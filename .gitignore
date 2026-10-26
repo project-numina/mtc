@@ -1,0 +1,7 @@
+.lake/
+codex.log
+codex-final.md
+*.olean
+*.ilean
+*.trace
+scratch/

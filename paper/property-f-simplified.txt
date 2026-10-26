@@ -1,0 +1,288 @@
+        PROPERTY F IMPLIES WEAK INTEGRALITY
+    FOR PSEUDO-UNITARY BRAIDED FUSION CATEGORIES
+
+                Abstract. We give a proof by contradiction that every braided
+                fusion category with property F and a pseudo-unitary Galois
+                conjugate is weakly integral. The proof combines a trace in-
+                equality for finite braid group images with Galois symmetry
+                in the Drinfeld centre. A non-pseudo-unitary conjugate would
+                produce a Galois image of the unit whose conjugated dimen-
+                sion lies strictly between zero and one. The trace inequality
+                forces the absolute value of this dimension to equal the object’s
+                Frobenius–Perron dimension, which is at least one.
+
+
+
+
+                                     1. Introduction
+   Let C be a braided fusion category over C. For an object X and n ≥ 2, write GX,n
+for the image of
+                                                       ⊗(i−1)               ⊗(n−i−1)
+         ρX,n : Bn −→ Aut(X ⊗n ),           σi 7−→ idX          ⊗cX,X ⊗ idX            .
+The category has property F if every GX,n is finite, and is weakly integral if
+FPdim(C) ∈ Z.
+Conjecture (Naidu–Rowell [NR]). A braided fusion category has property F if and
+only if it is weakly integral.
+   Thus the conjecture relates finiteness of all braid group images to a single arithmetic
+condition on the fusion category. We prove the implication from property F to weak
+integrality under a pseudo-unitarity hypothesis. Recall that C is pseudo-unitary if
+dim(C) = FPdim(C).
+Theorem 1.1. Let C be a braided fusion category with a pseudo-unitary Galois
+conjugate. If C has property F, then C is weakly integral.
+   The proof takes place in the Drinfeld centre of a pseudo-unitary Galois conjugate
+of C. We show that every further Galois conjugate remains pseudo-unitary; its global
+dimension is then fixed by Galois conjugation and hence is an integer. If a conjugate
+were not pseudo-unitary, Galois symmetry in the centre would produce a simple
+object Y whose dimension in a conjugate category lies strictly between zero and one.
+Finite braid images force the absolute value of this dimension to equal FPdim(Y ),
+which is at least one.
+   The main step is the trace argument in Section 3. It first bounds the categorical
+trace of every unitary in a braid algebra. A particular three-strand braid attains this
+bound; the equality case then gives the required identity of dimensions. Section 4
+places the relevant Galois images of the unit in a subcategory of the centre with
+property F and completes the contradiction. It then derives a criterion for a single
+object to have infinite braid images.
+  Date: October 22, 2026.
+                                               1
+                                  2. Preliminaries
+   All fusion categories are over C, and we suppress associativity and unit constraints.
+We write 1 for the tensor unit and NZW = dim Hom(W, Z) for the multiplicity of a
+simple object W in an object Z.
+2.1. Transfer of property F. Property F passes to direct summands and fusion
+subcategories. Indeed, if V is a summand of X, naturality of the braiding makes
+V ⊗n invariant under the braid action on X ⊗n , and restriction gives a quotient of
+GX,n . It also passes along a dominant braided tensor functor: the braid image on
+the image of an object is a quotient of its original braid image, and every object of
+the target is a summand of such an image.
+   If C has property F, so do C rev and C ⊠ C rev . Reversing the braiding inverts
+the braid generators. On X ⊠ Y , the braid image is a quotient of a subgroup of
+GX,n × GY,n , and every object of the product category is a summand of some X ⊠ Y .
+   Finally, property F and Frobenius–Perron dimensions are invariant under Galois
+conjugation. A number-field model for the braided categorical data exists by [ENO,
+2.30, 2.33]. Conjugation preserves all relations among braid matrices and preserves
+the fusion rules. We regard Galois automorphisms as automorphisms of Q over Q.
+2.2. Dimensions. In a spherical category, dX denotes categorical dimension, Tr
+categorical trace, and tr ordinary matrix trace. Simple dimensions and their Galois
+conjugates are real and nonzero [ENO, 2.3, 2.5, 2.10]. The dimension function is
+a character of the fusion ring, as is each of its Galois conjugates. Thus σ(dX ) is a
+fusion-matrix eigenvalue, and Perron–Frobenius theory gives
+                                 |σ(dX )| ≤ FPdim(X).
+                        2
+                     X dX , global dimensions are totally positive and dim(C) ≤
+                   P
+Since dim(C) =
+FPdim(C) [ENO, 8.21]. On a pseudo-unitary category we use the canonical spherical
+structure, for which dX = FPdim(X) [ENO, 8.23]. On a Galois conjugate we retain
+the transported spherical structure.
+Remark (Spherical structures under conjugation). We record why the chosen spherical
+structure is defined over a finite extension of the field of definition, so that it can be
+transported under Galois conjugation. For each simple X, choose a nonzero algebraic
+map aX : X → X ∗∗ and write its pivotal component as jX = tX aX . Let qX (aX )
+denote the quantum trace defined using the duality maps. This trace is algebraic
+and nonzero [ENO, Section 2.1], and
+                                    dX = tX qX (aX ).
+Since dX is algebraic, so is tX . There are only finitely many simple objects, giving
+the required finite extension.
+2.3. Galois symmetry of modular data. A modular category is a non-degenerate
+braided fusion category with a spherical structure. Let M be modular, put D =
+dim(M), and set
+                              SXY = TrX⊗Y (cY,X cX,Y ).
+The matrix S is symmetric and S 2 = DE, where EXY = δX,Y ∗ . Its normalized
+columns χY (X) = SXY /dY are fusion-ring characters. Non-degeneracy makes them
+distinct, so they exhaust the characters [EGNO, 8.13.11, 8.14.2]. Thus every Galois
+                                            2
+automorphism τ determines a permutation τb of the simple labels by τ ◦ χY = χτb(Y ) .
+This permutation is distinct from passage to the conjugate category, whose tensor
+unit is still 1.
+Proposition 2.1. If Y = τb(1), then Y is self-dual and
+(1)                      SXY = dY τ (dX )       for every simple X,
+(2)                     τ (D) = D/d2Y .
+Proof. The first identity is χY = τ ◦ χ1 . Therefore
+                                      X
+                       d2Y τ (D) =         2
+                                          SXY = (S 2 )Y Y = DδY,Y ∗ .
+                                      X
+The left side is nonzero, proving both assertions.                                       □
+
+                                 3. The trace argument
+  Fix an object X for which every braid image GX,n is finite, and let An ⊆ End(X ⊗n )
+be the linear span of GX,n . Averaging makes the group action unitary on each
+multiplicity space. The resulting adjoint makes An a finite-dimensional ∗-algebra,
+with                                 ∗
+
+                                                                 αg g −1 .
+                                  X                      X
+                                        αg g  =
+                                g∈GX,n                  g∈GX,n
+Thus the involution is independent of the averaged inner products. Tensoring on
+either side with identity strands preserves it, since it carries braid images and their
+inverses to braid images and inverses.
+   The next lemma obtains a trace bound by placing overlapping copies of a unitary
+on increasingly many strands.
+Lemma 3.1 (Trace bound). Let X be simple in a spherical braided fusion category,
+with GX,n finite for every n. Put d = dX and f = FPdim(X). Every unitary u ∈ Am ,
+m ≥ 2, satisfies
+                                  | Tr(u)| ≤ |d|f m−1 .
+Proof. Place k copies u1 , . . . , uk on consecutive blocks of m strands, successive blocks
+sharing one strand, so N = k(m − 1) + 1. These insertions preserve the involution, so
+U = u1 · · · uk is unitary. On each multiplicity space its ordinary trace has absolute
+value at most the dimension of that space. Consequently,
+                            X                               
+              | Tr(U )| =        dW tr U |Hom(W,X ⊗N )
+                            W
+                            X                   X
+                                 W                       W                  N
+                       ≤        NX ⊗N |dW | ≤           NX ⊗N FPdim(W ) = f   .
+                            W                       W
+Simplicity of X makes the partial trace of u over its last m − 1 strands equal to
+(Tr(u)/d) idX . Only uk meets the last m − 1 strands of U ; tracing them out and
+iterating gives
+                          Tr(u)k
+                  Tr(U ) =       ,          | Tr(u)|k ≤ |d|k−1 f k(m−1)+1 .
+                           dk−1
+Take k-th roots and let k → ∞.                                                           □
+                                                3
+  For the rest of this section, let M be pseudo-unitary and modular, let τ be a
+Galois automorphism, and put
+         Y = τb(1),       σ = τ −1 ,        f = dY = FPdim(Y ),                  d = σ(dY ).
+We now work in Mσ , retaining the simple-object labels of M. The dimensions
+there are σ(dW ), where dW denotes the original dimension in M. All traces, braid
+operators, and multiplicity spaces below are taken in Mσ , and An denotes the span
+of GY,n . These braid images are isomorphic to those in M by Galois invariance.
+Lemma 3.2 (Galois rigidity). If GY,n is finite for every n, then f = |d|.
+Proof. We first bound the total absolute weight of the categorical trace on A3 .
+Decompose the multiplicity spaces into irreducible representations of the finite group
+GY,3 :
+            HW = Hom(W, Y ⊗3 ) ∼        Vr⊕mW r ,     A3 ∼
+                                    M                       M
+                                 =                       =     End(Vr ),
+                                            r                             r
+retaining only the constituents that occur. For T ∈ A3 ,
+                             X                                X
+                  Tr(T ) =       wr tr(T |Vr ),       wr =         mW r σ(dW ).
+                             r                                 W
+The multiplicities mW r are nonnegative integers, and for each retained r at least one
+is positive. Since the original dimensions dW are positive,
+                                                          !
+                                            X
+                                 wr = σ         mW r dW       ̸= 0.
+                                            W
+The weights are real. Let J ∈ A3 act on Vr by sgn(wr ). This is a unitary involution,
+so Lemma 3.1 gives
+                             X
+(3)                              |wr | dim Vr = Tr(J) ≤ |d|f 2 .
+                             r
+   We now exhibit a braid whose trace attains this bound.
+Let a, b be the images of σ1 , σ2 , and put c = cY,Y . In
+M, equation (1) gives SY Y = f τ (f ); applying σ yields                                    = f
+Tr(c2 ) = df in Mσ . Since Y is simple, the partial trace of
+c2 over its second strand is f idY . Tracing over the third
+strand of a2 b2 therefore gives                                               Partial trace over strand 3.
+                                 Tr(a2 b2 ) = f Tr(c2 ) = df 2 .
+  Since g = a2 b2 is unitary,
+                  X                    X                           X
+       |d|f 2 =       wr tr(g|Vr ) ≤        |wr | | tr(g|Vr )| ≤       |wr | dim Vr ≤ |d|f 2 .
+                  r                     r                          r
+ Equality holds throughout. Since every wr is nonzero, each unitary matrix g|Vr
+has trace of absolute value dim Vr , and hence is scalar. Hence a2 b2 is central in A3 .
+Commuting it with b shows that a2 commutes with b; it also commutes with a, so it
+is central. The braid generators are conjugate, whence a2 = b2 . Thus
+                                    c2 ⊗ idY = idY ⊗c2 .
+Taking the partial trace over the third strand yields d c2 = f idY ⊗Y . Since c2 has
+finite order, |f /d| = 1.                                                         □
+                                                  4
+Remark. Pseudo-unitarity is used here to identify dY with FPdim(Y ) and to ensure
+that every trace weight wr is nonzero. The conjugated dimension d = σ(dY ) may be
+negative, which explains the absolute value in the conclusion.
+
+
+                    4. The main theorem and consequences
+   To apply Lemma 3.2, we place the Galois images of the unit in a modular category
+where their braid images are finite. The required category is the Drinfeld centre; the
+relevant objects lie in a subcategory generated by the canonical images of C and C rev .
+   For a fusion subcategory A of a braided category, write A′ for its centralizer. Let
+  ι+ : C −→ Z(C),     X 7−→ (X, cX,− ),             ι− : C rev −→ Z(C),     X 7−→ (X, c−1
+                                                                                       −,X ),
+
+and denote their images by C+ and C− .
+Lemma 4.1. Let C be a pseudo-unitary braided fusion category with property F.
+Then M = Z(C) is pseudo-unitary and modular, and B = C+ ∨ C− has property F
+and contains τb(1) for every Galois automorphism τ .
+Proof. The centre is modular. Its global and Frobenius–Perron dimensions are
+dim(C)2 and FPdim(C)2 , respectively, so it is pseudo-unitary [EGNO, 7.16.6, 8.20.14,
+9.3.4]. The canonical images are mutual centralizers inside M: (V, γ) centralizes C+
+precisely when γX = c−1X,V for every X, and similarly for C− . Consequently,
+
+                                 B ′ = C+ ∩ C− = ι+ (C ′ ).
+This category is symmetric, hence integral [DGNO, 2.46]. For Y = τb(1) and every
+simple X ∈ B ′ , we therefore have dX = FPdim(X) ∈ Z, and
+                                SXY = dY τ (dX ) = dY dX .
+The S-matrix criterion for centralizers and the double-centralizer theorem give
+Y ∈ B ′′ = B [EGNO, 8.20.5, 8.21.1]. Finally, the two canonical images centralize
+each other, so X ⊠Y 7→ ι+ (X)⊗ι− (Y ) defines a braided functor C ⊠C rev → B [EGNO,
+8.6.1]. It is dominant because these images generate B. The transfer properties in
+Section 2.1 therefore give property F for B.                                     □
+
+Proof of Theorem 1.1. By Galois invariance we may assume that C is pseudo-unitary.
+Put δ = dim(C) = FPdim(C). We show that every Galois conjugate of C is pseudo-
+unitary. Their common fusion rules will then force every Galois automorphism to fix
+δ, proving integrality. Suppose, to the contrary, that C σ is not pseudo-unitary. Since
+Galois conjugation preserves fusion rules,
+                       0 < σ(δ) = dim(C σ ) < FPdim(C σ ) = δ.
+Set M = Z(C), D = δ 2 , τ = σ −1 and Y = τb(1). By Lemma 4.1, all braid images
+of Y are finite. Write f = dY = FPdim(Y ) and d = σ(dY ). Equation (2) and the
+positivity of δ and τ (δ) = dim(C τ ) give
+                          s
+                                D       δ                  σ(δ)
+                     f=             =       ,         d=        ∈ (0, 1).
+                              τ (D)   τ (δ)                 δ
+                                                5
+Lemma 3.2 now gives the contradiction
+                            1 ≤ FPdim(Y ) = f = |d| = d < 1.
+Thus every Galois conjugate of C is pseudo-unitary, and every Galois automorphism
+fixes δ. As δ is an algebraic integer, δ ∈ Z.                                   □
+   The theorem also has an objectwise consequence. To apply it to the fusion
+subcategory ⟨X⟩ generated by an object X, we must establish property F for every
+object of that subcategory. The following lemma shows that finiteness of all GX,n
+suffices.
+Lemma 4.2 (Closure). Let X be an object of a braided fusion category. If GX,n is
+finite for every n, then ⟨X⟩ has property F.
+Proof. The case X = 0 is immediate. Otherwise, summands of finite sums of positive
+powers of X form a nonzero full abelian subcategory closed under tensor products
+and subquotients. By [EGNO, 4.11.4], it contains the unit and is rigid, so it equals
+⟨X⟩. Thus every object of ⟨X⟩ is a summand of some Z = i X ⊗ki , with ki ≥ 1. For
+                                                             L
+
+each n ≥ 2, the pure braid group Pn preserves each summand X ⊗ki1 ⊗ · · · ⊗ X ⊗kin of
+Z ⊗n . By cabling, its action there has image in the finite group GX,ki1 +···+kin . Thus
+its image on Z ⊗n is finite, being contained in a finite product of finite groups. Since
+[Bn : Pn ] = n!, the full braid image is finite as well [ERW, 2.1(ii)]. Naturality passes
+finiteness to every summand of Z, as in Section 2.1.                                   □
+  Consequently, the dimension of a particular simple object can force its own braid
+images to be infinite.
+Corollary 4.3. Let X be a simple object of a braided fusion category, and suppose
+that ⟨X⟩ has a pseudo-unitary Galois conjugate. If FPdim(X)2 ∈  / Z, then GX,n is
+infinite for every sufficiently large n.
+Proof. If every GX,n were finite, Lemma 4.2 and Theorem 1.1 would make ⟨X⟩
+weakly integral. Then FPdim(X)2 ∈ Z by [ENO, 8.27], a contradiction. Hence
+GX,n0 is infinite for some n0 . Tensoring with a nonzero object is faithful, so tensoring
+with identity strands embeds GX,n0 in GX,n for every n ≥ n0 .                          □
+   In particular, the conclusion holds in every unitary braided fusion category, since its
+fusion subcategories are unitary and hence pseudo-unitary. The simplicity hypothesis
+is essential: direct sums in a weakly integral category need not have integral squared
+Frobenius–Perron dimension.
+
+                                        References
+[DGNO] V. Drinfeld, S. Gelaki, D. Nikshych and V. Ostrik, On braided fusion categories I, Selecta
+       Math. (N.S.) 16 (2010), 1–119.
+[EGNO] P. Etingof, S. Gelaki, D. Nikshych and V. Ostrik, Tensor Categories, Mathematical Surveys
+       and Monographs, vol. 205, American Mathematical Society, Providence, RI, 2015.
+[ENO] P. Etingof, D. Nikshych and V. Ostrik, On fusion categories, Ann. of Math. (2) 162 (2005),
+       581–642.
+[ERW] P. Etingof, E. Rowell and S. Witherspoon, Braid group representations from twisted
+       quantum doubles of finite groups, Pacific J. Math. 234 (2008), 33–41.
+[NR]   D. Naidu and E. C. Rowell, A finiteness property for braided fusion categories, Algebr.
+       Represent. Theory 14 (2011), 837–855.
+
+                                               6
+
