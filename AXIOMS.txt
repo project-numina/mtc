@@ -1,0 +1,18 @@
+'PropertyF.propertyF_implies_weaklyIntegral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PropertyF.global_dimension_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PropertyF.OverlapModel.trace_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PropertyF.ThreeStrandModel.rigidity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PropertyF.ModularData.galois_global_dimension' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PropertyF.propertyF_closure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PropertyF.eventually_infinite_braidImage' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PropertyF.integer_of_galois_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PropertyF.pivotal_scalar_algebraic' depends on axioms: [propext, Classical.choice, Quot.sound]
+PropertyF.propertyF_implies_weaklyIntegral : ∀ (H : PropertyF.StandardInputs) (C : PropertyF.BraidedFusionCategory),
+  PropertyF.HasPseudoUnitaryGaloisConjugate C →
+    PropertyF.HasPropertyF C.Obj → PropertyF.WeaklyIntegral C.fusion.globalFPDimension
+PropertyF.eventually_infinite_braidImage : ∀ (H : PropertyF.StandardInputs) {C : PropertyF.BraidedFusionCategory}
+  {X : C.Obj} (I : PropertyF.GeneratedInputs C X),
+  CategoryTheory.Simple X →
+    PropertyF.HasPseudoUnitaryGaloisConjugate I.category →
+      (¬∃ z, C.fusion.fpDimension X ^ 2 = ↑z) → ∃ N, ∀ (n : ℕ), N ≤ n → Infinite ↥(PropertyF.braidImage X n)
+Audited 566 project declarations: no sorryAx or custom axioms.
