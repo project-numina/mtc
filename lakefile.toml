@@ -1,7 +1,7 @@
 name = "property-f-lean"
 version = "0.1.0"
 defaultTargets = ["PropertyF"]
-moreLeanArgs = ["-j2", "-M1400"]
+moreLeanArgs = ["-j2", "-M3000"]
 
 [[require]]
 name = "mathlib"
