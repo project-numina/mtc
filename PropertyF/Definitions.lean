@@ -1,15 +1,19 @@
 module
 public import Mathlib.CategoryTheory.Monoidal.Braided.Basic
+public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Defs
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Basic
 public import Mathlib.CategoryTheory.Monoidal.Linear
 public import Mathlib.CategoryTheory.Abelian.Basic
 public import Mathlib.CategoryTheory.Simple
 public import Mathlib.Algebra.Group.Subgroup.Basic
 public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Mathlib.LinearAlgebra.Dimension.Finrank
 public import Mathlib.Analysis.Complex.Basic
+public import Mathlib.CategoryTheory.Retract
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open scoped BigOperators
 namespace PropertyF
 
 universe v u
@@ -53,5 +57,150 @@ def WeaklyIntegral (globalFPDimension : ℝ) : Prop :=
 /-- Pseudo-unitarity is equality of global dimensions. -/
 def PseudoUnitary (globalDimension : ℂ) (globalFPDimension : ℝ) : Prop :=
   globalDimension = (globalFPDimension : ℂ)
+
+attribute [local instance] Abelian.hasFiniteBiproducts
+
+/-- Finite semisimplicity and a positive fusion-ring character on a genuine
+complex linear rigid braided category. A positive normalized character is the
+Frobenius–Perron dimension character [ENO §8]. Its existence is literature input;
+its equations and the finite decomposition requirement are visible here.
+
+`fpSimple` is specified as a positive character, not as an opaque FPdim constant.
+Simple representatives are pairwise nonisomorphic. -/
+structure FusionData (C : Type u) [Category.{v} C] [MonoidalCategory C]
+    [BraidedCategory C] [Abelian C] [Linear ℂ C]
+    [RigidCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] where
+  rank : ℕ
+  simpleObject : Fin rank → C
+  simple_is_simple : ∀ i, Simple (simpleObject i)
+  simple_injective : ∀ i j, Nonempty (simpleObject i ≅ simpleObject j) → i = j
+  unitIndex : Fin rank
+  unit_iso : simpleObject unitIndex ≅ 𝟙_ C
+  hom_finite : ∀ X Y : C, FiniteDimensional ℂ (X ⟶ Y)
+  decomposition : ∀ X : C, ∃ m : Fin rank → ℕ,
+    Nonempty (X ≅ ⨁ (fun p : Σ i, Fin (m i) => simpleObject p.1))
+  fpSimple : Fin rank → ℝ
+  fp_positive : ∀ i, 0 < fpSimple i
+  fp_unit : fpSimple unitIndex = 1
+  fp_character : ∀ i j, fpSimple i * fpSimple j =
+    ∑ k, (Module.finrank ℂ (simpleObject k ⟶ simpleObject i ⊗ simpleObject j) : ℝ) * fpSimple k
+
+namespace FusionData
+variable [BraidedCategory C] [Abelian C] [Linear ℂ C]
+  [RigidCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+
+/-- Object FP dimension is the positive character evaluated on its actual
+simple multiplicities (the dimensions of Hom spaces). -/
+def fpDimension (F : FusionData C) (X : C) : ℝ :=
+  ∑ i, (Module.finrank ℂ (F.simpleObject i ⟶ X) : ℝ) * F.fpSimple i
+
+/-- Global FP dimension, the sum of squares on simple labels. -/
+def globalFPDimension (F : FusionData C) : ℝ := ∑ i, F.fpSimple i ^ 2
+
+end FusionData
+/-- The two quantum traces used in the intrinsic squared norm of a simple
+object. They are composites of Mathlib's actual evaluation and coevaluation
+morphisms, not an uninterpreted dimension function. -/
+def rightQuantumTrace [RigidCategory C] {X : C} (j : X ≅ (Xᘁ)ᘁ) : End (𝟙_ C) :=
+  End.of (ExactPairing.coevaluation X (Xᘁ) ≫
+    (j.hom ⊗ₘ 𝟙 (Xᘁ)) ≫ ExactPairing.evaluation (Xᘁ) ((Xᘁ)ᘁ))
+
+def leftQuantumTrace [RigidCategory C] {X : C} (j : X ≅ (Xᘁ)ᘁ) : End (𝟙_ C) :=
+  End.of (ExactPairing.coevaluation (Xᘁ) ((Xᘁ)ᘁ) ≫
+    (𝟙 (Xᘁ) ⊗ₘ j.inv) ≫ ExactPairing.evaluation X (Xᘁ))
+
+/-- Choices needed to evaluate intrinsic squared norms [ENO §2.1]. The unit
+endomorphism algebra is identified with ℂ by a genuine ℂ-algebra equivalence.
+The simple double-dual isomorphisms need not assemble to a pivotal structure;
+the product of the two quantum traces is independent of each choice. -/
+structure GlobalDimensionData (C : Type u) [Category.{v} C] [MonoidalCategory C]
+    [BraidedCategory C] [Abelian C] [Linear ℂ C] [RigidCategory C]
+    [MonoidalPreadditive C] [MonoidalLinear ℂ C] (F : FusionData C) where
+  unitScalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ
+  doubleDualIso : ∀ i, F.simpleObject i ≅ ((F.simpleObject i)ᘁ)ᘁ
+
+/-- A bundled actual complex braided fusion category with choices for evaluating
+its intrinsic squared norms. Global dimension is defined below by actual duality
+morphisms. -/
+structure BraidedFusionCategory where
+  Obj : Type u
+  [category : Category.{v} Obj]
+  [monoidal : MonoidalCategory Obj]
+  [braided : BraidedCategory Obj]
+  [abelian : Abelian Obj]
+  [linear : Linear ℂ Obj]
+  [rigid : RigidCategory Obj]
+  [monoidalPreadditive : MonoidalPreadditive Obj]
+  [monoidalLinear : MonoidalLinear ℂ Obj]
+  fusion : FusionData Obj
+  dimensionData : GlobalDimensionData Obj fusion
+
+attribute [instance] BraidedFusionCategory.category BraidedFusionCategory.monoidal
+  BraidedFusionCategory.braided BraidedFusionCategory.abelian
+  BraidedFusionCategory.linear BraidedFusionCategory.rigid
+  BraidedFusionCategory.monoidalPreadditive BraidedFusionCategory.monoidalLinear
+
+/-- Braid images on zero or one strand are trivial. This uniform indexing
+is useful for cabling blocks that contain tensor units. -/
+def braidImageAll [BraidedCategory C] (X : C) : ℕ → Type v
+  | 0 => ↥(⊥ : Subgroup (Aut (tensorPower X 0)))
+  | 1 => ↥(⊥ : Subgroup (Aut (tensorPower X 1)))
+  | n + 2 => braidImage X n
+
+instance braidImageAll_group [BraidedCategory C] (X : C) (n : ℕ) :
+    Group (braidImageAll X n) := by
+  cases n with
+  | zero => exact inferInstanceAs (Group ↥(⊥ : Subgroup (Aut (tensorPower X 0))))
+  | succ n => cases n with
+    | zero => exact inferInstanceAs (Group ↥(⊥ : Subgroup (Aut (tensorPower X 1))))
+    | succ n => exact inferInstanceAs (Group (braidImage X n))
+
+/-- The additive, idempotent-complete tensor closure of an object, described by
+retracts of finite sums of nonnegative tensor powers. By [EGNO 4.11.4] this is
+the generated fusion subcategory. Allowing exponent zero handles `X=0` uniformly.
+No finiteness assertion is part of this definition. -/
+def GeneratedBy [BraidedCategory C] [Abelian C] (X Y : C) : Prop :=
+  ∃ (count : ℕ) (k : Fin count → ℕ),
+    Nonempty (Retract Y (⨁ (fun i => tensorPower X (k i))))
+
+/-- Intrinsic global dimension as the sum of the simple squared norms
+[ENO §2.1]. No spherical or pivotal structure is assumed by this definition. -/
+def BraidedFusionCategory.globalDimension (C : BraidedFusionCategory.{v,u}) : ℂ :=
+  ∑ i, C.dimensionData.unitScalar (rightQuantumTrace (C.dimensionData.doubleDualIso i)) *
+    C.dimensionData.unitScalar (leftQuantumTrace (C.dimensionData.doubleDualIso i))
+
+/-- A coefficientwise Galois conjugate: an actual braided monoidal equivalence
+whose map on morphisms is semilinear for the specified automorphism. -/
+structure GaloisConjugate (C D : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ) where
+  equivalence : C.Obj ≌ D.Obj
+  [monoidal : equivalence.functor.Monoidal]
+  [braided : equivalence.functor.Braided]
+  map_smul : ∀ {X Y : C.Obj} (z : ℂ) (f : X ⟶ Y),
+    equivalence.functor.map (z • f) = σ z • equivalence.functor.map f
+
+/-- Identity conjugation, with the identity braided monoidal functor. -/
+def GaloisConjugate.refl (C : BraidedFusionCategory.{v,u}) :
+    GaloisConjugate C C (RingEquiv.refl ℂ) where
+  equivalence := CategoryTheory.Equivalence.refl
+  monoidal := inferInstanceAs ((𝟭 C.Obj).Monoidal)
+  braided := inferInstanceAs ((𝟭 C.Obj).Braided)
+  map_smul := by intros; rfl
+
+/-- Faithful statement of the paper's hypothesis, including a possibly
+non-pseudo-unitary original category. -/
+def HasPseudoUnitaryGaloisConjugate (C : BraidedFusionCategory.{v,u}) : Prop :=
+  ∃ (D : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ),
+    Nonempty (GaloisConjugate C D σ) ∧
+    PseudoUnitary D.globalDimension D.fusion.globalFPDimension
+
+/-- A pseudo-unitary category is its own pseudo-unitary Galois conjugate. -/
+theorem hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
+    (h : PseudoUnitary C.globalDimension C.fusion.globalFPDimension) :
+    HasPseudoUnitaryGaloisConjugate C :=
+  ⟨C, RingEquiv.refl ℂ, ⟨GaloisConjugate.refl C⟩, h⟩
+
+/-- The Naidu–Rowell conjecture, stated for context; its converse is not claimed. -/
+def PropertyFConjecture : Prop := ∀ C : BraidedFusionCategory.{v,u},
+  HasPropertyF C.Obj ↔ WeaklyIntegral C.fusion.globalFPDimension
 
 end PropertyF

@@ -12,9 +12,9 @@ namespace PropertyF
 def ColumnUnitary {ι : Type*} [Fintype ι] (U : Matrix ι ι ℂ) : Prop :=
   ∀ j, ∑ i, Complex.normSq (U i j) = 1
 
-variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+variable {ι : Type*} [Fintype ι]
 
-lemma columnUnitary_of_unitary {U : Matrix ι ι ℂ}
+lemma columnUnitary_of_unitary [DecidableEq ι] {U : Matrix ι ι ℂ}
     (hU : U ∈ Matrix.unitaryGroup ι ℂ) : ColumnUnitary U := by
   intro j
   have h := congrArg (fun A : Matrix ι ι ℂ => (A j j).re)
@@ -22,7 +22,6 @@ lemma columnUnitary_of_unitary {U : Matrix ι ι ℂ}
   simpa [Matrix.mul_apply, Matrix.star_apply, Complex.mul_re,
     Complex.normSq_apply, pow_two] using h
 
-omit [DecidableEq ι] in
 lemma entry_normSq_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : ι) :
     Complex.normSq (U i j) ≤ 1 := by
   calc
@@ -45,7 +44,7 @@ theorem norm_trace_le_card {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) :
     _ = Fintype.card ι := by simp
 
 /-- Saturation of the real trace estimate forces the identity matrix. -/
-theorem eq_one_of_re_trace_eq_card {U : Matrix ι ι ℂ} (hU : ColumnUnitary U)
+theorem eq_one_of_re_trace_eq_card [DecidableEq ι] {U : Matrix ι ι ℂ} (hU : ColumnUnitary U)
     (ht : U.trace.re = Fintype.card ι) : U = 1 := by
   have hre : ∀ i, (U i i).re ≤ 1 := fun i =>
     (Complex.re_le_norm _).trans (entry_norm_le_one hU i i)
@@ -72,7 +71,7 @@ theorem eq_one_of_re_trace_eq_card {U : Matrix ι ι ℂ} (hU : ColumnUnitary U)
 
 /-- Equality in the complex trace bound forces a scalar matrix. This includes
 zero-dimensional blocks and does not assume an eigenvalue decomposition. -/
-theorem scalar_of_norm_trace_eq_card {U : Matrix ι ι ℂ} (hU : ColumnUnitary U)
+theorem scalar_of_norm_trace_eq_card [DecidableEq ι] {U : Matrix ι ι ℂ} (hU : ColumnUnitary U)
     (ht : ‖U.trace‖ = Fintype.card ι) : ∃ z : ℂ, U = z • (1 : Matrix ι ι ℂ) := by
   by_cases hι : IsEmpty ι
   · let := hι

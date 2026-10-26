@@ -1,6 +1,12 @@
 # Formalization status
 
-Work in progress. The entire paper has been read and mapped in `PLAN.md`.
+Conditional formalization. The entire paper has been read and mapped in `PLAN.md`.
+
+The main theorem `PropertyF.propertyF_implies_weaklyIntegral` and the closure and
+objectwise corollary compile with zero `sorry` proofs. They have explicit
+literature and categorical realization hypotheses in `PropertyF/Axioms.lean`.
+These hypotheses have not been constructed from Mathlib's category structures.
+Consequently this is not an assumption-free categorical formalization.
 
 Implemented and kernel checked:
 
@@ -21,9 +27,26 @@ Implemented and kernel checked:
 - The positive dimension-ratio calculation and final Galois inequality
   contradiction.
 
-**These are interface-relative proofs.** The construction of the interfaces
-from fusion categories, Lemma 4.1, closure, and the full main theorem are still
-outstanding. No completed categorical theorem is claimed at this stage.
+**These are interface-relative proofs.** Also implemented:
+
+- Finite semisimplicity and FP dimension as a positive fusion-ring character on
+  genuine Mathlib complex linear rigid braided categories.
+- Intrinsic global dimension from actual evaluation and coevaluation morphisms.
+- Spherical pivotal-scalar algebraicity and finite-extension argument.
+- Mutual-centralizer computations using actual half-braidings.
+- Lemma 4.1's containment and property-F arguments from the explicit standard
+  centre criterion and product quotient witnesses.
+- The complete main contradiction, Galois reduction, and integer conclusion.
+- Lemma 4.2's finite-product/finite-index argument from cabling witnesses, and
+  Corollary 4.3 including propagation to every sufficiently large strand count.
+- General finite-image quotient/restriction/product and inverse-generator
+  transfer arguments from §2.1.
+
+Remaining construction bridges are described in the expanded ledger below.
+`PropertyF/Audit.lean` runs the main dependency checks during `lake build`.
+The main theorem's `#print axioms` result is exactly
+`[propext, Classical.choice, Quot.sound]`. Explicit theorem parameters do not
+appear in that list.
 
 Lean and Mathlib are pinned to `v4.35.0`. Mathlib's 9031 cached artifacts were
 downloaded with `LEAN_NUM_THREADS=8 taskset -c 0-7 lake exe cache get`.
@@ -44,7 +67,12 @@ All unproved interface laws are in `PropertyF/Axioms.lean`:
 | `ModularData` | Symmetry, unit column, S-square, distinct fusion-character Galois permutation | [EGNO 8.13.11, 8.14.2]; actual finite matrices and complex field automorphisms |
 | `ThreeStrandModel` | Braiding relation, pair embeddings, two partial traces, nonzero pair algebra, finite order | Spherical calculus [EGNO §§4.7–4.8] and finite braid images; not constructed from categorical data |
 
-The last three interfaces contain genuine hypotheses. `#print axioms` does not
+Additional standard-input structures now include `CenterInputs`,
+`ThreeStrandRealization`, `DimensionField`, `PseudoUnitaryInputs`, `StandardInputs`,
+`CablingWitness`, and `GeneratedInputs`. Their full field-level ledger will be
+recorded below before handoff.
+
+These interfaces contain genuine hypotheses. `#print axioms` does not
 list theorem parameters, so an empty custom-axiom list does not discharge them.
 The nonzero-weight condition and `Tr(c²)=df` are explicit arguments to the
 rigidity theorem, not unmentioned consequences of the model.
