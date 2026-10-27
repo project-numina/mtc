@@ -127,6 +127,7 @@ public import PropertyF.Ground.Cabling.TupleCrossing
 public import PropertyF.Ground.Cabling.CablingFinite
 public import PropertyF.Ground.Integrate.ScalarTwist
 public import PropertyF.Ground.Integrate.ScalarTwistTransport
+public import PropertyF.Ground.Integrate.ScalarTwistModular
 
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.PositiveWeights

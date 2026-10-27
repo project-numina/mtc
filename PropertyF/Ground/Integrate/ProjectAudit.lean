@@ -213,6 +213,7 @@ import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
 import all PropertyF.Ground.Integrate.ScalarTwistTransport
+import all PropertyF.Ground.Integrate.ScalarTwistModular
 import all PropertyF.Ground.Integrate.StrandInclusion
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Modular.Audit
@@ -323,6 +324,7 @@ run_cmd do
       ``PropertyF.Ground.generated_simple_square_integer,
       ``PropertyF.Ground.ScalarTwist.conjugate,
       ``PropertyF.Ground.ScalarTwist.labels,
+      ``PropertyF.Ground.ScalarTwist.labels_S,
       ``PropertyF.Ground.Calculus.actual_rigidity_of_overlap_and_galois_dimensions,
       ``PropertyF.Ground.Dimensions.fourthDualRootNaturalSquare_eq,
       ``PropertyF.Ground.selfDual_character_galois_real,
