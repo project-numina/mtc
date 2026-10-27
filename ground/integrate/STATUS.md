@@ -43,7 +43,7 @@
   spaces as a genuine ground braided fusion category, proving non-vacuity of
   the category interface (property F and pseudo-unitarity are not yet shown).
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans all 1,707 integrated declarations for forbidden axioms.
+- `ProjectAudit` scans all 1,734 integrated declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and
@@ -52,16 +52,16 @@
 
 ## In progress
 
-- Prove faithful interpretation of the frozen target and choice independence.
-  Continue to exercise the final dependency gate as integration progresses.
+- Continue validating mathematical interfaces and exercising the final
+  dependency gate as integration progresses.
 - Refactor the conditional argument into bundle-free results as constructions
   arrive; a direct use of its old theorem would fail the strict dependency audit.
 
 ## Blocked / remaining
 
-No final theorem: the target needs FP/semisimple, intrinsic/spherical dimension,
-centre, modular, and categorical braid/trace constructions enumerated in the
-ledger. The FP spectral-radius/character identification and both global dimensions’
+No final theorem: pseudo-unitary spherical structures, centre fusion and
+modularity, and the categorical braid/trace witness remain open as detailed
+in the ledger. The FP spectral-radius/character identification and both global dimensions’
 representative independence are proved. The work
 is a substantial multi-workstream formalization, not a short integration patch;
 no reliable completion-time estimate is available.

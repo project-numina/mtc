@@ -4,8 +4,8 @@ Baseline: 094175c. Frozen target definition: 45da64d. As of 2026-10-27 all old
 interfaces below are unconstructed unless explicitly marked otherwise. Exact
 field types are in `PropertyF/Axioms.lean` and `PropertyF/Definitions.lean`;
 `FORMALIZATION.md` explains their mathematical content. All owners are the
-workstreams specified in the coordination board. The target is frozen after fusion and dimensions review; the mathematical
-identification and independence obligations listed below remain open.
+workstreams specified in the coordination board. The target was frozen after
+fusion and dimensions review; unresolved mathematical obligations are noted below.
 
 ## Target and dependency graph
 
@@ -36,16 +36,13 @@ The category interface is inhabited by `Example.complexVectorSpaces`, based
 on finite-dimensional complex vector spaces; property F and pseudo-unitarity
 for that example have not yet been established.
 
-Provisional mathematical checks: simple reps exhaust all simple isoclasses;
-squared
-norms and their global sum are independent of isomorphism and presentation
-(proved in `Dimensions.GroundNorm`); FP spectral
-radii form the unique positive fusion character (proved by fusion be9a122);
-`Ground.globalFPDimension_presentation` proves presentation independence;
-compare complex-automorphism conjugacy with the paper's algebraic-closure
-formulation. `Ground.doubleDualIso` is already constructed from Mathlib's
-braided swapped pairing and uniqueness of duals. No choice independence proof
-is claimed yet.
+Simple representatives are proved complete; both global dimensions are
+proved independent of their presentation. FP spectral radii form the unique
+positive fusion character, and the intrinsic squared norm is independent of
+the scalar and double-dual choices. `Ground.doubleDualIso` is constructed
+from Mathlib’s braided swapped pairing and uniqueness of duals. Comparison
+of complex-automorphism conjugacy with the paper’s algebraic-closure
+formulation remains an explicit review obligation.
 
 ## Fields and ownership
 
@@ -56,15 +53,15 @@ is claimed yet.
 | `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Constructed by `Ground.legacyGlobalDimensionData`; norm and representative independence proved. |
 | `MultiplicityData` | `simpleCount`, `dimension`, `fpDimension`, `multiplicity`, `dimension_bound` | calculus; dimensions for bound | Open: group-representation decomposition and spherical dimension bound. |
 | `OverlapModel` | `stage`, `decomposition`, `fpMass_eq` | calculus, fusion | Actual braid-image algebras and unitary Wedderburn blocks constructed; categorical multiplicity and FP mass remain. |
-| `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Left-strand star maps and partial-trace bimodule/identity laws constructed; right insertion and iterated trace remain. |
-| `ThreeStrandModel` | `overlap`, `pair`, `pair_nonzero`, `cSquared`, `a`, `b`, `braid_relation`, `a_unitary`, `b_unitary` | calculus | Open: categorical braid action, finite-image averaging, nonzero blocks. |
-| `ThreeStrandModel` | `leftPair`, `rightPair`, `left_cSquared`, `right_cSquared` | calculus | Open: identity-strand algebra embeddings. |
+| `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Both strand star maps and iterated partial trace proved on calculus/dimensions branches; overlap recurrence iteration remains. |
+| `ThreeStrandModel` | `overlap`, `pair`, `pair_nonzero`, `cSquared`, `a`, `b`, `braid_relation`, `a_unitary`, `b_unitary` | calculus | Actual unitary pair/three-strand blocks, braid relation, nonzero blocks and finite order proved on calculus b0fe84a; full model assembly remains. |
+| `ThreeStrandModel` | `leftPair`, `rightPair`, `left_cSquared`, `right_cSquared` | calculus | Actual left/right identity-strand block maps and square-braiding identities proved on calculus b0fe84a; model assembly remains. |
 | `ThreeStrandModel` | `pairTrace`, `simplePartial`, `pair_trace_partial`, `thirdPartial`, `trace_third`, `third_left`, `third_right`, `third_bimodule` | calculus, dimensions | Open: spherical trace realization. |
-| `ThreeStrandModel` | `finite_order` | calculus | Open: transport finite order from finite actual image. |
+| `ThreeStrandModel` | `finite_order` | calculus | Finite order of the actual represented square proved on calculus b0fe84a; model assembly remains. |
 | `ThreeStrandRealization` | `model`, `positive`, `transport`, `retained`, `trace_formula` | calculus; dimensions/modular for transported dimensions and S | Unitary braid blocks with categorical trace weights and integer multiplicities are constructed; transport, partial traces and full overlap bridge remain. |
-| `ProductImageWitness` | `subgroup`, `map`, `surjective` | centre | Open: dominant product functor and restriction-to-summand diagram. |
+| `ProductImageWitness` | `subgroup`, `map`, `surjective` | centre | Actual product-functor/retract quotient maps constructed on centre f031e99; dominance onto the generated subcategory remains. |
 | `ModularData` | `rank`, `unit`, `dual`, `dimension`, `globalDimension`, `S` | modular, centre | Actual categorical S defined for a chosen pivotal structure; modular centre and remaining data open. |
-| `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | S symmetry and unit column proved; S², Verlinde and nonvanishing remain open. |
+| `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | S symmetry, unit column and nonvanishing proved; Verlinde proved on modular a002b9d; S² remains open. |
 | `ModularData` | `galoisLabel`, `galois_character` | modular | Constructed from a normalized-column character classification; modular-category realization and classification hypotheses remain. |
 | `CenterInputs` | `data`, `object`, `dim`, `dimension_real`, `positive`, `at_least_one`, `conjugate_real` | centre, dimensions, modular | Open: canonical spherical modular centre and dimension properties. |
 | `CenterInputs` | `global_square`, `symmetric_integrality`, `generated`, `double_centralizer` | centre | Open: centre dimension, symmetric core and double centralizer. |
