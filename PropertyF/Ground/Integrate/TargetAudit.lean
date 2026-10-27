@@ -27,7 +27,6 @@ import all PropertyF.Ground.CentreBundle.Canonical
 import all PropertyF.Ground.CentreCabling.LanternSpherical
 import all PropertyF.Ground.CentreCabling.TwistDual
 import all PropertyF.Ground.CentreCalculus.MonodromyCap
-import all PropertyF.Ground.CentreCalculus.TargetReduction
 import all PropertyF.Ground.CentreInduction.DualMonodromy
 import all PropertyF.Ground.CentreInduction.FiniteMonodromyModular
 import all PropertyF.Ground.CentreModular.CenterBalanced
@@ -109,7 +108,6 @@ import all PropertyF.Ground.Dimensions.DualBraiding
 import all PropertyF.Ground.Dimensions.ENOInvolution
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.PivotalLift
-import all PropertyF.Ground.Integrate.PivotalCentralityReduction
 import all PropertyF.Ground.CentreInduction.DualTensorComparison
 import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
 import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
@@ -273,7 +271,6 @@ import all PropertyF.Ground.Cabling.GeneratedAbelian
 import all PropertyF.Ground.Cabling.GeneratedDimension
 import all PropertyF.Ground.Cabling.GeneratedF
 import all PropertyF.Ground.Cabling.GeneratedFusion
-import all PropertyF.Ground.Cabling.GeneratedInputsBridge
 import all PropertyF.Ground.Cabling.GeneratedIntegral
 import all PropertyF.Ground.Cabling.GeneratorBlock
 import all PropertyF.Ground.Cabling.Images
@@ -424,7 +421,6 @@ import all PropertyF.Ground.Dimensions.SimplePairing
 import all PropertyF.Ground.Dimensions.SimpleScalars
 import all PropertyF.Ground.Dimensions.SphericalArithmetic
 import all PropertyF.Ground.Dimensions.SphericalCriterion
-import all PropertyF.Ground.Dimensions.SphericalGalois
 import all PropertyF.Ground.Dimensions.TensorExtension
 import all PropertyF.Ground.Dimensions.TensorMultiplicativity
 import all PropertyF.Ground.Dimensions.TensorTrace
@@ -478,12 +474,10 @@ import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.FunctorUniverse
-import all PropertyF.Ground.Integrate.GeneratedCenterReduction
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.OverlapReduction
-import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist

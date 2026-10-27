@@ -19,17 +19,14 @@ theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U)
   exact R.injective_obj_of_injective (inferInstance : Injective J)
 
 /-- A retract of an injective object is injective. -/
-theorem injective_of_retract {A B : D} (r : Retract A B) [Injective B] : Injective A where
-  factors f m _ := by
-    obtain ⟨g, hg⟩ := Injective.factors (f ≫ r.i) m
-    refine ⟨g ≫ r.r, ?_⟩
-    rw [← Category.assoc, hg, Category.assoc, r.retract, Category.comp_id]
+theorem injective_of_retract {A B : D} (r : Retract A B) [Injective B] : Injective A :=
+  r.injective
 
 /-- A unit retract of a tensor product with an injective makes every object injective. -/
 theorem all_injective_of_unit_retract (J U : D) [Injective J]
     (r : Retract (𝟙_ D) (J ⊗ U)) (X : D) : Injective X := by
   letI : Injective (J ⊗ U) := tensor_preserves_injective J U
-  letI : Injective (𝟙_ D) := injective_of_retract r
+  letI : Injective (𝟙_ D) := r.injective
   letI : Injective ((𝟙_ D) ⊗ X) := tensor_preserves_injective (𝟙_ D) X
   exact Injective.of_iso (λ_ X) inferInstance
 

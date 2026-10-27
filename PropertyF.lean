@@ -1,6 +1,5 @@
 module
 public import PropertyF.Ground.Integrate.ProjectAudit
-public import PropertyF.Ground.Integrate.GeneratedCenterReduction
 public import PropertyF.Ground.CentreCabling.ProductGenerated
 public import PropertyF.Ground.CentreCalculus.Core
 public import PropertyF.Ground.CentreCalculus.ExteriorReduction
@@ -120,7 +119,6 @@ public import PropertyF.Ground.Dimensions.DoubleDualFunctor
 public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.SignCharacter
-public import PropertyF.Ground.Dimensions.SphericalGalois
 public import PropertyF.Ground.Dimensions.InvolutionTrace
 public import PropertyF.Ground.Dimensions.WeightedEigenvalue
 public import PropertyF.Ground.Dimensions.ComplexSaturation
@@ -196,7 +194,6 @@ public import PropertyF.Ground.Cabling.ExprTuple
 public import PropertyF.Ground.Cabling.ExprTupleCross
 public import PropertyF.Ground.Cabling.LocalCable
 public import PropertyF.Ground.Cabling.CablingComplete
-public import PropertyF.Ground.Cabling.GeneratedInputsBridge
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.BlockGroupoid
 public import PropertyF.Ground.Cabling.BlockWords
@@ -338,7 +335,6 @@ public import PropertyF.Ground.CentreCalculus.PermutationQuotient
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
 public import PropertyF.Ground.CentreCalculus.ParityCorrection
 public import PropertyF.Ground.CentreCalculus.FirstCrossingTrace
-public import PropertyF.Ground.CentreCalculus.TargetReduction
 public import PropertyF.Ground.CentreCalculus.MonodromyCap
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
@@ -359,7 +355,6 @@ public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
 public import PropertyF.Ground.Integrate.CompatibleCenterReduction
 public import PropertyF.Ground.Integrate.RigidCenterReduction
-public import PropertyF.Ground.Integrate.PivotalCentralityReduction
 public import PropertyF.Ground.Integrate.PivotalOnlyReduction
 public import PropertyF.Ground.Integrate.CoreIntegralityReduction
 public import PropertyF.Ground.Integrate.BalancedCenterReduction

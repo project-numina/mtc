@@ -1,5 +1,4 @@
 project_file	project_line	project_name	mathlib_file	mathlib_line	mathlib_name
-PropertyF/BraidAlgebra.lean	32	norm_eq_one_of_pow_eq_one	.lake/packages/mathlib/Mathlib/Analysis/Complex/Basic.lean	103	norm_eq_one_of_pow_eq_one
 PropertyF/Ground/Modular/Classification.lean	84	dual_involutive	.lake/packages/mathlib/Mathlib/Combinatorics/Matroid/Dual.lean	158	dual_involutive
 PropertyF/Ground/CentreInduction/WeakHalfBraiding.lean	23	weak_left	.lake/packages/mathlib/Mathlib/Data/Ordmap/Invariants.lean	777	Bounded.weak_left
 PropertyF/Ground/CentreInduction/WeakHalfBraiding.lean	44	weak_right	.lake/packages/mathlib/Mathlib/Data/Ordmap/Invariants.lean	781	Bounded.weak_right

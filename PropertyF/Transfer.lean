@@ -9,23 +9,8 @@ namespace PropertyF
 /-- Quotient transfer of finite images, the group-theoretic part of §2.1. -/
 theorem finite_range_of_ker_le {G H K : Type*} [Group G] [Group H] [Group K]
     (f : G →* H) (g : G →* K) [Finite f.range] (hker : f.ker ≤ g.ker) : Finite g.range := by
-  classical
-  let r : f.range → G := fun y => Classical.choose y.property
-  have hr : ∀ y : f.range, f (r y) = y := fun y => Classical.choose_spec y.property
-  let q : f.range → g.range := fun y => ⟨g (r y), ⟨r y, rfl⟩⟩
-  apply Finite.of_surjective q
-  rintro ⟨y, x, rfl⟩
-  refine ⟨⟨f x, ⟨x, rfl⟩⟩, ?_⟩
-  apply Subtype.ext
-  change g (r ⟨f x, ⟨x, rfl⟩⟩) = g x
-  apply mul_inv_eq_one.mp
-  have hx : r ⟨f x, ⟨x, rfl⟩⟩ * x⁻¹ ∈ f.ker := by
-    change f (r ⟨f x, ⟨x, rfl⟩⟩ * x⁻¹) = 1
-    rw [map_mul, map_inv, hr]
-    simp
-  have hg := hker hx
-  change g (r ⟨f x, ⟨x, rfl⟩⟩ * x⁻¹) = 1 at hg
-  simpa only [map_mul, map_inv] using hg
+  let : g.ker.FiniteIndex := Subgroup.finiteIndex_of_le hker
+  exact Finite.of_equiv (G ⧸ g.ker) (QuotientGroup.quotientKerEquivRange g)
 
 /-- Restriction to an invariant embedded set preserves finite images. Applying
 this to the split inclusion of each tensor power gives summand transfer in §2.1.
@@ -42,20 +27,6 @@ theorem finite_range_of_intertwiner {G V W : Type*} [Group G]
   apply hi
   rw [← hintertwine, hg]
   rfl
-
-/-- Reversing all generators does not change the generated subgroup. This
-formalizes the reversed-braiding argument of §2.1. -/
-theorem closure_inverse_generators {G ι : Type*} [Group G] (g : ι → G) :
-    Subgroup.closure (Set.range (fun i => (g i)⁻¹)) = Subgroup.closure (Set.range g) := by
-  apply le_antisymm
-  · apply (Subgroup.closure_le _).mpr
-    rintro _ ⟨i, rfl⟩
-    exact Subgroup.inv_mem _ (Subgroup.subset_closure ⟨i, rfl⟩)
-  · apply (Subgroup.closure_le _).mpr
-    rintro _ ⟨i, rfl⟩
-    have h := Subgroup.inv_mem (Subgroup.closure (Set.range (fun i => (g i)⁻¹)))
-      (Subgroup.subset_closure (Set.mem_range_self i))
-    simpa using h
 
 /-- The diagonal braid image in a product embeds in the product of its factor
 images, so finite factor images imply a finite product image (§2.1). -/

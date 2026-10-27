@@ -118,40 +118,13 @@ theorem galois_sharp_trace_bound_of_overlap_identity
     simpa using h
   have hf : 0 < Ground.fpDimension C X :=
     lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C X (Simple.not_isZero X))
-  have hnum := PropertyF.trace_bound_of_overlap
-    (t := ‖galoisActualBraidTrace C X p σ t u‖)
-    (d := ‖σ (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)))‖)
-    (f := Ground.fpDimension C X) (m := t + 2) (norm_ne_zero_iff.mpr hδ) hf
-  have hres : ‖galoisActualBraidTrace C X p σ t u‖ ≤
-      |‖σ (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)))‖| *
-        Ground.fpDimension C X ^ ((t + 2) - 1) := by
-    apply hnum
-    intro k
-    have h := hbound (overlapIndex t k) (overlapProduct X t u k)
+  apply norm_bound_of_overlapIndex hδ hf t
+    (fun k => galoisActualBraidTrace C X p σ (overlapIndex t k) (overlapProduct X t u k)) ?_ ?_
+  · intro k
+    have hb := hbound (overlapIndex t k) (overlapProduct X t u k)
       (galois_overlapProduct_unitary X t σ r size T hsmul hunit u hu k)
-    have hexp : overlapIndex t k + 2 = (k + 1) * ((t + 2) - 1) + 1 := by
-      rw [overlapIndex_formula]
-      have hh : (t + 2) - 1 = t + 1 := by omega
-      rw [hh]
-      ring
-    rw [hexp] at h
-    have hr := congrArg σ (hrec k)
-    simp only [map_mul, map_pow] at hr
-    change galoisActualBraidTrace C X p σ (overlapIndex t k) (overlapProduct X t u k) *
-      σ (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
-        galoisActualBraidTrace C X p σ t u ^ (k + 1) at hr
-    calc
-      ‖galoisActualBraidTrace C X p σ t u‖ ^ (k + 1) =
-          ‖galoisActualBraidTrace C X p σ t u ^ (k + 1)‖ := (norm_pow _ _).symm
-      _ = ‖galoisActualBraidTrace C X p σ (overlapIndex t k) (overlapProduct X t u k) *
-          σ (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k‖ := congrArg norm hr.symm
-      _ = ‖galoisActualBraidTrace C X p σ (overlapIndex t k) (overlapProduct X t u k)‖ *
-          ‖σ (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)))‖ ^ k := by rw [norm_mul, norm_pow]
-      _ ≤ |‖σ (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)))‖| ^ k *
-          Ground.fpDimension C X ^ ((k + 1) * ((t + 2) - 1) + 1) := by
-        simpa only [abs_of_nonneg (norm_nonneg _), mul_comm] using
-          mul_le_mul_of_nonneg_right h
-            (pow_nonneg (norm_nonneg (σ (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))))) k)
-  simpa [abs_of_nonneg (norm_nonneg _)] using hres
+    exact hb
+  · intro k
+    simpa only [galoisActualBraidTrace, map_mul, map_pow] using congrArg σ (hrec k)
 
 end PropertyF.Ground.Calculus

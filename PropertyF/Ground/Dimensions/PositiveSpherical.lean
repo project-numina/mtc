@@ -40,16 +40,4 @@ theorem spherical_dimension_dual_of_positive (C : Ground.BraidedFusionCategory)
     nlinarith
   rw [hreal, hreal, hd]
 
-/-- Positive spherical simple dimensions imply the full Galois bounds needed
-for the pseudo-unitary reduction. -/
-theorem pseudoUnitary_galois_fp_bounds_of_positive (C : Ground.BraidedFusionCategory)
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (d : Fin (Ground.rank C) → ℝ)
-    (hreal : ∀ i, pivotalDimension C p (Ground.simples C i) = (d i : ℂ))
-    (hpos : ∀ i, 0 < d i) (hpu : Ground.PseudoUnitary C) (σ : ℂ ≃+* ℂ) :
-    ∃ D : ℝ, 0 < D ∧ D ≤ Ground.globalFPDimension C ∧
-      σ (Ground.globalFPDimension C : ℂ) = (D : ℂ) :=
-  pseudoUnitary_galois_fp_bounds_of_dual C p hp
-    (spherical_dimension_dual_of_positive C p hp d hreal hpos) hpu σ
-
 end PropertyF.Ground.Dimensions

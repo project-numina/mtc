@@ -9,11 +9,8 @@ universe v u
 
 /-- The right dual of a simple object is simple. -/
 theorem simple_rightDual (D : Ground.BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X] :
-    Simple (Xᘁ) := by
-  let _ : Simple (ᘁX) := Ground.simple_leftDual D X
-  let _ : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-  exact Simple.of_iso (leftDualIso (inferInstance : ExactPairing (Xᘁ) X)
-    (inferInstance : ExactPairing (ᘁX) X))
+    Simple (Xᘁ) :=
+  Ground.simple_rightDual D X
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A positive tensor power containing the unit makes the simple generator's
