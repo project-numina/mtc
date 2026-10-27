@@ -157,6 +157,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   remain unproved. `crossing_completeness` and
   `crossingInclusion_projection_ne` prove the completeness and off-diagonal
   vanishing relations for the chosen simple summands.
+  `halfBraidingOfCrossingCandidate` assembles the half-braiding from the
+  still-unproved invertibility, crossed-object naturality, and tensor law;
+  its naturality in the induction argument follows from the matrix proof.
 - `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
   transpose and proves it injective; composing it with the unit-summand
   counit recovers the original map. Centrality and surjectivity onto centre

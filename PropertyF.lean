@@ -234,6 +234,8 @@ public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 public import PropertyF.Ground.CentreInduction.HomTranspose
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
 
+public import PropertyF.Ground.CentreInduction.CandidateAssembly
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
