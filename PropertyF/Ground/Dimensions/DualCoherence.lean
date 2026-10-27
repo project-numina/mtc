@@ -56,4 +56,34 @@ theorem trace_change_rightDual [RightRigidCategory C] {X Y Z : C}
   rw [← whisker_exchange_assoc]
   rw [coevaluation_rightDualIso_assoc]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The pivotal dimension of the tensor unit is one. -/
+theorem rightTrace_unit [RightRigidCategory C] (p : PivotalStructure (C := C)) : p.rightTrace (𝟙 (𝟙_ C)) = 1 := by
+  let hp : ExactPairing (𝟙_ C) (rightDualObject (𝟙_ C)) :=
+    @HasRightDual.exact C _ _ (𝟙_ C) (RightRigidCategory.rightDual (𝟙_ C))
+  let hq : ExactPairing (𝟙_ C) (𝟙_ C) := exactPairingUnit
+  let r := rightDualIso hp hq
+  have h := trace_change_rightDual hp hq r.inv
+  have hev := rightDualIso_inv_evaluation hp hq
+  apply End.homEquiv.injective
+  simp only [PivotalStructure.rightTrace, End.homEquiv_apply, End.one_asHom,
+    Category.id_comp, p.unit]
+  change @ExactPairing.coevaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp ≫
+    ((r.inv ≫ @rightAdjointMate C _ _ (rightDualObject (𝟙_ C)) (𝟙_ C)
+      (RightRigidCategory.rightDual _) (RightRigidCategory.rightDual _) r.hom) ⊗ₘ 𝟙 (rightDualObject (𝟙_ C))) ≫
+      @ExactPairing.evaluation C _ _ (rightDualObject (𝟙_ C))
+        (rightDualObject (rightDualObject (𝟙_ C)))
+        (@HasRightDual.exact C _ _ _ (RightRigidCategory.rightDual _)) = 𝟙 (𝟙_ C)
+  have hfinal : @ExactPairing.coevaluation C _ _ (𝟙_ C) (𝟙_ C) hq ≫
+      (r.inv ⊗ₘ 𝟙 (𝟙_ C)) ≫
+      @ExactPairing.evaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp = 𝟙 (𝟙_ C) := by
+    simp only [tensorHom_def, whiskerLeft_id, Category.comp_id]
+    change @ExactPairing.coevaluation C _ _ (𝟙_ C) (𝟙_ C) hq ≫
+      ((rightDualIso hp hq).inv ▷ (𝟙_ C) ≫
+        @ExactPairing.evaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp) = 𝟙 (𝟙_ C)
+    rw [hev]
+    change (ρ_ (𝟙_ C)).inv ≫ (ρ_ (𝟙_ C)).hom = 𝟙 (𝟙_ C)
+    exact Iso.inv_hom_id _
+  exact h.trans hfinal
+
 end PropertyF.Ground.Dimensions

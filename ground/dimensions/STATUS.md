@@ -18,15 +18,22 @@
 
 - `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
 
-- `pseudoUnitary_iff_simple_saturation` establishes the global equality characterization given explicit sphericality, real dimensions, unit normalization, and tensor multiplicativity; the latter hypotheses remain unproved.
-- `pivotalDimension_decomposition` proves the Hom-multiplicity formula; `pivotalDimension_character` and `galois_pivotalDimension_norm_le_fpSimple` reduce the pivotal character and Galois FP bound to the still-unproved unit and tensor trace laws.
-- `character_norm_le_fpSimple` and `galois_character_norm_le_fpSimple` prove the spectral-radius bound for any nonzero complex fusion character and every complex field conjugate. Deriving the character equations for spherical dimensions is still open.
+- `globalDimension_real_one_le_of_spherical` proves the target global dimension is at least one given a spherical structure with real simple dimensions; existence and reality are not yet proved.
+- `pseudoUnitary_iff_simple_saturation` establishes the global equality characterization given a spherical structure and real simple dimensions.
+- `character_value_isIntegral`, `pivotalDimension_isIntegral`, `spherical_squaredNorm_isIntegral`, and `spherical_globalDimension_isIntegral` prove algebraic integrality of pivotal dimensions and, when spherical structures exist, intrinsic squared norms and global dimension.
+- `pivotalDimension_decomposition` proves the Hom-multiplicity formula; `pivotalDimension_character` and `galois_pivotalDimension_norm_le_fpSimple` establish the pivotal fusion character and Galois FP bound with no extra trace-law assumptions.
+- `character_norm_le_fpSimple` and `galois_character_norm_le_fpSimple` prove the spectral-radius bound for any nonzero complex fusion character and every complex field conjugate. The character equations now hold for all pivotal structures.
 
+- `rightTrace_unit` and `pivotalDimension_unit` prove the pivotal trace and dimension of the tensor unit equal one, for any pivotal structure.
 - `coevaluation_rightDualIso`, `rightDualIso_evaluation`, and their inverse variants prove that Mathlib’s canonical comparison of right duals transports the actual duality maps.
+
+- `rightTrace_tensor_pairing` rewrites the trace using the tensor-product dual pairing; `rightTrace_partialTrace` proves compatibility of partial and total pivotal traces without extra assumptions.
+
+- `pivotalTrace_tensor`, `rightPartialTrace_tensor`, and `pivotalDimension_tensor` prove tensor multiplicativity and remove the multiplicativity premises from the spectral bound and pseudo-unitarity characterization.
 
 ## In progress
 
-- `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic`, and `rightTrace_id_iso` also hold for any pivotal structure. Multiplicativity and semilinear trace transport remain open.
+- `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic`, and `rightTrace_id_iso` also hold for any pivotal structure. `pivotalTrace_tensor` proves multiplicativity; semilinear trace transport remains open.
 
 - Prove elementary dimension consequences and trace infrastructure while waiting for the shared category interface.
 
@@ -36,4 +43,4 @@
 - Integrate/fusion: genuine category and semisimplicity interface needed to construct pivotal and spherical structures, intrinsic norms and their ENO properties.
 - Remaining: positivity/total positivity of squared norms; categorical global dimension ≥ 1; ENO 8.21/8.22 inequalities and equality case; ENO 8.23 canonical spherical structure; construction of pseudo-unitary conjugate real/positive/bounded dimensions and transport. These are substantial mathematical developments, not completed by the arithmetic construction.
 
-Estimate: the finite-field arithmetic is finished modulo global FP integrality; the category-theoretic dimension program remains substantially open and its duration is currently uncertain.
+Estimate: the finite-field arithmetic is finished and the categorical integrality is established for spherical structures; the category-theoretic dimension program remains substantially open and its duration is currently uncertain.
