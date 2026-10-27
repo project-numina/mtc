@@ -1,8 +1,9 @@
 # Dependencies
 
-- Fusion: for simple X, exhibit a split unit `𝟙 ⟶ Y ⊗ X ⟶ 𝟙`.
-  This completes `GeneratedInputs.strand_inclusion` using
-  `PropertyF.strand_inclusion_of_unit_retract`. Requested on the board.
+- Resolved: fusion’s `unit_retract_leftDual_tensor`, wired by integrate as
+  `Ground.simple_strand_inclusion`, completes the simple strand-inclusion step.
+- Resolved: modular’s `Ground.Modular.braidImageFunctorIso` supplies the
+  braided-functor generator coherence and image equivalence.
 - Fusion: prove every mono and epi splits in the frozen target category;
   this discharges the arguments to `generatedCategoryAbelianOfSplit`.
   Requested on the board.
