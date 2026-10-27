@@ -8,6 +8,7 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 
 /-- The canonical isomorphism between two right duals transports coevaluation. -/
+@[reassoc]
 theorem coevaluation_rightDualIso {X Y Z : C} (p : ExactPairing X Y) (q : ExactPairing X Z) :
     @ExactPairing.coevaluation C _ _ X Y p ≫ X ◁ (rightDualIso p q).hom =
       @ExactPairing.coevaluation C _ _ X Z q := by
@@ -42,5 +43,17 @@ theorem rightDualIso_inv_evaluation {X Y Z : C} (p : ExactPairing X Y) (q : Exac
     (rightDualIso p q).inv ▷ X ≫ @ExactPairing.evaluation C _ _ X Y p =
       @ExactPairing.evaluation C _ _ X Z q :=
   rightDualIso_evaluation q p
+
+/-- Closing a morphism does not change when its right dual is replaced by a
+canonically isomorphic one and the morphism is transported by the dual map. -/
+theorem trace_change_rightDual [RightRigidCategory C] {X Y Z : C}
+    (p : ExactPairing X Y) (q : ExactPairing X Z) (u : X ⟶ Zᘁ) :
+    @ExactPairing.coevaluation C _ _ X Y p ≫
+      ((u ≫ ((rightDualIso p q).hom)ᘁ) ⊗ₘ 𝟙 Y) ≫ ε_ Y (Yᘁ) =
+    @ExactPairing.coevaluation C _ _ X Z q ≫ (u ⊗ₘ 𝟙 Z) ≫ ε_ Z (Zᘁ) := by
+  simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc]
+  rw [rightAdjointMate_comp_evaluation]
+  rw [← whisker_exchange_assoc]
+  rw [coevaluation_rightDualIso_assoc]
 
 end PropertyF.Ground.Dimensions
