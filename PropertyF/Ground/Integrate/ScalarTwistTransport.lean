@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Integrate.ScalarTwist
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Integrate.PropertyFTransport
+public import PropertyF.Ground.Integrate.Conjugacy
 public import PropertyF.Ground.Modular.FusionTransport
 
 /-! Pivotal traces and finite braid images under scalar twisting. -/
@@ -41,7 +41,7 @@ theorem pivotalDimension_twist (p : Dimensions.PivotalStructure (C := C.Obj)) (X
 
 /-- Property F is preserved by scalar twisting. -/
 theorem propertyF_twist (hF : HasPropertyF C.Obj) : HasPropertyF (category C σ).Obj :=
-  galois_propertyF (conjugate C σ) hF
+  Modular.conjugate_propertyF C (category C σ) (conjugate C σ) hF
 
 /-- Individual braid images are unchanged as groups. -/
 theorem objectPropertyF_twist (X : C.Obj) :

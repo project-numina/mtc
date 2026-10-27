@@ -1,5 +1,5 @@
 Mathlib default linter warnings from lake build PropertyF (including replayed modules).
-Warning blocks: 509
+Warning blocks: 488
 
 warning: PropertyF/Ground/Cabling/AllInsert.lean:17:0: automatically included section variable(s) unused in theorem `PropertyF.addLeftAutAll_mem`:
   [Abelian C]
@@ -214,79 +214,7 @@ Hint: Omit it from the simp argument list.
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
 
-warning: PropertyF/Ground/Cabling/FusionCycle.lean:55:2: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/FusionCycle.lean:56:2: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneralDual.lean:34:4: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedAbelian.lean:18:20: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedAbelian.lean:19:20: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
 warning: PropertyF/Ground/Cabling/GeneratedF.lean:21:2: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedFusion.lean:22:6: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedFusion.lean:23:6: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedFusion.lean:78:6: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -305,60 +233,6 @@ But this is not relevant for proofs because of proof irrelevance.
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
 warning: PropertyF/Ground/Cabling/GeneratedInputsBridge.lean:39:4: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedIntegral.lean:16:2: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedIntegral.lean:19:6: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedIntegral.lean:20:6: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedIntegral.lean:22:2: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedIntegral.lean:25:2: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Cabling/GeneratedIntegral.lean:26:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -835,15 +709,6 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreCabling/TwistDual.lean:56:2: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
 warning: PropertyF/Ground/CentreCabling/TwistDual.lean:57:2: Try this: 
   letI̵
 
@@ -853,7 +718,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreCabling/TwistDual.lean:94:2: Try this: 
+warning: PropertyF/Ground/CentreCabling/TwistDual.lean:58:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -872,6 +737,15 @@ But this is not relevant for proofs because of proof irrelevance.
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
 warning: PropertyF/Ground/CentreCabling/TwistDual.lean:96:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+
+warning: PropertyF/Ground/CentreCabling/TwistDual.lean:97:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -1288,7 +1162,16 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreCalculus/TypeARelations.lean:62:34: This simp argument is unused:
+warning: PropertyF/Ground/CentreCalculus/TypeARelations.lean:115:51: This simp argument is unused:
+  List.mem_singleton
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil, not_or, and_true, Fin.ext_iff,
+    Fin.val_castSucc, Fin.val_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+
+warning: PropertyF/Ground/CentreCalculus/TypeARelations.lean:99:34: This simp argument is unused:
   map_pow
 
 Hint: Omit it from the simp argument list.
@@ -1296,20 +1179,11 @@ Hint: Omit it from the simp argument list.
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
 
-warning: PropertyF/Ground/CentreCalculus/TypeARelations.lean:62:43: This simp argument is unused:
+warning: PropertyF/Ground/CentreCalculus/TypeARelations.lean:99:43: This simp argument is unused:
   FreeGroup.lift_apply_of
 
 Hint: Omit it from the simp argument list.
   [apply] simp only [strandPermutation, map_pow, pow_two]
-
-Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-
-warning: PropertyF/Ground/CentreCalculus/TypeARelations.lean:78:51: This simp argument is unused:
-  List.mem_singleton
-
-Hint: Omit it from the simp argument list.
-  [apply] simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil, not_or, and_true, Fin.ext_iff,
-    Fin.val_castSucc, Fin.val_succ]
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
 
@@ -1684,14 +1558,6 @@ consider restructuring your `variable` declarations so that the variables are no
 
 Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
 
-warning: PropertyF/Ground/CentreInduction/DoubleBraiding.lean:24:10: This simp argument is unused:
-  Category.assoc
-
-Hint: Omit it from the simp argument list.
-  [apply] simp
-
-Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-
 warning: PropertyF/Ground/CentreInduction/DrinfeldFourth.lean:114:15: This simp argument is unused:
   Category.assoc
 
@@ -1731,15 +1597,6 @@ Hint: Omit it from the simp argument list.
   [apply] simp
 
 Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-
-warning: PropertyF/Ground/CentreInduction/DualBraiding.lean:104:2: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
 warning: PropertyF/Ground/CentreInduction/DualTensorComparison.lean:24:2: Try this: 
   letI̵
@@ -2324,7 +2181,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreInduction/Injectives.lean:13:4: Try this: 
+warning: PropertyF/Ground/CentreInduction/Injectives.lean:15:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2333,15 +2190,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreInduction/Injectives.lean:14:38: This simp argument is unused:
-  Category.assoc
-
-Hint: Omit it from the simp argument list.
-  [apply] simp
-
-Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-
-warning: PropertyF/Ground/CentreInduction/Injectives.lean:18:2: Try this: 
+warning: PropertyF/Ground/CentreInduction/Injectives.lean:17:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2350,7 +2199,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreInduction/Injectives.lean:20:2: Try this: 
+warning: PropertyF/Ground/CentreInduction/Injectives.lean:27:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2359,7 +2208,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreInduction/Injectives.lean:30:2: Try this: 
+warning: PropertyF/Ground/CentreInduction/PivotalCentrality.lean:37:4: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2368,16 +2217,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreInduction/PivotalCentrality.lean:36:4: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/CentreInduction/PivotalCentrality.lean:45:2: Try this: 
+warning: PropertyF/Ground/CentreInduction/PivotalCentrality.lean:46:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2833,15 +2673,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:135:13: This simp argument is unused:
-  Category.assoc
-
-Hint: Omit it from the simp argument list.
-  [apply] simp only [Iso.hom_inv_id_assoc]
-
-Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
-
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:147:2: Try this: 
+warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:131:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2850,7 +2682,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:154:2: Try this: 
+warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:138:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2859,7 +2691,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:155:2: Try this: 
+warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:139:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2868,7 +2700,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:30:2: Try this: 
+warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:31:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2877,16 +2709,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:31:4: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:35:2: Try this: 
+warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:32:4: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2904,7 +2727,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:55:2: Try this: 
+warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:37:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2931,7 +2754,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:59:2: Try this: 
+warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:58:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -2940,7 +2763,16 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:68:2: Try this: 
+warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:60:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+
+warning: PropertyF/Ground/CentreRigid/TransparentUnit.lean:69:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -3803,7 +3635,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/Fusion/Reciprocity.lean:107:2: Try this: 
+warning: PropertyF/Ground/Fusion/Reciprocity.lean:115:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -3812,7 +3644,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/Fusion/Reciprocity.lean:108:2: Try this: 
+warning: PropertyF/Ground/Fusion/Reciprocity.lean:116:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -4055,7 +3887,7 @@ But this is not relevant for proofs because of proof irrelevance.
 
 Note: This linter can be disabled with `set_option linter.style.haveILetI false`
 
-warning: PropertyF/Ground/Fusion/SpectralIntegral.lean:71:2: Try this: 
+warning: PropertyF/Ground/Fusion/SpectralIntegral.lean:77:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
@@ -4313,24 +4145,6 @@ warning: PropertyF/Ground/Integrate/CompatibleCenterReduction.lean:13:0: Definit
 Note: This linter can be disabled with `set_option linter.defProp false`
 
 warning: PropertyF/Ground/Integrate/FunctorUniverse.lean:45:4: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Integrate/GeneratedCenterReduction.lean:39:2: Try this: 
-  letI̵
-
-The goal is a proposition, so `let` is preferred over `letI`.
-The difference between `let` and `letI` is that `letI` inlines the value.
-But this is not relevant for proofs because of proof irrelevance.
-
-Note: This linter can be disabled with `set_option linter.style.haveILetI false`
-
-warning: PropertyF/Ground/Integrate/GeneratedCenterReduction.lean:40:2: Try this: 
   letI̵
 
 The goal is a proposition, so `let` is preferred over `letI`.
