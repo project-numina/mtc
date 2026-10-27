@@ -212,6 +212,7 @@ import all PropertyF.Ground.Fusion.UnitPower
 import all PropertyF.Ground.Fusion.WeakIntegrality
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterFiniteImage
+import all PropertyF.Ground.Integrate.CenterCentralizers
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterReduction
 import all PropertyF.Ground.Integrate.CenterReductionComplete
@@ -356,6 +357,7 @@ run_cmd do
       ``PropertyF.Ground.target_of_spherical_existence_center_and_overlap,
       ``PropertyF.Ground.target_of_center_and_overlap,
       ``PropertyF.Ground.target_of_modular_center,
+      ``PropertyF.Ground.target_of_center_centralizers,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.Dimensions.positive_spherical_of_spherical_pseudoUnitary,
       ``PropertyF.Ground.Example.target_hypotheses_inhabited,

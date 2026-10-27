@@ -144,6 +144,7 @@ public import PropertyF.Ground.Integrate.TwistedRigidity
 public import PropertyF.Ground.Integrate.OverlapReduction
 public import PropertyF.Ground.Integrate.CenterOnlyReduction
 public import PropertyF.Ground.Integrate.CenterReductionComplete
+public import PropertyF.Ground.Integrate.CenterCentralizers
 public import PropertyF.Ground.Integrate.ExamplePropertyF
 
 public import PropertyF.Ground.Calculus.ThreeRigidity
