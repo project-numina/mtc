@@ -12,10 +12,28 @@
   `globalFPDimension_isIntegral`: the fusion equations give an integer matrix
   having the positive character as eigenvector, so its values and their finite
   sums and products are algebraic integers.
+- `Ground.integer_matrix_eigenvalue_isIntegral`: a reusable matrix theorem
+  with no dependency on the old fusion or numerical hypothesis structures.
 - `Ground.split_from_simple`: any nonzero map out of a simple object splits,
   using the genuine finite semisimplicity property.
 - `Ground.unit_retract_leftDual_tensor`: the tensor unit is a retract of
   `ᘁX ⊗ X` for simple `X`, supplying the cabling strand-inclusion input.
+- `Ground.simples_simple`, `simples_injective`, `simples_decompose`,
+  `exists_simple_iso`, `exists_unit_iso`, and `finrank_simples_hom`: the
+  target's representatives enumerate all simple objects, including the unit,
+  and satisfy Schur's Hom formula without using old fusion structures.
+- `Ground.homBiproductLinearEquiv`, `finrank_hom_biproduct`,
+  `finrank_simple_of_decomposition`, `exists_canonical_decomposition`:
+  Hom-space dimensions compute decomposition multiplicities, and every object
+  decomposes with those canonical multiplicities.
+- `Ground.tensor_multiplicity`, `fusionCoeff_unit`, `fusionCoeff_comm`, and
+  `fusionCoeff_assoc`: tensor product acts on multiplicities through the actual
+  fusion coefficients, which satisfy the unit, commutativity and associativity
+  laws for the genuine target category.
+- `Ground.tensorRightHomLinearEquiv`, `finrank_frobenius_reciprocity`, and
+  `fusionCoeff_reciprocity`: rigidity gives complex-linear Hom equivalences and
+  Frobenius reciprocity with the actual left dual object. A simple-label dual
+  permutation has not yet been constructed.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -24,6 +42,9 @@ character or discharge the `FusionData` hypothesis.
 
 Construction of fusion rules and the positive character from a genuine finite
 semisimple rigid category. Integration has been asked for its target interface.
+Integration independently proved the unit-scalar identification in its own
+`PropertyF/Ground/Integrate/UnitScalar.lean`; our duplicate was removed to avoid
+declaration conflicts.
 
 ## Blocked / outstanding
 
