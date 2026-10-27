@@ -336,6 +336,12 @@ public import PropertyF.Ground.Dimensions.SphericalReal
 public import PropertyF.Ground.Dimensions.PivotalBounds
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 public import PropertyF.Ground.Dimensions.DefectCoevaluation
+public import PropertyF.Ground.CentreCalculus.Core
+public import PropertyF.Ground.CentreCalculus.GeneratorSquare
+public import PropertyF.Ground.CentreCalculus.PureSquares
+public import PropertyF.Ground.CentreCalculus.PermutationQuotient
+public import PropertyF.Ground.CentreCalculus.ProjectorReduction
+public import PropertyF.Ground.CentreCalculus.ParityCorrection
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
