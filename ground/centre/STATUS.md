@@ -20,6 +20,8 @@ The centre has a constructed preadditive structure, linear structure over any ri
 
 `centerCokernel` and `centerCokernelIsColimit` construct cokernels in the centre; `centerForgetPreservesEpimorphisms` proves the forgetful functor preserves epimorphisms. `centerNormalMono`, `centerNormalEpi`, and `centerAbelian` prove that the centre of a rigid abelian monoidal category is abelian.
 
+`integral_of_nonnegative_falling_factorials` proves the arithmetic step for an elementary exterior-power proof of symmetric-core integrality: a nonnegative real whose falling factorials are all nonnegative is a natural number. Proving that these falling factorials are factorial multiples of actual exterior-power dimensions in the pseudo-unitary symmetric core remains open.
+
 ## In progress
 
 Prove `ProductRetract` is closed under duals and agrees with the generated fusion subcategory; investigate centre rigidity and semisimplicity.
