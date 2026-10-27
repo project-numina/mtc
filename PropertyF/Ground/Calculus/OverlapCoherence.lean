@@ -76,4 +76,45 @@ theorem overlap_trace_step_of_coherence (D : Ground.BraidedFusionCategory.{v,u})
   rw [hh]
   field_simp
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The first two-copy overlap on two strands agrees with the local graphical
+overlap. -/
+theorem pair_overlap_first_coherence (X : C) (u : braidAlgebra X 0) :
+    (isoEndAlgEquiv (overlapPowerIso X 0 0).symm)
+        (overlapProduct X 0 u 1 : End (tensorPower X (overlapIndex 0 1 + 2))) =
+      overlapEndProduct (tensorPower X (overlapIndex 0 0 + 1)) X (tensorPower X (0 + 1))
+        (previousOverlapLocal X 0 0 u) (u : End (tensorPower X (0 + 2))) := by
+  change (isoEndAlgEquiv (overlapPowerIso X 0 0).symm)
+      ((overlapLeft X 0 0 u : End (tensorPower X (overlapIndex 0 1 + 2))) *
+       (overlapRight X 0 0 u : End (tensorPower X (overlapIndex 0 1 + 2)))) = _
+  rw [map_mul, overlapEndProduct, overlapLeft_local]
+  congr 1
+  apply End.ext
+  change (overlapPowerIso X 0 0).hom ≫
+      ((addLeftBraidAlgebra X 0 u : braidAlgebra X 1) : End (tensorPower X 3)).asHom ≫
+        (overlapPowerIso X 0 0).inv =
+    (α_ (tensorPower X 1) X (tensorPower X 1)).hom ≫
+      (tensorPower X 1 ◁ (u : End (tensorPower X 2)).asHom) ≫
+      (α_ (tensorPower X 1) X (tensorPower X 1)).inv
+  rw [addLeftBraidAlgebra_asHom]
+  simp only [overlapPowerIso, overlapIndex, insertRightPowerIso, appendIso,
+    tensorPower, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, Iso.symm_inv,
+    tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv, id_tensorHom,
+    tensorHom_id, Category.assoc]
+  simp only [id_eq, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, Iso.symm_inv,
+    tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv, id_tensorHom,
+    Category.assoc]
+  monoidal
+
+/-- The first overlap trace step is constructed for every two-strand braid
+algebra element and every simple strand. -/
+theorem pair_overlap_first_trace (D : Ground.BraidedFusionCategory.{v,u})
+    (X : D.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := D.Obj))
+    (u : braidAlgebra X 0) :
+    actualBraidTrace D X p 1 (overlapProduct X 0 u 1) *
+        Dimensions.groundUnitScalarEquiv D (p.rightTrace (𝟙 X)) =
+      actualBraidTrace D X p 0 u ^ 2 := by
+  have h := overlap_trace_step_of_coherence D X p 0 0 u (pair_overlap_first_coherence X u)
+  simpa [overlapIndex, overlapProduct, pow_two] using h
+
 end PropertyF.Ground.Calculus
