@@ -166,8 +166,11 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   simples up to isomorphism without sliding or sphericality, using finite
   length and the adjunction. `induction_injective` and
   `center_enough_injectives` show induced objects are injective and every
-  centre object embeds in one. Averaging-loop sliding and construction of
-  centre semisimplicity/fusion remain open.
+  centre object embeds in one. `center_fusion_of_nonzero_induced_trace`
+  gives an alternative to loop sliding: given centre rigidity, a pivotal
+  structure on the centre and nonzero trace of one induced object imply
+  semisimplicity and fusion. Constructing that pivotal structure/trace or
+  proving averaging-loop sliding remains open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
   unit-counit column on simple test strands. `crossingUnitBlock_eval` proves
   the diagonal duality contraction, and `secondTriangle` proves the second
