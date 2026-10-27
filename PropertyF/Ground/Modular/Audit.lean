@@ -70,6 +70,7 @@ run_cmd do
       ``PropertyF.Ground.Modular.character_orthogonal,
       ``PropertyF.Ground.Modular.categoricalS_square,
       ``PropertyF.Ground.Modular.categoricalS_galois_action_of_invertibleS,
+      ``PropertyF.Ground.Modular.categoricalS_galois_symmetry,
       ``PropertyF.Ground.Modular.simpleDimension_dual,
       ``PropertyF.Ground.Modular.categoricalS_galois_action_of_S_square,
       ``PropertyF.Ground.Modular.simpleDimension_ne_zero,
