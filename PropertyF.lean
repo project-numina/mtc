@@ -364,3 +364,4 @@ See `FORMALIZATION.md` for the complete assumption ledger.
 -/
 
 import PropertyF.Ground.CentreCabling.TwistFinite
+import PropertyF.Ground.CentreCabling.VafaTwist

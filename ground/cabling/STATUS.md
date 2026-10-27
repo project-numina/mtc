@@ -230,3 +230,16 @@ root-of-unity theorem are still explicit missing ingredients, so this is not a
 proof of the centre centralizer condition or of the frozen target. Focused build
 passed. Next: derive the pivotal twist balance and the algebraic consequences
 of Vafa's determinant relations.
+
+`finite_order_of_integer_relations` proves nonsingular integer exponent
+relations force finite order in any commutative group using the adjugate.
+`vafaMatrix_det_ne_zero` proves strict diagonal dominance for the relevant
+weighted relations, and `finite_order_of_vafa_relations` yields torsion.
+`vafaWeight_sum` and `vafaMultiplicity_pos` verify that the actual fusion
+multiplicities satisfy the needed strict inequality. Finally,
+`mixed_monodromy_finite_of_vafa_relations` connects the *actual* pivotal twist
+to finite mixed monodromy, conditional on the precise standard lantern
+relations and the balancing equation. Both categorical identities remain
+unproved; this is not a proof of Vafa's theorem or the target. Focused builds
+passed. The next concrete work is to derive those identities from braiding,
+pivotal coherence and the induced linear maps on multiplicity spaces.
