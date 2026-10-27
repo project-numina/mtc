@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.NaturalRoots
 public import PropertyF.Ground.Dimensions.InvolutionTrace
+public import PropertyF.Ground.Dimensions.NaturalSquareDefect
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -91,5 +92,34 @@ theorem multiplicityDefect_trace_integer_bound
       (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :=
     Ground.IsFusionCategory.hom_finite _ _
   exact involution_trace_integer_bound _ hinv
+
+/-- If the tensor of the simple root components has the expected fourth-dual
+square, the resulting tensor defect is an involution. -/
+theorem rootTensorDefect_involution_of_tensor_square
+    (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj)
+    (hsq : (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
+      (fourthDualIso C (X ⊗ Y)).hom) :
+    (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
+  have ha := congrArg (fun n => (n.app (X ⊗ Y)).hom) (fourthDualRootNaturalSquare_eq C)
+  change ((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫
+    ((((fourthDualRootNaturalIso C).app (X ⊗ Y)).homᘁ)ᘁ) =
+      (fourthDualIso C (X ⊗ Y)).hom at ha
+  have h := natural_square_defect_involution (doubleDualFunctor C.Obj)
+    (fourthDualRootNaturalIso C) (X ⊗ Y) (rootTensorIso C X Y) (ha.trans hsq.symm)
+  exact h
+
+/-- The tensor-square comparison implies involutivity of every corresponding
+actual multiplicity-space operator. -/
+theorem multiplicityDefect_involution_of_tensor_square
+    (C : Ground.BraidedFusionCategory.{v,u}) (i j k : Fin (Ground.rank C))
+    (hsq : (rootTensorIso C (Ground.simples C i) (Ground.simples C j)).hom ≫
+      (((rootTensorIso C (Ground.simples C i) (Ground.simples C j)).homᘁ)ᘁ) =
+        (fourthDualIso C (Ground.simples C i ⊗ Ground.simples C j)).hom) :
+    (multiplicityDefect C i j k).toLinearMap *
+      (multiplicityDefect C i j k).toLinearMap = 1 := by
+  have hd := rootTensorDefect_involution_of_tensor_square C _ _ hsq
+  ext f
+  change multiplicityDefect C i j k (multiplicityDefect C i j k f) = f
+  rw [multiplicityDefect_apply, multiplicityDefect_apply, Category.assoc, hd, Category.comp_id]
 
 end PropertyF.Ground.Dimensions
