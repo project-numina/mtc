@@ -1,5 +1,5 @@
 module
-public import Mathlib.CategoryTheory.Monoidal.Center
+public import PropertyF.Ground.Centre.Embeddings
 public import Mathlib.CategoryTheory.Monoidal.Linear
 public import Mathlib.Algebra.Group.Subgroup.Basic
 public import Mathlib.Algebra.Module.Submodule.Basic
@@ -108,4 +108,57 @@ theorem finiteDimensional_hom (K : Type*) [Field K] [Linear K C] [MonoidalLinear
       (CategoryTheory.Center.forget C).mapLinearMap K)
     (Functor.map_injective (CategoryTheory.Center.forget C))
 
+section Unit
+variable [BraidedCategory C]
+open CategoryTheory.Functor.Monoidal
+
+/-- Every endomorphism of the tensor unit lifts canonically to the centre. -/
+def liftUnitHom (f : 𝟙_ C ⟶ 𝟙_ C) :
+    𝟙_ (CategoryTheory.Center C) ⟶ 𝟙_ (CategoryTheory.Center C) :=
+  (εIso (CategoryTheory.Center.ofBraided C)).hom ≫
+    (CategoryTheory.Center.ofBraided C).map f ≫
+      (εIso (CategoryTheory.Center.ofBraided C)).inv
+
+omit [Preadditive C] [MonoidalPreadditive C] in
+@[simp] theorem liftUnitHom_f (f : 𝟙_ C ⟶ 𝟙_ C) : (liftUnitHom f).f = f := by
+  simp only [liftUnitHom, CategoryTheory.Center.comp_f, εIso_hom, εIso_inv,
+    CategoryTheory.Center.ofBraided_ε_f, CategoryTheory.Center.ofBraided_η_f,
+    CategoryTheory.Center.ofBraided_map_f]
+  change 𝟙 (𝟙_ C) ≫ f ≫ 𝟙 (𝟙_ C) = f
+  simp
+
+omit [Preadditive C] [MonoidalPreadditive C] in
+/-- Forgetting the half-braiding bijects the endomorphisms of the tensor unit. -/
+theorem forget_unit_hom_bijective :
+    Function.Bijective (fun f : (𝟙_ (CategoryTheory.Center C) ⟶ 𝟙_ (CategoryTheory.Center C)) => f.f) := by
+  constructor
+  · intro f g h
+    exact CategoryTheory.Center.ext f g h
+  · intro f
+    exact ⟨liftUnitHom f, liftUnitHom_f f⟩
+
+/-- The bijection on unit endomorphisms is linear over the coefficient field. -/
+def unitHomLinearEquiv (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C] :
+    (𝟙_ (CategoryTheory.Center C) ⟶ 𝟙_ (CategoryTheory.Center C)) ≃ₗ[K]
+      (𝟙_ C ⟶ 𝟙_ C) :=
+  LinearEquiv.ofBijective
+    (show (𝟙_ (CategoryTheory.Center C) ⟶ 𝟙_ (CategoryTheory.Center C)) →ₗ[K]
+      (𝟙_ C ⟶ 𝟙_ C) from (CategoryTheory.Center.forget C).mapLinearMap K)
+    forget_unit_hom_bijective
+
+instance positiveLinear (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C] :
+    (CategoryTheory.Center.ofBraided C).Linear K where
+  map_smul := by
+    intros
+    apply CategoryTheory.Center.ext
+    rfl
+
+instance negativeLinear (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C] :
+    (negative C).Linear K where
+  map_smul := by
+    intros
+    apply CategoryTheory.Center.ext
+    rfl
+
+end Unit
 end PropertyF.Ground.Centre
