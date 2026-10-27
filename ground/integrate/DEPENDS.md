@@ -1,3 +1,10 @@
+# Final dependency status (2026-10-27)
+
+No unproved centre, spherical, modular, cabling, core-integrality or pivotal
+existence premises remain in `PropertyF.Ground.target`. The strict target
+audit passes, including private-body dependency inspection and permitted
+axiom checks. Earlier entries below describe superseded temporary premises.
+
 # Integration dependencies
 
 All remaining items are explicit, temporary arguments to

@@ -1,3 +1,15 @@
+# Final target completed (2026-10-27)
+
+`PropertyF.Ground.target : TargetStatement` is proved in `PropertyF/Ground/Final.lean`.
+The strict `scripts/audit-target.sh` passes: the theorem has exactly the frozen
+statement type, its transitive types and private bodies contain no forbidden
+legacy hypothesis structures or foreign implementations, and its kernel
+axioms are exactly `[propext, Classical.choice, Quot.sound]`. The actual
+Drinfeld cap identity and fourth-dual tensor law construct the positive
+spherical structure for pseudo-unitary bases, completing the remaining
+pivotal-existence step. The history below records earlier conditional stages;
+their blocked and remaining descriptions are superseded by the final proof.
+
 # Integration status
 
 ## Done
@@ -309,3 +321,8 @@ no reliable completion-time estimate is available.
   fourth-dual tensor law and positive spherical existence from the Drinfeld
   law; integration of that commit is the remaining step. Full build and strict
   project audit pass (504 modules, 4,828 declarations).
+
+Final verification: `LEAN_NUM_THREADS=4 taskset -c 0-3 lake build PropertyF`
+passed, including `ProjectAudit` over 4,840 declarations. A direct
+`#print axioms PropertyF.Ground.target` returned exactly
+`[propext, Classical.choice, Quot.sound]`; `scripts/audit-target.sh` passed.

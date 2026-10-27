@@ -1,3 +1,15 @@
+# Final target status (2026-10-27)
+
+`PropertyF.Ground.target` is proved with exactly the frozen `TargetStatement`
+type. `scripts/audit-target.sh` passes, checking transitive types and private
+bodies for forbidden hypothesis structures and foreign implementations; its
+axiom set is `[propext, Classical.choice, Quot.sound]`. The actual Drinfeld
+tensor-pairing cap identity proves balancing; fourth-dual tensor coherence
+then constructs the positive spherical structure for every pseudo-unitary
+base. The centre and the finite-image argument are assembled from those
+constructions. The tables and snapshots below are historical; their open
+statuses describe earlier conditional interfaces, not the final target.
+
 # Ground integration ledger
 
 Baseline: 094175c. Frozen target definition: 45da64d. As of 2026-10-27 all old
