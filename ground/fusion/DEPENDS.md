@@ -32,3 +32,11 @@ These describe proof obligations, not axioms or assumptions in the target.
   weighted-loop sliding equation for arbitrary underlying maps. It remains
   unproved. Together with sphericality and nonzero global dimension, it
   yields splitting independently of the pivotal-lift route.
+
+## Round 3
+
+- A pivotal structure on the centre compatible with a positive base pivotal
+  structure would now supply centre fusion, positive sphericality,
+  pseudo-unitarity and both global dimension squares, assuming centre rigidity.
+  Fusion is investigating the compatible pivotal lift; the compatibility is
+  currently an explicit hypothesis, not a constructed result.
