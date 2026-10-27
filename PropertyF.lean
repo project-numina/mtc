@@ -362,6 +362,7 @@ public import PropertyF.Ground.CentreCalculus.ProjectorReduction
 public import PropertyF.Ground.CentreCalculus.ParityCorrection
 public import PropertyF.Ground.CentreCalculus.FirstCrossingTrace
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
+public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 public import PropertyF.Ground.CentreCabling.SCentrality
 public import PropertyF.Ground.CentreCabling.FusionCentralizer
 public import PropertyF.Ground.CentreCabling.FourierCentralizer

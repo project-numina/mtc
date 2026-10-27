@@ -1,0 +1,131 @@
+module
+public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
+
+/-! The parity of the twist of a self-transparent simple. -/
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
+namespace PropertyF.Ground.CentreCalculus
+universe v u
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The coevaluation characterizing the braided double-dual map. -/
+theorem drinfeld_coevaluation (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (doubleDualIso C X).inv =
+      η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv := by
+  let q : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
+  let h : ExactPairing (Xᘁ) ((Xᘁ)ᘁ) := HasRightDual.exact
+  have hc := Dimensions.coevaluation_rightDualIso q h
+  change (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
+    (Xᘁ) ◁ (doubleDualIso C X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) at hc
+  rw [← hc, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Closing the first strand of the inverse braiding gives the inverse
+pivotal/Drinfeld twist. -/
+theorem leftPartialTrace_inverse_braiding (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (X : C.Obj) :
+    leftPartialTrace p X X (End.of (β_ X X).inv) =
+      End.of ((doubleDualIso C X).hom ≫ (p.iso X).inv) := by
+  apply End.ext
+  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
+  let t : X ⟶ X := (doubleDualIso C X).hom ≫ (p.iso X).inv
+  have hcup : η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv =
+      (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫ (Xᘁ) ◁ t := by
+    dsimp [t]
+    rw [← drinfeld_coevaluation C X, Category.assoc, ← whiskerLeft_comp,
+      Iso.inv_hom_id_assoc]
+  rw [hcup]
+  simp only [comp_whiskerRight, Category.assoc]
+  -- The inverse crossings cancel after applying the inverse hexagon.
+  have hmove : (Xᘁ ◁ t) ▷ X ≫ (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) =
+      (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫ (Xᘁ ◁ (X ◁ t)) := by
+    rw [associator_naturality_middle_assoc]
+    simp only [← whiskerLeft_comp, braiding_inv_naturality_left]
+  slice_lhs 4 6 => rw [hmove]
+  simp only [Category.assoc]
+  -- remaining inverse-braid/duality snake
+  have hsnake : (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ ((β_ (Xᘁ) X).inv ▷ X) ≫
+      (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫ (α_ (Xᘁ) X X).inv ≫
+      (ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom = 𝟙 X := by
+    have hc : (β_ (Xᘁ ⊗ X) X).inv =
+        (α_ X (Xᘁ) X).inv ≫ (β_ (Xᘁ) X).inv ▷ X ≫
+          (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫
+          (α_ (Xᘁ) X X).inv := braiding_tensor_left_inv (Xᘁ) X X
+    have h := braiding_inv_naturality_right X (ε_ X (Xᘁ))
+    have ht : (β_ (Xᘁ ⊗ X) X).inv ≫ ε_ X (Xᘁ) ▷ X =
+        X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ C.Obj) X).inv := h.symm
+    rw [hc] at ht
+    simp only [Category.assoc] at ht
+    calc
+      _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
+          ((α_ X (Xᘁ) X).inv ≫ (β_ (Xᘁ) X).inv ▷ X ≫
+            (α_ (Xᘁ) X X).hom ≫ Xᘁ ◁ (β_ X X).inv ≫
+            (α_ (Xᘁ) X X).inv ≫ ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom := by simp [Category.assoc]
+      _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
+          X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ C.Obj) X).inv ≫ (λ_ X).hom := by rw [ht]; simp [Category.assoc]
+      _ = 𝟙 X := by
+        rw [ExactPairing.evaluation_coevaluation_assoc]
+        simp
+  rw [associator_inv_naturality_right_assoc]
+  rw [whisker_exchange_assoc (ε_ X (Xᘁ)) t]
+  rw [leftUnitor_naturality]
+  change _ = t
+  simpa only [Category.assoc, Category.id_comp] using congrArg (fun f => f ≫ t) hsnake
+
+/-- In a spherical category, the twist of a self-transparent simple is a sign. -/
+theorem pivotalTwist_sign_of_selfTransparent (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (X : C.Obj) [Simple X]
+    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
+    Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
+      Dimensions.pivotalBraidedTwistScalar C p X = -1 := by
+  let θ := Dimensions.pivotalBraidedTwistScalar C p X
+  let t : X ⟶ X := (doubleDualIso C X).hom ≫ (p.iso X).inv
+  have hc : (β_ X X).hom = (β_ X X).inv := by
+    calc
+      (β_ X X).hom = ((β_ X X).hom ≫ (β_ X X).hom) ≫ (β_ X X).inv := by simp [Category.assoc]
+      _ = (β_ X X).inv := by rw [hX, Category.id_comp]
+  have htr := spherical_rightTrace_leftPartialTrace p hp X X (End.of (β_ X X).hom)
+  have hp1 := leftPartialTrace_braiding_of_trace_compatibility C p X htr
+  have hp2 := leftPartialTrace_inverse_braiding C p X
+  rw [← hc] at hp2
+  have he : θ • 𝟙 X = t := by
+    have h := congrArg End.asHom (hp1.symm.trans hp2)
+    simpa [θ, t] using h
+  have ht : t ≫ (Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X := by
+    simp [t, Dimensions.pivotalBraidedTwist, Category.assoc]
+  rw [← he, Dimensions.pivotalBraidedTwist_simple] at ht
+  simp only [Linear.smul_comp, Linear.comp_smul, Category.id_comp, smul_smul] at ht
+  have hsq : θ * θ = 1 := by
+    apply smul_left_injective ℂ (id_nonzero X)
+    simpa using ht
+  exact mul_self_eq_one_iff.mp hsq
+
+/-- Every self-transparent simple has integral FP dimension in an FP-valued
+spherical braided fusion category. -/
+theorem selfTransparent_simple_integral (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
+    (X : C.Obj) [Simple X]
+    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
+    ∃ m : ℕ, fpDimension C X = m :=
+  integral_of_spherical_and_twist_sign C p hp hdim X hX
+    (pivotalTwist_sign_of_selfTransparent C p hp X hX)
+
+/-- The complex categorical dimension of a self-transparent simple label is
+an integer. -/
+theorem selfTransparent_simpleDimension_integer (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
+    (i : Fin (rank C))
+    (hX : (β_ (simples C i) (simples C i)).hom ≫
+      (β_ (simples C i) (simples C i)).hom = 𝟙 _) :
+    ∃ z : ℤ, Modular.simpleDimension C p i = z := by
+  letI : Simple (simples C i) := simples_simple C i
+  obtain ⟨m, hm⟩ := selfTransparent_simple_integral C p hp hdim (simples C i) hX
+  rw [fpDimension_simple] at hm
+  refine ⟨m, ?_⟩
+  rw [hdim i, hm]
+  norm_cast
+
+end PropertyF.Ground.CentreCalculus
