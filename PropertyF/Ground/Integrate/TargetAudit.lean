@@ -19,6 +19,26 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreBundle.Canonical
+import all PropertyF.Ground.CentreCabling.LanternSpherical
+import all PropertyF.Ground.CentreCabling.TwistDual
+import all PropertyF.Ground.CentreCalculus.MonodromyCap
+import all PropertyF.Ground.CentreCalculus.TargetReduction
+import all PropertyF.Ground.CentreInduction.DualMonodromy
+import all PropertyF.Ground.CentreInduction.FiniteMonodromyModular
+import all PropertyF.Ground.CentreModular.CenterBalanced
+import all PropertyF.Ground.CentreRigid.LoopAbsorption
+import all PropertyF.Ground.CentreRigid.LoopIdempotent
+import all PropertyF.Ground.CentreRigid.NestedTrace
+import all PropertyF.Ground.CentreRigid.PartialTrace
+import all PropertyF.Ground.CentreRigid.PartialTraceBiproduct
+import all PropertyF.Ground.CentreRigid.SNondegenerate
+import all PropertyF.Ground.CentreRigid.TransparentUnit
+import all PropertyF.Ground.CentreRigid.WindingDecomposition
+import all PropertyF.Ground.CentreRigid.WindingTensor
+import all PropertyF.Ground.Dimensions.DefectBraiding
+import all PropertyF.Ground.Dimensions.DefectTraceBraiding
+import all PropertyF.Ground.Dimensions.DrinfeldTensorCap
 import all PropertyF.Ground.Integrate.CapCenterReduction
 import all PropertyF.Ground.CentreInduction.DirectDual
 import all PropertyF.Ground.CentreInduction.Transparent
