@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.ForgetDual
+public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.CentreInduction.ActualFusion
 public import PropertyF.Ground.Dimensions.SphericalReal
 public import PropertyF.Ground.CentreModular.InductionDimension
@@ -18,20 +19,8 @@ variable [IsFusionCategory (CategoryTheory.Center C.Obj)]
 
 /-- Forgetting an endomorphism of the unit preserves its scalar. -/
 theorem center_forget_unitScalar (f : End (𝟙_ (CategoryTheory.Center C.Obj))) :
-    unitScalar C (End.of f.asHom.f) = unitScalar (Integrate.bundledCenter C) f := by
-  let z := unitScalar (Integrate.bundledCenter C) f
-  have hf := algebraMap_unitScalar (Integrate.bundledCenter C) f
-  have hf' := congrArg (fun e : End (𝟙_ (CategoryTheory.Center C.Obj)) => e.asHom.f) hf
-  have hs : (z • 𝟙 (𝟙_ (CategoryTheory.Center C.Obj))).f = z • 𝟙 (𝟙_ C.Obj) := by
-    change (CategoryTheory.Center.forget C.Obj).map (z • 𝟙 _) = _
-    rw [Functor.map_smul]
-    rfl
-  have hbase : End.of f.asHom.f = algebraMap ℂ (End (𝟙_ C.Obj)) z := by
-    apply End.ext
-    change f.asHom.f = z • 𝟙 (𝟙_ C.Obj)
-    change (z • 𝟙 (𝟙_ (CategoryTheory.Center C.Obj))).f = f.asHom.f at hf'
-    exact hf'.symm.trans hs
-  rw [hbase, unitScalar_algebraMap]
+    unitScalar C (End.of f.asHom.f) = unitScalar (Integrate.bundledCenter C) f :=
+  (CentreInduction.center_unitScalar_forget C f).symm
 
 /-- A compatible pivotal component has the same dimension as its underlying object. -/
 theorem center_pivotalDimension_eq_forget
@@ -41,12 +30,8 @@ theorem center_pivotalDimension_eq_forget
     (hcompat : ((pZ.iso Z).hom.f) ≫ (CentreInduction.forgetDoubleDualIso C Z).hom =
       (p.iso Z.1).hom) :
     Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ Z =
-      Dimensions.pivotalDimension C p Z.1 := by
-  unfold Dimensions.pivotalDimension
-  rw [← center_forget_unitScalar C]
-  congr 1
-  apply End.ext
-  exact CentreInduction.forget_trace_of_pivotal_component C p pZ Z hcompat
+      Dimensions.pivotalDimension C p Z.1 :=
+  CentreInduction.center_pivotalDimension_forget C p pZ Z hcompat
 
 /-- Compatibility with an FP-valued base pivotal structure forces the actual
 centre pivotal dimensions to equal FP dimensions. -/

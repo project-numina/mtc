@@ -49,12 +49,8 @@ theorem rightPartialTrace_whiskerLeft (p : PivotalStructure (C := C))
     (X Z Y : C) (t : End (Z ⊗ Y)) :
     rightPartialTrace p (X ⊗ Z) Y
       (End.of ((α_ X Z Y).hom ≫ (X ◁ t.asHom) ≫ (α_ X Z Y).inv)) =
-      End.of (X ◁ (rightPartialTrace p Z Y t).asHom) := by
-  apply End.ext
-  simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
-    comp_whiskerRight, Category.assoc]
-  simp only [whiskerLeft_comp]
-  monoidal
+      End.of (X ◁ (rightPartialTrace p Z Y t).asHom) :=
+  Calculus.rightPartialTrace_whiskerLeft p X Z Y t
 
 end Trace
 section Nested
