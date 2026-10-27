@@ -14,6 +14,7 @@
 - `PropertyF.Ground.Modular.categoricalS`, `categoricalS_symmetric`, `categoricalS_unit`, and `categorical_global_eq_sum_squares`: the actual double-braiding trace defines S for a ground braided fusion category with a pivotal structure; symmetry and unit column follow without nondegeneracy, and global sum-of-squares follows from sphericality.
 - `PropertyF.Ground.Modular.categoricalS_galois_action` constructs the Galois action on the actual S columns from explicitly stated S-square, nonzero-dimension, and Verlinde equations, with no old modular-data bundle; `galois_unit_properties` proves the paper's Proposition 2.1 from the exact numerical identities.
 - The integrator's transitive type-and-body dependency scanner reports no old hypothesis structures in the ground Galois reduction, S symmetry/unit, or new Galois action and proposition.
+- `PropertyF.Ground.Modular.braidImageFunctorMap`, `braidImageFunctorMap_surjective`, and `objectPropertyF_functor`: arbitrary braided functors, including nonfaithful ones, induce surjections on braid images and preserve objectwise property F.
 - Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
 
 ## In progress

@@ -137,17 +137,49 @@ lemma braidAutMap_injective (X : C) (n : ℕ) [F.Faithful] :
   apply F.map_injective
   exact congrArg (fun a : Aut (F.obj (tensorPower X (n+2))) => a.asIso.hom) h'
 
+/-- The functor map sends the source braid-image subgroup onto the target
+braid-image subgroup, even if the functor is not faithful. -/
+theorem braidImage_map_eq (X : C) (n : ℕ) :
+    (braidImage X n).map (braidAutMap F X n) = braidImage (F.obj X) n := by
+  rw [braidImage, MonoidHom.map_closure, ← Set.range_comp]
+  have heq : (braidAutMap F X n ∘ braidGenerator X n) = braidGenerator (F.obj X) n := by
+    funext i
+    exact braidAutMap_generator F X n i
+  rw [heq]
+  rfl
+
+/-- A braided functor induces a homomorphism on braid-image groups. -/
+def braidImageFunctorMap (X : C) (n : ℕ) : braidImage X n →* braidImage (F.obj X) n :=
+  ((braidAutMap F X n).comp (braidImage X n).subtype).codRestrict _ (by
+    intro a
+    rw [← braidImage_map_eq F X n]
+    exact Subgroup.mem_map.mpr ⟨a, a.property, rfl⟩)
+
+/-- The map on braid-image groups is always surjective. -/
+theorem braidImageFunctorMap_surjective (X : C) (n : ℕ) :
+    Function.Surjective (braidImageFunctorMap F X n) := by
+  intro y
+  have hy : (y : Aut (tensorPower (F.obj X) (n + 2))) ∈
+      (braidImage X n).map (braidAutMap F X n) := by
+    rw [braidImage_map_eq]
+    exact y.property
+  obtain ⟨a, ha, hy⟩ := Subgroup.mem_map.mp hy
+  refine ⟨⟨a, ha⟩, ?_⟩
+  exact Subtype.ext hy
+
+/-- A braided functor preserves finiteness of each object's braid images. -/
+theorem objectPropertyF_functor (X : C) (hX : ObjectPropertyF X) :
+    ObjectPropertyF (F.obj X) := by
+  intro n
+  let _ : Finite (braidImage X n) := hX n
+  exact Finite.of_surjective (braidImageFunctorMap F X n) (braidImageFunctorMap_surjective F X n)
+
 /-- A faithful braided functor induces isomorphisms on braid-image groups. -/
 def braidImageFunctorIso (X : C) (n : ℕ) [F.Faithful] :
     braidImage X n ≃* braidImage (F.obj X) n := by
   let m := braidAutMap F X n
-  have hm : (braidImage X n).map m = braidImage (F.obj X) n := by
-    rw [braidImage, MonoidHom.map_closure, ← Set.range_comp]
-    have heq : (m ∘ braidGenerator X n) = braidGenerator (F.obj X) n := by
-      funext i
-      exact braidAutMap_generator F X n i
-    rw [heq]
-    rfl
+  have hm : (braidImage X n).map m = braidImage (F.obj X) n :=
+    braidImage_map_eq F X n
   exact ((braidImage X n).equivMapOfInjective m (braidAutMap_injective F X n)).trans
     (MulEquiv.subgroupCongr hm)
 
