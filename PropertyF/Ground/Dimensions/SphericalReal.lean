@@ -4,6 +4,7 @@ public import PropertyF.Ground.Dimensions.RealSphericalBounds
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
+open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 set_option backward.isDefEq.respectTransparency false in
@@ -50,6 +51,18 @@ theorem spherical_simple_dimension_galois_real (C : Ground.BraidedFusionCategory
   intro j
   rw [pivotalDimension_dual_eq_conj]
   exact (pivotal_spherical_iff_simple_dimensions_real C p).mp hp j
+
+/-- Galois conjugates of all object dimensions in a spherical category are real. -/
+theorem spherical_object_dimension_galois_real (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (σ : ℂ ≃+* ℂ) (X : C.Obj) :
+    ((σ (pivotalDimension C p X)).re : ℂ) = σ (pivotalDimension C p X) := by
+  apply Complex.conj_eq_iff_re.mp
+  rw [pivotalDimension_decomposition, map_sum, map_sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  simp only [map_mul, map_natCast]
+  rw [Complex.conj_eq_iff_re.mpr (spherical_simple_dimension_galois_real C p hp σ i)]
 
 /-- Existing spherical structures provide all simple Galois norm bounds. -/
 theorem spherical_squaredNorm_galois_bounds (C : Ground.BraidedFusionCategory.{v,u})

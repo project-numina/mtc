@@ -32,16 +32,6 @@ theorem target_globalDimension_le_of_simple_bounds (C : Ground.BraidedFusionCate
   have hsum : 0 ≤ d i + Ground.fpSimple C i := by linarith
   nlinarith [mul_nonneg (sub_nonneg.mpr hpos) hsum]
 
-/-- A nonzero real simple dimension makes the sum of squares strictly positive. -/
-theorem global_sum_squares_positive {ι : Type*} [Fintype ι]
-    (d : ι → ℝ) (h : ∃ i, d i ≠ 0) : 0 < ∑ i, (d i) ^ 2 := by
-  classical
-  obtain ⟨i, hi⟩ := h
-  apply Finset.sum_pos'
-  · intro j _
-    exact sq_nonneg (d j)
-  · exact ⟨i, Finset.mem_univ i, sq_pos_of_ne_zero hi⟩
-
 /-- If each real simple dimension is bounded by its FP dimension, equality of
 the global sums is equivalent to saturation at every simple. -/
 theorem global_sum_squares_eq_iff (C : Ground.BraidedFusionCategory.{v,u})
