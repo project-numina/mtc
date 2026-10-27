@@ -43,3 +43,9 @@
 - `conjugate_images` is complete; integrate its general braided-functor version into the ground proof without old hypothesis structures.
 
 The category-level modular identities and Galois action are constructed under the stated spherical, reality and invertibility conditions. Instantiating them for the actual centre and completing the final target remain open. There is no reliable completion-time estimate until the centre fusion structure, canonical spherical dimensions and S-invertibility are constructed; these are substantial foundational dependencies, not routine wiring.
+
+## Round 2: centre modularity and dimension
+
+The intended elementary dimension route uses the right adjoint I of the actual centre forgetful functor: adjunction gives `[I(X_i):Z_j] = [U(Z_j):X_i]`, and the standard underlying decomposition `U I(X) = ⊕_k X_k ⊗ X ⊗ X_k*` gives `FPdim(I(X_i)) = FPdim(C) FPdim(X_i)`. Summing those equalities with FP weights and using preservation of FP dimension by U proves `FPdim(Z(C)) = FPdim(C)^2`. A positive spherical structure then identifies the categorical global dimension with the former. `CentreModular.center_globalFPDimension_of_induction` and `center_globalDimension_of_induction` prove exactly this calculation, with the adjunction multiplicities and induction sizes explicit and still unproved; no induced object is asserted to exist. Focused build passed.
+
+For nondegeneracy, first reduce invertibility of the actual S matrix to pairwise distinct normalized S columns using their existing fusion-character orthogonality. The missing categorical step is then to show those columns separate centre simples, using the induction/coend and its Hopf-link calculation. This separation is not known from the current interfaces. Rigidity/fusion of the actual centre, the induction construction and positive spherical structure remain substantial dependencies; no reliable completion estimate is available.

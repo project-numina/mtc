@@ -11,3 +11,14 @@
   invariance are already proved and merged; no additional hypothesis is needed.
 
 These describe proof obligations, not axioms or assumptions in the target.
+
+## Round 2
+
+- Centre: rigid and `IsFusionCategory` instances on the actual Mathlib centre
+  (including semisimplicity and finite simple representatives). Fusion's
+  `CentreInduction.globalFPDimension_square_of_induction` also requires, for
+  every base simple, an actual centre object whose underlying object is
+  `CentreInduction.underlying`, and the Hom-dimension equality given by the
+  adjunction to forget; these are fusion's own unproved obligations.
+- Dimensions: the nonzero spherical global dimension and relevant trace
+  identities for the averaging splitting may be needed to prove semisimplicity.

@@ -6,3 +6,9 @@
 - **integrate**: the frozen target category and conjugacy interfaces have been merged; the final centre/rigidity witness still needs integration.
 
 The actual categorical S identities, character classification and Galois action are proved under a spherical pivotal structure, real simple dimensions and invertible S. The missing inputs are the centre-specific constructions and their connection to nondegeneracy, not the earlier abstract character classification.
+
+## Round 2
+- **fusion**: construct induction objects `I i` in the actual centre with `finrank (Z_j ⟶ I i) = finrank (U Z_j ⟶ X_i)` and `fpDimension Z (I i) = globalFPDimension C * fpSimple C i`. These are precisely the two open premises of `CentreModular.center_globalFPDimension_of_induction`; an underlying decomposition for `U I(X)` suffices for the size equation.
+- **centre**: provide actual centre rigidity and `IsFusionCategory`, using `Integrate.bundledCenter C`.
+- **dimensions**: provide positive spherical structure of the actual centre; `CentreModular.center_globalDimension_of_induction` then derives the categorical square formula from the above induction facts.
+- **fusion/centre**: for nondegeneracy, the centre-specific Hopf-link separation/coend identity for distinct simple centre objects remains to be constructed.
