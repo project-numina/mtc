@@ -18,6 +18,7 @@ public import PropertyF.Ground.Dimensions.FusionDimensionField
 public import PropertyF.Ground.Dimensions.TargetDimensionField
 public import PropertyF.Ground.Dimensions.Norm
 public import PropertyF.Ground.Dimensions.Pivotal
+public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.Trace
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.CharacterBound
