@@ -148,33 +148,16 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
-- `CentreInduction.crossingCandidate` constructs a finite matrix formula
-  for the proposed half-braiding using actual simple-decomposition inclusions,
-  projections, and dual mates. `crossingCandidate_natural_middle` proves
-  naturality in the induction argument, discharging that part of `hb` once
-  the candidate becomes a half-braiding. `crossingCandidate_natural_test`
-  proves naturality in the crossed object using dual mates and the
-  fusion-basis contraction identity. The tensor law, unit centrality,
-  and the second triangle remain unproved. `crossing_completeness` and
-  `crossingInclusion_projection_ne` prove the completeness and off-diagonal
-  vanishing relations for the chosen simple summands. `pairing_crossingProjection`
-  identifies these projections with the dual basis, and
-  `fusionBasis_contraction_natural` proves the natural contraction identity
-  needed to compare decompositions on the two sides of a test-object map.
-  `halfBraidingOfCrossingCandidate` assembles the half-braiding from the
-  still-unproved tensor law on triples of simples. `natTrans_isIso_of_simples`, `crossingCandidate_isIso_of_simples`,
-  and `crossingCandidate_tensor_of_all_simples` extend finite checks to all
-  objects. `weak_isIso` constructs the inverse in a rigid category directly
-  from naturality, unit normalization, and the tensor law; consequently
-  `crossing_isIso_of_unit_tensor` removes the separate invertibility premise.
-  `crossingCandidate_unit` now proves unit normalization for every induction
-  argument by reducing the unit matrix to its unique diagonal block. Hence
-  only the finite tensor check remains for the actual half-braiding.
-  `closeFusionMap_tensor` and `crossingBlock_tensor` prove composition of
-  dual mates and individual crossing blocks. `crossingBlock_refinement`
-  now proves the nested fusion-basis contraction equals the direct one.
-  The remaining tensor-law calculation must expand the actual biproduct
-  crossing composite into those nested blocks and match the sums.
+- `CentreInduction.crossingCandidate` is the explicit induction crossing,
+  now proved natural in both arguments, normalized at the tensor unit, and
+  tensor-compatible (`crossingCandidate_tensor`). The tensor proof composes
+  dual mates and individual crossing blocks, refines basis contractions
+  across the nested fusion decomposition, and rearranges the finite sums.
+  `weak_isIso` supplies invertibility from rigidity, and
+  `halfBraidingOfCrossingCandidate` constructs the actual half-braiding
+  without extra assumptions. `induction` is the resulting functor from C to
+  Mathlib's actual `Center C.Obj`, with underlying object the desired finite
+  sum. The adjunction, averaging-loop sliding, and centre fusion remain open.
 - `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
   transpose and proves it injective; composing it with the unit-summand
   counit recovers the original map. Centrality and surjectivity onto centre
@@ -277,8 +260,8 @@ give semisimplicity and a finite set of simple summands of induced simples.
 Finally use adjunction and the FP dimension of induced objects to compare the
 regular FP vectors and obtain the global square formula. Centre already
 provides finite-dimensional Hom spaces and the unit-endomorphism comparison.
-The half-braiding coherence, adjunction, and loop-sliding identity remain
-substantial work. The averaging splitting and centre fusion assembly are
+The induction half-braiding is constructed; the adjunction and loop-sliding
+identity remain substantial work. The averaging splitting and centre fusion assembly are
 proved conditionally on those inputs and the stated spherical assumptions.
 
 ## Round 2 verification
