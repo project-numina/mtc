@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Integrate.UnitScalar
+public import PropertyF.Ground.Integrate.Conjugacy
 
 /-! Compatibility with the pre-ground categorical bundle. These constructions
 are useful for auditing its formerly assumed fields, but declarations that
@@ -52,5 +53,25 @@ theorem legacy_globalDimension_eq (C : BraidedFusionCategory.{v,u}) :
   simp only [legacyCategory, legacyGlobalDimensionData, legacyFusionData]
   rw [unitScalar_eq_equiv, unitScalar_eq_equiv]
   rfl
+
+/-- The ground semilinear braided equivalence also witnesses conjugacy in the
+legacy category interface. -/
+def legacyGaloisConjugate {C D : BraidedFusionCategory.{v,u}} {σ : ℂ ≃+* ℂ}
+    (h : GaloisConjugate C D σ) :
+    PropertyF.GaloisConjugate (legacyCategory C) (legacyCategory D) σ where
+  equivalence := h.equivalence
+  monoidal := h.braided.toMonoidal
+  braided := h.braided
+  map_smul := h.map_smul
+
+/-- The pseudo-unitary conjugate hypothesis transfers to the legacy bundle. -/
+theorem legacy_hasPseudoUnitaryGaloisConjugate (C : BraidedFusionCategory.{v,u})
+    (h : HasPseudoUnitaryGaloisConjugate C) :
+    PropertyF.HasPseudoUnitaryGaloisConjugate (legacyCategory C) := by
+  obtain ⟨D, σ, ⟨E⟩, hD⟩ := h
+  refine ⟨legacyCategory D, σ, ⟨legacyGaloisConjugate E⟩, ?_⟩
+  unfold PropertyF.PseudoUnitary
+  rw [legacy_globalDimension_eq, legacy_globalFPDimension_eq]
+  exact hD
 
 end PropertyF.Ground

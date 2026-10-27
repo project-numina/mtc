@@ -32,6 +32,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -118,6 +119,7 @@ import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.TotalMatrix
 import all PropertyF.Ground.Integrate.Arithmetic
+import all PropertyF.Ground.Integrate.ConditionalBridge
 import all PropertyF.Ground.Integrate.Conjugacy
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
@@ -175,6 +177,8 @@ run_cmd do
       unless n == ``PropertyF.StandardInputs do
         throwError "unexpected forbidden fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect an imported definition body"
+  unless (findIssue env ``PropertyF.Ground.target_of_legacy_standardInputs).isSome do
+    throwError "dependency audit did not reject the conditional target bridge"
   unless (findIssue env ``PropertyF.Ground.legacyCategory).isSome do
     throwError "dependency audit did not reject the old compatibility bundle"
   unless (findIssue env ``PropertyF.propertyF_implies_weaklyIntegral).isSome do

@@ -9,6 +9,9 @@
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
 - `globalFPDimension_presentation` proves the spectral FP global dimension
   independent of the complete finite list of simple representatives.
+- `target_of_legacy_standardInputs` checks the old conditional theorem applies
+  to the frozen target; its explicit `StandardInputs` premise makes it unsuitable
+  for the final dependency cone.
 - `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
   the old categorical data from ground definitions; dimension equality bridges
   are proved. These compatibility declarations are excluded from the final cone.

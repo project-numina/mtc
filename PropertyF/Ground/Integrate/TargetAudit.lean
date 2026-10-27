@@ -10,6 +10,7 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -96,6 +97,7 @@ import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.TotalMatrix
 import all PropertyF.Ground.Integrate.Arithmetic
+import all PropertyF.Ground.Integrate.ConditionalBridge
 import all PropertyF.Ground.Integrate.Conjugacy
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
