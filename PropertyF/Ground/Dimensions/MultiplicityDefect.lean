@@ -122,4 +122,38 @@ theorem multiplicityDefect_involution_of_tensor_square
   change multiplicityDefect C i j k (multiplicityDefect C i j k f) = f
   rw [multiplicityDefect_apply, multiplicityDefect_apply, Category.assoc, hd, Category.comp_id]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The tensor-square identity follows from naturality of the double-dual
+tensor comparison and the corresponding tensor law for the fourth dual. -/
+theorem rootTensor_square_of_fourthDual_tensor
+    (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj)
+    (hnat : (doubleDualTensorIso X Y).hom ≫
+        (((((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
+          ((fourthDualRootNaturalIso C).app Y).hom)ᘁ)ᘁ) =
+      (((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) ⊗ₘ
+        ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ)) ≫
+        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom)
+    (hfourth : (fourthDualIso C (X ⊗ Y)).hom =
+      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
+        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
+          (((doubleDualTensorIso X Y).homᘁ)ᘁ)) :
+    (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
+      (fourthDualIso C (X ⊗ Y)).hom := by
+  have hx := congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C)
+  have hy := congrArg (fun n => (n.app Y).hom) (fourthDualRootNaturalSquare_eq C)
+  change ((fourthDualRootNaturalIso C).app X).hom ≫
+    ((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) = (fourthDualIso C X).hom at hx
+  change ((fourthDualRootNaturalIso C).app Y).hom ≫
+    ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ) = (fourthDualIso C Y).hom at hy
+  rw [hfourth, ← hx, ← hy]
+  simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
+    Category.assoc]
+  have hn2 := congrArg (fun f =>
+    (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
+      ((fourthDualRootNaturalIso C).app Y).hom) ≫ f ≫
+      (((doubleDualTensorIso X Y).homᘁ)ᘁ)) hnat
+  simp only [Category.assoc] at hn2
+  rw [hn2]
+  rw [tensorHom_comp_tensorHom_assoc]
+
 end PropertyF.Ground.Dimensions
