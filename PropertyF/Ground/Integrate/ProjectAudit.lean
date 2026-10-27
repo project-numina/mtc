@@ -203,6 +203,8 @@ run_cmd do
   let mut checked : Nat := 0
   for (name, _) in env.constants.toList do
     if name.toString.startsWith "PropertyF." then
+      if Lean.isExtern env name || (Lean.Compiler.getImplementedBy? env name).isSome then
+        throwError "Unexpected foreign implementation in project declaration {name}"
       for ax in ← collectAxioms name do
         unless #[``propext, ``Classical.choice, ``Quot.sound].contains ax do
           throwError "Unexpected axiom {ax} in project declaration {name}"
