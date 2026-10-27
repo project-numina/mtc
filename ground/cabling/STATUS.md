@@ -49,14 +49,24 @@
   monoidal associator. `generatedBy_tensor` and `generatedBy_isMonoidal`
   construct tensor closure and the inherited braided monoidal structure,
   with braided full faithful inclusion. `generatedCategoryAbelianOfSplit`
-  constructs its abelian structure from explicit split-mono/epi hypotheses.
+  constructs its abelian structure from explicit split-mono/epi hypotheses; `Ground.Cabling.generatedCategoryAbelian` now supplies these unconditionally from fusion semisimplicity.
   `generatedCategoryRigidOfDualClosure` constructs rigidity from closure
   under right duals. `generatedBy_dual_of_generator_dual` reduces that
   closure to generation of the generator’s own right dual, and
   `generatedCategoryRigidOfGeneratorDual` constructs rigidity from it.
   `Ground.Cabling.generatedBy_rightDual_of_unit_power` proves that for a
   simple X this membership follows when some positive power contains the
-  unit. Establishing that occurrence and the fusion structure remains.
+  unit. `Ground.Cabling.unit_retract_power` now constructs that occurrence
+  from a balanced fusion flow, and `generatedCategoryRigidOfSimple` constructs
+  rigidity without further assumptions for simple generators.
+  `Ground.Cabling.generatedBy_rightDual` now uses
+  semisimple decomposition and proves dual closure for arbitrary generators;
+  `generatedCategoryRigid` constructs their rigidity unconditionally.
+  `generatedFusion` bundles this as a genuine braided fusion category;
+  `generatedFusionInclusion` is full, faithful and braided, its essential
+  image is `GeneratedBy`, and `generatedFusionInclusionBraidImageIso`
+  identifies braid images. These constructions use no legacy hypothesis
+  structures; their axiom audits show only the three Lean foundations.
 
 - `positiveMatrix_eigenvector_integral` proves the arithmetic/Perron step
   of ENO 8.27: a normalized positive eigenvector of a positive rational
@@ -67,21 +77,26 @@
 
 ## In progress
 
-- Prove the categorical crossing-generator block permutation law and that
-  each pure block restriction belongs to its X braid image. These are the
-  exact remaining inputs to `sumPowersCablingWitness`.
+- `powerSum_crossing_permutesBlocks` proves the categorical crossing-generator
+  block permutation law. `moveHead_mem_braidImage` proves a single strand
+  crossing an arbitrary block is a braid; `moveHead_spectators` extends this
+  to spectator blocks on both sides. The unproved step is the general crossing
+  of two tensor-power blocks in arbitrary tuple contexts. Pure-word composition
+  is now proved by `powerSum_pureBlock_mem_of_generators`. Empty blocks are
+  handled by `blockSwap_zero_left` and `blockSwap_zero_right`; a singleton
+  left block is handled by `blockSwap_one_left_mem`. Right insertion works at
+  every strand count by `addRightAutAllIter_hom`. The comparison between its
+  `concatPowerIso` and the existing tuple normalization remains unproved.
+  `objectPropertyF_generated_of_block_membership` proves bundle-free property-F
+  transfer conditional on the resulting pure-block membership.
 
 ## Remaining
 
-- Prove `GeneratedBy X (Xᘁ)` from finite semisimplicity and construct
-  the fusion structure on the generated subcategory and cabling witnesses.
-- Prove the categorical setup for ENO 8.27: the adjoint component, a
-  strictly positive power of its fusion matrix, its integer eigenvalue,
-  and integrality of coordinates; show inclusion preserves FP dimension.
-  `square_integral_of_adjoint_matrix` completes the final numerical step
-  once a categorical adjoint matrix presentation is supplied.
-- The categorical braid/cabling identities, generation of the dual, and the
-  inherited semisimple fusion structure require substantial further work.
-  Fusion has constructed the ground positive character and object FP
-  dimension; the categorical adjoint-component construction and full
-  inclusion invariance remain open. No reliable completion estimate is available.
+- Construct cabling witnesses using the remaining pure-block cabling identity.
+- Fusion completed ENO 8.27 without the adjoint-component construction:
+  `Ground.fpSimple_sq_integer_of_weaklyIntegral` and
+  `Ground.simple_fpDimension_sq_integer_of_weaklyIntegral` prove simple
+  squares integral by a Galois argument. `Ground.Cabling.generated_simple_square_integral`
+  connects this result to our bundled generated category and inclusion.
+- The general categorical cabling identity remains substantial. No reliable
+  completion estimate is available.

@@ -59,7 +59,7 @@ Checked the actual source at this revision:
 | Lemma 3.2, conclusion | Partial trace gives scalar square braiding; finite order implies scalar has modulus one |
 | Lemma 4.1, centre | Standard centre modularity and squared dimensions [EGNO 7.16.6, 8.20.14, 9.3.4] |
 | Lemma 4.1, centralizers | Establish mutual centralizers, intersection, symmetric integrality [DGNO 2.46], S criterion and double centralizer [EGNO 8.20.5, 8.21.1] |
-| Lemma 4.1, property F | Braided dominant product functor [EGNO 8.6.1] and proved transfers |
+| Lemma 4.1, property F | Braided product functor onto its generated image and proved transfers |
 | Theorem 1.1, contradiction | Non-PU conjugate has smaller positive global dimension; Proposition 2.1 gives dimension ratio in `(0,1)`; Lemma 3.2 contradicts FP dimension `≥1` |
 | Theorem 1.1, arithmetic | All conjugates equal implies rationality; algebraic integrality implies integer |
 | Lemma 4.2 | Positive tensor powers generate the rigid subcategory [EGNO 4.11.4]; pure-braid cabling, finite products, finite-index transfer [ERW 2.1(ii)] |

@@ -105,4 +105,16 @@ theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.H
   apply End.ext
   simpa [← hcval] using hc.symm
 
+/-- Closing a right tensor factor commutes with adding an identity factor on
+the left, with the associator made explicit. -/
+theorem rightPartialTrace_whiskerLeft (p : Dimensions.PivotalStructure (C := C))
+    (A X Y : C) (f : End (X ⊗ Y)) :
+    rightPartialTrace p (A ⊗ X) Y (End.of
+      ((α_ A X Y).hom ≫ (A ◁ f.asHom) ≫ (α_ A X Y).inv)) =
+      End.of (A ◁ (rightPartialTrace p X Y f).asHom) := by
+  apply End.ext
+  simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+    comp_whiskerRight, whiskerLeft_comp, Category.assoc]
+  monoidal
+
 end PropertyF.Ground.Calculus
