@@ -116,9 +116,17 @@ public import PropertyF.Ground.Cabling.UnitBraid
 public import PropertyF.Ground.Cabling.MoveHead
 public import PropertyF.Ground.Cabling.MoveHeadInsert
 public import PropertyF.Ground.Cabling.MoveHeadContext
+public import PropertyF.Ground.Cabling.PowerCompare
+public import PropertyF.Ground.Cabling.PowerGeneral
 public import PropertyF.Ground.Cabling.PureBlocks
+public import PropertyF.Ground.Cabling.BlockGroupoid
+public import PropertyF.Ground.Cabling.BlockWords
+public import PropertyF.Ground.Cabling.CableClass
+public import PropertyF.Ground.Cabling.GeneratorBlock
+public import PropertyF.Ground.Cabling.TupleIso
 public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple
+public import PropertyF.Ground.Cabling.GeneratedF
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapUnitary
 public import PropertyF.Ground.Calculus.OverlapBound
@@ -137,6 +145,11 @@ public import PropertyF.Ground.Integrate.ExamplePropertyF
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.PositiveWeights
 public import PropertyF.Ground.Calculus.GaloisMatrices
+public import PropertyF.Ground.Calculus.GaloisBlocks
+public import PropertyF.Ground.Calculus.SemilinearMaps
+public import PropertyF.Ground.Calculus.GaloisTraceBound
+public import PropertyF.Ground.Calculus.GaloisOverlap
+public import PropertyF.Ground.Calculus.GaloisRigidity
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
