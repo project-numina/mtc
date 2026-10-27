@@ -40,6 +40,16 @@ theorem average_center_hom (C : BraidedFusionCategory.{v,u})
   apply CategoryTheory.Center.ext
   simp [average, loopSum_center_hom C p hp f, smul_smul, hne]
 
+/-- Normalized averaging is idempotent once the sliding identity has been
+proved. -/
+theorem average_idempotent (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (hslide : SimpleLoopCentrality C p) (hne : globalDimension C ≠ 0)
+    (X Y : CategoryTheory.Center C.Obj) (f : X.1 ⟶ Y.1) :
+    average C p hslide X Y (average C p hslide X Y f).f =
+      average C p hslide X Y f :=
+  average_center_hom C p hp hslide hne (average C p hslide X Y f)
+
 /-- If the loop-sliding identity holds, every epimorphism in the centre splits.
 The global-dimension and spherical hypotheses remain explicit. -/
 theorem epi_splits_of_loop_centrality (C : BraidedFusionCategory.{v,u})

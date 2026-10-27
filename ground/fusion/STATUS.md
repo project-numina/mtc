@@ -144,6 +144,11 @@ The separate compatibility bridge constructs the old `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.subobjectEndRangeEmbedding` embeds the subobject order
+  into subspaces of a finite-dimensional Hom space when subobjects split.
+  Assuming loop sliding, centre objects are Artinian and Noetherian, and
+  every nonzero centre object has a simple retract. Finite direct-sum
+  decomposition and finitely many simple isomorphism classes remain open.
 - `CentreInduction.retract_of_adjunction_and_loop` derives the required
   centre-object retract from the forgetful right adjoint and the same unproved
   loop-sliding identity, using faithfulness of forget.
