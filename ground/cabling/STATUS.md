@@ -217,3 +217,16 @@ double centralizer, actual-centre reduction, S-test saturation, product
 closure, dual closure and core identification report only `propext`,
 `Classical.choice`, and `Quot.sound`. The new centre-cabling files contain no
 `sorry`, `admit`, `axiom`, `native_decide`, `implemented_by`, or `extern`.
+
+## Round 3 continuation
+
+Merged the integration snapshot. `natural_end_finite_order_of_simples` proves
+that finite order on the finitely many simple components gives a common order
+on every object. `mixed_monodromy_finite_of_balanced_finite_twist` proves that
+any balanced natural automorphism with finite-order simple components gives
+finite-order mixed monodromy on all object pairs. The proof is independent of
+property F and positivity. The pivotal twist's balancing equation and the Vafa
+root-of-unity theorem are still explicit missing ingredients, so this is not a
+proof of the centre centralizer condition or of the frozen target. Focused build
+passed. Next: derive the pivotal twist balance and the algebraic consequences
+of Vafa's determinant relations.

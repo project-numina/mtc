@@ -27,3 +27,11 @@
   braidings between a product-retract simple and an arbitrary simple. A
   finite-order ribbon twist/Vafa result or a direct centre-specific argument
   would suffice. Base property F alone has not been shown to provide this.
+
+## Round 3 finite-twist route
+
+`mixed_monodromy_finite_of_balanced_finite_twist` reduces finite mixed
+monodromy to the balancing identity and finite order of simple pivotal twists.
+Neither the balancing identity for the actual pivotal/Drinfeld twist nor the
+Vafa root-of-unity theorem is assumed proved. Cabling is working on these
+steps; the centre's rigid/fusion instances remain separate.
