@@ -21,6 +21,10 @@
 - `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
   the old categorical data from ground definitions; dimension equality bridges
   are proved. These compatibility declarations are excluded from the final cone.
+- `twistedOverlapTrace_proved`, `galois_rigidity`, and
+  `target_of_modular_center` discharge actual overlap coherence, trace bounds
+  and three-strand rigidity. The final reduction needs only the modular centre
+  and its finite-image transfer, as explicit unproved premises.
 - `positive_bounded_conjugates_of_fp` proves real, positive bounded global FP
   conjugates for any ground braided fusion category, without spherical or
   pseudo-unitary assumptions. `target_of_center_and_overlap` therefore needs
@@ -65,7 +69,7 @@
   on a finite tensor-product basis. `Example.target_hypotheses_inhabited`
   proves that both target hypotheses hold simultaneously for this category.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans 2,969 integrated public and private declarations for forbidden axioms.
+- `ProjectAudit` scans 3,035 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and
@@ -74,8 +78,8 @@
 
 ## In progress
 
-- Continue wiring scalar-twisted pivotal and dimension transport into the
-  actual three-strand rigidity argument as categorical overlap coherence arrives.
+- Wire genuine centre fusion, positive spherical, dimension, S invertibility,
+  centralizer and finite-image constructions as they arrive.
 - Continue validating mathematical interfaces and exercising the final
   dependency gate as integration progresses.
 - Refactor the conditional argument into bundle-free results as constructions
@@ -83,8 +87,8 @@
 
 ## Blocked / remaining
 
-No final theorem: centre fusion, its positive spherical structure and
-modularity, and the categorical braid/trace witness remain open as detailed
+No final theorem: centre fusion, its positive spherical structure,
+modularity, global dimension formula and finite-image transfer remain open as detailed
 in the ledger. The FP spectral-radius/character identification and both global dimensions’
 representative independence are proved. The work
 is a substantial multi-workstream formalization, not a short integration patch;
