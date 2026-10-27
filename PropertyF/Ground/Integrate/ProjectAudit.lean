@@ -38,6 +38,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -153,6 +154,7 @@ import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.SubcategoryDimension
 import all PropertyF.Ground.Fusion.TotalMatrix
 import all PropertyF.Ground.Integrate.Arithmetic
+import all PropertyF.Ground.Integrate.CenterReduction
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
 import all PropertyF.Ground.Integrate.Conjugacy
@@ -269,6 +271,7 @@ run_cmd do
       ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
       ``PropertyF.Ground.target_of_spherical_and_witness,
       ``PropertyF.Ground.target_of_canonical_spherical_and_witness,
+      ``PropertyF.Ground.target_of_canonical_spherical_and_center,
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,

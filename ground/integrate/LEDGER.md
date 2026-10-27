@@ -9,9 +9,9 @@ fusion and dimensions review; unresolved mathematical obligations are noted belo
 
 ## Target and dependency graph
 
-`target_of_spherical_and_witness` reduces the frozen statement to two
-explicit categorical obligations: a spherical pivotal structure with self-dual
-simple dimensions, and a centre/rigidity witness for each smaller conjugate. Global FP positivity
+`target_of_canonical_spherical_and_center` reduces the frozen statement to
+two explicit categorical obligations: the canonical positive spherical
+structure and a concrete modular centre with finite-image and rigidity facts. Global FP positivity
 is proved from the tensor unit; the numerical contradiction is bundle-free. Global FP
 invariance under semilinear braided equivalence is proved by
 `Modular.conjugate_globalFPDimension`.

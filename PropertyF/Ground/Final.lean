@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Integrate.Reduction
+public import PropertyF.Ground.Integrate.CenterReduction
 
 /-! Reserved for the final `PropertyF.Ground.target : TargetStatement` theorem.
 The statement remains in `Target.lean`; keeping the proof downstream avoids a

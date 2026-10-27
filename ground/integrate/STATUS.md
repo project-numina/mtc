@@ -21,9 +21,10 @@
 - `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
   the old categorical data from ground definitions; dimension equality bridges
   are proved. These compatibility declarations are excluded from the final cone.
-- `target_of_spherical_and_witness` reduces the target to existence of a
-  self-dual spherical structure and the centre/rigidity witness. Both are
-  explicit unproved premises; the numerical and conjugate-bound steps are proved.
+- `target_of_canonical_spherical_and_center` reduces the target to canonical
+  spherical existence and precise modular-centre, finite-image and rigidity
+  facts. These are explicit unproved premises; the numerical and conjugate-bound
+  steps are proved.
 - `galois_propertyF` transports property F along the target's actual braided
   semilinear equivalence using modular’s braid-image equivalences.
 - `weaklyIntegral_of_globalFPDimension_fixed` wires spectral FP integrality

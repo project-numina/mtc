@@ -1,9 +1,9 @@
 # Integration dependencies
 
 All remaining items below are explicit, temporary arguments to
-`Ground.target_of_canonical_spherical_and_witness`; none is an assumption in the frozen
+`Ground.target_of_canonical_spherical_and_center`; none is an assumption in the frozen
 `TargetStatement`. Their exact Lean types are in
-`PropertyF/Ground/Integrate/Reduction.lean`.
+`PropertyF/Ground/Integrate/CenterReduction.lean`.
 
 - `hCanonical`: for pseudo-unitary C, construct an actual spherical pivotal
   structure whose simple dimensions equal the corresponding positive FP
@@ -11,21 +11,16 @@ All remaining items below are explicit, temporary arguments to
   `positive_bounded_conjugates_of_spherical` then supply dual invariance and
   all real-conjugate bounds without extra assumptions. The alternative
   `target_of_spherical_and_witness` needs only self-dual simple dimensions.
-- `hWitness`: for σ producing a strictly smaller real conjugate a, and its
-  inverse producing b, produce reals f,d with `σ f = d`, `f*b = FPdim(C)`,
-  `1 ≤ f`, and `f = |d|`. Owners: centre (canonical centre, centralizers,
-  property F, positive centre dimension and global-square identities), modular
-  (S-matrix/Verlinde/Galois unit column), and calculus (three-strand rigidity
-  from actual finite images and spherical traces). Dimensions supplies the
-  positive spherical structure and trace/dimension transport. This is the
-  paper's specific centre/rigidity intermediate conclusion, not target fixedness.
-  `center_witness_of_modular_and_rigidity` now derives this conclusion from
-  the modular global identity, the Galois-unit self-column and rigidity.
-  `exists_modular_witness` constructs those modular identities and the real
-  dimension f ≥ 1 from an actual positive spherical category with invertible S;
-  `center_witness_of_categorical_modular_data` now assembles the witness
-  from property F of the selected column and three-strand rigidity. Identifying
-  the category as the centre and proving those two implications remain.
+- `hCenter`: for pseudo-unitary property-F C and each σ, construct the centre
+  as a genuine braided fusion category Z with positive spherical structure,
+  invertible categorical S, and global dimension FPdim(C)²; prove that any
+  simple with the Galois-unit S column has property F and obeys the concrete
+  three-strand rigidity implication. Owners: centre (Z, dimension formula,
+  centralizers, finite-image transfer and S invertibility), dimensions
+  (positive spherical structures and trace transport), and calculus (actual
+  three-strand rigidity); modular supplies S identities and Galois action.
+  The exact dependent statement is in `CenterReduction.lean`. The centre
+  witness and numerical contradiction are constructed from these premises.
 
 Fusion has proved `one_le_globalFPDimension` directly from the unit fusion
 matrix, so global FP positivity is discharged. The last sum/integrality step, Galois transport of property F and global FP
