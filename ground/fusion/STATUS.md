@@ -148,6 +148,11 @@ The separate compatibility bridge constructs the old `FusionData`.
   test strand. `simpleLoopCentrality_of_rank_one` proves the entire sliding
   condition in fusion rank one; `centerForgetEquivalenceOfRankOne` constructs
   an actual equivalence of the centre with C in that special case.
+  `rightAdjointOfRankOne` and `adjunctionOfRankOne` construct its right
+  adjoint and identify its underlying object with the induction sum.
+  `fusion_of_rank_one` and `globalFPDimension_square_of_rank_one` prove the
+  centre fusion structure and FP-square formula for rank one, conditional
+  only on centre rigidity.
 - `CentreInduction.subobjectEndRangeEmbedding` embeds the subobject order
   into subspaces of a finite-dimensional Hom space when subobjects split.
   Assuming loop sliding, centre objects are Artinian and Noetherian, and

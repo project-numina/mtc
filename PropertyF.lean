@@ -229,3 +229,4 @@ public import PropertyF.Ground.CentreRigid.Unit
 public import PropertyF.Ground.CentreRigid.MateEquations
 public import PropertyF.Ground.CentreInduction.Fusion
 public import PropertyF.Ground.CentreInduction.UnitTest
+public import PropertyF.Ground.CentreInduction.RankOne
