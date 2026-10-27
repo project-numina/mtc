@@ -242,6 +242,7 @@ public import PropertyF.Ground.CentreInduction.CrossingTensor
 public import PropertyF.Ground.CentreInduction.BasisRefinement
 public import PropertyF.Ground.CentreInduction.CrossingCoherence
 public import PropertyF.Ground.CentreInduction.CandidateAssembly
+public import PropertyF.Ground.CentreInduction.AdjunctionMatrix
 
 public import PropertyF.Ground.CentreInduction.BasisPairing
 
