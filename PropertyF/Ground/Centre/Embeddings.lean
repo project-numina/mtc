@@ -64,6 +64,27 @@ theorem positive_negative_centralize (X Y : C) :
 def Centralizes (A B : CategoryTheory.Center C) : Prop :=
   (β_ A B).hom ≫ (β_ B A).hom = 𝟙 _
 
+omit [BraidedCategory C] in
+/-- Centralization is invariant under isomorphism in its first argument. -/
+theorem centralizes_of_iso_left {A B T : CategoryTheory.Center C} (i : A ≅ B)
+    (h : Centralizes B T) : Centralizes A T := by
+  unfold Centralizes at *
+  apply (cancel_mono (i.hom ▷ T)).mp
+  calc
+    ((β_ A T).hom ≫ (β_ T A).hom) ≫ (i.hom ▷ T) =
+        (i.hom ▷ T) ≫ ((β_ B T).hom ≫ (β_ T B).hom) := by
+      simp only [Category.assoc, BraidedCategory.braiding_naturality_left_assoc]
+      rw [← BraidedCategory.braiding_naturality_right T i.hom]
+    _ = 𝟙 _ ≫ (i.hom ▷ T) := by rw [h]; simp
+
+omit [BraidedCategory C] in
+/-- Centralization is symmetric. -/
+theorem centralizes_symm {A B : CategoryTheory.Center C} (h : Centralizes A B) :
+    Centralizes B A := by
+  unfold Centralizes at *
+  apply (cancel_epi (β_ A B).hom).mp
+  simp only [← Category.assoc, h, Category.id_comp, Category.comp_id]
+
 /-- The paper's half-braiding test is exactly centralization of the positive image. -/
 theorem centralizes_positive_image_iff (Y : CategoryTheory.Center C) :
     (∀ X : C, Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X)) ↔
@@ -111,5 +132,48 @@ def positiveIsoOfCentralizesNegative (Y : CategoryTheory.Center C)
         (congrArg Iso.hom (hβ X)).symm⟩
   letI : IsIso f.f := inferInstanceAs (IsIso (𝟙 Y.1))
   exact CategoryTheory.Center.isoMk f
+
+/-- The categorical centralizer of the positive image is exactly the
+essential image of the negative embedding. -/
+theorem centralizes_positive_iff_negative_essential_image (Y : CategoryTheory.Center C) :
+    (∀ X : C, Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X)) ↔
+      ∃ X : C, Nonempty (Y ≅ (negative C).obj X) := by
+  constructor
+  · intro h
+    exact ⟨Y.1, ⟨negativeIsoOfCentralizesPositive Y h⟩⟩
+  · rintro ⟨X, ⟨i⟩⟩ Z
+    apply centralizes_of_iso_left i
+    exact centralizes_symm (positive_negative_centralize Z X)
+
+/-- The categorical centralizer of the negative image is the essential image
+of the positive embedding. -/
+theorem centralizes_negative_iff_positive_essential_image (Y : CategoryTheory.Center C) :
+    (∀ X : C, Centralizes Y ((negative C).obj X)) ↔
+      ∃ X : C, Nonempty (Y ≅ (CategoryTheory.Center.ofBraided C).obj X) := by
+  constructor
+  · intro h
+    exact ⟨Y.1, ⟨positiveIsoOfCentralizesNegative Y h⟩⟩
+  · rintro ⟨X, ⟨i⟩⟩ Z
+    apply centralizes_of_iso_left i
+    exact positive_negative_centralize X Z
+
+/-- The positive embedding detects transparency in the original category. -/
+theorem transparent_iff_positive_centralizes_positive (X : C) :
+    Transparent X ↔ ∀ Y : C, Centralizes ((CategoryTheory.Center.ofBraided C).obj X)
+      ((CategoryTheory.Center.ofBraided C).obj Y) := by
+  constructor
+  · intro h Y
+    apply CategoryTheory.Center.ext
+    exact h Y
+  · intro h Y
+    exact congrArg CategoryTheory.Center.Hom.f (h Y)
+
+/-- The intersection of the two essential images consists exactly of the
+positive images of transparent objects. -/
+theorem transparent_iff_positive_in_negative_image (X : C) :
+    Transparent X ↔ ∃ Y : C,
+      Nonempty ((CategoryTheory.Center.ofBraided C).obj X ≅ (negative C).obj Y) := by
+  rw [← centralizes_positive_iff_negative_essential_image,
+    ← transparent_iff_positive_centralizes_positive]
 
 end PropertyF.Ground.Centre
