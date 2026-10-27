@@ -78,6 +78,7 @@ public import PropertyF.Ground.Dimensions.NaturalRoots
 public import PropertyF.Ground.Dimensions.RootDualSign
 public import PropertyF.Ground.Dimensions.RootNorm
 public import PropertyF.Ground.Dimensions.ENOReciprocity
+public import PropertyF.Ground.Dimensions.ENOGalois
 public import PropertyF.Ground.Dimensions.NaturalTrace
 public import PropertyF.Ground.Dimensions.PivotalUniqueness
 public import PropertyF.Ground.Dimensions.PositiveCanonical
