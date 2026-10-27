@@ -219,6 +219,7 @@ import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
 import all PropertyF.Ground.Integrate.ExampleDimensions
 import all PropertyF.Ground.Integrate.ExamplePropertyF
+import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.LegacyBridge
@@ -326,6 +327,7 @@ run_cmd do
       ``PropertyF.Ground.target_of_pseudo_fixedness,
       ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
       ``PropertyF.Ground.positive_ratio_of_galois_square,
+      ``PropertyF.Ground.positive_bounded_conjugates_of_fp,
       ``PropertyF.Ground.center_witness_of_modular_and_rigidity,
       ``PropertyF.Ground.exists_modular_witness,
       ``PropertyF.Ground.center_witness_of_categorical_modular_data,

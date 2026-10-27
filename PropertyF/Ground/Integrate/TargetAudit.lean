@@ -197,6 +197,7 @@ import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
 import all PropertyF.Ground.Integrate.ExampleDimensions
 import all PropertyF.Ground.Integrate.ExamplePropertyF
+import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.LegacyBridge
