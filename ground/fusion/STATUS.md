@@ -69,6 +69,10 @@
 - `Ground.fusionData`, `fusionData_globalFPDimension`: every field of the
   earlier `FusionData` is constructed from the genuine target category; this
   compatibility bridge is separate from the strict target dependency cone.
+- `Ground.fpDimension` and its `simple`, `iso`, `unit`, `nonneg`, `isIntegral`,
+  and `tensor` theorems, plus `one_le_fpDimension`: object FP dimension is
+  constructed from Hom multiplicities, tensor-multiplicative, integral over ℤ,
+  and at least one on nonzero objects.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -87,10 +91,10 @@ Mathlib has categorical Schur's lemma but a source search found no general
 Perron–Frobenius theorem for positive matrices. Existence, uniqueness and
 agreement of the target dimensions with the positive character are proved.
 
-Object tensor/dual/inclusion invariance, spectral-dimension independence of
-chosen representatives, and the centre dimension comparison remain. The
-project-scale remaining effort is substantial; no credible completion-time
-estimate is yet available.
+Object dual/inclusion invariance, spectral-dimension independence of chosen
+representatives, and the centre dimension comparison remain. The project-scale
+remaining effort is substantial; no credible completion-time estimate is yet
+available.
 
 Integration requires the target dependency cone to avoid the old hypothesis
 bundles entirely. The above results currently use `FusionData` and must be
