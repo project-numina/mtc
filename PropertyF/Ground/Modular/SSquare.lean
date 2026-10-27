@@ -113,11 +113,8 @@ theorem categoricalS_columns_orthogonal (C : Ground.BraidedFusionCategory)
 
 /-- The tensor unit is self-dual. -/
 theorem dualIndex_unit (C : Ground.BraidedFusionCategory) :
-    Ground.dualIndex C (unitIndex C) = unitIndex C := by
-  have h := fusionCoeff_reciprocity_labels C (unitIndex C) (unitIndex C) (unitIndex C)
-  simp only [fusionCoeff_unit, ite_true] at h
-  split_ifs at h with hh
-  exact hh.symm
+    Ground.dualIndex C (unitIndex C) = unitIndex C :=
+  Ground.dualIndex_unit C
 
 
 /-- Nondegeneracy forces the off-charge-conjugation entries of S² to vanish. -/
@@ -153,7 +150,7 @@ theorem categoricalS_square (C : Ground.BraidedFusionCategory)
   let u := unitIndex C
   let δ := Ground.dualIndex C
   let a : Fin (rank C) → ℂ := fun x => ∑ z, S x z * S z (δ x)
-  have hunit : δ u = u := dualIndex_unit C
+  have hunit : δ u = u := Ground.dualIndex_unit C
   have hdual : Function.Involutive δ := Ground.dualIndex_involutive C
   have hcross (x t : Fin (rank C)) (h : t ≠ δ x) :
       (∑ z, S x z * S z t) = 0 := by
@@ -193,7 +190,7 @@ theorem categoricalS_square (C : Ground.BraidedFusionCategory)
   have hu : a u = globalDimension C := by
     change (∑ z, categoricalS C p (unitIndex C) z *
       categoricalS C p z (Ground.dualIndex C (unitIndex C))) = globalDimension C
-    rw [dualIndex_unit C]
+    rw [Ground.dualIndex_unit C]
     simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
     simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
   by_cases hxy : x = δ y

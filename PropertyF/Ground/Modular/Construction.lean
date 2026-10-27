@@ -2,11 +2,10 @@ module
 public import PropertyF.Ground.Modular.SSquare
 
 /-!
-# Modular data from an invertible categorical S matrix
+# Galois symmetry from an invertible categorical S matrix
 
-The legacy `ModularData` compatibility bundle is constructed from a genuine
-spherical category, real simple dimensions, and invertibility of its actual S
-matrix. The separate Galois-action theorem avoids that legacy bundle.
+A spherical category with real simple dimensions and an invertible S matrix
+has the Galois symmetries of its normalized S columns.
 -/
 open scoped BigOperators
 open PropertyF.Ground.Dimensions
@@ -30,21 +29,6 @@ theorem globalDimension_ne_zero_of_invertibleS (C : Ground.BraidedFusionCategory
   rw [Matrix.det_mul] at hh
   simp only [Matrix.det_zero] at hh
   exact mul_ne_zero hdet hdet hh
-
-/-- Construct the original modular-data bundle from the genuine S matrix, a
-spherical pivotal structure, real simple dimensions, and S nondegeneracy. -/
-def categoricalModularData (C : Ground.BraidedFusionCategory)
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hdet : (categoricalS C p).det ≠ 0)
-    (hreal : ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j) :
-    PropertyF.ModularData := by
-  let N : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  exact modularDataOfVerlinde (rank C) (unitIndex C) (Ground.dualIndex C)
-    (simpleDimension C p) (globalDimension C) (categoricalS C p)
-    (simpleDimension_ne_zero C p) (globalDimension_ne_zero_of_invertibleS C p hp hdet hreal)
-    (categorical_global_eq_sum_squares C p hp) (categoricalS_symmetric C p)
-    (categoricalS_unit C p) (simpleDimension_unit C p) (categoricalS_square C p hp hdet hreal)
-    N rfl (categoricalS_verlinde C p)
 
 /-- The S-column Galois action for any nondegenerate spherical category with
 real simple dimensions, without old input bundles. -/

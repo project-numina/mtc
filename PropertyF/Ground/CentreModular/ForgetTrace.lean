@@ -64,7 +64,7 @@ theorem center_SEntry_eq_underlying_trace
       (CentreInduction.forgetDoubleDualIso C (X ⊗ Y)).hom = (p.iso (X.1 ⊗ Y.1)).hom) :
     unitScalarEquiv (Integrate.bundledCenter C) (Modular.SEntry pZ X Y) =
       unitScalar C (p.rightTrace ((X.2.β Y.1).hom ≫ (Y.2.β X.1).hom)) := by
-  rw [← unitScalar_eq_equiv, ← center_forget_unitScalar C]
+  rw [← unitScalar_eq_equiv, CentreInduction.center_unitScalar_forget C]
   congr 1
   apply End.ext
   have h := forget_pivotalTrace C p pZ (X ⊗ Y) (Modular.doubleBraiding X Y) hcompat

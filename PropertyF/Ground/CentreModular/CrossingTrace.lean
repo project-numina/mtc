@@ -18,20 +18,9 @@ theorem trace_tensor_biproduct (C : BraidedFusionCategory.{v,u})
     {ι : Type*} [Fintype ι] (V : ι → C.Obj) (T : C.Obj)
     (f : (⨁ V) ⊗ T ⟶ (⨁ V) ⊗ T) :
     p.rightTrace f = ∑ i, p.rightTrace ((biproduct.ι V i ▷ T) ≫ f ≫ (biproduct.π V i ▷ T)) := by
-  classical
-  have ht : (∑ i, (biproduct.π V i ▷ T) ≫ (biproduct.ι V i ▷ T)) = 𝟙 ((⨁ V) ⊗ T) := by
-    simp only [← comp_whiskerRight, ← sum_whiskerRight, biproduct.total, id_whiskerRight]
-  calc
-    _ = p.rightTrace ((∑ i, (biproduct.π V i ▷ T) ≫ (biproduct.ι V i ▷ T)) ≫ f) := by
-      rw [ht, Category.id_comp]
-    _ = ∑ i, p.rightTrace (((biproduct.π V i ▷ T) ≫ (biproduct.ι V i ▷ T)) ≫ f) := by
-      rw [Preadditive.sum_comp]
-      exact map_sum (Dimensions.rightTraceLinear p _) _ _
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro i _
-      simpa only [Category.assoc] using p.rightTrace_cyclic
-        (biproduct.π V i ▷ T) ((biproduct.ι V i ▷ T) ≫ f)
+  apply Dimensions.rightTrace_decomposition p _ (fun i => V i ⊗ T)
+    (fun i => biproduct.ι V i ▷ T) (fun i => biproduct.π V i ▷ T) ?_ f
+  simp only [← comp_whiskerRight, ← sum_whiskerRight, biproduct.total, id_whiskerRight]
 
 /-- The closed induced crossing has only diagonal fusion-matrix blocks. -/
 theorem induced_crossing_trace_diagonal (C : BraidedFusionCategory.{v,u})
