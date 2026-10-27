@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Cabling.Blocks
 public import PropertyF.Ground.Cabling.Pure
+public import Mathlib.CategoryTheory.Conj
 open CategoryTheory CategoryTheory.Limits
 @[expose] public noncomputable section
 namespace PropertyF
@@ -60,6 +61,21 @@ theorem permutesBlocks_of_inclusions {I : Type} [Fintype I] (f : I → C)
     rw [reassoc_of% (biproduct.ι_π_ne f hij), zero_comp,
       reassoc_of% (h j), biproduct.ι_π_ne_assoc f hpi]
     simp
+
+/-- A block decomposition transports inclusion permutation laws into
+projector permutation laws. -/
+theorem transport_permutesBlocks_of_inclusions {I : Type} [Fintype I] (f : I → C)
+    {V : C} (e : V ≅ ⨁ f) (a : Aut V) (p : Equiv.Perm I)
+    (h : ∀ i, ∃ g : f i ⟶ f (p i),
+      (biproduct.ι f i ≫ e.inv) ≫ a.asIso.hom = g ≫ (biproduct.ι f (p i) ≫ e.inv)) :
+    permutesBlocks f (e.conjAut a) p := by
+  classical
+  choose g hg using h
+  apply permutesBlocks_of_inclusions f (e.conjAut a) p g
+  intro i
+  simp only [Iso.conjAut_apply, Iso.trans_hom, Iso.symm_hom]
+  rw [← Category.assoc, ← Category.assoc, hg i]
+  simp [Category.assoc]
 
 /-- Words in generators which permute blocks continue to do so with the
 corresponding word in permutations. -/
