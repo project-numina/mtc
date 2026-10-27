@@ -205,6 +205,7 @@ import all PropertyF.Ground.Integrate.ExampleDimensions
 import all PropertyF.Ground.Integrate.ExamplePropertyF
 import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.FPRepresentatives
+import all PropertyF.Ground.Integrate.FunctorUniverse
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness

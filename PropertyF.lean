@@ -140,6 +140,7 @@ public import PropertyF.Ground.Integrate.ScalarTwistTransport
 public import PropertyF.Ground.Integrate.ScalarTwistModular
 public import PropertyF.Ground.Integrate.ScalarTwistNorm
 public import PropertyF.Ground.Integrate.FPConjugates
+public import PropertyF.Ground.Integrate.FunctorUniverse
 public import PropertyF.Ground.Integrate.TwistedRigidity
 public import PropertyF.Ground.Integrate.OverlapReduction
 public import PropertyF.Ground.Integrate.CenterOnlyReduction
