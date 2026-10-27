@@ -18,6 +18,10 @@
   using the genuine finite semisimplicity property.
 - `Ground.unit_retract_leftDual_tensor`: the tensor unit is a retract of
   `ᘁX ⊗ X` for simple `X`, supplying the cabling strand-inclusion input.
+- `Ground.simples_simple`, `simples_injective`, `simples_decompose`,
+  `exists_simple_iso`, `exists_unit_iso`, and `finrank_simples_hom`: the
+  target's representatives enumerate all simple objects, including the unit,
+  and satisfy Schur's Hom formula without using old fusion structures.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
