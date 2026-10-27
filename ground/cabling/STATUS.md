@@ -13,9 +13,20 @@
 - `strandPermutation`, `pureWords`, `braidWordAction`, `pureBraidImage` and
   `pureBraidImage_finiteIndex`: categorical pure braid images have finite
   index, using permutation of free words.
+- `blockRestrictionHom` and `blockRestriction_ker_le` construct and detect
+  restrictions of a group action preserving the summands of a finite
+  biproduct. `retractActionHom` and `retractAction_ker_le` construct
+  restriction to an arbitrary invariant retract. `braidImageRetractMap`
+  is a surjective homomorphism between actual braid images for any retract;
+  `objectPropertyF_of_retract` establishes the summand transfer.
 - `cablingWitnessOfPureAction`: constructs a full `CablingWitness` from
   a pure-word map to the product of cabled braid images and the precise
   kernel containment needed to descend to the pure image.
+- `tensorPowerBiproductIso` and `sumPowersTensorPowerIso` construct the
+  decomposition of tensor powers of sums of powers into tuple-indexed
+  tensor-power blocks.
+- `CablingWitness.of_retract` and `cabling_of_sumPowers` reduce all generated
+  objects to proving the cabling diagram only for finite sums of powers.
 
 - `generatedImageEquiv` and `braidImageEquivOfGeneratorCoherence` reduce
   image equivalences under faithful monoidal functors to the generator
@@ -44,6 +55,9 @@
 - `positiveMatrix_eigenvector_integral` proves the arithmetic/Perron step
   of ENO 8.27: a normalized positive eigenvector of a positive rational
   matrix with rational eigenvalue has integer entries if integral over ℤ.
+- `matrix_exists_positive_power` and `connectedMatrix_eigenvector_integral`
+  extend this to a nonnegative rational matrix with positive diagonal and
+  connected powers, constructing the needed positive power.
 
 ## In progress
 

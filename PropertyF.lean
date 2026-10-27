@@ -21,6 +21,7 @@ public import PropertyF.Ground.Calculus.StarSpan
 public import PropertyF.Ground.Centre.Embeddings
 public import PropertyF.Ground.Centre.Linear
 public import PropertyF.Ground.Centre.Zero
+public import PropertyF.Ground.Centre.Biproduct
 public import PropertyF.Ground.Centre.ReverseBraiding
 public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Centre.ProductImages
@@ -31,6 +32,7 @@ public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
+public import PropertyF.Ground.Modular.PseudoGalois
 public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Witness
 public import PropertyF.Ground.Cabling.Images
@@ -49,6 +51,12 @@ public import PropertyF.Ground.Cabling.DualClosure
 public import PropertyF.Ground.Cabling.Inclusion
 public import PropertyF.Ground.Cabling.Perron
 public import PropertyF.Ground.Cabling.Primitive
+public import PropertyF.Ground.Cabling.ENOArithmetic
+public import PropertyF.Ground.Cabling.Blocks
+public import PropertyF.Ground.Cabling.RetractAction
+public import PropertyF.Ground.Cabling.Naturality
+public import PropertyF.Ground.Cabling.CableRetract
+public import PropertyF.Ground.Cabling.TensorDecomposition
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.

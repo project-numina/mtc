@@ -2,6 +2,7 @@ module
 public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Centre.ReverseBraiding
 public import PropertyF.Ground.Modular.BraidFunctor
+public import PropertyF.Ground.Cabling.Naturality
 
 /-! Braid images in the ordinary product with mixed braiding. -/
 @[expose] public noncomputable section
@@ -151,5 +152,46 @@ theorem negative_objectPropertyF_iff (X : C) :
     let _ := hf
     exact Finite.of_equiv (@braidImage C _ _ (CategoryTheory.reverseBraiding C) X n)
       (e n).toEquiv
+
+/-- Tensoring the positive and negative images preserves finite braid images. -/
+theorem productFunctor_objectPropertyF (X Y : C)
+    (hX : ObjectPropertyF X) (hY : ObjectPropertyF Y) :
+    ObjectPropertyF (productFunctor.obj (X,Y)) := by
+  let _ : (productFunctor (C := C)).Braided := productBraided
+  apply Modular.objectPropertyF_functor (productFunctor (C := C)) (X,Y)
+  intro n
+  let _ := hX n
+  let _ := hY n
+  exact product_braidImage_finite X Y n
+
+/-- The centre image of a pair has braid image a quotient of a subgroup of
+its two source braid images. This does not require finite images. -/
+theorem productFunctor_image_quotient (X Y : C) (n : ℕ) :
+    ∃ H : Subgroup (braidImage X n × braidImage Y n),
+      ∃ q : H →* braidImage (productFunctor.obj (X,Y)) n, Function.Surjective q := by
+  let _ : (productFunctor (C := C)).Braided := productBraided
+  let e := MonoidHom.ofInjective (productBraidMap_injective X Y n)
+  let q := (Modular.braidImageFunctorMap (productFunctor (C := C)) (X,Y) n).comp
+    e.symm.toMonoidHom
+  refine ⟨(productBraidMap X Y n).range, q, ?_⟩
+  intro a
+  obtain ⟨b, hb⟩ := Modular.braidImageFunctorMap_surjective (productFunctor (C := C)) (X,Y) n a
+  exact ⟨e b, by simpa [q] using hb⟩
+
+/-- Every retract of a product-functor image has the same quotient-of-a-subgroup
+presentation, without a finiteness assumption. -/
+theorem productFunctor_retract_image_quotient (X Y : C) (Z : CategoryTheory.Center C)
+    (r : CategoryTheory.Retract Z (productFunctor.obj (X,Y))) (n : ℕ) :
+    ∃ H : Subgroup (braidImage X n × braidImage Y n),
+      ∃ q : H →* braidImage Z n, Function.Surjective q := by
+  obtain ⟨H, q, hq⟩ := productFunctor_image_quotient X Y n
+  exact ⟨H, (braidImageRetractMap r n).comp q,
+    (braidImageRetractMap_surjective r n).comp hq⟩
+
+/-- Property F transfers to every retract of a product-functor image. -/
+theorem productFunctor_retract_objectPropertyF (X Y : C) (Z : CategoryTheory.Center C)
+    (r : CategoryTheory.Retract Z (productFunctor.obj (X,Y)))
+    (hX : ObjectPropertyF X) (hY : ObjectPropertyF Y) : ObjectPropertyF Z :=
+  objectPropertyF_of_retract r (productFunctor_objectPropertyF X Y hX hY)
 
 end PropertyF.Ground.Centre
