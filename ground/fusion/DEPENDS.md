@@ -51,3 +51,7 @@ These describe proof obligations, not axioms or assumptions in the target.
   still requires centre rigidity and existence of a base pivotal structure for
   the pseudo-unitary category. General pivotal existence is not assumed for
   arbitrary fusion categories.
+
+- The Drinfeld tensor law now implies fourth-dual monoidality and positive
+  spherical existence for pseudo-unitary categories. The Drinfeld tensor law
+  is the remaining explicit input and is being proved by dimensions/calculus.
