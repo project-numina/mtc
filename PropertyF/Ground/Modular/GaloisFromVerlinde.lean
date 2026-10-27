@@ -1,13 +1,13 @@
 module
 public import PropertyF.Ground.Modular.Classification
-public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Modular.DimensionNonzero
 
 /-!
 # Galois action from Verlinde's equations
 
 The classification and complex-automorphism action require no old modular-data
 bundle. The remaining hypotheses of the categorical theorem are stated as the
-specific S-square, dimension nonvanishing and Verlinde equations that must be
+specific S-square, global nonvanishing and Verlinde equations that must be
 proved from a nondegenerate spherical fusion category.
 -/
 open scoped BigOperators
@@ -41,7 +41,7 @@ theorem exists_galoisLabel_of_verlinde {ι : Type*} [Fintype ι] [DecidableEq ι
 normalized S-columns carry the genuine action of all complex automorphisms. -/
 theorem categoricalS_galois_action (C : Ground.BraidedFusionCategory)
     (p : PivotalStructure (C := C.Obj)) (dual : Fin (rank C) → Fin (rank C))
-    (hd : ∀ y, simpleDimension C p y ≠ 0) (hD : globalDimension C ≠ 0)
+    (hD : globalDimension C ≠ 0)
     (hsq : ∀ x y, ∑ z, categoricalS C p x z * categoricalS C p z y =
       if x = dual y then globalDimension C else 0)
     (hVerlinde : ∀ i j y,
@@ -53,7 +53,7 @@ theorem categoricalS_galois_action (C : Ground.BraidedFusionCategory)
         categoricalS C p i (act σ j) / simpleDimension C p (act σ j) := by
   let N : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
   exact exists_galoisLabel_of_verlinde N (categoricalS C p) dual (simpleDimension C p)
-    (globalDimension C) hd hD (categoricalS_symmetric C p) (categoricalS_unit C p) hsq hVerlinde
+    (globalDimension C) (simpleDimension_ne_zero C p) hD (categoricalS_symmetric C p) (categoricalS_unit C p) hsq hVerlinde
 
 
 /-- Proposition 2.1 from the numerical S identities and the character equation,
