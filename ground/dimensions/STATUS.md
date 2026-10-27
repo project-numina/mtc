@@ -37,7 +37,7 @@
 - `fourthDualRootNaturalIso` extends the simple square roots to a natural isomorphism Id → double dual, and `fourthDualRootNaturalSquare_eq` proves its square equals the natural fourth-dual map on every object. Monoidality remains open.
 - `exists_fourthDual_square_root` and `fourthDualSimpleRoot_sq` construct the ENO square-root components on every simple, without assuming monoidality or naturality.
 - `doubleDualFunctor` is a complex-linear additive functor; `drinfeldNaturalIso` and `fourthDualNaturalIso` package the natural maps as categorical natural isomorphisms, with tensor coherence still unproved.
-- `doubleDualIso_natural` and `fourthDualIso_natural` construct and prove naturality of the braided double- and fourth-dual maps. The fourth-dual map’s monoidal coherence remains unproved.
+- `doubleDualIso_natural` and `fourthDualIso_natural` construct and prove naturality of the braided double- and fourth-dual maps; `fourthDualIso_rightDual` proves the fourth-dual map on a right dual equals the inverse dual map. The fourth-dual map’s monoidal coherence remains unproved.
 - `target_squaredNorm_unit` proves the intrinsic norm of the tensor unit is one without a pivotal structure.
 - `target_squaredNorm_rightDual` proves intrinsic norm invariance under duality without a pivotal structure. `spherical_pivotalDimension_rightDual_sq` proves equality of squared dimensions, with the sign still unresolved.
 - `rightQuantumTrace_simple_ne_zero`, `leftQuantumTrace_simple_ne_zero`, and `target_squaredNorm_ne_zero` establish nonvanishing for every simple without a pivotal or spherical structure.
