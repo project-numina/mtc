@@ -51,9 +51,9 @@ is claimed yet.
 
 | Interface | Field(s) | Owner | Status |
 |---|---|---|---|
-| `FusionData` | `rank`, `simpleObject`, `simple_is_simple`, `simple_injective`, `unitIndex`, `unit_iso`, `hom_finite`, `decomposition` | fusion | Ground category has finite semisimple property; construction of old bundle pending. |
-| `FusionData` | `fpSimple`, `fp_positive`, `fp_unit`, `fp_character` | fusion | Unique positive character constructed and proved equal to the ground spectral-radius definition; legacy bundle bridge pending. |
-| `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Ground double-dual and scalar algebra equivalence constructed; fixed-representative choice independence proved in `Dimensions.Norm`; old bundle pending. |
+| `FusionData` | `rank`, `simpleObject`, `simple_is_simple`, `simple_injective`, `unitIndex`, `unit_iso`, `hom_finite`, `decomposition` | fusion | Constructed by `Ground.legacyFusionData` from ground category. |
+| `FusionData` | `fpSimple`, `fp_positive`, `fp_unit`, `fp_character` | fusion | Constructed by `Ground.legacyFusionData` using the ground spectral character. |
+| `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Constructed by `Ground.legacyGlobalDimensionData`; norm and representative independence proved. |
 | `MultiplicityData` | `simpleCount`, `dimension`, `fpDimension`, `multiplicity`, `dimension_bound` | calculus; dimensions for bound | Open: group-representation decomposition and spherical dimension bound. |
 | `OverlapModel` | `stage`, `decomposition`, `fpMass_eq` | calculus, fusion | Actual braid-image algebras and unitary Wedderburn blocks constructed; categorical multiplicity and FP mass remain. |
 | `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Left-strand star maps and partial-trace bimodule/identity laws constructed; right insertion and iterated trace remain. |

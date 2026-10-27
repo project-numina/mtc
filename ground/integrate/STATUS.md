@@ -7,6 +7,9 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
+- `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
+  the old categorical data from ground definitions; dimension equality bridges
+  are proved. These compatibility declarations are excluded from the final cone.
 - `target_of_bounded_conjugates_and_witness` proves the numerical contradiction
   and reduces the target to bounds on real conjugates and the centre/rigidity
   witness, both explicitly listed as unproved premises; global FP positivity
