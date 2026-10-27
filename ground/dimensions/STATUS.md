@@ -19,6 +19,7 @@
 - `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
 
 - `spherical_dimension_dual_of_positive` removes the dual-invariance premise when spherical simple dimensions are positive; `pseudoUnitary_galois_fp_bounds_of_positive` supplies the Galois bounds in that case. Existence of such a structure remains open.
+- `doubleDualIso_natural` and `fourthDualIso_natural` construct and prove naturality of the braided double- and fourth-dual maps. The fourth-dual map’s monoidal coherence remains unproved.
 - `target_squaredNorm_unit` proves the intrinsic norm of the tensor unit is one without a pivotal structure.
 - `target_squaredNorm_rightDual` proves intrinsic norm invariance under duality without a pivotal structure. `spherical_pivotalDimension_rightDual_sq` proves equality of squared dimensions, with the sign still unresolved.
 - `rightQuantumTrace_simple_ne_zero`, `leftQuantumTrace_simple_ne_zero`, and `target_squaredNorm_ne_zero` establish nonvanishing for every simple without a pivotal or spherical structure.
@@ -41,7 +42,7 @@
 
 - `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic`, and `rightTrace_id_iso` also hold for any pivotal structure. `pivotalTrace_tensor` proves multiplicativity; semilinear trace transport remains open.
 
-- Prove pivotal duality coherence and obtain canonical spherical structures on pseudo-unitary categories.
+- Prove pivotal duality coherence and obtain canonical spherical structures on pseudo-unitary categories. ENO 2.3/8.23 uses a monoidal fourth-dual isomorphism and its square-root/trace operators; the braided fourth-dual map is constructed and natural, but its tensor coherence and the subsequent semisimple operator argument are not yet formalized.
 
 ## Dependencies and remaining work
 
