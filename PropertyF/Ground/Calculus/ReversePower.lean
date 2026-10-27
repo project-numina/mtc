@@ -161,4 +161,34 @@ theorem insertRightPowerIso_eq_reverseConcat (X : C) (n k : ℕ) :
     simp only [Category.assoc]
     rw [appendIso_eqToHom_natural X h₀]
 
+omit [BraidedCategory C] in
+set_option backward.isDefEq.respectTransparency false in
+/-- A shared strand can be attached to the left block before concatenating
+the right tail, or kept as the head of the right block. -/
+theorem reverseConcat_overlap (X : C) (a b : ℕ) :
+    (reverseConcatIso X a (b + 1)).hom =
+      (α_ (tensorPower X a) X (tensorPower X b)).inv ≫
+      ((appendIso X a).hom ▷ tensorPower X b) ≫
+      (reverseConcatIso X (a + 1) b).hom ≫
+      eqToHom (congrArg (tensorPower X) (by omega : b + (a + 1) = (b + 1) + a)) := by
+  induction a with
+  | zero =>
+    simp only [reverseConcatIso, appendIso, tensorPower, Nat.add_zero, eqToHom_refl,
+      Category.comp_id, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
+      id_tensorHom, comp_whiskerRight]
+    monoidal
+  | succ a ih =>
+    have h₀ : b + (a + 1) = (b + 1) + a := by omega
+    have h : b + ((a + 1) + 1) = (b + 1) + (a + 1) := by omega
+    have hcomp : eqToHom (congrArg (tensorPower X) h) =
+        X ◁ eqToHom (congrArg (tensorPower X) h₀) := by
+      rw [whiskerLeft_eqToHom]
+    simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
+      id_tensorHom, Category.assoc]
+    rw [hcomp]
+    rw [ih, appendIso_succ]
+    simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
+      id_tensorHom, whiskerLeft_comp, comp_whiskerRight, Category.assoc]
+    monoidal
+
 end PropertyF.Ground.Calculus
