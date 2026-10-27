@@ -128,3 +128,9 @@ class, and `fpDeterminant_scalar_simple_eq_zero_iff` detects finite order on
 simple scalar automorphisms. The determinant's tensor-product identity and
 hexagon identity are unproved, so Vafa-type monodromy remains open. Focused
 build and foundational axiom checks passed.
+
+`fpDeterminant_conjugate` proves invariance under isomorphism, and
+`fpDeterminant_tensor_simple` proves the desired tensor-product rule for every
+actual automorphism of a simple object using Schur's lemma. The extension to
+arbitrary (possibly repeated simple-summand) objects and the double-braiding
+hexagon relation remain open. Focused build and axiom checks passed.

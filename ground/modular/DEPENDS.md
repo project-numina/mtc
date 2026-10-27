@@ -43,3 +43,6 @@ The actual categorical S identities, character classification and Galois action 
 - `fpDeterminant` is constructed and satisfies composition and scalar rules.
   The missing categorical step is its tensor-product rule, then the hexagon
   relation for double braidings; finite monodromy does not yet follow.
+- The FP determinant is conjugation invariant and has the tensor rule for
+  simple-object automorphisms. The arbitrary-object tensor rule still needs
+  block determinant/decomposition arguments.
