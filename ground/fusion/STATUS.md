@@ -158,6 +158,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   without extra assumptions. `induction` is the resulting functor from C to
   Mathlib's actual `Center C.Obj`, with underlying object the desired finite
   sum. The adjunction, averaging-loop sliding, and centre fusion remain open.
+  `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
+  unit-counit column on simple test strands, reducing the second triangle to
+  the diagonal duality contraction.
 - `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
   transpose and proves it injective; composing it with the unit-summand
   counit recovers the original map. Centrality and surjectivity onto centre
