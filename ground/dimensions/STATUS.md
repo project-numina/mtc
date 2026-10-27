@@ -18,6 +18,7 @@
 
 - `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
 
+- `pseudoUnitary_iff_simple_saturation` establishes the global equality characterization given explicit sphericality, real dimensions, unit normalization, and tensor multiplicativity; the latter hypotheses remain unproved.
 - `pivotalDimension_decomposition` proves the Hom-multiplicity formula; `pivotalDimension_character` and `galois_pivotalDimension_norm_le_fpSimple` reduce the pivotal character and Galois FP bound to the still-unproved unit and tensor trace laws.
 - `character_norm_le_fpSimple` and `galois_character_norm_le_fpSimple` prove the spectral-radius bound for any nonzero complex fusion character and every complex field conjugate. Deriving the character equations for spherical dimensions is still open.
 
