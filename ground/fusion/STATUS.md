@@ -145,7 +145,9 @@ The separate compatibility bridge constructs the old `FusionData`.
 ## Round 2 progress (2026-10-27)
 
 - `CentreInduction.comm_of_simples` proves that a candidate centre morphism
-  need only satisfy the intertwining equations on base simple representatives.
+  need only satisfy the intertwining equations on base simple representatives;
+  `natTrans_ext_on_simples` gives the parallel result for natural transformations
+  between additive functors.
 - `CentreInduction.underlyingFunctor` constructs the induction sum as a
   functor on the base category; it is additive, complex-linear, and faithful.
 - `CentreInduction.homLinearEquivOfAdjunction` and

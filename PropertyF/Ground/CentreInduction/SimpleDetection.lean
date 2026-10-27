@@ -45,3 +45,28 @@ theorem comm_of_simples (C : BraidedFusionCategory.{v,u})
     MonoidalCategory.whiskerLeft_comp, Category.assoc] using hs
 
 end PropertyF.Ground.CentreInduction
+
+namespace PropertyF.Ground.CentreInduction
+universe v u v' u'
+attribute [local instance] Abelian.hasFiniteBiproducts
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Natural transformations between additive functors out of a fusion
+category are determined by their components on the simple representatives. -/
+theorem natTrans_ext_on_simples (C : BraidedFusionCategory.{v,u})
+    {D : Type u'} [Category.{v'} D] [Preadditive D] [HasFiniteBiproducts D]
+    (F G : C.Obj ⥤ D) [F.Additive] [G.Additive] (a b : F ⟶ G)
+    (h : ∀ i, a.app (simples C i) = b.app (simples C i)) : a = b := by
+  ext U
+  let V := Dimensions.simplePiecesObject C U
+  let e := Dimensions.simpleDecomposition C U
+  apply (cancel_epi (F.map e.inv)).1
+  apply (cancel_epi (F.mapBiproduct V).inv).1
+  apply biproduct.hom_ext'
+  intro p
+  simp only [Functor.mapBiproduct_inv, biproduct.ι_desc_assoc]
+  rw [a.naturality, b.naturality, a.naturality_assoc, b.naturality_assoc]
+  change a.app (simples C p.1) ≫ _ = b.app (simples C p.1) ≫ _
+  rw [h p.1]
+
+end PropertyF.Ground.CentreInduction
