@@ -3,9 +3,8 @@ public import PropertyF.Audit
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
-public import PropertyF.Ground.Calculus.StarSpan
+public import PropertyF.Ground.Calculus.Intertwining
 public import PropertyF.Ground.Calculus.FiniteOrder
-public import PropertyF.Ground.Calculus.UnitaryBlocks
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.

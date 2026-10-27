@@ -27,6 +27,29 @@ variable {G : Type*} [Group G] [Finite G]
 def groupInImage (ρ : G →* A) : G →* groupImageAlgebra ρ :=
   (groupAlgebraMap ρ).rangeRestrict.toMonoidHom.comp (MonoidAlgebra.of ℂ G)
 
+omit [Finite G] in
+/-- The group elements span their image algebra. -/
+theorem groupInImage_span (ρ : G →* A) :
+    Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ := by
+  classical
+  apply Submodule.map_injective_of_injective (groupImageAlgebra ρ).toSubmodule.subtype_injective
+  rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype]
+  calc
+    _ = Submodule.span ℂ (Set.range ρ) := by
+      congr 1
+      ext x
+      simp only [Set.mem_image, Set.mem_range]
+      constructor
+      · rintro ⟨_, ⟨g, rfl⟩, rfl⟩
+        refine ⟨g, ?_⟩
+        change ρ g = MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g)
+        exact (MonoidAlgebra.lift_of ρ g).symm
+      · rintro ⟨g, rfl⟩
+        refine ⟨groupInImage ρ g, ⟨g, rfl⟩, ?_⟩
+        change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
+        exact MonoidAlgebra.lift_of ρ g
+    _ = (groupImageAlgebra ρ).toSubmodule := (groupImageAlgebra_toSubmodule ρ).symm
+
 /-- A Wedderburn equivalence can be chosen so that every group element is
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
 theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
