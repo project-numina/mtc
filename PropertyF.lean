@@ -194,3 +194,4 @@ See `FORMALIZATION.md` for the complete assumption ledger.
 import PropertyF.Ground.CentreInduction.Underlying
 import PropertyF.Ground.CentreInduction.GlobalSquare
 import PropertyF.Ground.CentreInduction.Adjunction
+import PropertyF.Ground.CentreInduction.SimpleDetection
