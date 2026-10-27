@@ -221,6 +221,8 @@ public import PropertyF.Ground.Dimensions.CoevaluationSliding
 public import PropertyF.Ground.Dimensions.DrinfeldUnit
 public import PropertyF.Ground.Dimensions.FourthDualUnit
 
+public import PropertyF.Ground.CentreDimensions.BraidingTrace
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
