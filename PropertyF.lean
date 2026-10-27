@@ -23,6 +23,12 @@ public import PropertyF.Ground.Modular.GaloisFromVerlinde
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Witness
+public import PropertyF.Ground.Calculus.ImageMaps
+public import PropertyF.Ground.Calculus.CategoricalTrace
+public import PropertyF.Ground.Calculus.PartialTrace
+public import PropertyF.Ground.Calculus.FiniteOrder
+public import PropertyF.Ground.Cabling.Images
+public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.Pivotal
 public import PropertyF.Ground.Dimensions.Trace
 public import PropertyF.Ground.Dimensions.BiproductTrace
