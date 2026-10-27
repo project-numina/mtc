@@ -7,6 +7,7 @@ public import PropertyF.Ground.CentreCalculus.ExteriorReduction
 public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.GlobalSquare
 public import PropertyF.Ground.CentreInduction.Adjunction
+public import PropertyF.Ground.CentreModular.VafaPivotal
 public import PropertyF.Ground.CentreModular.VafaCompletion
 public import PropertyF.Ground.CentreModular.VafaFunctor
 public import PropertyF.Ground.CentreModular.AdditiveDecomposition

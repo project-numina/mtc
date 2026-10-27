@@ -205,3 +205,12 @@ scalars of a natural automorphism from its explicit simple-object balancing
 identity, without a lantern relation. Actual pivotal twist balancing remains
 unproved, so this is still conditional and does not prove the final theorem.
 Focused build and foundational axiom checks passed.
+
+`pivotal_twist_finite_of_balancing` specializes the Vafa determinant proof to
+the actual pivotal/Drinfeld twist. `mixed_monodromy_finite_of_pivotal_balancing`
+then proves finite order of every mixed double braiding in a genuine braided
+fusion category with a pivotal structure, assuming only the explicit pivotal
+twist balancing law. No lantern relation, positivity, sphericality or S
+invertibility is assumed. Actual balancing is being proved by integrate and
+dimensions; it remains an open premise here. Focused build and direct
+foundational axiom checks passed.
