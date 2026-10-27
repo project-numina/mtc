@@ -5,6 +5,7 @@ public import PropertyF.Ground.Integrate.UnitScalar
 public import PropertyF.Ground.Fusion.Integrality
 public import PropertyF.Ground.Fusion.Splitting
 public import PropertyF.Ground.Fusion.FunctorDimension
+public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer

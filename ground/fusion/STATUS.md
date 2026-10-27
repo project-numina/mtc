@@ -21,6 +21,10 @@
 - `Ground.fusionMatrix_unit`, `Ground.fpSimple_unit`, and
   `Ground.one_le_globalFPDimension`: the spectral-radius definition is
   normalized at the unit and the global dimension is at least one.
+- `Ground.split_to_simple`, `simple_projective`, `simple_injective`,
+  `object_projective`, `object_injective`, `epi_splits`, and `mono_splits`:
+  every object is projective and injective, and all epimorphisms and
+  monomorphisms split.
 - `Ground.split_from_simple`: any nonzero map out of a simple object splits,
   using the genuine finite semisimplicity property.
 - `Ground.unit_retract_leftDual_tensor`: the tensor unit is a retract of
@@ -84,8 +88,8 @@ The legacy `FusionData` results are separate from the bundle-free ground results
 
 ## In progress
 
-Proving split monomorphisms and epimorphisms from finite semisimplicity, as
-requested by cabling; then pursue the adjoint-component integrality argument.
+Investigating the adjoint-component integrality argument and its categorical
+construction, in coordination with cabling.
 
 ## Blocked / outstanding
 
