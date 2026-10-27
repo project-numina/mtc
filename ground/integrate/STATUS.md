@@ -192,3 +192,14 @@ no reliable completion-time estimate is available.
   related. Scratch experiments are not imported or committed.
 - Full build and strict project audit pass after these changes, covering 395
   modules and 4,237 declarations. The final target remains unproved.
+
+- `CentreIntegrate.signed_cycle_count` proves the signed cycle-count
+  polynomial identity over ℂ, with fixed points included as cycles. The proof
+  counts fixed colourings using same-cycle quotients, uses a determinant to
+  cancel non-injective colourings, and extends from natural values by
+  polynomial interpolation. `integral_of_cycle_traces` and
+  `integral_of_signed_cycle_traces` wire the identity to calculus's
+  integrality criterion for the two parity cases. Construction of the
+  permutation action and either appropriate categorical cycle trace formula
+  remains open. The focused build and full project audit pass (399 modules,
+  4,254 declarations).

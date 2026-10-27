@@ -41,6 +41,10 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreIntegrate.CycleColoring
+import all PropertyF.Ground.CentreIntegrate.CyclePolynomial
+import all PropertyF.Ground.CentreIntegrate.CycleTraceReduction
+import all PropertyF.Ground.CentreIntegrate.PermutationSignSum
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
 import all PropertyF.Ground.Integrate.CompatibleCenterReduction
 import all PropertyF.Ground.CentreCabling.CentralityClosure
@@ -538,6 +542,9 @@ run_cmd do
       ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
+      ``PropertyF.Ground.CentreIntegrate.signed_cycle_count,
+      ``PropertyF.Ground.CentreIntegrate.integral_of_cycle_traces,
+      ``PropertyF.Ground.CentreIntegrate.integral_of_signed_cycle_traces,
       ``PropertyF.Ground.target_of_compatible_center_and_integral_numerical_core,
       ``PropertyF.Ground.target_of_integral_numerical_center_core,
       ``PropertyF.Ground.center_globalDimension_square_of_actual_induction,

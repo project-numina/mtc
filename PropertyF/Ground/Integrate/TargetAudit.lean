@@ -19,6 +19,10 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreIntegrate.CycleColoring
+import all PropertyF.Ground.CentreIntegrate.CyclePolynomial
+import all PropertyF.Ground.CentreIntegrate.CycleTraceReduction
+import all PropertyF.Ground.CentreIntegrate.PermutationSignSum
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
 import all PropertyF.Ground.Integrate.CompatibleCenterReduction
 import all PropertyF.Ground.CentreCabling.CentralityClosure

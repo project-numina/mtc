@@ -211,3 +211,11 @@ and the numerical-core route. This avoids assuming centre pseudo-unitarity,
 but does not construct the base pivotal structure, compatible lift, rigidity,
 invertible S or numerical-core integrality. The integrated full build and
 strict project audit pass, covering 395 modules and 4,237 declarations.
+
+Symmetric-core integrality update: `CentreIntegrate.signed_cycle_count` proves
+the full signed permutation cycle polynomial identity, and
+`integral_of_cycle_traces` / `integral_of_signed_cycle_traces` connect it to
+positive categorical dimensions in both parity cases. This discharges the
+combinatorial signed-sum evaluation; the actual symmetric-group action and
+its categorical cycle-trace/parity identity remain unproved. Full project
+audit passes for the new results.
