@@ -25,7 +25,7 @@ theorem target_of_galois_invariance_and_pseudo_fixedness
     TargetStatement.{v,u} := by
   intro C hPU hF
   obtain ⟨D, σ, ⟨E⟩, hD⟩ := hPU
-  have hDF : HasPropertyF D.Obj := galois_propertyF E hF
+  have hDF : HasPropertyF D.Obj := Modular.conjugate_propertyF C D E hF
   have hDInt := weaklyIntegral_of_globalFPDimension_fixed D (hFixed D hD hDF)
   rwa [hInvariant E]
 

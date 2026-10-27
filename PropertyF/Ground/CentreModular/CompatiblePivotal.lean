@@ -56,12 +56,8 @@ theorem center_spherical_of_compatible
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
     (hcompat : ∀ Z, ((pZ.iso Z).hom.f) ≫ (CentreInduction.forgetDoubleDualIso C Z).hom =
-      (p.iso Z.1).hom) : pZ.IsSpherical := by
-  apply (Dimensions.pivotal_spherical_iff_simple_dimensions_real (Integrate.bundledCenter C) pZ).2
-  intro i
-  rw [center_pivotalDimension_eq_fp_of_compatible C p hsimple pZ hcompat,
-    fpDimension_simple]
-  simp
+      (p.iso Z.1).hom) : pZ.IsSpherical :=
+  (CentreInduction.center_positive_spherical_of_compatible_pivotal C p hsimple pZ hcompat).1
 
 /-- The categorical global dimension square follows from compatible pivotal
 structures and the actual induction adjunction; centre pseudo-unitarity is a

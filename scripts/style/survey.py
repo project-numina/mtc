@@ -239,7 +239,13 @@ def main():
     source_pairs=[(source_names[a],source_names[b]) for a,b in pairs if a in source_names and b in source_names]
     add(f'Lean syntactic expression equality confirms {len(pairs)} project theorem pairs have identical elaborated types, including generated/private declarations; {len(source_pairs)} pairs match source theorems. Source examples:')
     for a,b in source_pairs[:15]: add(f'- `{a["file"]}:{a["line"]} {a["name"]}` / `{b["file"]}:{b["line"]} {b["name"]}`')
-    add(f'\nThe full Mathlib source name scan produced {len(name_matches)} same-terminal-name pairs in `STYLE_NAME_MATCHES.tsv`. Names alone do not establish related statements and raw scanning can include commented text. One replacement is verified: `PropertyF.norm_eq_one_of_pow_eq_one` in `PropertyF/BraidAlgebra.lean` follows directly from `Complex.norm_eq_one_of_pow_eq_one` in `Mathlib/Analysis/Complex/Basic.lean`, with the two hypotheses reversed. `scripts/style/ExistingMathlib.lean` independently checks that application. This explains why strict expression equality misses this example.\n')
+    add(f'\nThe full Mathlib source name scan produced {len(name_matches)} same-terminal-name pairs in `STYLE_NAME_MATCHES.tsv`. Names alone do not establish related statements and raw scanning can include commented text.')
+    old_norm = any(d['file'] == 'PropertyF/BraidAlgebra.lean' and
+                   d['name'] == 'norm_eq_one_of_pow_eq_one' for d in pth)
+    if old_norm:
+        add('The project theorem `PropertyF.norm_eq_one_of_pow_eq_one` follows directly from `Complex.norm_eq_one_of_pow_eq_one` with the hypotheses reversed. `scripts/style/ExistingMathlib.lean` independently checks that application, which strict expression equality misses.\n')
+    else:
+        add('The former project theorem `PropertyF.norm_eq_one_of_pow_eq_one` has been removed in favor of `Complex.norm_eq_one_of_pow_eq_one`. `scripts/style/ExistingMathlib.lean` independently checks the application with the hypotheses reversed.\n')
     add(f'\n{len(matches)} source theorems have a type hash shared with an imported Mathlib declaration. These are unverified candidates, not established Mathlib replacements; this is not semantic `exact?` search. Imported Mathlib theorem bodies are hidden and appear axiom-shaped; actual axiom declarations are also included, so inspect source and trust assumptions before replacement. Examples:')
     for d,ms in matches[:15]: add(f'- `{d["file"]}:{d["line"]} {d["name"]}` → '+', '.join('`'+x+'`' for x in ms[:3]))
     # Pair same-named lemmas across modules; similarity is a review heuristic.
