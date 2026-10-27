@@ -394,3 +394,5 @@ public import PropertyF.Ground.CentreRigid.WindingDecomposition
 public import PropertyF.Ground.CentreRigid.LoopAbsorption
 
 public import PropertyF.Ground.CentreRigid.WindingTensor
+
+public import PropertyF.Ground.CentreRigid.NestedTrace

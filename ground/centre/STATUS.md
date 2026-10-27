@@ -160,3 +160,9 @@ the outer winding of that partial trace. To combine this with FP absorption,
 one still needs the general nested partial-trace identity (existing
 `rightPartialTrace_nested_simple` only handles simple equal survivors) and
 the open-strand geometric sliding identity.
+`partialTraceHom_nested` proves the general iterated partial-trace identity
+for arbitrary surviving objects and maps, using `cap_tensor` and the canonical
+tensor dual pairing. This removes the nested-trace gap in combining the
+winding tensor factorization with FP loop absorption. The geometric step from
+closed-loop absorption to open-strand centrality remains unproved. Focused
+build passes.
