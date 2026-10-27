@@ -86,22 +86,4 @@ theorem evaluation_central (Z : Center C)
   refine ⟨dualCrossing_tensor Z, coevaluation_central Z (dualCrossing_tensor Z),
     evaluation_central Z (dualCrossing_tensor Z)⟩
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The right dual chosen in the centre forgets to the chosen base dual. -/
-theorem rigidCenter_forget_dual (Z : Center C) :
-    letI := rigidCenter (C := C)
-    (Zᘁ).1 = Z.1ᘁ := by rfl
-
-set_option backward.isDefEq.respectTransparency false in
-/-- The centre coevaluation forgets to the base coevaluation. -/
-theorem rigidCenter_forget_coevaluation (Z : Center C) :
-    letI := rigidCenter (C := C)
-    (η_ Z (Zᘁ)).f = η_ Z.1 Z.1ᘁ := by rfl
-
-set_option backward.isDefEq.respectTransparency false in
-/-- The centre evaluation forgets to the base evaluation. -/
-theorem rigidCenter_forget_evaluation (Z : Center C) :
-    letI := rigidCenter (C := C)
-    (ε_ Z (Zᘁ)).f = ε_ Z.1 Z.1ᘁ := by rfl
-
 end PropertyF.Ground.CentreRigid

@@ -167,23 +167,4 @@ theorem centerUnitSimple [Simple (𝟙_ C)] : Simple (𝟙_ (CategoryTheory.Cent
     infer_instance
   exact centerSimple_of_underlying _
 
-section Braided
-variable [BraidedCategory C]
-
-/-- The positive canonical embedding sends simple objects to simple centre objects. -/
-theorem positive_preserves_simple (X : C) [Simple X] :
-    Simple ((CategoryTheory.Center.ofBraided C).obj X) := by
-  have : Simple ((CategoryTheory.Center.ofBraided C).obj X).1 := by
-    change Simple X
-    infer_instance
-  exact centerSimple_of_underlying _
-
-/-- The negative canonical embedding sends simple objects to simple centre objects. -/
-theorem negative_preserves_simple (X : C) [Simple X] : Simple ((negative C).obj X) := by
-  have : Simple ((negative C).obj X).1 := by
-    change Simple X
-    infer_instance
-  exact centerSimple_of_underlying _
-
-end Braided
 end PropertyF.Ground.Centre

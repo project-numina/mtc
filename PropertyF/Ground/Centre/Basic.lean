@@ -45,12 +45,6 @@ instance positiveBraided : (CategoryTheory.Center.ofBraided C).Braided where
     change (𝟙 _ ≫ (β_ X Y).hom) = (β_ X Y).hom ≫ 𝟙 _
     simp
 
-/-- The negative embedding preserves the reversed braiding. -/
-@[instance_reducible]
-def negativeBraided : @Functor.Braided C _ _ (CategoryTheory.reverseBraiding C)
-    (CategoryTheory.Center C) _ _ _ (negative C) :=
-  @positiveBraided C _ _ (CategoryTheory.reverseBraiding C)
-
 instance positiveFaithful : (CategoryTheory.Center.ofBraided C).Faithful where
   map_injective := by
     intro X Y f g h
@@ -151,49 +145,6 @@ def positiveIsoOfCentralizesNegative (Y : CategoryTheory.Center C)
         (congrArg Iso.hom (hβ X)).symm⟩
   letI : IsIso f.f := inferInstanceAs (IsIso (𝟙 Y.1))
   exact CategoryTheory.Center.isoMk f
-
-/-- The categorical centralizer of the positive image is exactly the
-essential image of the negative embedding. -/
-theorem centralizes_positive_iff_negative_essential_image (Y : CategoryTheory.Center C) :
-    (∀ X : C, Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X)) ↔
-      ∃ X : C, Nonempty (Y ≅ (negative C).obj X) := by
-  constructor
-  · intro h
-    exact ⟨Y.1, ⟨negativeIsoOfCentralizesPositive Y h⟩⟩
-  · rintro ⟨X, ⟨i⟩⟩ Z
-    apply centralizes_of_iso_left i
-    exact centralizes_symm (positive_negative_centralize Z X)
-
-/-- The categorical centralizer of the negative image is the essential image
-of the positive embedding. -/
-theorem centralizes_negative_iff_positive_essential_image (Y : CategoryTheory.Center C) :
-    (∀ X : C, Centralizes Y ((negative C).obj X)) ↔
-      ∃ X : C, Nonempty (Y ≅ (CategoryTheory.Center.ofBraided C).obj X) := by
-  constructor
-  · intro h
-    exact ⟨Y.1, ⟨positiveIsoOfCentralizesNegative Y h⟩⟩
-  · rintro ⟨X, ⟨i⟩⟩ Z
-    apply centralizes_of_iso_left i
-    exact positive_negative_centralize X Z
-
-/-- The positive embedding detects transparency in the original category. -/
-theorem transparent_iff_positive_centralizes_positive (X : C) :
-    Transparent X ↔ ∀ Y : C, Centralizes ((CategoryTheory.Center.ofBraided C).obj X)
-      ((CategoryTheory.Center.ofBraided C).obj Y) := by
-  constructor
-  · intro h Y
-    apply CategoryTheory.Center.ext
-    exact h Y
-  · intro h Y
-    exact congrArg CategoryTheory.Center.Hom.f (h Y)
-
-/-- The intersection of the two essential images consists exactly of the
-positive images of transparent objects. -/
-theorem transparent_iff_positive_in_negative_image (X : C) :
-    Transparent X ↔ ∃ Y : C,
-      Nonempty ((CategoryTheory.Center.ofBraided C).obj X ≅ (negative C).obj Y) := by
-  rw [← centralizes_positive_iff_negative_essential_image,
-    ← transparent_iff_positive_centralizes_positive]
 
 end PropertyF.Ground.Centre
 
@@ -303,40 +254,6 @@ theorem finiteDimensional_hom (K : Type*) [Field K] [Linear K C] [MonoidalLinear
 section Unit
 variable [BraidedCategory C]
 open CategoryTheory.Functor.Monoidal
-
-/-- Every endomorphism of the tensor unit lifts canonically to the centre. -/
-def liftUnitHom (f : 𝟙_ C ⟶ 𝟙_ C) :
-    𝟙_ (CategoryTheory.Center C) ⟶ 𝟙_ (CategoryTheory.Center C) :=
-  (εIso (CategoryTheory.Center.ofBraided C)).hom ≫
-    (CategoryTheory.Center.ofBraided C).map f ≫
-      (εIso (CategoryTheory.Center.ofBraided C)).inv
-
-omit [Preadditive C] [MonoidalPreadditive C] in
-@[simp] theorem liftUnitHom_f (f : 𝟙_ C ⟶ 𝟙_ C) : (liftUnitHom f).f = f := by
-  simp only [liftUnitHom, CategoryTheory.Center.comp_f, εIso_hom, εIso_inv,
-    CategoryTheory.Center.ofBraided_ε_f, CategoryTheory.Center.ofBraided_η_f,
-    CategoryTheory.Center.ofBraided_map_f]
-  change 𝟙 (𝟙_ C) ≫ f ≫ 𝟙 (𝟙_ C) = f
-  simp
-
-omit [Preadditive C] [MonoidalPreadditive C] in
-/-- Forgetting the half-braiding bijects the endomorphisms of the tensor unit. -/
-theorem forget_unit_hom_bijective :
-    Function.Bijective (fun f : (𝟙_ (CategoryTheory.Center C) ⟶ 𝟙_ (CategoryTheory.Center C)) => f.f) := by
-  constructor
-  · intro f g h
-    exact CategoryTheory.Center.ext f g h
-  · intro f
-    exact ⟨liftUnitHom f, liftUnitHom_f f⟩
-
-/-- The bijection on unit endomorphisms is linear over the coefficient field. -/
-def unitHomLinearEquiv (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C] :
-    (𝟙_ (CategoryTheory.Center C) ⟶ 𝟙_ (CategoryTheory.Center C)) ≃ₗ[K]
-      (𝟙_ C ⟶ 𝟙_ C) :=
-  LinearEquiv.ofBijective
-    (show (𝟙_ (CategoryTheory.Center C) ⟶ 𝟙_ (CategoryTheory.Center C)) →ₗ[K]
-      (𝟙_ C ⟶ 𝟙_ C) from (CategoryTheory.Center.forget C).mapLinearMap K)
-    forget_unit_hom_bijective
 
 instance positiveLinear (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C] :
     (CategoryTheory.Center.ofBraided C).Linear K where

@@ -60,10 +60,4 @@ theorem reverse_braidImage (X : C) (n : ℕ) :
   rw [h]
   simpa only [Set.inv_range] using (Subgroup.closure_inv (Set.range (braidGenerator X n)))
 
-/-- Property F is invariant under braiding reversal. -/
-theorem reverse_objectPropertyF_iff (X : C) :
-    @ObjectPropertyF C _ _ (CategoryTheory.reverseBraiding C) X ↔ ObjectPropertyF X := by
-  unfold ObjectPropertyF
-  simp only [reverse_braidImage]
-
 end PropertyF.Ground.Centre

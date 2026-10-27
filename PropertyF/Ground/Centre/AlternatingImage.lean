@@ -36,27 +36,4 @@ theorem alternatingProjector_trace (X : C) (n : ℕ)
   refine ⟨Y, ?_⟩
   rw [← hri, p.rightTrace_cyclic, hir]
 
-/-- The split image's dimension is the normalized signed sum of the traces
-of the operators in the action. -/
-theorem alternatingProjector_dimension_formula (X : C) (n : ℕ)
-    [Invertible (Fintype.card (Equiv.Perm (Fin n)) : ℂ)]
-    (ρ : Equiv.Perm (Fin n) →* End X)
-    (p : PropertyF.Ground.Dimensions.PivotalStructure (C := C)) :
-    ∃ Y : C, p.rightTrace (𝟙 Y) =
-      ⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
-        ∑ σ : Equiv.Perm (Fin n),
-          (permutationSign ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
-  obtain ⟨Y, hY⟩ := alternatingProjector_trace X n ρ p
-  refine ⟨Y, ?_⟩
-  rw [← hY, alternatingProjector_eq_sum]
-  simp only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul]
-  congr 1
-  have h := map_sum (PropertyF.Ground.Dimensions.rightTraceLinear p X)
-      (fun σ : Equiv.Perm (Fin n) => (permutationSign ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
-  change p.rightTrace (∑ σ : Equiv.Perm (Fin n),
-      (permutationSign ℂ n σ : ℂ) • (ρ σ).asHom) =
-    ∑ σ : Equiv.Perm (Fin n),
-      p.rightTrace ((permutationSign ℂ n σ : ℂ) • (ρ σ).asHom) at h
-  simpa only [p.rightTrace_smul] using h
-
 end PropertyF.Ground.Centre

@@ -124,35 +124,6 @@ theorem product_braidImage_finite (X Y : C) (n : ℕ)
     Finite (braidImage (X,Y) n) :=
   Finite.of_injective (productBraidMap X Y n) (productBraidMap_injective X Y n)
 
-/-- The positive centre embedding preserves and reflects objectwise property F. -/
-theorem positive_objectPropertyF_iff (X : C) :
-    ObjectPropertyF ((CategoryTheory.Center.ofBraided C).obj X) ↔ ObjectPropertyF X := by
-  constructor <;> intro h n
-  · let _ := h n
-    exact Finite.of_equiv (braidImage ((CategoryTheory.Center.ofBraided C).obj X) n)
-      (Modular.braidImageFunctorIso (CategoryTheory.Center.ofBraided C) X n).symm.toEquiv
-  · let _ := h n
-    exact Finite.of_equiv (braidImage X n)
-      (Modular.braidImageFunctorIso (CategoryTheory.Center.ofBraided C) X n).toEquiv
-
-/-- The negative centre embedding also preserves and reflects property F. -/
-theorem negative_objectPropertyF_iff (X : C) :
-    ObjectPropertyF ((negative C).obj X) ↔ ObjectPropertyF X := by
-  have e (n : ℕ) := @Modular.braidImageFunctorIso C _ _ (CategoryTheory.reverseBraiding C)
-    (CategoryTheory.Center C) _ _ _ (negative C) negativeBraided X n negativeFaithful
-  constructor <;> intro h n
-  · let _ := h n
-    have hf : Finite (@braidImage C _ _ (CategoryTheory.reverseBraiding C) X n) :=
-      Finite.of_equiv (braidImage ((negative C).obj X) n) (e n).symm.toEquiv
-    rw [reverse_braidImage] at hf
-    exact hf
-  · have hf : Finite (@braidImage C _ _ (CategoryTheory.reverseBraiding C) X n) := by
-      rw [reverse_braidImage]
-      exact h n
-    let _ := hf
-    exact Finite.of_equiv (@braidImage C _ _ (CategoryTheory.reverseBraiding C) X n)
-      (e n).toEquiv
-
 /-- Tensoring the positive and negative images preserves finite braid images. -/
 theorem productFunctor_objectPropertyF (X Y : C)
     (hX : ObjectPropertyF X) (hY : ObjectPropertyF Y) :
