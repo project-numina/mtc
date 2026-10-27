@@ -407,3 +407,11 @@ half-braiding around the base right dual; `directDualCrossing_natural` and
 `halfBraiding_inv_tensor` expands the inverse tensor crossing. Tensor
 compatibility and centrality of evaluation and coevaluation remain unproved;
 there is no general centre rigidity instance. Focused build passes.
+
+`positive_simple_centralizes_induced_unit` proves any positive simple image
+centralizing the induced tensor unit must be the base unit. It follows that
+`center_transparent_simple_iso_unit` proves every transparent simple of the
+actual centre is isomorphic to its unit, unconditionally from the base fusion
+category, without centre rigidity, fusion or pivotal assumptions. Focused
+build passes. S invertibility still requires turning its numerical S-test into
+actual centrality; investigating the finite-monodromy route.
