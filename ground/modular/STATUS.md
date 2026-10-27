@@ -233,3 +233,10 @@ constructed given any pivotal structure on the pseudo-unitary base. Actual
 twist balancing and base pivotal existence remain open. Focused build and
 foundational axiom check passed. A full `lake build PropertyF` passed at the
 preceding integration snapshot, including its 4,723-declaration audit.
+
+Latest full `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF` passed
+(4,322 jobs). A separate fail-closed `findIssue` scan with private project
+imports checked `mixed_monodromy_finite_of_pivotal_balancing` and
+`center_S_invertible_of_balanced_pivotal`; both passed without forbidden legacy
+structures, uninspected project modules, or foreign implementations. Both
+retain the explicit balancing premise. The frozen target remains unproved.
