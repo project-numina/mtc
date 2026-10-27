@@ -66,10 +66,12 @@ public import PropertyF.Ground.Dimensions.WeightedEigenvalue
 public import PropertyF.Ground.Dimensions.ComplexSaturation
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.DefectTrace
+public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import PropertyF.Ground.Dimensions.RootSignTwist
 public import PropertyF.Ground.Dimensions.TensorExtension
 public import PropertyF.Ground.Dimensions.ENOSpherical
 public import PropertyF.Ground.Dimensions.ENOPhase
+public import PropertyF.Ground.Dimensions.ENOReduction
 public import PropertyF.Ground.Dimensions.NaturalSquareDefect
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.NaturalRoots
