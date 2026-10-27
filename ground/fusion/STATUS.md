@@ -153,6 +153,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   functor, by coevaluating each simple and applying the given half-braiding.
   It is candidate adjunction-unit data only: the induction half-braiding,
   centrality of the unit, and the triangle identities remain open.
+  `unitCandidate_counit_component` reduces the underlying first triangle to
+  its unit-labelled component, and `coevaluation_iso_unit` proves the needed
+  normalization of that component’s coevaluation under a unit isomorphism.
 - `CentreInduction.fusion_of_pseudoUnitary_and_induction` discharges
   the nonzero global-dimension premise using pseudo-unitarity and FP positivity.
   The spherical structure, induction adjunction, and sliding equation remain

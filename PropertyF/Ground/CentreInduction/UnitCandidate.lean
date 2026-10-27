@@ -54,4 +54,13 @@ def unitCandidateNatural (C : BraidedFusionCategory.{v,u}) :
       unitCandidate, CategoryTheory.Center.forget, Category.assoc, biproduct.lift_π, biproduct.lift_π_assoc, biproduct.map_π]
     simpa only [Category.assoc] using unitComponent_natural C f i
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The underlying left triangle reduces to the unit-labelled coevaluation
+component; no triangle identity is asserted here. -/
+theorem unitCandidate_counit_component (C : BraidedFusionCategory.{v,u})
+    (Z : CategoryTheory.Center C.Obj) :
+    unitCandidate C Z ≫ (underlyingCounit C).app Z.1 =
+      unitComponent C Z (unitIndex C) ≫ (unitSummandIso C Z.1).hom := by
+  simp [unitCandidate, underlyingCounit, unitSummandRetract, underlying, Category.assoc]
+
 end PropertyF.Ground.CentreInduction
