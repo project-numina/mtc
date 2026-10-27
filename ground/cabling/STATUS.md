@@ -54,7 +54,9 @@
   under right duals. `generatedBy_dual_of_generator_dual` reduces that
   closure to generation of the generator’s own right dual, and
   `generatedCategoryRigidOfGeneratorDual` constructs rigidity from it.
-  Establishing that one membership and the fusion structure remains.
+  `Ground.Cabling.generatedBy_rightDual_of_unit_power` proves that for a
+  simple X this membership follows when some positive power contains the
+  unit. Establishing that occurrence and the fusion structure remains.
 
 - `positiveMatrix_eigenvector_integral` proves the arithmetic/Perron step
   of ENO 8.27: a normalized positive eigenvector of a positive rational
