@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Integrate.Fixedness
+public import PropertyF.Ground.Integrate.ConjugateBound
 public import PropertyF.Ground.Integrate.PropertyFTransport
 public import PropertyF.Ground.Modular.FusionTransport
 
@@ -74,5 +75,26 @@ theorem target_of_bounded_conjugates_and_witness
           f * b = globalFPDimension C ∧ 1 ≤ f ∧ f = |d|) :
     TargetStatement.{v,u} :=
   target_of_numerical_witnesses (fun C _ _ => lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C)) hConjugates hWitness
+
+/-- A spherical structure with self-dual simple dimensions supplies all
+conjugate bounds. The remaining categorical premise is the centre witness. -/
+theorem target_of_spherical_and_witness
+    (hSpherical : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧
+        ∀ i, Dimensions.pivotalDimension C p (simples C (dualIndex C i)) =
+          Dimensions.pivotalDimension C p (simples C i))
+    (hWitness : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ (σ : ℂ ≃+* ℂ) (a b : ℝ),
+        0 < a → a < globalFPDimension C →
+        σ (globalFPDimension C : ℂ) = (a : ℂ) →
+        σ.symm (globalFPDimension C : ℂ) = (b : ℂ) →
+        ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧
+          f * b = globalFPDimension C ∧ 1 ≤ f ∧ f = |d|) :
+    TargetStatement.{v,u} := by
+  apply target_of_bounded_conjugates_and_witness
+  · intro C hPU _ σ
+    obtain ⟨p, hp, hdual⟩ := hSpherical C hPU
+    exact positive_bounded_conjugates_of_spherical C hPU p hp hdual σ
+  · exact hWitness
 
 end PropertyF.Ground
