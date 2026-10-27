@@ -1,5 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.BiproductTrace
+public import PropertyF.Ground.Dimensions.DualCoherence
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Dimensions.CharacterBound
 public import PropertyF.Ground.Dimensions.GroundNorm
 
@@ -34,17 +36,27 @@ theorem pivotalDimension_decomposition (C : Ground.BraidedFusionCategory.{v,u})
   simp only [← groundUnitScalarEquiv_apply, ht, map_sum, map_smul, smul_eq_mul]
   rfl
 
-/-- The only missing categorical ingredients for the pivotal dimensions to
-form a normalized fusion character are unit normalization and tensor
-multiplicativity. Additivity and the simple multiplicities are proved above. -/
+/-- The pivotal dimension of the tensor unit is normalized to one. -/
+theorem pivotalDimension_unit (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
+  unfold pivotalDimension
+  rw [rightTrace_unit]
+  simpa using Ground.unitScalar_algebraMap C 1
+
+/-- Pivotal dimensions multiply under tensor products. -/
+theorem pivotalDimension_tensor (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (X Y : C.Obj) :
+    pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
+  simpa [pivotalDimension, ← groundUnitScalarEquiv_apply] using
+    pivotalTrace_tensor p (groundUnitScalarEquiv C) X Y (𝟙 X) (𝟙 Y)
+
+/-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj))
-    (hmul : ∀ X Y, pivotalDimension C p (X ⊗ Y) =
-      pivotalDimension C p X * pivotalDimension C p Y) :
+    (p : PivotalStructure (C := C.Obj)) :
     ∀ i j, pivotalDimension C p (Ground.simples C i) * pivotalDimension C p (Ground.simples C j) =
       ∑ k, (Ground.fusionCoeff C i j k : ℂ) * pivotalDimension C p (Ground.simples C k) := by
   intro i j
-  rw [← hmul, pivotalDimension_decomposition]
+  rw [← pivotalDimension_tensor, pivotalDimension_decomposition]
   rfl
 
 /-- Pivotal dimension is invariant under object isomorphism. -/
@@ -54,20 +66,37 @@ theorem pivotalDimension_iso (C : Ground.BraidedFusionCategory.{v,u})
   unfold pivotalDimension
   rw [p.rightTrace_id_iso e]
 
-/-- Once the unit and tensor trace laws are proved, every Galois conjugate of
-each pivotal simple dimension is bounded by its FP dimension. -/
+/-- Every simple pivotal dimension is an algebraic integer. -/
+theorem pivotalDimension_simple_isIntegral (C : Ground.BraidedFusionCategory)
+    (p : PivotalStructure (C := C.Obj)) (i : Fin (Ground.rank C)) :
+    IsIntegral ℤ (pivotalDimension C p (Ground.simples C i)) := by
+  apply character_value_isIntegral C
+    (fun j => pivotalDimension C p (Ground.simples C j)) (Ground.unitIndex C)
+  · obtain ⟨e⟩ := Ground.unitIndex_iso C
+    rw [pivotalDimension_iso C p e, pivotalDimension_unit]
+    exact one_ne_zero
+  · exact pivotalDimension_character C p
+
+/-- Every pivotal dimension is an algebraic integer. -/
+theorem pivotalDimension_isIntegral (C : Ground.BraidedFusionCategory)
+    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) :
+    IsIntegral ℤ (pivotalDimension C p X) := by
+  rw [pivotalDimension_decomposition]
+  apply IsIntegral.sum
+  intro i _
+  exact (isIntegral_natCast _).mul (pivotalDimension_simple_isIntegral C p i)
+
+/-- Every Galois conjugate of each pivotal simple dimension is bounded by
+its Frobenius–Perron dimension. -/
 theorem galois_pivotalDimension_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
     (p : PivotalStructure (C := C.Obj))
-    (hunit : pivotalDimension C p (𝟙_ C.Obj) = 1)
-    (hmul : ∀ X Y, pivotalDimension C p (X ⊗ Y) =
-      pivotalDimension C p X * pivotalDimension C p Y)
     (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
     ‖σ (pivotalDimension C p (Ground.simples C i))‖ ≤ Ground.fpSimple C i := by
   apply galois_character_norm_le_fpSimple C
     (fun j => pivotalDimension C p (Ground.simples C j)) (Ground.unitIndex C)
   · obtain ⟨e⟩ := Ground.unitIndex_iso C
-    rw [pivotalDimension_iso C p e, hunit]
+    rw [pivotalDimension_iso C p e, pivotalDimension_unit]
     exact one_ne_zero
-  · exact pivotalDimension_character C p hmul
+  · exact pivotalDimension_character C p
 
 end PropertyF.Ground.Dimensions
