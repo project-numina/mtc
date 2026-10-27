@@ -4,6 +4,7 @@ public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
 public import PropertyF.Ground.Calculus.Intertwining
+public import PropertyF.Ground.Calculus.CyclicTrace
 public import PropertyF.Ground.Calculus.FiniteOrder
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
