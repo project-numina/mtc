@@ -241,6 +241,8 @@ public import PropertyF.Ground.Dimensions.RealSphericalBounds
 
 public import PropertyF.Ground.Dimensions.RightDualUnitTensor
 
+public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
