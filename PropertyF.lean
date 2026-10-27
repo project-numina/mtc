@@ -6,6 +6,7 @@ public import PropertyF.Descent
 public import PropertyF.Transfer
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.FusionDimensionField
+public import PropertyF.Ground.Dimensions.TargetDimensionField
 public import PropertyF.Ground.Dimensions.Norm
 public import PropertyF.Ground.Dimensions.Pivotal
 public import PropertyF.Ground.Dimensions.Trace
