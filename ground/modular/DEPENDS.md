@@ -66,3 +66,7 @@ The actual categorical S identities, character classification and Galois action 
 - The actual monodromy determinant hexagon on simples is now proved assuming
   simple twist balancing. Expanding the determinant on a tensor product into
   the simple summands remains open.
+- The FP determinant/additivity/hexagon route now proves finite order of every
+  simple scalar from the actual simple balancing identity alone; the previous
+  monodromy-determinant-vanishing premise is discharged. Actual pivotal twist
+  balancing remains open.

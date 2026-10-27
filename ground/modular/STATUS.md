@@ -194,3 +194,14 @@ expands as the sum of its simple values weighted by actual Hom multiplicities.
 This supplies the numerical decomposition needed for the monodromy determinant
 once its categorical iso/additivity/zero properties are proved. Focused build
 and foundational axiom check passed.
+
+`fpDeterminant_functor_natural_decomposition` proves the FP determinant of a
+natural automorphism of any additive endofunctor expands over the simple
+summands of the source. Applying it to the actual double-braiding natural
+automorphism supplies the missing fusion-sum step. Consequently
+`fpDeterminant_simple_monodromy_eq_zero` and
+`natural_scalars_finite_of_simple_balancing` prove finite order of all simple
+scalars of a natural automorphism from its explicit simple-object balancing
+identity, without a lantern relation. Actual pivotal twist balancing remains
+unproved, so this is still conditional and does not prove the final theorem.
+Focused build and foundational axiom checks passed.
