@@ -154,3 +154,9 @@ expansion. These are ingredients for Kirby-loop sliding, which remains open.
 `S_k ⊗ S_i` equals `FPdim(S_k)` times the original sum. With FP-valued
 pivotal dimensions, `loop_absorption` identifies the sum as the actual
 Kirby loop. The geometric sliding identity is still missing.
+`winding_tensor` factors winding around a tensor product into successive
+windings; `trace_inner_winding_tensor` closes the inner factor and produces
+the outer winding of that partial trace. To combine this with FP absorption,
+one still needs the general nested partial-trace identity (existing
+`rightPartialTrace_nested_simple` only handles simple equal survivors) and
+the open-strand geometric sliding identity.
