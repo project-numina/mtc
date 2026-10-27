@@ -83,4 +83,58 @@ theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :
   simp only [tensorHom_def, id_whiskerRight, whiskerLeft_id, Category.id_comp, Category.comp_id]
   rw [rightAdjointMate_comp_evaluation]
 
+/-- Trace using a single chosen double-dual isomorphism; no pivotal structure
+is needed. -/
+def rightTraceWith {X : C} (j : X ≅ (Xᘁ)ᘁ) (f : X ⟶ X) : End (𝟙_ C) :=
+  End.of (η_ X (Xᘁ) ≫ ((f ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ))
+
+/-- Cyclicity needs naturality only for the two components involved. -/
+theorem rightTraceWith_cyclic {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
+    (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
+    rightTraceWith j (f ≫ g) = rightTraceWith k (g ≫ f) := by
+  apply End.homEquiv.injective
+  change η_ X (Xᘁ) ≫ (((f ≫ g) ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
+    η_ Y (Yᘁ) ≫ (((g ≫ f) ≫ k.hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ)
+  simp only [Category.assoc]
+  calc
+    _ = η_ X (Xᘁ) ≫ f ▷ (Xᘁ) ≫ g ▷ (Xᘁ) ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by simp [tensorHom_def, comp_whiskerRight]
+    _ = η_ Y (Yᘁ) ≫ Y ◁ fᘁ ≫ g ▷ (Xᘁ) ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [coevaluation_comp_rightAdjointMate_assoc]
+    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ X ◁ fᘁ ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc g (fᘁ)]
+    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ j.hom ▷ (Yᘁ) ≫ ((Xᘁ)ᘁ) ◁ fᘁ ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc j.hom (fᘁ)]
+    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ j.hom ▷ (Yᘁ) ≫ (fᘁ)ᘁ ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by rw [← rightAdjointMate_comp_evaluation]
+    _ = η_ Y (Yᘁ) ≫ ((g ≫ f ≫ k.hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
+      simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, hnat,
+        comp_whiskerRight, Category.assoc]
+
+/-- Compatible double-dual components have the same right quantum trace under
+an object isomorphism. -/
+theorem rightQuantumTrace_iso {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
+    (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
+    rightQuantumTrace j = rightQuantumTrace k := by
+  have h := rightTraceWith_cyclic j k e.hom e.inv hnat
+  simpa [rightTraceWith, rightQuantumTrace] using h
+
+/-- Compatibility of double-dual components is preserved by inverse duality. -/
+theorem dual_components_natural {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
+    (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
+    (e.invᘁ) ≫ (rightDualIsoMap k).symm.hom =
+      (rightDualIsoMap j).symm.hom ≫ ((e.invᘁ)ᘁ)ᘁ := by
+  let ee := rightDualIsoMap (rightDualIsoMap e)
+  have hiso : e ≪≫ k = j ≪≫ ee := by
+    apply Iso.ext
+    exact hnat
+  have hinv := congrArg (fun (a : X ≅ (Yᘁ)ᘁ) => a.inv) hiso
+  have hdual := congrArg (fun (a : (Yᘁ)ᘁ ⟶ X) => rightAdjointMate a) hinv
+  simpa only [Iso.trans_inv, comp_rightAdjointMate, ee, rightDualIsoMap, Iso.symm_hom] using hdual
+
+/-- Both quantum traces are preserved when double-dual components are
+transported across an object isomorphism. -/
+theorem quantumTraces_iso {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
+    (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
+    rightQuantumTrace j = rightQuantumTrace k ∧ leftQuantumTrace j = leftQuantumTrace k := by
+  refine ⟨rightQuantumTrace_iso j k e hnat, ?_⟩
+  rw [leftQuantumTrace_eq_rightDual, leftQuantumTrace_eq_rightDual]
+  exact rightQuantumTrace_iso (rightDualIsoMap j).symm (rightDualIsoMap k).symm
+    (rightDualIsoMap e.symm) (dual_components_natural j k e hnat)
+
 end PropertyF.Ground.Dimensions

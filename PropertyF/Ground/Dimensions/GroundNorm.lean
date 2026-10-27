@@ -56,6 +56,19 @@ theorem target_globalDimension_eq_sum_squares (C : Ground.BraidedFusionCategory.
   let : Simple (Ground.simples C i) := Ground.simples_simple C i
   exact target_squaredNorm_eq_dimension_sq C p hp (Ground.simples C i)
 
+/-- Intrinsic squared norms are invariant under simple-object isomorphism,
+without assuming a pivotal or spherical structure. -/
+theorem target_squaredNorm_iso (C : Ground.BraidedFusionCategory.{v,u})
+    {X Y : C.Obj} [Simple X] [Simple Y] (e : X ≅ Y) :
+    Ground.squaredNorm C X = Ground.squaredNorm C Y := by
+  let j := Ground.doubleDualIso C X
+  let k : Y ≅ (Yᘁ)ᘁ := e.symm ≪≫ j ≪≫ rightDualIsoMap (rightDualIsoMap e)
+  have hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ := by
+    simp [k, rightDualIsoMap]
+  have h := quantumTraces_iso j k e hnat
+  rw [target_squaredNorm_choice_independent C X j,
+      target_squaredNorm_choice_independent C Y k, h.1, h.2]
+
 /-- In a spherical braided fusion category, the target norm is invariant under
 isomorphism of simple objects. -/
 theorem target_squaredNorm_iso_of_spherical (C : Ground.BraidedFusionCategory.{v,u})
