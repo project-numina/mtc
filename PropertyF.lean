@@ -90,12 +90,11 @@ public import PropertyF.Ground.Cabling.Zero
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple
+public import PropertyF.Ground.Calculus.ThreeTrace
+public import PropertyF.Ground.Calculus.OverlapUnitary
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
-
-public import PropertyF.Ground.Calculus.ThreeTrace
-public import PropertyF.Ground.Calculus.OverlapUnitary
