@@ -23,21 +23,6 @@ theorem permutationSign_mul_self (n : ℕ) (σ : Equiv.Perm (Fin n)) :
   change ((Equiv.Perm.sign σ : ℤ) : ℂ) * ((Equiv.Perm.sign σ : ℤ) : ℂ) = 1
   exact_mod_cast h
 
-/-- Twisting an action by permutation sign turns its alternating projector
-into the ordinary group-average projector. -/
-theorem alternatingProjector_sign_twist (C : BraidedFusionCategory.{v,u})
-    (X : C.Obj) (n : ℕ) (ρ : Equiv.Perm (Fin n) →* End X) :
-    letI := permutationCardInvertible n
-    Centre.alternatingProjector (k := ℂ) n
-      (Centre.twistAction (Centre.permutationSign ℂ n) ρ) =
-    Centre.algebraAverage (k := ℂ) ρ := by
-  letI := permutationCardInvertible n
-  unfold Centre.alternatingProjector
-  congr 1
-  ext σ
-  simp only [Centre.twistAction, MonoidHom.coe_mk, OneHom.coe_mk,
-    smul_smul, permutationSign_mul_self, one_smul]
-
 /-- An unsigned permutation-trace identity also implies integrality: it is
 the signed identity for the sign-twisted action. This accommodates the
 opposite parity case without identifying either trace formula here. -/

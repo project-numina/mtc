@@ -50,9 +50,6 @@ import all PropertyF.Ground.CentreCalculus.TwistSign
 import all PropertyF.Ground.CentreModular.VafaPivotal
 import all PropertyF.Ground.Integrate.BalancedCenterReduction
 import all PropertyF.Ground.CentreCabling.TwistFinite
-import all PropertyF.Ground.CentreCabling.VafaAlgebra
-import all PropertyF.Ground.CentreCabling.VafaDeterminant
-import all PropertyF.Ground.CentreCabling.VafaLanternReduction
 import all PropertyF.Ground.CentreCabling.VafaTwist
 import all PropertyF.Ground.CentreModular.AdditiveDecomposition
 import all PropertyF.Ground.CentreModular.CompatiblePivotal
@@ -124,7 +121,6 @@ import all PropertyF.Ground.CentreCabling.ProductCore
 import all PropertyF.Ground.CentreCabling.RegularSupport
 import all PropertyF.Ground.CentreCabling.TargetReduction
 import all PropertyF.Ground.CentreCabling.TraceSaturation
-import all PropertyF.Ground.CentreCalculus.ParityCorrection
 import all PropertyF.Ground.CentreCalculus.ProjectorReduction
 import all PropertyF.Ground.CentreDimensions.BraidingTrace
 import all PropertyF.Ground.CentreDimensions.InvolutionTrace
@@ -440,7 +436,6 @@ import all PropertyF.Ground.Integrate.CenterDualMate
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterProductBridge
-import all PropertyF.Ground.Integrate.CenterReduction
 import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
@@ -458,7 +453,6 @@ import all PropertyF.Ground.Integrate.FunctorUniverse
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
-import all PropertyF.Ground.Integrate.OverlapReduction
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist

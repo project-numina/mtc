@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreIntegrate.CyclePolynomial
-public import PropertyF.Ground.CentreCalculus.ParityCorrection
+public import PropertyF.Ground.CentreCalculus.ParityDeletion
 
 /-! Cycle trace formulas suffice for the existing exterior-projector argument. -/
 

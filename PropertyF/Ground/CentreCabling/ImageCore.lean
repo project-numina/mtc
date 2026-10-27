@@ -88,15 +88,6 @@ theorem imageLabel_underlying_simple
     letI : Simple ((Centre.negative C.Obj).obj Y.1) := Simple.of_iso e.symm
     exact Functor.simple_of_simple_obj (Centre.negative C.Obj) Y.1
 
-/-- A symmetric-core label has a simple underlying transparent base object. -/
-theorem symmetricCore_underlying_simple
-    (a : Fin (rank (Integrate.bundledCenter C))) (ha : a ∈ symmetricCore C) :
-    Simple (simples (Integrate.bundledCenter C) a).1 := by
-  apply imageLabel_underlying_simple C a
-  left
-  let Y : CategoryTheory.Center C.Obj := simples (Integrate.bundledCenter C) a
-  exact ⟨Y.1, ⟨Retract.ofIso (Centre.positiveIsoOfCentralizesNegative Y ha.2)⟩⟩
-
 /-- The S-test on both canonical images detects the actual core if the relevant
 mixed monodromies have finite order. Only simple image constituents, and only
 labels passing this S-test, are needed for the finite-order hypothesis. -/
@@ -176,67 +167,5 @@ theorem doubleBraiding_eq_one_tensor_right
   apply (cancel_epi (α_ Z X Y).hom).mp
   apply (cancel_mono (α_ Z X Y).inv).mp
   simpa using hf
-
-/-- Every actual symmetric-core object centralizes all product retracts. -/
-theorem symmetricCore_centralizes_productRetract
-    (C : Ground.BraidedFusionCategory.{v,u})
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    [IsFusionCategory (CategoryTheory.Center C.Obj)]
-    (y : Fin (rank (Integrate.bundledCenter C))) (hy : y ∈ symmetricCore C)
-    (W : CategoryTheory.Center C.Obj) (hW : Centre.ProductRetract W) :
-    Centre.Centralizes (simples (Integrate.bundledCenter C) y) W := by
-  let Z := simples (Integrate.bundledCenter C) y
-  obtain ⟨X, Y, ⟨r⟩⟩ := hW
-  have hprod : Centre.Centralizes Z (Centre.productFunctor.obj (X,Y)) := by
-    change Modular.doubleBraiding Z
-      ((CategoryTheory.Center.ofBraided C.Obj).obj X ⊗ (Centre.negative C.Obj).obj Y) = 𝟙 _
-    exact doubleBraiding_eq_one_tensor_right Z _ _ (hy.1 X) (hy.2 Y)
-  apply Centre.centralizes_symm
-  change Modular.doubleBraiding W Z = 𝟙 _
-  apply doubleBraiding_eq_one_of_retract r Z
-  exact Centre.centralizes_symm hprod
-
-/-- Actual core labels satisfy the numerical S-test against every product
-retract label without any finite-order hypothesis. -/
-theorem symmetricCore_numericalProductCentralizer
-    (C : Ground.BraidedFusionCategory.{v,u})
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    [IsFusionCategory (CategoryTheory.Center C.Obj)]
-    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
-    (y : Fin (rank (Integrate.bundledCenter C))) (hy : y ∈ symmetricCore C) :
-    ∀ a ∈ productLabels C, Modular.categoricalS (Integrate.bundledCenter C) p a y =
-      Modular.simpleDimension (Integrate.bundledCenter C) p a *
-        Modular.simpleDimension (Integrate.bundledCenter C) p y := by
-  intro a ha
-  have h := symmetricCore_centralizes_productRetract C y hy _ ((mem_productLabels C a).mp ha)
-  have hh := Centre.centralizes_symm h
-  exact categoricalS_eq_of_doubleBraiding (Integrate.bundledCenter C) p a y hh
-
-/-- Under the reduced finite-order hypothesis, the actual symmetric core is
-exactly the numerical S-centralizer of the product-retract labels. -/
-theorem symmetricCore_iff_numericalProductCentralizer
-    (C : Ground.BraidedFusionCategory.{v,u})
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    [IsFusionCategory (CategoryTheory.Center C.Obj)]
-    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
-    (hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) p i =
-      (fpSimple (Integrate.bundledCenter C) i : ℂ))
-    (hfinite : ∀ y, (∀ a ∈ imageLabels C,
-      Modular.categoricalS (Integrate.bundledCenter C) p a y =
-        Modular.simpleDimension (Integrate.bundledCenter C) p a *
-          Modular.simpleDimension (Integrate.bundledCenter C) p y) →
-      ∀ a ∈ imageLabels C, IsOfFinOrder (End.of (Modular.doubleBraiding
-        (simples (Integrate.bundledCenter C) a) (simples (Integrate.bundledCenter C) y))))
-    (y : Fin (rank (Integrate.bundledCenter C))) :
-    y ∈ symmetricCore C ↔ ∀ a ∈ productLabels C,
-      Modular.categoricalS (Integrate.bundledCenter C) p a y =
-        Modular.simpleDimension (Integrate.bundledCenter C) p a *
-          Modular.simpleDimension (Integrate.bundledCenter C) p y := by
-  constructor
-  · exact symmetricCore_numericalProductCentralizer C p y
-  · intro h
-    apply numericalImageCentralizer_subset_symmetricCore C p hdim hfinite y
-    intro a ha
-    exact h a (imageLabels_subset_productLabels C ha)
 
 end PropertyF.Ground.CentreCabling

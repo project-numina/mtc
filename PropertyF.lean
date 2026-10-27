@@ -218,7 +218,6 @@ public import PropertyF.Ground.Integrate.ScalarTwistNorm
 public import PropertyF.Ground.Integrate.FPConjugates
 public import PropertyF.Ground.Integrate.FunctorUniverse
 public import PropertyF.Ground.Integrate.TwistedRigidity
-public import PropertyF.Ground.Integrate.OverlapReduction
 public import PropertyF.Ground.Integrate.CenterOnlyReduction
 public import PropertyF.Ground.Integrate.CenterReductionComplete
 public import PropertyF.Ground.Integrate.CenterCentralizers
@@ -333,7 +332,6 @@ public import PropertyF.Ground.Dimensions.DefectCoevaluation
 public import PropertyF.Ground.CentreCalculus.BraidRelations
 public import PropertyF.Ground.Centre.Calculus.TypeA
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
-public import PropertyF.Ground.CentreCalculus.ParityCorrection
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 public import PropertyF.Ground.CentreCabling.RegularSupport
@@ -390,8 +388,6 @@ public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 
 public import PropertyF.Ground.CentreCabling.TwistFinite
 public import PropertyF.Ground.CentreCabling.VafaTwist
-public import PropertyF.Ground.CentreCabling.VafaDeterminant
-public import PropertyF.Ground.CentreCabling.VafaLanternReduction
 public import PropertyF.Ground.Dimensions.DefectBraiding
 public import PropertyF.Ground.Dimensions.DefectTraceBraiding
 public import PropertyF.Ground.Dimensions.DrinfeldTensorCap
