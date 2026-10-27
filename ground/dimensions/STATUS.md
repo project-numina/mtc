@@ -80,6 +80,8 @@
 
 - `fourthDualRoot_unit_component` identifies the actual natural root on the tensor unit as the canonical double-dual unit map multiplied by the (±1) root dimension.
 
+- `root_components_coevaluation`, `root_components_evaluation`, `root_components_swapped_coevaluation`, and `root_components_swapped_evaluation` prove that root components transport the actual simple duality cups and caps with the ENO sign, for both the ordinary and braided-swapped pairings. The remaining three-object defect sliding identity is not yet proved.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
