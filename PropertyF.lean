@@ -81,3 +81,4 @@ public import PropertyF.Ground.Calculus.ThreeSaturation
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.PositiveWeights
 public import PropertyF.Ground.Calculus.GaloisMatrices
+public import PropertyF.Ground.Calculus.GaloisBlocks
