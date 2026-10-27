@@ -1,5 +1,6 @@
 module
-public import PropertyF.Ground.Integrate.FourthDualCenterReduction
+public import PropertyF.Ground.Integrate.PivotalBalancedReduction
+public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
 
 /-! The proved cap diagram supplies Drinfeld tensor coherence and balancing. -/
@@ -34,7 +35,7 @@ theorem target_of_pseudoUnitary_pivotal_existence
     (hPivotal : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
       HasPropertyF C.Obj → Nonempty (Dimensions.PivotalStructure (C := C.Obj))) :
     TargetStatement.{v,u} := by
-  apply target_of_pivotal_base_and_center_cap
+  apply target_of_pivotal_base_and_center_balancing
   intro C hpu hF
   obtain ⟨p⟩ := hPivotal C hpu hF
   letI := CentreRigid.rigidCenter (C := C.Obj)
@@ -42,6 +43,7 @@ theorem target_of_pseudoUnitary_pivotal_existence
   refine ⟨p, ?_⟩
   dsimp only
   intro X Y
-  exact Dimensions.drinfeld_tensor_pairing_cap (Integrate.bundledCenter C) X Y
+  exact pivotal_twist_balanced (Integrate.bundledCenter C)
+    (centerPivotalOfPivotalPseudoUnitary C p hpu) X Y
 
 end PropertyF.Ground

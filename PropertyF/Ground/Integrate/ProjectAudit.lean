@@ -65,7 +65,6 @@ import all PropertyF.Ground.CentreRigid.WindingTensor
 import all PropertyF.Ground.Dimensions.DefectBraiding
 import all PropertyF.Ground.Dimensions.DefectTraceBraiding
 import all PropertyF.Ground.Dimensions.DrinfeldTensorCap
-import all PropertyF.Ground.Integrate.CapCenterReduction
 import all PropertyF.Ground.CentreInduction.DirectDual
 import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.Integrate.PivotalBalancedReduction
@@ -254,7 +253,6 @@ import all PropertyF.Ground.Dimensions.SphericalPivotalDual
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
 import all PropertyF.Ground.Integrate.NumericalCoreReduction
-import all PropertyF.Ground.Integrate.FourthDualCenterReduction
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -655,8 +653,6 @@ run_cmd do
       ``PropertyF.Ground.drinfeld_tensor,
       ``PropertyF.Ground.pivotal_twist_balanced,
       ``PropertyF.Ground.target_of_pseudoUnitary_pivotal_existence,
-      ``PropertyF.Ground.target_of_fourthDual_tensor_and_center_cap,
-      ``PropertyF.Ground.target_of_pivotal_base_and_center_cap,
       ``PropertyF.Ground.CentreIntegrate.pivotal_balance_of_drinfeld_tensor,
       ``PropertyF.Ground.target_of_pivotal_base_and_center_balancing,
       ``PropertyF.Ground.CentreInduction.center_transparent_simple_iso_unit,

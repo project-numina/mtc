@@ -1,4 +1,5 @@
 module
+public import PropertyF.Ground.Fusion.GeneratedRigidity
 public import PropertyF.Ground.Fusion.BalancedFlow
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Cabling.UnitPower
@@ -51,12 +52,8 @@ theorem fusion_unit_cycle (D : Ground.BraidedFusionCategory.{v,u})
 /-- A positive fusion coefficient gives an actual split inclusion. -/
 theorem fusionCoeffRetract (D : Ground.BraidedFusionCategory.{v,u})
     (i a b : Fin (rank D)) (h : 0 < fusionCoeff D i a b) :
-    Nonempty (Retract (simples D b) (simples D i ⊗ simples D a)) := by
-  letI : ∀ Y Z : D.Obj, FiniteDimensional ℂ (Y ⟶ Z) := IsFusionCategory.hom_finite
-  letI : Simple (simples D b) := simples_simple D b
-  obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp h
-  obtain ⟨r, hr⟩ := Ground.split_from_simple f hf
-  exact ⟨⟨f, r, hr⟩⟩
+    Nonempty (Retract (simples D b) (simples D i ⊗ simples D a)) :=
+  Ground.fusionCoeff_retract D i a b h
 
 /-- Along any fusion path, an occurrence of its initial label in a power
 extends to an occurrence of its final label in a later power. -/
@@ -82,23 +79,14 @@ def powerRetract (D : Ground.BraidedFusionCategory.{v,u}) {X Y : D.Obj}
 
 /-- A positive tensor power of every simple object contains the unit. -/
 theorem unit_retract_power (D : Ground.BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X] :
-    ∃ n, Nonempty (Retract (𝟙_ D.Obj) (tensorPower X (n + 1))) := by
-  obtain ⟨i, ⟨e⟩⟩ := Ground.exists_simple_iso D X
-  obtain ⟨j, hj, path⟩ := fusion_unit_cycle D i
-  obtain ⟨u⟩ := Ground.unitIndex_iso D
-  obtain ⟨q⟩ := fusionCoeffRetract D i (unitIndex D) j hj
-  let r := q.trans
-    (Retract.ofIso ((Iso.refl (simples D i)) ⊗ᵢ u))
-  obtain ⟨n, ⟨s⟩⟩ := fusion_path_retract D i path 0 r
-  let t := (Retract.ofIso u.symm).trans s
-  let p := powerRetract D (Retract.ofIso e.symm) (n + 1)
-  exact ⟨n, ⟨t.trans p⟩⟩
+    ∃ n, Nonempty (Retract (𝟙_ D.Obj) (tensorPower X (n + 1))) :=
+  Ground.unit_retract_tensorPower D X
 
 /-- The generated subcategory of a simple object is closed under duals. -/
 theorem generatedBy_rightDual_of_simple (D : Ground.BraidedFusionCategory.{v,u})
-    (X : D.Obj) [Simple X] : GeneratedBy X (Xᘁ) := by
-  obtain ⟨n, ⟨r⟩⟩ := unit_retract_power D X
-  exact generatedBy_rightDual_of_unit_power D X n r
+    (X : D.Obj) [Simple X] : GeneratedBy X (Xᘁ) :=
+  Ground.simple_generatedBy_rightDual D X
+
 /-- The generated full subcategory of a simple object is rigid. -/
 @[instance_reducible] def generatedCategoryRigidOfSimple
     (D : Ground.BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X] :
