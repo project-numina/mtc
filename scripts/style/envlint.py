@@ -7,7 +7,7 @@ import subprocess
 root=Path(__file__).resolve().parents[2]
 os.chdir(root)
 audit=(root/'PropertyF/Ground/Integrate/TargetAudit.lean').read_text()
-imports='\n'.join(re.findall(r'^import all .+$',audit,re.M))
+imports='\n'.join(re.findall(r'^import all .+$',audit,re.M))+'\nimport all PropertyF\nimport all PropertyF.Ground.Integrate.ProjectAudit\nimport all PropertyF.Ground.Integrate.TargetAudit'
 source=root/'scripts/style/.EnvLintRun.lean'
 source.write_text('module\npublic meta import Mathlib\n'+imports+'\nset_option maxHeartbeats 0 in\n#lint in PropertyF\n')
 with (root/'STYLE_LINT_ENV.txt').open('w') as out:

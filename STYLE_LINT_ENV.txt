@@ -1,4 +1,4 @@
-scripts/style/.EnvLintRun.lean:510:0: error: -- Found 179 errors in 2814 declarations (plus 2024 automatically generated ones) in PropertyF with 15 linters
+scripts/style/.EnvLintRun.lean:513:0: error: -- Found 179 errors in 2815 declarations (plus 2024 automatically generated ones) in PropertyF with 15 linters
 
 /- The `defsWithUnderscore` linter reports:
 FOUND definitions with an underscore in their name.

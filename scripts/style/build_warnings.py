@@ -14,6 +14,7 @@ for line in lines:
             blocks.append(block); block=None
         else: block.append(line)
 if block: blocks.append(block)
+blocks.sort(key=lambda block: '\n'.join(block))
 out = root/'STYLE_LINT_BUILD.txt'
 out.write_text('Mathlib default linter warnings from lake build PropertyF (including replayed modules).\n'
                f'Warning blocks: {len(blocks)}\n\n'+'\n\n'.join('\n'.join(b).rstrip() for b in blocks)+'\n')
