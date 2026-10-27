@@ -221,3 +221,4 @@ See `FORMALIZATION.md` for the complete assumption ledger.
 -/
 
 public import PropertyF.Ground.Dimensions.RootDualLabel
+public import PropertyF.Ground.Dimensions.DefectNaturality

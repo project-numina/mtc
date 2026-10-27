@@ -62,6 +62,8 @@
 
 - `rootDualSign_label` transports the actual root at the chosen dual label through the canonical right-dual isomorphism; `rootDualSign_dual` proves the ENO sign is the same on dual labels, without pivotality, sphericality or additional hypotheses.
 
+- `rootTensorIso_natural` and `rootTensorDefect_natural` establish naturality of the actual tensor root and its defect. `enoTraceMatrix_reciprocity_of_rightDual_frobenius_defect` removes the arbitrary dual-label isomorphism from the outstanding Frobenius equation; that simpler equation still needs a proof.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
