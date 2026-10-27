@@ -266,3 +266,10 @@ relations from an explicit identity of actual three-strand endomorphisms.
 `mixed_monodromy_finite_of_pivotal_lantern` reduces arbitrary mixed-monodromy
 finiteness to that particular pivotal lantern identity and the pivotal twist
 balancing law. Neither identity is claimed proved. Focused build passed.
+
+After merging integration and fusion, `spherical_selfBraiding_trace_dual` and
+`spherical_twistScalar_dual_label` prove that the pivotal twist scalars agree
+on dual simples in every spherical braided fusion category. This is the
+ribbon dual-scalar ingredient used by the lantern argument, and uses fusion's
+actual dual-braiding comparison. Focused build passed. The general lantern
+endomorphism identity and twist balancing remain open.

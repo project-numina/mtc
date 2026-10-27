@@ -311,6 +311,14 @@ public import PropertyF.Ground.CentreInduction.Injectives
 public import PropertyF.Ground.CentreInduction.InjectiveFusion
 public import PropertyF.Ground.CentreInduction.InducedTrace
 public import PropertyF.Ground.CentreInduction.ForgetDual
+public import PropertyF.Ground.CentreInduction.ForgetDualNaturality
+public import PropertyF.Ground.CentreInduction.ForgetDualTensor
+public import PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
+public import PropertyF.Ground.CentreInduction.PivotalLift
+public import PropertyF.Ground.CentreInduction.PositivePivotal
+public import PropertyF.Ground.CentreInduction.DoubleBraiding
+public import PropertyF.Ground.CentreInduction.PivotalCentrality
+public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.CentreInduction.RankOneComplete
 
 public import PropertyF.Ground.CentreInduction.BasisPairing
@@ -357,13 +365,53 @@ public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.CentreCabling.CoreCentrality
 public import PropertyF.Ground.CentreCabling.TargetReduction
 
+public import PropertyF.Ground.Integrate.CenterSquareReduction
+public import PropertyF.Ground.Integrate.NumericalCoreReduction
+public import PropertyF.Ground.Integrate.CompatibleCenterReduction
+public import PropertyF.Ground.Integrate.RigidCenterReduction
+public import PropertyF.Ground.Integrate.PivotalCentralityReduction
+public import PropertyF.Ground.CentreIntegrate.CycleTraceReduction
+public import PropertyF.Ground.CentreIntegrate.TwistSign
+public import PropertyF.Ground.CentreIntegrate.TwistDual
+public import PropertyF.Ground.CentreIntegrate.TwistBalancing
+
+
+
+
+public import PropertyF.Ground.CentreRigid.SimpleCentrality
+
+public import PropertyF.Ground.CentreRigid.SimpleTensor
+
+public import PropertyF.Ground.CentreRigid.RankOneMate
+
+public import PropertyF.Ground.CentreRigid.MateExplicit
+
+public import PropertyF.Ground.CentreRigid.Coevaluation
+
+public import PropertyF.Ground.CentreRigid.Tensor
+
+public import PropertyF.Ground.CentreRigid.Evaluation
+public import PropertyF.Ground.CentreRigid.ForgetComparison
+
+public import PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
+public import PropertyF.Ground.Dimensions.DefectAssociativity
+public import PropertyF.Ground.Dimensions.DefectSliding
+public import PropertyF.Ground.Dimensions.DefectExtension
+public import PropertyF.Ground.Dimensions.ENOInvolution
+public import PropertyF.Ground.Dimensions.BraidingCapSlide
+public import PropertyF.Ground.Dimensions.DualBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
+<<<<<<< HEAD
 
 import PropertyF.Ground.CentreCabling.TwistFinite
 import PropertyF.Ground.CentreCabling.VafaTwist
 import PropertyF.Ground.CentreCabling.VafaDeterminant
 import PropertyF.Ground.CentreCabling.VafaLanternReduction
+=======
+>>>>>>> refs/heads/ground/integrate
+import PropertyF.Ground.CentreCabling.TwistDual

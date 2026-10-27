@@ -87,3 +87,52 @@ Focused Lake builds passed for `CentreBundle.Fusion`, `CentreRigid.Lift`,
 the fusion assembly, conditional rigidity, both unit tensor laws, unit
 centrality, and both mate equations. The general mate coherence remains
 centre-owned work, not an external dependency.
+
+## Round 3 continuation
+
+Merged the integration snapshot including induction, rank-one results and current
+centralizer reductions. General rigidity remains the priority. In
+`CentreRigid.SimpleCentrality`, `coevaluation_central_of_simples` and
+`evaluation_central_of_simples` reduce the two duality-map centrality equations
+to tests on base simple representatives, once the crossing tensor law is given.
+This is a reduction, not a proof of those tests or of rigidity. The immediate route
+is to use naturality and semisimple decompositions similarly for the tensor law,
+then prove the resulting mate equations diagrammatically.
+`dualCrossing_tensor_of_simples` also proves the general tensor law follows
+from its cases on pairs of base simple representatives, by naturality in each
+argument and semisimple decomposition. The simple-pair cases are not proved.
+`tensor_of_rank_one` and `rigidOfRankOne` prove the normalized mate tensor law
+and centrality in rank one, constructing rigidity with base right duals and
+base evaluation/coevaluation definitionally. This strengthens the rank-one
+comparison with the previously constructed equivalence-based instance; it
+has no implication for general rank. The focused build passes and the main
+instance has only the three standard Lean axioms.
+`dualMate_counit_explicit` and `dualMate_unit_explicit` express the abstract
+mate equations through the actual cups and caps. Moreover,
+`dualMateUnit_crossed_coevaluation` identifies the unit normalization with the
+crossed coevaluation: the base right-dual cup followed by the half-braiding
+is the base left-dual cup followed by the normalization map. This is a concrete
+step toward the general centrality and tensor diagrams, not their proof.
+`coevaluation_sliding` proves the normalized dual crossing intertwines the base
+coevaluation in every rigid monoidal category, without any tensor-law premise;
+`coevaluation_central` lifts this to the actual centre once the crossing tensor
+law is supplied. The proof uses the mate unit, half-braiding naturality and
+tensor law, and the crossed-cup normalization. Evaluation and the dual-crossing
+tensor law remain open. Focused Lake build passes on cores 16–19.
+`dualCrossing_tensor` proves the general normalized dual crossing tensor law
+in every rigid monoidal category. The proof composes two coevaluation slides,
+uses interchange and the original half-braiding law, then invokes injectivity
+of the rigid Hom equivalence. Together with `coevaluation_central`, only
+centrality of evaluation remains before general centre rigidity. Focused build
+passes; the proof has no additional hypotheses.
+`evaluation_sliding` and `evaluation_central` prove the remaining cap diagram,
+and `rigidCenter` constructs `RigidCategory (Center C)` for every rigid
+monoidal category, without further premises. `rigidCenter_forget_dual`,
+`rigidCenter_forget_evaluation`, and `rigidCenter_forget_coevaluation` record
+that its chosen dual and pairing forget definitionally to those of the base.
+Focused Lake build passes. General centre finite semisimplicity and fusion
+assembly remain to be completed; rigidity is no longer a dependency.
+For `rigidCenter`, `forgetDualIso_eq_refl` and `forgetDoubleDualIso_eq_refl`
+identify fusion's canonical centre/base dual comparison isomorphisms with the
+identity, simplifying the induced pivotal-centrality calculation. Focused
+build passes; the needed pivotal centrality and base positive sphere are open.

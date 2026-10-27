@@ -32,3 +32,22 @@ These describe proof obligations, not axioms or assumptions in the target.
   weighted-loop sliding equation for arbitrary underlying maps. It remains
   unproved. Together with sphericality and nonzero global dimension, it
   yields splitting independently of the pivotal-lift route.
+
+## Round 3
+
+- A pivotal structure on the centre compatible with a positive base pivotal
+  structure would now supply centre fusion, positive sphericality,
+  pseudo-unitarity and both global dimension squares, assuming centre rigidity.
+  Fusion is investigating the compatible pivotal lift; the compatibility is
+  currently an explicit hypothesis, not a constructed result.
+
+- The full compatible centre pivotal lift is now constructed assuming only
+  `PivotalComponentsCentral`, the explicit centrality of its transported
+  components. Its naturality, tensor and unit laws are proved. Centrality can
+  be checked on simple base test objects. This centrality remains open.
+
+- RESOLVED: centre pivotal component centrality and pivotal lift are proved
+  in fusion. The resulting centre fusion and spherical/dimension construction
+  still requires centre rigidity and existence of a base pivotal structure for
+  the pseudo-unitary category. General pivotal existence is not assumed for
+  arbitrary fusion categories.

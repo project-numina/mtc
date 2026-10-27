@@ -41,6 +41,141 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreIntegrate.TwistBalancing
+import all PropertyF.Ground.CentreIntegrate.MonodromyDual
+import all PropertyF.Ground.CentreIntegrate.TwistDual
+import all PropertyF.Ground.Dimensions.BraidingCapSlide
+import all PropertyF.Ground.Dimensions.DefectAssociativity
+import all PropertyF.Ground.Dimensions.DefectExtension
+import all PropertyF.Ground.Dimensions.DefectSliding
+import all PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
+import all PropertyF.Ground.Dimensions.DoubleDualBraiding
+import all PropertyF.Ground.Dimensions.DualBraiding
+import all PropertyF.Ground.Dimensions.ENOInvolution
+import all PropertyF.Ground.CentreInduction.ForgetDualUnit
+import all PropertyF.Ground.CentreInduction.PivotalLift
+import all PropertyF.Ground.Integrate.PivotalCentralityReduction
+import all PropertyF.Ground.CentreInduction.DualTensorComparison
+import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
+import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
+import all PropertyF.Ground.CentreInduction.ForgetDualTensor
+import all PropertyF.Ground.CentreRigid.Evaluation
+import all PropertyF.Ground.CentreRigid.ForgetComparison
+import all PropertyF.Ground.Integrate.RigidCenterReduction
+import all PropertyF.Ground.CentreIntegrate.TwistSign
+import all PropertyF.Ground.CentreRigid.Coevaluation
+import all PropertyF.Ground.CentreRigid.MateExplicit
+import all PropertyF.Ground.CentreRigid.RankOneMate
+import all PropertyF.Ground.CentreRigid.SimpleCentrality
+import all PropertyF.Ground.CentreRigid.SimpleTensor
+import all PropertyF.Ground.CentreRigid.Tensor
+import all PropertyF.Ground.CentreIntegrate.CycleColoring
+import all PropertyF.Ground.CentreIntegrate.CyclePolynomial
+import all PropertyF.Ground.CentreIntegrate.CycleTraceReduction
+import all PropertyF.Ground.CentreIntegrate.PermutationSignSum
+import all PropertyF.Ground.CentreInduction.PivotalTransfer
+import all PropertyF.Ground.Integrate.CompatibleCenterReduction
+import all PropertyF.Ground.CentreCabling.CentralityClosure
+import all PropertyF.Ground.CentreCabling.CoreCentrality
+import all PropertyF.Ground.CentreCabling.FiniteMonodromy
+import all PropertyF.Ground.CentreCabling.FiniteOrderMatrix
+import all PropertyF.Ground.CentreCabling.FourierCentralizer
+import all PropertyF.Ground.CentreCabling.FusionCentralizer
+import all PropertyF.Ground.CentreCabling.ImageCore
+import all PropertyF.Ground.CentreCabling.ProductCentralizer
+import all PropertyF.Ground.CentreCabling.ProductCore
+import all PropertyF.Ground.CentreCabling.RegularSupport
+import all PropertyF.Ground.CentreCabling.SCentrality
+import all PropertyF.Ground.CentreCabling.TargetReduction
+import all PropertyF.Ground.CentreCabling.TraceSaturation
+import all PropertyF.Ground.CentreCalculus.GeneratorSquare
+import all PropertyF.Ground.CentreCalculus.ParityCorrection
+import all PropertyF.Ground.CentreCalculus.PermutationQuotient
+import all PropertyF.Ground.CentreCalculus.ProjectorReduction
+import all PropertyF.Ground.CentreCalculus.PureSquares
+import all PropertyF.Ground.CentreDimensions.BraidingTrace
+import all PropertyF.Ground.CentreDimensions.InvolutionTrace
+import all PropertyF.Ground.CentreDimensions.PivotalTwist
+import all PropertyF.Ground.CentreDimensions.RankOneCenter
+import all PropertyF.Ground.CentreDimensions.RankOneModular
+import all PropertyF.Ground.CentreDimensions.RankOneRigid
+import all PropertyF.Ground.CentreInduction.ActualFusion
+import all PropertyF.Ground.CentreInduction.AdjunctionAssembly
+import all PropertyF.Ground.CentreInduction.AdjunctionMatrix
+import all PropertyF.Ground.CentreInduction.Artinian
+import all PropertyF.Ground.CentreInduction.Averaging
+import all PropertyF.Ground.CentreInduction.BasisPairing
+import all PropertyF.Ground.CentreInduction.BasisRefinement
+import all PropertyF.Ground.CentreInduction.Biproducts
+import all PropertyF.Ground.CentreInduction.CandidateAssembly
+import all PropertyF.Ground.CentreInduction.CenterLength
+import all PropertyF.Ground.CentreInduction.CounitColumn
+import all PropertyF.Ground.CentreInduction.CrossingBlocks
+import all PropertyF.Ground.CentreInduction.CrossingCoherence
+import all PropertyF.Ground.CentreInduction.CrossingNaturality
+import all PropertyF.Ground.CentreInduction.CrossingTensor
+import all PropertyF.Ground.CentreInduction.CrossingUnit
+import all PropertyF.Ground.CentreInduction.Dominance
+import all PropertyF.Ground.CentreInduction.FiniteLabels
+import all PropertyF.Ground.CentreInduction.FiniteSimples
+import all PropertyF.Ground.CentreInduction.FiniteSum
+import all PropertyF.Ground.CentreInduction.FirstTriangle
+import all PropertyF.Ground.CentreInduction.ForgetDual
+import all PropertyF.Ground.CentreInduction.Fusion
+import all PropertyF.Ground.CentreInduction.HomTranspose
+import all PropertyF.Ground.CentreInduction.InducedTrace
+import all PropertyF.Ground.CentreInduction.InjectiveFusion
+import all PropertyF.Ground.CentreInduction.Injectives
+import all PropertyF.Ground.CentreInduction.PartialTrace
+import all PropertyF.Ground.CentreInduction.PseudoUnitary
+import all PropertyF.Ground.CentreInduction.RankOne
+import all PropertyF.Ground.CentreInduction.RankOneComplete
+import all PropertyF.Ground.CentreInduction.Representatives
+import all PropertyF.Ground.CentreInduction.SecondTriangle
+import all PropertyF.Ground.CentreInduction.SimpleDetection
+import all PropertyF.Ground.CentreInduction.Splitting
+import all PropertyF.Ground.CentreInduction.TensorDetection
+import all PropertyF.Ground.CentreInduction.UnitCandidate
+import all PropertyF.Ground.CentreInduction.UnitCentrality
+import all PropertyF.Ground.CentreInduction.UnitCoevaluation
+import all PropertyF.Ground.CentreInduction.UnitDiagram
+import all PropertyF.Ground.CentreInduction.UnitNormalization
+import all PropertyF.Ground.CentreInduction.UnitSummand
+import all PropertyF.Ground.CentreInduction.UnitTest
+import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
+import all PropertyF.Ground.CentreModular.ColumnSeparation
+import all PropertyF.Ground.CentreModular.KirbyCriterion
+import all PropertyF.Ground.CentreModular.RegularSupport
+import all PropertyF.Ground.CentreRigid.MateEquations
+import all PropertyF.Ground.Dimensions.CoevaluationReciprocity
+import all PropertyF.Ground.Dimensions.CoevaluationSliding
+import all PropertyF.Ground.Dimensions.DefectCoevaluation
+import all PropertyF.Ground.Dimensions.DefectNaturality
+import all PropertyF.Ground.Dimensions.DoubleDualAssociativity
+import all PropertyF.Ground.Dimensions.DoubleDualMonoidal
+import all PropertyF.Ground.Dimensions.DoubleDualPairing
+import all PropertyF.Ground.Dimensions.DoubleDualUnitTensor
+import all PropertyF.Ground.Dimensions.DrinfeldUnit
+import all PropertyF.Ground.Dimensions.DualEvaluation
+import all PropertyF.Ground.Dimensions.FourthDualUnit
+import all PropertyF.Ground.Dimensions.FourthTensorUnit
+import all PropertyF.Ground.Dimensions.PivotalBounds
+import all PropertyF.Ground.Dimensions.PivotalDual
+import all PropertyF.Ground.Dimensions.PivotalPairing
+import all PropertyF.Ground.Dimensions.PivotalPseudoUnitary
+import all PropertyF.Ground.Dimensions.PositivePivotalDual
+import all PropertyF.Ground.Dimensions.RankOneCriterion
+import all PropertyF.Ground.Dimensions.RankOneSpherical
+import all PropertyF.Ground.Dimensions.RealSphericalBounds
+import all PropertyF.Ground.Dimensions.RightDualAssociativity
+import all PropertyF.Ground.Dimensions.RightDualUnitTensor
+import all PropertyF.Ground.Dimensions.RootDualLabel
+import all PropertyF.Ground.Dimensions.RootDualPairing
+import all PropertyF.Ground.Dimensions.RootUnitComponent
+import all PropertyF.Ground.Dimensions.SphericalPivotalDual
+import all PropertyF.Ground.Dimensions.SphericalReal
+import all PropertyF.Ground.Integrate.CenterSquareReduction
+import all PropertyF.Ground.Integrate.NumericalCoreReduction
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -434,6 +569,26 @@ run_cmd do
       ``PropertyF.Ground.Calculus.galois_three_strand_rigidity,
       ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
+      ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
+      ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
+      ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
+      ``PropertyF.Ground.CentreRigid.rigidCenter,
+      ``PropertyF.Ground.target_of_fusion_center_integral_numerical_core,
+      ``PropertyF.Ground.target_of_pivotal_lift_and_integral_numerical_core,
+      ``PropertyF.Ground.CentreIntegrate.doubleDualTensor_evaluation,
+      ``PropertyF.Ground.CentreIntegrate.drinfeld_tensor_of_pairing_cap,
+      ``PropertyF.Ground.CentreIntegrate.balance_of_drinfeld_tensor,
+      ``PropertyF.Ground.CentreIntegrate.twist_sign_of_spherical_self_transparency_and_balancing,
+      ``PropertyF.Ground.CentreIntegrate.pivotalTwistScalar_rightDual,
+      ``PropertyF.Ground.CentreIntegrate.self_doubleBraiding_eq_one_rightDual,
+      ``PropertyF.Ground.CentreIntegrate.twist_sign_of_dual_and_tensor,
+      ``PropertyF.Ground.CentreIntegrate.signed_cycle_count,
+      ``PropertyF.Ground.CentreIntegrate.integral_of_cycle_traces,
+      ``PropertyF.Ground.CentreIntegrate.integral_of_signed_cycle_traces,
+      ``PropertyF.Ground.target_of_compatible_center_and_integral_numerical_core,
+      ``PropertyF.Ground.target_of_integral_numerical_center_core,
+      ``PropertyF.Ground.center_globalDimension_square_of_actual_induction,
+      ``PropertyF.Ground.target_of_center_image_monodromy_no_square,
       ``PropertyF.Ground.weaklyIntegral_of_positive_modular_propertyF,
       ``PropertyF.Ground.categoricalS_det_eq_zero_of_transparent_column,
       ``PropertyF.Ground.Dimensions.positive_spherical_of_spherical_pseudoUnitary,

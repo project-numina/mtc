@@ -141,3 +141,104 @@ in the ledger. The FP spectral-radius/character identification and both global d
 representative independence are proved. The work
 is a substantial multi-workstream formalization, not a short integration patch;
 no reliable completion-time estimate is available.
+
+## Round 3 integration (2026-10-27)
+
+- Merged committed tips fusion `ca79865`, dimensions `4af7956`, centre
+  `6d26130` (already contained), modular `ee9ee20`, calculus `1870108`,
+  and cabling `63f901e`. The actual centre induction and forgetful adjunction
+  are now constructed without extra assumptions; finite simple representatives
+  and enough injectives are also proved. Centre semisimplicity remains open.
+- `center_globalDimension_square_of_actual_induction` applies the actual
+  adjunction to prove the categorical centre square whenever centre rigidity,
+  fusion and an FP-valued spherical structure exist.
+  `target_of_center_image_monodromy_no_square` eliminates the square premise
+  from cabling's most refined target reduction. Its remaining centre premises
+  are rigidity, fusion, FP-valued spherical structure, invertible S, integral
+  core dimensions, and finite mixed monodromy on the specified image labels.
+- Cabling's fusion-ring Fourier argument establishes the numerical double
+  centralizer; its identification with the actual symmetric core still needs
+  finite-order mixed monodromy (or a different proof of the numerical-to-actual
+  inclusion). This is not implied by property F on C by the existing proof:
+  centre half-braidings are not generally the base braiding.
+- Expanded both audits to 392 project modules. Full `lake build PropertyF`
+  on cores 0–3 with four Lean threads passes; `ProjectAudit` checks 4,226
+  declarations and the new reduction's dependency cone. Target audit fails
+  as intended because `PropertyF.Ground.target` is absent.
+- Shorter-route assessment: the new categorical square is automatic once the
+  centre sphere exists, but it does not resolve the circularity in constructing
+  that sphere. Fourier double-centralizer replaces a categorical theorem by
+  an S-test, but identifying that S-test with the integral symmetric core is
+  still open. No centre-free route for the general target is established.
+
+- `target_of_integral_numerical_center_core` replaces both the actual-core
+  integrality and mixed-monodromy premises by the single assertion that the
+  numerical S-centralizer of product-retract simples has integer dimensions.
+  Fourier double-centralization is proved. The comparison theorem
+  `numericalProductCore_integral_of_image_monodromy` shows the earlier
+  actual-core integrality plus finite-monodromy hypotheses imply the new
+  numerical-integrality premise. The latter is not proved independently.
+
+- Merged fusion `f93cf9e`. `target_of_compatible_center_and_integral_numerical_core`
+  wires its `center_structure_of_compatible_pivotal` into the numerical-core
+  reduction, constructing centre fusion and the FP-valued centre sphere from
+  centre rigidity, an FP-valued base pivotal structure, and a compatible
+  pivotal lift. This is an alternative to proving centre pseudo-unitarity
+  first; existence of both base pivotal structure and compatible lift remains
+  open. Invertible centre S and numerical-core integrality remain assumptions.
+- The dual-evaluation coherence attempt expanded the mate counit but did not
+  derive the required equation: the mate component is at `Z ⊗ U`, so original
+  half-braiding tensor coherence and unit normalization still need to be
+  related. Scratch experiments are not imported or committed.
+- Full build and strict project audit pass after these changes, covering 395
+  modules and 4,237 declarations. The final target remains unproved.
+
+- `CentreIntegrate.signed_cycle_count` proves the signed cycle-count
+  polynomial identity over ℂ, with fixed points included as cycles. The proof
+  counts fixed colourings using same-cycle quotients, uses a determinant to
+  cancel non-injective colourings, and extends from natural values by
+  polynomial interpolation. `integral_of_cycle_traces` and
+  `integral_of_signed_cycle_traces` wire the identity to calculus's
+  integrality criterion for the two parity cases. Construction of the
+  permutation action and either appropriate categorical cycle trace formula
+  remains open. The focused build and full project audit pass (399 modules,
+  4,254 declarations).
+
+- Merged centre `62010e5`: the normalized dual crossing tensor law and
+  coevaluation centrality are proved. Centre `f1f0122` has since also proved
+  general evaluation centrality and actual centre rigidity; that newer commit
+  is awaiting integration. `CentreIntegrate.twist_sign_of_dual_and_tensor`
+  reduces the simple twist parity sign to dual compatibility and
+  multiplicativity on the dual pair; both remain explicit hypotheses. The
+  coevaluation nonzero argument is proved from nonzero simple dimension.
+
+- Merged actual centre rigidity `f1f0122` and its forgetful comparisons.
+  `target_of_fusion_center_integral_numerical_core` removes centre rigidity
+  from the numerical-core reduction, while
+  `target_of_pivotal_lift_and_integral_numerical_core` removes it from the
+  compatible-pivotal route. The other stated premises remain unproved.
+  Expanded project audit and full build pass for 413 modules and 4,311
+  declarations. Fusion's newer pivotal-centrality reduction is not yet merged.
+
+- Merged fusion `f811c73`. `target_of_pivotal_centrality_and_integral_numerical_core`
+  now constructs the compatible centre pivotal lift from the explicit
+  `PivotalComponentsCentral` equation, using the constructed centre rigid
+  structure. It still assumes an FP-valued base pivotal structure, that
+  centrality equation, centre S invertibility and numerical-core integrality.
+  The full build and strict project audit pass (416 modules, 4,328 declarations).
+
+- Merged dimensions `4117b5b`. `spherical_rightTrace_rightDual` and
+  `pivotalTwistScalar_rightDual` establish equality of twist scalars for a
+  spherical simple and its right dual. `self_doubleBraiding_eq_one_rightDual`
+  establishes centrality of X with X* from centrality with itself, using the
+  generated-subcategory dual theorem. The parity sign now follows from the
+  still-unproved pivotal twist balancing equation on this one dual pair, as
+  `twist_sign_of_spherical_self_transparency_and_balancing` records. Full build
+  and strict project audit pass (426 modules, 4,363 declarations).
+
+- `doubleDualTensor_evaluation`, `drinfeld_tensor_of_pairing_cap`, and
+  `balance_of_drinfeld_tensor` reduce pivotal twist balancing to one explicit
+  tensor-pairing cap/hexagon identity. The identity is the `hcap` premise in
+  `TwistBalancing.lean` and is still unproved; it would discharge the parity
+  sign and support Vafa's mixed-monodromy route. Full build and project audit
+  pass (427 modules, 4,366 declarations).

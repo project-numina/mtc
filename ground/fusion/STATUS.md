@@ -328,3 +328,75 @@ square assumes centre rigidity and fusion.
   and `rankOne_induction_retract` show the actual induction unit is an
   isomorphism and splits in this case; `rankOne_center_fp_square` now proves
   the FP square with no centre-rigidity or centre-fusion premise in rank one.
+
+## Round 3 continuation
+
+Merged ground/integrate. `center_structure_of_compatible_pivotal` constructs
+centre fusion and proves the compatible pivotal lift is positive spherical,
+centre pseudo-unitarity, and the categorical global dimension square, from
+centre rigidity and a positive base pivotal structure. This avoids inferring
+centre pseudo-unitarity from a categorical-square theorem that itself assumes
+positive sphericality. `center_unitScalar_forget` and
+`center_pivotalDimension_forget` prove the scalar and trace transfers. The
+compatible centre pivotal lift itself is still unproved, as are general centre
+rigidity and positive base pivotal existence. Investigating centrality of the
+base pivotal component on arbitrary centre objects via centre duality maps.
+Focused build passes, and the two principal results have only the three standard
+kernel axioms. No reliable completion-time estimate is available.
+
+`forget_rightAdjointMate`, `forgetDualIso_natural`,
+`forgetDoubleDualIso_natural` and `transported_pivotal_natural` establish the
+naturality coherence of the centre/base dual comparisons and of the transported
+pivotal components on actual centre morphisms. This does not establish that
+those components are centre morphisms or obey the tensor law. Focused build
+passes.
+
+`rightDualIso_tensor` proves that canonical comparisons between choices of
+dual pairings preserve tensor products, `forget_rightDualTensorIso` identifies
+the forgotten centre dual tensorator, and `forgetDualIso_tensor` proves the
+centre/base dual comparison preserves tensor products. Focused build passes.
+Double-dual tensor coherence and pivotal component centrality remain open.
+
+`forgetDoubleDualIso_tensor` proves the centre/base double-dual comparison
+respects tensorators, and `transported_pivotal_tensor` proves the base pivotal
+components transported to the centre double dual obey the tensor equation
+after forgetting. Naturality is also proved; unit coherence and centrality
+remain to be established. Focused build passes.
+
+`forgetDoubleDualIso_unit` and `transported_pivotal_unit` establish the unit
+coherence of the transported components. `liftedPivotalStructure` constructs
+the actual centre pivotal structure from the single explicit centrality
+equation `PivotalComponentsCentral`; `pivotalComponentsCentral_of_simples`
+reduces that equation to simple test objects.
+`center_structure_of_pivotal_centrality` derives centre fusion, positive
+sphericality, pseudo-unitarity, and the categorical dimension square from
+that equation, centre rigidity, and FP-valued base pivotal dimensions. The
+centrality equation is not proved; neither are centre rigidity or base pivotal
+existence. Focused build passes; pivotal lift and assembly use only the three
+standard kernel axioms.
+
+`positiveDualIso` and `positiveDoubleDualIso` compare the centre duals of
+canonical positive images to the positive images of base duals, and prove
+these comparisons forget to the canonical centre/base comparisons.
+`positivePivotalComponent` and `pivotalComponentsCentral_positive` prove the
+transported base pivotal components are actual centre isomorphisms on every
+positive image. General centre-object centrality remains open; investigating
+centre braiding naturality and double-dual preservation of braiding. Focused
+build passes.
+
+`eval_braiding_slide_right`, `eval_braiding_slide_left`,
+`rightDualTensorIso_braiding` and `doubleDualTensorIso_braiding` prove the
+canonical double-dual tensorator preserves the braiding in any right-rigid
+braided category. Focused build passes. Applying these to centre braiding
+naturality to prove the general pivotal-component centrality equation.
+
+`pivotalComponentsCentral_proved` proves centrality for every centre object
+and test object assuming only centre rigidity and a base pivotal structure.
+`canonicalCenterPivotal` is the actual compatible centre pivotal lift.
+`center_structure_of_fp_pivotal` constructs centre fusion, positive
+sphericality, centre pseudo-unitarity and categorical global dimension square
+from centre rigidity and FP-valued base pivotal dimensions.
+`center_structure_of_pivotal_pseudoUnitary` further reduces the base premise
+to any pivotal structure plus pseudo-unitarity using dimensions' theorem.
+General centre rigidity and base pivotal existence remain open; this does not
+prove the frozen target. Focused build and direct kernel axiom checks pass.
