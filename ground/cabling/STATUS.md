@@ -77,3 +77,143 @@ canonical embeddings. `Centre.productRetract_rightDual` and
 `Centre.productTensorClosure_rightDual` establish right-dual closure assuming
 only the centre's genuine rigid/fusion instances. Focused build passed. The
 remaining substantive task is the double-centralizer S-test implication.
+
+Further round 2 results: `CentreCabling.categoricalS_eq_of_doubleBraiding`
+proves categorical centrality implies the numerical S-test.
+`character_fp_eq_of_constituent` proves the FP equality locus of any fusion
+character is closed under tensor-product constituents via the character norm
+bound; `sCentralizer_closed_under_constituents` and
+`sCentralizer_closed_under_dual` apply this to actual S columns in the positive
+case. These results need neither S invertibility nor finite braid images.
+The reverse S-test-to-monodromy implication and the centralizer dimension /
+double-centralizer equality remain unproved. Focused builds passed.
+
+Double-centralizer route under development: for a dual-closed label set A of
+product retracts, take its FP-weighted regular vector and its S-transform. If
+that transform vanishes off the numerical centralizer of A, S-square and the
+unit label imply the desired reverse inclusion. Proving this support identity
+requires the regular-vector eigenvalue calculation using fusion closure; it is
+not asserted as an established fact.
+
+`CentreCabling.categoricalS_fourier_inversion` derives inversion from the
+actual categorical S-square theorem. `doubleCentralizer_of_fourier_support`
+proves the exact double-centralizer implication from an explicitly supplied
+vector supported on generated labels, nonzero at the unit, whose S-transform
+is supported on the core. This support condition is not yet proved; proving it
+for the positive FP-weighted regular vector using fusion closure is the next
+step. The identification of the numerical core with the actual symmetric
+intersection also remains open. Focused build passed.
+
+`CentreCabling.regular_vector_fusion_eigenvector` proves the regular FP vector
+is a fusion eigenvector for any dual- and constituent-closed set of labels;
+`fourier_eq_zero_of_fusion_eigenvector` proves the required Fourier support;
+`doubleCentralizer_of_fusion_closed` derives the numerical double-centralizer
+theorem from invertible S and positive FP dimensions, for any set closed under
+unit, duals and constituents. It assumes the chosen core contains that set's
+numerical S-centralizer. This is a proved linear-algebra theorem, not a proof
+that the paper's actual symmetric core has the required inclusion. Focused
+build passed. Next instantiate the theorem for actual product retract labels.
+
+`CentreCabling.productLabels` is the actual finite set of centre simples which
+are product retracts. `unit_mem_productLabels`, `dual_mem_productLabels`, and
+`constituent_mem_productLabels` prove its fusion closure using actual centre
+rigidity/fusion instances. `productLabels_doubleCentralizer` specializes the
+numerical double-centralizer theorem to those exact product retracts. Its only
+remaining centralizer hypothesis is that the chosen core contains the numerical
+S-centralizer of product labels; establishing that inclusion for the paper's
+integral symmetric core requires S-test-to-monodromy and the existing actual
+embedding centralizer identities. Focused build passed.
+
+`CentreCabling.mixedMonodromy_finite_order` proves property F forces every
+mixed double braiding in the base braided fusion category to have finite
+order, by retracting it from the square of the self-braiding of a direct sum.
+This does not prove finite order for arbitrary centre monodromy: after
+forgetting, a centre half-braiding is not generally the base braiding. The
+S-test-to-monodromy bridge remains open. Focused build passed.
+
+`finiteOrder_matrix_trace_saturation` proves finite-order complex matrices have
+real trace bounded by size, with equality only for the identity. Using actual
+semisimple endomorphism blocks and positive pivotal dimensions,
+`finiteOrder_eq_one_of_trace_eq_dimension` proves the categorical trace
+saturation statement. `doubleBraiding_eq_one_of_sTest_of_finite_order`
+therefore proves numerical S-centrality implies actual identity monodromy
+whenever that double braiding has finite order. Finite order of mixed
+monodromy in the centre remains unproved; base property F does not directly
+supply it. Focused builds passed.
+
+`CentreCabling.symmetricCore` is the actual centralizer of both canonical
+images. `doubleBraiding_eq_one_of_simple_constituents` extends actual
+centrality from simple members of a retract-closed class to all objects in
+the class. `numericalProductCentralizer_subset_symmetricCore` proves the
+numerical-to-categorical core inclusion assuming finite order for mixed centre
+monodromies with product-retract simple first strand. Combined in
+`productLabels_doubleCentralizer_of_finite_monodromy`, this gives the exact
+actual-centre double-centralizer/product-retract test with only that remaining
+finite-order premise, alongside centre fusion/positive spherical/nondegenerate
+S prerequisites. Symmetric-core dimension integrality is calculus's separate
+unfinished obligation. Focused build passed.
+
+`symmetricCore_underlying_transparent` identifies each actual core label's
+underlying base object as transparent; `symmetricCore_subset_productLabels`
+shows every core label is a product retract; and
+`symmetricCore_dimension_eq_underlying_fp` identifies its positive centre
+simple dimension with the underlying object's base FP dimension. These supply
+calculus's core-integrality bridge without choosing a spherical structure on C.
+Focused build passed.
+
+Integration handoff: `Ground.target_of_center_finite_mixed_monodromy` applies
+our theorems to the frozen target and eliminates explicit double-centralizer
+and product-retract assumptions. Its centre premise still requires the actual
+rigid/fusion instances, positive spherical structure, invertible S, global
+square, integral dimensions on `symmetricCore`, and finite order of centre
+mixed monodromy for product-retract simples. These are explicit unproved
+premises; the final target is not proved. `lake build PropertyF` passed before
+the addition of this focused-built wrapper; the core new theorem axiom checks
+report only propext, Classical.choice and Quot.sound.
+
+Improved dependency: `imageLabels` are just the simple retracts of the two
+canonical embeddings, and are proved contained in product labels.
+`productLabels_doubleCentralizer_of_image_monodromy` needs finite-order
+monodromy only between these image simples and labels already passing their
+numerical S-test. `target_of_center_image_monodromy` wires this strictly weaker
+premise to the frozen target. Centre mixed monodromy finite order is still not
+proved. Focused builds passed.
+
+`symmetricCore_centralizes_productRetract` proves the actual core centralizes
+every actual product retract, and `symmetricCore_numericalProductCentralizer`
+proves the categorical-to-numerical direction without extra assumptions.
+`symmetricCore_iff_numericalProductCentralizer` proves the converse under the
+narrow image-monodromy finite-order condition. Focused build passed.
+
+`positiveIsoOfImageRetract` and `negativeIsoOfImageRetract` show retracts of
+the canonical embeddings stay in the respective essential image.
+`imageLabel_underlying_simple` and `symmetricCore_underlying_simple` prove
+those centre simple labels have simple underlying base objects; together with
+the previously proved transparency and FP-dimension identities, this gives
+calculus a simple-transparent-object formulation of core integrality. Focused
+build passed.
+
+## Current blockers and estimate
+
+The workstream's generated-product/retract identification and numerical
+fusion-subcategory double-centralizer theorem are proved. The remaining
+categorical step is precisely the `hfinite` argument of
+`productLabels_doubleCentralizer_of_image_monodromy`: prove finite order of
+mixed monodromy between a canonical-image simple and an arbitrary centre
+simple which passes the image S-test. A finite-order twist/Vafa theorem would
+supply it; no such theorem is available in the current integrated snapshot,
+and base property F does not directly control arbitrary centre half-braidings.
+The centre rigidity/fusion instances, positive spherical structure and
+invertible S are separately owned by centre/fusion/dimensions/modular; calculus
+owns integrality of the simple transparent base objects described above. The
+conditional target reduction exposes all of these premises and is not the
+final theorem. The missing mixed-monodromy result is a substantial categorical
+proof, potentially as deep as Vafa's theorem; there is no reliable short time
+estimate until a direct centre-specific route or a twist result is available.
+
+Final verification on this branch: `lake build PropertyF` passed on cores
+24–27 with four Lean threads. Direct `#print axioms` checks on the numerical
+double centralizer, actual-centre reduction, S-test saturation, product
+closure, dual closure and core identification report only `propext`,
+`Classical.choice`, and `Quot.sound`. The new centre-cabling files contain no
+`sorry`, `admit`, `axiom`, `native_decide`, `implemented_by`, or `extern`.
