@@ -95,4 +95,70 @@ theorem reverseConcat_one_right (X : C) (a : ℕ) :
     simp only [whiskerLeft_comp, tensorPower]
     monoidal
 
+omit [BraidedCategory C] in
+set_option backward.isDefEq.respectTransparency false in
+/-- Adding one strand to the right commutes with tensor-power concatenation. -/
+theorem reverseConcat_succ_right (X : C) (a b : ℕ) :
+    (reverseConcatIso X a (b + 1)).hom ≫
+      eqToHom (congrArg (tensorPower X) (by omega : (b + 1) + a = (b + a) + 1)) =
+    (tensorPower X a ◁ (appendIso X b).inv) ≫
+      (α_ (tensorPower X a) (tensorPower X b) X).inv ≫
+      ((reverseConcatIso X a b).hom ▷ X) ≫ (appendIso X (b + a)).hom := by
+  induction a with
+  | zero =>
+    simp only [reverseConcatIso, tensorPower, Nat.add_zero, eqToHom_refl, Category.comp_id]
+    have hc : (α_ (𝟙_ C) (tensorPower X b) X).inv ≫ (λ_ (tensorPower X b)).hom ▷ X =
+        (λ_ (tensorPower X b ⊗ X)).hom := by monoidal
+    simp only [← Category.assoc, hc, leftUnitor_naturality]
+    simp [Category.assoc]
+  | succ a ih =>
+    have h₀ : (b + 1) + a = (b + a) + 1 := by omega
+    have h : (b + 1) + (a + 1) = (b + (a + 1)) + 1 := by omega
+    have hcomp : eqToHom (congrArg (tensorPower X) h) =
+        X ◁ eqToHom (congrArg (tensorPower X) h₀) := by
+      rw [whiskerLeft_eqToHom]
+    simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
+      id_tensorHom, comp_whiskerRight, Category.assoc]
+    rw [hcomp, ← whiskerLeft_comp, ih]
+    have happ : appendIso X (b + (a + 1)) =
+        (α_ X (tensorPower X (b + a)) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X (b + a)) :=
+      appendIso_succ X (b + a)
+    rw [happ]
+    simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom,
+      whiskerLeft_comp]
+    monoidal
+
+omit [BraidedCategory C] in
+/-- Appending a strand commutes with equality transport of the prefix length. -/
+theorem appendIso_eqToHom_natural (X : C) {i j : ℕ} (h : i = j) :
+    (eqToHom (congrArg (tensorPower X) h) ▷ X) ≫ (appendIso X j).hom =
+      (appendIso X i).hom ≫ eqToHom (congrArg (tensorPower X) (congrArg Nat.succ h)) := by
+  cases h
+  simp
+
+omit [BraidedCategory C] in
+set_option backward.isDefEq.respectTransparency false in
+/-- Repeated right insertion is canonical reverse-indexed concatenation. -/
+theorem insertRightPowerIso_eq_reverseConcat (X : C) (n k : ℕ) :
+    (insertRightPowerIso X n k).hom = (reverseConcatIso X (n + 2) k).hom ≫
+      eqToHom (congrArg (tensorPower X) (by omega : k + (n + 2) = (n + k) + 2)) := by
+  induction k with
+  | zero =>
+    simpa only [insertRightPowerIso, Nat.add_zero] using
+      (reverseConcat_zero_right X (n + 2)).symm
+  | succ k ih =>
+    have h₀ : k + (n + 2) = (n + k) + 2 := by omega
+    have h₁ : (k + 1) + (n + 2) = (k + (n + 2)) + 1 := by omega
+    have h₂ : (k + (n + 2)) + 1 = (n + (k + 1)) + 2 := by omega
+    have hcomp : eqToHom (congrArg (tensorPower X)
+        (by omega : (k + 1) + (n + 2) = (n + (k + 1)) + 2)) =
+        eqToHom (congrArg (tensorPower X) h₁) ≫ eqToHom (congrArg (tensorPower X) h₂) := by
+      rw [eqToHom_trans]
+    rw [hcomp, ← Category.assoc, reverseConcat_succ_right]
+    simp only [insertRightPowerIso, Iso.trans_hom, Iso.symm_hom,
+      tensorIso_hom, Iso.refl_hom, tensorHom_id, id_tensorHom, Category.assoc]
+    rw [ih, comp_whiskerRight]
+    simp only [Category.assoc]
+    rw [appendIso_eqToHom_natural X h₀]
+
 end PropertyF.Ground.Calculus
