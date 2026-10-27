@@ -45,6 +45,9 @@
   `fusionCoeff_reciprocity_labels`: the actual dual of each simple is simple,
   duality gives an involutive permutation of labels, and the usual
   Frobenius reciprocity identity follows.
+- `Ground.totalFusionMatrix_symmetric` and `totalFusionMatrix_pos`: the sum of
+  the real fusion matrices is symmetric and strictly positive. Positivity uses
+  cabling's `tensorLeft_faithful_of_unit_retract` (merged commit 288c894).
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
