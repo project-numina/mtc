@@ -10,6 +10,8 @@
 - `target_squaredNorm_choice_independent`, `target_squaredNorm_eq_dimension_sq`, and `target_globalDimension_eq_sum_squares` apply the choice independence and spherical identities to the genuine-category target, without old hypothesis bundles.
 - `PivotalStructure`, `PivotalStructure.rightTrace`, `leftTrace`, `IsSpherical` use actual duality maps; `rightTrace_id`, `leftTrace_id`, and `spherical_norm_eq_dimension_sq` connect them to the existing intrinsic norm. Existence and trace laws remain open.
 
+- `target_globalDimension_real`, `target_globalDimension_le_of_simple_bounds`, and `global_sum_squares_positive` reduce the global realness, inequality, and positivity assertions to explicit simple-dimension hypotheses; those hypotheses remain unproved.
+
 ## In progress
 
 - `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. Cyclicity, multiplicativity and trace transport remain open.
