@@ -26,6 +26,8 @@
 - `rightTrace_unit` and `pivotalDimension_unit` prove the pivotal trace and dimension of the tensor unit equal one, for any pivotal structure.
 - `coevaluation_rightDualIso`, `rightDualIso_evaluation`, and their inverse variants prove that Mathlib’s canonical comparison of right duals transports the actual duality maps.
 
+- `rightTrace_tensor_pairing` rewrites the trace using the tensor-product dual pairing; `rightTrace_partialTrace` proves compatibility of partial and total pivotal traces without extra assumptions.
+
 ## In progress
 
 - `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic`, and `rightTrace_id_iso` also hold for any pivotal structure. Multiplicativity and semilinear trace transport remain open.
