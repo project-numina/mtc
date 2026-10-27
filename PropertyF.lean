@@ -204,6 +204,7 @@ public import PropertyF.Ground.CentreCabling.FiniteOrderMatrix
 public import PropertyF.Ground.CentreCabling.TraceSaturation
 public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.CentreCabling.ProductCore
+public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.CentreCabling.TargetReduction
 
 /-! Formalization of `paper/property-f-simplified.pdf`.

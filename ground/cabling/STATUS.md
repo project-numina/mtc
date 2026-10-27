@@ -170,3 +170,11 @@ mixed monodromy for product-retract simples. These are explicit unproved
 premises; the final target is not proved. `lake build PropertyF` passed before
 the addition of this focused-built wrapper; the core new theorem axiom checks
 report only propext, Classical.choice and Quot.sound.
+
+Improved dependency: `imageLabels` are just the simple retracts of the two
+canonical embeddings, and are proved contained in product labels.
+`productLabels_doubleCentralizer_of_image_monodromy` needs finite-order
+monodromy only between these image simples and labels already passing their
+numerical S-test. `target_of_center_image_monodromy` wires this strictly weaker
+premise to the frozen target. Centre mixed monodromy finite order is still not
+proved. Focused builds passed.
