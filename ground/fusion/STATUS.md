@@ -144,6 +144,10 @@ The separate compatibility bridge constructs the old `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.partialTraceHom`, `winding`, and `loopSum` construct the
+  spherical loop average; `loopSum_center_hom` proves it acts by global
+  dimension on central maps. Centrality of its action on arbitrary maps,
+  needed for Maschke averaging, is not yet proved.
 - `CentreInduction.comm_of_simples` proves that a candidate centre morphism
   need only satisfy the intertwining equations on base simple representatives;
   `natTrans_ext_on_simples` gives the parallel result for natural transformations
