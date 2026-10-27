@@ -98,6 +98,8 @@
 
 - `rank_subsingleton_of_globalFPDimension_eq_one` proves FP dimension one forces rank one; `positive_spherical_of_globalFPDimension_eq_one` constructs the positive spherical structure directly from that equality, available to instantiate the actual centre when its FP square is known.
 
+- After merging fusion, `center_positive_spherical_of_rank_one` and `center_spherical_and_globalDimension_of_rank_one` construct an actual-centre positive spherical structure and prove the categorical FP-square equality in rank one, assuming the centre rigid instance. Centre rigidity itself remains owned and unproved.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
