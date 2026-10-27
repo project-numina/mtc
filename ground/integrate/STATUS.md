@@ -7,6 +7,8 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
+- `simple_presentation_equiv` and `sum_simple_presentation` reindex any
+  complete pairwise-nonisomorphic simple presentation and its invariant sums.
 - `simple_strand_inclusion` combines fusion’s split-unit theorem with cabling’s
   identity-strand embedding and discharges that field for ground categories.
 - `squaredNorm_eq_of_choices` connects the target norm to any conventional

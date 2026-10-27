@@ -4,6 +4,9 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 public import PropertyF.Ground.Integrate.UnitScalar
 public import PropertyF.Ground.Integrate.Norm
 public import PropertyF.Ground.Integrate.StrandInclusion
+public import PropertyF.Ground.Integrate.Representatives
+public import PropertyF.Ground.Fusion.Reciprocity
+public import PropertyF.Ground.Fusion.MatrixIntegral
 public import PropertyF.Ground.Integrate.Example
 public import PropertyF.Ground.Fusion.Integrality
 public import PropertyF.Ground.Fusion.Splitting
@@ -40,6 +43,7 @@ run_cmd do
       ``PropertyF.Ground.Example.complexVectorSpaces,
       ``PropertyF.Ground.squaredNorm_eq_of_choices,
       ``PropertyF.Ground.simple_strand_inclusion,
+      ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.Dimensions.squaredNorm_independent] do
     if let some bad := findForbidden env n then
       throwError "unexpected old hypothesis {bad} in ground result {n}"
