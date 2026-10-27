@@ -58,8 +58,8 @@
   simple X this membership follows when some positive power contains the
   unit. `Ground.Cabling.unit_retract_power` now constructs that occurrence
   from a balanced fusion flow, and `generatedCategoryRigidOfSimple` constructs
-  rigidity without further assumptions for simple generators. The fusion
-  structure remains. `Ground.Cabling.generatedBy_rightDual` now uses
+  rigidity without further assumptions for simple generators.
+  `Ground.Cabling.generatedBy_rightDual` now uses
   semisimple decomposition and proves dual closure for arbitrary generators;
   `generatedCategoryRigid` constructs their rigidity unconditionally.
   `generatedFusion` bundles this as a genuine braided fusion category;
@@ -81,10 +81,14 @@
   block permutation law. `moveHead_mem_braidImage` proves a single strand
   crossing an arbitrary block is a braid; `moveHead_spectators` extends this
   to spectator blocks on both sides. The unproved step is the general crossing
-  of two tensor-power blocks and composition along pure words, yielding the
-  pure-block membership in `sumPowersCablingWitness`. `objectPropertyF_generated_of_block_membership`
-  proves the resulting bundle-free property-F transfer conditional on exactly
-  that membership.
+  of two tensor-power blocks in arbitrary tuple contexts. Pure-word composition
+  is now proved by `powerSum_pureBlock_mem_of_generators`. Empty blocks are
+  handled by `blockSwap_zero_left` and `blockSwap_zero_right`; a singleton
+  left block is handled by `blockSwap_one_left_mem`. Right insertion works at
+  every strand count by `addRightAutAllIter_hom`. The comparison between its
+  `concatPowerIso` and the existing tuple normalization remains unproved.
+  `objectPropertyF_generated_of_block_membership` proves bundle-free property-F
+  transfer conditional on the resulting pure-block membership.
 
 ## Remaining
 
