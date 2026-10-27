@@ -119,3 +119,12 @@ open; no monodromy finite-order claim follows yet. Focused build and axiom
 checks passed. The preceding full `lake build PropertyF` also passed; its
 project audit covered the prior integrated snapshot and individual axiom checks
 cover these newly added declarations.
+
+`CentreModular.fpDeterminant` now constructs the actual categorical
+FP-weighted determinant in `vafaUnitSpace` from determinants of the induced
+actions on each simple Hom space. `fpDeterminant_trans` proves additivity
+under composition; `fpDeterminant_scalar` gives FPdim(X) times the scalar
+class, and `fpDeterminant_scalar_simple_eq_zero_iff` detects finite order on
+simple scalar automorphisms. The determinant's tensor-product identity and
+hexagon identity are unproved, so Vafa-type monodromy remains open. Focused
+build and foundational axiom checks passed.

@@ -40,3 +40,6 @@ The actual categorical S identities, character classification and Galois action 
 - `vafaUnitSpace` and `vafaUnitClass_eq_zero_iff` now provide the missing
   torsion-detection space for complex units. The categorical determinant and
   its hexagon/tensor equations remain unproved.
+- `fpDeterminant` is constructed and satisfies composition and scalar rules.
+  The missing categorical step is its tensor-product rule, then the hexagon
+  relation for double braidings; finite monodromy does not yet follow.
