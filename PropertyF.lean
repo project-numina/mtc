@@ -214,15 +214,16 @@ public import PropertyF.Ground.Calculus.SharpRigidity
 
 public import PropertyF.Ground.Calculus.IntegratorBridge
 
-/-! Formalization of `paper/property-f-simplified.pdf`.
-The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
-Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
-See `FORMALIZATION.md` for the complete assumption ledger.
--/
-
 public import PropertyF.Ground.Dimensions.RootDualLabel
 public import PropertyF.Ground.Dimensions.DefectNaturality
 public import PropertyF.Ground.Dimensions.CoevaluationReciprocity
 public import PropertyF.Ground.Dimensions.CoevaluationSliding
 public import PropertyF.Ground.Dimensions.DrinfeldUnit
 public import PropertyF.Ground.Dimensions.FourthDualUnit
+
+/-! Formalization of `paper/property-f-simplified.pdf`.
+The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
+Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
+See `FORMALIZATION.md` for the complete assumption ledger.
+-/
+
