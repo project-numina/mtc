@@ -144,6 +144,9 @@ The separate compatibility bridge constructs the old `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.retract_of_adjunction_and_loop` derives the required
+  centre-object retract from the forgetful right adjoint and the same unproved
+  loop-sliding identity, using faithfulness of forget.
 - `CentreInduction.partialTraceHom`, `winding`, and `loopSum` construct the
   spherical loop average; `loopSum_center_hom` proves it acts by global
   dimension on central maps. Centrality of its action on arbitrary maps,

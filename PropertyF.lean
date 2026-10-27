@@ -197,3 +197,4 @@ import PropertyF.Ground.CentreInduction.Adjunction
 import PropertyF.Ground.CentreInduction.SimpleDetection
 import PropertyF.Ground.CentreInduction.Averaging
 import PropertyF.Ground.CentreInduction.Splitting
+import PropertyF.Ground.CentreInduction.Dominance
