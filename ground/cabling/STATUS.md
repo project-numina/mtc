@@ -243,3 +243,10 @@ relations and the balancing equation. Both categorical identities remain
 unproved; this is not a proof of Vafa's theorem or the target. Focused builds
 passed. The next concrete work is to derive those identities from braiding,
 pivotal coherence and the induced linear maps on multiplicity spaces.
+
+`natural_postcomp_simple` and `determinant_natural_postcomp_simple` compute
+the actual linear map and determinant induced by any natural endomorphism on
+maps from a simple object. `vafaMultiplicity_eq_finrank` identifies the
+lantern exponent with the dimension of the actual triple-tensor Hom space.
+These are steps toward the lantern determinant calculation; the three pair
+operators and the lantern identity remain unproved. Focused build passed.
