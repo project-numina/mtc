@@ -47,13 +47,13 @@ Branch: `ground/calculus`. Started from `094175c`.
 
 ## In progress
 
-- Await integrator pickup of `target_of_spherical_existence_and_center` and any additional interface work needed for the actual centre.
+- Integrate has merged the overlap proof and independently discharged its named overlap and rigidity premises in commit `82d924c`. Stand by for any interface work needed for the actual centre.
 
 ## Blocked / dependencies
 
-- **Dimensions:** construct an initial spherical structure for a pseudo-unitary category. The positive canonical structure follows from other committed dimensions results once such a structure exists.
+- **Dimensions / centre:** construct the positive spherical structure on the actual centre. Integrate's newer `target_of_modular_center` avoids requiring a spherical structure on the original category.
 - **Centre / modular / cabling:** construct the Drinfeld centre as a genuine braided fusion category with the needed nondegenerate S matrix, global-dimension identity, and finite braid-image transfer for the selected simple. These are explicit premises of `target_of_spherical_existence_and_center` and belong to the other workstreams.
 
 ## Remaining fields and estimate
 
-The mathematical conclusions needed from the old `OverlapModel`, `ThreeStrandModel`, `ThreeStrandRealization`, and the `CenterInputs.realize` step are proved directly as categorical theorems and wired to the integrator without those forbidden structures. The literal legacy structures are not constructed: their `partialTrace` and `thirdPartial` fields require arbitrary partial traces to land in the smaller braid-image span, a stronger closure property that has not been established and is unnecessary for the actual proof. We have not claimed a counterexample. The direct centre application remains blocked on the centre, modularity, and spherical-existence work listed above; no reliable completion-time estimate is available.
+The mathematical conclusions needed from the old `OverlapModel`, `ThreeStrandModel`, `ThreeStrandRealization`, and the `CenterInputs.realize` step are proved directly as categorical theorems and wired to the integrator without those forbidden structures. The literal legacy structures are not constructed: their `partialTrace` and `thirdPartial` fields require arbitrary partial traces to land in the smaller braid-image span, a stronger closure property that has not been established and is unnecessary for the actual proof. We have not claimed a counterexample. The direct centre application remains blocked on the centre, modularity, finite-image and centre spherical-existence work listed above; no reliable completion-time estimate is available.
