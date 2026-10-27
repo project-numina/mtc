@@ -147,6 +147,7 @@ public import PropertyF.Ground.Integrate.CenterOnlyReduction
 public import PropertyF.Ground.Integrate.CenterReductionComplete
 public import PropertyF.Ground.Integrate.CenterCentralizers
 public import PropertyF.Ground.Integrate.CenterProductBridge
+public import PropertyF.Ground.Integrate.CenterBundle
 public import PropertyF.Ground.Integrate.ExamplePropertyF
 
 public import PropertyF.Ground.Calculus.ThreeRigidity
