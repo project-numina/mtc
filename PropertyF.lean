@@ -8,6 +8,7 @@ public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
 public import PropertyF.Ground.Calculus.Overlap
+public import PropertyF.Ground.Calculus.OverlapTrace
 public import PropertyF.Ground.Calculus.ImageMaps
 public import PropertyF.Ground.Calculus.BraidTraceBound
 public import PropertyF.Ground.Calculus.CategoricalTrace
