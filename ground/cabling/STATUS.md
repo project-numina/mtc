@@ -26,7 +26,9 @@
   essential image. `generatedBy_tensorPower`, `generatedBy_unit`,
   `generatedBy_self`, `generatedBy_retract`, `generatedBy_of_iso` establish
   basic closure. `tensorPowerTensorIso` combines two powers using the
-  monoidal associator. No monoidal or fusion instance is yet constructed.
+  monoidal associator. `generatedBy_tensor` and `generatedBy_isMonoidal`
+  construct tensor closure and the inherited braided monoidal structure,
+  with braided full faithful inclusion. Fusion and rigid structure remain.
 
 ## In progress
 
@@ -39,8 +41,8 @@
 
 ## Remaining
 
-- Construct all other `GeneratedInputs` fields, including the generated
-  fusion category, its inclusion and essential image, and cabling witnesses.
+- Construct the fusion and rigid structures on the generated subcategory,
+  its braid image equivalence, and cabling witnesses.
 - Prove ENO 8.27 and preservation of FP dimension along the inclusion.
 - The project lacks constructions of fusion categories, semisimplicity, FP
   dimensions and nonzero-object tensor faithfulness. The final target and

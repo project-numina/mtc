@@ -1,6 +1,9 @@
 module
 public import PropertyF.Definitions
 public import Mathlib.CategoryTheory.Monoidal.Subcategory
+public import Mathlib.CategoryTheory.Monoidal.Preadditive
+public import Mathlib.CategoryTheory.Limits.Shapes.Products
+public import Mathlib.Logic.Equiv.Fin.Basic
 
 /-! Basic closure properties of the object property defining the generated
 subcategory. -/
@@ -65,5 +68,52 @@ theorem generatedInclusion_essentialImage (X Y : C) :
 /-- The full subcategory on the generated objects contains the unit. -/
 instance generatedBy_containsUnit (X : C) : ObjectProperty.ContainsUnit (GeneratedBy X) where
   prop_unit := generatedBy_unit X
+
+/-- Flatten an iterated finite biproduct. -/
+def flattenBiproduct (a b : ℕ) (f : Fin a → Fin b → C) :
+    (⨁ fun i => ⨁ fun j => f i j) ≅ ⨁ fun p : Fin a × Fin b => f p.1 p.2 :=
+  biproduct.isoProduct _ ≪≫
+    Pi.mapIso (fun i => biproduct.isoProduct (f i)) ≪≫
+    piPiIso (fun _ : Fin a => Fin b) f ≪≫
+    Pi.whiskerEquiv (f := fun p : Σ _ : Fin a, Fin b => f p.1 p.2)
+      (g := fun p : Fin a × Fin b => f p.1 p.2)
+      (Equiv.sigmaEquivProd (Fin a) (Fin b)) (fun _ => Iso.refl _) ≪≫
+    (biproduct.isoProduct _).symm
+
+variable [MonoidalPreadditive C]
+/-- Distribute tensor product over two finite biproducts. -/
+def tensorBiproduct (a b : ℕ) (f : Fin a → C) (g : Fin b → C) :
+    (⨁ f) ⊗ (⨁ g) ≅ ⨁ fun p : Fin a × Fin b => f p.1 ⊗ g p.2 :=
+  rightDistributor f (⨁ g) ≪≫
+    biproduct.mapIso (fun i => leftDistributor (f i) g) ≪≫
+    flattenBiproduct a b (fun i j => f i ⊗ g j)
+/-- Tensor products of finite sums of powers are finite sums of powers. -/
+def sumPowersTensorIso (X : C) (a b : ℕ) (k : Fin a → ℕ) (l : Fin b → ℕ) :
+    (⨁ fun i => tensorPower X (k i)) ⊗ (⨁ fun j => tensorPower X (l j)) ≅
+    ⨁ fun p : Fin (a * b) => tensorPower X
+      (k (finProdFinEquiv.symm p).1 + l (finProdFinEquiv.symm p).2) :=
+  tensorBiproduct a b (fun i => tensorPower X (k i)) (fun j => tensorPower X (l j)) ≪≫
+    biproduct.whiskerEquiv finProdFinEquiv (fun p => by
+      simpa using (tensorPowerTensorIso X (k p.1) (l p.2)).symm)
+
+/-- The generated objects are closed under tensor product. -/
+theorem generatedBy_tensor (X Y Z : C) (hY : GeneratedBy X Y) (hZ : GeneratedBy X Z) :
+    GeneratedBy X (Y ⊗ Z) := by
+  obtain ⟨a, k, ⟨rY⟩⟩ := hY
+  obtain ⟨b, l, ⟨rZ⟩⟩ := hZ
+  let r : Retract (Y ⊗ Z) ((⨁ fun i => tensorPower X (k i)) ⊗
+      (⨁ fun j => tensorPower X (l j))) :=
+    { i := rY.i ⊗ₘ rZ.i
+      r := rY.r ⊗ₘ rZ.r
+      retract := by rw [tensorHom_comp_tensorHom, rY.retract, rZ.retract, id_tensorHom_id] }
+  exact ⟨a * b, fun p => k (finProdFinEquiv.symm p).1 + l (finProdFinEquiv.symm p).2,
+    ⟨r.trans (Retract.ofIso (sumPowersTensorIso X a b k l))⟩⟩
+/-- The generated full subcategory inherits a braided monoidal structure. -/
+instance generatedBy_isMonoidal (X : C) :
+    ObjectProperty.IsMonoidal (GeneratedBy X) where
+  prop_tensor _ _ hY hZ := generatedBy_tensor X _ _ hY hZ
+
+/-- The generated inclusion inherits Mathlib's braided functor structure. -/
+@[instance_reducible] def generatedInclusionBraided (X : C) : (generatedInclusion X).Braided := inferInstance
 
 end PropertyF
