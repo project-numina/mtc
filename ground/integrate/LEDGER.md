@@ -161,3 +161,105 @@ and the frozen target remain open.
 - Calculus proves common-centralizer self-centrality and reduces integral
   dimensions to actual exterior-object trace identities. Construction and
   trace formulas of the alternating projectors remain open.
+
+## Round 3 integrated snapshot
+
+Merged fusion `ca79865`, dimensions `4af7956`, centre `6d26130`, modular
+`ee9ee20`, calculus `1870108`, and cabling `63f901e`. In particular the
+actual induction functor and forgetful adjunction are proved, as are centre
+finite length, finitely many simple representatives, and enough injectives;
+general centre semisimplicity and rigidity remain unproved. Fusion's actual
+adjunction proves the FP-square once those instances exist.
+
+`center_globalDimension_square_of_actual_induction` and
+`target_of_center_image_monodromy_no_square` combine the actual adjunction,
+FP-valued centre sphere and cabling's numerical double-centralizer argument.
+They remove global-square as an independent centre premise. Remaining premises:
+actual centre rigidity/fusion, FP-valued sphericality, invertible categorical
+S, integral dimensions on the actual symmetric core, and finite-order mixed
+monodromy for simple canonical-image retracts against labels satisfying their
+numerical S-test. The numerical fusion-subcategory double-centralizer itself
+is proved; identifying the numerical centralizer with the actual core remains
+conditional on that finite-order step. The numerical support proof does not
+establish core integrality. These are conditional reductions, not the target.
+
+The rank-one actual centre is fully rigid, fusion, positive spherical and
+modular, with the dimension-square identity. General pivotal existence for
+fusion categories remains open; pseudo-unitary spherical existence has not
+been derived here. `positive_spherical_of_pivotal_pseudoUnitary` proves it if
+an actual pivotal structure is supplied, so it cannot be applied to the
+centre without first proving both its pivotal structure and pseudo-unitarity.
+
+The integrated `PropertyF` build passed on cores 0–3 with four Lean threads;
+the expanded audit covers 392 project modules and 4,226 declarations. The
+strict target audit fails because `PropertyF.Ground.target` is missing.
+
+`target_of_integral_numerical_center_core` gives an alternate route avoiding
+mixed monodromy and actual core identification: it assumes integral dimensions
+on the numerical S-centralizer of product-retract simples and invokes the
+proved Fourier double-centralizer. `numericalProductCore_integral_of_image_monodromy`
+proves the earlier actual-core integrality and restricted finite-order
+hypotheses imply this numerical integrality. No independent proof of the new
+integrality assertion is known, and the actual core being symmetric does not by
+itself establish it for the larger numerical set.
+
+Fusion `f93cf9e` constructs centre fusion, an FP-valued spherical structure
+and the categorical square assuming centre rigidity and a compatible centre
+pivotal lift of an FP-valued base pivotal structure. Integration's
+`target_of_compatible_center_and_integral_numerical_core` uses that result
+and the numerical-core route. This avoids assuming centre pseudo-unitarity,
+but does not construct the base pivotal structure, compatible lift, rigidity,
+invertible S or numerical-core integrality. The integrated full build and
+strict project audit pass, covering 395 modules and 4,237 declarations.
+
+Symmetric-core integrality update: `CentreIntegrate.signed_cycle_count` proves
+the full signed permutation cycle polynomial identity, and
+`integral_of_cycle_traces` / `integral_of_signed_cycle_traces` connect it to
+positive categorical dimensions in both parity cases. This discharges the
+combinatorial signed-sum evaluation; the actual symmetric-group action and
+its categorical cycle-trace/parity identity remain unproved. Full project
+audit passes for the new results.
+
+Centre `62010e5` proves the dual-crossing tensor law and coevaluation
+centrality. The newer centre `f1f0122` reports actual general centre rigidity
+and must be merged; its evaluation centrality is no longer an open item once
+integrated. `CentreIntegrate.twist_sign_of_dual_and_tensor` proves the sign
+from two explicit twist identities on the simple/dual pair; those identities
+remain open and the theorem does not assume or prove a Vafa theorem.
+
+Centre `f1f0122` is now merged: `CentreRigid.rigidCenter` constructs actual
+centre rigidity unconditionally, with the dual, evaluation and coevaluation
+forgetting to the chosen base data. The reductions
+`target_of_fusion_center_integral_numerical_core` and
+`target_of_pivotal_lift_and_integral_numerical_core` discharge this formerly
+open target premise. The latest full build and strict project audit pass (413
+modules, 4,311 declarations). Fusion `f811c73` reduces compatible pivotal-lift
+existence to component centrality; it has not yet been merged here.
+
+Fusion `f811c73` and `target_of_pivotal_centrality_and_integral_numerical_core`
+replace the compatible-lift premise by explicit pivotal-component centrality
+for each centre object and base test object. The general centre rigidity is
+already constructed. Base FP-valued pivotal existence, this centrality,
+centre S invertibility and numerical-core integrality remain open. The full
+build and strict project audit pass (416 modules, 4,328 declarations).
+
+Parity progress: spherical right traces are invariant under taking duals,
+and the pivotal twist scalar of a simple equals that of its right dual.
+Self-transparent objects centralize their right duals using the generated
+subcategory. Hence the parity sign follows if the pivotal twist balancing
+equation holds on the simple/dual pair; that equation remains unproved. The
+latest full build and strict project audit pass (426 modules, 4,363 declarations).
+
+Pivotal twist balancing now reduces to the explicit tensor-pairing cap
+identity in `CentreIntegrate.drinfeld_tensor_of_pairing_cap` via
+`balance_of_drinfeld_tensor`. The double-dual evaluation comparison is
+proved; the cap identity itself remains open. Full build and project audit
+pass (427 modules, 4,366 declarations).
+
+Fusion `36bf5d8` proves the transported pivotal components are central and
+constructs the centre pivotal lift; with the actual centre rigid instance,
+centre fusion and positive sphericality follow from pseudo-unitarity and any
+base pivotal structure. `target_of_pivotal_base_and_integral_numerical_core`
+therefore retains base pivotal existence, centre S invertibility and numerical
+core integrality as explicit obligations. The full build and project audit pass
+(432 modules, 4,394 declarations).

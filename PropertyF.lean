@@ -314,6 +314,10 @@ public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.ForgetDualNaturality
 public import PropertyF.Ground.CentreInduction.ForgetDualTensor
 public import PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
+public import PropertyF.Ground.CentreInduction.PivotalLift
+public import PropertyF.Ground.CentreInduction.PositivePivotal
+public import PropertyF.Ground.CentreInduction.DoubleBraiding
+public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.CentreInduction.RankOneComplete
 
@@ -346,6 +350,8 @@ public import PropertyF.Ground.CentreCalculus.PureSquares
 public import PropertyF.Ground.CentreCalculus.PermutationQuotient
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
 public import PropertyF.Ground.CentreCalculus.ParityCorrection
+public import PropertyF.Ground.CentreCalculus.FirstCrossingTrace
+public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 public import PropertyF.Ground.CentreCabling.ProductGenerated
 public import PropertyF.Ground.CentreCabling.SCentrality
 public import PropertyF.Ground.CentreCabling.FusionCentralizer
@@ -361,11 +367,18 @@ public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.CentreCabling.CoreCentrality
 public import PropertyF.Ground.CentreCabling.TargetReduction
 
-/-! Formalization of `paper/property-f-simplified.pdf`.
-The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
-Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
-See `FORMALIZATION.md` for the complete assumption ledger.
--/
+public import PropertyF.Ground.Integrate.CenterSquareReduction
+public import PropertyF.Ground.Integrate.NumericalCoreReduction
+public import PropertyF.Ground.Integrate.CompatibleCenterReduction
+public import PropertyF.Ground.Integrate.RigidCenterReduction
+public import PropertyF.Ground.Integrate.PivotalCentralityReduction
+public import PropertyF.Ground.Integrate.PivotalOnlyReduction
+public import PropertyF.Ground.CentreIntegrate.CycleTraceReduction
+public import PropertyF.Ground.CentreIntegrate.TwistSign
+public import PropertyF.Ground.CentreIntegrate.TwistDual
+public import PropertyF.Ground.CentreIntegrate.TwistBalancing
+
+
 
 
 public import PropertyF.Ground.CentreRigid.SimpleCentrality
@@ -381,7 +394,6 @@ public import PropertyF.Ground.CentreRigid.Coevaluation
 public import PropertyF.Ground.CentreRigid.Tensor
 
 public import PropertyF.Ground.CentreRigid.Evaluation
-
 public import PropertyF.Ground.CentreRigid.ForgetComparison
 
 public import PropertyF.Ground.CentreBundle.Canonical
@@ -398,3 +410,16 @@ public import PropertyF.Ground.CentreRigid.WindingTensor
 public import PropertyF.Ground.CentreRigid.NestedTrace
 
 public import PropertyF.Ground.CentreRigid.LoopIdempotent
+public import PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
+public import PropertyF.Ground.Dimensions.DefectAssociativity
+public import PropertyF.Ground.Dimensions.DefectSliding
+public import PropertyF.Ground.Dimensions.DefectExtension
+public import PropertyF.Ground.Dimensions.ENOInvolution
+public import PropertyF.Ground.Dimensions.BraidingCapSlide
+public import PropertyF.Ground.Dimensions.DualBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualBraiding
+/-! Formalization of `paper/property-f-simplified.pdf`.
+The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
+Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
+See `FORMALIZATION.md` for the complete assumption ledger.
+-/
