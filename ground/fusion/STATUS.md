@@ -64,6 +64,11 @@
   target's spectral-radius dimensions are exactly that positive character.
   This uses `Dimensions.character_norm_le_fpSimple` from dimensions commit
   e5a83b8 and `complex_eigenvalue_le_positive_eigenvalue` for the reverse bound.
+- `Ground.fusionMatrix_dual`, `fpSimple_dual`, and `one_le_fpSimple`: simple
+  FP dimensions are invariant under duals and at least one.
+- `Ground.fusionData`, `fusionData_globalFPDimension`: every field of the
+  earlier `FusionData` is constructed from the genuine target category; this
+  compatibility bridge is separate from the strict target dependency cone.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -82,9 +87,10 @@ Mathlib has categorical Schur's lemma but a source search found no general
 Perron–Frobenius theorem for positive matrices. Existence, uniqueness and
 agreement of the target dimensions with the positive character are proved.
 
-Construction of `FusionData`, object tensor/dual/inclusion invariance, and the
-centre dimension comparison remain. The project-scale remaining effort is
-substantial; no credible completion-time estimate is yet available.
+Object tensor/dual/inclusion invariance, spectral-dimension independence of
+chosen representatives, and the centre dimension comparison remain. The
+project-scale remaining effort is substantial; no credible completion-time
+estimate is yet available.
 
 Integration requires the target dependency cone to avoid the old hypothesis
 bundles entirely. The above results currently use `FusionData` and must be
