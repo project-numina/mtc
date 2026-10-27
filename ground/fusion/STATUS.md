@@ -151,11 +151,18 @@ The separate compatibility bridge constructs the old `FusionData`.
 - `CentreInduction.center_finite_simple_sum_of_loop_centrality` proves every
   centre object is a finite iterated binary sum of simple objects under the
   same explicit assumptions, by induction on endomorphism-space dimension.
-  Conversion to the bundle’s chosen-label presentation remains open.
+  `finiteSimpleSum_biproduct` converts the binary sums into finite indexed
+  biproducts.
 - `CentreInduction.finite_simple_labels_of_adjunction_and_loop` proves a finite
   set of actual centre simples covers all simple objects, using the explicit
   unproved right adjoint and loop-sliding identity. The result does not
-  construct either assumption.
+  construct either assumption. `finite_semisimple_of_adjunction_and_loop`
+  deduplicates these labels and groups multiplicities into the exact ground
+  fusion interface; `fusion_of_adjunction_and_loop` supplies the fusion
+  instance once centre rigidity is supplied.
+- `globalFPDimension_square_of_assembled_fusion` combines that instance
+  with the FP-square calculation, still assuming the adjoint, the induction
+  object isomorphisms, and the loop-sliding identity.
 - `CentreInduction.retract_of_adjunction_and_loop` derives the required
   centre-object retract from the forgetful right adjoint and the same unproved
   loop-sliding identity, using faithfulness of forget.
