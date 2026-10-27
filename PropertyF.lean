@@ -4,6 +4,7 @@ public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
 public import PropertyF.Ground.Calculus.ImageMaps
+public import PropertyF.Ground.Calculus.EndBlocks
 public import PropertyF.Ground.Calculus.CategoricalTrace
 public import PropertyF.Ground.Calculus.PartialTrace
 public import PropertyF.Ground.Calculus.FiniteOrder
