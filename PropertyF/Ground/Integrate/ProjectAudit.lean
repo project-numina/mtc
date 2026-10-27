@@ -479,7 +479,6 @@ import all PropertyF.Ground.Integrate.CenterDualMate
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterProductBridge
-import all PropertyF.Ground.Integrate.CenterReduction
 import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
@@ -497,7 +496,6 @@ import all PropertyF.Ground.Integrate.FunctorUniverse
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
-import all PropertyF.Ground.Integrate.OverlapReduction
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
@@ -606,9 +604,6 @@ run_cmd do
       ``PropertyF.Ground.galois_unit_self_entry,
       ``PropertyF.Ground.target_of_numerical_witnesses,
       ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
-      ``PropertyF.Ground.target_of_spherical_and_witness,
-      ``PropertyF.Ground.target_of_canonical_spherical_and_witness,
-      ``PropertyF.Ground.target_of_canonical_spherical_and_center,
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,
@@ -622,8 +617,6 @@ run_cmd do
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
       ``PropertyF.Ground.Integrate.dualCrossing_unit,
       ``PropertyF.Ground.rigidity_of_twisted_overlap,
-      ``PropertyF.Ground.target_of_canonical_spherical_center_and_overlap,
-      ``PropertyF.Ground.target_of_spherical_existence_center_and_overlap,
       ``PropertyF.Ground.target_of_center_and_overlap,
       ``PropertyF.Ground.target_of_modular_center,
       ``PropertyF.Ground.target_of_center_centralizers,

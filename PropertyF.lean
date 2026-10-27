@@ -219,7 +219,6 @@ public import PropertyF.Ground.Integrate.ScalarTwistNorm
 public import PropertyF.Ground.Integrate.FPConjugates
 public import PropertyF.Ground.Integrate.FunctorUniverse
 public import PropertyF.Ground.Integrate.TwistedRigidity
-public import PropertyF.Ground.Integrate.OverlapReduction
 public import PropertyF.Ground.Integrate.CenterOnlyReduction
 public import PropertyF.Ground.Integrate.CenterReductionComplete
 public import PropertyF.Ground.Integrate.CenterCentralizers
