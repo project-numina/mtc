@@ -13,6 +13,9 @@ fusion and dimensions review; unresolved mathematical obligations are noted belo
 Mathlib’s Drinfeld centre, at object universe `max u v`; one construction
 serves all Galois automorphisms. `Integrate.center_forget_fpDimension` applies
 once the centre rigid and fusion instances are constructed.
+`Integrate.dualCrossingIso` constructs a unit-normalized natural candidate
+for dual centre objects; its tensor law and centrality of evaluation and
+coevaluation remain unproved.
 `target_of_center_product_retracts` explicitly transfers property F from
 actual product retracts through a faithful braided functor into the centre.
 The remaining categorical assumptions are listed in
@@ -101,7 +104,7 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 Latest merged snapshots: fusion f175963; dimensions de99790; calculus 9ea993f;
 centre 21f99af; modular 07408af; cabling 1d72ebb. The full development build
-passed; `ProjectAudit` scans 3,233 integrated public and private declarations, all with only the
+passed; `ProjectAudit` scans 3,242 integrated public and private declarations, all with only the
 standard axioms. The strict target audit correctly fails because `Ground.target`
 is absent. This is not a proof of the target.
 

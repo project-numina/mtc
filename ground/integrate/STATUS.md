@@ -77,7 +77,7 @@
   on a finite tensor-product basis. `Example.target_hypotheses_inhabited`
   proves that both target hypotheses hold simultaneously for this category.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans 3,233 integrated public and private declarations for forbidden axioms.
+- `ProjectAudit` scans 3,242 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and
@@ -86,6 +86,11 @@
 
 ## In progress
 
+- `Integrate.dualCrossingIso` gives a unit-normalized natural candidate
+  on a centre object’s chosen dual. Its tensor half-braiding law and the
+  centre evaluation/coevaluation equations remain open; expanding the
+  adjunction mates produces a large coherence identity involving both dual
+  pairings and the original half-braiding. No rigid-centre instance is claimed.
 - Wire genuine centre fusion, positive spherical, dimension, S invertibility,
   centralizer and finite-image constructions as they arrive.
 - Continue validating mathematical interfaces and exercising the final
