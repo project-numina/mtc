@@ -26,7 +26,9 @@
   decomposition of tensor powers of sums of powers into tuple-indexed
   tensor-power blocks. `pureWord_preserves_tupleBlocks` and
   `pureTupleBlockAction_ker_le` reduce pure-word block preservation to
-  the generator permutation law.
+  the generator permutation law. `sumPowersCablingWitness` constructs
+  the full witness from that law and membership of pure block restrictions
+  in the corresponding X braid images.
 - `CablingWitness.of_retract` and `cabling_of_sumPowers` reduce all generated
   objects to proving the cabling diagram only for finite sums of powers.
 
@@ -63,8 +65,9 @@
 
 ## In progress
 
-- Construct the categorical pure-word map to cabled images and prove its
-  kernel containment for a retract of a sum of powers.
+- Prove the categorical crossing-generator block permutation law and that
+  each pure block restriction belongs to its X braid image. These are the
+  exact remaining inputs to `sumPowersCablingWitness`.
 
 ## Remaining
 
