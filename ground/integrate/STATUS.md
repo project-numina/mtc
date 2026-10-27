@@ -2,6 +2,19 @@
 
 ## Done
 
+- `weaklyIntegral_of_positive_modular_propertyF` proves the non-degenerate
+  special case directly in the original category given a positive spherical
+  structure and invertible S; no centre is used. It does not establish the
+  frozen target for arbitrary degenerate braided categories.
+- `categoricalS_det_eq_zero_of_transparent_column` shows a non-unit simple
+  with transparent S-column makes S singular, formalizing the obstruction to
+  applying the direct proof unchanged to a subcategory with nontrivial core.
+- Merged dimensions 5646fbb, cabling 3ddf985, and fusion 4bd27d9; the full
+  merged library built. Expanded both audit import lists to cover all newly
+  merged modules; `ProjectAudit` passed for 3,569 declarations and checked the
+  direct theorem's dependency cone. The target audit still fails correctly:
+  `PropertyF.Ground.target` is missing.
+
 - `PropertyF.Ground.IsFusionCategory`, `BraidedFusionCategory`, `fusionMatrix`,
   `fpSimple`, `globalFPDimension`, `doubleDualIso`, `unitScalar`, `squaredNorm`,
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
@@ -84,13 +97,35 @@
   uninspected-module negative tests both pass. `scripts/audit-target.sh`
   rejects a missing final theorem and checks its type, dependencies, and axioms.
 
+- `target_of_actual_center_generated` wires the proved equivalence between
+  actual product retracts and the tensor/sum/retract closure of the canonical
+  centre images into the final reduction. The double-centralizer membership
+  assertion remains unproved.
+- Merged round-2 centre, fusion, modular, calculus and cabling snapshots. The
+  centre fusion bundle follows from rigidity plus finite semisimplicity; centre
+  rigidity is reduced to the dual mate tensor law and centrality of evaluation
+  and coevaluation. The centre FP-square follows from a right adjoint to
+  forgetful with the stated underlying objects; the adjoint remains unbuilt.
+
 ## In progress
+
+- For the general target, the elementary viable route remains a positive
+  spherical modular extension with the required Galois-column finite images.
+  The existing `target_of_modular_center` permits an abstract extension of the
+  specified global dimension, while `target_of_actual_center` asks for the
+  actual Mathlib centre. The direct modular proof avoids centre theory only
+  when C itself has invertible S; restricting to the generated subcategory
+  does not generally preserve non-degeneracy because its symmetric core can
+  contain non-unit simples. No general smaller extension is constructed.
 
 - `Integrate.dualCrossingIso` gives a unit-normalized natural candidate
   on a centre object’s chosen dual. Its tensor half-braiding law and the
   centre evaluation/coevaluation equations remain open; expanding the
   adjunction mates produces a large coherence identity involving both dual
   pairings and the original half-braiding. No rigid-centre instance is claimed.
+- Centre pseudo-unitarity needs an independent route: FP-square plus the
+  current categorical-square result cannot establish it without assuming the
+  very positive spherical structure that ENO would then construct.
 - Wire genuine centre fusion, positive spherical, dimension, S invertibility,
   centralizer and finite-image constructions as they arrive.
 - Continue validating mathematical interfaces and exercising the final
