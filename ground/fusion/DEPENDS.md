@@ -14,18 +14,22 @@ These describe proof obligations, not axioms or assumptions in the target.
 
 ## Round 2
 
-- Centre: rigid and `IsFusionCategory` instances on the actual Mathlib centre
-  (including semisimplicity and finite simple representatives). Fusion's
-  `CentreInduction.globalFPDimension_square_of_induction` also requires, for
-  every base simple, an actual centre object whose underlying object is
-  `CentreInduction.underlying`, and the Hom-dimension equality given by the
-  adjunction to forget; fusion now constructs these using `induction` and
-  `actualAdjunction`. Fusion still proves centre semisimplicity conditional
-  on its own open loop-sliding equation.
-- Dimensions: the nonzero spherical global dimension and relevant trace
-  identities for the averaging splitting may be needed to prove semisimplicity.
-
-- Fusion's own outstanding `CentreInduction.SimpleLoopCentrality` is the
-  explicit finite loop-sliding equation for arbitrary underlying maps. Under
-  that identity, a spherical structure on C and nonzero global dimension,
-  the proved averaging construction splits all centre monos and epis.
+- Centre: construct rigidity for the actual Mathlib centre. For the alternate
+  semisimplicity route, construct a pivotal structure on that centre and show
+  its trace on `induction C (𝟙_ C.Obj)` maps to the base trace, or directly
+  construct a centre cap on this induced object whose composite with its
+  coevaluation is nonzero. These are precise remaining external interfaces;
+  see `center_fusion_of_positive_compatible_pivotal` and
+  `center_fusion_of_nonzero_induced_cap`.
+- Dimensions: construct a positive base pivotal structure for the relevant
+  pseudo-unitary category. Fusion proves its trace on the underlying induced
+  unit is FPdim(C), hence nonzero.
+- Fusion constructs the actual induction functor and forgetful right adjunction,
+  finite-dimensional centre Homs, Artinian/Noetherian centre objects, and
+  finite simple representatives. Once centre rigidity and either the pivotal
+  compatibility or the internal loop-sliding proof is supplied, the existing
+  constructions produce centre semisimplicity/fusion and the global FP square.
+- Fusion's own alternative `SimpleLoopCentrality` is the explicit finite
+  weighted-loop sliding equation for arbitrary underlying maps. It remains
+  unproved. Together with sphericality and nonzero global dimension, it
+  yields splitting independently of the pivotal-lift route.

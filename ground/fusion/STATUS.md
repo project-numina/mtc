@@ -173,6 +173,8 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   trace as FPdim(C) for a positive base pivotal structure, and
   `center_fusion_of_positive_compatible_pivotal` reduces fusion to one
   explicit trace-compatibility equality for a centre pivotal structure.
+  `center_induction_retract_of_positive_compatible_pivotal` also splits the
+  actual adjunction unit for every centre object under the same assumptions.
   Constructing that pivotal structure/compatibility or proving averaging-loop
   sliding remains open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
@@ -300,3 +302,14 @@ mathematical premises described above are still unproved.
   conditional adjunction/fusion/FP-square, and rank-one FP-square results
   returned only `propext`, `Classical.choice`, and `Quot.sound`. These checks
   do not discharge the explicit general induction and sliding premises.
+
+## Round 2 latest verification
+
+Focused builds passed for `InducedTrace` and its dependencies; the root
+`PropertyF.lean` checked successfully using the assigned cores. `#print axioms`
+for `induction`, `actualAdjunction`, `finite_simple_representatives`,
+`center_enough_injectives`, `globalFPDimension_square_of_actual_induction`,
+and `center_fusion_of_positive_compatible_pivotal` reported only
+`propext`, `Classical.choice`, and `Quot.sound`. The latter fusion result
+still assumes the explicit centre pivotal trace compatibility, and the FP
+square assumes centre rigidity and fusion.
