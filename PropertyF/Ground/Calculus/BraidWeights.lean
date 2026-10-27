@@ -2,6 +2,7 @@ module
 public import PropertyF.Ground.Calculus.EndTrace
 public import PropertyF.Ground.Calculus.UnitaryBlocks
 public import PropertyF.Ground.Calculus.RepresentationTrace
+public import PropertyF.Ground.Calculus.WeightFacts
 
 /-! Multiplicity weights for the pivotal trace on finite braid-image blocks. -/
 
@@ -80,5 +81,47 @@ theorem pivotalTrace_braid_multiplicities
   apply Finset.sum_congr rfl
   intro i _
   ring
+
+/-- Finite categorical braid images admit unitary blocks and natural-number
+multiplicities with the actual pivotal trace formula and retention. -/
+theorem exists_unitary_braid_trace_blocks
+    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (hfinite : Finite (braidImage X n))
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
+    ∃ (r : ℕ) (d : Fin r → ℕ)
+      (b : braidAlgebra X n ≃ₐ[ℂ] ∀ j, Matrix (Fin (d j)) (Fin (d j)) ℂ)
+      (mult : Fin (Ground.rank C) → Fin r → ℕ),
+      (∀ j, 0 < d j) ∧
+      (∀ g j, b (groupInImage (braidEndRepresentation X n) g) j ∈
+        Matrix.unitaryGroup (Fin (d j)) ℂ) ∧
+      (∀ j, ∃ i, 0 < mult i j) ∧
+      (∀ i, Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2)) =
+        ∑ j, mult i j * d j) ∧
+      ∀ a : braidAlgebra X n,
+        scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
+          ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
+            (b a j).trace := by
+  let m : Fin (Ground.rank C) → ℕ := fun i =>
+    Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
+  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
+  obtain ⟨r, d, b, hnonzero, hunitary⟩ := braidAlgebra_unitary_blocks X n hfinite
+  have hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
+  obtain ⟨mult, hret, hdim, htrace⟩ :=
+    pivotalTrace_braid_multiplicities C X n p scalar m e r d hd b
+  exact ⟨r, d, b, mult, hd, hunitary, hret, hdim, htrace⟩
+
+/-- If the actual categorical dimensions are Galois transforms of positive
+original dimensions, every retained categorical braid-trace weight is nonzero. -/
+theorem categorical_transported_weight_ne_zero
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
+    (σ : ℂ ≃+* ℂ) (original : Fin (Ground.rank C) → ℝ)
+    (hpositive : ∀ i, 0 < original i)
+    (htransport : ∀ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) = σ (original i : ℂ))
+    {r : ℕ} (mult : Fin (Ground.rank C) → Fin r → ℕ)
+    (hretained : ∀ j, ∃ i, 0 < mult i j) (j : Fin r) :
+    (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) ≠ 0 := by
+  simp_rw [htransport]
+  exact transported_weight_ne_zero (fun i => mult i j) original σ hpositive (hretained j)
 
 end PropertyF.Ground.Calculus
