@@ -18,6 +18,7 @@ import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.Trace
+import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Modular.BraidIso
 import all PropertyF.Ground.Modular.BraidFunctor
@@ -27,6 +28,7 @@ import all PropertyF.Ground.Modular.Labels
 import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.SMatrix
 import all PropertyF.Ground.Modular.DimensionNonzero
+import all PropertyF.Ground.Modular.UnitDimension
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
 import all PropertyF.Ground.Modular.PseudoGalois
 import all PropertyF.Ground.Integrate.DependencyAudit
@@ -49,6 +51,7 @@ run_cmd do
       ``PropertyF.Ground.Modular.categoricalS_symmetric,
       ``PropertyF.Ground.Modular.categoricalS_unit,
       ``PropertyF.Ground.Modular.simpleDimension_ne_zero,
+      ``PropertyF.Ground.Modular.simpleDimension_unit,
       ``PropertyF.Ground.Modular.categoricalS_galois_action,
       ``PropertyF.Ground.Modular.galois_unit_properties,
       ``PropertyF.Ground.Modular.categoricalS_galois_action_pseudoUnitary,
