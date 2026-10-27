@@ -219,3 +219,5 @@ The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
+
+public import PropertyF.Ground.Dimensions.RootDualLabel
