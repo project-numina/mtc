@@ -7,6 +7,11 @@ public import PropertyF.Ground.Fusion.Splitting
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
+public import PropertyF.Ground.Calculus.ImageMaps
+public import PropertyF.Ground.Calculus.BraidTraceBound
+public import PropertyF.Ground.Calculus.CategoricalTrace
+public import PropertyF.Ground.Calculus.PartialTrace
+public import PropertyF.Ground.Calculus.FiniteOrder
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.FusionDimensionField
@@ -28,10 +33,6 @@ public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
 public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Witness
-public import PropertyF.Ground.Calculus.ImageMaps
-public import PropertyF.Ground.Calculus.CategoricalTrace
-public import PropertyF.Ground.Calculus.PartialTrace
-public import PropertyF.Ground.Calculus.FiniteOrder
 public import PropertyF.Ground.Cabling.Images
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.Pivotal
