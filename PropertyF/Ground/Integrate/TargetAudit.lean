@@ -43,7 +43,6 @@ import all PropertyF.Ground.CentreRigid.WindingTensor
 import all PropertyF.Ground.Dimensions.DefectBraiding
 import all PropertyF.Ground.Dimensions.DefectTraceBraiding
 import all PropertyF.Ground.Dimensions.DrinfeldTensorCap
-import all PropertyF.Ground.Integrate.CapCenterReduction
 import all PropertyF.Ground.CentreInduction.DirectDual
 import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.Integrate.PivotalBalancedReduction
@@ -148,7 +147,6 @@ import all PropertyF.Ground.CentreCalculus.GeneratorSquare
 import all PropertyF.Ground.CentreCalculus.ParityCorrection
 import all PropertyF.Ground.CentreCalculus.PermutationQuotient
 import all PropertyF.Ground.CentreCalculus.ProjectorReduction
-import all PropertyF.Ground.CentreCalculus.PureSquares
 import all PropertyF.Ground.CentreDimensions.BraidingTrace
 import all PropertyF.Ground.CentreDimensions.InvolutionTrace
 import all PropertyF.Ground.CentreDimensions.PivotalTwist
@@ -232,7 +230,6 @@ import all PropertyF.Ground.Dimensions.SphericalPivotalDual
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
 import all PropertyF.Ground.Integrate.NumericalCoreReduction
-import all PropertyF.Ground.Integrate.FourthDualCenterReduction
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
