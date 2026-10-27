@@ -119,3 +119,4 @@ public import PropertyF.Ground.Calculus.GaloisOverlap
 public import PropertyF.Ground.Calculus.GaloisRigidity
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Calculus.ReversePower
+public import PropertyF.Ground.Calculus.SharpRigidity
