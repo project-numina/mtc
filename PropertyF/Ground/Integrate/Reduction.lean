@@ -58,4 +58,21 @@ theorem target_of_numerical_witnesses
   exact galois_fixed_of_smaller_conjugate_witness (globalFPDimension C)
     (hPositive C hPU hF) (hConjugates C hPU hF) (hWitness C hPU hF)
 
+/-- The unit simple proves positivity, leaving only the bounded-conjugate and
+centre/rigidity witness obligations. -/
+theorem target_of_bounded_conjugates_and_witness
+    (hConjugates : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ, ∃ a : ℝ,
+        0 < a ∧ a ≤ globalFPDimension C ∧
+          σ (globalFPDimension C : ℂ) = (a : ℂ))
+    (hWitness : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ (σ : ℂ ≃+* ℂ) (a b : ℝ),
+        0 < a → a < globalFPDimension C →
+        σ (globalFPDimension C : ℂ) = (a : ℂ) →
+        σ.symm (globalFPDimension C : ℂ) = (b : ℂ) →
+        ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧
+          f * b = globalFPDimension C ∧ 1 ≤ f ∧ f = |d|) :
+    TargetStatement.{v,u} :=
+  target_of_numerical_witnesses (fun C _ _ => lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C)) hConjugates hWitness
+
 end PropertyF.Ground

@@ -9,10 +9,10 @@ identification and independence obligations listed below remain open.
 
 ## Target and dependency graph
 
-`target_of_numerical_witnesses` reduces the frozen statement to three explicit
-categorical obligations: positive global FP dimension; positive, bounded real
-conjugates; and a centre/rigidity witness for each strictly smaller conjugate.
-The numerical contradiction is now bundle-free and proved. Global FP
+`target_of_bounded_conjugates_and_witness` reduces the frozen statement to two
+explicit categorical obligations: positive, bounded real conjugates and a
+centre/rigidity witness for each strictly smaller conjugate. Global FP positivity
+is proved from the tensor unit; the numerical contradiction is bundle-free. Global FP
 invariance under semilinear braided equivalence is proved by
 `Modular.conjugate_globalFPDimension`.
 

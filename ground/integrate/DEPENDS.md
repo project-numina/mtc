@@ -1,13 +1,10 @@
 # Integration dependencies
 
-All items below are explicit, temporary arguments to
-`Ground.target_of_numerical_witnesses`; none is an assumption in the frozen
+All remaining items below are explicit, temporary arguments to
+`Ground.target_of_bounded_conjugates_and_witness`; none is an assumption in the frozen
 `TargetStatement`. Their exact Lean types are in
 `PropertyF/Ground/Integrate/Reduction.lean`.
 
-- `hPositive`: `0 < globalFPDimension C` for pseudo-unitary property-F C.
-  Owner: fusion (positivity of spectral FP dimensions; this is expected for all
-  ground fusion categories).
 - `hConjugates`: for each automorphism σ, `σ (globalFPDimension C)` is a
   positive real number at most the original global FP dimension. Owner:
   dimensions (pseudo-unitary canonical spherical structure, transport, real
@@ -21,6 +18,7 @@ All items below are explicit, temporary arguments to
   positive spherical structure and trace/dimension transport. This is the
   paper's specific centre/rigidity intermediate conclusion, not target fixedness.
 
-The last sum/integrality step, Galois transport of property F and global FP
+Fusion has proved `one_le_globalFPDimension` directly from the unit fusion
+matrix, so global FP positivity is discharged. The last sum/integrality step, Galois transport of property F and global FP
 invariance, and the numerical contradiction are proved without old input
 structures. `ground/integrate/LEDGER.md` details all underlying old fields.
