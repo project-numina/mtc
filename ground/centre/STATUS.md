@@ -51,6 +51,15 @@ interface from centre rigidity and the explicit finite semisimple decomposition;
 finite Hom spaces and simple unit are proved from C. This is conditional on
 the stated decomposition, which fusion owns, and on centre rigidity.
 
+`CentreRigid.dualObject`, `liftedPairing`, and `rigidOfMateCoherence`
+construct the actual centre duals and rigidity conditional on the explicit
+three mate-coherence equations. Triangle identities are proved by forgetting,
+and the chosen right evaluation and coevaluation forget to the original maps
+by definition. `dualCrossing_tensor_unit_left` and
+`dualCrossing_tensor_unit_right` prove both unit cases of the crossing tensor
+law from naturality and unit normalization. The general tensor law and both
+centrality equations remain unproved.
+
 ## In progress
 
 Prove `ProductRetract` is closed under duals and agrees with the generated fusion subcategory; investigate centre rigidity and semisimplicity. For the exterior-power route construct the symmetric-group action and compute the trace of the alternating projector; Mathlib does not appear to provide the needed action or symmetric-group presentation directly.
