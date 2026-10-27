@@ -57,6 +57,7 @@ public import PropertyF.Ground.Dimensions.FourthDualRoots
 public import PropertyF.Ground.Dimensions.DoubleDualFunctor
 public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Dimensions.PivotalTwist
+public import PropertyF.Ground.Dimensions.SignCharacter
 public import PropertyF.Ground.Dimensions.NaturalRoots
 public import PropertyF.Ground.Dimensions.PivotalUniqueness
 public import PropertyF.Ground.Dimensions.PositiveCanonical
