@@ -6,6 +6,7 @@ public import PropertyF.Transfer
 public import PropertyF.Ground.Centre.Embeddings
 public import PropertyF.Ground.Centre.Linear
 public import PropertyF.Ground.Centre.ReverseBraiding
+public import PropertyF.Ground.Centre.Product
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
