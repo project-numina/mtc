@@ -316,3 +316,9 @@ and `center_fusion_of_positive_compatible_pivotal` reported only
 `propext`, `Classical.choice`, and `Quot.sound`. The latter fusion result
 still assumes the explicit centre pivotal trace compatibility, and the FP
 square assumes centre rigidity and fusion.
+
+- Merged dimensions commit `7bd5788`: `rankOne_centerRigid` constructs the
+  actual centre rigidity instance in rank one. `rankOne_induction_unit_isIso`
+  and `rankOne_induction_retract` show the actual induction unit is an
+  isomorphism and splits in this case; `rankOne_center_fp_square` now proves
+  the FP square with no centre-rigidity or centre-fusion premise in rank one.
