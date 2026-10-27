@@ -152,3 +152,11 @@ actual-centre double-centralizer/product-retract test with only that remaining
 finite-order premise, alongside centre fusion/positive spherical/nondegenerate
 S prerequisites. Symmetric-core dimension integrality is calculus's separate
 unfinished obligation. Focused build passed.
+
+`symmetricCore_underlying_transparent` identifies each actual core label's
+underlying base object as transparent; `symmetricCore_subset_productLabels`
+shows every core label is a product retract; and
+`symmetricCore_dimension_eq_underlying_fp` identifies its positive centre
+simple dimension with the underlying object's base FP dimension. These supply
+calculus's core-integrality bridge without choosing a spherical structure on C.
+Focused build passed.

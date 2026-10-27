@@ -20,6 +20,40 @@ def symmetricCore : Set (Fin (rank (Integrate.bundledCenter C))) :=
     (∀ X : C.Obj, Centre.Centralizes (simples (Integrate.bundledCenter C) y)
       ((Centre.negative C.Obj).obj X))}
 
+/-- A core object lies over a transparent base object and is isomorphic to
+its positive canonical image. -/
+theorem symmetricCore_underlying_transparent
+    (y : Fin (rank (Integrate.bundledCenter C))) (hy : y ∈ symmetricCore C) :
+    Transparent (simples (Integrate.bundledCenter C) y).1 := by
+  exact transparent_of_both_centralizers _
+    ((Centre.centralizes_positive_image_iff _).mp hy.1)
+    ((Centre.centralizes_negative_image_iff _).mp hy.2)
+
+/-- Every core label is itself a product-retract label. -/
+theorem symmetricCore_subset_productLabels
+    (y : Fin (rank (Integrate.bundledCenter C))) (hy : y ∈ symmetricCore C) :
+    y ∈ productLabels C := by
+  apply (mem_productLabels C y).mpr
+  let Y := simples (Integrate.bundledCenter C) y
+  let e := Centre.positiveIsoOfCentralizesNegative Y hy.2
+  exact Centre.productRetract_of_retract (Retract.ofIso e)
+    (Centre.positive_productRetract Y.1)
+
+/-- The positive spherical dimension of a core label equals the FP dimension
+of its underlying transparent base object. -/
+theorem symmetricCore_dimension_eq_underlying_fp
+    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
+    (hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) p i =
+      (fpSimple (Integrate.bundledCenter C) i : ℂ))
+    (y : Fin (rank (Integrate.bundledCenter C))) :
+    Modular.simpleDimension (Integrate.bundledCenter C) p y =
+      (fpDimension C (simples (Integrate.bundledCenter C) y).1 : ℂ) := by
+  rw [hdim]
+  have heq := Integrate.center_forget_fpDimension C (simples (Integrate.bundledCenter C) y)
+  change fpDimension C (simples (Integrate.bundledCenter C) y).1 = _ at heq
+  rw [fpDimension_simple] at heq
+  exact_mod_cast heq.symm
+
 /-- Finite order of mixed monodromies turns the numerical centralizer of all
 product labels into the actual symmetric core. -/
 theorem numericalProductCentralizer_subset_symmetricCore
