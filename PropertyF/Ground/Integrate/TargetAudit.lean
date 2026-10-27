@@ -208,6 +208,7 @@ import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
 import all PropertyF.Ground.Integrate.ScalarTwistModular
+import all PropertyF.Ground.Integrate.ScalarTwistNorm
 import all PropertyF.Ground.Integrate.ScalarTwistTransport
 import all PropertyF.Ground.Integrate.StrandInclusion
 import all PropertyF.Ground.Integrate.TwistedRigidity

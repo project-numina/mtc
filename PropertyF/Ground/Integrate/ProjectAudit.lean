@@ -230,6 +230,7 @@ import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
 import all PropertyF.Ground.Integrate.ScalarTwistModular
+import all PropertyF.Ground.Integrate.ScalarTwistNorm
 import all PropertyF.Ground.Integrate.ScalarTwistTransport
 import all PropertyF.Ground.Integrate.StrandInclusion
 import all PropertyF.Ground.Integrate.TwistedRigidity
@@ -343,6 +344,7 @@ run_cmd do
       ``PropertyF.Ground.ScalarTwist.conjugate,
       ``PropertyF.Ground.ScalarTwist.labels,
       ``PropertyF.Ground.ScalarTwist.labels_S,
+      ``PropertyF.Ground.ScalarTwist.globalDimension_twist,
       ``PropertyF.Ground.rigidity_of_twisted_overlap,
       ``PropertyF.Ground.target_of_canonical_spherical_center_and_overlap,
       ``PropertyF.Ground.target_of_spherical_existence_center_and_overlap,
