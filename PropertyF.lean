@@ -4,11 +4,10 @@ public import PropertyF.Ground.Target
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
-public import PropertyF.Ground.Calculus.RightStrand
+public import PropertyF.Ground.Calculus.ThreeEmbedding
 public import PropertyF.Ground.Calculus.BraidTraceBound
 public import PropertyF.Ground.Calculus.CategoricalTrace
 public import PropertyF.Ground.Calculus.PartialTrace
-public import PropertyF.Ground.Calculus.ThreeBraid
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Witness
