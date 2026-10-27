@@ -18,6 +18,7 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -33,9 +34,15 @@ import all PropertyF.GaloisSymmetry
 import all PropertyF.Ground.Cabling.Blocks
 import all PropertyF.Ground.Cabling.CableRetract
 import all PropertyF.Ground.Cabling.CablingDiagram
+import all PropertyF.Ground.Cabling.CablingFinite
 import all PropertyF.Ground.Cabling.DualClosure
 import all PropertyF.Ground.Cabling.ENOArithmetic
+import all PropertyF.Ground.Cabling.FusionCycle
+import all PropertyF.Ground.Cabling.GeneralDual
 import all PropertyF.Ground.Cabling.Generated
+import all PropertyF.Ground.Cabling.GeneratedAbelian
+import all PropertyF.Ground.Cabling.GeneratedDimension
+import all PropertyF.Ground.Cabling.GeneratedFusion
 import all PropertyF.Ground.Cabling.Images
 import all PropertyF.Ground.Cabling.Inclusion
 import all PropertyF.Ground.Cabling.MixedBraid
@@ -50,6 +57,8 @@ import all PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.Cabling.TensorComponents
 import all PropertyF.Ground.Cabling.TensorDecomposition
 import all PropertyF.Ground.Cabling.TransportTuple
+import all PropertyF.Ground.Cabling.TupleCrossing
+import all PropertyF.Ground.Cabling.UnitBraid
 import all PropertyF.Ground.Cabling.UnitPower
 import all PropertyF.Ground.Cabling.Witness
 import all PropertyF.Ground.Cabling.Zero
@@ -66,6 +75,8 @@ import all PropertyF.Ground.Calculus.GroupBlocks
 import all PropertyF.Ground.Calculus.ImageMaps
 import all PropertyF.Ground.Calculus.Intertwining
 import all PropertyF.Ground.Calculus.Overlap
+import all PropertyF.Ground.Calculus.OverlapBound
+import all PropertyF.Ground.Calculus.OverlapCoherence
 import all PropertyF.Ground.Calculus.OverlapTrace
 import all PropertyF.Ground.Calculus.OverlapUnitary
 import all PropertyF.Ground.Calculus.PartialTrace
@@ -73,29 +84,40 @@ import all PropertyF.Ground.Calculus.PartialTraceGround
 import all PropertyF.Ground.Calculus.RepresentationTrace
 import all PropertyF.Ground.Calculus.RightStrand
 import all PropertyF.Ground.Calculus.StarSpan
+import all PropertyF.Ground.Calculus.StrandCoherence
 import all PropertyF.Ground.Calculus.ThreeBraid
 import all PropertyF.Ground.Calculus.ThreeEmbedding
+import all PropertyF.Ground.Calculus.ThreeSaturation
 import all PropertyF.Ground.Calculus.ThreeTrace
 import all PropertyF.Ground.Calculus.Unitarization
 import all PropertyF.Ground.Calculus.UnitaryBlocks
 import all PropertyF.Ground.Calculus.WeightFacts
 import all PropertyF.Ground.Centre.Abelian
+import all PropertyF.Ground.Centre.AlternatingImage
+import all PropertyF.Ground.Centre.Averaging
 import all PropertyF.Ground.Centre.Biproduct
 import all PropertyF.Ground.Centre.Cokernel
 import all PropertyF.Ground.Centre.Embeddings
+import all PropertyF.Ground.Centre.FiniteClosure
+import all PropertyF.Ground.Centre.GeneratedClosure
+import all PropertyF.Ground.Centre.ImageDuals
 import all PropertyF.Ground.Centre.Kernel
 import all PropertyF.Ground.Centre.Linear
 import all PropertyF.Ground.Centre.Product
 import all PropertyF.Ground.Centre.ProductClosure
 import all PropertyF.Ground.Centre.ProductImages
 import all PropertyF.Ground.Centre.ReverseBraiding
+import all PropertyF.Ground.Centre.SymmetricAction
 import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.Centre.Zero
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.CharacterBound
 import all PropertyF.Ground.Dimensions.DimensionCharacter
 import all PropertyF.Ground.Dimensions.DimensionField
+import all PropertyF.Ground.Dimensions.DoubleDualFunctor
+import all PropertyF.Ground.Dimensions.Drinfeld
 import all PropertyF.Ground.Dimensions.DualCoherence
+import all PropertyF.Ground.Dimensions.FourthDualRoots
 import all PropertyF.Ground.Dimensions.FusionDimensionField
 import all PropertyF.Ground.Dimensions.GlobalInequality
 import all PropertyF.Ground.Dimensions.GroundNorm
@@ -103,6 +125,8 @@ import all PropertyF.Ground.Dimensions.IntrinsicNonzero
 import all PropertyF.Ground.Dimensions.IteratedTrace
 import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
+import all PropertyF.Ground.Dimensions.PivotalUniqueness
+import all PropertyF.Ground.Dimensions.PositiveCanonical
 import all PropertyF.Ground.Dimensions.PositiveSpherical
 import all PropertyF.Ground.Dimensions.PseudoUnitary
 import all PropertyF.Ground.Dimensions.SphericalArithmetic
@@ -114,8 +138,11 @@ import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Dimensions.UnitNorm
 import all PropertyF.Ground.Final
 import all PropertyF.Ground.Fusion.Agreement
+import all PropertyF.Ground.Fusion.BalancedFlow
 import all PropertyF.Ground.Fusion.Character
 import all PropertyF.Ground.Fusion.FunctorDimension
+import all PropertyF.Ground.Fusion.GeneratedRigidity
+import all PropertyF.Ground.Fusion.GeneratedStructure
 import all PropertyF.Ground.Fusion.Integrality
 import all PropertyF.Ground.Fusion.LegacyBridge
 import all PropertyF.Ground.Fusion.MatrixIntegral
@@ -132,6 +159,8 @@ import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.SubcategoryDimension
 import all PropertyF.Ground.Fusion.TotalMatrix
+import all PropertyF.Ground.Fusion.UnitPower
+import all PropertyF.Ground.Fusion.WeakIntegrality
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterReduction

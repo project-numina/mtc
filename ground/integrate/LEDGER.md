@@ -62,7 +62,7 @@ formulation remains an explicit review obligation.
 | `ThreeStrandRealization` | `model`, `positive`, `transport`, `retained`, `trace_formula` | calculus; dimensions/modular for transported dimensions and S | Unitary braid blocks with categorical trace weights and integer multiplicities are constructed; transport, partial traces and full overlap bridge remain. |
 | `ProductImageWitness` | `subgroup`, `map`, `surjective` | centre | Actual product-functor/retract quotient maps constructed on centre f031e99; dominance onto the generated subcategory remains. |
 | `ModularData` | `rank`, `unit`, `dual`, `dimension`, `globalDimension`, `S` | modular, centre | Actual categorical S defined for a chosen pivotal structure; modular centre and remaining data open. |
-| `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | S symmetry, unit column, nonvanishing and Verlinde proved; S² follows from sphericality, real dimensions and invertible categorical S. Centre S invertibility remains. |
+| `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | All legacy fields constructed from an actual spherical category with real dimensions and invertible S; centre realization and S invertibility remain. |
 | `ModularData` | `galoisLabel`, `galois_character` | modular | Constructed for a spherical category with real dimensions and invertible categorical S; the centre realization remains. |
 | `CenterInputs` | `data`, `object`, `dim`, `dimension_real`, `positive`, `at_least_one`, `conjugate_real` | centre, dimensions, modular | Open: canonical spherical modular centre and dimension properties. |
 | `CenterInputs` | `global_square`, `symmetric_integrality`, `generated`, `double_centralizer` | centre | Open: centre dimension, symmetric core and double centralizer. |
@@ -74,17 +74,17 @@ formulation remains an explicit review obligation.
 | `StandardInputs` | `pseudo` | dimensions, centre, calculus, modular | Open: package above constructions for pseudo-unitary categories. |
 | `StandardInputs` | `conjugate_labels`, `conjugate_images` | modular, fusion | Braid-image equivalences, ground property-F transport, simple-label equivalence and spectral global FP preservation are proved. |
 | `CablingWitness` | `blockCount`, `lengths`, `pureImage`, `finiteIndex`, `cableImage`, `restriction`, `restriction_surjective` | cabling | Finite index and abstract pure-word quotient constructed; categorical cabling map pending. Only used by corollary. |
-| `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling | Open; only used by corollary. |
-| `GeneratedInputs` | `simple_square_integral`, `strand_inclusion` | cabling, fusion | Bundle-free `Ground.simple_strand_inclusion` now constructed; packaging and square-integrality remain. Only used by corollary. |
+| `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling, fusion | Ground generated fusion category, inclusion, image equivalence and essential image constructed; pure-block cabling membership remains. Only used by corollary. |
+| `GeneratedInputs` | `simple_square_integral`, `strand_inclusion` | cabling, fusion | Both bundle-free `Ground.simple_strand_inclusion` and `Ground.generated_simple_square_integer` are proved; legacy packaging remains. Only used by corollary. |
 
 The existing `#print axioms` result establishes only kernel axiom cleanliness
 for the *conditional* theorem; it says nothing about constructing these fields.
 
 ## Integrated snapshot
 
-Latest merged snapshots: fusion 5c7a48b; dimensions 86679d3; calculus 1c36987;
-centre c251fd7; modular 8ab02b4; cabling 4bdead2. The full development build
-passed; `ProjectAudit` scans 2,305 integrated public and private declarations, all with only the
+Latest merged snapshots: fusion 4f73556; dimensions 45cf7ee; calculus befc525;
+centre 1f65434; modular 07408af; cabling 78e91a4. The full development build
+passed; `ProjectAudit` scans 2,544 integrated public and private declarations, all with only the
 standard axioms. This is not a proof of the target.
 
 The final arithmetic reduction is bundle-free: fusion bfbd006 proves target
