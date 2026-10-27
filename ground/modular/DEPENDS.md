@@ -63,3 +63,6 @@ The actual categorical S identities, character classification and Galois action 
 - Assuming simple-object twist balancing, the tensor determinant rule now holds
   on both sides for actual simple mixed monodromies. Twist balancing and the
   hexagon/additivity calculation remain open.
+- The actual monodromy determinant hexagon on simples is now proved assuming
+  simple twist balancing. Expanding the determinant on a tensor product into
+  the simple summands remains open.

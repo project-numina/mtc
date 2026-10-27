@@ -179,3 +179,11 @@ simple-object balancing equation, `fpDeterminant_tensor_simple_monodromy` and
 compatibility on either side for actual mixed monodromies of simple objects.
 The balancing equation and the categorical hexagon/additivity proof remain
 open, so no finite order is claimed. Focused build and axiom checks passed.
+
+`monodromy_hexagon_iso` proves the explicit categorical double-braiding
+hexagon as a product of conjugated actual monodromy isomorphisms.
+`fpDeterminant_monodromy_hexagon` derives the weighted FP determinant equation
+on three simple objects under the explicit simple twist-balancing identity.
+The remaining determinant-to-fusion-sum expansion, actual twist balancing,
+and final finite-order conclusion remain unproved. Focused build and axiom
+checks passed.
