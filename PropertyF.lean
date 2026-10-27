@@ -199,3 +199,4 @@ import PropertyF.Ground.CentreInduction.Averaging
 import PropertyF.Ground.CentreInduction.Splitting
 import PropertyF.Ground.CentreInduction.Dominance
 import PropertyF.Ground.CentreInduction.Artinian
+import PropertyF.Ground.CentreInduction.FiniteSum

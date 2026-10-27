@@ -1,8 +1,10 @@
 module
 public import PropertyF.Ground.CentreInduction.Splitting
+public import PropertyF.Ground.Centre.Abelian
 public import Mathlib.CategoryTheory.Subobject.ArtinianObject
 public import Mathlib.CategoryTheory.Subobject.NoetherianObject
 public import Mathlib.RingTheory.Artinian.Module
+public import Mathlib.CategoryTheory.Abelian.Exact
 
 /-! Finite Hom spaces and split monomorphisms force Artinian objects. -/
 
@@ -84,5 +86,23 @@ theorem exists_simple_retract_of_loop_centrality (C : BraidedFusionCategory.{v,u
   obtain ⟨P, hP⟩ := exists_simple_subobject hX
   letI : IsSplitMono P.arrow := mono_splits_of_loop_centrality C p hp hslide hne P.arrow
   exact ⟨P, hP, ⟨{ i := P.arrow, r := retraction P.arrow }⟩⟩
+
+set_option backward.isDefEq.respectTransparency false in
+set_option backward.defeqAttrib.useBackward true in
+/-- Every nonzero centre object splits as the direct sum of a simple object
+and a complement, assuming the loop-sliding identity. -/
+theorem exists_simple_biprod_of_loop_centrality (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (hslide : SimpleLoopCentrality C p) (hne : globalDimension C ≠ 0)
+    (X : CategoryTheory.Center C.Obj) (hX : ¬ IsZero X) :
+    ∃ S K : CategoryTheory.Center C.Obj, Simple S ∧ Nonempty (X ≅ S ⊞ K) := by
+  letI : IsArtinianObject X := center_artinian_of_loop_centrality C p hp hslide hne X
+  obtain ⟨P, hP⟩ := exists_simple_subobject hX
+  letI : IsSplitMono P.arrow := mono_splits_of_loop_centrality C p hp hslide hne P.arrow
+  let E := ShortComplex.cokernelSequence P.arrow
+  let split : E.Splitting := ShortComplex.Splitting.ofExactOfRetraction E
+    (ShortComplex.cokernelSequence_exact P.arrow) (retraction P.arrow)
+    (IsSplitMono.id P.arrow) inferInstance
+  exact ⟨P, cokernel P.arrow, hP, ⟨split.isoBinaryBiproduct⟩⟩
 
 end PropertyF.Ground.CentreInduction
