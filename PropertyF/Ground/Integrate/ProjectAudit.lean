@@ -27,6 +27,9 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
+
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -78,13 +81,17 @@ import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.TargetDimensionField
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Final
+import all PropertyF.Ground.Fusion.Agreement
+import all PropertyF.Ground.Fusion.Character
 import all PropertyF.Ground.Fusion.Integrality
 import all PropertyF.Ground.Fusion.MatrixIntegral
 import all PropertyF.Ground.Fusion.Multiplicity
+import all PropertyF.Ground.Fusion.Perron
 import all PropertyF.Ground.Fusion.PositiveMatrix
 import all PropertyF.Ground.Fusion.Reciprocity
 import all PropertyF.Ground.Fusion.Schur
 import all PropertyF.Ground.Fusion.Simples
+import all PropertyF.Ground.Fusion.SpectralBound
 import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.TotalMatrix
@@ -92,6 +99,8 @@ import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.Conjugacy
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
+import all PropertyF.Ground.Integrate.Fixedness
+import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction
@@ -136,6 +145,8 @@ run_cmd do
       unless n == ``PropertyF.StandardInputs do
         throwError "unexpected forbidden fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect an imported definition body"
+  unless (findIssue env ``PropertyF.Ground.legacyCategory).isSome do
+    throwError "dependency audit did not reject the old compatibility bundle"
   unless (findIssue env ``PropertyF.propertyF_implies_weaklyIntegral).isSome do
     throwError "dependency audit did not reject the imported conditional theorem"
   for n in #[``PropertyF.Ground.TargetStatement,
@@ -148,7 +159,12 @@ run_cmd do
       ``PropertyF.Ground.galois_propertyF,
       ``PropertyF.Ground.target_of_galois_invariance_and_pseudo_fixedness,
       ``PropertyF.Ground.target_of_pseudo_fixedness,
+      ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
+      ``PropertyF.Ground.target_of_numerical_witnesses,
+      ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
+      ``PropertyF.Ground.fpSimple_eq_fpCharacter,
+      ``PropertyF.Ground.fpSimple_mul,
       ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,
       ``PropertyF.Ground.Dimensions.squaredNorm_independent] do

@@ -5,6 +5,9 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+
+
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -56,13 +59,17 @@ import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.TargetDimensionField
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Final
+import all PropertyF.Ground.Fusion.Agreement
+import all PropertyF.Ground.Fusion.Character
 import all PropertyF.Ground.Fusion.Integrality
 import all PropertyF.Ground.Fusion.MatrixIntegral
 import all PropertyF.Ground.Fusion.Multiplicity
+import all PropertyF.Ground.Fusion.Perron
 import all PropertyF.Ground.Fusion.PositiveMatrix
 import all PropertyF.Ground.Fusion.Reciprocity
 import all PropertyF.Ground.Fusion.Schur
 import all PropertyF.Ground.Fusion.Simples
+import all PropertyF.Ground.Fusion.SpectralBound
 import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.TotalMatrix
@@ -70,6 +77,8 @@ import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.Conjugacy
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
+import all PropertyF.Ground.Integrate.Fixedness
+import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction

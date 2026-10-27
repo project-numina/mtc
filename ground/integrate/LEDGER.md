@@ -9,8 +9,10 @@ identification and independence obligations listed below remain open.
 
 ## Target and dependency graph
 
-`target_of_pseudo_fixedness` gives a bundle-free reduction to the paper’s
-Galois fixedness argument for pseudo-unitary property-F categories. Global FP
+`target_of_bounded_conjugates_and_witness` reduces the frozen statement to two
+explicit categorical obligations: positive, bounded real conjugates and a
+centre/rigidity witness for each strictly smaller conjugate. Global FP positivity
+is proved from the tensor unit; the numerical contradiction is bundle-free. Global FP
 invariance under semilinear braided equivalence is proved by
 `Modular.conjugate_globalFPDimension`.
 
@@ -38,7 +40,8 @@ Provisional mathematical checks: simple reps exhaust all simple isoclasses;
 squared
 norms and their global sum are independent of isomorphism and presentation
 (proved in `Dimensions.GroundNorm`); FP spectral
-radii form the unique positive fusion character and are presentation independent;
+radii form the unique positive fusion character (proved by fusion be9a122);
+presentation independence remains;
 compare complex-automorphism conjugacy with the paper's algebraic-closure
 formulation. `Ground.doubleDualIso` is already constructed from Mathlib's
 braided swapped pairing and uniqueness of duals. No choice independence proof
@@ -48,9 +51,9 @@ is claimed yet.
 
 | Interface | Field(s) | Owner | Status |
 |---|---|---|---|
-| `FusionData` | `rank`, `simpleObject`, `simple_is_simple`, `simple_injective`, `unitIndex`, `unit_iso`, `hom_finite`, `decomposition` | fusion | Ground category has finite semisimple property; construction of old bundle pending. |
-| `FusionData` | `fpSimple`, `fp_positive`, `fp_unit`, `fp_character` | fusion | Spectral-radius ground definition exists; PF character theorem and bridge pending. |
-| `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Ground double-dual and scalar algebra equivalence constructed; fixed-representative choice independence proved in `Dimensions.Norm`; old bundle pending. |
+| `FusionData` | `rank`, `simpleObject`, `simple_is_simple`, `simple_injective`, `unitIndex`, `unit_iso`, `hom_finite`, `decomposition` | fusion | Constructed by `Ground.legacyFusionData` from ground category. |
+| `FusionData` | `fpSimple`, `fp_positive`, `fp_unit`, `fp_character` | fusion | Constructed by `Ground.legacyFusionData` using the ground spectral character. |
+| `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Constructed by `Ground.legacyGlobalDimensionData`; norm and representative independence proved. |
 | `MultiplicityData` | `simpleCount`, `dimension`, `fpDimension`, `multiplicity`, `dimension_bound` | calculus; dimensions for bound | Open: group-representation decomposition and spherical dimension bound. |
 | `OverlapModel` | `stage`, `decomposition`, `fpMass_eq` | calculus, fusion | Actual braid-image algebras and unitary Wedderburn blocks constructed; categorical multiplicity and FP mass remain. |
 | `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Left-strand star maps and partial-trace bimodule/identity laws constructed; right insertion and iterated trace remain. |
@@ -89,5 +92,5 @@ standard axioms. This is not a proof of the target.
 The final arithmetic reduction is bundle-free: fusion bfbd006 proves target
 global FP algebraic integrality, and `weaklyIntegral_of_globalFPDimension_fixed`
 combines it with the constructed finite Galois field and automorphism extension.
-The remaining target-specific premise is global FP invariance under every complex
-automorphism, which needs the categorical argument and transport constructions.
+Global FP conjugacy invariance is proved. Galois fixedness requires the
+categorical real-conjugate bounds and centre/rigidity witnesses above.

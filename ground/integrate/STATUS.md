@@ -7,8 +7,13 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
-- `target_of_pseudo_fixedness` reduces the frozen target to Galois fixedness
-  in the pseudo-unitary property-F case. Global FP conjugacy invariance is proved.
+- `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
+  the old categorical data from ground definitions; dimension equality bridges
+  are proved. These compatibility declarations are excluded from the final cone.
+- `target_of_bounded_conjugates_and_witness` proves the numerical contradiction
+  and reduces the target to bounds on real conjugates and the centre/rigidity
+  witness, both explicitly listed as unproved premises; global FP positivity
+  is discharged by fusion’s `one_le_globalFPDimension`.
 - `galois_propertyF` transports property F along the target's actual braided
   semilinear equivalence using modular’s braid-image equivalences.
 - `weaklyIntegral_of_globalFPDimension_fixed` wires spectral FP integrality
@@ -46,8 +51,8 @@
 
 No final theorem: the target needs FP/semisimple, intrinsic/spherical dimension,
 centre, modular, and categorical braid/trace constructions enumerated in the
-ledger. The FP spectral-radius/character identification and choice independence,
-is not yet proved. The intrinsic global dimension is now proved independent
+ledger. The FP spectral-radius/character identification is proved; FP representative
+independence remains to be proved. The intrinsic global dimension is now proved independent
 of both scalar/double-dual choices and simple representatives (dimensions
 commit 4a39ec5). The work
 is a substantial multi-workstream formalization, not a short integration patch;
