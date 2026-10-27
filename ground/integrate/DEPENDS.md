@@ -1,9 +1,9 @@
 # Integration dependencies
 
 All remaining items are explicit, temporary arguments to
-`Ground.target_of_modular_center`; none is an assumption in the frozen
+`Ground.target_of_center_product_retracts`; none is an assumption in the frozen
 `TargetStatement`. The exact Lean type is in
-`PropertyF/Ground/Integrate/CenterReductionComplete.lean`. No spherical structure
+`PropertyF/Ground/Integrate/CenterProductBridge.lean`. No spherical structure
 is needed on the original category: `positive_bounded_conjugates_of_fp`
 constructs the bounds directly from its FP fusion character.
 
@@ -16,11 +16,13 @@ constructs the bounds directly from its FP fusion character.
   identities and Galois action. Calculus proved the actual overlap recurrence
   and integrate wired it to `Ground.galois_rigidity`, so no braid-calculus
   premise remains.
-  `propertyF_of_galois_column` derives the finite-image implication from
-  integral dimensions on the common centralizer, a double-centralizer test,
-  and property F on the generated subcategory. These three assertions remain
-  explicit centre obligations. The exact final reduction is in
-  `CenterReductionComplete.lean`.
+  `propertyF_of_galois_column` derives the selected finite image from integral
+  dimensions on the common centralizer, a double-centralizer test and generated
+  labels being actual product retracts. The product-retract finite-image
+  transfer is constructed through a faithful braided functor to Mathlib Center;
+  full-centre dominance is neither assumed nor true in general. The integral
+  core, double centralizer and product-retract identification remain explicit
+  centre obligations.
 
 The centre must still be equipped with a positive spherical structure;
 its construction remains owned by centre and dimensions.

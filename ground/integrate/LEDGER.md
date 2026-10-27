@@ -9,7 +9,11 @@ fusion and dimensions review; unresolved mathematical obligations are noted belo
 
 ## Target and dependency graph
 
-`target_of_modular_center` reduces the frozen statement to an actual positive
+`target_of_center_product_retracts` explicitly transfers property F from
+actual product retracts through a faithful braided functor into the centre.
+The remaining categorical assumptions are listed in
+`CenterProductBridge.lean`; unconditional full-centre product dominance is
+false and is not assumed. `target_of_modular_center` reduces the frozen statement to an actual positive
 spherical modular centre, its global FP-square formula, and finite images for
 the Galois-unit-column object. `twistedOverlapTrace_proved` and
 `galois_rigidity` discharge the braid-calculus premises unconditionally.
@@ -93,7 +97,7 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 Latest merged snapshots: fusion f175963; dimensions 6be760b; calculus fd59727;
 centre 21f99af; modular 07408af; cabling 7ff2fe9. The full development build
-passed; `ProjectAudit` scans 3,035 integrated public and private declarations, all with only the
+passed; `ProjectAudit` scans 3,038 integrated public and private declarations, all with only the
 standard axioms. The strict target audit correctly fails because `Ground.target`
 is absent. This is not a proof of the target.
 

@@ -21,6 +21,9 @@
 - `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
   the old categorical data from ground definitions; dimension equality bridges
   are proved. These compatibility declarations are excluded from the final cone.
+- `target_of_center_product_retracts` wires the centre workstream’s actual
+  product-retract image theorem into the target reduction through faithful
+  braided functors, with independent universe parameters.
 - `twistedOverlapTrace_proved`, `galois_rigidity`, and
   `target_of_modular_center` discharge actual overlap coherence, trace bounds
   and three-strand rigidity. The final reduction needs only the modular centre
@@ -69,7 +72,7 @@
   on a finite tensor-product basis. `Example.target_hypotheses_inhabited`
   proves that both target hypotheses hold simultaneously for this category.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans 3,035 integrated public and private declarations for forbidden axioms.
+- `ProjectAudit` scans 3,038 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and
