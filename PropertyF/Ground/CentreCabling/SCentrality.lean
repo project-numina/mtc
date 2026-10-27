@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Centre.Embeddings
+public import PropertyF.Ground.Centre.Basic
 
 /-! Categorical centrality implies the numerical S-matrix test. -/
 

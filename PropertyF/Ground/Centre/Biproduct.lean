@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Centre.Linear
+public import PropertyF.Ground.Centre.Basic
 public import Mathlib.CategoryTheory.Preadditive.AdditiveFunctor
 public import Mathlib.CategoryTheory.Limits.Constructions.FiniteProductsOfBinaryProducts
 

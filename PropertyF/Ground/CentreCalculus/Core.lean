@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Centre.Embeddings
+public import PropertyF.Ground.Centre.Basic
 
 /-! The common centralizer consists of self-centralizing objects. -/
 @[expose] public noncomputable section
