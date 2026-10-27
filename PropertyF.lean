@@ -198,3 +198,6 @@ The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
+import PropertyF.Ground.CentreCabling.ProductGenerated
+import PropertyF.Ground.CentreCabling.SCentrality
+import PropertyF.Ground.CentreCabling.FusionCentralizer

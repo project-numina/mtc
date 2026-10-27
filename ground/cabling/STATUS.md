@@ -77,3 +77,13 @@ canonical embeddings. `Centre.productRetract_rightDual` and
 `Centre.productTensorClosure_rightDual` establish right-dual closure assuming
 only the centre's genuine rigid/fusion instances. Focused build passed. The
 remaining substantive task is the double-centralizer S-test implication.
+
+Further round 2 results: `CentreCabling.categoricalS_eq_of_doubleBraiding`
+proves categorical centrality implies the numerical S-test.
+`character_fp_eq_of_constituent` proves the FP equality locus of any fusion
+character is closed under tensor-product constituents via the character norm
+bound; `sCentralizer_closed_under_constituents` and
+`sCentralizer_closed_under_dual` apply this to actual S columns in the positive
+case. These results need neither S invertibility nor finite braid images.
+The reverse S-test-to-monodromy implication and the centralizer dimension /
+double-centralizer equality remain unproved. Focused builds passed.
