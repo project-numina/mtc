@@ -236,3 +236,4 @@ public import PropertyF.Ground.CentreInduction.UnitCandidate
 public import PropertyF.Ground.CentreInduction.UnitCoevaluation
 public import PropertyF.Ground.CentreInduction.FirstTriangle
 public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
+public import PropertyF.Ground.CentreInduction.HomTranspose

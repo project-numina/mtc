@@ -148,6 +148,10 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
+  transpose and proves it injective; composing it with the unit-summand
+  counit recovers the original map. Centrality and surjectivity onto centre
+  morphisms remain open.
 - `CentreInduction.adjunctionOfHalfBraiding` assembles the actual right
   adjunction from a half-braiding on every underlying induction sum, its
   naturality in the middle factor, centrality of `unitCandidate`, and the
