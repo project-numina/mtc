@@ -311,6 +311,9 @@ public import PropertyF.Ground.CentreInduction.Injectives
 public import PropertyF.Ground.CentreInduction.InjectiveFusion
 public import PropertyF.Ground.CentreInduction.InducedTrace
 public import PropertyF.Ground.CentreInduction.ForgetDual
+public import PropertyF.Ground.CentreInduction.ForgetDualNaturality
+public import PropertyF.Ground.CentreInduction.ForgetDualTensor
+public import PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.CentreInduction.RankOneComplete
 
@@ -378,6 +381,9 @@ public import PropertyF.Ground.CentreRigid.MateExplicit
 public import PropertyF.Ground.CentreRigid.Coevaluation
 
 public import PropertyF.Ground.CentreRigid.Tensor
+
+public import PropertyF.Ground.CentreRigid.Evaluation
+public import PropertyF.Ground.CentreRigid.ForgetComparison
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.

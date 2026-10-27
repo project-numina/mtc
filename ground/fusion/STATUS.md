@@ -343,3 +343,22 @@ rigidity and positive base pivotal existence. Investigating centrality of the
 base pivotal component on arbitrary centre objects via centre duality maps.
 Focused build passes, and the two principal results have only the three standard
 kernel axioms. No reliable completion-time estimate is available.
+
+`forget_rightAdjointMate`, `forgetDualIso_natural`,
+`forgetDoubleDualIso_natural` and `transported_pivotal_natural` establish the
+naturality coherence of the centre/base dual comparisons and of the transported
+pivotal components on actual centre morphisms. This does not establish that
+those components are centre morphisms or obey the tensor law. Focused build
+passes.
+
+`rightDualIso_tensor` proves that canonical comparisons between choices of
+dual pairings preserve tensor products, `forget_rightDualTensorIso` identifies
+the forgotten centre dual tensorator, and `forgetDualIso_tensor` proves the
+centre/base dual comparison preserves tensor products. Focused build passes.
+Double-dual tensor coherence and pivotal component centrality remain open.
+
+`forgetDoubleDualIso_tensor` proves the centre/base double-dual comparison
+respects tensorators, and `transported_pivotal_tensor` proves the base pivotal
+components transported to the centre double dual obey the tensor equation
+after forgetting. Naturality is also proved; unit coherence and centrality
+remain to be established. Focused build passes.

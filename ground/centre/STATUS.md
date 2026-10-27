@@ -125,3 +125,14 @@ uses interchange and the original half-braiding law, then invokes injectivity
 of the rigid Hom equivalence. Together with `coevaluation_central`, only
 centrality of evaluation remains before general centre rigidity. Focused build
 passes; the proof has no additional hypotheses.
+`evaluation_sliding` and `evaluation_central` prove the remaining cap diagram,
+and `rigidCenter` constructs `RigidCategory (Center C)` for every rigid
+monoidal category, without further premises. `rigidCenter_forget_dual`,
+`rigidCenter_forget_evaluation`, and `rigidCenter_forget_coevaluation` record
+that its chosen dual and pairing forget definitionally to those of the base.
+Focused Lake build passes. General centre finite semisimplicity and fusion
+assembly remain to be completed; rigidity is no longer a dependency.
+For `rigidCenter`, `forgetDualIso_eq_refl` and `forgetDoubleDualIso_eq_refl`
+identify fusion's canonical centre/base dual comparison isomorphisms with the
+identity, simplifying the induced pivotal-centrality calculation. Focused
+build passes; the needed pivotal centrality and base positive sphere are open.
