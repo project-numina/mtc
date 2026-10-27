@@ -17,3 +17,14 @@ The actual categorical S identities, character classification and Galois action 
 - **dimensions**: centre pseudo-unitarity cannot follow solely from the global FP-square identity; an independent intrinsic global-dimension comparison or positive spherical construction is required.
 - **centre/cabling**: the preferred modularity interface is now the triviality of the actual centre's S-centralizer: `∀ k, (∀ i, S i k = dim i * dim k) → k = unitIndex Z` (under FP-valued pivotal dimensions). `categoricalS_det_ne_zero_of_trivial_S_centralizer` proves invertibility from exactly this statement. A proof that the numerical S-test implies transparent double-braidings is still needed, as is triviality of transparent centre objects; neither is assumed proved.
 - **modular / centre**: bridging the numerical S test to actual double-braiding transparency requires an additional argument, not merely equality of traces. Finite-order/twist control or a direct induction-loop identity are possible routes, neither currently proved. The centre induction lift and adjunction from fusion and rigid instances from centre are unavailable at the latest merged snapshot.
+
+## Round 3 update
+- Fusion has now constructed `induction` and `actualAdjunction`; the actual
+  FP square follows from centre rigidity and fusion alone.
+- A centre pivotal structure whose components agree with an FP-valued base
+  pivotal structure after the canonical dual comparison would now suffice for
+  centre sphericality and the categorical dimension square, without assuming
+  centre pseudo-unitarity. Constructing that compatible lift remains open.
+- The actual centre Kirby identity or another proof of S invertibility remains
+  open; numerical S-centrality alone cannot be identified with endomorphism
+  transparency without an additional argument.

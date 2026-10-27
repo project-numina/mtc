@@ -61,3 +61,21 @@ The FP-square equation alone does not prove the centre pseudo-unitary: that addi
 Merged fusion's actual-adjunction bridge. `CentreModular.center_globalDimension_of_adjunction` now takes the right adjoint to the actual centre forgetful functor, the underlying induction-object isomorphisms, and spherical FP-valued dimensions, and proves the categorical dimension-square formula. These premises remain open. After moving fusion's imports before the root module documentation, `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF` passes, including the integrated 3,242-declaration foundational-axiom audit. Direct `#print axioms` checks of the new dimension, S-centralizer, Kirby, and regular-support theorems show only `propext`, `Classical.choice`, and `Quot.sound`.
 
 Merged integration d6173aa in merge 4292aac. The full `PropertyF` build now passes with the expanded 3,577-declaration integrated audit; the adjunction-based categorical dimension theorem also passes `#print axioms` with exactly the three permitted axioms. Remaining modularity obstruction: the existing trace equality `S(i,k)=dim(i)dim(k)` is a scalar equality, while actual transparency is an equality of endomorphisms. Positivity of categorical dimensions alone has not supplied an argument that upgrades this scalar equality to equality of monodromy; such an argument may need finite-order/twist information or a direct induction-loop calculation. The actual induction lift/adjunction, centre rigidity/fusion and independent positive spherical or intrinsic-dimension square are still being constructed by their respective owners. Their present absence prevents instantiating these centre-specific results and leaves no reliable completion-time estimate.
+
+## Round 3 continuation
+
+Merged integration snapshot 8c9e461. Fusion's actual centre induction and
+forgetful adjunction are now constructed, so
+`CentreInduction.globalFPDimension_square_of_actual_induction` proves the
+FP square assuming only the actual centre rigidity and fusion instances.
+`CentreModular.center_forget_unitScalar`, `center_pivotalDimension_eq_forget`,
+`center_pivotalDimension_eq_fp_of_compatible`, `center_spherical_of_compatible`,
+and `center_globalDimension_square_of_compatible` show that a pivotal centre
+lift compatible with an FP-valued base pivotal structure automatically has
+FP-valued dimensions, is spherical, and gives the categorical dimension square.
+This does not assume centre pseudo-unitarity and uses the actual induction
+adjunction; however, construction of the compatible centre pivotal lift and
+centre rigidity/fusion remain open. The general Kirby-loop identity and S
+invertibility remain open. Focused build passed; `#print axioms` for the scalar,
+FP-value, sphericality and dimension-square results returned only propext,
+Classical.choice and Quot.sound.
