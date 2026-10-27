@@ -144,6 +144,12 @@ The separate compatibility bridge constructs the old `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.underlyingFunctor` constructs the induction sum as a
+  functor on the base category.
+- `CentreInduction.homLinearEquivOfAdjunction` and
+  `globalFPDimension_square_of_adjunction` derive the finrank condition from
+  an actual adjunction to the forgetful functor; centre fusion/rigidity and
+  the induction functor with its underlying decomposition remain premises.
 - `CentreInduction.globalFPDimension_square_of_induction` derives the centre
   global FP square from centre fusion/rigidity, induced representatives with
   the stated underlying objects, and the precise adjunction Hom-dimension
