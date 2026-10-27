@@ -13,6 +13,7 @@ public import PropertyF.Ground.Calculus.StarSpan
 public import PropertyF.Ground.Centre.Embeddings
 public import PropertyF.Ground.Centre.Linear
 public import PropertyF.Ground.Centre.Zero
+public import PropertyF.Ground.Centre.Biproduct
 public import PropertyF.Ground.Centre.ReverseBraiding
 public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Centre.ProductImages
