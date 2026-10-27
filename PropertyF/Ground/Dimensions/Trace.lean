@@ -137,4 +137,36 @@ theorem quantumTraces_iso {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
   exact rightQuantumTrace_iso (rightDualIsoMap j).symm (rightDualIsoMap k).symm
     (rightDualIsoMap e.symm) (dual_components_natural j k e hnat)
 
+/-- Left trace is right trace on the dual endomorphism with the inverse dual
+pivotal component. -/
+theorem leftTrace_eq_rightTraceWith_dual (p : PivotalStructure (C := C))
+    {X : C} (f : X ⟶ X) :
+    p.leftTrace f = rightTraceWith (rightDualIsoMap (p.iso X)).symm (fᘁ) := by
+  apply End.homEquiv.injective
+  change η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (𝟙 (Xᘁ) ⊗ₘ ((p.iso X).inv ≫ f)) ≫ ε_ X (Xᘁ) =
+    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (((fᘁ) ≫ (p.iso X).invᘁ) ⊗ₘ 𝟙 ((Xᘁ)ᘁ)) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)
+  simp only [tensorHom_def, id_whiskerRight, whiskerLeft_id, Category.id_comp, Category.comp_id]
+  rw [← comp_rightAdjointMate, rightAdjointMate_comp_evaluation]
+
+/-- The inverse dual pivotal components are natural on dual morphisms. -/
+theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
+    {X Y : C} (f : X ⟶ Y) :
+    (fᘁ) ≫ (rightDualIsoMap (p.iso X)).symm.hom =
+      (rightDualIsoMap (p.iso Y)).symm.hom ≫ ((fᘁ)ᘁ)ᘁ := by
+  have hinv : (p.iso X).inv ≫ f = (fᘁ)ᘁ ≫ (p.iso Y).inv := by
+    apply (cancel_mono (p.iso Y).hom).1
+    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+    rw [p.naturality f]
+    simp [← Category.assoc]
+  have hdual := congrArg (fun (a : (Xᘁ)ᘁ ⟶ Y) => rightAdjointMate a) hinv
+  simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using hdual
+
+/-- The left pivotal trace is cyclic without requiring sphericality. -/
+theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
+    (f : X ⟶ Y) (g : Y ⟶ X) : p.leftTrace (f ≫ g) = p.leftTrace (g ≫ f) := by
+  rw [leftTrace_eq_rightTraceWith_dual, leftTrace_eq_rightTraceWith_dual,
+    comp_rightAdjointMate, comp_rightAdjointMate]
+  exact rightTraceWith_cyclic (rightDualIsoMap (p.iso X)).symm
+    (rightDualIsoMap (p.iso Y)).symm (gᘁ) (fᘁ) (dual_pivotal_naturality p g)
+
 end PropertyF.Ground.Dimensions

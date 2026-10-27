@@ -5,6 +5,8 @@
 - `PropertyF.Ground.Dimensions.extend_complex_automorphism`: every automorphism of a subfield of ℂ extends to ℂ, using a transcendence basis and uniqueness of algebraic closures.
 - `PropertyF.Ground.Dimensions.finite_galois_normal_field`: an algebraic complex number belongs to a finite Galois intermediate field given by its normal closure.
 - `PropertyF.Ground.Dimensions.squaredNorm_independent`: intrinsic squared norm is independent of the double-dual isomorphism on each simple; `globalDimensionData_independent` also handles the unit scalar algebra equivalence.
+- `dimensionFieldOfGround` constructs `DimensionField` for the target spectral-radius global FP dimension, using fusion’s bundle-free integrality theorem. Integrate has also proved the bundle-free fixed-field arithmetic step.
+- `dimensionFieldOfFusionData` constructs the entire old `DimensionField` from fusion’s proven character integrality; the old `FusionData` remains an assumption in this compatibility theorem.
 - `PropertyF.Ground.Dimensions.dimensionFieldOfIntegral`: constructs all fields of `DimensionField δ` from `IsIntegral ℤ (δ : ℂ)`.
 
 - `target_globalDimension_independent_simples` proves the target global dimension is unchanged by any complete pairwise nonisomorphic finite simple list.
@@ -14,15 +16,21 @@
 
 - `target_globalDimension_real`, `target_globalDimension_le_of_simple_bounds`, `global_sum_squares_positive`, `global_sum_squares_one_le`, and `global_sum_squares_eq_iff` reduce the global realness, inequality, and positivity assertions to explicit simple-dimension hypotheses; those hypotheses remain unproved.
 
+- `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
+
+- `pseudoUnitary_iff_simple_saturation` establishes the global equality characterization given explicit sphericality, real dimensions, unit normalization, and tensor multiplicativity; the latter hypotheses remain unproved.
+- `pivotalDimension_decomposition` proves the Hom-multiplicity formula; `pivotalDimension_character` and `galois_pivotalDimension_norm_le_fpSimple` reduce the pivotal character and Galois FP bound to the still-unproved unit and tensor trace laws.
+- `character_norm_le_fpSimple` and `galois_character_norm_le_fpSimple` prove the spectral-radius bound for any nonzero complex fusion character and every complex field conjugate. Deriving the character equations for spherical dimensions is still open.
+
 ## In progress
 
-- `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic_of_spherical`, and `rightTrace_id_iso` also hold. Multiplicativity and semilinear trace transport remain open.
+- `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic`, and `rightTrace_id_iso` also hold for any pivotal structure. Multiplicativity and semilinear trace transport remain open.
 
 - Prove elementary dimension consequences and trace infrastructure while waiting for the shared category interface.
 
 ## Dependencies and remaining work
 
-- Fusion: global FP dimension integrality over ℤ. Once obtained it discharges the input to `dimensionFieldOfIntegral`.
+- Fusion: positive-character theory and spectral-radius agreement, needed for ENO dimension bounds and canonical spherical construction. Target spectral FP integrality is proved.
 - Integrate/fusion: genuine category and semisimplicity interface needed to construct pivotal and spherical structures, intrinsic norms and their ENO properties.
 - Remaining: positivity/total positivity of squared norms; categorical global dimension ≥ 1; ENO 8.21/8.22 inequalities and equality case; ENO 8.23 canonical spherical structure; construction of pseudo-unitary conjugate real/positive/bounded dimensions and transport. These are substantial mathematical developments, not completed by the arithmetic construction.
 

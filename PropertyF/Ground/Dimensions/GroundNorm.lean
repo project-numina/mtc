@@ -1,7 +1,8 @@
 module
 public import PropertyF.Ground.Dimensions.Norm
 public import PropertyF.Ground.Dimensions.Trace
-public import PropertyF.Ground.Fusion.Scalar
+public import PropertyF.Ground.Fusion.Simples
+public import PropertyF.Ground.Integrate.UnitScalar
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
