@@ -19,8 +19,11 @@ All remaining items below are explicit, temporary arguments to
   centralizers, finite-image transfer and S invertibility), dimensions
   (positive spherical structures and trace transport), and calculus (actual
   three-strand rigidity); modular supplies S identities and Galois action.
-  The exact dependent statement is in `CenterReduction.lean`. The centre
-  witness and numerical contradiction are constructed from these premises.
+  `propertyF_of_galois_column` derives the finite-image implication from
+  integral dimensions on the common centralizer, a double-centralizer test,
+  and property F on the generated subcategory. These three assertions remain
+  explicit centre obligations. The exact final reduction is in
+  `CenterReduction.lean`.
 
 Fusion has proved `one_le_globalFPDimension` directly from the unit fusion
 matrix, so global FP positivity is discharged. The last sum/integrality step, Galois transport of property F and global FP
