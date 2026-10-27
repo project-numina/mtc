@@ -70,6 +70,7 @@ public import PropertyF.Ground.Dimensions.DefectTrace
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import PropertyF.Ground.Dimensions.SimplePairing
 public import PropertyF.Ground.Dimensions.ReciprocityEquiv
+public import PropertyF.Ground.Dimensions.ENOFrobenius
 public import PropertyF.Ground.Dimensions.RootSignTwist
 public import PropertyF.Ground.Dimensions.TensorExtension
 public import PropertyF.Ground.Dimensions.ENOSpherical
