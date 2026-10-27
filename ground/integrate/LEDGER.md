@@ -304,3 +304,10 @@ Only two explicit conditions remain on this route: existence of a pivotal
 structure for the pseudo-unitary base, and balancing for the actual centre's
 pivotal twist. Neither is proved. Full build and strict project audit pass
 (480 modules, 4,747 declarations).
+
+`target_of_pivotal_base_and_center_cap` makes the balancing gap concrete:
+base pivotal existence plus the actual centre tensor-pairing cap equation
+imply the target. `pivotal_balance_of_drinfeld_tensor` translates its
+Drinfeld tensor consequence to the balancing convention needed by Vafa.
+Neither cap identity nor base pivotal existence is claimed. Full build and
+strict project audit pass (481 modules, 4,749 declarations).

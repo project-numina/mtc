@@ -128,3 +128,7 @@ Fusion `c85981c` proves centre categorical transparency is trivial. Together
 with modular's balancing-to-S criterion, `target_of_pivotal_base_and_center_balancing`
 leaves only two explicit obligations: base pivotal existence under
 pseudo-unitarity, and pivotal twist balancing on the constructed centre.
+
+`target_of_pivotal_base_and_center_cap` wires the exact tensor-pairing cap
+identity to balancing and the target. The cap and base pivotal-existence
+premises remain open; dimensions and calculus are pursuing the cap diagram.

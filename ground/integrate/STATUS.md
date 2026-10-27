@@ -285,3 +285,10 @@ no reliable completion-time estimate is available.
   the resulting centre. All other centre, core and finite-image requirements
   are derived from these. Both conditions remain unproved. Full build and
   strict project audit pass (480 modules, 4,747 declarations).
+
+- `target_of_pivotal_base_and_center_cap` replaces the balancing premise by
+  the exact tensor-pairing cap identity already isolated in
+  `drinfeld_tensor_of_pairing_cap`. `pivotal_balance_of_drinfeld_tensor`
+  supplies the monodromy-first balancing convention. The cap identity and
+  base pivotal existence remain unproved. Full build and strict project audit
+  pass (481 modules, 4,749 declarations).

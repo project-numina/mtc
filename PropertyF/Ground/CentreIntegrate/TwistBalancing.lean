@@ -85,4 +85,16 @@ theorem drinfeld_tensor_of_pairing_cap (C : BraidedFusionCategory.{v,u}) (X Y : 
   simp only [tensorRightHomEquiv_whiskerRight_comp_evaluation] at hh
   exact (cancel_mono (λ_ ((Wᘁ)ᘁ)).inv).1 hh
 
+/-- In the usual convention, twist balancing has monodromy first. -/
+theorem pivotal_balance_of_drinfeld_tensor (C : BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (X Y : C.Obj)
+    (h : Modular.doubleBraiding X Y ≫ (doubleDualIso C (X ⊗ Y)).hom =
+      ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
+        (doubleDualTensorIso X Y).hom) :
+    Modular.doubleBraiding X Y ≫
+      ((pivotalBraidedTwist C p X).hom ⊗ₘ (pivotalBraidedTwist C p Y).hom) =
+        (pivotalBraidedTwist C p (X ⊗ Y)).hom := by
+  rw [balance_of_drinfeld_tensor C p X Y h]
+  exact CentreCabling.doubleBraiding_natural _ _
+
 end PropertyF.Ground.CentreIntegrate
