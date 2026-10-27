@@ -1,5 +1,17 @@
 module
 public import PropertyF.Ground.Integrate.ProjectAudit
+public import PropertyF.Ground.Integrate.GeneratedCenterReduction
+public import PropertyF.Ground.CentreCabling.ProductGenerated
+public import PropertyF.Ground.CentreCalculus.Core
+public import PropertyF.Ground.CentreCalculus.ExteriorReduction
+public import PropertyF.Ground.CentreInduction.Underlying
+public import PropertyF.Ground.CentreInduction.GlobalSquare
+public import PropertyF.Ground.CentreInduction.Adjunction
+public import PropertyF.Ground.CentreModular.InductionDimension
+public import PropertyF.Ground.CentreBundle.Fusion
+public import PropertyF.Ground.CentreRigid.Lift
+public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.Integrate.DirectModular
 public import PropertyF.Ground.Target
 public import PropertyF.Ground.Integrate.UnitScalar
 public import PropertyF.Ground.Fusion.Integrality
@@ -198,6 +210,10 @@ public import PropertyF.Ground.Integrate.CenterProductBridge
 public import PropertyF.Ground.Integrate.CenterBundle
 public import PropertyF.Ground.Integrate.CenterDualMate
 public import PropertyF.Ground.Integrate.ActualCenterReduction
+public import PropertyF.Ground.CentreModular.InductionDimension
+public import PropertyF.Ground.CentreModular.ColumnSeparation
+public import PropertyF.Ground.CentreModular.KirbyCriterion
+public import PropertyF.Ground.CentreModular.RegularSupport
 public import PropertyF.Ground.Integrate.ExamplePropertyF
 
 public import PropertyF.Ground.Calculus.ThreeRigidity
@@ -304,6 +320,28 @@ public import PropertyF.Ground.CentreInduction.CrossingNaturality
 public import PropertyF.Ground.CentreDimensions.RankOneCenter
 
 public import PropertyF.Ground.CentreDimensions.RankOneRigid
+
+public import PropertyF.Ground.CentreDimensions.RankOneModular
+
+public import PropertyF.Ground.Dimensions.RightDualAssociativity
+
+public import PropertyF.Ground.Dimensions.DoubleDualAssociativity
+
+public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
+
+public import PropertyF.Ground.Dimensions.DualEvaluation
+public import PropertyF.Ground.Dimensions.DoubleDualPairing
+public import PropertyF.Ground.Dimensions.PivotalDual
+public import PropertyF.Ground.Dimensions.SphericalReal
+public import PropertyF.Ground.Dimensions.PivotalBounds
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
+public import PropertyF.Ground.Dimensions.DefectCoevaluation
+public import PropertyF.Ground.CentreCalculus.Core
+public import PropertyF.Ground.CentreCalculus.GeneratorSquare
+public import PropertyF.Ground.CentreCalculus.PureSquares
+public import PropertyF.Ground.CentreCalculus.PermutationQuotient
+public import PropertyF.Ground.CentreCalculus.ProjectorReduction
+public import PropertyF.Ground.CentreCalculus.ParityCorrection
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
