@@ -270,3 +270,10 @@ no reliable completion-time estimate is available.
   invertibility of centre S, and centre pivotal twist balancing. None of those
   three is asserted proved. Full build and strict audit pass (475 modules,
   4,731 declarations).
+
+- Modular's transparency criterion is merged and wired as
+  `target_of_pivotal_balanced_center_trivial_transparency`: centre S
+  invertibility can be replaced by triviality of actual transparent simples
+  once twist balancing holds. Base pivotal existence, balancing, and that
+  transparency statement are explicit and unproved. Full build and strict
+  project audit pass (477 modules, 4,736 declarations).

@@ -289,3 +289,9 @@ remaining three explicit obligations are: a pivotal structure for each
 pseudo-unitary base, centre S invertibility, and pivotal twist balancing on
 that centre. No final target is proved. Full build and strict project audit
 pass (475 modules, 4,731 declarations).
+
+`target_of_pivotal_balanced_center_trivial_transparency` applies modular's
+trace-saturation criterion: given balancing, it replaces S-invertibility by
+the assertion that only the centre unit is transparent. Base pivotal
+existence, balancing, and this actual transparency condition remain open.
+Full build and strict project audit pass (477 modules, 4,736 declarations).
