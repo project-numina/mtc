@@ -2,6 +2,7 @@ module
 public import PropertyF.Ground.CentreInduction.UnitCandidate
 public import PropertyF.Ground.CentreInduction.UnitCoevaluation
 public import PropertyF.Ground.CentreInduction.UnitTest
+public import PropertyF.Ground.CentreRigid.Unit
 
 /-! The first underlying triangle for the proposed centre adjunction. -/
 
@@ -33,7 +34,7 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   rw [← comp_whiskerRight_assoc, ← hn]
   rw [comp_whiskerRight_assoc, ← associator_inv_naturality_middle_assoc]
   rw [← whiskerLeft_comp_assoc]
-  rw [halfBraiding_unit C Z]
+  rw [CentreRigid.halfBraiding_unit Z]
   simp only [comp_whiskerRight, Category.assoc]
   rw [triangle_assoc_comp_right_assoc, ← whisker_exchange_assoc]
   simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp]

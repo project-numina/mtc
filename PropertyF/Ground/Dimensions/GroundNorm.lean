@@ -105,16 +105,4 @@ theorem target_globalDimension_independent_simples (C : Ground.BraidedFusionCate
   obtain ⟨e⟩ := hf i
   exact target_squaredNorm_iso C e
 
-/-- In a spherical braided fusion category, the target norm is invariant under
-isomorphism of simple objects. -/
-theorem target_squaredNorm_iso_of_spherical (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    {X Y : C.Obj} [Simple X] [Simple Y] (e : X ≅ Y) :
-    Ground.squaredNorm C X = Ground.squaredNorm C Y := by
-  rw [target_squaredNorm_eq_dimension_sq C p hp X, target_squaredNorm_eq_dimension_sq C p hp Y]
-  have h : rightQuantumTrace (p.iso X) = rightQuantumTrace (p.iso Y) := by
-    rw [← rightTrace_id, ← rightTrace_id]
-    exact p.rightTrace_id_iso e
-  rw [h]
-
 end PropertyF.Ground.Dimensions

@@ -48,7 +48,6 @@ import all PropertyF.Ground.CentreBundle.Canonical
 import all PropertyF.Ground.CentreCabling.LanternSpherical
 import all PropertyF.Ground.CentreCabling.TwistDual
 import all PropertyF.Ground.CentreCalculus.MonodromyCap
-import all PropertyF.Ground.CentreCalculus.TargetReduction
 import all PropertyF.Ground.CentreInduction.DualMonodromy
 import all PropertyF.Ground.CentreInduction.FiniteMonodromyModular
 import all PropertyF.Ground.CentreModular.CenterBalanced
@@ -343,7 +342,6 @@ import all PropertyF.Ground.Calculus.GaloisRigidity
 import all PropertyF.Ground.Calculus.GaloisTraceBound
 import all PropertyF.Ground.Calculus.GroupBlocks
 import all PropertyF.Ground.Calculus.ImageMaps
-import all PropertyF.Ground.Calculus.IntegratorBridge
 import all PropertyF.Ground.Calculus.Intertwining
 import all PropertyF.Ground.Calculus.Overlap
 import all PropertyF.Ground.Calculus.OverlapBound
@@ -445,7 +443,6 @@ import all PropertyF.Ground.Dimensions.SimplePairing
 import all PropertyF.Ground.Dimensions.SimpleScalars
 import all PropertyF.Ground.Dimensions.SphericalArithmetic
 import all PropertyF.Ground.Dimensions.SphericalCriterion
-import all PropertyF.Ground.Dimensions.SphericalGalois
 import all PropertyF.Ground.Dimensions.TensorExtension
 import all PropertyF.Ground.Dimensions.TensorMultiplicativity
 import all PropertyF.Ground.Dimensions.TensorTrace

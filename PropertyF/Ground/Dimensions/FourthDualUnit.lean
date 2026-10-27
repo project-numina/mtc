@@ -120,12 +120,7 @@ theorem rootDimension_unit_sq (C : Ground.BraidedFusionCategory.{v,u}) :
 /-- The ENO dual sign of the tensor unit is positive. -/
 theorem rootDualSign_unit (C : Ground.BraidedFusionCategory.{v,u}) :
     rootDualSign C (Ground.unitIndex C) = 1 := by
-  have hdual : Ground.dualIndex C (Ground.unitIndex C) = Ground.unitIndex C := by
-    have h := Ground.fusionCoeff_dual_unit C (Ground.unitIndex C)
-    rw [Ground.fusionCoeff_unit] at h
-    by_cases he : Ground.unitIndex C = Ground.dualIndex C (Ground.unitIndex C)
-    · exact he.symm
-    · simp [he] at h
+  have hdual := Ground.dualIndex_unit C
   have hnorm : Ground.squaredNorm C (Ground.simples C (Ground.unitIndex C)) = 1 := by
     let : Simple (Ground.simples C (Ground.unitIndex C)) := Ground.simples_simple C _
     let : Simple (𝟙_ C.Obj) := Ground.IsFusionCategory.unit_simple
