@@ -369,3 +369,15 @@ Its explicit standard-input and realization assumptions are in `PropertyF.Axioms
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
 
+
+public import PropertyF.Ground.CentreRigid.SimpleCentrality
+
+public import PropertyF.Ground.CentreRigid.SimpleTensor
+
+public import PropertyF.Ground.CentreRigid.RankOneMate
+
+public import PropertyF.Ground.CentreRigid.MateExplicit
+
+public import PropertyF.Ground.CentreRigid.Coevaluation
+
+public import PropertyF.Ground.CentreRigid.Tensor
