@@ -4,7 +4,7 @@ public import PropertyF.Ground.Target
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
-public import PropertyF.Ground.Calculus.ImageMaps
+public import PropertyF.Ground.Calculus.RightStrand
 public import PropertyF.Ground.Calculus.BraidTraceBound
 public import PropertyF.Ground.Calculus.CategoricalTrace
 public import PropertyF.Ground.Calculus.PartialTrace
