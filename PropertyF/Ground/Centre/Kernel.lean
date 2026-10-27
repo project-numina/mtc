@@ -153,11 +153,37 @@ instance centerForgetPreservesMonomorphisms : (CategoryTheory.Center.forget C).P
       simpa using centerKernel_condition f
     exact congrArg CategoryTheory.Center.Hom.f hzero
 
+/-- An object whose underlying object is simple is simple in the centre. -/
+theorem centerSimple_of_underlying (Z : CategoryTheory.Center C) [Simple Z.1] : Simple Z := by
+  have : Simple ((CategoryTheory.Center.forget C).obj Z) := by
+    change Simple Z.1
+    infer_instance
+  exact (CategoryTheory.Center.forget C).simple_of_simple_obj Z
+
 /-- A simple underlying tensor unit remains simple in the centre. -/
 theorem centerUnitSimple [Simple (𝟙_ C)] : Simple (𝟙_ (CategoryTheory.Center C)) := by
-  have : Simple ((CategoryTheory.Center.forget C).obj (𝟙_ (CategoryTheory.Center C))) := by
+  have : Simple (𝟙_ (CategoryTheory.Center C)).1 := by
     change Simple (𝟙_ C)
     infer_instance
-  exact (CategoryTheory.Center.forget C).simple_of_simple_obj _
+  exact centerSimple_of_underlying _
 
+section Braided
+variable [BraidedCategory C]
+
+/-- The positive canonical embedding sends simple objects to simple centre objects. -/
+theorem positive_preserves_simple (X : C) [Simple X] :
+    Simple ((CategoryTheory.Center.ofBraided C).obj X) := by
+  have : Simple ((CategoryTheory.Center.ofBraided C).obj X).1 := by
+    change Simple X
+    infer_instance
+  exact centerSimple_of_underlying _
+
+/-- The negative canonical embedding sends simple objects to simple centre objects. -/
+theorem negative_preserves_simple (X : C) [Simple X] : Simple ((negative C).obj X) := by
+  have : Simple ((negative C).obj X).1 := by
+    change Simple X
+    infer_instance
+  exact centerSimple_of_underlying _
+
+end Braided
 end PropertyF.Ground.Centre

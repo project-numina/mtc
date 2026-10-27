@@ -16,7 +16,7 @@ The centre has a constructed preadditive structure, linear structure over any ri
 
 `fstBraidMap`, `sndBraidMap`, `productBraidMap`, `productBraidMap_injective`, and `product_braidImage_finite` prove that actual braid images of objects in the mixed product category embed in the product of the factor images, so finite images of both factors imply a finite product image. The proof uses the merged modular workstream’s braided-functor coherence. `positive_objectPropertyF_iff` and `negative_objectPropertyF_iff` establish property F preservation and reflection by both canonical embeddings.
 
-`centerKernel` and `centerKernelIsLimit` construct kernels in the centre of a rigid abelian monoidal category. `centerForgetPreservesMonomorphisms` follows from this construction, and `centerUnitSimple` proves the centre tensor unit is simple when C’s unit is simple.
+`centerKernel` and `centerKernelIsLimit` construct kernels in the centre of a rigid abelian monoidal category. `centerForgetPreservesMonomorphisms` follows from this construction, and `centerSimple_of_underlying` proves that a centre object is simple whenever its underlying object is simple. In particular `centerUnitSimple`, `positive_preserves_simple` and `negative_preserves_simple` establish simplicity of the unit and the canonical images of simple objects.
 
 `centerCokernel` and `centerCokernelIsColimit` construct cokernels in the centre; `centerForgetPreservesEpimorphisms` proves the forgetful functor preserves epimorphisms. `centerNormalMono`, `centerNormalEpi`, and `centerAbelian` prove that the centre of a rigid abelian monoidal category is abelian.
 
