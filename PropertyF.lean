@@ -7,6 +7,8 @@ public import PropertyF.Ground.CentreCalculus.ExteriorReduction
 public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.GlobalSquare
 public import PropertyF.Ground.CentreInduction.Adjunction
+public import PropertyF.Ground.CentreModular.ForgetTrace
+public import PropertyF.Ground.CentreModular.CrossingTrace
 public import PropertyF.Ground.CentreModular.InducedKirby
 public import PropertyF.Ground.CentreModular.CompatiblePivotal
 public import PropertyF.Ground.CentreModular.InductionDimension

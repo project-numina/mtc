@@ -89,3 +89,13 @@ centre-specific induced-loop vanishing for non-unit simple centre objects. This
 vanishing is still unproved, so this does not establish general modularity.
 Focused build and `#print axioms` for all three results passed with only the
 three permitted axioms.
+
+`CentreModular.forget_pivotalTrace` extends centre-to-base trace comparison to
+arbitrary endomorphisms. `center_SEntry_eq_underlying_trace` identifies any
+centre Hopf link with the base trace of the two half-braidings when the relevant
+pivotal component is compatible. `induced_crossing_trace_diagonal` expands the
+explicit induction crossing into its diagonal fusion-basis blocks, and
+`center_kirby_sum_eq_diagonal_traces` rewrites the centre Kirby sum as an
+explicit finite weighted sum of those base-category block traces. The pivotal
+compatibility and evaluation of that sum remain unproved. Focused build and
+foundational axiom checks passed.

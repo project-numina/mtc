@@ -31,3 +31,6 @@ The actual categorical S identities, character classification and Galois action 
 - The centre Kirby sum can now be rewritten as the weighted sum of actual
   induced-simple Hopf links, in `CentreModular.center_kirby_sum_eq_induced`.
   Evaluating this sum on non-unit centre simples remains open.
+- The remaining induced Kirby-loop evaluation is now an explicit finite sum of
+  base-category diagonal fusion-block traces (`center_kirby_sum_eq_diagonal_traces`),
+  assuming the displayed pivotal compatibility. Vanishing is not yet proved.
