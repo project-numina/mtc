@@ -68,6 +68,41 @@ theorem crossingInclusion_projection (C : BraidedFusionCategory.{v,u}) (T : C.Ob
     crossingInclusion C T i j a ≫ crossingProjection C T i j a = 𝟙 (simples C i) := by
   simp [crossingInclusion, crossingProjection, Dimensions.simpleInclusion, Category.assoc]
 
+/-- Distinct summand inclusions and projections have zero composite. -/
+theorem crossingInclusion_projection_ne (C : BraidedFusionCategory.{v,u}) (T : C.Obj)
+    (j : Fin (rank C))
+    (p q : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)))
+    (hne : p ≠ q) :
+    crossingInclusion C T p.1 j p.2 ≫ crossingProjection C T q.1 j q.2 = 0 := by
+  simp [crossingInclusion, crossingProjection, Dimensions.simpleInclusion, Category.assoc,
+    biproduct.ι_π_ne _ hne]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The projection/inclusion pairs resolve the identity on `T ⊗ Sⱼ`.
+This is the completeness relation used for changes of fusion bases. -/
+theorem crossing_completeness (C : BraidedFusionCategory.{v,u}) (T : C.Obj)
+    (j : Fin (rank C)) :
+    (∑ p : Σ i : Fin (rank C),
+        Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+      crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) =
+        𝟙 (T ⊗ simples C j) := by
+  classical
+  let e := Dimensions.simpleDecomposition C (T ⊗ simples C j)
+  let V := Dimensions.simplePiecesObject C (T ⊗ simples C j)
+  have hs : e.hom ≫ (𝟙 (⨁ V)) ≫ e.inv = 𝟙 (T ⊗ simples C j) := by
+    dsimp [e, V]
+    simp
+  have ht := congrArg (fun k => e.hom ≫ k ≫ e.inv) (biproduct.total (f := V))
+  rw [hs] at ht
+  simp only [Preadditive.comp_sum, Preadditive.sum_comp, Category.assoc] at ht
+  calc
+    _ = ∑ p, e.hom ≫ biproduct.π V p ≫ biproduct.ι V p ≫ e.inv := by
+      apply Finset.sum_congr rfl
+      intro p _
+      cases p
+      simp [crossingProjection, crossingInclusion, Dimensions.simpleInclusion, e, V, Category.assoc]
+    _ = _ := ht
+
 /-- The finite matrix formula proposed for the induction half-braiding. This
 is only a morphism; invertibility, naturality, the tensor law, and compatibility
 with the induction functor are not yet proved. -/
