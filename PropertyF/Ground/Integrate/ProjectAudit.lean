@@ -202,7 +202,11 @@ run_cmd do
   let env ← getEnv
   let mut checked : Nat := 0
   for (name, _) in env.constants.toList do
-    if name.toString.startsWith "PropertyF." then
+    let projectModule := match env.getModuleIdxFor? name with
+      | some idx => env.header.modules[idx.toNat]?.any fun m =>
+          m.module.toString == "PropertyF" || m.module.toString.startsWith "PropertyF."
+      | none => false
+    if name.toString.startsWith "PropertyF." || projectModule then
       if Lean.isExtern env name || (Lean.Compiler.getImplementedBy? env name).isSome then
         throwError "Unexpected foreign implementation in project declaration {name}"
       for ax in ← collectAxioms name do

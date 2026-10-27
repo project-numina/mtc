@@ -84,7 +84,7 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 Latest merged snapshots: fusion 5c7a48b; dimensions 86679d3; calculus 1c36987;
 centre c251fd7; modular 8ab02b4; cabling 4bdead2. The full development build
-passed; `ProjectAudit` scans 2,105 integrated declarations, all with only the
+passed; `ProjectAudit` scans 2,305 integrated public and private declarations, all with only the
 standard axioms. This is not a proof of the target.
 
 The final arithmetic reduction is bundle-free: fusion bfbd006 proves target

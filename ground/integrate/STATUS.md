@@ -44,7 +44,7 @@
   equal one, so its pseudo-unitary conjugate is also constructed. Property F
   for the example is not yet proved.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans all 2,105 integrated declarations for forbidden axioms.
+- `ProjectAudit` scans 2,305 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and
