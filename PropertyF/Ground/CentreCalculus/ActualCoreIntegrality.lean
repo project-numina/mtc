@@ -19,9 +19,8 @@ theorem actual_symmetricCore_integrality (C : BraidedFusionCategory.{v,u})
     (hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) p i =
       (fpSimple (Integrate.bundledCenter C) i : ℂ)) :
     ∀ y ∈ CentreCabling.symmetricCore C,
-      ∃ z : ℤ, Modular.simpleDimension (Integrate.bundledCenter C) p y = z := by
-  intro y hy
-  apply selfTransparent_simpleDimension_integer (Integrate.bundledCenter C) p hp hdim y
-  exact commonCentralizer_self (simples (Integrate.bundledCenter C) y) hy.1 hy.2
+      ∃ z : ℤ, Modular.simpleDimension (Integrate.bundledCenter C) p y = z :=
+  fun y hy ↦ selfTransparent_simpleDimension_integer (Integrate.bundledCenter C) p hp hdim y
+    (commonCentralizer_self (simples (Integrate.bundledCenter C) y) hy.1 hy.2)
 
 end PropertyF.Ground.CentreCalculus
