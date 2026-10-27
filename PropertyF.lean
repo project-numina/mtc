@@ -231,3 +231,4 @@ public import PropertyF.Ground.CentreInduction.Fusion
 public import PropertyF.Ground.CentreInduction.UnitTest
 public import PropertyF.Ground.CentreInduction.RankOne
 public import PropertyF.Ground.CentreInduction.UnitSummand
+public import PropertyF.Ground.CentreInduction.PseudoUnitary

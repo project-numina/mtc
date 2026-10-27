@@ -148,6 +148,10 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.fusion_of_pseudoUnitary_and_induction` discharges
+  the nonzero global-dimension premise using pseudo-unitarity and FP positivity.
+  The spherical structure, induction adjunction, and sliding equation remain
+  explicit premises.
 - `CentreInduction.unitSummandRetract` gives an explicit retract of every
   base object from its underlying induction sum through the unit-labelled
   component. Its naturality and its role as an adjunction counit remain open.
@@ -224,3 +228,12 @@ provides finite-dimensional Hom spaces and the unit-endomorphism comparison.
 The half-braiding coherence, adjunction, and loop-sliding identity remain
 substantial work. The averaging splitting and centre fusion assembly are
 proved conditionally on those inputs and the stated spherical assumptions.
+
+## Round 2 verification
+
+Focused builds passed for `CentreInduction.Fusion`, `RankOne`, `UnitSummand`,
+and `PseudoUnitary`, including their dependency modules. `#print axioms` on
+the finite-semisimplicity assembly, conditional centre fusion and FP-square
+theorems, rank-one sliding and FP-square theorems, and pseudo-unitary assembly
+showed only `propext`, `Classical.choice`, and `Quot.sound`. The explicit
+mathematical premises described above are still unproved.
