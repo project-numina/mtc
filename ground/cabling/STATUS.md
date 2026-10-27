@@ -87,3 +87,19 @@ bound; `sCentralizer_closed_under_constituents` and
 case. These results need neither S invertibility nor finite braid images.
 The reverse S-test-to-monodromy implication and the centralizer dimension /
 double-centralizer equality remain unproved. Focused builds passed.
+
+Double-centralizer route under development: for a dual-closed label set A of
+product retracts, take its FP-weighted regular vector and its S-transform. If
+that transform vanishes off the numerical centralizer of A, S-square and the
+unit label imply the desired reverse inclusion. Proving this support identity
+requires the regular-vector eigenvalue calculation using fusion closure; it is
+not asserted as an established fact.
+
+`CentreCabling.categoricalS_fourier_inversion` derives inversion from the
+actual categorical S-square theorem. `doubleCentralizer_of_fourier_support`
+proves the exact double-centralizer implication from an explicitly supplied
+vector supported on generated labels, nonzero at the unit, whose S-transform
+is supported on the core. This support condition is not yet proved; proving it
+for the positive FP-weighted regular vector using fusion closure is the next
+step. The identification of the numerical core with the actual symmetric
+intersection also remains open. Focused build passed.

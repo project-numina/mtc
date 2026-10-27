@@ -196,6 +196,7 @@ public import PropertyF.Ground.Calculus.IntegratorBridge
 public import PropertyF.Ground.CentreCabling.ProductGenerated
 public import PropertyF.Ground.CentreCabling.SCentrality
 public import PropertyF.Ground.CentreCabling.FusionCentralizer
+public import PropertyF.Ground.CentreCabling.FourierCentralizer
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
