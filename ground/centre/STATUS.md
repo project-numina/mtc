@@ -172,3 +172,11 @@ closed winding maps; `loop_square` and `normalized_loop_idempotent` prove its
 normalization is idempotent on underlying Hom spaces. No loop centrality or
 centre semisimplicity is claimed: identifying its image with centre Hom maps
 remains the missing geometric step. Focused build passes.
+`negative_and_induced_detect_unit` proves a simple object of the actual centre
+centralizing all negative images and the actual induced tensor unit is
+isomorphic to the centre unit. Consequently `transparent_simple_is_unit`
+proves categorical nondegeneracy of the actual centre, without centre fusion,
+pivotal or spherical assumptions. The proof uses the nonzero diagonal matrix
+block of the actual induction crossing and the counit unit-summand projection.
+Numerical S-centrality has not yet been shown to imply categorical centrality;
+therefore S-matrix invertibility is not claimed. Focused build passes.
