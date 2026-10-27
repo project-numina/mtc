@@ -57,3 +57,23 @@ integrator still needs to merge this branch and connect the bundle-free results
 to the shared frozen target; the centre, canonical spherical structure and
 other workstream obligations are separate. The global target is not asserted
 proved by this workstream.
+
+## Round 2: centre centralizers and product retracts
+
+Plan: identify the generated tensor/retract closure of the two canonical centre
+embeddings with `ProductRetract` using the product functor's object formula.
+Once the actual centre has the rigid fusion instances owned by centre/fusion,
+use the already proved theorem that a fusion-category object's dual is generated
+by it to obtain dual closure without additional dual-functor coherence. For the
+double centralizer, investigate whether S-square and Verlinde give the required
+membership in this specific closure through a dimension/counting argument; the
+S equality must first be related to actual double braiding (positivity is
+available in the target). This remains open and requires the genuine
+centralizer dimension theorem or an equivalent explicit linear-algebra proof.
+
+Round 2 progress: `Centre.productRetract_iff_tensorClosure` identifies actual
+product retracts exactly with the tensor/biproduct/retract closure of the two
+canonical embeddings. `Centre.productRetract_rightDual` and
+`Centre.productTensorClosure_rightDual` establish right-dual closure assuming
+only the centre's genuine rigid/fusion instances. Focused build passed. The
+remaining substantive task is the double-centralizer S-test implication.

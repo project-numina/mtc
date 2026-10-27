@@ -9,3 +9,12 @@
   hypothesis structures.
 - Handoff: the integration workstream must merge `ground/cabling` and use the
   bundle-free property-F and generated-category theorems in the frozen target.
+
+## Round 2
+
+- Centre/fusion: actual `RigidCategory (Center C.Obj)` and
+  `IsFusionCategory (Center C.Obj)` instances are needed by the proved
+  product-retract dual-closure theorem. No centre dominance is assumed.
+- Modular/centre: double-centralizer work needs categorical S nondegeneracy
+  and a proof that the S test expresses double-braiding centrality, together
+  with the modular centralizer dimension formula (or a direct equivalent).
