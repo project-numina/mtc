@@ -142,6 +142,7 @@ public import PropertyF.Ground.Integrate.ScalarTwistNorm
 public import PropertyF.Ground.Integrate.FPConjugates
 public import PropertyF.Ground.Integrate.TwistedRigidity
 public import PropertyF.Ground.Integrate.OverlapReduction
+public import PropertyF.Ground.Integrate.CenterOnlyReduction
 public import PropertyF.Ground.Integrate.ExamplePropertyF
 
 public import PropertyF.Ground.Calculus.ThreeRigidity

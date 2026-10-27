@@ -188,6 +188,7 @@ import all PropertyF.Ground.Fusion.UnitPower
 import all PropertyF.Ground.Fusion.WeakIntegrality
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterFiniteImage
+import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterReduction
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge

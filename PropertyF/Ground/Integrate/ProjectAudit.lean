@@ -210,6 +210,7 @@ import all PropertyF.Ground.Fusion.UnitPower
 import all PropertyF.Ground.Fusion.WeakIntegrality
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterFiniteImage
+import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterReduction
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
@@ -350,6 +351,7 @@ run_cmd do
       ``PropertyF.Ground.rigidity_of_twisted_overlap,
       ``PropertyF.Ground.target_of_canonical_spherical_center_and_overlap,
       ``PropertyF.Ground.target_of_spherical_existence_center_and_overlap,
+      ``PropertyF.Ground.target_of_center_and_overlap,
       ``PropertyF.Ground.Dimensions.positive_spherical_of_spherical_pseudoUnitary,
       ``PropertyF.Ground.Example.target_hypotheses_inhabited,
       ``PropertyF.Ground.Calculus.actual_rigidity_of_overlap_and_galois_dimensions,
