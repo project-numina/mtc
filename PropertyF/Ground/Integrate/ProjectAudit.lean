@@ -184,6 +184,11 @@ run_cmd do
       unless n == ``PropertyF.StandardInputs do
         throwError "unexpected forbidden fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect an imported definition body"
+  match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenProof with
+  | some (.forbidden n) =>
+      unless n == ``PropertyF.StandardInputs do
+        throwError "unexpected forbidden theorem fixture dependency {n}"
+  | _ => throwError "dependency audit did not inspect the imported theorem proof"
   unless (findIssue env ``PropertyF.Ground.target_of_legacy_standardInputs).isSome do
     throwError "dependency audit did not reject the conditional target bridge"
   unless (findIssue env ``PropertyF.Ground.legacyCategory).isSome do
