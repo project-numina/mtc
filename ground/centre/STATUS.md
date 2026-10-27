@@ -119,3 +119,9 @@ coevaluation in every rigid monoidal category, without any tensor-law premise;
 law is supplied. The proof uses the mate unit, half-braiding naturality and
 tensor law, and the crossed-cup normalization. Evaluation and the dual-crossing
 tensor law remain open. Focused Lake build passes on cores 16–19.
+`dualCrossing_tensor` proves the general normalized dual crossing tensor law
+in every rigid monoidal category. The proof composes two coevaluation slides,
+uses interchange and the original half-braiding law, then invokes injectivity
+of the rigid Hom equivalence. Together with `coevaluation_central`, only
+centrality of evaluation remains before general centre rigidity. Focused build
+passes; the proof has no additional hypotheses.
