@@ -140,3 +140,15 @@ therefore proves numerical S-centrality implies actual identity monodromy
 whenever that double braiding has finite order. Finite order of mixed
 monodromy in the centre remains unproved; base property F does not directly
 supply it. Focused builds passed.
+
+`CentreCabling.symmetricCore` is the actual centralizer of both canonical
+images. `doubleBraiding_eq_one_of_simple_constituents` extends actual
+centrality from simple members of a retract-closed class to all objects in
+the class. `numericalProductCentralizer_subset_symmetricCore` proves the
+numerical-to-categorical core inclusion assuming finite order for mixed centre
+monodromies with product-retract simple first strand. Combined in
+`productLabels_doubleCentralizer_of_finite_monodromy`, this gives the exact
+actual-centre double-centralizer/product-retract test with only that remaining
+finite-order premise, alongside centre fusion/positive spherical/nondegenerate
+S prerequisites. Symmetric-core dimension integrality is calculus's separate
+unfinished obligation. Focused build passed.
