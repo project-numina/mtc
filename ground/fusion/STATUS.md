@@ -164,7 +164,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   into an induced base simple (`simple_mono_induced_simple`).
   `finite_simple_representatives` now proves finitely many actual centre
   simples up to isomorphism without sliding or sphericality, using finite
-  length and the adjunction. Averaging-loop sliding and construction of
+  length and the adjunction. `induction_injective` and
+  `center_enough_injectives` show induced objects are injective and every
+  centre object embeds in one. Averaging-loop sliding and construction of
   centre semisimplicity/fusion remain open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
   unit-counit column on simple test strands. `crossingUnitBlock_eval` proves
