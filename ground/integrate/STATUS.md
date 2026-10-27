@@ -7,6 +7,8 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
+- `positive_ratio_of_galois_square` and `galois_unit_self_entry` isolate the
+  bundle-free arithmetic and S-entry substitutions needed for the centre witness.
 - `positive_bounded_conjugates_of_spherical` supplies all bounded-real
   conjugates given an actual spherical structure and dual-invariant dimensions.
 - `selfDual_character_real` and `selfDual_character_galois_real` prove

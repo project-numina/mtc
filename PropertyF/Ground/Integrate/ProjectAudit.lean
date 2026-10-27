@@ -206,6 +206,8 @@ run_cmd do
       ``PropertyF.Ground.target_of_galois_invariance_and_pseudo_fixedness,
       ``PropertyF.Ground.target_of_pseudo_fixedness,
       ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
+      ``PropertyF.Ground.positive_ratio_of_galois_square,
+      ``PropertyF.Ground.galois_unit_self_entry,
       ``PropertyF.Ground.target_of_numerical_witnesses,
       ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
       ``PropertyF.Ground.target_of_spherical_and_witness,
