@@ -41,6 +41,10 @@
   `generatedCategoryRigidOfGeneratorDual` constructs rigidity from it.
   Establishing that one membership and the fusion structure remains.
 
+- `positiveMatrix_eigenvector_integral` proves the arithmetic/Perron step
+  of ENO 8.27: a normalized positive eigenvector of a positive rational
+  matrix with rational eigenvalue has integer entries if integral over ℤ.
+
 ## In progress
 
 - Construct the categorical pure-word map to cabled images and prove its
@@ -50,7 +54,9 @@
 
 - Prove `GeneratedBy X (Xᘁ)` from finite semisimplicity and construct
   the fusion structure on the generated subcategory and cabling witnesses.
-- Prove ENO 8.27 and preservation of FP dimension along the inclusion.
+- Prove the categorical setup for ENO 8.27: the adjoint component, a
+  strictly positive power of its fusion matrix, its integer eigenvalue,
+  and integrality of coordinates; show inclusion preserves FP dimension.
 - The project lacks constructions of fusion categories, semisimplicity, FP
   and FP dimensions. The final target and
   interfaces are being developed by the other workstreams. Full completion
