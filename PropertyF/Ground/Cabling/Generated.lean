@@ -4,6 +4,8 @@ public import Mathlib.CategoryTheory.Monoidal.Subcategory
 public import Mathlib.CategoryTheory.Monoidal.Preadditive
 public import Mathlib.CategoryTheory.Limits.Shapes.Products
 public import Mathlib.Logic.Equiv.Fin.Basic
+public import Mathlib.CategoryTheory.ObjectProperty.FiniteProducts
+public import Mathlib.CategoryTheory.ObjectProperty.ContainsZero
 
 /-! Basic closure properties of the object property defining the generated
 subcategory. -/
@@ -114,6 +116,35 @@ theorem generatedBy_biproduct (X : C) (a : ℕ) (f : Fin a → C)
         change tensorPower X (k (e.symm (e p)).1 (e.symm (e p)).2) = _
         rw [e.symm_apply_apply]))
   exact ⟨_, k', ⟨R.trans (Retract.ofIso e')⟩⟩
+
+/-- Generated objects are closed under isomorphism. -/
+instance generatedBy_isoClosed (X : C) : ObjectProperty.IsClosedUnderIsomorphisms (GeneratedBy X) where
+  of_iso e h := generatedBy_of_iso h e.symm
+
+/-- Generated objects are closed under biproducts indexed by any finite type. -/
+theorem generatedBy_finiteBiproduct (X : C) {J : Type} [Finite J] (f : J → C)
+    (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
+  classical
+  let _ : Fintype J := Fintype.ofFinite J
+  let e := Fintype.equivFin J
+  let g : Fin (Fintype.card J) → C := fun i => f (e.symm i)
+  have hg := generatedBy_biproduct X _ g (fun i => hf (e.symm i))
+  apply generatedBy_of_iso hg
+  exact biproduct.whiskerEquiv e (fun j => eqToIso (by simp [g]))
+
+/-- The generated closure contains the zero object. -/
+instance generatedBy_containsZero (X : C) : ObjectProperty.ContainsZero (GeneratedBy X) where
+  exists_zero := by
+    obtain ⟨Z, hZ⟩ := HasZeroObject.zero (C := C)
+    exact ⟨Z, hZ, generatedBy_retract (generatedBy_unit X) (hZ.retract _)⟩
+
+/-- Generated objects are closed under finite products in the ambient category. -/
+instance generatedBy_finiteProducts (X : C) : ObjectProperty.IsClosedUnderFiniteProducts (GeneratedBy X) where
+  isClosedUnderLimitsOfShape J _ := by
+    apply ObjectProperty.IsClosedUnderLimitsOfShape.mk'
+    rintro _ ⟨F, hF⟩
+    apply generatedBy_of_iso (generatedBy_finiteBiproduct X (fun j : J => F.obj ⟨j⟩) (fun j => hF ⟨j⟩))
+    exact (Pi.isoLimit F).symm ≪≫ (biproduct.isoProduct _).symm
 
 variable [MonoidalPreadditive C]
 /-- Distribute tensor product over two finite biproducts. -/
