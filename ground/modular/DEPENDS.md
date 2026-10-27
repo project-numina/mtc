@@ -55,3 +55,5 @@ The actual categorical S identities, character classification and Galois action 
   determinants of simple double braidings remain explicit open premises.
 - `fpDeterminant_biprod` proves direct-sum additivity for block-diagonal
   automorphisms. Tensor compatibility for arbitrary automorphisms remains open.
+- The tensor determinant identity is closed under binary direct sums, via
+  `fpDeterminant_tensor_biprod`; non-block-diagonal automorphisms remain open.

@@ -157,3 +157,9 @@ between the simple Hom space into a biproduct and a product of Hom spaces.
 This supplies the determinant direct-sum step for the Vafa route; arbitrary
 (non-block-diagonal) automorphisms and the tensor/hexagon identities remain
 open. Focused build and foundational axiom check passed.
+
+`fpDeterminant_tensor_biprod` proves the tensor determinant identity is closed
+under actual binary direct sums, using the monoidal distributor and determinant
+conjugation/direct-sum formulas. Together with the simple case this covers
+block-diagonal simple-sum automorphisms. The arbitrary automorphism case and
+monodromy hexagon remain open. Focused build and axiom check passed.
