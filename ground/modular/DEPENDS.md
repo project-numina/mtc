@@ -37,3 +37,6 @@ The actual categorical S identities, character classification and Galois action 
 - Vafa determinant route: the regular-element cancellation is now proved, but
   actual categorical determinants, their hexagon/tensor identities and the
   torsion-detection vector space remain open.
+- `vafaUnitSpace` and `vafaUnitClass_eq_zero_iff` now provide the missing
+  torsion-detection space for complex units. The categorical determinant and
+  its hexagon/tensor equations remain unproved.

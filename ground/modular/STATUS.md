@@ -107,3 +107,15 @@ fusion derivation relation is zero. The categorical determinant, its
 hexagon/tensor identities, and the faithful passage from non-torsion complex
 units to the relevant vector space are not yet constructed, so finite-order
 monodromy is not proved. Focused build and foundational axiom check passed.
+
+`CentreModular.vafaUnitSpace` constructs the real vector space
+ℝ ⊗ℚ (ℚ ⊗ℤ Additive(ℂˣ)); `vafaUnitClass` maps complex units into it,
+`vafaUnitClass_eq_zero_iff` proves that its kernel consists exactly of
+finite-order units, and `vafaUnitClass_mul`/`vafaUnitClass_pow` prove the
+multiplicative-to-additive properties. This supplies the torsion-detection
+component needed by the determinant route. Constructing the categorical
+determinant invariant and deriving its fusion/hexagon equation are still
+open; no monodromy finite-order claim follows yet. Focused build and axiom
+checks passed. The preceding full `lake build PropertyF` also passed; its
+project audit covered the prior integrated snapshot and individual axiom checks
+cover these newly added declarations.
