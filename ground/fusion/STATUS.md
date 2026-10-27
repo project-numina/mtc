@@ -60,6 +60,10 @@
 - `Ground.positive_character_unique`, `fpCharacter`, `fpCharacter_pos`,
   `fpCharacter_unit`, and `fpCharacter_mul`: that character is unique and is
   available as a constructed function with its fundamental laws.
+- `Ground.fpSimple_eq_fpCharacter`, `fpSimple_pos`, and `fpSimple_mul`: the
+  target's spectral-radius dimensions are exactly that positive character.
+  This uses `Dimensions.character_norm_le_fpSimple` from dimensions commit
+  e5a83b8 and `complex_eigenvalue_le_positive_eigenvalue` for the reverse bound.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -75,14 +79,12 @@ declaration conflicts.
 ## Blocked / outstanding
 
 Mathlib has categorical Schur's lemma but a source search found no general
-Perron–Frobenius theorem for positive matrices. The unique positive fusion
-character is now constructed; agreement with the target's spectral-radius
-dimensions remains to be established.
+Perron–Frobenius theorem for positive matrices. Existence, uniqueness and
+agreement of the target dimensions with the positive character are proved.
 
-Construction of `FusionData`, tensor/dual/inclusion invariance, agreement of
-spectral radii with the positive character, and the centre dimension comparison
-remain. The project-scale remaining effort is substantial; no credible
-completion-time estimate is yet available.
+Construction of `FusionData`, object tensor/dual/inclusion invariance, and the
+centre dimension comparison remain. The project-scale remaining effort is
+substantial; no credible completion-time estimate is yet available.
 
 Integration requires the target dependency cone to avoid the old hypothesis
 bundles entirely. The above results currently use `FusionData` and must be
