@@ -203,3 +203,11 @@ no reliable completion-time estimate is available.
   permutation action and either appropriate categorical cycle trace formula
   remains open. The focused build and full project audit pass (399 modules,
   4,254 declarations).
+
+- Merged centre `62010e5`: the normalized dual crossing tensor law and
+  coevaluation centrality are proved. Centre `f1f0122` has since also proved
+  general evaluation centrality and actual centre rigidity; that newer commit
+  is awaiting integration. `CentreIntegrate.twist_sign_of_dual_and_tensor`
+  reduces the simple twist parity sign to dual compatibility and
+  multiplicativity on the dual pair; both remain explicit hypotheses. The
+  coevaluation nonzero argument is proved from nonzero simple dimension.

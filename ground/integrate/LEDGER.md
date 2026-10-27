@@ -219,3 +219,10 @@ positive categorical dimensions in both parity cases. This discharges the
 combinatorial signed-sum evaluation; the actual symmetric-group action and
 its categorical cycle-trace/parity identity remain unproved. Full project
 audit passes for the new results.
+
+Centre `62010e5` proves the dual-crossing tensor law and coevaluation
+centrality. The newer centre `f1f0122` reports actual general centre rigidity
+and must be merged; its evaluation centrality is no longer an open item once
+integrated. `CentreIntegrate.twist_sign_of_dual_and_tensor` proves the sign
+from two explicit twist identities on the simple/dual pair; those identities
+remain open and the theorem does not assume or prove a Vafa theorem.
