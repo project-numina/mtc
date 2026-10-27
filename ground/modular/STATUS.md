@@ -42,4 +42,4 @@
 - Ground conjugate label, spectral FP invariance, and the legacy `StandardInputs.conjugate_labels` field are complete.
 - `conjugate_images` is complete; integrate its general braided-functor version into the ground proof without old hypothesis structures.
 
-The category-level modular identities and Galois action are constructed under the stated spherical, reality and invertibility conditions. Instantiating them for the actual centre and completing the final target remain open.
+The category-level modular identities and Galois action are constructed under the stated spherical, reality and invertibility conditions. Instantiating them for the actual centre and completing the final target remain open. There is no reliable completion-time estimate until the centre fusion structure, canonical spherical dimensions and S-invertibility are constructed; these are substantial foundational dependencies, not routine wiring.
