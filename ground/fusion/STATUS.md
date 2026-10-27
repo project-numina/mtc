@@ -26,6 +26,10 @@
   `finrank_simple_of_decomposition`, `exists_canonical_decomposition`:
   Hom-space dimensions compute decomposition multiplicities, and every object
   decomposes with those canonical multiplicities.
+- `Ground.tensor_multiplicity`, `fusionCoeff_unit`, `fusionCoeff_comm`, and
+  `fusionCoeff_assoc`: tensor product acts on multiplicities through the actual
+  fusion coefficients, which satisfy the unit, commutativity and associativity
+  laws for the genuine target category.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.

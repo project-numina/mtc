@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Fusion.Simples
 public import Mathlib.LinearAlgebra.Dimension.Constructions
+public import Mathlib.CategoryTheory.Monoidal.Preadditive
 
 /-! Hom-space multiplicities of finite direct sums. -/
 
@@ -64,5 +65,79 @@ theorem exists_canonical_decomposition (D : BraidedFusionCategory.{v,u}) (X : D.
     exact finrank_simple_of_decomposition D X m e i
   cases hm.symm
   exact ⟨e⟩
+
+/-- Tensoring an object on the left acts on simple multiplicities by its
+integer fusion matrix. -/
+theorem tensor_multiplicity (D : BraidedFusionCategory.{v,u}) (X Y : D.Obj)
+    (k : Fin (rank D)) :
+    Module.finrank ℂ (simples D k ⟶ X ⊗ Y) =
+      ∑ j, Module.finrank ℂ (simples D j ⟶ Y) *
+        Module.finrank ℂ (simples D k ⟶ X ⊗ simples D j) := by
+  classical
+  let m : Fin (rank D) → ℕ := fun j => Module.finrank ℂ (simples D j ⟶ Y)
+  let V : (Σ j, Fin (m j)) → D.Obj := fun p => simples D p.1
+  obtain ⟨e⟩ := exists_canonical_decomposition D Y
+  let e' : X ⊗ Y ≅ ⨁ (fun p => X ⊗ V p) :=
+    (Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X V
+  letI : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  calc
+    Module.finrank ℂ (simples D k ⟶ X ⊗ Y) =
+        Module.finrank ℂ (simples D k ⟶ ⨁ (fun p => X ⊗ V p)) :=
+      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e').finrank_eq
+    _ = ∑ p : Σ j, Fin (m j), Module.finrank ℂ (simples D k ⟶ X ⊗ V p) :=
+      finrank_hom_biproduct _ _
+    _ = _ := by
+      rw [Fintype.sum_sigma]
+      apply Finset.sum_congr rfl
+      intro j _
+      change (∑ _ : Fin (m j), Module.finrank ℂ (simples D k ⟶ X ⊗ simples D j)) = _
+      simp [m]
+
+/-- Fusion coefficients are the actual Hom-space dimensions. -/
+def fusionCoeff (D : BraidedFusionCategory.{v,u}) (i j k : Fin (rank D)) : ℕ :=
+  Module.finrank ℂ (simples D k ⟶ simples D i ⊗ simples D j)
+
+/-- The representative of the tensor unit. -/
+def unitIndex (D : BraidedFusionCategory.{v,u}) : Fin (rank D) :=
+  Classical.choose (exists_unit_iso D)
+
+theorem unitIndex_iso (D : BraidedFusionCategory.{v,u}) :
+    Nonempty (simples D (unitIndex D) ≅ 𝟙_ D.Obj) :=
+  Classical.choose_spec (exists_unit_iso D)
+
+theorem fusionCoeff_unit (D : BraidedFusionCategory.{v,u}) (j k : Fin (rank D)) :
+    fusionCoeff D (unitIndex D) j k = if k = j then 1 else 0 := by
+  obtain ⟨e⟩ := unitIndex_iso D
+  unfold fusionCoeff
+  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
+    ((e ⊗ᵢ Iso.refl (simples D j)) ≪≫ λ_ (simples D j))).finrank_eq]
+  exact finrank_simples_hom D k j
+
+theorem fusionCoeff_comm (D : BraidedFusionCategory.{v,u}) (i j k : Fin (rank D)) :
+    fusionCoeff D i j k = fusionCoeff D j i k := by
+  exact (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (β_ (simples D i) (simples D j))).finrank_eq
+
+/-- Associativity of fusion coefficients, derived from associativity of
+tensor products and finite semisimplicity. -/
+theorem fusionCoeff_assoc (D : BraidedFusionCategory.{v,u})
+    (i j k l : Fin (rank D)) :
+    ∑ r, fusionCoeff D j k r * fusionCoeff D i r l =
+      ∑ r, fusionCoeff D i j r * fusionCoeff D r k l := by
+  classical
+  calc
+    _ = Module.finrank ℂ (simples D l ⟶ simples D i ⊗ (simples D j ⊗ simples D k)) := by
+      simpa [fusionCoeff] using (tensor_multiplicity D (simples D i)
+        (simples D j ⊗ simples D k) l).symm
+    _ = Module.finrank ℂ (simples D l ⟶ simples D k ⊗ (simples D i ⊗ simples D j)) :=
+      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
+        ((α_ (simples D i) (simples D j) (simples D k)).symm ≪≫
+          β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq
+    _ = ∑ r, fusionCoeff D i j r * fusionCoeff D k r l := by
+      simpa [fusionCoeff] using tensor_multiplicity D (simples D k)
+        (simples D i ⊗ simples D j) l
+    _ = _ := by
+      apply Finset.sum_congr rfl
+      intro r _
+      rw [fusionCoeff_comm D k r l]
 
 end PropertyF.Ground
