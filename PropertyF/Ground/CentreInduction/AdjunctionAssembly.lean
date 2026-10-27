@@ -6,9 +6,10 @@ public import PropertyF.Ground.CentreInduction.Fusion
 remaining coherence obligations. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
+attribute [local instance] Abelian.hasFiniteBiproducts
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A half-braiding on each underlying induction sum, natural in the
@@ -98,5 +99,48 @@ theorem fusion_and_globalFPDimension_of_halfBraiding (C : BraidedFusionCategory.
   apply globalFPDimension_square_of_adjunction C I adj
   intro i
   exact ⟨Iso.refl _⟩
+
+/-- It suffices to verify centrality of the proposed unit against the base
+simple representatives. -/
+def adjunctionOfSimpleUnitCentrality (C : BraidedFusionCategory.{v,u})
+    (b : ∀ X : C.Obj, HalfBraiding (underlying C X))
+    (hb : ∀ {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj),
+      ((underlyingFunctor C).map f ▷ T) ≫ ((b Y).β T).hom =
+        ((b X).β T).hom ≫ (T ◁ (underlyingFunctor C).map f))
+    (hunit : ∀ (Z : CategoryTheory.Center C.Obj) (i : Fin (rank C)),
+      (unitCandidate C Z ▷ simples C i) ≫ ((b Z.1).β (simples C i)).hom =
+        (Z.2.β (simples C i)).hom ≫ (simples C i ◁ unitCandidate C Z))
+    (htriangle : ∀ X : C.Obj,
+      unitCandidate C ((inductionOfHalfBraiding C b hb).obj X) ≫
+        (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X)) :
+    CategoryTheory.Center.forget C.Obj ⊣ inductionOfHalfBraiding C b hb := by
+  apply adjunctionOfHalfBraiding C b hb ?_ htriangle
+  intro Z T
+  exact comm_of_simples C Z ((inductionOfHalfBraiding C b hb).obj Z.1)
+    (unitCandidate C Z) (hunit Z) T
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The remaining induction triangle is determined by finitely many matrix
+entries against the simple summands of the underlying induction object. -/
+theorem secondTriangle_of_matrix_entries (C : BraidedFusionCategory.{v,u})
+    (b : ∀ X : C.Obj, HalfBraiding (underlying C X))
+    (hb : ∀ {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj),
+      ((underlyingFunctor C).map f ▷ T) ≫ ((b Y).β T).hom =
+        ((b X).β T).hom ≫ (T ◁ (underlyingFunctor C).map f))
+    (hentries : ∀ (X : C.Obj) (i j : Fin (rank C)),
+      let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+      biproduct.ι V i ≫
+        (unitCandidate C ((inductionOfHalfBraiding C b hb).obj X) ≫
+          (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
+        biproduct.ι V i ≫ biproduct.π V j) :
+    ∀ X : C.Obj,
+      unitCandidate C ((inductionOfHalfBraiding C b hb).obj X) ≫
+        (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X) := by
+  intro X
+  apply biproduct.hom_ext'
+  intro i
+  apply biproduct.hom_ext
+  intro j
+  simpa [underlying, Category.assoc] using hentries X i j
 
 end PropertyF.Ground.CentreInduction

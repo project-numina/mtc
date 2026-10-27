@@ -167,7 +167,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   explicit second triangle. `fusion_and_globalFPDimension_of_halfBraiding`
   combines these with loop sliding and centre rigidity to construct the
   centre fusion instance and its FP-square theorem. The listed categorical
-  conditions are still unproved.
+  conditions are still unproved. `adjunctionOfSimpleUnitCentrality` reduces
+  unit centrality to simple test objects and `secondTriangle_of_matrix_entries`
+  reduces the remaining triangle to finite summand components.
 - `CentreInduction.unitCandidateNatural` constructs a natural map from the
   centre forgetful functor to its composite with the underlying induction
   functor, by coevaluating each simple and applying the given half-braiding.
