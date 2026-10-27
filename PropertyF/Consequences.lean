@@ -1,5 +1,9 @@
 module
 public import PropertyF.Main
+public import PropertyF.Ground.Final
+public import PropertyF.Ground.Cabling.CablingComplete
+public import PropertyF.Ground.Fusion.WeakIntegrality
+public import PropertyF.Ground.Integrate.StrandInclusion
 
 @[expose] public noncomputable section
 namespace PropertyF
@@ -61,3 +65,32 @@ theorem eventually_infinite_braidImage (H : StandardInputs.{v,u})
   exact hN (Finite.of_injective e e.injective)
 
 end PropertyF
+
+namespace PropertyF.Ground
+
+open CategoryTheory
+universe v u
+
+/-- A simple object with nonintegral squared FP dimension has infinite braid images
+from some strand number onward, provided its generated fusion category has a
+pseudo-unitary Galois conjugate. -/
+theorem eventually_infinite_braidImage (D : BraidedFusionCategory.{v,u})
+    (X : D.Obj) [Simple X]
+    (hPU : HasPseudoUnitaryGaloisConjugate (generatedFusionCategory D X))
+    (hnonintegral : ¬ ∃ z : ℤ, fpDimension D X ^ 2 = z) :
+    ∃ N : ℕ, ∀ n : ℕ, N ≤ n → Infinite (braidImage X n) := by
+  have hnotall : ¬ ObjectPropertyF X := by
+    intro hAll
+    have hweak := target (generatedFusionCategory D X) hPU
+      (Cabling.generatedFusion_hasPropertyF D X hAll)
+    exact hnonintegral (generated_simple_square_integer D X hweak)
+  obtain ⟨N, hN⟩ : ∃ N, ¬ Finite (braidImage X N) := by
+    simpa only [ObjectPropertyF, not_forall] using hnotall
+  refine ⟨N, ?_⟩
+  intro n hn
+  apply not_finite_iff_infinite.mp
+  intro hfinite
+  obtain ⟨e⟩ := simple_strand_inclusion D X N n hn
+  exact hN (Finite.of_injective e e.injective)
+
+end PropertyF.Ground
