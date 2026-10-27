@@ -415,3 +415,9 @@ actual centre is isomorphic to its unit, unconditionally from the base fusion
 category, without centre rigidity, fusion or pivotal assumptions. Focused
 build passes. S invertibility still requires turning its numerical S-test into
 actual centrality; investigating the finite-monodromy route.
+
+`center_S_invertible_of_finite_simple_monodromy` combines the trivial actual
+centre Müger centre with trace saturation to prove categorical S invertibility
+for an FP-valued centre pivotal structure, assuming finite order of mixed
+monodromies of centre simple pairs. It does not prove that finite-order
+condition. Focused build and kernel axiom checks pass.
