@@ -85,6 +85,7 @@ public import PropertyF.Ground.Cabling.MoveHeadInsert
 public import PropertyF.Ground.Cabling.MoveHeadContext
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.BlockGroupoid
+public import PropertyF.Ground.Cabling.BlockWords
 public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple
 public import PropertyF.Ground.Cabling.TupleCrossing
