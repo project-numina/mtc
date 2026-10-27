@@ -50,6 +50,11 @@
   cabling's `tensorLeft_faithful_of_unit_retract` (merged commit 288c894).
 - `Ground.positive_matrix_eigenspace_unique`: any eigenspace containing a
   strictly positive eigenvector of a positive real matrix is one-dimensional.
+- `Ground.positive_symmetric_matrix_has_positive_eigenvector`: every strictly
+  positive symmetric real matrix has a strictly positive eigenvector, proved by
+  maximizing its quadratic form on a sphere and applying Mathlib's symmetric
+  operator spectral theory. Combining this with the total fusion matrix is in
+  progress.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -65,10 +70,9 @@ declaration conflicts.
 ## Blocked / outstanding
 
 Mathlib has categorical Schur's lemma but a source search found no general
-Perron–Frobenius theorem for positive matrices. A constructive proof of a
-positive eigenvector and uniqueness, or an alternative elementary argument,
-is needed. The categorical bridge from biproduct decompositions to fusion-ring
-associativity and rigidity also remains to be developed.
+Perron–Frobenius theorem for positive matrices. Existence and uniqueness for the
+positive symmetric total fusion matrix are now proved; they still need to be
+assembled into a positive character and related to the spectral-radius target.
 
 Construction of `FusionData`, tensor/dual/inclusion invariance, agreement of
 spectral radii with the positive character, and the centre dimension comparison
