@@ -4,6 +4,11 @@ Branch: `ground/calculus`. Started from `094175c`.
 
 ## Done
 
+- `braid_squares_equal_of_saturation`, `actual_three_strand_rigidity_of_trace_bound`, `actual_rigidity_of_overlap_and_galois_dimensions` and `actual_rigidity_of_overlap_coherence`: categorical three-strand rigidity is proved from explicit real Galois dimension data and an overlap identity/coherence premise; unitary braid blocks, nonzero weights, saturation, partial-trace scalarity, and finite-order conclusion are constructed. These are conditional reductions, not a proof that the remaining premises hold.
+- `exists_galois_braid_trace_weights`, `exists_positive_braid_trace_weights`: from actual finite braid images, construct unitary blocks with real nonzero weights when actual pivotal simple dimensions are real Galois conjugates of positive dimensions, or positive weights when those dimensions are positive.
+- `addLeftBraidAlgebraIter_asHom`, `addRightBraidAlgebraIter_asHom`, `overlapLeft_local`: explicit tensor-power coherence for both iterated strand embeddings and the old factor of the overlap; `pair_overlap_first_coherence` and `pair_overlap_first_trace` prove the first two-strand overlap for arbitrary braid-algebra elements.
+- Strict private-body dependency audit and axiom collection pass for representative new overlap, unitarity and conditional categorical rigidity theorems. The latter retain explicit mathematical premises.
+
 - `three_braid_trace`, `three_braid_trace_categoricalS`, `two_braid_square_trace_categoricalS` and `two_braid_square_galois_trace`: actual two/three-strand categorical braids realize the diagonal categorical S entry and its overlap formula, including scalar application of a complex field automorphism. This does not yet construct the transported representation.
 - `overlapProduct_unitary`, `exists_unitary_overlap_presentations`: finite actual braid images provide simultaneous unitary blocks in which iterated actual overlap products remain unitary, using star-preserving left/right insertion.
 
@@ -37,8 +42,8 @@ Branch: `ground/calculus`. Started from `094175c`.
 
 ## In progress
 
-- Assemble the overlapping-product recurrence and prove the strengthened Lemma 3.1 bound from the categorical strand and partial-trace constructions.
-- Prove three-strand partial-trace identities and the Galois rigidity bridge.
+- Prove the relative left/right insertion coherence for every three-strand overlap, which supplies the one remaining overlap premise in the categorical rigidity reduction; general Lemma 3.1 needs the same coherence at arbitrary strand lengths.
+- Construct an arbitrary semilinear Galois twist of categories/pivotal structures, or an equivalent semilinear braid-representation transport; this is required to instantiate the real Galois dimension hypotheses for an arbitrary automorphism in the final fixedness argument.
 
 ## Blocked / dependencies
 

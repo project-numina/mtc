@@ -123,6 +123,10 @@ public import PropertyF.Ground.Cabling.CablingFinite
 public import PropertyF.Ground.Integrate.ScalarTwist
 public import PropertyF.Ground.Integrate.ScalarTwistTransport
 
+public import PropertyF.Ground.Calculus.ThreeRigidity
+public import PropertyF.Ground.Calculus.PositiveWeights
+public import PropertyF.Ground.Calculus.GaloisMatrices
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
