@@ -234,6 +234,7 @@ public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 public import PropertyF.Ground.CentreInduction.HomTranspose
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
 
+public import PropertyF.Ground.CentreInduction.TensorDetection
 public import PropertyF.Ground.CentreInduction.CandidateAssembly
 
 public import PropertyF.Ground.CentreInduction.BasisPairing
