@@ -113,10 +113,9 @@ Round 2 progress below for precise theorem statements.
 
 ## Blocked / outstanding
 
-- Fusion-owned: construct the canonical half-braiding on `underlyingFunctor`,
-  its lift `I : C ⥤ Center C`, and the forgetful right adjunction. In particular
-  the remaining universal-property proof must produce the actual Hom
-  equivalence, not merely the computed FP dimension of the underlying sum.
+- Fusion-owned: prove that `unitCandidate` is a centre morphism for the
+  constructed induction functor. Its two underlying triangle identities are
+  proved, so this supplies the forgetful right adjunction and Hom equivalence.
 - Fusion-owned: prove `SimpleLoopCentrality`, the sliding equation for the
   explicit spherical weighted loop sum. The unit-labelled case and rank-one
   special case are proved; for a general simple test strand this requires the
@@ -126,8 +125,8 @@ Round 2 progress below for precise theorem statements.
   a spherical structure on pseudo-unitary C; nonzero global dimension follows
   from pseudo-unitarity and FP positivity.
 
-There is no credible completion-time estimate for the general half-braiding,
-adjunction, and loop-sliding proofs. The existing conditional results do not
+There is no credible completion-time estimate for unit centrality and
+loop-sliding proofs. The existing conditional results do not
 prove the frozen target. The global subcategory inequality is proved, but no
 stronger divisibility theorem is claimed. Ground constructions avoid the old
 hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
@@ -159,8 +158,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   Mathlib's actual `Center C.Obj`, with underlying object the desired finite
   sum. The adjunction, averaging-loop sliding, and centre fusion remain open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
-  unit-counit column on simple test strands, reducing the second triangle to
-  the diagonal duality contraction.
+  unit-counit column on simple test strands. `crossingUnitBlock_eval` proves
+  the diagonal duality contraction, and `secondTriangle` proves the second
+  triangle for the actual induction functor.
 - `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
   transpose and proves it injective; composing it with the unit-summand
   counit recovers the original map. Centrality and surjectivity onto centre
@@ -171,14 +171,14 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   explicit second triangle. `fusion_and_globalFPDimension_of_halfBraiding`
   combines these with loop sliding and centre rigidity to construct the
   centre fusion instance and its FP-square theorem. The listed categorical
-  conditions are still unproved. `adjunctionOfSimpleUnitCentrality` reduces
-  unit centrality to simple test objects and `secondTriangle_of_matrix_entries`
-  reduces the remaining triangle to finite summand components.
+  conditions include unit centrality and loop sliding, which remain unproved.
+  `adjunctionOfSimpleUnitCentrality` reduces unit centrality to simple test
+  objects; its second triangle is now supplied by `secondTriangle`.
 - `CentreInduction.unitCandidateNatural` constructs a natural map from the
   centre forgetful functor to its composite with the underlying induction
   functor, by coevaluating each simple and applying the given half-braiding.
-  It is candidate adjunction-unit data only: the induction half-braiding,
-  centrality of the unit, and the triangle identities remain open.
+  It is candidate adjunction-unit data: its centrality remains open, while
+  both underlying triangle identities and the induction half-braiding are proved.
   `unitCandidate_counit_component` reduces the underlying first triangle to
   its unit-labelled component, and `coevaluation_iso_unit` proves the needed
   normalization of that component’s coevaluation under a unit isomorphism.

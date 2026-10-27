@@ -244,6 +244,8 @@ public import PropertyF.Ground.CentreInduction.CrossingCoherence
 public import PropertyF.Ground.CentreInduction.CandidateAssembly
 public import PropertyF.Ground.CentreInduction.AdjunctionMatrix
 public import PropertyF.Ground.CentreInduction.CounitColumn
+public import PropertyF.Ground.CentreInduction.UnitDiagram
+public import PropertyF.Ground.CentreInduction.SecondTriangle
 
 public import PropertyF.Ground.CentreInduction.BasisPairing
 
