@@ -74,6 +74,7 @@ public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
 public import PropertyF.Ground.Cabling.Rigidity
 public import PropertyF.Ground.Cabling.DualClosure
+public import PropertyF.Ground.Cabling.UnitPower
 public import PropertyF.Ground.Cabling.Inclusion
 public import PropertyF.Ground.Cabling.Perron
 public import PropertyF.Ground.Cabling.Primitive
@@ -83,8 +84,12 @@ public import PropertyF.Ground.Cabling.RetractAction
 public import PropertyF.Ground.Cabling.Naturality
 public import PropertyF.Ground.Cabling.CableRetract
 public import PropertyF.Ground.Cabling.TensorDecomposition
+public import PropertyF.Ground.Cabling.TensorComponents
+public import PropertyF.Ground.Cabling.MixedBraid
+public import PropertyF.Ground.Cabling.Zero
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.CablingDiagram
+public import PropertyF.Ground.Cabling.TransportTuple
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.

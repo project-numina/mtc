@@ -54,7 +54,9 @@
   under right duals. `generatedBy_dual_of_generator_dual` reduces that
   closure to generation of the generator’s own right dual, and
   `generatedCategoryRigidOfGeneratorDual` constructs rigidity from it.
-  Establishing that one membership and the fusion structure remains.
+  `Ground.Cabling.generatedBy_rightDual_of_unit_power` proves that for a
+  simple X this membership follows when some positive power contains the
+  unit. Establishing that occurrence and the fusion structure remains.
 
 - `positiveMatrix_eigenvector_integral` proves the arithmetic/Perron step
   of ENO 8.27: a normalized positive eigenvector of a positive rational
@@ -76,8 +78,10 @@
 - Prove the categorical setup for ENO 8.27: the adjoint component, a
   strictly positive power of its fusion matrix, its integer eigenvalue,
   and integrality of coordinates; show inclusion preserves FP dimension.
-- The project lacks constructions of fusion categories, semisimplicity, FP
-  and FP dimensions. The final target and
-  interfaces are being developed by the other workstreams. Full completion
-  requires substantial category-theoretic and braid-calculus infrastructure;
-  no reliable time estimate is available yet.
+  `square_integral_of_adjoint_matrix` completes the final numerical step
+  once a categorical adjoint matrix presentation is supplied.
+- The categorical braid/cabling identities, generation of the dual, and the
+  inherited semisimple fusion structure require substantial further work.
+  Fusion has constructed the ground positive character and object FP
+  dimension; the categorical adjoint-component construction and full
+  inclusion invariance remain open. No reliable completion estimate is available.

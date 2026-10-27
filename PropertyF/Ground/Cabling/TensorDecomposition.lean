@@ -44,7 +44,7 @@ def tensorPowerBiproductIso {I : Type} [Fintype I] (f : I → C) : ∀ n,
         tensorFiniteBiproduct f (tupleTensor f n) ≪≫
         biproduct.whiskerEquiv e (fun p => by
           change tupleTensor f (n + 1) (Fin.cons p.1 p.2) ≅ f p.1 ⊗ tupleTensor f n p.2
-          simpa [tupleTensor] using Iso.refl (f p.1 ⊗ tupleTensor f n p.2))
+          exact Iso.refl _)
 /-- A block indexed by powers is itself a tensor power of the generator. -/
 def tupleTensorPowersIso {I : Type} (X : C) (k : I → ℕ) : ∀ (n : ℕ) (t : Fin n → I),
     tupleTensor (fun i => tensorPower X (k i)) n t ≅
