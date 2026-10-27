@@ -10,7 +10,7 @@ Branch: `ground/calculus`. Started from `094175c`.
 - `PropertyF.Ground.Calculus.rightBlockMap_pair_square`, `leftBlockMap_pair_square`, `tripleBlock_braid_relation`, and `pairBlockGenerator_square_finite_order`: actual two/three-strand block operators satisfy both squared-braiding insertion identities, the braid relation, and finite order.
 - `PropertyF.Ground.Calculus.addRightAut_generator` and `addRightStrand`: explicitly append one right identity strand and prove it maps every actual categorical generator into the larger braid image using associator/naturality coherence. `addRightBraidAlgebra`, `addRightBlockStarMap`, and `addRightBlocksIterStarMap` construct one or any number of right identity strands as actual braid-algebra star maps in independently chosen unitary presentations.
 - `PropertyF.Ground.Calculus.three_braid_relation`, `three_braid_image_relation`, and `three_braid_relation_map`: the actual three-strand generators and every representation satisfy Yang–Baxter, including the unitors in right-associated tensor powers.
-- `PropertyF.Ground.Calculus.fpDimension_tensorPower` and `exists_unitary_braid_trace_power_bound`: using fusion's constructed multiplicative FP dimension, finite braid images give actual unitary blocks and the ordinary trace bound `‖Tr(u)‖ ≤ FPdim(X)^(n+2)`, conditional on the explicit simple-dimension bound.
+- `PropertyF.Ground.Calculus.fpDimension_tensorPower` and `exists_unitary_braid_trace_power_bound`: using fusion's constructed multiplicative FP dimension, finite braid images give actual unitary blocks and the ordinary trace bound `‖Tr(u)‖ ≤ FPdim(X)^(n+2)`, `exists_unitary_braid_trace_power_bound_ground` removes the dimension-bound premise using dimensions' pivotal character estimate.
 - `PropertyF.Ground.Calculus.pivotalTrace_braid_unitary_bound`: the paper's ordinary unitary trace estimate for the actual categorical braid algebra, from the explicit simple-dimension bound; the stronger overlap bound still requires right insertion and iterated partial trace.
 - `PropertyF.Ground.Calculus.multiplicity_mass_eq` and `transported_weight_ne_zero`: block-mass equality from the proved dimension counts, and nonvanishing under a Galois automorphism when original simple dimensions are positive and the block is retained. The actual categorical Galois transport remains to be constructed.
 - `PropertyF.Ground.Calculus.pivotalTrace_braid_multiplicities`: the actual pivotal trace on finite braid-image blocks has the paper's weight formula, with nonnegative integer multiplicities, every block retained, and multiplicity-space dimensions equal to the sum of multiplicities times braid-block sizes. This is a categorical theorem, with no old input bundles.
@@ -32,13 +32,14 @@ Branch: `ground/calculus`. Started from `094175c`.
 
 ## In progress
 
-- Connect the finite-group unitary realization and span lemma to the actual categorical braid-image embeddings.
+- Assemble the overlapping-product recurrence and prove the strengthened Lemma 3.1 bound from the categorical strand and partial-trace constructions.
+- Prove three-strand partial-trace identities and the Galois rigidity bridge.
 
 ## Blocked / dependencies
 
-- End-algebra and trace constructions require shared fusion and spherical category interfaces; precise requests are in `DEPENDS.md`.
+- Galois transport of the pivotal structure, positive canonical spherical structures, and the modular S-matrix bridge depend on dimensions, centre, and modular workstreams; precise requests are in `DEPENDS.md`.
 - Trace transport and the S-matrix formula require modular and Galois-conjugation constructions.
 
 ## Remaining fields and estimate
 
-All fields of `OverlapModel`, `ThreeStrandModel`, `ThreeStrandRealization`, and `CenterInputs.realize` remain to be assembled from genuine categories. The finite-order field now has a direct theorem once its categorical representation is constructed. The missing categorical semisimplicity, spherical calculus, compatible Wedderburn blocks, and Galois transport represent substantial work; no credible completion-time estimate is currently available.
+All fields of `OverlapModel`, `ThreeStrandModel`, `ThreeStrandRealization`, and `CenterInputs.realize` remain to be assembled from genuine categories. The finite-order field now has a direct theorem once its categorical representation is constructed. The individual End blocks, unitary braid blocks, strand maps, trace weights, categorical partial trace and simple-strand scalar law are constructed; assembling the overlap/three-strand arguments and the categorical Galois/centre bridges remains substantial. No credible completion-time estimate is currently available.

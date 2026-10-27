@@ -3,6 +3,7 @@ public import PropertyF.Ground.Calculus.BraidWeights
 public import PropertyF.Ground.Calculus.WeightFacts
 public import PropertyF.UnitaryTrace
 public import PropertyF.Ground.Fusion.ObjectDimension
+public import PropertyF.Ground.Dimensions.DimensionCharacter
 
 /-! The ordinary weighted trace bound for actual braid algebras. -/
 
@@ -88,5 +89,25 @@ theorem exists_unitary_braid_trace_power_bound
   change ‖scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
     Ground.fpDimension C (tensorPower X (n + 2)) at h
   simpa only [fpDimension_tensorPower] using h
+
+/-- In a genuine pivotal braided fusion category the ordinary unitary trace
+power bound requires no separate dimension-bound hypothesis. -/
+theorem exists_unitary_braid_trace_power_bound_ground
+    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (hfinite : Finite (braidImage X n)) (p : Dimensions.PivotalStructure (C := C.Obj)) :
+    ∃ (r : ℕ) (d : Fin r → ℕ)
+      (b : braidAlgebra X n ≃ₐ[ℂ] ∀ j, Matrix (Fin (d j)) (Fin (d j)) ℂ),
+      (∀ j, 0 < d j) ∧
+      (∀ g j, b (groupInImage (braidEndRepresentation X n) g) j ∈
+        Matrix.unitaryGroup (Fin (d j)) ℂ) ∧
+      ∀ a : braidAlgebra X n, (∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) →
+        ‖Dimensions.groundUnitScalarEquiv C
+          (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
+            Ground.fpDimension C X ^ (n + 2) := by
+  apply exists_unitary_braid_trace_power_bound C X n hfinite p (Dimensions.groundUnitScalarEquiv C)
+  intro i
+  have h := Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
+  simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension,
+    Dimensions.groundUnitScalarEquiv_apply] using h
 
 end PropertyF.Ground.Calculus
