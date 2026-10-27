@@ -109,7 +109,6 @@ import all PropertyF.Ground.Dimensions.DualBraiding
 import all PropertyF.Ground.Dimensions.ENOInvolution
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.PivotalLift
-import all PropertyF.Ground.Integrate.PivotalCentralityReduction
 import all PropertyF.Ground.CentreInduction.DualTensorComparison
 import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
 import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
@@ -479,12 +478,10 @@ import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.FunctorUniverse
-import all PropertyF.Ground.Integrate.GeneratedCenterReduction
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.OverlapReduction
-import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
@@ -506,7 +503,6 @@ import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
 import all PropertyF.Ground.Modular.HopfPartialTrace
 import all PropertyF.Ground.Modular.Labels
-import all PropertyF.Ground.Modular.LegacyLabels
 import all PropertyF.Ground.Modular.PseudoGalois
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Modular.SMatrix

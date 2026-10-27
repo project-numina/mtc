@@ -1,6 +1,5 @@
 module
 public import PropertyF.Ground.Integrate.ProjectAudit
-public import PropertyF.Ground.Integrate.GeneratedCenterReduction
 public import PropertyF.Ground.CentreCabling.ProductGenerated
 public import PropertyF.Ground.CentreCalculus.Core
 public import PropertyF.Ground.CentreCalculus.ExteriorReduction
@@ -93,7 +92,6 @@ public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Modular.Construction
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
 public import PropertyF.Ground.Modular.PseudoGalois
-public import PropertyF.Ground.Modular.LegacyLabels
 public import PropertyF.Ground.Calculus.PartialTrace
 public import PropertyF.Ground.Calculus.FiniteOrder
 public import PropertyF.Ground.Dimensions.Pivotal
@@ -360,7 +358,6 @@ public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
 public import PropertyF.Ground.Integrate.CompatibleCenterReduction
 public import PropertyF.Ground.Integrate.RigidCenterReduction
-public import PropertyF.Ground.Integrate.PivotalCentralityReduction
 public import PropertyF.Ground.Integrate.PivotalOnlyReduction
 public import PropertyF.Ground.Integrate.CoreIntegralityReduction
 public import PropertyF.Ground.Integrate.BalancedCenterReduction
