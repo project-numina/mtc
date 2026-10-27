@@ -150,3 +150,10 @@ scalars have finite order if an explicit categorical balancing equation holds
 and the FP determinant of each simple mixed double braiding vanishes. Both
 premises remain unproved; this does not establish Vafa's theorem or the centre
 modularity. Focused build and axiom checks passed.
+
+`fpDeterminant_biprod` proves the categorical FP determinant is additive on
+binary direct sums of actual automorphisms, via a concrete linear equivalence
+between the simple Hom space into a biproduct and a product of Hom spaces.
+This supplies the determinant direct-sum step for the Vafa route; arbitrary
+(non-block-diagonal) automorphisms and the tensor/hexagon identities remain
+open. Focused build and foundational axiom check passed.

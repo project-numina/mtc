@@ -53,3 +53,5 @@ The actual categorical S identities, character classification and Galois action 
 - The natural-automorphism determinant formula and its finite-order
   consequence are constructed. Actual twist balancing and vanishing FP
   determinants of simple double braidings remain explicit open premises.
+- `fpDeterminant_biprod` proves direct-sum additivity for block-diagonal
+  automorphisms. Tensor compatibility for arbitrary automorphisms remains open.
