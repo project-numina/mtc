@@ -2,6 +2,7 @@ module
 public import PropertyF.Audit
 public meta import PropertyF.Ground.Integrate.DependencyAudit
 public import PropertyF.Ground.Integrate.UnitScalar
+public import PropertyF.Ground.Integrate.Norm
 public import PropertyF.Ground.Integrate.Example
 public import PropertyF.Ground.Fusion.Integrality
 public import PropertyF.Ground.Fusion.Splitting
@@ -36,6 +37,7 @@ run_cmd do
     throwError "dependency audit did not reject the imported conditional theorem"
   for n in #[``PropertyF.Ground.unit_algebraMap_bijective,
       ``PropertyF.Ground.Example.complexVectorSpaces,
+      ``PropertyF.Ground.squaredNorm_eq_of_choices,
       ``PropertyF.Ground.Dimensions.squaredNorm_independent] do
     if let some bad := findForbidden env n then
       throwError "unexpected old hypothesis {bad} in ground result {n}"

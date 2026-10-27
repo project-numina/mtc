@@ -7,6 +7,8 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Posted provisional statement and explicit review requests to fusion/dimensions.
+- `squaredNorm_eq_of_choices` connects the target norm to any conventional
+  choice of scalar equivalence and simple double-dual isomorphism.
 - `unit_algebraMap_bijective`, `unitScalarEquiv`, `unitScalar_algebraMap`,
   `algebraMap_unitScalar`, and `unitScalar_eq_equiv`: Schur supplies the
   canonical unit-scalar equivalence and validates the target definition.
