@@ -62,6 +62,7 @@ public import PropertyF.Ground.Dimensions.InvolutionTrace
 public import PropertyF.Ground.Dimensions.NaturalSquareDefect
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.NaturalRoots
+public import PropertyF.Ground.Dimensions.NaturalTrace
 public import PropertyF.Ground.Dimensions.PivotalUniqueness
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.GroundNorm
