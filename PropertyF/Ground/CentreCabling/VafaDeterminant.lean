@@ -1,11 +1,13 @@
 module
 public import PropertyF.Ground.CentreCabling.VafaTwist
+public import PropertyF.Ground.CentreCabling.DependentDeterminant
 
 /-! Determinants of natural twists on simple-source multiplicity spaces. -/
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
+attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- A natural endomorphism acts on maps out of a simple object by its scalar
 component at that simple object. -/
@@ -58,5 +60,114 @@ theorem vafaMultiplicity_eq_finrank (C : Ground.BraidedFusionCategory.{v,u})
         fusionCoeff C i (dualIndex C i) j * fusionCoeff C i j i
       rw [fusionCoeff_comm C j i]
     _ = _ := (CategoryTheory.Linear.homCongr ℂ (Iso.refl X) e).finrank_eq.symm
+
+/-- The determinant of postcomposition by a diagonal biproduct endomorphism
+is the product of its scalar entries with Hom-space multiplicities. -/
+theorem determinant_postcomp_biproduct_scalar
+    (C : Ground.BraidedFusionCategory.{v,u}) {ι : Type*} [Fintype ι]
+    (X : C.Obj) (V : ι → C.Obj) (c : ι → ℂ) :
+    LinearMap.det (CategoryTheory.Linear.rightComp ℂ X
+      (biproduct.map (fun i => c i • 𝟙 (V i)))) =
+      ∏ i, c i ^ Module.finrank ℂ (X ⟶ V i) := by
+  classical
+  letI : ∀ i, FiniteDimensional ℂ (X ⟶ V i) := fun i => IsFusionCategory.hom_finite _ _
+  let e := homBiproductLinearEquiv X V
+  let f := CategoryTheory.Linear.rightComp ℂ X (biproduct.map (fun i => c i • 𝟙 (V i)))
+  let g := LinearMap.pi (fun i => (c i • (1 : (X ⟶ V i) →ₗ[ℂ] (X ⟶ V i))).comp
+    (LinearMap.proj i))
+  have hg : (e : _ →ₗ[ℂ] _) ∘ₗ f ∘ₗ (e.symm : _ →ₗ[ℂ] _) = g := by
+    ext z i
+    simp [e, f, g, homBiproductLinearEquiv, Category.assoc]
+  calc
+    _ = LinearMap.det g := by rw [← hg, LinearMap.det_conj]
+    _ = _ := det_dependent_pi_scalar (fun i => X ⟶ V i) c
+
+/-- A natural endomorphism tensored with an identity acts diagonally after
+a simple decomposition of its first tensor factor. -/
+theorem natural_whisker_diagonal
+    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
+    (A B : C.Obj) :
+    let F := Dimensions.simplePiecesObject C A
+    let e : A ⊗ B ≅ ⨁ (fun q : Dimensions.simplePieces C A => F q ⊗ B) :=
+      (Dimensions.simpleDecomposition C A ⊗ᵢ Iso.refl B) ≪≫ rightDistributor F B
+    (α.app A ▷ B) ≫ e.hom = e.hom ≫ biproduct.map (fun q : Dimensions.simplePieces C A =>
+      Calculus.groundSimpleScalar C q.1 (End.of (α.app (simples C q.1))) • 𝟙 (F q ⊗ B)) := by
+  classical
+  let F := Dimensions.simplePiecesObject C A
+  let d := Dimensions.simpleDecomposition C A
+  let e : A ⊗ B ≅ ⨁ (fun q : Dimensions.simplePieces C A => F q ⊗ B) :=
+    (d ⊗ᵢ Iso.refl B) ≪≫ rightDistributor F B
+  change (α.app A ▷ B) ≫ e.hom = e.hom ≫ _
+  apply (cancel_epi e.inv).mp
+  apply biproduct.hom_ext'
+  intro q
+  simp only [Category.assoc, Iso.inv_hom_id_assoc, biproduct.ι_map]
+  dsimp only [e, Iso.trans_inv, tensorIso_inv, Iso.refl_inv]
+  simp only [Category.assoc, biproduct_ι_comp_rightDistributor_inv_assoc, tensorHom_id]
+  have hn := α.naturality (biproduct.ι F q ≫ d.inv)
+  simp only [Functor.id_map] at hn
+  have hs := Calculus.groundSimpleScalar_smul_id C q.1 (End.of (α.app (simples C q.1)))
+  change _ = α.app (F q) at hs
+  have hn' : biproduct.ι F q ≫ d.inv ≫ α.app A =
+      Calculus.groundSimpleScalar C q.1 (End.of (α.app (simples C q.1))) •
+        (biproduct.ι F q ≫ d.inv) := by
+    calc
+      _ = α.app (F q) ≫ (biproduct.ι F q ≫ d.inv) := by simpa [Category.assoc] using hn
+      _ = _ := by
+        conv_lhs => rw [← hs]
+        simp [Category.assoc, F, Dimensions.simplePiecesObject, Linear.smul_comp]
+  simp only [← comp_whiskerRight_assoc]
+  rw [hn']
+  simp [e, Category.assoc, Linear.smul_comp, F, Dimensions.simplePiecesObject]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Determinant of a natural endomorphism on the first tensor factor, acting
+on an arbitrary simple-source Hom space, computed in a simple decomposition. -/
+theorem determinant_natural_whisker
+    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
+    (X A B : C.Obj) :
+    LinearMap.det (CategoryTheory.Linear.rightComp ℂ X (α.app A ▷ B)) =
+      ∏ q : Dimensions.simplePieces C A,
+        (Calculus.groundSimpleScalar C q.1 (End.of (α.app (simples C q.1)))) ^
+          Module.finrank ℂ (X ⟶ Dimensions.simplePiecesObject C A q ⊗ B) := by
+  classical
+  let F := Dimensions.simplePiecesObject C A
+  let e : A ⊗ B ≅ ⨁ (fun q : Dimensions.simplePieces C A => F q ⊗ B) :=
+    (Dimensions.simpleDecomposition C A ⊗ᵢ Iso.refl B) ≪≫ rightDistributor F B
+  let c (q : Dimensions.simplePieces C A) :=
+    Calculus.groundSimpleScalar C q.1 (End.of (α.app (simples C q.1)))
+  let E := CategoryTheory.Linear.homCongr ℂ (Iso.refl X) e
+  let f : (X ⟶ A ⊗ B) →ₗ[ℂ] (X ⟶ A ⊗ B) :=
+    CategoryTheory.Linear.rightComp ℂ X (α.app A ▷ B)
+  let g := CategoryTheory.Linear.rightComp ℂ X (biproduct.map (fun q => c q • 𝟙 (F q ⊗ B)))
+  have hc := natural_whisker_diagonal C α A B
+  change (α.app A ▷ B) ≫ e.hom = e.hom ≫ biproduct.map (fun q => c q • 𝟙 (F q ⊗ B)) at hc
+  have hg : (E : _ →ₗ[ℂ] _) ∘ₗ f ∘ₗ (E.symm : _ →ₗ[ℂ] _) = g := by
+    ext z
+    simp only [E, f, g, LinearMap.comp_apply, CategoryTheory.Linear.rightComp_apply]
+    simp [CategoryTheory.Linear.homCongr, Category.assoc, hc]
+  change LinearMap.det f = _
+  calc
+    _ = LinearMap.det g := by rw [← hg, LinearMap.det_conj]
+    _ = _ := determinant_postcomp_biproduct_scalar C X (fun q => F q ⊗ B) c
+
+/-- The first pair-twist determinant in the Vafa lantern argument, expressed
+using fusion coefficients. -/
+theorem determinant_vafa_first_pair
+    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
+    (i : Fin (rank C)) :
+    LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C i)
+      (α.app (simples C i ⊗ simples C (dualIndex C i)) ▷ simples C i)) =
+    ∏ j, (Calculus.groundSimpleScalar C j (End.of (α.app (simples C j)))) ^
+      (fusionCoeff C i (dualIndex C i) j * fusionCoeff C j i i) := by
+  classical
+  rw [determinant_natural_whisker]
+  rw [Fintype.prod_sigma]
+  apply Finset.prod_congr rfl
+  intro j hj
+  change (∏ _ : Fin (fusionCoeff C i (dualIndex C i) j),
+      (Calculus.groundSimpleScalar C j (End.of (α.app (simples C j)))) ^
+        fusionCoeff C j i i) = _
+  simp [← pow_mul, Nat.mul_comm]
 
 end PropertyF.Ground.CentreCabling

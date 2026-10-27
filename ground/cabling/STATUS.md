@@ -250,3 +250,11 @@ maps from a simple object. `vafaMultiplicity_eq_finrank` identifies the
 lantern exponent with the dimension of the actual triple-tensor Hom space.
 These are steps toward the lantern determinant calculation; the three pair
 operators and the lantern identity remain unproved. Focused build passed.
+
+`det_dependent_pi_scalar` computes a dependent-product scalar determinant.
+`determinant_postcomp_biproduct_scalar` and `natural_whisker_diagonal` transfer
+that calculation to actual categorical tensor factors. In particular,
+`determinant_vafa_first_pair` proves the first pair-twist determinant with the
+precise fusion-coefficient exponents appearing in `vafaWeight`. Focused build
+passed. The other two pair operators, the lantern relation and twist balance
+remain to be established.
