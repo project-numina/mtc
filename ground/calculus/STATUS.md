@@ -8,7 +8,7 @@ Branch: `ground/calculus`. Started from `094175c`.
 
 The proof constructs the full symmetric-group action on all tensor powers of any self-transparent object (`permutationAction`, `tensorPermutationAction`), proves all type-A relations and the group presentation using a finite coset normal form (`finite_card_of_typeA`, `pureWords_eq_typeANormal`), splits the actual alternating projectors, and evaluates their trace by one-strand deletion and the falling factorial. `leftTrace_partialTrace` proves the iterated left trace identity; `spherical_rightTrace_leftPartialTrace` supplies the spherical form. `leftPartialTrace_inverse_braiding` computes the inverse twist and `pivotalTwist_sign_of_selfTransparent` proves its scalar is ±1 using self-transparency and sphericality, handling super parity without a finite-order hypothesis. `selfTransparent_simple_integral` and `selfTransparent_simpleDimension_integer` prove the general categorical integrality result; `actual_symmetricCore_integrality` specializes it to the exact centre core.
 
-Focused module builds pass; the strict axiom and integration audits will be run after wiring. This does not prove integrality of the larger numerical S-centralizer without an additional theorem identifying it with the actual core. General centre positive sphericality and S invertibility remain open on other workstreams.
+`CentreCalculus.target_of_center_image_monodromy` wires integrality into the target reduction and removes that premise. Focused module builds pass; direct axiom checks for integrality and the target reduction report only propext, Classical.choice and Quot.sound. This does not prove integrality of the larger numerical S-centralizer without an additional theorem identifying it with the actual core. General centre positive sphericality and S invertibility remain open on other workstreams.
 
 ## Done
 
@@ -55,7 +55,7 @@ Focused module builds pass; the strict axiom and integration audits will be run 
 
 ## In progress
 
-- Wiring the proved symmetric-core integrality into the integration reduction; then take the highest-value remaining ledger obligation.
+- Drinfeld tensor cap: `doubleBraiding_tensor_evaluation` proves the monodromy slides across tensor evaluation to the reversed dual monodromy. The overall monodromy crossed-cap factorization and twist balancing remain open.
 
 ## Blocked / dependencies
 
