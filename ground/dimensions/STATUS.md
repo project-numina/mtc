@@ -85,6 +85,7 @@
 
 - `fourthDualRoot_unit_component` identifies the actual natural root on the tensor unit as the canonical double-dual unit map multiplied by the (±1) root dimension.
 
+- `rootTensorDefect_coevaluation` proves the actual tensor defect acts on the ordinary coevaluation of every simple by the product of the unit-root scalar and the simple dual sign, with no additional assumptions. The three-object swapped-coevaluation slide remains unproved.
 - `root_components_coevaluation`, `root_components_evaluation`, `root_components_swapped_coevaluation`, and `root_components_swapped_evaluation` prove that root components transport the actual simple duality cups and caps with the ENO sign, for both the ordinary and braided-swapped pairings. The remaining three-object defect sliding identity is not yet proved.
 
 - `spherical_pivotal_dual_simple_of_dimension` derives the pivotal dual identity on a simple from sphericality and equality of its and its dual’s dimensions. `pivotal_dual_of_simple_dual` extends simple dual coherence to every object; `positive_spherical_pivotal_dual` proves full dual coherence for any positive spherical structure. General pivotal dual coherence is now proved by `pivotal_dual`; positive spherical existence remains open.
