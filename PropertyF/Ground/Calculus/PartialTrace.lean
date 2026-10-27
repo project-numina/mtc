@@ -1,5 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.Trace
+public import Mathlib.CategoryTheory.Preadditive.Schur
+public import Mathlib.Analysis.Complex.Polynomial.Basic
 
 /-! Partial trace over the right tensor factor, constructed from duality. -/
 
@@ -80,5 +82,27 @@ theorem rightPartialTrace_insert (p : Dimensions.PivotalStructure (C := C))
   have hins : insertRightIdentity X Y a = insertRightIdentity X Y a * 1 := by simp
   rw [hins, rightPartialTrace_left, hone]
   simp
+
+/-- Schur's lemma reduces the simple-survivor partial-trace formula to the
+single, explicitly stated compatibility of iterated and total pivotal traces. -/
+theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C] (X Y : C)
+    [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
+    (p : Dimensions.PivotalStructure (C := C))
+    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
+    (hd : scalar (p.rightTrace (𝟙 X)) ≠ 0)
+    (htrace : p.rightTrace (rightPartialTrace p X Y f).asHom = p.rightTrace f.asHom) :
+    rightPartialTrace p X Y f =
+      (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
+  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ
+    (rightPartialTrace p X Y f).asHom
+  have hscalar : scalar (p.rightTrace (rightPartialTrace p X Y f).asHom) =
+      c * scalar (p.rightTrace (𝟙 X)) := by
+    rw [← hc, p.rightTrace_smul]
+    simp
+  have hcval : c = scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 X)) := by
+    apply (eq_div_iff hd).2
+    exact hscalar.symm.trans (congrArg scalar htrace)
+  apply End.ext
+  simpa [← hcval] using hc.symm
 
 end PropertyF.Ground.Calculus
