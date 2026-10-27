@@ -20,11 +20,12 @@
 - `trace_unit` and `simpleDimension_unit`: a pivotal structure gives unit dimension one, derived from the canonical dual-comparison coherence. `categoricalS_galois_unit_properties` no longer assumes unit normalization.
 - `legacy_conjugate_labels`: constructs the exact legacy `StandardInputs.conjugate_labels` field, comparing the legacy positive character to the ground spectral-radius character via positive-character uniqueness. `conjugate_images` is also proved. The compatibility proof explicitly mentions legacy structures and is not used in the strict target cone.
 - `SEntry_biproduct_left` and `SEntry_tensor_decomposition`: double-braiding traces are additive on finite biproducts and expand on tensor products with the actual Hom-space fusion coefficients. `categoricalS_verlinde_of_hopf_product` reduces the normalized Verlinde equations to the explicitly stated Hopf-link product identity, which remains unproved.
+- `partialTrace_doubleBraiding_simple` identifies the partial trace of a double braiding on a simple surviving object with its normalized S scalar, using the proved iterated-trace law. `hopf_product_of_partialTrace_composition` reduces the Hopf product to a concrete equation between partial traces of the three actual double braidings.
 - Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
 
 ## In progress
 
-- Prove the Hopf-link product identity (isolated as `hopf` in `categoricalS_verlinde_of_hopf_product`), using iterated partial traces and braided coherence, then establish S² from nondegeneracy.
+- Prove the Hopf-link product identity (isolated as `hopf` in `categoricalS_verlinde_of_hopf_product`), using braided/associator coherence and composition of partial traces, then establish S² from nondegeneracy.
 - Make the S/Verlinde and Galois results usable directly in the ground development without old hypothesis structures in their dependency cone.
 
 ## Blocked / dependencies
