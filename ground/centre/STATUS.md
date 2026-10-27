@@ -113,3 +113,9 @@ mate equations through the actual cups and caps. Moreover,
 crossed coevaluation: the base right-dual cup followed by the half-braiding
 is the base left-dual cup followed by the normalization map. This is a concrete
 step toward the general centrality and tensor diagrams, not their proof.
+`coevaluation_sliding` proves the normalized dual crossing intertwines the base
+coevaluation in every rigid monoidal category, without any tensor-law premise;
+`coevaluation_central` lifts this to the actual centre once the crossing tensor
+law is supplied. The proof uses the mate unit, half-braiding naturality and
+tensor law, and the crossed-cup normalization. Evaluation and the dual-crossing
+tensor law remain open. Focused Lake build passes on cores 16–19.

@@ -48,4 +48,21 @@ theorem dualMateUnit_crossed_coevaluation (Z : Center C) :
           ((ρ_ Z.1ᘁ).hom ▷ Z.1) := by rw [h]
     _ = _ := by monoidal
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The mate carries the crossed cup through an arbitrary test object. -/
+theorem dualMate_crossed_cup (Z : Center C) (U : C) :
+    𝟙 U ⊗≫ ((η_ ((ᘁZ.1) : C) Z.1 ≫ (Integrate.dualMateUnit Z).inv ▷ Z.1) ▷ U) ⊗≫
+      ((Z.1ᘁ : C) ◁ (Z.2.β U).hom) ⊗≫ 𝟙 ((Z.1ᘁ ⊗ U) ⊗ Z.1) =
+    𝟙 U ⊗≫ (U ◁ η_ ((ᘁZ.1) : C) Z.1) ⊗≫
+      ((show U ⊗ (ᘁZ.1) ⟶ Z.1ᘁ ⊗ U from (Integrate.dualMateIso Z).inv.app U) ▷ Z.1) ⊗≫ 𝟙 ((Z.1ᘁ ⊗ U) ⊗ Z.1) := by
+  have hu := CentreRigid.dualMate_unit_explicit Z U
+  have hc := CentreRigid.dualMateUnit_crossed_coevaluation Z
+  rw [← hc]
+  calc
+    _ = (λ_ U).inv ≫ (η_ Z.1 Z.1ᘁ ▷ U) ≫ (α_ Z.1 Z.1ᘁ U).hom ≫
+        (Z.2.β (Z.1ᘁ ⊗ U)).hom := by rw [Z.2.monoidal]; monoidal
+    _ = (ρ_ U).inv ≫ (U ◁ η_ ((ᘁZ.1) : C) Z.1) ≫ (α_ U (ᘁZ.1) Z.1).inv ≫
+        ((Integrate.dualMateIso Z).inv.app U ▷ Z.1) := hu
+    _ = _ := by monoidal
+
 end PropertyF.Ground.CentreRigid

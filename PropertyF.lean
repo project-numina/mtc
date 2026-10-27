@@ -371,3 +371,5 @@ public import PropertyF.Ground.CentreRigid.SimpleTensor
 public import PropertyF.Ground.CentreRigid.RankOneMate
 
 public import PropertyF.Ground.CentreRigid.MateExplicit
+
+public import PropertyF.Ground.CentreRigid.Coevaluation
