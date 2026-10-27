@@ -2,6 +2,10 @@
 
 Branch: `ground/calculus`. Started from `094175c`.
 
+## Round 3 continuation
+
+`CentreCalculus.adjacent_braid_relation` and `distant_braid_commute` prove all actual Yang–Baxter and disjoint-strand commutation relations, for all strand counts, without self-transparency assumptions. Together with `braidGenerator_involutive` they provide the categorical type-A relations, but the group-theoretic theorem identifying their normal closure with the permutation kernel is still open. The integrated dimensions branch supplies the real twist scalar and its sign under the still-unproved finite-order premise. The parity sign, cycle traces, and unconditional integrality remain open.
+
 ## Round 2: symmetric-core integrality (in progress)
 
 The intended core is the common centralizer of the two canonical images in the actual Mathlib centre, equivalently their intersection; it is symmetric, not an arbitrary set. `CentreCalculus.commonCentralizer_self` proves every common-centralizer object centralizes itself without requiring the centre fusion instance. For a self-centralizing object, `braidGenerator_involutive` proves all actual adjacent generators square to one and `squareRelations_action_trivial` proves the normal closure of their squares acts trivially. `strandPermutation_surjective` proves adjacent swaps generate the whole finite permutation group. `permutationActionOfPureTrivial` constructs the actual permutation action when the pure-word kernel is contained in the braid-action kernel; that containment remains unproved.
