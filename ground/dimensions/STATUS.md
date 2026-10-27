@@ -98,7 +98,9 @@
 
 - `rank_subsingleton_of_globalFPDimension_eq_one` proves FP dimension one forces rank one; `positive_spherical_of_globalFPDimension_eq_one` constructs the positive spherical structure directly from that equality, available to instantiate the actual centre when its FP square is known.
 
-- After merging fusion, `center_positive_spherical_of_rank_one` and `center_spherical_and_globalDimension_of_rank_one` construct an actual-centre positive spherical structure and prove the categorical FP-square equality in rank one, assuming the centre rigid instance. Centre rigidity itself remains owned and unproved.
+- After merging fusion, `center_positive_spherical_of_rank_one` and `center_spherical_and_globalDimension_of_rank_one` construct an actual-centre positive spherical structure and prove the categorical FP-square equality in rank one, assuming the centre rigid instance. General centre rigidity itself remains owned and unproved; the rank-one case is now constructed by `rankOne_centerRigid`.
+
+- `rankOne_centerRigid` constructs rigidity of the actual centre from the proved rank-one monoidal forgetful equivalence. `rankOne_center_spherical_and_globalDimension` then constructs centre fusion and positive spherical structure and proves the centre FP-square equality with no extra hypotheses in rank one. General centre rigidity remains open.
 
 ## Round 2 route
 
