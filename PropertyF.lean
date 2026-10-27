@@ -39,6 +39,7 @@ public import PropertyF.Ground.Cabling.Images
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.Pivotal
 public import PropertyF.Ground.Dimensions.DualCoherence
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.TensorTrace
 public import PropertyF.Ground.Dimensions.QuantumTensor
 public import PropertyF.Ground.Dimensions.IteratedTrace
@@ -79,6 +80,7 @@ public import PropertyF.Ground.Dimensions.RootDualSign
 public import PropertyF.Ground.Dimensions.RootNorm
 public import PropertyF.Ground.Dimensions.ENOReciprocity
 public import PropertyF.Ground.Dimensions.ENOGalois
+public import PropertyF.Ground.Dimensions.ENOCoherence
 public import PropertyF.Ground.Dimensions.NaturalTrace
 public import PropertyF.Ground.Dimensions.PivotalUniqueness
 public import PropertyF.Ground.Dimensions.PositiveCanonical
