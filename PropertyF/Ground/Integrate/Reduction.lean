@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.Integrate.Arithmetic
+public import PropertyF.Ground.Integrate.Fixedness
 public import PropertyF.Ground.Integrate.PropertyFTransport
 public import PropertyF.Ground.Modular.FusionTransport
 
@@ -34,5 +35,27 @@ theorem target_of_pseudo_fixedness
     TargetStatement.{v,u} :=
   target_of_galois_invariance_and_pseudo_fixedness
     (fun {C D} {_} E => Modular.conjugate_globalFPDimension C D E) hFixed
+
+/-- Reduction to the three remaining numerical consequences of the categorical
+centre argument. These are explicit premises and are not part of the target. -/
+theorem target_of_numerical_witnesses
+    (hPositive : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → 0 < globalFPDimension C)
+    (hConjugates : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ, ∃ a : ℝ,
+        0 < a ∧ a ≤ globalFPDimension C ∧
+          σ (globalFPDimension C : ℂ) = (a : ℂ))
+    (hWitness : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ (σ : ℂ ≃+* ℂ) (a b : ℝ),
+        0 < a → a < globalFPDimension C →
+        σ (globalFPDimension C : ℂ) = (a : ℂ) →
+        σ.symm (globalFPDimension C : ℂ) = (b : ℂ) →
+        ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧
+          f * b = globalFPDimension C ∧ 1 ≤ f ∧ f = |d|) :
+    TargetStatement.{v,u} := by
+  apply target_of_pseudo_fixedness
+  intro C hPU hF
+  exact galois_fixed_of_smaller_conjugate_witness (globalFPDimension C)
+    (hPositive C hPU hF) (hConjugates C hPU hF) (hWitness C hPU hF)
 
 end PropertyF.Ground

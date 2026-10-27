@@ -7,8 +7,9 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
-- `target_of_pseudo_fixedness` reduces the frozen target to Galois fixedness
-  in the pseudo-unitary property-F case. Global FP conjugacy invariance is proved.
+- `target_of_numerical_witnesses` proves the paper’s numerical contradiction
+  and reduces the target to positivity, bounds on real conjugates, and the
+  centre/rigidity witness, all explicitly listed as unproved premises.
 - `galois_propertyF` transports property F along the target's actual braided
   semilinear equivalence using modular’s braid-image equivalences.
 - `weaklyIntegral_of_globalFPDimension_fixed` wires spectral FP integrality

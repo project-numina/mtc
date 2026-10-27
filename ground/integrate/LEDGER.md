@@ -9,8 +9,10 @@ identification and independence obligations listed below remain open.
 
 ## Target and dependency graph
 
-`target_of_pseudo_fixedness` gives a bundle-free reduction to the paper’s
-Galois fixedness argument for pseudo-unitary property-F categories. Global FP
+`target_of_numerical_witnesses` reduces the frozen statement to three explicit
+categorical obligations: positive global FP dimension; positive, bounded real
+conjugates; and a centre/rigidity witness for each strictly smaller conjugate.
+The numerical contradiction is now bundle-free and proved. Global FP
 invariance under semilinear braided equivalence is proved by
 `Modular.conjugate_globalFPDimension`.
 
@@ -89,5 +91,5 @@ standard axioms. This is not a proof of the target.
 The final arithmetic reduction is bundle-free: fusion bfbd006 proves target
 global FP algebraic integrality, and `weaklyIntegral_of_globalFPDimension_fixed`
 combines it with the constructed finite Galois field and automorphism extension.
-The remaining target-specific premise is global FP invariance under every complex
-automorphism, which needs the categorical argument and transport constructions.
+Global FP conjugacy invariance is proved. Galois fixedness requires the
+categorical real-conjugate bounds and centre/rigidity witnesses above.
