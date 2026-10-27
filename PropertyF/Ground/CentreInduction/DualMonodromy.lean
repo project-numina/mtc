@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.DoubleBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 
 /-! The dual functors transport monodromy through their tensorators. -/
 @[expose] public noncomputable section
@@ -15,8 +16,8 @@ theorem rightDualTensorIso_monodromy (X Y : D) :
       (rightDualTensorIso X Y).hom ≫ Modular.doubleBraiding (Yᘁ) (Xᘁ) := by
   unfold Modular.doubleBraiding
   simp only [comp_rightAdjointMate, Category.assoc]
-  rw [rightDualTensorIso_braiding X Y]
-  rw [← Category.assoc ((β_ Y X).homᘁ), rightDualTensorIso_braiding Y X]
+  rw [Dimensions.rightDualTensorIso_braiding X Y]
+  rw [← Category.assoc ((β_ Y X).homᘁ), Dimensions.rightDualTensorIso_braiding Y X]
   simp [Category.assoc]
 
 /-- The double-dual tensorator transports mixed monodromy. -/
@@ -25,7 +26,8 @@ theorem doubleDualTensorIso_monodromy (X Y : D) :
       Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫ (Dimensions.doubleDualTensorIso X Y).hom := by
   unfold Modular.doubleBraiding
   simp only [comp_rightAdjointMate, Category.assoc]
-  rw [← Category.assoc (Dimensions.doubleDualTensorIso X Y).hom, doubleDualTensorIso_braiding X Y]
+  rw [← Category.assoc (Dimensions.doubleDualTensorIso X Y).hom,
+    Dimensions.doubleDualTensorIso_braiding X Y]
   simp only [Category.assoc]
-  rw [doubleDualTensorIso_braiding Y X]
+  rw [Dimensions.doubleDualTensorIso_braiding Y X]
 end PropertyF.Ground.CentreInduction
