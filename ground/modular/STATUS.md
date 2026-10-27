@@ -61,3 +61,147 @@ The FP-square equation alone does not prove the centre pseudo-unitary: that addi
 Merged fusion's actual-adjunction bridge. `CentreModular.center_globalDimension_of_adjunction` now takes the right adjoint to the actual centre forgetful functor, the underlying induction-object isomorphisms, and spherical FP-valued dimensions, and proves the categorical dimension-square formula. These premises remain open. After moving fusion's imports before the root module documentation, `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF` passes, including the integrated 3,242-declaration foundational-axiom audit. Direct `#print axioms` checks of the new dimension, S-centralizer, Kirby, and regular-support theorems show only `propext`, `Classical.choice`, and `Quot.sound`.
 
 Merged integration d6173aa in merge 4292aac. The full `PropertyF` build now passes with the expanded 3,577-declaration integrated audit; the adjunction-based categorical dimension theorem also passes `#print axioms` with exactly the three permitted axioms. Remaining modularity obstruction: the existing trace equality `S(i,k)=dim(i)dim(k)` is a scalar equality, while actual transparency is an equality of endomorphisms. Positivity of categorical dimensions alone has not supplied an argument that upgrades this scalar equality to equality of monodromy; such an argument may need finite-order/twist information or a direct induction-loop calculation. The actual induction lift/adjunction, centre rigidity/fusion and independent positive spherical or intrinsic-dimension square are still being constructed by their respective owners. Their present absence prevents instantiating these centre-specific results and leaves no reliable completion-time estimate.
+
+## Round 3 continuation
+
+Merged integration snapshot 8c9e461. Fusion's actual centre induction and
+forgetful adjunction are now constructed, so
+`CentreInduction.globalFPDimension_square_of_actual_induction` proves the
+FP square assuming only the actual centre rigidity and fusion instances.
+`CentreModular.center_forget_unitScalar`, `center_pivotalDimension_eq_forget`,
+`center_pivotalDimension_eq_fp_of_compatible`, `center_spherical_of_compatible`,
+and `center_globalDimension_square_of_compatible` show that a pivotal centre
+lift compatible with an FP-valued base pivotal structure automatically has
+FP-valued dimensions, is spherical, and gives the categorical dimension square.
+This does not assume centre pseudo-unitarity and uses the actual induction
+adjunction; however, construction of the compatible centre pivotal lift and
+centre rigidity/fusion remain open. The general Kirby-loop identity and S
+invertibility remain open. Focused build passed; `#print axioms` for the scalar,
+FP-value, sphericality and dimension-square results returned only propext,
+Classical.choice and Quot.sound.
+
+`CentreModular.SEntry_simple_decomposition` expands an arbitrary Hopf link
+on the actual centre simples. `center_kirby_sum_eq_induced` uses the actual
+induction adjunction and FP-preserving forgetful functor to rewrite the centre
+Kirby sum as the FP-weighted sum of Hopf links with induced base simples.
+`center_S_invertible_of_induced_loop_vanishing` isolates the precise remaining
+centre-specific induced-loop vanishing for non-unit simple centre objects. This
+vanishing is still unproved, so this does not establish general modularity.
+Focused build and `#print axioms` for all three results passed with only the
+three permitted axioms.
+
+`CentreModular.forget_pivotalTrace` extends centre-to-base trace comparison to
+arbitrary endomorphisms. `center_SEntry_eq_underlying_trace` identifies any
+centre Hopf link with the base trace of the two half-braidings when the relevant
+pivotal component is compatible. `induced_crossing_trace_diagonal` expands the
+explicit induction crossing into its diagonal fusion-basis blocks, and
+`center_kirby_sum_eq_diagonal_traces` rewrites the centre Kirby sum as an
+explicit finite weighted sum of those base-category block traces. The pivotal
+compatibility and evaluation of that sum remain unproved. Focused build and
+foundational axiom checks passed.
+
+`CentreModular.regular_fusion_derivation_vanishes` proves the FP regular-element
+cancellation underlying Etingof's determinant proof of Vafa-type finite
+monodromy: any real-vector-valued function on simple labels satisfying the
+fusion derivation relation is zero. The categorical determinant, its
+hexagon/tensor identities, and the faithful passage from non-torsion complex
+units to the relevant vector space are not yet constructed, so finite-order
+monodromy is not proved. Focused build and foundational axiom check passed.
+
+`CentreModular.vafaUnitSpace` constructs the real vector space
+ℝ ⊗ℚ (ℚ ⊗ℤ Additive(ℂˣ)); `vafaUnitClass` maps complex units into it,
+`vafaUnitClass_eq_zero_iff` proves that its kernel consists exactly of
+finite-order units, and `vafaUnitClass_mul`/`vafaUnitClass_pow` prove the
+multiplicative-to-additive properties. This supplies the torsion-detection
+component needed by the determinant route. Constructing the categorical
+determinant invariant and deriving its fusion/hexagon equation are still
+open; no monodromy finite-order claim follows yet. Focused build and axiom
+checks passed. The preceding full `lake build PropertyF` also passed; its
+project audit covered the prior integrated snapshot and individual axiom checks
+cover these newly added declarations.
+
+`CentreModular.fpDeterminant` now constructs the actual categorical
+FP-weighted determinant in `vafaUnitSpace` from determinants of the induced
+actions on each simple Hom space. `fpDeterminant_trans` proves additivity
+under composition; `fpDeterminant_scalar` gives FPdim(X) times the scalar
+class, and `fpDeterminant_scalar_simple_eq_zero_iff` detects finite order on
+simple scalar automorphisms. The determinant's tensor-product identity and
+hexagon identity are unproved, so Vafa-type monodromy remains open. Focused
+build and foundational axiom checks passed.
+
+`fpDeterminant_conjugate` proves invariance under isomorphism, and
+`fpDeterminant_tensor_simple` proves the desired tensor-product rule for every
+actual automorphism of a simple object using Schur's lemma. The extension to
+arbitrary (possibly repeated simple-summand) objects and the double-braiding
+hexagon relation remain open. Focused build and axiom checks passed.
+
+Merged centre f1f0122, which constructs centre rigidity without assumptions.
+`finite_order_of_fp_twist_balance` proves finite order of every simple twist
+scalar from one explicitly stated FP-weighted fusion relation in
+`vafaUnitSpace`. The categorical proof of that relation, including the
+arbitrary-object tensor determinant rule and braiding balance, remains open.
+The focused build and foundational axiom check passed.
+
+`fpDeterminant_natural` computes the actual determinant of an arbitrary
+natural automorphism using its scalar on each simple source and the actual
+Hom-space multiplicities. `natural_scalars_finite_of_monodromy_determinant`
+combines this with the FP regular cancellation and torsion detector: simple
+scalars have finite order if an explicit categorical balancing equation holds
+and the FP determinant of each simple mixed double braiding vanishes. Both
+premises remain unproved; this does not establish Vafa's theorem or the centre
+modularity. Focused build and axiom checks passed.
+
+`fpDeterminant_biprod` proves the categorical FP determinant is additive on
+binary direct sums of actual automorphisms, via a concrete linear equivalence
+between the simple Hom space into a biproduct and a product of Hom spaces.
+This supplies the determinant direct-sum step for the Vafa route; arbitrary
+(non-block-diagonal) automorphisms and the tensor/hexagon identities remain
+open. Focused build and foundational axiom check passed.
+
+`fpDeterminant_tensor_biprod` proves the tensor determinant identity is closed
+under actual binary direct sums, using the monoidal distributor and determinant
+conjugation/direct-sum formulas. Together with the simple case this covers
+block-diagonal simple-sum automorphisms. The arbitrary automorphism case and
+monodromy hexagon remain open. Focused build and axiom check passed.
+
+`fpDeterminant_tensor_natural` now proves the full tensor determinant rule
+for all components of an arbitrary natural automorphism on any objects,
+without extra assumptions. It uses a finite binary simple decomposition,
+naturality, and the preceding scalar and biproduct determinant laws. This
+covers pivotal twist components; the general non-natural automorphism rule and
+the monodromy hexagon/additivity calculation remain open. Focused build and
+foundational axiom checks passed.
+
+`fpDeterminant_tensor_scalar_natural` extends the unconditional tensor rule
+to scalar multiples of natural-automorphism components. Under an explicit
+simple-object balancing equation, `fpDeterminant_tensor_simple_monodromy` and
+`fpDeterminant_simple_monodromy_tensor` therefore establish tensor determinant
+compatibility on either side for actual mixed monodromies of simple objects.
+The balancing equation and the categorical hexagon/additivity proof remain
+open, so no finite order is claimed. Focused build and axiom checks passed.
+
+`monodromy_hexagon_iso` proves the explicit categorical double-braiding
+hexagon as a product of conjugated actual monodromy isomorphisms.
+`fpDeterminant_monodromy_hexagon` derives the weighted FP determinant equation
+on three simple objects under the explicit simple twist-balancing identity.
+The remaining determinant-to-fusion-sum expansion, actual twist balancing,
+and final finite-order conclusion remain unproved. Focused build and axiom
+checks passed.
+
+`additive_object_function_decomposition` proves any isomorphism-invariant,
+binary-additive, zero-preserving real-vector-valued function on base objects
+expands as the sum of its simple values weighted by actual Hom multiplicities.
+This supplies the numerical decomposition needed for the monodromy determinant
+once its categorical iso/additivity/zero properties are proved. Focused build
+and foundational axiom check passed.
+
+`fpDeterminant_functor_natural_decomposition` proves the FP determinant of a
+natural automorphism of any additive endofunctor expands over the simple
+summands of the source. Applying it to the actual double-braiding natural
+automorphism supplies the missing fusion-sum step. Consequently
+`fpDeterminant_simple_monodromy_eq_zero` and
+`natural_scalars_finite_of_simple_balancing` prove finite order of all simple
+scalars of a natural automorphism from its explicit simple-object balancing
+identity, without a lantern relation. Actual pivotal twist balancing remains
+unproved, so this is still conditional and does not prove the final theorem.
+Focused build and foundational axiom checks passed.
