@@ -38,6 +38,12 @@ theorem one_le_globalFPDimension (D : BraidedFusionCategory) :
     (fun i _ => sq_nonneg (fpSimple D i)) (Finset.mem_univ (unitIndex D))
   simpa [fpSimple_unit] using h
 
+/-- A pseudo-unitary category has nonzero global dimension. -/
+theorem globalDimension_ne_zero_of_pseudoUnitary (D : BraidedFusionCategory)
+    (h : PseudoUnitary D) : globalDimension D ≠ 0 := by
+  rw [h]
+  exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D)))
+
 /-- The squared spectral radius of an integer matrix is integral over ℤ.
 The index type is nonempty so that the complex matrix algebra is nontrivial. -/
 theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]

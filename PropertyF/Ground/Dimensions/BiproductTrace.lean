@@ -19,21 +19,26 @@ def rightTraceLinear (p : PivotalStructure (C := C)) (X : C) :
   map_add' := p.rightTrace_add
   map_smul' := p.rightTrace_smul
 
+/-- The right trace decomposes across a finite family of maps summing to the identity. -/
+theorem rightTrace_decomposition {ι : Type*} [Fintype ι] (p : PivotalStructure (C := C))
+    (X : C) (Y : ι → C) (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
+    (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
+    p.rightTrace f = ∑ j, p.rightTrace (i j ≫ f ≫ q j) := by
+  calc
+    _ = p.rightTrace ((∑ j, q j ≫ i j) ≫ f) := by rw [h, Category.id_comp]
+    _ = ∑ j, p.rightTrace ((q j ≫ i j) ≫ f) := by
+      rw [Preadditive.sum_comp]
+      exact map_sum (rightTraceLinear p _) _ _
+    _ = _ := by
+      apply Finset.sum_congr rfl
+      intro j _
+      simpa only [Category.assoc] using p.rightTrace_cyclic (q j) (i j ≫ f)
+
 /-- The trace on a finite direct sum is the sum of traces of diagonal blocks. -/
 theorem rightTrace_biproduct {ι : Type*} [Fintype ι] (F : ι → C) [HasBiproduct F]
     (p : PivotalStructure (C := C)) (f : (⨁ F) ⟶ (⨁ F)) :
-    p.rightTrace f = ∑ i, p.rightTrace (biproduct.ι F i ≫ f ≫ biproduct.π F i) := by
-  classical
-  calc
-    _ = p.rightTrace ((∑ i, biproduct.π F i ≫ biproduct.ι F i) ≫ f) := by rw [biproduct.total]; simp
-    _ = ∑ i, p.rightTrace ((biproduct.π F i ≫ biproduct.ι F i) ≫ f) := by
-      rw [Preadditive.sum_comp]
-      exact map_sum (rightTraceLinear p _) _ _
-    _ = ∑ i, p.rightTrace (biproduct.ι F i ≫ f ≫ biproduct.π F i) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      simp only [Category.assoc]
-      simpa only [Category.assoc] using p.rightTrace_cyclic (biproduct.π F i) (biproduct.ι F i ≫ f)
+    p.rightTrace f = ∑ i, p.rightTrace (biproduct.ι F i ≫ f ≫ biproduct.π F i) :=
+  rightTrace_decomposition p _ F (biproduct.ι F) (biproduct.π F) biproduct.total f
 
 /-- Categorical dimensions are additive on finite direct sums. -/
 theorem rightDimension_biproduct {ι : Type*} [Fintype ι] (F : ι → C) [HasBiproduct F]

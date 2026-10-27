@@ -43,7 +43,7 @@ theorem center_pivotalDimension_eq_fp_of_compatible
       (p.iso Z.1).hom) (Z : CategoryTheory.Center C.Obj) :
     Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ Z =
       (fpDimension (Integrate.bundledCenter C) Z : ℂ) := by
-  rw [center_pivotalDimension_eq_forget C p pZ Z (hcompat Z),
+  rw [CentreInduction.center_pivotalDimension_forget C p pZ Z (hcompat Z),
     CentreInduction.pivotalDimension_eq_fp C p hsimple]
   have h := Integrate.center_forget_fpDimension C Z
   change fpDimension C Z.1 = fpDimension (Integrate.bundledCenter C) Z at h
@@ -68,11 +68,8 @@ theorem center_globalDimension_square_of_compatible
     (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
     (hcompat : ∀ Z, ((pZ.iso Z).hom.f) ≫ (CentreInduction.forgetDoubleDualIso C Z).hom =
       (p.iso Z.1).hom) :
-    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
-  apply center_globalDimension_of_adjunction C (CentreInduction.induction C)
-    (CentreInduction.actualAdjunction C) (fun _ => ⟨Iso.refl _⟩) pZ
-    (center_spherical_of_compatible C p hsimple pZ hcompat)
-  intro i
-  rw [center_pivotalDimension_eq_fp_of_compatible C p hsimple pZ hcompat, fpDimension_simple]
+    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
+  (CentreInduction.center_structure_of_compatible_pivotal C p hsimple pZ hcompat).elim
+    (fun _ h ↦ h.2.2.2)
 
 end PropertyF.Ground.CentreModular

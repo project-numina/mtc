@@ -20,6 +20,6 @@ theorem simpleDimension_unit (C : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) : simpleDimension C p (unitIndex C) = 1 := by
   obtain ⟨e⟩ := unitIndex_iso C
   unfold simpleDimension
-  rw [p.rightTrace_id_iso e, trace_unit, map_one]
+  rw [p.rightTrace_id_iso e, Dimensions.rightTrace_unit, map_one]
 
 end PropertyF.Ground.Modular

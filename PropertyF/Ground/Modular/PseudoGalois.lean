@@ -11,9 +11,8 @@ namespace PropertyF.Ground.Modular
 
 /-- Pseudo-unitarity and the tensor-unit FP contribution make global dimension nonzero. -/
 theorem globalDimension_ne_zero_of_pseudoUnitary (C : Ground.BraidedFusionCategory)
-    (h : Ground.PseudoUnitary C) : Ground.globalDimension C ≠ 0 := by
-  rw [h]
-  exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (Ground.one_le_globalFPDimension C)))
+    (h : Ground.PseudoUnitary C) : Ground.globalDimension C ≠ 0 :=
+  Ground.globalDimension_ne_zero_of_pseudoUnitary C h
 
 /-- S-square and Verlinde produce the Galois action in a pseudo-unitary category. -/
 theorem categoricalS_galois_action_pseudoUnitary (C : Ground.BraidedFusionCategory)
@@ -27,7 +26,7 @@ theorem categoricalS_galois_action_pseudoUnitary (C : Ground.BraidedFusionCatego
     ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)), ∀ (σ : ℂ ≃+* ℂ) i j,
       σ (categoricalS C p i j / simpleDimension C p j) =
         categoricalS C p i (act σ j) / simpleDimension C p (act σ j) :=
-  categoricalS_galois_action C p (Ground.dualIndex C) (globalDimension_ne_zero_of_pseudoUnitary C h) hsq hVerlinde
+  categoricalS_galois_action C p (Ground.dualIndex C) (Ground.globalDimension_ne_zero_of_pseudoUnitary C h) hsq hVerlinde
 
 /-- Proposition 2.1 specialized to actual spherical S-matrices; the unit
 S-square identity remains an explicit categorical obligation. -/
@@ -43,7 +42,7 @@ theorem categoricalS_galois_unit_properties (C : Ground.BraidedFusionCategory)
       σ (globalDimension C) = globalDimension C / simpleDimension C p y ^ 2 :=
   galois_unit_properties (unitIndex C) (categoricalS C p) (Ground.dualIndex C)
     (simpleDimension C p) (globalDimension C) (simpleDimension_ne_zero C p)
-    (globalDimension_ne_zero_of_pseudoUnitary C h) (simpleDimension_unit C p)
+    (Ground.globalDimension_ne_zero_of_pseudoUnitary C h) (simpleDimension_unit C p)
     (categorical_global_eq_sum_squares C p hp) (categoricalS_symmetric C p)
     (categoricalS_unit C p) hsq σ y hchar
 end PropertyF.Ground.Modular
