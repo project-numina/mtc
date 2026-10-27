@@ -80,21 +80,21 @@ formulation remains an explicit review obligation.
 | `ThreeStrandModel` | `pairTrace`, `simplePartial`, `pair_trace_partial`, `thirdPartial`, `trace_third`, `third_left`, `third_right`, `third_bimodule` | calculus, dimensions | Open: spherical trace realization. |
 | `ThreeStrandModel` | `finite_order` | calculus | Finite order of the actual represented square proved on calculus b0fe84a; model assembly remains. |
 | `ThreeStrandRealization` | `model`, `positive`, `transport`, `retained`, `trace_formula` | calculus; dimensions/modular for transported dimensions and S | Unitary braid blocks and trace weights are constructed; arbitrary scalar-twisted categories, pivotal structures and dimensions are now transported. The full actual overlap recurrence and resulting rigidity are proved; legacy packaging is unnecessary. |
-| `ProductImageWitness` | `subgroup`, `map`, `surjective` | centre | Actual product-functor/retract quotient maps constructed on centre f031e99; dominance onto the generated subcategory remains. |
+| `ProductImageWitness` | `subgroup`, `map`, `surjective` | centre | Actual product-functor/retract quotient maps and the equality of product retracts with the generated tensor/sum/retract closure are constructed; double-centralizer membership remains. |
 | `ModularData` | `rank`, `unit`, `dual`, `dimension`, `globalDimension`, `S` | modular, centre | Actual categorical S defined for a chosen pivotal structure; modular centre and remaining data open. |
 | `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | All legacy fields constructed from an actual spherical category with real dimensions and invertible S; centre realization and S invertibility remain. |
 | `ModularData` | `galoisLabel`, `galois_character` | modular | Constructed for a spherical category with real dimensions and invertible categorical S; the centre realization remains. |
 | `CenterInputs` | `data`, `object`, `dim`, `dimension_real`, `positive`, `at_least_one`, `conjugate_real` | centre, dimensions, modular | Open: canonical spherical modular centre and dimension properties. |
 | `CenterInputs` | `global_square`, `symmetric_integrality`, `generated`, `double_centralizer` | centre | Open: centre dimension, symmetric core and double centralizer. |
-| `CenterInputs` | `product_witness` | centre | Subgroup/quotient and retract finite-image transfer are constructed; dominance onto generated centre category remains. |
+| `CenterInputs` | `product_witness` | centre | Subgroup/quotient and retract finite-image transfer and generated closure identification are constructed; double-centralizer membership remains. |
 | `CenterInputs` | `realize` | calculus | The bundle-free `galois_rigidity` is constructed from the actual finite braid image; legacy packaging is unnecessary. |
 | `DimensionField` | `field`, `finite`, `galois`, `element`, `element_eq`, `integral`, `extend` | dimensions, fusion for algebraic integrality | Ground spectral global FP integrality is proved; bundle-free normal-field descent is wired by `weaklyIntegral_of_globalFPDimension_fixed`. |
 | `PseudoUnitaryInputs` | `conjugateGlobal`, `conjugate_eq`, `conjugate_positive`, `conjugate_le` | dimensions | Open: conjugate categorical dimensions, positivity and bounds. |
 | `PseudoUnitaryInputs` | `center`, `arithmetic` | centre, dimensions | Open: package above constructions. |
 | `StandardInputs` | `pseudo` | dimensions, centre, calculus, modular | Open: package above constructions for pseudo-unitary categories. |
 | `StandardInputs` | `conjugate_labels`, `conjugate_images` | modular, fusion | Braid-image equivalences, ground property-F transport, simple-label equivalence and spectral global FP preservation are proved. |
-| `CablingWitness` | `blockCount`, `lengths`, `pureImage`, `finiteIndex`, `cableImage`, `restriction`, `restriction_surjective` | cabling | Finite index and abstract pure-word quotient constructed; categorical cabling map pending. Only used by corollary. |
-| `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling, fusion | Ground generated fusion category, inclusion, image equivalence and essential image constructed; pure-block cabling membership remains. Only used by corollary. |
+| `CablingWitness` | `blockCount`, `lengths`, `pureImage`, `finiteIndex`, `cableImage`, `restriction`, `restriction_surjective` | cabling | Finite index and abstract pure-word quotient constructed; categorical cabling map constructed by `cablingWitness_generated`. Only used by corollary. |
+| `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling, fusion | Ground generated fusion category, inclusion, image equivalence and essential image constructed; pure-block cabling membership and `generatedInputsOfGround` are constructed. Only used by corollary. |
 | `GeneratedInputs` | `simple_square_integral`, `strand_inclusion` | cabling, fusion | Both bundle-free `Ground.simple_strand_inclusion` and `Ground.generated_simple_square_integer` are proved; legacy packaging remains. Only used by corollary. |
 
 The existing `#print axioms` result establishes only kernel axiom cleanliness
@@ -102,9 +102,10 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 ## Integrated snapshot
 
-Latest merged snapshots: fusion f175963; dimensions de99790; calculus 9ea993f;
-centre 21f99af; modular 07408af; cabling 1d72ebb. The full development build
-passed; `ProjectAudit` scans 3,242 integrated public and private declarations, all with only the
+Latest merged snapshots: fusion 1bd2903; dimensions 5646fbb; calculus 80b024f;
+centre 212e726; modular 0e4940c; cabling eef095b. The full development build
+passed. After expanding the audit imports to include the newly merged modules,
+`ProjectAudit` scans 3,569 integrated public and private declarations, all with only the
 standard axioms. The strict target audit correctly fails because `Ground.target`
 is absent. This is not a proof of the target.
 
@@ -121,3 +122,42 @@ global FP algebraic integrality, and `weaklyIntegral_of_globalFPDimension_fixed`
 combines it with the constructed finite Galois field and automorphism extension.
 Global FP conjugacy invariance is proved. Galois fixedness requires the
 centre/rigidity witnesses above; the real-conjugate bounds are unconditional.
+
+## Round 2 shorter-route assessment
+
+`weaklyIntegral_of_positive_modular_propertyF` proves weak integrality directly
+in a positive spherical, non-degenerate category with property F. It avoids
+all centre construction and centralizer obligations in that special case.
+The proof uses only the selected Galois-unit column, rigidity and the global
+dimension identity, but its existence uses invertibility of the full S-matrix.
+`categoricalS_det_eq_zero_of_transparent_column` shows that any non-unit simple
+with the transparent column forces S to be singular; in particular a nontrivial
+symmetric core blocks a direct application to the generated subcategory. No
+construction of a smaller modular extension or general replacement for the
+column identity has been proved.
+
+Dimensions 5646fbb gives canonical spherical existence conditional on the
+fourth-dual tensor equation on simple pairs and the Frobenius defect equation;
+these equations remain unproved. Cabling 3ddf985 completes its separate
+cabling and generated-category interfaces. The actual centre hCenter premise
+and the frozen target remain open.
+
+## Round 2 centre interfaces integrated
+
+- Centre `fusionOfFiniteSemisimple` constructs the ground fusion property from
+  centre rigidity and finite semisimplicity; Hom finiteness and the simple unit
+  are proved. `rigidOfMateCoherence` constructs rigidity conditional on the
+  normalized dual half-braiding tensor law and centrality of the two duality
+  maps; those three identities are unproved.
+- Fusion `globalFPDimension_square_of_adjunction` derives the FP-square from a
+  right adjoint of centre forgetful with its underlying induction-sum formula,
+  assuming centre rigidity/fusion. The adjoint and formula are unconstructed.
+  Modular's categorical-square reduction additionally needs a positive
+  spherical structure on the centre.
+- Cabling `productRetract_iff_tensorClosure` identifies the actual generated
+  tensor/sum/retract closure with product retracts. Integration's
+  `target_of_actual_center_generated` wires that theorem into the target
+  reduction. The double-centralizer S-test into this closure is still open.
+- Calculus proves common-centralizer self-centrality and reduces integral
+  dimensions to actual exterior-object trace identities. Construction and
+  trace formulas of the alternating projectors remain open.
