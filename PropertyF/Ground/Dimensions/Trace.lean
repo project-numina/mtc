@@ -32,3 +32,38 @@ theorem leftTrace_smul (c : ℂ) (f : X ⟶ X) : p.leftTrace (c • f) = c • p
   simp [leftTrace, tensorHom_def]
 
 end PropertyF.Ground.Dimensions.PivotalStructure
+
+namespace PropertyF.Ground.Dimensions.PivotalStructure
+open CategoryTheory CategoryTheory.MonoidalCategory
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+
+/-- The right pivotal trace is cyclic. -/
+theorem rightTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
+    (f : X ⟶ Y) (g : Y ⟶ X) : p.rightTrace (f ≫ g) = p.rightTrace (g ≫ f) := by
+  apply End.homEquiv.injective
+  change η_ X (Xᘁ) ≫ (((f ≫ g) ≫ (p.iso X).hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
+    η_ Y (Yᘁ) ≫ (((g ≫ f) ≫ (p.iso Y).hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ)
+  simp only [Category.assoc]
+  calc
+    _ = η_ X (Xᘁ) ≫ f ▷ (Xᘁ) ≫ g ▷ (Xᘁ) ≫ (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by simp [tensorHom_def, comp_whiskerRight]
+    _ = η_ Y (Yᘁ) ≫ Y ◁ fᘁ ≫ g ▷ (Xᘁ) ≫ (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [coevaluation_comp_rightAdjointMate_assoc]
+    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ X ◁ fᘁ ≫ (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc g (fᘁ)]
+    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ (p.iso X).hom ▷ (Yᘁ) ≫ ((Xᘁ)ᘁ) ◁ fᘁ ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc (p.iso X).hom (fᘁ)]
+    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ (p.iso X).hom ▷ (Yᘁ) ≫ (fᘁ)ᘁ ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by rw [← rightAdjointMate_comp_evaluation]
+    _ = η_ Y (Yᘁ) ≫ ((g ≫ f ≫ (p.iso Y).hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
+      simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, p.naturality f,
+        comp_whiskerRight, Category.assoc]
+
+/-- In a spherical category the left pivotal trace is cyclic as well. -/
+theorem leftTrace_cyclic_of_spherical (p : PivotalStructure (C := C)) (hp : p.IsSpherical)
+    {X Y : C} (f : X ⟶ Y) (g : Y ⟶ X) : p.leftTrace (f ≫ g) = p.leftTrace (g ≫ f) := by
+  rw [hp X (f ≫ g), hp Y (g ≫ f)]
+  exact p.rightTrace_cyclic f g
+
+/-- Pivotal dimensions are invariant under object isomorphism. -/
+theorem rightTrace_id_iso (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) :
+    p.rightTrace (𝟙 X) = p.rightTrace (𝟙 Y) := by
+  simpa using p.rightTrace_cyclic e.hom e.inv
+
+end PropertyF.Ground.Dimensions.PivotalStructure

@@ -14,7 +14,7 @@
 
 ## In progress
 
-- `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. Cyclicity, multiplicativity and trace transport remain open.
+- `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic_of_spherical`, and `rightTrace_id_iso` also hold. Multiplicativity and semilinear trace transport remain open.
 
 - Prove elementary dimension consequences and trace infrastructure while waiting for the shared category interface.
 
