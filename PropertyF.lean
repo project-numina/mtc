@@ -380,24 +380,20 @@ public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
 public import PropertyF.Ground.Integrate.CompatibleCenterReduction
 public import PropertyF.Ground.CentreIntegrate.CycleTraceReduction
+public import PropertyF.Ground.CentreRigid.SimpleCentrality
+public import PropertyF.Ground.CentreRigid.SimpleTensor
+public import PropertyF.Ground.CentreRigid.RankOneMate
+public import PropertyF.Ground.CentreRigid.MateExplicit
+public import PropertyF.Ground.CentreRigid.Coevaluation
+public import PropertyF.Ground.CentreRigid.Tensor
+public import PropertyF.Ground.CentreRigid.Evaluation
+public import PropertyF.Ground.CentreCabling.TwistFinite
+public import PropertyF.Ground.CentreCabling.VafaTwist
+public import PropertyF.Ground.CentreCabling.VafaDeterminant
+public import PropertyF.Ground.CentreCabling.VafaLanternReduction
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
-
-
-public import PropertyF.Ground.CentreRigid.SimpleCentrality
-
-public import PropertyF.Ground.CentreRigid.SimpleTensor
-
-public import PropertyF.Ground.CentreRigid.RankOneMate
-
-public import PropertyF.Ground.CentreRigid.MateExplicit
-
-public import PropertyF.Ground.CentreRigid.Coevaluation
-
-public import PropertyF.Ground.CentreRigid.Tensor
-
-public import PropertyF.Ground.CentreRigid.Evaluation
