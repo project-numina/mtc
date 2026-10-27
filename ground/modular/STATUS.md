@@ -18,6 +18,7 @@
 - `PropertyF.Ground.Modular.pivotalTrace_simple_ne_zero` and `simpleDimension_ne_zero`: every simple in a genuine pivotal braided fusion category has nonzero categorical dimension, from semisimple splitting and rigidity plus Schur; no spherical or pseudo-unitary hypothesis is required. `categoricalS_galois_action` now derives simple-dimension nonvanishing.
 - `globalDimension_ne_zero_of_pseudoUnitary` and `categoricalS_galois_action_pseudoUnitary`: in the paper's pseudo-unitary setting, both simple and global dimension nonvanishing are derived; the remaining action hypotheses are S² and Verlinde with the actual dual-label map. `categoricalS_galois_unit_properties` specializes Proposition 2.1 and derives unit normalization.
 - `trace_unit` and `simpleDimension_unit`: a pivotal structure gives unit dimension one, derived from the canonical dual-comparison coherence. `categoricalS_galois_unit_properties` no longer assumes unit normalization.
+- `legacy_conjugate_labels`: constructs the exact legacy `StandardInputs.conjugate_labels` field, comparing the legacy positive character to the ground spectral-radius character via positive-character uniqueness. `conjugate_images` is also proved. The compatibility proof explicitly mentions legacy structures and is not used in the strict target cone.
 - Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
 
 ## In progress
@@ -33,7 +34,7 @@
 ## Remaining
 
 - Construct categorical S, symmetry, unit column, S-square, Verlinde, and normalized-column character classification from a genuine modular category; combine with the completed Galois action construction.
-- Ground conjugate label and spectral FP invariance are complete. The legacy `StandardInputs.conjugate_labels` statement uses the old positive-character specification; it would additionally require the fusion workstream's uniqueness/comparison theorem. The ground result does not need that dependency.
+- Ground conjugate label, spectral FP invariance, and the legacy `StandardInputs.conjugate_labels` field are complete.
 - `conjugate_images` is complete; integrate its general braided-functor version into the ground proof without old hypothesis structures.
 
 This is substantial foundational work; the present result discharges only the abstract Galois-action construction once character classification and modular identities are established, not the category-level obligations.
