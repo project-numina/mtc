@@ -154,7 +154,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   naturality in the induction argument, discharging that part of `hb` once
   the candidate becomes a half-braiding. Invertibility, naturality in the
   crossed object, tensor law, unit centrality, and the second triangle
-  remain unproved.
+  remain unproved. `crossing_completeness` and
+  `crossingInclusion_projection_ne` prove the completeness and off-diagonal
+  vanishing relations for the chosen simple summands.
 - `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
   transpose and proves it injective; composing it with the unit-summand
   counit recovers the original map. Centrality and surjectivity onto centre
@@ -267,3 +269,11 @@ the finite-semisimplicity assembly, conditional centre fusion and FP-square
 theorems, rank-one sliding and FP-square theorems, and pseudo-unitary assembly
 showed only `propext`, `Classical.choice`, and `Quot.sound`. The explicit
 mathematical premises described above are still unproved.
+
+- The root module `PropertyF.lean` was checked with `lake env lean` after
+  building missing dependencies one at a time; it passed. The integrated
+  `ProjectAudit` build audited 3,250 imported declarations and passed.
+  `#print axioms` for the crossing naturality and completeness, first triangle,
+  conditional adjunction/fusion/FP-square, and rank-one FP-square results
+  returned only `propext`, `Classical.choice`, and `Quot.sound`. These checks
+  do not discharge the explicit general induction and sliding premises.
