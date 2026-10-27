@@ -37,4 +37,24 @@ theorem firstBraid_components {I : Type} [Fintype I] (f : I → C)
   rw [hg]
   simpa [firstMixedBraid, Category.assoc] using
     (firstMixedBraid_natural (biproduct.ι f a) (biproduct.ι f b) (tupleTensorInclusion f n t)).symm
+omit [MonoidalPreadditive C] in
+set_option backward.isDefEq.respectTransparency false in
+/-- Prefixing a spectator strand transports a block crossing by one position. -/
+theorem tailBraid_components {I : Type} [Fintype I] (f : I → C)
+    (a : I) (n : ℕ) (i : Fin (n + 1)) (U V : C)
+    (u : U ⟶ tensorPower (⨁ f) (n + 2))
+    (v : V ⟶ tensorPower (⨁ f) (n + 2)) (g : U ⟶ V)
+    (h : u ≫ (braidGenerator (⨁ f) n i).asIso.hom = g ≫ v) :
+    (biproduct.ι f a ⊗ₘ u) ≫ (braidGenerator (⨁ f) (n + 1) i.succ).asIso.hom =
+      (𝟙 (f a) ⊗ₘ g) ≫ (biproduct.ι f a ⊗ₘ v) := by
+  rcases i with ⟨i, hi⟩
+  have hg : braidGenerator (⨁ f) (n + 1) (⟨i, hi⟩ : Fin (n+1)).succ =
+      Aut.of (Iso.refl (⨁ f) ⊗ᵢ (braidGenerator (⨁ f) n ⟨i, hi⟩).asIso) := by
+    apply Aut.ext
+    apply Iso.ext
+    simp [braidGenerator, tensorIso_hom, id_tensorHom]
+  rw [hg]
+  simp only [tensorIso_hom, Iso.refl_hom, tensorHom_comp_tensorHom,
+    Category.id_comp, Category.comp_id, h]
+
 end PropertyF
