@@ -234,7 +234,6 @@ public import PropertyF.Ground.CentreModular.ColumnSeparation
 public import PropertyF.Ground.CentreModular.KirbyCriterion
 public import PropertyF.Ground.CentreModular.RegularSupport
 public import PropertyF.Ground.Integrate.ExamplePropertyF
-
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.PositiveWeights
 public import PropertyF.Ground.Calculus.GaloisMatrices
@@ -246,42 +245,26 @@ public import PropertyF.Ground.Calculus.GaloisRigidity
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Calculus.ReversePower
 public import PropertyF.Ground.Calculus.SharpRigidity
-
 public import PropertyF.Ground.Calculus.IntegratorBridge
-
 public import PropertyF.Ground.Dimensions.RootDualLabel
 public import PropertyF.Ground.Dimensions.DefectNaturality
 public import PropertyF.Ground.Dimensions.CoevaluationReciprocity
 public import PropertyF.Ground.Dimensions.CoevaluationSliding
 public import PropertyF.Ground.Dimensions.DrinfeldUnit
 public import PropertyF.Ground.Dimensions.FourthDualUnit
-
 public import PropertyF.Ground.CentreDimensions.BraidingTrace
-
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
-
 public import PropertyF.Ground.CentreDimensions.InvolutionTrace
-
 public import PropertyF.Ground.Dimensions.RootUnitComponent
-
 public import PropertyF.Ground.Dimensions.RootDualPairing
-
 public import PropertyF.Ground.Dimensions.PositivePivotalDual
-
 public import PropertyF.Ground.Dimensions.SphericalPivotalDual
-
 public import PropertyF.Ground.Dimensions.PivotalPairing
-
 public import PropertyF.Ground.Dimensions.RealSphericalBounds
-
 public import PropertyF.Ground.Dimensions.RightDualUnitTensor
-
 public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
-
 public import PropertyF.Ground.Dimensions.FourthTensorUnit
-
 public import PropertyF.Ground.Dimensions.RankOneSpherical
-
 public import PropertyF.Ground.Dimensions.RankOneCriterion
 public import PropertyF.Ground.CentreInduction.SimpleDetection
 public import PropertyF.Ground.CentreInduction.Averaging
@@ -290,7 +273,6 @@ public import PropertyF.Ground.CentreInduction.Dominance
 public import PropertyF.Ground.CentreInduction.Artinian
 public import PropertyF.Ground.CentreInduction.FiniteSum
 public import PropertyF.Ground.CentreInduction.FiniteLabels
-
 public import PropertyF.Ground.CentreRigid.MateEquations
 public import PropertyF.Ground.CentreInduction.Fusion
 public import PropertyF.Ground.CentreInduction.UnitTest
@@ -303,7 +285,6 @@ public import PropertyF.Ground.CentreInduction.FirstTriangle
 public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 public import PropertyF.Ground.CentreInduction.HomTranspose
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
-
 public import PropertyF.Ground.CentreInduction.TensorDetection
 public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
 public import PropertyF.Ground.CentreInduction.UnitNormalization
@@ -337,23 +318,14 @@ public import PropertyF.Ground.CentreInduction.FiniteMonodromyModular
 public import PropertyF.Ground.CentreInduction.DirectDual
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.CentreInduction.RankOneComplete
-
 public import PropertyF.Ground.CentreInduction.BasisPairing
-
 public import PropertyF.Ground.CentreInduction.CrossingNaturality
-
 public import PropertyF.Ground.CentreDimensions.RankOneCenter
-
 public import PropertyF.Ground.CentreDimensions.RankOneRigid
-
 public import PropertyF.Ground.CentreDimensions.RankOneModular
-
 public import PropertyF.Ground.Dimensions.RightDualAssociativity
-
 public import PropertyF.Ground.Dimensions.DoubleDualAssociativity
-
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
-
 public import PropertyF.Ground.Dimensions.DualEvaluation
 public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Dimensions.PivotalDual
@@ -371,7 +343,6 @@ public import PropertyF.Ground.CentreCalculus.TargetReduction
 public import PropertyF.Ground.CentreCalculus.MonodromyCap
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
-public import PropertyF.Ground.CentreCabling.ProductGenerated
 public import PropertyF.Ground.CentreCabling.SCentrality
 public import PropertyF.Ground.CentreCabling.FusionCentralizer
 public import PropertyF.Ground.CentreCabling.FourierCentralizer
@@ -385,7 +356,6 @@ public import PropertyF.Ground.CentreCabling.ProductCore
 public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.CentreCabling.CoreCentrality
 public import PropertyF.Ground.CentreCabling.TargetReduction
-
 public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
 public import PropertyF.Ground.Integrate.CompatibleCenterReduction
@@ -402,25 +372,14 @@ public import PropertyF.Ground.CentreIntegrate.CycleTraceReduction
 public import PropertyF.Ground.CentreIntegrate.TwistSign
 public import PropertyF.Ground.CentreIntegrate.TwistDual
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
-
-
-
-
 public import PropertyF.Ground.CentreRigid.SimpleCentrality
-
 public import PropertyF.Ground.CentreRigid.SimpleTensor
-
 public import PropertyF.Ground.CentreRigid.RankOneMate
-
 public import PropertyF.Ground.CentreRigid.MateExplicit
-
 public import PropertyF.Ground.CentreRigid.Coevaluation
-
 public import PropertyF.Ground.CentreRigid.Tensor
-
 public import PropertyF.Ground.CentreRigid.Evaluation
 public import PropertyF.Ground.CentreRigid.ForgetComparison
-
 public import PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
 public import PropertyF.Ground.Dimensions.DefectAssociativity
 public import PropertyF.Ground.Dimensions.DefectSliding
@@ -429,15 +388,16 @@ public import PropertyF.Ground.Dimensions.ENOInvolution
 public import PropertyF.Ground.Dimensions.BraidingCapSlide
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
-
 public import PropertyF.Ground.CentreCabling.TwistFinite
 public import PropertyF.Ground.CentreCabling.VafaTwist
 public import PropertyF.Ground.CentreCabling.VafaDeterminant
 public import PropertyF.Ground.CentreCabling.VafaLanternReduction
-
 public import PropertyF.Ground.Dimensions.DefectBraiding
 public import PropertyF.Ground.Dimensions.DefectTraceBraiding
 public import PropertyF.Ground.Dimensions.DrinfeldTensorCap
+public import PropertyF.Ground.CentreCabling.TwistDual
+public import PropertyF.Ground.CentreCabling.LanternSpherical
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
