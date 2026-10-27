@@ -180,3 +180,10 @@ pivotal or spherical assumptions. The proof uses the nonzero diagonal matrix
 block of the actual induction crossing and the counit unit-summand projection.
 Numerical S-centrality has not yet been shown to imply categorical centrality;
 therefore S-matrix invertibility is not claimed. Focused build passes.
+`center_s_invertible_of_test_monodromy` proves categorical S invertibility for
+an FP-valued pivotal centre assuming finite-order mixed monodromies only for
+test simples that are retracts of negative images or of the induced unit, and
+only against numerical S-central labels. The proof combines categorical centre
+nondegeneracy with positive trace saturation and the existing S criterion.
+Those finite-order hypotheses remain unproved; this is not unconditional S
+invertibility. Focused build passes.
