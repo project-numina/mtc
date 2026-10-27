@@ -47,11 +47,6 @@ theorem artinian_of_split_subobjects (X : D) [FiniteDimensional ℂ (X ⟶ X)]
     (hsplit : ∀ (P : Subobject X), IsSplitMono P.arrow) : IsArtinianObject X := by
   exact ⟨(subobjectEndRangeEmbedding X hsplit).wellFoundedLT⟩
 
-/-- The same order embedding also gives the ascending chain condition. -/
-theorem noetherian_of_split_subobjects (X : D) [FiniteDimensional ℂ (X ⟶ X)]
-    (hsplit : ∀ (P : Subobject X), IsSplitMono P.arrow) : IsNoetherianObject X := by
-  exact ⟨(subobjectEndRangeEmbedding X hsplit).wellFoundedGT⟩
-
 /-- Under the stated loop-sliding identity, every object of the actual centre
 is Artinian. -/
 theorem center_artinian_of_loop_centrality (C : BraidedFusionCategory.{v,u})

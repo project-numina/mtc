@@ -44,20 +44,4 @@ theorem fusion_of_adjunction_and_loop (C : BraidedFusionCategory.{v,u})
   CentreBundle.fusionOfFiniteSemisimple C
     (finite_semisimple_of_adjunction_and_loop C p hp hslide hne I adj)
 
-/-- The same conditional construction gives the global FP-square formula
-when the right adjoint has the prescribed underlying induction objects. -/
-theorem globalFPDimension_square_of_assembled_fusion (C : BraidedFusionCategory.{v,u})
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hslide : SimpleLoopCentrality C p) (hne : globalDimension C ≠ 0)
-    (I : C.Obj ⥤ CategoryTheory.Center C.Obj)
-    (adj : CategoryTheory.Center.forget C.Obj ⊣ I)
-    (hI : ∀ i, Nonempty ((I.obj (simples C i)).1 ≅ underlying C (simples C i))) :
-    letI : IsFusionCategory (CategoryTheory.Center C.Obj) :=
-      fusion_of_adjunction_and_loop C p hp hslide hne I adj
-    globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 := by
-  letI : IsFusionCategory (CategoryTheory.Center C.Obj) :=
-    fusion_of_adjunction_and_loop C p hp hslide hne I adj
-  exact globalFPDimension_square_of_adjunction C I adj hI
-
 end PropertyF.Ground.CentreInduction

@@ -21,13 +21,4 @@ theorem rankOne_induction_retract (Z : CategoryTheory.Center C.Obj) :
     (rankOne_induction_unit_isIso C Z)
   exact ⟨Retract.ofIso e⟩
 
-/-- The actual rank-one centre is rigid and fusion, with the expected FP square. -/
-theorem rankOne_center_fp_square :
-    letI : RigidCategory (CategoryTheory.Center C.Obj) := Dimensions.rankOne_centerRigid C
-    letI : IsFusionCategory (CategoryTheory.Center C.Obj) := fusion_of_rank_one C
-    globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 := by
-  letI : RigidCategory (CategoryTheory.Center C.Obj) := Dimensions.rankOne_centerRigid C
-  letI : IsFusionCategory (CategoryTheory.Center C.Obj) := fusion_of_rank_one C
-  exact globalFPDimension_square_of_actual_induction C
-
 end PropertyF.Ground.CentreInduction

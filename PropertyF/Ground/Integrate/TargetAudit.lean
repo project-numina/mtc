@@ -114,7 +114,6 @@ import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
 import all PropertyF.Ground.CentreRigid.Evaluation
 import all PropertyF.Ground.CentreRigid.ForgetComparison
-import all PropertyF.Ground.Integrate.RigidCenterReduction
 import all PropertyF.Ground.CentreIntegrate.TwistSign
 import all PropertyF.Ground.CentreRigid.Coevaluation
 import all PropertyF.Ground.CentreRigid.MateExplicit
@@ -127,7 +126,6 @@ import all PropertyF.Ground.CentreIntegrate.CyclePolynomial
 import all PropertyF.Ground.CentreIntegrate.CycleTraceReduction
 import all PropertyF.Ground.CentreIntegrate.PermutationSignSum
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
-import all PropertyF.Ground.Integrate.CompatibleCenterReduction
 import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.CoreCentrality
 import all PropertyF.Ground.CentreCabling.FiniteMonodromy
@@ -174,7 +172,6 @@ import all PropertyF.Ground.CentreInduction.FiniteSum
 import all PropertyF.Ground.CentreInduction.FirstTriangle
 import all PropertyF.Ground.CentreInduction.ForgetDual
 import all PropertyF.Ground.CentreInduction.Fusion
-import all PropertyF.Ground.CentreInduction.HomTranspose
 import all PropertyF.Ground.CentreInduction.InducedTrace
 import all PropertyF.Ground.CentreInduction.InjectiveFusion
 import all PropertyF.Ground.CentreInduction.Injectives

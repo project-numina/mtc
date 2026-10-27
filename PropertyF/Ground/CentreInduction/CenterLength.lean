@@ -106,10 +106,4 @@ theorem simple_mono_induced_simple (X : CategoryTheory.Center C.Obj) [Simple X] 
     simpa [t] using this
   exact ⟨i, t, mono_of_nonzero_from_simple ht⟩
 
-/-- Every nonzero centre object has a simple subobject. -/
-theorem center_exists_simple_subobject (X : CategoryTheory.Center C.Obj) (hX : ¬ IsZero X) :
-    ∃ P : Subobject X, Simple (P : CategoryTheory.Center C.Obj) := by
-  letI : IsArtinianObject X := center_artinian C X
-  exact exists_simple_subobject hX
-
 end PropertyF.Ground.CentreInduction

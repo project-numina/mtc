@@ -279,7 +279,6 @@ public import PropertyF.Ground.CentreInduction.UnitCandidate
 public import PropertyF.Ground.CentreInduction.UnitCoevaluation
 public import PropertyF.Ground.CentreInduction.FirstTriangle
 public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
-public import PropertyF.Ground.CentreInduction.HomTranspose
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
 public import PropertyF.Ground.CentreInduction.TensorDetection
 public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
@@ -354,8 +353,6 @@ public import PropertyF.Ground.CentreCabling.CoreCentrality
 public import PropertyF.Ground.CentreCabling.TargetReduction
 public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
-public import PropertyF.Ground.Integrate.CompatibleCenterReduction
-public import PropertyF.Ground.Integrate.RigidCenterReduction
 public import PropertyF.Ground.Integrate.PivotalOnlyReduction
 public import PropertyF.Ground.Integrate.CoreIntegralityReduction
 public import PropertyF.Ground.Integrate.BalancedCenterReduction
