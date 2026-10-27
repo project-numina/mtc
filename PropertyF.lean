@@ -18,6 +18,7 @@ public import PropertyF.Ground.Centre.Zero
 public import PropertyF.Ground.Centre.Biproduct
 public import PropertyF.Ground.Centre.Kernel
 public import PropertyF.Ground.Centre.Cokernel
+public import PropertyF.Ground.Centre.Abelian
 public import PropertyF.Ground.Centre.ReverseBraiding
 public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Centre.ProductImages
