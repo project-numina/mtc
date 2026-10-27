@@ -93,8 +93,8 @@ formulation remains an explicit review obligation.
 | `PseudoUnitaryInputs` | `center`, `arithmetic` | centre, dimensions | Open: package above constructions. |
 | `StandardInputs` | `pseudo` | dimensions, centre, calculus, modular | Open: package above constructions for pseudo-unitary categories. |
 | `StandardInputs` | `conjugate_labels`, `conjugate_images` | modular, fusion | Braid-image equivalences, ground property-F transport, simple-label equivalence and spectral global FP preservation are proved. |
-| `CablingWitness` | `blockCount`, `lengths`, `pureImage`, `finiteIndex`, `cableImage`, `restriction`, `restriction_surjective` | cabling | Finite index and abstract pure-word quotient constructed; categorical cabling map pending. Only used by corollary. |
-| `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling, fusion | Ground generated fusion category, inclusion, image equivalence and essential image constructed; pure-block cabling membership remains. Only used by corollary. |
+| `CablingWitness` | `blockCount`, `lengths`, `pureImage`, `finiteIndex`, `cableImage`, `restriction`, `restriction_surjective` | cabling | Finite index and abstract pure-word quotient constructed; categorical cabling map constructed by `cablingWitness_generated`. Only used by corollary. |
+| `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling, fusion | Ground generated fusion category, inclusion, image equivalence and essential image constructed; pure-block cabling membership and `generatedInputsOfGround` are constructed. Only used by corollary. |
 | `GeneratedInputs` | `simple_square_integral`, `strand_inclusion` | cabling, fusion | Both bundle-free `Ground.simple_strand_inclusion` and `Ground.generated_simple_square_integer` are proved; legacy packaging remains. Only used by corollary. |
 
 The existing `#print axioms` result establishes only kernel axiom cleanliness
@@ -102,9 +102,10 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 ## Integrated snapshot
 
-Latest merged snapshots: fusion f175963; dimensions de99790; calculus 9ea993f;
-centre 21f99af; modular 07408af; cabling 1d72ebb. The full development build
-passed; `ProjectAudit` scans 3,242 integrated public and private declarations, all with only the
+Latest merged snapshots: fusion 4bd27d9; dimensions 5646fbb; calculus 9ea993f;
+centre 21f99af; modular 0ef3cb6; cabling 3ddf985. The full development build
+passed. After expanding the audit imports to include the newly merged modules,
+`ProjectAudit` scans 3,532 integrated public and private declarations, all with only the
 standard axioms. The strict target audit correctly fails because `Ground.target`
 is absent. This is not a proof of the target.
 
@@ -121,3 +122,22 @@ global FP algebraic integrality, and `weaklyIntegral_of_globalFPDimension_fixed`
 combines it with the constructed finite Galois field and automorphism extension.
 Global FP conjugacy invariance is proved. Galois fixedness requires the
 centre/rigidity witnesses above; the real-conjugate bounds are unconditional.
+
+## Round 2 shorter-route assessment
+
+`weaklyIntegral_of_positive_modular_propertyF` proves weak integrality directly
+in a positive spherical, non-degenerate category with property F. It avoids
+all centre construction and centralizer obligations in that special case.
+The proof uses only the selected Galois-unit column, rigidity and the global
+dimension identity, but its existence uses invertibility of the full S-matrix.
+`categoricalS_det_eq_zero_of_transparent_column` shows that any non-unit simple
+with the transparent column forces S to be singular; in particular a nontrivial
+symmetric core blocks a direct application to the generated subcategory. No
+construction of a smaller modular extension or general replacement for the
+column identity has been proved.
+
+Dimensions 5646fbb gives canonical spherical existence conditional on the
+fourth-dual tensor equation on simple pairs and the Frobenius defect equation;
+these equations remain unproved. Cabling 3ddf985 completes its separate
+cabling and generated-category interfaces. The actual centre hCenter premise
+and the frozen target remain open.
