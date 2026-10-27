@@ -252,6 +252,7 @@ public import PropertyF.Ground.CentreInduction.CenterLength
 public import PropertyF.Ground.CentreInduction.FiniteSimples
 public import PropertyF.Ground.CentreInduction.Injectives
 public import PropertyF.Ground.CentreInduction.InjectiveFusion
+public import PropertyF.Ground.CentreInduction.InducedTrace
 
 public import PropertyF.Ground.CentreInduction.BasisPairing
 

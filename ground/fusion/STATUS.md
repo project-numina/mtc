@@ -169,8 +169,12 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   centre object embeds in one. `center_fusion_of_nonzero_induced_trace`
   gives an alternative to loop sliding: given centre rigidity, a pivotal
   structure on the centre and nonzero trace of one induced object imply
-  semisimplicity and fusion. Constructing that pivotal structure/trace or
-  proving averaging-loop sliding remains open.
+  semisimplicity and fusion. `induced_unit_dimension` computes the underlying
+  trace as FPdim(C) for a positive base pivotal structure, and
+  `center_fusion_of_positive_compatible_pivotal` reduces fusion to one
+  explicit trace-compatibility equality for a centre pivotal structure.
+  Constructing that pivotal structure/compatibility or proving averaging-loop
+  sliding remains open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
   unit-counit column on simple test strands. `crossingUnitBlock_eval` proves
   the diagonal duality contraction, and `secondTriangle` proves the second
