@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Fusion.Agreement
+public import PropertyF.Ground.Dimensions.PositiveCanonical
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -190,5 +191,28 @@ theorem positive_spherical_of_spherical_pseudoUnitary
   · intro i
     exact (spherical_dimensions_real_of_pseudoUnitary C p hp hpu i).symm
   · exact hpu
+
+/-- In a pseudo-unitary category admitting a spherical structure, every Galois
+conjugate of an intrinsic simple squared norm is strictly positive. -/
+theorem pseudoUnitary_squaredNorm_totallyPositive_of_spherical
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (hpu : Ground.PseudoUnitary C) (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
+    ∃ r : ℝ, 0 < r ∧ σ (Ground.squaredNorm C (Ground.simples C i)) = (r : ℂ) := by
+  obtain ⟨q, hq, hdim⟩ := positive_spherical_of_spherical_pseudoUnitary C p hp hpu
+  exact positive_spherical_squaredNorm_totallyPositive C q hq (Ground.fpSimple C)
+    hdim (Ground.fpSimple_pos C) σ i
+
+/-- Galois conjugates of the global FP dimension are positive and bounded,
+assuming pseudo-unitarity and an existing spherical structure. -/
+theorem pseudoUnitary_galois_fp_bounds_of_spherical
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (hpu : Ground.PseudoUnitary C) (σ : ℂ ≃+* ℂ) :
+    ∃ D : ℝ, 0 < D ∧ D ≤ Ground.globalFPDimension C ∧
+      σ (Ground.globalFPDimension C : ℂ) = (D : ℂ) := by
+  obtain ⟨q, hq, hdim⟩ := positive_spherical_of_spherical_pseudoUnitary C p hp hpu
+  exact positive_spherical_galois_fp_bounds C q hq (Ground.fpSimple C)
+    hdim (Ground.fpSimple_pos C) σ
 
 end PropertyF.Ground.Dimensions
