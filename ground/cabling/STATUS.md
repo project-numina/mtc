@@ -15,7 +15,8 @@
   index, using permutation of free words.
 - `blockRestrictionHom` and `blockRestriction_ker_le` construct and detect
   restrictions of a group action preserving the summands of a finite
-  biproduct.
+  biproduct. `retractActionHom` and `retractAction_ker_le` construct
+  restriction to an arbitrary invariant retract.
 - `cablingWitnessOfPureAction`: constructs a full `CablingWitness` from
   a pure-word map to the product of cabled braid images and the precise
   kernel containment needed to descend to the pure image.

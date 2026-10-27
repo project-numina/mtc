@@ -28,6 +28,7 @@ public import PropertyF.Ground.Cabling.Perron
 public import PropertyF.Ground.Cabling.Primitive
 public import PropertyF.Ground.Cabling.ENOArithmetic
 public import PropertyF.Ground.Cabling.Blocks
+public import PropertyF.Ground.Cabling.RetractAction
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
