@@ -9,8 +9,8 @@ constructs the bounds directly from its FP fusion character.
 
 - `hCenter`: for pseudo-unitary property-F C, construct one actual Drinfeld
   centre with rigid and fusion instances and a positive spherical structure,
-  invertible categorical S, and global dimension FPdim(C)²; prove that any
-  and the stated centralizer conditions. Owners: centre (Z,
+  invertible categorical S, global dimension FPdim(C)², and the stated
+  centralizer conditions. Owners: centre (Z,
   dimension formula, centralizers, finite-image transfer and S invertibility)
   and dimensions (positive spherical structures); modular supplies S
   identities and Galois action. Calculus proved the actual overlap recurrence
