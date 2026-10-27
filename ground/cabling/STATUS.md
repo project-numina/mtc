@@ -192,3 +192,28 @@ those centre simple labels have simple underlying base objects; together with
 the previously proved transparency and FP-dimension identities, this gives
 calculus a simple-transparent-object formulation of core integrality. Focused
 build passed.
+
+## Current blockers and estimate
+
+The workstream's generated-product/retract identification and numerical
+fusion-subcategory double-centralizer theorem are proved. The remaining
+categorical step is precisely the `hfinite` argument of
+`productLabels_doubleCentralizer_of_image_monodromy`: prove finite order of
+mixed monodromy between a canonical-image simple and an arbitrary centre
+simple which passes the image S-test. A finite-order twist/Vafa theorem would
+supply it; no such theorem is available in the current integrated snapshot,
+and base property F does not directly control arbitrary centre half-braidings.
+The centre rigidity/fusion instances, positive spherical structure and
+invertible S are separately owned by centre/fusion/dimensions/modular; calculus
+owns integrality of the simple transparent base objects described above. The
+conditional target reduction exposes all of these premises and is not the
+final theorem. The missing mixed-monodromy result is a substantial categorical
+proof, potentially as deep as Vafa's theorem; there is no reliable short time
+estimate until a direct centre-specific route or a twist result is available.
+
+Final verification on this branch: `lake build PropertyF` passed on cores
+24–27 with four Lean threads. Direct `#print axioms` checks on the numerical
+double centralizer, actual-centre reduction, S-test saturation, product
+closure, dual closure and core identification report only `propext`,
+`Classical.choice`, and `Quot.sound`. The new centre-cabling files contain no
+`sorry`, `admit`, `axiom`, `native_decide`, `implemented_by`, or `extern`.
