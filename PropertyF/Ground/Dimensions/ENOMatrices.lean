@@ -114,4 +114,44 @@ theorem rootDimension_galois_norm_le_fp_of_trace_matrix
   · intro j
     simpa only [map_sum, map_mul, ht] using congrArg σ (heig j)
 
+
+/-- Under ENO's real and FP-saturated eigenvector hypotheses, the actual trace
+matrix entries saturate their fusion bounds with the forced signs. -/
+theorem enoTraceMatrix_saturation_of_real_dimensions
+    (C : Ground.BraidedFusionCategory.{v,u}) (d : Fin (Ground.rank C) → ℝ)
+    (hreal : ∀ i, rootDimension C i = (d i : ℂ))
+    (hd : ∀ i, |d i| = Ground.fpSimple C i)
+    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
+      (multiplicityDefect C i j k).toLinearMap = 1)
+    (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
+      rootDimension C i * rootDimension C j) :
+    ∀ i j k, enoTraceMatrix C i j k =
+      (((d i / Ground.fpSimple C i) * (d j / Ground.fpSimple C j) *
+        (d k / Ground.fpSimple C k) * (Ground.fusionCoeff C i j k : ℝ) : ℝ) : ℂ) := by
+  let T : Fin (Ground.rank C) → Fin (Ground.rank C) → Fin (Ground.rank C) → ℝ :=
+    fun i j k => (enoTraceMatrix C i j k).re
+  have hT : ∀ i j k, (T i j k : ℂ) = enoTraceMatrix C i j k := by
+    intro i j k
+    obtain ⟨n, hn, _⟩ := multiplicityDefect_trace_integer_bound C i j k (hinv i j k)
+    change ((LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap).re : ℂ) =
+      LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap
+    rw [hn]
+    simp
+  have hdom : ∀ i j k, |T i j k| ≤ (Ground.fusionCoeff C i j k : ℝ) := by
+    intro i j k
+    obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C i j k (hinv i j k)
+    change |(LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap).re| ≤ _
+    rw [hn, Complex.intCast_re, ← Int.cast_abs]
+    exact_mod_cast hb
+  have he : ∀ i j, ∑ k, T i j k * d k = d i * d j := by
+    intro i j
+    have h := congrArg Complex.re (heig i j)
+    simp only [hreal, Complex.re_sum, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+      mul_zero, sub_zero] at h
+    exact h
+  have hs := fusion_signed_eigenvalue_saturation C T d hd hdom he
+  intro i j k
+  rw [← hT i j k, hs i j k]
+
+
 end PropertyF.Ground.Dimensions
