@@ -43,4 +43,23 @@ theorem connectedMatrix_eigenvector_integral {ι : Type} [Fintype ι] [Nonempty 
     rw [hmap] at hpi
     simpa [Matrix.mulVec, dotProduct] using hpi
   exact positiveMatrix_eigenvector_integral (a ^ n) v (eig ^ n) o hn hv hpn hv0 hIntegral
+/-- Once `X ⊗ X*` is decomposed over the adjoint component, integral
+adjoint dimensions imply integrality of the simple square. -/
+theorem square_integral_of_adjoint_matrix {ι : Type} [Fintype ι] [Nonempty ι] [DecidableEq ι]
+    (a : Matrix ι ι ℚ) (v : ι → ℝ) (eig : ℚ) (o : ι) (d : ℝ) (c : ι → ℕ)
+    (ha : ∀ i j, 0 ≤ a i j) (hdiag : ∀ i, 0 < a i i)
+    (hconnected : ∀ i j, ∃ n : ℕ, 0 < (a ^ n) i j)
+    (hv : ∀ i, 0 < v i)
+    (hve : ∀ i, ∑ j, (a i j : ℝ) * v j = (eig : ℝ) * v i)
+    (hv0 : v o = 1) (hIntegral : ∀ i, IsIntegral ℤ (v i))
+    (hdecomp : d ^ 2 = ∑ i, (c i : ℝ) * v i) : ∃ z : ℤ, d ^ 2 = z := by
+  classical
+  have hi := connectedMatrix_eigenvector_integral a v eig o ha hdiag hconnected hv hve hv0 hIntegral
+  choose z hz using hi
+  refine ⟨∑ i, (c i : ℤ) * z i, ?_⟩
+  rw [hdecomp]
+  simp only [Int.cast_sum, Int.cast_mul, Int.cast_natCast]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [hz i]
 end PropertyF
