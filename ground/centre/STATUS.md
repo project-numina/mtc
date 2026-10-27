@@ -1,0 +1,25 @@
+# Centre workstream status
+
+## Route
+
+Mathlib constructs the braided monoidal Drinfeld centre and the positive monoidal embedding. First construct the reverse-braiding embedding and prove the mutual-centralizer calculation at the actual functor level. For the fusion and dimension theorem the candidate elementary route is the induction functor, built using a finite semisimple decomposition as a coend, followed by its adjunction to the forgetful functor and the dimension computation. The coend construction, semisimplicity of the centre, pivotal traces, and nondegeneracy are substantial missing proofs; induction is a proposed route, not a result. The Deligne tensor product and its universal property are also absent and must be built before the full product functor can be stated. No assumption that these constructions exist should be mistaken for a proof.
+
+## Done
+
+`PropertyF.Ground.Centre.negative` is the reverse-braiding monoidal embedding; `positiveFaithful`, `positiveFull`, `negativeFaithful`, `negativeFull` prove the two embeddings fully faithful; `positive_negative_centralize` proves their images centralize in the actual Drinfeld centre. Mathlib already provides `Center`, its braided monoidal structure, `Center.forget`, and `Center.ofBraided`; the baseline proves the objectwise equivalences in `PropertyF.CenterBasics`.
+
+## In progress
+
+Identify the entire categorical centralizers of these embeddings; inspect how to transport braid images through them.
+
+## Blocked / dependencies
+
+The frozen genuine fusion-category interface is being developed by integrate; finite semisimple machinery by fusion; pivotal/spherical traces and canonical pseudo-unitary structure by dimensions; modular-data constructions by modular; simultaneous braid-algebra realization by calculus. Need their precise interfaces before constructing the centre-specific portions of `CenterInputs`.
+
+## Remaining fields
+
+All centre fusion/spherical structure and categorical/FP dimension formulas; modularity; symmetric integrality; double centralizer; `global_square`, `symmetric_integrality`, `double_centralizer`, `product_witness`, and centre instances/data/dimensions in `CenterInputs`. `realize` additionally depends on calculus. No individual field has been discharged yet.
+
+## Estimate
+
+The foundational fusion, pivotal, semisimplicity, induction and nondegeneracy developments are extensive research-scale formalization work; completion cannot responsibly be estimated in hours. Begin with independently provable categorical structure while interfaces mature.
