@@ -102,4 +102,65 @@ theorem exists_positive_character (D : BraidedFusionCategory) :
       _ = ∑ k, (fusionCoeff D i j k : ℝ) * f k := by
         simp [f, Finset.sum_div, mul_div_assoc]
 
+theorem character_total_eigenvector (D : BraidedFusionCategory)
+    (f : Fin (rank D) → ℝ)
+    (hf : ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k) :
+    totalFusionMatrix D *ᵥ f = (∑ i, f i) • f := by
+  classical
+  rw [totalFusionMatrix_eq_sum_characterMatrix, Matrix.sum_mulVec]
+  ext j
+  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro i _
+  change (∑ k, (fusionCoeff D i j k : ℝ) * f k) = f i * f j
+  exact (hf i j).symm
+
+/-- The positive normalized fusion character is unique. -/
+theorem positive_character_unique (D : BraidedFusionCategory)
+    (f g : Fin (rank D) → ℝ) (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
+    (hfunit : f (unitIndex D) = 1) (hgunit : g (unitIndex D) = 1)
+    (hf : ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k)
+    (hg : ∀ i j, g i * g j = ∑ k, (fusionCoeff D i j k : ℝ) * g k) : f = g := by
+  classical
+  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  have hfe := character_total_eigenvector D f hf
+  have hge := character_total_eigenvector D g hg
+  have hsym : (totalFusionMatrix D)ᵀ = totalFusionMatrix D := by
+    apply Matrix.ext
+    intro i j
+    exact totalFusionMatrix_symmetric D j i
+  have hdot : f ⬝ᵥ totalFusionMatrix D *ᵥ g = g ⬝ᵥ totalFusionMatrix D *ᵥ f := by
+    simpa [hsym] using Matrix.dotProduct_transpose_mulVec (totalFusionMatrix D) f g
+  rw [hfe, hge, dotProduct_smul, dotProduct_smul, dotProduct_comm g f] at hdot
+  have hdotpos : 0 < f ⬝ᵥ g := by
+    apply Finset.sum_pos
+    · intro i _
+      exact mul_pos (hfpos i) (hgpos i)
+    · exact Finset.univ_nonempty
+  have heq : (∑ i, f i) = ∑ i, g i := by
+    have := mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm
+    exact this
+  rw [← heq] at hge
+  obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique (totalFusionMatrix D)
+    (totalFusionMatrix_pos D) f g hfpos _ hfe hge
+  have hc1 : c = 1 := by
+    have h := congrFun hc (unitIndex D)
+    simpa [hfunit, hgunit] using h.symm
+  rw [hc, hc1, one_smul]
+
+/-- The unique positive normalized character of the fusion rules. -/
+def fpCharacter (D : BraidedFusionCategory) : Fin (rank D) → ℝ :=
+  Classical.choose (exists_positive_character D)
+
+theorem fpCharacter_pos (D : BraidedFusionCategory) (i : Fin (rank D)) :
+    0 < fpCharacter D i := (Classical.choose_spec (exists_positive_character D)).1 i
+
+theorem fpCharacter_unit (D : BraidedFusionCategory) : fpCharacter D (unitIndex D) = 1 :=
+  (Classical.choose_spec (exists_positive_character D)).2.1
+
+theorem fpCharacter_mul (D : BraidedFusionCategory) (i j : Fin (rank D)) :
+    fpCharacter D i * fpCharacter D j =
+      ∑ k, (fusionCoeff D i j k : ℝ) * fpCharacter D k :=
+  (Classical.choose_spec (exists_positive_character D)).2.2 i j
+
 end PropertyF.Ground

@@ -57,6 +57,9 @@
 - `Ground.characterMatrix_commute`, `exists_positive_common_eigenvector`, and
   `exists_positive_character`: the actual fusion rules admit a positive
   normalized character, constructed from the genuine target category.
+- `Ground.positive_character_unique`, `fpCharacter`, `fpCharacter_pos`,
+  `fpCharacter_unit`, and `fpCharacter_mul`: that character is unique and is
+  available as a constructed function with its fundamental laws.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -72,9 +75,9 @@ declaration conflicts.
 ## Blocked / outstanding
 
 Mathlib has categorical Schur's lemma but a source search found no general
-Perron–Frobenius theorem for positive matrices. The positive fusion character is
-now constructed; uniqueness and agreement with the target's spectral-radius
-dimensions remain to be established.
+Perron–Frobenius theorem for positive matrices. The unique positive fusion
+character is now constructed; agreement with the target's spectral-radius
+dimensions remains to be established.
 
 Construction of `FusionData`, tensor/dual/inclusion invariance, agreement of
 spectral radii with the positive character, and the centre dimension comparison
