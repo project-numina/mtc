@@ -90,7 +90,7 @@
 
 - `real_spherical_squaredNorm_galois_bounds` and `real_spherical_globalDimension_galois_bounds` prove the simple total-positivity/FP-square bounds and global Galois bounds for any existing spherical structure with real simple dimensions, without positivity or pseudo-unitarity. General existence remains open.
 
-- `rightDualTensorIso_unit_left` and `rightDualTensorIso_unit_right` prove both unit coherence laws for the canonical right-dual tensor comparison in any right rigid monoidal category. `doubleDualTensorIso_unit_left` and `doubleDualTensorIso_unit_right` also prove both corresponding double-dual unit laws. Associativity remains to be established.
+- `rightDualTensorIso_unit_left` and `rightDualTensorIso_unit_right` prove both unit coherence laws for the canonical right-dual tensor comparison in any right rigid monoidal category. `doubleDualTensorIso_unit_left` and `doubleDualTensorIso_unit_right` also prove both corresponding double-dual unit laws. `rightDualTensorIso_associativity` proves the right-dual associativity law; double-dual associativity remains to be established.
 
 - `rootTensorDefect_unit_left`, `rootTensorDefect_unit_right` and their chosen-unit-label variants prove actual unit-factor defects equal the ±1 unit root scalar. `fourthDualIso_tensor_unit_left` and `fourthDualIso_tensor_unit_right` prove the fourth-dual tensor law whenever either actual factor is the tensor unit; the non-unit cases remain open.
 
