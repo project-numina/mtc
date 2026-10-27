@@ -40,3 +40,8 @@ These describe proof obligations, not axioms or assumptions in the target.
   pseudo-unitarity and both global dimension squares, assuming centre rigidity.
   Fusion is investigating the compatible pivotal lift; the compatibility is
   currently an explicit hypothesis, not a constructed result.
+
+- The full compatible centre pivotal lift is now constructed assuming only
+  `PivotalComponentsCentral`, the explicit centrality of its transported
+  components. Its naturality, tensor and unit laws are proved. Centrality can
+  be checked on simple base test objects. This centrality remains open.
