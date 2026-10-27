@@ -103,3 +103,13 @@ is supported on the core. This support condition is not yet proved; proving it
 for the positive FP-weighted regular vector using fusion closure is the next
 step. The identification of the numerical core with the actual symmetric
 intersection also remains open. Focused build passed.
+
+`CentreCabling.regular_vector_fusion_eigenvector` proves the regular FP vector
+is a fusion eigenvector for any dual- and constituent-closed set of labels;
+`fourier_eq_zero_of_fusion_eigenvector` proves the required Fourier support;
+`doubleCentralizer_of_fusion_closed` derives the numerical double-centralizer
+theorem from invertible S and positive FP dimensions, for any set closed under
+unit, duals and constituents. It assumes the chosen core contains that set's
+numerical S-centralizer. This is a proved linear-algebra theorem, not a proof
+that the paper's actual symmetric core has the required inclusion. Focused
+build passed. Next instantiate the theorem for actual product retract labels.
