@@ -6,11 +6,12 @@ Branch: `ground/calculus`. Started from `094175c`.
 
 - Inspected the paper's §3, the existing conditional interfaces, and Mathlib's matrix positivity APIs.
 - `PropertyF.Ground.Calculus.averagedGram`, `averagedGram_posDef`, `averagedGram_invariant`: a positive-definite invariant form for any finite group representation by complex invertible matrices. Built `PropertyF.Ground.Calculus.Averaging`.
+- `PropertyF.Ground.Calculus.map_star_of_mem_span`, `star_eq_coe_inv_of_unitary`, and `map_star_on_unitary_group_span`: an intertwining algebra map preserves adjoints on the span of unitary group images.
 - `PropertyF.Ground.Calculus.exists_unitarizing_basis`: constructs a common change of basis making every group element unitary, using the square root of the averaged Gram matrix.
 
 ## In progress
 
-- Connect the finite-group unitary realization to compatible star maps and categorical braid images.
+- Connect the finite-group unitary realization and span lemma to the actual categorical braid-image embeddings.
 
 ## Blocked / dependencies
 
