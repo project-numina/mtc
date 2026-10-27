@@ -62,6 +62,7 @@ public import PropertyF.Ground.Dimensions.SignCharacter
 public import PropertyF.Ground.Dimensions.SphericalGalois
 public import PropertyF.Ground.Dimensions.InvolutionTrace
 public import PropertyF.Ground.Dimensions.WeightedEigenvalue
+public import PropertyF.Ground.Dimensions.ComplexSaturation
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.RootSignTwist
 public import PropertyF.Ground.Dimensions.TensorExtension
