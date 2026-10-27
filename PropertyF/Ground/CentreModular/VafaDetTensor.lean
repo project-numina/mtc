@@ -39,30 +39,4 @@ theorem fpDeterminant_tensor_scalar (C : BraidedFusionCategory.{v,u})
       fpDimension C X • fpDeterminant C Y (scalarIso C Y z) := by
   rw [tensor_scalarIso, fpDeterminant_scalar, fpDeterminant_scalar, fpDimension_tensor, mul_smul]
 
-/-- Every actual automorphism of a simple representative is scalar. -/
-theorem simple_iso_eq_scalarIso (C : BraidedFusionCategory.{v,u})
-    (i : Fin (rank C)) (a : simples C i ≅ simples C i) :
-    ∃ z : ℂˣ, a = scalarIso C (simples C i) z := by
-  let : Simple (simples C i) := simples_simple C i
-  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  obtain ⟨z, hz⟩ := endomorphism_simple_eq_smul_id ℂ a.hom
-  have hne : z ≠ 0 := by
-    intro h
-    have ha : a.hom = 0 := by simpa [h] using hz.symm
-    have hh := a.hom_inv_id
-    simp [ha] at hh
-    exact id_nonzero _ hh.symm
-  refine ⟨Units.mk0 z hne, ?_⟩
-  apply Iso.ext
-  exact hz.symm
-
-/-- The tensor-product determinant rule holds for every simple-object
-automorphism, without extra hypotheses. -/
-theorem fpDeterminant_tensor_simple (C : BraidedFusionCategory.{v,u})
-    (X : C.Obj) (i : Fin (rank C)) (a : simples C i ≅ simples C i) :
-    fpDeterminant C (X ⊗ simples C i) (Iso.refl X ⊗ᵢ a) =
-      fpDimension C X • fpDeterminant C (simples C i) a := by
-  obtain ⟨z, rfl⟩ := simple_iso_eq_scalarIso C i a
-  exact fpDeterminant_tensor_scalar C X (simples C i) z
-
 end PropertyF.Ground.CentreModular

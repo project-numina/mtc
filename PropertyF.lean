@@ -6,7 +6,6 @@ public import PropertyF.Ground.CentreCalculus.ExteriorReduction
 public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.GlobalSquare
 public import PropertyF.Ground.CentreInduction.Adjunction
-public import PropertyF.Ground.CentreModular.CenterBalanced
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
 public import PropertyF.Ground.CentreModular.VafaPivotal
 public import PropertyF.Ground.CentreModular.VafaCompletion
@@ -23,10 +22,6 @@ public import PropertyF.Ground.CentreModular.VafaDetTensor
 public import PropertyF.Ground.CentreModular.VafaDeterminant
 public import PropertyF.Ground.CentreModular.VafaTorsion
 public import PropertyF.Ground.CentreModular.VafaRegular
-public import PropertyF.Ground.CentreModular.ForgetTrace
-public import PropertyF.Ground.CentreModular.CrossingTrace
-public import PropertyF.Ground.CentreModular.InducedKirby
-public import PropertyF.Ground.CentreModular.CompatiblePivotal
 public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreBundle.Fusion
 public import PropertyF.Ground.CentreRigid.Lift
@@ -218,7 +213,6 @@ public import PropertyF.Ground.Integrate.ScalarTwistNorm
 public import PropertyF.Ground.Integrate.FPConjugates
 public import PropertyF.Ground.Integrate.FunctorUniverse
 public import PropertyF.Ground.Integrate.TwistedRigidity
-public import PropertyF.Ground.Integrate.OverlapReduction
 public import PropertyF.Ground.Integrate.CenterOnlyReduction
 public import PropertyF.Ground.Integrate.CenterReductionComplete
 public import PropertyF.Ground.Integrate.CenterCentralizers
@@ -226,7 +220,6 @@ public import PropertyF.Ground.Integrate.CenterProductBridge
 public import PropertyF.Ground.Integrate.CenterBundle
 public import PropertyF.Ground.Integrate.CenterDualMate
 public import PropertyF.Ground.Integrate.ActualCenterReduction
-public import PropertyF.Ground.CentreModular.ColumnSeparation
 public import PropertyF.Ground.CentreModular.KirbyCriterion
 public import PropertyF.Ground.CentreModular.RegularSupport
 public import PropertyF.Ground.Integrate.ExamplePropertyF
@@ -249,7 +242,6 @@ public import PropertyF.Ground.Dimensions.DrinfeldUnit
 public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.CentreDimensions.BraidingTrace
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
-public import PropertyF.Ground.CentreDimensions.InvolutionTrace
 public import PropertyF.Ground.Dimensions.RootUnitComponent
 public import PropertyF.Ground.Dimensions.RootDualPairing
 public import PropertyF.Ground.Dimensions.PositivePivotalDual
@@ -317,9 +309,7 @@ public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.CentreInduction.RankOneComplete
 public import PropertyF.Ground.CentreInduction.BasisPairing
 public import PropertyF.Ground.CentreInduction.CrossingNaturality
-public import PropertyF.Ground.CentreDimensions.RankOneCenter
 public import PropertyF.Ground.CentreDimensions.RankOneRigid
-public import PropertyF.Ground.CentreDimensions.RankOneModular
 public import PropertyF.Ground.Dimensions.RightDualAssociativity
 public import PropertyF.Ground.Dimensions.DoubleDualAssociativity
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
@@ -359,7 +349,6 @@ public import PropertyF.Ground.Integrate.BalancedCenterReduction
 public import PropertyF.Ground.Integrate.TransparentCenterReduction
 public import PropertyF.Ground.Integrate.PivotalBalancedReduction
 public import PropertyF.Ground.Integrate.DrinfeldComplete
-public import PropertyF.Ground.Centre.Modular.CycleTraces
 public import PropertyF.Ground.CentreIntegrate.TwistSign
 public import PropertyF.Ground.CentreIntegrate.TwistDual
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
