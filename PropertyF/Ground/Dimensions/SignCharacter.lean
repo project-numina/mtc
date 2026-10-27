@@ -215,4 +215,19 @@ theorem pseudoUnitary_galois_fp_bounds_of_spherical
   exact positive_spherical_galois_fp_bounds C q hq (Ground.fpSimple C)
     hdim (Ground.fpSimple_pos C) σ
 
+/-- If a pseudo-unitary category has any spherical structure, its spherical
+structure with FP dimensions is uniquely determined. -/
+theorem existsUnique_positive_spherical_of_spherical_pseudoUnitary
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (hpu : Ground.PseudoUnitary C) :
+    ∃! q : PivotalStructure (C := C.Obj), q.IsSpherical ∧
+      ∀ i, pivotalDimension C q (Ground.simples C i) = (Ground.fpSimple C i : ℂ) := by
+  obtain ⟨q, hq, hdim⟩ := positive_spherical_of_spherical_pseudoUnitary C p hp hpu
+  refine ⟨q, ⟨hq, hdim⟩, ?_⟩
+  intro r hr
+  apply pivotalStructure_unique_of_simple_dimensions C r q
+  intro i
+  rw [hr.2 i, hdim i]
+
 end PropertyF.Ground.Dimensions
