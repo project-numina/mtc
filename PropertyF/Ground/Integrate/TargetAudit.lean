@@ -19,6 +19,20 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreCalculus.BraidRelations
+import all PropertyF.Ground.CentreCalculus.FirstCrossingTrace
+import all PropertyF.Ground.CentreCalculus.LeftCrossing
+import all PropertyF.Ground.CentreCalculus.LeftPartialTrace
+import all PropertyF.Ground.CentreCalculus.LeftTensorTrace
+import all PropertyF.Ground.CentreCalculus.ParityDeletion
+import all PropertyF.Ground.CentreCalculus.PermutationInsert
+import all PropertyF.Ground.CentreCalculus.PermutationTraceSum
+import all PropertyF.Ground.CentreCalculus.TensorPermutation
+import all PropertyF.Ground.CentreCalculus.TypeANormalWords
+import all PropertyF.Ground.CentreCalculus.TypeAPresentation
+import all PropertyF.Ground.CentreCalculus.TypeAQuotient
+import all PropertyF.Ground.CentreCalculus.TypeARelations
+import all PropertyF.Ground.Integrate.CoreIntegralityReduction
 import all PropertyF.Ground.CentreInduction.DoubleBraiding
 import all PropertyF.Ground.CentreInduction.DualBraiding
 import all PropertyF.Ground.CentreInduction.PivotalCentrality

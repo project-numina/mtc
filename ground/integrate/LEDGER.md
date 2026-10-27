@@ -263,3 +263,12 @@ base pivotal structure. `target_of_pivotal_base_and_integral_numerical_core`
 therefore retains base pivotal existence, centre S invertibility and numerical
 core integrality as explicit obligations. The full build and project audit pass
 (432 modules, 4,394 declarations).
+
+Calculus's actual permutation action and spherical iterated partial trace are
+now integrated. `symmetricCore_integral_of_dual_balancing` constructs integer
+core dimensions from the pivotal twist balancing identity on core simple/dual
+pairs, using the proved parity-sign reduction. The target reduction
+`target_of_pivotal_base_balancing_and_image_monodromy` consequently requires
+base pivotal existence, centre S invertibility, that balancing identity and
+restricted mixed-monodromy finiteness. These premises are not established.
+Latest full build and strict project audit pass (446 modules, 4,565 declarations).

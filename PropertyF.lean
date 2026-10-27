@@ -373,6 +373,7 @@ public import PropertyF.Ground.Integrate.CompatibleCenterReduction
 public import PropertyF.Ground.Integrate.RigidCenterReduction
 public import PropertyF.Ground.Integrate.PivotalCentralityReduction
 public import PropertyF.Ground.Integrate.PivotalOnlyReduction
+public import PropertyF.Ground.Integrate.CoreIntegralityReduction
 public import PropertyF.Ground.CentreIntegrate.CycleTraceReduction
 public import PropertyF.Ground.CentreIntegrate.TwistSign
 public import PropertyF.Ground.CentreIntegrate.TwistDual
@@ -404,6 +405,7 @@ public import PropertyF.Ground.Dimensions.ENOInvolution
 public import PropertyF.Ground.Dimensions.BraidingCapSlide
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.

@@ -41,6 +41,20 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreCalculus.BraidRelations
+import all PropertyF.Ground.CentreCalculus.FirstCrossingTrace
+import all PropertyF.Ground.CentreCalculus.LeftCrossing
+import all PropertyF.Ground.CentreCalculus.LeftPartialTrace
+import all PropertyF.Ground.CentreCalculus.LeftTensorTrace
+import all PropertyF.Ground.CentreCalculus.ParityDeletion
+import all PropertyF.Ground.CentreCalculus.PermutationInsert
+import all PropertyF.Ground.CentreCalculus.PermutationTraceSum
+import all PropertyF.Ground.CentreCalculus.TensorPermutation
+import all PropertyF.Ground.CentreCalculus.TypeANormalWords
+import all PropertyF.Ground.CentreCalculus.TypeAPresentation
+import all PropertyF.Ground.CentreCalculus.TypeAQuotient
+import all PropertyF.Ground.CentreCalculus.TypeARelations
+import all PropertyF.Ground.Integrate.CoreIntegralityReduction
 import all PropertyF.Ground.CentreInduction.DoubleBraiding
 import all PropertyF.Ground.CentreInduction.DualBraiding
 import all PropertyF.Ground.CentreInduction.PivotalCentrality
@@ -578,6 +592,8 @@ run_cmd do
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
+      ``PropertyF.Ground.target_of_pivotal_base_balancing_and_image_monodromy,
+      ``PropertyF.Ground.symmetricCore_integral_of_dual_balancing,
       ``PropertyF.Ground.target_of_pivotal_base_and_integral_numerical_core,
       ``PropertyF.Ground.CentreRigid.rigidCenter,
       ``PropertyF.Ground.target_of_fusion_center_integral_numerical_core,

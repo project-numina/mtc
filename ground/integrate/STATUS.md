@@ -251,3 +251,13 @@ no reliable completion-time estimate is available.
   pivotal existence, centre S invertibility, and numerical-core integrality.
   No general pivotal existence is claimed. Full build and project audit pass
   (432 modules, 4,394 declarations).
+
+- Merged calculus, including the type-A presentation, actual permutation
+  actions, parity-deletion reduction, and spherical iterated trace theorem.
+  `simple_integral_of_self_transparency_and_dual_balancing` and
+  `symmetricCore_integral_of_dual_balancing` prove actual symmetric-core
+  integrality from twist balancing on its simple/dual pairs. The resulting
+  `target_of_pivotal_base_balancing_and_image_monodromy` assumes base pivotal
+  existence, centre S invertibility, that balancing equation and the restricted
+  mixed-monodromy finite-order condition. Balancing is still unproved. Full
+  build and project audit pass (446 modules, 4,565 declarations).
