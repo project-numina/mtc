@@ -170,6 +170,9 @@ public import PropertyF.Ground.Integrate.CenterProductBridge
 public import PropertyF.Ground.Integrate.CenterBundle
 public import PropertyF.Ground.Integrate.CenterDualMate
 public import PropertyF.Ground.Integrate.ActualCenterReduction
+public import PropertyF.Ground.CentreModular.InductionDimension
+public import PropertyF.Ground.CentreModular.ColumnSeparation
+public import PropertyF.Ground.CentreModular.KirbyCriterion
 public import PropertyF.Ground.Integrate.ExamplePropertyF
 
 public import PropertyF.Ground.Calculus.ThreeRigidity

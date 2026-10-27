@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Integrate.CenterBundle
+public import PropertyF.Ground.CentreInduction.GlobalSquare
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 
 /-! The global-dimension calculation from the two numerical consequences of
@@ -90,5 +90,32 @@ theorem center_globalDimension_of_induction
   change globalDimension (Integrate.bundledCenter C) =
     (globalFPDimension (Integrate.bundledCenter C) : ℂ) at hpu
   rw [hpu, center_globalFPDimension_of_induction C I hmult hsize, Complex.ofReal_pow]
+
+/-- The induction underlying-object isomorphism and adjunction give the
+categorical square formula when the chosen spherical dimensions equal FP
+dimensions. The displayed induction and spherical assumptions remain explicit. -/
+theorem center_globalDimension_of_underlying_induction
+    (I : Fin (rank C) → (Integrate.bundledCenter C).Obj)
+    (hI : ∀ i, Nonempty ((I i).1 ≅ CentreInduction.underlying C (simples C i)))
+    (hadj : ∀ i j,
+      Module.finrank ℂ (simples (Integrate.bundledCenter C) j ⟶ I i) =
+      Module.finrank ℂ ((simples (Integrate.bundledCenter C) j).1 ⟶ simples C i))
+    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
+    (hp : p.IsSpherical)
+    (hdim : ∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) p
+      (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ)) :
+    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
+  have hpu : PseudoUnitary (Integrate.bundledCenter C) := by
+    unfold PseudoUnitary globalFPDimension
+    rw [Dimensions.target_globalDimension_eq_sum_squares (Integrate.bundledCenter C) p hp]
+    simp only [← Dimensions.rightTrace_id, Complex.ofReal_sum, Complex.ofReal_pow]
+    apply Finset.sum_congr rfl
+    intro i _
+    change Dimensions.pivotalDimension (Integrate.bundledCenter C) p
+      (simples (Integrate.bundledCenter C) i) ^ 2 = _
+    rw [hdim]
+  change globalDimension (Integrate.bundledCenter C) =
+    (globalFPDimension (Integrate.bundledCenter C) : ℂ) at hpu
+  rw [hpu, CentreInduction.globalFPDimension_square_of_induction C I hI hadj, Complex.ofReal_pow]
 
 end PropertyF.Ground.CentreModular

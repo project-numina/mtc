@@ -12,3 +12,6 @@ The actual categorical S identities, character classification and Galois action 
 - **centre**: provide actual centre rigidity and `IsFusionCategory`, using `Integrate.bundledCenter C`.
 - **dimensions**: provide positive spherical structure of the actual centre; `CentreModular.center_globalDimension_of_induction` then derives the categorical square formula from the above induction facts.
 - **fusion/centre**: for nondegeneracy, the centre-specific Hopf-link separation/coend identity for distinct simple centre objects remains to be constructed.
+
+- **modular / fusion induction**: prove the actual centre Kirby sum `∑ z, simpleDimension Z p z * categoricalS Z p k z = if k = unitIndex Z then D else 0` with nonzero D; `CentreModular.categoricalS_det_ne_zero_of_kirby` then proves modularity. The Kirby identity is an unproved centre-specific categorical equality, not an independently obtained nondegeneracy result.
+- **dimensions**: centre pseudo-unitarity cannot follow solely from the global FP-square identity; an independent intrinsic global-dimension comparison or positive spherical construction is required.
