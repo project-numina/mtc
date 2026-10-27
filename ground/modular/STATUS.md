@@ -134,3 +134,10 @@ build and foundational axiom checks passed.
 actual automorphism of a simple object using Schur's lemma. The extension to
 arbitrary (possibly repeated simple-summand) objects and the double-braiding
 hexagon relation remain open. Focused build and axiom checks passed.
+
+Merged centre f1f0122, which constructs centre rigidity without assumptions.
+`finite_order_of_fp_twist_balance` proves finite order of every simple twist
+scalar from one explicitly stated FP-weighted fusion relation in
+`vafaUnitSpace`. The categorical proof of that relation, including the
+arbitrary-object tensor determinant rule and braiding balance, remains open.
+The focused build and foundational axiom check passed.

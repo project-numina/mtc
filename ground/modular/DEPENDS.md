@@ -46,3 +46,7 @@ The actual categorical S identities, character classification and Galois action 
 - The FP determinant is conjugation invariant and has the tensor rule for
   simple-object automorphisms. The arbitrary-object tensor rule still needs
   block determinant/decomposition arguments.
+- Centre rigidity is now constructed and merged (centre f1f0122).
+- `finite_order_of_fp_twist_balance` reduces Vafa finite order to one explicit
+  FP-weighted fusion equation. The categorical proof of that equation remains
+  open; no unconditional finite-order result is claimed.
