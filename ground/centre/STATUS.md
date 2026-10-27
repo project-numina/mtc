@@ -101,3 +101,9 @@ then prove the resulting mate equations diagrammatically.
 `dualCrossing_tensor_of_simples` also proves the general tensor law follows
 from its cases on pairs of base simple representatives, by naturality in each
 argument and semisimple decomposition. The simple-pair cases are not proved.
+`tensor_of_rank_one` and `rigidOfRankOne` prove the normalized mate tensor law
+and centrality in rank one, constructing rigidity with base right duals and
+base evaluation/coevaluation definitionally. This strengthens the rank-one
+comparison with the previously constructed equivalence-based instance; it
+has no implication for general rank. The focused build passes and the main
+instance has only the three standard Lean axioms.
