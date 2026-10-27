@@ -201,6 +201,7 @@ import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
+import all PropertyF.Ground.Integrate.ScalarTwist
 import all PropertyF.Ground.Integrate.StrandInclusion
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Modular.Audit

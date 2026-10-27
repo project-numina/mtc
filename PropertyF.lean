@@ -118,6 +118,7 @@ public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Calculus.ThreeSaturation
 public import PropertyF.Ground.Cabling.TupleCrossing
 public import PropertyF.Ground.Cabling.CablingFinite
+public import PropertyF.Ground.Integrate.ScalarTwist
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
