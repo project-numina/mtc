@@ -374,3 +374,29 @@ that equation, centre rigidity, and FP-valued base pivotal dimensions. The
 centrality equation is not proved; neither are centre rigidity or base pivotal
 existence. Focused build passes; pivotal lift and assembly use only the three
 standard kernel axioms.
+
+`positiveDualIso` and `positiveDoubleDualIso` compare the centre duals of
+canonical positive images to the positive images of base duals, and prove
+these comparisons forget to the canonical centre/base comparisons.
+`positivePivotalComponent` and `pivotalComponentsCentral_positive` prove the
+transported base pivotal components are actual centre isomorphisms on every
+positive image. General centre-object centrality remains open; investigating
+centre braiding naturality and double-dual preservation of braiding. Focused
+build passes.
+
+`eval_braiding_slide_right`, `eval_braiding_slide_left`,
+`rightDualTensorIso_braiding` and `doubleDualTensorIso_braiding` prove the
+canonical double-dual tensorator preserves the braiding in any right-rigid
+braided category. Focused build passes. Applying these to centre braiding
+naturality to prove the general pivotal-component centrality equation.
+
+`pivotalComponentsCentral_proved` proves centrality for every centre object
+and test object assuming only centre rigidity and a base pivotal structure.
+`canonicalCenterPivotal` is the actual compatible centre pivotal lift.
+`center_structure_of_fp_pivotal` constructs centre fusion, positive
+sphericality, centre pseudo-unitarity and categorical global dimension square
+from centre rigidity and FP-valued base pivotal dimensions.
+`center_structure_of_pivotal_pseudoUnitary` further reduces the base premise
+to any pivotal structure plus pseudo-unitarity using dimensions' theorem.
+General centre rigidity and base pivotal existence remain open; this does not
+prove the frozen target. Focused build and direct kernel axiom checks pass.

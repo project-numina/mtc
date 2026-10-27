@@ -45,3 +45,9 @@ These describe proof obligations, not axioms or assumptions in the target.
   `PivotalComponentsCentral`, the explicit centrality of its transported
   components. Its naturality, tensor and unit laws are proved. Centrality can
   be checked on simple base test objects. This centrality remains open.
+
+- RESOLVED: centre pivotal component centrality and pivotal lift are proved
+  in fusion. The resulting centre fusion and spherical/dimension construction
+  still requires centre rigidity and existence of a base pivotal structure for
+  the pseudo-unitary category. General pivotal existence is not assumed for
+  arbitrary fusion categories.
