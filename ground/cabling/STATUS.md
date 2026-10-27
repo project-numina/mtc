@@ -13,6 +13,9 @@
 - `strandPermutation`, `pureWords`, `braidWordAction`, `pureBraidImage` and
   `pureBraidImage_finiteIndex`: categorical pure braid images have finite
   index, using permutation of free words.
+- `blockRestrictionHom` and `blockRestriction_ker_le` construct and detect
+  restrictions of a group action preserving the summands of a finite
+  biproduct.
 - `cablingWitnessOfPureAction`: constructs a full `CablingWitness` from
   a pure-word map to the product of cabled braid images and the precise
   kernel containment needed to descend to the pure image.
