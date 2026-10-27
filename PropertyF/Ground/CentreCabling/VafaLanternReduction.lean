@@ -148,21 +148,4 @@ theorem pivotal_vafa_relations_of_lantern
   apply Units.ext
   simpa using hh
 
-/-- Finite mixed monodromy follows from the actual pivotal lantern and
-balancing identities. These identities remain explicit premises. -/
-theorem mixed_monodromy_finite_of_pivotal_lantern
-    (C : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (h : ∀ i, let α := (Dimensions.pivotalBraidedTwistNaturalIso C p).hom
-      vafaPair12 C α i ≫ vafaPair13 C α i (vafaCross13 C i) ≫
-        vafaPair23 C α i (vafaCross23 C i) =
-          naturalSimpleScalar C α i ^ 3 • α.app (vafaObject C i))
-    (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
-      ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
-        (Dimensions.pivotalBraidedTwist C p Y).hom) =
-      (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom)
-    (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) :=
-  mixed_monodromy_finite_of_vafa_relations C p (pivotal_vafa_relations_of_lantern C p h)
-    hbalance X Y
-
 end PropertyF.Ground.CentreCabling

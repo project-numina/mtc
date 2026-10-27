@@ -48,7 +48,6 @@ import all PropertyF.Ground.CentreBundle.Canonical
 import all PropertyF.Ground.CentreCabling.LanternSpherical
 import all PropertyF.Ground.CentreCabling.TwistDual
 import all PropertyF.Ground.CentreCalculus.MonodromyCap
-import all PropertyF.Ground.CentreCalculus.TargetReduction
 import all PropertyF.Ground.CentreInduction.DualMonodromy
 import all PropertyF.Ground.CentreInduction.FiniteMonodromyModular
 import all PropertyF.Ground.CentreModular.CenterBalanced
