@@ -104,6 +104,7 @@ public import PropertyF.Ground.Cabling.ExprPowers
 public import PropertyF.Ground.Cabling.TupleIsoStep
 public import PropertyF.Ground.Cabling.ExprTuple
 public import PropertyF.Ground.Cabling.ExprTupleCross
+public import PropertyF.Ground.Cabling.LocalCable
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.BlockGroupoid
 public import PropertyF.Ground.Cabling.BlockWords
