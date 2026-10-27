@@ -166,3 +166,9 @@ tensor dual pairing. This removes the nested-trace gap in combining the
 winding tensor factorization with FP loop absorption. The geometric step from
 closed-loop absorption to open-strand centrality remains unproved. Focused
 build passes.
+`closedWinding_tensor` proves closed windings compose under tensor product;
+`loop_eigen` proves the Kirby loop is a common FP eigenvector for all simple
+closed winding maps; `loop_square` and `normalized_loop_idempotent` prove its
+normalization is idempotent on underlying Hom spaces. No loop centrality or
+centre semisimplicity is claimed: identifying its image with centre Hom maps
+remains the missing geometric step. Focused build passes.
