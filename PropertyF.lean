@@ -53,6 +53,7 @@ public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Dimensions.UnitNorm
 public import PropertyF.Ground.Dimensions.PositiveSpherical
 public import PropertyF.Ground.Dimensions.Drinfeld
+public import PropertyF.Ground.Dimensions.FourthDualRoots
 public import PropertyF.Ground.Dimensions.PivotalUniqueness
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.GroundNorm
