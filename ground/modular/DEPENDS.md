@@ -70,3 +70,7 @@ The actual categorical S identities, character classification and Galois action 
   simple scalar from the actual simple balancing identity alone; the previous
   monodromy-determinant-vanishing premise is discharged. Actual pivotal twist
   balancing remains open.
+- The actual pivotal twist and arbitrary mixed-monodromy finite-order results
+  now follow from the pivotal twist balancing law alone, without a lantern
+  relation. The law remains open, with integrate/dimensions proving its cap
+  diagram.
