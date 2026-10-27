@@ -63,6 +63,7 @@ public import PropertyF.Ground.Cabling.FusionCycle
 public import PropertyF.Ground.Cabling.GeneralDual
 public import PropertyF.Ground.Cabling.GeneratedFusion
 public import PropertyF.Ground.Cabling.GeneratedDimension
+public import PropertyF.Ground.Cabling.GeneratedIntegral
 public import PropertyF.Ground.Cabling.Inclusion
 public import PropertyF.Ground.Cabling.Perron
 public import PropertyF.Ground.Cabling.Primitive
