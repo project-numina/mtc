@@ -74,6 +74,7 @@ public import PropertyF.Ground.Dimensions.Trace
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.CharacterBound
 public import PropertyF.Ground.Dimensions.DimensionCharacter
+public import PropertyF.Ground.Dimensions.CharacterDual
 public import PropertyF.Ground.Dimensions.PseudoUnitary
 public import PropertyF.Ground.Dimensions.SphericalCriterion
 public import PropertyF.Ground.Dimensions.SphericalArithmetic
@@ -86,7 +87,11 @@ public import PropertyF.Ground.Dimensions.DoubleDualFunctor
 public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.SignCharacter
+public import PropertyF.Ground.Dimensions.InvolutionTrace
+public import PropertyF.Ground.Dimensions.NaturalSquareDefect
+public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.NaturalRoots
+public import PropertyF.Ground.Dimensions.NaturalTrace
 public import PropertyF.Ground.Dimensions.PivotalUniqueness
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.GroundNorm
