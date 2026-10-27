@@ -16,6 +16,25 @@ def GaloisConjugate.refl (C : BraidedFusionCategory.{v,u}) :
   braided := inferInstanceAs ((𝟭 C.Obj).Braided)
   map_smul := by intros; rfl
 
+/-- Semilinear braided equivalences compose with their scalar automorphisms. -/
+def GaloisConjugate.trans {C D E : BraidedFusionCategory.{v,u}}
+    {σ τ : ℂ ≃+* ℂ} (F : GaloisConjugate C D σ) (G : GaloisConjugate D E τ) :
+    GaloisConjugate C E (σ.trans τ) := by
+  letI := F.braided
+  letI := G.braided
+  exact {
+    equivalence := F.equivalence.trans G.equivalence
+    monoidal := inferInstance
+    braided := by
+      change (F.equivalence.functor ⋙ G.equivalence.functor).Braided
+      infer_instance
+    map_smul := by
+      intro X Y z f
+      change G.equivalence.functor.map (F.equivalence.functor.map (z • f)) = _
+      rw [F.map_smul, G.map_smul]
+      rfl
+  }
+
 /-- Pseudo-unitary categories satisfy the conjugate condition themselves. -/
 theorem hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary
     (C : BraidedFusionCategory.{v,u}) (h : PseudoUnitary C) :
