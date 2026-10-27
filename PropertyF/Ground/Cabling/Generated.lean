@@ -6,6 +6,8 @@ public import Mathlib.CategoryTheory.Limits.Shapes.Products
 public import Mathlib.Logic.Equiv.Fin.Basic
 public import Mathlib.CategoryTheory.ObjectProperty.FiniteProducts
 public import Mathlib.CategoryTheory.ObjectProperty.ContainsZero
+public import Mathlib.CategoryTheory.Abelian.Subcategory
+public import Mathlib.CategoryTheory.ObjectProperty.EpiMono
 
 /-! Basic closure properties of the object property defining the generated
 subcategory. -/
@@ -145,6 +147,27 @@ instance generatedBy_finiteProducts (X : C) : ObjectProperty.IsClosedUnderFinite
     rintro _ ⟨F, hF⟩
     apply generatedBy_of_iso (generatedBy_finiteBiproduct X (fun j : J => F.obj ⟨j⟩) (fun j => hF ⟨j⟩))
     exact (Pi.isoLimit F).symm ≪≫ (biproduct.isoProduct _).symm
+
+/-- A full retract-closed finite-sum subcategory of a semisimple abelian
+category is abelian: the splitting assumptions express precisely the remaining
+semisimplicity input. -/
+@[instance_reducible] def generatedCategoryAbelianOfSplit (X : C)
+    (hmono : ∀ {A B : C} (f : A ⟶ B), Mono f → IsSplitMono f)
+    (hepi : ∀ {A B : C} (f : A ⟶ B), Epi f → IsSplitEpi f) :
+    Abelian (generatedCategory X) := by
+  let _ : ObjectProperty.IsClosedUnderSubobjects (GeneratedBy X) := {
+    prop_of_mono := by
+      intro A B f hf hB
+      let _ : IsSplitMono f := hmono f hf
+      exact generatedBy_retract hB { i := f, r := retraction f }
+  }
+  let _ : ObjectProperty.IsClosedUnderQuotients (GeneratedBy X) := {
+    prop_of_epi := by
+      intro A B f hf hA
+      let _ : IsSplitEpi f := hepi f hf
+      exact generatedBy_retract hA { i := section_ f, r := f }
+  }
+  infer_instance
 
 variable [MonoidalPreadditive C]
 /-- Distribute tensor product over two finite biproducts. -/

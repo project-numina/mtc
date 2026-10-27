@@ -30,7 +30,9 @@
   `tensorPowerTensorIso` combines two powers using the
   monoidal associator. `generatedBy_tensor` and `generatedBy_isMonoidal`
   construct tensor closure and the inherited braided monoidal structure,
-  with braided full faithful inclusion. Fusion and rigid structure remain.
+  with braided full faithful inclusion. `generatedCategoryAbelianOfSplit`
+  constructs its abelian structure from explicit split-mono/epi hypotheses.
+  Fusion and rigid structure remain.
 
 ## In progress
 
