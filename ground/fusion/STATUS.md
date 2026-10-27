@@ -8,6 +8,10 @@
   are complex scalars.
 - `FusionData.fpDimension_simple`: the existing object FP-dimension expression
   agrees with the specified character on each representative.
+- `FusionData.fpSimple_isIntegral`, `fpDimension_isIntegral`, and
+  `globalFPDimension_isIntegral`: the fusion equations give an integer matrix
+  having the positive character as eigenvector, so its values and their finite
+  sums and products are algebraic integers.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -29,3 +33,8 @@ Every field of `FusionData`, plus tensor/dual/inclusion invariance, integrality,
 and the centre dimension comparison, remains to be constructed from the target
 category definition. The project-scale remaining effort is substantial; no
 credible completion-time estimate is yet available.
+
+Integration requires the target dependency cone to avoid the old hypothesis
+bundles entirely. The above results currently use `FusionData` and must be
+generalized to the genuine category/character interface before they can be used
+directly in the final proof.
