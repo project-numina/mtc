@@ -342,6 +342,20 @@ public import PropertyF.Ground.CentreCalculus.PureSquares
 public import PropertyF.Ground.CentreCalculus.PermutationQuotient
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
 public import PropertyF.Ground.CentreCalculus.ParityCorrection
+public import PropertyF.Ground.CentreCabling.ProductGenerated
+public import PropertyF.Ground.CentreCabling.SCentrality
+public import PropertyF.Ground.CentreCabling.FusionCentralizer
+public import PropertyF.Ground.CentreCabling.FourierCentralizer
+public import PropertyF.Ground.CentreCabling.RegularSupport
+public import PropertyF.Ground.CentreCabling.ProductCentralizer
+public import PropertyF.Ground.CentreCabling.FiniteMonodromy
+public import PropertyF.Ground.CentreCabling.FiniteOrderMatrix
+public import PropertyF.Ground.CentreCabling.TraceSaturation
+public import PropertyF.Ground.CentreCabling.CentralityClosure
+public import PropertyF.Ground.CentreCabling.ProductCore
+public import PropertyF.Ground.CentreCabling.ImageCore
+public import PropertyF.Ground.CentreCabling.CoreCentrality
+public import PropertyF.Ground.CentreCabling.TargetReduction
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
