@@ -34,6 +34,9 @@
   `pivotalDimension_twist`, `objectPropertyF_twist`, and `labels` construct an
   arbitrary complex Galois twist and transport genuine pivotal dimensions and
   finite braid images; the twist is a ground braided fusion category.
+  `ScalarTwist.squaredNorm_twist`, `globalDimension_twist`, and
+  `globalFPDimension_twist` prove the corresponding intrinsic and FP global
+  dimension transport with no spherical premise.
 - `propertyF_of_galois_column` reduces the selected centre simple's finite
   braid images to symmetric-core integrality, a double-centralizer test, and
   finite images for generated labels. These remain categorical premises.
@@ -58,7 +61,7 @@
   on a finite tensor-product basis. `Example.target_hypotheses_inhabited`
   proves that both target hypotheses hold simultaneously for this category.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans 2,962 integrated public and private declarations for forbidden axioms.
+- `ProjectAudit` scans 2,965 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and

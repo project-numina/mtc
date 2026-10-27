@@ -91,14 +91,16 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 Latest merged snapshots: fusion f175963; dimensions 6be760b; calculus fd59727;
 centre 21f99af; modular 07408af; cabling 7ff2fe9. The full development build
-passed; `ProjectAudit` scans 2,962 integrated public and private declarations, all with only the
+passed; `ProjectAudit` scans 2,965 integrated public and private declarations, all with only the
 standard axioms. The strict target audit correctly fails because `Ground.target`
 is absent. This is not a proof of the target.
 
 `ScalarTwist.category` and `ScalarTwist.conjugate` construct every arbitrary
 complex Galois conjugate; `ScalarTwist.pivotal`, `spherical`,
 `pivotalDimension_twist`, `objectPropertyF_twist`, and `labels` establish the
-corresponding pivotal dimension and finite-image transport. Calculus still
+corresponding pivotal dimension and finite-image transport. The intrinsic
+squared norms and global dimension transform by the automorphism, while FP
+global dimension is preserved. Calculus still
 needs the intrinsic all-strand overlap identity, and centre and canonical
 spherical existence remain open.
 
