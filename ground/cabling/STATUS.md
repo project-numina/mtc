@@ -16,14 +16,19 @@
   a pure-word map to the product of cabled braid images and the precise
   kernel containment needed to descend to the pure image.
 
+- `generatedImageEquiv` and `braidImageEquivOfGeneratorCoherence` reduce
+  image equivalences under faithful monoidal functors to the generator
+  coherence identity. `ker_le_of_mono_intertwiner` proves restriction of
+  an action along an invariant summand.
+
 ## In progress
 
 - Obtain the split unit for simple X from rigidity, semisimplicity, and the
   simple unit. Fusion has been asked for the corresponding construction.
 - Construct the categorical pure-word map to cabled images and prove its
   kernel containment for a retract of a sum of powers.
-- Prove that a faithful braided functor identifies braid images via its
-  monoidal coherence isomorphism.
+- Prove the generator coherence identity for braided functors, so the
+  image-equivalence construction applies without an extra hypothesis.
 
 ## Remaining
 
