@@ -24,6 +24,7 @@ public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Centre.ProductImages
 public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.Centre.SymmetricIntegrality
+public import PropertyF.Ground.Centre.Averaging
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Modular.BraidIso
 public import PropertyF.Ground.Modular.BraidFunctor

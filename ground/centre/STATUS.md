@@ -22,9 +22,11 @@ The centre has a constructed preadditive structure, linear structure over any ri
 
 `integral_of_nonnegative_falling_factorials` proves the arithmetic step for an elementary exterior-power proof of symmetric-core integrality: a nonnegative real whose falling factorials are all nonnegative is a natural number. Proving that these falling factorials are factorial multiples of actual exterior-power dimensions in the pseudo-unitary symmetric core remains open.
 
+`groupAverage_idempotent` and `algebraAverage_idempotent` establish finite-group averaging as an idempotent in any algebra over a commutative ring with invertible group order. `alternatingProjector`, `alternatingProjector_eq_sum`, and `alternatingProjector_idempotent` specialize this to the sign character of a symmetric group. This does not yet construct the symmetric-group action on tensor powers, its split image, or its categorical trace.
+
 ## In progress
 
-Prove `ProductRetract` is closed under duals and agrees with the generated fusion subcategory; investigate centre rigidity and semisimplicity.
+Prove `ProductRetract` is closed under duals and agrees with the generated fusion subcategory; investigate centre rigidity and semisimplicity. For the exterior-power route construct the symmetric-group action and compute the trace of the alternating projector; Mathlib does not appear to provide the needed action or symmetric-group presentation directly.
 
 ## Blocked / dependencies
 
