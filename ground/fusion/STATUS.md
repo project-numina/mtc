@@ -427,3 +427,20 @@ that the right-dual and double-dual tensorators transport monodromy in any
 right-rigid braided category. The fourth-dual tensor law itself is still open;
 these are steps toward deriving it from the Drinfeld tensor law. Focused build
 passes.
+
+`fourthDualIso_tensor_of_drinfeld` proves monoidality of the canonical
+fourth-dual map from the standard Drinfeld tensor law, by transporting and
+cancelling its monodromy through right duality.
+`positive_spherical_of_drinfeld_tensor` then constructs a positive spherical
+structure for pseudo-unitary C without assuming any initial pivotal
+structure. The Drinfeld tensor law is still an explicit unproved hypothesis;
+dimensions and calculus are working on its cap diagram. Focused build and
+standard-axiom checks pass.
+
+Merged dimensions' proof of the Drinfeld tensor cap. `drinfeldTensorLaw`
+now proves the law without assumptions; `fourthDualIso_tensor` proves the
+canonical fourth-dual tensor law; `positive_spherical_of_pseudoUnitary`
+constructs the positive spherical structure with FP dimensions for every
+genuine pseudo-unitary braided fusion category, without a pivotal premise.
+Focused build and kernel axiom checks pass. Integration of the final target
+and its strict audit remain to be confirmed.
