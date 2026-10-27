@@ -328,3 +328,18 @@ square assumes centre rigidity and fusion.
   and `rankOne_induction_retract` show the actual induction unit is an
   isomorphism and splits in this case; `rankOne_center_fp_square` now proves
   the FP square with no centre-rigidity or centre-fusion premise in rank one.
+
+## Round 3 continuation
+
+Merged ground/integrate. `center_structure_of_compatible_pivotal` constructs
+centre fusion and proves the compatible pivotal lift is positive spherical,
+centre pseudo-unitarity, and the categorical global dimension square, from
+centre rigidity and a positive base pivotal structure. This avoids inferring
+centre pseudo-unitarity from a categorical-square theorem that itself assumes
+positive sphericality. `center_unitScalar_forget` and
+`center_pivotalDimension_forget` prove the scalar and trace transfers. The
+compatible centre pivotal lift itself is still unproved, as are general centre
+rigidity and positive base pivotal existence. Investigating centrality of the
+base pivotal component on arbitrary centre objects via centre duality maps.
+Focused build passes, and the two principal results have only the three standard
+kernel axioms. No reliable completion-time estimate is available.
