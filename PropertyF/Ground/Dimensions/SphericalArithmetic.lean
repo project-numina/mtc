@@ -15,16 +15,6 @@ theorem pivotalDimension_simple_ne_zero (C : Ground.BraidedFusionCategory)
   have h := Ground.Modular.simpleDimension_ne_zero C p i
   simpa [Ground.Modular.simpleDimension, pivotalDimension, Ground.unitScalar_eq_equiv] using h
 
-/-- Simple intrinsic norms are nonzero whenever a spherical structure exists. -/
-theorem spherical_squaredNorm_ne_zero (C : Ground.BraidedFusionCategory)
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (i : Fin (Ground.rank C)) : Ground.squaredNorm C (Ground.simples C i) ≠ 0 := by
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
-  rw [target_squaredNorm_eq_dimension_sq C p hp]
-  have h := pivotalDimension_simple_ne_zero C p i
-  simp only [pivotalDimension, rightTrace_id] at h
-  exact pow_ne_zero 2 h
-
 /-- Every Galois conjugate of a self-dual pivotal dimension is real. The
 categorical equality on dual labels is an explicit remaining input. -/
 theorem galois_pivotalDimension_real_of_dual (C : Ground.BraidedFusionCategory)
