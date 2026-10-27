@@ -10,6 +10,8 @@
 - `unit_algebraMap_bijective`, `unitScalarEquiv`, `unitScalar_algebraMap`,
   `algebraMap_unitScalar`, and `unitScalar_eq_equiv`: Schur supplies the
   canonical unit-scalar equivalence and validates the target definition.
+- Merged snapshots from all six workstreams and built the integrated library.
+- `ProjectAudit` scans all 822 integrated declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findForbidden` checks transitive declaration types and bodies;
   its negative fixture catches a hidden old input. `scripts/audit-target.sh`
