@@ -147,4 +147,33 @@ theorem spherical_globalDimension_galois_real (C : Ground.BraidedFusionCategory.
   intro i _
   exact spherical_squaredNorm_galois_real C p hp σ i
 
+/-- The norm of every Galois conjugate of a spherical simple squared norm is
+bounded by the square of its FP dimension. -/
+theorem spherical_squaredNorm_galois_norm_le_fp_sq (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
+    ‖σ (Ground.squaredNorm C (Ground.simples C i))‖ ≤ Ground.fpSimple C i ^ 2 := by
+  letI : Simple (Ground.simples C i) := Ground.simples_simple C i
+  rw [target_squaredNorm_eq_dimension_sq C p hp, ← rightTrace_id]
+  change ‖σ (pivotalDimension C p (Ground.simples C i) ^ 2)‖ ≤ _
+  rw [map_pow, norm_pow]
+  have hb := galois_pivotalDimension_norm_le_fpSimple C p σ i
+  nlinarith [norm_nonneg (σ (pivotalDimension C p (Ground.simples C i)))]
+
+/-- Every Galois conjugate of the global dimension of a spherical category
+is real and at most its global FP dimension. Positivity is not assumed. -/
+theorem spherical_globalDimension_galois_le_fp (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) (σ : ℂ ≃+* ℂ) :
+    ∃ D : ℝ, D ≤ Ground.globalFPDimension C ∧ σ (Ground.globalDimension C) = (D : ℂ) := by
+  let z := σ (Ground.globalDimension C)
+  have hr : (z.re : ℂ) = z :=
+    Complex.conj_eq_iff_re.mp (spherical_globalDimension_galois_real C p hp σ)
+  refine ⟨z.re, ?_, hr.symm⟩
+  change (σ (Ground.globalDimension C)).re ≤ Ground.globalFPDimension C
+  unfold Ground.globalDimension Ground.globalFPDimension
+  rw [map_sum, Complex.re_sum]
+  apply Finset.sum_le_sum
+  intro i _
+  exact le_trans (Complex.re_le_norm _) (spherical_squaredNorm_galois_norm_le_fp_sq C p hp σ i)
+
 end PropertyF.Ground.Dimensions
