@@ -230,4 +230,24 @@ theorem existsUnique_positive_spherical_of_spherical_pseudoUnitary
   intro i
   rw [hr.2 i, hdim i]
 
+/-- In any category admitting a spherical structure, pseudo-unitarity is
+exactly saturation of the intrinsic simple-norm FP bounds. -/
+theorem pseudoUnitary_iff_squaredNorm_saturation_of_spherical
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) :
+    Ground.PseudoUnitary C ↔ ∀ i, Ground.squaredNorm C (Ground.simples C i) =
+      ((Ground.fpSimple C i ^ 2 : ℝ) : ℂ) := by
+  constructor
+  · intro hpu i
+    obtain ⟨q, hq, hdim⟩ := positive_spherical_of_spherical_pseudoUnitary C p hp hpu
+    exact positive_spherical_squaredNorm_eq_fp_sq C q hq (Ground.fpSimple C)
+      hdim (Ground.fpSimple_pos C) i
+  · intro hs
+    change Ground.globalDimension C = (Ground.globalFPDimension C : ℂ)
+    unfold Ground.globalDimension Ground.globalFPDimension
+    rw [Complex.ofReal_sum]
+    apply Finset.sum_congr rfl
+    intro i _
+    exact hs i
+
 end PropertyF.Ground.Dimensions

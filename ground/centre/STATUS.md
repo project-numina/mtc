@@ -1,5 +1,19 @@
 # Centre workstream status
 
+## Round 2 route
+
+For an arbitrary centre object, take its underlying right dual and obtain the
+crossing by taking the rigid mate of the given half-braiding, normalized at the
+unit. Its tensor law and the evaluation/coevaluation intertwining equations
+must be proved from the half-braiding law and the zig-zag identities; the
+normalization alone proves neither. The centre is braided, so one right dual
+per object also supplies a left dual. For the bundle use the existing exact
+abelian and linear centre instances, inject centre Hom spaces into finite base
+Hom spaces, and use the established simple unit. Fusion owns the genuinely
+remaining finite semisimple decomposition of the actual centre, via induction
+and separability; bundle it against these same canonical instances. No product
+image dominance is assumed.
+
 ## Route
 
 Mathlib constructs the braided monoidal Drinfeld centre and the positive monoidal embedding. For the fusion and dimension theorem the candidate elementary route is the induction functor, built using a finite semisimple decomposition as a coend, followed by its adjunction to the forgetful functor and the dimension computation. The coend construction, semisimplicity of the centre, pivotal traces, and nondegeneracy are substantial missing proofs; induction is a proposed route, not a result. The Deligne tensor product and its universal property are also absent. Unconditional dominance of C ⊠ C^rev → Z(C), requested in the workstream brief, is false: for C = Rep_C(Z/2) the positive and negative embeddings agree and the product image has only two simple objects, whereas the centre has four. Dominance requires an additional nondegeneracy assumption. This does not change the frozen target.
@@ -32,6 +46,23 @@ The centre has a constructed preadditive structure, linear structure over any ri
 
 `objectPropertyF_of_symmetricGroup_actions` proves the property-F consequence of an explicit symmetric-group action whose adjacent transpositions act by the actual braid generators. The action itself is a premise, and is not yet constructed even for the vector-space test category.
 
+`CentreBundle.fusionOfFiniteSemisimple` assembles the actual centre fusion
+interface from centre rigidity and the explicit finite semisimple decomposition;
+finite Hom spaces and simple unit are proved from C. This is conditional on
+the stated decomposition, which fusion owns, and on centre rigidity.
+
+`CentreRigid.dualObject`, `liftedPairing`, and `rigidOfMateCoherence`
+construct the actual centre duals and rigidity conditional on the explicit
+three mate-coherence equations. Triangle identities are proved by forgetting,
+and the chosen right evaluation and coevaluation forget to the original maps
+by definition. `dualCrossing_tensor_unit_left` and
+`dualCrossing_tensor_unit_right` prove both unit cases of the crossing tensor
+law from naturality and unit normalization. `halfBraiding_unit` and
+`centrality_at_unit` prove the evaluation and coevaluation intertwining
+equations at the tensor unit, for any underlying morphism. The general tensor law and both
+centrality equations remain unproved. `dualMate_counit` and `dualMate_unit`
+expose the mate identities for use in those coherence proofs.
+
 ## In progress
 
 Prove `ProductRetract` is closed under duals and agrees with the generated fusion subcategory; investigate centre rigidity and semisimplicity. For the exterior-power route construct the symmetric-group action and compute the trace of the alternating projector; Mathlib does not appear to provide the needed action or symmetric-group presentation directly.
@@ -47,3 +78,12 @@ The rest of centre fusion/spherical structure (in particular rigidity, semisimpl
 ## Estimate
 
 The foundational fusion, pivotal, semisimplicity, induction and nondegeneracy developments are extensive research-scale formalization work; completion cannot responsibly be estimated in hours. Begin with independently provable categorical structure while interfaces mature.
+
+## Round 2 verification
+
+Focused Lake builds passed for `CentreBundle.Fusion`, `CentreRigid.Lift`,
+`CentreRigid.Unit` and `CentreRigid.MateEquations` on cores 16–19. Lean
+`#print axioms` reports only propext, Classical.choice and Quot.sound for
+the fusion assembly, conditional rigidity, both unit tensor laws, unit
+centrality, and both mate equations. The general mate coherence remains
+centre-owned work, not an external dependency.
