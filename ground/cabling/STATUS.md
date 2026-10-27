@@ -77,14 +77,13 @@
 
 ## In progress
 
-- Prove the categorical crossing-generator block permutation law and that
-  each pure block restriction belongs to its X braid image. These are the
-  exact remaining inputs to `sumPowersCablingWitness`.
+- `powerSum_crossing_permutesBlocks` proves the categorical crossing-generator
+  block permutation law. Prove that each pure block restriction belongs to
+  its X braid image; this is the remaining input to `sumPowersCablingWitness`.
 
 ## Remaining
 
-- Construct cabling witnesses, including the categorical block-permutation
-  and pure-block cabling identities.
+- Construct cabling witnesses using the remaining pure-block cabling identity.
 - Prove the categorical setup for ENO 8.27: the adjoint component, a
   strictly positive power of its fusion matrix, its integer eigenvalue,
   and integrality of coordinates; show inclusion preserves FP dimension.

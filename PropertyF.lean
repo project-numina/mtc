@@ -74,6 +74,7 @@ public import PropertyF.Ground.Cabling.Zero
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple
+public import PropertyF.Ground.Cabling.TupleCrossing
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
