@@ -141,3 +141,26 @@ The separate compatibility bridge constructs the old `FusionData`.
   `fpDimension_functor`.
 - The main target is still unproved; its outstanding spherical, centre, and
   braid-rigidity obligations belong to the other workstreams.
+
+## Round 2 progress (2026-10-27)
+
+- `CentreInduction.underlying` constructs the underlying finite biproduct;
+  `CentreInduction.fpDimension_underlying` proves its FP dimension equals
+  `globalFPDimension C * fpDimension C X`. Focused build passes.
+
+## Round 2 plan (2026-10-27)
+
+Use the actual Mathlib centre and its forgetful functor, with the existing
+`Integrate.bundledCenter` once centre supplies rigidity and fusion instances.
+Construct the underlying induction object as the finite biproduct of
+`Sᵢ ⊗ X ⊗ Sᵢ*` and prove its FP dimension directly by additivity,
+multiplicativity and dual invariance. Construct its canonical half-braiding
+using simple-decomposition matrix units, prove the adjunction with forget,
+and split its unit/counit by the nonzero global dimension. The splitting should
+give semisimplicity and a finite set of simple summands of induced simples.
+Finally use adjunction and the FP dimension of induced objects to compare the
+regular FP vectors and obtain the global square formula. Centre already
+provides finite-dimensional Hom spaces and the unit-endomorphism comparison.
+The half-braiding coherence, adjunction, averaging splitting, and centre fusion
+instance are substantial remaining categorical work; no completion estimate is
+credible yet.
