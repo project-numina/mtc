@@ -148,6 +148,11 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.unitCandidateNatural` constructs a natural map from the
+  centre forgetful functor to its composite with the underlying induction
+  functor, by coevaluating each simple and applying the given half-braiding.
+  It is candidate adjunction-unit data only: the induction half-braiding,
+  centrality of the unit, and the triangle identities remain open.
 - `CentreInduction.fusion_of_pseudoUnitary_and_induction` discharges
   the nonzero global-dimension premise using pseudo-unitarity and FP positivity.
   The spherical structure, induction adjunction, and sliding equation remain
