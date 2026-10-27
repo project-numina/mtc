@@ -77,6 +77,10 @@
   and `tensor` theorems, plus `one_le_fpDimension`: object FP dimension is
   constructed from Hom multiplicities, tensor-multiplicative, integral over ℤ,
   and at least one on nonzero objects.
+- `Ground.simple_functor_obj`, `simple_labels_inclusion`, and
+  `globalFPDimension_le_of_full_functor`: a full faithful linear tensor
+  inclusion sends simples injectively to simples and its global FP dimension
+  is bounded above by that of the ambient category.
 - `Ground.fpDimension_biproduct`, `fpDimension_functor_decomposition`, and
   `fpDimension_functor`: finite sums are additive, and every faithful additive
   strong monoidal functor preserves FP dimensions of all objects.
