@@ -234,3 +234,4 @@ public import PropertyF.Ground.CentreInduction.UnitSummand
 public import PropertyF.Ground.CentreInduction.PseudoUnitary
 public import PropertyF.Ground.CentreInduction.UnitCandidate
 public import PropertyF.Ground.CentreInduction.UnitCoevaluation
+public import PropertyF.Ground.CentreInduction.FirstTriangle

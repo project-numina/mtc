@@ -156,6 +156,8 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   `unitCandidate_counit_component` reduces the underlying first triangle to
   its unit-labelled component, and `coevaluation_iso_unit` proves the needed
   normalization of that component’s coevaluation under a unit isomorphism.
+  `unitCandidate_counit` now proves the first triangle for these underlying
+  natural transformations, without assuming centre induction.
 - `CentreInduction.fusion_of_pseudoUnitary_and_induction` discharges
   the nonzero global-dimension premise using pseudo-unitarity and FP positivity.
   The spherical structure, induction adjunction, and sliding equation remain
