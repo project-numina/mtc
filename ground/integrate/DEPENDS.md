@@ -78,3 +78,9 @@ only for image labels and numerical centralizer labels (cabling). The final two
 could be replaced by a proof that the numerical centralizer is an integral
 set; no such proof is currently available. The positive-spherical construction
 still cannot be obtained circularly from the FP square alone.
+
+Alternative: `target_of_integral_numerical_center_core` replaces the separate
+actual-core integrality and mixed-monodromy conditions by integral dimensions
+on the numerical S-centralizer of product-retract simples. This is implied by
+the previous pair, but is not yet proved directly. All other centre premises
+remain.

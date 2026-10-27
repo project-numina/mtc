@@ -170,3 +170,11 @@ no reliable completion-time estimate is available.
   that sphere. Fourier double-centralizer replaces a categorical theorem by
   an S-test, but identifying that S-test with the integral symmetric core is
   still open. No centre-free route for the general target is established.
+
+- `target_of_integral_numerical_center_core` replaces both the actual-core
+  integrality and mixed-monodromy premises by the single assertion that the
+  numerical S-centralizer of product-retract simples has integer dimensions.
+  Fourier double-centralization is proved. The comparison theorem
+  `numericalProductCore_integral_of_image_monodromy` shows the earlier
+  actual-core integrality plus finite-monodromy hypotheses imply the new
+  numerical-integrality premise. The latter is not proved independently.

@@ -141,6 +141,7 @@ import all PropertyF.Ground.Dimensions.RootUnitComponent
 import all PropertyF.Ground.Dimensions.SphericalPivotalDual
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
+import all PropertyF.Ground.Integrate.NumericalCoreReduction
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -534,6 +535,8 @@ run_cmd do
       ``PropertyF.Ground.Calculus.galois_three_strand_rigidity,
       ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
+      ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
+      ``PropertyF.Ground.target_of_integral_numerical_center_core,
       ``PropertyF.Ground.center_globalDimension_square_of_actual_induction,
       ``PropertyF.Ground.target_of_center_image_monodromy_no_square,
       ``PropertyF.Ground.weaklyIntegral_of_positive_modular_propertyF,

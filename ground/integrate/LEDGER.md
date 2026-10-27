@@ -193,3 +193,12 @@ centre without first proving both its pivotal structure and pseudo-unitarity.
 The integrated `PropertyF` build passed on cores 0–3 with four Lean threads;
 the expanded audit covers 392 project modules and 4,226 declarations. The
 strict target audit fails because `PropertyF.Ground.target` is missing.
+
+`target_of_integral_numerical_center_core` gives an alternate route avoiding
+mixed monodromy and actual core identification: it assumes integral dimensions
+on the numerical S-centralizer of product-retract simples and invokes the
+proved Fourier double-centralizer. `numericalProductCore_integral_of_image_monodromy`
+proves the earlier actual-core integrality and restricted finite-order
+hypotheses imply this numerical integrality. No independent proof of the new
+integrality assertion is known, and the actual core being symmetric does not by
+itself establish it for the larger numerical set.
