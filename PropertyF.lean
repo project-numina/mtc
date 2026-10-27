@@ -97,6 +97,7 @@ public import PropertyF.Ground.Cabling.FusionCycle
 public import PropertyF.Ground.Cabling.GeneralDual
 public import PropertyF.Ground.Cabling.GeneratedFusion
 public import PropertyF.Ground.Cabling.GeneratedDimension
+public import PropertyF.Ground.Cabling.GeneratedIntegral
 public import PropertyF.Ground.Cabling.Inclusion
 public import PropertyF.Ground.Cabling.Perron
 public import PropertyF.Ground.Cabling.Primitive
@@ -110,6 +111,9 @@ public import PropertyF.Ground.Cabling.TensorComponents
 public import PropertyF.Ground.Cabling.MixedBraid
 public import PropertyF.Ground.Cabling.Zero
 public import PropertyF.Ground.Cabling.UnitBraid
+public import PropertyF.Ground.Cabling.MoveHead
+public import PropertyF.Ground.Cabling.MoveHeadInsert
+public import PropertyF.Ground.Cabling.MoveHeadContext
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple

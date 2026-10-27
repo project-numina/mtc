@@ -7,5 +7,5 @@
 - Resolved: fusion’s mono/epi splitting yields `generatedCategoryAbelian`.
 - Resolved: `generatedFusion` bundles the generated subcategory; fusion’s
   inclusion theorem supplies FP dimension preservation and the global bound.
-- Fusion/dimensions: ENO 8.27 needs the arithmetic theory of FP dimensions
-  and weakly integral fusion rings; owner coordination pending.
+- Resolved: fusion’s `simple_fpDimension_sq_integer_of_weaklyIntegral` proves
+  ENO 8.27 by Galois bounds; the generated-category application is wired.

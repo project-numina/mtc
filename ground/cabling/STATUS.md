@@ -78,19 +78,21 @@
 ## In progress
 
 - `powerSum_crossing_permutesBlocks` proves the categorical crossing-generator
-  block permutation law. Prove that each pure block restriction belongs to
-  its X braid image; this is the remaining input to `sumPowersCablingWitness`.
+  block permutation law. `moveHead_mem_braidImage` proves a single strand
+  crossing an arbitrary block is a braid; `moveHead_spectators` extends this
+  to spectator blocks on both sides. The unproved step is the general crossing
+  of two tensor-power blocks and composition along pure words, yielding the
+  pure-block membership in `sumPowersCablingWitness`. `objectPropertyF_generated_of_block_membership`
+  proves the resulting bundle-free property-F transfer conditional on exactly
+  that membership.
 
 ## Remaining
 
 - Construct cabling witnesses using the remaining pure-block cabling identity.
-- Prove the categorical setup for ENO 8.27: the adjoint component, a
-  strictly positive power of its fusion matrix, its integer eigenvalue,
-  and integrality of coordinates; show inclusion preserves FP dimension.
-  `square_integral_of_adjoint_matrix` completes the final numerical step
-  once a categorical adjoint matrix presentation is supplied.
-- The categorical braid/cabling identities, generation of the dual, and the
-  categorical setup for ENO 8.27 require substantial further work.
-  Fusion has constructed the ground positive character, object FP
-  dimension, and preservation by full fusion inclusions; the categorical
-  adjoint-component construction remains open. No reliable completion estimate is available.
+- Fusion completed ENO 8.27 without the adjoint-component construction:
+  `Ground.fpSimple_sq_integer_of_weaklyIntegral` and
+  `Ground.simple_fpDimension_sq_integer_of_weaklyIntegral` prove simple
+  squares integral by a Galois argument. `Ground.Cabling.generated_simple_square_integral`
+  connects this result to our bundled generated category and inclusion.
+- The general categorical cabling identity remains substantial. No reliable
+  completion estimate is available.
