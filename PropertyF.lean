@@ -44,8 +44,17 @@ public import PropertyF.Ground.Modular.BraidFunctor
 public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Modular.SAdditivity
+public import PropertyF.Ground.Modular.HopfPartialTrace
+public import PropertyF.Ground.Modular.Verlinde
+public import PropertyF.Ground.Modular.CharacterStar
+public import PropertyF.Ground.Modular.SSquare
+public import PropertyF.Ground.Modular.Construction
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
 public import PropertyF.Ground.Modular.PseudoGalois
+public import PropertyF.Ground.Modular.LegacyLabels
+public import PropertyF.Ground.Calculus.PartialTrace
+public import PropertyF.Ground.Calculus.FiniteOrder
 public import PropertyF.Ground.Dimensions.Pivotal
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.TensorTrace

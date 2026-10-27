@@ -19,6 +19,10 @@ import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Dimensions.DualCoherence
+import all PropertyF.Ground.Dimensions.BiproductTrace
+import all PropertyF.Ground.Calculus.PartialTrace
+import all PropertyF.Ground.Dimensions.TensorTrace
+import all PropertyF.Ground.Dimensions.IteratedTrace
 import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Modular.BraidIso
 import all PropertyF.Ground.Modular.BraidFunctor
@@ -27,6 +31,12 @@ import all PropertyF.Ground.Modular.Classification
 import all PropertyF.Ground.Modular.Labels
 import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.SMatrix
+import all PropertyF.Ground.Modular.SAdditivity
+import all PropertyF.Ground.Modular.HopfPartialTrace
+import all PropertyF.Ground.Modular.Verlinde
+import all PropertyF.Ground.Modular.CharacterStar
+import all PropertyF.Ground.Modular.SSquare
+import all PropertyF.Ground.Modular.Construction
 import all PropertyF.Ground.Modular.DimensionNonzero
 import all PropertyF.Ground.Modular.UnitDimension
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
@@ -50,6 +60,18 @@ run_cmd do
       ``PropertyF.Ground.Modular.braidImageFunctorMap_surjective,
       ``PropertyF.Ground.Modular.categoricalS_symmetric,
       ``PropertyF.Ground.Modular.categoricalS_unit,
+      ``PropertyF.Ground.Modular.SEntry_tensor_decomposition,
+      ``PropertyF.Ground.Modular.partialTrace_doubleBraiding_simple,
+      ``PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition,
+      ``PropertyF.Ground.Modular.categoricalS_verlinde_of_hopf_product,
+      ``PropertyF.Ground.Modular.categoricalS_verlinde,
+      ``PropertyF.Ground.Modular.character_dual_conj,
+      ``PropertyF.Ground.Modular.categoricalS_dual_conj,
+      ``PropertyF.Ground.Modular.character_orthogonal,
+      ``PropertyF.Ground.Modular.categoricalS_square,
+      ``PropertyF.Ground.Modular.categoricalS_galois_action_of_invertibleS,
+      ``PropertyF.Ground.Modular.simpleDimension_dual,
+      ``PropertyF.Ground.Modular.categoricalS_galois_action_of_S_square,
       ``PropertyF.Ground.Modular.simpleDimension_ne_zero,
       ``PropertyF.Ground.Modular.simpleDimension_unit,
       ``PropertyF.Ground.Modular.categoricalS_galois_action,
