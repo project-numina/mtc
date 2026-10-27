@@ -235,3 +235,10 @@ no reliable completion-time estimate is available.
   still-unproved pivotal twist balancing equation on this one dual pair, as
   `twist_sign_of_spherical_self_transparency_and_balancing` records. Full build
   and strict project audit pass (426 modules, 4,363 declarations).
+
+- `doubleDualTensor_evaluation`, `drinfeld_tensor_of_pairing_cap`, and
+  `balance_of_drinfeld_tensor` reduce pivotal twist balancing to one explicit
+  tensor-pairing cap/hexagon identity. The identity is the `hcap` premise in
+  `TwistBalancing.lean` and is still unproved; it would discharge the parity
+  sign and support Vafa's mixed-monodromy route. Full build and project audit
+  pass (427 modules, 4,366 declarations).

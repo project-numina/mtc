@@ -249,3 +249,9 @@ Self-transparent objects centralize their right duals using the generated
 subcategory. Hence the parity sign follows if the pivotal twist balancing
 equation holds on the simple/dual pair; that equation remains unproved. The
 latest full build and strict project audit pass (426 modules, 4,363 declarations).
+
+Pivotal twist balancing now reduces to the explicit tensor-pairing cap
+identity in `CentreIntegrate.drinfeld_tensor_of_pairing_cap` via
+`balance_of_drinfeld_tensor`. The double-dual evaluation comparison is
+proved; the cap identity itself remains open. Full build and project audit
+pass (427 modules, 4,366 declarations).

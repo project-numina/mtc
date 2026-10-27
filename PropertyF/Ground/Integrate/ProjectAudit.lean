@@ -41,6 +41,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreIntegrate.TwistBalancing
 import all PropertyF.Ground.CentreIntegrate.MonodromyDual
 import all PropertyF.Ground.CentreIntegrate.TwistDual
 import all PropertyF.Ground.Dimensions.BraidingCapSlide
@@ -574,6 +575,9 @@ run_cmd do
       ``PropertyF.Ground.CentreRigid.rigidCenter,
       ``PropertyF.Ground.target_of_fusion_center_integral_numerical_core,
       ``PropertyF.Ground.target_of_pivotal_lift_and_integral_numerical_core,
+      ``PropertyF.Ground.CentreIntegrate.doubleDualTensor_evaluation,
+      ``PropertyF.Ground.CentreIntegrate.drinfeld_tensor_of_pairing_cap,
+      ``PropertyF.Ground.CentreIntegrate.balance_of_drinfeld_tensor,
       ``PropertyF.Ground.CentreIntegrate.twist_sign_of_spherical_self_transparency_and_balancing,
       ``PropertyF.Ground.CentreIntegrate.pivotalTwistScalar_rightDual,
       ``PropertyF.Ground.CentreIntegrate.self_doubleBraiding_eq_one_rightDual,
