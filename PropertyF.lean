@@ -219,6 +219,7 @@ public import PropertyF.Ground.CentreCalculus.GeneratorSquare
 public import PropertyF.Ground.CentreCalculus.PureSquares
 public import PropertyF.Ground.CentreCalculus.PermutationQuotient
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
+public import PropertyF.Ground.CentreCalculus.ParityCorrection
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
