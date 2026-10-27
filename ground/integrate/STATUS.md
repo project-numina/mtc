@@ -28,10 +28,11 @@
   spaces as a genuine ground braided fusion category, proving non-vacuity of
   the category interface (property F and pseudo-unitarity are not yet shown).
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans all 832 integrated declarations for forbidden axioms.
+- `ProjectAudit` scans all 946 integrated declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
-- `DependencyAudit.findForbidden` checks transitive declaration types and bodies;
-  its negative fixture catches a hidden old input. `scripts/audit-target.sh`
+- `DependencyAudit.findIssue` checks transitive project types and private bodies;
+  it fails closed on modules without private imports. Imported hidden-input and
+  uninspected-module negative tests both pass. `scripts/audit-target.sh`
   rejects a missing final theorem and checks its type, dependencies, and axioms.
 
 ## In progress

@@ -35,7 +35,35 @@ partial def findForbidden (env : Environment) (root : Name) : Option Name := Id.
     if !visited.contains n then
       visited := visited.insert n
       if isForbidden n then return some n
-      if let some ci := env.find? n then
+      if let some ci := env.checked.get.find? n then
+        pending := pending ++ ci.type.getUsedConstants
+        if let some value := ci.value? (allowOpaque := true) then
+          pending := pending ++ value.getUsedConstants
+  return none
+
+/-- A scan must reject a forbidden name or an uninspected project module. -/
+inductive Issue where
+  | forbidden (name : Name)
+  | uninspectedModule (moduleName : Name)
+  deriving Repr
+
+/-- Fail closed when a project declaration comes from a module whose private
+bodies were not imported. External modules cannot depend on project modules,
+so their bodies cannot hide a project hypothesis and need not be traversed. -/
+partial def findIssue (env : Environment) (root : Name) : Option Issue := Id.run do
+  let mut pending := #[root]
+  let mut visited : Std.HashSet Name := {}
+  while !pending.isEmpty do
+    let n := pending.back!
+    pending := pending.pop
+    if !visited.contains n then
+      visited := visited.insert n
+      if isForbidden n then return some (.forbidden n)
+      if let some idx := env.getModuleIdxFor? n then
+        if let some m := env.header.modules[idx.toNat]? then
+          if !m.module.toString.startsWith "PropertyF" then continue
+          if !m.importAll then return some (.uninspectedModule m.module)
+      if let some ci := env.checked.get.find? n then
         pending := pending ++ ci.type.getUsedConstants
         if let some value := ci.value? (allowOpaque := true) then
           pending := pending ++ value.getUsedConstants

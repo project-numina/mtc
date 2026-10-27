@@ -2,6 +2,58 @@ module
 public import PropertyF.Ground.Final
 public meta import PropertyF.Ground.Integrate.DependencyAudit
 
+import all PropertyF.Arithmetic
+import all PropertyF.Audit
+import all PropertyF.Axioms
+import all PropertyF.BlockTrace
+import all PropertyF.BraidAlgebra
+import all PropertyF.Center
+import all PropertyF.CenterBasics
+import all PropertyF.Consequences
+import all PropertyF.Definitions
+import all PropertyF.Descent
+import all PropertyF.GaloisRigidity
+import all PropertyF.GaloisSymmetry
+import all PropertyF.Ground.Cabling.Pure
+import all PropertyF.Ground.Cabling.Strands
+import all PropertyF.Ground.Cabling.Witness
+import all PropertyF.Ground.Calculus.Averaging
+import all PropertyF.Ground.Calculus.StarSpan
+import all PropertyF.Ground.Calculus.Unitarization
+import all PropertyF.Ground.Centre.Embeddings
+import all PropertyF.Ground.Dimensions.DimensionField
+import all PropertyF.Ground.Dimensions.Norm
+import all PropertyF.Ground.Final
+import all PropertyF.Ground.Fusion.Integrality
+import all PropertyF.Ground.Fusion.MatrixIntegral
+import all PropertyF.Ground.Fusion.Multiplicity
+import all PropertyF.Ground.Fusion.Reciprocity
+import all PropertyF.Ground.Fusion.Schur
+import all PropertyF.Ground.Fusion.Simples
+import all PropertyF.Ground.Fusion.SpectralIntegral
+import all PropertyF.Ground.Fusion.Splitting
+import all PropertyF.Ground.Integrate.Arithmetic
+import all PropertyF.Ground.Integrate.Conjugacy
+import all PropertyF.Ground.Integrate.DependencyAudit
+import all PropertyF.Ground.Integrate.Example
+import all PropertyF.Ground.Integrate.Norm
+import all PropertyF.Ground.Integrate.PropertyFTransport
+import all PropertyF.Ground.Integrate.Reduction
+import all PropertyF.Ground.Integrate.Representatives
+import all PropertyF.Ground.Integrate.StrandInclusion
+import all PropertyF.Ground.Integrate.UnitScalar
+import all PropertyF.Ground.Modular.BraidFunctor
+import all PropertyF.Ground.Modular.BraidIso
+import all PropertyF.Ground.Modular.Characters
+import all PropertyF.Ground.Modular.Classification
+import all PropertyF.Ground.Modular.Labels
+import all PropertyF.Ground.Target
+import all PropertyF.Main
+import all PropertyF.PowerBound
+import all PropertyF.TraceBound
+import all PropertyF.Transfer
+import all PropertyF.UnitaryTrace
+
 /-! Explicit final-theorem gate. This module intentionally fails to build until
 `PropertyF.Ground.target : PropertyF.Ground.TargetStatement` exists. It is not
 part of the ordinary library build while the proof remains under development. -/
@@ -20,8 +72,8 @@ run_cmd do
       unless n == ``PropertyF.Ground.TargetStatement do
         throwError "Final theorem must have exactly the frozen TargetStatement type"
   | _ => throwError "Final theorem must have exactly the frozen TargetStatement type"
-  if let some bad := findForbidden env targetName then
-    throwError "Final theorem depends on forbidden declaration {bad}"
+  if let some issue := findIssue env targetName then
+    throwError "Final theorem dependency audit failed: {repr issue}"
   let axioms ← collectAxioms targetName
   for ax in axioms do
     unless #[``propext, ``Classical.choice, ``Quot.sound].contains ax do
