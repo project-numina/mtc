@@ -3,7 +3,7 @@ public import PropertyF.Audit
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
-public import PropertyF.Ground.Calculus.Intertwining
+public import PropertyF.Ground.Calculus.ImageMaps
 public import PropertyF.Ground.Calculus.CyclicTrace
 public import PropertyF.Ground.Calculus.FiniteOrder
 public import PropertyF.Ground.Cabling.Strands
