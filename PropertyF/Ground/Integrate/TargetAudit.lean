@@ -192,6 +192,7 @@ import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterCentralizers
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
+import all PropertyF.Ground.Integrate.CenterProductBridge
 import all PropertyF.Ground.Integrate.CenterReduction
 import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
