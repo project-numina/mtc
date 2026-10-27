@@ -1,6 +1,9 @@
 module
 public import PropertyF.Ground.Integrate.FPConjugates
-public import PropertyF.Ground.Integrate.OverlapReduction
+public import PropertyF.Ground.Integrate.Reduction
+public import PropertyF.Ground.Integrate.ModularWitness
+public import PropertyF.Ground.Integrate.TwistedRigidity
+public import PropertyF.Ground.Dimensions.SignCharacter
 
 /-! The final target follows from the centre and the overlap recurrence alone. -/
 
