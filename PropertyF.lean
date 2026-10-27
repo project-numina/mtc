@@ -1,5 +1,6 @@
 module
 public import PropertyF.Audit
+public import PropertyF.Ground.Target
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
