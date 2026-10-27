@@ -13,6 +13,31 @@ open scoped BigOperators Matrix.Norms.Operator
 
 namespace PropertyF.Ground
 
+/-- The fusion matrix of the tensor unit is the identity. -/
+theorem fusionMatrix_unit (D : BraidedFusionCategory) :
+    fusionMatrix D (unitIndex D) = 1 := by
+  classical
+  ext k j
+  change (fusionCoeff D (unitIndex D) j k : ℂ) = _
+  rw [fusionCoeff_unit]
+  simp [Matrix.one_apply]
+
+/-- The spectral-radius FP dimension is normalized on the tensor unit. -/
+theorem fpSimple_unit (D : BraidedFusionCategory) :
+    fpSimple D (unitIndex D) = 1 := by
+  classical
+  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  simp [fpSimple, fusionMatrix_unit, spectrum.spectralRadius_one]
+
+/-- The global FP dimension is at least one, from the unit contribution. -/
+theorem one_le_globalFPDimension (D : BraidedFusionCategory) :
+    1 ≤ globalFPDimension D := by
+  classical
+  unfold globalFPDimension
+  have h := Finset.single_le_sum (f := fun i => fpSimple D i ^ 2)
+    (fun i _ => sq_nonneg (fpSimple D i)) (Finset.mem_univ (unitIndex D))
+  simpa [fpSimple_unit] using h
+
 /-- The squared spectral radius of an integer matrix is integral over ℤ.
 The index type is nonempty so that the complex matrix algebra is nontrivial. -/
 theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]
