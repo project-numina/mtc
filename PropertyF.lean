@@ -11,6 +11,12 @@ public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Witness
 public import PropertyF.Ground.Cabling.Images
 public import PropertyF.Ground.Cabling.Generated
+public import PropertyF.Ground.Dimensions.DimensionField
+public import PropertyF.Ground.Dimensions.Norm
+public import PropertyF.Ground.Dimensions.Pivotal
+public import PropertyF.Ground.Dimensions.Trace
+public import PropertyF.Ground.Dimensions.GroundNorm
+public import PropertyF.Ground.Dimensions.GlobalInequality
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
