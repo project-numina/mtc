@@ -50,6 +50,12 @@ public import PropertyF.Ground.Cabling.DualClosure
 public import PropertyF.Ground.Cabling.Inclusion
 public import PropertyF.Ground.Cabling.Perron
 public import PropertyF.Ground.Cabling.Primitive
+public import PropertyF.Ground.Cabling.ENOArithmetic
+public import PropertyF.Ground.Cabling.Blocks
+public import PropertyF.Ground.Cabling.RetractAction
+public import PropertyF.Ground.Cabling.Naturality
+public import PropertyF.Ground.Cabling.CableRetract
+public import PropertyF.Ground.Cabling.TensorDecomposition
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
