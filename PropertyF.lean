@@ -77,3 +77,4 @@ public import PropertyF.Ground.Calculus.OverlapUnitary
 public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.StrandCoherence
 public import PropertyF.Ground.Calculus.OverlapCoherence
+public import PropertyF.Ground.Calculus.ThreeSaturation
