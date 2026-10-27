@@ -100,6 +100,10 @@ public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapUnitary
+public import PropertyF.Ground.Calculus.OverlapBound
+public import PropertyF.Ground.Calculus.StrandCoherence
+public import PropertyF.Ground.Calculus.OverlapCoherence
+public import PropertyF.Ground.Calculus.ThreeSaturation
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.

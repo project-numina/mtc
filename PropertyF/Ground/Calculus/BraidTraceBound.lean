@@ -110,4 +110,31 @@ theorem exists_unitary_braid_trace_power_bound_ground
   simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension,
     Dimensions.groundUnitScalarEquiv_apply] using h
 
+/-- The ordinary bound holds in any block presentation, not only a particular
+presentation chosen by the finite-group unitarization theorem. -/
+theorem braid_trace_unitary_bound_ground
+    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (r : ℕ) (d : Fin r → ℕ)
+    (hd : ∀ j, 0 < d j)
+    (b : braidAlgebra X n ≃ₐ[ℂ] ∀ j, Matrix (Fin (d j)) (Fin (d j)) ℂ)
+    (a : braidAlgebra X n) (ha : ∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) :
+    ‖Dimensions.groundUnitScalarEquiv C
+      (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
+        Ground.fpDimension C X ^ (n + 2) := by
+  let m : Fin (Ground.rank C) → ℕ := fun i =>
+    Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
+  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
+  have hbound : ∀ i, ‖Dimensions.groundUnitScalarEquiv C
+      (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ Ground.fpSimple C i := by
+    intro i
+    have h := Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
+    simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension,
+      Dimensions.groundUnitScalarEquiv_apply] using h
+  have h := pivotalTrace_braid_unitary_bound C X n p (Dimensions.groundUnitScalarEquiv C)
+    m e r d hd b (Ground.fpSimple C) hbound a ha
+  change ‖Dimensions.groundUnitScalarEquiv C
+    (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
+      Ground.fpDimension C (tensorPower X (n + 2)) at h
+  simpa only [fpDimension_tensorPower] using h
+
 end PropertyF.Ground.Calculus
