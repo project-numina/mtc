@@ -31,6 +31,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -43,28 +44,43 @@ import all PropertyF.Definitions
 import all PropertyF.Descent
 import all PropertyF.GaloisRigidity
 import all PropertyF.GaloisSymmetry
+import all PropertyF.Ground.Cabling.Blocks
+import all PropertyF.Ground.Cabling.CableRetract
+import all PropertyF.Ground.Cabling.CablingDiagram
 import all PropertyF.Ground.Cabling.DualClosure
+import all PropertyF.Ground.Cabling.ENOArithmetic
 import all PropertyF.Ground.Cabling.Generated
 import all PropertyF.Ground.Cabling.Images
 import all PropertyF.Ground.Cabling.Inclusion
+import all PropertyF.Ground.Cabling.Naturality
 import all PropertyF.Ground.Cabling.Perron
 import all PropertyF.Ground.Cabling.Primitive
 import all PropertyF.Ground.Cabling.Pure
+import all PropertyF.Ground.Cabling.PureBlocks
+import all PropertyF.Ground.Cabling.RetractAction
 import all PropertyF.Ground.Cabling.Rigidity
 import all PropertyF.Ground.Cabling.Strands
+import all PropertyF.Ground.Cabling.TensorDecomposition
 import all PropertyF.Ground.Cabling.Witness
 import all PropertyF.Ground.Calculus.Averaging
 import all PropertyF.Ground.Calculus.BraidBlocks
+import all PropertyF.Ground.Calculus.BraidTraceBound
+import all PropertyF.Ground.Calculus.BraidWeights
 import all PropertyF.Ground.Calculus.CategoricalTrace
 import all PropertyF.Ground.Calculus.CyclicTrace
+import all PropertyF.Ground.Calculus.EndBlocks
+import all PropertyF.Ground.Calculus.EndTrace
 import all PropertyF.Ground.Calculus.FiniteOrder
 import all PropertyF.Ground.Calculus.GroupBlocks
 import all PropertyF.Ground.Calculus.ImageMaps
 import all PropertyF.Ground.Calculus.Intertwining
 import all PropertyF.Ground.Calculus.PartialTrace
+import all PropertyF.Ground.Calculus.RepresentationTrace
 import all PropertyF.Ground.Calculus.StarSpan
 import all PropertyF.Ground.Calculus.Unitarization
 import all PropertyF.Ground.Calculus.UnitaryBlocks
+import all PropertyF.Ground.Calculus.WeightFacts
+import all PropertyF.Ground.Centre.Biproduct
 import all PropertyF.Ground.Centre.Embeddings
 import all PropertyF.Ground.Centre.Linear
 import all PropertyF.Ground.Centre.Product
@@ -73,20 +89,25 @@ import all PropertyF.Ground.Centre.ReverseBraiding
 import all PropertyF.Ground.Centre.Zero
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.CharacterBound
+import all PropertyF.Ground.Dimensions.DimensionCharacter
 import all PropertyF.Ground.Dimensions.DimensionField
+import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.FusionDimensionField
 import all PropertyF.Ground.Dimensions.GlobalInequality
 import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
+import all PropertyF.Ground.Dimensions.PseudoUnitary
 import all PropertyF.Ground.Dimensions.TargetDimensionField
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Final
 import all PropertyF.Ground.Fusion.Agreement
 import all PropertyF.Ground.Fusion.Character
 import all PropertyF.Ground.Fusion.Integrality
+import all PropertyF.Ground.Fusion.LegacyBridge
 import all PropertyF.Ground.Fusion.MatrixIntegral
 import all PropertyF.Ground.Fusion.Multiplicity
+import all PropertyF.Ground.Fusion.ObjectDimension
 import all PropertyF.Ground.Fusion.Perron
 import all PropertyF.Ground.Fusion.PositiveMatrix
 import all PropertyF.Ground.Fusion.Reciprocity
@@ -109,14 +130,18 @@ import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.StrandInclusion
 import all PropertyF.Ground.Integrate.UnitScalar
+import all PropertyF.Ground.Modular.Audit
 import all PropertyF.Ground.Modular.BraidFunctor
 import all PropertyF.Ground.Modular.BraidIso
 import all PropertyF.Ground.Modular.Characters
 import all PropertyF.Ground.Modular.Classification
+import all PropertyF.Ground.Modular.DimensionNonzero
 import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
 import all PropertyF.Ground.Modular.Labels
+import all PropertyF.Ground.Modular.PseudoGalois
 import all PropertyF.Ground.Modular.SMatrix
+import all PropertyF.Ground.Modular.UnitDimension
 import all PropertyF.Ground.Target
 import all PropertyF.Main
 import all PropertyF.PowerBound
@@ -168,6 +193,7 @@ run_cmd do
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,
       ``PropertyF.Ground.globalFPDimension_presentation,
+      ``PropertyF.Ground.Calculus.exists_unitary_braid_trace_blocks,
       ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,
       ``PropertyF.Ground.Dimensions.squaredNorm_independent] do
