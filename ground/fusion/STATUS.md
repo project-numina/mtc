@@ -400,3 +400,10 @@ from centre rigidity and FP-valued base pivotal dimensions.
 to any pivotal structure plus pseudo-unitarity using dimensions' theorem.
 General centre rigidity and base pivotal existence remain open; this does not
 prove the frozen target. Focused build and direct kernel axiom checks pass.
+
+Round 3 centre rigidity takeover: `directDualCrossing` bends the inverse
+half-braiding around the base right dual; `directDualCrossing_natural` and
+`directDualCrossing_unit` prove naturality and unit normalization, and
+`halfBraiding_inv_tensor` expands the inverse tensor crossing. Tensor
+compatibility and centrality of evaluation and coevaluation remain unproved;
+there is no general centre rigidity instance. Focused build passes.
