@@ -19,6 +19,10 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
+import all PropertyF.Ground.CentreCalculus.TwistSign
+import all PropertyF.Ground.CentreModular.VafaPivotal
+import all PropertyF.Ground.Integrate.BalancedCenterReduction
 import all PropertyF.Ground.CentreCabling.DependentDeterminant
 import all PropertyF.Ground.CentreCabling.TwistFinite
 import all PropertyF.Ground.CentreCabling.VafaAlgebra

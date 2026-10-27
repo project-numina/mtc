@@ -41,6 +41,10 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
+import all PropertyF.Ground.CentreCalculus.TwistSign
+import all PropertyF.Ground.CentreModular.VafaPivotal
+import all PropertyF.Ground.Integrate.BalancedCenterReduction
 import all PropertyF.Ground.CentreCabling.DependentDeterminant
 import all PropertyF.Ground.CentreCabling.TwistFinite
 import all PropertyF.Ground.CentreCabling.VafaAlgebra
@@ -617,6 +621,9 @@ run_cmd do
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
+      ``PropertyF.Ground.target_of_pivotal_base_modular_balanced_center,
+      ``PropertyF.Ground.CentreCalculus.actual_symmetricCore_integrality,
+      ``PropertyF.Ground.CentreModular.mixed_monodromy_finite_of_pivotal_balancing,
       ``PropertyF.Ground.target_of_pivotal_base_balancing_and_image_monodromy,
       ``PropertyF.Ground.symmetricCore_integral_of_dual_balancing,
       ``PropertyF.Ground.target_of_pivotal_base_and_integral_numerical_core,

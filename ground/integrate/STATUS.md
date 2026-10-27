@@ -261,3 +261,12 @@ no reliable completion-time estimate is available.
   existence, centre S invertibility, that balancing equation and the restricted
   mixed-monodromy finite-order condition. Balancing is still unproved. Full
   build and project audit pass (446 modules, 4,565 declarations).
+
+- Merged calculus actual-core integrality and modular `3b920a6` (finite mixed
+  monodromy from pivotal balancing). `target_of_pivotal_base_modular_balanced_center`
+  now constructs centre rigidity, fusion, positive sphericality, its dimension
+  square, actual core integrality, and restricted mixed-monodromy finiteness.
+  Its explicit premises are existence of any base pivotal structure,
+  invertibility of centre S, and centre pivotal twist balancing. None of those
+  three is asserted proved. Full build and strict audit pass (475 modules,
+  4,731 declarations).

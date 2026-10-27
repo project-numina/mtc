@@ -280,3 +280,12 @@ balancing and is awaiting integration. The latest integrated full build and
 project audit pass (471 modules, 4,723 declarations). Calculus has since
 reported unconditional actual symmetric-core integrality under the existing
 positive spherical centre hypotheses; its commit is awaiting integration.
+
+Calculus now proves `actual_symmetricCore_integrality` directly, including
+super parity, and modular `3b920a6` proves all mixed monodromy finite from
+pivotal twist balancing. `target_of_pivotal_base_modular_balanced_center`
+wires these with actual rigidity and the pivotal-centre construction. Its
+remaining three explicit obligations are: a pivotal structure for each
+pseudo-unitary base, centre S invertibility, and pivotal twist balancing on
+that centre. No final target is proved. Full build and strict project audit
+pass (475 modules, 4,731 declarations).

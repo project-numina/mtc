@@ -116,3 +116,10 @@ constructed permutation action and spherical trace identity. The associated
 `target_of_pivotal_base_balancing_and_image_monodromy` keeps base pivotal
 existence, centre S invertibility, twist balancing, and restricted mixed
 monodromy as explicit unproved conditions.
+
+The actual symmetric-core integrality and the Vafa finite mixed-monodromy
+conclusion are constructed. The latter remains conditional on pivotal twist
+balancing. `target_of_pivotal_base_modular_balanced_center` reduces the target
+to base pivotal existence, centre S invertibility, and centre pivotal twist
+balancing. Centre rigidity/fusion/positive sphere/global square and actual
+core integrality are supplied by constructions under the base-pivotal premise.
