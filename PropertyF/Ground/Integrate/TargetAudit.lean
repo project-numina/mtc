@@ -321,7 +321,6 @@ import all PropertyF.Ground.Calculus.GaloisRigidity
 import all PropertyF.Ground.Calculus.GaloisTraceBound
 import all PropertyF.Ground.Calculus.GroupBlocks
 import all PropertyF.Ground.Calculus.ImageMaps
-import all PropertyF.Ground.Calculus.IntegratorBridge
 import all PropertyF.Ground.Calculus.Intertwining
 import all PropertyF.Ground.Calculus.Overlap
 import all PropertyF.Ground.Calculus.OverlapBound
