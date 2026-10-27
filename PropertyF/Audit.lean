@@ -2,6 +2,7 @@ module
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
+public import PropertyF.Ground.Integrate.DependencyAudit
 
 /-! Reproducible dependency audit. The standard-input structure is an explicit
 parameter and therefore does not appear in `#print axioms`. Consult the ledger. -/
