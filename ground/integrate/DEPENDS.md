@@ -1,16 +1,16 @@
 # Integration dependencies
 
 All remaining items are explicit, temporary arguments to
-`Ground.target_of_center_product_retracts`; none is an assumption in the frozen
+`Ground.target_of_actual_center`; none is an assumption in the frozen
 `TargetStatement`. The exact Lean type is in
-`PropertyF/Ground/Integrate/CenterProductBridge.lean`. No spherical structure
+`PropertyF/Ground/Integrate/ActualCenterReduction.lean`. No spherical structure
 is needed on the original category: `positive_bounded_conjugates_of_fp`
 constructs the bounds directly from its FP fusion character.
 
-- `hCenter`: for pseudo-unitary property-F C and each σ, construct the centre
-  as a genuine braided fusion category Z with positive spherical structure,
+- `hCenter`: for pseudo-unitary property-F C, construct one actual Drinfeld
+  centre with rigid and fusion instances and a positive spherical structure,
   invertible categorical S, and global dimension FPdim(C)²; prove that any
-  simple with the Galois-unit S column has property F. Owners: centre (Z,
+  and the stated centralizer conditions. Owners: centre (Z,
   dimension formula, centralizers, finite-image transfer and S invertibility)
   and dimensions (positive spherical structures); modular supplies S
   identities and Galois action. Calculus proved the actual overlap recurrence

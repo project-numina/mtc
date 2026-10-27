@@ -21,6 +21,11 @@
 - `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
   the old categorical data from ground definitions; dimension equality bridges
   are proved. These compatibility declarations are excluded from the final cone.
+- `target_of_actual_center` states all remaining assumptions directly on
+  Mathlib’s Drinfeld centre, at its correct object universe; one centre
+  construction serves every Galois automorphism. `Integrate.bundledCenter`
+  and `center_forget_fpDimension` wire the actual centre and forgetful functor
+  conditional on the still-unproved rigid and fusion instances.
 - `target_of_center_product_retracts` wires the centre workstream’s actual
   product-retract image theorem into the target reduction through faithful
   braided functors, with independent universe parameters.
@@ -72,7 +77,7 @@
   on a finite tensor-product basis. `Example.target_hypotheses_inhabited`
   proves that both target hypotheses hold simultaneously for this category.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans 3,038 integrated public and private declarations for forbidden axioms.
+- `ProjectAudit` scans 3,233 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and

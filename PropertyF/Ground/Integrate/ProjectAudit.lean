@@ -53,15 +53,26 @@ import all PropertyF.Definitions
 import all PropertyF.Descent
 import all PropertyF.GaloisRigidity
 import all PropertyF.GaloisSymmetry
+import all PropertyF.Ground.Cabling.AllInsert
 import all PropertyF.Ground.Cabling.BlockGroupoid
+import all PropertyF.Ground.Cabling.BlockOne
+import all PropertyF.Ground.Cabling.BlockSwap
 import all PropertyF.Ground.Cabling.BlockWords
 import all PropertyF.Ground.Cabling.Blocks
+import all PropertyF.Ground.Cabling.CableAppend
 import all PropertyF.Ground.Cabling.CableClass
 import all PropertyF.Ground.Cabling.CableRetract
+import all PropertyF.Ground.Cabling.CableTensor
 import all PropertyF.Ground.Cabling.CablingDiagram
 import all PropertyF.Ground.Cabling.CablingFinite
+import all PropertyF.Ground.Cabling.ConcatBase
+import all PropertyF.Ground.Cabling.ConcatGeneral
+import all PropertyF.Ground.Cabling.ConcatLeft
+import all PropertyF.Ground.Cabling.ConcatPower
 import all PropertyF.Ground.Cabling.DualClosure
 import all PropertyF.Ground.Cabling.ENOArithmetic
+import all PropertyF.Ground.Cabling.ExprBraiding
+import all PropertyF.Ground.Cabling.ExprStructure
 import all PropertyF.Ground.Cabling.FusionCycle
 import all PropertyF.Ground.Cabling.GeneralDual
 import all PropertyF.Ground.Cabling.Generated
@@ -79,8 +90,12 @@ import all PropertyF.Ground.Cabling.MoveHeadContext
 import all PropertyF.Ground.Cabling.MoveHeadInsert
 import all PropertyF.Ground.Cabling.Naturality
 import all PropertyF.Ground.Cabling.Perron
+import all PropertyF.Ground.Cabling.PowerAssoc
 import all PropertyF.Ground.Cabling.PowerCompare
+import all PropertyF.Ground.Cabling.PowerExpr
 import all PropertyF.Ground.Cabling.PowerGeneral
+import all PropertyF.Ground.Cabling.PrefixCompare
+import all PropertyF.Ground.Cabling.PrefixPower
 import all PropertyF.Ground.Cabling.Primitive
 import all PropertyF.Ground.Cabling.Pure
 import all PropertyF.Ground.Cabling.PureBlocks
@@ -112,6 +127,7 @@ import all PropertyF.Ground.Calculus.GaloisRigidity
 import all PropertyF.Ground.Calculus.GaloisTraceBound
 import all PropertyF.Ground.Calculus.GroupBlocks
 import all PropertyF.Ground.Calculus.ImageMaps
+import all PropertyF.Ground.Calculus.IntegratorBridge
 import all PropertyF.Ground.Calculus.Intertwining
 import all PropertyF.Ground.Calculus.Overlap
 import all PropertyF.Ground.Calculus.OverlapBound
@@ -125,6 +141,7 @@ import all PropertyF.Ground.Calculus.RepresentationTrace
 import all PropertyF.Ground.Calculus.ReversePower
 import all PropertyF.Ground.Calculus.RightStrand
 import all PropertyF.Ground.Calculus.SemilinearMaps
+import all PropertyF.Ground.Calculus.SharpRigidity
 import all PropertyF.Ground.Calculus.StarSpan
 import all PropertyF.Ground.Calculus.StrandCoherence
 import all PropertyF.Ground.Calculus.TensorPowerCoherence
@@ -157,6 +174,7 @@ import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.Centre.Zero
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.CharacterBound
+import all PropertyF.Ground.Dimensions.CharacterDual
 import all PropertyF.Ground.Dimensions.DimensionCharacter
 import all PropertyF.Ground.Dimensions.DimensionField
 import all PropertyF.Ground.Dimensions.DoubleDualFunctor
@@ -167,8 +185,12 @@ import all PropertyF.Ground.Dimensions.FusionDimensionField
 import all PropertyF.Ground.Dimensions.GlobalInequality
 import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Dimensions.IntrinsicNonzero
+import all PropertyF.Ground.Dimensions.InvolutionTrace
 import all PropertyF.Ground.Dimensions.IteratedTrace
+import all PropertyF.Ground.Dimensions.MultiplicityDefect
 import all PropertyF.Ground.Dimensions.NaturalRoots
+import all PropertyF.Ground.Dimensions.NaturalSquareDefect
+import all PropertyF.Ground.Dimensions.NaturalTrace
 import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.PivotalTwist
@@ -213,8 +235,8 @@ import all PropertyF.Ground.Fusion.WeakIntegrality
 import all PropertyF.Ground.Integrate.ActualCenterReduction
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterBundle
-import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterCentralizers
+import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterProductBridge
 import all PropertyF.Ground.Integrate.CenterReduction
@@ -229,8 +251,8 @@ import all PropertyF.Ground.Integrate.ExampleDimensions
 import all PropertyF.Ground.Integrate.ExamplePropertyF
 import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.FPRepresentatives
-import all PropertyF.Ground.Integrate.FunctorUniverse
 import all PropertyF.Ground.Integrate.Fixedness
+import all PropertyF.Ground.Integrate.FunctorUniverse
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
@@ -366,6 +388,8 @@ run_cmd do
       ``PropertyF.Ground.target_of_center_centralizers,
       ``PropertyF.Ground.target_of_center_product_retracts,
       ``PropertyF.Ground.target_of_actual_center,
+      ``PropertyF.Ground.Calculus.galois_three_strand_rigidity,
+      ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.Dimensions.positive_spherical_of_spherical_pseudoUnitary,
       ``PropertyF.Ground.Example.target_hypotheses_inhabited,
