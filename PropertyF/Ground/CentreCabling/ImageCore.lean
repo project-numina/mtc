@@ -59,9 +59,8 @@ def negativeIsoOfImageRetract (Y : CategoryTheory.Center C.Obj) (A : C.Obj)
 def imageLabels : Set (Fin (rank (Integrate.bundledCenter C))) :=
   {a | CanonicalImageRetract C (simples (Integrate.bundledCenter C) a)}
 
-theorem imageLabels_subset_productLabels : imageLabels C ⊆ (↑(productLabels C) : Set _) := by
-  intro a ha
-  exact (mem_productLabels C a).mpr (canonicalImageRetract_product C ha)
+theorem imageLabels_subset_productLabels : imageLabels C ⊆ (↑(productLabels C) : Set _) :=
+  fun a ha ↦ (mem_productLabels C a).mpr (canonicalImageRetract_product C ha)
 
 /-- Each simple image label has a simple underlying base object. -/
 theorem imageLabel_underlying_simple

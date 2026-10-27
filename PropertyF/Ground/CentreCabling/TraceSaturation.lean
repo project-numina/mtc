@@ -25,19 +25,13 @@ theorem finiteOrder_matrix_unitarizable {ι : Type*} [Fintype ι] [DecidableEq �
     ∃ P : (Matrix ι ι ℂ)ˣ, ((P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)) ∈ Matrix.unitaryGroup ι ℂ := by
   classical
   let u : (Matrix ι ι ℂ)ˣ := hM.isUnit.unit
-  have hu : (u : Matrix ι ι ℂ) = M := hM.isUnit.unit_spec
-  have hufin : IsOfFinOrder u := by
-    obtain ⟨n, hn, hp⟩ := hM.exists_pow_eq_one
-    apply isOfFinOrder_iff_pow_eq_one.mpr
-    refine ⟨n, hn, ?_⟩
-    apply Units.ext
-    simpa [hu] using hp
+  have hufin : IsOfFinOrder u := Units.isOfFinOrder_val.mp (by simpa [u] using hM)
   let G := Subgroup.zpowers u
   letI : Finite G := hufin.finite_zpowers
   letI : Fintype G := Fintype.ofFinite G
   obtain ⟨P, hP⟩ := Calculus.exists_unitarizing_basis G.subtype
   let g : G := ⟨u, Subgroup.mem_zpowers u⟩
-  exact ⟨P, by simpa [g, hu] using hP g⟩
+  exact ⟨P, by simpa [g, u] using hP g⟩
 
 /-- A finite-order matrix has real trace at most its size, with equality
 only for the identity. -/
@@ -102,12 +96,8 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   let m (i : Fin (rank D)) := Module.finrank ℂ (simples D i ⟶ X)
   obtain ⟨e⟩ := exists_canonical_decomposition D X
   let B := Calculus.groundEndBlockEquiv D X m e
-  have hf (i : Fin (rank D)) : IsOfFinOrder (B a i) := by
-    obtain ⟨n, hn, hpow⟩ := ha.exists_pow_eq_one
-    apply isOfFinOrder_iff_pow_eq_one.mpr
-    refine ⟨n, hn, ?_⟩
-    have h := congrArg (fun z : End X => B z i) hpow
-    simpa using h
+  have hf (i : Fin (rank D)) : IsOfFinOrder (B a i) :=
+    (Pi.evalMonoidHom _ i).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha)
   have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation (B a i) (hf i)
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by

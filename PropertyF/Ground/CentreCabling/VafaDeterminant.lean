@@ -16,16 +16,16 @@ namespace PropertyF.Ground.CentreCabling
 
 /-- A componentwise scalar map on a finite dependent product has determinant
  equal to the product of the scalars, counted by each component dimension. -/
-theorem det_dependent_pi_scalar {ι : Type*} [Fintype ι] (V : ι → Type*)
-    [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
-    [∀ i, FiniteDimensional ℂ (V i)] (c : ι → ℂ) :
-    (LinearMap.pi (fun i => (c i • (1 : V i →ₗ[ℂ] V i)).comp
-      (LinearMap.proj i))).det = ∏ i, c i ^ Module.finrank ℂ (V i) := by
+theorem det_dependent_pi_scalar {𝕜 : Type*} [Field 𝕜] {ι : Type*} [Fintype ι] (V : ι → Type*)
+    [∀ i, AddCommGroup (V i)] [∀ i, Module 𝕜 (V i)]
+    [∀ i, FiniteDimensional 𝕜 (V i)] (c : ι → 𝕜) :
+    (LinearMap.pi (fun i => (c i • (1 : V i →ₗ[𝕜] V i)).comp
+      (LinearMap.proj i))).det = ∏ i, c i ^ Module.finrank 𝕜 (V i) := by
   classical
-  let b : ∀ i, Module.Basis (Fin (Module.finrank ℂ (V i))) ℂ (V i) :=
-    fun i => Module.finBasis ℂ (V i)
+  let b : ∀ i, Module.Basis (Fin (Module.finrank 𝕜 (V i))) 𝕜 (V i) :=
+    fun i => Module.finBasis 𝕜 (V i)
   let B := Pi.basis b
-  let f := LinearMap.pi (fun i => (c i • (1 : V i →ₗ[ℂ] V i)).comp
+  let f := LinearMap.pi (fun i => (c i • (1 : V i →ₗ[𝕜] V i)).comp
       (LinearMap.proj i))
   have hm : LinearMap.toMatrix B B f = Matrix.diagonal (fun q => c q.1) := by
     ext ⟨i, k⟩ ⟨j, l⟩
@@ -46,12 +46,12 @@ end PropertyF.Ground.CentreCabling
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
+variable (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- A natural endomorphism acts on maps out of a simple object by its scalar
 component at that simple object. -/
 theorem natural_postcomp_simple
-    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (i : Fin (rank C)) (X : C.Obj) :
     CategoryTheory.Linear.rightComp ℂ (simples C i) (α.app X) =
       (Calculus.groundSimpleScalar C i (End.of (α.app (simples C i)))) •
@@ -71,7 +71,6 @@ theorem natural_postcomp_simple
 /-- The determinant of a natural endomorphism on a simple-source Hom space
 is the simple scalar raised to its actual vector-space dimension. -/
 theorem determinant_natural_postcomp_simple
-    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (i : Fin (rank C)) (X : C.Obj) :
     LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C i) (α.app X)) =
       (Calculus.groundSimpleScalar C i (End.of (α.app (simples C i)))) ^
@@ -82,7 +81,7 @@ theorem determinant_natural_postcomp_simple
 
 /-- The fusion-rule multiplicity is the dimension of the actual lantern Hom
 space, using the chosen representative of the dual simple. -/
-theorem vafaMultiplicity_eq_finrank (C : Ground.BraidedFusionCategory.{v,u})
+theorem vafaMultiplicity_eq_finrank
     (i : Fin (rank C)) :
     vafaMultiplicity C i = Module.finrank ℂ
       (simples C i ⟶ (simples C i ⊗ simples C (dualIndex C i)) ⊗ simples C i) := by
@@ -103,7 +102,7 @@ theorem vafaMultiplicity_eq_finrank (C : Ground.BraidedFusionCategory.{v,u})
 /-- The determinant of postcomposition by a diagonal biproduct endomorphism
 is the product of its scalar entries with Hom-space multiplicities. -/
 theorem determinant_postcomp_biproduct_scalar
-    (C : Ground.BraidedFusionCategory.{v,u}) {ι : Type*} [Fintype ι]
+    {ι : Type*} [Fintype ι]
     (X : C.Obj) (V : ι → C.Obj) (c : ι → ℂ) :
     LinearMap.det (CategoryTheory.Linear.rightComp ℂ X
       (biproduct.map (fun i => c i • 𝟙 (V i)))) =
@@ -124,7 +123,6 @@ theorem determinant_postcomp_biproduct_scalar
 /-- A natural endomorphism tensored with an identity acts diagonally after
 a simple decomposition of its first tensor factor. -/
 theorem natural_whisker_diagonal
-    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (A B : C.Obj) :
     let F := Dimensions.simplePiecesObject C A
     let e : A ⊗ B ≅ ⨁ (fun q : Dimensions.simplePieces C A => F q ⊗ B) :=
@@ -163,7 +161,6 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Determinant of a natural endomorphism on the first tensor factor, acting
 on an arbitrary simple-source Hom space, computed in a simple decomposition. -/
 theorem determinant_natural_whisker
-    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (X A B : C.Obj) :
     LinearMap.det (CategoryTheory.Linear.rightComp ℂ X (α.app A ▷ B)) =
       ∏ q : Dimensions.simplePieces C A,
@@ -193,7 +190,6 @@ theorem determinant_natural_whisker
 /-- The first pair-twist determinant in the Vafa lantern argument, expressed
 using fusion coefficients. -/
 theorem determinant_vafa_first_pair
-    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (i : Fin (rank C)) :
     LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C i)
       (α.app (simples C i ⊗ simples C (dualIndex C i)) ▷ simples C i)) =
@@ -211,7 +207,6 @@ theorem determinant_vafa_first_pair
 
 /-- Pair-twist determinant for arbitrary simple labels and source. -/
 theorem determinant_vafa_pair
-    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (s a b c : Fin (rank C)) :
     LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C s)
       (α.app (simples C a ⊗ simples C b) ▷ simples C c)) =
@@ -229,7 +224,7 @@ theorem determinant_vafa_pair
 /-- Conjugating an endomorphism by an isomorphism of its target object does
 not change its determinant on a Hom space. -/
 theorem determinant_postcomp_iso_conjugate
-    (C : Ground.BraidedFusionCategory.{v,u}) (X Y Z : C.Obj)
+    (X Y Z : C.Obj)
     (e : Y ≅ Z) (a : Z ⟶ Z) :
     LinearMap.det (CategoryTheory.Linear.rightComp ℂ X (e.hom ≫ a ≫ e.inv)) =
       LinearMap.det (CategoryTheory.Linear.rightComp ℂ X a) := by
@@ -245,7 +240,6 @@ theorem determinant_postcomp_iso_conjugate
 
 /-- Any transported pair-twist operator has the same fusion-rule determinant. -/
 theorem determinant_vafa_pair_conjugate
-    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (s a b c : Fin (rank C)) (W : C.Obj)
     (e : W ≅ (simples C a ⊗ simples C b) ⊗ simples C c) :
     LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C s)
@@ -256,7 +250,7 @@ theorem determinant_vafa_pair_conjugate
 
 /-- Postcomposition determinants multiply under composition. -/
 theorem determinant_postcomp_comp
-    (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj) (f g : Y ⟶ Y) :
+    (X Y : C.Obj) (f g : Y ⟶ Y) :
     LinearMap.det (CategoryTheory.Linear.rightComp ℂ X (f ≫ g)) =
       LinearMap.det (CategoryTheory.Linear.rightComp ℂ X f) *
         LinearMap.det (CategoryTheory.Linear.rightComp ℂ X g) := by
@@ -269,7 +263,7 @@ theorem determinant_postcomp_comp
 /-- Postcomposition by a scalar multiple scales the determinant by that scalar
 raised to the actual dimension of the Hom space. -/
 theorem determinant_postcomp_smul
-    (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj) (z : ℂ) (f : Y ⟶ Y) :
+    (X Y : C.Obj) (z : ℂ) (f : Y ⟶ Y) :
     LinearMap.det (CategoryTheory.Linear.rightComp ℂ X (z • f)) =
       z ^ Module.finrank ℂ (X ⟶ Y) *
         LinearMap.det (CategoryTheory.Linear.rightComp ℂ X f) := by

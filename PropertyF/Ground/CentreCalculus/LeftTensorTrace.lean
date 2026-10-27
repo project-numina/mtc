@@ -15,12 +15,12 @@ compatibility in spherical categories.
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
+variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
+  (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
 
 /-- The trace of the two-strand permutation is the actual twist scalar times
 the dimension. This identifies the parity factor that occurs in deletion. -/
-theorem twoStrand_permutation_trace (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (X : C.Obj) [Simple X]
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
+theorem twoStrand_permutation_trace :
     unitScalar C (p.rightTrace ((tensorPermutationAction X hX 2)
       (Equiv.Perm.decomposeFin.symm (1, 1))).asHom) =
     Dimensions.pivotalBraidedTwistScalar C p X * Dimensions.pivotalDimension C p X := by
@@ -42,9 +42,7 @@ theorem twoStrand_permutation_trace (C : BraidedFusionCategory.{v,u})
   exact Dimensions.pivotalTrace_selfBraiding C p X
 
 /-- Twisting by sign negates the two-strand trace. -/
-theorem twoStrand_parity_trace (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (X : C.Obj) [Simple X]
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool) :
+theorem twoStrand_parity_trace (odd : Bool) :
     unitScalar C (p.rightTrace ((parityPermutationAction C X hX odd 2)
       (Equiv.Perm.decomposeFin.symm (1, 1))).asHom) =
     (if odd then -Dimensions.pivotalBraidedTwistScalar C p X
@@ -63,9 +61,7 @@ theorem twoStrand_parity_trace (C : BraidedFusionCategory.{v,u})
 
 /-- If the twist is a sign, one parity choice satisfies the adjacent deletion
 identity in its two-strand base case. -/
-theorem exists_parity_twoStrand_deletion (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (X : C.Obj) [Simple X]
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
+theorem exists_parity_twoStrand_deletion
     (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
       Dimensions.pivotalBraidedTwistScalar C p X = -1) :
     ∃ odd : Bool, ∀ σ : Equiv.Perm (Fin 1),
@@ -96,11 +92,11 @@ end PropertyF.Ground.CentreCalculus
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
+variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 /-- Once left partial trace composes with total trace, Schur's lemma computes
 the closed crossing as the pivotal twist scalar. -/
 theorem leftPartialTrace_braiding_of_trace_compatibility
-    (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (X : C.Obj) [Simple X]
     (ht : p.rightTrace (leftPartialTrace p X X (End.of (β_ X X).hom)).asHom =
       p.rightTrace (β_ X X).hom) :
@@ -125,7 +121,6 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The closed first crossing with any spectator tensor factor is the same
 scalar on the entire untraced factor. -/
 theorem leftPartialTrace_firstGenerator_of_trace_compatibility
-    (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (X : C.Obj) [Simple X] (n : ℕ)
     (ht : p.rightTrace (leftPartialTrace p X X (End.of (β_ X X).hom)).asHom =
       p.rightTrace (β_ X X).hom) :
@@ -150,41 +145,9 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility
   simp
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Fixed-head permutation actions are left tensor insertions in every degree. -/
-theorem tensorPermutationAction_fixHead (C : BraidedFusionCategory.{v,u})
-    (X : C.Obj) (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
-    ∀ n (σ : Equiv.Perm (Fin n)),
-      tensorPermutationAction X hX (n + 1) (fixHead n σ) =
-        (tensorLeft X).mapEnd (tensorPower X n) (tensorPermutationAction X hX n σ) := by
-  intro n
-  cases n with
-  | zero =>
-    intro σ
-    have hσ : σ = 1 := Subsingleton.elim _ _
-    subst σ
-    simp [tensorPermutationAction, Functor.mapEnd]
-    rfl
-  | succ n =>
-    cases n with
-    | zero =>
-      intro σ
-      have hσ : σ = 1 := by
-        ext x
-        exact congrArg Fin.val ((Fin.eq_zero (σ x)).trans (Fin.eq_zero ((1 : Equiv.Perm (Fin 1)) x)).symm)
-      subst σ
-      simp [tensorPermutationAction, Functor.mapEnd]
-      rfl
-    | succ n =>
-      intro σ
-      change Aut.toEnd (permutationAction X hX (n + 1) (fixHead (n + 2) σ)) = _
-      rw [permutationAction_fixHead]
-      rfl
-
-set_option backward.isDefEq.respectTransparency false in
 /-- Left trace compatibility implies the local deletion law, with the actual
 pivotal twist scalar as its factor. -/
 theorem tensorPermutationTrace_adjacent_of_leftTrace
-    (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
     (htotal : ∀ Y (f : End (X ⊗ Y)),
       p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom)
@@ -215,7 +178,6 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
 /-- The symmetric integrality argument now needs only left iterated-trace
 compatibility and the sign of the actual pivotal twist scalar. -/
 theorem integral_of_leftTrace_and_twist_sign
-    (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
     (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
     (htotal : ∀ Y (f : End (X ⊗ Y)),
@@ -353,8 +315,8 @@ theorem integral_of_spherical_and_twist_sign
     (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
     (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
       Dimensions.pivotalBraidedTwistScalar C p X = -1) :
-    ∃ m : ℕ, fpDimension C X = m := by
-  apply integral_of_leftTrace_and_twist_sign C p hdim X hX _ hsign
-  exact spherical_rightTrace_leftPartialTrace p hp X
+    ∃ m : ℕ, fpDimension C X = m :=
+  integral_of_leftTrace_and_twist_sign C p hdim X hX
+    (spherical_rightTrace_leftPartialTrace p hp X) hsign
 
 end PropertyF.Ground.CentreCalculus

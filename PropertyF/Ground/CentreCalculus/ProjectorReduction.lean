@@ -154,21 +154,4 @@ theorem integral_of_signed_permutation_traces (C : BraidedFusionCategory.{v,u})
   rw [alternatingProjector_scalar_trace]
   exact hρ
 
-/-- The signed-trace criterion supplies the exact integer-valued simple
-dimension conclusion required by the actual-centre reduction. -/
-theorem simpleDimension_integer_of_signed_traces (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (i : Fin (rank C))
-    (hTrace : ∀ n : ℕ, ∃ ρ : Equiv.Perm (Fin n) →* End (tensorPower (simples C i) n),
-      (∑ σ : Equiv.Perm (Fin n), (Centre.permutationSign ℂ n σ : ℂ) *
-        unitScalar C (p.rightTrace (ρ σ).asHom)) =
-          ∏ k ∈ Finset.range n, ((fpDimension C (simples C i) : ℂ) - (k : ℂ))) :
-    ∃ z : ℤ, Modular.simpleDimension C p i = z := by
-  obtain ⟨m, hm⟩ := integral_of_signed_permutation_traces C p hdim (simples C i) hTrace
-  rw [fpDimension_simple] at hm
-  refine ⟨m, ?_⟩
-  rw [hdim i, hm]
-  norm_cast
-
 end PropertyF.Ground.CentreCalculus

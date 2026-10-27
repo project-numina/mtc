@@ -346,8 +346,6 @@ public import PropertyF.Ground.CentreCabling.CoreCentrality
 public import PropertyF.Ground.CentreCabling.TargetReduction
 public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
-public import PropertyF.Ground.Integrate.CompatibleCenterReduction
-public import PropertyF.Ground.Integrate.RigidCenterReduction
 public import PropertyF.Ground.Integrate.PivotalOnlyReduction
 public import PropertyF.Ground.Integrate.CoreIntegralityReduction
 public import PropertyF.Ground.Integrate.BalancedCenterReduction

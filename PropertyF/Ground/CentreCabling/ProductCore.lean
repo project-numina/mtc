@@ -3,6 +3,7 @@ public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.CentreCabling.TraceSaturation
 public import PropertyF.Ground.CentreCabling.ProductGenerated
 public import PropertyF.Ground.CentreCabling.RegularSupport
+public import PropertyF.Ground.Fusion.UnitPower
 
 /-!
 # Product labels and the symmetric core
@@ -51,7 +52,7 @@ theorem constituent_mem_productLabels
     (hi : i ∈ productLabels C) (hj : j ∈ productLabels C)
     (hk : 0 < fusionCoeff (Integrate.bundledCenter C) i j k) : k ∈ productLabels C := by
   rw [mem_productLabels] at hi hj ⊢
-  obtain ⟨r⟩ := Cabling.fusionCoeffRetract (Integrate.bundledCenter C) i j k hk
+  obtain ⟨r⟩ := Ground.fusionCoeff_retract (Integrate.bundledCenter C) i j k hk
   exact Centre.productRetract_of_retract r (Centre.productRetract_tensor hi hj)
 
 /-- The centre's product-retract labels satisfy the numerical double-centralizer
@@ -88,8 +89,8 @@ def symmetricCore : Set (Fin (rank (Integrate.bundledCenter C))) :=
 its positive canonical image. -/
 theorem symmetricCore_underlying_transparent
     (y : Fin (rank (Integrate.bundledCenter C))) (hy : y ∈ symmetricCore C) :
-    Transparent (simples (Integrate.bundledCenter C) y).1 := by
-  exact transparent_of_both_centralizers _
+    Transparent (simples (Integrate.bundledCenter C) y).1 :=
+  transparent_of_both_centralizers _
     ((Centre.centralizes_positive_image_iff _).mp hy.1)
     ((Centre.centralizes_negative_image_iff _).mp hy.2)
 

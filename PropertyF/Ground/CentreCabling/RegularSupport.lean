@@ -16,10 +16,12 @@ numerical double-centralizer inclusion.
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
+variable (D : Ground.BraidedFusionCategory.{v,u})
+  (p : Dimensions.PivotalStructure (C := D.Obj))
 
 /-- If a fusion character takes its FP value on two simples, then it takes
 its FP value on every simple constituent of their tensor product. -/
-theorem character_fp_eq_of_constituent (D : Ground.BraidedFusionCategory.{v,u})
+theorem character_fp_eq_of_constituent
     (χ : Fin (rank D) → ℂ) (hunit : χ (unitIndex D) = 1)
     (hchar : ∀ i j, χ i * χ j = ∑ k, (fusionCoeff D i j k : ℂ) * χ k)
     (i j k : Fin (rank D))
@@ -54,8 +56,6 @@ theorem character_fp_eq_of_constituent (D : Ground.BraidedFusionCategory.{v,u})
 closed under simple tensor-product constituents. Neither S invertibility nor
 finite braid images are needed. -/
 theorem sCentralizer_closed_under_constituents
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj))
     (hdim : ∀ a, Modular.simpleDimension D p a = (fpSimple D a : ℂ))
     (i j k y : Fin (rank D))
     (hi : Modular.categoricalS D p i y = Modular.simpleDimension D p i * Modular.simpleDimension D p y)
@@ -84,8 +84,6 @@ theorem sCentralizer_closed_under_constituents
 /-- The numerical S-centralizer is closed under dual labels when dimensions
 are the positive FP dimensions. -/
 theorem sCentralizer_closed_under_dual
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj))
     (hdim : ∀ a, Modular.simpleDimension D p a = (fpSimple D a : ℂ))
     (i y : Fin (rank D))
     (hi : Modular.categoricalS D p i y = Modular.simpleDimension D p i * Modular.simpleDimension D p y) :
@@ -102,11 +100,12 @@ end PropertyF.Ground.CentreCabling
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
+variable (D : Ground.BraidedFusionCategory.{v,u})
+  (p : Dimensions.PivotalStructure (C := D.Obj))
 
 /-- The S-transform of a vector, inverted using the categorical S-square identity. -/
 theorem categoricalS_fourier_inversion
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj)) (hp : p.IsSpherical)
+    (hp : p.IsSpherical)
     (hdet : (Modular.categoricalS D p).det ≠ 0)
     (hreal : ∀ j, starRingEnd ℂ (Modular.simpleDimension D p j) = Modular.simpleDimension D p j)
     (f : Fin (rank D) → ℂ) (x : Fin (rank D)) :
@@ -139,8 +138,7 @@ theorem categoricalS_fourier_inversion
 unit coefficient is nonzero, any label centralizing that support has a
 nonzero dual coefficient in the original vector. -/
 theorem nonzero_dual_coefficient_of_sCentralizer
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj)) (hp : p.IsSpherical)
+    (hp : p.IsSpherical)
     (hdet : (Modular.categoricalS D p).det ≠ 0)
     (hreal : ∀ j, starRingEnd ℂ (Modular.simpleDimension D p j) = Modular.simpleDimension D p j)
     (f : Fin (rank D) → ℂ) (core : Set (Fin (rank D)))
@@ -180,8 +178,7 @@ inclusion once its S-transform is supported on the chosen core. The support
 hypotheses are explicit: this theorem does not establish the required
 regular-vector identity. -/
 theorem doubleCentralizer_of_fourier_support
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj)) (hp : p.IsSpherical)
+    (hp : p.IsSpherical)
     (hdet : (Modular.categoricalS D p).det ≠ 0)
     (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
     (f : Fin (rank D) → ℂ) (core generated : Set (Fin (rank D)))
@@ -210,12 +207,12 @@ end PropertyF.Ground.CentreCabling
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
+variable (D : Ground.BraidedFusionCategory.{v,u})
+  (p : Dimensions.PivotalStructure (C := D.Obj))
 
 /-- The S-transform of a common FP eigenvector vanishes at every label whose
 normalized S character differs from the FP character on a chosen label. -/
 theorem fourier_eq_zero_of_fusion_eigenvector
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj))
     (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
     (f : Fin (rank D) → ℂ) (a y : Fin (rank D))
     (heigen : ∀ k, ∑ i, (fusionCoeff D a i k : ℂ) * f i = (fpSimple D a : ℂ) * f k)
@@ -247,15 +244,9 @@ theorem fourier_eq_zero_of_fusion_eigenvector
         apply Finset.sum_congr rfl
         intro k _
         ring
-  have hχ : χ a ≠ (fpSimple D a : ℂ) := by
-    intro h
-    apply hne
-    have hd := Modular.simpleDimension_ne_zero D p y
-    have hh := (div_eq_iff hd).mp h
-    simpa [χ, hdim] using hh
-  have hT : T = 0 := by
-    apply (mul_eq_zero.mp (show (χ a - (fpSimple D a : ℂ)) * T = 0 by
-      rw [sub_mul, ht, sub_self])).resolve_left (sub_ne_zero.mpr hχ)
+  have hχ : χ a ≠ (fpSimple D a : ℂ) := fun h ↦ hne <| by
+    simpa [χ, hdim] using (div_eq_iff (Modular.simpleDimension_ne_zero D p y)).mp h
+  have hT : T = 0 := (mul_eq_mul_right_iff.mp ht).resolve_left hχ
   have hs : (∑ i, Modular.categoricalS D p y i * f i) = Modular.simpleDimension D p y * T := by
     rw [Finset.mul_sum]
     apply Finset.sum_congr rfl
@@ -268,7 +259,7 @@ theorem fourier_eq_zero_of_fusion_eigenvector
 /-- The FP-weighted regular vector of a dual- and fusion-closed set of labels
 is an eigenvector for multiplication by each label in that set. -/
 theorem regular_vector_fusion_eigenvector
-    (D : Ground.BraidedFusionCategory.{v,u}) (A : Finset (Fin (rank D)))
+    (A : Finset (Fin (rank D)))
     (hdual : ∀ a ∈ A, dualIndex D a ∈ A)
     (hclosed : ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < fusionCoeff D a b k → k ∈ A)
     (a : Fin (rank D)) (ha : a ∈ A) (k : Fin (rank D)) :
@@ -306,8 +297,7 @@ theorem regular_vector_fusion_eigenvector
 /-- Numerical double-centralizer theorem for a fusion-closed set of simple
 labels. The supplied core must contain its numerical S-centralizer. -/
 theorem doubleCentralizer_of_fusion_closed
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj)) (hp : p.IsSpherical)
+    (hp : p.IsSpherical)
     (hdet : (Modular.categoricalS D p).det ≠ 0)
     (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
     (A : Finset (Fin (rank D))) (core : Set (Fin (rank D)))
