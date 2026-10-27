@@ -16,6 +16,7 @@
 - `PropertyF.Ground.Modular.Audit` privately imports project modules and passes the integrator's hardened fail-closed dependency scanner and foundational-axiom check for ground Galois reduction, braid-functor surjectivity, S symmetry/unit, simple-dimension nonvanishing, and the Galois action and proposition. This audit checks the declarations, not the missing final theorem.
 - `PropertyF.Ground.Modular.braidImageFunctorMap`, `braidImageFunctorMap_surjective`, and `objectPropertyF_functor`: arbitrary braided functors, including nonfaithful ones, induce surjections on braid images and preserve objectwise property F.
 - `PropertyF.Ground.Modular.pivotalTrace_simple_ne_zero` and `simpleDimension_ne_zero`: every simple in a genuine pivotal braided fusion category has nonzero categorical dimension, from semisimple splitting and rigidity plus Schur; no spherical or pseudo-unitary hypothesis is required. `categoricalS_galois_action` now derives simple-dimension nonvanishing.
+- `globalDimension_ne_zero_of_pseudoUnitary` and `categoricalS_galois_action_pseudoUnitary`: in the paper's pseudo-unitary setting, both simple and global dimension nonvanishing are derived; the remaining action hypotheses are S² and Verlinde with the actual dual-label map. `categoricalS_galois_unit_properties` specializes Proposition 2.1, additionally requiring unit normalization.
 - Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
 
 ## In progress

@@ -11,6 +11,8 @@ import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.Simples
 import all PropertyF.Ground.Fusion.Multiplicity
 import all PropertyF.Ground.Fusion.Reciprocity
+import all PropertyF.Ground.Fusion.MatrixIntegral
+import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Dimensions.Norm
@@ -26,6 +28,7 @@ import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.SMatrix
 import all PropertyF.Ground.Modular.DimensionNonzero
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
+import all PropertyF.Ground.Modular.PseudoGalois
 import all PropertyF.Ground.Integrate.DependencyAudit
 meta import PropertyF.Ground.Integrate.DependencyAudit
 /-!
@@ -47,7 +50,9 @@ run_cmd do
       ``PropertyF.Ground.Modular.categoricalS_unit,
       ``PropertyF.Ground.Modular.simpleDimension_ne_zero,
       ``PropertyF.Ground.Modular.categoricalS_galois_action,
-      ``PropertyF.Ground.Modular.galois_unit_properties] do
+      ``PropertyF.Ground.Modular.galois_unit_properties,
+      ``PropertyF.Ground.Modular.categoricalS_galois_action_pseudoUnitary,
+      ``PropertyF.Ground.Modular.categoricalS_galois_unit_properties] do
     if let some bad := findIssue env n then
       throwError "{n}: {repr bad}"
     let axioms ← Lean.collectAxioms n

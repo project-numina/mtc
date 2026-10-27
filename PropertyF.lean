@@ -25,6 +25,7 @@ public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
+public import PropertyF.Ground.Modular.PseudoGalois
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Witness
