@@ -13,6 +13,15 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [BraidedCategory C] [Abelian C]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
+/-- Tensoring two powers gives the corresponding combined power. -/
+def tensorPowerTensorIso (X : C) : ∀ n m : ℕ,
+    tensorPower X n ⊗ tensorPower X m ≅ tensorPower X (n + m)
+  | 0, m => by simpa [tensorPower] using (λ_ (tensorPower X m))
+  | n + 1, m => by
+      simpa only [Nat.succ_add, tensorPower] using
+        ((α_ X (tensorPower X n) (tensorPower X m)) ≪≫
+          (Iso.refl X ⊗ᵢ tensorPowerTensorIso X n m))
+
 /-- Any tensor power is in the generated closure. -/
 theorem generatedBy_tensorPower (X : C) (k : ℕ) : GeneratedBy X (tensorPower X k) := by
   let f : Fin 1 → C := fun _ => tensorPower X k
