@@ -41,7 +41,7 @@ squared
 norms and their global sum are independent of isomorphism and presentation
 (proved in `Dimensions.GroundNorm`); FP spectral
 radii form the unique positive fusion character (proved by fusion be9a122);
-presentation independence remains;
+`Ground.globalFPDimension_presentation` proves presentation independence;
 compare complex-automorphism conjugacy with the paper's algebraic-closure
 formulation. `Ground.doubleDualIso` is already constructed from Mathlib's
 braided swapped pairing and uniqueness of duals. No choice independence proof

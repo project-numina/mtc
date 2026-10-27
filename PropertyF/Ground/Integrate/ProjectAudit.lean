@@ -30,6 +30,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -99,6 +100,7 @@ import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.Conjugacy
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
+import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.Norm
@@ -165,6 +167,7 @@ run_cmd do
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,
+      ``PropertyF.Ground.globalFPDimension_presentation,
       ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,
       ``PropertyF.Ground.Dimensions.squaredNorm_independent] do

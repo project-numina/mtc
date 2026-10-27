@@ -7,6 +7,8 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
+- `globalFPDimension_presentation` proves the spectral FP global dimension
+  independent of the complete finite list of simple representatives.
 - `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
   the old categorical data from ground definitions; dimension equality bridges
   are proved. These compatibility declarations are excluded from the final cone.
@@ -51,9 +53,7 @@
 
 No final theorem: the target needs FP/semisimple, intrinsic/spherical dimension,
 centre, modular, and categorical braid/trace constructions enumerated in the
-ledger. The FP spectral-radius/character identification is proved; FP representative
-independence remains to be proved. The intrinsic global dimension is now proved independent
-of both scalar/double-dual choices and simple representatives (dimensions
-commit 4a39ec5). The work
+ledger. The FP spectral-radius/character identification and both global dimensions’
+representative independence are proved. The work
 is a substantial multi-workstream formalization, not a short integration patch;
 no reliable completion-time estimate is available.
