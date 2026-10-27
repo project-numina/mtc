@@ -322,6 +322,7 @@ public import PropertyF.Ground.Dimensions.DefectAssociativity
 public import PropertyF.Ground.Dimensions.DefectSliding
 public import PropertyF.Ground.Dimensions.DefectExtension
 public import PropertyF.Ground.Dimensions.ENOInvolution
+public import PropertyF.Ground.Dimensions.BraidingCapSlide
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
