@@ -167,6 +167,9 @@ run_cmd do
 open Lean Elab Command PropertyF.Ground.DependencyAudit in
 run_cmd do
   let env ← getEnv
+  match findIssue env `PropertyF.Ground.AuditMissingFixture with
+  | some (.missingDeclaration _) => pure ()
+  | _ => throwError "dependency audit did not reject a missing declaration"
   match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenInputWrapper with
   | some (.forbidden n) =>
       unless n == ``PropertyF.StandardInputs do

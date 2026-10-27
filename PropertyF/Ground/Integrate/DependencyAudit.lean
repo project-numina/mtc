@@ -48,6 +48,7 @@ inductive Issue where
   | forbidden (name : Name)
   | uninspectedModule (moduleName : Name)
   | foreignImplementation (name : Name)
+  | missingDeclaration (name : Name)
   deriving Repr
 
 /-- Pinned upstream modules cannot import this project. Any other module must be
@@ -79,6 +80,8 @@ partial def findIssue (env : Environment) (root : Name) : Option Issue := Id.run
         pending := pending ++ ci.type.getUsedConstants
         if let some value := ci.value? (allowOpaque := true) then
           pending := pending ++ value.getUsedConstants
+      else
+        return some (.missingDeclaration n)
   return none
 
 /-- Test fixture: a forbidden input hidden behind an ordinary definition. -/
