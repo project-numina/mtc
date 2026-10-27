@@ -98,6 +98,7 @@ public import PropertyF.Ground.Cabling.PrefixCompare
 public import PropertyF.Ground.Cabling.CableTensor
 public import PropertyF.Ground.Cabling.PowerAssoc
 public import PropertyF.Ground.Cabling.PowerExpr
+public import PropertyF.Ground.Cabling.ExprStructure
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.BlockGroupoid
 public import PropertyF.Ground.Cabling.BlockWords
