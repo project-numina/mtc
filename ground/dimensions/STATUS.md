@@ -74,7 +74,7 @@
 
 - `rightPartialTrace_braiding` proves the actual right partial trace of a self-braiding is the pivotal/Drinfeld twist `p.iso X ≫ (doubleDualIso C X).inv`. The twist-sign and parity-corrected cycle identities remain open.
 
-- `pivotalBraidedTwist` constructs the actual natural twist; `pivotalBraidedTwistScalar_ne_zero` proves its simple scalar is nonzero, and `pivotalTrace_selfBraiding` gives the two-cycle trace as twist scalar times pivotal dimension. Showing that scalar is ±1 for a self-transparent simple remains open.
+- `pivotalBraidedTwistNaturalIso` constructs the actual natural twist and `pivotalBraidedTwist_unit` proves it fixes the unit; `pivotalBraidedTwistScalar_ne_zero` proves its simple scalar is nonzero, and `pivotalTrace_selfBraiding` gives the two-cycle trace as twist scalar times pivotal dimension. Showing that scalar is ±1 for a self-transparent simple remains open.
 
 ## Round 2 route
 
