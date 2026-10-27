@@ -33,10 +33,34 @@ def homBiproductLinearEquiv {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
     funext i
     simp
 
+/-- The Hom space out of a finite biproduct is the product of the Hom spaces. -/
+def biproductHomLinearEquiv {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+    (V : ι → C) (X : C) : (⨁ V ⟶ X) ≃ₗ[ℂ] (∀ i, V i ⟶ X) where
+  toFun f i := biproduct.ι V i ≫ f
+  invFun f := biproduct.desc f
+  left_inv f := by
+    apply biproduct.hom_ext'
+    intro i
+    simp
+  right_inv f := by
+    funext i
+    simp
+  map_add' f g := by
+    funext i
+    simp
+  map_smul' z f := by
+    funext i
+    simp
+
 theorem finrank_hom_biproduct {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
     (X : C) (V : ι → C) [∀ i, FiniteDimensional ℂ (X ⟶ V i)] :
     Module.finrank ℂ (X ⟶ ⨁ V) = ∑ i, Module.finrank ℂ (X ⟶ V i) := by
   rw [(homBiproductLinearEquiv X V).finrank_eq, Module.finrank_pi_fintype]
+
+theorem finrank_biproduct_hom {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+    (V : ι → C) (X : C) [∀ i, FiniteDimensional ℂ (V i ⟶ X)] :
+    Module.finrank ℂ (⨁ V ⟶ X) = ∑ i, Module.finrank ℂ (V i ⟶ X) := by
+  rw [(biproductHomLinearEquiv V X).finrank_eq, Module.finrank_pi_fintype]
 
 /-- A chosen simple's Hom dimension counts its copies in a decomposition. -/
 theorem finrank_simple_of_decomposition (D : BraidedFusionCategory.{v,u})
@@ -65,6 +89,23 @@ theorem exists_canonical_decomposition (D : BraidedFusionCategory.{v,u}) (X : D.
     exact finrank_simple_of_decomposition D X m e i
   cases hm.symm
   exact ⟨e⟩
+
+/-- Hom dimensions to and from a simple coincide in a semisimple category. -/
+theorem finrank_to_simple_eq_from_simple (D : BraidedFusionCategory.{v,u})
+    (X : D.Obj) (i : Fin (rank D)) :
+    Module.finrank ℂ (X ⟶ simples D i) = Module.finrank ℂ (simples D i ⟶ X) := by
+  classical
+  let m : Fin (rank D) → ℕ := fun j => Module.finrank ℂ (simples D j ⟶ X)
+  obtain ⟨e⟩ := exists_canonical_decomposition D X
+  letI : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  calc
+    _ = Module.finrank ℂ (⨁ (fun p : Σ j, Fin (m j) => simples D p.1) ⟶ simples D i) :=
+      (CategoryTheory.Linear.homCongr ℂ e (Iso.refl _)).finrank_eq
+    _ = ∑ p : Σ j, Fin (m j), Module.finrank ℂ (simples D p.1 ⟶ simples D i) :=
+      finrank_biproduct_hom _ _
+    _ = _ := by
+      rw [Fintype.sum_sigma]
+      simp [finrank_simples_hom, m]
 
 /-- Tensoring an object on the left acts on simple multiplicities by its
 integer fusion matrix. -/

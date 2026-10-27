@@ -30,6 +30,10 @@
   `fusionCoeff_assoc`: tensor product acts on multiplicities through the actual
   fusion coefficients, which satisfy the unit, commutativity and associativity
   laws for the genuine target category.
+- `Ground.tensorRightHomLinearEquiv`, `finrank_frobenius_reciprocity`, and
+  `fusionCoeff_reciprocity`: rigidity gives complex-linear Hom equivalences and
+  Frobenius reciprocity with the actual left dual object. A simple-label dual
+  permutation has not yet been constructed.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
