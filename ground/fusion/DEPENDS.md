@@ -55,3 +55,7 @@ These describe proof obligations, not axioms or assumptions in the target.
 - The Drinfeld tensor law now implies fourth-dual monoidality and positive
   spherical existence for pseudo-unitary categories. The Drinfeld tensor law
   is the remaining explicit input and is being proved by dimensions/calculus.
+
+- RESOLVED: dimensions proved the Drinfeld tensor cap, which now supplies
+  `drinfeldTensorLaw`, the fourth-dual tensor law and positive spherical
+  existence for pseudo-unitary braided fusion categories without extra inputs.

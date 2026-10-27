@@ -436,3 +436,11 @@ structure for pseudo-unitary C without assuming any initial pivotal
 structure. The Drinfeld tensor law is still an explicit unproved hypothesis;
 dimensions and calculus are working on its cap diagram. Focused build and
 standard-axiom checks pass.
+
+Merged dimensions' proof of the Drinfeld tensor cap. `drinfeldTensorLaw`
+now proves the law without assumptions; `fourthDualIso_tensor` proves the
+canonical fourth-dual tensor law; `positive_spherical_of_pseudoUnitary`
+constructs the positive spherical structure with FP dimensions for every
+genuine pseudo-unitary braided fusion category, without a pivotal premise.
+Focused build and kernel axiom checks pass. Integration of the final target
+and its strict audit remain to be confirmed.
