@@ -130,3 +130,13 @@ order, by retracting it from the square of the self-braiding of a direct sum.
 This does not prove finite order for arbitrary centre monodromy: after
 forgetting, a centre half-braiding is not generally the base braiding. The
 S-test-to-monodromy bridge remains open. Focused build passed.
+
+`finiteOrder_matrix_trace_saturation` proves finite-order complex matrices have
+real trace bounded by size, with equality only for the identity. Using actual
+semisimple endomorphism blocks and positive pivotal dimensions,
+`finiteOrder_eq_one_of_trace_eq_dimension` proves the categorical trace
+saturation statement. `doubleBraiding_eq_one_of_sTest_of_finite_order`
+therefore proves numerical S-centrality implies actual identity monodromy
+whenever that double braiding has finite order. Finite order of mixed
+monodromy in the centre remains unproved; base property F does not directly
+supply it. Focused builds passed.

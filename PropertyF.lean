@@ -200,6 +200,8 @@ public import PropertyF.Ground.CentreCabling.FourierCentralizer
 public import PropertyF.Ground.CentreCabling.RegularSupport
 public import PropertyF.Ground.CentreCabling.ProductCentralizer
 public import PropertyF.Ground.CentreCabling.FiniteMonodromy
+public import PropertyF.Ground.CentreCabling.FiniteOrderMatrix
+public import PropertyF.Ground.CentreCabling.TraceSaturation
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
