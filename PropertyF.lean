@@ -59,6 +59,7 @@ public import PropertyF.Ground.Dimensions.DoubleDualFunctor
 public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.SignCharacter
+public import PropertyF.Ground.Dimensions.SphericalGalois
 public import PropertyF.Ground.Dimensions.InvolutionTrace
 public import PropertyF.Ground.Dimensions.WeightedEigenvalue
 public import PropertyF.Ground.Dimensions.ENOMatrices
