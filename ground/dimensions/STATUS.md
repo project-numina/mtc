@@ -5,6 +5,7 @@
 - `PropertyF.Ground.Dimensions.extend_complex_automorphism`: every automorphism of a subfield of ℂ extends to ℂ, using a transcendence basis and uniqueness of algebraic closures.
 - `PropertyF.Ground.Dimensions.finite_galois_normal_field`: an algebraic complex number belongs to a finite Galois intermediate field given by its normal closure.
 - `PropertyF.Ground.Dimensions.squaredNorm_independent`: intrinsic squared norm is independent of the double-dual isomorphism on each simple; `globalDimensionData_independent` also handles the unit scalar algebra equivalence.
+- `dimensionFieldOfFusionData` constructs the entire old `DimensionField` from fusion’s proven character integrality; the old `FusionData` remains an assumption in this compatibility theorem.
 - `PropertyF.Ground.Dimensions.dimensionFieldOfIntegral`: constructs all fields of `DimensionField δ` from `IsIntegral ℤ (δ : ℂ)`.
 
 - `target_globalDimension_independent_simples` proves the target global dimension is unchanged by any complete pairwise nonisomorphic finite simple list.
@@ -22,7 +23,7 @@
 
 ## Dependencies and remaining work
 
-- Fusion: global FP dimension integrality over ℤ. Once obtained it discharges the input to `dimensionFieldOfIntegral`.
+- Fusion: global FP dimension integrality over ℤ for the genuine target spectral-radius definition. The old `FusionData` version is proved by fusion and connected to `DimensionField`.
 - Integrate/fusion: genuine category and semisimplicity interface needed to construct pivotal and spherical structures, intrinsic norms and their ENO properties.
 - Remaining: positivity/total positivity of squared norms; categorical global dimension ≥ 1; ENO 8.21/8.22 inequalities and equality case; ENO 8.23 canonical spherical structure; construction of pseudo-unitary conjugate real/positive/bounded dimensions and transport. These are substantial mathematical developments, not completed by the arithmetic construction.
 
