@@ -72,10 +72,6 @@ theorem center_artinian (X : CategoryTheory.Center C.Obj) : IsArtinianObject X :
   letI : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
   exact ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
 
-/-- Every actual centre object is Noetherian, without spherical hypotheses. -/
-theorem center_noetherian (X : CategoryTheory.Center C.Obj) : IsNoetherianObject X := by
-  letI : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
-  exact ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedGT⟩
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object embeds in an induced base simple. -/

@@ -95,13 +95,6 @@ theorem center_fusion_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.O
   obtain ⟨m, ⟨a⟩⟩ := regroup_biproduct S V (fun j => hcover (V j) (hV j))
   exact ⟨m, ⟨e ≪≫ a⟩⟩
 
-/-- The induced fusion structure has the global FP-square dimension. -/
-theorem center_fp_square_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.Obj)
-    (r : Retract (𝟙_ (CategoryTheory.Center C.Obj)) ((induction C).obj X ⊗ U)) :
-    letI : IsFusionCategory (CategoryTheory.Center C.Obj) := center_fusion_of_unit_retract C X U r
-    globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 := by
-  letI : IsFusionCategory (CategoryTheory.Center C.Obj) := center_fusion_of_unit_retract C X U r
-  exact globalFPDimension_square_of_actual_induction C
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A cap with nonzero unit composite gives a unit retract. -/
@@ -139,16 +132,6 @@ theorem center_fusion_of_nonzero_induced_trace (X : C.Obj)
     simpa [Dimensions.PivotalStructure.rightTrace, cap, J, Category.assoc] using h
   exact center_fusion_of_nonzero_induced_cap C X cap hcap
 
-/-- Under the unit-retract condition, the actual adjunction unit splits for
-every centre object. -/
-theorem center_induction_retract_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.Obj)
-    (r : Retract (𝟙_ (CategoryTheory.Center C.Obj)) ((induction C).obj X ⊗ U))
-    (Z : CategoryTheory.Center C.Obj) : Nonempty (Retract Z ((induction C).obj Z.1)) := by
-  letI : Injective Z := center_all_injective_of_unit_retract C X U r Z
-  let i := (actualAdjunction C).unit.app Z
-  letI : Mono i := induction_unit_mono C Z
-  obtain ⟨s, hs⟩ := Injective.factors (𝟙 Z) i
-  exact ⟨{ i := i, r := s, retract := hs }⟩
 
 
 end PropertyF.Ground.CentreInduction

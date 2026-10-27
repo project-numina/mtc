@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.CentreInduction.UnitTest
-public import PropertyF.Ground.CentreInduction.Fusion
+public import PropertyF.Ground.CentreInduction.Representatives
+public import PropertyF.Ground.CentreBundle.Fusion
 
 /-! Induction and fusion in the rank-one case. -/
 

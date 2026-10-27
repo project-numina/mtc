@@ -63,7 +63,6 @@ import all PropertyF.Ground.CentreRigid.WindingTensor
 import all PropertyF.Ground.Dimensions.DefectBraiding
 import all PropertyF.Ground.Dimensions.DefectTraceBraiding
 import all PropertyF.Ground.Dimensions.DrinfeldTensorCap
-import all PropertyF.Ground.CentreInduction.DirectDual
 import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.Integrate.PivotalBalancedReduction
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
@@ -111,8 +110,6 @@ import all PropertyF.Ground.CentreCalculus.TypeAPresentation
 import all PropertyF.Ground.CentreCalculus.TypeAQuotient
 import all PropertyF.Ground.CentreCalculus.TypeARelations
 import all PropertyF.Ground.Integrate.CoreIntegralityReduction
-import all PropertyF.Ground.CentreInduction.DoubleBraiding
-import all PropertyF.Ground.CentreInduction.DualBraiding
 import all PropertyF.Ground.CentreInduction.PivotalCentrality
 import all PropertyF.Ground.CentreInduction.PositivePivotal
 import all PropertyF.Ground.Integrate.PivotalOnlyReduction
@@ -186,20 +183,15 @@ import all PropertyF.Ground.CentreInduction.CrossingCoherence
 import all PropertyF.Ground.CentreInduction.CrossingNaturality
 import all PropertyF.Ground.CentreInduction.CrossingTensor
 import all PropertyF.Ground.CentreInduction.CrossingUnit
-import all PropertyF.Ground.CentreInduction.Dominance
-import all PropertyF.Ground.CentreInduction.FiniteLabels
 import all PropertyF.Ground.CentreInduction.FiniteSimples
 import all PropertyF.Ground.CentreInduction.FiniteSum
 import all PropertyF.Ground.CentreInduction.FirstTriangle
 import all PropertyF.Ground.CentreInduction.ForgetDual
-import all PropertyF.Ground.CentreInduction.Fusion
 import all PropertyF.Ground.CentreInduction.InducedTrace
 import all PropertyF.Ground.CentreInduction.InjectiveFusion
 import all PropertyF.Ground.CentreInduction.Injectives
 import all PropertyF.Ground.CentreInduction.PartialTrace
-import all PropertyF.Ground.CentreInduction.PseudoUnitary
 import all PropertyF.Ground.CentreInduction.RankOne
-import all PropertyF.Ground.CentreInduction.RankOneComplete
 import all PropertyF.Ground.CentreInduction.Representatives
 import all PropertyF.Ground.CentreInduction.SecondTriangle
 import all PropertyF.Ground.CentreInduction.SimpleDetection
@@ -209,7 +201,6 @@ import all PropertyF.Ground.CentreInduction.UnitCandidate
 import all PropertyF.Ground.CentreInduction.UnitCentrality
 import all PropertyF.Ground.CentreInduction.UnitCoevaluation
 import all PropertyF.Ground.CentreInduction.UnitDiagram
-import all PropertyF.Ground.CentreInduction.UnitNormalization
 import all PropertyF.Ground.CentreInduction.UnitSummand
 import all PropertyF.Ground.CentreInduction.UnitTest
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
@@ -478,7 +469,6 @@ import all PropertyF.Ground.Integrate.CenterDualMate
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterProductBridge
-import all PropertyF.Ground.Integrate.CenterReduction
 import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
@@ -496,7 +486,6 @@ import all PropertyF.Ground.Integrate.FunctorUniverse
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
-import all PropertyF.Ground.Integrate.OverlapReduction
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
@@ -605,9 +594,6 @@ run_cmd do
       ``PropertyF.Ground.galois_unit_self_entry,
       ``PropertyF.Ground.target_of_numerical_witnesses,
       ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
-      ``PropertyF.Ground.target_of_spherical_and_witness,
-      ``PropertyF.Ground.target_of_canonical_spherical_and_witness,
-      ``PropertyF.Ground.target_of_canonical_spherical_and_center,
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,
@@ -621,8 +607,6 @@ run_cmd do
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
       ``PropertyF.Ground.Integrate.dualCrossing_unit,
       ``PropertyF.Ground.rigidity_of_twisted_overlap,
-      ``PropertyF.Ground.target_of_canonical_spherical_center_and_overlap,
-      ``PropertyF.Ground.target_of_spherical_existence_center_and_overlap,
       ``PropertyF.Ground.target_of_center_and_overlap,
       ``PropertyF.Ground.target_of_modular_center,
       ``PropertyF.Ground.target_of_center_centralizers,

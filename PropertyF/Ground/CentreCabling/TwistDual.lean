@@ -1,6 +1,8 @@
 module
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
-public import PropertyF.Ground.CentreInduction.DualBraiding
+public import PropertyF.Ground.CentreInduction.PositivePivotal
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
+public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.SphericalReal
 

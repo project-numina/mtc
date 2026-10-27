@@ -49,33 +49,5 @@ inductive FiniteSimpleSum (D : Type u) [Category.{v} D] [Preadditive D]
   | cons {X S K} : Simple S → FiniteSimpleSum D K → Nonempty (X ≅ S ⊞ K) →
       FiniteSimpleSum D X
 
-set_option backward.isDefEq.respectTransparency false in
-/-- Assuming the finite loop-sliding identity, every object of the actual
-centre is a finite binary sum of simple objects. -/
-theorem center_finite_simple_sum_of_loop_centrality (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hslide : SimpleLoopCentrality C p) (hne : globalDimension C ≠ 0)
-    (X : CategoryTheory.Center C.Obj) : FiniteSimpleSum (CategoryTheory.Center C.Obj) X := by
-  let m : CategoryTheory.Center C.Obj → ℕ := fun Z => Module.finrank ℂ (Z ⟶ Z)
-  induction X using (measure m).wf.induction with
-  | h X ih =>
-    by_cases hz : IsZero X
-    · exact .zero hz
-    · obtain ⟨S, K, hS, ⟨e⟩⟩ := exists_simple_biprod_of_loop_centrality C p hp hslide hne X hz
-      letI : Simple S := hS
-      letI : ∀ A B : CategoryTheory.Center C.Obj, FiniteDimensional ℂ (A ⟶ B) := by
-        intro A B
-        letI : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
-        exact Centre.finiteDimensional_hom ℂ A B
-      have hs : ¬ IsZero S := by
-        intro h
-        exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp h)
-      have he : Module.finrank ℂ (X ⟶ X) = Module.finrank ℂ (S ⊞ K ⟶ S ⊞ K) :=
-        (CategoryTheory.Linear.homCongr ℂ e e).finrank_eq
-      have hk : m K < m X := by
-        change Module.finrank ℂ (K ⟶ K) < Module.finrank ℂ (X ⟶ X)
-        rw [he]
-        exact finrank_end_complement_lt S K hs
-      exact .cons hS (ih K hk) ⟨e⟩
 
 end PropertyF.Ground.CentreInduction

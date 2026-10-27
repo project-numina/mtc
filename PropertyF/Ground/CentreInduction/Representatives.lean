@@ -1,5 +1,6 @@
 module
-public import PropertyF.Ground.CentreInduction.FiniteLabels
+public import PropertyF.Ground.CentreInduction.FiniteSum
+public import PropertyF.Ground.CentreInduction.Adjunction
 public import PropertyF.Ground.CentreInduction.Biproducts
 
 /-! Distinct finite representatives of simple objects in the centre. -/

@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.CentreInduction.FirstTriangle
-public import PropertyF.Ground.CentreInduction.Fusion
+public import PropertyF.Ground.CentreInduction.Representatives
+public import PropertyF.Ground.CentreBundle.Fusion
 
 /-! Assembly of the induction adjunction from a half-braiding and its two
 remaining coherence obligations. -/
@@ -71,24 +72,6 @@ def adjunctionOfHalfBraiding (C : BraidedFusionCategory.{v,u})
     apply CategoryTheory.Center.ext
     exact htriangle X
 
-/-- It suffices to verify centrality of the proposed unit against the base
-simple representatives. -/
-def adjunctionOfSimpleUnitCentrality (C : BraidedFusionCategory.{v,u})
-    (b : ∀ X : C.Obj, HalfBraiding (underlying C X))
-    (hb : ∀ {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj),
-      ((underlyingFunctor C).map f ▷ T) ≫ ((b Y).β T).hom =
-        ((b X).β T).hom ≫ (T ◁ (underlyingFunctor C).map f))
-    (hunit : ∀ (Z : CategoryTheory.Center C.Obj) (i : Fin (rank C)),
-      (unitCandidate C Z ▷ simples C i) ≫ ((b Z.1).β (simples C i)).hom =
-        (Z.2.β (simples C i)).hom ≫ (simples C i ◁ unitCandidate C Z))
-    (htriangle : ∀ X : C.Obj,
-      unitCandidate C ((inductionOfHalfBraiding C b hb).obj X) ≫
-        (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X)) :
-    CategoryTheory.Center.forget C.Obj ⊣ inductionOfHalfBraiding C b hb := by
-  apply adjunctionOfHalfBraiding C b hb ?_ htriangle
-  intro Z T
-  exact comm_of_simples C Z ((inductionOfHalfBraiding C b hb).obj Z.1)
-    (unitCandidate C Z) (hunit Z) T
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The remaining induction triangle is determined by finitely many matrix

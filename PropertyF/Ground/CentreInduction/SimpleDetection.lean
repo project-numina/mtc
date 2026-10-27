@@ -69,43 +69,5 @@ theorem natTrans_ext_on_simples (C : BraidedFusionCategory.{v,u})
   change a.app (simples C p.1) ≫ _ = b.app (simples C p.1) ≫ _
   rw [h p.1]
 
-set_option backward.isDefEq.respectTransparency false in
-/-- A natural transformation between additive functors is invertible at every
-object if it is invertible on the simple representatives. -/
-theorem natTrans_isIso_of_simples
-    (C : BraidedFusionCategory.{v,u})
-    {D : Type u'} [Category.{v'} D] [Preadditive D] [HasFiniteBiproducts D]
-    (F G : C.Obj ⥤ D) [F.Additive] [G.Additive] (a : F ⟶ G)
-    (h : ∀ i, IsIso (a.app (simples C i))) : ∀ T, IsIso (a.app T) := by
-  classical
-  intro T
-  let V := Dimensions.simplePiecesObject C T
-  let e := Dimensions.simpleDecomposition C T
-  letI (p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T))) : IsIso (a.app (V p)) := h p.1
-  let k : F.obj (⨁ V) ≅ G.obj (⨁ V) := F.mapBiproduct V ≪≫
-    biproduct.mapIso (fun p => asIso (a.app (V p))) ≪≫ (G.mapBiproduct V).symm
-  have hk : a.app (⨁ V) = k.hom := by
-    apply (cancel_mono (G.mapBiproduct V).hom).1
-    apply (cancel_epi (F.mapBiproduct V).inv).1
-    simp only [k, Iso.trans_hom, Iso.symm_hom, Category.assoc,
-      Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id, biproduct.mapIso_hom]
-    apply biproduct.hom_ext'
-    intro p
-    simp only [Functor.mapBiproduct_inv, biproduct.ι_desc_assoc,
-      a.naturality_assoc, biproduct.ι_map, asIso_hom, Category.assoc]
-    have hp : G.map (biproduct.ι V p) ≫ (G.mapBiproduct V).hom =
-        biproduct.ι (G.obj ∘ V) p := by
-      rw [show G.map (biproduct.ι V p) =
-        biproduct.ι (G.obj ∘ V) p ≫ (G.mapBiproduct V).inv by simp [Functor.mapBiproduct_inv]]
-      simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [hp]
-    rfl
-  haveI : IsIso (a.app (⨁ V)) := by rw [hk]; infer_instance
-  have hn := a.naturality e.inv
-  have heq : a.app T = F.map e.hom ≫ a.app (⨁ V) ≫ G.map e.inv := by
-    rw [← hn, ← Category.assoc, ← F.map_comp]
-    simp
-  rw [heq]
-  infer_instance
 
 end PropertyF.Ground.CentreInduction
