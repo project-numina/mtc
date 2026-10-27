@@ -7,6 +7,8 @@
 - `PropertyF.Ground.Dimensions.squaredNorm_independent`: intrinsic squared norm is independent of the double-dual isomorphism on each simple; `globalDimensionData_independent` also handles the unit scalar algebra equivalence.
 - `PropertyF.Ground.Dimensions.dimensionFieldOfIntegral`: constructs all fields of `DimensionField δ` from `IsIntegral ℤ (δ : ℂ)`.
 
+- `PivotalStructure`, `PivotalStructure.rightTrace`, `leftTrace`, `IsSpherical` use actual duality maps; `rightTrace_id`, `leftTrace_id`, and `spherical_norm_eq_dimension_sq` connect them to the existing intrinsic norm. Existence and trace laws remain open.
+
 ## In progress
 
 - Prove elementary dimension consequences and trace infrastructure while waiting for the shared category interface.
