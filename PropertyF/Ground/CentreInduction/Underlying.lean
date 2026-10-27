@@ -29,3 +29,28 @@ theorem fpDimension_underlying (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
   ring
 
 end PropertyF.Ground.CentreInduction
+
+namespace PropertyF.Ground.CentreInduction
+attribute [local instance] CategoryTheory.Abelian.hasFiniteBiproducts
+
+/-- The induction sum is functorial in its middle factor. This is a functor
+in the base category; its lift to the centre is still to be constructed. -/
+def underlyingFunctor (C : BraidedFusionCategory.{v,u}) : C.Obj ⥤ C.Obj where
+  obj := underlying C
+  map {X Y} f := CategoryTheory.Limits.biproduct.map
+    (fun i : Fin (rank C) => (simples C i ◁ f) ▷ (simples C i)ᘁ)
+  map_id X := by
+    apply CategoryTheory.Limits.biproduct.hom_ext'
+    intro i
+    apply CategoryTheory.Limits.biproduct.hom_ext
+    intro j
+    simp [underlying]
+  map_comp f g := by
+    apply CategoryTheory.Limits.biproduct.hom_ext'
+    intro i
+    apply CategoryTheory.Limits.biproduct.hom_ext
+    intro j
+    simp [underlying, Category.assoc, CategoryTheory.MonoidalCategory.whiskerLeft_comp,
+      CategoryTheory.MonoidalCategory.comp_whiskerRight]
+
+end PropertyF.Ground.CentreInduction
