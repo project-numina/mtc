@@ -8,6 +8,7 @@ public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.Norm
 public import PropertyF.Ground.Calculus.StarSpan
 public import PropertyF.Ground.Centre.Embeddings
+public import PropertyF.Ground.Modular.Classification
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
