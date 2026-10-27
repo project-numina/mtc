@@ -25,6 +25,7 @@ public import PropertyF.Ground.Modular.BraidFunctor
 public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Modular.SAdditivity
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
 public import PropertyF.Ground.Modular.PseudoGalois
 public import PropertyF.Ground.Modular.LegacyLabels

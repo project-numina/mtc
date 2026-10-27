@@ -19,6 +19,7 @@ import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Dimensions.DualCoherence
+import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Modular.BraidIso
 import all PropertyF.Ground.Modular.BraidFunctor
@@ -27,6 +28,7 @@ import all PropertyF.Ground.Modular.Classification
 import all PropertyF.Ground.Modular.Labels
 import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.SMatrix
+import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Modular.DimensionNonzero
 import all PropertyF.Ground.Modular.UnitDimension
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
@@ -50,6 +52,8 @@ run_cmd do
       ``PropertyF.Ground.Modular.braidImageFunctorMap_surjective,
       ``PropertyF.Ground.Modular.categoricalS_symmetric,
       ``PropertyF.Ground.Modular.categoricalS_unit,
+      ``PropertyF.Ground.Modular.SEntry_tensor_decomposition,
+      ``PropertyF.Ground.Modular.categoricalS_verlinde_of_hopf_product,
       ``PropertyF.Ground.Modular.simpleDimension_ne_zero,
       ``PropertyF.Ground.Modular.simpleDimension_unit,
       ``PropertyF.Ground.Modular.categoricalS_galois_action,
