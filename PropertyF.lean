@@ -248,6 +248,55 @@ public import PropertyF.Ground.Dimensions.FourthTensorUnit
 public import PropertyF.Ground.Dimensions.RankOneSpherical
 
 public import PropertyF.Ground.Dimensions.RankOneCriterion
+public import PropertyF.Ground.CentreInduction.Underlying
+public import PropertyF.Ground.CentreInduction.GlobalSquare
+public import PropertyF.Ground.CentreInduction.Adjunction
+public import PropertyF.Ground.CentreInduction.SimpleDetection
+public import PropertyF.Ground.CentreInduction.Averaging
+public import PropertyF.Ground.CentreInduction.Splitting
+public import PropertyF.Ground.CentreInduction.Dominance
+public import PropertyF.Ground.CentreInduction.Artinian
+public import PropertyF.Ground.CentreInduction.FiniteSum
+public import PropertyF.Ground.CentreInduction.FiniteLabels
+
+public import PropertyF.Ground.CentreBundle.Fusion
+public import PropertyF.Ground.CentreRigid.Lift
+public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.CentreRigid.MateEquations
+public import PropertyF.Ground.CentreInduction.Fusion
+public import PropertyF.Ground.CentreInduction.UnitTest
+public import PropertyF.Ground.CentreInduction.RankOne
+public import PropertyF.Ground.CentreInduction.UnitSummand
+public import PropertyF.Ground.CentreInduction.PseudoUnitary
+public import PropertyF.Ground.CentreInduction.UnitCandidate
+public import PropertyF.Ground.CentreInduction.UnitCoevaluation
+public import PropertyF.Ground.CentreInduction.FirstTriangle
+public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
+public import PropertyF.Ground.CentreInduction.HomTranspose
+public import PropertyF.Ground.CentreInduction.CrossingBlocks
+
+public import PropertyF.Ground.CentreInduction.TensorDetection
+public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
+public import PropertyF.Ground.CentreInduction.UnitNormalization
+public import PropertyF.Ground.CentreInduction.CrossingUnit
+public import PropertyF.Ground.CentreInduction.CrossingTensor
+public import PropertyF.Ground.CentreInduction.BasisRefinement
+public import PropertyF.Ground.CentreInduction.CrossingCoherence
+public import PropertyF.Ground.CentreInduction.CandidateAssembly
+public import PropertyF.Ground.CentreInduction.AdjunctionMatrix
+public import PropertyF.Ground.CentreInduction.CounitColumn
+public import PropertyF.Ground.CentreInduction.UnitDiagram
+public import PropertyF.Ground.CentreInduction.SecondTriangle
+public import PropertyF.Ground.CentreInduction.UnitCentrality
+public import PropertyF.Ground.CentreInduction.ActualFusion
+public import PropertyF.Ground.CentreInduction.CenterLength
+public import PropertyF.Ground.CentreInduction.FiniteSimples
+public import PropertyF.Ground.CentreInduction.Injectives
+public import PropertyF.Ground.CentreInduction.InjectiveFusion
+
+public import PropertyF.Ground.CentreInduction.BasisPairing
+
+public import PropertyF.Ground.CentreInduction.CrossingNaturality
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
