@@ -150,3 +150,7 @@ into its diagonal partial traces. `winding_natural`, `trace_winding_biproduct`
 and `trace_winding_simple_decomposition` show the actual centre winding
 trace is additive in the test strand and give its simple fusion-multiplicity
 expansion. These are ingredients for Kirby-loop sliding, which remains open.
+`fp_loop_absorption` proves that the FP-weighted sum of closed windings over
+`S_k ⊗ S_i` equals `FPdim(S_k)` times the original sum. With FP-valued
+pivotal dimensions, `loop_absorption` identifies the sum as the actual
+Kirby loop. The geometric sliding identity is still missing.

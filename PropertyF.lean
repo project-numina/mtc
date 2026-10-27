@@ -390,3 +390,5 @@ public import PropertyF.Ground.CentreRigid.PartialTrace
 
 public import PropertyF.Ground.CentreRigid.PartialTraceBiproduct
 public import PropertyF.Ground.CentreRigid.WindingDecomposition
+
+public import PropertyF.Ground.CentreRigid.LoopAbsorption
