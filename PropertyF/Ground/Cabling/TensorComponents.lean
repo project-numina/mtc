@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Cabling.TensorDecomposition
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open scoped BigOperators
 @[expose] public noncomputable section
 namespace PropertyF
 universe v u
@@ -64,4 +65,17 @@ theorem tensorPowerBiproductIso_ι_inv {I : Type} [Fintype I] (f : I → C) :
         (𝟙 (⨁ f) ⊗ₘ (tensorPowerBiproductIso f n).inv) =
         biproduct.ι f (t 0) ⊗ₘ tupleTensorInclusion f n (Fin.tail t)
       rw [Category.id_comp, tensorHom_comp_tensorHom, Category.comp_id, tensorPowerBiproductIso_ι_inv]
+omit [BraidedCategory C] in
+set_option backward.isDefEq.respectTransparency false in
+/-- The cabled block inclusion is the tuple inclusion after the block-power isomorphism. -/
+theorem sumPowersTensorPowerIso_ι_inv {I : Type} [Fintype I] (X : C) (k : I → ℕ)
+    (n : ℕ) (t : Fin n → I) :
+    biproduct.ι (fun t : Fin n → I => tensorPower X (∑ i, k (t i))) t ≫
+      (sumPowersTensorPowerIso X k n).inv =
+    (tupleTensorPowersIso X k n t).inv ≫
+      tupleTensorInclusion (fun i => tensorPower X (k i)) n t := by
+  simp only [sumPowersTensorPowerIso, Iso.trans_inv,
+    biproduct.mapIso_inv, biproduct.ι_map_assoc]
+  rw [tensorPowerBiproductIso_ι_inv]
+
 end PropertyF
