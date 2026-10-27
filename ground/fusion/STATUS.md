@@ -108,8 +108,8 @@ The legacy `FusionData` results are separate from the bundle-free ground results
 
 The round-2 induction and Maschke constructions are in progress. The centre
 fusion property and global FP-square formula have been reduced to explicit
-categorical identities, and proved in rank one assuming centre rigidity; see
-Round 2 progress below for precise theorem statements.
+categorical identities, and proved without additional centre assumptions in
+rank one; see Round 2 progress below for precise theorem statements.
 
 ## Blocked / outstanding
 
@@ -125,8 +125,8 @@ Round 2 progress below for precise theorem statements.
   a spherical structure on pseudo-unitary C; nonzero global dimension follows
   from pseudo-unitarity and FP positivity.
 
-There is no credible completion-time estimate for the general loop-sliding proof. The existing conditional results do not
-prove the frozen target. The global subcategory inequality is proved, but no
+There is no credible completion-time estimate for the general loop-sliding
+proof. The existing conditional results do not prove the frozen target. The global subcategory inequality is proved, but no
 stronger divisibility theorem is claimed. Ground constructions avoid the old
 hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
 
@@ -299,8 +299,9 @@ showed only `propext`, `Classical.choice`, and `Quot.sound`. The explicit
 mathematical premises described above are still unproved.
 
 - The root module `PropertyF.lean` was checked with `lake env lean` after
-  building missing dependencies one at a time; it passed. The integrated
-  `ProjectAudit` build audited 3,250 imported declarations and passed.
+  building missing dependencies one at a time; it passed. An earlier integrated
+  `ProjectAudit` build audited 3,250 imported declarations and passed; that
+  audit predates the latest induction and rank-one additions.
   `#print axioms` for the crossing naturality and completeness, first triangle,
   conditional adjunction/fusion/FP-square, and rank-one FP-square results
   returned only `propext`, `Classical.choice`, and `Quot.sound`. These checks
@@ -317,6 +318,11 @@ and `center_fusion_of_positive_compatible_pivotal` reported only
 still assumes the explicit centre pivotal trace compatibility, and the FP
 square assumes centre rigidity and fusion.
 
+- After merging dimensions `7bd5788`, focused builds for the newly imported
+  dependencies and `RankOneComplete` passed, and the root module checked again.
+  `#print axioms` for the actual adjunction, finite centre simples, the
+  conditional pivotal-centrality fusion result, and the rank-one retract and
+  FP square returned only `propext`, `Classical.choice`, and `Quot.sound`.
 - Merged dimensions commit `7bd5788`: `rankOne_centerRigid` constructs the
   actual centre rigidity instance in rank one. `rankOne_induction_unit_isIso`
   and `rankOne_induction_retract` show the actual induction unit is an
