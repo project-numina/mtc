@@ -67,3 +67,20 @@ theorem rightTrace_id_iso (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y
   simpa using p.rightTrace_cyclic e.hom e.inv
 
 end PropertyF.Ground.Dimensions.PivotalStructure
+
+namespace PropertyF.Ground.Dimensions
+open CategoryTheory CategoryTheory.MonoidalCategory
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
+
+/-- The left quantum trace of an isomorphism is the right quantum trace of the
+corresponding inverse dual isomorphism. -/
+theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :
+    leftQuantumTrace j = rightQuantumTrace (rightDualIsoMap j).symm := by
+  apply End.homEquiv.injective
+  change η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (𝟙 (Xᘁ) ⊗ₘ j.inv) ≫ ε_ X (Xᘁ) =
+    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ ((j.invᘁ) ⊗ₘ 𝟙 ((Xᘁ)ᘁ)) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)
+  simp only [tensorHom_def, id_whiskerRight, whiskerLeft_id, Category.id_comp, Category.comp_id]
+  rw [rightAdjointMate_comp_evaluation]
+
+end PropertyF.Ground.Dimensions
