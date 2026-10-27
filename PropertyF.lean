@@ -366,6 +366,7 @@ public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
 public import PropertyF.Ground.Integrate.CompatibleCenterReduction
 public import PropertyF.Ground.Integrate.RigidCenterReduction
+public import PropertyF.Ground.Integrate.PivotalCentralityReduction
 public import PropertyF.Ground.CentreIntegrate.CycleTraceReduction
 public import PropertyF.Ground.CentreIntegrate.TwistSign
 

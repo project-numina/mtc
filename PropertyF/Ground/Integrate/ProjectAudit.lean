@@ -41,6 +41,9 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreInduction.ForgetDualUnit
+import all PropertyF.Ground.CentreInduction.PivotalLift
+import all PropertyF.Ground.Integrate.PivotalCentralityReduction
 import all PropertyF.Ground.CentreInduction.DualTensorComparison
 import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
 import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
@@ -556,6 +559,8 @@ run_cmd do
       ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
+      ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
+      ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
       ``PropertyF.Ground.CentreRigid.rigidCenter,
       ``PropertyF.Ground.target_of_fusion_center_integral_numerical_core,
       ``PropertyF.Ground.target_of_pivotal_lift_and_integral_numerical_core,

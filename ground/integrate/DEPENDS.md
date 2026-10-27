@@ -98,3 +98,8 @@ Centre rigidity is constructed: `CentreRigid.rigidCenter` is now integrated.
 instance and sphere conditional on a compatible pivotal lift and FP-valued
 base pivotal structure. Those structures, S invertibility and numerical-core
 integrality remain open.
+
+Fusion `f811c73` constructs the centre pivotal lift from
+`PivotalComponentsCentral`; integration wires it into
+`target_of_pivotal_centrality_and_integral_numerical_core`. This centrality and
+the FP-valued base pivotal structure remain unproved.

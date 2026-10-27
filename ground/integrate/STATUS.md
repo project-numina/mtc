@@ -219,3 +219,10 @@ no reliable completion-time estimate is available.
   compatible-pivotal route. The other stated premises remain unproved.
   Expanded project audit and full build pass for 413 modules and 4,311
   declarations. Fusion's newer pivotal-centrality reduction is not yet merged.
+
+- Merged fusion `f811c73`. `target_of_pivotal_centrality_and_integral_numerical_core`
+  now constructs the compatible centre pivotal lift from the explicit
+  `PivotalComponentsCentral` equation, using the constructed centre rigid
+  structure. It still assumes an FP-valued base pivotal structure, that
+  centrality equation, centre S invertibility and numerical-core integrality.
+  The full build and strict project audit pass (416 modules, 4,328 declarations).

@@ -19,6 +19,9 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreInduction.ForgetDualUnit
+import all PropertyF.Ground.CentreInduction.PivotalLift
+import all PropertyF.Ground.Integrate.PivotalCentralityReduction
 import all PropertyF.Ground.CentreInduction.DualTensorComparison
 import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
 import all PropertyF.Ground.CentreInduction.ForgetDualNaturality

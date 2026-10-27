@@ -235,3 +235,10 @@ forgetting to the chosen base data. The reductions
 open target premise. The latest full build and strict project audit pass (413
 modules, 4,311 declarations). Fusion `f811c73` reduces compatible pivotal-lift
 existence to component centrality; it has not yet been merged here.
+
+Fusion `f811c73` and `target_of_pivotal_centrality_and_integral_numerical_core`
+replace the compatible-lift premise by explicit pivotal-component centrality
+for each centre object and base test object. The general centre rigidity is
+already constructed. Base FP-valued pivotal existence, this centrality,
+centre S invertibility and numerical-core integrality remain open. The full
+build and strict project audit pass (416 modules, 4,328 declarations).
