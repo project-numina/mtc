@@ -77,4 +77,39 @@ theorem center_noetherian (X : CategoryTheory.Center C.Obj) : IsNoetherianObject
   letI : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
   exact ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedGT⟩
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Every simple centre object embeds in an induced base simple. -/
+theorem simple_mono_induced_simple (X : CategoryTheory.Center C.Obj) [Simple X] :
+    ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (simples C i), Mono f := by
+  have hx : ¬ IsZero X.1 := by
+    intro hz
+    have hid : (𝟙 X : X ⟶ X) = 0 := by
+      apply CategoryTheory.Center.ext
+      change (CategoryTheory.Center.forget C.Obj).map (𝟙 X) =
+        (CategoryTheory.Center.forget C.Obj).map 0
+      rw [(CategoryTheory.Center.forget C.Obj).map_id, (CategoryTheory.Center.forget C.Obj).map_zero]
+      exact (IsZero.iff_id_eq_zero X.1).mp hz
+    exact id_nonzero X hid
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity C X.1 hx
+  have hi' : 0 < Module.finrank ℂ (X.1 ⟶ simples C i) := by
+    rw [finrank_to_simple_eq_from_simple C]
+    exact hi
+  letI : FiniteDimensional ℂ (X.1 ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp hi'
+  let e := homLinearEquivOfAdjunction (CategoryTheory.Center.forget C.Obj) (induction C)
+    (actualAdjunction C) X (simples C i)
+  let t : X ⟶ (induction C).obj (simples C i) := e.symm g
+  have ht : t ≠ 0 := by
+    intro ht
+    apply hg
+    have := congrArg e ht
+    simpa [t] using this
+  exact ⟨i, t, mono_of_nonzero_from_simple ht⟩
+
+/-- Every nonzero centre object has a simple subobject. -/
+theorem center_exists_simple_subobject (X : CategoryTheory.Center C.Obj) (hX : ¬ IsZero X) :
+    ∃ P : Subobject X, Simple (P : CategoryTheory.Center C.Obj) := by
+  letI : IsArtinianObject X := center_artinian C X
+  exact exists_simple_subobject hX
+
 end PropertyF.Ground.CentreInduction

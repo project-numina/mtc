@@ -158,7 +158,10 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   sum. `unitCandidate_central` proves the candidate unit is a centre map,
   and `actualAdjunction` constructs the actual right adjunction to forget.
   `globalFPDimension_square_of_actual_induction` proves the global FP-square
-  identity whenever the actual centre is rigid and fusion. Averaging-loop
+  identity whenever the actual centre is rigid and fusion. `center_artinian`
+  and `center_noetherian` establish both chain conditions unconditionally;
+  every nonzero centre object has a simple subobject, and every simple embeds
+  into an induced base simple (`simple_mono_induced_simple`). Averaging-loop
   sliding and construction of centre fusion remain open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
   unit-counit column on simple test strands. `crossingUnitBlock_eval` proves
