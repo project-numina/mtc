@@ -1,0 +1,114 @@
+module
+public import PropertyF.Ground.Modular.Labels
+public import PropertyF.Ground.Modular.BraidFunctor
+public import PropertyF.Ground.Fusion.Multiplicity
+public import Mathlib.LinearAlgebra.Dimension.Finrank
+public import Mathlib.LinearAlgebra.Matrix.Reindex
+
+/-!
+# Galois invariance of fusion rules and property F
+
+A semilinear equivalence induces additive Hom equivalences, preserves Hom
+finranks, and therefore carries the fusion matrices to their reindexings.
+Spectrum invariance under algebra equivalence proves the ground target's
+spectral-radius FP dimensions are preserved without a Perron–Frobenius theorem.
+-/
+open scoped BigOperators
+open CategoryTheory CategoryTheory.MonoidalCategory
+open CategoryTheory.Functor.Monoidal
+@[expose] public noncomputable section
+namespace PropertyF.Ground.Modular
+universe v u
+
+/-- Semilinear equivalences preserve the dimensions of Hom spaces. -/
+theorem conjugate_hom_finrank (C D : Ground.BraidedFusionCategory.{v,u})
+    {σ : ℂ ≃+* ℂ} (h : Ground.GaloisConjugate C D σ) (X Y : C.Obj) :
+    Module.finrank ℂ (X ⟶ Y) =
+      Module.finrank ℂ (h.equivalence.functor.obj X ⟶ h.equivalence.functor.obj Y) := by
+  let F := h.equivalence.functor
+  let _ : F.Additive := F.additive_of_preserves_binary_products
+  let eqv : (X ⟶ Y) ≃+ (F.obj X ⟶ F.obj Y) :=
+    AddEquiv.ofBijective F.mapAddHom ⟨F.map_injective, F.map_surjective⟩
+  have hr := lift_rank_eq_of_equiv_equiv σ eqv σ.bijective (fun z f => h.map_smul z f)
+  have hf := congrArg Cardinal.toNat hr
+  simpa only [Cardinal.toNat_lift, Module.finrank] using hf
+
+/-- The semilinear equivalence preserves the categorical fusion coefficients. -/
+theorem conjugate_fusionCoeff (C D : Ground.BraidedFusionCategory.{v,u})
+    {σ : ℂ ≃+* ℂ} (h : Ground.GaloisConjugate C D σ)
+    (e : Fin (rank C) ≃ Fin (rank D))
+    (he : ∀ i, Nonempty (h.equivalence.functor.obj (simples C i) ≅ simples D (e i)))
+    (i j k : Fin (rank C)) : fusionCoeff C i j k = fusionCoeff D (e i) (e j) (e k) := by
+  let F := h.equivalence.functor
+  let _ := h.monoidal
+  let a := (he i).some
+  let b := (he j).some
+  let c := (he k).some
+  let t : F.obj (simples C i ⊗ simples C j) ≅ simples D (e i) ⊗ simples D (e j) :=
+    (μIso F (simples C i) (simples C j)).symm ≪≫ (a ⊗ᵢ b)
+  change Module.finrank ℂ (simples C k ⟶ simples C i ⊗ simples C j) = _
+  rw [conjugate_hom_finrank C D h]
+  exact (CategoryTheory.Linear.homCongr ℂ c t).finrank_eq
+
+
+/-- Conjugation transports the target's fusion matrix by reindexing. -/
+theorem conjugate_fusionMatrix (C D : Ground.BraidedFusionCategory.{v,u})
+    {σ : ℂ ≃+* ℂ} (h : Ground.GaloisConjugate C D σ)
+    (e : Fin (rank C) ≃ Fin (rank D))
+    (he : ∀ i, Nonempty (h.equivalence.functor.obj (simples C i) ≅ simples D (e i)))
+    (i : Fin (rank C)) :
+    Matrix.reindexAlgEquiv ℂ ℂ e (fusionMatrix C i) = fusionMatrix D (e i) := by
+  ext k j
+  have hc := conjugate_fusionCoeff C D h e he i (e.symm j) (e.symm k)
+  simp only [e.apply_symm_apply] at hc
+  simpa only [fusionCoeff, fusionMatrix, Matrix.coe_reindexAlgEquiv, Matrix.reindex_apply,
+    Matrix.submatrix_apply] using congrArg (fun n : ℕ => (n : ℂ)) hc
+
+/-- The spectral-radius FP dimensions are invariant under Galois conjugation. -/
+theorem conjugate_fpSimple (C D : Ground.BraidedFusionCategory.{v,u})
+    {σ : ℂ ≃+* ℂ} (h : Ground.GaloisConjugate C D σ)
+    (e : Fin (rank C) ≃ Fin (rank D))
+    (he : ∀ i, Nonempty (h.equivalence.functor.obj (simples C i) ≅ simples D (e i)))
+    (i : Fin (rank C)) : fpSimple C i = fpSimple D (e i) := by
+  have hm := conjugate_fusionMatrix C D h e he i
+  unfold fpSimple
+  rw [← hm, spectralRadius_eq_of_unital, spectralRadius_eq_of_unital,
+    AlgEquiv.spectrum_eq]
+
+
+/-- Galois conjugacy gives the label bijection and preserves each FP dimension. -/
+theorem conjugate_labels (C D : Ground.BraidedFusionCategory.{v,u})
+    {σ : ℂ ≃+* ℂ} (h : Ground.GaloisConjugate C D σ) :
+    ∃ e : Fin (rank C) ≃ Fin (rank D), ∀ i, fpSimple C i = fpSimple D (e i) := by
+  obtain ⟨e, he⟩ := simpleLabels_equiv C D h.equivalence
+  exact ⟨e, conjugate_fpSimple C D h e he⟩
+
+/-- The target's global FP dimension is invariant under Galois conjugacy. -/
+theorem conjugate_globalFPDimension (C D : Ground.BraidedFusionCategory.{v,u})
+    {σ : ℂ ≃+* ℂ} (h : Ground.GaloisConjugate C D σ) :
+    globalFPDimension C = globalFPDimension D := by
+  obtain ⟨e, he⟩ := conjugate_labels C D h
+  unfold globalFPDimension
+  calc
+    ∑ i, fpSimple C i ^ 2 = ∑ i, fpSimple D (e i) ^ 2 := by simp only [he]
+    _ = ∑ j, fpSimple D j ^ 2 := e.sum_comp (fun j => fpSimple D j ^ 2)
+
+
+/-- Ground version of braid-image invariance for a conjugate category. -/
+theorem ground_conjugate_images (C D : Ground.BraidedFusionCategory.{v,u})
+    {σ : ℂ ≃+* ℂ} (h : Ground.GaloisConjugate C D σ) (Y : D.Obj) (n : ℕ) :
+    ∃ X : C.Obj, Nonempty (braidImage Y n ≃* braidImage X n) := by
+  let _ := h.monoidal
+  let _ := h.braided
+  exact braidImages_of_essentiallySurjective h.equivalence.functor Y n
+
+/-- Property F is invariant in the forward direction under Galois conjugacy. -/
+theorem conjugate_propertyF (C D : Ground.BraidedFusionCategory.{v,u})
+    {σ : ℂ ≃+* ℂ} (h : Ground.GaloisConjugate C D σ)
+    (hF : HasPropertyF C.Obj) : HasPropertyF D.Obj := by
+  intro Y n
+  obtain ⟨X, ⟨e⟩⟩ := ground_conjugate_images C D h Y n
+  let _ : Finite (braidImage X n) := hF X n
+  exact Finite.of_equiv (braidImage X n) e.symm.toEquiv
+
+end PropertyF.Ground.Modular
