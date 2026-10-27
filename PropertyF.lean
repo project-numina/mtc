@@ -385,3 +385,5 @@ public import PropertyF.Ground.CentreRigid.Evaluation
 public import PropertyF.Ground.CentreRigid.ForgetComparison
 
 public import PropertyF.Ground.CentreBundle.Canonical
+
+public import PropertyF.Ground.CentreRigid.PartialTrace

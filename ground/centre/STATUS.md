@@ -140,3 +140,8 @@ build passes; the needed pivotal centrality and base positive sphere are open.
 `rigidCenter` directly; `globalFPDimension_bundledOfFiniteSemisimple` proves
 the FP square using the actual induction adjunction. Their sole remaining
 premise is the explicit finite-semiplicity decomposition. Focused build passes.
+For the separate Kirby-loop route, `partialTraceHom_dinatural` proves a
+morphism can be moved around the closed strand of a pivotal partial trace,
+and `partialTraceHom_conjugate` proves invariance under changing the closed
+object by an isomorphism. These hold for arbitrary pivotal categories and
+are tools toward, not proofs of, general loop sliding. Focused build passes.
