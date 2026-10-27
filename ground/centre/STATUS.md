@@ -107,3 +107,9 @@ base evaluation/coevaluation definitionally. This strengthens the rank-one
 comparison with the previously constructed equivalence-based instance; it
 has no implication for general rank. The focused build passes and the main
 instance has only the three standard Lean axioms.
+`dualMate_counit_explicit` and `dualMate_unit_explicit` express the abstract
+mate equations through the actual cups and caps. Moreover,
+`dualMateUnit_crossed_coevaluation` identifies the unit normalization with the
+crossed coevaluation: the base right-dual cup followed by the half-braiding
+is the base left-dual cup followed by the normalization map. This is a concrete
+step toward the general centrality and tensor diagrams, not their proof.

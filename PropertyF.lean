@@ -369,3 +369,5 @@ public import PropertyF.Ground.CentreRigid.SimpleCentrality
 public import PropertyF.Ground.CentreRigid.SimpleTensor
 
 public import PropertyF.Ground.CentreRigid.RankOneMate
+
+public import PropertyF.Ground.CentreRigid.MateExplicit
