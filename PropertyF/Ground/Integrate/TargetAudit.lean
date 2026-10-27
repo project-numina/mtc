@@ -3,6 +3,7 @@ public import PropertyF.Ground.Final
 public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -23,6 +24,7 @@ import all PropertyF.Ground.Calculus.StarSpan
 import all PropertyF.Ground.Calculus.Unitarization
 import all PropertyF.Ground.Centre.Embeddings
 import all PropertyF.Ground.Dimensions.BiproductTrace
+import all PropertyF.Ground.Dimensions.CharacterBound
 import all PropertyF.Ground.Dimensions.DimensionField
 import all PropertyF.Ground.Dimensions.FusionDimensionField
 import all PropertyF.Ground.Dimensions.GlobalInequality
@@ -35,11 +37,13 @@ import all PropertyF.Ground.Final
 import all PropertyF.Ground.Fusion.Integrality
 import all PropertyF.Ground.Fusion.MatrixIntegral
 import all PropertyF.Ground.Fusion.Multiplicity
+import all PropertyF.Ground.Fusion.PositiveMatrix
 import all PropertyF.Ground.Fusion.Reciprocity
 import all PropertyF.Ground.Fusion.Schur
 import all PropertyF.Ground.Fusion.Simples
 import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Fusion.Splitting
+import all PropertyF.Ground.Fusion.TotalMatrix
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.Conjugacy
 import all PropertyF.Ground.Integrate.DependencyAudit
@@ -54,7 +58,10 @@ import all PropertyF.Ground.Modular.BraidFunctor
 import all PropertyF.Ground.Modular.BraidIso
 import all PropertyF.Ground.Modular.Characters
 import all PropertyF.Ground.Modular.Classification
+import all PropertyF.Ground.Modular.FusionTransport
+import all PropertyF.Ground.Modular.GaloisFromVerlinde
 import all PropertyF.Ground.Modular.Labels
+import all PropertyF.Ground.Modular.SMatrix
 import all PropertyF.Ground.Target
 import all PropertyF.Main
 import all PropertyF.PowerBound
