@@ -1,5 +1,6 @@
 module
 public import PropertyF.Audit
+public meta import PropertyF.Ground.Integrate.DependencyAudit
 public import PropertyF.Ground.Integrate.UnitScalar
 public import PropertyF.Ground.Integrate.Example
 public import PropertyF.Ground.Fusion.Integrality
@@ -27,3 +28,15 @@ run_cmd do
           throwError "Unexpected axiom {ax} in project declaration {name}"
       checked := checked + 1
   logInfo m!"Audited {checked} integrated project declarations: no sorryAx or custom axioms."
+
+open Lean Elab Command PropertyF.Ground.DependencyAudit in
+run_cmd do
+  let env ← getEnv
+  unless (findForbidden env ``PropertyF.propertyF_implies_weaklyIntegral).isSome do
+    throwError "dependency audit did not reject the imported conditional theorem"
+  for n in #[``PropertyF.Ground.unit_algebraMap_bijective,
+      ``PropertyF.Ground.Example.complexVectorSpaces,
+      ``PropertyF.Ground.Dimensions.squaredNorm_independent] do
+    if let some bad := findForbidden env n then
+      throwError "unexpected old hypothesis {bad} in ground result {n}"
+  logInfo "Dependency audit passed imported positive and negative fixtures."
