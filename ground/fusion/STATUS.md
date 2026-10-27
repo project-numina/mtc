@@ -156,7 +156,10 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   crossed object, tensor law, unit centrality, and the second triangle
   remain unproved. `crossing_completeness` and
   `crossingInclusion_projection_ne` prove the completeness and off-diagonal
-  vanishing relations for the chosen simple summands.
+  vanishing relations for the chosen simple summands. `pairing_crossingProjection`
+  identifies these projections with the dual basis, and
+  `fusionBasis_contraction_natural` proves the natural contraction identity
+  needed to compare decompositions on the two sides of a test-object map.
   `halfBraidingOfCrossingCandidate` assembles the half-braiding from the
   still-unproved invertibility, crossed-object naturality, and tensor law;
   its naturality in the induction argument follows from the matrix proof.
