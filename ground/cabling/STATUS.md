@@ -217,3 +217,52 @@ double centralizer, actual-centre reduction, S-test saturation, product
 closure, dual closure and core identification report only `propext`,
 `Classical.choice`, and `Quot.sound`. The new centre-cabling files contain no
 `sorry`, `admit`, `axiom`, `native_decide`, `implemented_by`, or `extern`.
+
+## Round 3 continuation
+
+Merged the integration snapshot. `natural_end_finite_order_of_simples` proves
+that finite order on the finitely many simple components gives a common order
+on every object. `mixed_monodromy_finite_of_balanced_finite_twist` proves that
+any balanced natural automorphism with finite-order simple components gives
+finite-order mixed monodromy on all object pairs. The proof is independent of
+property F and positivity. The pivotal twist's balancing equation and the Vafa
+root-of-unity theorem are still explicit missing ingredients, so this is not a
+proof of the centre centralizer condition or of the frozen target. Focused build
+passed. Next: derive the pivotal twist balance and the algebraic consequences
+of Vafa's determinant relations.
+
+`finite_order_of_integer_relations` proves nonsingular integer exponent
+relations force finite order in any commutative group using the adjugate.
+`vafaMatrix_det_ne_zero` proves strict diagonal dominance for the relevant
+weighted relations, and `finite_order_of_vafa_relations` yields torsion.
+`vafaWeight_sum` and `vafaMultiplicity_pos` verify that the actual fusion
+multiplicities satisfy the needed strict inequality. Finally,
+`mixed_monodromy_finite_of_vafa_relations` connects the *actual* pivotal twist
+to finite mixed monodromy, conditional on the precise standard lantern
+relations and the balancing equation. Both categorical identities remain
+unproved; this is not a proof of Vafa's theorem or the target. Focused builds
+passed. The next concrete work is to derive those identities from braiding,
+pivotal coherence and the induced linear maps on multiplicity spaces.
+
+`natural_postcomp_simple` and `determinant_natural_postcomp_simple` compute
+the actual linear map and determinant induced by any natural endomorphism on
+maps from a simple object. `vafaMultiplicity_eq_finrank` identifies the
+lantern exponent with the dimension of the actual triple-tensor Hom space.
+These are steps toward the lantern determinant calculation; the three pair
+operators and the lantern identity remain unproved. Focused build passed.
+
+`det_dependent_pi_scalar` computes a dependent-product scalar determinant.
+`determinant_postcomp_biproduct_scalar` and `natural_whisker_diagonal` transfer
+that calculation to actual categorical tensor factors. In particular,
+`determinant_vafa_first_pair` proves the first pair-twist determinant with the
+precise fusion-coefficient exponents appearing in `vafaWeight`. Focused build
+passed. The other two pair operators, the lantern relation and twist balance
+remain to be established.
+
+`determinant_vafa_pair_conjugate` computes every transported pair-twist
+determinant. `vafa_relations_of_lantern` derives the precise Vafa scalar
+relations from an explicit identity of actual three-strand endomorphisms.
+`vafaCross13` and `vafaCross23` specify the crossings, and
+`mixed_monodromy_finite_of_pivotal_lantern` reduces arbitrary mixed-monodromy
+finiteness to that particular pivotal lantern identity and the pivotal twist
+balancing law. Neither identity is claimed proved. Focused build passed.

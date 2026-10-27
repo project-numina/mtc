@@ -109,3 +109,10 @@ compatible lift. Together with actual centre rigidity, the centre fusion and
 sphere follow from pseudo-unitarity and any base pivotal structure. The
 current `target_of_pivotal_base_and_integral_numerical_core` leaves base
 pivotal existence, centre S invertibility and numerical-core integrality.
+
+The alternate actual-core route now constructs core integrality from spherical
+structure and twist balancing on core simples and their duals, using calculus's
+constructed permutation action and spherical trace identity. The associated
+`target_of_pivotal_base_balancing_and_image_monodromy` keeps base pivotal
+existence, centre S invertibility, twist balancing, and restricted mixed
+monodromy as explicit unproved conditions.

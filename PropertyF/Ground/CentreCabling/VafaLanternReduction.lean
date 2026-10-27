@@ -1,0 +1,168 @@
+module
+public import PropertyF.Ground.CentreCabling.VafaDeterminant
+
+/-! The categorical lantern identity implies the scalar Vafa relations. -/
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+open scoped BigOperators
+namespace PropertyF.Ground.CentreCabling
+universe v u
+
+/-- The simple scalar of a natural endomorphism. -/
+def naturalSimpleScalar (C : Ground.BraidedFusionCategory.{v,u})
+    (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj) (i : Fin (rank C)) : ℂ :=
+  Calculus.groundSimpleScalar C i (End.of (α.app (simples C i)))
+
+/-- The three-strand object used in Vafa's determinant calculation. -/
+def vafaObject (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (rank C)) : C.Obj :=
+  (simples C i ⊗ simples C (dualIndex C i)) ⊗ simples C i
+
+/-- Pair twist on the first and second tensor factors. -/
+def vafaPair12 (C : Ground.BraidedFusionCategory.{v,u})
+    (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj) (i : Fin (rank C)) : vafaObject C i ⟶ vafaObject C i :=
+  α.app (simples C i ⊗ simples C (dualIndex C i)) ▷ simples C i
+
+/-- The crossed first/third pair, transported through a chosen crossing. -/
+def vafaPair13 (C : Ground.BraidedFusionCategory.{v,u})
+    (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj) (i : Fin (rank C))
+    (e : vafaObject C i ≅ (simples C i ⊗ simples C i) ⊗ simples C (dualIndex C i)) :
+    vafaObject C i ⟶ vafaObject C i :=
+  e.hom ≫ (α.app (simples C i ⊗ simples C i) ▷ simples C (dualIndex C i)) ≫ e.inv
+
+/-- The second/third pair, transported through a chosen crossing. -/
+def vafaPair23 (C : Ground.BraidedFusionCategory.{v,u})
+    (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj) (i : Fin (rank C))
+    (e : vafaObject C i ≅ (simples C (dualIndex C i) ⊗ simples C i) ⊗ simples C i) :
+    vafaObject C i ⟶ vafaObject C i :=
+  e.hom ≫ (α.app (simples C (dualIndex C i) ⊗ simples C i) ▷ simples C i) ≫ e.inv
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The lantern identity on actual endomorphisms implies the scalar Vafa
+relations. The choice of crossing and the identity itself are explicit. -/
+theorem vafa_relations_of_lantern
+    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
+    (e13 : ∀ i, vafaObject C i ≅
+      (simples C i ⊗ simples C i) ⊗ simples C (dualIndex C i))
+    (e23 : ∀ i, vafaObject C i ≅
+      (simples C (dualIndex C i) ⊗ simples C i) ⊗ simples C i)
+    (h : ∀ i, vafaPair12 C α i ≫ vafaPair13 C α i (e13 i) ≫
+      vafaPair23 C α i (e23 i) = naturalSimpleScalar C α i ^ 3 • α.app (vafaObject C i))
+    (i : Fin (rank C)) :
+    naturalSimpleScalar C α i ^ (4 * vafaMultiplicity C i) =
+      ∏ j, naturalSimpleScalar C α j ^ vafaWeight C i j := by
+  classical
+  have hh := congrArg (fun f => LinearMap.det
+    (CategoryTheory.Linear.rightComp ℂ (simples C i) f)) (h i)
+  rw [determinant_postcomp_comp, determinant_postcomp_comp,
+    determinant_postcomp_smul] at hh
+  erw [determinant_natural_postcomp_simple C α i (vafaObject C i)] at hh
+  have h12 := determinant_vafa_first_pair C α i
+  have h13 := determinant_vafa_pair_conjugate C α i i i (dualIndex C i) (vafaObject C i) (e13 i)
+  have h23 := determinant_vafa_pair_conjugate C α i (dualIndex C i) i i (vafaObject C i) (e23 i)
+  change LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C i) (vafaPair12 C α i)) = _ at h12
+  change LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C i) (vafaPair13 C α i (e13 i))) = _ at h13
+  change LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C i) (vafaPair23 C α i (e23 i))) = _ at h23
+  rw [h12, h13, h23] at hh
+  change (∏ j, naturalSimpleScalar C α j ^
+      (fusionCoeff C i (dualIndex C i) j * fusionCoeff C j i i)) *
+    ((∏ j, naturalSimpleScalar C α j ^
+      (fusionCoeff C i i j * fusionCoeff C j (dualIndex C i) i)) *
+    (∏ j, naturalSimpleScalar C α j ^
+      (fusionCoeff C (dualIndex C i) i j * fusionCoeff C j i i))) =
+    (naturalSimpleScalar C α i ^ 3) ^ Module.finrank ℂ (simples C i ⟶ vafaObject C i) *
+      naturalSimpleScalar C α i ^ Module.finrank ℂ (simples C i ⟶ vafaObject C i) at hh
+  have hdim : Module.finrank ℂ (simples C i ⟶ vafaObject C i) = vafaMultiplicity C i := by
+    simpa [vafaObject] using (vafaMultiplicity_eq_finrank C i).symm
+  rw [hdim] at hh
+  have h23' : (∏ j, naturalSimpleScalar C α j ^
+      (fusionCoeff C (dualIndex C i) i j * fusionCoeff C j i i)) =
+      ∏ j, naturalSimpleScalar C α j ^
+        (fusionCoeff C i (dualIndex C i) j * fusionCoeff C j i i) := by
+    simp_rw [fusionCoeff_comm C (dualIndex C i) i]
+  rw [h23'] at hh
+  have hprod : (∏ j, naturalSimpleScalar C α j ^ vafaWeight C i j) =
+      (∏ j, naturalSimpleScalar C α j ^
+        (fusionCoeff C i (dualIndex C i) j * fusionCoeff C j i i)) *
+      (∏ j, naturalSimpleScalar C α j ^
+        (fusionCoeff C i i j * fusionCoeff C j (dualIndex C i) i)) *
+      (∏ j, naturalSimpleScalar C α j ^
+        (fusionCoeff C i (dualIndex C i) j * fusionCoeff C j i i)) := by
+    rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
+    apply Finset.prod_congr rfl
+    intro j hj
+    rw [← pow_add, ← pow_add]
+    congr 1
+    unfold vafaWeight
+    ring
+  rw [hprod]
+  have hr : (naturalSimpleScalar C α i ^ 3) ^ vafaMultiplicity C i * naturalSimpleScalar C α i ^ vafaMultiplicity C i =
+      naturalSimpleScalar C α i ^ (4 * vafaMultiplicity C i) := by
+    rw [← pow_mul, ← pow_add]
+    congr 1
+    omega
+  rw [hr] at hh
+  simpa only [mul_assoc] using hh.symm
+
+/-- The natural simple scalar agrees with the actual pivotal twist unit. -/
+theorem natural_pivotal_twist_scalar
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
+    naturalSimpleScalar C (Dimensions.pivotalBraidedTwistNaturalIso C p).hom i =
+      (pivotalTwistUnit C p i : ℂ) := by
+  letI : Simple (simples C i) := simples_simple C i
+  change Calculus.groundSimpleScalar C i (End.of
+    (Dimensions.pivotalBraidedTwist C p (simples C i)).hom) = _
+  rw [Dimensions.pivotalBraidedTwist_simple]
+  change Calculus.groundSimpleScalar C i
+    (Dimensions.pivotalBraidedTwistScalar C p (simples C i) • (1 : End (simples C i))) = _
+  simp [pivotalTwistUnit]
+
+/-- Crossing the middle and last strands brings the first/third pair together. -/
+def vafaCross13 (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
+    vafaObject C i ≅ (simples C i ⊗ simples C i) ⊗ simples C (dualIndex C i) :=
+  (α_ (simples C i) (simples C (dualIndex C i)) (simples C i)) ≪≫
+    (Iso.refl (simples C i) ⊗ᵢ β_ (simples C (dualIndex C i)) (simples C i)) ≪≫
+    (α_ (simples C i) (simples C i) (simples C (dualIndex C i))).symm
+
+/-- Rotate the first strand around the second and third to expose their pair. -/
+def vafaCross23 (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
+    vafaObject C i ≅ (simples C (dualIndex C i) ⊗ simples C i) ⊗ simples C i :=
+  (α_ (simples C i) (simples C (dualIndex C i)) (simples C i)) ≪≫
+    β_ (simples C i) (simples C (dualIndex C i) ⊗ simples C i)
+
+/-- The actual pivotal lantern equation implies the required unit-valued
+Vafa relations. The lantern equation remains an explicit hypothesis. -/
+theorem pivotal_vafa_relations_of_lantern
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj))
+    (h : ∀ i, let α := (Dimensions.pivotalBraidedTwistNaturalIso C p).hom
+      vafaPair12 C α i ≫ vafaPair13 C α i (vafaCross13 C i) ≫
+        vafaPair23 C α i (vafaCross23 C i) =
+          naturalSimpleScalar C α i ^ 3 • α.app (vafaObject C i)) :
+    ∀ i, pivotalTwistUnit C p i ^ (4 * vafaMultiplicity C i) =
+      ∏ j, pivotalTwistUnit C p j ^ vafaWeight C i j := by
+  intro i
+  have hh := vafa_relations_of_lantern C (Dimensions.pivotalBraidedTwistNaturalIso C p).hom
+    (vafaCross13 C) (vafaCross23 C) h i
+  simp_rw [natural_pivotal_twist_scalar] at hh
+  apply Units.ext
+  simpa using hh
+
+/-- Finite mixed monodromy follows from the actual pivotal lantern and
+balancing identities. These identities remain explicit premises. -/
+theorem mixed_monodromy_finite_of_pivotal_lantern
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj))
+    (h : ∀ i, let α := (Dimensions.pivotalBraidedTwistNaturalIso C p).hom
+      vafaPair12 C α i ≫ vafaPair13 C α i (vafaCross13 C i) ≫
+        vafaPair23 C α i (vafaCross23 C i) =
+          naturalSimpleScalar C α i ^ 3 • α.app (vafaObject C i))
+    (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
+      ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
+        (Dimensions.pivotalBraidedTwist C p Y).hom) =
+      (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom)
+    (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) :=
+  mixed_monodromy_finite_of_vafa_relations C p (pivotal_vafa_relations_of_lantern C p h)
+    hbalance X Y
+
+end PropertyF.Ground.CentreCabling
