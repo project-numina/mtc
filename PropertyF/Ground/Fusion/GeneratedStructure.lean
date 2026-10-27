@@ -101,4 +101,17 @@ def generatedFusionCategory (D : BraidedFusionCategory.{v,u})
   exact { Obj := generatedCategory X }
 
 
+/-- The generated subcategory inclusion preserves FP dimension. -/
+theorem generatedFusionCategory_fpDimension (D : BraidedFusionCategory.{v,u})
+    (X : D.Obj) (Y : (generatedFusionCategory D X).Obj) :
+    fpDimension (generatedFusionCategory D X) Y = fpDimension D Y.obj := by
+  letI := generatedCategoryAbelian D X
+  letI := generatedCategoryRigid D X
+  letI := generatedCategoryFusion D X
+  let F := generatedInclusion X
+  letI ha : F.Additive := inferInstance
+  letI hf : F.Faithful := inferInstance
+  letI hm : F.Monoidal := inferInstance
+  exact (@fpDimension_functor (generatedFusionCategory D X) D F ha hf hm Y).symm
+
 end PropertyF.Ground
