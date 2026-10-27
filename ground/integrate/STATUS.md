@@ -292,3 +292,11 @@ no reliable completion-time estimate is available.
   supplies the monodromy-first balancing convention. The cap identity and
   base pivotal existence remain unproved. Full build and strict project audit
   pass (481 modules, 4,749 declarations).
+
+- `target_of_fourthDual_tensor_and_center_cap` connects dimensions' ENO
+  construction to the cap-based target reduction: the base fourth-dual tensor
+  law supplies the positive spherical base structure. The base fourth-dual law
+  and centre cap identity remain explicit, unproved premises. Fusion is
+  deriving the fourth-dual law from the Drinfeld tensor law; dimensions and
+  calculus are pursuing the cap diagram. Full build and strict project audit
+  pass (482 modules, 4,750 declarations).

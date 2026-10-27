@@ -230,6 +230,7 @@ import all PropertyF.Ground.Dimensions.SphericalPivotalDual
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
 import all PropertyF.Ground.Integrate.NumericalCoreReduction
+import all PropertyF.Ground.Integrate.FourthDualCenterReduction
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -627,6 +628,7 @@ run_cmd do
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
+      ``PropertyF.Ground.target_of_fourthDual_tensor_and_center_cap,
       ``PropertyF.Ground.target_of_pivotal_base_and_center_cap,
       ``PropertyF.Ground.CentreIntegrate.pivotal_balance_of_drinfeld_tensor,
       ``PropertyF.Ground.target_of_pivotal_base_and_center_balancing,

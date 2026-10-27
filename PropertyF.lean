@@ -392,6 +392,7 @@ public import PropertyF.Ground.Integrate.BalancedCenterReduction
 public import PropertyF.Ground.Integrate.TransparentCenterReduction
 public import PropertyF.Ground.Integrate.PivotalBalancedReduction
 public import PropertyF.Ground.Integrate.CapCenterReduction
+public import PropertyF.Ground.Integrate.FourthDualCenterReduction
 public import PropertyF.Ground.CentreIntegrate.CycleTraceReduction
 public import PropertyF.Ground.CentreIntegrate.TwistSign
 public import PropertyF.Ground.CentreIntegrate.TwistDual

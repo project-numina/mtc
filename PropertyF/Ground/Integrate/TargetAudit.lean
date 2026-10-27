@@ -208,6 +208,7 @@ import all PropertyF.Ground.Dimensions.SphericalPivotalDual
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
 import all PropertyF.Ground.Integrate.NumericalCoreReduction
+import all PropertyF.Ground.Integrate.FourthDualCenterReduction
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms

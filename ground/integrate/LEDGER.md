@@ -311,3 +311,11 @@ imply the target. `pivotal_balance_of_drinfeld_tensor` translates its
 Drinfeld tensor consequence to the balancing convention needed by Vafa.
 Neither cap identity nor base pivotal existence is claimed. Full build and
 strict project audit pass (481 modules, 4,749 declarations).
+
+`target_of_fourthDual_tensor_and_center_cap` supplies the pseudo-unitary base
+pivotal structure using the proved ENO construction under the fourth-dual
+tensor law. Its two explicit remaining coherence premises are that law on
+the base and the tensor-pairing cap identity on its constructed centre.
+Fusion is working on deriving the first from Drinfeld's tensor law; dimensions
+and calculus are working on the cap. Full build and strict audit pass (482
+modules, 4,750 declarations).
