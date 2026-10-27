@@ -72,6 +72,7 @@ public import PropertyF.Ground.Cabling.TensorDecomposition
 public import PropertyF.Ground.Cabling.TensorComponents
 public import PropertyF.Ground.Cabling.MixedBraid
 public import PropertyF.Ground.Cabling.Zero
+public import PropertyF.Ground.Cabling.UnitBraid
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple
