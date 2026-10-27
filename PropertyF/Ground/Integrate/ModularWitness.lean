@@ -21,7 +21,7 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     (hdet : (Modular.categoricalS Z p).det ≠ 0)
     (δ : ℝ) (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) :
-    ∃ (y : Fin (rank Z)) (f d : ℝ), 1 ≤ f ∧
+    ∃ (y : Fin (rank Z)) (f d : ℝ), 1 ≤ f ∧ f = fpSimple Z y ∧
       σ (f : ℂ) = (d : ℂ) ∧ y = dualIndex Z y ∧
       (∀ x, Modular.categoricalS Z p x y =
         (f : ℂ) * σ.symm (Modular.simpleDimension Z p x)) ∧
@@ -49,7 +49,8 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     apply Complex.conj_eq_iff_re.mp
     simpa only [← Complex.star_def] using selfDual_character_galois_real Z χ (unitIndex Z)
       hχ hchar hdual σ y
-  refine ⟨y, f, (σ (f : ℂ)).re, one_le_fpSimple Z y, hreal'.symm, hself σ.symm, ?_, ?_, ?_⟩
+  refine ⟨y, f, (σ (f : ℂ)).re, one_le_fpSimple Z y, rfl, hreal'.symm,
+    hself σ.symm, ?_, ?_, ?_⟩
   · intro x
     have h := hcolumn σ.symm x
     rw [hdim] at h
