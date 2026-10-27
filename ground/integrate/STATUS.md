@@ -25,6 +25,13 @@
   spherical existence and precise modular-centre, finite-image and rigidity
   facts. These are explicit unproved premises; the numerical and conjugate-bound
   steps are proved.
+- `ScalarTwist.category`, `conjugate`, `pivotal`, `spherical`,
+  `pivotalDimension_twist`, `objectPropertyF_twist`, and `labels` construct an
+  arbitrary complex Galois twist and transport genuine pivotal dimensions and
+  finite braid images; the twist is a ground braided fusion category.
+- `propertyF_of_galois_column` reduces the selected centre simple's finite
+  braid images to symmetric-core integrality, a double-centralizer test, and
+  finite images for generated labels. These remain categorical premises.
 - `galois_propertyF` transports property F along the target's actual braided
   semilinear equivalence using modular’s braid-image equivalences.
 - `weaklyIntegral_of_globalFPDimension_fixed` wires spectral FP integrality
@@ -45,7 +52,7 @@
   equal one, so its pseudo-unitary conjugate is also constructed. Property F
   for the example is not yet proved.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans 2,544 integrated public and private declarations for forbidden axioms.
+- `ProjectAudit` scans 2,730 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and
@@ -54,6 +61,8 @@
 
 ## In progress
 
+- Continue wiring scalar-twisted pivotal and dimension transport into the
+  actual three-strand rigidity argument as categorical overlap coherence arrives.
 - Continue validating mathematical interfaces and exercising the final
   dependency gate as integration progresses.
 - Refactor the conditional argument into bundle-free results as constructions

@@ -19,6 +19,9 @@ All remaining items below are explicit, temporary arguments to
   centralizers, finite-image transfer and S invertibility), dimensions
   (positive spherical structures and trace transport), and calculus (actual
   three-strand rigidity); modular supplies S identities and Galois action.
+  Arbitrary scalar-twisted ground categories and their pivotal dimensions,
+  FP labels and braid-image finiteness are constructed by integrate; the
+  all-strand categorical overlap identity remains owned by calculus.
   `propertyF_of_galois_column` derives the finite-image implication from
   integral dimensions on the common centralizer, a double-centralizer test,
   and property F on the generated subcategory. These three assertions remain

@@ -65,9 +65,13 @@ import all PropertyF.Ground.Cabling.Generated
 import all PropertyF.Ground.Cabling.GeneratedAbelian
 import all PropertyF.Ground.Cabling.GeneratedDimension
 import all PropertyF.Ground.Cabling.GeneratedFusion
+import all PropertyF.Ground.Cabling.GeneratedIntegral
 import all PropertyF.Ground.Cabling.Images
 import all PropertyF.Ground.Cabling.Inclusion
 import all PropertyF.Ground.Cabling.MixedBraid
+import all PropertyF.Ground.Cabling.MoveHead
+import all PropertyF.Ground.Cabling.MoveHeadContext
+import all PropertyF.Ground.Cabling.MoveHeadInsert
 import all PropertyF.Ground.Cabling.Naturality
 import all PropertyF.Ground.Cabling.Perron
 import all PropertyF.Ground.Cabling.Primitive
@@ -93,6 +97,7 @@ import all PropertyF.Ground.Calculus.CyclicTrace
 import all PropertyF.Ground.Calculus.EndBlocks
 import all PropertyF.Ground.Calculus.EndTrace
 import all PropertyF.Ground.Calculus.FiniteOrder
+import all PropertyF.Ground.Calculus.GaloisMatrices
 import all PropertyF.Ground.Calculus.GroupBlocks
 import all PropertyF.Ground.Calculus.ImageMaps
 import all PropertyF.Ground.Calculus.Intertwining
@@ -103,12 +108,14 @@ import all PropertyF.Ground.Calculus.OverlapTrace
 import all PropertyF.Ground.Calculus.OverlapUnitary
 import all PropertyF.Ground.Calculus.PartialTrace
 import all PropertyF.Ground.Calculus.PartialTraceGround
+import all PropertyF.Ground.Calculus.PositiveWeights
 import all PropertyF.Ground.Calculus.RepresentationTrace
 import all PropertyF.Ground.Calculus.RightStrand
 import all PropertyF.Ground.Calculus.StarSpan
 import all PropertyF.Ground.Calculus.StrandCoherence
 import all PropertyF.Ground.Calculus.ThreeBraid
 import all PropertyF.Ground.Calculus.ThreeEmbedding
+import all PropertyF.Ground.Calculus.ThreeRigidity
 import all PropertyF.Ground.Calculus.ThreeSaturation
 import all PropertyF.Ground.Calculus.ThreeTrace
 import all PropertyF.Ground.Calculus.Unitarization
@@ -120,6 +127,7 @@ import all PropertyF.Ground.Centre.Averaging
 import all PropertyF.Ground.Centre.Biproduct
 import all PropertyF.Ground.Centre.Cokernel
 import all PropertyF.Ground.Centre.Embeddings
+import all PropertyF.Ground.Centre.Exact
 import all PropertyF.Ground.Centre.FiniteClosure
 import all PropertyF.Ground.Centre.GeneratedClosure
 import all PropertyF.Ground.Centre.ImageDuals
@@ -145,12 +153,14 @@ import all PropertyF.Ground.Dimensions.GlobalInequality
 import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Dimensions.IntrinsicNonzero
 import all PropertyF.Ground.Dimensions.IteratedTrace
+import all PropertyF.Ground.Dimensions.NaturalRoots
 import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.PivotalUniqueness
 import all PropertyF.Ground.Dimensions.PositiveCanonical
 import all PropertyF.Ground.Dimensions.PositiveSpherical
 import all PropertyF.Ground.Dimensions.PseudoUnitary
+import all PropertyF.Ground.Dimensions.SimpleScalars
 import all PropertyF.Ground.Dimensions.SphericalArithmetic
 import all PropertyF.Ground.Dimensions.SphericalCriterion
 import all PropertyF.Ground.Dimensions.TargetDimensionField
@@ -313,6 +323,8 @@ run_cmd do
       ``PropertyF.Ground.generated_simple_square_integer,
       ``PropertyF.Ground.ScalarTwist.conjugate,
       ``PropertyF.Ground.ScalarTwist.labels,
+      ``PropertyF.Ground.Calculus.actual_rigidity_of_overlap_and_galois_dimensions,
+      ``PropertyF.Ground.Dimensions.fourthDualRootNaturalSquare_eq,
       ``PropertyF.Ground.selfDual_character_galois_real,
       ``PropertyF.Ground.positive_bounded_conjugates_of_spherical,
       ``PropertyF.Ground.Calculus.exists_unitary_braid_trace_blocks,

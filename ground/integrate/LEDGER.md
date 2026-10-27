@@ -52,14 +52,14 @@ formulation remains an explicit review obligation.
 | `FusionData` | `rank`, `simpleObject`, `simple_is_simple`, `simple_injective`, `unitIndex`, `unit_iso`, `hom_finite`, `decomposition` | fusion | Constructed by `Ground.legacyFusionData` from ground category. |
 | `FusionData` | `fpSimple`, `fp_positive`, `fp_unit`, `fp_character` | fusion | Constructed by `Ground.legacyFusionData` using the ground spectral character. |
 | `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Constructed by `Ground.legacyGlobalDimensionData`; norm and representative independence proved. |
-| `MultiplicityData` | `simpleCount`, `dimension`, `fpDimension`, `multiplicity`, `dimension_bound` | calculus; dimensions for bound | Open: group-representation decomposition and spherical dimension bound. |
+| `MultiplicityData` | `simpleCount`, `dimension`, `fpDimension`, `multiplicity`, `dimension_bound` | calculus; dimensions for bound | Actual unitary group-representation blocks, multiplicities, and trace weights are constructed; the sharp bound remains dependent on categorical overlap coherence. |
 | `OverlapModel` | `stage`, `decomposition`, `fpMass_eq` | calculus, fusion | Actual braid-image algebras, unitary blocks, categorical multiplicities and ordinary FP mass bound constructed; overlap trace iteration remains. |
 | `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Both strand star maps and iterated partial trace proved on calculus/dimensions branches; overlap recurrence iteration remains. |
 | `ThreeStrandModel` | `overlap`, `pair`, `pair_nonzero`, `cSquared`, `a`, `b`, `braid_relation`, `a_unitary`, `b_unitary` | calculus | Actual unitary pair/three-strand blocks, braid relation, nonzero blocks and finite order proved on calculus b0fe84a; full model assembly remains. |
 | `ThreeStrandModel` | `leftPair`, `rightPair`, `left_cSquared`, `right_cSquared` | calculus | Actual left/right identity-strand block maps and square-braiding identities proved on calculus b0fe84a; model assembly remains. |
 | `ThreeStrandModel` | `pairTrace`, `simplePartial`, `pair_trace_partial`, `thirdPartial`, `trace_third`, `third_left`, `third_right`, `third_bimodule` | calculus, dimensions | Open: spherical trace realization. |
 | `ThreeStrandModel` | `finite_order` | calculus | Finite order of the actual represented square proved on calculus b0fe84a; model assembly remains. |
-| `ThreeStrandRealization` | `model`, `positive`, `transport`, `retained`, `trace_formula` | calculus; dimensions/modular for transported dimensions and S | Unitary braid blocks with categorical trace weights and integer multiplicities are constructed; transport, partial traces and full overlap bridge remain. |
+| `ThreeStrandRealization` | `model`, `positive`, `transport`, `retained`, `trace_formula` | calculus; dimensions/modular for transported dimensions and S | Unitary braid blocks and trace weights are constructed; arbitrary scalar-twisted categories, pivotal structures and dimensions are now transported. The full overlap recurrence remains. |
 | `ProductImageWitness` | `subgroup`, `map`, `surjective` | centre | Actual product-functor/retract quotient maps constructed on centre f031e99; dominance onto the generated subcategory remains. |
 | `ModularData` | `rank`, `unit`, `dual`, `dimension`, `globalDimension`, `S` | modular, centre | Actual categorical S defined for a chosen pivotal structure; modular centre and remaining data open. |
 | `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | All legacy fields constructed from an actual spherical category with real dimensions and invertible S; centre realization and S invertibility remain. |
@@ -82,10 +82,18 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 ## Integrated snapshot
 
-Latest merged snapshots: fusion 4f73556; dimensions 45cf7ee; calculus befc525;
-centre 1f65434; modular 07408af; cabling 78e91a4. The full development build
-passed; `ProjectAudit` scans 2,544 integrated public and private declarations, all with only the
-standard axioms. This is not a proof of the target.
+Latest merged snapshots: fusion f175963; dimensions f1a12ec; calculus fe2ac1e;
+centre 21f99af; modular 07408af; cabling 64a6b8b. The full development build
+passed; `ProjectAudit` scans 2,730 integrated public and private declarations, all with only the
+standard axioms. The strict target audit correctly fails because `Ground.target`
+is absent. This is not a proof of the target.
+
+`ScalarTwist.category` and `ScalarTwist.conjugate` construct every arbitrary
+complex Galois conjugate; `ScalarTwist.pivotal`, `spherical`,
+`pivotalDimension_twist`, `objectPropertyF_twist`, and `labels` establish the
+corresponding pivotal dimension and finite-image transport. Calculus still
+needs the intrinsic all-strand overlap identity, and centre and canonical
+spherical existence remain open.
 
 The final arithmetic reduction is bundle-free: fusion bfbd006 proves target
 global FP algebraic integrality, and `weaklyIntegral_of_globalFPDimension_fixed`
