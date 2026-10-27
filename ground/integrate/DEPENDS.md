@@ -65,3 +65,47 @@ its categorical global dimension from FP-square via the current modular
 theorem already assumes a positive spherical structure. A separate intrinsic
 categorical-square proof or an independent construction of the positive
 spherical structure is needed.
+
+## Round 3 reduced interface
+
+`target_of_center_image_monodromy_no_square` no longer assumes the centre
+categorical global-square formula: actual induction and its adjunction supply
+it under the other stated centre assumptions. Remaining centre arguments are:
+rigidity (centre), finite semisimplicity/fusion (fusion), an FP-valued spherical
+structure (dimensions), invertibility of S (modular), integer dimensions on
+`CentreCabling.symmetricCore` (calculus), and finite-order mixed monodromy
+only for image labels and numerical centralizer labels (cabling). The final two
+could be replaced by a proof that the numerical centralizer is an integral
+set; no such proof is currently available. The positive-spherical construction
+still cannot be obtained circularly from the FP square alone.
+
+Alternative: `target_of_integral_numerical_center_core` replaces the separate
+actual-core integrality and mixed-monodromy conditions by integral dimensions
+on the numerical S-centralizer of product-retract simples. This is implied by
+the previous pair, but is not yet proved directly. All other centre premises
+remain.
+
+Fusion `f93cf9e` proves centre fusion, spherical FP dimensions and the
+categorical square from centre rigidity and a compatible lift of an FP-valued
+base pivotal structure, without assuming centre pseudo-unitarity. The wired
+`target_of_compatible_center_and_integral_numerical_core` exposes only that
+lift/base structure, rigidity, invertible centre S and numerical-core
+integrality. Existence of the lift and base structure remains unproved.
+
+Centre rigidity is constructed: `CentreRigid.rigidCenter` is now integrated.
+`target_of_fusion_center_integral_numerical_core` uses it directly, and
+`target_of_pivotal_lift_and_integral_numerical_core` also constructs the fusion
+instance and sphere conditional on a compatible pivotal lift and FP-valued
+base pivotal structure. Those structures, S invertibility and numerical-core
+integrality remain open.
+
+Fusion `f811c73` constructs the centre pivotal lift from
+`PivotalComponentsCentral`; integration wires it into
+`target_of_pivotal_centrality_and_integral_numerical_core`. This centrality and
+the FP-valued base pivotal structure remain unproved.
+
+Fusion `36bf5d8` now proves pivotal-component centrality and constructs the
+compatible lift. Together with actual centre rigidity, the centre fusion and
+sphere follow from pseudo-unitarity and any base pivotal structure. The
+current `target_of_pivotal_base_and_integral_numerical_core` leaves base
+pivotal existence, centre S invertibility and numerical-core integrality.
