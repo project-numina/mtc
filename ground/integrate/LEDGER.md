@@ -65,7 +65,7 @@ is claimed yet.
 | `PseudoUnitaryInputs` | `conjugateGlobal`, `conjugate_eq`, `conjugate_positive`, `conjugate_le` | dimensions | Open: conjugate categorical dimensions, positivity and bounds. |
 | `PseudoUnitaryInputs` | `center`, `arithmetic` | centre, dimensions | Open: package above constructions. |
 | `StandardInputs` | `pseudo` | dimensions, centre, calculus, modular | Open: package above constructions for pseudo-unitary categories. |
-| `StandardInputs` | `conjugate_labels`, `conjugate_images` | modular, fusion | Open: simple labels/FP character and actual braid-image equivalences. |
+| `StandardInputs` | `conjugate_labels`, `conjugate_images` | modular, fusion | Braid-image equivalences and ground property-F transport are proved; simple-label equivalence is proved, FP dimension preservation remains. |
 | `CablingWitness` | `blockCount`, `lengths`, `pureImage`, `finiteIndex`, `cableImage`, `restriction`, `restriction_surjective` | cabling | Finite index and abstract pure-word quotient constructed; categorical cabling map pending. Only used by corollary. |
 | `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling | Open; only used by corollary. |
 | `GeneratedInputs` | `simple_square_integral`, `strand_inclusion` | cabling, fusion | Bundle-free `Ground.simple_strand_inclusion` now constructed; packaging and square-integrality remain. Only used by corollary. |

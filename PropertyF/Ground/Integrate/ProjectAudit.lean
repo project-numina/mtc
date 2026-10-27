@@ -7,6 +7,8 @@ public import PropertyF.Ground.Integrate.StrandInclusion
 public import PropertyF.Ground.Integrate.Representatives
 public import PropertyF.Ground.Integrate.Conjugacy
 public import PropertyF.Ground.Integrate.Arithmetic
+public import PropertyF.Ground.Integrate.PropertyFTransport
+public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.Fusion.MatrixIntegral
 public import PropertyF.Ground.Integrate.Example
@@ -46,6 +48,7 @@ run_cmd do
       ``PropertyF.Ground.squaredNorm_eq_of_choices,
       ``PropertyF.Ground.simple_strand_inclusion,
       ``PropertyF.Ground.weaklyIntegral_of_globalFPDimension_fixed,
+      ``PropertyF.Ground.galois_propertyF,
       ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,
       ``PropertyF.Ground.Dimensions.squaredNorm_independent] do
