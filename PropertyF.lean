@@ -306,6 +306,8 @@ public import PropertyF.Ground.CentreDimensions.RankOneModular
 
 public import PropertyF.Ground.Dimensions.RightDualAssociativity
 
+public import PropertyF.Ground.Dimensions.DoubleDualAssociativity
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
