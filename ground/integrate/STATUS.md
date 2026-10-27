@@ -242,3 +242,12 @@ no reliable completion-time estimate is available.
   `TwistBalancing.lean` and is still unproved; it would discharge the parity
   sign and support Vafa's mixed-monodromy route. Full build and project audit
   pass (427 modules, 4,366 declarations).
+
+- Merged fusion `36bf5d8`. `pivotalComponentsCentral_proved` constructs the
+  compatible centre pivotal lift from any base pivotal structure; together
+  with constructed centre rigidity and pseudo-unitarity it constructs centre
+  fusion and the positive spherical structure. The new
+  `target_of_pivotal_base_and_integral_numerical_core` retains only base
+  pivotal existence, centre S invertibility, and numerical-core integrality.
+  No general pivotal existence is claimed. Full build and project audit pass
+  (432 modules, 4,394 declarations).

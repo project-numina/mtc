@@ -103,3 +103,9 @@ Fusion `f811c73` constructs the centre pivotal lift from
 `PivotalComponentsCentral`; integration wires it into
 `target_of_pivotal_centrality_and_integral_numerical_core`. This centrality and
 the FP-valued base pivotal structure remain unproved.
+
+Fusion `36bf5d8` now proves pivotal-component centrality and constructs the
+compatible lift. Together with actual centre rigidity, the centre fusion and
+sphere follow from pseudo-unitarity and any base pivotal structure. The
+current `target_of_pivotal_base_and_integral_numerical_core` leaves base
+pivotal existence, centre S invertibility and numerical-core integrality.

@@ -255,3 +255,11 @@ identity in `CentreIntegrate.drinfeld_tensor_of_pairing_cap` via
 `balance_of_drinfeld_tensor`. The double-dual evaluation comparison is
 proved; the cap identity itself remains open. Full build and project audit
 pass (427 modules, 4,366 declarations).
+
+Fusion `36bf5d8` proves the transported pivotal components are central and
+constructs the centre pivotal lift; with the actual centre rigid instance,
+centre fusion and positive sphericality follow from pseudo-unitarity and any
+base pivotal structure. `target_of_pivotal_base_and_integral_numerical_core`
+therefore retains base pivotal existence, centre S invertibility and numerical
+core integrality as explicit obligations. The full build and project audit pass
+(432 modules, 4,394 declarations).

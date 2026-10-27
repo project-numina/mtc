@@ -41,6 +41,11 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreInduction.DoubleBraiding
+import all PropertyF.Ground.CentreInduction.DualBraiding
+import all PropertyF.Ground.CentreInduction.PivotalCentrality
+import all PropertyF.Ground.CentreInduction.PositivePivotal
+import all PropertyF.Ground.Integrate.PivotalOnlyReduction
 import all PropertyF.Ground.CentreIntegrate.TwistBalancing
 import all PropertyF.Ground.CentreIntegrate.MonodromyDual
 import all PropertyF.Ground.CentreIntegrate.TwistDual
@@ -572,6 +577,8 @@ run_cmd do
       ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
+      ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
+      ``PropertyF.Ground.target_of_pivotal_base_and_integral_numerical_core,
       ``PropertyF.Ground.CentreRigid.rigidCenter,
       ``PropertyF.Ground.target_of_fusion_center_integral_numerical_core,
       ``PropertyF.Ground.target_of_pivotal_lift_and_integral_numerical_core,
