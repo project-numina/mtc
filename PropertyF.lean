@@ -212,19 +212,20 @@ The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
-import PropertyF.Ground.CentreInduction.Underlying
-import PropertyF.Ground.CentreInduction.GlobalSquare
-import PropertyF.Ground.CentreInduction.Adjunction
-import PropertyF.Ground.CentreInduction.SimpleDetection
-import PropertyF.Ground.CentreInduction.Averaging
-import PropertyF.Ground.CentreInduction.Splitting
-import PropertyF.Ground.CentreInduction.Dominance
-import PropertyF.Ground.CentreInduction.Artinian
-import PropertyF.Ground.CentreInduction.FiniteSum
-import PropertyF.Ground.CentreInduction.FiniteLabels
+public import PropertyF.Ground.CentreInduction.Underlying
+public import PropertyF.Ground.CentreInduction.GlobalSquare
+public import PropertyF.Ground.CentreInduction.Adjunction
+public import PropertyF.Ground.CentreInduction.SimpleDetection
+public import PropertyF.Ground.CentreInduction.Averaging
+public import PropertyF.Ground.CentreInduction.Splitting
+public import PropertyF.Ground.CentreInduction.Dominance
+public import PropertyF.Ground.CentreInduction.Artinian
+public import PropertyF.Ground.CentreInduction.FiniteSum
+public import PropertyF.Ground.CentreInduction.FiniteLabels
 
 public import PropertyF.Ground.CentreBundle.Fusion
 public import PropertyF.Ground.CentreRigid.Lift
 public import PropertyF.Ground.CentreRigid.Unit
 public import PropertyF.Ground.CentreRigid.MateEquations
-import PropertyF.Ground.CentreInduction.Fusion
+public import PropertyF.Ground.CentreInduction.Fusion
+public import PropertyF.Ground.CentreInduction.UnitTest

@@ -144,6 +144,10 @@ The separate compatibility bridge constructs the old `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.loopSum_comm_unitIndex` proves loop sliding on the unit
+  test strand. `simpleLoopCentrality_of_rank_one` proves the entire sliding
+  condition in fusion rank one; `centerForgetEquivalenceOfRankOne` constructs
+  an actual equivalence of the centre with C in that special case.
 - `CentreInduction.subobjectEndRangeEmbedding` embeds the subobject order
   into subspaces of a finite-dimensional Hom space when subobjects split.
   Assuming loop sliding, centre objects are Artinian and Noetherian, and
