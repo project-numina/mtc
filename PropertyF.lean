@@ -23,6 +23,7 @@ public import PropertyF.Ground.Cabling.Witness
 public import PropertyF.Ground.Dimensions.Pivotal
 public import PropertyF.Ground.Dimensions.Trace
 public import PropertyF.Ground.Dimensions.BiproductTrace
+public import PropertyF.Ground.Dimensions.CharacterBound
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
 
