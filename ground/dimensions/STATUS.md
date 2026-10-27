@@ -85,6 +85,7 @@
 
 - `fourthDualRoot_unit_component` identifies the actual natural root on the tensor unit as the canonical double-dual unit map multiplied by the (±1) root dimension.
 
+- `rootTensorDefect_involution_extension` extends involutivity from simple pairs to all object pairs; `enoTraceMatrix_reciprocity_of_simple_fourthDual_tensor` and `eno_pseudoUnitary_yields_positive_spherical_of_nonunit_fourthDual_tensor` consequently reduce the canonical sphere and ENO reciprocity to the fourth-dual tensor law only on non-unit simple pairs.
 - `rootTensorDefect_slide_of_involution` proves the complete signed three-object slide whenever the outer defect is involutive. `enoTraceMatrix_reciprocity_of_fourthDual_tensor`, `eno_pseudoUnitary_yields_positive_spherical_of_fourthDual_tensor`, and `globalDimension_galois_bounds_of_fourthDual_tensor` therefore discharge the separate slide and trace-reciprocity assumptions, reducing all ENO dimension theory and the pseudo-unitary canonical sphere to the fourth-dual tensor law on all objects.
 - `rootTensorDefect_associativity` proves the full three-object cocycle identity for the actual root defect, unconditionally, by transporting the strong monoidal double dual to the identity functor. This is a key remaining ingredient for the signed sliding identity.
 - `rootTensorDefect_coevaluation` and `rootTensorDefect_swapped_coevaluation` prove the actual tensor defect acts on both ordinary and braided-swapped coevaluations of every simple by the product of the unit-root scalar and the simple dual sign, with no additional assumptions. `rootTensorDefect_coevaluation_of_iso` makes the result independent of simple representative. The three-object swapped-coevaluation slide now follows from involutivity of its outer defect.
@@ -120,14 +121,14 @@ The same ENO construction applies to the actual centre `Integrate.bundledCenter 
 
 ## In progress
 
-- Prove the braided fourth-dual map is monoidal. This alone now suffices for the general ENO construction without assuming a pivotal structure, since the signed coevaluation slide follows from defect involutivity. Natural roots, multiplicity operators, their conditional involutivity, numerical spectral bounds, and phase reconstruction are already formalized.
+- Prove the braided fourth-dual map is monoidal on pairs of non-unit simples. This alone now suffices for the general ENO construction without assuming a pivotal structure, since the signed coevaluation slide follows from defect involutivity. Natural roots, multiplicity operators, their conditional involutivity, numerical spectral bounds, and phase reconstruction are already formalized.
 - Find a shorter construction of a pivotal structure in pseudo-unitary categories. Any such construction can now be upgraded directly to the unique positive spherical structure by `existsUnique_positive_spherical_of_pivotal_pseudoUnitary`.
 - Check the general centre’s pivotal lift and trace compatibility against centre and fusion’s evolving interfaces. The rank-one centre is completely handled; general centre rigidity and semisimplicity remain external work.
 
 ## Dependencies and remaining work
 
 - Fusion supplies the actual category interface, simple representatives, finite semisimplicity, positive fusion-character theory, and target global FP integrality.
-- The remaining base-category gap is pivotal existence, equivalently for the current ENO route the explicit fourth-dual tensor identity. All norm integrality, positivity, FP bounds, and canonical positive spherical uniqueness and construction are established given any actual pivotal structure.
+- The remaining base-category gap is pivotal existence, equivalently for the current ENO route the explicit fourth-dual tensor identity on non-unit simple pairs. All norm integrality, positivity, FP bounds, and canonical positive spherical uniqueness and construction are established given any actual pivotal structure.
 - Semilinear transport of pivotal structures, dimensions, and intrinsic norms was supplied by integrate; compare arbitrary-equivalence transport with the eventual centre interface.
 - Centre rigidity, finite semisimplicity, and modularity in general are external gaps owned by centre, fusion, and modular. Rank one is proved without these extra assumptions.
 
