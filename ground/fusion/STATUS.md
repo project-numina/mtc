@@ -50,6 +50,20 @@
   cabling's `tensorLeft_faithful_of_unit_retract` (merged commit 288c894).
 - `Ground.positive_matrix_eigenspace_unique`: any eigenspace containing a
   strictly positive eigenvector of a positive real matrix is one-dimensional.
+- `Ground.positive_symmetric_matrix_has_positive_eigenvector`: every strictly
+  positive symmetric real matrix has a strictly positive eigenvector, proved by
+  maximizing its quadratic form on a sphere and applying Mathlib's symmetric
+  operator spectral theory.
+- `Ground.characterMatrix_commute`, `exists_positive_common_eigenvector`, and
+  `exists_positive_character`: the actual fusion rules admit a positive
+  normalized character, constructed from the genuine target category.
+- `Ground.positive_character_unique`, `fpCharacter`, `fpCharacter_pos`,
+  `fpCharacter_unit`, and `fpCharacter_mul`: that character is unique and is
+  available as a constructed function with its fundamental laws.
+- `Ground.fpSimple_eq_fpCharacter`, `fpSimple_pos`, and `fpSimple_mul`: the
+  target's spectral-radius dimensions are exactly that positive character.
+  This uses `Dimensions.character_norm_le_fpSimple` from dimensions commit
+  e5a83b8 and `complex_eigenvalue_le_positive_eigenvalue` for the reverse bound.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -65,15 +79,12 @@ declaration conflicts.
 ## Blocked / outstanding
 
 Mathlib has categorical Schur's lemma but a source search found no general
-Perron–Frobenius theorem for positive matrices. A constructive proof of a
-positive eigenvector and uniqueness, or an alternative elementary argument,
-is needed. The categorical bridge from biproduct decompositions to fusion-ring
-associativity and rigidity also remains to be developed.
+Perron–Frobenius theorem for positive matrices. Existence, uniqueness and
+agreement of the target dimensions with the positive character are proved.
 
-Construction of `FusionData`, tensor/dual/inclusion invariance, agreement of
-spectral radii with the positive character, and the centre dimension comparison
-remain. The project-scale remaining effort is substantial; no credible
-completion-time estimate is yet available.
+Construction of `FusionData`, object tensor/dual/inclusion invariance, and the
+centre dimension comparison remain. The project-scale remaining effort is
+substantial; no credible completion-time estimate is yet available.
 
 Integration requires the target dependency cone to avoid the old hypothesis
 bundles entirely. The above results currently use `FusionData` and must be
