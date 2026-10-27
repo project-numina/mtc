@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.CentreCabling.FusionCentralizer
 public import PropertyF.Ground.Modular.Construction
+public import PropertyF.Ground.Fusion.Reciprocity
 
 /-! A Fourier-support reduction of the double-centralizer inclusion. -/
 
@@ -74,7 +75,7 @@ theorem nonzero_dual_coefficient_of_sCentralizer
   have huinv := categoricalS_fourier_inversion D p hp hdet hreal f (unitIndex D)
   change (∑ y, Modular.categoricalS D p x y * T y) = _ at hxinv
   change (∑ y, Modular.categoricalS D p (unitIndex D) y * T y) = _ at huinv
-  rw [hxinv, huinv, Modular.dualIndex_unit D] at heq
+  rw [hxinv, huinv, Ground.dualIndex_unit D] at heq
   have hn := mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
     (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit)
   intro hz

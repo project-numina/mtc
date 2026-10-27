@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Centre.GeneratedClosure
 public import PropertyF.Ground.Cabling.GeneralDual
+public import PropertyF.Ground.Fusion.GeneratedRigidity
 public import PropertyF.Ground.Integrate.CenterBundle
 
 /-! The generated centre product subcategory and its dual closure. -/
@@ -39,7 +40,7 @@ theorem productRetract_rightDual (D : Ground.BraidedFusionCategory.{v,u})
     {Z : CategoryTheory.Center D.Obj} (hZ : ProductRetract Z) :
     ProductRetract (Zᘁ) := by
   exact productRetract_generatedBy hZ
-    (Cabling.generatedBy_rightDual (Integrate.bundledCenter D) Z)
+    (Ground.generatedBy_rightDual (Integrate.bundledCenter D) Z)
 
 /-- The same generated closure is stable under centre right duals. -/
 theorem productTensorClosure_rightDual (D : Ground.BraidedFusionCategory.{v,u})
