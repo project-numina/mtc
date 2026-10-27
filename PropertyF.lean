@@ -23,6 +23,8 @@ public import PropertyF.Ground.Centre.ReverseBraiding
 public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Centre.ProductImages
 public import PropertyF.Ground.Centre.ProductClosure
+public import PropertyF.Ground.Centre.FiniteClosure
+public import PropertyF.Ground.Centre.GeneratedClosure
 public import PropertyF.Ground.Centre.SymmetricIntegrality
 public import PropertyF.Ground.Centre.Averaging
 public import PropertyF.Ground.Centre.AlternatingImage
