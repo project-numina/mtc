@@ -1,0 +1,390 @@
+scripts/style/.EnvLintRun.lean:510:0: error: -- Found 179 errors in 2814 declarations (plus 2024 automatically generated ones) in PropertyF with 15 linters
+
+/- The `defsWithUnderscore` linter reports:
+FOUND definitions with an underscore in their name.
+This linter can be disabled with `@[nolint defsWithUnderscore]`. -/
+-- PropertyF.Axioms
+#check @PropertyF.GeneratedInputs.inclusion_braided /- The definition `PropertyF.GeneratedInputs.inclusion_braided` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Definitions
+#check @PropertyF.FusionData.unit_iso /- The definition `PropertyF.FusionData.unit_iso` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+#check @PropertyF.braidImageAll_group /- The definition `PropertyF.braidImageAll_group` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.Cabling.CableRetract
+#check @PropertyF.CablingWitness.of_retract /- The definition `PropertyF.CablingWitness.of_retract` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.Cabling.CablingComplete
+#check PropertyF.cablingWitness_generated /- The definition `PropertyF.cablingWitness_generated` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.Centre.FiniteClosure
+#check @PropertyF.Ground.Centre.productFunctor_finiteSumRetract /- The definition `PropertyF.Ground.Centre.productFunctor_finiteSumRetract` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.Centre.ProductClosure
+#check @PropertyF.Ground.Centre.productFunctor_sumRetract /- The definition `PropertyF.Ground.Centre.productFunctor_sumRetract` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.Centre.ProductImages
+#check @PropertyF.Ground.Centre.instBraidedCategoryProd_propertyF /- The definition `PropertyF.Ground.Centre.instBraidedCategoryProd_propertyF` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.CentreDimensions.RankOneRigid
+#check PropertyF.Ground.Dimensions.rankOne_centerRigid /- The definition `PropertyF.Ground.Dimensions.rankOne_centerRigid` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.CentreInduction.Dominance
+#check PropertyF.Ground.CentreInduction.retract_of_adjunction_and_loop /- The definition `PropertyF.Ground.CentreInduction.retract_of_adjunction_and_loop` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.CentreInduction.InjectiveFusion
+#check PropertyF.Ground.CentreInduction.unit_retract_of_nonzero_cap /- The definition `PropertyF.Ground.CentreInduction.unit_retract_of_nonzero_cap` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.Dimensions.SimpleScalars
+#check PropertyF.Ground.Dimensions.simplePieces_fintype /- The definition `PropertyF.Ground.Dimensions.simplePieces_fintype` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.Fusion.GeneratedRigidity
+#check PropertyF.Ground.simple_generatedCategoryRigid /- The definition `PropertyF.Ground.simple_generatedCategoryRigid` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+-- PropertyF.Ground.Integrate.Example
+#check PropertyF.Ground.Example.instRigidCategoryFGModuleCatComplex_propertyF /- The definition `PropertyF.Ground.Example.instRigidCategoryFGModuleCatComplex_propertyF` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+
+/- The `docBlame` linter reports:
+DEFINITIONS ARE MISSING DOCUMENTATION STRINGS:
+This linter can be disabled with `@[nolint docBlame]`. -/
+-- PropertyF.Axioms
+#check @PropertyF.MultiplicityData.simpleCount /- definition missing documentation string -/
+#check @PropertyF.MultiplicityData.dimension /- definition missing documentation string -/
+#check @PropertyF.MultiplicityData.fpDimension /- definition missing documentation string -/
+#check @PropertyF.MultiplicityData.multiplicity /- definition missing documentation string -/
+#check @PropertyF.MultiplicityData.weight /- definition missing documentation string -/
+#check @PropertyF.MultiplicityData.fpMass /- definition missing documentation string -/
+#check @PropertyF.OverlapModel.stage /- definition missing documentation string -/
+#check @PropertyF.OverlapModel.decomposition /- definition missing documentation string -/
+#check @PropertyF.OverlapModel.left /- definition missing documentation string -/
+#check @PropertyF.OverlapModel.right /- definition missing documentation string -/
+#check @PropertyF.OverlapModel.partialTrace /- definition missing documentation string -/
+#check PropertyF.ModularData.rank /- definition missing documentation string -/
+#check PropertyF.ModularData.unit /- definition missing documentation string -/
+#check PropertyF.ModularData.dual /- definition missing documentation string -/
+#check PropertyF.ModularData.dimension /- definition missing documentation string -/
+#check PropertyF.ModularData.globalDimension /- definition missing documentation string -/
+#check PropertyF.ModularData.S /- definition missing documentation string -/
+#check PropertyF.ModularData.galoisLabel /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.overlap /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.pair /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.cSquared /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.a /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.b /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.leftPair /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.rightPair /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.pairTrace /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.simplePartial /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandModel.thirdPartial /- definition missing documentation string -/
+#check @PropertyF.ProductImageWitness.subgroup /- definition missing documentation string -/
+#check @PropertyF.ProductImageWitness.map /- definition missing documentation string -/
+#check @PropertyF.ThreeStrandRealization.model /- definition missing documentation string -/
+#check @PropertyF.CenterInputs.data /- definition missing documentation string -/
+#check @PropertyF.CenterInputs.object /- definition missing documentation string -/
+#check @PropertyF.CenterInputs.dim /- definition missing documentation string -/
+#check @PropertyF.CenterInputs.generated /- definition missing documentation string -/
+#check @PropertyF.DimensionField.field /- definition missing documentation string -/
+#check @PropertyF.DimensionField.element /- definition missing documentation string -/
+#check @PropertyF.PseudoUnitaryInputs.conjugateGlobal /- definition missing documentation string -/
+#check @PropertyF.PseudoUnitaryInputs.center /- definition missing documentation string -/
+#check @PropertyF.PseudoUnitaryInputs.arithmetic /- definition missing documentation string -/
+#check PropertyF.StandardInputs.pseudo /- definition missing documentation string -/
+#check @PropertyF.CablingWitness.blockCount /- definition missing documentation string -/
+#check @PropertyF.CablingWitness.lengths /- definition missing documentation string -/
+#check @PropertyF.CablingWitness.pureImage /- definition missing documentation string -/
+#check @PropertyF.CablingWitness.cableImage /- definition missing documentation string -/
+#check @PropertyF.CablingWitness.restriction /- definition missing documentation string -/
+#check @PropertyF.GeneratedInputs.category /- definition missing documentation string -/
+#check @PropertyF.GeneratedInputs.inclusion /- definition missing documentation string -/
+#check @PropertyF.GeneratedInputs.inclusion_braided /- definition missing documentation string -/
+
+-- PropertyF.BlockTrace
+#check PropertyF.Blocks.count /- definition missing documentation string -/
+#check PropertyF.Blocks.size /- definition missing documentation string -/
+#check PropertyF.Blocks.Algebra /- definition missing documentation string -/
+#check PropertyF.Blocks.IsUnitary /- definition missing documentation string -/
+#check PropertyF.Blocks.trace /- definition missing documentation string -/
+#check PropertyF.Blocks.mass /- definition missing documentation string -/
+
+-- PropertyF.CenterBasics
+#check @PropertyF.IsPositive /- definition missing documentation string -/
+#check @PropertyF.IsNegative /- definition missing documentation string -/
+
+-- PropertyF.Definitions
+#check @PropertyF.FusionData.rank /- definition missing documentation string -/
+#check @PropertyF.FusionData.simpleObject /- definition missing documentation string -/
+#check @PropertyF.FusionData.unitIndex /- definition missing documentation string -/
+#check @PropertyF.FusionData.unit_iso /- definition missing documentation string -/
+#check @PropertyF.FusionData.fpSimple /- definition missing documentation string -/
+#check @PropertyF.leftQuantumTrace /- definition missing documentation string -/
+#check @PropertyF.GlobalDimensionData.unitScalar /- definition missing documentation string -/
+#check @PropertyF.GlobalDimensionData.doubleDualIso /- definition missing documentation string -/
+#check PropertyF.BraidedFusionCategory.Obj /- definition missing documentation string -/
+#check PropertyF.BraidedFusionCategory.fusion /- definition missing documentation string -/
+#check PropertyF.BraidedFusionCategory.dimensionData /- definition missing documentation string -/
+#check @PropertyF.GaloisConjugate.equivalence /- definition missing documentation string -/
+#check @PropertyF.GaloisConjugate.monoidal /- definition missing documentation string -/
+#check @PropertyF.GaloisConjugate.braided /- definition missing documentation string -/
+
+-- PropertyF.GaloisRigidity
+#check @PropertyF.ThreeStrandModel.tr /- definition missing documentation string -/
+
+-- PropertyF.Ground.Cabling.BlockWords
+#check @PropertyF.BlockMorphismClass.holds /- definition missing documentation string -/
+
+-- PropertyF.Ground.Cabling.CableClass
+#check @PropertyF.cableHom /- definition missing documentation string -/
+#check @PropertyF.cableClass /- definition missing documentation string -/
+
+-- PropertyF.Ground.Cabling.MixedBraid
+#check @PropertyF.firstMixedBraid /- definition missing documentation string -/
+
+-- PropertyF.Ground.Cabling.MoveHead
+#check @PropertyF.whiskerMoveHead /- definition missing documentation string -/
+
+-- PropertyF.Ground.Cabling.PowerExpr
+#check @PropertyF.PowerExpr.eval /- definition missing documentation string -/
+#check PropertyF.PowerExpr.length /- definition missing documentation string -/
+
+-- PropertyF.Ground.Cabling.TupleCrossing
+#check @PropertyF.swapTuple /- definition missing documentation string -/
+
+-- PropertyF.Ground.Calculus.RightStrand
+#check @PropertyF.Ground.Calculus.appendIso /- definition missing documentation string -/
+#check @PropertyF.Ground.Calculus.addRightAut /- definition missing documentation string -/
+
+-- PropertyF.Ground.Calculus.ThreeBraid
+#check @PropertyF.Ground.Calculus.threeGeneratorRight /- definition missing documentation string -/
+
+-- PropertyF.Ground.Centre.Biproduct
+#check @PropertyF.Ground.Centre.centerBiprodSnd /- definition missing documentation string -/
+
+-- PropertyF.Ground.Centre.ProductImages
+#check @PropertyF.Ground.Centre.instBraidedCategoryProd_propertyF /- definition missing documentation string -/
+
+-- PropertyF.Ground.CentreInduction.PositivePivotal
+#check PropertyF.Ground.CentreInduction.positiveDualIso /- definition missing documentation string -/
+#check PropertyF.Ground.CentreInduction.positiveDoubleDualIso /- definition missing documentation string -/
+#check PropertyF.Ground.CentreInduction.positivePivotalComponent /- definition missing documentation string -/
+
+-- PropertyF.Ground.CentreRigid.SimpleTensor
+#check PropertyF.Ground.CentreRigid.leftNat /- definition missing documentation string -/
+#check PropertyF.Ground.CentreRigid.rightNat /- definition missing documentation string -/
+#check PropertyF.Ground.CentreRigid.leftNatU /- definition missing documentation string -/
+#check PropertyF.Ground.CentreRigid.rightNatU /- definition missing documentation string -/
+
+-- PropertyF.Ground.Dimensions.DoubleDualMonoidal
+#check PropertyF.Ground.Dimensions.doubleDualMonoidal /- definition missing documentation string -/
+
+-- PropertyF.Ground.Dimensions.Pivotal
+#check @PropertyF.Ground.Dimensions.PivotalStructure.iso /- definition missing documentation string -/
+
+-- PropertyF.Ground.Dimensions.RootSignTwist
+#check PropertyF.Ground.Dimensions.rootSignTwist /- definition missing documentation string -/
+#check PropertyF.Ground.Dimensions.rootSignTensorIso /- definition missing documentation string -/
+#check PropertyF.Ground.Dimensions.rootSignDefect /- definition missing documentation string -/
+
+-- PropertyF.Ground.Dimensions.SimpleHomBasis
+#check PropertyF.Ground.Dimensions.simpleInclusion /- definition missing documentation string -/
+
+-- PropertyF.Ground.Fusion.Perron
+#check @PropertyF.Ground.euclideanAbs /- definition missing documentation string -/
+
+-- PropertyF.Ground.Integrate.DependencyAudit
+#check PropertyF.Ground.DependencyAudit.forbidden /- definition missing documentation string -/
+#check PropertyF.Ground.DependencyAudit.isForbidden /- definition missing documentation string -/
+#check PropertyF.Ground.DependencyAudit.hiddenInputWrapper /- definition missing documentation string -/
+
+-- PropertyF.Ground.Integrate.Example
+#check PropertyF.Ground.Example.instRigidCategoryFGModuleCatComplex_propertyF /- definition missing documentation string -/
+#check PropertyF.Ground.Example.V /- definition missing documentation string -/
+#check PropertyF.Ground.Example.F /- definition missing documentation string -/
+
+-- PropertyF.Ground.Modular.BraidIso
+#check @PropertyF.Ground.Modular.tensorPowerIso /- definition missing documentation string -/
+
+-- PropertyF.Ground.Modular.Characters
+#check @PropertyF.Ground.Modular.FusionRules.unit /- definition missing documentation string -/
+#check @PropertyF.Ground.Modular.FusionRules.coeff /- definition missing documentation string -/
+#check @PropertyF.Ground.Modular.Character.value /- definition missing documentation string -/
+
+-- PropertyF.Ground.Target
+#check PropertyF.Ground.BraidedFusionCategory.Obj /- definition missing documentation string -/
+#check PropertyF.Ground.rank /- definition missing documentation string -/
+#check PropertyF.Ground.simples /- definition missing documentation string -/
+#check PropertyF.Ground.globalFPDimension /- definition missing documentation string -/
+#check PropertyF.Ground.squaredNorm /- definition missing documentation string -/
+#check PropertyF.Ground.globalDimension /- definition missing documentation string -/
+#check PropertyF.Ground.PseudoUnitary /- definition missing documentation string -/
+#check @PropertyF.Ground.GaloisConjugate.equivalence /- definition missing documentation string -/
+#check @PropertyF.Ground.GaloisConjugate.monoidal /- definition missing documentation string -/
+#check @PropertyF.Ground.GaloisConjugate.braided /- definition missing documentation string -/
+#check PropertyF.Ground.HasPseudoUnitaryGaloisConjugate /- definition missing documentation string -/
+
+-- PropertyF.TraceBound
+#check @PropertyF.OverlapModel.tr /- definition missing documentation string -/
+
+/- The `unusedArguments` linter reports:
+UNUSED ARGUMENTS.
+This linter can be disabled with `@[nolint unusedArguments]`. -/
+-- PropertyF.Definitions
+#check @PropertyF.GeneratedBy /- 1 unused argument:
+  argument 4: [CategoryTheory.BraidedCategory C] -/
+
+-- PropertyF.Ground.Cabling.AllInsert
+#check @PropertyF.addLeftAutAll_mem /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+#check @PropertyF.addRightAutAll_mem /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.BlockOne
+#check @PropertyF.braidImageAllSubgroup_transport /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.BlockSwap
+#check @PropertyF.powerTensor_zero_left /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.CableClass
+#check @PropertyF.cableHom_comp /- 1 unused argument:
+  argument 6: [CategoryTheory.MonoidalPreadditive C] -/
+#check @PropertyF.cableHom_inv /- 1 unused argument:
+  argument 6: [CategoryTheory.MonoidalPreadditive C] -/
+#check @PropertyF.cableHom_aut_mem /- 1 unused argument:
+  argument 6: [CategoryTheory.MonoidalPreadditive C] -/
+
+-- PropertyF.Ground.Cabling.CablingFinite
+#check @PropertyF.braidImageAll_finite_of_propertyF /- 1 unused argument:
+  argument 6: [CategoryTheory.MonoidalPreadditive C] -/
+
+-- PropertyF.Ground.Cabling.ConcatGeneral
+#check @PropertyF.concatPowerIso_succ_left /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.ConcatLeft
+#check @PropertyF.concatPowerIso_zero_left /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.ConcatPower
+#check @PropertyF.addRightAutAllIter_hom /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.ExprTuple
+#check @PropertyF.powerTensor_transport /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+#check @PropertyF.tensor_eqToHom /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.ExprTupleCross
+#check @PropertyF.tailBraid_components_general /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.LocalCable
+#check @PropertyF.cableHom_reindex /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.MoveHead
+#check @PropertyF.powerTensor_succ /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 6: [CategoryTheory.MonoidalPreadditive C] -/
+#check @PropertyF.moveHead_zero /- 1 unused argument:
+  argument 6: [CategoryTheory.MonoidalPreadditive C] -/
+
+-- PropertyF.Ground.Cabling.PowerCompare
+#check @PropertyF.powerTensor_zero_right /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+#check @PropertyF.powerTensor_one_right /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.PowerExpr
+#check @PropertyF.cableHom_id /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+#check @PropertyF.PowerExpr.isCable_comp /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+#check @PropertyF.PowerExpr.isCable_inv /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+#check @PropertyF.cableHom_eqToHom /- 1 unused argument:
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.PowerGeneral
+#check @PropertyF.castIso_hom_comp /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 6: [CategoryTheory.MonoidalPreadditive C] -/
+
+-- PropertyF.Ground.Cabling.PrefixPower
+#check @PropertyF.addLeftAutAllIter_hom /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Cabling.TupleCrossing
+#check @PropertyF.tuple_cross /- 1 unused argument:
+  argument 6: [CategoryTheory.MonoidalPreadditive C] -/
+
+-- PropertyF.Ground.Cabling.TupleIso
+#check @PropertyF.tuple_cross_iso /- 1 unused argument:
+  argument 6: [CategoryTheory.MonoidalPreadditive C] -/
+
+-- PropertyF.Ground.Cabling.TupleIsoStep
+#check @PropertyF.castIso_hom_right /- 2 unused arguments:
+  argument 4: [CategoryTheory.BraidedCategory C]
+  argument 8: [CategoryTheory.MonoidalLinear ℂ C] -/
+
+-- PropertyF.Ground.Calculus.EndBlocks
+#check @PropertyF.Ground.Calculus.orthogonalEndBlocks /- 1 unused argument:
+  argument 8: [Fintype ι] -/
+
+-- PropertyF.Ground.CentreCabling.ImageCore
+#check PropertyF.Ground.CentreCabling.canonicalImageRetract_of_retract /- 1 unused argument:
+  argument 3: [PropertyF.Ground.IsFusionCategory (CategoryTheory.Center C.Obj)] -/
+#check PropertyF.Ground.CentreCabling.canonicalImageRetract_product /- 1 unused argument:
+  argument 3: [PropertyF.Ground.IsFusionCategory (CategoryTheory.Center C.Obj)] -/
+
+-- PropertyF.Ground.CentreCabling.ProductGenerated
+#check @PropertyF.Ground.Centre.productRetract_iff_tensorClosure /- 1 unused argument:
+  argument 6: [CategoryTheory.RigidCategory C] -/
+
+-- PropertyF.Ground.CentreCabling.VafaAlgebra
+#check @PropertyF.Ground.CentreCabling.vafaMatrix /- 1 unused argument:
+  argument 2: [Fintype ι] -/
+
+-- PropertyF.Ground.CentreInduction.DirectDual
+#check @PropertyF.Ground.CentreInduction.halfBraiding_inv_tensor /- 1 unused argument:
+  argument 4: [CategoryTheory.RightRigidCategory D] -/
+
+-- PropertyF.Ground.CentreInduction.FiniteSimples
+#check PropertyF.Ground.CentreInduction.center_cokernel_measure_lt /- 1 unused argument:
+  argument 5: [CategoryTheory.Mono p] -/
+
+-- PropertyF.Ground.CentreInduction.InjectiveFusion
+#check @PropertyF.Ground.CentreInduction.tensor_preserves_injective /- 1 unused argument:
+  argument 3: [CategoryTheory.Abelian D] -/
+#check @PropertyF.Ground.CentreInduction.injective_of_retract /- 2 unused arguments:
+  argument 3: [CategoryTheory.Abelian D]
+  argument 5: [CategoryTheory.RigidCategory D] -/
+#check @PropertyF.Ground.CentreInduction.mono_splits_of_all_injective /- 2 unused arguments:
+  argument 3: [CategoryTheory.Abelian D]
+  argument 5: [CategoryTheory.RigidCategory D] -/
+
+-- PropertyF.Ground.CentreInduction.SimpleDetection
+#check PropertyF.Ground.CentreInduction.natTrans_ext_on_simples /- 2 unused arguments:
+  argument 5: [CategoryTheory.Limits.HasFiniteBiproducts D]
+  argument 9: [G.Additive] -/
+#check PropertyF.Ground.CentreInduction.natTrans_isIso_of_simples /- 1 unused argument:
+  argument 5: [CategoryTheory.Limits.HasFiniteBiproducts D] -/
+
+-- PropertyF.Ground.CentreIntegrate.CycleColoring
+#check @PropertyF.Ground.CentreIntegrate.countCycles /- 1 unused argument:
+  argument 2: [Fintype α] -/
+
+-- PropertyF.Ground.CentreRigid.PartialTraceBiproduct
+#check @PropertyF.Ground.CentreRigid.partialTraceHom_biproduct /- 1 unused argument:
+  argument 13: [DecidableEq ι] -/
+
+-- PropertyF.Ground.Fusion.Perron
+#check @PropertyF.Ground.euclideanAbs /- 1 unused argument:
+  argument 2: [Fintype ι] -/
