@@ -14,13 +14,15 @@ must be verified before the target is frozen.
 global categorical dimension (dimensions); braided semilinear conjugacy
 (modular/integrate); property F on actual braid images (already defined).
 
-To reuse `propertyF_implies_weaklyIntegral`, construct from each ground category:
+A conditional prototype can construct from each ground category:
 `FusionData` (fusion) + `GlobalDimensionData` (dimensions) + proofs ground
 and old global FP/categorical dimensions agree (fusion, dimensions). Construct
 `StandardInputs` (below) or specialize its pieces to the categories actually
 needed (integrate). Transport the Galois equivalence and property F (integrate /
-modular). Apply the existing conditional theorem. Finish with target dependency
-and axiom audit. `GeneratedInputs` and cabling are NOT used by the main target;
+modular). The strict final audit rejects the old theorem and its input structures anywhere
+in the dependency cone even if their instances are constructed. Refactor or
+reprove the conditional argument using ground constructions and helper results
+whose types and values avoid those structures, then run the target audit. `GeneratedInputs` and cabling are NOT used by the main target;
 they remain obligations for the separate corollary.
 
 Provisional mathematical checks: simple reps exhaust all simple isoclasses;
