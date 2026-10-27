@@ -68,6 +68,8 @@
 
 - `enoTraceMatrix_reciprocity_of_coevaluation_sliding` reduces the remaining ENO reciprocity to a concrete signed sliding equation for the actual swapped-pairing coevaluation and the tensor defect. This sliding equation is not yet proved.
 
+- `drinfeld_unit` proves the actual braided double-dual map agrees with the canonical unit comparison. Tensor-product compatibility of the fourth-dual map remains open.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
