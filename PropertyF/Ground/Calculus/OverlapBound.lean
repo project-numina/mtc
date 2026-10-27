@@ -15,6 +15,39 @@ def actualBraidTrace (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
   Dimensions.groundUnitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
 
+/-- Iterating a single overlap step gives the scaled power identity, without
+dividing by the simple dimension. -/
+theorem overlap_trace_power_of_step
+    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (t : ℕ) (u : braidAlgebra X t)
+    (hstep : ∀ k, actualBraidTrace C X p (overlapIndex t (k + 1))
+        (overlapProduct X t u (k + 1)) *
+        Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) =
+      actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
+        actualBraidTrace C X p t u) :
+    ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
+      (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+        actualBraidTrace C X p t u ^ (k + 1) := by
+  intro k
+  induction k with
+  | zero => simp [overlapIndex, overlapProduct]
+  | succ k ih =>
+    calc
+      _ = (actualBraidTrace C X p (overlapIndex t (k + 1))
+          (overlapProduct X t u (k + 1)) *
+          Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) *
+          (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k := by
+            rw [pow_succ]; ring
+      _ = (actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
+          actualBraidTrace C X p t u) *
+          (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k := by rw [hstep k]
+      _ = (actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
+          (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k) *
+          actualBraidTrace C X p t u := by ring
+      _ = _ := by
+        rw [ih]
+        exact (pow_succ _ (k + 1)).symm
+
 /-- The sharp bound follows from the single remaining categorical coherence:
 the displayed scaled overlap trace identity. All unitary blocks and the
 ordinary power bound are obtained from actual finite braid images. -/
