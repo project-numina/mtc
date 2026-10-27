@@ -6,6 +6,7 @@ public import PropertyF.Descent
 public import PropertyF.Transfer
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.Norm
+public import PropertyF.Ground.Calculus.StarSpan
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
