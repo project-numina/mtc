@@ -10,6 +10,8 @@ Mathlib constructs the braided monoidal Drinfeld centre and the positive monoida
 
 The centre has a constructed preadditive structure, linear structure over any ring, monoidal preadditive/linear structures, and faithful additive/linear forgetful functor in `PropertyF.Ground.Centre.Linear`; `finiteDimensional_hom` proves finite-dimensionality of centre Hom spaces from that of the underlying Hom spaces.
 
+`reverse_braidGenerator`, `reverse_braidImage`, and `reverse_objectPropertyF_iff` prove that the actual adjacent generators invert under reverse braiding, the generated image subgroup is unchanged, and objectwise property F is invariant.
+
 ## In progress
 
 Inspect how to transport braid images through the embeddings; investigate centre rigidity and semisimplicity.
