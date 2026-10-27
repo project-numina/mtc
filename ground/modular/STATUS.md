@@ -163,3 +163,11 @@ under actual binary direct sums, using the monoidal distributor and determinant
 conjugation/direct-sum formulas. Together with the simple case this covers
 block-diagonal simple-sum automorphisms. The arbitrary automorphism case and
 monodromy hexagon remain open. Focused build and axiom check passed.
+
+`fpDeterminant_tensor_natural` now proves the full tensor determinant rule
+for all components of an arbitrary natural automorphism on any objects,
+without extra assumptions. It uses a finite binary simple decomposition,
+naturality, and the preceding scalar and biproduct determinant laws. This
+covers pivotal twist components; the general non-natural automorphism rule and
+the monodromy hexagon/additivity calculation remain open. Focused build and
+foundational axiom checks passed.

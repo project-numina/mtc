@@ -57,3 +57,6 @@ The actual categorical S identities, character classification and Galois action 
   automorphisms. Tensor compatibility for arbitrary automorphisms remains open.
 - The tensor determinant identity is closed under binary direct sums, via
   `fpDeterminant_tensor_biprod`; non-block-diagonal automorphisms remain open.
+- `fpDeterminant_tensor_natural` proves tensor compatibility for every
+  component of every natural automorphism, including the pivotal twist.
+  General monodromy determinants and their hexagon/additivity remain open.
