@@ -79,3 +79,13 @@ centre rigidity/fusion remain open. The general Kirby-loop identity and S
 invertibility remain open. Focused build passed; `#print axioms` for the scalar,
 FP-value, sphericality and dimension-square results returned only propext,
 Classical.choice and Quot.sound.
+
+`CentreModular.SEntry_simple_decomposition` expands an arbitrary Hopf link
+on the actual centre simples. `center_kirby_sum_eq_induced` uses the actual
+induction adjunction and FP-preserving forgetful functor to rewrite the centre
+Kirby sum as the FP-weighted sum of Hopf links with induced base simples.
+`center_S_invertible_of_induced_loop_vanishing` isolates the precise remaining
+centre-specific induced-loop vanishing for non-unit simple centre objects. This
+vanishing is still unproved, so this does not establish general modularity.
+Focused build and `#print axioms` for all three results passed with only the
+three permitted axioms.

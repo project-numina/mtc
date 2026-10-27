@@ -28,3 +28,6 @@ The actual categorical S identities, character classification and Galois action 
 - The actual centre Kirby identity or another proof of S invertibility remains
   open; numerical S-centrality alone cannot be identified with endomorphism
   transparency without an additional argument.
+- The centre Kirby sum can now be rewritten as the weighted sum of actual
+  induced-simple Hopf links, in `CentreModular.center_kirby_sum_eq_induced`.
+  Evaluating this sum on non-unit centre simples remains open.
