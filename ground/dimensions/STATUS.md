@@ -76,6 +76,8 @@
 
 - `pivotalBraidedTwistNaturalIso` constructs the actual natural twist and `pivotalBraidedTwist_unit` proves it fixes the unit; `pivotalBraidedTwistScalar_ne_zero` proves its simple scalar is nonzero, and `pivotalTrace_selfBraiding` gives the two-cycle trace as twist scalar times pivotal dimension. Showing that scalar is ±1 for a self-transparent simple remains open.
 
+- `pivotalTrace_eq_simpleHom_trace_sum` proves the general pivotal trace decomposition; `pivotalTrace_involution_real` shows involution traces are real when simple pivotal dimensions are real. `pivotalBraidedTwistScalar_real_of_involutive` gives reality for a self-transparent simple, and `pivotalBraidedTwistScalar_sign_of_finite_order` gives ±1 under an explicit unproved finite-order premise.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
