@@ -27,6 +27,7 @@ public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.CharacterBound
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.PseudoUnitary
+public import PropertyF.Ground.Dimensions.SphericalCriterion
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
 

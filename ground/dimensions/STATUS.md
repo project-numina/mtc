@@ -27,6 +27,7 @@
 - `rightTrace_unit` and `pivotalDimension_unit` prove the pivotal trace and dimension of the tensor unit equal one, for any pivotal structure.
 - `coevaluation_rightDualIso`, `rightDualIso_evaluation`, and their inverse variants prove that Mathlib’s canonical comparison of right duals transports the actual duality maps.
 
+- `isSpherical_iff_simple_dimensions` reduces sphericality on all endomorphisms to equality of left and right dimensions on the finite list of simples.
 - `rightTrace_tensor_pairing` rewrites the trace using the tensor-product dual pairing; `rightTrace_partialTrace` proves compatibility of partial and total pivotal traces without extra assumptions.
 
 - `pivotalTrace_tensor`, `rightPartialTrace_tensor`, and `pivotalDimension_tensor` prove tensor multiplicativity and remove the multiplicativity premises from the spectral bound and pseudo-unitarity characterization.
