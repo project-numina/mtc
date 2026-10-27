@@ -55,6 +55,7 @@ public import PropertyF.Ground.Dimensions.PositiveSpherical
 public import PropertyF.Ground.Dimensions.Drinfeld
 public import PropertyF.Ground.Dimensions.FourthDualRoots
 public import PropertyF.Ground.Dimensions.DoubleDualFunctor
+public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Dimensions.PivotalUniqueness
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.GroundNorm
