@@ -154,7 +154,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   explicit premises.
 - `CentreInduction.unitSummandRetract` gives an explicit retract of every
   base object from its underlying induction sum through the unit-labelled
-  component. Its naturality and its role as an adjunction counit remain open.
+  component. `underlyingCounit` and `underlyingUnitSummand` construct the
+  projection and inclusion naturally in the object, with their composite equal
+  to the identity. Their connection to the centre adjunction remains open.
 - `CentreInduction.loopSum_comm_unitIndex` proves loop sliding on the unit
   test strand. `simpleLoopCentrality_of_rank_one` proves the entire sliding
   condition in fusion rank one; `centerForgetEquivalenceOfRankOne` constructs
