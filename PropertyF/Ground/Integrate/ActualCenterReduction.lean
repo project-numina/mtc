@@ -15,7 +15,7 @@ and centralizer assertions about the actual centre. Those assertions remain
 unproved premises of this reduction. -/
 theorem target_of_actual_center
     (hCenter : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ,
+      HasPropertyF C.Obj →
       ∃ (hR : RigidCategory (CategoryTheory.Center C.Obj)),
         letI := hR
         ∃ (hFusion : IsFusionCategory (CategoryTheory.Center C.Obj)),
@@ -34,7 +34,7 @@ theorem target_of_actual_center
   apply target_of_center_product_retracts
   intro C hPU hF σ
   obtain ⟨hR, hFusion, p, core, generated, hp, hdim, hdet, hglobal, hIntegral, hDouble, hProduct⟩ :=
-    hCenter C hPU hF σ
+    hCenter C hPU hF
   letI := hR
   letI := hFusion
   have hB : (𝟭 (CategoryTheory.Center C.Obj)).Braided := inferInstance
