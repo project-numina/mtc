@@ -113,3 +113,13 @@ unit, duals and constituents. It assumes the chosen core contains that set's
 numerical S-centralizer. This is a proved linear-algebra theorem, not a proof
 that the paper's actual symmetric core has the required inclusion. Focused
 build passed. Next instantiate the theorem for actual product retract labels.
+
+`CentreCabling.productLabels` is the actual finite set of centre simples which
+are product retracts. `unit_mem_productLabels`, `dual_mem_productLabels`, and
+`constituent_mem_productLabels` prove its fusion closure using actual centre
+rigidity/fusion instances. `productLabels_doubleCentralizer` specializes the
+numerical double-centralizer theorem to those exact product retracts. Its only
+remaining centralizer hypothesis is that the chosen core contains the numerical
+S-centralizer of product labels; establishing that inclusion for the paper's
+integral symmetric core requires S-test-to-monodromy and the existing actual
+embedding centralizer identities. Focused build passed.

@@ -18,3 +18,8 @@
 - Modular/centre: double-centralizer work needs categorical S nondegeneracy
   and a proof that the S test expresses double-braiding centrality, together
   with the modular centralizer dimension formula (or a direct equivalent).
+- Centre/modular: `productLabels_doubleCentralizer` reduces our actual-centre
+  double centralizer to proving numerical S-centralizers of product labels lie
+  in the integral symmetric core. The missing bridge is S-test to identity
+  double braiding (the other direction is proved), plus symmetric-core
+  integrality from calculus.
