@@ -21,6 +21,12 @@
   coherence identity. `ker_le_of_mono_intertwiner` proves restriction of
   an action along an invariant summand.
 
+- `generatedCategory` and `generatedInclusion` give the full subcategory
+  and inclusion; `generatedInclusion_essentialImage` characterizes its
+  essential image. `generatedBy_tensorPower`, `generatedBy_unit`,
+  `generatedBy_self`, `generatedBy_retract`, `generatedBy_of_iso` establish
+  basic closure. No monoidal or fusion instance is yet constructed.
+
 ## In progress
 
 - Obtain the split unit for simple X from rigidity, semisimplicity, and the
