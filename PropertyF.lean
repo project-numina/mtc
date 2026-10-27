@@ -380,6 +380,21 @@ public import PropertyF.Ground.CentreRigid.Coevaluation
 public import PropertyF.Ground.CentreRigid.Tensor
 public import PropertyF.Ground.CentreRigid.Evaluation
 public import PropertyF.Ground.CentreRigid.ForgetComparison
+
+public import PropertyF.Ground.CentreBundle.Canonical
+
+public import PropertyF.Ground.CentreRigid.PartialTrace
+
+public import PropertyF.Ground.CentreRigid.PartialTraceBiproduct
+public import PropertyF.Ground.CentreRigid.WindingDecomposition
+
+public import PropertyF.Ground.CentreRigid.LoopAbsorption
+
+public import PropertyF.Ground.CentreRigid.WindingTensor
+
+public import PropertyF.Ground.CentreRigid.NestedTrace
+
+public import PropertyF.Ground.CentreRigid.LoopIdempotent
 public import PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
 public import PropertyF.Ground.Dimensions.DefectAssociativity
 public import PropertyF.Ground.Dimensions.DefectSliding
@@ -403,3 +418,7 @@ The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
+
+public import PropertyF.Ground.CentreRigid.TransparentUnit
+
+public import PropertyF.Ground.CentreRigid.SNondegenerate

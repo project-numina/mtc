@@ -18,3 +18,16 @@ Exact signatures depend on the frozen category interface and will be refined as 
   Nonempty (X ≅ ⨁ (fun p : Σ i, Fin (m i) => S p.1))`. This is exactly
   the final argument of `CentreBundle.fusionOfFiniteSemisimple`; it is not
   assumed in the final target. Centre rigidity is independently unfinished.
+
+## Round 3 update
+
+General centre rigidity is constructed by `CentreRigid.rigidCenter`, with the
+chosen base dual and pairing preserved definitionally. Fusion 36bf5d8 builds
+centre fusion, a positive spherical structure and the FP/categorical square
+from pseudo-unitarity plus any base pivotal structure. The present integrated
+reduction leaves pseudo-unitary base pivotal existence and pivotal twist
+balancing; dimensions and fusion are working on the fourth-dual route and
+its Drinfeld tensor identity. `transparent_simple_is_unit` is also proved
+here, independently of centre fusion. Centre S-invertibility follows
+conditionally from the restricted finite-order test in `SNondegenerate`, or
+from the integrated balancing-to-finite-monodromy route.

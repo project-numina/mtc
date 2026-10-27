@@ -136,3 +136,68 @@ For `rigidCenter`, `forgetDualIso_eq_refl` and `forgetDoubleDualIso_eq_refl`
 identify fusion's canonical centre/base dual comparison isomorphisms with the
 identity, simplifying the induced pivotal-centrality calculation. Focused
 build passes; the needed pivotal centrality and base positive sphere are open.
+`canonicalFusionOfFiniteSemisimple` and `bundledOfFiniteSemisimple` now use
+`rigidCenter` directly; `globalFPDimension_bundledOfFiniteSemisimple` proves
+the FP square using the actual induction adjunction. Their sole remaining
+premise is the explicit finite-semiplicity decomposition. Focused build passes.
+For the separate Kirby-loop route, `partialTraceHom_dinatural` proves a
+morphism can be moved around the closed strand of a pivotal partial trace,
+and `partialTraceHom_conjugate` proves invariance under changing the closed
+object by an isomorphism. These hold for arbitrary pivotal categories and
+are tools toward, not proofs of, general loop sliding. Focused build passes.
+`partialTraceHom_biproduct` decomposes a partial trace over a finite biproduct
+into its diagonal partial traces. `winding_natural`, `trace_winding_biproduct`
+and `trace_winding_simple_decomposition` show the actual centre winding
+trace is additive in the test strand and give its simple fusion-multiplicity
+expansion. These are ingredients for Kirby-loop sliding, which remains open.
+`fp_loop_absorption` proves that the FP-weighted sum of closed windings over
+`S_k ⊗ S_i` equals `FPdim(S_k)` times the original sum. With FP-valued
+pivotal dimensions, `loop_absorption` identifies the sum as the actual
+Kirby loop. The geometric sliding identity is still missing.
+`winding_tensor` factors winding around a tensor product into successive
+windings; `trace_inner_winding_tensor` closes the inner factor and produces
+the outer winding of that partial trace. To combine this with FP absorption,
+one still needs the general nested partial-trace identity (existing
+`rightPartialTrace_nested_simple` only handles simple equal survivors) and
+the open-strand geometric sliding identity.
+`partialTraceHom_nested` proves the general iterated partial-trace identity
+for arbitrary surviving objects and maps, using `cap_tensor` and the canonical
+tensor dual pairing. This removes the nested-trace gap in combining the
+winding tensor factorization with FP loop absorption. The geometric step from
+closed-loop absorption to open-strand centrality remains unproved. Focused
+build passes.
+`closedWinding_tensor` proves closed windings compose under tensor product;
+`loop_eigen` proves the Kirby loop is a common FP eigenvector for all simple
+closed winding maps; `loop_square` and `normalized_loop_idempotent` prove its
+normalization is idempotent on underlying Hom spaces. No loop centrality or
+centre semisimplicity is claimed: identifying its image with centre Hom maps
+remains the missing geometric step. Focused build passes.
+`negative_and_induced_detect_unit` proves a simple object of the actual centre
+centralizing all negative images and the actual induced tensor unit is
+isomorphic to the centre unit. Consequently `transparent_simple_is_unit`
+proves categorical nondegeneracy of the actual centre, without centre fusion,
+pivotal or spherical assumptions. The proof uses the nonzero diagonal matrix
+block of the actual induction crossing and the counit unit-summand projection.
+Numerical S-centrality has not yet been shown to imply categorical centrality;
+therefore S-matrix invertibility is not claimed. Focused build passes.
+`center_s_invertible_of_test_monodromy` proves categorical S invertibility for
+an FP-valued pivotal centre assuming finite-order mixed monodromies only for
+test simples that are retracts of negative images or of the induced unit, and
+only against numerical S-central labels. The proof combines categorical centre
+nondegeneracy with positive trace saturation and the existing S criterion.
+Those finite-order hypotheses remain unproved; this is not unconditional S
+invertibility. Focused build passes.
+
+## Current team target status
+
+The integrated reduction now needs existence of a pivotal structure on a
+pseudo-unitary base and pivotal twist balancing. General centre rigidity,
+conditional centre fusion/sphere, categorical nondegeneracy and the symmetric
+core integrality step are constructed; finite monodromy and numerical
+S-invertibility follow once balancing is proved. Dimensions is proving the
+Drinfeld tensor cap, fusion the fourth-dual cancellation, and other teams
+are assisting those diagrams. `#print axioms` on `rigidCenter`,
+`partialTraceHom_nested`, `normalized_loop_idempotent`,
+`transparent_simple_is_unit`, `center_s_invertible_of_test_monodromy`, and
+the conditional centre FP-square theorem reports only the standard three
+Lean axioms. No general target theorem is claimed.
