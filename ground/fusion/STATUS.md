@@ -18,6 +18,9 @@
   `Ground.fpSimple_isIntegral`, and `Ground.globalFPDimension_isIntegral`:
   the target's spectral-radius simple dimensions and global dimension are
   algebraic integers, without assuming a positive character or old bundles.
+- `Ground.fusionMatrix_unit`, `Ground.fpSimple_unit`, and
+  `Ground.one_le_globalFPDimension`: the spectral-radius definition is
+  normalized at the unit and the global dimension is at least one.
 - `Ground.split_from_simple`: any nonzero map out of a simple object splits,
   using the genuine finite semisimplicity property.
 - `Ground.unit_retract_leftDual_tensor`: the tensor unit is a retract of
