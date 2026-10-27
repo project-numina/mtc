@@ -49,6 +49,7 @@ public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.PseudoUnitary
 public import PropertyF.Ground.Dimensions.SphericalCriterion
 public import PropertyF.Ground.Dimensions.SphericalArithmetic
+public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
 public import PropertyF.Ground.Cabling.Rigidity

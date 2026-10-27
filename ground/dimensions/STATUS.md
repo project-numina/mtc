@@ -18,6 +18,7 @@
 
 - `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
 
+- `rightQuantumTrace_simple_ne_zero`, `leftQuantumTrace_simple_ne_zero`, and `target_squaredNorm_ne_zero` establish nonvanishing for every simple without a pivotal or spherical structure.
 - `pivotalDimension_simple_ne_zero` and `spherical_squaredNorm_ne_zero` reuse modular’s genuine categorical nonvanishing theorem. `spherical_squaredNorm_totallyPositive_of_dual` and `pseudoUnitary_galois_fp_bounds_of_dual` establish total positivity and the conjugate positivity/upper bound from the explicit remaining dual-dimension identity.
 - `globalDimension_real_one_le_of_spherical` proves the target global dimension is at least one given a spherical structure with real simple dimensions; existence and reality are not yet proved.
 - `pseudoUnitary_iff_simple_saturation` establishes the global equality characterization given a spherical structure and real simple dimensions.
