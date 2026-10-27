@@ -64,6 +64,8 @@ public import PropertyF.Ground.Dimensions.InvolutionTrace
 public import PropertyF.Ground.Dimensions.WeightedEigenvalue
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.RootSignTwist
+public import PropertyF.Ground.Dimensions.TensorExtension
+public import PropertyF.Ground.Dimensions.ENOSpherical
 public import PropertyF.Ground.Dimensions.NaturalSquareDefect
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.NaturalRoots
