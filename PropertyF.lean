@@ -74,3 +74,4 @@ See `FORMALIZATION.md` for the complete assumption ledger.
 
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapUnitary
+public import PropertyF.Ground.Calculus.OverlapBound
