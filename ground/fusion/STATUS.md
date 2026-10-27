@@ -81,7 +81,8 @@
   `fusionFlow_balance`, `unit_retract_tensorPower`,
   `simple_generatedBy_rightDual`, and `simple_generatedCategoryRigid`:
   every simple has the unit as a retract of a positive tensor power, and its
-  generated tensor subcategory is rigid.
+  generated tensor subcategory is rigid; `generatedBy_rightDual` and
+  `generatedCategoryRigid` extend this to every object using semisimplicity.
 - `Ground.simple_functor_obj`, `simple_labels_inclusion`, and
   `globalFPDimension_le_of_full_functor`: a full faithful linear tensor
   inclusion sends simples injectively to simples and its global FP dimension
