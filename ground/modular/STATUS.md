@@ -8,11 +8,12 @@
 - `PropertyF.Ground.Modular.modularDataOfCharacters`: constructs the existing `ModularData` package from its numerical identities plus a bijective classification of normalized S-columns as fusion characters. The Galois permutation and its character equation are constructed, not supplied.
 - `PropertyF.Ground.Modular.braidGenerator_natural`, `conjugate_braidGenerator`, and `braidImageIso`: isomorphic objects have isomorphic braid-image groups via the actual tensor-power isomorphisms; this requires only a braided monoidal category.
 - `PropertyF.Ground.Modular.braidGenerator_functor`, `braidImageFunctorIso`, `braidImages_of_essentiallySurjective`, and `conjugate_images`: the old `StandardInputs.conjugate_images` field is proved from the braided equivalence; the general result works for any faithful, essentially surjective braided monoidal functor without old hypothesis structures.
+- `PropertyF.Ground.Modular.simpleLabels_equiv` constructs the bijection of simple representatives under any category equivalence for the frozen ground category, together with the actual object isomorphisms.
 - Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
 
 ## In progress
 
-- Derive conjugate-label and positive-character preservation from fusion rules and their uniqueness; investigate categorical S-matrix ingredients.
+- Derive fusion-coefficient invariance from the semilinear functor and the label bijection; then prove FP invariance using the spectral-radius definition or positive-character uniqueness. Investigate categorical S-matrix ingredients.
 - Make the S/Verlinde and Galois results usable directly in the ground development without old hypothesis structures in their dependency cone.
 
 ## Blocked / dependencies
