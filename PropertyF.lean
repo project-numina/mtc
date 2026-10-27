@@ -40,6 +40,7 @@ public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.Pivotal
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.TensorTrace
+public import PropertyF.Ground.Dimensions.QuantumTensor
 public import PropertyF.Ground.Dimensions.IteratedTrace
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Dimensions.Trace
