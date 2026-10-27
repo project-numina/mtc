@@ -11,11 +11,12 @@
 - `PropertyF.Ground.Modular.simpleLabels_equiv` constructs the bijection of simple representatives under any category equivalence for the frozen ground category, together with the actual object isomorphisms.
 - `PropertyF.Ground.Modular.conjugate_hom_finrank`, `conjugate_fusionCoeff`, `conjugate_fusionMatrix`, `conjugate_fpSimple`, `conjugate_labels`, and `conjugate_globalFPDimension`: Galois conjugacy preserves Hom dimensions, fusion rules, target spectral-radius FP dimensions, and global FP dimension. These statements use the frozen ground category and no old hypothesis bundles.
 - `PropertyF.Ground.Modular.ground_conjugate_images` and `conjugate_propertyF`: braid images and property F transport to the conjugate in the frozen ground interface.
+- `PropertyF.Ground.Modular.categoricalS`, `categoricalS_symmetric`, `categoricalS_unit`, and `categorical_global_eq_sum_squares`: the actual double-braiding trace defines S for a ground braided fusion category with a pivotal structure; symmetry and unit column follow without nondegeneracy, and global sum-of-squares follows from sphericality.
 - Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
 
 ## In progress
 
-- Develop the categorical S-matrix and prove its structural identities using the dimensions workstream's spherical traces.
+- Prove S² and the Verlinde equations from a genuine non-degenerate spherical braided fusion category; integrate the category-level S with the algebraic Galois action.
 - Make the S/Verlinde and Galois results usable directly in the ground development without old hypothesis structures in their dependency cone.
 
 ## Blocked / dependencies
