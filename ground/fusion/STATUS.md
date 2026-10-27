@@ -14,6 +14,10 @@
   sums and products are algebraic integers.
 - `Ground.integer_matrix_eigenvalue_isIntegral`: a reusable matrix theorem
   with no dependency on the old fusion or numerical hypothesis structures.
+- `Ground.integer_matrix_spectralRadius_sq_isIntegral`,
+  `Ground.fpSimple_isIntegral`, and `Ground.globalFPDimension_isIntegral`:
+  the target's spectral-radius simple dimensions and global dimension are
+  algebraic integers, without assuming a positive character or old bundles.
 - `Ground.split_from_simple`: any nonzero map out of a simple object splits,
   using the genuine finite semisimplicity property.
 - `Ground.unit_retract_leftDual_tensor`: the tensor unit is a retract of
@@ -54,8 +58,8 @@ positive eigenvector and uniqueness, or an alternative elementary argument,
 is needed. The categorical bridge from biproduct decompositions to fusion-ring
 associativity and rigidity also remains to be developed.
 
-Construction of `FusionData`, tensor/dual/inclusion invariance, integrality for
-the target spectral-radius definition, and the centre dimension comparison
+Construction of `FusionData`, tensor/dual/inclusion invariance, agreement of
+spectral radii with the positive character, and the centre dimension comparison
 remain. The project-scale remaining effort is substantial; no credible
 completion-time estimate is yet available.
 
