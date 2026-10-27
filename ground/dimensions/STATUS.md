@@ -22,6 +22,7 @@
 - `positive_spherical_isPseudoUnitary`, `positive_spherical_squaredNorm_eq_fp_sq`, `positive_spherical_squaredNorm_totallyPositive`, and `positive_spherical_galois_fp_bounds` show any positive spherical structure supplies pseudo-unitarity and the required Galois bounds; constructing the structure remains open.
 - `pivotalStructure_unique_of_simple_dimensions` proves pivotal structures are determined by simple dimensions; `positive_pivotalDimension_eq_fpSimple` and `positive_pivotalStructure_unique` prove the uniqueness and FP-identification parts of ENO 8.23. Existence remains open.
 - `exists_fourthDual_square_root` and `fourthDualSimpleRoot_sq` construct the ENO square-root components on every simple, without assuming monoidality or naturality.
+- `doubleDualFunctor` is a complex-linear additive functor; `drinfeldNaturalIso` and `fourthDualNaturalIso` package the natural maps as categorical natural isomorphisms, with tensor coherence still unproved.
 - `doubleDualIso_natural` and `fourthDualIso_natural` construct and prove naturality of the braided double- and fourth-dual maps. The fourth-dual map’s monoidal coherence remains unproved.
 - `target_squaredNorm_unit` proves the intrinsic norm of the tensor unit is one without a pivotal structure.
 - `target_squaredNorm_rightDual` proves intrinsic norm invariance under duality without a pivotal structure. `spherical_pivotalDimension_rightDual_sq` proves equality of squared dimensions, with the sign still unresolved.
