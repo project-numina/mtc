@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.CounitColumn
+public import PropertyF.Ground.CentreInduction.Transparent
 public import PropertyF.Ground.Centre.Embeddings
 
 /-! Transparent simple centre objects are the unit. -/
@@ -116,25 +117,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A positive simple centralizing the induced unit is the unit-labelled simple. -/
 theorem positive_centralizes_induced_unit (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C))
     (h : Centre.Centralizes ((CategoryTheory.Center.ofBraided C.Obj).obj (simples C i))
-      ((CentreInduction.induction C).obj (𝟙_ C.Obj))) : i = unitIndex C := by
-  let T := simples C i
-  let J := (CentreInduction.induction C).obj (𝟙_ C.Obj)
-  let p := (CentreInduction.underlyingCounit C).app (𝟙_ C.Obj)
-  have hm := congrArg CategoryTheory.Center.Hom.f h
-  change (β_ T J.1).hom ≫ CentreInduction.crossingCandidate C (𝟙_ C.Obj) T = 𝟙 _ at hm
-  have hcross : CentreInduction.crossingCandidate C (𝟙_ C.Obj) T = (β_ T J.1).inv := by
-    apply (cancel_epi (β_ T J.1).hom).1
-    simpa using hm
-  apply counit_comm_forces_unit C i
-  change (p ▷ T) ≫ (λ_ T).hom ≫ (ρ_ T).inv =
-    CentreInduction.crossingCandidate C (𝟙_ C.Obj) T ≫ (T ◁ p)
-  rw [hcross]
-  have hb := BraidedCategory.braiding_naturality_right T p
-  change (T ◁ p) ≫ (β_ T (𝟙_ C.Obj)).hom = (β_ T J.1).hom ≫ (p ▷ T) at hb
-  apply (cancel_epi (β_ T J.1).hom).1
-  simp only [Category.assoc, Iso.hom_inv_id_assoc]
-  rw [← Category.assoc, ← hb]
-  simp [braiding_tensorUnit_right, Category.assoc]
+      ((CentreInduction.induction C).obj (𝟙_ C.Obj))) : i = unitIndex C :=
+  CentreInduction.positive_simple_centralizes_induced_unit C i (Centre.centralizes_symm h)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A simple centre object centralizing negative images and the induced unit is the unit. -/
@@ -167,7 +151,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem transparent_simple_is_unit (C : BraidedFusionCategory.{v,u}) (Z : Center C.Obj) [Simple Z]
     (h : ∀ W : Center C.Obj, Centre.Centralizes Z W) :
     Nonempty (Z ≅ 𝟙_ (Center C.Obj)) :=
-  negative_and_induced_detect_unit C Z (fun T => h ((Centre.negative C.Obj).obj T))
-    (h ((CentreInduction.induction C).obj (𝟙_ C.Obj)))
+  CentreInduction.center_transparent_simple_iso_unit C Z h
 
 end PropertyF.Ground.CentreRigid
