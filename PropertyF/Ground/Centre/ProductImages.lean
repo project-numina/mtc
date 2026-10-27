@@ -81,32 +81,75 @@ theorem projections_jointly_injective (X Y : C) (n : ℕ) :
   · exact congrArg (fun z => z.asIso.hom) hf'
   · exact congrArg (fun z => z.asIso.hom) hs'
 
-/-- The actual braid image of a mixed product object embeds in the product of
-its two factor images. -/
-theorem product_braidImage_finite (X Y : C) (n : ℕ)
-    [Finite (braidImage X n)] [Finite (braidImage Y n)] :
-    Finite (braidImage (X,Y) n) := by
-  have hf : braidImage (X,Y) n ≤ (braidImage X n).comap (fstBraidMap X Y n) := by
-    apply (Subgroup.closure_le _).mpr
-    rintro _ ⟨i, rfl⟩
-    change fstBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage X n
-    rw [fstBraidMap_generator]
-    exact Subgroup.subset_closure ⟨i, rfl⟩
-  have hs : braidImage (X,Y) n ≤ (braidImage Y n).comap (sndBraidMap X Y n) := by
-    apply (Subgroup.closure_le _).mpr
-    rintro _ ⟨i, rfl⟩
-    change sndBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage Y n
-    rw [sndBraidMap_generator]
-    exact Subgroup.inv_mem _ (Subgroup.subset_closure ⟨i, rfl⟩)
-  let j : braidImage (X,Y) n → braidImage X n × braidImage Y n :=
-    fun a => (⟨fstBraidMap X Y n a, hf a.property⟩,
-      ⟨sndBraidMap X Y n a, hs a.property⟩)
-  apply Finite.of_injective j
+/-- The projected first component of a product braid lies in the first image. -/
+theorem fstBraidMap_mem (X Y : C) (n : ℕ) :
+    braidImage (X,Y) n ≤ (braidImage X n).comap (fstBraidMap X Y n) := by
+  apply (Subgroup.closure_le _).mpr
+  rintro _ ⟨i, rfl⟩
+  change fstBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage X n
+  rw [fstBraidMap_generator]
+  exact Subgroup.subset_closure ⟨i, rfl⟩
+
+/-- The projected second component lies in the original, unreversed image. -/
+theorem sndBraidMap_mem (X Y : C) (n : ℕ) :
+    braidImage (X,Y) n ≤ (braidImage Y n).comap (sndBraidMap X Y n) := by
+  apply (Subgroup.closure_le _).mpr
+  rintro _ ⟨i, rfl⟩
+  change sndBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage Y n
+  rw [sndBraidMap_generator]
+  exact Subgroup.inv_mem _ (Subgroup.subset_closure ⟨i, rfl⟩)
+
+/-- The actual product braid image maps into the product of the two factor images. -/
+def productBraidMap (X Y : C) (n : ℕ) :
+    braidImage (X,Y) n →* (braidImage X n × braidImage Y n) where
+  toFun a := (⟨fstBraidMap X Y n a, fstBraidMap_mem X Y n a.property⟩,
+    ⟨sndBraidMap X Y n a, sndBraidMap_mem X Y n a.property⟩)
+  map_one' := by ext <;> simp
+  map_mul' := by intro a b; ext <;> simp
+
+/-- The product braid image is a subgroup of the product of its two factor images. -/
+theorem productBraidMap_injective (X Y : C) (n : ℕ) :
+    Function.Injective (productBraidMap X Y n) := by
   intro a b hab
   apply Subtype.ext
   apply projections_jointly_injective X Y n
   apply Prod.ext
   · exact congrArg (fun x : braidImage X n × braidImage Y n => x.1.val) hab
   · exact congrArg (fun x : braidImage X n × braidImage Y n => x.2.val) hab
+
+/-- Finite factor images imply a finite mixed-product braid image. -/
+theorem product_braidImage_finite (X Y : C) (n : ℕ)
+    [Finite (braidImage X n)] [Finite (braidImage Y n)] :
+    Finite (braidImage (X,Y) n) :=
+  Finite.of_injective (productBraidMap X Y n) (productBraidMap_injective X Y n)
+
+/-- The positive centre embedding preserves and reflects objectwise property F. -/
+theorem positive_objectPropertyF_iff (X : C) :
+    ObjectPropertyF ((CategoryTheory.Center.ofBraided C).obj X) ↔ ObjectPropertyF X := by
+  constructor <;> intro h n
+  · let _ := h n
+    exact Finite.of_equiv (braidImage ((CategoryTheory.Center.ofBraided C).obj X) n)
+      (Modular.braidImageFunctorIso (CategoryTheory.Center.ofBraided C) X n).symm.toEquiv
+  · let _ := h n
+    exact Finite.of_equiv (braidImage X n)
+      (Modular.braidImageFunctorIso (CategoryTheory.Center.ofBraided C) X n).toEquiv
+
+/-- The negative centre embedding also preserves and reflects property F. -/
+theorem negative_objectPropertyF_iff (X : C) :
+    ObjectPropertyF ((negative C).obj X) ↔ ObjectPropertyF X := by
+  have e (n : ℕ) := @Modular.braidImageFunctorIso C _ _ (CategoryTheory.reverseBraiding C)
+    (CategoryTheory.Center C) _ _ _ (negative C) negativeBraided X n negativeFaithful
+  constructor <;> intro h n
+  · let _ := h n
+    have hf : Finite (@braidImage C _ _ (CategoryTheory.reverseBraiding C) X n) :=
+      Finite.of_equiv (braidImage ((negative C).obj X) n) (e n).symm.toEquiv
+    rw [reverse_braidImage] at hf
+    exact hf
+  · have hf : Finite (@braidImage C _ _ (CategoryTheory.reverseBraiding C) X n) := by
+      rw [reverse_braidImage]
+      exact h n
+    let _ := hf
+    exact Finite.of_equiv (@braidImage C _ _ (CategoryTheory.reverseBraiding C) X n)
+      (e n).toEquiv
 
 end PropertyF.Ground.Centre

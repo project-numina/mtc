@@ -14,7 +14,7 @@ The centre has a constructed preadditive structure, linear structure over any ri
 
 `mixedBraiding` constructs the componentwise braiding with the second component reversed on the ordinary product category. `productFunctor` constructs the monoidal functor from this ordinary product category to the centre and `positiveProductIso` / `negativeProductIso` identify its restrictions to the two factors. `productBraided` proves this functor is braided for `mixedBraiding`. This is not yet the Deligne product; extension and dominance remain open.
 
-`fstBraidMap`, `sndBraidMap`, `projections_jointly_injective`, and `product_braidImage_finite` prove that actual braid images of objects in the mixed product category embed in the product of the factor images, so finite images of both factors imply a finite product image. The proof uses the merged modular workstream’s braided-functor coherence.
+`fstBraidMap`, `sndBraidMap`, `productBraidMap`, `productBraidMap_injective`, and `product_braidImage_finite` prove that actual braid images of objects in the mixed product category embed in the product of the factor images, so finite images of both factors imply a finite product image. The proof uses the merged modular workstream’s braided-functor coherence. `positive_objectPropertyF_iff` and `negative_objectPropertyF_iff` establish property F preservation and reflection by both canonical embeddings.
 
 ## In progress
 
