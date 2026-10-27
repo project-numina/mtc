@@ -133,4 +133,107 @@ theorem simpleScalarNaturalIso_app_simple (C : Ground.BraidedFusionCategory.{v,u
   change simpleScalarComponent C c (Ground.simples C i) = _
   exact simpleScalarNatural_app_simple C c i
 
+/-- Maps out of a tensor product of finite biproducts are determined by their
+restrictions to the tensor products of summand inclusions. -/
+theorem tensorBiproduct_hom_ext (C : Ground.BraidedFusionCategory.{v,u})
+    {ι κ : Type} [Fintype ι] [Fintype κ] (F : ι → C.Obj) (G : κ → C.Obj)
+    {Z : C.Obj} (f g : (⨁ F) ⊗ (⨁ G) ⟶ Z)
+    (h : ∀ i j, (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ f =
+      (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ g) : f = g := by
+  let r : ((⨁ F) ⊗ (⨁ G)) ≅ ⨁ (fun i => F i ⊗ (⨁ G)) := rightDistributor F (⨁ G)
+  apply (cancel_epi r.inv).1
+  apply biproduct.hom_ext'
+  intro i
+  dsimp only [r]
+  simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
+  apply (cancel_epi (leftDistributor (F i) G).inv).1
+  apply biproduct.hom_ext'
+  intro j
+  simp only [biproduct_ι_comp_leftDistributor_inv_assoc]
+  simpa only [tensorHom_def', Category.assoc] using h i j
+
+/-- If scalars multiply along every nonzero fusion coefficient, the natural
+scalar map has the expected tensor component on pairs of simple objects. -/
+theorem simpleScalarNatural_tensor_simples (C : Ground.BraidedFusionCategory.{v,u})
+    (c : Fin (Ground.rank C) → ℂ)
+    (hmul : ∀ i j k, Ground.fusionCoeff C i j k ≠ 0 → c k = c i * c j)
+    (i j : Fin (Ground.rank C)) :
+    (simpleScalarNatural C c).app (Ground.simples C i ⊗ Ground.simples C j) =
+      (c i * c j) • 𝟙 (Ground.simples C i ⊗ Ground.simples C j) := by
+  classical
+  let X := Ground.simples C i ⊗ Ground.simples C j
+  let e := simpleDecomposition C X
+  let V := simplePiecesObject C X
+  apply (cancel_epi e.inv).1
+  apply biproduct.hom_ext'
+  intro a
+  have hn := (simpleScalarNatural C c).naturality (biproduct.ι V a ≫ e.inv)
+  simp only [Functor.id_map] at hn
+  change (biproduct.ι V a ≫ e.inv) ≫ (simpleScalarNatural C c).app X =
+    (simpleScalarNatural C c).app (Ground.simples C a.1) ≫ biproduct.ι V a ≫ e.inv at hn
+  rw [simpleScalarNatural_app_simple] at hn
+  have hcoeff : Ground.fusionCoeff C i j a.1 ≠ 0 := by
+    change Module.finrank ℂ (Ground.simples C a.1 ⟶ X) ≠ 0
+    exact Nat.ne_of_gt (Nat.zero_lt_of_lt a.2.isLt)
+  have hscalar := hmul i j a.1 hcoeff
+  simpa [V, X, simplePiecesObject, hscalar, Category.assoc] using hn
+
+/-- Scalar values satisfying the fusion support rule extend to a tensor
+natural endomorphism of the identity. -/
+theorem simpleScalarNatural_tensor (C : Ground.BraidedFusionCategory.{v,u})
+    (c : Fin (Ground.rank C) → ℂ)
+    (hmul : ∀ i j k, Ground.fusionCoeff C i j k ≠ 0 → c k = c i * c j)
+    (X Y : C.Obj) :
+    (simpleScalarNatural C c).app (X ⊗ Y) =
+      (simpleScalarNatural C c).app X ⊗ₘ (simpleScalarNatural C c).app Y := by
+  classical
+  let ex := simpleDecomposition C X
+  let ey := simpleDecomposition C Y
+  let V := simplePiecesObject C X
+  let W := simplePiecesObject C Y
+  apply (cancel_epi (ex.symm ⊗ᵢ ey.symm).hom).1
+  apply tensorBiproduct_hom_ext C V W
+  intro a b
+  let sx : Ground.simples C a.1 ⟶ X := biproduct.ι V a ≫ ex.inv
+  let sy : Ground.simples C b.1 ⟶ Y := biproduct.ι W b ≫ ey.inv
+  have hx : sx ≫ (simpleScalarNatural C c).app X = c a.1 • sx := by
+    have h := (simpleScalarNatural C c).naturality sx
+    simp only [Functor.id_map, simpleScalarNatural_app_simple, Linear.smul_comp] at h
+    simpa [Linear.smul_comp] using h
+  have hy : sy ≫ (simpleScalarNatural C c).app Y = c b.1 • sy := by
+    have h := (simpleScalarNatural C c).naturality sy
+    simp only [Functor.id_map, simpleScalarNatural_app_simple, Linear.smul_comp] at h
+    simpa [Linear.smul_comp] using h
+  have ht : (sx ⊗ₘ sy) ≫
+      ((simpleScalarNatural C c).app X ⊗ₘ (simpleScalarNatural C c).app Y) =
+      (c a.1 * c b.1) • (sx ⊗ₘ sy) := by
+    rw [tensorHom_comp_tensorHom, hx, hy]
+    simp [tensorHom_def, smul_smul, mul_comm]
+  have hs : (sx ⊗ₘ sy) ≫ (simpleScalarNatural C c).app (X ⊗ Y) =
+      (c a.1 * c b.1) • (sx ⊗ₘ sy) := by
+    have h := (simpleScalarNatural C c).naturality (sx ⊗ₘ sy)
+    simp only [Functor.id_map, simpleScalarNatural_tensor_simples C c hmul,
+      Linear.smul_comp] at h
+    simpa [Linear.smul_comp] using h
+  simpa [sx, sy, ex, ey, V, W, tensorIso_hom, tensorHom_comp_tensorHom,
+    Category.assoc] using hs.trans ht.symm
+
+/-- The unit component is the identity when the unit scalar is one. -/
+theorem simpleScalarNatural_unit (C : Ground.BraidedFusionCategory.{v,u})
+    (c : Fin (Ground.rank C) → ℂ) (hunit : c (Ground.unitIndex C) = 1) :
+    (simpleScalarNatural C c).app (𝟙_ C.Obj) = 𝟙 _ := by
+  obtain ⟨e⟩ := Ground.unitIndex_iso C
+  apply (cancel_epi e.hom).1
+  have h := (simpleScalarNatural C c).naturality e.hom
+  simp only [Functor.id_map, simpleScalarNatural_app_simple, hunit, one_smul] at h
+  simpa using h
+
+/-- Fusion-compatible scalar labels define a monoidal natural transformation. -/
+theorem simpleScalarNatural_isMonoidal (C : Ground.BraidedFusionCategory.{v,u})
+    (c : Fin (Ground.rank C) → ℂ) (hunit : c (Ground.unitIndex C) = 1)
+    (hmul : ∀ i j k, Ground.fusionCoeff C i j k ≠ 0 → c k = c i * c j) :
+    NatTrans.IsMonoidal (simpleScalarNatural C c) where
+  unit := by simpa using simpleScalarNatural_unit C c hunit
+  tensor X Y := by simpa using simpleScalarNatural_tensor C c hmul X Y
+
 end PropertyF.Ground.Dimensions
