@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.DualCoherence
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Dimensions.CharacterBound
 public import PropertyF.Ground.Dimensions.GroundNorm
 
@@ -42,16 +43,20 @@ theorem pivotalDimension_unit (C : Ground.BraidedFusionCategory.{v,u})
   rw [rightTrace_unit]
   simpa using Ground.unitScalar_algebraMap C 1
 
-/-- The remaining categorical ingredient for pivotal dimensions to
-form a fusion character is tensor multiplicativity. Additivity and the simple multiplicities are proved above. -/
+/-- Pivotal dimensions multiply under tensor products. -/
+theorem pivotalDimension_tensor (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (X Y : C.Obj) :
+    pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
+  simpa [pivotalDimension, ← groundUnitScalarEquiv_apply] using
+    pivotalTrace_tensor p (groundUnitScalarEquiv C) X Y (𝟙 X) (𝟙 Y)
+
+/-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj))
-    (hmul : ∀ X Y, pivotalDimension C p (X ⊗ Y) =
-      pivotalDimension C p X * pivotalDimension C p Y) :
+    (p : PivotalStructure (C := C.Obj)) :
     ∀ i j, pivotalDimension C p (Ground.simples C i) * pivotalDimension C p (Ground.simples C j) =
       ∑ k, (Ground.fusionCoeff C i j k : ℂ) * pivotalDimension C p (Ground.simples C k) := by
   intro i j
-  rw [← hmul, pivotalDimension_decomposition]
+  rw [← pivotalDimension_tensor, pivotalDimension_decomposition]
   rfl
 
 /-- Pivotal dimension is invariant under object isomorphism. -/
@@ -61,12 +66,10 @@ theorem pivotalDimension_iso (C : Ground.BraidedFusionCategory.{v,u})
   unfold pivotalDimension
   rw [p.rightTrace_id_iso e]
 
-/-- Once tensor multiplicativity is proved, every Galois conjugate of
-each pivotal simple dimension is bounded by its FP dimension. -/
+/-- Every Galois conjugate of each pivotal simple dimension is bounded by
+its Frobenius–Perron dimension. -/
 theorem galois_pivotalDimension_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
     (p : PivotalStructure (C := C.Obj))
-    (hmul : ∀ X Y, pivotalDimension C p (X ⊗ Y) =
-      pivotalDimension C p X * pivotalDimension C p Y)
     (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
     ‖σ (pivotalDimension C p (Ground.simples C i))‖ ≤ Ground.fpSimple C i := by
   apply galois_character_norm_le_fpSimple C
@@ -74,6 +77,6 @@ theorem galois_pivotalDimension_norm_le_fpSimple (C : Ground.BraidedFusionCatego
   · obtain ⟨e⟩ := Ground.unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit]
     exact one_ne_zero
-  · exact pivotalDimension_character C p hmul
+  · exact pivotalDimension_character C p
 
 end PropertyF.Ground.Dimensions
