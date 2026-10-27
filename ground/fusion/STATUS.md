@@ -12,6 +12,8 @@
   `globalFPDimension_isIntegral`: the fusion equations give an integer matrix
   having the positive character as eigenvector, so its values and their finite
   sums and products are algebraic integers.
+- `Ground.integer_matrix_eigenvalue_isIntegral`: a reusable matrix theorem
+  with no dependency on the old fusion or numerical hypothesis structures.
 - `Ground.split_from_simple`: any nonzero map out of a simple object splits,
   using the genuine finite semisimplicity property.
 - `Ground.unit_retract_leftDual_tensor`: the tensor unit is a retract of
