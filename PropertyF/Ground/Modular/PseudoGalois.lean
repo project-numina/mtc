@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
 public import PropertyF.Ground.Fusion.SpectralIntegral
+public import PropertyF.Ground.Modular.UnitDimension
 
 /-! The pseudo-unitary case of categorical Galois symmetry. -/
 open scoped BigOperators
@@ -29,10 +30,9 @@ theorem categoricalS_galois_action_pseudoUnitary (C : Ground.BraidedFusionCatego
   categoricalS_galois_action C p (Ground.dualIndex C) (globalDimension_ne_zero_of_pseudoUnitary C h) hsq hVerlinde
 
 /-- Proposition 2.1 specialized to actual spherical S-matrices; the unit
-normalization and S-square identity remain explicit categorical obligations. -/
+S-square identity remains an explicit categorical obligation. -/
 theorem categoricalS_galois_unit_properties (C : Ground.BraidedFusionCategory)
     (h : Ground.PseudoUnitary C) (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hu : simpleDimension C p (unitIndex C) = 1)
     (hsq : ∀ x y, ∑ z, categoricalS C p x z * categoricalS C p z y =
       if x = Ground.dualIndex C y then globalDimension C else 0)
     (σ : ℂ ≃+* ℂ) (y : Fin (rank C))
@@ -43,7 +43,7 @@ theorem categoricalS_galois_unit_properties (C : Ground.BraidedFusionCategory)
       σ (globalDimension C) = globalDimension C / simpleDimension C p y ^ 2 :=
   galois_unit_properties (unitIndex C) (categoricalS C p) (Ground.dualIndex C)
     (simpleDimension C p) (globalDimension C) (simpleDimension_ne_zero C p)
-    (globalDimension_ne_zero_of_pseudoUnitary C h) hu
+    (globalDimension_ne_zero_of_pseudoUnitary C h) (simpleDimension_unit C p)
     (categorical_global_eq_sum_squares C p hp) (categoricalS_symmetric C p)
     (categoricalS_unit C p) hsq σ y hchar
 end PropertyF.Ground.Modular

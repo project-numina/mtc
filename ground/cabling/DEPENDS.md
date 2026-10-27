@@ -4,10 +4,8 @@
   `Ground.simple_strand_inclusion`, completes the simple strand-inclusion step.
 - Resolved: modular’s `Ground.Modular.braidImageFunctorIso` supplies the
   braided-functor generator coherence and image equivalence.
-- Fusion: prove every mono and epi splits in the frozen target category;
-  this discharges the arguments to `generatedCategoryAbelianOfSplit`.
-  Requested on the board.
-- Fusion: generated full subcategory needs inherited fusion-category and
-  FP-dimension constructions, including preservation under full inclusions.
-- Fusion/dimensions: ENO 8.27 needs the arithmetic theory of FP dimensions
-  and weakly integral fusion rings; owner coordination pending.
+- Resolved: fusion’s mono/epi splitting yields `generatedCategoryAbelian`.
+- Resolved: `generatedFusion` bundles the generated subcategory; fusion’s
+  inclusion theorem supplies FP dimension preservation and the global bound.
+- Resolved: fusion’s `simple_fpDimension_sq_integer_of_weaklyIntegral` proves
+  ENO 8.27 by Galois bounds; the generated-category application is wired.

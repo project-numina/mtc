@@ -7,8 +7,55 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
-- `target_of_pseudo_fixedness` reduces the frozen target to Galois fixedness
-  in the pseudo-unitary property-F case. Global FP conjugacy invariance is proved.
+- `positive_ratio_of_galois_square` and `galois_unit_self_entry` isolate the
+  bundle-free arithmetic and S-entry substitutions needed for the centre witness.
+- `positive_bounded_conjugates_of_spherical` supplies all bounded-real
+  conjugates given an actual spherical structure and dual-invariant dimensions.
+- `selfDual_character_real` and `selfDual_character_galois_real` prove
+  reality of self-dual fusion characters and all their Galois conjugates.
+- `globalFPDimension_presentation` proves the spectral FP global dimension
+  independent of the complete finite list of simple representatives.
+- `target_of_legacy_standardInputs` checks the old conditional theorem applies
+  to the frozen target; its explicit `StandardInputs` premise makes it unsuitable
+  for the final dependency cone.
+- `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
+  the old categorical data from ground definitions; dimension equality bridges
+  are proved. These compatibility declarations are excluded from the final cone.
+- `target_of_actual_center` states all remaining assumptions directly on
+  Mathlib’s Drinfeld centre, at its correct object universe; one centre
+  construction serves every Galois automorphism. `Integrate.bundledCenter`
+  and `center_forget_fpDimension` wire the actual centre and forgetful functor
+  conditional on the still-unproved rigid and fusion instances.
+- `target_of_center_product_retracts` wires the centre workstream’s actual
+  product-retract image theorem into the target reduction through faithful
+  braided functors, with independent universe parameters.
+- `twistedOverlapTrace_proved`, `galois_rigidity`, and
+  `target_of_modular_center` discharge actual overlap coherence, trace bounds
+  and three-strand rigidity. The final reduction needs only the modular centre
+  and its finite-image transfer, as explicit unproved premises.
+- `positive_bounded_conjugates_of_fp` proves real, positive bounded global FP
+  conjugates for any ground braided fusion category, without spherical or
+  pseudo-unitary assumptions. `target_of_center_and_overlap` therefore needs
+  no spherical structure on the original category.
+- `target_of_spherical_existence_center_and_overlap` only needs existence of
+  an initial spherical structure for pseudo-unitary categories: dimensions
+  derives the unique positive structure from it. This existence remains open.
+- `target_of_canonical_spherical_center_and_overlap` wires the actual scalar
+  twist and reduces the remaining rigidity premise to `TwistedOverlapTrace`.
+- `target_of_canonical_spherical_and_center` reduces the target to canonical
+  spherical existence and precise modular-centre, finite-image and rigidity
+  facts. These are explicit unproved premises; the numerical and conjugate-bound
+  steps are proved.
+- `ScalarTwist.category`, `conjugate`, `pivotal`, `spherical`,
+  `pivotalDimension_twist`, `objectPropertyF_twist`, and `labels` construct an
+  arbitrary complex Galois twist and transport genuine pivotal dimensions and
+  finite braid images; the twist is a ground braided fusion category.
+  `ScalarTwist.squaredNorm_twist`, `globalDimension_twist`, and
+  `globalFPDimension_twist` prove the corresponding intrinsic and FP global
+  dimension transport with no spherical premise.
+- `propertyF_of_galois_column` reduces the selected centre simple's finite
+  braid images to symmetric-core integrality, a double-centralizer test, and
+  finite images for generated labels. These remain categorical premises.
 - `galois_propertyF` transports property F along the target's actual braided
   semilinear equivalence using modular’s braid-image equivalences.
 - `weaklyIntegral_of_globalFPDimension_fixed` wires spectral FP integrality
@@ -25,10 +72,12 @@
   `algebraMap_unitScalar`, and `unitScalar_eq_equiv`: Schur supplies the
   canonical unit-scalar equivalence and validates the target definition.
 - `Example.complexVectorSpaces` constructs finite-dimensional complex vector
-  spaces as a genuine ground braided fusion category, proving non-vacuity of
-  the category interface (property F and pseudo-unitarity are not yet shown).
+  spaces as a genuine ground braided fusion category; both global dimensions
+  equal one, and `Example.propertyF` proves finite braid images by their action
+  on a finite tensor-product basis. `Example.target_hypotheses_inhabited`
+  proves that both target hypotheses hold simultaneously for this category.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans all 1,381 integrated declarations for forbidden axioms.
+- `ProjectAudit` scans 3,242 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and
@@ -37,18 +86,23 @@
 
 ## In progress
 
-- Prove faithful interpretation of the frozen target and choice independence.
-  Continue to exercise the final dependency gate as integration progresses.
+- `Integrate.dualCrossingIso` gives a unit-normalized natural candidate
+  on a centre object’s chosen dual. Its tensor half-braiding law and the
+  centre evaluation/coevaluation equations remain open; expanding the
+  adjunction mates produces a large coherence identity involving both dual
+  pairings and the original half-braiding. No rigid-centre instance is claimed.
+- Wire genuine centre fusion, positive spherical, dimension, S invertibility,
+  centralizer and finite-image constructions as they arrive.
+- Continue validating mathematical interfaces and exercising the final
+  dependency gate as integration progresses.
 - Refactor the conditional argument into bundle-free results as constructions
   arrive; a direct use of its old theorem would fail the strict dependency audit.
 
 ## Blocked / remaining
 
-No final theorem: the target needs FP/semisimple, intrinsic/spherical dimension,
-centre, modular, and categorical braid/trace constructions enumerated in the
-ledger. The FP spectral-radius/character identification and choice independence,
-is not yet proved. The intrinsic global dimension is now proved independent
-of both scalar/double-dual choices and simple representatives (dimensions
-commit 4a39ec5). The work
+No final theorem: centre fusion, its positive spherical structure,
+modularity, global dimension formula and finite-image transfer remain open as detailed
+in the ledger. The FP spectral-radius/character identification and both global dimensions’
+representative independence are proved. The work
 is a substantial multi-workstream formalization, not a short integration patch;
 no reliable completion-time estimate is available.
