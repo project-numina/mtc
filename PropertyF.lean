@@ -7,6 +7,9 @@ public import PropertyF.Ground.Fusion.Splitting
 public import PropertyF.Ground.Fusion.FunctorDimension
 public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Fusion.SubcategoryDimension
+public import PropertyF.Ground.Fusion.GeneratedRigidity
+public import PropertyF.Ground.Fusion.GeneratedStructure
+public import PropertyF.Ground.Fusion.WeakIntegrality
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
