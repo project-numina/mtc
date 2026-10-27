@@ -249,6 +249,7 @@ public import PropertyF.Ground.CentreInduction.SecondTriangle
 public import PropertyF.Ground.CentreInduction.UnitCentrality
 public import PropertyF.Ground.CentreInduction.ActualFusion
 public import PropertyF.Ground.CentreInduction.CenterLength
+public import PropertyF.Ground.CentreInduction.FiniteSimples
 
 public import PropertyF.Ground.CentreInduction.BasisPairing
 

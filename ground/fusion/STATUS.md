@@ -161,8 +161,11 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   identity whenever the actual centre is rigid and fusion. `center_artinian`
   and `center_noetherian` establish both chain conditions unconditionally;
   every nonzero centre object has a simple subobject, and every simple embeds
-  into an induced base simple (`simple_mono_induced_simple`). Averaging-loop
-  sliding and construction of centre fusion remain open.
+  into an induced base simple (`simple_mono_induced_simple`).
+  `finite_simple_representatives` now proves finitely many actual centre
+  simples up to isomorphism without sliding or sphericality, using finite
+  length and the adjunction. Averaging-loop sliding and construction of
+  centre semisimplicity/fusion remain open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
   unit-counit column on simple test strands. `crossingUnitBlock_eval` proves
   the diagonal duality contraction, and `secondTriangle` proves the second
