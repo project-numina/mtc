@@ -40,25 +40,4 @@ theorem doubleDualIso_evaluation (X : C) (a : X ≅ (Xᘁ)ᘁ) :
     _ = _ := by simp only [← Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id,
       whiskerLeft_id, Category.id_comp]
 
-/-- A real spherical pivotal structure preserves coevaluation on every object. -/
-theorem real_spherical_pivotal_coevaluation (D : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := D.Obj)) (hp : p.IsSpherical)
-    (d : Fin (Ground.rank D) → ℝ)
-    (hreal : ∀ i, pivotalDimension D p (Ground.simples D i) = (d i : ℂ))
-    (X : D.Obj) :
-    η_ X (Xᘁ) ≫ ((p.iso X).hom ⊗ₘ (p.iso (Xᘁ)).hom) =
-      η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
-  rw [real_spherical_pivotal_dual D p hp d hreal X]
-  exact doubleDualIso_coevaluation X (p.iso X)
-
-/-- A real spherical pivotal structure preserves evaluation on every object. -/
-theorem real_spherical_pivotal_evaluation (D : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := D.Obj)) (hp : p.IsSpherical)
-    (d : Fin (Ground.rank D) → ℝ)
-    (hreal : ∀ i, pivotalDimension D p (Ground.simples D i) = (d i : ℂ))
-    (X : D.Obj) :
-    ((p.iso (Xᘁ)).hom ⊗ₘ (p.iso X).hom) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) =
-      ε_ X (Xᘁ) := by
-  rw [real_spherical_pivotal_dual D p hp d hreal X]
-  exact doubleDualIso_evaluation X (p.iso X)
 end PropertyF.Ground.Dimensions

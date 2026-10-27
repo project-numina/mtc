@@ -424,7 +424,6 @@ import all PropertyF.Ground.Dimensions.SimplePairing
 import all PropertyF.Ground.Dimensions.SimpleScalars
 import all PropertyF.Ground.Dimensions.SphericalArithmetic
 import all PropertyF.Ground.Dimensions.SphericalCriterion
-import all PropertyF.Ground.Dimensions.SphericalGalois
 import all PropertyF.Ground.Dimensions.TensorExtension
 import all PropertyF.Ground.Dimensions.TensorMultiplicativity
 import all PropertyF.Ground.Dimensions.TensorTrace
