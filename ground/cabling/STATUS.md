@@ -33,7 +33,10 @@
   with braided full faithful inclusion. `generatedCategoryAbelianOfSplit`
   constructs its abelian structure from explicit split-mono/epi hypotheses.
   `generatedCategoryRigidOfDualClosure` constructs rigidity from closure
-  under right duals. Establishing that closure and fusion structure remains.
+  under right duals. `generatedBy_dual_of_generator_dual` reduces that
+  closure to generation of the generator’s own right dual, and
+  `generatedCategoryRigidOfGeneratorDual` constructs rigidity from it.
+  Establishing that one membership and the fusion structure remains.
 
 ## In progress
 
@@ -46,7 +49,8 @@
 
 ## Remaining
 
-- Construct the fusion and rigid structures on the generated subcategory,
+- Prove `GeneratedBy X (Xᘁ)` from finite semisimplicity and construct
+  the fusion structure on the generated subcategory,
   its braid image equivalence, and cabling witnesses.
 - Prove ENO 8.27 and preservation of FP dimension along the inclusion.
 - The project lacks constructions of fusion categories, semisimplicity, FP
