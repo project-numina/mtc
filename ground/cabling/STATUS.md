@@ -160,3 +160,13 @@ shows every core label is a product retract; and
 simple dimension with the underlying object's base FP dimension. These supply
 calculus's core-integrality bridge without choosing a spherical structure on C.
 Focused build passed.
+
+Integration handoff: `Ground.target_of_center_finite_mixed_monodromy` applies
+our theorems to the frozen target and eliminates explicit double-centralizer
+and product-retract assumptions. Its centre premise still requires the actual
+rigid/fusion instances, positive spherical structure, invertible S, global
+square, integral dimensions on `symmetricCore`, and finite order of centre
+mixed monodromy for product-retract simples. These are explicit unproved
+premises; the final target is not proved. `lake build PropertyF` passed before
+the addition of this focused-built wrapper; the core new theorem axiom checks
+report only propext, Classical.choice and Quot.sound.
