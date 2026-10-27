@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.BraidWeights
+public import PropertyF.Ground.Calculus.OverlapCoherence
 
 /-! Construction of real nonzero braid-block trace weights from dimensions. -/
 
@@ -104,5 +105,34 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
   intro z hz
   have h := sharp_trace_bound_for_presentations_of_overlap_identity C X p 1 r size b hsize he z hz (hrec z)
   simpa [hdim, hfp, Complex.norm_real, Real.norm_eq_abs] using h
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Categorical rigidity follows from the precise remaining tensor-power
+coherence for three-strand overlaps and real Galois dimension transport. -/
+theorem actual_rigidity_of_overlap_coherence
+    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
+    (p : Dimensions.PivotalStructure (C := C.Obj))
+    (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
+    (hpos : ∀ i, 0 < original i)
+    (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
+    (hqdim : ∀ i, Dimensions.groundUnitScalarEquiv C
+      (p.rightTrace (𝟙 (Ground.simples C i))) = (qdim i : ℂ))
+    (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
+    (hdim : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
+    (hfp : Ground.fpDimension C X = f)
+    (hS : Dimensions.groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
+      (d : ℂ) * f)
+    (hfinite : ObjectPropertyF X)
+    (hcoh : ∀ (u : braidAlgebra X 1) k,
+      (isoEndAlgEquiv (overlapPowerIso X 1 k).symm)
+        (overlapProduct X 1 u (k + 1) : End (tensorPower X (overlapIndex 1 (k + 1) + 2))) =
+      overlapEndProduct (tensorPower X (overlapIndex 1 k + 1)) X (tensorPower X 2)
+        (previousOverlapLocal X 1 k u) (u : End (tensorPower X 3))) : f = |d| := by
+  apply actual_rigidity_of_overlap_and_galois_dimensions C X p original qdim σ
+    hpos htransport hqdim d f hd hf hdim hfp hS hfinite
+  intro u
+  apply overlap_trace_power_of_step C X p 1 u
+  intro k
+  exact overlap_trace_step_of_coherence C X p 1 k u (hcoh u k)
 
 end PropertyF.Ground.Calculus

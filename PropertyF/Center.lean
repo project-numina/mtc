@@ -21,7 +21,8 @@ theorem galois_unit_mem_generated (τ : ℂ ≃+* ℂ) :
   rw [I.data.galois_unit_column, hz, map_intCast, mul_comm]
 
 /-- Property F on the generated subcategory, from the explicit quotient of a
-product supplied by the canonical dominant braided functor. The groups here
+product supplied by the canonical braided functor onto its generated image.
+No dominance onto the entire centre is assumed. The groups here
 are actual generated categorical braid images. -/
 theorem object_propertyF_of_mem (hF : HasPropertyF C.Obj) {Y : Fin I.data.rank}
     (hY : Y ∈ I.generated) : ObjectPropertyF (I.object Y) := by

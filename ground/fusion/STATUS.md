@@ -106,8 +106,9 @@ The legacy `FusionData` results are separate from the bundle-free ground results
 
 ## In progress
 
-Reviewing the generated-category inclusion interface and centre-dimension
-dependencies. Simple-square integrality is proved by a Galois argument.
+The individual fusion-category, FP-character, inclusion, generated-category,
+and simple-square results are constructed. Awaiting the centre fusion structure
+and induction/dominance interface before the global centre comparison.
 
 ## Blocked / outstanding
 
@@ -115,11 +116,28 @@ Mathlib has categorical Schur's lemma but a source search found no general
 Perron–Frobenius theorem for positive matrices. Existence, uniqueness and
 agreement of the target dimensions with the positive character are proved.
 
-The centre dimension comparison and fusion-subcategory dimension identities
-remain. Integration proved representative independence and modular proved
-conjugacy invariance; inclusion invariance is now proved above. The project-scale
-remaining effort is substantial; no credible completion-time estimate is yet
-available.
+The remaining workstream obligation is `FPdim(Z(C)) = FPdim(C)^2`. It is
+blocked on centre constructing Z(C) as a ground fusion category and providing
+the induction/forgetful or equivalent dominance machinery. Fusion functor
+preservation applies to the centre forgetful functor once that structure
+exists; the global-square theorem itself is not yet proved. The global
+sub-category inequality is proved above, but no stronger divisibility theorem
+is claimed. No credible completion-time estimate is available until the centre
+interface exists.
 
 The ground constructions and functor theorem avoid old hypothesis bundles.
 The separate compatibility bridge constructs the old `FusionData`.
+
+## Latest verification
+
+- Focused Lake builds passed for `Fusion.FunctorDimension`,
+  `Fusion.SemisimpleSplit`, `Fusion.SubcategoryDimension`, `Fusion.BalancedFlow`,
+  `Fusion.GeneratedRigidity`, `Fusion.GeneratedStructure`, and
+  `Fusion.WeakIntegrality`, with `LEAN_NUM_THREADS=4` and cores 4–7.
+- `#print axioms` for the principal new results showed only `propext`,
+  `Classical.choice`, and `Quot.sound`. Integration’s strict private-body
+  dependency scanner passed for `generatedFusionCategory`,
+  `generated_simple_square_integer`, `unit_retract_tensorPower`, and
+  `fpDimension_functor`.
+- The main target is still unproved; its outstanding spherical, centre, and
+  braid-rigidity obligations belong to the other workstreams.

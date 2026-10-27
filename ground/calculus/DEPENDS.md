@@ -1,9 +1,8 @@
 # Dependencies
 
-- **Fusion:** supplied the genuine semisimple category, simple decompositions, multiplicities, and FP dimensions; these are used by the constructed block/trace theorems. No further fusion interface is needed for the local results currently proved.
-- **Dimensions:** supplied pivotal structures, traces and iterated trace compatibility. The canonical positive spherical structure for a pseudo-unitary category remains needed to obtain positive transported block weights from the final target hypotheses.
-- **Modular:** supplied the actual categorical S matrix; `two_braid_square_trace_categoricalS` and `three_braid_trace_categoricalS` prove the diagonal braid trace identities. Full Galois action on the categorical S matrix still depends on modular nondegeneracy and centre results.
-- **Fusion / dimensions / modular:** an actual Galois-conjugate category and scalar-transport equivalence preserving the spherical structure and simple decompositions remain needed for realization transport. Merely applying an automorphism to a trace equality does not construct the transported representation.
-- **Centre:** a genuine braided fusion structure and modular nondegeneracy for the Drinfeld centre are needed to apply the final realization to the centre.
+- **Fusion:** supplied the genuine semisimple category, simple decompositions, multiplicities and FP dimensions used in all categorical braid-block and trace theorems.
+- **Dimensions:** supplied pivotal structures, traces, iterated trace compatibility and dimension bounds. The actual centre still needs a positive spherical structure. Integrate's current reduction does not require a spherical structure on the original category.
+- **Modular:** supplied the actual categorical S matrix and Galois/character arithmetic. `positive_galois_rigidity` needs the actual S self-entry identity; `target_of_spherical_existence_and_center` takes invertibility of the centre S matrix as part of its explicit centre premise.
+- **Centre / cabling:** construct the Drinfeld centre as a genuine braided fusion category, its nondegenerate S matrix and global dimension, and finite braid-image transfer to the selected centre simple.
 
-The internal outstanding calculus step for Lemma 3.1 is the categorical coherence relating the actual repeated strand maps to the local partial-trace overlap recurrence, then iteration and the strengthened bound. Three-strand rigidity and the full transported realization are also not complete.
+The intrinsic overlap recurrence and both calculus lemmas are proved, as is arbitrary semilinear Galois transport of finite braid-algebra blocks. The integrator's scalar-twisted overlap interface is discharged. The old hypothesis structures have not been assembled literally; their braid-span closure requirements are stronger than what the proof needs, and the final dependency cone must not mention them.

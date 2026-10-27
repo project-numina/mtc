@@ -1,24 +1,31 @@
 # Integration dependencies
 
-All remaining items below are explicit, temporary arguments to
-`Ground.target_of_spherical_and_witness`; none is an assumption in the frozen
-`TargetStatement`. Their exact Lean types are in
-`PropertyF/Ground/Integrate/Reduction.lean`.
+All remaining items are explicit, temporary arguments to
+`Ground.target_of_actual_center`; none is an assumption in the frozen
+`TargetStatement`. The exact Lean type is in
+`PropertyF/Ground/Integrate/ActualCenterReduction.lean`. No spherical structure
+is needed on the original category: `positive_bounded_conjugates_of_fp`
+constructs the bounds directly from its FP fusion character.
 
-- `hSpherical`: for pseudo-unitary C, construct an actual spherical pivotal
-  structure whose simple dimensions agree on dual labels. Owner: dimensions.
-  `positive_bounded_conjugates_of_spherical` then supplies all real-conjugate
-  bounds without extra assumptions.
-- `hWitness`: for σ producing a strictly smaller real conjugate a, and its
-  inverse producing b, produce reals f,d with `σ f = d`, `f*b = FPdim(C)`,
-  `1 ≤ f`, and `f = |d|`. Owners: centre (canonical centre, centralizers,
-  property F, positive centre dimension and global-square identities), modular
-  (S-matrix/Verlinde/Galois unit column), and calculus (three-strand rigidity
-  from actual finite images and spherical traces). Dimensions supplies the
-  positive spherical structure and trace/dimension transport. This is the
-  paper's specific centre/rigidity intermediate conclusion, not target fixedness.
-  `center_witness_of_modular_and_rigidity` now derives this conclusion from
-  the modular global identity, the Galois-unit self-column and rigidity.
+- `hCenter`: for pseudo-unitary property-F C, construct one actual Drinfeld
+  centre with rigid and fusion instances and a positive spherical structure,
+  invertible categorical S, global dimension FPdim(C)², and the stated
+  centralizer conditions. Owners: centre (Z,
+  dimension formula, centralizers, finite-image transfer and S invertibility)
+  and dimensions (positive spherical structures); modular supplies S
+  identities and Galois action. Calculus proved the actual overlap recurrence
+  and integrate wired it to `Ground.galois_rigidity`, so no braid-calculus
+  premise remains.
+  `propertyF_of_galois_column` derives the selected finite image from integral
+  dimensions on the common centralizer, a double-centralizer test and generated
+  labels being actual product retracts. The product-retract finite-image
+  transfer is constructed through a faithful braided functor to Mathlib Center;
+  full-centre dominance is neither assumed nor true in general. The integral
+  core, double centralizer and product-retract identification remain explicit
+  centre obligations.
+
+The centre must still be equipped with a positive spherical structure;
+its construction remains owned by centre and dimensions.
 
 Fusion has proved `one_le_globalFPDimension` directly from the unit fusion
 matrix, so global FP positivity is discharged. The last sum/integrality step, Galois transport of property F and global FP
