@@ -1,24 +1,31 @@
 # Integration dependencies
 
-All remaining items below are explicit, temporary arguments to
-`Ground.target_of_spherical_and_witness`; none is an assumption in the frozen
-`TargetStatement`. Their exact Lean types are in
-`PropertyF/Ground/Integrate/Reduction.lean`.
+All remaining items are explicit, temporary arguments to
+`Ground.target_of_center_and_overlap`; none is an assumption in the frozen
+`TargetStatement`. The exact Lean type is in
+`PropertyF/Ground/Integrate/CenterOnlyReduction.lean`. No spherical structure
+is needed on the original category: `positive_bounded_conjugates_of_fp`
+constructs the bounds directly from its FP fusion character.
 
-- `hSpherical`: for pseudo-unitary C, construct an actual spherical pivotal
-  structure whose simple dimensions agree on dual labels. Owner: dimensions.
-  `positive_bounded_conjugates_of_spherical` then supplies all real-conjugate
-  bounds without extra assumptions.
-- `hWitness`: for σ producing a strictly smaller real conjugate a, and its
-  inverse producing b, produce reals f,d with `σ f = d`, `f*b = FPdim(C)`,
-  `1 ≤ f`, and `f = |d|`. Owners: centre (canonical centre, centralizers,
-  property F, positive centre dimension and global-square identities), modular
-  (S-matrix/Verlinde/Galois unit column), and calculus (three-strand rigidity
-  from actual finite images and spherical traces). Dimensions supplies the
-  positive spherical structure and trace/dimension transport. This is the
-  paper's specific centre/rigidity intermediate conclusion, not target fixedness.
-  `center_witness_of_modular_and_rigidity` now derives this conclusion from
-  the modular global identity, the Galois-unit self-column and rigidity.
+- `hCenter`: for pseudo-unitary property-F C and each σ, construct the centre
+  as a genuine braided fusion category Z with positive spherical structure,
+  invertible categorical S, and global dimension FPdim(C)²; prove that any
+  simple with the Galois-unit S column has property F and obeys the concrete
+  three-strand rigidity implication. Owners: centre (Z, dimension formula,
+  centralizers, finite-image transfer and S invertibility), dimensions
+  (positive spherical structures and trace transport), and calculus (actual
+  three-strand rigidity); modular supplies S identities and Galois action.
+  Arbitrary scalar-twisted ground categories and their pivotal dimensions,
+  FP labels and braid-image finiteness are constructed by integrate; the
+  all-strand categorical overlap identity remains owned by calculus.
+  `propertyF_of_galois_column` derives the finite-image implication from
+  integral dimensions on the common centralizer, a double-centralizer test,
+  and property F on the generated subcategory. These three assertions remain
+  explicit centre obligations. The exact final reduction is in
+  `CenterReduction.lean`.
+
+The centre must still be equipped with a positive spherical structure;
+its construction remains owned by centre and dimensions.
 
 Fusion has proved `one_le_globalFPDimension` directly from the unit fusion
 matrix, so global FP positivity is discharged. The last sum/integrality step, Galois transport of property F and global FP

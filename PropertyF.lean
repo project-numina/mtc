@@ -33,17 +33,38 @@ public import PropertyF.Ground.Centre.Embeddings
 public import PropertyF.Ground.Centre.Linear
 public import PropertyF.Ground.Centre.Zero
 public import PropertyF.Ground.Centre.Biproduct
+public import PropertyF.Ground.Centre.Kernel
+public import PropertyF.Ground.Centre.Cokernel
+public import PropertyF.Ground.Centre.Abelian
+public import PropertyF.Ground.Centre.Exact
 public import PropertyF.Ground.Centre.ReverseBraiding
 public import PropertyF.Ground.Centre.Product
+public import PropertyF.Ground.Centre.ImageDuals
 public import PropertyF.Ground.Centre.ProductImages
+public import PropertyF.Ground.Centre.ProductClosure
+public import PropertyF.Ground.Centre.FiniteClosure
+public import PropertyF.Ground.Centre.GeneratedClosure
+public import PropertyF.Ground.Centre.SymmetricIntegrality
+public import PropertyF.Ground.Centre.Averaging
+public import PropertyF.Ground.Centre.AlternatingImage
+public import PropertyF.Ground.Centre.SymmetricAction
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Modular.BraidIso
 public import PropertyF.Ground.Modular.BraidFunctor
 public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Modular.SAdditivity
+public import PropertyF.Ground.Modular.HopfPartialTrace
+public import PropertyF.Ground.Modular.Verlinde
+public import PropertyF.Ground.Modular.CharacterStar
+public import PropertyF.Ground.Modular.SSquare
+public import PropertyF.Ground.Modular.Construction
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
 public import PropertyF.Ground.Modular.PseudoGalois
+public import PropertyF.Ground.Modular.LegacyLabels
+public import PropertyF.Ground.Calculus.PartialTrace
+public import PropertyF.Ground.Calculus.FiniteOrder
 public import PropertyF.Ground.Dimensions.Pivotal
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.TensorTrace
@@ -56,6 +77,18 @@ public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.PseudoUnitary
 public import PropertyF.Ground.Dimensions.SphericalCriterion
 public import PropertyF.Ground.Dimensions.SphericalArithmetic
+public import PropertyF.Ground.Dimensions.IntrinsicNonzero
+public import PropertyF.Ground.Dimensions.UnitNorm
+public import PropertyF.Ground.Dimensions.PositiveSpherical
+public import PropertyF.Ground.Dimensions.Drinfeld
+public import PropertyF.Ground.Dimensions.FourthDualRoots
+public import PropertyF.Ground.Dimensions.DoubleDualFunctor
+public import PropertyF.Ground.Dimensions.SimpleScalars
+public import PropertyF.Ground.Dimensions.PivotalTwist
+public import PropertyF.Ground.Dimensions.SignCharacter
+public import PropertyF.Ground.Dimensions.NaturalRoots
+public import PropertyF.Ground.Dimensions.PivotalUniqueness
+public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
 public import PropertyF.Ground.Cabling.GeneratedAbelian
@@ -93,22 +126,25 @@ public import PropertyF.Ground.Cabling.GeneratorBlock
 public import PropertyF.Ground.Cabling.TupleIso
 public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple
-public import PropertyF.Ground.Cabling.TupleCrossing
-public import PropertyF.Ground.Cabling.CablingFinite
 public import PropertyF.Ground.Cabling.GeneratedF
-
-/-! Formalization of `paper/property-f-simplified.pdf`.
-The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
-Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
-See `FORMALIZATION.md` for the complete assumption ledger.
--/
-
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapUnitary
 public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.StrandCoherence
 public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Calculus.ThreeSaturation
+public import PropertyF.Ground.Cabling.TupleCrossing
+public import PropertyF.Ground.Cabling.CablingFinite
+public import PropertyF.Ground.Integrate.ScalarTwist
+public import PropertyF.Ground.Integrate.ScalarTwistTransport
+public import PropertyF.Ground.Integrate.ScalarTwistModular
+public import PropertyF.Ground.Integrate.ScalarTwistNorm
+public import PropertyF.Ground.Integrate.FPConjugates
+public import PropertyF.Ground.Integrate.TwistedRigidity
+public import PropertyF.Ground.Integrate.OverlapReduction
+public import PropertyF.Ground.Integrate.CenterOnlyReduction
+public import PropertyF.Ground.Integrate.ExamplePropertyF
+
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.PositiveWeights
 public import PropertyF.Ground.Calculus.GaloisMatrices
@@ -120,3 +156,9 @@ public import PropertyF.Ground.Calculus.GaloisRigidity
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Calculus.ReversePower
 public import PropertyF.Ground.Calculus.SharpRigidity
+
+/-! Formalization of `paper/property-f-simplified.pdf`.
+The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
+Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
+See `FORMALIZATION.md` for the complete assumption ledger.
+-/

@@ -4,14 +4,20 @@ Baseline: 094175c. Frozen target definition: 45da64d. As of 2026-10-27 all old
 interfaces below are unconstructed unless explicitly marked otherwise. Exact
 field types are in `PropertyF/Axioms.lean` and `PropertyF/Definitions.lean`;
 `FORMALIZATION.md` explains their mathematical content. All owners are the
-workstreams specified in the coordination board. The target is frozen after fusion and dimensions review; the mathematical
-identification and independence obligations listed below remain open.
+workstreams specified in the coordination board. The target was frozen after
+fusion and dimensions review; unresolved mathematical obligations are noted below.
 
 ## Target and dependency graph
 
-`target_of_spherical_and_witness` reduces the frozen statement to two
-explicit categorical obligations: a spherical pivotal structure with self-dual
-simple dimensions, and a centre/rigidity witness for each smaller conjugate. Global FP positivity
+`target_of_canonical_spherical_and_center` reduces the frozen statement to
+two explicit categorical obligations: the canonical positive spherical
+structure and a concrete modular centre with finite-image and rigidity facts.
+`target_of_canonical_spherical_center_and_overlap` derives that rigidity from
+the named actual scalar-twisted overlap recurrence, `TwistedOverlapTrace`.
+`target_of_center_and_overlap` needs no spherical assumption on the original
+category: `positive_bounded_conjugates_of_fp` proves the conjugate bounds
+directly from its self-dual FP fusion character. Its centre premise still
+requires a positive spherical structure on the constructed modular centre. Global FP positivity
 is proved from the tensor unit; the numerical contradiction is bundle-free. Global FP
 invariance under semilinear braided equivalence is proved by
 `Modular.conjugate_globalFPDimension`.
@@ -33,19 +39,19 @@ whose types and values avoid those structures, then run the target audit. `Gener
 they remain obligations for the separate corollary.
 
 The category interface is inhabited by `Example.complexVectorSpaces`, based
-on finite-dimensional complex vector spaces; property F and pseudo-unitarity
-for that example have not yet been established.
+on finite-dimensional complex vector spaces. Both global dimensions equal one
+and the pseudo-unitary conjugate is constructed. `Example.propertyF` proves
+finite braid images by a tensor-product-basis action, and
+`Example.target_hypotheses_inhabited` establishes the full target hypotheses
+simultaneously.
 
-Provisional mathematical checks: simple reps exhaust all simple isoclasses;
-squared
-norms and their global sum are independent of isomorphism and presentation
-(proved in `Dimensions.GroundNorm`); FP spectral
-radii form the unique positive fusion character (proved by fusion be9a122);
-`Ground.globalFPDimension_presentation` proves presentation independence;
-compare complex-automorphism conjugacy with the paper's algebraic-closure
-formulation. `Ground.doubleDualIso` is already constructed from Mathlib's
-braided swapped pairing and uniqueness of duals. No choice independence proof
-is claimed yet.
+Simple representatives are proved complete; both global dimensions are
+proved independent of their presentation. FP spectral radii form the unique
+positive fusion character, and the intrinsic squared norm is independent of
+the scalar and double-dual choices. `Ground.doubleDualIso` is constructed
+from Mathlib’s braided swapped pairing and uniqueness of duals. Comparison
+of complex-automorphism conjugacy with the paper’s algebraic-closure
+formulation remains an explicit review obligation.
 
 ## Fields and ownership
 
@@ -54,18 +60,18 @@ is claimed yet.
 | `FusionData` | `rank`, `simpleObject`, `simple_is_simple`, `simple_injective`, `unitIndex`, `unit_iso`, `hom_finite`, `decomposition` | fusion | Constructed by `Ground.legacyFusionData` from ground category. |
 | `FusionData` | `fpSimple`, `fp_positive`, `fp_unit`, `fp_character` | fusion | Constructed by `Ground.legacyFusionData` using the ground spectral character. |
 | `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Constructed by `Ground.legacyGlobalDimensionData`; norm and representative independence proved. |
-| `MultiplicityData` | `simpleCount`, `dimension`, `fpDimension`, `multiplicity`, `dimension_bound` | calculus; dimensions for bound | Open: group-representation decomposition and spherical dimension bound. |
-| `OverlapModel` | `stage`, `decomposition`, `fpMass_eq` | calculus, fusion | Actual braid-image algebras and unitary Wedderburn blocks constructed; categorical multiplicity and FP mass remain. |
-| `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Left-strand star maps and partial-trace bimodule/identity laws constructed; right insertion and iterated trace remain. |
-| `ThreeStrandModel` | `overlap`, `pair`, `pair_nonzero`, `cSquared`, `a`, `b`, `braid_relation`, `a_unitary`, `b_unitary` | calculus | Open: categorical braid action, finite-image averaging, nonzero blocks. |
-| `ThreeStrandModel` | `leftPair`, `rightPair`, `left_cSquared`, `right_cSquared` | calculus | Open: identity-strand algebra embeddings. |
+| `MultiplicityData` | `simpleCount`, `dimension`, `fpDimension`, `multiplicity`, `dimension_bound` | calculus; dimensions for bound | Actual unitary group-representation blocks, multiplicities, and trace weights are constructed; the sharp bound remains dependent on categorical overlap coherence. |
+| `OverlapModel` | `stage`, `decomposition`, `fpMass_eq` | calculus, fusion | Actual braid-image algebras, unitary blocks, categorical multiplicities and ordinary FP mass bound constructed; overlap trace iteration remains. |
+| `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Both strand star maps and iterated partial trace proved on calculus/dimensions branches; overlap recurrence iteration remains. |
+| `ThreeStrandModel` | `overlap`, `pair`, `pair_nonzero`, `cSquared`, `a`, `b`, `braid_relation`, `a_unitary`, `b_unitary` | calculus | Actual unitary pair/three-strand blocks, braid relation, nonzero blocks and finite order proved on calculus b0fe84a; full model assembly remains. |
+| `ThreeStrandModel` | `leftPair`, `rightPair`, `left_cSquared`, `right_cSquared` | calculus | Actual left/right identity-strand block maps and square-braiding identities proved on calculus b0fe84a; model assembly remains. |
 | `ThreeStrandModel` | `pairTrace`, `simplePartial`, `pair_trace_partial`, `thirdPartial`, `trace_third`, `third_left`, `third_right`, `third_bimodule` | calculus, dimensions | Open: spherical trace realization. |
-| `ThreeStrandModel` | `finite_order` | calculus | Open: transport finite order from finite actual image. |
-| `ThreeStrandRealization` | `model`, `positive`, `transport`, `retained`, `trace_formula` | calculus; dimensions/modular for transported dimensions and S | Unitary braid blocks with categorical trace weights and integer multiplicities are constructed; transport, partial traces and full overlap bridge remain. |
-| `ProductImageWitness` | `subgroup`, `map`, `surjective` | centre | Open: dominant product functor and restriction-to-summand diagram. |
+| `ThreeStrandModel` | `finite_order` | calculus | Finite order of the actual represented square proved on calculus b0fe84a; model assembly remains. |
+| `ThreeStrandRealization` | `model`, `positive`, `transport`, `retained`, `trace_formula` | calculus; dimensions/modular for transported dimensions and S | Unitary braid blocks and trace weights are constructed; arbitrary scalar-twisted categories, pivotal structures and dimensions are now transported. The full overlap recurrence remains. |
+| `ProductImageWitness` | `subgroup`, `map`, `surjective` | centre | Actual product-functor/retract quotient maps constructed on centre f031e99; dominance onto the generated subcategory remains. |
 | `ModularData` | `rank`, `unit`, `dual`, `dimension`, `globalDimension`, `S` | modular, centre | Actual categorical S defined for a chosen pivotal structure; modular centre and remaining data open. |
-| `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | S symmetry and unit column proved; S², Verlinde and nonvanishing remain open. |
-| `ModularData` | `galoisLabel`, `galois_character` | modular | Constructed from a normalized-column character classification; modular-category realization and classification hypotheses remain. |
+| `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | All legacy fields constructed from an actual spherical category with real dimensions and invertible S; centre realization and S invertibility remain. |
+| `ModularData` | `galoisLabel`, `galois_character` | modular | Constructed for a spherical category with real dimensions and invertible categorical S; the centre realization remains. |
 | `CenterInputs` | `data`, `object`, `dim`, `dimension_real`, `positive`, `at_least_one`, `conjugate_real` | centre, dimensions, modular | Open: canonical spherical modular centre and dimension properties. |
 | `CenterInputs` | `global_square`, `symmetric_integrality`, `generated`, `double_centralizer` | centre | Open: centre dimension, symmetric core and double centralizer. |
 | `CenterInputs` | `product_witness` | centre | Subgroup/quotient and retract finite-image transfer are constructed; dominance onto generated centre category remains. |
@@ -76,21 +82,31 @@ is claimed yet.
 | `StandardInputs` | `pseudo` | dimensions, centre, calculus, modular | Open: package above constructions for pseudo-unitary categories. |
 | `StandardInputs` | `conjugate_labels`, `conjugate_images` | modular, fusion | Braid-image equivalences, ground property-F transport, simple-label equivalence and spectral global FP preservation are proved. |
 | `CablingWitness` | `blockCount`, `lengths`, `pureImage`, `finiteIndex`, `cableImage`, `restriction`, `restriction_surjective` | cabling | Finite index and abstract pure-word quotient constructed; categorical cabling map pending. Only used by corollary. |
-| `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling | Open; only used by corollary. |
-| `GeneratedInputs` | `simple_square_integral`, `strand_inclusion` | cabling, fusion | Bundle-free `Ground.simple_strand_inclusion` now constructed; packaging and square-integrality remain. Only used by corollary. |
+| `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling, fusion | Ground generated fusion category, inclusion, image equivalence and essential image constructed; pure-block cabling membership remains. Only used by corollary. |
+| `GeneratedInputs` | `simple_square_integral`, `strand_inclusion` | cabling, fusion | Both bundle-free `Ground.simple_strand_inclusion` and `Ground.generated_simple_square_integer` are proved; legacy packaging remains. Only used by corollary. |
 
 The existing `#print axioms` result establishes only kernel axiom cleanliness
 for the *conditional* theorem; it says nothing about constructing these fields.
 
 ## Integrated snapshot
 
-Latest merged snapshots: fusion 60076b7; dimensions f0dd606; calculus 158456c;
-centre f031e99; modular 1d68dcc; cabling fd9b085. The full development build
-passed; `ProjectAudit` scans 1,707 integrated declarations, all with only the
-standard axioms. This is not a proof of the target.
+Latest merged snapshots: fusion f175963; dimensions 6be760b; calculus fd59727;
+centre 21f99af; modular 07408af; cabling 7ff2fe9. The full development build
+passed; `ProjectAudit` scans 2,969 integrated public and private declarations, all with only the
+standard axioms. The strict target audit correctly fails because `Ground.target`
+is absent. This is not a proof of the target.
+
+`ScalarTwist.category` and `ScalarTwist.conjugate` construct every arbitrary
+complex Galois conjugate; `ScalarTwist.pivotal`, `spherical`,
+`pivotalDimension_twist`, `objectPropertyF_twist`, and `labels` establish the
+corresponding pivotal dimension and finite-image transport. The intrinsic
+squared norms and global dimension transform by the automorphism, while FP
+global dimension is preserved. Calculus still
+needs the intrinsic all-strand overlap identity, and centre and canonical
+spherical existence remain open.
 
 The final arithmetic reduction is bundle-free: fusion bfbd006 proves target
 global FP algebraic integrality, and `weaklyIntegral_of_globalFPDimension_fixed`
 combines it with the constructed finite Galois field and automorphism extension.
 Global FP conjugacy invariance is proved. Galois fixedness requires the
-categorical real-conjugate bounds and centre/rigidity witnesses above.
+centre/rigidity witnesses above; the real-conjugate bounds are unconditional.
