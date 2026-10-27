@@ -19,6 +19,31 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreCabling.DependentDeterminant
+import all PropertyF.Ground.CentreCabling.TwistFinite
+import all PropertyF.Ground.CentreCabling.VafaAlgebra
+import all PropertyF.Ground.CentreCabling.VafaDeterminant
+import all PropertyF.Ground.CentreCabling.VafaFusion
+import all PropertyF.Ground.CentreCabling.VafaLanternReduction
+import all PropertyF.Ground.CentreCabling.VafaTwist
+import all PropertyF.Ground.CentreModular.AdditiveDecomposition
+import all PropertyF.Ground.CentreModular.CompatiblePivotal
+import all PropertyF.Ground.CentreModular.CrossingTrace
+import all PropertyF.Ground.CentreModular.ForgetTrace
+import all PropertyF.Ground.CentreModular.InducedKirby
+import all PropertyF.Ground.CentreModular.VafaBiproduct
+import all PropertyF.Ground.CentreModular.VafaCompletion
+import all PropertyF.Ground.CentreModular.VafaDetTensor
+import all PropertyF.Ground.CentreModular.VafaDeterminant
+import all PropertyF.Ground.CentreModular.VafaFPBalance
+import all PropertyF.Ground.CentreModular.VafaFunctor
+import all PropertyF.Ground.CentreModular.VafaHexagon
+import all PropertyF.Ground.CentreModular.VafaNatural
+import all PropertyF.Ground.CentreModular.VafaNaturalTensor
+import all PropertyF.Ground.CentreModular.VafaRegular
+import all PropertyF.Ground.CentreModular.VafaTensorBiproduct
+import all PropertyF.Ground.CentreModular.VafaTensorMonodromy
+import all PropertyF.Ground.CentreModular.VafaTorsion
 import all PropertyF.Ground.CentreCalculus.BraidRelations
 import all PropertyF.Ground.CentreCalculus.FirstCrossingTrace
 import all PropertyF.Ground.CentreCalculus.LeftCrossing

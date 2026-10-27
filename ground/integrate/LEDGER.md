@@ -272,3 +272,11 @@ pairs, using the proved parity-sign reduction. The target reduction
 base pivotal existence, centre S invertibility, that balancing identity and
 restricted mixed-monodromy finiteness. These premises are not established.
 Latest full build and strict project audit pass (446 modules, 4,565 declarations).
+
+Merged modular `2cca92a` and its cabling dependencies. The FP-determinant
+Vafa proof gives finite simple twist order conditional on simple balancing; a
+newer modular commit reports all mixed monodromy finite conditional on pivotal
+balancing and is awaiting integration. The latest integrated full build and
+project audit pass (471 modules, 4,723 declarations). Calculus has since
+reported unconditional actual symmetric-core integrality under the existing
+positive spherical centre hypotheses; its commit is awaiting integration.
