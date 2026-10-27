@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Integrate.Fixedness
 public import PropertyF.Ground.Integrate.ConjugateBound
-public import PropertyF.Ground.Integrate.PropertyFTransport
+public import PropertyF.Ground.Integrate.Conjugacy
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Dimensions.PositiveSpherical
 public import PropertyF.Ground.Fusion.Agreement
