@@ -14,6 +14,17 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 
+/-- The actual overlap trace recurrence on the σ-twist of a chosen simple. -/
+def TwistedOverlapTrace (Z : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := Z.Obj))
+    (σ : ℂ ≃+* ℂ) (y : Fin (rank Z)) : Prop :=
+  ∀ (u : braidAlgebra (show (ScalarTwist.category Z σ).Obj from simples Z y) 1) k,
+      actualBraidTrace (ScalarTwist.category Z σ) (show (ScalarTwist.category Z σ).Obj from simples Z y) (ScalarTwist.pivotal Z σ p)
+          (overlapIndex 1 k) (overlapProduct (show (ScalarTwist.category Z σ).Obj from simples Z y) 1 u k) *
+        (Dimensions.groundUnitScalarEquiv (ScalarTwist.category Z σ)
+          ((ScalarTwist.pivotal Z σ p).rightTrace (𝟙 (show (ScalarTwist.category Z σ).Obj from simples Z y)))) ^ k =
+      actualBraidTrace (ScalarTwist.category Z σ) (show (ScalarTwist.category Z σ).Obj from simples Z y) (ScalarTwist.pivotal Z σ p) 1 u ^ (k + 1)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- For a positive pivotal category, all the dimension and scalar-twist
 premises of categorical rigidity follow from actual fusion data. The sole
@@ -25,12 +36,7 @@ theorem rigidity_of_twisted_overlap (Z : BraidedFusionCategory.{v,u})
     (hF : ObjectPropertyF (simples Z y)) (d : ℝ)
     (hσ : σ (fpSimple Z y : ℂ) = (d : ℂ))
     (hS : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y)
-    (hrec : ∀ (u : braidAlgebra (show (ScalarTwist.category Z σ).Obj from simples Z y) 1) k,
-      actualBraidTrace (ScalarTwist.category Z σ) (show (ScalarTwist.category Z σ).Obj from simples Z y) (ScalarTwist.pivotal Z σ p)
-          (overlapIndex 1 k) (overlapProduct (show (ScalarTwist.category Z σ).Obj from simples Z y) 1 u k) *
-        (Dimensions.groundUnitScalarEquiv (ScalarTwist.category Z σ)
-          ((ScalarTwist.pivotal Z σ p).rightTrace (𝟙 (show (ScalarTwist.category Z σ).Obj from simples Z y)))) ^ k =
-      actualBraidTrace (ScalarTwist.category Z σ) (show (ScalarTwist.category Z σ).Obj from simples Z y) (ScalarTwist.pivotal Z σ p) 1 u ^ (k + 1)) :
+    (hrec : TwistedOverlapTrace Z p σ y) :
     fpSimple Z y = |d| := by
   let D := ScalarTwist.category Z σ
   let q := ScalarTwist.pivotal Z σ p
