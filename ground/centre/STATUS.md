@@ -145,3 +145,8 @@ morphism can be moved around the closed strand of a pivotal partial trace,
 and `partialTraceHom_conjugate` proves invariance under changing the closed
 object by an isomorphism. These hold for arbitrary pivotal categories and
 are tools toward, not proofs of, general loop sliding. Focused build passes.
+`partialTraceHom_biproduct` decomposes a partial trace over a finite biproduct
+into its diagonal partial traces. `winding_natural`, `trace_winding_biproduct`
+and `trace_winding_simple_decomposition` show the actual centre winding
+trace is additive in the test strand and give its simple fusion-multiplicity
+expansion. These are ingredients for Kirby-loop sliding, which remains open.
