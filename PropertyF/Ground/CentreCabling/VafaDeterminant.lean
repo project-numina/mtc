@@ -170,4 +170,75 @@ theorem determinant_vafa_first_pair
         fusionCoeff C j i i) = _
   simp [← pow_mul, Nat.mul_comm]
 
+/-- Pair-twist determinant for arbitrary simple labels and source. -/
+theorem determinant_vafa_pair
+    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
+    (s a b c : Fin (rank C)) :
+    LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C s)
+      (α.app (simples C a ⊗ simples C b) ▷ simples C c)) =
+    ∏ j, (Calculus.groundSimpleScalar C j (End.of (α.app (simples C j)))) ^
+      (fusionCoeff C a b j * fusionCoeff C j c s) := by
+  classical
+  rw [determinant_natural_whisker, Fintype.prod_sigma]
+  apply Finset.prod_congr rfl
+  intro j hj
+  change (∏ _ : Fin (fusionCoeff C a b j),
+      (Calculus.groundSimpleScalar C j (End.of (α.app (simples C j)))) ^
+        fusionCoeff C j c s) = _
+  simp [← pow_mul, Nat.mul_comm]
+
+/-- Conjugating an endomorphism by an isomorphism of its target object does
+not change its determinant on a Hom space. -/
+theorem determinant_postcomp_iso_conjugate
+    (C : Ground.BraidedFusionCategory.{v,u}) (X Y Z : C.Obj)
+    (e : Y ≅ Z) (a : Z ⟶ Z) :
+    LinearMap.det (CategoryTheory.Linear.rightComp ℂ X (e.hom ≫ a ≫ e.inv)) =
+      LinearMap.det (CategoryTheory.Linear.rightComp ℂ X a) := by
+  let E := CategoryTheory.Linear.homCongr ℂ (Iso.refl X) e
+  let f := CategoryTheory.Linear.rightComp ℂ X (e.hom ≫ a ≫ e.inv)
+  let g := CategoryTheory.Linear.rightComp ℂ X a
+  have hg : (E : _ →ₗ[ℂ] _) ∘ₗ f ∘ₗ (E.symm : _ →ₗ[ℂ] _) = g := by
+    ext z
+    simp [E, f, g, CategoryTheory.Linear.homCongr, Category.assoc]
+  calc
+    _ = LinearMap.det g := by rw [← hg, LinearMap.det_conj]
+    _ = _ := rfl
+
+/-- Any transported pair-twist operator has the same fusion-rule determinant. -/
+theorem determinant_vafa_pair_conjugate
+    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
+    (s a b c : Fin (rank C)) (W : C.Obj)
+    (e : W ≅ (simples C a ⊗ simples C b) ⊗ simples C c) :
+    LinearMap.det (CategoryTheory.Linear.rightComp ℂ (simples C s)
+      (e.hom ≫ (α.app (simples C a ⊗ simples C b) ▷ simples C c) ≫ e.inv)) =
+    ∏ j, (Calculus.groundSimpleScalar C j (End.of (α.app (simples C j)))) ^
+      (fusionCoeff C a b j * fusionCoeff C j c s) := by
+  rw [determinant_postcomp_iso_conjugate, determinant_vafa_pair]
+
+/-- Postcomposition determinants multiply under composition. -/
+theorem determinant_postcomp_comp
+    (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj) (f g : Y ⟶ Y) :
+    LinearMap.det (CategoryTheory.Linear.rightComp ℂ X (f ≫ g)) =
+      LinearMap.det (CategoryTheory.Linear.rightComp ℂ X f) *
+        LinearMap.det (CategoryTheory.Linear.rightComp ℂ X g) := by
+  have h : CategoryTheory.Linear.rightComp ℂ X (f ≫ g) =
+      (CategoryTheory.Linear.rightComp ℂ X g).comp (CategoryTheory.Linear.rightComp ℂ X f) := by
+    ext z
+    simp [Category.assoc]
+  rw [h, LinearMap.det_comp, mul_comm]
+
+/-- Postcomposition by a scalar multiple scales the determinant by that scalar
+raised to the actual dimension of the Hom space. -/
+theorem determinant_postcomp_smul
+    (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj) (z : ℂ) (f : Y ⟶ Y) :
+    LinearMap.det (CategoryTheory.Linear.rightComp ℂ X (z • f)) =
+      z ^ Module.finrank ℂ (X ⟶ Y) *
+        LinearMap.det (CategoryTheory.Linear.rightComp ℂ X f) := by
+  letI : FiniteDimensional ℂ (X ⟶ Y) := IsFusionCategory.hom_finite _ _
+  have h : CategoryTheory.Linear.rightComp ℂ X (z • f) =
+      z • CategoryTheory.Linear.rightComp ℂ X f := by
+    ext w
+    simp
+  rw [h, LinearMap.det_smul]
+
 end PropertyF.Ground.CentreCabling

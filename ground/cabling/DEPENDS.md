@@ -40,3 +40,7 @@ The purely algebraic Vafa step and the fusion multiplicity inequalities are
 now proved in `VafaAlgebra` and `VafaFusion`; `VafaTwist` identifies the
 remaining hypotheses as the actual twist's balancing law and its lantern
 determinant relation for `vafaWeight` and `vafaMultiplicity`.
+
+The three actual pair-twist determinants and the resulting scalar Vafa
+relations are now derived from a concrete endomorphism-level lantern identity
+in `VafaLanternReduction`; that identity and twist balancing remain open.

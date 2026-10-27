@@ -258,3 +258,11 @@ that calculation to actual categorical tensor factors. In particular,
 precise fusion-coefficient exponents appearing in `vafaWeight`. Focused build
 passed. The other two pair operators, the lantern relation and twist balance
 remain to be established.
+
+`determinant_vafa_pair_conjugate` computes every transported pair-twist
+determinant. `vafa_relations_of_lantern` derives the precise Vafa scalar
+relations from an explicit identity of actual three-strand endomorphisms.
+`vafaCross13` and `vafaCross23` specify the crossings, and
+`mixed_monodromy_finite_of_pivotal_lantern` reduces arbitrary mixed-monodromy
+finiteness to that particular pivotal lantern identity and the pivotal twist
+balancing law. Neither identity is claimed proved. Focused build passed.
