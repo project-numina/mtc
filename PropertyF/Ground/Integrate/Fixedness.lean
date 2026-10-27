@@ -31,6 +31,21 @@ theorem galois_unit_self_entry (σ : ℂ ≃+* ℂ) {S : ℂ} {f d : ℝ}
     (hd : σ (f : ℂ) = (d : ℂ)) : σ S = (d : ℂ) * f := by
   rw [hS, map_mul, hd, σ.apply_symm_apply]
 
+/-- The modular global-dimension and unit-column identities, together with the
+three-strand rigidity conclusion for the self-entry, give the witness required
+by the final contradiction. -/
+theorem center_witness_of_modular_and_rigidity (σ : ℂ ≃+* ℂ) {δ b f d : ℝ} {S : ℂ}
+    (hδ : 0 < δ) (hb : 0 < b) (hf : 1 ≤ f)
+    (hτ : σ.symm (δ : ℂ) = (b : ℂ))
+    (hσf : σ (f : ℂ) = (d : ℂ))
+    (hG : σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2)
+    (hS : S = (f : ℂ) * σ.symm (f : ℂ))
+    (hRigid : σ S = (d : ℂ) * f → f = |d|) :
+    σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
+  refine ⟨hσf, ?_, hf, ?_⟩
+  · exact positive_ratio_of_galois_square σ.symm hδ hb (lt_of_lt_of_le zero_lt_one hf) hτ hG
+  · exact hRigid (galois_unit_self_entry σ hS hσf)
+
 /-- If real conjugates are bounded above by δ and the centre/rigidity witness
 exists for each strictly smaller conjugate, every conjugate equals δ. -/
 theorem galois_fixed_of_smaller_conjugate_witness (δ : ℝ) (hδ : 0 < δ)

@@ -17,6 +17,8 @@ All remaining items below are explicit, temporary arguments to
   from actual finite images and spherical traces). Dimensions supplies the
   positive spherical structure and trace/dimension transport. This is the
   paper's specific centre/rigidity intermediate conclusion, not target fixedness.
+  `center_witness_of_modular_and_rigidity` now derives this conclusion from
+  the modular global identity, the Galois-unit self-column and rigidity.
 
 Fusion has proved `one_le_globalFPDimension` directly from the unit fusion
 matrix, so global FP positivity is discharged. The last sum/integrality step, Galois transport of property F and global FP
