@@ -152,4 +152,29 @@ theorem negative_objectPropertyF_iff (X : C) :
     exact Finite.of_equiv (@braidImage C _ _ (CategoryTheory.reverseBraiding C) X n)
       (e n).toEquiv
 
+/-- Tensoring the positive and negative images preserves finite braid images. -/
+theorem productFunctor_objectPropertyF (X Y : C)
+    (hX : ObjectPropertyF X) (hY : ObjectPropertyF Y) :
+    ObjectPropertyF (productFunctor.obj (X,Y)) := by
+  let _ : (productFunctor (C := C)).Braided := productBraided
+  apply Modular.objectPropertyF_functor (productFunctor (C := C)) (X,Y)
+  intro n
+  let _ := hX n
+  let _ := hY n
+  exact product_braidImage_finite X Y n
+
+/-- The centre image of a pair has braid image a quotient of a subgroup of
+its two source braid images. This does not require finite images. -/
+theorem productFunctor_image_quotient (X Y : C) (n : ℕ) :
+    ∃ H : Subgroup (braidImage X n × braidImage Y n),
+      ∃ q : H →* braidImage (productFunctor.obj (X,Y)) n, Function.Surjective q := by
+  let _ : (productFunctor (C := C)).Braided := productBraided
+  let e := MonoidHom.ofInjective (productBraidMap_injective X Y n)
+  let q := (Modular.braidImageFunctorMap (productFunctor (C := C)) (X,Y) n).comp
+    e.symm.toMonoidHom
+  refine ⟨(productBraidMap X Y n).range, q, ?_⟩
+  intro a
+  obtain ⟨b, hb⟩ := Modular.braidImageFunctorMap_surjective (productFunctor (C := C)) (X,Y) n a
+  exact ⟨e b, by simpa [q] using hb⟩
+
 end PropertyF.Ground.Centre
