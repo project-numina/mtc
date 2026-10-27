@@ -81,6 +81,7 @@ public import PropertyF.Ground.Cabling.MixedBraid
 public import PropertyF.Ground.Cabling.Zero
 public import PropertyF.Ground.Cabling.UnitBraid
 public import PropertyF.Ground.Cabling.MoveHead
+public import PropertyF.Ground.Cabling.MoveHeadInsert
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple
