@@ -1,14 +1,16 @@
 # Integration dependencies
 
 All remaining items below are explicit, temporary arguments to
-`Ground.target_of_spherical_and_witness`; none is an assumption in the frozen
+`Ground.target_of_canonical_spherical_and_witness`; none is an assumption in the frozen
 `TargetStatement`. Their exact Lean types are in
 `PropertyF/Ground/Integrate/Reduction.lean`.
 
-- `hSpherical`: for pseudo-unitary C, construct an actual spherical pivotal
-  structure whose simple dimensions agree on dual labels. Owner: dimensions.
-  `positive_bounded_conjugates_of_spherical` then supplies all real-conjugate
-  bounds without extra assumptions.
+- `hCanonical`: for pseudo-unitary C, construct an actual spherical pivotal
+  structure whose simple dimensions equal the corresponding positive FP
+  dimensions. Owner: dimensions. `spherical_dimension_dual_of_positive` and
+  `positive_bounded_conjugates_of_spherical` then supply dual invariance and
+  all real-conjugate bounds without extra assumptions. The alternative
+  `target_of_spherical_and_witness` needs only self-dual simple dimensions.
 - `hWitness`: for σ producing a strictly smaller real conjugate a, and its
   inverse producing b, produce reals f,d with `σ f = d`, `f*b = FPdim(C)`,
   `1 ≤ f`, and `f = |d|`. Owners: centre (canonical centre, centralizers,

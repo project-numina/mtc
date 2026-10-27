@@ -4,6 +4,8 @@ public import PropertyF.Ground.Integrate.Fixedness
 public import PropertyF.Ground.Integrate.ConjugateBound
 public import PropertyF.Ground.Integrate.PropertyFTransport
 public import PropertyF.Ground.Modular.FusionTransport
+public import PropertyF.Ground.Dimensions.PositiveSpherical
+public import PropertyF.Ground.Fusion.Agreement
 
 /-! Bundle-free reduction of the target to FP invariance under conjugacy and the
 paper's Galois-fixedness argument for pseudo-unitary categories. -/
@@ -95,6 +97,28 @@ theorem target_of_spherical_and_witness
   · intro C hPU _ σ
     obtain ⟨p, hp, hdual⟩ := hSpherical C hPU
     exact positive_bounded_conjugates_of_spherical C hPU p hp hdual σ
+  · exact hWitness
+
+/-- The standard positive spherical structure directly supplies the spherical
+and duality premise of the target reduction. Its existence and the centre
+witness remain explicit, separately owned categorical obligations. -/
+theorem target_of_canonical_spherical_and_witness
+    (hCanonical : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧
+        ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hWitness : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ (σ : ℂ ≃+* ℂ) (a b : ℝ),
+        0 < a → a < globalFPDimension C →
+        σ (globalFPDimension C : ℂ) = (a : ℂ) →
+        σ.symm (globalFPDimension C : ℂ) = (b : ℂ) →
+        ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧
+          f * b = globalFPDimension C ∧ 1 ≤ f ∧ f = |d|) :
+    TargetStatement.{v,u} := by
+  apply target_of_spherical_and_witness
+  · intro C hPU
+    obtain ⟨p, hp, hdim⟩ := hCanonical C hPU
+    refine ⟨p, hp, ?_⟩
+    exact Dimensions.spherical_dimension_dual_of_positive C p hp (fpSimple C) hdim (fpSimple_pos C)
   · exact hWitness
 
 end PropertyF.Ground
