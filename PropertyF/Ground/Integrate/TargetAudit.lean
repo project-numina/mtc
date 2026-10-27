@@ -19,6 +19,8 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreInduction.PivotalTransfer
+import all PropertyF.Ground.Integrate.CompatibleCenterReduction
 import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.CoreCentrality
 import all PropertyF.Ground.CentreCabling.FiniteMonodromy

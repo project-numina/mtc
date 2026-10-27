@@ -202,3 +202,12 @@ proves the earlier actual-core integrality and restricted finite-order
 hypotheses imply this numerical integrality. No independent proof of the new
 integrality assertion is known, and the actual core being symmetric does not by
 itself establish it for the larger numerical set.
+
+Fusion `f93cf9e` constructs centre fusion, an FP-valued spherical structure
+and the categorical square assuming centre rigidity and a compatible centre
+pivotal lift of an FP-valued base pivotal structure. Integration's
+`target_of_compatible_center_and_integral_numerical_core` uses that result
+and the numerical-core route. This avoids assuming centre pseudo-unitarity,
+but does not construct the base pivotal structure, compatible lift, rigidity,
+invertible S or numerical-core integrality. The integrated full build and
+strict project audit pass, covering 395 modules and 4,237 declarations.

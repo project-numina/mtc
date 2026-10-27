@@ -41,6 +41,8 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreInduction.PivotalTransfer
+import all PropertyF.Ground.Integrate.CompatibleCenterReduction
 import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.CoreCentrality
 import all PropertyF.Ground.CentreCabling.FiniteMonodromy
@@ -536,6 +538,7 @@ run_cmd do
       ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
+      ``PropertyF.Ground.target_of_compatible_center_and_integral_numerical_core,
       ``PropertyF.Ground.target_of_integral_numerical_center_core,
       ``PropertyF.Ground.center_globalDimension_square_of_actual_induction,
       ``PropertyF.Ground.target_of_center_image_monodromy_no_square,

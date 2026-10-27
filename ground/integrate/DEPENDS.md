@@ -84,3 +84,10 @@ actual-core integrality and mixed-monodromy conditions by integral dimensions
 on the numerical S-centralizer of product-retract simples. This is implied by
 the previous pair, but is not yet proved directly. All other centre premises
 remain.
+
+Fusion `f93cf9e` proves centre fusion, spherical FP dimensions and the
+categorical square from centre rigidity and a compatible lift of an FP-valued
+base pivotal structure, without assuming centre pseudo-unitarity. The wired
+`target_of_compatible_center_and_integral_numerical_core` exposes only that
+lift/base structure, rigidity, invertible centre S and numerical-core
+integrality. Existence of the lift and base structure remains unproved.

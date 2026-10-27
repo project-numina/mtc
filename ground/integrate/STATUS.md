@@ -178,3 +178,17 @@ no reliable completion-time estimate is available.
   `numericalProductCore_integral_of_image_monodromy` shows the earlier
   actual-core integrality plus finite-monodromy hypotheses imply the new
   numerical-integrality premise. The latter is not proved independently.
+
+- Merged fusion `f93cf9e`. `target_of_compatible_center_and_integral_numerical_core`
+  wires its `center_structure_of_compatible_pivotal` into the numerical-core
+  reduction, constructing centre fusion and the FP-valued centre sphere from
+  centre rigidity, an FP-valued base pivotal structure, and a compatible
+  pivotal lift. This is an alternative to proving centre pseudo-unitarity
+  first; existence of both base pivotal structure and compatible lift remains
+  open. Invertible centre S and numerical-core integrality remain assumptions.
+- The dual-evaluation coherence attempt expanded the mate counit but did not
+  derive the required equation: the mate component is at `Z ⊗ U`, so original
+  half-braiding tensor coherence and unit normalization still need to be
+  related. Scratch experiments are not imported or committed.
+- Full build and strict project audit pass after these changes, covering 395
+  modules and 4,237 declarations. The final target remains unproved.
