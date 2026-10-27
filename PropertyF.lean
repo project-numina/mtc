@@ -302,6 +302,8 @@ public import PropertyF.Ground.CentreDimensions.RankOneCenter
 
 public import PropertyF.Ground.CentreDimensions.RankOneRigid
 
+public import PropertyF.Ground.CentreDimensions.RankOneModular
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
