@@ -202,6 +202,7 @@ import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
+import all PropertyF.Ground.Integrate.ScalarTwistTransport
 import all PropertyF.Ground.Integrate.StrandInclusion
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Modular.Audit
@@ -310,6 +311,8 @@ run_cmd do
       ``PropertyF.Ground.fpSimple_mul,
       ``PropertyF.Ground.globalFPDimension_presentation,
       ``PropertyF.Ground.generated_simple_square_integer,
+      ``PropertyF.Ground.ScalarTwist.conjugate,
+      ``PropertyF.Ground.ScalarTwist.labels,
       ``PropertyF.Ground.selfDual_character_galois_real,
       ``PropertyF.Ground.positive_bounded_conjugates_of_spherical,
       ``PropertyF.Ground.Calculus.exists_unitary_braid_trace_blocks,
