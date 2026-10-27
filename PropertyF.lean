@@ -36,9 +36,12 @@ public import PropertyF.Ground.Calculus.FiniteOrder
 public import PropertyF.Ground.Cabling.Images
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.Pivotal
+public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.Trace
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.CharacterBound
+public import PropertyF.Ground.Dimensions.DimensionCharacter
+public import PropertyF.Ground.Dimensions.PseudoUnitary
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
 public import PropertyF.Ground.Cabling.Rigidity
