@@ -34,6 +34,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -97,10 +98,13 @@ import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.FusionDimensionField
 import all PropertyF.Ground.Dimensions.GlobalInequality
 import all PropertyF.Ground.Dimensions.GroundNorm
+import all PropertyF.Ground.Dimensions.IteratedTrace
 import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.PseudoUnitary
 import all PropertyF.Ground.Dimensions.TargetDimensionField
+import all PropertyF.Ground.Dimensions.TensorMultiplicativity
+import all PropertyF.Ground.Dimensions.TensorTrace
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Final
 import all PropertyF.Ground.Fusion.Agreement
@@ -123,6 +127,7 @@ import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
 import all PropertyF.Ground.Integrate.Conjugacy
+import all PropertyF.Ground.Integrate.ConjugateBound
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
 import all PropertyF.Ground.Integrate.FPRepresentatives
@@ -203,6 +208,7 @@ run_cmd do
       ``PropertyF.Ground.fpSimple_mul,
       ``PropertyF.Ground.globalFPDimension_presentation,
       ``PropertyF.Ground.selfDual_character_galois_real,
+      ``PropertyF.Ground.positive_bounded_conjugates_of_spherical,
       ``PropertyF.Ground.Calculus.exists_unitary_braid_trace_blocks,
       ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,

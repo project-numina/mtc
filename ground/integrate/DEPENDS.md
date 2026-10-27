@@ -7,8 +7,10 @@ All remaining items below are explicit, temporary arguments to
 
 - `hConjugates`: for each automorphism σ, `σ (globalFPDimension C)` is a
   positive real number at most the original global FP dimension. Owner:
-  dimensions (pseudo-unitary canonical spherical structure, transport, real
-  norms and the global FP bound), with fusion supplying FP character results.
+  dimensions (construct a spherical pivotal structure for pseudo-unitary C
+  and prove its simple dimensions dual-invariant). The bundle-free theorem
+  `positive_bounded_conjugates_of_spherical` proves these bounds from exactly
+  that structure and dual-invariance.
 - `hWitness`: for σ producing a strictly smaller real conjugate a, and its
   inverse producing b, produce reals f,d with `σ f = d`, `f*b = FPdim(C)`,
   `1 ≤ f`, and `f = |d|`. Owners: centre (canonical centre, centralizers,

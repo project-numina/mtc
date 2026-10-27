@@ -7,6 +7,8 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
+- `positive_bounded_conjugates_of_spherical` supplies all bounded-real
+  conjugates given an actual spherical structure and dual-invariant dimensions.
 - `selfDual_character_real` and `selfDual_character_galois_real` prove
   reality of self-dual fusion characters and all their Galois conjugates.
 - `globalFPDimension_presentation` proves the spectral FP global dimension
