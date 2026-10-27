@@ -353,15 +353,13 @@ public import PropertyF.Ground.CentreCabling.CoreCentrality
 public import PropertyF.Ground.CentreCabling.TargetReduction
 public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
-public import PropertyF.Ground.Integrate.CompatibleCenterReduction
-public import PropertyF.Ground.Integrate.RigidCenterReduction
 public import PropertyF.Ground.Integrate.PivotalOnlyReduction
 public import PropertyF.Ground.Integrate.CoreIntegralityReduction
 public import PropertyF.Ground.Integrate.BalancedCenterReduction
 public import PropertyF.Ground.Integrate.TransparentCenterReduction
 public import PropertyF.Ground.Integrate.PivotalBalancedReduction
 public import PropertyF.Ground.Integrate.DrinfeldComplete
-public import PropertyF.Ground.CentreIntegrate.CycleTraceReduction
+public import PropertyF.Ground.Centre.Modular.CycleTraces
 public import PropertyF.Ground.CentreIntegrate.TwistSign
 public import PropertyF.Ground.CentreIntegrate.TwistDual
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing

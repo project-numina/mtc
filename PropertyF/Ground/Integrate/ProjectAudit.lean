@@ -135,7 +135,6 @@ import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
 import all PropertyF.Ground.CentreRigid.Evaluation
 import all PropertyF.Ground.CentreRigid.ForgetComparison
-import all PropertyF.Ground.Integrate.RigidCenterReduction
 import all PropertyF.Ground.CentreIntegrate.TwistSign
 import all PropertyF.Ground.CentreRigid.Coevaluation
 import all PropertyF.Ground.CentreRigid.MateExplicit
@@ -143,12 +142,8 @@ import all PropertyF.Ground.CentreRigid.RankOneMate
 import all PropertyF.Ground.CentreRigid.SimpleCentrality
 import all PropertyF.Ground.CentreRigid.SimpleTensor
 import all PropertyF.Ground.CentreRigid.Tensor
-import all PropertyF.Ground.CentreIntegrate.CycleColoring
-import all PropertyF.Ground.CentreIntegrate.CyclePolynomial
-import all PropertyF.Ground.CentreIntegrate.CycleTraceReduction
-import all PropertyF.Ground.CentreIntegrate.PermutationSignSum
+import all PropertyF.Ground.Centre.Modular.CycleTraces
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
-import all PropertyF.Ground.Integrate.CompatibleCenterReduction
 import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.CoreCentrality
 import all PropertyF.Ground.CentreCabling.FiniteMonodromy
@@ -649,10 +644,7 @@ run_cmd do
       ``PropertyF.Ground.CentreModular.mixed_monodromy_finite_of_pivotal_balancing,
       ``PropertyF.Ground.target_of_pivotal_base_balancing_and_image_monodromy,
       ``PropertyF.Ground.symmetricCore_integral_of_dual_balancing,
-      ``PropertyF.Ground.target_of_pivotal_base_and_integral_numerical_core,
       ``PropertyF.Ground.CentreRigid.rigidCenter,
-      ``PropertyF.Ground.target_of_fusion_center_integral_numerical_core,
-      ``PropertyF.Ground.target_of_pivotal_lift_and_integral_numerical_core,
       ``PropertyF.Ground.CentreIntegrate.doubleDualTensor_evaluation,
       ``PropertyF.Ground.CentreIntegrate.drinfeld_tensor_of_pairing_cap,
       ``PropertyF.Ground.CentreIntegrate.balance_of_drinfeld_tensor,
@@ -663,7 +655,6 @@ run_cmd do
       ``PropertyF.Ground.CentreIntegrate.signed_cycle_count,
       ``PropertyF.Ground.CentreIntegrate.integral_of_cycle_traces,
       ``PropertyF.Ground.CentreIntegrate.integral_of_signed_cycle_traces,
-      ``PropertyF.Ground.target_of_compatible_center_and_integral_numerical_core,
       ``PropertyF.Ground.target_of_integral_numerical_center_core,
       ``PropertyF.Ground.center_globalDimension_square_of_actual_induction,
       ``PropertyF.Ground.target_of_center_image_monodromy_no_square,
