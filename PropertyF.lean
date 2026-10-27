@@ -159,6 +159,13 @@ public import PropertyF.Ground.Cabling.PowerAssoc
 public import PropertyF.Ground.Cabling.PowerExpr
 public import PropertyF.Ground.Cabling.ExprStructure
 public import PropertyF.Ground.Cabling.ExprBraiding
+public import PropertyF.Ground.Cabling.ExprPowers
+public import PropertyF.Ground.Cabling.TupleIsoStep
+public import PropertyF.Ground.Cabling.ExprTuple
+public import PropertyF.Ground.Cabling.ExprTupleCross
+public import PropertyF.Ground.Cabling.LocalCable
+public import PropertyF.Ground.Cabling.CablingComplete
+public import PropertyF.Ground.Cabling.GeneratedInputsBridge
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.BlockGroupoid
 public import PropertyF.Ground.Cabling.BlockWords
@@ -207,6 +214,40 @@ public import PropertyF.Ground.Calculus.SharpRigidity
 
 public import PropertyF.Ground.Calculus.IntegratorBridge
 
+public import PropertyF.Ground.Dimensions.RootDualLabel
+public import PropertyF.Ground.Dimensions.DefectNaturality
+public import PropertyF.Ground.Dimensions.CoevaluationReciprocity
+public import PropertyF.Ground.Dimensions.CoevaluationSliding
+public import PropertyF.Ground.Dimensions.DrinfeldUnit
+public import PropertyF.Ground.Dimensions.FourthDualUnit
+
+public import PropertyF.Ground.CentreDimensions.BraidingTrace
+
+public import PropertyF.Ground.CentreDimensions.PivotalTwist
+
+public import PropertyF.Ground.CentreDimensions.InvolutionTrace
+
+public import PropertyF.Ground.Dimensions.RootUnitComponent
+
+public import PropertyF.Ground.Dimensions.RootDualPairing
+
+public import PropertyF.Ground.Dimensions.PositivePivotalDual
+
+public import PropertyF.Ground.Dimensions.SphericalPivotalDual
+
+public import PropertyF.Ground.Dimensions.PivotalPairing
+
+public import PropertyF.Ground.Dimensions.RealSphericalBounds
+
+public import PropertyF.Ground.Dimensions.RightDualUnitTensor
+
+public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
+
+public import PropertyF.Ground.Dimensions.FourthTensorUnit
+
+public import PropertyF.Ground.Dimensions.RankOneSpherical
+
+public import PropertyF.Ground.Dimensions.RankOneCriterion
 public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.GlobalSquare
 public import PropertyF.Ground.CentreInduction.Adjunction
@@ -259,8 +300,13 @@ public import PropertyF.Ground.CentreInduction.BasisPairing
 
 public import PropertyF.Ground.CentreInduction.CrossingNaturality
 
+public import PropertyF.Ground.CentreDimensions.RankOneCenter
+
+public import PropertyF.Ground.CentreDimensions.RankOneRigid
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
+
