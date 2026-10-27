@@ -3,6 +3,8 @@ public import PropertyF.Axioms
 public import PropertyF.Ground.Target
 public import Lean.Util.FoldConsts
 public import Lean.Util.CollectAxioms
+public import Lean.Compiler.ImplementedByAttr
+public import Lean.Compiler.ExternAttr
 
 /-! Dependency-cone audit. Unlike `#print axioms`, this traverses declaration
 bodies AND types, so it detects unconstructed hypothesis structures even if
@@ -45,6 +47,7 @@ partial def findForbidden (env : Environment) (root : Name) : Option Name := Id.
 inductive Issue where
   | forbidden (name : Name)
   | uninspectedModule (moduleName : Name)
+  | foreignImplementation (name : Name)
   deriving Repr
 
 /-- Pinned upstream modules cannot import this project. Any other module must be
@@ -70,6 +73,8 @@ partial def findIssue (env : Environment) (root : Name) : Option Issue := Id.run
         if let some m := env.header.modules[idx.toNat]? then
           if isTrustedUpstream m.module then continue
           if !m.importAll then return some (.uninspectedModule m.module)
+      if Lean.isExtern env n || (Lean.Compiler.getImplementedBy? env n).isSome then
+        return some (.foreignImplementation n)
       if let some ci := env.checked.get.find? n then
         pending := pending ++ ci.type.getUsedConstants
         if let some value := ci.value? (allowOpaque := true) then
