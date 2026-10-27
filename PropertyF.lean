@@ -21,6 +21,7 @@ public import PropertyF.Ground.Centre.Cokernel
 public import PropertyF.Ground.Centre.Abelian
 public import PropertyF.Ground.Centre.ReverseBraiding
 public import PropertyF.Ground.Centre.Product
+public import PropertyF.Ground.Centre.ImageDuals
 public import PropertyF.Ground.Centre.ProductImages
 public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.Centre.FiniteClosure
