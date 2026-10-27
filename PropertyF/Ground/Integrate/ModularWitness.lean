@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.Integrate.CharacterReality
+public import PropertyF.Ground.Integrate.Fixedness
 public import PropertyF.Ground.Modular.Construction
 public import PropertyF.Ground.Fusion.Agreement
 
@@ -61,5 +62,35 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
   · have h := hcolumn σ.symm y
     rw [hdim] at h
     exact h
+
+/-- Once the Galois-unit column is known to have finite braid image and the
+actual three-strand rigidity theorem applies, the required numerical witness
+follows from categorical modular data. -/
+theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := Z.Obj)) (hp : p.IsSpherical)
+    (hdim : ∀ i, Modular.simpleDimension Z p i = (fpSimple Z i : ℂ))
+    (hdet : (Modular.categoricalS Z p).det ≠ 0)
+    (δ b : ℝ) (hδ : 0 < δ) (hb : 0 < b)
+    (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
+    (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
+    (hF : ∀ y, (∀ x, Modular.categoricalS Z p x y =
+      (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
+      ObjectPropertyF (simples Z y))
+    (hRigid : ∀ y, ObjectPropertyF (simples Z y) → ∀ d : ℝ,
+      σ (fpSimple Z y : ℂ) = (d : ℂ) →
+      σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y →
+      fpSimple Z y = |d|) :
+    ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
+  obtain ⟨y, f, d, hf, hfy, hσf, _, hcolumn, hG, hS⟩ :=
+    exists_modular_witness Z p hp hdim hdet δ hglobal σ
+  have hyF : ObjectPropertyF (simples Z y) := by
+    apply hF y
+    simpa only [hfy] using hcolumn
+  refine ⟨f, d, center_witness_of_modular_and_rigidity σ hδ hb hf hτ hσf hG hS ?_⟩
+  intro htrace
+  have htrace' : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y := by
+    simpa only [hfy] using htrace
+  have hσf' : σ (fpSimple Z y : ℂ) = (d : ℂ) := by simpa only [hfy] using hσf
+  simpa only [hfy] using hRigid y hyF d hσf' htrace'
 
 end PropertyF.Ground

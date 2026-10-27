@@ -263,6 +263,7 @@ run_cmd do
       ``PropertyF.Ground.positive_ratio_of_galois_square,
       ``PropertyF.Ground.center_witness_of_modular_and_rigidity,
       ``PropertyF.Ground.exists_modular_witness,
+      ``PropertyF.Ground.center_witness_of_categorical_modular_data,
       ``PropertyF.Ground.galois_unit_self_entry,
       ``PropertyF.Ground.target_of_numerical_witnesses,
       ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
