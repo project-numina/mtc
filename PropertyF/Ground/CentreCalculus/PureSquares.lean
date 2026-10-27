@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreCalculus.GeneratorSquare
+public import PropertyF.Ground.CentreCalculus.Core
 public import PropertyF.Ground.Cabling.Pure
 public import Mathlib.GroupTheory.PresentedGroup
 
@@ -26,5 +27,15 @@ theorem squareRelations_action_trivial (X : C)
   apply MonoidHom.mem_ker.mpr
   simp only [pow_two, map_mul, FreeGroup.lift_apply_of]
   exact braidGenerator_involutive X hX n i
+
+/-- Square relations act trivially on any object of the common centralizer
+of the two canonical centre images. -/
+theorem commonCentralizer_squareRelations_trivial (Y : CategoryTheory.Center C)
+    (hp : ∀ X : C, Centre.Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X))
+    (hn : ∀ X : C, Centre.Centralizes Y ((Centre.negative C).obj X)) (n : ℕ) :
+    Subgroup.normalClosure (squareRelations n) ≤
+      (FreeGroup.lift (braidGenerator Y n)).ker := by
+  apply squareRelations_action_trivial
+  exact commonCentralizer_self Y hp hn
 
 end PropertyF.Ground.CentreCalculus

@@ -214,6 +214,12 @@ public import PropertyF.Ground.Calculus.SharpRigidity
 
 public import PropertyF.Ground.Calculus.IntegratorBridge
 
+public import PropertyF.Ground.CentreCalculus.Core
+public import PropertyF.Ground.CentreCalculus.GeneratorSquare
+public import PropertyF.Ground.CentreCalculus.PureSquares
+public import PropertyF.Ground.CentreCalculus.PermutationQuotient
+public import PropertyF.Ground.CentreCalculus.ProjectorReduction
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.

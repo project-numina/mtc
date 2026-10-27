@@ -2,6 +2,16 @@
 
 Branch: `ground/calculus`. Started from `094175c`.
 
+## Round 2: symmetric-core integrality (in progress)
+
+The intended core is the common centralizer of the two canonical images in the actual Mathlib centre, equivalently their intersection; it is symmetric, not an arbitrary set. `CentreCalculus.commonCentralizer_self` proves every common-centralizer object centralizes itself without requiring the centre fusion instance. For a self-centralizing object, `braidGenerator_involutive` proves all actual adjacent generators square to one and `squareRelations_action_trivial` proves the normal closure of their squares acts trivially. `strandPermutation_surjective` proves adjacent swaps generate the whole finite permutation group. `permutationActionOfPureTrivial` constructs the actual permutation action when the pure-word kernel is contained in the braid-action kernel; that containment remains unproved.
+
+The raw alternating-power formula in the round-2 brief is false: for an odd one-dimensional object of super vector spaces with its positive spherical structure, the self-braiding is -id, so its alternating square has dimension 1 while the ordinary binomial polynomial gives 0. The proof must incorporate a parity/twist sign. For a simple self-centralizing object, a possible corrected route is to prove that its twist is ±1, twist the permutation action by its sign so that the cycle traces are d to the number of cycles, and split the corresponding signed average. This twist identification and the corrected cycle-trace formula are unproved. The conditional signed-sum lemma does not claim its premise for the uncorrected action.
+
+The planned corrected elementary route is to split a suitably sign-corrected permutation average on each tensor power. Its trace is nonnegative because its image is an actual object and `pivotalDimension_eq_fpDimension` extends the positive simple dimension condition to all objects. `alternatingProjector_scalar_trace` evaluates the normalization as the signed permutation trace sum, and `integral_of_signed_permutation_traces` derives integer FP dimension from the explicit signed-sum falling-factorial identity. These are conditional reductions: the actual permutation actions and their signed trace identity have not been constructed. `integral_of_pivotal_exterior_dimensions` and the earlier falling-factorial lemma supply the numerical final step.
+
+Remaining categorical work: prove the twist/parity sign correction, prove the full pure-word kernel acts trivially using a type-A symmetric-group presentation (including adjacent braid and distant commutation for all strand counts); establish the trace of each permutation, or an equivalent recurrence, and sum it to the falling factorial. Then turn the resulting FP integer into the reduction's complex simple dimension integer and apply `commonCentralizer_self` to its actual chosen core. Mathlib has adjacent-swap generation but a search did not find a type-A symmetric-group presentation or a categorical permutation action. No reliable completion-time estimate is available; these are substantial unproved internal obligations, not dependencies merely awaiting other teams.
+
 ## Done
 
 - `freshOverlapIso_eq_overlapPowerIso`, `overlap_trace_power`: proved the actual overlap recurrence for every simple strand, every length and iteration, without extra closure or coherence assumptions.
@@ -47,7 +57,7 @@ Branch: `ground/calculus`. Started from `094175c`.
 
 ## In progress
 
-- Integrate has merged the overlap proof and independently discharged its named overlap and rigidity premises in commit `82d924c`. Stand by for any interface work needed for the actual centre.
+- Round 2 symmetric-core integrality: permutation action and trace identity, as detailed above.
 
 ## Blocked / dependencies
 
