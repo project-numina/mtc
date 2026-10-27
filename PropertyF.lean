@@ -4,6 +4,7 @@ public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
 public import PropertyF.Ground.Calculus.StarSpan
+public import PropertyF.Ground.Calculus.FiniteOrder
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
