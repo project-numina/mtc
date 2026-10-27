@@ -214,3 +214,12 @@ twist balancing law. No lantern relation, positivity, sphericality or S
 invertibility is assumed. Actual balancing is being proved by integrate and
 dimensions; it remains an open premise here. Focused build and direct
 foundational axiom checks passed.
+
+`transparent_of_S_test_and_balancing` now upgrades the numerical S-centrality
+condition on a simple to actual transparency, using the Vafa determinant route
+for mixed finite order and positive trace saturation. `categoricalS_det_ne_zero_of_trivial_transparency`
+then proves S invertibility for any FP-valued pivotal category with balanced
+twist if the unit is the only transparent simple. For the actual centre the
+transparent-object theorem and twist balancing remain unproved; centre and
+integrate/dimensions respectively are pursuing them. Focused build and direct
+foundational axiom checks passed.

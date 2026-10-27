@@ -74,3 +74,7 @@ The actual categorical S identities, character classification and Galois action 
   now follow from the pivotal twist balancing law alone, without a lantern
   relation. The law remains open, with integrate/dimensions proving its cap
   diagram.
+- Assuming pivotal balancing, numerical S-centrality now implies genuine
+  transparency; S invertibility follows if the unit is the sole transparent
+  simple (`categoricalS_det_ne_zero_of_trivial_transparency`). Centre is proving
+  transparent-object triviality; balancing remains open.
