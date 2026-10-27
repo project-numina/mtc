@@ -16,7 +16,7 @@
 
 - `target_globalDimension_real`, `target_globalDimension_le_of_simple_bounds`, `global_sum_squares_positive`, `global_sum_squares_one_le`, and `global_sum_squares_eq_iff` reduce the global realness, inequality, and positivity assertions to explicit simple-dimension hypotheses; those hypotheses remain unproved.
 
-- `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension.
+- `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
 
 ## In progress
 

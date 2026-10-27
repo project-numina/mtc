@@ -1,6 +1,8 @@
 module
 public import PropertyF.Ground.Dimensions.Trace
 public import Mathlib.CategoryTheory.Preadditive.Biproducts
+public import Mathlib.CategoryTheory.Preadditive.Schur
+public import Mathlib.Analysis.Complex.Polynomial.Basic
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -39,5 +41,35 @@ theorem rightDimension_biproduct {ι : Type*} [Fintype ι] (F : ι → C) [HasBi
     p.rightTrace (𝟙 (⨁ F)) = ∑ i, p.rightTrace (𝟙 (F i)) := by
   rw [rightTrace_biproduct F p]
   simp
+
+/-- If diagonal blocks are scalar, trace is their dimension-weighted sum. -/
+theorem rightTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
+    (F : ι → C) [HasBiproduct F] (p : PivotalStructure (C := C))
+    (f : (⨁ F) ⟶ (⨁ F)) (c : ι → ℂ)
+    (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
+    p.rightTrace f = ∑ i, c i • p.rightTrace (𝟙 (F i)) := by
+  rw [rightTrace_biproduct F p]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [hc i, p.rightTrace_smul]
+
+/-- Schur's lemma gives the scalar diagonal blocks of any endomorphism of a
+finite direct sum of simple objects, and hence its weighted trace formula. -/
+theorem rightTrace_biproduct_simple [HasKernels C] {ι : Type*} [Fintype ι]
+    (F : ι → C) [HasBiproduct F] (hs : ∀ i, Simple (F i))
+    (hfinite : ∀ i, FiniteDimensional ℂ (F i ⟶ F i))
+    (p : PivotalStructure (C := C)) (f : (⨁ F) ⟶ (⨁ F)) :
+    ∃ c : ι → ℂ,
+      (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
+      p.rightTrace f = ∑ i, c i • p.rightTrace (𝟙 (F i)) := by
+  classical
+  have h : ∀ i, ∃ c : ℂ, biproduct.ι F i ≫ f ≫ biproduct.π F i = c • 𝟙 (F i) := by
+    intro i
+    let : Simple (F i) := hs i
+    let : FiniteDimensional ℂ (F i ⟶ F i) := hfinite i
+    obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ (biproduct.ι F i ≫ f ≫ biproduct.π F i)
+    exact ⟨c, hc.symm⟩
+  choose c hc using h
+  exact ⟨c, hc, rightTrace_biproduct_scalar_blocks F p f c hc⟩
 
 end PropertyF.Ground.Dimensions
