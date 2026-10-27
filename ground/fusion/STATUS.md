@@ -145,7 +145,7 @@ The separate compatibility bridge constructs the old `FusionData`.
 ## Round 2 progress (2026-10-27)
 
 - `CentreInduction.underlyingFunctor` constructs the induction sum as a
-  functor on the base category.
+  functor on the base category; it is additive, complex-linear, and faithful.
 - `CentreInduction.homLinearEquivOfAdjunction` and
   `globalFPDimension_square_of_adjunction` derive the finrank condition from
   an actual adjunction to the forgetful functor; centre fusion/rigidity and
