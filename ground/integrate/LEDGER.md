@@ -9,6 +9,11 @@ identification and independence obligations listed below remain open.
 
 ## Target and dependency graph
 
+`target_of_galois_invariance_and_pseudo_fixedness` now gives a bundle-free
+reduction to precisely two premises: global FP invariance under a semilinear
+braided equivalence, and Galois fixedness for pseudo-unitary property-F
+categories. Both remain unproved.
+
 `Ground.TargetStatement` → genuine fusion properties and simple representatives
 (fusion); FPdim via spectral radius and independence (fusion); squared norms and
 global categorical dimension (dimensions); braided semilinear conjugacy

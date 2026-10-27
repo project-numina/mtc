@@ -8,6 +8,7 @@ public import PropertyF.Ground.Integrate.Representatives
 public import PropertyF.Ground.Integrate.Conjugacy
 public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Integrate.PropertyFTransport
+public import PropertyF.Ground.Integrate.Reduction
 public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.Fusion.MatrixIntegral
@@ -49,6 +50,7 @@ run_cmd do
       ``PropertyF.Ground.simple_strand_inclusion,
       ``PropertyF.Ground.weaklyIntegral_of_globalFPDimension_fixed,
       ``PropertyF.Ground.galois_propertyF,
+      ``PropertyF.Ground.target_of_galois_invariance_and_pseudo_fixedness,
       ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,
       ``PropertyF.Ground.Dimensions.squaredNorm_independent] do
