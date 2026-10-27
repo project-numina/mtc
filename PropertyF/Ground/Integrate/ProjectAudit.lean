@@ -8,7 +8,7 @@ public import PropertyF.Ground.Integrate.Representatives
 public import PropertyF.Ground.Integrate.Conjugacy
 public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Integrate.PropertyFTransport
-public import PropertyF.Ground.Integrate.Reduction
+public import PropertyF.Ground.Final
 public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.Fusion.MatrixIntegral

@@ -1,4 +1,5 @@
 module
+public import PropertyF.Ground.Final
 public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 /-! Explicit final-theorem gate. This module intentionally fails to build until
