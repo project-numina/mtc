@@ -16,9 +16,13 @@
 
 - `target_globalDimension_real`, `target_globalDimension_le_of_simple_bounds`, `global_sum_squares_positive`, `global_sum_squares_one_le`, and `global_sum_squares_eq_iff` reduce the global realness, inequality, and positivity assertions to explicit simple-dimension hypotheses; those hypotheses remain unproved.
 
+- `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
+
+- `character_norm_le_fpSimple` and `galois_character_norm_le_fpSimple` prove the spectral-radius bound for any nonzero complex fusion character and every complex field conjugate. Deriving the character equations for spherical dimensions is still open.
+
 ## In progress
 
-- `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic_of_spherical`, and `rightTrace_id_iso` also hold. Multiplicativity and semilinear trace transport remain open.
+- `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic`, and `rightTrace_id_iso` also hold for any pivotal structure. Multiplicativity and semilinear trace transport remain open.
 
 - Prove elementary dimension consequences and trace infrastructure while waiting for the shared category interface.
 

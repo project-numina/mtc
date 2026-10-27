@@ -39,8 +39,17 @@
   laws for the genuine target category.
 - `Ground.tensorRightHomLinearEquiv`, `finrank_frobenius_reciprocity`, and
   `fusionCoeff_reciprocity`: rigidity gives complex-linear Hom equivalences and
-  Frobenius reciprocity with the actual left dual object. A simple-label dual
-  permutation has not yet been constructed.
+  Frobenius reciprocity with the actual left dual object.
+- `Ground.finrank_end_leftDual`, `simple_of_finrank_end_eq_one`,
+  `simple_leftDual`, `dualIndex`, `dualIndex_involutive`, `dualEquiv`, and
+  `fusionCoeff_reciprocity_labels`: the actual dual of each simple is simple,
+  duality gives an involutive permutation of labels, and the usual
+  Frobenius reciprocity identity follows.
+- `Ground.totalFusionMatrix_symmetric` and `totalFusionMatrix_pos`: the sum of
+  the real fusion matrices is symmetric and strictly positive. Positivity uses
+  cabling's `tensorLeft_faithful_of_unit_retract` (merged commit 288c894).
+- `Ground.positive_matrix_eigenspace_unique`: any eigenspace containing a
+  strictly positive eigenvector of a positive real matrix is one-dimensional.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.

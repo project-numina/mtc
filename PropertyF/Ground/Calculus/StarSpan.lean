@@ -51,4 +51,20 @@ theorem map_star_on_unitary_group_span {G ι κ : Type*} [Group G]
   rw [star_eq_coe_inv_of_unitary (ρ g) (hρ g), ← map_inv ρ, hφ,
     hφ, star_eq_coe_inv_of_unitary (σ g) (hσ g), map_inv]
 
+/-- If a group spans an algebra and two representations have adjoint equal to
+inverse on group elements, every intertwining algebra map preserves adjoints.
+This captures identity-strand maps without assuming injectivity or surjectivity. -/
+theorem map_star_of_group_span {G H : Type*} [Group G] [Group H]
+    (ρ : G →* A) (σ : H →* B) (τ : G →* H) (φ : A →ₐ[ℂ] B)
+    (hspan : Submodule.span ℂ (Set.range ρ) = ⊤)
+    (hρ : ∀ g, star (ρ g) = ρ g⁻¹)
+    (hσ : ∀ h, star (σ h) = σ h⁻¹)
+    (hφ : ∀ g, φ (ρ g) = σ (τ g)) (x : A) :
+    φ (star x) = star (φ x) := by
+  apply map_star_of_mem_span φ (Set.range ρ)
+  · rintro _ ⟨g, rfl⟩
+    rw [hρ, hφ, hφ, hσ, map_inv]
+  · rw [hspan]
+    exact Submodule.mem_top
+
 end PropertyF.Ground.Calculus

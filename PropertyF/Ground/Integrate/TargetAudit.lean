@@ -1,5 +1,95 @@
 module
+public import PropertyF.Ground.Final
 public meta import PropertyF.Ground.Integrate.DependencyAudit
+
+
+
+
+import all PropertyF.Arithmetic
+import all PropertyF.Audit
+import all PropertyF.Axioms
+import all PropertyF.BlockTrace
+import all PropertyF.BraidAlgebra
+import all PropertyF.Center
+import all PropertyF.CenterBasics
+import all PropertyF.Consequences
+import all PropertyF.Definitions
+import all PropertyF.Descent
+import all PropertyF.GaloisRigidity
+import all PropertyF.GaloisSymmetry
+import all PropertyF.Ground.Cabling.DualClosure
+import all PropertyF.Ground.Cabling.Generated
+import all PropertyF.Ground.Cabling.Images
+import all PropertyF.Ground.Cabling.Inclusion
+import all PropertyF.Ground.Cabling.Perron
+import all PropertyF.Ground.Cabling.Primitive
+import all PropertyF.Ground.Cabling.Pure
+import all PropertyF.Ground.Cabling.Rigidity
+import all PropertyF.Ground.Cabling.Strands
+import all PropertyF.Ground.Cabling.Witness
+import all PropertyF.Ground.Calculus.Averaging
+import all PropertyF.Ground.Calculus.BraidBlocks
+import all PropertyF.Ground.Calculus.CategoricalTrace
+import all PropertyF.Ground.Calculus.CyclicTrace
+import all PropertyF.Ground.Calculus.FiniteOrder
+import all PropertyF.Ground.Calculus.GroupBlocks
+import all PropertyF.Ground.Calculus.ImageMaps
+import all PropertyF.Ground.Calculus.Intertwining
+import all PropertyF.Ground.Calculus.PartialTrace
+import all PropertyF.Ground.Calculus.StarSpan
+import all PropertyF.Ground.Calculus.Unitarization
+import all PropertyF.Ground.Calculus.UnitaryBlocks
+import all PropertyF.Ground.Centre.Embeddings
+import all PropertyF.Ground.Centre.Linear
+import all PropertyF.Ground.Centre.Product
+import all PropertyF.Ground.Centre.ProductImages
+import all PropertyF.Ground.Centre.ReverseBraiding
+import all PropertyF.Ground.Centre.Zero
+import all PropertyF.Ground.Dimensions.BiproductTrace
+import all PropertyF.Ground.Dimensions.CharacterBound
+import all PropertyF.Ground.Dimensions.DimensionField
+import all PropertyF.Ground.Dimensions.FusionDimensionField
+import all PropertyF.Ground.Dimensions.GlobalInequality
+import all PropertyF.Ground.Dimensions.GroundNorm
+import all PropertyF.Ground.Dimensions.Norm
+import all PropertyF.Ground.Dimensions.Pivotal
+import all PropertyF.Ground.Dimensions.TargetDimensionField
+import all PropertyF.Ground.Dimensions.Trace
+import all PropertyF.Ground.Final
+import all PropertyF.Ground.Fusion.Integrality
+import all PropertyF.Ground.Fusion.MatrixIntegral
+import all PropertyF.Ground.Fusion.Multiplicity
+import all PropertyF.Ground.Fusion.PositiveMatrix
+import all PropertyF.Ground.Fusion.Reciprocity
+import all PropertyF.Ground.Fusion.Schur
+import all PropertyF.Ground.Fusion.Simples
+import all PropertyF.Ground.Fusion.SpectralIntegral
+import all PropertyF.Ground.Fusion.Splitting
+import all PropertyF.Ground.Fusion.TotalMatrix
+import all PropertyF.Ground.Integrate.Arithmetic
+import all PropertyF.Ground.Integrate.Conjugacy
+import all PropertyF.Ground.Integrate.DependencyAudit
+import all PropertyF.Ground.Integrate.Example
+import all PropertyF.Ground.Integrate.Norm
+import all PropertyF.Ground.Integrate.PropertyFTransport
+import all PropertyF.Ground.Integrate.Reduction
+import all PropertyF.Ground.Integrate.Representatives
+import all PropertyF.Ground.Integrate.StrandInclusion
+import all PropertyF.Ground.Integrate.UnitScalar
+import all PropertyF.Ground.Modular.BraidFunctor
+import all PropertyF.Ground.Modular.BraidIso
+import all PropertyF.Ground.Modular.Characters
+import all PropertyF.Ground.Modular.Classification
+import all PropertyF.Ground.Modular.FusionTransport
+import all PropertyF.Ground.Modular.GaloisFromVerlinde
+import all PropertyF.Ground.Modular.Labels
+import all PropertyF.Ground.Modular.SMatrix
+import all PropertyF.Ground.Target
+import all PropertyF.Main
+import all PropertyF.PowerBound
+import all PropertyF.TraceBound
+import all PropertyF.Transfer
+import all PropertyF.UnitaryTrace
 
 /-! Explicit final-theorem gate. This module intentionally fails to build until
 `PropertyF.Ground.target : PropertyF.Ground.TargetStatement` exists. It is not
@@ -19,8 +109,8 @@ run_cmd do
       unless n == ``PropertyF.Ground.TargetStatement do
         throwError "Final theorem must have exactly the frozen TargetStatement type"
   | _ => throwError "Final theorem must have exactly the frozen TargetStatement type"
-  if let some bad := findForbidden env targetName then
-    throwError "Final theorem depends on forbidden declaration {bad}"
+  if let some issue := findIssue env targetName then
+    throwError "Final theorem dependency audit failed: {repr issue}"
   let axioms ← collectAxioms targetName
   for ax in axioms do
     unless #[``propext, ``Classical.choice, ``Quot.sound].contains ax do
