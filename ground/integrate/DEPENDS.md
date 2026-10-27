@@ -1,18 +1,12 @@
 # Integration dependencies
 
-All remaining items below are explicit, temporary arguments to
-`Ground.target_of_spherical_existence_center_and_overlap`; none is an assumption in the frozen
-`TargetStatement`. Their exact Lean types are in
-`PropertyF/Ground/Integrate/OverlapReduction.lean`. The former rigidity premise
-is discharged from the precise categorical `TwistedOverlapTrace` recurrence.
+All remaining items are explicit, temporary arguments to
+`Ground.target_of_center_and_overlap`; none is an assumption in the frozen
+`TargetStatement`. The exact Lean type is in
+`PropertyF/Ground/Integrate/CenterOnlyReduction.lean`. No spherical structure
+is needed on the original category: `positive_bounded_conjugates_of_fp`
+constructs the bounds directly from its FP fusion character.
 
-- `hSpherical`: for pseudo-unitary C, construct any actual spherical pivotal
-  structure. Owner: dimensions. Given that structure,
-  `positive_spherical_of_spherical_pseudoUnitary` constructs the canonical
-  positive FP-dimensional structure without extra assumptions. `spherical_dimension_dual_of_positive` and
-  `positive_bounded_conjugates_of_spherical` then supply dual invariance and
-  all real-conjugate bounds without extra assumptions. The alternative
-  `target_of_spherical_and_witness` needs only self-dual simple dimensions.
 - `hCenter`: for pseudo-unitary property-F C and each σ, construct the centre
   as a genuine braided fusion category Z with positive spherical structure,
   invertible categorical S, and global dimension FPdim(C)²; prove that any
@@ -29,6 +23,9 @@ is discharged from the precise categorical `TwistedOverlapTrace` recurrence.
   and property F on the generated subcategory. These three assertions remain
   explicit centre obligations. The exact final reduction is in
   `CenterReduction.lean`.
+
+The centre must still be equipped with a positive spherical structure;
+its construction remains owned by centre and dimensions.
 
 Fusion has proved `one_le_globalFPDimension` directly from the unit fusion
 matrix, so global FP positivity is discharged. The last sum/integrality step, Galois transport of property F and global FP

@@ -14,9 +14,10 @@ two explicit categorical obligations: the canonical positive spherical
 structure and a concrete modular centre with finite-image and rigidity facts.
 `target_of_canonical_spherical_center_and_overlap` derives that rigidity from
 the named actual scalar-twisted overlap recurrence, `TwistedOverlapTrace`.
-`target_of_spherical_existence_center_and_overlap` needs only any initial
-spherical structure for a pseudo-unitary category: dimensions constructs
-the positive one from that premise. Initial spherical existence remains open. Global FP positivity
+`target_of_center_and_overlap` needs no spherical assumption on the original
+category: `positive_bounded_conjugates_of_fp` proves the conjugate bounds
+directly from its self-dual FP fusion character. Its centre premise still
+requires a positive spherical structure on the constructed modular centre. Global FP positivity
 is proved from the tensor unit; the numerical contradiction is bundle-free. Global FP
 invariance under semilinear braided equivalence is proved by
 `Modular.conjugate_globalFPDimension`.
@@ -91,7 +92,7 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 Latest merged snapshots: fusion f175963; dimensions 6be760b; calculus fd59727;
 centre 21f99af; modular 07408af; cabling 7ff2fe9. The full development build
-passed; `ProjectAudit` scans 2,965 integrated public and private declarations, all with only the
+passed; `ProjectAudit` scans 2,969 integrated public and private declarations, all with only the
 standard axioms. The strict target audit correctly fails because `Ground.target`
 is absent. This is not a proof of the target.
 
@@ -108,4 +109,4 @@ The final arithmetic reduction is bundle-free: fusion bfbd006 proves target
 global FP algebraic integrality, and `weaklyIntegral_of_globalFPDimension_fixed`
 combines it with the constructed finite Galois field and automorphism extension.
 Global FP conjugacy invariance is proved. Galois fixedness requires the
-categorical real-conjugate bounds and centre/rigidity witnesses above.
+centre/rigidity witnesses above; the real-conjugate bounds are unconditional.
