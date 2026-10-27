@@ -58,4 +58,30 @@ theorem fourthDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
   rw [doubleDualIso_natural_assoc, hd]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The natural braided double-dual map commutes with applying double dual. -/
+theorem doubleDualIso_doubleDual (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+    (doubleDualIso C ((Xᘁ)ᘁ)).hom = (((doubleDualIso C X).homᘁ)ᘁ) := by
+  apply (cancel_epi (doubleDualIso C X).hom).1
+  exact doubleDualIso_natural C (doubleDualIso C X).hom
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The braided fourth-dual map intertwines duals with its inverse. -/
+theorem fourthDualIso_rightDual (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+    fourthDualIso C (Xᘁ) = (rightDualIsoMap (fourthDualIso C X)).symm := by
+  have hi : (doubleDualIso C ((Xᘁ)ᘁ)).inv = (((doubleDualIso C X).invᘁ)ᘁ) := by
+    have hh : doubleDualIso C ((Xᘁ)ᘁ) = rightDualIsoMap (rightDualIsoMap (doubleDualIso C X)) := by
+      apply Iso.ext
+      exact doubleDualIso_doubleDual C X
+    exact congrArg Iso.inv hh
+  apply Iso.ext
+  simp only [fourthDualIso, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, rightDualIsoMap,
+    comp_rightAdjointMate]
+  rw [hi]
+  change (doubleDualIso C (Xᘁ)).hom ≫ (((((doubleDualIso C X).invᘁ)ᘁ)ᘁ)) =
+    ((doubleDualIso C X).invᘁ) ≫ ((((doubleDualIso C (Xᘁ)).homᘁ)ᘁ))
+  rw [← doubleDualIso_doubleDual C (Xᘁ)]
+  exact (doubleDualIso_natural C ((doubleDualIso C X).invᘁ)).symm
+
+
 end PropertyF.Ground.Dimensions
