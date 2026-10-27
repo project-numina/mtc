@@ -73,20 +73,19 @@
   and `tensor` theorems, plus `one_le_fpDimension`: object FP dimension is
   constructed from Hom multiplicities, tensor-multiplicative, integral over ℤ,
   and at least one on nonzero objects.
+- `Ground.fpDimension_biproduct`, `fpDimension_functor_decomposition`, and
+  `fpDimension_functor`: finite sums are additive, and every faithful additive
+  strong monoidal functor preserves FP dimensions of all objects.
 - `Ground.dual_multiplicity`, `fpDimension_leftDual`, and
   `fpDimension_rightDual`: FP dimensions of arbitrary objects are invariant
   under either dual.
 
-These results use the existing `FusionData`; they do not construct its positive
-character or discharge the `FusionData` hypothesis.
+The legacy `FusionData` results are separate from the bundle-free ground results.
 
 ## In progress
 
-Construction of fusion rules and the positive character from a genuine finite
-semisimple rigid category. Integration has been asked for its target interface.
-Integration independently proved the unit-scalar identification in its own
-`PropertyF/Ground/Integrate/UnitScalar.lean`; our duplicate was removed to avoid
-declaration conflicts.
+Proving split monomorphisms and epimorphisms from finite semisimplicity, as
+requested by cabling; then pursue the adjoint-component integrality argument.
 
 ## Blocked / outstanding
 
@@ -94,12 +93,11 @@ Mathlib has categorical Schur's lemma but a source search found no general
 Perron–Frobenius theorem for positive matrices. Existence, uniqueness and
 agreement of the target dimensions with the positive character are proved.
 
-Inclusion invariance, spectral-dimension independence of chosen
-representatives, and the centre dimension comparison remain. The project-scale
+The centre dimension comparison and fusion-subcategory dimension identities
+remain. Integration proved representative independence and modular proved
+conjugacy invariance; inclusion invariance is now proved above. The project-scale
 remaining effort is substantial; no credible completion-time estimate is yet
 available.
 
-Integration requires the target dependency cone to avoid the old hypothesis
-bundles entirely. The above results currently use `FusionData` and must be
-generalized to the genuine category/character interface before they can be used
-directly in the final proof.
+The ground constructions and functor theorem avoid old hypothesis bundles.
+The separate compatibility bridge constructs the old `FusionData`.
