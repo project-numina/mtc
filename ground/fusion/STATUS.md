@@ -148,6 +148,11 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.crossingCandidate` constructs a finite matrix formula
+  for the proposed half-braiding using actual simple-decomposition inclusions,
+  projections, and dual mates. The map is constructed, but invertibility,
+  its naturality and tensor law, and its compatibility with the proposed unit
+  and adjunction triangle remain unproved.
 - `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
   transpose and proves it injective; composing it with the unit-summand
   counit recovers the original map. Centrality and surjectivity onto centre
