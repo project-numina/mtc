@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Integrate.TwistedRigidity
+public import PropertyF.Ground.Integrate.OverlapReduction
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 
 /-! Connect the proved overlap recurrence to the frozen integration interface. -/
@@ -32,5 +32,26 @@ theorem positive_galois_rigidity (Z : Ground.BraidedFusionCategory.{v,u})
     Ground.fpSimple Z y = |d| :=
   Ground.rigidity_of_twisted_overlap Z p hdim σ y hF d hσ hS
     (twistedOverlapTrace_constructed Z p σ y)
+
+/-- With the categorical overlap theorem supplied, the frozen target reduces
+to spherical-structure existence and the actual centre/finite-image results. -/
+theorem target_of_spherical_existence_and_center
+    (hSpherical : ∀ (C : Ground.BraidedFusionCategory.{v,u}), Ground.PseudoUnitary C →
+      ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical)
+    (hCenter : ∀ (C : Ground.BraidedFusionCategory.{v,u}), Ground.PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ,
+      ∃ (Z : Ground.BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj)),
+        p.IsSpherical ∧
+        (∀ i, Ground.Modular.simpleDimension Z p i = (Ground.fpSimple Z i : ℂ)) ∧
+        (Ground.Modular.categoricalS Z p).det ≠ 0 ∧
+        Ground.globalDimension Z = (Ground.globalFPDimension C : ℂ) ^ 2 ∧
+        (∀ y, (∀ x, Ground.Modular.categoricalS Z p x y =
+          (Ground.fpSimple Z y : ℂ) * σ.symm (Ground.Modular.simpleDimension Z p x)) →
+          ObjectPropertyF (Ground.simples Z y))) : Ground.TargetStatement.{v,u} := by
+  apply Ground.target_of_spherical_existence_center_and_overlap hSpherical
+  intro C hPU hF σ
+  obtain ⟨Z, p, hp, hdim, hdet, hglobal, hFtransfer⟩ := hCenter C hPU hF σ
+  exact ⟨Z, p, hp, hdim, hdet, hglobal, hFtransfer,
+    fun y _ => twistedOverlapTrace_constructed Z p σ y⟩
 
 end PropertyF.Ground.Calculus
