@@ -36,7 +36,8 @@ for that example have not yet been established.
 
 Provisional mathematical checks: simple reps exhaust all simple isoclasses;
 squared
-norms are independent of isomorphism and simple presentation; FP spectral
+norms and their global sum are independent of isomorphism and presentation
+(proved in `Dimensions.GroundNorm`); FP spectral
 radii form the unique positive fusion character and are presentation independent;
 compare complex-automorphism conjugacy with the paper's algebraic-closure
 formulation. `Ground.doubleDualIso` is already constructed from Mathlib's

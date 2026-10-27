@@ -24,6 +24,7 @@ public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Witness
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -43,8 +44,15 @@ import all PropertyF.Ground.Calculus.Averaging
 import all PropertyF.Ground.Calculus.StarSpan
 import all PropertyF.Ground.Calculus.Unitarization
 import all PropertyF.Ground.Centre.Embeddings
+import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.DimensionField
+import all PropertyF.Ground.Dimensions.FusionDimensionField
+import all PropertyF.Ground.Dimensions.GlobalInequality
+import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Dimensions.Norm
+import all PropertyF.Ground.Dimensions.Pivotal
+import all PropertyF.Ground.Dimensions.TargetDimensionField
+import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Final
 import all PropertyF.Ground.Fusion.Integrality
 import all PropertyF.Ground.Fusion.MatrixIntegral
@@ -105,6 +113,7 @@ run_cmd do
       ``PropertyF.Ground.unit_algebraMap_bijective,
       ``PropertyF.Ground.Example.complexVectorSpaces,
       ``PropertyF.Ground.squaredNorm_eq_of_choices,
+      ``PropertyF.Ground.Dimensions.target_globalDimension_independent_simples,
       ``PropertyF.Ground.simple_strand_inclusion,
       ``PropertyF.Ground.weaklyIntegral_of_globalFPDimension_fixed,
       ``PropertyF.Ground.galois_propertyF,
