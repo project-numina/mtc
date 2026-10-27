@@ -37,6 +37,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -162,6 +163,7 @@ import all PropertyF.Ground.Integrate.ExampleDimensions
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.LegacyBridge
+import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction
@@ -260,6 +262,7 @@ run_cmd do
       ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
       ``PropertyF.Ground.positive_ratio_of_galois_square,
       ``PropertyF.Ground.center_witness_of_modular_and_rigidity,
+      ``PropertyF.Ground.exists_modular_witness,
       ``PropertyF.Ground.galois_unit_self_entry,
       ``PropertyF.Ground.target_of_numerical_witnesses,
       ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,

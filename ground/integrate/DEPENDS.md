@@ -21,6 +21,10 @@ All remaining items below are explicit, temporary arguments to
   paper's specific centre/rigidity intermediate conclusion, not target fixedness.
   `center_witness_of_modular_and_rigidity` now derives this conclusion from
   the modular global identity, the Galois-unit self-column and rigidity.
+  `exists_modular_witness` constructs those modular identities and the real
+  dimension f ≥ 1 from an actual positive spherical category with invertible S;
+  identifying that category as the centre and establishing property F and
+  the categorical rigidity implication remain.
 
 Fusion has proved `one_le_globalFPDimension` directly from the unit fusion
 matrix, so global FP positivity is discharged. The last sum/integrality step, Galois transport of property F and global FP

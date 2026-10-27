@@ -15,6 +15,7 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -140,6 +141,7 @@ import all PropertyF.Ground.Integrate.ExampleDimensions
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.LegacyBridge
+import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction
