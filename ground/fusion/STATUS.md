@@ -106,27 +106,31 @@ The legacy `FusionData` results are separate from the bundle-free ground results
 
 ## In progress
 
-The individual fusion-category, FP-character, inclusion, generated-category,
-and simple-square results are constructed. Awaiting the centre fusion structure
-and induction/dominance interface before the global centre comparison.
+The round-2 induction and Maschke constructions are in progress. The centre
+fusion property and global FP-square formula have been reduced to explicit
+categorical identities, and proved in rank one assuming centre rigidity; see
+Round 2 progress below for precise theorem statements.
 
 ## Blocked / outstanding
 
-Mathlib has categorical Schur's lemma but a source search found no general
-Perron–Frobenius theorem for positive matrices. Existence, uniqueness and
-agreement of the target dimensions with the positive character are proved.
+- Fusion-owned: construct the canonical half-braiding on `underlyingFunctor`,
+  its lift `I : C ⥤ Center C`, and the forgetful right adjunction. In particular
+  the remaining universal-property proof must produce the actual Hom
+  equivalence, not merely the computed FP dimension of the underlying sum.
+- Fusion-owned: prove `SimpleLoopCentrality`, the sliding equation for the
+  explicit spherical weighted loop sum. The unit-labelled case and rank-one
+  special case are proved; for a general simple test strand this requires the
+  fusion-basis completeness and pivotal trace sliding identity. Once proved,
+  the loop sum splits centre monos and epis and yields finite semisimplicity.
+- Centre: construct rigidity on the actual Mathlib centre. Dimensions: produce
+  a spherical structure on pseudo-unitary C; nonzero global dimension follows
+  from pseudo-unitarity and FP positivity.
 
-The remaining workstream obligation is `FPdim(Z(C)) = FPdim(C)^2`. It is
-blocked on centre constructing Z(C) as a ground fusion category and providing
-the induction/forgetful or equivalent dominance machinery. Fusion functor
-preservation applies to the centre forgetful functor once that structure
-exists; the global-square theorem itself is not yet proved. The global
-sub-category inequality is proved above, but no stronger divisibility theorem
-is claimed. No credible completion-time estimate is available until the centre
-interface exists.
-
-The ground constructions and functor theorem avoid old hypothesis bundles.
-The separate compatibility bridge constructs the old `FusionData`.
+There is no credible completion-time estimate for the general half-braiding,
+adjunction, and loop-sliding proofs. The existing conditional results do not
+prove the frozen target. The global subcategory inequality is proved, but no
+stronger divisibility theorem is claimed. Ground constructions avoid the old
+hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
 
 ## Latest verification
 
@@ -204,7 +208,7 @@ The separate compatibility bridge constructs the old `FusionData`.
 ## Round 2 plan (2026-10-27)
 
 Use the actual Mathlib centre and its forgetful functor, with the existing
-`Integrate.bundledCenter` once centre supplies rigidity and fusion instances.
+`Integrate.bundledCenter` once centre rigidity and the fusion instance are supplied.
 Construct the underlying induction object as the finite biproduct of
 `Sᵢ ⊗ X ⊗ Sᵢ*` and prove its FP dimension directly by additivity,
 multiplicativity and dual invariance. Construct its canonical half-braiding
@@ -214,6 +218,6 @@ give semisimplicity and a finite set of simple summands of induced simples.
 Finally use adjunction and the FP dimension of induced objects to compare the
 regular FP vectors and obtain the global square formula. Centre already
 provides finite-dimensional Hom spaces and the unit-endomorphism comparison.
-The half-braiding coherence, adjunction, averaging splitting, and centre fusion
-instance are substantial remaining categorical work; no completion estimate is
-credible yet.
+The half-braiding coherence, adjunction, and loop-sliding identity remain
+substantial work. The averaging splitting and centre fusion assembly are
+proved conditionally on those inputs and the stated spherical assumptions.
