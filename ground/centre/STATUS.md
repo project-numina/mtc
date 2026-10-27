@@ -87,3 +87,14 @@ Focused Lake builds passed for `CentreBundle.Fusion`, `CentreRigid.Lift`,
 the fusion assembly, conditional rigidity, both unit tensor laws, unit
 centrality, and both mate equations. The general mate coherence remains
 centre-owned work, not an external dependency.
+
+## Round 3 continuation
+
+Merged the integration snapshot including induction, rank-one results and current
+centralizer reductions. General rigidity remains the priority. In
+`CentreRigid.SimpleCentrality`, `coevaluation_central_of_simples` and
+`evaluation_central_of_simples` reduce the two duality-map centrality equations
+to tests on base simple representatives, once the crossing tensor law is given.
+This is a reduction, not a proof of those tests or of rigidity. The immediate route
+is to use naturality and semisimple decompositions similarly for the tensor law,
+then prove the resulting mate equations diagrammatically.
