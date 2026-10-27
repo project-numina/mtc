@@ -19,6 +19,11 @@
 - `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
 
 - `spherical_dimension_dual_of_positive` removes the dual-invariance premise when spherical simple dimensions are positive; `pseudoUnitary_galois_fp_bounds_of_positive` supplies the Galois bounds in that case. Existence of such a structure remains open.
+- `positive_spherical_isPseudoUnitary`, `positive_spherical_squaredNorm_eq_fp_sq`, `positive_spherical_squaredNorm_totallyPositive`, and `positive_spherical_galois_fp_bounds` show any positive spherical structure supplies pseudo-unitarity and the required Galois bounds; constructing the structure remains open.
+- `pivotalStructure_unique_of_simple_dimensions` proves pivotal structures are determined by simple dimensions; `positive_pivotalDimension_eq_fpSimple` and `positive_pivotalStructure_unique` prove the uniqueness and FP-identification parts of ENO 8.23. Existence remains open.
+- `exists_fourthDual_square_root` and `fourthDualSimpleRoot_sq` construct the ENO square-root components on every simple, without assuming monoidality or naturality.
+- `doubleDualFunctor` is a complex-linear additive functor; `drinfeldNaturalIso` and `fourthDualNaturalIso` package the natural maps as categorical natural isomorphisms, with tensor coherence still unproved.
+- `doubleDualIso_natural` and `fourthDualIso_natural` construct and prove naturality of the braided double- and fourth-dual maps. The fourth-dual map’s monoidal coherence remains unproved.
 - `target_squaredNorm_unit` proves the intrinsic norm of the tensor unit is one without a pivotal structure.
 - `target_squaredNorm_rightDual` proves intrinsic norm invariance under duality without a pivotal structure. `spherical_pivotalDimension_rightDual_sq` proves equality of squared dimensions, with the sign still unresolved.
 - `rightQuantumTrace_simple_ne_zero`, `leftQuantumTrace_simple_ne_zero`, and `target_squaredNorm_ne_zero` establish nonvanishing for every simple without a pivotal or spherical structure.
@@ -41,7 +46,7 @@
 
 - `PivotalStructure.rightTrace_add`, `rightTrace_smul`, `leftTrace_add`, and `leftTrace_smul` establish linearity. `rightTrace_cyclic`, `leftTrace_cyclic`, and `rightTrace_id_iso` also hold for any pivotal structure. `pivotalTrace_tensor` proves multiplicativity; semilinear trace transport remains open.
 
-- Prove pivotal duality coherence and obtain canonical spherical structures on pseudo-unitary categories.
+- Prove pivotal duality coherence and obtain canonical spherical structures on pseudo-unitary categories. ENO 2.3/8.23 uses a monoidal fourth-dual isomorphism and its square-root/trace operators; the braided fourth-dual map is constructed and natural, but its tensor coherence and the subsequent semisimple operator argument are not yet formalized.
 
 ## Dependencies and remaining work
 
@@ -50,3 +55,12 @@
 - Remaining: positivity/total positivity of squared norms; categorical global dimension ≥ 1; ENO 8.21/8.22 inequalities and equality case; ENO 8.23 canonical spherical structure; construction of pseudo-unitary conjugate real/positive/bounded dimensions and transport. These are substantial mathematical developments, not completed by the arithmetic construction.
 
 Estimate: the finite-field arithmetic is finished and the categorical integrality is established for spherical structures; the category-theoretic dimension program remains substantially open and its duration is currently uncertain.
+
+## Current blockers and next proof steps
+
+1. **Pivotal dual coherence.** Need to prove `p.iso (Xᘁ) = (rightDualIsoMap (p.iso X)).symm`, or at least equality of the two simple dimensions on dual objects. Naturality of `p` on evaluation/coevaluation plus its unit and tensor laws should give this, but the required double-dual coherence across tensor pairings is not yet formalized. The positive-spherical special case is already resolved by `spherical_dimension_dual_of_positive`.
+2. **ENO 2.3/8.21 for arbitrary categories.** The intrinsic norm is choice-independent, nonzero, dual-invariant, and normalized at the unit, but no general proof of positivity, algebraic integrality, total positivity, or the FP square bound is in this branch. The [ENO proof](https://annals.math.princeton.edu/wp-content/uploads/annals-v162-n2-p01.pdf) uses a monoidal fourth-dual isomorphism, square roots on simples, and induced involutions on fusion multiplicity spaces. `fourthDualIso` is built and natural; its monoidal compatibility has not been proved. Square-root components on simples are constructed, but the induced multiplicity-space involutions and positivity arguments are not yet formalized. No assertion that the chosen fourth-dual candidate is monoidal is made.
+3. **ENO 8.23 existence.** A positive spherical structure is unique and supplies all required FP/Galois consequences, but deriving its existence from `Ground.PseudoUnitary` remains open. ENO's construction uses the preceding fourth-dual and trace-operator results and then twists simple components; extending and proving the tensor coherence of the twist is also unformalized.
+4. **Semilinear transport.** The scalar/Galois inequalities are available once an actual positive spherical structure exists, but compatibility of intrinsic dimensions and traces with a semilinear braided equivalence still requires transport of exact pairings and categorical trace maps.
+
+Verification: the complete merged `PropertyF` library built successfully with `LEAN_NUM_THREADS=4 taskset -c 8-11 lake build PropertyF`. `#print axioms` for iterated trace, tensor trace, intrinsic norm nonvanishing and unit, pivotal uniqueness, the positive-spherical Galois bounds, and fourth-dual naturality returned only `propext`, `Classical.choice`, and `Quot.sound`. The final target theorem is not established.
