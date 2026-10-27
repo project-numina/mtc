@@ -99,4 +99,39 @@ theorem target_squaredNorm_ne_zero (C : Ground.BraidedFusionCategory.{v,u})
     simpa using (Ground.unitScalarEquiv C).injective.ne hl
   exact mul_ne_zero hsr hsl
 
+/-- Dualizing a double-dual component twice exchanges its left and right
+quantum traces. -/
+theorem leftQuantumTrace_dual_component {C : Type u} [Category.{v} C] [MonoidalCategory C]
+    [RigidCategory C] {X : C} (j : X ≅ (Xᘁ)ᘁ) :
+    leftQuantumTrace (rightDualIsoMap j).symm = rightQuantumTrace j := by
+  rw [leftQuantumTrace_eq_rightDual]
+  have hdual : (rightDualIsoMap (rightDualIsoMap j).symm).symm =
+      rightDualIsoMap (rightDualIsoMap j) := by
+    apply Iso.ext
+    rfl
+  rw [hdual]
+  exact (rightQuantumTrace_iso j (rightDualIsoMap (rightDualIsoMap j)) j (by rfl)).symm
+
+/-- The intrinsic squared norm is invariant under right duality, without any
+pivotal or spherical structure. -/
+theorem target_squaredNorm_rightDual (C : Ground.BraidedFusionCategory.{v,u})
+    (X : C.Obj) [Simple X] : Ground.squaredNorm C (Xᘁ) = Ground.squaredNorm C X := by
+  let : Simple (Xᘁ) := simple_rightDual C X
+  let j := Ground.doubleDualIso C X
+  rw [target_squaredNorm_choice_independent C (Xᘁ) (rightDualIsoMap j).symm,
+    target_squaredNorm_choice_independent C X j]
+  rw [← leftQuantumTrace_eq_rightDual j, leftQuantumTrace_dual_component]
+  exact mul_comm _ _
+
+/-- In a spherical fusion category, a simple and its dual have the same
+squared pivotal dimension. -/
+theorem spherical_pivotalDimension_rightDual_sq (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) (X : C.Obj) [Simple X] :
+    pivotalDimension C p (Xᘁ) ^ 2 = pivotalDimension C p X ^ 2 := by
+  let : Simple (Xᘁ) := simple_rightDual C X
+  have h := target_squaredNorm_rightDual C X
+  rw [target_squaredNorm_eq_dimension_sq C p hp (Xᘁ),
+    target_squaredNorm_eq_dimension_sq C p hp X] at h
+  simpa [pivotalDimension, rightTrace_id] using h
+
 end PropertyF.Ground.Dimensions
