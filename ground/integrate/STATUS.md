@@ -6,7 +6,7 @@
   `fpSimple`, `globalFPDimension`, `doubleDualIso`, `unitScalar`, `squaredNorm`,
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
-- Posted provisional statement and explicit review requests to fusion/dimensions.
+- Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
 - `squaredNorm_eq_of_choices` connects the target norm to any conventional
   choice of scalar equivalence and simple double-dual isomorphism.
 - `unit_algebraMap_bijective`, `unitScalarEquiv`, `unitScalar_algebraMap`,
@@ -16,7 +16,7 @@
   spaces as a genuine ground braided fusion category, proving non-vacuity of
   the category interface (property F and pseudo-unitarity are not yet shown).
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans all 822 integrated declarations for forbidden axioms.
+- `ProjectAudit` scans all 832 integrated declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findForbidden` checks transitive declaration types and bodies;
   its negative fixture catches a hidden old input. `scripts/audit-target.sh`
@@ -24,10 +24,10 @@
 
 ## In progress
 
-- Prove faithful interpretation of the target and choice independence; freeze
-  only after review. Extend audit tests and verify the final gate.
-- Build bridge from the ground category to existing conditional theorem as
-  constructions arrive. Coordinate with all owners.
+- Prove faithful interpretation of the frozen target and choice independence.
+  Continue to exercise the final dependency gate as integration progresses.
+- Refactor the conditional argument into bundle-free results as constructions
+  arrive; a direct use of its old theorem would fail the strict dependency audit.
 
 ## Blocked / remaining
 

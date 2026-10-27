@@ -1,11 +1,11 @@
 # Ground integration ledger
 
-Baseline: 094175c. Target definition: 45da64d. As of 2026-10-27 all old
+Baseline: 094175c. Frozen target definition: 45da64d. As of 2026-10-27 all old
 interfaces below are unconstructed unless explicitly marked otherwise. Exact
 field types are in `PropertyF/Axioms.lean` and `PropertyF/Definitions.lean`;
 `FORMALIZATION.md` explains their mathematical content. All owners are the
-workstreams specified in the coordination board. Statements marked provisional
-must be verified before the target is frozen.
+workstreams specified in the coordination board. The target is frozen after fusion and dimensions review; the mathematical
+identification and independence obligations listed below remain open.
 
 ## Target and dependency graph
 
