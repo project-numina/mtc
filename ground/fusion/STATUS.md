@@ -157,7 +157,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   Mathlib's actual `Center C.Obj`, with underlying object the desired finite
   sum. `unitCandidate_central` proves the candidate unit is a centre map,
   and `actualAdjunction` constructs the actual right adjunction to forget.
-  Averaging-loop sliding and centre fusion remain open.
+  `globalFPDimension_square_of_actual_induction` proves the global FP-square
+  identity whenever the actual centre is rigid and fusion. Averaging-loop
+  sliding and construction of centre fusion remain open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
   unit-counit column on simple test strands. `crossingUnitBlock_eval` proves
   the diagonal duality contraction, and `secondTriangle` proves the second
