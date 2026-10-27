@@ -144,6 +144,10 @@ The separate compatibility bridge constructs the old `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.globalFPDimension_square_of_induction` derives the centre
+  global FP square from centre fusion/rigidity, induced representatives with
+  the stated underlying objects, and the precise adjunction Hom-dimension
+  equality; these hypotheses are not yet constructed.
 - `CentreInduction.underlying` constructs the underlying finite biproduct;
   `CentreInduction.fpDimension_underlying` proves its FP dimension equals
   `globalFPDimension C * fpDimension C X`. Focused build passes.

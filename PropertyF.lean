@@ -192,3 +192,4 @@ Its explicit standard-input and realization assumptions are in `PropertyF.Axioms
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
 import PropertyF.Ground.CentreInduction.Underlying
+import PropertyF.Ground.CentreInduction.GlobalSquare
