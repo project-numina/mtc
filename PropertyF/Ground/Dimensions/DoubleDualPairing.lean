@@ -95,4 +95,29 @@ theorem doubleDual_evaluation {C : Type u} [Category.{v} C]
   change (s.inv ≫ t.homᘁ) ≫ (((ε_ X (Xᘁ))ᘁ)ᘁ) ≫ (r.invᘁ ≫ r.hom) = _
   have hx := congrArg (fun f => s.inv ≫ f ≫ r.hom) hd
   simpa only [Category.assoc] using hx.trans hc
+set_option backward.isDefEq.respectTransparency false in
+/-- The canonical strong monoidal double-dual functor preserves coevaluation. -/
+theorem doubleDual_coevaluation {C : Type u} [Category.{v} C]
+    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
+    (doubleDualUnitIso (C := C)).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) ≫
+      (doubleDualTensorIso X (Xᘁ)).inv = η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
+  let I := 𝟙_ C
+  let : HasRightDual I := RightRigidCategory.rightDual I
+  let W := X ⊗ (Xᘁ)
+  let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
+  let : HasRightDual W := RightRigidCategory.rightDual W
+  let : HasRightDual V := RightRigidCategory.rightDual V
+  let r : Iᘁ ≅ I := rightDualUnitIso
+  let t : Wᘁ ≅ V := rightDualTensorIso X (Xᘁ)
+  let s : Vᘁ ≅ ((Xᘁ)ᘁ) ⊗ (((Xᘁ)ᘁ)ᘁ) := rightDualTensorIso ((Xᘁ)ᘁ) (Xᘁ)
+  have he := rightDualCoevaluation_evaluation X
+  change t.inv ≫ ((η_ X (Xᘁ))ᘁ) ≫ r.hom = ε_ (Xᘁ) ((Xᘁ)ᘁ) at he
+  have hd := congrArg (fun f : V ⟶ I => fᘁ) he
+  simp only [comp_rightAdjointMate] at hd
+  have hc := rightDualEvaluation_coevaluation (Xᘁ)
+  change r.inv ≫ ((ε_ (Xᘁ) ((Xᘁ)ᘁ))ᘁ) ≫ s.hom = _ at hc
+  change (r.inv ≫ r.homᘁ) ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) ≫ (t.invᘁ ≫ s.hom) = _
+  have hx := congrArg (fun f => r.inv ≫ f ≫ s.hom) hd
+  simpa only [Category.assoc] using hx.trans hc
 end PropertyF.Ground.Dimensions
