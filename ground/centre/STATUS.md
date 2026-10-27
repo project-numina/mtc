@@ -12,11 +12,11 @@ The centre has a constructed preadditive structure, linear structure over any ri
 
 `reverse_braidGenerator`, `reverse_braidImage`, and `reverse_objectPropertyF_iff` prove that the actual adjacent generators invert under reverse braiding, the generated image subgroup is unchanged, and objectwise property F is invariant.
 
-`mixedBraiding` constructs the componentwise braiding with the second component reversed on the ordinary product category. `productFunctor` constructs the monoidal functor from this ordinary product category to the centre and `positiveProductIso` / `negativeProductIso` identify its restrictions to the two factors. This is not yet the Deligne product and braidedness of the functor is not yet proved.
+`mixedBraiding` constructs the componentwise braiding with the second component reversed on the ordinary product category. `productFunctor` constructs the monoidal functor from this ordinary product category to the centre and `positiveProductIso` / `negativeProductIso` identify its restrictions to the two factors. `productBraided` proves this functor is braided for `mixedBraiding`. This is not yet the Deligne product; extension and dominance remain open.
 
 ## In progress
 
-Prove braidedness of `productFunctor` from cross-centrality, transport braid images through the embeddings, and investigate centre rigidity and semisimplicity.
+Extend the braided product functor to the Deligne product; transport braid images through the embeddings; investigate centre rigidity and semisimplicity.
 
 ## Blocked / dependencies
 
