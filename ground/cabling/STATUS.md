@@ -9,12 +9,15 @@
   `strand_inclusion_of_unit_retract`: a split copy of the unit in `Y ⊗ X`
   implies tensoring by X is faithful and thus gives strand inclusion.
 
+- `strandPermutation`, `pureWords`, `braidWordAction`, `pureBraidImage` and
+  `pureBraidImage_finiteIndex`: categorical pure braid images have finite
+  index, using permutation of free words.
+
 ## In progress
 
 - Obtain the split unit for simple X from rigidity, semisimplicity, and the
   simple unit. Fusion has been asked for the corresponding construction.
-- Prove the finite-index pure image from the free group on braid generators
-  and its action on the strands; construct the cabling restriction maps.
+- Construct the cabling restriction maps from pure braid words.
 - Prove that a faithful braided functor identifies braid images via its
   monoidal coherence isomorphism.
 

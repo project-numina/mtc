@@ -4,6 +4,7 @@ public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
 public import PropertyF.Ground.Cabling.Strands
+public import PropertyF.Ground.Cabling.Pure
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
