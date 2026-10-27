@@ -19,22 +19,21 @@
 - `globalDimension_ne_zero_of_pseudoUnitary` and `categoricalS_galois_action_pseudoUnitary`: in the paper's pseudo-unitary setting, both simple and global dimension nonvanishing are derived; the remaining action hypotheses are S² and Verlinde with the actual dual-label map. `categoricalS_galois_unit_properties` specializes Proposition 2.1 and derives unit normalization.
 - `trace_unit` and `simpleDimension_unit`: a pivotal structure gives unit dimension one, derived from the canonical dual-comparison coherence. `categoricalS_galois_unit_properties` no longer assumes unit normalization.
 - `legacy_conjugate_labels`: constructs the exact legacy `StandardInputs.conjugate_labels` field, comparing the legacy positive character to the ground spectral-radius character via positive-character uniqueness. `conjugate_images` is also proved. The compatibility proof explicitly mentions legacy structures and is not used in the strict target cone.
-- `SEntry_biproduct_left` and `SEntry_tensor_decomposition`: double-braiding traces are additive on finite biproducts and expand on tensor products with the actual Hom-space fusion coefficients. `categoricalS_verlinde_of_hopf_product` reduces the normalized Verlinde equations to the explicitly stated Hopf-link product identity, which remains unproved.
+- `SEntry_biproduct_left` and `SEntry_tensor_decomposition`: double-braiding traces are additive on finite biproducts and expand on tensor products with the actual Hom-space fusion coefficients. `categoricalS_verlinde_of_hopf_product` reduces the normalized Verlinde equations to the Hopf-link product identity, subsequently proved in `Verlinde.lean`.
 - `partialTrace_doubleBraiding_simple` identifies the partial trace of a double braiding on a simple surviving object with its normalized S scalar, using the proved iterated-trace law. `hopf_product_of_partialTrace_composition` reduces the Hopf product to a concrete equation between partial traces of the three actual double braidings.
 - `doubleBraiding_tensor_factorization`, `rightPartialTrace_natural`, `rightPartialTrace_whiskerLeft`, `rightPartialTrace_nested_simple`, `partialTrace_doubleBraiding_tensor`, and `categoricalS_verlinde`: the Hopf-link product identity and all normalized Verlinde character equations are proved from genuine braided pivotal fusion categories. `categoricalS_galois_action_of_S_square` needs only pseudo-unitarity, a pivotal structure and the S² identity.
 - `character_dual_conj` proves that every normalized character respects duality and complex conjugation from fusion-coefficient reciprocity. Consequently `categoricalS_dual_conj`, `categoricalS_dual_symmetric`, and `simpleDimension_dual` hold whenever all simple pivotal dimensions are real. This is a conditional result and does not itself prove reality.
 - `character_orthogonal`, `categoricalS_square`, and `categoricalS_galois_action_of_invertibleS`: from an actual spherical pivotal structure, real simple dimensions, and invertibility of the categorical S matrix, the full S² identity and Galois action are proved. `categoricalModularData` constructs every field of the legacy `ModularData` compatibility bundle from the same explicit categorical assumptions. The centre has not yet supplied those assumptions.
-- Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
+- Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF` and `lake build PropertyF.Ground.Modular.Audit` under the same core/thread limits; the hardened modular proof-body and foundational-axiom audit passes.
 
 ## In progress
 
-- Construct the centre's braided fusion and canonical spherical structures and prove their simple dimensions real and their S matrix invertible, coordinating with centre and dimensions. S² has been proved from those exact assumptions.
-- Make the S/Verlinde and Galois results usable directly in the ground development without old hypothesis structures in their dependency cone.
+- Work with centre and dimensions to connect the actual centre to the proved modular-data theorems; the centre fusion/spherical structure, reality and S invertibility are not yet available.
 
 ## Blocked / dependencies
 
-- The category-level S-matrix and its properties require spherical traces from dimensions, fusion rules from fusion, and the modular/non-degenerate centre from centre. No such construction has yet been merged. See `ground/modular/DEPENDS.md`.
-- Integrate published a provisional genuine-category target in `ground/integrate` commit 45da64d. Its strict audit prohibits old hypothesis structures in the final dependency cone; the category-free character and classification theorems are independent of those structures, while the two old-`ModularData` constructors are compatibility bridges only.
+- Construction of the actual Drinfeld centre as a ground braided fusion category, its spherical structure, real simple dimensions, and invertibility of its categorical S matrix are owned by centre/dimensions and are not yet available. The S-matrix identities and Galois action are constructed once those precise inputs are supplied.
+- Integrate froze the genuine-category target from `ground/integrate` commit 45da64d. Its strict audit prohibits old hypothesis structures in the final dependency cone; the category-free character and classification theorems are independent of those structures, while the two old-`ModularData` constructors are compatibility bridges only.
 
 ## Remaining
 
@@ -42,4 +41,4 @@
 - Ground conjugate label, spectral FP invariance, and the legacy `StandardInputs.conjugate_labels` field are complete.
 - `conjugate_images` is complete; integrate its general braided-functor version into the ground proof without old hypothesis structures.
 
-This is substantial foundational work; the present result discharges only the abstract Galois-action construction once character classification and modular identities are established, not the category-level obligations.
+The category-level modular identities and Galois action are constructed under the stated spherical, reality and invertibility conditions. Instantiating them for the actual centre and completing the final target remain open.
