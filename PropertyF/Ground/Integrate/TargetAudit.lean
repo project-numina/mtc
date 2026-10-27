@@ -100,10 +100,12 @@ import all PropertyF.Ground.Calculus.PartialTrace
 import all PropertyF.Ground.Calculus.PartialTraceGround
 import all PropertyF.Ground.Calculus.PositiveWeights
 import all PropertyF.Ground.Calculus.RepresentationTrace
+import all PropertyF.Ground.Calculus.ReversePower
 import all PropertyF.Ground.Calculus.RightStrand
 import all PropertyF.Ground.Calculus.SemilinearMaps
 import all PropertyF.Ground.Calculus.StarSpan
 import all PropertyF.Ground.Calculus.StrandCoherence
+import all PropertyF.Ground.Calculus.TensorPowerCoherence
 import all PropertyF.Ground.Calculus.ThreeBraid
 import all PropertyF.Ground.Calculus.ThreeEmbedding
 import all PropertyF.Ground.Calculus.ThreeRigidity
@@ -190,6 +192,7 @@ import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterReduction
+import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
 import all PropertyF.Ground.Integrate.Conjugacy

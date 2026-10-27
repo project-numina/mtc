@@ -122,10 +122,12 @@ import all PropertyF.Ground.Calculus.PartialTrace
 import all PropertyF.Ground.Calculus.PartialTraceGround
 import all PropertyF.Ground.Calculus.PositiveWeights
 import all PropertyF.Ground.Calculus.RepresentationTrace
+import all PropertyF.Ground.Calculus.ReversePower
 import all PropertyF.Ground.Calculus.RightStrand
 import all PropertyF.Ground.Calculus.SemilinearMaps
 import all PropertyF.Ground.Calculus.StarSpan
 import all PropertyF.Ground.Calculus.StrandCoherence
+import all PropertyF.Ground.Calculus.TensorPowerCoherence
 import all PropertyF.Ground.Calculus.ThreeBraid
 import all PropertyF.Ground.Calculus.ThreeEmbedding
 import all PropertyF.Ground.Calculus.ThreeRigidity
@@ -212,6 +214,7 @@ import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterReduction
+import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
 import all PropertyF.Ground.Integrate.Conjugacy
@@ -352,6 +355,8 @@ run_cmd do
       ``PropertyF.Ground.target_of_canonical_spherical_center_and_overlap,
       ``PropertyF.Ground.target_of_spherical_existence_center_and_overlap,
       ``PropertyF.Ground.target_of_center_and_overlap,
+      ``PropertyF.Ground.target_of_modular_center,
+      ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.Dimensions.positive_spherical_of_spherical_pseudoUnitary,
       ``PropertyF.Ground.Example.target_hypotheses_inhabited,
       ``PropertyF.Ground.Calculus.actual_rigidity_of_overlap_and_galois_dimensions,
