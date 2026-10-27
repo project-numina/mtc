@@ -327,6 +327,7 @@ public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 public import PropertyF.Ground.Dimensions.DefectBraiding
 public import PropertyF.Ground.Dimensions.DefectTraceBraiding
+public import PropertyF.Ground.Dimensions.DrinfeldTensorCap
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
