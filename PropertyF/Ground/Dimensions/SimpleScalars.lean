@@ -109,4 +109,28 @@ theorem simpleScalarNatural_app_simple (C : Ground.BraidedFusionCategory.{v,u})
   change s ≫ simpleScalarComponent C c X = s ≫ (c i • 𝟙 X)
   simp [s, simpleScalarComponent, e, V, a, Category.assoc]
 
+/-- Nonzero scalar values on all simples extend to a natural automorphism of
+the identity functor. -/
+def simpleScalarNaturalIso (C : Ground.BraidedFusionCategory.{v,u})
+    (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) : 𝟭 C.Obj ≅ 𝟭 C.Obj := by
+  let component (X : C.Obj) : X ≅ X :=
+    simpleDecomposition C X ≪≫
+      biproduct.mapIso (fun a : simplePieces C X =>
+        scaleIso (Iso.refl (simplePiecesObject C X a)) (c a.1) (hc a.1)) ≪≫
+      (simpleDecomposition C X).symm
+  have hcomponent (X : C.Obj) : (component X).hom = simpleScalarComponent C c X := by
+    simp [component, simpleScalarComponent, scaleIso]
+  refine NatIso.ofComponents component ?_
+  intro X Y f
+  simp only [Functor.id_map, hcomponent]
+  exact (simpleScalarNatural C c).naturality f
+
+/-- On each simple, the natural automorphism has the prescribed scalar component. -/
+theorem simpleScalarNaturalIso_app_simple (C : Ground.BraidedFusionCategory.{v,u})
+    (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (Ground.rank C)) :
+    ((simpleScalarNaturalIso C c hc).app (Ground.simples C i)).hom =
+      c i • 𝟙 (Ground.simples C i) := by
+  change simpleScalarComponent C c (Ground.simples C i) = _
+  exact simpleScalarNatural_app_simple C c i
+
 end PropertyF.Ground.Dimensions
