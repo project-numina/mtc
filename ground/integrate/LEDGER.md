@@ -11,7 +11,9 @@ fusion and dimensions review; unresolved mathematical obligations are noted belo
 
 `target_of_canonical_spherical_and_center` reduces the frozen statement to
 two explicit categorical obligations: the canonical positive spherical
-structure and a concrete modular centre with finite-image and rigidity facts. Global FP positivity
+structure and a concrete modular centre with finite-image and rigidity facts.
+`target_of_canonical_spherical_center_and_overlap` derives that rigidity from
+the named actual scalar-twisted overlap recurrence, `TwistedOverlapTrace`. Global FP positivity
 is proved from the tensor unit; the numerical contradiction is bundle-free. Global FP
 invariance under semilinear braided equivalence is proved by
 `Modular.conjugate_globalFPDimension`.
@@ -34,8 +36,10 @@ they remain obligations for the separate corollary.
 
 The category interface is inhabited by `Example.complexVectorSpaces`, based
 on finite-dimensional complex vector spaces. Both global dimensions equal one
-and the pseudo-unitary conjugate is constructed; property F for that example
-has not yet been established.
+and the pseudo-unitary conjugate is constructed. `Example.propertyF` proves
+finite braid images by a tensor-product-basis action, and
+`Example.target_hypotheses_inhabited` establishes the full target hypotheses
+simultaneously.
 
 Simple representatives are proved complete; both global dimensions are
 proved independent of their presentation. FP spectral radii form the unique
@@ -84,7 +88,7 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 Latest merged snapshots: fusion f175963; dimensions f1a12ec; calculus fe2ac1e;
 centre 21f99af; modular 07408af; cabling 64a6b8b. The full development build
-passed; `ProjectAudit` scans 2,730 integrated public and private declarations, all with only the
+passed; `ProjectAudit` scans 2,790 integrated public and private declarations, all with only the
 standard axioms. The strict target audit correctly fails because `Ground.target`
 is absent. This is not a proof of the target.
 

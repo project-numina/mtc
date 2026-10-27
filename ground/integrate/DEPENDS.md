@@ -1,9 +1,10 @@
 # Integration dependencies
 
 All remaining items below are explicit, temporary arguments to
-`Ground.target_of_canonical_spherical_and_center`; none is an assumption in the frozen
+`Ground.target_of_canonical_spherical_center_and_overlap`; none is an assumption in the frozen
 `TargetStatement`. Their exact Lean types are in
-`PropertyF/Ground/Integrate/CenterReduction.lean`.
+`PropertyF/Ground/Integrate/OverlapReduction.lean`. The former rigidity premise
+is discharged from the precise categorical `TwistedOverlapTrace` recurrence.
 
 - `hCanonical`: for pseudo-unitary C, construct an actual spherical pivotal
   structure whose simple dimensions equal the corresponding positive FP

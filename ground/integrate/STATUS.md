@@ -21,6 +21,8 @@
 - `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
   the old categorical data from ground definitions; dimension equality bridges
   are proved. These compatibility declarations are excluded from the final cone.
+- `target_of_canonical_spherical_center_and_overlap` wires the actual scalar
+  twist and reduces the remaining rigidity premise to `TwistedOverlapTrace`.
 - `target_of_canonical_spherical_and_center` reduces the target to canonical
   spherical existence and precise modular-centre, finite-image and rigidity
   facts. These are explicit unproved premises; the numerical and conjugate-bound
@@ -49,10 +51,11 @@
   canonical unit-scalar equivalence and validates the target definition.
 - `Example.complexVectorSpaces` constructs finite-dimensional complex vector
   spaces as a genuine ground braided fusion category; both global dimensions
-  equal one, so its pseudo-unitary conjugate is also constructed. Property F
-  for the example is not yet proved.
+  equal one, and `Example.propertyF` proves finite braid images by their action
+  on a finite tensor-product basis. `Example.target_hypotheses_inhabited`
+  proves that both target hypotheses hold simultaneously for this category.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans 2,730 integrated public and private declarations for forbidden axioms.
+- `ProjectAudit` scans 2,790 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and
