@@ -16,6 +16,8 @@ The centre has a constructed preadditive structure, linear structure over any ri
 
 `fstBraidMap`, `sndBraidMap`, `productBraidMap`, `productBraidMap_injective`, and `product_braidImage_finite` prove that actual braid images of objects in the mixed product category embed in the product of the factor images, so finite images of both factors imply a finite product image. The proof uses the merged modular workstream’s braided-functor coherence. `positive_objectPropertyF_iff` and `negative_objectPropertyF_iff` establish property F preservation and reflection by both canonical embeddings.
 
+`centerKernel` and `centerKernelIsLimit` construct kernels in the centre of a rigid abelian monoidal category. `centerForgetPreservesMonomorphisms` follows from this construction, and `centerUnitSimple` proves the centre tensor unit is simple when C’s unit is simple.
+
 ## In progress
 
 Prove `ProductRetract` is closed under duals and agrees with the generated fusion subcategory; investigate centre rigidity and semisimplicity.
@@ -26,7 +28,7 @@ The frozen genuine fusion-category interface is being developed by integrate; fi
 
 ## Remaining fields
 
-The rest of centre fusion/spherical structure (in particular rigidity, semisimplicity, finite simple objects, and simple unit) and categorical/FP dimension formulas; modularity; symmetric integrality; double centralizer; `global_square`, `symmetric_integrality`, `double_centralizer`, `product_witness`, and centre instances/data/dimensions in `CenterInputs`. `realize` additionally depends on calculus. No individual field has been discharged yet.
+The rest of centre fusion/spherical structure (in particular rigidity, cokernels/abelianness, semisimplicity, and finite simple objects) and categorical/FP dimension formulas; modularity; symmetric integrality; double centralizer; `global_square`, `symmetric_integrality`, `double_centralizer`, `product_witness`, and centre instances/data/dimensions in `CenterInputs`. `realize` additionally depends on calculus. No individual field has been discharged yet.
 
 ## Estimate
 
