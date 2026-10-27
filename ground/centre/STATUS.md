@@ -136,3 +136,7 @@ For `rigidCenter`, `forgetDualIso_eq_refl` and `forgetDoubleDualIso_eq_refl`
 identify fusion's canonical centre/base dual comparison isomorphisms with the
 identity, simplifying the induced pivotal-centrality calculation. Focused
 build passes; the needed pivotal centrality and base positive sphere are open.
+`canonicalFusionOfFiniteSemisimple` and `bundledOfFiniteSemisimple` now use
+`rigidCenter` directly; `globalFPDimension_bundledOfFiniteSemisimple` proves
+the FP square using the actual induction adjunction. Their sole remaining
+premise is the explicit finite-semiplicity decomposition. Focused build passes.
