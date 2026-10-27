@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.CentreInduction.DualBraiding
+public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.SphericalReal
 
 /-! Compatibility of pivotal twists with duals in spherical categories. -/
@@ -31,7 +32,7 @@ theorem spherical_selfBraiding_trace_dual
     (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) (X : C.Obj) :
     p.rightTrace (β_ X X).hom = p.rightTrace (β_ (Xᘁ) (Xᘁ)).hom := by
   let e := rightDualTensorIso X X
-  have hb := CentreInduction.rightDualTensorIso_braiding X X
+  have hb := Dimensions.rightDualTensorIso_braiding X X
   change ((β_ X X).homᘁ) ≫ e.hom = e.hom ≫ (β_ (Xᘁ) (Xᘁ)).hom at hb
   have hc := p.rightTrace_cyclic e.hom ((β_ (Xᘁ) (Xᘁ)).hom ≫ e.inv)
   have heq : ((β_ X X).homᘁ) = e.hom ≫ (β_ (Xᘁ) (Xᘁ)).hom ≫ e.inv := by
