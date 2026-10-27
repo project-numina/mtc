@@ -104,6 +104,8 @@
 
 - `rankOne_center_modular_and_globalDimension` additionally proves the actual rank-one centre S-matrix is invertible, assembling rigidity, fusion, positive spherical structure, modular S, and global dimension square without extra hypotheses in rank one.
 
+- `doubleDualCoreMonoidal` and `doubleDualMonoidal` package the actual double-dual functor and its proved comparison, associativity, unit and naturality laws as a Mathlib strong monoidal functor. This does not prove fourth-dual monoidality or ENO reciprocity.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
