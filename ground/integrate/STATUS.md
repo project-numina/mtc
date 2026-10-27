@@ -21,6 +21,9 @@
 - `legacyFusionData` and `legacyGlobalDimensionData` construct every field of
   the old categorical data from ground definitions; dimension equality bridges
   are proved. These compatibility declarations are excluded from the final cone.
+- `target_of_spherical_existence_center_and_overlap` only needs existence of
+  an initial spherical structure for pseudo-unitary categories: dimensions
+  derives the unique positive structure from it. This existence remains open.
 - `target_of_canonical_spherical_center_and_overlap` wires the actual scalar
   twist and reduces the remaining rigidity premise to `TwistedOverlapTrace`.
 - `target_of_canonical_spherical_and_center` reduces the target to canonical
@@ -55,7 +58,7 @@
   on a finite tensor-product basis. `Example.target_hypotheses_inhabited`
   proves that both target hypotheses hold simultaneously for this category.
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans 2,790 integrated public and private declarations for forbidden axioms.
+- `ProjectAudit` scans 2,962 integrated public and private declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and
@@ -73,7 +76,7 @@
 
 ## Blocked / remaining
 
-No final theorem: pseudo-unitary spherical structures, centre fusion and
+No final theorem: initial spherical structures for pseudo-unitary categories, centre fusion and
 modularity, and the categorical braid/trace witness remain open as detailed
 in the ledger. The FP spectral-radius/character identification and both global dimensions’
 representative independence are proved. The work

@@ -13,7 +13,10 @@ fusion and dimensions review; unresolved mathematical obligations are noted belo
 two explicit categorical obligations: the canonical positive spherical
 structure and a concrete modular centre with finite-image and rigidity facts.
 `target_of_canonical_spherical_center_and_overlap` derives that rigidity from
-the named actual scalar-twisted overlap recurrence, `TwistedOverlapTrace`. Global FP positivity
+the named actual scalar-twisted overlap recurrence, `TwistedOverlapTrace`.
+`target_of_spherical_existence_center_and_overlap` needs only any initial
+spherical structure for a pseudo-unitary category: dimensions constructs
+the positive one from that premise. Initial spherical existence remains open. Global FP positivity
 is proved from the tensor unit; the numerical contradiction is bundle-free. Global FP
 invariance under semilinear braided equivalence is proved by
 `Modular.conjugate_globalFPDimension`.
@@ -86,9 +89,9 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 ## Integrated snapshot
 
-Latest merged snapshots: fusion f175963; dimensions f1a12ec; calculus fe2ac1e;
-centre 21f99af; modular 07408af; cabling 64a6b8b. The full development build
-passed; `ProjectAudit` scans 2,790 integrated public and private declarations, all with only the
+Latest merged snapshots: fusion f175963; dimensions 6be760b; calculus fd59727;
+centre 21f99af; modular 07408af; cabling 7ff2fe9. The full development build
+passed; `ProjectAudit` scans 2,962 integrated public and private declarations, all with only the
 standard axioms. The strict target audit correctly fails because `Ground.target`
 is absent. This is not a proof of the target.
 
