@@ -12,6 +12,10 @@
   `globalFPDimension_isIntegral`: the fusion equations give an integer matrix
   having the positive character as eigenvector, so its values and their finite
   sums and products are algebraic integers.
+- `Ground.split_from_simple`: any nonzero map out of a simple object splits,
+  using the genuine finite semisimplicity property.
+- `Ground.unit_retract_leftDual_tensor`: the tensor unit is a retract of
+  `ᘁX ⊗ X` for simple `X`, supplying the cabling strand-inclusion input.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -29,10 +33,10 @@ positive eigenvector and uniqueness, or an alternative elementary argument,
 is needed. The categorical bridge from biproduct decompositions to fusion-ring
 associativity and rigidity also remains to be developed.
 
-Every field of `FusionData`, plus tensor/dual/inclusion invariance, integrality,
-and the centre dimension comparison, remains to be constructed from the target
-category definition. The project-scale remaining effort is substantial; no
-credible completion-time estimate is yet available.
+Construction of `FusionData`, tensor/dual/inclusion invariance, integrality for
+the target spectral-radius definition, and the centre dimension comparison
+remain. The project-scale remaining effort is substantial; no credible
+completion-time estimate is yet available.
 
 Integration requires the target dependency cone to avoid the old hypothesis
 bundles entirely. The above results currently use `FusionData` and must be
