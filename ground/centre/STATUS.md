@@ -98,3 +98,6 @@ to tests on base simple representatives, once the crossing tensor law is given.
 This is a reduction, not a proof of those tests or of rigidity. The immediate route
 is to use naturality and semisimple decompositions similarly for the tensor law,
 then prove the resulting mate equations diagrammatically.
+`dualCrossing_tensor_of_simples` also proves the general tensor law follows
+from its cases on pairs of base simple representatives, by naturality in each
+argument and semisimple decomposition. The simple-pair cases are not proved.

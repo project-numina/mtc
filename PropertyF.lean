@@ -365,3 +365,5 @@ See `FORMALIZATION.md` for the complete assumption ledger.
 
 
 public import PropertyF.Ground.CentreRigid.SimpleCentrality
+
+public import PropertyF.Ground.CentreRigid.SimpleTensor
