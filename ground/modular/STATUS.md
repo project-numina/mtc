@@ -23,11 +23,12 @@
 - `partialTrace_doubleBraiding_simple` identifies the partial trace of a double braiding on a simple surviving object with its normalized S scalar, using the proved iterated-trace law. `hopf_product_of_partialTrace_composition` reduces the Hopf product to a concrete equation between partial traces of the three actual double braidings.
 - `doubleBraiding_tensor_factorization`, `rightPartialTrace_natural`, `rightPartialTrace_whiskerLeft`, `rightPartialTrace_nested_simple`, `partialTrace_doubleBraiding_tensor`, and `categoricalS_verlinde`: the Hopf-link product identity and all normalized Verlinde character equations are proved from genuine braided pivotal fusion categories. `categoricalS_galois_action_of_S_square` needs only pseudo-unitarity, a pivotal structure and the S² identity.
 - `character_dual_conj` proves that every normalized character respects duality and complex conjugation from fusion-coefficient reciprocity. Consequently `categoricalS_dual_conj`, `categoricalS_dual_symmetric`, and `simpleDimension_dual` hold whenever all simple pivotal dimensions are real. This is a conditional result and does not itself prove reality.
+- `character_orthogonal`, `categoricalS_square`, and `categoricalS_galois_action_of_invertibleS`: from an actual spherical pivotal structure, real simple dimensions, and invertibility of the categorical S matrix, the full S² identity and Galois action are proved. `categoricalModularData` constructs every field of the legacy `ModularData` compatibility bundle from the same explicit categorical assumptions. The centre has not yet supplied those assumptions.
 - Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
 
 ## In progress
 
-- Prove S² from a genuine categorical nondegeneracy condition and construct the centre's modular data using the actual centre.
+- Construct the centre's braided fusion and canonical spherical structures and prove their simple dimensions real and their S matrix invertible, coordinating with centre and dimensions. S² has been proved from those exact assumptions.
 - Make the S/Verlinde and Galois results usable directly in the ground development without old hypothesis structures in their dependency cone.
 
 ## Blocked / dependencies
@@ -37,7 +38,7 @@
 
 ## Remaining
 
-- Categorical S, symmetry, unit column, Verlinde, and normalized-column classification are proved. Prove S-square from a genuine modular category and construct the centre instance.
+- Categorical S, symmetry, unit column, Verlinde, normalized-column classification, S-square, and the full Galois action are proved for a spherical category with real simple dimensions and invertible categorical S. Construct/obtain those properties for the actual centre.
 - Ground conjugate label, spectral FP invariance, and the legacy `StandardInputs.conjugate_labels` field are complete.
 - `conjugate_images` is complete; integrate its general braided-functor version into the ground proof without old hypothesis structures.
 

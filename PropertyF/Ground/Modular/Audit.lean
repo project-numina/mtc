@@ -35,6 +35,8 @@ import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Modular.HopfPartialTrace
 import all PropertyF.Ground.Modular.Verlinde
 import all PropertyF.Ground.Modular.CharacterStar
+import all PropertyF.Ground.Modular.SSquare
+import all PropertyF.Ground.Modular.Construction
 import all PropertyF.Ground.Modular.DimensionNonzero
 import all PropertyF.Ground.Modular.UnitDimension
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
@@ -65,6 +67,9 @@ run_cmd do
       ``PropertyF.Ground.Modular.categoricalS_verlinde,
       ``PropertyF.Ground.Modular.character_dual_conj,
       ``PropertyF.Ground.Modular.categoricalS_dual_conj,
+      ``PropertyF.Ground.Modular.character_orthogonal,
+      ``PropertyF.Ground.Modular.categoricalS_square,
+      ``PropertyF.Ground.Modular.categoricalS_galois_action_of_invertibleS,
       ``PropertyF.Ground.Modular.simpleDimension_dual,
       ``PropertyF.Ground.Modular.categoricalS_galois_action_of_S_square,
       ``PropertyF.Ground.Modular.simpleDimension_ne_zero,
