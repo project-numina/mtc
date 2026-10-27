@@ -91,4 +91,31 @@ theorem existsUnique_positive_spherical_of_pivotal_pseudoUnitary
   apply pivotalStructure_unique_of_simple_dimensions C r q
   intro i
   rw [hr.2 i, hd i]
+/-- In a pivotal category, pseudo-unitarity is precisely saturation of each pivotal FP bound. -/
+theorem pseudoUnitary_iff_pivotal_saturation (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) :
+    Ground.PseudoUnitary C ↔ ∀ i, ‖pivotalDimension C p (Ground.simples C i)‖ = Ground.fpSimple C i := by
+  constructor
+  · exact pseudoUnitary_saturation_of_pivotal C p
+  · intro h
+    unfold Ground.PseudoUnitary Ground.globalDimension Ground.globalFPDimension
+    rw [Complex.ofReal_sum]
+    apply Finset.sum_congr rfl
+    intro i _
+    have hnorm := galois_squaredNorm_eq_pivotalDimension_norm_sq C p (RingEquiv.refl ℂ) i
+    simpa only [RingEquiv.refl_apply, h i] using hnorm
+
+/-- Pseudo-unitarity is equivalent to saturation of every intrinsic simple-norm bound. -/
+theorem pseudoUnitary_iff_squaredNorm_saturation_of_pivotal (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) :
+    Ground.PseudoUnitary C ↔ ∀ i, Ground.squaredNorm C (Ground.simples C i) =
+      ((Ground.fpSimple C i ^ 2 : ℝ) : ℂ) := by
+  constructor
+  · intro h i
+    have hn := galois_squaredNorm_eq_pivotalDimension_norm_sq C p (RingEquiv.refl ℂ) i
+    simpa only [RingEquiv.refl_apply, pseudoUnitary_saturation_of_pivotal C p h i] using hn
+  · intro h
+    unfold Ground.PseudoUnitary Ground.globalDimension Ground.globalFPDimension
+    rw [Complex.ofReal_sum]
+    exact Finset.sum_congr rfl (fun i _ => h i)
 end PropertyF.Ground.Dimensions
