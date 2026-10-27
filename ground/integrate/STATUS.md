@@ -28,7 +28,7 @@
   spaces as a genuine ground braided fusion category, proving non-vacuity of
   the category interface (property F and pseudo-unitarity are not yet shown).
 - Merged snapshots from all six workstreams and built the integrated library.
-- `ProjectAudit` scans all 946 integrated declarations for forbidden axioms.
+- `ProjectAudit` scans all 1,381 integrated declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findIssue` checks transitive project types and private bodies;
   it fails closed on modules without private imports. Imported hidden-input and

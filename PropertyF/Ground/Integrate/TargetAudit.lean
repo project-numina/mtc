@@ -4,6 +4,7 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -16,13 +17,34 @@ import all PropertyF.Definitions
 import all PropertyF.Descent
 import all PropertyF.GaloisRigidity
 import all PropertyF.GaloisSymmetry
+import all PropertyF.Ground.Cabling.DualClosure
+import all PropertyF.Ground.Cabling.Generated
+import all PropertyF.Ground.Cabling.Images
+import all PropertyF.Ground.Cabling.Inclusion
+import all PropertyF.Ground.Cabling.Perron
+import all PropertyF.Ground.Cabling.Primitive
 import all PropertyF.Ground.Cabling.Pure
+import all PropertyF.Ground.Cabling.Rigidity
 import all PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.Cabling.Witness
 import all PropertyF.Ground.Calculus.Averaging
+import all PropertyF.Ground.Calculus.BraidBlocks
+import all PropertyF.Ground.Calculus.CategoricalTrace
+import all PropertyF.Ground.Calculus.CyclicTrace
+import all PropertyF.Ground.Calculus.FiniteOrder
+import all PropertyF.Ground.Calculus.GroupBlocks
+import all PropertyF.Ground.Calculus.ImageMaps
+import all PropertyF.Ground.Calculus.Intertwining
+import all PropertyF.Ground.Calculus.PartialTrace
 import all PropertyF.Ground.Calculus.StarSpan
 import all PropertyF.Ground.Calculus.Unitarization
+import all PropertyF.Ground.Calculus.UnitaryBlocks
 import all PropertyF.Ground.Centre.Embeddings
+import all PropertyF.Ground.Centre.Linear
+import all PropertyF.Ground.Centre.Product
+import all PropertyF.Ground.Centre.ProductImages
+import all PropertyF.Ground.Centre.ReverseBraiding
+import all PropertyF.Ground.Centre.Zero
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.CharacterBound
 import all PropertyF.Ground.Dimensions.DimensionField

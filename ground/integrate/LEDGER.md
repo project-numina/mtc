@@ -52,16 +52,16 @@ is claimed yet.
 | `FusionData` | `fpSimple`, `fp_positive`, `fp_unit`, `fp_character` | fusion | Spectral-radius ground definition exists; PF character theorem and bridge pending. |
 | `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Ground double-dual and scalar algebra equivalence constructed; fixed-representative choice independence proved in `Dimensions.Norm`; old bundle pending. |
 | `MultiplicityData` | `simpleCount`, `dimension`, `fpDimension`, `multiplicity`, `dimension_bound` | calculus; dimensions for bound | Open: group-representation decomposition and spherical dimension bound. |
-| `OverlapModel` | `stage`, `decomposition`, `fpMass_eq` | calculus, fusion | Open: endomorphism blocks, decomposition and FP mass. |
-| `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Open: compatible finite-group averaging and spherical partial traces. |
+| `OverlapModel` | `stage`, `decomposition`, `fpMass_eq` | calculus, fusion | Actual braid-image algebras and unitary Wedderburn blocks constructed; categorical multiplicity and FP mass remain. |
+| `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Left-strand star maps and partial-trace bimodule/identity laws constructed; right insertion and iterated trace remain. |
 | `ThreeStrandModel` | `overlap`, `pair`, `pair_nonzero`, `cSquared`, `a`, `b`, `braid_relation`, `a_unitary`, `b_unitary` | calculus | Open: categorical braid action, finite-image averaging, nonzero blocks. |
 | `ThreeStrandModel` | `leftPair`, `rightPair`, `left_cSquared`, `right_cSquared` | calculus | Open: identity-strand algebra embeddings. |
 | `ThreeStrandModel` | `pairTrace`, `simplePartial`, `pair_trace_partial`, `thirdPartial`, `trace_third`, `third_left`, `third_right`, `third_bimodule` | calculus, dimensions | Open: spherical trace realization. |
 | `ThreeStrandModel` | `finite_order` | calculus | Open: transport finite order from finite actual image. |
-| `ThreeStrandRealization` | `model`, `positive`, `transport`, `retained`, `trace_formula` | calculus; dimensions/modular for transported dimensions and S | Open: construct the whole bridge. |
+| `ThreeStrandRealization` | `model`, `positive`, `transport`, `retained`, `trace_formula` | calculus; dimensions/modular for transported dimensions and S | Unitary braid blocks and cyclic trace decomposition constructed; transported weights and full categorical bridge remain. |
 | `ProductImageWitness` | `subgroup`, `map`, `surjective` | centre | Open: dominant product functor and restriction-to-summand diagram. |
-| `ModularData` | `rank`, `unit`, `dual`, `dimension`, `globalDimension`, `S` | modular, centre | Open: modular centre and actual S-matrix. |
-| `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | Open: spherical and modular identities. |
+| `ModularData` | `rank`, `unit`, `dual`, `dimension`, `globalDimension`, `S` | modular, centre | Actual categorical S defined for a chosen pivotal structure; modular centre and remaining data open. |
+| `ModularData` | `dimension_ne_zero`, `global_ne_zero`, `global_eq`, `S_symmetric`, `S_unit`, `unit_dimension`, `S_square` | modular | S symmetry and unit column proved; S², Verlinde and nonvanishing remain open. |
 | `ModularData` | `galoisLabel`, `galois_character` | modular | Constructed from a normalized-column character classification; modular-category realization and classification hypotheses remain. |
 | `CenterInputs` | `data`, `object`, `dim`, `dimension_real`, `positive`, `at_least_one`, `conjugate_real` | centre, dimensions, modular | Open: canonical spherical modular centre and dimension properties. |
 | `CenterInputs` | `global_square`, `symmetric_integrality`, `generated`, `double_centralizer` | centre | Open: centre dimension, symmetric core and double centralizer. |
@@ -81,9 +81,9 @@ for the *conditional* theorem; it says nothing about constructing these fields.
 
 ## Integrated snapshot
 
-Merged commits: fusion ab1854b; dimensions 3abe2e6; calculus 7734d98;
-centre f0745cb; modular bd4679d; cabling ff61b71. The full development build
-passed; `ProjectAudit` scans 822 integrated declarations, all with only the
+Latest merged snapshots: fusion 808b482; dimensions e5a83b8; calculus d4d9806;
+centre 9a2402b; modular d0da324; cabling 199ca8a. The full development build
+passed; `ProjectAudit` scans 1,381 integrated declarations, all with only the
 standard axioms. This is not a proof of the target.
 
 The final arithmetic reduction is bundle-free: fusion bfbd006 proves target
