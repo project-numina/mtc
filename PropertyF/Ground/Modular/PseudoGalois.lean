@@ -9,11 +9,6 @@ open PropertyF.Ground.Dimensions
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Modular
 
-/-- Pseudo-unitarity and the tensor-unit FP contribution make global dimension nonzero. -/
-theorem globalDimension_ne_zero_of_pseudoUnitary (C : Ground.BraidedFusionCategory)
-    (h : Ground.PseudoUnitary C) : Ground.globalDimension C ≠ 0 :=
-  Ground.globalDimension_ne_zero_of_pseudoUnitary C h
-
 /-- S-square and Verlinde produce the Galois action in a pseudo-unitary category. -/
 theorem categoricalS_galois_action_pseudoUnitary (C : Ground.BraidedFusionCategory)
     (h : Ground.PseudoUnitary C) (p : PivotalStructure (C := C.Obj))

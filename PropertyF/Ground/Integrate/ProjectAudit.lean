@@ -169,7 +169,6 @@ import all PropertyF.Ground.CentreCalculus.GeneratorSquare
 import all PropertyF.Ground.CentreCalculus.ParityCorrection
 import all PropertyF.Ground.CentreCalculus.PermutationQuotient
 import all PropertyF.Ground.CentreCalculus.ProjectorReduction
-import all PropertyF.Ground.CentreCalculus.PureSquares
 import all PropertyF.Ground.CentreDimensions.BraidingTrace
 import all PropertyF.Ground.CentreDimensions.InvolutionTrace
 import all PropertyF.Ground.CentreDimensions.PivotalTwist

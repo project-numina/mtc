@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.DoubleBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 
 /-! The pivotal structure of the base lifts to the rigid centre. -/
@@ -25,7 +26,7 @@ theorem pivotalComponentsCentral_proved (p : Dimensions.PivotalStructure (C := C
   have hn : b.f ≫ u (B ⊗ Z) = u (Z ⊗ B) ≫ ((bᘁ)ᘁ).f :=
     by simpa [u, Category.assoc] using transported_pivotal_natural C p b
   rw [hu, hu] at hn
-  have hb := congrArg CategoryTheory.Center.Hom.f (doubleDualTensorIso_braiding Z B)
+  have hb := congrArg CategoryTheory.Center.Hom.f (Dimensions.doubleDualTensorIso_braiding Z B)
   simp only [CategoryTheory.Center.comp_f] at hb
   change (Dimensions.doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
     (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (Dimensions.doubleDualTensorIso B Z).hom.f at hb

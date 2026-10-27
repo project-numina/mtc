@@ -44,14 +44,6 @@ theorem rightPartialTrace_natural (p : PivotalStructure (C := C)) {A B : C} (Y :
   rw [associator_naturality_left_assoc, ← whisker_exchange_assoc,
     ← whisker_exchange_assoc, rightUnitor_naturality]
 
-/-- Partial trace commutes with adding an untouched strand on the left. -/
-theorem rightPartialTrace_whiskerLeft (p : PivotalStructure (C := C))
-    (X Z Y : C) (t : End (Z ⊗ Y)) :
-    rightPartialTrace p (X ⊗ Z) Y
-      (End.of ((α_ X Z Y).hom ≫ (X ◁ t.asHom) ≫ (α_ X Z Y).inv)) =
-      End.of (X ◁ (rightPartialTrace p Z Y t).asHom) :=
-  Calculus.rightPartialTrace_whiskerLeft p X Z Y t
-
 end Trace
 section Nested
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]

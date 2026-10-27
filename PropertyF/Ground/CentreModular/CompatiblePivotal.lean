@@ -17,22 +17,6 @@ variable (C : BraidedFusionCategory.{v,u})
 variable [RigidCategory (CategoryTheory.Center C.Obj)]
 variable [IsFusionCategory (CategoryTheory.Center C.Obj)]
 
-/-- Forgetting an endomorphism of the unit preserves its scalar. -/
-theorem center_forget_unitScalar (f : End (𝟙_ (CategoryTheory.Center C.Obj))) :
-    unitScalar C (End.of f.asHom.f) = unitScalar (Integrate.bundledCenter C) f :=
-  (CentreInduction.center_unitScalar_forget C f).symm
-
-/-- A compatible pivotal component has the same dimension as its underlying object. -/
-theorem center_pivotalDimension_eq_forget
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
-    (Z : CategoryTheory.Center C.Obj)
-    (hcompat : ((pZ.iso Z).hom.f) ≫ (CentreInduction.forgetDoubleDualIso C Z).hom =
-      (p.iso Z.1).hom) :
-    Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ Z =
-      Dimensions.pivotalDimension C p Z.1 :=
-  CentreInduction.center_pivotalDimension_forget C p pZ Z hcompat
-
 /-- Compatibility with an FP-valued base pivotal structure forces the actual
 centre pivotal dimensions to equal FP dimensions. -/
 theorem center_pivotalDimension_eq_fp_of_compatible
