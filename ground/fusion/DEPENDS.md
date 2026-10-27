@@ -19,7 +19,9 @@ These describe proof obligations, not axioms or assumptions in the target.
   `CentreInduction.globalFPDimension_square_of_induction` also requires, for
   every base simple, an actual centre object whose underlying object is
   `CentreInduction.underlying`, and the Hom-dimension equality given by the
-  adjunction to forget; these are fusion's own unproved obligations.
+  adjunction to forget; fusion now constructs these using `induction` and
+  `actualAdjunction`. Fusion still proves centre semisimplicity conditional
+  on its own open loop-sliding equation.
 - Dimensions: the nonzero spherical global dimension and relevant trace
   identities for the averaging splitting may be needed to prove semisimplicity.
 

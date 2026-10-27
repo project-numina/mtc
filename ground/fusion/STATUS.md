@@ -113,9 +113,9 @@ Round 2 progress below for precise theorem statements.
 
 ## Blocked / outstanding
 
-- Fusion-owned: prove that `unitCandidate` is a centre morphism for the
-  constructed induction functor. Its two underlying triangle identities are
-  proved, so this supplies the forgetful right adjunction and Hom equivalence.
+- Fusion-owned: prove the weighted-loop sliding identity for the constructed
+  induction functor and establish the centre fusion structure. The actual
+  induction functor and its right adjunction to forget are now constructed.
 - Fusion-owned: prove `SimpleLoopCentrality`, the sliding equation for the
   explicit spherical weighted loop sum. The unit-labelled case and rank-one
   special case are proved; for a general simple test strand this requires the
@@ -125,8 +125,7 @@ Round 2 progress below for precise theorem statements.
   a spherical structure on pseudo-unitary C; nonzero global dimension follows
   from pseudo-unitarity and FP positivity.
 
-There is no credible completion-time estimate for unit centrality and
-loop-sliding proofs. The existing conditional results do not
+There is no credible completion-time estimate for the general loop-sliding proof. The existing conditional results do not
 prove the frozen target. The global subcategory inequality is proved, but no
 stronger divisibility theorem is claimed. Ground constructions avoid the old
 hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
@@ -156,7 +155,9 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   `halfBraidingOfCrossingCandidate` constructs the actual half-braiding
   without extra assumptions. `induction` is the resulting functor from C to
   Mathlib's actual `Center C.Obj`, with underlying object the desired finite
-  sum. The adjunction, averaging-loop sliding, and centre fusion remain open.
+  sum. `unitCandidate_central` proves the candidate unit is a centre map,
+  and `actualAdjunction` constructs the actual right adjunction to forget.
+  Averaging-loop sliding and centre fusion remain open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
   unit-counit column on simple test strands. `crossingUnitBlock_eval` proves
   the diagonal duality contraction, and `secondTriangle` proves the second
@@ -171,14 +172,13 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   explicit second triangle. `fusion_and_globalFPDimension_of_halfBraiding`
   combines these with loop sliding and centre rigidity to construct the
   centre fusion instance and its FP-square theorem. The listed categorical
-  conditions include unit centrality and loop sliding, which remain unproved.
-  `adjunctionOfSimpleUnitCentrality` reduces unit centrality to simple test
-  objects; its second triangle is now supplied by `secondTriangle`.
+  conditions include loop sliding, which remains unproved; the half-braiding,
+  unit centrality and second triangle are supplied by the actual constructions.
 - `CentreInduction.unitCandidateNatural` constructs a natural map from the
   centre forgetful functor to its composite with the underlying induction
   functor, by coevaluating each simple and applying the given half-braiding.
-  It is candidate adjunction-unit data: its centrality remains open, while
-  both underlying triangle identities and the induction half-braiding are proved.
+  Its centrality and both triangle identities are now proved, giving
+  `actualAdjunction`.
   `unitCandidate_counit_component` reduces the underlying first triangle to
   its unit-labelled component, and `coevaluation_iso_unit` proves the needed
   normalization of that component’s coevaluation under a unit isomorphism.
@@ -186,8 +186,8 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   natural transformations, without assuming centre induction.
 - `CentreInduction.fusion_of_pseudoUnitary_and_induction` discharges
   the nonzero global-dimension premise using pseudo-unitarity and FP positivity.
-  The spherical structure, induction adjunction, and sliding equation remain
-  explicit premises.
+  The spherical structure and sliding equation remain explicit premises;
+  `actualAdjunction` supplies the induction adjunction.
 - `CentreInduction.unitSummandRetract` gives an explicit retract of every
   base object from its underlying induction sum through the unit-labelled
   component. `underlyingCounit` and `underlyingUnitSummand` construct the
@@ -263,8 +263,8 @@ give semisimplicity and a finite set of simple summands of induced simples.
 Finally use adjunction and the FP dimension of induced objects to compare the
 regular FP vectors and obtain the global square formula. Centre already
 provides finite-dimensional Hom spaces and the unit-endomorphism comparison.
-The induction half-braiding is constructed; the adjunction and loop-sliding
-identity remain substantial work. The averaging splitting and centre fusion assembly are
+The induction half-braiding and adjunction are constructed; the loop-sliding
+identity remains substantial work. The averaging splitting and centre fusion assembly are
 proved conditionally on those inputs and the stated spherical assumptions.
 
 ## Round 2 verification

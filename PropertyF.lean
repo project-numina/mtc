@@ -246,6 +246,7 @@ public import PropertyF.Ground.CentreInduction.AdjunctionMatrix
 public import PropertyF.Ground.CentreInduction.CounitColumn
 public import PropertyF.Ground.CentreInduction.UnitDiagram
 public import PropertyF.Ground.CentreInduction.SecondTriangle
+public import PropertyF.Ground.CentreInduction.UnitCentrality
 
 public import PropertyF.Ground.CentreInduction.BasisPairing
 
