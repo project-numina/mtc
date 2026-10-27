@@ -17,3 +17,60 @@ The actual categorical S identities, character classification and Galois action 
 - **dimensions**: centre pseudo-unitarity cannot follow solely from the global FP-square identity; an independent intrinsic global-dimension comparison or positive spherical construction is required.
 - **centre/cabling**: the preferred modularity interface is now the triviality of the actual centre's S-centralizer: `∀ k, (∀ i, S i k = dim i * dim k) → k = unitIndex Z` (under FP-valued pivotal dimensions). `categoricalS_det_ne_zero_of_trivial_S_centralizer` proves invertibility from exactly this statement. A proof that the numerical S-test implies transparent double-braidings is still needed, as is triviality of transparent centre objects; neither is assumed proved.
 - **modular / centre**: bridging the numerical S test to actual double-braiding transparency requires an additional argument, not merely equality of traces. Finite-order/twist control or a direct induction-loop identity are possible routes, neither currently proved. The centre induction lift and adjunction from fusion and rigid instances from centre are unavailable at the latest merged snapshot.
+
+## Round 3 update
+- Fusion has now constructed `induction` and `actualAdjunction`; the actual
+  FP square follows from centre rigidity and fusion alone.
+- A centre pivotal structure whose components agree with an FP-valued base
+  pivotal structure after the canonical dual comparison would now suffice for
+  centre sphericality and the categorical dimension square, without assuming
+  centre pseudo-unitarity. Constructing that compatible lift remains open.
+- The actual centre Kirby identity or another proof of S invertibility remains
+  open; numerical S-centrality alone cannot be identified with endomorphism
+  transparency without an additional argument.
+- The centre Kirby sum can now be rewritten as the weighted sum of actual
+  induced-simple Hopf links, in `CentreModular.center_kirby_sum_eq_induced`.
+  Evaluating this sum on non-unit centre simples remains open.
+- The remaining induced Kirby-loop evaluation is now an explicit finite sum of
+  base-category diagonal fusion-block traces (`center_kirby_sum_eq_diagonal_traces`),
+  assuming the displayed pivotal compatibility. Vanishing is not yet proved.
+- Vafa determinant route: the regular-element cancellation is now proved, but
+  actual categorical determinants, their hexagon/tensor identities and the
+  torsion-detection vector space remain open.
+- `vafaUnitSpace` and `vafaUnitClass_eq_zero_iff` now provide the missing
+  torsion-detection space for complex units. The categorical determinant and
+  its hexagon/tensor equations remain unproved.
+- `fpDeterminant` is constructed and satisfies composition and scalar rules.
+  The missing categorical step is its tensor-product rule, then the hexagon
+  relation for double braidings; finite monodromy does not yet follow.
+- The FP determinant is conjugation invariant and has the tensor rule for
+  simple-object automorphisms. The arbitrary-object tensor rule still needs
+  block determinant/decomposition arguments.
+- Centre rigidity is now constructed and merged (centre f1f0122).
+- `finite_order_of_fp_twist_balance` reduces Vafa finite order to one explicit
+  FP-weighted fusion equation. The categorical proof of that equation remains
+  open; no unconditional finite-order result is claimed.
+- The natural-automorphism determinant formula and its finite-order
+  consequence are constructed. Actual twist balancing and vanishing FP
+  determinants of simple double braidings remain explicit open premises.
+- `fpDeterminant_biprod` proves direct-sum additivity for block-diagonal
+  automorphisms. Tensor compatibility for arbitrary automorphisms remains open.
+- The tensor determinant identity is closed under binary direct sums, via
+  `fpDeterminant_tensor_biprod`; non-block-diagonal automorphisms remain open.
+- `fpDeterminant_tensor_natural` proves tensor compatibility for every
+  component of every natural automorphism, including the pivotal twist.
+  General monodromy determinants and their hexagon/additivity remain open.
+- Assuming simple-object twist balancing, the tensor determinant rule now holds
+  on both sides for actual simple mixed monodromies. Twist balancing and the
+  hexagon/additivity calculation remain open.
+- The actual monodromy determinant hexagon on simples is now proved assuming
+  simple twist balancing. Expanding the determinant on a tensor product into
+  the simple summands remains open.
+- The FP determinant/additivity/hexagon route now proves finite order of every
+  simple scalar from the actual simple balancing identity alone; the previous
+  monodromy-determinant-vanishing premise is discharged. Actual pivotal twist
+  balancing remains open.
+- The actual pivotal twist and arbitrary mixed-monodromy finite-order results
+  now follow from the pivotal twist balancing law alone, without a lantern
+  relation. The law remains open, with integrate/dimensions proving its cap
+  diagram.
