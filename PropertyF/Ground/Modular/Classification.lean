@@ -125,33 +125,4 @@ theorem normalized_columns_linearIndependent (S : Matrix ι ι ℂ)
   exact Matrix.linearIndependent_cols_of_det_ne_zero hdet
 
 
-/-- Construct `ModularData` using the S identities and the Verlinde character
-equations. Completeness of the columns and the full Galois action are derived. -/
-def modularDataOfVerlinde (rank : ℕ) (unit : Fin rank)
-    (dual : Fin rank → Fin rank) (dimension : Fin rank → ℂ)
-    (globalDimension : ℂ) (S : Matrix (Fin rank) (Fin rank) ℂ)
-    (dimension_ne_zero : ∀ X, dimension X ≠ 0)
-    (global_ne_zero : globalDimension ≠ 0)
-    (global_eq : globalDimension = ∑ X, dimension X ^ 2)
-    (S_symmetric : ∀ X Y, S X Y = S Y X)
-    (S_unit : ∀ X, S X unit = dimension X)
-    (unit_dimension : dimension unit = 1)
-    (S_square : ∀ X Y, ∑ Z, S X Z * S Z Y =
-      if X = dual Y then globalDimension else 0)
-    (N : FusionRules (Fin rank)) (hunit : N.unit = unit)
-    (verlinde : ∀ X Z Y,
-      (S X Y / dimension Y) * (S Z Y / dimension Y) =
-        ∑ W, (N.coeff X Z W : ℂ) * (S W Y / dimension Y)) :
-    PropertyF.ModularData := by
-  let columns : Fin rank → Character N := fun Y => {
-    value := fun X => S X Y / dimension Y
-    unit_eq := by rw [hunit, S_symmetric, S_unit]; exact div_self (dimension_ne_zero Y)
-    mul_eq := fun X Z => verlinde X Z Y }
-  have hlin : LinearIndependent ℂ (fun Y => (columns Y).value) :=
-    normalized_columns_linearIndependent S dual dimension globalDimension
-      dimension_ne_zero global_ne_zero S_symmetric S_square
-  exact modularDataOfCharacters rank unit dual dimension globalDimension S
-    dimension_ne_zero global_ne_zero global_eq S_symmetric S_unit unit_dimension
-    S_square N columns (fun _ _ => rfl) (characters_bijective N columns hlin)
-
 end PropertyF.Ground.Modular

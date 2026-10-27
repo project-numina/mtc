@@ -86,7 +86,6 @@ public import PropertyF.Ground.Modular.CharacterStar
 public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Modular.Construction
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
-public import PropertyF.Ground.Modular.PseudoGalois
 public import PropertyF.Ground.Calculus.PartialTrace
 public import PropertyF.Ground.Calculus.FiniteOrder
 public import PropertyF.Ground.Dimensions.Pivotal
@@ -349,8 +348,6 @@ public import PropertyF.Ground.Integrate.BalancedCenterReduction
 public import PropertyF.Ground.Integrate.TransparentCenterReduction
 public import PropertyF.Ground.Integrate.PivotalBalancedReduction
 public import PropertyF.Ground.Integrate.DrinfeldComplete
-public import PropertyF.Ground.CentreIntegrate.TwistSign
-public import PropertyF.Ground.CentreIntegrate.TwistDual
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 public import PropertyF.Ground.CentreRigid.SimpleCentrality
 public import PropertyF.Ground.CentreRigid.SimpleTensor
