@@ -154,4 +154,40 @@ theorem enoTraceMatrix_saturation_of_real_dimensions
   rw [← hT i j k, hs i j k]
 
 
+/-- Saturation forces the actual involutions to equal the prescribed signs. -/
+theorem enoDefect_eq_sign_of_real_saturated_dimensions
+    (C : Ground.BraidedFusionCategory.{v,u}) (d : Fin (Ground.rank C) → ℝ)
+    (hreal : ∀ i, rootDimension C i = (d i : ℂ))
+    (hd : ∀ i, |d i| = Ground.fpSimple C i)
+    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
+      (multiplicityDefect C i j k).toLinearMap = 1)
+    (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
+      rootDimension C i * rootDimension C j) (i j k : Fin (Ground.rank C)) :
+    (multiplicityDefect C i j k).toLinearMap =
+      (((d i / Ground.fpSimple C i) * (d j / Ground.fpSimple C j) *
+        (d k / Ground.fpSimple C k) : ℝ) : ℂ) • 1 := by
+  let s : Fin (Ground.rank C) → ℝ := fun x => d x / Ground.fpSimple C x
+  have hs : ∀ x, s x * s x = 1 := by
+    intro x
+    have hsq : d x * d x = Ground.fpSimple C x * Ground.fpSimple C x := by
+      have h := congrArg (fun y : ℝ => y * y) (hd x)
+      simpa only [abs_mul_abs_self] using h
+    dsimp [s]
+    field_simp [ne_of_gt (Ground.fpSimple_pos C x)]
+    nlinarith [hsq]
+  have hsign : (s i * s j * s k) * (s i * s j * s k) = 1 := by
+    rw [show (s i * s j * s k) * (s i * s j * s k) =
+      (s i * s i) * (s j * s j) * (s k * s k) by ring, hs i, hs j, hs k]
+    norm_num
+  letI : FiniteDimensional ℂ
+      (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :=
+    Ground.IsFusionCategory.hom_finite _ _
+  apply involution_eq_sign_of_trace_eq _ (hinv i j k)
+  · exact_mod_cast hsign
+  · have h := enoTraceMatrix_saturation_of_real_dimensions C d hreal hd hinv heig i j k
+    change LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap = _ at h
+    change LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap =
+      (((s i * s j * s k : ℝ) : ℂ) * (Ground.fusionCoeff C i j k : ℂ))
+    simpa [s] using h
+
 end PropertyF.Ground.Dimensions
