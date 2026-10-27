@@ -295,3 +295,12 @@ trace-saturation criterion: given balancing, it replaces S-invertibility by
 the assertion that only the centre unit is transparent. Base pivotal
 existence, balancing, and this actual transparency condition remain open.
 Full build and strict project audit pass (477 modules, 4,736 declarations).
+
+Fusion `c85981c` proves `center_transparent_simple_iso_unit` unconditionally
+for the actual centre using the induced unit. The integrator's
+`target_of_pivotal_base_and_center_balancing` combines it with the already
+proved balancing-to-S, Vafa, symmetric-core and centre construction results.
+Only two explicit conditions remain on this route: existence of a pivotal
+structure for the pseudo-unitary base, and balancing for the actual centre's
+pivotal twist. Neither is proved. Full build and strict project audit pass
+(480 modules, 4,747 declarations).

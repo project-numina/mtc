@@ -19,6 +19,9 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreInduction.DirectDual
+import all PropertyF.Ground.CentreInduction.Transparent
+import all PropertyF.Ground.Integrate.PivotalBalancedReduction
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
 import all PropertyF.Ground.Integrate.TransparentCenterReduction
 import all PropertyF.Ground.CentreCalculus.ActualCoreIntegrality

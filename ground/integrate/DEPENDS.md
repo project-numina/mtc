@@ -123,3 +123,8 @@ balancing. `target_of_pivotal_base_modular_balanced_center` reduces the target
 to base pivotal existence, centre S invertibility, and centre pivotal twist
 balancing. Centre rigidity/fusion/positive sphere/global square and actual
 core integrality are supplied by constructions under the base-pivotal premise.
+
+Fusion `c85981c` proves centre categorical transparency is trivial. Together
+with modular's balancing-to-S criterion, `target_of_pivotal_base_and_center_balancing`
+leaves only two explicit obligations: base pivotal existence under
+pseudo-unitarity, and pivotal twist balancing on the constructed centre.

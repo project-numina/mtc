@@ -41,6 +41,9 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreInduction.DirectDual
+import all PropertyF.Ground.CentreInduction.Transparent
+import all PropertyF.Ground.Integrate.PivotalBalancedReduction
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
 import all PropertyF.Ground.Integrate.TransparentCenterReduction
 import all PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
@@ -623,6 +626,8 @@ run_cmd do
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
+      ``PropertyF.Ground.target_of_pivotal_base_and_center_balancing,
+      ``PropertyF.Ground.CentreInduction.center_transparent_simple_iso_unit,
       ``PropertyF.Ground.target_of_pivotal_balanced_center_trivial_transparency,
       ``PropertyF.Ground.CentreModular.categoricalS_det_ne_zero_of_trivial_transparency,
       ``PropertyF.Ground.target_of_pivotal_base_modular_balanced_center,

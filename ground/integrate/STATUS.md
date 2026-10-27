@@ -277,3 +277,11 @@ no reliable completion-time estimate is available.
   once twist balancing holds. Base pivotal existence, balancing, and that
   transparency statement are explicit and unproved. Full build and strict
   project audit pass (477 modules, 4,736 declarations).
+
+- Fusion `c85981c` proves the actual centre has no non-unit transparent simple
+  using induction. `target_of_pivotal_base_and_center_balancing` wires that
+  theorem into the target: the only remaining explicit conditions are a
+  pivotal structure on the pseudo-unitary base and pivotal twist balancing on
+  the resulting centre. All other centre, core and finite-image requirements
+  are derived from these. Both conditions remain unproved. Full build and
+  strict project audit pass (480 modules, 4,747 declarations).
