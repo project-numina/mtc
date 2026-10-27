@@ -92,6 +92,8 @@
 
 - `rightDualTensorIso_unit_left` and `rightDualTensorIso_unit_right` prove both unit coherence laws for the canonical right-dual tensor comparison in any right rigid monoidal category. `doubleDualTensorIso_unit_left` and `doubleDualTensorIso_unit_right` also prove both corresponding double-dual unit laws. Associativity remains to be established.
 
+- `rootTensorDefect_unit_left`, `rootTensorDefect_unit_right` and their chosen-unit-label variants prove actual unit-factor defects equal the ±1 unit root scalar. `fourthDualIso_tensor_unit_left` and `fourthDualIso_tensor_unit_right` prove the fourth-dual tensor law whenever either actual factor is the tensor unit; the non-unit cases remain open.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
