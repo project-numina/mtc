@@ -22,3 +22,8 @@ These describe proof obligations, not axioms or assumptions in the target.
   adjunction to forget; these are fusion's own unproved obligations.
 - Dimensions: the nonzero spherical global dimension and relevant trace
   identities for the averaging splitting may be needed to prove semisimplicity.
+
+- Fusion's own outstanding `CentreInduction.SimpleLoopCentrality` is the
+  explicit finite loop-sliding equation for arbitrary underlying maps. Under
+  that identity, a spherical structure on C and nonzero global dimension,
+  the proved averaging construction splits all centre monos and epis.
