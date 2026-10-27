@@ -458,7 +458,6 @@ import all PropertyF.Ground.Integrate.CenterDualMate
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterProductBridge
-import all PropertyF.Ground.Integrate.CenterReduction
 import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
@@ -476,7 +475,6 @@ import all PropertyF.Ground.Integrate.FunctorUniverse
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
-import all PropertyF.Ground.Integrate.OverlapReduction
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
