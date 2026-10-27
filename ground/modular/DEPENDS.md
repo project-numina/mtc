@@ -34,3 +34,6 @@ The actual categorical S identities, character classification and Galois action 
 - The remaining induced Kirby-loop evaluation is now an explicit finite sum of
   base-category diagonal fusion-block traces (`center_kirby_sum_eq_diagonal_traces`),
   assuming the displayed pivotal compatibility. Vanishing is not yet proved.
+- Vafa determinant route: the regular-element cancellation is now proved, but
+  actual categorical determinants, their hexagon/tensor identities and the
+  torsion-detection vector space remain open.

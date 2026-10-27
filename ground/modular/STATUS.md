@@ -99,3 +99,11 @@ explicit induction crossing into its diagonal fusion-basis blocks, and
 explicit finite weighted sum of those base-category block traces. The pivotal
 compatibility and evaluation of that sum remain unproved. Focused build and
 foundational axiom checks passed.
+
+`CentreModular.regular_fusion_derivation_vanishes` proves the FP regular-element
+cancellation underlying Etingof's determinant proof of Vafa-type finite
+monodromy: any real-vector-valued function on simple labels satisfying the
+fusion derivation relation is zero. The categorical determinant, its
+hexagon/tensor identities, and the faithful passage from non-torsion complex
+units to the relevant vector space are not yet constructed, so finite-order
+monodromy is not proved. Focused build and foundational axiom check passed.
