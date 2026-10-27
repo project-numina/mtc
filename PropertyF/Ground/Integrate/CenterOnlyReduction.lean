@@ -15,7 +15,7 @@ unproved premises of this reduction. -/
 theorem target_of_center_and_overlap
     (hCenter : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
       HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ,
-      ∃ (Z : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj)),
+      ∃ (Z : BraidedFusionCategory.{v,max u v}) (p : Dimensions.PivotalStructure (C := Z.Obj)),
         p.IsSpherical ∧
         (∀ i, Modular.simpleDimension Z p i = (fpSimple Z i : ℂ)) ∧
         (Modular.categoricalS Z p).det ≠ 0 ∧
