@@ -21,11 +21,12 @@
 - `legacy_conjugate_labels`: constructs the exact legacy `StandardInputs.conjugate_labels` field, comparing the legacy positive character to the ground spectral-radius character via positive-character uniqueness. `conjugate_images` is also proved. The compatibility proof explicitly mentions legacy structures and is not used in the strict target cone.
 - `SEntry_biproduct_left` and `SEntry_tensor_decomposition`: double-braiding traces are additive on finite biproducts and expand on tensor products with the actual Hom-space fusion coefficients. `categoricalS_verlinde_of_hopf_product` reduces the normalized Verlinde equations to the explicitly stated Hopf-link product identity, which remains unproved.
 - `partialTrace_doubleBraiding_simple` identifies the partial trace of a double braiding on a simple surviving object with its normalized S scalar, using the proved iterated-trace law. `hopf_product_of_partialTrace_composition` reduces the Hopf product to a concrete equation between partial traces of the three actual double braidings.
+- `doubleBraiding_tensor_factorization`, `rightPartialTrace_natural`, `rightPartialTrace_whiskerLeft`, `rightPartialTrace_nested_simple`, `partialTrace_doubleBraiding_tensor`, and `categoricalS_verlinde`: the Hopf-link product identity and all normalized Verlinde character equations are proved from genuine braided pivotal fusion categories. `categoricalS_galois_action_of_S_square` needs only pseudo-unitarity, a pivotal structure and the S² identity.
 - Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
 
 ## In progress
 
-- Prove the Hopf-link product identity (isolated as `hopf` in `categoricalS_verlinde_of_hopf_product`), using braided/associator coherence and composition of partial traces, then establish S² from nondegeneracy.
+- Prove S² from a genuine categorical nondegeneracy condition and construct the centre's modular data using the actual centre.
 - Make the S/Verlinde and Galois results usable directly in the ground development without old hypothesis structures in their dependency cone.
 
 ## Blocked / dependencies
@@ -35,7 +36,7 @@
 
 ## Remaining
 
-- Construct categorical S, symmetry, unit column, S-square, Verlinde, and normalized-column character classification from a genuine modular category; combine with the completed Galois action construction.
+- Categorical S, symmetry, unit column, Verlinde, and normalized-column classification are proved. Prove S-square from a genuine modular category and construct the centre instance.
 - Ground conjugate label, spectral FP invariance, and the legacy `StandardInputs.conjugate_labels` field are complete.
 - `conjugate_images` is complete; integrate its general braided-functor version into the ground proof without old hypothesis structures.
 

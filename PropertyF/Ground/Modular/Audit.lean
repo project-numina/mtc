@@ -33,6 +33,7 @@ import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.SMatrix
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Modular.HopfPartialTrace
+import all PropertyF.Ground.Modular.Verlinde
 import all PropertyF.Ground.Modular.DimensionNonzero
 import all PropertyF.Ground.Modular.UnitDimension
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
@@ -60,6 +61,8 @@ run_cmd do
       ``PropertyF.Ground.Modular.partialTrace_doubleBraiding_simple,
       ``PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition,
       ``PropertyF.Ground.Modular.categoricalS_verlinde_of_hopf_product,
+      ``PropertyF.Ground.Modular.categoricalS_verlinde,
+      ``PropertyF.Ground.Modular.categoricalS_galois_action_of_S_square,
       ``PropertyF.Ground.Modular.simpleDimension_ne_zero,
       ``PropertyF.Ground.Modular.simpleDimension_unit,
       ``PropertyF.Ground.Modular.categoricalS_galois_action,
