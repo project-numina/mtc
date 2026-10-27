@@ -25,6 +25,7 @@ public import PropertyF.Ground.Cabling.Rigidity
 public import PropertyF.Ground.Cabling.DualClosure
 public import PropertyF.Ground.Cabling.Inclusion
 public import PropertyF.Ground.Cabling.Perron
+public import PropertyF.Ground.Cabling.Primitive
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
