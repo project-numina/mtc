@@ -57,8 +57,11 @@ three mate-coherence equations. Triangle identities are proved by forgetting,
 and the chosen right evaluation and coevaluation forget to the original maps
 by definition. `dualCrossing_tensor_unit_left` and
 `dualCrossing_tensor_unit_right` prove both unit cases of the crossing tensor
-law from naturality and unit normalization. The general tensor law and both
-centrality equations remain unproved.
+law from naturality and unit normalization. `halfBraiding_unit` and
+`centrality_at_unit` prove the evaluation and coevaluation intertwining
+equations at the tensor unit, for any underlying morphism. The general tensor law and both
+centrality equations remain unproved. `dualMate_counit` and `dualMate_unit`
+expose the mate identities for use in those coherence proofs.
 
 ## In progress
 
@@ -75,3 +78,12 @@ The rest of centre fusion/spherical structure (in particular rigidity, semisimpl
 ## Estimate
 
 The foundational fusion, pivotal, semisimplicity, induction and nondegeneracy developments are extensive research-scale formalization work; completion cannot responsibly be estimated in hours. Begin with independently provable categorical structure while interfaces mature.
+
+## Round 2 verification
+
+Focused Lake builds passed for `CentreBundle.Fusion`, `CentreRigid.Lift`,
+`CentreRigid.Unit` and `CentreRigid.MateEquations` on cores 16–19. Lean
+`#print axioms` reports only propext, Classical.choice and Quot.sound for
+the fusion assembly, conditional rigidity, both unit tensor laws, unit
+centrality, and both mate equations. The general mate coherence remains
+centre-owned work, not an external dependency.
