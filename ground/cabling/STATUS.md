@@ -78,8 +78,13 @@
 ## In progress
 
 - `powerSum_crossing_permutesBlocks` proves the categorical crossing-generator
-  block permutation law. Prove that each pure block restriction belongs to
-  its X braid image; this is the remaining input to `sumPowersCablingWitness`.
+  block permutation law. `moveHead_mem_braidImage` proves a single strand
+  crossing an arbitrary block is a braid; `moveHead_spectators` extends this
+  to spectator blocks on both sides. The unproved step is the general crossing
+  of two tensor-power blocks and composition along pure words, yielding the
+  pure-block membership in `sumPowersCablingWitness`. `objectPropertyF_generated_of_block_membership`
+  proves the resulting bundle-free property-F transfer conditional on exactly
+  that membership.
 
 ## Remaining
 
