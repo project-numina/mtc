@@ -93,20 +93,6 @@ theorem galois_squaredNorm_eq_rootDimension_norm_sq_of_reciprocity
         _ = _ := by rw [rootDualSign_sq, one_mul]
     _ = _ := by simpa using Complex.mul_conj' (σ (rootDimension C i))
 
-/-- Under trace reciprocity, intrinsic simple squared norms are totally
-positive for all complex Galois automorphisms. -/
-theorem squaredNorm_totallyPositive_of_trace_reciprocity
-    (C : Ground.BraidedFusionCategory.{v,u})
-    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1)
-    (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j)
-    (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
-    ∃ r : ℝ, 0 < r ∧ σ (Ground.squaredNorm C (Ground.simples C i)) = (r : ℂ) := by
-  refine ⟨‖σ (rootDimension C i)‖ ^ 2, ?_,
-    galois_squaredNorm_eq_rootDimension_norm_sq_of_reciprocity C hinv htranspose σ i⟩
-  exact sq_pos_of_pos (norm_pos_iff.mpr ((map_ne_zero σ).2 (rootDimension_ne_zero C i)))
-
 /-- Involutivity alone makes every intrinsic simple squared norm an algebraic
 integer, using the signed product and the trace-matrix eigenvector identity. -/
 theorem squaredNorm_isIntegral_of_involutions

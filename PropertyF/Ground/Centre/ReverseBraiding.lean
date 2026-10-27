@@ -1,6 +1,7 @@
 module
 public import PropertyF.Definitions
 public import PropertyF.Transfer
+public import Mathlib.Algebra.Group.Subgroup.Pointwise
 
 /-! Reversing the braiding inverts each actual adjacent braid generator. -/
 
@@ -57,7 +58,7 @@ theorem reverse_braidImage (X : C) (n : ℕ) :
   have h : @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n =
       fun i => (braidGenerator X n i)⁻¹ := funext (reverse_braidGenerator X n)
   rw [h]
-  exact closure_inverse_generators (braidGenerator X n)
+  simpa only [Set.inv_range] using (Subgroup.closure_inv (Set.range (braidGenerator X n)))
 
 /-- Property F is invariant under braiding reversal. -/
 theorem reverse_objectPropertyF_iff (X : C) :

@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.CentreRigid.SimpleTensor
 public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.CentreRigid.Evaluation
 public import PropertyF.Ground.CentreInduction.UnitTest
 
 /-! The normalized mate supplies the chosen base dual in rank one. -/
@@ -30,36 +31,15 @@ theorem tensor_of_rank_one (C : BraidedFusionCategory.{v,u}) [Subsingleton (Fin 
   ∀ U V, ((Integrate.dualCrossingIso Z).app (U ⊗ V)).hom =
     (α_ _ _ _).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ V) ≫
       (α_ _ _ _).hom ≫ (U ◁ ((Integrate.dualCrossingIso Z).app V).hom) ≫
-        (α_ _ _ _).inv := by
-  intro U V
-  change (CentreRigid.leftNatU C Z V).app U = (CentreRigid.rightNatU C Z V).app U
-  have h : CentreRigid.leftNatU C Z V = CentreRigid.rightNatU C Z V := by
-    apply CentreInduction.natTrans_ext_on_simples C
-    intro i
-    have hi : i = unitIndex C := Subsingleton.elim _ _
-    subst i
-    obtain ⟨e⟩ := unitIndex_iso C
-    let G := tensorRight V ⋙ tensorRight Z.1ᘁ
-    let a := CentreRigid.leftNatU C Z V
-    let b := CentreRigid.rightNatU C Z V
-    have hu : a.app (𝟙_ C.Obj) = b.app (𝟙_ C.Obj) := CentreRigid.dualCrossing_tensor_unit_left Z V
-    apply (cancel_mono (G.map e.hom)).1
-    rw [← a.naturality, ← b.naturality, hu]
-  exact congrArg (fun a => a.app U) h
+        (α_ _ _ _).inv :=
+  dualCrossing_tensor Z
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The normalized mate gives the actual centre a rigid structure in rank one,
 with underlying right dual, evaluation and coevaluation inherited from the base. -/
 @[instance_reducible] def rigidOfRankOne (C : BraidedFusionCategory.{v,u})
-    [Subsingleton (Fin (rank C))] : RigidCategory (Center C.Obj) := by
-  apply rigidOfMateCoherence
-  intro Z
-  let hTensor := tensor_of_rank_one C Z
-  refine ⟨hTensor, ?_, ?_⟩
-  · exact CentreInduction.all_maps_central_of_rank_one C (𝟙_ (Center C.Obj))
-      (Z ⊗ dualObject Z hTensor) (η_ Z.1 Z.1ᘁ)
-  · exact CentreInduction.all_maps_central_of_rank_one C (dualObject Z hTensor ⊗ Z)
-      (𝟙_ (Center C.Obj)) (ε_ Z.1 Z.1ᘁ)
+    [Subsingleton (Fin (rank C))] : RigidCategory (Center C.Obj) :=
+  rigidCenter (C := C.Obj)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Forgetting the selected centre right dual gives the selected base dual. -/

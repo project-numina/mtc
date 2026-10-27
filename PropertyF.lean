@@ -242,7 +242,6 @@ public import PropertyF.Ground.Calculus.GaloisRigidity
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Calculus.ReversePower
 public import PropertyF.Ground.Calculus.SharpRigidity
-public import PropertyF.Ground.Calculus.IntegratorBridge
 public import PropertyF.Ground.Dimensions.RootDualLabel
 public import PropertyF.Ground.Dimensions.DefectNaturality
 public import PropertyF.Ground.Dimensions.CoevaluationReciprocity
@@ -335,7 +334,6 @@ public import PropertyF.Ground.CentreCalculus.PermutationQuotient
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
 public import PropertyF.Ground.CentreCalculus.ParityCorrection
 public import PropertyF.Ground.CentreCalculus.FirstCrossingTrace
-public import PropertyF.Ground.CentreCalculus.TargetReduction
 public import PropertyF.Ground.CentreCalculus.MonodromyCap
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality

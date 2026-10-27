@@ -27,7 +27,6 @@ import all PropertyF.Ground.CentreBundle.Canonical
 import all PropertyF.Ground.CentreCabling.LanternSpherical
 import all PropertyF.Ground.CentreCabling.TwistDual
 import all PropertyF.Ground.CentreCalculus.MonodromyCap
-import all PropertyF.Ground.CentreCalculus.TargetReduction
 import all PropertyF.Ground.CentreInduction.DualMonodromy
 import all PropertyF.Ground.CentreInduction.FiniteMonodromyModular
 import all PropertyF.Ground.CentreModular.CenterBalanced
@@ -319,7 +318,6 @@ import all PropertyF.Ground.Calculus.GaloisRigidity
 import all PropertyF.Ground.Calculus.GaloisTraceBound
 import all PropertyF.Ground.Calculus.GroupBlocks
 import all PropertyF.Ground.Calculus.ImageMaps
-import all PropertyF.Ground.Calculus.IntegratorBridge
 import all PropertyF.Ground.Calculus.Intertwining
 import all PropertyF.Ground.Calculus.Overlap
 import all PropertyF.Ground.Calculus.OverlapBound

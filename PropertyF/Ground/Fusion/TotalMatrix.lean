@@ -16,10 +16,6 @@ def totalFusionMatrix (D : BraidedFusionCategory) :
     Matrix (Fin (rank D)) (Fin (rank D)) ℝ :=
   fun j k => ∑ i, (fusionCoeff D i k j : ℝ)
 
-theorem totalFusionMatrix_nonneg (D : BraidedFusionCategory) (j k : Fin (rank D)) :
-    0 ≤ totalFusionMatrix D j k := by
-  exact Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _
-
 /-- Duality and Frobenius reciprocity make the total fusion matrix symmetric. -/
 theorem totalFusionMatrix_symmetric (D : BraidedFusionCategory) (j k : Fin (rank D)) :
     totalFusionMatrix D j k = totalFusionMatrix D k j := by
