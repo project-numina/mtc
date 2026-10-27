@@ -55,7 +55,7 @@ The proof constructs the full symmetric-group action on all tensor powers of any
 
 ## In progress
 
-- Taking the highest-value remaining open ledger obligation after coordination.
+- Drinfeld tensor cap: `doubleBraiding_tensor_evaluation` proves the monodromy slides across tensor evaluation to the reversed dual monodromy. The overall monodromy crossed-cap factorization and twist balancing remain open.
 
 ## Blocked / dependencies
 
