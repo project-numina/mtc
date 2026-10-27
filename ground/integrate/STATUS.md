@@ -7,6 +7,9 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Posted provisional statement and explicit review requests to fusion/dimensions.
+- `unit_algebraMap_bijective`, `unitScalarEquiv`, `unitScalar_algebraMap`,
+  `algebraMap_unitScalar`, and `unitScalar_eq_equiv`: Schur supplies the
+  canonical unit-scalar equivalence and validates the target definition.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.
 - `DependencyAudit.findForbidden` checks transitive declaration types and bodies;
   its negative fixture catches a hidden old input. `scripts/audit-target.sh`

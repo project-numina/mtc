@@ -26,7 +26,7 @@ whose types and values avoid those structures, then run the target audit. `Gener
 they remain obligations for the separate corollary.
 
 Provisional mathematical checks: simple reps exhaust all simple isoclasses;
-scalar map ℂ → End(𝟙) is bijective; `invFun` computes its inverse; squared
+squared
 norms are independent of isomorphism and simple presentation; FP spectral
 radii form the unique positive fusion character and are presentation independent;
 compare complex-automorphism conjugacy with the paper's algebraic-closure
@@ -40,7 +40,7 @@ is claimed yet.
 |---|---|---|---|
 | `FusionData` | `rank`, `simpleObject`, `simple_is_simple`, `simple_injective`, `unitIndex`, `unit_iso`, `hom_finite`, `decomposition` | fusion | Ground category has finite semisimple property; construction of old bundle pending. |
 | `FusionData` | `fpSimple`, `fp_positive`, `fp_unit`, `fp_character` | fusion | Spectral-radius ground definition exists; PF character theorem and bridge pending. |
-| `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Ground double-dual is constructed; scalar equivalence and old bundle pending. |
+| `GlobalDimensionData` | `unitScalar`, `doubleDualIso` | dimensions | Ground double-dual and scalar algebra equivalence constructed; old bundle pending. |
 | `MultiplicityData` | `simpleCount`, `dimension`, `fpDimension`, `multiplicity`, `dimension_bound` | calculus; dimensions for bound | Open: group-representation decomposition and spherical dimension bound. |
 | `OverlapModel` | `stage`, `decomposition`, `fpMass_eq` | calculus, fusion | Open: endomorphism blocks, decomposition and FP mass. |
 | `OverlapModel` | `left`, `right`, `partialTrace`, `trace_partial`, `partial_left`, `partial_right` | calculus, dimensions | Open: compatible finite-group averaging and spherical partial traces. |
