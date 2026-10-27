@@ -421,3 +421,9 @@ centre Müger centre with trace saturation to prove categorical S invertibility
 for an FP-valued centre pivotal structure, assuming finite order of mixed
 monodromies of centre simple pairs. It does not prove that finite-order
 condition. Focused build and kernel axiom checks pass.
+
+`rightDualTensorIso_monodromy` and `doubleDualTensorIso_monodromy` prove
+that the right-dual and double-dual tensorators transport monodromy in any
+right-rigid braided category. The fourth-dual tensor law itself is still open;
+these are steps toward deriving it from the Drinfeld tensor law. Focused build
+passes.
