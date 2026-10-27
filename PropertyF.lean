@@ -190,13 +190,14 @@ public import PropertyF.Ground.Calculus.SharpRigidity
 
 public import PropertyF.Ground.Calculus.IntegratorBridge
 
+public import PropertyF.Ground.CentreInduction.Underlying
+public import PropertyF.Ground.CentreInduction.GlobalSquare
+public import PropertyF.Ground.CentreInduction.Adjunction
+public import PropertyF.Ground.CentreInduction.SimpleDetection
+public import PropertyF.Ground.CentreInduction.Averaging
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
-import PropertyF.Ground.CentreInduction.Underlying
-import PropertyF.Ground.CentreInduction.GlobalSquare
-import PropertyF.Ground.CentreInduction.Adjunction
-import PropertyF.Ground.CentreInduction.SimpleDetection
-import PropertyF.Ground.CentreInduction.Averaging
