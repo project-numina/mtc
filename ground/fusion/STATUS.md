@@ -53,8 +53,10 @@
 - `Ground.positive_symmetric_matrix_has_positive_eigenvector`: every strictly
   positive symmetric real matrix has a strictly positive eigenvector, proved by
   maximizing its quadratic form on a sphere and applying Mathlib's symmetric
-  operator spectral theory. Combining this with the total fusion matrix is in
-  progress.
+  operator spectral theory.
+- `Ground.characterMatrix_commute`, `exists_positive_common_eigenvector`, and
+  `exists_positive_character`: the actual fusion rules admit a positive
+  normalized character, constructed from the genuine target category.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -70,9 +72,9 @@ declaration conflicts.
 ## Blocked / outstanding
 
 Mathlib has categorical Schur's lemma but a source search found no general
-Perron–Frobenius theorem for positive matrices. Existence and uniqueness for the
-positive symmetric total fusion matrix are now proved; they still need to be
-assembled into a positive character and related to the spectral-radius target.
+Perron–Frobenius theorem for positive matrices. The positive fusion character is
+now constructed; uniqueness and agreement with the target's spectral-radius
+dimensions remain to be established.
 
 Construction of `FusionData`, tensor/dual/inclusion invariance, agreement of
 spectral radii with the positive character, and the centre dimension comparison
