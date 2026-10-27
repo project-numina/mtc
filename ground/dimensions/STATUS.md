@@ -74,6 +74,8 @@
 
 - `rightPartialTrace_braiding` proves the actual right partial trace of a self-braiding is the pivotal/Drinfeld twist `p.iso X ≫ (doubleDualIso C X).inv`. The twist-sign and parity-corrected cycle identities remain open.
 
+- `pivotalBraidedTwist` constructs the actual natural twist; `pivotalBraidedTwistScalar_ne_zero` proves its simple scalar is nonzero, and `pivotalTrace_selfBraiding` gives the two-cycle trace as twist scalar times pivotal dimension. Showing that scalar is ±1 for a self-transparent simple remains open.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
