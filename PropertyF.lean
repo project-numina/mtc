@@ -130,6 +130,7 @@ public import PropertyF.Ground.Integrate.ScalarTwistTransport
 public import PropertyF.Ground.Integrate.ScalarTwistModular
 public import PropertyF.Ground.Integrate.TwistedRigidity
 public import PropertyF.Ground.Integrate.OverlapReduction
+public import PropertyF.Ground.Integrate.ExamplePropertyF
 
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.PositiveWeights
