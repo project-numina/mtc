@@ -86,9 +86,14 @@ public import PropertyF.Ground.Dimensions.PivotalUniqueness
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
+public import PropertyF.Ground.Cabling.GeneratedAbelian
 public import PropertyF.Ground.Cabling.Rigidity
 public import PropertyF.Ground.Cabling.DualClosure
 public import PropertyF.Ground.Cabling.UnitPower
+public import PropertyF.Ground.Cabling.FusionCycle
+public import PropertyF.Ground.Cabling.GeneralDual
+public import PropertyF.Ground.Cabling.GeneratedFusion
+public import PropertyF.Ground.Cabling.GeneratedDimension
 public import PropertyF.Ground.Cabling.Inclusion
 public import PropertyF.Ground.Cabling.Perron
 public import PropertyF.Ground.Cabling.Primitive
@@ -101,6 +106,7 @@ public import PropertyF.Ground.Cabling.TensorDecomposition
 public import PropertyF.Ground.Cabling.TensorComponents
 public import PropertyF.Ground.Cabling.MixedBraid
 public import PropertyF.Ground.Cabling.Zero
+public import PropertyF.Ground.Cabling.UnitBraid
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.CablingDiagram
 public import PropertyF.Ground.Cabling.TransportTuple
@@ -110,6 +116,8 @@ public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.StrandCoherence
 public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Calculus.ThreeSaturation
+public import PropertyF.Ground.Cabling.TupleCrossing
+public import PropertyF.Ground.Cabling.CablingFinite
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
