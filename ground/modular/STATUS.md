@@ -141,3 +141,12 @@ scalar from one explicitly stated FP-weighted fusion relation in
 `vafaUnitSpace`. The categorical proof of that relation, including the
 arbitrary-object tensor determinant rule and braiding balance, remains open.
 The focused build and foundational axiom check passed.
+
+`fpDeterminant_natural` computes the actual determinant of an arbitrary
+natural automorphism using its scalar on each simple source and the actual
+Hom-space multiplicities. `natural_scalars_finite_of_monodromy_determinant`
+combines this with the FP regular cancellation and torsion detector: simple
+scalars have finite order if an explicit categorical balancing equation holds
+and the FP determinant of each simple mixed double braiding vanishes. Both
+premises remain unproved; this does not establish Vafa's theorem or the centre
+modularity. Focused build and axiom checks passed.

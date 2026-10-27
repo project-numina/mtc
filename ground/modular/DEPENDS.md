@@ -50,3 +50,6 @@ The actual categorical S identities, character classification and Galois action 
 - `finite_order_of_fp_twist_balance` reduces Vafa finite order to one explicit
   FP-weighted fusion equation. The categorical proof of that equation remains
   open; no unconditional finite-order result is claimed.
+- The natural-automorphism determinant formula and its finite-order
+  consequence are constructed. Actual twist balancing and vanishing FP
+  determinants of simple double braidings remain explicit open premises.
