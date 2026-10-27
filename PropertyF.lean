@@ -52,6 +52,7 @@ public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.PseudoUnitary
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
+public import PropertyF.Ground.Cabling.GeneratedAbelian
 public import PropertyF.Ground.Cabling.Rigidity
 public import PropertyF.Ground.Cabling.DualClosure
 public import PropertyF.Ground.Cabling.UnitPower

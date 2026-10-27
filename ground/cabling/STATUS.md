@@ -49,7 +49,7 @@
   monoidal associator. `generatedBy_tensor` and `generatedBy_isMonoidal`
   construct tensor closure and the inherited braided monoidal structure,
   with braided full faithful inclusion. `generatedCategoryAbelianOfSplit`
-  constructs its abelian structure from explicit split-mono/epi hypotheses.
+  constructs its abelian structure from explicit split-mono/epi hypotheses; `Ground.Cabling.generatedCategoryAbelian` now supplies these unconditionally from fusion semisimplicity.
   `generatedCategoryRigidOfDualClosure` constructs rigidity from closure
   under right duals. `generatedBy_dual_of_generator_dual` reduces that
   closure to generation of the generator’s own right dual, and
@@ -82,6 +82,6 @@
   once a categorical adjoint matrix presentation is supplied.
 - The categorical braid/cabling identities, generation of the dual, and the
   inherited semisimple fusion structure require substantial further work.
-  Fusion has constructed the ground positive character and object FP
-  dimension; the categorical adjoint-component construction and full
-  inclusion invariance remain open. No reliable completion estimate is available.
+  Fusion has constructed the ground positive character, object FP
+  dimension, and preservation by full fusion inclusions; the categorical
+  adjoint-component construction remains open. No reliable completion estimate is available.
