@@ -24,6 +24,8 @@ The centre has a constructed preadditive structure, linear structure over any ri
 
 `groupAverage_idempotent` and `algebraAverage_idempotent` establish finite-group averaging as an idempotent in any algebra over a commutative ring with invertible group order. `alternatingProjector`, `alternatingProjector_eq_sum`, and `alternatingProjector_idempotent` specialize this to the sign character of a symmetric group. `alternatingProjector_splits` constructs the split image in an idempotent-complete linear category, and `alternatingProjector_dimension_formula` identifies its pivotal dimension with the normalized signed sum of traces of the action operators. This does not yet construct the symmetric-group action on tensor powers or evaluate those operator traces.
 
+`objectPropertyF_of_symmetricGroup_actions` proves the property-F consequence of an explicit symmetric-group action whose adjacent transpositions act by the actual braid generators. The action itself is a premise, and is not yet constructed even for the vector-space test category.
+
 ## In progress
 
 Prove `ProductRetract` is closed under duals and agrees with the generated fusion subcategory; investigate centre rigidity and semisimplicity. For the exterior-power route construct the symmetric-group action and compute the trace of the alternating projector; Mathlib does not appear to provide the needed action or symmetric-group presentation directly.
