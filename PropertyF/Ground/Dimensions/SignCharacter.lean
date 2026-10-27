@@ -143,4 +143,52 @@ theorem positive_spherical_of_real_spherical_pseudoUnitary
   change (s i : ℂ) * (d i : ℂ) = (Ground.fpSimple C i : ℂ)
   exact_mod_cast hvalue
 
+/-- Pseudo-unitarity forces the dimensions of every spherical structure to be
+real, by saturation of the complex FP bounds term by term. -/
+theorem spherical_dimensions_real_of_pseudoUnitary
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (hpu : Ground.PseudoUnitary C) (i : Fin (Ground.rank C)) :
+    ((pivotalDimension C p (Ground.simples C i)).re : ℂ) =
+      pivotalDimension C p (Ground.simples C i) := by
+  classical
+  let z : Fin (Ground.rank C) → ℂ := fun i => pivotalDimension C p (Ground.simples C i)
+  let f := Ground.fpSimple C
+  have hg : ∑ i, ((z i).re ^ 2 - (z i).im ^ 2) = ∑ i, f i ^ 2 := by
+    have h := hpu
+    change Ground.globalDimension C = (Ground.globalFPDimension C : ℂ) at h
+    rw [target_globalDimension_eq_sum_squares C p hp] at h
+    have hr := congrArg Complex.re h
+    simpa [Ground.globalFPDimension, z, f, pivotalDimension, rightTrace_id,
+      pow_two, Complex.mul_re] using hr
+  have hb : ∀ i, (z i).re ^ 2 + (z i).im ^ 2 ≤ f i ^ 2 := by
+    intro i
+    have h := galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
+    change ‖z i‖ ≤ f i at h
+    have hs : ‖z i‖ ^ 2 ≤ f i ^ 2 := by nlinarith [norm_nonneg (z i), Ground.fpSimple_pos C i]
+    rw [Complex.sq_norm, Complex.normSq_apply] at hs
+    nlinarith
+  have hn : ∀ i, 0 ≤ f i ^ 2 - ((z i).re ^ 2 - (z i).im ^ 2) := by
+    intro i
+    nlinarith [hb i, sq_nonneg ((z i).im)]
+  have hz : ∑ i, (f i ^ 2 - ((z i).re ^ 2 - (z i).im ^ 2)) = 0 := by
+    rw [Finset.sum_sub_distrib, hg, sub_self]
+  have hi := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => hn j)).1 hz i (Finset.mem_univ i)
+  have him : (z i).im = 0 := by nlinarith [hb i, sq_nonneg ((z i).im)]
+  exact (Complex.ext_iff).2 ⟨by simp, by simpa using him.symm⟩
+
+/-- A pseudo-unitary category with a spherical structure admits the canonical
+positive spherical structure, without assuming reality separately. -/
+theorem positive_spherical_of_spherical_pseudoUnitary
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+    (hpu : Ground.PseudoUnitary C) :
+    ∃ q : PivotalStructure (C := C.Obj), q.IsSpherical ∧
+      ∀ i, pivotalDimension C q (Ground.simples C i) = (Ground.fpSimple C i : ℂ) := by
+  apply positive_spherical_of_real_spherical_pseudoUnitary C p hp
+    (fun i => (pivotalDimension C p (Ground.simples C i)).re)
+  · intro i
+    exact (spherical_dimensions_real_of_pseudoUnitary C p hp hpu i).symm
+  · exact hpu
+
 end PropertyF.Ground.Dimensions
