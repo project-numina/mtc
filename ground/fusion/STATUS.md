@@ -148,6 +148,13 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
 
 ## Round 2 progress (2026-10-27)
 
+- `CentreInduction.adjunctionOfHalfBraiding` assembles the actual right
+  adjunction from a half-braiding on every underlying induction sum, its
+  naturality in the middle factor, centrality of `unitCandidate`, and the
+  explicit second triangle. `fusion_and_globalFPDimension_of_halfBraiding`
+  combines these with loop sliding and centre rigidity to construct the
+  centre fusion instance and its FP-square theorem. The listed categorical
+  conditions are still unproved.
 - `CentreInduction.unitCandidateNatural` constructs a natural map from the
   centre forgetful functor to its composite with the underlying induction
   functor, by coevaluating each simple and applying the given half-braiding.
