@@ -161,3 +161,61 @@ and the frozen target remain open.
 - Calculus proves common-centralizer self-centrality and reduces integral
   dimensions to actual exterior-object trace identities. Construction and
   trace formulas of the alternating projectors remain open.
+
+## Round 3 integrated snapshot
+
+Merged fusion `ca79865`, dimensions `4af7956`, centre `6d26130`, modular
+`ee9ee20`, calculus `1870108`, and cabling `63f901e`. In particular the
+actual induction functor and forgetful adjunction are proved, as are centre
+finite length, finitely many simple representatives, and enough injectives;
+general centre semisimplicity and rigidity remain unproved. Fusion's actual
+adjunction proves the FP-square once those instances exist.
+
+`center_globalDimension_square_of_actual_induction` and
+`target_of_center_image_monodromy_no_square` combine the actual adjunction,
+FP-valued centre sphere and cabling's numerical double-centralizer argument.
+They remove global-square as an independent centre premise. Remaining premises:
+actual centre rigidity/fusion, FP-valued sphericality, invertible categorical
+S, integral dimensions on the actual symmetric core, and finite-order mixed
+monodromy for simple canonical-image retracts against labels satisfying their
+numerical S-test. The numerical fusion-subcategory double-centralizer itself
+is proved; identifying the numerical centralizer with the actual core remains
+conditional on that finite-order step. The numerical support proof does not
+establish core integrality. These are conditional reductions, not the target.
+
+The rank-one actual centre is fully rigid, fusion, positive spherical and
+modular, with the dimension-square identity. General pivotal existence for
+fusion categories remains open; pseudo-unitary spherical existence has not
+been derived here. `positive_spherical_of_pivotal_pseudoUnitary` proves it if
+an actual pivotal structure is supplied, so it cannot be applied to the
+centre without first proving both its pivotal structure and pseudo-unitarity.
+
+The integrated `PropertyF` build passed on cores 0–3 with four Lean threads;
+the expanded audit covers 392 project modules and 4,226 declarations. The
+strict target audit fails because `PropertyF.Ground.target` is missing.
+
+`target_of_integral_numerical_center_core` gives an alternate route avoiding
+mixed monodromy and actual core identification: it assumes integral dimensions
+on the numerical S-centralizer of product-retract simples and invokes the
+proved Fourier double-centralizer. `numericalProductCore_integral_of_image_monodromy`
+proves the earlier actual-core integrality and restricted finite-order
+hypotheses imply this numerical integrality. No independent proof of the new
+integrality assertion is known, and the actual core being symmetric does not by
+itself establish it for the larger numerical set.
+
+Fusion `f93cf9e` constructs centre fusion, an FP-valued spherical structure
+and the categorical square assuming centre rigidity and a compatible centre
+pivotal lift of an FP-valued base pivotal structure. Integration's
+`target_of_compatible_center_and_integral_numerical_core` uses that result
+and the numerical-core route. This avoids assuming centre pseudo-unitarity,
+but does not construct the base pivotal structure, compatible lift, rigidity,
+invertible S or numerical-core integrality. The integrated full build and
+strict project audit pass, covering 395 modules and 4,237 declarations.
+
+Symmetric-core integrality update: `CentreIntegrate.signed_cycle_count` proves
+the full signed permutation cycle polynomial identity, and
+`integral_of_cycle_traces` / `integral_of_signed_cycle_traces` connect it to
+positive categorical dimensions in both parity cases. This discharges the
+combinatorial signed-sum evaluation; the actual symmetric-group action and
+its categorical cycle-trace/parity identity remain unproved. Full project
+audit passes for the new results.
