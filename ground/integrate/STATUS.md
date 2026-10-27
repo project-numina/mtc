@@ -40,8 +40,9 @@
   `algebraMap_unitScalar`, and `unitScalar_eq_equiv`: Schur supplies the
   canonical unit-scalar equivalence and validates the target definition.
 - `Example.complexVectorSpaces` constructs finite-dimensional complex vector
-  spaces as a genuine ground braided fusion category, proving non-vacuity of
-  the category interface (property F and pseudo-unitarity are not yet shown).
+  spaces as a genuine ground braided fusion category; both global dimensions
+  equal one, so its pseudo-unitary conjugate is also constructed. Property F
+  for the example is not yet proved.
 - Merged snapshots from all six workstreams and built the integrated library.
 - `ProjectAudit` scans all 1,734 integrated declarations for forbidden axioms.
 - Field-by-field ownership and dependency graph in `LEDGER.md`.

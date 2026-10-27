@@ -33,8 +33,9 @@ whose types and values avoid those structures, then run the target audit. `Gener
 they remain obligations for the separate corollary.
 
 The category interface is inhabited by `Example.complexVectorSpaces`, based
-on finite-dimensional complex vector spaces; property F and pseudo-unitarity
-for that example have not yet been established.
+on finite-dimensional complex vector spaces. Both global dimensions equal one
+and the pseudo-unitary conjugate is constructed; property F for that example
+has not yet been established.
 
 Simple representatives are proved complete; both global dimensions are
 proved independent of their presentation. FP spectral radii form the unique

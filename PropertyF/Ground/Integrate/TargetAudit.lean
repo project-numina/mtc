@@ -13,6 +13,7 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -76,14 +77,18 @@ import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.FusionDimensionField
 import all PropertyF.Ground.Dimensions.GlobalInequality
 import all PropertyF.Ground.Dimensions.GroundNorm
+import all PropertyF.Ground.Dimensions.IntrinsicNonzero
 import all PropertyF.Ground.Dimensions.IteratedTrace
 import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.PseudoUnitary
+import all PropertyF.Ground.Dimensions.SphericalArithmetic
+import all PropertyF.Ground.Dimensions.SphericalCriterion
 import all PropertyF.Ground.Dimensions.TargetDimensionField
 import all PropertyF.Ground.Dimensions.TensorMultiplicativity
 import all PropertyF.Ground.Dimensions.TensorTrace
 import all PropertyF.Ground.Dimensions.Trace
+import all PropertyF.Ground.Dimensions.UnitNorm
 import all PropertyF.Ground.Final
 import all PropertyF.Ground.Fusion.Agreement
 import all PropertyF.Ground.Fusion.Character
@@ -108,6 +113,7 @@ import all PropertyF.Ground.Integrate.Conjugacy
 import all PropertyF.Ground.Integrate.ConjugateBound
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
+import all PropertyF.Ground.Integrate.ExampleDimensions
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.LegacyBridge
