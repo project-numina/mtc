@@ -85,3 +85,4 @@ public import PropertyF.Ground.Calculus.GaloisBlocks
 public import PropertyF.Ground.Calculus.SemilinearMaps
 public import PropertyF.Ground.Calculus.GaloisTraceBound
 public import PropertyF.Ground.Calculus.GaloisOverlap
+public import PropertyF.Ground.Calculus.GaloisRigidity
