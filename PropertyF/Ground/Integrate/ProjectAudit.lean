@@ -385,7 +385,6 @@ import all PropertyF.Ground.Centre.ProductImages
 import all PropertyF.Ground.Centre.ReverseBraiding
 import all PropertyF.Ground.Centre.SymmetricAction
 import all PropertyF.Ground.Centre.SymmetricIntegrality
-import all PropertyF.Ground.Centre.Zero
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.CentreCabling.ProductGenerated
 import all PropertyF.Ground.CentreCalculus.Core
