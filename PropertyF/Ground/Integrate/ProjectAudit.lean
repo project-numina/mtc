@@ -173,9 +173,18 @@ run_cmd do
       checked := checked + 1
   logInfo m!"Audited {checked} integrated project declarations: no sorryAx or custom axioms."
 
+private def auditFixture (n : Nat) : Nat := n
+
 open Lean Elab Command PropertyF.Ground.DependencyAudit in
 run_cmd do
   let env ← getEnv
+  let modified ← match Lean.Compiler.setImplementedBy env
+      ``auditFixture ``Nat.succ with
+    | .ok env => pure env
+    | .error err => throwError "could not create foreign-implementation test fixture: {err}"
+  match findIssue modified ``auditFixture with
+  | some (.foreignImplementation _) => pure ()
+  | _ => throwError "dependency audit did not reject a substituted implementation"
   match findIssue env `PropertyF.Ground.AuditMissingFixture with
   | some (.missingDeclaration _) => pure ()
   | _ => throwError "dependency audit did not reject a missing declaration"
