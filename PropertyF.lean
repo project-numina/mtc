@@ -239,6 +239,7 @@ public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
 public import PropertyF.Ground.CentreInduction.UnitNormalization
 public import PropertyF.Ground.CentreInduction.CrossingUnit
 public import PropertyF.Ground.CentreInduction.CrossingTensor
+public import PropertyF.Ground.CentreInduction.BasisRefinement
 public import PropertyF.Ground.CentreInduction.CandidateAssembly
 
 public import PropertyF.Ground.CentreInduction.BasisPairing

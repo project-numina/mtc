@@ -171,8 +171,10 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   argument by reducing the unit matrix to its unique diagonal block. Hence
   only the finite tensor check remains for the actual half-braiding.
   `closeFusionMap_tensor` and `crossingBlock_tensor` prove composition of
-  dual mates and individual crossing blocks; the remaining tensor-law
-  calculation must identify the nested fusion-basis sum with the direct sum.
+  dual mates and individual crossing blocks. `crossingBlock_refinement`
+  now proves the nested fusion-basis contraction equals the direct one.
+  The remaining tensor-law calculation must expand the actual biproduct
+  crossing composite into those nested blocks and match the sums.
 - `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
   transpose and proves it injective; composing it with the unit-summand
   counit recovers the original map. Centrality and surjectivity onto centre
