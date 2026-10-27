@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.Fusion
+public import PropertyF.Ground.Fusion.SpectralIntegral
 
 /-! Pseudo-unitarity supplies the nonzero scalar needed for averaging. -/
 
@@ -11,11 +12,8 @@ universe v u
 /-- The global categorical dimension of a pseudo-unitary fusion category is
 nonzero, because its global FP dimension is at least one. -/
 theorem globalDimension_ne_zero_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
-    (hPU : PseudoUnitary C) : globalDimension C ≠ 0 := by
-  rw [PseudoUnitary] at hPU
-  rw [hPU]
-  have hpos : 0 < globalFPDimension C := lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)
-  exact_mod_cast (ne_of_gt hpos)
+    (hPU : PseudoUnitary C) : globalDimension C ≠ 0 :=
+  Ground.globalDimension_ne_zero_of_pseudoUnitary C hPU
 
 /-- For pseudo-unitary C the fusion assembly needs no separate nonzero
 global-dimension premise. The adjunction and loop-sliding identity remain
@@ -27,6 +25,7 @@ theorem fusion_of_pseudoUnitary_and_induction (C : BraidedFusionCategory.{v,u})
     (I : C.Obj ⥤ CategoryTheory.Center C.Obj)
     (adj : CategoryTheory.Center.forget C.Obj ⊣ I) :
     IsFusionCategory (CategoryTheory.Center C.Obj) :=
-  fusion_of_adjunction_and_loop C p hp hslide (globalDimension_ne_zero_of_pseudoUnitary C hPU) I adj
+  fusion_of_adjunction_and_loop C p hp hslide
+    (Ground.globalDimension_ne_zero_of_pseudoUnitary C hPU) I adj
 
 end PropertyF.Ground.CentreInduction
