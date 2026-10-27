@@ -1,5 +1,19 @@
 # Centre workstream status
 
+## Round 2 route
+
+For an arbitrary centre object, take its underlying right dual and obtain the
+crossing by taking the rigid mate of the given half-braiding, normalized at the
+unit. Its tensor law and the evaluation/coevaluation intertwining equations
+must be proved from the half-braiding law and the zig-zag identities; the
+normalization alone proves neither. The centre is braided, so one right dual
+per object also supplies a left dual. For the bundle use the existing exact
+abelian and linear centre instances, inject centre Hom spaces into finite base
+Hom spaces, and use the established simple unit. Fusion owns the genuinely
+remaining finite semisimple decomposition of the actual centre, via induction
+and separability; bundle it against these same canonical instances. No product
+image dominance is assumed.
+
 ## Route
 
 Mathlib constructs the braided monoidal Drinfeld centre and the positive monoidal embedding. For the fusion and dimension theorem the candidate elementary route is the induction functor, built using a finite semisimple decomposition as a coend, followed by its adjunction to the forgetful functor and the dimension computation. The coend construction, semisimplicity of the centre, pivotal traces, and nondegeneracy are substantial missing proofs; induction is a proposed route, not a result. The Deligne tensor product and its universal property are also absent. Unconditional dominance of C ⊠ C^rev → Z(C), requested in the workstream brief, is false: for C = Rep_C(Z/2) the positive and negative embeddings agree and the product image has only two simple objects, whereas the centre has four. Dominance requires an additional nondegeneracy assumption. This does not change the frozen target.
@@ -31,6 +45,11 @@ The centre has a constructed preadditive structure, linear structure over any ri
 `groupAverage_idempotent` and `algebraAverage_idempotent` establish finite-group averaging as an idempotent in any algebra over a commutative ring with invertible group order. `alternatingProjector`, `alternatingProjector_eq_sum`, and `alternatingProjector_idempotent` specialize this to the sign character of a symmetric group. `alternatingProjector_splits` constructs the split image in an idempotent-complete linear category, and `alternatingProjector_dimension_formula` identifies its pivotal dimension with the normalized signed sum of traces of the action operators. This does not yet construct the symmetric-group action on tensor powers or evaluate those operator traces.
 
 `objectPropertyF_of_symmetricGroup_actions` proves the property-F consequence of an explicit symmetric-group action whose adjacent transpositions act by the actual braid generators. The action itself is a premise, and is not yet constructed even for the vector-space test category.
+
+`CentreBundle.fusionOfFiniteSemisimple` assembles the actual centre fusion
+interface from centre rigidity and the explicit finite semisimple decomposition;
+finite Hom spaces and simple unit are proved from C. This is conditional on
+the stated decomposition, which fusion owns, and on centre rigidity.
 
 ## In progress
 
