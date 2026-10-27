@@ -5,6 +5,7 @@ public import PropertyF.Descent
 public import PropertyF.Transfer
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Modular.BraidIso
+public import PropertyF.Ground.Modular.BraidFunctor
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.

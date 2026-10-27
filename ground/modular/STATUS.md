@@ -7,11 +7,12 @@
 - `PropertyF.Ground.Modular.modularDataOfVerlinde` constructs `ModularData` from the S identities and Verlinde character equations, deriving both classification and Galois fields.
 - `PropertyF.Ground.Modular.modularDataOfCharacters`: constructs the existing `ModularData` package from its numerical identities plus a bijective classification of normalized S-columns as fusion characters. The Galois permutation and its character equation are constructed, not supplied.
 - `PropertyF.Ground.Modular.braidGenerator_natural`, `conjugate_braidGenerator`, and `braidImageIso`: isomorphic objects have isomorphic braid-image groups via the actual tensor-power isomorphisms; this requires only a braided monoidal category.
+- `PropertyF.Ground.Modular.braidGenerator_functor`, `braidImageFunctorIso`, `braidImages_of_essentiallySurjective`, and `conjugate_images`: the old `StandardInputs.conjugate_images` field is proved from the braided equivalence; the general result works for any faithful, essentially surjective braided monoidal functor without old hypothesis structures.
 - Verified: `LEAN_NUM_THREADS=4 taskset -c 20-23 lake build PropertyF.Ground.Modular.Characters`.
 
 ## In progress
 
-- Develop braid-image equivalences under braided monoidal equivalences and connect to semilinear conjugacy.
+- Derive conjugate-label and positive-character preservation from fusion rules and their uniqueness; investigate categorical S-matrix ingredients.
 - Make the S/Verlinde and Galois results usable directly in the ground development without old hypothesis structures in their dependency cone.
 
 ## Blocked / dependencies
@@ -23,6 +24,6 @@
 
 - Construct categorical S, symmetry, unit column, S-square, Verlinde, and normalized-column character classification from a genuine modular category; combine with the completed Galois action construction.
 - Derive conjugate label equivalence and positive-character invariance from the semilinear braided equivalence and fusion workstream's FP uniqueness.
-- Construct the remaining braid-image equivalence under a braided monoidal functor, with coherent comparison maps for tensor powers; combine with `braidImageIso` and essential surjectivity.
+- `conjugate_images` is complete; integrate its general braided-functor version into the ground proof without old hypothesis structures.
 
 This is substantial foundational work; the present result discharges only the abstract Galois-action construction once character classification and modular identities are established, not the category-level obligations.
