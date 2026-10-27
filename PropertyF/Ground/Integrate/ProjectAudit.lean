@@ -28,6 +28,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -79,13 +80,17 @@ import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.TargetDimensionField
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Final
+import all PropertyF.Ground.Fusion.Agreement
+import all PropertyF.Ground.Fusion.Character
 import all PropertyF.Ground.Fusion.Integrality
 import all PropertyF.Ground.Fusion.MatrixIntegral
 import all PropertyF.Ground.Fusion.Multiplicity
+import all PropertyF.Ground.Fusion.Perron
 import all PropertyF.Ground.Fusion.PositiveMatrix
 import all PropertyF.Ground.Fusion.Reciprocity
 import all PropertyF.Ground.Fusion.Schur
 import all PropertyF.Ground.Fusion.Simples
+import all PropertyF.Ground.Fusion.SpectralBound
 import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.TotalMatrix
@@ -154,6 +159,8 @@ run_cmd do
       ``PropertyF.Ground.target_of_numerical_witnesses,
       ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
+      ``PropertyF.Ground.fpSimple_eq_fpCharacter,
+      ``PropertyF.Ground.fpSimple_mul,
       ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,
       ``PropertyF.Ground.Dimensions.squaredNorm_independent] do

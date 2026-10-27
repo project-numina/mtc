@@ -48,8 +48,8 @@
 
 No final theorem: the target needs FP/semisimple, intrinsic/spherical dimension,
 centre, modular, and categorical braid/trace constructions enumerated in the
-ledger. The FP spectral-radius/character identification and choice independence,
-is not yet proved. The intrinsic global dimension is now proved independent
+ledger. The FP spectral-radius/character identification is proved; FP representative
+independence remains to be proved. The intrinsic global dimension is now proved independent
 of both scalar/double-dual choices and simple representatives (dimensions
 commit 4a39ec5). The work
 is a substantial multi-workstream formalization, not a short integration patch;
