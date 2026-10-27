@@ -231,6 +231,8 @@ public import PropertyF.Ground.Dimensions.RootUnitComponent
 
 public import PropertyF.Ground.Dimensions.RootDualPairing
 
+public import PropertyF.Ground.Dimensions.PositivePivotalDual
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
