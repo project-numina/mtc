@@ -134,29 +134,4 @@ theorem eno_root_norm_saturation_of_pseudoUnitary
   intro i
   simpa [d, abs_of_nonneg (norm_nonneg _)] using h i
 
-/-- Once the root dimensions are made real, ENO's remaining categorical
-identities and pseudo-unitarity construct the positive spherical structure. -/
-theorem eno_pseudoUnitary_real_root_yields_positive_spherical
-    (C : Ground.BraidedFusionCategory.{v,u}) (d : Fin (Ground.rank C) → ℝ)
-    (hreal : ∀ i, rootDimension C i = (d i : ℂ))
-    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1)
-    (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
-      rootDimension C i * rootDimension C j)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
-    (hnorm : ∀ i, Ground.squaredNorm C (Ground.simples C i) =
-      ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ) := by
-  have hs := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
-  have hd : ∀ i, |d i| = Ground.fpSimple C i := by
-    intro i
-    simpa [hreal, Complex.norm_real] using hs i
-  apply eno_real_saturated_root_yields_positive_spherical C d hreal hd hinv heig hnat
-  intro i
-  rw [hnorm i, hs i]
-
-
 end PropertyF.Ground.Dimensions

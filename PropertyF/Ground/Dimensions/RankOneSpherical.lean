@@ -52,10 +52,6 @@ theorem fourthDualIso_tensor_unitLabel_right (C : Ground.BraidedFusionCategory.{
           (((doubleDualTensorIso X (Ground.simples C (Ground.unitIndex C))).homᘁ)ᘁ) :=
   fourthDualIso_tensor_of_signed_defect C _ _ (rootDimension C (Ground.unitIndex C))
     (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_right C X)
-/-- The unit label is fixed by the simple-dual involution. -/
-theorem dualIndex_unit (C : Ground.BraidedFusionCategory.{v,u}) :
-    Ground.dualIndex C (Ground.unitIndex C) = Ground.unitIndex C := Ground.dualIndex_unit C
-
 /-- The root tensor defect is the unit sign when its left factor is the right
 dual of the chosen unit representative. -/
 theorem rootTensorDefect_unitLabelDual_left (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
@@ -63,7 +59,7 @@ theorem rootTensorDefect_unitLabelDual_left (C : Ground.BraidedFusionCategory.{v
       rootDimension C (Ground.unitIndex C) • 𝟙 (((Ground.simples C (Ground.unitIndex C))ᘁ) ⊗ X) := by
   let e : ((Ground.simples C (Ground.unitIndex C))ᘁ) ≅
       Ground.simples C (Ground.unitIndex C) := by
-    simpa only [dualIndex_unit] using rightDualLabelIso C (Ground.unitIndex C)
+    simpa only [Ground.dualIndex_unit] using rightDualLabelIso C (Ground.unitIndex C)
   let E := e ⊗ᵢ Iso.refl X
   apply (cancel_mono E.hom).1
   have h := rootTensorDefect_natural C e.hom (𝟙 X)

@@ -28,7 +28,7 @@ theorem rootDualSign_dual (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Gro
   let Y := Ground.simples C (Ground.dualIndex C i)
   let : Simple X := Ground.simples_simple C i
   let : Simple Y := Ground.simples_simple C _
-  let : Simple (Xᘁ) := simple_rightDual C X
+  let : Simple (Xᘁ) := Ground.simple_rightDual C X
   have he : Ground.squaredNorm C Y = Ground.squaredNorm C X := by
     rw [← target_squaredNorm_iso C (rightDualLabelIso C i)]
     exact target_squaredNorm_rightDual C X

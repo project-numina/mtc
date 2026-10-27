@@ -34,7 +34,7 @@ theorem rootDual_differs_by_sign (C : Ground.BraidedFusionCategory.{v,u}) (X : C
     [Simple X] : ∃ ε : ℂ, ε * ε = 1 ∧
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom =
         ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom := by
-  letI : Simple (Xᘁ) := simple_rightDual C X
+  letI : Simple (Xᘁ) := Ground.simple_rightDual C X
   letI : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := Ground.IsFusionCategory.hom_finite _ _
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)

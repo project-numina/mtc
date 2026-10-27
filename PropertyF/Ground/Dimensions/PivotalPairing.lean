@@ -1,5 +1,7 @@
 module
-public import PropertyF.Ground.Dimensions.SphericalPivotalDual
+public import PropertyF.Ground.Dimensions.RootDualPairing
+public import PropertyF.Ground.Dimensions.PositiveSpherical
+public import PropertyF.Ground.Dimensions.SignCharacter
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory

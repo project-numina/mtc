@@ -16,7 +16,7 @@ theorem simple_rightDual (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [S
 isomorphism, by applying the right-trace result to its simple dual. -/
 theorem leftQuantumTrace_simple_ne_zero (C : Ground.BraidedFusionCategory.{v,u})
     (X : C.Obj) [Simple X] (j : X ≅ (Xᘁ)ᘁ) : leftQuantumTrace j ≠ 0 := by
-  let : Simple (Xᘁ) := simple_rightDual C X
+  let : Simple (Xᘁ) := Ground.simple_rightDual C X
   rw [leftQuantumTrace_eq_rightDual]
   exact rightQuantumTrace_simple_ne_zero C (Xᘁ) (rightDualIsoMap j).symm
 
@@ -52,7 +52,7 @@ theorem leftQuantumTrace_dual_component {C : Type u} [Category.{v} C] [MonoidalC
 pivotal or spherical structure. -/
 theorem target_squaredNorm_rightDual (C : Ground.BraidedFusionCategory.{v,u})
     (X : C.Obj) [Simple X] : Ground.squaredNorm C (Xᘁ) = Ground.squaredNorm C X := by
-  let : Simple (Xᘁ) := simple_rightDual C X
+  let : Simple (Xᘁ) := Ground.simple_rightDual C X
   let j := Ground.doubleDualIso C X
   rw [target_squaredNorm_choice_independent C (Xᘁ) (rightDualIsoMap j).symm,
     target_squaredNorm_choice_independent C X j]
@@ -64,7 +64,7 @@ squared pivotal dimension. -/
 theorem spherical_pivotalDimension_rightDual_sq (C : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) (X : C.Obj) [Simple X] :
     pivotalDimension C p (Xᘁ) ^ 2 = pivotalDimension C p X ^ 2 := by
-  let : Simple (Xᘁ) := simple_rightDual C X
+  let : Simple (Xᘁ) := Ground.simple_rightDual C X
   have h := target_squaredNorm_rightDual C X
   rw [target_squaredNorm_eq_dimension_sq C p hp (Xᘁ),
     target_squaredNorm_eq_dimension_sq C p hp X] at h

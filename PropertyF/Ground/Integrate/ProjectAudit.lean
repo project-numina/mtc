@@ -7,7 +7,6 @@ public import PropertyF.Ground.Integrate.StrandInclusion
 public import PropertyF.Ground.Integrate.Representatives
 public import PropertyF.Ground.Integrate.Conjugacy
 public import PropertyF.Ground.Integrate.Arithmetic
-public import PropertyF.Ground.Integrate.PropertyFTransport
 public import PropertyF.Ground.Final
 public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Fusion.Reciprocity
@@ -128,10 +127,8 @@ import all PropertyF.Ground.Dimensions.DefectSliding
 import all PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
 import all PropertyF.Ground.Dimensions.DoubleDualBraiding
 import all PropertyF.Ground.Dimensions.DualBraiding
-import all PropertyF.Ground.Dimensions.ENOInvolution
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.PivotalLift
-import all PropertyF.Ground.Integrate.PivotalCentralityReduction
 import all PropertyF.Ground.CentreInduction.DualTensorComparison
 import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
 import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
@@ -239,7 +236,6 @@ import all PropertyF.Ground.Dimensions.PivotalBounds
 import all PropertyF.Ground.Dimensions.PivotalDual
 import all PropertyF.Ground.Dimensions.PivotalPairing
 import all PropertyF.Ground.Dimensions.PivotalPseudoUnitary
-import all PropertyF.Ground.Dimensions.PositivePivotalDual
 import all PropertyF.Ground.Dimensions.RankOneCriterion
 import all PropertyF.Ground.Dimensions.RankOneSpherical
 import all PropertyF.Ground.Dimensions.RealSphericalBounds
@@ -248,7 +244,6 @@ import all PropertyF.Ground.Dimensions.RightDualUnitTensor
 import all PropertyF.Ground.Dimensions.RootDualLabel
 import all PropertyF.Ground.Dimensions.RootDualPairing
 import all PropertyF.Ground.Dimensions.RootUnitComponent
-import all PropertyF.Ground.Dimensions.SphericalPivotalDual
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
 import all PropertyF.Ground.Integrate.NumericalCoreReduction
@@ -500,12 +495,10 @@ import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.FunctorUniverse
-import all PropertyF.Ground.Integrate.GeneratedCenterReduction
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.OverlapReduction
-import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
@@ -601,7 +594,7 @@ run_cmd do
       ``PropertyF.Ground.Dimensions.target_globalDimension_independent_simples,
       ``PropertyF.Ground.simple_strand_inclusion,
       ``PropertyF.Ground.weaklyIntegral_of_globalFPDimension_fixed,
-      ``PropertyF.Ground.galois_propertyF,
+      ``PropertyF.Ground.Modular.conjugate_propertyF,
       ``PropertyF.Ground.target_of_galois_invariance_and_pseudo_fixedness,
       ``PropertyF.Ground.target_of_pseudo_fixedness,
       ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
@@ -637,13 +630,11 @@ run_cmd do
       ``PropertyF.Ground.target_of_center_centralizers,
       ``PropertyF.Ground.target_of_center_product_retracts,
       ``PropertyF.Ground.target_of_actual_center,
-      ``PropertyF.Ground.target_of_actual_center_generated,
       ``PropertyF.Ground.Calculus.galois_three_strand_rigidity,
       ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
-      ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
       ``PropertyF.Ground.drinfeld_tensor,
       ``PropertyF.Ground.pivotal_twist_balanced,

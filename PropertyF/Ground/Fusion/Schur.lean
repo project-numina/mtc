@@ -33,12 +33,4 @@ theorem fpDimension_simple (F : FusionData C) (j : Fin F.rank) :
   classical
   simp [fpDimension, finrank_simple_hom]
 
-/-- Every endomorphism of a simple object is a scalar. -/
-theorem simple_endomorphism_scalar (F : FusionData C) (i : Fin F.rank)
-    (f : F.simpleObject i ⟶ F.simpleObject i) :
-    ∃ c : ℂ, c • 𝟙 (F.simpleObject i) = f := by
-  letI : Simple (F.simpleObject i) := F.simple_is_simple i
-  letI : FiniteDimensional ℂ (F.simpleObject i ⟶ F.simpleObject i) := F.hom_finite _ _
-  exact CategoryTheory.endomorphism_simple_eq_smul_id ℂ f
-
 end PropertyF.FusionData

@@ -106,10 +106,8 @@ import all PropertyF.Ground.Dimensions.DefectSliding
 import all PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
 import all PropertyF.Ground.Dimensions.DoubleDualBraiding
 import all PropertyF.Ground.Dimensions.DualBraiding
-import all PropertyF.Ground.Dimensions.ENOInvolution
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.PivotalLift
-import all PropertyF.Ground.Integrate.PivotalCentralityReduction
 import all PropertyF.Ground.CentreInduction.DualTensorComparison
 import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
 import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
@@ -217,7 +215,6 @@ import all PropertyF.Ground.Dimensions.PivotalBounds
 import all PropertyF.Ground.Dimensions.PivotalDual
 import all PropertyF.Ground.Dimensions.PivotalPairing
 import all PropertyF.Ground.Dimensions.PivotalPseudoUnitary
-import all PropertyF.Ground.Dimensions.PositivePivotalDual
 import all PropertyF.Ground.Dimensions.RankOneCriterion
 import all PropertyF.Ground.Dimensions.RankOneSpherical
 import all PropertyF.Ground.Dimensions.RealSphericalBounds
@@ -226,7 +223,6 @@ import all PropertyF.Ground.Dimensions.RightDualUnitTensor
 import all PropertyF.Ground.Dimensions.RootDualLabel
 import all PropertyF.Ground.Dimensions.RootDualPairing
 import all PropertyF.Ground.Dimensions.RootUnitComponent
-import all PropertyF.Ground.Dimensions.SphericalPivotalDual
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
 import all PropertyF.Ground.Integrate.NumericalCoreReduction
@@ -478,12 +474,10 @@ import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.FunctorUniverse
-import all PropertyF.Ground.Integrate.GeneratedCenterReduction
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.OverlapReduction
-import all PropertyF.Ground.Integrate.PropertyFTransport
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist

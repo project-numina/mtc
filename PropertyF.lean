@@ -1,6 +1,5 @@
 module
 public import PropertyF.Ground.Integrate.ProjectAudit
-public import PropertyF.Ground.Integrate.GeneratedCenterReduction
 public import PropertyF.Ground.CentreCabling.ProductGenerated
 public import PropertyF.Ground.CentreCalculus.Core
 public import PropertyF.Ground.CentreCalculus.ExteriorReduction
@@ -255,8 +254,6 @@ public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.CentreDimensions.InvolutionTrace
 public import PropertyF.Ground.Dimensions.RootUnitComponent
 public import PropertyF.Ground.Dimensions.RootDualPairing
-public import PropertyF.Ground.Dimensions.PositivePivotalDual
-public import PropertyF.Ground.Dimensions.SphericalPivotalDual
 public import PropertyF.Ground.Dimensions.PivotalPairing
 public import PropertyF.Ground.Dimensions.RealSphericalBounds
 public import PropertyF.Ground.Dimensions.RightDualUnitTensor
@@ -359,7 +356,6 @@ public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
 public import PropertyF.Ground.Integrate.CompatibleCenterReduction
 public import PropertyF.Ground.Integrate.RigidCenterReduction
-public import PropertyF.Ground.Integrate.PivotalCentralityReduction
 public import PropertyF.Ground.Integrate.PivotalOnlyReduction
 public import PropertyF.Ground.Integrate.CoreIntegralityReduction
 public import PropertyF.Ground.Integrate.BalancedCenterReduction
@@ -397,7 +393,6 @@ public import PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
 public import PropertyF.Ground.Dimensions.DefectAssociativity
 public import PropertyF.Ground.Dimensions.DefectSliding
 public import PropertyF.Ground.Dimensions.DefectExtension
-public import PropertyF.Ground.Dimensions.ENOInvolution
 public import PropertyF.Ground.Dimensions.BraidingCapSlide
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding

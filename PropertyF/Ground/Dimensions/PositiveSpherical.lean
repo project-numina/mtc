@@ -18,7 +18,7 @@ theorem spherical_dimension_dual_of_positive (C : Ground.BraidedFusionCategory)
   let X := Ground.simples C i
   let : Simple X := Ground.simples_simple C i
   let : Simple (ᘁX) := Ground.simple_leftDual C X
-  let : Simple (Xᘁ) := simple_rightDual C X
+  let : Simple (Xᘁ) := Ground.simple_rightDual C X
   let e : (ᘁX) ≅ (Xᘁ) :=
     leftDualIso HasLeftDual.exact (BraidedCategory.exactPairing_swap X (Xᘁ))
   obtain ⟨e'⟩ := Ground.dualIndex_iso C i

@@ -124,30 +124,4 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
   intro i
   rw [hnorm i, hsat i]
 
-/-- ENO's positive spherical structure follows from the double/fourth-dual
-coherence, trace-matrix eigenvector identity and intrinsic root-norm identity. -/
-theorem eno_pseudoUnitary_yields_positive_spherical_of_dual_coherence
-    (C : Ground.BraidedFusionCategory.{v,u})
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
-    (hfourth : ∀ X Y : C.Obj, (fourthDualIso C (X ⊗ Y)).hom =
-      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso X Y).homᘁ)ᘁ))
-    (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
-      rootDimension C i * rootDimension C j)
-    (hnorm : ∀ i, Ground.squaredNorm C (Ground.simples C i) =
-      ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ) := by
-  apply eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities C _ heig hnat hnorm hpu
-  intro i j k
-  apply multiplicityDefect_involution_of_tensor_square C i j k
-  apply rootTensor_square_of_fourthDual_tensor C
-  · exact (hnat ((fourthDualRootNaturalIso C).app (Ground.simples C i)).hom
-      ((fourthDualRootNaturalIso C).app (Ground.simples C j)).hom).symm
-  · exact hfourth _ _
-
-
 end PropertyF.Ground.Dimensions

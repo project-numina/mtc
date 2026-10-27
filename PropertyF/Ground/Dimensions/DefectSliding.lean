@@ -79,18 +79,6 @@ theorem enoTraceMatrix_reciprocity_of_fourthDual_tensor
   exact rootTensorDefect_slide_of_involution C i (Ground.simples C k)
     (rootTensorDefect_involution_of_fourthDual_tensor C hfourth _ _)
 
-/-- The fourth-dual tensor law and pseudo-unitarity construct a positive spherical structure. -/
-theorem eno_pseudoUnitary_yields_positive_spherical_of_fourthDual_tensor
-    (C : Ground.BraidedFusionCategory.{v,u})
-    (hfourth : ∀ X Y : C.Obj, (fourthDualIso C (X ⊗ Y)).hom =
-      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso X Y).homᘁ)ᘁ)) (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ) :=
-  eno_pseudoUnitary_yields_positive_spherical_of_fourth_tensor_and_reciprocity C hfourth
-    (enoTraceMatrix_reciprocity_of_fourthDual_tensor C hfourth) hpu
-
 /-- The fourth-dual tensor law implies all global Galois dimension bounds. -/
 theorem globalDimension_galois_bounds_of_fourthDual_tensor
     (C : Ground.BraidedFusionCategory.{v,u})
