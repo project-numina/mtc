@@ -193,11 +193,12 @@ public import PropertyF.Ground.Calculus.SharpRigidity
 
 public import PropertyF.Ground.Calculus.IntegratorBridge
 
+public import PropertyF.Ground.CentreCabling.ProductGenerated
+public import PropertyF.Ground.CentreCabling.SCentrality
+public import PropertyF.Ground.CentreCabling.FusionCentralizer
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
-import PropertyF.Ground.CentreCabling.ProductGenerated
-import PropertyF.Ground.CentreCabling.SCentrality
-import PropertyF.Ground.CentreCabling.FusionCentralizer
