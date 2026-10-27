@@ -41,6 +41,8 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.Dimensions.MonodromyTensorCap
+import all PropertyF.Ground.Integrate.DrinfeldComplete
 import all PropertyF.Ground.CentreBundle.Canonical
 import all PropertyF.Ground.CentreCabling.LanternSpherical
 import all PropertyF.Ground.CentreCabling.TwistDual
@@ -648,6 +650,9 @@ run_cmd do
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
+      ``PropertyF.Ground.drinfeld_tensor,
+      ``PropertyF.Ground.pivotal_twist_balanced,
+      ``PropertyF.Ground.target_of_pseudoUnitary_pivotal_existence,
       ``PropertyF.Ground.target_of_fourthDual_tensor_and_center_cap,
       ``PropertyF.Ground.target_of_pivotal_base_and_center_cap,
       ``PropertyF.Ground.CentreIntegrate.pivotal_balance_of_drinfeld_tensor,

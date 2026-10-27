@@ -319,3 +319,11 @@ the base and the tensor-pairing cap identity on its constructed centre.
 Fusion is working on deriving the first from Drinfeld's tensor law; dimensions
 and calculus are working on the cap. Full build and strict audit pass (482
 modules, 4,750 declarations).
+
+Dimensions `550f4d6` proves the tensor-pairing cap identity. Integration's
+`drinfeld_tensor` and `pivotal_twist_balanced` discharge balancing, and
+`target_of_pseudoUnitary_pivotal_existence` leaves only existence of a
+pivotal structure on the pseudo-unitary property-F base. Fusion `57297bd`
+reports fourth-dual tensor coherence and positive spherical existence from
+Drinfeld tensor coherence and is awaiting integration. Full build and strict
+project audit pass (504 modules, 4,828 declarations).

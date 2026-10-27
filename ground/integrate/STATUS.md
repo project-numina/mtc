@@ -300,3 +300,12 @@ no reliable completion-time estimate is available.
   deriving the fourth-dual law from the Drinfeld tensor law; dimensions and
   calculus are pursuing the cap diagram. Full build and strict project audit
   pass (482 modules, 4,750 declarations).
+
+- Merged dimensions `550f4d6`: the tensor-pairing cap identity is proved.
+  `drinfeld_tensor` and `pivotal_twist_balanced` now hold for any ground
+  braided fusion category. `target_of_pseudoUnitary_pivotal_existence`
+  reduces the frozen target to existence of a pivotal structure on the
+  pseudo-unitary property-F base. Fusion `57297bd` has since proved the
+  fourth-dual tensor law and positive spherical existence from the Drinfeld
+  law; integration of that commit is the remaining step. Full build and strict
+  project audit pass (504 modules, 4,828 declarations).

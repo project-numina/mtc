@@ -19,6 +19,8 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.Dimensions.MonodromyTensorCap
+import all PropertyF.Ground.Integrate.DrinfeldComplete
 import all PropertyF.Ground.CentreBundle.Canonical
 import all PropertyF.Ground.CentreCabling.LanternSpherical
 import all PropertyF.Ground.CentreCabling.TwistDual

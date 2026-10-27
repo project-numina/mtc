@@ -132,3 +132,9 @@ pseudo-unitarity, and pivotal twist balancing on the constructed centre.
 `target_of_pivotal_base_and_center_cap` wires the exact tensor-pairing cap
 identity to balancing and the target. The cap and base pivotal-existence
 premises remain open; dimensions and calculus are pursuing the cap diagram.
+
+Dimensions `550f4d6` proves the tensor-pairing cap, and `drinfeld_tensor` and
+`pivotal_twist_balanced` are now proved. The latest target reduction needs only
+pseudo-unitary pivotal existence. Fusion `57297bd` proves the fourth-dual
+law and pseudo-unitary spherical existence conditional on the Drinfeld law;
+that result is awaiting integration.
