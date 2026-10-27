@@ -123,6 +123,9 @@
   centre evaluation/coevaluation equations remain open; expanding the
   adjunction mates produces a large coherence identity involving both dual
   pairings and the original half-braiding. No rigid-centre instance is claimed.
+- Centre pseudo-unitarity needs an independent route: FP-square plus the
+  current categorical-square result cannot establish it without assuming the
+  very positive spherical structure that ENO would then construct.
 - Wire genuine centre fusion, positive spherical, dimension, S invertibility,
   centralizer and finite-image constructions as they arrive.
 - Continue validating mathematical interfaces and exercising the final

@@ -57,3 +57,11 @@ requires the dual crossing tensor equation and centrality of evaluation and
 coevaluation. Fusion's `globalFPDimension_square_of_adjunction` reduces the
 FP-square to an actual right adjoint and its underlying induction formula.
 The adjoint, finite semisimplicity and centre rigidity are not constructed.
+
+**Avoid a dependency cycle:** the centre FP-square formula alone does not show
+that the centre is pseudo-unitary. Applying the generic ENO positive-spherical
+construction to the centre first requires its pseudo-unitarity, while deriving
+its categorical global dimension from FP-square via the current modular
+theorem already assumes a positive spherical structure. A separate intrinsic
+categorical-square proof or an independent construction of the positive
+spherical structure is needed.
