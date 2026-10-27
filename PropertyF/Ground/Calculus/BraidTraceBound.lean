@@ -2,6 +2,7 @@ module
 public import PropertyF.Ground.Calculus.BraidWeights
 public import PropertyF.Ground.Calculus.WeightFacts
 public import PropertyF.UnitaryTrace
+public import PropertyF.Ground.Fusion.ObjectDimension
 
 /-! The ordinary weighted trace bound for actual braid algebras. -/
 
@@ -51,5 +52,41 @@ theorem pivotalTrace_braid_unitary_bound
         (norm_nonneg _)
       exact Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (hfp i)
     _ = ∑ i, (m i : ℝ) * fp i := multiplicity_mass_eq m d mult fp hdim
+
+/-- The actual FP dimension of a tensor power is the corresponding power. -/
+theorem fpDimension_tensorPower (C : Ground.BraidedFusionCategory.{v,u})
+    (X : C.Obj) (n : ℕ) : Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n := by
+  induction n with
+  | zero => simp [tensorPower, Ground.fpDimension_unit]
+  | succ n ih =>
+    simp only [tensorPower, Ground.fpDimension_tensor, ih, pow_succ]
+    ring
+
+/-- Finite braid image constructs unitary blocks in which the ordinary
+categorical trace bound is the n-strand FP-dimension power. -/
+theorem exists_unitary_braid_trace_power_bound
+    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (hfinite : Finite (braidImage X n))
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
+    (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ Ground.fpSimple C i) :
+    ∃ (r : ℕ) (d : Fin r → ℕ)
+      (b : braidAlgebra X n ≃ₐ[ℂ] ∀ j, Matrix (Fin (d j)) (Fin (d j)) ℂ),
+      (∀ j, 0 < d j) ∧
+      (∀ g j, b (groupInImage (braidEndRepresentation X n) g) j ∈
+        Matrix.unitaryGroup (Fin (d j)) ℂ) ∧
+      ∀ a : braidAlgebra X n, (∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) →
+        ‖scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
+          Ground.fpDimension C X ^ (n + 2) := by
+  let m : Fin (Ground.rank C) → ℕ := fun i =>
+    Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
+  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
+  obtain ⟨r, d, b, hnonzero, hunitary⟩ := braidAlgebra_unitary_blocks X n hfinite
+  have hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
+  refine ⟨r, d, b, hd, hunitary, fun a ha => ?_⟩
+  have h := pivotalTrace_braid_unitary_bound C X n p scalar m e r d hd b
+    (Ground.fpSimple C) hbound a ha
+  change ‖scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
+    Ground.fpDimension C (tensorPower X (n + 2)) at h
+  simpa only [fpDimension_tensorPower] using h
 
 end PropertyF.Ground.Calculus
