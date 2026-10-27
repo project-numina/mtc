@@ -47,9 +47,16 @@ inductive Issue where
   | uninspectedModule (moduleName : Name)
   deriving Repr
 
-/-- Fail closed when a project declaration comes from a module whose private
-bodies were not imported. External modules cannot depend on project modules,
-so their bodies cannot hide a project hypothesis and need not be traversed. -/
+/-- Pinned upstream modules cannot import this project. Any other module must be
+inspected even if it uses a namespace other than `PropertyF`. -/
+def isTrustedUpstream (n : Name) : Bool :=
+  #["Init", "Lean", "Std", "Lake", "Mathlib", "Batteries", "Aesop", "Qq",
+    "Plausible", "ImportGraph", "ProofWidgets", "LeanSearchClient", "Cli"].any fun s =>
+      n.toString == s || n.toString.startsWith (s ++ ".")
+
+/-- Fail closed when a non-upstream declaration comes from a module whose
+private bodies were not imported. Pinned upstream modules cannot depend on
+project modules, so their bodies cannot hide a project hypothesis. -/
 partial def findIssue (env : Environment) (root : Name) : Option Issue := Id.run do
   let mut pending := #[root]
   let mut visited : Std.HashSet Name := {}
@@ -61,7 +68,7 @@ partial def findIssue (env : Environment) (root : Name) : Option Issue := Id.run
       if isForbidden n then return some (.forbidden n)
       if let some idx := env.getModuleIdxFor? n then
         if let some m := env.header.modules[idx.toNat]? then
-          if !m.module.toString.startsWith "PropertyF" then continue
+          if isTrustedUpstream m.module then continue
           if !m.importAll then return some (.uninspectedModule m.module)
       if let some ci := env.checked.get.find? n then
         pending := pending ++ ci.type.getUsedConstants
