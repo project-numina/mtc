@@ -210,6 +210,10 @@ public import PropertyF.Ground.Integrate.CenterProductBridge
 public import PropertyF.Ground.Integrate.CenterBundle
 public import PropertyF.Ground.Integrate.CenterDualMate
 public import PropertyF.Ground.Integrate.ActualCenterReduction
+public import PropertyF.Ground.CentreModular.InductionDimension
+public import PropertyF.Ground.CentreModular.ColumnSeparation
+public import PropertyF.Ground.CentreModular.KirbyCriterion
+public import PropertyF.Ground.CentreModular.RegularSupport
 public import PropertyF.Ground.Integrate.ExamplePropertyF
 
 public import PropertyF.Ground.Calculus.ThreeRigidity
@@ -332,6 +336,7 @@ public import PropertyF.Ground.Dimensions.SphericalReal
 public import PropertyF.Ground.Dimensions.PivotalBounds
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 public import PropertyF.Ground.Dimensions.DefectCoevaluation
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
