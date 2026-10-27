@@ -314,6 +314,7 @@ public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.ForgetDualNaturality
 public import PropertyF.Ground.CentreInduction.ForgetDualTensor
 public import PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
+public import PropertyF.Ground.CentreInduction.PivotalLift
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.CentreInduction.RankOneComplete
 

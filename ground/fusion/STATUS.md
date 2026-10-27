@@ -362,3 +362,15 @@ respects tensorators, and `transported_pivotal_tensor` proves the base pivotal
 components transported to the centre double dual obey the tensor equation
 after forgetting. Naturality is also proved; unit coherence and centrality
 remain to be established. Focused build passes.
+
+`forgetDoubleDualIso_unit` and `transported_pivotal_unit` establish the unit
+coherence of the transported components. `liftedPivotalStructure` constructs
+the actual centre pivotal structure from the single explicit centrality
+equation `PivotalComponentsCentral`; `pivotalComponentsCentral_of_simples`
+reduces that equation to simple test objects.
+`center_structure_of_pivotal_centrality` derives centre fusion, positive
+sphericality, pseudo-unitarity, and the categorical dimension square from
+that equation, centre rigidity, and FP-valued base pivotal dimensions. The
+centrality equation is not proved; neither are centre rigidity or base pivotal
+existence. Focused build passes; pivotal lift and assembly use only the three
+standard kernel axioms.
