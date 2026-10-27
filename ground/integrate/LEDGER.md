@@ -226,3 +226,12 @@ and must be merged; its evaluation centrality is no longer an open item once
 integrated. `CentreIntegrate.twist_sign_of_dual_and_tensor` proves the sign
 from two explicit twist identities on the simple/dual pair; those identities
 remain open and the theorem does not assume or prove a Vafa theorem.
+
+Centre `f1f0122` is now merged: `CentreRigid.rigidCenter` constructs actual
+centre rigidity unconditionally, with the dual, evaluation and coevaluation
+forgetting to the chosen base data. The reductions
+`target_of_fusion_center_integral_numerical_core` and
+`target_of_pivotal_lift_and_integral_numerical_core` discharge this formerly
+open target premise. The latest full build and strict project audit pass (413
+modules, 4,311 declarations). Fusion `f811c73` reduces compatible pivotal-lift
+existence to component centrality; it has not yet been merged here.

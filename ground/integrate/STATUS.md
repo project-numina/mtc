@@ -211,3 +211,11 @@ no reliable completion-time estimate is available.
   reduces the simple twist parity sign to dual compatibility and
   multiplicativity on the dual pair; both remain explicit hypotheses. The
   coevaluation nonzero argument is proved from nonzero simple dimension.
+
+- Merged actual centre rigidity `f1f0122` and its forgetful comparisons.
+  `target_of_fusion_center_integral_numerical_core` removes centre rigidity
+  from the numerical-core reduction, while
+  `target_of_pivotal_lift_and_integral_numerical_core` removes it from the
+  compatible-pivotal route. The other stated premises remain unproved.
+  Expanded project audit and full build pass for 413 modules and 4,311
+  declarations. Fusion's newer pivotal-centrality reduction is not yet merged.

@@ -19,6 +19,13 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreInduction.DualTensorComparison
+import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
+import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
+import all PropertyF.Ground.CentreInduction.ForgetDualTensor
+import all PropertyF.Ground.CentreRigid.Evaluation
+import all PropertyF.Ground.CentreRigid.ForgetComparison
+import all PropertyF.Ground.Integrate.RigidCenterReduction
 import all PropertyF.Ground.CentreIntegrate.TwistSign
 import all PropertyF.Ground.CentreRigid.Coevaluation
 import all PropertyF.Ground.CentreRigid.MateExplicit

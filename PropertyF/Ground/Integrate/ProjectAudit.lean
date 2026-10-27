@@ -41,6 +41,13 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreInduction.DualTensorComparison
+import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
+import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
+import all PropertyF.Ground.CentreInduction.ForgetDualTensor
+import all PropertyF.Ground.CentreRigid.Evaluation
+import all PropertyF.Ground.CentreRigid.ForgetComparison
+import all PropertyF.Ground.Integrate.RigidCenterReduction
 import all PropertyF.Ground.CentreIntegrate.TwistSign
 import all PropertyF.Ground.CentreRigid.Coevaluation
 import all PropertyF.Ground.CentreRigid.MateExplicit
@@ -549,6 +556,9 @@ run_cmd do
       ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
+      ``PropertyF.Ground.CentreRigid.rigidCenter,
+      ``PropertyF.Ground.target_of_fusion_center_integral_numerical_core,
+      ``PropertyF.Ground.target_of_pivotal_lift_and_integral_numerical_core,
       ``PropertyF.Ground.CentreIntegrate.twist_sign_of_dual_and_tensor,
       ``PropertyF.Ground.CentreIntegrate.signed_cycle_count,
       ``PropertyF.Ground.CentreIntegrate.integral_of_cycle_traces,

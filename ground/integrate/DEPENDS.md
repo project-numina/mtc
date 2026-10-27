@@ -91,3 +91,10 @@ base pivotal structure, without assuming centre pseudo-unitarity. The wired
 `target_of_compatible_center_and_integral_numerical_core` exposes only that
 lift/base structure, rigidity, invertible centre S and numerical-core
 integrality. Existence of the lift and base structure remains unproved.
+
+Centre rigidity is constructed: `CentreRigid.rigidCenter` is now integrated.
+`target_of_fusion_center_integral_numerical_core` uses it directly, and
+`target_of_pivotal_lift_and_integral_numerical_core` also constructs the fusion
+instance and sphere conditional on a compatible pivotal lift and FP-valued
+base pivotal structure. Those structures, S invertibility and numerical-core
+integrality remain open.
