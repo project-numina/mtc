@@ -33,6 +33,7 @@ public import PropertyF.Ground.Cabling.Naturality
 public import PropertyF.Ground.Cabling.CableRetract
 public import PropertyF.Ground.Cabling.TensorDecomposition
 public import PropertyF.Ground.Cabling.TensorComponents
+public import PropertyF.Ground.Cabling.MixedBraid
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.CablingDiagram
 
