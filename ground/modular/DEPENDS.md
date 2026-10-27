@@ -78,3 +78,7 @@ The actual categorical S identities, character classification and Galois action 
   transparency; S invertibility follows if the unit is the sole transparent
   simple (`categoricalS_det_ne_zero_of_trivial_transparency`). Centre is proving
   transparent-object triviality; balancing remains open.
+- Fusion proved the actual centre has no non-unit transparent simples. This
+  and our finite-monodromy proof give `center_S_invertible_of_balanced_pivotal`;
+  the only remaining input to that criterion, beyond constructed centre
+  instances/FP dimensions, is the pivotal twist balancing equation.

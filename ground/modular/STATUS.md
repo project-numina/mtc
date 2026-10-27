@@ -223,3 +223,13 @@ twist if the unit is the only transparent simple. For the actual centre the
 transparent-object theorem and twist balancing remain unproved; centre and
 integrate/dimensions respectively are pursuing them. Focused build and direct
 foundational axiom checks passed.
+
+Merged fusion's `center_transparent_simple_iso_unit` and categorical centre
+S criterion. `center_S_invertible_of_balanced_pivotal` now proves S
+invertibility for the actual centre assuming centre rigidity/fusion, FP-valued
+pivotal dimensions, and the actual pivotal twist balancing equation. Centre
+rigidity is constructed; fusion and FP-valued centre pivotal structure are
+constructed given any pivotal structure on the pseudo-unitary base. Actual
+twist balancing and base pivotal existence remain open. Focused build and
+foundational axiom check passed. A full `lake build PropertyF` passed at the
+preceding integration snapshot, including its 4,723-declaration audit.
