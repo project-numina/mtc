@@ -236,6 +236,7 @@ import all PropertyF.Ground.Integrate.ActualCenterReduction
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterBundle
 import all PropertyF.Ground.Integrate.CenterCentralizers
+import all PropertyF.Ground.Integrate.CenterDualMate
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterProductBridge
@@ -380,6 +381,7 @@ run_cmd do
       ``PropertyF.Ground.ScalarTwist.globalDimension_twist,
       ``PropertyF.Ground.fpDimension_functor_universe,
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
+      ``PropertyF.Ground.Integrate.dualCrossing_unit,
       ``PropertyF.Ground.rigidity_of_twisted_overlap,
       ``PropertyF.Ground.target_of_canonical_spherical_center_and_overlap,
       ``PropertyF.Ground.target_of_spherical_existence_center_and_overlap,

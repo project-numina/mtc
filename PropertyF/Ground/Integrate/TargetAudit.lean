@@ -214,6 +214,7 @@ import all PropertyF.Ground.Integrate.ActualCenterReduction
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterBundle
 import all PropertyF.Ground.Integrate.CenterCentralizers
+import all PropertyF.Ground.Integrate.CenterDualMate
 import all PropertyF.Ground.Integrate.CenterFiniteImage
 import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterProductBridge
