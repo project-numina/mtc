@@ -154,21 +154,22 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   naturality in the induction argument, discharging that part of `hb` once
   the candidate becomes a half-braiding. `crossingCandidate_natural_test`
   proves naturality in the crossed object using dual mates and the
-  fusion-basis contraction identity. Invertibility, the tensor law, unit
-  centrality, and the second triangle remain unproved. `crossing_completeness` and
+  fusion-basis contraction identity. The tensor law, unit centrality,
+  and the second triangle remain unproved. `crossing_completeness` and
   `crossingInclusion_projection_ne` prove the completeness and off-diagonal
   vanishing relations for the chosen simple summands. `pairing_crossingProjection`
   identifies these projections with the dual basis, and
   `fusionBasis_contraction_natural` proves the natural contraction identity
   needed to compare decompositions on the two sides of a test-object map.
   `halfBraidingOfCrossingCandidate` assembles the half-braiding from the
-  still-unproved unit normalization on simples and tensor law on triples of
-  simples. `natTrans_isIso_of_simples`, `crossingCandidate_isIso_of_simples`,
+  still-unproved tensor law on triples of simples. `natTrans_isIso_of_simples`, `crossingCandidate_isIso_of_simples`,
   and `crossingCandidate_tensor_of_all_simples` extend finite checks to all
   objects. `weak_isIso` constructs the inverse in a rigid category directly
   from naturality, unit normalization, and the tensor law; consequently
   `crossing_isIso_of_unit_tensor` removes the separate invertibility premise.
-  The remaining finite unit and tensor checks themselves remain unproved.
+  `crossingCandidate_unit` now proves unit normalization for every induction
+  argument by reducing the unit matrix to its unique diagonal block. Hence
+  only the finite tensor check remains for the actual half-braiding.
 - `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
   transpose and proves it injective; composing it with the unit-summand
   counit recovers the original map. Centrality and surjectivity onto centre
