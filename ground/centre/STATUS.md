@@ -58,7 +58,8 @@ and the chosen right evaluation and coevaluation forget to the original maps
 by definition. `dualCrossing_tensor_unit_left` and
 `dualCrossing_tensor_unit_right` prove both unit cases of the crossing tensor
 law from naturality and unit normalization. The general tensor law and both
-centrality equations remain unproved.
+centrality equations remain unproved. `dualMate_counit` and `dualMate_unit`
+expose the mate identities for use in those coherence proofs.
 
 ## In progress
 

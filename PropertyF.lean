@@ -216,3 +216,4 @@ See `FORMALIZATION.md` for the complete assumption ledger.
 public import PropertyF.Ground.CentreBundle.Fusion
 public import PropertyF.Ground.CentreRigid.Lift
 public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.CentreRigid.MateEquations
