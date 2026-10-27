@@ -54,6 +54,7 @@ public import PropertyF.Ground.Dimensions.UnitNorm
 public import PropertyF.Ground.Dimensions.PositiveSpherical
 public import PropertyF.Ground.Dimensions.Drinfeld
 public import PropertyF.Ground.Dimensions.PivotalUniqueness
+public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
 public import PropertyF.Ground.Cabling.Rigidity

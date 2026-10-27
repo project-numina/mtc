@@ -19,6 +19,7 @@
 - `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
 
 - `spherical_dimension_dual_of_positive` removes the dual-invariance premise when spherical simple dimensions are positive; `pseudoUnitary_galois_fp_bounds_of_positive` supplies the Galois bounds in that case. Existence of such a structure remains open.
+- `positive_spherical_isPseudoUnitary` and `positive_spherical_galois_fp_bounds` show any positive spherical structure supplies pseudo-unitarity and the required Galois bounds; constructing the structure remains open.
 - `pivotalStructure_unique_of_simple_dimensions` proves pivotal structures are determined by simple dimensions; `positive_pivotalDimension_eq_fpSimple` and `positive_pivotalStructure_unique` prove the uniqueness and FP-identification parts of ENO 8.23. Existence remains open.
 - `doubleDualIso_natural` and `fourthDualIso_natural` construct and prove naturality of the braided double- and fourth-dual maps. The fourth-dual map’s monoidal coherence remains unproved.
 - `target_squaredNorm_unit` proves the intrinsic norm of the tensor unit is one without a pivotal structure.
