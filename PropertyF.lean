@@ -28,6 +28,7 @@ public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Modular.SAdditivity
 public import PropertyF.Ground.Modular.HopfPartialTrace
 public import PropertyF.Ground.Modular.Verlinde
+public import PropertyF.Ground.Modular.CharacterStar
 public import PropertyF.Ground.Modular.GaloisFromVerlinde
 public import PropertyF.Ground.Modular.PseudoGalois
 public import PropertyF.Ground.Modular.LegacyLabels

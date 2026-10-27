@@ -1,0 +1,119 @@
+module
+public import PropertyF.Ground.Modular.Verlinde
+public import Mathlib.Analysis.Complex.Norm
+
+/-!
+# Duality and complex conjugation of fusion characters
+
+Frobenius reciprocity makes each fusion matrix adjoint to its dual-label
+matrix. A finite inner-product calculation then shows that any normalized
+character sends dual labels to conjugate complex numbers. Applied to categorical
+S columns, this yields the usual dual-conjugation law when dimensions are real.
+-/
+open scoped BigOperators
+@[expose] public noncomputable section
+namespace PropertyF.Ground.Modular
+
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+variable (N : FusionRules ι) (dual : ι → ι)
+variable (hdual : ∀ i j k, N.coeff i j k = N.coeff (dual i) k j)
+
+omit [DecidableEq ι] in
+include hdual in
+/-- Fusion duality makes every normalized character compatible with conjugation. -/
+theorem character_dual_conj (χ : Character N) (i : ι) :
+    χ.value (dual i) = starRingEnd ℂ (χ.value i) := by
+  classical
+  let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * χ.value j
+  have hw : w ≠ 0 := by
+    let r : ℝ := ∑ j, Complex.normSq (χ.value j)
+    have hr : 0 < r := by
+      have hh := Finset.single_le_sum (f := fun j => Complex.normSq (χ.value j))
+        (fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ N.unit)
+      have : 1 ≤ r := by simpa [r, χ.unit_eq] using hh
+      linarith
+    have hw' : w = (r : ℂ) := by
+      simp only [w, r, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]
+    rw [hw']
+    exact_mod_cast ne_of_gt hr
+  have hbalance : χ.value i * w = starRingEnd ℂ (χ.value (dual i)) * w := by
+    calc
+      _ = ∑ j, starRingEnd ℂ (χ.value j) * (χ.value i * χ.value j) := by
+        simp only [w, Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro j _
+        ring
+      _ = ∑ j, ∑ k, starRingEnd ℂ (χ.value j) * ((N.coeff i j k : ℂ) * χ.value k) := by
+        simp only [χ.mul_eq, Finset.mul_sum]
+      _ = ∑ k, ∑ j, ((N.coeff (dual i) k j : ℂ) * starRingEnd ℂ (χ.value j)) * χ.value k := by
+        rw [Finset.sum_comm]
+        apply Finset.sum_congr rfl
+        intro k _
+        apply Finset.sum_congr rfl
+        intro j _
+        rw [hdual i j k]
+        ring
+      _ = ∑ k, starRingEnd ℂ (χ.value (dual i) * χ.value k) * χ.value k := by
+        apply Finset.sum_congr rfl
+        intro k _
+        rw [χ.mul_eq, map_sum, Finset.sum_mul]
+        simp only [map_mul, map_natCast]
+      _ = starRingEnd ℂ (χ.value (dual i)) * w := by
+        simp only [w, map_mul, Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro k _
+        ring
+  have h := mul_right_cancel₀ hw hbalance
+  have hh := congrArg (starRingEnd ℂ) h
+  simpa using hh.symm
+
+/-- Actual fusion coefficients satisfy the adjointness relation. -/
+theorem fusionCoeff_dual_adjoint (C : Ground.BraidedFusionCategory) (i j k : Fin (rank C)) :
+    fusionCoeff C i j k = fusionCoeff C (Ground.dualIndex C i) k j := by
+  rw [fusionCoeff_comm C i j, fusionCoeff_reciprocity_labels, fusionCoeff_comm]
+
+/-- With real simple dimensions, dualizing a label conjugates the corresponding
+categorical S entry. No categorical dual-trace identity is needed. -/
+theorem categoricalS_dual_conj (C : Ground.BraidedFusionCategory)
+    (p : Dimensions.PivotalStructure (C := C.Obj))
+    (hreal : ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j)
+    (i j : Fin (rank C)) :
+    categoricalS C p (Ground.dualIndex C i) j = starRingEnd ℂ (categoricalS C p i j) := by
+  let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
+  let χ : Character rules := {
+    value := fun x => categoricalS C p x j / simpleDimension C p j
+    unit_eq := by rw [categoricalS_symmetric C p, categoricalS_unit]; exact div_self (simpleDimension_ne_zero C p j)
+    mul_eq := fun x y => categoricalS_verlinde C p x y j }
+  have hh := character_dual_conj rules (Ground.dualIndex C) (fusionCoeff_dual_adjoint C) χ i
+  change categoricalS C p (Ground.dualIndex C i) j / simpleDimension C p j =
+    starRingEnd ℂ (categoricalS C p i j / simpleDimension C p j) at hh
+  have hmap := map_div₀ (starRingEnd ℂ) (categoricalS C p i j) (simpleDimension C p j)
+  rw [hmap, hreal j] at hh
+  have hd := simpleDimension_ne_zero C p j
+  have h := congrArg (fun z : ℂ => z * simpleDimension C p j) hh
+  simpa [hd] using h
+
+/-- S is equivariant with respect to duality on the two indices. -/
+theorem categoricalS_dual_symmetric (C : Ground.BraidedFusionCategory)
+    (p : Dimensions.PivotalStructure (C := C.Obj))
+    (hreal : ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j)
+    (i j : Fin (rank C)) :
+    categoricalS C p (Ground.dualIndex C i) j = categoricalS C p i (Ground.dualIndex C j) := by
+  calc
+    _ = starRingEnd ℂ (categoricalS C p i j) := categoricalS_dual_conj C p hreal i j
+    _ = starRingEnd ℂ (categoricalS C p j i) := congrArg (starRingEnd ℂ) (categoricalS_symmetric C p i j)
+    _ = categoricalS C p (Ground.dualIndex C j) i := (categoricalS_dual_conj C p hreal j i).symm
+    _ = _ := categoricalS_symmetric C p _ _
+
+
+/-- Real pivotal simple dimensions are invariant under dual labels. -/
+theorem simpleDimension_dual (C : Ground.BraidedFusionCategory)
+    (p : Dimensions.PivotalStructure (C := C.Obj))
+    (hreal : ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j)
+    (i : Fin (rank C)) :
+    simpleDimension C p (Ground.dualIndex C i) = simpleDimension C p i := by
+  have h := categoricalS_dual_conj C p hreal i (unitIndex C)
+  rw [categoricalS_unit, categoricalS_unit, hreal i] at h
+  exact h
+
+end PropertyF.Ground.Modular
