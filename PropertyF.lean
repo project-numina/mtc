@@ -342,6 +342,7 @@ public import PropertyF.Ground.CentreCalculus.PureSquares
 public import PropertyF.Ground.CentreCalculus.PermutationQuotient
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
 public import PropertyF.Ground.CentreCalculus.ParityCorrection
+public import PropertyF.Ground.CentreCalculus.TypeAQuotient
 public import PropertyF.Ground.CentreCabling.ProductGenerated
 public import PropertyF.Ground.CentreCabling.SCentrality
 public import PropertyF.Ground.CentreCabling.FusionCentralizer

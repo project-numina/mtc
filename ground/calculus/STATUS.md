@@ -4,7 +4,7 @@ Branch: `ground/calculus`. Started from `094175c`.
 
 ## Round 3 continuation
 
-`CentreCalculus.adjacent_braid_relation` and `distant_braid_commute` prove all actual Yang–Baxter and disjoint-strand commutation relations, for all strand counts, without self-transparency assumptions. Together with `braidGenerator_involutive` they provide the categorical type-A relations, but the group-theoretic theorem identifying their normal closure with the permutation kernel is still open. The integrated dimensions branch supplies the real twist scalar and its sign under the still-unproved finite-order premise. The parity sign, cycle traces, and unconditional integrality remain open.
+`CentreCalculus.adjacent_braid_relation` and `distant_braid_commute` prove all actual Yang–Baxter and disjoint-strand commutation relations, for all strand counts, without self-transparency assumptions. Together with `braidGenerator_involutive` they provide the categorical type-A relations, but the group-theoretic theorem identifying their normal closure with the permutation kernel is still open. `typeARelations_action_trivial` proves the normal closure of all these relations acts trivially; `typeARelations_permutation_trivial` proves it lies in the permutation kernel. `pureWords_eq_typeANormal_of_card_bound` reduces the missing converse to a finite normal-form bound of `(n+2)!`, and `permutationActionOfTypeACardBound` constructs the actual action under that explicit bound. No finiteness or bound is claimed. The integrated dimensions branch supplies the real twist scalar and its sign under the still-unproved finite-order premise. The parity sign, cycle traces, and unconditional integrality remain open.
 
 ## Round 2: symmetric-core integrality (in progress)
 
