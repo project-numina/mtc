@@ -6,6 +6,7 @@ Branch: `ground/calculus`. Started from `094175c`.
 
 - Inspected the paper's §3, the existing conditional interfaces, and Mathlib's matrix positivity APIs.
 - `PropertyF.Ground.Calculus.averagedGram`, `averagedGram_posDef`, `averagedGram_invariant`: a positive-definite invariant form for any finite group representation by complex invertible matrices. Built `PropertyF.Ground.Calculus.Averaging`.
+- `PropertyF.Ground.Calculus.braidEndRepresentation`, `braidAlgebra`, `braidAlgebra_toSubmodule`, `braidAlgebra_semisimple`, and `braidAlgebra_blocks`: the genuine categorical braid-image span is a finite-dimensional semisimple algebra with complex matrix blocks when the image is finite.
 - `PropertyF.Ground.Calculus.groupImageAlgebra_toSubmodule`, `groupImageAlgebra_semisimple`, `groupImageAlgebra_finite`, and `groupImageAlgebra_blocks`: the span of any finite group image is a finite-dimensional semisimple algebra, with a complex matrix-block decomposition by Maschke and Wedderburn–Artin. This does not identify the block equivalence with the compatible adjoints or categorical multiplicities.
 - `PropertyF.Ground.Calculus.imageGenerator`, `represented_braid_finite_order`, `represented_square_finite_order`, and `braid_square_finite_order`: finite order for actual categorical braid generators and their represented squares.
 - `PropertyF.Ground.Calculus.map_star_of_mem_span`, `star_eq_coe_inv_of_unitary`, and `map_star_on_unitary_group_span`: an intertwining algebra map preserves adjoints on the span of unitary group images.
