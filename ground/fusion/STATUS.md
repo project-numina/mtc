@@ -73,6 +73,9 @@
   and `tensor` theorems, plus `one_le_fpDimension`: object FP dimension is
   constructed from Hom multiplicities, tensor-multiplicative, integral over ℤ,
   and at least one on nonzero objects.
+- `Ground.dual_multiplicity`, `fpDimension_leftDual`, and
+  `fpDimension_rightDual`: FP dimensions of arbitrary objects are invariant
+  under either dual.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
@@ -91,7 +94,7 @@ Mathlib has categorical Schur's lemma but a source search found no general
 Perron–Frobenius theorem for positive matrices. Existence, uniqueness and
 agreement of the target dimensions with the positive character are proved.
 
-Object dual/inclusion invariance, spectral-dimension independence of chosen
+Inclusion invariance, spectral-dimension independence of chosen
 representatives, and the centre dimension comparison remain. The project-scale
 remaining effort is substantial; no credible completion-time estimate is yet
 available.

@@ -137,4 +137,48 @@ theorem fpDimension_tensor (D : BraidedFusionCategory) (X Y : D.Obj) :
       intro j _
       ring
 
+/-- Multiplicity of a simple in a dual object equals the multiplicity of its
+dual in the original object. -/
+theorem dual_multiplicity (D : BraidedFusionCategory) (X : D.Obj) (i : Fin (rank D)) :
+    Module.finrank ℂ (simples D i ⟶ ᘁX) =
+      Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) := by
+  obtain ⟨e⟩ := dualIndex_iso D i
+  calc
+    _ = Module.finrank ℂ (simples D i ⟶ (ᘁX) ⊗ 𝟙_ D.Obj) :=
+      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁX : D.Obj)).symm).finrank_eq
+    _ = Module.finrank ℂ (X ⊗ simples D i ⟶ 𝟙_ D.Obj) :=
+      (tensorLeftHomLinearEquiv (simples D i) (ᘁX) X (𝟙_ D.Obj)).finrank_eq.symm
+    _ = Module.finrank ℂ (simples D i ⊗ X ⟶ 𝟙_ D.Obj) :=
+      (CategoryTheory.Linear.homCongr ℂ (β_ X (simples D i)) (Iso.refl _)).finrank_eq
+    _ = Module.finrank ℂ (X ⟶ (ᘁ(simples D i)) ⊗ 𝟙_ D.Obj) :=
+      (tensorLeftHomLinearEquiv X (ᘁ(simples D i)) (simples D i) (𝟙_ D.Obj)).finrank_eq
+    _ = Module.finrank ℂ (X ⟶ ᘁ(simples D i)) :=
+      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁ(simples D i) : D.Obj))).finrank_eq
+    _ = Module.finrank ℂ (X ⟶ simples D (dualIndex D i)) :=
+      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
+    _ = _ := finrank_to_simple_eq_from_simple D X _
+
+/-- FP dimension is invariant under taking a left dual. -/
+theorem fpDimension_leftDual (D : BraidedFusionCategory) (X : D.Obj) :
+    fpDimension D (ᘁX) = fpDimension D X := by
+  classical
+  unfold fpDimension
+  simp_rw [dual_multiplicity]
+  calc
+    _ = ∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
+        fpSimple D (dualIndex D i) := by simp_rw [fpSimple_dual]
+    _ = _ := ?_
+  have h := Equiv.sum_comp (dualEquiv D)
+    (fun i => (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i)
+  change (∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
+    fpSimple D (dualIndex D i)) = _ at h
+  exact h
+
+/-- FP dimension is invariant under taking a right dual. -/
+theorem fpDimension_rightDual (D : BraidedFusionCategory) (X : D.Obj) :
+    fpDimension D (Xᘁ) = fpDimension D X := by
+  let e : (ᘁX : D.Obj) ≅ Xᘁ :=
+    leftDualIso inferInstance (BraidedCategory.exactPairing_swap X (Xᘁ))
+  rw [← fpDimension_iso D e, fpDimension_leftDual]
+
 end PropertyF.Ground
