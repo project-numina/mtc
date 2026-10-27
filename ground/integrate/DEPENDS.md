@@ -21,8 +21,8 @@ constructs the bounds directly from its FP fusion character.
   labels being actual product retracts. The product-retract finite-image
   transfer is constructed through a faithful braided functor to Mathlib Center;
   full-centre dominance is neither assumed nor true in general. The integral
-  core, double centralizer and product-retract identification remain explicit
-  centre obligations.
+  core and double centralizer remain explicit centre obligations; the
+  product-retract identification is proved.
 
 The centre must still be equipped with a positive spherical structure;
 its construction remains owned by centre and dimensions.
@@ -47,3 +47,13 @@ Dimensions 5646fbb reduces canonical spherical existence to the fourth-dual
 tensor law on simple pairs and the stated Frobenius defect equation. Both
 remain owned by dimensions. Cabling 3ddf985 supplies the pure cabling and
 all its legacy bridge fields, which are separate from the final target cone.
+
+`target_of_actual_center_generated` uses the tensor/sum/retract generated
+closure directly: `Centre.productRetract_iff_tensorClosure` proves the product
+retract identification. Cabling must still prove the S-test/double-centralizer
+membership for that closure. Centre's `fusionOfFiniteSemisimple` reduces the
+fusion bundle to rigidity plus finite semisimplicity; `rigidOfMateCoherence`
+requires the dual crossing tensor equation and centrality of evaluation and
+coevaluation. Fusion's `globalFPDimension_square_of_adjunction` reduces the
+FP-square to an actual right adjoint and its underlying induction formula.
+The adjoint, finite semisimplicity and centre rigidity are not constructed.

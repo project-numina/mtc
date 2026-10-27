@@ -11,7 +11,7 @@
   applying the direct proof unchanged to a subcategory with nontrivial core.
 - Merged dimensions 5646fbb, cabling 3ddf985, and fusion 4bd27d9; the full
   merged library built. Expanded both audit import lists to cover all newly
-  merged modules; `ProjectAudit` passed for 3,532 declarations and checked the
+  merged modules; `ProjectAudit` passed for 3,569 declarations and checked the
   direct theorem's dependency cone. The target audit still fails correctly:
   `PropertyF.Ground.target` is missing.
 
@@ -96,6 +96,16 @@
   it fails closed on modules without private imports. Imported hidden-input and
   uninspected-module negative tests both pass. `scripts/audit-target.sh`
   rejects a missing final theorem and checks its type, dependencies, and axioms.
+
+- `target_of_actual_center_generated` wires the proved equivalence between
+  actual product retracts and the tensor/sum/retract closure of the canonical
+  centre images into the final reduction. The double-centralizer membership
+  assertion remains unproved.
+- Merged round-2 centre, fusion, modular, calculus and cabling snapshots. The
+  centre fusion bundle follows from rigidity plus finite semisimplicity; centre
+  rigidity is reduced to the dual mate tensor law and centrality of evaluation
+  and coevaluation. The centre FP-square follows from a right adjoint to
+  forgetful with the stated underlying objects; the adjoint remains unbuilt.
 
 ## In progress
 

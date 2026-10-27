@@ -1,5 +1,9 @@
 module
 public import PropertyF.Ground.Integrate.ProjectAudit
+public import PropertyF.Ground.Integrate.GeneratedCenterReduction
+public import PropertyF.Ground.CentreCabling.ProductGenerated
+public import PropertyF.Ground.CentreCalculus.Core
+public import PropertyF.Ground.CentreCalculus.ExteriorReduction
 public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.GlobalSquare
 public import PropertyF.Ground.CentreInduction.Adjunction

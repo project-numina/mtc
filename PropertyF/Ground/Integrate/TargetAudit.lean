@@ -157,6 +157,16 @@ import all PropertyF.Ground.Centre.ReverseBraiding
 import all PropertyF.Ground.Centre.SymmetricAction
 import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.Centre.Zero
+import all PropertyF.Ground.CentreBundle.Fusion
+import all PropertyF.Ground.CentreCabling.ProductGenerated
+import all PropertyF.Ground.CentreCalculus.Core
+import all PropertyF.Ground.CentreCalculus.ExteriorReduction
+import all PropertyF.Ground.CentreInduction.Adjunction
+import all PropertyF.Ground.CentreInduction.GlobalSquare
+import all PropertyF.Ground.CentreInduction.Underlying
+import all PropertyF.Ground.CentreModular.InductionDimension
+import all PropertyF.Ground.CentreRigid.Lift
+import all PropertyF.Ground.CentreRigid.Unit
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.CharacterBound
 import all PropertyF.Ground.Dimensions.CharacterDual
@@ -261,6 +271,7 @@ import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.FunctorUniverse
+import all PropertyF.Ground.Integrate.GeneratedCenterReduction
 import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Norm
