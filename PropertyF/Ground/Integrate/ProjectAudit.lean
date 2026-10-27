@@ -34,6 +34,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -97,10 +98,13 @@ import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.FusionDimensionField
 import all PropertyF.Ground.Dimensions.GlobalInequality
 import all PropertyF.Ground.Dimensions.GroundNorm
+import all PropertyF.Ground.Dimensions.IteratedTrace
 import all PropertyF.Ground.Dimensions.Norm
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.PseudoUnitary
 import all PropertyF.Ground.Dimensions.TargetDimensionField
+import all PropertyF.Ground.Dimensions.TensorMultiplicativity
+import all PropertyF.Ground.Dimensions.TensorTrace
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Final
 import all PropertyF.Ground.Fusion.Agreement
@@ -123,6 +127,7 @@ import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
 import all PropertyF.Ground.Integrate.Conjugacy
+import all PropertyF.Ground.Integrate.ConjugateBound
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Example
 import all PropertyF.Ground.Integrate.FPRepresentatives
@@ -179,6 +184,11 @@ run_cmd do
       unless n == ``PropertyF.StandardInputs do
         throwError "unexpected forbidden fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect an imported definition body"
+  match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenProof with
+  | some (.forbidden n) =>
+      unless n == ``PropertyF.StandardInputs do
+        throwError "unexpected forbidden theorem fixture dependency {n}"
+  | _ => throwError "dependency audit did not inspect the imported theorem proof"
   unless (findIssue env ``PropertyF.Ground.target_of_legacy_standardInputs).isSome do
     throwError "dependency audit did not reject the conditional target bridge"
   unless (findIssue env ``PropertyF.Ground.legacyCategory).isSome do
@@ -196,13 +206,18 @@ run_cmd do
       ``PropertyF.Ground.target_of_galois_invariance_and_pseudo_fixedness,
       ``PropertyF.Ground.target_of_pseudo_fixedness,
       ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
+      ``PropertyF.Ground.positive_ratio_of_galois_square,
+      ``PropertyF.Ground.center_witness_of_modular_and_rigidity,
+      ``PropertyF.Ground.galois_unit_self_entry,
       ``PropertyF.Ground.target_of_numerical_witnesses,
       ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
+      ``PropertyF.Ground.target_of_spherical_and_witness,
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,
       ``PropertyF.Ground.globalFPDimension_presentation,
       ``PropertyF.Ground.selfDual_character_galois_real,
+      ``PropertyF.Ground.positive_bounded_conjugates_of_spherical,
       ``PropertyF.Ground.Calculus.exists_unitary_braid_trace_blocks,
       ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,

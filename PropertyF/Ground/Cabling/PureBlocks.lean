@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Cabling.Blocks
 public import PropertyF.Ground.Cabling.Pure
+public import Mathlib.CategoryTheory.Conj
 open CategoryTheory CategoryTheory.Limits
 @[expose] public noncomputable section
 namespace PropertyF
@@ -38,6 +39,43 @@ theorem permutesBlocks_inv {I : Type} [Fintype I] (f : I → C)
   have hp : p (p⁻¹ i) = i := Equiv.apply_symm_apply p i
   rw [hp] at hi
   simpa [Category.assoc] using hi.symm
+
+/-- An automorphism permutes the block projectors if it carries each block
+inclusion into the corresponding permuted block. -/
+theorem permutesBlocks_of_inclusions {I : Type} [Fintype I] (f : I → C)
+    (a : Aut (⨁ f)) (p : Equiv.Perm I)
+    (e : ∀ i, f i ⟶ f (p i))
+    (h : ∀ i, biproduct.ι f i ≫ a.asIso.hom = e i ≫ biproduct.ι f (p i)) :
+    permutesBlocks f a p := by
+  classical
+  intro i
+  apply biproduct.hom_ext'
+  intro j
+  simp only [Category.assoc]
+  by_cases hij : j = i
+  · subst j
+    rw [reassoc_of% (biproduct.ι_π_self f i),
+      reassoc_of% (h i), reassoc_of% (biproduct.ι_π_self f (p i))]
+    exact h i
+  · have hpi : p j ≠ p i := fun h => hij (p.injective h)
+    rw [reassoc_of% (biproduct.ι_π_ne f hij), zero_comp,
+      reassoc_of% (h j), biproduct.ι_π_ne_assoc f hpi]
+    simp
+
+/-- A block decomposition transports inclusion permutation laws into
+projector permutation laws. -/
+theorem transport_permutesBlocks_of_inclusions {I : Type} [Fintype I] (f : I → C)
+    {V : C} (e : V ≅ ⨁ f) (a : Aut V) (p : Equiv.Perm I)
+    (h : ∀ i, ∃ g : f i ⟶ f (p i),
+      (biproduct.ι f i ≫ e.inv) ≫ a.asIso.hom = g ≫ (biproduct.ι f (p i) ≫ e.inv)) :
+    permutesBlocks f (e.conjAut a) p := by
+  classical
+  choose g hg using h
+  apply permutesBlocks_of_inclusions f (e.conjAut a) p g
+  intro i
+  simp only [Iso.conjAut_apply, Iso.trans_hom, Iso.symm_hom]
+  rw [← Category.assoc, ← Category.assoc, hg i]
+  simp [Category.assoc]
 
 /-- Words in generators which permute blocks continue to do so with the
 corresponding word in permutations. -/

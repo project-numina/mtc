@@ -4,6 +4,12 @@ public import PropertyF.Ground.Target
 public import PropertyF.Ground.Integrate.UnitScalar
 public import PropertyF.Ground.Fusion.Integrality
 public import PropertyF.Ground.Fusion.Splitting
+public import PropertyF.Ground.Fusion.FunctorDimension
+public import PropertyF.Ground.Fusion.SemisimpleSplit
+public import PropertyF.Ground.Fusion.SubcategoryDimension
+public import PropertyF.Ground.Fusion.GeneratedRigidity
+public import PropertyF.Ground.Fusion.GeneratedStructure
+public import PropertyF.Ground.Fusion.WeakIntegrality
 public import PropertyF.Consequences
 public import PropertyF.Descent
 public import PropertyF.Transfer
@@ -52,8 +58,15 @@ public import PropertyF.Ground.Dimensions.SphericalCriterion
 public import PropertyF.Ground.Dimensions.SphericalArithmetic
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.GlobalInequality
+public import PropertyF.Ground.Cabling.GeneratedAbelian
 public import PropertyF.Ground.Cabling.Rigidity
 public import PropertyF.Ground.Cabling.DualClosure
+public import PropertyF.Ground.Cabling.UnitPower
+public import PropertyF.Ground.Cabling.FusionCycle
+public import PropertyF.Ground.Cabling.GeneralDual
+public import PropertyF.Ground.Cabling.GeneratedFusion
+public import PropertyF.Ground.Cabling.GeneratedDimension
+public import PropertyF.Ground.Cabling.GeneratedIntegral
 public import PropertyF.Ground.Cabling.Inclusion
 public import PropertyF.Ground.Cabling.Perron
 public import PropertyF.Ground.Cabling.Primitive
@@ -63,8 +76,26 @@ public import PropertyF.Ground.Cabling.RetractAction
 public import PropertyF.Ground.Cabling.Naturality
 public import PropertyF.Ground.Cabling.CableRetract
 public import PropertyF.Ground.Cabling.TensorDecomposition
+public import PropertyF.Ground.Cabling.TensorComponents
+public import PropertyF.Ground.Cabling.MixedBraid
+public import PropertyF.Ground.Cabling.Zero
+public import PropertyF.Ground.Cabling.UnitBraid
+public import PropertyF.Ground.Cabling.MoveHead
+public import PropertyF.Ground.Cabling.MoveHeadInsert
+public import PropertyF.Ground.Cabling.MoveHeadContext
+public import PropertyF.Ground.Cabling.PowerCompare
+public import PropertyF.Ground.Cabling.PowerGeneral
 public import PropertyF.Ground.Cabling.PureBlocks
+public import PropertyF.Ground.Cabling.BlockGroupoid
+public import PropertyF.Ground.Cabling.BlockWords
+public import PropertyF.Ground.Cabling.CableClass
+public import PropertyF.Ground.Cabling.GeneratorBlock
+public import PropertyF.Ground.Cabling.TupleIso
 public import PropertyF.Ground.Cabling.CablingDiagram
+public import PropertyF.Ground.Cabling.TransportTuple
+public import PropertyF.Ground.Cabling.TupleCrossing
+public import PropertyF.Ground.Cabling.CablingFinite
+public import PropertyF.Ground.Cabling.GeneratedF
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.

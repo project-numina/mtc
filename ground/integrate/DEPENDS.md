@@ -1,14 +1,14 @@
 # Integration dependencies
 
 All remaining items below are explicit, temporary arguments to
-`Ground.target_of_bounded_conjugates_and_witness`; none is an assumption in the frozen
+`Ground.target_of_spherical_and_witness`; none is an assumption in the frozen
 `TargetStatement`. Their exact Lean types are in
 `PropertyF/Ground/Integrate/Reduction.lean`.
 
-- `hConjugates`: for each automorphism σ, `σ (globalFPDimension C)` is a
-  positive real number at most the original global FP dimension. Owner:
-  dimensions (pseudo-unitary canonical spherical structure, transport, real
-  norms and the global FP bound), with fusion supplying FP character results.
+- `hSpherical`: for pseudo-unitary C, construct an actual spherical pivotal
+  structure whose simple dimensions agree on dual labels. Owner: dimensions.
+  `positive_bounded_conjugates_of_spherical` then supplies all real-conjugate
+  bounds without extra assumptions.
 - `hWitness`: for σ producing a strictly smaller real conjugate a, and its
   inverse producing b, produce reals f,d with `σ f = d`, `f*b = FPdim(C)`,
   `1 ≤ f`, and `f = |d|`. Owners: centre (canonical centre, centralizers,
@@ -17,6 +17,8 @@ All remaining items below are explicit, temporary arguments to
   from actual finite images and spherical traces). Dimensions supplies the
   positive spherical structure and trace/dimension transport. This is the
   paper's specific centre/rigidity intermediate conclusion, not target fixedness.
+  `center_witness_of_modular_and_rigidity` now derives this conclusion from
+  the modular global identity, the Galois-unit self-column and rigidity.
 
 Fusion has proved `one_le_globalFPDimension` directly from the unit fusion
 matrix, so global FP positivity is discharged. The last sum/integrality step, Galois transport of property F and global FP

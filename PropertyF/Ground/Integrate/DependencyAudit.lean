@@ -89,6 +89,11 @@ def hiddenInput : Prop := ∃ _H : PropertyF.StandardInputs.{0, 0}, True
 
 def hiddenInputWrapper : Prop := hiddenInput
 
+/-- A proof with a clean statement but a forbidden type inside its body. -/
+theorem hiddenProof : True :=
+  (Classical.em (Nonempty PropertyF.StandardInputs.{0,0})).elim
+    (fun _ => True.intro) (fun _ => True.intro)
+
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv
