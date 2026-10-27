@@ -7,6 +7,8 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
+- `weaklyIntegral_of_globalFPDimension_fixed` wires spectral FP integrality
+  to finite-Galois descent without an old dimension-field hypothesis.
 - `GaloisConjugate.refl` and `hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary`
   verify that pseudo-unitary categories satisfy the frozen conjugacy condition.
 - `simple_presentation_equiv` and `sum_simple_presentation` reindex any

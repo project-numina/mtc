@@ -61,7 +61,7 @@ is claimed yet.
 | `CenterInputs` | `global_square`, `symmetric_integrality`, `generated`, `double_centralizer` | centre | Open: centre dimension, symmetric core and double centralizer. |
 | `CenterInputs` | `product_witness` | centre | Open: construct `ProductImageWitness` for generated labels. |
 | `CenterInputs` | `realize` | calculus | Open: construct `ThreeStrandRealization` from categorical finite braid image. |
-| `DimensionField` | `field`, `finite`, `galois`, `element`, `element_eq`, `integral`, `extend` | dimensions, fusion for algebraic integrality | Constructed by `dimensionFieldOfIntegral` conditional on integrality; ground FP integrality remains. |
+| `DimensionField` | `field`, `finite`, `galois`, `element`, `element_eq`, `integral`, `extend` | dimensions, fusion for algebraic integrality | Ground spectral global FP integrality is proved; bundle-free normal-field descent is wired by `weaklyIntegral_of_globalFPDimension_fixed`. |
 | `PseudoUnitaryInputs` | `conjugateGlobal`, `conjugate_eq`, `conjugate_positive`, `conjugate_le` | dimensions | Open: conjugate categorical dimensions, positivity and bounds. |
 | `PseudoUnitaryInputs` | `center`, `arithmetic` | centre, dimensions | Open: package above constructions. |
 | `StandardInputs` | `pseudo` | dimensions, centre, calculus, modular | Open: package above constructions for pseudo-unitary categories. |
@@ -79,3 +79,9 @@ Merged commits: fusion ab1854b; dimensions 3abe2e6; calculus 7734d98;
 centre f0745cb; modular bd4679d; cabling ff61b71. The full development build
 passed; `ProjectAudit` scans 822 integrated declarations, all with only the
 standard axioms. This is not a proof of the target.
+
+The final arithmetic reduction is bundle-free: fusion bfbd006 proves target
+global FP algebraic integrality, and `weaklyIntegral_of_globalFPDimension_fixed`
+combines it with the constructed finite Galois field and automorphism extension.
+The remaining target-specific premise is global FP invariance under every complex
+automorphism, which needs the categorical argument and transport constructions.
