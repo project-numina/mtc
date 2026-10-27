@@ -71,35 +71,6 @@ def adjunctionOfHalfBraiding (C : BraidedFusionCategory.{v,u})
     apply CategoryTheory.Center.ext
     exact htriangle X
 
-/-- Once the displayed half-braiding coherences and loop sliding are proved,
-the actual centre obtains its fusion structure and global FP-square identity.
-Every still-unproved categorical condition is explicit in the statement. -/
-theorem fusion_and_globalFPDimension_of_halfBraiding (C : BraidedFusionCategory.{v,u})
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hne : globalDimension C ≠ 0) (hslide : SimpleLoopCentrality C p)
-    (b : ∀ X : C.Obj, HalfBraiding (underlying C X))
-    (hb : ∀ {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj),
-      ((underlyingFunctor C).map f ▷ T) ≫ ((b Y).β T).hom =
-        ((b X).β T).hom ≫ (T ◁ (underlyingFunctor C).map f))
-    (hunit : ∀ (Z : CategoryTheory.Center C.Obj) (T : C.Obj),
-      (unitCandidate C Z ▷ T) ≫ ((b Z.1).β T).hom =
-        (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z))
-    (htriangle : ∀ X : C.Obj,
-      unitCandidate C ((inductionOfHalfBraiding C b hb).obj X) ≫
-        (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X)) :
-    ∃ hFusion : IsFusionCategory (CategoryTheory.Center C.Obj),
-      letI := hFusion
-      globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 := by
-  let I := inductionOfHalfBraiding C b hb
-  let adj := adjunctionOfHalfBraiding C b hb hunit htriangle
-  let hFusion := fusion_of_adjunction_and_loop C p hp hslide hne I adj
-  refine ⟨hFusion, ?_⟩
-  letI : IsFusionCategory (CategoryTheory.Center C.Obj) := hFusion
-  apply globalFPDimension_square_of_adjunction C I adj
-  intro i
-  exact ⟨Iso.refl _⟩
-
 /-- It suffices to verify centrality of the proposed unit against the base
 simple representatives. -/
 def adjunctionOfSimpleUnitCentrality (C : BraidedFusionCategory.{v,u})

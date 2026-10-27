@@ -39,16 +39,6 @@ theorem fusion_of_actual_induction (C : BraidedFusionCategory.{v,u})
     IsFusionCategory (CategoryTheory.Center C.Obj) :=
   fusion_of_adjunction_and_loop C p hp hslide hne (induction C) (actualAdjunction C)
 
-/-- The above fusion structure has the expected global FP dimension. -/
-theorem globalFPDimension_square_of_actual_assembled_fusion (C : BraidedFusionCategory.{v,u})
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hslide : SimpleLoopCentrality C p) (hne : globalDimension C ≠ 0) :
-    letI : IsFusionCategory (CategoryTheory.Center C.Obj) := fusion_of_actual_induction C p hp hslide hne
-    globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 := by
-  letI : IsFusionCategory (CategoryTheory.Center C.Obj) := fusion_of_actual_induction C p hp hslide hne
-  exact globalFPDimension_square_of_actual_induction C
-
 /-- Pseudo-unitarity supplies the nonzero dimension for the fusion assembly. -/
 theorem fusion_of_pseudoUnitary_actual_induction (C : BraidedFusionCategory.{v,u})
     [RigidCategory (CategoryTheory.Center C.Obj)] (hPU : PseudoUnitary C)

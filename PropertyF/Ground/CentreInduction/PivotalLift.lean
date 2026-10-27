@@ -49,18 +49,6 @@ theorem liftedPivotalStructure_compatible (p : Dimensions.PivotalStructure (C :=
       (p.iso Z.1).hom := by
   simp [liftedPivotalStructure, Category.assoc]
 
-/-- It suffices to verify centrality against the base simple representatives. -/
-theorem pivotalComponentsCentral_of_simples
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (h : ∀ (Z : CategoryTheory.Center C.Obj) (i : Fin (rank C)),
-      let u := (p.iso Z.1).hom ≫ (forgetDoubleDualIso C Z).inv
-      (u ▷ simples C i) ≫ (((Zᘁ)ᘁ).2.β (simples C i)).hom =
-        (Z.2.β (simples C i)).hom ≫ (simples C i ◁ u)) :
-    PivotalComponentsCentral C p := by
-  intro Z
-  exact comm_of_simples C Z ((Zᘁ)ᘁ)
-    ((p.iso Z.1).hom ≫ (forgetDoubleDualIso C Z).inv) (h Z)
-
 /-- Centrality of the transported pivotal components yields centre fusion,
 positive sphericality, pseudo-unitarity and the categorical dimension square. -/
 theorem center_structure_of_pivotal_centrality
