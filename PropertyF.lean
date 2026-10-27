@@ -388,6 +388,14 @@ public import PropertyF.Ground.CentreRigid.Tensor
 public import PropertyF.Ground.CentreRigid.Evaluation
 public import PropertyF.Ground.CentreRigid.ForgetComparison
 
+public import PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
+public import PropertyF.Ground.Dimensions.DefectAssociativity
+public import PropertyF.Ground.Dimensions.DefectSliding
+public import PropertyF.Ground.Dimensions.DefectExtension
+public import PropertyF.Ground.Dimensions.ENOInvolution
+public import PropertyF.Ground.Dimensions.BraidingCapSlide
+public import PropertyF.Ground.Dimensions.DualBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
