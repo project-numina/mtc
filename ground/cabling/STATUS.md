@@ -24,7 +24,9 @@
   kernel containment needed to descend to the pure image.
 - `tensorPowerBiproductIso` and `sumPowersTensorPowerIso` construct the
   decomposition of tensor powers of sums of powers into tuple-indexed
-  tensor-power blocks.
+  tensor-power blocks. `pureWord_preserves_tupleBlocks` and
+  `pureTupleBlockAction_ker_le` reduce pure-word block preservation to
+  the generator permutation law.
 - `CablingWitness.of_retract` and `cabling_of_sumPowers` reduce all generated
   objects to proving the cabling diagram only for finite sums of powers.
 
