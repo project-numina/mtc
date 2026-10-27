@@ -178,3 +178,9 @@ monodromy only between these image simples and labels already passing their
 numerical S-test. `target_of_center_image_monodromy` wires this strictly weaker
 premise to the frozen target. Centre mixed monodromy finite order is still not
 proved. Focused builds passed.
+
+`symmetricCore_centralizes_productRetract` proves the actual core centralizes
+every actual product retract, and `symmetricCore_numericalProductCentralizer`
+proves the categorical-to-numerical direction without extra assumptions.
+`symmetricCore_iff_numericalProductCentralizer` proves the converse under the
+narrow image-monodromy finite-order condition. Focused build passed.
