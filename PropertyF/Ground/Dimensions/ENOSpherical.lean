@@ -108,4 +108,55 @@ theorem eno_real_saturated_root_yields_positive_spherical
   obtain ⟨p, hp⟩ := eno_real_saturated_root_yields_positive_pivotal C d hreal hd hinv heig hnat
   exact ⟨p, spherical_of_fp_dimensions_and_squaredNorms C p hp hnorm, hp⟩
 
+/-- ENO's trace-matrix bound and the root-norm identity turn global
+pseudo-unitarity into pointwise FP saturation. -/
+theorem eno_root_norm_saturation_of_pseudoUnitary
+    (C : Ground.BraidedFusionCategory.{v,u})
+    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
+      (multiplicityDefect C i j k).toLinearMap = 1)
+    (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
+      rootDimension C i * rootDimension C j)
+    (hnorm : ∀ i, Ground.squaredNorm C (Ground.simples C i) =
+      ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
+    ∀ i, ‖rootDimension C i‖ = Ground.fpSimple C i := by
+  let d : Fin (Ground.rank C) → ℝ := fun i => ‖rootDimension C i‖
+  have hb : ∀ i, |d i| ≤ Ground.fpSimple C i := by
+    intro i
+    rw [abs_of_nonneg (norm_nonneg _)]
+    exact rootDimension_norm_le_fp_of_trace_matrix C i (hinv i) (heig i)
+  have hg : (∑ i, d i ^ 2) = Ground.globalFPDimension C := by
+    have h := hpu
+    change Ground.globalDimension C = (Ground.globalFPDimension C : ℂ) at h
+    unfold Ground.globalDimension at h
+    simp only [hnorm, ← Complex.ofReal_sum] at h
+    exact Complex.ofReal_injective h
+  have h := (global_sum_squares_eq_iff C d hb).1 hg
+  intro i
+  simpa [d, abs_of_nonneg (norm_nonneg _)] using h i
+
+/-- Once the root dimensions are made real, ENO's remaining categorical
+identities and pseudo-unitarity construct the positive spherical structure. -/
+theorem eno_pseudoUnitary_real_root_yields_positive_spherical
+    (C : Ground.BraidedFusionCategory.{v,u}) (d : Fin (Ground.rank C) → ℝ)
+    (hreal : ∀ i, rootDimension C i = (d i : ℂ))
+    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
+      (multiplicityDefect C i j k).toLinearMap = 1)
+    (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
+      rootDimension C i * rootDimension C j)
+    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
+      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
+        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
+    (hnorm : ∀ i, Ground.squaredNorm C (Ground.simples C i) =
+      ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
+    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
+      pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ) := by
+  have hs := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
+  have hd : ∀ i, |d i| = Ground.fpSimple C i := by
+    intro i
+    simpa [hreal, Complex.norm_real] using hs i
+  apply eno_real_saturated_root_yields_positive_spherical C d hreal hd hinv heig hnat
+  intro i
+  rw [hnorm i, hs i]
+
+
 end PropertyF.Ground.Dimensions
