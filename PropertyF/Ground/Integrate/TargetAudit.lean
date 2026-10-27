@@ -19,6 +19,16 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 
 
 
+import all PropertyF.Ground.CentreIntegrate.MonodromyDual
+import all PropertyF.Ground.CentreIntegrate.TwistDual
+import all PropertyF.Ground.Dimensions.BraidingCapSlide
+import all PropertyF.Ground.Dimensions.DefectAssociativity
+import all PropertyF.Ground.Dimensions.DefectExtension
+import all PropertyF.Ground.Dimensions.DefectSliding
+import all PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
+import all PropertyF.Ground.Dimensions.DoubleDualBraiding
+import all PropertyF.Ground.Dimensions.DualBraiding
+import all PropertyF.Ground.Dimensions.ENOInvolution
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.PivotalLift
 import all PropertyF.Ground.Integrate.PivotalCentralityReduction

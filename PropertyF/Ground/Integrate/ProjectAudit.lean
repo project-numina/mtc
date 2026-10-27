@@ -41,6 +41,16 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreIntegrate.MonodromyDual
+import all PropertyF.Ground.CentreIntegrate.TwistDual
+import all PropertyF.Ground.Dimensions.BraidingCapSlide
+import all PropertyF.Ground.Dimensions.DefectAssociativity
+import all PropertyF.Ground.Dimensions.DefectExtension
+import all PropertyF.Ground.Dimensions.DefectSliding
+import all PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
+import all PropertyF.Ground.Dimensions.DoubleDualBraiding
+import all PropertyF.Ground.Dimensions.DualBraiding
+import all PropertyF.Ground.Dimensions.ENOInvolution
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.PivotalLift
 import all PropertyF.Ground.Integrate.PivotalCentralityReduction
@@ -564,6 +574,9 @@ run_cmd do
       ``PropertyF.Ground.CentreRigid.rigidCenter,
       ``PropertyF.Ground.target_of_fusion_center_integral_numerical_core,
       ``PropertyF.Ground.target_of_pivotal_lift_and_integral_numerical_core,
+      ``PropertyF.Ground.CentreIntegrate.twist_sign_of_spherical_self_transparency_and_balancing,
+      ``PropertyF.Ground.CentreIntegrate.pivotalTwistScalar_rightDual,
+      ``PropertyF.Ground.CentreIntegrate.self_doubleBraiding_eq_one_rightDual,
       ``PropertyF.Ground.CentreIntegrate.twist_sign_of_dual_and_tensor,
       ``PropertyF.Ground.CentreIntegrate.signed_cycle_count,
       ``PropertyF.Ground.CentreIntegrate.integral_of_cycle_traces,

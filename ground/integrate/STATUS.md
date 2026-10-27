@@ -226,3 +226,12 @@ no reliable completion-time estimate is available.
   structure. It still assumes an FP-valued base pivotal structure, that
   centrality equation, centre S invertibility and numerical-core integrality.
   The full build and strict project audit pass (416 modules, 4,328 declarations).
+
+- Merged dimensions `4117b5b`. `spherical_rightTrace_rightDual` and
+  `pivotalTwistScalar_rightDual` establish equality of twist scalars for a
+  spherical simple and its right dual. `self_doubleBraiding_eq_one_rightDual`
+  establishes centrality of X with X* from centrality with itself, using the
+  generated-subcategory dual theorem. The parity sign now follows from the
+  still-unproved pivotal twist balancing equation on this one dual pair, as
+  `twist_sign_of_spherical_self_transparency_and_balancing` records. Full build
+  and strict project audit pass (426 modules, 4,363 declarations).

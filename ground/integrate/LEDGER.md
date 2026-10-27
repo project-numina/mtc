@@ -242,3 +242,10 @@ for each centre object and base test object. The general centre rigidity is
 already constructed. Base FP-valued pivotal existence, this centrality,
 centre S invertibility and numerical-core integrality remain open. The full
 build and strict project audit pass (416 modules, 4,328 declarations).
+
+Parity progress: spherical right traces are invariant under taking duals,
+and the pivotal twist scalar of a simple equals that of its right dual.
+Self-transparent objects centralize their right duals using the generated
+subcategory. Hence the parity sign follows if the pivotal twist balancing
+equation holds on the simple/dual pair; that equation remains unproved. The
+latest full build and strict project audit pass (426 modules, 4,363 declarations).
