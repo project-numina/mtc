@@ -187,3 +187,17 @@ only against numerical S-central labels. The proof combines categorical centre
 nondegeneracy with positive trace saturation and the existing S criterion.
 Those finite-order hypotheses remain unproved; this is not unconditional S
 invertibility. Focused build passes.
+
+## Current team target status
+
+The integrated reduction now needs existence of a pivotal structure on a
+pseudo-unitary base and pivotal twist balancing. General centre rigidity,
+conditional centre fusion/sphere, categorical nondegeneracy and the symmetric
+core integrality step are constructed; finite monodromy and numerical
+S-invertibility follow once balancing is proved. Dimensions is proving the
+Drinfeld tensor cap, fusion the fourth-dual cancellation, and other teams
+are assisting those diagrams. `#print axioms` on `rigidCenter`,
+`partialTraceHom_nested`, `normalized_loop_idempotent`,
+`transparent_simple_is_unit`, `center_s_invertible_of_test_monodromy`, and
+the conditional centre FP-square theorem reports only the standard three
+Lean axioms. No general target theorem is claimed.
