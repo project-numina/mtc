@@ -24,6 +24,8 @@ theorem exists_galois_unitary_braid_blocks
       (mult : Fin (Ground.rank C) → Fin r → ℕ),
       (∀ i, 0 < size i) ∧
       (∀ i, ∃ j, 0 < mult j i) ∧
+      (∀ i, Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2)) =
+        ∑ j, mult i j * size j) ∧
       (∀ g i, T (groupInImage (braidEndRepresentation X n) g) i ∈
         Matrix.unitaryGroup (Fin (size i)) ℂ) ∧
       (∀ (z : ℂ) a, T (z • a) = σ z • T a) ∧
@@ -33,7 +35,7 @@ theorem exists_galois_unitary_braid_blocks
           (p.rightTrace (𝟙 (Ground.simples C i))))) * (T a j).trace) := by
   classical
   let _ : Fintype (braidImage X n) := Fintype.ofFinite _
-  obtain ⟨r, size, b, mult, hsize, _, hret, _, htrace⟩ :=
+  obtain ⟨r, size, b, mult, hsize, _, hret, hdim, htrace⟩ :=
     exists_unitary_braid_trace_blocks C X n hfinite p (Dimensions.groundUnitScalarEquiv C)
   let rep (i : Fin r) : braidImage X n →* Matrix (Fin (size i)) (Fin (size i)) ℂ :=
     { toFun := fun g => b (groupInImage (braidEndRepresentation X n) g) i
@@ -41,7 +43,7 @@ theorem exists_galois_unitary_braid_blocks
       map_mul' := by intros; simp }
   choose P hunit htr hsmul using fun i => exists_galois_unitary_matrix_equiv σ (rep i).toHomUnits
   let T := b.toRingEquiv.trans (RingEquiv.piCongrRight (fun i => galoisMatrixEquiv σ (P i)))
-  refine ⟨r, size, T, mult, hsize, hret, ?_, ?_, ?_⟩
+  refine ⟨r, size, T, mult, hsize, hret, hdim, ?_, ?_, ?_⟩
   · intro g i
     exact hunit i g
   · intro z a
@@ -78,7 +80,7 @@ theorem exists_galois_real_braid_trace_blocks
         (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)) =
           (PropertyF.Blocks.mk r size).trace w (T a)) := by
   classical
-  obtain ⟨r, size, T, mult, hsize, hret, hunit, hsmul, htrace⟩ :=
+  obtain ⟨r, size, T, mult, hsize, hret, _, hunit, hsmul, htrace⟩ :=
     exists_galois_unitary_braid_blocks C X n hfinite p σ
   let w : Fin r → ℝ := fun j => ∑ i, (mult i j : ℝ) * conjugate i
   refine ⟨r, size, T, w, hsize, ?_, hunit, hsmul, ?_⟩
