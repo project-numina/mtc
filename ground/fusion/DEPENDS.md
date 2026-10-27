@@ -15,12 +15,11 @@ These describe proof obligations, not axioms or assumptions in the target.
 ## Round 2
 
 - Centre: construct rigidity for the actual Mathlib centre. For the alternate
-  semisimplicity route, construct a pivotal structure on that centre and show
-  its trace on `induction C (𝟙_ C.Obj)` maps to the base trace, or directly
-  construct a centre cap on this induced object whose composite with its
-  coevaluation is nonzero. These are precise remaining external interfaces;
-  see `center_fusion_of_positive_compatible_pivotal` and
-  `center_fusion_of_nonzero_induced_cap`.
+  semisimplicity route, prove centrality of the base pivotal map on the
+  induced unit, with double-dual objects identified by `forgetDoubleDualIso`;
+  it suffices to check simple test objects as stated by
+  `center_fusion_of_simple_induced_pivotal_centrality`. Alternatively construct
+  a centre cap on that induced object with nonzero coevaluation composite.
 - Dimensions: construct a positive base pivotal structure for the relevant
   pseudo-unitary category. Fusion proves its trace on the underlying induced
   unit is FPdim(C), hence nonzero.

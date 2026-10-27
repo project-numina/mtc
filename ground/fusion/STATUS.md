@@ -175,8 +175,11 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   explicit trace-compatibility equality for a centre pivotal structure.
   `center_induction_retract_of_positive_compatible_pivotal` also splits the
   actual adjunction unit for every centre object under the same assumptions.
-  Constructing that pivotal structure/compatibility or proving averaging-loop
-  sliding remains open.
+  `forgetDualIso` and `forgetDoubleDualIso` compare the actual centre duals
+  with base duals; `center_fusion_of_simple_induced_pivotal_centrality` now
+  needs only centrality of the base pivotal map on the induced unit, checked
+  on simple test objects. Centre rigidity, that centrality, positive base
+  pivotal existence, or the independent averaging-loop proof remain open.
   `crossing_counit_offdiag` and `crossing_counit_diagonal` calculate its
   unit-counit column on simple test strands. `crossingUnitBlock_eval` proves
   the diagonal duality contraction, and `secondTriangle` proves the second
