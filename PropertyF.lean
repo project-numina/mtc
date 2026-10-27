@@ -58,8 +58,6 @@ public import PropertyF.Ground.Cabling.Witness
 public import PropertyF.Ground.Cabling.Images
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.DimensionField
-public import PropertyF.Ground.Dimensions.FusionDimensionField
-public import PropertyF.Ground.Dimensions.TargetDimensionField
 public import PropertyF.Ground.Dimensions.Norm
 public import PropertyF.Ground.Calculus.StarSpan
 public import PropertyF.Ground.Centre.Embeddings

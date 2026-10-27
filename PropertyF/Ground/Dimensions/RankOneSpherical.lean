@@ -54,12 +54,7 @@ theorem fourthDualIso_tensor_unitLabel_right (C : Ground.BraidedFusionCategory.{
     (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_right C X)
 /-- The unit label is fixed by the simple-dual involution. -/
 theorem dualIndex_unit (C : Ground.BraidedFusionCategory.{v,u}) :
-    Ground.dualIndex C (Ground.unitIndex C) = Ground.unitIndex C := by
-  have h := Ground.fusionCoeff_dual_unit C (Ground.unitIndex C)
-  rw [Ground.fusionCoeff_unit] at h
-  by_cases he : Ground.unitIndex C = Ground.dualIndex C (Ground.unitIndex C)
-  · exact he.symm
-  · simp [he] at h
+    Ground.dualIndex C (Ground.unitIndex C) = Ground.unitIndex C := Ground.dualIndex_unit C
 
 /-- The root tensor defect is the unit sign when its left factor is the right
 dual of the chosen unit representative. -/
