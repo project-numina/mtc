@@ -184,3 +184,11 @@ every actual product retract, and `symmetricCore_numericalProductCentralizer`
 proves the categorical-to-numerical direction without extra assumptions.
 `symmetricCore_iff_numericalProductCentralizer` proves the converse under the
 narrow image-monodromy finite-order condition. Focused build passed.
+
+`positiveIsoOfImageRetract` and `negativeIsoOfImageRetract` show retracts of
+the canonical embeddings stay in the respective essential image.
+`imageLabel_underlying_simple` and `symmetricCore_underlying_simple` prove
+those centre simple labels have simple underlying base objects; together with
+the previously proved transparency and FP-dimension identities, this gives
+calculus a simple-transparent-object formulation of core integrality. Focused
+build passed.
