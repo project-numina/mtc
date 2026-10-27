@@ -96,6 +96,14 @@ theorem simple_leftDual (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X]
   letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   exact CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X
 
+/-- The right dual of a simple object in a braided fusion category is simple. -/
+theorem simple_rightDual (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X] :
+    Simple (Xᘁ) := by
+  let : Simple (ᘁX) := simple_leftDual D X
+  let e : (ᘁX) ≅ (Xᘁ) :=
+    leftDualIso HasLeftDual.exact (BraidedCategory.exactPairing_swap X (Xᘁ))
+  exact Simple.of_iso e.symm
+
 /-- The label of the left dual of a simple representative. -/
 def dualIndex (D : BraidedFusionCategory.{v,u}) (j : Fin (rank D)) : Fin (rank D) := by
   letI : Simple (simples D j) := simples_simple D j
@@ -126,6 +134,14 @@ theorem fusionCoeff_reciprocity_labels (D : BraidedFusionCategory.{v,u})
   rw [fusionCoeff_reciprocity]
   exact (CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
     (Iso.refl (simples D k) ⊗ᵢ e)).finrank_eq
+
+/-- The label of the tensor unit is fixed by duality. -/
+theorem dualIndex_unit (D : BraidedFusionCategory.{v,u}) :
+    dualIndex D (unitIndex D) = unitIndex D := by
+  have h := fusionCoeff_reciprocity_labels D (unitIndex D) (unitIndex D) (unitIndex D)
+  simp only [fusionCoeff_unit, ite_true] at h
+  split_ifs at h with hh
+  exact hh.symm
 
 /-- Duality is involutive on simple labels. -/
 theorem dualIndex_involutive (D : BraidedFusionCategory.{v,u}) :

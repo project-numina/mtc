@@ -70,11 +70,7 @@ theorem rightQuantumTrace_simple_ne_zero (C : Ground.BraidedFusionCategory.{v,u}
 
 /-- In a braided fusion category the right dual of a simple object is simple. -/
 theorem simple_rightDual (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X] :
-    Simple (Xᘁ) := by
-  let : Simple (ᘁX) := Ground.simple_leftDual C X
-  let e : (ᘁX) ≅ (Xᘁ) :=
-    leftDualIso HasLeftDual.exact (BraidedCategory.exactPairing_swap X (Xᘁ))
-  exact Simple.of_iso e.symm
+    Simple (Xᘁ) := Ground.simple_rightDual C X
 
 /-- A simple object has nonzero left quantum trace for any double-dual
 isomorphism, by applying the right-trace result to its simple dual. -/

@@ -56,4 +56,14 @@ theorem pivotal_coevaluation {C : Type u} [Category.{v} C]
       η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
   rw [pivotal_dual p X]
   exact doubleDualIso_coevaluation X (p.iso X)
+
+set_option backward.isDefEq.respectTransparency false in
+/-- In a spherical category, taking the right dual preserves pivotal traces. -/
+theorem spherical_rightTrace_dual {C : Type u} [Category.{v} C]
+    [MonoidalCategory C] [RigidCategory C] (p : PivotalStructure (C := C))
+    (hp : p.IsSpherical) {X : C} (f : X ⟶ X) : p.rightTrace (fᘁ) = p.rightTrace f := by
+  have h := leftTrace_eq_rightTraceWith_dual p f
+  rw [← pivotal_dual p X] at h
+  change p.leftTrace f = p.rightTrace (fᘁ) at h
+  exact h.symm.trans (hp X f)
 end PropertyF.Ground.Dimensions
