@@ -6,11 +6,11 @@ Mathlib constructs the braided monoidal Drinfeld centre and the positive monoida
 
 ## Done
 
-`PropertyF.Ground.Centre.negative` is the reverse-braiding monoidal embedding; `positiveFaithful`, `positiveFull`, `negativeFaithful`, `negativeFull` prove the two embeddings fully faithful; `positive_negative_centralize` proves their images centralize in the actual Drinfeld centre. Mathlib already provides `Center`, its braided monoidal structure, `Center.forget`, and `Center.ofBraided`; the baseline proves the objectwise equivalences in `PropertyF.CenterBasics`.
+`PropertyF.Ground.Centre.negative` is the reverse-braiding monoidal embedding; `positiveFaithful`, `positiveFull`, `negativeFaithful`, `negativeFull` prove the two embeddings fully faithful; `positive_negative_centralize` proves their images centralize in the actual Drinfeld centre. `positiveBraided` and `negativeBraided` establish compatibility with the source braidings, including the reversed braiding. `centralizes_positive_image_iff`, `centralizes_negative_image_iff`, `negativeIsoOfCentralizesPositive`, and `positiveIsoOfCentralizesNegative` give the mutual-centralizer calculation using actual centre morphisms and explicit isomorphisms. Mathlib already provides `Center`, its braided monoidal structure, `Center.forget`, and `Center.ofBraided`; the baseline proves the objectwise equivalences in `PropertyF.CenterBasics`.
 
 ## In progress
 
-Identify the entire categorical centralizers of these embeddings; inspect how to transport braid images through them.
+Characterize centralizers up to arbitrary isomorphism and inspect how to transport braid images through the embeddings.
 
 ## Blocked / dependencies
 
