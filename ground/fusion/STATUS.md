@@ -22,6 +22,9 @@
   `exists_simple_iso`, `exists_unit_iso`, and `finrank_simples_hom`: the
   target's representatives enumerate all simple objects, including the unit,
   and satisfy Schur's Hom formula without using old fusion structures.
+- `Ground.unit_algebraMap_bijective`, `unitScalar_algebraMap`, and
+  `algebraMap_unitScalar`: the target's unit scalar map really is the inverse
+  of scalar multiplication on the tensor unit.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
