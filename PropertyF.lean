@@ -80,3 +80,4 @@ public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Calculus.ThreeSaturation
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.PositiveWeights
+public import PropertyF.Ground.Calculus.GaloisMatrices
