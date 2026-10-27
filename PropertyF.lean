@@ -79,3 +79,4 @@ public import PropertyF.Ground.Calculus.StrandCoherence
 public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Calculus.ThreeSaturation
 public import PropertyF.Ground.Calculus.ThreeRigidity
+public import PropertyF.Ground.Calculus.PositiveWeights
