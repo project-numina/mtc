@@ -44,6 +44,9 @@
 - `positiveMatrix_eigenvector_integral` proves the arithmetic/Perron step
   of ENO 8.27: a normalized positive eigenvector of a positive rational
   matrix with rational eigenvalue has integer entries if integral over ℤ.
+- `matrix_exists_positive_power` and `connectedMatrix_eigenvector_integral`
+  extend this to a nonnegative rational matrix with positive diagonal and
+  connected powers, constructing the needed positive power.
 
 ## In progress
 
