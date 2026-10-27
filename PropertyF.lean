@@ -5,6 +5,7 @@ public import PropertyF.Descent
 public import PropertyF.Transfer
 public import PropertyF.Ground.Calculus.ImageMaps
 public import PropertyF.Ground.Calculus.CategoricalTrace
+public import PropertyF.Ground.Calculus.PartialTrace
 public import PropertyF.Ground.Calculus.FiniteOrder
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
