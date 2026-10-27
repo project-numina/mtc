@@ -25,6 +25,10 @@ reprove the conditional argument using ground constructions and helper results
 whose types and values avoid those structures, then run the target audit. `GeneratedInputs` and cabling are NOT used by the main target;
 they remain obligations for the separate corollary.
 
+The category interface is inhabited by `Example.complexVectorSpaces`, based
+on finite-dimensional complex vector spaces; property F and pseudo-unitarity
+for that example have not yet been established.
+
 Provisional mathematical checks: simple reps exhaust all simple isoclasses;
 squared
 norms are independent of isomorphism and simple presentation; FP spectral

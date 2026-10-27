@@ -1,6 +1,7 @@
 module
 public import PropertyF.Audit
 public import PropertyF.Ground.Integrate.UnitScalar
+public import PropertyF.Ground.Integrate.Example
 public import PropertyF.Ground.Fusion.Integrality
 public import PropertyF.Ground.Fusion.Splitting
 public import PropertyF.Ground.Dimensions.DimensionField
