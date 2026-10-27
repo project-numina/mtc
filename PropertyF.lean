@@ -102,6 +102,7 @@ public import PropertyF.Ground.Cabling.ExprStructure
 public import PropertyF.Ground.Cabling.ExprBraiding
 public import PropertyF.Ground.Cabling.ExprPowers
 public import PropertyF.Ground.Cabling.TupleIsoStep
+public import PropertyF.Ground.Cabling.ExprTuple
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.BlockGroupoid
 public import PropertyF.Ground.Cabling.BlockWords
