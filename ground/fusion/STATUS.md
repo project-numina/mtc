@@ -48,6 +48,8 @@
 - `Ground.totalFusionMatrix_symmetric` and `totalFusionMatrix_pos`: the sum of
   the real fusion matrices is symmetric and strictly positive. Positivity uses
   cabling's `tensorLeft_faithful_of_unit_retract` (merged commit 288c894).
+- `Ground.positive_matrix_eigenspace_unique`: any eigenspace containing a
+  strictly positive eigenvector of a positive real matrix is one-dimensional.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
