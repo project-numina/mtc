@@ -96,6 +96,7 @@ public import PropertyF.Ground.Cabling.CableAppend
 public import PropertyF.Ground.Cabling.PrefixPower
 public import PropertyF.Ground.Cabling.PrefixCompare
 public import PropertyF.Ground.Cabling.CableTensor
+public import PropertyF.Ground.Cabling.PowerAssoc
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.BlockGroupoid
 public import PropertyF.Ground.Cabling.BlockWords
