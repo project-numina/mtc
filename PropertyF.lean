@@ -230,14 +230,122 @@ public import PropertyF.Ground.Calculus.SharpRigidity
 
 public import PropertyF.Ground.Calculus.IntegratorBridge
 
+public import PropertyF.Ground.Dimensions.RootDualLabel
+public import PropertyF.Ground.Dimensions.DefectNaturality
+public import PropertyF.Ground.Dimensions.CoevaluationReciprocity
+public import PropertyF.Ground.Dimensions.CoevaluationSliding
+public import PropertyF.Ground.Dimensions.DrinfeldUnit
+public import PropertyF.Ground.Dimensions.FourthDualUnit
+
+public import PropertyF.Ground.CentreDimensions.BraidingTrace
+
+public import PropertyF.Ground.CentreDimensions.PivotalTwist
+
+public import PropertyF.Ground.CentreDimensions.InvolutionTrace
+
+public import PropertyF.Ground.Dimensions.RootUnitComponent
+
+public import PropertyF.Ground.Dimensions.RootDualPairing
+
+public import PropertyF.Ground.Dimensions.PositivePivotalDual
+
+public import PropertyF.Ground.Dimensions.SphericalPivotalDual
+
+public import PropertyF.Ground.Dimensions.PivotalPairing
+
+public import PropertyF.Ground.Dimensions.RealSphericalBounds
+
+public import PropertyF.Ground.Dimensions.RightDualUnitTensor
+
+public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
+
+public import PropertyF.Ground.Dimensions.FourthTensorUnit
+
+public import PropertyF.Ground.Dimensions.RankOneSpherical
+
+public import PropertyF.Ground.Dimensions.RankOneCriterion
 public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.GlobalSquare
 public import PropertyF.Ground.CentreInduction.Adjunction
 public import PropertyF.Ground.CentreInduction.SimpleDetection
 public import PropertyF.Ground.CentreInduction.Averaging
+public import PropertyF.Ground.CentreInduction.Splitting
+public import PropertyF.Ground.CentreInduction.Dominance
+public import PropertyF.Ground.CentreInduction.Artinian
+public import PropertyF.Ground.CentreInduction.FiniteSum
+public import PropertyF.Ground.CentreInduction.FiniteLabels
+
+public import PropertyF.Ground.CentreBundle.Fusion
+public import PropertyF.Ground.CentreRigid.Lift
+public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.CentreRigid.MateEquations
+public import PropertyF.Ground.CentreInduction.Fusion
+public import PropertyF.Ground.CentreInduction.UnitTest
+public import PropertyF.Ground.CentreInduction.RankOne
+public import PropertyF.Ground.CentreInduction.UnitSummand
+public import PropertyF.Ground.CentreInduction.PseudoUnitary
+public import PropertyF.Ground.CentreInduction.UnitCandidate
+public import PropertyF.Ground.CentreInduction.UnitCoevaluation
+public import PropertyF.Ground.CentreInduction.FirstTriangle
+public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
+public import PropertyF.Ground.CentreInduction.HomTranspose
+public import PropertyF.Ground.CentreInduction.CrossingBlocks
+
+public import PropertyF.Ground.CentreInduction.TensorDetection
+public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
+public import PropertyF.Ground.CentreInduction.UnitNormalization
+public import PropertyF.Ground.CentreInduction.CrossingUnit
+public import PropertyF.Ground.CentreInduction.CrossingTensor
+public import PropertyF.Ground.CentreInduction.BasisRefinement
+public import PropertyF.Ground.CentreInduction.CrossingCoherence
+public import PropertyF.Ground.CentreInduction.CandidateAssembly
+public import PropertyF.Ground.CentreInduction.AdjunctionMatrix
+public import PropertyF.Ground.CentreInduction.CounitColumn
+public import PropertyF.Ground.CentreInduction.UnitDiagram
+public import PropertyF.Ground.CentreInduction.SecondTriangle
+public import PropertyF.Ground.CentreInduction.UnitCentrality
+public import PropertyF.Ground.CentreInduction.ActualFusion
+public import PropertyF.Ground.CentreInduction.CenterLength
+public import PropertyF.Ground.CentreInduction.FiniteSimples
+public import PropertyF.Ground.CentreInduction.Injectives
+public import PropertyF.Ground.CentreInduction.InjectiveFusion
+public import PropertyF.Ground.CentreInduction.InducedTrace
+public import PropertyF.Ground.CentreInduction.ForgetDual
+public import PropertyF.Ground.CentreInduction.RankOneComplete
+
+public import PropertyF.Ground.CentreInduction.BasisPairing
+
+public import PropertyF.Ground.CentreInduction.CrossingNaturality
+
+public import PropertyF.Ground.CentreDimensions.RankOneCenter
+
+public import PropertyF.Ground.CentreDimensions.RankOneRigid
+
+public import PropertyF.Ground.CentreDimensions.RankOneModular
+
+public import PropertyF.Ground.Dimensions.RightDualAssociativity
+
+public import PropertyF.Ground.Dimensions.DoubleDualAssociativity
+
+public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
+
+public import PropertyF.Ground.Dimensions.DualEvaluation
+public import PropertyF.Ground.Dimensions.DoubleDualPairing
+public import PropertyF.Ground.Dimensions.PivotalDual
+public import PropertyF.Ground.Dimensions.SphericalReal
+public import PropertyF.Ground.Dimensions.PivotalBounds
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
+public import PropertyF.Ground.Dimensions.DefectCoevaluation
+public import PropertyF.Ground.CentreCalculus.Core
+public import PropertyF.Ground.CentreCalculus.GeneratorSquare
+public import PropertyF.Ground.CentreCalculus.PureSquares
+public import PropertyF.Ground.CentreCalculus.PermutationQuotient
+public import PropertyF.Ground.CentreCalculus.ProjectorReduction
+public import PropertyF.Ground.CentreCalculus.ParityCorrection
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/
+

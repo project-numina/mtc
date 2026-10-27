@@ -61,3 +61,44 @@ theorem loopSum_center_hom (C : BraidedFusionCategory.{v,u})
     ← Finset.sum_smul, ← Modular.categorical_global_eq_sum_squares C p hp]
 
 end PropertyF.Ground.CentreInduction
+
+namespace PropertyF.Ground.CentreInduction
+universe v u
+set_option backward.isDefEq.respectTransparency false in
+/-- Winding commutes with a central map on the source side. -/
+theorem winding_precompose (C : BraidedFusionCategory.{v,u})
+    {W X Y : CategoryTheory.Center C.Obj} (f : W ⟶ X) (g : X.1 ⟶ Y.1)
+    (T : C.Obj) :
+    winding C W Y T (f.f ≫ g) = (f.f ▷ T) ≫ winding C X Y T g := by
+  simp only [winding, MonoidalCategory.whiskerLeft_comp, Category.assoc, ← f.comm_assoc]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Winding commutes with a central map on the target side. -/
+theorem winding_postcompose (C : BraidedFusionCategory.{v,u})
+    {X Y Z : CategoryTheory.Center C.Obj} (g : X.1 ⟶ Y.1) (f : Y ⟶ Z)
+    (T : C.Obj) :
+    winding C X Z T (g ≫ f.f) = winding C X Y T g ≫ (f.f ▷ T) := by
+  have h : (T ◁ f.f) ≫ (Z.2.β T).inv = (Y.2.β T).inv ≫ (f.f ▷ T) := by
+    apply (cancel_epi (Y.2.β T).hom).1
+    simp [← f.comm_assoc]
+  simp only [winding, MonoidalCategory.whiskerLeft_comp, Category.assoc, h]
+
+/-- The loop sum is compatible with central morphisms on the source side. -/
+theorem loopSum_precompose (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj))
+    {W X Y : CategoryTheory.Center C.Obj} (f : W ⟶ X) (g : X.1 ⟶ Y.1) :
+    loopSum C p W Y (f.f ≫ g) = f.f ≫ loopSum C p X Y g := by
+  classical
+  simp only [loopSum, winding_precompose, partialTraceHom_precompose,
+    Preadditive.comp_sum, Linear.comp_smul]
+
+/-- The loop sum is compatible with central morphisms on the target side. -/
+theorem loopSum_postcompose (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj))
+    {X Y Z : CategoryTheory.Center C.Obj} (g : X.1 ⟶ Y.1) (f : Y ⟶ Z) :
+    loopSum C p X Z (g ≫ f.f) = loopSum C p X Y g ≫ f.f := by
+  classical
+  simp only [loopSum, winding_postcompose, partialTraceHom_postcompose,
+    Preadditive.sum_comp, Linear.smul_comp]
+
+end PropertyF.Ground.CentreInduction

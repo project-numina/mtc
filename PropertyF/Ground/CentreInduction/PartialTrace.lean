@@ -36,3 +36,28 @@ theorem partialTraceHom_whisker (p : Dimensions.PivotalStructure (C := C))
   rw [whisker_exchange_assoc, ← rightUnitor_inv_naturality_assoc]
 
 end PropertyF.Ground.CentreInduction
+
+namespace PropertyF.Ground.CentreInduction
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+
+/-- Partial trace commutes with precomposition on the surviving factor. -/
+theorem partialTraceHom_precompose (p : Dimensions.PivotalStructure (C := C))
+    {W X Y : C} (T : C) (f : W ⟶ X) (g : X ⊗ T ⟶ Y ⊗ T) :
+    partialTraceHom p W Y T ((f ▷ T) ≫ g) = f ≫ partialTraceHom p X Y T g := by
+  simp only [partialTraceHom, LinearMap.coe_mk, AddHom.coe_mk, comp_whiskerRight,
+    Category.assoc]
+  rw [← associator_inv_naturality_left_assoc, whisker_exchange_assoc,
+    ← rightUnitor_inv_naturality_assoc]
+
+/-- Partial trace commutes with postcomposition on the surviving factor. -/
+theorem partialTraceHom_postcompose (p : Dimensions.PivotalStructure (C := C))
+    {X Y Z : C} (T : C) (g : X ⊗ T ⟶ Y ⊗ T) (f : Y ⟶ Z) :
+    partialTraceHom p X Z T (g ≫ (f ▷ T)) = partialTraceHom p X Y T g ≫ f := by
+  simp only [partialTraceHom, LinearMap.coe_mk, AddHom.coe_mk, comp_whiskerRight,
+    Category.assoc]
+  rw [associator_naturality_left_assoc, ← whisker_exchange_assoc,
+    ← whisker_exchange_assoc, rightUnitor_naturality]
+
+end PropertyF.Ground.CentreInduction
