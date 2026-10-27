@@ -32,7 +32,8 @@
   construct tensor closure and the inherited braided monoidal structure,
   with braided full faithful inclusion. `generatedCategoryAbelianOfSplit`
   constructs its abelian structure from explicit split-mono/epi hypotheses.
-  Fusion and rigid structure remain.
+  `generatedCategoryRigidOfDualClosure` constructs rigidity from closure
+  under right duals. Establishing that closure and fusion structure remains.
 
 ## In progress
 
