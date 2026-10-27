@@ -1,4 +1,5 @@
 module
+public import PropertyF.Ground.Fusion.GeneratedStructure
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Fusion.SemisimpleSplit
 
@@ -14,8 +15,6 @@ needed to construct the abelian structure on the generated subcategory. -/
 @[instance_reducible] def generatedCategoryAbelian
     (D : Ground.BraidedFusionCategory.{v,u}) (X : D.Obj) :
     Abelian (generatedCategory X) :=
-  generatedCategoryAbelianOfSplit X
-    (fun f hf => by letI : Mono f := hf; exact Ground.mono_splits D f)
-    (fun f hf => by letI : Epi f := hf; exact Ground.epi_splits D f)
+  Ground.generatedCategoryAbelian D X
 
 end PropertyF.Ground.Cabling

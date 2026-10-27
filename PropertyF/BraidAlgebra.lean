@@ -28,17 +28,11 @@ theorem squares_eq_of_central_product {G : Type*} [Group G] (a b : G)
     _ = ((a * b) * a * (a * b)⁻¹) ^ 2 := by simp only [pow_two]; group
     _ = b ^ 2 := by rw [hconj]
 
-/-- A scalar of finite multiplicative order has complex modulus one. -/
-theorem norm_eq_one_of_pow_eq_one {z : ℂ} {n : ℕ} (hn : n ≠ 0) (h : z ^ n = 1) :
-    ‖z‖ = 1 := by
-  have hpow : ‖z‖ ^ n = 1 ^ n := by simpa [norm_pow] using congrArg norm h
-  exact (pow_left_inj₀ (norm_nonneg _) zero_le_one hn).mp hpow
-
 /-- The last scalar calculation of Lemma 3.2, including negative `d`. -/
 theorem fp_eq_abs_dim_of_finite_order {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
     (h : ∃ n : ℕ, n ≠ 0 ∧ (f / d : ℂ) ^ n = 1) : f = |d| := by
   obtain ⟨n, hn, heq⟩ := h
-  have hh := norm_eq_one_of_pow_eq_one hn heq
+  have hh := Complex.norm_eq_one_of_pow_eq_one heq hn
   have hdiv : f / |d| = 1 := by simpa [norm_div, abs_of_pos hf] using hh
   exact (div_eq_one_iff_eq (abs_ne_zero.mpr hd)).mp hdiv
 

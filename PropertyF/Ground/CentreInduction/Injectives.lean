@@ -8,16 +8,13 @@ namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- Every object of a finite semisimple base is injective. -/
-theorem base_injective (X : C.Obj) : Injective X where
-  factors g f _ := by
-    letI : IsSplitMono f := mono_splits C f
-    exact ⟨retraction f ≫ g, by simp [Category.assoc]⟩
+theorem base_injective (X : C.Obj) : Injective X := object_injective C X
 
 /-- Induction sends every base object to an injective centre object. -/
 theorem induction_injective (X : C.Obj) : Injective ((induction C).obj X) := by
   letI : (induction C).PreservesInjectiveObjects :=
     Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms (actualAdjunction C)
-  letI : Injective X := base_injective C X
+  letI : Injective X := object_injective C X
   infer_instance
 
 set_option backward.isDefEq.respectTransparency false in

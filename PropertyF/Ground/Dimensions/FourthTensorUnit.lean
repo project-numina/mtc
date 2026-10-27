@@ -165,38 +165,4 @@ theorem rootTensor_square_eq_fourthDual_tensor (C : Ground.BraidedFusionCategory
   rw [hn2]
   rw [tensorHom_comp_tensorHom_assoc]
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The fourth-dual tensor law holds whenever the left factor is the unit. -/
-theorem fourthDualIso_tensor_unit_left (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
-    letI : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
-    letI : HasRightDual ((𝟙_ C.Obj)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C.Obj)ᘁ)
-    (fourthDualIso C (𝟙_ C.Obj ⊗ X)).hom =
-      ((fourthDualIso C (𝟙_ C.Obj)).hom ⊗ₘ (fourthDualIso C X).hom) ≫
-        (doubleDualTensorIso (((𝟙_ C.Obj)ᘁ)ᘁ) ((Xᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso (𝟙_ C.Obj) X).homᘁ)ᘁ) := by
-  have hsq : (rootTensorIso C (𝟙_ C.Obj) X).hom ≫
-      (((rootTensorIso C (𝟙_ C.Obj) X).homᘁ)ᘁ) = (fourthDualIso C (𝟙_ C.Obj ⊗ X)).hom := by
-    rw [rootTensorIso_unit_left]
-    simp only [rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul,
-      rootDimension_unit_sq, one_smul]
-    exact congrArg (fun n => (n.app (𝟙_ C.Obj ⊗ X)).hom) (fourthDualRootNaturalSquare_eq C)
-  exact hsq.symm.trans (rootTensor_square_eq_fourthDual_tensor C _ _)
-
-set_option backward.isDefEq.respectTransparency false in
-/-- The fourth-dual tensor law holds whenever the right factor is the unit. -/
-theorem fourthDualIso_tensor_unit_right (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
-    letI : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
-    letI : HasRightDual ((𝟙_ C.Obj)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C.Obj)ᘁ)
-    (fourthDualIso C (X ⊗ 𝟙_ C.Obj)).hom =
-      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C (𝟙_ C.Obj)).hom) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) (((𝟙_ C.Obj)ᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso X (𝟙_ C.Obj)).homᘁ)ᘁ) := by
-  have hsq : (rootTensorIso C X (𝟙_ C.Obj)).hom ≫
-      (((rootTensorIso C X (𝟙_ C.Obj)).homᘁ)ᘁ) = (fourthDualIso C (X ⊗ 𝟙_ C.Obj)).hom := by
-    rw [rootTensorIso_unit_right]
-    simp only [rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul,
-      rootDimension_unit_sq, one_smul]
-    exact congrArg (fun n => (n.app (X ⊗ 𝟙_ C.Obj)).hom) (fourthDualRootNaturalSquare_eq C)
-  exact hsq.symm.trans (rootTensor_square_eq_fourthDual_tensor C _ _)
-
 end PropertyF.Ground.Dimensions
