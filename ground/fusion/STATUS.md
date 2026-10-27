@@ -162,12 +162,13 @@ hypothesis bundles; the separate compatibility bridge constructs `FusionData`.
   `fusionBasis_contraction_natural` proves the natural contraction identity
   needed to compare decompositions on the two sides of a test-object map.
   `halfBraidingOfCrossingCandidate` assembles the half-braiding from the
-  still-unproved invertibility on pairs of simple objects and tensor law on
-  triples of simples. `natTrans_isIso_of_simples`,
-  `crossingCandidate_isIso_of_simples`, and
-  `crossingCandidate_tensor_of_all_simples` extend these finite checks to
-  all objects using naturality and biproduct decompositions; the finite
-  checks themselves remain unproved.
+  still-unproved unit normalization on simples and tensor law on triples of
+  simples. `natTrans_isIso_of_simples`, `crossingCandidate_isIso_of_simples`,
+  and `crossingCandidate_tensor_of_all_simples` extend finite checks to all
+  objects. `weak_isIso` constructs the inverse in a rigid category directly
+  from naturality, unit normalization, and the tensor law; consequently
+  `crossing_isIso_of_unit_tensor` removes the separate invertibility premise.
+  The remaining finite unit and tensor checks themselves remain unproved.
 - `CentreInduction.transposeUnderlying` constructs the candidate linear Hom
   transpose and proves it injective; composing it with the unit-summand
   counit recovers the original map. Centrality and surjectivity onto centre
