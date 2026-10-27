@@ -188,6 +188,7 @@ import all PropertyF.Ground.Fusion.SubcategoryDimension
 import all PropertyF.Ground.Fusion.TotalMatrix
 import all PropertyF.Ground.Fusion.UnitPower
 import all PropertyF.Ground.Fusion.WeakIntegrality
+import all PropertyF.Ground.Integrate.ActualCenterReduction
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterBundle
 import all PropertyF.Ground.Integrate.CenterFiniteImage

@@ -210,6 +210,7 @@ import all PropertyF.Ground.Fusion.SubcategoryDimension
 import all PropertyF.Ground.Fusion.TotalMatrix
 import all PropertyF.Ground.Fusion.UnitPower
 import all PropertyF.Ground.Fusion.WeakIntegrality
+import all PropertyF.Ground.Integrate.ActualCenterReduction
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterBundle
 import all PropertyF.Ground.Integrate.CenterFiniteImage
@@ -364,6 +365,7 @@ run_cmd do
       ``PropertyF.Ground.target_of_modular_center,
       ``PropertyF.Ground.target_of_center_centralizers,
       ``PropertyF.Ground.target_of_center_product_retracts,
+      ``PropertyF.Ground.target_of_actual_center,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.Dimensions.positive_spherical_of_spherical_pseudoUnitary,
       ``PropertyF.Ground.Example.target_hypotheses_inhabited,
