@@ -83,6 +83,23 @@ theorem rightPartialTrace_insert (p : Dimensions.PivotalStructure (C := C))
   rw [hins, rightPartialTrace_left, hone]
   simp
 
+/-- A simple endomorphism is determined by its pivotal trace. -/
+theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
+    {Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
+    (p : Dimensions.PivotalStructure (C := C))
+    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (a : End Y)
+    (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) :
+    a = (scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
+  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ a.asHom
+  have hscalar : scalar (p.rightTrace a.asHom) = c * scalar (p.rightTrace (𝟙 Y)) := by
+    rw [← hc, p.rightTrace_smul]
+    simp
+  have hcval : c = scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y)) :=
+    (eq_div_iff hd).2 hscalar.symm
+  apply End.ext
+  simpa [← hcval] using hc.symm
+
+
 /-- Schur's lemma reduces the simple-survivor partial-trace formula to the
 single, explicitly stated compatibility of iterated and total pivotal traces. -/
 theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C] (X Y : C)
@@ -93,17 +110,7 @@ theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.H
     (htrace : p.rightTrace (rightPartialTrace p X Y f).asHom = p.rightTrace f.asHom) :
     rightPartialTrace p X Y f =
       (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
-  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ
-    (rightPartialTrace p X Y f).asHom
-  have hscalar : scalar (p.rightTrace (rightPartialTrace p X Y f).asHom) =
-      c * scalar (p.rightTrace (𝟙 X)) := by
-    rw [← hc, p.rightTrace_smul]
-    simp
-  have hcval : c = scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 X)) := by
-    apply (eq_div_iff hd).2
-    exact hscalar.symm.trans (congrArg scalar htrace)
-  apply End.ext
-  simpa [← hcval] using hc.symm
+  simpa only [htrace] using simple_end_eq_trace_smul p scalar (rightPartialTrace p X Y f) hd
 
 /-- Closing a right tensor factor commutes with adding an identity factor on
 the left, with the associator made explicit. -/
