@@ -123,3 +123,10 @@ remaining centralizer hypothesis is that the chosen core contains the numerical
 S-centralizer of product labels; establishing that inclusion for the paper's
 integral symmetric core requires S-test-to-monodromy and the existing actual
 embedding centralizer identities. Focused build passed.
+
+`CentreCabling.mixedMonodromy_finite_order` proves property F forces every
+mixed double braiding in the base braided fusion category to have finite
+order, by retracting it from the square of the self-braiding of a direct sum.
+This does not prove finite order for arbitrary centre monodromy: after
+forgetting, a centre half-braiding is not generally the base braiding. The
+S-test-to-monodromy bridge remains open. Focused build passed.
