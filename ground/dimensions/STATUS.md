@@ -85,6 +85,7 @@
 
 - `fourthDualRoot_unit_component` identifies the actual natural root on the tensor unit as the canonical double-dual unit map multiplied by the (±1) root dimension.
 
+- `rootTensorDefect_associativity` proves the full three-object cocycle identity for the actual root defect, unconditionally, by transporting the strong monoidal double dual to the identity functor. This is a key remaining ingredient for the signed sliding identity.
 - `rootTensorDefect_coevaluation` and `rootTensorDefect_swapped_coevaluation` prove the actual tensor defect acts on both ordinary and braided-swapped coevaluations of every simple by the product of the unit-root scalar and the simple dual sign, with no additional assumptions. `rootTensorDefect_coevaluation_of_iso` makes the result independent of simple representative. The three-object swapped-coevaluation slide remains unproved.
 - `root_components_coevaluation`, `root_components_evaluation`, `root_components_swapped_coevaluation`, and `root_components_swapped_evaluation` prove that root components transport the actual simple duality cups and caps with the ENO sign, for both the ordinary and braided-swapped pairings. The remaining three-object defect sliding identity is not yet proved.
 
