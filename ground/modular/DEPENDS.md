@@ -60,3 +60,6 @@ The actual categorical S identities, character classification and Galois action 
 - `fpDeterminant_tensor_natural` proves tensor compatibility for every
   component of every natural automorphism, including the pivotal twist.
   General monodromy determinants and their hexagon/additivity remain open.
+- Assuming simple-object twist balancing, the tensor determinant rule now holds
+  on both sides for actual simple mixed monodromies. Twist balancing and the
+  hexagon/additivity calculation remain open.

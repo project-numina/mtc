@@ -171,3 +171,11 @@ naturality, and the preceding scalar and biproduct determinant laws. This
 covers pivotal twist components; the general non-natural automorphism rule and
 the monodromy hexagon/additivity calculation remain open. Focused build and
 foundational axiom checks passed.
+
+`fpDeterminant_tensor_scalar_natural` extends the unconditional tensor rule
+to scalar multiples of natural-automorphism components. Under an explicit
+simple-object balancing equation, `fpDeterminant_tensor_simple_monodromy` and
+`fpDeterminant_simple_monodromy_tensor` therefore establish tensor determinant
+compatibility on either side for actual mixed monodromies of simple objects.
+The balancing equation and the categorical hexagon/additivity proof remain
+open, so no finite order is claimed. Focused build and axiom checks passed.
