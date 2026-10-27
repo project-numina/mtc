@@ -60,4 +60,26 @@ theorem leftPartialTrace_whiskerRight (p : Dimensions.PivotalStructure (C := C))
     comp_whiskerRight, whiskerLeft_comp, Category.assoc]
   monoidal
 
+/-- Schur's lemma identifies the partial trace on a simple surviving strand
+once compatibility with total trace is known. -/
+theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C]
+    (X Y : C) [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
+    (p : Dimensions.PivotalStructure (C := C))
+    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
+    (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
+    (htrace : p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom) :
+    leftPartialTrace p X Y f =
+      (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
+  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ
+    (leftPartialTrace p X Y f).asHom
+  have hscalar : scalar (p.rightTrace (leftPartialTrace p X Y f).asHom) =
+      c * scalar (p.rightTrace (𝟙 Y)) := by
+    rw [← hc, p.rightTrace_smul]
+    simp
+  have hcval : c = scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y)) := by
+    apply (eq_div_iff hd).2
+    exact hscalar.symm.trans (congrArg scalar htrace)
+  apply End.ext
+  simpa [← hcval] using hc.symm
+
 end PropertyF.Ground.CentreCalculus
