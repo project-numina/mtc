@@ -27,7 +27,6 @@ import all PropertyF.Ground.CentreBundle.Canonical
 import all PropertyF.Ground.CentreCabling.TwistDual
 import all PropertyF.Ground.CentreInduction.DualMonodromy
 import all PropertyF.Ground.CentreInduction.FiniteMonodromyModular
-import all PropertyF.Ground.CentreModular.CenterBalanced
 import all PropertyF.Ground.CentreRigid.LoopAbsorption
 import all PropertyF.Ground.CentreRigid.LoopIdempotent
 import all PropertyF.Ground.CentreRigid.NestedTrace
@@ -55,10 +54,6 @@ import all PropertyF.Ground.CentreCabling.VafaDeterminant
 import all PropertyF.Ground.CentreCabling.VafaLanternReduction
 import all PropertyF.Ground.CentreCabling.VafaTwist
 import all PropertyF.Ground.CentreModular.AdditiveDecomposition
-import all PropertyF.Ground.CentreModular.CompatiblePivotal
-import all PropertyF.Ground.CentreModular.CrossingTrace
-import all PropertyF.Ground.CentreModular.ForgetTrace
-import all PropertyF.Ground.CentreModular.InducedKirby
 import all PropertyF.Ground.CentreModular.VafaBiproduct
 import all PropertyF.Ground.CentreModular.VafaCompletion
 import all PropertyF.Ground.CentreModular.VafaDetTensor
@@ -111,10 +106,6 @@ import all PropertyF.Ground.CentreRigid.RankOneMate
 import all PropertyF.Ground.CentreRigid.SimpleCentrality
 import all PropertyF.Ground.CentreRigid.SimpleTensor
 import all PropertyF.Ground.CentreRigid.Tensor
-import all PropertyF.Ground.CentreIntegrate.CycleColoring
-import all PropertyF.Ground.CentreIntegrate.CyclePolynomial
-import all PropertyF.Ground.CentreIntegrate.CycleTraceReduction
-import all PropertyF.Ground.CentreIntegrate.PermutationSignSum
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
 import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.CoreCentrality
@@ -127,10 +118,7 @@ import all PropertyF.Ground.CentreCabling.TraceSaturation
 import all PropertyF.Ground.CentreCalculus.ParityCorrection
 import all PropertyF.Ground.CentreCalculus.ProjectorReduction
 import all PropertyF.Ground.CentreDimensions.BraidingTrace
-import all PropertyF.Ground.CentreDimensions.InvolutionTrace
 import all PropertyF.Ground.CentreDimensions.PivotalTwist
-import all PropertyF.Ground.CentreDimensions.RankOneCenter
-import all PropertyF.Ground.CentreDimensions.RankOneModular
 import all PropertyF.Ground.CentreDimensions.RankOneRigid
 import all PropertyF.Ground.CentreInduction.ActualFusion
 import all PropertyF.Ground.CentreInduction.AdjunctionAssembly
@@ -176,7 +164,6 @@ import all PropertyF.Ground.CentreInduction.UnitNormalization
 import all PropertyF.Ground.CentreInduction.UnitSummand
 import all PropertyF.Ground.CentreInduction.UnitTest
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
-import all PropertyF.Ground.CentreModular.ColumnSeparation
 import all PropertyF.Ground.CentreModular.KirbyCriterion
 import all PropertyF.Ground.CentreModular.RegularSupport
 import all PropertyF.Ground.CentreRigid.MateEquations
@@ -478,7 +465,6 @@ import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
 import all PropertyF.Ground.Modular.HopfPartialTrace
 import all PropertyF.Ground.Modular.Labels
-import all PropertyF.Ground.Modular.LegacyLabels
 import all PropertyF.Ground.Modular.PseudoGalois
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Modular.SMatrix
