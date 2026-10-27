@@ -7,6 +7,8 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
+- `simple_strand_inclusion` combines fusion’s split-unit theorem with cabling’s
+  identity-strand embedding and discharges that field for ground categories.
 - `squaredNorm_eq_of_choices` connects the target norm to any conventional
   choice of scalar equivalence and simple double-dual isomorphism.
 - `unit_algebraMap_bijective`, `unitScalarEquiv`, `unitScalar_algebraMap`,

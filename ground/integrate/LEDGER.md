@@ -68,7 +68,7 @@ is claimed yet.
 | `StandardInputs` | `conjugate_labels`, `conjugate_images` | modular, fusion | Open: simple labels/FP character and actual braid-image equivalences. |
 | `CablingWitness` | `blockCount`, `lengths`, `pureImage`, `finiteIndex`, `cableImage`, `restriction`, `restriction_surjective` | cabling | Finite index and abstract pure-word quotient constructed; categorical cabling map pending. Only used by corollary. |
 | `GeneratedInputs` | `cabling`, `category`, `inclusion`, `inclusion_braided`, `inclusion_full`, `inclusion_faithful`, `inclusion_generated`, `generated_essential_image`, `image_equivalence` | cabling | Open; only used by corollary. |
-| `GeneratedInputs` | `simple_square_integral`, `strand_inclusion` | cabling, fusion | Unit retract and strand injection constructed separately; packaging and square-integrality remain. Only used by corollary. |
+| `GeneratedInputs` | `simple_square_integral`, `strand_inclusion` | cabling, fusion | Bundle-free `Ground.simple_strand_inclusion` now constructed; packaging and square-integrality remain. Only used by corollary. |
 
 The existing `#print axioms` result establishes only kernel axiom cleanliness
 for the *conditional* theorem; it says nothing about constructing these fields.
