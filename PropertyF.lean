@@ -381,3 +381,5 @@ public import PropertyF.Ground.CentreRigid.Coevaluation
 public import PropertyF.Ground.CentreRigid.Tensor
 
 public import PropertyF.Ground.CentreRigid.Evaluation
+
+public import PropertyF.Ground.CentreRigid.ForgetComparison

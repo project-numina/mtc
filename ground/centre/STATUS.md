@@ -132,3 +132,7 @@ monoidal category, without further premises. `rigidCenter_forget_dual`,
 that its chosen dual and pairing forget definitionally to those of the base.
 Focused Lake build passes. General centre finite semisimplicity and fusion
 assembly remain to be completed; rigidity is no longer a dependency.
+For `rigidCenter`, `forgetDualIso_eq_refl` and `forgetDoubleDualIso_eq_refl`
+identify fusion's canonical centre/base dual comparison isomorphisms with the
+identity, simplifying the induced pivotal-centrality calculation. Focused
+build passes; the needed pivotal centrality and base positive sphere are open.
