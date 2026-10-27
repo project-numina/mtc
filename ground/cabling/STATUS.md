@@ -59,7 +59,9 @@
   unit. `Ground.Cabling.unit_retract_power` now constructs that occurrence
   from a balanced fusion flow, and `generatedCategoryRigidOfSimple` constructs
   rigidity without further assumptions for simple generators. The fusion
-  structure and rigidity for arbitrary generators remain.
+  structure remains. `Ground.Cabling.generatedBy_rightDual` now uses
+  semisimple decomposition and proves dual closure for arbitrary generators;
+  `generatedCategoryRigid` constructs their rigidity unconditionally.
 
 - `positiveMatrix_eigenvector_integral` proves the arithmetic/Perron step
   of ENO 8.27: a normalized positive eigenvector of a positive rational
@@ -76,16 +78,15 @@
 
 ## Remaining
 
-- Prove `GeneratedBy X (Xᘁ)` for arbitrary X and construct the fusion
-  structure on the generated subcategory and cabling witnesses.
+- Construct the fusion structure on the generated subcategory and cabling
+  witnesses.
 - Prove the categorical setup for ENO 8.27: the adjoint component, a
   strictly positive power of its fusion matrix, its integer eigenvalue,
   and integrality of coordinates; show inclusion preserves FP dimension.
   `square_integral_of_adjoint_matrix` completes the final numerical step
   once a categorical adjoint matrix presentation is supplied.
 - The categorical braid/cabling identities, generation of the dual, and the
-  inherited semisimple fusion structure and general-generator dual closure
-  require substantial further work.
+  inherited semisimple fusion structure require substantial further work.
   Fusion has constructed the ground positive character, object FP
   dimension, and preservation by full fusion inclusions; the categorical
   adjoint-component construction remains open. No reliable completion estimate is available.
