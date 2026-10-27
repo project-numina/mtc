@@ -22,6 +22,8 @@
 - `cablingWitnessOfPureAction`: constructs a full `CablingWitness` from
   a pure-word map to the product of cabled braid images and the precise
   kernel containment needed to descend to the pure image.
+- `CablingWitness.of_retract` and `cabling_of_sumPowers` reduce all generated
+  objects to proving the cabling diagram only for finite sums of powers.
 
 - `generatedImageEquiv` and `braidImageEquivOfGeneratorCoherence` reduce
   image equivalences under faithful monoidal functors to the generator
