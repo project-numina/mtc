@@ -317,6 +317,21 @@ public import PropertyF.Ground.CentreDimensions.RankOneCenter
 
 public import PropertyF.Ground.CentreDimensions.RankOneRigid
 
+public import PropertyF.Ground.CentreDimensions.RankOneModular
+
+public import PropertyF.Ground.Dimensions.RightDualAssociativity
+
+public import PropertyF.Ground.Dimensions.DoubleDualAssociativity
+
+public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
+
+public import PropertyF.Ground.Dimensions.DualEvaluation
+public import PropertyF.Ground.Dimensions.DoubleDualPairing
+public import PropertyF.Ground.Dimensions.PivotalDual
+public import PropertyF.Ground.Dimensions.SphericalReal
+public import PropertyF.Ground.Dimensions.PivotalBounds
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
+public import PropertyF.Ground.Dimensions.DefectCoevaluation
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
