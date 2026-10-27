@@ -88,6 +88,8 @@
 
 - `doubleDualIso_coevaluation` and `doubleDualIso_evaluation` establish dual-pairing transport for any object and any double-dual isomorphism. `real_spherical_pivotal_coevaluation` and `real_spherical_pivotal_evaluation` apply these to every object of a real spherical fusion category.
 
+- `real_spherical_squaredNorm_galois_bounds` and `real_spherical_globalDimension_galois_bounds` prove the simple total-positivity/FP-square bounds and global Galois bounds for any existing spherical structure with real simple dimensions, without positivity or pseudo-unitarity. General existence remains open.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
