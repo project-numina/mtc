@@ -40,9 +40,4 @@ theorem eval_braiding_slide_left (X Y : D) :
       rw [Dimensions.braiding_cap_slide X (Yᘁ)]
     _ = _ := by monoidal
 
-/-- Dualizing a braiding gives the braiding of the duals. -/
-theorem rightDualTensorIso_braiding (X Y : D) :
-    ((β_ X Y).homᘁ) ≫ (rightDualTensorIso X Y).hom =
-      (rightDualTensorIso Y X).hom ≫ (β_ (Xᘁ) (Yᘁ)).hom :=
-  Dimensions.rightDualTensorIso_braiding X Y
 end PropertyF.Ground.CentreInduction

@@ -7,9 +7,6 @@ universe v u
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
 
-/-- Every object of a finite semisimple base is injective. -/
-theorem base_injective (X : C.Obj) : Injective X := object_injective C X
-
 /-- Induction sends every base object to an injective centre object. -/
 theorem induction_injective (X : C.Obj) : Injective ((induction C).obj X) := by
   letI : (induction C).PreservesInjectiveObjects :=

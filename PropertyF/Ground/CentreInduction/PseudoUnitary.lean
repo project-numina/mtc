@@ -9,12 +9,6 @@ open CategoryTheory
 namespace PropertyF.Ground.CentreInduction
 universe v u
 
-/-- The global categorical dimension of a pseudo-unitary fusion category is
-nonzero, because its global FP dimension is at least one. -/
-theorem globalDimension_ne_zero_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
-    (hPU : PseudoUnitary C) : globalDimension C ≠ 0 :=
-  Ground.globalDimension_ne_zero_of_pseudoUnitary C hPU
-
 /-- For pseudo-unitary C the fusion assembly needs no separate nonzero
 global-dimension premise. The adjunction and loop-sliding identity remain
 explicit unproved assumptions. -/
