@@ -187,3 +187,10 @@ on three simple objects under the explicit simple twist-balancing identity.
 The remaining determinant-to-fusion-sum expansion, actual twist balancing,
 and final finite-order conclusion remain unproved. Focused build and axiom
 checks passed.
+
+`additive_object_function_decomposition` proves any isomorphism-invariant,
+binary-additive, zero-preserving real-vector-valued function on base objects
+expands as the sum of its simple values weighted by actual Hom multiplicities.
+This supplies the numerical decomposition needed for the monodromy determinant
+once its categorical iso/additivity/zero properties are proved. Focused build
+and foundational axiom check passed.
