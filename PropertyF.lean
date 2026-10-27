@@ -225,3 +225,4 @@ public import PropertyF.Ground.Dimensions.DefectNaturality
 public import PropertyF.Ground.Dimensions.CoevaluationReciprocity
 public import PropertyF.Ground.Dimensions.CoevaluationSliding
 public import PropertyF.Ground.Dimensions.DrinfeldUnit
+public import PropertyF.Ground.Dimensions.FourthDualUnit
