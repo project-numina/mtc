@@ -61,7 +61,6 @@ public import PropertyF.Ground.Dimensions.Norm
 public import PropertyF.Ground.Calculus.StarSpan
 public import PropertyF.Ground.Centre.Embeddings
 public import PropertyF.Ground.Centre.Linear
-public import PropertyF.Ground.Centre.Zero
 public import PropertyF.Ground.Centre.Biproduct
 public import PropertyF.Ground.Centre.Kernel
 public import PropertyF.Ground.Centre.Cokernel

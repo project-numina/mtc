@@ -356,13 +356,13 @@ import all PropertyF.Ground.Centre.GeneratedClosure
 import all PropertyF.Ground.Centre.ImageDuals
 import all PropertyF.Ground.Centre.Kernel
 import all PropertyF.Ground.Centre.Linear
+import all PropertyF.Ground.Centre.Basic
 import all PropertyF.Ground.Centre.Product
 import all PropertyF.Ground.Centre.ProductClosure
 import all PropertyF.Ground.Centre.ProductImages
 import all PropertyF.Ground.Centre.ReverseBraiding
 import all PropertyF.Ground.Centre.SymmetricAction
 import all PropertyF.Ground.Centre.SymmetricIntegrality
-import all PropertyF.Ground.Centre.Zero
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.CentreCabling.ProductGenerated
 import all PropertyF.Ground.CentreCalculus.Core
