@@ -273,3 +273,10 @@ on dual simples in every spherical braided fusion category. This is the
 ribbon dual-scalar ingredient used by the lantern argument, and uses fusion's
 actual dual-braiding comparison. Focused build passed. The general lantern
 endomorphism identity and twist balancing remain open.
+
+`vafaSingles_eq_scalar` proves the three single-strand pivotal twists act by
+the cube of the simple scalar. `pivotal_vafa_relations_of_general_lantern`
+derives the Vafa scalar relations from the general three-strand lantern
+identity in any spherical braided fusion category, without an extra dual
+scalar premise. The general lantern identity and balancing remain unproved.
+Focused build passed.

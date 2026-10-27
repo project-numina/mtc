@@ -415,3 +415,4 @@ import PropertyF.Ground.CentreCabling.VafaLanternReduction
 =======
 >>>>>>> refs/heads/ground/integrate
 import PropertyF.Ground.CentreCabling.TwistDual
+import PropertyF.Ground.CentreCabling.LanternSpherical
