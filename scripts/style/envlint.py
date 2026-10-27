@@ -11,7 +11,7 @@ imports='\n'.join(re.findall(r'^import all .+$',audit,re.M))+'\nimport all Prope
 source=root/'scripts/style/.EnvLintRun.lean'
 source.write_text('module\npublic meta import Mathlib\n'+imports+'\nset_option maxHeartbeats 0 in\n#lint in PropertyF\n')
 with (root/'STYLE_LINT_ENV.txt').open('w') as out:
-    r=subprocess.run(['taskset','-c','28-31','lake','env','lean',str(source.relative_to(root))], stdout=out, stderr=subprocess.STDOUT,env={**os.environ,'LEAN_NUM_THREADS':'4'})
+    r=subprocess.run(['taskset','-c',os.environ.get('STYLE_CORES', '28-31'),'lake','env','lean',str(source.relative_to(root))], stdout=out, stderr=subprocess.STDOUT,env={**os.environ,'LEAN_NUM_THREADS':'4'})
 text=(root/'STYLE_LINT_ENV.txt').read_text()
 # #lint returns an error when findings exist; reject infrastructure/syntax errors.
 if r.returncode and 'declarations (plus' not in text:

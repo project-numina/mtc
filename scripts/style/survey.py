@@ -134,7 +134,7 @@ def main():
         audit=(ROOT/'PropertyF/Ground/Integrate/TargetAudit.lean').read_text()
         imports='\n'.join(re.findall(r'^import all .+$',audit,re.M))+'\nimport all PropertyF\nimport all PropertyF.Ground.Integrate.ProjectAudit\nimport all PropertyF.Ground.Integrate.TargetAudit'
         generated=STYLE/'.EnvironmentRun.lean'; generated.write_text('module\npublic import Mathlib\npublic meta import Lean\n'+imports+'\n'+(STYLE/'Environment.lean').read_text())
-        subprocess.run(['taskset','-c','28-31','lake','env','lean',str(generated.relative_to(ROOT))],check=True,env={**os.environ,'LEAN_NUM_THREADS':'4'})
+        subprocess.run(['taskset','-c',os.environ.get('STYLE_CORES', '28-31'),'lake','env','lean',str(generated.relative_to(ROOT))],check=True,env={**os.environ,'LEAN_NUM_THREADS':'4'})
     project=[parse(p,mod(p,ROOT/'PropertyF','PropertyF')) for p in projectpaths] + [parse(ROOT/'PropertyF.lean','PropertyF')]
     project.sort(key=lambda f:f['file'])
     mathsample=[parse(p,mod(p,MATH,'Mathlib')) for p in mathpaths if sampled(mod(p,MATH,'Mathlib'))]
