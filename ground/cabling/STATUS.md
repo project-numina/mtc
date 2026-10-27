@@ -12,12 +12,16 @@
 - `strandPermutation`, `pureWords`, `braidWordAction`, `pureBraidImage` and
   `pureBraidImage_finiteIndex`: categorical pure braid images have finite
   index, using permutation of free words.
+- `cablingWitnessOfPureAction`: constructs a full `CablingWitness` from
+  a pure-word map to the product of cabled braid images and the precise
+  kernel containment needed to descend to the pure image.
 
 ## In progress
 
 - Obtain the split unit for simple X from rigidity, semisimplicity, and the
   simple unit. Fusion has been asked for the corresponding construction.
-- Construct the cabling restriction maps from pure braid words.
+- Construct the categorical pure-word map to cabled images and prove its
+  kernel containment for a retract of a sum of powers.
 - Prove that a faithful braided functor identifies braid images via its
   monoidal coherence isomorphism.
 
