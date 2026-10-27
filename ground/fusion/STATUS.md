@@ -383,3 +383,9 @@ transported base pivotal components are actual centre isomorphisms on every
 positive image. General centre-object centrality remains open; investigating
 centre braiding naturality and double-dual preservation of braiding. Focused
 build passes.
+
+`eval_braiding_slide_right`, `eval_braiding_slide_left`,
+`rightDualTensorIso_braiding` and `doubleDualTensorIso_braiding` prove the
+canonical double-dual tensorator preserves the braiding in any right-rigid
+braided category. Focused build passes. Applying these to centre braiding
+naturality to prove the general pivotal-component centrality equation.
