@@ -25,7 +25,8 @@
   and inclusion; `generatedInclusion_essentialImage` characterizes its
   essential image. `generatedBy_tensorPower`, `generatedBy_unit`,
   `generatedBy_self`, `generatedBy_retract`, `generatedBy_of_iso` establish
-  basic closure. `tensorPowerTensorIso` combines two powers using the
+  basic closure. `generatedBy_biproduct` proves closure under finite sums.
+  `tensorPowerTensorIso` combines two powers using the
   monoidal associator. `generatedBy_tensor` and `generatedBy_isMonoidal`
   construct tensor closure and the inherited braided monoidal structure,
   with braided full faithful inclusion. Fusion and rigid structure remain.

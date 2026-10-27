@@ -80,6 +80,41 @@ def flattenBiproduct (a b : ℕ) (f : Fin a → Fin b → C) :
       (Equiv.sigmaEquivProd (Fin a) (Fin b)) (fun _ => Iso.refl _) ≪≫
     (biproduct.isoProduct _).symm
 
+/-- Flatten a dependently indexed finite biproduct. -/
+def flattenDependent (a : ℕ) (b : Fin a → ℕ) (f : (i : Fin a) → Fin (b i) → C) :
+    (⨁ fun i => ⨁ fun j => f i j) ≅ ⨁ fun p : Σ i, Fin (b i) => f p.1 p.2 :=
+  biproduct.isoProduct _ ≪≫
+    Pi.mapIso (fun i => biproduct.isoProduct (f i)) ≪≫
+    piPiIso (fun i => Fin (b i)) f ≪≫ (biproduct.isoProduct _).symm
+
+/-- Finite biproducts of generated objects are generated. -/
+theorem generatedBy_biproduct (X : C) (a : ℕ) (f : Fin a → C)
+    (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
+  classical
+  have hex : ∀ i, ∃ (n : ℕ) (k : Fin n → ℕ), Nonempty (Retract (f i) (⨁ fun j => tensorPower X (k j))) := by
+    intro i
+    obtain ⟨n, k, ⟨r⟩⟩ := hf i
+    exact ⟨n, k, ⟨r⟩⟩
+  choose n k hr using hex
+  let r : ∀ i, Retract (f i) (⨁ fun j => tensorPower X (k i j)) := fun i => (hr i).some
+  let h : Fin a → C := fun i => ⨁ fun j => tensorPower X (k i j)
+  let R : Retract (⨁ f) (⨁ h) := {
+    i := biproduct.map fun i => (r i).i
+    r := biproduct.map fun i => (r i).r
+    retract := by
+      apply biproduct.hom_ext
+      intro i
+      simp [Category.assoc, (r i).retract]
+  }
+  let e : (Σ i, Fin (n i)) ≃ Fin (Fintype.card (Σ i, Fin (n i))) := Fintype.equivFin _
+  let k' : Fin (Fintype.card (Σ i, Fin (n i))) → ℕ := fun p => k (e.symm p).1 (e.symm p).2
+  let e' : (⨁ h) ≅ ⨁ fun p => tensorPower X (k' p) :=
+    flattenDependent a n (fun i j => tensorPower X (k i j)) ≪≫
+      biproduct.whiskerEquiv e (fun p => eqToIso (by
+        change tensorPower X (k (e.symm (e p)).1 (e.symm (e p)).2) = _
+        rw [e.symm_apply_apply]))
+  exact ⟨_, k', ⟨R.trans (Retract.ofIso e')⟩⟩
+
 variable [MonoidalPreadditive C]
 /-- Distribute tensor product over two finite biproducts. -/
 def tensorBiproduct (a b : ℕ) (f : Fin a → C) (g : Fin b → C) :
