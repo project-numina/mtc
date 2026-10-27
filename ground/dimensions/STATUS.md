@@ -18,6 +18,7 @@
 
 - `rightTrace_biproduct` proves the trace of an endomorphism on a finite biproduct is the sum of diagonal block traces; `rightDimension_biproduct` gives additivity of dimension, and `rightTrace_biproduct_simple` uses Schur to derive dimension-weighted scalar diagonal blocks.
 
+- `pivotalDimension_simple_ne_zero` and `spherical_squaredNorm_ne_zero` reuse modular’s genuine categorical nonvanishing theorem. `spherical_squaredNorm_totallyPositive_of_dual` and `pseudoUnitary_galois_fp_bounds_of_dual` establish total positivity and the conjugate positivity/upper bound from the explicit remaining dual-dimension identity.
 - `globalDimension_real_one_le_of_spherical` proves the target global dimension is at least one given a spherical structure with real simple dimensions; existence and reality are not yet proved.
 - `pseudoUnitary_iff_simple_saturation` establishes the global equality characterization given a spherical structure and real simple dimensions.
 - `character_value_isIntegral`, `pivotalDimension_isIntegral`, `spherical_squaredNorm_isIntegral`, and `spherical_globalDimension_isIntegral` prove algebraic integrality of pivotal dimensions and, when spherical structures exist, intrinsic squared norms and global dimension.
@@ -41,7 +42,7 @@
 ## Dependencies and remaining work
 
 - Fusion: positive-character theory and spectral-radius agreement, needed for ENO dimension bounds and canonical spherical construction. Target spectral FP integrality is proved.
-- Integrate/fusion: genuine category and semisimplicity interface needed to construct pivotal and spherical structures, intrinsic norms and their ENO properties.
+- Category interfaces, simple representatives, unit scalars and target FP integrality are available. Remaining categorical dependencies are the construction of canonical spherical structure and the identity of spherical dimensions on dual objects.
 - Remaining: positivity/total positivity of squared norms; categorical global dimension ≥ 1; ENO 8.21/8.22 inequalities and equality case; ENO 8.23 canonical spherical structure; construction of pseudo-unitary conjugate real/positive/bounded dimensions and transport. These are substantial mathematical developments, not completed by the arithmetic construction.
 
 Estimate: the finite-field arithmetic is finished and the categorical integrality is established for spherical structures; the category-theoretic dimension program remains substantially open and its duration is currently uncertain.
