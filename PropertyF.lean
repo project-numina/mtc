@@ -7,6 +7,24 @@ public import PropertyF.Ground.CentreCalculus.ExteriorReduction
 public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.GlobalSquare
 public import PropertyF.Ground.CentreInduction.Adjunction
+public import PropertyF.Ground.CentreModular.VafaCompletion
+public import PropertyF.Ground.CentreModular.VafaFunctor
+public import PropertyF.Ground.CentreModular.AdditiveDecomposition
+public import PropertyF.Ground.CentreModular.VafaHexagon
+public import PropertyF.Ground.CentreModular.VafaTensorMonodromy
+public import PropertyF.Ground.CentreModular.VafaNaturalTensor
+public import PropertyF.Ground.CentreModular.VafaTensorBiproduct
+public import PropertyF.Ground.CentreModular.VafaBiproduct
+public import PropertyF.Ground.CentreModular.VafaNatural
+public import PropertyF.Ground.CentreModular.VafaFPBalance
+public import PropertyF.Ground.CentreModular.VafaDetTensor
+public import PropertyF.Ground.CentreModular.VafaDeterminant
+public import PropertyF.Ground.CentreModular.VafaTorsion
+public import PropertyF.Ground.CentreModular.VafaRegular
+public import PropertyF.Ground.CentreModular.ForgetTrace
+public import PropertyF.Ground.CentreModular.CrossingTrace
+public import PropertyF.Ground.CentreModular.InducedKirby
+public import PropertyF.Ground.CentreModular.CompatiblePivotal
 public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreBundle.Fusion
 public import PropertyF.Ground.CentreRigid.Lift
@@ -210,7 +228,6 @@ public import PropertyF.Ground.Integrate.CenterProductBridge
 public import PropertyF.Ground.Integrate.CenterBundle
 public import PropertyF.Ground.Integrate.CenterDualMate
 public import PropertyF.Ground.Integrate.ActualCenterReduction
-public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreModular.ColumnSeparation
 public import PropertyF.Ground.CentreModular.KirbyCriterion
 public import PropertyF.Ground.CentreModular.RegularSupport
@@ -264,9 +281,6 @@ public import PropertyF.Ground.Dimensions.FourthTensorUnit
 public import PropertyF.Ground.Dimensions.RankOneSpherical
 
 public import PropertyF.Ground.Dimensions.RankOneCriterion
-public import PropertyF.Ground.CentreInduction.Underlying
-public import PropertyF.Ground.CentreInduction.GlobalSquare
-public import PropertyF.Ground.CentreInduction.Adjunction
 public import PropertyF.Ground.CentreInduction.SimpleDetection
 public import PropertyF.Ground.CentreInduction.Averaging
 public import PropertyF.Ground.CentreInduction.Splitting
@@ -275,9 +289,6 @@ public import PropertyF.Ground.CentreInduction.Artinian
 public import PropertyF.Ground.CentreInduction.FiniteSum
 public import PropertyF.Ground.CentreInduction.FiniteLabels
 
-public import PropertyF.Ground.CentreBundle.Fusion
-public import PropertyF.Ground.CentreRigid.Lift
-public import PropertyF.Ground.CentreRigid.Unit
 public import PropertyF.Ground.CentreRigid.MateEquations
 public import PropertyF.Ground.CentreInduction.Fusion
 public import PropertyF.Ground.CentreInduction.UnitTest
@@ -344,7 +355,6 @@ public import PropertyF.Ground.Dimensions.SphericalReal
 public import PropertyF.Ground.Dimensions.PivotalBounds
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 public import PropertyF.Ground.Dimensions.DefectCoevaluation
-public import PropertyF.Ground.CentreCalculus.Core
 public import PropertyF.Ground.CentreCalculus.GeneratorSquare
 public import PropertyF.Ground.CentreCalculus.PureSquares
 public import PropertyF.Ground.CentreCalculus.PermutationQuotient
@@ -352,7 +362,6 @@ public import PropertyF.Ground.CentreCalculus.ProjectorReduction
 public import PropertyF.Ground.CentreCalculus.ParityCorrection
 public import PropertyF.Ground.CentreCalculus.FirstCrossingTrace
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
-public import PropertyF.Ground.CentreCabling.ProductGenerated
 public import PropertyF.Ground.CentreCabling.SCentrality
 public import PropertyF.Ground.CentreCabling.FusionCentralizer
 public import PropertyF.Ground.CentreCabling.FourierCentralizer
@@ -405,6 +414,11 @@ public import PropertyF.Ground.Dimensions.ENOInvolution
 public import PropertyF.Ground.Dimensions.BraidingCapSlide
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
+
+public import PropertyF.Ground.CentreCabling.TwistFinite
+public import PropertyF.Ground.CentreCabling.VafaTwist
+public import PropertyF.Ground.CentreCabling.VafaDeterminant
+public import PropertyF.Ground.CentreCabling.VafaLanternReduction
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
