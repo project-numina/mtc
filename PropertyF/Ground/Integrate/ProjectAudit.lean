@@ -33,6 +33,7 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+
 import all PropertyF.Arithmetic
 import all PropertyF.Audit
 import all PropertyF.Axioms
@@ -119,6 +120,7 @@ import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.TotalMatrix
 import all PropertyF.Ground.Integrate.Arithmetic
+import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.ConditionalBridge
 import all PropertyF.Ground.Integrate.Conjugacy
 import all PropertyF.Ground.Integrate.DependencyAudit
@@ -200,6 +202,7 @@ run_cmd do
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,
       ``PropertyF.Ground.globalFPDimension_presentation,
+      ``PropertyF.Ground.selfDual_character_galois_real,
       ``PropertyF.Ground.Calculus.exists_unitary_braid_trace_blocks,
       ``PropertyF.Ground.sum_simple_presentation,
       ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,
