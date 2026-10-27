@@ -86,6 +86,7 @@ public import PropertyF.Ground.Cabling.MoveHeadContext
 public import PropertyF.Ground.Cabling.PowerCompare
 public import PropertyF.Ground.Cabling.PowerGeneral
 public import PropertyF.Ground.Cabling.BlockSwap
+public import PropertyF.Ground.Cabling.BlockOne
 public import PropertyF.Ground.Cabling.PureBlocks
 public import PropertyF.Ground.Cabling.BlockGroupoid
 public import PropertyF.Ground.Cabling.BlockWords
