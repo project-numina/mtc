@@ -1,9 +1,212 @@
 module
-public import PropertyF.Ground.CentreCabling.FourierCentralizer
+public import PropertyF.Ground.Modular.CharacterStar
+public import PropertyF.Ground.Dimensions.CharacterBound
+public import PropertyF.Ground.Fusion.Agreement
+public import PropertyF.Ground.Modular.Construction
+public import PropertyF.Ground.Fusion.Reciprocity
 
-/-! The numerical centralizer as the Fourier support of a fusion eigenvector. -/
+/-!
+# Fusion centralizers and Fourier support
 
+The equality locus of a fusion character is closed under constituents.
+Fourier inversion and the FP-weighted regular eigenvector then give the
+numerical double-centralizer inclusion.
+-/
 @[expose] public noncomputable section
+open scoped BigOperators
+namespace PropertyF.Ground.CentreCabling
+universe v u
+
+/-- If a fusion character takes its FP value on two simples, then it takes
+its FP value on every simple constituent of their tensor product. -/
+theorem character_fp_eq_of_constituent (D : Ground.BraidedFusionCategory.{v,u})
+    (χ : Fin (rank D) → ℂ) (hunit : χ (unitIndex D) = 1)
+    (hchar : ∀ i j, χ i * χ j = ∑ k, (fusionCoeff D i j k : ℂ) * χ k)
+    (i j k : Fin (rank D))
+    (hi : χ i = (fpSimple D i : ℂ)) (hj : χ j = (fpSimple D j : ℂ))
+    (hk : 0 < fusionCoeff D i j k) : χ k = (fpSimple D k : ℂ) := by
+  classical
+  have hbound (a : Fin (rank D)) : ‖χ a‖ ≤ fpSimple D a :=
+    Dimensions.character_norm_le_fpSimple D χ (unitIndex D) (by rw [hunit]; norm_num) hchar a
+  have hre (a : Fin (rank D)) : (χ a).re ≤ fpSimple D a :=
+    le_trans (Complex.re_le_norm _) (hbound a)
+  have hsum : ∑ a, (fusionCoeff D i j a : ℝ) * (fpSimple D a - (χ a).re) = 0 := by
+    have hh := congrArg Complex.re (hchar i j)
+    simp only [hi, hj, Complex.ofReal_re, Complex.ofReal_im, Complex.re_sum,
+      Complex.mul_re, Complex.natCast_re, Complex.natCast_im, zero_mul, sub_zero] at hh
+    simp_rw [mul_sub]
+    rw [Finset.sum_sub_distrib, ← fpSimple_mul D i j]
+    linarith
+  have hz : (fusionCoeff D i j k : ℝ) * (fpSimple D k - (χ k).re) = 0 :=
+    (Finset.sum_eq_zero_iff_of_nonneg (fun a _ => mul_nonneg (Nat.cast_nonneg _) (sub_nonneg.mpr (hre a)))).mp hsum k (Finset.mem_univ _)
+  have hcoeff : (0 : ℝ) < fusionCoeff D i j k := by exact_mod_cast hk
+  have hreal : (χ k).re = fpSimple D k := by nlinarith
+  have hnorm : (χ k).re ^ 2 + (χ k).im ^ 2 ≤ fpSimple D k ^ 2 := by
+    have hs := sq_le_sq₀ (norm_nonneg (χ k)) (fpSimple_pos D k).le |>.2 (hbound k)
+    rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply] at hs
+    simpa [pow_two] using hs
+  have him : (χ k).im = 0 := by
+    rw [hreal] at hnorm
+    nlinarith [sq_nonneg (χ k).im]
+  apply Complex.ext <;> simp [hreal, him]
+
+/-- In a positive spherical realization, the S-centralizer of any label is
+closed under simple tensor-product constituents. Neither S invertibility nor
+finite braid images are needed. -/
+theorem sCentralizer_closed_under_constituents
+    (D : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := D.Obj))
+    (hdim : ∀ a, Modular.simpleDimension D p a = (fpSimple D a : ℂ))
+    (i j k y : Fin (rank D))
+    (hi : Modular.categoricalS D p i y = Modular.simpleDimension D p i * Modular.simpleDimension D p y)
+    (hj : Modular.categoricalS D p j y = Modular.simpleDimension D p j * Modular.simpleDimension D p y)
+    (hk : 0 < fusionCoeff D i j k) :
+    Modular.categoricalS D p k y = Modular.simpleDimension D p k * Modular.simpleDimension D p y := by
+  let χ : Fin (rank D) → ℂ := fun a => Modular.categoricalS D p a y / Modular.simpleDimension D p y
+  have hd : Modular.simpleDimension D p y ≠ 0 := Modular.simpleDimension_ne_zero D p y
+  have hunit : χ (unitIndex D) = 1 := by
+    dsimp [χ]
+    rw [Modular.categoricalS_symmetric, Modular.categoricalS_unit]
+    exact div_self hd
+  have hc : ∀ a b, χ a * χ b = ∑ t, (fusionCoeff D a b t : ℂ) * χ t :=
+    fun a b => Modular.categoricalS_verlinde D p a b y
+  have hχi : χ i = (fpSimple D i : ℂ) := by
+    dsimp [χ]
+    rw [hi, mul_div_cancel_right₀ _ hd, hdim]
+  have hχj : χ j = (fpSimple D j : ℂ) := by
+    dsimp [χ]
+    rw [hj, mul_div_cancel_right₀ _ hd, hdim]
+  have hχk := character_fp_eq_of_constituent D χ hunit hc i j k hχi hχj hk
+  change Modular.categoricalS D p k y / Modular.simpleDimension D p y = _ at hχk
+  rw [← hdim k] at hχk
+  exact (div_eq_iff hd).mp hχk
+
+/-- The numerical S-centralizer is closed under dual labels when dimensions
+are the positive FP dimensions. -/
+theorem sCentralizer_closed_under_dual
+    (D : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := D.Obj))
+    (hdim : ∀ a, Modular.simpleDimension D p a = (fpSimple D a : ℂ))
+    (i y : Fin (rank D))
+    (hi : Modular.categoricalS D p i y = Modular.simpleDimension D p i * Modular.simpleDimension D p y) :
+    Modular.categoricalS D p (dualIndex D i) y =
+      Modular.simpleDimension D p (dualIndex D i) * Modular.simpleDimension D p y := by
+  have hreal (a) : starRingEnd ℂ (Modular.simpleDimension D p a) = Modular.simpleDimension D p a := by
+    rw [hdim]
+    simp
+  rw [Modular.categoricalS_dual_conj D p hreal i y, hi, map_mul, hreal, hreal]
+  rw [hdim (dualIndex D i), fpSimple_dual, ← hdim i]
+
+end PropertyF.Ground.CentreCabling
+
+open scoped BigOperators
+namespace PropertyF.Ground.CentreCabling
+universe v u
+
+/-- The S-transform of a vector, inverted using the categorical S-square identity. -/
+theorem categoricalS_fourier_inversion
+    (D : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := D.Obj)) (hp : p.IsSpherical)
+    (hdet : (Modular.categoricalS D p).det ≠ 0)
+    (hreal : ∀ j, starRingEnd ℂ (Modular.simpleDimension D p j) = Modular.simpleDimension D p j)
+    (f : Fin (rank D) → ℂ) (x : Fin (rank D)) :
+    (∑ y, Modular.categoricalS D p x y *
+      (∑ i, Modular.categoricalS D p y i * f i)) =
+      globalDimension D * f (dualIndex D x) := by
+  classical
+  calc
+    _ = ∑ i, (∑ y, Modular.categoricalS D p x y * Modular.categoricalS D p y i) * f i := by
+      simp only [Finset.mul_sum, Finset.sum_mul, mul_assoc]
+      rw [Finset.sum_comm]
+    _ = ∑ i, (if x = dualIndex D i then globalDimension D else 0) * f i := by
+      simp_rw [Modular.categoricalS_square D p hp hdet hreal]
+    _ = globalDimension D * f (dualIndex D x) := by
+      rw [Finset.sum_eq_single (dualIndex D x)]
+      · rw [dualIndex_involutive D x]
+        simp
+      · intro b _ hb
+        have hx : x ≠ dualIndex D b := by
+          intro h
+          apply hb
+          have hh := congrArg (dualIndex D) h
+          rw [dualIndex_involutive D b] at hh
+          exact hh.symm
+        simp [hx]
+      · intro h
+        exact (h (Finset.mem_univ _)).elim
+
+/-- If the S-transform of a vector is supported on a set of labels and its
+unit coefficient is nonzero, any label centralizing that support has a
+nonzero dual coefficient in the original vector. -/
+theorem nonzero_dual_coefficient_of_sCentralizer
+    (D : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := D.Obj)) (hp : p.IsSpherical)
+    (hdet : (Modular.categoricalS D p).det ≠ 0)
+    (hreal : ∀ j, starRingEnd ℂ (Modular.simpleDimension D p j) = Modular.simpleDimension D p j)
+    (f : Fin (rank D) → ℂ) (core : Set (Fin (rank D)))
+    (hunit : f (unitIndex D) ≠ 0)
+    (hsupport : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0)
+    (x : Fin (rank D))
+    (hx : ∀ y ∈ core, Modular.categoricalS D p x y =
+      Modular.simpleDimension D p x * Modular.simpleDimension D p y) :
+    f (dualIndex D x) ≠ 0 := by
+  classical
+  let T (y : Fin (rank D)) := ∑ i, Modular.categoricalS D p y i * f i
+  have heq : (∑ y, Modular.categoricalS D p x y * T y) =
+      Modular.simpleDimension D p x *
+        (∑ y, Modular.categoricalS D p (unitIndex D) y * T y) := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro y _
+    by_cases hy : y ∈ core
+    · rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
+        Modular.categoricalS_unit]
+      ring
+    · have hz : T y = 0 := hsupport y hy
+      simp [hz]
+  have hxinv := categoricalS_fourier_inversion D p hp hdet hreal f x
+  have huinv := categoricalS_fourier_inversion D p hp hdet hreal f (unitIndex D)
+  change (∑ y, Modular.categoricalS D p x y * T y) = _ at hxinv
+  change (∑ y, Modular.categoricalS D p (unitIndex D) y * T y) = _ at huinv
+  rw [hxinv, huinv, Ground.dualIndex_unit D] at heq
+  have hn := mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
+    (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit)
+  intro hz
+  rw [hz, mul_zero] at heq
+  exact hn heq.symm
+
+/-- A vector supported on generated labels proves the exact double-centralizer
+inclusion once its S-transform is supported on the chosen core. The support
+hypotheses are explicit: this theorem does not establish the required
+regular-vector identity. -/
+theorem doubleCentralizer_of_fourier_support
+    (D : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := D.Obj)) (hp : p.IsSpherical)
+    (hdet : (Modular.categoricalS D p).det ≠ 0)
+    (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
+    (f : Fin (rank D) → ℂ) (core generated : Set (Fin (rank D)))
+    (hunit : f (unitIndex D) ≠ 0)
+    (hgenerated : ∀ y, f y ≠ 0 → y ∈ generated)
+    (hsupport : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0) :
+    ∀ x, (∀ y ∈ core, Modular.categoricalS D p y x =
+      Modular.simpleDimension D p y * Modular.simpleDimension D p x) → x ∈ generated := by
+  intro x hx
+  have hreal (j) : starRingEnd ℂ (Modular.simpleDimension D p j) = Modular.simpleDimension D p j := by
+    rw [hdim]
+    simp
+  have hdual (y) (hy : y ∈ core) :
+      Modular.categoricalS D p (dualIndex D x) y =
+        Modular.simpleDimension D p (dualIndex D x) * Modular.simpleDimension D p y := by
+    apply sCentralizer_closed_under_dual D p hdim x y
+    rw [Modular.categoricalS_symmetric]
+    simpa [mul_comm] using hx y hy
+  have h := nonzero_dual_coefficient_of_sCentralizer D p hp hdet hreal f core
+    hunit hsupport (dualIndex D x) hdual
+  rw [dualIndex_involutive D x] at h
+  exact hgenerated x h
+
+end PropertyF.Ground.CentreCabling
+
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u

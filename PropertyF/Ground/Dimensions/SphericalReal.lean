@@ -64,21 +64,4 @@ theorem spherical_object_dimension_galois_real (C : Ground.BraidedFusionCategory
   simp only [map_mul, map_natCast]
   rw [Complex.conj_eq_iff_re.mpr (spherical_simple_dimension_galois_real C p hp σ i)]
 
-/-- Existing spherical structures provide all simple Galois norm bounds. -/
-theorem spherical_squaredNorm_galois_bounds (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
-    ∃ r : ℝ, 0 < r ∧ r ≤ Ground.fpSimple C i ^ 2 ∧
-      σ (Ground.squaredNorm C (Ground.simples C i)) = (r : ℂ) :=
-  real_spherical_squaredNorm_galois_bounds C p hp
-    (fun j => (pivotalDimension C p (Ground.simples C j)).re)
-    (fun j => (spherical_simple_dimension_real C p hp j).symm) σ i
-
-/-- Existing spherical structures provide the global Galois dimension bounds. -/
-theorem spherical_globalDimension_galois_bounds (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) (σ : ℂ ≃+* ℂ) :
-    ∃ D : ℝ, 1 ≤ D ∧ D ≤ Ground.globalFPDimension C ∧ σ (Ground.globalDimension C) = (D : ℂ) :=
-  real_spherical_globalDimension_galois_bounds C p hp
-    (fun j => (pivotalDimension C p (Ground.simples C j)).re)
-    (fun j => (spherical_simple_dimension_real C p hp j).symm) σ
 end PropertyF.Ground.Dimensions

@@ -64,17 +64,6 @@ theorem center_artinian_of_loop_centrality (C : BraidedFusionCategory.{v,u})
   intro P
   exact mono_splits_of_loop_centrality C p hp hslide hne P.arrow
 
-/-- Under the loop-sliding identity, every centre object is Noetherian. -/
-theorem center_noetherian_of_loop_centrality (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hslide : SimpleLoopCentrality C p) (hne : globalDimension C ≠ 0)
-    (X : CategoryTheory.Center C.Obj) : IsNoetherianObject X := by
-  letI : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
-  letI : FiniteDimensional ℂ (X ⟶ X) := Centre.finiteDimensional_hom ℂ X X
-  apply noetherian_of_split_subobjects X
-  intro P
-  exact mono_splits_of_loop_centrality C p hp hslide hne P.arrow
-
 /-- Under the same hypotheses every nonzero centre object has a simple
 retract. This is one step toward its finite semisimple decomposition. -/
 theorem exists_simple_retract_of_loop_centrality (C : BraidedFusionCategory.{v,u})

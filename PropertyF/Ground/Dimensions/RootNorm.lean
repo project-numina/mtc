@@ -8,33 +8,6 @@ public import PropertyF.Ground.Dimensions.CharacterDual
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
-set_option backward.isDefEq.respectTransparency false in
-/-- The ENO signed norm formula indexed by the canonical dual simple label. -/
-theorem squaredNorm_eq_signed_root_dimensions_labels (C : Ground.BraidedFusionCategory.{v,u})
-    (i : Fin (Ground.rank C)) : ∃ ε : ℂ, ε * ε = 1 ∧
-      Ground.squaredNorm C (Ground.simples C i) = ε * rootDimension C i *
-        rootDimension C (Ground.dualIndex C i) := by
-  let X := Ground.simples C i
-  letI : Simple X := Ground.simples_simple C i
-  obtain ⟨ε, hs, hnorm⟩ := squaredNorm_eq_signed_root_dimensions C X
-  refine ⟨ε, hs, ?_⟩
-  let e : Xᘁ ≅ ᘁX := leftDualIso
-    (BraidedCategory.exactPairing_swap X (Xᘁ)) HasLeftDual.exact
-  obtain ⟨u⟩ := Ground.dualIndex_iso C i
-  have ht := rootTrace_id_iso C (e ≪≫ u)
-  have hId (Z : C.Obj) : rootTrace C (𝟙 Z) = rightQuantumTrace ((fourthDualRootNaturalIso C).app Z) := by
-    apply End.homEquiv.injective
-    simp [rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def]
-  have hq : Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (Xᘁ))) =
-      rootDimension C (Ground.dualIndex C i) := by
-    rw [← hId, ht]
-    rfl
-  have hx : Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app X)) =
-      rootDimension C i := by
-    rw [← hId]
-    rfl
-  simpa [hx, hq] using hnorm
-
 /-- The sign comparing the root on a simple's dual to the inverse dual root. -/
 noncomputable def rootDualSign (C : Ground.BraidedFusionCategory.{v,u})
     (i : Fin (Ground.rank C)) : ℂ := by

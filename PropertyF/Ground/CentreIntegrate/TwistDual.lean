@@ -13,15 +13,6 @@ namespace PropertyF.Ground.CentreIntegrate
 set_option linter.style.haveILetI false
 set_option backward.isDefEq.respectTransparency false
 
-/-- Spherical traces are invariant under taking the right dual. -/
-theorem spherical_rightTrace_rightDual {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
-    (p : PivotalStructure (C := C)) (hp : p.IsSpherical) {X : C} (f : X ⟶ X) :
-    p.rightTrace (fᘁ) = p.rightTrace f := by
-  have h := leftTrace_eq_rightTraceWith_dual p f
-  rw [← pivotal_dual p X] at h
-  change p.leftTrace f = p.rightTrace (fᘁ) at h
-  exact h.symm.trans (hp X f)
-
 /-- In a spherical category, a simple and its right dual have the same
 pivotal twist scalar. -/
 theorem pivotalTwistScalar_rightDual (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))

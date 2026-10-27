@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.CentreCabling.CoreCentrality
 public import PropertyF.Ground.Cabling.GeneralDual
+public import PropertyF.Ground.Fusion.GeneratedRigidity
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open PropertyF.Ground
 @[expose] public noncomputable section
@@ -38,6 +39,6 @@ theorem self_doubleBraiding_eq_one_generated (D : BraidedFusionCategory.{v,u}) (
 theorem self_doubleBraiding_eq_one_rightDual (D : BraidedFusionCategory.{v,u}) (X : D.Obj)
     (h : Modular.doubleBraiding X X = 𝟙 _) :
     Modular.doubleBraiding X (Xᘁ) = 𝟙 _ :=
-  self_doubleBraiding_eq_one_generated D X _ h (Cabling.generatedBy_rightDual D X)
+  self_doubleBraiding_eq_one_generated D X _ h (Ground.generatedBy_rightDual D X)
 
 end PropertyF.Ground.CentreIntegrate

@@ -3,6 +3,7 @@ public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.CentreInduction.DualBraiding
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.PivotalDual
+public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.Dimensions.SphericalReal
 
 /-! Compatibility of pivotal twists with duals in spherical categories. -/
@@ -36,12 +37,12 @@ theorem spherical_twistScalar_rightDual
     (i : Fin (rank C)) :
     let X := simples C i
     letI : Simple X := simples_simple C i
-    letI : Simple (Xᘁ) := Dimensions.simple_rightDual C X
+    letI : Simple (Xᘁ) := Ground.simple_rightDual C X
     Dimensions.pivotalBraidedTwistScalar C p (Xᘁ) =
       Dimensions.pivotalBraidedTwistScalar C p X := by
   let X := simples C i
   letI : Simple X := simples_simple C i
-  letI : Simple (Xᘁ) := Dimensions.simple_rightDual C X
+  letI : Simple (Xᘁ) := Ground.simple_rightDual C X
   have hb := congrArg (Ground.unitScalar C) (spherical_selfBraiding_trace_dual C p hp X)
   rw [Dimensions.pivotalTrace_selfBraiding, Dimensions.pivotalTrace_selfBraiding] at hb
   have hd : Dimensions.pivotalDimension C p (Xᘁ) = Dimensions.pivotalDimension C p X := by
@@ -79,7 +80,7 @@ theorem spherical_twistScalar_dual_label
     Dimensions.pivotalBraidedTwistScalar C p (simples C (dualIndex C i)) =
       Dimensions.pivotalBraidedTwistScalar C p (simples C i) := by
   letI : Simple (simples C i) := simples_simple C i
-  letI : Simple ((simples C i)ᘁ) := Dimensions.simple_rightDual C (simples C i)
+  letI : Simple ((simples C i)ᘁ) := Ground.simple_rightDual C (simples C i)
   letI : Simple (simples C (dualIndex C i)) := simples_simple C _
   calc
     _ = Dimensions.pivotalBraidedTwistScalar C p ((simples C i)ᘁ) :=

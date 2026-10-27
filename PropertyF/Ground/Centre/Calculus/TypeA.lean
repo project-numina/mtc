@@ -1,12 +1,11 @@
 module
 public import PropertyF.Ground.CentreCalculus.BraidRelations
-public import PropertyF.Ground.CentreCalculus.GeneratorSquare
 public import PropertyF.Ground.CentreCalculus.Core
 public import PropertyF.Ground.Cabling.Pure
 public import Mathlib.GroupTheory.PresentedGroup
 public import Mathlib.GroupTheory.Perm.Sign
 public import Mathlib.GroupTheory.QuotientGroup.Defs
-public import PropertyF.Ground.CentreCalculus.TypeANormalWords
+public import PropertyF.Ground.Centre.Calculus.TypeANormalWords
 
 /-!
 # The type-A presentation of the symmetric group
