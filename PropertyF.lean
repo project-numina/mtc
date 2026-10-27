@@ -76,3 +76,4 @@ public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapUnitary
 public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.StrandCoherence
+public import PropertyF.Ground.Calculus.OverlapCoherence
