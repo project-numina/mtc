@@ -247,6 +247,8 @@ public import PropertyF.Ground.Dimensions.FourthTensorUnit
 
 public import PropertyF.Ground.Dimensions.RankOneSpherical
 
+public import PropertyF.Ground.Dimensions.RankOneCriterion
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.

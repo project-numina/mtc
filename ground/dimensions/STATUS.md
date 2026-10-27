@@ -96,6 +96,8 @@
 
 - `fourthDualIso_tensor_unitLabel_left/right` and `coevaluation_slide_unitLabel` prove the unit-label cases of both remaining ENO identities. `eno_pseudoUnitary_yields_positive_spherical_of_nonunit_coherences` needs those identities only on non-unit labels. `rankOne_pseudoUnitary` and `rankOne_positive_spherical` fully construct pseudo-unitarity and positive spherical structure for every rank-one genuine braided fusion category, with no extra mathematical hypotheses.
 
+- `rank_subsingleton_of_globalFPDimension_eq_one` proves FP dimension one forces rank one; `positive_spherical_of_globalFPDimension_eq_one` constructs the positive spherical structure directly from that equality, available to instantiate the actual centre when its FP square is known.
+
 ## Round 2 route
 
 The same ENO construction applies to the actual centre `Integrate.bundledCenter C` as soon as centre rigidity and finite semisimplicity are constructed. Pseudo-unitarity of that centre can follow from the categorical-dimension and FP-dimension square formulas owned by modular and fusion; check these proofs do not presuppose the positive centre spherical structure they are intended to supply. Continue the two intrinsic coherence proofs for the base and centre uniformly. A direct centre lift of a positive spherical structure may be shorter after the centre's explicit duals are available; trace compatibility must then be proved for its forgetful functor.
