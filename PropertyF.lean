@@ -357,6 +357,8 @@ public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.CentreCabling.CoreCentrality
 public import PropertyF.Ground.CentreCabling.TargetReduction
 
+public import PropertyF.Ground.Integrate.CenterSquareReduction
+
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.

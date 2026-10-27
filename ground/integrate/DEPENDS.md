@@ -65,3 +65,16 @@ its categorical global dimension from FP-square via the current modular
 theorem already assumes a positive spherical structure. A separate intrinsic
 categorical-square proof or an independent construction of the positive
 spherical structure is needed.
+
+## Round 3 reduced interface
+
+`target_of_center_image_monodromy_no_square` no longer assumes the centre
+categorical global-square formula: actual induction and its adjunction supply
+it under the other stated centre assumptions. Remaining centre arguments are:
+rigidity (centre), finite semisimplicity/fusion (fusion), an FP-valued spherical
+structure (dimensions), invertibility of S (modular), integer dimensions on
+`CentreCabling.symmetricCore` (calculus), and finite-order mixed monodromy
+only for image labels and numerical centralizer labels (cabling). The final two
+could be replaced by a proof that the numerical centralizer is an integral
+set; no such proof is currently available. The positive-spherical construction
+still cannot be obtained circularly from the FP square alone.
