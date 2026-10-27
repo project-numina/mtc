@@ -64,4 +64,36 @@ theorem fpSimple_mul (D : BraidedFusionCategory) (i j : Fin (rank D)) :
       ∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k := by
   simp only [fpSimple_eq_fpCharacter, fpCharacter_mul]
 
+/-- The fusion matrix of a dual is the transpose of the original one. -/
+theorem fusionMatrix_dual (D : BraidedFusionCategory) (i : Fin (rank D)) :
+    fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ := by
+  ext j k
+  change (fusionCoeff D (dualIndex D i) k j : ℂ) = (fusionCoeff D i j k : ℂ)
+  rw [fusionCoeff_comm D (dualIndex D i) k, fusionCoeff_reciprocity_labels,
+    dualIndex_involutive, fusionCoeff_comm D j i]
+
+/-- Dual simple objects have the same FP dimension. -/
+theorem fpSimple_dual (D : BraidedFusionCategory) (i : Fin (rank D)) :
+    fpSimple D (dualIndex D i) = fpSimple D i := by
+  simp [fpSimple, fusionMatrix_dual, Matrix.spectralRadius_transpose]
+
+theorem fusionCoeff_dual_unit (D : BraidedFusionCategory) (i : Fin (rank D)) :
+    fusionCoeff D i (dualIndex D i) (unitIndex D) = 1 := by
+  rw [fusionCoeff_comm D i (dualIndex D i), fusionCoeff_reciprocity_labels,
+    fusionCoeff_unit]
+  simp
+
+/-- Every simple has FP dimension at least one. -/
+theorem one_le_fpSimple (D : BraidedFusionCategory) (i : Fin (rank D)) :
+    1 ≤ fpSimple D i := by
+  classical
+  have hsum : 1 ≤ ∑ k, (fusionCoeff D i (dualIndex D i) k : ℝ) * fpSimple D k := by
+    have h := Finset.single_le_sum
+      (f := fun k => (fusionCoeff D i (dualIndex D i) k : ℝ) * fpSimple D k)
+      (fun k _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D k).le)
+      (Finset.mem_univ (unitIndex D))
+    simpa [fusionCoeff_dual_unit, fpSimple_unit] using h
+  rw [← fpSimple_mul, fpSimple_dual] at hsum
+  nlinarith [fpSimple_pos D i]
+
 end PropertyF.Ground
