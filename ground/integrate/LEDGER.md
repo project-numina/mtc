@@ -219,3 +219,64 @@ positive categorical dimensions in both parity cases. This discharges the
 combinatorial signed-sum evaluation; the actual symmetric-group action and
 its categorical cycle-trace/parity identity remain unproved. Full project
 audit passes for the new results.
+
+Centre `62010e5` proves the dual-crossing tensor law and coevaluation
+centrality. The newer centre `f1f0122` reports actual general centre rigidity
+and must be merged; its evaluation centrality is no longer an open item once
+integrated. `CentreIntegrate.twist_sign_of_dual_and_tensor` proves the sign
+from two explicit twist identities on the simple/dual pair; those identities
+remain open and the theorem does not assume or prove a Vafa theorem.
+
+Centre `f1f0122` is now merged: `CentreRigid.rigidCenter` constructs actual
+centre rigidity unconditionally, with the dual, evaluation and coevaluation
+forgetting to the chosen base data. The reductions
+`target_of_fusion_center_integral_numerical_core` and
+`target_of_pivotal_lift_and_integral_numerical_core` discharge this formerly
+open target premise. The latest full build and strict project audit pass (413
+modules, 4,311 declarations). Fusion `f811c73` reduces compatible pivotal-lift
+existence to component centrality; it has not yet been merged here.
+
+Fusion `f811c73` and `target_of_pivotal_centrality_and_integral_numerical_core`
+replace the compatible-lift premise by explicit pivotal-component centrality
+for each centre object and base test object. The general centre rigidity is
+already constructed. Base FP-valued pivotal existence, this centrality,
+centre S invertibility and numerical-core integrality remain open. The full
+build and strict project audit pass (416 modules, 4,328 declarations).
+
+Parity progress: spherical right traces are invariant under taking duals,
+and the pivotal twist scalar of a simple equals that of its right dual.
+Self-transparent objects centralize their right duals using the generated
+subcategory. Hence the parity sign follows if the pivotal twist balancing
+equation holds on the simple/dual pair; that equation remains unproved. The
+latest full build and strict project audit pass (426 modules, 4,363 declarations).
+
+Pivotal twist balancing now reduces to the explicit tensor-pairing cap
+identity in `CentreIntegrate.drinfeld_tensor_of_pairing_cap` via
+`balance_of_drinfeld_tensor`. The double-dual evaluation comparison is
+proved; the cap identity itself remains open. Full build and project audit
+pass (427 modules, 4,366 declarations).
+
+Fusion `36bf5d8` proves the transported pivotal components are central and
+constructs the centre pivotal lift; with the actual centre rigid instance,
+centre fusion and positive sphericality follow from pseudo-unitarity and any
+base pivotal structure. `target_of_pivotal_base_and_integral_numerical_core`
+therefore retains base pivotal existence, centre S invertibility and numerical
+core integrality as explicit obligations. The full build and project audit pass
+(432 modules, 4,394 declarations).
+
+Calculus's actual permutation action and spherical iterated partial trace are
+now integrated. `symmetricCore_integral_of_dual_balancing` constructs integer
+core dimensions from the pivotal twist balancing identity on core simple/dual
+pairs, using the proved parity-sign reduction. The target reduction
+`target_of_pivotal_base_balancing_and_image_monodromy` consequently requires
+base pivotal existence, centre S invertibility, that balancing identity and
+restricted mixed-monodromy finiteness. These premises are not established.
+Latest full build and strict project audit pass (446 modules, 4,565 declarations).
+
+Merged modular `2cca92a` and its cabling dependencies. The FP-determinant
+Vafa proof gives finite simple twist order conditional on simple balancing; a
+newer modular commit reports all mixed monodromy finite conditional on pivotal
+balancing and is awaiting integration. The latest integrated full build and
+project audit pass (471 modules, 4,723 declarations). Calculus has since
+reported unconditional actual symmetric-core integrality under the existing
+positive spherical centre hypotheses; its commit is awaiting integration.

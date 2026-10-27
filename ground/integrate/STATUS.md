@@ -203,3 +203,61 @@ no reliable completion-time estimate is available.
   permutation action and either appropriate categorical cycle trace formula
   remains open. The focused build and full project audit pass (399 modules,
   4,254 declarations).
+
+- Merged centre `62010e5`: the normalized dual crossing tensor law and
+  coevaluation centrality are proved. Centre `f1f0122` has since also proved
+  general evaluation centrality and actual centre rigidity; that newer commit
+  is awaiting integration. `CentreIntegrate.twist_sign_of_dual_and_tensor`
+  reduces the simple twist parity sign to dual compatibility and
+  multiplicativity on the dual pair; both remain explicit hypotheses. The
+  coevaluation nonzero argument is proved from nonzero simple dimension.
+
+- Merged actual centre rigidity `f1f0122` and its forgetful comparisons.
+  `target_of_fusion_center_integral_numerical_core` removes centre rigidity
+  from the numerical-core reduction, while
+  `target_of_pivotal_lift_and_integral_numerical_core` removes it from the
+  compatible-pivotal route. The other stated premises remain unproved.
+  Expanded project audit and full build pass for 413 modules and 4,311
+  declarations. Fusion's newer pivotal-centrality reduction is not yet merged.
+
+- Merged fusion `f811c73`. `target_of_pivotal_centrality_and_integral_numerical_core`
+  now constructs the compatible centre pivotal lift from the explicit
+  `PivotalComponentsCentral` equation, using the constructed centre rigid
+  structure. It still assumes an FP-valued base pivotal structure, that
+  centrality equation, centre S invertibility and numerical-core integrality.
+  The full build and strict project audit pass (416 modules, 4,328 declarations).
+
+- Merged dimensions `4117b5b`. `spherical_rightTrace_rightDual` and
+  `pivotalTwistScalar_rightDual` establish equality of twist scalars for a
+  spherical simple and its right dual. `self_doubleBraiding_eq_one_rightDual`
+  establishes centrality of X with X* from centrality with itself, using the
+  generated-subcategory dual theorem. The parity sign now follows from the
+  still-unproved pivotal twist balancing equation on this one dual pair, as
+  `twist_sign_of_spherical_self_transparency_and_balancing` records. Full build
+  and strict project audit pass (426 modules, 4,363 declarations).
+
+- `doubleDualTensor_evaluation`, `drinfeld_tensor_of_pairing_cap`, and
+  `balance_of_drinfeld_tensor` reduce pivotal twist balancing to one explicit
+  tensor-pairing cap/hexagon identity. The identity is the `hcap` premise in
+  `TwistBalancing.lean` and is still unproved; it would discharge the parity
+  sign and support Vafa's mixed-monodromy route. Full build and project audit
+  pass (427 modules, 4,366 declarations).
+
+- Merged fusion `36bf5d8`. `pivotalComponentsCentral_proved` constructs the
+  compatible centre pivotal lift from any base pivotal structure; together
+  with constructed centre rigidity and pseudo-unitarity it constructs centre
+  fusion and the positive spherical structure. The new
+  `target_of_pivotal_base_and_integral_numerical_core` retains only base
+  pivotal existence, centre S invertibility, and numerical-core integrality.
+  No general pivotal existence is claimed. Full build and project audit pass
+  (432 modules, 4,394 declarations).
+
+- Merged calculus, including the type-A presentation, actual permutation
+  actions, parity-deletion reduction, and spherical iterated trace theorem.
+  `simple_integral_of_self_transparency_and_dual_balancing` and
+  `symmetricCore_integral_of_dual_balancing` prove actual symmetric-core
+  integrality from twist balancing on its simple/dual pairs. The resulting
+  `target_of_pivotal_base_balancing_and_image_monodromy` assumes base pivotal
+  existence, centre S invertibility, that balancing equation and the restricted
+  mixed-monodromy finite-order condition. Balancing is still unproved. Full
+  build and project audit pass (446 modules, 4,565 declarations).

@@ -41,6 +41,78 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
+import all PropertyF.Ground.CentreCabling.DependentDeterminant
+import all PropertyF.Ground.CentreCabling.TwistFinite
+import all PropertyF.Ground.CentreCabling.VafaAlgebra
+import all PropertyF.Ground.CentreCabling.VafaDeterminant
+import all PropertyF.Ground.CentreCabling.VafaFusion
+import all PropertyF.Ground.CentreCabling.VafaLanternReduction
+import all PropertyF.Ground.CentreCabling.VafaTwist
+import all PropertyF.Ground.CentreModular.AdditiveDecomposition
+import all PropertyF.Ground.CentreModular.CompatiblePivotal
+import all PropertyF.Ground.CentreModular.CrossingTrace
+import all PropertyF.Ground.CentreModular.ForgetTrace
+import all PropertyF.Ground.CentreModular.InducedKirby
+import all PropertyF.Ground.CentreModular.VafaBiproduct
+import all PropertyF.Ground.CentreModular.VafaCompletion
+import all PropertyF.Ground.CentreModular.VafaDetTensor
+import all PropertyF.Ground.CentreModular.VafaDeterminant
+import all PropertyF.Ground.CentreModular.VafaFPBalance
+import all PropertyF.Ground.CentreModular.VafaFunctor
+import all PropertyF.Ground.CentreModular.VafaHexagon
+import all PropertyF.Ground.CentreModular.VafaNatural
+import all PropertyF.Ground.CentreModular.VafaNaturalTensor
+import all PropertyF.Ground.CentreModular.VafaRegular
+import all PropertyF.Ground.CentreModular.VafaTensorBiproduct
+import all PropertyF.Ground.CentreModular.VafaTensorMonodromy
+import all PropertyF.Ground.CentreModular.VafaTorsion
+import all PropertyF.Ground.CentreCalculus.BraidRelations
+import all PropertyF.Ground.CentreCalculus.FirstCrossingTrace
+import all PropertyF.Ground.CentreCalculus.LeftCrossing
+import all PropertyF.Ground.CentreCalculus.LeftPartialTrace
+import all PropertyF.Ground.CentreCalculus.LeftTensorTrace
+import all PropertyF.Ground.CentreCalculus.ParityDeletion
+import all PropertyF.Ground.CentreCalculus.PermutationInsert
+import all PropertyF.Ground.CentreCalculus.PermutationTraceSum
+import all PropertyF.Ground.CentreCalculus.TensorPermutation
+import all PropertyF.Ground.CentreCalculus.TypeANormalWords
+import all PropertyF.Ground.CentreCalculus.TypeAPresentation
+import all PropertyF.Ground.CentreCalculus.TypeAQuotient
+import all PropertyF.Ground.CentreCalculus.TypeARelations
+import all PropertyF.Ground.Integrate.CoreIntegralityReduction
+import all PropertyF.Ground.CentreInduction.DoubleBraiding
+import all PropertyF.Ground.CentreInduction.DualBraiding
+import all PropertyF.Ground.CentreInduction.PivotalCentrality
+import all PropertyF.Ground.CentreInduction.PositivePivotal
+import all PropertyF.Ground.Integrate.PivotalOnlyReduction
+import all PropertyF.Ground.CentreIntegrate.TwistBalancing
+import all PropertyF.Ground.CentreIntegrate.MonodromyDual
+import all PropertyF.Ground.CentreIntegrate.TwistDual
+import all PropertyF.Ground.Dimensions.BraidingCapSlide
+import all PropertyF.Ground.Dimensions.DefectAssociativity
+import all PropertyF.Ground.Dimensions.DefectExtension
+import all PropertyF.Ground.Dimensions.DefectSliding
+import all PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
+import all PropertyF.Ground.Dimensions.DoubleDualBraiding
+import all PropertyF.Ground.Dimensions.DualBraiding
+import all PropertyF.Ground.Dimensions.ENOInvolution
+import all PropertyF.Ground.CentreInduction.ForgetDualUnit
+import all PropertyF.Ground.CentreInduction.PivotalLift
+import all PropertyF.Ground.Integrate.PivotalCentralityReduction
+import all PropertyF.Ground.CentreInduction.DualTensorComparison
+import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
+import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
+import all PropertyF.Ground.CentreInduction.ForgetDualTensor
+import all PropertyF.Ground.CentreRigid.Evaluation
+import all PropertyF.Ground.CentreRigid.ForgetComparison
+import all PropertyF.Ground.Integrate.RigidCenterReduction
+import all PropertyF.Ground.CentreIntegrate.TwistSign
+import all PropertyF.Ground.CentreRigid.Coevaluation
+import all PropertyF.Ground.CentreRigid.MateExplicit
+import all PropertyF.Ground.CentreRigid.RankOneMate
+import all PropertyF.Ground.CentreRigid.SimpleCentrality
+import all PropertyF.Ground.CentreRigid.SimpleTensor
+import all PropertyF.Ground.CentreRigid.Tensor
 import all PropertyF.Ground.CentreIntegrate.CycleColoring
 import all PropertyF.Ground.CentreIntegrate.CyclePolynomial
 import all PropertyF.Ground.CentreIntegrate.CycleTraceReduction
@@ -542,6 +614,22 @@ run_cmd do
       ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
+      ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
+      ``PropertyF.Ground.target_of_pivotal_centrality_and_integral_numerical_core,
+      ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
+      ``PropertyF.Ground.target_of_pivotal_base_balancing_and_image_monodromy,
+      ``PropertyF.Ground.symmetricCore_integral_of_dual_balancing,
+      ``PropertyF.Ground.target_of_pivotal_base_and_integral_numerical_core,
+      ``PropertyF.Ground.CentreRigid.rigidCenter,
+      ``PropertyF.Ground.target_of_fusion_center_integral_numerical_core,
+      ``PropertyF.Ground.target_of_pivotal_lift_and_integral_numerical_core,
+      ``PropertyF.Ground.CentreIntegrate.doubleDualTensor_evaluation,
+      ``PropertyF.Ground.CentreIntegrate.drinfeld_tensor_of_pairing_cap,
+      ``PropertyF.Ground.CentreIntegrate.balance_of_drinfeld_tensor,
+      ``PropertyF.Ground.CentreIntegrate.twist_sign_of_spherical_self_transparency_and_balancing,
+      ``PropertyF.Ground.CentreIntegrate.pivotalTwistScalar_rightDual,
+      ``PropertyF.Ground.CentreIntegrate.self_doubleBraiding_eq_one_rightDual,
+      ``PropertyF.Ground.CentreIntegrate.twist_sign_of_dual_and_tensor,
       ``PropertyF.Ground.CentreIntegrate.signed_cycle_count,
       ``PropertyF.Ground.CentreIntegrate.integral_of_cycle_traces,
       ``PropertyF.Ground.CentreIntegrate.integral_of_signed_cycle_traces,

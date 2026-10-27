@@ -2,15 +2,13 @@
 
 Branch: `ground/calculus`. Started from `094175c`.
 
-## Round 2: symmetric-core integrality (in progress)
+## Round 3: symmetric-core integrality proved
 
-The intended core is the common centralizer of the two canonical images in the actual Mathlib centre, equivalently their intersection; it is symmetric, not an arbitrary set. `CentreCalculus.commonCentralizer_self` proves every common-centralizer object centralizes itself without requiring the centre fusion instance. For a self-centralizing object, `braidGenerator_involutive` proves all actual adjacent generators square to one and `squareRelations_action_trivial` proves the normal closure of their squares acts trivially. `strandPermutation_surjective` proves adjacent swaps generate the whole finite permutation group. `permutationActionOfPureTrivial` constructs the actual permutation action when the pure-word kernel is contained in the braid-action kernel; that containment remains unproved.
+`actual_symmetricCore_integrality` proves the exact complex categorical dimension integrality premise for `CentreCabling.symmetricCore` in the actual Mathlib Drinfeld centre, assuming the actual centre is rigid/fusion and carries an FP-valued spherical structure. These are the same structural assumptions already present in the integration reductions, not new integrality hypotheses.
 
-The raw alternating-power formula in the round-2 brief is false: for an odd one-dimensional object of super vector spaces with its positive spherical structure, the self-braiding is -id, so its alternating square has dimension 1 while the ordinary binomial polynomial gives 0. The proof must incorporate a parity/twist sign. For a simple self-centralizing object, a possible corrected route is to prove that its twist is ±1, twist the permutation action by its sign so that the cycle traces are d to the number of cycles, and split the corresponding signed average. This twist identification and the corrected cycle-trace formula are unproved. The conditional signed-sum lemma does not claim its premise for the uncorrected action. `alternatingProjector_sign_twist` proves the sign-twisted alternating projector is the ordinary group average; `integral_of_unsigned_permutation_traces` supplies the alternate parity case from its still-unproved trace identity.
+The proof constructs the full symmetric-group action on all tensor powers of any self-transparent object (`permutationAction`, `tensorPermutationAction`), proves all type-A relations and the group presentation using a finite coset normal form (`finite_card_of_typeA`, `pureWords_eq_typeANormal`), splits the actual alternating projectors, and evaluates their trace by one-strand deletion and the falling factorial. `leftTrace_partialTrace` proves the iterated left trace identity; `spherical_rightTrace_leftPartialTrace` supplies the spherical form. `leftPartialTrace_inverse_braiding` computes the inverse twist and `pivotalTwist_sign_of_selfTransparent` proves its scalar is ±1 using self-transparency and sphericality, handling super parity without a finite-order hypothesis. `selfTransparent_simple_integral` and `selfTransparent_simpleDimension_integer` prove the general categorical integrality result; `actual_symmetricCore_integrality` specializes it to the exact centre core.
 
-The planned corrected elementary route is to split a suitably sign-corrected permutation average on each tensor power. Its trace is nonnegative because its image is an actual object and `pivotalDimension_eq_fpDimension` extends the positive simple dimension condition to all objects. `alternatingProjector_scalar_trace` evaluates the normalization as the signed permutation trace sum, and `integral_of_signed_permutation_traces` derives integer FP dimension from the explicit signed-sum falling-factorial identity. These are conditional reductions: the actual permutation actions and their signed trace identity have not been constructed. `integral_of_pivotal_exterior_dimensions` and the earlier falling-factorial lemma supply the numerical final step.
-
-Remaining categorical work: prove the twist/parity sign correction, prove the full pure-word kernel acts trivially using a type-A symmetric-group presentation (including adjacent braid and distant commutation for all strand counts); establish the trace of each permutation, or an equivalent recurrence, and sum it to the falling factorial. Then turn the resulting FP integer into the reduction's complex simple dimension integer and apply `commonCentralizer_self` to its actual chosen core. Mathlib has adjacent-swap generation but a search did not find a type-A symmetric-group presentation or a categorical permutation action. No reliable completion-time estimate is available; these are substantial unproved internal obligations, not dependencies merely awaiting other teams.
+Focused module builds pass; the strict axiom and integration audits will be run after wiring. This does not prove integrality of the larger numerical S-centralizer without an additional theorem identifying it with the actual core. General centre positive sphericality and S invertibility remain open on other workstreams.
 
 ## Done
 
@@ -57,7 +55,7 @@ Remaining categorical work: prove the twist/parity sign correction, prove the fu
 
 ## In progress
 
-- Round 2 symmetric-core integrality: permutation action and trace identity, as detailed above.
+- Wiring the proved symmetric-core integrality into the integration reduction; then take the highest-value remaining ledger obligation.
 
 ## Blocked / dependencies
 
