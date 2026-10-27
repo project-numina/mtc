@@ -122,4 +122,141 @@ def addRightStrand (X : C) (n : ℕ) : braidImage X n →* braidImage X (n + 1) 
     exact Subgroup.subset_closure (Set.mem_range_self _)
   exact (f.comp (braidImage X n).subtype).codRestrict _ (fun a => hf a a.property)
 
+variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+
+/-- Append a right identity strand as an algebra map on all endomorphisms. -/
+def appendRightEndAlgHom (X : C) (n : ℕ) :
+    End (tensorPower X (n + 2)) →ₐ[ℂ] End (tensorPower X ((n + 1) + 2)) :=
+  (isoEndAlgEquiv (appendIso X (n + 2))).toAlgHom.comp
+    (functorEndAlgHom (tensorRight X) (tensorPower X (n + 2)))
+
+/-- The endomorphism map carries the categorical braid representation to
+the appended braid representation. -/
+theorem appendRightEndAlgHom_group (X : C) (n : ℕ) (g : braidImage X n) :
+    appendRightEndAlgHom X n (braidEndRepresentation X n g) =
+      braidEndRepresentation X (n + 1) (addRightStrand X n g) := by
+  apply End.ext
+  rfl
+
+/-- Appending one right identity strand gives a map of actual braid algebras. -/
+def addRightBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + 1) :=
+  imageAlgebraMap (braidEndRepresentation X n) (braidEndRepresentation X (n + 1))
+    (addRightStrand X n) (appendRightEndAlgHom X n) (appendRightEndAlgHom_group X n)
+
+/-- The induced algebra map carries every braid to the right-inserted braid. -/
+theorem addRightBraidAlgebra_group (X : C) (n : ℕ) (g : braidImage X n) :
+    addRightBraidAlgebra X n (groupInImage (braidEndRepresentation X n) g) =
+      groupInImage (braidEndRepresentation X (n + 1)) (addRightStrand X n g) := by
+  apply imageAlgebraMap_group
+
+/-- Right insertion expressed in independently chosen matrix blocks. -/
+def addRightBlockMap (X : C) (n : ℕ) {r s : ℕ} {d : Fin r → ℕ} {k : Fin s → ℕ}
+    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
+    (f : braidAlgebra X (n + 1) ≃ₐ[ℂ] ∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ) :
+    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ]
+      (∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ) :=
+  f.toAlgHom.comp ((addRightBraidAlgebra X n).comp e.symm.toAlgHom)
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Right insertion preserves the adjoint for any unitary presentations. -/
+theorem addRightBlockMap_star (X : C) (n : ℕ) {r s : ℕ}
+    {d : Fin r → ℕ} {k : Fin s → ℕ}
+    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
+    (f : braidAlgebra X (n + 1) ≃ₐ[ℂ] ∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ)
+    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
+      Matrix.unitaryGroup (Fin (d i)) ℂ)
+    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + 1)) g) i ∈
+      Matrix.unitaryGroup (Fin (k i)) ℂ)
+    (x : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
+    addRightBlockMap X n e f (star x) = star (addRightBlockMap X n e f x) := by
+  apply presented_intertwiner_map_star (braidEndRepresentation X n)
+    (braidEndRepresentation X (n + 1)) (addRightStrand X n) e f he hf
+    (addRightBlockMap X n e f)
+  intro g
+  change f (addRightBraidAlgebra X n (e.symm (e (groupInImage (braidEndRepresentation X n) g)))) = _
+  rw [e.symm_apply_apply, addRightBraidAlgebra_group]
+  rfl
+
+/-- Bundled star algebra map for one right identity strand. -/
+def addRightBlockStarMap (X : C) (n : ℕ) {r s : ℕ}
+    {d : Fin r → ℕ} {k : Fin s → ℕ}
+    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
+    (f : braidAlgebra X (n + 1) ≃ₐ[ℂ] ∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ)
+    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
+      Matrix.unitaryGroup (Fin (d i)) ℂ)
+    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + 1)) g) i ∈
+      Matrix.unitaryGroup (Fin (k i)) ℂ) :
+    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →⋆ₐ[ℂ]
+      (∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ) where
+  toAlgHom := addRightBlockMap X n e f
+  map_star' := addRightBlockMap_star X n e f he hf
+
+/-- Repeated right identity-strand insertion on the actual image groups. -/
+def addRightStrands (X : C) (n : ℕ) : ∀ k, braidImage X n →* braidImage X (n + k)
+  | 0 => MonoidHom.id _
+  | k + 1 => (addRightStrand X (n + k)).comp (addRightStrands X n k)
+
+/-- Repeated right identity-strand insertion on the actual braid algebras. -/
+def addRightBraidAlgebraIter (X : C) (n : ℕ) :
+    ∀ k, braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + k)
+  | 0 => AlgHom.id ℂ _
+  | k + 1 => (addRightBraidAlgebra X (n + k)).comp (addRightBraidAlgebraIter X n k)
+
+/-- Repeated insertion acts as expected on every actual braid. -/
+theorem addRightBraidAlgebraIter_group (X : C) (n : ℕ) :
+    ∀ (k : ℕ) (g : braidImage X n),
+      addRightBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g) =
+        groupInImage (braidEndRepresentation X (n + k)) (addRightStrands X n k g)
+  | 0, g => rfl
+  | k + 1, g => by
+    change addRightBraidAlgebra X (n + k)
+      (addRightBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g)) = _
+    rw [addRightBraidAlgebraIter_group X n k g, addRightBraidAlgebra_group]
+    rfl
+
+/-- Repeated right insertion expressed in unitary matrix blocks. -/
+def addRightBlocksIter (X : C) (n k : ℕ) {r s : ℕ}
+    {d : Fin r → ℕ} {q : Fin s → ℕ}
+    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) :
+    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ]
+      (∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) :=
+  f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Repeated right identity-strand insertion is star-preserving in independently
+chosen unitary block presentations. -/
+theorem addRightBlocksIter_star (X : C) (n k : ℕ) {r s : ℕ}
+    {d : Fin r → ℕ} {q : Fin s → ℕ}
+    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
+    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
+      Matrix.unitaryGroup (Fin (d i)) ℂ)
+    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
+      Matrix.unitaryGroup (Fin (q i)) ℂ)
+    (x : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
+    addRightBlocksIter X n k e f (star x) = star (addRightBlocksIter X n k e f x) := by
+  apply presented_intertwiner_map_star (braidEndRepresentation X n)
+    (braidEndRepresentation X (n + k)) (addRightStrands X n k) e f he hf
+    (addRightBlocksIter X n k e f)
+  intro g
+  change f (addRightBraidAlgebraIter X n k (e.symm (e (groupInImage (braidEndRepresentation X n) g)))) = _
+  rw [e.symm_apply_apply, addRightBraidAlgebraIter_group]
+  rfl
+
+/-- The repeated identity-strand insertion as a star algebra map. -/
+def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
+    {d : Fin r → ℕ} {q : Fin s → ℕ}
+    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
+    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
+      Matrix.unitaryGroup (Fin (d i)) ℂ)
+    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
+      Matrix.unitaryGroup (Fin (q i)) ℂ) :
+    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →⋆ₐ[ℂ]
+      (∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) where
+  toAlgHom := addRightBlocksIter X n k e f
+  map_star' := addRightBlocksIter_star X n k e f he hf
+
+
 end PropertyF.Ground.Calculus
