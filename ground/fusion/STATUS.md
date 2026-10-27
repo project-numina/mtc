@@ -77,6 +77,11 @@
   and `tensor` theorems, plus `one_le_fpDimension`: object FP dimension is
   constructed from Hom multiplicities, tensor-multiplicative, integral over ℤ,
   and at least one on nonzero objects.
+- `Ground.balanced_flow_no_entry`, `balanced_flow_cycle`,
+  `fusionFlow_balance`, `unit_retract_tensorPower`,
+  `simple_generatedBy_rightDual`, and `simple_generatedCategoryRigid`:
+  every simple has the unit as a retract of a positive tensor power, and its
+  generated tensor subcategory is rigid.
 - `Ground.simple_functor_obj`, `simple_labels_inclusion`, and
   `globalFPDimension_le_of_full_functor`: a full faithful linear tensor
   inclusion sends simples injectively to simples and its global FP dimension
