@@ -7,6 +7,7 @@ public import PropertyF.Ground.CentreCalculus.ExteriorReduction
 public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.GlobalSquare
 public import PropertyF.Ground.CentreInduction.Adjunction
+public import PropertyF.Ground.CentreModular.CenterBalanced
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
 public import PropertyF.Ground.CentreModular.VafaPivotal
 public import PropertyF.Ground.CentreModular.VafaCompletion
@@ -403,6 +404,7 @@ public import PropertyF.Ground.Dimensions.ENOInvolution
 public import PropertyF.Ground.Dimensions.BraidingCapSlide
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
+
 public import PropertyF.Ground.CentreCabling.TwistFinite
 public import PropertyF.Ground.CentreCabling.VafaTwist
 public import PropertyF.Ground.CentreCabling.VafaDeterminant
@@ -412,6 +414,8 @@ public import PropertyF.Ground.Dimensions.DefectTraceBraiding
 public import PropertyF.Ground.Dimensions.DrinfeldTensorCap
 public import PropertyF.Ground.CentreCabling.TwistDual
 public import PropertyF.Ground.CentreCabling.LanternSpherical
+
+
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
