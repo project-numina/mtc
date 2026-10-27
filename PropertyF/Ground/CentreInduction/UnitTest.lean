@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.Splitting
+public import PropertyF.Ground.CentreRigid.Unit
 
 /-! The unit-strand case of the centre intertwining equation. -/
 
@@ -13,23 +14,16 @@ set_option backward.defeqAttrib.useBackward true in
 /-- A centre half-braiding on the tensor unit is the canonical unitor map. -/
 theorem halfBraiding_unit (C : BraidedFusionCategory.{v,u})
     (X : CategoryTheory.Center C.Obj) :
-    (X.2.β (𝟙_ C.Obj)).hom = (ρ_ X.1).hom ≫ (λ_ X.1).inv := by
-  have h := congrArg CategoryTheory.Center.Hom.f
-    (braiding_tensorUnit_right X)
-  change (CategoryTheory.Center.braiding X (𝟙_ (CategoryTheory.Center C.Obj))).hom.f =
-    ((ρ_ X).hom ≫ (λ_ X).inv).f at h
-  simp only [CategoryTheory.Center.braiding_hom_f, CategoryTheory.Center.comp_f,
-    CategoryTheory.Center.rightUnitor_hom_f, CategoryTheory.Center.leftUnitor_inv_f] at h
-  exact h
+    (X.2.β (𝟙_ C.Obj)).hom = (ρ_ X.1).hom ≫ (λ_ X.1).inv :=
+  CentreRigid.halfBraiding_unit X
 
 /-- Every underlying map satisfies the centre intertwining equation on the
 unit strand. -/
 theorem comm_unit (C : BraidedFusionCategory.{v,u})
     (X Y : CategoryTheory.Center C.Obj) (f : X.1 ⟶ Y.1) :
     (f ▷ 𝟙_ C.Obj) ≫ (Y.2.β (𝟙_ C.Obj)).hom =
-      (X.2.β (𝟙_ C.Obj)).hom ≫ ((𝟙_ C.Obj) ◁ f) := by
-  rw [halfBraiding_unit C X, halfBraiding_unit C Y]
-  simp [Category.assoc, rightUnitor_naturality, ← leftUnitor_inv_naturality]
+      (X.2.β (𝟙_ C.Obj)).hom ≫ ((𝟙_ C.Obj) ◁ f) :=
+  CentreRigid.centrality_at_unit X Y f
 
 /-- Every underlying map also intertwines a half-braiding on any object
 isomorphic to the tensor unit. -/
