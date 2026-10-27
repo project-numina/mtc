@@ -25,6 +25,10 @@
 - `Ground.unit_algebraMap_bijective`, `unitScalar_algebraMap`, and
   `algebraMap_unitScalar`: the target's unit scalar map really is the inverse
   of scalar multiplication on the tensor unit.
+- `Ground.homBiproductLinearEquiv`, `finrank_hom_biproduct`,
+  `finrank_simple_of_decomposition`, `exists_canonical_decomposition`:
+  Hom-space dimensions compute decomposition multiplicities, and every object
+  decomposes with those canonical multiplicities.
 
 These results use the existing `FusionData`; they do not construct its positive
 character or discharge the `FusionData` hypothesis.
