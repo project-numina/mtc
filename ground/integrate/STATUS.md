@@ -7,6 +7,8 @@
   `globalDimension`, `GaloisConjugate`, `HasPseudoUnitaryGaloisConjugate`,
   `TargetStatement` in `PropertyF/Ground/Target.lean`; module builds.
 - Fusion and dimensions reviewed the target; it is frozen at commit 45da64d.
+- `GaloisConjugate.refl` and `hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary`
+  verify that pseudo-unitary categories satisfy the frozen conjugacy condition.
 - `simple_presentation_equiv` and `sum_simple_presentation` reindex any
   complete pairwise-nonisomorphic simple presentation and its invariant sums.
 - `simple_strand_inclusion` combines fusion’s split-unit theorem with cabling’s
