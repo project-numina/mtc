@@ -22,9 +22,6 @@
   `exists_simple_iso`, `exists_unit_iso`, and `finrank_simples_hom`: the
   target's representatives enumerate all simple objects, including the unit,
   and satisfy Schur's Hom formula without using old fusion structures.
-- `Ground.unit_algebraMap_bijective`, `unitScalar_algebraMap`, and
-  `algebraMap_unitScalar`: the target's unit scalar map really is the inverse
-  of scalar multiplication on the tensor unit.
 - `Ground.homBiproductLinearEquiv`, `finrank_hom_biproduct`,
   `finrank_simple_of_decomposition`, `exists_canonical_decomposition`:
   Hom-space dimensions compute decomposition multiplicities, and every object
@@ -37,6 +34,9 @@ character or discharge the `FusionData` hypothesis.
 
 Construction of fusion rules and the positive character from a genuine finite
 semisimple rigid category. Integration has been asked for its target interface.
+Integration independently proved the unit-scalar identification in its own
+`PropertyF/Ground/Integrate/UnitScalar.lean`; our duplicate was removed to avoid
+declaration conflicts.
 
 ## Blocked / outstanding
 
