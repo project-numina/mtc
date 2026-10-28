@@ -103,7 +103,6 @@ import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.CentreInduction.Adjunction
 import all PropertyF.Ground.CentreInduction.Underlying
-import all PropertyF.Ground.CentreModular.InductionDimension
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.ComplexSaturation
 import all PropertyF.Ground.Dimensions.DimensionCharacter

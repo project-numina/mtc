@@ -118,9 +118,11 @@ theorem square_support_constant {R : Type*} [CommRing R] [IsDomain R] [Decidable
   have ha : a x = a u := mul_right_cancel₀ (hne x) (by simpa [mul_comm] using hm)
   simpa [a, hunit] using ha
 
+variable (hp : p.IsSpherical)
+
+include hp in
 /-- Nondegeneracy, sphericality, and real dimensions imply the S-square identity. -/
-theorem categoricalS_square (hp : p.IsSpherical)
-    (hdet : (Sₚ).det ≠ 0)
+theorem categoricalS_square (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
     HasSSquare Sₚ (Ground.dualIndex C) (globalDimension C) := by
   classical
@@ -158,9 +160,11 @@ variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
 
+variable (hp : p.IsSpherical)
+
+include hp in
 /-- Invertibility and S-square force the global dimension to be nonzero. -/
-theorem globalDimension_ne_zero_of_invertibleS (hp : p.IsSpherical)
-    (hdet : (Sₚ).det ≠ 0)
+theorem globalDimension_ne_zero_of_invertibleS (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
     globalDimension C ≠ 0 := by
   classical
@@ -172,10 +176,10 @@ theorem globalDimension_ne_zero_of_invertibleS (hp : p.IsSpherical)
   exact mul_ne_zero hdet hdet (by
     simpa only [Matrix.det_mul, Matrix.det_zero] using congrArg Matrix.det hs)
 
+include hp in
 /-- The S-column Galois action for any nondegenerate spherical category with
 real simple dimensions, without old input bundles. -/
-theorem categoricalS_galois_action_of_invertibleS (hp : p.IsSpherical)
-    (hdet : (Sₚ).det ≠ 0)
+theorem categoricalS_galois_action_of_invertibleS (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
     ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)),
       IsGaloisColumnAction (Sₚ) (dₚ) act :=

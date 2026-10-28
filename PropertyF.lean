@@ -4,7 +4,6 @@ public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.Adjunction
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
 public import PropertyF.Ground.Centre.Modular.Vafa
-public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreBundle.Fusion
 public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.Target

@@ -2,7 +2,6 @@ module
 public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.Integrate.ActualCenterReduction
 public import PropertyF.Ground.CentreInduction.ActualFusion
-public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.CentreInduction.ForgetDual
@@ -30,10 +29,12 @@ theorem center_globalDimension_square_of_actual_induction
     (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
     (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p) :
-    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
-  CentreModular.center_globalDimension_of_adjunction C
-    (CentreInduction.induction C) (CentreInduction.actualAdjunction C)
-    (fun _ ↦ ⟨Iso.refl _⟩) p hp hdim
+    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
+  have h : globalDimension (Integrate.bundledCenter C) =
+      (globalFPDimension (Integrate.bundledCenter C) : ℂ) := by
+    rw [Modular.categorical_global_eq_sum_squares (Integrate.bundledCenter C) p hp]
+    simp [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow]
+  rw [h, CentreInduction.globalFPDimension_square_of_actual_induction C, Complex.ofReal_pow]
 
 
 
