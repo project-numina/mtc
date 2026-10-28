@@ -51,11 +51,4 @@ theorem centralizesNegative_iff (Y : CategoryTheory.Center C) :
     rw [h X]
     simp
 
-/-- The intersection of the two canonical images lies over the symmetric core. -/
-theorem transparent_of_both_centralizers (Y : CategoryTheory.Center C)
-    (hpos : CentralizesPositive Y) (hneg : CentralizesNegative Y) : Transparent Y.1 := by
-  intro X
-  rw [← (centralizesNegative_iff Y).mp hneg X]
-  exact hpos X
-
 end PropertyF

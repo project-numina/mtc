@@ -220,12 +220,12 @@ run_cmd do
   | _ => throwError "dependency audit did not reject a missing declaration"
   match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenInputWrapper with
   | some (.forbidden n) =>
-      unless n == ``PropertyF.BraidedFusionCategory do
+      unless n == ``PropertyF.Ground.DependencyAudit.ForbiddenFixture do
         throwError "unexpected forbidden fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect an imported definition body"
   match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenProof with
   | some (.forbidden n) =>
-      unless n == ``PropertyF.BraidedFusionCategory do
+      unless n == ``PropertyF.Ground.DependencyAudit.ForbiddenFixture do
         throwError "unexpected forbidden theorem fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
   for n in #[``PropertyF.Ground.TargetStatement,
