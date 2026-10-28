@@ -16,9 +16,7 @@ theorem natural_end_finite_order_of_simples
     (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (h : ∀ i, IsOfFinOrder (End.of (α.app (Ground.simples C i)))) :
     ∃ n : ℕ, n ≠ 0 ∧ ∀ X, (End.of (α.app X)) ^ n = 1 := by
-  have hf : IsOfFinOrder (fun i : Fin (rank C) ↦ End.of (α.app (simples C i))) :=
-    IsOfFinOrder.pi h
-  obtain ⟨n, hn, hs⟩ := hf.exists_pow_eq_one
+  obtain ⟨n, hn, hs⟩ := (IsOfFinOrder.pi h).exists_pow_eq_one
   let a : End (𝟭 C.Obj) := End.of α
   have happ (k : ℕ) (X : C.Obj) : (a ^ k).asHom.app X =
       ((End.of (α.app X)) ^ k).asHom := by
@@ -63,18 +61,12 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist
     rw [tensor_end_pow, hp X, hp Y]
     apply End.ext
     simp
-  have hc : Commute t m := by
-    apply End.ext
-    exact doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y)
-  have hmt : t * m = z := by
-    apply End.ext
-    exact hbalance X Y
-  have hz : z ^ n = 1 := hp _
-  have hm : m ^ n = 1 := by
-    have h := hc.mul_pow n
-    rw [hmt, hz, ht, one_mul] at h
-    exact h.symm
-  exact isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, hm⟩
+  have hc : Commute t m := End.ext (doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))
+  have hmt : t * m = z := End.ext (hbalance X Y)
+  refine isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, ?_⟩
+  have h := hc.mul_pow n
+  rw [hmt, hp _, ht, one_mul] at h
+  exact h.symm
 
 /-- The actual pivotal twist scalars, viewed as nonzero complex numbers. -/
 def pivotalTwistUnit (C : Ground.BraidedFusionCategory.{v,u})

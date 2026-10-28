@@ -112,9 +112,9 @@ theorem nonzero_dual_coefficient_of_sCentralizer
   dsimp only [T] at heq
   rw [categoricalS_fourier_inversion hp hdet hreal f x,
     categoricalS_fourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D] at heq
-  have hn := mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
-    (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit)
-  exact fun hz ↦ hn (by simpa only [hz, mul_zero] using heq.symm)
+  exact fun hz ↦ (mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
+    (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit))
+      (by simpa only [hz, mul_zero] using heq.symm)
 
 include hp hdet in
 /-- A vector supported on generated labels proves the exact double-centralizer
@@ -127,14 +127,11 @@ theorem doubleCentralizer_of_fourier_support
     (hunit : f (unitIndex D) ≠ 0)
     (hgenerated : ∀ y, f y ≠ 0 → y ∈ generated)
     (hsupport : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0) :
-    sCentralizer D p core ⊆ generated := by
-  intro x hx
-  have hreal := realSimpleDimensions_of_fp hdim
-  have hdual (y) (hy : y ∈ core) :=
-    sCentralizes_dual hdim (sCentralizes_symm (hx y hy))
-  have h := nonzero_dual_coefficient_of_sCentralizer hp hdet hreal hunit hsupport hdual
-  rw [dualIndex_involutive D x] at h
-  exact hgenerated x h
+    sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated x <| by
+  simpa only [dualIndex_involutive D x] using
+    nonzero_dual_coefficient_of_sCentralizer hp hdet (realSimpleDimensions_of_fp hdim)
+      hunit hsupport (x := dualIndex D x)
+      (fun y hy ↦ sCentralizes_dual hdim (sCentralizes_symm (hx y hy)))
 
 end PropertyF.Ground.CentreCabling
 

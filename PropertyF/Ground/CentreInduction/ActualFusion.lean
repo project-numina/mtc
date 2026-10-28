@@ -170,19 +170,6 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
     _ = _ := by rw [crossing_completeness, unitBlockLinear_id]; rfl
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The underlying unit is the sum of its biproduct components. -/
-theorem unitCandidate_sum (Z : 𝒵) :
-  let V := inductionSummand C Z.1
-  unitCandidate C Z = ∑ i, unitComponent C Z i ≫ biproduct.ι V i := by
-  classical
-  let V := inductionSummand C Z.1
-  have hp (i) : unitCandidate C Z ≫ biproduct.π V i = unitComponent C Z i :=
-    biproduct.lift_π _ _
-  have hid : unitCandidate C Z ≫ 𝟙 (⨁ V) = unitCandidate C Z := Category.comp_id _
-  simpa only [hid, Preadditive.comp_sum, ← Category.assoc, hp] using
-    (congrArg (fun f => unitCandidate C Z ≫ f) (biproduct.total (f := V))).symm
-
-set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
 theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
@@ -202,7 +189,7 @@ theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
       ∑ i, ∑ a : crossingIndex C T i j,
         (unitComponent C Z i ▷ T) ≫ crossingBlock Z.1 T (simples C i) (simples C j)
           (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
-    rw [unitCandidate_sum]
+    rw [unitCandidate, biproduct.lift_eq]
     simp only [sum_whiskerRight, Preadditive.sum_comp, comp_whiskerRight, Category.assoc]
     apply Finset.sum_congr rfl
     intro i _
