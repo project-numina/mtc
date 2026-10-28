@@ -96,7 +96,6 @@ theorem leftTrace_id (p : PivotalStructure (C := C)) (X : C) :
 theorem spherical_quantumTraces_eq (p : PivotalStructure (C := C))
     (hp : p.IsSpherical) (X : C) :
     rightQuantumTrace (p.iso X) = leftQuantumTrace (p.iso X) := by
-  rw [← rightTrace_id, ← leftTrace_id]
-  exact (hp X (𝟙 X)).symm
+  simpa only [← rightTrace_id, ← leftTrace_id] using (hp X (𝟙 X)).symm
 
 end PropertyF.Ground.Dimensions
