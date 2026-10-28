@@ -74,13 +74,18 @@ end
 
 variable (D : BraidedFusionCategory.{v,u})
 
+/-- The multiplicity of a chosen simple object in an object. -/
+abbrev simpleMultiplicity (i : Fin (rank D)) (X : D.Obj) : ℕ :=
+  Module.finrank ℂ (simples D i ⟶ X)
+
 /-- A chosen simple's Hom dimension counts its copies in a decomposition. -/
 theorem finrank_simple_of_decomposition
     {X : D.Obj} (m : Fin (rank D) → ℕ)
     (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => simples D p.1)) (i : Fin (rank D)) :
-    Module.finrank ℂ (simples D i ⟶ X) = m i := by
+    simpleMultiplicity D i X = m i := by
   classical
   let : ∀ Y Z : D.Obj, FiniteDimensional ℂ (Y ⟶ Z) := IsFusionCategory.hom_finite
+  dsimp only [simpleMultiplicity]
   rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq,
     finrank_hom_biproduct, Fintype.sum_sigma]
   simp [finrank_simples_hom]
@@ -88,7 +93,7 @@ theorem finrank_simple_of_decomposition
 /-- Every object decomposes with the canonical Hom-space multiplicities. -/
 theorem exists_canonical_decomposition (X : D.Obj) :
     Nonempty (X ≅ ⨁ (fun p : Σ i : Fin (rank D),
-      Fin (Module.finrank ℂ (simples D i ⟶ X)) => simples D p.1)) := by
+      Fin (simpleMultiplicity D i X) => simples D p.1)) := by
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
   cases (funext (finrank_simple_of_decomposition D m e)).symm
   exact ⟨e⟩
@@ -114,7 +119,7 @@ theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
 
 /-- A nonzero object has a nonzero simple multiplicity. -/
 theorem exists_positive_multiplicity {X : D.Obj}
-    (hX : ¬ IsZero X) : ∃ i, 0 < Module.finrank ℂ (simples D i ⟶ X) := by
+    (hX : ¬ IsZero X) : ∃ i, 0 < simpleMultiplicity D i X := by
   classical
   obtain ⟨i, _, t, _, ht⟩ := exists_simple_retract D (by
     simpa [IsZero.iff_id_eq_zero] using hX)
@@ -127,20 +132,21 @@ theorem exists_positive_multiplicity {X : D.Obj}
 integer fusion matrix. -/
 theorem tensor_multiplicity (X Y : D.Obj)
     (k : Fin (rank D)) :
-    Module.finrank ℂ (simples D k ⟶ X ⊗ Y) =
-      ∑ j, Module.finrank ℂ (simples D j ⟶ Y) *
-        Module.finrank ℂ (simples D k ⟶ X ⊗ simples D j) := by
+    simpleMultiplicity D k (X ⊗ Y) =
+      ∑ j, simpleMultiplicity D j Y *
+        simpleMultiplicity D k (X ⊗ simples D j) := by
   classical
-  let m : Fin (rank D) → ℕ := fun j => Module.finrank ℂ (simples D j ⟶ Y)
+  let m : Fin (rank D) → ℕ := fun j => simpleMultiplicity D j Y
   let V : (Σ j, Fin (m j)) → D.Obj := fun p => simples D p.1
   obtain ⟨e⟩ := exists_canonical_decomposition D Y
   let e' : X ⊗ Y ≅ ⨁ (fun p => X ⊗ V p) :=
     (Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X V
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  dsimp only [simpleMultiplicity]
   rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e').finrank_eq,
     finrank_hom_biproduct, Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun j _ ↦ ?_
-  change (∑ _ : Fin (m j), Module.finrank ℂ (simples D k ⟶ X ⊗ simples D j)) = _
+  change (∑ _ : Fin (m j), simpleMultiplicity D k (X ⊗ simples D j)) = _
   simp [m]
 
 /-- Fusion coefficients are the actual Hom-space dimensions. -/
@@ -166,16 +172,19 @@ theorem fusionCoeff_comm (i j k : Fin (rank D)) :
     fusionCoeff D i j k = fusionCoeff D j i k :=
   (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (β_ (simples D i) (simples D j))).finrank_eq
 
+local notation "N" => fusionCoeff D
+
 /-- Associativity of fusion coefficients, derived from associativity of
 tensor products and finite semisimplicity. -/
 theorem fusionCoeff_assoc
     (i j k l : Fin (rank D)) :
-    ∑ r, fusionCoeff D j k r * fusionCoeff D i r l =
-      ∑ r, fusionCoeff D i j r * fusionCoeff D r k l := by
+    ∑ r, N j k r * N i r l = ∑ r, N i j r * N r k l := by
   classical
   have h := (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples D l))
     ((α_ (simples D i) (simples D j) (simples D k)).symm ≪≫
       β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq
+  change simpleMultiplicity D l (simples D i ⊗ (simples D j ⊗ simples D k)) =
+    simpleMultiplicity D l (simples D k ⊗ (simples D i ⊗ simples D j)) at h
   rw [tensor_multiplicity D (simples D i) (simples D j ⊗ simples D k) l,
     tensor_multiplicity D (simples D k) (simples D i ⊗ simples D j) l] at h
   change (∑ r, fusionCoeff D j k r * fusionCoeff D i r l) =

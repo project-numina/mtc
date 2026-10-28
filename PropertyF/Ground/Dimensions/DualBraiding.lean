@@ -32,12 +32,6 @@ theorem braiding_cap_slide :
           Iso.inv_hom_id, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id_assoc]
         monoidal
     _ = _ := by monoidal
-set_option backward.isDefEq.respectTransparency false in
-/-- The same cap slide for the reversed braiding. -/
-theorem braiding_inverse_cap_slide :
-    (β_ V U).inv ▷ W ⊗≫ V ◁ f ⊗≫ (ρ_ V).hom =
-      𝟙 ((U ⊗ V) ⊗ W) ⊗≫ U ◁ (β_ V W).hom ⊗≫ f ▷ V ⊗≫ (λ_ V).hom :=
-  @braiding_cap_slide C _ _ (reverseBraiding C) U W V f
 end PropertyF.Ground.Dimensions
 
 end
@@ -49,9 +43,10 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [BraidedCategory C] [RightRigidCategory C]
 variable (X Y : C)
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Sliding the crossing through both caps relates the two tensor evaluations. -/
-theorem dual_braiding_tensor_evaluations :
+theorem dual_braiding_tensor_evaluations [HasRightDual X] [HasRightDual Y] :
     (β_ (Xᘁ) (Yᘁ)).hom ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
       ((Xᘁ) ⊗ (Yᘁ)) ◁ (β_ X Y).hom ≫ ε_ (Y ⊗ X) ((Xᘁ) ⊗ (Yᘁ)) := by
   let U := Xᘁ
@@ -74,11 +69,15 @@ theorem dual_braiding_tensor_evaluations :
         ((U ⊗ X) ◁ ε_ Y V ≫ ε_ X U ▷ (𝟙_ C)) ⊗≫ 𝟙 (𝟙_ C) := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ U ◁ ((β_ X V).inv ▷ Y ⊗≫ X ◁ ε_ Y V ⊗≫ (ρ_ X).hom) ⊗≫ ε_ X U := by monoidal
     _ = 𝟙 _ ⊗≫ U ◁ (𝟙 ((V ⊗ X) ⊗ Y) ⊗≫ V ◁ (β_ X Y).hom ⊗≫ ε_ Y V ▷ X ⊗≫ (λ_ X).hom) ⊗≫ ε_ X U := by
-      rw [braiding_inverse_cap_slide]
+      rw [show (β_ X V).inv ▷ Y ⊗≫ X ◁ ε_ Y V ⊗≫ (ρ_ X).hom =
+        𝟙 ((V ⊗ X) ⊗ Y) ⊗≫ V ◁ (β_ X Y).hom ⊗≫ ε_ Y V ▷ X ⊗≫ (λ_ X).hom from
+          @braiding_cap_slide C _ _ (reverseBraiding C) V Y X (ε_ Y V)]
     _ = _ := by monoidal
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- The right-dual tensor comparison transports a braiding to the braiding of the duals. -/
-theorem rightDualTensorIso_braiding :
+theorem rightDualTensorIso_braiding [HasRightDual X] [HasRightDual Y]
+    [HasRightDual (X ⊗ Y)] [HasRightDual (Y ⊗ X)] :
     ((β_ X Y).homᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso Y X).hom ≫ (β_ (Xᘁ) (Yᘁ)).hom :=
   evaluation_ext (X := X ⊗ Y) (by

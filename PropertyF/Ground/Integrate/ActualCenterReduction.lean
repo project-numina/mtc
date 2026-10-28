@@ -23,7 +23,13 @@ public import PropertyF.Arithmetic
 /-! # Galois arithmetic and the centre reduction
 
 The numerical descent and categorical centre witnesses combine to prove
-weak integrality from the actual centre and its finite braid images. -/
+weak integrality from the actual centre and its finite braid images.
+
+## Main results
+
+* `integral_eq_int_of_complex_galois_fixed` gives the arithmetic descent.
+* `center_witness_of_categorical_modular_data` constructs the numerical witness.
+* `weaklyIntegral_of_actual_center` assembles the centre reduction. -/
 
 /-! # Galois fixedness and integrality
 
@@ -156,17 +162,17 @@ and the modular global-dimension identity. -/
 theorem exists_modular_witness (hfp : IsFPSpherical Z p) (hdet : (𝒮).det ≠ 0)
     {δ : ℝ} (hglobal : globalDimension Z = (δ : ℂ) ^ 2) (σ : ℂ ≃+* ℂ) :
     ∃ y : Fin (rank Z), 1 ≤ 𝒇 y ∧ IsGaloisUnitColumn Z p σ.symm y ∧
-      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (𝒇 y : ℂ) ^ 2 := by
-  have hreal := CentreCabling.realSimpleDimensions_of_fp hfp.2
-  obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hfp.1 hdet hreal
+      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (𝒇 y : ℂ) ^ 2 :=
+  let hreal := CentreCabling.realSimpleDimensions_of_fp hfp.2
+  let ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hfp.1 hdet hreal
   let y := act σ.symm (unitIndex Z)
-  obtain ⟨hcolumn, _, hG⟩ := Modular.galois_unit_properties (Modular.simpleDimension_ne_zero Z p)
+  let ⟨hcolumn, _, hG⟩ := Modular.galois_unit_properties (Modular.simpleDimension_ne_zero Z p)
     (Modular.globalDimension_ne_zero_of_invertibleS Z p hfp.1 hdet hreal)
     (Modular.simpleDimension_unit Z p) (Modular.categorical_global_eq_sum_squares Z p hfp.1)
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
     (Modular.categoricalS_square Z p hfp.1 hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
-  exact ⟨y, one_le_fpSimple Z y, by simpa only [IsGaloisUnitColumn, hfp.2] using hcolumn,
+  ⟨y, one_le_fpSimple Z y, by simpa only [IsGaloisUnitColumn, hfp.2] using hcolumn,
     by simpa only [hglobal, hfp.2] using hG⟩
 
 /-- Once the Galois-unit column is known to have finite braid image and the
@@ -211,8 +217,7 @@ local notation "φ" => algebraMap ℝ K
 
 /-- A conjugate of a sum of squares is the sum of the squares of its conjugates. -/
 theorem galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K) (h : ∀ i, σ (φ (d i)) = φ (e i)) :
-    σ (φ (∑ i, d i ^ 2)) = φ (∑ i, e i ^ 2) := by
-  simp only [map_sum, map_pow, h]
+    σ (φ (∑ i, d i ^ 2)) = φ (∑ i, e i ^ 2) := by simp only [map_sum, map_pow, h]
 
 /-- A bounded conjugate sum of squares is positive when one conjugate is one. -/
 theorem positive_galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K)
@@ -303,16 +308,15 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
     (hIntegral : HasIntegralSimpleDimensionsOn 𝒵ᶠ p core)
     (hDouble : Modular.sCentralizer 𝒵ᶠ p core ⊆ generated)
     (hProduct : ∀ y ∈ generated, Centre.ProductRetract (simples 𝒵ᶠ y)) :
-    WeaklyIntegral (globalFPDimension C) := by
-  apply integral_eq_int_of_complex_galois_fixed (globalFPDimension_isIntegral C)
-  apply galois_fixed_of_smaller_conjugate_witness (j := algebraMap ℝ ℂ) (globalFPDimension C)
-    (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
-    (positive_bounded_conjugates_of_fp C)
-  intro τ a b _ _ hb _ hτ
-  exact center_witness_of_categorical_modular_data 𝒵ᶠ hfp hdet
-    (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)) hb hglobal τ hτ fun y hColumn ↦
-      propertyF_of_galois_column hIntegral hDouble
-        (fun i hi ↦ Centre.productRetract_propertyF (hProduct i hi) hF) hColumn
+    WeaklyIntegral (globalFPDimension C) :=
+  integral_eq_int_of_complex_galois_fixed (globalFPDimension_isIntegral C) <|
+    galois_fixed_of_smaller_conjugate_witness (j := algebraMap ℝ ℂ) (globalFPDimension C)
+      (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
+      (positive_bounded_conjugates_of_fp C) fun τ _ _ _ _ hb _ hτ ↦
+        center_witness_of_categorical_modular_data 𝒵ᶠ hfp hdet
+          (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)) hb hglobal τ hτ fun _ hColumn ↦
+            propertyF_of_galois_column hIntegral hDouble
+              (fun i hi ↦ Centre.productRetract_propertyF (hProduct i hi) hF) hColumn
 
 end PropertyF.Ground
 end

@@ -13,7 +13,13 @@ public import PropertyF.Ground.CentreModular.TransparencyCriterion
 /-! # The centre reduction and the final theorem
 
 The induction dimension formula and trivial centre transparency supply
-the modular ingredients for the property-F weak-integrality theorem. -/
+the modular ingredients for the property-F weak-integrality theorem.
+
+## Main results
+
+* `center_globalDimension_square_of_actual_induction` gives the centre dimension.
+* `center_transparent_label_eq_unit` proves trivial centre transparency.
+* `target` proves weak integrality from property F and a pseudo-unitary conjugate. -/
 
 section
 /-! The constructed induction adjunction removes the centre square premise. -/

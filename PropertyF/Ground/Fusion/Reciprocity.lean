@@ -109,7 +109,7 @@ theorem dualIndex_iso (j : Fin (rank D)) :
 theorem fusionCoeff_reciprocity
     (i j k : Fin (rank D)) :
     fusionCoeff D i j k =
-      Module.finrank ℂ (simples D i ⟶ simples D k ⊗ (ᘁ(simples D j))) :=
+      simpleMultiplicity D i (simples D k ⊗ (ᘁ(simples D j))) :=
   letI : Simple (simples D i) := simples_simple D i
   (finrank_frobenius_reciprocity (k := ℂ) (simples D i) (simples D j) (simples D k)).trans
     (finrank_to_simple_eq_from_simple _ (simples D i))
@@ -146,9 +146,9 @@ theorem dualIndex_unit :
 theorem dualIndex_involutive :
     Function.Involutive (dualIndex D) := by
   intro i
-  have hunit := fusionCoeff_dual_unit D i
-  rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit] at hunit
-  simpa [eq_comm] using hunit
+  simpa [fusionCoeff_unit, eq_comm] using
+    ((fusionCoeff_reciprocity_labels D i (dualIndex D i) (unitIndex D)).symm.trans
+      (fusionCoeff_dual_unit D i))
 
 /-- Duality permutes the simple labels. -/
 def dualEquiv : Equiv.Perm (Fin (rank D)) :=

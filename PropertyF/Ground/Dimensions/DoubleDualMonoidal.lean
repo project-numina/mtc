@@ -17,9 +17,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Canonical right-dual tensor comparisons respect associativity. -/
-theorem rightDualTensorIso_associativity (X Y Z : C) :
+theorem rightDualTensorIso_associativity (X Y Z : C)
+    [HasRightDual X] [HasRightDual Y] [HasRightDual Z]
+    [HasRightDual (X ⊗ Y)] [HasRightDual (Y ⊗ Z)]
+    [HasRightDual ((X ⊗ Y) ⊗ Z)] [HasRightDual (X ⊗ (Y ⊗ Z))] :
     (rightDualTensorIso (X ⊗ Y) Z).hom ≫
       (Zᘁ) ◁ (rightDualTensorIso X Y).hom =
     ((α_ X Y Z).invᘁ) ≫ (rightDualTensorIso X (Y ⊗ Z)).hom ≫

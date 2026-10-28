@@ -14,11 +14,15 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+
+/-- The fourth-dual tensor law on pairs of chosen simple objects. -/
+abbrev SimpleFourthDualTensorLaw : Prop :=
+  ∀ i j : Fin (rank C), fourthDualTensorLaw (simples C i) (simples C j)
+
 /-- It suffices to prove the fourth-dual tensor law on simple pairs; the
 construction uses no assumption about that law on arbitrary objects. -/
 theorem positive_spherical_of_simple_fourth_and_reciprocity
-    (hfourth : ∀ i j : Fin (rank C),
-      fourthDualTensorLaw (simples C i) (simples C j))
+    (hfourth : SimpleFourthDualTensorLaw C)
     (htranspose : ENOTraceMatrixReciprocity C)
     (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C :=

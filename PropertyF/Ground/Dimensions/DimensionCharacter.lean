@@ -40,7 +40,7 @@ variable (p : PivotalStructure (C := C.Obj))
 multiplicities, for any pivotal structure. -/
 theorem pivotalDimension_decomposition
     (X : C.Obj) :
-    pivotalDimension C p X = ∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℂ) *
+    pivotalDimension C p X = ∑ i, (simpleMultiplicity C i X : ℂ) *
       pivotalDimension C p (simples C i) := by
   classical
   obtain ⟨e⟩ := exists_canonical_decomposition C X
@@ -54,11 +54,6 @@ theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStr
     (X : C.Obj) : pivotalDimension C p X = (fpDimension C X : ℂ) := by
   simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
     hsimple] using pivotalDimension_decomposition C p X
-
-/-- The pivotal dimension of the tensor unit is normalized to one. -/
-theorem pivotalDimension_unit
-    : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
-  simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1
 
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor
@@ -83,7 +78,8 @@ theorem pivotalDimension_iso
 /-- The pivotal dimension of the simple representative of the unit is one. -/
 theorem pivotalDimension_unitIndex :
     pivotalDimension C p (simples C (unitIndex C)) = 1 :=
-  (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso C p e).trans (pivotalDimension_unit C p)
+  (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso C p e).trans (by
+    simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1)
 
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
 its Frobenius–Perron dimension. -/
@@ -140,18 +136,18 @@ theorem isSpherical_iff_simple_dimensions
     exact h _ _
   · intro hs X f
     classical
-    let m (i : Fin (rank C)) := Module.finrank ℂ (simples C i ⟶ X)
+    let m (i : Fin (rank C)) := simpleMultiplicity C i X
     let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
     obtain ⟨e⟩ := exists_canonical_decomposition C X
     let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
-    have hleft : p.leftTrace f = p.leftTrace g := by
-      simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f))
-    have hright : p.rightTrace f = p.rightTrace g := by
-      simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f))
     obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple (k := ℂ)
       (fun (a : Σ i, Fin (m i)) ↦ simples_simple C a.1)
       (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
-    rw [hleft, hright, htrace, leftTrace_biproduct_scalar_blocks p g hc]
+    rw [show p.leftTrace f = p.leftTrace g from by
+          simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f)),
+      show p.rightTrace f = p.rightTrace g from by
+        simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f)),
+      htrace, leftTrace_biproduct_scalar_blocks p g hc]
     exact Finset.sum_congr rfl fun a _ ↦ congrArg (fun t ↦ c a • t) (hs a.1)
 
 end PropertyF.Ground.Dimensions

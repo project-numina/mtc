@@ -34,12 +34,12 @@ theorem rightQuantumTrace_tensor_scalar
   have hpt : partialTraceWith k X 1 = scalar (rightQuantumTrace k) • 1 := by
     simpa only [id_tensorHom_id, show End.of (𝟙 (X ⊗ Y)) = (1 : End (X ⊗ Y)) from rfl,
       rightTraceWith_id] using partialTraceWith_tensor_right_scalar scalar k X (𝟙 Y)
-  have ht : rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) =
-      scalar (rightQuantumTrace k) • rightQuantumTrace j := by
-    apply End.homEquiv.injective
-    simpa [hpt, rightTraceWith, rightQuantumTrace, tensorHom_def] using
-      congrArg End.asHom (rightTraceWith_partialTraceWith j k (1 : End (X ⊗ Y))).symm
-  rw [ht, map_smul, smul_eq_mul, mul_comm]
+  simpa only [map_smul, smul_eq_mul, mul_comm] using congrArg scalar
+    (show rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) =
+        scalar (rightQuantumTrace k) • rightQuantumTrace j from by
+      apply End.homEquiv.injective
+      simpa [hpt, rightTraceWith, rightQuantumTrace, tensorHom_def] using
+        congrArg End.asHom (rightTraceWith_partialTraceWith j k (1 : End (X ⊗ Y))).symm)
 
 end PropertyF.Ground.Dimensions
 
@@ -95,7 +95,7 @@ theorem simpleInclusion_independent
 /-- The canonical summand inclusions form a basis of each simple Hom space. -/
 def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
     (X : C.Obj) (k : Fin (rank C)) :
-    Module.Basis (Fin (Module.finrank ℂ (simples C k ⟶ X))) ℂ (simples C k ⟶ X) := by
+    Module.Basis (Fin (simpleMultiplicity C k X)) ℂ (simples C k ⟶ X) := by
   letI : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   exact basisOfLinearIndependentOfCardEqFinrank' (simpleInclusion C X k)
     (simpleInclusion_independent C X k) (Fintype.card_fin _)
@@ -103,7 +103,7 @@ def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
 @[simp]
 theorem simpleInclusionBasis_apply
     (X : C.Obj) (k : Fin (rank C))
-    (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
+    (t : Fin (simpleMultiplicity C k X)) :
     simpleInclusionBasis C X k t = simpleInclusion C X k t :=
   letI : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) t
@@ -113,7 +113,7 @@ set_option backward.isDefEq.respectTransparency false in
 projections of the morphism. -/
 theorem simpleInclusionBasis_projection
     {X : C.Obj} {k : Fin (rank C)} (g : simples C k ⟶ X)
-    (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
+    (t : Fin (simpleMultiplicity C k X)) :
     ((simpleInclusionBasis C X k).repr g t) • 𝟙 (simples C k) =
       g ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩ := by
   classical
@@ -128,7 +128,7 @@ set_option backward.isDefEq.respectTransparency false in
 blocks in the chosen object decomposition. -/
 theorem simpleHom_postcomp_trace
     {X : C.Obj} {k : Fin (rank C)} (g : X ⟶ X)
-    (c : Fin (Module.finrank ℂ (simples C k ⟶ X)) → ℂ)
+    (c : Fin (simpleMultiplicity C k X) → ℂ)
     (hc : ∀ t, biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫
       (simpleDecomposition C X).inv ≫ g ≫ (simpleDecomposition C X).hom ≫
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (simples C k)) :
@@ -209,9 +209,9 @@ the other. -/
 theorem simpleHomPairing_natural
     {S X Y : D} [Simple S] [FiniteDimensional k (S ⟶ S)] (g : Y ⟶ S) (a : X ⟶ Y) :
     simpleHomPairing (k := k) S X (a ≫ g) =
-      Module.Dual.transpose (Linear.rightComp k S a) (simpleHomPairing (k := k) S Y g) := by
-  ext f
-  simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
+      Module.Dual.transpose (Linear.rightComp k S a) (simpleHomPairing (k := k) S Y g) :=
+  LinearMap.ext fun f ↦ by
+    simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
 
 
 set_option backward.isDefEq.respectTransparency false in

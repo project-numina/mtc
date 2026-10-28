@@ -10,9 +10,16 @@ public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Fusion.Agreement
 
 section
-/-! Scalar twisting along an arbitrary complex-field automorphism. The underlying
-category, monoidal structure, braiding and duality are unchanged; only the
-complex action on morphisms is precomposed with the inverse automorphism. -/
+/-! # Scalar twists and Galois rigidity
+
+Twisting by a complex-field automorphism preserves the category, monoidal structure,
+braiding and duality, while precomposing the action on morphisms with its inverse.
+
+## Main results
+
+* `ScalarTwist.category` bundles the twisted braided fusion category.
+* `ScalarTwist.pivotalDimension_twist` describes the transformed pivotal dimensions.
+* `galois_rigidity_of_propertyF` derives the Galois-column rigidity assertion. -/
 
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false
@@ -108,11 +115,10 @@ local notation "pσ" => pivotal C σ p
 
 /-- The twisted inverse unit-scalar map applies σ to the original scalar. -/
 theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
-    unitScalar Cσ f = σ (unitScalar C f) := by
-  apply (unit_algebraMap_bijective Cσ).1
-  simp only [algebraMap_unitScalar Cσ f]
-  exact (algebraMap_unitScalar C f).symm.trans
-    (congrArg (fun z : ℂ ↦ z • (1 : End (𝟙_ C.Obj))) (σ.symm_apply_apply _).symm)
+    unitScalar Cσ f = σ (unitScalar C f) :=
+  (unit_algebraMap_bijective Cσ).1 <| (algebraMap_unitScalar Cσ f).trans <|
+    (algebraMap_unitScalar C f).symm.trans
+      (congrArg (fun z : ℂ ↦ z • (1 : End (𝟙_ C.Obj))) (σ.symm_apply_apply _).symm)
 
 /-- Pivotal dimensions transform by the specified field automorphism. -/
 theorem pivotalDimension_twist (X : C.Obj) :
@@ -137,11 +143,11 @@ theorem labels (hdim : Modular.HasFPSimpleDimensions C p) :
 theorem exists_galois_fp_dimensions (hdim : Modular.HasFPSimpleDimensions C p) :
     ∃ original transformed : Fin (rank Cσ) → ℝ,
       (∀ i, 0 < original i) ∧ (∀ i, σ (original i : ℂ) = (transformed i : ℂ)) ∧
-      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ i) = (transformed i : ℂ) := by
-  obtain ⟨e, he⟩ := labels C σ hdim
-  refine ⟨fun i ↦ fpSimple C (e.symm i), fun i ↦ (σ (fpSimple C (e.symm i) : ℂ)).re,
-    fun i ↦ fpSimple_pos C _, fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, fun i ↦ ?_⟩
-  simpa only [e.apply_symm_apply, fp_simple_galois_real] using he (e.symm i)
+      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ i) = (transformed i : ℂ) :=
+  let ⟨e, he⟩ := labels C σ hdim
+  ⟨fun i ↦ fpSimple C (e.symm i), fun i ↦ (σ (fpSimple C (e.symm i) : ℂ)).re,
+    fun i ↦ fpSimple_pos C _, fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, fun i ↦ by
+      simpa only [e.apply_symm_apply, fp_simple_galois_real] using he (e.symm i)⟩
 
 end PropertyF.Ground.ScalarTwist
 end
