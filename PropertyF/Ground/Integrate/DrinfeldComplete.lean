@@ -30,11 +30,9 @@ theorem center_globalDimension_square_of_actual_induction
     (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p) :
     globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
-  have h : globalDimension (Integrate.bundledCenter C) =
-      (globalFPDimension (Integrate.bundledCenter C) : ℂ) := by
-    rw [Modular.categorical_global_eq_sum_squares (Integrate.bundledCenter C) p hp]
-    simp [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow]
-  rw [h, CentreInduction.globalFPDimension_square_of_actual_induction C, Complex.ofReal_pow]
+  rw [← Complex.ofReal_pow, ← CentreInduction.globalFPDimension_square_of_actual_induction C,
+    Modular.categorical_global_eq_sum_squares (Integrate.bundledCenter C) p hp]
+  simp [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow]
 
 
 
@@ -58,7 +56,7 @@ theorem centerFusionOfPivotalPseudoUnitary
     letI := CentreRigid.rigidCenter (C := C.Obj)
     IsFusionCategory (CategoryTheory.Center C.Obj) :=
   let := CentreRigid.rigidCenter (C := C.Obj)
-  Classical.choose (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu)
+  Classical.choose (CentreInduction.center_structure_of_pivotal_pseudoUnitary p hpu)
 
 /-- The actual centre spherical pivotal structure constructed along the same route. -/
 def centerPivotalOfPivotalPseudoUnitary
@@ -69,7 +67,7 @@ def centerPivotalOfPivotalPseudoUnitary
   letI := CentreRigid.rigidCenter (C := C.Obj)
   letI := centerFusionOfPivotalPseudoUnitary C p hpu
   exact Classical.choose (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))
+    (CentreInduction.center_structure_of_pivotal_pseudoUnitary p hpu))
 
 /-- The constructed centre pivotal dimensions are its FP dimensions. -/
 theorem centerPivotal_hasFPDimensions (C : BraidedFusionCategory.{v,u})
@@ -81,7 +79,7 @@ theorem centerPivotal_hasFPDimensions (C : BraidedFusionCategory.{v,u})
   letI := CentreRigid.rigidCenter (C := C.Obj)
   letI := centerFusionOfPivotalPseudoUnitary C p hpu
   have hd := (Classical.choose_spec (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))).2.1
+    (CentreInduction.center_structure_of_pivotal_pseudoUnitary p hpu))).2.1
   change CentreInduction.PivotalHasFPDimensions (Integrate.bundledCenter C)
     (centerPivotalOfPivotalPseudoUnitary C p hpu) at hd
   intro i
@@ -114,15 +112,11 @@ theorem center_transparent_label_eq_unit
     [IsFusionCategory (CategoryTheory.Center C.Obj)]
     (k : Fin (rank (Integrate.bundledCenter C)))
     (hk : Transparent (simples (Integrate.bundledCenter C) k)) :
-    k = unitIndex (Integrate.bundledCenter C) := by
+    k = unitIndex (Integrate.bundledCenter C) :=
   let D := Integrate.bundledCenter C
-  let Y := simples D k
-  letI : Simple Y := simples_simple D k
-  obtain ⟨e⟩ := CentreInduction.center_transparent_simple_iso_unit C (Z := Y) (by
-    intro W
-    exact hk W)
-  obtain ⟨u⟩ := unitIndex_iso D
-  exact simples_injective D ⟨e ≪≫ u.symm⟩
+  let : Simple (simples D k) := simples_simple D k
+  simples_injective D ⟨(CentreInduction.center_transparent_simple_iso_unit (C := C)
+    (Z := simples D k) hk).some ≪≫ (unitIndex_iso D).some.symm⟩
 
 
 

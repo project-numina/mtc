@@ -69,10 +69,9 @@ theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v
     (hF : ∀ y, (∀ x, Modular.categoricalS Z p x y =
       (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
       ObjectPropertyF (simples Z y)) :
-    ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
-  obtain ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ :=
-    exists_modular_witness Z hp hdim hdet hglobal σ
-  exact ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ hσf hG hS
+    ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
+  let ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ := exists_modular_witness Z hp hdim hdet hglobal σ
+  ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ hσf hG hS
     (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d hσf)⟩
 
 end PropertyF.Ground
@@ -151,8 +150,7 @@ theorem propertyF_of_galois_column
     ObjectPropertyF (simples Z y) :=
   hFinite y <| hDouble fun x hx ↦ by
     obtain ⟨z, hz⟩ := hIntegral x hx
-    change Modular.categoricalS Z p x y = Modular.simpleDimension Z p x * Modular.simpleDimension Z p y
-    rw [hColumn, hz, map_intCast, mul_comm]
+    simpa only [CentreCabling.sCentralizes, hz, map_intCast, mul_comm] using hColumn x
 
 end PropertyF.Ground
 end

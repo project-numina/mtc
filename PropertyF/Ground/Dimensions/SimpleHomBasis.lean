@@ -117,12 +117,6 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
-/-- The inclusion of a chosen simple summand in the canonical decomposition. -/
-def simpleInclusion (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
-    (k : Fin (rank C)) (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
-    simples C k ⟶ X :=
-  biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫ (simpleDecomposition C X).inv
-
 /-- A weighted sum of inclusions projects onto its matching simple summand. -/
 theorem simplePieces_sum_projection (X : C.Obj) (k : Fin (rank C))
     (c : Fin (Module.finrank ℂ (simples C k ⟶ X)) → ℂ)

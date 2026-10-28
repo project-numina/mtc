@@ -207,8 +207,8 @@ theorem tensorDual_coevaluation (X Y : C) :
   let r : A ≅ B := rightDualTensorIso X Y
   let t : Bᘁ ≅ E := rightDualTensorIso (Yᘁ) (Xᘁ)
   have hn : η_ A (Aᘁ) = η_ B (Bᘁ) ≫ r.inv ▷ (Bᘁ) ≫ A ◁ (r.homᘁ) := by
-    have h := Dimensions.coevaluation_iso_map r.symm
-    simpa only [Iso.symm_hom, Iso.symm_inv, tensorHom_def, Category.assoc] using h.symm
+    simpa only [Iso.symm_hom, Iso.symm_inv, tensorHom_def, Category.assoc] using
+      (Dimensions.coevaluation_iso_map r.symm).symm
   rw [hn]
   have he : η_ B E ≫ B ◁ t.inv = η_ B (Bᘁ) :=
     Dimensions.coevaluation_rightDualIso_inv HasRightDual.exact ExactPairing.tensor

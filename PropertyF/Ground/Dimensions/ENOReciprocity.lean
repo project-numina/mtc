@@ -1,5 +1,4 @@
 module
-public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
@@ -270,6 +269,42 @@ theorem rootPhasePivotal_dimension
   simpa only [pivotalDimension, rightTrace_id, rootPhasePivotal] using
     rootSignQuantumTrace_simple C c hc i
 
+/-- Saturated root dimensions normalize every involutive multiplicity defect. -/
+theorem normalized_defects_trivial
+    (hinv : MultiplicityDefectsInvolutive C) (heig : ENOTraceMatrixEigenvector C)
+    (hsat : ∀ i, ‖rootDimension C i‖ = fpSimple C i) :
+    ScaledMultiplicityDefectsTrivial C
+      (fun i => (rootDimension C i / (fpSimple C i : ℂ))⁻¹) := by
+  classical
+  let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
+  have hq : ∀ i, ‖q i‖ = 1 :=
+    fun i ↦ norm_div_ofReal_eq_one (fpSimple_pos C i) (hsat i)
+  let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
+  have hdom : ∀ i j k, ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) :=
+    fun i j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv i j k)
+  have hphase : ∀ i j k, enoTraceMatrix C i j k * (q k / (q i * q j)) =
+      (fusionCoeff C i j k : ℂ) := by
+    intro i j k
+    simpa [q, div_eq_mul_inv, mul_assoc] using
+      (fusion_complex_eigenvalue_saturation C (enoTraceMatrix C) (rootDimension C) hsat hdom heig i j k)
+  change ScaledMultiplicityDefectsTrivial C c
+  intro i j k
+  let r := q k / (q i * q j)
+  have hrnorm : ‖r‖ = 1 := by
+    dsimp [r]
+    rw [norm_div, norm_mul, hq i, hq j, hq k]
+    norm_num
+  have hrtrace : LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap * r =
+      (Module.finrank ℂ (simples C k ⟶ simples C i ⊗ simples C j) : ℂ) := by
+    exact hphase i j k
+  let : FiniteDimensional ℂ
+    (simples C k ⟶ simples C i ⊗ simples C j) :=
+    IsFusionCategory.hom_finite _ _
+  have hfactor : c k / (c i * c j) = r⁻¹ := by
+    simp [c, r, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_assoc]
+  rw [hfactor]
+  exact involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm hrtrace
+
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/
 theorem positive_spherical_of_matrix_identities
@@ -280,44 +315,10 @@ theorem positive_spherical_of_matrix_identities
   classical
   have hsat := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
   let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
-  have hq : ∀ i, ‖q i‖ = 1 := by
-    intro i
-    dsimp [q]
-    rw [norm_div, Complex.norm_real, Real.norm_eq_abs,
-      abs_of_pos (fpSimple_pos C i), hsat i]
-    exact div_self (ne_of_gt (fpSimple_pos C i))
-  have hq0 : ∀ i, q i ≠ 0 := fun i => norm_pos_iff.mp (by rw [hq]; norm_num)
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
-  have hc : ∀ i, c i ≠ 0 := fun i => inv_ne_zero (hq0 i)
-  have hdom : ∀ i j k, ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) := by
-    intro i j k
-    obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C (hinv i j k)
-    change ‖LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap‖ ≤ _
-    rw [hn, Complex.norm_intCast, ← Int.cast_abs]
-    exact_mod_cast hb
-  have hphase : ∀ i j k, enoTraceMatrix C i j k * (q k / (q i * q j)) =
-      (fusionCoeff C i j k : ℂ) := by
-    intro i j k
-    simpa [q, div_eq_mul_inv, mul_assoc] using
-      (fusion_complex_eigenvalue_saturation C (enoTraceMatrix C) (rootDimension C) hsat hdom heig i j k)
-  have hdef : ScaledMultiplicityDefectsTrivial C c := by
-    intro i j k
-    let r := q k / (q i * q j)
-    have hrnorm : ‖r‖ = 1 := by
-      dsimp [r]
-      rw [norm_div, norm_mul, hq i, hq j, hq k]
-      norm_num
-    have hrtrace : LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap * r =
-        (Module.finrank ℂ (simples C k ⟶ simples C i ⊗ simples C j) : ℂ) := by
-      exact hphase i j k
-    let : FiniteDimensional ℂ
-      (simples C k ⟶ simples C i ⊗ simples C j) :=
-      IsFusionCategory.hom_finite _ _
-    have hfactor : c k / (c i * c j) = r⁻¹ := by
-      dsimp [c, r]
-      field_simp [hq0 i, hq0 j, hq0 k]
-    rw [hfactor]
-    exact involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm hrtrace
+  have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero C i)
+    (by exact_mod_cast ne_of_gt (fpSimple_pos C i)))
+  have hdef : ScaledMultiplicityDefectsTrivial C c := normalized_defects_trivial C hinv heig hsat
   have hvalue : ∀ i, c i * rootDimension C i = (fpSimple C i : ℂ) := by
     intro i
     have hf : (fpSimple C i : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (fpSimple_pos C i)
@@ -367,10 +368,7 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
       LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap
     rw [hn]
     simp
-  have hv : d ≠ 0 := by
-    intro hz
-    apply rootDimension_ne_zero C (unitIndex C)
-    exact congrFun hz (unitIndex C)
+  have hv : d ≠ 0 := fun hz ↦ rootDimension_ne_zero C (unitIndex C) (congrFun hz _)
   have h : A *ᵥ d = d i • d := by
     ext j
     change (∑ k, enoTraceMatrix C i j k * rootDimension C k) = rootDimension C i * rootDimension C j

@@ -61,13 +61,9 @@ theorem categoricalS_columns_orthogonal
     ∑ x, starRingEnd ℂ (Sₚ x a) * Sₚ x b = 0 := by
   let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
   let cols (j : Fin (rank C)) : Character rules := categoricalSCharacter C p j
-  have hne : cols a ≠ cols b := by
-    intro h
-    apply hab
-    apply categoricalS_character_injective C p hdet
-    exact congrArg Character.value h
   have ho := character_orthogonal rules (Ground.dualIndex C) (fusionCoeff_dual_adjoint C)
-    (cols a) (cols b) hne
+    (cols a) (cols b) (fun h ↦
+      hab (categoricalS_character_injective C p hdet (congrArg Character.value h)))
   change (∑ x, starRingEnd ℂ (Sₚ x a / dₚ a) * (Sₚ x b / dₚ b)) = 0 at ho
   simp only [map_div₀, hreal, div_mul_div_comm, ← Finset.sum_div] at ho
   exact (div_eq_zero_iff).mp ho |>.resolve_right
@@ -80,13 +76,13 @@ theorem categoricalS_square_off_dual
     (hreal : HasRealSimpleDimensions C p)
     (x y : Fin (rank C)) (hxy : x ≠ Ground.dualIndex C y) :
     ∑ z, Sₚ x z * Sₚ z y = 0 := by
-  have hne : Ground.dualIndex C x ≠ y := fun h ↦ hxy (by
-    simpa only [Ground.dualIndex_involutive C x] using congrArg (Ground.dualIndex C) h)
   have hstar (z : Fin (rank C)) :
       starRingEnd ℂ (Sₚ z (Ground.dualIndex C x)) = Sₚ x z := by
     rw [categoricalS_symmetric C p z, categoricalS_dual_conj C p hreal]
     simp
-  simpa only [hstar] using categoricalS_columns_orthogonal C p hdet hreal hne
+  simpa only [hstar] using categoricalS_columns_orthogonal C p hdet hreal
+    (fun (h : Ground.dualIndex C x = y) ↦ hxy (by
+      simpa only [Ground.dualIndex_involutive C x] using congrArg (Ground.dualIndex C) h))
 
 
 /-- If the square of a matrix is supported on an involution, an invariant
@@ -137,8 +133,7 @@ theorem categoricalS_square (hdet : (Sₚ).det ≠ 0)
       (fun i j hij => categoricalS_square_off_dual C p hdet hreal i j hij) x).trans ?_
     simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
     simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
-  · rw [ite_eq_right hxy]
-    exact categoricalS_square_off_dual C p hdet hreal x y hxy
+  · simpa only [ite_eq_right hxy] using categoricalS_square_off_dual C p hdet hreal x y hxy
 
 end PropertyF.Ground.Modular
 end

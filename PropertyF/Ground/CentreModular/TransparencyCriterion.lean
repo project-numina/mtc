@@ -26,6 +26,14 @@ local notation "dₚ" => simpleDimension C p
 abbrev HasKirbyIdentity (D : ℂ) : Prop :=
   ∀ k, (∑ z, dₚ z * Sₚ k z) = if k = unitIndex C then D else 0
 
+/-- A product of S-matrix entries expands using the fusion coefficients. -/
+theorem categoricalS_product (x y z : Fin (rank C)) :
+    Sₚ x z * Sₚ z y = ∑ k, (fusionCoeff C x y k : ℂ) * (dₚ z * Sₚ k z) := by
+  rw [categoricalS_symmetric C p z y]
+  simpa only [SEntry_tensor_decomposition, Finset.sum_mul, Finset.mul_sum, mul_left_comm, mul_comm,
+    mul_assoc] using
+    (hopf_product_of_partialTrace_composition C p (partialTrace_doubleBraiding_tensor C p) x y z).symm
+
 /-- The vacuum-column Kirby identity propagates to all S-square entries by
 the categorical Verlinde identity and fusion reciprocity. -/
 theorem categoricalS_square_of_kirby
@@ -34,16 +42,7 @@ theorem categoricalS_square_of_kirby
     HasSSquare (Sₚ) (dualIndex C) D := by
   classical
   intro x y
-  have hprod (z : Fin (rank C)) :
-      Sₚ x z * Sₚ z y =
-        ∑ k, (fusionCoeff C x y k : ℂ) *
-          (dₚ z * Sₚ k z) := by
-    rw [categoricalS_symmetric C p z y]
-    have h := categoricalS_verlinde C p x y z
-    simp_rw [← mul_div_assoc, ← Finset.sum_div] at h
-    field_simp [simpleDimension_ne_zero C p z] at h
-    simpa only [Finset.sum_mul, Finset.mul_sum, mul_left_comm, mul_comm, mul_assoc] using h
-  simp_rw [hprod]
+  simp_rw [categoricalS_product C p x y]
   rw [Finset.sum_comm]
   simp_rw [← Finset.mul_sum, hkirby]
   rw [Finset.sum_eq_single_of_mem (unitIndex C) (Finset.mem_univ _)]
@@ -108,15 +107,11 @@ theorem categoricalS_det_ne_zero_of_unit_character_unique
   intro k hk
   let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
   let cols (j : Fin (rank C)) : Character rules := categoricalSCharacter C p j
-  have hne : cols (unitIndex C) ≠ cols k := fun he ↦
-    hunique k hk (congrArg Character.value he).symm
-  have ho := character_orthogonal rules (dualIndex C) (fusionCoeff_dual_adjoint C)
-    (cols (unitIndex C)) (cols k) hne
-  have hstar (z : Fin (rank C)) : starRingEnd ℂ (dₚ z) =
-      dₚ z := by rw [hdim]; simp
   have hzero : (∑ z, dₚ z *
       (Sₚ z k / dₚ k)) = 0 := by
-    simpa [cols, categoricalSCharacter, categoricalS_unit, simpleDimension_unit, hstar] using ho
+    simpa [cols, categoricalSCharacter, categoricalS_unit, simpleDimension_unit, hdim, fpSimple_unit] using
+      character_orthogonal rules (dualIndex C) (fusionCoeff_dual_adjoint C)
+        (cols (unitIndex C)) (cols k) (fun he ↦ hunique k hk (congrArg Character.value he).symm)
   simp_rw [← mul_div_assoc, ← Finset.sum_div] at hzero
   simpa only [categoricalS_symmetric C p k] using
     (div_eq_zero_iff.mp hzero).resolve_right (simpleDimension_ne_zero C p k)
@@ -155,17 +150,13 @@ theorem transparent_of_S_test_and_balancing (k : Fin (rank C))
     (hs : ∀ i, Sₚ i k =
       dₚ i * dₚ k) :
     Transparent (simples C k) := by
-  have hsimple (i : Fin (rank C)) :
-      Modular.doubleBraiding (simples C i) (simples C k) = 𝟙 _ := by
-    apply CentreCabling.doubleBraiding_eq_one_of_sTest_of_finite_order hdim
-    · exact mixed_monodromy_finite_of_pivotal_balancing C p hbalance _ _
-    · exact hs i
   intro X
   have hx : Modular.doubleBraiding X (simples C k) = 𝟙 _ := by
     apply CentreCabling.doubleBraiding_eq_one_of_simple_constituents C (fun _ => True)
       (fun _ _ => trivial) trivial
     intro i _
-    exact hsimple i
+    exact CentreCabling.doubleBraiding_eq_one_of_sTest_of_finite_order hdim
+      (mixed_monodromy_finite_of_pivotal_balancing C p hbalance _ _) (hs i)
   change Modular.doubleBraiding (simples C k) X = 𝟙 _
   simpa [Modular.doubleBraiding, Category.assoc] using
     congrArg (fun f => (β_ X (simples C k)).inv ≫ f ≫ (β_ X (simples C k)).hom) hx

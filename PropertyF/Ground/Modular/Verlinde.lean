@@ -72,10 +72,8 @@ theorem galois_unit_column_square
 with no modular-data hypothesis bundle. -/
 theorem galois_unit_properties (hu : d u = 1)
     (hglobal : D = ∑ x, d x ^ 2) (hsym : ∀ x y, S x y = S y x)
-    (hunit : ∀ x, S x u = d x)
-    (hsq : HasSSquare S dual D)
-    (σ : ℂ ≃+* ℂ) (y : ι)
-    (hchar : ∀ x, σ (S x u / d u) = S x y / d y) :
+    (hunit : ∀ x, S x u = d x) (hsq : HasSSquare S dual D)
+    (σ : ℂ ≃+* ℂ) (y : ι) (hchar : ∀ x, σ (S x u / d u) = S x y / d y) :
     (∀ x, S x y = d y * σ (d x)) ∧ y = dual y ∧ σ D = D / d y ^ 2 := by
   have hcol (x : ι) : S x y = d y * σ (d x) :=
     ((div_eq_iff (hd y)).mp (by simpa only [hunit, hu, div_one] using (hchar x).symm)).trans
@@ -144,10 +142,8 @@ theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCatego
     HasHopfProduct D p := by
   intro i j k
   let _ : Simple (simples D k) := simples_simple D k
-  have h := hcomp i j k
-  rw [partialTrace_doubleBraiding_simple, partialTrace_doubleBraiding_simple,
-    partialTrace_doubleBraiding_simple, smul_mul_smul, one_mul] at h
-  have hv := smul_left_injective ℂ (one_ne_zero : (1 : End (simples D k)) ≠ 0) h
+  have hv := smul_left_injective ℂ (one_ne_zero : (1 : End (simples D k)) ≠ 0) (by
+    simpa only [partialTrace_doubleBraiding_simple, smul_mul_smul, one_mul] using hcomp i j k)
   field_simp [simpleDimension_ne_zero D p k] at hv
   simpa only [SEntry_symmetric p (simples D k) (simples D i ⊗ simples D j),
     SEntry_symmetric p (simples D k) (simples D i),
@@ -241,6 +237,25 @@ theorem rightPartialTrace_nested_simple (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ)
 
 end Trace
 
+section MonodromyTrace
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+  [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+
+/-- Partial tracing a tensor-product monodromy leaves a conjugated partial monodromy. -/
+theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X Y : C) :
+    rightPartialTrace p (Z ⊗ X) Y
+      (End.of ((α_ Z X Y).hom ≫ doubleBraiding Z (X ⊗ Y) ≫ (α_ Z X Y).inv)) =
+    End.of ((β_ Z X).hom ≫ (X ◁ (partialMonodromy p Z Y).asHom) ≫ (β_ X Z).hom) := by
+  let t : End ((X ⊗ Z) ⊗ Y) := End.of ((α_ X Z Y).hom ≫
+    (X ◁ doubleBraiding Z Y) ≫ (α_ X Z Y).inv)
+  have hfactor : End.of ((α_ Z X Y).hom ≫ doubleBraiding Z (X ⊗ Y) ≫ (α_ Z X Y).inv) =
+      End.of (((β_ Z X).hom ▷ Y) ≫ t.asHom ≫ ((β_ X Z).hom ▷ Y)) := by
+    apply End.ext
+    simpa [t, Category.assoc] using doubleBraiding_tensor_factorization Z X Y
+  rw [hfactor, rightPartialTrace_natural, Calculus.rightPartialTrace_whiskerLeft]
+
+end MonodromyTrace
+
 /-- Double-braiding partial traces multiply on a simple surviving strand. -/
 theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) : HasMultiplicativePartialTrace D p := by
@@ -252,20 +267,17 @@ theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,
   let _ : FiniteDimensional ℂ (Z ⟶ Z) := Ground.IsFusionCategory.hom_finite _ _
   let s : ℂ := Ground.unitScalarEquiv D (SEntry p Z Y) / simpleDimension D p k
   let f : End (Z ⊗ (X ⊗ Y)) := End.of (doubleBraiding Z (X ⊗ Y))
-  let t : End ((X ⊗ Z) ⊗ Y) := End.of ((α_ X Z Y).hom ≫
-    (X ◁ doubleBraiding Z Y) ≫ (α_ X Z Y).inv)
-  have hs : rightPartialTrace p Z Y (End.of (doubleBraiding Z Y)) = s • 1 :=
+  have hs : partialMonodromy p Z Y = s • 1 :=
     partialTrace_doubleBraiding_simple D p k Y
   change rightPartialTrace p Z (X ⊗ Y) f =
     rightPartialTrace p Z X (End.of (doubleBraiding Z X)) *
       rightPartialTrace p Z Y (End.of (doubleBraiding Z Y))
   rw [rightPartialTrace_nested_simple p (Ground.unitScalarEquiv D) Z X Y
     (simpleDimension_ne_zero D p k) f]
-  have hfactor : End.of ((α_ Z X Y).hom ≫ f.asHom ≫ (α_ Z X Y).inv) =
-      End.of (((β_ Z X).hom ▷ Y) ≫ t.asHom ≫ ((β_ X Z).hom ▷ Y)) := by
-    apply End.ext
-    simpa [f, t, Category.assoc] using doubleBraiding_tensor_factorization Z X Y
-  rw [hfactor, rightPartialTrace_natural, Calculus.rightPartialTrace_whiskerLeft, hs]
+  rw [partialTrace_doubleBraiding_factor]
+  change rightPartialTrace p Z Y (End.of (doubleBraiding Z Y)) = s • 1 at hs
+  dsimp only [partialMonodromy]
+  rw [hs]
   have he : End.of ((β_ Z X).hom ≫ (X ◁ (s • (1 : End Z)).asHom) ≫ (β_ X Z).hom) =
       s • End.of (doubleBraiding Z X) := by
     apply End.ext
