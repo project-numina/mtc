@@ -55,8 +55,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unitTensorIso_natural [HasRightDual A] (e : A ≅ 𝟙_ D) (f : M ⟶ N) :
     ((A ◁ f) ▷ Aᘁ) ≫ (unitTensorIso e N).hom = (unitTensorIso e M).hom ≫ f := by
   dsimp [unitTensorIso, hasRightDualUnit]
-  rw [Category.assoc, ← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc]
-  simp only [id_tensorHom, tensorHom_id]
+  rw [Category.assoc, ← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc,
+    id_tensorHom, tensorHom_id]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
