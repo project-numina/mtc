@@ -27,9 +27,13 @@ variable (X Y : C) [ExactPairing X Y]
 def weakInverse : Y ⊗ A ⟶ A ⊗ Y :=
   𝟙 _ ⊗≫ (Y ⊗ A) ◁ η_ X Y ⊗≫ (Y ◁ b X) ▷ Y ⊗≫ (ε_ X Y ▷ A) ▷ Y ⊗≫ 𝟙 _
 
-include hn ht hu in
-/-- The bent crossing is a right inverse. -/
-theorem weak_left : b Y ≫ weakInverse b X Y = 𝟙 (A ⊗ Y) := by
+include hu in
+/-- The bent crossing is a right inverse when it is natural at evaluation. -/
+theorem weak_left
+    (hε : (A ◁ ε_ X Y) ≫ b (𝟙_ C) = b (Y ⊗ X) ≫ (ε_ X Y ▷ A))
+    (hYX : b (Y ⊗ X) = (α_ _ _ _).inv ≫ (b Y ▷ X) ≫
+      (α_ _ _ _).hom ≫ (Y ◁ b X) ≫ (α_ _ _ _).inv) :
+    b Y ≫ weakInverse b X Y = 𝟙 (A ⊗ Y) := by
   calc
     _ = 𝟙 _ ⊗≫ ((b Y ▷ (𝟙_ C)) ≫ ((Y ⊗ A) ◁ η_ X Y)) ⊗≫
       (Y ◁ b X) ▷ Y ⊗≫ (ε_ X Y ▷ A) ▷ Y ⊗≫ 𝟙 _ := by
@@ -37,15 +41,19 @@ theorem weak_left : b Y ≫ weakInverse b X Y = 𝟙 (A ⊗ Y) := by
     _ = 𝟙 _ ⊗≫ (((A ⊗ Y) ◁ η_ X Y) ≫ (b Y ▷ (X ⊗ Y))) ⊗≫
       (Y ◁ b X) ▷ Y ⊗≫ (ε_ X Y ▷ A) ▷ Y ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y)) ⊗≫
-      ((b (Y ⊗ X) ≫ ε_ X Y ▷ A) ▷ Y) ⊗≫ 𝟙 _ := by rw [ht Y X]; monoidal
+      ((b (Y ⊗ X) ≫ ε_ X Y ▷ A) ▷ Y) ⊗≫ 𝟙 _ := by rw [hYX]; monoidal
     _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y)) ⊗≫ 𝟙 _ := by
-      rw [← hn (ε_ X Y), hu]
+      rw [← hε, hu]
       monoidal
     _ = _ := by rw [coevaluation_evaluation'']; monoidal
 
-include hn ht hu in
-/-- The bent crossing is a left inverse. -/
-theorem weak_right : weakInverse b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
+include hu in
+/-- The bent crossing is a left inverse when it is natural at coevaluation. -/
+theorem weak_right
+    (hη : (A ◁ η_ X Y) ≫ b (X ⊗ Y) = b (𝟙_ C) ≫ (η_ X Y ▷ A))
+    (hXY : b (X ⊗ Y) = (α_ _ _ _).inv ≫ (b X ▷ Y) ≫
+      (α_ _ _ _).hom ≫ (X ◁ b Y) ≫ (α_ _ _ _).inv) :
+    weakInverse b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
   calc
     _ = 𝟙 _ ⊗≫ (Y ⊗ A) ◁ η_ X Y ⊗≫ (Y ◁ b X) ▷ Y ⊗≫
       ((ε_ X Y ▷ (A ⊗ Y)) ≫ ((𝟙_ C) ◁ b Y)) ⊗≫ 𝟙 _ := by
@@ -54,9 +62,9 @@ theorem weak_right : weakInverse b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
       (((Y ⊗ X) ◁ b Y) ≫ (ε_ X Y ▷ (Y ⊗ A))) ⊗≫ 𝟙 _ := by
       rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (Y ◁ ((A ◁ η_ X Y) ≫ b (X ⊗ Y))) ⊗≫
-      (ε_ X Y ▷ (Y ⊗ A)) ⊗≫ 𝟙 _ := by rw [ht X Y]; monoidal
+      (ε_ X Y ▷ (Y ⊗ A)) ⊗≫ 𝟙 _ := by rw [hXY]; monoidal
     _ = 𝟙 _ ⊗≫ ((Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y) ▷ A) ⊗≫ 𝟙 _ := by
-      rw [hn (η_ X Y), hu]
+      rw [hη, hu]
       monoidal
     _ = _ := by rw [coevaluation_evaluation'']; monoidal
 
@@ -64,7 +72,8 @@ include hn ht hu in
 /-- Tensor compatibility, naturality, and unit normalization imply that the
 crossing is invertible on every object admitting a left dual. -/
 theorem weak_isIso (X : C) [ExactPairing X Y] : IsIso (b Y) :=
-  ⟨⟨weakInverse b X Y, weak_left b hn ht hu X Y, weak_right b hn ht hu X Y⟩⟩
+  ⟨⟨weakInverse b X Y, weak_left b hu X Y (hn (ε_ X Y)) (ht Y X),
+    weak_right b hu X Y (hn (η_ X Y)) (ht X Y)⟩⟩
 
 end PropertyF.Ground.CentreInduction
 end
@@ -101,23 +110,22 @@ theorem crossingComposite_summand :
       nestedCrossingBlock C X T U i k j a b ≫ ((T ⊗ U) ◁ biproduct.ι Vᶜ j) := by
   dsimp only [nestedCrossingBlock]
   let V := inductionSummand C X
-  let bT : (⨁ V) ⊗ T ⟶ T ⊗ (⨁ V) := βᶜ T
-  let bU : (⨁ V) ⊗ U ⟶ U ⊗ (⨁ V) := βᶜ U
+  let b (A : C.Obj) : (⨁ V) ⊗ A ⟶ A ⊗ (⨁ V) := βᶜ A
   calc
-    _ = 𝟙 _ ⊗≫ (((biproduct.ι V i ▷ T) ≫ bT) ▷ U) ⊗≫
-      (T ◁ bU) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
+    _ = 𝟙 _ ⊗≫ (((biproduct.ι V i ▷ T) ≫ b T) ▷ U) ⊗≫
+      (T ◁ b U) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
       dsimp only [crossingTensorComposite]
       monoidal
     _ = ∑ k, ∑ a : crossingIndex C T i k,
       𝟙 _ ⊗≫ (crossingBlock X T (Sᶜ k)
           (crossingInclusion C T i k a) (crossingProjection C T i k a) ▷ U) ⊗≫
-        (T ◁ ((biproduct.ι V k ▷ U) ≫ bU)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
-      dsimp only [bT]
+        (T ◁ ((biproduct.ι V k ▷ U) ≫ b U)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
+      dsimp only [b]
       rw [crossingCandidate_on_summand]
       simp [monoidalComp, sum_whiskerRight, Preadditive.sum_comp, Preadditive.comp_sum,
         crossingSummand, V]
     _ = _ := by
-      dsimp only [bU, V, underlying]
+      dsimp only [b, V, underlying]
       simp_rw [crossingCandidate_on_summand]
       simp [whiskerLeft_sum, monoidalComp, Preadditive.comp_sum, Preadditive.sum_comp,
         crossingBlock_tensor, crossingSummand, V]
