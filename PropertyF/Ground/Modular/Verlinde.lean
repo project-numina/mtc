@@ -204,8 +204,10 @@ end Braiding
 section Trace
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable (p : PivotalStructure (C := C))
+
 /-- Partial trace is natural for morphisms on the surviving strand. -/
-theorem rightPartialTrace_natural (p : PivotalStructure (C := C)) {A B : C} (Y : C)
+theorem rightPartialTrace_natural {A B : C} (Y : C)
     (f : A ⟶ B) (g : B ⟶ A) (t : End (B ⊗ Y)) :
     rightPartialTrace p A Y (End.of ((f ▷ Y) ≫ t.asHom ≫ (g ▷ Y))) =
       End.of (f ≫ (rightPartialTrace p B Y t).asHom ≫ g) := by
@@ -217,15 +219,10 @@ theorem rightPartialTrace_natural (p : PivotalStructure (C := C)) {A B : C} (Y :
   rw [associator_naturality_left_assoc, ← whisker_exchange_assoc,
     ← whisker_exchange_assoc, rightUnitor_naturality]
 
-end Trace
-section Nested
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
-  [CategoryTheory.Limits.HasKernels C]
+variable [CategoryTheory.Limits.HasKernels C]
 /-- When the surviving object is simple with nonzero dimension, successive
 partial traces agree with tracing the combined tensor factor. -/
-theorem rightPartialTrace_nested_simple (p : PivotalStructure (C := C))
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (Z X Y : C)
+theorem rightPartialTrace_nested_simple (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (Z X Y : C)
     [Simple Z] [FiniteDimensional ℂ (Z ⟶ Z)]
     (hd : scalar (p.rightTrace (𝟙 Z)) ≠ 0) (f : End (Z ⊗ (X ⊗ Y))) :
     rightPartialTrace p Z (X ⊗ Y) f =
@@ -242,7 +239,7 @@ theorem rightPartialTrace_nested_simple (p : PivotalStructure (C := C))
   simp only [Calculus.scalarTrace, rightTrace_partialTrace p g, hc]
 
 
-end Nested
+end Trace
 
 /-- Double-braiding partial traces multiply on a simple surviving strand. -/
 theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,u})

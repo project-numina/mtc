@@ -146,11 +146,8 @@ private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]
     obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift' hk t hz
     change S ⟶ P at g
     change g ≫ p = t at hg
-    have ht : t ≠ 0 := fun h => id_nonzero S ((cancel_mono t).1 (by simp [h]))
-    have hg0 : g ≠ 0 := by
-      intro h
-      apply ht
-      simpa [h] using hg.symm
+    have hg0 : g ≠ 0 := fun h =>
+      id_nonzero S ((cancel_mono t).1 (by simpa [h] using hg.symm))
     let : IsIso g := isIso_of_hom_simple hg0
     exact Or.inl ⟨asIso g⟩
   · exact Or.inr (mono_of_nonzero_from_simple hz)
