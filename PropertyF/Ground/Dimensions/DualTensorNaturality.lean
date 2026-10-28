@@ -123,6 +123,13 @@ def fourthDualIso (X : C) :
     X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ) :=
   drinfeldIso X ≪≫ (rightDualIsoMap (drinfeldIso (Xᘁ))).symm
 
+/-- The fourth-dual isomorphism is compatible with tensoring two objects. -/
+abbrev fourthDualTensorLaw (X Y : C) : Prop :=
+  (fourthDualIso (X ⊗ Y)).hom =
+    ((fourthDualIso X).hom ⊗ₘ (fourthDualIso Y).hom) ≫
+      (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
+        (((doubleDualTensorIso X Y).homᘁ)ᘁ)
+
 /-- The braided fourth-dual isomorphism is natural. Monoidality is a separate obligation. -/
 theorem fourthDualIso_natural {X Y : C} (f : X ⟶ Y) :
     f ≫ (fourthDualIso Y).hom = (fourthDualIso X).hom ≫ ((((fᘁ)ᘁ)ᘁ)ᘁ) := by
