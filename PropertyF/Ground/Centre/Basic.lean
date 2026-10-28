@@ -287,10 +287,8 @@ def centerZero : CategoryTheory.Center C :=
 
 omit [HasZeroObject C] in
 /-- The forgetful functor detects zero objects. -/
-theorem isZero_of_forget (Z : CategoryTheory.Center C) (h : IsZero Z.1) : IsZero Z := by
-  apply (IsZero.iff_id_eq_zero _).mpr
-  apply CategoryTheory.Center.ext
-  exact h.eq_of_src _ _
+theorem isZero_of_forget (Z : CategoryTheory.Center C) (h : IsZero Z.1) : IsZero Z :=
+  (IsZero.iff_id_eq_zero _).mpr (CategoryTheory.Center.ext _ _ (h.eq_of_src _ _))
 
 /-- The constructed centre object over zero is a zero object. -/
 theorem centerZero_isZero : IsZero (centerZero (C := C)) :=

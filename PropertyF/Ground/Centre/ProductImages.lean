@@ -115,24 +115,14 @@ theorem projections_jointly_injective (X Y : C) (n : ℕ) :
     Function.Injective (fun a : Aut (tensorPower (X,Y) (n+2)) =>
       (fstBraidMap X Y n a, sndBraidMap X Y n a)) := by
   intro a b h
-  have hf := congrArg Prod.fst h
-  have hs := congrArg Prod.snd h
   let p := Modular.tensorPowerComparison (CategoryTheory.Prod.fst C C) (X,Y) (n+2)
   let q := @Modular.tensorPowerComparison (C × C) _ _ (mixedBraiding (C := C)) C _ _
     (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) (n+2)
-  have hf' : (Functor.mapAut (tensorPower (X,Y) (n+2)) (CategoryTheory.Prod.fst C C)) a =
-      (Functor.mapAut (tensorPower (X,Y) (n+2)) (CategoryTheory.Prod.fst C C)) b := by
-    apply p.symm.conjAut.injective
-    exact hf
-  have hs' : (Functor.mapAut (tensorPower (X,Y) (n+2)) (CategoryTheory.Prod.snd C C)) a =
-      (Functor.mapAut (tensorPower (X,Y) (n+2)) (CategoryTheory.Prod.snd C C)) b := by
-    apply q.symm.conjAut.injective
-    exact hs
   apply Aut.ext
   apply Iso.ext
   apply Prod.ext
-  · exact congrArg (fun z => z.asIso.hom) hf'
-  · exact congrArg (fun z => z.asIso.hom) hs'
+  · exact congrArg (fun z => z.asIso.hom) (p.symm.conjAut.injective (congrArg Prod.fst h))
+  · exact congrArg (fun z => z.asIso.hom) (q.symm.conjAut.injective (congrArg Prod.snd h))
 
 /-- The projected first component of a product braid lies in the first image. -/
 theorem fstBraidMap_mem (X Y : C) (n : ℕ) :
