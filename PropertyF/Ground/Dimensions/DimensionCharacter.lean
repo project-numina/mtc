@@ -126,19 +126,18 @@ simple representatives to verify sphericality on all endomorphisms. -/
 theorem isSpherical_iff_simple_dimensions
     (p : PivotalStructure (C := C.Obj)) :
     p.IsSpherical ↔ ∀ i : Fin (rank C),
-      p.leftTrace (𝟙 (simples C i)) = p.rightTrace (𝟙 (simples C i)) := by
-  refine ⟨fun h i ↦ h _ _, ?_⟩
-  intro hs X f
-  let V : (Σ i, Fin (simpleMultiplicity C i X)) → C.Obj := fun a ↦ simples C a.1
-  let e : X ≅ ⨁ V := Classical.choice (exists_canonical_decomposition C X)
-  let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
-  obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple (k := ℂ)
-    (fun (a : Σ i, Fin (simpleMultiplicity C i X)) ↦ simples_simple C a.1)
-    (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
-  simp only [show p.leftTrace f = p.leftTrace g from by
-        simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f)),
-    show p.rightTrace f = p.rightTrace g from by
-      simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f)),
-    htrace, leftTrace_biproduct_scalar_blocks p g hc, V, hs]
+      p.leftTrace (𝟙 (simples C i)) = p.rightTrace (𝟙 (simples C i)) :=
+  ⟨fun h i ↦ h _ _, fun hs X f ↦ by
+    let V : (Σ i, Fin (simpleMultiplicity C i X)) → C.Obj := fun a ↦ simples C a.1
+    let e : X ≅ ⨁ V := Classical.choice (exists_canonical_decomposition C X)
+    let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
+    obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple (k := ℂ)
+      (fun (a : Σ i, Fin (simpleMultiplicity C i X)) ↦ simples_simple C a.1)
+      (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
+    simp only [show p.leftTrace f = p.leftTrace g from by
+          simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f)),
+      show p.rightTrace f = p.rightTrace g from by
+        simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f)),
+      htrace, leftTrace_biproduct_scalar_blocks p g hc, V, hs]⟩
 
 end PropertyF.Ground.Dimensions
