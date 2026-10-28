@@ -272,7 +272,7 @@ theorem overlap_trace_power (C : Ground.BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {t : ℕ} (u : braidAlgebra X t) :
     ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+      (pivotalDimension C p X) ^ k =
         actualBraidTrace C X p t u ^ (k + 1) :=
   overlap_trace_power_of_isos C p u (freshOverlapIso_eq_overlapPowerIso X t)
 

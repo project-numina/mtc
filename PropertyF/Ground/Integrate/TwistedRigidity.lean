@@ -255,7 +255,9 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
     change σ (Modular.categoricalS Z p y y) = _
     exact hS
   apply actual_rigidity_of_overlap_and_galois_dimensions D X q original transformed σ
-    hpos htrans hqdim d (fpSimple Z y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
+    hpos htrans hqdim d (fpSimple Z y) hd (fpSimple_pos Z y)
+    (by simpa only [Dimensions.pivotalDimension, ← Dimensions.groundUnitScalarEquiv_apply] using hXdim)
+    hXfp hXS hF
   intro u k
   exact Calculus.overlap_trace_power D q u k
 

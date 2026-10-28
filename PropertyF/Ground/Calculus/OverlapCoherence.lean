@@ -239,7 +239,7 @@ theorem overlap_trace_step_of_coherence (D : Ground.BraidedFusionCategory.{v,u})
       overlapEndProduct (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
         (previousOverlapLocal X t k u) (u : End (tensorPower X (t + 2)))) :
     actualBraidTrace D X p (overlapIndex t (k + 1)) (overlapProduct X t u (k + 1)) *
-        groundUnitScalarEquiv D (p.rightTrace (𝟙 X)) =
+        pivotalDimension D p X =
       actualBraidTrace D X p (overlapIndex t k) (overlapProduct X t u k) *
         actualBraidTrace D X p t u := by
   have hh := congrArg
@@ -250,6 +250,7 @@ theorem overlap_trace_step_of_coherence (D : Ground.BraidedFusionCategory.{v,u})
   have hδ := Modular.unitScalar_rightTrace_ne_zero D p X
   change actualBraidTrace D X p _ _ = actualBraidTrace D X p _ _ *
     (actualBraidTrace D X p t u / _) at hh
+  simp only [pivotalDimension, ← groundUnitScalarEquiv_apply]
   rw [hh]
   field_simp
 
@@ -262,7 +263,7 @@ theorem overlap_trace_power_of_isos (C : Ground.BraidedFusionCategory.{v,u})
       (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
         overlapPowerIso X t k) :
     ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+      (pivotalDimension C p X) ^ k =
         actualBraidTrace C X p t u ^ (k + 1) :=
   overlap_trace_power_of_step C p u fun k ↦
     overlap_trace_step_of_coherence C p k u (overlapProduct_local_of_iso k u (hiso k))

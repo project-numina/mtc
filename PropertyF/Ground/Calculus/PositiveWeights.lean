@@ -58,14 +58,14 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (hqdim : ∀ i, groundUnitScalarEquiv C
       (p.rightTrace (𝟙 (Ground.simples C i))) = (qdim i : ℂ))
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
-    (hdim : groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
+    (hdim : pivotalDimension C p X = (d : ℂ))
     (hfp : Ground.fpDimension C X = f)
     (hS : groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
     (hrec : ∀ (u : braidAlgebra X 1) k,
       actualBraidTrace C X p (overlapIndex 1 k) (overlapProduct X 1 u k) *
-        (groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+        (pivotalDimension C p X) ^ k =
           actualBraidTrace C X p 1 u ^ (k + 1)) : f = |d| := by
   classical
   choose r size b w hsize he hw htrace using fun n =>

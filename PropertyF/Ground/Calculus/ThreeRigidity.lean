@@ -60,9 +60,10 @@ theorem actual_three_braid_trace (C : Ground.BraidedFusionCategory.{v,u})
     actualBraidTrace C X p 1 (groupInImage (braidEndRepresentation X 1)
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) =
       groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) ^ 2 /
-        groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) := by
+        pivotalDimension C p X := by
   simpa [actualBraidTrace, groupInImage_val, braidEndRepresentation,
-    threeGeneratorLeft, threeGeneratorRight, imageGenerator] using
+    threeGeneratorLeft, threeGeneratorRight, imageGenerator, pivotalDimension,
+    ← groundUnitScalarEquiv_apply] using
     (three_braid_trace C X p (groundUnitScalarEquiv C))
 
 /-- The modular self-entry identity makes the actual three-strand trace attain
@@ -70,7 +71,7 @@ the value used in the saturation argument. -/
 theorem actual_three_braid_saturates (C : Ground.BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {d f : ℝ} (hd : d ≠ 0)
-    (hdim : groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
+    (hdim : pivotalDimension C p X = (d : ℂ))
     (hS : groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * f) :
     actualBraidTrace C X p 1 (groupInImage (braidEndRepresentation X 1)
@@ -173,10 +174,11 @@ theorem pair_operator_scalar_of_overlaps_equal
     (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} [Simple X]
     (p : PivotalStructure (C := C.Obj)) (u : End (X ⊗ X))
     {d f : ℝ} (hd : d ≠ 0)
-    (hdim : groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
+    (hdim : pivotalDimension C p X = (d : ℂ))
     (htrace : groundUnitScalarEquiv C (p.rightTrace u.asHom) = (d : ℂ) * f)
     (heq : insertRightIdentity (X ⊗ X) X u = overlapFresh X X X u) :
     u = (f / d : ℂ) • (1 : End (X ⊗ X)) := by
+  simp only [pivotalDimension, ← groundUnitScalarEquiv_apply] at hdim
   have h := congrArg (rightPartialTrace p (X ⊗ X) X) heq
   rw [rightPartialTrace_insert p (groundUnitScalarEquiv C),
     overlapFresh, rightPartialTrace_whiskerLeft,
@@ -225,9 +227,10 @@ theorem dimension_eq_abs_of_scalar_monodromy
     (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj}
     (p : PivotalStructure (C := C.Obj))
     {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
-    (hdim : groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
+    (hdim : pivotalDimension C p X = (d : ℂ))
     (hfinite : ObjectPropertyF X)
     (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| := by
+  simp only [pivotalDimension, ← groundUnitScalarEquiv_apply] at hdim
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
   have hdim2 : groundUnitScalarEquiv C (p.rightTrace (𝟙 (X ⊗ X))) = (d : ℂ) ^ 2 := by
     have h := Dimensions.pivotalDimension_tensor C p X X
@@ -259,7 +262,7 @@ theorem actual_three_strand_rigidity_of_trace_bound
     (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
     {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0)
     {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
-    (hdim : groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
+    (hdim : pivotalDimension C p X = (d : ℂ))
     (hS : groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
