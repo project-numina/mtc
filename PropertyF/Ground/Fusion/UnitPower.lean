@@ -14,10 +14,10 @@ namespace PropertyF.Ground
 
 /-- In a finite balanced flow, a set with no outgoing edges also has no
 incoming edges. -/
-theorem balanced_flow_no_entry {ι : Type*} [Fintype ι] (b : ι → ι → ℝ)
+theorem balanced_flow_no_entry {ι : Type*} [Fintype ι] {b : ι → ι → ℝ}
     (hb : ∀ i j, 0 ≤ b i j)
     (hbalance : ∀ i, (∑ j, b i j) = ∑ j, b j i)
-    (s : Finset ι) (hclosed : ∀ i ∈ s, ∀ j ∉ s, b i j = 0)
+    {s : Finset ι} (hclosed : ∀ i ∈ s, ∀ j ∉ s, b i j = 0)
     {i j : ι} (hi : i ∉ s) (hj : j ∈ s) : b i j = 0 := by
   classical
   have hout : ∑ x ∈ s, ∑ y, b x y = ∑ x ∈ s, ∑ y ∈ s, b x y := by
@@ -44,7 +44,7 @@ theorem balanced_flow_no_entry {ι : Type*} [Fintype ι] (b : ι → ι → ℝ)
 
 /-- Every vertex with an outgoing edge in a finite balanced nonnegative flow
 lies on a directed cycle. -/
-theorem balanced_flow_cycle {ι : Type*} [Fintype ι] (b : ι → ι → ℝ)
+theorem balanced_flow_cycle {ι : Type*} [Fintype ι] {b : ι → ι → ℝ}
     (hb : ∀ i j, 0 ≤ b i j)
     (hbalance : ∀ i, (∑ j, b i j) = ∑ j, b j i)
     {o : ι} (hout : ∃ j, 0 < b o j) :
@@ -63,7 +63,7 @@ theorem balanced_flow_cycle {ι : Type*} [Fintype ι] (b : ι → ι → ℝ)
   have ho : o ∉ s := by simp [s, Relation.ReflTransGen.refl]
   have hjs : j ∉ s := by
     intro hjs
-    exact (ne_of_gt hj) (balanced_flow_no_entry b hb hbalance s hc ho hjs)
+    exact (ne_of_gt hj) (balanced_flow_no_entry hb hbalance hc ho hjs)
   refine ⟨j, hj, ?_⟩
   simpa [s] using hjs
 
@@ -149,7 +149,7 @@ theorem unit_retract_tensorPower (D : BraidedFusionCategory.{v,u})
     unfold fusionFlow
     rw [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, ite_eq_left rfl, Nat.cast_one]
     simpa [fpSimple_unit] using fpSimple_pos D i
-  obtain ⟨j, hj, hp⟩ := balanced_flow_cycle (fusionFlow D i) (fusionFlow_nonneg D i)
+  obtain ⟨j, hj, hp⟩ := balanced_flow_cycle (fusionFlow_nonneg D i)
     (fusionFlow_balance D i) ⟨i, hout⟩
   have hji : j = i := by
     unfold fusionFlow at hj

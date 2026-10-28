@@ -243,7 +243,7 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhasePivotal_dimension
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
+    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
     (hdef : ScaledMultiplicityDefectsTrivial C c)
     (hunit : RootSignUnitLaw C c hc) (i : Fin (rank C)) :
     pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
