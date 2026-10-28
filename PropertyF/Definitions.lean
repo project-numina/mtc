@@ -11,6 +11,12 @@ public import Mathlib.LinearAlgebra.Dimension.Finrank
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.CategoryTheory.Retract
 
+/-!
+# Braid images and generated objects
+
+Tensor powers, categorical braid generators, property F, quantum traces and generated objects.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators

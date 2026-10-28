@@ -38,10 +38,8 @@ theorem braid_squares_equal_of_saturation (B : PropertyF.Blocks)
     apply le_antisymm (B.norm_trace_le w hunit)
     rw [htrace]
     simpa [norm_pow, abs_of_pos hf] using hmass
-  have hc := B.central_of_saturation w hw hunit hsaturate
-  apply PropertyF.squares_eq_of_central_product a b hbraid
-  apply Units.ext
-  exact hc b
+  exact PropertyF.squares_eq_of_central_product a b hbraid
+    (Units.ext (B.central_of_saturation w hw hunit hsaturate b))
 
 end PropertyF.Ground.Calculus
 
@@ -109,7 +107,7 @@ theorem actual_braid_squares_equal_of_saturation
   have hc : B.IsUnitary (c : B.Algebra) := he _
   have hbraid : a * c * a = c * a * c := by
     apply Units.ext
-    exact three_braid_relation_map X ρ
+    exact three_braid_relation_map ρ
   have hbnd : ∀ z : B.Algebra, B.IsUnitary z → ‖B.trace w z‖ ≤ |d| * f ^ 2 := by
     intro z hz
     change ∀ i, z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ at hz
@@ -187,7 +185,7 @@ theorem pair_operator_scalar_of_overlaps_equal
   have h := congrArg (rightPartialTrace p (X ⊗ X) X) heq
   rw [rightPartialTrace_insert p (Dimensions.groundUnitScalarEquiv C),
     overlapFresh, rightPartialTrace_whiskerLeft,
-    rightPartialTrace_simple_ground C X X p (Dimensions.groundUnitScalarEquiv C)] at h
+    rightPartialTrace_simple_ground C (X := X) (Y := X) p (Dimensions.groundUnitScalarEquiv C)] at h
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
   simp only [hdim, htrace] at h
   have h' : (d : ℂ) • u = (f : ℂ) • (1 : End (X ⊗ X)) := by
@@ -212,7 +210,7 @@ self-braiding on the ordinary tensor product. -/
 theorem selfMonodromy_finite_order (C : Ground.BraidedFusionCategory.{v,u})
     (X : C.Obj) (hfinite : ObjectPropertyF X) :
     ∃ n : ℕ, n ≠ 0 ∧ selfMonodromy X ^ n = 1 := by
-  obtain ⟨n, hn, hpow⟩ := braid_square_finite_order X hfinite
+  obtain ⟨n, hn, hpow⟩ := braid_square_finite_order hfinite
   have hgen : (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd (braidGenerator X 0 0)) =
       End.of ((β_ X X).hom) := by
     apply End.ext

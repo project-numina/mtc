@@ -6,10 +6,11 @@ public import Mathlib.GroupTheory.Perm.Basic
 public import Mathlib.CategoryTheory.Conj
 public import Mathlib.Algebra.Group.Subgroup.Map
 
-/-! The permutation of a braid word and its finite-index pure image.
-The free group represents words in adjacent crossings. Its permutation kernel
-is the inverse image of the usual pure braid group; this construction does not
-require imposing the braid relations to establish finite index. -/
+/-!
+# Braid words and naturality
+
+The categorical action of braid words is natural in the underlying object.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory

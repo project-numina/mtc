@@ -2,6 +2,12 @@ module
 public import Mathlib.Analysis.SpecificLimits.Basic
 public import Mathlib.Tactic
 
+/-!
+# Bounds from overlapping powers
+
+Power estimates convert a scaled overlap recurrence into a sharp norm bound.
+-/
+
 @[expose] public section
 namespace PropertyF
 
