@@ -18,15 +18,6 @@ variable {V W : C.Obj} {E : Type*} [AddCommGroup E] [Module ℂ E]
 attribute [local instance] Abelian.hasFiniteBiproducts
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
-/-- The perfect pairing is natural for maps between different underlying
-objects: precomposition corresponds to dualizing postcomposition. -/
-theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) (q : V ⟶ W)
-    (f : W ⟶ simples C i) : simpleHomPairingEquiv (simples C i) V (q ≫ f) =
-    Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv (simples C i) W f) :=
-  letI : Simple (simples C i) := simples_simple C i
-  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  simpleHomPairing_natural f q
-
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/
 theorem dualBasis_contraction_natural {k : Type*} [CommSemiring k] {I J : Type} [Fintype I] [Fintype J] [DecidableEq I] [DecidableEq J]
@@ -62,6 +53,10 @@ theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
     (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
+  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  have hn (f : W ⟶ simples C i) : simpleHomPairingEquiv (simples C i) V (q ≫ f) =
+      Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q)
+        (simpleHomPairingEquiv (simples C i) W f) := simpleHomPairing_natural f q
   let A := simpleInclusionBasis C V i
   let B := simpleInclusionBasis C W i
   let P := simpleHomPairingEquiv (simples C i) V
@@ -70,7 +65,7 @@ theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
     (LinearMap.lcomp ℂ E P.symm.toLinearMap).comp F
   simpa only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply,
     LinearEquiv.coe_coe, A, B, P, simpleInclusionBasis_apply,
-    ← pairing_simpleProjection, ← simpleHomPairingEquiv_natural, LinearEquiv.symm_apply_apply] using
+    ← pairing_simpleProjection, ← hn, LinearEquiv.symm_apply_apply] using
     dualBasis_contraction_natural A B (Linear.rightComp ℂ (simples C i) q) F'
 
 /-- A mixed crossing block, with the input and output test strands allowed
@@ -160,18 +155,32 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory 
 variable {T U R S : D}
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The closed fusion map is characterized by its evaluation pairing. -/
+theorem closeFusionMap_evaluation (f : T ⊗ S ⟶ R) :
+    (closeFusionMap T S f ▷ S) ≫ ε_ S (Sᘁ) =
+      𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
+  have he := Dimensions.rightDualIso_evaluation
+      (@HasRightDual.exact D _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
+      (ExactPairing.tensor (X₁ := T) (X₂ := S) (Y₁ := Tᘁ) (Y₂ := Sᘁ))
+  change (rightDualTensorIso T S).hom ▷ (T ⊗ S) ≫
+    (𝟙 _ ⊗≫ (Sᘁ) ◁ (ε_ T (Tᘁ) ▷ S) ⊗≫ ε_ S (Sᘁ)) =
+      ε_ (T ⊗ S) ((T ⊗ S)ᘁ) at he
+  calc
+    _ = 𝟙 _ ⊗≫ ((fᘁ ▷ (T ⊗ S)) ≫ ε_ (T ⊗ S) ((T ⊗ S)ᘁ)) := by
+      rw [← he]
+      dsimp [closeFusionMap]
+      monoidal
+    _ = _ := by rw [rightAdjointMate_comp_evaluation]; monoidal
+
+
+set_option backward.isDefEq.respectTransparency false in
 /-- Closing a fusion map is natural in its test strand. -/
 theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     (Rᘁ ◁ h) ≫ closeFusionMap U S f =
       closeFusionMap T S ((h ▷ S) ≫ f) := by
-  simp only [closeFusionMap, Category.assoc, comp_rightAdjointMate, comp_whiskerRight]
-  rw [whisker_exchange_assoc]
-  have hn := congrArg (fun k => k ▷ T) (rightDualTensorIso_natural h (𝟙 S))
-  rw [tensorHom_id, rightAdjointMate_id, id_tensorHom, comp_whiskerRight,
-    comp_whiskerRight] at hn
-  rw [reassoc_of% hn, whisker_exchange_assoc, associator_naturality_right_assoc,
-    associator_naturality_middle_assoc]
-  rw [← whiskerLeft_comp_assoc, ← whiskerLeft_comp_assoc, rightAdjointMate_comp_evaluation]
+  apply Dimensions.evaluation_ext (X := S)
+  simp only [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp]
+  monoidal
 
 variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
   [MonoidalPreadditive D] [MonoidalLinear k D]
