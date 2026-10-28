@@ -28,6 +28,24 @@ theorem reverse_braidGenerator_zero (X : C) (n : ℕ) :
   all_goals simp only [Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, Iso.symm_inv,
     tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv, Category.assoc]
 
+/-- A reversed braid generator is inverted when the index is shifted. -/
+theorem reverse_braidGenerator_succ (X : C) (n : ℕ) (i : Fin (n + 1))
+    (h : @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n i =
+      (braidGenerator X n i)⁻¹) :
+    @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X (n + 1) i.succ =
+      (braidGenerator X (n + 1) i.succ)⁻¹ := by
+  obtain ⟨i, hi⟩ := i
+  change @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X (n + 1)
+      ⟨i + 1, Nat.succ_lt_succ hi⟩ =
+    (braidGenerator X (n + 1) ⟨i + 1, Nat.succ_lt_succ hi⟩)⁻¹
+  apply CategoryTheory.Aut.ext
+  apply Iso.ext
+  simp only [braidGenerator, h]
+  simp only [Aut.inv_asIso, Iso.symm_hom, tensorIso_hom, Iso.refl_hom]
+  change 𝟙 X ⊗ₘ (braidGenerator X n ⟨i, hi⟩).asIso.inv =
+    (Iso.refl X ⊗ᵢ (braidGenerator X n ⟨i, hi⟩).asIso).inv
+  rw [tensorIso_inv, Iso.refl_inv]
+
 theorem reverse_braidGenerator (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
     @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n i =
       (braidGenerator X n i)⁻¹ := by
@@ -38,17 +56,9 @@ theorem reverse_braidGenerator (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
     fin_cases i
     exact reverse_braidGenerator_zero X 0
   | succ n ih =>
-    intro ⟨i, hi⟩
-    cases i with
-    | zero => exact reverse_braidGenerator_zero X (n + 1)
-    | succ i =>
-      apply CategoryTheory.Aut.ext
-      apply Iso.ext
-      simp only [braidGenerator, ih]
-      simp only [Aut.inv_asIso, Iso.symm_hom, tensorIso_hom, Iso.refl_hom]
-      change 𝟙 X ⊗ₘ (braidGenerator X n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso.inv =
-        (Iso.refl X ⊗ᵢ (braidGenerator X n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso).inv
-      rw [tensorIso_inv, Iso.refl_inv]
+    intro i
+    exact Fin.cases (reverse_braidGenerator_zero X (n + 1))
+      (fun j ↦ reverse_braidGenerator_succ X n j (ih j)) i
 
 end PropertyF.Ground.Centre
 
