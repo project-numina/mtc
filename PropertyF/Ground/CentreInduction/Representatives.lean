@@ -206,9 +206,7 @@ theorem regroup_biproduct {D : Type u} [Category.{v} D] [Preadditive D]
   have hE (p : Σ i, Fin (m i)) : idx (E p) = p.1 := by
     change idx ((e p.1).symm p.2).1 = p.1
     exact ((e p.1).symm p.2).2
-  let W : (Σ i, Fin (m i)) → D := fun p => S p.1
-  refine ⟨m, ⟨(biproduct.whiskerEquiv E ?_).symm⟩⟩
-  intro p
-  exact Classical.choice (by simpa only [hE] using hIso (E p))
+  exact ⟨m, ⟨(biproduct.whiskerEquiv E fun p =>
+    Classical.choice (by simpa only [hE] using hIso (E p))).symm⟩⟩
 
 end PropertyF.Ground.CentreInduction
