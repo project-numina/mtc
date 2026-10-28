@@ -143,5 +143,4 @@ theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
     (Centre.centralizes_symm (Centre.centralizes_of_iso_left e'.symm (hcentral _)))
   exact ⟨e' ≪≫ F.mapIso (unitIndex_iso C).some ≪≫ (CategoryTheory.Functor.Monoidal.εIso F).symm⟩
 
-
 end PropertyF.Ground.CentreInduction
