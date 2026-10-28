@@ -87,8 +87,6 @@ theorem rootTensorDefect_coevaluation_of_iso
   let d := a ⊗ᵢ b
   have hc : η_ X (Xᘁ) ≫ d.hom = η_ Y (Yᘁ) := coevaluation_iso_map a
   have hn := rootTensorDefect_natural C a.hom b.hom
-  change d.hom ≫ (rootTensorDefect C Y (Yᘁ)).hom =
-    (rootTensorDefect C X (Xᘁ)).hom ≫ d.hom at hn
   exact scalar_eigenvector_of_mono hc hn (rootTensorDefect_coevaluation i)
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -105,7 +103,6 @@ theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
   let r : X ≅ Q := rightDualIso inferInstance HasRightDual.exact
   have hc : η_ A X ≫ A ◁ r.hom = η_ A Q := coevaluation_rightDualIso inferInstance HasRightDual.exact
   have he := rootTensorDefect_coevaluation_of_iso (dualIndex C i) (rightDualLabelIso C i)
-  change η_ A Q ≫ (rootTensorDefect C A Q).hom = _ at he
   rw [rootDualSign_dual] at he
   exact scalar_eigenvector_of_mono hc (by
     simpa only [id_tensorHom] using rootTensorDefect_natural C (𝟙 A) r.hom) he
@@ -150,8 +147,7 @@ variable {C} in
 /-- The signed three-object cup slide follows from involutivity of its outer tensor defect. -/
 theorem rootTensorDefect_slide_of_involution
     {i : Fin (rank C)} (K : C.Obj)
-    (hinv : let X := simples C i
-      IsInvolutiveHom (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom) :
+    (hinv : IsInvolutiveHom (rootTensorDefect C ((simples C i)ᘁ) (simples C i ⊗ K)).hom) :
     RootTensorDefectSlide C i K := by
   let X := simples C i
   let A := Xᘁ

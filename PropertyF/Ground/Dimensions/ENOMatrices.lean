@@ -128,8 +128,7 @@ namespace PropertyF.Ground.Dimensions
 /-- If a complex weighted sum reaches its nonnegative termwise norm bound,
 all its positive-weight terms equal their respective bounds. -/
 theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
-    {N f : ι → ℝ} {x : ι → ℂ} (hf : ∀ k, 0 < f k)
-    (hdom : ∀ k, ‖x k‖ ≤ N k)
+    {N f : ι → ℝ} {x : ι → ℂ} (hf : ∀ k, 0 < f k) (hdom : ∀ k, ‖x k‖ ≤ N k)
     (heq : ∑ k, x k * (f k : ℂ) = ((∑ k, N k * f k : ℝ) : ℂ)) :
     ∀ k, x k = (N k : ℂ) := by
   have hsum : ∑ k, (N k - (x k).re) * f k = 0 := by
