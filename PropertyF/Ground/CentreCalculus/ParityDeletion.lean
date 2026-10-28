@@ -49,13 +49,10 @@ include hdim in
 /-- Once the moved-strand trace deletion identity is shown for one parity,
 positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
-    (hmoved : ∀ n (q : Fin (n + 1)), q ≠ 0 → ∀ σ,
-      permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 1)
-        (Equiv.Perm.decomposeFin.symm (q, σ)) =
-      permutationScalarTrace C p (parityPermutationAction C hX odd) n σ) :
+    (hmoved : HasMovedTrace (permutationScalarTrace C p (parityPermutationAction C hX odd))) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_trace_deletion hdim (parityPermutationAction C hX odd)
-    (fun _ σ ↦ parityPermutationTrace_fixHead hdim hX odd σ) hmoved
+    ⟨(fun _ σ ↦ parityPermutationTrace_fixHead hdim hX odd σ), hmoved⟩
 
 end PropertyF.Ground.CentreCalculus
 
@@ -84,14 +81,11 @@ strands. -/
 theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
     {p : Dimensions.PivotalStructure (C := C.Obj)} {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
-    (hadj : ∀ n (σ : Equiv.Perm (Fin (n + 1))),
-      permutationScalarTrace C p ρ (n + 2) (Equiv.Perm.decomposeFin.symm (1, σ)) =
-      permutationScalarTrace C p ρ (n + 1) σ) :
-    ∀ n (q : Fin (n + 1)), q ≠ 0 → ∀ σ,
-      permutationScalarTrace C p ρ (n + 1) (Equiv.Perm.decomposeFin.symm (q, σ)) =
-      permutationScalarTrace C p ρ n σ := by
+    (hadj : HasAdjacentTrace (permutationScalarTrace C p ρ)) :
+    HasMovedTrace (permutationScalarTrace C p ρ) := by
   intro n q hq σ
-  simp only [permutationScalarTrace] at hadj ⊢
+  simp only [HasAdjacentTrace, permutationScalarTrace] at hadj
+  simp only [HasMovedTrace, permutationScalarTrace]
   cases n with
   | zero => exact (hq (Fin.eq_zero q)).elim
   | succ n =>
@@ -122,10 +116,7 @@ include hdim in
 /-- Integrality reduces to the first-adjacent-crossing trace identity for
 one of the two actual parity choices. -/
 theorem integral_of_parity_adjacent_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
-    (hadj : ∀ n (σ : Equiv.Perm (Fin (n + 1))),
-      permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 2)
-        (Equiv.Perm.decomposeFin.symm (1, σ)) =
-      permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 1) σ) :
+    (hadj : HasAdjacentTrace (permutationScalarTrace C p (parityPermutationAction C hX odd))) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_parity_moved_trace hdim hX odd
     (movedTrace_of_adjacent (parityPermutationAction C hX odd) hadj)

@@ -81,7 +81,6 @@ instance twistedFusion : IsFusionCategory (Obj C σ) where
 def category : BraidedFusionCategory.{v,u} where
   Obj := Obj C σ
 
-
 end PropertyF.Ground.ScalarTwist
 end
 end
@@ -134,7 +133,6 @@ theorem labels (p : Dimensions.PivotalStructure (C := C.Obj))
   rw [← hd, ← pivotalDimension_twist C σ p (simples C i)]
   exact (Dimensions.pivotalDimension_iso (category C σ) (pivotal C σ p) (he i).some).symm
 
-
 /-- Simple FP dimensions and their real conjugates give the twisted pivotal dimensions. -/
 theorem exists_galois_fp_dimensions (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : Modular.HasFPSimpleDimensions C p) :
@@ -184,7 +182,6 @@ theorem rightTrace_twist (p : Dimensions.PivotalStructure (C := C.Obj))
       σ (Ground.unitScalarEquiv C (p.rightTrace f)) :=
   ((unitScalar_eq_equiv (category C σ) _).symm.trans (unitScalar_twist C σ _)).trans
     (congrArg σ (unitScalar_eq_equiv C _))
-
 
 end PropertyF.Ground.ScalarTwist
 end
