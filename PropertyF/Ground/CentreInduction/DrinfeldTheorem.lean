@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.CentreInduction.PositivePivotal
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
-public import PropertyF.Ground.Dimensions.DoubleDualBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.Dimensions.DefectExtension
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing

@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.Adjunction
-public import PropertyF.Ground.Dimensions.PositiveCanonical
+public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 
 /-! The global-dimension calculation from the two numerical consequences of
 centre induction. The induction construction and these consequences are not

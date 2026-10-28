@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
-public import PropertyF.Ground.Dimensions.RootDualPairing
+public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.Dimensions.DefectNaturality
 
 /-! # Unit laws for the fourth-dual root

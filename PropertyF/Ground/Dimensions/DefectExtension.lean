@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.DualCoherence
-public import PropertyF.Ground.Dimensions.RootDualPairing
+public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.DefectNaturality
