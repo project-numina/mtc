@@ -254,11 +254,11 @@ theorem tensorBiproduct_hom_ext
     {ι κ : Type} [Fintype ι] [Fintype κ] {F : ι → E} {G : κ → E}
     {Z : E} {f g : (⨁ F) ⊗ (⨁ G) ⟶ Z}
     (h : ∀ i j, (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ f =
-      (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ g) : f = g := by
-  refine (cancel_epi (rightDistributor F (⨁ G)).inv).1 (biproduct.hom_ext' _ _ fun i ↦ ?_)
-  simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
-  refine (cancel_epi (leftDistributor (F i) G).inv).1 (biproduct.hom_ext' _ _ fun j ↦ ?_)
-  simpa only [biproduct_ι_comp_leftDistributor_inv_assoc, tensorHom_def', Category.assoc] using h i j
+      (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ g) : f = g :=
+  (cancel_epi (rightDistributor F (⨁ G)).inv).1 <| biproduct.hom_ext' _ _ fun i ↦ by
+    simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
+    exact (cancel_epi (leftDistributor (F i) G).inv).1 <| biproduct.hom_ext' _ _ fun j ↦ by
+      simpa only [biproduct_ι_comp_leftDistributor_inv_assoc, tensorHom_def', Category.assoc] using h i j
 
 /-- Tensor products of maps from decomposed summands jointly detect morphisms. -/
 theorem tensor_decomposition_hom_ext
