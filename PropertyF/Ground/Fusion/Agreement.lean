@@ -278,7 +278,8 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
   obtain ⟨i, f, _, hf, _⟩ := exists_simple_retract D hid
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   have hm : 0 < Module.finrank ℂ (simples D i ⟶ Y) := by
-    rw [← finrank_to_simple_eq_from_simple D Y i]
+    let : Simple (simples D i) := simples_simple D i
+    rw [← finrank_to_simple_eq_from_simple Y (simples D i)]
     exact Module.finrank_pos_iff_exists_ne_zero.mpr ⟨f, hf⟩
   have hc : 0 < fusionCoeff D i k j := by
     rw [fusionCoeff_reciprocity_labels]

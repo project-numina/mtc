@@ -221,7 +221,10 @@ theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFus
   have hbase (j : Fin (rank 𝒵ᶠ)) :
       ∑ i, (Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) : ℝ) * fpSimple C i =
         fpSimple 𝒵ᶠ j := by
-    simpa only [fpDimension, ← finrank_to_simple_eq_from_simple C] using
+    have hs (i : Fin (rank C)) :=
+      letI : Simple (simples C i) := simples_simple C i
+      finrank_to_simple_eq_from_simple (simples 𝒵ᶠ j).1 (simples C i)
+    simpa only [fpDimension, ← hs] using
       (show fpDimension C (simples 𝒵ᶠ j).1 = fpSimple 𝒵ᶠ j from
         (Integrate.center_forget_fpDimension C (simples 𝒵ᶠ j)).trans (fpDimension_simple 𝒵ᶠ j))
   have hsum : (∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i)) = globalFPDimension 𝒵ᶠ := by

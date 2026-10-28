@@ -40,6 +40,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 /-- Braiding identifies the right dual with the chosen left-dual representative. -/
 def rightDualLabelIso (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
     (simples C i)ᘁ ≅ simples C (dualIndex C i) :=
@@ -64,7 +65,7 @@ def enoReciprocityEquiv (C : BraidedFusionCategory.{v,u})
     (i j k : Fin (rank C)) :
     Module.Dual ℂ (simples C k ⟶ simples C i ⊗ simples C j) ≃ₗ[ℂ]
       (simples C j ⟶ simples C (dualIndex C i) ⊗ simples C k) :=
-  (simpleHomPairingEquiv C k (simples C i ⊗ simples C j)).symm.trans
+  (simpleHomPairingEquiv (simples C k) (simples C i ⊗ simples C j)).symm.trans
     (enoFrobeniusEquiv C i j k)
 
 /-- The categorical operator intertwining under the actual reciprocity
@@ -105,12 +106,13 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 /-- The ENO reciprocity equivalence is the composition pairing followed by
 the actual Frobenius reciprocity map. -/
 theorem enoReciprocityEquiv_pairing
     {i j k : Fin (rank C)}
     (g : simples C i ⊗ simples C j ⟶ simples C k) :
-    enoReciprocityEquiv C i j k (simpleHomPairingEquiv C k (simples C i ⊗ simples C j) g) =
+    enoReciprocityEquiv C i j k (simpleHomPairingEquiv (simples C k) (simples C i ⊗ simples C j) g) =
       enoFrobeniusEquiv C i j k g := by simp [enoReciprocityEquiv]
 
 /-- It is enough to prove the defect compatibility on ordinary categorical
@@ -124,7 +126,7 @@ theorem trace_reciprocity_of_frobenius_defect
   apply trace_reciprocity_of_intertwining C
   intro i j k v
   let : Simple (simples C j) := simples_simple C j
-  let P := simpleHomPairingEquiv C j (simples C i ⊗ simples C k)
+  let P := simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)
   let g := P.symm v
   have hv : P g = v := P.apply_symm_apply v
   rw [← hv]

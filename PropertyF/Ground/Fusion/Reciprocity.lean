@@ -101,10 +101,11 @@ theorem fusionCoeff_reciprocity
     (i j k : Fin (rank D)) :
     fusionCoeff D i j k =
       Module.finrank ℂ (simples D i ⟶ simples D k ⊗ (ᘁ(simples D j))) :=
+  letI : Simple (simples D i) := simples_simple D i
   calc
     _ = Module.finrank ℂ (simples D k ⊗ (ᘁ(simples D j)) ⟶ simples D i) :=
       finrank_frobenius_reciprocity (simples D i) (simples D j) (simples D k)
-    _ = _ := finrank_to_simple_eq_from_simple D _ i
+    _ = _ := finrank_to_simple_eq_from_simple _ (simples D i)
 
 /-- The usual fusion-coefficient Frobenius reciprocity identity. -/
 theorem fusionCoeff_reciprocity_labels
