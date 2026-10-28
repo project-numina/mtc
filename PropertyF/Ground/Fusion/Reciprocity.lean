@@ -68,9 +68,8 @@ theorem simple_of_finrank_end_eq_one {X : E}
   obtain ⟨i, s, t, _, hts⟩ := exists_simple_retract D hid
   let : Simple (simples D i) := simples_simple D i
   obtain ⟨z, hz⟩ := (finrank_eq_one_iff_of_nonzero' (K := ℂ) (𝟙 X) hid).mp hdim (s ≫ t)
-  have hz1 : z = 1 := by
-    apply smul_left_injective ℂ (id_nonzero (simples D i))
-    simpa [Category.assoc, hts] using congrArg (fun f => t ≫ f ≫ s) hz
+  have hz1 : z = 1 := smul_left_injective ℂ (id_nonzero (simples D i)) (by
+    simpa [Category.assoc, hts] using congrArg (fun f => t ≫ f ≫ s) hz)
   exact Simple.of_iso ⟨s, t, by simpa [hz1] using hz.symm, hts⟩
 
 /-- Duals of simple objects remain simple. -/
