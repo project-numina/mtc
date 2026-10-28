@@ -90,10 +90,8 @@ theorem drinfeld_inv_natural {A B : D} [HasRightDual A] [HasRightDual (Aᘁ)]
 /-- The inverse dual Drinfeld map after the tensorator, in terms of the
 reversed dual factors and monodromy. -/
 theorem drinfeld_inv_dual_tensor :
-    (μ₂ X Y).hom ≫
-      ((d ((X ⊗ Y)ᘁ)).invᘁ) =
-    M ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
-      (((d (Xᘁ)).invᘁ) ⊗ₘ ((d (Yᘁ)).invᘁ)) ≫
+    (μ₂ X Y).hom ≫ ((d ((X ⊗ Y)ᘁ)).invᘁ) =
+      M ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫ (((d (Xᘁ)).invᘁ) ⊗ₘ ((d (Yᘁ)).invᘁ)) ≫
         (μ₂ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫ (((μ₂ X Y).homᘁ)ᘁ) := by
   let t := rightDualTensorIso X Y
   let f := (d (Yᘁ)).inv
@@ -117,8 +115,7 @@ theorem drinfeld_inv_dual_tensor :
 theorem fourthDualIso_tensor :
     (fourthDualIso (X ⊗ Y)).hom =
       ((fourthDualIso X).hom ⊗ₘ (fourthDualIso Y).hom) ≫
-        (μ₂ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
-          (((μ₂ X Y).homᘁ)ᘁ) := by
+        (μ₂ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫ (((μ₂ X Y).homᘁ)ᘁ) := by
   let m : X ⊗ Y ≅ X ⊗ Y := (β_ X Y) ≪≫ (β_ Y X)
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap]
   rw [(Iso.eq_inv_comp m).2 (drinfeld_tensor X Y)]

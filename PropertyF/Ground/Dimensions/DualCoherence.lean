@@ -29,9 +29,7 @@ theorem coevaluation_iso_map {X Y : C} [HasRightDual X] [HasRightDual Y] (a : X 
 along an isomorphism. -/
 theorem evaluation_iso_map {X Y : C} [HasRightDual X] [HasRightDual Y] (a : X ≅ Y) :
     ((a.invᘁ) ⊗ₘ a.hom) ≫ ε_ Y (Yᘁ) = ε_ X (Xᘁ) := by
-  simp only [tensorHom_def', Category.assoc]
-  erw [rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
-    whiskerLeft_id, Category.id_comp]
+  simp [tensorHom_def', rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Comparing duals successively agrees with comparing them directly. -/
