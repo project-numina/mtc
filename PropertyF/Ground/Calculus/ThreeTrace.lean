@@ -27,9 +27,9 @@ image is finite. No faithfulness of the representation is required. -/
 theorem represented_braid_finite_order {H : Type*} [Monoid H]
     {X : C} {n : ℕ} (h : Finite (braidImage X n))
     (ρ : braidImage X n →* H) (g : braidImage X n) :
-    ∃ k : ℕ, k ≠ 0 ∧ (ρ g) ^ k = 1 := by
+    ∃ k : ℕ, k ≠ 0 ∧ (ρ g) ^ k = 1 :=
   let _ : Finite (braidImage X n) := h
-  exact (ρ.isOfFinOrder (isOfFinOrder_of_finite g)).exists_pow_eq_one.imp
+  (ρ.isOfFinOrder (isOfFinOrder_of_finite g)).exists_pow_eq_one.imp
     fun _ ⟨hk, hpow⟩ ↦ ⟨hk.ne', hpow⟩
 
 /-- In particular, the represented square of the two-strand self-braiding

@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Calculus.UnitaryBlocks
-public import PropertyF.UnitaryTrace
+public import PropertyF.BlockTrace
 public import Mathlib.GroupTheory.OrderOfElement
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Dimensions.DimensionCharacter

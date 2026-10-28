@@ -144,10 +144,10 @@ theorem groupImageAlgebra_finite (ρ : G →* A) :
 matrix blocks. It is not assumed that the representation is faithful. -/
 theorem groupImageAlgebra_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ), (∀ i, NeZero (d i)) ∧
-      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) := by
+      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
   let _ := groupImageAlgebra_semisimple ρ
   let _ := groupImageAlgebra_finite ρ
-  exact IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
+  IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
 
 end PropertyF.Ground.Calculus
 

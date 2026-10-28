@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Calculus.BraidWeights
-public import PropertyF.UnitaryTrace
+public import PropertyF.BlockTrace
 public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Calculus.ThreeTrace

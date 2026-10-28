@@ -135,10 +135,10 @@ def imageAlgebraMap (ρ : G →* A) (σ : H →* B) (τ : G →* H)
 /-- The induced algebra map intertwines the image-group representations. -/
 theorem imageAlgebraMap_group (ρ : G →* A) (σ : H →* B) (τ : G →* H)
     (F : A →ₐ[ℂ] B) (hF : ∀ g, F (ρ g) = σ (τ g)) (g : G) :
-    imageAlgebraMap ρ σ τ F hF (groupInImage ρ g) = groupInImage σ (τ g) := by
-  apply Subtype.ext
-  change F (groupInImage ρ g : A) = (groupInImage σ (τ g) : B)
-  simpa using hF g
+    imageAlgebraMap ρ σ τ F hF (groupInImage ρ g) = groupInImage σ (τ g) :=
+  Subtype.ext (by
+    change F (groupInImage ρ g : A) = (groupInImage σ (τ g) : B)
+    simpa using hF g)
 
 universe v u v' u'
 variable {C : Type u} {D : Type u'} [Category.{v} C] [Category.{v'} D]
