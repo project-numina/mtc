@@ -123,8 +123,7 @@ theorem fusionCoeff_dual_symmetry
 theorem fusionCoeff_dual_unit (i : Fin (rank D)) :
     fusionCoeff D i (dualIndex D i) (unitIndex D) = 1 := by
   rw [fusionCoeff_comm D i (dualIndex D i), fusionCoeff_reciprocity_labels,
-    fusionCoeff_unit]
-  simp
+    fusionCoeff_unit, ite_eq_left rfl]
 
 /-- The label of the tensor unit is fixed by duality. -/
 theorem dualIndex_unit :

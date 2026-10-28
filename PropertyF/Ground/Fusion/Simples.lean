@@ -63,11 +63,10 @@ theorem split_from_simple {S X : C} [Simple S] (f : S ⟶ X) (hf : f ≠ 0) :
 /-- The tensor unit is a retract of the left dual tensored with any simple
 object. This is the split-unit input for identity-strand embeddings. -/
 theorem unit_retract_leftDual_tensor (X : C) [Simple X] :
-    ∃ (s : 𝟙_ C ⟶ (ᘁX) ⊗ X) (r : (ᘁX) ⊗ X ⟶ 𝟙_ C), s ≫ r = 𝟙 (𝟙_ C) := by
-  let : Simple (𝟙_ C) := IsFusionCategory.unit_simple (C := C)
-  obtain ⟨r, hr⟩ := split_from_simple (ExactPairing.coevaluation (ᘁX) X)
-    (exactPairing_ne_zero (ᘁX) X (id_nonzero X)).1
-  exact ⟨_, r, hr⟩
+    ∃ (s : 𝟙_ C ⟶ (ᘁX) ⊗ X) (r : (ᘁX) ⊗ X ⟶ 𝟙_ C), s ≫ r = 𝟙 (𝟙_ C) :=
+  letI : Simple (𝟙_ C) := IsFusionCategory.unit_simple (C := C)
+  ⟨_, split_from_simple (ExactPairing.coevaluation (ᘁX) X)
+    (exactPairing_ne_zero (ᘁX) X (id_nonzero X)).1⟩
 
 end PropertyF.Ground
 
@@ -118,11 +117,11 @@ theorem exists_simple_retract {X : C.Obj} (hX : 𝟙 X ≠ 0) :
 
 /-- Every simple object is isomorphic to one of the chosen representatives. -/
 theorem exists_simple_iso (X : C.Obj) [Simple X] :
-    ∃ i : Fin (rank C), Nonempty (X ≅ simples C i) := by
-  obtain ⟨i, s, _, hs, _⟩ := exists_simple_retract C (id_nonzero X)
-  let : Simple (simples C i) := simples_simple C i
-  let : IsIso s := CategoryTheory.isIso_of_hom_simple hs
-  exact ⟨i, ⟨asIso s⟩⟩
+    ∃ i : Fin (rank C), Nonempty (X ≅ simples C i) :=
+  (exists_simple_retract C (id_nonzero X)).imp fun i ⟨s, _, hs, _⟩ ↦
+    letI : Simple (simples C i) := simples_simple C i
+    letI : IsIso s := CategoryTheory.isIso_of_hom_simple hs
+    ⟨asIso s⟩
 
 /-- The tensor unit occurs among the representatives. -/
 theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ C.Obj) :=
