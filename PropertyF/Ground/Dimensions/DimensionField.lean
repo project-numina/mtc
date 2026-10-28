@@ -1,8 +1,15 @@
 module
-public import PropertyF.Axioms
+public import PropertyF.BlockTrace
+public import PropertyF.Definitions
+public import PropertyF.CenterBasics
+public import Mathlib.CategoryTheory.Monoidal.Center
+public import Mathlib.CategoryTheory.Monoidal.Linear
+public import Mathlib.CategoryTheory.Monoidal.Rigid.Basic
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.GroupTheory.Index
 public import Mathlib.FieldTheory.Normal.Closure
 public import Mathlib.Analysis.Complex.Polynomial.Basic
-public import Mathlib.FieldTheory.Galois.Basic
 public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
 public import Mathlib.FieldTheory.IsAlgClosed.Classification
 public import Mathlib.Algebra.MvPolynomial.Equiv

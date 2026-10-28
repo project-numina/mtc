@@ -140,7 +140,6 @@ import all PropertyF.Ground.Dimensions.RootUnitComponent
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
 import all PropertyF.Arithmetic
-import all PropertyF.Axioms
 import all PropertyF.BlockTrace
 import all PropertyF.BraidAlgebra
 import all PropertyF.CenterBasics

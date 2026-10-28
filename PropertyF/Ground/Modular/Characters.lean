@@ -1,5 +1,13 @@
 module
-public import PropertyF.Axioms
+public import PropertyF.BlockTrace
+public import PropertyF.Definitions
+public import PropertyF.CenterBasics
+public import Mathlib.CategoryTheory.Monoidal.Center
+public import Mathlib.CategoryTheory.Monoidal.Linear
+public import Mathlib.CategoryTheory.Monoidal.Rigid.Basic
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.GroupTheory.Index
 
 /-!
 # Galois action on fusion characters

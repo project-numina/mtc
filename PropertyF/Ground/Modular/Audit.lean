@@ -2,7 +2,6 @@ module
 
 
 import all PropertyF.Definitions
-import all PropertyF.Axioms
 import all PropertyF.BlockTrace
 import all PropertyF.CenterBasics
 import all PropertyF.UnitaryTrace
