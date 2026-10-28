@@ -68,6 +68,7 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 -- The Drinfeld isomorphism and the double-dual tensor comparison.
 local notation "d" => drinfeldIso
 local notation "μ₂" => doubleDualTensorIso
+local notation "d₄" => fourthDualIso
 -- Monodromy is the double braiding.
 local notation "M" => Modular.doubleBraiding
 
@@ -112,8 +113,8 @@ theorem drinfeld_inv_dual_tensor :
 
 /-- The Drinfeld tensor law forces monoidality of the canonical fourth-dual map. -/
 theorem fourthDualIso_tensor :
-    (fourthDualIso (X ⊗ Y)).hom =
-      ((fourthDualIso X).hom ⊗ₘ (fourthDualIso Y).hom) ≫
+    (d₄ (X ⊗ Y)).hom =
+      ((d₄ X).hom ⊗ₘ (d₄ Y).hom) ≫
         (μ₂ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫ (((μ₂ X Y).homᘁ)ᘁ) := by
   let m : X ⊗ Y ≅ X ⊗ Y := (β_ X Y) ≪≫ (β_ Y X)
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap]
