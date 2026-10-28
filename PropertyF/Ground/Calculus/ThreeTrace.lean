@@ -81,12 +81,10 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The categorical adjacent braidings satisfy Yang–Baxter. -/
 theorem three_braid_relation (X : C) :
     braidGenerator X 1 0 * braidGenerator X 1 1 * braidGenerator X 1 0 =
-    braidGenerator X 1 1 * braidGenerator X 1 0 * braidGenerator X 1 1 := by
-  apply (threePowerIso X).conjAut.injective
-  apply Aut.ext
-  apply Iso.ext
-  simp only [map_mul, Aut.mul_asIso, Iso.trans_hom, threeGeneratorLeft_transport, threeGeneratorRight_transport, Category.assoc]
-  exact BraidedCategory.yang_baxter X X X
+    braidGenerator X 1 1 * braidGenerator X 1 0 * braidGenerator X 1 1 :=
+  (threePowerIso X).conjAut.injective (Aut.ext (Iso.ext (by
+    simpa only [map_mul, Aut.mul_asIso, Iso.trans_hom, threeGeneratorLeft_transport,
+      threeGeneratorRight_transport, Category.assoc] using BraidedCategory.yang_baxter X X X)))
 
 /-- The two adjacent generators in the actual three-strand image. -/
 def threeGeneratorLeft (X : C) : braidImage X 1 := imageGenerator X 1 0

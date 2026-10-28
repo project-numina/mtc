@@ -73,12 +73,8 @@ theorem presented_group_span (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ}
 theorem unitary_block_star_inv {n : ℕ} {d : Fin n → ℕ}
     (ρ : G →* PropertyF.Blocks.Algebra ⟨_, d⟩)
     (hu : ∀ g i, ρ g i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) (g : G) :
-    star (ρ g) = ρ g⁻¹ := by
-  apply funext
-  intro i
-  change star (ρ g i) = ρ g⁻¹ i
-  have h := star_eq_coe_inv_of_unitary (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g) (hu g i)
-  exact h
+    star (ρ g) = ρ g⁻¹ :=
+  funext fun i => star_eq_coe_inv_of_unitary (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g) (hu g i)
 
 /-- Any algebra map intertwining two unitary block presentations is a star map.
 This gives the analytic part of identity-strand compatibility; the categorical

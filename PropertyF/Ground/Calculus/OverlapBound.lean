@@ -148,12 +148,11 @@ theorem starMap_preserves_block_unitary {r s : ℕ} {d : Fin r → ℕ} {q : Fin
       (PropertyF.Blocks.Algebra ⟨_, q⟩))
     {u : PropertyF.Blocks.Algebra ⟨_, d⟩}
     (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ u) :
-    PropertyF.Blocks.IsUnitary ⟨_, q⟩ (F u) := by
-  intro j
-  apply Matrix.mem_unitaryGroup_iff.mpr
-  simpa only [map_mul, map_star, map_one, Pi.mul_apply, Pi.star_apply, Pi.one_apply] using
-    congrArg (fun x : PropertyF.Blocks.Algebra ⟨_, d⟩ => F x j)
-      (show u * star u = 1 from funext fun i => Matrix.mem_unitaryGroup_iff.mp (hu i))
+    PropertyF.Blocks.IsUnitary ⟨_, q⟩ (F u) := fun j =>
+  Matrix.mem_unitaryGroup_iff.mpr (by
+    simpa only [map_mul, map_star, map_one, Pi.mul_apply, Pi.star_apply, Pi.one_apply] using
+      congrArg (fun x : PropertyF.Blocks.Algebra ⟨_, d⟩ => F x j)
+        (show u * star u = 1 from funext fun i => Matrix.mem_unitaryGroup_iff.mp (hu i)))
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]

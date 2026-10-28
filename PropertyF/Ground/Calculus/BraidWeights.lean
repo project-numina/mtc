@@ -324,12 +324,8 @@ theorem braidToEndBlocks_injective (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (e : tensorPower X (n + 2) ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
     {r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :
-    Function.Injective (braidToEndBlocks C X n m e r d b) := by
-  intro x y h
-  apply b.symm.injective
-  apply Subtype.ext
-  apply (groundEndBlockEquiv C _ m e).injective
-  exact h
+    Function.Injective (braidToEndBlocks C X n m e r d b) :=
+  (groundEndBlockEquiv C _ m e).injective.comp (Subtype.val_injective.comp b.symm.injective)
 
 /-- The actual categorical trace on the braid algebra has the paper's
 multiplicity-weight formula. Every retained braid block occurs in a simple

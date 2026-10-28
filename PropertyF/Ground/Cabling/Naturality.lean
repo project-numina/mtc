@@ -147,10 +147,9 @@ theorem braidImageRetractMap_surjective {X Y : C} (r : Retract X Y) (n : ℕ) :
   intro a
   obtain ⟨w, rfl⟩ := braidWordAction_surjective X n a
   refine ⟨braidWordAction Y n w, ?_⟩
-  change ((braidWordAction Y n).rangeRestrict.liftOfSurjective
-    (braidWordAction Y n).rangeRestrict_surjective
+  change ((braidWordAction Y n).rangeRestrict.liftOfSurjective _
     ⟨braidWordAction X n, by simpa using braidWordAction_ker_le_of_retract r n⟩)
-      ((braidWordAction Y n).rangeRestrict w) = braidWordAction X n w
+    ((braidWordAction Y n).rangeRestrict w) = _
   simp
 /-- Property F passes from an object to any retract. -/
 theorem objectPropertyF_of_retract {X Y : C} (r : Retract X Y)
