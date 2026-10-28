@@ -67,6 +67,13 @@ def tensorPowerMap {X Y : C} (f : X ⟶ Y) : ∀ n, tensorPower X n ⟶ tensorPo
       (tensorHom_comp_tensorHom f (tensorPowerMap f n) g (tensorPowerMap g n)).symm
 
 
+/-- Tensor powers carry a retract to a retract. -/
+private abbrev tensorPowerMap_retract {X Y : C} (r : Retract X Y) (n : ℕ) :
+    Retract (tensorPower X n) (tensorPower Y n) where
+  i := tensorPowerMap r.i n
+  r := tensorPowerMap r.r n
+  retract := by rw [← tensorPowerMap_comp, r.retract, tensorPowerMap_id]
+
 variable [BraidedCategory C]
 
 /-- Naturality of the first adjacent braiding. -/
@@ -122,33 +129,21 @@ theorem braidWordAction_ker_le_of_retract {X Y : C} (r : Retract X Y) (n : ℕ) 
   apply Iso.ext
   have nat := braidWord_map_natural r.i n w
   rw [hw] at nat
-  let : IsSplitMono (tensorPowerMap r.i (n + 2)) := ⟨⟨{
-    retraction := tensorPowerMap r.r (n + 2)
-    id := by rw [← tensorPowerMap_comp, r.retract, tensorPowerMap_id] }⟩⟩
+  let : IsSplitMono (tensorPowerMap r.i (n + 2)) := (tensorPowerMap_retract r (n + 2)).instIsSplitMonoI
   exact (cancel_mono (tensorPowerMap r.i (n + 2))).mp (by simpa using nat)
 
 /-- Restriction to a retract induces a surjective homomorphism of braid images. -/
 def braidImageRetractMap {X Y : C} (r : Retract X Y) (n : ℕ) :
-    braidImage Y n →* braidImage X n := by
-  let f := braidWordAction Y n
-  let g := braidWordAction X n
-  let q := f.rangeRestrict.liftOfSurjective f.rangeRestrict_surjective
-    ⟨g, by simpa using braidWordAction_ker_le_of_retract r n⟩
-  have hs := braidWordAction_surjective Y n
-  let embed : braidImage Y n →* f.range :=
-    (MonoidHom.id _).codRestrict f.range (fun y => hs y)
-  exact q.comp embed
+    braidImage Y n →* braidImage X n :=
+  (braidWordAction Y n).liftOfSurjective (braidWordAction_surjective Y n)
+    ⟨braidWordAction X n, braidWordAction_ker_le_of_retract r n⟩
 
 /-- The restriction map hits every braid word on the retract. -/
 theorem braidImageRetractMap_surjective {X Y : C} (r : Retract X Y) (n : ℕ) :
-    Function.Surjective (braidImageRetractMap r n) := by
-  intro a
-  obtain ⟨w, rfl⟩ := braidWordAction_surjective X n a
-  refine ⟨braidWordAction Y n w, ?_⟩
-  change ((braidWordAction Y n).rangeRestrict.liftOfSurjective _
-    ⟨braidWordAction X n, by simpa using braidWordAction_ker_le_of_retract r n⟩)
-    ((braidWordAction Y n).rangeRestrict w) = _
-  simp
+    Function.Surjective (braidImageRetractMap r n) := fun a =>
+  let ⟨w, hw⟩ := braidWordAction_surjective X n a
+  ⟨braidWordAction Y n w, by simpa [braidImageRetractMap] using hw⟩
+
 /-- Property F passes from an object to any retract. -/
 theorem objectPropertyF_of_retract {X Y : C} (r : Retract X Y)
     (hY : ObjectPropertyF Y) : ObjectPropertyF X := fun n ↦
