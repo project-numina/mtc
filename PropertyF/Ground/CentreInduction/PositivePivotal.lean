@@ -27,23 +27,26 @@ local notation "𝒵ᶜ" => Center C.Obj
 abbrev PivotalHasFPDimensions (p : PivotalStructure (C := C.Obj)) : Prop :=
   ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ)
 
+section
+variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
+
 /-- Agreement with FP dimension on simples extends to all objects. -/
-theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p) (X : C.Obj) :
+theorem pivotalDimension_eq_fp (hsimple : PivotalHasFPDimensions C p) (X : C.Obj) :
     pivotalDimension C p X = (fpDimension C X : ℂ) := by
   simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
     hsimple] using pivotalDimension_decomposition C p X
+end
+
+variable {p : PivotalStructure (C := C.Obj)}
 
 /-- The pivotal dimension of the underlying induced unit is the global FP dimension. -/
-theorem pivotalDimension_underlying_unit {p : PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p) :
+theorem pivotalDimension_underlying_unit (hsimple : PivotalHasFPDimensions C p) :
     pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
   rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
 
 /-- A compatible centre pivotal structure constructs centre fusion when the base
 pivotal dimensions equal FP dimensions. -/
-theorem center_fusion_of_compatible_pivotal {p : PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p) [RigidCategory 𝒵ᶜ]
+theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions C p) [RigidCategory 𝒵ᶜ]
     {pZ : PivotalStructure (C := 𝒵ᶜ)}
     (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) : IsFusionCategory 𝒵ᶜ := by
   refine center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ fun hz => ?_
