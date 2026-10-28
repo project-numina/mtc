@@ -38,10 +38,12 @@ def moveWord (s : ℕ → G) : ℕ → G
   | 0 => 1
   | j + 1 => s j * moveWord s j
 
+variable (hb : ∀ i, i + 1 < m → s i * s (i + 1) * s i = s (i + 1) * s i * s (i + 1))
+  (hc : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i)
+
+include hc in
 /-- A generator beyond a word's support commutes with the word. -/
-theorem commute_moveWord
-    (hc : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i)
-    (i : ℕ) : ∀ j, j + 1 ≤ i → i < m →
+theorem commute_moveWord (i : ℕ) : ∀ j, j + 1 ≤ i → i < m →
       s i * moveWord s j = moveWord s j * s i := by
   intro j
   induction j with
@@ -51,11 +53,10 @@ theorem commute_moveWord
     simp only [moveWord, ← mul_assoc]
     rw [(hc j i (by omega) him).symm, mul_assoc, ih (by omega) him, ← mul_assoc]
 
+include hb hc in
 /-- Moving a crossing past the strand-moving word shifts its index by one.
 This is the main rewriting step for the type-A coset normal form. -/
-theorem moveWord_exchange
-    (hb : ∀ i, i + 1 < m → s i * s (i + 1) * s i = s (i + 1) * s i * s (i + 1))
-    (hc : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i) :
+theorem moveWord_exchange :
     ∀ j i, i + 1 < j → j ≤ m → s i * moveWord s j = moveWord s j * s (i + 1) := by
   intro j
   induction j with
@@ -107,12 +108,10 @@ theorem moveWord_coset_step {i j : ℕ} (hi : i < m) (hj : j ≤ m) :
 include hrel in
 /-- A generator preserves the strand-moving coset normal form. -/
 theorem HasMoveWordCoset.mul_generator {i : ℕ} {g : G} (hi : i < m)
-    (hg : HasMoveWordCoset s m g) : HasMoveWordCoset s m (s i * g) := by
-  let H := Subgroup.closure (Set.range (fun t : Fin (m - 1) ↦ s (t.val + 1)))
-  obtain ⟨j, hj, h, hh, rfl⟩ := hg
-  obtain ⟨k, hk, h', hh', heq⟩ := moveWord_coset_step hrel hi hj
-  refine ⟨k, hk, h' * h, H.mul_mem hh' hh, ?_⟩
-  rw [← mul_assoc, heq, mul_assoc]
+    (hg : HasMoveWordCoset s m g) : HasMoveWordCoset s m (s i * g) :=
+  let ⟨j, hj, h, hh, hg⟩ := hg
+  let ⟨k, hk, h', hh', heq⟩ := moveWord_coset_step hrel hi hj
+  ⟨k, hk, h' * h, Subgroup.mul_mem _ hh' hh, by rw [hg, ← mul_assoc, heq, mul_assoc]⟩
 
 include hrel in
 /-- Every word in type-A generators has a strand-moving coset normal form. -/
@@ -166,18 +165,15 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
     have ht (i : ℕ) (hi : i < m) : (t i : G) = s (i + 1) := by simp [t, hi]
     have htgen : Subgroup.closure (Set.range (fun q : Fin m => t q.val)) = ⊤ := by
       apply Subgroup.map_injective H.subtype_injective
-      simp only [MonoidHom.map_closure, Subgroup.map_top, Subgroup.range_subtype]
-      congr 1
-      rw [← Set.range_comp]
-      congr 1
-      exact funext fun q ↦ ht q.val q.isLt
+      simp only [MonoidHom.map_closure, Subgroup.map_top, Subgroup.range_subtype,
+        ← Set.range_comp, Function.comp_def, Subgroup.subtype_apply, ht _ (Fin.isLt _), H]
     obtain ⟨hfin, hcard⟩ := ih t (hrel.shift ht) htgen
     let : Finite H := hfin
     have hcover (g : G) : ∃ j : Fin (m + 2), ∃ h : H, g = moveWord s j.val * h := by
       obtain ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hrel (hgen.symm ▸ Subgroup.mem_top g)
       exact ⟨⟨j, by omega⟩, ⟨h, hh⟩, he⟩
     obtain ⟨hG, hbound⟩ := finite_card_le_of_coset_cover H (fun j : Fin (m + 2) ↦ moveWord s j.val) hcover
-    have hbound' : Nat.card G ≤ (m + 2) * Nat.card H := by simpa only [Nat.card_fin] using hbound
-    exact ⟨hG, by simpa only [Nat.factorial_succ] using hbound'.trans (Nat.mul_le_mul_left _ hcard)⟩
+    exact ⟨hG, by simpa only [Nat.card_fin, Nat.factorial_succ] using
+      hbound.trans (Nat.mul_le_mul_left (Nat.card (Fin (m + 2))) hcard)⟩
 
 end PropertyF.Ground.CentreCalculus
