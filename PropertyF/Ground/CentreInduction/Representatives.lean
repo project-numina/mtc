@@ -79,13 +79,10 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
         (ShortComplex.cokernelSequence_exact f) r hr inferInstance
       let K := cokernel f
       let e : Z ≅ S ⊞ K := split.isoBinaryBiproduct
-      have hs : ¬ IsZero S := Simple.not_isZero _
-      have he : Module.finrank k (Z ⟶ Z) = Module.finrank k (S ⊞ K ⟶ S ⊞ K) :=
-        (CategoryTheory.Linear.homCongr k e e).finrank_eq
       have hk : m K < m Z := by
         change Module.finrank k (K ⟶ K) < Module.finrank k (Z ⟶ Z)
-        rw [he]
-        exact finrank_end_complement_lt _ K hs
+        rw [(CategoryTheory.Linear.homCongr k e e).finrank_eq]
+        exact finrank_end_complement_lt _ K (Simple.not_isZero _)
       exact .cons hS (ih K hk) ⟨e⟩
 
 

@@ -69,7 +69,6 @@ public import PropertyF.Ground.CentreInduction.CrossingBlocks
 public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
 public import PropertyF.Ground.CentreInduction.CrossingUnit
 public import PropertyF.Ground.CentreInduction.CrossingCoherence
-public import PropertyF.Ground.CentreInduction.CounitColumn
 public import PropertyF.Ground.CentreInduction.SecondTriangle
 public import PropertyF.Ground.CentreInduction.ActualFusion
 public import PropertyF.Ground.CentreInduction.FiniteSimples
@@ -80,7 +79,6 @@ public import PropertyF.Ground.CentreInduction.PositivePivotal
 public import PropertyF.Ground.CentreInduction.DrinfeldTheorem
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.CentreInduction.BasisPairing
-public import PropertyF.Ground.CentreInduction.CrossingNaturality
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary

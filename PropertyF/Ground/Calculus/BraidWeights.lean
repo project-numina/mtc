@@ -207,11 +207,10 @@ theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
     (∑ j, w j * (Pi.single (M := fun k => Matrix (Fin (d k)) (Fin (d k)) ℂ) i A j).trace) =
       w i * A.trace := by
   classical
-  rw [Finset.sum_eq_single i]
+  rw [Fintype.sum_eq_single i]
   · simp
-  · intro j _ h
+  · intro j h
     simp [Pi.single_eq_of_ne h]
-  · simp
 
 /-- For any representation of a finite product of nonzero complex matrix
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the
@@ -298,10 +297,10 @@ variable (C : BraidedFusionCategory.{v,u})
 
 /-- The faithful inclusion of the braid algebra in the full endomorphism
 algebra, expressed in their respective matrix-block presentations. -/
-def braidToEndBlocks (X : C.Obj) (n : ℕ)
-    (m : Fin (Ground.rank C) → ℕ)
+def braidToEndBlocks {X : C.Obj} {n : ℕ}
+    {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
-    (r : ℕ) (d : Fin r → ℕ)
+    {r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
       (Blocks.Algebra ⟨_, m⟩) :=
@@ -314,7 +313,7 @@ theorem braidToEndBlocks_injective {X : C.Obj}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
-    Function.Injective (braidToEndBlocks C X n m e r d b) :=
+    Function.Injective (braidToEndBlocks C e b) :=
   (groundEndBlockEquiv C _ m e).injective.comp (Subtype.val_injective.comp b.symm.injective)
 
 /-- The categorical braid trace has the weights supplied by block multiplicities. -/
@@ -339,7 +338,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,
       (∀ j, ∃ i, 0 < mult i j) ∧
       HasMultiplicityDecomposition m d mult ∧ HasMultiplicityTrace C p scalar b mult := by
-  let F := braidToEndBlocks C X n m e r d b
+  let F := braidToEndBlocks C e b
   obtain ⟨mult, hmult, hretained⟩ := faithful_block_representation_multiplicities hd F
     (braidToEndBlocks_injective C e b)
   have hdim : ∀ i, m i = ∑ j, mult i j * d j := by
