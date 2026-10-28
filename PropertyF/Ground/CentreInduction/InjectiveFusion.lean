@@ -31,16 +31,15 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Under the unit-retract condition every centre object is a finite simple sum. -/
 theorem center_finite_simple_sum_of_unit_retract {X : C.Obj} {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
-    (Z : 𝒵) : FiniteSimpleSum (𝒵) Z := by
-  let (W : 𝒵) : IsArtinianObject W := center_artinian C W
-  let : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective C X)
-  let (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
-  let (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) :=
-    let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
+    (Z : 𝒵) : FiniteSimpleSum (𝒵) Z :=
+  letI (W : 𝒵) : IsArtinianObject W := center_artinian C W
+  letI : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective C X)
+  letI (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
+  letI (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) :=
+    letI : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
     Centre.finiteDimensional_hom ℂ A B
-  refine finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW => ?_) Z
-  obtain ⟨P, hP⟩ := exists_simple_subobject hW
-  exact ⟨P, P.arrow, hP, inferInstance⟩
+  finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW =>
+    ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract {X : C.Obj} {U : 𝒵}
@@ -59,10 +58,10 @@ set_option backward.isDefEq.respectTransparency false in
 def unitRetractOfNonzeroCap {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [RightRigidCategory D] [Preadditive D] [HasKernels D] [Simple (𝟙_ D)]
     {J : D} (cap : J ⊗ Jᘁ ⟶ 𝟙_ D) (hne : η_ J (Jᘁ) ≫ cap ≠ 0) :
-    Retract (𝟙_ D) (J ⊗ Jᘁ) := by
+    Retract (𝟙_ D) (J ⊗ Jᘁ) :=
   letI : IsIso (η_ J (Jᘁ) ≫ cap) := isIso_of_hom_simple hne
-  refine { i := η_ J (Jᘁ), r := cap ≫ inv (η_ J (Jᘁ) ≫ cap), retract := ?_ }
-  simp only [← Category.assoc, IsIso.hom_inv_id]
+  { i := η_ J (Jᘁ), r := cap ≫ inv (η_ J (Jᘁ) ≫ cap)
+    retract := (Category.assoc _ _ _).symm.trans (IsIso.hom_inv_id _) }
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre pivotal structure with nonzero trace on an induced object implies fusion. -/

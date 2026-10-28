@@ -176,7 +176,6 @@ theorem crossingUnitBlock_eval (X T : D) (e : A ≅ 𝟙_ D) :
     _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ T ◁ g) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫
       (((((T ⊗ A) ⊗ X) ◁ q) ≫ (((T ◁ f) ▷ X) ▷ Aᘁ))) ⊗≫
       (((T ⊗ (𝟙_ D)) ⊗ X) ◁ d) ⊗≫ 𝟙 _ := by
-        simp only [comp_whiskerRight, whiskerLeft_comp]
         monoidal
     _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ T ◁ g) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫
       (((((T ◁ f) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ≫
