@@ -59,8 +59,7 @@ def alternatingProjector (ρ : Equiv.Perm (Fin n) →* A) : A :=
 
 /-- The alternating projector is idempotent before making any splitting assumption. -/
 theorem alternatingProjector_idempotent (ρ : Equiv.Perm (Fin n) →* A) :
-    alternatingProjector (k := k) ρ * alternatingProjector (k := k) ρ =
-      alternatingProjector (k := k) ρ :=
+    IsIdempotentElem (alternatingProjector (k := k) ρ) :=
   algebraAverage_idempotent _
 
 /-- The alternating projector is the normalized signed sum of permutation operators. -/

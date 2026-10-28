@@ -165,7 +165,7 @@ theorem product_braidImage_finite (X Y : C) (n : ℕ)
   Finite.of_injective (productBraidMap X Y n) (productBraidMap_injective X Y n)
 
 /-- Tensoring the positive and negative images preserves finite braid images. -/
-theorem productFunctor_objectPropertyF (X Y : C)
+theorem productFunctor_objectPropertyF {X Y : C}
     (hX : ObjectPropertyF X) (hY : ObjectPropertyF Y) :
     ObjectPropertyF (productFunctor.obj (X,Y)) := by
   let _ : (productFunctor (C := C)).Braided := productBraided
@@ -176,9 +176,9 @@ theorem productFunctor_objectPropertyF (X Y : C)
   exact product_braidImage_finite X Y n
 
 /-- Property F transfers to every retract of a product-functor image. -/
-theorem productFunctor_retract_objectPropertyF (X Y : C) (Z : CategoryTheory.Center C)
+theorem productFunctor_retract_objectPropertyF {X Y : C} {Z : CategoryTheory.Center C}
     (r : CategoryTheory.Retract Z (productFunctor.obj (X,Y)))
     (hX : ObjectPropertyF X) (hY : ObjectPropertyF Y) : ObjectPropertyF Z :=
-  objectPropertyF_of_retract r (productFunctor_objectPropertyF X Y hX hY)
+  objectPropertyF_of_retract r (productFunctor_objectPropertyF hX hY)
 
 end PropertyF.Ground.Centre

@@ -216,7 +216,7 @@ theorem coevaluation_sliding (Z : Center C) (U : C) :
 set_option backward.isDefEq.respectTransparency false in
 /-- If the normalized crossing is monoidal, the chosen coevaluation is a
 morphism in the actual centre, without further hypotheses. -/
-theorem coevaluation_central (Z : Center C)
+theorem coevaluation_central {Z : Center C}
     (hTensor : IsDualCrossingMonoidal Z) (U : C) :
     ((η_ Z.1 Z.1ᘁ) ▷ U) ≫ ((Z ⊗ dualObject Z hTensor).2.β U).hom =
       ((𝟙_ (Center C)).2.β U).hom ≫ (U ◁ η_ Z.1 Z.1ᘁ) := by
@@ -356,7 +356,7 @@ theorem evaluation_sliding (Z : Center C) (U : C) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The chosen base evaluation is a morphism of actual centre objects. -/
-theorem evaluation_central (Z : Center C)
+theorem evaluation_central {Z : Center C}
     (hTensor : IsDualCrossingMonoidal Z) (U : C) :
     ((ε_ Z.1 Z.1ᘁ) ▷ U) ≫ ((𝟙_ (Center C)).2.β U).hom =
       ((dualObject Z hTensor ⊗ Z).2.β U).hom ≫ (U ◁ ε_ Z.1 Z.1ᘁ) := by
@@ -376,7 +376,7 @@ theorem evaluation_central (Z : Center C)
 @[instance_reducible] def rigidCenter : RigidCategory (Center C) := by
   apply rigidOfMateCoherence
   intro Z
-  refine ⟨dualCrossing_tensor Z, coevaluation_central Z (dualCrossing_tensor Z),
-    evaluation_central Z (dualCrossing_tensor Z)⟩
+  refine ⟨dualCrossing_tensor Z, coevaluation_central (dualCrossing_tensor Z),
+    evaluation_central (dualCrossing_tensor Z)⟩
 
 end PropertyF.Ground.CentreRigid
