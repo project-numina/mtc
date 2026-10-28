@@ -47,12 +47,11 @@ on the chosen double-dual isomorphism. -/
 theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional k (X ⟶ X)]
     (scalar : End (𝟙_ C) ≃ₐ[k] k) (j l : X ≅ (Xᘁ)ᘁ) :
     scalar (rightQuantumTrace j) * scalar (leftQuantumTrace j) =
-      scalar (rightQuantumTrace l) * scalar (leftQuantumTrace l) := by
-  obtain ⟨c, hc, hhom⟩ := isomorphisms_scalar (k := k) j l
-  have hl : leftQuantumTrace l = c⁻¹ • leftQuantumTrace j := by
-    apply End.homEquiv.injective
-    simp [leftQuantumTrace, iso_inv_eq_inv_smul hc hhom, tensorHom_def]
-  simp [rightQuantumTrace_smul_hom hhom, hl, hc, mul_comm, mul_left_comm]
+      scalar (rightQuantumTrace l) * scalar (leftQuantumTrace l) :=
+  (isomorphisms_scalar (k := k) j l).elim fun c ⟨hc, hhom⟩ ↦
+    have hl : leftQuantumTrace l = c⁻¹ • leftQuantumTrace j := End.homEquiv.injective (by
+      simp [leftQuantumTrace, iso_inv_eq_inv_smul hc hhom, tensorHom_def])
+    by simp [rightQuantumTrace_smul_hom hhom, hl, hc, mul_comm, mul_left_comm]
 
 end PropertyF.Ground.Dimensions
 

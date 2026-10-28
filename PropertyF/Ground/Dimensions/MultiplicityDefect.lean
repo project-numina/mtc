@@ -83,7 +83,8 @@ theorem fourthDualRootNaturalSquare_eq :
       ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
         (fourthDualIso (simples C i)).hom
     rw [fourthDualRootNaturalIso_app_simple]
-    exact congrArg Iso.hom (fourthDualSimpleRoot_sq i)
+    exact congrArg Iso.hom (Classical.choose_spec
+      (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i))))
 
 end PropertyF.Ground.Dimensions
 
