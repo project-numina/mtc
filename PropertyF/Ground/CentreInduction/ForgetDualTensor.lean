@@ -40,11 +40,9 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (κ₂ Y).hom = (κ₂ X).hom ≫ ((f.fᘁ)ᘁ) := by
   simpa only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
-    Category.assoc] using (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩
-    (CommSq.vert_inv (g := rightDualIsoMap (κ X))
-      (h := rightDualIsoMap (κ Y)) ⟨by
-        simpa only [comp_rightAdjointMate, rightDualIsoMap] using
-          (congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)).symm⟩)).w
+    Category.assoc] using (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by
+      simpa only [comp_rightAdjointMate] using (congrArg (fun m => rightAdjointMate m)
+        (CommSq.vert_inv (g := κ Y) (h := κ X) ⟨forgetDualIso_natural f⟩).w).symm⟩).w
 
 variable (p : PivotalStructure (C := D))
 
@@ -139,10 +137,9 @@ private theorem forgetDualIso_tensor_mate_inv :
     (τ X Y).hom.fᘁ ≫ (κ (X ⊗ Y)).invᘁ =
       (((κ Y).inv ⊗ₘ (κ X).inv)ᘁ) ≫
         (τ X.1 Y.1).homᘁ :=
-  (CommSq.vert_inv (g := rightDualIsoMap ((κ Y) ⊗ᵢ (κ X)))
-    (h := rightDualIsoMap (κ (X ⊗ Y))) ⟨by
-      simpa only [comp_rightAdjointMate, rightDualIsoMap, tensorIso_hom] using
-        congrArg (fun m => rightAdjointMate m) (forgetDualIso_tensor X Y)⟩).w
+  by simpa only [comp_rightAdjointMate, tensorIso_inv] using
+    congrArg (fun m => rightAdjointMate m) (CommSq.horiz_inv
+      (f := κ (X ⊗ Y)) (i := (κ Y) ⊗ᵢ (κ X)) ⟨forgetDualIso_tensor X Y⟩).w
 
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
 theorem forgetDoubleDualIso_tensor :
