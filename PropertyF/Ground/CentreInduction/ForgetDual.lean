@@ -13,7 +13,7 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
-local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵" => Center C.Obj
 
 /-- A pivotal structure has the Frobenius–Perron dimensions on simple objects. -/
 abbrev PivotalHasFPDimensions (p : PivotalStructure (C := C.Obj)) : Prop :=
@@ -39,8 +39,8 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (CategoryTheory.Center D)]
-local notation "𝒵" => CategoryTheory.Center D
+  [RigidCategory (Center D)]
+local notation "𝒵" => Center D
 
 omit [RightRigidCategory D] in
 set_option backward.isDefEq.respectTransparency false in
@@ -49,19 +49,19 @@ set_option backward.isDefEq.respectTransparency false in
   coevaluation' := (η_ Z (Zᘁ)).f
   evaluation' := (ε_ Z (Zᘁ)).f
   coevaluation_evaluation' := by
-    have h := congrArg CategoryTheory.Center.Hom.f (ExactPairing.coevaluation_evaluation Z (Zᘁ))
-    simpa only [CategoryTheory.Center.comp_f, CategoryTheory.Center.whiskerLeft_f,
-      CategoryTheory.Center.whiskerRight_f, CategoryTheory.Center.associator_inv_f,
-      CategoryTheory.Center.associator_hom_f, CategoryTheory.Center.rightUnitor_hom_f,
-      CategoryTheory.Center.rightUnitor_inv_f, CategoryTheory.Center.leftUnitor_hom_f,
-      CategoryTheory.Center.leftUnitor_inv_f] using h
+    have h := congrArg Center.Hom.f (ExactPairing.coevaluation_evaluation Z (Zᘁ))
+    simpa only [Center.comp_f, Center.whiskerLeft_f,
+      Center.whiskerRight_f, Center.associator_inv_f,
+      Center.associator_hom_f, Center.rightUnitor_hom_f,
+      Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
+      Center.leftUnitor_inv_f] using h
   evaluation_coevaluation' := by
-    have h := congrArg CategoryTheory.Center.Hom.f (ExactPairing.evaluation_coevaluation Z (Zᘁ))
-    simpa only [CategoryTheory.Center.comp_f, CategoryTheory.Center.whiskerLeft_f,
-      CategoryTheory.Center.whiskerRight_f, CategoryTheory.Center.associator_inv_f,
-      CategoryTheory.Center.associator_hom_f, CategoryTheory.Center.rightUnitor_hom_f,
-      CategoryTheory.Center.rightUnitor_inv_f, CategoryTheory.Center.leftUnitor_hom_f,
-      CategoryTheory.Center.leftUnitor_inv_f] using h
+    have h := congrArg Center.Hom.f (ExactPairing.evaluation_coevaluation Z (Zᘁ))
+    simpa only [Center.comp_f, Center.whiskerLeft_f,
+      Center.whiskerRight_f, Center.associator_inv_f,
+      Center.associator_hom_f, Center.rightUnitor_hom_f,
+      Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
+      Center.leftUnitor_inv_f] using h
 
 /-- Compare the underlying centre dual with the chosen base dual. -/
 def forgetDualIso (Z : 𝒵) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=
@@ -111,10 +111,10 @@ pivotal dimensions equal FP dimensions. -/
 theorem center_fusion_of_compatible_pivotal (C : BraidedFusionCategory.{v,u})
     {p : PivotalStructure (C := C.Obj)}
     (hsimple : PivotalHasFPDimensions C p)
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    {pZ : PivotalStructure (C := CategoryTheory.Center C.Obj)}
+    [RigidCategory (Center C.Obj)]
+    {pZ : PivotalStructure (C := Center C.Obj)}
     (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) :
-    IsFusionCategory (CategoryTheory.Center C.Obj) := by
+    IsFusionCategory (Center C.Obj) := by
   apply center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
   intro hz
   have ht := forget_trace_of_pivotal_component hcompat

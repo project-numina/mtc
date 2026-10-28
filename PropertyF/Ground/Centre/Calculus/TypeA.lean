@@ -36,6 +36,10 @@ theorem strandPermutation_surjective (n : ℕ) : Function.Surjective (strandPerm
   FreeGroup.lift_surjective_iff_closure_range_eq_top.mpr <|
     Subgroup.closure_eq_top_of_mclosure_eq_top <| Equiv.Perm.mclosure_swap_castSucc_succ (n + 1)
 
+/-- The transposition of consecutive positions in a finite strand set. -/
+abbrev adjacentSwap {n : ℕ} (i : Fin n) : Equiv.Perm (Fin (n + 1)) :=
+  Equiv.swap i.castSucc i.succ
+
 /-- Pure-word triviality is the precise remaining condition for the actual
 braid action to factor through the symmetric group. -/
 def permutationActionOfPureTrivial (X : C) (n : ℕ)
@@ -49,7 +53,7 @@ categorical braid generator. -/
 theorem permutationActionOfPureTrivial_swap (X : C) (n : ℕ)
     (h : (strandPermutation n).ker ≤ (FreeGroup.lift (braidGenerator X n)).ker)
     (i : Fin (n + 1)) :
-    permutationActionOfPureTrivial X n h (Equiv.swap i.castSucc i.succ) =
+    permutationActionOfPureTrivial X n h (adjacentSwap i) =
       braidGenerator X n i :=
   let e := QuotientGroup.liftEquiv (strandPermutation n).ker (strandPermutation_surjective n) rfl
   (congrArg (QuotientGroup.lift _ (FreeGroup.lift (braidGenerator X n)) h)
@@ -130,20 +134,18 @@ variable {n : ℕ} {i j : Fin (n + 1)}
 
 /-- Adjacent transpositions satisfy the braid relation. -/
 theorem adjacentSwaps_braid (hij : i.val + 1 = j.val) :
-    Equiv.swap i.castSucc i.succ * Equiv.swap j.castSucc j.succ * Equiv.swap i.castSucc i.succ =
-      Equiv.swap j.castSucc j.succ * Equiv.swap i.castSucc i.succ * Equiv.swap j.castSucc j.succ := by
+    adjacentSwap i * adjacentSwap j * adjacentSwap i =
+      adjacentSwap j * adjacentSwap i * adjacentSwap j := by
+  dsimp only [adjacentSwap]
   rw [← (show i.succ = j.castSucc from Fin.ext hij)]
   apply swap_braid <;> apply Fin.ne_of_val_ne <;>
     simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
 
 /-- Distant adjacent transpositions commute. -/
 theorem adjacentSwaps_commute (hij : i.val + 1 < j.val) :
-    Equiv.swap i.castSucc i.succ * Equiv.swap j.castSucc j.succ =
-      Equiv.swap j.castSucc j.succ * Equiv.swap i.castSucc i.succ := by
-  apply (Equiv.Perm.disjoint_swap_swap ?_).commute.eq
-  simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil,
-    not_or, and_true, Fin.ext_iff, Fin.val_castSucc, Fin.val_succ, not_false_eq_true]
-  repeat' constructor <;> omega
+    adjacentSwap i * adjacentSwap j =
+      adjacentSwap j * adjacentSwap i :=
+  (Equiv.Perm.disjoint_swap_swap (by simp [Fin.ext_iff]; omega)).commute.eq
 
 /-- Every defining type-A relation also has trivial strand permutation. -/
 theorem typeARelations_permutation_trivial (n : ℕ) :
@@ -261,7 +263,7 @@ def permutationAction (X : C)
 /-- The descended action sends adjacent swaps to the actual braid generators. -/
 theorem permutationAction_swap {X : C}
     (hX : SelfTransparent X) {n : ℕ} (i : Fin (n + 1)) :
-    permutationAction X hX n (Equiv.swap i.castSucc i.succ) = braidGenerator X n i :=
+    permutationAction X hX n (adjacentSwap i) = braidGenerator X n i :=
   permutationActionOfPureTrivial_swap X n _ i
 
 end PropertyF.Ground.CentreCalculus

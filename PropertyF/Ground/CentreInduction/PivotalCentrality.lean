@@ -15,32 +15,33 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (CategoryTheory.Center D)]
+  [RigidCategory (Center D)]
+local notation "𝒵" => Center D
 
 /-- Transported pivotal components respect the braiding between centre objects. -/
-private theorem transported_pivotal_braiding (p : PivotalStructure (C := D)) (Z B : CategoryTheory.Center D) :
-    let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
+private theorem transported_pivotal_braiding (p : PivotalStructure (C := D)) (Z B : 𝒵) :
+    let u (W : 𝒵) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
       (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
     (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
       (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f := by
   dsimp only
-  let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
+  let u (W : 𝒵) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
     (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
-  have hu (X Y : CategoryTheory.Center D) :
+  have hu (X Y : 𝒵) :
       u (X ⊗ Y) = (u X ⊗ₘ u Y) ≫ (doubleDualTensorIso X Y).hom.f :=
     (transported_pivotal_tensor p X Y).symm
   let b := (β_ Z B).hom
   have hn : b.f ≫ u (B ⊗ Z) = u (Z ⊗ B) ≫ ((bᘁ)ᘁ).f :=
     by simpa [u, Category.assoc] using transported_pivotal_natural p b
   rw [hu, hu] at hn
-  have hb := congrArg CategoryTheory.Center.Hom.f (doubleDualTensorIso_braiding Z B)
-  simp only [CategoryTheory.Center.comp_f] at hb
+  have hb := congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
+  simp only [Center.comp_f] at hb
   change (doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
     (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (doubleDualTensorIso B Z).hom.f at hb
   simp only [Category.assoc] at hn
   rw [hb] at hn
   let : IsIso (doubleDualTensorIso B Z).hom.f := by
-    change IsIso ((CategoryTheory.Center.forget D).map (doubleDualTensorIso B Z).hom)
+    change IsIso ((Center.forget D).map (doubleDualTensorIso B Z).hom)
     infer_instance
   apply (cancel_mono (doubleDualTensorIso B Z).hom.f).1
   simpa [Category.assoc] using hn
@@ -49,9 +50,9 @@ private theorem transported_pivotal_braiding (p : PivotalStructure (C := D)) (Z 
 theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : PivotalStructure (C := D)) :
     PivotalComponentsCentral p := by
   intro Z T
-  let F := CategoryTheory.Center.ofBraided D
+  let F := Center.ofBraided D
   let B := F.obj T
-  let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
+  let u (W : 𝒵) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
     (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
   have hc := transported_pivotal_braiding p Z B
   change (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
@@ -62,7 +63,7 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : PivotalStructur
     exact positivePivotalComponent_forget p T
   let : IsIso (u B) := by
     rw [← hj]
-    change IsIso ((CategoryTheory.Center.forget D).map j)
+    change IsIso ((Center.forget D).map j)
     infer_instance
   have hbeta := ((Zᘁ)ᘁ).2.naturality (u B)
   change (u Z ▷ T) ≫ (((Zᘁ)ᘁ).2.β T).hom =
@@ -82,7 +83,7 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {C : BraidedFusionCategory.{v,u}}
-local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵" => Center C.Obj
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 open CategoryTheory.Limits
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -90,7 +91,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 /-- A positive simple image centralizing the induced unit is the unit. -/
 theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
     (hcentral : Centre.Centralizes
-      ((induction C).obj (𝟙_ C.Obj)) ((CategoryTheory.Center.ofBraided C.Obj).obj (simples C i))) :
+      ((induction C).obj (𝟙_ C.Obj)) ((Center.ofBraided C.Obj).obj (simples C i))) :
     i = unitIndex C := by
   by_contra hi
   let X := 𝟙_ C.Obj
@@ -102,7 +103,7 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
   have hb : crossingCandidate C X S = (β_ S (underlying C X)).inv := by
     rw [← IsIso.Iso.inv_hom]
     apply IsIso.eq_inv_of_inv_hom_id
-    exact congrArg CategoryTheory.Center.Hom.f hcentral
+    exact congrArg Center.Hom.f hcentral
   have hzero : (biproduct.ι V i ▷ S) ≫ crossingCandidate C X S ≫
       (S ◁ (underlyingCounit C).app X) = 0 := by
     rw [hb]
@@ -124,12 +125,12 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
 theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
     (hcentral : ∀ W : 𝒵, Centre.Centralizes Z W) :
     Nonempty (Z ≅ 𝟙_ (𝒵)) := by
-  let F := CategoryTheory.Center.ofBraided C.Obj
+  let F := Center.ofBraided C.Obj
   let e := Centre.positiveIsoOfCentralizesNegative Z (fun X => hcentral ((Centre.negative C.Obj).obj X))
   let : F.PreservesMonomorphisms := {
     preserves := fun f => by
       intro _
-      apply (CategoryTheory.Center.forget C.Obj).mono_of_mono_map
+      apply (Center.forget C.Obj).mono_of_mono_map
       change Mono f
       infer_instance }
   let : Simple (F.obj Z.1) := Simple.of_iso e.symm
