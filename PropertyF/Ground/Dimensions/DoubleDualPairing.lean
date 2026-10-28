@@ -236,13 +236,12 @@ theorem pivotal_dual (p : PivotalStructure (C := C)) (X : C) :
   simp only [tensorHom_def, Category.assoc] at h
   rw [← (rightAdjointMate_comp_evaluation (p.iso X).hom)] at h
   rw [← comp_whiskerRight_assoc] at h
-  have hk : (p.iso (Xᘁ)).hom ≫ ((p.iso X).hom)ᘁ = 𝟙 (Xᘁ) := by
-    apply evaluation_ext (X := X)
-    simpa only [id_whiskerRight, Category.id_comp] using h
-  calc
-    _ = (p.iso (Xᘁ)).hom ≫ (((p.iso X).hom)ᘁ ≫ ((p.iso X).inv)ᘁ) := by
-      rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id, Category.comp_id]
-    _ = _ := by rw [← Category.assoc, hk, Category.id_comp]
+  apply (cancel_mono (rightDualIsoMap (p.iso X)).hom).1
+  change _ = (rightDualIsoMap (p.iso X)).inv ≫ (rightDualIsoMap (p.iso X)).hom
+  rw [Iso.inv_hom_id]
+  change (p.iso (Xᘁ)).hom ≫ ((p.iso X).hom)ᘁ = 𝟙 (Xᘁ)
+  apply evaluation_ext (X := X)
+  simpa only [id_whiskerRight, Category.id_comp] using h
 end PropertyF.Ground.Dimensions
 
 end
