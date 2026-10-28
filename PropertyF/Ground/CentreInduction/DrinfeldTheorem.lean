@@ -48,18 +48,11 @@ theorem drinfeld_tensor_inverse {C : BraidedFusionCategory.{v,u}} (h : DrinfeldT
       (Dimensions.doubleDualTensorIso X Y).inv ≫
         ((doubleDualIso C X).inv ⊗ₘ (doubleDualIso C Y).inv) ≫
           Modular.doubleBraiding X Y := by
-  let m : X ⊗ Y ≅ X ⊗ Y := (β_ X Y) ≪≫ (β_ Y X)
-  have hi : m ≪≫ doubleDualIso C (X ⊗ Y) =
-      (doubleDualIso C X ⊗ᵢ doubleDualIso C Y) ≪≫ Dimensions.doubleDualTensorIso X Y := by
-    apply Iso.ext
-    exact h X Y
-  have hinv := congrArg Iso.inv hi
-  simp only [Iso.trans_inv, tensorIso_inv] at hinv
-  change (doubleDualIso C (X ⊗ Y)).inv ≫ m.inv = _ at hinv
-  apply (cancel_mono m.inv).1
-  rw [hinv]
-  change _ = (_ ≫ _ ≫ m.hom) ≫ m.inv
-  simp [Category.assoc]
+  change (doubleDualIso C (X ⊗ Y)).inv =
+    (Dimensions.doubleDualTensorIso X Y).inv ≫
+      (doubleDualIso C X ⊗ᵢ doubleDualIso C Y).inv ≫ Modular.doubleBraiding X Y
+  rw [Iso.eq_inv_comp, Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
+  exact (h X Y).symm
 
 /-- Formula for transporting the inverse Drinfeld map through an isomorphism. -/
 theorem drinfeld_inv_natural {A B : C.Obj} (t : A ≅ B) :
@@ -100,10 +93,9 @@ theorem drinfeld_inv_dual_tensor {C : BraidedFusionCategory.{v,u}} (h : Drinfeld
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
     (doubleDualIso C ((X ⊗ Y)ᘁ)).invᘁ = _
   rw [hn', hi']
-  have hc : t.homᘁ ≫ t.invᘁ = 𝟙 _ := by
-    rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
   simp only [comp_rightAdjointMate, Category.assoc]
-  rw [← Category.assoc (t.homᘁ), hc, Category.id_comp]
+  rw [← Category.assoc (t.homᘁ), ← comp_rightAdjointMate, Iso.inv_hom_id,
+    rightAdjointMate_id, Category.id_comp]
   rw [← Category.assoc (rightDualTensorIso (Yᘁ) (Xᘁ)).inv, hm']
   simp only [Category.assoc]
   rw [← Category.assoc (rightDualTensorIso (Yᘁ) (Xᘁ)).inv, ht']
