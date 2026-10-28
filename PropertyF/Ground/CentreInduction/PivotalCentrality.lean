@@ -17,9 +17,10 @@ set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (Center D)]
 local notation "𝒵" => Center D
+variable (p : PivotalStructure (C := D))
 
 /-- Transported pivotal components respect the braiding between centre objects. -/
-private theorem transported_pivotal_braiding (p : PivotalStructure (C := D)) (Z B : 𝒵) :
+private theorem transported_pivotal_braiding (Z B : 𝒵) :
     let u := transportedPivotalHom p
     (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
       (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f := by
@@ -45,7 +46,7 @@ private theorem transported_pivotal_braiding (p : PivotalStructure (C := D)) (Z 
   simpa [Category.assoc] using hn
 
 /-- Every transported base pivotal component is a morphism in the actual centre. -/
-theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : PivotalStructure (C := D)) :
+theorem pivotalComponentsCentral_proved [BraidedCategory D] :
     PivotalComponentsCentral p := by
   intro Z T
   let F := Center.ofBraided D
