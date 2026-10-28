@@ -27,7 +27,7 @@ def fourthDualRootScalar (C : BraidedFusionCategory.{v,u})
     (i : Fin (rank C)) : ℂ := by
   let : Simple (simples C i) := simples_simple C i
   let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  exact Classical.choose (isomorphisms_scalar
+  exact Classical.choose (isomorphisms_scalar (k := ℂ)
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
 theorem fourthDualRootScalar_spec
@@ -36,7 +36,7 @@ theorem fourthDualRootScalar_spec
       (doubleDualIso C (simples C i)).hom :=
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  let h := Classical.choose_spec (isomorphisms_scalar
+  let h := Classical.choose_spec (isomorphisms_scalar (k := ℂ)
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
   ⟨h.1, h.2.1⟩
 

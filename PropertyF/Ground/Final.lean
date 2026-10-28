@@ -85,7 +85,6 @@ conjugate has integral global Frobenius–Perron dimension. -/
 theorem target : TargetStatement.{v,u} := by
   intro C hPU hF
   obtain ⟨D, _, ⟨E⟩, hD⟩ := hPU
-  have hDF := Modular.conjugate_propertyF E hF
   obtain ⟨p, _, hp⟩ := CentreInduction.positive_spherical_of_pseudoUnitary D hD
   let := CentreRigid.rigidCenter (C := D.Obj)
   let hc := CentreInduction.pivotalComponentsCentral_proved p
@@ -107,14 +106,13 @@ theorem target : TargetStatement.{v,u} := by
   have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy D pZ :=
     fun _ _ _ _ ↦ CentreModular.mixed_monodromy_finite_of_pivotal_balancing
       (Integrate.bundledCenter D) pZ hbalance _ _
-  have hInt : WeaklyIntegral (globalFPDimension D) := by
-    apply weaklyIntegral_of_actual_center D hDF ⟨hspherical, hdim⟩ hdet
-      (center_globalDimension_square_of_actual_induction D ⟨hspherical, hdim⟩)
-      (fun y hy ↦ CentreCalculus.actual_symmetricCore_integrality ⟨hspherical, hdim⟩
-        (y := ⟨y, hy⟩))
-    · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mpr
-        (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)
-    · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mp hy
-  rwa [Modular.conjugate_globalFPDimension E]
+  rw [Modular.conjugate_globalFPDimension E]
+  apply weaklyIntegral_of_actual_center D (Modular.conjugate_propertyF E hF) ⟨hspherical, hdim⟩ hdet
+    (center_globalDimension_square_of_actual_induction D ⟨hspherical, hdim⟩)
+    (fun y hy ↦ CentreCalculus.actual_symmetricCore_integrality ⟨hspherical, hdim⟩
+      (y := ⟨y, hy⟩))
+  · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mpr
+      (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)
+  · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mp hy
 
 end PropertyF.Ground
