@@ -101,10 +101,8 @@ include hp hdet hreal in
 unit coefficient is nonzero, any label centralizing that support has a
 nonzero dual coefficient in the original vector. -/
 theorem nonzero_dual_coefficient_of_sCentralizer
-    (hunit : f (unitIndex D) ≠ 0)
-    (hsupport : FourierSupportedOn D p f core)
-    {x : Fin (rank D)} (hx : ∀ y ∈ core, sCentralizes D p x y) :
-    f (dualIndex D x) ≠ 0 := by
+    (hunit : f (unitIndex D) ≠ 0) (hsupport : FourierSupportedOn D p f core)
+    {x : Fin (rank D)} (hx : ∀ y ∈ core, sCentralizes D p x y) : f (dualIndex D x) ≠ 0 := by
   classical
   have heq : sFourier D p (sFourier D p f) x =
       dim D p x * sFourier D p (sFourier D p f) (unitIndex D) := by
@@ -124,10 +122,9 @@ hypotheses are explicit: this theorem does not establish the required
 regular-vector identity. -/
 theorem doubleCentralizer_of_fourier_support
     (hfp : IsFPSpherical D p) {generated : Set (Fin (rank D))}
-    (hunit : f (unitIndex D) ≠ 0)
-    (hgenerated : Function.support f ⊆ generated)
-    (hsupport : FourierSupportedOn D p f core) :
-    sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated <|
+    (hunit : f (unitIndex D) ≠ 0) (hgenerated : Function.support f ⊆ generated)
+    (hsupport : FourierSupportedOn D p f core) : sCentralizer D p core ⊆ generated :=
+  fun x hx ↦ hgenerated <|
   (dualIndex_involutive D x) ▸
     nonzero_dual_coefficient_of_sCentralizer hfp.1 hdet (realSimpleDimensions_of_fp hfp.2)
       hunit hsupport (fun y hy ↦ sCentralizes_dual hfp.2 (sCentralizes_symm (hx y hy)))
@@ -143,8 +140,7 @@ variable {D : Ground.BraidedFusionCategory.{v,u}}
 /-- A character pairing with an eigenvector has the same eigenvalue on both sides. -/
 theorem sum_mul_eigenvalue {ι R : Type*} [Fintype ι] [CommSemiring R]
     (N : ι → ι → R) (χ f : ι → R) {c d : R}
-    (hχ : ∀ i, c * χ i = ∑ k, N i k * χ k)
-    (hf : ∀ k, ∑ i, N i k * f i = d * f k) :
+    (hχ : ∀ i, c * χ i = ∑ k, N i k * χ k) (hf : ∀ k, ∑ i, N i k * f i = d * f k) :
     c * (∑ i, χ i * f i) = d * ∑ i, χ i * f i := by
   classical
   calc
@@ -158,13 +154,10 @@ theorem sum_mul_eigenvalue {ι R : Type*} [Fintype ι] [CommSemiring R]
 
 /-- The S-transform of a common FP eigenvector vanishes at every label whose
 normalized S character differs from the FP character on a chosen label. -/
-theorem fourier_eq_zero_of_fusion_eigenvector
-    (hdim : HasFPSimpleDimensions D p)
+theorem fourier_eq_zero_of_fusion_eigenvector (hdim : HasFPSimpleDimensions D p)
     {f : Fin (rank D) → ℂ} {a y : Fin (rank D)}
     (heigen : ∀ k, ∑ i, (fusionCoeff D a i k : ℂ) * f i = (fpSimple D a : ℂ) * f k)
-    (hne : S D p a y ≠
-      dim D p a * dim D p y) :
-    sFourier D p f y = 0 := by
+    (hne : S D p a y ≠ dim D p a * dim D p y) : sFourier D p f y = 0 := by
   classical
   let χ (i : Fin (rank D)) := S D p i y / dim D p y
   let T : ℂ := ∑ i, χ i * f i
@@ -249,9 +242,8 @@ theorem regular_vector_fusion_eigenvector {A : Finset (Fin (rank D))}
   · exact regularVector_mul_eq_zero_of_not_mem hA.fusion ha hk
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
-theorem regularVector_fourier_support
-    (hdim : HasFPSimpleDimensions D p)
-    {A : Finset (Fin (rank D))} {core : Set (Fin (rank D))}
+theorem regularVector_fourier_support (hdim : HasFPSimpleDimensions D p)
+    {A : Finset (Fin (rank D))} {core : Set _}
     (hA : IsDualFusionClosed D A) (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
     FourierSupportedOn D p (regularVector D A) core := by
   intro y hy
@@ -265,10 +257,8 @@ theorem regularVector_fourier_support
 labels. The supplied core must contain its numerical S-centralizer. -/
 theorem doubleCentralizer_of_fusion_closed
     (hfp : IsFPSpherical D p) (hdet : (S D p).det ≠ 0)
-    {A : Finset (Fin (rank D))} {core : Set (Fin (rank D))}
-    (hA : IsFusionSubring D A)
-    (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
-    sCentralizer D p core ⊆ (↑A : Set _) :=
+    {A : Finset (Fin (rank D))} {core : Set _} (hA : IsFusionSubring D A)
+    (hcore : sCentralizer D p (↑A : Set _) ⊆ core) : sCentralizer D p core ⊆ (↑A : Set _) :=
   doubleCentralizer_of_fourier_support hdet hfp (f := regularVector D A)
     (regularVector_ne_zero_iff.mpr hA.unit) (fun _ hi ↦ regularVector_ne_zero_iff.mp hi)
     (regularVector_fourier_support hfp.2 hA.toIsDualFusionClosed hcore)

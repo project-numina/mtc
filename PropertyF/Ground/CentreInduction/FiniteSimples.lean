@@ -17,12 +17,12 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
-local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵" => Center C.Obj
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- An underlying factorization through a centre monomorphism is central. -/
-theorem center_factor {P Q X : CategoryTheory.Center D} (p : P ⟶ X) (q : Q ⟶ X)
+theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g := by
   refine ⟨⟨g, ?_⟩, rfl⟩
@@ -35,7 +35,7 @@ theorem center_factor {P Q X : CategoryTheory.Center D} (p : P ⟶ X) (q : Q ⟶
   exact p.comm T
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
-def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : CategoryTheory.Center D) (P : Subobject X) :
+def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : Center D) (P : Subobject X) :
     Submodule ℂ (X.1 ⟶ X.1) := LinearMap.range (Linear.rightComp ℂ X.1 P.arrow.f)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -47,7 +47,7 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
     constructor
     · intro h
       have : Mono P.arrow.f := by
-        change Mono ((CategoryTheory.Center.forget C.Obj).map P.arrow)
+        change Mono ((Center.forget C.Obj).map P.arrow)
         infer_instance
       let : IsSplitMono P.arrow.f := mono_splits C P.arrow.f
       have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange X P :=
@@ -57,20 +57,20 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
       have hg' : (P.arrow.f ≫ g) ≫ Q.arrow.f = P.arrow.f := by
         rw [Category.assoc, hg, ← Category.assoc, IsSplitMono.id, Category.id_comp]
       have : Mono Q.arrow.f := by
-        change Mono ((CategoryTheory.Center.forget C.Obj).map Q.arrow)
+        change Mono ((Center.forget C.Obj).map Q.arrow)
         infer_instance
       let : IsSplitMono Q.arrow.f := mono_splits C Q.arrow.f
       obtain ⟨t, ht⟩ := center_factor P.arrow Q.arrow (P.arrow.f ≫ g) hg'
       apply Subobject.le_of_comm t
-      apply CategoryTheory.Center.ext
+      apply Center.ext
       change t.f ≫ Q.arrow.f = P.arrow.f
       rw [ht, hg']
     · intro h x hx
       obtain ⟨g, rfl⟩ := hx
       refine ⟨g ≫ (Subobject.ofLE P Q h).f, ?_⟩
       change (g ≫ (Subobject.ofLE P Q h).f) ≫ Q.arrow.f = g ≫ P.arrow.f
-      have hfactor := congrArg CategoryTheory.Center.Hom.f (Subobject.ofLE_arrow h)
-      dsimp only [CategoryTheory.Center.comp_f] at hfactor
+      have hfactor := congrArg Center.Hom.f (Subobject.ofLE_arrow h)
+      dsimp only [Center.comp_f] at hfactor
       rw [Category.assoc, hfactor])
 
 /-- Every actual centre object is Artinian, without spherical hypotheses. -/
@@ -88,7 +88,7 @@ theorem simple_mono_induced_simple (X : 𝒵) [Simple X] :
   obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp
     (show 0 < Module.finrank ℂ (X.1 ⟶ simples C i) from by
       simpa only [finrank_to_simple_eq_from_simple C] using hi)
-  let e := homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj) (induction C)
+  let e := homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj) (induction C)
     (actualAdjunction C) X (simples C i)
   exact ⟨i, e.symm g, mono_of_nonzero_from_simple (e.symm.map_eq_zero_iff.not.mpr hg)⟩
 
@@ -103,7 +103,7 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
-local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵" => Center C.Obj
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
@@ -119,7 +119,7 @@ theorem center_cokernel_measure_lt {S W : 𝒵}
   let : IsSplitEpi q := epi_splits C q
   let : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
   exact finrank_end_lt_of_split_epi p.f q (fun h => hp (by ext; exact h))
-    (congrArg CategoryTheory.Center.Hom.f (PropertyF.Ground.Centre.centerCokernel_condition p))
+    (congrArg Center.Hom.f (PropertyF.Ground.Centre.centerCokernel_condition p))
 
 /-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
 private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]

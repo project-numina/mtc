@@ -12,6 +12,8 @@ public import PropertyF.Ground.Centre.Abelian
 public import PropertyF.Ground.CentreInduction.Representatives
 public import PropertyF.Ground.CentreBundle.Fusion
 
+open PropertyF.Ground.Dimensions
+
 /-! The unit summand of the underlying induction object. -/
 
 @[expose] public noncomputable section
@@ -26,7 +28,7 @@ def unitSummandIso (X : C.Obj) :
     (simples C (unitIndex C) ⊗ X) ⊗ (simples C (unitIndex C))ᘁ ≅ X := by
   let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   let d : (simples C (unitIndex C))ᘁ ≅ 𝟙_ C.Obj :=
-    Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso
+    rightDualIsoMap e.symm ≪≫ rightDualUnitIso
   exact ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫ ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ X
 
 set_option backward.isDefEq.respectTransparency false in
@@ -88,16 +90,16 @@ set_option backward.defeqAttrib.useBackward true in
 by the induced identification of its right dual with the unit. -/
 theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
     {A : D} (e : A ≅ 𝟙_ D) :
-    η_ A Aᘁ ≫ (e.hom ⊗ₘ (Dimensions.rightDualIsoMap e.symm ≪≫
-      Dimensions.rightDualUnitIso).hom) = (ρ_ (𝟙_ D)).inv := by
+    η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm ≪≫
+      rightDualUnitIso).hom) = (ρ_ (𝟙_ D)).inv := by
   let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
   let p : ExactPairing (𝟙_ D) ((𝟙_ D)ᘁ) := HasRightDual.exact
   let q : ExactPairing (𝟙_ D) (𝟙_ D) := exactPairingUnit
-  simp only [Iso.trans_hom, Dimensions.rightDualIsoMap, Iso.symm_hom,
+  simp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
     tensorHom_def, whiskerLeft_comp]
   rw [← Category.assoc (e.hom ▷ Aᘁ), ← tensorHom_def, ← Category.assoc,
-    Dimensions.coevaluation_iso_map]
-  exact Dimensions.coevaluation_rightDualIso p q
+    coevaluation_iso_map]
+  exact coevaluation_rightDualIso p q
 
 end PropertyF.Ground.CentreInduction
 
@@ -110,7 +112,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
-local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵" => Center C.Obj
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The component indexed by a simple object inserts its coevaluation and
@@ -160,13 +162,13 @@ set_option backward.defeqAttrib.useBackward true in
 /-- The underlying maps proposed for the induction unit and counit satisfy
 the first triangle identity. -/
 theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
-    (Z : CategoryTheory.Center C.Obj) :
+    (Z : Center C.Obj) :
     unitCandidate C Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 := by
   simp only [unitCandidate, underlyingCounit, unitSummandRetract,
     CategoryTheory.Limits.biproduct.lift_π_assoc]
   let A := simples C (unitIndex C)
   let e : A ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
-  let d : Aᘁ ≅ 𝟙_ C.Obj := Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso
+  let d : Aᘁ ≅ 𝟙_ C.Obj := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
   dsimp only [unitComponent, unitSummandIso]
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_def,
     whiskerLeft_id, Category.comp_id, Category.assoc]
