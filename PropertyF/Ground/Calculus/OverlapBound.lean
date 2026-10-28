@@ -51,19 +51,16 @@ theorem pivotalTrace_braid_unitary_bound {X : C.Obj} {n : ℕ}
     ‖scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
       ∑ i, (m i : ℝ) * fp i := by
   obtain ⟨mult, _, hdim, htrace⟩ := pivotalTrace_braid_multiplicities C p scalar e hd b
-  have hw (j : Fin r) :
-      ‖∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤
-        ∑ i, (mult i j : ℝ) * fp i :=
-    (norm_sum_le _ _).trans <| Finset.sum_le_sum fun i _ => by
-      simpa using mul_le_mul_of_nonneg_left (hbound i) (Nat.cast_nonneg (mult i j))
   rw [htrace a, ← multiplicity_mass_eq m d mult fp hdim]
   refine (norm_sum_le _ _).trans ?_
   apply Finset.sum_le_sum
   intro j _
   rw [norm_mul]
-  apply mul_le_mul (hw j) (by simpa using norm_trace_le_card (ha j)) (norm_nonneg _)
-  exact Finset.sum_nonneg fun i _ =>
-    mul_nonneg (Nat.cast_nonneg _) ((norm_nonneg _).trans (hbound i))
+  apply mul_le_mul ?_ (by simpa using norm_trace_le_card (ha j)) (norm_nonneg _)
+  · exact Finset.sum_nonneg fun i _ =>
+      mul_nonneg (Nat.cast_nonneg _) ((norm_nonneg _).trans (hbound i))
+  · exact (norm_sum_le _ _).trans <| Finset.sum_le_sum fun i _ => by
+      simpa using mul_le_mul_of_nonneg_left (hbound i) (Nat.cast_nonneg (mult i j))
 
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
 theorem fpDimension_tensorPower (X : C.Obj) :

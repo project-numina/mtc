@@ -232,10 +232,7 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
       rw [← map_mul]
       simp [e, ← Pi.single_mul, Matrix.single_mul_single_same])
     refine ⟨k, ?_⟩
-    have ht := hw e
-    change (φ e).trace = ∑ k, w k * (e k).trace at ht
-    exact (show w i = (φ e).trace from by
-      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one] using ht.symm).trans hk
+    simpa [T, e, sum_trace_single] using (hw e).symm.trans hk
   choose mult hm using hnat
   exact ⟨mult, fun x => by simpa [T, hm] using hw x⟩
 
@@ -270,13 +267,11 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
   let e : Blocks.Algebra ⟨_, d⟩ := Pi.single j (Matrix.single k k 1)
   have hzero : φ e = 0 := by
     funext i
-    have hidem : φ e i * φ e i = φ e i := by
-      simpa [e, ← Pi.single_mul, Matrix.single_mul_single_same] using
+    apply idempotent_matrix_eq_zero_of_trace_eq_zero
+    · simpa [e, ← Pi.single_mul, Matrix.single_mul_single_same] using
         (congrFun (map_mul φ e e) i).symm
-    have ht : (φ e i).trace = 0 := by
-      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
+    · simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
         Nat.eq_zero_of_le_zero (hn i), Nat.cast_zero] using hmult i e
-    exact idempotent_matrix_eq_zero_of_trace_eq_zero hidem ht
   simpa [e] using congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k)
     (hinj (show φ e = φ 0 from by simpa using hzero))
 
