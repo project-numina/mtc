@@ -99,19 +99,12 @@ theorem doubleDualTensorIso_associativity (X Y Z : C) :
     simpa only [Iso.trans_inv, Iso.symm_inv, Category.assoc] using (congrArg Iso.inv heq).symm
   simp only [A, B, C₀, D, E, F, rightDualIsoMap, Iso.symm_hom,
     whiskerRightIso_hom, whiskerLeftIso_inv] at hrev
-  slice_lhs 2 3 => rw [hmove1]
-  simp only [Category.assoc]
-  slice_lhs 1 2 => rw [hrev]
-  simp only [Category.assoc]
-  slice_lhs 5 6 => rw [hdual]
-  simp only [Category.assoc]
-  slice_lhs 4 5 => rw [← comp_rightAdjointMate, Iso.hom_inv_id, rightAdjointMate_id]
-  simp only [Category.id_comp, Category.assoc]
-  slice_lhs 6 7 => rw [← comp_rightAdjointMate, ← comp_rightAdjointMate,
-    Iso.inv_hom_id, rightAdjointMate_id, rightAdjointMate_id]
-  simp only [Category.comp_id]
-  slice_lhs 3 4 => rw [hmove2]
-  simp only [Category.assoc]
+  rw [reassoc_of% hmove1, reassoc_of% hrev, reassoc_of% hdual]
+  rw [← comp_rightAdjointMate_assoc, Iso.hom_inv_id, rightAdjointMate_id, Category.id_comp]
+  rw [← (comp_rightAdjointMate (f := (α_ X Y Z).homᘁ) (g := (α_ X Y Z).invᘁ)),
+    ← (comp_rightAdjointMate (f := (α_ X Y Z).inv) (g := (α_ X Y Z).hom)),
+    Iso.inv_hom_id, rightAdjointMate_id, rightAdjointMate_id, Category.comp_id]
+  rw [reassoc_of% hmove2]
 
 end PropertyF.Ground.Dimensions
 
@@ -165,7 +158,6 @@ theorem doubleDualTensorIso_braiding {C : Type u} [Category.{v} C] [MonoidalCate
   have hd := congrArg (fun f => rightAdjointMate f) (rightDualTensorIso_braiding X Y)
   rw [comp_rightAdjointMate, comp_rightAdjointMate] at hd
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
-  rw [hd, ← Category.assoc,
-    ((CommSq.vert_inv (CommSq.mk (rightDualTensorIso_braiding (Xᘁ) (Yᘁ)))).w).symm,
-    Category.assoc]
+  rw [hd, reassoc_of%
+    ((CommSq.vert_inv (CommSq.mk (rightDualTensorIso_braiding (Xᘁ) (Yᘁ)))).w).symm]
 end PropertyF.Ground.Dimensions

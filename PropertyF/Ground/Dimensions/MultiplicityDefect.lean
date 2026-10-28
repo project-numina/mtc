@@ -226,11 +226,7 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
     exact (a.hom.naturality d.hom).symm
   apply (cancel_mono (b.hom ≫ F.map b.hom)).1
   simp only [Category.assoc]
-  slice_lhs 2 3 => rw [← hc]
-  simp only [Category.assoc]
-  slice_lhs 3 4 => rw [← Functor.map_comp, hd]
-  slice_lhs 1 2 => rw [hd]
-  rw [hsq]
+  rw [← reassoc_of% hc, reassoc_of% hd, ← Functor.map_comp, hd, hsq]
   exact (Category.id_comp _).symm
 
 end PropertyF.Ground.Dimensions
@@ -318,9 +314,8 @@ theorem rootTensor_square_eq_fourthDual_tensor (X Y : C.Obj) :
   rw [← hroot X, ← hroot Y]
   simp only [rootTensorSquare, rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
     Category.assoc]
-  slice_lhs 2 3 => rw [← doubleDualTensorIso_natural]
-  simp only [doubleDualFunctor, Category.assoc]
-  rw [tensorHom_comp_tensorHom_assoc]
+  rw [← reassoc_of% (doubleDualTensorIso_natural _ _), tensorHom_comp_tensorHom_assoc]
+  rfl
 
 end PropertyF.Ground.Dimensions
 
