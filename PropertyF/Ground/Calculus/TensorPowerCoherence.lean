@@ -153,14 +153,22 @@ theorem freshOverlapIso_eq_overlapPowerIso (t k : ℕ) :
 
 end
 
+set_option backward.isDefEq.respectTransparency false in
 /-- The intrinsic overlap trace identity holds for every actual braid-algebra
 element on a simple strand. -/
 theorem overlap_trace_power (C : BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {t : ℕ} (u : braidAlgebra X t) :
     HasOverlapTracePower C p u :=
-  overlap_trace_power_of_step C p u fun k ↦
-    overlap_trace_step_of_coherence C p u k
-      (overlapProduct_local_of_iso k u (freshOverlapIso_eq_overlapPowerIso X t k))
+  overlap_trace_power_of_step C p u fun k ↦ overlap_trace_step_of_coherence C p u k <| by
+    have hiso := freshOverlapIso_eq_overlapPowerIso X t k
+    have hr : (overlapPowerIso X t k).symm.conj (overlapRight X t k u : End _) =
+        overlapFresh (tensorPower X (overlapIndex t k + 1)) (u : End (tensorPower X (t + 2))) :=
+      End.ext (by simpa [hiso, overlapFresh,
+        Iso.conj_apply_asHom, Category.assoc] using
+        (congrArg (fun f => (α_ _ _ _).hom ≫ f ≫ (overlapPowerIso X t k).inv)
+          (freshOverlapIso_action k u)))
+    simp [IsLocalOverlapProduct, overlapProduct, overlapEndProduct, previousOverlapLocal,
+      overlapLeft_local, hr]
 
 end PropertyF.Ground.Calculus

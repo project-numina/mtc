@@ -18,12 +18,12 @@ namespace PropertyF.Ground.Calculus
 
 section UnitaryRepresentation
 
-variable {G A : Type*} [Group G] [Monoid A] [StarMul A]
+variable {A : Type*} [Monoid A] [StarMul A]
 
-/-- A unitary representation sends group inversion to the adjoint. -/
-theorem unitary_representation_star_inv (ρ : G →* A) {g : G}
-    (hρ : ρ g ∈ unitary A) : star (ρ g) = ρ g⁻¹ :=
-  (ρ.toHomUnits g).eq_inv_of_mul_eq_one_right (Unitary.star_mul_self_of_mem hρ)
+/-- The adjoint of a unitary unit is its inverse. -/
+theorem unitary_star_coe_inv (u : Aˣ) (hu : (u : A) ∈ unitary A) :
+    star (u : A) = ((u⁻¹ : Aˣ) : A) :=
+  u.eq_inv_of_mul_eq_one_right (Unitary.star_mul_self_of_mem hu)
 
 end UnitaryRepresentation
 
@@ -57,8 +57,8 @@ theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
     (φ : A →ₗ[R] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
     φ (star x) = star (φ x) :=
   map_star_of_mem_span φ (Set.range ρ) (fun _ ⟨g, hg⟩ ↦ hg ▸ by
-    simp [unitary_representation_star_inv ρ (hρ g),
-      unitary_representation_star_inv σ (hσ g), hφ]) (hspan.symm ▸ Submodule.mem_top)
+    simp [show star (ρ g) = ρ g⁻¹ from unitary_star_coe_inv (ρ.toHomUnits g) (hρ g),
+      show star (σ g) = σ g⁻¹ from unitary_star_coe_inv (σ.toHomUnits g) (hσ g), hφ]) (hspan.symm ▸ Submodule.mem_top)
 
 end PropertyF.Ground.Calculus
 
@@ -244,14 +244,12 @@ theorem append_first_two :
     _ = (X ◁ X ◁ e.inv) ≫
         ((α_ X X (A ⊗ X)).inv ≫ (β_ X X).hom ▷ (A ⊗ X) ≫ (α_ X X (A ⊗ X)).hom) ≫
         (X ◁ X ◁ e.hom) := by
-          dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv,
-            Iso.refl_hom, Iso.refl_inv]
-          simp only [id_tensorHom, Category.assoc]
+          simp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv,
+            Iso.refl_hom, Iso.refl_inv, id_tensorHom, Category.assoc]
           monoidal
     _ = _ := by
-      simp only [Category.assoc]
-      rw [← first_pair_natural_assoc X (β_ X X).hom e.inv]
-      simp [← whiskerLeft_comp]
+      simp only [Category.assoc, ← first_pair_natural_assoc X (β_ X X).hom e.inv,
+        ← whiskerLeft_comp, Iso.inv_hom_id, whiskerLeft_id, Category.comp_id]
 
 end Append
 
@@ -263,20 +261,19 @@ theorem appendIso_succ (n : ℕ) : appendIso X (n+1) =
 set_option backward.isDefEq.respectTransparency false in
 /-- Appending preserves the first adjacent generator. -/
 private theorem addRightAut_first_generator (n : ℕ) : addRightAut X n (braidGenerator X n 0) =
-    braidGenerator X (n + 1) 0 := by
-  apply Aut.ext
-  apply Iso.ext
-  change (appendIso X (n + 2)).inv ≫ ((braidGenerator X n 0).asIso.hom ▷ X) ≫
-    (appendIso X (n + 2)).hom = (braidGenerator X (n + 1) 0).asIso.hom
-  simp only [← Fin.zero_eta, braidGenerator.eq_1, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
-    tensorHom_id]
-  change (appendIso X (n + 2)).inv ≫
-    (((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
-      (α_ X X (tensorPower X n)).hom) ▷ X) ≫ (appendIso X (n + 2)).hom =
-    (α_ X X (tensorPower X (n + 1))).inv ≫ (β_ X X).hom ▷ tensorPower X (n + 1) ≫
-      (α_ X X (tensorPower X (n + 1))).hom
-  rw [appendIso_succ X (n + 1), appendIso_succ X n]
-  exact append_first_two X (appendIso X n)
+    braidGenerator X (n + 1) 0 :=
+  Aut.ext (Iso.ext (by
+    change (appendIso X (n + 2)).inv ≫ ((braidGenerator X n 0).asIso.hom ▷ X) ≫
+      (appendIso X (n + 2)).hom = (braidGenerator X (n + 1) 0).asIso.hom
+    simp only [← Fin.zero_eta, braidGenerator.eq_1, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+      Iso.refl_hom, tensorHom_id]
+    change (appendIso X (n + 2)).inv ≫
+      (((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
+        (α_ X X (tensorPower X n)).hom) ▷ X) ≫ (appendIso X (n + 2)).hom =
+      (α_ X X (tensorPower X (n + 1))).inv ≫ (β_ X X).hom ▷ tensorPower X (n + 1) ≫
+        (α_ X X (tensorPower X (n + 1))).hom
+    rw [appendIso_succ X (n + 1), appendIso_succ X n]
+    exact append_first_two X (appendIso X n)))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Appending a strand preserves each adjacent braid generator. -/

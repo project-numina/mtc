@@ -2,13 +2,7 @@ module
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
 public import PropertyF.Ground.Dimensions.Pivotal
 public import PropertyF.Ground.Dimensions.DualCoherence
-public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Centre.Rigid
-public import PropertyF.Ground.Calculus.PartialTrace
-public import PropertyF.Ground.Modular.SMatrix
-public import PropertyF.Ground.Dimensions.SimpleScalars
-public import PropertyF.Ground.Fusion.SemisimpleSplit
-public import PropertyF.Ground.Centre.Abelian
 public import PropertyF.Ground.CentreInduction.Representatives
 public import PropertyF.Ground.CentreBundle.Fusion
 
@@ -56,8 +50,8 @@ theorem unitSummandIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
         (unitSummandIso C Y).hom = (unitSummandIso C X).hom ≫ f := by
   dsimp [unitSummandIso]
   rw [Category.assoc, ← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc]
-  simp only [id_tensorHom, tensorHom_id, rightUnitor_naturality, Category.assoc]
-  rw [rightUnitor_naturality_assoc, leftUnitor_naturality]
+  simp only [id_tensorHom, tensorHom_id, rightUnitor_naturality, Category.assoc,
+    rightUnitor_naturality_assoc, leftUnitor_naturality]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-summand projection is natural. This is the candidate underlying
@@ -65,9 +59,8 @@ counit for the centre-forgetful right adjunction. -/
 def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
   app X := (unitSummandRetract C X).r
   naturality {X Y} f := by
-    dsimp only [underlyingFunctor, unitSummandRetract, Functor.id_map]
-    simp only [Category.assoc, biproduct.map_π_assoc]
-    simpa only [Category.assoc] using congrArg (fun g =>
+    simpa only [underlyingFunctor, unitSummandRetract, Functor.id_map, Category.assoc,
+      biproduct.map_π_assoc] using congrArg (fun g =>
       biproduct.π (inductionSummand C X)
         (unitIndex C) ≫ g) (unitSummandIso_natural C f)
 
@@ -88,13 +81,17 @@ set_option backward.defeqAttrib.useBackward true in
 by the induced identification of its right dual with the unit. -/
 theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
     {A : D} (e : A ≅ 𝟙_ D) :
-    η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm ≪≫
+    η_ A Aᘁ ≫ (e.hom ▷ Aᘁ) ≫ (λ_ Aᘁ).hom ≫
+      (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom = 𝟙 (𝟙_ D) := by
+  have hc : η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm ≪≫
       rightDualUnitIso).hom) = (ρ_ (𝟙_ D)).inv := by
-  let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
-  dsimp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom]
-  rw [tensorHom_def, whiskerLeft_comp, ← Category.assoc (e.hom ▷ Aᘁ),
-    ← tensorHom_def, ← Category.assoc, coevaluation_iso_map]
-  exact coevaluation_rightDualIso HasRightDual.exact exactPairingUnit
+    let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
+    dsimp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom]
+    rw [tensorHom_def, whiskerLeft_comp, ← Category.assoc (e.hom ▷ Aᘁ),
+      ← tensorHom_def, ← Category.assoc, coevaluation_iso_map]
+    exact coevaluation_rightDualIso HasRightDual.exact exactPairingUnit
+  rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc, hc]
+  monoidal_coherence
 
 end PropertyF.Ground.CentreInduction
 
@@ -169,10 +166,7 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   simp only [comp_whiskerRight, Category.assoc]
   rw [triangle_assoc_comp_right_assoc, ← whisker_exchange_assoc]
   simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp]
-  have hunit : η_ A Aᘁ ≫ (e.hom ▷ Aᘁ) ≫ (λ_ Aᘁ).hom ≫ d.hom = 𝟙 (𝟙_ C.Obj) := by
-    rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc,
-      coevaluation_iso_unit e]
-    monoidal_coherence
+  have hunit := coevaluation_iso_unit e
   simp only [← whiskerLeft_comp_assoc]
   dsimp only [A, e, d, Iso.trans_hom] at hunit
   simp only [Category.assoc] at hunit ⊢

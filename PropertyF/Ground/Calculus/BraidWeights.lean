@@ -53,15 +53,15 @@ theorem groundEndBlockEquiv_diagonal (i : Fin (Ground.rank C)) (j : Fin (m i)) :
       (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫ e.inv ≫ a.asHom ≫ e.hom ≫
         biproduct.π (simpleCopies C m) ⟨i, j⟩)))
 
+variable (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual pivotal trace on a fusion-category endomorphism is the sum of
 simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
-theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
-    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
-    scalar (p.rightTrace a.asHom) = ∑ i,
-      scalar (p.rightTrace (𝟙 (Ground.simples C i))) *
-        (groundEndBlockEquiv C e a i).trace := by
+theorem pivotalTrace_groundEndBlocks :
+    scalar (p.rightTrace a.asHom) =
+      ∑ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) * (groundEndBlockEquiv C e a i).trace := by
   classical
   let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
@@ -89,12 +89,12 @@ abbrev HasMultiplicityDecomposition {ι κ : Type*} [Fintype κ]
 
 /-- The block trace mass is the constituent multiplicity mass whenever the
 actual representation dimensions decompose into braid-block dimensions. -/
-theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
-    (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → ℝ)
+theorem multiplicity_mass_eq {A : Type*} [AddCommMonoid A] {ι κ : Type*} [Fintype ι] [Fintype κ]
+    (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → A)
     (hdim : HasMultiplicityDecomposition m d mult) :
-    (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) = ∑ i, (m i : ℝ) * fp i := by
-  simpa [hdim, Finset.sum_mul, Finset.mul_sum, mul_comm, mul_left_comm] using
-    (Finset.sum_comm (s := .univ) (t := .univ) (f := fun i j => (mult i j : ℝ) * fp i * d j)).symm
+    (∑ j, d j • ∑ i, mult i j • fp i) = ∑ i, m i • fp i := by
+  simpa [hdim, ← Finset.sum_nsmul_assoc, Finset.smul_sum, ← mul_smul, Nat.mul_comm] using
+    (Finset.sum_comm (s := .univ) (t := .univ) (f := fun i j => d j • (mult i j • fp i))).symm
 
 /-- The paper's Galois-transported multiplicity weights cannot vanish when
 all original constituent dimensions are positive and the block is retained. -/
@@ -198,12 +198,9 @@ theorem idempotent_matrix_trace_nat : ∃ n : ℕ, A.trace = n :=
 
 /-- A complex idempotent matrix with zero trace is zero. -/
 theorem idempotent_matrix_eq_zero_of_trace_eq_zero (ht : A.trace = 0) : A = 0 :=
-  Matrix.toLinAlgEquiv'.injective (by
-    simpa only [map_zero] using LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero
-      ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')
-      (by
-        change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
-        simpa only [Matrix.trace_toLin'_eq] using ht))
+  Matrix.toLinAlgEquiv'.injective <| by
+    simpa using LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero
+      ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv') ((Matrix.trace_toLin'_eq A).trans ht)
 
 end IdempotentTrace
 

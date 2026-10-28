@@ -116,11 +116,10 @@ lemma signElement_unitary :
 
 /-- The sign element attains the total weighted block mass. -/
 lemma trace_signElement :
-    B.trace w (B.signElement w) = (B.mass w : ℂ) := by
-  unfold trace mass signElement
-  rw [Complex.ofReal_sum]
-  refine Finset.sum_congr rfl fun r _ => ?_
-  split_ifs with h <;> simp [h, abs_of_nonneg, abs_of_neg, lt_of_not_ge]
+    B.trace w (B.signElement w) = (B.mass w : ℂ) :=
+  (Finset.sum_congr rfl fun r _ => by
+    by_cases h : 0 ≤ w r <;> simp [signElement, h, abs_of_nonneg, abs_of_neg, lt_of_not_ge]).trans
+      (Complex.ofReal_sum _ _).symm
 
 /-- A bound on all unitary traces bounds the total weighted block mass. -/
 lemma mass_le_of_unitary_trace_bound {R : ℝ}

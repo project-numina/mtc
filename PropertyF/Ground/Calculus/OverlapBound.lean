@@ -61,7 +61,9 @@ theorem pivotalTrace_braid_unitary_bound
     ‖scalar (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
       ∑ i, (m i : ℝ) * fp i := by
   obtain ⟨mult, _, hdim, htrace⟩ := pivotalTrace_braid_multiplicities C p scalar e hd b
-  rw [htrace a, ← multiplicity_mass_eq m d mult fp hdim]
+  have hmass : (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) = ∑ i, (m i : ℝ) * fp i := by
+    simpa only [nsmul_eq_mul, mul_comm] using multiplicity_mass_eq m d mult fp hdim
+  rw [htrace a, ← hmass]
   refine (norm_sum_le _ _).trans ?_
   apply Finset.sum_le_sum
   intro j _
@@ -167,33 +169,6 @@ variable {X : C} {t : ℕ} {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
   (he : ∀ n, IsUnitaryBraidPresentation (e n))
 include he
 
-/-- Extending an existing overlap by identity strands preserves unitarity. -/
-private theorem overlapLeft_unitary (k : ℕ) {v : braidAlgebra X (overlapIndex t k)}
-    (hv : Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩ (e _ v)) :
-    Blocks.IsUnitary ⟨_, d (overlapIndex t (k + 1))⟩ (e _ (overlapLeft X t k v)) := by
-  change e (overlapIndex t k + (t + 1))
-    (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v) ∈
-      unitary (Blocks.Algebra ⟨_, d (overlapIndex t k + (t + 1))⟩)
-  simpa [addRightBlocksIterStarMap] using
-    Unitary.map_mem
-      (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) hv
-
-/-- Inserting a fresh overlapping factor preserves unitarity. -/
-private theorem overlapRight_unitary (k : ℕ) {u : braidAlgebra X t}
-    (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u)) :
-    Blocks.IsUnitary ⟨_, d (overlapIndex t (k + 1))⟩ (e _ (overlapRight X t k u)) := by
-  have hcast : ∀ (a b : ℕ) (h : a = b)
-      (f : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b),
-      Blocks.IsUnitary ⟨_, d b⟩ (e b (f u)) →
-      Blocks.IsUnitary ⟨_, d a⟩
-        (e a ((Eq.mpr (congrArg (fun n => braidAlgebra X t →ₐ[ℂ] braidAlgebra X n) h) f) u)) := by
-    rintro a b rfl f hunit
-    exact hunit
-  exact hcast _ _ (overlapIndex_formula t (k + 1)) _ (by
-    simpa [addLeftBlocksIterStarMap] using
-      Unitary.map_mem
-        (addLeftBlocksIterStarMap X t ((k + 1) * (t + 1)) (e t) (e _) (he t) (he _)) hu)
-
 /-- Successive actual overlapping products remain blockwise unitary. The
 presentations may be chosen independently at every strand count. -/
 theorem overlapProduct_unitary {u : braidAlgebra X t}
@@ -205,8 +180,21 @@ theorem overlapProduct_unitary {u : braidAlgebra X t}
   | zero => exact hu
   | succ k ih =>
     rw [overlapProduct, map_mul]
-    exact (unitary _).mul_mem (overlapLeft_unitary e he k ih)
-      (overlapRight_unitary e he k hu)
+    apply (unitary _).mul_mem ?_ ?_
+    · simpa [overlapLeft, overlapIndex, Blocks.IsUnitary, addRightBlocksIterStarMap] using!
+        (Unitary.map_mem
+          (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) ih)
+    · have hcast : ∀ (a b : ℕ) (h : a = b)
+          (f : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b),
+          Blocks.IsUnitary ⟨_, d b⟩ (e b (f u)) →
+          Blocks.IsUnitary ⟨_, d a⟩
+            (e a ((Eq.mpr (congrArg (fun n => braidAlgebra X t →ₐ[ℂ] braidAlgebra X n) h) f) u)) := by
+        rintro a b rfl f hunit
+        exact hunit
+      exact hcast _ _ (overlapIndex_formula t (k + 1)) _ (by
+        simpa [addLeftBlocksIterStarMap] using
+          Unitary.map_mem
+            (addLeftBlocksIterStarMap X t ((k + 1) * (t + 1)) (e t) (e _) (he t) (he _)) hu)
 
 end OverlapUnitary
 
@@ -237,14 +225,10 @@ theorem overlap_trace_power_of_step
       (pivotalDimension C p X) ^ k +
       ih * actualBraidTrace C p u
 
-/-- The sharp bound works in any family of unitary braid-block presentations;
-it does not depend on a particular choice made by finite-group averaging. -/
-theorem sharp_trace_bound_for_presentations_of_overlap_identity
-    [Simple X] {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
-    (e : ∀ n, BraidBlockPresentation X n (d n))
-    (hd : ∀ n i, 0 < d n i)
-    (he : ∀ n, IsUnitaryBraidPresentation (e n))
-    (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u))
+/-- Bounds for the overlapping traces and their recurrence imply the sharp bound. -/
+theorem sharp_trace_bound_of_overlap [Simple X]
+    (hbound : ∀ k, ‖actualBraidTrace C p (overlapProduct u k)‖ ≤
+      Ground.fpDimension C X ^ (overlapIndex t k + 2))
     (hrec : HasOverlapTracePower C p u) :
     ‖actualBraidTrace C p u‖ ≤
       ‖pivotalDimension C p X‖ *
@@ -254,8 +238,7 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X)))
     (fun k => actualBraidTrace C p (overlapProduct u k)) ?_ hrec
   intro k
-  convert braid_trace_unitary_bound_ground C p (hd _) (e _) (overlapProduct u k)
-    (overlapProduct_unitary e he hu k) using 1
+  convert hbound k using 1
   congr 1
   rw [overlapIndex_formula, show t + 2 - 1 = t + 1 by omega]
   ring

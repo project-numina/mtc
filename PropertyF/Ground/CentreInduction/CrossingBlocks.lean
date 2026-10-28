@@ -136,6 +136,16 @@ theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
   simp_rw [← Category.assoc (biproduct.π _ _)]
   rw [← Preadditive.sum_comp, biproduct.total, Category.id_comp, Iso.hom_inv_id]
 
+omit [RightRigidCategory D] in
+/-- Maps out of a tensor of a finite biproduct are determined by their summands. -/
+theorem biproduct_tensor_hom_ext [Preadditive D] [MonoidalPreadditive D]
+    [HasFiniteBiproducts D] {J : Type} [Finite J] (V : J → D) (T : D)
+    {W : D} {f g : (⨁ V) ⊗ T ⟶ W}
+    (h : ∀ i, (biproduct.ι V i ▷ T) ≫ f = (biproduct.ι V i ▷ T) ≫ g) : f = g :=
+  (cancel_epi (rightDistributor V T).inv).1 <|
+    biproduct.hom_ext' _ _ fun i => by
+      simpa only [biproduct_ι_comp_rightDistributor_inv_assoc] using h i
+
 variable (X T : C.Obj)
 
 /-- The finite matrix formula for the induction half-braiding. Its invertibility
@@ -167,9 +177,7 @@ theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj)
       crossingCandidate C X T ≫ (T ◁ (underlyingFunctor C).map h) := by
   let VX := inductionSummand C X
   let VY := inductionSummand C Y
-  apply (cancel_epi (rightDistributor VX T).inv).1
-  refine biproduct.hom_ext' _ _ fun i => ?_
-  rw [biproduct_ι_comp_rightDistributor_inv_assoc, biproduct_ι_comp_rightDistributor_inv_assoc]
+  refine biproduct_tensor_hom_ext VX T fun i => ?_
   dsimp [VX, VY, underlying] at *
   simp only [← Category.assoc, ← comp_whiskerRight]
   simp only [underlyingFunctor, biproduct.ι_map, comp_whiskerRight, Category.assoc,

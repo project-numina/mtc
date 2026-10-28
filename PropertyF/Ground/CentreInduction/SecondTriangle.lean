@@ -121,17 +121,14 @@ theorem close_rightUnit_eval (e : A ≅ 𝟙_ D) :
   let d := (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom
   let z := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
   have h := closeFusionMap_evaluation ((T ◁ e.hom) ≫ (ρ_ T).hom)
-  rw [← evaluation_iso_unit e] at h
-  simp only [tensorHom_def', monoidalComp, whiskerLeft_comp, Category.assoc] at h
-  rw [whisker_exchange_assoc, ← comp_whiskerRight_assoc] at h
+  simp only [← evaluation_iso_unit e, tensorHom_def', monoidalComp, whiskerLeft_comp,
+    Category.assoc, whisker_exchange_assoc, ← comp_whiskerRight_assoc] at h
   change z ≫ d = ε_ T (Tᘁ)
   apply (cancel_epi ((((Tᘁ : D) ⊗ T) ◁ e.hom) ≫ (ρ_ (Tᘁ ⊗ T)).hom)).1
   calc
     _ = ((z ≫ d) ▷ A) ≫ ((𝟙_ D) ◁ e.hom) ≫ (ρ_ (𝟙_ D)).hom := by
-      simp only [Category.assoc]
-      rw [← Category.assoc (ρ_ (Tᘁ ⊗ T)).hom z d, ← rightUnitor_naturality,
-        ← whisker_exchange_assoc]
-      simp only [Category.assoc, ← rightUnitor_naturality, comp_whiskerRight]
+      simp only [Category.assoc, ← rightUnitor_naturality, ← whisker_exchange_assoc,
+        comp_whiskerRight]
     _ = _ := by
       rw [h]
       monoidal
