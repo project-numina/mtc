@@ -80,17 +80,15 @@ theorem crossingBlock_of_simple_split [HasRightDual R] [HasRightDual S] [Simple 
     (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
     crossingBlock X T S g f = crossingBlock X T S e.hom e.inv := by
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id k (g ≫ e.inv)
-  obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id k (e.hom ≫ f)
   have hg : g = c • e.hom := by
     simpa [Category.assoc] using (congrArg (fun k => k ≫ e.hom) hc).symm
-  have hf : f = d • e.inv := by
-    simpa [Category.assoc] using (congrArg (fun k => e.inv ≫ k) hd).symm
-  have hcd : c * d = 1 := by
-    apply (smul_left_injective k (id_nonzero R))
-    simpa [hg, hf, Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using h
-  change mixedCrossingBilinear (k := k) X T T R S g f = _
-  simp only [hg, hf, map_smul, LinearMap.smul_apply, smul_smul, mul_comm d c, hcd, one_smul]
-  rfl
+  have hc0 : c ≠ 0 := fun hc0 => id_nonzero R (by simpa [hg, hc0] using h.symm)
+  have hf : f = c⁻¹ • e.inv := by
+    simpa [hg, ← Category.assoc, Linear.comp_smul, Linear.smul_comp, smul_smul, hc0] using
+      congrArg (fun k => c⁻¹ • (e.inv ≫ k)) h
+  change mixedCrossingBilinear (k := k) X T T R S g f =
+    mixedCrossingBilinear (k := k) X T T R S e.hom e.inv
+  simp [hg, hf, hc0]
 
 variable (X : C.Obj) (i j : Fin (rank C))
 
