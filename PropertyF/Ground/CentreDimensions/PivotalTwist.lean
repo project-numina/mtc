@@ -49,7 +49,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C}
     (d : X ≅ (Xᘁ)ᘁ)
     (hd : HasDrinfeldEvaluation d) :
-    Calculus.rightPartialTrace p X X (End.of (β_ X X).hom) =
+    Calculus.rightPartialTrace p (End.of (β_ X X).hom) =
       End.of ((p.iso X).hom ≫ d.inv) :=
   End.ext (by
     dsimp only [HasDrinfeldEvaluation] at hd

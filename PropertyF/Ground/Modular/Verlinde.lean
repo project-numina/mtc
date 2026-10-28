@@ -132,7 +132,7 @@ universe v u
 abbrev partialMonodromy {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
     [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C]
     [MonoidalLinear ℂ C] (p : PivotalStructure (C := C)) (X Y : C) : End X :=
-  rightPartialTrace p X Y (End.of (doubleBraiding X Y))
+  rightPartialTrace p (End.of (doubleBraiding X Y))
 
 /-- Closing one strand of a double braiding gives the normalized S scalar. -/
 theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,u})
@@ -223,8 +223,8 @@ variable (p : PivotalStructure (C := C))
 /-- Partial trace is natural for morphisms on the surviving strand. -/
 theorem rightPartialTrace_natural {A B : C} (Y : C)
     (f : A ⟶ B) (g : B ⟶ A) (t : End (B ⊗ Y)) :
-    rightPartialTrace p A Y (End.of ((f ▷ Y) ≫ t.asHom ≫ (g ▷ Y))) =
-      End.of (f ≫ (rightPartialTrace p B Y t).asHom ≫ g) :=
+    rightPartialTrace p (End.of ((f ▷ Y) ≫ t.asHom ≫ (g ▷ Y))) =
+      End.of (f ≫ (rightPartialTrace p t).asHom ≫ g) :=
   End.ext (by
     simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
       comp_whiskerRight, Category.assoc]
@@ -239,8 +239,8 @@ partial traces agree with tracing the combined tensor factor. -/
 theorem rightPartialTrace_nested_simple (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (Z X Y : C)
     [Simple Z] [FiniteDimensional ℂ (Z ⟶ Z)]
     (hd : scalar (p.rightTrace (𝟙 Z)) ≠ 0) (f : End (Z ⊗ (X ⊗ Y))) :
-    rightPartialTrace p Z (X ⊗ Y) f =
-      rightPartialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y
+    rightPartialTrace p f =
+      rightPartialTrace p (rightPartialTrace p
         (End.of ((α_ Z X Y).hom ≫ f.asHom ≫ (α_ Z X Y).inv))) := by
   let g : End ((Z ⊗ X) ⊗ Y) := End.of ((α_ Z X Y).hom ≫ f.asHom ≫ (α_ Z X Y).inv)
   have hc : p.rightTrace g.asHom = p.rightTrace f.asHom := by
@@ -249,7 +249,7 @@ theorem rightPartialTrace_nested_simple (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ)
   rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd
       (rightTrace_partialTrace p f),
     rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd
-      (rightTrace_partialTrace p (rightPartialTrace p (Z ⊗ X) Y g))]
+      (rightTrace_partialTrace p (rightPartialTrace p g))]
   simp only [Calculus.scalarTrace, rightTrace_partialTrace p g, hc]
 
 
@@ -261,7 +261,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- Partial tracing a tensor-product monodromy leaves a conjugated partial monodromy. -/
 theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X Y : C) :
-    rightPartialTrace p (Z ⊗ X) Y
+    rightPartialTrace p
       (End.of ((α_ Z X Y).hom ≫ doubleBraiding Z (X ⊗ Y) ≫ (α_ Z X Y).inv)) =
     End.of ((β_ Z X).hom ≫ (X ◁ (partialMonodromy p Z Y).asHom) ≫ (β_ X Z).hom) := by
   let t : End ((X ⊗ Z) ⊗ Y) := End.of ((α_ X Z Y).hom ≫
@@ -275,7 +275,7 @@ theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X 
 /-- A scalar partial monodromy factors out of the tensor-product partial trace. -/
 theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) (Z X Y : C) (s : ℂ)
     (hs : partialMonodromy p Z Y = s • 1) :
-    rightPartialTrace p (Z ⊗ X) Y
+    rightPartialTrace p
       (End.of ((α_ Z X Y).hom ≫ doubleBraiding Z (X ⊗ Y) ≫ (α_ Z X Y).inv)) =
     s • End.of (doubleBraiding Z X) := by
   rw [partialTrace_doubleBraiding_factor, hs]
@@ -297,14 +297,14 @@ theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,
   let f : End (Z ⊗ (X ⊗ Y)) := End.of (doubleBraiding Z (X ⊗ Y))
   have hs : partialMonodromy p Z Y = s • 1 :=
     partialTrace_doubleBraiding_simple D p k Y
-  change rightPartialTrace p Z (X ⊗ Y) f =
-    rightPartialTrace p Z X (End.of (doubleBraiding Z X)) *
-      rightPartialTrace p Z Y (End.of (doubleBraiding Z Y))
+  change rightPartialTrace p f =
+    rightPartialTrace p (End.of (doubleBraiding Z X)) *
+      rightPartialTrace p (End.of (doubleBraiding Z Y))
   rw [rightPartialTrace_nested_simple p (Ground.unitScalarEquiv D) Z X Y
     (simpleDimension_ne_zero D p k) f]
   rw [partialTrace_doubleBraiding_scalar p Z X Y s hs, map_smul]
-  change s • rightPartialTrace p Z X (End.of (doubleBraiding Z X)) =
-    rightPartialTrace p Z X (End.of (doubleBraiding Z X)) * partialMonodromy p Z Y
+  change s • rightPartialTrace p (End.of (doubleBraiding Z X)) =
+    rightPartialTrace p (End.of (doubleBraiding Z X)) * partialMonodromy p Z Y
   rw [hs]
   simp
 
