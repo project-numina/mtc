@@ -41,7 +41,7 @@ theorem cyclicTrace_decomposition {ι : Type*} [Fintype ι]
       simpa only [Category.assoc] using hcyclic (q j) (i j ≫ f)
 
 /-- Each diagonal block on a biproduct of simple objects is a scalar. -/
-theorem simple_biproduct_diagonal [HasKernels C] {ι : Type*} [Fintype ι]
+theorem simple_biproduct_diagonal [HasKernels C] {ι : Type*}
     {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
     (hfinite : ∀ i, FiniteDimensional ℂ (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
     ∃ c : ι → ℂ, ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i) := by
@@ -57,7 +57,7 @@ theorem simple_biproduct_diagonal [HasKernels C] {ι : Type*} [Fintype ι]
 theorem cyclicTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
     (trace : ∀ X : C, (X ⟶ X) →ₗ[ℂ] A)
     (hcyclic : IsCyclicTrace trace)
-    (F : ι → C) [HasBiproduct F] (f : (⨁ F) ⟶ (⨁ F)) {c : ι → ℂ}
+    {F : ι → C} [HasBiproduct F] (f : (⨁ F) ⟶ (⨁ F)) {c : ι → ℂ}
     (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
     trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) := by
   rw [cyclicTrace_decomposition trace hcyclic (biproduct.ι F) (biproduct.π F) biproduct.total f]
@@ -67,13 +67,13 @@ theorem cyclicTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
 theorem cyclicTrace_biproduct_simple [HasKernels C] {ι : Type*} [Fintype ι]
     (trace : ∀ X : C, (X ⟶ X) →ₗ[ℂ] A)
     (hcyclic : IsCyclicTrace trace)
-    (F : ι → C) [HasBiproduct F] (hs : ∀ i, Simple (F i))
+    {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
     (hfinite : ∀ i, FiniteDimensional ℂ (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
     ∃ c : ι → ℂ,
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
       trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) :=
   (simple_biproduct_diagonal hs hfinite f).imp fun _c hc ↦
-    ⟨hc, cyclicTrace_biproduct_scalar_blocks trace hcyclic F f hc⟩
+    ⟨hc, cyclicTrace_biproduct_scalar_blocks trace hcyclic f hc⟩
 
 end CyclicTrace
 
@@ -110,13 +110,13 @@ theorem rightDimension_biproduct {ι : Type*} [Fintype ι] (F : ι → C) [HasBi
 /-- Schur's lemma gives the scalar diagonal blocks of any endomorphism of a
 finite direct sum of simple objects, and hence its weighted trace formula. -/
 theorem rightTrace_biproduct_simple [HasKernels C] {ι : Type*} [Fintype ι]
-    (F : ι → C) [HasBiproduct F] (hs : ∀ i, Simple (F i))
+    {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
     (hfinite : ∀ i, FiniteDimensional ℂ (F i ⟶ F i))
     (p : PivotalStructure (C := C)) (f : (⨁ F) ⟶ (⨁ F)) :
     ∃ c : ι → ℂ,
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
       p.rightTrace f = ∑ i, c i • p.rightTrace (𝟙 (F i)) :=
   cyclicTrace_biproduct_simple (rightTraceLinear p) (fun f g => p.rightTrace_cyclic f g)
-    F hs hfinite f
+    hs hfinite f
 
 end PropertyF.Ground.Dimensions
