@@ -86,9 +86,8 @@ theorem fusionFlow_balance (i j : Fin (rank D)) :
 theorem fusionCoeff_retract
     {i j k : Fin (rank D)} (h : 0 < fusionCoeff D i j k) :
     Nonempty (Retract (simples D k) (simples D i ⊗ simples D j)) :=
-  let : FiniteDimensional ℂ (simples D k ⟶ simples D i ⊗ simples D j) :=
-    IsFusionCategory.hom_finite _ _
-  let : Simple (simples D k) := simples_simple D k
+  letI := IsFusionCategory.hom_finite (simples D k) (simples D i ⊗ simples D j)
+  letI := simples_simple D k
   (Module.finrank_pos_iff_exists_ne_zero.mp h).elim fun f hf ↦
     (split_from_simple f hf).elim fun r hr ↦ ⟨{ i := f, r := r, retract := hr }⟩
 
