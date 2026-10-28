@@ -25,8 +25,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_unit (S : D) :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  dsimp only [crossingBlock, mixedCrossing]
-  rw [closeFusionMap_unit]
+  simp only [crossingBlock, mixedCrossing, closeFusionMap_unit]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
