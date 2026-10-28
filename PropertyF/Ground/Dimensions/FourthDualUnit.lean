@@ -17,12 +17,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : BraidedFusionCategory.{v,u})
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+  [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The braided double-dual map has the canonical component on the unit. -/
 theorem drinfeld_unit :
-    (doubleDualIso C (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
-  let U : C.Obj := 𝟙_ C.Obj
+    (drinfeldIso (𝟙_ C)).hom = (doubleDualUnitIso (C := C)).hom := by
+  let U : C := 𝟙_ C
   let : HasRightDual U := RightRigidCategory.rightDual U
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let r : Uᘁ ≅ U := rightDualUnitIso
@@ -30,14 +31,14 @@ theorem drinfeld_unit :
       (β_ U (Uᘁ)).hom ≫ ε_ U (Uᘁ) := by
     rw [comp_whiskerRight_assoc, rightAdjointMate_comp_evaluation]
     have hb : (β_ U U).hom = 𝟙 (U ⊗ U) := by
-      change (β_ (𝟙_ C.Obj) (𝟙_ C.Obj)).hom = 𝟙 _
+      change (β_ (𝟙_ C) (𝟙_ C)).hom = 𝟙 _
       rw [braiding_tensorUnit_left, unitors_equal, Iso.hom_inv_id]
     have hn := braiding_naturality_right U r.hom
     rw [hb, Category.comp_id] at hn
     have hc : U ◁ r.hom ≫ r.inv ▷ U = (β_ U (Uᘁ)).hom := by
       rw [hn, Category.assoc, ← comp_whiskerRight, Iso.hom_inv_id, id_whiskerRight, Category.comp_id]
     rw [← whisker_exchange_assoc, ← Category.assoc, hc]
-  change (doubleDualUnitIso (C := C.Obj)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
+  change (doubleDualUnitIso (C := C)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
   exact evaluation_ext ((drinfeld_eval U).trans h.symm)
 end PropertyF.Ground.Dimensions
 
@@ -48,32 +49,34 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : BraidedFusionCategory.{v,u})
+section
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+  [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The Drinfeld map respects duality on the tensor unit. -/
 theorem drinfeld_unit_dual :
-    doubleDualIso C (rightDualObject (𝟙_ C.Obj)) =
-      (rightDualIsoMap (doubleDualIso C (𝟙_ C.Obj))).symm := by
-  let U : C.Obj := 𝟙_ C.Obj
+    drinfeldIso (rightDualObject (𝟙_ C)) =
+      (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm := by
+  let U : C := 𝟙_ C
   let : HasRightDual U := RightRigidCategory.rightDual U
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let : HasRightDual ((Uᘁ)ᘁ) := RightRigidCategory.rightDual ((Uᘁ)ᘁ)
   let r : Uᘁ ≅ U := rightDualUnitIso
   have hu : (drinfeldIso U).hom = (r.inv ≫ (r.homᘁ)) :=
-    drinfeld_unit C
+    drinfeld_unit
   have hb : (drinfeldIso (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) = (r.homᘁ) := by
     rw [← (drinfeldIso_natural r.hom), hu]
     simp only [Iso.hom_inv_id_assoc]
   apply Iso.ext
   simp only [rightDualIsoMap, Iso.symm_hom]
   let ee := rightDualIsoMap (rightDualIsoMap r)
-  change (doubleDualIso C (Uᘁ)).hom = ((doubleDualIso C U).invᘁ)
+  change (drinfeldIso (Uᘁ)).hom = ((drinfeldIso U).invᘁ)
   apply (cancel_mono ee.hom).1
   change (drinfeldIso (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) =
-    ((doubleDualIso C U).invᘁ) ≫ ((r.homᘁ)ᘁ)
+    ((drinfeldIso U).invᘁ) ≫ ((r.homᘁ)ᘁ)
   rw [hb]
-  have hui : (doubleDualIso C U).inv = (r.invᘁ) ≫ r.hom := by
-    have hIso : doubleDualIso C U = r.symm ≪≫ rightDualIsoMap r := Iso.ext hu
+  have hui : (drinfeldIso U).inv = (r.invᘁ) ≫ r.hom := by
+    have hIso : drinfeldIso U = r.symm ≪≫ rightDualIsoMap r := Iso.ext hu
     simpa only [Iso.trans_inv, Iso.symm_inv, rightDualIsoMap] using congrArg Iso.inv hIso
   have hcancel := (rightDualIsoMap r).hom_inv_id
   change (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Uᘁ) at hcancel
@@ -81,23 +84,27 @@ theorem drinfeld_unit_dual :
     hcancel, rightAdjointMate_id, Category.comp_id]
 /-- The fourth-dual map has the canonical iterated unit component. -/
 theorem fourthDualIso_unit :
-    letI : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
-    letI : HasRightDual ((𝟙_ C.Obj)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C.Obj)ᘁ)
-    letI : HasRightDual (((𝟙_ C.Obj)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C.Obj)ᘁ)ᘁ)
-    fourthDualIso (𝟙_ C.Obj) =
-      doubleDualUnitIso (C := C.Obj) ≪≫
-        rightDualIsoMap (rightDualIsoMap (doubleDualUnitIso (C := C.Obj))) := by
-  let : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
-  let : HasRightDual ((𝟙_ C.Obj)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C.Obj)ᘁ)
-  let : HasRightDual (((𝟙_ C.Obj)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C.Obj)ᘁ)ᘁ)
+    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
+    letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
+    letI : HasRightDual (((𝟙_ C)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C)ᘁ)ᘁ)
+    fourthDualIso (𝟙_ C) =
+      doubleDualUnitIso (C := C) ≪≫
+        rightDualIsoMap (rightDualIsoMap (doubleDualUnitIso (C := C))) := by
+  let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
+  let : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
+  let : HasRightDual (((𝟙_ C)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C)ᘁ)ᘁ)
   unfold fourthDualIso
-  have hdual := drinfeld_unit_dual C
-  change drinfeldIso ((𝟙_ C.Obj)ᘁ) =
-    (rightDualIsoMap (drinfeldIso (𝟙_ C.Obj))).symm at hdual
-  have hu : drinfeldIso (𝟙_ C.Obj) = doubleDualUnitIso := Iso.ext (drinfeld_unit C)
+  have hdual := drinfeld_unit_dual (C := C)
+  change drinfeldIso ((𝟙_ C)ᘁ) =
+    (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm at hdual
+  have hu : drinfeldIso (𝟙_ C) = doubleDualUnitIso := Iso.ext (drinfeld_unit (C := C))
   rw [hdual, hu]
   apply Iso.ext
   rfl
+
+end
+
+variable (C : BraidedFusionCategory.{v,u})
 /-- The root dimension of the unit label is the root trace of the tensor unit. -/
 theorem rootDimension_unit :
     rootDimension C (unitIndex C) =
@@ -119,7 +126,7 @@ theorem fourthDualRoot_unit_component :
   let a := (fourthDualRootNaturalIso C).app U
   let u := doubleDualIso C U
   obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar (k := ℂ) u a
-  have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
+  have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit (C := C.Obj))
   have htrace : unitScalar C (rightQuantumTrace a) = r := by
     rw [rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
     simp only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one]
@@ -137,13 +144,13 @@ theorem rootDimension_unit_sq :
   let a := (fourthDualRootNaturalIso C).app U
   let u := doubleDualIso C U
   let r := rootDimension C (unitIndex C)
-  have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
+  have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit (C := C.Obj))
   have hr : a.hom = r • u.hom := by
     simpa [a, r, hu] using fourthDualRoot_unit_component C
   have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso U).hom :=
     congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C)
   have hfourth : (fourthDualIso U).hom = u.hom ≫ ((u.homᘁ)ᘁ) := by
-    have h := congrArg Iso.hom (fourthDualIso_unit C)
+    have h := congrArg Iso.hom (fourthDualIso_unit (C := C.Obj))
     rw [hu]
     simpa only [Iso.trans_hom, rightDualIsoMap] using h
   exact scalar_sq_eq_one_of_same_square u a r hr (hsq.trans hfourth)

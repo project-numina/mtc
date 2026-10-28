@@ -204,7 +204,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem fourthDualIso_tensor_of_signed_defect
     {X Y : C.Obj} (z : ℂ) (hz : z * z = 1)
     (hd : (rootTensorDefect C X Y).hom = z • 𝟙 (X ⊗ Y)) :
-    fourthDualTensorLaw C X Y := by
+    fourthDualTensorLaw X Y := by
   let T := rootTensorIso C X Y
   let A := (fourthDualRootNaturalIso C).app (X ⊗ Y)
   have hsq : T.hom ≫ ((T.homᘁ)ᘁ) = (fourthDualIso (X ⊗ Y)).hom := by
@@ -217,14 +217,14 @@ theorem fourthDualIso_tensor_of_signed_defect
 /-- The fourth-dual tensor law holds when the left factor is the chosen unit
 simple representative. -/
 theorem fourthDualIso_tensor_unitLabel_left (X : C.Obj) :
-    fourthDualTensorLaw C (simples C (unitIndex C)) X :=
+    fourthDualTensorLaw (simples C (unitIndex C)) X :=
   fourthDualIso_tensor_of_signed_defect C (rootDimension C (unitIndex C))
     (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_left C X)
 
 /-- The fourth-dual tensor law holds when the right factor is the chosen unit
 simple representative. -/
 theorem fourthDualIso_tensor_unitLabel_right (X : C.Obj) :
-    fourthDualTensorLaw C X (simples C (unitIndex C)) :=
+    fourthDualTensorLaw X (simples C (unitIndex C)) :=
   fourthDualIso_tensor_of_signed_defect C (rootDimension C (unitIndex C))
     (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_right C X)
 end PropertyF.Ground.Dimensions
@@ -253,7 +253,7 @@ theorem rootTensorDefect_involution_extension
 /-- The fourth-dual tensor law on simple pairs implies ENO trace reciprocity. -/
 theorem trace_reciprocity_of_fourth_dual
     (hfourth : ∀ i j : Fin (rank C),
-      fourthDualTensorLaw C (simples C i) (simples C j)) :
+      fourthDualTensorLaw (simples C i) (simples C j)) :
     ENOTraceMatrixReciprocity C :=
   trace_reciprocity_of_coevaluation C fun _ _ ↦ rootTensorDefect_slide_of_involution C _
     (rootTensorDefect_involution_extension C
@@ -263,11 +263,11 @@ theorem trace_reciprocity_of_fourth_dual
 /-- The fourth-dual law on non-unit simple pairs suffices for the canonical pseudo-unitary spherical structure. -/
 theorem positive_spherical_of_nonunit_fourth_dual
     (hfourth : ∀ i j : Fin (rank C), i ≠ unitIndex C → j ≠ unitIndex C →
-      fourthDualTensorLaw C (simples C i) (simples C j))
+      fourthDualTensorLaw (simples C i) (simples C j))
     (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
   have hsimple : ∀ i j : Fin (rank C),
-      fourthDualTensorLaw C (simples C i) (simples C j) := by
+      fourthDualTensorLaw (simples C i) (simples C j) := by
     intro i j
     by_cases hi : i = unitIndex C
     · subst i
