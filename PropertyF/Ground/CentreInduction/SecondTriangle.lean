@@ -13,11 +13,11 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Composing a crossing with the unit-summand counit selects one matrix column. -/
-theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
+theorem crossing_counit_matrix (T : C.Obj) (i : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ (underlyingCounit C).app X) =
     (∑ a, crossingSummand C X T i (unitIndex C) a) ≫ (T ◁ (unitSummandIso C X).hom) := by
@@ -25,20 +25,7 @@ theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
     congrArg (fun k => k ≫ (T ◁ (unitSummandIso C X).hom))
       (crossingCandidate_matrix C X T i (unitIndex C))
 
-end PropertyF.Ground.CentreInduction
-
-end
-end
-
-section
 /-! The unit-column matrix of the induction crossing. -/
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-open scoped BigOperators
-universe v u
-attribute [local instance] Abelian.hasFiniteBiproducts
-@[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u})
 
 /-- Tensoring a simple by the chosen unit representative changes it by an isomorphism. -/
 def simpleTensorUnitIso (j : Fin (rank C)) : simples C j ⊗ simples C (unitIndex C) ≅ simples C j :=
@@ -51,8 +38,6 @@ theorem counit_column_finrank (i j : Fin (rank C)) :
     Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C (unitIndex C)) = if i = j then 1 else 0 :=
   (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (simpleTensorUnitIso C j)).finrank_eq.trans
     (finrank_simples_hom C i j)
-
-variable (X : C.Obj)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Off-diagonal counit crossing entries vanish. -/
@@ -185,8 +170,7 @@ theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
       (((T ⊗ (𝟙_ D)) ⊗ X) ◁ d) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ (T ◁ (g ≫ f))) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫
       (((T ⊗ (𝟙_ D)) ⊗ X) ◁ (q ≫ d)) ⊗≫ 𝟙 _ := by
-        simp only [whiskerLeft_comp, comp_whiskerRight]
-        simp [monoidalComp, Category.assoc]
+        simp [monoidalComp, Category.assoc, whiskerLeft_comp, comp_whiskerRight]
     _ = _ := by rw [hq, e.inv_hom_id]; simp; monoidal
 
 end PropertyF.Ground.CentreInduction
