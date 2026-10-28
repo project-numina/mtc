@@ -111,6 +111,9 @@ set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
   [RightRigidCategory D] [RightRigidCategory (Center D)]
 local notation "Z⁺" => Functor.obj (Center.ofBraided D)
+-- The dual and double-dual comparisons for the forgetful functor.
+local notation "κ" => forgetDualIso
+local notation "κ₂" => forgetDoubleDualIso
 variable (p : PivotalStructure (C := D)) (T : D)
 
 /-- The positive centre embedding preserves right duals up to the canonical isomorphism. -/
@@ -119,7 +122,7 @@ def positiveDualIso : (Z⁺ T)ᘁ ≅ Z⁺ (Tᘁ) :=
 
 /-- Forgetting the positive dual comparison gives the base dual comparison. -/
 theorem positiveDualIso_forget :
-    (positiveDualIso T).hom.f = (forgetDualIso (Z⁺ T)).hom :=
+    (positiveDualIso T).hom.f = (κ (Z⁺ T)).hom :=
   forget_rightDualIso HasRightDual.exact (Centre.positiveExactPairing T (Tᘁ))
     HasRightDual.exact ((Category.id_comp _).trans (Category.comp_id _))
 
@@ -129,21 +132,21 @@ def positiveDoubleDualIso : ((Z⁺ T)ᘁ)ᘁ ≅ Z⁺ ((Tᘁ)ᘁ) :=
 
 /-- Forgetting also preserves the inverse positive dual comparison. -/
 theorem positiveDualIso_inv_forget :
-    (positiveDualIso T).inv.f = (forgetDualIso (Z⁺ T)).inv :=
+    (positiveDualIso T).inv.f = (κ (Z⁺ T)).inv :=
   (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDualIso T))
-    (forgetDualIso (Z⁺ T))).2 (positiveDualIso_forget T)
+    (κ (Z⁺ T))).2 (positiveDualIso_forget T)
 
 /-- Forgetting the positive double-dual comparison gives the base comparison. -/
 theorem positiveDoubleDualIso_forget :
-    (positiveDoubleDualIso T).hom.f = (forgetDoubleDualIso (Z⁺ T)).hom := by
+    (positiveDoubleDualIso T).hom.f = (κ₂ (Z⁺ T)).hom := by
   simpa [positiveDoubleDualIso, forgetDoubleDualIso, rightDualIsoMap,
     positiveDualIso_forget, positiveDualIso_inv_forget] using forgetDualIso_natural (positiveDualIso T).inv
 
 /-- Forgetting also preserves the inverse positive double-dual comparison. -/
 theorem positiveDoubleDualIso_inv_forget :
-    (positiveDoubleDualIso T).inv.f = (forgetDoubleDualIso (Z⁺ T)).inv :=
+    (positiveDoubleDualIso T).inv.f = (κ₂ (Z⁺ T)).inv :=
   (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDoubleDualIso T))
-    (forgetDoubleDualIso (Z⁺ T))).2 (positiveDoubleDualIso_forget T)
+    (κ₂ (Z⁺ T))).2 (positiveDoubleDualIso_forget T)
 
 /-- The pivotal component transported to the positive centre lift. -/
 def positivePivotalComponent :

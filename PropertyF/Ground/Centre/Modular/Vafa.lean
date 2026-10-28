@@ -444,30 +444,17 @@ local instance (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 
 /-- Tensoring a biproduct automorphism respects the canonical biproduct comparison. -/
 theorem tensor_biprod_mapIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [Preadditive D] [HasBinaryBiproducts D]
+    [HasZeroMorphisms D] [HasBinaryBiproducts D]
     (X : D) [(tensorLeft X).PreservesZeroMorphisms] {Y Z : D}
     [PreservesBinaryBiproducts (tensorLeft X)] (a : Y ≅ Y) (b : Z ≅ Z) :
     Iso.refl X ⊗ᵢ biprod.mapIso a b = (Functor.mapBiprod (tensorLeft X) Y Z) ≪≫
       biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b) ≪≫
         (Functor.mapBiprod (tensorLeft X) Y Z).symm :=
-  let e := Functor.mapBiprod (tensorLeft X) Y Z
-  let A := biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b)
-  show Iso.refl X ⊗ᵢ biprod.mapIso a b = e ≪≫ A ≪≫ e.symm from
-    Iso.ext ((cancel_epi e.inv).1 (by
-      have hleft : biprod.inl ≫ e.inv = X ◁ biprod.inl := by
-        rw [Functor.mapBiprod_inv, biprod.inl_desc]
-        rfl
-      have hright : biprod.inr ≫ e.inv = X ◁ biprod.inr := by
-        rw [Functor.mapBiprod_inv, biprod.inr_desc]
-        rfl
-      apply biprod.hom_ext' <;>
-        simp only [Iso.trans_hom, Iso.symm_hom, Iso.inv_hom_id_assoc] <;>
-        simp only [← Category.assoc, hleft, hright, tensorIso_hom, Iso.refl_hom, id_tensorHom,
-          ← whiskerLeft_comp] <;>
-        simp only [A, biprod.mapIso_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom] <;>
-        simp only [biprod.inl_map, biprod.inr_map, whiskerLeft_comp, Category.assoc]
-      · exact (congrArg (fun f => (X ◁ a.hom) ≫ f) hleft).symm
-      · exact (congrArg (fun f => (X ◁ b.hom) ≫ f) hright).symm))
+  Iso.ext ((cancel_mono (Functor.mapBiprod (tensorLeft X) Y Z).hom).1 (by
+    simp only [Iso.trans_hom, Iso.symm_hom, Category.assoc, Iso.inv_hom_id, Category.comp_id]
+    apply biprod.hom_ext <;>
+      simp [biprod.mapIso_hom, tensorIso_hom, id_tensorHom,
+        ← whiskerLeft_comp, Category.assoc]))
 
 /-- The tensor determinant identity is closed under binary direct sums. -/
 theorem fpDeterminant_tensor_biprod
@@ -526,12 +513,12 @@ theorem functor_natural_app_conjugate {D : Type u} {E : Type*}
     η.app X = F.mapIso e ≪≫ η.app Y ≪≫ (F.mapIso e).symm :=
   Iso.ext ((cancel_mono (F.mapIso e).hom).1 (by simp))
 
-/-- An additive functor's natural automorphism is block diagonal on a binary
+/-- A biproduct-preserving functor's natural automorphism is block diagonal on a binary
 biproduct under its canonical comparison isomorphism. -/
 theorem functor_natural_app_biprod {D : Type u} {E : Type*}
-    [Category.{v} D] [Category E] [Preadditive D] [Preadditive E]
+    [Category.{v} D] [Category E] [HasZeroMorphisms D] [HasZeroMorphisms E]
     [HasBinaryBiproducts D]
-    (F : D ⥤ E) [F.Additive] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
+    (F : D ⥤ E) [F.PreservesZeroMorphisms] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
     η.app (X ⊞ Y) = F.mapBiprod X Y ≪≫
       biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm :=
   Iso.ext ((cancel_mono (F.mapBiprod X Y).hom).1 (by
@@ -635,8 +622,7 @@ theorem additive_object_function_decomposition {M : Type w} [AddCommMonoid M]
     f X = ∑ i, Module.finrank ℂ (simples C i ⟶ X) • f (simples C i) := by
   classical
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  have h := base_finite_simple_sum C X
-  induction h with
+  induction base_finite_simple_sum C X with
   | @zero W hz =>
     rw [hzero W hz]
     apply Eq.symm
@@ -811,8 +797,9 @@ the second strand. -/
 theorem fpDeterminant_monodromy_decomposition :
     monodromyDet C Z W = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ W) : ℝ) • monodromyDet C Z (simples C i) :=
-  by simpa only [Nat.cast_smul_eq_nsmul, monodromyDet, monodromyNaturalIso, NatIso.ofComponents.app] using
-    fpDeterminant_functor_natural_decomposition C (tensorLeft Z) (monodromyNaturalIso Z) W
+  by
+    simpa only [Nat.cast_smul_eq_nsmul, monodromyDet, monodromyNaturalIso, NatIso.ofComponents.app] using
+      fpDeterminant_functor_natural_decomposition C (tensorLeft Z) (monodromyNaturalIso Z) W
 
 end
 

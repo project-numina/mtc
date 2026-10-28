@@ -13,6 +13,9 @@ set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RightRigidCategory (Center D)]
 local notation "𝒵" => Center D
+-- The dual and double-dual comparisons for the forgetful functor.
+local notation "κ" => forgetDualIso
+local notation "κ₂" => forgetDoubleDualIso
 variable {X Y : Center D}
 
 omit [RightRigidCategory D] in
@@ -26,17 +29,16 @@ theorem forget_rightAdjointMate (f : X ⟶ Y) :
 
 /-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
 theorem forgetDualIso_natural (f : X ⟶ Y) :
-    (fᘁ).f ≫ (forgetDualIso X).hom = (forgetDualIso Y).hom ≫ (f.fᘁ) := by
+    (fᘁ).f ≫ (κ X).hom = (κ Y).hom ≫ (f.fᘁ) := by
   simp [forget_rightAdjointMate, forgetDualIso, rightDualIso, ← comp_rightAdjointMate]
 
 /-- The double-dual comparison is natural in centre morphisms. -/
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
-    ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso Y).hom =
-      (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
+    ((fᘁ)ᘁ).f ≫ (κ₂ Y).hom = (κ₂ X).hom ≫ ((f.fᘁ)ᘁ) := by
   simpa only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
     Category.assoc] using (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩
-    (CommSq.vert_inv (g := rightDualIsoMap (forgetDualIso X))
-      (h := rightDualIsoMap (forgetDualIso Y)) ⟨by
+    (CommSq.vert_inv (g := rightDualIsoMap (κ X))
+      (h := rightDualIsoMap (κ Y)) ⟨by
         simpa only [comp_rightAdjointMate, rightDualIsoMap] using
           (congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)).symm⟩)).w
 
@@ -44,12 +46,12 @@ variable (p : PivotalStructure (C := D))
 
 /-- Transport a pivotal component along the forgotten double-dual comparison. -/
 def transportedPivotalHom (Z : 𝒵) :
-    Z.1 ⟶ ((Zᘁ)ᘁ).1 := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
+    Z.1 ⟶ ((Zᘁ)ᘁ).1 := (p.iso Z.1).hom ≫ (κ₂ Z).inv
 
 /-- The transported pivotal components are natural on centre morphisms. -/
 theorem transported_pivotal_natural (f : X ⟶ Y) :
     f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f :=
-  (cancel_mono (forgetDoubleDualIso Y).hom).1 <| by
+  (cancel_mono (κ₂ Y).hom).1 <| by
     simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_natural] using p.naturality f.f
 
 end PropertyF.Ground.CentreInduction
@@ -95,6 +97,8 @@ set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RightRigidCategory (Center D)]
 local notation "𝒵" => Center D
+-- The dual comparison for the forgetful functor.
+local notation "κ" => forgetDualIso
 variable (X Y : Center D)
 
 omit [RightRigidCategory D] in
@@ -125,9 +129,9 @@ theorem forget_rightDualTensorIso :
 
 /-- Forgetting centre duals preserves their tensor comparison. -/
 theorem forgetDualIso_tensor :
-    (forgetDualIso (X ⊗ Y)).hom ≫ (rightDualTensorIso X.1 Y.1).hom =
+    (κ (X ⊗ Y)).hom ≫ (rightDualTensorIso X.1 Y.1).hom =
       (rightDualTensorIso X Y).hom.f ≫
-        ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) := by
+        ((κ Y).hom ⊗ₘ (κ X).hom) := by
   rw [forget_rightDualTensorIso]
   dsimp only [forgetDualIso, rightDualTensorIso]
   rw [← rightDualIso_tensor (forgetPairing X) HasRightDual.exact
