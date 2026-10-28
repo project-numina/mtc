@@ -165,17 +165,16 @@ numbers; reality and categorical multiplicities require additional input. -/
 theorem cyclic_block_trace {B : Blocks} (T : B.Algebra →ₗ[ℂ] ℂ)
     (hT : ∀ X Y, T (X * Y) = T (Y * X)) :
     ∃ w : Fin B.count → ℂ, ∀ X, T X = ∑ i, w i * (X i).trace := by
-  classical
   let V : Fin B.count → Type := fun i => Matrix (Fin (B.size i)) (Fin (B.size i)) ℂ
   let Tblock (i : Fin B.count) : V i →ₗ[ℂ] ℂ := T.comp (LinearMap.single ℂ V i)
-  have hc (i : Fin B.count) : ∀ X Y : V i, Tblock i (X * Y) = Tblock i (Y * X) := by
-    intro X Y
-    change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
-    simpa only [Pi.single_mul] using hT (Pi.single i X) (Pi.single i Y)
+  have hc (i : Fin B.count) : ∀ X Y : V i, Tblock i (X * Y) = Tblock i (Y * X) :=
+    fun X Y => by
+      change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
+      simpa only [Pi.single_mul] using hT (Pi.single i X) (Pi.single i Y)
   choose w hw using fun i : Fin B.count => cyclic_matrix_trace (Tblock i) (hc i)
-  refine ⟨w, fun X => ?_⟩
-  simp only [← hw, Tblock, LinearMap.comp_apply, LinearMap.single_apply, ← map_sum,
-    LinearMap.sum_single_apply]
+  exact ⟨w, fun X => by
+    simp only [← hw, Tblock, LinearMap.comp_apply, LinearMap.single_apply, ← map_sum,
+      LinearMap.sum_single_apply]⟩
 
 end PropertyF.Ground.Calculus
 
@@ -227,15 +226,13 @@ theorem representation_trace_multiplicities {m : ℕ}
   obtain ⟨w, hw⟩ := cyclic_block_trace T (fun x y => by
     change (φ (x * y)).trace = (φ (y * x)).trace
     simpa only [map_mul] using Matrix.trace_mul_comm (φ x) (φ y))
-  have hnat : ∀ i, ∃ k : ℕ, w i = k := by
-    intro i
+  have hnat : ∀ i, ∃ k : ℕ, w i = k := fun i =>
     let j : Fin (B.size i) := ⟨0, hd i⟩
     let e : B.Algebra := Pi.single i (Matrix.single j j 1)
-    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by
+    let ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by
       rw [← map_mul]
       simp [e, ← Pi.single_mul, Matrix.single_mul_single_same])
-    refine ⟨k, ?_⟩
-    simpa [T, e, sum_trace_single] using (hw e).symm.trans hk
+    ⟨k, by simpa [T, e, sum_trace_single] using (hw e).symm.trans hk⟩
   choose mult hm using hnat
   exact ⟨mult, fun x => by simpa [T, hm] using hw x⟩
 
