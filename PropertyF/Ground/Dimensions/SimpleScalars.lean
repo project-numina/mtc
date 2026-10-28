@@ -207,12 +207,8 @@ theorem simpleScalarNatural_app_simple
   let s : X ⟶ X := biproduct.ι V a ≫ e.inv
   let t : X ⟶ X := e.hom ≫ biproduct.π V a
   have hst : s ≫ t = 𝟙 X := by simp [s, t, Category.assoc, V, a, X, simplePiecesObject]
-  have hs : s ≠ 0 := by
-    intro hz
-    have hid : 𝟙 X = 0 := by simpa [hz] using hst.symm
-    let : Simple X := simples_simple C i
-    exact id_nonzero X hid
   let : Simple X := simples_simple C i
+  have hs : s ≠ 0 := fun hz ↦ id_nonzero X (by simpa [hz] using hst.symm)
   let : IsIso s := isIso_of_hom_simple hs
   apply (cancel_epi s).1
   change s ≫ simpleScalarComponent C c X = s ≫ (c i • 𝟙 X)
