@@ -6,16 +6,11 @@ public import Mathlib.CategoryTheory.Preadditive.Biproducts
 public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.Fusion.Simples
 
-/-! Rigidity of the generated subcategory from closure under right duals. -/
+/-!
+# Duals in generated closures
 
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF
-universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
-  [Abelian C] [MonoidalPreadditive C] [RigidCategory C]
-
-end PropertyF
+Finite sums of right mates and generation of a simple object’s dual.
+-/
 
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators

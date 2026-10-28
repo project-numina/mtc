@@ -21,7 +21,7 @@ open scoped BigOperators Matrix ComplexOrder
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- Eigenvalues on a common eigenvector for a real matrix and its transpose
 are complex conjugates. -/
 theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
@@ -48,11 +48,11 @@ theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
 /-- Every nonzero fusion character takes complex-conjugate values on dual
 simple objects, with no pivotal or spherical hypothesis. -/
 theorem fusion_character_dual_eq_conj
-    (χ : Fin (Ground.rank C) → ℂ) (i₀ : Fin (Ground.rank C)) (hχ : χ i₀ ≠ 0)
+    (χ : Fin (rank C) → ℂ) (i₀ : Fin (rank C)) (hχ : χ i₀ ≠ 0)
     (hchar : ∀ i j, χ i * χ j = ∑ k, (Ground.fusionCoeff C i j k : ℂ) * χ k)
-    (i : Fin (Ground.rank C)) : χ (Ground.dualIndex C i) = star (χ i) := by
+    (i : Fin (rank C)) : χ (Ground.dualIndex C i) = star (χ i) := by
   classical
-  let A : Matrix (Fin (Ground.rank C)) (Fin (Ground.rank C)) ℂ :=
+  let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
     fun j k => (Ground.fusionCoeff C i j k : ℂ)
   have hv : χ ≠ 0 := by
     intro hz
@@ -75,11 +75,11 @@ theorem fusion_character_dual_eq_conj
 /-- Simple pivotal dimensions on duals are conjugate, for any pivotal
 structure on a genuine braided fusion category. -/
 theorem pivotalDimension_dual_eq_conj
-    (p : PivotalStructure (C := C.Obj)) (i : Fin (Ground.rank C)) :
-    pivotalDimension C p (Ground.simples C (Ground.dualIndex C i)) =
-      star (pivotalDimension C p (Ground.simples C i)) := by
+    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
+    pivotalDimension C p (simples C (Ground.dualIndex C i)) =
+      star (pivotalDimension C p (simples C i)) := by
   apply fusion_character_dual_eq_conj C
-    (fun j => pivotalDimension C p (Ground.simples C j)) (Ground.unitIndex C)
+    (fun j => pivotalDimension C p (simples C j)) (unitIndex C)
   · obtain ⟨e⟩ := Ground.unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit]
     exact one_ne_zero
@@ -88,11 +88,11 @@ theorem pivotalDimension_dual_eq_conj
 /-- Galois conjugates of pivotal dimensions also interchange complex
 conjugation and duality. -/
 theorem galois_pivotalDimension_dual_eq_conj
-    (p : PivotalStructure (C := C.Obj)) (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
-    σ (pivotalDimension C p (Ground.simples C (Ground.dualIndex C i))) =
-      star (σ (pivotalDimension C p (Ground.simples C i))) := by
+    (p : PivotalStructure (C := C.Obj)) (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
+    σ (pivotalDimension C p (simples C (Ground.dualIndex C i))) =
+      star (σ (pivotalDimension C p (simples C i))) := by
   apply fusion_character_dual_eq_conj C
-    (fun j => σ (pivotalDimension C p (Ground.simples C j))) (Ground.unitIndex C)
+    (fun j => σ (pivotalDimension C p (simples C j))) (unitIndex C)
   · obtain ⟨e⟩ := Ground.unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit, map_one]
     exact one_ne_zero
@@ -108,7 +108,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse dual of a natural fourth-dual square root is also a root at
 the dual object. -/
@@ -168,32 +168,32 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- The sign comparing the root on a simple's dual to the inverse dual root. -/
-noncomputable def rootDualSign (C : Ground.BraidedFusionCategory.{v,u})
-    (i : Fin (Ground.rank C)) : ℂ := by
-  letI : Simple (Ground.simples C i) := Ground.simples_simple C i
-  exact Classical.choose (rootDual_differs_by_sign C (Ground.simples C i))
+noncomputable def rootDualSign (C : BraidedFusionCategory.{v,u})
+    (i : Fin (rank C)) : ℂ := by
+  letI : Simple (simples C i) := Ground.simples_simple C i
+  exact Classical.choose (rootDual_differs_by_sign C (simples C i))
 
-theorem rootDualSign_sq (i : Fin (Ground.rank C)) :
+theorem rootDualSign_sq (i : Fin (rank C)) :
     rootDualSign C i * rootDualSign C i = 1 := by
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
-  exact (Classical.choose_spec (rootDual_differs_by_sign C (Ground.simples C i))).1
+  let : Simple (simples C i) := Ground.simples_simple C i
+  exact (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).1
 
-theorem rootDualSign_component (i : Fin (Ground.rank C)) :
-    ((fourthDualRootNaturalIso C).app ((Ground.simples C i)ᘁ)).hom =
-      rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (Ground.simples C i))).symm.hom := by
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
-  exact (Classical.choose_spec (rootDual_differs_by_sign C (Ground.simples C i))).2
+theorem rootDualSign_component (i : Fin (rank C)) :
+    ((fourthDualRootNaturalIso C).app ((simples C i)ᘁ)).hom =
+      rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (simples C i))).symm.hom := by
+  let : Simple (simples C i) := Ground.simples_simple C i
+  exact (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).2
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Intrinsic simple norms are signed products of the root dimensions of a
 simple and its dual, using the same sign as the dual-root component. -/
 theorem squaredNorm_eq_rootDualSign_mul
-    (i : Fin (Ground.rank C)) :
-    Ground.squaredNorm C (Ground.simples C i) = rootDualSign C i * rootDimension C i *
+    (i : Fin (rank C)) :
+    squaredNorm C (simples C i) = rootDualSign C i * rootDimension C i *
       rootDimension C (Ground.dualIndex C i) := by
-  let X := Ground.simples C i
+  let X := simples C i
   let : Simple X := Ground.simples_simple C i
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap j).symm
@@ -237,25 +237,25 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- A pivotal structure whose simple dimensions and intrinsic norms are the
 FP values is spherical. -/
 theorem spherical_of_fp_dimensions_and_squaredNorms
     (p : PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ))
-    (hnorm : ∀ i, Ground.squaredNorm C (Ground.simples C i) =
-      ((Ground.fpSimple C i ^ 2 : ℝ) : ℂ)) : p.IsSpherical := by
+    (hdim : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hnorm : ∀ i, squaredNorm C (simples C i) =
+      ((fpSimple C i ^ 2 : ℝ) : ℂ)) : p.IsSpherical := by
   apply (isSpherical_iff_simple_dimensions C p).2
   intro i
-  let X := Ground.simples C i
+  let X := simples C i
   let : Simple X := Ground.simples_simple C i
   have hh := target_squaredNorm_choice_independent C X (p.iso X)
   rw [← rightTrace_id, ← leftTrace_id] at hh
-  have hr : Ground.unitScalar C (p.rightTrace (𝟙 X)) = (Ground.fpSimple C i : ℂ) := hdim i
+  have hr : Ground.unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) := hdim i
   rw [hr, hnorm i, Complex.ofReal_pow] at hh
-  have hf : (Ground.fpSimple C i : ℂ) ≠ 0 := by
+  have hf : (fpSimple C i : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt (Ground.fpSimple_pos C i)
-  have hl : Ground.unitScalar C (p.leftTrace (𝟙 X)) = (Ground.fpSimple C i : ℂ) := by
+  have hl : Ground.unitScalar C (p.leftTrace (𝟙 X)) = (fpSimple C i : ℂ) := by
     apply mul_left_cancel₀ hf
     simpa [pow_two] using hh.symm
   apply (groundUnitScalarEquiv C).injective
@@ -268,17 +268,17 @@ theorem eno_root_norm_saturation_of_pseudoUnitary
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j)
-    (hnorm : ∀ i, Ground.squaredNorm C (Ground.simples C i) =
+    (hnorm : ∀ i, squaredNorm C (simples C i) =
       ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
-    ∀ i, ‖rootDimension C i‖ = Ground.fpSimple C i := by
-  let d : Fin (Ground.rank C) → ℝ := fun i => ‖rootDimension C i‖
-  have hb : ∀ i, |d i| ≤ Ground.fpSimple C i := by
+    ∀ i, ‖rootDimension C i‖ = fpSimple C i := by
+  let d : Fin (rank C) → ℝ := fun i => ‖rootDimension C i‖
+  have hb : ∀ i, |d i| ≤ fpSimple C i := by
     intro i
     rw [abs_of_nonneg (norm_nonneg _)]
     exact rootDimension_norm_le_fp_of_trace_matrix C i (hinv i) (heig i)
-  have hg : (∑ i, d i ^ 2) = Ground.globalFPDimension C := by
+  have hg : (∑ i, d i ^ 2) = globalFPDimension C := by
     have h := hpu
-    change Ground.globalDimension C = (Ground.globalFPDimension C : ℂ) at h
+    change Ground.globalDimension C = (globalFPDimension C : ℂ) at h
     unfold Ground.globalDimension at h
     simp only [hnorm, ← Complex.ofReal_sum] at h
     exact Complex.ofReal_injective h
@@ -296,11 +296,11 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- A phase-twisted natural root becomes pivotal when its scaled multiplicity
 operators are identities and the double-dual tensorator is natural. -/
-def rootPhasePivotal (C : Ground.BraidedFusionCategory.{v,u})
-    (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
+def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
+    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
       (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
         (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
@@ -321,20 +321,20 @@ def rootPhasePivotal (C : Ground.BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhasePivotal_dimension
-    (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
+    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
       (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
         (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
     (hdef : ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1)
     (hunit : ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom =
-      (doubleDualUnitIso (C := C.Obj)).hom) (i : Fin (Ground.rank C)) :
-    pivotalDimension C (rootPhasePivotal C c hc hnat hdef hunit) (Ground.simples C i) =
+      (doubleDualUnitIso (C := C.Obj)).hom) (i : Fin (rank C)) :
+    pivotalDimension C (rootPhasePivotal C c hc hnat hdef hunit) (simples C i) =
       c i * rootDimension C i := by
-  have ht : (rootPhasePivotal C c hc hnat hdef hunit).rightTrace (𝟙 (Ground.simples C i)) =
-      c i • rootTrace C (𝟙 (Ground.simples C i)) := by
+  have ht : (rootPhasePivotal C c hc hnat hdef hunit).rightTrace (𝟙 (simples C i)) =
+      c i • rootTrace C (𝟙 (simples C i)) := by
     apply End.homEquiv.injective
     have h := rootSignTwist_app_simple C c hc i
-    change (rootSignTwist C c hc).hom.app (Ground.simples C i) = _ at h
+    change (rootSignTwist C c hc).hom.app (simples C i) = _ at h
     simp [PivotalStructure.rightTrace, rootPhasePivotal, rootTrace, rightTraceWith, h, tensorHom_def]
   unfold pivotalDimension rootDimension
   rw [ht]
@@ -350,13 +350,13 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
     (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
       (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
         (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
-    (hnorm : ∀ i, Ground.squaredNorm C (Ground.simples C i) =
+    (hnorm : ∀ i, squaredNorm C (simples C i) =
       ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
     ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ) := by
+      pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
   classical
   have hsat := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
-  let q : Fin (Ground.rank C) → ℂ := fun i => rootDimension C i / (Ground.fpSimple C i : ℂ)
+  let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
   have hq : ∀ i, ‖q i‖ = 1 := by
     intro i
     dsimp [q]
@@ -364,7 +364,7 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
       abs_of_pos (Ground.fpSimple_pos C i), hsat i]
     exact div_self (ne_of_gt (Ground.fpSimple_pos C i))
   have hq0 : ∀ i, q i ≠ 0 := fun i => norm_pos_iff.mp (by rw [hq]; norm_num)
-  let c : Fin (Ground.rank C) → ℂ := fun i => (q i)⁻¹
+  let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i => inv_ne_zero (hq0 i)
   have hdom : ∀ i j k, ‖enoTraceMatrix C i j k‖ ≤ (Ground.fusionCoeff C i j k : ℝ) := by
     intro i j k
@@ -385,27 +385,27 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
       rw [norm_div, norm_mul, hq i, hq j, hq k]
       norm_num
     have hrtrace : LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap * r =
-        (Module.finrank ℂ (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) : ℂ) := by
+        (Module.finrank ℂ (simples C k ⟶ simples C i ⊗ simples C j) : ℂ) := by
       exact hphase i j k
     let : FiniteDimensional ℂ
-      (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :=
+      (simples C k ⟶ simples C i ⊗ simples C j) :=
       Ground.IsFusionCategory.hom_finite _ _
     have hfactor : c k / (c i * c j) = r⁻¹ := by
       dsimp [c, r]
       field_simp [hq0 i, hq0 j, hq0 k]
     rw [hfactor]
     exact involution_phase_inv_eq_one_of_trace _ (hinv i j k) r hrnorm hrtrace
-  have hvalue : ∀ i, c i * rootDimension C i = (Ground.fpSimple C i : ℂ) := by
+  have hvalue : ∀ i, c i * rootDimension C i = (fpSimple C i : ℂ) := by
     intro i
-    have hf : (Ground.fpSimple C i : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (Ground.fpSimple_pos C i)
+    have hf : (fpSimple C i : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (Ground.fpSimple_pos C i)
     dsimp [c, q]
     field_simp [hf, rootDimension_ne_zero C i]
-  have hu : c (Ground.unitIndex C) * rootDimension C (Ground.unitIndex C) = 1 := by
+  have hu : c (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
     rw [hvalue, Ground.fpSimple_unit]
     norm_num
   let unitProof := rootSignTwist_unit_of_simple_dimension C c hc hu
   let p := rootPhasePivotal C c hc hnat hdef unitProof
-  have hp : ∀ i, pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ) := by
+  have hp : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     intro i
     rw [rootPhasePivotal_dimension, hvalue]
   refine ⟨p, spherical_of_fp_dimensions_and_squaredNorms C p hp ?_, hp⟩
@@ -422,7 +422,7 @@ open scoped BigOperators Matrix ComplexOrder
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- ENO's trace reciprocity identifies the dual root dimension with the
 signed complex conjugate of the original one. -/
 theorem rootDimension_dual_conjugate_of_trace_reciprocity
@@ -430,10 +430,10 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
       (multiplicityDefect C i j k).toLinearMap = 1)
     (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
       rootDualSign C i * enoTraceMatrix C i k j)
-    (i : Fin (Ground.rank C)) :
+    (i : Fin (rank C)) :
     rootDimension C (Ground.dualIndex C i) = rootDualSign C i * star (rootDimension C i) := by
   classical
-  let A : Matrix (Fin (Ground.rank C)) (Fin (Ground.rank C)) ℂ := enoTraceMatrix C i
+  let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ := enoTraceMatrix C i
   let d := rootDimension C
   let ε := rootDualSign C i
   have hε : ε * ε = 1 := rootDualSign_sq C i
@@ -448,8 +448,8 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     simp
   have hv : d ≠ 0 := by
     intro hz
-    apply rootDimension_ne_zero C (Ground.unitIndex C)
-    exact congrFun hz (Ground.unitIndex C)
+    apply rootDimension_ne_zero C (unitIndex C)
+    exact congrFun hz (unitIndex C)
   have h : A *ᵥ d = d i • d := by
     ext j
     change (∑ k, enoTraceMatrix C i j k * rootDimension C k) = rootDimension C i * rootDimension C j
@@ -484,8 +484,8 @@ theorem squaredNorm_eq_rootDimension_norm_sq_of_trace_reciprocity
     (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j) (i : Fin (Ground.rank C)) :
-    Ground.squaredNorm C (Ground.simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
+      rootDualSign C i * enoTraceMatrix C i k j) (i : Fin (rank C)) :
+    squaredNorm C (simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
   rw [squaredNorm_eq_rootDualSign_mul C i,
     rootDimension_dual_conjugate_of_trace_reciprocity C hinv htranspose i]
   calc

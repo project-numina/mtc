@@ -11,13 +11,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual natural fourth-dual root is its unit dimension times the
 canonical double-dual unit map. -/
 theorem fourthDualRoot_unit_component :
     ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj)).hom =
-      rootDimension C (Ground.unitIndex C) • (doubleDualUnitIso (C := C.Obj)).hom := by
+      rootDimension C (unitIndex C) • (doubleDualUnitIso (C := C.Obj)).hom := by
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
@@ -34,15 +34,15 @@ theorem fourthDualRoot_unit_component :
     have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
     rw [hu, rightQuantumTrace_unitIso]
     simp only [← groundUnitScalarEquiv_apply, map_smul, map_one, smul_eq_mul, mul_one]
-  have hdim : rootDimension C (Ground.unitIndex C) = r := by
+  have hdim : rootDimension C (unitIndex C) = r := by
     obtain ⟨e⟩ := Ground.unitIndex_iso C
     have hn := (fourthDualRootNaturalIso C).hom.naturality e.hom
     have ht := rightQuantumTrace_iso
-      ((fourthDualRootNaturalIso C).app (Ground.simples C (Ground.unitIndex C))) a e
+      ((fourthDualRootNaturalIso C).app (simples C (unitIndex C))) a e
       (by simpa [doubleDualFunctor, a] using hn)
-    change Ground.unitScalar C (rootTrace C (𝟙 (Ground.simples C (Ground.unitIndex C)))) = r
-    have hq : rootTrace C (𝟙 (Ground.simples C (Ground.unitIndex C))) =
-        rightQuantumTrace ((fourthDualRootNaturalIso C).app (Ground.simples C (Ground.unitIndex C))) := by
+    change Ground.unitScalar C (rootTrace C (𝟙 (simples C (unitIndex C)))) = r
+    have hq : rootTrace C (𝟙 (simples C (unitIndex C))) =
+        rightQuantumTrace ((fourthDualRootNaturalIso C).app (simples C (unitIndex C))) := by
       apply End.homEquiv.injective
       simp [rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def]
     rw [hq, ht, htrace]
@@ -57,17 +57,17 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- On a simple and its right dual the root carries the ordinary duality cup
 to the double-dual cup, with the ENO sign. -/
 theorem root_components_coevaluation
-    (i : Fin (Ground.rank C)) :
-    let X := Ground.simples C i
+    (i : Fin (rank C)) :
+    let X := simples C i
     η_ X (Xᘁ) ≫ (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom) =
       rootDualSign C i • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
-  let X := Ground.simples C i
+  let X := simples C i
   let a : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   let e := rootDualSign C i
   have ha : ((fourthDualRootNaturalIso C).app (Xᘁ)).hom = e • ((a.invᘁ)) := by

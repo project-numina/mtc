@@ -26,17 +26,30 @@ open PropertyF.Ground.Dimensions
 
 namespace PropertyF.Ground.Modular
 
+/-- Normalized columns satisfy the fusion-character equations. -/
+abbrev HasVerlindeFormula {ι : Type*} [Fintype ι] (N : FusionRules ι)
+    (S : Matrix ι ι ℂ) (d : ι → ℂ) : Prop :=
+  ∀ i j y, (S i y / d y) * (S j y / d y) =
+    ∑ k, (N.coeff i j k : ℂ) * (S k y / d y)
+
+/-- Complex automorphisms act on normalized S-matrix columns. -/
+abbrev IsGaloisColumnAction {ι : Type*} (S : Matrix ι ι ℂ) (d : ι → ℂ)
+    (act : (ℂ ≃+* ℂ) →* Equiv.Perm ι) : Prop :=
+  ∀ (σ : ℂ ≃+* ℂ) i j, σ (S i j / d j) = S i (act σ j) / d (act σ j)
+
+section
+variable {ι : Type*} [Fintype ι] [DecidableEq ι] (N : FusionRules ι) (u : ι)
+variable (S : Matrix ι ι ℂ) (dual : ι → ι) (d : ι → ℂ) (D : ℂ)
+variable (hd : ∀ y, d y ≠ 0) (hD : D ≠ 0)
+include hd hD
+
 /-- The full action on normalized columns follows from S-square and the
 Verlinde character equations, without an assumed character classification. -/
-theorem exists_galoisLabel_of_verlinde {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (N : FusionRules ι) (S : Matrix ι ι ℂ) (dual : ι → ι)
-    (d : ι → ℂ) (D : ℂ) (hd : ∀ y, d y ≠ 0) (hD : D ≠ 0)
+theorem exists_galoisLabel_of_verlinde
     (hsym : ∀ x y, S x y = S y x) (hunit : ∀ x, S x N.unit = d x)
-    (hsq : ∀ x y, ∑ z, S x z * S z y = if x = dual y then D else 0)
-    (hVerlinde : ∀ i j y, (S i y / d y) * (S j y / d y) =
-      ∑ k, (N.coeff i j k : ℂ) * (S k y / d y)) :
-    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm ι, ∀ (σ : ℂ ≃+* ℂ) i j,
-      σ (S i j / d j) = S i (act σ j) / d (act σ j) := by
+    (hsq : HasSSquare S dual D)
+    (hVerlinde : HasVerlindeFormula N S d) :
+    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm ι, IsGaloisColumnAction S d act := by
   let columns : ι → Character N := fun j => {
     value := fun i => S i j / d j
     unit_eq := by rw [hsym, hunit]; exact div_self (hd j)
@@ -48,33 +61,12 @@ theorem exists_galoisLabel_of_verlinde {ι : Type*} [Fintype ι] [DecidableEq ι
   intro σ i j
   exact (Character.galoisLabel_character e σ j i).symm
 
-/-- Once S-square and Verlinde are proved categorically, the corresponding
-normalized S-columns carry the genuine action of all complex automorphisms. -/
-theorem categoricalS_galois_action (C : Ground.BraidedFusionCategory)
-    (p : PivotalStructure (C := C.Obj)) (dual : Fin (rank C) → Fin (rank C))
-    (hD : globalDimension C ≠ 0)
-    (hsq : ∀ x y, ∑ z, categoricalS C p x z * categoricalS C p z y =
-      if x = dual y then globalDimension C else 0)
-    (hVerlinde : ∀ i j y,
-      (categoricalS C p i y / simpleDimension C p y) *
-        (categoricalS C p j y / simpleDimension C p y) =
-      ∑ k, (fusionCoeff C i j k : ℂ) * (categoricalS C p k y / simpleDimension C p y)) :
-    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)), ∀ (σ : ℂ ≃+* ℂ) i j,
-      σ (categoricalS C p i j / simpleDimension C p j) =
-        categoricalS C p i (act σ j) / simpleDimension C p (act σ j) := by
-  let N : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  exact exists_galoisLabel_of_verlinde N (categoricalS C p) dual (simpleDimension C p)
-    (globalDimension C) (simpleDimension_ne_zero C p) hD (categoricalS_symmetric C p) (categoricalS_unit C p) hsq hVerlinde
-
-
 /-- Proposition 2.1 from the numerical S identities and the character equation,
 with no modular-data hypothesis bundle. -/
-theorem galois_unit_properties {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (u : ι) (S : Matrix ι ι ℂ) (dual : ι → ι) (d : ι → ℂ) (D : ℂ)
-    (hd : ∀ y, d y ≠ 0) (hD : D ≠ 0) (hu : d u = 1)
+theorem galois_unit_properties (hu : d u = 1)
     (hglobal : D = ∑ x, d x ^ 2) (hsym : ∀ x y, S x y = S y x)
     (hunit : ∀ x, S x u = d x)
-    (hsq : ∀ x y, ∑ z, S x z * S z y = if x = dual y then D else 0)
+    (hsq : HasSSquare S dual D)
     (σ : ℂ ≃+* ℂ) (y : ι)
     (hchar : ∀ x, σ (S x u / d u) = S x y / d y) :
     (∀ x, S x y = d y * σ (d x)) ∧ y = dual y ∧ σ D = D / d y ^ 2 := by
@@ -107,6 +99,24 @@ theorem galois_unit_properties {ι : Type*} [Fintype ι] [DecidableEq ι]
   apply (eq_div_iff (pow_ne_zero 2 (hd y))).mpr
   rw [mul_comm, hsquare, ite_eq_left hself]
 
+end
+
+/-- Once S-square and Verlinde are proved categorically, the corresponding
+normalized S-columns carry the genuine action of all complex automorphisms. -/
+theorem categoricalS_galois_action (C : Ground.BraidedFusionCategory)
+    (p : PivotalStructure (C := C.Obj)) (dual : Fin (rank C) → Fin (rank C))
+    (hD : globalDimension C ≠ 0)
+    (hsq : HasSSquare (categoricalS C p) dual (globalDimension C))
+    (hVerlinde : HasVerlindeFormula ⟨unitIndex C, fusionCoeff C⟩
+      (categoricalS C p) (simpleDimension C p)) :
+    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)),
+      IsGaloisColumnAction (categoricalS C p) (simpleDimension C p) act := by
+  let N : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
+  exact exists_galoisLabel_of_verlinde N (categoricalS C p) dual (simpleDimension C p)
+    (globalDimension C) (simpleDimension_ne_zero C p) hD (categoricalS_symmetric C p) (categoricalS_unit C p) hsq hVerlinde
+
+
+
 end PropertyF.Ground.Modular
 end
 
@@ -131,7 +141,7 @@ theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,
       (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 := by
   let _ : Simple (simples D k) := simples_simple D k
   let _ : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
-  exact rightPartialTrace_simple_of_trace_compatibility (simples D k) X p
+  exact rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
     (Ground.unitScalarEquiv D) (End.of (doubleBraiding (simples D k) X))
     (simpleDimension_ne_zero D p k)
     (rightTrace_partialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)))
@@ -262,8 +272,8 @@ theorem rightPartialTrace_nested_simple (p : PivotalStructure (C := C))
   have ht1 := rightTrace_partialTrace p Z (X ⊗ Y) f
   have ht2 := rightTrace_partialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y g)
   have ht3 := rightTrace_partialTrace p (Z ⊗ X) Y g
-  rw [rightPartialTrace_simple_of_trace_compatibility Z (X ⊗ Y) p scalar f hd ht1,
-    rightPartialTrace_simple_of_trace_compatibility Z X p scalar _ hd ht2, ht3, hc]
+  rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd ht1,
+    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd ht2, ht3, hc]
 
 
 end Nested

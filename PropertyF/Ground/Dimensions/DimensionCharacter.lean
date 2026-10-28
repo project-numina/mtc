@@ -16,11 +16,11 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Complex pivotal dimension obtained using the canonical unit scalar map. -/
-def pivotalDimension (C : Ground.BraidedFusionCategory.{v,u})
+def pivotalDimension (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) (X : C.Obj) : ℂ :=
   Ground.unitScalar C (p.rightTrace (𝟙 X))
 
@@ -28,13 +28,13 @@ def pivotalDimension (C : Ground.BraidedFusionCategory.{v,u})
 multiplicities, for any pivotal structure. -/
 theorem pivotalDimension_decomposition
     (p : PivotalStructure (C := C.Obj)) (X : C.Obj) :
-    pivotalDimension C p X = ∑ i, (Module.finrank ℂ (Ground.simples C i ⟶ X) : ℂ) *
-      pivotalDimension C p (Ground.simples C i) := by
+    pivotalDimension C p X = ∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℂ) *
+      pivotalDimension C p (simples C i) := by
   classical
-  let m (i : Fin (Ground.rank C)) := Module.finrank ℂ (Ground.simples C i ⟶ X)
-  let V : (Σ i, Fin (m i)) → C.Obj := fun a => Ground.simples C a.1
+  let m (i : Fin (rank C)) := Module.finrank ℂ (simples C i ⟶ X)
+  let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C X
-  have ht : p.rightTrace (𝟙 X) = ∑ i, (m i : ℂ) • p.rightTrace (𝟙 (Ground.simples C i)) := by
+  have ht : p.rightTrace (𝟙 X) = ∑ i, (m i : ℂ) • p.rightTrace (𝟙 (simples C i)) := by
     calc
       _ = p.rightTrace (𝟙 (⨁ V)) := p.rightTrace_id_iso e
       _ = ∑ a, p.rightTrace (𝟙 (V a)) := rightDimension_biproduct V p
@@ -60,8 +60,8 @@ theorem pivotalDimension_tensor
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character
     (p : PivotalStructure (C := C.Obj)) :
-    ∀ i j, pivotalDimension C p (Ground.simples C i) * pivotalDimension C p (Ground.simples C j) =
-      ∑ k, (Ground.fusionCoeff C i j k : ℂ) * pivotalDimension C p (Ground.simples C k) := by
+    ∀ i j, pivotalDimension C p (simples C i) * pivotalDimension C p (simples C j) =
+      ∑ k, (Ground.fusionCoeff C i j k : ℂ) * pivotalDimension C p (simples C k) := by
   intro i j
   rw [← pivotalDimension_tensor, pivotalDimension_decomposition]
   rfl
@@ -75,12 +75,12 @@ theorem pivotalDimension_iso
 
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
 its Frobenius–Perron dimension. -/
-theorem galois_pivotalDimension_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
+theorem galois_pivotalDimension_norm_le_fpSimple (C : BraidedFusionCategory)
     (p : PivotalStructure (C := C.Obj))
-    (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
-    ‖σ (pivotalDimension C p (Ground.simples C i))‖ ≤ Ground.fpSimple C i := by
+    (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
+    ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i := by
   apply galois_character_norm_le_fpSimple C
-    (fun j => pivotalDimension C p (Ground.simples C j)) (Ground.unitIndex C)
+    (fun j => pivotalDimension C p (simples C j)) (unitIndex C)
   · obtain ⟨e⟩ := Ground.unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit]
     exact one_ne_zero

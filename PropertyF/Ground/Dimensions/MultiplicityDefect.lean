@@ -17,53 +17,53 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Scalar comparing the chosen simple fourth-dual square root to the
 braided double-dual component. -/
-def fourthDualRootScalar (C : Ground.BraidedFusionCategory.{v,u})
-    (i : Fin (Ground.rank C)) : ℂ := by
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
+def fourthDualRootScalar (C : BraidedFusionCategory.{v,u})
+    (i : Fin (rank C)) : ℂ := by
+  let : Simple (simples C i) := Ground.simples_simple C i
   exact Classical.choose (isomorphisms_differ_by_scalar C
-    (Ground.doubleDualIso C (Ground.simples C i)) (fourthDualSimpleRoot C i))
+    (Ground.doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
 theorem fourthDualRootScalar_spec
-    (i : Fin (Ground.rank C)) : fourthDualRootScalar C i ≠ 0 ∧
+    (i : Fin (rank C)) : fourthDualRootScalar C i ≠ 0 ∧
     (fourthDualSimpleRoot C i).hom = fourthDualRootScalar C i •
-      (Ground.doubleDualIso C (Ground.simples C i)).hom := by
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
+      (Ground.doubleDualIso C (simples C i)).hom := by
+  let : Simple (simples C i) := Ground.simples_simple C i
   exact Classical.choose_spec (isomorphisms_differ_by_scalar C
-    (Ground.doubleDualIso C (Ground.simples C i)) (fourthDualSimpleRoot C i))
+    (Ground.doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
 /-- The chosen simple square roots extend to a natural isomorphism from the
 identity to the double-dual functor. It is not asserted to be monoidal. -/
-def fourthDualRootNaturalIso (C : Ground.BraidedFusionCategory.{v,u}) :
+def fourthDualRootNaturalIso (C : BraidedFusionCategory.{v,u}) :
     𝟭 C.Obj ≅ doubleDualFunctor C.Obj :=
   simpleScalarNaturalIso C (fourthDualRootScalar C) (fun i => (fourthDualRootScalar_spec C i).1) ≪≫
     drinfeldNaturalIso C
 
 /-- The natural extension has exactly the chosen simple components. -/
 theorem fourthDualRootNaturalIso_app_simple
-    (i : Fin (Ground.rank C)) :
-    (fourthDualRootNaturalIso C).app (Ground.simples C i) = fourthDualSimpleRoot C i := by
+    (i : Fin (rank C)) :
+    (fourthDualRootNaturalIso C).app (simples C i) = fourthDualSimpleRoot C i := by
   apply Iso.ext
   simp only [fourthDualRootNaturalIso, NatIso.trans_app, Iso.trans_hom,
     simpleScalarNaturalIso_app_simple]
-  change (fourthDualRootScalar C i • 𝟙 (Ground.simples C i)) ≫
-    (Ground.doubleDualIso C (Ground.simples C i)).hom = _
+  change (fourthDualRootScalar C i • 𝟙 (simples C i)) ≫
+    (Ground.doubleDualIso C (simples C i)).hom = _
   simpa using (fourthDualRootScalar_spec C i).2.symm
 
 /-- Natural transformations from the identity are determined by their
 components on the simple representatives. -/
 theorem natTrans_eq_of_simple_components
     (F : C.Obj ⥤ C.Obj) (α β : 𝟭 C.Obj ⟶ F)
-    (h : ∀ i, α.app (Ground.simples C i) = β.app (Ground.simples C i)) : α = β := by
+    (h : ∀ i, α.app (simples C i) = β.app (simples C i)) : α = β := by
   apply NatTrans.ext
   funext X
   classical
   obtain ⟨m, ⟨e⟩⟩ := Ground.simples_decompose C X
-  let V : (Σ i, Fin (m i)) → C.Obj := fun a => Ground.simples C a.1
+  let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
   have hs : α.app (⨁ V) = β.app (⨁ V) := by
     apply biproduct.hom_ext'
     intro a
@@ -78,7 +78,7 @@ theorem natTrans_eq_of_simple_components
   rw [← hα, ← hβ, hs]
 
 /-- The natural double-dual root, squared using the double-dual functor. -/
-def fourthDualRootNaturalSquare (C : Ground.BraidedFusionCategory.{v,u}) :
+def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
     𝟭 C.Obj ≅ doubleDualFunctor C.Obj ⋙ doubleDualFunctor C.Obj :=
   fourthDualRootNaturalIso C ≪≫
     Functor.isoWhiskerRight (fourthDualRootNaturalIso C) (doubleDualFunctor C.Obj)
@@ -90,9 +90,9 @@ theorem fourthDualRootNaturalSquare_eq :
   apply Iso.ext
   apply natTrans_eq_of_simple_components C
   intro i
-  change ((fourthDualRootNaturalIso C).app (Ground.simples C i)).hom ≫
-    ((((fourthDualRootNaturalIso C).app (Ground.simples C i)).homᘁ)ᘁ) =
-      (fourthDualIso C (Ground.simples C i)).hom
+  change ((fourthDualRootNaturalIso C).app (simples C i)).hom ≫
+    ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
+      (fourthDualIso C (simples C i)).hom
   rw [fourthDualRootNaturalIso_app_simple]
   exact congrArg Iso.hom (fourthDualSimpleRoot_sq C i)
 
@@ -267,48 +267,48 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Tensoring the components of the natural square root gives another
 isomorphism from a tensor product to its double dual. -/
-def rootTensorIso (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+def rootTensorIso (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
     X ⊗ Y ≅ ((X ⊗ Y)ᘁ)ᘁ :=
   ((fourthDualRootNaturalIso C).app X ⊗ᵢ (fourthDualRootNaturalIso C).app Y) ≪≫
     doubleDualTensorIso X Y
 
 /-- The defect of tensor compatibility of the chosen natural square root. -/
-def rootTensorDefect (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+def rootTensorDefect (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
     X ⊗ Y ≅ X ⊗ Y :=
   (fourthDualRootNaturalIso C).app (X ⊗ Y) ≪≫ (rootTensorIso C X Y).symm
 
 /-- The actual operator on each fusion multiplicity space induced by the tensor
 defect. Its involutivity requires the still-unproved tensor compatibility of
 the fourth-dual isomorphism. -/
-def multiplicityDefect (C : Ground.BraidedFusionCategory.{v,u})
-    (i j k : Fin (Ground.rank C)) :
-    (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) ≃ₗ[ℂ]
-      (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :=
-  Linear.homCongr ℂ (Iso.refl _) (rootTensorDefect C (Ground.simples C i) (Ground.simples C j))
+def multiplicityDefect (C : BraidedFusionCategory.{v,u})
+    (i j k : Fin (rank C)) :
+    (simples C k ⟶ simples C i ⊗ simples C j) ≃ₗ[ℂ]
+      (simples C k ⟶ simples C i ⊗ simples C j) :=
+  Linear.homCongr ℂ (Iso.refl _) (rootTensorDefect C (simples C i) (simples C j))
 
 /-- The multiplicity operator is composition with the tensor defect. -/
 theorem multiplicityDefect_apply
-    (i j k : Fin (Ground.rank C))
-    (f : Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :
+    (i j k : Fin (rank C))
+    (f : simples C k ⟶ simples C i ⊗ simples C j) :
     multiplicityDefect C i j k f =
-      f ≫ (rootTensorDefect C (Ground.simples C i) (Ground.simples C j)).hom :=
+      f ≫ (rootTensorDefect C (simples C i) (simples C j)).hom :=
   by simp [multiplicityDefect, Linear.homCongr_apply]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- If the categorical multiplicity defect is involutive, its trace is an
 integer bounded by the actual fusion coefficient. -/
-theorem multiplicityDefect_trace_integer_bound (i j k : Fin (Ground.rank C))
+theorem multiplicityDefect_trace_integer_bound (i j k : Fin (rank C))
     (hinv : (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ∃ n : ℤ, LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap = (n : ℂ) ∧
       |n| ≤ (Ground.fusionCoeff C i j k : ℤ) := by
   let : FiniteDimensional ℂ
-      (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :=
+      (simples C k ⟶ simples C i ⊗ simples C j) :=
     Ground.IsFusionCategory.hom_finite _ _
   exact involution_trace_integer_bound _ hinv
 
@@ -328,16 +328,23 @@ theorem rootTensorDefect_involution_of_tensor_square (X Y : C.Obj)
 
 /-- The tensor-square comparison implies involutivity of every corresponding
 actual multiplicity-space operator. -/
-theorem multiplicityDefect_involution_of_tensor_square (i j k : Fin (Ground.rank C))
-    (hsq : (rootTensorIso C (Ground.simples C i) (Ground.simples C j)).hom ≫
-      (((rootTensorIso C (Ground.simples C i) (Ground.simples C j)).homᘁ)ᘁ) =
-        (fourthDualIso C (Ground.simples C i ⊗ Ground.simples C j)).hom) :
+theorem multiplicityDefect_involution_of_tensor_square (i j k : Fin (rank C))
+    (hsq : (rootTensorIso C (simples C i) (simples C j)).hom ≫
+      (((rootTensorIso C (simples C i) (simples C j)).homᘁ)ᘁ) =
+        (fourthDualIso C (simples C i ⊗ simples C j)).hom) :
     (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1 := by
   ext f
   change multiplicityDefect C i j k (multiplicityDefect C i j k f) = f
   rw [multiplicityDefect_apply, multiplicityDefect_apply, Category.assoc,
     rootTensorDefect_involution_of_tensor_square C _ _ hsq, Category.comp_id]
+
+/-- The fourth-dual isomorphism is compatible with tensoring two objects. -/
+abbrev fourthDualTensorLaw (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) : Prop :=
+  (fourthDualIso C (X ⊗ Y)).hom =
+    ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
+      (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
+        (((doubleDualTensorIso X Y).homᘁ)ᘁ)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The tensor-square identity follows from naturality of the double-dual
@@ -349,10 +356,7 @@ theorem rootTensor_square_of_fourthDual_tensor (X Y : C.Obj)
       (((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) ⊗ₘ
         ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ)) ≫
         (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom)
-    (hfourth : (fourthDualIso C (X ⊗ Y)).hom =
-      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso X Y).homᘁ)ᘁ)) :
+    (hfourth : fourthDualTensorLaw C X Y) :
     (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
       (fourthDualIso C (X ⊗ Y)).hom := by
   have hx := congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C)

@@ -13,18 +13,18 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor map with a unit factor has the root's unit sign. -/
 theorem rootTensorIso_unit_left (X : C.Obj) :
     (rootTensorIso C (𝟙_ C.Obj) X).hom =
-      rootDimension C (Ground.unitIndex C) • ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom := by
+      rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom := by
   let I := 𝟙_ C.Obj
   let : HasRightDual I := RightRigidCategory.rightDual I
   let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual (Iᘁ)
   let a := (fourthDualRootNaturalIso C).app X
   let b := (fourthDualRootNaturalIso C).app (I ⊗ X)
-  let z := rootDimension C (Ground.unitIndex C)
+  let z := rootDimension C (unitIndex C)
   let L := rightDualIsoMap (rightDualIsoMap (λ_ X))
   have hnat : (λ_ X).hom ≫ a.hom = b.hom ≫ (((λ_ X).homᘁ)ᘁ) :=
     (fourthDualRootNaturalIso C).hom.naturality (λ_ X).hom
@@ -49,9 +49,9 @@ theorem rootTensorIso_unit_left (X : C.Obj) :
 /-- The ENO tensor defect with a left unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_left (X : C.Obj) :
     (rootTensorDefect C (𝟙_ C.Obj) X).hom =
-      rootDimension C (Ground.unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) := by
+      rootDimension C (unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) := by
   let I := 𝟙_ C.Obj
-  let z := rootDimension C (Ground.unitIndex C)
+  let z := rootDimension C (unitIndex C)
   let T := rootTensorIso C I X
   let A := (fourthDualRootNaturalIso C).app (I ⊗ X)
   have ht : T.hom = z • A.hom := rootTensorIso_unit_left C X
@@ -70,13 +70,13 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor map with a unit factor has the root's unit sign. -/
 theorem rootTensorIso_unit_right (X : C.Obj) :
     (rootTensorIso C X (𝟙_ C.Obj)).hom =
-      rootDimension C (Ground.unitIndex C) • ((fourthDualRootNaturalIso C).app (X ⊗ 𝟙_ C.Obj)).hom := by
+      rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (X ⊗ 𝟙_ C.Obj)).hom := by
   let I := 𝟙_ C.Obj
   let : HasRightDual I := RightRigidCategory.rightDual I
   let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual (Iᘁ)
   let a := (fourthDualRootNaturalIso C).app X
   let b := (fourthDualRootNaturalIso C).app (X ⊗ I)
-  let z := rootDimension C (Ground.unitIndex C)
+  let z := rootDimension C (unitIndex C)
   let L := rightDualIsoMap (rightDualIsoMap (ρ_ X))
   have hnat : (ρ_ X).hom ≫ a.hom = b.hom ≫ (((ρ_ X).homᘁ)ᘁ) :=
     (fourthDualRootNaturalIso C).hom.naturality (ρ_ X).hom
@@ -101,9 +101,9 @@ theorem rootTensorIso_unit_right (X : C.Obj) :
 /-- The ENO tensor defect with a right unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_right (X : C.Obj) :
     (rootTensorDefect C X (𝟙_ C.Obj)).hom =
-      rootDimension C (Ground.unitIndex C) • 𝟙 (X ⊗ 𝟙_ C.Obj) := by
+      rootDimension C (unitIndex C) • 𝟙 (X ⊗ 𝟙_ C.Obj) := by
   let I := 𝟙_ C.Obj
-  let z := rootDimension C (Ground.unitIndex C)
+  let z := rootDimension C (unitIndex C)
   let T := rootTensorIso C X I
   let A := (fourthDualRootNaturalIso C).app (X ⊗ I)
   have ht : T.hom = z • A.hom := rootTensorIso_unit_right C X
@@ -120,27 +120,27 @@ theorem rootTensorDefect_unit_right (X : C.Obj) :
   exact hleft.trans hright.symm
 /-- The left-unit defect formula holds for the chosen simple representative. -/
 theorem rootTensorDefect_unitLabel_left (X : C.Obj) :
-    (rootTensorDefect C (Ground.simples C (Ground.unitIndex C)) X).hom =
-      rootDimension C (Ground.unitIndex C) • 𝟙 (Ground.simples C (Ground.unitIndex C) ⊗ X) := by
+    (rootTensorDefect C (simples C (unitIndex C)) X).hom =
+      rootDimension C (unitIndex C) • 𝟙 (simples C (unitIndex C) ⊗ X) := by
   obtain ⟨e⟩ := Ground.unitIndex_iso C
   let E := e ⊗ᵢ Iso.refl X
   apply (cancel_mono E.hom).1
   have h := rootTensorDefect_natural C e.hom (𝟙 X)
   change E.hom ≫ (rootTensorDefect C (𝟙_ C.Obj) X).hom =
-    (rootTensorDefect C (Ground.simples C (Ground.unitIndex C)) X).hom ≫ E.hom at h
+    (rootTensorDefect C (simples C (unitIndex C)) X).hom ≫ E.hom at h
   rw [← h, rootTensorDefect_unit_left]
   simp only [Linear.comp_smul, Linear.smul_comp, Category.comp_id, Category.id_comp]
 
 /-- The right-unit defect formula holds for the chosen simple representative. -/
 theorem rootTensorDefect_unitLabel_right (X : C.Obj) :
-    (rootTensorDefect C X (Ground.simples C (Ground.unitIndex C))).hom =
-      rootDimension C (Ground.unitIndex C) • 𝟙 (X ⊗ Ground.simples C (Ground.unitIndex C)) := by
+    (rootTensorDefect C X (simples C (unitIndex C))).hom =
+      rootDimension C (unitIndex C) • 𝟙 (X ⊗ simples C (unitIndex C)) := by
   obtain ⟨e⟩ := Ground.unitIndex_iso C
   let E := Iso.refl X ⊗ᵢ e
   apply (cancel_mono E.hom).1
   have h := rootTensorDefect_natural C (𝟙 X) e.hom
   change E.hom ≫ (rootTensorDefect C X (𝟙_ C.Obj)).hom =
-    (rootTensorDefect C X (Ground.simples C (Ground.unitIndex C))).hom ≫ E.hom at h
+    (rootTensorDefect C X (simples C (unitIndex C))).hom ≫ E.hom at h
   rw [← h, rootTensorDefect_unit_right]
   simp only [Linear.comp_smul, Linear.smul_comp, Category.comp_id, Category.id_comp]
 

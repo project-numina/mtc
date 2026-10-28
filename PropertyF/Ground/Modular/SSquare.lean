@@ -226,9 +226,8 @@ real simple dimensions, without old input bundles. -/
 theorem categoricalS_galois_action_of_invertibleS (hp : p.IsSpherical)
     (hdet : (categoricalS C p).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
-    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)), ∀ (σ : ℂ ≃+* ℂ) i j,
-      σ (categoricalS C p i j / simpleDimension C p j) =
-        categoricalS C p i (act σ j) / simpleDimension C p (act σ j) :=
+    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)),
+      IsGaloisColumnAction (categoricalS C p) (simpleDimension C p) act :=
   categoricalS_galois_action C p (Ground.dualIndex C)
     (globalDimension_ne_zero_of_invertibleS C p hp hdet hreal)
     (categoricalS_square C p hp hdet hreal) (categoricalS_verlinde C p)

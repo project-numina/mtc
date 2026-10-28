@@ -160,11 +160,15 @@ theorem characters_bijective (columns : ι → Character N)
     obtain ⟨y, hy⟩ := characters_exhausted N columns b hb χ
     exact ⟨y, hy.symm⟩
 
+/-- The square of an S-matrix is a scalar multiple of duality. -/
+abbrev HasSSquare (S : Matrix ι ι ℂ) (dual : ι → ι) (D : ℂ) : Prop :=
+  ∀ x y, ∑ z, S x z * S z y = if x = dual y then D else 0
+
 /-- Symmetry and the S-square relation force the duality map to be an
 involution, independently of categorical duality. -/
 theorem dual_involutive (S : Matrix ι ι ℂ) (dual : ι → ι) (D : ℂ)
     (hD : D ≠ 0) (hsym : ∀ x y, S x y = S y x)
-    (hsq : ∀ x y, ∑ z, S x z * S z y = if x = dual y then D else 0) :
+    (hsq : HasSSquare S dual D) :
     Function.Involutive dual := by
   intro y
   have hsym_sq : (∑ z, S (dual y) z * S z y) =
@@ -186,7 +190,7 @@ theorem normalized_columns_linearIndependent (S : Matrix ι ι ℂ)
     (dual : ι → ι) (dimension : ι → ℂ) (D : ℂ)
     (hd : ∀ y, dimension y ≠ 0) (hD : D ≠ 0)
     (hsym : ∀ x y, S x y = S y x)
-    (hsq : ∀ x y, ∑ z, S x z * S z y = if x = dual y then D else 0) :
+    (hsq : HasSSquare S dual D) :
     LinearIndependent ℂ (fun y x => S x y / dimension y) := by
   classical
   let A : Matrix ι ι ℂ := fun x y => S x y / dimension y
