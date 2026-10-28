@@ -1,5 +1,6 @@
 module
 public import Mathlib.LinearAlgebra.Dual.Lemmas
+public import Mathlib.LinearAlgebra.Dual.Basis
 public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Dimensions.GroundNorm
@@ -75,6 +76,28 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+section
+variable {k : Type*} [CommSemiring k] {I J : Type} [Fintype I] [Fintype J]
+  [DecidableEq I] [DecidableEq J]
+variable {A B F : Type*} [AddCommMonoid A] [Module k A] [AddCommMonoid B] [Module k B]
+  [AddCommMonoid F] [Module k F]
+
+/-- A bilinear contraction with dual bases is natural under any linear map.
+This is the matrix identity needed to change fusion bases across a morphism. -/
+theorem dualBasis_contraction_natural (a : Module.Basis I k A) (b : Module.Basis J k B)
+    (L : A →ₗ[k] B) (f : B →ₗ[k] Module.Dual k A →ₗ[k] F) :
+    (∑ i, f (L (a i)) (a.dualBasis i)) =
+      ∑ j, f (b j) (Module.Dual.transpose L (b.dualBasis j)) := by
+  let c : I → J → k := fun i j => b.repr (L (a i)) j
+  have hL (i : I) : L (a i) = ∑ j, c i j • b j := (b.sum_repr _).symm
+  have hD (j : J) : Module.Dual.transpose L (b.dualBasis j) =
+      ∑ i, c i j • a.dualBasis i := by
+    simpa [c, Module.Basis.dualBasis_repr, Module.Dual.transpose_apply] using
+      (a.dualBasis.sum_repr (Module.Dual.transpose L (b.dualBasis j))).symm
+  simp only [hL, hD, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]
+  exact Finset.sum_comm
+end
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite

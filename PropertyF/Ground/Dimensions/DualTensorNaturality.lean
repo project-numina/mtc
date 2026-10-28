@@ -27,6 +27,30 @@ theorem evaluation_ext {X Y Z : C} [ExactPairing X Y] {f g : Z ⟶ Y}
       (congrArg (tensorRightHomEquiv Z X Y (𝟙_ C)) h).trans
         (@tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ X Z hDual g)
 
+section
+variable {X Y A B A' B' : C} (pX : ExactPairing X A) (qX : ExactPairing X A')
+  (pY : ExactPairing Y B) (qY : ExactPairing Y B')
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The canonical comparison of duals preserves tensor products of pairings. -/
+theorem rightDualIso_tensor :
+    (rightDualIso (@ExactPairing.tensor C _ _ X Y A B pX pY)
+      (@ExactPairing.tensor C _ _ X Y A' B' qX qY)).hom =
+        (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom :=
+  let : ExactPairing X A := pX
+  let : ExactPairing Y B := pY
+  let : ExactPairing X A' := qX
+  let : ExactPairing Y B' := qY
+  evaluation_ext (X := X ⊗ Y) <| by
+    rw [rightDualIso_evaluation]
+    symm
+    rw [tensorHom_def, comp_whiskerRight_assoc,
+      tensorPairing_evaluation_whiskerLeft (p := pX) (q := qX) (r := qY)
+        (rightDualIso pX qX).hom (rightDualIso_evaluation pX qX),
+      tensorPairing_evaluation_whiskerRight (p := pX) (q := pY) (r := qY)
+        (rightDualIso pY qY).hom (rightDualIso_evaluation pY qY)]
+end
+
 variable [RightRigidCategory C]
 variable {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y')
 

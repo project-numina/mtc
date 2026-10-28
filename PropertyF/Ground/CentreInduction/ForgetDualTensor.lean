@@ -62,42 +62,6 @@ end PropertyF.Ground.CentreInduction
 
 end
 
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreInduction
-universe v u
-set_option backward.isDefEq.respectTransparency false
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
-variable {X Y A B A' B' F : D} (pX : ExactPairing X A) (qX : ExactPairing X A')
-  (pY : ExactPairing Y B) (qY : ExactPairing Y B')
-
-/-- The canonical comparison of duals preserves tensor products of pairings. -/
-theorem rightDualIso_tensor :
-    (rightDualIso (@ExactPairing.tensor D _ _ X Y A B pX pY)
-      (@ExactPairing.tensor D _ _ X Y A' B' qX qY)).hom =
-        (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom :=
-  let : ExactPairing X A := pX
-  let : ExactPairing Y B := pY
-  let : ExactPairing X A' := qX
-  let : ExactPairing Y B' := qY
-  evaluation_ext (X := X ⊗ Y) <| by
-    rw [rightDualIso_evaluation]
-    symm
-    rw [tensorHom_def, comp_whiskerRight_assoc,
-      tensorPairing_evaluation_whiskerLeft (p := pX) (q := qX) (r := qY)
-        (rightDualIso pX qX).hom (rightDualIso_evaluation pX qX),
-      tensorPairing_evaluation_whiskerRight (p := pX) (q := pY) (r := qY)
-        (rightDualIso pY qY).hom (rightDualIso_evaluation pY qY)]
-/-- Comparing duals successively agrees with comparing them directly. -/
-theorem rightDualIso_trans
-    (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X F) :
-    (rightDualIso p q).hom ≫ (rightDualIso q r).hom = (rightDualIso p r).hom := by
-  simp [rightDualIso, ← comp_rightAdjointMate]
-
-end PropertyF.Ground.CentreInduction
-
-end
-
 /-! Tensor coherence of centre and base dual comparisons. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -157,23 +121,24 @@ local notation "𝒵" => Center D
 -- The dual and double-dual comparisons for the forgetful functor.
 local notation "κ" => forgetDualIso
 local notation "κ₂" => forgetDoubleDualIso
--- The tensor comparison for double right duals.
+-- The tensor comparisons for right duals and double right duals.
+local notation "τ" => rightDualTensorIso
 local notation "μ₂" => doubleDualTensorIso
 variable (p : PivotalStructure (C := D)) (X Y : Center D)
 
 /-- The inverse tensor comparison commutes with the forgotten dual isomorphisms. -/
 private theorem forgetDualIso_tensor_inv :
-    (rightDualTensorIso X Y).inv.f ≫ (κ (X ⊗ Y)).hom =
+    (τ X Y).inv.f ≫ (κ (X ⊗ Y)).hom =
       ((κ Y).hom ⊗ₘ (κ X).hom) ≫
-        (rightDualTensorIso X.1 Y.1).inv :=
-  (CommSq.vert_inv (g := (Center.forget D).mapIso (rightDualTensorIso X Y))
+        (τ X.1 Y.1).inv :=
+  (CommSq.vert_inv (g := (Center.forget D).mapIso (τ X Y))
     (h := rightDualTensorIso X.1 Y.1) ⟨forgetDualIso_tensor X Y⟩).w.symm
 
 /-- Taking mates of the tensor comparison also preserves its inverse. -/
 private theorem forgetDualIso_tensor_mate_inv :
-    (rightDualTensorIso X Y).hom.fᘁ ≫ (κ (X ⊗ Y)).invᘁ =
+    (τ X Y).hom.fᘁ ≫ (κ (X ⊗ Y)).invᘁ =
       (((κ Y).inv ⊗ₘ (κ X).inv)ᘁ) ≫
-        (rightDualTensorIso X.1 Y.1).homᘁ :=
+        (τ X.1 Y.1).homᘁ :=
   (CommSq.vert_inv (g := rightDualIsoMap ((κ Y) ⊗ᵢ (κ X)))
     (h := rightDualIsoMap (κ (X ⊗ Y))) ⟨by
       simpa only [comp_rightAdjointMate, rightDualIsoMap, tensorIso_hom] using
