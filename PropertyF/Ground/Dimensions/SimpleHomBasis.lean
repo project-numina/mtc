@@ -158,9 +158,9 @@ def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
 theorem simpleInclusionBasis_apply
     (X : C.Obj) (k : Fin (rank C))
     (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
-    simpleInclusionBasis C X k t = simpleInclusion C X k t := by
-  let : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
-  exact congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) t
+    simpleInclusionBasis C X k t = simpleInclusion C X k t :=
+  letI : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
+  congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) t
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Coordinates in the simple-inclusion basis are the scalar diagonal

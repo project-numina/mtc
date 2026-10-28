@@ -64,7 +64,6 @@ theorem rootSignTensorIso_hom
   rw [rootSignTwist_app_simple, rootSignTwist_app_simple]
   simp [rootTensorIso, tensorHom_def, smul_smul, mul_comm]
 
-set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseTensorIso_inv
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (i j : Fin (rank C)) :
@@ -125,11 +124,9 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The right quantum trace of the canonical unit double-dual map is one. -/
-theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C)) = 1 := by
-  apply End.homEquiv.injective
-  exact unitDoubleDual_trace (C := C)
+theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C)) = 1 :=
+  End.homEquiv.injective (unitDoubleDual_trace (C := C))
 
 end PropertyF.Ground.Dimensions
 
@@ -184,7 +181,7 @@ theorem rootSignQuantumTrace_simple
 
 set_option backward.isDefEq.respectTransparency false in
 theorem naturalDoubleDual_unit_eq_of_trace_one
-    (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
+    {a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj}
     (htrace : unitScalar C (rightQuantumTrace (a.app (𝟙_ C.Obj))) = 1) :
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
   let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple

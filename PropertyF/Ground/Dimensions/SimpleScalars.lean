@@ -255,9 +255,7 @@ def simpleScalarNaturalIso (C : BraidedFusionCategory.{v,u})
 theorem simpleScalarNaturalIso_app_simple
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
     ((simpleScalarNaturalIso C c hc).app (simples C i)).hom =
-      c i • 𝟙 (simples C i) := by
-  change simpleScalarComponent C c (simples C i) = _
-  exact simpleScalarNatural_app_simple C c i
+      c i • 𝟙 (simples C i) := simpleScalarNatural_app_simple C c i
 
 /-- Maps out of a tensor product of finite biproducts are determined by their
 restrictions to the tensor products of summand inclusions. -/
