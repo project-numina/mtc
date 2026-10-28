@@ -31,6 +31,10 @@ theorem pivotalDimension_eq_fpDimension {X : C.Obj} : pivotalDimension C p X = (
   simpa [fpDimension, ← hdim, Modular.simpleDimension, pivotalDimension, unitScalar_eq_equiv] using
     pivotalDimension_decomposition C p X
 
+/-- The Frobenius–Perron dimension of an object is a natural number. -/
+abbrev IsFPIntegral (C : BraidedFusionCategory.{v,u}) (X : C.Obj) : Prop :=
+  ∃ n : ℕ, fpDimension C X = n
+
 /-- Every falling factorial is a factorial multiple of a value of `dim`. -/
 abbrev HasFallingFactorialDimensions {A R : Type*} [CommRing R] (d : R) (dim : A → R) : Prop :=
   ∀ n : ℕ, ∃ Y, (Nat.factorial n : R) * dim Y = ∏ k ∈ Finset.range n, (d - (k : R))
@@ -41,7 +45,7 @@ integer. The remaining categorical task is to construct those objects and
 establish their dimensions using alternating projectors. -/
 theorem integral_of_exterior_dimensions {X : C.Obj}
     (hExterior : HasFallingFactorialDimensions (fpDimension C X) (fpDimension C)) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   Centre.integral_of_nonnegative_falling_factorials (fpDimension_nonneg C X) fun n ↦
     let ⟨Y, hY⟩ := hExterior n
     hY ▸ mul_nonneg (Nat.cast_nonneg _) (fpDimension_nonneg C Y)
@@ -51,7 +55,7 @@ include hdim in
 split alternating projector can supply the witnesses. -/
 theorem integral_of_pivotal_exterior_dimensions {X : C.Obj}
     (hExterior : HasFallingFactorialDimensions (fpDimension C X : ℂ) (pivotalDimension C p)) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_exterior_dimensions fun n ↦
     let ⟨Y, hY⟩ := hExterior n
     ⟨Y, Complex.ofReal_injective <| by
@@ -82,7 +86,7 @@ theorem integral_of_alternating_projector_trace {X : C.Obj}
       (Nat.factorial n : ℂ) * unitScalar C
         (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
           ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_pivotal_exterior_dimensions hdim fun n ↦
     let ⟨ρ, hρ⟩ := hTrace n
     let := permutationCardInvertible n
@@ -132,7 +136,7 @@ theorem integral_of_signed_permutation_traces {X : C.Obj}
       (∑ σ : Equiv.Perm (Fin n), (permutationSign ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom)) =
           ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_alternating_projector_trace hdim fun n ↦
     let ⟨ρ, hρ⟩ := hTrace n
     ⟨ρ, (alternatingProjector_scalar_trace (C := C) (p := p) ρ).trans hρ⟩
