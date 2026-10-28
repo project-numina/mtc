@@ -13,11 +13,12 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Resolving a fusion strand commutes with coevaluation. -/
-theorem fusion_coevaluation {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S R f) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) =
       𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) := by
   have hr : (𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫
@@ -58,8 +59,7 @@ theorem fusion_coevaluation {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component followed by a crossing block reduces to a fusion endomorphism. -/
-theorem unit_block {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    (Z : CategoryTheory.Center D) {T S R : D}
+theorem unit_block (Z : CategoryTheory.Center D) {T S R : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (( (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫
       ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock Z.1 T R S g f =
@@ -100,10 +100,12 @@ theorem unit_block {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigi
       (bTS ▷ Sᘁ) ⊗≫ 𝟙 _ := by simp only [tensorHom_def]; monoidal
     _ = _ := by rw [hf]
 
+variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
+  [MonoidalPreadditive D] [MonoidalLinear k D]
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-block diagram depends linearly on its fusion endomorphism. -/
-def unitBlockLinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (Z : CategoryTheory.Center D) (T S : D) :
+def unitBlockLinear (Z : CategoryTheory.Center D) (T S : D) :
     (T ⊗ S ⟶ T ⊗ S) →ₗ[k] (Z.1 ⊗ T ⟶ T ⊗ ((S ⊗ Z.1) ⊗ Sᘁ)) where
   toFun h := 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ h ▷ Sᘁ ⊗≫
     𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _
@@ -118,8 +120,7 @@ def unitBlockLinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The identity fusion endomorphism yields the centre intertwining diagram. -/
-theorem unitBlockLinear_id {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (Z : CategoryTheory.Center D) (T S : D) :
+theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
     unitBlockLinear (k := k) Z T S (𝟙 (T ⊗ S)) = (Z.2.β T).hom ≫ (T ◁
       ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫ (α_ Z.1 S (Sᘁ)).inv ≫
         ((Z.2.β S).hom ▷ Sᘁ))) := by
@@ -149,14 +150,14 @@ theorem unitBlockLinear_id {k : Type*} [CommSemiring k] {D : Type u} [Category.{
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
-theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)) :
-  (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
+  (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
     (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C p.1) (simples C j)
       (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)) =
     (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
   classical
   calc
-    _ = ∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+    _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
       unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
         crossingInclusion C T p.1 j p.2) := by
       apply Finset.sum_congr rfl
@@ -164,17 +165,17 @@ theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)
       exact unit_block Z
         (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
     _ = unitBlockLinear (k := ℂ) Z T (simples C j)
-      (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+      (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
         crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) := by rw [map_sum]
     _ = _ := by rw [crossing_completeness, unitBlockLinear_id]; rfl
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The underlying unit is the sum of its biproduct components. -/
-theorem unitCandidate_sum (Z : CategoryTheory.Center C.Obj) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
+theorem unitCandidate_sum (Z : 𝒵) :
+  let V := inductionSummand C Z.1
   unitCandidate C Z = ∑ i, unitComponent C Z i ≫ biproduct.ι V i := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C Z.1
   have hp (i) : unitCandidate C Z ≫ biproduct.π V i = unitComponent C Z i :=
     biproduct.lift_π _ _
   have hid : unitCandidate C Z ≫ 𝟙 (⨁ V) = unitCandidate C Z := Category.comp_id _
@@ -183,11 +184,11 @@ theorem unitCandidate_sum (Z : CategoryTheory.Center C.Obj) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
-theorem unitCandidate_central (Z : CategoryTheory.Center C.Obj) (T : C.Obj) :
+theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
       (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C Z.1
   apply (cancel_mono (leftDistributor T V).hom).1
   apply biproduct.hom_ext
   intro j
@@ -198,7 +199,7 @@ theorem unitCandidate_central (Z : CategoryTheory.Center C.Obj) (T : C.Obj) :
       (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
     rw [← whiskerLeft_comp, hcomp]
   have hl : (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T ≫ (T ◁ biproduct.π V j) =
-      ∑ i, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+      ∑ i, ∑ a : crossingIndex C T i j,
         (unitComponent C Z i ▷ T) ≫ crossingBlock Z.1 T (simples C i) (simples C j)
           (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
     rw [unitCandidate_sum]
@@ -213,12 +214,23 @@ theorem unitCandidate_central (Z : CategoryTheory.Center C.Obj) (T : C.Obj) :
     _ = _ := by simpa [Fintype.sum_sigma] using unit_sum C Z T j
     _ = _ := hr.symm
 
+set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/
-def actualAdjunction : CategoryTheory.Center.forget C.Obj ⊣ induction C :=
-  adjunctionOfHalfBraiding C (halfBraidingOfCrossingCandidate C)
-    (halfBraidingOfCrossingCandidate_natural C)
-    (fun Z T => unitCandidate_central C Z T)
-    (secondTriangle C)
+def actualAdjunction : CategoryTheory.Center.forget C.Obj ⊣ induction C where
+  unit := {
+    app Z := ⟨unitCandidate C Z, unitCandidate_central C Z⟩
+    naturality {X Y} f := by
+      apply CategoryTheory.Center.ext
+      change f.f ≫ unitCandidate C Y = unitCandidate C X ≫ (underlyingFunctor C).map f.f
+      apply biproduct.hom_ext
+      intro i
+      simp only [underlyingFunctor, unitCandidate, Category.assoc, biproduct.lift_π, biproduct.lift_π_assoc, biproduct.map_π]
+      simpa only [Category.assoc] using unitComponent_natural C f i }
+  counit := underlyingCounit C
+  left_triangle_components Z := unitCandidate_counit C Z
+  right_triangle_components X := by
+    apply CategoryTheory.Center.ext
+    exact secondTriangle C X
 
 end PropertyF.Ground.CentreInduction
 

@@ -106,25 +106,19 @@ def fusionOperator (i : ι) : (ι → ℂ) →ₗ[ℂ] (ι → ℂ) :=
 omit [DecidableEq ι] in
 /-- A character is a simultaneous eigenvector of all fusion operators. -/
 theorem character_eigenvector (χ : Character N) (i : ι) :
-    fusionOperator N i χ.value = χ.value i • χ.value := by
-  ext j
-  change (∑ k, (N.coeff i j k : ℂ) * χ.value k) = χ.value i * χ.value j
-  exact (χ.mul_eq i j).symm
+    fusionOperator N i χ.value = χ.value i • χ.value :=
+  funext fun j ↦ (χ.mul_eq i j).symm
 
 /-- A basis consisting of characters classifies every character. -/
 theorem characters_exhausted (columns : ι → Character N)
     (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = (columns y).value)
     (χ : Character N) : ∃ y, χ = columns y := by
   classical
-  have hcoeff : ∃ y, b.equivFun χ.value y ≠ 0 := by
-    by_contra h
-    push Not at h
-    have heq : b.equivFun χ.value = 0 := by ext y; simp [h]
-    have hzero : χ.value = 0 := b.equivFun.injective (by simpa using heq)
+  obtain ⟨y, hy⟩ : ∃ y, b.equivFun χ.value y ≠ 0 := by
+    by_contra! h
+    have hzero : χ.value = 0 := b.equivFun.injective (by ext y; simp [h y])
     have := χ.unit_eq
-    rw [hzero] at this
-    simp at this
-  obtain ⟨y, hy⟩ := hcoeff
+    simp [hzero] at this
   have hb_eigen (i x : ι) : fusionOperator N i (b x) =
       (columns x).value i • b x := by
     rw [hb, character_eigenvector]
@@ -133,12 +127,11 @@ theorem characters_exhausted (columns : ι → Character N)
     conv_lhs => rw [← b.sum_equivFun χ.value]
     simp only [map_sum, map_smul, hb_eigen]
     simp [Finsupp.single_apply, mul_comm]
-  have heval (i : ι) : χ.value i = (columns y).value i := by
-    have he := hcoord i
-    rw [character_eigenvector] at he
-    simp only [map_smul, Pi.smul_apply, smul_eq_mul] at he
-    exact mul_right_cancel₀ hy he
-  exact ⟨y, Character.ext (funext heval)⟩
+  refine ⟨y, Character.ext (funext fun i ↦ ?_)⟩
+  have he := hcoord i
+  rw [character_eigenvector] at he
+  simp only [map_smul, Pi.smul_apply, smul_eq_mul] at he
+  exact mul_right_cancel₀ hy he
 
 
 /-- A linearly independent family of as many characters as labels is a
@@ -147,17 +140,16 @@ theorem characters_bijective (columns : ι → Character N)
     (hlin : LinearIndependent ℂ (fun y => (columns y).value)) :
     Function.Bijective columns := by
   classical
-  constructor
-  · intro i j h
-    apply hlin.injective
-    exact congrArg Character.value h
-  · intro χ
-    let b := basisOfPiSpaceOfLinearIndependent hlin
-    have hb : ∀ y, b y = (columns y).value := by
-      intro y
-      exact congrFun (coe_basisOfPiSpaceOfLinearIndependent hlin) y
-    obtain ⟨y, hy⟩ := characters_exhausted N columns b hb χ
-    exact ⟨y, hy.symm⟩
+  refine ⟨fun _ _ h ↦ hlin.injective (congrArg Character.value h), fun χ ↦ ?_⟩
+  let b := basisOfPiSpaceOfLinearIndependent hlin
+  exact (characters_exhausted N columns b
+    (fun y ↦ congrFun (coe_basisOfPiSpaceOfLinearIndependent hlin) y) χ).imp fun _ h ↦ h.symm
+
+/-- Normalized columns satisfy the fusion-character equations. -/
+abbrev HasVerlindeFormula {ι : Type*} [Fintype ι] {K : Type*} [DivisionSemiring K]
+    (N : FusionRules ι) (S : Matrix ι ι K) (d : ι → K) : Prop :=
+  ∀ i j y, (S i y / d y) * (S j y / d y) =
+    ∑ k, (N.coeff i j k : K) * (S k y / d y)
 
 /-- The square of an S-matrix is a scalar multiple of duality. -/
 abbrev HasSSquare {R : Type*} [Semiring R] (S : Matrix ι ι R) (dual : ι → ι)
@@ -181,8 +173,7 @@ theorem dual_involutive {R : Type*} [CommSemiring R]
   have h := hsq (dual y) y
   rw [ite_eq_left rfl, hsym_sq, hsq] at h
   by_contra hn
-  have hn' : y ≠ dual (dual y) := Ne.symm hn
-  rw [ite_eq_right hn'] at h
+  rw [ite_eq_right (Ne.symm hn)] at h
   exact hD h.symm
 
 /-- The normalized S columns are linearly independent. The proof constructs an

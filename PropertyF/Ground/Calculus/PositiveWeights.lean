@@ -5,6 +5,8 @@ public import PropertyF.Ground.Calculus.OverlapCoherence
 
 /-! Construction of real nonzero braid-block trace weights from dimensions. -/
 
+open PropertyF.Ground.Dimensions
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
@@ -14,21 +16,19 @@ universe v u
 /-- Real Galois conjugates of positive simple dimensions yield nonzero real
 weights in every retained actual braid block, even if their signs differ. -/
 theorem exists_galois_braid_trace_weights
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
-    (hfinite : Finite (braidImage X n)) (p : Dimensions.PivotalStructure (C := C.Obj))
+    (C : BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (hfinite : Finite (braidImage X n)) (p : PivotalStructure (C := C.Obj))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)
     (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
-    (hdim : ∀ i, Ground.unitScalarEquiv C
-      (p.rightTrace (𝟙 (Ground.simples C i))) = (qdim i : ℂ)) :
+    (hdim : ∀ i, pivotalDimension C p (Ground.simples C i) = (qdim i : ℂ)) :
     ∃ (r : ℕ) (size : Fin r → ℕ)
       (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
       (w : Fin r → ℝ),
       (∀ i, 0 < size i) ∧
-      IsUnitaryPresentation (braidEndRepresentation X n) b ∧
+      IsUnitaryBraidPresentation b ∧
       (∀ i, w i ≠ 0) ∧
-      ∀ z : braidAlgebra X n, actualBraidTrace C X p n z =
-        (PropertyF.Blocks.mk r size).trace w (b z) := by
+      IsTracePresentation C p b w := by
   classical
   obtain ⟨r, size, b, mult, hsize, hunit, hret, _, htrace⟩ :=
     exists_unitary_braid_trace_blocks C X n hfinite p (Ground.unitScalarEquiv C)
@@ -40,6 +40,7 @@ theorem exists_galois_braid_trace_weights
       ← Complex.ofReal_sum] at hn
     exact_mod_cast hn
   · intro z
+    simp only [pivotalDimension, Ground.unitScalar_eq_equiv] at hdim
     rw [actualBraidTrace, htrace]
     simp only [PropertyF.Blocks.trace, w, Complex.ofReal_sum, Complex.ofReal_mul,
       Complex.ofReal_natCast, hdim]
@@ -48,23 +49,19 @@ theorem exists_galois_braid_trace_weights
 one intrinsic overlap trace identity. All matrix blocks and weights are
 constructed from the actual finite braid images. -/
 theorem actual_rigidity_of_overlap_and_galois_dimensions
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
-    (p : Dimensions.PivotalStructure (C := C.Obj))
+    (C : BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
+    (p : PivotalStructure (C := C.Obj))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)
     (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
-    (hqdim : ∀ i, Ground.unitScalarEquiv C
-      (p.rightTrace (𝟙 (Ground.simples C i))) = (qdim i : ℂ))
+    (hqdim : ∀ i, pivotalDimension C p (Ground.simples C i) = (qdim i : ℂ))
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
-    (hdim : Ground.unitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
+    (hdim : pivotalDimension C p X = (d : ℂ))
     (hfp : Ground.fpDimension C X = f)
-    (hS : Ground.unitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
+    (hS : scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
-    (hrec : ∀ (u : braidAlgebra X 1) k,
-      actualBraidTrace C X p (overlapIndex 1 k) (overlapProduct X 1 u k) *
-        (Ground.unitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
-          actualBraidTrace C X p 1 u ^ (k + 1)) : f = |d| := by
+    (hrec : ∀ u : braidAlgebra X 1, HasOverlapTracePower C p u) : f = |d| := by
   classical
   choose r size b w hsize he hw htrace using fun n =>
     exists_galois_braid_trace_weights C X n (hfinite n) p original qdim σ hpos htransport hqdim

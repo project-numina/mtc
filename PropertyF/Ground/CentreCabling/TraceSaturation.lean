@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Calculus.UnitaryBlocks
-public import PropertyF.UnitaryTrace
+public import PropertyF.BlockTrace
 public import Mathlib.GroupTheory.OrderOfElement
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Dimensions.DimensionCharacter
@@ -40,10 +40,7 @@ theorem finiteOrder_matrix_trace_saturation {M : Matrix ι ι ℂ} (hM : IsOfFin
       (M.trace.re = Fintype.card ι → M = 1) := by
   obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
   let U : Matrix ι ι ℂ := (P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)
-  have ht : U.trace = M.trace := by
-    dsimp [U]
-    rw [Matrix.trace_mul_cycle]
-    simp
+  have ht : U.trace = M.trace := Matrix.trace_units_conj P M
   have hu : PropertyF.ColumnUnitary U := PropertyF.columnUnitary_of_unitary hP
   constructor
   · rw [← ht]
@@ -59,41 +56,46 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
-variable (D : Ground.BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := D.Obj))
+variable {D : Ground.BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := D.Obj)}
 attribute [local instance] Abelian.hasFiniteBiproducts
+
+/-- Positive weighted sums preserve equality when the terms are pointwise ordered. -/
+theorem eq_of_pos_weighted_sum_eq {ι R : Type*} [Fintype ι] [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    {w a b : ι → R}
+    (hw : ∀ i, 0 < w i) (hle : ∀ i, a i ≤ b i)
+    (hsum : (∑ i, w i * a i) = ∑ i, w i * b i) (i : ι) : a i = b i :=
+  mul_left_cancel₀ (ne_of_gt (hw i)) <|
+    (Finset.sum_eq_sum_iff_of_le (fun j _ ↦ mul_le_mul_of_nonneg_left (hle j) (hw j).le)).mp
+      hsum i (Finset.mem_univ i)
 
 /-- In a fusion category with positive simple pivotal dimensions, a
 finite-order endomorphism whose pivotal trace equals the object's dimension
 is the identity. -/
 theorem finiteOrder_eq_one_of_trace_eq_dimension
-    (hdim : ∀ i, Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
-      (fpSimple D i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     {X : D.Obj} {a : End X} (ha : IsOfFinOrder a)
     (ht : p.rightTrace a.asHom = p.rightTrace (𝟙 X)) : a = 1 := by
   classical
   let m (i : Fin (rank D)) := Module.finrank ℂ (simples D i ⟶ X)
   obtain ⟨e⟩ := exists_canonical_decomposition D X
   let B := Calculus.groundEndBlockEquiv D X m e
-  have hf (i : Fin (rank D)) : IsOfFinOrder (B a i) :=
-    (Pi.evalMonoidHom _ i).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha)
-  have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation (hf i)
+  have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation
+    ((Pi.evalMonoidHom _ i).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha))
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
-    have h1 := Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) X m e a
-    have h2 := Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) X m e 1
+    have h1 := Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) e a
+    have h2 := Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) e 1
     simp only [End.one_asHom] at h2
     have hh := congrArg Complex.re (h1.symm.trans ((congrArg (Ground.unitScalarEquiv D) ht).trans h2))
-    simpa [hdim, B, Complex.re_sum, Complex.mul_re] using hh
-  have hle : ∀ i, fpSimple D i * (B a i).trace.re ≤ fpSimple D i * (m i : ℝ) :=
-    fun i => mul_le_mul_of_nonneg_left (by simpa using (hb i).1) (fpSimple_pos D i).le
-  have heq (i : Fin (rank D)) : (B a i).trace.re = (m i : ℝ) := by
-    have hh := (Finset.sum_eq_sum_iff_of_le (fun i _ => hle i)).mp hsum i (Finset.mem_univ i)
-    exact mul_left_cancel₀ (ne_of_gt (fpSimple_pos D i)) hh
+    change (∀ i, Modular.simpleDimension D p i = (fpSimple D i : ℂ)) at hdim
+    simp only [Modular.simpleDimension] at hdim
+    simp only [hdim] at hh
+    simpa [B, Complex.re_sum, Complex.mul_re] using hh
+  have heq (i : Fin (rank D)) : (B a i).trace.re = (m i : ℝ) :=
+    eq_of_pos_weighted_sum_eq (fpSimple_pos D) (fun j ↦ by simpa using (hb j).1) hsum i
   apply B.injective
-  apply funext
-  intro i
-  have h := (hb i).2 (by simpa using heq i)
-  simpa using h
+  funext i
+  simpa using (hb i).2 (by simpa using heq i)
 
 /-- For a finite-order double braiding, the positive spherical S-test is
 equivalent to categorical centrality. -/
@@ -104,22 +106,14 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     (hs : Modular.categoricalS D p i j =
       Modular.simpleDimension D p i * Modular.simpleDimension D p j) :
     Modular.doubleBraiding (simples D i) (simples D j) = 𝟙 _ := by
-  have hdim' : ∀ k, Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D k))) =
-      (fpSimple D k : ℂ) := by
-    intro k
-    simpa [Modular.simpleDimension] using hdim k
   have ht : p.rightTrace (Modular.doubleBraiding (simples D i) (simples D j)) =
       p.rightTrace (𝟙 (simples D i ⊗ simples D j)) := by
     apply (Ground.unitScalarEquiv D).injective
-    have hd := Dimensions.pivotalDimension_tensor D p (simples D i) (simples D j)
-    have hd' : Modular.simpleDimension D p i * Modular.simpleDimension D p j =
-        Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i ⊗ simples D j))) := by
-      simpa [Modular.simpleDimension, Dimensions.pivotalDimension,
-        Ground.unitScalar_eq_equiv] using hd.symm
-    have hs' := hs
-    change Ground.unitScalarEquiv D (p.rightTrace (Modular.doubleBraiding _ _)) = _ at hs'
-    exact hs'.trans hd'
-  have h := finiteOrder_eq_one_of_trace_eq_dimension D p hdim' hfinite ht
-  exact congrArg End.asHom h
+    change Modular.categoricalS D p i j = _
+    rw [hs]
+    simpa [Modular.simpleDimension, Dimensions.pivotalDimension,
+      Ground.unitScalar_eq_equiv] using
+      (Dimensions.pivotalDimension_tensor D p (simples D i) (simples D j)).symm
+  exact congrArg End.asHom (finiteOrder_eq_one_of_trace_eq_dimension hdim hfinite ht)
 
 end PropertyF.Ground.CentreCabling

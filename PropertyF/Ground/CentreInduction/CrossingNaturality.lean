@@ -12,24 +12,11 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
-set_option backward.isDefEq.respectTransparency false in
-/-- Moving a test-strand map to the output of a crossing block composes the
-fusion inclusion with that map. -/
-@[reassoc]
-theorem crossingBlock_post_test {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D]
-    (X : D) {T U R S : D} (h : T ⟶ U)
-    (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    crossingBlock X T R S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
-      mixedCrossingBilinear (k := k) X T U R S (g ≫ (h ▷ S)) f := by
-  simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk,
-    comp_whiskerRight, Category.assoc]
-  monoidal
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a fusion map is natural in its test strand. -/
-theorem closeFusionMap_pre_test {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] {T U R S : D} (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
+theorem closeFusionMap_pre_test {T U R S : D} (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     (Rᘁ ◁ h) ≫ closeFusionMap U S R f =
       closeFusionMap T S R ((h ▷ S) ≫ f) := by
   simp only [closeFusionMap, Category.assoc, comp_rightAdjointMate, comp_whiskerRight]
@@ -45,13 +32,26 @@ theorem closeFusionMap_pre_test {D : Type u} [Category.{v} D] [MonoidalCategory 
   simp only [← whiskerLeft_comp_assoc]
   rw [rightAdjointMate_comp_evaluation]
 
+variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
+  [MonoidalPreadditive D] [MonoidalLinear k D]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Moving a test-strand map to the output of a crossing block composes the
+fusion inclusion with that map. -/
+@[reassoc]
+theorem crossingBlock_post_test (X : D) {T U R S : D} (h : T ⟶ U)
+    (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+    crossingBlock X T R S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
+      mixedCrossingBilinear (k := k) X T U R S (g ≫ (h ▷ S)) f := by
+  simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk,
+    comp_whiskerRight, Category.assoc]
+  monoidal
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the input of a crossing block composes the
 fusion projection with that map. -/
 @[reassoc]
-theorem crossingBlock_pre_test {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D]
-    (X : D) {T U R S : D} (h : T ⟶ U)
+theorem crossingBlock_pre_test (X : D) {T U R S : D} (h : T ⟶ U)
     (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
     (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U R S g f =
       mixedCrossingBilinear (k := k) X T U R S g ((h ▷ S) ≫ f) := by
@@ -82,7 +82,7 @@ theorem crossingCandidate_natural_test
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V T).inv).1
   apply biproduct.hom_ext'
   intro i

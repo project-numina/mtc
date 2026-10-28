@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.CentreInduction.CrossingTensor
+public import PropertyF.Ground.CentreInduction.CrossingUnit
 
 /-! Refining simple-basis contractions across finite decompositions. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -103,7 +103,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Nested fusion decompositions give the direct crossing-block contraction. -/
 theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
     (∑ p : Dimensions.simplePieces C (U ⊗ simples C j),
-      ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C p.1)),
+      ∑ a : crossingIndex C T i p.1,
         crossingBlock X (T ⊗ U) (simples C i) (simples C j)
           (crossingInclusion C T i p.1 a ≫ (T ◁ crossingInclusion C U p.1 j p.2) ≫
             (α_ T U (simples C j)).inv)

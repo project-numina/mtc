@@ -11,19 +11,21 @@ def tensorPowerIso {X Y : C} (f : X ≅ Y) : ∀ n, tensorPower X n ≅ tensorPo
   | 0 => Iso.refl _
   | n + 1 => f ⊗ᵢ tensorPowerIso f n
 
+/-- Braiding the first two strands of a right-associated tensor product. -/
+abbrev firstBraiding (X A : C) : X ⊗ (X ⊗ A) ≅ X ⊗ (X ⊗ A) :=
+  (α_ X X A).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl A) ≪≫ α_ X X A
+
 /-- The first braid generator is the associated braiding on the first two strands. -/
 lemma braidGenerator_zero (X : C) (n : ℕ) :
     (braidGenerator X n 0).asIso.hom =
-      ((α_ X X (tensorPower X n)).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl (tensorPower X n)) ≪≫
-        α_ X X (tensorPower X n)).hom :=
+      (firstBraiding X (tensorPower X n)).hom :=
   Nat.casesOn n rfl (fun _ ↦ rfl)
 
 /-- Naturality of the first adjacent braiding, with its associators. -/
 lemma braid_first {X Y A B : C} (f : X ≅ Y) (g : A ≅ B) :
-    ((α_ X X A).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl A) ≪≫ α_ X X A).hom ≫
-        (f ⊗ᵢ f ⊗ᵢ g).hom =
-      (f ⊗ᵢ f ⊗ᵢ g).hom ≫
-        ((α_ Y Y B).symm ≪≫ ((β_ Y Y) ⊗ᵢ Iso.refl B) ≪≫ α_ Y Y B).hom := by
+    (firstBraiding X A).hom ≫ (f ⊗ᵢ f ⊗ᵢ g).hom =
+      (f ⊗ᵢ f ⊗ᵢ g).hom ≫ (firstBraiding Y B).hom := by
+  dsimp only [firstBraiding]
   simp only [Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom, Category.assoc]
   rw [← associator_naturality, associator_inv_naturality_assoc]
   simp only [← Category.assoc, tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id,

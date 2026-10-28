@@ -4,6 +4,8 @@ public import PropertyF.Ground.Calculus.ThreeTrace
 
 /-! Tensor-power coherence for the concrete strand insertions. -/
 
+open PropertyF.Ground.Dimensions
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Calculus
@@ -123,11 +125,24 @@ def freshOverlapIso (X : C) (t k : ℕ) :
     insertLeftPowerIso X t ((k + 1) * (t + 1)) ≪≫
     eqToIso (congrArg (fun n => tensorPower X (n + 2)) (overlapIndex_formula t (k + 1)).symm)
 
+/-- The left- and right-insertion isomorphisms agree on an overlap. -/
+abbrev HasOverlapCoherence (X : C) (t k : ℕ) : Prop :=
+  freshOverlapIso X t k =
+    (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
+      overlapPowerIso X t k
+
 /-- The previous overlap operator expressed with its last strand explicit. -/
 def previousOverlapLocal (X : C) (t k : ℕ) (u : braidAlgebra X t) :
     End (tensorPower X (overlapIndex t k + 1) ⊗ X) :=
   (isoEndAlgEquiv (appendIso X (overlapIndex t k + 1)).symm)
     (overlapProduct X t u k : End (tensorPower X (overlapIndex t k + 2)))
+
+/-- The actual overlapping product agrees with the local endomorphism product. -/
+abbrev IsLocalOverlapProduct {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t) : Prop :=
+  (isoEndAlgEquiv (overlapPowerIso X t k).symm)
+      (overlapProduct X t u (k + 1) : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
+    overlapEndProduct (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
+      (previousOverlapLocal X t k u) (u : End (tensorPower X (t + 2)))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The fresh algebra element is left whiskering along its canonical
@@ -167,9 +182,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Agreement of the two canonical tensor-power isomorphisms identifies the
 fresh actual braid factor with the local overlap factor. -/
 theorem overlapRight_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
-    (hiso : freshOverlapIso X t k =
-      (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
-        overlapPowerIso X t k) :
+    (hiso : HasOverlapCoherence X t k) :
     (isoEndAlgEquiv (overlapPowerIso X t k).symm)
       (overlapRight X t k u : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
     overlapFresh (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
@@ -212,13 +225,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A single coherence equality between the left- and right-insertion
 isomorphisms gives the entire actual overlap-product identification. -/
 theorem overlapProduct_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
-    (hiso : freshOverlapIso X t k =
-      (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
-        overlapPowerIso X t k) :
-    (isoEndAlgEquiv (overlapPowerIso X t k).symm)
-      (overlapProduct X t u (k + 1) : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
-    overlapEndProduct (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
-      (previousOverlapLocal X t k u) (u : End (tensorPower X (t + 2))) := by
+    (hiso : HasOverlapCoherence X t k) :
+    IsLocalOverlapProduct k u := by
   change (isoEndAlgEquiv (overlapPowerIso X t k).symm)
       ((overlapLeft X t k (overlapProduct X t u k) :
           End (tensorPower X (overlapIndex t (k + 1) + 2))) *
@@ -229,15 +237,12 @@ theorem overlapProduct_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebr
 set_option backward.isDefEq.respectTransparency false in
 /-- Identifying the actual product with the local graphical overlap implies
 the precise one-step trace recurrence. -/
-theorem overlap_trace_step_of_coherence (D : Ground.BraidedFusionCategory.{v,u})
-    {X : D.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := D.Obj))
+theorem overlap_trace_step_of_coherence (D : BraidedFusionCategory.{v,u})
+    {X : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
     {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
-    (hcoh : (isoEndAlgEquiv (overlapPowerIso X t k).symm)
-        (overlapProduct X t u (k + 1) : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
-      overlapEndProduct (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
-        (previousOverlapLocal X t k u) (u : End (tensorPower X (t + 2)))) :
+    (hcoh : IsLocalOverlapProduct k u) :
     actualBraidTrace D X p (overlapIndex t (k + 1)) (overlapProduct X t u (k + 1)) *
-        Ground.unitScalarEquiv D (p.rightTrace (𝟙 X)) =
+        pivotalDimension D p X =
       actualBraidTrace D X p (overlapIndex t k) (overlapProduct X t u k) *
         actualBraidTrace D X p t u := by
   have hh := congrArg
@@ -245,27 +250,20 @@ theorem overlap_trace_step_of_coherence (D : Ground.BraidedFusionCategory.{v,u})
   simp only [rightTrace_iso_conj] at hh
   rw [pivotalTrace_overlap D (X := X) p (Ground.unitScalarEquiv D)] at hh
   simp only [previousOverlapLocal, rightTrace_iso_conj] at hh
-  have hδ : Ground.unitScalarEquiv D (p.rightTrace (𝟙 X)) ≠ 0 := by
-    intro h
-    apply Modular.pivotalTrace_simple_ne_zero D p X
-    apply (Ground.unitScalarEquiv D).injective
-    simpa using h
+  have hδ := Modular.unitScalar_rightTrace_ne_zero D p X
   change actualBraidTrace D X p _ _ = actualBraidTrace D X p _ _ *
     (actualBraidTrace D X p t u / _) at hh
+  simp only [pivotalDimension, Ground.unitScalar_eq_equiv]
   rw [hh]
   field_simp
 
 /-- Canonical isomorphism coherence supplies the scaled trace identity for
 every iterated actual overlapping braid-algebra product. -/
-theorem overlap_trace_power_of_isos (C : Ground.BraidedFusionCategory.{v,u})
-    {X : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+theorem overlap_trace_power_of_isos (C : BraidedFusionCategory.{v,u})
+    {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {t : ℕ} (u : braidAlgebra X t)
-    (hiso : ∀ k, freshOverlapIso X t k =
-      (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
-        overlapPowerIso X t k) :
-    ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (Ground.unitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
-        actualBraidTrace C X p t u ^ (k + 1) :=
+    (hiso : ∀ k, HasOverlapCoherence X t k) :
+    HasOverlapTracePower C p u :=
   overlap_trace_power_of_step C p u fun k ↦
     overlap_trace_step_of_coherence C p k u (overlapProduct_local_of_iso k u (hiso k))
 

@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Dimensions.BiproductTrace
 
 /-!
@@ -69,17 +70,18 @@ theorem SEntry_tensor_decomposition (D : Ground.BraidedFusionCategory.{v,u})
   simp [Fintype.sum_sigma, V, m, categoricalS, nsmul_eq_mul]
 
 
+/-- The Hopf-link product rule for simple objects. -/
+abbrev HasHopfProduct (D : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := D.Obj)) : Prop :=
+  ∀ i j k, Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
+    simpleDimension D p k = categoricalS D p i k * categoricalS D p j k
+
 /-- The categorical Hopf-link product identity implies the Verlinde character
 equations once tensor products are decomposed into their simple summands. -/
 theorem categoricalS_verlinde_of_hopf_product (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj))
-    (hopf : ∀ i j k,
-      Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
-        simpleDimension D p k = categoricalS D p i k * categoricalS D p j k) :
-    ∀ i j k,
-      (categoricalS D p i k / simpleDimension D p k) *
-        (categoricalS D p j k / simpleDimension D p k) =
-      ∑ l, (fusionCoeff D i j l : ℂ) * (categoricalS D p l k / simpleDimension D p k) := by
+    (hopf : HasHopfProduct D p) :
+    HasVerlindeFormula ⟨unitIndex D, fusionCoeff D⟩ (categoricalS D p) (simpleDimension D p) := by
   intro i j k
   have hk := hopf i j k
   rw [SEntry_tensor_decomposition] at hk

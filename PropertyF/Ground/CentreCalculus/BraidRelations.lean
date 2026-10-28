@@ -30,28 +30,31 @@ theorem braidGenerator_succ (X : C) {n : ℕ} (k : Fin (n + 1)) :
   simp [Functor.mapAut, braidGenerator, tensorIso_hom, tensorLeft, id_tensorHom]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Self-transparency makes each adjacent braid generator an involution. -/
-theorem braidGenerator_involutive {X : C}
-    (hX : SelfTransparent X) :
-    ∀ (n : ℕ) (i : Fin (n + 1)), braidGenerator X n i * braidGenerator X n i = 1 := by
-  have hzero (n : ℕ) : braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ * braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ = 1 := by
-    apply Aut.ext
-    apply Iso.ext
-    simp only [Aut.mul_asIso, Aut.one_asIso, Iso.trans_hom, Iso.refl_hom]
-    cases n <;>
-      simp only [braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
-        Iso.refl_hom, tensorHom_id, Category.assoc, Iso.hom_inv_id_assoc] <;>
-      rw [← Category.assoc ((β_ X X).hom ▷ _) ((β_ X X).hom ▷ _),
-        ← comp_whiskerRight, hX, id_whiskerRight, Category.id_comp, Iso.inv_hom_id]
+/-- The first braid generator is involutive on a self-transparent object. -/
+theorem braidGenerator_zero_involutive {X : C} (hX : SelfTransparent X) (n : ℕ) :
+    braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ *
+      braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ = 1 := by
+  apply Aut.ext
+  apply Iso.ext
+  simp only [Aut.mul_asIso, Aut.one_asIso, Iso.trans_hom, Iso.refl_hom]
+  cases n <;>
+    simp only [braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+      Iso.refl_hom, tensorHom_id, Category.assoc, Iso.hom_inv_id_assoc] <;>
+    rw [← Category.assoc ((β_ X X).hom ▷ _) ((β_ X X).hom ▷ _),
+      ← comp_whiskerRight, hX, id_whiskerRight, Category.id_comp, Iso.inv_hom_id]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Self-transparency makes each adjacent braid generator an involution. -/
+theorem braidGenerator_involutive {X : C} (hX : SelfTransparent X) :
+    ∀ (n : ℕ) (i : Fin (n + 1)), braidGenerator X n i * braidGenerator X n i = 1 := by
   intro n
   induction n with
   | zero =>
     intro i
-    simpa [Fin.eq_zero i] using hzero 0
+    simpa [Fin.eq_zero i] using braidGenerator_zero_involutive hX 0
   | succ n ih =>
     intro i
-    refine Fin.cases (hzero (n + 1)) (fun j => ?_) i
+    refine Fin.cases (braidGenerator_zero_involutive hX (n + 1)) (fun j => ?_) i
     have h := congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2))) (ih j)
     simpa only [map_mul, map_one, braidGenerator_succ] using h
 

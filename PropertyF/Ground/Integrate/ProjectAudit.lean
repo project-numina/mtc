@@ -30,7 +30,6 @@ public import PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
 import all PropertyF.Ground.Integrate.DrinfeldComplete
-import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
 import all PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 import all PropertyF.Ground.CentreCalculus.TwistSign
@@ -64,12 +63,10 @@ import all PropertyF.Ground.CentreInduction.ActualFusion
 import all PropertyF.Ground.CentreInduction.AdjunctionAssembly
 import all PropertyF.Ground.CentreInduction.BasisPairing
 import all PropertyF.Ground.CentreInduction.BasisRefinement
-import all PropertyF.Ground.CentreInduction.CandidateAssembly
 import all PropertyF.Ground.CentreInduction.CounitColumn
 import all PropertyF.Ground.CentreInduction.CrossingBlocks
 import all PropertyF.Ground.CentreInduction.CrossingCoherence
 import all PropertyF.Ground.CentreInduction.CrossingNaturality
-import all PropertyF.Ground.CentreInduction.CrossingTensor
 import all PropertyF.Ground.CentreInduction.CrossingUnit
 import all PropertyF.Ground.CentreInduction.FiniteSimples
 import all PropertyF.Ground.CentreInduction.FiniteSum
@@ -77,7 +74,6 @@ import all PropertyF.Ground.CentreInduction.ForgetDual
 import all PropertyF.Ground.CentreInduction.InjectiveFusion
 import all PropertyF.Ground.CentreInduction.Representatives
 import all PropertyF.Ground.CentreInduction.SecondTriangle
-import all PropertyF.Ground.CentreInduction.UnitSummand
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
 import all PropertyF.Ground.Dimensions.CoevaluationSliding
 import all PropertyF.Ground.Dimensions.DefectNaturality
@@ -173,7 +169,6 @@ import all PropertyF.Ground.Modular.Verlinde
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Target
 import all PropertyF.PowerBound
-import all PropertyF.UnitaryTrace
 
 /-! Scan all currently integrated project declarations, including the ground
 modules. `PropertyF.Audit` alone sees only its own imports. -/
@@ -233,24 +228,19 @@ run_cmd do
       ``PropertyF.Ground.center_witness_of_categorical_modular_data,
       ``PropertyF.Ground.propertyF_of_galois_column,
       ``PropertyF.Ground.galois_unit_self_entry,
-      ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,
-      ``PropertyF.Ground.ScalarTwist.conjugate,
       ``PropertyF.Ground.ScalarTwist.labels,
       ``PropertyF.Ground.fpDimension_functor,
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
       ``PropertyF.Ground.galois_rigidity_of_propertyF,
-      ``PropertyF.Ground.target_of_modular_center,
       ``PropertyF.Ground.target_of_actual_center,
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
       ``PropertyF.Ground.drinfeld_tensor,
       ``PropertyF.Ground.pivotal_twist_balanced,
-      ``PropertyF.Ground.target_of_pseudoUnitary_pivotal_existence,
       ``PropertyF.Ground.CentreIntegrate.pivotal_balance_of_drinfeld_tensor,
-      ``PropertyF.Ground.target_of_pivotal_base_and_center_balancing,
       ``PropertyF.Ground.CentreInduction.center_transparent_simple_iso_unit,
       ``PropertyF.Ground.CentreModular.categoricalS_det_ne_zero_of_trivial_transparency,
       ``PropertyF.Ground.CentreCalculus.actual_symmetricCore_integrality,

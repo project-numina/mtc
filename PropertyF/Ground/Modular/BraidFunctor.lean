@@ -24,12 +24,11 @@ def tensorPowerComparison (X : C) : ∀ n, tensorPower (F.obj X) n ≅ F.obj (te
 
 /-- A braided functor preserves the first adjacent braid, including associators. -/
 lemma braid_first_functor (X A : C) :
-    ((α_ (F.obj X) (F.obj X) (F.obj A)).symm ≪≫
-      ((β_ (F.obj X) (F.obj X)) ⊗ᵢ Iso.refl (F.obj A)) ≪≫
-       α_ (F.obj X) (F.obj X) (F.obj A)).hom ≫
+    (firstBraiding (F.obj X) (F.obj A)).hom ≫
       (F.obj X ◁ (μIso F X A).hom) ≫ (μIso F X (X ⊗ A)).hom =
       (F.obj X ◁ (μIso F X A).hom) ≫ (μIso F X (X ⊗ A)).hom ≫
-        F.map (((α_ X X A).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl A) ≪≫ α_ X X A).hom) := by
+        F.map (firstBraiding X A).hom := by
+  dsimp only [firstBraiding]
   simp only [Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
     Functor.map_comp, map_associator_inv, map_associator, map_tensor,
     Functor.map_braiding, μIso_hom, Category.assoc]
@@ -42,17 +41,15 @@ lemma braid_first_functor (X A : C) :
 
 /-- The first adjacent braid remains natural after comparing the remaining tensor factors. -/
 lemma braid_first_with_comparison (X A : C) {B : D} (g : B ≅ F.obj A) :
-    ((α_ (F.obj X) (F.obj X) B).symm ≪≫
-      ((β_ (F.obj X) (F.obj X)) ⊗ᵢ Iso.refl B) ≪≫
-       α_ (F.obj X) (F.obj X) B).hom ≫
+    (firstBraiding (F.obj X) B).hom ≫
       (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ (F.obj X ◁ (μIso F X A).hom) ≫
         (μIso F X (X ⊗ A)).hom =
       (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ (F.obj X ◁ (μIso F X A).hom) ≫
         (μIso F X (X ⊗ A)).hom ≫
-        F.map (((α_ X X A).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl A) ≪≫ α_ X X A).hom) := by
+        F.map (firstBraiding X A).hom := by
   have hn := braid_first (Iso.refl (F.obj X)) g
   simp only [tensorIso_hom, Iso.refl_hom, id_tensorHom] at hn
-  simp only [← Category.assoc, hn]
+  rw [← Category.assoc, hn]
   have h := congrArg (fun k => (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ k)
     (braid_first_functor F X A)
   simpa only [Category.assoc] using h
@@ -121,13 +118,10 @@ lemma braidAutMap_generator (X : C) (n : ℕ) (i : Fin (n+1)) :
 
 /-- Faithfulness makes the induced automorphism map injective. -/
 lemma braidAutMap_injective (X : C) (n : ℕ) [F.Faithful] :
-    Function.Injective (braidAutMap F X n) := by
-  intro a b h
-  apply Aut.ext
-  apply Iso.ext
-  apply F.map_injective
-  exact congrArg (fun a : Aut (F.obj (tensorPower X (n+2))) => a.asIso.hom)
-    ((tensorPowerComparison F X (n+2)).symm.conjAut.injective h)
+    Function.Injective (braidAutMap F X n) := fun _ _ h ↦
+  Aut.ext (Iso.ext (F.map_injective (congrArg
+    (fun a : Aut (F.obj (tensorPower X (n+2))) => a.asIso.hom)
+    ((tensorPowerComparison F X (n+2)).symm.conjAut.injective h))))
 
 /-- The functor map sends the source braid-image subgroup onto the target
 braid-image subgroup, even if the functor is not faithful. -/
@@ -147,28 +141,23 @@ def braidImageFunctorMap (X : C) (n : ℕ) : braidImage X n →* braidImage (F.o
 
 /-- The map on braid-image groups is always surjective. -/
 theorem braidImageFunctorMap_surjective (X : C) (n : ℕ) :
-    Function.Surjective (braidImageFunctorMap F X n) := by
-  intro y
-  obtain ⟨a, ha, hy⟩ := Subgroup.mem_map.mp (show
+    Function.Surjective (braidImageFunctorMap F X n) := fun y ↦
+  (Subgroup.mem_map.mp (show
     (y : Aut (tensorPower (F.obj X) (n + 2))) ∈ (braidImage X n).map (braidAutMap F X n) from
-      (braidImage_map_eq F X n).symm ▸ y.property)
-  exact ⟨⟨a, ha⟩, Subtype.ext hy⟩
+      (braidImage_map_eq F X n).symm ▸ y.property)).elim fun a ⟨ha, hy⟩ ↦
+    ⟨⟨a, ha⟩, Subtype.ext hy⟩
 
 /-- A braided functor preserves finiteness of each object's braid images. -/
 theorem objectPropertyF_functor (X : C) (hX : ObjectPropertyF X) :
-    ObjectPropertyF (F.obj X) := by
-  intro n
-  let _ : Finite (braidImage X n) := hX n
-  exact Finite.of_surjective (braidImageFunctorMap F X n) (braidImageFunctorMap_surjective F X n)
+    ObjectPropertyF (F.obj X) := fun n ↦
+  letI : Finite (braidImage X n) := hX n
+  Finite.of_surjective (braidImageFunctorMap F X n) (braidImageFunctorMap_surjective F X n)
 
 /-- A faithful braided functor induces isomorphisms on braid-image groups. -/
 def braidImageFunctorIso (X : C) (n : ℕ) [F.Faithful] :
-    braidImage X n ≃* braidImage (F.obj X) n := by
-  let m := braidAutMap F X n
-  have hm : (braidImage X n).map m = braidImage (F.obj X) n :=
-    braidImage_map_eq F X n
-  exact ((braidImage X n).equivMapOfInjective m (braidAutMap_injective F X n)).trans
-    (MulEquiv.subgroupCongr hm)
+    braidImage X n ≃* braidImage (F.obj X) n :=
+  ((braidImage X n).equivMapOfInjective (braidAutMap F X n) (braidAutMap_injective F X n)).trans
+    (MulEquiv.subgroupCongr (braidImage_map_eq F X n))
 
 
 /-- Essential surjectivity handles arbitrary target objects. -/

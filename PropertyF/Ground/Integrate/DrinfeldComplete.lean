@@ -10,7 +10,7 @@ public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 public import PropertyF.Ground.Centre.Modular.Vafa
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
-public import PropertyF.Ground.CentreInduction.Transparent
+public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
 
@@ -34,9 +34,7 @@ theorem center_globalDimension_square_of_actual_induction
     globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
   CentreModular.center_globalDimension_of_adjunction C
     (CentreInduction.induction C) (CentreInduction.actualAdjunction C)
-    (fun _ ↦ ⟨Iso.refl _⟩) p hp fun i ↦ by
-      simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-        unitScalar_eq_equiv] using hdim i
+    (fun _ ↦ ⟨Iso.refl _⟩) p hp hdim
 
 
 
@@ -82,12 +80,10 @@ theorem centerPivotal_hasFPDimensions (C : BraidedFusionCategory.{v,u})
       (centerPivotalOfPivotalPseudoUnitary C p hpu) := by
   letI := CentreRigid.rigidCenter (C := C.Obj)
   letI := centerFusionOfPivotalPseudoUnitary C p hpu
-  have hs := Classical.choose_spec (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))
-  obtain ⟨_, hd, _, _⟩ := hs
-  change ∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C)
-    (centerPivotalOfPivotalPseudoUnitary C p hpu)
-    (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ) at hd
+  have hd := (Classical.choose_spec (Classical.choose_spec
+    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))).2.1
+  change CentreInduction.PivotalHasFPDimensions (Integrate.bundledCenter C)
+    (centerPivotalOfPivotalPseudoUnitary C p hpu) at hd
   intro i
   simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
     unitScalar_eq_equiv] using hd i
@@ -128,42 +124,6 @@ theorem center_transparent_label_eq_unit
   obtain ⟨u⟩ := unitIndex_iso D
   exact simples_injective D ⟨e ≪≫ u.symm⟩
 
-/-- The frozen target follows from base pivotal existence and balancing of
-its constructed centre twist. These two obligations remain explicit. -/
-theorem target_of_pivotal_base_and_center_balancing
-    (hCenter : ∀ (C : BraidedFusionCategory.{v,u}) (hpu : PseudoUnitary C),
-      HasPropertyF C.Obj →
-      ∃ (p : Dimensions.PivotalStructure (C := C.Obj)),
-        letI := CentreRigid.rigidCenter (C := C.Obj)
-        letI := centerFusionOfPivotalPseudoUnitary C p hpu
-        let pZ := centerPivotalOfPivotalPseudoUnitary C p hpu
-        let D := Integrate.bundledCenter C
-        CentreModular.IsPivotalTwistBalanced D pZ) : TargetStatement.{v,u} := by
-  apply target_of_actual_center
-  intro C hpu hF
-  obtain ⟨p, hbalance⟩ := hCenter C hpu hF
-  letI := CentreRigid.rigidCenter (C := C.Obj)
-  letI := centerFusionOfPivotalPseudoUnitary C p hpu
-  let pZ := centerPivotalOfPivotalPseudoUnitary C p hpu
-  have hs := Classical.choose_spec (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))
-  obtain ⟨hspherical, _, _, _⟩ := hs
-  have hdim := centerPivotal_hasFPDimensions C p hpu
-  have hdet := CentreModular.categoricalS_det_ne_zero_of_trivial_transparency
-    (Integrate.bundledCenter C) pZ hdim hbalance (center_transparent_label_eq_unit C)
-  have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy C pZ := by
-    intro y _ a _
-    exact CentreModular.mixed_monodromy_finite_of_pivotal_balancing
-      (Integrate.bundledCenter C) pZ hbalance _ _
-  refine ⟨CentreRigid.rigidCenter, inferInstance, pZ, CentreCabling.symmetricCore C,
-    (↑(CentreCabling.productLabels C) : Set _), hspherical, hdim, hdet,
-    center_globalDimension_square_of_actual_induction C pZ hspherical hdim,
-    CentreCalculus.actual_symmetricCore_integrality C pZ hspherical hdim, ?_, ?_⟩
-  · intro y hy
-    exact (CentreCabling.mem_productLabels C y).mpr
-      (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy C pZ hspherical hdet hdim hfinite y hy)
-  · intro y hy
-    exact (CentreCabling.mem_productLabels C y).mp hy
 
 
 end PropertyF.Ground
@@ -185,8 +145,8 @@ theorem drinfeld_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
     Modular.doubleBraiding X Y ≫ (doubleDualIso C (X ⊗ Y)).hom =
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom :=
-  CentreIntegrate.drinfeld_tensor_of_pairing_cap C X Y
-    (Dimensions.drinfeld_tensor_pairing_cap C X Y)
+  CentreIntegrate.drinfeld_tensor_of_pairing_cap (doubleDualIso C)
+    (Dimensions.drinfeld_eval C (X ⊗ Y)) (Dimensions.drinfeld_tensor_pairing_cap C X Y)
 
 /-- The twist of any pivotal braided fusion category is balanced. -/
 theorem pivotal_twist_balanced (C : BraidedFusionCategory.{v,u})
@@ -195,24 +155,9 @@ theorem pivotal_twist_balanced (C : BraidedFusionCategory.{v,u})
       ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
         (Dimensions.pivotalBraidedTwist C p Y).hom) =
       (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom :=
-  CentreIntegrate.pivotal_balance_of_drinfeld_tensor C p X Y (drinfeld_tensor C X Y)
+  CentreIntegrate.pivotal_balance_of_drinfeld_tensor p (doubleDualIso C) (drinfeld_tensor C X Y)
 
-/-- The frozen target follows once the pseudo-unitary property-F base is
-shown to admit a pivotal structure. That existence is the sole premise. -/
-theorem target_of_pseudoUnitary_pivotal_existence
-    (hPivotal : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj → Nonempty (Dimensions.PivotalStructure (C := C.Obj))) :
-    TargetStatement.{v,u} := by
-  apply target_of_pivotal_base_and_center_balancing
-  intro C hpu hF
-  obtain ⟨p⟩ := hPivotal C hpu hF
-  letI := CentreRigid.rigidCenter (C := C.Obj)
-  letI := centerFusionOfPivotalPseudoUnitary C p hpu
-  refine ⟨p, ?_⟩
-  dsimp only
-  intro X Y
-  exact pivotal_twist_balanced (Integrate.bundledCenter C)
-    (centerPivotalOfPivotalPseudoUnitary C p hpu) X Y
+
 
 end PropertyF.Ground
 end

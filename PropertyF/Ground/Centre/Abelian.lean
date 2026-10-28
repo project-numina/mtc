@@ -51,26 +51,18 @@ private theorem inr_mapBiprod_inv (X Y : CategoryTheory.Center C) (U : C) :
 @[reassoc]
 theorem inl_sumHalfIso {X Y : CategoryTheory.Center C} (U : C) :
     biprod.inl ▷ U ≫ (sumHalfIso X Y U).hom = halfBraidingHom X U ≫ U ◁ biprod.inl := by
-  have h : biprod.inl ▷ U ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).hom = biprod.inl := by
-    apply (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
-    rw [Functor.mapBiprod_inv, biprod.inl_desc]
-    rfl
-  dsimp only [sumHalfIso, Iso.trans_hom, Iso.symm_hom]
-  rw [← Category.assoc, ← Category.assoc, h]
-  simp only [biprod.mapIso, biprod.inl_map]
+  simp only [sumHalfIso, Iso.trans_hom, Iso.symm_hom, ← Category.assoc,
+    (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
+      (inl_mapBiprod_inv X Y U).symm, biprod.mapIso, biprod.inl_map]
   rw [Functor.mapBiprod_inv, Category.assoc, biprod.inl_desc]
   rfl
 
 @[reassoc]
 theorem inr_sumHalfIso {X Y : CategoryTheory.Center C} (U : C) :
     biprod.inr ▷ U ≫ (sumHalfIso X Y U).hom = halfBraidingHom Y U ≫ U ◁ biprod.inr := by
-  have h : biprod.inr ▷ U ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).hom = biprod.inr := by
-    apply (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
-    rw [Functor.mapBiprod_inv, biprod.inr_desc]
-    rfl
-  dsimp only [sumHalfIso, Iso.trans_hom, Iso.symm_hom]
-  rw [← Category.assoc, ← Category.assoc, h]
-  simp only [biprod.mapIso, biprod.inr_map]
+  simp only [sumHalfIso, Iso.trans_hom, Iso.symm_hom, ← Category.assoc,
+    (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
+      (inr_mapBiprod_inv X Y U).symm, biprod.mapIso, biprod.inr_map]
   rw [Functor.mapBiprod_inv, Category.assoc, biprod.inr_desc]
   rfl
 
@@ -127,22 +119,18 @@ def centerBiprodInr (X Y : CategoryTheory.Center C) : Y ⟶ centerBiprod X Y :=
 /-- The first projection commutes with the sum half-braiding. -/
 theorem sumHalfIso_fst (X Y : CategoryTheory.Center C) (U : C) :
     biprod.fst ▷ U ≫ halfBraidingHom X U = (sumHalfIso X Y U).hom ≫ U ◁ biprod.fst := by
-  apply (cancel_epi (Functor.mapBiprod (tensorRight U) X.1 Y.1).inv).mp
-  apply biprod.hom_ext'
-  · simp only [← Category.assoc, Functor.mapBiprod_inv, biprod.inl_desc]
-    simp [← comp_whiskerRight, ← whiskerLeft_comp, inl_sumHalfIso]
-  · simp only [← Category.assoc, Functor.mapBiprod_inv, biprod.inr_desc]
-    simp [← comp_whiskerRight, ← whiskerLeft_comp, inr_sumHalfIso]
+  refine (cancel_epi (Functor.mapBiprod (tensorRight U) X.1 Y.1).inv).mp
+    (biprod.hom_ext' _ _ ?_ ?_)
+  all_goals simp only [← Category.assoc, Functor.mapBiprod_inv, biprod.inl_desc, biprod.inr_desc]
+  all_goals simp [← comp_whiskerRight, ← whiskerLeft_comp, inl_sumHalfIso, inr_sumHalfIso]
 
 /-- The second projection commutes with the sum half-braiding. -/
 theorem sumHalfIso_snd (X Y : CategoryTheory.Center C) (U : C) :
     biprod.snd ▷ U ≫ halfBraidingHom Y U = (sumHalfIso X Y U).hom ≫ U ◁ biprod.snd := by
-  apply (cancel_epi (Functor.mapBiprod (tensorRight U) X.1 Y.1).inv).mp
-  apply biprod.hom_ext'
-  · simp only [← Category.assoc, Functor.mapBiprod_inv, biprod.inl_desc]
-    simp [← comp_whiskerRight, ← whiskerLeft_comp, inl_sumHalfIso]
-  · simp only [← Category.assoc, Functor.mapBiprod_inv, biprod.inr_desc]
-    simp [← comp_whiskerRight, ← whiskerLeft_comp, inr_sumHalfIso]
+  refine (cancel_epi (Functor.mapBiprod (tensorRight U) X.1 Y.1).inv).mp
+    (biprod.hom_ext' _ _ ?_ ?_)
+  all_goals simp only [← Category.assoc, Functor.mapBiprod_inv, biprod.inl_desc, biprod.inr_desc]
+  all_goals simp [← comp_whiskerRight, ← whiskerLeft_comp, inl_sumHalfIso, inr_sumHalfIso]
 
 
 /-- The biproduct projections lift to centre morphisms. -/

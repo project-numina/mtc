@@ -93,11 +93,10 @@ theorem selfDual_character_galois_real (C : BraidedFusionCategory)
 theorem fp_simple_galois_real (C : BraidedFusionCategory.{v,u})
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     (((σ (fpSimple C i : ℂ)).re : ℝ) : ℂ) = σ (fpSimple C i : ℂ) := by
-  let χ : Fin (rank C) → ℂ := fun i => (fpSimple C i : ℂ)
-  have hχ : χ (unitIndex C) ≠ 0 := by simp [χ, fpSimple_unit]
-  have hchar : IsFusionMultiplicative C χ := fpSimple_isFusionMultiplicative C
-  have hdual : ∀ i, χ (dualIndex C i) = χ i := by intro i; simp [χ, fpSimple_dual]
   apply Complex.conj_eq_iff_re.mp
-  simpa only [← Complex.star_def] using selfDual_character_galois_real C hχ hchar hdual σ i
+  simpa only [← Complex.star_def] using
+    selfDual_character_galois_real C (χ := fun i ↦ (fpSimple C i : ℂ))
+      (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C)
+      (by intro i; simp [fpSimple_dual]) σ i
 
 end PropertyF.Ground

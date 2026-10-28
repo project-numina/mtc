@@ -58,22 +58,21 @@ end
 
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
 /-- Centrality of the transported pivotal components yields centre fusion,
 positive sphericality, pseudo-unitarity and the categorical dimension square. -/
 theorem center_structure_of_pivotal_centrality
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hsimple : PivotalHasFPDimensions C p)
     (hc : PivotalComponentsCentral p) :
     ∃ hFusion : IsFusionCategory (𝒵),
       letI := hFusion
       let pZ := liftedPivotalStructure p hc
       pZ.IsSpherical ∧
-      (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
-        (simples (Integrate.bundledCenter C) i) =
-          (fpSimple (Integrate.bundledCenter C) i : ℂ)) ∧
-      PseudoUnitary (Integrate.bundledCenter C) ∧
-      globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
+      PivotalHasFPDimensions 𝒵ᶠ pZ ∧
+      PseudoUnitary 𝒵ᶠ ∧
+      globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
   center_structure_of_compatible_pivotal C p hsimple (liftedPivotalStructure p hc)
     (liftedPivotalStructure_compatible p hc)
 
@@ -101,24 +100,16 @@ theorem positiveDualIso_forget (T : D) :
     (positiveDualIso T).hom.f =
       (forgetDualIso ((CategoryTheory.Center.ofBraided D).obj T)).hom := by
   let F := CategoryTheory.Center.ofBraided D
-  have hc : (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _ (F.obj T) (F.obj (Tᘁ))
+  have hc : (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _
+      ((CategoryTheory.Center.ofBraided D).obj T) ((CategoryTheory.Center.ofBraided D).obj (Tᘁ))
       (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) := by
     change (ε F ≫ F.map (η_ T (Tᘁ)) ≫ δ F T (Tᘁ)).f = _
     simp [F]
-  change (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _
-    ((CategoryTheory.Center.ofBraided D).obj T) ((CategoryTheory.Center.ofBraided D).obj (Tᘁ))
-    (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) at hc
-  have hc' : (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _
-      ((CategoryTheory.Center.ofBraided D).obj T) ((CategoryTheory.Center.ofBraided D).obj (Tᘁ))
-      (Centre.positiveExactPairing T (Tᘁ))).f =
-      η_ ((CategoryTheory.Center.ofBraided D).obj T).1
-        (((CategoryTheory.Center.ofBraided D).obj T).1ᘁ) := by
-    convert hc using 1; rfl
   unfold positiveDualIso forgetDualIso rightDualIso rightAdjointMate
   simp only [CategoryTheory.Center.comp_f, CategoryTheory.Center.rightUnitor_inv_f,
     CategoryTheory.Center.leftUnitor_hom_f, CategoryTheory.Center.whiskerLeft_f,
     CategoryTheory.Center.whiskerRight_f, CategoryTheory.Center.associator_inv_f,
-    CategoryTheory.Center.id_f, hc']
+    CategoryTheory.Center.id_f, hc]
   rfl
 
 /-- The comparison between the double duals of an object and its positive lift. -/

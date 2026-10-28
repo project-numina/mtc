@@ -152,8 +152,7 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
 pseudo-unitary base, without assuming an initial pivotal structure. -/
 theorem positive_spherical_of_drinfeld_tensor (h : DrinfeldTensorLaw C)
     (hpu : PseudoUnitary C) :
-    ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) :=
+    ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
   Dimensions.positive_spherical_of_nonunit_fourth_dual C
     (fun i j _ _ ↦ fourthDualIso_tensor_of_drinfeld C h (simples C i) (simples C j)) hpu
 
@@ -169,16 +168,15 @@ universe v u
 
 /-- The canonical Drinfeld isomorphism satisfies its tensor law. -/
 theorem drinfeldTensorLaw (C : BraidedFusionCategory.{v,u}) : DrinfeldTensorLaw C :=
-  fun X Y ↦ CentreIntegrate.drinfeld_tensor_of_pairing_cap C X Y
-    (Dimensions.drinfeld_tensor_pairing_cap C X Y)
+  fun X Y ↦ CentreIntegrate.drinfeld_tensor_of_pairing_cap (doubleDualIso C)
+    (Dimensions.drinfeld_eval C (X ⊗ Y)) (Dimensions.drinfeld_tensor_pairing_cap C X Y)
 
 
 /-- Every pseudo-unitary braided fusion category has a positive spherical
 structure with its actual FP dimensions, without any pivotal premise. -/
 theorem positive_spherical_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
     (hpu : PseudoUnitary C) :
-    ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) :=
+    ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
   positive_spherical_of_drinfeld_tensor C (drinfeldTensorLaw C) hpu
 
 end PropertyF.Ground.CentreInduction

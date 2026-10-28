@@ -7,12 +7,11 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Catego
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u})
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component followed by a map can be expressed through a crossing. -/
-theorem unitComponent_reduce {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N)
+theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N)
     (t : M ⟶ N) (w : N ⟶ X) :
     t ≫ ((ρ_ N).inv ≫ (N ◁ η_ S (Sᘁ)) ≫ (α_ N S (Sᘁ)).inv ≫ (b ▷ Sᘁ)) ≫
       ((S ◁ w) ▷ Sᘁ) =
@@ -27,8 +26,7 @@ theorem unitComponent_reduce {D : Type u} [Category.{v} D] [MonoidalCategory D] 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Evaluation is normalized along an isomorphism with the tensor unit. -/
-theorem evaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    {A : D} (e : A ≅ 𝟙_ D) :
+theorem evaluation_iso_unit {A : D} (e : A ≅ 𝟙_ D) :
     ((Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom ⊗ₘ e.hom) ≫
       (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) := by
   let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
@@ -59,8 +57,7 @@ theorem evaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D] [
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Closing the right unit isomorphism gives ordinary evaluation. -/
-theorem close_rightUnit_eval {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    (T : D) {A : D} (e : A ≅ 𝟙_ D) :
+theorem close_rightUnit_eval (T : D) {A : D} (e : A ≅ 𝟙_ D) :
     closeFusionMap T A T ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
       (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom = ε_ T (Tᘁ) := by
   let d : Aᘁ ⟶ 𝟙_ D := (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom
@@ -99,8 +96,7 @@ theorem close_rightUnit_eval {D : Type u} [Category.{v} D] [MonoidalCategory D] 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The canonical unit-column crossing block contracts by evaluation. -/
-theorem crossingUnitBlock_eval {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    (X T : D) {A : D} (e : A ≅ 𝟙_ D) :
+theorem crossingUnitBlock_eval (X T : D) {A : D} (e : A ≅ 𝟙_ D) :
   let d : Aᘁ ≅ 𝟙_ D := Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso
   let us : (A ⊗ X) ⊗ Aᘁ ≅ X := ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
@@ -157,13 +153,13 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component reduces to the corresponding counit-crossing matrix entry. -/
 theorem unit_matrix_reduce (X : C.Obj) (i j : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) =
   𝟙 _ ⊗≫ ((V i) ◁ η_ (simples C j) ((simples C j)ᘁ)) ⊗≫
     (((biproduct.ι V i ▷ (simples C j)) ≫ crossingCandidate C X (simples C j) ≫
       ((simples C j) ◁ (underlyingCounit C).app X)) ▷ (simples C j)ᘁ) ⊗≫ 𝟙 _ := by
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   let b : (⨁ V) ⊗ simples C j ⟶ simples C j ⊗ (⨁ V) := crossingCandidate C X (simples C j)
   let w : (⨁ V) ⟶ X := (underlyingCounit C).app X
   change biproduct.ι V i ≫ ((ρ_ (⨁ V)).inv ≫ ((⨁ V) ◁ η_ (simples C j) ((simples C j)ᘁ)) ≫
@@ -176,7 +172,7 @@ theorem unit_matrix_reduce (X : C.Obj) (i j : Fin (rank C)) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The off-diagonal components of the second triangle vanish. -/
 theorem unit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) = 0 := by
   have h := unit_matrix_reduce C X i j
@@ -187,7 +183,7 @@ theorem unit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/
 theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) i ≫
     ((simples C i ◁ (underlyingCounit C).app X) ▷ (simples C i)ᘁ) = 𝟙 (V i) := by
   have h := unit_matrix_reduce C X i i
@@ -211,10 +207,10 @@ set_option backward.defeqAttrib.useBackward true in
 /-- Projecting a mapped induction unit selects its corresponding component. -/
 theorem unitCandidate_map_projection_general (Z : CategoryTheory.Center C.Obj) {X : C.Obj}
     (f : Z.1 ⟶ X) (j : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (unitCandidate C Z ≫ (underlyingFunctor C).map f) ≫ biproduct.π V j =
     unitComponent C Z j ≫ ((simples C j ◁ f) ▷ (simples C j)ᘁ) := by
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   let W : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
   let g : ∀ k, W k ⟶ V k := fun k => (simples C k ◁ f) ▷ (simples C k)ᘁ
   change (biproduct.lift (unitComponent C Z) ≫ biproduct.map g) ≫ biproduct.π V j =
@@ -228,31 +224,30 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Every matrix entry of the second triangle has the expected value. -/
 theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   biproduct.ι V i ≫
     (unitCandidate C ((induction C).obj X) ≫
       (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   have hp := unitCandidate_map_projection_general C ((induction C).obj X) ((underlyingCounit C).app X) j
   have hh := congrArg (fun f => biproduct.ι V i ≫ f) hp
   simp only [Category.assoc] at hh
   change _ = _ at hh
-  have hu : biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
-      ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) =
-      biproduct.ι V i ≫ biproduct.π V j := by
-    by_cases h : i = j
-    · subst j
-      simpa using unit_diag C X i
-    · simpa [biproduct.ι_π_ne V h] using unit_offdiag C X i j h
-  simpa [Category.assoc] using hh.trans hu
+  by_cases h : i = j
+  · subst j
+    simpa [Category.assoc] using hh.trans (unit_diag C X i)
+  · simpa [V, Category.assoc, biproduct.ι_π_ne _ h] using hh.trans (unit_offdiag C X i j h)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit and counit satisfy the second triangle. -/
 theorem secondTriangle (X : C.Obj) :
     unitCandidate C ((induction C).obj X) ≫
       (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X) := by
-  apply secondTriangle_of_matrix_entries C (halfBraidingOfCrossingCandidate C)
-    (halfBraidingOfCrossingCandidate_natural C) (secondTriangle_entry C) X
+  apply biproduct.hom_ext'
+  intro i
+  apply biproduct.hom_ext
+  intro j
+  simpa [underlying, Category.assoc] using secondTriangle_entry C X i j
 
 end PropertyF.Ground.CentreInduction

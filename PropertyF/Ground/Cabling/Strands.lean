@@ -39,9 +39,9 @@ theorem tensorLeft_faithful_of_unit_retract {X Y : C}
     Functor.Faithful (tensorLeft X) := by
   constructor
   intro A B f g hfg
-  have hY : Y ◁ (X ◁ f) = Y ◁ (X ◁ g) := congrArg (fun k => Y ◁ k) hfg
   have hYX : (Y ⊗ X) ◁ f = (Y ⊗ X) ◁ g := by
-    simp only [tensor_whiskerLeft, hY]
+    change X ◁ f = X ◁ g at hfg
+    simp only [tensor_whiskerLeft, congrArg (fun k => Y ◁ k) hfg]
   have recover (k : A ⟶ B) :
       (λ_ A).inv ≫ (i ▷ A) ≫ ((Y ⊗ X) ◁ k) ≫ (r ▷ B) ≫ (λ_ B).hom = k := by
     simp only [Category.assoc, ← whisker_exchange_assoc, ← comp_whiskerRight_assoc,

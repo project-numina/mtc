@@ -56,16 +56,13 @@ def isoEndAlgEquiv {X Y : C} (e : X ≅ Y) : End X ≃ₐ[ℂ] End Y where
     simp [Algebra.algebraMap_eq_smul_one]
 
 /-- The chosen nonisomorphic simple representatives are Hom-orthogonal. -/
-theorem groundSimples_orthogonal (C : Ground.BraidedFusionCategory.{v,u}) :
-    HomOrthogonal (Ground.simples C) := by
-  intro i j hij
+theorem groundSimples_orthogonal (C : BraidedFusionCategory.{v,u}) :
+    HomOrthogonal (Ground.simples C) := fun i j hij =>
   let _ : Simple (Ground.simples C i) := Ground.simples_simple C i
   let _ : Simple (Ground.simples C j) := Ground.simples_simple C j
-  apply subsingleton_of_forall_eq (0 : Ground.simples C i ⟶ Ground.simples C j)
-  intro f
-  by_contra hf
-  let _ : IsIso f := isIso_of_hom_simple hf
-  exact hij (Ground.simples_injective C ⟨asIso f⟩)
+  subsingleton_of_forall_eq 0 fun f => Classical.byContradiction fun hf =>
+    let _ : IsIso f := isIso_of_hom_simple hf
+    hij (Ground.simples_injective C ⟨asIso f⟩)
 
 /-- The occurrences of label `i` in a dependent sum are indexed by `Fin (m i)`. -/
 def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
@@ -80,7 +77,7 @@ def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
 
 /-- A chosen simple-object decomposition gives the corresponding complex
 matrix-block decomposition of its endomorphism algebra. -/
-def groundEndBlockEquiv (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
+def groundEndBlockEquiv (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
     (m : Fin (Ground.rank C) → ℕ)
     (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1)) :
     End X ≃ₐ[ℂ] ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ := by

@@ -14,12 +14,13 @@ variable (C : BraidedFusionCategory.{v,u})
   [RigidCategory (CategoryTheory.Center C.Obj)]
   [IsFusionCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
 /-- The scalar of a centre unit endomorphism is unchanged by forgetting. -/
 theorem center_unitScalar_forget (a : End (𝟙_ (𝒵))) :
-    unitScalar (Integrate.bundledCenter C) a = unitScalar C (End.of a.asHom.f) := by
-  let z := unitScalar (Integrate.bundledCenter C) a
-  have h := algebraMap_unitScalar (Integrate.bundledCenter C) a
+    unitScalar 𝒵ᶠ a = unitScalar C (End.of a.asHom.f) := by
+  let z := unitScalar 𝒵ᶠ a
+  have h := algebraMap_unitScalar 𝒵ᶠ a
   have hf := congrArg (fun x : End (𝟙_ (𝒵)) => x.asHom.f) h
   have hb : End.of a.asHom.f = algebraMap ℂ (End (𝟙_ C.Obj)) z := by
     apply End.ext
@@ -35,33 +36,29 @@ theorem center_pivotalDimension_forget
     (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (Z : 𝒵)
     (hcompat : (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
-    Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ Z =
+    Dimensions.pivotalDimension 𝒵ᶠ pZ Z =
       Dimensions.pivotalDimension C p Z.1 := by
-  unfold Dimensions.pivotalDimension
-  rw [center_unitScalar_forget]
-  rw [forget_trace_of_pivotal_component p pZ Z hcompat]
+  simp only [Dimensions.pivotalDimension, center_unitScalar_forget,
+    forget_trace_of_pivotal_component p pZ Z hcompat]
 
 /-- A compatible lift of a positive pivotal structure has the actual centre's
 FP dimensions, is spherical, and proves the centre's pseudo-unitarity. -/
 theorem center_positive_spherical_of_compatible_pivotal
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hsimple : PivotalHasFPDimensions C p)
     (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : ∀ Z : 𝒵,
       (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     pZ.IsSpherical ∧
-      (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
-        (simples (Integrate.bundledCenter C) i) =
-          (fpSimple (Integrate.bundledCenter C) i : ℂ)) ∧
-      PseudoUnitary (Integrate.bundledCenter C) := by
-  let D := Integrate.bundledCenter C
+      PivotalHasFPDimensions 𝒵ᶠ pZ ∧
+      PseudoUnitary 𝒵ᶠ := by
+  let D := 𝒵ᶠ
   have hd (i : Fin (rank D)) : Dimensions.pivotalDimension D pZ (simples D i) =
       (fpSimple D i : ℂ) := by
     rw [center_pivotalDimension_forget C p pZ _ (hcompat _),
       pivotalDimension_eq_fp C p hsimple]
-    have hf := Integrate.center_forget_fpDimension C (simples D i)
-    change fpDimension C (simples D i).1 = fpDimension D (simples D i) at hf
-    rw [hf, fpDimension_simple]
+    change (fpDimension C ((CategoryTheory.Center.forget C.Obj).obj (simples D i)) : ℂ) = _
+    rw [Integrate.center_forget_fpDimension C, fpDimension_simple]
   have hs : pZ.IsSpherical := by
     apply (Dimensions.pivotal_spherical_iff_simple_dimensions_real D pZ).2
     intro i
@@ -77,23 +74,22 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
 /-- A compatible pivotal lift supplies fusion, a positive spherical structure,
 and the categorical global-dimension square without assuming centre pseudo-unitarity. -/
 theorem center_structure_of_compatible_pivotal
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hsimple : PivotalHasFPDimensions C p)
     (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : ∀ Z : 𝒵,
       (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     ∃ hFusion : IsFusionCategory (𝒵),
       letI := hFusion
       pZ.IsSpherical ∧
-      (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
-        (simples (Integrate.bundledCenter C) i) =
-          (fpSimple (Integrate.bundledCenter C) i : ℂ)) ∧
-      PseudoUnitary (Integrate.bundledCenter C) ∧
-      globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
+      PivotalHasFPDimensions 𝒵ᶠ pZ ∧
+      PseudoUnitary 𝒵ᶠ ∧
+      globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 := by
   let J := (induction C).obj (𝟙_ C.Obj)
   let : IsFusionCategory (𝒵) :=
     center_fusion_of_compatible_pivotal C p hsimple pZ
@@ -101,9 +97,9 @@ theorem center_structure_of_compatible_pivotal
   refine ⟨inferInstance, ?_⟩
   obtain ⟨hs, hd, hpu⟩ := center_positive_spherical_of_compatible_pivotal C p hsimple pZ hcompat
   refine ⟨hs, hd, hpu, ?_⟩
-  change globalDimension (Integrate.bundledCenter C) = _
-  rw [show globalDimension (Integrate.bundledCenter C) =
-      (globalFPDimension (Integrate.bundledCenter C) : ℂ) from hpu]
+  change globalDimension 𝒵ᶠ = _
+  rw [show globalDimension 𝒵ᶠ =
+      (globalFPDimension 𝒵ᶠ : ℂ) from hpu]
   rw [globalFPDimension_square_of_actual_induction C, Complex.ofReal_pow]
 
 end PropertyF.Ground.CentreInduction

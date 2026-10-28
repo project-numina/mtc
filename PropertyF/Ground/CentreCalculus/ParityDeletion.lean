@@ -21,7 +21,7 @@ def parityPermutationAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
   if odd then Centre.twistAction (Centre.permutationSign ℂ n) (tensorPermutationAction X hX n)
   else tensorPermutationAction X hX n
 
-variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable {C : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := C.Obj)}
   (hdim : Modular.HasFPSimpleDimensions C p)
 
 include hdim in
@@ -31,12 +31,12 @@ theorem parityPermutationTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd
     permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 1) (fixHead n σ) =
     (fpDimension C X : ℂ) * permutationScalarTrace C p (parityPermutationAction C hX odd) n σ := by
   cases odd with
-  | false => exact tensorPermutationTrace_fixHead C p hdim X hX n σ
+  | false => exact tensorPermutationTrace_fixHead hdim hX σ
   | true =>
     have hs : (Centre.permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
         (Centre.permutationSign ℂ n σ : ℂ) := by
       simpa [fixHead] using sign_decomposeFin 0 σ
-    have ht := tensorPermutationTrace_fixHead C p hdim X hX n σ
+    have ht := tensorPermutationTrace_fixHead hdim hX σ
     dsimp only [permutationScalarTrace] at ht
     simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
@@ -54,8 +54,8 @@ theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd
         (Equiv.Perm.decomposeFin.symm (q, σ)) =
       permutationScalarTrace C p (parityPermutationAction C hX odd) n σ) :
     ∃ m : ℕ, fpDimension C X = m :=
-  integral_of_trace_deletion C p hdim X (parityPermutationAction C hX odd)
-    (fun _ σ ↦ parityPermutationTrace_fixHead C p hdim hX odd σ) hmoved
+  integral_of_trace_deletion hdim (parityPermutationAction C hX odd)
+    (fun _ σ ↦ parityPermutationTrace_fixHead hdim hX odd σ) hmoved
 
 end PropertyF.Ground.CentreCalculus
 
@@ -81,8 +81,8 @@ theorem permutationTrace_conj {C : Type u} [Category.{v} C] [MonoidalCategory C]
 /-- It is enough to establish the moved-strand deletion identity for the
 first adjacent swap: all other positions follow by conjugating the remaining
 strands. -/
-theorem movedTrace_of_adjacent (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (X : C.Obj)
+theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
+    {p : Dimensions.PivotalStructure (C := C.Obj)} {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
     (hadj : ∀ n (σ : Equiv.Perm (Fin (n + 1))),
       permutationScalarTrace C p ρ (n + 2) (Equiv.Perm.decomposeFin.symm (1, σ)) =
@@ -106,9 +106,8 @@ theorem movedTrace_of_adjacent (C : BraidedFusionCategory.{v,u})
       simp only [map_mul, map_inv, ← mul_assoc]
       simp [T, mul_assoc]
     rw [hd, permutationTrace_conj p (ρ (n + 2)) T _, hadj]
-    have hconj := permutationTrace_conj p (ρ (n + 1)) τ⁻¹ σ
-    simp only [inv_inv] at hconj
-    rw [hconj]
+    simpa only [inv_inv] using
+      congrArg (unitScalar C) (permutationTrace_conj p (ρ (n + 1)) τ⁻¹ σ)
 
 end PropertyF.Ground.CentreCalculus
 
@@ -116,7 +115,7 @@ namespace PropertyF.Ground.CentreCalculus
 open CategoryTheory CategoryTheory.MonoidalCategory
 universe v u
 
-variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable {C : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := C.Obj)}
   (hdim : Modular.HasFPSimpleDimensions C p)
 
 include hdim in
@@ -128,7 +127,7 @@ theorem integral_of_parity_adjacent_trace {X : C.Obj} (hX : SelfTransparent X) (
         (Equiv.Perm.decomposeFin.symm (1, σ)) =
       permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 1) σ) :
     ∃ m : ℕ, fpDimension C X = m :=
-  integral_of_parity_moved_trace C p hdim hX odd
-    (movedTrace_of_adjacent C p X (parityPermutationAction C hX odd) hadj)
+  integral_of_parity_moved_trace hdim hX odd
+    (movedTrace_of_adjacent (parityPermutationAction C hX odd) hadj)
 
 end PropertyF.Ground.CentreCalculus

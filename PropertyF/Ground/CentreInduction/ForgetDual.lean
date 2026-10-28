@@ -11,23 +11,27 @@ namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵" => CategoryTheory.Center C.Obj
 
+/-- A pivotal structure has the Frobenius–Perron dimensions on simple objects. -/
+abbrev PivotalHasFPDimensions (p : Dimensions.PivotalStructure (C := C.Obj)) : Prop :=
+  ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ)
+
 /-- Agreement with FP dimension on simples extends to all objects. -/
 theorem pivotalDimension_eq_fp (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hsimple : PivotalHasFPDimensions C p)
     (X : C.Obj) : Dimensions.pivotalDimension C p X = (fpDimension C X : ℂ) := by
   rw [Dimensions.pivotalDimension_decomposition]
   simp only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast, hsimple]
 
 /-- The induction of the tensor unit has base pivotal dimension FPdim(C). -/
 theorem induced_unit_dimension (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ)) :
+    (hsimple : PivotalHasFPDimensions C p) :
     Dimensions.pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
   rw [pivotalDimension_eq_fp C p hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The displayed trace compatibility makes the induced unit trace nonzero. -/
 theorem induced_center_trace_ne_zero_of_compatible (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hsimple : PivotalHasFPDimensions C p)
     [RigidCategory (𝒵)]
     (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
@@ -51,7 +55,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A compatible centre pivotal structure constructs centre fusion when
 base pivotal dimensions equal FP dimensions. -/
 theorem center_fusion_of_compatible_pivotal (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hsimple : PivotalHasFPDimensions C p)
     [RigidCategory (𝒵)]
     (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
