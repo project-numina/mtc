@@ -23,13 +23,11 @@ theorem simple_presentation_equiv {n : ℕ} (S : Fin n → C.Obj)
     exact exists_simple_iso C (S i)
   refine ⟨Equiv.ofBijective f ⟨?_, ?_⟩, hf⟩
   · intro i j hij
-    obtain ⟨ei⟩ := hf i
-    obtain ⟨ej⟩ := hf j
-    exact hInjective i j ⟨ei ≪≫ eqToIso (congrArg (simples C) hij) ≪≫ ej.symm⟩
+    exact hInjective i j <| (hf i).elim fun ei ↦
+      (hf j).map fun ej ↦ ei ≪≫ eqToIso (congrArg (simples C) hij) ≪≫ ej.symm
   · intro j
-    obtain ⟨i, ⟨e⟩⟩ := hCover j
-    obtain ⟨ei⟩ := hf i
-    exact ⟨i, simples_injective C ⟨ei.symm ≪≫ e⟩⟩
+    obtain ⟨i, e⟩ := hCover j
+    exact ⟨i, simples_injective C ((hf i).elim fun ei ↦ e.map fun e ↦ ei.symm ≪≫ e)⟩
 
 
 end PropertyF.Ground

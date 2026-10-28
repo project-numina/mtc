@@ -177,15 +177,9 @@ theorem fourier_eq_zero_of_fusion_eigenvector
     · exact heigen
   have hχ : χ a ≠ (fpSimple D a : ℂ) := fun h ↦ hne <| by
     simpa [χ, hdim] using (div_eq_iff (Modular.simpleDimension_ne_zero D p y)).mp h
-  have hT : T = 0 := (mul_eq_mul_right_iff.mp ht).resolve_left hχ
-  have hs : (∑ i, Modular.categoricalS D p y i * f i) = Modular.simpleDimension D p y * T := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro i _
-    rw [Modular.categoricalS_symmetric D p y i]
-    dsimp [χ]
-    field_simp [Modular.simpleDimension_ne_zero D p y]
-  rw [hs, hT, mul_zero]
+  apply (div_eq_zero_iff.mp ?_).resolve_right (Modular.simpleDimension_ne_zero D p y)
+  simpa only [T, χ, div_mul_eq_mul_div, ← Finset.sum_div,
+    Modular.categoricalS_symmetric D p y] using (mul_eq_mul_right_iff.mp ht).resolve_left hχ
 
 /-- A set of simple labels is closed under fusion constituents. -/
 abbrev IsFusionClosed (D : Ground.BraidedFusionCategory.{v,u}) (A : Finset (Fin (rank D))) : Prop :=
