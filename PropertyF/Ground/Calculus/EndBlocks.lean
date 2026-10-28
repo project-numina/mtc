@@ -18,7 +18,7 @@ variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
 open scoped Classical in
 /-- Orthogonal direct-sum endomorphisms decompose as matrix blocks over the
 endomorphism algebras of the constituents. -/
-def orthogonalEndBlocks {ι α : Type} [Fintype ι] [Fintype α]
+def orthogonalEndBlocks {ι α : Type} [Fintype α]
     (S : ι → C) (f : α → ι) (hS : HomOrthogonal S) :
     End (⨁ fun a => S (f a)) ≃ₐ[ℂ]
       ∀ i : ι, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) (End (S i)) := by

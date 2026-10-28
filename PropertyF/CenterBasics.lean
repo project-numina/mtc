@@ -19,6 +19,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def CentralizesNegative (Y : CategoryTheory.Center C) : Prop :=
   ∀ X : C, (Y.2.β X).hom ≫ (β_ Y.1 X).inv = 𝟙 _
 
+/-- A central object with the positive canonical half-braiding. -/
 def IsPositive (Y : CategoryTheory.Center C) : Prop := ∀ X : C, Y.2.β X = β_ Y.1 X
 
 /-- An object is transparent precisely when its double braiding with every

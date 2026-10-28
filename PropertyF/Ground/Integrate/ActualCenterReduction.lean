@@ -243,6 +243,7 @@ theorem target_of_modular_center
       (globalFPDimension C) b (lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C))
       hb hglobal σ hτ hfinite
 
+
 end PropertyF.Ground
 end
 end

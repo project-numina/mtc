@@ -15,7 +15,7 @@ variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center
 
 /-- Transported pivotal components respect the braiding between centre objects. -/
 private theorem transported_pivotal_braiding {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] [RigidCategory (CategoryTheory.Center D)]
+    [RightRigidCategory D] [RigidCategory (CategoryTheory.Center D)]
     (p : Dimensions.PivotalStructure (C := D)) (Z B : CategoryTheory.Center D) :
     let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
       (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
