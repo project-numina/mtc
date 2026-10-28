@@ -54,8 +54,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the inverse tensor defect with the natural root gives the product
 of the two simple root dimensions. -/
-theorem rootTrace_inverseDefect
-    (i j : Fin (rank C)) :
+theorem rootTrace_inverseDefect (i j : Fin (rank C)) :
     unitScalar C (rootTrace C (rootTensorDefect C (simples C i) (simples C j)).inv) =
       rootDimension C i * rootDimension C j := by
   simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, rootTrace,
@@ -248,8 +247,7 @@ theorem simpleHomPairingEquiv_natural {S X Y : D} [Simple S] (g : Y ⟶ S) (a : 
     simpleHomPairingEquiv S X (a ≫ g) =
       Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairingEquiv S Y g) :=
   letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
-  by
-    ext f
+  LinearMap.ext fun f ↦ by
     simp [simpleHomPairingEquiv, simpleHomPairing, Module.Dual.transpose_apply,
       Linear.rightComp_apply, Category.assoc]
 

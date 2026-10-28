@@ -32,16 +32,14 @@ theorem rightDualTensorIso_unit_left :
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
   let r : Iᘁ ≅ I := rightDualUnitIso
-  have he := rightDualIso_inv_evaluation
-    (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
-    (inferInstance : ExactPairing I I)
-  change r.inv ▷ I ≫ ε_ I (Iᘁ) = ε_ I I at he
   apply evaluation_ext (X := I ⊗ X)
   simp only [comp_whiskerRight_assoc]
   rw [rightDualTensorIso_evaluation I X, rightAdjointMate_comp_evaluation,
     tensorPairing_evaluation_whiskerLeft (p := (inferInstance : ExactPairing I I))
       (q := @HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
-      (r := HasRightDual.exact) r.inv he,
+      (r := HasRightDual.exact) r.inv (rightDualIso_inv_evaluation
+        (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
+        (inferInstance : ExactPairing I I)),
     @ExactPairing.tensor_evaluation C _ _ I X I (Xᘁ)
       (inferInstance : ExactPairing I I) HasRightDual.exact]
   rw [show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
@@ -55,10 +53,6 @@ theorem rightDualTensorIso_unit_right :
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
   let r : Iᘁ ≅ I := rightDualUnitIso
-  have he := rightDualIso_inv_evaluation
-    (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
-    (inferInstance : ExactPairing I I)
-  change r.inv ▷ I ≫ ε_ I (Iᘁ) = ε_ I I at he
   apply evaluation_ext (X := X ⊗ I)
   simp only [comp_whiskerRight_assoc]
   rw [rightDualTensorIso_evaluation X I, rightAdjointMate_comp_evaluation]
@@ -68,7 +62,9 @@ theorem rightDualTensorIso_unit_right :
         (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I)))
   rw [comp_whiskerRight_assoc,
     tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := (inferInstance : ExactPairing I I))
-      (r := @HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I)) r.inv he,
+      (r := @HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I)) r.inv
+      (rightDualIso_inv_evaluation (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
+        (inferInstance : ExactPairing I I)),
     @ExactPairing.tensor_evaluation C _ _ X I (Xᘁ) I
       HasRightDual.exact (inferInstance : ExactPairing I I)]
   rw [show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =

@@ -56,8 +56,7 @@ theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStr
     hsimple] using pivotalDimension_decomposition C p (X := X)
 
 /-- Pivotal dimensions multiply under tensor products. -/
-theorem pivotalDimension_tensor
-    (X Y : C.Obj) :
+theorem pivotalDimension_tensor (X Y : C.Obj) :
     pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
   simpa [pivotalDimension, Ground.unitScalar_eq_equiv] using
     pivotalTrace_tensor p (Ground.unitScalarEquiv C) (𝟙 X) (𝟙 Y)
@@ -86,9 +85,8 @@ its Frobenius–Perron dimension. -/
 theorem galois_pivotalDimension_norm_le_fpSimple
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i :=
-  galois_character_norm_le_fpSimple C
-    (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
-    (by simpa only [pivotalDimension_unitIndex] using (one_ne_zero : (1 : ℂ) ≠ 0))
+  galois_character_norm_le_fpSimple C (i₀ := unitIndex C)
+    ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
     (pivotalDimension_character C p) σ i
 
 end PropertyF.Ground.Dimensions

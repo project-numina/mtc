@@ -154,10 +154,9 @@ theorem norm_saturation_of_pseudoUnitary {d : Fin (rank C) → ℂ}
   have hg : (∑ i, ‖d i‖ ^ 2) = globalFPDimension C := by
     apply Complex.ofReal_injective
     simpa only [PseudoUnitary, globalDimension, hnorm, ← Complex.ofReal_sum] using hpu
-  intro i
   simpa only [abs_of_nonneg (norm_nonneg _)] using
     (sum_sq_eq_sum_sq_iff (fun i ↦ by
-      simpa only [abs_of_nonneg (norm_nonneg _)] using hbound i)).1 hg i
+      simpa only [abs_of_nonneg (norm_nonneg _)] using hbound i)).1 hg
 
 /-- If some simple has real dimension one, the global sum is at least one. -/
 theorem global_sum_squares_one_le {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]

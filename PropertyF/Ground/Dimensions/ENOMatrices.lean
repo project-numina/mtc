@@ -98,8 +98,7 @@ theorem enoTraceMatrix_norm_le_fusionCoeff {i j k : Fin (rank C)}
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) := by
   obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C h
-  change ‖LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap‖ ≤ _
-  rw [hn, Complex.norm_intCast, ← Int.cast_abs]
+  simp only [enoTraceMatrix, hn, Complex.norm_intCast, ← Int.cast_abs]
   exact_mod_cast hb
 
 /-- Once the categorical multiplicity defects are involutive and their trace
@@ -145,7 +144,7 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
   have him : (x k).im = 0 := Complex.abs_re_eq_norm.mp <| by
     rw [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))]
     exact le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)
-  apply Complex.ext <;> simp [hre, him]
+  exact Complex.ext hre him
 
 /-- Saturation of a weighted complex eigenvector forces each entry to have
   the phase of the product of its eigenvector values. -/

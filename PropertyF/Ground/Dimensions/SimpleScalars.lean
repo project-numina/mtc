@@ -224,11 +224,8 @@ theorem simpleScalarNatural_app_simple
   let e := simpleDecomposition C X
   let V := simplePiecesObject C X
   let s : X ⟶ X := biproduct.ι V a ≫ e.inv
-  have hst : s ≫ e.hom ≫ biproduct.π V a = 𝟙 X := by
-    simp [s, Category.assoc, V, a, X, simplePiecesObject]
   let : Simple X := simples_simple C i
-  let : IsIso s := isIso_of_hom_simple (fun hz ↦
-    id_nonzero X (by simpa [hz] using hst.symm))
+  let : IsIso s := isIso_of_hom_simple (mono_ne_zero_of_id_ne_zero s (id_nonzero X))
   apply (cancel_epi s).1
   simp [simpleScalarNatural, s, simpleScalarComponent, e, V, a, X, Category.assoc]
 

@@ -109,7 +109,7 @@ theorem galois_character_norm_le_fpSimple
     (hchar : IsFusionMultiplicative C χ)
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     ‖σ (χ i)‖ ≤ fpSimple C i :=
-  character_norm_le_fpSimple C (χ := fun j ↦ σ (χ j)) (i₀ := i₀)
+  character_norm_le_fpSimple C (i₀ := i₀)
     ((map_ne_zero σ).2 hχ) (fun j k ↦ by simpa using congrArg σ (hchar j k)) i
 
 end PropertyF.Ground.Dimensions

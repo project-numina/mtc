@@ -44,8 +44,7 @@ theorem one_le_fpDimension {X : D.Obj}
 
 /-- Hom multiplicities of a tensor product are the convolution of the
 multiplicities of its factors with the fusion coefficients. -/
-theorem tensor_multiplicity_expanded (X Y : D.Obj)
-    (k : Fin (rank D)) :
+theorem tensor_multiplicity_expanded (X Y : D.Obj) (k : Fin (rank D)) :
     simpleMultiplicity D k (X ⊗ Y) =
       ∑ i, ∑ j, simpleMultiplicity D i X *
         simpleMultiplicity D j Y * fusionCoeff D i j k := by
