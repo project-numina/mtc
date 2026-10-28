@@ -26,10 +26,10 @@ theorem braid_squares_equal_of_saturation (B : PropertyF.Blocks)
     a ^ 2 = b ^ 2 := by
   have hunit : B.IsUnitary ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) := by
     intro r
-    have h := (Matrix.unitaryGroup (Fin (B.size r)) ℂ).mul_mem
-      ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).mul_mem (ha r) (ha r))
-      ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).mul_mem (hb r) (hb r))
-    simpa [pow_two] using h
+    simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Pi.mul_apply, Pi.pow_apply] using
+      (Matrix.unitaryGroup (Fin (B.size r)) ℂ).mul_mem
+        ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (ha r) 2)
+        ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (hb r) 2)
   have hmass : B.mass w ≤ |d| * f ^ 2 := by
     have h := hbound (B.signElement w) (B.signElement_unitary w)
     rw [B.trace_signElement] at h

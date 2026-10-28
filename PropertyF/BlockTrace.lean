@@ -35,9 +35,8 @@ lemma entry_normSq_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : �
 
 lemma entry_norm_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : ι) :
     ‖U i j‖ ≤ 1 := by
-  have h := entry_normSq_le_one hU i j
-  rw [Complex.normSq_eq_norm_sq] at h
-  nlinarith [norm_nonneg (U i j)]
+  simpa only [Complex.normSq_eq_norm_sq, sq_le_one_iff₀ (norm_nonneg _)] using
+    entry_normSq_le_one hU i j
 
 /-- The ordinary matrix trace estimate used twice in Section 3. -/
 theorem norm_trace_le_card {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) :
@@ -97,10 +96,9 @@ theorem scalar_of_norm_trace_eq_card [DecidableEq ι] {U : Matrix ι ι ℂ} (hU
       rw [div_mul_cancel₀ _ (by exact_mod_cast hn : (Fintype.card ι : ℂ) ≠ 0)]
     rw [Matrix.trace_smul, smul_eq_mul, hc, ← mul_assoc, hzmul, one_mul]
     simp
-  have hVeq := eq_one_of_re_trace_eq_card hV htr
   refine ⟨z, ?_⟩
-  have h := congrArg (fun V : Matrix ι ι ℂ => z • V) hVeq
-  simpa [smul_smul, mul_comm z (conj z), hzmul] using h
+  simpa [smul_smul, mul_comm z (conj z), hzmul] using
+    congrArg (fun V : Matrix ι ι ℂ => z • V) (eq_one_of_re_trace_eq_card hV htr)
 
 end PropertyF
 

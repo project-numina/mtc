@@ -162,16 +162,9 @@ theorem cyclic_matrix_trace {ι : Type*} [Fintype ι] [DecidableEq ι]
           Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1
         simp only [Matrix.single_mul_single_same, one_mul, hz, map_zero] at hoff
         rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
-    calc
-      T X = ∑ i, ∑ j, T (Matrix.single i j (X i j)) := by
-        conv_lhs => rw [Matrix.matrix_eq_sum_single X]
-        simp only [map_sum]
-      _ = ∑ i, ∑ j, w * (Matrix.single i j (X i j)).trace := by simp only [hs]
-      _ = w * X.trace := by
-        simp_rw [← Finset.mul_sum]
-        congr 1
-        conv_rhs => rw [Matrix.matrix_eq_sum_single X]
-        simp only [Matrix.trace_sum]
+    induction X using Matrix.induction_on with
+    | h_add X Y hX hY => simp [hX, hY, Matrix.trace_add, mul_add]
+    | h_std_basis i j a => exact hs i j a
   · have hempty : IsEmpty ι := not_nonempty_iff.mp hn
     let _ := hempty
     refine ⟨0, fun X => ?_⟩
@@ -249,11 +242,9 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
       change (φ e).trace = ∑ k, w k * (e k).trace at ht
       rw [Finset.sum_eq_single i] at ht
       · simpa [e] using ht
-      · intro j hj hji
-        have hz : e j = 0 := Pi.single_eq_of_ne hji _
-        simp [hz]
-      · intro hi
-        exact (hi (Finset.mem_univ i)).elim
+      · intro j _ hji
+        simp [e, Pi.single_eq_of_ne hji]
+      · simp
     exact ht'.symm.trans hk
   choose mult hm using hnat
   refine ⟨mult, fun x => ?_⟩
@@ -301,13 +292,11 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
       simpa [he] using h.symm
     have ht : (φ e i).trace = 0 := by
       rw [hmult]
-      apply Finset.sum_eq_zero
-      intro r _
-      by_cases h : r = j
-      · subst r
-        simp [Nat.eq_zero_of_le_zero (hn i)]
-      · have hz : e r = 0 := Pi.single_eq_of_ne h _
-        simp [hz]
+      rw [Finset.sum_eq_single j]
+      · simp [Nat.eq_zero_of_le_zero (hn i)]
+      · intro r _ h
+        simp [e, Pi.single_eq_of_ne h]
+      · simp
     exact idempotent_matrix_eq_zero_of_trace_eq_zero hidem ht
   have hezero : e = 0 := hinj (by simpa using hzero)
   have hentry := congrArg (fun x : PropertyF.Blocks.Algebra ⟨_, d⟩ => x j k k) hezero
@@ -383,15 +372,9 @@ theorem pivotalTrace_braid_multiplicities
     rw [b.symm_apply_apply] at h
     exact h
   rw [pivotalTrace_groundEndBlocks C p scalar _ m e]
-  simp_rw [hi]
-  simp_rw [Finset.mul_sum]
+  simp_rw [hi, Finset.mul_sum]
   rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro j _
-  rw [Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro i _
-  ring
+  simp only [Finset.sum_mul, mul_assoc, mul_left_comm]
 
 /-- Finite categorical braid images admit unitary blocks and natural-number
 multiplicities with the actual pivotal trace formula and retention. -/

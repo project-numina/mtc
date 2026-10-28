@@ -212,15 +212,9 @@ theorem groupInImage_span (ρ : G →* A) :
   classical
   apply Submodule.map_injective_of_injective (groupImageAlgebra ρ).toSubmodule.subtype_injective
   rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype]
-  calc
-    _ = Submodule.span ℂ (Set.range ρ) := by
-      congr 1
-      rw [← Set.range_comp']
-      change Set.range (fun g => (groupInImage ρ g : A)) = Set.range ρ
-      congr 1
-      funext g
-      exact groupInImage_val ρ g
-    _ = (groupImageAlgebra ρ).toSubmodule := (groupImageAlgebra_toSubmodule ρ).symm
+  rw [← Set.range_comp']
+  change Submodule.span ℂ (Set.range (fun g => (groupInImage ρ g : A))) = _
+  simpa only [groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
 
 /-- A Wedderburn equivalence can be chosen so that every group element is
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
