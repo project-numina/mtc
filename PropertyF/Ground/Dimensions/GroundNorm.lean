@@ -132,12 +132,8 @@ theorem sum_sq_eq_sum_sq_iff {k : Type*} [CommRing k] [LinearOrder k] [IsStrictO
     (∑ i, (d i) ^ 2) = ∑ i, (f i) ^ 2 ↔ ∀ i, |d i| = f i := by
   rw [Finset.sum_eq_sum_iff_of_le
     (fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2)]
-  constructor
-  · intro heq i
-    apply (sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i))).mp
-    simpa only [sq_abs] using heq i (Finset.mem_univ i)
-  · intro heq i _
-    rw [← heq i, sq_abs]
+  simpa only [Finset.mem_univ, true_implies, sq_abs] using
+    (forall_congr' fun i ↦ sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i)))
 
 variable {C} in
 /-- A pseudo-unitary global dimension saturates every FP bound when the

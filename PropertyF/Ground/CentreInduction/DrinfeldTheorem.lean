@@ -146,7 +146,7 @@ theorem positive_spherical_of_pseudoUnitary {C : BraidedFusionCategory.{v,u}}
     ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
   let h (i j : Fin (rank C)) : fourthDualTensorLaw (simples C i) (simples C j) :=
     fourthDualIso_tensor (simples C i) (simples C j)
-  positive_spherical_of_simple_fourth_and_reciprocity C h
-    (trace_reciprocity_of_fourth_dual C h) hpu
+  positive_spherical_of_simple_fourth_and_reciprocity h
+    (trace_reciprocity_of_fourth_dual h) hpu
 
 end PropertyF.Ground.CentreInduction

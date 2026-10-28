@@ -44,9 +44,8 @@ theorem pivotalDimension_decomposition :
       pivotalDimension C p (simples C i) := by
   classical
   obtain ⟨e⟩ := exists_canonical_decomposition C X
-  rw [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
-    rightDimension_biproduct]
-  simp [Fintype.sum_sigma, pivotalDimension, Ground.unitScalar_eq_equiv]
+  simp [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
+    rightDimension_biproduct, Fintype.sum_sigma]
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
 theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
@@ -62,8 +61,7 @@ theorem pivotalDimension_tensor (X Y : C.Obj) :
     pivotalTrace_tensor p (Ground.unitScalarEquiv C) (𝟙 X) (𝟙 Y)
 
 /-- Pivotal simple dimensions form a fusion character. -/
-theorem pivotalDimension_character
-    :
+theorem pivotalDimension_character :
     IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) :=
   fun i j ↦ (pivotalDimension_tensor C p (simples C i) (simples C j)).symm.trans
     (pivotalDimension_decomposition C p (X := _))

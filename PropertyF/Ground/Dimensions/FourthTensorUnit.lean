@@ -53,7 +53,6 @@ theorem rootTensorDefect_unit_left :
       (rootDimension C (unitIndex C) • 𝟙 _) ≫ (rootTensorIso C (𝟙_ C.Obj) X).hom
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp]
   rw [rootTensorIso_unit_left]
-  simp only [Linear.comp_smul, smul_smul, rootDimension_unit_sq, one_smul]
-  exact (Category.id_comp _).symm
+  erw [Linear.comp_smul, smul_smul, rootDimension_unit_sq, one_smul, Category.id_comp]
 
 end PropertyF.Ground.Dimensions

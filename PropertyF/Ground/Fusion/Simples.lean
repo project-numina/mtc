@@ -30,7 +30,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [BraidedCategory C] [Abelian C] [Linear ℂ C] [RigidCategory C]
   [MonoidalPreadditive C] [MonoidalLinear ℂ C] [IsFusionCategory C]
 
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.unit_simple
 
 /-- A nonzero morphism from a simple object into a semisimple object splits. -/
 theorem split_from_simple {S X : C} [Simple S] (f : S ⟶ X) (hf : f ≠ 0) :
@@ -53,7 +53,6 @@ theorem split_from_simple {S X : C} [Simple S] (f : S ⟶ X) (hf : f ≠ 0) :
 object. This is the split-unit input for identity-strand embeddings. -/
 theorem unit_retract_leftDual_tensor (X : C) [Simple X] :
     ∃ (s : 𝟙_ C ⟶ (ᘁX) ⊗ X) (r : (ᘁX) ⊗ X ⟶ 𝟙_ C), s ≫ r = 𝟙 (𝟙_ C) :=
-  letI : Simple (𝟙_ C) := IsFusionCategory.unit_simple (C := C)
   ⟨_, split_from_simple (ExactPairing.coevaluation (ᘁX) X)
     (exactPairing_ne_zero (ᘁX) (id_nonzero X)).1⟩
 
@@ -69,6 +68,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
+  IsFusionCategory.unit_simple
 variable (C : BraidedFusionCategory.{v,u})
 
 theorem simples_simple (i : Fin (rank C)) : Simple (simples C i) :=
@@ -119,7 +119,6 @@ theorem exists_simple_iso (X : C.Obj) [Simple X] :
 
 /-- The tensor unit occurs among the representatives. -/
 theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ C.Obj) :=
-  letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   (exists_simple_iso C (𝟙_ C.Obj)).imp fun _ h => h.map Iso.symm
 
 /-- Hom spaces between the chosen simples have the expected multiplicities. -/

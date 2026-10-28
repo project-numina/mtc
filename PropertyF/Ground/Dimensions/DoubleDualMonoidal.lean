@@ -46,8 +46,8 @@ theorem rightDualTensorIso_associativity (X Y Z : C)
     tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := HasRightDual.exact)
       (r := ExactPairing.tensor) (rightDualTensorIso Y Z).hom (rightDualTensorIso_evaluation Y Z),
     ← whisker_exchange_assoc, rightDualTensorIso_evaluation X (Y ⊗ Z),
-    ← whisker_exchange_assoc, rightAdjointMate_comp_evaluation]
-  rw [← Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]
+    ← whisker_exchange_assoc, rightAdjointMate_comp_evaluation,
+    ← Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]
 
 end PropertyF.Ground.Dimensions
 
@@ -128,15 +128,9 @@ def doubleDualCoreMonoidal (C : Type u) [Category.{v} C] [MonoidalCategory C] [R
     intro X Y X' f
     simpa only [doubleDualFunctor, rightAdjointMate_id, id_tensorHom] using
       (doubleDualTensorIso_natural (𝟙 X') f)
-  associativity := by
-    intro X Y Z
-    exact doubleDualTensorIso_associativity X Y Z
-  left_unitality := by
-    intro X
-    exact (doubleDualTensorIso_unit_left X).symm
-  right_unitality := by
-    intro X
-    exact (doubleDualTensorIso_unit_right X).symm
+  associativity := fun X Y Z ↦ doubleDualTensorIso_associativity X Y Z
+  left_unitality := fun X ↦ (doubleDualTensorIso_unit_left X).symm
+  right_unitality := fun X ↦ (doubleDualTensorIso_unit_right X).symm
 
 /-- The canonical monoidal structure on the double-dual functor. -/
 @[instance_reducible] def doubleDualMonoidal (C : Type u) [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C] :

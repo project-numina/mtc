@@ -137,9 +137,8 @@ theorem fpDimension_functor_decomposition (F : C.Obj ⥤ D.Obj) [F.Additive] (X 
       (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) := by
   classical
   obtain ⟨e⟩ := exists_canonical_decomposition C X
-  rw [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
+  simp [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
     Fintype.sum_sigma]
-  simp
 
 /-- An additive faithful strong monoidal functor preserves FP dimension. -/
 theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal]

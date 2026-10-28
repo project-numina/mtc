@@ -198,8 +198,7 @@ theorem fourthDualIso_rightDual (X : C) [HasRightDual X] [HasRightDual (Xᘁ)]
   rw [hi]
   change (drinfeldIso (Xᘁ)).hom ≫ (((((drinfeldIso X).invᘁ)ᘁ)ᘁ)) =
     ((drinfeldIso X).invᘁ) ≫ ((((drinfeldIso (Xᘁ)).homᘁ)ᘁ))
-  rw [← drinfeldIso_doubleDual (Xᘁ)]
-  exact (drinfeldIso_natural ((drinfeldIso X).invᘁ)).symm
+  simpa only [drinfeldIso_doubleDual] using (drinfeldIso_natural ((drinfeldIso X).invᘁ)).symm
 
 
 end PropertyF.Ground.Dimensions
