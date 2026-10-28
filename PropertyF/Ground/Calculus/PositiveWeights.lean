@@ -36,10 +36,10 @@ theorem exists_galois_braid_trace_weights
   let w : Fin r → ℝ := fun j => ∑ i, (mult i j : ℝ) * qdim i
   refine ⟨r, size, b, w, hsize, hunit, ?_, ?_⟩
   · intro j
-    have hn := transported_weight_ne_zero (fun i => mult i j) original σ hpos (hret j)
-    simp only [htransport, ← Complex.ofReal_natCast, ← Complex.ofReal_mul,
-      ← Complex.ofReal_sum] at hn
-    exact_mod_cast hn
+    exact_mod_cast (show ((∑ i, (mult i j : ℝ) * qdim i : ℝ) : ℂ) ≠ 0 from by
+      simpa only [htransport, ← Complex.ofReal_natCast, ← Complex.ofReal_mul,
+        ← Complex.ofReal_sum] using
+          transported_weight_ne_zero (fun i => mult i j) original σ hpos (hret j))
   · intro z
     simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
     rw [actualBraidTrace, htrace]

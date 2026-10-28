@@ -80,15 +80,13 @@ theorem braid_trace_unitary_bound_ground {X : C.Obj} {n : ℕ}
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
-  have hbound (i) : ‖Ground.unitScalarEquiv C
-      (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ Ground.fpSimple C i := by
-    simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension, unitScalar_eq_equiv] using
-      Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
   rw [← fpDimension_tensorPower]
   change ‖Ground.unitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
       Ground.fpDimension C (tensorPower X (n + 2))
-  exact pivotalTrace_braid_unitary_bound C p (Ground.unitScalarEquiv C) e hd b hbound a ha
+  exact pivotalTrace_braid_unitary_bound C p (Ground.unitScalarEquiv C) e hd b (fun i => by
+    simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension, unitScalar_eq_equiv] using
+      Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i) a ha
 
 end PropertyF.Ground.Calculus
 

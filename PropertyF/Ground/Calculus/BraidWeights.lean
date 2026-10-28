@@ -139,10 +139,9 @@ private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
   · subst j
     have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
     simp only [Matrix.single_mul_single_same, mul_one, one_mul] at hdiag
-    have hscalar : Matrix.single i₀ i₀ a = a • Matrix.single i₀ i₀ (1 : ℂ) := by
-      simp [Matrix.smul_single]
-    rw [hdiag, hscalar, map_smul, Matrix.trace_single_eq_same]
-    simp [mul_comm]
+    rw [hdiag, Matrix.trace_single_eq_same, mul_comm]
+    change T (Matrix.single i₀ i₀ a) = a • T (Matrix.single i₀ i₀ 1)
+    rw [← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]
   · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
     simp only [Matrix.single_mul_single_same, one_mul,
       Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
