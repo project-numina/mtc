@@ -1574,6 +1574,7 @@ PropertyF.Ground.Integrate.CenterBundle	PropertyF.Ground.Integrate.halfBraidingI
 PropertyF.Ground.Centre.Rigid	PropertyF.Ground.CentreRigid.coevaluation_sliding	theorem	1	305	2	1	0	3	0	3201076352
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instBraidedCategoryObj	definition	1	28	2	0	0	0	0	1291634194
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.cokernelHalfIso._proof_3	theorem	1	125	2	3	0	4	0	4248710744
+PropertyF.Ground.Fusion.Agreement	_private.PropertyF.Ground.Fusion.Agreement.0.PropertyF.Ground.exists_positive_common_eigenvector.match_1_1	definition	1	233	5	0	0	0	2	2085059528
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.doubleDualFunctor._proof_2	theorem	1	131	3	3	0	3	0	2991908232
 PropertyF.Ground.Calculus.BraidWeights	_private.PropertyF.Ground.Calculus.BraidWeights.0.PropertyF.Ground.Calculus.transported_weight_ne_zero._simp_1_1	theorem	0	20	1	0	0	0	0	1617091727
 PropertyF.Ground.Fusion.UnitPower	PropertyF.Ground.simple_generatedBy_rightDual	theorem	1	119	1	1	0	10	4	4100210778
@@ -1636,6 +1637,7 @@ PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.tensorBipr
 PropertyF.Ground.Fusion.ObjectDimension	PropertyF.Ground.fpDimension_iso	theorem	1	29	1	3	0	0	0	2962760104
 PropertyF.Ground.CentreCalculus.TwistSign	PropertyF.Ground.CentreCalculus.drinfeld_coevaluation	theorem	1	135	1	1	0	4	0	528093513
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.imageAlgebraMap	definition	1	330	5	4	0	6	1	1613841304
+PropertyF.Ground.CentreInduction.SecondTriangle	PropertyF.Ground.CentreInduction.simpleTensorUnitIso.eq_1	theorem	0	76	2	0	0	0	0	1512406893
 PropertyF.Ground.Centre.Calculus.TypeA	PropertyF.Ground.CentreCalculus.typeA_finite_card	theorem	1	38	1	0	0	0	0	2474577055
 PropertyF.Ground.Modular.SSquare	_private.PropertyF.Ground.Modular.SSquare.0.PropertyF.Ground.Modular._aux_PropertyF_Ground_Modular_SSquare___macroRules__private_PropertyF_Ground_Modular_SSquare_0_PropertyF_Ground_Modular_termDₚ_1_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.cokernelHalfIso_naturality	theorem	1	198	2	5	0	5	1	1615539940
