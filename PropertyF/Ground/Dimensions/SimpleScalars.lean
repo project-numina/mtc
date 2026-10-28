@@ -144,18 +144,17 @@ theorem simple_scalar_biproduct_natural
   intro j
   simp only [Category.assoc, biproduct.ι_map_assoc, biproduct.map_π,
     Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
+  let g := biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
+    biproduct.π (fun j => simples C (b j)) j
+  change c (a i) • g = c (b j) • g
   by_cases h : a i = b j
   · rw [show c (a i) = c (b j) from congrArg c h]
-  · have hz : biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
-        biproduct.π (fun j => simples C (b j)) j = 0 := by
+  · have hz : g = 0 := by
       by_contra hne
       let : Simple (simples C (a i)) := simples_simple C _
       let : Simple (simples C (b j)) := simples_simple C _
-      let : IsIso (biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
-        biproduct.π (fun j => simples C (b j)) j) := isIso_of_hom_simple hne
-      exact h (simples_injective C ⟨asIso
-        (biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
-          biproduct.π (fun j => simples C (b j)) j)⟩)
+      let : IsIso g := isIso_of_hom_simple hne
+      exact h (simples_injective C ⟨asIso g⟩)
     rw [hz, smul_zero, smul_zero]
 
 /-- Index type for the canonical simple summands of an object. -/
