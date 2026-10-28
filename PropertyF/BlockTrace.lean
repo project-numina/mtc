@@ -34,9 +34,8 @@ theorem norm_trace_le_card :
 /-- Saturation of the real trace estimate forces the identity matrix. -/
 theorem eq_one_of_re_trace_eq_card (ht : U.trace.re = Fintype.card ι) : U = 1 :=
   sub_eq_zero.mp <| Matrix.trace_conjTranspose_mul_self_eq_zero_iff.mp <| by
-    apply Complex.ext <;> simp [Matrix.conjTranspose_sub, sub_mul, mul_sub,
-      show Uᴴ * U = 1 from Matrix.mem_unitaryGroup_iff'.mp hU, Matrix.trace_sub,
-      Matrix.trace_conjTranspose, ht]
+    simp [Complex.ext_iff, Matrix.conjTranspose_sub, sub_mul, mul_sub, Matrix.trace_sub,
+      Matrix.trace_conjTranspose, ht, show Uᴴ * U = 1 from Matrix.mem_unitaryGroup_iff'.mp hU]
 
 /-- Equality in the complex trace bound forces a scalar matrix. This includes
 zero-dimensional blocks and does not assume an eigenvalue decomposition. -/
@@ -152,10 +151,9 @@ theorem block_trace_norm_eq_of_saturation (r : Fin B.count) (hw : w r ≠ 0) : �
 /-- Equality in the weighted bound implies centrality when no weight vanishes.
 This is the equality argument in Lemma 3.2, proved using actual complex matrices. -/
 theorem central_of_saturation (hw : ∀ r, w r ≠ 0) : ∀ T : B.Algebra, g * T = T * g :=
-  fun T => funext fun r =>
-    let ⟨z, hz⟩ := scalar_of_norm_trace_eq_card (hg r)
-      (by simpa using B.block_trace_norm_eq_of_saturation w hg hsat r (hw r))
-    by simp [hz]
+  fun T => funext fun r => (scalar_of_norm_trace_eq_card (hg r)
+    (by simpa using B.block_trace_norm_eq_of_saturation w hg hsat r (hw r))).elim fun _ hz =>
+      by simp [hz]
 
 end Saturation
 

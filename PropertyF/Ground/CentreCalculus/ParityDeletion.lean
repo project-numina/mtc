@@ -88,13 +88,6 @@ theorem scalarPermTrace_parity {D : Type u} [Category.{v} D] [MonoidalCategory D
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : HasFPSimpleDimensions C p) {X : C.Obj} (hX : SelfTransparent X) {n : ℕ}
 
-/-- The sign-twisted permutation trace is the sign times the original trace. -/
-theorem parityPermTrace_true (σ : Perm (Fin n)) :
-    tr C p (parityPermAction C.Obj hX true) n σ =
-      (sgn ℂ n σ : ℂ) * tr C p (tensorPermAction X hX) n σ := by
-  simpa [permScalarTrace] using
-    scalarPermTrace_parity p (unitScalarEquiv C).toLinearMap hX σ
-
 section
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
   [RightRigidCategory D] [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]

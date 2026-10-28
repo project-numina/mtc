@@ -35,11 +35,10 @@ theorem center_finite_simple_sum_of_unit_retract {X : C.Obj} {U : 𝒵}
   let (W : 𝒵) : IsArtinianObject W := center_artinian C W
   let : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective C X)
   let (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
-  let (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) := by
+  let (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) :=
     let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
-    exact Centre.finiteDimensional_hom ℂ A B
-  apply finiteSimpleSum_of_injective (k := ℂ) ?_ Z
-  intro W hW
+    Centre.finiteDimensional_hom ℂ A B
+  refine finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW => ?_) Z
   obtain ⟨P, hP⟩ := exists_simple_subobject hW
   exact ⟨P, P.arrow, hP, inferInstance⟩
 

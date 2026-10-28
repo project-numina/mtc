@@ -131,43 +131,55 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility (n : ℕ)
   apply End.ext
   simp
 
-variable (hX : SelfTransparent X) (htotal : IsLeftTraceCompatible p X)
+section
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [RightRigidCategory D] [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+variable (p : PivotalStructure (C := D)) (scalar : End (𝟙_ D) →ₗ[ℂ] ℂ)
+  {X : D} (hX : SelfTransparent X) (htotal : IsLeftTraceCompatible p X) (t : ℂ)
+  (hfirst : ∀ n, leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = t • 1)
 
-include htotal in
+include htotal hfirst in
 set_option backward.isDefEq.respectTransparency false in
-/-- Left trace compatibility implies the local deletion law, with the actual
-pivotal twist scalar as its factor. -/
+/-- Closing the first crossing gives the adjacent-strand trace deletion law. -/
 theorem tensorPermTrace_adjacent {n : ℕ} (σ : Perm (Fin (n + 1))) :
-    tr C p (tensorPermAction X hX) (n + 2) (decomposeFin.symm (1, σ)) =
-      θ C p X * tr C p (tensorPermAction X hX) (n + 1) σ := by
-  dsimp only [permScalarTrace, scalarPermTrace]
+    scalarPermTrace p scalar (tensorPermAction X hX) (n + 2) (decomposeFin.symm (1, σ)) =
+      t * scalarPermTrace p scalar (tensorPermAction X hX) (n + 1) σ := by
+  dsimp only [scalarPermTrace]
   let f := (tensorPermAction X hX (n + 1)) σ
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   rw [tensorPermAction_adjacent hX σ, ← htotal _ _]
-  change unitScalarEquiv C (p.rightTrace (leftPartialTrace p (b * insertLeftIdentity X f)).asHom) = _
+  change scalar (p.rightTrace (leftPartialTrace p (b * insertLeftIdentity X f)).asHom) = _
   rw [leftPartialTrace_right]
   dsimp only [b]
-  rw [leftPartialTrace_firstGenerator_of_trace_compatibility (C := C) n
-    (htotal X (End.of (β_ X X).hom))]
+  rw [hfirst n]
   simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul, map_smul, smul_eq_mul, f]
 
-include htotal in
-/-- A negative twist is corrected by the sign-twisted permutation action. -/
-theorem negativeParity_adjacentTrace (hneg : θ C p X = -1) :
-    HasAdjacentTrace (tr C p (parityPermAction C.Obj hX true)) := fun n σ ↦ by
-  simp [parityPermTrace_true, sign_decomposeFin, tensorPermTrace_adjacent hX htotal, hneg]
+include htotal hfirst in
+/-- A negative crossing scalar is corrected by the sign-twisted action. -/
+theorem negativeParity_adjacentTrace (hneg : t = -1) :
+    HasAdjacentTrace (scalarPermTrace p scalar (parityPermAction D hX true)) := fun n σ ↦ by
+  simp only [scalarPermTrace_parity, sign_decomposeFin,
+    show (1 : Fin (n + 2)) ≠ 0 from one_ne_zero, ite_false,
+    tensorPermTrace_adjacent p scalar hX htotal t hfirst σ, hneg,
+    neg_mul, mul_neg, one_mul, neg_neg]
+end
+
+variable (hX : SelfTransparent X) (htotal : IsLeftTraceCompatible p X)
 
 include hdim hX htotal in
 /-- The symmetric integrality argument now needs only left iterated-trace
 compatibility and the sign of the actual pivotal twist scalar. -/
 theorem integral_of_leftTrace_and_twist_sign (hsign : θ C p X = 1 ∨ θ C p X = -1) :
     IsFPIntegral C X := by
+  have hfirst (n : ℕ) : leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = θ C p X • 1 :=
+    leftPartialTrace_firstGenerator_of_trace_compatibility (C := C) n
+      (htotal X (End.of (β_ X X).hom))
   rcases hsign with h | h
   · exact integral_of_parity_adjacent_trace hdim hX false fun n σ ↦ by
       simpa [permScalarTrace, scalarPermTrace, parityPermAction, h] using
-        tensorPermTrace_adjacent (C := C) hX htotal σ
+        tensorPermTrace_adjacent p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst σ
   · exact integral_of_parity_adjacent_trace hdim hX true
-      (negativeParity_adjacentTrace hX htotal h)
+      (negativeParity_adjacentTrace p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst h)
 
 end PropertyF.Ground.CentreCalculus
 

@@ -34,7 +34,7 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
     transported_pivotal_natural p b
   rw [hu, hu] at hn
   have hb := congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
-  simp only [Center.comp_f] at hb
+  dsimp only [Center.comp_f] at hb
   change (doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
     (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (doubleDualTensorIso B Z).hom.f at hb
   simp only [Category.assoc] at hn

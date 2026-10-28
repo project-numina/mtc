@@ -175,10 +175,8 @@ theorem cyclic_block_trace {B : Blocks} (T : B.Algebra →ₗ[ℂ] ℂ)
     simpa only [Pi.single_mul] using hT (Pi.single i X) (Pi.single i Y)
   choose w hw using fun i : Fin B.count => cyclic_matrix_trace (Tblock i) (hc i)
   refine ⟨w, fun X => ?_⟩
-  conv_lhs => rw [← LinearMap.sum_single_apply V X]
-  rw [map_sum]
-  change (∑ i, Tblock i (X i)) = _
-  simp only [hw]
+  simp only [← hw, Tblock, LinearMap.comp_apply, LinearMap.single_apply, ← map_sum,
+    LinearMap.sum_single_apply]
 
 end PropertyF.Ground.Calculus
 
@@ -210,14 +208,14 @@ theorem idempotent_matrix_eq_zero_of_trace_eq_zero (ht : A.trace = 0) : A = 0 :=
 
 end IdempotentTrace
 
+open scoped Classical in
 /-- A weighted block trace of an element supported in one block. -/
 theorem sum_trace_single {B : Blocks} (w : Fin B.count → ℂ)
     (i : Fin B.count) (A : Matrix (Fin (B.size i)) (Fin (B.size i)) ℂ) :
     (∑ j, w j * ((Pi.single i A : B.Algebra) j).trace) =
       w i * A.trace := by
-  classical
-  rw [Fintype.sum_eq_single i]
-  all_goals simp_all
+  simpa using Fintype.sum_eq_single i
+    (f := fun j => w j * ((Pi.single i A : B.Algebra) j).trace) (fun j h => by simp_all)
 
 variable {B : Blocks} (hd : ∀ i, 0 < B.size i)
 

@@ -42,12 +42,10 @@ def underlyingFunctor (C : BraidedFusionCategory.{v,u}) : C.Obj ⥤ C.Obj where
   map {X Y} f := CategoryTheory.Limits.biproduct.map
     (fun i : Fin (rank C) => (simples C i ◁ f) ▷ (simples C i)ᘁ)
   map_id X := by
-    apply biproduct.hom_ext'
-    intro i
+    refine biproduct.hom_ext' _ _ fun i => ?_
     simp [underlying]
   map_comp f g := by
-    apply biproduct.hom_ext'
-    intro i
+    refine biproduct.hom_ext' _ _ fun i => ?_
     simp [underlying, Category.assoc, whiskerLeft_comp, comp_whiskerRight]
 
 end PropertyF.Ground.CentreInduction
@@ -164,9 +162,9 @@ simple summand. -/
 theorem crossingCandidate_on_summand (X T : C.Obj) (i : Fin (rank C)) :
     let V := inductionSummand C X
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
-      ∑ j, ∑ a : crossingIndex C T i j, crossingSummand C X T i j a ≫ (T ◁ biproduct.ι V j) := by
-  simp only [crossingCandidate, biproduct_ι_comp_rightDistributor_hom_assoc,
-    biproduct.ι_desc]
+      ∑ j, ∑ a : crossingIndex C T i j, crossingSummand C X T i j a ≫ (T ◁ biproduct.ι V j) :=
+  (biproduct_ι_comp_rightDistributor_hom_assoc (inductionSummand C X) T i _).trans
+    (biproduct.ι_desc _ i)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing is natural in the induction argument. -/
@@ -176,8 +174,7 @@ theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj)
   let VX := inductionSummand C X
   let VY := inductionSummand C Y
   apply (cancel_epi (rightDistributor VX T).inv).1
-  apply biproduct.hom_ext'
-  intro i
+  refine biproduct.hom_ext' _ _ fun i => ?_
   simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
   dsimp [VX, VY, underlying] at *
   simp only [← Category.assoc, ← comp_whiskerRight]
