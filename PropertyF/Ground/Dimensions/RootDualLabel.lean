@@ -113,16 +113,16 @@ theorem trace_reciprocity_of_frobenius_defect
       enoFrobeniusEquiv C i k j ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
       rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
         (rootTensorDefect C (simples C (dualIndex C i)) (simples C j)).hom)) :
-    ENOTraceMatrixReciprocity C := by
-  refine trace_reciprocity_of_intertwining fun i j k v ↦ ?_
-  obtain ⟨g, rfl⟩ := (simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)).surjective v
-  have hm : (multiplicityDefect C i k j).toLinearMap =
-      Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom :=
-    LinearMap.ext fun f ↦ multiplicityDefect_apply C f
-  rw [hm]
-  erw [← simpleHomPairingEquiv_natural, enoReciprocityEquiv_pairing,
-    enoReciprocityEquiv_pairing, hcompat]
-  simp [multiplicityDefect_apply]
+    ENOTraceMatrixReciprocity C :=
+  trace_reciprocity_of_intertwining fun i j k v ↦ by
+    obtain ⟨g, rfl⟩ := (simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)).surjective v
+    have hm : (multiplicityDefect C i k j).toLinearMap =
+        Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom :=
+      LinearMap.ext fun f ↦ multiplicityDefect_apply C f
+    rw [hm]
+    erw [← simpleHomPairingEquiv_natural, enoReciprocityEquiv_pairing,
+      enoReciprocityEquiv_pairing, hcompat]
+    simp [multiplicityDefect_apply]
 
 end PropertyF.Ground.Dimensions
 
@@ -142,8 +142,8 @@ theorem rootDualSign_dual (i : Fin (rank C)) :
   let : Simple (simples C i) := simples_simple C i
   have he := (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans
     (target_squaredNorm_rightDual (simples C i))
-  rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
-  rw [Ground.dualIndex_involutive] at he
+  rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul,
+    Ground.dualIndex_involutive] at he
   apply mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero i)
     (rootDimension_ne_zero (dualIndex C i)))
   simpa only [mul_assoc, mul_left_comm, mul_comm] using he

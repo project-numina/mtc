@@ -55,8 +55,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rightTraceWith_partialTraceWith {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
     (f : End (X ⊗ Y)) :
     rightTraceWith j (partialTraceWith k X f).asHom =
-      rightTraceWith ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) f.asHom := by
-  apply End.homEquiv.injective
+      rightTraceWith ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) f.asHom := End.homEquiv.injective <| by
   rw [End.homEquiv_apply, End.homEquiv_apply, rightTraceWith_tensor_pairing]
   simp only [rightTraceWith, partialTraceWith, ExactPairing.tensor_coevaluation,
     ExactPairing.tensor_evaluation, tensorHom_def, comp_whiskerRight]

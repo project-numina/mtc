@@ -102,10 +102,8 @@ variable {k : Type*} [Field k] [NeZero (2 : k)]
 
 /-- The positive spectral projection of an involution is idempotent. -/
 theorem involution_half_projection (hT : IsInvolutiveElem T) :
-    IsIdempotentElem ((2 : k)⁻¹ • (1 + T)) := by
-  have hinv (x : V) : T (T x) = x := congrArg (fun f : V →ₗ[k] V ↦ f x) hT
-  change ((2 : k)⁻¹ • (1 + T)) * ((2 : k)⁻¹ • (1 + T)) = _
-  ext x
+    IsIdempotentElem ((2 : k)⁻¹ • (1 + T)) := LinearMap.ext fun x ↦ by
+  have hinv : T (T x) = x := congrArg (fun f : V →ₗ[k] V ↦ f x) hT
   simp only [Module.End.mul_apply, LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply,
     map_smul, map_add, hinv, smul_add, smul_smul]
   match_scalars <;> field_simp <;> ring

@@ -37,12 +37,10 @@ theorem tensorPairing_coevaluation_evaluation [HasRightDual X] [HasRightDual (X�
     let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
     letI : ExactPairing W V := ExactPairing.tensor
     η_ W V ≫ (ε_ X (Xᘁ) ▷ V) ≫ (λ_ V).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) := by
-  dsimp only
-  rw [ExactPairing.tensor_coevaluation]
+  simp only [ExactPairing.tensor_coevaluation]
   calc
     _ = η_ (Xᘁ) ((Xᘁ)ᘁ) ⊗≫
       (((Xᘁ) ◁ η_ X (Xᘁ) ≫ (α_ (Xᘁ) X (Xᘁ)).inv ≫ ε_ X (Xᘁ) ▷ (Xᘁ)) ▷ ((Xᘁ)ᘁ)) ⊗≫ 𝟙 _ := by
-        simp only [comp_whiskerRight]
         monoidal
     _ = _ := by
       rw [ExactPairing.coevaluation_evaluation]
@@ -91,13 +89,11 @@ theorem tensorPairing_evaluation_coevaluation [HasRightDual X] [HasRightDual (X�
     let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
     letI : ExactPairing W V := ExactPairing.tensor
     (ρ_ V).inv ≫ V ◁ η_ X (Xᘁ) ≫ ε_ W V = ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
-  dsimp only
-  rw [ExactPairing.tensor_evaluation]
+  simp only [ExactPairing.tensor_evaluation]
   calc
     _ = 𝟙 (((Xᘁ)ᘁ) ⊗ (Xᘁ)) ⊗≫
       (((Xᘁ)ᘁ) ◁ ((Xᘁ) ◁ η_ X (Xᘁ) ≫ (α_ (Xᘁ) X (Xᘁ)).inv ≫ ε_ X (Xᘁ) ▷ (Xᘁ))) ⊗≫
         ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
-      simp only [whiskerLeft_comp]
       monoidal
     _ = _ := by
       rw [ExactPairing.coevaluation_evaluation]

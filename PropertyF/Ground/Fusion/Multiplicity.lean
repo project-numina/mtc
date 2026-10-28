@@ -130,15 +130,15 @@ integer fusion matrix. -/
 theorem tensor_multiplicity (X Y : D.Obj) (k : Fin (rank D)) :
     simpleMultiplicity D k (X ⊗ Y) =
       ∑ j, simpleMultiplicity D j Y *
-        simpleMultiplicity D k (X ⊗ simples D j) := by
-  obtain ⟨e⟩ := exists_canonical_decomposition D Y
-  dsimp only [simpleMultiplicity]
-  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
-      ((Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X _)).finrank_eq,
-    finrank_hom_biproduct, Fintype.sum_sigma]
-  refine Finset.sum_congr rfl fun j _ ↦ ?_
-  change (∑ _ : Fin (simpleMultiplicity D j Y), simpleMultiplicity D k (X ⊗ simples D j)) = _
-  simp
+        simpleMultiplicity D k (X ⊗ simples D j) :=
+  (exists_canonical_decomposition D Y).elim fun e ↦ by
+    dsimp only [simpleMultiplicity]
+    rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
+        ((Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X _)).finrank_eq,
+      finrank_hom_biproduct, Fintype.sum_sigma]
+    refine Finset.sum_congr rfl fun j _ ↦ ?_
+    change (∑ _ : Fin (simpleMultiplicity D j Y), simpleMultiplicity D k (X ⊗ simples D j)) = _
+    simp
 
 /-- Fusion coefficients are the actual Hom-space dimensions. -/
 def fusionCoeff (i j k : Fin (rank D)) : ℕ :=
@@ -169,14 +169,14 @@ variable {D} in
 tensor products and finite semisimplicity. -/
 theorem fusionCoeff_assoc (i j k l : Fin (rank D)) :
     ∑ r, N j k r * N i r l = ∑ r, N i j r * N r k l := by
-  have h := (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples D l))
-    ((α_ (simples D i) (simples D j) (simples D k)).symm ≪≫
-      β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq
-  change simpleMultiplicity D l (simples D i ⊗ (simples D j ⊗ simples D k)) =
-    simpleMultiplicity D l (simples D k ⊗ (simples D i ⊗ simples D j)) at h
+  have h : simpleMultiplicity D l (simples D i ⊗ (simples D j ⊗ simples D k)) =
+      simpleMultiplicity D l (simples D k ⊗ (simples D i ⊗ simples D j)) :=
+    (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples D l))
+      ((α_ (simples D i) (simples D j) (simples D k)).symm ≪≫
+        β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq
   rw [tensor_multiplicity (simples D i) (simples D j ⊗ simples D k) l,
     tensor_multiplicity (simples D k) (simples D i ⊗ simples D j) l] at h
-  change ∑ r, N j k r * N i r l = ∑ r, N i j r * N k r l at h
-  simpa only [← fusionCoeff_comm D k] using h
+  simpa only [← fusionCoeff_comm D k] using
+    (show ∑ r, N j k r * N i r l = ∑ r, N i j r * N k r l from h)
 
 end PropertyF.Ground
