@@ -145,6 +145,7 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.CentreInduction
 universe v u
+attribute [local instance] Abelian.hasFiniteBiproducts
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
@@ -172,10 +173,10 @@ set_option backward.defeqAttrib.useBackward true in
 the first triangle identity. -/
 theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
     (Z : Center C.Obj) :
-    unitCandidate C Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 := by
-  simpa only [unitCandidate, underlyingCounit, unitSummandRetract,
-    CategoryTheory.Limits.biproduct.lift_π_assoc, unitComponent, unitSummandIso] using
-    unitComponentAt_iso_unit Z (Classical.choice (unitIndex_iso C))
+    unitCandidate C Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 :=
+  (CategoryTheory.Limits.biproduct.lift_π_assoc (unitComponent C Z) (unitIndex C)
+    (unitSummandIso C Z.1).hom).trans
+      (unitComponentAt_iso_unit Z (Classical.choice (unitIndex_iso C)))
 
 end PropertyF.Ground.CentreInduction
 
