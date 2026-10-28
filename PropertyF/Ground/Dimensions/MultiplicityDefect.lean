@@ -64,8 +64,7 @@ theorem natTrans_eq_of_simple_components
     (h : ∀ i, α.app (simples C i) = β.app (simples C i)) : α = β := by
   apply NatTrans.ext
   funext X
-  apply simpleInclusion_hom_ext C
-  intro i t
+  refine simpleInclusion_hom_ext C fun i t ↦ ?_
   change simpleInclusion C X i t ≫ α.app X = simpleInclusion C X i t ≫ β.app X
   simpa only [Functor.id_map] using
     (α.naturality (simpleInclusion C X i t)).trans (by
@@ -83,8 +82,7 @@ isomorphism on every object. Monoidal compatibility remains a separate issue. -/
 theorem fourthDualRootNaturalSquare_eq :
     fourthDualRootNaturalSquare C = fourthDualNaturalIso C.Obj := by
   apply Iso.ext
-  apply natTrans_eq_of_simple_components C
-  intro i
+  refine natTrans_eq_of_simple_components C fun i ↦ ?_
   change ((fourthDualRootNaturalIso C).app (simples C i)).hom ≫
     ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
       (fourthDualIso (simples C i)).hom

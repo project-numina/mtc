@@ -185,12 +185,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Every pivotal structure preserves evaluation. -/
 theorem pivotal_evaluation :
     ((p.iso (Xᘁ)).hom ⊗ₘ (p.iso X).hom) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) = ε_ X (Xᘁ) := by
-  let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual I
-  let W := (Xᘁ) ⊗ X
-  let : HasRightDual W := RightRigidCategory.rightDual W
+  let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+  let : HasRightDual ((Xᘁ) ⊗ X) := RightRigidCategory.rightDual _
   have h := p.naturality (ε_ X (Xᘁ))
-  change ε_ X (Xᘁ) ≫ (p.iso I).hom = (p.iso W).hom ≫ (((ε_ X (Xᘁ))ᘁ)ᘁ) at h
   rw [p.tensor, p.unit] at h
   rw [← doubleDual_evaluation X, ← Category.assoc, ← Category.assoc, ← h]
   simp
@@ -222,8 +219,8 @@ theorem pivotal_spherical_iff_simple_dimensions_real
       unitScalar C (p.leftTrace (𝟙 (simples C i))) =
         star (pivotalDimension C p (simples C i)) := by
     rw [leftTrace_id, leftQuantumTrace_eq_rightDual, ← pivotal_dual, ← rightTrace_id]
-    change pivotalDimension C p ((simples C i)ᘁ) = _
-    rw [pivotalDimension_iso C p (rightDualLabelIso C i), pivotalDimension_dual_eq_conj]
+    exact (pivotalDimension_iso C p (rightDualLabelIso C i)).trans
+      (pivotalDimension_dual_eq_conj C p i)
   rw [isSpherical_iff_simple_dimensions]
   refine forall_congr' fun i ↦ ?_
   rw [← hdual i]
