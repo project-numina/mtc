@@ -154,6 +154,25 @@ theorem matrix_quadratic_form {ι : Type*} [Fintype ι] [DecidableEq ι]
     Matrix.toLpLin_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc,
     mul_comm, mul_left_comm]
 
+/-- A nonnegative eigenvector of a positive matrix is positive in every coordinate
+if it has a positive coordinate. -/
+theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
+    (A : Matrix ι ι ℝ) (hpos : ∀ i j, 0 < A i j) (v : ι → ℝ)
+    (hnonneg : ∀ i, 0 ≤ v i) (hpositive : ∃ i, 0 < v i)
+    (d : ℝ) (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
+  classical
+  obtain ⟨j, hj⟩ := hpositive
+  intro i
+  have hsum : 0 < ∑ k, A i k * v k :=
+    Finset.sum_pos' (fun k _ => mul_nonneg (hpos i k).le (hnonneg k))
+      ⟨j, Finset.mem_univ _, mul_pos (hpos i j) hj⟩
+  have hi := congrFun heigen i
+  simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hi
+  have : 0 < d * v i := by linarith
+  by_contra hn
+  have : v i = 0 := le_antisymm (le_of_not_gt hn) (hnonneg i)
+  simp [this] at *
+
 /-- A strictly positive symmetric real matrix has a strictly positive
 eigenvector. -/
 theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype ι]
@@ -204,18 +223,8 @@ theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype
   let d := T.rayleighQuotient y
   have heigen' : A *ᵥ (fun i => y i) = d • (fun i => y i) := by
     simpa [T, d, Matrix.toLpLin_apply] using (congrArg ofLp heigen)
-  obtain ⟨j, hj⟩ := hyexists
-  have hypos (i : ι) : 0 < y i := by
-    have hsum : 0 < ∑ k, A i k * y k :=
-      Finset.sum_pos' (fun k _ => mul_nonneg (hpos i k).le (hynonneg k))
-        ⟨j, Finset.mem_univ _, mul_pos (hpos i j) hj⟩
-    have hi := congrFun heigen' i
-    simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hi
-    have : 0 < d * y i := by linarith
-    by_contra hn
-    have : y i = 0 := le_antisymm (le_of_not_gt hn) (hynonneg i)
-    simp [this] at *
-  exact ⟨d, fun i => y i, hypos, heigen'⟩
+  exact ⟨d, fun i => y i,
+    positive_matrix_eigenvector_pos A hpos (fun i => y i) hynonneg hyexists d heigen', heigen'⟩
 
 end PropertyF.Ground
 

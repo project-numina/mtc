@@ -242,7 +242,7 @@ run_cmd do
       ``PropertyF.Ground.ScalarTwist.labels,
       ``PropertyF.Ground.fpDimension_functor,
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
-      ``PropertyF.Ground.rigidity_of_twisted_overlap,
+      ``PropertyF.Ground.galois_rigidity_of_propertyF,
       ``PropertyF.Ground.target_of_modular_center,
       ``PropertyF.Ground.target_of_center_centralizers,
       ``PropertyF.Ground.target_of_center_product_retracts,

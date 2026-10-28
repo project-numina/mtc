@@ -35,7 +35,7 @@ theorem finrank_frobenius_reciprocity [RigidCategory C] (X Y Z : C) :
 /-- An object and its left dual have endomorphism spaces of the same
 dimension, obtained using both rigidity adjunctions. -/
 theorem finrank_end_leftDual [RigidCategory C] (X : C) :
-    Module.finrank ℂ ((ᘁX) ⟶ (ᘁX)) = Module.finrank ℂ (X ⟶ X) := by
+    Module.finrank ℂ ((ᘁX) ⟶ (ᘁX)) = Module.finrank ℂ (X ⟶ X) :=
   calc
     _ = Module.finrank ℂ ((𝟙_ C) ⊗ (ᘁX) ⟶ (ᘁX)) :=
       (CategoryTheory.Linear.homCongr ℂ (λ_ (ᘁX)).symm (Iso.refl _)).finrank_eq
@@ -118,7 +118,7 @@ theorem dualIndex_iso (D : BraidedFusionCategory.{v,u}) (j : Fin (rank D)) :
 theorem fusionCoeff_reciprocity (D : BraidedFusionCategory.{v,u})
     (i j k : Fin (rank D)) :
     fusionCoeff D i j k =
-      Module.finrank ℂ (simples D i ⟶ simples D k ⊗ (ᘁ(simples D j))) := by
+      Module.finrank ℂ (simples D i ⟶ simples D k ⊗ (ᘁ(simples D j))) :=
   calc
     _ = Module.finrank ℂ (simples D k ⊗ (ᘁ(simples D j)) ⟶ simples D i) :=
       finrank_frobenius_reciprocity (simples D i) (simples D j) (simples D k)

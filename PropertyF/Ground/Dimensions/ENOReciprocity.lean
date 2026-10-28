@@ -201,16 +201,13 @@ theorem squaredNorm_eq_rootDualSign_mul
   let e : Xᘁ ≅ ᘁX := leftDualIso
     (BraidedCategory.exactPairing_swap X (Xᘁ)) HasLeftDual.exact
   obtain ⟨u⟩ := Ground.dualIndex_iso C i
-  have hId (Z : C.Obj) : rootTrace C (𝟙 Z) = rightQuantumTrace ((fourthDualRootNaturalIso C).app Z) := by
-    apply End.homEquiv.injective
-    simp [rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def]
   have hq : Ground.unitScalar C (rightQuantumTrace k) = rootDimension C (Ground.dualIndex C i) := by
     change Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (Xᘁ))) = _
-    rw [← hId, rootTrace_id_iso C (e ≪≫ u)]
+    rw [← rootTrace_id C, rootTrace_id_iso C (e ≪≫ u)]
     rfl
   have hx : Ground.unitScalar C (rightQuantumTrace j) = rootDimension C i := by
     change Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app X)) = _
-    rw [← hId]
+    rw [← rootTrace_id C]
     rfl
   have ht : rightQuantumTrace k = rootDualSign C i • rightQuantumTrace l := by
     apply End.homEquiv.injective

@@ -125,10 +125,8 @@ theorem rootTensorDefect_unitLabel_left (X : C.Obj) :
   obtain ⟨e⟩ := Ground.unitIndex_iso C
   let E := e ⊗ᵢ Iso.refl X
   apply (cancel_mono E.hom).1
-  have h := rootTensorDefect_natural C e.hom (𝟙 X)
-  change E.hom ≫ (rootTensorDefect C (𝟙_ C.Obj) X).hom =
-    (rootTensorDefect C (simples C (unitIndex C)) X).hom ≫ E.hom at h
-  rw [← h, rootTensorDefect_unit_left]
+  dsimp [E, tensorIso_hom]
+  rw [← rootTensorDefect_natural C e.hom (𝟙 X), rootTensorDefect_unit_left]
   simp only [Linear.comp_smul, Linear.smul_comp, Category.comp_id, Category.id_comp]
 
 /-- The right-unit defect formula holds for the chosen simple representative. -/
@@ -138,10 +136,8 @@ theorem rootTensorDefect_unitLabel_right (X : C.Obj) :
   obtain ⟨e⟩ := Ground.unitIndex_iso C
   let E := Iso.refl X ⊗ᵢ e
   apply (cancel_mono E.hom).1
-  have h := rootTensorDefect_natural C (𝟙 X) e.hom
-  change E.hom ≫ (rootTensorDefect C X (𝟙_ C.Obj)).hom =
-    (rootTensorDefect C X (simples C (unitIndex C))).hom ≫ E.hom at h
-  rw [← h, rootTensorDefect_unit_right]
+  dsimp [E, tensorIso_hom]
+  rw [← rootTensorDefect_natural C (𝟙 X) e.hom, rootTensorDefect_unit_right]
   simp only [Linear.comp_smul, Linear.smul_comp, Category.comp_id, Category.id_comp]
 
 set_option backward.isDefEq.respectTransparency false in

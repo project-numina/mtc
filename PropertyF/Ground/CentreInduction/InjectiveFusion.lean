@@ -10,11 +10,11 @@ namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- Induction sends every base object to an injective centre object. -/
-theorem induction_injective (X : C.Obj) : Injective ((induction C).obj X) := by
-  let : (induction C).PreservesInjectiveObjects :=
+theorem induction_injective (X : C.Obj) : Injective ((induction C).obj X) :=
+  letI : (induction C).PreservesInjectiveObjects :=
     Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms (actualAdjunction C)
-  let : Injective X := object_injective C X
-  infer_instance
+  letI : Injective X := object_injective C X
+  inferInstance
 
 
 

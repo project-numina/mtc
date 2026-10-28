@@ -28,7 +28,7 @@ def rightTraceLinear (p : PivotalStructure (C := C)) (X : C) :
 theorem rightTrace_decomposition {ι : Type*} [Fintype ι] (p : PivotalStructure (C := C))
     (X : C) (Y : ι → C) (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
-    p.rightTrace f = ∑ j, p.rightTrace (i j ≫ f ≫ q j) := by
+    p.rightTrace f = ∑ j, p.rightTrace (i j ≫ f ≫ q j) :=
   calc
     _ = p.rightTrace ((∑ j, q j ≫ i j) ≫ f) := by rw [h, Category.id_comp]
     _ = ∑ j, p.rightTrace ((q j ≫ i j) ≫ f) := by
