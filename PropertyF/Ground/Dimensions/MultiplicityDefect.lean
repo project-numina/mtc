@@ -59,9 +59,9 @@ theorem fourthDualRootNaturalIso_app_simple
 whose finite biproducts contain every object. -/
 theorem natTrans_eq_of_biproduct_components
     {D : Type u} [Category.{v} D] [HasZeroMorphisms D] [HasFiniteBiproducts D]
-    {ι : Type} [Fintype ι] {T : ι → D}
+    {ι : Type} [Fintype ι] {T : ι → D} {F : D ⥤ D} {α β : 𝟭 D ⟶ F}
     (hdecomp : ∀ X, HasBiproductDecomposition T X)
-    {F : D ⥤ D} {α β : 𝟭 D ⟶ F} (h : ∀ i, α.app (T i) = β.app (T i)) : α = β :=
+    (h : ∀ i, α.app (T i) = β.app (T i)) : α = β :=
   NatTrans.ext <| funext fun X ↦ (hdecomp X).elim fun m ⟨e⟩ ↦
     biproduct_decomposition_hom_ext e fun ⟨i, t⟩ ↦ by
       let s := biproduct.ι (fun p : Σ i, Fin (m i) ↦ T p.1) ⟨i, t⟩ ≫ e.inv
