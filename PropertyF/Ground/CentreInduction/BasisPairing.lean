@@ -146,10 +146,10 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
       ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum]
     rw [crossing_completeness]
     simp [W]
-  have hc := simpleBasis_contraction_refinement C i q r h
-    (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
   simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
-    crossingInclusion, crossingProjection, mixedCrossingBilinear, crossingBlock, Category.assoc] using hc
+    crossingInclusion, crossingProjection, mixedCrossingBilinear, crossingBlock, Category.assoc] using
+    simpleBasis_contraction_refinement C i q r h
+      (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
 
 end PropertyF.Ground.CentreInduction
 

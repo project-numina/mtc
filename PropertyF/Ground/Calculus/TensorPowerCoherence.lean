@@ -95,10 +95,8 @@ theorem insertRightPowerIso_eq_reverseConcat (n k : ℕ) :
     rw [← eqToHom_trans (congrArg (tensorPower X) h₁) (congrArg (tensorPower X) h₂),
       ← Category.assoc, reverseConcat_succ_right]
     simp only [insertRightPowerIso, Iso.trans_hom, Iso.symm_hom,
-      tensorIso_hom, Iso.refl_hom, tensorHom_id, id_tensorHom, Category.assoc]
-    rw [ih, comp_whiskerRight]
-    simp only [Category.assoc]
-    rw [appendIso_eqToHom_natural X h₀]
+      tensorIso_hom, Iso.refl_hom, tensorHom_id, id_tensorHom, Category.assoc,
+      ih, comp_whiskerRight, appendIso_eqToHom_natural X h₀]
 
 omit [BraidedCategory C] in
 set_option backward.isDefEq.respectTransparency false in
@@ -171,13 +169,10 @@ theorem freshOverlapIso_eq_overlapPowerIso (t k : ℕ) :
     HasOverlapCoherence X t k := by
   apply Iso.ext
   simp only [freshOverlapIso, overlapPowerIso, Iso.trans_hom, Iso.symm_hom,
-    tensorIso_hom, Iso.refl_hom, tensorHom_id]
-  rw [insertLeftPowerIso_eq_reverseConcat, insertRightPowerIso_eq_reverseConcat]
-  simp only [Category.assoc]
-  simp only [eqToIso.hom]
-  rw [reverseConcat_eqToHom_left_assoc X (overlap_prefix_count t k)]
-  rw [reverseConcat_overlap X (overlapIndex t k + 1) (t + 1)]
-  simp only [Category.assoc, eqToHom_trans]
+    tensorIso_hom, Iso.refl_hom, tensorHom_id, insertLeftPowerIso_eq_reverseConcat,
+    insertRightPowerIso_eq_reverseConcat, Category.assoc, eqToIso.hom,
+    reverseConcat_eqToHom_left_assoc X (overlap_prefix_count t k),
+    reverseConcat_overlap X (overlapIndex t k + 1) (t + 1), eqToHom_trans]
 
 end
 

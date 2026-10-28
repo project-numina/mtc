@@ -55,13 +55,16 @@ theorem tensor_end_pow [MonoidalCategory D]
     apply End.ext
     simp only [pow_succ, End.mul_asHom, ih, tensorHom_comp_tensorHom]
 
+/-- A natural automorphism of the identity satisfies the twist balancing law. -/
+abbrev IsBalancedTwist [MonoidalCategory D] [BraidedCategory D] (θ : 𝟭 D ≅ 𝟭 D) : Prop :=
+  ∀ X Y, doubleBraiding X Y ≫ (θ.hom.app X ⊗ₘ θ.hom.app Y) = θ.hom.app (X ⊗ Y)
+
 /-- A balanced natural automorphism with finite-order simple components has
 finite-order double braidings on every pair of objects. The balancing identity
 is stated explicitly and is not asserted here for the pivotal twist. -/
 theorem mixed_monodromy_finite_of_balanced_finite_twist (θ : 𝟭 C.Obj ≅ 𝟭 C.Obj)
     (hfinite : ∀ i, IsOfFinOrder (End.of (θ.hom.app (Ground.simples C i))))
-    (hbalance : ∀ X Y, doubleBraiding X Y ≫
-      (θ.hom.app X ⊗ₘ θ.hom.app Y) = θ.hom.app (X ⊗ Y))
+    (hbalance : IsBalancedTwist θ)
     (X Y : C.Obj) : IsOfFinOrder (End.of (doubleBraiding X Y)) := by
   obtain ⟨n, hn, hp⟩ := natural_end_finite_order_of_simples θ.hom hfinite
   let t : End (X ⊗ Y) := End.of (θ.hom.app X ⊗ₘ θ.hom.app Y)

@@ -112,10 +112,9 @@ theorem transported_weight_ne_zero {ι : Type*} [Fintype ι]
     exact Finset.sum_pos' (fun i _ => mul_nonneg (Nat.cast_nonneg _) (hpos i).le)
       ⟨i, Finset.mem_univ _, mul_pos (by exact_mod_cast hi) (hpos i)⟩
   intro hz
-  have hzero : (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0 := by
-    apply σ.injective
-    simp [map_sum, map_mul, hz]
-  exact (ne_of_gt hsum) (by exact_mod_cast hzero)
+  apply (ne_of_gt hsum)
+  exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz) :
+    (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0)
 
 end PropertyF.Ground.Calculus
 
@@ -142,10 +141,10 @@ private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
     rw [hdiag, Matrix.trace_single_eq_same, mul_comm]
     change T (Matrix.single i₀ i₀ a) = a • T (Matrix.single i₀ i₀ 1)
     rw [← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]
-  · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
-    simp only [Matrix.single_mul_single_same, one_mul,
-      Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
-    rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
+  · rw [Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
+    simpa only [Matrix.single_mul_single_same, one_mul,
+      Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] using
+      hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
 
 include hT in
 /-- A cyclic linear functional on a complex matrix algebra is a scalar
@@ -156,7 +155,7 @@ theorem cyclic_matrix_trace : ∃ w : ℂ, ∀ X, T X = w * X.trace := by
   · let i₀ : ι := Classical.choice hn
     refine ⟨T (Matrix.single i₀ i₀ 1), fun X => ?_⟩
     induction X using Matrix.induction_on with
-    | h_add X Y hX hY => simp [hX, hY, Matrix.trace_add, mul_add]
+    | h_add X Y hX hY => rw [map_add, hX, hY, Matrix.trace_add, mul_add]
     | h_std_basis i j a => exact cyclic_matrix_single T hT i₀ i j a
   · let _ : IsEmpty ι := not_nonempty_iff.mp hn
     exact ⟨0, fun X => by simp [Subsingleton.elim X 0]⟩
@@ -207,9 +206,9 @@ theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
       w i * A.trace := by
   classical
   rw [Fintype.sum_eq_single i]
-  · simp
+  · rw [Pi.single_eq_same]
   · intro j h
-    simp [Pi.single_eq_of_ne h]
+    rw [Pi.single_eq_of_ne h, Matrix.trace_zero, mul_zero]
 
 /-- For any representation of a finite product of nonzero complex matrix
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the
@@ -334,9 +333,8 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     (braidToEndBlocks_injective C e b)
   have hdim : ∀ i, m i = ∑ j, mult i j * d j := by
     intro i
-    have h := hmult i 1
-    simp only [map_one, Pi.one_apply, Matrix.trace_one, Fintype.card_fin] at h
-    exact_mod_cast h
+    exact_mod_cast (show (m i : ℂ) = ∑ j, (mult i j : ℂ) * d j from by
+      simpa only [map_one, Pi.one_apply, Matrix.trace_one, Fintype.card_fin] using hmult i 1)
   refine ⟨mult, hretained, hdim, fun a => ?_⟩
   have hi : ∀ i, (groundEndBlockEquiv C e (a : End (tensorPower X (n + 2))) i).trace =
       ∑ j, (mult i j : ℂ) * (b a j).trace := by

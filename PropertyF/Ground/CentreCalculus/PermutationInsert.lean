@@ -8,7 +8,8 @@ public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 # Permutation actions and traces
 
 Self-transparent tensor powers carry permutation actions. We relate their
-signed traces to one-strand deletion and insertion identities.
+signed traces to one-strand deletion and insertion identities. The notation
+`tr C p ρ n σ` is the scalar pivotal trace of the permutation action.
 -/
 @[expose] public noncomputable section
 open PropertyF.Ground.Modular (HasFPSimpleDimensions)
@@ -108,15 +109,17 @@ abbrev permutationScalarTrace (C : BraidedFusionCategory.{v,u})
     (n : ℕ) (σ : Equiv.Perm (Fin n)) : ℂ :=
   unitScalar C (p.rightTrace ((ρ n) σ).asHom)
 
+local notation "tr" => permutationScalarTrace
+
 /-- Integrality follows from one-strand trace deletion for any compatible
 (possibly sign-twisted) family of actual actions. -/
 theorem integral_of_trace_deletion {C : BraidedFusionCategory.{v,u}}
     {p : PivotalStructure (C := C.Obj)}
     (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
-    (h : IsTraceDeletion (permutationScalarTrace C p ρ) (fpDimension C X : ℂ)) :
+    (h : IsTraceDeletion (tr C p ρ) (fpDimension C X : ℂ)) :
     ∃ m : ℕ, fpDimension C X = m := by
-  let F := permutationScalarTrace C p ρ
+  let F := tr C p ρ
   have hz : F 0 1 = 1 := by
     change unitScalar C (p.rightTrace (((ρ 0) 1).asHom)) = 1
     rw [map_one]
@@ -130,6 +133,7 @@ end PropertyF.Ground.CentreCalculus
 
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
+local notation "tr" => permutationScalarTrace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -202,8 +206,8 @@ theorem tensorPermutationTrace_fixHead {D : BraidedFusionCategory.{v,u}}
     {p : PivotalStructure (C := D.Obj)}
     (hdim : HasFPSimpleDimensions D p)
     {X : D.Obj} (hX : SelfTransparent X) {n : ℕ} (σ : Equiv.Perm (Fin n)) :
-      permutationScalarTrace D p (tensorPermutationAction X hX) (n + 1) (fixHead n σ) =
-      (fpDimension D X : ℂ) * permutationScalarTrace D p (tensorPermutationAction X hX) n σ := by
+      tr D p (tensorPermutationAction X hX) (n + 1) (fixHead n σ) =
+      (fpDimension D X : ℂ) * tr D p (tensorPermutationAction X hX) n σ := by
   simp only [permutationScalarTrace]
   rw [tensorPermutationAction_fixHead]
   change unitScalar D (p.rightTrace (X ◁ ((tensorPermutationAction X hX n) σ).asHom)) = _

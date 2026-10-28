@@ -6,8 +6,10 @@ public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 
 The inverse-braiding trace identifies the inverse pivotal twist. On a
 self-transparent simple object the twist is a sign, giving integral dimension.
+We write `θ C p X` for the pivotal twist scalar.
 -/
 @[expose] public noncomputable section
+local notation "θ" => PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar
 open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
@@ -81,7 +83,7 @@ include hp in
 theorem inverse_twist_eq_scalar_of_selfTransparent {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
     (doubleDualIso C X).hom ≫ (p.iso X).inv =
-      pivotalBraidedTwistScalar C p X • 𝟙 X := by
+      θ C p X • 𝟙 X := by
   have h := leftPartialTrace_inverse_braiding (C := C) (p := p) X
   rw [← ((β_ X X).inv_ext' hX), leftPartialTrace_braiding_of_trace_compatibility (C := C)
     (spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom))] at h
@@ -91,8 +93,8 @@ include hp in
 /-- In a spherical category, the twist of a self-transparent simple is a sign. -/
 theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
-    pivotalBraidedTwistScalar C p X = 1 ∨
-      pivotalBraidedTwistScalar C p X = -1 := by
+    θ C p X = 1 ∨
+      θ C p X = -1 := by
   have ht : ((doubleDualIso C X).hom ≫ (p.iso X).inv) ≫
       (Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X := by
     simp [Dimensions.pivotalBraidedTwist, Category.assoc]

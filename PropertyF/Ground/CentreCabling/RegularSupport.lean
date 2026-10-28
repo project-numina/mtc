@@ -34,6 +34,12 @@ abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
 variable {D : Ground.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
 
+/-- The S-transform of a vector vanishes outside the given set. -/
+abbrev FourierSupportedOn (D : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := D.Obj)) (f : Fin (rank D) → ℂ)
+    (core : Set (Fin (rank D))) : Prop :=
+  ∀ y ∉ core, ∑ i, S D p y i * f i = 0
+
 /-- Numerical S-centrality is symmetric. -/
 theorem sCentralizes_symm {i j : Fin (rank D)}
     (h : sCentralizes D p i j) : sCentralizes D p j i :=
@@ -101,7 +107,7 @@ nonzero dual coefficient in the original vector. -/
 theorem nonzero_dual_coefficient_of_sCentralizer
     {f : Fin (rank D) → ℂ} {core : Set (Fin (rank D))}
     (hunit : f (unitIndex D) ≠ 0)
-    (hsupport : ∀ y, y ∉ core → ∑ i, S D p y i * f i = 0)
+    (hsupport : FourierSupportedOn D p f core)
     {x : Fin (rank D)} (hx : ∀ y ∈ core, sCentralizes D p x y) :
     f (dualIndex D x) ≠ 0 := by
   classical
@@ -128,9 +134,9 @@ theorem doubleCentralizer_of_fourier_support
     (hdim : HasFPSimpleDimensions D p)
     {f : Fin (rank D) → ℂ} {core generated : Set (Fin (rank D))}
     (hunit : f (unitIndex D) ≠ 0)
-    (hgenerated : ∀ y, f y ≠ 0 → y ∈ generated)
-    (hsupport : ∀ y, y ∉ core → ∑ i, S D p y i * f i = 0) :
-    sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated x <|
+    (hgenerated : Function.support f ⊆ generated)
+    (hsupport : FourierSupportedOn D p f core) :
+    sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated <|
   (dualIndex_involutive D x) ▸
     nonzero_dual_coefficient_of_sCentralizer hp hdet (realSimpleDimensions_of_fp hdim)
       hunit hsupport (x := dualIndex D x)
@@ -252,8 +258,9 @@ theorem regular_vector_fusion_eigenvector {A : Finset (Fin (rank D))}
 theorem regularVector_fourier_support
     (hdim : HasFPSimpleDimensions D p)
     {A : Finset (Fin (rank D))} {core : Set (Fin (rank D))}
-    (hA : IsDualFusionClosed D A) (hcore : sCentralizer D p (↑A : Set _) ⊆ core) {y : Fin (rank D)} (hy : y ∉ core) :
-    ∑ i, S D p y i * regularVector D A i = 0 := by
+    (hA : IsDualFusionClosed D A) (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
+    FourierSupportedOn D p (regularVector D A) core := by
+  intro y hy
   obtain ⟨a, ha, hne⟩ : ∃ a ∈ A, ¬sCentralizes D p a y := by
     simpa only [sCentralizer, Set.mem_ofPred_eq, Finset.mem_coe, not_forall, exists_prop] using
       (show y ∉ sCentralizer D p (↑A : Set _) from fun h ↦ hy (hcore h))
@@ -273,6 +280,6 @@ theorem doubleCentralizer_of_fusion_closed
     sCentralizer D p core ⊆ (↑A : Set _) :=
   doubleCentralizer_of_fourier_support hp hdet hdim (f := regularVector D A)
     (regularVector_ne_zero_iff.mpr hunit) (fun _ hi ↦ regularVector_ne_zero_iff.mp hi)
-    (fun _ hy ↦ regularVector_fourier_support hdim hA hcore hy)
+    (regularVector_fourier_support hdim hA hcore)
 
 end PropertyF.Ground.CentreCabling
