@@ -22,9 +22,8 @@ theorem commute_moveWord {s : ℕ → G} {m : ℕ}
   | zero => simp [moveWord]
   | succ j ih =>
     intro hji him
-    have hcomm := (hc j i (by omega) him).symm
     simp only [moveWord, ← mul_assoc]
-    rw [hcomm, mul_assoc, ih (by omega) him, ← mul_assoc]
+    rw [(hc j i (by omega) him).symm, mul_assoc, ih (by omega) him, ← mul_assoc]
 
 /-- Moving a crossing past the strand-moving word shifts its index by one.
 This is the main rewriting step for the type-A coset normal form. -/
@@ -59,19 +58,15 @@ theorem moveWord_coset_step {s : ℕ → G} {m : ℕ}
     (hs : ∀ i, i < m → s i * s i = 1)
     (hb : ∀ i, i + 1 < m → s i * s (i + 1) * s i = s (i + 1) * s i * s (i + 1))
     (hc : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i)
-    (i j : ℕ) (hi : i < m) (hj : j ≤ m) :
+    {i j : ℕ} (hi : i < m) (hj : j ≤ m) :
     ∃ k ≤ m, ∃ h ∈ Subgroup.closure (Set.range (fun t : Fin (m - 1) => s (t.val + 1))),
       s i * moveWord s j = moveWord s k * h := by
   let H := Subgroup.closure (Set.range (fun t : Fin (m - 1) => s (t.val + 1)))
-  have memH (a : ℕ) (ha : 0 < a) (ham : a < m) : s a ∈ H := by
-    apply Subgroup.subset_closure
-    refine ⟨⟨a - 1, by omega⟩, ?_⟩
-    change s (a - 1 + 1) = s a
-    congr 1
-    omega
+  have memH (a : ℕ) (ha : 0 < a) (ham : a < m) : s a ∈ H :=
+    Subgroup.subset_closure ⟨⟨a - 1, by omega⟩, congrArg s (Nat.sub_add_cancel (by omega))⟩
   by_cases h₁ : i + 1 < j
-  · refine ⟨j, hj, s (i + 1), memH _ (by omega) (by omega), ?_⟩
-    exact moveWord_exchange hb hc j i h₁ hj
+  · exact ⟨j, hj, s (i + 1), memH _ (by omega) (by omega),
+      moveWord_exchange hb hc j i h₁ hj⟩
   · by_cases h₂ : j = i + 1
     · subst j
       refine ⟨i, by omega, 1, H.one_mem, ?_⟩
@@ -80,9 +75,8 @@ theorem moveWord_coset_step {s : ℕ → G} {m : ℕ}
       · subst j
         refine ⟨i + 1, by omega, 1, H.one_mem, ?_⟩
         simp [moveWord]
-      · have hji : j + 1 ≤ i := by omega
-        refine ⟨j, hj, s i, memH _ (by omega) hi, ?_⟩
-        exact commute_moveWord hc i j hji hi
+      · exact ⟨j, hj, s i, memH _ (by omega) hi,
+          commute_moveWord hc i j (by omega) hi⟩
 
 end PropertyF.Ground.CentreCalculus
 
@@ -95,7 +89,7 @@ theorem exists_moveWord_coset {s : ℕ → G} {m : ℕ}
     (hs : ∀ i, i < m → s i * s i = 1)
     (hb : ∀ i, i + 1 < m → s i * s (i + 1) * s i = s (i + 1) * s i * s (i + 1))
     (hc : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i)
-    (g : G) (hg : g ∈ Subgroup.closure (Set.range (fun t : Fin m => s t.val))) :
+    {g : G} (hg : g ∈ Subgroup.closure (Set.range (fun t : Fin m => s t.val))) :
     ∃ j ≤ m, ∃ h ∈ Subgroup.closure (Set.range (fun t : Fin (m - 1) => s (t.val + 1))),
       g = moveWord s j * h := by
   let H := Subgroup.closure (Set.range (fun t : Fin (m - 1) => s (t.val + 1)))
@@ -105,7 +99,7 @@ theorem exists_moveWord_coset {s : ℕ → G} {m : ℕ}
     intro i g hg
     obtain ⟨j, hj, h, hh, he⟩ := hg
     rw [he]
-    obtain ⟨k, hk, h', hh', heq⟩ := moveWord_coset_step hs hb hc i.val j i.isLt hj
+    obtain ⟨k, hk, h', hh', heq⟩ := moveWord_coset_step hs hb hc i.isLt hj
     refine ⟨k, hk, h' * h, H.mul_mem hh' hh, ?_⟩
     rw [← mul_assoc, heq, mul_assoc]
   induction hg using Subgroup.closure_induction_left with
@@ -115,10 +109,7 @@ theorem exists_moveWord_coset {s : ℕ → G} {m : ℕ}
     exact step i y ih
   | inv_mul_cancel x hx y hy ih =>
     obtain ⟨i, rfl⟩ := hx
-    have hinv : (s i.val)⁻¹ = s i.val := by
-      apply inv_eq_of_mul_eq_one_left
-      exact hs i.val i.isLt
-    rw [hinv]
+    rw [inv_eq_of_mul_eq_one_left (hs i.val i.isLt)]
     exact step i y ih
 
 end PropertyF.Ground.CentreCalculus
@@ -148,20 +139,16 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
     let t : ℕ → H := fun i => if h : i < m then
       ⟨s (i + 1), Subgroup.subset_closure ⟨⟨i, h⟩, rfl⟩⟩ else 1
     have ht (i : ℕ) (hi : i < m) : (t i : G) = s (i + 1) := by simp [t, hi]
-    have hts : ∀ i, i < m → t i * t i = 1 := by
-      intro i hi
-      apply Subtype.ext
+    have hts : ∀ i, i < m → t i * t i = 1 := fun i hi ↦ Subtype.ext <| by
       simpa only [Subgroup.coe_mul, Subgroup.coe_one, ht i hi] using hs (i + 1) (by omega)
-    have htb : ∀ i, i + 1 < m → t i * t (i + 1) * t i = t (i + 1) * t i * t (i + 1) := by
-      intro i hi
-      apply Subtype.ext
-      simpa only [Subgroup.coe_mul, ht i (by omega), ht (i + 1) (by omega), Nat.add_assoc] using
-        hb (i + 1) (by omega)
-    have htc : ∀ i j, i + 1 < j → j < m → t i * t j = t j * t i := by
-      intro i j hij hj
-      apply Subtype.ext
-      simpa only [Subgroup.coe_mul, ht i (by omega), ht j hj] using
-        hc (i + 1) (j + 1) (by omega) (by omega)
+    have htb : ∀ i, i + 1 < m → t i * t (i + 1) * t i = t (i + 1) * t i * t (i + 1) :=
+      fun i hi ↦ Subtype.ext <| by
+        simpa only [Subgroup.coe_mul, ht i (by omega), ht (i + 1) (by omega), Nat.add_assoc] using
+          hb (i + 1) (by omega)
+    have htc : ∀ i j, i + 1 < j → j < m → t i * t j = t j * t i :=
+      fun i j hij hj ↦ Subtype.ext <| by
+        simpa only [Subgroup.coe_mul, ht i (by omega), ht j hj] using
+          hc (i + 1) (j + 1) (by omega) (by omega)
     have htgen : Subgroup.closure (Set.range (fun q : Fin m => t q.val)) = ⊤ := by
       apply Subgroup.map_injective H.subtype_injective
       simp only [MonoidHom.map_closure, Subgroup.map_top, Subgroup.range_subtype]
@@ -176,7 +163,7 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
     have hf : Function.Surjective f := by
       intro g
       have hg : g ∈ Subgroup.closure (Set.range (fun q : Fin (m + 1) => s q.val)) := by rw [hgen]; trivial
-      obtain ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hs hb hc g hg
+      obtain ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hs hb hc hg
       refine ⟨(⟨j, by omega⟩, ⟨h, by simpa [H] using hh⟩), ?_⟩
       exact he.symm
     let : Finite G := Finite.of_surjective f hf

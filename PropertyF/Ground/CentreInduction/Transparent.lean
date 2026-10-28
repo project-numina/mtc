@@ -29,14 +29,14 @@ theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
   change crossingCandidate C X S ≫ (β_ S (underlying C X)).hom = 𝟙 _ at hm
   have hb : crossingCandidate C X S = (β_ S (underlying C X)).inv := by
     apply (cancel_mono (β_ S (underlying C X)).hom).1
-    simpa [hm] using hm
+    simp [hm]
   have hzero : (biproduct.ι V i ▷ S) ≫ crossingCandidate C X S ≫
       (S ◁ (underlyingCounit C).app X) = 0 := by
     rw [hb]
     change (biproduct.ι V i ▷ S) ≫ (β_ S (⨁ V)).inv ≫
       (S ◁ (underlyingCounit C).app X) = 0
     rw [braiding_inv_naturality_left_assoc]
-    simp only [Category.assoc, ← whiskerLeft_comp, hz, MonoidalPreadditive.whiskerLeft_zero,
+    simp only [← whiskerLeft_comp, hz, MonoidalPreadditive.whiskerLeft_zero,
       comp_zero]
   have h := unit_matrix_reduce C X i i
   change biproduct.ι V i ≫ unitComponent C ((induction C).obj X) i ≫
@@ -46,7 +46,7 @@ theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
     have hd := unit_diag C X i
     rw [← hd, h]
     simp [monoidalComp]
-  letI : Simple S := simples_simple C i
+  let : Simple S := simples_simple C i
   let e : S ⊗ (Sᘁ) ≅ V i := whiskerRightIso (ρ_ S).symm (Sᘁ)
   have hz' : 𝟙 (S ⊗ Sᘁ) = 0 := by
     have ht := congrArg (fun f => e.hom ≫ f ≫ e.inv) hid
@@ -66,14 +66,14 @@ theorem center_transparent_simple_iso_unit (Z : CategoryTheory.Center C.Obj) [Si
     Nonempty (Z ≅ 𝟙_ (CategoryTheory.Center C.Obj)) := by
   let F := CategoryTheory.Center.ofBraided C.Obj
   let e := Centre.positiveIsoOfCentralizesNegative Z (fun X => hcentral ((Centre.negative C.Obj).obj X))
-  letI : F.PreservesMonomorphisms := {
+  let : F.PreservesMonomorphisms := {
     preserves := fun f => by
       intro _
       apply (CategoryTheory.Center.forget C.Obj).mono_of_mono_map
       change Mono f
       infer_instance }
-  letI : Simple (F.obj Z.1) := Simple.of_iso e.symm
-  letI : Simple Z.1 := Functor.simple_of_simple_obj F Z.1
+  let : Simple (F.obj Z.1) := Simple.of_iso e.symm
+  let : Simple Z.1 := Functor.simple_of_simple_obj F Z.1
   obtain ⟨i, ⟨s⟩⟩ := exists_simple_iso C Z.1
   let e' : Z ≅ F.obj (simples C i) := e ≪≫ F.mapIso s
   have hc : Centre.Centralizes ((induction C).obj (𝟙_ C.Obj)) (F.obj (simples C i)) := by

@@ -44,7 +44,7 @@ theorem forgetDoubleDualIso_natural {X Y : CategoryTheory.Center C.Obj} (f : X �
   simp only [Category.assoc]
   have hk : (fᘁ).fᘁ ≫ (forgetDualIso C Y).invᘁ =
       (forgetDualIso C X).invᘁ ≫ ((f.fᘁ)ᘁ) := by
-    letI : IsIso ((forgetDualIso C X).homᘁ) := by
+    let : IsIso ((forgetDualIso C X).homᘁ) := by
       change IsIso (Dimensions.rightDualIsoMap (forgetDualIso C X)).hom
       infer_instance
     apply (cancel_epi ((forgetDualIso C X).homᘁ)).1
@@ -67,7 +67,7 @@ theorem transported_pivotal_natural
   apply (cancel_mono (forgetDoubleDualIso C Y).hom).1
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
   rw [h]
-  simp only [Category.assoc, Iso.inv_hom_id_assoc]
+  simp only [Iso.inv_hom_id_assoc]
   exact p.naturality f.f
 
 end PropertyF.Ground.CentreInduction
@@ -93,10 +93,10 @@ theorem rightDualIso_tensor {X Y A B A' B' : D}
     let q := (inferInstance : ExactPairing (X ⊗ Y) (B' ⊗ A'))
     (rightDualIso p q).hom = (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom := by
   dsimp only
-  letI : ExactPairing X A := pX
-  letI : ExactPairing Y B := pY
-  letI : ExactPairing X A' := qX
-  letI : ExactPairing Y B' := qY
+  let : ExactPairing X A := pX
+  let : ExactPairing Y B := pY
+  let : ExactPairing X A' := qX
+  let : ExactPairing Y B' := qY
   have hX := Dimensions.rightDualIso_evaluation pX qX
   have hY := Dimensions.rightDualIso_evaluation pY qY
   have h := Dimensions.rightDualIso_evaluation
@@ -129,7 +129,7 @@ theorem rightDualIso_tensor {X Y A B A' B' : D}
   let r := b ⊗ₘ a
   change l ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) (B' ⊗ A') =
     r ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) (B' ⊗ A') at hh
-  letI : HasRightDual (X ⊗ Y) := { rightDual := B' ⊗ A', exact := inferInstance }
+  let : HasRightDual (X ⊗ Y) := { rightDual := B' ⊗ A', exact := inferInstance }
   have he := congrArg (tensorRightHomEquiv (B ⊗ A) (X ⊗ Y) (B' ⊗ A') (𝟙_ D)) hh
   have hL := @tensorRightHomEquiv_whiskerRight_comp_evaluation D _ _ (X ⊗ Y) (B ⊗ A) this l
   have hR := @tensorRightHomEquiv_whiskerRight_comp_evaluation D _ _ (X ⊗ Y) (B ⊗ A) this r
@@ -154,10 +154,7 @@ variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center
 theorem rightDualIso_trans {D : Type u} [Category.{v} D] [MonoidalCategory D]
     {X A B E : D} (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X E) :
     (rightDualIso p q).hom ≫ (rightDualIso q r).hom = (rightDualIso p r).hom := by
-  unfold rightDualIso
-  simp only
-  rw [← @comp_rightAdjointMate]
-  simp
+  simp [rightDualIso, ← comp_rightAdjointMate]
 
 theorem forget_rightDualTensorIso (X Y : CategoryTheory.Center C.Obj) :
     (rightDualTensorIso X Y).hom.f =

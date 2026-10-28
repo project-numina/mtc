@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.Cabling.Pure
-public import PropertyF.Ground.Cabling.Images
+public import Mathlib.CategoryTheory.Conj
+public import Mathlib.Algebra.Group.Subgroup.Map
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 @[expose] public noncomputable section
 namespace PropertyF

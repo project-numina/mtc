@@ -3,7 +3,6 @@ public import PropertyF.Ground.CentreInduction.PositivePivotal
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
-public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 
 /-! The pivotal structure of the base lifts to the rigid centre. -/
@@ -37,7 +36,7 @@ theorem pivotalComponentsCentral_proved (p : Dimensions.PivotalStructure (C := C
   rw [hb] at hn
   have hc : b.f ≫ (u B ⊗ₘ u Z) =
       (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f := by
-    letI : IsIso (Dimensions.doubleDualTensorIso B Z).hom.f := by
+    let : IsIso (Dimensions.doubleDualTensorIso B Z).hom.f := by
       change IsIso ((CategoryTheory.Center.forget C.Obj).map (Dimensions.doubleDualTensorIso B Z).hom)
       infer_instance
     apply (cancel_mono (Dimensions.doubleDualTensorIso B Z).hom.f).1
@@ -46,7 +45,7 @@ theorem pivotalComponentsCentral_proved (p : Dimensions.PivotalStructure (C := C
   have hj : j.f = u B := by
     change _ = (p.iso T).hom ≫ (forgetDoubleDualIso C B).inv
     exact positivePivotalComponent_forget C p T
-  letI : IsIso (u B) := by
+  let : IsIso (u B) := by
     rw [← hj]
     change IsIso ((CategoryTheory.Center.forget C.Obj).map j)
     infer_instance
