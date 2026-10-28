@@ -55,7 +55,7 @@ theorem isomorphisms_differ_by_scalar
 /-- For every simple object, any prescribed fourth-dual isomorphism has a
 square root through the double dual. No monoidality or naturality is assumed. -/
 theorem exists_fourthDual_square_root
-    (X : C.Obj) [Simple X] (g : X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ)) :
+    {X : C.Obj} [Simple X] (g : X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ)) :
     ∃ a : X ≅ ((Xᘁ)ᘁ), a ≪≫ rightDualIsoMap (rightDualIsoMap a) = g := by
   let e := Ground.doubleDualIso C X
   let e2 := e ≪≫ rightDualIsoMap (rightDualIsoMap e)
@@ -78,7 +78,7 @@ simple representative. -/
 def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
     simples C i ≅ ((simples C i)ᘁ)ᘁ := by
   let : Simple (simples C i) := Ground.simples_simple C i
-  exact Classical.choose (exists_fourthDual_square_root C (simples C i)
+  exact Classical.choose (exists_fourthDual_square_root C
     (fourthDualIso C (simples C i)))
 
 /-- The chosen simple component squares to the natural fourth-dual component. -/
@@ -86,7 +86,7 @@ theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :
     fourthDualSimpleRoot C i ≪≫ rightDualIsoMap (rightDualIsoMap (fourthDualSimpleRoot C i)) =
       fourthDualIso C (simples C i) := by
   let : Simple (simples C i) := Ground.simples_simple C i
-  exact Classical.choose_spec (exists_fourthDual_square_root C (simples C i)
+  exact Classical.choose_spec (exists_fourthDual_square_root C
     (fourthDualIso C (simples C i)))
 
 end PropertyF.Ground.Dimensions
@@ -178,7 +178,7 @@ theorem simple_scalar_biproduct_natural
       let : Simple (simples C (b j)) := Ground.simples_simple C _
       let : IsIso (biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
         biproduct.π (fun j => simples C (b j)) j) := isIso_of_hom_simple hne
-      exact h (Ground.simples_injective C _ _ ⟨asIso
+      exact h (Ground.simples_injective C ⟨asIso
         (biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
           biproduct.π (fun j => simples C (b j)) j)⟩)
     simp [hz]

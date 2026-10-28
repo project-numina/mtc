@@ -13,7 +13,7 @@ namespace PropertyF.Ground.Centre
 /-- A nonnegative real number whose falling factorials are all nonnegative is
 an integer. In a pseudo-unitary symmetric setting, the intended application is
 that these products are factorial multiples of exterior-power dimensions. -/
-theorem integral_of_nonnegative_falling_factorials (d : ℝ) (hd : 0 ≤ d)
+theorem integral_of_nonnegative_falling_factorials {d : ℝ} (hd : 0 ≤ d)
     (h : ∀ n : ℕ, 0 ≤ ∏ k ∈ Finset.range n, (d - (k : ℝ))) :
     ∃ m : ℕ, d = m := by
   let m := ⌊d⌋₊

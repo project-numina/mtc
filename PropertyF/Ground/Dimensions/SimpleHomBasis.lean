@@ -229,7 +229,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Coordinates in the simple-inclusion basis are the scalar diagonal
 projections of the morphism. -/
 theorem simpleInclusionBasis_projection
-    (X : C.Obj) (k : Fin (rank C)) (g : simples C k ⟶ X)
+    {X : C.Obj} {k : Fin (rank C)} (g : simples C k ⟶ X)
     (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
     ((simpleInclusionBasis C X k).repr g t) • 𝟙 (simples C k) =
       g ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩ := by
@@ -255,7 +255,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Ordinary trace on a simple Hom space is the sum of scalar diagonal
 blocks in the chosen object decomposition. -/
 theorem simpleHom_postcomp_trace
-    (X : C.Obj) (k : Fin (rank C)) (g : X ⟶ X)
+    {X : C.Obj} {k : Fin (rank C)} (g : X ⟶ X)
     (c : Fin (Module.finrank ℂ (simples C k ⟶ X)) → ℂ)
     (hc : ∀ t, biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫
       (simpleDecomposition C X).inv ≫ g ≫ (simpleDecomposition C X).hom ≫
@@ -272,13 +272,13 @@ theorem simpleHom_postcomp_trace
     simpleInclusionBasis_apply]
   apply smul_left_injective ℂ (id_nonzero (simples C k))
   simpa [simpleInclusion, Category.assoc, hc t] using
-    (simpleInclusionBasis_projection C X k (simpleInclusion C X k t ≫ g) t)
+    (simpleInclusionBasis_projection C (simpleInclusion C X k t ≫ g) t)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root categorical trace equals the dimension-weighted sum of
 ordinary traces on the simple Hom spaces. -/
 theorem rootTrace_eq_simpleHom_trace_sum
-    (X : C.Obj) (g : X ⟶ X) :
+    {X : C.Obj} (g : X ⟶ X) :
     Ground.unitScalar C (rootTrace C g) =
       ∑ k, LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) * rootDimension C k := by
   classical
@@ -296,7 +296,7 @@ theorem rootTrace_eq_simpleHom_trace_sum
       c ⟨k, t⟩ • 𝟙 (simples C k) := by
     intro t
     simpa [f, Category.assoc] using hc ⟨k, t⟩
-  rw [(simpleHom_postcomp_trace C X k g (fun t => c ⟨k,t⟩) hblock), Finset.sum_mul]
+  rw [(simpleHom_postcomp_trace C g (fun t => c ⟨k,t⟩) hblock), Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro t _
   change c ⟨k, t⟩ * (groundUnitScalarEquiv C (rootTrace C (𝟙 (simples C k)))) =
@@ -307,7 +307,7 @@ theorem rootTrace_eq_simpleHom_trace_sum
 set_option backward.isDefEq.respectTransparency false in
 /-- Involutivity of every multiplicity operator implies ENO's trace-matrix
 root-dimension eigenvector identity. -/
-theorem enoTraceMatrix_eigenvector_of_involutions (i j : Fin (rank C))
+theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}
     (hinv : ∀ k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ∑ k, enoTraceMatrix C i j k * rootDimension C k = rootDimension C i * rootDimension C j := by
@@ -322,7 +322,7 @@ theorem enoTraceMatrix_eigenvector_of_involutions (i j : Fin (rank C))
       apply (multiplicityDefect C i j k).injective
       simp [h]
     simpa [multiplicityDefect, Linear.homCongr_apply, Linear.homCongr_symm_apply, d] using hs
-  have ht := rootTrace_eq_simpleHom_trace_sum C X d.inv
+  have ht := rootTrace_eq_simpleHom_trace_sum C d.inv
   rw [rootTrace_inverseDefect] at ht
   calc
     _ = ∑ k, LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) d.inv) * rootDimension C k := by

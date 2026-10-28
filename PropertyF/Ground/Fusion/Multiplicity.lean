@@ -64,7 +64,7 @@ theorem finrank_biproduct_hom {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
 
 /-- A chosen simple's Hom dimension counts its copies in a decomposition. -/
 theorem finrank_simple_of_decomposition (D : BraidedFusionCategory.{v,u})
-    (X : D.Obj) (m : Fin (rank D) → ℕ)
+    {X : D.Obj} (m : Fin (rank D) → ℕ)
     (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => simples D p.1)) (i : Fin (rank D)) :
     Module.finrank ℂ (simples D i ⟶ X) = m i := by
   classical
@@ -84,7 +84,7 @@ theorem exists_canonical_decomposition (D : BraidedFusionCategory.{v,u}) (X : D.
     Nonempty (X ≅ ⨁ (fun p : Σ i : Fin (rank D),
       Fin (Module.finrank ℂ (simples D i ⟶ X)) => simples D p.1)) := by
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
-  cases (funext (finrank_simple_of_decomposition D X m e)).symm
+  cases (funext (finrank_simple_of_decomposition D m e)).symm
   exact ⟨e⟩
 
 /-- Hom dimensions to and from a simple coincide in a semisimple category. -/
