@@ -59,9 +59,7 @@ variable {C} in
 theorem rootSignTensorIso_hom (i j : Fin (rank C)) :
     (rootSignTensorIso C c hc (simples C i) (simples C j)).hom =
       (c i * c j) • (rootTensorIso C (simples C i) (simples C j)).hom := by
-  change (((rootSignTwist C c hc).app (simples C i)).hom ⊗ₘ
-    ((rootSignTwist C c hc).app (simples C j)).hom) ≫ _ = _
-  rw [rootSignTwist_app_simple, rootSignTwist_app_simple]
+  rw [rootSignTensorIso, Iso.trans_hom, tensorIso_hom, rootSignTwist_app_simple, rootSignTwist_app_simple]
   simp [rootTensorIso, tensorHom_def, smul_smul, mul_comm]
 
 variable {C} in
