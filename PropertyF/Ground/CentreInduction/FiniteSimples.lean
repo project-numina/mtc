@@ -10,6 +10,8 @@ The centre has finitely many simple isomorphism classes. A retract of the tensor
 an induced object then gives finite semisimple decompositions and a fusion structure.
 -/
 
+attribute [local instance] PropertyF.Ground.Centre.finiteDimensional_hom
+
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
 universe v u
@@ -72,12 +74,11 @@ theorem center_artinian : IsArtinianObject X :=
 set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object has a nonzero map to an induced base simple. -/
 theorem simple_hom_induced_simple [Simple X] :
-    ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), f ≠ 0 := by
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
+    ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), f ≠ 0 :=
+  let ⟨i, hi⟩ := exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
     (fun _ ↦ inferInstance)
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
-  let : FiniteDimensional ℂ (X ⟶ (induction C).obj (Sᶜ i)) := Centre.finiteDimensional_hom ℂ _ _
-  exact ⟨i, finrank_pos_iff_exists_ne_zero.mp
+  ⟨i, finrank_pos_iff_exists_ne_zero.mp
     (show 0 < finrank ℂ (X ⟶ (induction C).obj (Sᶜ i)) from by
       simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)⟩
 
@@ -124,7 +125,6 @@ theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
   letI (W : 𝒵) : IsArtinianObject W := center_artinian W
   letI : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective X)
   letI (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
-  letI (A : 𝒵) : FiniteDimensional ℂ (A ⟶ A) := Centre.finiteDimensional_hom ℂ A A
   finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW =>
     ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
 

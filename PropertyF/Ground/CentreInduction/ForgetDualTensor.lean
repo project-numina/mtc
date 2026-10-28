@@ -39,8 +39,8 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 /-- The double-dual comparison is natural in centre morphisms. -/
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (κ₂ Y).hom = (κ₂ X).hom ≫ ((f.fᘁ)ᘁ) := by
-  simpa only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
-    Category.assoc] using (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by
+  simpa [forgetDoubleDualIso, rightDualIsoMap, Category.assoc] using
+    (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by
       simpa only [comp_rightAdjointMate] using (congrArg (fun m => rightAdjointMate m)
         (CommSq.vert_inv (g := κ Y) (h := κ X) ⟨forgetDualIso_natural f⟩).w).symm⟩).w
 
@@ -58,7 +58,8 @@ instance transportedPivotalHom_isIso (Z : 𝒵) : IsIso (transportedPivotalHom p
 theorem transported_pivotal_natural (f : X ⟶ Y) :
     f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f :=
   (cancel_mono (κ₂ Y).hom).1 <| by
-    simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_natural] using p.naturality f.f
+    simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_natural] using
+      p.naturality f.f
 
 end PropertyF.Ground.CentreInduction
 
@@ -89,12 +90,8 @@ theorem forget_rightDualTensorIso :
     (rightDualTensorIso X Y).hom.f =
       (rightDualIso (forgetPairing (X ⊗ Y)) (tensorForgetPairing X Y)).hom :=
   forget_rightDualIso HasRightDual.exact ExactPairing.tensor (tensorForgetPairing X Y) <| by
-    let cx : 𝟙_ D ⟶ X.1 ⊗ (Xᘁ).1 := (η_ X (Xᘁ)).f
-    let cy : 𝟙_ D ⟶ Y.1 ⊗ (Yᘁ).1 := (η_ Y (Yᘁ)).f
-    change (η_ X (Xᘁ) ⊗≫ (X ◁ η_ Y (Yᘁ)) ▷ (Xᘁ) ⊗≫
-        𝟙 ((X ⊗ Y) ⊗ ((Yᘁ) ⊗ (Xᘁ)))).f =
-      (cx ⊗≫ (X.1 ◁ cy) ▷ (Xᘁ).1 ⊗≫ 𝟙 ((X.1 ⊗ Y.1) ⊗ ((Yᘁ).1 ⊗ (Xᘁ).1)))
-    simp [monoidalComp, cx, cy]
+    simp [ExactPairing.tensor_coevaluation, monoidalComp]
+    rfl
 
 /-- Forgetting centre duals preserves their tensor comparison. -/
 theorem forgetDualIso_tensor :
@@ -150,8 +147,7 @@ theorem forgetDoubleDualIso_tensor :
     (μ₂ X Y).hom.f ≫ (κ₂ (X ⊗ Y)).hom =
       ((κ₂ X).hom ⊗ₘ (κ₂ Y).hom) ≫
         (μ₂ X.1 Y.1).hom := by
-  simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
-    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso, Category.assoc,
+  simp [doubleDualTensorIso, rightDualIsoMap, forgetDoubleDualIso, Category.assoc,
     reassoc_of% forgetDualIso_natural, reassoc_of% forgetDualIso_tensor_inv (Yᘁ) (Xᘁ),
     forgetDualIso_tensor_mate_inv X Y,
     ← reassoc_of% rightDualTensorIso_inv_natural (κ Y).inv (κ X).inv,

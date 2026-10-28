@@ -116,9 +116,7 @@ theorem crossingCandidate_unit_summand :
       (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
       (crossingInclusion_projection default), crossingBlock_unit, Category.assoc]
   · intro j _ hne
-    let : IsEmpty (crossingIndex C (𝟙_ C.Obj) i j) := by
-      simp [crossingIndex, unit_crossing_finrank, hne.symm]
-    exact Fintype.sum_empty _
+    simp [crossingIndex, unit_crossing_finrank, hne.symm]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The explicit induction crossing is normalized on the tensor unit. -/
@@ -126,7 +124,7 @@ theorem crossingCandidate_unit :
     crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv :=
   rightDistributor_ext_left (f := inductionSummand C X) fun i => by
-    simpa only [underlying, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc] using
+    simpa [underlying, ← leftUnitor_inv_naturality] using
       crossingCandidate_unit_summand X i
 
 end PropertyF.Ground.CentreInduction
