@@ -1,6 +1,6 @@
 module
-public import PropertyF.Ground.CentreInduction.ForgetDualUnit
-public import PropertyF.Ground.CentreInduction.InjectiveFusion
+public import PropertyF.Ground.CentreInduction.ForgetDualTensor
+public import PropertyF.Ground.CentreInduction.FiniteSimples
 public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Dimensions.DimensionCharacter
