@@ -62,15 +62,13 @@ theorem fourthDualRootNaturalIso_app_simple
 components on the simple representatives. -/
 theorem natTrans_eq_of_simple_components
     {F : C.Obj ⥤ C.Obj} {α β : 𝟭 C.Obj ⟶ F}
-    (h : ∀ i, α.app (simples C i) = β.app (simples C i)) : α = β := by
-  apply NatTrans.ext
-  funext X
-  refine simpleInclusion_hom_ext C fun i t ↦ ?_
-  change simpleInclusion C X i t ≫ α.app X = simpleInclusion C X i t ≫ β.app X
-  simpa only [Functor.id_map] using
-    (α.naturality (simpleInclusion C X i t)).trans (by
-      rw [h i]
-      exact (β.naturality (simpleInclusion C X i t)).symm)
+    (h : ∀ i, α.app (simples C i) = β.app (simples C i)) : α = β :=
+  NatTrans.ext <| funext fun X ↦ simpleInclusion_hom_ext C fun i t ↦ by
+    change simpleInclusion C X i t ≫ α.app X = simpleInclusion C X i t ≫ β.app X
+    simpa only [Functor.id_map] using
+      (α.naturality (simpleInclusion C X i t)).trans (by
+        rw [h i]
+        exact (β.naturality (simpleInclusion C X i t)).symm)
 
 /-- The natural double-dual root, squared using the double-dual functor. -/
 def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
