@@ -2,7 +2,6 @@ module
 public import PropertyF.Ground.CentreInduction.InjectiveFusion
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Integrate.CharacterReality
-public import PropertyF.Ground.Modular.SMatrix
 
 open PropertyF.Ground.Dimensions
 
@@ -140,8 +139,7 @@ theorem center_fusion_of_compatible_pivotal {p : PivotalStructure (C := C.Obj)}
     (hsimple : PivotalHasFPDimensions C p) [RigidCategory 𝒵ᶜ]
     {pZ : PivotalStructure (C := 𝒵ᶜ)}
     (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) : IsFusionCategory 𝒵ᶜ := by
-  apply center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
-  intro hz
+  refine center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ fun hz => ?_
   have ht := forget_trace_of_pivotal_component hcompat
   change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
     (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht

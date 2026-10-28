@@ -129,9 +129,8 @@ theorem unitCandidate_central :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
       (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
   let V := inductionSummand C Z.1
-  apply (cancel_mono (leftDistributor T V).hom).1
-  refine biproduct.hom_ext _ _ fun j => ?_
-  simp only [Category.assoc, leftDistributor_hom_comp_biproduct_π]
+  refine leftDistributor_ext_right (f := V) fun j => ?_
+  simp only [Category.assoc]
   rw [← whiskerLeft_comp, show unitCandidate C Z ≫ biproduct.π V j =
     unitComponent C Z j from biproduct.lift_π _ _]
   simpa only [V, unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,

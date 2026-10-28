@@ -77,8 +77,7 @@ theorem pivotalTrace_braid_unitary_bound
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
 theorem braid_trace_unitary_bound_ground :
-    HasUnitaryTraceBound C p b (Ground.fpDimension C X ^ (n + 2)) := by
-  intro a ha
+    HasUnitaryTraceBound C p b (Ground.fpDimension C X ^ (n + 2)) := fun a ha ↦ by
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (braidTensorPower X n)
@@ -169,21 +168,21 @@ variable {X : C} {t : ℕ} {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
   (he : ∀ n, IsUnitaryBraidPresentation (e n))
 include he
 
+variable {u : braidAlgebra X t} (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u))
+
+include hu in
 /-- Successive actual overlapping products remain blockwise unitary. The
 presentations may be chosen independently at every strand count. -/
-theorem overlapProduct_unitary {u : braidAlgebra X t}
-    (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u)) :
-    ∀ k, Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩
-      (e (overlapIndex t k) (overlapProduct u k)) := by
-  intro k
-  induction k with
-  | zero => exact hu
-  | succ k ih =>
+theorem overlapProduct_unitary : ∀ k,
+    Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩ (e (overlapIndex t k) (overlapProduct u k))
+  | 0 => hu
+  | k + 1 => by
     rw [overlapProduct, map_mul]
     apply (unitary _).mul_mem ?_ ?_
     · simpa [overlapLeft, overlapIndex, Blocks.IsUnitary, addRightBlocksIterStarMap] using!
         (Unitary.map_mem
-          (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) ih)
+          (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _))
+          (overlapProduct_unitary k))
     · have hcast : ∀ (a b : ℕ) (h : a = b)
           (f : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b),
           Blocks.IsUnitary ⟨_, d b⟩ (e b (f u)) →
@@ -232,15 +231,14 @@ theorem sharp_trace_bound_of_overlap [Simple X]
     (hrec : HasOverlapTracePower C p u) :
     ‖actualBraidTrace C p u‖ ≤
       ‖pivotalDimension C p X‖ *
-        Ground.fpDimension C X ^ (t + 1) := by
-  simp only [HasOverlapTracePower, pivotalDimension, unitScalar_eq_equiv] at hrec ⊢
-  apply norm_bound_of_overlap (m := t + 2) (Modular.unitScalar_rightTrace_ne_zero C p X)
+        Ground.fpDimension C X ^ (t + 1) :=
+  norm_bound_of_overlap (m := t + 2) (by
+    simpa [pivotalDimension, unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X)
     (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X)))
-    (fun k => actualBraidTrace C p (overlapProduct u k)) ?_ hrec
-  intro k
-  convert hbound k using 1
-  congr 1
-  rw [overlapIndex_formula, show t + 2 - 1 = t + 1 by omega]
-  ring
+    (fun k => actualBraidTrace C p (overlapProduct u k)) (fun k => by
+      convert hbound k using 1
+      congr 1
+      rw [overlapIndex_formula, show t + 2 - 1 = t + 1 by omega]
+      ring) hrec
 
 end PropertyF.Ground.Calculus

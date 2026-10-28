@@ -110,18 +110,17 @@ section BraidNaturality
 variable {X Y : C} (f : X ⟶ Y) (n : ℕ)
 
 /-- Each adjacent braid generator is natural in arbitrary morphisms. -/
-theorem braidGenerator_map_natural (i : Fin (n + 1)) :
+theorem braidGenerator_map_natural : ∀ (n : ℕ) (i : Fin (n + 1)),
     (braidGenerator X n i).asIso.hom ≫ tensorPowerMap f (n + 2) =
-      tensorPowerMap f (n + 2) ≫ (braidGenerator Y n i).asIso.hom := by
-  induction n with
-  | zero => exact (Fin.eq_zero i).symm ▸ braid_first_map f (tensorPowerMap f 0)
-  | succ n ih =>
-    refine Fin.cases (braid_first_map f (tensorPowerMap f (n + 1))) (fun j => ?_) i
+      tensorPowerMap f (n + 2) ≫ (braidGenerator Y n i).asIso.hom
+  | 0, i => (Fin.eq_zero i).symm ▸ braid_first_map f (tensorPowerMap f 0)
+  | n + 1, i => Fin.cases (braid_first_map f (tensorPowerMap f (n + 1))) (fun j => by
     change (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom) ≫
         (f ⊗ₘ tensorPowerMap f (n + 2)) =
       (f ⊗ₘ tensorPowerMap f (n + 2)) ≫
         (𝟙 Y ⊗ₘ (braidGenerator Y n j).asIso.hom)
-    simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id, ih]
+    simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id,
+      braidGenerator_map_natural n j]) i
 
 /-- Braiding words are natural in any morphism, not only in isomorphisms. -/
 theorem braidWord_map_natural (w : BraidWords n) :
@@ -135,17 +134,14 @@ end BraidNaturality
 /-- Any braid word acting trivially on an object also acts trivially on its
 retract, by naturality of the tensor-power inclusion. -/
 theorem braidWordAction_ker_le_of_retract {X Y : C} (r : Retract X Y) (n : ℕ) :
-    (braidWordAction Y n).ker ≤ (braidWordAction X n).ker := by
-  intro w hw
-  change braidWordAction Y n w = 1 at hw
-  change braidWordAction X n w = 1
-  apply Subtype.ext
-  apply Aut.ext
-  apply Iso.ext
-  have nat := braidWord_map_natural r.i n w
-  rw [hw] at nat
-  let : IsSplitMono (tensorPowerMap r.i (n + 2)) := (tensorPowerMap_retract r (n + 2)).instIsSplitMonoI
-  exact (cancel_mono (tensorPowerMap r.i (n + 2))).mp (by simpa using nat)
+    (braidWordAction Y n).ker ≤ (braidWordAction X n).ker := fun w hw ↦
+  Subtype.ext (Aut.ext (Iso.ext (by
+    have nat := braidWord_map_natural r.i n w
+    change braidWordAction Y n w = 1 at hw
+    rw [hw] at nat
+    let : IsSplitMono (tensorPowerMap r.i (n + 2)) :=
+      (tensorPowerMap_retract r (n + 2)).instIsSplitMonoI
+    exact (cancel_mono (tensorPowerMap r.i (n + 2))).mp (by simpa using nat))))
 
 /-- Restriction to a retract induces a surjective homomorphism of braid images. -/
 def braidImageRetractMap {X Y : C} (r : Retract X Y) (n : ℕ) :

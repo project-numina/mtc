@@ -40,16 +40,16 @@ set_option backward.isDefEq.respectTransparency false in
 right dual a retract of a lower tensor power. -/
 theorem generatedBy_rightDual_of_unit_power {X : D} [Simple X] {n : ℕ}
     (r : Retract (𝟙_ D) (tensorPower X (n + 1))) :
-    GeneratedBy X (Xᘁ) := by
+    GeneratedBy X (Xᘁ) :=
   let _ : Simple (𝟙_ D) := Ground.IsFusionCategory.unit_simple
   let _ : Simple (Xᘁ) := Ground.simple_rightDual X
-  let : IsSplitMono r.i := r.instIsSplitMonoI
+  let _ : IsSplitMono r.i := r.instIsSplitMonoI
   let f : Xᘁ ⊗ 𝟙_ D ⟶ tensorPower X n :=
     (Ground.tensorLeftHomLinearEquiv (k := ℂ) (𝟙_ D) X (Xᘁ) (tensorPower X n)).symm r.i
-  have hf : f ≠ 0 := (Ground.tensorLeftHomLinearEquiv
+  let hf : f ≠ 0 := (Ground.tensorLeftHomLinearEquiv
     (𝟙_ D) X (Xᘁ) (tensorPower X n)).symm.map_ne_zero_iff.mpr
       (Ground.mono_ne_zero_of_id_ne_zero r.i (id_nonzero (𝟙_ D)))
   let g : Xᘁ ⟶ tensorPower X n := (ρ_ (Xᘁ)).inv ≫ f
-  obtain ⟨s, hs⟩ := Ground.split_from_simple g (by simpa [g] using hf)
-  exact generatedBy_retract (generatedBy_tensorPower X n) { i := g, r := s, retract := hs }
+  let ⟨s, hs⟩ := Ground.split_from_simple g (by simpa [g] using hf)
+  generatedBy_retract (generatedBy_tensorPower X n) { i := g, r := s, retract := hs }
 end PropertyF.Ground.Cabling

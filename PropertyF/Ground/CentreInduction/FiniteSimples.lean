@@ -15,8 +15,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g := by
-  refine ⟨⟨g, ?_⟩, rfl⟩
-  intro T
+  refine ⟨⟨g, fun T => ?_⟩, rfl⟩
   let : IsSplitMono (T ◁ q.f) :=
     IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
   apply (cancel_mono (T ◁ q.f)).1
@@ -100,7 +99,7 @@ private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D] {
   · obtain ⟨g, hg⟩ : {g : S ⟶ P // g ≫ p = t} := KernelFork.IsLimit.lift'
       (Abelian.monoIsKernelOfCokernel (CokernelCofork.ofπ q hpq) hc) t hz
     let : IsIso g := isIso_of_hom_simple (fun h =>
-      id_nonzero S ((cancel_mono t).1 (by simpa [h] using hg.symm)))
+      mono_ne_zero_of_id_ne_zero t (id_nonzero S) (by simpa [h] using hg.symm))
     exact Or.inl ⟨asIso g⟩
   · exact .inr (mono_of_nonzero_from_simple hz)
 
@@ -120,8 +119,7 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
     · let : IsArtinianObject W := center_artinian C W
       let P := simpleSubobject hw
       let p : P ⟶ W := simpleSubobjectArrow hw
-      have hp : p ≠ 0 := fun h0 =>
-        id_nonzero _ ((cancel_mono p).1 (by simp [h0]))
+      have hp : p ≠ 0 := mono_ne_zero_of_id_ne_zero p (id_nonzero _)
       let Q := Centre.centerCokernel p
       let q : W ⟶ Q := Centre.centerCokernelπ p
       obtain ⟨L, hL⟩ := ih Q (center_cokernel_measure_lt C p hp)
