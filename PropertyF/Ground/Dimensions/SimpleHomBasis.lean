@@ -227,26 +227,16 @@ theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}
     (hinv : ∀ k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ∑ k, enoTraceMatrix C i j k * rootDimension C k = rootDimension C i * rootDimension C j := by
-  let X := simples C i ⊗ simples C j
   let d := rootTensorDefect C (simples C i) (simples C j)
   have hop (k : Fin (rank C)) :
       Linear.rightComp ℂ (simples C k) d.inv = (multiplicityDefect C i j k).toLinearMap := by
     ext f
-    have h : multiplicityDefect C i j k (multiplicityDefect C i j k f) = f := by
-      exact (congrArg (fun L => L f) (hinv k))
-    have hs : (multiplicityDefect C i j k).symm f = multiplicityDefect C i j k f := by
-      apply (multiplicityDefect C i j k).injective
-      simp [h]
+    have hs : (multiplicityDefect C i j k).symm f = multiplicityDefect C i j k f :=
+      (LinearEquiv.symm_apply_eq _).2 (congrArg (fun L => L f) (hinv k)).symm
     simpa [multiplicityDefect, Linear.homCongr_apply, Linear.homCongr_symm_apply, d] using hs
   have ht := rootTrace_eq_simpleHom_trace_sum C d.inv
   rw [rootTrace_inverseDefect] at ht
-  calc
-    _ = ∑ k, LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) d.inv) * rootDimension C k := by
-      apply Finset.sum_congr rfl
-      intro k _
-      rw [hop k]
-      rfl
-    _ = _ := ht.symm
+  simpa only [enoTraceMatrix, hop] using ht.symm
 
 end PropertyF.Ground.Dimensions
 
