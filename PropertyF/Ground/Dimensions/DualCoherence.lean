@@ -33,6 +33,14 @@ theorem evaluation_iso_map {X Y : C} [HasRightDual X] [HasRightDual Y] (a : X �
   erw [rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
     whiskerLeft_id, Category.id_comp]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Comparing duals successively agrees with comparing them directly. -/
+theorem rightDualIso_trans {X A B F : C}
+    (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X F) :
+    (rightDualIso p q).hom ≫ (rightDualIso q r).hom = (rightDualIso p r).hom := by
+  simp [rightDualIso, ← comp_rightAdjointMate]
+
+
 section
 variable {X Y Z : C}
 variable (p : ExactPairing X Y) (q : ExactPairing X Z)

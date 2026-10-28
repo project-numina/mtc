@@ -62,42 +62,6 @@ end PropertyF.Ground.CentreInduction
 
 end
 
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreInduction
-universe v u
-set_option backward.isDefEq.respectTransparency false
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
-variable {X Y A B A' B' F : D} (pX : ExactPairing X A) (qX : ExactPairing X A')
-  (pY : ExactPairing Y B) (qY : ExactPairing Y B')
-
-/-- The canonical comparison of duals preserves tensor products of pairings. -/
-theorem rightDualIso_tensor :
-    (rightDualIso (@ExactPairing.tensor D _ _ X Y A B pX pY)
-      (@ExactPairing.tensor D _ _ X Y A' B' qX qY)).hom =
-        (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom :=
-  let : ExactPairing X A := pX
-  let : ExactPairing Y B := pY
-  let : ExactPairing X A' := qX
-  let : ExactPairing Y B' := qY
-  evaluation_ext (X := X ⊗ Y) <| by
-    rw [rightDualIso_evaluation]
-    symm
-    rw [tensorHom_def, comp_whiskerRight_assoc,
-      tensorPairing_evaluation_whiskerLeft (p := pX) (q := qX) (r := qY)
-        (rightDualIso pX qX).hom (rightDualIso_evaluation pX qX),
-      tensorPairing_evaluation_whiskerRight (p := pX) (q := pY) (r := qY)
-        (rightDualIso pY qY).hom (rightDualIso_evaluation pY qY)]
-/-- Comparing duals successively agrees with comparing them directly. -/
-theorem rightDualIso_trans
-    (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X F) :
-    (rightDualIso p q).hom ≫ (rightDualIso q r).hom = (rightDualIso p r).hom := by
-  simp [rightDualIso, ← comp_rightAdjointMate]
-
-end PropertyF.Ground.CentreInduction
-
-end
-
 /-! Tensor coherence of centre and base dual comparisons. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
