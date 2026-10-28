@@ -275,10 +275,8 @@ def centerKernelι {X Y : CategoryTheory.Center C} (f : X ⟶ Y) : centerKernel 
 
 /-- The kernel inclusion followed by the original map is zero. -/
 theorem centerKernel_condition {X Y : CategoryTheory.Center C} (f : X ⟶ Y) :
-    centerKernelι f ≫ f = 0 := by
-  apply CategoryTheory.Center.ext
-  change kernel.ι f.f ≫ f.f = 0
-  exact kernel.condition f.f
+    centerKernelι f ≫ f = 0 :=
+  CategoryTheory.Center.ext _ _ (kernel.condition f.f)
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency.types false in
@@ -433,10 +431,8 @@ def centerCokernelπ {X Y : CategoryTheory.Center C} (f : X ⟶ Y) : Y ⟶ cente
 
 /-- The original map followed by the cokernel projection is zero. -/
 theorem centerCokernel_condition {X Y : CategoryTheory.Center C} (f : X ⟶ Y) :
-    f ≫ centerCokernelπ f = 0 := by
-  apply CategoryTheory.Center.ext
-  change f.f ≫ cokernel.π f.f = 0
-  exact cokernel.condition f.f
+    f ≫ centerCokernelπ f = 0 :=
+  CategoryTheory.Center.ext _ _ (cokernel.condition f.f)
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency.types false in

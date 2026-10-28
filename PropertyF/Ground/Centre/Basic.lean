@@ -55,16 +55,6 @@ instance positiveFull : (CategoryTheory.Center.ofBraided C).Full where
     intro X Y f
     exact ⟨f.f, CategoryTheory.Center.ext _ _ rfl⟩
 
-instance negativeFaithful : (negative C).Faithful where
-  map_injective := by
-    intro X Y f g h
-    exact congrArg CategoryTheory.Center.Hom.f h
-
-instance negativeFull : (negative C).Full where
-  map_surjective := by
-    intro X Y f
-    exact ⟨f.f, CategoryTheory.Center.ext _ _ rfl⟩
-
 /-- The two canonical images centralize one another in the actual centre. -/
 theorem positive_negative_centralize (X Y : C) :
     (β_ ((CategoryTheory.Center.ofBraided C).obj X) ((negative C).obj Y)).hom ≫
@@ -220,25 +210,6 @@ theorem finiteDimensional_hom (K : Type*) [Field K] [Linear K C] [MonoidalLinear
       (CategoryTheory.Center.forget C).mapLinearMap K)
     (Functor.map_injective (CategoryTheory.Center.forget C))
 
-section Unit
-variable [BraidedCategory C]
-open CategoryTheory.Functor.Monoidal
-
-instance positiveLinear (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C] :
-    (CategoryTheory.Center.ofBraided C).Linear K where
-  map_smul := by
-    intros
-    apply CategoryTheory.Center.ext
-    rfl
-
-instance negativeLinear (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C] :
-    (negative C).Linear K where
-  map_smul := by
-    intros
-    apply CategoryTheory.Center.ext
-    rfl
-
-end Unit
 end PropertyF.Ground.Centre
 
 
