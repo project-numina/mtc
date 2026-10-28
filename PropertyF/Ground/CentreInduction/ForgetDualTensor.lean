@@ -4,7 +4,11 @@ public import PropertyF.Ground.Dimensions.DualTensorNaturality
 
 open PropertyF.Ground.Dimensions
 
-/-! Naturality of the comparison between centre duals and base duals. -/
+/-! # Centre dual comparisons
+
+The forgetful functor preserves right duals up to a natural isomorphism. Its double-dual
+comparison satisfies the tensor and unit laws used to transport pivotal components.
+-/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreInduction
@@ -154,6 +158,8 @@ local notation "𝒵" => Center D
 -- The dual and double-dual comparisons for the forgetful functor.
 local notation "κ" => forgetDualIso
 local notation "κ₂" => forgetDoubleDualIso
+-- The tensor comparison for double right duals.
+local notation "μ₂" => doubleDualTensorIso
 variable (p : PivotalStructure (C := D)) (X Y : Center D)
 
 /-- The inverse tensor comparison commutes with the forgotten dual isomorphisms. -/
@@ -176,9 +182,9 @@ private theorem forgetDualIso_tensor_mate_inv :
 
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
 theorem forgetDoubleDualIso_tensor :
-    (doubleDualTensorIso X Y).hom.f ≫ (κ₂ (X ⊗ Y)).hom =
+    (μ₂ X Y).hom.f ≫ (κ₂ (X ⊗ Y)).hom =
       ((κ₂ X).hom ⊗ₘ (κ₂ Y).hom) ≫
-        (doubleDualTensorIso X.1 Y.1).hom := by
+        (μ₂ X.1 Y.1).hom := by
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap, Center.comp_f, forgetDoubleDualIso, Category.assoc]
   rw [reassoc_of% forgetDualIso_natural,
@@ -190,7 +196,7 @@ theorem forgetDoubleDualIso_tensor :
 /-- The transported pivotal components satisfy the tensor law after forgetting. -/
 theorem transported_pivotal_tensor :
     (transportedPivotalHom p X ⊗ₘ transportedPivotalHom p Y) ≫
-      (doubleDualTensorIso X Y).hom.f = transportedPivotalHom p (X ⊗ Y) :=
+      (μ₂ X Y).hom.f = transportedPivotalHom p (X ⊗ Y) :=
   (Iso.eq_comp_inv (κ₂ (X ⊗ Y))).2 <| by
     simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_tensor] using
       (p.tensor X.1 Y.1).symm

@@ -12,10 +12,11 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 variable {k : Type*} [Field k] {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D]
   [HasBinaryBiproducts D]
+variable {S W Q : D}
 
 omit [HasBinaryBiproducts D] in
 /-- A split epimorphism with a nonzero annihilated map decreases endomorphism dimension. -/
-theorem finrank_end_lt_of_split_epi {S W Q : D} (p : S ⟶ W) (q : W ⟶ Q)
+theorem finrank_end_lt_of_split_epi (p : S ⟶ W) (q : W ⟶ Q)
     [IsSplitEpi q] [FiniteDimensional k (W ⟶ W)]
     (hp : p ≠ 0) (hq : p ≫ q = 0) :
     Module.finrank k (Q ⟶ Q) < Module.finrank k (W ⟶ W) := by
@@ -34,7 +35,7 @@ theorem finrank_end_lt_of_split_epi {S W Q : D} (p : S ⟶ W) (q : W ⟶ Q)
 
 /-- Removing a nonzero direct summand strictly decreases the dimension of the
 endomorphism space. -/
-theorem finrank_end_complement_lt {S : D} (K : D)
+theorem finrank_end_complement_lt (K : D)
     [FiniteDimensional k (S ⊞ K ⟶ S ⊞ K)] (hS : ¬ IsZero S) :
     Module.finrank k (K ⟶ K) < Module.finrank k (S ⊞ K ⟶ S ⊞ K) :=
   finrank_end_lt_of_split_epi (k := k) biprod.inl biprod.snd
