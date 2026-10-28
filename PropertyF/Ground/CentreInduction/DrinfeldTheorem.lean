@@ -57,7 +57,7 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u})
 
-theorem drinfeld_tensor_inverse (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+theorem drinfeld_tensor_inverse (X Y : C.Obj) :
     (doubleDualIso C (X ⊗ Y)).inv = (doubleDualTensorIso X Y).inv ≫
       ((doubleDualIso C X).inv ⊗ₘ (doubleDualIso C Y).inv) ≫ Modular.doubleBraiding X Y := by
   change (doubleDualIso C (X ⊗ Y)).inv =
@@ -74,7 +74,7 @@ theorem drinfeld_inv_natural {A B : C.Obj} (t : A ≅ B) :
 
 /-- The inverse dual Drinfeld map after the tensorator, in terms of the
 reversed dual factors and monodromy. -/
-theorem drinfeld_inv_dual_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+theorem drinfeld_inv_dual_tensor (X Y : C.Obj) :
     (doubleDualTensorIso X Y).hom ≫
       ((doubleDualIso C ((X ⊗ Y)ᘁ)).invᘁ) =
     Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
@@ -110,7 +110,7 @@ theorem drinfeld_inv_dual_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj)
   simp only [comp_rightAdjointMate, Category.assoc, f, g, t]
 
 /-- The Drinfeld tensor law forces monoidality of the canonical fourth-dual map. -/
-theorem fourthDualIso_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+theorem fourthDualIso_tensor (X Y : C.Obj) :
     (fourthDualIso C (X ⊗ Y)).hom =
       ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
         (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
