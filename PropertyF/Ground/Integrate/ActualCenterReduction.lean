@@ -137,13 +137,13 @@ when property F holds throughout the generated subcategory. The two label
 sets and the categorical double-centralizer and finite-image results are
 explicit interim premises, not assumptions in the target. -/
 theorem propertyF_of_galois_column (hIntegral : HasIntegralSimpleDimensionsOn Z p core)
-    (hDouble : CentreCabling.sCentralizer Z p core ⊆ generated)
+    (hDouble : Modular.sCentralizer Z p core ⊆ generated)
     (hFinite : ∀ y ∈ generated, ObjectPropertyF (simples Z y))
     (hColumn : IsGaloisUnitColumn Z p τ y) :
     ObjectPropertyF (simples Z y) :=
   hFinite y <| hDouble fun x hx ↦ by
     obtain ⟨z, hz⟩ := hIntegral x hx
-    simpa only [CentreCabling.sCentralizes, hz, map_intCast, mul_comm] using hColumn x
+    simpa only [Modular.sCentralizes, hz, map_intCast, mul_comm] using hColumn x
 
 end PropertyF.Ground
 end
@@ -176,7 +176,7 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
     (hdet : (Modular.categoricalS 𝒵ᶠ p).det ≠ 0)
     (hglobal : globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2)
     (hIntegral : HasIntegralSimpleDimensionsOn 𝒵ᶠ p core)
-    (hDouble : CentreCabling.sCentralizer 𝒵ᶠ p core ⊆ generated)
+    (hDouble : Modular.sCentralizer 𝒵ᶠ p core ⊆ generated)
     (hProduct : ∀ y ∈ generated, Centre.ProductRetract (simples 𝒵ᶠ y)) :
     WeaklyIntegral (globalFPDimension C) := by
   apply weaklyIntegral_of_galois_fixed (globalFPDimension_isIntegral C)

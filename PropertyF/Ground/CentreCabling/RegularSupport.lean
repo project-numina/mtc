@@ -13,24 +13,14 @@ numerical double-centralizer inclusion. The local notations `S D p` and
 `dim D p` denote the categorical S-matrix and simple dimensions.
 -/
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (HasFPSimpleDimensions HasRealSimpleDimensions)
+open PropertyF.Ground.Modular
+  (HasFPSimpleDimensions HasRealSimpleDimensions IsFPSpherical sCentralizes sCentralizer)
 open PropertyF.Ground.Dimensions
 open scoped BigOperators
 local notation "S" => PropertyF.Ground.Modular.categoricalS
 local notation "dim" => PropertyF.Ground.Modular.simpleDimension
 namespace PropertyF.Ground.CentreCabling
 universe v u
-variable (D : Ground.BraidedFusionCategory.{v,u})
-  (p : PivotalStructure (C := D.Obj))
-
-/-- Two simple labels satisfy the numerical S-matrix centrality test. -/
-abbrev sCentralizes (i j : Fin (rank D)) : Prop :=
-  S D p i j = dim D p i * dim D p j
-
-/-- The labels satisfying the numerical S-centrality test against a set. -/
-abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
-  {j | ∀ i ∈ A, sCentralizes D p i j}
-
 variable {D : Ground.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
 
@@ -100,12 +90,13 @@ theorem sum_mul_eq_mul_sum_of_supported {ι R : Type*} [Fintype ι] [Semiring R]
   · rw [hfg i hi, mul_assoc]
   · simp [hw i hi]
 
+variable {f : Fin (rank D) → ℂ} {core : Set (Fin (rank D))}
+
 include hp hdet hreal in
 /-- If the S-transform of a vector is supported on a set of labels and its
 unit coefficient is nonzero, any label centralizing that support has a
 nonzero dual coefficient in the original vector. -/
 theorem nonzero_dual_coefficient_of_sCentralizer
-    {f : Fin (rank D) → ℂ} {core : Set (Fin (rank D))}
     (hunit : f (unitIndex D) ≠ 0)
     (hsupport : FourierSupportedOn D p f core)
     {x : Fin (rank D)} (hx : ∀ y ∈ core, sCentralizes D p x y) :
@@ -125,22 +116,21 @@ theorem nonzero_dual_coefficient_of_sCentralizer
     (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit))
       (by simpa only [hz, mul_zero] using heq.symm)
 
-include hp hdet in
+include hdet in
 /-- A vector supported on generated labels proves the exact double-centralizer
 inclusion once its S-transform is supported on the chosen core. The support
 hypotheses are explicit: this theorem does not establish the required
 regular-vector identity. -/
 theorem doubleCentralizer_of_fourier_support
-    (hdim : HasFPSimpleDimensions D p)
-    {f : Fin (rank D) → ℂ} {core generated : Set (Fin (rank D))}
+    (hfp : IsFPSpherical D p) {generated : Set (Fin (rank D))}
     (hunit : f (unitIndex D) ≠ 0)
     (hgenerated : Function.support f ⊆ generated)
     (hsupport : FourierSupportedOn D p f core) :
     sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated <|
   (dualIndex_involutive D x) ▸
-    nonzero_dual_coefficient_of_sCentralizer hp hdet (realSimpleDimensions_of_fp hdim)
+    nonzero_dual_coefficient_of_sCentralizer hfp.1 hdet (realSimpleDimensions_of_fp hfp.2)
       hunit hsupport (x := dualIndex D x)
-      (fun y hy ↦ sCentralizes_dual hdim (sCentralizes_symm (hx y hy)))
+      (fun y hy ↦ sCentralizes_dual hfp.2 (sCentralizes_symm (hx y hy)))
 
 end PropertyF.Ground.CentreCabling
 
@@ -198,6 +188,11 @@ structure IsDualFusionClosed (D : Ground.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) : Prop where
   dual : ∀ a ∈ A, dualIndex D a ∈ A
   fusion : IsFusionClosed D A
+
+/-- A set of labels containing the unit and closed under duals and fusion. -/
+structure IsFusionSubring (D : Ground.BraidedFusionCategory.{v,u})
+    (A : Finset (Fin (rank D))) : Prop extends IsDualFusionClosed D A where
+  unit : unitIndex D ∈ A
 
 /-- Fusion coefficients vanish outside a fusion-closed set. -/
 theorem IsFusionClosed.fusionCoeff_eq_zero {A : Finset (Fin (rank D))}
@@ -270,16 +265,13 @@ theorem regularVector_fourier_support
 /-- Numerical double-centralizer theorem for a fusion-closed set of simple
 labels. The supplied core must contain its numerical S-centralizer. -/
 theorem doubleCentralizer_of_fusion_closed
-    (hp : p.IsSpherical)
-    (hdet : (S D p).det ≠ 0)
-    (hdim : HasFPSimpleDimensions D p)
+    (hfp : IsFPSpherical D p) (hdet : (S D p).det ≠ 0)
     {A : Finset (Fin (rank D))} {core : Set (Fin (rank D))}
-    (hunit : unitIndex D ∈ A)
-    (hA : IsDualFusionClosed D A)
+    (hA : IsFusionSubring D A)
     (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
     sCentralizer D p core ⊆ (↑A : Set _) :=
-  doubleCentralizer_of_fourier_support hp hdet hdim (f := regularVector D A)
-    (regularVector_ne_zero_iff.mpr hunit) (fun _ hi ↦ regularVector_ne_zero_iff.mp hi)
-    (regularVector_fourier_support hdim hA hcore)
+  doubleCentralizer_of_fourier_support hdet hfp (f := regularVector D A)
+    (regularVector_ne_zero_iff.mpr hA.unit) (fun _ hi ↦ regularVector_ne_zero_iff.mp hi)
+    (regularVector_fourier_support hfp.2 hA.toIsDualFusionClosed hcore)
 
 end PropertyF.Ground.CentreCabling

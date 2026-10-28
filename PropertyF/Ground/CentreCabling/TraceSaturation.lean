@@ -16,7 +16,7 @@ positive dimensions, trace saturation detects an identity, relating the
 categorical double braiding to its numerical S-matrix centrality test.
 -/
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (HasFPSimpleDimensions doubleBraiding)
+open PropertyF.Ground.Modular (HasFPSimpleDimensions doubleBraiding sCentralizes)
 open PropertyF.Ground.Dimensions
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
@@ -103,8 +103,7 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     (hdim : HasFPSimpleDimensions D p)
     {i j : Fin (rank D)}
     (hfinite : IsOfFinOrder (End.of (doubleBraiding (simples D i) (simples D j))))
-    (hs : Modular.categoricalS D p i j =
-      Modular.simpleDimension D p i * Modular.simpleDimension D p j) :
+    (hs : sCentralizes D p i j) :
     doubleBraiding (simples D i) (simples D j) = 𝟙 _ := by
   have ht : p.rightTrace (doubleBraiding (simples D i) (simples D j)) =
       p.rightTrace (𝟙 (simples D i ⊗ simples D j)) := by
