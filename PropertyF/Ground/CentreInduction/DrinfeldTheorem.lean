@@ -166,10 +166,9 @@ pseudo-unitary base, without assuming an initial pivotal structure. -/
 theorem positive_spherical_of_drinfeld_tensor (h : DrinfeldTensorLaw C)
     (hpu : PseudoUnitary C) :
     ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
-  apply Dimensions.eno_pseudoUnitary_yields_positive_spherical_of_nonunit_fourthDual_tensor C _ hpu
-  intro i j _ _
-  exact fourthDualIso_tensor_of_drinfeld C h (simples C i) (simples C j)
+      Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) :=
+  Dimensions.eno_pseudoUnitary_yields_positive_spherical_of_nonunit_fourthDual_tensor C
+    (fun i j _ _ ↦ fourthDualIso_tensor_of_drinfeld C h (simples C i) (simples C j)) hpu
 
 end PropertyF.Ground.CentreInduction
 
@@ -182,9 +181,8 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 
 /-- The canonical Drinfeld isomorphism satisfies its tensor law. -/
-theorem drinfeldTensorLaw (C : BraidedFusionCategory.{v,u}) : DrinfeldTensorLaw C := by
-  intro X Y
-  exact CentreIntegrate.drinfeld_tensor_of_pairing_cap C X Y
+theorem drinfeldTensorLaw (C : BraidedFusionCategory.{v,u}) : DrinfeldTensorLaw C :=
+  fun X Y ↦ CentreIntegrate.drinfeld_tensor_of_pairing_cap C X Y
     (Dimensions.drinfeld_tensor_pairing_cap C X Y)
 
 

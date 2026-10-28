@@ -13,14 +13,15 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 
-/-- Every transported base pivotal component is a morphism in the actual centre. -/
-theorem pivotalComponentsCentral_proved {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] [RigidCategory (CategoryTheory.Center D)]
-    (p : Dimensions.PivotalStructure (C := D)) :
-    PivotalComponentsCentral p := by
-  intro Z T
-  let F := CategoryTheory.Center.ofBraided D
-  let B := F.obj T
+/-- Transported pivotal components respect the braiding between centre objects. -/
+private theorem transported_pivotal_braiding {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] [RigidCategory (CategoryTheory.Center D)]
+    (p : Dimensions.PivotalStructure (C := D)) (Z B : CategoryTheory.Center D) :
+    let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
+      (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
+    (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
+      (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f := by
+  dsimp only
   let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
     (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
   have hu (X Y : CategoryTheory.Center D) :
@@ -36,13 +37,25 @@ theorem pivotalComponentsCentral_proved {D : Type u} [Category.{v} D] [MonoidalC
     (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (Dimensions.doubleDualTensorIso B Z).hom.f at hb
   simp only [Category.assoc] at hn
   rw [hb] at hn
-  have hc : b.f ≫ (u B ⊗ₘ u Z) =
-      (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f := by
-    let : IsIso (Dimensions.doubleDualTensorIso B Z).hom.f := by
-      change IsIso ((CategoryTheory.Center.forget D).map (Dimensions.doubleDualTensorIso B Z).hom)
-      infer_instance
-    apply (cancel_mono (Dimensions.doubleDualTensorIso B Z).hom.f).1
-    simpa [Category.assoc] using hn
+  let : IsIso (Dimensions.doubleDualTensorIso B Z).hom.f := by
+    change IsIso ((CategoryTheory.Center.forget D).map (Dimensions.doubleDualTensorIso B Z).hom)
+    infer_instance
+  apply (cancel_mono (Dimensions.doubleDualTensorIso B Z).hom.f).1
+  simpa [Category.assoc] using hn
+
+/-- Every transported base pivotal component is a morphism in the actual centre. -/
+theorem pivotalComponentsCentral_proved {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [BraidedCategory D] [RightRigidCategory D] [RigidCategory (CategoryTheory.Center D)]
+    (p : Dimensions.PivotalStructure (C := D)) :
+    PivotalComponentsCentral p := by
+  intro Z T
+  let F := CategoryTheory.Center.ofBraided D
+  let B := F.obj T
+  let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
+    (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
+  have hc := transported_pivotal_braiding p Z B
+  change (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
+    (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f at hc
   let j := (positivePivotalComponent p T).hom
   have hj : j.f = u B := by
     change _ = (p.iso T).hom ≫ (forgetDoubleDualIso B).inv
