@@ -2,6 +2,8 @@ module
 public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 
+open PropertyF.Ground.Dimensions
+
 /-! Naturality of the comparison between centre duals and base duals. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -9,8 +11,8 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (CategoryTheory.Center D)]
-local notation "𝒵" => CategoryTheory.Center D
+  [RigidCategory (Center D)]
+local notation "𝒵" => Center D
 
 omit [RightRigidCategory D] in
 /-- Forgetting a centre mate computes the mate for the forgotten dual pairings. -/
@@ -18,10 +20,10 @@ theorem forget_rightAdjointMate {X Y : 𝒵} (f : X ⟶ Y) :
     (fᘁ).f = @rightAdjointMate D _ _ X.1 Y.1
       (show HasRightDual X.1 from { rightDual := (Xᘁ).1, exact := forgetPairing X })
       (show HasRightDual Y.1 from { rightDual := (Yᘁ).1, exact := forgetPairing Y }) f.f := by
-  simp only [rightAdjointMate, CategoryTheory.Center.comp_f,
-    CategoryTheory.Center.rightUnitor_inv_f, CategoryTheory.Center.leftUnitor_hom_f,
-    CategoryTheory.Center.whiskerLeft_f, CategoryTheory.Center.whiskerRight_f,
-    CategoryTheory.Center.associator_inv_f]
+  simp only [rightAdjointMate, Center.comp_f,
+    Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
+    Center.whiskerLeft_f, Center.whiskerRight_f,
+    Center.associator_inv_f]
   rfl
 
 /-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
@@ -35,19 +37,19 @@ theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
       (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
   have hmate := congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
   simp only [comp_rightAdjointMate] at hmate
-  simp only [forgetDoubleDualIso, Iso.trans_hom, Dimensions.rightDualIsoMap,
+  simp only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap,
     Iso.symm_hom, Category.assoc]
   rw [← Category.assoc, forgetDualIso_natural (fᘁ)]
   simp only [Category.assoc]
   congr 1
-  change (fᘁ).fᘁ ≫ (Dimensions.rightDualIsoMap (forgetDualIso Y)).inv =
-    (Dimensions.rightDualIsoMap (forgetDualIso X)).inv ≫ ((f.fᘁ)ᘁ)
+  change (fᘁ).fᘁ ≫ (rightDualIsoMap (forgetDualIso Y)).inv =
+    (rightDualIsoMap (forgetDualIso X)).inv ≫ ((f.fᘁ)ᘁ)
   rw [Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
   exact hmate
 
 /-- The transported pivotal components are natural on centre morphisms. -/
 theorem transported_pivotal_natural
-    (p : Dimensions.PivotalStructure (C := D))
+    (p : PivotalStructure (C := D))
     {X Y : 𝒵} (f : X ⟶ Y) :
     f.f ≫ (p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv =
       (p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv ≫ ((fᘁ)ᘁ).f := by
@@ -97,8 +99,8 @@ private theorem rightDualIso_tensor_evaluation {X Y A B A' B' : D}
         (b ▷ ((𝟙_ D) ⊗ Y)) ⊗≫ ε_ Y B' := by monoidal
     _ = 𝟙 _ ⊗≫ B ◁ ((a ▷ X ≫ ε_ X A') ▷ Y) ⊗≫
         (b ▷ Y ≫ ε_ Y B') := by monoidal
-    _ = _ := by rw [Dimensions.rightDualIso_evaluation pX qX,
-      Dimensions.rightDualIso_evaluation pY qY]
+    _ = _ := by rw [rightDualIso_evaluation pX qX,
+      rightDualIso_evaluation pY qY]
 
 /-- The canonical comparison of duals preserves tensor products of pairings. -/
 theorem rightDualIso_tensor {X Y A B A' B' : D}
@@ -116,8 +118,8 @@ theorem rightDualIso_tensor {X Y A B A' B' : D}
   let : ExactPairing Y B := pY
   let : ExactPairing X A' := qX
   let : ExactPairing Y B' := qY
-  exact Dimensions.evaluation_ext
-    ((Dimensions.rightDualIso_evaluation
+  exact evaluation_ext
+    ((rightDualIso_evaluation
       (inferInstance : ExactPairing (X ⊗ Y) (B ⊗ A))
       (inferInstance : ExactPairing (X ⊗ Y) (B' ⊗ A'))).trans
       (rightDualIso_tensor_evaluation pX qX pY qY).symm)
@@ -132,7 +134,8 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (CategoryTheory.Center D)]
+  [RigidCategory (Center D)]
+local notation "𝒵" => Center D
 
 theorem rightDualIso_trans {E : Type u} [Category.{v} E] [MonoidalCategory E]
     {X A B E : E} (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X E) :
@@ -141,7 +144,7 @@ theorem rightDualIso_trans {E : Type u} [Category.{v} E] [MonoidalCategory E]
 
 omit [RightRigidCategory D] in
 /-- The forgotten tensor dual agrees with the tensor pairing of forgotten duals. -/
-theorem forget_rightDualTensorIso (X Y : CategoryTheory.Center D) :
+theorem forget_rightDualTensorIso (X Y : 𝒵) :
     (rightDualTensorIso X Y).hom.f =
       (rightDualIso (forgetPairing (X ⊗ Y))
         (show ExactPairing (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1) from
@@ -158,14 +161,14 @@ theorem forget_rightDualTensorIso (X Y : CategoryTheory.Center D) :
       (cx ⊗≫ (X.1 ◁ cy) ▷ (Xᘁ).1 ⊗≫ 𝟙 ((X.1 ⊗ Y.1) ⊗ ((Yᘁ).1 ⊗ (Xᘁ).1)))
     simp [monoidalComp, cx, cy]
   unfold rightDualTensorIso rightDualIso rightAdjointMate
-  simp only [CategoryTheory.Center.comp_f, CategoryTheory.Center.rightUnitor_inv_f,
-    CategoryTheory.Center.leftUnitor_hom_f, CategoryTheory.Center.whiskerLeft_f,
-    CategoryTheory.Center.whiskerRight_f, CategoryTheory.Center.associator_inv_f,
-    CategoryTheory.Center.id_f, hc]
+  simp only [Center.comp_f, Center.rightUnitor_inv_f,
+    Center.leftUnitor_hom_f, Center.whiskerLeft_f,
+    Center.whiskerRight_f, Center.associator_inv_f,
+    Center.id_f, hc]
   rfl
 
 /-- Forgetting centre duals preserves their tensor comparison. -/
-theorem forgetDualIso_tensor (X Y : CategoryTheory.Center D) :
+theorem forgetDualIso_tensor (X Y : 𝒵) :
     (forgetDualIso (X ⊗ Y)).hom ≫ (rightDualTensorIso X.1 Y.1).hom =
       (rightDualTensorIso X Y).hom.f ≫
         ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) := by

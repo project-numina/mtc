@@ -70,12 +70,12 @@ include h
 /-- Semilinear equivalences preserve the dimensions of Hom spaces. -/
 theorem conjugate_hom_finrank (X Y : C.Obj) :
     Module.finrank ℂ (X ⟶ Y) =
-      Module.finrank ℂ (h.equivalence.functor.obj X ⟶ h.equivalence.functor.obj Y) := by
+      Module.finrank ℂ (h.equivalence.functor.obj X ⟶ h.equivalence.functor.obj Y) :=
   let F := h.equivalence.functor
-  let _ : F.Additive := F.additive_of_preserves_binary_products
+  let : F.Additive := F.additive_of_preserves_binary_products
   let eqv : (X ⟶ Y) ≃+ (F.obj X ⟶ F.obj Y) :=
     AddEquiv.ofBijective F.mapAddHom ⟨F.map_injective, F.map_surjective⟩
-  simpa only [Cardinal.toNat_lift, Module.finrank] using
+  by simpa only [Cardinal.toNat_lift, Module.finrank] using
     congrArg Cardinal.toNat (lift_rank_eq_of_equiv_equiv σ eqv σ.bijective (fun z f => h.map_smul z f))
 
 section
@@ -99,12 +99,12 @@ theorem conjugate_fusionCoeff (i j k : Fin (rank C)) : fusionCoeff C i j k = fus
 
 /-- Conjugation transports the target's fusion matrix by reindexing. -/
 theorem conjugate_fusionMatrix (i : Fin (rank C)) :
-    Matrix.reindexAlgEquiv ℂ ℂ e (fusionMatrix C i) = fusionMatrix D (e i) := by
-  ext k j
-  have hc := conjugate_fusionCoeff h he i (e.symm j) (e.symm k)
-  simp only [e.apply_symm_apply] at hc
-  simpa only [fusionCoeff, fusionMatrix, Matrix.coe_reindexAlgEquiv, Matrix.reindex_apply,
-    Matrix.submatrix_apply] using congrArg (fun n : ℕ => (n : ℂ)) hc
+    Matrix.reindexAlgEquiv ℂ ℂ e (fusionMatrix C i) = fusionMatrix D (e i) :=
+  Matrix.ext fun k j ↦ by
+    have hc := conjugate_fusionCoeff h he i (e.symm j) (e.symm k)
+    simp only [e.apply_symm_apply] at hc
+    simpa only [fusionCoeff, fusionMatrix, Matrix.coe_reindexAlgEquiv, Matrix.reindex_apply,
+      Matrix.submatrix_apply] using congrArg (fun n : ℕ => (n : ℂ)) hc
 
 /-- The spectral-radius FP dimensions are invariant under Galois conjugation. -/
 theorem conjugate_fpSimple (i : Fin (rank C)) : fpSimple C i = fpSimple D (e i) := by

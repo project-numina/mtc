@@ -44,25 +44,18 @@ lemma braid_first_with_comparison (X A : C) {B : D} (g : B ≅ F.obj A) :
     let h := (F.obj X ◁ (F.obj X ◁ g.hom)) ≫
       (F.obj X ◁ (μIso F X A).hom) ≫ (μIso F X (X ⊗ A)).hom
     (firstBraiding (F.obj X) B).hom ≫ h = h ≫ F.map (firstBraiding X A).hom := by
-  dsimp only
   have hn := braid_first (Iso.refl (F.obj X)) g
   simp only [tensorIso_hom, Iso.refl_hom, id_tensorHom] at hn
-  rw [← Category.assoc, hn]
-  simpa only [Category.assoc] using
-    congrArg (fun k => (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ k) (braid_first_functor F X A)
+  simpa only [← Category.assoc, hn] using
+    congrArg (fun k ↦ (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ k) (braid_first_functor F X A)
 
 
 /-- Functoriality of the first generator on any tensor power. -/
 lemma braid_first_power (X : C) (n : ℕ) :
     (braidGenerator (F.obj X) n 0).asIso.hom ≫ (tensorPowerComparison F X (n+2)).hom =
       (tensorPowerComparison F X (n+2)).hom ≫ F.map (braidGenerator X n 0).asIso.hom := by
-  rw [braidGenerator_zero, braidGenerator_zero]
-  let e := (Iso.refl (F.obj X) ⊗ᵢ ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X n) ≪≫
-    μIso F X (tensorPower X n))) ≪≫ μIso F X (X ⊗ tensorPower X n)
-  change (firstBraiding (F.obj X) (tensorPower (F.obj X) n)).hom ≫ e.hom =
-    e.hom ≫ F.map (firstBraiding X (tensorPower X n)).hom
-  simp only [e, Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom, whiskerLeft_comp,
-    Category.assoc]
+  simp only [braidGenerator_zero, tensorPowerComparison, tensorPower, Iso.trans_hom, tensorIso_hom,
+    Iso.refl_hom, id_tensorHom, whiskerLeft_comp, Category.assoc]
   simpa only [Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom, Category.assoc] using
     braid_first_with_comparison F X (tensorPower X n) (tensorPowerComparison F X n)
 

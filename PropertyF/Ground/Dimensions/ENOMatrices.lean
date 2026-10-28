@@ -178,11 +178,9 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
   have hnonneg (k : ι) : 0 ≤ (N k - (x k).re) * f k :=
     mul_nonneg (sub_nonneg.mpr (le_trans (Complex.re_le_norm _) (hdom k))) (le_of_lt (hf k))
   have hsum : ∑ k, (N k - (x k).re) * f k = 0 := by
-    have hr := congrArg Complex.re heq
-    simp only [Complex.re_sum, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
-      mul_zero, sub_zero] at hr
-    simp only [sub_mul, Finset.sum_sub_distrib]
-    linarith
+    simpa only [Complex.re_sum, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+      mul_zero, sub_zero, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] using
+      (congrArg Complex.re heq).symm
   intro k
   have hz := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => hnonneg j)).1 hsum k (Finset.mem_univ k)
   have hre : (x k).re = N k :=
@@ -212,10 +210,8 @@ theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
   have hf : ∀ i, 0 < f i := fpSimple_pos C
   have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ norm_div_ofReal_eq_one (hf i) (hd i)
   have hqn : ∀ i, q i ≠ 0 := fun i => norm_pos_iff.mp (by rw [hq]; norm_num)
-  have hrepr : ∀ i, q i * (f i : ℂ) = d i := by
-    intro i
-    dsimp [q]
-    field_simp [show (f i : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (hf i))]
+  have hrepr (i) : q i * (f i : ℂ) = d i :=
+    div_mul_cancel₀ _ (by exact_mod_cast (ne_of_gt (hf i)))
   intro i j k
   let x : Fin (rank C) → ℂ := fun l => T i j l * q l / (q i * q j)
   have hx : ∀ l, ‖x l‖ ≤ (fusionCoeff C i j l : ℝ) := by
@@ -228,8 +224,7 @@ theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
     calc
       _ = (∑ l, T i j l * d l) / (q i * q j) := by
         rw [Finset.sum_div]
-        apply Finset.sum_congr rfl
-        intro l _
+        refine Finset.sum_congr rfl fun l _ ↦ ?_
         rw [← hrepr l]
         dsimp [x]
         ring

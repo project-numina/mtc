@@ -63,12 +63,8 @@ variable (p : PivotalStructure (C := D)) (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
 theorem balance_of_drinfeld_tensor {X Y : D} (h : HasDrinfeldTensorEquation d X Y) :
     (relativeTwist p d (X ⊗ Y)).hom =
       (relativeTwist p d X ⊗ᵢ relativeTwist p d Y).hom ≫ Modular.doubleBraiding X Y := by
-  dsimp only [HasDrinfeldTensorEquation] at h
-  simp only [relativeTwist, Iso.trans_hom, Iso.symm_hom, tensorIso_hom]
   apply (cancel_mono (d (X ⊗ Y)).hom).1
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [h, p.tensor, ← Category.assoc, tensorHom_comp_tensorHom]
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+  simp [relativeTwist, Category.assoc, h, p.tensor]
 
 /-- In the usual convention, twist balancing has monodromy first. -/
 theorem pivotal_balance_of_drinfeld_tensor {X Y : D} (h : HasDrinfeldTensorEquation d X Y) :

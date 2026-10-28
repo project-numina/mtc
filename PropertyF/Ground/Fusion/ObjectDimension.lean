@@ -77,11 +77,7 @@ theorem tensor_multiplicity_expanded (X Y : D.Obj)
   rw [tensor_multiplicity]
   simp_rw [he, Finset.mul_sum]
   rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro i _
-  apply Finset.sum_congr rfl
-  intro j _
-  ring
+  simp only [mul_assoc, mul_comm]
 
 /-- FP dimension is multiplicative on tensor products. -/
 theorem fpDimension_tensor (X Y : D.Obj) :
@@ -93,16 +89,11 @@ theorem fpDimension_tensor (X Y : D.Obj) :
     _ = ∑ i, ∑ j, (Module.finrank ℂ (simples D i ⟶ X) : ℝ) *
         (Module.finrank ℂ (simples D j ⟶ Y) : ℝ) *
         (∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k) := by
-      simp only [Finset.sum_mul, Finset.mul_sum]
+      simp only [Finset.sum_mul, Finset.mul_sum, mul_assoc]
       rw [Finset.sum_comm]
       apply Finset.sum_congr rfl
       intro i _
       rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro j _
-      apply Finset.sum_congr rfl
-      intro k _
-      ring
     _ = ∑ i, ∑ j, (Module.finrank ℂ (simples D i ⟶ X) : ℝ) *
         (Module.finrank ℂ (simples D j ⟶ Y) : ℝ) *
         (fpSimple D i * fpSimple D j) := by
@@ -110,11 +101,7 @@ theorem fpDimension_tensor (X Y : D.Obj) :
     _ = _ := by
       simp only [Finset.sum_mul, Finset.mul_sum]
       conv_rhs => rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro i _
-      apply Finset.sum_congr rfl
-      intro j _
-      ring
+      simp only [mul_assoc, mul_left_comm, mul_comm]
 
 /-- Multiplicity of a simple in a dual object equals the multiplicity of its
 dual in the original object. -/
@@ -201,11 +188,8 @@ theorem fpDimension_functor (C : BraidedFusionCategory.{v,u})
     apply lt_of_lt_of_le zero_lt_one
     apply one_le_fpDimension
     intro hz
-    have hid : (𝟙 (simples C i) : simples C i ⟶ simples C i) = 0 := by
-      apply F.map_injective
-      simpa using ((IsZero.iff_id_eq_zero _).mp hz)
     let : Simple (simples C i) := simples_simple C i
-    exact id_nonzero _ hid
+    exact id_nonzero _ (F.map_eq_zero_iff.mp (by simpa using (IsZero.iff_id_eq_zero _).mp hz))
   have hunit : f (unitIndex C) = 1 := by
     obtain ⟨e⟩ := unitIndex_iso C
     rw [show f (unitIndex C) = fpDimension D (𝟙_ D.Obj) from
