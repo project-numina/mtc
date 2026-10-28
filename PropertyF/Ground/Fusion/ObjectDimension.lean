@@ -125,8 +125,7 @@ theorem fpDimension_biproduct {ι : Type} [Fintype ι] (V : ι → D.Obj) :
     fpDimension D (⨁ V) = ∑ i, fpDimension D (V i) := by
   classical
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  unfold fpDimension
-  simp_rw [finrank_hom_biproduct, Nat.cast_sum, Finset.sum_mul]
+  simp only [fpDimension, finrank_hom_biproduct, Nat.cast_sum, Finset.sum_mul]
   exact Finset.sum_comm
 
 /-- Applying an additive functor to a canonical decomposition expresses the
@@ -135,12 +134,10 @@ theorem fpDimension_functor_decomposition (F : C.Obj ⥤ D.Obj) [F.Additive] (X 
     fpDimension D (F.obj X) = ∑ i,
       (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) := by
   classical
-  let m : Fin (rank C) → ℕ := fun i => simpleMultiplicity C i X
-  let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
   obtain ⟨e⟩ := exists_canonical_decomposition C X
-  rw [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct V), fpDimension_biproduct,
+  rw [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
     Fintype.sum_sigma]
-  simp [V, m]
+  simp
 
 /-- An additive faithful strong monoidal functor preserves FP dimension. -/
 theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal]

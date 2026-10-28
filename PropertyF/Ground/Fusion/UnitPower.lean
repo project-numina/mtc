@@ -182,11 +182,11 @@ theorem generatedBy_rightDual (X : D) :
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := D)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → D := fun p => T p.1
-  have hv (p : Σ i, Fin (m i)) : GeneratedBy X (V p) := by
-    apply generatedBy_retract (generatedBy_self X)
-    exact { i := biproduct.ι V p ≫ e.inv
-            r := e.hom ≫ biproduct.π V p
-            retract := by simp [Category.assoc] }
+  have hv (p : Σ i, Fin (m i)) : GeneratedBy X (V p) :=
+    generatedBy_retract (generatedBy_self X)
+      { i := biproduct.ι V p ≫ e.inv
+        r := e.hom ≫ biproduct.π V p
+        retract := by simp [Category.assoc] }
   exact generatedBy_of_iso
     (generatedBy_retract (generatedBy_finiteBiproduct _ fun p ↦
       letI : Simple (V p) := hsimple p.1
