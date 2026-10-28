@@ -91,9 +91,9 @@ theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
     η_ A Aᘁ ≫ (e.hom ▷ Aᘁ) ≫ (λ_ Aᘁ).hom ≫
       (rightDualIsoMap e.symm).hom = 𝟙 (𝟙_ D) := by
   let : HasRightDual (𝟙_ D) := hasRightDualUnit
-  have hc : η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm).hom) = (ρ_ (𝟙_ D)).inv :=
-    coevaluation_iso_map e
-  rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc, hc]
+  rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc,
+    show η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm).hom) = (ρ_ (𝟙_ D)).inv from
+      coevaluation_iso_map e]
   monoidal_coherence
 
 end PropertyF.Ground.CentreInduction
