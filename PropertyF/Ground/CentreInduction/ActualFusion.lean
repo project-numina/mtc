@@ -224,14 +224,8 @@ set_option backward.defeqAttrib.useBackward true in
 theorem globalFPDimension_eq_induction_sum [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ =
       ∑ i, fpSimple C i * fpDimension 𝒵ᶠ ((induction C).obj (simples C i)) := by
-  let I (i : Fin (rank C)) := (induction C).obj (simples C i)
-  have hadj (i : Fin (rank C)) (j : Fin (rank 𝒵ᶠ)) :
-      Module.finrank ℂ ((simples 𝒵ᶠ j : 𝒵) ⟶ I i) =
-      Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) :=
-    finrank_hom_induction C (simples 𝒵ᶠ j) (simples C i)
-  change globalFPDimension 𝒵ᶠ = ∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i)
   symm
-  simp_rw [fpDimension, hadj, Finset.mul_sum]
+  simp_rw [fpDimension, finrank_hom_induction C, Finset.mul_sum]
   rw [Finset.sum_comm]
   simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
     ← Finset.mul_sum, ← center_fpDimension_eq_sum_to_simple C, fpDimension_simple]
