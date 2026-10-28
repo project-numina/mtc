@@ -49,10 +49,9 @@ def transportedPivotalHom (Z : 𝒵) :
 
 /-- The transported pivotal components are natural on centre morphisms. -/
 theorem transported_pivotal_natural (f : X ⟶ Y) :
-    f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f := by
-  dsimp only [transportedPivotalHom]
-  rw [← Category.assoc, Iso.comp_inv_eq]
-  simpa only [Category.assoc, forgetDoubleDualIso_natural, Iso.inv_hom_id_assoc] using p.naturality f.f
+    f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f :=
+  (cancel_mono (forgetDoubleDualIso Y).hom).1 <| by
+    simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_natural] using p.naturality f.f
 
 end PropertyF.Ground.CentreInduction
 

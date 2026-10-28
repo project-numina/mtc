@@ -83,14 +83,12 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Catego
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 variable {A : D}
-/-- Use the chosen rigid dual for the tensor unit in these comparisons. -/
-local instance instUnitHasRightDual : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component followed by a map can be expressed through a crossing. -/
-theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N) (t : M ⟶ N) (w : N ⟶ X) :
+theorem unitComponent_reduce {M N X S : D} [HasRightDual S] (b : N ⊗ S ⟶ S ⊗ N) (t : M ⟶ N) (w : N ⟶ X) :
     t ≫ ((ρ_ N).inv ≫ (N ◁ η_ S (Sᘁ)) ≫ (α_ N S (Sᘁ)).inv ≫ (b ▷ Sᘁ)) ≫
       ((S ◁ w) ▷ Sᘁ) =
     𝟙 _ ⊗≫ (M ◁ η_ S (Sᘁ)) ⊗≫ ((t ▷ S ≫ b ≫ (S ◁ w)) ▷ Sᘁ) ⊗≫ 𝟙 _ := by
@@ -101,30 +99,25 @@ theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N) (t : M ⟶ 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Evaluation is normalized along an isomorphism with the tensor unit. -/
-theorem evaluation_iso_unit (e : A ≅ 𝟙_ D) :
-    ((rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom ⊗ₘ e.hom) ≫
-      (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) := by
-  let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
-  simp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
-    tensorHom_def', comp_whiskerRight, Category.assoc,
-    show rightDualUnitIso.hom ▷ (𝟙_ D) ≫ (ρ_ (𝟙_ D)).hom =
-      ε_ (𝟙_ D) ((𝟙_ D)ᘁ) from rightDualIso_evaluation HasRightDual.exact exactPairingUnit,
-    rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
-    whiskerLeft_id, Category.id_comp]
+theorem evaluation_iso_unit [HasRightDual A] (e : A ≅ 𝟙_ D) :
+    ((rightDualIsoMap e.symm).hom ⊗ₘ e.hom) ≫
+      (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) :=
+  evaluation_iso_map e
 
 variable (X T : D)
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Closing the right unit isomorphism gives ordinary evaluation. -/
-theorem close_rightUnit_eval (e : A ≅ 𝟙_ D) :
+theorem close_rightUnit_eval [HasRightDual A] [HasRightDual T] (e : A ≅ 𝟙_ D) :
     closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
-      (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom = ε_ T (Tᘁ) := by
-  let d := (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom
+      (rightDualIsoMap e.symm).hom = ε_ T (Tᘁ) := by
+  let d : Aᘁ ⟶ 𝟙_ D := (rightDualIsoMap e.symm).hom
   let z := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
   have h := closeFusionMap_evaluation ((T ◁ e.hom) ≫ (ρ_ T).hom)
   simp only [← evaluation_iso_unit e, tensorHom_def', monoidalComp, whiskerLeft_comp,
     Category.assoc, whisker_exchange_assoc, ← comp_whiskerRight_assoc] at h
+  change (z ≫ d) ▷ A ≫ (𝟙_ D ◁ e.hom) ≫ (ρ_ (𝟙_ D)).hom = _ at h
   change z ≫ d = ε_ T (Tᘁ)
   apply (cancel_epi ((((Tᘁ : D) ⊗ T) ◁ e.hom) ≫ (ρ_ (Tᘁ ⊗ T)).hom)).1
   calc
@@ -138,12 +131,12 @@ theorem close_rightUnit_eval (e : A ≅ 𝟙_ D) :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The canonical unit-column crossing block contracts by evaluation. -/
-theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
+theorem crossingUnitBlock_eval [HasRightDual A] [HasRightDual T] (e : A ≅ 𝟙_ D) :
   let te : T ⊗ A ≅ T := whiskerLeftIso T e ≪≫ ρ_ T
   crossingBlock X T A te.inv te.hom ≫ (T ◁ (unitTensorIso e X).hom) =
     𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
   dsimp only [unitTensorIso]
-  set δ : Aᘁ ≅ 𝟙_ D := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
+  set δ : Aᘁ ≅ 𝟙_ D := rightDualIsoMap e.symm
   have hq : closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫ δ.hom = ε_ T (Tᘁ) :=
     close_rightUnit_eval T e
   clear_value δ

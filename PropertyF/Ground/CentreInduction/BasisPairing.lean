@@ -68,19 +68,21 @@ theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
 
 /-- A mixed crossing block, with the input and output test strands allowed
 to differ, is bilinear in its two fusion morphisms. -/
-def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (X T U R S : D) : (R ⟶ U ⊗ S) →ₗ[k]
-      (T ⊗ S ⟶ R) →ₗ[k] (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
+def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (X T U R S : D)
+    [HasRightDual R] [HasRightDual S] :
+    (R ⟶ U ⊗ S) →ₗ[k] (T ⊗ S ⟶ R) →ₗ[k]
+      (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
   toFun g := {
     toFun := fun f => mixedCrossing X T U g f
     map_add' := by
       intro f f'
-      simp [mixedCrossing, closeFusionMap, rightAdjointMate, Category.assoc,
+      simp [mixedCrossing, closeFusionMap, tensorRightHomEquiv, Category.assoc,
         tensorHom_def, MonoidalPreadditive.whiskerLeft_add, MonoidalPreadditive.add_whiskerRight,
        Preadditive.comp_add, Preadditive.add_comp]
     map_smul' := by
       intro r f
-      simp [mixedCrossing, closeFusionMap, rightAdjointMate, Category.assoc,
+      simp [mixedCrossing, closeFusionMap, tensorRightHomEquiv, Category.assoc,
         tensorHom_def, MonoidalLinear.whiskerLeft_smul, MonoidalLinear.smul_whiskerRight,
        Linear.comp_smul, Linear.smul_comp] }
   map_add' := by
@@ -148,23 +150,23 @@ variable (C : BraidedFusionCategory.{v,u})
 local notation "Sᶜ" => simples C
 attribute [local instance] Abelian.hasFiniteBiproducts
 
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 variable {T U R S : D}
+
+section
+variable [HasRightDual S] [HasRightDual R]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The closed fusion map is characterized by its evaluation pairing. -/
 theorem closeFusionMap_evaluation (f : T ⊗ S ⟶ R) :
     (closeFusionMap T S f ▷ S) ≫ ε_ S (Sᘁ) =
       𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
-  calc
-    _ = 𝟙 _ ⊗≫ ((fᘁ ▷ (T ⊗ S)) ≫ ε_ (T ⊗ S) ((T ⊗ S)ᘁ)) := by
-      erw [← Dimensions.rightDualIso_evaluation
-        (@HasRightDual.exact D _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
-        (ExactPairing.tensor (X₁ := T) (X₂ := S) (Y₁ := Tᘁ) (Y₂ := Sᘁ)),
-        ExactPairing.tensor_evaluation]
-      dsimp [closeFusionMap]
-      monoidal
-    _ = _ := by rw [rightAdjointMate_comp_evaluation]; monoidal
+  apply (tensorRightHomEquiv (Rᘁ ⊗ T) S Sᘁ (𝟙_ D)).injective
+  rw [tensorRightHomEquiv_whiskerRight_comp_evaluation]
+  have hc : 𝟙 ((Rᘁ ⊗ T) ⊗ S) ⊗≫ (Rᘁ ◁ f) ⊗≫ ε_ R Rᘁ =
+      (α_ Rᘁ T S).hom ≫ (Rᘁ ◁ f) ≫ ε_ R Rᘁ := by monoidal
+  rw [hc]
+  simp [closeFusionMap]
 
 
 set_option backward.isDefEq.respectTransparency false in
@@ -200,6 +202,7 @@ theorem crossingBlock_pre_test (h : T ⟶ U)
   simp only [crossingBlock, mixedCrossing, tensorHom_def, Category.assoc]
   rw [associator_naturality_right_assoc, ← whisker_exchange_assoc, ← whiskerLeft_comp_assoc,
     closeFusionMap_pre_test, whisker_exchange_assoc]
+end
 
 variable (X : C.Obj)
 

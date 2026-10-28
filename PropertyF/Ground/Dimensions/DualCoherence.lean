@@ -25,6 +25,13 @@ theorem coevaluation_iso_map {X Y : C} [HasRightDual X] [HasRightDual Y] (a : X 
     coevaluation_comp_rightAdjointMate, Category.assoc, ← comp_whiskerRight,
     Iso.inv_hom_id, id_whiskerRight, Category.comp_id]
 
+/-- Evaluation is preserved when an object and its chosen right dual are transported
+along an isomorphism. -/
+theorem evaluation_iso_map {X Y : C} [HasRightDual X] [HasRightDual Y] (a : X ≅ Y) :
+    ((a.invᘁ) ⊗ₘ a.hom) ≫ ε_ Y (Yᘁ) = ε_ X (Xᘁ) := by
+  simp only [tensorHom_def', Category.assoc]
+  erw [rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
+    whiskerLeft_id, Category.id_comp]
 
 section
 variable {X Y Z : C}

@@ -48,10 +48,10 @@ theorem forgetDoubleDualIso_tensor :
 /-- The transported pivotal components satisfy the tensor law after forgetting. -/
 theorem transported_pivotal_tensor :
     (transportedPivotalHom p X ⊗ₘ transportedPivotalHom p Y) ≫
-      (doubleDualTensorIso X Y).hom.f = transportedPivotalHom p (X ⊗ Y) := by
-  dsimp only [transportedPivotalHom]
-  rw [Iso.eq_comp_inv, Category.assoc, forgetDoubleDualIso_tensor]
-  simpa [Category.assoc] using (p.tensor X.1 Y.1).symm
+      (doubleDualTensorIso X Y).hom.f = transportedPivotalHom p (X ⊗ Y) :=
+  (Iso.eq_comp_inv (forgetDoubleDualIso (X ⊗ Y))).2 <| by
+    simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_tensor] using
+      (p.tensor X.1 Y.1).symm
 
 /-! Unit coherence of centre dual and pivotal comparisons. -/
 

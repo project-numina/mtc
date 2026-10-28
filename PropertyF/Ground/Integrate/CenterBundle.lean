@@ -22,29 +22,31 @@ section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Integrate
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+variable [LeftRigidCategory C] [RightRigidCategory C]
+variable (Z : CategoryTheory.Center C)
 
 /-- A half-braiding is a natural isomorphism of the two tensor functors. -/
-def halfBraidingIso (Z : CategoryTheory.Center C) : tensorLeft Z.1 ≅ tensorRight Z.1 :=
+def halfBraidingIso : tensorLeft Z.1 ≅ tensorRight Z.1 :=
   NatIso.ofComponents Z.2.β (fun f => Z.2.naturality f)
 
 /-- Mate the half-braiding through the left adjoints of the tensor functors. -/
-def dualMateIso (Z : CategoryTheory.Center C) : tensorLeft (Z.1ᘁ) ≅ tensorRight (ᘁZ.1) := by
+def dualMateIso : tensorLeft (Z.1ᘁ) ≅ tensorRight (ᘁZ.1) := by
   let L := tensorLeftAdjunction Z.1 (Z.1ᘁ)
   let R := tensorRightAdjunction (ᘁZ.1) Z.1
   exact ((conjugateIsoEquiv L R).symm (halfBraidingIso Z)).symm
 
 /-- Evaluating the mate at the unit identifies the chosen right and left duals. -/
-def dualMateUnit (Z : CategoryTheory.Center C) : (Z.1ᘁ) ≅ (ᘁZ.1) :=
+def dualMateUnit : (Z.1ᘁ) ≅ (ᘁZ.1) :=
   (ρ_ (Z.1ᘁ)).symm ≪≫ (dualMateIso Z).app (𝟙_ C) ≪≫ (λ_ (ᘁZ.1))
 
 /-- Normalize the mate using its unit component, obtaining a natural family
 of isomorphisms on the chosen right dual. -/
-def dualCrossingIso (Z : CategoryTheory.Center C) : tensorLeft (Z.1ᘁ) ≅ tensorRight (Z.1ᘁ) :=
+def dualCrossingIso : tensorLeft (Z.1ᘁ) ≅ tensorRight (Z.1ᘁ) :=
   dualMateIso Z ≪≫ (tensoringRight C).mapIso (dualMateUnit Z).symm
 
 /-- The normalized family is natural in the crossing object. -/
-theorem dualCrossing_natural (Z : CategoryTheory.Center C) {U V : C} (f : U ⟶ V) :
+theorem dualCrossing_natural {U V : C} (f : U ⟶ V) :
     (Z.1ᘁ) ◁ f ≫ ((dualCrossingIso Z).app V).hom =
       ((dualCrossingIso Z).app U).hom ≫ f ▷ (Z.1ᘁ) :=
   (dualCrossingIso Z).hom.naturality f
