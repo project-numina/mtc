@@ -33,10 +33,9 @@ theorem pivotalDimension_dual_eq_conj
     (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
     pivotalDimension C p (simples C (dualIndex C i)) =
       star (pivotalDimension C p (simples C i)) :=
-  fusion_character_dual_eq_conj (N := fusionCoeff C) (d := dualIndex C) (i₀ := unitIndex C)
+  fusion_character_dual_eq_conj (i₀ := unitIndex C)
     (fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm)
-    ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
-    (pivotalDimension_character C p) i
+    ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero) (pivotalDimension_character C p) i
 
 
 end PropertyF.Ground.Dimensions
@@ -59,8 +58,7 @@ theorem scalar_sq_eq_one_of_same_square {X : D} [HasRightDual X] [HasRightDual (
     (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 :=
   smul_left_injective k (mono_ne_zero_of_id_ne_zero
     (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom (id_nonzero X)) (by
-      simpa only [Iso.trans_hom, rightDualIsoMap, hz, rightAdjointMate_smul,
-        Linear.smul_comp, Linear.comp_smul, smul_smul, one_smul] using hsq)
+      simpa [rightDualIsoMap, hz, rightAdjointMate_smul, smul_smul] using hsq)
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] IsFusionCategory.hom_finite

@@ -115,9 +115,8 @@ theorem rightQuantumTrace_iso :
 theorem dual_components_natural :
     (e.invᘁ) ≫ (rightDualIsoMap k).symm.hom =
       (rightDualIsoMap j).symm.hom ≫ ((e.invᘁ)ᘁ)ᘁ := by
-  simpa only [Iso.trans_inv, comp_rightAdjointMate, rightDualIsoMap, Iso.symm_hom] using
-    congrArg (fun (a : X ≅ (Yᘁ)ᘁ) ↦ a.invᘁ)
-      (Iso.ext hnat : e ≪≫ k = j ≪≫ rightDualIsoMap (rightDualIsoMap e))
+  simpa [rightDualIsoMap, comp_rightAdjointMate] using congrArg (fun (a : X ≅ (Yᘁ)ᘁ) ↦ a.invᘁ)
+    (Iso.ext hnat : e ≪≫ k = j ≪≫ rightDualIsoMap (rightDualIsoMap e))
 
 /-- Both quantum traces are preserved when double-dual components are
 transported across an object isomorphism. -/
@@ -143,9 +142,8 @@ theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
     {X Y : C} (f : X ⟶ Y) :
     (fᘁ) ≫ (rightDualIsoMap (p.iso X)).symm.hom =
       (rightDualIsoMap (p.iso Y)).symm.hom ≫ ((fᘁ)ᘁ)ᘁ := by
-  simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using
-    congrArg (fun (a : (Xᘁ)ᘁ ⟶ Y) => rightAdjointMate a)
-      ((CommSq.vert_inv (CommSq.mk (p.naturality f))).w).symm
+  simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using congrArg rightAdjointMate
+    ((CommSq.vert_inv (CommSq.mk (p.naturality f))).w).symm
 
 /-- The left pivotal trace is cyclic without requiring sphericality. -/
 theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
