@@ -120,7 +120,7 @@ positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace (hmoved : HasMovedTrace (tr C p (parityPermAction C.Obj hX odd))) :
     IsFPIntegral C X :=
   integral_of_trace_deletion hdim (parityPermAction C.Obj hX odd) ⟨(fun _ σ ↦ by
-    simpa [fixHead, ← unitScalar_eq_equiv, ← pivotalDimension_eq_fpDimension hdim, pivotalDimension]
+    simpa [fixHead, ← unitScalar_eq_equiv, ← pivotalDimension_eq_fp (pivotalDimensions_on_simples hdim) _, pivotalDimension]
       using parityPermTrace_fixHead p (unitScalarEquiv C) hX odd σ), hmoved⟩
 
 include hdim in
