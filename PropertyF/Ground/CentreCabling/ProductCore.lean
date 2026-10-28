@@ -59,8 +59,7 @@ inclusion whenever the chosen core contains their numerical centralizer. -/
 theorem productLabels_doubleCentralizer
     (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
     (hp : p.IsSpherical) (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
-    (hdim : ∀ j, Modular.simpleDimension (Integrate.bundledCenter C) p j =
-      (fpSimple (Integrate.bundledCenter C) j : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
     (core : Set (Fin (rank (Integrate.bundledCenter C))))
     (hcore : ∀ y, (∀ a ∈ productLabels C,
       Modular.categoricalS (Integrate.bundledCenter C) p a y =

@@ -57,12 +57,14 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The component indexed by a simple object inserts its coevaluation and
 moves the simple strand past the centre object's half-braiding. -/
-def unitComponent (C : BraidedFusionCategory.{v,u})
-    (Z : CategoryTheory.Center C.Obj) (i : Fin (rank C)) :
+def unitComponent
+    (Z : 𝒵) (i : Fin (rank C)) :
     Z.1 ⟶ (simples C i ⊗ Z.1) ⊗ (simples C i)ᘁ :=
   (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ (simples C i) ((simples C i)ᘁ)) ≫
     (α_ Z.1 (simples C i) ((simples C i)ᘁ)).inv ≫
@@ -70,14 +72,14 @@ def unitComponent (C : BraidedFusionCategory.{v,u})
 
 /-- The underlying map of the proposed adjunction unit. Centrality depends
 on constructing the induction half-braiding and is not asserted. -/
-def unitCandidate (C : BraidedFusionCategory.{v,u}) (Z : CategoryTheory.Center C.Obj) :
+def unitCandidate (Z : 𝒵) :
     Z.1 ⟶ underlying C Z.1 :=
   biproduct.lift (unitComponent C Z)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed unit component is natural for genuine centre maps. -/
-theorem unitComponent_natural (C : BraidedFusionCategory.{v,u})
-    {X Y : CategoryTheory.Center C.Obj} (f : X ⟶ Y) (i : Fin (rank C)) :
+theorem unitComponent_natural
+    {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
     f.f ≫ unitComponent C Y i = unitComponent C X i ≫
       ((simples C i ◁ f.f) ▷ (simples C i)ᘁ) := by
   dsimp [unitComponent]
@@ -92,7 +94,7 @@ theorem unitComponent_natural (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed underlying unit is natural in centre objects. -/
-def unitCandidateNatural (C : BraidedFusionCategory.{v,u}) :
+def unitCandidateNatural :
     CategoryTheory.Center.forget C.Obj ⟶
       CategoryTheory.Center.forget C.Obj ⋙ underlyingFunctor C where
   app Z := unitCandidate C Z
@@ -106,8 +108,8 @@ def unitCandidateNatural (C : BraidedFusionCategory.{v,u}) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The underlying left triangle reduces to the unit-labelled coevaluation
 component; no triangle identity is asserted here. -/
-theorem unitCandidate_counit_component (C : BraidedFusionCategory.{v,u})
-    (Z : CategoryTheory.Center C.Obj) :
+theorem unitCandidate_counit_component
+    (Z : 𝒵) :
     unitCandidate C Z ≫ (underlyingCounit C).app Z.1 =
       unitComponent C Z (unitIndex C) ≫ (unitSummandIso C Z.1).hom := by
   simp [unitCandidate, underlyingCounit, unitSummandRetract, underlying]
@@ -169,17 +171,19 @@ remaining coherence obligations. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A half-braiding on each underlying induction sum, natural in the
 middle factor, lifts the underlying induction functor to the actual centre. -/
-def inductionOfHalfBraiding (C : BraidedFusionCategory.{v,u})
+def inductionOfHalfBraiding
     (b : ∀ X : C.Obj, HalfBraiding (underlying C X))
     (hb : ∀ {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj),
       ((underlyingFunctor C).map f ▷ T) ≫ ((b Y).β T).hom =
         ((b X).β T).hom ≫ (T ◁ (underlyingFunctor C).map f)) :
-    C.Obj ⥤ CategoryTheory.Center C.Obj where
+    C.Obj ⥤ 𝒵 where
   obj X := ⟨underlying C X, b X⟩
   map f := ⟨(underlyingFunctor C).map f, hb f⟩
   map_id X := by
@@ -191,15 +195,15 @@ def inductionOfHalfBraiding (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- If the candidate unit is central for the proposed half-braiding, it lifts
 to a natural transformation in the centre. -/
-def inductionUnitOfCentrality (C : BraidedFusionCategory.{v,u})
+def inductionUnitOfCentrality
     (b : ∀ X : C.Obj, HalfBraiding (underlying C X))
     (hb : ∀ {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj),
       ((underlyingFunctor C).map f ▷ T) ≫ ((b Y).β T).hom =
         ((b X).β T).hom ≫ (T ◁ (underlyingFunctor C).map f))
-    (hunit : ∀ (Z : CategoryTheory.Center C.Obj) (T : C.Obj),
+    (hunit : ∀ (Z : 𝒵) (T : C.Obj),
       (unitCandidate C Z ▷ T) ≫ ((b Z.1).β T).hom =
         (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z)) :
-    𝟭 (CategoryTheory.Center C.Obj) ⟶
+    𝟭 (𝒵) ⟶
       CategoryTheory.Center.forget C.Obj ⋙ inductionOfHalfBraiding C b hb where
   app Z := ⟨unitCandidate C Z, hunit Z⟩
   naturality {X Y} f := by
@@ -212,12 +216,12 @@ adjunction once the explicit second triangle is established. The first
 triangle has already been proved from the actual half-braidings of centre
 objects. Neither the proposed half-braiding, centrality, nor the second
 triangle is assumed to exist by the ground target. -/
-def adjunctionOfHalfBraiding (C : BraidedFusionCategory.{v,u})
+def adjunctionOfHalfBraiding
     (b : ∀ X : C.Obj, HalfBraiding (underlying C X))
     (hb : ∀ {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj),
       ((underlyingFunctor C).map f ▷ T) ≫ ((b Y).β T).hom =
         ((b X).β T).hom ≫ (T ◁ (underlyingFunctor C).map f))
-    (hunit : ∀ (Z : CategoryTheory.Center C.Obj) (T : C.Obj),
+    (hunit : ∀ (Z : 𝒵) (T : C.Obj),
       (unitCandidate C Z ▷ T) ≫ ((b Z.1).β T).hom =
         (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z))
     (htriangle : ∀ X : C.Obj,
@@ -235,7 +239,7 @@ def adjunctionOfHalfBraiding (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The remaining induction triangle is determined by finitely many matrix
 entries against the simple summands of the underlying induction object. -/
-theorem secondTriangle_of_matrix_entries (C : BraidedFusionCategory.{v,u})
+theorem secondTriangle_of_matrix_entries
     (b : ∀ X : C.Obj, HalfBraiding (underlying C X))
     (hb : ∀ {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj),
       ((underlyingFunctor C).map f ▷ T) ≫ ((b Y).β T).hom =

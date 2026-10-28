@@ -10,10 +10,11 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (CategoryTheory.Center D)]
+local notation "𝒵" => CategoryTheory.Center D
 
 omit [RightRigidCategory D] in
 /-- Forgetting a centre mate computes the mate for the forgotten dual pairings. -/
-theorem forget_rightAdjointMate {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
+theorem forget_rightAdjointMate {X Y : 𝒵} (f : X ⟶ Y) :
     (fᘁ).f = @rightAdjointMate D _ _ X.1 Y.1
       (show HasRightDual X.1 from { rightDual := (Xᘁ).1, exact := forgetPairing X })
       (show HasRightDual Y.1 from { rightDual := (Yᘁ).1, exact := forgetPairing Y }) f.f := by
@@ -24,12 +25,12 @@ theorem forget_rightAdjointMate {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
   rfl
 
 /-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
-theorem forgetDualIso_natural {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
+theorem forgetDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
     (fᘁ).f ≫ (forgetDualIso X).hom = (forgetDualIso Y).hom ≫ (f.fᘁ) := by
   simp [forget_rightAdjointMate, forgetDualIso, rightDualIso, ← comp_rightAdjointMate]
 
 /-- The double-dual comparison is natural in centre morphisms. -/
-theorem forgetDoubleDualIso_natural {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
+theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso Y).hom =
       (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
   have h := forgetDualIso_natural f
@@ -58,7 +59,7 @@ theorem forgetDoubleDualIso_natural {X Y : CategoryTheory.Center D} (f : X ⟶ Y
 /-- The transported pivotal components are natural on centre morphisms. -/
 theorem transported_pivotal_natural
     (p : Dimensions.PivotalStructure (C := D))
-    {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
+    {X Y : 𝒵} (f : X ⟶ Y) :
     f.f ≫ (p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv =
       (p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv ≫ ((fᘁ)ᘁ).f := by
   have h := forgetDoubleDualIso_natural f

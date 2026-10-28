@@ -11,11 +11,12 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+local notation "𝒵" => CategoryTheory.Center C.Obj
 
 /-- The sole remaining obstruction to lifting the pivotal structure is the
 half-braiding intertwining equation for the transported components. -/
 def PivotalComponentsCentral (p : Dimensions.PivotalStructure (C := C.Obj)) : Prop :=
-  ∀ (Z : CategoryTheory.Center C.Obj) (T : C.Obj),
+  ∀ (Z : 𝒵) (T : C.Obj),
     let u := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
     (u ▷ T) ≫ (((Zᘁ)ᘁ).2.β T).hom = (Z.2.β T).hom ≫ (T ◁ u)
 
@@ -23,7 +24,7 @@ def PivotalComponentsCentral (p : Dimensions.PivotalStructure (C := C.Obj)) : Pr
 actual centre; naturality, tensor and unit coherence are proved. -/
 def liftedPivotalStructure (p : Dimensions.PivotalStructure (C := C.Obj))
     (hc : PivotalComponentsCentral C p) :
-    Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj) where
+    Dimensions.PivotalStructure (C := 𝒵) where
   iso Z := by
     let u := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
     let f : Z ⟶ ((Zᘁ)ᘁ) := ⟨u, hc Z⟩
@@ -46,7 +47,7 @@ def liftedPivotalStructure (p : Dimensions.PivotalStructure (C := C.Obj))
 
 /-- The lifted component agrees with the original pivotal component. -/
 theorem liftedPivotalStructure_compatible (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hc : PivotalComponentsCentral C p) (Z : CategoryTheory.Center C.Obj) :
+    (hc : PivotalComponentsCentral C p) (Z : 𝒵) :
     ((liftedPivotalStructure C p hc).iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom =
       (p.iso Z.1).hom := by
   simp [liftedPivotalStructure, Category.assoc]
@@ -57,7 +58,7 @@ theorem center_structure_of_pivotal_centrality
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (hc : PivotalComponentsCentral C p) :
-    ∃ hFusion : IsFusionCategory (CategoryTheory.Center C.Obj),
+    ∃ hFusion : IsFusionCategory (𝒵),
       letI := hFusion
       let pZ := liftedPivotalStructure C p hc
       pZ.IsSpherical ∧

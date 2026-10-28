@@ -9,6 +9,7 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
 theorem pivotalDimension_eq_fp (p : Dimensions.PivotalStructure (C := C.Obj))
@@ -27,8 +28,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The displayed trace compatibility makes the induced unit trace nonzero. -/
 theorem induced_center_trace_ne_zero_of_compatible (p : Dimensions.PivotalStructure (C := C.Obj))
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
+    [RigidCategory (𝒵)]
+    (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
       (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom) :
     pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj))) ≠ 0 := by
@@ -54,11 +55,11 @@ set_option backward.isDefEq.respectTransparency false in
 base pivotal dimensions equal FP dimensions. -/
 theorem center_fusion_of_compatible_pivotal (p : Dimensions.PivotalStructure (C := C.Obj))
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
+    [RigidCategory (𝒵)]
+    (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
       (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom) :
-    IsFusionCategory (CategoryTheory.Center C.Obj) :=
+    IsFusionCategory (𝒵) :=
   center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
     (induced_center_trace_ne_zero_of_compatible C p hsimple pZ hcompat)
 
@@ -76,11 +77,12 @@ universe v u
 namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (CategoryTheory.Center D)]
+local notation "𝒵" => CategoryTheory.Center D
 
 omit [RightRigidCategory D] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Forgetting a centre dual pair gives a dual pair in the base category. -/
-@[instance_reducible] def forgetPairing (Z : CategoryTheory.Center D) : ExactPairing Z.1 ((Zᘁ).1) where
+@[instance_reducible] def forgetPairing (Z : 𝒵) : ExactPairing Z.1 ((Zᘁ).1) where
   coevaluation' := (η_ Z (Zᘁ)).f
   evaluation' := (ε_ Z (Zᘁ)).f
   coevaluation_evaluation' := by
@@ -99,19 +101,19 @@ set_option backward.isDefEq.respectTransparency false in
       CategoryTheory.Center.leftUnitor_inv_f] using h
 
 /-- Compare the underlying centre dual with the chosen base dual. -/
-def forgetDualIso (Z : CategoryTheory.Center D) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=
+def forgetDualIso (Z : 𝒵) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=
   rightDualIso (forgetPairing Z) HasRightDual.exact
 
 /-- Compare the underlying centre double dual with the chosen base double dual. -/
-def forgetDoubleDualIso (Z : CategoryTheory.Center D) : (((Zᘁ)ᘁ).1) ≅ ((Z.1ᘁ)ᘁ) :=
+def forgetDoubleDualIso (Z : 𝒵) : (((Zᘁ)ᘁ).1) ≅ ((Z.1ᘁ)ᘁ) :=
   forgetDualIso (Zᘁ) ≪≫ Dimensions.rightDualIsoMap (forgetDualIso Z).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Compatible pivotal components have equal traces after forgetting. -/
 theorem forget_trace_of_pivotal_component
     (p : Dimensions.PivotalStructure (C := D))
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center D))
-    (Z : CategoryTheory.Center D)
+    (pZ : Dimensions.PivotalStructure (C := 𝒵))
+    (Z : 𝒵)
     (hcompat : ((pZ.iso Z).hom.f) ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     (pZ.rightTrace (𝟙 Z)).asHom.f = (p.rightTrace (𝟙 Z.1)).asHom := by
   let e := forgetDualIso Z

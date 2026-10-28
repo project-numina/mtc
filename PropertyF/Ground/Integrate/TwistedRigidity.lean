@@ -208,7 +208,7 @@ premises of categorical rigidity follow from actual fusion data. The sole
 remaining braid-calculus premise is the displayed overlap trace recurrence. -/
 theorem rigidity_of_twisted_overlap (Z : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := Z.Obj))
-    (hdim : ∀ i, Modular.simpleDimension Z p i = (fpSimple Z i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions Z p)
     (σ : ℂ ≃+* ℂ) (y : Fin (rank Z))
     (hF : ObjectPropertyF (simples Z y)) (d : ℝ)
     (hσ : σ (fpSimple Z y : ℂ) = (d : ℂ))
@@ -248,6 +248,7 @@ theorem rigidity_of_twisted_overlap (Z : BraidedFusionCategory.{v,u})
     unfold transformed original
     rw [hreal]
     congr 1
+    unfold Modular.HasFPSimpleDimensions at hdim
     unfold Dimensions.pivotalDimension Modular.simpleDimension at *
     rw [unitScalar_eq_equiv]
     exact hdim _
