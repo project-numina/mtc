@@ -10,45 +10,6 @@ universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [MonoidalCategory C]
   [MonoidalPreadditive C] [HasBinaryBiproducts C] [BraidedCategory C]
 
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.isDefEq.respectTransparency.types false in
-set_option backward.defeqAttrib.useBackward true in
-/-- A direct sum of two product images is a retract of a single product image.
-The ambient product contains the two extra cross terms. -/
-def productFunctor_sumRetract (X Y X' Y' : C) :
-    Retract ((productFunctor.obj (X,Y)) ⊞ (productFunctor.obj (X',Y')))
-      (productFunctor.obj (X ⊞ X', Y ⊞ Y')) where
-  i := biprod.desc (productFunctor.map (biprod.inl, biprod.inl))
-    (productFunctor.map (biprod.inr, biprod.inr))
-  r := biprod.lift (productFunctor.map (biprod.fst, biprod.fst))
-    (productFunctor.map (biprod.snd, biprod.snd))
-  retract := by
-    apply biprod.hom_ext'
-    · apply biprod.hom_ext
-      · simp only [Category.assoc, biprod.inl_desc_assoc, biprod.lift_fst]
-        apply CategoryTheory.Center.ext
-        simp [productFunctor, negative, tensorHom_comp_tensorHom]
-      · simp only [Category.assoc, biprod.inl_desc_assoc, biprod.lift_snd]
-        apply CategoryTheory.Center.ext
-        simp [productFunctor, negative, tensorHom_comp_tensorHom]; rfl
-    · apply biprod.hom_ext
-      · simp only [Category.assoc, biprod.inr_desc_assoc, biprod.lift_fst]
-        apply CategoryTheory.Center.ext
-        simp [productFunctor, negative, tensorHom_comp_tensorHom]; rfl
-      · simp only [Category.assoc, biprod.inr_desc_assoc, biprod.lift_snd]
-        apply CategoryTheory.Center.ext
-        simp [productFunctor, negative, tensorHom_comp_tensorHom]
-
-/-- The direct sum of two retracts is a retract of the direct sum. -/
-def biprodRetract {A B A' B' : CategoryTheory.Center C}
-    (r : Retract A A') (s : Retract B B') : Retract (A ⊞ B) (A' ⊞ B') where
-  i := biprod.map r.i s.i
-  r := biprod.map r.r s.r
-  retract := by
-    apply biprod.hom_ext'
-    · simp
-    · simp
-
 /-- Objects isomorphic to retracts of canonical product images. -/
 def ProductRetract (Z : CategoryTheory.Center C) : Prop :=
   ∃ X Y : C, Nonempty (Retract Z (productFunctor.obj (X,Y)))
@@ -75,13 +36,6 @@ omit [Preadditive C] [MonoidalPreadditive C] [HasBinaryBiproducts C] in
 theorem unit_productRetract : ProductRetract (𝟙_ (CategoryTheory.Center C)) :=
   ⟨𝟙_ C, 𝟙_ C, ⟨Retract.ofIso (CategoryTheory.Functor.Monoidal.εIso productFunctor)⟩⟩
 
-/-- The class is closed under finite binary sums. -/
-theorem productRetract_biprod {Z W : CategoryTheory.Center C}
-    (hZ : ProductRetract Z) (hW : ProductRetract W) : ProductRetract (Z ⊞ W) := by
-  obtain ⟨X, Y, ⟨r⟩⟩ := hZ
-  obtain ⟨X', Y', ⟨s⟩⟩ := hW
-  exact ⟨X ⊞ X', Y ⊞ Y', ⟨(biprodRetract r s).trans (productFunctor_sumRetract X Y X' Y')⟩⟩
-
 omit [Preadditive C] [MonoidalPreadditive C] [HasBinaryBiproducts C] in
 /-- Tensor products preserve retracts in the centre. -/
 def tensorRetract {A B A' B' : CategoryTheory.Center C}
@@ -107,27 +61,6 @@ theorem productRetract_propertyF {Z : CategoryTheory.Center C}
     (hZ : ProductRetract Z) (hC : HasPropertyF C) : ObjectPropertyF Z := by
   obtain ⟨X, Y, ⟨r⟩⟩ := hZ
   exact productFunctor_retract_objectPropertyF X Y Z r (hC X) (hC Y)
-
-/-- The tensor, biproduct and retract closure of the two canonical images.
-Dual closure is deliberately not included until centre rigidity is constructed. -/
-inductive ProductTensorClosure : CategoryTheory.Center C → Prop
-  | positive (X : C) : ProductTensorClosure ((CategoryTheory.Center.ofBraided C).obj X)
-  | negative (X : C) : ProductTensorClosure ((negative C).obj X)
-  | unit : ProductTensorClosure (𝟙_ (CategoryTheory.Center C))
-  | tensor {Z W} : ProductTensorClosure Z → ProductTensorClosure W → ProductTensorClosure (Z ⊗ W)
-  | biprod {Z W} : ProductTensorClosure Z → ProductTensorClosure W → ProductTensorClosure (Z ⊞ W)
-  | retract {Z W} : Retract Z W → ProductTensorClosure W → ProductTensorClosure Z
-
-/-- Every object in the explicit tensor closure is a retract of one product image. -/
-theorem productTensorClosure_retract {Z : CategoryTheory.Center C}
-    (h : ProductTensorClosure Z) : ProductRetract Z := by
-  induction h with
-  | positive X => exact positive_productRetract X
-  | negative X => exact negative_productRetract X
-  | unit => exact unit_productRetract
-  | tensor _ _ hZ hW => exact productRetract_tensor hZ hW
-  | biprod _ _ hZ hW => exact productRetract_biprod hZ hW
-  | retract r _ hW => exact productRetract_of_retract r hW
 
 end PropertyF.Ground.Centre
 
