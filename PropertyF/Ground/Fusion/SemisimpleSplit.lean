@@ -62,16 +62,12 @@ theorem object_projective (X : C) : Projective X := by
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → C := fun p => T p.1
-  let : ∀ p, Projective (V p) := fun p => by
-    let : Simple (V p) := hsimple p.1
-    exact simple_projective (V p)
-  have hV : Projective (⨁ V) := by
-    refine ⟨?_⟩
-    intro A B g f hf
-    let : Epi f := hf
-    refine ⟨biproduct.desc (fun p => Projective.factorThru (biproduct.ι V p ≫ g) f), ?_⟩
-    exact biproduct.hom_ext' _ _ fun p ↦ by simp
-  exact Projective.of_iso e.symm hV
+  let : ∀ p, Projective (V p) := fun p ↦
+    letI : Simple (V p) := hsimple p.1
+    simple_projective (V p)
+  apply Projective.of_iso e.symm
+  exact ⟨fun g f _ ↦ ⟨biproduct.desc (fun p ↦ Projective.factorThru (biproduct.ι V p ≫ g) f),
+    biproduct.hom_ext' _ _ fun p ↦ by simp [V]⟩⟩
 
 /-- Every object is injective. -/
 theorem object_injective (X : C) : Injective X :=
