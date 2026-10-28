@@ -33,7 +33,7 @@ theorem target : TargetStatement.{v,u} := by
   refine ⟨CentreRigid.rigidCenter, inferInstance, pZ, CentreCabling.symmetricCore C,
     (↑(CentreCabling.productLabels C) : Set _), hspherical, hdim, hdet,
     center_globalDimension_square_of_actual_induction C pZ hspherical hdim,
-    CentreCalculus.actual_symmetricCore_integrality C pZ hspherical hdim, ?_, ?_⟩
+    CentreCalculus.actual_symmetricCore_integrality hspherical hdim, ?_, ?_⟩
   · intro y hy
     exact (CentreCabling.mem_productLabels C y).mpr
       (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy C hspherical hdet hdim hfinite y hy)

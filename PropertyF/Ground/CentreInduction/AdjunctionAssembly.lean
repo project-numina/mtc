@@ -113,13 +113,8 @@ theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
   rw [← Category.assoc, he]
   simp only [Category.assoc]
   rw [← whisker_exchange_assoc]
-  have hh : (e.inv ▷ (𝟙_ D)) ≫ (e.hom ▷ (𝟙_ D)) = 𝟙 _ := by
-    rw [← comp_whiskerRight, Iso.inv_hom_id, id_whiskerRight]
-  calc
-    _ = (η_ (𝟙_ D) ((𝟙_ D)ᘁ) ≫
-      (𝟙_ D) ◁ Dimensions.rightDualUnitIso.hom) ≫
-      ((e.inv ▷ (𝟙_ D)) ≫ (e.hom ▷ (𝟙_ D))) := by simp only [Category.assoc]
-    _ = _ := by rw [hh, Category.comp_id]; exact hu
+  rw [← comp_whiskerRight, Iso.inv_hom_id, id_whiskerRight, Category.comp_id]
+  exact hu
 
 end PropertyF.Ground.CentreInduction
 
