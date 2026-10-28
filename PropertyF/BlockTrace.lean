@@ -13,18 +13,24 @@ namespace PropertyF
 
 /-- Explicit finite Wedderburn blocks, rather than an opaque trace space. -/
 structure Blocks where
+  /-- Number of matrix blocks. -/
   count : ℕ
+  /-- Dimension of each block. -/
   size : Fin count → ℕ
 
 namespace Blocks
+/-- Product of the complex matrix algebras in the decomposition. -/
 abbrev Algebra (B : Blocks) := ∀ r, Matrix (Fin (B.size r)) (Fin (B.size r)) ℂ
 
+/-- Blockwise unitarity. -/
 def IsUnitary (B : Blocks) (u : B.Algebra) : Prop :=
   ∀ r, u r ∈ Matrix.unitaryGroup (Fin (B.size r)) ℂ
 
+/-- Weighted sum of the block traces. -/
 def trace (B : Blocks) (w : Fin B.count → ℝ) (u : B.Algebra) : ℂ :=
   ∑ r, (w r : ℂ) * (u r).trace
 
+/-- Weighted sum of the block dimensions. -/
 def mass (B : Blocks) (w : Fin B.count → ℝ) : ℝ :=
   ∑ r, |w r| * B.size r
 

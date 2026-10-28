@@ -17,7 +17,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
-  [BraidedCategory C] [Abelian C]
+  [Abelian C]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Tensoring two powers gives the corresponding combined power. -/

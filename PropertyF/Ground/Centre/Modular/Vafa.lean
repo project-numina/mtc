@@ -504,20 +504,32 @@ theorem fpDeterminant_tensor_of_simple
   rw [ha]
   exact fpDeterminant_tensor_scalar C X S _
 
-/-- A natural automorphism acts block-diagonally on a binary biproduct. -/
-theorem natural_app_biprod {D : Type u} [Category.{v} D] [Preadditive D]
-    [HasBinaryBiproducts D] (η : 𝟭 D ≅ 𝟭 D) (S K : D) :
-    η.app (S ⊞ K) = biprod.mapIso (η.app S) (η.app K) := by
-  apply Iso.ext
-  apply biprod.hom_ext'
-  · simpa using η.hom.naturality (biprod.inl : S ⟶ S ⊞ K)
-  · simpa using η.hom.naturality (biprod.inr : K ⟶ S ⊞ K)
+/-- Components of a natural automorphism of a functor are conjugate along
+isomorphisms in the source. -/
+theorem functor_natural_app_conjugate {D : Type u} {E : Type*}
+    [Category.{v} D] [Category E] (F : D ⥤ E) (η : F ≅ F) {X Y : D} (e : X ≅ Y) :
+    η.app X = F.mapIso e ≪≫ η.app Y ≪≫ (F.mapIso e).symm :=
+  Iso.ext ((cancel_mono (F.mapIso e).hom).1 (by simp))
 
-/-- Naturality transports a component along any object isomorphism. -/
-theorem natural_app_conjugate {D : Type u} [Category.{v} D]
-    (η : 𝟭 D ≅ 𝟭 D) {Y Z : D} (e : Y ≅ Z) :
-    η.app Y = e ≪≫ η.app Z ≪≫ e.symm :=
-  Iso.ext ((cancel_mono e.hom).1 (by simpa [Category.assoc] using (η.hom.naturality e.hom).symm))
+/-- An additive functor's natural automorphism is block diagonal on a binary
+biproduct under its canonical comparison isomorphism. -/
+theorem functor_natural_app_biprod {D : Type u} {E : Type*}
+    [Category.{v} D] [Category E] [Preadditive D] [Preadditive E]
+    [HasBinaryBiproducts D] [HasBinaryBiproducts E]
+    (F : D ⥤ E) [F.Additive] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
+    η.app (X ⊞ Y) = F.mapBiprod X Y ≪≫
+      biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm := by
+  apply Iso.ext
+  apply (cancel_mono (F.mapBiprod X Y).hom).1
+  change (η.app (X ⊞ Y)).hom ≫ (F.mapBiprod X Y).hom =
+    ((F.mapBiprod X Y).hom ≫ (biprod.mapIso (η.app X) (η.app Y)).hom ≫
+      (F.mapBiprod X Y).inv) ≫ (F.mapBiprod X Y).hom
+  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+  apply biprod.hom_ext
+  · simpa only [Functor.mapBiprod_hom, Category.assoc, biprod.lift_fst, biprod.lift_fst_assoc,
+      biprod.mapIso_hom, biprod.map_fst, Iso.app_hom] using (η.hom.naturality (biprod.fst : X ⊞ Y ⟶ X)).symm
+  · simpa only [Functor.mapBiprod_hom, Category.assoc, biprod.lift_snd, biprod.lift_snd_assoc,
+      biprod.mapIso_hom, biprod.map_snd, Iso.app_hom] using (η.hom.naturality (biprod.snd : X ⊞ Y ⟶ Y)).symm
 
 /-- Tensoring a conjugated automorphism conjugates its tensor extension. -/
 theorem tensor_conjugate_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -535,14 +547,9 @@ theorem fpDeterminant_tensor_natural
   have hY := base_finite_simple_sum C Y
   induction hY with
   | @zero W hz =>
-    have hη : η.app W = Iso.refl W := by
-      apply Iso.ext
-      exact hz.eq_of_src _ _
-    rw [hη]
-    have ht : Iso.refl X ⊗ᵢ Iso.refl W = Iso.refl (X ⊗ W) := by
-      apply Iso.ext
-      simp
-    rw [ht, fpDeterminant_refl, fpDeterminant_refl, smul_zero]
+    have hη : η.app W = Iso.refl W := Iso.ext (hz.eq_of_src _ _)
+    have ht : Iso.refl X ⊗ᵢ Iso.refl W = Iso.refl (X ⊗ W) := Iso.ext (by simp)
+    simp only [hη, ht, fpDeterminant_refl, smul_zero]
   | @cons Y S K hs hk he ih =>
     obtain ⟨e⟩ := he
     have hS : fpDeterminant C (X ⊗ S) (Iso.refl X ⊗ᵢ η.app S) =
@@ -550,8 +557,16 @@ theorem fpDeterminant_tensor_natural
       let : Simple S := hs
       exact fpDeterminant_tensor_of_simple C X S (η.app S)
     have hsum := fpDeterminant_tensor_biprod C X (η.app S) (η.app K) hS ih
-    rw [← natural_app_biprod] at hsum
-    have hη := natural_app_conjugate η e
+    let : PreservesBinaryBiproducts (𝟭 C.Obj) := preservesBinaryBiproducts_of_preservesBiproducts _
+    have hid : (𝟭 C.Obj).mapBiprod S K = Iso.refl (S ⊞ K) := by
+      apply Iso.ext
+      apply biprod.hom_ext <;> simp
+    have hsum' : η.app (S ⊞ K) = biprod.mapIso (η.app S) (η.app K) := by
+      simpa [hid] using functor_natural_app_biprod (𝟭 C.Obj) η S K
+    rw [← hsum'] at hsum
+    have he : (𝟭 C.Obj).mapIso e = e := Iso.ext rfl
+    have hη : η.app Y = e ≪≫ η.app (S ⊞ K) ≪≫ e.symm := by
+      simpa only [he] using functor_natural_app_conjugate (𝟭 C.Obj) η e
     rw [hη, tensor_conjugate_iso]
     have hl := fpDeterminant_conjugate C (Iso.refl X ⊗ᵢ e).symm
       (Iso.refl X ⊗ᵢ η.app (S ⊞ K))
@@ -638,41 +653,6 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
-
-/-- Components of a natural automorphism of a functor are conjugate along
-isomorphisms in the source. -/
-theorem functor_natural_app_conjugate {D : Type u} {E : Type*}
-    [Category.{v} D] [Category E] (F : D ⥤ E) (η : F ≅ F) {X Y : D} (e : X ≅ Y) :
-    η.app X = F.mapIso e ≪≫ η.app Y ≪≫ (F.mapIso e).symm :=
-  Iso.ext ((cancel_mono (F.mapIso e).hom).1 (by simp))
-
-/-- An additive functor's natural automorphism is block diagonal on a binary
-biproduct under its canonical comparison isomorphism. -/
-theorem functor_natural_app_biprod {D : Type u} {E : Type*}
-    [Category.{v} D] [Category E] [Preadditive D] [Preadditive E]
-    [HasBinaryBiproducts D] [HasBinaryBiproducts E]
-    (F : D ⥤ E) [F.Additive] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
-    η.app (X ⊞ Y) = F.mapBiprod X Y ≪≫
-      biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm := by
-  let e := F.mapBiprod X Y
-  apply Iso.ext
-  change (η.app (X ⊞ Y)).hom = e.hom ≫ (biprod.mapIso (η.app X) (η.app Y)).hom ≫ e.inv
-  apply (cancel_epi e.inv).1
-  apply biprod.hom_ext'
-  · have hι : biprod.inl ≫ e.inv = F.map biprod.inl := by
-      rw [Functor.mapBiprod_inv, biprod.inl_desc]
-    have hn := η.hom.naturality (biprod.inl : X ⟶ X ⊞ Y)
-    change F.map biprod.inl ≫ (η.app (X ⊞ Y)).hom = (η.app X).hom ≫ F.map biprod.inl at hn
-    simp only [Iso.inv_hom_id_assoc]
-    rw [← Category.assoc, hι, hn]
-    simp only [biprod.mapIso_hom, biprod.inl_map_assoc, hι]
-  · have hι : biprod.inr ≫ e.inv = F.map biprod.inr := by
-      rw [Functor.mapBiprod_inv, biprod.inr_desc]
-    have hn := η.hom.naturality (biprod.inr : Y ⟶ X ⊞ Y)
-    change F.map biprod.inr ≫ (η.app (X ⊞ Y)).hom = (η.app Y).hom ≫ F.map biprod.inr at hn
-    simp only [Iso.inv_hom_id_assoc]
-    rw [← Category.assoc, hι, hn]
-    simp only [biprod.mapIso_hom, biprod.inr_map_assoc, hι]
 
 /-- The FP determinant of a natural automorphism of an additive functor
 expands over the simple summands of the source object. -/

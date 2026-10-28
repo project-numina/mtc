@@ -257,7 +257,7 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
   apply actual_rigidity_of_overlap_and_galois_dimensions D X q original transformed σ
     hpos htrans hqdim d (fpSimple Z y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
   intro u k
-  exact Calculus.overlap_trace_power D X q 1 u k
+  exact Calculus.overlap_trace_power D q u k
 
 end PropertyF.Ground
 end
