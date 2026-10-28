@@ -145,7 +145,7 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
   have him : (x k).im = 0 := Complex.abs_re_eq_norm.mp <| by
     rw [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))]
     exact le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)
-  apply Complex.ext <;> simp [hre, him]
+  exact Complex.ext hre him
 
 /-- Saturation of a weighted complex eigenvector forces each entry to have
   the phase of the product of its eigenvector values. -/
