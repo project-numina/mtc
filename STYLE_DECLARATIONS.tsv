@@ -50,7 +50,6 @@ PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.addRightBra
 PropertyF.Ground.CentreCabling.RegularSupport	PropertyF.Ground.CentreCabling.fourier_eq_zero_of_fusion_eigenvector	theorem	1	132	3	5	0	0	3	3031939603
 PropertyF.Ground.CentreInduction.ForgetDualTensor	PropertyF.Ground.CentreInduction.transportedPivotalHom	definition	1	95	2	1	0	4	0	4188918619
 PropertyF.Ground.CentreCabling.ImageCore	_private.PropertyF.Ground.CentreCabling.ImageCore.0.PropertyF.Ground.CentreCabling.canonicalImageRetract_of_retract.match_1_3	definition	1	162	3	2	0	3	2	1451050757
-PropertyF.Ground.CentreInduction.FiniteSimples	_private.PropertyF.Ground.CentreInduction.FiniteSimples.0.PropertyF.Ground.CentreInduction.simple_hom_induced_simple.match_1_1	definition	1	273	4	1	0	0	2	2266522021
 PropertyF.Ground.CentreCabling.RegularSupport	PropertyF.Ground.CentreCabling.sCentralizes_dual	theorem	1	64	2	3	0	0	1	3227780719
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.PivotalStructure.unit	theorem	1	90	1	1	0	3	0	2389891311
 PropertyF.Ground.Cabling.Naturality	PropertyF.tensorPowerMap_comp._f	definition	1	116	4	4	0	2	0	1174453231
@@ -1250,7 +1249,6 @@ PropertyF.Ground.CentreInduction.ForgetDual	PropertyF.Ground.CentreInduction.for
 PropertyF.PowerBound	PropertyF.trace_bound_of_overlap	theorem	1	125	3	4	0	0	3	2710499389
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.sumHalfIso.eq_1	theorem	0	278	3	1	0	5	2	1073088387
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.HasTensorDeterminant	definition	1	20	3	1	0	0	0	3457983119
-PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.dualEquiv_apply	theorem	0	41	2	0	0	0	0	2136351988
 PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.tensorLeftHomLinearEquiv._proof_4	theorem	1	75	4	1	0	3	0	2642364504
 PropertyF.BlockTrace	PropertyF.Blocks.mass_nonneg	theorem	1	29	2	0	0	0	0	2860426519
 PropertyF.Ground.Centre.Averaging	PropertyF.Ground.Centre.permutationSign	definition	1	51	2	0	0	1	0	2087390935
