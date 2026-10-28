@@ -249,10 +249,9 @@ theorem simpleHomPairingEquiv_natural {S X Y : D} [Simple S] (g : Y ⟶ S) (a : 
       Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairingEquiv S Y g) :=
   letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
   by
-    change simpleHomPairing (k := ℂ) S X (a ≫ g) =
-      Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairing (k := ℂ) S Y g)
     ext f
-    simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
+    simp [simpleHomPairingEquiv, simpleHomPairing, Module.Dual.transpose_apply,
+      Linear.rightComp_apply, Category.assoc]
 
 
 end PropertyF.Ground.Dimensions
