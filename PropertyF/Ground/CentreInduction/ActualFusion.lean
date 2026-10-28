@@ -200,12 +200,20 @@ variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 local notation "𝒵" => Center C.Obj
 
+/-- FP dimension is the weighted sum of Hom dimensions to simple objects. -/
+theorem fpDimension_eq_sum_to_simple (X : C.Obj) :
+    fpDimension C X = ∑ i, (Module.finrank ℂ (X ⟶ simples C i) : ℝ) * fpSimple C i :=
+  Finset.sum_congr rfl fun i _ =>
+    letI : Simple (simples C i) := simples_simple C i
+    congrArg (fun n : ℕ => (n : ℝ) * fpSimple C i)
+      (finrank_to_simple_eq_from_simple X (simples C i)).symm
+
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
-/-- If the actual centre has a fusion structure, its global FP dimension is the square
-of the base global FP dimension. -/
-theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
-    globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
+/-- The centre's global FP dimension is the weighted sum of its induced simples. -/
+theorem globalFPDimension_eq_induction_sum [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
+    globalFPDimension 𝒵ᶠ =
+      ∑ i, fpSimple C i * fpDimension 𝒵ᶠ ((induction C).obj (simples C i)) := by
   let I (i : Fin (rank C)) := (induction C).obj (simples C i)
   have hadj (i : Fin (rank C)) (j : Fin (rank 𝒵ᶠ)) :
       Module.finrank ℂ ((simples 𝒵ᶠ j : 𝒵) ⟶ I i) =
@@ -214,26 +222,27 @@ theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFus
       (induction C) (actualAdjunction C) (simples 𝒵ᶠ j) (simples C i)).finrank_eq
   have hbase (j : Fin (rank 𝒵ᶠ)) :
       ∑ i, (Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) : ℝ) * fpSimple C i =
-        fpSimple 𝒵ᶠ j := by
-    have hs (i : Fin (rank C)) :=
-      letI : Simple (simples C i) := simples_simple C i
-      finrank_to_simple_eq_from_simple (simples 𝒵ᶠ j).1 (simples C i)
-    simpa only [fpDimension, ← hs] using
-      (show fpDimension C (simples 𝒵ᶠ j).1 = fpSimple 𝒵ᶠ j from
-        (Integrate.center_forget_fpDimension C (simples 𝒵ᶠ j)).trans (fpDimension_simple 𝒵ᶠ j))
-  have hsum : (∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i)) = globalFPDimension 𝒵ᶠ := by
-    simp_rw [fpDimension, hadj, Finset.mul_sum]
-    rw [Finset.sum_comm]
-    simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
-      ← Finset.mul_sum, hbase]
-    simp [globalFPDimension, pow_two]
-  calc
-    globalFPDimension 𝒵ᶠ = ∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i) := hsum.symm
-    _ = (globalFPDimension C) ^ 2 := by
-      simp_rw [← Integrate.center_forget_fpDimension C]
-      change (∑ i, fpSimple C i * fpDimension C (underlying C (simples C i))) = _
-      simp [fpDimension_underlying, fpDimension_simple, globalFPDimension, pow_two,
-        Finset.mul_sum, mul_left_comm]
+        fpSimple 𝒵ᶠ j :=
+    (fpDimension_eq_sum_to_simple C (simples 𝒵ᶠ j).1).symm.trans <|
+      (Integrate.center_forget_fpDimension C (simples 𝒵ᶠ j)).trans (fpDimension_simple 𝒵ᶠ j)
+  change globalFPDimension 𝒵ᶠ = ∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i)
+  symm
+  simp_rw [fpDimension, hadj, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
+    ← Finset.mul_sum, hbase]
+  simp [globalFPDimension, pow_two]
 
+set_option backward.isDefEq.respectTransparency false in
+set_option backward.defeqAttrib.useBackward true in
+/-- If the actual centre has a fusion structure, its global FP dimension is the square
+of the base global FP dimension. -/
+theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
+    globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
+  rw [globalFPDimension_eq_induction_sum C]
+  simp_rw [← Integrate.center_forget_fpDimension C]
+  change (∑ i, fpSimple C i * fpDimension C (underlying C (simples C i))) = _
+  simp [fpDimension_underlying, fpDimension_simple, globalFPDimension, pow_two,
+    Finset.mul_sum, mul_left_comm]
 
 end PropertyF.Ground.CentreInduction

@@ -123,12 +123,14 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 /-- Pointwise absolute-value bounds imply the corresponding sum-of-squares bound. -/
-theorem sum_sq_le_sum_sq_of_abs_le {ι : Type*} [Fintype ι] {d f : ι → ℝ}
+theorem sum_sq_le_sum_sq_of_abs_le {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
+    {ι : Type*} [Fintype ι] {d f : ι → k}
     (hbound : ∀ i, |d i| ≤ f i) : ∑ i, (d i) ^ 2 ≤ ∑ i, (f i) ^ 2 :=
   Finset.sum_le_sum fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2
 
 /-- A sum-of-squares bound is saturated precisely when every term is saturated. -/
-theorem sum_sq_eq_sum_sq_iff {ι : Type*} [Fintype ι] {d f : ι → ℝ}
+theorem sum_sq_eq_sum_sq_iff {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
+    {ι : Type*} [Fintype ι] {d f : ι → k}
     (hbound : ∀ i, |d i| ≤ f i) :
     (∑ i, (d i) ^ 2) = ∑ i, (f i) ^ 2 ↔ ∀ i, |d i| = f i := by
   rw [Finset.sum_eq_sum_iff_of_le
@@ -146,18 +148,17 @@ theorem norm_saturation_of_pseudoUnitary {d : Fin (rank C) → ℂ}
     (hbound : ∀ i, ‖d i‖ ≤ fpSimple C i)
     (hnorm : ∀ i, squaredNorm C (simples C i) = ((‖d i‖ ^ 2 : ℝ) : ℂ))
     (hpu : PseudoUnitary C) : ∀ i, ‖d i‖ = fpSimple C i := by
-  have hb : ∀ i, |‖d i‖| ≤ fpSimple C i := fun i ↦ by
-    simpa only [abs_of_nonneg (norm_nonneg _)] using hbound i
   have hg : (∑ i, ‖d i‖ ^ 2) = globalFPDimension C := by
     apply Complex.ofReal_injective
     simpa only [PseudoUnitary, globalDimension, hnorm, ← Complex.ofReal_sum] using hpu
   intro i
   simpa only [abs_of_nonneg (norm_nonneg _)] using
-    (sum_sq_eq_sum_sq_iff hb).1 hg i
+    (sum_sq_eq_sum_sq_iff (fun i ↦ by
+      simpa only [abs_of_nonneg (norm_nonneg _)] using hbound i)).1 hg i
 
 /-- If some simple has real dimension one, the global sum is at least one. -/
-theorem global_sum_squares_one_le {ι : Type*} [Fintype ι]
-    (d : ι → ℝ) (h : ∃ i, d i = 1) : 1 ≤ ∑ i, (d i) ^ 2 := by
+theorem global_sum_squares_one_le {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
+    {ι : Type*} [Fintype ι] (d : ι → k) (h : ∃ i, d i = 1) : 1 ≤ ∑ i, (d i) ^ 2 := by
   classical
   obtain ⟨i, hi⟩ := h
   simpa [hi] using

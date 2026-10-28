@@ -107,10 +107,8 @@ private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D] {
     (hpq : p ≫ q = 0) (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
     Nonempty (S ≅ P) ∨ Mono (t ≫ q) := by
   by_cases hz : t ≫ q = 0
-  · obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift'
+  · obtain ⟨g, hg⟩ : {g : S ⟶ P // g ≫ p = t} := KernelFork.IsLimit.lift'
       (Abelian.monoIsKernelOfCokernel (CokernelCofork.ofπ q hpq) hc) t hz
-    change S ⟶ P at g
-    change g ≫ p = t at hg
     let : IsIso g := isIso_of_hom_simple (fun h =>
       id_nonzero S ((cancel_mono t).1 (by simpa [h] using hg.symm)))
     exact Or.inl ⟨asIso g⟩
@@ -141,12 +139,11 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
       intro S hS ⟨t, ht⟩
       let : Simple S := hS
       let : Mono t := ht
-      rcases simple_mono_cokernel p t q
-          (Centre.centerCokernel_condition p)
-          (Centre.centerCokernelIsColimit p) with hSP | hmono
-      · exact ⟨P, List.Mem.head _, hSP⟩
-      · obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, hmono⟩
-        exact ⟨T, List.Mem.tail _ hT, hST⟩
+      exact (simple_mono_cokernel p t q
+        (Centre.centerCokernel_condition p) (Centre.centerCokernelIsColimit p)).elim
+        (fun hSP => ⟨P, List.Mem.head _, hSP⟩) (fun hmono =>
+          let ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, hmono⟩
+          ⟨T, List.Mem.tail _ hT, hST⟩)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual centre has finitely many simple objects up to isomorphism. -/
