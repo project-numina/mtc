@@ -104,24 +104,18 @@ theorem close_rightUnit_eval (e : A ≅ 𝟙_ D) :
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
-/-- The canonical unit-column crossing block contracts by evaluation. -/
-theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
-  let te : T ⊗ A ≅ T := whiskerLeftIso T e ≪≫ ρ_ T
-  crossingBlock X T A te.inv te.hom ≫ (T ◁ (unitTensorIso e X).hom) =
-    𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
-  dsimp only [unitTensorIso]
-  set δ : Aᘁ ≅ 𝟙_ D := rightDualIsoMap e.symm
-  have hq : closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫ δ.hom = ε_ T (Tᘁ) :=
-    close_rightUnit_eval T e
-  clear_value δ
-  simp only [crossingBlock, mixedCrossing, Iso.trans_hom, Iso.trans_inv, whiskerLeftIso_hom,
-    whiskerLeftIso_inv, tensorIso_hom, Iso.refl_hom, tensorHom_def, whiskerLeft_id,
-    Category.comp_id]
-  set d : Aᘁ ⟶ 𝟙_ D := δ.hom
-  set q : Tᘁ ⊗ T ⟶ Aᘁ := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
-  set f : A ⟶ 𝟙_ D := e.hom
-  set g : 𝟙_ D ⟶ A := e.inv
-  clear_value d q
+/-- A split unit factor contracts a crossing whenever its closed map is evaluation. -/
+theorem crossingBlock_unit_of_split (f : A ⟶ 𝟙_ D) (g : 𝟙_ D ⟶ A) (d : Aᘁ ⟶ 𝟙_ D)
+    (hfg : g ≫ f = 𝟙 (𝟙_ D))
+    (hq : closeFusionMap T A ((T ◁ f) ≫ (ρ_ T).hom) ≫ d = ε_ T (Tᘁ)) :
+    crossingBlock X T A ((ρ_ T).inv ≫ (T ◁ g)) ((T ◁ f) ≫ (ρ_ T).hom) ≫
+        (T ◁ unitTensorHom f d X) =
+      𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
+  simp only [crossingBlock, mixedCrossing, unitTensorHom, tensorHom_def,
+    whiskerLeft_id, Category.comp_id]
+  set q : Tᘁ ⊗ T ⟶ Aᘁ := closeFusionMap T A ((T ◁ f) ≫ (ρ_ T).hom)
+  change q ≫ d = _ at hq
+  clear_value q
   calc
     _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ T ◁ g) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫
       (((((T ⊗ A) ⊗ X) ◁ q) ≫ (((T ◁ f) ▷ X) ▷ Aᘁ))) ⊗≫
@@ -131,7 +125,17 @@ theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
       (((T ⊗ (𝟙_ D)) ⊗ X) ◁ (q ≫ d)) ⊗≫ 𝟙 _ := by
         rw [whisker_exchange]
         simp [monoidalComp, Category.assoc, whiskerLeft_comp, comp_whiskerRight]
-    _ = _ := by rw [hq, e.inv_hom_id]; simp; monoidal
+    _ = _ := by rw [hq, hfg]; simp; monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+set_option backward.defeqAttrib.useBackward true in
+/-- The canonical unit-column crossing block contracts by evaluation. -/
+theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
+  let te : T ⊗ A ≅ T := whiskerLeftIso T e ≪≫ ρ_ T
+  crossingBlock X T A te.inv te.hom ≫ (T ◁ (unitTensorIso e X).hom) =
+    𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ :=
+  crossingBlock_unit_of_split X T e.hom e.inv
+    (rightDualIsoMap e.symm).hom e.inv_hom_id (close_rightUnit_eval T e)
 
 end PropertyF.Ground.CentreInduction
 
