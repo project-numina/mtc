@@ -137,8 +137,7 @@ theorem ground_conjugate_images (Y : D.Obj) (n : ℕ) :
 theorem conjugate_propertyF
     (hF : HasPropertyF C.Obj) : HasPropertyF D.Obj := fun Y n ↦
   (ground_conjugate_images h Y n).elim fun X ⟨e⟩ ↦
-    letI : Finite (braidImage X n) := hF X n
-    Finite.of_equiv (braidImage X n) e.symm.toEquiv
+    Finite.of_equiv (braidImage X n) (h := hF X n) e.symm.toEquiv
 
 end PropertyF.Ground.Modular
 end

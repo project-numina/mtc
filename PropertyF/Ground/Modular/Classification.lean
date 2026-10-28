@@ -36,7 +36,9 @@ namespace PropertyF.Ground.Modular
 /-- The data needed to state the character equations. No fusion-ring axioms are
 needed for the Galois action itself. -/
 structure FusionRules (ι : Type*) where
+  /-- The label of the unit object. -/
   unit : ι
+  /-- The multiplicity of the third label in the product of the first two. -/
   coeff : ι → ι → ι → ℕ
 
 /-- A function respects the multiplication encoded by fusion coefficients. -/
@@ -46,6 +48,7 @@ abbrev IsFusionCharacter {ι K : Type*} [Fintype ι] [Semiring K]
 
 /-- A normalized complex-valued character of integral fusion rules. -/
 structure Character {ι : Type*} [Fintype ι] (N : FusionRules ι) where
+  /-- The value of the character on each label. -/
   value : ι → ℂ
   unit_eq : value N.unit = 1
   mul_eq : IsFusionCharacter N value
@@ -187,9 +190,8 @@ include hd in
 /-- Nonzero normalized columns of an invertible matrix are distinct. -/
 theorem normalized_columns_injective (hdet : S.det ≠ 0) :
     Function.Injective (fun j i ↦ S i j / dimension j) := fun a b h ↦
-  (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply
-    (dimension b) (dimension a) a b (hd b) (funext fun x ↦ by
-      simpa [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
+  (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply _ _ a b (hd b)
+    (funext fun x ↦ by simpa [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
 
 include hd in
 /-- The normalized S columns are linearly independent. The proof constructs an

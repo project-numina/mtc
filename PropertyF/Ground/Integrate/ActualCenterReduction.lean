@@ -4,7 +4,7 @@ public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Modular.FusionTransport
-public import PropertyF.Ground.Dimensions.IntrinsicNonzero
+
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Modular.SMatrix

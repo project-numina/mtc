@@ -21,8 +21,7 @@ theorem target : TargetStatement.{v,u} := by
   let pZ := CentreInduction.liftedPivotalStructure p hc
   let J := (CentreInduction.induction D).obj (𝟙_ D.Obj)
   let := CentreInduction.center_fusion_of_compatible_pivotal D hp
-    (CentreInduction.forget_trace_of_pivotal_component
-      (CentreInduction.liftedPivotalStructure_compatible hc J))
+    (CentreInduction.liftedPivotalStructure_compatible hc J)
   obtain ⟨hspherical, hfp⟩ := CentreInduction.center_positive_spherical_of_compatible_pivotal hp
     (CentreInduction.liftedPivotalStructure_compatible hc)
   have hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter D) pZ := by

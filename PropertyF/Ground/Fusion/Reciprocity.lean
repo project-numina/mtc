@@ -128,8 +128,7 @@ theorem dualIndex_involutive (D : BraidedFusionCategory.{v,u}) :
       if i = dualIndex D (dualIndex D i) then 1 else 0 := by
     rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit]
   by_contra h
-  have h' : i ≠ dualIndex D (dualIndex D i) := Ne.symm h
-  simp [h'] at hdual
+  simp [Ne.symm h] at hdual
   omega
 
 /-- Duality permutes the simple labels. -/

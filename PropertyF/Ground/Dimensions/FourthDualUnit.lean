@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.DualCoherence
-public import PropertyF.Ground.Dimensions.CoevaluationSliding
+public import PropertyF.Ground.Dimensions.DefectNaturality
 
 /-! # Fourth duals of the tensor unit
 
