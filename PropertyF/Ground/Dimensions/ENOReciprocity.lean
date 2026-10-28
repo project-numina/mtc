@@ -145,12 +145,10 @@ theorem squaredNorm_eq_rootDualSign_mul
     congrArg (unitScalar C) ((rootTrace_id C (Xᘁ)).symm.trans (rootTrace_id_iso C (e ≪≫ u)))
   have hx : unitScalar C (rightQuantumTrace j) = rootDimension C i :=
     congrArg (unitScalar C) (rootTrace_id C X).symm
-  have ht : rightQuantumTrace k = rootDualSign C i • rightQuantumTrace l :=
-    rightQuantumTrace_smul_hom (rootDualSign_component C i)
   rw [target_squaredNorm_choice_independent C j, leftQuantumTrace_eq_rightDual j]
   change unitScalar C (rightQuantumTrace j) * unitScalar C (rightQuantumTrace l) =
     rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i)
-  rw [← hx, ← hq, ht]
+  rw [← hx, ← hq, rightQuantumTrace_smul_hom (rootDualSign_component C i)]
   simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
   rw [mul_mul_mul_comm, rootDualSign_sq, one_mul]
 

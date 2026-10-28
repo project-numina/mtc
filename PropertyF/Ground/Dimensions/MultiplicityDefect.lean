@@ -193,8 +193,7 @@ theorem involution_phase_inv_eq_one_of_trace :
   have hs : T = c • (1 : V →ₗ[ℂ] V) := by
     simpa [smul_mul_assoc, hT] using
       (congrArg (fun F ↦ F * T) (involution_phase_eq_one_of_trace hT hc htrace)).symm
-  have hc0 : c ≠ 0 := norm_ne_zero_iff.mp (by rw [hc]; norm_num)
-  rw [hs, smul_smul, inv_mul_cancel₀ hc0, one_smul]
+  rw [hs, smul_smul, inv_mul_cancel₀ (norm_ne_zero_iff.mp (by rw [hc]; exact one_ne_zero)), one_smul]
 
 
 end PropertyF.Ground.Dimensions
@@ -324,13 +323,10 @@ theorem rootTensor_square_eq_fourthDual_tensor
       ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
         (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
           (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
-  have hx := congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C)
-  have hy := congrArg (fun n => (n.app Y).hom) (fourthDualRootNaturalSquare_eq C)
-  change ((fourthDualRootNaturalIso C).app X).hom ≫
-    ((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) = (fourthDualIso C X).hom at hx
-  change ((fourthDualRootNaturalIso C).app Y).hom ≫
-    ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ) = (fourthDualIso C Y).hom at hy
-  rw [← hx, ← hy]
+  have hroot (Z : C.Obj) : ((fourthDualRootNaturalIso C).app Z).hom ≫
+      ((((fourthDualRootNaturalIso C).app Z).homᘁ)ᘁ) = (fourthDualIso C Z).hom :=
+    congrArg (fun n ↦ (n.app Z).hom) (fourthDualRootNaturalSquare_eq C)
+  rw [← hroot X, ← hroot Y]
   simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
     Category.assoc]
   slice_lhs 2 3 => rw [← doubleDualTensorIso_natural]

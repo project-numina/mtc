@@ -131,12 +131,11 @@ theorem unit_retract_tensorPower {E : Type u} [Category.{v} E] [MonoidalCategory
   classical
   let D : BraidedFusionCategory := { Obj := E }
   obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso D X
-  have hout : 0 < fusionFlow D i (unitIndex D) i := by
-    unfold fusionFlow
-    rw [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, ite_eq_left rfl, Nat.cast_one]
-    simpa [fpSimple_unit] using fpSimple_pos D i
   obtain ⟨j, hj, hp⟩ := balanced_flow_cycle (fusionFlow_nonneg D i)
-    (fusionFlow_balance D i) ⟨i, hout⟩
+    (fusionFlow_balance D i) ⟨i, by
+      unfold fusionFlow
+      rw [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, ite_eq_left rfl, Nat.cast_one]
+      simpa [fpSimple_unit] using fpSimple_pos D i⟩
   have hji : j = i := by
     unfold fusionFlow at hj
     rw [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit] at hj
