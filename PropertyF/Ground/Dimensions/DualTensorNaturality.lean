@@ -69,9 +69,9 @@ theorem rightDualTensorIso_natural [HasRightDual X] [HasRightDual X']
     ((f ⊗ₘ g)ᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ) :=
   evaluation_ext (X := X ⊗ Y) (by
-    simp only [comp_whiskerRight_assoc]
-    rw [rightDualTensorIso_evaluation, rightAdjointMate_comp_evaluation,
-      ← rightDualTensorIso_evaluation X' Y', whisker_exchange_assoc,
+    simp only [comp_whiskerRight_assoc, rightDualTensorIso_evaluation,
+      rightAdjointMate_comp_evaluation]
+    rw [← rightDualTensorIso_evaluation X' Y', whisker_exchange_assoc,
       tensorPairing_evaluation_natural])
 
 omit [RightRigidCategory C] in

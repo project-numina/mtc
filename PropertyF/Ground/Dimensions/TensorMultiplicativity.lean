@@ -26,24 +26,21 @@ theorem rightTraceWith_tensor_pairing {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅
     η_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) ≫
       ((f ≫ (j.hom ⊗ₘ k.hom)) ⊗ₘ 𝟙 ((Yᘁ) ⊗ (Xᘁ))) ≫
       ε_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) := by
+  let V := (Yᘁ) ⊗ (Xᘁ)
+  let U := ((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)
   let p1 : ExactPairing (X ⊗ Y) ((X ⊗ Y)ᘁ) := HasRightDual.exact
-  let p2 : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := ExactPairing.tensor
-  let q1 : ExactPairing ((Yᘁ) ⊗ (Xᘁ)) (((Yᘁ) ⊗ (Xᘁ))ᘁ) := HasRightDual.exact
-  let q2 : ExactPairing ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) := ExactPairing.tensor
-  let r := rightDualIso p1 p2
+  let p2 : ExactPairing (X ⊗ Y) V := ExactPairing.tensor
+  let q1 : ExactPairing V (Vᘁ) := HasRightDual.exact
+  let q2 : ExactPairing V U := ExactPairing.tensor
   let s := rightDualIso q1 q2
   let u := f ≫ (j.hom ⊗ₘ k.hom)
-  have hr : @ExactPairing.coevaluation C _ _ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) p2 ≫
-      ((u ≫ s.inv) ⊗ₘ 𝟙 ((Yᘁ) ⊗ (Xᘁ))) ≫
-        @ExactPairing.evaluation C _ _ ((Yᘁ) ⊗ (Xᘁ)) (((Yᘁ) ⊗ (Xᘁ))ᘁ) q1 =
-      @ExactPairing.coevaluation C _ _ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) p2 ≫
-      (u ⊗ₘ 𝟙 ((Yᘁ) ⊗ (Xᘁ))) ≫
-        @ExactPairing.evaluation C _ _ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) q2 := by
+  have hr : η_ (X ⊗ Y) V ≫ ((u ≫ s.inv) ⊗ₘ 𝟙 V) ≫ ε_ V (Vᘁ) =
+      η_ (X ⊗ Y) V ≫ (u ⊗ₘ 𝟙 V) ≫ ε_ V U := by
     simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc]
     rw [(rightDualIso_inv_evaluation q1 q2)]
   simpa only [rightTraceWith, End.homEquiv_apply, doubleDualTensorIso, Iso.trans_hom,
     Iso.symm_hom, tensorIso_hom, rightDualIsoMap, Category.assoc, rightDualTensorIso,
-    r, s, u, p1, p2, q1, q2] using (trace_change_rightDual p1 p2 (u ≫ s.inv)).trans hr
+    s, u, p1, p2, q1, q2, U, V] using (trace_change_rightDual p1 p2 (u ≫ s.inv)).trans hr
 
 
 omit [RightRigidCategory C] in
