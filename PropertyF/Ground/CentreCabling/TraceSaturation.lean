@@ -16,6 +16,7 @@ positive dimensions, trace saturation detects an identity, relating the
 categorical double braiding to its numerical S-matrix centrality test.
 -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Dimensions
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 
@@ -55,7 +56,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
-variable {D : Ground.BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := D.Obj)}
+variable {D : Ground.BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := D.Obj)}
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Positive weighted sums preserve equality when the terms are pointwise ordered. -/
@@ -109,9 +110,9 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     apply (Ground.unitScalarEquiv D).injective
     change Modular.categoricalS D p i j = _
     rw [hs]
-    simpa [Modular.simpleDimension, Dimensions.pivotalDimension,
+    simpa [Modular.simpleDimension, pivotalDimension,
       Ground.unitScalar_eq_equiv] using
-      (Dimensions.pivotalDimension_tensor D p (simples D i) (simples D j)).symm
+      (pivotalDimension_tensor D p (simples D i) (simples D j)).symm
   exact congrArg End.asHom (finiteOrder_eq_one_of_trace_eq_dimension hdim hfinite ht)
 
 end PropertyF.Ground.CentreCabling

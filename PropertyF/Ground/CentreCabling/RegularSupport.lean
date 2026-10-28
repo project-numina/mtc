@@ -13,13 +13,14 @@ numerical double-centralizer inclusion. The local notations `S D p` and
 `dim D p` denote the categorical S-matrix and simple dimensions.
 -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Dimensions
 open scoped BigOperators
 local notation "S" => PropertyF.Ground.Modular.categoricalS
 local notation "dim" => PropertyF.Ground.Modular.simpleDimension
 namespace PropertyF.Ground.CentreCabling
 universe v u
 variable (D : Ground.BraidedFusionCategory.{v,u})
-  (p : Dimensions.PivotalStructure (C := D.Obj))
+  (p : PivotalStructure (C := D.Obj))
 
 /-- Two simple labels satisfy the numerical S-matrix centrality test. -/
 abbrev sCentralizes (i j : Fin (rank D)) : Prop :=
@@ -31,22 +32,20 @@ abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
 
 /-- Numerical S-centrality is symmetric. -/
 theorem sCentralizes_symm {D : Ground.BraidedFusionCategory.{v,u}}
-    {p : Dimensions.PivotalStructure (C := D.Obj)} {i j : Fin (rank D)}
+    {p : PivotalStructure (C := D.Obj)} {i j : Fin (rank D)}
     (h : sCentralizes D p i j) : sCentralizes D p j i :=
   (Modular.categoricalS_symmetric D p j i).trans <|
     h.trans (mul_comm (dim D p i) (dim D p j))
 
 /-- FP-valued simple dimensions are fixed by complex conjugation. -/
 theorem realSimpleDimensions_of_fp {D : Ground.BraidedFusionCategory.{v,u}}
-    {p : Dimensions.PivotalStructure (C := D.Obj)} (hdim : Modular.HasFPSimpleDimensions D p) :
-    Modular.HasRealSimpleDimensions D p := fun j ↦ by
-  rw [hdim]
-  simp
+    {p : PivotalStructure (C := D.Obj)} (hdim : Modular.HasFPSimpleDimensions D p) :
+    Modular.HasRealSimpleDimensions D p := fun j ↦ by simp [hdim]
 
 /-- The numerical S-centralizer is closed under dual labels when dimensions
 are the positive FP dimensions. -/
 theorem sCentralizes_dual {D : Ground.BraidedFusionCategory.{v,u}}
-    {p : Dimensions.PivotalStructure (C := D.Obj)} (hdim : Modular.HasFPSimpleDimensions D p)
+    {p : PivotalStructure (C := D.Obj)} (hdim : Modular.HasFPSimpleDimensions D p)
     {i y : Fin (rank D)} (hi : sCentralizes D p i y) :
     sCentralizes D p (dualIndex D i) y := by
   dsimp only [sCentralizes] at hi ⊢
@@ -60,7 +59,7 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
 variable {D : Ground.BraidedFusionCategory.{v,u}}
-  {p : Dimensions.PivotalStructure (C := D.Obj)}
+  {p : PivotalStructure (C := D.Obj)}
   (hp : p.IsSpherical) (hdet : (S D p).det ≠ 0)
   (hreal : Modular.HasRealSimpleDimensions D p)
 
@@ -142,7 +141,7 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
 variable {D : Ground.BraidedFusionCategory.{v,u}}
-  {p : Dimensions.PivotalStructure (C := D.Obj)}
+  {p : PivotalStructure (C := D.Obj)}
 
 /-- A character pairing with an eigenvector has the same eigenvalue on both sides. -/
 theorem sum_mul_eigenvalue {ι R : Type*} [Fintype ι] [CommSemiring R]
@@ -218,9 +217,8 @@ theorem regularVector_mul_eq_zero_of_not_mem {A : Finset (Fin (rank D))}
   apply Finset.sum_eq_zero
   intro i _
   by_cases hi : i ∈ A
-  · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi,
-      hA.fusionCoeff_eq_zero ha hi hk, Nat.cast_zero, zero_mul]
-  · rw [show regularVector D A i = 0 from ite_eq_right hi, mul_zero]
+  · simp [regularVector, hi, hA.fusionCoeff_eq_zero ha hi hk]
+  · simp [regularVector, hi]
 
 /-- On its support, the regular vector has the FP eigenvalue. -/
 theorem regularVector_mul_of_mem {A : Finset (Fin (rank D))}
@@ -234,9 +232,8 @@ theorem regularVector_mul_of_mem {A : Finset (Fin (rank D))}
       intro i _
       rw [Modular.fusionCoeff_dual_adjoint D a i k]
       by_cases hi : i ∈ A
-      · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi]
-      · rw [show regularVector D A i = 0 from ite_eq_right hi,
-          hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi, Nat.cast_zero, zero_mul, zero_mul]
+      · simp [regularVector, hi]
+      · simp [regularVector, hi, hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi]
     _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
       simpa [fpSimple_dual] using
         (congrArg (fun z : ℝ ↦ (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)).symm
@@ -248,10 +245,8 @@ theorem regular_vector_fusion_eigenvector {A : Finset (Fin (rank D))}
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * regularVector D A k := by
   by_cases hk : k ∈ A
-  · rw [show regularVector D A k = (fpSimple D k : ℂ) from ite_eq_left hk]
-    exact regularVector_mul_of_mem hA ha hk
-  · rw [show regularVector D A k = 0 from ite_eq_right hk, mul_zero]
-    exact regularVector_mul_eq_zero_of_not_mem hA.fusion ha hk
+  · simpa [regularVector, hk] using regularVector_mul_of_mem hA ha hk
+  · simpa [regularVector, hk] using regularVector_mul_eq_zero_of_not_mem hA.fusion ha hk
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support
