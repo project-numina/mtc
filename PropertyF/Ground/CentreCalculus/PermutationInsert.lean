@@ -160,13 +160,9 @@ theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Perm (Fin
 
 theorem fixHead_swap {n : ℕ} (i : Fin n) :
     fixHead (n + 1) (adjacentSwap i) =
-      adjacentSwap i.succ := by
-  dsimp only [adjacentSwap]
-  have h : i.succ.castSucc = i.castSucc.succ := Fin.ext rfl
-  rw [h]
-  ext x
-  refine Fin.cases ?_ (fun j => ?_) x <;> simp [fixHead, Equiv.swap_apply_def, Fin.ext_iff]
-  split_ifs <;> rfl
+      adjacentSwap i.succ :=
+  Equiv.ext <| Fin.cases (by simp [fixHead, adjacentSwap, Equiv.swap_apply_def, Fin.ext_iff]) fun j ↦ by
+    simpa [fixHead, adjacentSwap] using (Fin.succ_injective _).map_swap i.castSucc i.succ j
 
 section
 variable {X : C} (hX : SelfTransparent X) {n : ℕ}
@@ -220,8 +216,7 @@ theorem tensorPermAction_adjacent (σ : Perm (Fin (n + 1))) :
         End.of (X ◁ ((tensorPermAction X hX (n + 1)) σ).asHom) := by
   rw [decomposeFin_eq_swap_fixHead, map_mul]
   change tensorPermAction X hX (n + 2) (adjacentSwap (0 : Fin (n + 1))) * _ = _
-  simp only [tensorPermAction_swap, tensorPermAction_fixHead]
-  rfl
+  exact congrArg₂ (· * ·) (tensorPermAction_swap hX 0) (tensorPermAction_fixHead hX σ)
 
 end
 
@@ -235,12 +230,12 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A fixed inserted strand contributes its pivotal dimension to the scalar trace. -/
 theorem tensorPermTrace_fixHead (σ : Perm (Fin n)) :
     scalarPermTrace p scalar (tensorPermAction X hX) (n + 1) (fixHead n σ) =
-      scalar (p.rightTrace (𝟙 X)) * scalarPermTrace p scalar (tensorPermAction X hX) n σ := by
-  simp only [scalarPermTrace]
-  rw [tensorPermAction_fixHead]
-  change scalar (p.rightTrace (X ◁ ((tensorPermAction X hX n) σ).asHom)) = _
-  simpa only [id_tensorHom] using Dimensions.pivotalTrace_tensor p scalar
-    (𝟙 X) ((tensorPermAction X hX n) σ).asHom
+      scalar (p.rightTrace (𝟙 X)) * scalarPermTrace p scalar (tensorPermAction X hX) n σ :=
+  (congrArg (fun a : End (tensorPower X (n + 1)) ↦ scalar (p.rightTrace a.asHom))
+    (tensorPermAction_fixHead hX σ)).trans <| by
+      change scalar (p.rightTrace (X ◁ ((tensorPermAction X hX n) σ).asHom)) = _
+      simpa only [id_tensorHom] using Dimensions.pivotalTrace_tensor p scalar
+        (𝟙 X) ((tensorPermAction X hX n) σ).asHom
 
 end
 

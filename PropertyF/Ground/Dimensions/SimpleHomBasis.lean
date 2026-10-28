@@ -191,19 +191,11 @@ theorem rootTrace_eq_simpleHom_trace_sum
   obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple C V (fun a => simples_simple C a.1) f
   rw [heq, ht]
   simp only [Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
-  apply Finset.sum_congr rfl
-  intro k _
+  refine Finset.sum_congr rfl fun k _ ↦ ?_
   have hblock : ∀ t, biproduct.ι V ⟨k, t⟩ ≫ e.inv ≫ g ≫ e.hom ≫ biproduct.π V ⟨k, t⟩ =
-      c ⟨k, t⟩ • 𝟙 (simples C k) := by
-    intro t
-    simpa [f, Category.assoc] using hc ⟨k, t⟩
-  rw [(simpleHom_postcomp_trace C g (fun t => c ⟨k,t⟩) hblock), Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro t _
-  change c ⟨k, t⟩ * (Ground.unitScalarEquiv C (rootTrace C (𝟙 (simples C k)))) =
-    c ⟨k, t⟩ * rootDimension C k
-  rw [← Ground.unitScalar_eq_equiv]
-  rfl
+      c ⟨k, t⟩ • 𝟙 (simples C k) := fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩
+  rw [simpleHom_postcomp_trace C g (fun t => c ⟨k,t⟩) hblock, Finset.sum_mul]
+  simp only [rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Involutivity of every multiplicity operator implies ENO's trace-matrix
