@@ -31,11 +31,11 @@ variable (C : BraidedFusionCategory.{v,u})
 structure on a genuine braided fusion category. -/
 theorem pivotalDimension_dual_eq_conj
     (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
-    pivotalDimension C p (simples C (Ground.dualIndex C i)) =
+    pivotalDimension C p (simples C (dualIndex C i)) =
       star (pivotalDimension C p (simples C i)) := by
   apply fusion_character_dual_eq_conj C
     (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
-  · obtain ⟨e⟩ := Ground.unitIndex_iso C
+  · obtain ⟨e⟩ := unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit]
     exact one_ne_zero
   · exact pivotalDimension_character C p
@@ -44,11 +44,11 @@ theorem pivotalDimension_dual_eq_conj
 conjugation and duality. -/
 theorem galois_pivotalDimension_dual_eq_conj
     (p : PivotalStructure (C := C.Obj)) (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
-    σ (pivotalDimension C p (simples C (Ground.dualIndex C i))) =
+    σ (pivotalDimension C p (simples C (dualIndex C i))) =
       star (σ (pivotalDimension C p (simples C i))) := by
   apply fusion_character_dual_eq_conj C
     (χ := fun j => σ (pivotalDimension C p (simples C j))) (i₀ := unitIndex C)
-  · obtain ⟨e⟩ := Ground.unitIndex_iso C
+  · obtain ⟨e⟩ := unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit, map_one]
     exact one_ne_zero
   · intro j k
@@ -90,8 +90,8 @@ theorem rootDual_differs_by_sign (X : C.Obj)
     [Simple X] : ∃ ε : ℂ, ε * ε = 1 ∧
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom =
         ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom := by
-  let : Simple (Xᘁ) := Ground.simple_rightDual C X
-  let : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := Ground.IsFusionCategory.hom_finite _ _
+  let : Simple (Xᘁ) := simple_rightDual C X
+  let : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := IsFusionCategory.hom_finite _ _
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
   obtain ⟨ε, _, he, _⟩ := doubleDualIso_scalar l k
@@ -127,23 +127,23 @@ variable (C : BraidedFusionCategory.{v,u})
 /-- The sign comparing the root on a simple's dual to the inverse dual root. -/
 noncomputable def rootDualSign (C : BraidedFusionCategory.{v,u})
     (i : Fin (rank C)) : ℂ := by
-  letI : Simple (simples C i) := Ground.simples_simple C i
+  letI : Simple (simples C i) := simples_simple C i
   exact Classical.choose (rootDual_differs_by_sign C (simples C i))
 
 /-- The trace matrices of dual simples are transposes up to the dual-root sign. -/
 abbrev ENOTraceMatrixReciprocity (C : BraidedFusionCategory.{v,u}) : Prop :=
-  ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
+  ∀ i j k, enoTraceMatrix C (dualIndex C i) j k =
     rootDualSign C i * enoTraceMatrix C i k j
 
 theorem rootDualSign_sq (i : Fin (rank C)) :
     rootDualSign C i * rootDualSign C i = 1 := by
-  let : Simple (simples C i) := Ground.simples_simple C i
+  let : Simple (simples C i) := simples_simple C i
   exact (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).1
 
 theorem rootDualSign_component (i : Fin (rank C)) :
     ((fourthDualRootNaturalIso C).app ((simples C i)ᘁ)).hom =
       rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (simples C i))).symm.hom := by
-  let : Simple (simples C i) := Ground.simples_simple C i
+  let : Simple (simples C i) := simples_simple C i
   exact (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).2
 
 set_option backward.isDefEq.respectTransparency false in
@@ -152,21 +152,21 @@ simple and its dual, using the same sign as the dual-root component. -/
 theorem squaredNorm_eq_rootDualSign_mul
     (i : Fin (rank C)) :
     squaredNorm C (simples C i) = rootDualSign C i * rootDimension C i *
-      rootDimension C (Ground.dualIndex C i) := by
+      rootDimension C (dualIndex C i) := by
   let X := simples C i
-  let : Simple X := Ground.simples_simple C i
+  let : Simple X := simples_simple C i
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap j).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
   let e : Xᘁ ≅ ᘁX := leftDualIso
     (BraidedCategory.exactPairing_swap X (Xᘁ)) HasLeftDual.exact
-  obtain ⟨u⟩ := Ground.dualIndex_iso C i
-  have hq : Ground.unitScalar C (rightQuantumTrace k) = rootDimension C (Ground.dualIndex C i) := by
-    change Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (Xᘁ))) = _
+  obtain ⟨u⟩ := dualIndex_iso C i
+  have hq : unitScalar C (rightQuantumTrace k) = rootDimension C (dualIndex C i) := by
+    change unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (Xᘁ))) = _
     rw [← rootTrace_id C, rootTrace_id_iso C (e ≪≫ u)]
     rfl
-  have hx : Ground.unitScalar C (rightQuantumTrace j) = rootDimension C i := by
-    change Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app X)) = _
+  have hx : unitScalar C (rightQuantumTrace j) = rootDimension C i := by
+    change unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app X)) = _
     rw [← rootTrace_id C]
     rfl
   have ht : rightQuantumTrace k = rootDualSign C i • rightQuantumTrace l := by
@@ -174,8 +174,8 @@ theorem squaredNorm_eq_rootDualSign_mul
     have he : k.hom = rootDualSign C i • l.hom := rootDualSign_component C i
     simp [rightQuantumTrace, he, tensorHom_def]
   rw [target_squaredNorm_choice_independent C j, leftQuantumTrace_eq_rightDual j]
-  change Ground.unitScalar C (rightQuantumTrace j) * Ground.unitScalar C (rightQuantumTrace l) =
-    rootDualSign C i * rootDimension C i * rootDimension C (Ground.dualIndex C i)
+  change unitScalar C (rightQuantumTrace j) * unitScalar C (rightQuantumTrace l) =
+    rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i)
   rw [← hx, ← hq, ht]
   simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
   have hs := rootDualSign_sq C i
@@ -205,14 +205,14 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   apply (isSpherical_iff_simple_dimensions C p).2
   intro i
   let X := simples C i
-  let : Simple X := Ground.simples_simple C i
+  let : Simple X := simples_simple C i
   have hh := target_squaredNorm_choice_independent C (p.iso X)
   rw [← rightTrace_id, ← leftTrace_id] at hh
-  have hr : Ground.unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) := hdim i
+  have hr : unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) := hdim i
   rw [hr, hnorm i, Complex.ofReal_pow] at hh
   have hf : (fpSimple C i : ℂ) ≠ 0 := by
-    exact_mod_cast ne_of_gt (Ground.fpSimple_pos C i)
-  have hl : Ground.unitScalar C (p.leftTrace (𝟙 X)) = (fpSimple C i : ℂ) := by
+    exact_mod_cast ne_of_gt (fpSimple_pos C i)
+  have hl : unitScalar C (p.leftTrace (𝟙 X)) = (fpSimple C i : ℂ) := by
     apply mul_left_cancel₀ hf
     simpa [pow_two] using hh.symm
   apply (groundUnitScalarEquiv C).injective
@@ -223,7 +223,7 @@ pseudo-unitarity into pointwise FP saturation. -/
 theorem eno_root_norm_saturation_of_pseudoUnitary
     (hinv : MultiplicityDefectsInvolutive C)
     (heig : ENOTraceMatrixEigenvector C)
-    (hnorm : RootNormIdentity C) (hpu : Ground.PseudoUnitary C) :
+    (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     ∀ i, ‖rootDimension C i‖ = fpSimple C i := by
   let d : Fin (rank C) → ℝ := fun i => ‖rootDimension C i‖
   have hb : ∀ i, |d i| ≤ fpSimple C i := by
@@ -232,8 +232,8 @@ theorem eno_root_norm_saturation_of_pseudoUnitary
     exact rootDimension_norm_le_fp_of_trace_matrix C (hinv i) (heig i)
   have hg : (∑ i, d i ^ 2) = globalFPDimension C := by
     have h := hpu
-    change Ground.globalDimension C = (globalFPDimension C : ℂ) at h
-    unfold Ground.globalDimension at h
+    change globalDimension C = (globalFPDimension C : ℂ) at h
+    unfold globalDimension at h
     simp only [hnorm, ← Complex.ofReal_sum] at h
     exact Complex.ofReal_injective h
   have h := (global_sum_squares_eq_iff C d hb).1 hg
@@ -293,7 +293,7 @@ root has real dimensions. The remaining categorical identities are explicit. -/
 theorem positive_spherical_of_matrix_identities
     (hinv : MultiplicityDefectsInvolutive C)
     (heig : ENOTraceMatrixEigenvector C)
-    (hnorm : RootNormIdentity C) (hpu : Ground.PseudoUnitary C) :
+    (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
   classical
   have hsat := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
@@ -302,19 +302,19 @@ theorem positive_spherical_of_matrix_identities
     intro i
     dsimp [q]
     rw [norm_div, Complex.norm_real, Real.norm_eq_abs,
-      abs_of_pos (Ground.fpSimple_pos C i), hsat i]
-    exact div_self (ne_of_gt (Ground.fpSimple_pos C i))
+      abs_of_pos (fpSimple_pos C i), hsat i]
+    exact div_self (ne_of_gt (fpSimple_pos C i))
   have hq0 : ∀ i, q i ≠ 0 := fun i => norm_pos_iff.mp (by rw [hq]; norm_num)
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i => inv_ne_zero (hq0 i)
-  have hdom : ∀ i j k, ‖enoTraceMatrix C i j k‖ ≤ (Ground.fusionCoeff C i j k : ℝ) := by
+  have hdom : ∀ i j k, ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) := by
     intro i j k
     obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C (hinv i j k)
     change ‖LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap‖ ≤ _
     rw [hn, Complex.norm_intCast, ← Int.cast_abs]
     exact_mod_cast hb
   have hphase : ∀ i j k, enoTraceMatrix C i j k * (q k / (q i * q j)) =
-      (Ground.fusionCoeff C i j k : ℂ) := by
+      (fusionCoeff C i j k : ℂ) := by
     intro i j k
     simpa [q, div_eq_mul_inv, mul_assoc] using
       (fusion_complex_eigenvalue_saturation C (enoTraceMatrix C) (rootDimension C) hsat hdom heig i j k)
@@ -330,7 +330,7 @@ theorem positive_spherical_of_matrix_identities
       exact hphase i j k
     let : FiniteDimensional ℂ
       (simples C k ⟶ simples C i ⊗ simples C j) :=
-      Ground.IsFusionCategory.hom_finite _ _
+      IsFusionCategory.hom_finite _ _
     have hfactor : c k / (c i * c j) = r⁻¹ := by
       dsimp [c, r]
       field_simp [hq0 i, hq0 j, hq0 k]
@@ -338,11 +338,11 @@ theorem positive_spherical_of_matrix_identities
     exact involution_phase_inv_eq_one_of_trace _ (hinv i j k) r hrnorm hrtrace
   have hvalue : ∀ i, c i * rootDimension C i = (fpSimple C i : ℂ) := by
     intro i
-    have hf : (fpSimple C i : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (Ground.fpSimple_pos C i)
+    have hf : (fpSimple C i : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (fpSimple_pos C i)
     dsimp [c, q]
     field_simp [hf, rootDimension_ne_zero C i]
   have hu : c (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
-    rw [hvalue, Ground.fpSimple_unit]
+    rw [hvalue, fpSimple_unit]
     norm_num
   let unitProof := rootSignTwist_unit_of_simple_dimension C c hc hu
   let p := rootPhasePivotal C c hc hdef unitProof
@@ -370,7 +370,7 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     (hinv : MultiplicityDefectsInvolutive C)
     (htranspose : ENOTraceMatrixReciprocity C)
     (i : Fin (rank C)) :
-    rootDimension C (Ground.dualIndex C i) = rootDualSign C i * star (rootDimension C i) := by
+    rootDimension C (dualIndex C i) = rootDualSign C i * star (rootDimension C i) := by
   classical
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ := enoTraceMatrix C i
   let d := rootDimension C
@@ -393,12 +393,12 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     ext j
     change (∑ k, enoTraceMatrix C i j k * rootDimension C k) = rootDimension C i * rootDimension C j
     exact enoTraceMatrix_eigenvector_of_involutions C (hinv i j)
-  have ht : Aᵀ *ᵥ d = (ε * d (Ground.dualIndex C i)) • d := by
+  have ht : Aᵀ *ᵥ d = (ε * d (dualIndex C i)) • d := by
     ext j
     change (∑ k, enoTraceMatrix C i k j * rootDimension C k) =
-      (ε * rootDimension C (Ground.dualIndex C i)) * rootDimension C j
+      (ε * rootDimension C (dualIndex C i)) * rootDimension C j
     have he := enoTraceMatrix_eigenvector_of_involutions C
-      (hinv (Ground.dualIndex C i) j)
+      (hinv (dualIndex C i) j)
     simp_rw [htranspose] at he
     calc
       _ = ε * ∑ k, ((ε * enoTraceMatrix C i k j) * rootDimension C k) := by
@@ -408,14 +408,14 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
         calc
           _ = (ε * ε) * (enoTraceMatrix C i k j * rootDimension C k) := by rw [hε, one_mul]
           _ = _ := by ring
-      _ = ε * (rootDimension C (Ground.dualIndex C i) * rootDimension C j) := by rw [he]
+      _ = ε * (rootDimension C (dualIndex C i) * rootDimension C j) := by rw [he]
       _ = _ := by ring
   have hc := conjugate_of_transpose_eigenvector A hA hv h ht
   have hc' := congrArg star hc
   simp only [star_mul, star_star, hεstar] at hc'
   calc
-    d (Ground.dualIndex C i) = (ε * ε) * d (Ground.dualIndex C i) := by rw [hε, one_mul]
-    _ = ε * (ε * d (Ground.dualIndex C i)) := by ring
+    d (dualIndex C i) = (ε * ε) * d (dualIndex C i) := by rw [hε, one_mul]
+    _ = ε * (ε * d (dualIndex C i)) := by ring
     _ = ε * star (d i) := by rw [hc']
 
 /-- ENO's trace reciprocity proves the intrinsic root-norm identity. -/
