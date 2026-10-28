@@ -52,7 +52,6 @@ import all PropertyF.Ground.Centre.Rigid
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
 import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.ImageCore
-import all PropertyF.Ground.CentreCabling.ProductCore
 import all PropertyF.Ground.CentreCabling.RegularSupport
 import all PropertyF.Ground.CentreCabling.TraceSaturation
 import all PropertyF.Ground.CentreCalculus.ProjectorReduction
