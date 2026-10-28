@@ -44,6 +44,13 @@ theorem rightDualTensorIso_monodromy {X Y : D} :
   simp [Modular.doubleBraiding, comp_rightAdjointMate, Category.assoc,
     rightDualTensorIso_braiding]
 
+/-- Inverse dual tensor comparison also transports monodromy. -/
+theorem rightDualTensorIso_inv_monodromy {X Y : D} :
+    (rightDualTensorIso X Y).inv ≫ (Modular.doubleBraiding X Y)ᘁ =
+      Modular.doubleBraiding (Yᘁ) (Xᘁ) ≫ (rightDualTensorIso X Y).inv :=
+  (CommSq.vert_inv (g := rightDualTensorIso X Y)
+    (h := rightDualTensorIso X Y) ⟨rightDualTensorIso_monodromy⟩).w.symm
+
 end PropertyF.Ground.CentreInduction
 
 end
@@ -89,12 +96,6 @@ theorem drinfeld_inv_dual_tensor :
   have hn' := congrArg (fun z => rightAdjointMate z) (drinfeld_inv_natural C t)
   have hi' := congrArg (fun z => rightAdjointMate z) (drinfeld_tensor_inverse C (Yᘁ) (Xᘁ))
   simp only [comp_rightAdjointMate] at hn' hi'
-  have hm' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫
-      ((Modular.doubleBraiding (Yᘁ) (Xᘁ))ᘁ) =
-      Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
-        (rightDualTensorIso (Yᘁ) (Xᘁ)).inv :=
-    (CommSq.vert_inv (g := rightDualTensorIso (Yᘁ) (Xᘁ))
-      (h := rightDualTensorIso (Yᘁ) (Xᘁ)) ⟨rightDualTensorIso_monodromy⟩).w.symm
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
@@ -103,7 +104,8 @@ theorem drinfeld_inv_dual_tensor :
   simp only [comp_rightAdjointMate, Category.assoc]
   rw [← Category.assoc (t.homᘁ), ← comp_rightAdjointMate, Iso.inv_hom_id,
     rightAdjointMate_id, Category.id_comp]
-  rw [reassoc_of% hm', ← reassoc_of% rightDualTensorIso_inv_natural f g]
+  rw [reassoc_of% rightDualTensorIso_inv_monodromy,
+    ← reassoc_of% rightDualTensorIso_inv_natural f g]
   dsimp only [doubleDualTensorIso, rightDualIsoMap,
     Iso.trans_inv, Iso.symm_inv]
   simp only [comp_rightAdjointMate, Category.assoc, f, g, t]
