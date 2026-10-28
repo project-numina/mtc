@@ -85,9 +85,8 @@ theorem simpleInclusion_independent
     LinearIndependent ℂ (simpleInclusion C X k) := by
   classical
   let : Simple (simples C k) := simples_simple C k
-  apply Fintype.linearIndependent_iff.mpr
-  intro g hg t
-  apply smul_left_injective ℂ (id_nonzero (simples C k))
+  refine Fintype.linearIndependent_iff.mpr fun g hg t ↦
+    smul_left_injective ℂ (id_nonzero (simples C k)) ?_
   simpa [simpleInclusion, Category.assoc, Preadditive.sum_comp, Linear.smul_comp,
     biproduct.ι_π] using congrArg (fun f : simples C k ⟶ X ↦
       f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) hg
