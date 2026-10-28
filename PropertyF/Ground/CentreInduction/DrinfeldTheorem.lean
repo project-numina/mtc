@@ -80,12 +80,11 @@ theorem drinfeld_tensor_inverse :
     Iso.comp_inv_eq, drinfeld_tensor, tensorIso_hom]
 
 omit [RightRigidCategory D] in
-/-- Formula for transporting the inverse Drinfeld map through an isomorphism. -/
+/-- The inverse Drinfeld map is natural in the object. -/
 theorem drinfeld_inv_natural {A B : D} [HasRightDual A] [HasRightDual (Aᘁ)]
-    [HasRightDual B] [HasRightDual (Bᘁ)] (t : A ≅ B) :
-    (d A).inv = (((t.homᘁ)ᘁ) ≫ (d B).inv) ≫ t.inv := by
-  rw [Iso.eq_comp_inv, Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv,
-    drinfeldIso_natural]
+    [HasRightDual B] [HasRightDual (Bᘁ)] (f : A ⟶ B) :
+    CommSq (d A).inv ((fᘁ)ᘁ) f (d B).inv :=
+  (CommSq.vert_inv ⟨drinfeldIso_natural f⟩).flip
 
 /-- The inverse dual Drinfeld map after the tensorator, in terms of the
 reversed dual factors and monodromy. -/
@@ -96,7 +95,7 @@ theorem drinfeld_inv_dual_tensor :
   let t := rightDualTensorIso X Y
   let f := (d (Yᘁ)).inv
   let g := (d (Xᘁ)).inv
-  have hn' := congrArg (fun z => rightAdjointMate z) (drinfeld_inv_natural t)
+  have hn' := congrArg rightAdjointMate ((Iso.eq_comp_inv t).2 (drinfeld_inv_natural t.hom).w)
   have hi' := congrArg (fun z => rightAdjointMate z) (drinfeld_tensor_inverse (Yᘁ : D) (Xᘁ : D))
   simp only [comp_rightAdjointMate] at hn' hi'
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
