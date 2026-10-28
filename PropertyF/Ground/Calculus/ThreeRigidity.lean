@@ -176,12 +176,9 @@ theorem actual_braid_squares_equal_of_saturation (hf : 0 < f)
         (congrArg ρ (three_braid_image_relation X))))
       (fun z hz => by
         simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz))
-      (by
-        change B.trace w (b (braidInImage (threeGeneratorLeft X)) ^ 2 *
-          b (braidInImage (threeGeneratorRight X)) ^ 2) = _
-        rw [← map_pow b, ← map_pow b, ← map_mul b,
-          ← map_pow (braidInImage (X := X) (n := 1)), ← map_pow (braidInImage (X := X) (n := 1)),
-          ← map_mul (braidInImage (X := X) (n := 1)), ← htrace, hvalue]))
+      (by simpa only [a, c, Units.val_mul, Units.val_pow_eq_pow_val,
+        MonoidHom.coe_toHomUnits, ρ, MonoidHom.coe_comp, Function.comp_apply, map_mul, map_pow,
+        htrace, B] using! hvalue))
 
 /-- Three-strand rigidity for a genuine braided pivotal fusion category,
 reduced to explicit real, nonzero trace weights and the sharp unitary bound. -/
