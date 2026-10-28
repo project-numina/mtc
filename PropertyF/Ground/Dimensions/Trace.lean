@@ -13,6 +13,11 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
+/-- An algebra equivalent to the scalar field is spanned by its identity. -/
+theorem eq_smul_one_of_algEquiv {A : Type*} [Semiring A] [Algebra ℂ A]
+    (e : A ≃ₐ[ℂ] ℂ) (a : A) : a = e a • (1 : A) :=
+  e.injective (by simp)
+
 /-- Cyclicity needs naturality only for the two components involved. -/
 theorem rightTraceWith_cyclic {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
     (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
