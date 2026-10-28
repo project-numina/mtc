@@ -23,6 +23,16 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+/-- A scalar eigenvector pulls back along a monomorphism intertwining two endomorphisms. -/
+theorem scalar_eigenvector_of_mono {k : Type*} [CommSemiring k]
+    {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D]
+    {I A B : D} {u : I ⟶ A} {v : I ⟶ B} {s : A ⟶ B} [Mono s]
+    {f : A ⟶ A} {g : B ⟶ B} {c : k}
+    (hu : u ≫ s = v) (hfg : s ≫ g = f ≫ s) (hv : v ≫ g = c • v) :
+    u ≫ f = c • u :=
+  (cancel_mono s).1 <| by
+    rw [Category.assoc, ← hfg, ← Category.assoc, hu, hv, ← hu, Linear.smul_comp]
+
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -79,9 +89,7 @@ theorem rootTensorDefect_coevaluation_of_iso
   have hn := rootTensorDefect_natural C a.hom b.hom
   change d.hom ≫ (rootTensorDefect C Y (Yᘁ)).hom =
     (rootTensorDefect C X (Xᘁ)).hom ≫ d.hom at hn
-  apply (cancel_mono d.hom).1
-  rw [Category.assoc, ← hn, ← Category.assoc, hc, rootTensorDefect_coevaluation,
-    ← hc, Linear.smul_comp]
+  exact scalar_eigenvector_of_mono hc hn (rootTensorDefect_coevaluation i)
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 /-- The root defect has the same eigenvalue on the braided-swapped cup. -/
@@ -103,8 +111,7 @@ theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
   have he := rootTensorDefect_coevaluation_of_iso (dualIndex C i) (rightDualLabelIso C i)
   change η_ A Q ≫ (rootTensorDefect C A Q).hom = _ at he
   rw [rootDualSign_dual] at he
-  apply (cancel_mono (A ◁ r.hom)).1
-  rw [Category.assoc, ← hn, ← Category.assoc, hc, he, ← hc, Linear.smul_comp]
+  exact scalar_eigenvector_of_mono hc hn he
 end PropertyF.Ground.Dimensions
 
 end
