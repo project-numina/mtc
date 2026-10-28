@@ -194,8 +194,7 @@ theorem fourthDualIso_rightDual (X : C) [HasRightDual X] [HasRightDual (Xᘁ)]
       drinfeldIso ((Xᘁ)ᘁ) = rightDualIsoMap (rightDualIsoMap (drinfeldIso X)))
   apply Iso.ext
   simp only [fourthDualIso, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, rightDualIsoMap,
-    comp_rightAdjointMate]
-  rw [hi]
+    comp_rightAdjointMate, hi]
   change (drinfeldIso (Xᘁ)).hom ≫ (((((drinfeldIso X).invᘁ)ᘁ)ᘁ)) =
     ((drinfeldIso X).invᘁ) ≫ ((((drinfeldIso (Xᘁ)).homᘁ)ᘁ))
   simpa only [drinfeldIso_doubleDual] using (drinfeldIso_natural ((drinfeldIso X).invᘁ)).symm
