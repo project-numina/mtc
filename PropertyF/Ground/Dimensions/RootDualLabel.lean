@@ -153,8 +153,6 @@ theorem rootDualSign_dual (i : Fin (rank C)) :
   let X := simples C i
   let Y := simples C (dualIndex C i)
   let : Simple X := simples_simple C i
-  let : Simple Y := simples_simple C _
-  let : Simple (Xᘁ) := simple_rightDual X
   have he : squaredNorm C Y = squaredNorm C X :=
     (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans (target_squaredNorm_rightDual C X)
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
