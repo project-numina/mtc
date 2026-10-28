@@ -94,8 +94,7 @@ theorem pivotalBraidedTwist_simple (C : Ground.BraidedFusionCategory.{v,u})
       pivotalBraidedTwistScalar C p X • (1 : End X) := by
     apply (simpleEndScalarEquiv C X).injective
     simp [pivotalBraidedTwistScalar]
-  have hh := congrArg End.asHom h
-  simpa using hh
+  simpa using congrArg End.asHom h
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (C : Ground.BraidedFusionCategory.{v,u})

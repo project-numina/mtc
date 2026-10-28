@@ -82,8 +82,8 @@ lemma braid_first_power (X : C) (n : ℕ) :
         α_ X X (tensorPower X n)).hom)
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom, whiskerLeft_comp,
     Category.assoc]
-  have h := braid_first_with_comparison F X (tensorPower X n) (tensorPowerComparison F X n)
-  simpa only [Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom, Category.assoc] using h
+  simpa only [Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom, Category.assoc] using
+    braid_first_with_comparison F X (tensorPower X n) (tensorPowerComparison F X n)
 
 /-- Every adjacent generator commutes with the tensor-power comparison. -/
 theorem braidGenerator_functor (X : C) (n : ℕ) (i : Fin (n + 1)) :

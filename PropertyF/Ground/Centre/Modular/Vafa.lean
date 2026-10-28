@@ -1035,8 +1035,8 @@ theorem pivotal_twist_finite_of_balancing
   intro i
   have hf' : IsOfFinOrder ((t i : ℂˣ) : ℂ) := Units.isOfFinOrder_val.mpr (hf i)
   let : Simple (simples C i) := simples_simple C i
-  have hm := (Dimensions.simpleEndScalarEquiv C (simples C i)).symm.toMonoidHom.isOfFinOrder hf'
-  simpa [t, CentreCabling.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using hm
+  simpa [t, CentreCabling.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using
+    (Dimensions.simpleEndScalarEquiv C (simples C i)).symm.toMonoidHom.isOfFinOrder hf'
 
 /-- The actual pivotal twist balancing law alone forces every mixed
 monodromy to have finite order; no lantern relation is required. -/

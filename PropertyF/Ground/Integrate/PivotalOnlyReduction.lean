@@ -1,7 +1,8 @@
 module
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
-public import PropertyF.Ground.CentreRigid.ForgetComparison
+public import PropertyF.Ground.CentreRigid.Evaluation
+public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
 
 /-! Centre fusion and sphericality from any base pivotal structure. -/

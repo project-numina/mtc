@@ -30,33 +30,7 @@ theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
   let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j
   have hbalance (i : ι) : ψ.value i * w = χ.value i * w := by
     have hc := character_dual_conj N dual hdual χ i
-    have hc' : starRingEnd ℂ (χ.value (dual i)) = χ.value i := by rw [hc]; simp
-    calc
-      _ = ∑ j, starRingEnd ℂ (χ.value j) * (ψ.value i * ψ.value j) := by
-        simp only [w, Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro j _
-        ring
-      _ = ∑ j, ∑ k, starRingEnd ℂ (χ.value j) * ((N.coeff i j k : ℂ) * ψ.value k) := by
-        simp only [ψ.mul_eq, Finset.mul_sum]
-      _ = ∑ k, ∑ j, ((N.coeff (dual i) k j : ℂ) * starRingEnd ℂ (χ.value j)) * ψ.value k := by
-        rw [Finset.sum_comm]
-        apply Finset.sum_congr rfl
-        intro k _
-        apply Finset.sum_congr rfl
-        intro j _
-        rw [hdual i j k]
-        ring
-      _ = ∑ k, starRingEnd ℂ (χ.value (dual i) * χ.value k) * ψ.value k := by
-        apply Finset.sum_congr rfl
-        intro k _
-        rw [χ.mul_eq, map_sum, Finset.sum_mul]
-        simp only [map_mul, map_natCast]
-      _ = χ.value i * w := by
-        simp only [w, map_mul, hc', Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro k _
-        ring
+    simpa [w, hc] using character_inner_balance N dual hdual χ ψ i
   have hi : ∃ i, χ.value i ≠ ψ.value i := by
     by_contra h
     push Not at h
