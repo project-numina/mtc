@@ -110,6 +110,29 @@ def UnitaryVia (ι : K →+* ℂ) : Prop :=
   (∀ a b c (i : Fin (n.N a b c)) (j : Fin (n.N b a c)),
     ι (s.Rinv a b c j i) = star (ι (s.R a b c i j)))
 
+/-- A star-preserving injective embedding reflects matrix unitarity. -/
+theorem unitaryVia_iff [StarRing K] (ι : K →+* ℂ) (hinj : Function.Injective ι)
+    (hstar : ∀ x, ι (star x) = star (ι x)) : s.UnitaryVia ι ↔ s.Unitary := by
+  constructor
+  · rintro ⟨hf, hr⟩
+    constructor
+    · intro a b c d i j
+      apply hinj
+      rw [hstar]
+      exact hf a b c d i j
+    · intro a b c i j
+      apply hinj
+      rw [hstar]
+      exact hr a b c i j
+  · rintro ⟨hf, hr⟩
+    constructor
+    · intro a b c d i j
+      rw [← hstar]
+      exact congrArg ι (hf a b c d i j)
+    · intro a b c i j
+      rw [← hstar]
+      exact congrArg ι (hr a b c i j)
+
 /-- The coherence checks, separate from the additional fusion-system axioms. -/
 def Coherent : Prop := s.Invertible ∧ s.Pentagon ∧ s.Hexagon₁ ∧ s.Hexagon₂
 

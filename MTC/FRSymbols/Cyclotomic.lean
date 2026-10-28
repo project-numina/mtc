@@ -1,6 +1,7 @@
 module
 public import Mathlib.RingTheory.AdjoinRoot
 public import Mathlib.RingTheory.Polynomial.Cyclotomic.Roots
+public import Mathlib.Analysis.Complex.Basic
 
 /-!
 # Exact cyclotomic coefficients for F and R symbols
@@ -49,6 +50,58 @@ theorem cyclotomicEmbedding_generator (n : ℕ) [NeZero n] :
     cyclotomicEmbedding n (cyclotomicGenerator n) =
       Complex.exp (2 * Real.pi * Complex.I / n) := by
   exact AdjoinRoot.lift_root _
+
+/-- Conjugation of exact cyclotomic coefficients sends the generator to its
+inverse and fixes rational numbers. -/
+noncomputable def cyclotomicConj (n : ℕ) [NeZero n] :
+    ExactCyclotomic n →+* ExactCyclotomic n :=
+  AdjoinRoot.lift (AdjoinRoot.of (cyclotomic n ℚ)) (cyclotomicGenerator n)⁻¹ (by
+    rw [← eval_map, map_cyclotomic]
+    exact (cyclotomicGenerator_primitive n).inv.isRoot_cyclotomic (NeZero.pos n))
+
+/-- The cyclotomic conjugation sends the generator to its inverse. -/
+theorem cyclotomicConj_generator (n : ℕ) [NeZero n] :
+    cyclotomicConj n (cyclotomicGenerator n) = (cyclotomicGenerator n)⁻¹ := by
+  exact AdjoinRoot.lift_root _
+
+/-- Exact cyclotomic conjugation is an involution. -/
+theorem cyclotomicConj_involutive (n : ℕ) [NeZero n] (x : ExactCyclotomic n) :
+    cyclotomicConj n (cyclotomicConj n x) = x := by
+  have heq : (cyclotomicConj n).comp (cyclotomicConj n) = RingHom.id _ := by
+    apply AdjoinRoot.ringHom_ext
+    · ext q
+      simp [cyclotomicConj]
+    · change cyclotomicConj n (cyclotomicConj n (cyclotomicGenerator n)) =
+        cyclotomicGenerator n
+      simp only [cyclotomicConj_generator, map_inv₀, inv_inv]
+  exact DFunLike.congr_fun heq x
+
+/-- The involution on the exact field sends `ζₙ` to `ζₙ⁻¹`. -/
+noncomputable instance (n : ℕ) [NeZero n] : StarRing (ExactCyclotomic n) where
+  star := cyclotomicConj n
+  star_involutive := cyclotomicConj_involutive n
+  star_mul := by
+    intro x y
+    simpa only [mul_comm] using map_mul (cyclotomicConj n) x y
+  star_add := by
+    intro x y
+    exact map_add (cyclotomicConj n) x y
+
+/-- The standard embedding respects the cyclotomic involution and complex
+conjugation. Thus exact-field unitarity agrees with complex unitarity. -/
+theorem cyclotomicEmbedding_map_star (n : ℕ) [NeZero n] (x : ExactCyclotomic n) :
+    cyclotomicEmbedding n (star x) = star (cyclotomicEmbedding n x) := by
+  have heq : (cyclotomicEmbedding n).comp (cyclotomicConj n) =
+      (starRingEnd ℂ).comp (cyclotomicEmbedding n) := by
+    apply AdjoinRoot.ringHom_ext
+    · ext q
+      simp [cyclotomicConj, cyclotomicEmbedding]
+    · change cyclotomicEmbedding n (cyclotomicConj n (cyclotomicGenerator n)) =
+        star (cyclotomicEmbedding n (cyclotomicGenerator n))
+      rw [cyclotomicConj_generator, map_inv₀, cyclotomicEmbedding_generator]
+      exact Complex.inv_eq_conj ((Complex.isPrimitiveRoot_exp n (NeZero.ne n)).norm'_eq_one
+        (NeZero.ne n))
+  exact DFunLike.congr_fun heq x
 
 /-- Polynomial representatives denote the same exact coefficient precisely
 when their difference has zero remainder modulo the cyclotomic polynomial. -/

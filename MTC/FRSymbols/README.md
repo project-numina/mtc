@@ -17,7 +17,10 @@ constructs the associated exact unnormalized S, twist and fusion data.
 `Cyclotomic.lean` represents exact coefficients in `ℚ[X]/(Φₙ)` and provides
 the standard complex embedding and an equality criterion using remainders.
 For positive `n`, the quotient has a field instance and the class of `X` is
-proved to be a primitive `n`th root.
+proved to be a primitive `n`th root. Exact conjugation sends it to its
+inverse, and the standard complex embedding preserves this involution.
+`CyclotomicMatrix.lean` proves that exact matrix unitarity is equivalent to
+unitarity after complex embedding.
 
 ## Local Atlas symbol blocks
 
