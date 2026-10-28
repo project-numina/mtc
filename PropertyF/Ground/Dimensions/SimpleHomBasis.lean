@@ -54,8 +54,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the inverse tensor defect with the natural root gives the product
 of the two simple root dimensions. -/
-theorem rootTrace_inverseDefect
-    (i j : Fin (rank C)) :
+theorem rootTrace_inverseDefect (i j : Fin (rank C)) :
     unitScalar C (rootTrace C (rootTensorDefect C (simples C i) (simples C j)).inv) =
       rootDimension C i * rootDimension C j := by
   simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, rootTrace,

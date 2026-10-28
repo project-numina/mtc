@@ -56,8 +56,7 @@ theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStr
     hsimple] using pivotalDimension_decomposition C p (X := X)
 
 /-- Pivotal dimensions multiply under tensor products. -/
-theorem pivotalDimension_tensor
-    (X Y : C.Obj) :
+theorem pivotalDimension_tensor (X Y : C.Obj) :
     pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
   simpa [pivotalDimension, Ground.unitScalar_eq_equiv] using
     pivotalTrace_tensor p (Ground.unitScalarEquiv C) (𝟙 X) (𝟙 Y)

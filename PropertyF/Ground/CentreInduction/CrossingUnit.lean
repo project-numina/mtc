@@ -22,16 +22,14 @@ set_option backward.isDefEq.respectTransparency false in
 theorem closeFusionMap_unit :
     closeFusionMap (𝟙_ D) S (λ_ S).hom = (ρ_ (Sᘁ)).hom :=
   Dimensions.evaluation_ext (X := S) <| by
-    rw [closeFusionMap_evaluation]
-    monoidal
+    simp [closeFusionMap_evaluation, monoidalComp]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical unit crossing block is the unitor comparison. -/
 theorem crossingBlock_unit :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  simp only [crossingBlock, mixedCrossing, closeFusionMap_unit]
-  monoidal
+  simp [crossingBlock, mixedCrossing, closeFusionMap_unit, tensorHom_def, Category.assoc]
 end
 
 section
@@ -45,15 +43,11 @@ theorem closeFusionMap_tensor (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
   apply Dimensions.evaluation_ext (X := S)
   rw [closeFusionMap_evaluation]
   calc
-    _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫
-      (closeFusionMap T K f ▷ K ≫ ε_ K (Kᘁ)) := by
-      rw [closeFusionMap_evaluation]
-      monoidal
-    _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by monoidal
+    _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by
+      simp [closeFusionMap_evaluation, monoidalComp]
     _ = _ := by
       rw [whisker_exchange]
-      simp only [monoidalComp, comp_whiskerRight, Category.assoc, closeFusionMap_evaluation]
-      monoidal
+      simp [monoidalComp, comp_whiskerRight, Category.assoc, closeFusionMap_evaluation]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossing blocks compose to the block of their composite fusion maps. -/

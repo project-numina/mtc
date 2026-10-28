@@ -26,8 +26,7 @@ theorem fusion_coevaluation [HasRightDual R] [HasRightDual S] (g : R ⟶ T ⊗ S
       𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) := by
   have hr : (𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫
       𝟙 ((T ⊗ S) ⊗ Sᘁ)) = (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)) (f ≫ g) := by
-    dsimp [tensorRightHomEquiv]
-    monoidal
+    simp [tensorRightHomEquiv, monoidalComp]
   rw [hr]
   apply (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)).symm.injective
   rw [Equiv.symm_apply_apply]
@@ -38,18 +37,15 @@ theorem fusion_coevaluation [HasRightDual R] [HasRightDual S] (g : R ⟶ T ⊗ S
       ((g ▷ ((Sᘁ : D) ⊗ S)) ≫ ((T ⊗ S) ◁ ε_ S (Sᘁ))) ⊗≫ 𝟙 _ := by
         rw [tensorHom_def']
         monoidal
-    _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ ((q ▷ S) ≫ ε_ S (Sᘁ))) ⊗≫
-      (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by
-      rw [← whisker_exchange]
-      monoidal
     _ = 𝟙 _ ⊗≫ ((η_ R (Rᘁ) ▷ (T ⊗ S)) ≫ (((R ⊗ Rᘁ) : D) ◁ f)) ⊗≫
       (R ◁ ε_ R (Rᘁ)) ⊗≫ g := by
-      rw [closeFusionMap_evaluation f]
-      monoidal
-    _ = f ⊗≫ ((η_ R (Rᘁ) ▷ R) ⊗≫ (R ◁ ε_ R (Rᘁ))) ⊗≫ g := by
       rw [← whisker_exchange]
+      simp [monoidalComp, Category.assoc, q]
+      rw [← whiskerLeft_comp_assoc, closeFusionMap_evaluation]
       monoidal
-    _ = _ := by rw [evaluation_coevaluation'']; monoidal
+    _ = _ := by
+      rw [← whisker_exchange]
+      simp [monoidalComp]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component followed by a crossing block reduces to a fusion endomorphism. -/
@@ -103,11 +99,9 @@ theorem unitBlockLinear_id [HasRightDual S] :
       (Z.2.β T).hom ≫ (T ◁ unitComponentAt Z S) := by
   dsimp only [unitBlockLinear, unitComponentAt, LinearMap.coe_mk, AddHom.coe_mk]
   rw [Z.2.monoidal]
-  let bT := (Z.2.β T).hom
-  let bS := (Z.2.β S).hom
   calc
-    _ = 𝟙 _ ⊗≫ (((Z.1 ⊗ T) ◁ η_ S (Sᘁ)) ≫ (bT ▷ (S ⊗ Sᘁ))) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by monoidal
+    _ = 𝟙 _ ⊗≫ (((Z.1 ⊗ T) ◁ η_ S (Sᘁ)) ≫ ((Z.2.β T).hom ▷ (S ⊗ Sᘁ))) ⊗≫
+      (T ◁ ((Z.2.β S).hom ▷ Sᘁ)) ⊗≫ 𝟙 _ := by monoidal
     _ = _ := by rw [whisker_exchange]; monoidal
 
 variable (Z : Center C.Obj) (T : C.Obj)

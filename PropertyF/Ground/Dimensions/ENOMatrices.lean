@@ -98,8 +98,7 @@ theorem enoTraceMatrix_norm_le_fusionCoeff {i j k : Fin (rank C)}
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) := by
   obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C h
-  change ‖LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap‖ ≤ _
-  rw [hn, Complex.norm_intCast, ← Int.cast_abs]
+  simp only [enoTraceMatrix, hn, Complex.norm_intCast, ← Int.cast_abs]
   exact_mod_cast hb
 
 /-- Once the categorical multiplicity defects are involutive and their trace
