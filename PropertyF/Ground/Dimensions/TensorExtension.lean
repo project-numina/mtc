@@ -46,7 +46,7 @@ def rootSignDefect (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignTwist_app_simple
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
+    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
     ((rootSignTwist C c hc).app (simples C i)).hom =
       c i • ((fourthDualRootNaturalIso C).app (simples C i)).hom := by
   change ((simpleScalarNaturalIso C c hc).app (simples C i)).hom ≫
@@ -56,7 +56,7 @@ theorem rootSignTwist_app_simple
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignTensorIso_hom
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i j : Fin (rank C)) :
+    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i j : Fin (rank C)) :
     (rootSignTensorIso C c hc (simples C i) (simples C j)).hom =
       (c i * c j) • (rootTensorIso C (simples C i) (simples C j)).hom := by
   change (((rootSignTwist C c hc).app (simples C i)).hom ⊗ₘ
@@ -65,15 +65,15 @@ theorem rootSignTensorIso_hom
   simp [rootTensorIso, tensorHom_def, smul_smul, mul_comm]
 
 theorem rootPhaseTensorIso_inv
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
+    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
     (i j : Fin (rank C)) :
     (rootSignTensorIso C c hc (simples C i) (simples C j)).inv =
       (c i * c j)⁻¹ • (rootTensorIso C (simples C i) (simples C j)).inv :=
-  iso_inv_eq_inv_smul (mul_ne_zero (hc i) (hc j)) (rootSignTensorIso_hom C c hc i j)
+  iso_inv_eq_inv_smul (mul_ne_zero (hc i) (hc j)) (rootSignTensorIso_hom C hc i j)
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseDefect_apply
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
+    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
     {i j k : Fin (rank C)}
     (f : simples C k ⟶ simples C i ⊗ simples C j) :
     f ≫ (rootSignDefect C c hc (simples C i) (simples C j)).hom =
@@ -89,7 +89,7 @@ theorem rootPhaseDefect_apply
   simp [rootTensorDefect, Linear.smul_comp, smul_smul, div_eq_mul_inv, mul_comm]
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootPhaseTensor_compatible_of_scaled_defects (c : Fin (rank C) → ℂ)
+theorem rootPhaseTensor_compatible_of_scaled_defects {c : Fin (rank C) → ℂ}
     (hc : ∀ i, c i ≠ 0) {i j : Fin (rank C)}
     (hdef : ∀ k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1) :
     (rootSignTwist C c hc).app (simples C i ⊗ simples C j) =
@@ -103,7 +103,7 @@ theorem rootPhaseTensor_compatible_of_scaled_defects (c : Fin (rank C) → ℂ)
     have hfd := congrArg (fun L => L f) (hdef k)
     change (c k / (c i * c j)) • multiplicityDefect C i j k f = f at hfd
     rw [multiplicityDefect_apply] at hfd
-    have ht := rootPhaseDefect_apply C c hc f
+    have ht := rootPhaseDefect_apply C hc f
     rw [hfd] at ht
     simpa [f, X] using ht
   change ((rootSignTwist C c hc).app X).hom ≫ (rootSignTensorIso C c hc _ _).inv = 𝟙 X at hid
@@ -165,13 +165,13 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignQuantumTrace_simple
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
+    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
     unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (simples C i))) =
       c i * rootDimension C i := by
   have hq : rightQuantumTrace ((rootSignTwist C c hc).app (simples C i)) =
       c i • rootTrace C (𝟙 (simples C i)) := by
     rw [rootTrace_id]
-    exact rightQuantumTrace_smul_hom (rootSignTwist_app_simple C c hc i)
+    exact rightQuantumTrace_smul_hom (rootSignTwist_app_simple C hc i)
   rw [hq]
   unfold rootDimension
   simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
@@ -191,7 +191,7 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignTwist_unit_of_simple_dimension
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
+    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
     (hunit : c (unitIndex C) * rootDimension C (unitIndex C) = 1) :
     RootSignUnitLaw C c hc := by
   apply naturalDoubleDual_unit_eq_of_trace_one

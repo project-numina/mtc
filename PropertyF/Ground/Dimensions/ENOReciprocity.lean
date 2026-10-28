@@ -241,7 +241,7 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
   tensor X Y := by
     apply doubleDualTensor_extension C (rootSignTwist C c hc)
     intro i j
-    exact congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C c hc (hdef i j))
+    exact congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C hc (hdef i j))
   unit := hunit
 
 set_option backward.isDefEq.respectTransparency false in
@@ -252,7 +252,7 @@ theorem rootPhasePivotal_dimension
     pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
       c i * rootDimension C i := by
   simpa only [pivotalDimension, rightTrace_id, rootPhasePivotal] using
-    rootSignQuantumTrace_simple C c hc i
+    rootSignQuantumTrace_simple C hc i
 
 /-- Saturated root dimensions normalize every involutive multiplicity defect. -/
 theorem normalized_defects_trivial
@@ -271,7 +271,7 @@ theorem normalized_defects_trivial
       (fusionCoeff C i j k : ℂ) := by
     intro i j k
     simpa [q, div_eq_mul_inv, mul_assoc] using
-      (fusion_complex_eigenvalue_saturation C (enoTraceMatrix C) (rootDimension C) hsat hdom heig i j k)
+      (fusion_complex_eigenvalue_saturation C hsat hdom heig i j k)
   change ScaledMultiplicityDefectsTrivial C c
   intro i j k
   let r := q k / (q i * q j)
@@ -312,7 +312,7 @@ theorem positive_spherical_of_matrix_identities
   have hu : c (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
     rw [hvalue, fpSimple_unit]
     norm_num
-  let unitProof := rootSignTwist_unit_of_simple_dimension C c hc hu
+  let unitProof := rootSignTwist_unit_of_simple_dimension C hc hu
   let p := rootPhasePivotal C c hc hdef unitProof
   have hp : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     intro i
