@@ -180,10 +180,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj) :
     ((underlyingFunctor C).map h ▷ T) ≫ crossingCandidate C Y T =
       crossingCandidate C X T ≫ (T ◁ (underlyingFunctor C).map h) := by
-  let VX := inductionSummand C X
-  let VY := inductionSummand C Y
-  refine rightDistributor_ext_left (f := VX) fun i => ?_
-  dsimp [VX, VY, underlying] at *
+  refine rightDistributor_ext_left (f := inductionSummand C X) fun i => ?_
+  dsimp [underlying] at *
   simp only [← Category.assoc, ← comp_whiskerRight]
   simp only [underlyingFunctor, biproduct.ι_map, comp_whiskerRight, Category.assoc,
     crossingCandidate_on_summand, Preadditive.comp_sum, Preadditive.sum_comp]

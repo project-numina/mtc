@@ -111,8 +111,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem finite_simple_subobject_labels (W : 𝒵) :
     ∃ L : List (𝒵), ∀ S : 𝒵, Simple S →
       (∃ t : S ⟶ W, Mono t) → ∃ T ∈ L, Nonempty (S ≅ T) := by
-  let m : 𝒵 → ℕ := fun Z => Module.finrank ℂ (Z.1 ⟶ Z.1)
-  induction W using (measure m).wf.induction with
+  induction W using (measure fun Z : 𝒵 ↦ Module.finrank ℂ (Z.1 ⟶ Z.1)).wf.induction with
   | h W ih =>
     by_cases hw : IsZero W
     · refine ⟨[], fun S hS ⟨t, ht⟩ => ?_⟩

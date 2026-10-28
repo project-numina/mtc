@@ -60,12 +60,11 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The induction crossing obeys the half-braiding tensor law. -/
 theorem crossingCandidate_tensor (U : C.Obj) :
     crossingCandidate C X (T ⊗ U) = crossingTensorComposite C X T U := by
-  let V := inductionSummand C X
-  refine rightDistributor_ext_left (f := V) fun i => ?_
+  refine rightDistributor_ext_left (f := inductionSummand C X) fun i => ?_
   rw [crossingCandidate_on_summand, crossingComposite_summand]
   simp_rw [← Preadditive.sum_comp, ← crossingBlock_refinement C X T U i]
   simp only [Fintype.sum_sigma, Preadditive.sum_comp]
-  dsimp only [underlying, V] at *
+  dsimp only [underlying] at *
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun k _ => ?_
   simp_rw [Finset.sum_comm (s := (Finset.univ : Finset (crossingIndex C U k _)))
