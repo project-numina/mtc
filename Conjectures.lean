@@ -18,3 +18,4 @@ public import Conjectures.Galois.SimpleFPDimension
 public import Conjectures.Galois.SquaredNorm
 public import Conjectures.RankFiniteness.EffectiveDimension
 public import Conjectures.PropertyF.ModularPropertyF
+public import Conjectures.RankFiniteness.DimensionValues
