@@ -19,8 +19,10 @@ universe v u
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [RightRigidCategory C]
-local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
-local instance : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual1 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual2 : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
 set_option backward.isDefEq.respectTransparency false in
 /-- The braided double-dual map has the canonical component on the unit. -/
 theorem drinfeld_unit :
@@ -50,9 +52,12 @@ universe v u
 section
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [RightRigidCategory C]
-local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
-local instance : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
-local instance : HasRightDual (((𝟙_ C)ᘁ)ᘁ) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual3 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual4 : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual5 : HasRightDual (((𝟙_ C)ᘁ)ᘁ) := RightRigidCategory.rightDual _
 set_option backward.isDefEq.respectTransparency false in
 /-- The Drinfeld map respects duality on the tensor unit. -/
 theorem drinfeld_unit_dual :

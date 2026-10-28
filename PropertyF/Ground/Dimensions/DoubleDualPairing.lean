@@ -26,7 +26,8 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
-local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance pairingUnitDual1 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
 omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle dual pair in the tensor-product coevaluation recovers
@@ -81,7 +82,8 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
-local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance pairingUnitDual2 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
 omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle pair in a tensor-product evaluation leaves the outer evaluation. -/

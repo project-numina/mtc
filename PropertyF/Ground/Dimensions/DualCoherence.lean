@@ -130,8 +130,10 @@ end
 
 section
 variable [RightRigidCategory C]
-local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
-local instance : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance coherenceUnitDual1 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance coherenceUnitDual2 : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual unit isomorphism has unit evaluation trace. -/

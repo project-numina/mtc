@@ -23,7 +23,8 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
-local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance unitTensorDual1 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
 set_option backward.isDefEq.respectTransparency false in
 /-- Right dual tensor comparison is compatible with the left unitor. -/
 theorem rightDualTensorIso_unit_left :
@@ -74,8 +75,10 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
-local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
-local instance : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance unitTensorDual2 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance unitTensorDual3 : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is left-unital. -/
 theorem doubleDualTensorIso_unit_left :
