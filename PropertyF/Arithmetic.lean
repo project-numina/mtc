@@ -22,10 +22,8 @@ theorem integer_of_galois_fixed {K : Type*} [Field K] [Algebra ℚ K]
     (hx : IsIntegral ℤ x) (hfixed : ∀ σ : K ≃ₐ[ℚ] K, σ x = x) :
     ∃ z : ℤ, x = (z : K) := by
   obtain ⟨q, hq⟩ := (IsGalois.mem_range_algebraMap_iff_fixed x).mpr hfixed
-  have hqint : IsIntegral ℤ q := by
-    apply (isIntegral_algebraMap_iff (B := K)).mp
-    simpa [hq] using hx
-  obtain ⟨z, hz⟩ := IsIntegrallyClosed.algebraMap_eq_of_integral hqint
+  obtain ⟨z, hz⟩ := IsIntegrallyClosed.algebraMap_eq_of_integral
+    (show IsIntegral ℤ q from (isIntegral_algebraMap_iff (B := K)).mp (by simpa [hq] using hx))
   exact ⟨z, by rw [← hq, ← hz]; simp⟩
 
 end PropertyF

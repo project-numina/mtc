@@ -131,36 +131,44 @@ end PropertyF.Ground.Calculus
 open scoped BigOperators
 namespace PropertyF.Ground.Calculus
 
+section
+
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+  (T : Matrix ι ι ℂ →ₗ[ℂ] ℂ) (hT : ∀ X Y, T (X * Y) = T (Y * X))
+
+include hT in
+/-- A cyclic functional agrees with a multiple of the trace on matrix units. -/
+private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
+    T (Matrix.single i j a) = T (Matrix.single i₀ i₀ 1) * (Matrix.single i j a).trace := by
+  classical
+  by_cases hij : i = j
+  · subst j
+    have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
+    simp only [Matrix.single_mul_single_same, mul_one, one_mul] at hdiag
+    have hscalar : Matrix.single i₀ i₀ a = a • Matrix.single i₀ i₀ (1 : ℂ) := by
+      simp [Matrix.smul_single]
+    rw [hdiag, hscalar, map_smul, Matrix.trace_single_eq_same]
+    simp [mul_comm]
+  · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
+    simp only [Matrix.single_mul_single_same, one_mul,
+      Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
+    rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
+
+include hT in
 /-- A cyclic linear functional on a complex matrix algebra is a scalar
 multiple of ordinary matrix trace, including the zero-dimensional case. -/
-theorem cyclic_matrix_trace {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (T : Matrix ι ι ℂ →ₗ[ℂ] ℂ) (hT : ∀ X Y, T (X * Y) = T (Y * X)) :
-    ∃ w : ℂ, ∀ X, T X = w * X.trace := by
+theorem cyclic_matrix_trace : ∃ w : ℂ, ∀ X, T X = w * X.trace := by
   classical
   by_cases hn : Nonempty ι
   · let i₀ : ι := Classical.choice hn
-    let w := T (Matrix.single i₀ i₀ 1)
-    refine ⟨w, fun X => ?_⟩
-    have hs : ∀ i j (a : ℂ), T (Matrix.single i j a) =
-        w * (Matrix.single i j a).trace := by
-      intro i j a
-      by_cases hij : i = j
-      · subst j
-        have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
-        simp only [Matrix.single_mul_single_same, mul_one, one_mul] at hdiag
-        have hscalar : Matrix.single i₀ i₀ a = a • Matrix.single i₀ i₀ (1 : ℂ) := by
-          simp [Matrix.smul_single]
-        rw [hdiag, hscalar, map_smul, Matrix.trace_single_eq_same]
-        simp [w, mul_comm]
-      · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
-        simp only [Matrix.single_mul_single_same, one_mul,
-          Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
-        rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
+    refine ⟨T (Matrix.single i₀ i₀ 1), fun X => ?_⟩
     induction X using Matrix.induction_on with
     | h_add X Y hX hY => simp [hX, hY, Matrix.trace_add, mul_add]
-    | h_std_basis i j a => exact hs i j a
+    | h_std_basis i j a => exact cyclic_matrix_single T hT i₀ i j a
   · let _ : IsEmpty ι := not_nonempty_iff.mp hn
     exact ⟨0, fun X => by simp [Subsingleton.elim X 0]⟩
+
+end
 
 /-- Every cyclic linear functional on a finite product of matrix algebras is
 a weighted sum of ordinary block traces. The weights may be arbitrary complex
