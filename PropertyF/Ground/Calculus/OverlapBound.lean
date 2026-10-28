@@ -282,14 +282,8 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     ‖actualBraidTrace C X p t u‖ ≤
       ‖Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))‖ *
         Ground.fpDimension C X ^ (t + 1) := by
-  have hδ : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    intro h
-    apply Modular.pivotalTrace_simple_ne_zero C p X
-    apply (Dimensions.groundUnitScalarEquiv C).injective
-    simpa using h
-  have hf : 0 < Ground.fpDimension C X :=
-    lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C X (Simple.not_isZero X))
-  apply norm_bound_of_overlapIndex hδ hf t
+  apply norm_bound_of_overlapIndex (Modular.unitScalar_rightTrace_ne_zero C p X)
+    (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C X (Simple.not_isZero X))) t
     (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec
   intro k
   have hbound := braid_trace_unitary_bound_ground C p
