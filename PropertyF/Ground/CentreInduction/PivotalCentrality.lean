@@ -33,7 +33,7 @@ omit [RightRigidCategory D] [RightRigidCategory (Center D)] in
 /-- A braiding equation against a positive centre object, transported along a
 split monomorphism, detects centrality of a map in the base category. -/
 theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
-    (f : Z.1 ⟶ W.1) (g : T ⟶ B.1) [IsSplitMono g]
+    {f : Z.1 ⟶ W.1} {g : T ⟶ B.1} [IsSplitMono g]
     (h : (β_ Z ((Center.ofBraided D).obj T)).hom.f ≫ (g ⊗ₘ f) =
       (f ⊗ₘ g) ≫ (β_ W B).hom.f) :
     (f ▷ T) ≫ (W.2.β T).hom = (Z.2.β T).hom ≫ (T ◁ f) :=
@@ -46,9 +46,8 @@ theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
 
 /-- Every transported base pivotal component is a morphism in the actual centre. -/
 theorem pivotalComponentsCentral_proved [BraidedCategory D] :
-    PivotalComponentsCentral p := fun Z T ↦
-  central_of_positive_braiding (u Z) (u ((Center.ofBraided D).obj T))
-    (transported_pivotal_braiding p Z _)
+    PivotalComponentsCentral p := fun Z _ ↦
+  central_of_positive_braiding (transported_pivotal_braiding p Z _)
 
 end PropertyF.Ground.CentreInduction
 
