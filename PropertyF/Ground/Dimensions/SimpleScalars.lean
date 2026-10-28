@@ -72,15 +72,15 @@ def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
     simples C i ≅ ((simples C i)ᘁ)ᘁ :=
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  Classical.choose (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso C (simples C i)))
+  Classical.choose (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
 
 /-- The chosen simple component squares to the natural fourth-dual component. -/
 theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :
     fourthDualSimpleRoot C i ≪≫ rightDualIsoMap (rightDualIsoMap (fourthDualSimpleRoot C i)) =
-      fourthDualIso C (simples C i) :=
+      fourthDualIso (simples C i) :=
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  Classical.choose_spec (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso C (simples C i)))
+  Classical.choose_spec (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
 
 end PropertyF.Ground.Dimensions
 
@@ -106,15 +106,16 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 /-- The canonical braided double-dual components form a natural isomorphism. -/
-def drinfeldNaturalIso (C : BraidedFusionCategory.{v,u}) :
-    𝟭 C.Obj ≅ doubleDualFunctor C.Obj :=
-  NatIso.ofComponents (doubleDualIso C) (fun f => doubleDualIso_natural C f)
+def drinfeldNaturalIso (C : Type u) [Category.{v} C] [MonoidalCategory C]
+    [BraidedCategory C] [RightRigidCategory C] : 𝟭 C ≅ doubleDualFunctor C :=
+  NatIso.ofComponents drinfeldIso (fun f ↦ drinfeldIso_natural f)
 
 /-- The canonical braided fourth-dual components form a natural
 isomorphism. Tensor compatibility is not asserted here. -/
-def fourthDualNaturalIso (C : BraidedFusionCategory.{v,u}) :
-    𝟭 C.Obj ≅ doubleDualFunctor C.Obj ⋙ doubleDualFunctor C.Obj :=
-  NatIso.ofComponents (fourthDualIso C) (fun f => fourthDualIso_natural C f)
+def fourthDualNaturalIso (C : Type u) [Category.{v} C] [MonoidalCategory C]
+    [BraidedCategory C] [RightRigidCategory C] :
+    𝟭 C ≅ doubleDualFunctor C ⋙ doubleDualFunctor C :=
+  NatIso.ofComponents fourthDualIso (fun f ↦ fourthDualIso_natural f)
 
 end PropertyF.Ground.Dimensions
 
