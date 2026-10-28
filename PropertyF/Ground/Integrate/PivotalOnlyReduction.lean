@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
-public import PropertyF.Ground.CentreRigid.Evaluation
+public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
 

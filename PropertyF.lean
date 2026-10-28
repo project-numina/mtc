@@ -6,8 +6,7 @@ public import PropertyF.Ground.CentreModular.TransparencyCriterion
 public import PropertyF.Ground.Centre.Modular.Vafa
 public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreBundle.Fusion
-public import PropertyF.Ground.CentreRigid.Lift
-public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.Target
 public import PropertyF.Ground.Integrate.UnitScalar
 public import PropertyF.Ground.Fusion.FunctorDimension
@@ -17,20 +16,12 @@ public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.DimensionField
-public import PropertyF.Ground.Centre.Biproduct
-public import PropertyF.Ground.Centre.Kernel
-public import PropertyF.Ground.Centre.Cokernel
 public import PropertyF.Ground.Centre.Abelian
-public import PropertyF.Ground.Centre.ReverseBraiding
-public import PropertyF.Ground.Centre.Product
-public import PropertyF.Ground.Centre.ImageDuals
 public import PropertyF.Ground.Centre.ProductImages
+public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Centre.ProductClosure
-public import PropertyF.Ground.Centre.FiniteClosure
-public import PropertyF.Ground.Centre.GeneratedClosure
 public import PropertyF.Ground.Centre.SymmetricIntegrality
 public import PropertyF.Ground.Centre.Averaging
-public import PropertyF.Ground.Centre.AlternatingImage
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Modular.BraidIso
 public import PropertyF.Ground.Modular.BraidFunctor
@@ -94,7 +85,6 @@ public import PropertyF.Ground.Dimensions.RootDualPairing
 public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
 public import PropertyF.Ground.Dimensions.FourthTensorUnit
 public import PropertyF.Ground.CentreInduction.FiniteSum
-public import PropertyF.Ground.CentreRigid.MateEquations
 public import PropertyF.Ground.CentreInduction.UnitSummand
 public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
@@ -139,10 +129,6 @@ public import PropertyF.Ground.Integrate.TransparentCenterReduction
 public import PropertyF.Ground.Integrate.PivotalBalancedReduction
 public import PropertyF.Ground.Integrate.DrinfeldComplete
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
-public import PropertyF.Ground.CentreRigid.MateExplicit
-public import PropertyF.Ground.CentreRigid.Coevaluation
-public import PropertyF.Ground.CentreRigid.Tensor
-public import PropertyF.Ground.CentreRigid.Evaluation
 
 
 
