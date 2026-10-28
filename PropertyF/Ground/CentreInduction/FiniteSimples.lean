@@ -125,10 +125,11 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
-theorem center_cokernel_measure_lt {S W : CategoryTheory.Center C.Obj}
+theorem center_cokernel_measure_lt {S W : 𝒵}
     (p : S ⟶ W) (hp : p ≠ 0) :
     Module.finrank ℂ ((PropertyF.Ground.Centre.centerCokernel p).1 ⟶
       (PropertyF.Ground.Centre.centerCokernel p).1) < Module.finrank ℂ (W.1 ⟶ W.1) := by
@@ -187,12 +188,12 @@ private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre object has only finitely many isomorphism classes of simple subobjects. -/
-theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
-    ∃ L : List (CategoryTheory.Center C.Obj),
-      ∀ S : CategoryTheory.Center C.Obj, Simple S →
+theorem finite_simple_subobject_labels (W : 𝒵) :
+    ∃ L : List (𝒵),
+      ∀ S : 𝒵, Simple S →
         (∃ t : S ⟶ W, Mono t) → ∃ T ∈ L, Nonempty (S ≅ T) := by
   classical
-  let m : CategoryTheory.Center C.Obj → ℕ := fun Z => Module.finrank ℂ (Z.1 ⟶ Z.1)
+  let m : 𝒵 → ℕ := fun Z => Module.finrank ℂ (Z.1 ⟶ Z.1)
   induction W using (measure m).wf.induction with
   | h W ih =>
     by_cases hw : IsZero W
@@ -203,15 +204,15 @@ theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
       exact (Simple.not_isZero S (IsZero.of_mono t hw)).elim
     · let : IsArtinianObject W := center_artinian C W
       obtain ⟨P, hP⟩ := exists_simple_subobject hw
-      let : Simple (P : CategoryTheory.Center C.Obj) := hP
-      let p : (P : CategoryTheory.Center C.Obj) ⟶ W := P.arrow
+      let : Simple (P : 𝒵) := hP
+      let p : (P : 𝒵) ⟶ W := P.arrow
       have hp : p ≠ 0 := fun h0 =>
         id_nonzero _ ((cancel_mono p).1 (by simp [h0]))
       let Q := PropertyF.Ground.Centre.centerCokernel p
       let q : W ⟶ Q := PropertyF.Ground.Centre.centerCokernelπ p
       have hlt : m Q < m W := center_cokernel_measure_lt C p hp
       obtain ⟨L, hL⟩ := ih Q hlt
-      refine ⟨(P : CategoryTheory.Center C.Obj) :: L, ?_⟩
+      refine ⟨(P : 𝒵) :: L, ?_⟩
       intro S hS ⟨t, ht⟩
       let : Simple S := hS
       let : Mono t := ht
@@ -226,9 +227,9 @@ theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual centre has finitely many simple objects up to isomorphism. -/
 theorem finite_simple_labels :
-    ∃ labels : Finset (CategoryTheory.Center C.Obj),
+    ∃ labels : Finset (𝒵),
       (∀ T ∈ labels, Simple T) ∧
-      ∀ X : CategoryTheory.Center C.Obj, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T) := by
+      ∀ X : 𝒵, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T) := by
   classical
   let L (i : Fin (rank C)) := Classical.choose (finite_simple_subobject_labels C
     ((induction C).obj (simples C i)))
@@ -247,10 +248,10 @@ theorem finite_simple_labels :
 
 /-- A finite family of pairwise nonisomorphic centre simples represents every simple. -/
 theorem finite_simple_representatives :
-    ∃ (n : ℕ) (S : Fin n → CategoryTheory.Center C.Obj),
+    ∃ (n : ℕ) (S : Fin n → 𝒵),
       (∀ i, Simple (S i)) ∧
       (∀ i j, Nonempty (S i ≅ S j) → i = j) ∧
-      (∀ X : CategoryTheory.Center C.Obj, Simple X → ∃ i, Nonempty (X ≅ S i)) := by
+      (∀ X : 𝒵, Simple X → ∃ i, Nonempty (X ≅ S i)) := by
   obtain ⟨labels, hs, hc⟩ := finite_simple_labels C
   exact simple_representatives_of_finite_cover labels hs hc
 
