@@ -8,9 +8,10 @@ public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 
 /-- The actual matrix crossing is invertible by rigidity. -/
-theorem crossingCandidate_isIso (C : BraidedFusionCategory.{v,u}) (X T : C.Obj) :
+theorem crossingCandidate_isIso (X T : C.Obj) :
     IsIso (crossingCandidate C X T) :=
   weak_isIso (underlying C X) (crossingCandidate C X)
     (fun f => crossingCandidate_natural_test C X f)
@@ -19,7 +20,7 @@ theorem crossingCandidate_isIso (C : BraidedFusionCategory.{v,u}) (X T : C.Obj) 
 
 /-- The explicit matrix crossings form an actual half-braiding on the
 induction sum, with no additional coherence assumptions. -/
-def halfBraidingOfCrossingCandidate (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+def halfBraidingOfCrossingCandidate (X : C.Obj) :
     HalfBraiding (underlying C X) where
   β T := by letI := crossingCandidate_isIso C X T; exact asIso (crossingCandidate C X T)
   monoidal T U := crossingCandidate_tensor C X T U
@@ -27,7 +28,7 @@ def halfBraidingOfCrossingCandidate (C : BraidedFusionCategory.{v,u}) (X : C.Obj
 
 /-- The proposed half-braiding is automatically natural in its induction
 argument: this coherence was proved directly for the matrix crossing. -/
-theorem halfBraidingOfCrossingCandidate_natural (C : BraidedFusionCategory.{v,u})
+theorem halfBraidingOfCrossingCandidate_natural
     {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj) :
     ((underlyingFunctor C).map f ▷ T) ≫
         ((halfBraidingOfCrossingCandidate C Y).β T).hom =
@@ -36,7 +37,7 @@ theorem halfBraidingOfCrossingCandidate_natural (C : BraidedFusionCategory.{v,u}
   crossingCandidate_natural_middle C f T
 
 /-- The actual induction functor to Mathlib's Drinfeld centre. -/
-def induction (C : BraidedFusionCategory.{v,u}) : C.Obj ⥤ CategoryTheory.Center C.Obj :=
+def induction : C.Obj ⥤ CategoryTheory.Center C.Obj :=
   inductionOfHalfBraiding C (halfBraidingOfCrossingCandidate C)
     (halfBraidingOfCrossingCandidate_natural C)
 

@@ -140,7 +140,7 @@ theorem labels (p : Dimensions.PivotalStructure (C := C.Obj)) :
           (simples (category C σ) (e i)) =
         σ (Dimensions.pivotalDimension C p (simples C i)) := by
   obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C (category C σ) (conjugate C σ).equivalence
-  refine ⟨e, fun i => ⟨Modular.conjugate_fpSimple C (category C σ) (conjugate C σ) e he i, ?_⟩⟩
+  refine ⟨e, fun i => ⟨Modular.conjugate_fpSimple (conjugate C σ) he i, ?_⟩⟩
   rw [← pivotalDimension_twist C σ p (simples C i)]
   exact (Dimensions.pivotalDimension_iso (category C σ) (pivotal C σ p) (he i).some).symm
 

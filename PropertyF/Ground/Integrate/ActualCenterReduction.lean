@@ -41,12 +41,12 @@ theorem target_of_bounded_conjugates_and_witness
 by
   intro C hPU hF
   obtain ⟨D, σ, ⟨E⟩, hD⟩ := hPU
-  have hDF := Modular.conjugate_propertyF C D E hF
+  have hDF := Modular.conjugate_propertyF E hF
   have hfixed := galois_fixed_of_smaller_conjugate_witness (globalFPDimension D)
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D))
     (hConjugates D hD hDF) (hWitness D hD hDF)
   have hInt := weaklyIntegral_of_globalFPDimension_fixed D hfixed
-  rwa [Modular.conjugate_globalFPDimension C D E]
+  rwa [Modular.conjugate_globalFPDimension E]
 
 end PropertyF.Ground
 end
@@ -71,12 +71,12 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     (hdet : (Modular.categoricalS Z p).det ≠ 0)
     (δ : ℝ) (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) :
-    ∃ (y : Fin (rank Z)) (f d : ℝ), 1 ≤ f ∧ f = fpSimple Z y ∧
-      σ (f : ℂ) = (d : ℂ) ∧ y = dualIndex Z y ∧
+    ∃ (y : Fin (rank Z)) (d : ℝ), 1 ≤ fpSimple Z y ∧
+      σ (fpSimple Z y : ℂ) = (d : ℂ) ∧
       (∀ x, Modular.categoricalS Z p x y =
-        (f : ℂ) * σ.symm (Modular.simpleDimension Z p x)) ∧
-      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2 ∧
-      Modular.categoricalS Z p y y = (f : ℂ) * σ.symm (f : ℂ) := by
+        (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) ∧
+      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (fpSimple Z y : ℂ) ^ 2 ∧
+      Modular.categoricalS Z p y y = (fpSimple Z y : ℂ) * σ.symm (fpSimple Z y : ℂ) := by
   have hreal : ∀ j, starRingEnd ℂ (Modular.simpleDimension Z p j) =
       Modular.simpleDimension Z p j := by
     intro j
@@ -90,22 +90,8 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
     (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
-  let f := fpSimple Z y
-  let χ : Fin (rank Z) → ℂ := fun i => (fpSimple Z i : ℂ)
-  have hχ : χ (unitIndex Z) ≠ 0 := by simp [χ, fpSimple_unit]
-  have hchar : ∀ i j, χ i * χ j = ∑ k, (fusionCoeff Z i j k : ℂ) * χ k := by
-    intro i j
-    dsimp [χ]
-    exact_mod_cast fpSimple_mul Z i j
-  have hdual : ∀ i, χ (dualIndex Z i) = χ i := by
-    intro i
-    simp [χ, fpSimple_dual]
-  have hreal' : (((σ (f : ℂ)).re : ℝ) : ℂ) = σ (f : ℂ) := by
-    apply Complex.conj_eq_iff_re.mp
-    simpa only [← Complex.star_def] using selfDual_character_galois_real Z χ (unitIndex Z)
-      hχ hchar hdual σ y
-  refine ⟨y, f, (σ (f : ℂ)).re, one_le_fpSimple Z y, rfl, hreal'.symm,
-    hprop.2.1, ?_, ?_, ?_⟩
+  refine ⟨y, (σ (fpSimple Z y : ℂ)).re, one_le_fpSimple Z y,
+    (fp_simple_galois_real Z σ y).symm, ?_, ?_, ?_⟩
   · intro x
     have h := hprop.1 x
     rw [hdim] at h
@@ -129,23 +115,12 @@ theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v
     (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
     (hF : ∀ y, (∀ x, Modular.categoricalS Z p x y =
       (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
-      ObjectPropertyF (simples Z y))
-    (hRigid : ∀ y, ObjectPropertyF (simples Z y) → ∀ d : ℝ,
-      σ (fpSimple Z y : ℂ) = (d : ℂ) →
-      σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y →
-      fpSimple Z y = |d|) :
+      ObjectPropertyF (simples Z y)) :
     ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
-  obtain ⟨y, f, d, hf, hfy, hσf, _, hcolumn, hG, hS⟩ :=
+  obtain ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ :=
     exists_modular_witness Z p hp hdim hdet δ hglobal σ
-  have hyF : ObjectPropertyF (simples Z y) := by
-    apply hF y
-    simpa only [hfy] using hcolumn
-  refine ⟨f, d, center_witness_of_modular_and_rigidity σ hδ hb hf hτ hσf hG hS ?_⟩
-  intro htrace
-  have htrace' : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y := by
-    simpa only [hfy] using htrace
-  have hσf' : σ (fpSimple Z y : ℂ) = (d : ℂ) := by simpa only [hfy] using hσf
-  simpa only [hfy] using hRigid y hyF d hσf' htrace'
+  exact ⟨_, d, center_witness_of_modular_and_rigidity σ hδ hb hf hτ hσf hG hS
+    (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d hσf)⟩
 
 end PropertyF.Ground
 end
@@ -265,8 +240,6 @@ theorem target_of_modular_center
     apply center_witness_of_categorical_modular_data Z p hp hdim hdet
       (globalFPDimension C) b (lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C))
       hb hglobal σ hτ hfinite
-    intro y hyF d hσ hS
-    exact galois_rigidity_of_propertyF Z p hdim σ y hyF d hσ hS
 
 end PropertyF.Ground
 end

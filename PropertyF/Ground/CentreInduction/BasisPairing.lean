@@ -10,11 +10,12 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A projection from a chosen fusion decomposition corresponds to the dual
 basis functional of the matching inclusion. -/
-theorem pairing_crossingProjection (C : BraidedFusionCategory.{v,u})
+theorem pairing_crossingProjection
     (T : C.Obj) (i j : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))) :
     Dimensions.simpleHomPairingEquiv C i (T ⊗ simples C j) (crossingProjection C T i j a) =
@@ -43,7 +44,7 @@ theorem pairing_crossingProjection (C : BraidedFusionCategory.{v,u})
 
 /-- The perfect pairing is natural for maps between different underlying
 objects: precomposition corresponds to dualizing postcomposition. -/
-theorem simpleHomPairingEquiv_natural (C : BraidedFusionCategory.{v,u})
+theorem simpleHomPairingEquiv_natural
     (i : Fin (rank C)) {V W : C.Obj} (q : V ⟶ W) (f : W ⟶ simples C i) :
     Dimensions.simpleHomPairingEquiv C i V (q ≫ f) =
       Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q)
@@ -88,7 +89,7 @@ theorem dualBasis_contraction_natural {I J : Type} [Fintype I] [Fintype J] [Deci
 
 /-- The fusion-basis contraction is independent of which side of a map
 `T ⊗ Sⱼ ⟶ U ⊗ Sⱼ` is used to insert the decomposition. -/
-theorem fusionBasis_contraction_natural (C : BraidedFusionCategory.{v,u})
+theorem fusionBasis_contraction_natural
     {T U : C.Obj} (i j : Fin (rank C))
     (q : T ⊗ simples C j ⟶ U ⊗ simples C j)
     {E : Type*} [AddCommGroup E] [Module ℂ E]

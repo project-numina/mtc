@@ -155,20 +155,16 @@ theorem permutationAction_fixHead {n : ℕ}
       (tensorLeft X).mapAut (tensorPower X (n + 2)) (permutationAction X hX n σ) := by
   let f := (permutationAction X hX (n + 1)).comp (fixHead (n + 2))
   let g := ((tensorLeft X).mapAut (tensorPower X (n + 2))).comp (permutationAction X hX n)
-  have heq : f = g := by
-    apply MonoidHom.ext
-    intro σ
-    obtain ⟨w, rfl⟩ := strandPermutation_surjective n σ
-    have hh : f.comp (strandPermutation n) = g.comp (strandPermutation n) := by
-      apply FreeGroup.ext_hom
-      intro i
-      change permutationAction X hX (n + 1) (fixHead (n + 2) (strandPermutation n (FreeGroup.of i))) =
-        (tensorLeft X).mapAut (tensorPower X (n + 2))
-          (permutationAction X hX n (strandPermutation n (FreeGroup.of i)))
-      simp only [strandPermutation, FreeGroup.lift_apply_of, fixHead_swap, permutationAction_swap]
-      exact (braidGenerator_succ X i).symm
-    exact DFunLike.congr_fun hh w
-  exact DFunLike.congr_fun heq σ
+  obtain ⟨w, rfl⟩ := strandPermutation_surjective n σ
+  have hh : f.comp (strandPermutation n) = g.comp (strandPermutation n) := by
+    apply FreeGroup.ext_hom
+    intro i
+    change permutationAction X hX (n + 1) (fixHead (n + 2) (strandPermutation n (FreeGroup.of i))) =
+      (tensorLeft X).mapAut (tensorPower X (n + 2))
+        (permutationAction X hX n (strandPermutation n (FreeGroup.of i)))
+    simp only [strandPermutation, FreeGroup.lift_apply_of, fixHead_swap, permutationAction_swap]
+    exact (braidGenerator_succ X i).symm
+  exact DFunLike.congr_fun hh w
 
 /-- Inserting a fixed strand tensors the permutation action with its identity. -/
 theorem tensorPermutationAction_fixHead :
