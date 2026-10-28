@@ -36,9 +36,9 @@ theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
   letI (W : 𝒵) : IsArtinianObject W := center_artinian C W
   letI : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective X)
   letI (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
-  letI (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) :=
-    letI : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
-    Centre.finiteDimensional_hom ℂ A B
+  letI (A : 𝒵) : FiniteDimensional ℂ (A ⟶ A) :=
+    letI : FiniteDimensional ℂ (A.1 ⟶ A.1) := IsFusionCategory.hom_finite _ _
+    Centre.finiteDimensional_hom ℂ A A
   finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW =>
     ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
 

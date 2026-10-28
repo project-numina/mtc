@@ -52,7 +52,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Finite-dimensional injective objects with simple subobjects split into finite simple sums. -/
 theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [Linear k E]
-    [(A B : E) → FiniteDimensional k (A ⟶ B)] [(Z : E) → Injective Z]
+    [(A : E) → FiniteDimensional k (A ⟶ A)] [(Z : E) → Injective Z]
     (hasSimple : ∀ {Z : E}, ¬ IsZero Z → ∃ (S : E) (f : S ⟶ Z), Simple S ∧ Mono f)
     (Z : E) : FiniteSimpleSum E Z := by
   let m : E → ℕ := fun W => Module.finrank k (W ⟶ W)
