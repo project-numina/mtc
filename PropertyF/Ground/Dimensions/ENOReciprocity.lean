@@ -303,10 +303,8 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
   have hε : ε * ε = 1 := rootDualSign_sq i
   have hεstar : star ε = ε := by
     rcases mul_self_eq_one_iff.mp hε with h | h <;> simp [h]
-  have hA : ∀ j k, star (A j k) = A j k := fun j k ↦
-    letI : FiniteDimensional ℂ (simples C k ⟶ simples C i ⊗ simples C j) :=
-      IsFusionCategory.hom_finite _ _
-    star_involution_trace (hinv i j k)
+  let : ∀ X Y : C.Obj, FiniteDimensional ℂ (X ⟶ Y) := IsFusionCategory.hom_finite
+  have hA : ∀ j k, star (A j k) = A j k := fun j k ↦ star_involution_trace (hinv i j k)
   have ht : Aᵀ *ᵥ d = (ε * d (dualIndex C i)) • d := by
     ext j
     change (∑ k, enoTraceMatrix C i k j * rootDimension C k) =
