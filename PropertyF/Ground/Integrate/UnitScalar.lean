@@ -31,9 +31,8 @@ def unitScalarEquiv : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ :=
 
 /-- The scalar inverse used by the ground target really inverts the canonical
 algebra map; no fallback value is reachable. -/
-theorem unitScalar_algebraMap (z : ℂ) : unitScalar C (algebraMap ℂ (End (𝟙_ C.Obj)) z) = z := by
-  apply (unit_algebraMap_bijective C).1
-  exact Function.invFun_eq ⟨z, rfl⟩
+theorem unitScalar_algebraMap (z : ℂ) : unitScalar C (algebraMap ℂ (End (𝟙_ C.Obj)) z) = z :=
+  (unit_algebraMap_bijective C).1 (Function.invFun_eq ⟨z, rfl⟩)
 
 theorem algebraMap_unitScalar (f : End (𝟙_ C.Obj)) :
     algebraMap ℂ (End (𝟙_ C.Obj)) (unitScalar C f) = f :=

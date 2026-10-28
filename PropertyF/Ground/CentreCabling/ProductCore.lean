@@ -61,19 +61,14 @@ theorem productLabels_doubleCentralizer
     (hp : p.IsSpherical) (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
     (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
     (core : Set (Fin (rank (Integrate.bundledCenter C))))
-    (hcore : ∀ y, (∀ a ∈ productLabels C,
-      Modular.categoricalS (Integrate.bundledCenter C) p a y =
-        Modular.simpleDimension (Integrate.bundledCenter C) p a *
-          Modular.simpleDimension (Integrate.bundledCenter C) p y) → y ∈ core) :
-    ∀ x, (∀ y ∈ core, Modular.categoricalS (Integrate.bundledCenter C) p y x =
-      Modular.simpleDimension (Integrate.bundledCenter C) p y *
-        Modular.simpleDimension (Integrate.bundledCenter C) p x) →
+    (hcore : sCentralizer (Integrate.bundledCenter C) p (↑(productLabels C) : Set _) ⊆ core) :
+    ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p core,
       Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := by
   intro x hx
   apply (mem_productLabels C x).mp
   exact doubleCentralizer_of_fusion_closed (Integrate.bundledCenter C) p hp hdet hdim
     (productLabels C) core (unit_mem_productLabels C) (dual_mem_productLabels C)
-    (fun i hi j hj k hk => constituent_mem_productLabels C i j k hi hj hk) hcore x hx
+    (fun i hi j hj k hk => constituent_mem_productLabels C i j k hi hj hk) hcore hx
 
 
 /-- Actual centre labels centralizing both canonical images. -/

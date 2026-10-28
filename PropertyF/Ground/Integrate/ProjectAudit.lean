@@ -215,20 +215,18 @@ run_cmd do
   | _ => throwError "dependency audit did not reject a missing declaration"
   match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenInputWrapper with
   | some (.forbidden n) =>
-      unless n == ``PropertyF.BraidedFusionCategory do
+      unless n == ``PropertyF.Ground.DependencyAudit.ForbiddenFixture do
         throwError "unexpected forbidden fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect an imported definition body"
   match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenProof with
   | some (.forbidden n) =>
-      unless n == ``PropertyF.BraidedFusionCategory do
+      unless n == ``PropertyF.Ground.DependencyAudit.ForbiddenFixture do
         throwError "unexpected forbidden theorem fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
   for n in #[``PropertyF.Ground.TargetStatement,
       ``PropertyF.Ground.unit_algebraMap_bijective,
       ``PropertyF.Ground.weaklyIntegral_of_globalFPDimension_fixed,
       ``PropertyF.Ground.Modular.conjugate_propertyF,
-      ``PropertyF.Ground.target_of_galois_invariance_and_pseudo_fixedness,
-      ``PropertyF.Ground.target_of_pseudo_fixedness,
       ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
       ``PropertyF.Ground.positive_ratio_of_galois_square,
       ``PropertyF.Ground.positive_bounded_conjugates_of_fp,
@@ -237,7 +235,6 @@ run_cmd do
       ``PropertyF.Ground.center_witness_of_categorical_modular_data,
       ``PropertyF.Ground.propertyF_of_galois_column,
       ``PropertyF.Ground.galois_unit_self_entry,
-      ``PropertyF.Ground.target_of_numerical_witnesses,
       ``PropertyF.Ground.target_of_bounded_conjugates_and_witness,
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,

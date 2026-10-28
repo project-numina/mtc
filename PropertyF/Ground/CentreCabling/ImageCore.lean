@@ -47,10 +47,7 @@ variable (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)
 
 /-- Image monodromy is finite for labels passing the numerical centralizer test. -/
 abbrev HasFiniteImageCentralizerMonodromy : Prop :=
-  ∀ y, (∀ a ∈ imageLabels C,
-      Modular.categoricalS (Integrate.bundledCenter C) p a y =
-        Modular.simpleDimension (Integrate.bundledCenter C) p a *
-          Modular.simpleDimension (Integrate.bundledCenter C) p y) →
+  ∀ y ∈ sCentralizer (Integrate.bundledCenter C) p (imageLabels C),
       ∀ a ∈ imageLabels C, IsOfFinOrder (End.of (Modular.doubleBraiding
         (simples (Integrate.bundledCenter C) a) (simples (Integrate.bundledCenter C) y)))
 
@@ -65,9 +62,7 @@ labels passing this S-test, are needed for the finite-order hypothesis. -/
 theorem numericalImageCentralizer_subset_symmetricCore
     (hfinite : HasFiniteImageCentralizerMonodromy C p)
     (y : Fin (rank (Integrate.bundledCenter C)))
-    (hy : ∀ a ∈ imageLabels C, Modular.categoricalS (Integrate.bundledCenter C) p a y =
-      Modular.simpleDimension (Integrate.bundledCenter C) p a *
-        Modular.simpleDimension (Integrate.bundledCenter C) p y) : y ∈ symmetricCore C := by
+    (hy : y ∈ sCentralizer (Integrate.bundledCenter C) p (imageLabels C)) : y ∈ symmetricCore C := by
   let Z := Integrate.bundledCenter C
   have hc (X : CategoryTheory.Center C.Obj) (hX : CanonicalImageRetract C X) :
       Centre.Centralizes (simples Z y) X := by
@@ -89,9 +84,7 @@ include hp hdet hdim in
 finite-order condition for simple canonical-image constituents. -/
 theorem productLabels_doubleCentralizer_of_image_monodromy
     (hfinite : HasFiniteImageCentralizerMonodromy C p) :
-    ∀ x, (∀ y ∈ symmetricCore C, Modular.categoricalS (Integrate.bundledCenter C) p y x =
-      Modular.simpleDimension (Integrate.bundledCenter C) p y *
-        Modular.simpleDimension (Integrate.bundledCenter C) p x) →
+    ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p (symmetricCore C),
       Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := by
   apply productLabels_doubleCentralizer C p hp hdet hdim (symmetricCore C)
   intro y hy
