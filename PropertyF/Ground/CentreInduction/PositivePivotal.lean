@@ -140,9 +140,8 @@ theorem positiveDualIso_inv_forget :
 /-- Forgetting the positive double-dual comparison gives the base comparison. -/
 theorem positiveDoubleDualIso_forget :
     (positiveDoubleDualIso T).hom.f = (forgetDoubleDualIso (Z⁺ T)).hom := by
-  simpa only [positiveDoubleDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap,
-    Center.comp_f, forgetDoubleDualIso, positiveDualIso_forget, positiveDualIso_inv_forget] using
-    forgetDualIso_natural (positiveDualIso T).inv
+  simpa [positiveDoubleDualIso, forgetDoubleDualIso, rightDualIsoMap,
+    positiveDualIso_forget, positiveDualIso_inv_forget] using forgetDualIso_natural (positiveDualIso T).inv
 
 /-- Forgetting also preserves the inverse positive double-dual comparison. -/
 theorem positiveDoubleDualIso_inv_forget :
