@@ -9,3 +9,4 @@ public import Conjectures.Fusion.SimpleDimensionAlgebraicInteger
 public import Conjectures.Fusion.SimpleDimensionLowerBound
 public import Conjectures.Fusion.WeaklyIntegralPseudoUnitary
 public import Conjectures.Fusion.WeaklyIntegralSquares
+public import Conjectures.PropertyF.FusionRulesInvariance
