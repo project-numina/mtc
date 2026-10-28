@@ -26,10 +26,11 @@ theorem all_injective_of_unit_retract {J U : D} [Injective J]
 
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (Center C.Obj)]
 local notation "𝒵" => Center C.Obj
+variable {X : C.Obj}
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Under the unit-retract condition every centre object is a finite simple sum. -/
-theorem center_finite_simple_sum_of_unit_retract {X : C.Obj} {U : 𝒵}
+theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
     (Z : 𝒵) : FiniteSimpleSum (𝒵) Z :=
   letI (W : 𝒵) : IsArtinianObject W := center_artinian C W
@@ -42,7 +43,7 @@ theorem center_finite_simple_sum_of_unit_retract {X : C.Obj} {U : 𝒵}
     ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
-theorem center_fusion_of_unit_retract {X : C.Obj} {U : 𝒵}
+theorem center_fusion_of_unit_retract {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
     IsFusionCategory (𝒵) :=
   let ⟨_, hsimple, hcover⟩ := finite_simple_labels C

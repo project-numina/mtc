@@ -12,27 +12,27 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
+variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 
 /-- The simple-indexed summand of the underlying induction object. -/
-abbrev inductionSummand (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
-    (i : Fin (rank C)) : C.Obj := (simples C i ⊗ X) ⊗ (simples C i)ᘁ
+abbrev inductionSummand (i : Fin (rank C)) : C.Obj := (simples C i ⊗ X) ⊗ (simples C i)ᘁ
 
 /-- The finite direct sum underlying the induction object. No half-braiding is
 claimed here. -/
-def underlying (C : BraidedFusionCategory.{v,u}) (X : C.Obj) : C.Obj :=
+def underlying : C.Obj :=
   ⨁ (inductionSummand C X)
 
 /-- The underlying induction object has FP dimension `FPdim(C) * FPdim(X)`.
 This calculation does not require the centre to be fusion or the existence of
 its induction half-braiding. -/
-theorem fpDimension_underlying (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem fpDimension_underlying :
     fpDimension C (underlying C X) = globalFPDimension C * fpDimension C X := by
   simp [underlying, fpDimension_biproduct, fpDimension_tensor, fpDimension_rightDual,
     fpDimension_simple, globalFPDimension, Finset.mul_sum, pow_two, mul_left_comm, mul_comm]
 
 /-- The induction sum is functorial in its middle factor. Its centre lift is
 constructed from the induction half-braiding. -/
-def underlyingFunctor (C : BraidedFusionCategory.{v,u}) : C.Obj ⥤ C.Obj where
+def underlyingFunctor : C.Obj ⥤ C.Obj where
   obj := underlying C
   map {X Y} f := CategoryTheory.Limits.biproduct.map
     (fun i : Fin (rank C) => (simples C i ◁ f) ▷ (simples C i)ᘁ)

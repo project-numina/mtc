@@ -73,14 +73,16 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
       dsimp only [Center.comp_f] at hfactor
       rw [Category.assoc, hfactor])
 
+variable (X : Center C.Obj)
+
 /-- Every actual centre object is Artinian, without spherical hypotheses. -/
-theorem center_artinian (X : 𝒵) : IsArtinianObject X :=
+theorem center_artinian : IsArtinianObject X :=
   let : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
   ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object embeds in an induced base simple. -/
-theorem simple_mono_induced_simple (X : 𝒵) [Simple X] :
+theorem simple_mono_induced_simple [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (simples C i), Mono f := by
   obtain ⟨i, hi⟩ := exists_positive_multiplicity C
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))

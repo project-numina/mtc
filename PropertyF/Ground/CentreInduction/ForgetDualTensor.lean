@@ -69,11 +69,11 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
+variable {X Y A B A' B' : D} (pX : ExactPairing X A) (qX : ExactPairing X A')
+  (pY : ExactPairing Y B) (qY : ExactPairing Y B')
 
 /-- Tensoring dual-comparison maps preserves the tensor evaluation pairing. -/
-private theorem rightDualIso_tensor_evaluation {X Y A B A' B' : D}
-    (pX : ExactPairing X A) (qX : ExactPairing X A')
-    (pY : ExactPairing Y B) (qY : ExactPairing Y B') :
+private theorem rightDualIso_tensor_evaluation :
     letI := pX
     letI := pY
     letI := qX
@@ -101,8 +101,7 @@ private theorem rightDualIso_tensor_evaluation {X Y A B A' B' : D}
       monoidal
 
 /-- The canonical comparison of duals preserves tensor products of pairings. -/
-theorem rightDualIso_tensor {X Y A B A' B' : D} (pX : ExactPairing X A) (qX : ExactPairing X A')
-    (pY : ExactPairing Y B) (qY : ExactPairing Y B') :
+theorem rightDualIso_tensor :
     (rightDualIso (@ExactPairing.tensor D _ _ X Y A B pX pY)
       (@ExactPairing.tensor D _ _ X Y A' B' qX qY)).hom =
         (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom :=
