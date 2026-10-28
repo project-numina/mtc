@@ -170,7 +170,7 @@ theorem unit_matrix_reduce :
     (((biproduct.ι V i ▷ (S j)) ≫ b (S j) ≫
       ((S j) ◁ (underlyingCounit C).app X)) ▷ (S j)ᘁ) ⊗≫ 𝟙 _ := by
   simp [unitComponent, unitComponentAt, induction, halfBraidingOfCrossingCandidate,
-    underlying, underlyingFunctor, inductionSummand, monoidalComp, Category.assoc,
+    underlying, underlyingFunctor, monoidalComp,
     rightUnitor_inv_naturality_assoc, ← whisker_exchange_assoc, -whiskerRight_id]
 
 set_option backward.isDefEq.respectTransparency false in
