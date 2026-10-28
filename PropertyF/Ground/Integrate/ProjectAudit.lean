@@ -1,8 +1,6 @@
 module
 public meta import PropertyF.Ground.Integrate.DependencyAudit
 public import PropertyF.Ground.Integrate.UnitScalar
-public import PropertyF.Ground.Integrate.Representatives
-public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Final
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Fusion.Reciprocity
@@ -29,7 +27,6 @@ public import PropertyF.Ground.Cabling.Strands
 
 import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
-import all PropertyF.Ground.Integrate.DrinfeldComplete
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
 import all PropertyF.Ground.CentreCalculus.TwistSign
 import all PropertyF.Ground.Centre.Modular.Vafa
@@ -126,11 +123,9 @@ import all PropertyF.Ground.Fusion.Simples
 import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Fusion.UnitPower
 import all PropertyF.Ground.Integrate.ActualCenterReduction
-import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterBundle
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.DependencyAudit
-import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.TwistedRigidity
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Modular.BraidFunctor

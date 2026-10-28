@@ -87,7 +87,6 @@ public import PropertyF.Ground.CentreCabling.RegularSupport
 public import PropertyF.Ground.CentreCabling.TraceSaturation
 public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.CentreCabling.ImageCore
-public import PropertyF.Ground.Integrate.DrinfeldComplete
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 
 

@@ -1,10 +1,8 @@
 module
-public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Modular.FusionTransport
-
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Modular.SMatrix
@@ -14,6 +12,97 @@ public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.CentreCabling.RegularSupport
 public import PropertyF.Ground.Integrate.CenterBundle
+public import Mathlib.Analysis.Complex.Basic
+public import Mathlib.Tactic
+public import PropertyF.Ground.Fusion.SpectralIntegral
+public import PropertyF.Ground.Dimensions.DimensionField
+public import PropertyF.Arithmetic
+
+/-! # Galois arithmetic and the centre reduction
+
+The numerical descent and categorical centre witnesses combine to prove
+weak integrality from the actual centre and its finite braid images. -/
+
+/-! # Galois fixedness and integrality
+
+A positive ratio and the centre's rigidity witness rule out smaller Galois
+conjugates. A real algebraic integer fixed by every complex automorphism is an
+integer, yielding the arithmetic descent used in the final theorem. -/
+
+section
+
+@[expose] public noncomputable section
+
+variable {R K : Type*} [Field R] [LinearOrder R] [IsStrictOrderedRing R] [Field K]
+
+namespace PropertyF
+
+/-- The final strict-inequality contradiction, including the inverse Galois
+transport of the positive dimension ratio. Lemma 3.2 supplies `hrigidity`.
+No assertion about all conjugates is assumed here. -/
+theorem galois_dimension_contradiction {j : R →+* K} {δ δσ δτ f d : R}
+    {σ : K ≃+* K} (hδ : 0 < δ) (hδσ : 0 < δσ) (hlt : δσ < δ)
+    (hδτ : σ (j δτ) = j δ) (hσδ : σ (j δ) = j δσ) (hσf : σ (j f) = j d)
+    (hratio : f * δτ = δ) (hf : 1 ≤ f) (hrigidity : f = |d|) : False := by
+  have hreal : d * δ = δσ := j.injective <| by simpa [hδτ, hσδ, hσf] using congrArg (σ ∘ j) hratio
+  nlinarith [abs_of_pos (show 0 < d by nlinarith)]
+
+end PropertyF
+
+namespace PropertyF.Ground
+
+/-- The numerical witness supplied by a Galois-unit column. -/
+abbrev HasGaloisDimensionWitness (j : R →+* K) (σ : K ≃+* K) (δ b : R) : Prop :=
+  ∃ f d : R, σ (j f) = j d ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d|
+
+/-- If real conjugates are bounded above by δ and the centre/rigidity witness
+exists for each strictly smaller conjugate, every conjugate equals δ. -/
+theorem galois_fixed_of_smaller_conjugate_witness {j : R →+* K} (δ : R) (hδ : 0 < δ)
+    (hConjugates : ∀ σ : K ≃+* K, ∃ a : R, 0 < a ∧ a ≤ δ ∧ σ (j δ) = j a)
+    (hWitness : ∀ (σ : K ≃+* K) (a b : R), 0 < a → a < δ → σ (j δ) = j a →
+      σ.symm (j δ) = j b → HasGaloisDimensionWitness j σ δ b) :
+    ∀ σ : K ≃+* K, σ (j δ) = j δ := by
+  intro σ
+  obtain ⟨a, ha, hale, haeq⟩ := hConjugates σ
+  obtain ⟨b, _, _, hbeq⟩ := hConjugates σ.symm
+  rcases lt_or_eq_of_le hale with halt | heq
+  · obtain ⟨f, d, hσf, hratio, hf, hrigidity⟩ := hWitness σ a b ha halt haeq hbeq
+    exact (galois_dimension_contradiction (j := j) (σ := σ) hδ ha halt
+      (by rw [← hbeq, σ.apply_symm_apply])
+      haeq hσf hratio hf hrigidity).elim
+  · simpa [heq] using haeq
+
+end PropertyF.Ground
+end
+end
+
+/-! The final arithmetic descent for the frozen target, without a dimension
+field or standard-input hypothesis. -/
+
+@[expose] public noncomputable section
+namespace PropertyF.Ground
+universe v u
+variable {R : Type*} [Field R] [Algebra R ℂ]
+local notation "ι" => algebraMap R ℂ
+
+/-- An algebraic integer in a complex subfield fixed by every complex automorphism is an integer. -/
+theorem integral_eq_int_of_complex_galois_fixed {δ : R} (hδr : IsIntegral ℤ δ)
+    (hfixed : ∀ τ : ℂ ≃+* ℂ, τ (ι δ) = ι δ) : ∃ z : ℤ, δ = z :=
+  let hδ := (isIntegral_algebraMap_iff (R := ℤ) (A := R) (B := ℂ)).mpr hδr
+  let K := Dimensions.dimensionNormalField (ι δ)
+  let ⟨hK, hfin, hgal⟩ := Dimensions.finite_galois_normal_field (ι δ)
+    (hδ.tower_top (A := ℚ))
+  letI : FiniteDimensional ℚ K := hfin
+  letI : IsGalois ℚ K := hgal
+  let x : K := ⟨ι δ, hK⟩
+  let ⟨z, hz⟩ := integer_of_galois_fixed (x := x)
+    ((isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by simpa [x] using hδ)) fun σ ↦ by
+      obtain ⟨τ, hτ⟩ := Dimensions.extend_complex_automorphism K.toSubfield σ.toRingEquiv
+      exact Subtype.ext ((hτ x).symm.trans (hfixed τ))
+  ⟨z, (algebraMap R ℂ).injective (by simpa [x] using congrArg (fun y : K ↦ (y : ℂ)) hz)⟩
+
+end PropertyF.Ground
+end
 
 section
 /-! Extract the numerical ingredients of the paper's witness from an actual
