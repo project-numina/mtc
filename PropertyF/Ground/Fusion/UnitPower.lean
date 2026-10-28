@@ -122,12 +122,9 @@ theorem fusionPath_retract {i k : Fin (rank D)}
   | @tail j k h edge ih =>
     obtain ⟨n, ⟨r⟩⟩ := ih
     have hn : 0 < fusionCoeff D i j k := by
-      have hp : 0 < (fusionCoeff D i j k : ℝ) := by
-        have hh := edge
-        unfold fusionFlow at hh
-        exact (mul_pos_iff_of_pos_left (fpSimple_pos D j)).mp
-          ((mul_pos_iff_of_pos_right (fpSimple_pos D k)).mp hh)
-      exact_mod_cast hp
+      change 0 < fpSimple D j * (fusionCoeff D i j k : ℝ) * fpSimple D k at edge
+      exact_mod_cast (mul_pos_iff_of_pos_left (fpSimple_pos D j)).mp
+        ((mul_pos_iff_of_pos_right (fpSimple_pos D k)).mp edge)
     obtain ⟨s⟩ := fusionCoeff_retract D hn
     let t : Retract (simples D i ⊗ simples D j)
         (simples D i ⊗ tensorPower (simples D i) (n + 1)) :=
