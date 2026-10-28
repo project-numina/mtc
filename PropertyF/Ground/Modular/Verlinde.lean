@@ -72,10 +72,8 @@ theorem galois_unit_column_square
 with no modular-data hypothesis bundle. -/
 theorem galois_unit_properties (hu : d u = 1)
     (hglobal : D = ∑ x, d x ^ 2) (hsym : ∀ x y, S x y = S y x)
-    (hunit : ∀ x, S x u = d x)
-    (hsq : HasSSquare S dual D)
-    (σ : ℂ ≃+* ℂ) (y : ι)
-    (hchar : ∀ x, σ (S x u / d u) = S x y / d y) :
+    (hunit : ∀ x, S x u = d x) (hsq : HasSSquare S dual D)
+    (σ : ℂ ≃+* ℂ) (y : ι) (hchar : ∀ x, σ (S x u / d u) = S x y / d y) :
     (∀ x, S x y = d y * σ (d x)) ∧ y = dual y ∧ σ D = D / d y ^ 2 := by
   have hcol (x : ι) : S x y = d y * σ (d x) :=
     ((div_eq_iff (hd y)).mp (by simpa only [hunit, hu, div_one] using (hchar x).symm)).trans
@@ -128,7 +126,7 @@ theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,
   rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
     (Ground.unitScalarEquiv D) (End.of (doubleBraiding (simples D k) X))
     (simpleDimension_ne_zero D p k)
-    (rightTrace_partialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)))
+    (rightTrace_partialTrace p (End.of (doubleBraiding (simples D k) X)))
 
 /-- Partial traces of double braiding multiply on a simple strand. -/
 abbrev HasMultiplicativePartialTrace (D : Ground.BraidedFusionCategory.{v,u})
@@ -144,10 +142,8 @@ theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCatego
     HasHopfProduct D p := by
   intro i j k
   let _ : Simple (simples D k) := simples_simple D k
-  have h := hcomp i j k
-  rw [partialTrace_doubleBraiding_simple, partialTrace_doubleBraiding_simple,
-    partialTrace_doubleBraiding_simple, smul_mul_smul, one_mul] at h
-  have hv := smul_left_injective ℂ (one_ne_zero : (1 : End (simples D k)) ≠ 0) h
+  have hv := smul_left_injective ℂ (one_ne_zero : (1 : End (simples D k)) ≠ 0) (by
+    simpa only [partialTrace_doubleBraiding_simple, smul_mul_smul, one_mul] using hcomp i j k)
   field_simp [simpleDimension_ne_zero D p k] at hv
   simpa only [SEntry_symmetric p (simples D k) (simples D i ⊗ simples D j),
     SEntry_symmetric p (simples D k) (simples D i),
@@ -233,10 +229,10 @@ theorem rightPartialTrace_nested_simple (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ)
     simpa [g, Category.assoc] using
       p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
   rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd
-      (rightTrace_partialTrace p Z (X ⊗ Y) f),
+      (rightTrace_partialTrace p f),
     rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd
-      (rightTrace_partialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y g))]
-  simp only [Calculus.scalarTrace, rightTrace_partialTrace p (Z ⊗ X) Y g, hc]
+      (rightTrace_partialTrace p (rightPartialTrace p (Z ⊗ X) Y g))]
+  simp only [Calculus.scalarTrace, rightTrace_partialTrace p g, hc]
 
 
 end Trace

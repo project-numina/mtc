@@ -56,7 +56,7 @@ theorem liftedPivotalStructure_compatible {p : Dimensions.PivotalStructure (C :=
 
 end
 
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+variable {C : BraidedFusionCategory.{v,u}} [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
@@ -73,7 +73,7 @@ theorem center_structure_of_pivotal_centrality
       PivotalHasFPDimensions 𝒵ᶠ pZ ∧
       PseudoUnitary 𝒵ᶠ ∧
       globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
-  center_structure_of_compatible_pivotal C hsimple
+  center_structure_of_compatible_pivotal hsimple
     (liftedPivotalStructure_compatible hc)
 
 end PropertyF.Ground.CentreInduction

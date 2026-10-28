@@ -75,8 +75,8 @@ theorem permutationTrace_conj {C : Type u} [Category.{v} C] [MonoidalCategory C]
     [RightRigidCategory C] (p : Dimensions.PivotalStructure (C := C)) {X : C}
     {G : Type*} [Group G] (ρ : G →* End X) (g h : G) :
     p.rightTrace (ρ (g * h * g⁻¹)).asHom = p.rightTrace (ρ h).asHom := by
-  have hcyc := p.rightTrace_cyclic (ρ (g * h)).asHom (ρ g⁻¹).asHom
-  simpa only [← End.mul_asHom, ← map_mul, mul_assoc, inv_mul_cancel_left] using hcyc.symm
+  simpa only [← End.mul_asHom, ← map_mul, mul_assoc, inv_mul_cancel_left] using
+    (p.rightTrace_cyclic (ρ (g * h)).asHom (ρ g⁻¹).asHom).symm
 
 /-- It is enough to establish the moved-strand deletion identity for the
 first adjacent swap: all other positions follow by conjugating the remaining

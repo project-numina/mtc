@@ -57,10 +57,9 @@ def isoEndAlgEquiv {X Y : C} (e : X ≅ Y) : End X ≃ₐ[ℂ] End Y where
 
 /-- The chosen nonisomorphic simple representatives are Hom-orthogonal. -/
 theorem groundSimples_orthogonal (C : BraidedFusionCategory.{v,u}) :
-    HomOrthogonal (Ground.simples C) := fun i j hij =>
-  let _ : Simple (Ground.simples C i) := Ground.simples_simple C i
-  let _ : Simple (Ground.simples C j) := Ground.simples_simple C j
-  subsingleton_of_forall_eq 0 fun f => Classical.byContradiction fun hf =>
+    HomOrthogonal (Ground.simples C) :=
+  let _ : ∀ i, Simple (Ground.simples C i) := Ground.simples_simple C
+  fun _i _j hij => subsingleton_of_forall_eq 0 fun f => Classical.byContradiction fun hf =>
     let _ : IsIso f := isIso_of_hom_simple hf
     hij (Ground.simples_injective C ⟨asIso f⟩)
 

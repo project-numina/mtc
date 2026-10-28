@@ -8,7 +8,7 @@ Sliding tensor defects through coevaluations yields reciprocity for trace matric
 ## Main results
 
 * `tensorLeftHomLinearEquiv_postcomp`: describes composition under Frobenius reciprocity.
-* `enoTraceMatrix_reciprocity_of_coevaluation_sliding`: derives trace reciprocity from coevaluation sliding.
+* `trace_reciprocity_of_coevaluation`: derives trace reciprocity from coevaluation sliding.
 -/
 
 @[expose] public noncomputable section
@@ -28,7 +28,7 @@ theorem tensorLeftHomLinearEquiv_postcomp (X Y Y' Z W : D) [ExactPairing Y Y']
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The Frobenius defect equation reduces to its value on the identity map. -/
-theorem enoTraceMatrix_reciprocity_of_coevaluation_defect
+theorem trace_reciprocity_of_coeval_defect
     (hunit : ∀ i k,
       let X := simples C i
       let K := simples C k
@@ -37,7 +37,7 @@ theorem enoTraceMatrix_reciprocity_of_coevaluation_defect
         rootDualSign C i • (tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
     ENOTraceMatrixReciprocity C := by
-  apply enoTraceMatrix_reciprocity_of_dual_frobenius_defect C
+  apply trace_reciprocity_of_dual_defect C
   intro i j k g
   let X := simples C i
   let K := simples C k
@@ -64,7 +64,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The ENO reciprocity identity only needs the defect to slide through the
 coevaluation of the swapped dual pairing. -/
-theorem enoTraceMatrix_reciprocity_of_coevaluation_sliding
+theorem trace_reciprocity_of_coevaluation
     (hslide : ∀ i k,
       let X := simples C i
       let K := simples C k
@@ -74,7 +74,7 @@ theorem enoTraceMatrix_reciprocity_of_coevaluation_sliding
       η ≫ (Xᘁ) ◁ (rootTensorDefect C X K).hom =
         rootDualSign C i • (η ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
     ENOTraceMatrixReciprocity C := by
-  apply enoTraceMatrix_reciprocity_of_coevaluation_defect C
+  apply trace_reciprocity_of_coeval_defect C
   intro i k
   let X := simples C i
   let K := simples C k

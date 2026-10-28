@@ -101,12 +101,7 @@ theorem weak_right : weakInverse b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
 include hn ht hu in
 /-- Tensor compatibility, naturality, and unit normalization imply that the
 crossing is invertible on every object admitting a left dual. -/
-theorem weak_isIso (X : C) [ExactPairing X Y] : IsIso (b Y) := by
-  let e : A ⊗ Y ≅ Y ⊗ A :=
-    { hom := b Y
-      inv := weakInverse b X Y
-      hom_inv_id := weak_left b hn ht hu X Y
-      inv_hom_id := weak_right b hn ht hu X Y }
-  exact e.isIso_hom
+theorem weak_isIso (X : C) [ExactPairing X Y] : IsIso (b Y) :=
+  ⟨⟨weakInverse b X Y, weak_left b hn ht hu X Y, weak_right b hn ht hu X Y⟩⟩
 
 end PropertyF.Ground.CentreInduction

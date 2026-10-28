@@ -53,9 +53,9 @@ theorem character_dual_conj (χ : Character N) (i : ι) :
       simp only [w, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]]
     exact_mod_cast ne_of_gt (Finset.sum_pos' (fun j _ ↦ Complex.normSq_nonneg _)
       ⟨N.unit, Finset.mem_univ _, by simp [χ.unit_eq]⟩)
-  have h : χ.value i = starRingEnd ℂ (χ.value (dual i)) :=
-    mul_right_cancel₀ hw (by simpa [w] using character_inner_balance N dual hdual χ χ i)
-  simpa using (congrArg (starRingEnd ℂ) h).symm
+  apply (starRingEnd ℂ).injective
+  simpa using (mul_right_cancel₀ hw (by
+    simpa [w] using character_inner_balance N dual hdual χ χ i)).symm
 
 /-- Actual fusion coefficients satisfy the adjointness relation. -/
 theorem fusionCoeff_dual_adjoint (C : Ground.BraidedFusionCategory) (i j k : Fin (rank C)) :
