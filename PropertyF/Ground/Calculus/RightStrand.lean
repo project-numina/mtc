@@ -244,14 +244,12 @@ theorem append_first_two :
     _ = (X ◁ X ◁ e.inv) ≫
         ((α_ X X (A ⊗ X)).inv ≫ (β_ X X).hom ▷ (A ⊗ X) ≫ (α_ X X (A ⊗ X)).hom) ≫
         (X ◁ X ◁ e.hom) := by
-          dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv,
-            Iso.refl_hom, Iso.refl_inv]
-          simp only [id_tensorHom, Category.assoc]
+          simp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv,
+            Iso.refl_hom, Iso.refl_inv, id_tensorHom, Category.assoc]
           monoidal
     _ = _ := by
-      simp only [Category.assoc]
-      rw [← first_pair_natural_assoc X (β_ X X).hom e.inv]
-      simp [← whiskerLeft_comp]
+      simp only [Category.assoc, ← first_pair_natural_assoc X (β_ X X).hom e.inv,
+        ← whiskerLeft_comp, Iso.inv_hom_id, whiskerLeft_id, Category.comp_id]
 
 end Append
 
