@@ -99,7 +99,6 @@ theorem alternatingProjector_trace (ρ : Equiv.Perm (Fin n) →* End X)
     (p : PropertyF.Ground.Dimensions.PivotalStructure (C := C)) :
     ∃ Y : C, p.rightTrace ((alternatingProjector (k := ℂ) n ρ).asHom) = p.rightTrace (𝟙 Y) := by
   obtain ⟨Y, i, r, hir, hri⟩ := alternatingProjector_splits X n ρ
-  refine ⟨Y, ?_⟩
-  rw [← hri, p.rightTrace_cyclic, hir]
+  exact ⟨Y, by rw [← hri, p.rightTrace_cyclic, hir]⟩
 
 end PropertyF.Ground.Centre

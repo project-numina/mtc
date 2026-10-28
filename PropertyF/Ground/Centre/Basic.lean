@@ -82,9 +82,8 @@ omit [BraidedCategory C] in
 /-- Centralization is symmetric. -/
 theorem centralizes_symm {A B : CategoryTheory.Center C} (h : Centralizes A B) :
     Centralizes B A := by
-  unfold Centralizes at *
   apply (cancel_epi (β_ A B).hom).mp
-  simp only [← Category.assoc, h, Category.id_comp, Category.comp_id]
+  simpa only [Category.assoc, Category.id_comp, Category.comp_id] using congrArg (fun f ↦ f ≫ (β_ A B).hom) h
 
 /-- The corresponding test for the negative image. -/
 theorem centralizes_negative_image_iff (Y : CategoryTheory.Center C) :

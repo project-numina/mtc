@@ -134,9 +134,9 @@ theorem dualMate_unit_explicit (Z : Center C) (U : C) :
     (Z.2.β (Z.1ᘁ ⊗ U)).hom =
   (ρ_ U).inv ≫ (U ◁ η_ (ᘁZ.1) Z.1) ≫ (α_ U (ᘁZ.1) Z.1).inv ≫
     ((Integrate.dualMateIso Z).inv.app U ▷ Z.1) := by
-  have h := CentreRigid.dualMate_unit Z U
   simpa [tensorRightAdjunction, tensorLeftAdjunction, Adjunction.mkOfHomEquiv, Adjunction.mk',
-    tensorRightHomEquiv, tensorLeftHomEquiv, Integrate.halfBraidingIso] using h
+    tensorRightHomEquiv, tensorLeftHomEquiv, Integrate.halfBraidingIso] using
+      CentreRigid.dualMate_unit Z U
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component identifies the two chosen duals compatibly with the crossed cup. -/

@@ -29,7 +29,7 @@ theorem reverse_braidGenerator_zero (X : C) (n : ℕ) :
     tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv, Category.assoc]
 
 /-- A reversed braid generator is inverted when the index is shifted. -/
-theorem reverse_braidGenerator_succ (X : C) (n : ℕ) (i : Fin (n + 1))
+theorem reverse_braidGenerator_succ (X : C) (n : ℕ) {i : Fin (n + 1)}
     (h : @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n i =
       (braidGenerator X n i)⁻¹) :
     @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X (n + 1) i.succ =
@@ -58,7 +58,7 @@ theorem reverse_braidGenerator (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
   | succ n ih =>
     intro i
     exact Fin.cases (reverse_braidGenerator_zero X (n + 1))
-      (fun j ↦ reverse_braidGenerator_succ X n j (ih j)) i
+      (fun j ↦ reverse_braidGenerator_succ X n (ih j)) i
 
 end PropertyF.Ground.Centre
 
