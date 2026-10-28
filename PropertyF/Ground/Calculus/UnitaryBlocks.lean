@@ -11,8 +11,12 @@ public import Mathlib.RingTheory.Finiteness.Basic
 public import PropertyF.Definitions
 public import PropertyF.BlockTrace
 
-/-! A finite group representation preserves a positive definite Hermitian form.
-The unnormalized average avoids dividing by the group order. -/
+/-!
+# Unitary blocks for braid images
+
+A finite group representation preserves an averaged positive definite form. Its image
+algebra has a matrix-block presentation in which the group acts unitarily.
+-/
 
 @[expose] public noncomputable section
 open Matrix

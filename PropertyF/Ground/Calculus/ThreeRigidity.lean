@@ -4,7 +4,12 @@ public import PropertyF.BraidAlgebra
 public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.ThreeTrace
 
-/-! The matrix saturation step of three-strand rigidity, without a model bundle. -/
+/-!
+# Three-strand trace rigidity
+
+Saturation of a unitary trace bound forces equality of braid squares. Partial trace
+then identifies the monodromy scalar and its dimension consequences.
+-/
 
 open PropertyF.Ground.Dimensions
 

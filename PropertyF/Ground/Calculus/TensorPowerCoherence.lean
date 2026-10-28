@@ -6,7 +6,12 @@ public import Mathlib.Tactic
 open CategoryTheory CategoryTheory.MonoidalCategory
 open PropertyF.Ground.Dimensions
 
-/-! Cast-free recursive tensor-power concatenation. -/
+/-!
+# Tensor-power concatenation
+
+The recursively defined `reverseConcatIso` proves coherence of the two ways to
+insert overlapping braid factors, and hence their trace recurrence.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

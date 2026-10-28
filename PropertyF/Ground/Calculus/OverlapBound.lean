@@ -6,7 +6,12 @@ public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.PowerBound
 
-/-! The ordinary weighted trace bound for actual braid algebras. -/
+/-!
+# Trace bounds from overlapping braids
+
+The categorical braid trace obeys a weighted unitary bound. Repeated overlapping
+products remain unitary, and their trace recurrence yields the sharper bound.
+-/
 
 open PropertyF.Ground.Dimensions
 
@@ -107,6 +112,7 @@ def overlapIndex (t : ℕ) : ℕ → ℕ
   | 0 => t
   | k + 1 => overlapIndex t k + (t + 1)
 
+/-- The number of strands added by repeated overlaps grows linearly. -/
 theorem overlapIndex_formula (t : ℕ) : ∀ k, overlapIndex t k = t + k * (t + 1)
   | 0 => by rw [overlapIndex, Nat.zero_mul, Nat.add_zero]
   | k + 1 => by simp [overlapIndex, overlapIndex_formula t k, Nat.succ_mul, Nat.add_assoc]

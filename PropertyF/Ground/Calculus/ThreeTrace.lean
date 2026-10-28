@@ -7,8 +7,12 @@ public import PropertyF.Ground.Calculus.RightStrand
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Modular.SMatrix
 
-/-! Finiteness of categorical braid images supplies the finite-order condition
-for the squared braiding and for every representation of the braid image. -/
+/-!
+# Traces of three-strand braids
+
+The categorical three-strand generators obey the braid relation and have finite
+order when the object has property F. Partial traces compute their overlap trace.
+-/
 
 open PropertyF.Ground.Dimensions
 

@@ -6,7 +6,12 @@ public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Calculus.EndBlocks
 public import Mathlib.Tactic
 
-/-! Compatibility of adjoints on algebras spanned by braid images. -/
+/-!
+# Strand insertion and unitary presentations
+
+Maps induced by adding strands act on braid-image algebras and preserve the adjoints
+of their unitary block presentations.
+-/
 
 @[expose] public section
 namespace PropertyF.Ground.Calculus

@@ -9,7 +9,13 @@ public import Mathlib.LinearAlgebra.Pi
 public import Mathlib.LinearAlgebra.Trace
 public import PropertyF.Ground.Calculus.UnitaryBlocks
 
-/-! The pivotal trace in the simple-constituent matrix decomposition. -/
+/-!
+# Braid traces and multiplicities
+
+The pivotal trace decomposes into traces on matrix blocks of simple constituents.
+Representations of braid algebras give nonnegative integral multiplicities, yielding
+`pivotalTrace_braid_multiplicities` and unitary trace presentations.
+-/
 
 open PropertyF.Ground.Dimensions
 

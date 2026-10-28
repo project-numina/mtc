@@ -3,7 +3,12 @@ public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.BraidWeights
 public import PropertyF.Ground.Calculus.OverlapCoherence
 
-/-! Construction of real nonzero braid-block trace weights from dimensions. -/
+/-!
+# Nonzero weights for braid traces
+
+Galois transport of positive constituent dimensions gives nonzero braid-block trace
+weights. These weights supply the hypotheses of the three-strand rigidity argument.
+-/
 
 open PropertyF.Ground.Dimensions
 

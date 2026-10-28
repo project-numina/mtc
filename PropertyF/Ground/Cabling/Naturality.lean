@@ -58,6 +58,7 @@ def tensorPowerMap {X Y : C} (f : X ⟶ Y) : ∀ n, tensorPower X n ⟶ tensorPo
   | 0 => rfl
   | n + 1 => by simp [tensorPowerMap, tensorPowerMap_id X n, tensorPower]
 
+/-- Tensor powers preserve composition of morphisms. -/
 @[simp] theorem tensorPowerMap_comp {X Y Z : C} (f : X ⟶ Y) (g : Y ⟶ Z) :
     ∀ n, tensorPowerMap (f ≫ g) n = tensorPowerMap f n ≫ tensorPowerMap g n
   | 0 => by simp [tensorPowerMap, tensorPower]
