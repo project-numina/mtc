@@ -51,14 +51,14 @@ theorem dual_mem_productLabels : dualIndex (𝒵 C) i ∈ productLabels C :=
   let X : CategoryTheory.Center C.Obj := simples Z i
   let e : (ᘁX) ≅ (Xᘁ) := leftDualIso HasLeftDual.exact
     (BraidedCategory.exactPairing_swap X (Xᘁ))
-  let ⟨e'⟩ := dualIndex_iso Z i
+  let ⟨e'⟩ := dualIndex_iso (D := Z) i
   (mem_productLabels C _).2 <| Centre.productRetract_of_retract (Retract.ofIso (e'.symm ≪≫ e))
     (Centre.productRetract_rightDual C ((mem_productLabels C i).1 i.property))
 
 /-- Every constituent label of two product labels is itself a product label. -/
 theorem constituent_mem_productLabels
     (k : {k : Fin (rank (𝒵 C)) // 0 < fusionCoeff (𝒵 C) i j k}) : k.val ∈ productLabels C :=
-  let ⟨r⟩ := Ground.fusionCoeff_retract (𝒵 C) k.property
+  let ⟨r⟩ := Ground.fusionCoeff_retract k.property
   (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|
     Centre.productRetract_tensor ((mem_productLabels C i).1 i.2) ((mem_productLabels C j).1 j.2)
 

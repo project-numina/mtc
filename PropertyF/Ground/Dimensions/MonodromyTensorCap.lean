@@ -125,7 +125,7 @@ theorem monodromy_tensor_cap_braid_reordered [HasRightDual X] [HasRightDual Y] :
 omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- A braiding loop around a morphism into the tensor unit contracts by naturality. -/
-theorem braiding_cap_loop (X Y Z : C) (f : Y ⊗ Z ⟶ 𝟙_ C) :
+theorem braiding_cap_loop (X : C) {Y Z : C} (f : Y ⊗ Z ⟶ 𝟙_ C) :
     (β_ X Y).hom ▷ Z ⊗≫ Y ◁ (β_ X Z).hom ⊗≫ f ▷ X ⊗≫ (λ_ X).hom =
       𝟙 ((X ⊗ Y) ⊗ Z) ⊗≫ X ◁ f ⊗≫ (ρ_ X).hom := by
   calc

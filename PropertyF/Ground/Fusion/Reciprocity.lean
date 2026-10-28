@@ -95,11 +95,13 @@ def dualIndex (j : Fin (rank D)) : Fin (rank D) := by
   letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   exact Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
 
+variable {D} in
 theorem dualIndex_iso (j : Fin (rank D)) :
     Nonempty ((ᘁ(simples D j)) ≅ simples D (dualIndex D j)) :=
   letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
 
+variable {D} in
 /-- Fusion reciprocity with the dual kept as an actual object. -/
 theorem fusionCoeff_reciprocity (i j k : Fin (rank D)) :
     fusionCoeff D i j k =
@@ -107,11 +109,12 @@ theorem fusionCoeff_reciprocity (i j k : Fin (rank D)) :
   (finrank_frobenius_reciprocity (k := ℂ) (simples D i) (simples D j) (simples D k)).trans
     (finrank_to_simple_eq_from_simple _ (simples D i))
 
+variable {D} in
 /-- The usual fusion-coefficient Frobenius reciprocity identity. -/
 theorem fusionCoeff_reciprocity_labels (i j k : Fin (rank D)) :
     fusionCoeff D i j k = fusionCoeff D k (dualIndex D j) i :=
-  (dualIndex_iso D j).elim fun e ↦
-    (fusionCoeff_reciprocity D i j k).trans
+  (dualIndex_iso j).elim fun e ↦
+    (fusionCoeff_reciprocity i j k).trans
       (CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
         (Iso.refl (simples D k) ⊗ᵢ e)).finrank_eq
 
@@ -119,8 +122,9 @@ theorem fusionCoeff_reciprocity_labels (i j k : Fin (rank D)) :
 theorem fusionCoeff_dual_symmetry (i j k : Fin (rank D)) :
     fusionCoeff D i k j = fusionCoeff D (dualIndex D i) j k :=
   (fusionCoeff_comm D i k j).trans
-    ((fusionCoeff_reciprocity_labels D k i j).trans (fusionCoeff_comm D j (dualIndex D i) k))
+    ((fusionCoeff_reciprocity_labels k i j).trans (fusionCoeff_comm D j (dualIndex D i) k))
 
+variable {D} in
 /-- A simple object and its dual contain the tensor unit with multiplicity one. -/
 theorem fusionCoeff_dual_unit (i : Fin (rank D)) :
     fusionCoeff D i (dualIndex D i) (unitIndex D) = 1 := by
@@ -131,14 +135,14 @@ theorem fusionCoeff_dual_unit (i : Fin (rank D)) :
 theorem dualIndex_unit :
     dualIndex D (unitIndex D) = unitIndex D := by
   simpa [fusionCoeff_unit, eq_comm] using
-    (fusionCoeff_reciprocity_labels D (unitIndex D) (unitIndex D) (unitIndex D))
+    (fusionCoeff_reciprocity_labels (unitIndex D) (unitIndex D) (unitIndex D))
 
 /-- Duality is involutive on simple labels. -/
 theorem dualIndex_involutive :
     Function.Involutive (dualIndex D) :=
   fun i ↦ by simpa [fusionCoeff_unit, eq_comm] using
-    ((fusionCoeff_reciprocity_labels D i (dualIndex D i) (unitIndex D)).symm.trans
-      (fusionCoeff_dual_unit D i))
+    ((fusionCoeff_reciprocity_labels i (dualIndex D i) (unitIndex D)).symm.trans
+      (fusionCoeff_dual_unit i))
 
 /-- Duality permutes the simple labels. -/
 def dualEquiv : Equiv.Perm (Fin (rank D)) :=

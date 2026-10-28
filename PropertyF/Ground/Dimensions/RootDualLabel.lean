@@ -30,8 +30,8 @@ theorem positive_spherical_of_simple_fourth_and_reciprocity
     multiplicityDefect_involution_of_tensor_square C k
       ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)
   positive_spherical_of_matrix_identities C hinv
-    (fun i j ↦ enoTraceMatrix_eigenvector_of_involutions C (hinv i j))
-    (fun i ↦ squaredNorm_eq_root_norm_sq_of_reciprocity C hinv htranspose i) hpu
+    (fun i j ↦ enoTraceMatrix_eigenvector_of_involutions (hinv i j))
+    (fun i ↦ squaredNorm_eq_root_norm_sq_of_reciprocity hinv htranspose i) hpu
 
 
 end PropertyF.Ground.Dimensions
@@ -51,7 +51,7 @@ variable (i j k : Fin (rank C))
 def rightDualLabelIso :
     (simples C i)ᘁ ≅ simples C (dualIndex C i) :=
   leftDualIso (BraidedCategory.exactPairing_swap (simples C i) ((simples C i)ᘁ))
-    HasLeftDual.exact ≪≫ Classical.choice (dualIndex_iso C i)
+    HasLeftDual.exact ≪≫ Classical.choice (dualIndex_iso i)
 
 /-- Actual Frobenius reciprocity using the chosen dual-label identification. -/
 def enoFrobeniusEquiv :
@@ -147,6 +147,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The ENO signs agree on the chosen dual label. -/
 theorem rootDualSign_dual (i : Fin (rank C)) :
     rootDualSign C (dualIndex C i) = rootDualSign C i := by
@@ -157,8 +158,8 @@ theorem rootDualSign_dual (i : Fin (rank C)) :
     (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans (target_squaredNorm_rightDual C X)
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
   rw [Ground.dualIndex_involutive] at he
-  apply mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero C i)
-    (rootDimension_ne_zero C (dualIndex C i)))
+  apply mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero i)
+    (rootDimension_ne_zero (dualIndex C i)))
   simpa only [mul_assoc, mul_left_comm, mul_comm] using he
 end PropertyF.Ground.Dimensions
 

@@ -172,7 +172,7 @@ theorem exists_modular_witness (hfp : IsFPSpherical Z p) (hdet : (𝒮).det ≠ 
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
     (Modular.categoricalS_square Z p hfp.1 hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
-  ⟨y, one_le_fpSimple Z y, by simpa only [IsGaloisUnitColumn, hfp.2] using hcolumn,
+  ⟨y, one_le_fpSimple y, by simpa only [IsGaloisUnitColumn, hfp.2] using hcolumn,
     by simpa only [hglobal, hfp.2] using hG⟩
 
 /-- Once the Galois-unit column is known to have finite braid image and the

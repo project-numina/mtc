@@ -141,6 +141,7 @@ theorem sum_sq_eq_sum_sq_iff {k : Type*} [CommRing k] [LinearOrder k] [IsStrictO
   · intro heq i _
     rw [← heq i, sq_abs]
 
+variable {C} in
 /-- A pseudo-unitary global dimension saturates every FP bound when the
 intrinsic norms are the squared norms of the given dimensions. -/
 theorem norm_saturation_of_pseudoUnitary {d : Fin (rank C) → ℂ}

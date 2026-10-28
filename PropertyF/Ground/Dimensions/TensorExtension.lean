@@ -47,15 +47,17 @@ end
 variable {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 theorem rootSignTwist_app_simple (i : Fin (rank C)) :
     ((rootSignTwist C c hc).app (simples C i)).hom =
       c i • ((fourthDualRootNaturalIso C).app (simples C i)).hom := by
   change ((simpleScalarNaturalIso C c hc).app (simples C i)).hom ≫
     ((fourthDualRootNaturalIso C).app (simples C i)).hom = _
   simpa using congrArg (fun f ↦ f ≫ ((fourthDualRootNaturalIso C).app (simples C i)).hom)
-    (simpleScalarNaturalIso_app_simple C hc i)
+    (simpleScalarNaturalIso_app_simple hc i)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 theorem rootSignTensorIso_hom (i j : Fin (rank C)) :
     (rootSignTensorIso C c hc (simples C i) (simples C j)).hom =
       (c i * c j) • (rootTensorIso C (simples C i) (simples C j)).hom := by
@@ -64,12 +66,14 @@ theorem rootSignTensorIso_hom (i j : Fin (rank C)) :
   rw [rootSignTwist_app_simple, rootSignTwist_app_simple]
   simp [rootTensorIso, tensorHom_def, smul_smul, mul_comm]
 
+variable {C} in
 theorem rootPhaseTensorIso_inv (i j : Fin (rank C)) :
     (rootSignTensorIso C c hc (simples C i) (simples C j)).inv =
       (c i * c j)⁻¹ • (rootTensorIso C (simples C i) (simples C j)).inv :=
-  iso_inv_eq_inv_smul (mul_ne_zero (hc i) (hc j)) (rootSignTensorIso_hom C hc i j)
+  iso_inv_eq_inv_smul (mul_ne_zero (hc i) (hc j)) (rootSignTensorIso_hom hc i j)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 theorem rootPhaseDefect_apply {i j k : Fin (rank C)}
     (f : simples C k ⟶ simples C i ⊗ simples C j) :
     f ≫ (rootSignDefect C c hc (simples C i) (simples C j)).hom =
@@ -143,13 +147,15 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
 variable {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 theorem rootSignQuantumTrace_simple (i : Fin (rank C)) :
     unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (simples C i))) =
       c i * rootDimension C i := by
   simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul] using
-    congrArg (Ground.unitScalarEquiv C) (rightQuantumTrace_smul_hom (rootSignTwist_app_simple C hc i))
+    congrArg (Ground.unitScalarEquiv C) (rightQuantumTrace_smul_hom (rootSignTwist_app_simple hc i))
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 theorem naturalDoubleDual_unit_eq_of_trace_one
     {a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj}
     (htrace : unitScalar C (rightQuantumTrace (a.app (𝟙_ C.Obj))) = 1) :
