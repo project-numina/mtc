@@ -138,8 +138,7 @@ theorem dualIndex_involutive :
   intro i
   have hunit := fusionCoeff_dual_unit D i
   rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit] at hunit
-  by_contra h
-  simp [Ne.symm h] at hunit
+  simpa [eq_comm] using hunit
 
 /-- Duality permutes the simple labels. -/
 def dualEquiv : Equiv.Perm (Fin (rank D)) :=

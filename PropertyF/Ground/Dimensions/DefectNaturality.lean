@@ -40,7 +40,7 @@ theorem rootTensorDefect_natural
       (rootTensorDefect C X Y).hom ≫ (f ⊗ₘ g) := by
   have hni : (((f ⊗ₘ g)ᘁ)ᘁ) ≫ (rootTensorIso C X' Y').inv =
       (rootTensorIso C X Y).inv ≫ (f ⊗ₘ g) :=
-    iso_inv_naturality_of_hom (rootTensorIso_natural C f g)
+    (CommSq.vert_inv (CommSq.mk (rootTensorIso_natural C f g))).w
   have ha : (f ⊗ₘ g) ≫ ((fourthDualRootNaturalIso C).app (X' ⊗ Y')).hom =
       ((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) :=
     (fourthDualRootNaturalIso C).hom.naturality (f ⊗ₘ g)
@@ -59,15 +59,6 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Linear ℂ D]
-  [MonoidalPreadditive D] [MonoidalLinear ℂ D]
-
-theorem tensorLeftHomLinearEquiv_postcomp {X Y' Z W : D} (Y : D) [ExactPairing Y Y']
-    (f : Y' ⊗ X ⟶ Z) (g : Z ⟶ W) :
-    tensorLeftHomLinearEquiv X Y Y' W (f ≫ g) =
-      tensorLeftHomLinearEquiv X Y Y' Z f ≫ Y ◁ g :=
-  by simp [tensorLeftHomLinearEquiv, tensorLeftHomEquiv, whiskerLeft_comp, Category.assoc]
-
 set_option backward.isDefEq.respectTransparency false in
 /-- The Frobenius defect equation reduces to its value on the identity map. -/
 theorem trace_reciprocity_of_coeval_defect
@@ -85,8 +76,12 @@ theorem trace_reciprocity_of_coeval_defect
   let K := simples C k
   let J := simples C j
   let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-  have hpost := tensorLeftHomLinearEquiv_postcomp (Xᘁ) (rootTensorDefect C X K).hom g
-  have hpost' := tensorLeftHomLinearEquiv_postcomp (Xᘁ) (𝟙 (X ⊗ K)) g
+  have hpost := tensorLeftHomEquiv_naturality (Y := Xᘁ) (rootTensorDefect C X K).hom g
+  have hpost' := tensorLeftHomEquiv_naturality (Y := Xᘁ) (𝟙 (X ⊗ K)) g
+  change tensorLeftHomLinearEquiv K (Xᘁ) X J ((rootTensorDefect C X K).hom ≫ g) =
+    tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom ≫ (Xᘁ) ◁ g at hpost
+  change tensorLeftHomLinearEquiv K (Xᘁ) X J ((𝟙 (X ⊗ K)) ≫ g) =
+    tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫ (Xᘁ) ◁ g at hpost'
   have hn := rootTensorDefect_natural C (𝟙 (Xᘁ)) g
   simp only [id_tensorHom] at hn
   simp only [Category.id_comp] at hpost'

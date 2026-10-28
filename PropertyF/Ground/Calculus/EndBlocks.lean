@@ -69,19 +69,20 @@ def isoEndAlgEquiv : End X ≃ₐ[ℂ] End Y where
     apply End.ext
     simp [Algebra.algebraMap_eq_smul_one]
 
+end Conjugation
+
 section PivotalTrace
 
-variable [MonoidalCategory C] [RightRigidCategory C]
+variable {X Y : C} [MonoidalCategory C] [RightRigidCategory C]
 
+omit [Preadditive C] [Linear ℂ C] in
 /-- Pivotal trace is unchanged by categorical conjugation. -/
-theorem rightTrace_iso_conj (p : Dimensions.PivotalStructure (C := C)) (a : End X) :
-    p.rightTrace ((isoEndAlgEquiv e) a).asHom = p.rightTrace a.asHom := by
-  simpa [isoEndAlgEquiv, Iso.conj_apply_asHom, Category.assoc] using
+theorem rightTrace_iso_conj (e : X ≅ Y) (p : Dimensions.PivotalStructure (C := C)) (a : End X) :
+    p.rightTrace (e.conj a).asHom = p.rightTrace a.asHom := by
+  simpa [Iso.conj_apply_asHom, Category.assoc] using
     p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
 
 end PivotalTrace
-
-end Conjugation
 
 variable (D : BraidedFusionCategory.{v,u})
 

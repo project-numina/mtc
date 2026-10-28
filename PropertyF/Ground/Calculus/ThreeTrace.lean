@@ -106,27 +106,25 @@ namespace PropertyF.Ground.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
-variable [Preadditive C] [Linear ℂ C]
-
 section GeneratorTransport
 
 variable (X : C)
 
 /-- The left adjacent generator after removing the trailing tensor unit. -/
 theorem threeGeneratorLeft_end_transport :
-    (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 0)) =
+    (threePowerIso X).conj (Aut.toEnd (braidGenerator X 1 0)) =
       End.of ((α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom) :=
   End.ext (threeGeneratorLeft_transport X)
 
 /-- The right adjacent generator after removing the trailing tensor unit. -/
 theorem threeGeneratorRight_end_transport :
-    (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 1)) =
+    (threePowerIso X).conj (Aut.toEnd (braidGenerator X 1 1)) =
       End.of (X ◁ (β_ X X).hom) :=
   End.ext (threeGeneratorRight_transport X)
 
 end GeneratorTransport
 
-variable [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 variable {X : C} {r : ℕ} {d : Fin r → ℕ} (b : BraidBlockPresentation X 1 d)
 
 /-- The left three-strand generator in a chosen block presentation. -/
@@ -212,18 +210,18 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def selfMonodromy (X : C) : End (X ⊗ X) :=
   End.of ((β_ X X).hom ≫ (β_ X X).hom)
 
-omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+omit [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The actual braid `a²b²` becomes the graphical overlap of two copies of
 double self-braiding after the standard tensor-power and associator isomorphisms. -/
 theorem three_braid_double_overlap (X : C) :
-    (isoEndAlgEquiv (threePowerIso X))
+    (threePowerIso X).conj
       (Aut.toEnd ((braidGenerator X 1 0) ^ 2 * (braidGenerator X 1 1) ^ 2)) =
-    (isoEndAlgEquiv (α_ X X X)) (overlapEndProduct (selfMonodromy X) (selfMonodromy X)) := by
+    (α_ X X X).conj (overlapEndProduct (selfMonodromy X) (selfMonodromy X)) := by
   rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, threeGeneratorLeft_end_transport, threeGeneratorRight_end_transport]
   apply End.ext
   simp [overlapEndProduct, insertRightIdentity, overlapFresh, selfMonodromy,
-    isoEndAlgEquiv, Iso.conj_apply_asHom, pow_two, End.mul_asHom,
-    comp_whiskerRight, whiskerLeft_comp, Category.assoc]
+    Iso.conj_apply_asHom, pow_two, End.mul_asHom, comp_whiskerRight, whiskerLeft_comp,
+    Category.assoc]
 
 /-- The three-strand trace is the square of the double-braiding trace,
 normalized by the pivotal dimension of the shared simple strand. -/

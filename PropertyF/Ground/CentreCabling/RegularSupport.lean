@@ -47,11 +47,11 @@ theorem realSimpleDimensions_of_fp (hdim : HasFPSimpleDimensions D p) :
 
 /-- The numerical S-centralizer is closed under dual labels when dimensions
 are the positive FP dimensions. -/
-theorem sCentralizes_dual (hdim : HasFPSimpleDimensions D p)
-    {i y : Fin (rank D)} (hi : sCentralizes D p i y) :
+theorem sCentralizes_dual (hdim : HasFPSimpleDimensions D p) {y : Fin (rank D)}
+    (i : {i : Fin (rank D) // sCentralizes D p i y}) :
     sCentralizes D p (dualIndex D i) y := by
   simpa [sCentralizes, Modular.categoricalS_dual_conj D p (realSimpleDimensions_of_fp hdim),
-    hdim, fpSimple_dual] using congrArg (starRingEnd ℂ) hi
+    hdim, fpSimple_dual] using congrArg (starRingEnd ℂ) i.property
 
 end PropertyF.Ground.CentreCabling
 
@@ -124,7 +124,7 @@ theorem doubleCentralizer_of_fourier_support
     (hsupport : FourierSupportedOn D p f core) : sCentralizer D p core ⊆ generated :=
   fun x hx ↦ hgenerated <| (dualIndex_involutive D x) ▸
     nonzero_dual_coefficient_of_sCentralizer hfp.1 hdet (realSimpleDimensions_of_fp hfp.2)
-      hunit hsupport (fun y hy ↦ sCentralizes_dual hfp.2 (sCentralizes_symm (hx y hy)))
+      hunit hsupport (fun y hy ↦ sCentralizes_dual (D := D) hfp.2 ⟨x, sCentralizes_symm (hx y hy)⟩)
 
 end PropertyF.Ground.CentreCabling
 
@@ -196,12 +196,10 @@ variable {R : Type*} [Fintype ι] [DecidableEq ι] [Semiring R]
 
 /-- Multiplication by a supported label cannot contribute outside a closed support. -/
 theorem fusionClosed_sum_eq_zero (w : ι → R) (hA : IsFusionClosed N A) :
-    ∑ i, (N a i k : R) * (if i ∈ A then w i else 0) = 0 := by
-  apply Finset.sum_eq_zero
-  intro i _
-  by_cases hi : i ∈ A
-  · simp [hi, hA.fusionCoeff_eq_zero (a := a) (b := ⟨i, hi⟩) (k := k)]
-  · simp [hi]
+    ∑ i, (N a i k : R) * (if i ∈ A then w i else 0) = 0 :=
+  Finset.sum_eq_zero fun i _ ↦
+    if hi : i ∈ A then by simp [hi, hA.fusionCoeff_eq_zero (a := a) (b := ⟨i, hi⟩) (k := k)]
+    else by simp [hi]
 end
 
 variable {A : Finset (Fin (rank D))} {a b : A} {k : {k : Fin (rank D) // k ∉ A}}
@@ -213,8 +211,8 @@ abbrev regularVector (D : Ground.BraidedFusionCategory.{v,u})
 
 /-- The support of the regular vector is precisely the chosen set. -/
 theorem regularVector_ne_zero_iff {i : Fin (rank D)} :
-    regularVector D A i ≠ 0 ↔ i ∈ A := by
-  simp [regularVector, ne_of_gt (fpSimple_pos D i)]
+    regularVector D A i ≠ 0 ↔ i ∈ A :=
+  ite_ne_right_iff.trans (and_iff_left (by exact_mod_cast ne_of_gt (fpSimple_pos D i)))
 
 /-- On its support, the regular vector has the FP eigenvalue. -/
 theorem regularVector_mul (hA : IsDualFusionClosed D A) {k : A} :

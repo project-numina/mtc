@@ -190,10 +190,9 @@ theorem fpDimension_functor (C : BraidedFusionCategory.{v,u})
     intro hz
     let : Simple (simples C i) := simples_simple C i
     exact id_nonzero _ (F.map_eq_zero_iff.mp (by simpa using (IsZero.iff_id_eq_zero _).mp hz))
-  have hunit : f (unitIndex C) = 1 := by
-    obtain ⟨e⟩ := unitIndex_iso C
-    rw [show f (unitIndex C) = fpDimension D (𝟙_ D.Obj) from
-      fpDimension_iso D (F.mapIso e ≪≫ (εIso F).symm), fpDimension_unit]
+  have hunit : f (unitIndex C) = 1 :=
+    (unitIndex_iso C).elim fun e ↦
+      (fpDimension_iso D (F.mapIso e ≪≫ (εIso F).symm)).trans (fpDimension_unit D)
   have hmul : ∀ i j, f i * f j = ∑ k, (fusionCoeff C i j k : ℝ) * f k := by
     intro i j
     calc
