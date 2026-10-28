@@ -65,9 +65,7 @@ theorem rightDualTensorIso_evaluation (X Y : C) [HasRightDual X] [HasRightDual Y
     [HasRightDual (X ⊗ Y)] :
     (rightDualTensorIso X Y).hom ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
       ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ) :=
-  rightDualIso_evaluation
-    (@HasRightDual.exact C _ _ (X ⊗ Y) inferInstance)
-    (ExactPairing.tensor (X₁ := X) (X₂ := Y) (Y₁ := Xᘁ) (Y₂ := Yᘁ))
+  rightDualIso_evaluation HasRightDual.exact ExactPairing.tensor
 
 variable {A B U V W : C}
 

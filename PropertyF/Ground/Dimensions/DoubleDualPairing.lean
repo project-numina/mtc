@@ -59,26 +59,18 @@ theorem rightDualEvaluation_coevaluation :
   let : HasRightDual W := RightRigidCategory.rightDual W
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso (Xᘁ) X
-  let q : ExactPairing W V := ExactPairing.tensor
-  have hu := coevaluation_rightDualIso_inv
+  have hu : (ρ_ I).inv ≫ I ◁ r.inv = η_ I (Iᘁ) := coevaluation_rightDualIso_inv
     (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
     (exactPairingUnit (C := C))
-  change (ρ_ I).inv ≫ I ◁ r.inv = η_ I (Iᘁ) at hu
-  have ht := coevaluation_rightDualIso
-    (@HasRightDual.exact C _ _ W (RightRigidCategory.rightDual W)) q
-  change η_ W (Wᘁ) ≫ W ◁ t.hom = @ExactPairing.coevaluation C _ _ W V q at ht
-  have hm := coevaluation_comp_rightAdjointMate (ε_ X (Xᘁ))
-  change η_ I (Iᘁ) ≫ I ◁ ((ε_ X (Xᘁ))ᘁ) =
-    η_ W (Wᘁ) ≫ (ε_ X (Xᘁ)) ▷ (Wᘁ) at hm
+  have ht : η_ W (Wᘁ) ≫ W ◁ t.hom = η_ W V := coevaluation_rightDualIso
+    (@HasRightDual.exact C _ _ W (RightRigidCategory.rightDual W)) ExactPairing.tensor
   calc
     _ = ((ρ_ I).inv ≫ I ◁ r.inv ≫ I ◁ ((ε_ X (Xᘁ))ᘁ) ≫ I ◁ t.hom) ≫ (λ_ V).hom := by monoidal
     _ = (η_ W (Wᘁ) ≫ (ε_ X (Xᘁ)) ▷ (Wᘁ)) ≫ I ◁ t.hom ≫ (λ_ V).hom := by
-      simpa only [← Category.assoc, hu] using
-        congrArg (fun f ↦ f ≫ I ◁ t.hom ≫ (λ_ V).hom) hm
-    _ = @ExactPairing.coevaluation C _ _ W V q ≫ (ε_ X (Xᘁ) ▷ V) ≫ (λ_ V).hom := by
-      rw [← ht]
-      simp only [Category.assoc]
-      rw [← whisker_exchange_assoc]
+      simp only [← Category.assoc, hu, coevaluation_comp_rightAdjointMate]
+      rfl
+    _ = η_ W V ≫ (ε_ X (Xᘁ) ▷ V) ≫ (λ_ V).hom := by
+      rw [← ht, Category.assoc, ← whisker_exchange_assoc, Category.assoc]
     _ = _ := tensorPairing_coevaluation_evaluation X
 end PropertyF.Ground.Dimensions
 
@@ -123,25 +115,20 @@ theorem rightDualCoevaluation_evaluation :
   let : HasRightDual W := RightRigidCategory.rightDual W
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso X (Xᘁ)
-  let q : ExactPairing W V := ExactPairing.tensor
-  have hu := rightDualIso_evaluation
+  have hu : r.hom ▷ I ≫ (ρ_ I).hom = ε_ I (Iᘁ) := rightDualIso_evaluation
     (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
     (exactPairingUnit (C := C))
-  change r.hom ▷ I ≫ (ρ_ I).hom = ε_ I (Iᘁ) at hu
-  have ht := rightDualIso_inv_evaluation
-    (@HasRightDual.exact C _ _ W (RightRigidCategory.rightDual W)) q
-  change t.inv ▷ W ≫ ε_ W (Wᘁ) = @ExactPairing.evaluation C _ _ W V q at ht
-  have hm := rightAdjointMate_comp_evaluation (η_ X (Xᘁ))
-  change ((η_ X (Xᘁ))ᘁ) ▷ I ≫ ε_ I (Iᘁ) = Wᘁ ◁ η_ X (Xᘁ) ≫ ε_ W (Wᘁ) at hm
+  have ht : t.inv ▷ W ≫ ε_ W (Wᘁ) = ε_ W V := rightDualIso_inv_evaluation
+    (@HasRightDual.exact C _ _ W (RightRigidCategory.rightDual W)) ExactPairing.tensor
   change t.inv ≫ ((η_ X (Xᘁ))ᘁ) ≫ r.hom = _
   calc
     _ = (ρ_ V).inv ≫ t.inv ▷ I ≫ (((η_ X (Xᘁ))ᘁ) ▷ I ≫ ε_ I (Iᘁ)) := by
       rw [← hu]
       simp only [← Category.assoc, ← comp_whiskerRight]
       monoidal
-    _ = (ρ_ V).inv ≫ t.inv ▷ I ≫ (Wᘁ ◁ η_ X (Xᘁ) ≫ ε_ W (Wᘁ)) :=
-      congrArg (fun f ↦ (ρ_ V).inv ≫ t.inv ▷ I ≫ f) hm
-    _ = (ρ_ V).inv ≫ V ◁ η_ X (Xᘁ) ≫ @ExactPairing.evaluation C _ _ W V q := by
+    _ = (ρ_ V).inv ≫ t.inv ▷ I ≫ (Wᘁ ◁ η_ X (Xᘁ) ≫ ε_ W (Wᘁ)) := by
+      rw [rightAdjointMate_comp_evaluation]
+    _ = (ρ_ V).inv ≫ V ◁ η_ X (Xᘁ) ≫ ε_ W V := by
       rw [← ht, whisker_exchange_assoc]
     _ = _ := tensorPairing_evaluation_coevaluation X
 set_option backward.isDefEq.respectTransparency false in
