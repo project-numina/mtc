@@ -21,13 +21,13 @@ set_option backward.isDefEq.respectTransparency false in
 /-- An underlying factorization through a centre monomorphism is central. -/
 theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
-    ∃ t : P ⟶ Q, t.f = g := by
-  refine ⟨⟨g, fun T => ?_⟩, rfl⟩
-  let : IsSplitMono (T ◁ q.f) :=
-    IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
-  apply (cancel_mono (T ◁ q.f)).1
-  simp only [Category.assoc, ← whiskerLeft_comp, hg, ← q.comm T,
-    ← comp_whiskerRight_assoc, p.comm]
+    ∃ t : P ⟶ Q, t.f = g :=
+  ⟨⟨g, fun T ↦
+    letI : IsSplitMono (T ◁ q.f) :=
+      IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
+    (cancel_mono (T ◁ q.f)).1 <| by
+      simp only [Category.assoc, ← whiskerLeft_comp, hg, ← q.comm T,
+        ← comp_whiskerRight_assoc, p.comm]⟩, rfl⟩
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
 def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : Center D) (P : Subobject X) :
