@@ -48,8 +48,7 @@ theorem moveWord_exchange (j i : ℕ) (hij : i + 1 < j) (hjm : j ≤ m) :
   | succ j ih =>
     by_cases h : i + 1 = j
     · subst j
-      simp only [moveWord, ← mul_assoc]
-      rw [hb i (by omega)]
+      simp only [moveWord, ← mul_assoc, hb i (by omega)]
       simp only [mul_assoc, commute_moveWord hc (i + 1) i (by omega) (by omega)]
     · simp only [moveWord, ← mul_assoc]
       rw [hc i j (by omega) (by omega), mul_assoc, ih i (by omega) (by omega), ← mul_assoc]
