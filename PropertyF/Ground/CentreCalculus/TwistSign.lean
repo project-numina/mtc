@@ -10,7 +10,7 @@ We write `θ C p X` for the pivotal twist scalar.
 -/
 @[expose] public noncomputable section
 local notation "θ" => PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar
-open PropertyF.Ground.Modular (HasFPSimpleDimensions)
+open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.CentreCalculus

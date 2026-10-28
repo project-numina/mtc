@@ -17,7 +17,7 @@ twist scalar.
 -/
 @[expose] public noncomputable section
 local notation "θ" => PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar
-open PropertyF.Ground.Modular (HasFPSimpleDimensions)
+open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical)
 open PropertyF.Ground.Centre (permutationSign)
 open Equiv.Perm (decomposeFin)
 open PropertyF.Ground.Dimensions
@@ -277,11 +277,6 @@ theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
     (hp : p.IsSpherical) {X Y : C} (f : End (X ⊗ Y)) :
     IsLeftTraceCompatibleAt p f :=
   (hp Y _).symm.trans <| (leftTrace_partialTrace p f).trans (hp _ _)
-
-/-- A chosen spherical pivotal structure whose simple dimensions are FP dimensions. -/
-abbrev IsFPSpherical (C : BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) : Prop :=
-  p.IsSpherical ∧ HasFPSimpleDimensions C p
 
 /-- A self-transparent simple with sign-valued twist has integral FP
 dimension in any FP-valued spherical fusion category. -/

@@ -3,6 +3,7 @@ public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.Integrate.ActualCenterReduction
 public import PropertyF.Ground.CentreInduction.ActualFusion
 public import PropertyF.Ground.CentreInduction.PositivePivotal
+public import PropertyF.Ground.CentreInduction.DrinfeldTheorem
 public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
@@ -79,22 +80,15 @@ namespace PropertyF.Ground
 universe v u
 set_option linter.style.haveILetI false
 
-/-- The actual Drinfeld map has the tensor coherence law in any braided
-fusion category. -/
-theorem drinfeld_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
-    Modular.doubleBraiding X Y ≫ (doubleDualIso C (X ⊗ Y)).hom =
-      ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
-        (Dimensions.doubleDualTensorIso X Y).hom :=
-  CentreIntegrate.drinfeld_tensor_of_pairing_cap (doubleDualIso C)
-    (Dimensions.drinfeld_eval C (X ⊗ Y)) (Dimensions.drinfeld_tensor_pairing_cap C X Y)
+variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
+local notation "θ" => Dimensions.pivotalBraidedTwist C p
 
 /-- The twist of any pivotal braided fusion category is balanced. -/
-theorem pivotal_twist_balanced (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (X Y : C.Obj) :
+theorem pivotal_twist_balanced (X Y : C.Obj) :
     Modular.doubleBraiding X Y ≫
-      ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
-        (Dimensions.pivotalBraidedTwist C p Y).hom) =
-      (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom :=
+      ((θ X).hom ⊗ₘ
+        (θ Y).hom) =
+      (θ (X ⊗ Y)).hom :=
   CentreIntegrate.pivotal_balance_of_drinfeld_tensor p (doubleDualIso C) (drinfeld_tensor C X Y)
 
 end PropertyF.Ground

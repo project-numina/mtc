@@ -48,9 +48,8 @@ omit [RightRigidCategory C] in
 theorem doubleBraiding_natural_right (X : C) {Y Z : C} (f : Y ⟶ Z) :
     doubleBraiding X Y ≫ (𝟙 X ⊗ₘ f) =
       (𝟙 X ⊗ₘ f) ≫ doubleBraiding X Z := by
-  unfold doubleBraiding
-  rw [Category.assoc, ← braiding_naturality f (𝟙 X), ← Category.assoc,
-    ← braiding_naturality (𝟙 X) f, Category.assoc]
+  rw [doubleBraiding, doubleBraiding, Category.assoc, ← braiding_naturality f (𝟙 X),
+    ← Category.assoc, ← braiding_naturality (𝟙 X) f, Category.assoc]
 
 /-- The trace of double braiding depends only on the isomorphism class. -/
 theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : Y ≅ Z) :
@@ -83,9 +82,20 @@ def simpleDimension (i : Fin (rank C)) : ℂ :=
 abbrev HasFPSimpleDimensions : Prop :=
   ∀ i, simpleDimension C p i = (fpSimple C i : ℂ)
 
+/-- A spherical pivotal structure whose simple dimensions are FP dimensions. -/
+abbrev IsFPSpherical : Prop := p.IsSpherical ∧ HasFPSimpleDimensions C p
+
 /-- The unnormalized categorical S-matrix, defined by double-braiding traces. -/
 def categoricalS : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
   fun i j => Ground.unitScalarEquiv C (SEntry p (simples C i) (simples C j))
+
+/-- Two simple labels satisfy the numerical S-matrix centrality test. -/
+abbrev sCentralizes (i j : Fin (rank C)) : Prop :=
+  categoricalS C p i j = simpleDimension C p i * simpleDimension C p j
+
+/-- The labels satisfying the numerical S-centrality test against a set. -/
+abbrev sCentralizer (A : Set (Fin (rank C))) : Set (Fin (rank C)) :=
+  {j | ∀ i ∈ A, sCentralizes C p i j}
 
 /-- A normalized column of the categorical S-matrix. -/
 def normalizedSColumn (j : Fin (rank C)) : Fin (rank C) → ℂ :=

@@ -24,12 +24,9 @@ set_option backward.isDefEq.respectTransparency false
 /-- Evaluating a double-dual tensor map reduces to the tensor pairing on
 the dual factors. -/
 theorem doubleDualTensor_evaluation {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-    {X Y : C} (u : X ⟶ (Xᘁ)ᘁ) (v : Y ⟶ (Yᘁ)ᘁ) :
-    ((u ⊗ₘ v) ≫ (doubleDualTensorIso X Y).hom) ▷ ((X ⊗ Y)ᘁ) ≫
-      ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
-      (u ⊗ₘ v) ▷ ((X ⊗ Y)ᘁ) ≫
-        (((Xᘁ)ᘁ ⊗ (Yᘁ)ᘁ) ◁ (rightDualTensorIso X Y).hom) ≫
-          ε_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) := by
+    {X Y : C} : (doubleDualTensorIso X Y).hom ▷ ((X ⊗ Y)ᘁ) ≫ ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
+      (((Xᘁ)ᘁ ⊗ (Yᘁ)ᘁ) ◁ (rightDualTensorIso X Y).hom) ≫
+        ε_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) := by
   let W := X ⊗ Y
   let V := (Yᘁ) ⊗ (Xᘁ)
   let t : Wᘁ ≅ V := rightDualTensorIso X Y
@@ -40,8 +37,8 @@ theorem doubleDualTensor_evaluation {C : Type u} [Category.{v} C] [MonoidalCateg
   change s.inv ▷ V ≫ ε_ V (Vᘁ) = @ExactPairing.evaluation C _ _ V _ q at hs
   have ht := rightAdjointMate_comp_evaluation t.hom
   change (t.homᘁ) ▷ Wᘁ ≫ ε_ (Wᘁ) (((Wᘁ)ᘁ)) = Vᘁ ◁ t.hom ≫ ε_ V Vᘁ at ht
-  change ((u ⊗ₘ v) ≫ (s.inv ≫ (t.homᘁ))) ▷ Wᘁ ≫ ε_ (Wᘁ) (((Wᘁ)ᘁ)) =
-    (u ⊗ₘ v) ▷ Wᘁ ≫ (((Xᘁ)ᘁ ⊗ (Yᘁ)ᘁ) ◁ t.hom) ≫ @ExactPairing.evaluation C _ _ V _ q
+  change (s.inv ≫ (t.homᘁ)) ▷ Wᘁ ≫ ε_ (Wᘁ) (((Wᘁ)ᘁ)) =
+    (((Xᘁ)ᘁ ⊗ (Yᘁ)ᘁ) ◁ t.hom) ≫ @ExactPairing.evaluation C _ _ V _ q
   simp only [comp_whiskerRight, Category.assoc, ht]
   rw [← whisker_exchange_assoc, hs]
 
@@ -103,14 +100,12 @@ theorem drinfeld_tensor_of_pairing_cap {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ
   have he := rightDualIso_evaluation
     (@HasRightDual.exact D _ _ W (RightRigidCategory.rightDual W)) p
   change t.hom ▷ W ≫ @ExactPairing.evaluation D _ _ W V p = ε_ W (Wᘁ) at he
-  have hs := doubleDualTensor_evaluation (d X).hom (d Y).hom
-  change (((d X).hom ⊗ₘ (d Y).hom) ≫
-    (doubleDualTensorIso X Y).hom) ▷ Wᘁ ≫ ε_ (Wᘁ) ((Wᘁ)ᘁ) =
-    ((d X).hom ⊗ₘ (d Y).hom) ▷ Wᘁ ≫
-      (((Xᘁ)ᘁ ⊗ (Yᘁ)ᘁ) ◁ t.hom) ≫ @ExactPairing.evaluation D _ _ V _ q at hs
+  have hs := doubleDualTensor_evaluation (C := D) (X := X) (Y := Y)
+  change (doubleDualTensorIso X Y).hom ▷ Wᘁ ≫ ε_ (Wᘁ) ((Wᘁ)ᘁ) =
+    (((Xᘁ)ᘁ ⊗ (Yᘁ)ᘁ) ◁ t.hom) ≫ @ExactPairing.evaluation D _ _ V _ q at hs
   apply evaluation_ext (X := Wᘁ)
   dsimp only [HasDrinfeldEvaluation] at hd
-  rw [comp_whiskerRight_assoc, hd, ← he, hs]
+  rw [comp_whiskerRight_assoc, hd, ← he, comp_whiskerRight_assoc, hs]
   rw [← braiding_naturality_right_assoc]
   rw [← whisker_exchange_assoc, ← whisker_exchange_assoc]
   dsimp only [HasDrinfeldTensorCap] at hcap

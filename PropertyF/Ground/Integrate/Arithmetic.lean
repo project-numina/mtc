@@ -47,28 +47,6 @@ theorem positive_ratio_of_galois_square {τ : ℂ ≃+* ℂ} {δ b f : ℝ}
   have hR' := (eq_div_iff (pow_ne_zero 2 (ne_of_gt hf))).mp hR
   nlinarith [sq_nonneg (f * b - δ), mul_pos hf hb]
 
-variable {σ : ℂ ≃+* ℂ} {δ b f d : ℝ} {S : ℂ}
-
-/-- Transport the Galois-unit S entry back to the chosen conjugate. -/
-theorem galois_unit_self_entry
-    (hS : S = (f : ℂ) * σ.symm (f : ℂ))
-    (hd : σ (f : ℂ) = (d : ℂ)) : σ S = (d : ℂ) * f := by
-  rw [hS, map_mul, hd, σ.apply_symm_apply]
-
-/-- The modular global-dimension and unit-column identities, together with the
-three-strand rigidity conclusion for the self-entry, give the witness required
-by the final contradiction. -/
-theorem center_witness_of_modular_and_rigidity
-    (hδ : 0 < δ) (hb : 0 < b) (hf : 1 ≤ f)
-    (hτ : σ.symm (δ : ℂ) = (b : ℂ))
-    (hσf : σ (f : ℂ) = (d : ℂ))
-    (hG : σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2)
-    (hS : S = (f : ℂ) * σ.symm (f : ℂ))
-    (hRigid : σ S = (d : ℂ) * f → f = |d|) :
-    σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
-  ⟨hσf, positive_ratio_of_galois_square (τ := σ.symm) hδ hb (lt_of_lt_of_le zero_lt_one hf) hτ hG,
-    hf, hRigid (galois_unit_self_entry (σ := σ) hS hσf)⟩
-
 /-- The numerical witness supplied by a Galois-unit column. -/
 abbrev HasGaloisDimensionWitness (σ : ℂ ≃+* ℂ) (δ b : ℝ) : Prop :=
   ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d|
