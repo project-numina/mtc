@@ -191,8 +191,7 @@ theorem crossingCandidate_natural_middle
   simp only [Category.assoc]
   rw [← whiskerLeft_comp]
   simp only [biproduct.ι_map, whiskerLeft_comp]
-  simpa only [Category.assoc] using congrArg (fun g => g ≫ (T ◁ biproduct.ι VY j))
-    (crossingBlock_natural_middle h
-      (crossingInclusion C T i j a) (crossingProjection C T i j a))
+  simpa only [Category.assoc] using crossingBlock_natural_middle_assoc h
+    (crossingInclusion C T i j a) (crossingProjection C T i j a) (T ◁ biproduct.ι VY j)
 
 end PropertyF.Ground.CentreInduction

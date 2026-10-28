@@ -73,12 +73,11 @@ theorem rightTraceWith_partialTraceWith {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y �
   simp only [tensorHom_def, comp_whiskerRight]
   monoidal
   simp
-  rw [whisker_exchange_assoc j.hom (λ_ (Xᘁ)).hom]
-  rw [whisker_exchange_assoc j.hom (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ (Xᘁ))]
-  rw [whisker_exchange_assoc j.hom (k.hom ▷ (Yᘁ) ▷ (Xᘁ))]
-  rw [← associator_naturality_left_assoc j.hom (Y ⊗ Yᘁ) (Xᘁ)]
-  rw [← comp_whiskerRight_assoc, ← associator_naturality_left]
-  rw [comp_whiskerRight, Category.assoc]
+  rw [whisker_exchange_assoc j.hom (λ_ (Xᘁ)).hom,
+    whisker_exchange_assoc j.hom (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ (Xᘁ)),
+    whisker_exchange_assoc j.hom (k.hom ▷ (Yᘁ) ▷ (Xᘁ)),
+    ← associator_naturality_left_assoc j.hom (Y ⊗ Yᘁ) (Xᘁ),
+    ← comp_whiskerRight_assoc, ← associator_naturality_left, comp_whiskerRight, Category.assoc]
 
 
 end PropertyF.Ground.Dimensions
@@ -162,10 +161,7 @@ theorem pivotalTrace_tensor (p : PivotalStructure (C := C))
     scalar (p.rightTrace (a ⊗ₘ b)) = scalar (p.rightTrace a) * scalar (p.rightTrace b) := by
   have h := rightTrace_partialTrace p (End.of (a ⊗ₘ b))
   rw [rightPartialTrace_tensor p scalar a b] at h
-  have hs : p.rightTrace (a ⊗ₘ b) = scalar (p.rightTrace b) • p.rightTrace a := by
-    simpa [PivotalStructure.rightTrace_smul] using h.symm
-  rw [hs, map_smul]
-  simp [mul_comm]
+  simpa [PivotalStructure.rightTrace_smul, smul_eq_mul, mul_comm] using congrArg scalar h.symm
 
 end PropertyF.Ground.Dimensions
 

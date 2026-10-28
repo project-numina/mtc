@@ -30,27 +30,26 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
   rw [hr]
   apply (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)).symm.injective
   simp only [Equiv.symm_apply_apply]
-  let q := closeFusionMap T S f
-  change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫
-    𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
-      ((T ⊗ S) ◁ ε_ S (Sᘁ)) ≫ (ρ_ (T ⊗ S)).hom = f ≫ g
+  dsimp only [tensorRightHomEquiv, Equiv.symm, Equiv.coe_fn_mk]
+  set q := closeFusionMap T S f
   calc
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ (q ▷ S)) ⊗≫
       ((g ▷ ((Sᘁ : D) ⊗ S)) ≫ ((T ⊗ S) ◁ ε_ S (Sᘁ))) ⊗≫ 𝟙 _ := by
         simp only [tensorHom_def']
         monoidal
-    _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ (q ▷ S)) ⊗≫
-      ((R ◁ ε_ S (Sᘁ)) ≫ (g ▷ (𝟙_ D))) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ ((q ▷ S) ≫ ε_ S (Sᘁ))) ⊗≫
-      (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by simp only [whiskerLeft_comp]; monoidal
+      (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by
+      rw [← whisker_exchange]
+      simp only [whiskerLeft_comp]
+      monoidal
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫
       (R ◁ (𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ))) ⊗≫
       (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by rw [closeFusionMap_evaluation f]
     _ = 𝟙 _ ⊗≫ ((η_ R (Rᘁ) ▷ (T ⊗ S)) ≫ (((R ⊗ Rᘁ) : D) ◁ f)) ⊗≫
       (R ◁ ε_ R (Rᘁ)) ⊗≫ g := by monoidal
-    _ = 𝟙 _ ⊗≫ (((𝟙_ D) ◁ f) ≫ (η_ R (Rᘁ) ▷ R)) ⊗≫
-      (R ◁ ε_ R (Rᘁ)) ⊗≫ g := by rw [whisker_exchange]
-    _ = f ⊗≫ ((η_ R (Rᘁ) ▷ R) ⊗≫ (R ◁ ε_ R (Rᘁ))) ⊗≫ g := by monoidal
+    _ = f ⊗≫ ((η_ R (Rᘁ) ▷ R) ⊗≫ (R ◁ ε_ R (Rᘁ))) ⊗≫ g := by
+      rw [← whisker_exchange]
+      monoidal
     _ = _ := by rw [evaluation_coevaluation'']; monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -71,19 +70,15 @@ theorem unit_block (Z : Center D) {T S R : D}
         simp only [tensorHom_def, comp_whiskerRight]
         monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
-      (((Z.1 ◁ g) ≫ bTS) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
-      ((T ⊗ S) ◁ (Z.1 ◁ q)) ⊗≫ 𝟙 _ := by rw [← Z.2.naturality g]
-    _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
       ((bTS ▷ ((Rᘁ : D) ⊗ T)) ≫ (((T ⊗ S) ⊗ Z.1) ◁ q)) ⊗≫ 𝟙 _ := by
+        rw [← Z.2.naturality g]
         simp only [comp_whiskerRight]
         monoidal
-    _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
-      ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
-      ((((Z.1 ⊗ (T ⊗ S)) ◁ q)) ≫ (bTS ▷ (Sᘁ))) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
-    _ = 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫
-      (bTS ▷ Sᘁ) ⊗≫ 𝟙 _ := by simp only [tensorHom_def]; monoidal
-    _ = _ := by rw [fusion_coevaluation g f]
+    _ = _ := by
+      rw [← whisker_exchange, ← fusion_coevaluation g f]
+      simp only [tensorHom_def]
+      monoidal
 
 variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
   [MonoidalPreadditive D] [MonoidalLinear k D]
@@ -114,13 +109,9 @@ theorem unitBlockLinear_id (Z : Center D) (T S : D) :
   let bT := (Z.2.β T).hom
   let bS := (Z.2.β S).hom
   calc
-    _ = 𝟙 _ ⊗≫ (Z.1 ◁ T ◁ η_ S (Sᘁ)) ⊗≫ (bT ▷ (S ⊗ Sᘁ)) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
     _ = 𝟙 _ ⊗≫ (((Z.1 ⊗ T) ◁ η_ S (Sᘁ)) ≫ (bT ▷ (S ⊗ Sᘁ))) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by monoidal
-    _ = 𝟙 _ ⊗≫ ((bT ▷ (𝟙_ D)) ≫ ((T ⊗ Z.1) ◁ η_ S (Sᘁ))) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
-    _ = _ := by monoidal
+      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
+    _ = _ := by rw [whisker_exchange]; monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
@@ -128,13 +119,10 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
     (unitComponent C Z p.1 ▷ T) ≫ crossingSummand C Z.1 T p.1 j p.2) =
       (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
-  calc
-    _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
-      unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
-        crossingInclusion C T p.1 j p.2) := by
-      exact Finset.sum_congr rfl fun p _ => unit_block Z
-        (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
-    _ = _ := by rw [← map_sum, crossing_completeness, unitBlockLinear_id]; rfl
+  simp only [unitComponent]
+  rw [← unitBlockLinear_id (k := ℂ) Z T (simples C j), ← crossing_completeness C T j, map_sum]
+  exact Finset.sum_congr rfl fun p _ => unit_block Z
+    (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/

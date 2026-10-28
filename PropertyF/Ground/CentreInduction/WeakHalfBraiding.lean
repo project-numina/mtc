@@ -46,30 +46,22 @@ def weakInverse : Y ⊗ A ⟶ A ⊗ Y :=
 include hn ht hu in
 /-- The bent crossing is a right inverse. -/
 theorem weak_left : b Y ≫ weakInverse b X Y = 𝟙 (A ⊗ Y) := by
-  have he : b (Y ⊗ X) ≫ (ε_ X Y ▷ A) =
-      (A ◁ ε_ X Y) ≫ ((ρ_ A).hom ≫ (λ_ A).inv) := by
-    rw [← hn (ε_ X Y), hu]
   calc
     _ = 𝟙 _ ⊗≫ ((b Y ▷ (𝟙_ C)) ≫ ((Y ⊗ A) ◁ η_ X Y)) ⊗≫
       (Y ◁ b X) ▷ Y ⊗≫ (ε_ X Y ▷ A) ▷ Y ⊗≫ 𝟙 _ := by
       dsimp [weakInverse]; monoidal
     _ = 𝟙 _ ⊗≫ (((A ⊗ Y) ◁ η_ X Y) ≫ (b Y ▷ (X ⊗ Y))) ⊗≫
       (Y ◁ b X) ▷ Y ⊗≫ (ε_ X Y ▷ A) ▷ Y ⊗≫ 𝟙 _ := by rw [whisker_exchange]
-    _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y)) ⊗≫ (b (Y ⊗ X) ▷ Y) ⊗≫
-      ((ε_ X Y ▷ A) ▷ Y) ⊗≫ 𝟙 _ := by rw [ht Y X]; monoidal
     _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y)) ⊗≫
-      ((b (Y ⊗ X) ≫ ε_ X Y ▷ A) ▷ Y) ⊗≫ 𝟙 _ := by monoidal
-    _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y)) ⊗≫
-      ((A ◁ ε_ X Y ≫ (ρ_ A).hom ≫ (λ_ A).inv) ▷ Y) ⊗≫ 𝟙 _ := by rw [he]
-    _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y)) ⊗≫ 𝟙 _ := by monoidal
+      ((b (Y ⊗ X) ≫ ε_ X Y ▷ A) ▷ Y) ⊗≫ 𝟙 _ := by rw [ht Y X]; monoidal
+    _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y)) ⊗≫ 𝟙 _ := by
+      rw [← hn (ε_ X Y), hu]
+      monoidal
     _ = _ := by rw [coevaluation_evaluation'']; monoidal
 
 include hn ht hu in
 /-- The bent crossing is a left inverse. -/
 theorem weak_right : weakInverse b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
-  have hc : (A ◁ η_ X Y) ≫ b (X ⊗ Y) =
-      ((ρ_ A).hom ≫ (λ_ A).inv) ≫ (η_ X Y ▷ A) := by
-    rw [hn (η_ X Y), hu]
   calc
     _ = 𝟙 _ ⊗≫ (Y ⊗ A) ◁ η_ X Y ⊗≫ (Y ◁ b X) ▷ Y ⊗≫
       ((ε_ X Y ▷ (A ⊗ Y)) ≫ ((𝟙_ C) ◁ b Y)) ⊗≫ 𝟙 _ := by
@@ -79,9 +71,9 @@ theorem weak_right : weakInverse b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
       rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (Y ◁ ((A ◁ η_ X Y) ≫ b (X ⊗ Y))) ⊗≫
       (ε_ X Y ▷ (Y ⊗ A)) ⊗≫ 𝟙 _ := by rw [ht X Y]; monoidal
-    _ = 𝟙 _ ⊗≫ (Y ◁ (((ρ_ A).hom ≫ (λ_ A).inv) ≫ (η_ X Y ▷ A))) ⊗≫
-      (ε_ X Y ▷ (Y ⊗ A)) ⊗≫ 𝟙 _ := by rw [hc]
-    _ = 𝟙 _ ⊗≫ ((Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y) ▷ A) ⊗≫ 𝟙 _ := by monoidal
+    _ = 𝟙 _ ⊗≫ ((Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y) ▷ A) ⊗≫ 𝟙 _ := by
+      rw [hn (η_ X Y), hu]
+      monoidal
     _ = _ := by rw [coevaluation_evaluation'']; monoidal
 
 include hn ht hu in

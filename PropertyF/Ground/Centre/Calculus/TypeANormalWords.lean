@@ -10,7 +10,7 @@ type-A involutions. This yields a factorial bound for the group's order.
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreCalculus
 
-variable {G : Type*} [Group G]
+variable {G : Type*} [Monoid G]
 
 /-- A family of involutions satisfying the type-A braid and commutation relations. -/
 structure IsTypeAFamily (s : ℕ → G) (m : ℕ) : Prop where
@@ -19,19 +19,6 @@ structure IsTypeAFamily (s : ℕ → G) (m : ℕ) : Prop where
   commute : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i
 
 variable {s : ℕ → G} {m : ℕ}
-
-/-- Shifting a type-A family into a subgroup preserves its relations. -/
-theorem IsTypeAFamily.shift {H : Subgroup G} {t : ℕ → H}
-    (hrel : IsTypeAFamily s (m + 1))
-    (ht : ∀ i, i < m → (t i : G) = s (i + 1)) : IsTypeAFamily t m :=
-  ⟨fun i hi ↦ Subtype.ext <| by
-    simpa only [Subgroup.coe_mul, Subgroup.coe_one, ht i hi] using hrel.square (i + 1) (by omega),
-   fun i hi ↦ Subtype.ext <| by
-    simpa only [Subgroup.coe_mul, ht i (by omega), ht (i + 1) (by omega), Nat.add_assoc] using
-      hrel.braid (i + 1) (by omega),
-   fun i j hij hj ↦ Subtype.ext <| by
-    simpa only [Subgroup.coe_mul, ht i (by omega), ht j hj] using
-      hrel.commute (i + 1) (j + 1) (by omega) (by omega)⟩
 
 /-- The word moving strand zero through the first `j` adjacent positions. -/
 def moveWord (s : ℕ → G) : ℕ → G
@@ -75,9 +62,22 @@ theorem moveWord_exchange :
 end PropertyF.Ground.CentreCalculus
 
 namespace PropertyF.Ground.CentreCalculus
-variable {G : Type*} [Group G]
+variable {G : Type*} [Group G] {s : ℕ → G} {m : ℕ}
 
-variable {s : ℕ → G} {m : ℕ} (hrel : IsTypeAFamily s m)
+/-- Shifting a type-A family into a subgroup preserves its relations. -/
+theorem IsTypeAFamily.shift {H : Subgroup G} {t : ℕ → H}
+    (hrel : IsTypeAFamily s (m + 1))
+    (ht : ∀ i, i < m → (t i : G) = s (i + 1)) : IsTypeAFamily t m :=
+  ⟨fun i hi ↦ Subtype.ext <| by
+    simpa only [Subgroup.coe_mul, Subgroup.coe_one, ht i hi] using hrel.square (i + 1) (by omega),
+   fun i hi ↦ Subtype.ext <| by
+    simpa only [Subgroup.coe_mul, ht i (by omega), ht (i + 1) (by omega), Nat.add_assoc] using
+      hrel.braid (i + 1) (by omega),
+   fun i j hij hj ↦ Subtype.ext <| by
+    simpa only [Subgroup.coe_mul, ht i (by omega), ht j hj] using
+      hrel.commute (i + 1) (j + 1) (by omega) (by omega)⟩
+
+variable (hrel : IsTypeAFamily s m)
 
 /-- An element has a strand-moving representative modulo the shifted subgroup. -/
 abbrev HasMoveWordCoset (s : ℕ → G) (m : ℕ) (g : G) : Prop :=
