@@ -29,17 +29,16 @@ theorem iso_inv_eq_inv_smul {X Y : C} {j k' : X ≅ Y} {c : k} (hc : c ≠ 0)
     simp only [Linear.smul_comp, ← Linear.comp_smul, Iso.inv_hom_id]
     rw [h, smul_smul, inv_mul_cancel₀ hc, one_smul, Iso.inv_hom_id]
 
-/-- Two isomorphisms from a simple object differ by a nonzero scalar and their inverses
-by its inverse. -/
+/-- Two isomorphisms from a simple object differ by a nonzero scalar. -/
 theorem isomorphisms_scalar [IsAlgClosed k] [HasKernels C] {X Y : C} [Simple X]
-    [FiniteDimensional k (X ⟶ X)] (j l : X ≅ Y) : ∃ c : k, c ≠ 0 ∧ l.hom = c • j.hom ∧
-    l.inv = c⁻¹ • j.inv := by
+    [FiniteDimensional k (X ⟶ X)] (j l : X ≅ Y) :
+    ∃ c : k, c ≠ 0 ∧ l.hom = c • j.hom := by
   obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id k (l.hom ≫ j.inv)
   have hhom : l.hom = c • j.hom := (cancel_mono j.inv).1 (by
     simpa only [Linear.smul_comp, Iso.hom_inv_id] using hc.symm)
   have hc0 : c ≠ 0 := fun h ↦
     mono_ne_zero_of_id_ne_zero l.hom (id_nonzero X) (by simpa [h] using hhom)
-  exact ⟨c, hc0, hhom, iso_inv_eq_inv_smul hc0 hhom⟩
+  exact ⟨c, hc0, hhom⟩
 end SimpleIsomorphisms
 
 variable {k : Type*} [Field k] [IsAlgClosed k] {C : Type u} [Category.{v} C]
@@ -52,10 +51,10 @@ theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional k (X ⟶ X
     (scalar : End (𝟙_ C) ≃ₐ[k] k) (j l : X ≅ (Xᘁ)ᘁ) :
     scalar (rightQuantumTrace j) * scalar (leftQuantumTrace j) =
       scalar (rightQuantumTrace l) * scalar (leftQuantumTrace l) := by
-  obtain ⟨c, hc, hhom, hinv⟩ := isomorphisms_scalar (k := k) j l
+  obtain ⟨c, hc, hhom⟩ := isomorphisms_scalar (k := k) j l
   have hl : leftQuantumTrace l = c⁻¹ • leftQuantumTrace j := by
     apply End.homEquiv.injective
-    simp [leftQuantumTrace, hinv, tensorHom_def]
+    simp [leftQuantumTrace, iso_inv_eq_inv_smul hc hhom, tensorHom_def]
   rw [rightQuantumTrace_smul_hom hhom, hl, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
   field_simp
 

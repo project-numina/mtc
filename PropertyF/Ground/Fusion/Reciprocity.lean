@@ -88,16 +88,15 @@ theorem simple_rightDual (X : E) [Simple X] :
 end
 
 variable (D : BraidedFusionCategory.{v,u})
+local instance (i : Fin (rank D)) : Simple (simples D i) := simples_simple D i
 
 /-- The label of the left dual of a simple representative. -/
 def dualIndex (j : Fin (rank D)) : Fin (rank D) := by
-  letI : Simple (simples D j) := simples_simple D j
   letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   exact Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
 
 theorem dualIndex_iso (j : Fin (rank D)) :
     Nonempty ((ᘁ(simples D j)) ≅ simples D (dualIndex D j)) :=
-  letI : Simple (simples D j) := simples_simple D j
   letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
 
@@ -105,7 +104,6 @@ theorem dualIndex_iso (j : Fin (rank D)) :
 theorem fusionCoeff_reciprocity (i j k : Fin (rank D)) :
     fusionCoeff D i j k =
       simpleMultiplicity D i (simples D k ⊗ (ᘁ(simples D j))) :=
-  letI : Simple (simples D i) := simples_simple D i
   (finrank_frobenius_reciprocity (k := ℂ) (simples D i) (simples D j) (simples D k)).trans
     (finrank_to_simple_eq_from_simple _ (simples D i))
 
