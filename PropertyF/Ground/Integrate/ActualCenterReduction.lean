@@ -67,8 +67,12 @@ theorem center_witness_of_categorical_modular_data (hfp : IsFPSpherical Z p)
   let d := (σ (𝒇 y : ℂ)).re
   let hσf : σ (𝒇 y : ℂ) = (d : ℂ) := (fp_simple_galois_real Z σ y).symm
   ⟨𝒇 y, d, hσf,
-    positive_ratio_of_galois_square (j := algebraMap ℝ ℂ) hδ hb
-      (lt_of_lt_of_le zero_lt_one hf) hτ hG, hf,
+    (by
+      refine (sq_eq_sq₀ (mul_pos (lt_of_lt_of_le zero_lt_one hf) hb).le hδ.le).mp ?_
+      apply Complex.ofReal_injective
+      simpa only [Complex.ofReal_mul, Complex.ofReal_pow, mul_pow, mul_comm] using
+        (eq_div_iff (pow_ne_zero 2 (by exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one hf))))).mp
+          (by simpa only [map_pow, hτ] using hG)), hf,
     galois_rigidity_of_propertyF Z p hfp.2 (hF y hcolumn) hσf (by
       rw [hcolumn y, hfp.2 y, map_mul, hσf, σ.apply_symm_apply])⟩
 

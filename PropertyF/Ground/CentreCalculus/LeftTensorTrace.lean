@@ -140,7 +140,7 @@ pivotal twist scalar as its factor. -/
 theorem tensorPermTrace_adjacent {n : ℕ} (σ : Perm (Fin (n + 1))) :
     tr C p (tensorPermAction X hX) (n + 2) (decomposeFin.symm (1, σ)) =
       θ C p X * tr C p (tensorPermAction X hX) (n + 1) σ := by
-  dsimp only [permScalarTrace]
+  dsimp only [permScalarTrace, scalarPermTrace]
   let f := (tensorPermAction X hX (n + 1)) σ
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   rw [tensorPermAction_adjacent hX σ, ← htotal _ _]
@@ -155,8 +155,8 @@ theorem tensorPermTrace_adjacent {n : ℕ} (σ : Perm (Fin (n + 1))) :
 include htotal in
 /-- A negative twist is corrected by the sign-twisted permutation action. -/
 theorem negativeParity_adjacentTrace (hneg : θ C p X = -1) :
-    HasAdjacentTrace (tr C p (parityPermAction C hX true)) := fun n σ ↦ by
-  simp [parityPermScalarTrace_true, sign_decomposeFin, tensorPermTrace_adjacent hX htotal, hneg]
+    HasAdjacentTrace (tr C p (parityPermAction C.Obj hX true)) := fun n σ ↦ by
+  simp [parityPermTrace_true, sign_decomposeFin, tensorPermTrace_adjacent hX htotal, hneg]
 
 include hdim hX htotal in
 /-- The symmetric integrality argument now needs only left iterated-trace
@@ -165,7 +165,7 @@ theorem integral_of_leftTrace_and_twist_sign (hsign : θ C p X = 1 ∨ θ C p X 
     IsFPIntegral C X := by
   rcases hsign with h | h
   · exact integral_of_parity_adjacent_trace hdim hX false fun n σ ↦ by
-      simpa [permScalarTrace, parityPermAction, h] using
+      simpa [permScalarTrace, scalarPermTrace, parityPermAction, h] using
         tensorPermTrace_adjacent (C := C) hX htotal σ
   · exact integral_of_parity_adjacent_trace hdim hX true
       (negativeParity_adjacentTrace hX htotal h)

@@ -32,8 +32,9 @@ theorem pivotalDimension_dual_eq_conj
     (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
     pivotalDimension C p (simples C (dualIndex C i)) =
       star (pivotalDimension C p (simples C i)) := by
-  apply fusion_character_dual_eq_conj (C := C)
+  apply fusion_character_dual_eq_conj (N := fusionCoeff C) (d := dualIndex C)
     (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
+  · exact fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm
   · obtain ⟨e⟩ := unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit]
     exact one_ne_zero

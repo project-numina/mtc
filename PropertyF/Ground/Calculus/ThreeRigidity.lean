@@ -36,7 +36,7 @@ theorem braid_squares_equal_of_saturation (B : Blocks)
         ((unitary B.Algebra).pow_mem (Pi.mem_unitary_iff.mpr hb) 2)
   apply squares_eq_of_central_product a b hbraid
   apply Units.ext
-  apply B.central_of_saturation w hw hunit ?_ b
+  apply B.central_of_saturation w hunit ?_ hw b
   apply le_antisymm (B.norm_trace_le w hunit)
   rw [htrace]
   simpa [norm_pow, abs_of_pos hf] using B.mass_le_of_unitary_trace_bound w hbound
