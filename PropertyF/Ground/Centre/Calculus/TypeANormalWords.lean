@@ -30,15 +30,13 @@ variable (hb : ∀ i, i + 1 < m → s i * s (i + 1) * s i = s (i + 1) * s i * s 
 
 include hc in
 /-- A generator beyond a word's support commutes with the word. -/
-theorem commute_moveWord (i : ℕ) : ∀ j, j + 1 ≤ i → i < m →
-      s i * moveWord s j = moveWord s j * s i := by
-  intro j
+theorem commute_moveWord (i j : ℕ) (hji : j + 1 ≤ i) (him : i < m) :
+    s i * moveWord s j = moveWord s j * s i := by
   induction j with
-  | zero => exact fun _ _ ↦ (mul_one _).trans (one_mul _).symm
+  | zero => simp [moveWord]
   | succ j ih =>
-    intro hji him
-    simp only [moveWord, ← mul_assoc]
-    rw [(hc j i (by omega) him).symm, mul_assoc, ih (by omega) him, ← mul_assoc]
+    rw [moveWord, ← mul_assoc, (hc j i (by omega) him).symm, mul_assoc,
+      ih (by omega), ← mul_assoc]
 
 include hb hc in
 /-- Moving a crossing past the strand-moving word shifts its index by one.

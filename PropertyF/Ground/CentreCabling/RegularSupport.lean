@@ -132,7 +132,6 @@ theorem sum_mul_eigenvalue {ι R : Type*} [Fintype ι] [CommSemiring R]
     (N : ι → ι → R) (χ f : ι → R) {c d : R}
     (hχ : ∀ i, c * χ i = ∑ k, N i k * χ k) (hf : ∀ k, ∑ i, N i k * f i = d * f k) :
     c * (∑ i, χ i * f i) = d * ∑ i, χ i * f i := by
-  classical
   calc
     _ = ∑ i, (c * χ i) * f i := by simp [Finset.mul_sum, mul_assoc]
     _ = ∑ i, ∑ k, N i k * χ k * f i := by simp_rw [hχ, Finset.sum_mul]
