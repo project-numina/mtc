@@ -147,9 +147,9 @@ omit [NeZero (2 : k)] in
 theorem involution_eq_one_of_trace_eq_finrank [CharZero k] (hT : T * T = 1)
     (htrace : LinearMap.trace k V T = (Module.finrank k V : k)) : T = 1 := by
   let Q : V →ₗ[k] V := (2 : k)⁻¹ • (1 - T)
-  have hq : IsIdempotentElem Q := by
-    simpa [Q, sub_eq_add_neg] using involution_half_projection (T := -T) (by simpa using hT)
-  have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff hq).mp (by simp [Q, htrace])
+  have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff (show IsIdempotentElem Q from by
+    simpa [Q, sub_eq_add_neg] using involution_half_projection (T := -T) (by simpa using hT))).mp
+      (by simp [Q, htrace])
   exact (sub_eq_zero.mp (by
     simpa [hzero] using (show (2 : k) • Q = 1 - T by simp [Q, smul_smul]).symm)).symm
 
