@@ -72,6 +72,7 @@ theorem finrank_biproduct_hom [∀ i, FiniteDimensional k (V i ⟶ X)] :
 end
 
 variable (D : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.unit_simple
 
 /-- The multiplicity of a chosen simple object in an object. -/
 abbrev simpleMultiplicity (i : Fin (rank D)) (X : D.Obj) : ℕ :=
@@ -93,8 +94,7 @@ theorem exists_canonical_decomposition (X : D.Obj) :
     Nonempty (X ≅ ⨁ (fun p : Σ i : Fin (rank D),
       Fin (simpleMultiplicity D i X) => simples D p.1)) := by
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
-  cases (funext (finrank_simple_of_decomposition m e)).symm
-  exact ⟨e⟩
+  cases (funext (finrank_simple_of_decomposition m e)).symm; exact ⟨e⟩
 
 /-- Hom dimensions to and from a simple coincide in a semisimple category. -/
 theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
@@ -146,11 +146,11 @@ def fusionCoeff (i j k : Fin (rank D)) : ℕ :=
 
 /-- The representative of the tensor unit. -/
 def unitIndex : Fin (rank D) :=
-  Classical.choose (exists_unit_iso D)
+  Classical.choose (exists_simple_iso D (𝟙_ D.Obj))
 
 theorem unitIndex_iso :
     Nonempty (simples D (unitIndex D) ≅ 𝟙_ D.Obj) :=
-  Classical.choose_spec (exists_unit_iso D)
+  (Classical.choose_spec (exists_simple_iso D (𝟙_ D.Obj))).map Iso.symm
 
 theorem fusionCoeff_unit (j k : Fin (rank D)) :
     fusionCoeff D (unitIndex D) j k = if k = j then 1 else 0 :=

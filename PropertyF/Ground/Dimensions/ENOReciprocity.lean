@@ -15,7 +15,6 @@ Character duality, phase normalization and trace reciprocity control the dimensi
 
 ## Main results
 
-* `pivotalDimension_dual_eq_conj`: identifies simple dimensions on duals with their complex conjugates.
 * `positive_spherical_of_matrix_identities`: uses trace matrix identities to construct a positive spherical structure.
 -/
 
@@ -26,17 +25,6 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-variable {C} in
-/-- Simple pivotal dimensions on duals are conjugate, for any pivotal
-structure on a genuine braided fusion category. -/
-theorem pivotalDimension_dual_eq_conj
-    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
-    pivotalDimension C p (simples C (dualIndex C i)) =
-      star (pivotalDimension C p (simples C i)) :=
-  fusion_character_dual_eq_conj (i₀ := unitIndex C)
-    (fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm)
-    ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero) (pivotalDimension_character C p) i
-
 
 end PropertyF.Ground.Dimensions
 

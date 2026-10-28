@@ -111,16 +111,11 @@ theorem exists_simple_iso (X : C.Obj) [Simple X] :
   (exists_retract_of_biproduct_decomposition (simples_decompose C X) (id_nonzero X)).imp
     fun _ ⟨s, _, hs, _⟩ ↦ ⟨letI := CategoryTheory.isIso_of_hom_simple hs; asIso s⟩
 
-/-- The tensor unit occurs among the representatives. -/
-theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ C.Obj) :=
-  (exists_simple_iso C (𝟙_ C.Obj)).imp fun _ h => h.map Iso.symm
-
 /-- Hom spaces between the chosen simples have the expected multiplicities. -/
 theorem finrank_simples_hom (i j : Fin (rank C)) :
     Module.finrank ℂ (simples C i ⟶ simples C j) = if i = j then 1 else 0 := by
-  simp only [CategoryTheory.finrank_hom_simple_simple ℂ,
-    show Nonempty (simples C i ≅ simples C j) ↔ i = j from
-      ⟨simples_injective C, fun h ↦ by subst j; exact ⟨Iso.refl _⟩⟩]
+  simp only [finrank_hom_simple_simple ℂ, show Nonempty (simples C i ≅ simples C j) ↔
+    i = j from ⟨simples_injective C, fun h ↦ by subst j; exact ⟨Iso.refl _⟩⟩]
 
 end PropertyF.Ground
 

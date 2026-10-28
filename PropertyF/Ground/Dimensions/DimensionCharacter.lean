@@ -79,15 +79,6 @@ theorem pivotalDimension_unitIndex :
   (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso p e).trans (by
     simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1)
 
-/-- Every Galois conjugate of each pivotal simple dimension is bounded by
-its Frobenius–Perron dimension. -/
-theorem galois_pivotalDimension_norm_le_fpSimple
-    (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
-    ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i :=
-  galois_character_norm_le_fpSimple (i₀ := unitIndex C)
-    ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
-    (pivotalDimension_character C p) σ i
-
 end PropertyF.Ground.Dimensions
 
 @[expose] public noncomputable section
