@@ -95,7 +95,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 
 /-- Closing the right tensor factor and then the left gives the total pivotal trace. -/
 theorem rightTrace_partialTrace (p : PivotalStructure (C := C)) {X Y : C} (f : End (X ⊗ Y)) :
-  p.rightTrace (rightPartialTrace p X Y f).asHom = p.rightTrace f.asHom := by
+  p.rightTrace (rightPartialTrace p f).asHom = p.rightTrace f.asHom := by
   simpa only [rightTraceWith, PivotalStructure.rightTrace, partialTraceWith,
     rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk, Iso.trans_hom, tensorIso_hom,
     ← p.tensor X Y, Category.assoc] using rightTraceWith_partialTraceWith (p.iso X) (p.iso Y) f
@@ -114,7 +114,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 
 /-- Closing the right tensor factor of an inserted endomorphism. -/
 theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X : C) {Y : C} (b : Y ⟶ Y) :
-    rightPartialTrace p X Y (End.of (𝟙 X ⊗ₘ b)) =
+    rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) =
       End.of ((ρ_ X).inv ≫ X ◁ (p.rightTrace b).asHom ≫ (ρ_ X).hom) := by
   apply End.ext
   simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
@@ -125,7 +125,7 @@ theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X : C) {
 /-- The right partial trace of an inserted right-factor endomorphism is scalar. -/
 theorem rightPartialTrace_one_tensor (p : PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X : C) {Y : C} (b : Y ⟶ Y) :
-    rightPartialTrace p X Y (End.of (𝟙 X ⊗ₘ b)) = scalar (p.rightTrace b) • 1 := by
+    rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) = scalar (p.rightTrace b) • 1 := by
   rw [rightPartialTrace_tensor_right p X b, eq_smul_one_of_algEquiv scalar (p.rightTrace b)]
   apply End.ext
   simp
@@ -133,7 +133,7 @@ theorem rightPartialTrace_one_tensor (p : PivotalStructure (C := C))
 /-- The partial trace of a tensor product is the left factor times the trace of the right. -/
 theorem rightPartialTrace_tensor (p : PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
-    rightPartialTrace p X Y (End.of (a ⊗ₘ b)) = scalar (p.rightTrace b) • End.of a := by
+    rightPartialTrace p (End.of (a ⊗ₘ b)) = scalar (p.rightTrace b) • End.of a := by
   rw [show End.of (a ⊗ₘ b) = End.of (𝟙 X ⊗ₘ b) * insertRightIdentity Y (End.of a) from
       End.ext (by simp [insertRightIdentity, tensorHom_def]),
     rightPartialTrace_right, rightPartialTrace_one_tensor p scalar X b]
