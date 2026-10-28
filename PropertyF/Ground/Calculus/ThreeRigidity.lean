@@ -60,12 +60,15 @@ theorem actual_three_braid_trace
     unitScalar_eq_equiv] using
     (three_braid_trace C X p (Ground.unitScalarEquiv C))
 
+section LocalMonodromy
+
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+  [Preadditive C] [Linear ℂ C]
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Equal actual three-strand squares make the two adjacent copies of double
 self-braiding equal in the conventional tensor-product parenthesization. -/
-theorem local_monodromy_of_three_squares_equal
-    {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
-    [Preadditive C] [Linear ℂ C] (X : C)
+theorem local_monodromy_of_three_squares_equal (X : C)
     (h : Aut.toEnd (braidGenerator X 1 0 ^ 2) = Aut.toEnd (braidGenerator X 1 1 ^ 2)) :
     insertRightIdentity X (selfMonodromy X) =
       overlapFresh X (selfMonodromy X) := by
@@ -81,9 +84,7 @@ theorem local_monodromy_of_three_squares_equal
 set_option backward.isDefEq.respectTransparency false in
 /-- Equality of the actual block squares implies equality of the categorical
 adjacent copies of double self-braiding. -/
-theorem local_monodromy_of_block_squares_equal
-    {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
-    [Preadditive C] [Linear ℂ C] {X : C} {r : ℕ} {size : Fin r → ℕ}
+theorem local_monodromy_of_block_squares_equal {X : C} {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
     (h : tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2) :
     insertRightIdentity X (selfMonodromy X) =
@@ -96,6 +97,22 @@ theorem local_monodromy_of_block_squares_equal
   simpa [braidInImage_val, braidEndRepresentation, threeGeneratorLeft,
     threeGeneratorRight, imageGenerator] using
       congrArg (fun z : braidAlgebra X 1 => (z : End (tensorPower X 3))) hs
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Finite categorical braid image gives finite order of the double
+self-braiding on the ordinary tensor product. -/
+theorem selfMonodromy_finite_order {X : C} (hfinite : ObjectPropertyF X) :
+    ∃ n : ℕ, n ≠ 0 ∧ selfMonodromy X ^ n = 1 := by
+  obtain ⟨n, hn, hpow⟩ := braid_square_finite_order hfinite
+  have hgen : (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd (braidGenerator X 0 0)) =
+      End.of ((β_ X X).hom) := End.ext (twoGenerator_transport X)
+  have h := congrArg (fun z => (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd z)) hpow
+  simp only [map_pow, map_one, hgen] at h
+  have hs : (End.of ((β_ X X).hom) : End (X ⊗ X)) ^ 2 = selfMonodromy X :=
+    End.ext (by simp [selfMonodromy, pow_two, End.mul_asHom])
+  exact ⟨n, hn, hs ▸ h⟩
+
+end LocalMonodromy
 
 /-- If the same pair operator occurs on either adjacent pair, partial trace
 forces that operator to be scalar. -/
@@ -124,32 +141,13 @@ theorem pair_operator_scalar_of_overlaps_equal {X : C.Obj} [Simple X]
   apply (smul_right_injective _ hd')
   simpa only [smul_smul, mul_div_cancel₀ _ hd'] using h'
 
-set_option backward.isDefEq.respectTransparency false in
-/-- Finite categorical braid image gives finite order of the double
-self-braiding on the ordinary tensor product. -/
-theorem selfMonodromy_finite_order {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [BraidedCategory C] [Preadditive C] [Linear ℂ C]
-    {X : C} (hfinite : ObjectPropertyF X) :
-    ∃ n : ℕ, n ≠ 0 ∧ selfMonodromy X ^ n = 1 := by
-  obtain ⟨n, hn, hpow⟩ := braid_square_finite_order hfinite
-  have hgen : (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd (braidGenerator X 0 0)) =
-      End.of ((β_ X X).hom) := End.ext (twoGenerator_transport X)
-  have h := congrArg (fun z => (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd z)) hpow
-  simp only [map_pow, map_one, hgen] at h
-  have hs : (End.of ((β_ X X).hom) : End (X ⊗ X)) ^ 2 = selfMonodromy X :=
-    End.ext (by simp [selfMonodromy, pow_two, End.mul_asHom])
-  exact ⟨n, hn, hs ▸ h⟩
-
 /-- An object with nonzero pivotal dimension has a nonzero identity endomorphism. -/
 theorem end_one_ne_zero_of_pivotalDimension_ne_zero {X : C.Obj}
     (h : pivotalDimension C p X ≠ 0) :
-    (1 : End X) ≠ 0 := by
-  intro hzero
-  apply h
-  simp only [pivotalDimension, unitScalar_eq_equiv]
-  simpa only [End.one_asHom, End.zero_asHom,
-    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear p _).map_zero,
-    map_zero] using congrArg (fun z : End X => Ground.unitScalarEquiv C (p.rightTrace z.asHom)) hzero
+    (1 : End X) ≠ 0 := fun hzero => h (by
+  simpa only [pivotalDimension, unitScalar_eq_equiv, End.one_asHom, End.zero_asHom,
+    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear p _).map_zero, map_zero] using
+    congrArg (fun z : End X => Ground.unitScalarEquiv C (p.rightTrace z.asHom)) hzero)
 
 /-- A scalar double self-braiding of finite order has unit-modulus scalar,
 so the two real dimensions have equal absolute value. -/

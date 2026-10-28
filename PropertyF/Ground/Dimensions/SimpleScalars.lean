@@ -246,7 +246,7 @@ def simpleScalarNaturalIso (C : BraidedFusionCategory.{v,u})
 
 /-- On each simple, the natural automorphism has the prescribed scalar component. -/
 theorem simpleScalarNaturalIso_app_simple
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
+    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
     ((simpleScalarNaturalIso C c hc).app (simples C i)).hom =
       c i • 𝟙 (simples C i) := simpleScalarNatural_app_simple C c i
 

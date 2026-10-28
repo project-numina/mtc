@@ -143,14 +143,6 @@ theorem unitComponent_natural
       (α_ X.1 (simples C i) ((simples C i)ᘁ)).inv ≫ (g ▷ (simples C i)ᘁ))
     (f.comm (simples C i))
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The underlying left triangle reduces to the unit-labelled coevaluation
-component; no triangle identity is asserted here. -/
-theorem unitCandidate_counit_component
-    (Z : 𝒵) :
-    unitCandidate C Z ≫ (underlyingCounit C).app Z.1 =
-      unitComponent C Z (unitIndex C) ≫ (unitSummandIso C Z.1).hom := by
-  simp [unitCandidate, underlyingCounit, unitSummandRetract, underlying]
 
 end PropertyF.Ground.CentreInduction
 
@@ -170,7 +162,8 @@ the first triangle identity. -/
 theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
     (Z : CategoryTheory.Center C.Obj) :
     unitCandidate C Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 := by
-  rw [unitCandidate_counit_component]
+  simp only [unitCandidate, underlyingCounit, unitSummandRetract,
+    CategoryTheory.Limits.biproduct.lift_π_assoc]
   let A := simples C (unitIndex C)
   let e : A ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   let d : Aᘁ ≅ 𝟙_ C.Obj := Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso
