@@ -29,13 +29,8 @@ theorem map_star_of_mem_span (φ : A →ₐ[ℂ] B) (S : Set A)
 /-- A unitary matrix's adjoint is the inverse of the corresponding unit. -/
 theorem star_eq_coe_inv_of_unitary {ι : Type*} [Fintype ι] [DecidableEq ι]
     (u : (Matrix ι ι ℂ)ˣ) (hu : (u : Matrix ι ι ℂ) ∈ Matrix.unitaryGroup ι ℂ) :
-    star (u : Matrix ι ι ℂ) = (↑u⁻¹ : Matrix ι ι ℂ) := by
-  have h : star (u : Matrix ι ι ℂ) * (u : Matrix ι ι ℂ) = 1 :=
-    Matrix.mem_unitaryGroup_iff'.mp hu
-  calc
-    star (u : Matrix ι ι ℂ) = star (u : Matrix ι ι ℂ) * ((u : Matrix ι ι ℂ) * ↑u⁻¹) := by simp
-    _ = (star (u : Matrix ι ι ℂ) * (u : Matrix ι ι ℂ)) * ↑u⁻¹ := by rw [mul_assoc]
-    _ = (↑u⁻¹ : Matrix ι ι ℂ) := by rw [h, one_mul]
+    star (u : Matrix ι ι ℂ) = (↑u⁻¹ : Matrix ι ι ℂ) :=
+  u.eq_inv_of_mul_eq_one_right (Matrix.mem_unitaryGroup_iff'.mp hu)
 
 /-- If a group spans an algebra and two representations have adjoint equal to
 inverse on group elements, every intertwining algebra map preserves adjoints.

@@ -16,36 +16,13 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
   let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ (underlyingCounit C).app X) =
-    (∑ a, crossingBlock C X T (simples C i) (simples C (unitIndex C))
+    (∑ a, crossingBlock X T (simples C i) (simples C (unitIndex C))
       (crossingInclusion C T i (unitIndex C) a) (crossingProjection C T i (unitIndex C) a)) ≫
       (T ◁ (unitSummandIso C X).hom) := by
   classical
   have h := crossingCandidate_matrix C X T i (unitIndex C)
   have hh := congrArg (fun k => k ≫ (T ◁ (unitSummandIso C X).hom)) h
   simpa only [underlyingCounit, unitSummandRetract, whiskerLeft_comp, Category.assoc] using hh
-
-set_option backward.isDefEq.respectTransparency false in
-/-- A split crossing block is independent of the chosen splitting of a simple. -/
-theorem crossingBlock_of_simple_split (X T : C.Obj) {R S : C.Obj} [Simple R]
-    (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
-    crossingBlock C X T R S g f = crossingBlock C X T R S e.hom e.inv := by
-  let : FiniteDimensional ℂ (R ⟶ R) := IsFusionCategory.hom_finite _ _
-  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ e.inv)
-  obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (e.hom ≫ f)
-  have hg : g = c • e.hom := by
-    simpa [Category.assoc] using (congrArg (fun k => k ≫ e.hom) hc).symm
-  have hf : f = d • e.inv := by
-    simpa [Category.assoc] using (congrArg (fun k => e.inv ≫ k) hd).symm
-  have hcd : c * d = 1 := by
-    apply (smul_left_injective ℂ (id_nonzero R))
-    have hh := h
-    rw [hg, hf] at hh
-    simpa [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using hh
-  change mixedCrossingBilinear C X T T R S g f = _
-  rw [hg, hf]
-  simp only [map_smul, LinearMap.smul_apply, smul_smul]
-  rw [mul_comm d c, hcd, one_smul]
-  rfl
 
 
 end PropertyF.Ground.CentreInduction
@@ -84,7 +61,7 @@ theorem crossing_counit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j)
   have hdim : Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C (unitIndex C)) = 0 := by
     rw [counit_column_finrank]; simp [hne]
   have hz : (∑ a : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C (unitIndex C))),
-      crossingBlock C X (simples C j) (simples C i) (simples C (unitIndex C))
+      crossingBlock X (simples C j) (simples C i) (simples C (unitIndex C))
         (crossingInclusion C (simples C j) i (unitIndex C) a)
         (crossingProjection C (simples C j) i (unitIndex C) a)) = 0 := by
     apply Finset.sum_eq_zero
@@ -101,7 +78,7 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
   let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
   (biproduct.ι V i ▷ simples C i) ≫ crossingCandidate C X (simples C i) ≫
     (simples C i ◁ (underlyingCounit C).app X) =
-      crossingBlock C X (simples C i) (simples C i) (simples C (unitIndex C))
+      crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
           (simples C i ◁ (unitSummandIso C X).hom) := by
   classical
@@ -114,10 +91,10 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
     dsimp [a]
     omega
   have hsum : (∑ b : Fin (Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C))),
-      crossingBlock C X (simples C i) (simples C i) (simples C (unitIndex C))
+      crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
         (crossingInclusion C (simples C i) i (unitIndex C) b)
         (crossingProjection C (simples C i) i (unitIndex C) b)) =
-      crossingBlock C X (simples C i) (simples C i) (simples C (unitIndex C))
+      crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom := by
     rw [Finset.sum_eq_single a]
     · let : Simple (simples C i) := simples_simple C i

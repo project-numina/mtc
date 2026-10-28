@@ -83,11 +83,9 @@ finite-order condition for simple canonical-image constituents. -/
 theorem productLabels_doubleCentralizer_of_image_monodromy
     (hfinite : HasFiniteImageCentralizerMonodromy C p) :
     ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p (symmetricCore C),
-      Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := by
-  apply productLabels_doubleCentralizer C p hp hdet hdim (symmetricCore C)
-  intro y hy
-  apply numericalImageCentralizer_subset_symmetricCore C p hdim hfinite y
-  intro a ha
-  exact hy a (imageLabels_subset_productLabels C ha)
+      Centre.ProductRetract (simples (Integrate.bundledCenter C) x) :=
+  productLabels_doubleCentralizer C p hp hdet hdim (symmetricCore C) fun y hy ↦
+    numericalImageCentralizer_subset_symmetricCore C p hdim hfinite y fun a ha ↦
+      hy a (imageLabels_subset_productLabels C ha)
 
 end PropertyF.Ground.CentreCabling

@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Integrate.CenterDualMate
+public import PropertyF.Ground.Integrate.CenterBundle
 
 /-! # Rigidity of the Drinfeld centre. -/
 

@@ -123,8 +123,8 @@ theorem fusionBasis_contraction_natural (C : BraidedFusionCategory.{v,u})
 
 /-- A mixed crossing block, with the input and output test strands allowed
 to differ, is bilinear in its two fusion morphisms. -/
-def mixedCrossingBilinear (C : BraidedFusionCategory.{v,u})
-    (X T U R S : C.Obj) : (R ⟶ U ⊗ S) →ₗ[ℂ]
+def mixedCrossingBilinear {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D] (X T U R S : D) : (R ⟶ U ⊗ S) →ₗ[ℂ]
       (T ⊗ S ⟶ R) →ₗ[ℂ] (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
   toFun g := {
     toFun := fun f =>

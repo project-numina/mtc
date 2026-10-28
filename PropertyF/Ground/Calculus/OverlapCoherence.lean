@@ -12,14 +12,14 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 /-- At the level of endomorphisms, left insertion is left whiskering. -/
-theorem addLeftBraidAlgebra_asHom (X : C) (n : ℕ) (a : braidAlgebra X n) :
+theorem addLeftBraidAlgebra_asHom {X : C} {n : ℕ} (a : braidAlgebra X n) :
     ((addLeftBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
       X ◁ (a : End (tensorPower X (n + 2))).asHom := rfl
 
 /-- At the level of endomorphisms, right insertion is right whiskering,
 transported across the append isomorphism. -/
-theorem addRightBraidAlgebra_asHom (X : C) (n : ℕ) (a : braidAlgebra X n) :
+theorem addRightBraidAlgebra_asHom {X : C} {n : ℕ} (a : braidAlgebra X n) :
     ((addRightBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
       (appendIso X (n + 2)).inv ≫ ((a : End (tensorPower X (n + 2))).asHom ▷ X) ≫
@@ -30,14 +30,13 @@ convention that index `n` has `n+2` strands. -/
 def insertLeftPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X k ⊗ tensorPower X (n + 2) ≅
     tensorPower X ((n + k) + 2)
   | 0 => λ_ (tensorPower X (n + 2))
-  | k + 1 => by
-      exact (α_ X (tensorPower X k) (tensorPower X (n + 2))) ≪≫
-          (Iso.refl X ⊗ᵢ insertLeftPowerIso X n k)
+  | k + 1 => (α_ X (tensorPower X k) (tensorPower X (n + 2))) ≪≫
+      (Iso.refl X ⊗ᵢ insertLeftPowerIso X n k)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion is one identity tensor factor, transported along
 the canonical tensor-power isomorphism. -/
-theorem addLeftBraidAlgebraIter_asHom (X : C) (n k : ℕ) (a : braidAlgebra X n) :
+theorem addLeftBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlgebra X n) :
     ((addLeftBraidAlgebraIter X n k a : braidAlgebra X (n + k)) :
       End (tensorPower X ((n + k) + 2))).asHom =
       (insertLeftPowerIso X n k).inv ≫
@@ -68,7 +67,7 @@ def insertRightPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X (n + 2) ⊗ ten
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right insertion is one identity tensor factor, transported along
 the canonical tensor-power isomorphism. -/
-theorem addRightBraidAlgebraIter_asHom (X : C) (n k : ℕ) (a : braidAlgebra X n) :
+theorem addRightBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlgebra X n) :
     ((addRightBraidAlgebraIter X n k a : braidAlgebra X (n + k)) :
       End (tensorPower X ((n + k) + 2))).asHom =
       (insertRightPowerIso X n k).inv ≫
@@ -266,10 +265,8 @@ theorem overlap_trace_power_of_isos (C : Ground.BraidedFusionCategory.{v,u})
         overlapPowerIso X t k) :
     ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
       (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
-        actualBraidTrace C X p t u ^ (k + 1) := by
-  apply overlap_trace_power_of_step C X p t u
-  intro k
-  apply overlap_trace_step_of_coherence C X p t k u
-  exact overlapProduct_local_of_iso X t k u (hiso k)
+        actualBraidTrace C X p t u ^ (k + 1) :=
+  overlap_trace_power_of_step C X p t u fun k ↦
+    overlap_trace_step_of_coherence C X p t k u (overlapProduct_local_of_iso X t k u (hiso k))
 
 end PropertyF.Ground.Calculus

@@ -220,8 +220,8 @@ theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
     [MonoidalPreadditive C] [MonoidalLinear ℂ C]
     (p : Dimensions.PivotalStructure (C := C)) (hp : p.IsSpherical)
     (X Y : C) (f : End (X ⊗ Y)) :
-    p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom := by
-  rw [← hp Y _, leftTrace_partialTrace, hp]
+    p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom :=
+  (hp Y _).symm.trans <| (leftTrace_partialTrace p X Y f).trans (hp _ _)
 
 /-- A self-transparent simple with sign-valued twist has integral FP
 dimension in any FP-valued spherical fusion category. -/

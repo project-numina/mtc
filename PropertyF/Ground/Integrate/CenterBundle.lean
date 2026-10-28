@@ -1,72 +1,46 @@
 module
-public import PropertyF.Ground.Fusion.FunctorDimension
 public import PropertyF.Ground.Centre.Abelian
+public import Mathlib.CategoryTheory.Adjunction.Mates
+public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
+public import PropertyF.Ground.Fusion.FunctorDimension
 
 section
-/-! FP dimension preservation for functors between independently sized categories. -/
+/-! Adjoint mates of centre half-braidings. The tensor law and the centrality
+of the dual evaluation and coevaluation are not established here. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-open CategoryTheory.Functor.Monoidal
-open scoped BigOperators
-namespace PropertyF.Ground
-universe v u v' u'
-attribute [local instance] Abelian.hasFiniteBiproducts
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace PropertyF.Ground.Integrate
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
-/-- Applying an additive functor to a canonical decomposition expresses the
-FP dimension of the image as the sum of the dimensions of image simples,
-with independent category universes. -/
-theorem fpDimension_functor_decomposition_universe (C : BraidedFusionCategory.{v,u})
-    (D : BraidedFusionCategory.{v',u'})
-    (F : C.Obj ⥤ D.Obj) [F.Additive] (X : C.Obj) :
-    fpDimension D (F.obj X) = ∑ i,
-      (Module.finrank ℂ (simples C i ⟶ X) : ℝ) * fpDimension D (F.obj (simples C i)) := by
-  classical
-  let m : Fin (rank C) → ℕ := fun i => Module.finrank ℂ (simples C i ⟶ X)
-  let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
-  obtain ⟨e⟩ := exists_canonical_decomposition C X
-  let e' : F.obj X ≅ ⨁ (fun p => F.obj (V p)) := F.mapIso e ≪≫ F.mapBiproduct V
-  rw [fpDimension_iso D e', fpDimension_biproduct, Fintype.sum_sigma]
-  simp [V, m]
+/-- A half-braiding is a natural isomorphism of the two tensor functors. -/
+def halfBraidingIso (Z : CategoryTheory.Center C) : tensorLeft Z.1 ≅ tensorRight Z.1 :=
+  NatIso.ofComponents Z.2.β (fun f => Z.2.naturality f)
 
-/-- An additive faithful strong monoidal functor preserves FP dimension,
-without requiring the source and target to have the same universes. -/
-theorem fpDimension_functor_universe (C : BraidedFusionCategory.{v,u})
-    (D : BraidedFusionCategory.{v',u'})
-    (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal] (X : C.Obj) :
-    fpDimension D (F.obj X) = fpDimension C X := by
-  classical
-  let f : Fin (rank C) → ℝ := fun i => fpDimension D (F.obj (simples C i))
-  have hpos : ∀ i, 0 < f i := by
-    intro i
-    apply lt_of_lt_of_le zero_lt_one
-    apply one_le_fpDimension
-    intro hz
-    have hid : (𝟙 (simples C i) : simples C i ⟶ simples C i) = 0 := by
-      apply F.map_injective
-      simpa using ((IsZero.iff_id_eq_zero _).mp hz)
-    letI : Simple (simples C i) := simples_simple C i
-    exact id_nonzero _ hid
-  have hunit : f (unitIndex C) = 1 := by
-    obtain ⟨e⟩ := unitIndex_iso C
-    rw [show f (unitIndex C) = fpDimension D (𝟙_ D.Obj) from
-      fpDimension_iso D (F.mapIso e ≪≫ (εIso F).symm), fpDimension_unit]
-  have hmul : ∀ i j, f i * f j = ∑ k, (fusionCoeff C i j k : ℝ) * f k := by
-    intro i j
-    calc
-      _ = fpDimension D (F.obj (simples C i) ⊗ F.obj (simples C j)) :=
-        (fpDimension_tensor D _ _).symm
-      _ = fpDimension D (F.obj (simples C i ⊗ simples C j)) :=
-        fpDimension_iso D (μIso F _ _)
-      _ = _ := fpDimension_functor_decomposition_universe C D F _
-  have heq : f = fpSimple C := positive_character_unique C f (fpSimple C)
-    hpos (fpSimple_pos C) hunit (fpSimple_unit C) hmul (fpSimple_mul C)
-  rw [fpDimension_functor_decomposition_universe]
-  change (∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℝ) * f i) = _
-  rw [heq]
-  rfl
+/-- Mate the half-braiding through the left adjoints of the tensor functors. -/
+def dualMateIso (Z : CategoryTheory.Center C) : tensorLeft (Z.1ᘁ) ≅ tensorRight (ᘁZ.1) := by
+  let L := tensorLeftAdjunction Z.1 (Z.1ᘁ)
+  let R := tensorRightAdjunction (ᘁZ.1) Z.1
+  exact ((conjugateIsoEquiv L R).symm (halfBraidingIso Z)).symm
 
-end PropertyF.Ground
+/-- Evaluating the mate at the unit identifies the chosen right and left duals. -/
+def dualMateUnit (Z : CategoryTheory.Center C) : (Z.1ᘁ) ≅ (ᘁZ.1) :=
+  (ρ_ (Z.1ᘁ)).symm ≪≫ (dualMateIso Z).app (𝟙_ C) ≪≫ (λ_ (ᘁZ.1))
+
+/-- Normalize the mate using its unit component, obtaining a natural family
+of isomorphisms on the chosen right dual. -/
+def dualCrossingIso (Z : CategoryTheory.Center C) : tensorLeft (Z.1ᘁ) ≅ tensorRight (Z.1ᘁ) :=
+  dualMateIso Z ≪≫ (tensoringRight C).mapIso (dualMateUnit Z).symm
+
+/-- The normalized family is natural in the crossing object. -/
+theorem dualCrossing_natural (Z : CategoryTheory.Center C) {U V : C} (f : U ⟶ V) :
+    (Z.1ᘁ) ◁ f ≫ ((dualCrossingIso Z).app V).hom =
+      ((dualCrossingIso Z).app U).hom ≫ f ▷ (Z.1ᘁ) :=
+  (dualCrossingIso Z).hom.naturality f
+
+
+end PropertyF.Ground.Integrate
 end
 end
 
@@ -92,7 +66,7 @@ theorem center_forget_fpDimension (X : (bundledCenter C).Obj) :
   let ha : (CategoryTheory.Center.forget C.Obj).Additive := Centre.centerForgetAdditive
   let hf : (CategoryTheory.Center.forget C.Obj).Faithful := Centre.centerForgetFaithful
   let hm : (CategoryTheory.Center.forget C.Obj).Monoidal := inferInstance
-  exact @fpDimension_functor_universe (bundledCenter C) C (CategoryTheory.Center.forget C.Obj)
+  exact @fpDimension_functor (bundledCenter C) C (CategoryTheory.Center.forget C.Obj)
     ha hf hm X
 
 end PropertyF.Ground.Integrate
