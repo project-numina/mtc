@@ -15,7 +15,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Composing a crossing with the unit-summand counit selects one matrix column. -/
 theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ (underlyingCounit C).app X) =
     (∑ a, crossingBlock X T (simples C i) (simples C (unitIndex C))
       (crossingInclusion C T i (unitIndex C) a) (crossingProjection C T i (unitIndex C) a)) ≫
@@ -55,7 +55,7 @@ theorem counit_column_finrank (i j : Fin (rank C)) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Off-diagonal counit crossing entries vanish. -/
 theorem crossing_counit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (biproduct.ι V i ▷ simples C j) ≫ crossingCandidate C X (simples C j) ≫
     (simples C j ◁ (underlyingCounit C).app X) = 0 := by
   classical
@@ -76,7 +76,7 @@ theorem crossing_counit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j)
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
 theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (biproduct.ι V i ▷ simples C i) ≫ crossingCandidate C X (simples C i) ≫
     (simples C i ◁ (underlyingCounit C).app X) =
       crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))

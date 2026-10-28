@@ -161,7 +161,7 @@ theorem target_of_pivotal_base_and_center_balancing
     CentreCalculus.actual_symmetricCore_integrality C pZ hspherical hdim, ?_, ?_⟩
   · intro y hy
     exact (CentreCabling.mem_productLabels C y).mpr
-      (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy C pZ hspherical hdet hdim hfinite y hy)
+      (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy C hspherical hdet hdim hfinite y hy)
   · intro y hy
     exact (CentreCabling.mem_productLabels C y).mp hy
 

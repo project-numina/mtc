@@ -160,7 +160,7 @@ theorem crossingCandidate_unit (X : C.Obj) :
     crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv := by
   classical
-  let V : Fin (rank C) → C.Obj := fun i => (simples C i ⊗ X) ⊗ (simples C i)ᘁ
+  let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (𝟙_ C.Obj)).inv).1
   apply biproduct.hom_ext'
   intro i

@@ -13,6 +13,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -149,7 +150,7 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
-theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)) :
+theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
     (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C p.1) (simples C j)
       (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)) =
@@ -170,11 +171,11 @@ theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The underlying unit is the sum of its biproduct components. -/
-theorem unitCandidate_sum (Z : CategoryTheory.Center C.Obj) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
+theorem unitCandidate_sum (Z : 𝒵) :
+  let V := inductionSummand C Z.1
   unitCandidate C Z = ∑ i, unitComponent C Z i ≫ biproduct.ι V i := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C Z.1
   have hp (i) : unitCandidate C Z ≫ biproduct.π V i = unitComponent C Z i :=
     biproduct.lift_π _ _
   have hid : unitCandidate C Z ≫ 𝟙 (⨁ V) = unitCandidate C Z := Category.comp_id _
@@ -183,11 +184,11 @@ theorem unitCandidate_sum (Z : CategoryTheory.Center C.Obj) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
-theorem unitCandidate_central (Z : CategoryTheory.Center C.Obj) (T : C.Obj) :
+theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
       (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C Z.1
   apply (cancel_mono (leftDistributor T V).hom).1
   apply biproduct.hom_ext
   intro j

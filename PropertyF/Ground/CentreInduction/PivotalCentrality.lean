@@ -81,6 +81,7 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
 /-- The actual rigid centre has a pivotal structure lifting any base pivotal structure. -/
 def canonicalCenterPivotal {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -98,9 +99,9 @@ theorem center_structure_of_fp_pivotal
       letI := hFusion
       let pZ := canonicalCenterPivotal p
       pZ.IsSpherical ∧
-      PivotalHasFPDimensions (Integrate.bundledCenter C) pZ ∧
-      PseudoUnitary (Integrate.bundledCenter C) ∧
-      globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
+      PivotalHasFPDimensions 𝒵ᶠ pZ ∧
+      PseudoUnitary 𝒵ᶠ ∧
+      globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
   center_structure_of_pivotal_centrality C p hsimple (pivotalComponentsCentral_proved p)
 
 end PropertyF.Ground.CentreInduction
@@ -108,26 +109,29 @@ end PropertyF.Ground.CentreInduction
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
+variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
+
 /-- If a pseudo-unitary base category admits a pivotal structure, its actual
 rigid centre is fusion, positive spherical and pseudo-unitary with the expected
 global dimension. Pivotal existence and centre rigidity remain hypotheses. -/
 theorem center_structure_of_pivotal_pseudoUnitary
-    (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+    [RigidCategory (𝒵)]
     (p : Dimensions.PivotalStructure (C := C.Obj)) (hpu : PseudoUnitary C) :
-    ∃ hFusion : IsFusionCategory (CategoryTheory.Center C.Obj),
+    ∃ hFusion : IsFusionCategory (𝒵),
       letI := hFusion
-      ∃ pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj),
+      ∃ pZ : Dimensions.PivotalStructure (C := 𝒵),
         pZ.IsSpherical ∧
-        PivotalHasFPDimensions (Integrate.bundledCenter C) pZ ∧
-        PseudoUnitary (Integrate.bundledCenter C) ∧
-        globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
+        PivotalHasFPDimensions 𝒵ᶠ pZ ∧
+        PseudoUnitary 𝒵ᶠ ∧
+        globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 := by
   obtain ⟨q, _, hq⟩ := Dimensions.positive_spherical_of_pivotal_pseudoUnitary C p hpu
   obtain ⟨hFusion, h⟩ := center_structure_of_fp_pivotal C q hq
   exact ⟨hFusion, canonicalCenterPivotal q, h⟩
 
 open CategoryTheory.Limits
 attribute [local instance] Abelian.hasFiniteBiproducts
-variable (C : BraidedFusionCategory.{v,u})
 
 /-- A positive simple image centralizing the induced unit is the unit. -/
 theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
@@ -138,7 +142,7 @@ theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
   by_contra hi
   let X := 𝟙_ C.Obj
   let S := simples C i
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   have hz : biproduct.ι V i ≫ (underlyingCounit C).app X = 0 := by
     change biproduct.ι V i ≫ biproduct.π V (unitIndex C) ≫ (unitSummandIso C X).hom = 0
     rw [← Category.assoc, biproduct.ι_π_ne _ hi, zero_comp]
@@ -171,9 +175,9 @@ theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
   simpa [hcoe] using hh.symm
 
 /-- Every transparent simple of the actual centre is the unit. -/
-theorem center_transparent_simple_iso_unit (Z : CategoryTheory.Center C.Obj) [Simple Z]
-    (hcentral : ∀ W : CategoryTheory.Center C.Obj, Centre.Centralizes Z W) :
-    Nonempty (Z ≅ 𝟙_ (CategoryTheory.Center C.Obj)) := by
+theorem center_transparent_simple_iso_unit (Z : 𝒵) [Simple Z]
+    (hcentral : ∀ W : 𝒵, Centre.Centralizes Z W) :
+    Nonempty (Z ≅ 𝟙_ (𝒵)) := by
   let F := CategoryTheory.Center.ofBraided C.Obj
   let e := Centre.positiveIsoOfCentralizesNegative Z (fun X => hcentral ((Centre.negative C.Obj).obj X))
   let : F.PreservesMonomorphisms := {

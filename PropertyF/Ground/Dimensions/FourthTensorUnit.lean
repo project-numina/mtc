@@ -18,6 +18,24 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+/-- For an involutive scalar, an isomorphism is its scalar multiple precisely when
+the quotient of the two isomorphisms is scalar. -/
+theorem iso_comp_inv_eq_smul_iff_of_sq_one {D : Type u} [Category.{v} D]
+    [Preadditive D] [Linear ℂ D] {X Y : D} (a t : X ≅ Y) (z : ℂ) (hz : z * z = 1) :
+    a.hom ≫ t.inv = z • 𝟙 X ↔ t.hom = z • a.hom := by
+  constructor
+  · intro h
+    have hcomp : z • t.hom = a.hom := by
+      have h' := congrArg (fun f => f ≫ t.hom) h
+      simpa [Category.assoc, Linear.smul_comp] using h'.symm
+    have h' := congrArg (fun f => z • f) hcomp
+    simpa [smul_smul, hz] using h'
+  · intro ht
+    apply (cancel_mono t.hom).1
+    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp,
+      Category.id_comp]
+    rw [ht, smul_smul, hz, one_smul]
+
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor map with a unit factor has the root's unit sign. -/
@@ -54,23 +72,9 @@ theorem rootTensorIso_unit_left (X : C.Obj) :
 /-- The ENO tensor defect with a left unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_left (X : C.Obj) :
     (rootTensorDefect C (𝟙_ C.Obj) X).hom =
-      rootDimension C (unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) := by
-  let I := 𝟙_ C.Obj
-  let z := rootDimension C (unitIndex C)
-  let T := rootTensorIso C I X
-  let A := (fourthDualRootNaturalIso C).app (I ⊗ X)
-  have ht : T.hom = z • A.hom := rootTensorIso_unit_left C X
-  have hz : z * z = 1 := rootDimension_unit_sq C
-  apply (cancel_mono T.hom).1
-  change (A.hom ≫ T.inv) ≫ T.hom = (z • 𝟙 (I ⊗ X)) ≫ T.hom
-  have hleft : (A.hom ≫ T.inv) ≫ T.hom = A.hom := by
-    simp only [doubleDualFunctor, Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  have hsmul : z • (z • A.hom) = A.hom := by
-    rw [smul_smul, hz, one_smul]
-  have hright : (z • 𝟙 (I ⊗ X)) ≫ T.hom = A.hom := by
-    rw [Linear.smul_comp, Category.id_comp, ht]
-    exact hsmul
-  exact hleft.trans hright.symm
+      rootDimension C (unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) :=
+  (iso_comp_inv_eq_smul_iff_of_sq_one _ _ _ (rootDimension_unit_sq C)).2
+    (rootTensorIso_unit_left C X)
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor map with a unit factor has the root's unit sign. -/
 theorem rootTensorIso_unit_right (X : C.Obj) :
@@ -106,23 +110,9 @@ theorem rootTensorIso_unit_right (X : C.Obj) :
 /-- The ENO tensor defect with a right unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_right (X : C.Obj) :
     (rootTensorDefect C X (𝟙_ C.Obj)).hom =
-      rootDimension C (unitIndex C) • 𝟙 (X ⊗ 𝟙_ C.Obj) := by
-  let I := 𝟙_ C.Obj
-  let z := rootDimension C (unitIndex C)
-  let T := rootTensorIso C X I
-  let A := (fourthDualRootNaturalIso C).app (X ⊗ I)
-  have ht : T.hom = z • A.hom := rootTensorIso_unit_right C X
-  have hz : z * z = 1 := rootDimension_unit_sq C
-  apply (cancel_mono T.hom).1
-  change (A.hom ≫ T.inv) ≫ T.hom = (z • 𝟙 (X ⊗ I)) ≫ T.hom
-  have hleft : (A.hom ≫ T.inv) ≫ T.hom = A.hom := by
-    simp only [doubleDualFunctor, Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  have hsmul : z • (z • A.hom) = A.hom := by
-    rw [smul_smul, hz, one_smul]
-  have hright : (z • 𝟙 (X ⊗ I)) ≫ T.hom = A.hom := by
-    rw [Linear.smul_comp, Category.id_comp, ht]
-    exact hsmul
-  exact hleft.trans hright.symm
+      rootDimension C (unitIndex C) • 𝟙 (X ⊗ 𝟙_ C.Obj) :=
+  (iso_comp_inv_eq_smul_iff_of_sq_one _ _ _ (rootDimension_unit_sq C)).2
+    (rootTensorIso_unit_right C X)
 /-- The left-unit defect formula holds for the chosen simple representative. -/
 theorem rootTensorDefect_unitLabel_left (X : C.Obj) :
     (rootTensorDefect C (simples C (unitIndex C)) X).hom =

@@ -82,7 +82,7 @@ theorem crossingCandidate_natural_test
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V T).inv).1
   apply biproduct.hom_ext'
   intro i

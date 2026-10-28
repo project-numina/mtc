@@ -96,7 +96,7 @@ and coherence are established in the subsequent induction modules. -/
 def crossingCandidate (X T : C.Obj) :
     underlying C X ⊗ T ⟶ T ⊗ underlying C X := by
   classical
-  let V : Fin (rank C) → C.Obj := fun i => (simples C i ⊗ X) ⊗ (simples C i)ᘁ
+  let V := inductionSummand C X
   refine (rightDistributor V T).hom ≫ biproduct.desc (fun i => ?_)
   exact ∑ j, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
     crossingBlock X T (simples C i) (simples C j)
@@ -109,7 +109,7 @@ simple summand. -/
 @[reassoc]
 theorem crossingCandidate_on_summand
     (X T : C.Obj) (i : Fin (rank C)) :
-    let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+    let V := inductionSummand C X
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
       ∑ j, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
         crossingBlock X T (simples C i) (simples C j)
@@ -126,8 +126,8 @@ theorem crossingCandidate_natural_middle
     ((underlyingFunctor C).map h ▷ T) ≫ crossingCandidate C Y T =
       crossingCandidate C X T ≫ (T ◁ (underlyingFunctor C).map h) := by
   classical
-  let VX : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
-  let VY : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Y) ⊗ (simples C k)ᘁ
+  let VX := inductionSummand C X
+  let VY := inductionSummand C Y
   have hi (i : Fin (rank C)) :
       (biproduct.ι VX i ▷ T) ≫ ((underlyingFunctor C).map h ▷ T) =
         (((simples C i ◁ h) ▷ (simples C i)ᘁ) ▷ T) ≫ (biproduct.ι VY i ▷ T) := by
