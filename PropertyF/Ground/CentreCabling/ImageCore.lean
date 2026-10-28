@@ -41,27 +41,26 @@ theorem unit_mem_productLabels : unitIndex (𝒵 C) ∈ productLabels C :=
   (mem_productLabels C _).2 <|
     Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
 
-variable {i j k : Fin (rank (𝒵 C))}
+variable {i j : productLabels C} {k : Fin (rank (𝒵 C))}
 
-theorem dual_mem_productLabels (hi : i ∈ productLabels C) : dualIndex (𝒵 C) i ∈ productLabels C :=
+theorem dual_mem_productLabels : dualIndex (𝒵 C) i ∈ productLabels C :=
   let Z := 𝒵 C
   let X : CategoryTheory.Center C.Obj := simples Z i
   let e : (ᘁX) ≅ (Xᘁ) := leftDualIso HasLeftDual.exact
     (BraidedCategory.exactPairing_swap X (Xᘁ))
   let ⟨e'⟩ := dualIndex_iso Z i
   (mem_productLabels C _).2 <| Centre.productRetract_of_retract (Retract.ofIso (e'.symm ≪≫ e))
-    (Centre.productRetract_rightDual C ((mem_productLabels C i).1 hi))
+    (Centre.productRetract_rightDual C ((mem_productLabels C i).1 i.property))
 
-theorem constituent_mem_productLabels (hi : i ∈ productLabels C) (hj : j ∈ productLabels C)
-    (hk : 0 < fusionCoeff (𝒵 C) i j k) : k ∈ productLabels C :=
+theorem constituent_mem_productLabels (hk : 0 < fusionCoeff (𝒵 C) i j k) : k ∈ productLabels C :=
   let ⟨r⟩ := Ground.fusionCoeff_retract (𝒵 C) hk
   (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|
-    Centre.productRetract_tensor ((mem_productLabels C i).1 hi) ((mem_productLabels C j).1 hj)
+    Centre.productRetract_tensor ((mem_productLabels C i).1 i.property) ((mem_productLabels C j).1 j.property)
 
 /-- The product-retract labels form a fusion subring. -/
 theorem productLabels_isFusionSubring : IsFusionSubring (𝒵 C) (productLabels C) :=
-  ⟨⟨(fun _ hi ↦ dual_mem_productLabels C hi),
-    (fun _ hi _ hj _ hk ↦ constituent_mem_productLabels C hi hj hk)⟩,
+  ⟨⟨(fun i hi ↦ dual_mem_productLabels C (i := ⟨i, hi⟩)),
+    (fun i hi j hj _ hk ↦ constituent_mem_productLabels C (i := ⟨i, hi⟩) (j := ⟨j, hj⟩) hk)⟩,
     unit_mem_productLabels C⟩
 
 /-- The centre's product-retract labels satisfy the numerical double-centralizer

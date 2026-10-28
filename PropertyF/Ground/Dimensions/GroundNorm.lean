@@ -187,7 +187,7 @@ theorem leftQuantumTrace_dual_component {C : Type u} [Category.{v} C] [MonoidalC
     [RigidCategory C] {X : C} (j : X ≅ (Xᘁ)ᘁ) :
     leftQuantumTrace (rightDualIsoMap j).symm = rightQuantumTrace j := by
   rw [leftQuantumTrace_eq_rightDual]
-  exact (rightQuantumTrace_iso (j := j) (k := rightDualIsoMap (rightDualIsoMap j)) j (by rfl)).symm
+  exact (rightQuantumTrace_iso j rfl).symm
 
 /-- The intrinsic squared norm is invariant under right duality, without any
 pivotal or spherical structure. -/
