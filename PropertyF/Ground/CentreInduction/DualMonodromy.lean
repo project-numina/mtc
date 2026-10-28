@@ -3,7 +3,6 @@ public import PropertyF.Ground.CentreInduction.PositivePivotal
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
-public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 
 /-! The dual functors transport monodromy through their tensorators. -/
 @[expose] public noncomputable section
