@@ -20,7 +20,7 @@ theorem pairing_crossingProjection (C : BraidedFusionCategory.{v,u})
     Dimensions.simpleHomPairingEquiv C i (T ⊗ simples C j) (crossingProjection C T i j a) =
       (Dimensions.simpleInclusionBasis C (T ⊗ simples C j) i).dualBasis a := by
   classical
-  letI : Simple (simples C i) := simples_simple C i
+  let : Simple (simples C i) := simples_simple C i
   let B := Dimensions.simpleInclusionBasis C (T ⊗ simples C j) i
   apply B.ext
   intro b
@@ -71,7 +71,7 @@ theorem dualBasis_contraction_natural {I J : Type} [Fintype I] [Fintype J] [Deci
       _ = _ := by
         apply Finset.sum_congr rfl
         intro i _
-        simp [c, Module.Basis.dualBasis_repr, Module.Basis.dualBasis_apply,
+        simp [c, Module.Basis.dualBasis_repr,
           Module.Dual.transpose_apply]
   calc
     _ = ∑ i, ∑ j, c i j • F (b j) (a.dualBasis i) := by
@@ -135,21 +135,21 @@ def mixedCrossingBilinear (C : BraidedFusionCategory.{v,u})
       intro f f'
       simp [closeFusionMap, Dimensions.rightAdjointMate_add, Category.assoc,
         tensorHom_def, MonoidalPreadditive.whiskerLeft_add, MonoidalPreadditive.add_whiskerRight,
-        Preadditive.comp_add, Preadditive.add_comp]
+       Preadditive.comp_add, Preadditive.add_comp]
     map_smul' := by
       intro r f
       simp [closeFusionMap, Dimensions.rightAdjointMate_smul, Category.assoc,
         tensorHom_def, MonoidalLinear.whiskerLeft_smul, MonoidalLinear.smul_whiskerRight,
-        Linear.comp_smul, Linear.smul_comp] }
+       Linear.comp_smul, Linear.smul_comp] }
   map_add' := by
     intro g g'
     ext f
     simp [Category.assoc, tensorHom_def, MonoidalPreadditive.add_whiskerRight,
-      MonoidalPreadditive.whiskerLeft_add, Preadditive.comp_add, Preadditive.add_comp]
+      Preadditive.comp_add, Preadditive.add_comp]
   map_smul' := by
     intro r g
     ext f
     simp [Category.assoc, tensorHom_def, MonoidalLinear.smul_whiskerRight,
-      MonoidalLinear.whiskerLeft_smul, Linear.comp_smul, Linear.smul_comp]
+      Linear.comp_smul, Linear.smul_comp]
 
 end PropertyF.Ground.CentreInduction

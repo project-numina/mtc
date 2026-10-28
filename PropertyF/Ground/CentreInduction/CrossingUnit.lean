@@ -11,7 +11,7 @@ variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The closed fusion map is characterized by its evaluation pairing. -/
-theorem closeFusionMap_evaluation (T S R : C.Obj) (f : T ⊗ S ⟶ R) :
+theorem closeFusionMap_evaluation {T S R : C.Obj} (f : T ⊗ S ⟶ R) :
     (closeFusionMap C T S R f ▷ S) ≫ ε_ S (Sᘁ) =
       𝟙 _ ⊗≫ ((Rᘁ : C.Obj) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
   have he := PropertyF.Ground.Dimensions.rightDualIso_evaluation
@@ -72,15 +72,13 @@ theorem crossingBlock_unit_of_split (X S : C.Obj) [Simple S]
     (g : S ⟶ (𝟙_ C.Obj) ⊗ S) (f : (𝟙_ C.Obj) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock C X (𝟙_ C.Obj) S S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ (λ_ S).hom)
   obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ ((λ_ S).inv ≫ f)
   have hg : g = c • (λ_ S).inv := by
-    have hh := congrArg (fun k => k ≫ (λ_ S).inv) hc
-    simpa [Category.assoc] using hh.symm
+    simpa [Category.assoc] using (congrArg (fun k => k ≫ (λ_ S).inv) hc).symm
   have hf : f = d • (λ_ S).hom := by
-    have hh := congrArg (fun k => (λ_ S).hom ≫ k) hd
-    simpa [Category.assoc] using hh.symm
+    simpa [Category.assoc] using (congrArg (fun k => (λ_ S).hom ≫ k) hd).symm
   have hcd : c * d = 1 := by
     apply (smul_left_injective ℂ (id_nonzero S))
     have hh := h
@@ -123,7 +121,7 @@ theorem crossingCandidate_unit (X : C.Obj) :
       dsimp [a]
       omega
     rw [Finset.sum_eq_single a]
-    · letI : Simple (simples C i) := simples_simple C i
+    · let : Simple (simples C i) := simples_simple C i
       rw [crossingBlock_unit_of_split C X (simples C i)
         (crossingInclusion C (𝟙_ C.Obj) i i a) (crossingProjection C (𝟙_ C.Obj) i i a)
         (crossingInclusion_projection C (𝟙_ C.Obj) i i a)]

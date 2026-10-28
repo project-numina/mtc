@@ -2,7 +2,6 @@ module
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Modular.SAdditivity
 public import PropertyF.Ground.Centre.ProductClosure
-public import PropertyF.Ground.Cabling.GeneralDual
 public import PropertyF.Ground.Fusion.GeneratedRigidity
 public import PropertyF.Ground.Integrate.CenterBundle
 

@@ -1,9 +1,18 @@
 module
-public import PropertyF.Ground.Dimensions.Trace
-public import PropertyF.Ground.Modular.Labels
-public import PropertyF.Ground.Fusion.Multiplicity
+public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 public import PropertyF.Ground.Dimensions.GroundNorm
+public import PropertyF.Ground.Dimensions.Trace
+public import PropertyF.Ground.Fusion.Multiplicity
+public import PropertyF.Ground.Fusion.Reciprocity
+public import PropertyF.Ground.Modular.FusionTransport
 
+/-!
+# The categorical S matrix and nonvanishing of simple dimensions.
+-/
+
+@[expose] public noncomputable section
+
+section
 /-!
 # Categorical S-matrix
 
@@ -15,7 +24,7 @@ these simple dimensions. No modular nondegeneracy is required here.
 open scoped BigOperators
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 open PropertyF.Ground.Dimensions
-@[expose] public noncomputable section
+
 namespace PropertyF.Ground.Modular
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -67,25 +76,28 @@ theorem SEntry_unit (p : PivotalStructure (C := C)) (X : C) :
   rw [SEntry, doubleBraiding_unit]
   exact p.rightTrace_id_iso (ρ_ X)
 
+section
+variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
+
 /-- Spherical dimension of a chosen simple representative. -/
-def simpleDimension (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) : ℂ :=
+def simpleDimension (i : Fin (rank C)) : ℂ :=
   Ground.unitScalarEquiv C (p.rightTrace (𝟙 (simples C i)))
 
+/-- The simple pivotal dimensions agree with Frobenius–Perron dimensions. -/
+abbrev HasFPSimpleDimensions : Prop :=
+  ∀ i, simpleDimension C p i = (fpSimple C i : ℂ)
+
 /-- The unnormalized categorical S-matrix, defined by double-braiding traces. -/
-def categoricalS (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
+def categoricalS : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
   fun i j => Ground.unitScalarEquiv C (SEntry p (simples C i) (simples C j))
 
 /-- The categorical S-matrix is symmetric. -/
-theorem categoricalS_symmetric (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (i j : Fin (rank C)) :
-    categoricalS C p i j = categoricalS C p j i := by
-  exact congrArg (Ground.unitScalarEquiv C) (SEntry_symmetric p _ _)
+theorem categoricalS_symmetric (i j : Fin (rank C)) :
+    categoricalS C p i j = categoricalS C p j i :=
+  congrArg (Ground.unitScalarEquiv C) (SEntry_symmetric p _ _)
 
 /-- The unit column consists of categorical dimensions. -/
-theorem categoricalS_unit (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
+theorem categoricalS_unit (i : Fin (rank C)) :
     categoricalS C p i (unitIndex C) = simpleDimension C p i := by
   obtain ⟨e⟩ := unitIndex_iso C
   change Ground.unitScalarEquiv C (SEntry p (simples C i) (simples C (unitIndex C))) = _
@@ -93,8 +105,7 @@ theorem categoricalS_unit (C : Ground.BraidedFusionCategory.{v,u})
   rfl
 
 /-- In the spherical case, global dimension is the sum of squared simple dimensions. -/
-theorem categorical_global_eq_sum_squares (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) :
+theorem categorical_global_eq_sum_squares (hp : p.IsSpherical) :
     Ground.globalDimension C = ∑ i, simpleDimension C p i ^ 2 := by
   rw [target_globalDimension_eq_sum_squares C p hp]
   apply Finset.sum_congr rfl
@@ -102,4 +113,46 @@ theorem categorical_global_eq_sum_squares (C : Ground.BraidedFusionCategory.{v,u
   rw [Ground.unitScalar_eq_equiv, ← rightTrace_id]
   rfl
 
+end
+
 end PropertyF.Ground.Modular
+end
+
+section
+/-!
+# Nonvanishing of simple pivotal dimensions
+
+Rigidity identifies the Hom space from X ⊗ X* to the tensor unit with End(X),
+which is one-dimensional by Schur. Semisimplicity splits coevaluation; the
+nonzero evaluation must be a nonzero multiple of that splitting. Consequently
+the pivotal dimension of a simple object cannot vanish.
+-/
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open PropertyF.Ground.Dimensions
+
+namespace PropertyF.Ground.Modular
+universe v u
+variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
+
+
+/-- A simple object has nonzero pivotal trace of the identity. -/
+theorem pivotalTrace_simple_ne_zero (X : C.Obj) [Simple X] :
+    p.rightTrace (𝟙 X) ≠ 0 := by
+  simpa only [Dimensions.rightTrace_id] using
+    Dimensions.rightQuantumTrace_simple_ne_zero C X (p.iso X)
+
+/-- The scalar pivotal trace of a simple object is nonzero. -/
+theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :
+    groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
+  simpa only [map_zero] using
+    (groundUnitScalarEquiv C).injective.ne (pivotalTrace_simple_ne_zero C p X)
+
+/-- Every simple categorical dimension is nonzero, without pseudo-unitarity. -/
+theorem simpleDimension_ne_zero (i : Fin (rank C)) :
+    simpleDimension C p i ≠ 0 := by
+  let _ : Simple (simples C i) := simples_simple C i
+  simpa only [simpleDimension, ← Ground.unitScalar_eq_equiv, ← groundUnitScalarEquiv_apply] using
+    unitScalar_rightTrace_ne_zero C p (simples C i)
+
+end PropertyF.Ground.Modular
+end

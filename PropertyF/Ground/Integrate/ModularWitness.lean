@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Integrate.Fixedness
-public import PropertyF.Ground.Modular.Construction
+public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Fusion.Agreement
 
 /-! Extract the numerical ingredients of the paper's witness from an actual

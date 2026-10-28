@@ -2,13 +2,14 @@ module
 public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.SphericalCriterion
-public import PropertyF.Ground.Dimensions.SphericalArithmetic
+public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Twist a pivotal structure by a fusion-compatible family of nonzero simple scalars. -/
 def pivotalScalarTwist (C : Ground.BraidedFusionCategory.{v,u})
@@ -39,7 +40,7 @@ def pivotalScalarTwist (C : Ground.BraidedFusionCategory.{v,u})
     simp only [simpleScalarNatural_unit C c hunit, Category.id_comp]
 
 /-- Twisting rescales each simple pivotal dimension by the chosen scalar. -/
-theorem pivotalDimension_scalarTwist_simple (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotalDimension_scalarTwist_simple
     (p : PivotalStructure (C := C.Obj)) (c : Fin (Ground.rank C) → ℂ)
     (hc : ∀ i, c i ≠ 0) (hunit : c (Ground.unitIndex C) = 1)
     (hmul : ∀ i j k, Ground.fusionCoeff C i j k ≠ 0 → c k = c i * c j)

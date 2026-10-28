@@ -51,8 +51,8 @@ theorem unitSummandIso_natural (C : BraidedFusionCategory.{v,u})
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, Category.assoc]
   rw [← id_tensorHom, ← tensorHom_id]
   rw [tensor_middle_natural_assoc C]
-  simp only [← tensorHom_comp_tensorHom_assoc, id_tensorHom, Category.id_comp,
-    leftUnitor_naturality_assoc, tensorHom_id, rightUnitor_naturality]
+  simp only [id_tensorHom,
+    tensorHom_id, rightUnitor_naturality]
   rw [rightUnitor_naturality_assoc, leftUnitor_naturality]
   rw [rightUnitor_naturality_assoc]
 
