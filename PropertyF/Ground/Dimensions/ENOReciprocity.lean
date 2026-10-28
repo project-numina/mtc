@@ -89,7 +89,7 @@ theorem rootDual_differs_by_sign (X : C.Obj)
     [Simple X] : ∃ ε : ℂ, ε * ε = 1 ∧
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom =
         ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom := by
-  let : Simple (Xᘁ) := simple_rightDual C X
+  let : Simple (Xᘁ) := simple_rightDual X
   let : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := IsFusionCategory.hom_finite _ _
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
