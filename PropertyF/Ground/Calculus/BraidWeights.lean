@@ -199,13 +199,13 @@ namespace PropertyF.Ground.Calculus
 
 /-- The trace of an idempotent complex matrix is a nonnegative integer. -/
 theorem idempotent_matrix_trace_nat {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ}
-    (hA : A * A = A) : ∃ n : ℕ, A.trace = n := by
+    (hA : A * A = A) : ∃ n : ℕ, A.trace = n :=
   let p := A.toLin'
   have hp : IsIdempotentElem p := by
     change A.toLin' * A.toLin' = A.toLin'
     rw [Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hA]
-  refine ⟨Module.finrank ℂ (LinearMap.range p), ?_⟩
-  simpa only [p, Matrix.trace_toLin'_eq] using ((LinearMap.isProj_range_iff_isIdempotentElem p).2 hp).trace
+  ⟨Module.finrank ℂ (LinearMap.range p), by
+    simpa only [p, Matrix.trace_toLin'_eq] using ((LinearMap.isProj_range_iff_isIdempotentElem p).2 hp).trace⟩
 
 /-- For any representation of a finite product of nonzero complex matrix
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the

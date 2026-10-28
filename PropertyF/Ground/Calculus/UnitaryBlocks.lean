@@ -25,15 +25,13 @@ variable {G ι : Type*} [Group G] [Fintype G] [Fintype ι] [DecidableEq ι]
 def averagedGram (ρ : G →* (Matrix ι ι ℂ)ˣ) : Matrix ι ι ℂ :=
   ∑ g : G, (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ)
 
+open scoped Classical in
 /-- The averaged form is positive definite, even in dimension zero. -/
 theorem averagedGram_posDef (ρ : G →* (Matrix ι ι ℂ)ˣ) :
-    (averagedGram ρ).PosDef := by
-  classical
-  unfold averagedGram
-  apply Matrix.posDef_sum Finset.univ_nonempty
-  intro g _
-  exact Matrix.PosDef.conjTranspose_mul_self _
-    (Matrix.mulVec_injective_of_isUnit (Units.isUnit (ρ g)))
+    (averagedGram ρ).PosDef :=
+  Matrix.posDef_sum Finset.univ_nonempty fun g _ =>
+    Matrix.PosDef.conjTranspose_mul_self _
+      (Matrix.mulVec_injective_of_isUnit (Units.isUnit (ρ g)))
 
 /-- Every group element is an isometry for the averaged form. -/
 theorem averagedGram_invariant (ρ : G →* (Matrix ι ι ℂ)ˣ) (h : G) :
@@ -123,19 +121,19 @@ theorem groupImageAlgebra_toSubmodule (ρ : G →* A) :
   change (groupAlgebraMap ρ).toLinearMap.range = _
   rw [h, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Finsupp.range_linearCombination]
 
+open scoped Classical in
 /-- A finite group's image algebra is semisimple, by Maschke and passage to a quotient. -/
 theorem groupImageAlgebra_semisimple (ρ : G →* A) :
-    IsSemisimpleRing (groupImageAlgebra ρ) := by
-  classical
+    IsSemisimpleRing (groupImageAlgebra ρ) :=
   let _ : NeZero (Nat.card G : ℂ) := ⟨by exact_mod_cast (Nat.card_ne_zero.mpr ⟨⟨1⟩, inferInstance⟩ : Nat.card G ≠ 0)⟩
-  exact RingHom.isSemisimpleRing_of_surjective (groupAlgebraMap ρ).rangeRestrict.toRingHom
+  RingHom.isSemisimpleRing_of_surjective (groupAlgebraMap ρ).rangeRestrict.toRingHom
     (AlgHom.rangeRestrict_surjective (groupAlgebraMap ρ))
 
+open scoped Classical in
 /-- The image algebra is finite-dimensional, even when the ambient algebra is not. -/
 theorem groupImageAlgebra_finite (ρ : G →* A) :
-    FiniteDimensional ℂ (groupImageAlgebra ρ) := by
-  classical
-  exact Module.Finite.of_surjective (groupAlgebraMap ρ).rangeRestrict.toLinearMap
+    FiniteDimensional ℂ (groupImageAlgebra ρ) :=
+  Module.Finite.of_surjective (groupAlgebraMap ρ).rangeRestrict.toLinearMap
     (AlgHom.rangeRestrict_surjective (groupAlgebraMap ρ))
 
 /-- The finite group image algebra is a finite product of nonempty complex
@@ -262,8 +260,8 @@ realization of their actual endomorphism algebra. -/
 theorem braidAlgebra_unitary_blocks (X : C) (n : ℕ) (h : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
         PropertyF.Blocks.Algebra ⟨_, d⟩),
-      (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e := by
+      (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e :=
   let _ : Finite (braidImage X n) := h
-  exact groupImageAlgebra_unitary_blocks _
+  groupImageAlgebra_unitary_blocks _
 
 end PropertyF.Ground.Calculus

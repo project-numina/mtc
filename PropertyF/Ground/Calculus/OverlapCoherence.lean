@@ -125,11 +125,24 @@ def freshOverlapIso (X : C) (t k : ℕ) :
     insertLeftPowerIso X t ((k + 1) * (t + 1)) ≪≫
     eqToIso (congrArg (fun n => tensorPower X (n + 2)) (overlapIndex_formula t (k + 1)).symm)
 
+/-- The left- and right-insertion isomorphisms agree on an overlap. -/
+abbrev HasOverlapCoherence (X : C) (t k : ℕ) : Prop :=
+  freshOverlapIso X t k =
+    (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
+      overlapPowerIso X t k
+
 /-- The previous overlap operator expressed with its last strand explicit. -/
 def previousOverlapLocal (X : C) (t k : ℕ) (u : braidAlgebra X t) :
     End (tensorPower X (overlapIndex t k + 1) ⊗ X) :=
   (isoEndAlgEquiv (appendIso X (overlapIndex t k + 1)).symm)
     (overlapProduct X t u k : End (tensorPower X (overlapIndex t k + 2)))
+
+/-- The actual overlapping product agrees with the local endomorphism product. -/
+abbrev IsLocalOverlapProduct {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t) : Prop :=
+  (isoEndAlgEquiv (overlapPowerIso X t k).symm)
+      (overlapProduct X t u (k + 1) : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
+    overlapEndProduct (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
+      (previousOverlapLocal X t k u) (u : End (tensorPower X (t + 2)))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The fresh algebra element is left whiskering along its canonical
@@ -169,9 +182,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Agreement of the two canonical tensor-power isomorphisms identifies the
 fresh actual braid factor with the local overlap factor. -/
 theorem overlapRight_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
-    (hiso : freshOverlapIso X t k =
-      (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
-        overlapPowerIso X t k) :
+    (hiso : HasOverlapCoherence X t k) :
     (isoEndAlgEquiv (overlapPowerIso X t k).symm)
       (overlapRight X t k u : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
     overlapFresh (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
@@ -214,13 +225,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A single coherence equality between the left- and right-insertion
 isomorphisms gives the entire actual overlap-product identification. -/
 theorem overlapProduct_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
-    (hiso : freshOverlapIso X t k =
-      (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
-        overlapPowerIso X t k) :
-    (isoEndAlgEquiv (overlapPowerIso X t k).symm)
-      (overlapProduct X t u (k + 1) : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
-    overlapEndProduct (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
-      (previousOverlapLocal X t k u) (u : End (tensorPower X (t + 2))) := by
+    (hiso : HasOverlapCoherence X t k) :
+    IsLocalOverlapProduct k u := by
   change (isoEndAlgEquiv (overlapPowerIso X t k).symm)
       ((overlapLeft X t k (overlapProduct X t u k) :
           End (tensorPower X (overlapIndex t (k + 1) + 2))) *
@@ -234,10 +240,7 @@ the precise one-step trace recurrence. -/
 theorem overlap_trace_step_of_coherence (D : BraidedFusionCategory.{v,u})
     {X : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
     {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
-    (hcoh : (isoEndAlgEquiv (overlapPowerIso X t k).symm)
-        (overlapProduct X t u (k + 1) : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
-      overlapEndProduct (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
-        (previousOverlapLocal X t k u) (u : End (tensorPower X (t + 2)))) :
+    (hcoh : IsLocalOverlapProduct k u) :
     actualBraidTrace D X p (overlapIndex t (k + 1)) (overlapProduct X t u (k + 1)) *
         pivotalDimension D p X =
       actualBraidTrace D X p (overlapIndex t k) (overlapProduct X t u k) *
@@ -259,9 +262,7 @@ every iterated actual overlapping braid-algebra product. -/
 theorem overlap_trace_power_of_isos (C : BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {t : ℕ} (u : braidAlgebra X t)
-    (hiso : ∀ k, freshOverlapIso X t k =
-      (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
-        overlapPowerIso X t k) :
+    (hiso : ∀ k, HasOverlapCoherence X t k) :
     HasOverlapTracePower C p u :=
   overlap_trace_power_of_step C p u fun k ↦
     overlap_trace_step_of_coherence C p k u (overlapProduct_local_of_iso k u (hiso k))
