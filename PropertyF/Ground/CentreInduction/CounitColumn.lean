@@ -24,29 +24,6 @@ theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
   have hh := congrArg (fun k => k ≫ (T ◁ (unitSummandIso C X).hom)) h
   simpa only [underlyingCounit, unitSummandRetract, whiskerLeft_comp, Category.assoc] using hh
 
-set_option backward.isDefEq.respectTransparency false in
-/-- A split crossing block is independent of the chosen splitting of a simple. -/
-theorem crossingBlock_of_simple_split (X T : C.Obj) {R S : C.Obj} [Simple R]
-    (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
-    crossingBlock X T R S g f = crossingBlock X T R S e.hom e.inv := by
-  let : FiniteDimensional ℂ (R ⟶ R) := IsFusionCategory.hom_finite _ _
-  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ e.inv)
-  obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (e.hom ≫ f)
-  have hg : g = c • e.hom := by
-    simpa [Category.assoc] using (congrArg (fun k => k ≫ e.hom) hc).symm
-  have hf : f = d • e.inv := by
-    simpa [Category.assoc] using (congrArg (fun k => e.inv ≫ k) hd).symm
-  have hcd : c * d = 1 := by
-    apply (smul_left_injective ℂ (id_nonzero R))
-    have hh := h
-    rw [hg, hf] at hh
-    simpa [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using hh
-  change mixedCrossingBilinear X T T R S g f = _
-  rw [hg, hf]
-  simp only [map_smul, LinearMap.smul_apply, smul_smul]
-  rw [mul_comm d c, hcd, one_smul]
-  rfl
-
 
 end PropertyF.Ground.CentreInduction
 

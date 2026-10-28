@@ -15,7 +15,7 @@ namespace PropertyF.Ground.CentreCalculus
 universe v u
 
 /-- Either the actual permutation action or its sign twist. -/
-def parityPermutationAction (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
+def parityPermutationAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool) (n : ℕ) :
     Equiv.Perm (Fin n) →* End (tensorPower X n) :=
   if odd then Centre.twistAction (Centre.permutationSign ℂ n) (tensorPermutationAction X hX n)
@@ -25,18 +25,18 @@ def parityPermutationAction (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 theorem parityPermutationTrace_fixHead (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (X : C.Obj) (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool)
-    (n : ℕ) (σ : Equiv.Perm (Fin n)) :
-    unitScalar C (p.rightTrace ((parityPermutationAction C X hX odd (n + 1))
+    {X : C.Obj} (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool)
+    {n : ℕ} (σ : Equiv.Perm (Fin n)) :
+    unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1))
       (fixHead n σ)).asHom) =
     (fpDimension C X : ℂ) *
-      unitScalar C (p.rightTrace ((parityPermutationAction C X hX odd n) σ).asHom) := by
+      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd n) σ).asHom) := by
   cases odd with
   | false => exact tensorPermutationTrace_fixHead C p hdim X hX n σ
   | true =>
     have hs : (Centre.permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
         (Centre.permutationSign ℂ n σ : ℂ) := by
-      simpa [fixHead] using sign_decomposeFin n 0 σ
+      simpa [fixHead] using sign_decomposeFin 0 σ
     simp only [parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
       unitScalar_eq_equiv, map_smul, smul_eq_mul]
@@ -49,15 +49,15 @@ positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (X : C.Obj) (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool)
+    {X : C.Obj} (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool)
     (hmoved : ∀ n (q : Fin (n + 1)), q ≠ 0 → ∀ σ,
-      unitScalar C (p.rightTrace ((parityPermutationAction C X hX odd (n + 1))
+      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1))
         (Equiv.Perm.decomposeFin.symm (q, σ))).asHom) =
-      unitScalar C (p.rightTrace ((parityPermutationAction C X hX odd n) σ).asHom)) :
+      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd n) σ).asHom)) :
     ∃ m : ℕ, fpDimension C X = m := by
-  apply integral_of_trace_deletion C p hdim X (parityPermutationAction C X hX odd)
+  apply integral_of_trace_deletion C p hdim X (parityPermutationAction C hX odd)
   · intro n σ
-    exact parityPermutationTrace_fixHead C p hdim X hX odd n σ
+    exact parityPermutationTrace_fixHead C p hdim hX odd σ
   · exact hmoved
 
 end PropertyF.Ground.CentreCalculus
@@ -67,7 +67,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 
 /-- A one-point permutation extension is the swap of that point with zero,
 followed by the fixed-head extension of the smaller permutation. -/
-theorem decomposeFin_eq_swap_fixHead (n : ℕ) (q : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
+theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
     Equiv.Perm.decomposeFin.symm (q, σ) = Equiv.swap 0 q * fixHead n σ := by
   ext x
   refine Fin.cases ?_ (fun j => ?_) x <;>
@@ -129,13 +129,13 @@ one of the two actual parity choices. -/
 theorem integral_of_parity_adjacent_trace (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (X : C.Obj) (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool)
+    {X : C.Obj} (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool)
     (hadj : ∀ n (σ : Equiv.Perm (Fin (n + 1))),
-      unitScalar C (p.rightTrace ((parityPermutationAction C X hX odd (n + 2))
+      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 2))
         (Equiv.Perm.decomposeFin.symm (1, σ))).asHom) =
-      unitScalar C (p.rightTrace ((parityPermutationAction C X hX odd (n + 1)) σ).asHom)) :
+      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1)) σ).asHom)) :
     ∃ m : ℕ, fpDimension C X = m :=
-  integral_of_parity_moved_trace C p hdim X hX odd
-    (movedTrace_of_adjacent C p X (parityPermutationAction C X hX odd) hadj)
+  integral_of_parity_moved_trace C p hdim hX odd
+    (movedTrace_of_adjacent C p X (parityPermutationAction C hX odd) hadj)
 
 end PropertyF.Ground.CentreCalculus

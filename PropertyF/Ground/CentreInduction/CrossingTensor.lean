@@ -9,15 +9,6 @@ namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
-/-- A map to a right dual is determined by its evaluation. -/
-theorem dual_map_ext {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] {V : D} (S : D) (f g : V ⟶ Sᘁ)
-    (h : f ▷ S ≫ ε_ S (Sᘁ) = g ▷ S ≫ ε_ S (Sᘁ)) : f = g := by
-  apply (cancel_mono (λ_ (Sᘁ)).inv).1
-  simpa only [tensorRightHomEquiv_whiskerRight_comp_evaluation] using
-    congrArg (tensorRightHomEquiv V S (Sᘁ) (𝟙_ D)) h
-
-set_option backward.isDefEq.respectTransparency false in
 /-- Closing a composite fusion map is the composite of the two closed maps. -/
 theorem closeFusionMap_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [RightRigidCategory D] {T U S K R : D} (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :

@@ -5,6 +5,11 @@ public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 
+/-! # Unit laws for dual tensor comparisons
+
+Right-dual and double-dual tensor comparisons are compatible with the unitors.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -145,8 +150,7 @@ theorem doubleDualTensorIso_unit_left (X : C) :
   rw [hR']
   slice_lhs 3 4 => rw [hs]
   have hc : (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Iᘁ) := by
-    have h := (rightDualIsoMap r).hom_inv_id
-    exact h
+    exact ((rightDualIsoMap r).hom_inv_id)
   simp only [Category.assoc]
   slice_lhs 2 3 => rw [← comp_whiskerRight, hc, id_whiskerRight]
   simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS'
@@ -188,8 +192,7 @@ theorem doubleDualTensorIso_unit_right (X : C) :
   rw [hR']
   slice_lhs 3 4 => rw [hs]
   have hc : (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Iᘁ) := by
-    have h := (rightDualIsoMap r).hom_inv_id
-    exact h
+    exact ((rightDualIsoMap r).hom_inv_id)
   simp only [Category.assoc]
   slice_lhs 2 3 => rw [← whiskerLeft_comp, hc, whiskerLeft_id]
   simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS'

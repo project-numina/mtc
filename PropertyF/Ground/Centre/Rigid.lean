@@ -165,7 +165,7 @@ theorem dualMateUnit_crossed_coevaluation (Z : Center C) :
   η_ (ᘁZ.1) Z.1 ≫ ((Integrate.dualMateUnit Z).inv ▷ Z.1) := by
   have h := CentreRigid.dualMate_unit_explicit Z (𝟙_ C)
   have hn := Z.2.naturality (ρ_ Z.1ᘁ).hom
-  dsimp [Integrate.dualMateUnit] 
+  dsimp [Integrate.dualMateUnit]
   simp only [Category.assoc, comp_whiskerRight]
   calc
     _ = ((λ_ (𝟙_ C)).inv ≫ (η_ Z.1 Z.1ᘁ ▷ (𝟙_ C)) ≫

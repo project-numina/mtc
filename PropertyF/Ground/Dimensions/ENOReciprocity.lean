@@ -10,6 +10,11 @@ public import PropertyF.Ground.Dimensions.TensorExtension
 public import PropertyF.Ground.Dimensions.SphericalCriterion
 public import PropertyF.Ground.Dimensions.ComplexSaturation
 
+/-! # Reciprocity and spherical dimensions
+
+Character duality, phase normalization and trace reciprocity control the dimensions of simple objects.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators Matrix ComplexOrder
@@ -65,8 +70,7 @@ theorem fusion_character_dual_eq_conj
     exact (hchar (Ground.dualIndex C i) j).symm
   have heq := conjugate_of_transpose_eigenvector A (by intro j k; simp [A]) χ hv
     (χ i) (χ (Ground.dualIndex C i)) h ht
-  have hh := congrArg star heq
-  simpa using hh
+  simpa using (congrArg star heq)
 
 /-- Simple pivotal dimensions on duals are conjugate, for any pivotal
 structure on a genuine braided fusion category. -/
@@ -114,8 +118,7 @@ theorem inverseDualRoot_square (X : C.Obj) :
       (fourthDualIso C (Xᘁ)).hom := by
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   have hroot : j.hom ≫ ((j.homᘁ)ᘁ) = (fourthDualIso C X).hom := by
-    have h := congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C)
-    exact h
+    exact (congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C))
   have hiso : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso C X := by
     apply Iso.ext
     exact hroot
@@ -132,15 +135,14 @@ theorem rootDual_differs_by_sign (X : C.Obj)
     [Simple X] : ∃ ε : ℂ, ε * ε = 1 ∧
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom =
         ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom := by
-  letI : Simple (Xᘁ) := Ground.simple_rightDual C X
-  letI : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := Ground.IsFusionCategory.hom_finite _ _
+  let : Simple (Xᘁ) := Ground.simple_rightDual C X
+  let : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := Ground.IsFusionCategory.hom_finite _ _
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
   obtain ⟨ε, _, he, _⟩ := doubleDualIso_scalar l k
   refine ⟨ε, ?_, he⟩
   have hk : k.hom ≫ ((k.homᘁ)ᘁ) = (fourthDualIso C (Xᘁ)).hom := by
-    have h := congrArg (fun n => (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C)
-    exact h
+    exact (congrArg (fun n => (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C))
   have hl : l.hom ≫ ((l.homᘁ)ᘁ) = (fourthDualIso C (Xᘁ)).hom := inverseDualRoot_square C X
   have hscale : k.hom ≫ ((k.homᘁ)ᘁ) = (ε * ε) • (l.hom ≫ ((l.homᘁ)ᘁ)) := by
     rw [he]
@@ -175,13 +177,13 @@ noncomputable def rootDualSign (C : Ground.BraidedFusionCategory.{v,u})
 
 theorem rootDualSign_sq (i : Fin (Ground.rank C)) :
     rootDualSign C i * rootDualSign C i = 1 := by
-  letI : Simple (Ground.simples C i) := Ground.simples_simple C i
+  let : Simple (Ground.simples C i) := Ground.simples_simple C i
   exact (Classical.choose_spec (rootDual_differs_by_sign C (Ground.simples C i))).1
 
 theorem rootDualSign_component (i : Fin (Ground.rank C)) :
     ((fourthDualRootNaturalIso C).app ((Ground.simples C i)ᘁ)).hom =
       rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (Ground.simples C i))).symm.hom := by
-  letI : Simple (Ground.simples C i) := Ground.simples_simple C i
+  let : Simple (Ground.simples C i) := Ground.simples_simple C i
   exact (Classical.choose_spec (rootDual_differs_by_sign C (Ground.simples C i))).2
 
 set_option backward.isDefEq.respectTransparency false in
@@ -192,7 +194,7 @@ theorem squaredNorm_eq_rootDualSign_mul
     Ground.squaredNorm C (Ground.simples C i) = rootDualSign C i * rootDimension C i *
       rootDimension C (Ground.dualIndex C i) := by
   let X := Ground.simples C i
-  letI : Simple X := Ground.simples_simple C i
+  let : Simple X := Ground.simples_simple C i
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap j).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
@@ -246,7 +248,7 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   apply (isSpherical_iff_simple_dimensions C p).2
   intro i
   let X := Ground.simples C i
-  letI : Simple X := Ground.simples_simple C i
+  let : Simple X := Ground.simples_simple C i
   have hh := target_squaredNorm_choice_independent C X (p.iso X)
   rw [← rightTrace_id, ← leftTrace_id] at hh
   have hr : Ground.unitScalar C (p.rightTrace (𝟙 X)) = (Ground.fpSimple C i : ℂ) := hdim i
@@ -373,8 +375,8 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
   have hphase : ∀ i j k, enoTraceMatrix C i j k * (q k / (q i * q j)) =
       (Ground.fusionCoeff C i j k : ℂ) := by
     intro i j k
-    have h := fusion_complex_eigenvalue_saturation C (enoTraceMatrix C) (rootDimension C) hsat hdom heig i j k
-    simpa [q, div_eq_mul_inv, mul_assoc] using h
+    simpa [q, div_eq_mul_inv, mul_assoc] using
+      (fusion_complex_eigenvalue_saturation C (enoTraceMatrix C) (rootDimension C) hsat hdom heig i j k)
   have hdef : ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1 := by
     intro i j k
     let r := q k / (q i * q j)
@@ -385,7 +387,7 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
     have hrtrace : LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap * r =
         (Module.finrank ℂ (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) : ℂ) := by
       exact hphase i j k
-    letI : FiniteDimensional ℂ
+    let : FiniteDimensional ℂ
       (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :=
       Ground.IsFusionCategory.hom_finite _ _
     have hfactor : c k / (c i * c j) = r⁻¹ := by

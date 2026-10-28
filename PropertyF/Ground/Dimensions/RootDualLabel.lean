@@ -3,6 +3,11 @@ public import PropertyF.Ground.Dimensions.ENOReciprocity
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.SimplePairing
 
+/-! # Dual labels and reciprocity
+
+Frobenius reciprocity and the fourth-dual tensor law imply trace reciprocity on simple labels.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -93,9 +98,9 @@ theorem enoTraceMatrix_reciprocity_of_operator_intertwining
     ext w
     obtain ⟨v, rfl⟩ := E.surjective w
     simpa [E, A, B, LinearEquiv.conj_apply] using hintertwine i j k v
-  letI : FiniteDimensional ℂ (Ground.simples C j ⟶ Ground.simples C i ⊗ Ground.simples C k) :=
+  let : FiniteDimensional ℂ (Ground.simples C j ⟶ Ground.simples C i ⊗ Ground.simples C k) :=
     Ground.IsFusionCategory.hom_finite _ _
-  letI : FiniteDimensional ℂ (Ground.simples C k ⟶ Ground.simples C (Ground.dualIndex C i) ⊗ Ground.simples C j) :=
+  let : FiniteDimensional ℂ (Ground.simples C k ⟶ Ground.simples C (Ground.dualIndex C i) ⊗ Ground.simples C j) :=
     Ground.IsFusionCategory.hom_finite _ _
   have ht := congrArg (LinearMap.trace ℂ _) hconj
   simp only [LinearMap.trace_conj', LinearMap.trace_transpose', map_smul, smul_eq_mul] at ht
@@ -147,7 +152,7 @@ theorem enoTraceMatrix_reciprocity_of_frobenius_defect
     ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k = rootDualSign C i * enoTraceMatrix C i k j := by
   apply enoTraceMatrix_reciprocity_of_operator_intertwining C
   intro i j k v
-  letI : Simple (Ground.simples C j) := Ground.simples_simple C j
+  let : Simple (Ground.simples C j) := Ground.simples_simple C j
   let P := simpleHomPairingEquiv C j (Ground.simples C i ⊗ Ground.simples C k)
   let g := P.symm v
   have hv : P g = v := P.apply_symm_apply v
@@ -190,7 +195,6 @@ theorem rootDualSign_dual (i : Fin (Ground.rank C)) :
     exact target_squaredNorm_rightDual C X
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
   rw [Ground.dualIndex_involutive] at he
-  have hd := rootDimension_ne_zero C i
   have he' := rootDimension_ne_zero C (Ground.dualIndex C i)
   have hc : rootDualSign C (Ground.dualIndex C i) *
       (rootDimension C i * rootDimension C (Ground.dualIndex C i)) =
@@ -199,7 +203,7 @@ theorem rootDualSign_dual (i : Fin (Ground.rank C)) :
       _ = rootDualSign C (Ground.dualIndex C i) * rootDimension C (Ground.dualIndex C i) * rootDimension C i := by ring
       _ = rootDualSign C i * rootDimension C i * rootDimension C (Ground.dualIndex C i) := he
       _ = _ := by ring
-  exact mul_right_cancel₀ (mul_ne_zero hd he') hc
+  exact mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero C i) he') hc
 end PropertyF.Ground.Dimensions
 
 end

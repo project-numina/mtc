@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.RootDualLabel
 
+/-! # Naturality of tensor defects
+
+Naturality of the root tensor isomorphism and defect yields trace reciprocity identities.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -32,12 +37,11 @@ theorem rootTensorDefect_natural
     {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y') :
     (f ⊗ₘ g) ≫ (rootTensorDefect C X' Y').hom =
       (rootTensorDefect C X Y).hom ≫ (f ⊗ₘ g) := by
-  have hn := rootTensorIso_natural C f g
   have hni : (((f ⊗ₘ g)ᘁ)ᘁ) ≫ (rootTensorIso C X' Y').inv =
       (rootTensorIso C X Y).inv ≫ (f ⊗ₘ g) := by
     apply (cancel_epi (rootTensorIso C X Y).hom).1
     simp only [Iso.hom_inv_id_assoc]
-    rw [← Category.assoc, ← hn]
+    rw [← Category.assoc, ← (rootTensorIso_natural C f g)]
     simp
   have ha : (f ⊗ₘ g) ≫ ((fourthDualRootNaturalIso C).app (X' ⊗ Y')).hom =
       ((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) :=
@@ -70,10 +74,9 @@ theorem enoTraceMatrix_reciprocity_of_rightDual_frobenius_defect
   let : ExactPairing ((Ground.simples C i)ᘁ) (Ground.simples C i) :=
     BraidedCategory.exactPairing_swap _ _
   have hn := rootTensorDefect_natural C (rightDualLabelIso C i).hom (𝟙 (Ground.simples C j))
-  have hh := hraw i j k g
   simp only [enoFrobeniusEquiv, LinearEquiv.trans_apply, Linear.homCongr_apply,
     Iso.refl_inv, Iso.refl_hom, Category.id_comp, tensorIso_hom] 
-  rw [hh]
+  rw [(hraw i j k g)]
   simp only [Linear.smul_comp, Category.assoc, ← hn]
 
 end PropertyF.Ground.Dimensions
