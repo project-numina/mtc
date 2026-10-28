@@ -59,31 +59,4 @@ theorem rootDual_differs_by_sign (C : Ground.BraidedFusionCategory.{v,u}) (X : C
     exact id_nonzero (Xᘁ) hh
   exact smul_left_injective ℂ hn hm
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The intrinsic norm is the product of the root dimension and the root
-right-dual dimension, up to the ENO sign. -/
-theorem squaredNorm_eq_signed_root_dimensions (C : Ground.BraidedFusionCategory.{v,u})
-    (X : C.Obj) [Simple X] : ∃ ε : ℂ, ε * ε = 1 ∧
-      Ground.squaredNorm C X = ε *
-        Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app X)) *
-        Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (Xᘁ))) := by
-  obtain ⟨ε, hε, he⟩ := rootDual_differs_by_sign C X
-  refine ⟨ε, hε, ?_⟩
-  let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
-  let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap j).symm
-  let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
-  have ht : rightQuantumTrace k = ε • rightQuantumTrace l := by
-    apply End.homEquiv.injective
-    have he' : k.hom = ε • l.hom := he
-    simp [rightQuantumTrace, he', tensorHom_def]
-  rw [target_squaredNorm_choice_independent C X j, leftQuantumTrace_eq_rightDual j]
-  change Ground.unitScalar C (rightQuantumTrace j) * Ground.unitScalar C (rightQuantumTrace l) =
-    ε * Ground.unitScalar C (rightQuantumTrace j) * Ground.unitScalar C (rightQuantumTrace k)
-  rw [ht]
-  simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
-  calc
-    _ = (ε * ε) * (groundUnitScalarEquiv C (rightQuantumTrace j) *
-      groundUnitScalarEquiv C (rightQuantumTrace l)) := by rw [hε, one_mul]
-    _ = _ := by ring
-
 end PropertyF.Ground.Dimensions

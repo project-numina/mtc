@@ -50,50 +50,7 @@ theorem doubleDualTensor_extension
   simpa [sx, sy, ex, ey, V, W, tensorIso_hom, tensorHom_comp_tensorHom,
     Category.assoc] using hh
 
-/-- The sign-twisted root is a genuine pivotal structure once the double-dual
-tensorator is natural, its simple-pair defects have the required signs, and
-its unit component is normalized. -/
-def rootSignPivotal (C : Ground.BraidedFusionCategory.{v,u})
-    (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (hs : ∀ i, c i * c i = 1)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
-    (hdef : ∀ i j k, (multiplicityDefect C i j k).toLinearMap = (c i * c j * c k) • 1)
-    (hunit : ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom =
-      (doubleDualUnitIso (C := C.Obj)).hom) : PivotalStructure (C := C.Obj) where
-  iso X := (rootSignTwist C c hc).app X
-  naturality {X Y} f := by
-    have h := (rootSignTwist C c hc).hom.naturality f
-    change f ≫ ((rootSignTwist C c hc).app Y).hom =
-      ((rootSignTwist C c hc).app X).hom ≫ ((fᘁ)ᘁ) at h
-    exact h
-  tensor X Y := by
-    apply doubleDualTensor_extension C (rootSignTwist C c hc) hnat
-    intro i j
-    exact congrArg Iso.hom (rootSignTensor_compatible_of_scalar_defects C c hc hs i j (hdef i j))
-  unit := hunit
-
 set_option backward.isDefEq.respectTransparency false in
-theorem rootSignPivotal_dimension (C : Ground.BraidedFusionCategory.{v,u})
-    (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (hs : ∀ i, c i * c i = 1)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
-    (hdef : ∀ i j k, (multiplicityDefect C i j k).toLinearMap = (c i * c j * c k) • 1)
-    (hunit : ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom =
-      (doubleDualUnitIso (C := C.Obj)).hom) (i : Fin (Ground.rank C)) :
-    pivotalDimension C (rootSignPivotal C c hc hs hnat hdef hunit) (Ground.simples C i) =
-      c i * rootDimension C i := by
-  have ht : (rootSignPivotal C c hc hs hnat hdef hunit).rightTrace (𝟙 (Ground.simples C i)) =
-      c i • rootTrace C (𝟙 (Ground.simples C i)) := by
-    apply End.homEquiv.injective
-    have h := rootSignTwist_app_simple C c hc i
-    change (rootSignTwist C c hc).hom.app (Ground.simples C i) = _ at h
-    simp [PivotalStructure.rightTrace, rootSignPivotal, rootTrace, rightTraceWith, h, tensorHom_def]
-  unfold pivotalDimension rootDimension
-  rw [ht]
-  simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
-
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignQuantumTrace_simple (C : Ground.BraidedFusionCategory.{v,u})
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (Ground.rank C)) :

@@ -72,12 +72,6 @@ theorem rightTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
     (f : X ⟶ Y) (g : Y ⟶ X) : p.rightTrace (f ≫ g) = p.rightTrace (g ≫ f) :=
   rightTraceWith_cyclic (p.iso X) (p.iso Y) f g (p.naturality f)
 
-/-- In a spherical category the left pivotal trace is cyclic as well. -/
-theorem leftTrace_cyclic_of_spherical (p : PivotalStructure (C := C)) (hp : p.IsSpherical)
-    {X Y : C} (f : X ⟶ Y) (g : Y ⟶ X) : p.leftTrace (f ≫ g) = p.leftTrace (g ≫ f) := by
-  rw [hp X (f ≫ g), hp Y (g ≫ f)]
-  exact p.rightTrace_cyclic f g
-
 /-- Pivotal dimensions are invariant under object isomorphism. -/
 theorem rightTrace_id_iso (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) :
     p.rightTrace (𝟙 X) = p.rightTrace (𝟙 Y) := by

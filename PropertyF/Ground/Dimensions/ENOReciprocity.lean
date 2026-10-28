@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.RootNorm
-public import PropertyF.Ground.Dimensions.ENOReduction
-
+public import PropertyF.Ground.Dimensions.ENOPhase
+public import PropertyF.Ground.Dimensions.SimpleHomBasis
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators Matrix ComplexOrder

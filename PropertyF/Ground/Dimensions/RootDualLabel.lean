@@ -6,21 +6,6 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 set_option backward.isDefEq.respectTransparency false in
-/-- The ENO root at the chosen dual label, transported from the actual right dual. -/
-theorem rootDualSign_label (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
-    ((fourthDualRootNaturalIso C).app (Ground.simples C (Ground.dualIndex C i))).hom =
-      rootDualSign C i • ((rightDualLabelIso C i).inv ≫
-        (rightDualIsoMap ((fourthDualRootNaturalIso C).app (Ground.simples C i))).symm.hom ≫
-        (((rightDualLabelIso C i).homᘁ)ᘁ)) := by
-  have hn := (fourthDualRootNaturalIso C).hom.naturality (rightDualLabelIso C i).hom
-  change (rightDualLabelIso C i).hom ≫
-      ((fourthDualRootNaturalIso C).app (Ground.simples C (Ground.dualIndex C i))).hom =
-      ((fourthDualRootNaturalIso C).app ((Ground.simples C i)ᘁ)).hom ≫
-        (((rightDualLabelIso C i).homᘁ)ᘁ) at hn
-  rw [rootDualSign_component] at hn
-  apply (cancel_epi (rightDualLabelIso C i).hom).1
-  simp only [Linear.comp_smul, Iso.hom_inv_id_assoc]
-  simpa only [Linear.smul_comp] using hn
 /-- The ENO signs agree on the chosen dual label. -/
 theorem rootDualSign_dual (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
     rootDualSign C (Ground.dualIndex C i) = rootDualSign C i := by
