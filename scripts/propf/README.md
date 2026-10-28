@@ -17,4 +17,14 @@ python3 -m unittest discover -s scripts/propf -v
 
 The script verifies invertibility and all Artin relations exactly. It enumerates distinct matrices represented by bounded words in generators and inverses. For each, the roots of the resultant `Res_y(P(y), y^d P(xy))` are ratios of eigenvalues, where `P` is the characteristic polynomial. A noncyclotomic irreducible rational factor certifies a ratio that is not a root of unity and hence an infinite *projective* matrix group. Output includes the braid word, characteristic polynomial, resultant and factor for independent checking. The certificate uses exact rational arithmetic, subject to SymPy's exact factorization; it is not a Lean proof.
 
-An inconclusive output, including a node-limit exit, does not establish finiteness. Checking Artin relations alone does not prove that the matrices arise from any category, object, tensor power, or F/R symbols; those links must be established independently. The current input format only accepts rational matrices. General Atlas matrices will often have cyclotomic or other algebraic entries, so an exact number-field implementation and a verified F/R-to-matrix adapter are still needed. A non-root-of-unity eigenvalue ratio of a braid word is sufficient but not necessary for infinite image; in particular, inspecting generator eigenvalues alone is insufficient. Never infer an exact certificate from floating-point orbit growth.
+An inconclusive output, including a node-limit exit, does not establish finiteness. Checking Artin relations alone does not prove that the matrices arise from any category, object, tensor power, or F/R symbols; those links must be established independently. A verified F/R-to-matrix adapter is still needed, as is support for algebraic fields beyond cyclotomic fields. A non-root-of-unity eigenvalue ratio of a braid word is sufficient but not necessary for infinite image; in particular, inspecting generator eigenvalues alone is insufficient. Never infer an exact certificate from floating-point orbit growth.
+
+## Cyclotomic matrices
+
+`cyclotomic_braid.py` accepts matrices over Q(ζₙ), where ζₙ is a primitive n-th root of unity and `order` is n. Each entry is a nonempty list of rational coefficients in increasing powers of ζₙ. For example, a two-strand representation with one diagonal generator is:
+
+```json
+{"order": 5, "generators": [[[[0, 1], [0]], [[0], [2]]]]}
+```
+
+Run `python3 scripts/propf/cyclotomic_braid.py matrices.json`. The field arithmetic and relation checks are exact. For each word, the tool first forms the ratio resultant over Q(ζₙ), then takes its norm to Q by another resultant with Φₙ. A noncyclotomic irreducible factor of this norm certifies a non-root-of-unity ratio: being a root of unity is preserved by Galois conjugation. The norm may be expensive at large field degrees or matrix dimensions. The same interpretation and inconclusive-result limitations described above apply.
