@@ -196,9 +196,8 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   rw [hr, hnorm i, Complex.ofReal_pow] at hh
   have hf : (fpSimple C i : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt (fpSimple_pos C i)
-  have hl : unitScalar C (p.leftTrace (𝟙 X)) = (fpSimple C i : ℂ) := by
-    apply mul_left_cancel₀ hf
-    simpa [pow_two] using hh.symm
+  have hl : unitScalar C (p.leftTrace (𝟙 X)) = (fpSimple C i : ℂ) :=
+    mul_left_cancel₀ hf (by simpa [pow_two] using hh.symm)
   apply (Ground.unitScalarEquiv C).injective
   simpa only [← Ground.unitScalar_eq_equiv] using hl.trans hr.symm
 
@@ -230,15 +229,9 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
     (hdef : ScaledMultiplicityDefectsTrivial C c)
     (hunit : RootSignUnitLaw C c hc) : PivotalStructure (C := C.Obj) where
   iso X := (rootSignTwist C c hc).app X
-  naturality {X Y} f := by
-    have h := (rootSignTwist C c hc).hom.naturality f
-    change f ≫ ((rootSignTwist C c hc).app Y).hom =
-      ((rootSignTwist C c hc).app X).hom ≫ ((fᘁ)ᘁ) at h
-    exact h
-  tensor X Y := by
-    apply doubleDualTensor_extension C (rootSignTwist C c hc)
-    intro i j
-    exact congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C hc (hdef i j))
+  naturality {_X _Y} f := (rootSignTwist C c hc).hom.naturality f
+  tensor X Y := doubleDualTensor_extension C (rootSignTwist C c hc)
+    (fun i j ↦ congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C hc (hdef i j))) X Y
   unit := hunit
 
 set_option backward.isDefEq.respectTransparency false in
@@ -264,21 +257,16 @@ theorem normalized_defects_trivial
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hdom : ∀ i j k, ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) :=
     fun i j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv i j k)
-  have hphase : ∀ i j k, enoTraceMatrix C i j k * (q k / (q i * q j)) =
+  have hphase (i j k) : enoTraceMatrix C i j k * (q k / (q i * q j)) =
       (fusionCoeff C i j k : ℂ) := by
-    intro i j k
     simpa [q, div_eq_mul_inv, mul_assoc] using
       (fusion_complex_eigenvalue_saturation C hsat hdom heig i j k)
   change ScaledMultiplicityDefectsTrivial C c
   intro i j k
   let r := q k / (q i * q j)
-  have hrnorm : ‖r‖ = 1 := by
-    dsimp [r]
-    rw [norm_div, norm_mul, hq i, hq j, hq k]
-    norm_num
+  have hrnorm : ‖r‖ = 1 := by simp [r, hq]
   have hrtrace : LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap * r =
-      (Module.finrank ℂ (simples C k ⟶ simples C i ⊗ simples C j) : ℂ) := by
-    exact hphase i j k
+      (Module.finrank ℂ (simples C k ⟶ simples C i ⊗ simples C j) : ℂ) := hphase i j k
   let : FiniteDimensional ℂ
     (simples C k ⟶ simples C i ⊗ simples C j) :=
     IsFusionCategory.hom_finite _ _
@@ -301,22 +289,18 @@ theorem positive_spherical_of_matrix_identities
   have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero C i)
     (by exact_mod_cast ne_of_gt (fpSimple_pos C i)))
   have hdef : ScaledMultiplicityDefectsTrivial C c := normalized_defects_trivial C hinv heig hsat
-  have hvalue : ∀ i, c i * rootDimension C i = (fpSimple C i : ℂ) := by
-    intro i
-    have hf : (fpSimple C i : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (fpSimple_pos C i)
+  have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) := by
     dsimp [c, q]
-    field_simp [hf, rootDimension_ne_zero C i]
+    rw [inv_div, div_mul_cancel₀ _ (rootDimension_ne_zero C i)]
   have hu : c (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
     rw [hvalue, fpSimple_unit]
     norm_num
   let unitProof := rootSignTwist_unit_of_simple_dimension C hc hu
   let p := rootPhasePivotal C c hc hdef unitProof
-  have hp : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
-    intro i
+  have hp (i) : pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     rw [rootPhasePivotal_dimension, hvalue]
-  refine ⟨p, spherical_of_fp_dimensions_and_squaredNorms C p hp ?_, hp⟩
-  intro i
-  rw [hnorm i, hsat i]
+  exact ⟨p, spherical_of_fp_dimensions_and_squaredNorms C p hp
+    (fun i ↦ by rw [hnorm i, hsat i]), hp⟩
 
 end PropertyF.Ground.Dimensions
 
