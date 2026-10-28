@@ -64,10 +64,8 @@ theorem drinfeld_tensor_inverse (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
 /-- Formula for transporting the inverse Drinfeld map through an isomorphism. -/
 theorem drinfeld_inv_natural {A B : C.Obj} (t : A ≅ B) :
     (doubleDualIso C A).inv = (((t.homᘁ)ᘁ) ≫ (doubleDualIso C B).inv) ≫ t.inv := by
-  apply (cancel_epi (doubleDualIso C A).hom).1
-  simp only [Iso.hom_inv_id]
-  rw [Category.assoc, ← Dimensions.doubleDualIso_natural_assoc]
-  simp
+  rw [Iso.eq_comp_inv, Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
+  exact Dimensions.doubleDualIso_natural C t.hom
 
 /-- The inverse dual Drinfeld map after the tensorator, in terms of the
 reversed dual factors and monodromy. -/
@@ -96,7 +94,7 @@ theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
         (rightDualTensorIso (Yᘁ) (Xᘁ)).inv := by
     rw [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
     exact rightDualTensorIso_monodromy
-  have ht' := rightDualTensorIso_inv_natural f g
+  have ht' := (Dimensions.rightDualTensorIso_inv_natural f g).symm
   simp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫

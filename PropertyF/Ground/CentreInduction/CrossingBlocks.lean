@@ -88,25 +88,13 @@ theorem crossing_completeness (T : C.Obj)
       crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) =
         𝟙 (T ⊗ simples C j) := by
   classical
-  let e := Dimensions.simpleDecomposition C (T ⊗ simples C j)
-  let V := Dimensions.simplePiecesObject C (T ⊗ simples C j)
-  have hs : e.hom ≫ (𝟙 (⨁ V)) ≫ e.inv = 𝟙 (T ⊗ simples C j) := by
-    dsimp [e, V]
-    simp
-  have ht := congrArg (fun k => e.hom ≫ k ≫ e.inv) (biproduct.total (f := V))
-  rw [hs] at ht
-  simp only [Preadditive.comp_sum, Preadditive.sum_comp, Category.assoc] at ht
-  calc
-    _ = ∑ p, e.hom ≫ biproduct.π V p ≫ biproduct.ι V p ≫ e.inv := by
-      apply Finset.sum_congr rfl
-      intro p _
-      cases p
-      simp [crossingProjection, crossingInclusion, Dimensions.simpleInclusion, e, V, Category.assoc]
-    _ = _ := ht
+  simp only [crossingProjection, crossingInclusion, Dimensions.simpleInclusion,
+    Category.assoc, ← Preadditive.comp_sum]
+  simp_rw [← Category.assoc (biproduct.π _ _)]
+  rw [← Preadditive.sum_comp, biproduct.total, Category.id_comp, Iso.hom_inv_id]
 
-/-- The finite matrix formula proposed for the induction half-braiding. This
-is only a morphism; invertibility, naturality, the tensor law, and compatibility
-with the induction functor are not yet proved. -/
+/-- The finite matrix formula for the induction half-braiding. Its invertibility
+and coherence are established in the subsequent induction modules. -/
 def crossingCandidate (X T : C.Obj) :
     underlying C X ⊗ T ⟶ T ⊗ underlying C X := by
   classical
