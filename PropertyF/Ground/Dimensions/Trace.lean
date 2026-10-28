@@ -128,18 +128,19 @@ theorem quantumTraces_iso :
 
 end
 
-/-- The inverse dual pivotal components are natural on dual morphisms. -/
-theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
-    {X Y : C} (f : X ⟶ Y) :
-    (fᘁ) ≫ (rightDualIsoMap (p.iso X)).symm.hom =
-      (rightDualIsoMap (p.iso Y)).symm.hom ≫ ((fᘁ)ᘁ)ᘁ := by
+/-- A naturality square for double-dual components induces one on their inverse duals. -/
+theorem dual_naturality {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ) (f : X ⟶ Y)
+    (h : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
+    (fᘁ) ≫ (rightDualIsoMap j).symm.hom =
+      (rightDualIsoMap k).symm.hom ≫ ((fᘁ)ᘁ)ᘁ := by
   simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using congrArg rightAdjointMate
-    ((CommSq.vert_inv (CommSq.mk (p.naturality f))).w).symm
+    ((CommSq.vert_inv (CommSq.mk h)).w).symm
 
 /-- The left pivotal trace is cyclic without requiring sphericality. -/
 theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
     (f : X ⟶ Y) (g : Y ⟶ X) : p.leftTrace (f ≫ g) = p.leftTrace (g ≫ f) := by
   simpa [PivotalStructure.leftTrace, rightTraceWith, rightDualIsoMap, ← comp_rightAdjointMate,
-    rightAdjointMate_comp_evaluation] using rightTraceWith_cyclic (gᘁ) (fᘁ) (dual_pivotal_naturality p g)
+    rightAdjointMate_comp_evaluation] using
+      rightTraceWith_cyclic (gᘁ) (fᘁ) (dual_naturality (p.iso Y) (p.iso X) g (p.naturality g))
 
 end PropertyF.Ground.Dimensions
