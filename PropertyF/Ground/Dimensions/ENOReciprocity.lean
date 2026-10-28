@@ -162,8 +162,7 @@ variable (C : BraidedFusionCategory.{v,u})
 variable {C} in
 /-- A pivotal structure whose simple dimensions and intrinsic norms are the
 FP values is spherical. -/
-theorem spherical_of_fp_dimensions_and_squaredNorms
-    {p : PivotalStructure (C := C.Obj)}
+theorem spherical_of_fp_dimensions_and_squaredNorms {p : PivotalStructure (C := C.Obj)}
     (hdim : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (hnorm : ∀ i, squaredNorm C (simples C i) =
       ((fpSimple C i ^ 2 : ℝ) : ℂ)) : p.IsSpherical := by
@@ -216,8 +215,7 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
-theorem rootPhasePivotal_dimension
-    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
+theorem rootPhasePivotal_dimension {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
     (hdef : ScaledMultiplicityDefectsTrivial C c)
     (hunit : RootSignUnitLaw C c hc) (i : Fin (rank C)) :
     pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
