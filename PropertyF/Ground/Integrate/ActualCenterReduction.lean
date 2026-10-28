@@ -188,12 +188,10 @@ theorem propertyF_of_galois_column
     (y : Fin (rank Z))
     (hColumn : ∀ x, Modular.categoricalS Z p x y =
       Modular.simpleDimension Z p y * τ (Modular.simpleDimension Z p x)) :
-    ObjectPropertyF (simples Z y) := by
-  apply hFinite y
-  apply hDouble y
-  intro x hx
-  obtain ⟨z, hz⟩ := hIntegral x hx
-  rw [hColumn, hz, map_intCast, mul_comm]
+    ObjectPropertyF (simples Z y) :=
+  hFinite y <| hDouble y fun x hx ↦ by
+    obtain ⟨z, hz⟩ := hIntegral x hx
+    rw [hColumn, hz, map_intCast, mul_comm]
 
 end PropertyF.Ground
 end

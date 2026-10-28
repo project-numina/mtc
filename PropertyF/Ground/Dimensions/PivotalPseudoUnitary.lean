@@ -160,8 +160,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Twisting any pivotal structure by its saturated phases constructs the canonical positive spherical structure. -/
 theorem positive_spherical_of_pivotal_pseudoUnitary
     (p : PivotalStructure (C := C.Obj)) (hpu : Ground.PseudoUnitary C) :
-    ∃ q : PivotalStructure (C := C.Obj), q.IsSpherical ∧ ∀ i,
-      pivotalDimension C q (simples C i) = (fpSimple C i : ℂ) := by
+    HasFPSphericalStructure C := by
   let z : Fin (rank C) → ℂ := fun i => pivotalDimension C p (simples C i)
   let f := fpSimple C
   let q : Fin (rank C) → ℂ := fun i => z i / (f i : ℂ)

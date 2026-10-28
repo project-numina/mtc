@@ -27,10 +27,10 @@ open PropertyF.Ground.Dimensions
 namespace PropertyF.Ground.Modular
 
 /-- Normalized columns satisfy the fusion-character equations. -/
-abbrev HasVerlindeFormula {ι : Type*} [Fintype ι] (N : FusionRules ι)
-    (S : Matrix ι ι ℂ) (d : ι → ℂ) : Prop :=
+abbrev HasVerlindeFormula {ι : Type*} [Fintype ι] {K : Type*} [DivisionSemiring K]
+    (N : FusionRules ι) (S : Matrix ι ι K) (d : ι → K) : Prop :=
   ∀ i j y, (S i y / d y) * (S j y / d y) =
-    ∑ k, (N.coeff i j k : ℂ) * (S k y / d y)
+    ∑ k, (N.coeff i j k : K) * (S k y / d y)
 
 /-- Complex automorphisms act on normalized S-matrix columns. -/
 abbrev IsGaloisColumnAction {ι : Type*} (S : Matrix ι ι ℂ) (d : ι → ℂ)
@@ -310,10 +310,8 @@ theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,
 
 /-- The normalized S columns satisfy the Verlinde fusion-character equations. -/
 theorem categoricalS_verlinde (D : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := D.Obj)) : ∀ i j k,
-    (categoricalS D p i k / simpleDimension D p k) *
-      (categoricalS D p j k / simpleDimension D p k) =
-    ∑ l, (fusionCoeff D i j l : ℂ) * (categoricalS D p l k / simpleDimension D p k) :=
+    (p : PivotalStructure (C := D.Obj)) :
+    HasVerlindeFormula ⟨unitIndex D, fusionCoeff D⟩ (categoricalS D p) (simpleDimension D p) :=
   categoricalS_verlinde_of_hopf_product D p
     (hopf_product_of_partialTrace_composition D p (partialTrace_doubleBraiding_tensor D p))
 

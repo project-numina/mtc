@@ -160,12 +160,14 @@ theorem characters_bijective (columns : ι → Character N)
     exact ⟨y, hy.symm⟩
 
 /-- The square of an S-matrix is a scalar multiple of duality. -/
-abbrev HasSSquare (S : Matrix ι ι ℂ) (dual : ι → ι) (D : ℂ) : Prop :=
+abbrev HasSSquare {R : Type*} [Semiring R] (S : Matrix ι ι R) (dual : ι → ι)
+    (D : R) : Prop :=
   ∀ x y, ∑ z, S x z * S z y = if x = dual y then D else 0
 
 /-- Symmetry and the S-square relation force the duality map to be an
 involution, independently of categorical duality. -/
-theorem dual_involutive {S : Matrix ι ι ℂ} {dual : ι → ι} {D : ℂ}
+theorem dual_involutive {R : Type*} [CommSemiring R]
+    {S : Matrix ι ι R} {dual : ι → ι} {D : R}
     (hD : D ≠ 0) (hsym : ∀ x y, S x y = S y x)
     (hsq : HasSSquare S dual D) :
     Function.Involutive dual := by
@@ -185,15 +187,15 @@ theorem dual_involutive {S : Matrix ι ι ℂ} {dual : ι → ι} {D : ℂ}
 
 /-- The normalized S columns are linearly independent. The proof constructs an
 explicit inverse from the S-square identity and nonzero dimensions. -/
-theorem normalized_columns_linearIndependent {S : Matrix ι ι ℂ}
-    {dual : ι → ι} {dimension : ι → ℂ} {D : ℂ}
+theorem normalized_columns_linearIndependent {K : Type*} [Field K] {S : Matrix ι ι K}
+    {dual : ι → ι} {dimension : ι → K} {D : K}
     (hd : ∀ y, dimension y ≠ 0) (hD : D ≠ 0)
     (hsym : ∀ x y, S x y = S y x)
     (hsq : HasSSquare S dual D) :
-    LinearIndependent ℂ (fun y x => S x y / dimension y) := by
+    LinearIndependent K (fun y x => S x y / dimension y) := by
   classical
-  let A : Matrix ι ι ℂ := fun x y => S x y / dimension y
-  let B : Matrix ι ι ℂ := fun x y => dimension x * S x (dual y) / D
+  let A : Matrix ι ι K := fun x y => S x y / dimension y
+  let B : Matrix ι ι K := fun x y => dimension x * S x (dual y) / D
   have hddual := dual_involutive hD hsym hsq
   have hab : A * B = 1 := by
     ext x y

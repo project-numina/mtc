@@ -106,9 +106,9 @@ theorem globalFPDimension_square_of_adjunction
     (I : C.Obj ⥤ CategoryTheory.Center C.Obj)
     (adj : CategoryTheory.Center.forget C.Obj ⊣ I)
     (hI : ∀ i, Nonempty ((I.obj (simples C i)).1 ≅ underlying C (simples C i))) :
-    globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 := by
-  apply globalFPDimension_square_of_induction C (fun i => I.obj (simples C i)) hI
-  exact fun i j => (homLinearEquivOfAdjunction (CategoryTheory.Center.forget C.Obj) I adj
-    (simples (Integrate.bundledCenter C) j) (simples C i)).finrank_eq
+    globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 :=
+  globalFPDimension_square_of_induction C (fun i => I.obj (simples C i)) hI
+    (fun i j => (homLinearEquivOfAdjunction (CategoryTheory.Center.forget C.Obj) I adj
+      (simples (Integrate.bundledCenter C) j) (simples C i)).finrank_eq)
 
 end PropertyF.Ground.CentreInduction
