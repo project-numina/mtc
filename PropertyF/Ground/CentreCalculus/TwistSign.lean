@@ -61,8 +61,6 @@ theorem inverse_crossing_snake :
     _ = 𝟙 X := by
       simp [ExactPairing.evaluation_coevaluation_assoc]
 
-variable [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the first strand of the inverse braiding gives the inverse
 pivotal/Drinfeld twist. -/
@@ -71,7 +69,7 @@ theorem leftPartialTrace_inverse_braiding :
       End.of ((braidedDoubleDualIso X).hom ≫ (p.iso X).inv) := by
   apply End.ext
   let t : X ⟶ X := (braidedDoubleDualIso X).hom ≫ (p.iso X).inv
-  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+  simp only [leftPartialTrace,
     pivotal_coevaluation_factor (p := p) X, comp_whiskerRight, Category.assoc]
   -- The inverse crossings cancel after applying the inverse hexagon.
   have hmove : (Xᘁ ◁ t) ▷ X ≫ (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) =
