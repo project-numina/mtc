@@ -26,22 +26,21 @@ omit [RightRigidCategory D] in
 /-- Forgetting a centre mate computes the mate for the forgotten dual pairings. -/
 theorem forget_rightAdjointMate (f : X ⟶ Y) :
     (fᘁ).f = @rightAdjointMate D _ _ X.1 Y.1
-      (show HasRightDual X.1 from { rightDual := (Xᘁ).1, exact := forgetPairing X })
-      (show HasRightDual Y.1 from { rightDual := (Yᘁ).1, exact := forgetPairing Y }) f.f := by
+      (forgetRightDual X) (forgetRightDual Y) f.f := by
   simp [rightAdjointMate]
   rfl
 
 /-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
 theorem forgetDualIso_natural (f : X ⟶ Y) :
-    (fᘁ).f ≫ (κ X).hom = (κ Y).hom ≫ (f.fᘁ) := by
-  simp [forget_rightAdjointMate, forgetDualIso, rightDualIso, ← comp_rightAdjointMate]
+    CommSq (fᘁ).f (κ Y).hom (κ X).hom (f.fᘁ) :=
+  ⟨by simp [forget_rightAdjointMate, forgetDualIso, rightDualIso, ← comp_rightAdjointMate]⟩
 
 /-- The double-dual comparison is natural in centre morphisms. -/
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     CommSq ((fᘁ)ᘁ).f (κ₂ X).hom (κ₂ Y).hom ((f.fᘁ)ᘁ) := ⟨by
   simpa [forgetDoubleDualIso, rightDualIsoMap] using
-    (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by simpa only [comp_rightAdjointMate] using
-      (congrArg rightAdjointMate (CommSq.vert_inv ⟨forgetDualIso_natural f⟩).w).symm⟩).w⟩
+    ((forgetDualIso_natural (fᘁ)).vert_comp ⟨by simpa only [comp_rightAdjointMate] using
+      (congrArg rightAdjointMate (forgetDualIso_natural f).vert_inv.w).symm⟩).w⟩
 
 variable (p : PivotalStructure (C := D))
 
@@ -146,7 +145,8 @@ theorem forgetDoubleDualIso_tensor :
       ((κ₂ X).hom ⊗ₘ (κ₂ Y).hom) ≫
         (μ₂ X.1 Y.1).hom := by
   simp [doubleDualTensorIso, rightDualIsoMap, forgetDoubleDualIso,
-    reassoc_of% forgetDualIso_natural, reassoc_of% forgetDualIso_tensor_inv (Yᘁ) (Xᘁ),
+    reassoc_of% (fun {A B : 𝒵} (f : A ⟶ B) ↦ (forgetDualIso_natural f).w),
+    reassoc_of% forgetDualIso_tensor_inv (Yᘁ) (Xᘁ),
     forgetDualIso_tensor_mate_inv X Y,
     ← reassoc_of% rightDualTensorIso_inv_natural (κ Y).inv (κ X).inv,
     tensorHom_comp_tensorHom_assoc]
@@ -190,7 +190,7 @@ theorem forgetDoubleDualIso_unit :
     rightDualIsoMap, Center.comp_f, forgetDoubleDualIso, Category.assoc]
   change e.inv.f ≫ (e.homᘁ).f ≫ (κ (Uᘁ)).hom ≫
       (κ U).invᘁ = b.inv ≫ b.homᘁ
-  erw [reassoc_of% forgetDualIso_natural e.hom]
+  erw [(forgetDualIso_natural e.hom).w_assoc]
   rw [← hu, comp_rightAdjointMate, Category.assoc,
     ← Category.assoc e.inv.f, hv, ← comp_rightAdjointMate, Iso.inv_hom_id,
     rightAdjointMate_id, Category.comp_id]

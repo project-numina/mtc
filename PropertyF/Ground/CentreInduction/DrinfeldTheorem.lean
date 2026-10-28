@@ -18,11 +18,11 @@ universe v u
 /-- The Drinfeld map satisfies tensor coherence in a braided rigid category. -/
 theorem drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [BraidedCategory D] [RightRigidCategory D] (X Y : D) :
-    Modular.doubleBraiding X Y ≫ (drinfeldIso (X ⊗ Y)).hom =
-      ((drinfeldIso X).hom ⊗ₘ (drinfeldIso Y).hom) ≫ (doubleDualTensorIso X Y).hom :=
-  CentreIntegrate.drinfeld_tensor_of_pairing_cap (fun Z ↦ drinfeldIso Z)
+    CommSq (Modular.doubleBraiding X Y) ((drinfeldIso X).hom ⊗ₘ (drinfeldIso Y).hom)
+      (drinfeldIso (X ⊗ Y)).hom (doubleDualTensorIso X Y).hom :=
+  ⟨CentreIntegrate.drinfeld_tensor_of_pairing_cap (fun Z ↦ drinfeldIso Z)
     (drinfeld_eval (X ⊗ Y))
-    ((monodromy_tensor_cap_evaluated X Y).trans (drinfeld_tensor_cap_factor X Y).symm)
+    ((monodromy_tensor_cap_evaluated X Y).trans (drinfeld_tensor_cap_factor X Y).symm)⟩
 
 end PropertyF.Ground
 end
@@ -62,17 +62,14 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 -- The Drinfeld isomorphism and the double-dual tensor comparison.
 local notation "d" => drinfeldIso
 local notation "μ₂" => doubleDualTensorIso
-local notation "d₄" => fourthDualIso
 -- Monodromy is the double braiding.
 local notation "M" => Modular.doubleBraiding
 
-/-- The inverse Drinfeld map satisfies the reversed tensor identity. -/
+/-- The tensorator and inverse Drinfeld maps form the reversed tensor square. -/
 theorem drinfeld_tensor_inverse :
-    (d (X ⊗ Y)).inv = (μ₂ X Y).inv ≫
-      ((d X).inv ⊗ₘ (d Y).inv) ≫ M X Y :=
-  (Iso.eq_inv_comp (μ₂ X Y)).2 <| by
-    simpa only [tensorIso_inv] using
-      (CommSq.vert_inv (g := d X ⊗ᵢ d Y) (h := d (X ⊗ Y)) ⟨drinfeld_tensor X Y⟩).w
+    CommSq (μ₂ X Y).hom ((d X).inv ⊗ₘ (d Y).inv) (d (X ⊗ Y)).inv (M X Y) := by
+  simpa only [tensorIso_inv] using
+    CommSq.vert_inv (g := d X ⊗ᵢ d Y) (h := d (X ⊗ Y)) (drinfeld_tensor X Y)
 
 omit [RightRigidCategory D] in
 /-- The inverse Drinfeld map is natural in the object. -/
@@ -91,7 +88,8 @@ theorem drinfeld_inv_dual_tensor :
   let f := (d (Yᘁ)).inv
   let g := (d (Xᘁ)).inv
   have hn' := congrArg rightAdjointMate ((Iso.eq_comp_inv t).2 (drinfeld_inv_natural t.hom).w)
-  have hi' := congrArg (fun z => rightAdjointMate z) (drinfeld_tensor_inverse (Yᘁ : D) (Xᘁ : D))
+  have hi' := congrArg rightAdjointMate <|
+    (Iso.eq_inv_comp (μ₂ (Yᘁ : D) (Xᘁ : D))).2 (drinfeld_tensor_inverse (Yᘁ : D) (Xᘁ : D)).w
   simp only [comp_rightAdjointMate] at hn' hi'
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap, Category.assoc]
@@ -107,12 +105,10 @@ theorem drinfeld_inv_dual_tensor :
 
 /-- The Drinfeld tensor law forces monoidality of the canonical fourth-dual map. -/
 theorem fourthDualIso_tensor :
-    (d₄ (X ⊗ Y)).hom =
-      ((d₄ X).hom ⊗ₘ (d₄ Y).hom) ≫
-        (μ₂ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫ (((μ₂ X Y).homᘁ)ᘁ) := by
+    fourthDualTensorLaw X Y := by
   let m : X ⊗ Y ≅ X ⊗ Y := (β_ X Y) ≪≫ (β_ Y X)
-  simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap]
-  rw [(Iso.eq_inv_comp m).2 (drinfeld_tensor X Y)]
+  simp only [fourthDualTensorLaw, fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap]
+  rw [(Iso.eq_inv_comp m).2 (drinfeld_tensor X Y).w]
   rw [Category.assoc, Category.assoc, drinfeld_inv_dual_tensor X Y]
   simp only [← tensorHom_comp_tensorHom_assoc, ← Category.assoc]
   rw [Category.assoc m.inv,
