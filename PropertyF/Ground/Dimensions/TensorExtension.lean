@@ -164,36 +164,24 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
         (doubleDualTensorIso (simples C i) (simples C j)).hom))
     (X Y : C.Obj) : (a.app (X ⊗ Y)).hom =
       ((a.app X).hom ⊗ₘ (a.app Y).hom) ≫ (doubleDualTensorIso X Y).hom := by
-  classical
-  let ex := simpleDecomposition C X
-  let ey := simpleDecomposition C Y
-  let V := simplePiecesObject C X
-  let W := simplePiecesObject C Y
-  apply (cancel_epi (ex.symm ⊗ᵢ ey.symm).hom).1
-  apply tensorBiproduct_hom_ext C V W
-  intro i j
-  let sx : simples C i.1 ⟶ X := biproduct.ι V i ≫ ex.inv
-  let sy : simples C j.1 ⟶ Y := biproduct.ι W j ≫ ey.inv
+  apply tensor_simples_hom_ext C
+  intro i j sx sy
   have hx := a.hom.naturality sx
   have hy := a.hom.naturality sy
   have hz := a.hom.naturality (sx ⊗ₘ sy)
-  change sx ≫ (a.app X).hom = (a.app (simples C i.1)).hom ≫ ((sxᘁ)ᘁ) at hx
-  change sy ≫ (a.app Y).hom = (a.app (simples C j.1)).hom ≫ ((syᘁ)ᘁ) at hy
+  change sx ≫ (a.app X).hom = (a.app (simples C i)).hom ≫ ((sxᘁ)ᘁ) at hx
+  change sy ≫ (a.app Y).hom = (a.app (simples C j)).hom ≫ ((syᘁ)ᘁ) at hy
   change (sx ⊗ₘ sy) ≫ (a.app (X ⊗ Y)).hom =
-    (a.app (simples C i.1 ⊗ simples C j.1)).hom ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) at hz
-  have hh : (sx ⊗ₘ sy) ≫ (a.app (X ⊗ Y)).hom =
-      (sx ⊗ₘ sy) ≫ (((a.app X).hom ⊗ₘ (a.app Y).hom) ≫ (doubleDualTensorIso X Y).hom) := by
-    calc
-      _ = (a.app (simples C i.1 ⊗ simples C j.1)).hom ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) := hz
-      _ = (((a.app (simples C i.1)).hom ⊗ₘ (a.app (simples C j.1)).hom) ≫
-        (doubleDualTensorIso _ _).hom) ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) := by rw [hpair]
-      _ = ((a.app (simples C i.1)).hom ⊗ₘ (a.app (simples C j.1)).hom) ≫
-        ((((sxᘁ)ᘁ) ⊗ₘ ((syᘁ)ᘁ)) ≫ (doubleDualTensorIso X Y).hom) := by rw [Category.assoc, ← doubleDualTensorIso_natural]
-      _ = ((sx ≫ (a.app X).hom) ⊗ₘ (sy ≫ (a.app Y).hom)) ≫ (doubleDualTensorIso X Y).hom := by
-        rw [tensorHom_comp_tensorHom_assoc, ← hx, ← hy]
-      _ = _ := by rw [← tensorHom_comp_tensorHom, Category.assoc]
-  simpa [sx, sy, ex, ey, V, W, tensorIso_hom, tensorHom_comp_tensorHom,
-    Category.assoc] using hh
+    (a.app (simples C i ⊗ simples C j)).hom ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) at hz
+  calc
+    _ = (a.app (simples C i ⊗ simples C j)).hom ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) := hz
+    _ = (((a.app (simples C i)).hom ⊗ₘ (a.app (simples C j)).hom) ≫
+      (doubleDualTensorIso _ _).hom) ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) := by rw [hpair]
+    _ = ((a.app (simples C i)).hom ⊗ₘ (a.app (simples C j)).hom) ≫
+      ((((sxᘁ)ᘁ) ⊗ₘ ((syᘁ)ᘁ)) ≫ (doubleDualTensorIso X Y).hom) := by rw [Category.assoc, ← doubleDualTensorIso_natural]
+    _ = ((sx ≫ (a.app X).hom) ⊗ₘ (sy ≫ (a.app Y).hom)) ≫ (doubleDualTensorIso X Y).hom := by
+      rw [tensorHom_comp_tensorHom_assoc, ← hx, ← hy]
+    _ = _ := by rw [← tensorHom_comp_tensorHom, Category.assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignQuantumTrace_simple
