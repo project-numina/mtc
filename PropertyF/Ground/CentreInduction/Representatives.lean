@@ -54,8 +54,7 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
     [(A : E) → FiniteDimensional k (A ⟶ A)] [(Z : E) → Injective Z]
     (hasSimple : ∀ {Z : E}, ¬ IsZero Z → ∃ (S : E) (f : S ⟶ Z), Simple S ∧ Mono f)
     (Z : E) : FiniteSimpleSum E Z := by
-  let m : E → ℕ := fun W => Module.finrank k (W ⟶ W)
-  induction Z using (measure m).wf.induction with
+  induction Z using (measure fun W : E => Module.finrank k (W ⟶ W)).wf.induction with
   | h Z ih =>
     by_cases hz : IsZero Z
     · exact .zero hz
@@ -66,10 +65,10 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
       let e : Z ≅ S ⊞ cokernel f :=
         (ShortComplex.Splitting.ofExactOfRetraction (ShortComplex.cokernelSequence f)
           (ShortComplex.cokernelSequence_exact f) r hr inferInstance).isoBinaryBiproduct
-      have hk : m (cokernel f) < m Z := by
-        simpa only [m, (CategoryTheory.Linear.homCongr k e e).finrank_eq] using
-          finrank_end_complement_lt (k := k) (cokernel f) (Simple.not_isZero S)
-      exact .cons hS (ih (cokernel f) hk) ⟨e⟩
+      exact .cons hS (ih (cokernel f) (by
+        change Module.finrank k (cokernel f ⟶ cokernel f) < Module.finrank k (Z ⟶ Z)
+        simpa only [(CategoryTheory.Linear.homCongr k e e).finrank_eq] using
+          finrank_end_complement_lt (k := k) (cokernel f) (Simple.not_isZero S))) ⟨e⟩
 
 end PropertyF.Ground.CentreInduction
 
