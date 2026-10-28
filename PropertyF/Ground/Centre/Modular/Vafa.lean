@@ -49,18 +49,14 @@ theorem derivation_vanishes_of_regular_eigenvector (N : ι → ι → ι → K) 
   dsimp only [IsFusionDerivation] at hderiv
   intro i
   let R : M := ∑ j, d j • b j
-  let D : K := ∑ j, d j ^ 2
   have hsum : (∑ j, d j • ∑ k, N i j k • b k) = d i • R := by
     simp only [Finset.smul_sum, smul_smul]
     rw [Finset.sum_comm]
     simp_rw [← Finset.sum_smul, hreg, mul_smul]
-    dsimp [R]
-    rw [Finset.smul_sum]
-  apply (smul_eq_zero.mp ?_).resolve_left hD
-  apply add_right_cancel (b := d i • R)
-  rw [zero_add]
-  simpa only [hderiv, smul_add, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul,
-    D, R, pow_two, Finset.smul_sum, mul_comm] using hsum
+    rw [show R = ∑ j, d j • b j from rfl, Finset.smul_sum]
+  exact (smul_eq_zero.mp (add_right_cancel (b := d i • R) (by
+    simpa only [hderiv, smul_add, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul,
+      R, pow_two, Finset.smul_sum, mul_comm, zero_add] using hsum))).resolve_left hD
 
 end
 

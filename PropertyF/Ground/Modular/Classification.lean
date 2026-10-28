@@ -174,10 +174,7 @@ theorem dual_involutive {R : Type*} [CommSemiring R]
   intro y
   have hsym_sq : (∑ z, S (dual y) z * S z y) =
       ∑ z, S y z * S z (dual y) := by
-    apply Finset.sum_congr rfl
-    intro z _
-    rw [hsym (dual y) z, hsym z y]
-    ring
+    simp_rw [hsym (dual y), hsym _ y, mul_comm]
   by_contra hn
   apply hD
   simpa only [ite_eq_left rfl, ite_true, hsym_sq, hsq, ite_eq_right (Ne.symm hn)] using

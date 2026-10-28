@@ -15,6 +15,9 @@ partial-trace compatibility. Tensor-duality identities establish that
 compatibility in spherical categories.
 -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Modular (HasFPSimpleDimensions)
+open PropertyF.Ground.Centre (permutationSign)
+open Equiv.Perm (decomposeFin)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
@@ -89,7 +92,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
-  (hdim : Modular.HasFPSimpleDimensions C p) {X : C.Obj} [Simple X]
+  (hdim : HasFPSimpleDimensions C p) {X : C.Obj} [Simple X]
 
 /-- Once left partial trace composes with total trace, Schur's lemma computes
 the closed crossing as the pivotal twist scalar. -/
@@ -136,13 +139,13 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
     (htotal : IsLeftTraceCompatible p X)
     {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
     unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 2))
-      (Equiv.Perm.decomposeFin.symm (1, σ))).asHom) =
+      (decomposeFin.symm (1, σ))).asHom) =
     pivotalBraidedTwistScalar C p X *
       unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 1)) σ).asHom) := by
   let f := (tensorPermutationAction X hX (n + 1)) σ
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   have hact : tensorPermutationAction X hX (n + 2)
-      (Equiv.Perm.decomposeFin.symm (1, σ)) =
+      (decomposeFin.symm (1, σ)) =
       b * insertLeftIdentity X f := by
     rw [decomposeFin_eq_swap_fixHead, map_mul]
     change tensorPermutationAction X hX (n + 2)
@@ -174,9 +177,9 @@ theorem integral_of_leftTrace_and_twist_sign
       tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ
   · apply integral_of_parity_adjacent_trace hdim hX true
     intro n σ
-    have hsign' : (Centre.permutationSign ℂ (n + 2)
-        (Equiv.Perm.decomposeFin.symm (1, σ)) : ℂ) =
-        -(Centre.permutationSign ℂ (n + 1) σ : ℂ) := by
+    have hsign' : (permutationSign ℂ (n + 2)
+        (decomposeFin.symm (1, σ)) : ℂ) =
+        -(permutationSign ℂ (n + 1) σ : ℂ) := by
       simpa using sign_decomposeFin 1 σ
     simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
@@ -277,7 +280,7 @@ theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
 /-- A chosen spherical pivotal structure whose simple dimensions are FP dimensions. -/
 abbrev IsFPSpherical (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) : Prop :=
-  p.IsSpherical ∧ Modular.HasFPSimpleDimensions C p
+  p.IsSpherical ∧ HasFPSimpleDimensions C p
 
 /-- A self-transparent simple with sign-valued twist has integral FP
 dimension in any FP-valued spherical fusion category. -/
