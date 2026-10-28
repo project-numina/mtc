@@ -54,27 +54,6 @@ theorem rootTensorDefect_natural
   dsimp only [doubleDualFunctor] at ha ⊢
   rw [← Category.assoc, ha, Category.assoc, hni, Category.assoc]
 
-/-- The dual-label choice can be removed from the Frobenius defect equation. -/
-theorem trace_reciprocity_of_dual_defect
-    (hraw : ∀ i j k (g : simples C i ⊗ simples C k ⟶ simples C j),
-      letI : ExactPairing ((simples C i)ᘁ) (simples C i) :=
-        BraidedCategory.exactPairing_swap _ _
-      tensorLeftHomLinearEquiv (simples C k) ((simples C i)ᘁ)
-          (simples C i) (simples C j)
-          ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
-        rootDualSign C i • (tensorLeftHomLinearEquiv (simples C k)
-            ((simples C i)ᘁ) (simples C i) (simples C j) g ≫
-          (rootTensorDefect C ((simples C i)ᘁ) (simples C j)).hom)) :
-    ENOTraceMatrixReciprocity C := by
-  apply trace_reciprocity_of_frobenius_defect C
-  intro i j k g
-  let : ExactPairing ((simples C i)ᘁ) (simples C i) :=
-    BraidedCategory.exactPairing_swap _ _
-  have hn := rootTensorDefect_natural C (rightDualLabelIso C i).hom (𝟙 (simples C j))
-  simp only [enoFrobeniusEquiv, LinearEquiv.trans_apply, Linear.homCongr_apply,
-    Iso.refl_inv, Iso.refl_hom, Category.id_comp, tensorIso_hom] 
-  rw [(hraw i j k g)]
-  simp only [Linear.smul_comp, Category.assoc, ← hn]
 
 end PropertyF.Ground.Dimensions
 
@@ -104,7 +83,7 @@ theorem trace_reciprocity_of_coeval_defect
         rootDualSign C i • (tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
     ENOTraceMatrixReciprocity C := by
-  apply trace_reciprocity_of_dual_defect C
+  apply trace_reciprocity_of_frobenius_defect C
   intro i j k g
   let X := simples C i
   let K := simples C k
@@ -117,7 +96,12 @@ theorem trace_reciprocity_of_coeval_defect
   have hn := rootTensorDefect_natural C (𝟙 (Xᘁ)) g
   simp only [id_tensorHom] at hn
   simp only [Category.id_comp] at hpost'
+  have hnlabel := rootTensorDefect_natural C (rightDualLabelIso C i).hom (𝟙 J)
+  simp only [enoFrobeniusEquiv, LinearEquiv.trans_apply, Linear.homCongr_apply,
+    Iso.refl_inv, Iso.refl_hom, Category.id_comp, tensorIso_hom]
   rw [hpost, hunit i k, Linear.smul_comp, Category.assoc, ← hn, ← Category.assoc, ← hpost']
+  dsimp only [X, K, J] at hnlabel ⊢
+  simp only [Linear.smul_comp, Category.assoc, ← hnlabel]
 end PropertyF.Ground.Dimensions
 
 end
