@@ -17,13 +17,16 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 attribute [local instance] Abelian.hasFiniteBiproducts
 
+/-- A tensor factor isomorphic to the unit and its dual cancel around any object. -/
+def unitTensorIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    {A : D} (e : A ≅ 𝟙_ D) (X : D) : (A ⊗ X) ⊗ Aᘁ ≅ X :=
+  ((e ⊗ᵢ Iso.refl X) ⊗ᵢ (rightDualIsoMap e.symm ≪≫ rightDualUnitIso)) ≪≫
+    ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
+
 /-- The unit-labelled summand is isomorphic to the middle object. -/
 def unitSummandIso :
     (simples C (unitIndex C) ⊗ X) ⊗ (simples C (unitIndex C))ᘁ ≅ X :=
-  let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
-  let d : (simples C (unitIndex C))ᘁ ≅ 𝟙_ C.Obj :=
-    rightDualIsoMap e.symm ≪≫ rightDualUnitIso
-  ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫ ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ X
+  unitTensorIso (Classical.choice (unitIndex_iso C)) X
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Every object is a retract of its underlying induction sum through the
@@ -44,11 +47,11 @@ theorem tensor_middle_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
   simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The unit summand isomorphism is natural in the middle factor. -/
-theorem unitSummandIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
-    ((simples C (unitIndex C) ◁ f) ▷ (simples C (unitIndex C))ᘁ) ≫
-        (unitSummandIso C Y).hom = (unitSummandIso C X).hom ≫ f := by
-  dsimp [unitSummandIso]
+/-- Cancelling tensor-unit factors is natural in the middle object. -/
+theorem unitTensorIso_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] {A X Y : D} (e : A ≅ 𝟙_ D) (f : X ⟶ Y) :
+    ((A ◁ f) ▷ Aᘁ) ≫ (unitTensorIso e Y).hom = (unitTensorIso e X).hom ≫ f := by
+  dsimp [unitTensorIso]
   rw [Category.assoc, ← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc]
   simp only [id_tensorHom, tensorHom_id, rightUnitor_naturality, Category.assoc,
     rightUnitor_naturality_assoc, leftUnitor_naturality]
@@ -59,10 +62,10 @@ counit for the centre-forgetful right adjunction. -/
 def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
   app X := (unitSummandRetract C X).r
   naturality {X Y} f := by
-    simpa only [underlyingFunctor, unitSummandRetract, Functor.id_map, Category.assoc,
-      biproduct.map_π_assoc] using congrArg (fun g =>
+    simpa only [underlyingFunctor, unitSummandRetract, unitSummandIso, Functor.id_map,
+      Category.assoc, biproduct.map_π_assoc] using congrArg (fun g =>
       biproduct.π (inductionSummand C X)
-        (unitIndex C) ≫ g) (unitSummandIso_natural C f)
+        (unitIndex C) ≫ g) (unitTensorIso_natural (Classical.choice (unitIndex_iso C)) f)
 
 end PropertyF.Ground.CentreInduction
 
@@ -145,17 +148,12 @@ universe v u
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
-/-- The underlying maps proposed for the induction unit and counit satisfy
-the first triangle identity. -/
-theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
-    (Z : Center C.Obj) :
-    unitCandidate C Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 := by
-  simp only [unitCandidate, underlyingCounit, unitSummandRetract,
-    CategoryTheory.Limits.biproduct.lift_π_assoc]
-  let A := simples C (unitIndex C)
-  let e : A ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
-  let d : Aᘁ ≅ 𝟙_ C.Obj := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
-  dsimp only [unitComponent, unitComponentAt, unitSummandIso]
+/-- The unit component associated to an object isomorphic to the tensor unit
+is inverse to the canonical identification of its tensor factors. -/
+theorem unitComponentAt_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] (Z : Center D) {A : D} (e : A ≅ 𝟙_ D) :
+    unitComponentAt Z A ≫ (unitTensorIso e Z.1).hom = 𝟙 Z.1 := by
+  dsimp only [unitComponentAt, unitTensorIso]
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_def,
     whiskerLeft_id, Category.comp_id, Category.assoc]
   rw [← comp_whiskerRight_assoc, ← Z.2.naturality e.hom, comp_whiskerRight_assoc,
@@ -166,10 +164,21 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp]
   have hunit := coevaluation_iso_unit e
   simp only [← whiskerLeft_comp_assoc]
-  dsimp only [A, e, d, Iso.trans_hom] at hunit
+  dsimp only [Iso.trans_hom] at hunit
   simp only [Category.assoc] at hunit ⊢
   rw [hunit, whiskerLeft_id]
   simp
+
+set_option backward.isDefEq.respectTransparency false in
+set_option backward.defeqAttrib.useBackward true in
+/-- The underlying maps proposed for the induction unit and counit satisfy
+the first triangle identity. -/
+theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
+    (Z : Center C.Obj) :
+    unitCandidate C Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 := by
+  simpa only [unitCandidate, underlyingCounit, unitSummandRetract,
+    CategoryTheory.Limits.biproduct.lift_π_assoc, unitComponent, unitSummandIso] using
+    unitComponentAt_iso_unit Z (Classical.choice (unitIndex_iso C))
 
 end PropertyF.Ground.CentreInduction
 

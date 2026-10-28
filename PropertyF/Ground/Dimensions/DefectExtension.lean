@@ -207,7 +207,7 @@ theorem fourthDualIso_tensor_of_signed_defect
     fourthDualTensorLaw C X Y := by
   let T := rootTensorIso C X Y
   let A := (fourthDualRootNaturalIso C).app (X ⊗ Y)
-  have hsq : T.hom ≫ ((T.homᘁ)ᘁ) = (fourthDualIso C (X ⊗ Y)).hom := by
+  have hsq : T.hom ≫ ((T.homᘁ)ᘁ) = (fourthDualIso (X ⊗ Y)).hom := by
     rw [(iso_comp_inv_eq_smul_iff_of_sq_one A T z hz).1 hd]
     simp only [rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul,
       hz, one_smul]

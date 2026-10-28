@@ -32,11 +32,10 @@ theorem split_to_simple {S X : C} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → C := fun p => T p.1
-  have hg : e.inv ≫ f ≠ 0 := fun h ↦ hf ((cancel_epi e.inv).1 (by simpa using h))
-  have hc : ∃ p, biproduct.ι V p ≫ e.inv ≫ f ≠ 0 := by
+  obtain ⟨p, hp⟩ : ∃ p, biproduct.ι V p ≫ e.inv ≫ f ≠ 0 := by
     by_contra! h
-    exact hg (biproduct.hom_ext' _ _ fun p ↦ by simpa only [comp_zero, Category.assoc] using h p)
-  obtain ⟨p, hp⟩ := hc
+    exact hf ((cancel_epi e.inv).1 (by simpa only [comp_zero] using
+      (biproduct.hom_ext' _ _ fun p ↦ by simpa only [comp_zero, Category.assoc] using h p)))
   let : Simple (V p) := hsimple p.1
   let g : V p ⟶ S := biproduct.ι V p ≫ e.inv ≫ f
   let : IsIso g := CategoryTheory.isIso_of_hom_simple hp

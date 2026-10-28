@@ -38,7 +38,7 @@ theorem drinfeld_unit :
       rw [hn, Category.assoc, ← comp_whiskerRight, Iso.hom_inv_id, id_whiskerRight, Category.comp_id]
     rw [← whisker_exchange_assoc, ← Category.assoc, hc]
   change (doubleDualUnitIso (C := C.Obj)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
-  exact evaluation_ext ((drinfeld_eval C U).trans h.symm)
+  exact evaluation_ext ((drinfeld_eval U).trans h.symm)
 end PropertyF.Ground.Dimensions
 
 end
@@ -59,17 +59,17 @@ theorem drinfeld_unit_dual :
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let : HasRightDual ((Uᘁ)ᘁ) := RightRigidCategory.rightDual ((Uᘁ)ᘁ)
   let r : Uᘁ ≅ U := rightDualUnitIso
-  have hu : (doubleDualIso C U).hom = (r.inv ≫ (r.homᘁ)) :=
+  have hu : (drinfeldIso U).hom = (r.inv ≫ (r.homᘁ)) :=
     drinfeld_unit C
-  have hb : (doubleDualIso C (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) = (r.homᘁ) := by
-    rw [← (doubleDualIso_natural C r.hom), hu]
+  have hb : (drinfeldIso (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) = (r.homᘁ) := by
+    rw [← (drinfeldIso_natural r.hom), hu]
     simp only [Iso.hom_inv_id_assoc]
   apply Iso.ext
   simp only [rightDualIsoMap, Iso.symm_hom]
   let ee := rightDualIsoMap (rightDualIsoMap r)
   change (doubleDualIso C (Uᘁ)).hom = ((doubleDualIso C U).invᘁ)
   apply (cancel_mono ee.hom).1
-  change (doubleDualIso C (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) =
+  change (drinfeldIso (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) =
     ((doubleDualIso C U).invᘁ) ≫ ((r.homᘁ)ᘁ)
   rw [hb]
   have hui : (doubleDualIso C U).inv = (r.invᘁ) ≫ r.hom := by
@@ -84,18 +84,17 @@ theorem fourthDualIso_unit :
     letI : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
     letI : HasRightDual ((𝟙_ C.Obj)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C.Obj)ᘁ)
     letI : HasRightDual (((𝟙_ C.Obj)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C.Obj)ᘁ)ᘁ)
-    fourthDualIso C (𝟙_ C.Obj) =
+    fourthDualIso (𝟙_ C.Obj) =
       doubleDualUnitIso (C := C.Obj) ≪≫
         rightDualIsoMap (rightDualIsoMap (doubleDualUnitIso (C := C.Obj))) := by
   let : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
   let : HasRightDual ((𝟙_ C.Obj)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C.Obj)ᘁ)
   let : HasRightDual (((𝟙_ C.Obj)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C.Obj)ᘁ)ᘁ)
-  have hu : doubleDualIso C (𝟙_ C.Obj) = doubleDualUnitIso (C := C.Obj) :=
-    Iso.ext (drinfeld_unit C)
   unfold fourthDualIso
   have hdual := drinfeld_unit_dual C
-  change doubleDualIso C ((𝟙_ C.Obj)ᘁ) =
-    (rightDualIsoMap (doubleDualIso C (𝟙_ C.Obj))).symm at hdual
+  change drinfeldIso ((𝟙_ C.Obj)ᘁ) =
+    (rightDualIsoMap (drinfeldIso (𝟙_ C.Obj))).symm at hdual
+  have hu : drinfeldIso (𝟙_ C.Obj) = doubleDualUnitIso := Iso.ext (drinfeld_unit C)
   rw [hdual, hu]
   apply Iso.ext
   rfl
@@ -141,9 +140,9 @@ theorem rootDimension_unit_sq :
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
   have hr : a.hom = r • u.hom := by
     simpa [a, r, hu] using fourthDualRoot_unit_component C
-  have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso C U).hom :=
+  have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso U).hom :=
     congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C)
-  have hfourth : (fourthDualIso C U).hom = u.hom ≫ ((u.homᘁ)ᘁ) := by
+  have hfourth : (fourthDualIso U).hom = u.hom ≫ ((u.homᘁ)ᘁ) := by
     have h := congrArg Iso.hom (fourthDualIso_unit C)
     rw [hu]
     simpa only [Iso.trans_hom, rightDualIsoMap] using h
