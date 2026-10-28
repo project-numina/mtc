@@ -257,14 +257,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 /-- Partial tracing a tensor-product monodromy leaves a conjugated partial monodromy. -/
 theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X Y : C) :
     rightPartialTrace p ((α_ Z X Y).symm.conj (End.of (doubleBraiding Z (X ⊗ Y)))) =
-    End.of ((β_ Z X).hom ≫ (X ◁ (partialMonodromy p Z Y).asHom) ≫ (β_ X Z).hom) := by
+    End.of ((β_ Z X).hom ≫ (X ◁ (partialMonodromy p Z Y).asHom) ≫ (β_ X Z).hom) :=
   let t : End ((X ⊗ Z) ⊗ Y) := End.of ((α_ X Z Y).hom ≫
     (X ◁ doubleBraiding Z Y) ≫ (α_ X Z Y).inv)
   have hfactor : (α_ Z X Y).symm.conj (End.of (doubleBraiding Z (X ⊗ Y))) =
-      End.of (((β_ Z X).hom ▷ Y) ≫ t.asHom ≫ ((β_ X Z).hom ▷ Y)) := by
-    apply End.ext
-    simpa [t, Iso.conj_apply_asHom, Category.assoc] using doubleBraiding_tensor_factorization Z X Y
-  rw [hfactor, rightPartialTrace_natural, Calculus.rightPartialTrace_whiskerLeft]
+      End.of (((β_ Z X).hom ▷ Y) ≫ t.asHom ≫ ((β_ X Z).hom ▷ Y)) := End.ext (by
+    simpa [t, Iso.conj_apply_asHom, Category.assoc] using doubleBraiding_tensor_factorization Z X Y)
+  by rw [hfactor, rightPartialTrace_natural, Calculus.rightPartialTrace_whiskerLeft]
 
 /-- A scalar partial monodromy factors out of the tensor-product partial trace. -/
 theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) {Z Y : C} (X : C) {s : ℂ}

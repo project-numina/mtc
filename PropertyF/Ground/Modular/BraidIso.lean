@@ -47,13 +47,12 @@ theorem braidGenerator_natural (n : ℕ)
   induction n with
   | zero => exact Fin.cases (braid_first f (tensorPowerIso f 0)) (fun j ↦ Fin.elim0 j) i
   | succ n ih =>
-    refine Fin.cases ?_ (fun j ↦ ?_) i
-    · exact braid_first f (tensorPowerIso f (n + 1))
-    · change (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom) ≫
-          (f.hom ⊗ₘ (tensorPowerIso f (n + 2)).hom) =
-        (f.hom ⊗ₘ (tensorPowerIso f (n + 2)).hom) ≫
-          (𝟙 Y ⊗ₘ (braidGenerator Y n j).asIso.hom)
-      simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id, ih]
+    refine Fin.cases (braid_first f (tensorPowerIso f (n + 1))) (fun j ↦ ?_) i
+    change (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom) ≫
+        (f.hom ⊗ₘ (tensorPowerIso f (n + 2)).hom) =
+      (f.hom ⊗ₘ (tensorPowerIso f (n + 2)).hom) ≫
+        (𝟙 Y ⊗ₘ (braidGenerator Y n j).asIso.hom)
+    simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id, ih]
 
 /-- Conjugation by the tensor-power isomorphism takes generators to generators. -/
 theorem conjugate_braidGenerator (n : ℕ)
