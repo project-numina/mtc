@@ -101,6 +101,7 @@ end
 The pivotal, balancing and transparency arguments supply the final reduction. -/
 
 section
+
 /-! Trivial centre transparency is constructed from actual induction. -/
 
 @[expose] public noncomputable section
