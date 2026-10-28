@@ -135,12 +135,11 @@ theorem characters_exhausted (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = 
     (χ : Character N) : ∃ y, χ = columns y := by
   obtain ⟨y, hy⟩ := Function.ne_iff.mp
     (show b.equivFun χ.value ≠ 0 from fun h ↦ by
-      have hzero : χ.value = 0 := b.equivFun.injective (by simpa using h)
-      simpa [hzero] using χ.unit_eq)
-  refine ⟨y, Character.ext (funext fun i ↦ ?_)⟩
-  exact basis_eigenvalue_eq b (fusionOperator N i) (fun j ↦ (columns j).value i)
-    χ.value (χ.value i) (fun j ↦ by rw [hb, character_eigenvector])
-    (character_eigenvector N χ i) y hy
+      simpa [b.equivFun.injective (by simpa using h)] using χ.unit_eq)
+  exact ⟨y, Character.ext (funext fun i ↦
+    basis_eigenvalue_eq b (fusionOperator N i) (fun j ↦ (columns j).value i)
+      χ.value (χ.value i) (fun j ↦ by rw [hb, character_eigenvector])
+      (character_eigenvector N χ i) y hy)⟩
 
 
 open scoped Classical in
