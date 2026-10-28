@@ -137,36 +137,26 @@ theorem crossingCandidate_natural_middle
   classical
   let VX := inductionSummand C X
   let VY := inductionSummand C Y
-  have hi (i : Fin (rank C)) :
-      (biproduct.ι VX i ▷ T) ≫ ((underlyingFunctor C).map h ▷ T) =
-        (((simples C i ◁ h) ▷ (simples C i)ᘁ) ▷ T) ≫ (biproduct.ι VY i ▷ T) := by
-    rw [← comp_whiskerRight, ← comp_whiskerRight]
-    congr 1
-    simp [underlyingFunctor, VX, VY]
   apply (cancel_epi (rightDistributor VX T).inv).1
   apply biproduct.hom_ext'
   intro i
   simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
   dsimp [VX, VY, underlying] at *
-  simp only [← Category.assoc, hi i]
+  simp only [← Category.assoc]
+  rw [← comp_whiskerRight]
+  simp only [underlyingFunctor, biproduct.ι_map, comp_whiskerRight]
   simp only [Category.assoc, crossingCandidate_on_summand]
   simp only [Preadditive.comp_sum, Preadditive.sum_comp]
   apply Finset.sum_congr rfl
   intro j _
   apply Finset.sum_congr rfl
   intro a _
-  have hj : biproduct.ι VX j ≫ (underlyingFunctor C).map h =
-      ((simples C j ◁ h) ▷ (simples C j)ᘁ) ≫ biproduct.ι VY j := by
-    simp [underlyingFunctor, VX, VY]
-  have hj' : (T ◁ biproduct.ι VX j) ≫ (T ◁ (underlyingFunctor C).map h) =
-      (T ◁ ((simples C j ◁ h) ▷ (simples C j)ᘁ)) ≫ (T ◁ biproduct.ι VY j) := by
-    simpa only [whiskerLeft_comp] using congrArg (fun g => T ◁ g) hj
-  have hblock := crossingBlock_natural_middle h
-    (crossingInclusion C T i j a) (crossingProjection C T i j a)
-  have hterm := congrArg (fun g => g ≫ (T ◁ biproduct.ι VY j)) hblock
-  simp only [Category.assoc] at hterm ⊢
-  rw [hj']
-  exact hterm
+  simp only [Category.assoc]
+  rw [← whiskerLeft_comp]
+  simp only [biproduct.ι_map, whiskerLeft_comp]
+  simpa only [Category.assoc] using congrArg (fun g => g ≫ (T ◁ biproduct.ι VY j))
+    (crossingBlock_natural_middle h
+      (crossingInclusion C T i j a) (crossingProjection C T i j a))
 
 
 end PropertyF.Ground.CentreInduction
