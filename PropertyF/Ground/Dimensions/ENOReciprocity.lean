@@ -241,6 +241,13 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] IsFusionCategory.hom_finite
+/-- An involution in a domain is fixed by the star operation. -/
+theorem star_eq_self_of_mul_self_eq_one {R : Type*} [NonAssocRing R] [NoZeroDivisors R]
+    [StarRing R] {x : R} (h : x * x = 1) : star x = x := by
+  rcases mul_self_eq_one_iff.mp h with h | h
+  · rw [h, star_one]
+  · rw [h, star_neg, star_one]
+
 variable {C} in
 /-- ENO's trace reciprocity identifies the dual root dimension with the
 signed complex conjugate of the original one. -/
@@ -252,10 +259,7 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
   let d := rootDimension C
   let ε := (rootDualSign C i).1
   have hε : ε * ε = 1 := (rootDualSign C i).2.1
-  have hεstar : star ε = ε := by
-    rcases mul_self_eq_one_iff.mp hε with h | h
-    · rw [h, star_one]
-    · rw [h, star_neg, star_one]
+  have hεstar : star ε = ε := star_eq_self_of_mul_self_eq_one hε
   have hA : ∀ j k, star (A j k) = A j k := fun j k ↦ star_involution_trace (hinv i j k)
   have ht : Aᵀ *ᵥ d = (ε * d (dualIndex C i)) • d := by
     ext j
