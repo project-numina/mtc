@@ -34,10 +34,7 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
     (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (doubleDualTensorIso B Z).hom.f at hb
   simp only [Category.assoc] at hn
   rw [hb] at hn
-  let : IsIso (doubleDualTensorIso B Z).hom.f := by
-    change IsIso ((Center.forget D).map (doubleDualTensorIso B Z).hom)
-    infer_instance
-  apply (cancel_mono (doubleDualTensorIso B Z).hom.f).1
+  apply (cancel_mono ((Center.forget D).map (doubleDualTensorIso B Z).hom)).1
   simpa [Category.assoc] using hn
 
 omit [RightRigidCategory D] [RigidCategory (Center D)] in
@@ -60,12 +57,9 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] :
     PivotalComponentsCentral p := by
   intro Z T
   let B := (Center.ofBraided D).obj T
-  let g := (positivePivotalComponent p T).hom.f
-  let : IsIso g := by
-    change IsIso ((Center.forget D).map (positivePivotalComponent p T).hom)
-    infer_instance
-  apply central_of_positive_braiding (T := T) (B := (Bᘁ)ᘁ) (transportedPivotalHom p Z) g
-  simpa only [g, B, positivePivotalComponent_forget] using transported_pivotal_braiding p Z B
+  apply central_of_positive_braiding (T := T) (B := (Bᘁ)ᘁ) (transportedPivotalHom p Z)
+    ((Center.forget D).map (positivePivotalComponent p T).hom)
+  simpa only [B, Center.forget, positivePivotalComponent_forget] using transported_pivotal_braiding p Z B
 
 end PropertyF.Ground.CentreInduction
 

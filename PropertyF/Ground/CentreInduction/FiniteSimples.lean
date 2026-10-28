@@ -37,16 +37,14 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
     intro P Q
     constructor
     · intro h
-      let : Mono P.arrow.f := inferInstanceAs (Mono ((Center.forget C.Obj).map P.arrow))
-      let : IsSplitMono P.arrow.f := mono_splits P.arrow.f
+      let : IsSplitMono P.arrow.f := mono_splits ((Center.forget C.Obj).map P.arrow)
       have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange X P :=
         ⟨retraction P.arrow.f, rfl⟩
       obtain ⟨g, hg⟩ := h hm
       change g ≫ Q.arrow.f = retraction P.arrow.f ≫ P.arrow.f at hg
       have hg' : (P.arrow.f ≫ g) ≫ Q.arrow.f = P.arrow.f := by
         rw [Category.assoc, hg, ← Category.assoc, IsSplitMono.id, Category.id_comp]
-      let : Mono Q.arrow.f := inferInstanceAs (Mono ((Center.forget C.Obj).map Q.arrow))
-      let : IsSplitMono Q.arrow.f := mono_splits Q.arrow.f
+      let : IsSplitMono Q.arrow.f := mono_splits ((Center.forget C.Obj).map Q.arrow)
       obtain ⟨t, ht⟩ := center_factor P.arrow Q.arrow (P.arrow.f ≫ g) hg'
       exact Subobject.le_of_comm t (Center.ext _ _ ((congrArg (· ≫ Q.arrow.f) ht).trans hg'))
     · intro h x hx
@@ -87,8 +85,7 @@ theorem center_cokernel_measure_lt {S W : 𝒵} (p : S ⟶ W) (hp : p ≠ 0) :
     Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) :=
   let Q := Centre.centerCokernel p
   let q : W.1 ⟶ Q.1 := (Centre.centerCokernelπ p).f
-  letI : Epi q := inferInstanceAs (Epi (cokernel.π p.f))
-  letI : IsSplitEpi q := epi_splits q
+  letI : IsSplitEpi q := epi_splits (cokernel.π p.f)
   letI : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
   finrank_end_lt_of_split_epi p.f q (fun h => hp (Center.ext p 0 h))
     (congrArg Center.Hom.f (Centre.centerCokernel_condition p))

@@ -20,7 +20,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Coevaluation is transported by an isomorphism and its inverse right dual. -/
 theorem coevaluation_iso_map {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [RightRigidCategory C] {X Y : C} (a : X ≅ Y) :
+    {X Y : C} [HasRightDual X] [HasRightDual Y] (a : X ≅ Y) :
     η_ X (Xᘁ) ≫ (a.hom ⊗ₘ (a.invᘁ)) = η_ Y (Yᘁ) := by
   rw [tensorHom_def, ← whisker_exchange, ← Category.assoc,
     coevaluation_comp_rightAdjointMate, Category.assoc, ← comp_whiskerRight,
@@ -107,7 +107,7 @@ theorem rightDualIso_inv_evaluation :
 
 /-- Closing a morphism does not change when its right dual is replaced by a
 canonically isomorphic one and the morphism is transported by the dual map. -/
-theorem trace_change_rightDual [RightRigidCategory C] {X Y Z : C}
+theorem trace_change_rightDual {X Y Z : C} [HasRightDual Y] [HasRightDual Z]
     (p : ExactPairing X Y) (q : ExactPairing X Z) (u : X ⟶ Zᘁ) :
     @ExactPairing.coevaluation C _ _ X Y p ≫
       ((u ≫ ((rightDualIso p q).hom)ᘁ) ⊗ₘ 𝟙 Y) ≫ ε_ Y (Yᘁ) =
@@ -125,6 +125,8 @@ theorem unitDoubleDual_trace [RightRigidCategory C] :
     η_ (𝟙_ C) ((𝟙_ C)ᘁ) ≫
       ((doubleDualUnitIso (C := C)).hom ⊗ₘ 𝟙 ((𝟙_ C)ᘁ)) ≫
       ε_ ((𝟙_ C)ᘁ) (((𝟙_ C)ᘁ)ᘁ) = 𝟙 (𝟙_ C) := by
+  let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+  let : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
   let hp : ExactPairing (𝟙_ C) (rightDualObject (𝟙_ C)) :=
     @HasRightDual.exact C _ _ (𝟙_ C) (RightRigidCategory.rightDual (𝟙_ C))
   let hq : ExactPairing (𝟙_ C) (𝟙_ C) := exactPairingUnit
