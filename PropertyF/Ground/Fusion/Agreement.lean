@@ -16,10 +16,13 @@ open scoped BigOperators Matrix
 
 namespace PropertyF.Ground
 
+section
+variable {ι : Type*} [Fintype ι] {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 < A i j)
+include hA
+
 /-- For a strictly positive matrix, the eigenspace of any strictly positive
 eigenvector is one-dimensional. No spectral theorem is assumed. -/
-theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι]
-    {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 < A i j)
+theorem positive_matrix_eigenspace_unique [Nonempty ι]
     {x y : ι → ℝ} (hx : ∀ i, 0 < x i) {d : ℝ}
     (hxe : A *ᵥ x = d • x) (hye : A *ᵥ y = d • y) :
     ∃ c : ℝ, y = c • x := by
@@ -48,8 +51,7 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
 
 /-- Positive eigenvectors of a positive symmetric matrix agree when normalized
 at the same coordinate, even when their eigenvalues are initially different. -/
-theorem positive_symmetric_eigenvector_unique {ι : Type*} [Fintype ι]
-    {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 < A i j) (hsym : Aᵀ = A)
+theorem positive_symmetric_eigenvector_unique (hsym : Aᵀ = A)
     {f g : ι → ℝ} (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
     {i₀ : ι} (hfunit : f i₀ = 1) (hgunit : g i₀ = 1)
     {a b : ℝ} (hfe : A *ᵥ f = a • f) (hge : A *ᵥ g = b • g) : f = g := by
@@ -64,6 +66,8 @@ theorem positive_symmetric_eigenvector_unique {ι : Type*} [Fintype ι]
   rw [← heq] at hge
   obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique hA hfpos hfe hge
   rw [hc, show c = 1 from by simpa [hfunit, hgunit] using (congrFun hc i₀).symm, one_smul]
+
+end
 
 /-- A function on simple labels is multiplicative for the fusion rules. -/
 abbrev IsFusionMultiplicative {R : Type*} [Semiring R]
