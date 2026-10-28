@@ -124,16 +124,16 @@ namespace PropertyF.Ground.Calculus
 
 section
 
-variable {ι : Type*} [Fintype ι] [DecidableEq ι]
-  (T : Matrix ι ι ℂ →ₗ[ℂ] ℂ) (hT : ∀ X Y, T (X * Y) = T (Y * X))
+variable {R : Type*} [CommSemiring R] {ι : Type*} [Fintype ι] [DecidableEq ι]
+  (T : Matrix ι ι R →ₗ[R] R) (hT : ∀ X Y, T (X * Y) = T (Y * X))
 
 include hT in
 /-- A cyclic functional agrees with a multiple of the trace on matrix units. -/
-private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
+private theorem cyclic_matrix_single (i₀ i j : ι) (a : R) :
     T (Matrix.single i j a) = T (Matrix.single i₀ i₀ 1) * (Matrix.single i j a).trace := by
   by_cases hij : i = j
   · subst j
-    have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
+    have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : R))
     simp only [Matrix.single_mul_single_same, mul_one, one_mul] at hdiag
     rw [hdiag, Matrix.trace_single_eq_same, mul_comm]
     change T (Matrix.single i₀ i₀ a) = a • T (Matrix.single i₀ i₀ 1)
@@ -141,12 +141,12 @@ private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
   · rw [Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
     simpa only [Matrix.single_mul_single_same, one_mul,
       Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] using
-      hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
+      hT (Matrix.single i i (1 : R)) (Matrix.single i j a)
 
 include hT in
-/-- A cyclic linear functional on a complex matrix algebra is a scalar
+/-- A cyclic linear functional on a matrix algebra is a scalar
 multiple of ordinary matrix trace, including the zero-dimensional case. -/
-theorem cyclic_matrix_trace : ∃ w : ℂ, ∀ X, T X = w * X.trace := by
+theorem cyclic_matrix_trace : ∃ w : R, ∀ X, T X = w * X.trace := by
   classical
   by_cases hn : Nonempty ι
   · let i₀ : ι := Classical.choice hn

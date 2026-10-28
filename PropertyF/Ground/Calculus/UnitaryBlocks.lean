@@ -25,7 +25,7 @@ namespace PropertyF.Ground.Calculus
 
 section Averaging
 
-variable {G A : Type*} [Group G] [Fintype G] [Semiring A] [StarRing A]
+variable {G A : Type*} [Group G] [Fintype G] [Semiring A] [StarMul A]
 variable (ρ : G →* A)
 
 /-- The sum of the adjoint squares of a finite group representation. -/
