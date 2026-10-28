@@ -109,7 +109,7 @@ theorem rightTrace_alternatingProjector :
     Dimensions.rightTraceLinear, LinearMap.coe_mk, AddHom.coe_mk] using
     congrArg (fun x : End (𝟙_ C.Obj) ↦
       (⅟(Fintype.card (Perm (Fin n)) : ℂ)) • x) <|
-        map_sum (Dimensions.rightTraceLinear p X)
+        map_sum (Dimensions.rightTraceLinear (k := ℂ) p X)
           (fun σ : Perm (Fin n) ↦ (sgn ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
 
 /-- Multiplying the alternating-projector trace by the group order gives
