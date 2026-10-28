@@ -57,7 +57,7 @@ theorem rootTensorDefect_natural
     _ = _ := by simpa only [doubleDualFunctor, Category.assoc] using congrArg (fun t => ((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ t) hni
 
 /-- The dual-label choice can be removed from the Frobenius defect equation. -/
-theorem enoTraceMatrix_reciprocity_of_rightDual_frobenius_defect
+theorem enoTraceMatrix_reciprocity_of_dual_frobenius_defect
     (hraw : ∀ i j k (g : simples C i ⊗ simples C k ⟶ simples C j),
       letI : ExactPairing ((simples C i)ᘁ) (simples C i) :=
         BraidedCategory.exactPairing_swap _ _

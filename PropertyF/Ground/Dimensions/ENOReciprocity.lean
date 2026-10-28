@@ -295,12 +295,9 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 /-- A phase-twisted natural root becomes pivotal when its scaled multiplicity
-operators are identities and the double-dual tensorator is natural. -/
+operators are identities. -/
 def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
     (hdef : ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1)
     (hunit : ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom =
       (doubleDualUnitIso (C := C.Obj)).hom) : PivotalStructure (C := C.Obj) where
@@ -311,7 +308,7 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
       ((rootSignTwist C c hc).app X).hom ≫ ((fᘁ)ᘁ) at h
     exact h
   tensor X Y := by
-    apply doubleDualTensor_extension C (rootSignTwist C c hc) hnat
+    apply doubleDualTensor_extension C (rootSignTwist C c hc)
     intro i j
     exact congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C c hc (hdef i j))
   unit := hunit
@@ -319,15 +316,12 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhasePivotal_dimension
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
     (hdef : ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1)
     (hunit : ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom =
       (doubleDualUnitIso (C := C.Obj)).hom) (i : Fin (rank C)) :
-    pivotalDimension C (rootPhasePivotal C c hc hnat hdef hunit) (simples C i) =
+    pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
       c i * rootDimension C i := by
-  have ht : (rootPhasePivotal C c hc hnat hdef hunit).rightTrace (𝟙 (simples C i)) =
+  have ht : (rootPhasePivotal C c hc hdef hunit).rightTrace (𝟙 (simples C i)) =
       c i • rootTrace C (𝟙 (simples C i)) := by
     apply End.homEquiv.injective
     have h := rootSignTwist_app_simple C c hc i
@@ -339,18 +333,14 @@ theorem rootPhasePivotal_dimension
 
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/
-theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
+theorem positive_spherical_of_matrix_identities
     (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
     (hnorm : ∀ i, squaredNorm C (simples C i) =
       ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
+    HasFPSphericalStructure C := by
   classical
   have hsat := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
   let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
@@ -401,7 +391,7 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
     rw [hvalue, Ground.fpSimple_unit]
     norm_num
   let unitProof := rootSignTwist_unit_of_simple_dimension C c hc hu
-  let p := rootPhasePivotal C c hc hnat hdef unitProof
+  let p := rootPhasePivotal C c hc hdef unitProof
   have hp : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     intro i
     rw [rootPhasePivotal_dimension, hvalue]
@@ -477,7 +467,7 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     _ = ε * star (d i) := by rw [hc']
 
 /-- ENO's trace reciprocity proves the intrinsic root-norm identity. -/
-theorem squaredNorm_eq_rootDimension_norm_sq_of_trace_reciprocity
+theorem squaredNorm_eq_root_norm_sq_of_reciprocity
     (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =

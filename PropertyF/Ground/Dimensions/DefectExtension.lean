@@ -307,7 +307,7 @@ theorem rootTensorDefect_involution_extension
   simpa [sx, sy, ex, ey, V, W, tensorIso_hom, tensorHom_comp_tensorHom,
     Category.assoc] using hh
 /-- The fourth-dual tensor law on simple pairs implies ENO trace reciprocity. -/
-theorem enoTraceMatrix_reciprocity_of_simple_fourthDual_tensor
+theorem enoTraceMatrix_reciprocity_of_simple_fourth_dual
     (hfourth : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j)) :
     ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k = rootDualSign C i * enoTraceMatrix C i k j := by
@@ -321,12 +321,11 @@ theorem enoTraceMatrix_reciprocity_of_simple_fourthDual_tensor
   exact rootTensorDefect_slide_of_involution C (simples C k) (hinv _ _)
 
 /-- The fourth-dual law on non-unit simple pairs suffices for the canonical pseudo-unitary spherical structure. -/
-theorem eno_pseudoUnitary_yields_positive_spherical_of_nonunit_fourthDual_tensor
+theorem positive_spherical_of_nonunit_fourth_dual
     (hfourth : ∀ i j : Fin (rank C), i ≠ unitIndex C → j ≠ unitIndex C →
       fourthDualTensorLaw C (simples C i) (simples C j))
     (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
+    HasFPSphericalStructure C := by
   have hsimple : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j) := by
     intro i j
@@ -337,8 +336,8 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_nonunit_fourthDual_tensor
       · subst j
         exact fourthDualIso_tensor_unitLabel_right C (simples C i)
       · exact hfourth i j hi hj
-  exact eno_pseudoUnitary_yields_positive_spherical_of_simple_fourth_and_reciprocity C hsimple
-    (enoTraceMatrix_reciprocity_of_simple_fourthDual_tensor C hsimple) hpu
+  exact positive_spherical_of_simple_fourth_and_reciprocity C hsimple
+    (enoTraceMatrix_reciprocity_of_simple_fourth_dual C hsimple) hpu
 end PropertyF.Ground.Dimensions
 
 end

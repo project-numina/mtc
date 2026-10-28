@@ -167,7 +167,7 @@ theorem positive_spherical_of_drinfeld_tensor (h : DrinfeldTensorLaw C)
     (hpu : PseudoUnitary C) :
     ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
       Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) :=
-  Dimensions.eno_pseudoUnitary_yields_positive_spherical_of_nonunit_fourthDual_tensor C
+  Dimensions.positive_spherical_of_nonunit_fourth_dual C
     (fun i j _ _ ↦ fourthDualIso_tensor_of_drinfeld C h (simples C i) (simples C j)) hpu
 
 end PropertyF.Ground.CentreInduction
