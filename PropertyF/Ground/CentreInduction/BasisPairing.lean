@@ -55,14 +55,14 @@ theorem simpleHomPairingEquiv_natural
 
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/
-theorem dualBasis_contraction_natural {I J : Type} [Fintype I] [Fintype J] [DecidableEq I] [DecidableEq J]
-    {A B E : Type*} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B]
-    [AddCommGroup E] [Module ℂ E] (a : Module.Basis I ℂ A) (b : Module.Basis J ℂ B)
-    (L : A →ₗ[ℂ] B) (F : B →ₗ[ℂ] Module.Dual ℂ A →ₗ[ℂ] E) :
+theorem dualBasis_contraction_natural {k : Type*} [Field k] {I J : Type} [Fintype I] [Fintype J] [DecidableEq I] [DecidableEq J]
+    {A B E : Type*} [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
+    [AddCommGroup E] [Module k E] (a : Module.Basis I k A) (b : Module.Basis J k B)
+    (L : A →ₗ[k] B) (F : B →ₗ[k] Module.Dual k A →ₗ[k] E) :
     (∑ i, F (L (a i)) (a.dualBasis i)) =
       ∑ j, F (b j) (Module.Dual.transpose L (b.dualBasis j)) := by
   classical
-  let c : I → J → ℂ := fun i j => b.repr (L (a i)) j
+  let c : I → J → k := fun i j => b.repr (L (a i)) j
   have hL (i : I) : L (a i) = ∑ j, c i j • b j := (b.sum_repr _).symm
   have hD (j : J) : Module.Dual.transpose L (b.dualBasis j) =
       ∑ i, c i j • a.dualBasis i := by
@@ -124,9 +124,9 @@ theorem fusionBasis_contraction_natural
 
 /-- A mixed crossing block, with the input and output test strands allowed
 to differ, is bilinear in its two fusion morphisms. -/
-def mixedCrossingBilinear {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D] (X T U R S : D) : (R ⟶ U ⊗ S) →ₗ[ℂ]
-      (T ⊗ S ⟶ R) →ₗ[ℂ] (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
+def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (X T U R S : D) : (R ⟶ U ⊗ S) →ₗ[k]
+      (T ⊗ S ⟶ R) →ₗ[k] (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
   toFun g := {
     toFun := fun f =>
       (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S R f) ≫
@@ -134,12 +134,12 @@ def mixedCrossingBilinear {D : Type u} [Category.{v} D] [MonoidalCategory D] [Ri
           (U ◁ (α_ S X (Sᘁ)).inv)
     map_add' := by
       intro f f'
-      simp [closeFusionMap, Dimensions.rightAdjointMate_add, Category.assoc,
+      simp [closeFusionMap, rightAdjointMate, Category.assoc,
         tensorHom_def, MonoidalPreadditive.whiskerLeft_add, MonoidalPreadditive.add_whiskerRight,
        Preadditive.comp_add, Preadditive.add_comp]
     map_smul' := by
       intro r f
-      simp [closeFusionMap, Dimensions.rightAdjointMate_smul, Category.assoc,
+      simp [closeFusionMap, rightAdjointMate, Category.assoc,
         tensorHom_def, MonoidalLinear.whiskerLeft_smul, MonoidalLinear.smul_whiskerRight,
        Linear.comp_smul, Linear.smul_comp] }
   map_add' := by

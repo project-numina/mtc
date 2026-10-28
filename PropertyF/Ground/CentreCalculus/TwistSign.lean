@@ -105,12 +105,11 @@ include hp hdim in
 an integer. -/
 theorem selfTransparent_simpleDimension_integer (i : Fin (rank C))
     (hX : SelfTransparent (simples C i)) :
-    ∃ z : ℤ, Modular.simpleDimension C p i = z := by
+    ∃ z : ℤ, Modular.simpleDimension C p i = z :=
   let : Simple (simples C i) := simples_simple C i
-  obtain ⟨m, hm⟩ := selfTransparent_simple_integral C p hp hdim (simples C i) hX
-  rw [fpDimension_simple] at hm
-  refine ⟨m, ?_⟩
-  rw [hdim i, hm]
-  norm_cast
+  let ⟨m, hm⟩ := selfTransparent_simple_integral C p hp hdim (simples C i) hX
+  ⟨m, by
+    rw [hdim i, ← fpDimension_simple C i, hm]
+    norm_cast⟩
 
 end PropertyF.Ground.CentreCalculus

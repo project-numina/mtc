@@ -83,7 +83,7 @@ theorem crossingBlock_of_simple_split {D : Type u} [Category.{v} D] [MonoidalCat
     have hh := h
     rw [hg, hf] at hh
     simpa [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using hh
-  change mixedCrossingBilinear X T T R S g f = _
+  change mixedCrossingBilinear (k := ℂ) X T T R S g f = _
   rw [hg, hf]
   simp only [map_smul, LinearMap.smul_apply, smul_smul]
   rw [mul_comm d c, hcd, one_smul]

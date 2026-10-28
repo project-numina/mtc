@@ -104,10 +104,10 @@ instance underlyingFunctor_faithful (C : BraidedFusionCategory.{v,u}) :
       exact Simple.of_iso (leftDualIso HasLeftDual.exact
         (BraidedCategory.exactPairing_swap S (Sᘁ))).symm
     obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor S
-    let : (tensorLeft S).Faithful := PropertyF.tensorLeft_faithful_of_unit_retract _ _ s r hsr
+    let : (tensorLeft S).Faithful := PropertyF.tensorLeft_faithful_of_unit_retract s r hsr
     obtain ⟨s', r', hsr'⟩ := unit_retract_leftDual_tensor (Sᘁ)
     let : (tensorLeft (Sᘁ)).Faithful :=
-      PropertyF.tensorLeft_faithful_of_unit_retract _ _ s' r' hsr'
+      PropertyF.tensorLeft_faithful_of_unit_retract s' r' hsr'
     let : (tensorRight (Sᘁ)).Faithful :=
       Functor.Faithful.of_iso (BraidedCategory.tensorLeftIsoTensorRight (Sᘁ))
     apply (tensorLeft S).map_injective

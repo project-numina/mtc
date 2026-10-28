@@ -100,7 +100,7 @@ theorem generatedBy_biproduct {X : C} {a : ℕ} (f : Fin a → C)
   exact ⟨_, k', ⟨R.trans (Retract.ofIso e')⟩⟩
 
 /-- Generated objects are closed under biproducts indexed by any finite type. -/
-theorem generatedBy_finiteBiproduct (X : C) {J : Type} [Finite J] (f : J → C)
+theorem generatedBy_finiteBiproduct {X : C} {J : Type} [Finite J] (f : J → C)
     (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
   classical
   let _ : Fintype J := Fintype.ofFinite J

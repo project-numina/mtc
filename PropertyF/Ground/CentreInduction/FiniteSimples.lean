@@ -104,7 +104,7 @@ theorem simple_mono_induced_simple (X : CategoryTheory.Center C.Obj) [Simple X] 
     exact hi
   let : FiniteDimensional ℂ (X.1 ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp hi'
-  let e := homLinearEquivOfAdjunction (CategoryTheory.Center.forget C.Obj) (induction C)
+  let e := homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj) (induction C)
     (actualAdjunction C) X (simples C i)
   let t : X ⟶ (induction C).obj (simples C i) := e.symm g
   have ht : t ≠ 0 := by
