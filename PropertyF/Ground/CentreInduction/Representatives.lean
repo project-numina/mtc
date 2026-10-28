@@ -34,7 +34,7 @@ theorem finrank_end_lt_of_split_epi {S W Q : D} (p : S ⟶ W) (q : W ⟶ Q)
 
 /-- Removing a nonzero direct summand strictly decreases the dimension of the
 endomorphism space. -/
-theorem finrank_end_complement_lt (S K : D)
+theorem finrank_end_complement_lt {S : D} (K : D)
     [FiniteDimensional k (S ⊞ K ⟶ S ⊞ K)] (hS : ¬ IsZero S) :
     Module.finrank k (K ⟶ K) < Module.finrank k (S ⊞ K ⟶ S ⊞ K) :=
   finrank_end_lt_of_split_epi (k := k) biprod.inl biprod.snd
@@ -69,7 +69,7 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
           (ShortComplex.cokernelSequence_exact f) r hr inferInstance).isoBinaryBiproduct
       have hk : m (cokernel f) < m Z := by
         simpa only [m, (CategoryTheory.Linear.homCongr k e e).finrank_eq] using
-          finrank_end_complement_lt (k := k) S (cokernel f) (Simple.not_isZero S)
+          finrank_end_complement_lt (k := k) (cokernel f) (Simple.not_isZero S)
       exact .cons hS (ih (cokernel f) hk) ⟨e⟩
 
 end PropertyF.Ground.CentreInduction

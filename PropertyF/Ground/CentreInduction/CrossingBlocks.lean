@@ -90,9 +90,8 @@ theorem mixedCrossing_natural_middle {X Y : D} (h : X ⟶ Y) {T U R S : D}
   simp only [mixedCrossing, tensorHom_def, Category.assoc]
   rw [associator_naturality_left_assoc, ← comp_whiskerRight_assoc, whisker_exchange, comp_whiskerRight_assoc,
     ← whisker_exchange_assoc, associator_naturality_middle_assoc]
-  simp only [associator_naturality_right_assoc]
-  rw [← whiskerLeft_comp, associator_inv_naturality_middle,
-    whiskerLeft_comp]
+  simp only [associator_naturality_right_assoc, ← whiskerLeft_comp,
+    associator_inv_naturality_middle]
 
 /-- The projection from the chosen simple decomposition of an object. -/
 def simpleProjection (V : C.Obj) (i : Fin (rank C))
