@@ -195,10 +195,5 @@ theorem finite_simple_labels :
     refine ⟨T, Finset.mem_filter.mpr ⟨?_, Simple.of_iso e.symm⟩, ⟨e⟩⟩
     exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, List.mem_toFinset.mpr hT⟩
 
-/-- A finite family of pairwise nonisomorphic centre simples represents every simple. -/
-theorem finite_simple_representatives :
-    ∃ (n : ℕ) (S : Fin n → 𝒵), IsSimpleRepresentativeFamily S :=
-  (finite_simple_labels C).elim fun _ h ↦
-    simple_representatives_of_finite_cover h.1 h.2
 
 end PropertyF.Ground.CentreInduction

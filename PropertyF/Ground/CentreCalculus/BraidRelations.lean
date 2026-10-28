@@ -24,8 +24,7 @@ abbrev SelfTransparent (X : C) : Prop :=
 theorem braidGenerator_succ (X : C) {n : ℕ} (k : Fin (n + 1)) :
     (tensorLeft X).mapAut (tensorPower X (n + 2)) (braidGenerator X n k) =
       braidGenerator X (n + 1) k.succ := by
-  apply Aut.ext
-  apply Iso.ext
+  ext
   rcases k with ⟨k, hk⟩
   simp [Functor.mapAut, braidGenerator, tensorIso_hom, tensorLeft, id_tensorHom]
 
