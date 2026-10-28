@@ -188,7 +188,7 @@ theorem addLeft_braid_unitary {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
 /-- Successive actual overlapping products remain blockwise unitary. The
 presentations may be chosen independently at every strand count. -/
 theorem overlapProduct_unitary {X : C} {t : ℕ}
-    (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
+    {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
       PropertyF.Blocks.Algebra ⟨_, d n⟩)
     (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
@@ -285,7 +285,7 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec
   intro k
   have hbound := braid_trace_unitary_bound_ground C p
-    (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary r d e he hu k)
+    (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary e he hu k)
   change ‖actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)‖ ≤ _ at hbound
   exact hbound
 
