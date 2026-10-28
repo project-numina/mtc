@@ -49,9 +49,8 @@ theorem exists_modular_witness (hp : p.IsSpherical)
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
     (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
-  refine ⟨y, one_le_fpSimple Z y, ?_, ?_⟩
-  · simpa only [hdim] using hprop.1
-  · simpa only [hglobal, hdim] using hprop.2.2
+  exact ⟨y, one_le_fpSimple Z y, by simpa only [hdim] using hprop.1,
+    by simpa only [hglobal, hdim] using hprop.2.2⟩
 
 /-- Once the Galois-unit column is known to have finite braid image and the
 actual three-strand rigidity theorem applies, the required numerical witness
@@ -195,10 +194,8 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
   intro y hColumn
   apply propertyF_of_galois_column hIntegral hDouble ?_ y
   · intro x
-    rw [hdim y]
-    exact hColumn x
-  · intro i hi
-    exact Centre.productRetract_propertyF (hProduct i hi) hF
+    simpa only [hdim] using hColumn x
+  · exact fun i hi ↦ Centre.productRetract_propertyF (hProduct i hi) hF
 
 end PropertyF.Ground
 end

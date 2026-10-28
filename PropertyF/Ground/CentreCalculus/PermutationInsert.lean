@@ -11,6 +11,9 @@ Self-transparent tensor powers carry permutation actions. We relate their
 signed traces to one-strand deletion and insertion identities.
 -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Modular (HasFPSimpleDimensions)
+open PropertyF.Ground.Centre (permutationSign)
+open Equiv.Perm (decomposeFin)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
@@ -42,24 +45,24 @@ namespace PropertyF.Ground.CentreCalculus
 
 /-- Signed permutation trace sum, with no categorical assumptions. -/
 def signedTraceSum (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (n : ℕ) : ℂ :=
-  ∑ σ, (Centre.permutationSign ℂ n σ : ℂ) * F n σ
+  ∑ σ, (permutationSign ℂ n σ : ℂ) * F n σ
 
 /-- The sign changes precisely when the newly inserted point is moved. -/
 theorem sign_decomposeFin {n : ℕ} (p : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
-    (Centre.permutationSign ℂ (n + 1) (Equiv.Perm.decomposeFin.symm (p, σ)) : ℂ) =
-      (if p = 0 then 1 else -1) * (Centre.permutationSign ℂ n σ : ℂ) := by
+    (permutationSign ℂ (n + 1) (decomposeFin.symm (p, σ)) : ℂ) =
+      (if p = 0 then 1 else -1) * (permutationSign ℂ n σ : ℂ) := by
   by_cases hp : p = 0 <;>
-    simp [Centre.permutationSign, Equiv.Perm.decomposeFin.symm_sign, hp]
+    simp [permutationSign, decomposeFin.symm_sign, hp]
 
 /-- A deletion identity for the trace gives the signed-sum recurrence. -/
 theorem signedTraceSum_succ {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ}
     {d c : ℂ} {n : ℕ}
-    (hfixed : ∀ σ, F (n + 1) (Equiv.Perm.decomposeFin.symm (0, σ)) = d * F n σ)
+    (hfixed : ∀ σ, F (n + 1) (decomposeFin.symm (0, σ)) = d * F n σ)
     (hmoved : ∀ (p : Fin (n + 1)), p ≠ 0 → ∀ σ,
-      F (n + 1) (Equiv.Perm.decomposeFin.symm (p, σ)) = c * F n σ) :
+      F (n + 1) (decomposeFin.symm (p, σ)) = c * F n σ) :
     signedTraceSum F (n + 1) = (d - (n : ℂ) * c) * signedTraceSum F n := by
   unfold signedTraceSum
-  rw [← Equiv.Perm.decomposeFin.symm.sum_comp,
+  rw [← decomposeFin.symm.sum_comp,
     Fintype.sum_prod_type, Fin.sum_univ_succ]
   simp only [sign_decomposeFin, ite_true, one_mul, hfixed, Fin.succ_ne_zero,
     ite_false, hmoved _ (Fin.succ_ne_zero _), neg_mul, Finset.sum_neg_distrib,
@@ -70,16 +73,16 @@ theorem signedTraceSum_succ {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ}
 /-- Deleting the first adjacent crossing leaves the permutation trace unchanged. -/
 abbrev HasAdjacentTrace (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) : Prop :=
   ∀ n (σ : Equiv.Perm (Fin (n + 1))),
-    F (n + 2) (Equiv.Perm.decomposeFin.symm (1, σ)) = F (n + 1) σ
+    F (n + 2) (decomposeFin.symm (1, σ)) = F (n + 1) σ
 
 /-- Deleting a moved strand leaves the permutation trace unchanged. -/
 abbrev HasMovedTrace (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) : Prop :=
   ∀ n (p : Fin (n + 1)), p ≠ 0 → ∀ σ,
-    F (n + 1) (Equiv.Perm.decomposeFin.symm (p, σ)) = F n σ
+    F (n + 1) (decomposeFin.symm (p, σ)) = F n σ
 
 /-- The trace contribution of deleting a fixed or a moved strand. -/
 structure IsTraceDeletion (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (d : ℂ) : Prop where
-  fixed : ∀ n σ, F (n + 1) (Equiv.Perm.decomposeFin.symm (0, σ)) = d * F n σ
+  fixed : ∀ n σ, F (n + 1) (decomposeFin.symm (0, σ)) = d * F n σ
   moved : HasMovedTrace F
 
 /-- The deletion identities imply the falling-factorial signed trace sum.
@@ -91,7 +94,7 @@ theorem signedTraceSum_falling {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ} {d 
   induction n with
   | zero =>
     let : Unique (Equiv.Perm (Fin 0)) := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩
-    simp [signedTraceSum, hzero, Centre.permutationSign]
+    simp [signedTraceSum, hzero, permutationSign]
   | succ n ih =>
     rw [signedTraceSum_succ (c := 1) (h.fixed n) (by simpa using h.moved n), ih,
       Finset.prod_range_succ]
@@ -109,7 +112,7 @@ abbrev permutationScalarTrace (C : BraidedFusionCategory.{v,u})
 (possibly sign-twisted) family of actual actions. -/
 theorem integral_of_trace_deletion {C : BraidedFusionCategory.{v,u}}
     {p : PivotalStructure (C := C.Obj)}
-    (hdim : Modular.HasFPSimpleDimensions C p) {X : C.Obj}
+    (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
     (h : IsTraceDeletion (permutationScalarTrace C p ρ) (fpDimension C X : ℂ)) :
     ∃ m : ℕ, fpDimension C X = m := by
@@ -132,7 +135,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- Extend a permutation by fixing the first strand. -/
 def fixHead (n : ℕ) : Equiv.Perm (Fin n) →* Equiv.Perm (Fin (n + 1)) where
-  toFun σ := Equiv.Perm.decomposeFin.symm (0, σ)
+  toFun σ := decomposeFin.symm (0, σ)
   map_one' := by
     ext x
     refine Fin.cases ?_ (fun j => ?_) x <;> simp
@@ -202,7 +205,7 @@ set_option backward.isDefEq.respectTransparency false in
  the actual permutation trace. -/
 theorem tensorPermutationTrace_fixHead {D : BraidedFusionCategory.{v,u}}
     {p : PivotalStructure (C := D.Obj)}
-    (hdim : Modular.HasFPSimpleDimensions D p)
+    (hdim : HasFPSimpleDimensions D p)
     {X : D.Obj} (hX : SelfTransparent X) {n : ℕ} (σ : Equiv.Perm (Fin n)) :
       permutationScalarTrace D p (tensorPermutationAction X hX) (n + 1) (fixHead n σ) =
       (fpDimension D X : ℂ) * permutationScalarTrace D p (tensorPermutationAction X hX) n σ := by

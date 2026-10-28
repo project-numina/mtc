@@ -10,6 +10,9 @@ The fixed-head and adjacent-crossing identities reduce integrality to a
 one-strand deletion formula for either parity choice.
 -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Modular (HasFPSimpleDimensions)
+open PropertyF.Ground.Centre (permutationSign)
+open Equiv.Perm (decomposeFin)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
@@ -19,11 +22,11 @@ universe v u
 def parityPermutationAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (hX : SelfTransparent X) (odd : Bool) (n : ℕ) :
     Equiv.Perm (Fin n) →* End (tensorPower X n) :=
-  if odd then Centre.twistAction (Centre.permutationSign ℂ n) (tensorPermutationAction X hX n)
+  if odd then Centre.twistAction (permutationSign ℂ n) (tensorPermutationAction X hX n)
   else tensorPermutationAction X hX n
 
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
-  (hdim : Modular.HasFPSimpleDimensions C p)
+  (hdim : HasFPSimpleDimensions C p)
 
 include hdim in
 /-- Sign twist preserves the fixed-strand trace deletion identity. -/
@@ -34,8 +37,8 @@ theorem parityPermutationTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd
   cases odd with
   | false => exact tensorPermutationTrace_fixHead hdim hX σ
   | true =>
-    have hs : (Centre.permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
-        (Centre.permutationSign ℂ n σ : ℂ) := by
+    have hs : (permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
+        (permutationSign ℂ n σ : ℂ) := by
       simpa [fixHead] using sign_decomposeFin 0 σ
     have ht := tensorPermutationTrace_fixHead hdim hX σ
     dsimp only [permutationScalarTrace] at ht
@@ -63,7 +66,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 /-- A one-point permutation extension is the swap of that point with zero,
 followed by the fixed-head extension of the smaller permutation. -/
 theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
-    Equiv.Perm.decomposeFin.symm (q, σ) = Equiv.swap 0 q * fixHead n σ := by
+    decomposeFin.symm (q, σ) = Equiv.swap 0 q * fixHead n σ := by
   ext x
   refine Fin.cases ?_ (fun j => ?_) x <;>
     simp [fixHead, Equiv.Perm.mul_apply]
@@ -95,8 +98,8 @@ theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
     let T := fixHead (n + 1) τ
     have hswap : Equiv.swap 0 j.succ = T * Equiv.swap 0 1 * T⁻¹ := by
       simpa [T, τ, fixHead] using Equiv.swap_apply_apply T (0 : Fin (n + 2)) 1
-    have hd : Equiv.Perm.decomposeFin.symm (j.succ, σ) =
-        T * (Equiv.Perm.decomposeFin.symm (1, τ⁻¹ * σ * τ)) * T⁻¹ := by
+    have hd : decomposeFin.symm (j.succ, σ) =
+        T * (decomposeFin.symm (1, τ⁻¹ * σ * τ)) * T⁻¹ := by
       rw [decomposeFin_eq_swap_fixHead, decomposeFin_eq_swap_fixHead, hswap]
       simp only [map_mul, map_inv, ← mul_assoc]
       simp [T, mul_assoc]
@@ -111,7 +114,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 universe v u
 
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
-  (hdim : Modular.HasFPSimpleDimensions C p)
+  (hdim : HasFPSimpleDimensions C p)
 
 include hdim in
 /-- Integrality reduces to the first-adjacent-crossing trace identity for

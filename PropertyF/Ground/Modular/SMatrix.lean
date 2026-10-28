@@ -45,12 +45,12 @@ theorem SEntry_symmetric (p : PivotalStructure (C := C)) (X Y : C) :
 
 omit [RightRigidCategory C] in
 /-- Double braiding is natural in the second object. -/
-theorem doubleBraiding_natural_right (X : C) {Y Z : C} (e : Y ≅ Z) :
-    doubleBraiding X Y ≫ (𝟙 X ⊗ₘ e.hom) =
-      (𝟙 X ⊗ₘ e.hom) ≫ doubleBraiding X Z := by
+theorem doubleBraiding_natural_right (X : C) {Y Z : C} (f : Y ⟶ Z) :
+    doubleBraiding X Y ≫ (𝟙 X ⊗ₘ f) =
+      (𝟙 X ⊗ₘ f) ≫ doubleBraiding X Z := by
   unfold doubleBraiding
-  rw [Category.assoc, ← braiding_naturality e.hom (𝟙 X), ← Category.assoc,
-    ← braiding_naturality (𝟙 X) e.hom, Category.assoc]
+  rw [Category.assoc, ← braiding_naturality f (𝟙 X), ← Category.assoc,
+    ← braiding_naturality (𝟙 X) f, Category.assoc]
 
 /-- The trace of double braiding depends only on the isomorphism class. -/
 theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : Y ≅ Z) :
@@ -59,7 +59,7 @@ theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : 
   have h := p.rightTrace_cyclic (doubleBraiding X Y ≫ t.hom) t.inv
   rw [Category.assoc, Iso.hom_inv_id, Category.comp_id,
     show doubleBraiding X Y ≫ t.hom = t.hom ≫ doubleBraiding X Z from
-      doubleBraiding_natural_right X e, Iso.inv_hom_id_assoc] at h
+      doubleBraiding_natural_right X e.hom, Iso.inv_hom_id_assoc] at h
   exact h
 
 omit [RightRigidCategory C] in

@@ -2,11 +2,19 @@ module
 public import PropertyF.Definitions
 public import Mathlib.CategoryTheory.Endomorphism
 public import Mathlib.CategoryTheory.Conj
+
+/-!
+# Braid images of isomorphic objects
+
+Tensor powers transport adjacent braid generators along an isomorphism. Conjugation
+by these tensor-power isomorphisms identifies the associated braid-image groups.
+-/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Modular
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+/-- Tensor powers transport an isomorphism between objects. -/
 def tensorPowerIso {X Y : C} (f : X ≅ Y) : ∀ n, tensorPower X n ≅ tensorPower Y n
   | 0 => Iso.refl _
   | n + 1 => f ⊗ᵢ tensorPowerIso f n
