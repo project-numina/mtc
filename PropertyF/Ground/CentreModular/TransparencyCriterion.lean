@@ -84,13 +84,11 @@ theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
       rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit]) (dualIndex_involutive C)
   · exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
   · intro k
-    by_cases hk : k = unitIndex C
+    split_ifs with hk
     · subst k
-      rw [ite_eq_left rfl]
       simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit, hdim]
       simp [globalFPDimension, Complex.ofReal_sum, pow_two]
-    · rw [ite_eq_right hk]
-      exact hvanish k hk
+    · exact hvanish k hk
 
 include hdim in
 /-- In a category with FP-valued dimensions, it suffices for the unit's
@@ -102,14 +100,12 @@ theorem categoricalS_det_ne_zero_of_unit_character_unique
   classical
   apply categoricalS_det_ne_zero_of_kirby_vanishes_off_unit C p hdim
   intro k hk
-  let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  let cols (j : Fin (rank C)) : Character rules := categoricalSCharacter C p j
-  have hzero : (∑ z, dₚ z *
-      (Sₚ z k / dₚ k)) = 0 := by
-    simpa [cols, categoricalSCharacter, normalizedSColumn, categoricalS_unit, simpleDimension_unit, hdim,
+  let χ := categoricalSCharacter C p
+  have hzero : (∑ z, dₚ z * (Sₚ z k / dₚ k)) = 0 := by
+    simpa [χ, categoricalSCharacter, normalizedSColumn, categoricalS_unit, simpleDimension_unit, hdim,
       fpSimple_unit] using
-      character_orthogonal rules (dualIndex C) (fusionCoeff_dual_adjoint C)
-        (cols (unitIndex C)) (cols k) (fun he ↦ hunique k hk (congrArg Character.value he).symm)
+      character_orthogonal _ (dualIndex C) (fusionCoeff_dual_adjoint C)
+        (χ (unitIndex C)) (χ k) (fun he ↦ hunique k hk (congrArg Character.value he).symm)
   simp_rw [← mul_div_assoc, ← Finset.sum_div] at hzero
   simpa only [categoricalS_symmetric C p k] using
     (div_eq_zero_iff.mp hzero).resolve_right (simpleDimension_ne_zero C p k)

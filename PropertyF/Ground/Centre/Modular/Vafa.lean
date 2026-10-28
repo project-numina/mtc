@@ -46,7 +46,6 @@ theorem derivation_vanishes_of_regular_eigenvector (N : ι → ι → ι → K) 
     (b : ι → M) (hderiv : IsFusionDerivation N d b) :
     ∀ i, b i = 0 := by
   classical
-  dsimp only [IsFusionDerivation] at hderiv
   intro i
   let R : M := ∑ j, d j • b j
   have hsum : (∑ j, d j • ∑ k, N i j k • b k) = d i • R := by
@@ -164,11 +163,9 @@ def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
 /-- A scalar linear equivalence has determinant equal to the scalar's dimension power. -/
 theorem linearEquiv_det_of_scalar {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (e : V ≃ₗ[K] V) (z : Kˣ) (h : e.toLinearMap = (z : K) • LinearMap.id) :
-    e.det = z ^ Module.finrank K V := by
-  apply Units.ext
-  rw [LinearEquiv.coe_det]
-  change LinearMap.det e.toLinearMap = (z : K) ^ _
-  rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one]
+    e.det = z ^ Module.finrank K V :=
+  Units.ext (by simp only [LinearEquiv.coe_det, h, LinearMap.det_smul, LinearMap.det_id,
+    mul_one, Units.val_pow_eq_pow_val])
 
 /-- On a scalar map, each Hom-space determinant is the corresponding power. -/
 theorem homAction_det_scalar {R : Type*} [Field R] {D : Type u} [Category.{v} D]
@@ -290,10 +287,10 @@ abbrev HasSimpleScalars (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → �
 theorem homAction_natural_scalar {R : Type*} [CommSemiring R] {D : Type u}
     [Category.{v} D] [Preadditive D] [Linear R D] (η : 𝟭 D ≅ 𝟭 D) {S X : D}
     (z : R) (hz : (η.app S).hom = z • 𝟙 S) :
-    (homAction (R := R) S X (η.app X)).toLinearMap = z • LinearMap.id := by
-  ext f
-  simpa [homAction, CategoryTheory.Linear.homCongr_apply,
-    show η.hom.app S = z • 𝟙 S from hz] using η.hom.naturality f
+    (homAction (R := R) S X (η.app X)).toLinearMap = z • LinearMap.id :=
+  LinearMap.ext fun f ↦ by
+    simpa [homAction, CategoryTheory.Linear.homCongr_apply,
+      show η.hom.app S = z • 𝟙 S from hz] using η.hom.naturality f
 
 /-- The actual FP determinant of a natural automorphism is the sum of its
 simple scalar classes, weighted by FP dimensions and Hom multiplicities. -/
