@@ -69,6 +69,18 @@ theorem eq_of_pos_weighted_sum_eq {ι R : Type*} [Fintype ι] [CommRing R] [Line
     (Finset.sum_eq_sum_iff_of_le (fun j _ ↦ mul_le_mul_of_nonneg_left (hle j) (hw j).le)).mp
       hsum i (Finset.mem_univ i)
 
+variable {ι : Type*} [Fintype ι] {J : ι → Type*}
+  [∀ i, Fintype (J i)] [∀ i, DecidableEq (J i)]
+
+/-- A positive weighted maximal trace forces a finite-order matrix family to be the identity. -/
+theorem finiteOrder_matrices_eq_one_of_weighted_trace
+    (M : ∀ i, Matrix (J i) (J i) ℂ) (w : ι → ℝ)
+    (hw : ∀ i, 0 < w i) (hM : ∀ i, IsOfFinOrder (M i))
+    (ht : (∑ i, w i * (M i).trace.re) = ∑ i, w i * (Fintype.card (J i) : ℝ)) :
+    ∀ i, M i = 1 := fun i ↦
+  (finiteOrder_matrix_trace_saturation (hM i)).2 <|
+    eq_of_pos_weighted_sum_eq hw (fun j ↦ (finiteOrder_matrix_trace_saturation (hM j)).1) ht i
+
 /-- In a fusion category with positive simple pivotal dimensions, a
 finite-order endomorphism whose pivotal trace equals the object's dimension
 is the identity. -/
@@ -80,8 +92,6 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   let m (i : Fin (rank D)) := Module.finrank ℂ (simples D i ⟶ X)
   obtain ⟨e⟩ := exists_canonical_decomposition D X
   let B := Calculus.groundEndBlockEquiv D e
-  have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation
-    ((Pi.evalMonoidHom _ i).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha))
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
     have h2 := Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) e 1
@@ -91,11 +101,11 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
     simpa [hdim, B, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
       ((Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) e a).symm.trans
         ((congrArg (Ground.unitScalarEquiv D) ht).trans h2))
-  have heq (i : Fin (rank D)) : (B a i).trace.re = (m i : ℝ) :=
-    eq_of_pos_weighted_sum_eq (fpSimple_pos D) (fun j ↦ by simpa using (hb j).1) hsum i
   apply B.injective
   funext i
-  simpa using (hb i).2 (by simpa using heq i)
+  simpa using finiteOrder_matrices_eq_one_of_weighted_trace (B a) (fpSimple D)
+    (fpSimple_pos D) (fun j ↦ (Pi.evalMonoidHom _ j).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha))
+    (by simpa only [Fintype.card_fin] using hsum) i
 
 /-- For a finite-order double braiding, the positive spherical S-test is
 equivalent to categorical centrality. -/
