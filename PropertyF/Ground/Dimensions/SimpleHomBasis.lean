@@ -261,4 +261,16 @@ def simpleHomPairingEquiv {D : Type u} [Category.{v} D] [MonoidalCategory D]
   exact LinearEquiv.ofBijective p ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).1 hi⟩
 
 
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [Abelian D] [Linear ℂ D] [RigidCategory D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+  [IsFusionCategory D]
+
+/-- The perfect pairing commutes with precomposition. -/
+theorem simpleHomPairingEquiv_natural {S X Y : D} [Simple S] (g : Y ⟶ S) (a : X ⟶ Y) :
+    simpleHomPairingEquiv S X (a ≫ g) =
+      Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairingEquiv S Y g) :=
+  letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
+  simpleHomPairing_natural g a
+
+
 end PropertyF.Ground.Dimensions
