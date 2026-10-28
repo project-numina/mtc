@@ -80,9 +80,9 @@ def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
       rw [Category.assoc, hfactor])
 
 /-- Every actual centre object is Artinian, without spherical hypotheses. -/
-theorem center_artinian (X : CategoryTheory.Center C.Obj) : IsArtinianObject X := by
+theorem center_artinian (X : CategoryTheory.Center C.Obj) : IsArtinianObject X :=
   let : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
-  exact ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
+  ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
 
 
 set_option backward.isDefEq.respectTransparency false in

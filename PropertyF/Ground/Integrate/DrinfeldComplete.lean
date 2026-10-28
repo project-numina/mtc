@@ -52,8 +52,7 @@ theorem target_of_center_image_monodromy_no_square
             p.IsSpherical ∧
             (Modular.HasFPSimpleDimensions Z p) ∧
             (Modular.categoricalS Z p).det ≠ 0 ∧
-            (∀ y ∈ CentreCabling.symmetricCore C,
-              ∃ z : ℤ, Modular.simpleDimension Z p y = z) ∧
+            (HasIntegralSimpleDimensionsOn Z p (CentreCabling.symmetricCore C)) ∧
             (CentreCabling.HasFiniteImageCentralizerMonodromy C p)) :
     TargetStatement.{v,u} := by
   apply target_of_center_image_monodromy

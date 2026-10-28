@@ -10,6 +10,11 @@ public import PropertyF.Ground.Dimensions.ComplexSaturation
 /-! # Pivotal structures and pseudo-unitarity
 
 Duality and reality properties of pivotal dimensions lead to a positive spherical structure.
+
+## Main results
+
+* `pivotal_dual`: relates pivotal components on dual objects.
+* `positive_spherical_of_pivotal_pseudoUnitary`: produces a positive spherical structure from pseudo-unitarity.
 -/
 
 @[expose] public noncomputable section

@@ -198,6 +198,15 @@ def enoTraceMatrix (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
     Fin (rank C) → Fin (rank C) → ℂ := fun j k =>
   LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap
 
+/-- The root-dimension vector is an eigenvector of every trace matrix. -/
+abbrev ENOTraceMatrixEigenvector (C : BraidedFusionCategory.{v,u}) : Prop :=
+  ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
+    rootDimension C i * rootDimension C j
+
+/-- Intrinsic simple norms are the squared complex norms of their root dimensions. -/
+abbrev RootNormIdentity (C : BraidedFusionCategory.{v,u}) : Prop :=
+  ∀ i, squaredNorm C (simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)
+
 /-- Once the categorical multiplicity defects are involutive and their trace
 matrix has the natural-root dimension vector as an eigenvector, ENO's FP
 bound follows. Both remaining identities are explicit hypotheses. -/

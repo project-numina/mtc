@@ -6,6 +6,11 @@ public import PropertyF.Ground.Dimensions.GroundNorm
 /-! # Scalar twists and tensor extension
 
 Scalar sign twists and tensor-defect identities describe extensions from simple objects.
+
+## Main results
+
+* `rootSignTwist`: constructs a scalar twist of the fourth-dual root.
+* `doubleDualTensor_extension`: extends the tensor compatibility from simple objects.
 -/
 
 @[expose] public noncomputable section
