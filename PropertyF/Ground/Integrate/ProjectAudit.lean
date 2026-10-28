@@ -31,13 +31,10 @@ import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
 import all PropertyF.Ground.Integrate.DrinfeldComplete
 import all PropertyF.Ground.CentreInduction.Transparent
-import all PropertyF.Ground.Integrate.PivotalBalancedReduction
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
-import all PropertyF.Ground.Integrate.TransparentCenterReduction
 import all PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 import all PropertyF.Ground.CentreCalculus.TwistSign
 import all PropertyF.Ground.Centre.Modular.Vafa
-import all PropertyF.Ground.Integrate.BalancedCenterReduction
 import all PropertyF.Ground.CentreCabling.TwistFinite
 import all PropertyF.Ground.CentreCalculus.BraidRelations
 import all PropertyF.Ground.CentreCalculus.LeftPartialTrace
@@ -48,7 +45,6 @@ import all PropertyF.Ground.Centre.Calculus.TypeANormalWords
 import all PropertyF.Ground.Centre.Calculus.TypeA
 import all PropertyF.Ground.CentreInduction.PivotalCentrality
 import all PropertyF.Ground.CentreInduction.PositivePivotal
-import all PropertyF.Ground.Integrate.PivotalOnlyReduction
 import all PropertyF.Ground.CentreIntegrate.TwistBalancing
 import all PropertyF.Ground.Dimensions.DefectExtension
 import all PropertyF.Ground.Dimensions.DoubleDualBraiding
@@ -94,9 +90,7 @@ import all PropertyF.Ground.Dimensions.FourthTensorUnit
 import all PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 import all PropertyF.Ground.Dimensions.RootDualLabel
 import all PropertyF.Ground.Dimensions.RootDualPairing
-import all PropertyF.Ground.Integrate.CenterSquareReduction
 import all PropertyF.Arithmetic
-import all PropertyF.Axioms
 import all PropertyF.BlockTrace
 import all PropertyF.BraidAlgebra
 import all PropertyF.CenterBasics
@@ -164,23 +158,15 @@ import all PropertyF.Ground.Fusion.UnitPower
 import all PropertyF.Ground.Integrate.ActualCenterReduction
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterBundle
-import all PropertyF.Ground.Integrate.CenterCentralizers
 import all PropertyF.Ground.Integrate.CenterDualMate
-import all PropertyF.Ground.Integrate.CenterFiniteImage
-import all PropertyF.Ground.Integrate.CenterOnlyReduction
-import all PropertyF.Ground.Integrate.CenterProductBridge
-import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.DependencyAudit
-import all PropertyF.Ground.Integrate.FPConjugates
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.FunctorUniverse
 import all PropertyF.Ground.Integrate.ModularWitness
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
-import all PropertyF.Ground.Integrate.ScalarTwistModular
-import all PropertyF.Ground.Integrate.ScalarTwistTransport
 import all PropertyF.Ground.Integrate.TwistedRigidity
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Modular.BraidFunctor
@@ -234,12 +220,12 @@ run_cmd do
   | _ => throwError "dependency audit did not reject a missing declaration"
   match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenInputWrapper with
   | some (.forbidden n) =>
-      unless n == ``PropertyF.StandardInputs do
+      unless n == ``PropertyF.BraidedFusionCategory do
         throwError "unexpected forbidden fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect an imported definition body"
   match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenProof with
   | some (.forbidden n) =>
-      unless n == ``PropertyF.StandardInputs do
+      unless n == ``PropertyF.BraidedFusionCategory do
         throwError "unexpected forbidden theorem fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
   for n in #[``PropertyF.Ground.TargetStatement,

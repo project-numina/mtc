@@ -74,11 +74,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+variable (D : Type u) [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+  [RigidCategory (CategoryTheory.Center D)]
 
+omit [RightRigidCategory D] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Forgetting a centre dual pair gives a dual pair in the base category. -/
-@[instance_reducible] def forgetPairing (Z : CategoryTheory.Center C.Obj) : ExactPairing Z.1 ((Zᘁ).1) where
+@[instance_reducible] def forgetPairing (Z : CategoryTheory.Center D) : ExactPairing Z.1 ((Zᘁ).1) where
   coevaluation' := (η_ Z (Zᘁ)).f
   evaluation' := (ε_ Z (Zᘁ)).f
   coevaluation_evaluation' := by
@@ -97,23 +99,23 @@ set_option backward.isDefEq.respectTransparency false in
       CategoryTheory.Center.leftUnitor_inv_f] using h
 
 /-- Compare the underlying centre dual with the chosen base dual. -/
-def forgetDualIso (Z : CategoryTheory.Center C.Obj) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=
-  rightDualIso (forgetPairing C Z) HasRightDual.exact
+def forgetDualIso (Z : CategoryTheory.Center D) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=
+  rightDualIso (forgetPairing D Z) HasRightDual.exact
 
 /-- Compare the underlying centre double dual with the chosen base double dual. -/
-def forgetDoubleDualIso (Z : CategoryTheory.Center C.Obj) : (((Zᘁ)ᘁ).1) ≅ ((Z.1ᘁ)ᘁ) :=
-  forgetDualIso C (Zᘁ) ≪≫ Dimensions.rightDualIsoMap (forgetDualIso C Z).symm
+def forgetDoubleDualIso (Z : CategoryTheory.Center D) : (((Zᘁ)ᘁ).1) ≅ ((Z.1ᘁ)ᘁ) :=
+  forgetDualIso D (Zᘁ) ≪≫ Dimensions.rightDualIsoMap (forgetDualIso D Z).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Compatible pivotal components have equal traces after forgetting. -/
 theorem forget_trace_of_pivotal_component
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
-    (Z : CategoryTheory.Center C.Obj)
-    (hcompat : ((pZ.iso Z).hom.f) ≫ (forgetDoubleDualIso C Z).hom = (p.iso Z.1).hom) :
+    (p : Dimensions.PivotalStructure (C := D))
+    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center D))
+    (Z : CategoryTheory.Center D)
+    (hcompat : ((pZ.iso Z).hom.f) ≫ (forgetDoubleDualIso D Z).hom = (p.iso Z.1).hom) :
     (pZ.rightTrace (𝟙 Z)).asHom.f = (p.rightTrace (𝟙 Z.1)).asHom := by
-  let e := forgetDualIso C Z
-  let e' := forgetDualIso C (Zᘁ)
+  let e := forgetDualIso D Z
+  let e' := forgetDualIso D (Zᘁ)
   let u : Z.1 ⟶ ((Zᘁ)ᘁ).1 := (pZ.iso Z).hom.f
   have hu : u ≫ e'.hom ≫ (e.invᘁ) = (p.iso Z.1).hom := by
     simpa [forgetDoubleDualIso, Dimensions.rightDualIsoMap, e, e', u, Category.assoc] using hcompat
@@ -121,9 +123,9 @@ theorem forget_trace_of_pivotal_component
     rw [← hu]
     simp only [Category.assoc, ← comp_rightAdjointMate, Iso.hom_inv_id,
       rightAdjointMate_id, Category.comp_id]
-  have heval := Dimensions.rightDualIso_evaluation (forgetPairing C (Zᘁ)) HasRightDual.exact
+  have heval := Dimensions.rightDualIso_evaluation (forgetPairing D (Zᘁ)) HasRightDual.exact
   change (e'.hom ▷ ((Zᘁ).1)) ≫ ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) = (ε_ (Zᘁ) ((Zᘁ)ᘁ)).f at heval
-  have ht := Dimensions.trace_change_rightDual (forgetPairing C Z) HasRightDual.exact (p.iso Z.1).hom
+  have ht := Dimensions.trace_change_rightDual (forgetPairing D Z) HasRightDual.exact (p.iso Z.1).hom
   change (η_ Z (Zᘁ)).f ≫ (((p.iso Z.1).hom ≫ (e.homᘁ)) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
       ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) =
     η_ Z.1 (Z.1ᘁ) ≫ ((p.iso Z.1).hom ⊗ₘ 𝟙 (Z.1ᘁ)) ≫ ε_ (Z.1ᘁ) ((Z.1ᘁ)ᘁ) at ht

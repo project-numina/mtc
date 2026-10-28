@@ -59,15 +59,8 @@ public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Integrate.ScalarTwist
-public import PropertyF.Ground.Integrate.ScalarTwistTransport
-public import PropertyF.Ground.Integrate.ScalarTwistModular
-public import PropertyF.Ground.Integrate.FPConjugates
 public import PropertyF.Ground.Integrate.FunctorUniverse
 public import PropertyF.Ground.Integrate.TwistedRigidity
-public import PropertyF.Ground.Integrate.CenterOnlyReduction
-public import PropertyF.Ground.Integrate.CenterReductionComplete
-public import PropertyF.Ground.Integrate.CenterCentralizers
-public import PropertyF.Ground.Integrate.CenterProductBridge
 public import PropertyF.Ground.Integrate.CenterBundle
 public import PropertyF.Ground.Integrate.CenterDualMate
 public import PropertyF.Ground.Integrate.ActualCenterReduction
@@ -120,11 +113,6 @@ public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.CentreCabling.ProductCore
 public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.CentreCabling.TargetReduction
-public import PropertyF.Ground.Integrate.CenterSquareReduction
-public import PropertyF.Ground.Integrate.PivotalOnlyReduction
-public import PropertyF.Ground.Integrate.BalancedCenterReduction
-public import PropertyF.Ground.Integrate.TransparentCenterReduction
-public import PropertyF.Ground.Integrate.PivotalBalancedReduction
 public import PropertyF.Ground.Integrate.DrinfeldComplete
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 
@@ -150,6 +138,4 @@ public import PropertyF.Ground.Dimensions.MonodromyTensorCap
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
 The main theorem is `PropertyF.Ground.target`.
-Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
-See `FORMALIZATION.md` for the complete assumption ledger.
 -/
