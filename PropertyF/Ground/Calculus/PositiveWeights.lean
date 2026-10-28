@@ -13,16 +13,17 @@ open scoped BigOperators
 namespace PropertyF.Ground.Calculus
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
+variable (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
+  (hpos : ∀ i, 0 < original i)
+  (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
+  (hqdim : ∀ i, pivotalDimension C p (Ground.simples C i) = (qdim i : ℂ))
+include hpos htransport hqdim
 
 /-- Real Galois conjugates of positive simple dimensions yield nonzero real
 weights in every retained actual braid block, even if their signs differ. -/
 theorem exists_galois_braid_trace_weights
     {X : C.Obj} {n : ℕ}
-    (hfinite : Finite (braidImage X n))
-    (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
-    (hpos : ∀ i, 0 < original i)
-    (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
-    (hdim : ∀ i, pivotalDimension C p (Ground.simples C i) = (qdim i : ℂ)) :
+    (hfinite : Finite (braidImage X n)) :
     ∃ (r : ℕ) (size : Fin r → ℕ)
       (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
       (w : Fin r → ℝ),
@@ -41,20 +42,16 @@ theorem exists_galois_braid_trace_weights
         ← Complex.ofReal_sum] using
           transported_weight_ne_zero (fun i => mult i j) original σ hpos (hret j))
   · intro z
-    unfold pivotalDimension at hdim
+    unfold pivotalDimension at hqdim
     rw [actualBraidTrace, htrace]
     simp only [Blocks.trace, w, Complex.ofReal_sum, Complex.ofReal_mul,
-      Complex.ofReal_natCast, ← unitScalar_eq_equiv, hdim]
+      Complex.ofReal_natCast, ← unitScalar_eq_equiv, hqdim]
 
 /-- Categorical three-strand rigidity from real Galois dimension data and
 one intrinsic overlap trace identity. All matrix blocks and weights are
 constructed from the actual finite braid images. -/
 theorem actual_rigidity_of_overlap_and_galois_dimensions
     (X : C.Obj) [Simple X]
-    (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
-    (hpos : ∀ i, 0 < original i)
-    (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
-    (hqdim : ∀ i, pivotalDimension C p (Ground.simples C i) = (qdim i : ℂ))
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hfp : Ground.fpDimension C X = f)
@@ -64,7 +61,7 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (hrec : ∀ u : braidAlgebra X 1, HasOverlapTracePower C p u) : f = |d| := by
   classical
   choose r size b w hsize he hw htrace using fun n =>
-    exists_galois_braid_trace_weights C p (hfinite n) original qdim σ hpos htransport hqdim
+    exists_galois_braid_trace_weights C p original qdim σ hpos htransport hqdim (hfinite n)
   apply actual_three_strand_rigidity_of_trace_bound C p (b 1) (he 1)
     (hw 1) hd hf hdim hS hfinite (htrace 1)
   intro z hz

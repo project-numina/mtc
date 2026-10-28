@@ -216,8 +216,6 @@ theorem regroup_biproduct {D : Type u} [Category.{v} D] [Preadditive D]
   let W : (Σ i, Fin (m i)) → D := fun p => S p.1
   refine ⟨m, ⟨(biproduct.whiskerEquiv E ?_).symm⟩⟩
   intro p
-  have hiso := hIso (E p)
-  rw [hE p] at hiso
-  exact Classical.choice hiso
+  exact Classical.choice (by simpa only [hE] using hIso (E p))
 
 end PropertyF.Ground.CentreInduction

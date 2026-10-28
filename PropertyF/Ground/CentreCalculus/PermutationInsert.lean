@@ -148,6 +148,14 @@ def fixHead (n : ℕ) : Equiv.Perm (Fin n) →* Equiv.Perm (Fin (n + 1)) where
     refine Fin.cases ?_ (fun j => ?_) x <;>
       simp [Equiv.Perm.mul_apply]
 
+/-- A one-point permutation extension is the swap of that point with zero,
+followed by the fixed-head extension of the smaller permutation. -/
+theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
+    decomposeFin.symm (q, σ) = Equiv.swap 0 q * fixHead n σ := by
+  ext x
+  refine Fin.cases ?_ (fun j => ?_) x <;>
+    simp [fixHead, Equiv.Perm.mul_apply]
+
 theorem fixHead_swap {n : ℕ} (i : Fin n) :
     fixHead (n + 1) (Equiv.swap i.castSucc i.succ) =
       Equiv.swap i.succ.castSucc i.succ.succ := by
@@ -171,8 +179,7 @@ theorem permutationAction_fixHead {n : ℕ}
   let g := ((tensorLeft X).mapAut (tensorPower X (n + 2))).comp (permutationAction X hX n)
   obtain ⟨w, rfl⟩ := strandPermutation_surjective n σ
   have hh : f.comp (strandPermutation n) = g.comp (strandPermutation n) := by
-    apply FreeGroup.ext_hom
-    intro i
+    refine FreeGroup.ext_hom _ _ fun i ↦ ?_
     change permutationAction X hX (n + 1) (fixHead (n + 2) (strandPermutation n (FreeGroup.of i))) =
       (tensorLeft X).mapAut (tensorPower X (n + 2))
         (permutationAction X hX n (strandPermutation n (FreeGroup.of i)))
@@ -196,6 +203,18 @@ theorem tensorPermutationAction_fixHead :
   · change Aut.toEnd (permutationAction X hX (n + 1) (fixHead (n + 2) σ)) = _
     rw [permutationAction_fixHead]
     rfl
+
+set_option backward.isDefEq.respectTransparency false in
+/-- An adjacent moved strand acts by the first crossing followed by fixed-head insertion. -/
+theorem tensorPermutationAction_adjacent {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
+    tensorPermutationAction X hX (n + 2) (decomposeFin.symm (1, σ)) =
+      (Aut.toEnd (braidGenerator X n 0) : End (X ⊗ tensorPower X (n + 1))) *
+        End.of (X ◁ ((tensorPermutationAction X hX (n + 1)) σ).asHom) := by
+  rw [decomposeFin_eq_swap_fixHead, map_mul]
+  change tensorPermutationAction X hX (n + 2)
+    (Equiv.swap (0 : Fin (n + 1)).castSucc (0 : Fin (n + 1)).succ) * _ = _
+  rw [tensorPermutationAction_swap, tensorPermutationAction_fixHead]
+  rfl
 
 end
 

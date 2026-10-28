@@ -109,7 +109,7 @@ theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalF
     simp [d, χ, Complex.norm_real, Real.norm_eq_abs]
   exact ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
       (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, by simp [d, χ, fpSimple_unit]⟩),
-    Dimensions.target_globalDimension_le_of_simple_bounds C d hbound,
+    Dimensions.target_globalDimension_le_of_simple_bounds C hbound,
     globalFPDimension_galois_sum_squares C σ⟩
 
 end PropertyF.Ground

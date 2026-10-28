@@ -48,8 +48,7 @@ theorem inverse_crossing_snake {D : Type u} [Category.{v} D] [MonoidalCategory D
   calc
     _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
         ((β_ (Xᘁ ⊗ X) X).inv ≫ ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom := by
-          rw [braiding_tensor_left_inv]
-          simp [Category.assoc]
+          simp [braiding_tensor_left_inv, Category.assoc]
     _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
         X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ D) X).inv ≫ (λ_ X).hom := by
           rw [← braiding_inv_naturality_right]
