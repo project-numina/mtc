@@ -36,9 +36,9 @@ theorem trace_bound_of_overlap {t d f : ℝ} {m : ℕ}
       rw [mul_pow, pow_succ |d|, pow_add, pow_one, mul_comm (k + 1), pow_mul]
       field_simp
 
-/-- A scaled complex overlap recurrence and bounds on the overlaps imply the sharp norm bound. -/
-theorem norm_bound_of_overlap {δ z : ℂ} {f : ℝ} {m : ℕ} (hδ : δ ≠ 0) (hf : 0 < f)
-    (a : ℕ → ℂ) (hbound : ∀ k, ‖a k‖ ≤ f ^ ((k + 1) * (m - 1) + 1))
+/-- A scaled overlap recurrence and bounds on the overlaps imply the sharp norm bound. -/
+theorem norm_bound_of_overlap {K : Type*} [NormedRing K] [NormMulClass K] [NormOneClass K] {δ z : K} {f : ℝ} {m : ℕ} (hδ : δ ≠ 0) (hf : 0 < f)
+    (a : ℕ → K) (hbound : ∀ k, ‖a k‖ ≤ f ^ ((k + 1) * (m - 1) + 1))
     (hrec : ∀ k, a k * δ ^ k = z ^ (k + 1)) : ‖z‖ ≤ ‖δ‖ * f ^ (m - 1) := by
   simpa only [abs_of_nonneg (norm_nonneg δ)] using
     trace_bound_of_overlap (norm_ne_zero_iff.mpr hδ) hf (fun k => by

@@ -233,8 +233,9 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- A scaled overlap recurrence and bounds at its strand counts imply the sharp norm bound. -/
-theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf : 0 < f)
-    (t : ℕ) (a : ℕ → ℂ) (hbound : ∀ k, ‖a k‖ ≤ f ^ (overlapIndex t k + 2))
+theorem norm_bound_of_overlapIndex {K : Type*} [NormedRing K] [NormMulClass K] [NormOneClass K]
+    {δ z : K} {f : ℝ} (hδ : δ ≠ 0) (hf : 0 < f)
+    (t : ℕ) (a : ℕ → K) (hbound : ∀ k, ‖a k‖ ≤ f ^ (overlapIndex t k + 2))
     (hrec : ∀ k, a k * δ ^ k = z ^ (k + 1)) : ‖z‖ ≤ ‖δ‖ * f ^ (t + 1) := by
   apply norm_bound_of_overlap (m := t + 2) hδ hf a ?_ hrec
   intro k
