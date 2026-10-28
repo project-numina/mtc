@@ -79,7 +79,6 @@ theorem center_artinian (X : 𝒵) : IsArtinianObject X :=
   let : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
   ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
 
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object embeds in an induced base simple. -/
 theorem simple_mono_induced_simple (X : 𝒵) [Simple X] :

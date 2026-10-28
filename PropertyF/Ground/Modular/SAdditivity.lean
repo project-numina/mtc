@@ -64,10 +64,9 @@ exactly the fusion coefficients. -/
 theorem SEntry_tensor_decomposition (i j k : Fin (rank D)) :
     Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
       ∑ l, (fusionCoeff D i j l : ℂ) * Sₚ l k := by
-  let X := simples D i ⊗ simples D j
-  obtain ⟨e⟩ := exists_canonical_decomposition D X
-  rw [SEntry_iso_left p e _, SEntry_biproduct_left]
-  simp [Fintype.sum_sigma, categoricalS, nsmul_eq_mul, fusionCoeff, X]
+  obtain ⟨e⟩ := exists_canonical_decomposition D (simples D i ⊗ simples D j)
+  simp [SEntry_iso_left p e _, SEntry_biproduct_left, Fintype.sum_sigma,
+    categoricalS, nsmul_eq_mul, fusionCoeff]
 
 
 /-- The Hopf-link product rule for simple objects. -/

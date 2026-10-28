@@ -149,7 +149,7 @@ surviving object is the total trace divided by its nonzero pivotal dimension. -/
 theorem rightPartialTrace_simple_ground (C : BraidedFusionCategory.{v,u})
     {X Y : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y)) :
-    rightPartialTrace p X Y f =
+    rightPartialTrace p f =
       (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) :=
   let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
   rightPartialTrace_simple_of_trace_compatibility (X := X) (Y := Y) p scalar f
@@ -183,7 +183,7 @@ variable {A X Y : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
 /-- Tracing the new strands of the overlap gives the old operator times the
 normalized trace of the fresh operator. -/
 theorem rightPartialTrace_overlap :
-    rightPartialTrace p (A ⊗ X) Y (overlapEndProduct v u) =
+    rightPartialTrace p (overlapEndProduct v u) =
       (scalarTrace p scalar u / scalar (p.rightTrace (𝟙 X))) • v := by
   rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
     rightPartialTrace_simple_ground D (X := X) (Y := Y) p scalar u]

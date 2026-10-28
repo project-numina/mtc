@@ -66,9 +66,8 @@ theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
     simp only [← whiskerLeft_comp, braiding_inv_naturality_left]
   slice_lhs 4 6 => rw [hmove]
   simp only [Category.assoc]
-  rw [associator_inv_naturality_right_assoc]
-  rw [whisker_exchange_assoc (ε_ X (Xᘁ)) t]
-  rw [leftUnitor_naturality]
+  rw [associator_inv_naturality_right_assoc, whisker_exchange_assoc (ε_ X (Xᘁ)) t,
+    leftUnitor_naturality]
   change _ = t
   simpa only [Category.assoc, Category.id_comp] using congrArg (fun f => f ≫ t) (inverse_crossing_snake X)
 

@@ -147,16 +147,11 @@ def fixHead (n : ℕ) : Equiv.Perm (Fin n) →* Equiv.Perm (Fin (n + 1)) where
 theorem fixHead_swap {n : ℕ} (i : Fin n) :
     fixHead (n + 1) (Equiv.swap i.castSucc i.succ) =
       Equiv.swap i.succ.castSucc i.succ.succ := by
+  have h : i.succ.castSucc = i.castSucc.succ := Fin.ext rfl
+  rw [h]
   ext x
-  refine Fin.cases ?_ (fun j => ?_) x
-  · simp [fixHead, Equiv.swap_apply_def, Fin.ext_iff]
-  ·
-    have h : i.succ.castSucc = i.castSucc.succ := Fin.ext rfl
-    rw [h]
-    simp only [fixHead, MonoidHom.coe_mk, OneHom.coe_mk,
-      Equiv.Perm.decomposeFin_symm_apply_succ, Equiv.swap_self, Equiv.refl_apply,
-      Equiv.swap_apply_def, Fin.succ_inj]
-    split_ifs <;> rfl
+  refine Fin.cases ?_ (fun j => ?_) x <;> simp [fixHead, Equiv.swap_apply_def, Fin.ext_iff]
+  split_ifs <;> rfl
 
 section
 variable {X : C} (hX : SelfTransparent X)

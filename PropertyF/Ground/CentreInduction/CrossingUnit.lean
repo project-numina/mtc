@@ -121,13 +121,9 @@ theorem crossingBlock_of_simple_split (X : D) {T R S : D} [Simple R]
     simpa [Category.assoc] using (congrArg (fun k => e.inv ≫ k) hd).symm
   have hcd : c * d = 1 := by
     apply (smul_left_injective ℂ (id_nonzero R))
-    have hh := h
-    rw [hg, hf] at hh
-    simpa [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using hh
+    simpa [hg, hf, Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using h
   change mixedCrossingBilinear (k := ℂ) X T T R S g f = _
-  rw [hg, hf]
-  simp only [map_smul, LinearMap.smul_apply, smul_smul]
-  rw [mul_comm d c, hcd, one_smul]
+  simp only [hg, hf, map_smul, LinearMap.smul_apply, smul_smul, mul_comm d c, hcd, one_smul]
   rfl
 
 set_option backward.isDefEq.respectTransparency false in

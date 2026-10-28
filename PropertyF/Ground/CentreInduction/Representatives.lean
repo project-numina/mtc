@@ -57,7 +57,6 @@ inductive FiniteSimpleSum (D : Type u) [Category.{v} D] [Preadditive D]
   | cons {X S K} : Simple S → FiniteSimpleSum D K → Nonempty (X ≅ S ⊞ K) →
       FiniteSimpleSum D X
 
-
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Finite-dimensional injective objects with simple subobjects split into finite simple sums. -/
@@ -79,15 +78,11 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
         (ShortComplex.cokernelSequence_exact f) r hr inferInstance
       let K := cokernel f
       let e : Z ≅ S ⊞ K := split.isoBinaryBiproduct
-      have hs : ¬ IsZero S := Simple.not_isZero _
-      have he : Module.finrank k (Z ⟶ Z) = Module.finrank k (S ⊞ K ⟶ S ⊞ K) :=
-        (CategoryTheory.Linear.homCongr k e e).finrank_eq
       have hk : m K < m Z := by
         change Module.finrank k (K ⟶ K) < Module.finrank k (Z ⟶ Z)
-        rw [he]
-        exact finrank_end_complement_lt _ K hs
+        rw [(CategoryTheory.Linear.homCongr k e e).finrank_eq]
+        exact finrank_end_complement_lt _ K (Simple.not_isZero _)
       exact .cons hS (ih K hk) ⟨e⟩
-
 
 end PropertyF.Ground.CentreInduction
 
@@ -191,9 +186,8 @@ theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [Ha
     exact hs _ (Quotient.out (e.symm i)).2
   · intro i j hij
     apply e.symm.injective
-    have hh : Quotient.mk R (Quotient.out (e.symm i)) =
-        Quotient.mk R (Quotient.out (e.symm j)) := Quotient.sound hij
-    simpa using hh
+    simpa using (Quotient.sound hij : Quotient.mk R (Quotient.out (e.symm i)) =
+      Quotient.mk R (Quotient.out (e.symm j)))
   · intro X hX
     obtain ⟨T, hT, ⟨iso⟩⟩ := hc X hX
     let t : A := ⟨T, hT⟩
