@@ -41,10 +41,11 @@ def imageLabels : Set (Fin (rank (Integrate.bundledCenter C))) :=
 theorem imageLabels_subset_productLabels : imageLabels C ⊆ (↑(productLabels C) : Set _) :=
   fun a ha ↦ (mem_productLabels C a).mpr (canonicalImageRetract_product C ha)
 
-variable (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
+variable {p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)}
 
 /-- Image monodromy is finite for labels passing the numerical centralizer test. -/
-abbrev HasFiniteImageCentralizerMonodromy : Prop :=
+abbrev HasFiniteImageCentralizerMonodromy
+    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)) : Prop :=
   ∀ y ∈ sCentralizer (Integrate.bundledCenter C) p (imageLabels C),
       ∀ a ∈ imageLabels C, IsOfFinOrder (End.of (Modular.doubleBraiding
         (simples (Integrate.bundledCenter C) a) (simples (Integrate.bundledCenter C) y)))
@@ -59,7 +60,7 @@ mixed monodromies have finite order. Only simple image constituents, and only
 labels passing this S-test, are needed for the finite-order hypothesis. -/
 theorem numericalImageCentralizer_subset_symmetricCore
     (hfinite : HasFiniteImageCentralizerMonodromy C p)
-    (y : Fin (rank (Integrate.bundledCenter C)))
+    {y : Fin (rank (Integrate.bundledCenter C))}
     (hy : y ∈ sCentralizer (Integrate.bundledCenter C) p (imageLabels C)) : y ∈ symmetricCore C := by
   let Z := Integrate.bundledCenter C
   have hc (X : CategoryTheory.Center C.Obj) (hX : CanonicalImageRetract C X) :
@@ -84,8 +85,8 @@ theorem productLabels_doubleCentralizer_of_image_monodromy
     (hfinite : HasFiniteImageCentralizerMonodromy C p) :
     ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p (symmetricCore C),
       Centre.ProductRetract (simples (Integrate.bundledCenter C) x) :=
-  productLabels_doubleCentralizer C p hp hdet hdim (symmetricCore C) fun y hy ↦
-    numericalImageCentralizer_subset_symmetricCore C p hdim hfinite y fun a ha ↦
+  productLabels_doubleCentralizer C hp hdet hdim fun y hy ↦
+    numericalImageCentralizer_subset_symmetricCore C hdim hfinite fun a ha ↦
       hy a (imageLabels_subset_productLabels C ha)
 
 end PropertyF.Ground.CentreCabling

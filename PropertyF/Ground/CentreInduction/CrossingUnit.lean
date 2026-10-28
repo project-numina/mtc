@@ -8,11 +8,11 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The closed fusion map is characterized by its evaluation pairing. -/
-theorem closeFusionMap_evaluation {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] {T S R : D} (f : T ⊗ S ⟶ R) :
+theorem closeFusionMap_evaluation {T S R : D} (f : T ⊗ S ⟶ R) :
     (closeFusionMap T S R f ▷ S) ≫ ε_ S (Sᘁ) =
       𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
   have he := PropertyF.Ground.Dimensions.rightDualIso_evaluation
@@ -37,8 +37,7 @@ theorem closeFusionMap_evaluation {D : Type u} [Category.{v} D] [MonoidalCategor
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A map to a right dual is determined by its evaluation. -/
-theorem dual_map_ext {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] {V : D} (S : D) (f g : V ⟶ Sᘁ)
+theorem dual_map_ext {V : D} (S : D) (f g : V ⟶ Sᘁ)
     (h : f ▷ S ≫ ε_ S (Sᘁ) = g ▷ S ≫ ε_ S (Sᘁ)) : f = g := by
   apply (cancel_mono (λ_ (Sᘁ)).inv).1
   simpa only [tensorRightHomEquiv_whiskerRight_comp_evaluation] using
@@ -46,8 +45,7 @@ theorem dual_map_ext {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the tensor-unit unitor gives the unitor of the dual object. -/
-theorem closeFusionMap_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] (S : D) :
+theorem closeFusionMap_unit (S : D) :
     closeFusionMap (𝟙_ D) S S (λ_ S).hom = (ρ_ (Sᘁ)).hom := by
   apply dual_map_ext S
   rw [closeFusionMap_evaluation]
@@ -55,8 +53,7 @@ theorem closeFusionMap_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical unit crossing block is the unitor comparison. -/
-theorem crossingBlock_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] (X S : D) :
+theorem crossingBlock_unit (X S : D) :
   crossingBlock X (𝟙_ D) S S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
   dsimp only [crossingBlock]
@@ -64,11 +61,11 @@ theorem crossingBlock_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
   simp only [tensorHom_def]
   monoidal
 
+variable [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D] [HasKernels D]
+
 set_option backward.isDefEq.respectTransparency false in
 /-- A split crossing block is independent of the chosen splitting of a simple. -/
-theorem crossingBlock_of_simple_split {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D]
-    [MonoidalLinear ℂ D] [HasKernels D] (X T : D) {R S : D} [Simple R]
+theorem crossingBlock_of_simple_split (X T : D) {R S : D} [Simple R]
     [FiniteDimensional ℂ (R ⟶ R)]
     (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
     crossingBlock X T R S g f = crossingBlock X T R S e.hom e.inv := by
@@ -91,9 +88,7 @@ theorem crossingBlock_of_simple_split {D : Type u} [Category.{v} D] [MonoidalCat
 
 set_option backward.isDefEq.respectTransparency false in
 /-- For a simple object, any splitting gives the same unit crossing block. -/
-theorem crossingBlock_unit_of_split {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D]
-    [MonoidalLinear ℂ D] [HasKernels D] (X : D) {S : D} [Simple S]
+theorem crossingBlock_unit_of_split (X : D) {S : D} [Simple S]
     [FiniteDimensional ℂ (S ⟶ S)]
     (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock X (𝟙_ D) S S g f =
