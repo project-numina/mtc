@@ -165,8 +165,7 @@ theorem unitComponentAt_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory
   rw [triangle_assoc_comp_right_assoc, ← whisker_exchange_assoc]
   simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp,
     ← whiskerLeft_comp_assoc, Category.assoc]
-  erw [reassoc_of% coevaluation_iso_unit e, whiskerLeft_id]
-  simp
+  simp [reassoc_of% coevaluation_iso_unit e, whiskerLeft_id]
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in

@@ -77,12 +77,11 @@ theorem simple_mono_induced_simple [Simple X] :
   obtain ⟨i, hi⟩ := exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
     (fun _ ↦ inferInstance)
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
+  let : FiniteDimensional ℂ (X ⟶ (induction C).obj (Sᶜ i)) := Centre.finiteDimensional_hom ℂ _ _
   obtain ⟨g, hg⟩ := finrank_pos_iff_exists_ne_zero.mp
-    (show 0 < finrank ℂ (X.1 ⟶ Sᶜ i) from by
-      simpa only [finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
-  let e := homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj) (induction C)
-    (actualAdjunction C) X (Sᶜ i)
-  exact ⟨i, e.symm g, mono_of_nonzero_from_simple (e.symm.map_eq_zero_iff.not.mpr hg)⟩
+    (show 0 < finrank ℂ (X ⟶ (induction C).obj (Sᶜ i)) from by
+      simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
+  exact ⟨i, g, mono_of_nonzero_from_simple hg⟩
 
 /-! Finiteness of simple objects in the actual Drinfeld centre. -/
 
