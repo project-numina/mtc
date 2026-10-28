@@ -34,59 +34,12 @@ theorem canonicalImageRetract_product {X : CategoryTheory.Center C.Obj}
   · exact Centre.productRetract_of_retract s (Centre.positive_productRetract A)
   · exact Centre.productRetract_of_retract s (Centre.negative_productRetract A)
 
-/-- A retract of the positive embedding is canonically isomorphic to the
-positive image of its underlying object. -/
-def positiveIsoOfImageRetract (Y : CategoryTheory.Center C.Obj) (A : C.Obj)
-    (r : Retract Y ((CategoryTheory.Center.ofBraided C.Obj).obj A)) :
-    Y ≅ (CategoryTheory.Center.ofBraided C.Obj).obj Y.1 := by
-  apply Centre.positiveIsoOfCentralizesNegative
-  intro X
-  change Modular.doubleBraiding Y ((Centre.negative C.Obj).obj X) = 𝟙 _
-  apply doubleBraiding_eq_one_of_retract r
-  exact Centre.positive_negative_centralize A X
-
-/-- The analogous statement for the negative embedding. -/
-def negativeIsoOfImageRetract (Y : CategoryTheory.Center C.Obj) (A : C.Obj)
-    (r : Retract Y ((Centre.negative C.Obj).obj A)) :
-    Y ≅ (Centre.negative C.Obj).obj Y.1 := by
-  apply Centre.negativeIsoOfCentralizesPositive
-  intro X
-  change Modular.doubleBraiding Y ((CategoryTheory.Center.ofBraided C.Obj).obj X) = 𝟙 _
-  apply doubleBraiding_eq_one_of_retract r
-  exact Centre.centralizes_symm (Centre.positive_negative_centralize X A)
-
 /-- Simple constituents of either canonical image. -/
 def imageLabels : Set (Fin (rank (Integrate.bundledCenter C))) :=
   {a | CanonicalImageRetract C (simples (Integrate.bundledCenter C) a)}
 
 theorem imageLabels_subset_productLabels : imageLabels C ⊆ (↑(productLabels C) : Set _) :=
   fun a ha ↦ (mem_productLabels C a).mpr (canonicalImageRetract_product C ha)
-
-/-- Each simple image label has a simple underlying base object. -/
-theorem imageLabel_underlying_simple
-    (a : Fin (rank (Integrate.bundledCenter C))) (ha : a ∈ imageLabels C) :
-    Simple (simples (Integrate.bundledCenter C) a).1 := by
-  let Y : CategoryTheory.Center C.Obj := simples (Integrate.bundledCenter C) a
-  letI : Simple Y := simples_simple (Integrate.bundledCenter C) a
-  letI : (CategoryTheory.Center.ofBraided C.Obj).PreservesMonomorphisms := {
-    preserves := fun f => by
-      intro _
-      apply (CategoryTheory.Center.forget C.Obj).mono_of_mono_map
-      change Mono f
-      infer_instance }
-  letI : (Centre.negative C.Obj).PreservesMonomorphisms := {
-    preserves := fun f => by
-      intro _
-      apply (CategoryTheory.Center.forget C.Obj).mono_of_mono_map
-      change Mono f
-      infer_instance }
-  rcases ha with ⟨A, ⟨r⟩⟩ | ⟨A, ⟨r⟩⟩
-  · let e := positiveIsoOfImageRetract C Y A r
-    letI : Simple ((CategoryTheory.Center.ofBraided C.Obj).obj Y.1) := Simple.of_iso e.symm
-    exact Functor.simple_of_simple_obj (CategoryTheory.Center.ofBraided C.Obj) Y.1
-  · let e := negativeIsoOfImageRetract C Y A r
-    letI : Simple ((Centre.negative C.Obj).obj Y.1) := Simple.of_iso e.symm
-    exact Functor.simple_of_simple_obj (Centre.negative C.Obj) Y.1
 
 /-- The S-test on both canonical images detects the actual core if the relevant
 mixed monodromies have finite order. Only simple image constituents, and only

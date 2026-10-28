@@ -16,14 +16,6 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
-  (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
-
-end PropertyF.Ground.CentreCalculus
-
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCalculus
-universe v u
-variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 /-- Once left partial trace composes with total trace, Schur's lemma computes
 the closed crossing as the pivotal twist scalar. -/

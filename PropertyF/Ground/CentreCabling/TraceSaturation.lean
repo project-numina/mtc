@@ -4,7 +4,7 @@ public import PropertyF.UnitaryTrace
 public import Mathlib.GroupTheory.OrderOfElement
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Centre.Embeddings
+public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Calculus.EndTrace
 public import PropertyF.Ground.Fusion.Agreement
 
