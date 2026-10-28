@@ -28,16 +28,14 @@ include hdual in
 theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
     ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 := by
   let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j
-  have hbalance (i : ι) : ψ.value i * w = χ.value i * w := by
-    have hc := character_dual_conj N dual hdual χ i
-    simpa [w, hc] using character_inner_balance N dual hdual χ ψ i
-  have hi : ∃ i, χ.value i ≠ ψ.value i := by
+  obtain ⟨i, hi⟩ : ∃ i, χ.value i ≠ ψ.value i := by
     by_contra h
     push Not at h
     exact hne (Character.ext (funext h))
-  obtain ⟨i, hi⟩ := hi
   by_contra hw
-  exact hi (mul_right_cancel₀ hw (hbalance i)).symm
+  exact hi (mul_right_cancel₀ hw (by
+    simpa [w, character_dual_conj N dual hdual χ i] using
+      character_inner_balance N dual hdual χ ψ i)).symm
 
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
@@ -85,17 +83,13 @@ theorem categoricalS_square_off_dual
     (hreal : HasRealSimpleDimensions C p)
     (x y : Fin (rank C)) (hxy : x ≠ Ground.dualIndex C y) :
     ∑ z, Sₚ x z * Sₚ z y = 0 := by
-  have hne : Ground.dualIndex C x ≠ y := by
-    intro h
-    apply hxy
-    have hh := congrArg (Ground.dualIndex C) h
-    simpa [Ground.dualIndex_involutive C x] using hh
-  have ho := categoricalS_columns_orthogonal C p hdet hreal hne
+  have hne : Ground.dualIndex C x ≠ y := fun h ↦ hxy (by
+    simpa only [Ground.dualIndex_involutive C x] using congrArg (Ground.dualIndex C) h)
   have hstar (z : Fin (rank C)) :
       starRingEnd ℂ (Sₚ z (Ground.dualIndex C x)) = Sₚ x z := by
     rw [categoricalS_symmetric C p z, categoricalS_dual_conj C p hreal]
     simp
-  simpa only [hstar] using ho
+  simpa only [hstar] using categoricalS_columns_orthogonal C p hdet hreal hne
 
 
 /-- If the square of a matrix is supported on an involution, an invariant
@@ -182,9 +176,8 @@ theorem globalDimension_ne_zero_of_invertibleS (hp : p.IsSpherical)
   have hs : Sₚ * Sₚ = 0 := by
     ext x y
     simp [Matrix.mul_apply, categoricalS_square C p hp hdet hreal, hz]
-  have hh := congrArg Matrix.det hs
-  rw [Matrix.det_mul, Matrix.det_zero] at hh
-  exact mul_ne_zero hdet hdet hh
+  exact mul_ne_zero hdet hdet (by
+    simpa only [Matrix.det_mul, Matrix.det_zero] using congrArg Matrix.det hs)
 
 /-- The S-column Galois action for any nondegenerate spherical category with
 real simple dimensions, without old input bundles. -/

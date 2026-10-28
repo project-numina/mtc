@@ -248,7 +248,10 @@ set_option backward.isDefEq.respectTransparency false in
 theorem secondTriangle (X : C.Obj) :
     unitCandidate C ((induction C).obj X) ≫
       (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X) := by
-  apply secondTriangle_of_matrix_entries C (halfBraidingOfCrossingCandidate C)
-    (halfBraidingOfCrossingCandidate_natural C) (secondTriangle_entry C) X
+  apply biproduct.hom_ext'
+  intro i
+  apply biproduct.hom_ext
+  intro j
+  simpa [underlying, Category.assoc] using secondTriangle_entry C X i j
 
 end PropertyF.Ground.CentreInduction

@@ -167,8 +167,7 @@ theorem dual_involutive {R : Type*} [CommSemiring R]
   have h := hsq (dual y) y
   rw [ite_eq_left rfl, hsym_sq, hsq] at h
   by_contra hn
-  have hn' : y ≠ dual (dual y) := Ne.symm hn
-  rw [ite_eq_right hn'] at h
+  rw [ite_eq_right (Ne.symm hn)] at h
   exact hD h.symm
 
 /-- The normalized S columns are linearly independent. The proof constructs an

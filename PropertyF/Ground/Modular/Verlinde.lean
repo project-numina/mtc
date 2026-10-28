@@ -250,13 +250,13 @@ theorem rightPartialTrace_nested_simple (p : PivotalStructure (C := C))
         (End.of ((α_ Z X Y).hom ≫ f.asHom ≫ (α_ Z X Y).inv))) := by
   let g : End ((Z ⊗ X) ⊗ Y) := End.of ((α_ Z X Y).hom ≫ f.asHom ≫ (α_ Z X Y).inv)
   have hc : p.rightTrace g.asHom = p.rightTrace f.asHom := by
-    have h := p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
-    simpa [g, Category.assoc] using h
-  have ht1 := rightTrace_partialTrace p Z (X ⊗ Y) f
-  have ht2 := rightTrace_partialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y g)
-  have ht3 := rightTrace_partialTrace p (Z ⊗ X) Y g
-  rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd ht1,
-    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd ht2, ht3, hc]
+    simpa [g, Category.assoc] using
+      p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
+  rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd
+      (rightTrace_partialTrace p Z (X ⊗ Y) f),
+    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd
+      (rightTrace_partialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y g)),
+    rightTrace_partialTrace p (Z ⊗ X) Y g, hc]
 
 
 end Nested

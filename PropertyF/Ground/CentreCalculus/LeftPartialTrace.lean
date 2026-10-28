@@ -11,7 +11,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 /-- Close the first factor using the pivotal left dual. -/
-def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) (X Y : C) :
+def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) {X Y : C} :
     End (X ⊗ Y) →ₗ[ℂ] End Y where
   toFun f := End.of ((λ_ Y).inv ≫
     ((η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ ((Xᘁ) ◁ (p.iso X).inv)) ▷ Y) ≫
@@ -27,7 +27,7 @@ def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) (X Y : C) :
 /-- Closing the left factor and then tracing agrees with the total trace. -/
 abbrev IsLeftTraceCompatible (p : Dimensions.PivotalStructure (C := C)) (X : C) : Prop :=
   ∀ Y (f : End (X ⊗ Y)),
-    p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom
+    p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom
 
 /-- Inserting a map on the untraced right factor. -/
 def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
@@ -35,8 +35,8 @@ def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
 
 theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
     {X Y : C} (a : End Y) (f : End (X ⊗ Y)) :
-    leftPartialTrace p X Y (f * insertLeftIdentity X a) =
-      leftPartialTrace p X Y f * a := by
+    leftPartialTrace p (f * insertLeftIdentity X a) =
+      leftPartialTrace p f * a := by
   apply End.ext
   simp only [leftPartialTrace, insertLeftIdentity, LinearMap.coe_mk, AddHom.coe_mk,
     End.mul_asHom, whiskerLeft_comp, Category.assoc]
@@ -46,9 +46,9 @@ theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
 /-- Closing the first factor commutes with a spectator factor on the right. -/
 theorem leftPartialTrace_whiskerRight (p : Dimensions.PivotalStructure (C := C))
     {X Y : C} (Z : C) (f : End (X ⊗ Y)) :
-    leftPartialTrace p X (Y ⊗ Z) (End.of
+    leftPartialTrace p (End.of
       ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
-      End.of ((leftPartialTrace p X Y f).asHom ▷ Z) := by
+      End.of ((leftPartialTrace p f).asHom ▷ Z) := by
   apply End.ext
   simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
     comp_whiskerRight, whiskerLeft_comp, Category.assoc]
@@ -61,10 +61,10 @@ theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.Ha
     (p : Dimensions.PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
-    (htrace : p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom) :
-    leftPartialTrace p X Y f =
+    (htrace : p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom) :
+    leftPartialTrace p f =
       (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) :=
-  (Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p X Y f) hd).trans <|
+  (Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p f) hd).trans <|
     congrArg (fun t ↦ (scalar t / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y)) htrace
 
 end PropertyF.Ground.CentreCalculus

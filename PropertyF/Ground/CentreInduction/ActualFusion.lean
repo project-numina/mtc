@@ -213,12 +213,23 @@ theorem unitCandidate_central (Z : CategoryTheory.Center C.Obj) (T : C.Obj) :
     _ = _ := by simpa [Fintype.sum_sigma] using unit_sum C Z T j
     _ = _ := hr.symm
 
+set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/
-def actualAdjunction : CategoryTheory.Center.forget C.Obj ⊣ induction C :=
-  adjunctionOfHalfBraiding C (halfBraidingOfCrossingCandidate C)
-    (halfBraidingOfCrossingCandidate_natural C)
-    (fun Z T => unitCandidate_central C Z T)
-    (secondTriangle C)
+def actualAdjunction : CategoryTheory.Center.forget C.Obj ⊣ induction C where
+  unit := {
+    app Z := ⟨unitCandidate C Z, unitCandidate_central C Z⟩
+    naturality {X Y} f := by
+      apply CategoryTheory.Center.ext
+      change f.f ≫ unitCandidate C Y = unitCandidate C X ≫ (underlyingFunctor C).map f.f
+      apply biproduct.hom_ext
+      intro i
+      simp only [underlyingFunctor, unitCandidate, Category.assoc, biproduct.lift_π, biproduct.lift_π_assoc, biproduct.map_π]
+      simpa only [Category.assoc] using unitComponent_natural C f i }
+  counit := underlyingCounit C
+  left_triangle_components Z := unitCandidate_counit C Z
+  right_triangle_components X := by
+    apply CategoryTheory.Center.ext
+    exact secondTriangle C X
 
 end PropertyF.Ground.CentreInduction
 

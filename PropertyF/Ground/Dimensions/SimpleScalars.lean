@@ -89,24 +89,6 @@ def doubleDualFunctor : C ⥤ C where
   map_id X := by simp
   map_comp f g := by simp [comp_rightAdjointMate]
 
-variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
-
-omit [Linear ℂ C] [MonoidalLinear ℂ C] in
-/-- Right adjoint mates preserve addition. -/
-theorem rightAdjointMate_add {X Y : C} (f g : X ⟶ Y) :
-    (f + g)ᘁ = fᘁ + gᘁ := by simp [rightAdjointMate]
-
-instance : (doubleDualFunctor C).Linear ℂ where
-  map_smul := by
-    intro X Y f c
-    change ((c • f)ᘁ)ᘁ = c • (fᘁ)ᘁ
-    rw [rightAdjointMate_smul, rightAdjointMate_smul]
-
-instance : (doubleDualFunctor C).Additive where
-  map_add := by
-    intro X Y f g
-    change ((f + g)ᘁ)ᘁ = (fᘁ)ᘁ + (gᘁ)ᘁ
-    rw [rightAdjointMate_add, rightAdjointMate_add]
 
 end PropertyF.Ground.Dimensions
 

@@ -28,9 +28,8 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 /-- Reversing the braiding inverts the first adjacent generator. -/
 theorem reverse_braidGenerator_zero (X : C) (n : ℕ) :
     @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n 0 =
-      (braidGenerator X n 0)⁻¹ := by
-  cases n <;> apply CategoryTheory.Aut.ext <;> apply Iso.ext <;>
-    change ((α_ X X (tensorPower X _)).symm ≪≫
+      (braidGenerator X n 0)⁻¹ := CategoryTheory.Aut.ext <| Iso.ext <| by
+  cases n <;> change ((α_ X X (tensorPower X _)).symm ≪≫
       ((β_ X X).symm ⊗ᵢ Iso.refl (tensorPower X _)) ≪≫ α_ X X (tensorPower X _)).hom =
       ((α_ X X (tensorPower X _)).symm ≪≫
         ((β_ X X) ⊗ᵢ Iso.refl (tensorPower X _)) ≪≫ α_ X X (tensorPower X _)).inv
@@ -111,16 +110,13 @@ def sndBraidMap (X Y : C) (n : ℕ) :
 /-- The two projected automorphisms jointly detect an automorphism of a tensor power. -/
 theorem projections_jointly_injective (X Y : C) (n : ℕ) :
     Function.Injective (fun a : Aut (tensorPower (X,Y) (n+2)) =>
-      (fstBraidMap X Y n a, sndBraidMap X Y n a)) := by
-  intro a b h
+      (fstBraidMap X Y n a, sndBraidMap X Y n a)) := fun _ _ h ↦
   let p := Modular.tensorPowerComparison (CategoryTheory.Prod.fst C C) (X,Y) (n+2)
   let q := @Modular.tensorPowerComparison (C × C) _ _ (mixedBraiding (C := C)) C _ _
     (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) (n+2)
-  apply Aut.ext
-  apply Iso.ext
-  apply Prod.ext
-  · exact congrArg (fun z => z.asIso.hom) (p.symm.conjAut.injective (congrArg Prod.fst h))
-  · exact congrArg (fun z => z.asIso.hom) (q.symm.conjAut.injective (congrArg Prod.snd h))
+  Aut.ext <| Iso.ext <| Prod.ext
+    (congrArg (fun z => z.asIso.hom) (p.symm.conjAut.injective (congrArg Prod.fst h)))
+    (congrArg (fun z => z.asIso.hom) (q.symm.conjAut.injective (congrArg Prod.snd h)))
 
 /-- The projected first component of a product braid lies in the first image. -/
 theorem fstBraidMap_mem (X Y : C) (n : ℕ) :
@@ -168,13 +164,12 @@ theorem product_braidImage_finite (X Y : C) (n : ℕ)
 /-- Tensoring the positive and negative images preserves finite braid images. -/
 theorem productFunctor_objectPropertyF {X Y : C}
     (hX : ObjectPropertyF X) (hY : ObjectPropertyF Y) :
-    ObjectPropertyF (productFunctor.obj (X,Y)) := by
-  let _ : (productFunctor (C := C)).Braided := productBraided
-  apply Modular.objectPropertyF_functor (productFunctor (C := C)) (X,Y)
-  intro n
-  let _ := hX n
-  let _ := hY n
-  exact product_braidImage_finite X Y n
+    ObjectPropertyF (productFunctor.obj (X,Y)) :=
+  letI : (productFunctor (C := C)).Braided := productBraided
+  Modular.objectPropertyF_functor (productFunctor (C := C)) (X,Y) fun n ↦
+    letI := hX n
+    letI := hY n
+    product_braidImage_finite X Y n
 
 /-- Property F transfers to every retract of a product-functor image. -/
 theorem productFunctor_retract_objectPropertyF {X Y : C} {Z : CategoryTheory.Center C}

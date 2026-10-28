@@ -229,15 +229,8 @@ theorem fourthDualIso_tensor_of_signed_defect
           (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
   let T := rootTensorIso C X Y
   let A := (fourthDualRootNaturalIso C).app (X ⊗ Y)
-  have hcomp : (z • 𝟙 (X ⊗ Y)) ≫ T.hom = A.hom := by
-    rw [← hd]
-    change (A.hom ≫ T.inv) ≫ T.hom = A.hom
-    simp only [doubleDualFunctor, Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  have hcomp' : z • T.hom = A.hom := by simpa [Linear.smul_comp] using hcomp
-  have ht : T.hom = z • A.hom := by
-    have hm := congrArg (fun f => z • f) hcomp'
-    simp only [smul_smul, hz, one_smul] at hm
-    exact hm
+  have ht : T.hom = z • A.hom :=
+    (iso_comp_inv_eq_smul_iff_of_sq_one A T z hz).1 hd
   have hsq : T.hom ≫ ((T.homᘁ)ᘁ) = (fourthDualIso C (X ⊗ Y)).hom := by
     rw [ht]
     simp only [rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul,

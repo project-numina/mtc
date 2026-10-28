@@ -437,9 +437,7 @@ theorem fpDeterminant_tensor_biprod
       fpDimension C X • fpDeterminant C (Y ⊞ Z) (biprod.mapIso a b) := by
   let e := Functor.mapBiprod (tensorLeft X) Y Z
   let A := biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b)
-  have hc := tensor_biprod_mapIso X a b
-  change Iso.refl X ⊗ᵢ biprod.mapIso a b = e ≪≫ A ≪≫ e.symm at hc
-  rw [hc]
+  rw [tensor_biprod_mapIso]
   have hd := fpDeterminant_conjugate C e.symm A
   change fpDeterminant C (X ⊗ (Y ⊞ Z)) (e ≪≫ A ≪≫ e.symm) = fpDeterminant C _ A at hd
   rw [hd, fpDeterminant_biprod, fpDeterminant_biprod, ha, hb, smul_add]
@@ -486,9 +484,7 @@ theorem fpDeterminant_tensor_of_simple
     have hh := a.hom_inv_id
     simp [ha] at hh
     exact id_nonzero _ hh.symm
-  have ha : a = scalarIso S (Units.mk0 z hne) := by
-    apply Iso.ext
-    exact hz.symm
+  have ha : a = scalarIso S (Units.mk0 z hne) := Iso.ext hz.symm
   rw [ha]
   exact fpDeterminant_tensor_scalar C X S _
 
