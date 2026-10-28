@@ -69,11 +69,11 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
   by_contra hi
   let X := 𝟙_ C.Obj
   let S := simples C i
-  let V := inductionSummand C X
+  let V := inductionSummand X
   have hz : biproduct.ι V i ≫ (underlyingCounit C).app X = 0 :=
     (biproduct.ι_π_ne_assoc V hi _).trans zero_comp
-  have hb : crossingCandidate C X S = (β_ S (underlying C X)).inv :=
-    (Iso.comp_hom_eq_id (β_ S (underlying C X))).1 (congrArg Center.Hom.f hcentral)
+  have hb : crossingCandidate X S = (β_ S (underlying X)).inv :=
+    (Iso.comp_hom_eq_id (β_ S (underlying X))).1 (congrArg Center.Hom.f hcentral)
   have hid : 𝟙 (V i) = 0 := by
     rw [← unit_diag X i, unit_matrix_reduce, hb]
     dsimp only [underlying]

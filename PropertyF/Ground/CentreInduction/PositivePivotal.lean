@@ -22,6 +22,7 @@ namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵ᶜ" => Center C.Obj
 
+variable {C} in
 /-- A pivotal structure has the Frobenius–Perron dimensions on simple objects. -/
 abbrev PivotalHasFPDimensions (p : PivotalStructure (C := C.Obj)) : Prop :=
   ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ)
@@ -29,19 +30,20 @@ abbrev PivotalHasFPDimensions (p : PivotalStructure (C := C.Obj)) : Prop :=
 
 variable {p : PivotalStructure (C := C.Obj)}
 
+variable {C} in
 /-- A compatible centre pivotal structure constructs centre fusion when the base
 pivotal dimensions equal FP dimensions. -/
-theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions C p) [RigidCategory 𝒵ᶜ]
+theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions p) [RigidCategory 𝒵ᶜ]
     {pZ : PivotalStructure (C := 𝒵ᶜ)}
     (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) : IsFusionCategory 𝒵ᶜ :=
   center_fusion_of_nonzero_induced_trace pZ fun hz => by
     have ht := forget_trace_of_pivotal_component hcompat (𝟙 _)
     change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
-      (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht
-    have hd : pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
+      (p.rightTrace (𝟙 (underlying (𝟙_ C.Obj)))).asHom at ht
+    have hd : pivotalDimension C p (underlying (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
       rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
-    change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
-    rw [show p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj))) = 0 from
+    change unitScalar C (p.rightTrace (𝟙 (underlying (𝟙_ C.Obj)))) = _ at hd
+    rw [show p.rightTrace (𝟙 (underlying (𝟙_ C.Obj))) = 0 from
       End.ext (ht.symm.trans (congrArg (fun a => a.asHom.f) hz))] at hd
     exact (Complex.ofReal_ne_zero.mpr
       (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))) <|
@@ -111,6 +113,7 @@ variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵" => Center C.Obj
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
+variable {C} in
 /-- The scalar of a centre unit endomorphism is unchanged by forgetting. -/
 theorem center_unitScalar_forget (a : End (𝟙_ (𝒵))) :
     unitScalar 𝒵ᶠ a = unitScalar C (End.of a.asHom.f) :=
@@ -118,12 +121,13 @@ theorem center_unitScalar_forget (a : End (𝟙_ (𝒵))) :
     (End.ext (congrArg (fun x : End (𝟙_ (𝒵)) => x.asHom.f)
       (algebraMap_unitScalar 𝒵ᶠ a))).trans (algebraMap_unitScalar C _).symm
 
+variable {C} in
 /-- Compatible pivotal components have identical scalar dimensions after forgetting. -/
 theorem center_pivotalDimension_forget
     {p : PivotalStructure (C := C.Obj)} {pZ : PivotalStructure (C := 𝒵)} {Z : 𝒵}
     (hcompat : PivotalCompatibleAt p pZ Z) :
     pivotalDimension 𝒵ᶠ pZ Z = pivotalDimension C p Z.1 :=
-  (center_unitScalar_forget C (pZ.rightTrace (𝟙 Z))).trans
+  (center_unitScalar_forget (pZ.rightTrace (𝟙 Z))).trans
     (congrArg (fun f => unitScalar C (End.of f)) (forget_trace_of_pivotal_component hcompat (𝟙 Z)))
 
 end PropertyF.Ground.CentreInduction
@@ -140,13 +144,13 @@ local notation "𝒵ᶠ" => Integrate.bundledCenter C
 /-- A compatible lift of a positive pivotal structure is spherical and has
 FP dimensions on the centre. -/
 theorem center_positive_spherical_of_compatible_pivotal
-    {p : PivotalStructure (C := C.Obj)} (hsimple : PivotalHasFPDimensions C p)
+    {p : PivotalStructure (C := C.Obj)} (hsimple : PivotalHasFPDimensions p)
     {pZ : PivotalStructure (C := 𝒵)} (hcompat : ∀ Z : 𝒵, PivotalCompatibleAt p pZ Z) :
-    pZ.IsSpherical ∧ PivotalHasFPDimensions 𝒵ᶠ pZ :=
+    pZ.IsSpherical ∧ PivotalHasFPDimensions (C := 𝒵ᶠ) pZ :=
   let D := 𝒵ᶠ
   let hd (i : Fin (rank D)) : pivotalDimension D pZ (simples D i) =
       (fpSimple D i : ℂ) := by
-    rw [center_pivotalDimension_forget C (hcompat _), pivotalDimension_eq_fp hsimple,
+    rw [center_pivotalDimension_forget (hcompat _), pivotalDimension_eq_fp hsimple,
       Integrate.center_forget_fpDimension C, fpDimension_simple]
   ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i ↦ by simp [hd i]), hd⟩
 

@@ -479,7 +479,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Every base object is a finite iterated binary sum of simple objects. -/
 theorem base_finite_simple_sum (X : C.Obj) :
-    CentreInduction.FiniteSimpleSum C.Obj X := by
+    CentreInduction.FiniteSimpleSum X := by
   let (A B : C.Obj) : FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite _ _
   let (W : C.Obj) : Injective W := object_injective W
   apply CentreInduction.finiteSimpleSum_of_injective (k := ℂ) ?_ X

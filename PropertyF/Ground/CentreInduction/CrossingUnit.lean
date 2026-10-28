@@ -105,15 +105,15 @@ theorem unit_crossing_finrank :
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit crossing on each induction summand is the canonical unitor map. -/
 theorem crossingCandidate_unit_summand :
-    let V := inductionSummand C X
-    (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ crossingCandidate C X (𝟙_ C.Obj) =
+    let V := inductionSummand X
+    (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ crossingCandidate X (𝟙_ C.Obj) =
       (ρ_ (V i)).hom ≫ (λ_ (V i)).inv ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) := by
   simp only [crossingCandidate_on_summand, crossingSummand]
   rw [Finset.sum_eq_single_of_mem i (Finset.mem_univ i)]
-  · let : Unique (crossingIndex C (𝟙_ C.Obj) i i) := by
+  · let : Unique (crossingIndex (𝟙_ C.Obj) i i) := by
       simpa [crossingIndex, unit_crossing_finrank] using (inferInstance : Unique (Fin 1))
     erw [Fintype.sum_unique, crossingBlock_of_simple_split (k := ℂ) X (λ_ (Sᶜ i)).symm
-      (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
+      (crossingInclusion (𝟙_ C.Obj) i i default) (crossingProjection (𝟙_ C.Obj) i i default)
       (crossingInclusion_projection default), crossingBlock_unit, Category.assoc]
   · intro j _ hne
     simp [crossingIndex, unit_crossing_finrank, hne.symm]
@@ -121,9 +121,9 @@ theorem crossingCandidate_unit_summand :
 set_option backward.isDefEq.respectTransparency false in
 /-- The explicit induction crossing is normalized on the tensor unit. -/
 theorem crossingCandidate_unit :
-    crossingCandidate C X (𝟙_ C.Obj) =
-      (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv :=
-  rightDistributor_ext_left (f := inductionSummand C X) fun i => by
+    crossingCandidate X (𝟙_ C.Obj) =
+      (ρ_ (underlying X)).hom ≫ (λ_ (underlying X)).inv :=
+  rightDistributor_ext_left (f := inductionSummand X) fun i => by
     simpa [underlying, ← leftUnitor_inv_naturality] using
       crossingCandidate_unit_summand X i
 
