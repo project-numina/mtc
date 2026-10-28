@@ -164,20 +164,10 @@ theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCatego
     partialTrace_doubleBraiding_simple, smul_mul_smul, one_mul] at h
   have hv := smul_left_injective ℂ honene h
   have hd := simpleDimension_ne_zero D p k
-  have hval : Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D i ⊗ simples D j)) *
-      simpleDimension D p k =
-      Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D i)) *
-        Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D j)) := by
-    calc
-      _ = (Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D i ⊗ simples D j)) /
-          simpleDimension D p k) * simpleDimension D p k ^ 2 := by field_simp
-      _ = ((Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D i)) /
-          simpleDimension D p k) * (Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D j)) /
-          simpleDimension D p k)) * simpleDimension D p k ^ 2 := by rw [hv]
-      _ = _ := by field_simp
+  field_simp [hd] at hv
   simpa only [SEntry_symmetric p (simples D k) (simples D i ⊗ simples D j),
     SEntry_symmetric p (simples D k) (simples D i),
-    SEntry_symmetric p (simples D k) (simples D j), categoricalS] using hval
+    SEntry_symmetric p (simples D k) (simples D j), categoricalS] using hv
 
 end PropertyF.Ground.Modular
 end

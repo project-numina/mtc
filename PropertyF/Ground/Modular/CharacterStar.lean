@@ -104,8 +104,7 @@ theorem categoricalS_dual_conj
   change categoricalS C p (Ground.dualIndex C i) j / simpleDimension C p j =
     starRingEnd ℂ (categoricalS C p i j / simpleDimension C p j) at hh
   rw [map_div₀, hreal j] at hh
-  have hd := simpleDimension_ne_zero C p j
-  simpa [hd] using congrArg (fun z : ℂ => z * simpleDimension C p j) hh
+  exact (div_left_inj' (simpleDimension_ne_zero C p j)).mp hh
 
 /-- Real pivotal simple dimensions are invariant under dual labels. -/
 theorem simpleDimension_dual

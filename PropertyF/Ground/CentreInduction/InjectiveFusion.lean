@@ -78,6 +78,7 @@ theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) {U : 𝒵}
   exact ⟨P, P.arrow, hP, inferInstance⟩
 
 
+
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract (X : C.Obj) {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :

@@ -73,20 +73,10 @@ theorem categoricalS_columns_orthogonal
     exact congrArg Character.value h
   have ho := character_orthogonal rules (Ground.dualIndex C) (fusionCoeff_dual_adjoint C)
     (cols a) (cols b) hne
-  have hda := simpleDimension_ne_zero C p a
-  have hdb := simpleDimension_ne_zero C p b
-  have hsum : (∑ x, starRingEnd ℂ (Sₚ x a) * Sₚ x b) =
-      (∑ x, starRingEnd ℂ (Sₚ x a / dₚ a) *
-        (Sₚ x b / dₚ b)) *
-        (dₚ a * dₚ b) := by
-    rw [Finset.sum_mul]
-    apply Finset.sum_congr rfl
-    intro x _
-    rw [map_div₀, hreal]
-    field_simp
-  rw [hsum]
-  change (∑ x, starRingEnd ℂ ((cols a).value x) * (cols b).value x) * _ = 0
-  rw [ho, zero_mul]
+  change (∑ x, starRingEnd ℂ (Sₚ x a / dₚ a) * (Sₚ x b / dₚ b)) = 0 at ho
+  simp only [map_div₀, hreal, div_mul_div_comm, ← Finset.sum_div] at ho
+  exact (div_eq_zero_iff).mp ho |>.resolve_right
+    (mul_ne_zero (simpleDimension_ne_zero C p a) (simpleDimension_ne_zero C p b))
 
 
 /-- Nondegeneracy forces the off-charge-conjugation entries of S² to vanish. -/
@@ -117,30 +107,20 @@ theorem square_support_constant {R : Type*} [CommRing R] [IsDomain R] [Decidable
     (hoff : ∀ x y, x ≠ δ y → (∑ z, S x z * S z y) = 0) (x : ι) :
     (∑ z, S x z * S z (δ x)) = ∑ z, S u z * S z u := by
   let a : ι → R := fun x => ∑ z, S x z * S z (δ x)
-  have hcross (x t : ι) (h : t ≠ δ x) : (∑ z, S x z * S z t) = 0 := by
-    apply hoff x t
-    intro hh
-    apply h
-    have he := congrArg δ hh
-    rw [hdual t] at he
-    exact he.symm
+  have hcross (x t : ι) (h : t ≠ δ x) : (∑ z, S x z * S z t) = 0 :=
+    hoff x t (fun hh ↦ h (by simpa only [hdual t] using (congrArg δ hh).symm))
   have hleft (x : ι) :
       (∑ t, (∑ z, S x z * S z t) * S t u) = a x * S x u := by
-    rw [Finset.sum_eq_single (δ x)]
+    rw [Finset.sum_eq_single_of_mem (δ x) (Finset.mem_univ _)]
     · rw [hcol]
     · intro t _ ht
       rw [hcross x t ht, zero_mul]
-    · intro h
-      exact (h (Finset.mem_univ _)).elim
   have hright (x : ι) :
       (∑ t, S x t * (∑ z, S t z * S z u)) = S x u * a u := by
-    rw [Finset.sum_eq_single u]
+    rw [Finset.sum_eq_single_of_mem u (Finset.mem_univ _)]
     · simp only [a, hunit]
     · intro t _ ht
-      have hh : t ≠ δ u := by simpa [hunit] using ht
-      rw [hoff t u hh, mul_zero]
-    · intro h
-      exact (h (Finset.mem_univ _)).elim
+      rw [hoff t u (by simpa only [hunit] using ht), mul_zero]
   have hm := congrArg (fun M : Matrix ι ι R => M x u) (Matrix.mul_assoc S S S)
   simp only [Matrix.mul_apply] at hm
   rw [hleft, hright] at hm
@@ -154,33 +134,20 @@ theorem categoricalS_square (hp : p.IsSpherical)
     HasSSquare Sₚ (Ground.dualIndex C) (globalDimension C) := by
   classical
   intro x y
-  let S := Sₚ
-  let u := unitIndex C
-  let δ := Ground.dualIndex C
-  let a : Fin (rank C) → ℂ := fun x => ∑ z, S x z * S z (δ x)
-  have hunit : δ u = u := Ground.dualIndex_unit C
-  have hdual : Function.Involutive δ := Ground.dualIndex_involutive C
-  have hall (x : Fin (rank C)) : a x = a u := by
-    have h := square_support_constant S hdual hunit
-      (fun i => by simpa only [S, u, δ, categoricalS_unit] using simpleDimension_dual C p hreal i)
-      (fun i => by simpa only [S, u, categoricalS_unit] using simpleDimension_ne_zero C p i)
-      (fun i j hij => categoricalS_square_off_dual C p hdet hreal i j hij) x
-    simpa only [a, hunit] using h
-  have hu : a u = globalDimension C := by
-    change (∑ z, Sₚ (unitIndex C) z *
-      Sₚ z (Ground.dualIndex C (unitIndex C))) = globalDimension C
-    rw [Ground.dualIndex_unit C]
-    simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
-    simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
-  by_cases hxy : x = δ y
+  by_cases hxy : x = Ground.dualIndex C y
   · rw [ite_eq_left hxy]
-    have hy : y = δ x := by
-      have he := congrArg δ hxy
-      rw [hdual y] at he
-      exact he.symm
+    have hy : y = Ground.dualIndex C x := by
+      rw [hxy, Ground.dualIndex_involutive]
     rw [hy]
-    change a x = globalDimension C
-    rw [hall, hu]
+    have hs := square_support_constant Sₚ (Ground.dualIndex_involutive C)
+      (Ground.dualIndex_unit C)
+      (fun i => by simpa only [categoricalS_unit] using simpleDimension_dual C p hreal i)
+      (fun i => by simpa only [categoricalS_unit] using simpleDimension_ne_zero C p i)
+      (fun i j hij => categoricalS_square_off_dual C p hdet hreal i j hij) x
+    have hu : (∑ z, Sₚ (unitIndex C) z * Sₚ z (unitIndex C)) = globalDimension C := by
+      simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
+      simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
+    exact hs.trans hu
   · rw [ite_eq_right hxy]
     exact categoricalS_square_off_dual C p hdet hreal x y hxy
 

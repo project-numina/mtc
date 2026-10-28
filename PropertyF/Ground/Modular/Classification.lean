@@ -114,15 +114,11 @@ theorem characters_exhausted (columns : ι → Character N)
     (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = (columns y).value)
     (χ : Character N) : ∃ y, χ = columns y := by
   classical
-  have hcoeff : ∃ y, b.equivFun χ.value y ≠ 0 := by
-    by_contra h
-    push Not at h
-    have heq : b.equivFun χ.value = 0 := by ext y; simp [h]
-    have hzero : χ.value = 0 := b.equivFun.injective (by simpa using heq)
+  obtain ⟨y, hy⟩ : ∃ y, b.equivFun χ.value y ≠ 0 := by
+    by_contra! h
+    have hzero : χ.value = 0 := b.equivFun.injective (by ext y; simp [h y])
     have := χ.unit_eq
-    rw [hzero] at this
-    simp at this
-  obtain ⟨y, hy⟩ := hcoeff
+    simp [hzero] at this
   have hb_eigen (i x : ι) : fusionOperator N i (b x) =
       (columns x).value i • b x := by
     rw [hb, character_eigenvector]
@@ -131,12 +127,11 @@ theorem characters_exhausted (columns : ι → Character N)
     conv_lhs => rw [← b.sum_equivFun χ.value]
     simp only [map_sum, map_smul, hb_eigen]
     simp [Finsupp.single_apply, mul_comm]
-  have heval (i : ι) : χ.value i = (columns y).value i := by
-    have he := hcoord i
-    rw [character_eigenvector] at he
-    simp only [map_smul, Pi.smul_apply, smul_eq_mul] at he
-    exact mul_right_cancel₀ hy he
-  exact ⟨y, Character.ext (funext heval)⟩
+  refine ⟨y, Character.ext (funext fun i ↦ ?_)⟩
+  have he := hcoord i
+  rw [character_eigenvector] at he
+  simp only [map_smul, Pi.smul_apply, smul_eq_mul] at he
+  exact mul_right_cancel₀ hy he
 
 
 /-- A linearly independent family of as many characters as labels is a

@@ -58,8 +58,8 @@ theorem target_of_center_image_monodromy_no_square
   apply target_of_center_image_monodromy
   intro C hPU hF
   obtain ⟨hR, hFusion, p, hp, hdim, hdet, hintegral, hfinite⟩ := hCenter C hPU hF
-  letI := hR
-  letI := hFusion
+  let := hR
+  let := hFusion
   exact ⟨hR, hFusion, p, hp, hdim, hdet,
     center_globalDimension_square_of_actual_induction C p hp hdim, hintegral, hfinite⟩
 
@@ -77,7 +77,7 @@ universe v u
 set_option linter.style.haveILetI false
 
 /-- The fusion instance constructed from a pivotal pseudo-unitary base. -/
-@[instance_reducible] def centerFusionOfPivotalPseudoUnitary
+theorem centerFusionOfPivotalPseudoUnitary
     (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hpu : PseudoUnitary C) :
     letI := CentreRigid.rigidCenter (C := C.Obj)

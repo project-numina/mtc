@@ -56,13 +56,10 @@ theorem regular_fusion_derivation_vanishes
     simp_rw [hhex, smul_add, smul_smul]
     simp only [Finset.sum_add_distrib, ← Finset.sum_smul, D, R, pow_two,
       Finset.smul_sum, smul_smul, mul_comm]
-  have hzero : D • B i z = 0 := by
-    have h := hsum'.symm.trans hsum
-    exact add_right_cancel (h.trans (zero_add (fpSimple C i • R)).symm)
-  have hpos : 0 < D := by
-    change 0 < globalFPDimension C
-    exact lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)
-  exact (smul_eq_zero.mp hzero).resolve_left (ne_of_gt hpos)
+  have hzero : D • B i z = 0 :=
+    add_right_cancel ((hsum'.symm.trans hsum).trans (zero_add (fpSimple C i • R)).symm)
+  have hpos : D ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
+  exact (smul_eq_zero.mp hzero).resolve_left hpos
 
 end PropertyF.Ground.CentreModular
 end
@@ -577,14 +574,7 @@ theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Mo
     have hr (i : Fin (rank C)) : Module.finrank ℂ (simples C i ⟶ S) =
         Module.finrank ℂ (simples C i ⟶ simples C j) :=
       (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
-    simp_rw [hr, finrank_simples_hom]
-    simp only [Nat.cast_ite, Nat.cast_one, Nat.cast_zero]
-    rw [Finset.sum_eq_single j]
-    · simpa using hiso e
-    · intro i _ hij
-      simp [hij]
-    · intro hj
-      exact (hj (Finset.mem_univ _)).elim
+    simpa [hr, finrank_simples_hom] using hiso e
   have h := base_finite_simple_sum C X
   induction h with
   | @zero W hz =>
@@ -603,12 +593,8 @@ theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Mo
     intro i _
     have hdim : Module.finrank ℂ (simples C i ⟶ W) =
         Module.finrank ℂ (simples C i ⟶ S) + Module.finrank ℂ (simples C i ⟶ K) := by
-      calc
-        _ = Module.finrank ℂ (simples C i ⟶ S ⊞ K) :=
-          (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
-        _ = Module.finrank ℂ ((simples C i ⟶ S) × (simples C i ⟶ K)) :=
-          (homBiprodLinearEquiv (simples C i) S K).finrank_eq
-        _ = _ := Module.finrank_prod
+      exact ((CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq).trans
+        ((homBiprodLinearEquiv (simples C i) S K).finrank_eq.trans Module.finrank_prod)
     rw [hdim, Nat.cast_add, add_smul]
 
 end PropertyF.Ground.CentreModular
@@ -686,8 +672,8 @@ theorem monodromy_simple_eq_scalar_natural
       scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ ≪≫
         η.app (simples C i ⊗ simples C j) := by
   rw [hbalance, show scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ =
-    (scalarIso (simples C i ⊗ simples C j) (t i * t j)).symm from Iso.ext rfl]
-  simp
+    (scalarIso (simples C i ⊗ simples C j) (t i * t j)).symm from Iso.ext rfl,
+    Iso.symm_self_id_assoc]
 
 /-- Under the explicit balancing equation, the tensor determinant rule holds
 for every simple mixed monodromy. -/
