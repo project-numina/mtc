@@ -27,7 +27,6 @@ theorem drinfeld_unit :
     (drinfeldIso (𝟙_ C)).hom = (doubleDualUnitIso (C := C)).hom := by
   let U : C := 𝟙_ C
   let : HasRightDual U := RightRigidCategory.rightDual U
-  let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let r : Uᘁ ≅ U := rightDualUnitIso
   have h : (r.inv ≫ (r.homᘁ)) ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) =
       (β_ U (Uᘁ)).hom ≫ ε_ U (Uᘁ) := by
@@ -60,8 +59,6 @@ theorem drinfeld_unit_dual :
       (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm := by
   let U : C := 𝟙_ C
   let : HasRightDual U := RightRigidCategory.rightDual U
-  let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
-  let : HasRightDual ((Uᘁ)ᘁ) := RightRigidCategory.rightDual ((Uᘁ)ᘁ)
   let r : Uᘁ ≅ U := rightDualUnitIso
   have hu : drinfeldIso U = r.symm ≪≫ rightDualIsoMap r := Iso.ext drinfeld_unit
   apply Iso.ext
@@ -84,8 +81,6 @@ theorem fourthDualIso_unit :
       doubleDualUnitIso (C := C) ≪≫
         rightDualIsoMap (rightDualIsoMap (doubleDualUnitIso (C := C))) := by
   let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
-  let : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
-  let : HasRightDual (((𝟙_ C)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C)ᘁ)ᘁ)
   unfold fourthDualIso
   rw [show drinfeldIso ((𝟙_ C)ᘁ) =
       (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm from drinfeld_unit_dual,
@@ -110,7 +105,6 @@ theorem fourthDualRoot_unit_component :
       rootDimension C (unitIndex C) • (doubleDualUnitIso (C := C.Obj)).hom := by
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
-  let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let : Simple U := IsFusionCategory.unit_simple
   let : FiniteDimensional ℂ (U ⟶ U) := IsFusionCategory.hom_finite _ _
   let a := (fourthDualRootNaturalIso C).app U
@@ -128,8 +122,6 @@ theorem rootDimension_unit_sq :
     rootDimension C (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
-  let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
-  let : HasRightDual ((Uᘁ)ᘁ) := RightRigidCategory.rightDual ((Uᘁ)ᘁ)
   let : Simple U := IsFusionCategory.unit_simple
   apply scalar_sq_eq_one_of_same_square (doubleDualUnitIso (C := C.Obj))
     ((fourthDualRootNaturalIso C).app U) (rootDimension C (unitIndex C))

@@ -17,7 +17,7 @@ normalized S columns are distinct, and their orthogonality gives the off-dual
 part of S². Associativity of matrix multiplication and the nonzero unit column
 show the remaining entries equal the global dimension.
 -/
-open scoped BigOperators
+open scoped BigOperators Matrix
 
 namespace PropertyF.Ground.Modular
 variable {ι : Type*} [Fintype ι] (N : FusionRules ι) (dual : ι → ι)
@@ -26,11 +26,26 @@ variable (hdual : ∀ i j k, N.coeff i j k = N.coeff (dual i) k j)
 include hdual in
 /-- Different fusion characters are orthogonal for the standard Hermitian pairing. -/
 theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
-    ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 :=
-  Classical.byContradiction fun hw ↦ hne (Character.ext (funext fun i ↦ (mul_right_cancel₀ hw (by
-    simpa [Ground.fusion_character_dual_eq_conj (i₀ := N.unit)
-      (fun a b c ↦ (hdual a c b).symm) (by simp [χ.unit_eq]) χ.mul_eq i] using
-      fusion_inner_balance _ _ hdual (starRingEnd ℂ) χ.value ψ.value χ.mul_eq ψ.mul_eq i)).symm))
+    ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 := by
+  classical
+  by_contra hw
+  apply hne
+  apply Character.ext
+  funext i
+  let A : Matrix ι ι ℂ := fun j k ↦ N.coeff i j k
+  have hχ (j k : ι) : starRingEnd ℂ (χ.value j) * starRingEnd ℂ (χ.value k) =
+      ∑ l, (N.coeff j k l : ℂ) * starRingEnd ℂ (χ.value l) := by
+    simpa only [map_mul, map_sum, map_natCast] using congrArg (starRingEnd ℂ) (χ.mul_eq j k)
+  have hleft : (fun j ↦ starRingEnd ℂ (χ.value j)) ᵥ* A =
+      χ.value i • (fun j ↦ starRingEnd ℂ (χ.value j)) := by
+    rw [← Matrix.mulVec_transpose]
+    change (fun j k ↦ (N.coeff i k j : ℂ)) *ᵥ (fun j ↦ starRingEnd ℂ (χ.value j)) = _
+    simpa only [hdual i,
+      Ground.fusion_character_dual_eq_conj (i₀ := N.unit)
+        (fun a b c ↦ (hdual a c b).symm) (by simp [χ.unit_eq]) χ.mul_eq i,
+      starRingEnd_apply, star_star] using Ground.fusion_character_eigenvector hχ (dual i)
+  exact (Ground.eigenvalue_eq_of_dotProduct_ne_zero
+    (Ground.fusion_character_eigenvector ψ.mul_eq i) hleft (by simpa [dotProduct] using hw)).symm
 
 include hdual in
 /-- Distinct normalized columns that are fusion characters are orthogonal. -/
@@ -54,7 +69,7 @@ local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
 
 /-- Orthogonal columns and dual-conjugation force off-dual entries of the square to vanish. -/
-theorem square_off_dual_of_orthogonal {J K : Type*} [Fintype J] [CommRing K] [StarRing K]
+theorem square_off_dual_of_orthogonal {J K : Type*} [Fintype J] [CommSemiring K] [StarRing K]
     (δ : J → J) (hdual : Function.Involutive δ) {S : Matrix J J K}
     (hsym : ∀ x y, S x y = S y x) (hconj : ∀ x z, S (δ x) z = star (S x z))
     (horth : ∀ {a b}, a ≠ b → ∑ z, star (S z a) * S z b = 0)
@@ -63,7 +78,7 @@ theorem square_off_dual_of_orthogonal {J K : Type*} [Fintype J] [CommRing K] [St
     simpa only [hdual x] using congrArg δ h))
 
 section SquareSupport
-variable {R : Type*} [CommRing R] [IsDomain R] [DecidableEq ι]
+variable {R : Type*} [CommSemiring R] [IsDomain R] [DecidableEq ι]
 variable (S : Matrix ι ι R) {δ : ι → ι} {u : ι} (hδ : Function.Involutive δ)
 variable (hunit : δ u = u) (hcol : ∀ x, S (δ x) u = S x u) (hne : ∀ x, S x u ≠ 0)
 variable (hoff : ∀ x y, x ≠ δ y → (∑ z, S x z * S z y) = 0)

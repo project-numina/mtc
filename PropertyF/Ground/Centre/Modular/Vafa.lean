@@ -209,8 +209,7 @@ theorem fpDeterminant_conjugate
     {X Y : C.Obj} (e : X ≅ Y) (a : X ≅ X) :
     fpDeterminant C (e.symm ≪≫ a ≪≫ e) = fpDeterminant C a := by
   unfold fpDeterminant
-  apply Finset.sum_congr rfl
-  intro i _
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
   congr 1
   let E := CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples C i)) e
   have h : homAction (R := ℂ) (simples C i) Y (e.symm ≪≫ a ≪≫ e) =
@@ -445,7 +444,7 @@ local instance (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 
 /-- Tensoring a biproduct automorphism respects the canonical biproduct comparison. -/
 theorem tensor_biprod_mapIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [Preadditive D] [HasBinaryBiproducts D]
+    [HasZeroMorphisms D] [HasBinaryBiproducts D]
     (X : D) [(tensorLeft X).PreservesZeroMorphisms] {Y Z : D}
     [PreservesBinaryBiproducts (tensorLeft X)] (a : Y ≅ Y) (b : Z ≅ Z) :
     Iso.refl X ⊗ᵢ biprod.mapIso a b = (Functor.mapBiprod (tensorLeft X) Y Z) ≪≫
@@ -527,12 +526,12 @@ theorem functor_natural_app_conjugate {D : Type u} {E : Type*}
     η.app X = F.mapIso e ≪≫ η.app Y ≪≫ (F.mapIso e).symm :=
   Iso.ext ((cancel_mono (F.mapIso e).hom).1 (by simp))
 
-/-- An additive functor's natural automorphism is block diagonal on a binary
+/-- A biproduct-preserving functor's natural automorphism is block diagonal on a binary
 biproduct under its canonical comparison isomorphism. -/
 theorem functor_natural_app_biprod {D : Type u} {E : Type*}
-    [Category.{v} D] [Category E] [Preadditive D] [Preadditive E]
+    [Category.{v} D] [Category E] [HasZeroMorphisms D] [HasZeroMorphisms E]
     [HasBinaryBiproducts D]
-    (F : D ⥤ E) [F.Additive] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
+    (F : D ⥤ E) [F.PreservesZeroMorphisms] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
     η.app (X ⊞ Y) = F.mapBiprod X Y ≪≫
       biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm :=
   Iso.ext ((cancel_mono (F.mapBiprod X Y).hom).1 (by
@@ -614,10 +613,10 @@ variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The multiplicity expansion of a simple object has a single nonzero term. -/
-theorem simple_multiplicity_expansion {M : Type w} [AddCommGroup M] [Module ℝ M]
+theorem simple_multiplicity_expansion {M : Type w} [AddCommMonoid M]
     (f : C.Obj → M) (hiso : ∀ {X Y : C.Obj}, (X ≅ Y) → f X = f Y)
     (S : C.Obj) [Simple S] :
-    f S = ∑ i, (Module.finrank ℂ (simples C i ⟶ S) : ℝ) • f (simples C i) :=
+    f S = ∑ i, Module.finrank ℂ (simples C i ⟶ S) • f (simples C i) :=
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   (exists_simple_iso C S).elim fun j hj ↦ hj.elim fun e ↦ by
     have hr (i : Fin (rank C)) : Module.finrank ℂ (simples C i ⟶ S) =
@@ -627,17 +626,16 @@ theorem simple_multiplicity_expansion {M : Type w} [AddCommGroup M] [Module ℝ 
 
 /-- Any isomorphism-invariant additive object function is determined by
 its values on simples and the actual Hom-space multiplicities. -/
-theorem additive_object_function_decomposition {M : Type w} [AddCommGroup M] [Module ℝ M]
+theorem additive_object_function_decomposition {M : Type w} [AddCommMonoid M]
     (f : C.Obj → M)
     (hiso : ∀ {X Y : C.Obj}, (X ≅ Y) → f X = f Y)
     (hzero : ∀ X, IsZero X → f X = 0)
     (hadd : ∀ X Y, f (X ⊞ Y) = f X + f Y)
     (X : C.Obj) :
-    f X = ∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℝ) • f (simples C i) := by
+    f X = ∑ i, Module.finrank ℂ (simples C i ⟶ X) • f (simples C i) := by
   classical
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  have h := base_finite_simple_sum C X
-  induction h with
+  induction base_finite_simple_sum C X with
   | @zero W hz =>
     rw [hzero W hz]
     apply Eq.symm
@@ -656,7 +654,7 @@ theorem additive_object_function_decomposition {M : Type w} [AddCommGroup M] [Mo
         Module.finrank ℂ (simples C i ⟶ S) + Module.finrank ℂ (simples C i ⟶ K) := by
       exact ((CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq).trans
         ((homBiprodLinearEquiv (simples C i) S K).finrank_eq.trans Module.finrank_prod)
-    rw [hdim, Nat.cast_add, add_smul]
+    rw [hdim, add_smul]
 
 end PropertyF.Ground.CentreModular
 end
@@ -676,7 +674,7 @@ expands over the simple summands of the source object. -/
 theorem fpDeterminant_functor_natural_decomposition
     (F : C.Obj ⥤ C.Obj) [F.Additive] (η : F ≅ F) (X : C.Obj) :
     fpDeterminant C (η.app X) = ∑ i,
-      (Module.finrank ℂ (simples C i ⟶ X) : ℝ) •
+      Module.finrank ℂ (simples C i ⟶ X) •
         fpDeterminant C (η.app (simples C i)) :=
   additive_object_function_decomposition C (fun X ↦ fpDeterminant C (η.app X))
     (fun {X Y} e ↦ (congrArg (fpDeterminant C) (functor_natural_app_conjugate F η e)).trans
@@ -812,7 +810,9 @@ the second strand. -/
 theorem fpDeterminant_monodromy_decomposition :
     monodromyDet C Z W = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ W) : ℝ) • monodromyDet C Z (simples C i) :=
-  fpDeterminant_functor_natural_decomposition C (tensorLeft Z) (monodromyNaturalIso Z) W
+  by
+    simpa only [Nat.cast_smul_eq_nsmul, monodromyDet, monodromyNaturalIso, NatIso.ofComponents.app] using
+      fpDeterminant_functor_natural_decomposition C (tensorLeft Z) (monodromyNaturalIso Z) W
 
 end
 

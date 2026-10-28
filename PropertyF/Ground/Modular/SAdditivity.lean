@@ -37,8 +37,7 @@ theorem SEntry_biproduct_left {ι : Type*} [Fintype ι] (V : ι → C) [HasBipro
   rw [rightTrace_decomposition p (fun i => biproduct.ι V i ▷ Y)
     (fun i => biproduct.π V i ▷ Y)
     (by simp only [← comp_whiskerRight, ← sum_whiskerRight, biproduct.total, id_whiskerRight]) _]
-  apply Finset.sum_congr rfl
-  intro i _
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
   unfold SEntry
   rw [← Category.assoc, ← doubleBraiding_natural_left (biproduct.ι V i) Y,
     Category.assoc, ← comp_whiskerRight, biproduct.ι_π_self, id_whiskerRight,

@@ -130,7 +130,6 @@ theorem unitDoubleDual_trace [RightRigidCategory C] :
       ε_ ((𝟙_ C)ᘁ) (((𝟙_ C)ᘁ)ᘁ) = 𝟙 (𝟙_ C) := by
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual _
-  let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual _
   let hp : ExactPairing I Iᘁ := HasRightDual.exact
   let hq : ExactPairing I I := exactPairingUnit
   let r := rightDualIso hp hq

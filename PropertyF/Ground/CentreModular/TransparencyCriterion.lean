@@ -44,8 +44,7 @@ theorem fusion_S_square_of_kirby (hkirby : HasKirbyIdentity S d N.unit D) : HasS
     rw [Finset.sum_comm]
     simp_rw [← Finset.mul_sum, hkirby]
     rw [Finset.sum_eq_single_of_mem N.unit (Finset.mem_univ _)]
-    · simp only [ite_true]
-      rw [hunit]
+    · simp only [ite_true, hunit]
       split_ifs <;> simp_all
     · intro k _ hk
       simp [hk]
