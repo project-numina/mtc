@@ -146,15 +146,12 @@ theorem simple_scalar_biproduct_natural
     Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
   let g := biproduct.ι (fun i ↦ T (a i)) i ≫ f ≫ biproduct.π (fun j ↦ T (b j)) j
   change c (a i) • g = c (b j) • g
-  by_cases h : a i = b j
-  · rw [show c (a i) = c (b j) from congrArg c h]
-  · have hz : g = 0 := by
-      by_contra hne
-      let : Simple (T (a i)) := hT _
-      let : Simple (T (b j)) := hT _
-      let : IsIso g := isIso_of_hom_simple hne
-      exact h (hinj ⟨asIso g⟩)
-    rw [hz, smul_zero, smul_zero]
+  by_cases hg : g = 0
+  · simp [hg]
+  · let : Simple (T (a i)) := hT _
+    let : Simple (T (b j)) := hT _
+    let : IsIso g := isIso_of_hom_simple hg
+    rw [show c (a i) = c (b j) from congrArg c (hinj ⟨asIso g⟩)]
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
