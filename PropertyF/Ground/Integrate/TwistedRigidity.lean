@@ -111,11 +111,9 @@ theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
     unitScalar Cσ f = σ (unitScalar C f) := by
   apply (unit_algebraMap_bijective Cσ).1
   rw [algebraMap_unitScalar Cσ f]
-  change f = _
-  conv_lhs => rw [← algebraMap_unitScalar C f]
-  simp only [Algebra.algebraMap_eq_smul_one]
-  change (unitScalar C f) • (1 : End (𝟙_ C.Obj)) = σ.symm (σ (unitScalar C f)) • (1 : End (𝟙_ C.Obj))
-  rw [σ.symm_apply_apply]
+  change f = σ.symm (σ (unitScalar C f)) • (1 : End (𝟙_ C.Obj))
+  simpa only [σ.symm_apply_apply, ← Algebra.algebraMap_eq_smul_one] using
+    (algebraMap_unitScalar C f).symm
 
 /-- Pivotal dimensions transform by the specified field automorphism. -/
 theorem pivotalDimension_twist (X : C.Obj) :
@@ -126,13 +124,13 @@ theorem pivotalDimension_twist (X : C.Obj) :
 /-- Match chosen simple representatives and transport pivotal dimensions. -/
 theorem labels (hdim : Modular.HasFPSimpleDimensions C p) :
     ∃ e : Fin (rank C) ≃ Fin (rank Cσ),
-      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ (e i)) = σ (fpSimple C i : ℂ) := by
-  obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C Cσ (CategoryTheory.Equivalence.refl)
-  refine ⟨e, fun i ↦ ?_⟩
-  have hd : Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
-    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using hdim i
-  rw [← hd, ← pivotalDimension_twist C σ p (simples C i)]
-  exact (Dimensions.pivotalDimension_iso Cσ pσ (he i).some).symm
+      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ (e i)) = σ (fpSimple C i : ℂ) :=
+  let ⟨e, he⟩ := Modular.simpleLabels_equiv C Cσ (CategoryTheory.Equivalence.refl)
+  ⟨e, fun i ↦ (Dimensions.pivotalDimension_iso Cσ pσ (he i).some).symm.trans <| by
+    change Dimensions.pivotalDimension Cσ pσ (simples C i) = _
+    rw [pivotalDimension_twist]
+    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using
+      congrArg σ (hdim i)⟩
 
 /-- Simple FP dimensions and their real conjugates give the twisted pivotal dimensions. -/
 theorem exists_galois_fp_dimensions (hdim : Modular.HasFPSimpleDimensions C p) :

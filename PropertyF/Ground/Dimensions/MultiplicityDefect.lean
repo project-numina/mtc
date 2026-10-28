@@ -141,9 +141,7 @@ theorem involution_trace_integer_bound {V : Type*} [AddCommGroup V] [Module ℂ 
   obtain ⟨m, hm, htrace⟩ := involution_trace_formula hT
   refine ⟨2 * (m : ℤ) - (Module.finrank ℂ V : ℤ), ?_, ?_⟩
   · simpa using htrace
-  · have hm' : (m : ℤ) ≤ (Module.finrank ℂ V : ℤ) := by exact_mod_cast hm
-    have hm0 : (0 : ℤ) ≤ (m : ℤ) := by positivity
-    rw [abs_le]
+  · rw [abs_le]
     constructor <;> omega
 
 /-- The trace of a complex involution is real. -/
@@ -162,9 +160,7 @@ theorem involution_eq_one_of_trace_eq_finrank {V : Type*} [AddCommGroup V] [Modu
   have hq : IsIdempotentElem Q := by
     simpa [Q, sub_eq_add_neg] using involution_half_projection (T := -T) (by simpa using hT)
   have hqt : LinearMap.trace ℂ V Q = 0 := by
-    have hid : LinearMap.trace ℂ V (1 : V →ₗ[ℂ] V) = (Module.finrank ℂ V : ℂ) :=
-      LinearMap.trace_id ℂ V
-    simp [Q, hid, htrace]
+    simp [Q, htrace]
   have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff hq).mp hqt
   have hQ : (2 : ℂ) • Q = 1 - T := by simp [Q, smul_smul]
   rw [hzero, smul_zero] at hQ

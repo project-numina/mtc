@@ -180,15 +180,9 @@ theorem rootDualSign_dual (i : Fin (rank C)) :
     exact target_squaredNorm_rightDual C X
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
   rw [Ground.dualIndex_involutive] at he
-  have he' := rootDimension_ne_zero C (dualIndex C i)
-  have hc : rootDualSign C (dualIndex C i) *
-      (rootDimension C i * rootDimension C (dualIndex C i)) =
-      rootDualSign C i * (rootDimension C i * rootDimension C (dualIndex C i)) := by
-    calc
-      _ = rootDualSign C (dualIndex C i) * rootDimension C (dualIndex C i) * rootDimension C i := by ring
-      _ = rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i) := he
-      _ = _ := by ring
-  exact mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero C i) he') hc
+  apply mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero C i)
+    (rootDimension_ne_zero C (dualIndex C i)))
+  simpa only [mul_assoc, mul_left_comm, mul_comm] using he
 end PropertyF.Ground.Dimensions
 
 end
