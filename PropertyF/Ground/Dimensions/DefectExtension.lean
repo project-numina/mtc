@@ -77,16 +77,6 @@ variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
-/-- The cup eigenvalue is invariant under changing the simple representative. -/
-theorem rootTensorDefect_coevaluation_of_iso
-    {X : C.Obj} (i : Fin (rank C)) (a : X ≅ simples C i) :
-    η_ X (Xᘁ) ≫ (rootTensorDefect C X (Xᘁ)).hom =
-      (rootDimension C (unitIndex C) * (rootDualSign C i).1) • η_ X (Xᘁ) :=
-  scalar_eigenvector_of_mono (s := (a ⊗ᵢ (rightDualIsoMap a).symm).hom)
-    (coevaluation_iso_map a) (rootTensorDefect_natural C a.hom (rightDualIsoMap a).symm.hom)
-    (rootTensorDefect_coevaluation i)
-set_option backward.isDefEq.respectTransparency false in
-variable {C} in
 /-- The root defect has the same eigenvalue on the braided-swapped cup. -/
 theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
     let X := simples C i
@@ -97,11 +87,14 @@ theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
   let A := Xᘁ
   letI : ExactPairing A X := BraidedCategory.exactPairing_swap X A
   let r : X ≅ (Xᘁ)ᘁ := rightDualIso inferInstance HasRightDual.exact
+  let a := rightDualLabelIso C i
   scalar_eigenvector_of_mono (s := A ◁ r.hom)
     (coevaluation_rightDualIso inferInstance HasRightDual.exact)
     (by simpa only [id_tensorHom] using rootTensorDefect_natural C (𝟙 A) r.hom)
-    (by simpa only [rootDualSign_dual] using
-      rootTensorDefect_coevaluation_of_iso (dualIndex C i) (rightDualLabelIso C i))
+    (by simpa only [rootDualSign_dual] using (scalar_eigenvector_of_mono
+      (s := (a ⊗ᵢ (rightDualIsoMap a).symm).hom) (coevaluation_iso_map a)
+      (rootTensorDefect_natural C a.hom (rightDualIsoMap a).symm.hom)
+      (rootTensorDefect_coevaluation (dualIndex C i))))
 end PropertyF.Ground.Dimensions
 
 end

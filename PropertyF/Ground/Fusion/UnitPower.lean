@@ -30,7 +30,8 @@ theorem balanced_flow_no_entry {s : Finset ι} (hclosed : ∀ i ∈ s, ∀ j ∉
     (Finset.sum_eq_sum_iff_of_le (fun z _ ↦
       Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ s) (fun x _ _ ↦ hb x z))).mp hin y hy
   have hzero : ∑ x ∈ Finset.univ \ s, b x j = 0 := by simp [Finset.sum_sdiff_eq_sub, ← hrow j hj]
-  exact (Finset.sum_eq_zero_iff_of_nonneg (fun x _ ↦ hb x j)).mp hzero i (by simp [hi])
+  exact (Finset.sum_eq_zero_iff_of_nonneg (fun x _ ↦ hb x j)).mp hzero i
+    (Finset.mem_sdiff.mpr ⟨Finset.mem_univ i, hi⟩)
 
 /-- Every vertex with an outgoing edge in a finite balanced nonnegative flow
 lies on a directed cycle. -/
