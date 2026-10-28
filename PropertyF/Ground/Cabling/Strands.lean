@@ -39,14 +39,12 @@ theorem tensorLeft_faithful_of_unit_retract {X Y : C}
     Functor.Faithful (tensorLeft X) := by
   constructor
   intro A B f g hfg
-  have hYX : (Y ⊗ X) ◁ f = (Y ⊗ X) ◁ g := by
-    change X ◁ f = X ◁ g at hfg
-    simp only [tensor_whiskerLeft, congrArg (fun k => Y ◁ k) hfg]
+  change X ◁ f = X ◁ g at hfg
   have recover (k : A ⟶ B) :
       (λ_ A).inv ≫ (i ▷ A) ≫ ((Y ⊗ X) ◁ k) ≫ (r ▷ B) ≫ (λ_ B).hom = k := by
     simp only [Category.assoc, ← whisker_exchange_assoc, ← comp_whiskerRight_assoc,
       h, id_whiskerRight, Category.id_comp, id_whiskerLeft, Iso.inv_hom_id_assoc,
       Iso.inv_hom_id, Category.comp_id]
-  rw [← recover f, hYX, recover g]
+  rw [← recover f, tensor_whiskerLeft Y X f, hfg, ← tensor_whiskerLeft Y X g, recover g]
 
 end PropertyF
