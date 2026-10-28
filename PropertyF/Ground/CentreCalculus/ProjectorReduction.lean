@@ -123,11 +123,8 @@ theorem alternatingProjector_scalar_trace :
       ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom) := by
   let := permutationCardInvertible n
-  rw [rightTrace_alternatingProjector ρ, unitScalar_eq_equiv]
-  simp only [map_smul, map_sum, smul_eq_mul, unitScalar_eq_equiv]
-  have hc : (Fintype.card (Perm (Fin n)) : ℂ) = (Nat.factorial n : ℂ) := by
-    simp [Fintype.card_perm]
-  rw [← hc, ← mul_assoc, mul_invOf_self, one_mul]
+  simp [rightTrace_alternatingProjector, unitScalar_eq_equiv, Fintype.card_perm,
+    Nat.factorial_ne_zero]
 
 include hdim in
 /-- It suffices to evaluate the unnormalized signed trace sum for each

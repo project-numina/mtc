@@ -72,22 +72,17 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
       crossingBlock X (simples C i) (simples C (unitIndex C))
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
           (simples C i ◁ (unitSummandIso C X).hom) := by
-  let a : crossingIndex C (simples C i) i (unitIndex C) :=
-    ⟨0, by simp [counit_column_finrank]⟩
-  let : Subsingleton (crossingIndex C (simples C i) i (unitIndex C)) := by
+  let : Unique (crossingIndex C (simples C i) i (unitIndex C)) := by
     simp only [crossingIndex, counit_column_finrank, ↓reduceIte]
     infer_instance
-  let : Unique (crossingIndex C (simples C i) i (unitIndex C)) :=
-    ⟨⟨a⟩, fun b => Subsingleton.elim b a⟩
-  have hh := crossing_counit_matrix C X (simples C i) i
-  rw [Fintype.sum_unique, show (default : crossingIndex C (simples C i) i (unitIndex C)) = a
-    from Subsingleton.elim _ _] at hh
-  dsimp only [crossingSummand] at hh
+  dsimp only
+  rw [crossing_counit_matrix C X (simples C i) i, Fintype.sum_unique]
+  dsimp only [crossingSummand]
   let : Simple (simples C i) := simples_simple C i
   let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   rw [crossingBlock_of_simple_split X (simpleTensorUnitIso C i).symm _ _
-    (crossingInclusion_projection a)] at hh
-  exact hh
+    (crossingInclusion_projection default)]
+  rfl
 
 end PropertyF.Ground.CentreInduction
 
