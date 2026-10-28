@@ -16,9 +16,10 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+variable {U W : C} (V : C) (f : U ⊗ W ⟶ 𝟙_ C)
 set_option backward.isDefEq.respectTransparency false in
 /-- A braiding slides past a morphism into the tensor unit. -/
-theorem braiding_cap_slide {U W : C} (V : C) (f : U ⊗ W ⟶ 𝟙_ C) :
+theorem braiding_cap_slide :
     (β_ U V).hom ▷ W ⊗≫ V ◁ f ⊗≫ (ρ_ V).hom =
       𝟙 ((U ⊗ V) ⊗ W) ⊗≫ U ◁ (β_ W V).inv ⊗≫ f ▷ V ⊗≫ (λ_ V).hom := by
   have h := braiding_naturality_left f V
@@ -35,7 +36,7 @@ theorem braiding_cap_slide {U W : C} (V : C) (f : U ⊗ W ⟶ 𝟙_ C) :
     _ = _ := by monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- The same cap slide for the reversed braiding. -/
-theorem braiding_inverse_cap_slide {U W : C} (V : C) (f : U ⊗ W ⟶ 𝟙_ C) :
+theorem braiding_inverse_cap_slide :
     (β_ V U).inv ▷ W ⊗≫ V ◁ f ⊗≫ (ρ_ V).hom =
       𝟙 ((U ⊗ V) ⊗ W) ⊗≫ U ◁ (β_ V W).hom ⊗≫ f ▷ V ⊗≫ (λ_ V).hom :=
   @braiding_cap_slide C _ _ (reverseBraiding C) U W V f
