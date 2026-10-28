@@ -40,9 +40,9 @@ theorem cyclicTrace_decomposition
 theorem cyclicTrace_biproduct_scalar_blocks
     {F : ι → C} [HasBiproduct F] (f : (⨁ F) ⟶ (⨁ F)) {c : ι → k}
     (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
-    trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) := by
-  rw [cyclicTrace_decomposition trace hcyclic (biproduct.ι F) (biproduct.π F) biproduct.total f]
-  simp_rw [hc, map_smul]
+    trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) :=
+  by simpa only [hc, map_smul] using
+    cyclicTrace_decomposition trace hcyclic (biproduct.ι F) (biproduct.π F) biproduct.total f
 
 end CyclicTrace
 
