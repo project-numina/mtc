@@ -333,14 +333,6 @@ theorem rootTensor_square_eq_fourthDual_tensor
   simp only [doubleDualFunctor, Category.assoc]
   rw [tensorHom_comp_tensorHom_assoc]
 
-/-- The fourth-dual isomorphism is compatible with tensoring two objects. -/
-abbrev fourthDualTensorLaw (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) : Prop :=
-  (fourthDualIso (X ⊗ Y)).hom =
-    ((fourthDualIso X).hom ⊗ₘ (fourthDualIso Y).hom) ≫
-      (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
-        (((doubleDualTensorIso X Y).homᘁ)ᘁ)
-
-
 end PropertyF.Ground.Dimensions
 
 end
