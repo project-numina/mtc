@@ -73,10 +73,6 @@ variable (D : BraidedFusionCategory.{v,u})
 def fusionFlow (i j k : Fin (rank D)) : ℝ :=
   fpSimple D j * (fusionCoeff D i j k : ℝ) * fpSimple D k
 
-theorem fusionFlow_nonneg (i j k : Fin (rank D)) :
-    0 ≤ fusionFlow D i j k :=
-  mul_nonneg (mul_nonneg (fpSimple_pos D j).le (Nat.cast_nonneg _)) (fpSimple_pos D k).le
-
 theorem fusionFlow_balance (i j : Fin (rank D)) :
     (∑ k, fusionFlow D i j k) = ∑ k, fusionFlow D i k j := by
   classical
@@ -128,7 +124,9 @@ theorem unit_retract_tensorPower {E : Type u} [Category.{v} E] [MonoidalCategory
   classical
   let D : BraidedFusionCategory := { Obj := E }
   obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso D X
-  obtain ⟨j, hj, hp⟩ := balanced_flow_cycle (fusionFlow_nonneg D i)
+  obtain ⟨j, hj, hp⟩ := balanced_flow_cycle (b := fusionFlow D i)
+    (fun j k ↦ mul_nonneg (mul_nonneg (fpSimple_pos D j).le (Nat.cast_nonneg _))
+      (fpSimple_pos D k).le)
     (fusionFlow_balance D i) ⟨i, by
       unfold fusionFlow
       rw [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, ite_eq_left rfl, Nat.cast_one]
