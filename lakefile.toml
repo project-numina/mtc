@@ -14,9 +14,12 @@ name = "PropertyF"
 
 [[lean_lib]]
 name = "MTC"
+globs = ["MTC.*"]
 
 [[lean_lib]]
 name = "Conjectures"
+globs = ["Conjectures.*"]
 
 [[lean_lib]]
 name = "AnyonAtlas"
+globs = ["AnyonAtlas.*"]

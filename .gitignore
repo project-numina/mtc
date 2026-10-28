@@ -3,3 +3,6 @@
 *.ilean
 *.trace
 /scratch/
+
+/data/
+/SEED_STATUS.md

@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+"""Audit every declaration in the three new libraries using Lean's kernel environment."""
+from pathlib import Path
+import os
+import re
+import subprocess
+import sys
+import tempfile
+
+from conjecture_status import ROOT, entries
+
+LIBRARIES = ("MTC", "Conjectures", "AnyonAtlas")
+
+
+def code_without_comments_and_strings(text):
+    """Mask nested Lean comments and strings, preserving token boundaries and newlines."""
+    out = []
+    i = 0
+    depth = 0
+    string = False
+    while i < len(text):
+        pair = text[i:i + 2]
+        c = text[i]
+        if depth:
+            if pair == "/-":
+                depth += 1
+                out.append("  ")
+                i += 2
+            elif pair == "-/":
+                depth -= 1
+                out.append("  ")
+                i += 2
+            else:
+                out.append("\n" if c == "\n" else " ")
+                i += 1
+        elif string:
+            if c == "\\" and i + 1 < len(text):
+                out.append("  ")
+                i += 2
+            else:
+                if c == '"':
+                    string = False
+                out.append("\n" if c == "\n" else " ")
+                i += 1
+        elif pair == "/-":
+            depth = 1
+            out.append("  ")
+            i += 2
+        elif pair == "--":
+            end = text.find("\n", i)
+            if end == -1:
+                end = len(text)
+            out.append(" " * (end - i))
+            i = end
+        elif c == '"':
+            string = True
+            out.append(" ")
+            i += 1
+        else:
+            out.append(c)
+            i += 1
+    return "".join(out)
+
+
+def main():
+    try:
+        items = entries()
+        # The token check covers project Lean sources; dependency audits below also catch `admit`.
+        for path in sorted(ROOT.rglob("*.lean")):
+            rel = path.relative_to(ROOT)
+            if any(part.startswith(".") for part in rel.parts) or rel.parts[0] in ("scratch", "data"):
+                continue
+            if rel.parts[0] != "Conjectures":
+                code = code_without_comments_and_strings(path.read_text(encoding="utf-8"))
+                if re.search(r"(?<![\w'])sorry(?![\w'])", code):
+                    raise ValueError(f"{rel}: sorry is only permitted in conjecture proofs")
+        modules = []
+        for lib in LIBRARIES:
+            modules.append(lib)
+            modules.extend(".".join(p.relative_to(ROOT).with_suffix("").parts) for p in sorted((ROOT / lib).rglob("*.lean")))
+        imports = "\n".join(f"import all {m}" for m in modules)
+        declarations = "\n".join(
+            f'  (\u0060{fields["Declaration"]}, "{path.with_suffix("").as_posix().replace("/", ".")}", {str(fields["Status"] != "formalized").lower()}),'
+            for path, fields in items
+        )
+        source = f'''module
+public meta import Lean
+{imports}
+
+open Lean Elab Command in
+run_cmd do
+  let env ← getEnv
+  let conjectures : Array (Name × String × Bool) := #[
+{declarations}
+  ]
+  for (name, moduleName, _) in conjectures do
+    let some ci := env.find? name | throwError "Missing conjecture declaration {{name}}"
+    match ci with
+    | .thmInfo _ => pure ()
+    | _ => throwError "Conjecture {{name}} must be a theorem"
+    let actual := (env.getModuleIdxFor? name).bind fun i => env.header.modules[i.toNat]?
+    unless actual.any (fun m => m.module.toString == moduleName) do
+      throwError "Conjecture {{name}} must be declared in {{moduleName}}"
+  let mut checked := 0
+  for (name, _) in env.constants.toList do
+    let ownModule := (env.getModuleIdxFor? name).bind fun i => env.header.modules[i.toNat]?
+    if ownModule.any (fun m => #["MTC", "Conjectures", "AnyonAtlas"].any fun lib =>
+        m.module.toString == lib || m.module.toString.startsWith (lib ++ ".")) then
+      if Lean.isExtern env name || (Lean.Compiler.getImplementedBy? env name).isSome then
+        throwError "Foreign implementation in project declaration {{name}}"
+      let allowSorry := conjectures.any fun (n, _, allowed) => n == name && allowed
+      for ax in ← collectAxioms name do
+        unless #[``propext, ``Classical.choice, ``Quot.sound].contains ax ||
+            (allowSorry && ax == ``sorryAx) do
+          throwError "Forbidden axiom {{ax}} in project declaration {{name}}"
+      checked := checked + 1
+  logInfo m!"Audited {{checked}} declarations in new libraries."
+'''
+        scratch = ROOT / "scratch"
+        scratch.mkdir(exist_ok=True)
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", suffix=".lean", dir=scratch, delete=False) as f:
+            f.write(source)
+            filename = f.name
+        try:
+            env = os.environ.copy()
+            env["LEAN_NUM_THREADS"] = "4"
+            return subprocess.call(["taskset", "-c", env.get("PROPERTYF_AUDIT_CORES", "0-3"), "lake", "env", "lean", filename], cwd=ROOT, env=env)
+        finally:
+            os.unlink(filename)
+    except (ValueError, OSError) as exc:
+        print(exc, file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
