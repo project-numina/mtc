@@ -35,10 +35,10 @@ include hcyclic
 theorem cyclicTrace_decomposition
     {X : C} {Y : ι → C} (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
-    trace X f = ∑ j, trace (Y j) (i j ≫ f ≫ q j) := by
-  conv_lhs => rw [← Category.id_comp f, ← h, Preadditive.sum_comp, map_sum]
-  exact Finset.sum_congr rfl fun j _ ↦ by
-    simpa only [Category.assoc] using hcyclic (q j) (i j ≫ f)
+    trace X f = ∑ j, trace (Y j) (i j ≫ f ≫ q j) :=
+  (show trace X f = (∑ j, trace X ((q j ≫ i j) ≫ f)) from by
+    conv_lhs => rw [← Category.id_comp f, ← h, Preadditive.sum_comp, map_sum]).trans <|
+      Finset.sum_congr rfl fun j _ ↦ by simpa [Category.assoc] using hcyclic (q j) (i j ≫ f)
 
 /-- Scalar diagonal blocks give the corresponding weighted cyclic trace. -/
 theorem cyclicTrace_biproduct_scalar_blocks
@@ -63,8 +63,7 @@ theorem simple_biproduct_diagonal [HasKernels C]
     (hfinite : ∀ i, FiniteDimensional k (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
     ∃ c : ι → k, HasScalarDiagonal F f c :=
   Classical.skolem.mp fun i ↦
-    let : Simple (F i) := hs i
-    let : FiniteDimensional k (F i ⟶ F i) := hfinite i
+    letI := hs i; letI := hfinite i
     (endomorphism_simple_eq_smul_id k (biproduct.ι F i ≫ f ≫ biproduct.π F i)).imp fun _ ↦ Eq.symm
 /-- A cyclic trace on a biproduct of simples is a weighted sum of simple traces. -/
 theorem cyclicTrace_biproduct_simple [HasKernels C]
