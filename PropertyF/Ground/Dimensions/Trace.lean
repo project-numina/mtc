@@ -121,10 +121,10 @@ theorem dual_components_natural
 transported across an object isomorphism. -/
 theorem quantumTraces_iso
     (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
-    rightQuantumTrace j = rightQuantumTrace k ∧ leftQuantumTrace j = leftQuantumTrace k := by
-  refine ⟨rightQuantumTrace_iso e hnat, ?_⟩
-  simpa only [leftQuantumTrace_eq_rightDual] using
-    rightQuantumTrace_iso (rightDualIsoMap e.symm) (dual_components_natural e hnat)
+    rightQuantumTrace j = rightQuantumTrace k ∧ leftQuantumTrace j = leftQuantumTrace k :=
+  ⟨rightQuantumTrace_iso e hnat, by
+    simpa only [leftQuantumTrace_eq_rightDual] using
+      rightQuantumTrace_iso (rightDualIsoMap e.symm) (dual_components_natural e hnat)⟩
 
 end
 

@@ -52,17 +52,16 @@ theorem sign_decomposeFin {n : ℕ} (p : Fin (n + 1)) (σ : Perm (Fin n)) :
   by_cases hp : p = 0 <;>
     simp [Centre.permutationSign, decomposeFin.symm_sign, hp]
 
-variable {F : ∀ n : ℕ, Perm (Fin n) → R} {d c : R} {n : ℕ}
+variable {F : ∀ n : ℕ, Perm (Fin n) → R} {d : R} {n : ℕ}
 
 /-- A deletion identity for the trace gives the signed-sum recurrence. -/
 theorem signedTraceSum_succ
     (hfixed : ∀ σ, F (n + 1) (decomposeFin.symm (0, σ)) = d * F n σ)
-    (hmoved : ∀ (p : Fin (n + 1)), p ≠ 0 → ∀ σ, F (n + 1) (decomposeFin.symm (p, σ)) = c * F n σ) :
-    signedTraceSum F (n + 1) = (d - (n : R) * c) * signedTraceSum F n := by
-  unfold signedTraceSum
-  rw [← decomposeFin.symm.sum_comp,
+    (hmoved : ∀ (p : Fin (n + 1)), p ≠ 0 → ∀ σ, F (n + 1) (decomposeFin.symm (p, σ)) = F n σ) :
+    signedTraceSum F (n + 1) = (d - (n : R)) * signedTraceSum F n := by
+  rw [signedTraceSum, ← decomposeFin.symm.sum_comp,
     Fintype.sum_prod_type, Fin.sum_univ_succ]
-  simp only [sign_decomposeFin, ite_true, one_mul, hfixed, Fin.succ_ne_zero,
+  simp only [signedTraceSum, sign_decomposeFin, ite_true, one_mul, hfixed, Fin.succ_ne_zero,
     ite_false, hmoved _ (Fin.succ_ne_zero _), neg_mul, Finset.sum_neg_distrib,
     mul_left_comm, ← Finset.mul_sum,
     Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
@@ -86,17 +85,14 @@ structure IsTraceDeletion (F : ∀ n : ℕ, Perm (Fin n) → R) (d : R) : Prop w
 /-- The deletion identities imply the falling-factorial signed trace sum.
 This isolates the categorical trace calculation from the permutation sum. -/
 theorem signedTraceSum_falling
-    (hzero : F 0 1 = 1) (h : IsTraceDeletion F d) :
-    ∀ n, signedTraceSum F n = ∏ k ∈ Finset.range n, (d - (k : R)) := by
-  intro n
+    (hzero : F 0 1 = 1) (h : IsTraceDeletion F d) (n : ℕ) :
+    signedTraceSum F n = ∏ k ∈ Finset.range n, (d - (k : R)) := by
   induction n with
   | zero =>
-    let : Unique (Perm (Fin 0)) := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩
     simp [signedTraceSum, hzero, Centre.permutationSign]
   | succ n ih =>
-    rw [signedTraceSum_succ (c := 1) (h.fixed n) (by simpa using h.moved n), ih,
-      Finset.prod_range_succ]
-    ring
+    simpa [ih, Finset.prod_range_succ, mul_comm] using
+      signedTraceSum_succ (h.fixed n) (h.moved n)
 
 end
 

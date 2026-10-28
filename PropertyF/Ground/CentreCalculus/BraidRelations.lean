@@ -105,7 +105,7 @@ theorem first_distant_commute (n : ℕ) (j : Fin (n + 1)) :
     rcases j with ⟨j, hj⟩
     simpa only [Fin.succ, braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
       Iso.refl_hom, tensorHom_id, id_tensorHom] using
-      (Calculus.crossing_natural X (b X n ⟨j, hj⟩).asIso.hom).symm
+      (Calculus.firstPair_natural X (β_ X X).hom (b X n ⟨j, hj⟩).asIso.hom).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Crossings supported on disjoint pairs of strands commute. -/

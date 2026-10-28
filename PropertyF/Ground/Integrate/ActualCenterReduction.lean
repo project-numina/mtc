@@ -14,6 +14,7 @@ public import PropertyF.Ground.CentreCabling.RegularSupport
 public import PropertyF.Ground.Integrate.CenterBundle
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.Tactic
+public import Mathlib.FieldTheory.IsSepClosed
 public import PropertyF.Ground.Fusion.SpectralIntegral
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Arithmetic
@@ -89,12 +90,8 @@ local notation "ι" => algebraMap R ℂ
 theorem integral_eq_int_of_complex_galois_fixed {δ : R} (hδr : IsIntegral ℤ δ)
     (hfixed : ∀ τ : ℂ ≃+* ℂ, τ (ι δ) = ι δ) : ∃ z : ℤ, δ = z :=
   let hδ := (isIntegral_algebraMap_iff (R := ℤ) (A := R) (B := ℂ)).mpr hδr
-  let K := Dimensions.dimensionNormalField (ι δ)
-  let ⟨hK, hfin, hgal⟩ := Dimensions.finite_galois_normal_field (ι δ)
-    (hδ.tower_top (A := ℚ))
-  letI : FiniteDimensional ℚ K := hfin
-  letI : IsGalois ℚ K := hgal
-  let x : K := ⟨ι δ, hK⟩
+  let K := separableClosure ℚ ℂ
+  let x : K := ⟨ι δ, (minpoly.irreducible (hδ.tower_top (A := ℚ))).separable⟩
   let ⟨z, hz⟩ := integer_of_galois_fixed (x := x)
     ((isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by simpa [x] using hδ)) fun σ ↦ by
       obtain ⟨τ, hτ⟩ := Dimensions.extend_complex_automorphism K.toSubfield σ.toRingEquiv

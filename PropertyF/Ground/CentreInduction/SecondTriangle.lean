@@ -74,8 +74,8 @@ theorem crossing_counit_diagonal (i : Fin (rank C)) :
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
           (simples C i ◁ (unitSummandIso C X).hom) := by
   let : Unique (crossingIndex C (simples C i) i (unitIndex C)) := by
-    simp only [crossingIndex, counit_column_finrank, ↓reduceIte]
-    infer_instance
+    simpa only [crossingIndex, counit_column_finrank, ↓reduceIte] using
+      (inferInstance : Unique (Fin 1))
   dsimp only
   rw [crossing_counit_matrix C X (simples C i) i, Fintype.sum_unique]
   dsimp only [crossingSummand]
@@ -176,7 +176,6 @@ theorem crossingUnitBlock_eval (X T : D) (e : A ≅ 𝟙_ D) :
     _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ T ◁ g) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫
       (((((T ⊗ A) ⊗ X) ◁ q) ≫ (((T ◁ f) ▷ X) ▷ Aᘁ))) ⊗≫
       (((T ⊗ (𝟙_ D)) ⊗ X) ◁ d) ⊗≫ 𝟙 _ := by
-        simp only [comp_whiskerRight, whiskerLeft_comp]
         monoidal
     _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ T ◁ g) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫
       (((((T ◁ f) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ≫

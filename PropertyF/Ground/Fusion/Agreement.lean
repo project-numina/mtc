@@ -207,10 +207,10 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {A : Matrix ι ι ℝ}
 /-- A strictly positive symmetric real matrix has a strictly positive eigenvector. -/
 theorem positive_symmetric_matrix_has_positive_eigenvector {A : Matrix ι ι ℝ}
     (hsym : A.IsHermitian) (hpos : ∀ i j, 0 < A i j) :
-    ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 < v i) ∧ A *ᵥ v = d • v := by
-  obtain ⟨d, v, hv, hvpos, heigen⟩ :=
-    nonneg_symmetric_matrix_has_nonneg_eigenvector hsym (fun i j => (hpos i j).le)
-  exact ⟨d, v, positive_matrix_eigenvector_pos hpos hv hvpos heigen, heigen⟩
+    ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 < v i) ∧ A *ᵥ v = d • v :=
+  (nonneg_symmetric_matrix_has_nonneg_eigenvector hsym (fun i j => (hpos i j).le)).imp
+    fun _ ⟨v, hv, hvpos, heigen⟩ ↦
+      ⟨v, positive_matrix_eigenvector_pos hpos hv hvpos heigen, heigen⟩
 
 end PropertyF.Ground
 
