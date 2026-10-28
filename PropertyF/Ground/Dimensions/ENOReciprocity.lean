@@ -106,8 +106,8 @@ variable (C : BraidedFusionCategory.{v,u})
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 /-- The sign comparing the root on a simple's dual to the inverse dual root. -/
 noncomputable def rootDualSign (C : BraidedFusionCategory.{v,u})
-    (i : Fin (rank C)) : ℂ := by
-  exact Classical.choose (rootDual_differs_by_sign C (simples C i))
+    (i : Fin (rank C)) : ℂ :=
+  Classical.choose (rootDual_differs_by_sign C (simples C i))
 
 /-- The trace matrices of dual simples are transposes up to the dual-root sign. -/
 abbrev ENOTraceMatrixReciprocity (C : BraidedFusionCategory.{v,u}) : Prop :=
