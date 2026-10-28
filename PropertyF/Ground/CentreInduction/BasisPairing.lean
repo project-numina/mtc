@@ -51,9 +51,8 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
       (simpleInclusionBasis C V i).dualBasis a := by
   refine (simpleInclusionBasis C V i).ext fun b => ?_
   rw [Module.Basis.dualBasis_apply_self]
-  simp [simpleHomPairingEquiv, simpleHomPairing,
-    simpleInclusion, simpleProjection, Category.assoc, biproduct.ι_π]
-  split_ifs <;> first | exact map_one _ | exact map_zero _
+  by_cases h : b = a <;> simp [simpleHomPairingEquiv, simpleHomPairing,
+    simpleInclusion, simpleProjection, Category.assoc, h]; rfl
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
 theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)

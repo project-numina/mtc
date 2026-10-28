@@ -94,14 +94,13 @@ omit [MonoidalCategory D] in
 private theorem simple_mono_cokernel [Abelian D] {P W Q S : D}
     [Simple P] [Simple S] (p : P ⟶ W) [Mono p] (t : S ⟶ W) [Mono t] (q : W ⟶ Q)
     (hpq : p ≫ q = 0) (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
-    Nonempty (S ≅ P) ∨ Mono (t ≫ q) := by
-  by_cases hz : t ≫ q = 0
-  · obtain ⟨g, hg⟩ : {g : S ⟶ P // g ≫ p = t} := KernelFork.IsLimit.lift'
+    Nonempty (S ≅ P) ∨ Mono (t ≫ q) :=
+  or_iff_not_imp_left.mpr fun h => mono_of_nonzero_from_simple fun hz => h <| by
+    obtain ⟨g, hg⟩ : {g : S ⟶ P // g ≫ p = t} := KernelFork.IsLimit.lift'
       (Abelian.monoIsKernelOfCokernel (CokernelCofork.ofπ q hpq) hc) t hz
-    let : IsIso g := isIso_of_hom_simple (fun h =>
-      mono_ne_zero_of_id_ne_zero t (id_nonzero S) (by simpa [h] using hg.symm))
-    exact Or.inl ⟨asIso g⟩
-  · exact .inr (mono_of_nonzero_from_simple hz)
+    let : IsIso g := isIso_of_hom_simple (fun hg0 =>
+      mono_ne_zero_of_id_ne_zero t (id_nonzero S) (by simpa [hg0] using hg.symm))
+    exact ⟨asIso g⟩
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre object has only finitely many isomorphism classes of simple subobjects. -/
