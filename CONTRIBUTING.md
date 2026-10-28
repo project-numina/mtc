@@ -14,7 +14,7 @@ needs careful statements and examples as well as proofs and exact data.
    `PropertyF.Ground` definitions for property F. Do not edit `PropertyF/Ground/Target.lean` or the
    proof of `PropertyF.Ground.target`.
 4. Replace the conjecture proof with a complete Lean proof, update its status and reference, and run
-   `python3 scripts/conjecture_status.py`. A result is formalized only when its proof and all
+   `python3 scripts/conjecture_status.py` and `python3 scripts/update_roots.py`. A result is formalized only when its proof and all
    dependencies use no `sorry` and only `propext`, `Classical.choice` and `Quot.sound` as axioms.
    `MTC/`, `AnyonAtlas/` and `PropertyF/` must be sorry-free. In `Conjectures/`, only the designated
    unformalized conjecture proof may use `sorry`; helper lemmas may not depend on an unproved

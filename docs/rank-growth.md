@@ -85,3 +85,32 @@ choices of vacuum and modular data inside a representation class, and do not
 by themselves supply a dimension bound. Category equivalence and numerical
 modular-data equivalence are also different: distinct categories can share
 modular data.
+
+## A quantitative first step and the remaining interfaces
+
+For a finite group G, complex representations of dimension r are semisimple.
+There are at most |G| irreducibles, and each multiplicity is at most r, so
+there are at most (r+1)^|G| isomorphism classes of r-dimensional
+representations. `MTC.ModularData.card_multiplicityProfile` proves the elementary
+profile count; applying it requires formalizing semisimplicity, irreducible
+classification, and the correspondence between profiles and representations.
+
+If the unnormalized twist order N is at most L, every linear lift of the
+projective modular representation has kernel containing Γ(12N), by the cited
+lifting theorem. A lift therefore factors through SL(2, Z/(12N)Z), which has
+at most (12N)^4 elements. Consequently a coarse bound on the number of
+projective equivalence classes arising with N ≤ L is
+
+    sum_{N=1}^L (r+1)^((12N)^4).
+
+This counts representations up to arbitrary change of basis; the bound is
+very loose and is not yet formalized in Lean. The source of the effective
+rank-dependent level bound is Proposition 3.15 cited above. A specific datum
+also chooses a vacuum and a simple-object basis. A further effective bound on
+the number of distinct modular data up to simultaneous permutation of labels,
+within one projective representation class, would control the numerical-data
+fiber. Finiteness alone for realizable data follows abstractly from the
+rank-finiteness theorem; the effective quantitative fiber bound is the
+unresolved target. Bounding categories requires an additional bound on
+inequivalent realizations of the same data or fusion rules; modular data do
+not determine a category in general.

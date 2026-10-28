@@ -26,7 +26,7 @@ def entries():
             raise ValueError(f"{rel}: missing module docstring")
         fields = {}
         for field in FIELDS:
-            values = re.findall(rf"(?m)^\s*{field}:\s*(\S.*?)\s*$", match.group(1))
+            values = re.findall(rf"(?m)^[ \t]*{field}:[ \t]*(\S[^\r\n]*?)[ \t]*$", match.group(1))
             if len(values) != 1:
                 raise ValueError(f"{rel}: expected exactly one nonempty {field} field")
             fields[field] = values[0]

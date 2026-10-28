@@ -15,11 +15,11 @@ COMMAND = re.compile(
     r"(theorem|lemma|example|def|abbrev|opaque|axiom|instance|structure|class|"
     r"inductive|namespace|section|end|run_cmd|#\w+)\b(?:[ \t]+([^\s:({]+))?"
 )
-SORRY = re.compile(r"(?<![\w'])sorry(?![\w'])")
+SORRY = re.compile(r"(?<![\w'])(?:sorry|admit)(?![\w'])")
 
 
 def check_sorry_scope(path, code, fields):
-    """Allow sorry tokens only in the named theorem's proof, including anonymous examples."""
+    """Allow placeholder tokens only in the named theorem proof, including in anonymous examples."""
     commands = list(COMMAND.finditer(code))
     for token in SORRY.finditer(code):
         current = next((command for command in reversed(commands) if command.start() < token.start()), None)
