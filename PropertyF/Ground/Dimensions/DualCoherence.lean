@@ -128,16 +128,20 @@ theorem trace_change_rightDual {X Y Z : C} [HasRightDual Y] [HasRightDual Z]
 
 end
 
+section
+variable [RightRigidCategory C]
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance coherenceUnitDual1 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance coherenceUnitDual2 : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual unit isomorphism has unit evaluation trace. -/
-theorem unitDoubleDual_trace [RightRigidCategory C] :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
-    letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
+theorem unitDoubleDual_trace :
     η_ (𝟙_ C) ((𝟙_ C)ᘁ) ≫
       ((doubleDualUnitIso (C := C)).hom ⊗ₘ 𝟙 ((𝟙_ C)ᘁ)) ≫
       ε_ ((𝟙_ C)ᘁ) (((𝟙_ C)ᘁ)ᘁ) = 𝟙 (𝟙_ C) := by
   let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual _
   let hp : ExactPairing I Iᘁ := HasRightDual.exact
   let hq : ExactPairing I I := exactPairingUnit
   let r := rightDualIso hp hq
@@ -151,10 +155,12 @@ theorem unitDoubleDual_trace [RightRigidCategory C] :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The pivotal dimension of the tensor unit is one. -/
-theorem rightTrace_unit [RightRigidCategory C] (p : PivotalStructure (C := C)) :
+theorem rightTrace_unit (p : PivotalStructure (C := C)) :
     p.rightTrace (𝟙 (𝟙_ C)) = 1 :=
   End.homEquiv.injective (by
     simpa only [PivotalStructure.rightTrace, rightTraceWith, End.homEquiv_apply, End.one_asHom,
       Category.id_comp, p.unit] using (unitDoubleDual_trace (C := C)))
+
+end
 
 end PropertyF.Ground.Dimensions

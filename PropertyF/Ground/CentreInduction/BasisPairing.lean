@@ -28,7 +28,7 @@ theorem pairing_simpleProjection {V : C.Obj} {i : Fin (rank C)}
   LinearMap.ext fun g => (simpleEndScalar (k := ℂ) (Sᶜ i)).symm.injective <| End.ext <| by
     simpa [Module.Basis.dualBasis_apply, simpleHomPairingEquiv, simpleHomPairing,
       simpleProjection, simpleEndScalar, Algebra.algebraMap_eq_smul_one] using
-      (simpleInclusionBasis_projection C g a).symm
+      (simpleInclusionBasis_projection g a).symm
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
 theorem simpleBasis_contraction_natural {i : Fin (rank C)} (q : V ⟶ W)

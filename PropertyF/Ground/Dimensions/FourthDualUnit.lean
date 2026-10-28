@@ -19,14 +19,15 @@ universe v u
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [RightRigidCategory C]
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual1 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual2 : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
 set_option backward.isDefEq.respectTransparency false in
 /-- The braided double-dual map has the canonical component on the unit. -/
 theorem drinfeld_unit :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
-    letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
     (drinfeldIso (𝟙_ C)).hom = (doubleDualUnitIso (C := C)).hom := by
   let U : C := 𝟙_ C
-  let : HasRightDual U := RightRigidCategory.rightDual U
   let r : Uᘁ ≅ U := rightDualUnitIso
   have h : (r.inv ≫ (r.homᘁ)) ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) =
       (β_ U (Uᘁ)).hom ≫ ε_ U (Uᘁ) := by
@@ -51,14 +52,18 @@ universe v u
 section
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [RightRigidCategory C]
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual3 : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual4 : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
+/-- The chosen right dual used in the unit coherence comparisons. -/
+local instance fourthUnitDual5 : HasRightDual (((𝟙_ C)ᘁ)ᘁ) := RightRigidCategory.rightDual _
 set_option backward.isDefEq.respectTransparency false in
 /-- The Drinfeld map respects duality on the tensor unit. -/
 theorem drinfeld_unit_dual :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
     drinfeldIso (rightDualObject (𝟙_ C)) =
       (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm := by
   let U : C := 𝟙_ C
-  let : HasRightDual U := RightRigidCategory.rightDual U
   let r : Uᘁ ≅ U := rightDualUnitIso
   have hu : drinfeldIso U = r.symm ≪≫ rightDualIsoMap r := Iso.ext drinfeld_unit
   apply Iso.ext
@@ -74,13 +79,9 @@ theorem drinfeld_unit_dual :
     rightAdjointMate_id, Category.comp_id]
 /-- The fourth-dual map has the canonical iterated unit component. -/
 theorem fourthDualIso_unit :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
-    letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
-    letI : HasRightDual (((𝟙_ C)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C)ᘁ)ᘁ)
     fourthDualIso (𝟙_ C) =
       doubleDualUnitIso (C := C) ≪≫
         rightDualIsoMap (rightDualIsoMap (doubleDualUnitIso (C := C))) := by
-  let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
   unfold fourthDualIso
   rw [show drinfeldIso ((𝟙_ C)ᘁ) =
       (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm from drinfeld_unit_dual,

@@ -34,10 +34,11 @@ theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 :=
   (unitIndex_iso D).elim fun e ↦
     (fpDimension_iso D e).symm.trans ((fpDimension_simple D _).trans (fpSimple_unit D))
 
+variable {D} in
 /-- Every nonzero object has FP dimension at least one. -/
 theorem one_le_fpDimension {X : D.Obj}
     (hX : ¬ IsZero X) : 1 ≤ fpDimension D X :=
-  (exists_positive_multiplicity (simples D) (simples_decompose D X)
+  (exists_positive_multiplicity (simples_decompose D X)
     (fun _ ↦ IsFusionCategory.hom_finite _ _) hX).elim fun i hi ↦
     (one_le_mul_of_one_le_of_one_le (Nat.one_le_cast.mpr hi) (one_le_fpSimple i)).trans
       (Finset.single_le_sum
@@ -123,6 +124,7 @@ universe v u v' u'
 attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 variable (C : BraidedFusionCategory.{v,u}) (D : BraidedFusionCategory.{v',u'})
 
+variable {D} in
 /-- FP dimension is additive over finite biproducts. -/
 theorem fpDimension_biproduct {ι : Type} [Fintype ι] (V : ι → D.Obj) :
     fpDimension D (⨁ V) = ∑ i, fpDimension D (V i) := by
@@ -130,16 +132,18 @@ theorem fpDimension_biproduct {ι : Type} [Fintype ι] (V : ι → D.Obj) :
   simp only [fpDimension, finrank_hom_biproduct, Nat.cast_sum, Finset.sum_mul]
   exact Finset.sum_comm
 
+variable {C D} in
 /-- Applying an additive functor to a canonical decomposition expresses the
 FP dimension of the image as the sum of the dimensions of image simples. -/
 theorem fpDimension_functor_decomposition (F : C.Obj ⥤ D.Obj) [F.Additive] (X : C.Obj) :
     fpDimension D (F.obj X) = ∑ i,
-      (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) := by
-  classical
-  obtain ⟨e⟩ := exists_canonical_decomposition C X
-  simp [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
-    Fintype.sum_sigma]
+      (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) :=
+  (exists_canonical_decomposition C X).elim fun e ↦ by
+    classical
+    simp [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
+      Fintype.sum_sigma]
 
+variable {C D} in
 /-- An additive faithful strong monoidal functor preserves FP dimension. -/
 theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal]
     (X : C.Obj) :
@@ -148,18 +152,18 @@ theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.M
   let f : Fin (rank C) → ℝ := fun i => fpDimension D (F.obj (simples C i))
   have hpos (i) : 0 < f i :=
     letI : Simple (simples C i) := simples_simple C i
-    lt_of_lt_of_le zero_lt_one (one_le_fpDimension D fun hz ↦
+    lt_of_lt_of_le zero_lt_one (one_le_fpDimension fun hz ↦
       id_nonzero _ (F.map_eq_zero_iff.mp (by simpa using (IsZero.iff_id_eq_zero _).mp hz)))
   have hunit : f (unitIndex C) = 1 :=
     (unitIndex_iso C).elim fun e ↦
       (fpDimension_iso D (F.mapIso e ≪≫ (εIso F).symm)).trans (fpDimension_unit D)
   have hmul (i j) : f i * f j = ∑ k, (fusionCoeff C i j k : ℝ) * f k :=
     (fpDimension_tensor D _ _).symm.trans ((fpDimension_iso D (μIso F _ _)).trans
-      (fpDimension_functor_decomposition C D F _))
+      (fpDimension_functor_decomposition F _))
   have heq : f = fpSimple C := positive_symmetric_eigenvector_unique (totalFusionMatrix_pos C)
     (Matrix.ext fun i j ↦ totalFusionMatrix_symmetric C j i) hpos (fpSimple_pos C)
     hunit (fpSimple_unit C) (character_total_eigenvector hmul)
     (character_total_eigenvector (fpSimple_mul C))
-  simpa only [fpDimension, ← heq, f] using fpDimension_functor_decomposition C D F X
+  simpa only [fpDimension, ← heq, f] using fpDimension_functor_decomposition F X
 
 end PropertyF.Ground

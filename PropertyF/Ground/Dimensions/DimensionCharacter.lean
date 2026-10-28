@@ -41,11 +41,11 @@ variable {X : C.Obj} in
 multiplicities, for any pivotal structure. -/
 theorem pivotalDimension_decomposition :
     pivotalDimension C p X = ∑ i, (simpleMultiplicity C i X : ℂ) *
-      pivotalDimension C p (simples C i) := by
-  classical
-  obtain ⟨e⟩ := exists_canonical_decomposition C X
-  simp [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
-    rightDimension_biproduct, Fintype.sum_sigma]
+      pivotalDimension C p (simples C i) :=
+  (exists_canonical_decomposition C X).elim fun e ↦ by
+    classical
+    simp [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
+      rightDimension_biproduct, Fintype.sum_sigma]
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
 theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
@@ -54,6 +54,7 @@ theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStr
   simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
     hsimple] using pivotalDimension_decomposition C p (X := X)
 
+variable {C} in
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor (X Y : C.Obj) :
     pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
@@ -63,9 +64,10 @@ theorem pivotalDimension_tensor (X Y : C.Obj) :
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character :
     IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) :=
-  fun i j ↦ (pivotalDimension_tensor C p (simples C i) (simples C j)).symm.trans
+  fun i j ↦ (pivotalDimension_tensor p (simples C i) (simples C j)).symm.trans
     (pivotalDimension_decomposition C p (X := _))
 
+variable {C} in
 /-- Pivotal dimension is invariant under object isomorphism. -/
 theorem pivotalDimension_iso
     {X Y : C.Obj} (e : X ≅ Y) :
@@ -75,7 +77,7 @@ theorem pivotalDimension_iso
 /-- The pivotal dimension of the simple representative of the unit is one. -/
 theorem pivotalDimension_unitIndex :
     pivotalDimension C p (simples C (unitIndex C)) = 1 :=
-  (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso C p e).trans (by
+  (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso p e).trans (by
     simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1)
 
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
@@ -83,7 +85,7 @@ its Frobenius–Perron dimension. -/
 theorem galois_pivotalDimension_norm_le_fpSimple
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i :=
-  galois_character_norm_le_fpSimple C (i₀ := unitIndex C)
+  galois_character_norm_le_fpSimple (i₀ := unitIndex C)
     ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
     (pivotalDimension_character C p) σ i
 
@@ -108,7 +110,7 @@ def leftTraceLinear (p : PivotalStructure (C := C)) (X : C) :
 theorem leftTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
     {F : ι → C} [HasBiproduct F] (p : PivotalStructure (C := C))
     (f : (⨁ F) ⟶ (⨁ F)) {c : ι → k}
-    (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
+    (hc : HasScalarDiagonal F f c) :
     p.leftTrace f = ∑ i, c i • p.leftTrace (𝟙 (F i)) :=
   cyclicTrace_biproduct_scalar_blocks (leftTraceLinear p)
     (fun f g => leftTrace_cyclic p f g) f hc

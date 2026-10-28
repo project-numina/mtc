@@ -488,7 +488,7 @@ theorem base_finite_simple_sum (X : C.Obj) :
   let (W : C.Obj) : Injective W := object_injective W
   apply CentreInduction.finiteSimpleSum_of_injective (k := ℂ) ?_ X
   intro W hW
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity (simples C) (simples_decompose C W)
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity (simples_decompose C W)
     (fun _ ↦ IsFusionCategory.hom_finite _ _) hW
   let : Simple (simples C i) := simples_simple C i
   obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp hi

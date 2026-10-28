@@ -19,6 +19,11 @@ variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [Preadditive
 variable {A : Type*} [AddCommMonoid A] [Module k A]
 variable {ι : Type*} [Fintype ι]
 
+/-- An endomorphism of a biproduct has the given scalars on its diagonal blocks. -/
+abbrev HasScalarDiagonal (F : ι → C) [HasBiproduct F]
+    (f : (⨁ F) ⟶ (⨁ F)) (c : ι → k) : Prop :=
+  ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)
+
 /-- A family of linear maps on endomorphisms is cyclic under composition. -/
 abbrev IsCyclicTrace (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A) : Prop :=
   ∀ {X Y : C} (f : X ⟶ Y) (g : Y ⟶ X), trace X (f ≫ g) = trace Y (g ≫ f)
@@ -39,7 +44,7 @@ theorem cyclicTrace_decomposition
 /-- Scalar diagonal blocks give the corresponding weighted cyclic trace. -/
 theorem cyclicTrace_biproduct_scalar_blocks
     {F : ι → C} [HasBiproduct F] (f : (⨁ F) ⟶ (⨁ F)) {c : ι → k}
-    (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
+    (hc : HasScalarDiagonal F f c) :
     trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) :=
   by simpa only [hc, map_smul] using
     cyclicTrace_decomposition trace hcyclic (biproduct.ι F) (biproduct.π F) biproduct.total f
@@ -57,7 +62,7 @@ omit [Fintype ι] in
 theorem simple_biproduct_diagonal [HasKernels C]
     {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
     (hfinite : ∀ i, FiniteDimensional k (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
-    ∃ c : ι → k, ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i) :=
+    ∃ c : ι → k, HasScalarDiagonal F f c :=
   Classical.skolem.mp fun i ↦
     let : Simple (F i) := hs i
     let : FiniteDimensional k (F i ⟶ F i) := hfinite i
@@ -69,8 +74,7 @@ theorem cyclicTrace_biproduct_simple [HasKernels C]
     (hcyclic : IsCyclicTrace trace)
     {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
     (hfinite : ∀ i, FiniteDimensional k (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
-    ∃ c : ι → k,
-      (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
+    ∃ c : ι → k, HasScalarDiagonal F f c ∧
       trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) :=
   (simple_biproduct_diagonal hs hfinite f).imp fun _c hc ↦
     ⟨hc, cyclicTrace_biproduct_scalar_blocks trace hcyclic f hc⟩
@@ -125,8 +129,7 @@ theorem rightTrace_biproduct_simple [HasKernels C]
     {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
     (hfinite : ∀ i, FiniteDimensional k (F i ⟶ F i))
     (p : PivotalStructure (C := C)) (f : (⨁ F) ⟶ (⨁ F)) :
-    ∃ c : ι → k,
-      (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
+    ∃ c : ι → k, HasScalarDiagonal F f c ∧
       p.rightTrace f = ∑ i, c i • p.rightTrace (𝟙 (F i)) :=
   cyclicTrace_biproduct_simple (fun X ↦ rightTraceWithLinear (p.iso X))
     (fun f g ↦ p.rightTrace_cyclic f g) hs hfinite f

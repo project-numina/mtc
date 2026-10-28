@@ -80,6 +80,7 @@ namespace PropertyF.Ground.Dimensions
 
 variable (C : BraidedFusionCategory)
 
+variable {C} in
 /-- Each value of any nonzero fusion-ring character is bounded in absolute value
 by the spectral-radius FP dimension. No positivity of the character is needed. -/
 theorem character_norm_le_fpSimple
@@ -102,6 +103,7 @@ theorem character_norm_le_fpSimple
         rw [spectralRadius_eq_of_unital]
         exact le_iSup_of_le (χ i) (le_iSup_of_le hz le_rfl))
 
+variable {C} in
 /-- Every complex field conjugate of a fusion character obeys the same FP
 bound, because field automorphisms preserve the integer fusion coefficients. -/
 theorem galois_character_norm_le_fpSimple
@@ -109,7 +111,7 @@ theorem galois_character_norm_le_fpSimple
     (hchar : IsFusionMultiplicative C χ)
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     ‖σ (χ i)‖ ≤ fpSimple C i :=
-  character_norm_le_fpSimple C (i₀ := i₀)
+  character_norm_le_fpSimple (i₀ := i₀)
     ((map_ne_zero σ).2 hχ) (fun j k ↦ by simpa using congrArg σ (hchar j k)) i
 
 end PropertyF.Ground.Dimensions
@@ -256,7 +258,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
   have hid : (𝟙 Y : Y ⟶ Y) ≠ 0 := fun h ↦
     id_nonzero (ᘁ(simples D k))
       ((tensorLeft (simples D j)).map_eq_zero_iff.mp (by simpa [Y] using h))
-  obtain ⟨i, hm⟩ := exists_positive_multiplicity (simples D) (simples_decompose D Y)
+  obtain ⟨i, hm⟩ := exists_positive_multiplicity (simples_decompose D Y)
     (fun _ ↦ IsFusionCategory.hom_finite _ _) (fun h ↦ hid ((IsZero.iff_id_eq_zero Y).mp h))
   unfold totalFusionMatrix
   exact Finset.sum_pos' (fun _ _ => Nat.cast_nonneg _)
@@ -447,7 +449,7 @@ variable (D : BraidedFusionCategory)
 theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
     fpCharacter D i ≤ fpSimple D i := by
   simpa [Complex.norm_real, abs_of_pos (fpCharacter_pos i)] using
-    (Dimensions.character_norm_le_fpSimple D (χ := fun j ↦ (fpCharacter D j : ℂ))
+    (Dimensions.character_norm_le_fpSimple (χ := fun j ↦ (fpCharacter D j : ℂ))
       (i₀ := unitIndex D) (by simp [fpCharacter_unit]) (fun j k ↦ by
         dsimp
         exact_mod_cast fpCharacter_mul j k) i)

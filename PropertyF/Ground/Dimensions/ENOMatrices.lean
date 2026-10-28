@@ -41,13 +41,13 @@ theorem rootTrace_cyclic {X Y : C.Obj}
 theorem rootTrace_id_iso {X Y : C.Obj} (e : X ≅ Y) :
     rootTrace C (𝟙 X) = rootTrace C (𝟙 Y) := by simpa using rootTrace_cyclic C e.hom e.inv
 
+variable {C} in
 /-- On a finite biproduct of simples, the natural-root trace is the sum of
 simple dimensions weighted by the scalar diagonal blocks. -/
 theorem rootTrace_biproduct_simple
     {ι : Type*} [Fintype ι] (F : ι → C.Obj) [HasBiproduct F]
     (hs : ∀ i, Simple (F i)) (f : (⨁ F) ⟶ (⨁ F)) :
-    ∃ c : ι → ℂ,
-      (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
+    ∃ c : ι → ℂ, HasScalarDiagonal F f c ∧
       rootTrace C f = ∑ i, c i • rootTrace C (𝟙 (F i)) :=
   cyclicTrace_biproduct_simple (fun X ↦ rightTraceWithLinear ((fourthDualRootNaturalIso C).app X)) (fun f g => rootTrace_cyclic C f g)
     hs (fun _ => IsFusionCategory.hom_finite _ _) f

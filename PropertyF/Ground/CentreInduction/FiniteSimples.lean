@@ -74,7 +74,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object embeds in an induced base simple. -/
 theorem simple_mono_induced_simple [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), Mono f := by
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity (k := ℂ) (simples C) (simples_decompose C X.1)
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
     (fun _ ↦ inferInstance)
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
   obtain ⟨g, hg⟩ := finrank_pos_iff_exists_ne_zero.mp
