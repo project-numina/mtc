@@ -15,17 +15,17 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 section CyclicTrace
-variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
-variable {A : Type*} [AddCommMonoid A] [Module ℂ A]
+variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
+variable {A : Type*} [AddCommMonoid A] [Module k A]
 variable {ι : Type*} [Fintype ι]
 
 /-- A family of linear maps on endomorphisms is cyclic under composition. -/
-abbrev IsCyclicTrace (trace : ∀ X : C, (X ⟶ X) →ₗ[ℂ] A) : Prop :=
+abbrev IsCyclicTrace (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A) : Prop :=
   ∀ {X Y : C} (f : X ⟶ Y) (g : Y ⟶ X), trace X (f ≫ g) = trace Y (g ≫ f)
 
 /-- A cyclic linear trace decomposes over maps whose composites sum to the identity. -/
 theorem cyclicTrace_decomposition
-    (trace : ∀ X : C, (X ⟶ X) →ₗ[ℂ] A)
+    (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A)
     (hcyclic : IsCyclicTrace trace)
     {X : C} {Y : ι → C} (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
@@ -35,60 +35,72 @@ theorem cyclicTrace_decomposition
   exact Finset.sum_congr rfl fun j _ ↦ by
     simpa only [Category.assoc] using hcyclic (q j) (i j ≫ f)
 
-omit [Fintype ι] in
-/-- Each diagonal block on a biproduct of simple objects is a scalar. -/
-theorem simple_biproduct_diagonal [HasKernels C]
-    {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
-    (hfinite : ∀ i, FiniteDimensional ℂ (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
-    ∃ c : ι → ℂ, ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i) := by
-  classical
-  have h (i : ι) : ∃ c : ℂ, biproduct.ι F i ≫ f ≫ biproduct.π F i = c • 𝟙 (F i) := by
-    let : Simple (F i) := hs i
-    let : FiniteDimensional ℂ (F i ⟶ F i) := hfinite i
-    exact (endomorphism_simple_eq_smul_id ℂ (biproduct.ι F i ≫ f ≫ biproduct.π F i)).imp
-      fun _ h ↦ h.symm
-  exact Classical.skolem.mp h
 /-- Scalar diagonal blocks give the corresponding weighted cyclic trace. -/
 theorem cyclicTrace_biproduct_scalar_blocks
-    (trace : ∀ X : C, (X ⟶ X) →ₗ[ℂ] A)
+    (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A)
     (hcyclic : IsCyclicTrace trace)
-    {F : ι → C} [HasBiproduct F] (f : (⨁ F) ⟶ (⨁ F)) {c : ι → ℂ}
+    {F : ι → C} [HasBiproduct F] (f : (⨁ F) ⟶ (⨁ F)) {c : ι → k}
     (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
     trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) := by
   rw [cyclicTrace_decomposition trace hcyclic (biproduct.ι F) (biproduct.π F) biproduct.total f]
   simp_rw [hc, map_smul]
 
+end CyclicTrace
+
+section SimpleTrace
+variable {k : Type*} [Field k] [IsAlgClosed k]
+variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
+variable {A : Type*} [AddCommMonoid A] [Module k A]
+variable {ι : Type*} [Fintype ι]
+
+omit [Fintype ι] in
+/-- Each diagonal block on a biproduct of simple objects is a scalar. -/
+theorem simple_biproduct_diagonal [HasKernels C]
+    {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
+    (hfinite : ∀ i, FiniteDimensional k (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
+    ∃ c : ι → k, ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i) :=
+  Classical.skolem.mp fun i ↦
+    let : Simple (F i) := hs i
+    let : FiniteDimensional k (F i ⟶ F i) := hfinite i
+    (endomorphism_simple_eq_smul_id k (biproduct.ι F i ≫ f ≫ biproduct.π F i)).imp
+      fun _ h ↦ h.symm
 /-- A cyclic trace on a biproduct of simples is a weighted sum of simple traces. -/
 theorem cyclicTrace_biproduct_simple [HasKernels C]
-    (trace : ∀ X : C, (X ⟶ X) →ₗ[ℂ] A)
+    (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A)
     (hcyclic : IsCyclicTrace trace)
     {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
-    (hfinite : ∀ i, FiniteDimensional ℂ (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
-    ∃ c : ι → ℂ,
+    (hfinite : ∀ i, FiniteDimensional k (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
+    ∃ c : ι → k,
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
       trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) :=
   (simple_biproduct_diagonal hs hfinite f).imp fun _c hc ↦
     ⟨hc, cyclicTrace_biproduct_scalar_blocks trace hcyclic f hc⟩
 
-end CyclicTrace
+end SimpleTrace
+
+section
+variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C]
+  [MonoidalCategory C] [RightRigidCategory C] [Preadditive C] [Linear k C]
+  [MonoidalPreadditive C] [MonoidalLinear k C]
+
+/-- Right pivotal trace as a linear map on an endomorphism space. -/
+def rightTraceLinear (p : PivotalStructure (C := C)) (X : C) :
+    (X ⟶ X) →ₗ[k] End (𝟙_ C) where
+  toFun := p.rightTrace
+  map_add' := p.rightTrace_add
+  map_smul' := p.rightTrace_smul
+end
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 variable {ι : Type*} [Fintype ι]
-
-/-- Right pivotal trace as a linear map on an endomorphism space. -/
-def rightTraceLinear (p : PivotalStructure (C := C)) (X : C) :
-    (X ⟶ X) →ₗ[ℂ] End (𝟙_ C) where
-  toFun := p.rightTrace
-  map_add' := p.rightTrace_add
-  map_smul' := p.rightTrace_smul
 
 /-- The right trace decomposes across a finite family of maps summing to the identity. -/
 theorem rightTrace_decomposition (p : PivotalStructure (C := C))
     {X : C} {Y : ι → C} (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
     p.rightTrace f = ∑ j, p.rightTrace (i j ≫ f ≫ q j) :=
-  cyclicTrace_decomposition (rightTraceLinear p) (fun f g => p.rightTrace_cyclic f g) i q h f
+  cyclicTrace_decomposition (rightTraceLinear (k := ℂ) p) (fun f g => p.rightTrace_cyclic f g) i q h f
 
 /-- The trace on a finite direct sum is the sum of traces of diagonal blocks. -/
 theorem rightTrace_biproduct (F : ι → C) [HasBiproduct F]
@@ -112,7 +124,7 @@ theorem rightTrace_biproduct_simple [HasKernels C]
     ∃ c : ι → ℂ,
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
       p.rightTrace f = ∑ i, c i • p.rightTrace (𝟙 (F i)) :=
-  cyclicTrace_biproduct_simple (rightTraceLinear p) (fun f g => p.rightTrace_cyclic f g)
+  cyclicTrace_biproduct_simple (rightTraceLinear (k := ℂ) p) (fun f g => p.rightTrace_cyclic f g)
     hs hfinite f
 
 end PropertyF.Ground.Dimensions
