@@ -51,8 +51,7 @@ theorem tensor_middle_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit summand isomorphism is natural in the middle factor. -/
-theorem unitSummandIso_natural
-    {X Y : C.Obj} (f : X ⟶ Y) :
+theorem unitSummandIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
     ((simples C (unitIndex C) ◁ f) ▷ (simples C (unitIndex C))ᘁ) ≫
         (unitSummandIso C Y).hom = (unitSummandIso C X).hom ≫ f := by
   dsimp [unitSummandIso]
@@ -131,8 +130,7 @@ def unitCandidate (Z : 𝒵) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed unit component is natural for genuine centre maps. -/
-theorem unitComponent_natural
-    {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
+theorem unitComponent_natural {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
     f.f ≫ unitComponent C Y i = unitComponent C X i ≫
       ((simples C i ◁ f.f) ▷ (simples C i)ᘁ) := by
   dsimp [unitComponent, unitComponentAt]
@@ -167,10 +165,9 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   dsimp only [unitComponent, unitComponentAt, unitSummandIso]
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_def,
     whiskerLeft_id, Category.comp_id, Category.assoc]
-  rw [← comp_whiskerRight_assoc, ← Z.2.naturality e.hom]
-  rw [comp_whiskerRight_assoc, ← associator_inv_naturality_middle_assoc]
-  rw [← whiskerLeft_comp_assoc]
-  rw [CentreRigid.halfBraiding_unit Z]
+  rw [← comp_whiskerRight_assoc, ← Z.2.naturality e.hom, comp_whiskerRight_assoc,
+    ← associator_inv_naturality_middle_assoc, ← whiskerLeft_comp_assoc,
+    CentreRigid.halfBraiding_unit Z]
   simp only [comp_whiskerRight, Category.assoc]
   rw [triangle_assoc_comp_right_assoc, ← whisker_exchange_assoc]
   simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp]

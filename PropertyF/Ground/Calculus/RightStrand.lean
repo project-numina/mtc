@@ -16,18 +16,45 @@ of their unitary block presentations.
 @[expose] public section
 namespace PropertyF.Ground.Calculus
 
-variable {A B : Type*} [Ring A] [Ring B] [Algebra ℂ A] [Algebra ℂ B]
-  [StarRing A] [StarRing B] [StarModule ℂ A] [StarModule ℂ B]
+section UnitaryRepresentation
 
-/-- A complex algebra map that preserves the adjoint of each generator preserves
+variable {G A : Type*} [Group G] [Monoid A] [StarMul A]
+
+/-- A unitary representation sends group inversion to the adjoint. -/
+theorem unitary_representation_star_inv (ρ : G →* A)
+    (hρ : ∀ g, ρ g ∈ unitary A) (g : G) : star (ρ g) = ρ g⁻¹ :=
+  (ρ.toHomUnits g).eq_inv_of_mul_eq_one_right (Unitary.star_mul_self_of_mem (hρ g))
+
+end UnitaryRepresentation
+
+variable {R A B : Type*} [CommSemiring R] [StarRing R] [Semiring A] [Semiring B]
+  [Algebra R A] [Algebra R B] [StarRing A] [StarRing B] [StarModule R A] [StarModule R B]
+
+/-- An algebra map that preserves the adjoint of each generator preserves
 it on their entire linear span. In particular this applies to identity-strand
 embeddings once the braids are represented by unitary matrices. -/
-theorem map_star_of_mem_span (φ : A →ₐ[ℂ] B) (S : Set A)
+theorem map_star_of_mem_span (φ : A →ₐ[R] B) (S : Set A)
     (hS : ∀ x ∈ S, φ (star x) = star (φ x))
-    {x : A} (hx : x ∈ Submodule.span ℂ S) : φ (star x) = star (φ x) :=
+    {x : A} (hx : x ∈ Submodule.span R S) : φ (star x) = star (φ x) :=
   Submodule.span_induction hS (by simp)
     (fun _ _ _ _ hx hy => by simp [hx, hy])
     (fun _ _ _ hx => by simp [star_smul, hx]) hx
+
+variable {G : Type*} [Group G]
+
+/-- An algebra map intertwining unitary representations is a star map when
+the source representation spans the source algebra. -/
+theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
+    (hspan : Submodule.span R (Set.range ρ) = ⊤)
+    (hρ : ∀ g, ρ g ∈ unitary A) (hσ : ∀ g, σ g ∈ unitary B)
+    (φ : A →ₐ[R] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
+    φ (star x) = star (φ x) := by
+  apply map_star_of_mem_span φ (Set.range ρ)
+  · rintro _ ⟨g, rfl⟩
+    rw [unitary_representation_star_inv ρ hρ, hφ, hφ,
+      unitary_representation_star_inv σ hσ]
+  · rw [hspan]
+    exact Submodule.mem_top
 
 end PropertyF.Ground.Calculus
 
@@ -36,15 +63,7 @@ end PropertyF.Ground.Calculus
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Calculus
 
-variable {G H A B : Type*} [Group G] [Group H]
-  [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B]
-
-/-- A unitary block representation sends group inversion to conjugate transpose. -/
-theorem unitary_block_star_inv {B : Blocks} (ρ : G →* B.Algebra)
-    (hu : ∀ g, B.IsUnitary (ρ g)) (g : G) :
-    star (ρ g) = ρ g⁻¹ :=
-  funext fun i => (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g).eq_inv_of_mul_eq_one_right
-    (Matrix.mem_unitaryGroup_iff'.mp (hu g i))
+variable {G A : Type*} [Monoid G] [Ring A] [Algebra ℂ A]
 
 section PresentedGroup
 
@@ -53,37 +72,12 @@ variable (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ} (e : GroupBlockPresentati
 /-- The group image spans any algebra-equivalent block presentation. -/
 theorem presented_group_span :
     Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ := by
-  classical
-  change Submodule.span ℂ (Set.range (fun g => e (groupInImage ρ g))) = ⊤
-  rw [Set.range_comp']
-  change Submodule.span ℂ (e.toLinearEquiv.toLinearMap '' Set.range (groupInImage ρ)) = ⊤
-  rw [← Submodule.map_span, groupInImage_span, Submodule.map_top]
-  exact LinearMap.range_eq_top.mpr e.surjective
-
-/-- Any algebra map intertwining two unitary block presentations is a star map.
-This gives the analytic part of identity-strand compatibility; the categorical
-strand map and its intertwining property must still be supplied separately. -/
-theorem presented_intertwiner_map_star
-    (σ : H →* B) (τ : G →* H)
-    {m : ℕ} {k : Fin m → ℕ} (f : GroupBlockPresentation σ k)
-    (he : IsUnitaryPresentation ρ e)
-    (hf : IsUnitaryPresentation σ f)
-    (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
-      (Blocks.Algebra ⟨_, k⟩))
-    (hφ : ∀ g, φ (e (groupInImage ρ g)) = f (groupInImage σ (τ g)))
-    (x : Blocks.Algebra ⟨_, d⟩) : φ (star x) = star (φ x) := by
-  apply map_star_of_mem_span φ (Set.range (e.toMonoidHom.comp (groupInImage ρ)))
-  · rintro _ ⟨g, rfl⟩
-    change φ (star (e (groupInImage ρ g))) = star (φ (e (groupInImage ρ g)))
-    rw [show star (e (groupInImage ρ g)) = e (groupInImage ρ g⁻¹) from
-        unitary_block_star_inv (e.toMonoidHom.comp (groupInImage ρ)) he g,
-      hφ, hφ,
-      show star (f (groupInImage σ (τ g))) = f (groupInImage σ (τ g)⁻¹) from
-        unitary_block_star_inv (f.toMonoidHom.comp (groupInImage σ)) hf (τ g), map_inv]
-  · rw [presented_group_span ρ e]
-    exact Submodule.mem_top
+  change Submodule.span ℂ (Set.range (fun g => e.toLinearMap (groupInImage ρ g))) = ⊤
+  simpa only [Set.range_comp', ← Submodule.map_span, groupInImage_span, Submodule.map_top] using
+    (LinearMap.range_eq_top.mpr e.surjective : e.toLinearMap.range = ⊤)
 
 end PresentedGroup
+
 
 end PropertyF.Ground.Calculus
 
@@ -170,14 +164,10 @@ def addLeftBraidAlgebraIter (X : C) (n : ℕ) :
 /-- Repeated insertion acts as expected on every actual braid. -/
 theorem addLeftBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
-      addLeftBraidAlgebraIter X n k (braidInImage g) =
-        braidInImage (addLeftStrands X n k g)
-  | 0, g => rfl
-  | k + 1, g => by
-    change addLeftBraidAlgebra X (n + k)
-      (addLeftBraidAlgebraIter X n k (braidInImage g)) = _
-    rw [addLeftBraidAlgebraIter_group k g]
-    exact imageAlgebraMap_group _ _ _ _ _ _
+      addLeftBraidAlgebraIter X n k (braidInImage g) = braidInImage (addLeftStrands X n k g)
+  | 0, _g => rfl
+  | k + 1, g => (congrArg (addLeftBraidAlgebra X _) (addLeftBraidAlgebraIter_group k g)).trans
+      (imageAlgebraMap_group _ _ _ _ _ _)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The repeated identity-strand insertion as a star algebra map. -/
@@ -191,8 +181,13 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
       (Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom)
   map_star' x := by
-    apply presented_intertwiner_map_star (braidEndRepresentation X n) e
-      (braidEndRepresentation X (n + k)) (addLeftStrands X n k) f he hf
+    apply unitary_intertwiner_map_star
+      (e.toMonoidHom.comp (groupInImage (braidEndRepresentation X n)))
+      ((f.toMonoidHom.comp (groupInImage (braidEndRepresentation X (n + k)))).comp
+        (addLeftStrands X n k))
+      (presented_group_span (braidEndRepresentation X n) e)
+      (fun g => Pi.mem_unitary_iff.mpr (he g))
+      (fun g => Pi.mem_unitary_iff.mpr (hf (addLeftStrands X n k g)))
       (f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom))
     intro g
     change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
@@ -245,8 +240,7 @@ theorem append_step (f : A ⟶ A) :
 
 /-- Appending a strand commutes with the first crossing. -/
 theorem append_first_two :
-  let E := (α_ X (X ⊗ A) X) ≪≫
-    (Iso.refl X ⊗ᵢ ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)))
+  let E := (α_ X (X ⊗ A) X) ≪≫ (Iso.refl X ⊗ᵢ ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)))
   E.inv ≫ (((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ▷ X) ≫ E.hom =
     (α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom := by
   dsimp only
@@ -359,14 +353,10 @@ def addRightBraidAlgebraIter (X : C) (n : ℕ) :
 /-- Repeated insertion acts as expected on every actual braid. -/
 theorem addRightBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
-      addRightBraidAlgebraIter X n k (braidInImage g) =
-        braidInImage (addRightStrands X n k g)
-  | 0, g => rfl
-  | k + 1, g => by
-    change addRightBraidAlgebra X (n + k)
-      (addRightBraidAlgebraIter X n k (braidInImage g)) = _
-    rw [addRightBraidAlgebraIter_group k g]
-    exact imageAlgebraMap_group _ _ _ _ _ _
+      addRightBraidAlgebraIter X n k (braidInImage g) = braidInImage (addRightStrands X n k g)
+  | 0, _g => rfl
+  | k + 1, g => (congrArg (addRightBraidAlgebra X _) (addRightBraidAlgebraIter_group k g)).trans
+      (imageAlgebraMap_group _ _ _ _ _ _)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The repeated identity-strand insertion as a star algebra map. -/
@@ -380,8 +370,13 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
       (Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)
   map_star' x := by
-    apply presented_intertwiner_map_star (braidEndRepresentation X n) e
-      (braidEndRepresentation X (n + k)) (addRightStrands X n k) f he hf
+    apply unitary_intertwiner_map_star
+      (e.toMonoidHom.comp (groupInImage (braidEndRepresentation X n)))
+      ((f.toMonoidHom.comp (groupInImage (braidEndRepresentation X (n + k)))).comp
+        (addRightStrands X n k))
+      (presented_group_span (braidEndRepresentation X n) e)
+      (fun g => Pi.mem_unitary_iff.mpr (he g))
+      (fun g => Pi.mem_unitary_iff.mpr (hf (addRightStrands X n k g)))
       (f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom))
     intro g
     change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _

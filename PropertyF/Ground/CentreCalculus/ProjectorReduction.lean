@@ -19,6 +19,7 @@ open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 local notation "sgn" => PropertyF.Ground.Centre.permutationSign
 open PropertyF.Ground.Dimensions
 open Equiv (Perm)
+open Fintype (card_perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCalculus
@@ -58,12 +59,8 @@ split alternating projector can supply the witnesses. -/
 theorem integral_of_pivotal_exterior
     (hExterior : HasFallingFactorialDimensions (fpDimension C X : ℂ) (pivotalDimension C p)) :
     IsFPIntegral C X :=
-  integral_of_exterior_dimensions fun n ↦
-    let ⟨Y, hY⟩ := hExterior n
-    ⟨Y, Complex.ofReal_injective <| by
-      rw [pivotalDimension_eq_fpDimension hdim] at hY
-      simpa only [Complex.ofReal_prod, Complex.ofReal_sub, Complex.ofReal_natCast,
-        Complex.ofReal_mul] using hY⟩
+  integral_of_exterior_dimensions fun n ↦ (hExterior n).imp fun Y hY ↦
+    Complex.ofReal_injective <| by simpa [pivotalDimension_eq_fpDimension hdim] using hY
 
 end PropertyF.Ground.CentreCalculus
 
@@ -79,6 +76,9 @@ variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
     Invertible (Fintype.card (Perm (Fin n)) : ℂ) :=
   invertibleOfNonzero (by exact_mod_cast Fintype.card_ne_zero)
 
+local instance (n : ℕ) : Invertible (Fintype.card (Perm (Fin n)) : ℂ) :=
+  permutationCardInvertible n
+
 include hdim in
 /-- A trace formula for actual alternating projectors implies integrality. The
 existence of the permutation action and the trace formula remain explicit. -/
@@ -89,11 +89,9 @@ theorem integral_of_alternating_projector_trace
         (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
           ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
     IsFPIntegral C X :=
-  integral_of_pivotal_exterior hdim fun n ↦
-    let ⟨ρ, hρ⟩ := hTrace n
-    let := permutationCardInvertible n
-    let ⟨Y, hY⟩ := Centre.alternatingProjector_trace ρ p
-    ⟨Y, (congrArg (fun t ↦ (Nat.factorial n : ℂ) * unitScalar C t) hY.symm).trans hρ⟩
+  integral_of_pivotal_exterior hdim fun n ↦ (hTrace n).elim fun ρ hρ ↦
+    (Centre.alternatingProjector_trace ρ p).imp fun _ hY ↦
+      (congrArg (fun t ↦ (Nat.factorial n : ℂ) * unitScalar C t) hY.symm).trans hρ
 
 variable {n : ℕ} (ρ : Perm (Fin n) →* End X)
 
@@ -103,7 +101,6 @@ theorem rightTrace_alternatingProjector :
     p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom) =
       ⅟(Fintype.card (Perm (Fin n)) : ℂ) •
         ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
-  let := permutationCardInvertible n
   rw [Centre.alternatingProjector, Centre.algebraAverage_eq_sum]
   change p.rightTrace ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
     ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
@@ -122,9 +119,7 @@ theorem alternatingProjector_scalar_trace :
       (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
       ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom) := by
-  let := permutationCardInvertible n
-  simp [rightTrace_alternatingProjector, unitScalar_eq_equiv, Fintype.card_perm,
-    Nat.factorial_ne_zero]
+  simp [rightTrace_alternatingProjector, unitScalar_eq_equiv, card_perm, n.factorial_ne_zero]
 
 include hdim in
 /-- It suffices to evaluate the unnormalized signed trace sum for each

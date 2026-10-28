@@ -151,8 +151,7 @@ surviving object is the total trace divided by its nonzero pivotal dimension. -/
 theorem rightPartialTrace_simple_ground (C : BraidedFusionCategory.{v,u})
     {X Y : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y)) :
-    rightPartialTrace p f =
-      (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) :=
+    rightPartialTrace p f = (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) :=
   let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
   rightPartialTrace_simple (X := X) (Y := Y) p scalar f
     (by simpa only [map_zero] using scalar.injective.ne (Modular.pivotalTrace_simple_ne_zero C p X))
@@ -219,8 +218,7 @@ double self-braiding after the standard tensor-power and associator isomorphisms
 theorem three_braid_double_overlap (X : C) :
     (isoEndAlgEquiv (threePowerIso X))
       (Aut.toEnd ((braidGenerator X 1 0) ^ 2 * (braidGenerator X 1 1) ^ 2)) =
-    (isoEndAlgEquiv (α_ X X X))
-      (overlapEndProduct (selfMonodromy X) (selfMonodromy X)) := by
+    (isoEndAlgEquiv (α_ X X X)) (overlapEndProduct (selfMonodromy X) (selfMonodromy X)) := by
   rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, threeGeneratorLeft_end_transport, threeGeneratorRight_end_transport]
   apply End.ext
   simp [overlapEndProduct, insertRightIdentity, overlapFresh, selfMonodromy,
@@ -229,12 +227,10 @@ theorem three_braid_double_overlap (X : C) :
 
 /-- The three-strand trace is the square of the double-braiding trace,
 normalized by the pivotal dimension of the shared simple strand. -/
-theorem three_braid_trace (D : BraidedFusionCategory.{v,u})
-    (X : D.Obj) [Simple X] (p : PivotalStructure (C := D.Obj))
-    (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) :
-    scalarTrace p scalar (Aut.toEnd ((braidGenerator X 1 0) ^ 2 *
-      (braidGenerator X 1 1) ^ 2)) =
-    scalarTrace p scalar (selfMonodromy X) ^ 2 / scalar (p.rightTrace (𝟙 X)) := by
+theorem three_braid_trace (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X]
+    (p : PivotalStructure (C := D.Obj)) (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) :
+    scalarTrace p scalar (Aut.toEnd (braidGenerator X 1 0 ^ 2 * braidGenerator X 1 1 ^ 2)) =
+      scalarTrace p scalar (selfMonodromy X) ^ 2 / scalar (p.rightTrace (𝟙 X)) := by
   rw [scalarTrace, scalarTrace, ← rightTrace_iso_conj (threePowerIso X) p,
     three_braid_double_overlap, rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p scalar,
     pow_two, mul_div_assoc]

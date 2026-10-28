@@ -71,10 +71,10 @@ theorem leftPartialTrace_right (a : End Y) (f : End (X ⊗ Y)) :
 theorem leftPartialTrace_whiskerRight (Z : C) (f : End (X ⊗ Y)) :
     leftPartialTrace p (End.of
       ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
-      End.of ((leftPartialTrace p f).asHom ▷ Z) := by
-  apply End.ext
-  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
-  monoidal
+      End.of ((leftPartialTrace p f).asHom ▷ Z) :=
+  End.ext <| by
+    dsimp [leftPartialTrace]
+    monoidal
 
 /-- Schur's lemma identifies the partial trace on a simple surviving strand
 once compatibility with total trace is known. -/
@@ -144,13 +144,12 @@ theorem tensorPermTrace_adjacent {n : ℕ} (σ : Perm (Fin (n + 1))) :
   let f := (tensorPermAction X hX (n + 1)) σ
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   rw [tensorPermAction_adjacent hX σ, ← htotal _ _]
-  change unitScalar C (p.rightTrace (leftPartialTrace p (b * insertLeftIdentity X f)).asHom) = _
+  change unitScalarEquiv C (p.rightTrace (leftPartialTrace p (b * insertLeftIdentity X f)).asHom) = _
   rw [leftPartialTrace_right]
   dsimp only [b]
   rw [leftPartialTrace_firstGenerator_of_trace_compatibility (C := C) n
     (htotal X (End.of (β_ X X).hom))]
-  simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul,
-    unitScalar_eq_equiv, map_smul, smul_eq_mul, f]
+  simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul, map_smul, smul_eq_mul, f]
 
 include htotal in
 /-- A negative twist is corrected by the sign-twisted permutation action. -/
