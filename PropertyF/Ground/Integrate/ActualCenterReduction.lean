@@ -212,12 +212,17 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 
-variable {ι K : Type*} [Fintype ι] [CommSemiring K] [Algebra ℝ K]
-local notation "φ" => algebraMap ℝ K
+section
+variable {ι R K : Type*} [Fintype ι] [CommSemiring R] [CommSemiring K] [Algebra R K]
+local notation "φ" => algebraMap R K
 
 /-- A conjugate of a sum of squares is the sum of the squares of its conjugates. -/
-theorem galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K) (h : ∀ i, σ (φ (d i)) = φ (e i)) :
+theorem galois_sum_squares {d e : ι → R} (σ : K ≃+* K) (h : ∀ i, σ (φ (d i)) = φ (e i)) :
     σ (φ (∑ i, d i ^ 2)) = φ (∑ i, e i ^ 2) := by simp only [map_sum, map_pow, h]
+end
+
+variable {ι K : Type*} [Fintype ι] [CommSemiring K] [Algebra ℝ K]
+local notation "φ" => algebraMap ℝ K
 
 /-- A bounded conjugate sum of squares is positive when one conjugate is one. -/
 theorem positive_galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K)

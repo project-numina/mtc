@@ -22,7 +22,8 @@ section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Integrate
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+variable [LeftRigidCategory C] [RightRigidCategory C]
 variable (Z : CategoryTheory.Center C)
 
 /-- A half-braiding is a natural isomorphism of the two tensor functors. -/
