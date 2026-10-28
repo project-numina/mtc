@@ -61,7 +61,9 @@ theorem pivotalTrace_braid_unitary_bound
     ‖scalar (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
       ∑ i, (m i : ℝ) * fp i := by
   obtain ⟨mult, _, hdim, htrace⟩ := pivotalTrace_braid_multiplicities C p scalar e hd b
-  rw [htrace a, ← multiplicity_mass_eq m d mult fp hdim]
+  have hmass : (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) = ∑ i, (m i : ℝ) * fp i := by
+    simpa only [nsmul_eq_mul, mul_comm] using multiplicity_mass_eq m d mult fp hdim
+  rw [htrace a, ← hmass]
   refine (norm_sum_le _ _).trans ?_
   apply Finset.sum_le_sum
   intro j _
