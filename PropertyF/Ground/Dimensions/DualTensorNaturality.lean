@@ -188,11 +188,10 @@ set_option backward.isDefEq.respectTransparency false in
 theorem fourthDualIso_rightDual (X : C) [HasRightDual X] [HasRightDual (Xᘁ)]
     [HasRightDual ((Xᘁ)ᘁ)] [HasRightDual (((Xᘁ)ᘁ)ᘁ)]
     [HasRightDual ((((Xᘁ)ᘁ)ᘁ)ᘁ)] :
-    fourthDualIso (Xᘁ) = (rightDualIsoMap (fourthDualIso X)).symm := by
+    fourthDualIso (Xᘁ) = (rightDualIsoMap (fourthDualIso X)).symm := Iso.ext <| by
   have hi : (drinfeldIso ((Xᘁ)ᘁ)).inv = (((drinfeldIso X).invᘁ)ᘁ) :=
     congrArg Iso.inv (Iso.ext (drinfeldIso_doubleDual X) :
       drinfeldIso ((Xᘁ)ᘁ) = rightDualIsoMap (rightDualIsoMap (drinfeldIso X)))
-  apply Iso.ext
   simp only [fourthDualIso, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, rightDualIsoMap,
     comp_rightAdjointMate, hi]
   change (drinfeldIso (Xᘁ)).hom ≫ (((((drinfeldIso X).invᘁ)ᘁ)ᘁ)) =
