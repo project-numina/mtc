@@ -3,7 +3,9 @@ public import PropertyF.Definitions
 
 /-! # Pivotal structures
 
-Dual isomorphisms and their tensor comparisons define pivotal structures and their traces.
+`rightDualIsoMap` and `doubleDualTensorIso` provide the duality comparisons
+needed to state a `PivotalStructure`. Its left and right traces specialize to
+the quantum traces on identity morphisms; `IsSpherical` requires them to agree.
 -/
 
 @[expose] public noncomputable section

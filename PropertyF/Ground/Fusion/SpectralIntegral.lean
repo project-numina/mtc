@@ -8,7 +8,12 @@ public import Mathlib.Analysis.Normed.Algebra.GelfandFormula
 public import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs
 public import Mathlib.Analysis.Matrix.Normed
 
-/-! Algebraic integrality for the target spectral-radius dimensions. -/
+/-! # Integrality of spectral-radius dimensions
+
+The spectral radius of an integer matrix on a nonempty index type has an integral
+square. Applying this to the fusion matrices proves `fpSimple_isIntegral`; the unit matrix also gives
+`fpSimple_unit` and the lower bound on the global FP dimension.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

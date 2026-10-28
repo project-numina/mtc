@@ -4,7 +4,10 @@ public import Mathlib.CategoryTheory.Monoidal.Linear
 
 /-! # Pivotal traces
 
-Right and left traces are linear, cyclic and compatible with duality and isomorphisms.
+Right and left traces are linear, cyclic and compatible with duality and
+isomorphisms. `rightTraceWith_cyclic` needs only a naturality square for the
+two components involved; `dual_naturality` transports such a square to their
+inverse duals and supplies cyclicity of the left pivotal trace.
 -/
 
 @[expose] public noncomputable section

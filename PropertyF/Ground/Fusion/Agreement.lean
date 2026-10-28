@@ -9,7 +9,16 @@ public import PropertyF.Ground.Cabling.Strands
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.LinearAlgebra.Eigenspace.Matrix
 
-/-! Elementary uniqueness of a positive matrix eigenvector. -/
+/-! # Positive fusion characters and FP dimensions
+
+The character matrices of the fusion rules have a common positive eigenvector.
+Normalizing it gives `fpCharacter`, which agrees with the spectral-radius
+dimension `fpSimple`. Weighted eigenvalue bounds also control arbitrary fusion
+characters and their Galois conjugates.
+
+For the fusion-ring background, see Etingof–Gelaki–Nikshych–Ostrik,
+*Tensor Categories*, §3.3.
+-/
 
 @[expose] public noncomputable section
 open scoped BigOperators Matrix

@@ -7,7 +7,10 @@ public import PropertyF.Ground.Fusion.Multiplicity
 
 /-! # Scalar natural transformations
 
-Simple objects determine scalar components and natural roots of the fourth-dual isomorphism.
+Scalar components on simple objects extend naturally over their biproduct
+decompositions. This module constructs the chosen simple fourth-dual roots,
+the double-dual functor, and the scalar natural isomorphisms used to assemble
+a natural root on every object.
 -/
 
 @[expose] public noncomputable section

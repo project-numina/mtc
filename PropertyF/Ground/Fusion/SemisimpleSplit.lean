@@ -2,7 +2,12 @@ module
 public import PropertyF.Ground.Fusion.Simples
 public import Mathlib.CategoryTheory.Preadditive.Injective.Basic
 
-/-! Monomorphisms split in a fusion category. -/
+/-! # Splittings in fusion categories
+
+Nonzero maps to a simple object split. Finite semisimple decompositions then
+show that simples and their finite sums are injective, so every monomorphism
+in a fusion category is split.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
