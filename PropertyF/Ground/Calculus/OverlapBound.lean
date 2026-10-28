@@ -31,13 +31,13 @@ def actualBraidTrace {X : C.Obj} {n : ℕ} (a : braidAlgebra X n) : ℂ :=
 /-- A block presentation realizes the categorical braid trace with the given weights. -/
 abbrev IsTracePresentation {X : C.Obj}
     {n r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) (w : Fin r → ℝ) : Prop :=
+    (b : BraidBlockPresentation X n d) (w : Fin r → ℝ) : Prop :=
   ∀ z : braidAlgebra X n, actualBraidTrace C p z = (Blocks.mk r d).trace w (b z)
 
 /-- A uniform bound for the trace of unitary elements in a block presentation. -/
 abbrev HasUnitaryTraceBound {X : C.Obj}
     {n r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) (R : ℝ) : Prop :=
+    (b : BraidBlockPresentation X n d) (R : ℝ) : Prop :=
   ∀ a, Blocks.IsUnitary ⟨_, d⟩ (b a) → ‖actualBraidTrace C p a‖ ≤ R
 
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
@@ -50,7 +50,7 @@ theorem fpDimension_tensorPower (X : C.Obj) :
 section BraidTraceBound
 
 variable {X : C.Obj} {n r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
-  (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
+  (b : BraidBlockPresentation X n d)
 include hd
 
 /-- In actual categorical braid blocks, the norm of the pivotal trace of a
@@ -173,8 +173,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 presentations may be chosen independently at every strand count. -/
 theorem overlapProduct_unitary {X : C} {t : ℕ}
     {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
-    (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
-      Blocks.Algebra ⟨_, d n⟩)
+    (e : ∀ n, BraidBlockPresentation X n (d n))
     (he : ∀ n, IsUnitaryBraidPresentation (e n))
     {u : braidAlgebra X t} (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u)) :
     ∀ k, Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩
@@ -251,8 +250,7 @@ theorem overlap_trace_power_of_step
 it does not depend on a particular choice made by finite-group averaging. -/
 theorem sharp_trace_bound_for_presentations_of_overlap_identity
     [Simple X] {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
-    (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
-      Blocks.Algebra ⟨_, d n⟩)
+    (e : ∀ n, BraidBlockPresentation X n (d n))
     (hd : ∀ n i, 0 < d n i)
     (he : ∀ n, IsUnitaryBraidPresentation (e n))
     (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u))

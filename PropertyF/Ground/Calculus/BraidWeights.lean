@@ -297,7 +297,7 @@ def braidToEndBlocks {X : C.Obj} {n : ℕ}
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
+    (b : BraidBlockPresentation X n d) :
     (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
       (Blocks.Algebra ⟨_, m⟩) :=
   (groundEndBlockEquiv C e).toAlgHom.comp
@@ -307,7 +307,7 @@ variable (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[
 
 /-- The categorical braid trace has the weights supplied by block multiplicities. -/
 abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
-    {d : Fin r → ℕ} (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
+    {d : Fin r → ℕ} (b : BraidBlockPresentation X n d)
     (mult : Fin (Ground.rank C) → Fin r → ℕ) : Prop :=
   ∀ a : braidAlgebra X n,
     scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
@@ -321,7 +321,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
+    (b : BraidBlockPresentation X n d) :
     ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,
       (∀ j, ∃ i, 0 < mult i j) ∧
       HasMultiplicityDecomposition m d mult ∧ HasMultiplicityTrace C p scalar b mult := by
@@ -348,7 +348,7 @@ theorem exists_unitary_braid_trace_blocks
     {X : C.Obj} {n : ℕ}
     (hfinite : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ)
-      (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
+      (b : BraidBlockPresentation X n d)
       (mult : Fin (Ground.rank C) → Fin r → ℕ),
       (∀ j, 0 < d j) ∧
       IsUnitaryBraidPresentation b ∧

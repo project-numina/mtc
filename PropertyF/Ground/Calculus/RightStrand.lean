@@ -181,8 +181,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩)
+    (e : BraidBlockPresentation X n d)
+    (f : BraidBlockPresentation X (n + k) q)
     (he : IsUnitaryBraidPresentation e)
     (hf : IsUnitaryBraidPresentation f) :
     (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
@@ -364,8 +364,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩)
+    (e : BraidBlockPresentation X n d)
+    (f : BraidBlockPresentation X (n + k) q)
     (he : IsUnitaryBraidPresentation e)
     (hf : IsUnitaryBraidPresentation f) :
     (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]

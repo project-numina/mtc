@@ -30,7 +30,7 @@ theorem exists_galois_braid_trace_weights
     {X : C.Obj} {n : ℕ}
     (hfinite : Finite (braidImage X n)) :
     ∃ (r : ℕ) (size : Fin r → ℕ)
-      (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
+      (b : BraidBlockPresentation X n size)
       (w : Fin r → ℝ),
       (∀ i, 0 < size i) ∧
       IsUnitaryBraidPresentation b ∧

@@ -158,6 +158,10 @@ def braidEndRepresentation (X : C) (n : ℕ) :
 def braidAlgebra (X : C) (n : ℕ) : Subalgebra ℂ (End (tensorPower X (n + 2))) :=
   groupImageAlgebra (braidEndRepresentation X n)
 
+/-- An equivalence from a categorical braid algebra to its matrix blocks. -/
+abbrev BraidBlockPresentation {r : ℕ} (X : C) (n : ℕ) (d : Fin r → ℕ) :=
+  braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩
+
 end PropertyF.Ground.Calculus
 
 /-! Unitary representatives for finite-group Wedderburn blocks. -/
@@ -242,14 +246,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- A unitary block presentation of the categorical braid-image algebra. -/
 abbrev IsUnitaryBraidPresentation {X : C} {n r : ℕ} {d : Fin r → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) : Prop :=
+    (e : BraidBlockPresentation X n d) : Prop :=
   IsUnitaryPresentation (braidEndRepresentation X n) e
 
 /-- Finite categorical braid images admit a simultaneous unitary block
 realization of their actual endomorphism algebra. -/
 theorem braidAlgebra_unitary_blocks {X : C} {n : ℕ} (h : Finite (braidImage X n)) :
-    ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
-        Blocks.Algebra ⟨_, d⟩),
+    ∃ (r : ℕ) (d : Fin r → ℕ) (e : BraidBlockPresentation X n d),
       (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e :=
   let _ : Finite (braidImage X n) := h
   groupImageAlgebra_unitary_blocks _

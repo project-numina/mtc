@@ -129,12 +129,12 @@ theorem threeGeneratorRight_end_transport (X : C) :
 
 /-- The left three-strand generator in a chosen block presentation. -/
 def tripleBlockLeft {X : C} {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
+    (b : BraidBlockPresentation X 1 d) :=
   b (braidInImage (threeGeneratorLeft X))
 
 /-- The right three-strand generator in a chosen block presentation. -/
 def tripleBlockRight {X : C} {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
+    (b : BraidBlockPresentation X 1 d) :=
   b (braidInImage (threeGeneratorRight X))
 
 end PropertyF.Ground.Calculus

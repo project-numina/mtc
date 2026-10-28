@@ -90,7 +90,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Equality of the actual block squares implies equality of the categorical
 adjacent copies of double self-braiding. -/
 theorem local_monodromy_of_block_squares_equal {X : C} {r : ℕ} {size : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
+    (b : BraidBlockPresentation X 1 size)
     (h : tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2) :
     insertRightIdentity X (selfMonodromy X) =
       overlapFresh X (selfMonodromy X) := by
@@ -175,7 +175,7 @@ theorem dimension_eq_abs_of_scalar_monodromy {X : C.Obj}
 section BlockRigidity
 
 variable {X : C.Obj} {r : ℕ} {size : Fin r → ℕ}
-  (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
+  (b : BraidBlockPresentation X 1 size)
   (he : IsUnitaryBraidPresentation b) {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0)
   {d f : ℝ} (htrace : IsTracePresentation C p b w)
   (hbound : HasUnitaryTraceBound C p b (|d| * f ^ 2))
