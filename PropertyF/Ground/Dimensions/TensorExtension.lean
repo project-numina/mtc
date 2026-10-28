@@ -191,7 +191,6 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
     Category.assoc] using hh
 
 set_option backward.isDefEq.respectTransparency false in
-set_option backward.isDefEq.respectTransparency false in
 theorem rootSignQuantumTrace_simple
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
     unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (simples C i))) =
