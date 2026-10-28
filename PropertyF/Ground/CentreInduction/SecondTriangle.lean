@@ -165,21 +165,17 @@ theorem crossingUnitBlock_eval (X T : D) {A : D} (e : A ≅ 𝟙_ D) :
   crossingBlock X T A te.inv te.hom ≫ (T ◁ us.hom) =
     𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
   dsimp only
-  let d : Aᘁ ⟶ 𝟙_ D := (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom
-  let q : Tᘁ ⊗ T ⟶ Aᘁ := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
-  have hq : q ≫ d = ε_ T (Tᘁ) := close_rightUnit_eval T e
+  set δ : Aᘁ ≅ 𝟙_ D := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
+  have hq : closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫ δ.hom = ε_ T (Tᘁ) :=
+    close_rightUnit_eval T e
+  clear_value δ
   simp only [crossingBlock, Iso.trans_hom, Iso.trans_inv, whiskerLeftIso_hom,
     whiskerLeftIso_inv, tensorIso_hom, Iso.refl_hom, tensorHom_def, whiskerLeft_id,
     Category.comp_id]
-  let f : A ⟶ 𝟙_ D := e.hom
-  let g : 𝟙_ D ⟶ A := e.inv
-  change ((α_ (T ⊗ X) (Tᘁ) T).hom ≫
-    ((((ρ_ T).inv ≫ T ◁ g) ▷ X ▷ ((Tᘁ : D) ⊗ T)) ≫
-      (((T ⊗ A) ⊗ X) ◁ q)) ≫
-      (α_ (T ⊗ A) X (Aᘁ)).hom ≫ (α_ T A (X ⊗ Aᘁ)).hom ≫
-      T ◁ (α_ A X (Aᘁ)).inv) ≫
-    T ◁ (((f ▷ X ▷ (Aᘁ)) ≫ ((𝟙_ D ⊗ X) ◁ d)) ≫
-      ((λ_ X).hom ▷ (𝟙_ D)) ≫ (ρ_ X).hom) = _
+  set d : Aᘁ ⟶ 𝟙_ D := δ.hom
+  set q : Tᘁ ⊗ T ⟶ Aᘁ := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
+  set f : A ⟶ 𝟙_ D := e.hom
+  set g : 𝟙_ D ⟶ A := e.inv
   clear_value d q
   calc
     _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ T ◁ g) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫

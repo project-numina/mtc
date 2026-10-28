@@ -8,12 +8,13 @@ public import PropertyF.Ground.CentreCalculus.PermutationInsert
 Twisting by permutation sign relates signed and unsigned trace criteria.
 The fixed-head and adjacent-crossing identities reduce integrality to a
 one-strand deletion formula for either parity choice. We write `tr C p ρ n σ`
-for the scalar pivotal trace of the permutation action.
+for the scalar pivotal trace of the permutation action and `sgn ℂ n σ`
+for the permutation sign.
 -/
 @[expose] public noncomputable section
 local notation "tr" => PropertyF.Ground.CentreCalculus.permScalarTrace
 open PropertyF.Ground.Modular (HasFPSimpleDimensions)
-open PropertyF.Ground.Centre (permutationSign)
+local notation "sgn" => PropertyF.Ground.Centre.permutationSign
 open Equiv.Perm (decomposeFin)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -24,7 +25,7 @@ universe v u
 def parityPermAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (hX : SelfTransparent X) (odd : Bool) (n : ℕ) :
     Equiv.Perm (Fin n) →* End (tensorPower X n) :=
-  if odd then Centre.twistAction (permutationSign ℂ n) (tensorPermAction X hX n)
+  if odd then Centre.twistAction (sgn ℂ n) (tensorPermAction X hX n)
   else tensorPermAction X hX n
 
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
@@ -33,7 +34,7 @@ variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
 /-- The sign-twisted permutation trace is the sign times the original trace. -/
 theorem parityPermScalarTrace_true (n : ℕ) (σ : Equiv.Perm (Fin n)) :
     tr C p (parityPermAction C hX true) n σ =
-      (permutationSign ℂ n σ : ℂ) * tr C p (tensorPermAction X hX) n σ := by
+      (sgn ℂ n σ : ℂ) * tr C p (tensorPermAction X hX) n σ := by
   simp [permScalarTrace, parityPermAction, Centre.twistAction, p.rightTrace_smul,
     unitScalar_eq_equiv, smul_eq_mul]
 
