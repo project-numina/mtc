@@ -94,10 +94,9 @@ theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
     simp [Dimensions.pivotalBraidedTwist, Category.assoc]
   rw [inverse_twist_eq_scalar_of_selfTransparent (C := C) hp hX,
     Dimensions.pivotalBraidedTwist_simple] at ht
-  simp only [Linear.smul_comp, Linear.comp_smul, Category.id_comp, smul_smul] at ht
   apply mul_self_eq_one_iff.mp
   apply smul_left_injective ℂ (id_nonzero X)
-  simpa using ht
+  simpa only [Linear.smul_comp, Linear.comp_smul, Category.id_comp, smul_smul, one_smul] using ht
 
 /-- Every self-transparent simple has integral FP dimension in an FP-valued
 spherical braided fusion category. -/

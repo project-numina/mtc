@@ -6,7 +6,7 @@ public import Mathlib.LinearAlgebra.Determinant
 public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
 public import Mathlib.RingTheory.Localization.BaseChange
 public import PropertyF.Ground.CentreCabling.TwistFinite
-public import PropertyF.Ground.CentreInduction.FiniteSum
+public import PropertyF.Ground.CentreInduction.Representatives
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Fusion.SemisimpleSplit
@@ -46,7 +46,6 @@ theorem derivation_vanishes_of_regular_eigenvector (N : ι → ι → ι → K) 
     (b : ι → M) (hderiv : IsFusionDerivation N d b) :
     ∀ i, b i = 0 := by
   classical
-  dsimp only [IsFusionDerivation] at hderiv
   intro i
   let R : M := ∑ j, d j • b j
   have hsum : (∑ j, d j • ∑ k, N i j k • b k) = d i • R := by
