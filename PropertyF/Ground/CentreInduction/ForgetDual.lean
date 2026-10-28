@@ -27,19 +27,11 @@ set_option backward.isDefEq.respectTransparency false in
   { coevaluation' := (η_ Z W).f
     evaluation' := (ε_ Z W).f
     coevaluation_evaluation' := by
-      simpa only [Center.comp_f, Center.whiskerLeft_f,
-        Center.whiskerRight_f, Center.associator_inv_f,
-        Center.associator_hom_f, Center.rightUnitor_hom_f,
-        Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
-        Center.leftUnitor_inv_f] using
-          congrArg Center.Hom.f (ExactPairing.coevaluation_evaluation Z W)
+      simpa [-ExactPairing.coevaluation_evaluation] using
+        congrArg Center.Hom.f (ExactPairing.coevaluation_evaluation Z W)
     evaluation_coevaluation' := by
-      simpa only [Center.comp_f, Center.whiskerLeft_f,
-        Center.whiskerRight_f, Center.associator_inv_f,
-        Center.associator_hom_f, Center.rightUnitor_hom_f,
-        Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
-        Center.leftUnitor_inv_f] using
-          congrArg Center.Hom.f (ExactPairing.evaluation_coevaluation Z W) }
+      simpa [-ExactPairing.evaluation_coevaluation] using
+        congrArg Center.Hom.f (ExactPairing.evaluation_coevaluation Z W) }
 
 omit [RightRigidCategory D] in
 /-- Forgetting a centre dual pair gives a dual pair in the base category. -/
