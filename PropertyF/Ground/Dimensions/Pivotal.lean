@@ -48,6 +48,11 @@ def rightDualUnitIso : rightDualObject (𝟙_ C) ≅ 𝟙_ C :=
 def doubleDualUnitIso : 𝟙_ C ≅ rightDualObject (rightDualObject (𝟙_ C)) :=
   rightDualUnitIso.symm ≪≫ rightDualIsoMap rightDualUnitIso
 
+/-- Trace using a single chosen double-dual isomorphism; no pivotal structure
+is needed. -/
+def rightTraceWith {X : C} (j : X ≅ (Xᘁ)ᘁ) (f : X ⟶ X) : End (𝟙_ C) :=
+  End.of (η_ X (Xᘁ) ≫ ((f ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ))
+
 /-- A pivotal structure is a monoidal natural isomorphism from the identity
 to the double-right-dual, expressed using the canonical duality comparisons. -/
 structure PivotalStructure where
@@ -82,11 +87,16 @@ end RightRigid
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
+/-- The trace of the identity is the quantum trace of its double-dual component. -/
+theorem rightTraceWith_id {X : C} (j : X ≅ (Xᘁ)ᘁ) :
+    rightTraceWith j (𝟙 X) = rightQuantumTrace j := by
+  simp [rightTraceWith, rightQuantumTrace]
+
 /-- For a rigid category these traces of the identity recover the traces used
 in the existing intrinsic squared norm. -/
 theorem rightTrace_id (p : PivotalStructure (C := C)) (X : C) :
     p.rightTrace (𝟙 X) = rightQuantumTrace (p.iso X) :=
-  by simp [PivotalStructure.rightTrace, rightQuantumTrace]
+  rightTraceWith_id (p.iso X)
 
 theorem leftTrace_id (p : PivotalStructure (C := C)) (X : C) :
     p.leftTrace (𝟙 X) = leftQuantumTrace (p.iso X) :=
@@ -96,7 +106,6 @@ theorem leftTrace_id (p : PivotalStructure (C := C)) (X : C) :
 theorem spherical_quantumTraces_eq (p : PivotalStructure (C := C))
     (hp : p.IsSpherical) (X : C) :
     rightQuantumTrace (p.iso X) = leftQuantumTrace (p.iso X) := by
-  rw [← rightTrace_id, ← leftTrace_id]
-  exact (hp X (𝟙 X)).symm
+  simpa only [← rightTrace_id, ← leftTrace_id] using (hp X (𝟙 X)).symm
 
 end PropertyF.Ground.Dimensions
