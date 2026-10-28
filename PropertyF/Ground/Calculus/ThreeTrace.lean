@@ -252,10 +252,8 @@ theorem three_braid_trace (D : BraidedFusionCategory.{v,u})
       (braidGenerator X 1 1) ^ 2)).asHom) =
     scalar (p.rightTrace (selfMonodromy X).asHom) ^ 2 /
       scalar (p.rightTrace (𝟙 X)) := by
-  have h := congrArg (fun z : End (X ⊗ (X ⊗ X)) => scalar (p.rightTrace z.asHom))
-    (three_braid_double_overlap X)
-  simp only [rightTrace_iso_conj] at h
-  rw [h, pivotalTrace_overlap D (X := X) p scalar]
+  rw [← rightTrace_iso_conj p (threePowerIso X), three_braid_double_overlap,
+    rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p scalar]
   ring
 
 /-- Remove the trailing tensor unit from the two-fold tensor power. -/
