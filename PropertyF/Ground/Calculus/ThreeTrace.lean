@@ -230,8 +230,7 @@ theorem three_braid_trace (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple 
     scalarTrace p scalar (Aut.toEnd (braidGenerator X 1 0 ^ 2 * braidGenerator X 1 1 ^ 2)) =
       scalarTrace p scalar (selfMonodromy X) ^ 2 / scalar (p.rightTrace (𝟙 X)) := by
   rw [scalarTrace, scalarTrace, ← rightTrace_iso_conj (threePowerIso X) p,
-    three_braid_double_overlap, rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p scalar,
-    pow_two, mul_div_assoc]
+    three_braid_double_overlap, rightTrace_iso_conj, pivotalTrace_overlap, pow_two, mul_div_assoc]
 
 /-- Remove the trailing tensor unit from the two-fold tensor power. -/
 def twoPowerIso (X : C) : tensorPower X 2 ≅ X ⊗ X :=

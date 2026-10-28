@@ -175,10 +175,8 @@ theorem cyclic_block_trace {B : Blocks} (T : B.Algebra →ₗ[ℂ] ℂ)
     simpa only [Pi.single_mul] using hT (Pi.single i X) (Pi.single i Y)
   choose w hw using fun i : Fin B.count => cyclic_matrix_trace (Tblock i) (hc i)
   refine ⟨w, fun X => ?_⟩
-  conv_lhs => rw [← LinearMap.sum_single_apply V X]
-  rw [map_sum]
-  change (∑ i, Tblock i (X i)) = _
-  simp only [hw]
+  simp only [← hw, Tblock, LinearMap.comp_apply, LinearMap.single_apply, ← map_sum,
+    LinearMap.sum_single_apply]
 
 end PropertyF.Ground.Calculus
 

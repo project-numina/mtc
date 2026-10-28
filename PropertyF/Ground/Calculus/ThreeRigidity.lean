@@ -144,9 +144,8 @@ theorem pair_operator_scalar_of_overlaps_equal {X : C.Obj} [Simple X]
 theorem end_one_ne_zero_of_pivotalDimension_ne_zero {X : C.Obj}
     (h : pivotalDimension C p X ≠ 0) :
     (1 : End X) ≠ 0 := fun hzero => h (by
-  simpa only [pivotalDimension, unitScalar_eq_equiv, End.one_asHom, End.zero_asHom,
-    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear p _).map_zero, map_zero] using
-    congrArg (fun z : End X => Ground.unitScalarEquiv C (p.rightTrace z.asHom)) hzero)
+  simp only [pivotalDimension, unitScalar_eq_equiv, ← End.one_asHom, hzero, End.zero_asHom,
+    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear p _).map_zero, map_zero])
 
 /-- A scalar double self-braiding of finite order has unit-modulus scalar,
 so the two real dimensions have equal absolute value. -/
