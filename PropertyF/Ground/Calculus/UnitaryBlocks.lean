@@ -179,7 +179,7 @@ end PropertyF.Ground.Calculus
 open CategoryTheory
 namespace PropertyF.Ground.Calculus
 
-variable {A : Type*} [Ring A] [Algebra ℂ A]
+variable {A : Type*} [Semiring A] [Algebra ℂ A]
 
 /-- Conjugation by an invertible element as an algebra automorphism. -/
 def unitConjugation (u : Aˣ) : A ≃ₐ[ℂ] A where
