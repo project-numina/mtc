@@ -74,8 +74,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Compatible pivotal components have equal traces after forgetting. -/
 theorem forget_trace_of_pivotal_component
     {p : PivotalStructure (C := D)} {pZ : PivotalStructure (C := 𝒵)} {Z : 𝒵}
-    (hcompat : PivotalCompatibleAt p pZ Z) :
-    (pZ.rightTrace (𝟙 Z)).asHom.f = (p.rightTrace (𝟙 Z.1)).asHom := by
+    (hcompat : PivotalCompatibleAt p pZ Z) (f : Z ⟶ Z) :
+    (pZ.rightTrace f).asHom.f = (p.rightTrace f.f).asHom := by
   let e := forgetDualIso Z
   let e' := forgetDualIso (Zᘁ)
   let u : Z.1 ⟶ ((Zᘁ)ᘁ).1 := (pZ.iso Z).hom.f
@@ -85,16 +85,16 @@ theorem forget_trace_of_pivotal_component
       e, e', u, Category.assoc] using hcompat
   have heval : (e'.hom ▷ ((Zᘁ).1)) ≫ ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) = (ε_ (Zᘁ) ((Zᘁ)ᘁ)).f :=
     rightDualIso_evaluation (forgetPairing (Zᘁ)) HasRightDual.exact
-  have ht : (η_ Z (Zᘁ)).f ≫ (((p.iso Z.1).hom ≫ (e.homᘁ)) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
+  have ht : (η_ Z (Zᘁ)).f ≫ (((f.f ≫ (p.iso Z.1).hom) ≫ (e.homᘁ)) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
       ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) =
-    η_ Z.1 (Z.1ᘁ) ≫ ((p.iso Z.1).hom ⊗ₘ 𝟙 (Z.1ᘁ)) ≫ ε_ (Z.1ᘁ) ((Z.1ᘁ)ᘁ) :=
-    trace_change_rightDual (forgetPairing Z) HasRightDual.exact (p.iso Z.1).hom
-  have hn : (pZ.rightTrace (𝟙 Z)).asHom.f =
-      (η_ Z (Zᘁ)).f ≫ ((u ≫ e'.hom) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
+    η_ Z.1 (Z.1ᘁ) ≫ ((f.f ≫ (p.iso Z.1).hom) ⊗ₘ 𝟙 (Z.1ᘁ)) ≫ ε_ (Z.1ᘁ) ((Z.1ᘁ)ᘁ) :=
+    trace_change_rightDual (forgetPairing Z) HasRightDual.exact (f.f ≫ (p.iso Z.1).hom)
+  have hn : (pZ.rightTrace f).asHom.f =
+      (η_ Z (Zᘁ)).f ≫ ((f.f ≫ u ≫ e'.hom) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
         ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) := by
     simp [PivotalStructure.rightTrace, rightTraceWith, tensorHom_def, ← heval,
       comp_whiskerRight, Category.assoc, u]
-  rw [hn, htrans, ht]
-  simp [PivotalStructure.rightTrace, rightTraceWith]
+  rw [hn, htrans, ← Category.assoc f.f (p.iso Z.1).hom (e.homᘁ), ht]
+  rfl
 
 end PropertyF.Ground.CentreInduction

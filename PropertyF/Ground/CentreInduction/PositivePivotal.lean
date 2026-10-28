@@ -41,7 +41,7 @@ theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions C 
     {pZ : PivotalStructure (C := 𝒵ᶜ)}
     (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) : IsFusionCategory 𝒵ᶜ := by
   refine center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ fun hz => ?_
-  have ht := forget_trace_of_pivotal_component hcompat
+  have ht := forget_trace_of_pivotal_component hcompat (𝟙 _)
   change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
     (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht
   have hd := pivotalDimension_underlying_unit C hsimple
@@ -190,7 +190,7 @@ theorem center_pivotalDimension_forget
     (hcompat : PivotalCompatibleAt p pZ Z) :
     pivotalDimension 𝒵ᶠ pZ Z = pivotalDimension C p Z.1 :=
   (center_unitScalar_forget C (pZ.rightTrace (𝟙 Z))).trans
-    (congrArg (fun f => unitScalar C (End.of f)) (forget_trace_of_pivotal_component hcompat))
+    (congrArg (fun f => unitScalar C (End.of f)) (forget_trace_of_pivotal_component hcompat (𝟙 Z)))
 
 end PropertyF.Ground.CentreInduction
 
