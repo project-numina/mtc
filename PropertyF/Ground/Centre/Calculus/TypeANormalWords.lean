@@ -90,8 +90,7 @@ theorem moveWord_coset_step {i j : ℕ} (hi : i < m) (hj : j ≤ m) :
       simp only [moveWord, mul_one, ← mul_assoc, hrel.square i hi, one_mul]
     · by_cases h₃ : j = i
       · subst j
-        refine ⟨i + 1, by omega, 1, H.one_mem, ?_⟩
-        simp [moveWord]
+        exact ⟨i + 1, by omega, 1, H.one_mem, (mul_one _).symm⟩
       · exact ⟨j, hj, s i, memH _ (by omega) hi,
           commute_moveWord hrel.commute i j (by omega) hi⟩
 
@@ -157,9 +156,8 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
     let f : Fin (m + 2) × H → G := fun a => moveWord s a.1.val * a.2
     have hf : Function.Surjective f := by
       intro g
-      have hg : g ∈ Subgroup.closure (Set.range (fun q : Fin (m + 1) => s q.val)) := by rw [hgen]; trivial
-      obtain ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hrel hg
-      exact ⟨(⟨j, by omega⟩, ⟨h, by simpa [H] using hh⟩), he.symm⟩
+      obtain ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hrel (hgen.symm ▸ Subgroup.mem_top g)
+      exact ⟨(⟨j, by omega⟩, ⟨h, hh⟩), he.symm⟩
     let : Finite G := Finite.of_surjective f hf
     refine ⟨inferInstance, ?_⟩
     calc

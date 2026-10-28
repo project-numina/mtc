@@ -219,7 +219,7 @@ theorem regularVector_mul_eq_zero_of_not_mem {A : Finset (Fin (rank D))}
   intro i _
   by_cases hi : i ∈ A
   · simp [regularVector, hi, hA.fusionCoeff_eq_zero ha hi hk]
-  · simp [regularVector, hi]
+  · rw [show regularVector D A i = 0 from ite_eq_right hi, mul_zero]
 
 /-- On its support, the regular vector has the FP eigenvalue. -/
 theorem regularVector_mul_of_mem {A : Finset (Fin (rank D))}
@@ -233,7 +233,7 @@ theorem regularVector_mul_of_mem {A : Finset (Fin (rank D))}
       intro i _
       rw [Modular.fusionCoeff_dual_adjoint D a i k]
       by_cases hi : i ∈ A
-      · simp [regularVector, hi]
+      · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi]
       · simp [regularVector, hi, hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi]
     _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
       simpa [fpSimple_dual] using
@@ -245,9 +245,9 @@ theorem regular_vector_fusion_eigenvector {A : Finset (Fin (rank D))}
     (hA : IsDualFusionClosed D A) {a : Fin (rank D)} (ha : a ∈ A) (k : Fin (rank D)) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * regularVector D A k := by
-  by_cases hk : k ∈ A
-  · simpa [regularVector, hk] using regularVector_mul_of_mem hA ha hk
-  · simpa [regularVector, hk] using regularVector_mul_eq_zero_of_not_mem hA.fusion ha hk
+  by_cases hk : k ∈ A <;> simp only [regularVector, hk, ↓reduceIte, mul_zero]
+  · exact regularVector_mul_of_mem hA ha hk
+  · exact regularVector_mul_eq_zero_of_not_mem hA.fusion ha hk
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support
