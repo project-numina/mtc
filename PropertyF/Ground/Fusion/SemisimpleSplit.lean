@@ -46,23 +46,17 @@ theorem split_to_simple {S X : C} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
 /-- Every simple object is projective: pull an epimorphism back to the simple
 object and split the resulting nonzero map. -/
 theorem simple_projective (S : C) [Simple S] : Projective S where
-  factors := by
-    intro X Y g f hf
-    let : Epi f := hf
-    obtain ⟨s, hs⟩ := split_to_simple (pullback.snd f g)
-      (epi_ne_zero_of_id_ne_zero _ (id_nonzero S))
-    refine ⟨s ≫ pullback.fst f g, ?_⟩
-    rw [Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]
+  factors := fun {X Y} g f [hf : Epi f] ↦
+    (split_to_simple (pullback.snd f g) (epi_ne_zero_of_id_ne_zero _ (id_nonzero S))).elim
+      fun s hs ↦ ⟨s ≫ pullback.fst f g, by
+        rw [Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]⟩
 
 /-- Every simple object is injective, by the dual pushout argument. -/
 theorem simple_injective (S : C) [Simple S] : Injective S where
-  factors := by
-    intro X Y g f hf
-    let : Mono f := hf
-    obtain ⟨r, hr⟩ := split_from_simple (pushout.inr f g)
-      (mono_ne_zero_of_id_ne_zero _ (id_nonzero S))
-    refine ⟨pushout.inl f g ≫ r, ?_⟩
-    rw [← Category.assoc, pushout.condition, Category.assoc, hr, Category.comp_id]
+  factors := fun {X Y} g f [hf : Mono f] ↦
+    (split_from_simple (pushout.inr f g) (mono_ne_zero_of_id_ne_zero _ (id_nonzero S))).elim
+      fun r hr ↦ ⟨pushout.inl f g ≫ r, by
+        rw [← Category.assoc, pushout.condition, Category.assoc, hr, Category.comp_id]⟩
 
 /-- Every object is projective. -/
 theorem object_projective (X : C) : Projective X := by
