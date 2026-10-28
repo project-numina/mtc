@@ -44,14 +44,12 @@ theorem center_pivotalDimension_forget
 FP dimensions, is spherical, and proves the centre's pseudo-unitarity. -/
 theorem center_positive_spherical_of_compatible_pivotal
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hsimple : PivotalHasFPDimensions C p)
     (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : ∀ Z : 𝒵,
       (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     pZ.IsSpherical ∧
-      (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
-        (simples (Integrate.bundledCenter C) i) =
-          (fpSimple (Integrate.bundledCenter C) i : ℂ)) ∧
+      PivotalHasFPDimensions (Integrate.bundledCenter C) pZ ∧
       PseudoUnitary (Integrate.bundledCenter C) := by
   let D := Integrate.bundledCenter C
   have hd (i : Fin (rank D)) : Dimensions.pivotalDimension D pZ (simples D i) =
@@ -80,16 +78,14 @@ local notation "𝒵" => CategoryTheory.Center C.Obj
 and the categorical global-dimension square without assuming centre pseudo-unitarity. -/
 theorem center_structure_of_compatible_pivotal
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hsimple : PivotalHasFPDimensions C p)
     (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : ∀ Z : 𝒵,
       (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     ∃ hFusion : IsFusionCategory (𝒵),
       letI := hFusion
       pZ.IsSpherical ∧
-      (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
-        (simples (Integrate.bundledCenter C) i) =
-          (fpSimple (Integrate.bundledCenter C) i : ℂ)) ∧
+      PivotalHasFPDimensions (Integrate.bundledCenter C) pZ ∧
       PseudoUnitary (Integrate.bundledCenter C) ∧
       globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
   let J := (induction C).obj (𝟙_ C.Obj)

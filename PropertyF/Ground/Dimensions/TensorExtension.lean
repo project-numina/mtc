@@ -210,7 +210,7 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
   let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
-  obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
+  obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
   have ht : rightQuantumTrace (a.app (𝟙_ C.Obj)) = r • rightQuantumTrace (doubleDualUnitIso (C := C.Obj)) := by
     apply End.homEquiv.injective
     have hr' : a.hom.app (𝟙_ C.Obj) = r • (doubleDualUnitIso (C := C.Obj)).hom := hr

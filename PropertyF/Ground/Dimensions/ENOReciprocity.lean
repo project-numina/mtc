@@ -94,7 +94,7 @@ theorem rootDual_differs_by_sign (X : C.Obj)
   let : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := IsFusionCategory.hom_finite _ _
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
-  obtain ⟨ε, _, he, _⟩ := doubleDualIso_scalar l k
+  obtain ⟨ε, _, he, _⟩ := isomorphisms_scalar l k
   refine ⟨ε, ?_, he⟩
   have hk : k.hom ≫ ((k.homᘁ)ᘁ) = (fourthDualIso C (Xᘁ)).hom := by
     exact (congrArg (fun n => (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C))

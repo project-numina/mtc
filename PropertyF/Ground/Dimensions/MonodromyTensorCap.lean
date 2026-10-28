@@ -132,18 +132,16 @@ theorem monodromy_tensor_cap_braid_reordered (C : BraidedFusionCategory.{v,u}) (
       simp only [monoidalComp, whiskerLeft_comp]
       monoidal
 set_option backward.isDefEq.respectTransparency false in
-/-- A braiding loop around an evaluation cap contracts by naturality. -/
-theorem braiding_right_cap_loop {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [BraidedCategory C] [RightRigidCategory C] (X Y : C) :
-    (β_ Y (Xᘁ)).hom ▷ X ⊗≫ (Xᘁ) ◁ (β_ Y X).hom ⊗≫
-      ε_ X (Xᘁ) ▷ Y ⊗≫ (λ_ Y).hom =
-      𝟙 ((Y ⊗ (Xᘁ)) ⊗ X) ⊗≫ Y ◁ ε_ X (Xᘁ) ⊗≫ (ρ_ Y).hom := by
-  have hn := braiding_naturality_right Y (ε_ X (Xᘁ))
-  have h := congrArg (fun f => f ≫ (λ_ Y).hom) hn
+/-- A braiding loop around a morphism into the tensor unit contracts by naturality. -/
+theorem braiding_cap_loop {C : Type u} [Category.{v} C] [MonoidalCategory C]
+    [BraidedCategory C] (X Y Z : C) (f : Y ⊗ Z ⟶ 𝟙_ C) :
+    (β_ X Y).hom ▷ Z ⊗≫ Y ◁ (β_ X Z).hom ⊗≫ f ▷ X ⊗≫ (λ_ X).hom =
+      𝟙 ((X ⊗ Y) ⊗ Z) ⊗≫ X ◁ f ⊗≫ (ρ_ X).hom := by
+  have hn := braiding_naturality_right X f
+  have h := congrArg (fun g => g ≫ (λ_ X).hom) hn
   simp only [Category.assoc, braiding_leftUnitor] at h
   calc
-    _ = (α_ Y (Xᘁ) X).hom ≫ (β_ Y ((Xᘁ) ⊗ X)).hom ≫
-        (ε_ X (Xᘁ) ▷ Y) ≫ (λ_ Y).hom := by
+    _ = (α_ X Y Z).hom ≫ (β_ X (Y ⊗ Z)).hom ≫ f ▷ X ≫ (λ_ X).hom := by
       rw [braiding_tensor_right_hom]
       monoidal
     _ = _ := by rw [← h]; monoidal
@@ -176,26 +174,10 @@ theorem monodromy_tensor_cap_remove_loop (C : BraidedFusionCategory.{v,u}) (X Y 
       (Y ◁ (β_ X V).hom) ▷ U ⊗≫ ((β_ Y V).hom ▷ X) ▷ U ⊗≫
       V ◁ (Y ◁ (β_ X U).hom) ⊗≫
       V ◁ (𝟙 ((Y ⊗ U) ⊗ X) ⊗≫ Y ◁ ε_ X U ⊗≫ (ρ_ Y).hom) ⊗≫ ε_ Y V := by
-        rw [braiding_right_cap_loop]
+        rw [braiding_cap_loop]
     _ = _ := by
       simp only [monoidalComp, whiskerLeft_comp]
       monoidal
-set_option backward.isDefEq.respectTransparency false in
-/-- A braiding loop contracts around a crossed evaluation cap. -/
-theorem braiding_crossed_cap_loop {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [BraidedCategory C] [RightRigidCategory C] (X Y : C) :
-    (β_ X Y).hom ▷ (Yᘁ) ⊗≫ Y ◁ (β_ X (Yᘁ)).hom ⊗≫
-      ((β_ Y (Yᘁ)).hom ≫ ε_ Y (Yᘁ)) ▷ X ⊗≫ (λ_ X).hom =
-      𝟙 ((X ⊗ Y) ⊗ (Yᘁ)) ⊗≫ X ◁ ((β_ Y (Yᘁ)).hom ≫ ε_ Y (Yᘁ)) ⊗≫ (ρ_ X).hom := by
-  let b := (β_ Y (Yᘁ)).hom ≫ ε_ Y (Yᘁ)
-  have hn := braiding_naturality_right X b
-  have h := congrArg (fun f => f ≫ (λ_ X).hom) hn
-  simp only [Category.assoc, braiding_leftUnitor] at h
-  calc
-    _ = (α_ X Y (Yᘁ)).hom ≫ (β_ X (Y ⊗ (Yᘁ))).hom ≫ b ▷ X ≫ (λ_ X).hom := by
-      rw [braiding_tensor_right_hom]
-      monoidal
-    _ = _ := by rw [← h]; monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- The monodromy tensor evaluation closes the two crossed caps in sequence. -/
 theorem monodromy_tensor_cap_evaluated (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
@@ -231,7 +213,7 @@ theorem monodromy_tensor_cap_evaluated (C : BraidedFusionCategory.{v,u}) (X Y : 
         monoidal
     _ = 𝟙 (W ⊗ P) ⊗≫
       ((𝟙 ((X ⊗ Y) ⊗ V) ⊗≫ X ◁ b ⊗≫ (ρ_ X).hom) ▷ U) ⊗≫ g := by
-        rw [braiding_crossed_cap_loop]
+        rw [braiding_cap_loop]
     _ = _ := by
       simp only [b, g, monoidalComp, comp_whiskerRight, whiskerLeft_comp]
       monoidal

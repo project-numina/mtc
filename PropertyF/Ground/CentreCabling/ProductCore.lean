@@ -35,7 +35,7 @@ theorem unit_mem_productLabels : unitIndex (Integrate.bundledCenter C) ∈ produ
   (mem_productLabels C _).2 <|
     Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
 
-theorem dual_mem_productLabels (i : Fin (rank (Integrate.bundledCenter C)))
+theorem dual_mem_productLabels {i : Fin (rank (Integrate.bundledCenter C))}
     (hi : i ∈ productLabels C) : dualIndex (Integrate.bundledCenter C) i ∈ productLabels C :=
   let Z := Integrate.bundledCenter C
   let X : CategoryTheory.Center C.Obj := simples Z i
@@ -46,7 +46,7 @@ theorem dual_mem_productLabels (i : Fin (rank (Integrate.bundledCenter C)))
     (Centre.productRetract_rightDual C ((mem_productLabels C i).1 hi))
 
 theorem constituent_mem_productLabels
-    (i j k : Fin (rank (Integrate.bundledCenter C)))
+    {i j k : Fin (rank (Integrate.bundledCenter C))}
     (hi : i ∈ productLabels C) (hj : j ∈ productLabels C)
     (hk : 0 < fusionCoeff (Integrate.bundledCenter C) i j k) : k ∈ productLabels C :=
   let ⟨r⟩ := Ground.fusionCoeff_retract (Integrate.bundledCenter C) hk
@@ -56,17 +56,17 @@ theorem constituent_mem_productLabels
 /-- The centre's product-retract labels satisfy the numerical double-centralizer
 inclusion whenever the chosen core contains their numerical centralizer. -/
 theorem productLabels_doubleCentralizer
-    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
+    {p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)}
     (hp : p.IsSpherical) (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
     (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
-    (core : Set (Fin (rank (Integrate.bundledCenter C))))
+    {core : Set (Fin (rank (Integrate.bundledCenter C)))}
     (hcore : sCentralizer (Integrate.bundledCenter C) p (↑(productLabels C) : Set _) ⊆ core) :
     ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p core,
       Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := fun x hx ↦
   (mem_productLabels C x).mp <|
-    doubleCentralizer_of_fusion_closed (Integrate.bundledCenter C) p hp hdet hdim
-      (productLabels C) core (unit_mem_productLabels C) (dual_mem_productLabels C)
-      (fun i hi j hj k hk ↦ constituent_mem_productLabels C i j k hi hj hk) hcore hx
+    doubleCentralizer_of_fusion_closed hp hdet hdim
+      (unit_mem_productLabels C) (fun _ hi ↦ dual_mem_productLabels C hi)
+      (fun _ hi _ hj _ hk ↦ constituent_mem_productLabels C hi hj hk) hcore hx
 
 
 /-- Actual centre labels centralizing both canonical images. -/
