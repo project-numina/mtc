@@ -17,7 +17,7 @@ set_option backward.isDefEq.respectTransparency false
 /-- Evaluating a double-dual tensor map reduces to the tensor pairing on
 the dual factors. -/
 theorem doubleDualTensor_evaluation {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-    (X Y : C) (u : X ⟶ (Xᘁ)ᘁ) (v : Y ⟶ (Yᘁ)ᘁ) :
+    {X Y : C} (u : X ⟶ (Xᘁ)ᘁ) (v : Y ⟶ (Yᘁ)ᘁ) :
     ((u ⊗ₘ v) ≫ (doubleDualTensorIso X Y).hom) ▷ ((X ⊗ Y)ᘁ) ≫
       ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
       (u ⊗ₘ v) ▷ ((X ⊗ Y)ᘁ) ≫
@@ -40,7 +40,7 @@ theorem doubleDualTensor_evaluation {C : Type u} [Category.{v} C] [MonoidalCateg
 
 /-- A compatible double-dual tensor equation implies pivotal twist balancing. -/
 theorem balance_of_drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] (p : PivotalStructure (C := D)) (X Y : D)
+    [BraidedCategory D] [RightRigidCategory D] (p : PivotalStructure (C := D)) {X Y : D}
     (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
     (h : Modular.doubleBraiding X Y ≫ (d (X ⊗ Y)).hom =
       ((d X).hom ⊗ₘ (d Y).hom) ≫ (doubleDualTensorIso X Y).hom) :
@@ -55,7 +55,7 @@ theorem balance_of_drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCatego
 
 /-- The tensor-pairing cap identity implies the Drinfeld tensor equation. -/
 theorem drinfeld_tensor_of_pairing_cap {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] (X Y : D) (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
+    [BraidedCategory D] [RightRigidCategory D] {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
     (hd : (d (X ⊗ Y)).hom ▷ ((X ⊗ Y)ᘁ) ≫
         ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
       (β_ (X ⊗ Y) ((X ⊗ Y)ᘁ)).hom ≫ ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ))
@@ -78,7 +78,7 @@ theorem drinfeld_tensor_of_pairing_cap {D : Type u} [Category.{v} D] [MonoidalCa
   have he := rightDualIso_evaluation
     (@HasRightDual.exact D _ _ W (RightRigidCategory.rightDual W)) p
   change t.hom ▷ W ≫ @ExactPairing.evaluation D _ _ W V p = ε_ W (Wᘁ) at he
-  have hs := doubleDualTensor_evaluation X Y (d X).hom (d Y).hom
+  have hs := doubleDualTensor_evaluation (d X).hom (d Y).hom
   change (((d X).hom ⊗ₘ (d Y).hom) ≫
     (doubleDualTensorIso X Y).hom) ▷ Wᘁ ≫ ε_ (Wᘁ) ((Wᘁ)ᘁ) =
     ((d X).hom ⊗ₘ (d Y).hom) ▷ Wᘁ ≫
@@ -97,14 +97,14 @@ theorem drinfeld_tensor_of_pairing_cap {D : Type u} [Category.{v} D] [MonoidalCa
 
 /-- In the usual convention, twist balancing has monodromy first. -/
 theorem pivotal_balance_of_drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] (p : PivotalStructure (C := D)) (X Y : D)
+    [BraidedCategory D] [RightRigidCategory D] (p : PivotalStructure (C := D)) {X Y : D}
     (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
     (h : Modular.doubleBraiding X Y ≫ (d (X ⊗ Y)).hom =
       ((d X).hom ⊗ₘ (d Y).hom) ≫ (doubleDualTensorIso X Y).hom) :
     Modular.doubleBraiding X Y ≫
       (((p.iso X).hom ≫ (d X).inv) ⊗ₘ ((p.iso Y).hom ≫ (d Y).inv)) =
         (p.iso (X ⊗ Y)).hom ≫ (d (X ⊗ Y)).inv := by
-  rw [balance_of_drinfeld_tensor p X Y d h]
+  rw [balance_of_drinfeld_tensor p d h]
   exact CentreCabling.doubleBraiding_natural _ _
 
 end PropertyF.Ground.CentreIntegrate

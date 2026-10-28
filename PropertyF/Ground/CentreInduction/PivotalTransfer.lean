@@ -67,10 +67,8 @@ theorem center_positive_spherical_of_compatible_pivotal
     intro i
     rw [hd]
     simp
-  refine ⟨hs, hd, ?_⟩
-  apply Dimensions.positive_spherical_isPseudoUnitary D pZ hs (fpSimple D)
-  · exact hd
-  · exact fpSimple_pos D
+  exact ⟨hs, hd, Dimensions.positive_spherical_isPseudoUnitary D pZ hs (fpSimple D) hd
+    (fpSimple_pos D)⟩
 
 end PropertyF.Ground.CentreInduction
 

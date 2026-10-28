@@ -81,15 +81,16 @@ variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.
 def pivotalBraidedTwist (X : C.Obj) : X ≅ X :=
   p.iso X ≪≫ (Ground.doubleDualIso C X).symm
 
-/-- The pivotal/Drinfeld twist is natural. -/
-theorem pivotalBraidedTwist_natural {X Y : C.Obj} (f : X ⟶ Y) :
-    f ≫ (pivotalBraidedTwist C p Y).hom = (pivotalBraidedTwist C p X).hom ≫ f := by
-  have hn : ((fᘁ)ᘁ) ≫ (Ground.doubleDualIso C Y).inv =
-      (Ground.doubleDualIso C X).inv ≫ f := by
-    apply (Ground.doubleDualIso C X).eq_inv_comp.mpr
-    simpa only [Category.assoc] using
-      (Ground.doubleDualIso C Y).comp_inv_eq.mpr (doubleDualIso_natural C f).symm
-  simp only [pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom, Category.assoc]
+/-- The ratio of natural pivotal and double-dual isomorphisms is natural. -/
+theorem pivotalBraidedTwist_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] (p : PivotalStructure (C := D)) (d : ∀ X : D, X ≅ (Xᘁ)ᘁ)
+    (hd : ∀ {X Y : D} (f : X ⟶ Y), f ≫ (d Y).hom = (d X).hom ≫ (fᘁ)ᘁ)
+    {X Y : D} (f : X ⟶ Y) :
+    f ≫ ((p.iso Y).hom ≫ (d Y).inv) = ((p.iso X).hom ≫ (d X).inv) ≫ f := by
+  have hn : ((fᘁ)ᘁ) ≫ (d Y).inv = (d X).inv ≫ f := by
+    apply (d X).eq_inv_comp.mpr
+    simpa only [Category.assoc] using (d Y).comp_inv_eq.mpr (hd f).symm
+  simp only [Category.assoc]
   rw [← Category.assoc, p.naturality, Category.assoc, hn]
 /-- The twist scalar of a simple object. -/
 def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
@@ -129,7 +130,9 @@ theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
 
 /-- The actual pivotal/Drinfeld twists form a natural automorphism. -/
 def pivotalBraidedTwistNaturalIso : 𝟭 C.Obj ≅ 𝟭 C.Obj :=
-  NatIso.ofComponents (pivotalBraidedTwist C p) (fun f => pivotalBraidedTwist_natural C p f)
+  NatIso.ofComponents (pivotalBraidedTwist C p) (fun f ↦ by
+    simpa only [Functor.id_map, pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom] using
+      pivotalBraidedTwist_natural p (Ground.doubleDualIso C) (fun f ↦ doubleDualIso_natural C f) f)
 
 
 end PropertyF.Ground.Dimensions

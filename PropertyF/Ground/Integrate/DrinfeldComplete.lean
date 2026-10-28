@@ -101,58 +101,7 @@ end
 The pivotal, balancing and transparency arguments supply the final reduction. -/
 
 section
-/-! The actual core and mixed-monodromy obligations from pivotal balancing. -/
 
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground
-universe v u
-set_option linter.style.haveILetI false
-
-/-- For a pseudo-unitary base with a pivotal structure, the actual centre is
-rigid, fusion and positive spherical. If its pivotal twist is balanced, its
-symmetric core is integral and the required mixed monodromy has finite order.
-The base pivotal structure, balancing and S invertibility are still explicit
-premises. -/
-theorem target_of_pivotal_base_modular_balanced_center
-    (hCenter : ∀ (C : BraidedFusionCategory.{v,u}) (hpu : PseudoUnitary C),
-      HasPropertyF C.Obj →
-      ∃ (p : Dimensions.PivotalStructure (C := C.Obj)),
-        letI := CentreRigid.rigidCenter (C := C.Obj)
-        letI := centerFusionOfPivotalPseudoUnitary C p hpu
-        let pZ := centerPivotalOfPivotalPseudoUnitary C p hpu
-        let D := Integrate.bundledCenter C
-        (Modular.categoricalS D pZ).det ≠ 0 ∧
-        (CentreModular.IsPivotalTwistBalanced D pZ)) : TargetStatement.{v,u} := by
-  apply target_of_actual_center
-  intro C hpu hF
-  obtain ⟨p, hdet, hbalance⟩ := hCenter C hpu hF
-  letI := CentreRigid.rigidCenter (C := C.Obj)
-  letI := centerFusionOfPivotalPseudoUnitary C p hpu
-  let pZ := centerPivotalOfPivotalPseudoUnitary C p hpu
-  have hs := Classical.choose_spec (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))
-  obtain ⟨hspherical, _, _, _⟩ := hs
-  have hdim := centerPivotal_hasFPDimensions C p hpu
-  have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy C pZ := by
-    intro y _ a _
-    exact CentreModular.mixed_monodromy_finite_of_pivotal_balancing
-      (Integrate.bundledCenter C) pZ hbalance _ _
-  refine ⟨CentreRigid.rigidCenter, inferInstance, pZ, CentreCabling.symmetricCore C,
-    (↑(CentreCabling.productLabels C) : Set _), hspherical, hdim, hdet,
-    center_globalDimension_square_of_actual_induction C pZ hspherical hdim,
-    CentreCalculus.actual_symmetricCore_integrality C pZ hspherical hdim, ?_, ?_⟩
-  · intro y hy
-    exact (CentreCabling.mem_productLabels C y).mpr
-      (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy C pZ hspherical hdet hdim hfinite y hy)
-  · intro y hy
-    exact (CentreCabling.mem_productLabels C y).mp hy
-
-end PropertyF.Ground
-end
-end
-
-section
 /-! Trivial centre transparency is constructed from actual induction. -/
 
 @[expose] public noncomputable section
@@ -190,15 +139,32 @@ theorem target_of_pivotal_base_and_center_balancing
         let pZ := centerPivotalOfPivotalPseudoUnitary C p hpu
         let D := Integrate.bundledCenter C
         CentreModular.IsPivotalTwistBalanced D pZ) : TargetStatement.{v,u} := by
-  apply target_of_pivotal_base_modular_balanced_center
+  apply target_of_actual_center
   intro C hpu hF
   obtain ⟨p, hbalance⟩ := hCenter C hpu hF
   letI := CentreRigid.rigidCenter (C := C.Obj)
   letI := centerFusionOfPivotalPseudoUnitary C p hpu
   let pZ := centerPivotalOfPivotalPseudoUnitary C p hpu
+  have hs := Classical.choose_spec (Classical.choose_spec
+    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))
+  obtain ⟨hspherical, _, _, _⟩ := hs
   have hdim := centerPivotal_hasFPDimensions C p hpu
-  exact ⟨p, CentreModular.categoricalS_det_ne_zero_of_trivial_transparency
-    (Integrate.bundledCenter C) pZ hdim hbalance (center_transparent_label_eq_unit C), hbalance⟩
+  have hdet := CentreModular.categoricalS_det_ne_zero_of_trivial_transparency
+    (Integrate.bundledCenter C) pZ hdim hbalance (center_transparent_label_eq_unit C)
+  have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy C pZ := by
+    intro y _ a _
+    exact CentreModular.mixed_monodromy_finite_of_pivotal_balancing
+      (Integrate.bundledCenter C) pZ hbalance _ _
+  refine ⟨CentreRigid.rigidCenter, inferInstance, pZ, CentreCabling.symmetricCore C,
+    (↑(CentreCabling.productLabels C) : Set _), hspherical, hdim, hdet,
+    center_globalDimension_square_of_actual_induction C pZ hspherical hdim,
+    CentreCalculus.actual_symmetricCore_integrality C pZ hspherical hdim, ?_, ?_⟩
+  · intro y hy
+    exact (CentreCabling.mem_productLabels C y).mpr
+      (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy C pZ hspherical hdet hdim hfinite y hy)
+  · intro y hy
+    exact (CentreCabling.mem_productLabels C y).mp hy
+
 
 end PropertyF.Ground
 end
@@ -219,7 +185,7 @@ theorem drinfeld_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
     Modular.doubleBraiding X Y ≫ (doubleDualIso C (X ⊗ Y)).hom =
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom :=
-  CentreIntegrate.drinfeld_tensor_of_pairing_cap X Y (doubleDualIso C)
+  CentreIntegrate.drinfeld_tensor_of_pairing_cap (doubleDualIso C)
     (Dimensions.drinfeld_eval C (X ⊗ Y)) (Dimensions.drinfeld_tensor_pairing_cap C X Y)
 
 /-- The twist of any pivotal braided fusion category is balanced. -/
@@ -229,7 +195,7 @@ theorem pivotal_twist_balanced (C : BraidedFusionCategory.{v,u})
       ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
         (Dimensions.pivotalBraidedTwist C p Y).hom) =
       (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom :=
-  CentreIntegrate.pivotal_balance_of_drinfeld_tensor p X Y (doubleDualIso C) (drinfeld_tensor C X Y)
+  CentreIntegrate.pivotal_balance_of_drinfeld_tensor p (doubleDualIso C) (drinfeld_tensor C X Y)
 
 /-- The frozen target follows once the pseudo-unitary property-F base is
 shown to admit a pivotal structure. That existence is the sole premise. -/

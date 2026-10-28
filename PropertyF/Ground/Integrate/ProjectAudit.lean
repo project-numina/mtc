@@ -253,7 +253,6 @@ run_cmd do
       ``PropertyF.Ground.target_of_pivotal_base_and_center_balancing,
       ``PropertyF.Ground.CentreInduction.center_transparent_simple_iso_unit,
       ``PropertyF.Ground.CentreModular.categoricalS_det_ne_zero_of_trivial_transparency,
-      ``PropertyF.Ground.target_of_pivotal_base_modular_balanced_center,
       ``PropertyF.Ground.CentreCalculus.actual_symmetricCore_integrality,
       ``PropertyF.Ground.CentreModular.mixed_monodromy_finite_of_pivotal_balancing,
       ``PropertyF.Ground.CentreRigid.rigidCenter,
