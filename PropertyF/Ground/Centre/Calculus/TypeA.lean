@@ -17,6 +17,8 @@ the symmetric group, so self-transparent braid actions factor through it.
 -/
 @[expose] public noncomputable section
 open Equiv (Perm)
+open QuotientGroup (eq_iff_div_mem)
+open Subgroup (subset_normalClosure)
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
@@ -215,16 +217,14 @@ theorem typeAGenerator_square {i : Fin (n + 1)} :
 theorem typeAGenerator_adjacent {i : Fin n} :
     g n i.val * g n (i.val + 1) * g n i.val =
       g n (i.val + 1) * g n i.val * g n (i.val + 1) := by
-  have hi : i.val + 1 < n + 1 := Nat.succ_lt_succ i.isLt
-  simp only [typeAGenerator, dite_eq_left hi, dite_eq_left (Nat.lt_succ_of_lt i.isLt), ← map_mul]
-  exact QuotientGroup.eq_iff_div_mem.mpr <| Subgroup.subset_normalClosure <|
-    Or.inr (Or.inl ⟨⟨i.val, by omega⟩, ⟨i.val + 1, hi⟩, rfl, rfl⟩)
+  simp only [typeAGenerator, dite_eq_left (Nat.succ_lt_succ i.isLt),
+    dite_eq_left (Nat.lt_succ_of_lt i.isLt), ← map_mul]
+  exact eq_iff_div_mem.mpr (subset_normalClosure (Or.inr (Or.inl ⟨i.castSucc, i.succ, rfl, rfl⟩)))
 
 theorem typeAGenerator_distant {i j : Fin (n + 1)} (hij : i.val + 1 < j.val) :
     g n i.val * g n j.val = g n j.val * g n i.val := by
   simp only [typeAGenerator, dite_eq_left i.isLt, dite_eq_left j.isLt, ← map_mul]
-  exact QuotientGroup.eq_iff_div_mem.mpr <| Subgroup.subset_normalClosure <|
-    Or.inr (Or.inr ⟨i, j, hij, rfl⟩)
+  exact eq_iff_div_mem.mpr (subset_normalClosure (Or.inr (Or.inr ⟨i, j, hij, rfl⟩)))
 
 variable (n : ℕ)
 
