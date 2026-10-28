@@ -43,23 +43,17 @@ theorem rootTensorDefect_natural
     (f ⊗ₘ g) ≫ (rootTensorDefect C X' Y').hom =
       (rootTensorDefect C X Y).hom ≫ (f ⊗ₘ g) := by
   have hni : (((f ⊗ₘ g)ᘁ)ᘁ) ≫ (rootTensorIso C X' Y').inv =
-      (rootTensorIso C X Y).inv ≫ (f ⊗ₘ g) := by
-    apply (cancel_epi (rootTensorIso C X Y).hom).1
-    simp only [Iso.hom_inv_id_assoc]
-    rw [← Category.assoc, ← (rootTensorIso_natural C f g)]
-    simp
+      (rootTensorIso C X Y).inv ≫ (f ⊗ₘ g) :=
+    iso_inv_naturality_of_hom (rootTensorIso C X Y) (rootTensorIso C X' Y')
+      (rootTensorIso_natural C f g)
   have ha : (f ⊗ₘ g) ≫ ((fourthDualRootNaturalIso C).app (X' ⊗ Y')).hom =
       ((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) :=
     (fourthDualRootNaturalIso C).hom.naturality (f ⊗ₘ g)
   change (f ⊗ₘ g) ≫ (((fourthDualRootNaturalIso C).app (X' ⊗ Y')).hom ≫
         (rootTensorIso C X' Y').inv) =
       (((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (rootTensorIso C X Y).inv) ≫ (f ⊗ₘ g)
-  calc
-    _ = ((f ⊗ₘ g) ≫ ((fourthDualRootNaturalIso C).app (X' ⊗ Y')).hom) ≫
-        (rootTensorIso C X' Y').inv := by simp only [doubleDualFunctor, Category.assoc]
-    _ = (((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ)) ≫
-        (rootTensorIso C X' Y').inv := by simpa only [doubleDualFunctor] using congrArg (fun t => t ≫ (rootTensorIso C X' Y').inv) ha
-    _ = _ := by simpa only [doubleDualFunctor, Category.assoc] using congrArg (fun t => ((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ t) hni
+  dsimp only [doubleDualFunctor] at ha ⊢
+  rw [← Category.assoc, ha, Category.assoc, hni, Category.assoc]
 
 /-- The dual-label choice can be removed from the Frobenius defect equation. -/
 theorem enoTraceMatrix_reciprocity_of_dual_frobenius_defect
