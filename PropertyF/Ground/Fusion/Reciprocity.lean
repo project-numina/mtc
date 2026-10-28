@@ -51,7 +51,7 @@ endomorphism space is simple. -/
 theorem simple_of_finrank_end_eq_one (D : BraidedFusionCategory.{v,u}) (X : D.Obj)
     (hdim : Module.finrank ℂ (X ⟶ X) = 1) : Simple X := by
   classical
-  letI : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   have hid : (𝟙 X : X ⟶ X) ≠ 0 := by
     obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp (by rw [hdim]; decide)
     intro h
@@ -64,8 +64,7 @@ theorem simple_of_finrank_end_eq_one (D : BraidedFusionCategory.{v,u}) (X : D.Ob
   have he : e.hom ≠ 0 := by
     intro h
     apply hid
-    have hh := congrArg (fun t => t ≫ e.inv) h
-    simpa using hh
+    simpa using (congrArg (fun t => t ≫ e.inv) h)
   have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra h
     push Not at h
@@ -74,14 +73,13 @@ theorem simple_of_finrank_end_eq_one (D : BraidedFusionCategory.{v,u}) (X : D.Ob
     intro p
     simpa using h p
   obtain ⟨p, _⟩ := hp
-  letI : Simple (V p) := simples_simple D p.1
+  let : Simple (V p) := simples_simple D p.1
   let s : X ⟶ V p := e.hom ≫ biproduct.π V p
   let t : V p ⟶ X := biproduct.ι V p ≫ e.inv
   have hts : t ≫ s = 𝟙 (V p) := by simp [s, t, Category.assoc]
   obtain ⟨z, hz⟩ := (finrank_eq_one_iff_of_nonzero' (K := ℂ) (𝟙 X) hid).mp hdim (s ≫ t)
   have hz' : z • 𝟙 (V p) = 𝟙 (V p) := by
-    have h := congrArg (fun f => t ≫ f ≫ s) hz
-    simpa [Category.assoc, hts] using h
+    simpa [Category.assoc, hts] using (congrArg (fun f => t ≫ f ≫ s) hz)
   have hz1 : z = 1 := by
     apply smul_left_injective ℂ (id_nonzero (V p))
     simpa using hz'
@@ -93,7 +91,7 @@ theorem simple_leftDual (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X]
     Simple (ᘁX) := by
   apply simple_of_finrank_end_eq_one D
   rw [finrank_end_leftDual]
-  letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   exact CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X
 
 /-- The right dual of a simple object in a braided fusion category is simple. -/
@@ -112,8 +110,8 @@ def dualIndex (D : BraidedFusionCategory.{v,u}) (j : Fin (rank D)) : Fin (rank D
 
 theorem dualIndex_iso (D : BraidedFusionCategory.{v,u}) (j : Fin (rank D)) :
     Nonempty ((ᘁ(simples D j)) ≅ simples D (dualIndex D j)) := by
-  letI : Simple (simples D j) := simples_simple D j
-  letI : Simple (ᘁ(simples D j)) := simple_leftDual D (simples D j)
+  let : Simple (simples D j) := simples_simple D j
+  let : Simple (ᘁ(simples D j)) := simple_leftDual D (simples D j)
   exact Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
 
 /-- Fusion reciprocity with the dual kept as an actual object. -/
@@ -221,8 +219,7 @@ theorem rightQuantumTrace_simple_ne_zero (C : Ground.BraidedFusionCategory.{v,u}
     exact hr hz.symm
   intro hzero
   have hhom : s ≫ r = 0 := by
-    have h := congrArg End.asHom hzero
-    simpa [rightQuantumTrace, s, r, t, ev, tensorIso_hom] using h
+    simpa [rightQuantumTrace, s, r, t, ev, tensorIso_hom] using (congrArg End.asHom hzero)
   rw [← hz, Linear.comp_smul, hr₀] at hhom
   have : z • (𝟙 (𝟙_ C.Obj)) ≠ 0 := smul_ne_zero hz0 (id_nonzero _)
   exact this hhom

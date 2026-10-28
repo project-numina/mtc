@@ -5,6 +5,11 @@ public import PropertyF.Ground.Fusion.Simples
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 public import PropertyF.Ground.Fusion.Multiplicity
 
+/-! # Scalar natural transformations
+
+Simple objects determine scalar components and natural roots of the fourth-dual isomorphism.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
@@ -182,7 +187,7 @@ theorem simple_scalar_biproduct_natural
 abbrev simplePieces (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :=
   Σ i : Fin (Ground.rank C), Fin (Module.finrank ℂ (Ground.simples C i ⟶ X))
 
-instance simplePieces_fintype (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+instance instFintypeSimplePieces (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
     Fintype (simplePieces C X) := by
   unfold simplePieces
   infer_instance

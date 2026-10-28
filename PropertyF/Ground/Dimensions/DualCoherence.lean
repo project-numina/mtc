@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.Pivotal
 
+/-! # Duality coherence
+
+Evaluation and coevaluation identities relate changes of duals and the associated traces.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

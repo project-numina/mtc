@@ -7,6 +7,11 @@ public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.ComplexSaturation
 
+/-! # Pivotal structures and pseudo-unitarity
+
+Duality and reality properties of pivotal dimensions lead to a positive spherical structure.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

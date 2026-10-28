@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 
+/-! # Double-dual pairings
+
+Tensor pairings satisfy the triangle identities and give the double-dual evaluation and coevaluation laws.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

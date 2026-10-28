@@ -2,6 +2,11 @@ module
 public import PropertyF.Ground.Target
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 
+/-! # The Drinfeld isomorphism
+
+The braided double-dual isomorphism is natural and induces the fourth-dual isomorphism.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 open PropertyF.Ground

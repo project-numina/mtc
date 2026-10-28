@@ -2,6 +2,11 @@ module
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Fusion.Agreement
 
+/-! # Positive pivotal dimensions
+
+Positive spherical dimensions agree with Frobenius–Perron dimensions and imply pseudo-unitarity.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions

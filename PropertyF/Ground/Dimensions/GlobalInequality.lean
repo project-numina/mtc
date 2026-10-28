@@ -2,6 +2,11 @@ module
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import Mathlib.Tactic
 
+/-! # Bounds for global dimension
+
+Simple-object bounds and equality conditions control the intrinsic global dimension.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators

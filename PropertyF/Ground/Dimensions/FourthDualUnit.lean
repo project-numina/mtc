@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.CoevaluationSliding
 
+/-! # Fourth duals of the tensor unit
+
+The Drinfeld and fourth-dual maps satisfy the unit identities used for root dimensions.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions
@@ -109,8 +114,7 @@ theorem rootDimension_unit_sq :
   let u := Ground.doubleDualIso C U
   obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar u a
   have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso C U).hom := by
-    have h := congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C)
-    exact h
+    exact (congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C))
   have hfourth : (fourthDualIso C U).hom = u.hom ≫ ((u.homᘁ)ᘁ) := by
     have h := congrArg Iso.hom (fourthDualIso_unit C)
     have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)

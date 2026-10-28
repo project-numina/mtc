@@ -3,9 +3,14 @@ public import PropertyF.Ground.Dimensions.SimpleScalars
 public import Mathlib.CategoryTheory.Whiskering
 public import Mathlib.LinearAlgebra.Trace
 public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
-public import Mathlib.Data.Complex.Basic
+public import Mathlib.Basic.Complex.Basic
 public import Mathlib.Tactic
 public import Mathlib.CategoryTheory.Iso
+
+/-! # Tensor defects and multiplicities
+
+Natural fourth-dual roots induce operators on multiplicity spaces and satisfy involution identities.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -107,8 +112,7 @@ theorem involution_trace_formula {V : Type*} [AddCommGroup V] [Module ℂ V]
       LinearMap.trace ℂ V T = 2 * (m : ℂ) - (Module.finrank ℂ V : ℂ) := by
   let P : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 + T)
   have hinv (x : V) : T (T x) = x := by
-    have h := congrArg (fun f : V →ₗ[ℂ] V => f x) hT
-    simpa using h
+    simpa using (congrArg (fun f : V →ₗ[ℂ] V => f x) hT)
   have hp : IsIdempotentElem P := by
     change P * P = P
     ext x
@@ -121,7 +125,7 @@ theorem involution_trace_formula {V : Type*} [AddCommGroup V] [Module ℂ V]
     ext x
     simp [P]
   have htp := congrArg (LinearMap.trace ℂ V) hP
-  simp only [map_smul, map_add, LinearMap.trace_id, smul_eq_mul] at htp
+  simp only [map_smul, map_add, smul_eq_mul] at htp
   refine ⟨Module.finrank ℂ (LinearMap.range P), (LinearMap.range P).finrank_le, ?_⟩
   rw [htrace] at htp
   have hid : LinearMap.trace ℂ V (1 : V →ₗ[ℂ] V) = (Module.finrank ℂ V : ℂ) :=
@@ -149,8 +153,7 @@ theorem involution_eq_one_of_trace_eq_finrank {V : Type*} [AddCommGroup V] [Modu
     (htrace : LinearMap.trace ℂ V T = (Module.finrank ℂ V : ℂ)) : T = 1 := by
   let Q : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 - T)
   have hinv (x : V) : T (T x) = x := by
-    have h := congrArg (fun f : V →ₗ[ℂ] V => f x) hT
-    simpa using h
+    simpa using (congrArg (fun f : V →ₗ[ℂ] V => f x) hT)
   have hq : IsIdempotentElem Q := by
     change Q * Q = Q
     ext x
@@ -175,7 +178,7 @@ theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module �
     (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
     c • T = 1 := by
   by_cases hz : Module.finrank ℂ V = 0
-  · letI : Subsingleton V := Module.finrank_zero_iff.mp hz
+  · let : Subsingleton V := Module.finrank_zero_iff.mp hz
     ext x
     exact Subsingleton.elim _ _
   have hdim : (Module.finrank ℂ V : ℂ) ≠ 0 := by exact_mod_cast hz
@@ -194,8 +197,7 @@ theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module �
     norm_num at h
     exact h
   have hinv (x : V) : T (T x) = x := by
-    have h := congrArg (fun f : V →ₗ[ℂ] V => f x) hT
-    simpa using h
+    simpa using (congrArg (fun f : V →ₗ[ℂ] V => f x) hT)
   have hu : (c • T) * (c • T) = 1 := by
     ext x
     change c • T (c • T x) = x
@@ -247,7 +249,7 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
         simp [Category.assoc]
       _ = d.inv ≫ d.hom ≫ (a.app X).hom := by
         rw [← hn]
-      _ = d.hom ≫ b.hom := by simp [hd, Category.assoc]
+      _ = d.hom ≫ b.hom := by simp [hd]
   apply (cancel_mono (b.hom ≫ F.map b.hom)).1
   calc
     (d.hom ≫ d.hom) ≫ (b.hom ≫ F.map b.hom) =
@@ -307,7 +309,7 @@ theorem multiplicityDefect_trace_integer_bound (i j k : Fin (Ground.rank C))
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ∃ n : ℤ, LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap = (n : ℂ) ∧
       |n| ≤ (Ground.fusionCoeff C i j k : ℤ) := by
-  letI : FiniteDimensional ℂ
+  let : FiniteDimensional ℂ
       (Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :=
     Ground.IsFusionCategory.hom_finite _ _
   exact involution_trace_integer_bound _ hinv

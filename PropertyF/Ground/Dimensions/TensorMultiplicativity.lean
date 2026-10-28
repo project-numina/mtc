@@ -2,6 +2,11 @@ module
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Calculus.PartialTrace
 
+/-! # Tensor products of pivotal traces
+
+Partial traces establish multiplicativity of the pivotal trace on tensor products.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

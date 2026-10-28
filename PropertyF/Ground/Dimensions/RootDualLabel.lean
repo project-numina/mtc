@@ -3,6 +3,11 @@ public import PropertyF.Ground.Dimensions.ENOReciprocity
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.SimplePairing
 
+/-! # Dual labels and reciprocity
+
+Frobenius reciprocity and the fourth-dual tensor law imply trace reciprocity on simple labels.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -93,9 +98,9 @@ theorem enoTraceMatrix_reciprocity_of_operator_intertwining
     ext w
     obtain ⟨v, rfl⟩ := E.surjective w
     simpa [E, A, B, LinearEquiv.conj_apply] using hintertwine i j k v
-  letI : FiniteDimensional ℂ (Ground.simples C j ⟶ Ground.simples C i ⊗ Ground.simples C k) :=
+  let : FiniteDimensional ℂ (Ground.simples C j ⟶ Ground.simples C i ⊗ Ground.simples C k) :=
     Ground.IsFusionCategory.hom_finite _ _
-  letI : FiniteDimensional ℂ (Ground.simples C k ⟶ Ground.simples C (Ground.dualIndex C i) ⊗ Ground.simples C j) :=
+  let : FiniteDimensional ℂ (Ground.simples C k ⟶ Ground.simples C (Ground.dualIndex C i) ⊗ Ground.simples C j) :=
     Ground.IsFusionCategory.hom_finite _ _
   have ht := congrArg (LinearMap.trace ℂ _) hconj
   simp only [LinearMap.trace_conj', LinearMap.trace_transpose', map_smul, smul_eq_mul] at ht
@@ -147,7 +152,7 @@ theorem enoTraceMatrix_reciprocity_of_frobenius_defect
     ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k = rootDualSign C i * enoTraceMatrix C i k j := by
   apply enoTraceMatrix_reciprocity_of_operator_intertwining C
   intro i j k v
-  letI : Simple (Ground.simples C j) := Ground.simples_simple C j
+  let : Simple (Ground.simples C j) := Ground.simples_simple C j
   let P := simpleHomPairingEquiv C j (Ground.simples C i ⊗ Ground.simples C k)
   let g := P.symm v
   have hv : P g = v := P.apply_symm_apply v

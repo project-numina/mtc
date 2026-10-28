@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
+/-! # Traces on simple multiplicity spaces
+
+Partial traces and bases of simple multiplicity spaces describe tensor traces and matrix coefficients.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -108,8 +113,7 @@ theorem rightQuantumTrace_tensor_scalar
   have ht : rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) =
       scalar (rightQuantumTrace k) • rightQuantumTrace j := by
     apply End.homEquiv.injective
-    have hh := congrArg End.asHom h.symm
-    simpa [rightTraceWith, rightQuantumTrace, tensorHom_def] using hh
+    simpa [rightTraceWith, rightQuantumTrace, tensorHom_def] using (congrArg End.asHom h.symm)
   rw [ht, map_smul]
   simp [mul_comm]
 
@@ -174,6 +178,7 @@ universe v u
 variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
+/-- The inclusion of a chosen simple summand in the canonical decomposition. -/
 def simpleInclusion (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
     (k : Fin (Ground.rank C)) (t : Fin (Module.finrank ℂ (Ground.simples C k ⟶ X))) :
     Ground.simples C k ⟶ X :=
@@ -184,7 +189,7 @@ theorem simpleInclusion_independent
     (X : C.Obj) (k : Fin (Ground.rank C)) :
     LinearIndependent ℂ (simpleInclusion C X k) := by
   classical
-  letI : Simple (Ground.simples C k) := Ground.simples_simple C k
+  let : Simple (Ground.simples C k) := Ground.simples_simple C k
   apply Fintype.linearIndependent_iff.mpr
   intro g hg t
   have h := congrArg (fun f : Ground.simples C k ⟶ X =>
@@ -218,7 +223,7 @@ theorem simpleInclusionBasis_apply
     (X : C.Obj) (k : Fin (Ground.rank C))
     (t : Fin (Module.finrank ℂ (Ground.simples C k ⟶ X))) :
     simpleInclusionBasis C X k t = simpleInclusion C X k t := by
-  letI : FiniteDimensional ℂ (Ground.simples C k ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (Ground.simples C k ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
   exact congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) t
 
 set_option backward.isDefEq.respectTransparency false in
@@ -258,8 +263,8 @@ theorem simpleHom_postcomp_trace
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (Ground.simples C k)) :
     LinearMap.trace ℂ _ (Linear.rightComp ℂ (Ground.simples C k) g) = ∑ t, c t := by
   classical
-  letI : Simple (Ground.simples C k) := Ground.simples_simple C k
-  letI : FiniteDimensional ℂ (Ground.simples C k ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  let : Simple (Ground.simples C k) := Ground.simples_simple C k
+  let : FiniteDimensional ℂ (Ground.simples C k ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
   rw [LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)]
   unfold Matrix.trace
   apply Finset.sum_congr rfl
@@ -267,8 +272,8 @@ theorem simpleHom_postcomp_trace
   simp only [Matrix.diag_apply, LinearMap.toMatrix_apply, Linear.rightComp_apply,
     simpleInclusionBasis_apply]
   apply smul_left_injective ℂ (id_nonzero (Ground.simples C k))
-  have hh := simpleInclusionBasis_projection C X k (simpleInclusion C X k t ≫ g) t
-  simpa [simpleInclusion, Category.assoc, hc t] using hh
+  simpa [simpleInclusion, Category.assoc, hc t] using
+    (simpleInclusionBasis_projection C X k (simpleInclusion C X k t ≫ g) t)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root categorical trace equals the dimension-weighted sum of
@@ -282,8 +287,7 @@ theorem rootTrace_eq_simpleHom_trace_sum
   let e := simpleDecomposition C X
   let f : (⨁ V) ⟶ (⨁ V) := e.inv ≫ g ≫ e.hom
   have heq : rootTrace C g = rootTrace C f := by
-    have h := rootTrace_cyclic C e.hom (e.inv ≫ g)
-    simpa [f, Category.assoc] using h
+    simpa [f, Category.assoc] using (rootTrace_cyclic C e.hom (e.inv ≫ g))
   obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple C V (fun a => Ground.simples_simple C a.1) f
   rw [heq, ht]
   simp only [← groundUnitScalarEquiv_apply, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
@@ -315,8 +319,7 @@ theorem enoTraceMatrix_eigenvector_of_involutions (i j : Fin (Ground.rank C))
       Linear.rightComp ℂ (Ground.simples C k) d.inv = (multiplicityDefect C i j k).toLinearMap := by
     ext f
     have h : multiplicityDefect C i j k (multiplicityDefect C i j k f) = f := by
-      have hh := congrArg (fun L => L f) (hinv k)
-      exact hh
+      exact (congrArg (fun L => L f) (hinv k))
     have hs : (multiplicityDefect C i j k).symm f = multiplicityDefect C i j k f := by
       apply (multiplicityDefect C i j k).injective
       simp [h]

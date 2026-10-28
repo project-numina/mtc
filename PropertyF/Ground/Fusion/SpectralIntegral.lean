@@ -31,7 +31,7 @@ theorem fusionMatrix_unit :
 theorem fpSimple_unit :
     fpSimple D (unitIndex D) = 1 := by
   classical
-  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   simp [fpSimple, fusionMatrix_unit, spectrum.spectralRadius_one]
 
 /-- The global FP dimension is at least one, from the unit contribution. -/
@@ -73,7 +73,7 @@ theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]
 theorem fpSimple_isIntegral (i : Fin (rank D)) :
     IsIntegral ℤ (fpSimple D i) := by
   classical
-  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   let A : Matrix (Fin (rank D)) (Fin (rank D)) ℤ := fun k j =>
     fusionCoeff D i j k
   have hmatrix : A.map (Int.castRingHom ℂ) = fusionMatrix D i := by

@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.RootDualLabel
 
+/-! # Naturality of tensor defects
+
+Naturality of the root tensor isomorphism and defect yields trace reciprocity identities.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

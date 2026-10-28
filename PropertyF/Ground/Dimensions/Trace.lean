@@ -2,6 +2,11 @@ module
 public import PropertyF.Ground.Dimensions.Pivotal
 public import Mathlib.CategoryTheory.Monoidal.Linear
 
+/-! # Pivotal traces
+
+Right and left traces are linear, cyclic and compatible with duality and isomorphisms.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -94,8 +99,7 @@ an object isomorphism. -/
 theorem rightQuantumTrace_iso {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
     (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
     rightQuantumTrace j = rightQuantumTrace k := by
-  have h := rightTraceWith_cyclic j k e.hom e.inv hnat
-  simpa [rightTraceWith, rightQuantumTrace] using h
+  simpa [rightTraceWith, rightQuantumTrace] using (rightTraceWith_cyclic j k e.hom e.inv hnat)
 
 /-- Compatibility of double-dual components is preserved by inverse duality. -/
 theorem dual_components_natural {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
@@ -107,8 +111,8 @@ theorem dual_components_natural {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ
     apply Iso.ext
     exact hnat
   have hinv := congrArg (fun (a : X ≅ (Yᘁ)ᘁ) => a.inv) hiso
-  have hdual := congrArg (fun (a : (Yᘁ)ᘁ ⟶ X) => rightAdjointMate a) hinv
-  simpa only [Iso.trans_inv, comp_rightAdjointMate, ee, rightDualIsoMap, Iso.symm_hom] using hdual
+  simpa only [Iso.trans_inv, comp_rightAdjointMate, ee, rightDualIsoMap, Iso.symm_hom] using
+    (congrArg (fun (a : (Yᘁ)ᘁ ⟶ X) => rightAdjointMate a) hinv)
 
 /-- Both quantum traces are preserved when double-dual components are
 transported across an object isomorphism. -/
@@ -141,8 +145,8 @@ theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
     simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
     rw [p.naturality f]
     simp [← Category.assoc]
-  have hdual := congrArg (fun (a : (Xᘁ)ᘁ ⟶ Y) => rightAdjointMate a) hinv
-  simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using hdual
+  simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using
+    (congrArg (fun (a : (Xᘁ)ᘁ ⟶ Y) => rightAdjointMate a) hinv)
 
 /-- The left pivotal trace is cyclic without requiring sphericality. -/
 theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}

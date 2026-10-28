@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.Drinfeld
 
+/-! # Braiding and dual tensor products
+
+Evaluation cap slides show that the right-dual tensor comparison transports the braiding.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions

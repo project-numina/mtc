@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 
+/-! # Trace matrices and eigenvalue bounds
+
+Weighted eigenvalue estimates and root traces produce matrix bounds for fusion coefficients.
+-/
+
 @[expose] public noncomputable section
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
@@ -141,8 +146,8 @@ theorem rootTrace_biproduct_simple
   classical
   have h : ∀ i, ∃ c : ℂ, biproduct.ι F i ≫ f ≫ biproduct.π F i = c • 𝟙 (F i) := by
     intro i
-    letI : Simple (F i) := hs i
-    letI : FiniteDimensional ℂ (F i ⟶ F i) := Ground.IsFusionCategory.hom_finite _ _
+    let : Simple (F i) := hs i
+    let : FiniteDimensional ℂ (F i ⟶ F i) := Ground.IsFusionCategory.hom_finite _ _
     obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ (biproduct.ι F i ≫ f ≫ biproduct.π F i)
     exact ⟨c, hc.symm⟩
   choose c hc using h
@@ -173,7 +178,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- All natural-root simple dimensions are nonzero. -/
 theorem rootDimension_ne_zero (i : Fin (Ground.rank C)) :
     rootDimension C i ≠ 0 := by
-  letI : Simple (Ground.simples C i) := Ground.simples_simple C i
+  let : Simple (Ground.simples C i) := Ground.simples_simple C i
   have h := rightQuantumTrace_simple_ne_zero C (Ground.simples C i)
     ((fourthDualRootNaturalIso C).app (Ground.simples C i))
   intro hz

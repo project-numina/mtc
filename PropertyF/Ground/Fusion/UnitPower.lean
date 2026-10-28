@@ -109,10 +109,10 @@ theorem fusionFlow_balance (D : BraidedFusionCategory.{v,u}) (i j : Fin (rank D)
 theorem fusionCoeff_retract (D : BraidedFusionCategory.{v,u})
     (i j k : Fin (rank D)) (h : 0 < fusionCoeff D i j k) :
     Nonempty (Retract (simples D k) (simples D i ⊗ simples D j)) := by
-  letI : FiniteDimensional ℂ (simples D k ⟶ simples D i ⊗ simples D j) :=
+  let : FiniteDimensional ℂ (simples D k ⟶ simples D i ⊗ simples D j) :=
     IsFusionCategory.hom_finite _ _
   obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp h
-  letI : Simple (simples D k) := simples_simple D k
+  let : Simple (simples D k) := simples_simple D k
   obtain ⟨r, hr⟩ := split_from_simple f hf
   exact ⟨{ i := f, r := r, retract := hr }⟩
 
@@ -148,7 +148,7 @@ theorem unit_retract_tensorPower (D : BraidedFusionCategory.{v,u})
   obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso D X
   have hout : 0 < fusionFlow D i (unitIndex D) i := by
     unfold fusionFlow
-    rw [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, if_pos rfl, Nat.cast_one]
+    rw [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, ite_eq_left rfl, Nat.cast_one]
     simpa [fpSimple_unit] using fpSimple_pos D i
   obtain ⟨j, hj, hp⟩ := balanced_flow_cycle (fusionFlow D i) (fusionFlow_nonneg D i)
     (fusionFlow_balance D i) (unitIndex D) ⟨i, hout⟩

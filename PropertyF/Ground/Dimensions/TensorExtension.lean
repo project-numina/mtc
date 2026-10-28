@@ -3,6 +3,11 @@ public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.GroundNorm
 
+/-! # Scalar twists and tensor extension
+
+Scalar sign twists and tensor-defect identities describe extensions from simple objects.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
@@ -11,17 +16,20 @@ universe v u
 variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
+/-- The fourth-dual root twisted by scalar signs on simple objects. -/
 def rootSignTwist (C : Ground.BraidedFusionCategory.{v,u})
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) :
     𝟭 C.Obj ≅ doubleDualFunctor C.Obj :=
   simpleScalarNaturalIso C c hc ≪≫ fourthDualRootNaturalIso C
 
+/-- The tensor comparison induced by the sign-twisted root. -/
 def rootSignTensorIso (C : Ground.BraidedFusionCategory.{v,u})
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (X Y : C.Obj) :
     X ⊗ Y ≅ ((X ⊗ Y)ᘁ)ᘁ :=
   ((rootSignTwist C c hc).app X ⊗ᵢ (rootSignTwist C c hc).app Y) ≪≫
     doubleDualTensorIso X Y
 
+/-- The defect of the sign-twisted root tensor comparison. -/
 def rootSignDefect (C : Ground.BraidedFusionCategory.{v,u})
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (X Y : C.Obj) : X ⊗ Y ≅ X ⊗ Y :=
   (rootSignTwist C c hc).app (X ⊗ Y) ≪≫ (rootSignTensorIso C c hc X Y).symm
@@ -224,8 +232,8 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
     (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
     (htrace : Ground.unitScalar C (rightQuantumTrace (a.app (𝟙_ C.Obj))) = 1) :
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
-  letI : Simple (𝟙_ C.Obj) := Ground.IsFusionCategory.unit_simple
-  letI : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := Ground.IsFusionCategory.hom_finite _ _
+  let : Simple (𝟙_ C.Obj) := Ground.IsFusionCategory.unit_simple
+  let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := Ground.IsFusionCategory.hom_finite _ _
   obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
   have ht : rightQuantumTrace (a.app (𝟙_ C.Obj)) = r • rightQuantumTrace (doubleDualUnitIso (C := C.Obj)) := by
     apply End.homEquiv.injective
