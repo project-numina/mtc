@@ -276,10 +276,8 @@ theorem partialTrace_doubleBraiding_tensor (D : BraidedFusionCategory.{v,u})
   intro i j k
   let : Simple (simples D k) := simples_simple D k
   let : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
-  let s := Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D j)) / simpleDimension D p k
   let f := End.of (doubleBraiding (simples D k) (simples D i ⊗ simples D j))
-  have hs : partialMonodromy p (simples D k) (simples D j) = s • 1 :=
-    partialTrace_doubleBraiding_simple D p k _
+  have hs := partialTrace_doubleBraiding_simple D p k (simples D j)
   change rightPartialTrace p f = _
   rw [rightPartialTrace_nested_simple p (simpleDimension_ne_zero D p k) f,
     partialTrace_doubleBraiding_scalar p (simples D i) hs, rightPartialTrace_smul, hs]

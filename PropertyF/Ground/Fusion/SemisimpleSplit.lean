@@ -27,8 +27,7 @@ theorem split_to_simple {S X : C} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
   let : Simple (V p) := hsimple p.1
   let g : V p ⟶ S := biproduct.ι V p ≫ e.inv ≫ f
   let : IsIso g := CategoryTheory.isIso_of_hom_simple hp
-  refine ⟨inv g ≫ biproduct.ι V p ≫ e.inv, ?_⟩
-  simpa only [g, Category.assoc] using IsIso.inv_hom_id g
+  exact ⟨inv g ≫ biproduct.ι V p ≫ e.inv, by simpa only [g, Category.assoc] using IsIso.inv_hom_id g⟩
 
 /-- Every simple object is injective, by the dual pushout argument. -/
 theorem simple_injective (S : C) [Simple S] : Injective S where

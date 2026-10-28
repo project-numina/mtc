@@ -81,8 +81,7 @@ theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
   · intro k
     split_ifs with hk
     · subst k
-      simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit, hdim]
-      simp [globalFPDimension, Complex.ofReal_sum, pow_two]
+      simp [categoricalS_symmetric C p, categoricalS_unit, hdim, globalFPDimension, pow_two]
     · exact hvanish k hk
 
 include hdim in
