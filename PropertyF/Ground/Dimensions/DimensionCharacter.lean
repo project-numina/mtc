@@ -83,7 +83,7 @@ its Frobenius–Perron dimension. -/
 theorem galois_pivotalDimension_norm_le_fpSimple
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i :=
-  galois_character_norm_le_fpSimple C (i₀ := unitIndex C)
+  galois_character_norm_le_fpSimple (i₀ := unitIndex C)
     ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
     (pivotalDimension_character C p) σ i
 
