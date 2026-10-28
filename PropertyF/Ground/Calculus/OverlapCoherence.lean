@@ -243,7 +243,7 @@ theorem overlap_trace_step_of_coherence (D : Ground.BraidedFusionCategory.{v,u})
   have hh := congrArg
     (fun z => Dimensions.groundUnitScalarEquiv D (p.rightTrace z.asHom)) hcoh
   simp only [rightTrace_iso_conj] at hh
-  rw [pivotalTrace_overlap D _ X _ p (Dimensions.groundUnitScalarEquiv D)] at hh
+  rw [pivotalTrace_overlap D (X := X) p (Dimensions.groundUnitScalarEquiv D)] at hh
   simp only [previousOverlapLocal, rightTrace_iso_conj] at hh
   have hδ : Dimensions.groundUnitScalarEquiv D (p.rightTrace (𝟙 X)) ≠ 0 := by
     intro h
