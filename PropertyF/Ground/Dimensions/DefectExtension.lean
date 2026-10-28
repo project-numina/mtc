@@ -1,4 +1,5 @@
 module
+public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.RootDualPairing
 public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
@@ -73,6 +74,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The cup eigenvalue is invariant under changing the simple representative. -/
 theorem rootTensorDefect_coevaluation_of_iso

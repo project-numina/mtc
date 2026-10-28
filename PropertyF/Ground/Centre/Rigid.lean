@@ -1,9 +1,16 @@
 module
 public import PropertyF.Ground.Integrate.CenterBundle
 
-/-! # Rigidity of the Drinfeld centre. -/
+/-!
+# Rigidity of the Drinfeld centre
 
-/-! Unit cases of the tensor law for the normalized dual crossing. -/
+The normalized mate of a centre object's half-braiding gives a half-braiding
+on its right dual. Its tensor law and the centrality of evaluation and
+coevaluation lift the underlying dual pair to the centre.
+
+The main construction is `CentreRigid.rigidCenter`. The intermediate
+`dualObject` and `liftedPairing` make the coherence conditions explicit.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

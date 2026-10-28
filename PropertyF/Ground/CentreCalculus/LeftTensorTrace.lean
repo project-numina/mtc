@@ -3,6 +3,7 @@ public import PropertyF.Ground.CentreCalculus.ParityDeletion
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.CentreCalculus.LeftPartialTrace
+public import PropertyF.Ground.Dimensions.DualCoherence
 
 /-!
 # Left traces of braid crossings
@@ -105,7 +106,7 @@ theorem integral_of_leftTrace_and_twist_sign
   rcases hsign with h | h
   · apply integral_of_parity_adjacent_trace C p hdim hX false
     intro n σ
-    simpa [parityPermutationAction, h] using
+    simpa [permutationScalarTrace, parityPermutationAction, h] using
       tensorPermutationTrace_adjacent_of_leftTrace C p X hX htotal n σ
   · apply integral_of_parity_adjacent_trace C p hdim hX true
     intro n σ
@@ -113,7 +114,7 @@ theorem integral_of_leftTrace_and_twist_sign
         (Equiv.Perm.decomposeFin.symm (1, σ)) : ℂ) =
         -(Centre.permutationSign ℂ (n + 1) σ : ℂ) := by
       simpa using sign_decomposeFin 1 σ
-    simp only [parityPermutationAction, ↓reduceIte, Centre.twistAction,
+    simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
       unitScalar_eq_equiv, map_smul, smul_eq_mul, hsign']
     rw [← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
@@ -139,20 +140,12 @@ theorem tensorDual_coevaluation (X Y : C) :
   let E := ((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)
   let r : A ≅ B := rightDualTensorIso X Y
   let t : Bᘁ ≅ E := rightDualTensorIso (Yᘁ) (Xᘁ)
-  have hcoe : η_ B (Bᘁ) ≫ B ◁ t.hom = η_ B E := by
-    exact Dimensions.coevaluation_rightDualIso HasRightDual.exact ExactPairing.tensor
-  have hn := coevaluation_comp_rightAdjointMate r.inv
-  change η_ A (Aᘁ) ≫ A ◁ (r.invᘁ) = η_ B (Bᘁ) ≫ r.inv ▷ (Bᘁ) at hn
-  have hn' : η_ A (Aᘁ) = η_ B (Bᘁ) ≫ r.inv ▷ (Bᘁ) ≫ A ◁ (r.homᘁ) := by
-    let k : Aᘁ ≅ Bᘁ := Dimensions.rightDualIsoMap r.symm
-    let : IsIso (r.invᘁ) := by change IsIso k.hom; infer_instance
-    apply (cancel_mono (A ◁ (r.invᘁ))).1
-    simp only [Category.assoc, ← whiskerLeft_comp, ← comp_rightAdjointMate, Iso.inv_hom_id,
-      rightAdjointMate_id, whiskerLeft_id, Category.comp_id]
-    exact hn
-  rw [hn']
-  have he : η_ B E ≫ B ◁ t.inv = η_ B (Bᘁ) := by
-    rw [← hcoe, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
+  have hn : η_ A (Aᘁ) = η_ B (Bᘁ) ≫ r.inv ▷ (Bᘁ) ≫ A ◁ (r.homᘁ) := by
+    have h := Dimensions.coevaluation_iso_map r.symm
+    simpa only [Iso.symm_hom, Iso.symm_inv, tensorHom_def, Category.assoc] using h.symm
+  rw [hn]
+  have he : η_ B E ≫ B ◁ t.inv = η_ B (Bᘁ) :=
+    Dimensions.coevaluation_rightDualIso_inv HasRightDual.exact ExactPairing.tensor
   rw [← he]
   dsimp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap]

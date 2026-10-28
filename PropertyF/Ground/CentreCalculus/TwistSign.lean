@@ -22,6 +22,26 @@ theorem drinfeld_coevaluation (X : C.Obj) :
   rw [← hc, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The inverse braiding cancels along the duality snake. -/
+theorem inverse_crossing_snake {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [BraidedCategory D] [RightRigidCategory D] (X : D) :
+    (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ ((β_ (Xᘁ) X).inv ▷ X) ≫
+      (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫ (α_ (Xᘁ) X X).inv ≫
+      (ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom = 𝟙 X := by
+  calc
+    _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
+        ((β_ (Xᘁ ⊗ X) X).inv ≫ ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom := by
+          rw [braiding_tensor_left_inv]
+          simp [Category.assoc]
+    _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
+        X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ D) X).inv ≫ (λ_ X).hom := by
+          rw [← braiding_inv_naturality_right]
+          simp [Category.assoc]
+    _ = 𝟙 X := by
+      rw [ExactPairing.evaluation_coevaluation_assoc]
+      simp
+
+set_option backward.isDefEq.respectTransparency false in
 /-- Closing the first strand of the inverse braiding gives the inverse
 pivotal/Drinfeld twist. -/
 theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
@@ -44,27 +64,11 @@ theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
     simp only [← whiskerLeft_comp, braiding_inv_naturality_left]
   slice_lhs 4 6 => rw [hmove]
   simp only [Category.assoc]
-  -- remaining inverse-braid/duality snake
-  have hsnake : (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ ((β_ (Xᘁ) X).inv ▷ X) ≫
-      (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫ (α_ (Xᘁ) X X).inv ≫
-      (ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom = 𝟙 X := by
-    calc
-      _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
-          ((β_ (Xᘁ ⊗ X) X).inv ≫ ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom := by
-            rw [braiding_tensor_left_inv]
-            simp [Category.assoc]
-      _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
-          X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ C.Obj) X).inv ≫ (λ_ X).hom := by
-            rw [← braiding_inv_naturality_right]
-            simp [Category.assoc]
-      _ = 𝟙 X := by
-        rw [ExactPairing.evaluation_coevaluation_assoc]
-        simp
   rw [associator_inv_naturality_right_assoc]
   rw [whisker_exchange_assoc (ε_ X (Xᘁ)) t]
   rw [leftUnitor_naturality]
   change _ = t
-  simpa only [Category.assoc, Category.id_comp] using congrArg (fun f => f ≫ t) hsnake
+  simpa only [Category.assoc, Category.id_comp] using congrArg (fun f => f ≫ t) (inverse_crossing_snake X)
 
 include hp in
 /-- In a spherical category, the twist of a self-transparent simple is a sign. -/

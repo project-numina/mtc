@@ -33,27 +33,18 @@ theorem forgetDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
 theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso Y).hom =
       (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
-  have h := forgetDualIso_natural f
-  have hmate := congrArg (fun m => rightAdjointMate m) h
+  have hmate := congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
   simp only [comp_rightAdjointMate] at hmate
-  have hdual := forgetDualIso_natural (fᘁ)
   simp only [forgetDoubleDualIso, Iso.trans_hom, Dimensions.rightDualIsoMap,
     Iso.symm_hom, Category.assoc]
-  rw [← Category.assoc, hdual]
+  rw [← Category.assoc, forgetDualIso_natural (fᘁ)]
   simp only [Category.assoc]
   have hk : (fᘁ).fᘁ ≫ (forgetDualIso Y).invᘁ =
       (forgetDualIso X).invᘁ ≫ ((f.fᘁ)ᘁ) := by
-    let : IsIso ((forgetDualIso X).homᘁ) := by
-      change IsIso (Dimensions.rightDualIsoMap (forgetDualIso X)).hom
-      infer_instance
-    apply (cancel_epi ((forgetDualIso X).homᘁ)).1
-    rw [← Category.assoc, hmate]
-    have hx : (forgetDualIso X).homᘁ ≫ (forgetDualIso X).invᘁ = 𝟙 _ := by
-      rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
-    have hy : (forgetDualIso Y).homᘁ ≫ (forgetDualIso Y).invᘁ = 𝟙 _ := by
-      rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
-    simp only [Category.assoc, hy, Category.comp_id]
-    rw [← Category.assoc, hx, Category.id_comp]
+    change (fᘁ).fᘁ ≫ (Dimensions.rightDualIsoMap (forgetDualIso Y)).inv =
+      (Dimensions.rightDualIsoMap (forgetDualIso X)).inv ≫ ((f.fᘁ)ᘁ)
+    rw [Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
+    exact hmate
   rw [hk]
 
 /-- The transported pivotal components are natural on centre morphisms. -/
@@ -62,10 +53,9 @@ theorem transported_pivotal_natural
     {X Y : 𝒵} (f : X ⟶ Y) :
     f.f ≫ (p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv =
       (p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv ≫ ((fᘁ)ᘁ).f := by
-  have h := forgetDoubleDualIso_natural f
   apply (cancel_mono (forgetDoubleDualIso Y).hom).1
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [h]
+  rw [forgetDoubleDualIso_natural f]
   simp only [Iso.inv_hom_id_assoc]
   exact p.naturality f.f
 

@@ -48,9 +48,7 @@ theorem braidGenerator_involutive {X : C}
   induction n with
   | zero =>
     intro i
-    have hi : i = 0 := Fin.eq_zero i
-    subst i
-    exact hzero 0
+    simpa [Fin.eq_zero i] using hzero 0
   | succ n ih =>
     intro i
     refine Fin.cases (hzero (n + 1)) (fun j => ?_) i
@@ -75,9 +73,7 @@ theorem adjacent_braid_relation (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
   induction n with
   | zero =>
     intro i
-    have hi : i = 0 := Fin.eq_zero i
-    subst i
-    exact Calculus.three_braid_relation X
+    simpa [Fin.eq_zero i] using Calculus.three_braid_relation X
   | succ n ih =>
     intro i
     refine Fin.cases ?_ (fun j => ?_) i
@@ -102,15 +98,9 @@ theorem first_distant_commute (X : C) (n : ℕ) (j : Fin (n + 1)) :
     (braidGenerator X (n + 2) ⟨0, by omega⟩).asIso.hom ≫
       (braidGenerator X (n + 2) j.succ.succ).asIso.hom
   rcases j with ⟨j, hj⟩
-  simp only [Fin.succ, braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
-    Iso.refl_hom, tensorHom_id, id_tensorHom]
-  change (X ◁ X ◁ (braidGenerator X n ⟨j, hj⟩).asIso.hom) ≫
-      ((α_ X X (tensorPower X (n + 2))).inv ≫ (β_ X X).hom ▷ _ ≫
-        (α_ X X (tensorPower X (n + 2))).hom) =
-    ((α_ X X (tensorPower X (n + 2))).inv ≫ (β_ X X).hom ▷ _ ≫
-        (α_ X X (tensorPower X (n + 2))).hom) ≫
-      (X ◁ X ◁ (braidGenerator X n ⟨j, hj⟩).asIso.hom)
-  exact (Calculus.crossing_natural X _ _ (braidGenerator X n ⟨j, hj⟩).asIso.hom).symm
+  simpa only [Fin.succ, braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+    Iso.refl_hom, tensorHom_id, id_tensorHom] using
+    (Calculus.crossing_natural X _ _ (braidGenerator X n ⟨j, hj⟩).asIso.hom).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Crossings supported on disjoint pairs of strands commute. -/
@@ -121,32 +111,25 @@ theorem distant_braid_commute (X : C) : ∀ (n : ℕ) (i j : Fin (n + 1)),
   intro n
   induction n with
   | zero =>
-    intro i j h
-    have hi := i.isLt
+    intro i j hij
     have hj := j.isLt
     omega
   | succ n ih =>
-    intro i j
-    revert j
-    refine Fin.cases ?_ (fun i' => ?_) i <;> intro j
-    · cases n with
+    intro i j hij
+    by_cases hi : i = 0
+    · subst i
+      cases n with
       | zero =>
-        intro h
         have hj := j.isLt
         omega
       | succ n =>
-        refine Fin.cases ?_ (fun j' => ?_) j
-        · intro h; simp only [Fin.val_zero] at h; omega
-        · refine Fin.cases ?_ (fun j'' => ?_) j'
-          · intro h; simp only [Fin.val_succ, Fin.val_zero] at h; omega
-          · intro h
-            exact first_distant_commute X n j''
-    · refine Fin.cases ?_ (fun j' => ?_) j
-      · intro h; simp only [Fin.val_succ, Fin.val_zero] at h; omega
-      · intro h
-        have h' : i'.val + 1 < j'.val := by simpa using h
-        have hh := congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2))) (ih i' j' h')
-        simp only [map_mul] at hh
-        simpa only [braidGenerator_succ] using hh
+        obtain ⟨j', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j) (by rintro rfl; simp at hij)
+        obtain ⟨j'', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j') (by rintro rfl; simp at hij)
+        exact first_distant_commute X n j''
+    · obtain ⟨i', rfl⟩ := Fin.exists_succ_eq_of_ne_zero hi
+      obtain ⟨j', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j) (by rintro rfl; simp at hij)
+      have hh := congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2)))
+        (ih i' j' (by simpa using hij))
+      simpa only [map_mul, braidGenerator_succ] using hh
 
 end PropertyF.Ground.CentreCalculus

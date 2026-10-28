@@ -74,10 +74,9 @@ theorem pivotalBraidedTwist_natural {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (pivotalBraidedTwist C p Y).hom = (pivotalBraidedTwist C p X).hom ≫ f := by
   have hn : ((fᘁ)ᘁ) ≫ (Ground.doubleDualIso C Y).inv =
       (Ground.doubleDualIso C X).inv ≫ f := by
-    apply (cancel_epi (Ground.doubleDualIso C X).hom).1
-    simp only [Iso.hom_inv_id_assoc]
-    rw [← doubleDualIso_natural_assoc]
-    simp
+    apply (Ground.doubleDualIso C X).eq_inv_comp.mpr
+    simpa only [Category.assoc] using
+      (Ground.doubleDualIso C Y).comp_inv_eq.mpr (doubleDualIso_natural C f).symm
   simp only [pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom, Category.assoc]
   rw [← Category.assoc, p.naturality, Category.assoc, hn]
 /-- The twist scalar of a simple object. -/
