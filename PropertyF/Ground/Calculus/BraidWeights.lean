@@ -126,8 +126,7 @@ theorem transported_weight_ne_zero {ι : Type*} [Fintype ι]
   have hzero : (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0 := by
     apply σ.injective
     simp [map_sum, map_mul, hz]
-  have hr : (∑ i, (mult i : ℝ) * dim i) = 0 := by exact_mod_cast hzero
-  linarith
+  exact (ne_of_gt hsum) (by exact_mod_cast hzero)
 
 end PropertyF.Ground.Calculus
 

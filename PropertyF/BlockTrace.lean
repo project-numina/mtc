@@ -155,9 +155,7 @@ lemma trace_signElement (B : Blocks) (w : Fin B.count → ℝ) :
     Fintype.card_fin, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast]
   apply Finset.sum_congr rfl
   intro r _
-  by_cases h : 0 ≤ w r
-  · simp [h, abs_of_nonneg h]
-  · simp [h, abs_of_neg (lt_of_not_ge h)]
+  by_cases h : 0 ≤ w r <;> simp [h, abs_of_nonneg, abs_of_neg, lt_of_not_ge]
 
 /-- Equality in the weighted bound implies centrality when no weight vanishes.
 This is the equality argument in Lemma 3.2, proved using actual complex matrices. -/

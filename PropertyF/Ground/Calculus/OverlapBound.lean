@@ -64,11 +64,11 @@ theorem pivotalTrace_braid_unitary_bound
     _ = ∑ i, (m i : ℝ) * fp i := multiplicity_mass_eq m d mult fp hdim
 
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
-theorem fpDimension_tensorPower (C : BraidedFusionCategory.{v,u})
-    (X : C.Obj) (n : ℕ) : Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n := by
-  induction n with
-  | zero => simp [tensorPower, Ground.fpDimension_unit]
-  | succ n ih => simp [tensorPower, Ground.fpDimension_tensor, ih, pow_succ, mul_comm]
+theorem fpDimension_tensorPower (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+    ∀ n, Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n
+  | 0 => by simp [tensorPower, Ground.fpDimension_unit]
+  | n + 1 => by simp [tensorPower, Ground.fpDimension_tensor, fpDimension_tensorPower C X n,
+      pow_succ, mul_comm]
 
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
@@ -112,10 +112,9 @@ def overlapIndex (t : ℕ) : ℕ → ℕ
   | 0 => t
   | k + 1 => overlapIndex t k + (t + 1)
 
-theorem overlapIndex_formula (t k : ℕ) : overlapIndex t k = t + k * (t + 1) := by
-  induction k with
-  | zero => simp [overlapIndex]
-  | succ k ih => simp [overlapIndex, ih, Nat.succ_mul, Nat.add_assoc]
+theorem overlapIndex_formula (t : ℕ) : ∀ k, overlapIndex t k = t + k * (t + 1)
+  | 0 => by simp [overlapIndex]
+  | k + 1 => by simp [overlapIndex, overlapIndex_formula t k, Nat.succ_mul, Nat.add_assoc]
 
 /-- Extend the existing product by `t+1` identity strands on the right. -/
 def overlapLeft (X : C) (t k : ℕ) :
