@@ -47,12 +47,14 @@ theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
   simpa only [comp_rightAdjointMate, rightDualIsoMap] using
     congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
 
+variable (p : PivotalStructure (C := D))
+
 /-- Transport a pivotal component along the forgotten double-dual comparison. -/
-def transportedPivotalHom (p : PivotalStructure (C := D)) (Z : 𝒵) :
+def transportedPivotalHom (Z : 𝒵) :
     Z.1 ⟶ ((Zᘁ)ᘁ).1 := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
 
 /-- The transported pivotal components are natural on centre morphisms. -/
-theorem transported_pivotal_natural (p : PivotalStructure (C := D)) (f : X ⟶ Y) :
+theorem transported_pivotal_natural (f : X ⟶ Y) :
     f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f := by
   dsimp only [transportedPivotalHom]
   rw [← Category.assoc, Iso.comp_inv_eq]

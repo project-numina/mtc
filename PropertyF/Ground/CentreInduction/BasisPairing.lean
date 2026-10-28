@@ -14,7 +14,7 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
-variable {V W : C.Obj}
+variable {V W : C.Obj} {E : Type*} [AddCommGroup E] [Module ℂ E]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The perfect pairing is natural for maps between different underlying
@@ -58,8 +58,8 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
   split_ifs <;> simp <;> exact End.ext rfl
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
-theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W) {E : Type*}
-    [AddCommGroup E] [Module ℂ E] (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
+theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
+    (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
   let A := simpleInclusionBasis C V i
@@ -109,7 +109,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.Obj} {W : C.Obj}
     (i : Fin (rank C)) (q : ∀ j, V j ⟶ W) (r : ∀ j, W ⟶ V j)
     (h : (∑ j, r j ≫ q j) = 𝟙 W)
-    {E : Type*} [AddCommGroup E] [Module ℂ E]
     (F : (simples C i ⟶ W) →ₗ[ℂ] (W ⟶ simples C i) →ₗ[ℂ] E) :
     (∑ j, ∑ a, F (simpleInclusion C (V j) i a ≫ q j)
         (r j ≫ simpleProjection C (V j) i a)) =
@@ -170,9 +169,8 @@ theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
   rw [whisker_exchange_assoc]
   have hn := congrArg (fun k => k ▷ T) (rightDualTensorIso_natural h (𝟙 S))
   simp only [tensorHom_id, rightAdjointMate_id, id_tensorHom, comp_whiskerRight] at hn
-  rw [reassoc_of% hn]
-  rw [whisker_exchange_assoc, associator_naturality_right_assoc]
-  rw [associator_naturality_middle_assoc]
+  rw [reassoc_of% hn, whisker_exchange_assoc, associator_naturality_right_assoc,
+    associator_naturality_middle_assoc]
   simp only [← whiskerLeft_comp_assoc]
   rw [rightAdjointMate_comp_evaluation]
 
