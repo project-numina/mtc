@@ -21,7 +21,7 @@ local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Simple projections form the dual basis to simple inclusions. -/
-theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
+theorem pairing_simpleProjection {V : C.Obj} {i : Fin (rank C)}
     (a : Fin (Module.finrank ℂ (Sᶜ i ⟶ V))) :
     simpleHomPairingEquiv (Sᶜ i) V (simpleProjection C V i a) =
       (simpleInclusionBasis C V i).dualBasis a :=
@@ -31,7 +31,7 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
       (simpleInclusionBasis_projection g a).symm
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
-theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
+theorem simpleBasis_contraction_natural {i : Fin (rank C)} (q : V ⟶ W)
     (F : (Sᶜ i ⟶ W) →ₗ[ℂ] (V ⟶ Sᶜ i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
@@ -75,7 +75,7 @@ def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v
 set_option backward.isDefEq.respectTransparency false in
 /-- A finite splitting can be used to refine a simple-basis contraction. -/
 theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.Obj} {W : C.Obj}
-    (i : Fin (rank C)) (q : ∀ j, V j ⟶ W) (r : ∀ j, W ⟶ V j)
+    {i : Fin (rank C)} (q : ∀ j, V j ⟶ W) (r : ∀ j, W ⟶ V j)
     (h : (∑ j, r j ≫ q j) = 𝟙 W)
     (F : (Sᶜ i ⟶ W) →ₗ[ℂ] (W ⟶ Sᶜ i) →ₗ[ℂ] E) :
     (∑ j, ∑ a, F (simpleInclusion C (V j) i a ≫ q j)
@@ -84,7 +84,7 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
   have step (j : J) : (∑ a, F (simpleInclusion C (V j) i a ≫ q j)
         (r j ≫ simpleProjection C (V j) i a)) =
       ∑ b, F (simpleInclusion C W i b) (r j ≫ q j ≫ simpleProjection C W i b) := by
-    simpa [Category.assoc] using simpleBasis_contraction_natural C i (q j)
+    simpa [Category.assoc] using simpleBasis_contraction_natural C (q j)
       ((LinearMap.lcomp ℂ E (Linear.leftComp ℂ (Sᶜ i) (r j))).comp F)
   simp_rw [step]
   rw [Finset.sum_comm]
@@ -106,7 +106,7 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
     rw [crossing_completeness, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id]
   simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
     crossingInclusion, crossingProjection, mixedCrossingBilinear, mixedCrossing, crossingBlock, Category.assoc] using
-    simpleBasis_contraction_refinement C i q r h
+    simpleBasis_contraction_refinement C q r h
       (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (Sᶜ i) (Sᶜ j))
 
 end PropertyF.Ground.CentreInduction
@@ -185,7 +185,7 @@ theorem crossingBlock_sum_natural_test
     ∑ a, crossingSummand C X T i j a ≫ (h ▷ ((Sᶜ j ⊗ X) ⊗ (Sᶜ j)ᘁ)) := by
   simpa only [crossingSummand, crossingBlock_pre_test, crossingBlock_post_test,
     mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk, crossingInclusion, crossingProjection, simpleProjection] using
-    (simpleBasis_contraction_natural C i (h ▷ Sᶜ j)
+    (simpleBasis_contraction_natural C (h ▷ Sᶜ j)
       (mixedCrossingBilinear (k := ℂ) X T U (Sᶜ i) (Sᶜ j))).symm
 
 set_option backward.isDefEq.respectTransparency false in
