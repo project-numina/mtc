@@ -273,7 +273,7 @@ theorem target_of_modular_center
     let X : D.Obj := simples Z y
     letI : Simple X := simples_simple Z y
     intro u k
-    exact Calculus.overlap_trace_power D X (ScalarTwist.pivotal Z σ p) 1 u k
+    exact Calculus.overlap_trace_power D (ScalarTwist.pivotal Z σ p) u k
 
 end PropertyF.Ground
 end

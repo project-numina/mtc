@@ -247,8 +247,8 @@ def actualBraidTrace (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
 /-- Iterating a single overlap step gives the scaled power identity, without
 dividing by the simple dimension. -/
 theorem overlap_trace_power_of_step
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (t : ℕ) (u : braidAlgebra X t)
+    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj}
+    (p : Dimensions.PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
     (hstep : ∀ k, actualBraidTrace C X p (overlapIndex t (k + 1))
         (overlapProduct X t u (k + 1)) *
         Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) =
