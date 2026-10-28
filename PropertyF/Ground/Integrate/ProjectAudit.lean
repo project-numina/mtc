@@ -15,7 +15,6 @@ public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.Norm
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Cabling.Strands
-public import PropertyF.Ground.Cabling.Pure
 
 
 
@@ -167,7 +166,6 @@ import all PropertyF.GaloisRigidity
 import all PropertyF.GaloisSymmetry
 import all PropertyF.Ground.Cabling.Generated
 import all PropertyF.Ground.Cabling.Naturality
-import all PropertyF.Ground.Cabling.Pure
 import all PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.Cabling.UnitPower
 import all PropertyF.Ground.Calculus.BraidWeights
@@ -177,12 +175,9 @@ import all PropertyF.Ground.Calculus.OverlapCoherence
 import all PropertyF.Ground.Calculus.PartialTrace
 import all PropertyF.Ground.Calculus.PositiveWeights
 import all PropertyF.Ground.Calculus.RightStrand
-import all PropertyF.Ground.Calculus.StrandCoherence
 import all PropertyF.Ground.Calculus.TensorPowerCoherence
-import all PropertyF.Ground.Calculus.ThreeBraid
 import all PropertyF.Ground.Calculus.ThreeRigidity
 import all PropertyF.Ground.Calculus.ThreeTrace
-import all PropertyF.Ground.Calculus.Unitarization
 import all PropertyF.Ground.Calculus.UnitaryBlocks
 import all PropertyF.Ground.Centre.Abelian
 import all PropertyF.Ground.Centre.AlternatingImage

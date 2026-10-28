@@ -30,7 +30,6 @@ public import PropertyF.Ground.Fusion.FunctorDimension
 public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Fusion.GeneratedRigidity
 public import PropertyF.Ground.Cabling.Strands
-public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.Norm
@@ -112,7 +111,6 @@ public import PropertyF.Ground.Cabling.UnitPower
 public import PropertyF.Ground.Cabling.Naturality
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapBound
-public import PropertyF.Ground.Calculus.StrandCoherence
 public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Integrate.ScalarTwist
 public import PropertyF.Ground.Integrate.ScalarTwistTransport
