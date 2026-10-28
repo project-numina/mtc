@@ -125,10 +125,9 @@ theorem crossingCandidate_unit_summand :
   · let : Unique (crossingIndex C (𝟙_ C.Obj) i i) := by
       simpa only [crossingIndex, unit_crossing_finrank, ↓reduceIte] using
         (inferInstance : Unique (Fin 1))
-    rw [Fintype.sum_unique]
     let : Simple (Sᶜ i) := simples_simple C i
     let : FiniteDimensional ℂ (Sᶜ i ⟶ Sᶜ i) := IsFusionCategory.hom_finite _ _
-    rw [crossingBlock_unit_of_split (k := ℂ) X
+    rw [Fintype.sum_unique, crossingBlock_unit_of_split (k := ℂ) X
       (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
       (crossingInclusion_projection default), Category.assoc]
   · intro j _ hne

@@ -59,16 +59,12 @@ theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
     (F : (Sᶜ i ⟶ W) →ₗ[ℂ] (V ⟶ Sᶜ i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
-  let A := simpleInclusionBasis C V i
-  let B := simpleInclusionBasis C W i
-  let P := simpleHomPairingEquiv (Sᶜ i) V
-  let F' : (Sᶜ i ⟶ W) →ₗ[ℂ]
-      Module.Dual ℂ (Sᶜ i ⟶ V) →ₗ[ℂ] E :=
-    (LinearMap.lcomp ℂ E P.symm.toLinearMap).comp F
-  simpa only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply,
-    LinearEquiv.coe_coe, A, B, P, simpleInclusionBasis_apply,
+  simpa only [LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply,
+    LinearEquiv.coe_coe, simpleInclusionBasis_apply,
     ← pairing_simpleProjection, ← simpleHomPairingEquiv_natural, LinearEquiv.symm_apply_apply] using
-    dualBasis_contraction_natural A B (Linear.rightComp ℂ (Sᶜ i) q) F'
+    dualBasis_contraction_natural (simpleInclusionBasis C V i) (simpleInclusionBasis C W i)
+      (Linear.rightComp ℂ (Sᶜ i) q)
+      ((LinearMap.lcomp ℂ E (simpleHomPairingEquiv (Sᶜ i) V).symm.toLinearMap).comp F)
 
 /-- A mixed crossing block, with the input and output test strands allowed
 to differ, is bilinear in its two fusion morphisms. -/
@@ -112,9 +108,8 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
   have step (j : J) : (∑ a, F (simpleInclusion C (V j) i a ≫ q j)
         (r j ≫ simpleProjection C (V j) i a)) =
       ∑ b, F (simpleInclusion C W i b) (r j ≫ q j ≫ simpleProjection C W i b) := by
-    let F' : (Sᶜ i ⟶ W) →ₗ[ℂ] (V j ⟶ Sᶜ i) →ₗ[ℂ] E :=
-      (LinearMap.lcomp ℂ E (Linear.leftComp ℂ (Sᶜ i) (r j))).comp F
-    simpa [F', Category.assoc] using simpleBasis_contraction_natural C i (q j) F'
+    simpa [Category.assoc] using simpleBasis_contraction_natural C i (q j)
+      ((LinearMap.lcomp ℂ E (Linear.leftComp ℂ (Sᶜ i) (r j))).comp F)
   simp_rw [step]
   rw [Finset.sum_comm]
   simp_rw [← map_sum, ← Category.assoc, ← Preadditive.sum_comp, h, Category.id_comp]
@@ -227,9 +222,7 @@ theorem crossingCandidate_natural_test {T U : C.Obj} (h : T ⟶ U) :
   rw [← whisker_exchange_assoc]
   simp only [crossingCandidate_on_summand, crossingCandidate_on_summand_assoc,
     Preadditive.comp_sum, Preadditive.sum_comp]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  simpa only [Category.assoc, whisker_exchange, Preadditive.sum_comp] using
-    congrArg (fun g => g ≫ (U ◁ biproduct.ι (inductionSummand C X) j))
-      (crossingBlock_sum_natural_test C X T U h i j)
+  simp_rw [Category.assoc, whisker_exchange, ← Category.assoc, ← Preadditive.sum_comp,
+    crossingBlock_sum_natural_test C X T U h i, ← Preadditive.sum_comp]
 
 end PropertyF.Ground.CentreInduction
