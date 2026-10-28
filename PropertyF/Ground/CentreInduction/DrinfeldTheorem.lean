@@ -20,7 +20,7 @@ theorem drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [BraidedCategory D] [RightRigidCategory D] (X Y : D) :
     Modular.doubleBraiding X Y ≫ (drinfeldIso (X ⊗ Y)).hom =
       ((drinfeldIso X).hom ⊗ₘ (drinfeldIso Y).hom) ≫ (doubleDualTensorIso X Y).hom :=
-  CentreIntegrate.drinfeld_tensor_of_pairing_cap drinfeldIso
+  CentreIntegrate.drinfeld_tensor_of_pairing_cap (fun Z ↦ drinfeldIso Z)
     (drinfeld_eval (X ⊗ Y)) (drinfeld_tensor_pairing_cap X Y)
 
 end PropertyF.Ground
