@@ -7,6 +7,11 @@ public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 /-! # Pivotal scalar twists
 
 Scalar natural transformations twist pivotal structures and their simple dimensions.
+
+## Main results
+
+* `pivotalScalarTwist`: twists a pivotal structure by scalar natural data.
+* `pivotalDimension_scalarTwist_simple`: computes the resulting dimensions of simples.
 -/
 
 @[expose] public noncomputable section
@@ -20,7 +25,7 @@ set_option backward.isDefEq.respectTransparency false in
 def pivotalScalarTwist (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) (c : Fin (rank C) → ℂ)
     (hc : ∀ i, c i ≠ 0) (hunit : c (unitIndex C) = 1)
-    (hmul : ∀ i j k, Ground.fusionCoeff C i j k ≠ 0 → c k = c i * c j) :
+    (hmul : ∀ i j k, fusionCoeff C i j k ≠ 0 → c k = c i * c j) :
     PivotalStructure (C := C.Obj) where
   iso X := (simpleScalarNaturalIso C c hc).app X ≪≫ p.iso X
   naturality {X Y} f := by
@@ -48,7 +53,7 @@ def pivotalScalarTwist (C : BraidedFusionCategory.{v,u})
 theorem pivotalDimension_scalarTwist_simple
     (p : PivotalStructure (C := C.Obj)) (c : Fin (rank C) → ℂ)
     (hc : ∀ i, c i ≠ 0) (hunit : c (unitIndex C) = 1)
-    (hmul : ∀ i j k, Ground.fusionCoeff C i j k ≠ 0 → c k = c i * c j)
+    (hmul : ∀ i j k, fusionCoeff C i j k ≠ 0 → c k = c i * c j)
     (i : Fin (rank C)) :
     pivotalDimension C (pivotalScalarTwist C p c hc hunit hmul) (simples C i) =
       c i * pivotalDimension C p (simples C i) := by

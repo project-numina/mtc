@@ -8,9 +8,16 @@ public import Mathlib.CategoryTheory.Simple
 public import Mathlib.CategoryTheory.Limits.Preserves.Shapes.Kernels
 public import Mathlib.CategoryTheory.Limits.Preserves.Basic
 
-/-! # Additive and abelian structure on the Drinfeld centre. -/
+/-!
+# Additive and abelian structure on the Drinfeld centre
 
-/-! Binary biproducts in the Drinfeld centre. -/
+Binary biproducts, kernels and cokernels are constructed on the underlying
+objects, with half-braidings induced by preservation under tensoring. The
+forgetful functor detects the relevant limits and colimits.
+
+The resulting `centerAbelian` construction supplies the abelian structure used
+for centre objects over a rigid abelian monoidal category.
+-/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Centre
@@ -42,7 +49,7 @@ private theorem inr_mapBiprod_inv (X Y : CategoryTheory.Center C) (U : C) :
   rfl
 
 @[reassoc]
-theorem inl_sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
+theorem inl_sumHalfIso {X Y : CategoryTheory.Center C} (U : C) :
     biprod.inl ▷ U ≫ (sumHalfIso X Y U).hom = halfBraidingHom X U ≫ U ◁ biprod.inl := by
   have h : biprod.inl ▷ U ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).hom = biprod.inl := by
     apply (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
@@ -55,7 +62,7 @@ theorem inl_sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
   rfl
 
 @[reassoc]
-theorem inr_sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
+theorem inr_sumHalfIso {X Y : CategoryTheory.Center C} (U : C) :
     biprod.inr ▷ U ≫ (sumHalfIso X Y U).hom = halfBraidingHom Y U ≫ U ◁ biprod.inr := by
   have h : biprod.inr ▷ U ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).hom = biprod.inr := by
     apply (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
@@ -111,11 +118,11 @@ def centerBiprod (X Y : CategoryTheory.Center C) : CategoryTheory.Center C :=
 
 /-- The usual inclusion is a centre morphism. -/
 def centerBiprodInl (X Y : CategoryTheory.Center C) : X ⟶ centerBiprod X Y :=
-  ⟨biprod.inl, fun U => inl_sumHalfIso X Y U⟩
+  ⟨biprod.inl, fun U => inl_sumHalfIso (X := X) (Y := Y) U⟩
 
 /-- The other usual inclusion is a centre morphism. -/
 def centerBiprodInr (X Y : CategoryTheory.Center C) : Y ⟶ centerBiprod X Y :=
-  ⟨biprod.inr, fun U => inr_sumHalfIso X Y U⟩
+  ⟨biprod.inr, fun U => inr_sumHalfIso (X := X) (Y := Y) U⟩
 
 /-- The first projection commutes with the sum half-braiding. -/
 theorem sumHalfIso_fst (X Y : CategoryTheory.Center C) (U : C) :

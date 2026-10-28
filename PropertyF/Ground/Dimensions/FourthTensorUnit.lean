@@ -6,6 +6,11 @@ public import PropertyF.Ground.Dimensions.DefectNaturality
 /-! # Unit laws for the fourth-dual root
 
 The tensor unit and unit labels satisfy the coherence identities for the root tensor defect.
+
+## Main results
+
+* `rootTensorIso_unit_left`: computes the left unit component of the fourth-dual root comparison.
+* `rootTensorDefect_unit_right`: computes the tensor defect at the right unit.
 -/
 
 @[expose] public noncomputable section
@@ -122,7 +127,7 @@ theorem rootTensorDefect_unit_right (X : C.Obj) :
 theorem rootTensorDefect_unitLabel_left (X : C.Obj) :
     (rootTensorDefect C (simples C (unitIndex C)) X).hom =
       rootDimension C (unitIndex C) • 𝟙 (simples C (unitIndex C) ⊗ X) := by
-  obtain ⟨e⟩ := Ground.unitIndex_iso C
+  obtain ⟨e⟩ := unitIndex_iso C
   let E := e ⊗ᵢ Iso.refl X
   apply (cancel_mono E.hom).1
   dsimp [E, tensorIso_hom]
@@ -133,7 +138,7 @@ theorem rootTensorDefect_unitLabel_left (X : C.Obj) :
 theorem rootTensorDefect_unitLabel_right (X : C.Obj) :
     (rootTensorDefect C X (simples C (unitIndex C))).hom =
       rootDimension C (unitIndex C) • 𝟙 (X ⊗ simples C (unitIndex C)) := by
-  obtain ⟨e⟩ := Ground.unitIndex_iso C
+  obtain ⟨e⟩ := unitIndex_iso C
   let E := Iso.refl X ⊗ᵢ e
   apply (cancel_mono E.hom).1
   dsimp [E, tensorIso_hom]

@@ -16,7 +16,7 @@ universe v u
 /-- Once induced simple representatives have the expected underlying objects
 and the adjunction supplies the displayed Hom dimension equality, the global
 FP dimension of the actual centre is the square of that of the base. The
-hypotheses explicitly isolate the still-unconstructed induction adjunction. -/
+hypotheses isolate the numerical contribution of the induction adjunction. -/
 theorem globalFPDimension_square_of_induction
     (C : BraidedFusionCategory.{v,u})
     [RigidCategory (CategoryTheory.Center C.Obj)]
@@ -87,11 +87,11 @@ universe v u v' u'
 
 /-- The reverse Hom equivalence of an adjunction is linear when its left
 adjoint is linear. -/
-def homLinearEquivOfAdjunction {A : Type u} {B : Type u'}
+def homLinearEquivOfAdjunction {k : Type*} [CommSemiring k] {A : Type u} {B : Type u'}
     [Category.{v} A] [Category.{v'} B] [Preadditive A] [Preadditive B]
-    [Linear ℂ A] [Linear ℂ B] (F : A ⥤ B) (G : B ⥤ A)
-    [F.Additive] [F.Linear ℂ] (adj : F ⊣ G) (X : A) (Y : B) :
-    (X ⟶ G.obj Y) ≃ₗ[ℂ] (F.obj X ⟶ Y) := by
+    [Linear k A] [Linear k B] (F : A ⥤ B) (G : B ⥤ A)
+    [F.Additive] [F.Linear k] (adj : F ⊣ G) (X : A) (Y : B) :
+    (X ⟶ G.obj Y) ≃ₗ[k] (F.obj X ⟶ Y) := by
   refine { (adj.homAddEquiv X Y).symm with map_smul' := ?_ }
   intro r f
   change (adj.homEquiv X Y).symm (r • f) = r • (adj.homEquiv X Y).symm f
@@ -108,7 +108,7 @@ theorem globalFPDimension_square_of_adjunction
     (hI : ∀ i, Nonempty ((I.obj (simples C i)).1 ≅ underlying C (simples C i))) :
     globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 :=
   globalFPDimension_square_of_induction C (fun i => I.obj (simples C i)) hI
-    (fun i j => (homLinearEquivOfAdjunction (CategoryTheory.Center.forget C.Obj) I adj
+    (fun i j => (homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj) I adj
       (simples (Integrate.bundledCenter C) j) (simples C i)).finrank_eq)
 
 end PropertyF.Ground.CentreInduction

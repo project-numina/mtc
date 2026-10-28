@@ -19,21 +19,17 @@ construction uses no assumption about that law on arbitrary objects. -/
 theorem positive_spherical_of_simple_fourth_and_reciprocity
     (hfourth : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j))
-    (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j)
-    (hpu : Ground.PseudoUnitary C) :
+    (htranspose : ENOTraceMatrixReciprocity C)
+    (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
-  have hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1 := by
+  have hinv : MultiplicityDefectsInvolutive C := by
     intro i j k
     apply multiplicityDefect_involution_of_tensor_square C k
     exact (rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm
-  have heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
-      rootDimension C i * rootDimension C j := by
+  have heig : ENOTraceMatrixEigenvector C := by
     intro i j
     exact enoTraceMatrix_eigenvector_of_involutions C (hinv i j)
-  have hnorm : ∀ i, squaredNorm C (simples C i) =
-      ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
+  have hnorm : RootNormIdentity C := by
     intro i
     exact squaredNorm_eq_root_norm_sq_of_reciprocity C hinv htranspose i
   exact positive_spherical_of_matrix_identities C hinv heig hnorm hpu
@@ -51,22 +47,22 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 /-- Braiding identifies the right dual with the chosen left-dual representative. -/
 def rightDualLabelIso (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
-    (simples C i)ᘁ ≅ simples C (Ground.dualIndex C i) :=
+    (simples C i)ᘁ ≅ simples C (dualIndex C i) :=
   leftDualIso (BraidedCategory.exactPairing_swap (simples C i) ((simples C i)ᘁ))
-    HasLeftDual.exact ≪≫ Classical.choice (Ground.dualIndex_iso C i)
+    HasLeftDual.exact ≪≫ Classical.choice (dualIndex_iso C i)
 
 /-- The actual ENO Frobenius/semisimple reciprocity isomorphism: the dual of
 one fusion multiplicity space is the dual-label multiplicity space. -/
 def enoReciprocityEquiv (C : BraidedFusionCategory.{v,u})
     (i j k : Fin (rank C)) :
     Module.Dual ℂ (simples C k ⟶ simples C i ⊗ simples C j) ≃ₗ[ℂ]
-      (simples C j ⟶ simples C (Ground.dualIndex C i) ⊗ simples C k) := by
+      (simples C j ⟶ simples C (dualIndex C i) ⊗ simples C k) := by
   let Xi := simples C i
   let Xj := simples C j
   let Xk := simples C k
   letI : ExactPairing (Xiᘁ) Xi := BraidedCategory.exactPairing_swap Xi (Xiᘁ)
   let eq1 := (simpleHomPairingEquiv C k (Xi ⊗ Xj)).symm
-  let eq2 := Ground.tensorLeftHomLinearEquiv Xj (Xiᘁ) Xi Xk
+  let eq2 := tensorLeftHomLinearEquiv Xj (Xiᘁ) Xi Xk
   let eq3 := Linear.homCongr ℂ (Iso.refl Xj) (rightDualLabelIso C i ⊗ᵢ Iso.refl Xk)
   exact eq1.trans (eq2.trans eq3)
 
@@ -77,22 +73,21 @@ theorem enoTraceMatrix_reciprocity_of_operator_intertwining
       (v : Module.Dual ℂ (simples C j ⟶ simples C i ⊗ simples C k)),
       enoReciprocityEquiv C i k j
         (Module.Dual.transpose (multiplicityDefect C i k j).toLinearMap v) =
-      rootDualSign C i • (multiplicityDefect C (Ground.dualIndex C i) j k)
+      rootDualSign C i • (multiplicityDefect C (dualIndex C i) j k)
         (enoReciprocityEquiv C i k j v)) :
-    ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j := by
+    ENOTraceMatrixReciprocity C := by
   intro i j k
   let E := enoReciprocityEquiv C i k j
   let A := (multiplicityDefect C i k j).toLinearMap
-  let B := (multiplicityDefect C (Ground.dualIndex C i) j k).toLinearMap
+  let B := (multiplicityDefect C (dualIndex C i) j k).toLinearMap
   have hconj : E.conj (Module.Dual.transpose A) = rootDualSign C i • B := by
     ext w
     obtain ⟨v, rfl⟩ := E.surjective w
     simpa [E, A, B, LinearEquiv.conj_apply] using hintertwine i j k v
   let : FiniteDimensional ℂ (simples C j ⟶ simples C i ⊗ simples C k) :=
-    Ground.IsFusionCategory.hom_finite _ _
-  let : FiniteDimensional ℂ (simples C k ⟶ simples C (Ground.dualIndex C i) ⊗ simples C j) :=
-    Ground.IsFusionCategory.hom_finite _ _
+    IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (simples C k ⟶ simples C (dualIndex C i) ⊗ simples C j) :=
+    IsFusionCategory.hom_finite _ _
   have ht := congrArg (LinearMap.trace ℂ _) hconj
   simp only [LinearMap.trace_conj', LinearMap.trace_transpose', map_smul, smul_eq_mul] at ht
   have hs := rootDualSign_sq C i
@@ -117,12 +112,12 @@ variable (C : BraidedFusionCategory.{v,u})
 def enoFrobeniusEquiv (C : BraidedFusionCategory.{v,u})
     (i j k : Fin (rank C)) :
     (simples C i ⊗ simples C j ⟶ simples C k) ≃ₗ[ℂ]
-      (simples C j ⟶ simples C (Ground.dualIndex C i) ⊗ simples C k) := by
+      (simples C j ⟶ simples C (dualIndex C i) ⊗ simples C k) := by
   let Xi := simples C i
   let Xj := simples C j
   let Xk := simples C k
   letI : ExactPairing (Xiᘁ) Xi := BraidedCategory.exactPairing_swap Xi (Xiᘁ)
-  exact (Ground.tensorLeftHomLinearEquiv Xj (Xiᘁ) Xi Xk).trans
+  exact (tensorLeftHomLinearEquiv Xj (Xiᘁ) Xi Xk).trans
     (Linear.homCongr ℂ (Iso.refl Xj) (rightDualLabelIso C i ⊗ᵢ Iso.refl Xk))
 
 /-- The ENO reciprocity equivalence is the composition pairing followed by
@@ -139,11 +134,11 @@ theorem enoTraceMatrix_reciprocity_of_frobenius_defect
     (hcompat : ∀ i j k (g : simples C i ⊗ simples C k ⟶ simples C j),
       enoFrobeniusEquiv C i k j ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
       rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
-        (rootTensorDefect C (simples C (Ground.dualIndex C i)) (simples C j)).hom)) :
-    ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k = rootDualSign C i * enoTraceMatrix C i k j := by
+        (rootTensorDefect C (simples C (dualIndex C i)) (simples C j)).hom)) :
+    ENOTraceMatrixReciprocity C := by
   apply enoTraceMatrix_reciprocity_of_operator_intertwining C
   intro i j k v
-  let : Simple (simples C j) := Ground.simples_simple C j
+  let : Simple (simples C j) := simples_simple C j
   let P := simpleHomPairingEquiv C j (simples C i ⊗ simples C k)
   let g := P.symm v
   have hv : P g = v := P.apply_symm_apply v
@@ -175,24 +170,24 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The ENO signs agree on the chosen dual label. -/
 theorem rootDualSign_dual (i : Fin (rank C)) :
-    rootDualSign C (Ground.dualIndex C i) = rootDualSign C i := by
+    rootDualSign C (dualIndex C i) = rootDualSign C i := by
   let X := simples C i
-  let Y := simples C (Ground.dualIndex C i)
-  let : Simple X := Ground.simples_simple C i
-  let : Simple Y := Ground.simples_simple C _
-  let : Simple (Xᘁ) := Ground.simple_rightDual C X
+  let Y := simples C (dualIndex C i)
+  let : Simple X := simples_simple C i
+  let : Simple Y := simples_simple C _
+  let : Simple (Xᘁ) := simple_rightDual C X
   have he : squaredNorm C Y = squaredNorm C X := by
     rw [← target_squaredNorm_iso C (rightDualLabelIso C i)]
     exact target_squaredNorm_rightDual C X
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
   rw [Ground.dualIndex_involutive] at he
-  have he' := rootDimension_ne_zero C (Ground.dualIndex C i)
-  have hc : rootDualSign C (Ground.dualIndex C i) *
-      (rootDimension C i * rootDimension C (Ground.dualIndex C i)) =
-      rootDualSign C i * (rootDimension C i * rootDimension C (Ground.dualIndex C i)) := by
+  have he' := rootDimension_ne_zero C (dualIndex C i)
+  have hc : rootDualSign C (dualIndex C i) *
+      (rootDimension C i * rootDimension C (dualIndex C i)) =
+      rootDualSign C i * (rootDimension C i * rootDimension C (dualIndex C i)) := by
     calc
-      _ = rootDualSign C (Ground.dualIndex C i) * rootDimension C (Ground.dualIndex C i) * rootDimension C i := by ring
-      _ = rootDualSign C i * rootDimension C i * rootDimension C (Ground.dualIndex C i) := he
+      _ = rootDualSign C (dualIndex C i) * rootDimension C (dualIndex C i) * rootDimension C i := by ring
+      _ = rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i) := he
       _ = _ := by ring
   exact mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero C i) he') hc
 end PropertyF.Ground.Dimensions

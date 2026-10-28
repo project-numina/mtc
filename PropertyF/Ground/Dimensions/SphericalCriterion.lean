@@ -68,15 +68,15 @@ theorem isSpherical_iff_simple_dimensions
     classical
     let m (i : Fin (rank C)) := Module.finrank ℂ (simples C i ⟶ X)
     let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
-    obtain ⟨e⟩ := Ground.exists_canonical_decomposition C X
+    obtain ⟨e⟩ := exists_canonical_decomposition C X
     let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
     have hleft : p.leftTrace f = p.leftTrace g := by
       simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f))
     have hright : p.rightTrace f = p.rightTrace g := by
       simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f))
-    have hsimple : ∀ a, Simple (V a) := fun a => Ground.simples_simple C a.1
+    have hsimple : ∀ a, Simple (V a) := fun a => simples_simple C a.1
     have hfinite : ∀ a, FiniteDimensional ℂ (V a ⟶ V a) := fun a =>
-      Ground.IsFusionCategory.hom_finite _ _
+      IsFusionCategory.hom_finite _ _
     obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple V hsimple hfinite p g
     rw [hleft, hright, htrace, leftTrace_biproduct_scalar_blocks V p g c hc]
     apply Finset.sum_congr rfl

@@ -1,9 +1,16 @@
 module
 public import PropertyF.Ground.Integrate.CenterBundle
 
-/-! # Rigidity of the Drinfeld centre. -/
+/-!
+# Rigidity of the Drinfeld centre
 
-/-! Unit cases of the tensor law for the normalized dual crossing. -/
+The normalized mate of a centre object's half-braiding gives a half-braiding
+on its right dual. Its tensor law and the centrality of evaluation and
+coevaluation lift the underlying dual pair to the centre.
+
+The main construction is `CentreRigid.rigidCenter`. The intermediate
+`dualObject` and `liftedPairing` make the coherence conditions explicit.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -103,7 +110,7 @@ end PropertyF.Ground.CentreRigid
 expose its compatibility with the units and counits of the tensor adjunctions. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
+open CategoryTheory CategoryTheory.MonoidalCategory PropertyF.Ground.Integrate
 namespace PropertyF.Ground.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
@@ -114,9 +121,8 @@ theorem dualMate_unit (Z : CategoryTheory.Center C) (U : C) :
         ((tensorLeft Z.1ᘁ).obj U) =
     (tensorRightAdjunction (ᘁZ.1) Z.1).unit.app U ≫
       (tensorRight Z.1).map ((Integrate.dualMateIso Z).inv.app U) := by
-  simpa [Integrate.dualMateIso] using
-    unit_conjugateEquiv_symm (tensorLeftAdjunction Z.1 Z.1ᘁ)
-      (tensorRightAdjunction (ᘁZ.1) Z.1) (Integrate.halfBraidingIso Z).hom U
+  simpa [Integrate.dualMateIso] using unit_conjugateEquiv_symm
+    (tensorLeftAdjunction Z.1 Z.1ᘁ) (tensorRightAdjunction (ᘁZ.1) Z.1) (halfBraidingIso Z).hom U
 
 end PropertyF.Ground.CentreRigid
 
@@ -130,13 +136,11 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The mate unit in terms of the actual base coevaluation maps. -/
 theorem dualMate_unit_explicit (Z : Center C) (U : C) :
-  (λ_ U).inv ≫ (η_ Z.1 Z.1ᘁ ▷ U) ≫ (α_ Z.1 Z.1ᘁ U).hom ≫
-    (Z.2.β (Z.1ᘁ ⊗ U)).hom =
+  (λ_ U).inv ≫ (η_ Z.1 Z.1ᘁ ▷ U) ≫ (α_ Z.1 Z.1ᘁ U).hom ≫ Centre.halfBraidingHom Z (Z.1ᘁ ⊗ U) =
   (ρ_ U).inv ≫ (U ◁ η_ (ᘁZ.1) Z.1) ≫ (α_ U (ᘁZ.1) Z.1).inv ≫
     ((Integrate.dualMateIso Z).inv.app U ▷ Z.1) := by
-  simpa [tensorRightAdjunction, tensorLeftAdjunction, Adjunction.mkOfHomEquiv, Adjunction.mk',
-    tensorRightHomEquiv, tensorLeftHomEquiv, Integrate.halfBraidingIso] using
-      CentreRigid.dualMate_unit Z U
+  simpa [tensorRightAdjunction, tensorLeftAdjunction, tensorRightHomEquiv,
+    tensorLeftHomEquiv, Integrate.halfBraidingIso] using CentreRigid.dualMate_unit Z U
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component identifies the two chosen duals compatibly with the crossed cup. -/
@@ -322,7 +326,7 @@ theorem evaluation_sliding (Z : Center C) (U : C) :
   apply (tensorLeftHomEquiv (X ⊗ U) X D (U ⊗ (𝟙_ C))).injective
   apply (cancel_epi cInv).1
   apply (cancel_mono ((X ◁ (ρ_ U).hom) ≫ c)).1
-  simp only [tensorLeftHomEquiv, Equiv.coe_fn_mk]
+  dsimp only [tensorLeftHomEquiv, Equiv.coe_fn_mk]
   calc
     _ = 𝟙 (U ⊗ X) := by
       calc

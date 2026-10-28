@@ -11,6 +11,11 @@ public import PropertyF.Ground.Dimensions.TensorExtension
 /-! # Extending tensor-defect identities
 
 Duality, associativity and coevaluation identities extend root tensor-defect relations.
+
+## Main results
+
+* `rootTensorDefect_coevaluation`: relates the tensor defect to coevaluation.
+* `positive_spherical_of_nonunit_fourth_dual`: constructs a positive spherical structure from fourth-dual compatibility.
 -/
 
 @[expose] public noncomputable section
@@ -122,7 +127,7 @@ theorem rootTensorDefect_swapped_coevaluation
   change η_ A X ≫ A ◁ r.hom = η_ A Q at hc
   have hn := rootTensorDefect_natural C (𝟙 A) r.hom
   simp only [id_tensorHom] at hn
-  have he := rootTensorDefect_coevaluation_of_iso C (Ground.dualIndex C i) (rightDualLabelIso C i)
+  have he := rootTensorDefect_coevaluation_of_iso C (dualIndex C i) (rightDualLabelIso C i)
   change η_ A Q ≫ (rootTensorDefect C A Q).hom = _ at he
   rw [rootDualSign_dual] at he
   apply (cancel_mono (A ◁ r.hom)).1
@@ -310,7 +315,7 @@ theorem rootTensorDefect_involution_extension
 theorem enoTraceMatrix_reciprocity_of_simple_fourth_dual
     (hfourth : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j)) :
-    ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k = rootDualSign C i * enoTraceMatrix C i k j := by
+    ENOTraceMatrixReciprocity C := by
   have hinv : ∀ X Y : C.Obj, (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
     apply rootTensorDefect_involution_extension C
     intro i j
@@ -324,7 +329,7 @@ theorem enoTraceMatrix_reciprocity_of_simple_fourth_dual
 theorem positive_spherical_of_nonunit_fourth_dual
     (hfourth : ∀ i j : Fin (rank C), i ≠ unitIndex C → j ≠ unitIndex C →
       fourthDualTensorLaw C (simples C i) (simples C j))
-    (hpu : Ground.PseudoUnitary C) :
+    (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
   have hsimple : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j) := by

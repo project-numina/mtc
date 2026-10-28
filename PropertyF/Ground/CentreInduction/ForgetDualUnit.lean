@@ -47,17 +47,6 @@ private theorem forgetDualIso_tensor_mate_inv (X Y : 𝒵) :
   rw [← Category.assoc, he, Category.id_comp]
   simp
 
-omit [RigidCategory (𝒵)] in
-/-- The inverse right-dual tensor comparison is natural in both arguments. -/
-private theorem rightDualTensorIso_inv_natural {A A' B B' : D}
-    (f : A ⟶ A') (g : B ⟶ B') :
-    (rightDualTensorIso A' B').inv ≫ ((f ⊗ₘ g)ᘁ) =
-      (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso A B).inv := by
-  apply (cancel_mono (rightDualTensorIso A B).hom).1
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [Dimensions.rightDualTensorIso_natural f g]
-  simp
-
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
 theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
     (Dimensions.doubleDualTensorIso X Y).hom.f ≫ (forgetDoubleDualIso (X ⊗ Y)).hom =
@@ -72,7 +61,7 @@ theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
   simp only [Category.assoc]
   rw [forgetDualIso_tensor_mate_inv X Y]
   rw [← Category.assoc ((rightDualTensorIso (Yᘁ).1 (Xᘁ).1).inv),
-    rightDualTensorIso_inv_natural (forgetDualIso Y).inv (forgetDualIso X).inv]
+    ← Dimensions.rightDualTensorIso_inv_natural (forgetDualIso Y).inv (forgetDualIso X).inv]
   simp only [tensorHom_comp_tensorHom_assoc, Category.assoc]
 
 /-- The transported pivotal components satisfy the tensor law after forgetting. -/

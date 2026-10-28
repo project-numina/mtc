@@ -13,6 +13,7 @@ public section
 open Lean
 namespace PropertyF.Ground.DependencyAudit
 
+/-- Legacy structures that may not occur in the target dependency cone. -/
 def forbidden : Array String := #[
   "PropertyF.FusionData", "PropertyF.GlobalDimensionData",
   "PropertyF.BraidedFusionCategory", "PropertyF.MultiplicityData",
@@ -23,6 +24,7 @@ def forbidden : Array String := #[
   "PropertyF.GeneratedInputs", "PropertyF.ModularData",
   "PropertyF.Ground.DependencyAudit.ForbiddenFixture"]
 
+/-- Detect a forbidden structure or one of its generated declarations. -/
 def isForbidden (n : Name) : Bool :=
   forbidden.any fun s => n.toString == s || n.toString.startsWith (s ++ ".")
 
@@ -92,6 +94,7 @@ structure ForbiddenFixture where
 /-- Test fixture: a forbidden input hidden behind an ordinary definition. -/
 def hiddenInput : Prop := ∃ _H : ForbiddenFixture, True
 
+/-- Indirect fixture for testing transitive dependency inspection. -/
 def hiddenInputWrapper : Prop := hiddenInput
 
 /-- A proof with a clean statement but a forbidden type inside its body. -/

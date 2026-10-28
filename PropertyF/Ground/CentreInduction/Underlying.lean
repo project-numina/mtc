@@ -33,8 +33,8 @@ end PropertyF.Ground.CentreInduction
 namespace PropertyF.Ground.CentreInduction
 attribute [local instance] CategoryTheory.Abelian.hasFiniteBiproducts
 
-/-- The induction sum is functorial in its middle factor. This is a functor
-in the base category; its lift to the centre is still to be constructed. -/
+/-- The induction sum is functorial in its middle factor. Its centre lift is
+constructed from the induction half-braiding. -/
 def underlyingFunctor (C : BraidedFusionCategory.{v,u}) : C.Obj ⥤ C.Obj where
   obj := underlying C
   map {X Y} f := CategoryTheory.Limits.biproduct.map

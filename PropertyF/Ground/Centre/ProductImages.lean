@@ -8,7 +8,16 @@ public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Modular.BraidFunctor
 public import PropertyF.Ground.Cabling.Naturality
 
-/-! Reversing the braiding inverts each actual adjacent braid generator. -/
+/-!
+# Braid images of centre product objects
+
+Reversing a braiding inverts the adjacent braid generators. In the product
+category with the mixed braiding, the two projections jointly detect braid
+automorphisms, and their images lie in the braid images of the two factors.
+
+Consequently `productFunctor_objectPropertyF` transfers finite braid images
+to the product of the positive and negative centre embeddings.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -99,16 +108,6 @@ def sndBraidMap (X Y : C) (n : ℕ) :
   @Modular.braidAutMap (C × C) _ _ (mixedBraiding (C := C)) C _ _
     (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n
 
-theorem fstBraidMap_generator (X Y : C) {n : ℕ} (i : Fin (n+1)) :
-    fstBraidMap X Y n (braidGenerator (X,Y) n i) = braidGenerator X n i :=
-  Modular.braidAutMap_generator (CategoryTheory.Prod.fst C C) (X,Y) n i
-
-theorem sndBraidMap_generator (X Y : C) {n : ℕ} (i : Fin (n+1)) :
-    sndBraidMap X Y n (braidGenerator (X,Y) n i) = (braidGenerator Y n i)⁻¹ :=
-  (@Modular.braidAutMap_generator (C × C) _ _ (mixedBraiding (C := C)) C _ _
-    (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n i).trans
-      (reverse_braidGenerator Y i)
-
 /-- The two projected automorphisms jointly detect an automorphism of a tensor power. -/
 theorem projections_jointly_injective (X Y : C) (n : ℕ) :
     Function.Injective (fun a : Aut (tensorPower (X,Y) (n+2)) =>
@@ -125,20 +124,24 @@ theorem projections_jointly_injective (X Y : C) (n : ℕ) :
 
 /-- The projected first component of a product braid lies in the first image. -/
 theorem fstBraidMap_mem (X Y : C) (n : ℕ) :
-    braidImage (X,Y) n ≤ (braidImage X n).comap (fstBraidMap X Y n) := by
-  apply (Subgroup.closure_le _).mpr
-  rintro _ ⟨i, rfl⟩
+    braidImage (X,Y) n ≤ (braidImage X n).comap (fstBraidMap X Y n) :=
+  (Subgroup.closure_le _).mpr fun _ h ↦ by
+  rcases h with ⟨i, rfl⟩
   change fstBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage X n
-  rw [fstBraidMap_generator]
+  unfold fstBraidMap
+  rw [Modular.braidAutMap_generator]
   exact Subgroup.subset_closure ⟨i, rfl⟩
 
 /-- The projected second component lies in the original, unreversed image. -/
 theorem sndBraidMap_mem (X Y : C) (n : ℕ) :
-    braidImage (X,Y) n ≤ (braidImage Y n).comap (sndBraidMap X Y n) := by
-  apply (Subgroup.closure_le _).mpr
-  rintro _ ⟨i, rfl⟩
+    braidImage (X,Y) n ≤ (braidImage Y n).comap (sndBraidMap X Y n) :=
+  (Subgroup.closure_le _).mpr fun _ h ↦ by
+  rcases h with ⟨i, rfl⟩
   change sndBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage Y n
-  rw [sndBraidMap_generator]
+  unfold sndBraidMap
+  rw [@Modular.braidAutMap_generator (C × C) _ _ (mixedBraiding (C := C)) C _ _
+    (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n i,
+    reverse_braidGenerator]
   exact Subgroup.inv_mem _ (Subgroup.subset_closure ⟨i, rfl⟩)
 
 /-- The actual product braid image maps into the product of the two factor images. -/
@@ -151,12 +154,10 @@ def productBraidMap (X Y : C) (n : ℕ) :
 
 /-- The product braid image is a subgroup of the product of its two factor images. -/
 theorem productBraidMap_injective (X Y : C) (n : ℕ) :
-    Function.Injective (productBraidMap X Y n) := by
-  intro a b hab
-  apply Subtype.ext
-  apply projections_jointly_injective X Y n
-  exact Prod.ext (congrArg (fun x : braidImage X n × braidImage Y n => x.1.val) hab)
-    (congrArg (fun x : braidImage X n × braidImage Y n => x.2.val) hab)
+    Function.Injective (productBraidMap X Y n) :=
+  fun _ _ h ↦ Subtype.ext <| projections_jointly_injective X Y n <|
+    Prod.ext (congrArg (fun x : braidImage X n × braidImage Y n => x.1.val) h)
+      (congrArg (fun x : braidImage X n × braidImage Y n => x.2.val) h)
 
 /-- Finite factor images imply a finite mixed-product braid image. -/
 theorem product_braidImage_finite (X Y : C) (n : ℕ)

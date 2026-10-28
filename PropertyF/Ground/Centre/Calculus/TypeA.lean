@@ -123,6 +123,15 @@ theorem typeARelations_action_trivial {X : C}
   simpa only [Subgroup.normalClosure_union] using
     sup_le (squareRelations_action_trivial hX n) (braidRelations_action_trivial X n)
 
+/-- Swaps of two adjacent pairs satisfy the braid relation. -/
+theorem swap_braid {α : Type*} [DecidableEq α] {a b c : α}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    Equiv.swap a b * Equiv.swap b c * Equiv.swap a b =
+      Equiv.swap b c * Equiv.swap a b * Equiv.swap b c := by
+  simpa only [Equiv.swap_comm] using
+    (Equiv.swap_mul_swap_mul_swap hbc.symm hac.symm).trans
+      ((Equiv.swap_comm a c).trans (Equiv.swap_mul_swap_mul_swap hab hac).symm)
+
 /-- Every defining type-A relation also has trivial strand permutation. -/
 theorem typeARelations_permutation_trivial (n : ℕ) :
     Subgroup.normalClosure (squareRelations n ∪ braidRelations n) ≤
@@ -138,14 +147,10 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
     · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
       have hm : i.succ = j.castSucc := Fin.ext hij
       rw [← hm]
-      have hxy : i.castSucc ≠ i.succ := by intro h; have := congrArg Fin.val h; simp at this
-      have hxz : i.castSucc ≠ j.succ := by intro h; have := congrArg Fin.val h; simp at this; omega
-      have hzy : j.succ ≠ i.succ := by intro h; have := congrArg Fin.val h; simp at this; omega
-      have hzX : j.succ ≠ i.castSucc := hxz.symm
-      have h₁ := Equiv.swap_mul_swap_mul_swap hxy hxz
-      have h₂ := Equiv.swap_mul_swap_mul_swap hzy hzX
-      rw [Equiv.swap_comm i.castSucc j.succ] at h₂
-      simpa only [Equiv.swap_comm] using h₂.trans h₁.symm
+      apply swap_braid
+      · simp [Fin.ext_iff]
+      · intro h; have hh := congrArg Fin.val h; simp at hh; omega
+      · intro h; have hh := congrArg Fin.val h; simp at hh; omega
     · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
       have hdis : [i.castSucc, i.succ, j.castSucc, j.succ].Nodup := by
         simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil,
@@ -184,21 +189,17 @@ bound of at most `(n+2)!` words. -/
 theorem pureWords_eq_typeANormal_of_card_bound (n : ℕ) [Fintype (typeAGroup n)]
     (hcard : Fintype.card (typeAGroup n) ≤ Nat.factorial (n + 2)) :
     (strandPermutation n).ker = typeANormal n := by
-  apply le_antisymm
-  · intro w hw
-    have hs := typeAPermutation_surjective n
-    have hc : Fintype.card (typeAGroup n) = Fintype.card (Equiv.Perm (Fin (n + 2))) := by
-      apply le_antisymm
-      · simpa [Fintype.card_perm] using hcard
-      · exact Fintype.card_le_of_surjective (typeAPermutation n) hs
-    have hi := ((Fintype.bijective_iff_surjective_and_card (typeAPermutation n)).2 ⟨hs, hc⟩).1
-    have hw' : typeAPermutation n (QuotientGroup.mk' (typeANormal n) w) =
-        typeAPermutation n 1 := by
-      change strandPermutation n w = 1
-      exact MonoidHom.mem_ker.mp hw
-    have he := hi hw'
-    exact (QuotientGroup.eq_one_iff w).mp he
-  · exact typeARelations_permutation_trivial n
+  apply le_antisymm ?_ (typeARelations_permutation_trivial n)
+  intro w hw
+  have hs := typeAPermutation_surjective n
+  have hi : Function.Injective (typeAPermutation n) :=
+    ((Fintype.bijective_iff_surjective_and_card (typeAPermutation n)).2
+      ⟨hs, le_antisymm (by simpa [Fintype.card_perm] using hcard)
+        (Fintype.card_le_of_surjective (typeAPermutation n) hs)⟩).1
+  apply (QuotientGroup.eq_one_iff w).mp
+  apply hi
+  change strandPermutation n w = 1
+  exact MonoidHom.mem_ker.mp hw
 
 end PropertyF.Ground.CentreCalculus
 
@@ -223,26 +224,19 @@ theorem typeAGenerator_adjacent {n i : ℕ} (hi : i + 1 < n + 1) :
       typeAGenerator n (i + 1) * typeAGenerator n i * typeAGenerator n (i + 1) := by
   let a : Fin (n + 1) := ⟨i, by omega⟩
   let b : Fin (n + 1) := ⟨i + 1, hi⟩
-  let w : BraidWords n := (FreeGroup.of a * FreeGroup.of b * FreeGroup.of a) *
-    (FreeGroup.of b * FreeGroup.of a * FreeGroup.of b)⁻¹
-  have hw : w ∈ typeANormal n :=
-    Subgroup.subset_normalClosure (Or.inr (Or.inl ⟨a, b, rfl, rfl⟩))
-  have hh := (QuotientGroup.eq_one_iff _).mpr hw
-  change (QuotientGroup.mk' (typeANormal n)) w = 1 at hh
-  simpa only [w, map_mul, map_inv, mul_inv_eq_one, typeAGenerator, dite_eq_left hi,
-    dite_eq_left (show i < n + 1 by omega), a, b] using hh
+  simp only [typeAGenerator, dite_eq_left hi, dite_eq_left (show i < n + 1 by omega), ← map_mul]
+  apply QuotientGroup.eq_iff_div_mem.mpr
+  apply Subgroup.subset_normalClosure
+  exact Or.inr (Or.inl ⟨a, b, rfl, rfl⟩)
 
 theorem typeAGenerator_distant {n i j : ℕ} (hij : i + 1 < j) (hj : j < n + 1) :
     typeAGenerator n i * typeAGenerator n j = typeAGenerator n j * typeAGenerator n i := by
   let a : Fin (n + 1) := ⟨i, by omega⟩
   let b : Fin (n + 1) := ⟨j, hj⟩
-  let w : BraidWords n := (FreeGroup.of a * FreeGroup.of b) * (FreeGroup.of b * FreeGroup.of a)⁻¹
-  have hw : w ∈ typeANormal n :=
-    Subgroup.subset_normalClosure (Or.inr (Or.inr ⟨a, b, hij, rfl⟩))
-  have hh := (QuotientGroup.eq_one_iff _).mpr hw
-  change (QuotientGroup.mk' (typeANormal n)) w = 1 at hh
-  simpa only [w, map_mul, map_inv, mul_inv_eq_one, typeAGenerator, dite_eq_left hj,
-    dite_eq_left (show i < n + 1 by omega), a, b] using hh
+  simp only [typeAGenerator, dite_eq_left hj, dite_eq_left (show i < n + 1 by omega), ← map_mul]
+  apply QuotientGroup.eq_iff_div_mem.mpr
+  apply Subgroup.subset_normalClosure
+  exact Or.inr (Or.inr ⟨a, b, hij, rfl⟩)
 
 /-- The quotient is generated by its adjacent generators. -/
 theorem typeAGenerator_generates (n : ℕ) :
@@ -262,17 +256,17 @@ theorem typeA_finite_card (n : ℕ) : Finite (typeAGroup n) ∧
     Nat.card (typeAGroup n) ≤ Nat.factorial (n + 2) := by
   simpa only [Nat.add_assoc] using
     finite_card_of_typeA (n + 1) (typeAGenerator n)
-      (fun _ hi ↦ typeAGenerator_square hi) (fun _ hi ↦ typeAGenerator_adjacent hi)
-      (fun _ _ hij hj ↦ typeAGenerator_distant hij hj) (typeAGenerator_generates n)
+      ⟨(fun _ hi ↦ typeAGenerator_square hi), (fun _ hi ↦ typeAGenerator_adjacent hi),
+        (fun _ _ hij hj ↦ typeAGenerator_distant hij hj)⟩ (typeAGenerator_generates n)
 
 /-- The kernel of the strand permutation is exactly the normal subgroup
 generated by the type-A relations. -/
 theorem pureWords_eq_typeANormal (n : ℕ) :
-    (strandPermutation n).ker = typeANormal n := by
-  obtain ⟨hf, hc⟩ := typeA_finite_card n
+    (strandPermutation n).ker = typeANormal n :=
+  let ⟨hf, hc⟩ := typeA_finite_card n
   let : Finite (typeAGroup n) := hf
   let : Fintype (typeAGroup n) := Fintype.ofFinite _
-  exact pureWords_eq_typeANormal_of_card_bound n (by simpa [Nat.card_eq_fintype_card] using hc)
+  pureWords_eq_typeANormal_of_card_bound n (by simpa [Nat.card_eq_fintype_card] using hc)
 
 /-- Self-transparent categorical braid actions factor through permutations. -/
 def permutationAction (X : C)
