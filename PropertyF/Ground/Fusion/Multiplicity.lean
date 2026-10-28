@@ -117,16 +117,19 @@ theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
     rw [CategoryTheory.finrank_hom_simple_simple ℂ,
       CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
 
-/-- A nonzero object has a nonzero simple multiplicity. -/
-theorem exists_positive_multiplicity {X : D.Obj}
-    (hX : ¬ IsZero X) : ∃ i, 0 < simpleMultiplicity D i X := by
+/-- A nonzero object decomposed over a finite family has a nonzero multiplicity. -/
+theorem exists_positive_multiplicity {k : Type*} [Field k]
+    {E : Type u} [Category.{v} E] [Preadditive E] [Linear k E] [HasFiniteBiproducts E]
+    {ι : Type} [Fintype ι] (T : ι → E) {X : E}
+    (hdecomp : HasBiproductDecomposition T X)
+    (hfinite : ∀ i, FiniteDimensional k (T i ⟶ X)) (hX : ¬ IsZero X) :
+    ∃ i, 0 < Module.finrank k (T i ⟶ X) := by
   classical
-  obtain ⟨i, _, t, _, ht⟩ := exists_simple_retract D (by
+  obtain ⟨i, s, t, hs, ht⟩ := exists_retract_of_biproduct_decomposition T hdecomp (by
     simpa [IsZero.iff_id_eq_zero] using hX)
-  let : FiniteDimensional ℂ (simples D i ⟶ X) := IsFusionCategory.hom_finite _ _
-  let : Simple (simples D i) := simples_simple D i
+  let : FiniteDimensional k (T i ⟶ X) := hfinite i
   exact ⟨i, Module.finrank_pos_iff_exists_ne_zero.mpr
-    ⟨t, fun h ↦ id_nonzero (simples D i) (by simpa [h] using ht.symm)⟩⟩
+    ⟨t, fun ht0 ↦ hs (by rw [← Category.comp_id s, ← ht, ht0, zero_comp, comp_zero])⟩⟩
 
 variable {D} in
 /-- Tensoring an object on the left acts on simple multiplicities by its

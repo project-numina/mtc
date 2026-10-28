@@ -142,7 +142,7 @@ universe v u
 
 /-- Every pseudo-unitary braided fusion category has a positive spherical
 structure with its actual FP dimensions, without any pivotal premise. -/
-theorem positive_spherical_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
+theorem positive_spherical_of_pseudoUnitary {C : BraidedFusionCategory.{v,u}}
     (hpu : PseudoUnitary C) :
     ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
   let h (i j : Fin (rank C)) : fourthDualTensorLaw (simples C i) (simples C j) :=
