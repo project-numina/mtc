@@ -168,12 +168,11 @@ theorem forgetDualIso_tensor :
   let s := tensorForgetPairing X Y
   let r := @ExactPairing.tensor D _ _ X.1 Y.1 (X.1ᘁ) (Y.1ᘁ)
       HasRightDual.exact HasRightDual.exact
-  have h3 := rightDualIso_tensor (forgetPairing X) HasRightDual.exact
-    (forgetPairing Y) HasRightDual.exact
-  change (rightDualIso s r).hom = (forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom at h3
   rw [forget_rightDualTensorIso]
   change (rightDualIso p q).hom ≫ (rightDualIso q r).hom =
     (rightDualIso p s).hom ≫ _
-  rw [← h3, rightDualIso_trans p q r, rightDualIso_trans p s r]
+  dsimp only [forgetDualIso]
+  rw [← rightDualIso_tensor (forgetPairing X) HasRightDual.exact
+    (forgetPairing Y) HasRightDual.exact, rightDualIso_trans p q r, rightDualIso_trans p s r]
 
 end PropertyF.Ground.CentreInduction

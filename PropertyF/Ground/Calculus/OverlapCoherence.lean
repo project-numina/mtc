@@ -203,12 +203,9 @@ fresh actual braid factor with the local overlap factor. -/
 theorem overlapRight_local_of_iso (hiso : HasOverlapCoherence X t k) :
     (overlapPowerIso X t k).symm.conj (overlapRight X t k u : End _) =
     overlapFresh (tensorPower X (overlapIndex t k + 1)) (u : End (tensorPower X (t + 2))) :=
-  End.ext (by
-    apply (cancel_mono (overlapPowerIso X t k).hom).mp
-    apply (cancel_epi (α_ (tensorPower X (overlapIndex t k + 1)) X
-      (tensorPower X (t + 1))).inv).mp
-    simpa [hiso, overlapFresh, Iso.conj_apply_asHom, Category.assoc] using
-      freshOverlapIso_action k u)
+  End.ext (by simpa [hiso, overlapFresh, Iso.conj_apply_asHom, Category.assoc] using
+    (congrArg (fun f => (α_ _ _ _).hom ≫ f ≫ (overlapPowerIso X t k).inv)
+      (freshOverlapIso_action k u)))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A single coherence equality between the left- and right-insertion
