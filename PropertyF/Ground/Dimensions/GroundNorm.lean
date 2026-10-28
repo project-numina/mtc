@@ -42,16 +42,21 @@ variable {k : Type*} [Field k] [IsAlgClosed k] {C : Type u} [Category.{v} C]
   [MonoidalCategory C] [Preadditive C] [Linear k C] [RigidCategory C] [HasKernels C]
   [MonoidalPreadditive C] [MonoidalLinear k C]
 
+omit [IsAlgClosed k] [HasKernels C] in
+/-- Scaling a double-dual component inversely scales its left quantum trace. -/
+theorem leftQuantumTrace_smul_hom {X : C} {j l : X ≅ (Xᘁ)ᘁ} {c : k}
+    (hc : c ≠ 0) (h : l.hom = c • j.hom) :
+    leftQuantumTrace l = c⁻¹ • leftQuantumTrace j :=
+  End.homEquiv.injective (by simp [leftQuantumTrace, iso_inv_eq_inv_smul hc h, tensorHom_def])
+
 /-- The product of the two quantum traces on a simple object does not depend
 on the chosen double-dual isomorphism. -/
 theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional k (X ⟶ X)]
     (scalar : End (𝟙_ C) ≃ₐ[k] k) (j l : X ≅ (Xᘁ)ᘁ) :
     scalar (rightQuantumTrace j) * scalar (leftQuantumTrace j) =
       scalar (rightQuantumTrace l) * scalar (leftQuantumTrace l) :=
-  (isomorphisms_scalar (k := k) j l).elim fun c ⟨hc, hhom⟩ ↦
-    have hl : leftQuantumTrace l = c⁻¹ • leftQuantumTrace j := End.homEquiv.injective (by
-      simp [leftQuantumTrace, iso_inv_eq_inv_smul hc hhom, tensorHom_def])
-    by simp [rightQuantumTrace_smul_hom hhom, hl, hc, mul_comm, mul_left_comm]
+  (isomorphisms_scalar (k := k) j l).elim fun c ⟨hc, hhom⟩ ↦ by
+    simp [rightQuantumTrace_smul_hom hhom, leftQuantumTrace_smul_hom hc hhom, hc, mul_comm, mul_left_comm]
 
 end PropertyF.Ground.Dimensions
 
