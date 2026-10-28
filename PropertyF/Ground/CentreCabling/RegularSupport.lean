@@ -132,8 +132,8 @@ end PropertyF.Ground.CentreCabling
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
-variable (D : Ground.BraidedFusionCategory.{v,u})
-  (p : Dimensions.PivotalStructure (C := D.Obj))
+variable {D : Ground.BraidedFusionCategory.{v,u}}
+  {p : Dimensions.PivotalStructure (C := D.Obj)}
 
 /-- A character pairing with an eigenvector has the same eigenvalue on both sides. -/
 theorem sum_mul_eigenvalue {ι R : Type*} [Fintype ι] [CommSemiring R]
@@ -155,7 +155,6 @@ theorem sum_mul_eigenvalue {ι R : Type*} [Fintype ι] [CommSemiring R]
 /-- The S-transform of a common FP eigenvector vanishes at every label whose
 normalized S character differs from the FP character on a chosen label. -/
 theorem fourier_eq_zero_of_fusion_eigenvector
-    {D : Ground.BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := D.Obj)}
     (hdim : Modular.HasFPSimpleDimensions D p)
     {f : Fin (rank D) → ℂ} {a y : Fin (rank D)}
     (heigen : ∀ k, ∑ i, (fusionCoeff D a i k : ℂ) * f i = (fpSimple D a : ℂ) * f k)
@@ -183,7 +182,7 @@ theorem fourier_eq_zero_of_fusion_eigenvector
   rw [hs, hT, mul_zero]
 
 /-- A set of simple labels is closed under fusion constituents. -/
-abbrev IsFusionClosed (A : Finset (Fin (rank D))) : Prop :=
+abbrev IsFusionClosed (D : Ground.BraidedFusionCategory.{v,u}) (A : Finset (Fin (rank D))) : Prop :=
   ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < fusionCoeff D a b k → k ∈ A
 
 /-- Fusion coefficients vanish outside a fusion-closed set. -/
@@ -195,7 +194,7 @@ theorem IsFusionClosed.fusionCoeff_eq_zero {A : Finset (Fin (rank D))}
 /-- The FP-weighted regular vector of a dual- and fusion-closed set of labels
 is an eigenvector for multiplication by each label in that set. -/
 theorem regular_vector_fusion_eigenvector
-    {D : Ground.BraidedFusionCategory.{v,u}} {A : Finset (Fin (rank D))}
+    {A : Finset (Fin (rank D))}
     (hdual : ∀ a ∈ A, dualIndex D a ∈ A)
     (hclosed : IsFusionClosed D A)
     {a : Fin (rank D)} (ha : a ∈ A) (k : Fin (rank D)) :
@@ -211,7 +210,7 @@ theorem regular_vector_fusion_eigenvector
         rw [Modular.fusionCoeff_dual_adjoint D a i k]
         by_cases hi : i ∈ A
         · simp [hi]
-        · simp [hi, hclosed.fusionCoeff_eq_zero D (hdual a ha) hk hi]
+        · simp [hi, hclosed.fusionCoeff_eq_zero (hdual a ha) hk hi]
       _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
         have hh := congrArg (fun z : ℝ => (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)
         simpa [fpSimple_dual] using hh.symm
@@ -219,13 +218,12 @@ theorem regular_vector_fusion_eigenvector
     apply Finset.sum_eq_zero
     intro i _
     by_cases hi : i ∈ A
-    · simp [hi, hclosed.fusionCoeff_eq_zero D ha hi hk]
+    · simp [hi, hclosed.fusionCoeff_eq_zero ha hi hk]
     · simp [hi]
 
 /-- Numerical double-centralizer theorem for a fusion-closed set of simple
 labels. The supplied core must contain its numerical S-centralizer. -/
 theorem doubleCentralizer_of_fusion_closed
-    {D : Ground.BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := D.Obj)}
     (hp : p.IsSpherical)
     (hdet : (Modular.categoricalS D p).det ≠ 0)
     (hdim : Modular.HasFPSimpleDimensions D p)

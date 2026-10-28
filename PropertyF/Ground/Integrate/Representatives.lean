@@ -18,27 +18,18 @@ theorem simple_presentation_equiv {n : ℕ} (S : Fin n → C.Obj)
     (hCover : ∀ j, ∃ i, Nonempty (S i ≅ simples C j)) :
     ∃ e : Fin n ≃ Fin (rank C), ∀ i, Nonempty (S i ≅ simples C (e i)) := by
   classical
-  have hExists : ∀ i, ∃ j, Nonempty (S i ≅ simples C j) := by
-    intro i
-    let : Simple (S i) := hSimple i
+  choose f hf using fun (i : Fin n) ↦ by
+    letI := hSimple i
     exact exists_simple_iso C (S i)
-  let f : Fin n → Fin (rank C) := fun i => Classical.choose (hExists i)
-  have hf : ∀ i, Nonempty (S i ≅ simples C (f i)) :=
-    fun i => Classical.choose_spec (hExists i)
-  have hinj : Function.Injective f := by
-    intro i j hij
+  refine ⟨Equiv.ofBijective f ⟨?_, ?_⟩, hf⟩
+  · intro i j hij
     obtain ⟨ei⟩ := hf i
     obtain ⟨ej⟩ := hf j
-    apply hInjective i j
-    have ej' : S j ≅ simples C (f i) := by simpa only [hij] using ej
-    exact ⟨ei ≪≫ ej'.symm⟩
-  have hsurj : Function.Surjective f := by
-    intro j
+    exact hInjective i j ⟨ei ≪≫ eqToIso (congrArg (simples C) hij) ≪≫ ej.symm⟩
+  · intro j
     obtain ⟨i, ⟨e⟩⟩ := hCover j
     obtain ⟨ei⟩ := hf i
-    refine ⟨i, ?_⟩
-    exact simples_injective C ⟨ei.symm ≪≫ e⟩
-  exact ⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, hf⟩
+    exact ⟨i, simples_injective C ⟨ei.symm ≪≫ e⟩⟩
 
 
 end PropertyF.Ground

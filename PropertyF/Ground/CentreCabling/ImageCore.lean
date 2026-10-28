@@ -69,7 +69,7 @@ theorem numericalImageCentralizer_subset_symmetricCore
     apply doubleBraiding_eq_one_of_simple_constituents Z (CanonicalImageRetract C)
       (fun r hr => canonicalImageRetract_of_retract C r hr) hX
     intro a ha
-    exact doubleBraiding_eq_one_of_sTest_of_finite_order Z p hdim
+    exact doubleBraiding_eq_one_of_sTest_of_finite_order hdim
       (hfinite y hy a ha) (hy a ha)
   constructor
   · intro X

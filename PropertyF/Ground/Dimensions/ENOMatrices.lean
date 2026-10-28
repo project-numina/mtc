@@ -117,24 +117,6 @@ theorem rootTrace_cyclic {X Y : C.Obj}
   apply rightTraceWith_cyclic
   exact (fourthDualRootNaturalIso C).hom.naturality f
 
-/-- The root trace of a finite biproduct is the sum of its diagonal block traces. -/
-theorem rootTrace_biproduct
-    {ι : Type*} [Fintype ι] (F : ι → C.Obj) [HasBiproduct F]
-    (f : (⨁ F) ⟶ (⨁ F)) :
-    rootTrace C f = ∑ i, rootTrace C (biproduct.ι F i ≫ f ≫ biproduct.π F i) := by
-  classical
-  calc
-    _ = rootTrace C ((∑ i, biproduct.π F i ≫ biproduct.ι F i) ≫ f) := by
-      rw [biproduct.total]; simp
-    _ = ∑ i, rootTrace C ((biproduct.π F i ≫ biproduct.ι F i) ≫ f) := by
-      rw [Preadditive.sum_comp]
-      exact map_sum (rootTraceLinear C _) _ _
-    _ = ∑ i, rootTrace C (biproduct.ι F i ≫ f ≫ biproduct.π F i) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      simp only [Category.assoc]
-      simpa only [Category.assoc] using rootTrace_cyclic C (biproduct.π F i) (biproduct.ι F i ≫ f)
-
 /-- The natural-root trace of the identity is invariant under isomorphism. -/
 theorem rootTrace_id_iso {X Y : C.Obj} (e : X ≅ Y) :
     rootTrace C (𝟙 X) = rootTrace C (𝟙 Y) := by simpa using rootTrace_cyclic C e.hom e.inv
@@ -146,21 +128,9 @@ theorem rootTrace_biproduct_simple
     (hs : ∀ i, Simple (F i)) (f : (⨁ F) ⟶ (⨁ F)) :
     ∃ c : ι → ℂ,
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
-      rootTrace C f = ∑ i, c i • rootTrace C (𝟙 (F i)) := by
-  classical
-  have h : ∀ i, ∃ c : ℂ, biproduct.ι F i ≫ f ≫ biproduct.π F i = c • 𝟙 (F i) := by
-    intro i
-    let : Simple (F i) := hs i
-    let : FiniteDimensional ℂ (F i ⟶ F i) := IsFusionCategory.hom_finite _ _
-    obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ (biproduct.ι F i ≫ f ≫ biproduct.π F i)
-    exact ⟨c, hc.symm⟩
-  choose c hc using h
-  refine ⟨c, hc, ?_⟩
-  rw [rootTrace_biproduct]
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [hc i]
-  exact (rootTraceLinear C (F i)).map_smul _ _
+      rootTrace C f = ∑ i, c i • rootTrace C (𝟙 (F i)) :=
+  cyclicTrace_biproduct_simple (rootTraceLinear C) (fun f g => rootTrace_cyclic C f g)
+    F hs (fun _ => IsFusionCategory.hom_finite _ _) f
 
 end PropertyF.Ground.Dimensions
 
