@@ -26,20 +26,19 @@ def halfBraidingOfCrossingCandidate (X : C.Obj) :
   monoidal T U := crossingCandidate_tensor C X T U
   naturality f := crossingCandidate_natural_test C X f
 
-/-- The proposed half-braiding is automatically natural in its induction
-argument: this coherence was proved directly for the matrix crossing. -/
-theorem halfBraidingOfCrossingCandidate_natural
-    {X Y : C.Obj} (f : X ⟶ Y) (T : C.Obj) :
-    ((underlyingFunctor C).map f ▷ T) ≫
-        ((halfBraidingOfCrossingCandidate C Y).β T).hom =
-      ((halfBraidingOfCrossingCandidate C X).β T).hom ≫
-        (T ◁ (underlyingFunctor C).map f) :=
-  crossingCandidate_natural_middle C f T
-
 /-- The actual induction functor to Mathlib's Drinfeld centre. -/
-def induction : C.Obj ⥤ CategoryTheory.Center C.Obj :=
-  inductionOfHalfBraiding C (halfBraidingOfCrossingCandidate C)
-    (halfBraidingOfCrossingCandidate_natural C)
+def induction : C.Obj ⥤ CategoryTheory.Center C.Obj where
+  obj X := ⟨underlying C X, halfBraidingOfCrossingCandidate C X⟩
+  map f := ⟨(underlyingFunctor C).map f, crossingCandidate_natural_middle C f⟩
+  map_id X := by
+    apply CategoryTheory.Center.ext
+    change (underlyingFunctor C).map (𝟙 X) = 𝟙 ((underlyingFunctor C).obj X)
+    exact (underlyingFunctor C).map_id X
+  map_comp f g := by
+    apply CategoryTheory.Center.ext
+    change (underlyingFunctor C).map (f ≫ g) =
+      (underlyingFunctor C).map f ≫ (underlyingFunctor C).map g
+    exact (underlyingFunctor C).map_comp f g
 
 
 end PropertyF.Ground.CentreInduction
