@@ -22,7 +22,6 @@ public meta import PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
 import all PropertyF.Ground.Integrate.DrinfeldComplete
-import all PropertyF.Ground.CentreCabling.TwistDual
 import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.Integrate.PivotalBalancedReduction
 import all PropertyF.Ground.CentreModular.TransparencyCriterion

@@ -37,7 +37,7 @@ theorem parityPermutationTrace_fixHead (C : BraidedFusionCategory.{v,u})
     have hs : (Centre.permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
         (Centre.permutationSign ℂ n σ : ℂ) := by
       simpa [fixHead] using sign_decomposeFin n 0 σ
-    simp only [parityPermutationAction, Bool.true_eq, ↓reduceIte, Centre.twistAction,
+    simp only [parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
       unitScalar_eq_equiv, map_smul, smul_eq_mul]
     rw [hs, ← unitScalar_eq_equiv, ← unitScalar_eq_equiv,

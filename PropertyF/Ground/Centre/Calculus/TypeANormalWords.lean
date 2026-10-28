@@ -138,8 +138,8 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
   | zero =>
     intro G inst s hs hb hc hgen
     have htop : (⊥ : Subgroup G) = ⊤ := by simpa using hgen
-    letI : Subsingleton G := Subgroup.subsingleton_iff.mp (subsingleton_iff_bot_eq_top.mp htop)
-    haveI : Finite G := Finite.of_subsingleton
+    let : Subsingleton G := Subgroup.subsingleton_iff.mp (subsingleton_iff_bot_eq_top.mp htop)
+    have : Finite G := Finite.of_subsingleton
     refine ⟨inferInstance, ?_⟩
     simp [Nat.card_unique]
   | succ m ih =>
@@ -171,7 +171,7 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
       funext q
       exact ht q.val q.isLt
     obtain ⟨hfin, hcard⟩ := ih t hts htb htc htgen
-    letI : Finite H := hfin
+    let : Finite H := hfin
     let f : Fin (m + 2) × H → G := fun a => moveWord s a.1.val * a.2
     have hf : Function.Surjective f := by
       intro g
@@ -179,7 +179,7 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
       obtain ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hs hb hc g hg
       refine ⟨(⟨j, by omega⟩, ⟨h, by simpa [H] using hh⟩), ?_⟩
       exact he.symm
-    letI : Finite G := Finite.of_surjective f hf
+    let : Finite G := Finite.of_surjective f hf
     refine ⟨inferInstance, ?_⟩
     calc
       Nat.card G ≤ Nat.card (Fin (m + 2) × H) := Nat.card_le_card_of_surjective f hf

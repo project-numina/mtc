@@ -26,12 +26,12 @@ def tensorPermutationAction (X : C)
   | n + 2 => Aut.toEnd.comp (permutationAction X hX n)
 
 /-- Every adjacent transposition acts by the actual categorical crossing. -/
-theorem tensorPermutationAction_swap (X : C)
+theorem tensorPermutationAction_swap {X : C}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
-    (n : ℕ) (i : Fin (n + 1)) :
+    {n : ℕ} (i : Fin (n + 1)) :
     tensorPermutationAction X hX (n + 2) (Equiv.swap i.castSucc i.succ) =
       Aut.toEnd (braidGenerator X n i) :=
-  congrArg Aut.toEnd (permutationAction_swap X hX n i)
+  congrArg Aut.toEnd (permutationAction_swap hX i)
 
 end PropertyF.Ground.CentreCalculus
 
@@ -60,8 +60,8 @@ theorem signedTraceSum_succ (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ)
   unfold signedTraceSum
   rw [← Equiv.Perm.decomposeFin.symm.sum_comp,
     Fintype.sum_prod_type, Fin.sum_univ_succ]
-  simp only [sign_decomposeFin, if_true, one_mul, hfixed, Fin.succ_ne_zero,
-    if_false, hmoved _ (Fin.succ_ne_zero _), neg_mul]
+  simp only [sign_decomposeFin, ite_true, one_mul, hfixed, Fin.succ_ne_zero,
+    ite_false, hmoved _ (Fin.succ_ne_zero _), neg_mul]
   simp only [Finset.sum_neg_distrib]
   simp only [show ∀ (a b c : ℂ), a * (b * c) = b * (a * c) by intros; ring, ← Finset.mul_sum]
   simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
@@ -78,7 +78,7 @@ theorem signedTraceSum_falling (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (d 
   intro n
   induction n with
   | zero =>
-    letI : Unique (Equiv.Perm (Fin 0)) := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩
+    let : Unique (Equiv.Perm (Fin 0)) := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩
     simp [signedTraceSum, hzero, Centre.permutationSign]
   | succ n ih =>
     rw [signedTraceSum_succ F d 1 n (hfixed n) (by simpa using hmoved n), ih,
@@ -146,7 +146,7 @@ theorem fixHead_swap (n : ℕ) (i : Fin n) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Inserting a fixed first strand acts by tensoring the old automorphism
 on the left with the identity of the new strand. -/
-theorem permutationAction_fixHead (X : C)
+theorem permutationAction_fixHead {X : C}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 2))) :
     permutationAction X hX (n + 1) (fixHead (n + 2) σ) =
@@ -169,7 +169,7 @@ theorem permutationAction_fixHead (X : C)
   exact DFunLike.congr_fun heq σ
 
 /-- Inserting a fixed strand tensors the permutation action with its identity. -/
-theorem tensorPermutationAction_fixHead (X : C)
+theorem tensorPermutationAction_fixHead {X : C}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
     ∀ {n} (σ : Equiv.Perm (Fin n)),
       tensorPermutationAction X hX (n + 1) (fixHead n σ) =

@@ -139,7 +139,6 @@ public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 
 public import PropertyF.Ground.CentreCabling.TwistFinite
-public import PropertyF.Ground.CentreCabling.TwistDual
 
 
 
