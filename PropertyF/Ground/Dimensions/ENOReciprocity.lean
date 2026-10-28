@@ -7,7 +7,7 @@ public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import PropertyF.Ground.Dimensions.TensorExtension
-public import PropertyF.Ground.Dimensions.ComplexSaturation
+
 
 /-! # Reciprocity and spherical dimensions
 
