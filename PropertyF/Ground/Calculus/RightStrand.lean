@@ -261,12 +261,14 @@ namespace PropertyF.Ground.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
+/-- Append one tensor factor to a right-associated tensor power. -/
 def appendIso (X : C) : ∀ n : ℕ, tensorPower X n ⊗ X ≅ tensorPower X (n + 1)
   | 0 => (λ_ X) ≪≫ (ρ_ X).symm
   | n + 1 => by
     simpa only [tensorPower] using
       ((α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X n))
 
+/-- Append an identity strand to an automorphism of a tensor power. -/
 def addRightAut (X : C) (n : ℕ) : Aut (tensorPower X (n+2)) →* Aut (tensorPower X ((n+1)+2)) :=
   (appendIso X (n+2)).conjAut.toMonoidHom.comp ((tensorRight X).mapAut (tensorPower X (n+2)))
 

@@ -187,17 +187,10 @@ theorem cyclic_block_trace {n : ℕ} (d : Fin n → ℕ)
   classical
   let V : Fin n → Type := fun i => Matrix (Fin (d i)) (Fin (d i)) ℂ
   let Tblock (i : Fin n) : V i →ₗ[ℂ] ℂ := T.comp (LinearMap.single ℂ V i)
-  have hmul (i : Fin n) (X Y : V i) :
-      Pi.single i (X * Y) = (Pi.single i X : ∀ i, V i) * Pi.single i Y := by
-    funext j
-    by_cases h : j = i
-    · subst j
-      simp
-    · simp [h]
   have hc (i : Fin n) : ∀ X Y : V i, Tblock i (X * Y) = Tblock i (Y * X) := by
     intro X Y
     change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
-    rw [hmul, hmul]
+    rw [Pi.single_mul, Pi.single_mul]
     exact hT _ _
   have hw : ∀ i, ∃ w : ℂ, ∀ X : V i, Tblock i X = w * X.trace :=
     fun i => cyclic_matrix_trace (Tblock i) (hc i)

@@ -89,6 +89,7 @@ theorem three_braid_relation (X : C) :
 /-- The two adjacent generators in the actual three-strand image. -/
 def threeGeneratorLeft (X : C) : braidImage X 1 := imageGenerator X 1 0
 
+/-- The right adjacent generator in the three-strand braid image. -/
 def threeGeneratorRight (X : C) : braidImage X 1 := imageGenerator X 1 1
 
 /-- The Yang–Baxter relation holds inside the actual categorical braid image. -/
