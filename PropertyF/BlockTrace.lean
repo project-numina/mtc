@@ -2,6 +2,7 @@ module
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.LinearAlgebra.Matrix.Trace
 public import Mathlib.LinearAlgebra.UnitaryGroup
+public import Mathlib.Analysis.CStarAlgebra.Matrix
 public import Mathlib.Tactic
 
 /-!
@@ -15,54 +16,40 @@ products of matrix algebras.
 open scoped BigOperators ComplexConjugate
 namespace PropertyF
 
-/-- The column-norm consequence of a complex matrix being unitary. -/
-def ColumnUnitary {ι : Type*} [Fintype ι] (U : Matrix ι ι ℂ) : Prop :=
-  ∀ j, ∑ i, Complex.normSq (U i j) = 1
-
-variable {ι : Type*} [Fintype ι]
-
-lemma columnUnitary_of_unitary [DecidableEq ι] {U : Matrix ι ι ℂ}
-    (hU : U ∈ Matrix.unitaryGroup ι ℂ) : ColumnUnitary U := fun j => by
-  simpa [Matrix.mul_apply, Matrix.star_apply, Complex.mul_re,
-    Complex.normSq_apply, pow_two] using
-    congrArg (fun A : Matrix ι ι ℂ => (A j j).re) (Matrix.mem_unitaryGroup_iff'.mp hU)
-
-lemma entry_normSq_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : ι) :
-    Complex.normSq (U i j) ≤ 1 :=
-  (Finset.single_le_sum (fun k _ => Complex.normSq_nonneg (U k j)) (Finset.mem_univ i)).trans_eq (hU j)
-
-lemma entry_norm_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : ι) :
-    ‖U i j‖ ≤ 1 :=
-  (sq_le_one_iff₀ (norm_nonneg _)).mp
-    (Complex.normSq_eq_norm_sq _ ▸ entry_normSq_le_one hU i j)
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- The ordinary matrix trace estimate used twice in Section 3. -/
-theorem norm_trace_le_card {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) :
+theorem norm_trace_le_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGroup ι ℂ) :
     ‖U.trace‖ ≤ Fintype.card ι := calc
     ‖U.trace‖ ≤ ∑ i, ‖U i i‖ := norm_sum_le _ _
-    _ ≤ ∑ _i : ι, (1 : ℝ) := Finset.sum_le_sum fun i _ => entry_norm_le_one hU i i
+    _ ≤ ∑ _i : ι, (1 : ℝ) := Finset.sum_le_sum fun i _ => entry_norm_bound_of_unitary hU i i
     _ = Fintype.card ι := by simp
 
 /-- Saturation of the real trace estimate forces the identity matrix. -/
-theorem eq_one_of_re_trace_eq_card [DecidableEq ι] {U : Matrix ι ι ℂ} (hU : ColumnUnitary U)
+theorem eq_one_of_re_trace_eq_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGroup ι ℂ)
     (ht : U.trace.re = Fintype.card ι) : U = 1 := by
+  have hcol (j : ι) : ∑ i, Complex.normSq (U i j) = 1 := by
+    have h := congrArg (fun A : Matrix ι ι ℂ => (A j j).re)
+      (Matrix.mem_unitaryGroup_iff'.mp hU)
+    simpa [Matrix.mul_apply, Matrix.star_apply, Complex.mul_re,
+      Complex.normSq_apply, pow_two] using h
   have hre : ∀ i, (U i i).re ≤ 1 := fun i =>
-    (Complex.re_le_norm _).trans (entry_norm_le_one hU i i)
+    (Complex.re_le_norm _).trans (entry_norm_bound_of_unitary hU i i)
   have hsum : ∑ i, (U i i).re = ∑ _i : ι, (1 : ℝ) := by
     simpa [Matrix.trace, Matrix.diag] using ht
   have hdiagRe : ∀ i, (U i i).re = 1 := fun i =>
     (Finset.sum_eq_sum_iff_of_le (fun k _ => hre k)).mp hsum i (Finset.mem_univ i)
   have hdiag : ∀ i, U i i = 1 := by
     intro i
-    have h := entry_normSq_le_one hU i i
-    rw [Complex.normSq_apply, hdiagRe] at h
+    have h := (sq_le_one_iff₀ (norm_nonneg (U i i))).2 (entry_norm_bound_of_unitary hU i i)
+    rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply, hdiagRe] at h
     have him : (U i i).im = 0 := by nlinarith [sq_nonneg (U i i).im]
     apply Complex.ext <;> simp [hdiagRe, him]
   ext i j
   by_cases hij : i = j
   · subst j; simp [hdiag]
   · have hsum' : ∑ k ∈ Finset.univ.erase j, Complex.normSq (U k j) = 0 := by
-      have h := hU j
+      have h := hcol j
       rw [← Finset.add_sum_erase _ _ (Finset.mem_univ j), hdiag] at h
       simpa using h
     have hz := (Finset.sum_eq_zero_iff_of_nonneg
@@ -71,7 +58,7 @@ theorem eq_one_of_re_trace_eq_card [DecidableEq ι] {U : Matrix ι ι ℂ} (hU :
 
 /-- Equality in the complex trace bound forces a scalar matrix. This includes
 zero-dimensional blocks and does not assume an eigenvalue decomposition. -/
-theorem scalar_of_norm_trace_eq_card [DecidableEq ι] {U : Matrix ι ι ℂ} (hU : ColumnUnitary U)
+theorem scalar_of_norm_trace_eq_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGroup ι ℂ)
     (ht : ‖U.trace‖ = Fintype.card ι) : ∃ z : ℂ, U = z • (1 : Matrix ι ι ℂ) := by
   by_cases hι : IsEmpty ι
   · let := hι
@@ -81,12 +68,10 @@ theorem scalar_of_norm_trace_eq_card [DecidableEq ι] {U : Matrix ι ι ℂ} (hU
     exact_mod_cast (Fintype.card_ne_zero (α := ι))
   let z : ℂ := U.trace / (Fintype.card ι : ℂ)
   have hz : ‖z‖ = 1 := by simp [z, ht, hn]
-  have hzsq : Complex.normSq z = 1 := by simp [Complex.normSq_eq_norm_sq, hz]
   have hzmul : conj z * z = 1 := by simp [Complex.conj_mul', hz]
-  have hV : ColumnUnitary (conj z • U) := by
-    intro j
-    simp only [Matrix.smul_apply, smul_eq_mul, Complex.normSq_mul, Complex.normSq_conj]
-    rw [← Finset.mul_sum, hzsq, one_mul, hU j]
+  have hV : conj z • U ∈ Matrix.unitaryGroup ι ℂ := by
+    apply Unitary.smul_mem_of_mem _ hU
+    simpa [Unitary.mem_iff, mul_comm] using hzmul
   have htr : (conj z • U).trace.re = Fintype.card ι := by
     have hc : U.trace = z * (Fintype.card ι : ℂ) := by
       dsimp [z]
@@ -132,7 +117,7 @@ lemma norm_trace_le (B : Blocks) (w : Fin B.count → ℝ) {u : B.Algebra}
     _ = ∑ r, |w r| * ‖(u r).trace‖ := by simp
     _ ≤ B.mass w := Finset.sum_le_sum fun r _ =>
       mul_le_mul_of_nonneg_left
-        (by simpa using norm_trace_le_card (columnUnitary_of_unitary (hu r))) (abs_nonneg _)
+        (by simpa using norm_trace_le_card (hu r)) (abs_nonneg _)
 
 /-- The sign element used on page 4, equation (3). -/
 def signElement (B : Blocks) (w : Fin B.count → ℝ) : B.Algebra :=
@@ -157,7 +142,7 @@ theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
     (hsat : ‖B.trace w g‖ = B.mass w) : ∀ T : B.Algebra, g * T = T * g := by
   have hle : ∀ r, |w r| * ‖(g r).trace‖ ≤ |w r| * B.size r := fun r =>
     mul_le_mul_of_nonneg_left
-      (by simpa using norm_trace_le_card (columnUnitary_of_unitary (hg r))) (abs_nonneg _)
+      (by simpa using norm_trace_le_card (hg r)) (abs_nonneg _)
   have heq : ∑ r, |w r| * ‖(g r).trace‖ = ∑ r, |w r| * B.size r := by
     apply le_antisymm (Finset.sum_le_sum fun r _ => hle r)
     calc
@@ -169,7 +154,7 @@ theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
       ((Finset.sum_eq_sum_iff_of_le (fun r _ => hle r)).mp heq r (Finset.mem_univ r))
   intro T
   funext r
-  obtain ⟨z, hz⟩ := scalar_of_norm_trace_eq_card (columnUnitary_of_unitary (hg r))
+  obtain ⟨z, hz⟩ := scalar_of_norm_trace_eq_card (hg r)
     (by simpa using hblock r)
   change g r * T r = T r * g r
   rw [hz, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]

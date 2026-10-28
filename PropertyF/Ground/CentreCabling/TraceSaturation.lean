@@ -41,12 +41,11 @@ theorem finiteOrder_matrix_trace_saturation {M : Matrix ι ι ℂ} (hM : IsOfFin
   obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
   let U : Matrix ι ι ℂ := (P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)
   have ht : U.trace = M.trace := Matrix.trace_units_conj P M
-  have hu : PropertyF.ColumnUnitary U := PropertyF.columnUnitary_of_unitary hP
   constructor
   · rw [← ht]
-    exact (Complex.re_le_norm _).trans (PropertyF.norm_trace_le_card hu)
+    exact (Complex.re_le_norm _).trans (PropertyF.norm_trace_le_card hP)
   · intro heq
-    have hU : U = 1 := PropertyF.eq_one_of_re_trace_eq_card hu (by rw [ht]; exact heq)
+    have hU : U = 1 := PropertyF.eq_one_of_re_trace_eq_card hP (by rw [ht]; exact heq)
     have hh := congrArg (fun A : Matrix ι ι ℂ => (↑(P⁻¹) : Matrix ι ι ℂ) * A * (P : Matrix ι ι ℂ)) hU
     simpa [U, Matrix.mul_assoc, ← Units.val_mul] using hh
 
