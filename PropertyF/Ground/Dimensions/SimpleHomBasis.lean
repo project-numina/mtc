@@ -95,7 +95,7 @@ theorem simpleInclusion_independent
 /-- The canonical summand inclusions form a basis of each simple Hom space. -/
 def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
     (X : C.Obj) (k : Fin (rank C)) :
-    Module.Basis (Fin (Module.finrank ℂ (simples C k ⟶ X))) ℂ (simples C k ⟶ X) := by
+    Module.Basis (Fin (simpleMultiplicity C k X)) ℂ (simples C k ⟶ X) := by
   letI : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   exact basisOfLinearIndependentOfCardEqFinrank' (simpleInclusion C X k)
     (simpleInclusion_independent C X k) (Fintype.card_fin _)
@@ -103,7 +103,7 @@ def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
 @[simp]
 theorem simpleInclusionBasis_apply
     (X : C.Obj) (k : Fin (rank C))
-    (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
+    (t : Fin (simpleMultiplicity C k X)) :
     simpleInclusionBasis C X k t = simpleInclusion C X k t :=
   letI : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) t
@@ -113,7 +113,7 @@ set_option backward.isDefEq.respectTransparency false in
 projections of the morphism. -/
 theorem simpleInclusionBasis_projection
     {X : C.Obj} {k : Fin (rank C)} (g : simples C k ⟶ X)
-    (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
+    (t : Fin (simpleMultiplicity C k X)) :
     ((simpleInclusionBasis C X k).repr g t) • 𝟙 (simples C k) =
       g ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩ := by
   classical
@@ -128,7 +128,7 @@ set_option backward.isDefEq.respectTransparency false in
 blocks in the chosen object decomposition. -/
 theorem simpleHom_postcomp_trace
     {X : C.Obj} {k : Fin (rank C)} (g : X ⟶ X)
-    (c : Fin (Module.finrank ℂ (simples C k ⟶ X)) → ℂ)
+    (c : Fin (simpleMultiplicity C k X) → ℂ)
     (hc : ∀ t, biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫
       (simpleDecomposition C X).inv ≫ g ≫ (simpleDecomposition C X).hom ≫
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (simples C k)) :

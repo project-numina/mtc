@@ -213,8 +213,7 @@ theorem rootTensorDefect_involution_extension
     Category.id_comp, Category.comp_id]
 /-- The fourth-dual tensor law on simple pairs implies ENO trace reciprocity. -/
 theorem trace_reciprocity_of_fourth_dual
-    (hfourth : ∀ i j : Fin (rank C),
-      fourthDualTensorLaw (simples C i) (simples C j)) :
+    (hfourth : SimpleFourthDualTensorLaw C) :
     ENOTraceMatrixReciprocity C :=
   trace_reciprocity_of_coevaluation C fun _ _ ↦ rootTensorDefect_slide_of_involution C _
     (rootTensorDefect_involution_extension C

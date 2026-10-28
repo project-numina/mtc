@@ -40,7 +40,7 @@ variable (p : PivotalStructure (C := C.Obj))
 multiplicities, for any pivotal structure. -/
 theorem pivotalDimension_decomposition
     (X : C.Obj) :
-    pivotalDimension C p X = ∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℂ) *
+    pivotalDimension C p X = ∑ i, (simpleMultiplicity C i X : ℂ) *
       pivotalDimension C p (simples C i) := by
   classical
   obtain ⟨e⟩ := exists_canonical_decomposition C X
@@ -136,7 +136,7 @@ theorem isSpherical_iff_simple_dimensions
     exact h _ _
   · intro hs X f
     classical
-    let m (i : Fin (rank C)) := Module.finrank ℂ (simples C i ⟶ X)
+    let m (i : Fin (rank C)) := simpleMultiplicity C i X
     let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
     obtain ⟨e⟩ := exists_canonical_decomposition C X
     let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom

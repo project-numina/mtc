@@ -158,7 +158,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Index type for the canonical simple summands of an object. -/
 abbrev simplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :=
-  Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ X))
+  Σ i : Fin (rank C), Fin (simpleMultiplicity C i X)
 
 instance instFintypeSimplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     Fintype (simplePieces C X) := by
@@ -176,7 +176,7 @@ def simpleDecomposition (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 
 /-- The inclusion of a chosen simple summand in the canonical decomposition. -/
 def simpleInclusion (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
-    (k : Fin (rank C)) (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
+    (k : Fin (rank C)) (t : Fin (simpleMultiplicity C k X)) :
     simples C k ⟶ X :=
   biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫ (simpleDecomposition C X).inv
 
