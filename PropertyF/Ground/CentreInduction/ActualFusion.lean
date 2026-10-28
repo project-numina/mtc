@@ -55,20 +55,17 @@ theorem unit_block [HasRightDual R] [HasRightDual S] (Z : Center D) (g : R ⟶ T
         𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _ := by
   let q := closeFusionMap T S f
   dsimp only [unitComponentAt, crossingBlock, mixedCrossing]
+  rw [tensorHom_def, comp_whiskerRight]
   calc
-    _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
-      (((Z.2.β R).hom ≫ (g ▷ Z.1)) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
-      ((T ⊗ S) ◁ (Z.1 ◁ q)) ⊗≫ 𝟙 _ := by
-        rw [tensorHom_def, comp_whiskerRight]
-        monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
       (((Z.2.β (T ⊗ S)).hom ▷ ((Rᘁ : D) ⊗ T)) ≫ (((T ⊗ S) ⊗ Z.1) ◁ q)) ⊗≫ 𝟙 _ := by
-        rw [← Z.2.naturality g]
-        monoidal
+      convert congrArg (fun h : Z.1 ⊗ R ⟶ (T ⊗ S) ⊗ Z.1 =>
+        𝟙 (Z.1 ⊗ T) ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
+          (h ▷ ((Rᘁ : D) ⊗ T)) ⊗≫ ((T ⊗ S) ◁ (Z.1 ◁ q)) ⊗≫
+            𝟙 (T ⊗ ((S ⊗ Z.1) ⊗ Sᘁ))) (Z.2.naturality g).symm using 1 <;> monoidal
     _ = _ := by
-      rw [← whisker_exchange, ← fusion_coevaluation g f]
-      rw [tensorHom_def]
+      rw [← whisker_exchange, ← fusion_coevaluation g f, tensorHom_def]
       monoidal
 
 variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
@@ -216,9 +213,9 @@ theorem globalFPDimension_eq_induction_sum [RigidCategory 𝒵] [IsFusionCategor
   symm
   simp_rw [fpDimension, finrank_hom_induction C, Finset.mul_sum]
   rw [Finset.sum_comm]
-  simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
-    ← Finset.mul_sum, ← center_fpDimension_eq_sum_to_simple C, fpDimension_simple]
-  simp [globalFPDimension, pow_two]
+  simp [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
+    ← Finset.mul_sum, ← center_fpDimension_eq_sum_to_simple C, fpDimension_simple,
+    globalFPDimension, pow_two]
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
@@ -226,8 +223,8 @@ set_option backward.defeqAttrib.useBackward true in
 of the base global FP dimension. -/
 theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
-  simp_rw [globalFPDimension_eq_induction_sum C, ← Integrate.center_forget_fpDimension C]
-  simp [induction, fpDimension_underlying, fpDimension_simple, globalFPDimension, pow_two,
-    Finset.mul_sum, mul_left_comm]
+  rw [globalFPDimension_eq_induction_sum C]
+  simp [← Integrate.center_forget_fpDimension C, induction, fpDimension_underlying,
+    fpDimension_simple, globalFPDimension, pow_two, Finset.mul_sum, mul_left_comm]
 
 end PropertyF.Ground.CentreInduction
