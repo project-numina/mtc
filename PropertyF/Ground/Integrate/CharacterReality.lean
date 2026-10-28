@@ -45,16 +45,13 @@ include hχ hchar
 /-- Every nonzero fusion character takes complex-conjugate values on dual
 simple objects, with no pivotal or spherical hypothesis. -/
 theorem fusion_character_dual_eq_conj (i : Fin (rank C)) : χ (dualIndex C i) = star (χ i) := by
-  classical
-  let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
-    fun j k => (fusionCoeff C i j k : ℂ)
-  have ht : Aᵀ *ᵥ χ = χ (dualIndex C i) • χ := by
-    convert fusion_character_eigenvector hchar (dualIndex C i) using 1
-    congr 1
-    change fusionMatrix C i = (fusionMatrix C (dualIndex C i))ᵀ
-    rw [fusionMatrix_dual, Matrix.transpose_transpose]
-  simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A])
-    (fun hz ↦ hχ (congrFun hz i₀)) (fusion_character_eigenvector hchar i) ht)
+  simpa using congrArg star (conjugate_of_transpose_eigenvector (fusionMatrix C i)ᵀ
+    (fun j k ↦ star_natCast _) (fun hz ↦ hχ (congrFun hz i₀))
+    (fusion_character_eigenvector hchar i) (by
+      change fusionMatrix C i *ᵥ χ = _
+      simpa only [fusionMatrix_dual, Matrix.transpose_transpose] using
+        (show (fusionMatrix C (dualIndex C i))ᵀ *ᵥ χ = χ (dualIndex C i) • χ from
+          fusion_character_eigenvector hchar (dualIndex C i))))
 
 variable (hdual : ∀ i, χ (dualIndex C i) = χ i)
 include hdual
