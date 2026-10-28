@@ -450,24 +450,11 @@ theorem tensor_biprod_mapIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
     Iso.refl X ⊗ᵢ biprod.mapIso a b = (Functor.mapBiprod (tensorLeft X) Y Z) ≪≫
       biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b) ≪≫
         (Functor.mapBiprod (tensorLeft X) Y Z).symm :=
-  let e := Functor.mapBiprod (tensorLeft X) Y Z
-  let A := biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b)
-  show Iso.refl X ⊗ᵢ biprod.mapIso a b = e ≪≫ A ≪≫ e.symm from
-    Iso.ext ((cancel_epi e.inv).1 (by
-      have hleft : biprod.inl ≫ e.inv = X ◁ biprod.inl := by
-        rw [Functor.mapBiprod_inv, biprod.inl_desc]
-        rfl
-      have hright : biprod.inr ≫ e.inv = X ◁ biprod.inr := by
-        rw [Functor.mapBiprod_inv, biprod.inr_desc]
-        rfl
-      apply biprod.hom_ext' <;>
-        simp only [Iso.trans_hom, Iso.symm_hom, Iso.inv_hom_id_assoc] <;>
-        simp only [← Category.assoc, hleft, hright, tensorIso_hom, Iso.refl_hom, id_tensorHom,
-          ← whiskerLeft_comp] <;>
-        simp only [A, biprod.mapIso_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom] <;>
-        simp only [biprod.inl_map, biprod.inr_map, whiskerLeft_comp, Category.assoc]
-      · exact (congrArg (fun f => (X ◁ a.hom) ≫ f) hleft).symm
-      · exact (congrArg (fun f => (X ◁ b.hom) ≫ f) hright).symm))
+  Iso.ext ((cancel_mono (Functor.mapBiprod (tensorLeft X) Y Z).hom).1 (by
+    simp only [Iso.trans_hom, Iso.symm_hom, Category.assoc, Iso.inv_hom_id, Category.comp_id]
+    apply biprod.hom_ext <;>
+      simp [biprod.mapIso_hom, tensorIso_hom, id_tensorHom,
+        ← whiskerLeft_comp, Category.assoc]))
 
 /-- The tensor determinant identity is closed under binary direct sums. -/
 theorem fpDeterminant_tensor_biprod
