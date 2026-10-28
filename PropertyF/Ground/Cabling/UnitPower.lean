@@ -17,13 +17,10 @@ open scoped BigOperators
 @[expose] public noncomputable section
 namespace PropertyF
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
-  [Abelian C] [MonoidalPreadditive C] [RigidCategory C]
-attribute [local instance] Abelian.hasFiniteBiproducts
-
-omit [BraidedCategory C] in
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [Preadditive C]
+  [MonoidalPreadditive C]
 /-- Taking right mates commutes with finite sums. -/
-theorem rightAdjointMate_sum {A B : C} {ι : Type} [Fintype ι]
+theorem rightAdjointMate_sum {A B : C} [HasRightDual A] [HasRightDual B] {ι : Type} [Fintype ι]
     (f : ι → (A ⟶ B)) : (∑ i, f i)ᘁ = ∑ i, (f i)ᘁ := by
   simp [rightAdjointMate, sum_whiskerRight,
     whiskerLeft_sum, Preadditive.comp_sum, Preadditive.sum_comp]

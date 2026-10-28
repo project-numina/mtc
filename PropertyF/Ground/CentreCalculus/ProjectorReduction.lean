@@ -76,8 +76,9 @@ variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
     Invertible (Fintype.card (Perm (Fin n)) : ℂ) :=
   invertibleOfNonzero (by exact_mod_cast Fintype.card_ne_zero)
 
-local instance (n : ℕ) : Invertible (Fintype.card (Perm (Fin n)) : ℂ) :=
-  permutationCardInvertible n
+/-- The permutation-group order has its canonical local inverse over ℂ. -/
+local instance permutationCardInvertibleInstance (n : ℕ) :
+    Invertible (Fintype.card (Perm (Fin n)) : ℂ) := permutationCardInvertible n
 
 include hdim in
 /-- A trace formula for actual alternating projectors implies integrality. The

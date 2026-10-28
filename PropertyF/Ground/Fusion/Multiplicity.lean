@@ -27,8 +27,11 @@ def simpleEndScalar [HasKernels C] (X : C) [Simple X]
     [FiniteDimensional ℂ (X ⟶ X)] : End X ≃ₐ[ℂ] ℂ :=
   (AlgEquiv.ofBijective (Algebra.ofId ℂ (End X)) (simple_algebraMap_bijective X)).symm
 
+section
+variable {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+
 /-- The Hom space into a finite biproduct is the product of the Hom spaces. -/
-def homBiproductLinearEquiv {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+def homBiproductLinearEquiv
     (X : C) (V : ι → C) : (X ⟶ ⨁ V) ≃ₗ[ℂ] (∀ i, X ⟶ V i) where
   toFun f i := f ≫ biproduct.π V i
   invFun f := biproduct.lift f
@@ -47,7 +50,7 @@ def homBiproductLinearEquiv {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
     simp
 
 /-- The Hom space out of a finite biproduct is the product of the Hom spaces. -/
-def biproductHomLinearEquiv {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+def biproductHomLinearEquiv
     (V : ι → C) (X : C) : (⨁ V ⟶ X) ≃ₗ[ℂ] (∀ i, V i ⟶ X) where
   toFun f i := biproduct.ι V i ≫ f
   invFun f := biproduct.desc f
@@ -65,15 +68,17 @@ def biproductHomLinearEquiv {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
     funext i
     simp
 
-theorem finrank_hom_biproduct {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+theorem finrank_hom_biproduct
     (X : C) (V : ι → C) [∀ i, FiniteDimensional ℂ (X ⟶ V i)] :
     Module.finrank ℂ (X ⟶ ⨁ V) = ∑ i, Module.finrank ℂ (X ⟶ V i) :=
   by rw [(homBiproductLinearEquiv X V).finrank_eq, Module.finrank_pi_fintype]
 
-theorem finrank_biproduct_hom {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+theorem finrank_biproduct_hom
     (V : ι → C) (X : C) [∀ i, FiniteDimensional ℂ (V i ⟶ X)] :
     Module.finrank ℂ (⨁ V ⟶ X) = ∑ i, Module.finrank ℂ (V i ⟶ X) :=
   by rw [(biproductHomLinearEquiv V X).finrank_eq, Module.finrank_pi_fintype]
+
+end
 
 variable (D : BraidedFusionCategory.{v,u})
 

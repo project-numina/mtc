@@ -211,13 +211,14 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 variable (p : PivotalStructure (C := C))
 
+omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Partial trace is natural for morphisms on the surviving strand. -/
 theorem rightPartialTrace_natural {A B Y : C}
     (f : A ⟶ B) (g : B ⟶ A) (t : End (B ⊗ Y)) :
     rightPartialTrace p (End.of ((f ▷ Y) ≫ t.asHom ≫ (g ▷ Y))) =
       End.of (f ≫ (rightPartialTrace p t).asHom ≫ g) :=
   End.ext (by
-    simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+    simp only [rightPartialTrace,
       comp_whiskerRight, Category.assoc]
     rw [← associator_inv_naturality_left_assoc, whisker_exchange_assoc,
       ← rightUnitor_inv_naturality_assoc]
@@ -279,7 +280,7 @@ theorem partialTrace_doubleBraiding_tensor (D : BraidedFusionCategory.{v,u})
     partialTrace_doubleBraiding_simple D p k _
   change rightPartialTrace p f = _
   rw [rightPartialTrace_nested_simple p (simpleDimension_ne_zero D p k) f,
-    partialTrace_doubleBraiding_scalar p (simples D i) hs, map_smul, hs]
+    partialTrace_doubleBraiding_scalar p (simples D i) hs, rightPartialTrace_smul, hs]
   simp [partialMonodromy]
 
 
