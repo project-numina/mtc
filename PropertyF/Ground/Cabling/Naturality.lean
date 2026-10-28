@@ -85,9 +85,9 @@ private theorem freeGroup_natural {X Y : C} {ι : Type*} (a : ι → Aut X) (b :
   | of i => simpa using h i
   | inv_of i ih =>
     simp only [map_inv, Aut.inv_asIso] at *
-    apply (cancel_epi (FreeGroup.lift a (FreeGroup.of i)).asIso.hom).mp
-    apply (cancel_mono (FreeGroup.lift b (FreeGroup.of i)).asIso.hom).mp
-    simpa [Category.assoc] using ih.symm
+    exact (cancel_epi (FreeGroup.lift a (FreeGroup.of i)).asIso.hom).mp <|
+      (cancel_mono (FreeGroup.lift b (FreeGroup.of i)).asIso.hom).mp <| by
+        simpa [Category.assoc] using ih.symm
   | mul x y ihx ihy =>
     simp only [map_mul, Aut.mul_asIso, Iso.trans_hom, Category.assoc]
     rw [ihx, ← Category.assoc, ihy, Category.assoc]

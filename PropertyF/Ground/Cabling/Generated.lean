@@ -102,12 +102,11 @@ private def flattenDependentFin (a : ℕ) (b : Fin a → ℕ)
 /-- Finite biproducts of generated objects are generated. -/
 theorem generatedBy_biproduct {X : C} {a : ℕ} (f : Fin a → C)
     (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
-  classical
   choose n k hr using hf
   let e := Fintype.equivFin (Σ i, Fin (n i))
-  refine ⟨_, fun p => k (e.symm p).1 (e.symm p).2, ?_⟩
-  exact ⟨(biproductRetract (fun i => (hr i).some)).trans
-    (Retract.ofIso (flattenDependentFin a n (fun i j => tensorPower X (k i j))))⟩
+  exact ⟨_, fun p => k (e.symm p).1 (e.symm p).2,
+    ⟨(biproductRetract (fun i => (hr i).some)).trans
+      (Retract.ofIso (flattenDependentFin a n (fun i j => tensorPower X (k i j))))⟩⟩
 
 /-- Generated objects are closed under biproducts indexed by any finite type. -/
 theorem generatedBy_finiteBiproduct {X : C} {J : Type} [Finite J] (f : J → C)
