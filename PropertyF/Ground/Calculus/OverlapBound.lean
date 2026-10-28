@@ -19,18 +19,18 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 unitary is bounded by the simple-multiplicity mass. The explicit dimension
 bound is supplied by the fusion/Perron and dimensions workstreams. -/
 theorem pivotalTrace_braid_unitary_bound
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
     (p : Dimensions.PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
-    (m : Fin (Ground.rank C) → ℕ)
+    {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (fun q : Σ i, Fin (m i) => Ground.simples C q.1))
-    (r : ℕ) (d : Fin r → ℕ) (hd : ∀ j, 0 < d j)
+    {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
-    (fp : Fin (Ground.rank C) → ℝ)
+    {fp : Fin (Ground.rank C) → ℝ}
     (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ fp i)
     (a : braidAlgebra X n) (ha : ∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) :
     ‖scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
       ∑ i, (m i : ℝ) * fp i := by
-  obtain ⟨mult, _, hdim, htrace⟩ := pivotalTrace_braid_multiplicities C X n p scalar m e r d hd b
+  obtain ⟨mult, _, hdim, htrace⟩ := pivotalTrace_braid_multiplicities C p scalar e hd b
   have hfp : ∀ i, 0 ≤ fp i := fun i => (norm_nonneg _).trans (hbound i)
   have hw (j : Fin r) :
       ‖∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤
@@ -67,8 +67,8 @@ theorem fpDimension_tensorPower (C : Ground.BraidedFusionCategory.{v,u})
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
 theorem braid_trace_unitary_bound_ground
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (r : ℕ) (d : Fin r → ℕ)
+    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
+    (p : Dimensions.PivotalStructure (C := C.Obj)) {r : ℕ} {d : Fin r → ℕ}
     (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (a : braidAlgebra X n) (ha : ∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) :
@@ -84,8 +84,8 @@ theorem braid_trace_unitary_bound_ground
     have h := Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
     simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension,
       Dimensions.groundUnitScalarEquiv_apply] using h
-  have h := pivotalTrace_braid_unitary_bound C X n p (Dimensions.groundUnitScalarEquiv C)
-    m e r d hd b (Ground.fpSimple C) hbound a ha
+  have h := pivotalTrace_braid_unitary_bound C p (Dimensions.groundUnitScalarEquiv C)
+    e hd b hbound a ha
   change ‖Dimensions.groundUnitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
       Ground.fpDimension C (tensorPower X (n + 2)) at h
@@ -292,8 +292,8 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
   apply norm_bound_of_overlapIndex hδ hf t
     (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec
   intro k
-  have hbound := braid_trace_unitary_bound_ground C X (overlapIndex t k) p
-    (r _) (d _) (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary r d e he hu k)
+  have hbound := braid_trace_unitary_bound_ground C p
+    (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary r d e he hu k)
   change ‖actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)‖ ≤ _ at hbound
   exact hbound
 

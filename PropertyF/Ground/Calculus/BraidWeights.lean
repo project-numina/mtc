@@ -362,11 +362,11 @@ theorem braidToEndBlocks_injective (C : Ground.BraidedFusionCategory.{v,u}) (X :
 multiplicity-weight formula. Every retained braid block occurs in a simple
 constituent's multiplicity space. -/
 theorem pivotalTrace_braid_multiplicities
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
     (p : Dimensions.PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
-    (m : Fin (Ground.rank C) → ℕ)
+    {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (fun q : Σ i, Fin (m i) => Ground.simples C q.1))
-    (r : ℕ) (d : Fin r → ℕ) (hd : ∀ j, 0 < d j)
+    {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :
     ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,
       (∀ j, ∃ i, 0 < mult i j) ∧
@@ -426,7 +426,7 @@ theorem exists_unitary_braid_trace_blocks
   obtain ⟨r, d, b, hnonzero, hunitary⟩ := braidAlgebra_unitary_blocks X n hfinite
   have hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
   obtain ⟨mult, hret, hdim, htrace⟩ :=
-    pivotalTrace_braid_multiplicities C X n p scalar m e r d hd b
+    pivotalTrace_braid_multiplicities C p scalar e hd b
   exact ⟨r, d, b, mult, hd, hunitary, hret, hdim, htrace⟩
 
 end PropertyF.Ground.Calculus

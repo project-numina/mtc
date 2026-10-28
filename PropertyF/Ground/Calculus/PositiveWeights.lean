@@ -68,8 +68,8 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
   classical
   choose r size b w hsize he hw htrace using fun n =>
     exists_galois_braid_trace_weights C X n (hfinite n) p original qdim σ hpos htransport hqdim
-  apply actual_three_strand_rigidity_of_trace_bound C X p (r 1) (size 1) (b 1) (he 1)
-    (w 1) (hw 1) d f hd hf hdim hS hfinite (htrace 1)
+  apply actual_three_strand_rigidity_of_trace_bound C p (b 1) (he 1)
+    (hw 1) hd hf hdim hS hfinite (htrace 1)
   intro z hz
   have h := sharp_trace_bound_for_presentations_of_overlap_identity C X p 1 r size b hsize he z hz (hrec z)
   simpa [hdim, hfp, Complex.norm_real, Real.norm_eq_abs] using h

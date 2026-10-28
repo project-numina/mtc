@@ -179,10 +179,9 @@ def addLeftBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidAl
 
 /-- The identity-strand algebra map carries each actual braid to its inserted
 copy. -/
-theorem addLeftBraidAlgebra_group (X : C) (n : ℕ) (g : braidImage X n) :
+theorem addLeftBraidAlgebra_group {X : C} {n : ℕ} (g : braidImage X n) :
     addLeftBraidAlgebra X n (groupInImage (braidEndRepresentation X n) g) =
-      groupInImage (braidEndRepresentation X (n + 1)) (addLeftStrand X n g) := by
-  apply imageAlgebraMap_group
+      groupInImage (braidEndRepresentation X (n + 1)) (addLeftStrand X n g) := imageAlgebraMap_group _ _ _ _ _ g
 
 /-- Repeated left identity-strand insertion on the actual image groups. -/
 def addLeftStrands (X : C) (n : ℕ) : ∀ k, braidImage X n →* braidImage X (n + k)
@@ -196,7 +195,7 @@ def addLeftBraidAlgebraIter (X : C) (n : ℕ) :
   | k + 1 => (addLeftBraidAlgebra X (n + k)).comp (addLeftBraidAlgebraIter X n k)
 
 /-- Repeated insertion acts as expected on every actual braid. -/
-theorem addLeftBraidAlgebraIter_group (X : C) (n : ℕ) :
+theorem addLeftBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
       addLeftBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g) =
         groupInImage (braidEndRepresentation X (n + k)) (addLeftStrands X n k g)
@@ -204,7 +203,7 @@ theorem addLeftBraidAlgebraIter_group (X : C) (n : ℕ) :
   | k + 1, g => by
     change addLeftBraidAlgebra X (n + k)
       (addLeftBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g)) = _
-    rw [addLeftBraidAlgebraIter_group X n k g, addLeftBraidAlgebra_group]
+    rw [addLeftBraidAlgebraIter_group k g, addLeftBraidAlgebra_group]
     rfl
 
 /-- Repeated left insertion expressed in unitary matrix blocks. -/
@@ -391,10 +390,9 @@ def addRightBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidA
     (addRightStrand X n) (appendRightEndAlgHom X n) (appendRightEndAlgHom_group X n)
 
 /-- The induced algebra map carries every braid to the right-inserted braid. -/
-theorem addRightBraidAlgebra_group (X : C) (n : ℕ) (g : braidImage X n) :
+theorem addRightBraidAlgebra_group {X : C} {n : ℕ} (g : braidImage X n) :
     addRightBraidAlgebra X n (groupInImage (braidEndRepresentation X n) g) =
-      groupInImage (braidEndRepresentation X (n + 1)) (addRightStrand X n g) := by
-  apply imageAlgebraMap_group
+      groupInImage (braidEndRepresentation X (n + 1)) (addRightStrand X n g) := imageAlgebraMap_group _ _ _ _ _ g
 
 /-- Repeated right identity-strand insertion on the actual image groups. -/
 def addRightStrands (X : C) (n : ℕ) : ∀ k, braidImage X n →* braidImage X (n + k)
@@ -408,7 +406,7 @@ def addRightBraidAlgebraIter (X : C) (n : ℕ) :
   | k + 1 => (addRightBraidAlgebra X (n + k)).comp (addRightBraidAlgebraIter X n k)
 
 /-- Repeated insertion acts as expected on every actual braid. -/
-theorem addRightBraidAlgebraIter_group (X : C) (n : ℕ) :
+theorem addRightBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
       addRightBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g) =
         groupInImage (braidEndRepresentation X (n + k)) (addRightStrands X n k g)
@@ -416,7 +414,7 @@ theorem addRightBraidAlgebraIter_group (X : C) (n : ℕ) :
   | k + 1, g => by
     change addRightBraidAlgebra X (n + k)
       (addRightBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g)) = _
-    rw [addRightBraidAlgebraIter_group X n k g, addRightBraidAlgebra_group]
+    rw [addRightBraidAlgebraIter_group k g, addRightBraidAlgebra_group]
     rfl
 
 /-- Repeated right insertion expressed in unitary matrix blocks. -/

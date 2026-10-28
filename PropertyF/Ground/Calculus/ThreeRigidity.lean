@@ -82,12 +82,12 @@ set_option backward.isDefEq.respectTransparency false in
 categorical weighted trace has the sharp bound and saturates it at `a²b²`.
 The remaining hypotheses are explicitly the trace weights and sharp bound. -/
 theorem actual_braid_squares_equal_of_saturation
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
+    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj}
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (r : ℕ) (size : Fin r → ℕ)
+    {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
     (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
-    (w : Fin r → ℝ) (hw : ∀ i, w i ≠ 0) (d f : ℝ) (hf : 0 < f)
+    {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0) {d f : ℝ} (hf : 0 < f)
     (htrace : ∀ z : braidAlgebra X 1, actualBraidTrace C X p 1 z =
       (PropertyF.Blocks.mk r size).trace w (b z))
     (hbound : ∀ z : braidAlgebra X 1,
@@ -256,13 +256,13 @@ theorem dimension_eq_abs_of_scalar_monodromy
 /-- Three-strand rigidity for a genuine braided pivotal fusion category,
 reduced to explicit real, nonzero trace weights and the sharp unitary bound. -/
 theorem actual_three_strand_rigidity_of_trace_bound
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
+    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} [Simple X]
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (r : ℕ) (size : Fin r → ℕ)
+    {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
     (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
-    (w : Fin r → ℝ) (hw : ∀ i, w i ≠ 0)
-    (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
+    {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0)
+    {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
     (hdim : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
     (hS : Dimensions.groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * f)
@@ -273,7 +273,7 @@ theorem actual_three_strand_rigidity_of_trace_bound
       (∀ i, b z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ) →
       ‖actualBraidTrace C X p 1 z‖ ≤ |d| * f ^ 2) : f = |d| := by
   have hvalue := actual_three_braid_saturates C X p d f hd hdim hS
-  have hsq := actual_braid_squares_equal_of_saturation C X p r size b he w hw d f hf htrace hbound hvalue
+  have hsq := actual_braid_squares_equal_of_saturation C p b he hw hf htrace hbound hvalue
   have hlocal := local_monodromy_of_block_squares_equal C X r size b hsq
   have hscalar := pair_operator_scalar_of_overlaps_equal C X p (selfMonodromy X) d f hd hdim hS hlocal
   exact dimension_eq_abs_of_scalar_monodromy C X p d f hd hf hdim hfinite hscalar
