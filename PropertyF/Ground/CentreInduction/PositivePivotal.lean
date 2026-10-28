@@ -62,7 +62,7 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 section
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (Center D)]
+  [RightRigidCategory (Center D)]
 local notation "𝒵" => Center D
 variable (p : PivotalStructure (C := D))
 
@@ -109,7 +109,7 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
-  [RightRigidCategory D] [RigidCategory (Center D)]
+  [RightRigidCategory D] [RightRigidCategory (Center D)]
 local notation "Z⁺" => Functor.obj (Center.ofBraided D)
 variable (p : PivotalStructure (C := D)) (T : D)
 

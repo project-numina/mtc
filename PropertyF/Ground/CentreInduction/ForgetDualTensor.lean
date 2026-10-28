@@ -11,7 +11,7 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (Center D)]
+  [RightRigidCategory (Center D)]
 local notation "𝒵" => Center D
 variable {X Y : Center D}
 
@@ -94,7 +94,7 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (Center D)]
+  [RightRigidCategory (Center D)]
 local notation "𝒵" => Center D
 variable (X Y : Center D)
 
@@ -104,7 +104,7 @@ abbrev tensorForgetPairing :
     ExactPairing (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1) :=
   @ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1 (forgetPairing X) (forgetPairing Y)
 
-omit [RightRigidCategory D] [RigidCategory (Center D)] in
+omit [RightRigidCategory D] [RightRigidCategory (Center D)] in
 /-- Comparing duals successively agrees with comparing them directly. -/
 theorem rightDualIso_trans {X A B F : D}
     (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X F) :
