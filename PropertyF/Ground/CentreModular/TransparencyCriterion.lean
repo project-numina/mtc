@@ -75,9 +75,8 @@ theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
   apply fusion_S_det_ne_zero_of_kirby (N := ⟨unitIndex C, fusionCoeff C⟩)
     (D := (globalFPDimension C : ℂ)) (categoricalS_symmetric C p)
     (simpleDimension_ne_zero C p) (categoricalS_verlinde C p)
-    (fun x y ↦ by
-      change fusionCoeff C x y (unitIndex C) = _
-      rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit]) (dualIndex_involutive C)
+    (fun x y ↦ (fusionCoeff_reciprocity_labels (D := C) x y (unitIndex C)).trans
+      (fusionCoeff_unit C (dualIndex C y) x)) (dualIndex_involutive C)
   · exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
   · intro k
     split_ifs with hk

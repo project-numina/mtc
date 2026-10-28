@@ -131,13 +131,11 @@ theorem categoricalS_square (hdet : (Sₚ).det ≠ 0)
     (character_columns_orthogonal ⟨unitIndex C, fusionCoeff C⟩ (Ground.dualIndex C)
       (fun i j k ↦ Ground.fusionCoeff_dual_symmetry C i k j) (S := Sₚ) (d := dₚ) (categoricalSCharacter C p)
       (fun _ _ ↦ rfl) hdet (simpleDimension_ne_zero C p) hreal)
-  have hglobal : (∑ z, Sₚ (unitIndex C) z * Sₚ z (unitIndex C)) = globalDimension C := by
-    simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
-    simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
-  rw [← hglobal]
-  exact square_eq_of_support Sₚ (Ground.dualIndex_involutive C) (Ground.dualIndex_unit C)
+  convert square_eq_of_support Sₚ (Ground.dualIndex_involutive C) (Ground.dualIndex_unit C)
     (fun i ↦ by simpa only [categoricalS_unit] using simpleDimension_dual C p hreal i)
-    (fun i ↦ by simpa only [categoricalS_unit] using simpleDimension_ne_zero C p i) hoff
+    (fun i ↦ by simpa only [categoricalS_unit] using simpleDimension_ne_zero C p i) hoff using 1
+  simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
+  simpa only [pow_two] using categorical_global_eq_sum_squares C p hp
 
 end PropertyF.Ground.Modular
 end
