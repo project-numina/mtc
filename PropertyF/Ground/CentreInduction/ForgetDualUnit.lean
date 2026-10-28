@@ -83,8 +83,7 @@ theorem forgetDoubleDualIso_unit :
   let b := rightDualUnitIso (C := D)
   have hu : (forgetDualIso U).hom ≫ b.hom = e.hom.f := forgetDualIso_unit (D := D)
   have hv : e.inv.f ≫ (forgetDualIso U).hom = b.inv :=
-    (Iso.comp_hom_eq_id b).1 <| (Category.assoc _ _ _).trans <|
-      (congrArg (e.inv.f ≫ ·) hu).trans (congrArg Center.Hom.f e.inv_hom_id)
+    (Iso.inv_comp_eq ((Center.forget D).mapIso e)).2 ((Iso.eq_comp_inv b).2 hu)
   have hn := forgetDualIso_natural e.hom
   change (e.homᘁ).f ≫ (forgetDualIso (Uᘁ)).hom =
     (forgetDualIso U).hom ≫ (e.hom.fᘁ) at hn
