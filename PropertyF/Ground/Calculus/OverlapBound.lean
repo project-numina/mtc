@@ -141,6 +141,12 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Calculus
 universe v u
 
+/-- A single overlap multiplies the trace by the normalized trace of its new factor. -/
+abbrev HasOverlapTraceStep (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
+    (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t) : Prop :=
+  ∀ k, actualBraidTrace C p (overlapProduct u (k + 1)) * pivotalDimension C p X =
+    actualBraidTrace C p (overlapProduct u k) * actualBraidTrace C p u
+
 /-- The scaled trace of overlapping products is the corresponding trace power. -/
 abbrev HasOverlapTracePower (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t) : Prop :=
@@ -247,11 +253,7 @@ variable (p : PivotalStructure (C := C.Obj)) {X : C.Obj} {t : ℕ} (u : braidAlg
 /-- Iterating a single overlap step gives the scaled power identity, without
 dividing by the simple dimension. -/
 theorem overlap_trace_power_of_step
-    (hstep : ∀ k, actualBraidTrace C p
-        (overlapProduct u (k + 1)) *
-        pivotalDimension C p X =
-      actualBraidTrace C p (overlapProduct u k) *
-        actualBraidTrace C p u) :
+    (hstep : HasOverlapTraceStep C p u) :
     HasOverlapTracePower C p u := by
   intro k
   induction k with

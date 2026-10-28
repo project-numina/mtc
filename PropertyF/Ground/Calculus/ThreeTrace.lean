@@ -245,10 +245,10 @@ normalized by the pivotal dimension of the shared simple strand. -/
 theorem three_braid_trace (D : BraidedFusionCategory.{v,u})
     (X : D.Obj) [Simple X] (p : PivotalStructure (C := D.Obj))
     (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) :
-    scalar (p.rightTrace (Aut.toEnd ((braidGenerator X 1 0) ^ 2 *
-      (braidGenerator X 1 1) ^ 2)).asHom) =
-    scalar (p.rightTrace (selfMonodromy X).asHom) ^ 2 /
-      scalar (p.rightTrace (𝟙 X)) := by
+    scalarTrace p scalar (Aut.toEnd ((braidGenerator X 1 0) ^ 2 *
+      (braidGenerator X 1 1) ^ 2)) =
+    scalarTrace p scalar (selfMonodromy X) ^ 2 / scalar (p.rightTrace (𝟙 X)) := by
+  unfold scalarTrace
   rw [← rightTrace_iso_conj p (threePowerIso X), three_braid_double_overlap,
     rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p scalar]
   ring
