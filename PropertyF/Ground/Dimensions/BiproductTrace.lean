@@ -65,8 +65,7 @@ theorem simple_biproduct_diagonal [HasKernels C]
   Classical.skolem.mp fun i ↦
     let : Simple (F i) := hs i
     let : FiniteDimensional k (F i ⟶ F i) := hfinite i
-    (endomorphism_simple_eq_smul_id k (biproduct.ι F i ≫ f ≫ biproduct.π F i)).imp
-      fun _ h ↦ h.symm
+    (endomorphism_simple_eq_smul_id k (biproduct.ι F i ≫ f ≫ biproduct.π F i)).imp fun _ ↦ Eq.symm
 /-- A cyclic trace on a biproduct of simples is a weighted sum of simple traces. -/
 theorem cyclicTrace_biproduct_simple [HasKernels C]
     (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A)

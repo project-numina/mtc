@@ -134,7 +134,6 @@ theorem squaredNorm_eq_rootDualSign_mul
       rootDimension C (dualIndex C i) := by
   let X := simples C i
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
-  let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap j).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
   let e : Xᘁ ≅ ᘁX := leftDualIso
     (BraidedCategory.exactPairing_swap X (Xᘁ)) HasLeftDual.exact
