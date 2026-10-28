@@ -1,7 +1,12 @@
 module
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 
-/-! The twist sign and integral dimensions of self-transparent simples. -/
+/-!
+# Twist signs and integral dimensions
+
+The inverse-braiding trace identifies the inverse pivotal twist. On a
+self-transparent simple object the twist is a sign, giving integral dimension.
+-/
 @[expose] public noncomputable section
 open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 open PropertyF.Ground.Dimensions
