@@ -318,14 +318,10 @@ import all PropertyF.Ground.Calculus.UnitaryBlocks
 import all PropertyF.Ground.Calculus.WeightFacts
 import all PropertyF.Ground.Centre.Abelian
 import all PropertyF.Ground.Centre.Averaging
-import all PropertyF.Ground.Centre.FiniteClosure
-import all PropertyF.Ground.Centre.GeneratedClosure
-import all PropertyF.Ground.Centre.ImageDuals
-import all PropertyF.Ground.Centre.Basic
-import all PropertyF.Ground.Centre.Product
 import all PropertyF.Ground.Centre.ProductClosure
+import all PropertyF.Ground.Centre.Product
+import all PropertyF.Ground.Centre.Basic
 import all PropertyF.Ground.Centre.ProductImages
-import all PropertyF.Ground.Centre.ReverseBraiding
 import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.CentreCabling.ProductGenerated

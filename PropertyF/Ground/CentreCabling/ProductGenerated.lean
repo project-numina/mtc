@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Centre.GeneratedClosure
+public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.Cabling.GeneralDual
 public import PropertyF.Ground.Fusion.GeneratedRigidity
 public import PropertyF.Ground.Integrate.CenterBundle

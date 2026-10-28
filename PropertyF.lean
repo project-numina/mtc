@@ -53,13 +53,9 @@ public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.Norm
 public import PropertyF.Ground.Calculus.StarSpan
 public import PropertyF.Ground.Centre.Abelian
-public import PropertyF.Ground.Centre.ReverseBraiding
-public import PropertyF.Ground.Centre.Product
-public import PropertyF.Ground.Centre.ImageDuals
 public import PropertyF.Ground.Centre.ProductImages
+public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Centre.ProductClosure
-public import PropertyF.Ground.Centre.FiniteClosure
-public import PropertyF.Ground.Centre.GeneratedClosure
 public import PropertyF.Ground.Centre.SymmetricIntegrality
 public import PropertyF.Ground.Centre.Averaging
 public import PropertyF.Ground.Modular.Classification

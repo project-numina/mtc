@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.PivotalLift
-public import PropertyF.Ground.Centre.ImageDuals
+public import PropertyF.Ground.Centre.Product
 
 /-! Pivotal components on canonical positive centre images. -/
 @[expose] public noncomputable section
