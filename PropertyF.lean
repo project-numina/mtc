@@ -1,7 +1,6 @@
 module
 public import PropertyF.Ground.Integrate.ProjectAudit
 public import PropertyF.Ground.CentreInduction.Underlying
-public import PropertyF.Ground.CentreInduction.Adjunction
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
 public import PropertyF.Ground.Centre.Modular.Vafa
 public import PropertyF.Ground.CentreBundle.Fusion
