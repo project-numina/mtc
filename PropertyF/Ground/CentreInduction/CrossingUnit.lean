@@ -30,7 +30,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_unit :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  simp [crossingBlock, mixedCrossing, closeFusionMap_unit, tensorHom_def, Category.assoc]
+  simp [crossingBlock, mixedCrossing, closeFusionMap_unit, tensorHom_def]
 end
 
 section
@@ -48,7 +48,7 @@ theorem closeFusionMap_tensor (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
       simp [closeFusionMap_evaluation, monoidalComp]
     _ = _ := by
       rw [whisker_exchange]
-      simp [monoidalComp, comp_whiskerRight, Category.assoc, closeFusionMap_evaluation]
+      simp [monoidalComp, comp_whiskerRight, closeFusionMap_evaluation]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossing blocks compose to the block of their composite fusion maps. -/
@@ -83,10 +83,10 @@ theorem crossingBlock_of_simple_split [HasRightDual R] [HasRightDual S] [Simple 
     crossingBlock X T S g f = crossingBlock X T S e.hom e.inv := by
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id k (g ≫ e.inv)
   have hg : g = c • e.hom := by
-    simpa [Category.assoc] using (congrArg (fun k => k ≫ e.hom) hc).symm
+    simpa using (congrArg (fun k => k ≫ e.hom) hc).symm
   have hc0 : c ≠ 0 := fun hc0 => id_nonzero R (by simpa [hg, hc0] using h.symm)
   have hf : f = c⁻¹ • e.inv := by
-    simpa [hg, ← Category.assoc, Linear.comp_smul, Linear.smul_comp, smul_smul, hc0] using
+    simpa [hg, ← Category.assoc, smul_smul, hc0] using
       congrArg (fun k => c⁻¹ • (e.inv ≫ k)) h
   change mixedCrossingBilinear (k := k) X T T R S g f =
     mixedCrossingBilinear (k := k) X T T R S e.hom e.inv
