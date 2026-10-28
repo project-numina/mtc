@@ -67,10 +67,10 @@ universe v u
 self-column, a dimension at least one, and a real conjugate. This is independent
 of the centre-specific realization and finite-braid rigidity. -/
 theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := Z.Obj)) (hp : p.IsSpherical)
+    {p : Dimensions.PivotalStructure (C := Z.Obj)} (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions Z p)
     (hdet : (Modular.categoricalS Z p).det ≠ 0)
-    (δ : ℝ) (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
+    {δ : ℝ} (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) :
     ∃ (y : Fin (rank Z)) (d : ℝ), 1 ≤ fpSimple Z y ∧
       σ (fpSimple Z y : ℂ) = (d : ℂ) ∧
@@ -104,10 +104,10 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
 actual three-strand rigidity theorem applies, the required numerical witness
 follows from categorical modular data. -/
 theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := Z.Obj)) (hp : p.IsSpherical)
+    {p : Dimensions.PivotalStructure (C := Z.Obj)} (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions Z p)
     (hdet : (Modular.categoricalS Z p).det ≠ 0)
-    (δ b : ℝ) (hδ : 0 < δ) (hb : 0 < b)
+    {δ b : ℝ} (hδ : 0 < δ) (hb : 0 < b)
     (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
     (hF : ∀ y, (∀ x, Modular.categoricalS Z p x y =
@@ -115,8 +115,8 @@ theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v
       ObjectPropertyF (simples Z y)) :
     ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
   obtain ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ :=
-    exists_modular_witness Z p hp hdim hdet δ hglobal σ
-  exact ⟨_, d, center_witness_of_modular_and_rigidity σ hδ hb hf hτ hσf hG hS
+    exists_modular_witness Z hp hdim hdet hglobal σ
+  exact ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ hσf hG hS
     (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d hσf)⟩
 
 end PropertyF.Ground
@@ -234,8 +234,8 @@ theorem target_of_modular_center
     obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp C σ.symm
     have hb : 0 < b := (Complex.ofReal_injective (hb'eq.symm.trans hτ)) ▸ hb'
     obtain ⟨Z, p, hp, hdim, hdet, hglobal, hfinite⟩ := hCenter C hPU hF σ
-    apply center_witness_of_categorical_modular_data Z p hp hdim hdet
-      (globalFPDimension C) b (lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C))
+    apply center_witness_of_categorical_modular_data Z hp hdim hdet
+      (lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C))
       hb hglobal σ hτ hfinite
 
 

@@ -22,16 +22,13 @@ theorem fpDimension_simple (j : Fin (rank D)) :
   simp [fpDimension, finrank_simples_hom]
 
 theorem fpDimension_iso {X Y : D.Obj} (e : X ≅ Y) :
-    fpDimension D X = fpDimension D Y := by
-  unfold fpDimension
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq]
+    fpDimension D X = fpDimension D Y :=
+  Finset.sum_congr rfl fun i _ => congrArg (fun n : ℕ => (n : ℝ) * fpSimple D i)
+    (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
 
 theorem fpDimension_nonneg (X : D.Obj) :
-    0 ≤ fpDimension D X := by
-  unfold fpDimension
-  exact Finset.sum_nonneg (fun i _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D i).le)
+    0 ≤ fpDimension D X :=
+  Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D i).le
 
 theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 := by
   obtain ⟨e⟩ := unitIndex_iso D
@@ -68,8 +65,8 @@ theorem one_le_fpDimension {X : D.Obj}
   obtain ⟨i, hi⟩ := exists_positive_multiplicity D hX
   have hcoeff : (1 : ℝ) ≤ Module.finrank ℂ (simples D i ⟶ X) := by exact_mod_cast hi
   have hterm : (1 : ℝ) ≤
-      (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i := by
-    nlinarith [one_le_fpSimple D i]
+      (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i :=
+    one_le_mul_of_one_le_of_one_le hcoeff (one_le_fpSimple D i)
   unfold fpDimension
   exact hterm.trans (Finset.single_le_sum
     (f := fun j => (Module.finrank ℂ (simples D j ⟶ X) : ℝ) * fpSimple D j)

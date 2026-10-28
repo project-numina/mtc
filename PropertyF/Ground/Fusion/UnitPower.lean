@@ -63,8 +63,7 @@ theorem balanced_flow_cycle {ι : Type*} [Fintype ι] (b : ι → ι → ℝ)
   have ho : o ∉ s := by simp [s, Relation.ReflTransGen.refl]
   have hjs : j ∉ s := by
     intro hjs
-    have hz := balanced_flow_no_entry b hb hbalance s hc o j ho hjs
-    linarith
+    exact (ne_of_gt hj) (balanced_flow_no_entry b hb hbalance s hc o j ho hjs)
   refine ⟨j, hj, ?_⟩
   simpa [s] using hjs
 

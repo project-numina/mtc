@@ -1,5 +1,6 @@
 module
-public import PropertyF.Ground.CentreCabling.TargetReduction
+public import PropertyF.Ground.CentreCabling.ImageCore
+public import PropertyF.Ground.Integrate.ActualCenterReduction
 public import PropertyF.Ground.CentreInduction.ActualFusion
 public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
@@ -55,13 +56,19 @@ theorem target_of_center_image_monodromy_no_square
             (HasIntegralSimpleDimensionsOn Z p (CentreCabling.symmetricCore C)) ∧
             (CentreCabling.HasFiniteImageCentralizerMonodromy C p)) :
     TargetStatement.{v,u} := by
-  apply target_of_center_image_monodromy
+  apply target_of_actual_center
   intro C hPU hF
   obtain ⟨hR, hFusion, p, hp, hdim, hdet, hintegral, hfinite⟩ := hCenter C hPU hF
-  letI := hR
-  letI := hFusion
-  exact ⟨hR, hFusion, p, hp, hdim, hdet,
-    center_globalDimension_square_of_actual_induction C p hp hdim, hintegral, hfinite⟩
+  let := hR
+  let := hFusion
+  refine ⟨hR, hFusion, p, CentreCabling.symmetricCore C,
+    (↑(CentreCabling.productLabels C) : Set _), hp, hdim, hdet,
+    center_globalDimension_square_of_actual_induction C p hp hdim, hintegral, ?_, ?_⟩
+  · intro y hy
+    exact (CentreCabling.mem_productLabels C y).mpr
+      (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy C p hp hdet hdim hfinite y hy)
+  · intro y hy
+    exact (CentreCabling.mem_productLabels C y).mp hy
 
 end PropertyF.Ground
 end
@@ -77,7 +84,7 @@ universe v u
 set_option linter.style.haveILetI false
 
 /-- The fusion instance constructed from a pivotal pseudo-unitary base. -/
-@[instance_reducible] def centerFusionOfPivotalPseudoUnitary
+theorem centerFusionOfPivotalPseudoUnitary
     (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hpu : PseudoUnitary C) :
     letI := CentreRigid.rigidCenter (C := C.Obj)

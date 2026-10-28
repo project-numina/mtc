@@ -73,21 +73,21 @@ namespace PropertyF.Ground.Dimensions
 
 /-- Each value of any nonzero fusion-ring character is bounded in absolute value
 by the spectral-radius FP dimension. No positivity of the character is needed. -/
-theorem character_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
-    {χ : Fin (Ground.rank C) → ℂ} {i₀ : Fin (Ground.rank C)} (hχ : χ i₀ ≠ 0)
-    (hchar : Ground.IsFusionMultiplicative C χ) (i : Fin (Ground.rank C)) :
-    ‖χ i‖ ≤ Ground.fpSimple C i := by
+theorem character_norm_le_fpSimple (C : BraidedFusionCategory)
+    {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
+    (hchar : IsFusionMultiplicative C χ) (i : Fin (rank C)) :
+    ‖χ i‖ ≤ fpSimple C i := by
   classical
-  let A := (Ground.fusionMatrix C i)ᵀ
+  let A := (fusionMatrix C i)ᵀ
   have heigen : A *ᵥ χ = χ i • χ := by
     ext j
-    change (∑ k, (Ground.fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
+    change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
     exact (hchar i j).symm
-  have hzero : (Matrix.scalar (Fin (Ground.rank C)) (χ i) - A) *ᵥ χ = 0 := by
+  have hzero : (Matrix.scalar (Fin (rank C)) (χ i) - A) *ᵥ χ = 0 := by
     rw [Matrix.sub_mulVec, heigen]
     ext j
     simp [Matrix.scalar_apply]
-  have hdet : (Matrix.scalar (Fin (Ground.rank C)) (χ i) - A).det = 0 :=
+  have hdet : (Matrix.scalar (Fin (rank C)) (χ i) - A).det = 0 :=
     Matrix.det_eq_zero_of_mulVec_eq_zero_of_mem_nonZeroDivisors hzero
       (mem_nonZeroDivisors_of_ne_zero hχ)
   have hz : χ i ∈ spectrum ℂ A := by
@@ -100,15 +100,15 @@ theorem character_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
     exact le_iSup_of_le (χ i) (le_iSup_of_le hz le_rfl)
   have htop : spectralRadius ℂ A ≠ ⊤ := by
     exact ne_of_lt (lt_of_le_of_lt (spectralRadius_le_nnnorm (𝕜 := ℂ) A) (by simp))
-  simpa [Ground.fpSimple, A, Matrix.spectralRadius_transpose] using (ENNReal.toReal_mono htop hle)
+  simpa [fpSimple, A, Matrix.spectralRadius_transpose] using (ENNReal.toReal_mono htop hle)
 
 /-- Every complex field conjugate of a fusion character obeys the same FP
 bound, because field automorphisms preserve the integer fusion coefficients. -/
-theorem galois_character_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
-    {χ : Fin (Ground.rank C) → ℂ} {i₀ : Fin (Ground.rank C)} (hχ : χ i₀ ≠ 0)
-    (hchar : Ground.IsFusionMultiplicative C χ)
-    (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
-    ‖σ (χ i)‖ ≤ Ground.fpSimple C i := by
+theorem galois_character_norm_le_fpSimple (C : BraidedFusionCategory)
+    {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
+    (hchar : IsFusionMultiplicative C χ)
+    (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
+    ‖σ (χ i)‖ ≤ fpSimple C i := by
   apply character_norm_le_fpSimple C (χ := fun j => σ (χ j)) (i₀ := i₀)
   · exact (map_ne_zero σ).2 hχ
   · intro j k
@@ -170,10 +170,11 @@ theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
       ⟨j, Finset.mem_univ _, mul_pos (hpos i j) hj⟩
   have hi := congrFun heigen i
   simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hi
-  have : 0 < d * v i := by linarith
-  by_contra hn
-  have : v i = 0 := le_antisymm (le_of_not_gt hn) (hnonneg i)
-  simp [this] at *
+  have hv : 0 < d * v i := hi ▸ hsum
+  have hne : v i ≠ 0 := by
+    intro h
+    simp [h] at hv
+  exact lt_of_le_of_ne (hnonneg i) (Ne.symm hne)
 
 /-- A nonnegative symmetric real matrix has a nonnegative eigenvector with a
 positive coordinate. -/
@@ -646,7 +647,7 @@ theorem one_le_fpSimple (i : Fin (rank D)) :
       (Finset.mem_univ (unitIndex D))
     simpa [fusionCoeff_dual_unit, fpSimple_unit] using h
   rw [← fpSimple_mul, fpSimple_dual] at hsum
-  nlinarith [fpSimple_pos D i]
+  exact (one_le_sq_iff₀ (fpSimple_pos D i).le).mp (by simpa only [pow_two] using hsum)
 
 end PropertyF.Ground
 

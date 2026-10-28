@@ -22,9 +22,9 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Lin
 
 theorem tensorLeftHomLinearEquiv_postcomp (X Y Y' Z W : D) [ExactPairing Y Y']
     (f : Y' ⊗ X ⟶ Z) (g : Z ⟶ W) :
-    Ground.tensorLeftHomLinearEquiv X Y Y' W (f ≫ g) =
-      Ground.tensorLeftHomLinearEquiv X Y Y' Z f ≫ Y ◁ g :=
-  by simp [Ground.tensorLeftHomLinearEquiv, tensorLeftHomEquiv, whiskerLeft_comp, Category.assoc]
+    tensorLeftHomLinearEquiv X Y Y' W (f ≫ g) =
+      tensorLeftHomLinearEquiv X Y Y' Z f ≫ Y ◁ g :=
+  by simp [tensorLeftHomLinearEquiv, tensorLeftHomEquiv, whiskerLeft_comp, Category.assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The Frobenius defect equation reduces to its value on the identity map. -/
@@ -33,8 +33,8 @@ theorem enoTraceMatrix_reciprocity_of_coevaluation_defect
       let X := simples C i
       let K := simples C k
       letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-      Ground.tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom =
-        rootDualSign C i • (Ground.tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
+      tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom =
+        rootDualSign C i • (tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
     ENOTraceMatrixReciprocity C := by
   apply enoTraceMatrix_reciprocity_of_dual_frobenius_defect C

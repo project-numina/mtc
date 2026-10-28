@@ -86,6 +86,13 @@ theorem signedTraceSum_falling {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ} {d 
     ring
 
 universe v u
+/-- Scalar pivotal trace of a permutation action on a tensor power. -/
+abbrev permutationScalarTrace (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) {X : C.Obj}
+    (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
+    (n : ℕ) (σ : Equiv.Perm (Fin n)) : ℂ :=
+  unitScalar C (p.rightTrace ((ρ n) σ).asHom)
+
 /-- Integrality follows from one-strand trace deletion for any compatible
 (possibly sign-twisted) family of actual actions. -/
 theorem integral_of_trace_deletion (C : BraidedFusionCategory.{v,u})
@@ -93,14 +100,13 @@ theorem integral_of_trace_deletion (C : BraidedFusionCategory.{v,u})
     (hdim : Modular.HasFPSimpleDimensions C p) (X : C.Obj)
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
     (hfixed : ∀ n σ,
-      unitScalar C (p.rightTrace ((ρ (n + 1)) (Equiv.Perm.decomposeFin.symm (0, σ))).asHom) =
-        (fpDimension C X : ℂ) * unitScalar C (p.rightTrace ((ρ n) σ).asHom))
+      permutationScalarTrace C p ρ (n + 1) (Equiv.Perm.decomposeFin.symm (0, σ)) =
+        (fpDimension C X : ℂ) * permutationScalarTrace C p ρ n σ)
     (hmoved : ∀ n (q : Fin (n + 1)), q ≠ 0 → ∀ σ,
-      unitScalar C (p.rightTrace ((ρ (n + 1)) (Equiv.Perm.decomposeFin.symm (q, σ))).asHom) =
-        unitScalar C (p.rightTrace ((ρ n) σ).asHom)) :
+      permutationScalarTrace C p ρ (n + 1) (Equiv.Perm.decomposeFin.symm (q, σ)) =
+        permutationScalarTrace C p ρ n σ) :
     ∃ m : ℕ, fpDimension C X = m := by
-  let F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ := fun n σ =>
-    unitScalar C (p.rightTrace ((ρ n) σ).asHom)
+  let F := permutationScalarTrace C p ρ
   have hz : F 0 1 = 1 := by
     change unitScalar C (p.rightTrace (((ρ 0) 1).asHom)) = 1
     rw [map_one]
@@ -200,10 +206,10 @@ theorem tensorPermutationTrace_fixHead (D : BraidedFusionCategory.{v,u})
     (hdim : Modular.HasFPSimpleDimensions D p)
     (X : D.Obj) (hX : SelfTransparent X) :
     ∀ n (σ : Equiv.Perm (Fin n)),
-      unitScalar D (p.rightTrace ((tensorPermutationAction X hX (n + 1))
-        (fixHead n σ)).asHom) =
-      (fpDimension D X : ℂ) * unitScalar D (p.rightTrace ((tensorPermutationAction X hX n) σ).asHom) := by
+      permutationScalarTrace D p (tensorPermutationAction X hX) (n + 1) (fixHead n σ) =
+      (fpDimension D X : ℂ) * permutationScalarTrace D p (tensorPermutationAction X hX) n σ := by
   intro n σ
+  simp only [permutationScalarTrace]
   rw [tensorPermutationAction_fixHead]
   have ht := Dimensions.pivotalTrace_tensor p (unitScalarEquiv D)
     (𝟙 X) ((tensorPermutationAction X hX n) σ).asHom

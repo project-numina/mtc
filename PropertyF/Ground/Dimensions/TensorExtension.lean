@@ -194,7 +194,7 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignQuantumTrace_simple
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
-    Ground.unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (simples C i))) =
+    unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (simples C i))) =
       c i * rootDimension C i := by
   have hq : rightQuantumTrace ((rootSignTwist C c hc).app (simples C i)) =
       c i • rootTrace C (𝟙 (simples C i)) := by
@@ -209,10 +209,10 @@ theorem rootSignQuantumTrace_simple
 set_option backward.isDefEq.respectTransparency false in
 theorem naturalDoubleDual_unit_eq_of_trace_one
     (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
-    (htrace : Ground.unitScalar C (rightQuantumTrace (a.app (𝟙_ C.Obj))) = 1) :
+    (htrace : unitScalar C (rightQuantumTrace (a.app (𝟙_ C.Obj))) = 1) :
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
-  let : Simple (𝟙_ C.Obj) := Ground.IsFusionCategory.unit_simple
-  let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := Ground.IsFusionCategory.hom_finite _ _
+  let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
+  let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
   obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
   have ht : rightQuantumTrace (a.app (𝟙_ C.Obj)) = r • rightQuantumTrace (doubleDualUnitIso (C := C.Obj)) := by
     apply End.homEquiv.injective
@@ -229,7 +229,7 @@ theorem rootSignTwist_unit_of_simple_dimension
     (hunit : c (unitIndex C) * rootDimension C (unitIndex C) = 1) :
     ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
   apply naturalDoubleDual_unit_eq_of_trace_one
-  obtain ⟨e⟩ := Ground.unitIndex_iso C
+  obtain ⟨e⟩ := unitIndex_iso C
   have hn := (rootSignTwist C c hc).hom.naturality e.hom
   have hq := rightQuantumTrace_iso
     ((rootSignTwist C c hc).app (simples C (unitIndex C)))

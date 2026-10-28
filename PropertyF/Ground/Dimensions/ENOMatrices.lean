@@ -60,15 +60,15 @@ their entries are dominated by fusion multiplicities. -/
 theorem fusion_dominated_eigenvalue_bound (C : BraidedFusionCategory)
     {i : Fin (rank C)} (T : Fin (rank C) → Fin (rank C) → ℂ)
     (v : Fin (rank C) → ℂ) (z : ℂ) (i₀ : Fin (rank C))
-    (hv : v i₀ ≠ 0) (hdom : ∀ j k, ‖T j k‖ ≤ Ground.fusionCoeff C i j k)
+    (hv : v i₀ ≠ 0) (hdom : ∀ j k, ‖T j k‖ ≤ fusionCoeff C i j k)
     (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ fpSimple C i := by
-  apply weighted_eigenvalue_bound (fun j k => Ground.fusionCoeff C i j k) T
-    (fpSimple C) (fpSimple C i) v z i₀ hv (Ground.fpSimple_pos C)
+  apply weighted_eigenvalue_bound (fun j k => fusionCoeff C i j k) T
+    (fpSimple C) (fpSimple C i) v z i₀ hv (fpSimple_pos C)
   · intro j k
     exact Nat.cast_nonneg _
   · exact hdom
   · intro j
-    exact (Ground.fpSimple_mul C i j).symm
+    exact (fpSimple_mul C i j).symm
   · exact heig
 
 end PropertyF.Ground.Dimensions
@@ -151,7 +151,7 @@ theorem rootTrace_biproduct_simple
   have h : ∀ i, ∃ c : ℂ, biproduct.ι F i ≫ f ≫ biproduct.π F i = c • 𝟙 (F i) := by
     intro i
     let : Simple (F i) := hs i
-    let : FiniteDimensional ℂ (F i ⟶ F i) := Ground.IsFusionCategory.hom_finite _ _
+    let : FiniteDimensional ℂ (F i ⟶ F i) := IsFusionCategory.hom_finite _ _
     obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ (biproduct.ι F i ≫ f ≫ biproduct.π F i)
     exact ⟨c, hc.symm⟩
   choose c hc using h
@@ -176,19 +176,19 @@ variable (C : BraidedFusionCategory.{v,u})
 /-- The dimension of a simple object with respect to the natural double-dual
 square root. -/
 def rootDimension (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) : ℂ :=
-  Ground.unitScalar C (rootTrace C (𝟙 (simples C i)))
+  unitScalar C (rootTrace C (𝟙 (simples C i)))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- All natural-root simple dimensions are nonzero. -/
 theorem rootDimension_ne_zero (i : Fin (rank C)) :
     rootDimension C i ≠ 0 := by
-  let : Simple (simples C i) := Ground.simples_simple C i
+  let : Simple (simples C i) := simples_simple C i
   have h := rightQuantumTrace_simple_ne_zero C (X := simples C i)
     ((fourthDualRootNaturalIso C).app (simples C i))
   intro hz
   apply h
   apply (groundUnitScalarEquiv C).injective
-  have hz' : Ground.unitScalar C (rightQuantumTrace
+  have hz' : unitScalar C (rightQuantumTrace
       ((fourthDualRootNaturalIso C).app (simples C i))) = 0 := by
     simpa [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def] using hz
   simpa only [map_zero, groundUnitScalarEquiv_apply] using hz'

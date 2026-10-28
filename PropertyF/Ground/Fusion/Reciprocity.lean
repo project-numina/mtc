@@ -164,11 +164,11 @@ end PropertyF.Ground
 namespace PropertyF.Ground.Dimensions
 
 /-- A simple object has nonzero right quantum trace for any double-dual isomorphism. -/
-theorem rightQuantumTrace_simple_ne_zero (C : Ground.BraidedFusionCategory.{v,u})
+theorem rightQuantumTrace_simple_ne_zero (C : BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (j : X ≅ (Xᘁ)ᘁ) :
     rightQuantumTrace j ≠ 0 := by
-  let _ : Simple (𝟙_ C.Obj) := Ground.IsFusionCategory.unit_simple
-  let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  let _ : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
+  let _ : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   let s : 𝟙_ C.Obj ⟶ X ⊗ (Xᘁ) := ExactPairing.coevaluation X (Xᘁ)
   have hs : s ≠ 0 := by
     intro hz
@@ -179,7 +179,7 @@ theorem rightQuantumTrace_simple_ne_zero (C : Ground.BraidedFusionCategory.{v,u}
     have ht' := congrArg (fun t => (λ_ X).inv ≫ t ≫ (ρ_ X).hom) ht
     have hid : 𝟙 X = 0 := by simpa [Category.assoc] using ht'.symm
     exact id_nonzero X hid
-  obtain ⟨r₀, hr₀⟩ := Ground.split_from_simple s hs
+  obtain ⟨r₀, hr₀⟩ := split_from_simple s hs
   have hr₀ne : r₀ ≠ 0 := by
     intro h
     rw [h] at hr₀
@@ -203,7 +203,7 @@ theorem rightQuantumTrace_simple_ne_zero (C : Ground.BraidedFusionCategory.{v,u}
     have h := congrArg (fun f => t.inv ≫ f) hz
     have : ev = 0 := by simpa [r, Category.assoc] using h
     exact hev this
-  let e₁ := Ground.tensorRightHomLinearEquiv X (Xᘁ) ((Xᘁ)ᘁ) (𝟙_ C.Obj)
+  let e₁ := tensorRightHomLinearEquiv X (Xᘁ) ((Xᘁ)ᘁ) (𝟙_ C.Obj)
   let e₂ := CategoryTheory.Linear.homCongr ℂ (Iso.refl X) (λ_ ((Xᘁ)ᘁ))
   let e₃ := CategoryTheory.Linear.homCongr ℂ (Iso.refl X) (j).symm
   have hfin : Module.finrank ℂ (X ⊗ (Xᘁ) ⟶ 𝟙_ C.Obj) = 1 := by

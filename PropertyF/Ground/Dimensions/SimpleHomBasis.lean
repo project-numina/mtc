@@ -69,7 +69,7 @@ set_option backward.isDefEq.respectTransparency false in
 of the two simple root dimensions. -/
 theorem rootTrace_inverseDefect
     (i j : Fin (rank C)) :
-    Ground.unitScalar C (rootTrace C (rootTensorDefect C (simples C i) (simples C j)).inv) =
+    unitScalar C (rootTrace C (rootTensorDefect C (simples C i) (simples C j)).inv) =
       rootDimension C i * rootDimension C j := by
   let X := simples C i
   let Y := simples C j
@@ -87,7 +87,7 @@ theorem rootTrace_inverseDefect
         ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ)
     rw [hd]
   rw [ht]
-  change Ground.unitScalar C (rightQuantumTrace
+  change unitScalar C (rightQuantumTrace
     (((a.app X) ⊗ᵢ (a.app Y)) ≪≫ doubleDualTensorIso X Y)) = _
   rw [← groundUnitScalarEquiv_apply]
   let ax : X ≅ (Xᘁ)ᘁ := (a.app X)
@@ -126,7 +126,7 @@ theorem simpleInclusion_independent
     (X : C.Obj) (k : Fin (rank C)) :
     LinearIndependent ℂ (simpleInclusion C X k) := by
   classical
-  let : Simple (simples C k) := Ground.simples_simple C k
+  let : Simple (simples C k) := simples_simple C k
   apply Fintype.linearIndependent_iff.mpr
   intro g hg t
   have h := congrArg (fun f : simples C k ⟶ X =>
@@ -151,7 +151,7 @@ theorem simpleInclusion_independent
 def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
     (X : C.Obj) (k : Fin (rank C)) :
     Module.Basis (Fin (Module.finrank ℂ (simples C k ⟶ X))) ℂ (simples C k ⟶ X) := by
-  letI : FiniteDimensional ℂ (simples C k ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  letI : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   exact basisOfLinearIndependentOfCardEqFinrank' (simpleInclusion C X k)
     (simpleInclusion_independent C X k) (Fintype.card_fin _)
 
@@ -160,7 +160,7 @@ theorem simpleInclusionBasis_apply
     (X : C.Obj) (k : Fin (rank C))
     (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
     simpleInclusionBasis C X k t = simpleInclusion C X k t := by
-  let : FiniteDimensional ℂ (simples C k ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   exact congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) t
 
 set_option backward.isDefEq.respectTransparency false in
@@ -200,8 +200,8 @@ theorem simpleHom_postcomp_trace
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (simples C k)) :
     LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) = ∑ t, c t := by
   classical
-  let : Simple (simples C k) := Ground.simples_simple C k
-  let : FiniteDimensional ℂ (simples C k ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  let : Simple (simples C k) := simples_simple C k
+  let : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   rw [LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)]
   unfold Matrix.trace
   apply Finset.sum_congr rfl
@@ -217,7 +217,7 @@ set_option backward.isDefEq.respectTransparency false in
 ordinary traces on the simple Hom spaces. -/
 theorem rootTrace_eq_simpleHom_trace_sum
     {X : C.Obj} (g : X ⟶ X) :
-    Ground.unitScalar C (rootTrace C g) =
+    unitScalar C (rootTrace C g) =
       ∑ k, LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) * rootDimension C k := by
   classical
   let V := simplePiecesObject C X
@@ -225,7 +225,7 @@ theorem rootTrace_eq_simpleHom_trace_sum
   let f : (⨁ V) ⟶ (⨁ V) := e.inv ≫ g ≫ e.hom
   have heq : rootTrace C g = rootTrace C f := by
     simpa [f, Category.assoc] using (rootTrace_cyclic C e.hom (e.inv ≫ g))
-  obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple C V (fun a => Ground.simples_simple C a.1) f
+  obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple C V (fun a => simples_simple C a.1) f
   rw [heq, ht]
   simp only [← groundUnitScalarEquiv_apply, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
   apply Finset.sum_congr rfl
