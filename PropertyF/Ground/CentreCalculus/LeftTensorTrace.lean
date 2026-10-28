@@ -204,9 +204,8 @@ theorem tensorDual_coevaluation :
   have he : η_ B E ≫ B ◁ t.inv = η_ B (Bᘁ) :=
     Dimensions.coevaluation_rightDualIso_inv HasRightDual.exact ExactPairing.tensor
   rw [← he]
-  dsimp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
-    Dimensions.rightDualIsoMap]
-  simp only [tensorHom_def, whiskerLeft_comp, Category.assoc]
+  simp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
+    Dimensions.rightDualIsoMap, tensorHom_def, whiskerLeft_comp, Category.assoc]
   rw [whisker_exchange_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -221,9 +220,9 @@ theorem leftTrace_tensor_pairing (f : X ⊗ Y ⟶ X ⊗ Y) :
   let E := (Yᘁ) ⊗ (Xᘁ)
   let r : D ≅ E := rightDualTensorIso X Y
   let q : ExactPairing A E := ExactPairing.tensor
-  have hev := Dimensions.rightDualIso_inv_evaluation
-    (@HasRightDual.exact C _ _ A (RightRigidCategory.rightDual A)) q
-  change r.inv ▷ A ≫ ε_ A D = @ExactPairing.evaluation C _ _ A E q at hev
+  have hev : r.inv ▷ A ≫ ε_ A D = @ExactPairing.evaluation C _ _ A E q :=
+    Dimensions.rightDualIso_inv_evaluation
+      (@HasRightDual.exact C _ _ A (RightRigidCategory.rightDual A)) q
   change η_ D (Dᘁ) ≫ (𝟙 D ⊗ₘ ((p.iso A).inv ≫ f)) ≫ ε_ A D = _
   rw [tensorDual_coevaluation,
     show p.iso (X ⊗ Y) = (p.iso X ⊗ᵢ p.iso Y) ≪≫ Dimensions.doubleDualTensorIso X Y from

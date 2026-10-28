@@ -60,14 +60,14 @@ abbrev HasGaloisDimensionWitness (j : R →+* K) (σ : K ≃+* K) (δ b : R) : P
 exists for each strictly smaller conjugate, every conjugate equals δ. -/
 theorem galois_fixed_of_smaller_conjugate_witness {j : R →+* K} (δ : R) (hδ : 0 < δ)
     (hConjugates : ∀ σ : K ≃+* K, ∃ a : R, 0 < a ∧ a ≤ δ ∧ σ (j δ) = j a)
-    (hWitness : ∀ (σ : K ≃+* K) (a b : R), 0 < a → a < δ → σ (j δ) = j a →
+    (hWitness : ∀ (σ : K ≃+* K) (a b : R), 0 < a → a < δ → 0 < b → σ (j δ) = j a →
       σ.symm (j δ) = j b → HasGaloisDimensionWitness j σ δ b) :
     ∀ σ : K ≃+* K, σ (j δ) = j δ := by
   intro σ
   obtain ⟨a, ha, hale, haeq⟩ := hConjugates σ
-  obtain ⟨b, _, _, hbeq⟩ := hConjugates σ.symm
+  obtain ⟨b, hb, _, hbeq⟩ := hConjugates σ.symm
   rcases lt_or_eq_of_le hale with halt | heq
-  · obtain ⟨f, d, hσf, hratio, hf, hrigidity⟩ := hWitness σ a b ha halt haeq hbeq
+  · obtain ⟨f, d, hσf, hratio, hf, hrigidity⟩ := hWitness σ a b ha halt hb haeq hbeq
     exact (galois_dimension_contradiction (j := j) (σ := σ) hδ ha halt
       (by rw [← hbeq, σ.apply_symm_apply])
       haeq hσf hratio hf hrigidity).elim
@@ -279,10 +279,8 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
   apply galois_fixed_of_smaller_conjugate_witness (j := algebraMap ℝ ℂ) (globalFPDimension C)
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
     (positive_bounded_conjugates_of_fp C)
-  intro τ a b _ _ _ hτ
+  intro τ a b _ _ hb _ hτ
   change τ.symm (globalFPDimension C : ℂ) = (b : ℂ) at hτ
-  obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp C τ.symm
-  have hb : 0 < b := (Complex.ofReal_injective (hb'eq.symm.trans hτ)) ▸ hb'
   apply center_witness_of_categorical_modular_data 𝒵ᶠ hfp hdet
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)) hb hglobal τ hτ
   intro y hColumn

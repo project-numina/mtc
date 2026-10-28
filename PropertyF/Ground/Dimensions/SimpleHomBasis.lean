@@ -294,20 +294,17 @@ end
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
-/-- The composition pairing is perfect for each representative simple. -/
-def simpleHomPairingEquiv (C : BraidedFusionCategory.{v,u})
-    (i : Fin (rank C)) (X : C.Obj) :
-    (X ⟶ simples C i) ≃ₗ[ℂ] Module.Dual ℂ (simples C i ⟶ X) := by
-  letI : Simple (simples C i) := simples_simple C i
-  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  letI : FiniteDimensional ℂ (X ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  letI : FiniteDimensional ℂ (simples C i ⟶ X) := IsFusionCategory.hom_finite _ _
-  let p := simpleHomPairing (simples C i) X
-  have hi := simpleHomPairing_injective (simples C i) X
-  have hd : Module.finrank ℂ (X ⟶ simples C i) =
-      Module.finrank ℂ (Module.Dual ℂ (simples C i ⟶ X)) :=
-    (finrank_to_simple_eq_from_simple C X i).trans
-      (Subspace.dual_finrank_eq (K := ℂ) (V := simples C i ⟶ X)).symm
+/-- The composition pairing is perfect for a simple object. -/
+def simpleHomPairingEquiv {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [BraidedCategory D] [Abelian D] [Linear ℂ D] [RigidCategory D]
+    [MonoidalPreadditive D] [MonoidalLinear ℂ D] [IsFusionCategory D]
+    (S X : D) [Simple S] : (X ⟶ S) ≃ₗ[ℂ] Module.Dual ℂ (S ⟶ X) := by
+  letI : ∀ A B : D, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  let p := simpleHomPairing S X
+  have hi := simpleHomPairing_injective S X
+  have hd : Module.finrank ℂ (X ⟶ S) = Module.finrank ℂ (Module.Dual ℂ (S ⟶ X)) :=
+    (finrank_to_simple_eq_from_simple X S).trans
+      (Subspace.dual_finrank_eq (K := ℂ) (V := S ⟶ X)).symm
   exact LinearEquiv.ofBijective p ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).1 hi⟩
 
 

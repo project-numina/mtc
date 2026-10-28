@@ -151,8 +151,7 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
     intro G inst s _ hgen
     have htop : (⊥ : Subgroup G) = ⊤ := by simpa using hgen
     let : Subsingleton G := Subgroup.subsingleton_iff.mp (subsingleton_iff_bot_eq_top.mp htop)
-    have : Finite G := Finite.of_subsingleton
-    exact ⟨inferInstance, by simp [Nat.card_unique]⟩
+    exact ⟨Finite.of_subsingleton, by simp [Nat.card_unique]⟩
   | succ m ih =>
     intro G inst s hrel hgen
     let H := Subgroup.closure (Set.range (fun t : Fin m => s (t.val + 1)))
@@ -165,9 +164,9 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
         ← Set.range_comp, Function.comp_def, Subgroup.subtype_apply, ht _ (Fin.isLt _), H]
     obtain ⟨hfin, hcard⟩ := ih t (hrel.shift ht) htgen
     let : Finite H := hfin
-    have hcover (g : G) : ∃ j : Fin (m + 2), ∃ h : H, g = moveWord s j.val * h := by
-      obtain ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hrel (hgen.symm ▸ Subgroup.mem_top g)
-      exact ⟨⟨j, by omega⟩, ⟨h, hh⟩, he⟩
+    have hcover (g : G) : ∃ j : Fin (m + 2), ∃ h : H, g = moveWord s j.val * h :=
+      let ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hrel (hgen.symm ▸ Subgroup.mem_top g)
+      ⟨⟨j, by omega⟩, ⟨h, hh⟩, he⟩
     obtain ⟨hG, hbound⟩ := finite_card_le_of_coset_cover H (fun j : Fin (m + 2) ↦ moveWord s j.val) hcover
     exact ⟨hG, by simpa only [Nat.card_fin, Nat.factorial_succ] using
       hbound.trans (Nat.mul_le_mul_left (Nat.card (Fin (m + 2))) hcard)⟩

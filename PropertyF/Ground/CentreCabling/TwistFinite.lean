@@ -61,12 +61,12 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist (θ : 𝟭 C.Obj ≅ �
   obtain ⟨n, hn, hp⟩ := natural_end_finite_order_of_components (simples C)
     (fun h ↦ Dimensions.natTrans_eq_of_simple_components C h) θ.hom hfinite
   let t : End (X ⊗ Y) := End.of (θ.hom.app X ⊗ₘ θ.hom.app Y)
-  let z : End (X ⊗ Y) := End.of (θ.hom.app (X ⊗ Y))
   let m : End (X ⊗ Y) := End.of (doubleBraiding X Y)
   have ht : t ^ n = 1 := by
     simp [t, tensor_end_pow (End.of (θ.hom.app X)) (End.of (θ.hom.app Y)) n, hp, End.ext_iff]
   refine isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, ?_⟩
-  simpa only [show t * m = z from End.ext (hbalance X Y), z, hp, ht, one_mul] using
+  simpa only [show t * m = End.of (θ.hom.app (X ⊗ Y)) from End.ext (hbalance X Y),
+    hp, ht, one_mul] using
     ((show Commute t m from End.ext (doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))).mul_pow n).symm
 
 /-- The actual pivotal twist scalars, viewed as nonzero complex numbers. -/

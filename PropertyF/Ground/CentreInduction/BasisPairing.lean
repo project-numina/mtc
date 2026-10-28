@@ -16,12 +16,13 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 variable {V W : C.Obj} {E : Type*} [AddCommGroup E] [Module ℂ E]
 attribute [local instance] Abelian.hasFiniteBiproducts
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 /-- The perfect pairing is natural for maps between different underlying
 objects: precomposition corresponds to dualizing postcomposition. -/
 theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) (q : V ⟶ W)
-    (f : W ⟶ simples C i) : simpleHomPairingEquiv C i V (q ≫ f) =
-    Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv C i W f) :=
+    (f : W ⟶ simples C i) : simpleHomPairingEquiv (simples C i) V (q ≫ f) =
+    Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv (simples C i) W f) :=
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   simpleHomPairing_natural f q
@@ -47,7 +48,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Simple projections form the dual basis to simple inclusions. -/
 theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ V))) :
-    simpleHomPairingEquiv C i V (simpleProjection C V i a) =
+    simpleHomPairingEquiv (simples C i) V (simpleProjection C V i a) =
       (simpleInclusionBasis C V i).dualBasis a := by
   let : Simple (simples C i) := simples_simple C i
   refine (simpleInclusionBasis C V i).ext fun b => ?_
@@ -63,7 +64,7 @@ theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
   let A := simpleInclusionBasis C V i
   let B := simpleInclusionBasis C W i
-  let P := simpleHomPairingEquiv C i V
+  let P := simpleHomPairingEquiv (simples C i) V
   let F' : (simples C i ⟶ W) →ₗ[ℂ]
       Module.Dual ℂ (simples C i ⟶ V) →ₗ[ℂ] E :=
     (LinearMap.lcomp ℂ E P.symm.toLinearMap).comp F
@@ -200,10 +201,12 @@ theorem crossingBlock_pre_test (h : T ⟶ U)
   rw [associator_naturality_right_assoc, ← whisker_exchange_assoc, ← whiskerLeft_comp_assoc,
     closeFusionMap_pre_test, whisker_exchange_assoc]
 
+variable (X : C.Obj)
+
 /-- Summing the crossing blocks removes the dependence on the chosen fusion
 basis, so a map of test objects can pass through each matrix entry. -/
 theorem crossingBlock_sum_natural_test
-    (X T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
+    (T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
     (∑ b, (((simples C i ⊗ X) ⊗ (simples C i)ᘁ) ◁ h) ≫ crossingSummand C X U i j b) =
     ∑ a, crossingSummand C X T i j a ≫ (h ▷ ((simples C j ⊗ X) ⊗ (simples C j)ᘁ)) := by
   simpa only [crossingSummand, crossingBlock_pre_test (k := ℂ), crossingBlock_post_test (k := ℂ),
@@ -213,7 +216,7 @@ theorem crossingBlock_sum_natural_test
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction crossing is natural in the crossed object. -/
-theorem crossingCandidate_natural_test (X : C.Obj) {T U : C.Obj} (h : T ⟶ U) :
+theorem crossingCandidate_natural_test {T U : C.Obj} (h : T ⟶ U) :
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
   let V := inductionSummand C X

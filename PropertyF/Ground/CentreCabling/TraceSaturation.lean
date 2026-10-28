@@ -34,8 +34,7 @@ theorem finiteOrder_matrix_unitarizable :
   let : Finite G := hufin.finite_zpowers
   let : Fintype G := Fintype.ofFinite G
   let ⟨P, hP⟩ := Calculus.exists_unitarizing_basis ((Units.coeHom _).comp G.subtype)
-  let g : G := ⟨u, Subgroup.mem_zpowers u⟩
-  ⟨P, by simpa [g, u] using hP g⟩
+  ⟨P, by simpa [u] using hP ⟨u, Subgroup.mem_zpowers u⟩⟩
 
 include hM in
 /-- A finite-order matrix has real trace at most its size, with equality
@@ -86,17 +85,15 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
     (hdim : HasFPSimpleDimensions D p)
     {X : D.Obj} {a : End X} (ha : IsOfFinOrder a)
     (ht : p.rightTrace a.asHom = p.rightTrace (𝟙 X)) : a = 1 := by
-  classical
   let m (i : Fin (rank D)) := Module.finrank ℂ (simples D i ⟶ X)
   obtain ⟨e⟩ := exists_canonical_decomposition D X
   let B := Calculus.groundEndBlockEquiv D e
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
     have h2 := Calculus.pivotalTrace_groundEndBlocks D e 1 p (Ground.unitScalarEquiv D)
-    simp only [End.one_asHom] at h2
     change (∀ i, Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
       (fpSimple D i : ℂ)) at hdim
-    simpa [hdim, B, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
+    simpa [hdim, B, End.one_asHom, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
       ((Calculus.pivotalTrace_groundEndBlocks D e a p (Ground.unitScalarEquiv D)).symm.trans
         ((congrArg (Ground.unitScalarEquiv D) ht).trans h2))
   apply B.injective

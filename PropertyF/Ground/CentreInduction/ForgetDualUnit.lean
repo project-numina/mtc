@@ -70,9 +70,7 @@ theorem forget_rightDualUnitIso :
       (rightDualIso (forgetPairing (𝟙_ (𝒵)))
         (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).hom := by
   have hc : (η_ (𝟙_ (𝒵)) (𝟙_ (𝒵))).f =
-      (ρ_ (𝟙_ (𝒵)).1).inv := by
-    change (ρ_ (𝟙_ (𝒵))).inv.f = _
-    exact Center.rightUnitor_inv_f _
+      (ρ_ (𝟙_ (𝒵)).1).inv := Center.rightUnitor_inv_f _
   unfold rightDualUnitIso rightDualIso rightAdjointMate
   simp only [Center.comp_f, Center.rightUnitor_inv_f,
     Center.leftUnitor_hom_f, Center.whiskerLeft_f,

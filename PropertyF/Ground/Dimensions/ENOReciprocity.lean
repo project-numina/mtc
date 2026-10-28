@@ -73,14 +73,11 @@ theorem inverseDualRoot_square (X : C.Obj) :
       (((((rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom)ᘁ)ᘁ)) =
       (fourthDualIso C (Xᘁ)).hom := by
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
-  have hroot : j.hom ≫ ((j.homᘁ)ᘁ) = (fourthDualIso C X).hom :=
-    (congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C))
-  have hiso : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso C X := Iso.ext hroot
-  have hinv := congrArg Iso.inv hiso
-  have hm := congrArg (fun f => rightAdjointMate f) hinv
+  have h : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso C X :=
+    Iso.ext (congrArg (fun n ↦ (n.app X).hom) (fourthDualRootNaturalSquare_eq C))
   rw [fourthDualIso_rightDual]
   simpa only [Iso.trans_inv, rightDualIsoMap, Iso.symm_hom, Iso.symm_inv,
-    comp_rightAdjointMate] using hm
+    comp_rightAdjointMate] using congrArg (fun (e : X ≅ _) ↦ e.invᘁ) h
 
 set_option backward.isDefEq.respectTransparency false in
 /-- On a simple object, the natural root on the dual differs from the inverse
