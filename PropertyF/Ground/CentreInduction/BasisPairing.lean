@@ -96,15 +96,13 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
     (∑ p : simplePieces C (U ⊗ Sᶜ j), ∑ a : crossingIndex C T i p.1,
       nestedCrossingBlock C X T U i p.1 j a p.2) = ∑ b, crossingSummand C X (T ⊗ U) i j b := by
   let J := simplePieces C (U ⊗ Sᶜ j)
-  let W := (T ⊗ U) ⊗ Sᶜ j
-  let V : J → C.Obj := fun p => T ⊗ Sᶜ p.1
-  let q (p : J) : V p ⟶ W := (T ◁ crossingInclusion C U p.1 j p.2) ≫ (α_ T U (Sᶜ j)).inv
-  let r (p : J) : W ⟶ V p := (α_ T U (Sᶜ j)).hom ≫ (T ◁ crossingProjection C U p.1 j p.2)
-  have h : (∑ p, r p ≫ q p) = 𝟙 W := by
+  let q (p : J) := (T ◁ crossingInclusion C U p.1 j p.2) ≫ (α_ T U (Sᶜ j)).inv
+  let r (p : J) := (α_ T U (Sᶜ j)).hom ≫ (T ◁ crossingProjection C U p.1 j p.2)
+  have h : (∑ p, r p ≫ q p) = 𝟙 ((T ⊗ U) ⊗ Sᶜ j) := by
     simp only [r, q, Category.assoc, ← whiskerLeft_comp_assoc,
       ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum]
     rw [crossing_completeness, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id]
-  simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
+  simpa [J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
     crossingInclusion, crossingProjection, mixedCrossingBilinear, mixedCrossing, crossingBlock, Category.assoc] using
     simpleBasis_contraction_refinement q r h
       (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (Sᶜ i) (Sᶜ j))

@@ -42,9 +42,7 @@ theorem weak_left
       (Y ◁ b X) ▷ Y ⊗≫ (ε_ X Y ▷ A) ▷ Y ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y)) ⊗≫
       ((b (Y ⊗ X) ≫ ε_ X Y ▷ A) ▷ Y) ⊗≫ 𝟙 _ := by rw [hYX]; monoidal
-    _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y)) ⊗≫ 𝟙 _ := by
-      rw [← hε, hu]
-      monoidal
+    _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y)) ⊗≫ 𝟙 _ := by rw [← hε, hu]; monoidal
     _ = _ := by rw [coevaluation_evaluation'']; monoidal
 
 include hu in
@@ -59,13 +57,10 @@ theorem weak_right
       ((ε_ X Y ▷ (A ⊗ Y)) ≫ ((𝟙_ C) ◁ b Y)) ⊗≫ 𝟙 _ := by
       dsimp [weakInverse]; monoidal
     _ = 𝟙 _ ⊗≫ (Y ⊗ A) ◁ η_ X Y ⊗≫ (Y ◁ b X) ▷ Y ⊗≫
-      (((Y ⊗ X) ◁ b Y) ≫ (ε_ X Y ▷ (Y ⊗ A))) ⊗≫ 𝟙 _ := by
-      rw [whisker_exchange]
+      (((Y ⊗ X) ◁ b Y) ≫ (ε_ X Y ▷ (Y ⊗ A))) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (Y ◁ ((A ◁ η_ X Y) ≫ b (X ⊗ Y))) ⊗≫
       (ε_ X Y ▷ (Y ⊗ A)) ⊗≫ 𝟙 _ := by rw [hXY]; monoidal
-    _ = 𝟙 _ ⊗≫ ((Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y) ▷ A) ⊗≫ 𝟙 _ := by
-      rw [hη, hu]
-      monoidal
+    _ = 𝟙 _ ⊗≫ ((Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y) ▷ A) ⊗≫ 𝟙 _ := by rw [hη, hu]; monoidal
     _ = _ := by rw [coevaluation_evaluation'']; monoidal
 
 include hn ht hu in

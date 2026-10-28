@@ -135,19 +135,16 @@ theorem finite_simple_labels {U : 𝒵}
     ∃ labels : Finset 𝒵, (∀ T ∈ labels, Simple T) ∧
       ∀ Z : 𝒵, Simple Z → ∃ T ∈ labels, Nonempty (Z ≅ T) := by
   classical
-  choose n V hV hIso using fun i : Fin (rank C) =>
-    finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract r
-      ((induction C).obj (simples C i)))
+  choose n V hV hIso using fun i : Fin (rank C) ↦ finiteSimpleSum_biproduct
+    (center_finite_simple_sum_of_unit_retract r ((induction C).obj (simples C i)))
   let labels := (Finset.univ.biUnion fun i => Finset.univ.image (V i)).filter Simple
   refine ⟨labels, fun _ h => (Finset.mem_filter.mp h).2, fun Z hZ => ?_⟩
   let : Simple Z := hZ
   obtain ⟨i, t, ht⟩ := simple_hom_induced_simple Z
-  let g := t ≫ (hIso i).some.hom
-  have hg : g ≠ 0 := fun h => ht (zero_of_comp_mono _ h)
-  obtain ⟨j, e⟩ := simple_iso_biproduct_summand (hV i) g hg
+  obtain ⟨j, e⟩ := simple_iso_biproduct_summand (hV i) (t ≫ (hIso i).some.hom)
+    (fun h => ht (zero_of_comp_mono _ h))
   exact ⟨V i j, Finset.mem_filter.mpr ⟨Finset.mem_biUnion.mpr
-    ⟨i, Finset.mem_univ _, Finset.mem_image.mpr ⟨j, Finset.mem_univ _, rfl⟩⟩,
-    hV i j⟩, e⟩
+    ⟨i, Finset.mem_univ _, Finset.mem_image_of_mem _ (Finset.mem_univ j)⟩, hV i j⟩, e⟩
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract {U : 𝒵}
