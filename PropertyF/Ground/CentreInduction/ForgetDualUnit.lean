@@ -62,9 +62,9 @@ theorem forget_rightDualUnitIso :
     (rightDualUnitIso (C := 𝒵)).hom.f =
       (rightDualIso (forgetPairing (𝟙_ (𝒵)))
         (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).hom :=
-  forget_rightDualIso
-    (@HasRightDual.exact (Center D) _ _ (𝟙_ (𝒵)) (RightRigidCategory.rightDual _))
-    exactPairingUnit exactPairingUnit (Center.rightUnitor_inv_f _)
+  letI : HasRightDual (𝟙_ (𝒵)) := RightRigidCategory.rightDual _
+  forget_rightDualIso HasRightDual.exact exactPairingUnit exactPairingUnit
+    (Center.rightUnitor_inv_f _)
 
 /-- Forgetting preserves the unit comparison for right duals. -/
 theorem forgetDualIso_unit :
