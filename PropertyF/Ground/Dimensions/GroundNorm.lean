@@ -174,14 +174,6 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-/-- Dualizing a double-dual component twice exchanges its left and right
-quantum traces. -/
-theorem leftQuantumTrace_dual_component {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [RigidCategory C] {X : C} (j : X ≅ (Xᘁ)ᘁ) :
-    leftQuantumTrace (rightDualIsoMap j).symm = rightQuantumTrace j := by
-  rw [leftQuantumTrace_eq_rightDual]
-  exact (rightQuantumTrace_iso j rfl).symm
-
 /-- The intrinsic squared norm is invariant under right duality, without any
 pivotal or spherical structure. -/
 theorem target_squaredNorm_rightDual
@@ -190,7 +182,8 @@ theorem target_squaredNorm_rightDual
   let j := doubleDualIso C X
   rw [target_squaredNorm_choice_independent C (rightDualIsoMap j).symm,
     target_squaredNorm_choice_independent C j, ← leftQuantumTrace_eq_rightDual j,
-    leftQuantumTrace_dual_component, mul_comm]
+    leftQuantumTrace_eq_rightDual ((rightDualIsoMap j).symm),
+    ← rightQuantumTrace_iso j rfl, mul_comm]
 
 end PropertyF.Ground.Dimensions
 

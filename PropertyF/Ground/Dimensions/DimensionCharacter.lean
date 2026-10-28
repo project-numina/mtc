@@ -55,11 +55,6 @@ theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStr
   simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
     hsimple] using pivotalDimension_decomposition C p X
 
-/-- The pivotal dimension of the tensor unit is normalized to one. -/
-theorem pivotalDimension_unit
-    : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
-  simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1
-
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor
     (X Y : C.Obj) :
@@ -83,7 +78,8 @@ theorem pivotalDimension_iso
 /-- The pivotal dimension of the simple representative of the unit is one. -/
 theorem pivotalDimension_unitIndex :
     pivotalDimension C p (simples C (unitIndex C)) = 1 :=
-  (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso C p e).trans (pivotalDimension_unit C p)
+  (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso C p e).trans (by
+    simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1)
 
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
 its Frobenius–Perron dimension. -/
