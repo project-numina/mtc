@@ -30,10 +30,9 @@ theorem braid_squares_equal_of_saturation (B : Blocks)
     (htrace : B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2) :
     a ^ 2 = b ^ 2 := by
   have hunit : B.IsUnitary ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) := by
-    apply Pi.mem_unitary_iff.mp
     simpa only [Units.val_mul, Units.val_pow_eq_pow_val] using
-      (unitary B.Algebra).mul_mem ((unitary B.Algebra).pow_mem (Pi.mem_unitary_iff.mpr ha) 2)
-        ((unitary B.Algebra).pow_mem (Pi.mem_unitary_iff.mpr hb) 2)
+      (unitary B.Algebra).mul_mem ((unitary B.Algebra).pow_mem ha 2)
+        ((unitary B.Algebra).pow_mem hb 2)
   apply squares_eq_of_central_product a b hbraid
   apply Units.ext
   apply B.central_of_saturation w hunit ?_ hw b
