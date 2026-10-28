@@ -83,11 +83,10 @@ set_option backward.isDefEq.respectTransparency false in
 theorem doubleDualTensorIso_natural :
     (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
       (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) := by
-  have h1' := rightDualTensorIso_inv_natural (gᘁ) (fᘁ)
   have h2 := congrArg (fun m => rightAdjointMate m) (rightDualTensorIso_natural f g)
   rw [comp_rightAdjointMate, comp_rightAdjointMate] at h2
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
-  rw [← Category.assoc, h1', Category.assoc, ← h2]
+  rw [← Category.assoc, rightDualTensorIso_inv_natural (gᘁ) (fᘁ), Category.assoc, ← h2]
 end PropertyF.Ground.Dimensions
 
 @[expose] public noncomputable section

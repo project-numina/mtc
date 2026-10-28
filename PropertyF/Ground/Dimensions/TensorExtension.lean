@@ -173,10 +173,10 @@ theorem rootSignTwist_unit_of_simple_dimension
     RootSignUnitLaw C c hc := by
   apply naturalDoubleDual_unit_eq_of_trace_one
   obtain ⟨e⟩ := unitIndex_iso C
-  have hn := (rootSignTwist C c hc).hom.naturality e.hom
   have hq := rightQuantumTrace_iso
     (j := (rootSignTwist C c hc).app (simples C (unitIndex C)))
-    (k := (rootSignTwist C c hc).app (𝟙_ C.Obj)) e (by simpa [doubleDualFunctor] using hn)
+    (k := (rootSignTwist C c hc).app (𝟙_ C.Obj)) e
+    (by simpa [doubleDualFunctor] using (rootSignTwist C c hc).hom.naturality e.hom)
   rw [← hq, rootSignQuantumTrace_simple, hunit]
 
 

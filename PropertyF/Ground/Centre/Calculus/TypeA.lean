@@ -12,8 +12,9 @@ public import PropertyF.Ground.Centre.Calculus.TypeANormalWords
 
 Square, adjacent braid and distant-commutativity relations give a quotient of
 the free group. The notation `s i` denotes the adjacent swap at position `i`,
-and `g n i` denotes the corresponding type-A quotient generator. A normal-form cardinality bound identifies this quotient with
-the symmetric group, so self-transparent braid actions factor through it.
+and `g n i` denotes the corresponding type-A quotient generator. A normal-form
+cardinality bound identifies this quotient with the symmetric group, so
+self-transparent braid actions factor through it.
 -/
 @[expose] public noncomputable section
 open Equiv (Perm swap_comm swap_mul_swap_mul_swap)
@@ -181,8 +182,7 @@ variable (n : ℕ)
 /-- The group presented by adjacent involutions with type-A relations. -/
 abbrev typeAGroup := BraidWords n ⧸ typeANormal n
 
-/-- The missing presentation theorem would follow from a finite normal-form
-bound of at most `(n+2)!` words. -/
+/-- A finite normal-form bound of at most `(n+2)!` proves the presentation. -/
 theorem pureWords_eq_typeANormal_of_card_bound [Finite (typeAGroup n)]
     (hcard : Nat.card (typeAGroup n) ≤ Nat.factorial (n + 2)) :
     (strandPermutation n).ker = typeANormal n :=
@@ -205,17 +205,20 @@ local notation "g" => typeAGenerator
 
 variable {n : ℕ}
 
+/-- Each type-A quotient generator is an involution. -/
 theorem typeAGenerator_square {i : Fin (n + 1)} :
     g n i.val * g n i.val = 1 := by
   simpa [typeAGenerator, i.isLt, pow_two] using (QuotientGroup.eq_one_iff
     (N := typeANormal n) _).mpr (Subgroup.subset_normalClosure (Or.inl ⟨i, rfl⟩))
 
+/-- Adjacent type-A quotient generators satisfy the braid relation. -/
 theorem typeAGenerator_adjacent {i : Fin n} :
     g n i.val * g n (i.val + 1) * g n i.val =
       g n (i.val + 1) * g n i.val * g n (i.val + 1) := by
   simp [typeAGenerator, i.isLt, Nat.lt_succ_of_lt i.isLt, -map_mul]
   exact eq_iff_div_mem.mpr (subset_normalClosure (Or.inr (Or.inl ⟨i.castSucc, i.succ, rfl, rfl⟩)))
 
+/-- Distant type-A quotient generators commute. -/
 theorem typeAGenerator_distant {i j : Fin (n + 1)} (hij : i.val + 1 < j.val) :
     g n i.val * g n j.val = g n j.val * g n i.val := by
   simp only [typeAGenerator, dite_eq_left i.isLt, dite_eq_left j.isLt, ← map_mul]
