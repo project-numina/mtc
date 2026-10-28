@@ -1,7 +1,15 @@
 module
 public import PropertyF.Ground.Fusion.Multiplicity
 
-/-! Frobenius reciprocity for actual categorical Hom spaces. -/
+/-! # Duality and Frobenius reciprocity
+
+The tensor-Hom linear equivalences give Frobenius reciprocity on actual Hom
+spaces. They identify dual simple labels, establish symmetries of the fusion
+coefficients, and show that a simple object's right quantum trace is nonzero.
+
+For duality in fusion categories, see Etingof–Gelaki–Nikshych–Ostrik,
+*Tensor Categories*.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

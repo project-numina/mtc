@@ -74,10 +74,8 @@ variable {C} in
 theorem rootDimension_ne_zero (i : Fin (rank C)) :
     rootDimension C i ≠ 0 :=
   letI : Simple (simples C i) := simples_simple C i
-  by simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, AlgEquiv.coe_toRingEquiv] using
-    (Ground.unitScalarEquiv C).toRingEquiv.map_ne_zero_iff.mpr
-      (rightQuantumTrace_simple_ne_zero (X := simples C i)
-        ((fourthDualRootNaturalIso C).app (simples C i)))
+  by simpa [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv] using
+    rightQuantumTrace_simple_ne_zero (X := simples C i) ((fourthDualRootNaturalIso C).app (simples C i))
 
 /-- The matrix of traces of the actual natural-root multiplicity defects. -/
 def enoTraceMatrix (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
@@ -108,8 +106,7 @@ matrix has the natural-root dimension vector as an eigenvector, ENO's FP
 bound follows. Both remaining identities are explicit hypotheses. -/
 theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
     (hinv : ∀ j k, IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap)
-    (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
-      rootDimension C i * rootDimension C j) :
+    (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k = rootDimension C i * rootDimension C j) :
     ‖rootDimension C i‖ ≤ fpSimple C i :=
   weighted_eigenvalue_bound (rootDimension_ne_zero (unitIndex C)) (fpSimple_pos C)
     (fun _ _ ↦ Nat.cast_nonneg _) (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff (hinv j k))

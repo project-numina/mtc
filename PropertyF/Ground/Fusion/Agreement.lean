@@ -9,7 +9,16 @@ public import PropertyF.Ground.Cabling.Strands
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.LinearAlgebra.Eigenspace.Matrix
 
-/-! Elementary uniqueness of a positive matrix eigenvector. -/
+/-! # Positive fusion characters and FP dimensions
+
+The character matrices of the fusion rules have a common positive eigenvector.
+Normalizing it gives `fpCharacter`, which agrees with the spectral-radius
+dimension `fpSimple`. Weighted eigenvalue bounds also control arbitrary fusion
+characters and their Galois conjugates.
+
+For the fusion-ring background, see Etingof–Gelaki–Nikshych–Ostrik,
+*Tensor Categories*, §3.3.
+-/
 
 @[expose] public noncomputable section
 open scoped BigOperators Matrix
@@ -86,13 +95,10 @@ theorem character_norm_le_fpSimple
     (hchar : IsFusionMultiplicative C χ) (i : Fin (rank C)) :
     ‖χ i‖ ≤ fpSimple C i := by
   let A := (fusionMatrix C i)ᵀ
-  have hz : χ i ∈ spectrum ℂ A := by
-    rw [← Matrix.spectrum_toLin']
-    exact (Module.End.hasEigenvalue_of_hasEigenvector
-      ⟨Module.End.mem_eigenspace_iff.mpr (by
-        ext j
-        change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
-        exact (hchar i j).symm), fun h ↦ hχ (congrFun h i₀)⟩).mem_spectrum
+  have hz : χ i ∈ spectrum ℂ A := Matrix.spectrum_toLin' A ▸
+    (Module.End.hasEigenvalue_of_hasEigenvector
+      ⟨Module.End.mem_eigenspace_iff.mpr (funext fun j ↦ (hchar i j).symm),
+        fun h ↦ hχ (congrFun h i₀)⟩).mem_spectrum
   simpa [fpSimple, A, Matrix.spectralRadius_transpose] using
     ENNReal.toReal_mono
       (ne_of_lt (lt_of_le_of_lt (spectralRadius_le_nnnorm (𝕜 := ℂ) A) (by simp)))
@@ -271,48 +277,40 @@ theorem characterMatrix_commute (i j : Fin (rank D)) :
     (fusionCoeff_assoc j i a b).trans (by simpa only [fusionCoeff_comm D j i] using
       (fusionCoeff_assoc i j a b).symm)
 
-/-- The total matrix has a strictly positive common eigenvector for all
-fusion matrices. -/
-theorem exists_positive_common_eigenvector :
-    ∃ (v : Fin (rank D) → ℝ), (∀ j, 0 < v j) ∧
-      ∀ i, ∃ d : ℝ, characterMatrix D i *ᵥ v = d • v :=
-  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
-  (positive_symmetric_matrix_has_positive_eigenvector
-    (Matrix.isHermitian_iff_isSymm.mpr (Matrix.IsSymm.ext fun j k ↦
-      totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)).elim fun _ ⟨v, hvpos, hve⟩ ↦
-    ⟨v, hvpos, fun i ↦ positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve (by
-      rw [Matrix.mulVec_mulVec,
-        (show Commute (totalFusionMatrix D) (characterMatrix D i) from
-          Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
-        ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul])⟩
-
 /-- A positive normalized character exists for the actual fusion rules. -/
 theorem exists_positive_character :
     ∃ f : Fin (rank D) → ℝ,
-      (∀ i, 0 < f i) ∧ f (unitIndex D) = 1 ∧
-      IsFusionMultiplicative D f := by
-  obtain ⟨v, hvpos, hve⟩ := exists_positive_common_eigenvector D
+      (∀ i, 0 < f i) ∧ IsFusionMultiplicative D f := by
+  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  obtain ⟨_, v, hvpos, hvtotal⟩ := positive_symmetric_matrix_has_positive_eigenvector
+    (Matrix.isHermitian_iff_isSymm.mpr (Matrix.IsSymm.ext fun j k ↦
+      totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)
+  have hve (i : Fin (rank D)) : ∃ d, characterMatrix D i *ᵥ v = d • v :=
+    positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hvtotal (by
+      rw [Matrix.mulVec_mulVec,
+        (show Commute (totalFusionMatrix D) (characterMatrix D i) from
+          Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
+        ← Matrix.mulVec_mulVec, hvtotal, Matrix.mulVec_smul])
   let f : Fin (rank D) → ℝ := fun i => v i / v (unitIndex D)
   have hunit : v (unitIndex D) ≠ 0 := ne_of_gt (hvpos _)
-  refine ⟨f, fun i => div_pos (hvpos i) (hvpos _), ?_, ?_⟩
-  · exact div_self hunit
-  · intro i j
-    obtain ⟨d, hd⟩ := hve i
-    have hscalar : d = f i := by
-      apply (eq_div_iff hunit).mpr
-      simpa [Matrix.mulVec, dotProduct, characterMatrix,
-        fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit] using
-          (congrFun hd (unitIndex D)).symm
-    have hrow := congrFun hd j
-    simp only [Matrix.mulVec, dotProduct, characterMatrix, Pi.smul_apply, smul_eq_mul] at hrow
-    rw [hscalar] at hrow
-    calc
-      f i * f j = (∑ k, (fusionCoeff D i j k : ℝ) * v k) / v (unitIndex D) := by
-        rw [hrow]
-        dsimp [f]
-        ring
-      _ = ∑ k, (fusionCoeff D i j k : ℝ) * f k := by
-        simp [f, Finset.sum_div, mul_div_assoc]
+  refine ⟨f, fun i => div_pos (hvpos i) (hvpos _), ?_⟩
+  intro i j
+  obtain ⟨d, hd⟩ := hve i
+  have hscalar : d = f i := by
+    apply (eq_div_iff hunit).mpr
+    simpa [Matrix.mulVec, dotProduct, characterMatrix,
+      fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit] using
+        (congrFun hd (unitIndex D)).symm
+  have hrow := congrFun hd j
+  simp only [Matrix.mulVec, dotProduct, characterMatrix, Pi.smul_apply, smul_eq_mul] at hrow
+  rw [hscalar] at hrow
+  calc
+    f i * f j = (∑ k, (fusionCoeff D i j k : ℝ) * v k) / v (unitIndex D) := by
+      rw [hrow]
+      dsimp [f]
+      ring
+    _ = ∑ k, (fusionCoeff D i j k : ℝ) * f k := by
+      simp [f, Finset.sum_div, mul_div_assoc]
 
 variable {D} in
 theorem character_total_eigenvector
@@ -326,18 +324,9 @@ theorem character_total_eigenvector
     ← hf]
 
 /-- The unique positive normalized character of the fusion rules. -/
-def fpCharacter (D : BraidedFusionCategory) : Fin (rank D) → ℝ :=
-  Classical.choose (exists_positive_character D)
-
-variable {D} in
-theorem fpCharacter_pos (i : Fin (rank D)) :
-    0 < fpCharacter D i := (Classical.choose_spec (exists_positive_character D)).1 i
-
-variable {D} in
-theorem fpCharacter_mul (i j : Fin (rank D)) :
-    fpCharacter D i * fpCharacter D j =
-      ∑ k, (fusionCoeff D i j k : ℝ) * fpCharacter D k :=
-  (Classical.choose_spec (exists_positive_character D)).2.2 i j
+def fpCharacter (D : BraidedFusionCategory) :
+    {f : Fin (rank D) → ℝ // (∀ i, 0 < f i) ∧ IsFusionMultiplicative D f} :=
+  Classical.indefiniteDescription _ (exists_positive_character D)
 
 end PropertyF.Ground
 
@@ -414,16 +403,16 @@ namespace PropertyF.Ground
 variable (D : BraidedFusionCategory)
 
 theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
-    fpCharacter D i ≤ fpSimple D i := by
-  simpa [Complex.norm_real, abs_of_pos (fpCharacter_pos i)] using
-    (Dimensions.character_norm_le_fpSimple (χ := fun j ↦ (fpCharacter D j : ℂ))
-      (i₀ := unitIndex D) (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpCharacter_pos (unitIndex D))))
+    (fpCharacter D).1 i ≤ fpSimple D i := by
+  simpa [Complex.norm_real, abs_of_pos ((fpCharacter D).2.1 i)] using
+    (Dimensions.character_norm_le_fpSimple (χ := fun j ↦ ((fpCharacter D).1 j : ℂ))
+      (i₀ := unitIndex D) (Complex.ofReal_ne_zero.mpr (ne_of_gt ((fpCharacter D).2.1 (unitIndex D))))
       (fun j k ↦ by
         dsimp
-        exact_mod_cast fpCharacter_mul j k) i)
+        exact_mod_cast (fpCharacter D).2.2 j k) i)
 
 theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
-    fpSimple D i ≤ fpCharacter D i := by
+    fpSimple D i ≤ (fpCharacter D).1 i := by
   let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   let A := characterMatrix D i
   let B := A.map Complex.ofRealHom
@@ -436,26 +425,26 @@ theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
   simpa only [fpSimple, ← Matrix.spectralRadius_transpose (fusionMatrix D i), ← hB,
     ← hzmax, ENNReal.coe_toReal, coe_nnnorm] using
       complex_eigenvalue_le_positive_eigenvalue
-        (show A *ᵥ fpCharacter D = fpCharacter D i • fpCharacter D from by
+        (show A *ᵥ (fpCharacter D).1 = (fpCharacter D).1 i • (fpCharacter D).1 from by
           ext j
-          change (∑ k, (fusionCoeff D i j k : ℝ) * fpCharacter D k) = _
-          exact (fpCharacter_mul i j).symm)
+          change (∑ k, (fusionCoeff D i j k : ℝ) * (fpCharacter D).1 k) = _
+          exact ((fpCharacter D).2.2 i j).symm)
         (show A.map Complex.ofRealHom *ᵥ v = z • v from by
           simpa [B, Matrix.toLin'_apply] using hv.apply_eq_smul)
-        (fun j k => Nat.cast_nonneg _) (fpCharacter_pos) hv.2
+        (fun j k => Nat.cast_nonneg _) (fpCharacter D).2.1 hv.2
 
 /-- The target spectral-radius FP dimension is the unique positive character. -/
 theorem fpSimple_eq_fpCharacter (i : Fin (rank D)) :
-    fpSimple D i = fpCharacter D i :=
+    fpSimple D i = (fpCharacter D).1 i :=
   le_antisymm (fpSimple_le_fpCharacter D i) (fpCharacter_le_fpSimple D i)
 
 theorem fpSimple_pos (i : Fin (rank D)) :
-    0 < fpSimple D i := (fpSimple_eq_fpCharacter D i).symm ▸ fpCharacter_pos i
+    0 < fpSimple D i := (fpSimple_eq_fpCharacter D i).symm ▸ (fpCharacter D).2.1 i
 
 theorem fpSimple_mul (i j : Fin (rank D)) :
     fpSimple D i * fpSimple D j =
       ∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k :=
-  by simp only [fpSimple_eq_fpCharacter, fpCharacter_mul]
+  by simp only [fpSimple_eq_fpCharacter, (fpCharacter D).2.2]
 
 /-- FP dimensions form a complex-valued fusion character. -/
 theorem fpSimple_isFusionMultiplicative :

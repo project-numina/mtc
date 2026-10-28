@@ -3,7 +3,13 @@ public import PropertyF.Ground.Target
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
-/-! Splitting maps from simples in a finite semisimple category. -/
+/-! # Simple representatives and splittings
+
+Nonzero maps from a simple object into a semisimple object split. The chosen
+simple representatives decompose every object into a finite biproduct, and
+their Hom spaces have the expected dimensions. These facts supply the unit
+retract and multiplicity constructions used by the fusion rules.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

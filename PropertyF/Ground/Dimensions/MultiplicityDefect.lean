@@ -10,7 +10,10 @@ public import Mathlib.CategoryTheory.Iso
 
 /-! # Tensor defects and multiplicities
 
-Natural fourth-dual roots induce operators on multiplicity spaces and satisfy involution identities.
+Chosen simple fourth-dual roots extend to a natural double-dual isomorphism.
+Its tensor defect induces operators on multiplicity spaces. The module proves
+involutivity criteria for those operators and the trace bounds for involutions
+used in the ENO matrix argument.
 -/
 
 @[expose] public noncomputable section
@@ -25,35 +28,18 @@ local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 /-- Scalar comparing the chosen simple fourth-dual square root to the
 braided double-dual component. -/
 def fourthDualRootScalar (C : BraidedFusionCategory.{v,u})
-    (i : Fin (rank C)) : ℂ :=
-  Classical.choose (isomorphisms_scalar (k := ℂ)
-    (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
-
-variable {C} in
-theorem fourthDualRootScalar_spec
-    (i : Fin (rank C)) : fourthDualRootScalar C i ≠ 0 ∧
-    (fourthDualSimpleRoot C i).hom = fourthDualRootScalar C i •
-      (doubleDualIso C (simples C i)).hom :=
-  Classical.choose_spec (isomorphisms_scalar (k := ℂ)
+    (i : Fin (rank C)) : {c : ℂ // c ≠ 0 ∧
+      (fourthDualSimpleRoot C i).hom = c • (doubleDualIso C (simples C i)).hom} :=
+  Classical.indefiniteDescription _ (isomorphisms_scalar (k := ℂ)
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
 /-- The chosen simple square roots extend to a natural isomorphism from the
 identity to the double-dual functor. It is not asserted to be monoidal. -/
 def fourthDualRootNaturalIso (C : BraidedFusionCategory.{v,u}) :
     𝟭 C.Obj ≅ doubleDualFunctor C.Obj :=
-  simpleScalarNaturalIso C (fourthDualRootScalar C) (fun i => (fourthDualRootScalar_spec i).1) ≪≫
+  simpleScalarNaturalIso C (fun i ↦ (fourthDualRootScalar C i).1)
+    (fun i ↦ (fourthDualRootScalar C i).2.1) ≪≫
     drinfeldNaturalIso C.Obj
-
-variable {C} in
-/-- The natural extension has exactly the chosen simple components. -/
-theorem fourthDualRootNaturalIso_app_simple
-    (i : Fin (rank C)) :
-    (fourthDualRootNaturalIso C).app (simples C i) = fourthDualSimpleRoot C i :=
-  Iso.ext <| by
-    simp only [fourthDualRootNaturalIso, NatIso.trans_app, Iso.trans_hom,
-      simpleScalarNaturalIso_app_simple]
-    erw [Linear.smul_comp, Category.id_comp]
-    exact (fourthDualRootScalar_spec i).2.symm
 
 /-- Natural transformations from the identity are determined on a family
 whose finite biproducts contain every object. -/
@@ -82,7 +68,12 @@ theorem fourthDualRootNaturalSquare_eq :
     change ((fourthDualRootNaturalIso C).app (simples C i)).hom ≫
       ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
         (fourthDualIso (simples C i)).hom
-    rw [fourthDualRootNaturalIso_app_simple]
+    rw [show (fourthDualRootNaturalIso C).app (simples C i) = fourthDualSimpleRoot C i from
+      Iso.ext <| by
+        simp only [fourthDualRootNaturalIso, NatIso.trans_app, Iso.trans_hom,
+          simpleScalarNaturalIso_app_simple]
+        erw [Linear.smul_comp, Category.id_comp]
+        exact (fourthDualRootScalar C i).2.2.symm]
     exact congrArg Iso.hom (Classical.choose_spec
       (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i))))
 
@@ -181,7 +172,7 @@ theorem involution_phase_inv_eq_one_of_trace :
   have hs : T = c • (1 : V →ₗ[ℂ] V) := by
     simpa [smul_mul_assoc, hT] using
       (congrArg (fun F ↦ F * T) (involution_phase_eq_one_of_trace hT hc htrace)).symm
-  rw [hs, smul_smul, inv_mul_cancel₀ (norm_ne_zero_iff.mp (by simp [hc])), one_smul]
+  rw [hs, smul_smul, inv_mul_cancel₀ (norm_ne_zero_iff.mp (hc.symm ▸ one_ne_zero)), one_smul]
 
 
 end PropertyF.Ground.Dimensions

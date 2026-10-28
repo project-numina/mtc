@@ -5,7 +5,10 @@ public import PropertyF.Ground.Dimensions.SimpleHomBasis
 
 /-! # Dual labels and reciprocity
 
-Frobenius reciprocity and the fourth-dual tensor law imply trace reciprocity on simple labels.
+`enoFrobeniusEquiv` and `enoReciprocityEquiv` realize Frobenius reciprocity on
+the chosen simple objects. Compatibility of the tensor defect with these
+equivalences yields trace reciprocity, while `rootDualSign_dual` compares the
+signs on a label and its dual.
 -/
 
 @[expose] public noncomputable section
@@ -72,20 +75,20 @@ theorem trace_reciprocity_of_intertwining
       (v : Module.Dual ℂ (simples C j ⟶ simples C i ⊗ simples C k)),
       enoReciprocityEquiv C i k j
         (Module.Dual.transpose (multiplicityDefect C i k j).toLinearMap v) =
-      rootDualSign C i • (multiplicityDefect C (dualIndex C i) j k)
+      (rootDualSign C i).1 • (multiplicityDefect C (dualIndex C i) j k)
         (enoReciprocityEquiv C i k j v)) :
     ENOTraceMatrixReciprocity C := by
   intro i j k
   let E := enoReciprocityEquiv C i k j
   let A := (multiplicityDefect C i k j).toLinearMap
   let B := (multiplicityDefect C (dualIndex C i) j k).toLinearMap
-  have ht : LinearMap.trace ℂ _ A = rootDualSign C i * LinearMap.trace ℂ _ B := by
+  have ht : LinearMap.trace ℂ _ A = (rootDualSign C i).1 * LinearMap.trace ℂ _ B := by
     simpa only [LinearMap.trace_conj', LinearMap.trace_transpose', map_smul, smul_eq_mul] using
       congrArg (LinearMap.trace ℂ _) (show E.conj (Module.Dual.transpose A) =
-        rootDualSign C i • B from LinearMap.ext fun w ↦ by
+        (rootDualSign C i).1 • B from LinearMap.ext fun w ↦ by
           simpa [E, A, B, LinearEquiv.conj_apply] using hintertwine i j k (E.symm w))
-  change LinearMap.trace ℂ _ B = rootDualSign C i * LinearMap.trace ℂ _ A
-  rw [ht, ← mul_assoc, rootDualSign_sq, one_mul]
+  change LinearMap.trace ℂ _ B = (rootDualSign C i).1 * LinearMap.trace ℂ _ A
+  rw [ht, ← mul_assoc, (rootDualSign C i).2.1, one_mul]
 
 end PropertyF.Ground.Dimensions
 
@@ -104,7 +107,7 @@ morphisms before applying the perfect-pairing duality. -/
 theorem trace_reciprocity_of_frobenius_defect
     (hcompat : ∀ i j k (g : simples C i ⊗ simples C k ⟶ simples C j),
       enoFrobeniusEquiv C i k j ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
-      rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
+      (rootDualSign C i).1 • (enoFrobeniusEquiv C i k j g ≫
         (rootTensorDefect C (simples C (dualIndex C i)) (simples C j)).hom)) :
     ENOTraceMatrixReciprocity C :=
   trace_reciprocity_of_intertwining fun i j k v ↦ by
@@ -130,7 +133,7 @@ set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 /-- The ENO signs agree on the chosen dual label. -/
 theorem rootDualSign_dual (i : Fin (rank C)) :
-    rootDualSign C (dualIndex C i) = rootDualSign C i := by
+    (rootDualSign C (dualIndex C i)).1 = (rootDualSign C i).1 := by
   let : Simple (simples C i) := simples_simple C i
   have he := (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans
     (target_squaredNorm_rightDual (simples C i))
