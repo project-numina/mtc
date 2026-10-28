@@ -43,7 +43,6 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
       rw [crossingCandidate_on_summand]
       simp only [monoidalComp, sum_whiskerRight, Preadditive.sum_comp, Preadditive.comp_sum]
       refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => ?_
-      simp only [comp_whiskerRight, whiskerLeft_comp]
       monoidal
     _ = _ := by
       refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => ?_
@@ -52,7 +51,6 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
       simp only [whiskerLeft_sum, monoidalComp, Preadditive.comp_sum, Preadditive.sum_comp]
       refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun b _ => ?_
       rw [crossingBlock_tensor]
-      simp only [whiskerLeft_comp]
       monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -62,8 +60,8 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (T ⊗ U)).inv).1
   refine biproduct.hom_ext' _ _ fun i => ?_
-  simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
-  rw [crossingCandidate_on_summand, crossingComposite_summand]
+  rw [biproduct_ι_comp_rightDistributor_inv_assoc, biproduct_ι_comp_rightDistributor_inv_assoc,
+    crossingCandidate_on_summand, crossingComposite_summand]
   simp only [← Preadditive.sum_comp]
   simp_rw [← crossingBlock_refinement C X T U i]
   simp only [Fintype.sum_sigma, Preadditive.sum_comp]

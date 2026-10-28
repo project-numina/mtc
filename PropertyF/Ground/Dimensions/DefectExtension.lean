@@ -42,26 +42,23 @@ theorem rootTensorDefect_coevaluation
   let t := rootTensorIso C X (Xᘁ)
   let u := rootDimension C (unitIndex C)
   let e := rootDualSign C i
-  have he : e * e = 1 := rootDualSign_sq C i
   have hc := root_components_coevaluation C i
   change η_ X (Xᘁ) ≫ (a.hom ⊗ₘ b.hom) = e • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) at hc
   have hn := (fourthDualRootNaturalIso C).hom.naturality (η_ X (Xᘁ))
   change η_ X (Xᘁ) ≫ ((fourthDualRootNaturalIso C).app W).hom =
     ((fourthDualRootNaturalIso C).app I).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) at hn
-  have hunit := fourthDualRoot_unit_component C
-  change ((fourthDualRootNaturalIso C).app I).hom = u • (doubleDualUnitIso (C := C.Obj)).hom at hunit
-  have hdual := doubleDual_coevaluation X
   have ht : η_ X (Xᘁ) ≫ t.hom =
       e • ((doubleDualUnitIso (C := C.Obj)).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ)) := by
     change η_ X (Xᘁ) ≫ ((a.hom ⊗ₘ b.hom) ≫ (doubleDualTensorIso X (Xᘁ)).hom) = _
     rw [← Category.assoc, hc, Linear.smul_comp]
     congr 1
     apply (cancel_mono (doubleDualTensorIso X (Xᘁ)).inv).1
-    simpa only [Category.assoc, Iso.hom_inv_id, Category.comp_id] using hdual.symm
+    simpa only [Category.assoc, Iso.hom_inv_id, Category.comp_id] using (doubleDual_coevaluation X).symm
   apply (cancel_mono t.hom).1
   change (η_ X (Xᘁ) ≫ (((fourthDualRootNaturalIso C).app W).hom ≫ t.inv)) ≫ t.hom = _
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp]
-  rw [hn, hunit, Linear.smul_comp, ht, ← mul_smul, mul_assoc, he, mul_one]
+  rw [hn, fourthDualRoot_unit_component, Linear.smul_comp, ht, ← mul_smul, mul_assoc,
+    rootDualSign_sq, mul_one]
 end PropertyF.Ground.Dimensions
 
 end

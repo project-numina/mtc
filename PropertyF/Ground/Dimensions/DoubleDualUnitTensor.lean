@@ -38,18 +38,14 @@ theorem rightDualTensorIso_unit_left (X : C) :
   apply evaluation_ext (X := I ⊗ X)
   simp only [comp_whiskerRight_assoc]
   rw [rightDualTensorIso_evaluation I X, rightAdjointMate_comp_evaluation,
-    ← comp_whiskerRight_assoc]
-  change _ = ((ρ_ (Xᘁ)).inv ≫ (Xᘁ) ◁ r.inv) ▷ (I ⊗ X) ≫
-    (𝟙 _ ⊗≫ (Xᘁ) ◁ (ε_ I (Iᘁ) ▷ X) ⊗≫ ε_ X (Xᘁ))
-  calc
-    _ = 𝟙 _ ⊗≫ (Xᘁ : C) ◁ ((r.inv ▷ I ≫ ε_ I (Iᘁ)) ▷ X) ⊗≫ ε_ X (Xᘁ) := by
-      rw [he]
-      change (Xᘁ) ◁ (λ_ X).hom ≫ ε_ X (Xᘁ) =
-        𝟙 _ ⊗≫ (Xᘁ : C) ◁ ((ρ_ I).hom ▷ X) ⊗≫ ε_ X (Xᘁ)
-      monoidal
-    _ = _ := by
-      simp only [comp_whiskerRight, whiskerLeft_comp]
-      monoidal
+    tensorPairing_evaluation_whiskerLeft (p := (inferInstance : ExactPairing I I))
+      (q := @HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
+      (r := HasRightDual.exact) r.inv he,
+    @ExactPairing.tensor_evaluation C _ _ I X I (Xᘁ)
+      (inferInstance : ExactPairing I I) HasRightDual.exact]
+  rw [show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
+    (ρ_ I).hom from rfl]
+  monoidal
 /-- Right dual tensor comparison is compatible with the right unitor. -/
 theorem rightDualTensorIso_unit_right (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
@@ -66,20 +62,17 @@ theorem rightDualTensorIso_unit_right (X : C) :
   simp only [comp_whiskerRight_assoc]
   rw [rightDualTensorIso_evaluation X I, rightAdjointMate_comp_evaluation]
   change _ = ((λ_ (Xᘁ)).inv ≫ r.inv ▷ (Xᘁ)) ▷ (X ⊗ I) ≫
-    (𝟙 _ ⊗≫ (Iᘁ) ◁ (ε_ X (Xᘁ) ▷ I) ⊗≫ ε_ I (Iᘁ))
-  symm
-  calc
-    _ = 𝟙 _ ⊗≫ ((r.inv ▷ ((Xᘁ ⊗ X) ⊗ I)) ≫
-      (Iᘁ : C) ◁ (ε_ X (Xᘁ) ▷ I)) ⊗≫ ε_ I (Iᘁ) := by
-        simp only [comp_whiskerRight]
-        monoidal
-    _ = 𝟙 _ ⊗≫ ((I : C) ◁ (ε_ X (Xᘁ) ▷ I) ≫
-      r.inv ▷ ((𝟙_ C) ⊗ I)) ⊗≫ ε_ I (Iᘁ) := by rw [← whisker_exchange]
-    _ = 𝟙 _ ⊗≫ (ε_ X (Xᘁ) ▷ I) ⊗≫ (r.inv ▷ I ≫ ε_ I (Iᘁ)) := by monoidal
-    _ = _ := by
-      rw [he]
-      change 𝟙 _ ⊗≫ (ε_ X (Xᘁ) ▷ I) ⊗≫ (ρ_ I).hom = _
-      monoidal
+    @ExactPairing.evaluation C _ _ (X ⊗ I) ((Iᘁ) ⊗ (Xᘁ))
+      (@ExactPairing.tensor C _ _ X I (Xᘁ) (Iᘁ) HasRightDual.exact
+        (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I)))
+  rw [comp_whiskerRight_assoc,
+    tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := (inferInstance : ExactPairing I I))
+      (r := @HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I)) r.inv he,
+    @ExactPairing.tensor_evaluation C _ _ X I (Xᘁ) I
+      HasRightDual.exact (inferInstance : ExactPairing I I)]
+  rw [show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
+    (ρ_ I).hom from rfl]
+  monoidal
 
 end PropertyF.Ground.Dimensions
 
