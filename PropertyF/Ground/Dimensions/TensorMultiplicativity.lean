@@ -33,7 +33,6 @@ theorem rightTraceWith_tensor_pairing {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅
   let r := rightDualIso p1 p2
   let s := rightDualIso q1 q2
   let u := f ≫ (j.hom ⊗ₘ k.hom)
-  have ht := trace_change_rightDual p1 p2 (u ≫ s.inv)
   have hr : @ExactPairing.coevaluation C _ _ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) p2 ≫
       ((u ≫ s.inv) ⊗ₘ 𝟙 ((Yᘁ) ⊗ (Xᘁ))) ≫
         @ExactPairing.evaluation C _ _ ((Yᘁ) ⊗ (Xᘁ)) (((Yᘁ) ⊗ (Xᘁ))ᘁ) q1 =
@@ -44,7 +43,7 @@ theorem rightTraceWith_tensor_pairing {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅
     rw [(rightDualIso_inv_evaluation q1 q2)]
   simpa only [rightTraceWith, End.homEquiv_apply, doubleDualTensorIso, Iso.trans_hom,
     Iso.symm_hom, tensorIso_hom, rightDualIsoMap, Category.assoc, rightDualTensorIso,
-    r, s, u, p1, p2, q1, q2] using ht.trans hr
+    r, s, u, p1, p2, q1, q2] using (trace_change_rightDual p1 p2 (u ≫ s.inv)).trans hr
 
 
 /-- Close the right tensor factor using an arbitrary double-dual isomorphism. -/

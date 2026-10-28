@@ -90,13 +90,11 @@ theorem fourthDualIso_unit :
   let : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
   let : HasRightDual ((𝟙_ C.Obj)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C.Obj)ᘁ)
   let : HasRightDual (((𝟙_ C.Obj)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C.Obj)ᘁ)ᘁ)
-  have hu : doubleDualIso C (𝟙_ C.Obj) = doubleDualUnitIso (C := C.Obj) :=
-    Iso.ext (drinfeld_unit C)
   unfold fourthDualIso
   have hdual := drinfeld_unit_dual C
   change doubleDualIso C ((𝟙_ C.Obj)ᘁ) =
     (rightDualIsoMap (doubleDualIso C (𝟙_ C.Obj))).symm at hdual
-  rw [hdual, hu]
+  rw [hdual, Iso.ext (drinfeld_unit C)]
   apply Iso.ext
   rfl
 /-- The root dimension of the unit label is the root trace of the tensor unit. -/

@@ -60,11 +60,11 @@ variable {D : Ground.BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := D.
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Positive weighted sums preserve equality when the terms are pointwise ordered. -/
-theorem eq_of_pos_weighted_sum_eq {ι R : Type*} [Fintype ι] [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+theorem eq_of_pos_weighted_sum_eq {ι R : Type*} [Fintype ι] [Semiring R] [LinearOrder R] [IsStrictOrderedRing R]
     {w a b : ι → R}
     (hw : ∀ i, 0 < w i) (hle : ∀ i, a i ≤ b i)
     (hsum : (∑ i, w i * a i) = ∑ i, w i * b i) (i : ι) : a i = b i :=
-  mul_left_cancel₀ (ne_of_gt (hw i)) <|
+  (strictMono_mul_left_of_pos (hw i)).injective <|
     (Finset.sum_eq_sum_iff_of_le (fun j _ ↦ mul_le_mul_of_nonneg_left (hle j) (hw j).le)).mp
       hsum i (Finset.mem_univ i)
 
