@@ -111,10 +111,11 @@ theorem rightTrace_alternatingProjector :
   change p.rightTrace ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
     ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
   simpa only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul,
-    Dimensions.rightTraceLinear, LinearMap.coe_mk, AddHom.coe_mk] using
+    Dimensions.rightTraceWithLinear, LinearMap.coe_mk, AddHom.coe_mk,
+    Dimensions.rightTraceWith_pivotal] using
     congrArg (fun x : End (𝟙_ C.Obj) ↦
       (⅟(Fintype.card (Perm (Fin n)) : ℂ)) • x) <|
-        map_sum (Dimensions.rightTraceLinear (k := ℂ) p X)
+        map_sum (Dimensions.rightTraceWithLinear (k := ℂ) (p.iso X))
           (fun σ : Perm (Fin n) ↦ (sgn ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
 
 /-- Multiplying the alternating-projector trace by the group order gives

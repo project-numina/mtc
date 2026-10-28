@@ -13,6 +13,10 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
+/-- The trace of a pivotal component is the pivotal trace. -/
+theorem rightTraceWith_pivotal (p : PivotalStructure (C := C)) {X : C} (f : X ⟶ X) :
+    rightTraceWith (p.iso X) f = p.rightTrace f := rfl
+
 /-- An algebra equivalent to the scalar field is spanned by its identity. -/
 theorem eq_smul_one_of_algEquiv {k : Type*} [CommSemiring k] {A : Type*}
     [Semiring A] [Algebra k A] (e : A ≃ₐ[k] k) (a : A) : a = e a • (1 : A) :=
