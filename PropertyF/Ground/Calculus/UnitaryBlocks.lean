@@ -84,14 +84,14 @@ end PropertyF.Ground.Calculus
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Calculus
 
-variable {G A : Type*} [Group G] [Ring A] [Algebra ℂ A]
+variable {G A : Type*} [Monoid G] [Ring A] [Algebra ℂ A]
 variable (ρ : G →* A)
 
-/-- The group-algebra map associated to a representation in a complex algebra. -/
+/-- The monoid-algebra map associated to a representation in a complex algebra. -/
 def groupAlgebraMap : MonoidAlgebra ℂ G →ₐ[ℂ] A :=
   MonoidAlgebra.lift ℂ A G ρ
 
-/-- The complex algebra spanned by the group image. -/
+/-- The complex algebra spanned by the representation image. -/
 def groupImageAlgebra : Subalgebra ℂ A := (groupAlgebraMap ρ).range
 
 /-- A matrix-block presentation of a group-image algebra. -/
@@ -114,18 +114,25 @@ theorem groupImageAlgebra_toSubmodule :
 variable [Finite G]
 
 open scoped Classical in
+/-- The image algebra is finite-dimensional, even when the ambient algebra is not. -/
+theorem groupImageAlgebra_finite :
+    FiniteDimensional ℂ (groupImageAlgebra ρ) :=
+  Module.Finite.of_surjective (groupAlgebraMap ρ).rangeRestrict.toLinearMap
+    (AlgHom.rangeRestrict_surjective (groupAlgebraMap ρ))
+
+end PropertyF.Ground.Calculus
+
+@[expose] public noncomputable section
+namespace PropertyF.Ground.Calculus
+
+variable {G A : Type*} [Group G] [Ring A] [Algebra ℂ A] (ρ : G →* A) [Finite G]
+
+open scoped Classical in
 /-- A finite group's image algebra is semisimple, by Maschke and passage to a quotient. -/
 theorem groupImageAlgebra_semisimple :
     IsSemisimpleRing (groupImageAlgebra ρ) :=
   let _ : NeZero (Nat.card G : ℂ) := ⟨by exact_mod_cast (Nat.card_ne_zero.mpr ⟨⟨1⟩, inferInstance⟩ : Nat.card G ≠ 0)⟩
   RingHom.isSemisimpleRing_of_surjective (groupAlgebraMap ρ).rangeRestrict.toRingHom
-    (AlgHom.rangeRestrict_surjective (groupAlgebraMap ρ))
-
-open scoped Classical in
-/-- The image algebra is finite-dimensional, even when the ambient algebra is not. -/
-theorem groupImageAlgebra_finite :
-    FiniteDimensional ℂ (groupImageAlgebra ρ) :=
-  Module.Finite.of_surjective (groupAlgebraMap ρ).rangeRestrict.toLinearMap
     (AlgHom.rangeRestrict_surjective (groupAlgebraMap ρ))
 
 /-- The finite group image algebra is a finite product of nonempty complex
@@ -185,9 +192,9 @@ def unitConjugation (u : Aˣ) : A ≃ₐ[ℂ] A where
   commutes' z := by
     simp [Algebra.commutes, mul_assoc]
 
-variable {G : Type*} [Group G] (ρ : G →* A)
+variable {G : Type*} [Monoid G] (ρ : G →* A)
 
-/-- The image group, regarded as units in its own linear-span algebra. -/
+/-- The image of a monoid representation in its own linear-span algebra. -/
 def groupInImage : G →* groupImageAlgebra ρ :=
   (groupAlgebraMap ρ).rangeRestrict.toMonoidHom.comp (MonoidAlgebra.of ℂ G)
 
@@ -210,7 +217,7 @@ abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ}
     (e : GroupBlockPresentation ρ d) : Prop :=
   ∀ g, Blocks.IsUnitary ⟨_, d⟩ (e (groupInImage ρ g))
 
-/-- The group elements span their image algebra. -/
+/-- The represented elements span their image algebra. -/
 theorem groupInImage_span :
     Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ := by
   classical
@@ -220,7 +227,13 @@ theorem groupInImage_span :
   change Submodule.span ℂ (Set.range (fun g => (groupInImage ρ g : A))) = _
   simpa only [groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
 
-variable [Finite G]
+end PropertyF.Ground.Calculus
+
+@[expose] public noncomputable section
+open CategoryTheory
+namespace PropertyF.Ground.Calculus
+
+variable {G A : Type*} [Group G] [Ring A] [Algebra ℂ A] (ρ : G →* A) [Finite G]
 
 /-- A Wedderburn equivalence can be chosen so that every group element is
 unitary in each matrix block. This choice is simultaneous for the whole group. -/

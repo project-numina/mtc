@@ -27,15 +27,15 @@ theorem unitary_representation_star_inv (ρ : G →* A)
 
 end UnitaryRepresentation
 
-variable {A B : Type*} [Ring A] [Ring B] [Algebra ℂ A] [Algebra ℂ B]
-  [StarRing A] [StarRing B] [StarModule ℂ A] [StarModule ℂ B]
+variable {R A B : Type*} [CommSemiring R] [StarRing R] [Semiring A] [Semiring B]
+  [Algebra R A] [Algebra R B] [StarRing A] [StarRing B] [StarModule R A] [StarModule R B]
 
-/-- A complex algebra map that preserves the adjoint of each generator preserves
+/-- An algebra map that preserves the adjoint of each generator preserves
 it on their entire linear span. In particular this applies to identity-strand
 embeddings once the braids are represented by unitary matrices. -/
-theorem map_star_of_mem_span (φ : A →ₐ[ℂ] B) (S : Set A)
+theorem map_star_of_mem_span (φ : A →ₐ[R] B) (S : Set A)
     (hS : ∀ x ∈ S, φ (star x) = star (φ x))
-    {x : A} (hx : x ∈ Submodule.span ℂ S) : φ (star x) = star (φ x) :=
+    {x : A} (hx : x ∈ Submodule.span R S) : φ (star x) = star (φ x) :=
   Submodule.span_induction hS (by simp)
     (fun _ _ _ _ hx hy => by simp [hx, hy])
     (fun _ _ _ hx => by simp [star_smul, hx]) hx
@@ -45,9 +45,9 @@ variable {G : Type*} [Group G]
 /-- An algebra map intertwining unitary representations is a star map when
 the source representation spans the source algebra. -/
 theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
-    (hspan : Submodule.span ℂ (Set.range ρ) = ⊤)
+    (hspan : Submodule.span R (Set.range ρ) = ⊤)
     (hρ : ∀ g, ρ g ∈ unitary A) (hσ : ∀ g, σ g ∈ unitary B)
-    (φ : A →ₐ[ℂ] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
+    (φ : A →ₐ[R] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
     φ (star x) = star (φ x) := by
   apply map_star_of_mem_span φ (Set.range ρ)
   · rintro _ ⟨g, rfl⟩

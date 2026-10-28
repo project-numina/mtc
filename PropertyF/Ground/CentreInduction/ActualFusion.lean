@@ -17,10 +17,11 @@ namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵" => Center C.Obj
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+variable {T S R : D}
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Resolving a fusion strand commutes with coevaluation. -/
-theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+theorem fusion_coevaluation (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S f) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) =
       𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) := by
   have hr : (𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫
@@ -54,7 +55,7 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component followed by a crossing block reduces to a fusion endomorphism. -/
-theorem unit_block (Z : Center D) {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+theorem unit_block (Z : Center D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (unitComponentAt Z R ▷ T) ≫ crossingBlock Z.1 T S g f =
       𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ (f ≫ g) ▷ Sᘁ ⊗≫
         𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _ := by

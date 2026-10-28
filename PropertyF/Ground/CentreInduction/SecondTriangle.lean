@@ -94,6 +94,7 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+variable {A : D}
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component followed by a map can be expressed through a crossing. -/
@@ -112,7 +113,7 @@ theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N) (t : M ⟶ 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Evaluation is normalized along an isomorphism with the tensor unit. -/
-theorem evaluation_iso_unit {A : D} (e : A ≅ 𝟙_ D) :
+theorem evaluation_iso_unit (e : A ≅ 𝟙_ D) :
     ((rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom ⊗ₘ e.hom) ≫
       (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) := by
   let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
@@ -126,7 +127,7 @@ theorem evaluation_iso_unit {A : D} (e : A ≅ 𝟙_ D) :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Closing the right unit isomorphism gives ordinary evaluation. -/
-theorem close_rightUnit_eval (T : D) {A : D} (e : A ≅ 𝟙_ D) :
+theorem close_rightUnit_eval (T : D) (e : A ≅ 𝟙_ D) :
     closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
       (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom = ε_ T (Tᘁ) := by
   let d := (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom
@@ -150,7 +151,7 @@ theorem close_rightUnit_eval (T : D) {A : D} (e : A ≅ 𝟙_ D) :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The canonical unit-column crossing block contracts by evaluation. -/
-theorem crossingUnitBlock_eval (X T : D) {A : D} (e : A ≅ 𝟙_ D) :
+theorem crossingUnitBlock_eval (X T : D) (e : A ≅ 𝟙_ D) :
   let d : Aᘁ ≅ 𝟙_ D := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
   let us : (A ⊗ X) ⊗ Aᘁ ≅ X := ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
