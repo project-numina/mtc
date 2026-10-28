@@ -75,6 +75,8 @@ theorem simples_simple (i : Fin (rank C)) : Simple (simples C i) :=
   (Classical.choose_spec (Classical.choose_spec
     (IsFusionCategory.finite_semisimple (C := C.Obj)))).1 i
 
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
+
 theorem simples_injective {i j : Fin (rank C)}
     (h : Nonempty (simples C i ≅ simples C j)) : i = j :=
   (Classical.choose_spec (Classical.choose_spec
@@ -102,8 +104,7 @@ theorem exists_simple_retract {X : C.Obj} (hX : 𝟙 X ≠ 0) :
 /-- Every simple object is isomorphic to one of the chosen representatives. -/
 theorem exists_simple_iso (X : C.Obj) [Simple X] :
     ∃ i : Fin (rank C), Nonempty (X ≅ simples C i) :=
-  (exists_simple_retract C (id_nonzero X)).imp fun i ⟨s, _, hs, _⟩ ↦
-    letI : Simple (simples C i) := simples_simple C i
+  (exists_simple_retract C (id_nonzero X)).imp fun _i ⟨s, _, hs, _⟩ ↦
     letI : IsIso s := CategoryTheory.isIso_of_hom_simple hs
     ⟨asIso s⟩
 
@@ -116,8 +117,6 @@ theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ 
 theorem finrank_simples_hom (i j : Fin (rank C)) :
     Module.finrank ℂ (simples C i ⟶ simples C j) = if i = j then 1 else 0 := by
   classical
-  let : Simple (simples C i) := simples_simple C i
-  let : Simple (simples C j) := simples_simple C j
   let : ∀ X Y : C.Obj, FiniteDimensional ℂ (X ⟶ Y) := IsFusionCategory.hom_finite
   simp only [CategoryTheory.finrank_hom_simple_simple ℂ,
     show Nonempty (simples C i ≅ simples C j) ↔ i = j from

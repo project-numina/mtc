@@ -87,7 +87,7 @@ theorem rootDual_differs_by_sign (X : C.Obj)
   let : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := IsFusionCategory.hom_finite _ _
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
-  obtain ⟨ε, _, he, _⟩ := isomorphisms_scalar (k := ℂ) l k
+  obtain ⟨ε, _, he⟩ := isomorphisms_scalar (k := ℂ) l k
   exact ⟨ε, scalar_sq_eq_one_of_same_square l k ε he
     ((congrArg (fun n ↦ (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C)).trans
       (inverseDualRoot_square C X).symm), he⟩
@@ -102,10 +102,10 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 /-- The sign comparing the root on a simple's dual to the inverse dual root. -/
 noncomputable def rootDualSign (C : BraidedFusionCategory.{v,u})
     (i : Fin (rank C)) : ℂ := by
-  letI : Simple (simples C i) := simples_simple C i
   exact Classical.choose (rootDual_differs_by_sign C (simples C i))
 
 /-- The trace matrices of dual simples are transposes up to the dual-root sign. -/
@@ -115,13 +115,11 @@ abbrev ENOTraceMatrixReciprocity (C : BraidedFusionCategory.{v,u}) : Prop :=
 
 theorem rootDualSign_sq (i : Fin (rank C)) :
     rootDualSign C i * rootDualSign C i = 1 :=
-  letI : Simple (simples C i) := simples_simple C i
   (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).1
 
 theorem rootDualSign_component (i : Fin (rank C)) :
     ((fourthDualRootNaturalIso C).app ((simples C i)ᘁ)).hom =
       rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (simples C i))).symm.hom :=
-  letI : Simple (simples C i) := simples_simple C i
   (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).2
 
 set_option backward.isDefEq.respectTransparency false in
@@ -132,7 +130,6 @@ theorem squaredNorm_eq_rootDualSign_mul
     squaredNorm C (simples C i) = rootDualSign C i * rootDimension C i *
       rootDimension C (dualIndex C i) := by
   let X := simples C i
-  let : Simple X := simples_simple C i
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap j).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)

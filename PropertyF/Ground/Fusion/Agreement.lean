@@ -229,6 +229,7 @@ namespace PropertyF.Ground
 
 variable (D : BraidedFusionCategory)
 attribute [local instance] Abelian.hasFiniteBiproducts
+local instance (i : Fin (rank D)) : Simple (simples D i) := simples_simple D i
 
 /-- Sum of all simple fusion matrices, over the real numbers. -/
 def totalFusionMatrix (D : BraidedFusionCategory) :
@@ -247,8 +248,6 @@ theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
 theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
     0 < totalFusionMatrix D j k := by
   classical
-  let : Simple (simples D j) := simples_simple D j
-  let : Simple (simples D k) := simples_simple D k
   let : Simple (ᘁ(simples D k)) := simple_leftDual (simples D k)
   obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor (simples D j)
   let : (tensorLeft (simples D j)).Faithful :=
