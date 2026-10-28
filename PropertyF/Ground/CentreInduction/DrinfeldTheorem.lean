@@ -83,8 +83,8 @@ omit [RightRigidCategory D] in
 theorem drinfeld_inv_natural {A B : D} [HasRightDual A] [HasRightDual (Aᘁ)]
     [HasRightDual B] [HasRightDual (Bᘁ)] (t : A ≅ B) :
     (d A).inv = (((t.homᘁ)ᘁ) ≫ (d B).inv) ≫ t.inv := by
-  rw [Iso.eq_comp_inv, Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
-  exact drinfeldIso_natural t.hom
+  rw [Iso.eq_comp_inv, Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv,
+    drinfeldIso_natural]
 
 /-- The inverse dual Drinfeld map after the tensorator, in terms of the
 reversed dual factors and monodromy. -/

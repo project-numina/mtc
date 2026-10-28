@@ -111,13 +111,10 @@ theorem close_rightUnit_eval [HasRightDual A] [HasRightDual T] (e : A ≅ 𝟙_ 
   change (z ≫ d) ▷ A ≫ (𝟙_ D ◁ e.hom) ≫ (ρ_ (𝟙_ D)).hom = _ at h
   change z ≫ d = ε_ T (Tᘁ)
   apply (cancel_epi ((((Tᘁ : D) ⊗ T) ◁ e.hom) ≫ (ρ_ (Tᘁ ⊗ T)).hom)).1
-  calc
-    _ = ((z ≫ d) ▷ A) ≫ ((𝟙_ D) ◁ e.hom) ≫ (ρ_ (𝟙_ D)).hom := by
-      simp only [Category.assoc, ← rightUnitor_naturality, ← whisker_exchange_assoc,
-        comp_whiskerRight]
-    _ = _ := by
-      rw [h]
-      monoidal
+  convert h using 1
+  · simp only [Category.assoc, ← rightUnitor_naturality, ← whisker_exchange_assoc,
+      comp_whiskerRight]
+  · monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in

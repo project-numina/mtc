@@ -68,7 +68,7 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
-variable {X Y A B A' B' : D} (pX : ExactPairing X A) (qX : ExactPairing X A')
+variable {X Y A B A' B' F : D} (pX : ExactPairing X A) (qX : ExactPairing X A')
   (pY : ExactPairing Y B) (qY : ExactPairing Y B')
 
 /-- The canonical comparison of duals preserves tensor products of pairings. -/
@@ -88,6 +88,12 @@ theorem rightDualIso_tensor :
         (rightDualIso pX qX).hom (rightDualIso_evaluation pX qX),
       tensorPairing_evaluation_whiskerRight (p := pX) (q := pY) (r := qY)
         (rightDualIso pY qY).hom (rightDualIso_evaluation pY qY)]
+/-- Comparing duals successively agrees with comparing them directly. -/
+theorem rightDualIso_trans
+    (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X F) :
+    (rightDualIso p q).hom ≫ (rightDualIso q r).hom = (rightDualIso p r).hom := by
+  simp [rightDualIso, ← comp_rightAdjointMate]
+
 end PropertyF.Ground.CentreInduction
 
 end
@@ -110,13 +116,6 @@ omit [RightRigidCategory D] in
 abbrev tensorForgetPairing :
     ExactPairing (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1) :=
   @ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1 (forgetPairing X) (forgetPairing Y)
-
-omit [RightRigidCategory D] [RightRigidCategory (Center D)] in
-/-- Comparing duals successively agrees with comparing them directly. -/
-theorem rightDualIso_trans {X A B F : D}
-    (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X F) :
-    (rightDualIso p q).hom ≫ (rightDualIso q r).hom = (rightDualIso p r).hom := by
-  simp [rightDualIso, ← comp_rightAdjointMate]
 
 omit [RightRigidCategory D] in
 /-- The forgotten tensor dual agrees with the tensor pairing of forgotten duals. -/
@@ -203,22 +202,15 @@ theorem transported_pivotal_tensor :
 
 /-! Unit coherence of centre dual and pivotal comparisons. -/
 
-omit [RightRigidCategory D] in
-/-- The right-dual unit comparison is preserved by centre forget. -/
-theorem forget_rightDualUnitIso :
-    (rightDualUnitIso (C := 𝒵)).hom.f =
-      (rightDualIso (forgetPairing (𝟙_ (𝒵)))
-        (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).hom :=
-  letI : HasRightDual (𝟙_ (𝒵)) := RightRigidCategory.rightDual _
-  forget_rightDualIso HasRightDual.exact exactPairingUnit exactPairingUnit
-    (Center.rightUnitor_inv_f _)
-
 /-- Forgetting preserves the unit comparison for right duals. -/
 theorem forgetDualIso_unit :
     (κ (𝟙_ (𝒵))).hom ≫ (rightDualUnitIso (C := D)).hom =
     (rightDualUnitIso (C := 𝒵)).hom.f :=
+  letI : HasRightDual (𝟙_ (𝒵)) := RightRigidCategory.rightDual _
   (rightDualIso_trans (forgetPairing (𝟙_ (𝒵))) HasRightDual.exact
-    (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).trans (forget_rightDualUnitIso (D := D)).symm
+    (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).trans
+      (forget_rightDualIso HasRightDual.exact exactPairingUnit exactPairingUnit
+        (Center.rightUnitor_inv_f _)).symm
 
 /-- Forgetting preserves the unit comparison for double right duals. -/
 theorem forgetDoubleDualIso_unit :
