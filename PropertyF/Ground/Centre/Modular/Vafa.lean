@@ -44,12 +44,11 @@ theorem derivation_vanishes_of_regular_eigenvector {ι K M : Type*} [Fintype ι]
     simp_rw [← Finset.sum_smul, hreg, mul_smul]
     dsimp [R]
     rw [Finset.smul_sum]
-  have hzero : D • b i = 0 := by
-    apply add_right_cancel (b := d i • R)
-    rw [zero_add]
-    simpa only [hderiv, smul_add, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul,
-      D, R, pow_two, Finset.smul_sum, mul_comm] using hsum
-  exact (smul_eq_zero.mp hzero).resolve_left hD
+  apply (smul_eq_zero.mp ?_).resolve_left hD
+  apply add_right_cancel (b := d i • R)
+  rw [zero_add]
+  simpa only [hderiv, smul_add, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul,
+    D, R, pow_two, Finset.smul_sum, mul_comm] using hsum
 
 /-- The FP regular-element cancellation at the heart of the determinant argument. -/
 theorem regular_fusion_derivation_vanishes
@@ -63,11 +62,10 @@ theorem regular_fusion_derivation_vanishes
       (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
     simp_rw [Modular.fusionCoeff_dual_adjoint C i]
     simpa only [mul_comm, fpSimple_dual] using (fpSimple_mul C (dualIndex C i) k).symm
-  have hD : (∑ j, fpSimple C j ^ 2) ≠ 0 :=
-    ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
   intro i z
   exact derivation_vanishes_of_regular_eigenvector
-    (fun i j k => (fusionCoeff C i j k : ℝ)) (fpSimple C) hreg hD (fun i => B i z)
+    (fun i j k => (fusionCoeff C i j k : ℝ)) (fpSimple C) hreg
+    (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))) (fun i => B i z)
     (fun i j => hhex i j z) i
 
 end PropertyF.Ground.CentreModular
@@ -249,12 +247,10 @@ theorem finite_order_of_fp_twist_balance
     rw [hbalance]
     simp only [smul_add, smul_smul]
     rw [mul_comm (fpSimple C j) (fpSimple C i)]
-  have hzero := regular_fusion_derivation_vanishes C vafaUnitSpace B hhex
   intro i
-  have hi := hzero i (unitIndex C)
-  change fpSimple C i • vafaUnitClass (t i) = 0 at hi
-  exact (vafaUnitClass_eq_zero_iff _).mp
-    ((smul_eq_zero.mp hi).resolve_left (ne_of_gt (fpSimple_pos C i)))
+  apply (vafaUnitClass_eq_zero_iff _).mp
+  apply (smul_eq_zero.mp ?_).resolve_left (ne_of_gt (fpSimple_pos C i))
+  exact regular_fusion_derivation_vanishes C vafaUnitSpace B hhex i (unitIndex C)
 
 end PropertyF.Ground.CentreModular
 end
@@ -559,9 +555,9 @@ abbrev HasTensorDeterminantRule (Y : C.Obj) : Prop :=
 /-- The tensor determinant equation is invariant under isomorphism in its second object. -/
 theorem tensorDeterminantRule_iff_of_iso {Y Z : C.Obj} (e : Y ≅ Z) :
     HasTensorDeterminantRule C η X Y ↔ HasTensorDeterminantRule C η X Z := by
-  have he : (𝟭 C.Obj).mapIso e = e := Iso.ext rfl
   have hη : η.app Y = e ≪≫ η.app Z ≪≫ e.symm := by
-    simpa only [he] using functor_natural_app_conjugate (𝟭 C.Obj) η e
+    simpa only [show (𝟭 C.Obj).mapIso e = e from Iso.ext rfl] using
+      functor_natural_app_conjugate (𝟭 C.Obj) η e
   have hl := fpDeterminant_conjugate C (Iso.refl X ⊗ᵢ e).symm
     (Iso.refl X ⊗ᵢ η.app Z)
   have hr := fpDeterminant_conjugate C e.symm (η.app Z)
@@ -583,15 +579,16 @@ theorem fpDeterminant_tensor_natural (Y : C.Obj) : HasTensorDeterminantRule C η
   | @cons Y S K hs hk he ih =>
     obtain ⟨e⟩ := he
     let : Simple S := hs
-    have hsum := fpDeterminant_tensor_biprod C X (η.app S) (η.app K)
-      (fpDeterminant_tensor_of_simple C X S (η.app S)) ih
     let : PreservesBinaryBiproducts (𝟭 C.Obj) := preservesBinaryBiproducts_of_preservesBiproducts _
     have hid : (𝟭 C.Obj).mapBiprod S K = Iso.refl (S ⊞ K) :=
       Iso.ext (by apply biprod.hom_ext <;> simp)
     have hsum' : η.app (S ⊞ K) = biprod.mapIso (η.app S) (η.app K) := by
       simpa [hid] using functor_natural_app_biprod (𝟭 C.Obj) η S K
-    rw [← hsum'] at hsum
-    exact (tensorDeterminantRule_iff_of_iso C η X e).mpr hsum
+    apply (tensorDeterminantRule_iff_of_iso C η X e).mpr
+    change HasTensorDeterminant C X (η.app (S ⊞ K))
+    rw [hsum']
+    exact fpDeterminant_tensor_biprod C X (η.app S) (η.app K)
+      (fpDeterminant_tensor_of_simple C X S (η.app S)) ih
 
 end PropertyF.Ground.CentreModular
 end
@@ -822,14 +819,12 @@ theorem fpDeterminant_simple_monodromy_eq_zero
     monodromyDet C (simples C z) (simples C i) = 0 := by
   let B : Fin (rank C) → Fin (rank C) → vafaUnitSpace := fun i z =>
     monodromyDet C (simples C z) (simples C i)
-  have hhex : ∀ i j z, (∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
-      fpSimple C j • B i z + fpSimple C i • B j z := by
-    intro i j z
-    have h := fpDeterminant_monodromy_hexagon C hbalance z i j
-    rw [fpDeterminant_monodromy_decomposition] at h
-    change (∑ k, (fusionCoeff C i j k : ℝ) • B k z) = _ at h
-    simpa [B, add_comm] using h
-  exact regular_fusion_derivation_vanishes C vafaUnitSpace B hhex i z
+  refine regular_fusion_derivation_vanishes C vafaUnitSpace B ?_ i z
+  intro i j z
+  have h := fpDeterminant_monodromy_hexagon C hbalance z i j
+  rw [fpDeterminant_monodromy_decomposition] at h
+  change (∑ k, (fusionCoeff C i j k : ℝ) • B k z) = _ at h
+  simpa [B, add_comm] using h
 
 /-- Under an actual natural twist and its simple balancing equation,
 the simple twist scalars have finite order. -/
@@ -901,7 +896,7 @@ monodromy to have finite order; no lantern relation is required. -/
 theorem mixed_monodromy_finite_of_pivotal_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p)
     (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) :=
-  CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist C
+  CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist
     (Dimensions.pivotalBraidedTwistNaturalIso C p)
     (pivotal_twist_finite_of_balancing C p hbalance) hbalance X Y
 
