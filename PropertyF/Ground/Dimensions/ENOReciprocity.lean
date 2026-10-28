@@ -237,8 +237,6 @@ theorem normalized_defects_trivial
       (fun i => (rootDimension C i / (fpSimple C i : ℂ))⁻¹) := by
   classical
   let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
-  have hq : ∀ i, ‖q i‖ = 1 :=
-    fun i ↦ norm_div_ofReal_eq_one (fpSimple_pos C i) (hsat i)
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hphase (i j k) : enoTraceMatrix C i j k * (q k / (q i * q j)) =
       (fusionCoeff C i j k : ℂ) := by
@@ -249,7 +247,9 @@ theorem normalized_defects_trivial
   change ScaledMultiplicityDefectsTrivial C c
   intro i j k
   let r := q k / (q i * q j)
-  have hrnorm : ‖r‖ = 1 := by simp [r, hq]
+  have hrnorm : ‖r‖ = 1 := by
+    simp [r, q, Complex.norm_real, abs_of_pos (fpSimple_pos C _),
+      hsat, ne_of_gt (fpSimple_pos C _)]
   let : FiniteDimensional ℂ
     (simples C k ⟶ simples C i ⊗ simples C j) :=
     IsFusionCategory.hom_finite _ _
