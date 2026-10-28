@@ -69,6 +69,10 @@ theorem center_witness_of_modular_and_rigidity
   ⟨hσf, positive_ratio_of_galois_square (τ := σ.symm) hδ hb (lt_of_lt_of_le zero_lt_one hf) hτ hG,
     hf, hRigid (galois_unit_self_entry (σ := σ) hS hσf)⟩
 
+/-- The numerical witness supplied by a Galois-unit column. -/
+abbrev HasGaloisDimensionWitness (σ : ℂ ≃+* ℂ) (δ b : ℝ) : Prop :=
+  ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d|
+
 /-- If real conjugates are bounded above by δ and the centre/rigidity witness
 exists for each strictly smaller conjugate, every conjugate equals δ. -/
 theorem galois_fixed_of_smaller_conjugate_witness (δ : ℝ) (hδ : 0 < δ)
@@ -77,7 +81,7 @@ theorem galois_fixed_of_smaller_conjugate_witness (δ : ℝ) (hδ : 0 < δ)
     (hWitness : ∀ (σ : ℂ ≃+* ℂ) (a b : ℝ),
       0 < a → a < δ → σ (δ : ℂ) = (a : ℂ) →
       σ.symm (δ : ℂ) = (b : ℂ) →
-      ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d|) :
+      HasGaloisDimensionWitness σ δ b) :
     ∀ σ : ℂ ≃+* ℂ, σ (δ : ℂ) = (δ : ℂ) := by
   intro σ
   obtain ⟨a, ha, hale, haeq⟩ := hConjugates σ
