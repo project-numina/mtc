@@ -35,15 +35,20 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D] [RightRigidCategory D]
 
+omit [RightRigidCategory D] in
 /-- Right duality reverses the tensor factors of mixed monodromy. -/
-theorem rightDualTensorIso_monodromy {X Y : D} :
+theorem rightDualTensorIso_monodromy {X Y : D}
+    [HasRightDual X] [HasRightDual Y] [HasRightDual (X ⊗ Y)] :
     (Modular.doubleBraiding X Y)ᘁ ≫ (rightDualTensorIso X Y).hom =
-      (rightDualTensorIso X Y).hom ≫ Modular.doubleBraiding (Yᘁ) (Xᘁ) := by
-  simp [Modular.doubleBraiding, comp_rightAdjointMate, Category.assoc,
+      (rightDualTensorIso X Y).hom ≫ Modular.doubleBraiding (Yᘁ) (Xᘁ) :=
+  let : HasRightDual (Y ⊗ X) := hasRightDualTensor
+  by simp [Modular.doubleBraiding, comp_rightAdjointMate, Category.assoc,
     rightDualTensorIso_braiding]
 
+omit [RightRigidCategory D] in
 /-- Inverse dual tensor comparison also transports monodromy. -/
-theorem rightDualTensorIso_inv_monodromy {X Y : D} :
+theorem rightDualTensorIso_inv_monodromy {X Y : D}
+    [HasRightDual X] [HasRightDual Y] [HasRightDual (X ⊗ Y)] :
     (rightDualTensorIso X Y).inv ≫ (Modular.doubleBraiding X Y)ᘁ =
       Modular.doubleBraiding (Yᘁ) (Xᘁ) ≫ (rightDualTensorIso X Y).inv :=
   (CommSq.vert_inv (g := rightDualTensorIso X Y)

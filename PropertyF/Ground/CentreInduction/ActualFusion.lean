@@ -143,8 +143,8 @@ def actualAdjunction : Center.forget C.Obj ⊣ induction C where
       apply Center.ext
       change f.f ≫ unitCandidate C Y = unitCandidate C X ≫ (underlyingFunctor C).map f.f
       refine biproduct.hom_ext _ _ fun i => ?_
-      simpa only [underlyingFunctor, unitCandidate, Category.assoc, biproduct.lift_π,
-        biproduct.lift_π_assoc, biproduct.map_π] using unitComponent_natural C f i }
+      simpa only [underlyingFunctor, unitCandidate, unitComponent, Category.assoc, biproduct.lift_π,
+        biproduct.lift_π_assoc, biproduct.map_π] using unitComponentAt_natural (S := simples C i) f }
   counit := underlyingCounit C
   left_triangle_components Z := unitCandidate_counit C Z
   right_triangle_components X := by
