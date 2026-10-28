@@ -21,9 +21,9 @@ section UnitaryRepresentation
 variable {G A : Type*} [Group G] [Monoid A] [StarMul A]
 
 /-- A unitary representation sends group inversion to the adjoint. -/
-theorem unitary_representation_star_inv (ρ : G →* A)
-    (hρ : ∀ g, ρ g ∈ unitary A) (g : G) : star (ρ g) = ρ g⁻¹ :=
-  (ρ.toHomUnits g).eq_inv_of_mul_eq_one_right (Unitary.star_mul_self_of_mem (hρ g))
+theorem unitary_representation_star_inv (ρ : G →* A) {g : G}
+    (hρ : ρ g ∈ unitary A) : star (ρ g) = ρ g⁻¹ :=
+  (ρ.toHomUnits g).eq_inv_of_mul_eq_one_right (Unitary.star_mul_self_of_mem hρ)
 
 end UnitaryRepresentation
 
@@ -50,7 +50,8 @@ theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
     (φ : A →ₐ[R] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
     φ (star x) = star (φ x) :=
   map_star_of_mem_span φ (Set.range ρ) (fun _ h => h.elim fun g hg => hg ▸ by
-    rw [unitary_representation_star_inv ρ hρ, hφ, hφ, unitary_representation_star_inv σ hσ])
+    rw [unitary_representation_star_inv ρ (hρ g), hφ, hφ,
+      unitary_representation_star_inv σ (hσ g)])
     (hspan.symm ▸ Submodule.mem_top)
 
 end PropertyF.Ground.Calculus
@@ -68,10 +69,10 @@ variable (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ} (e : GroupBlockPresentati
 
 /-- The group image spans any algebra-equivalent block presentation. -/
 theorem presented_group_span :
-    Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ := by
-  change Submodule.span ℂ (Set.range (fun g => e.toLinearMap (groupInImage ρ g))) = ⊤
-  simpa only [Set.range_comp', ← Submodule.map_span, groupInImage_span, Submodule.map_top] using
-    (LinearMap.range_eq_top.mpr e.surjective : e.toLinearMap.range = ⊤)
+    Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ :=
+  show Submodule.span ℂ (Set.range (fun g => e.toLinearMap (groupInImage ρ g))) = ⊤ from by
+    simpa only [Set.range_comp', ← Submodule.map_span, groupInImage_span, Submodule.map_top]
+      using (LinearMap.range_eq_top.mpr e.surjective : e.toLinearMap.range = ⊤)
 
 end PresentedGroup
 
@@ -183,8 +184,7 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
       ((f.toMonoidHom.comp (groupInImage (braidEndRepresentation X (n + k)))).comp
         (addLeftStrands X n k))
       (presented_group_span (braidEndRepresentation X n) e)
-      (fun g => Pi.mem_unitary_iff.mpr (he g))
-      (fun g => Pi.mem_unitary_iff.mpr (hf (addLeftStrands X n k g)))
+      he (fun g => hf (addLeftStrands X n k g))
       (f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom))
     intro g
     change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
@@ -282,7 +282,7 @@ private theorem addRightAut_first_generator (n : ℕ) : addRightAut X n (braidGe
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Appending a strand preserves each adjacent braid generator. -/
-theorem addRightAut_generator (n : ℕ) (i : Fin (n+1)) :
+theorem addRightAut_generator {n : ℕ} (i : Fin (n+1)) :
     addRightAut X n (braidGenerator X n i) = braidGenerator X (n+1) i.castSucc := by
   induction n with
   | zero => exact (Fin.eq_zero i).symm ▸ addRightAut_first_generator X 0
@@ -312,7 +312,7 @@ def addRightStrand (n : ℕ) : braidImage X n →* braidImage X (n + 1) := by
     apply (Subgroup.closure_le _).mpr
     rintro _ ⟨i, rfl⟩
     change addRightAut X n (braidGenerator X n i) ∈ braidImage X (n + 1)
-    exact Subgroup.subset_closure ⟨i.castSucc, (addRightAut_generator X n i).symm⟩
+    exact Subgroup.subset_closure ⟨i.castSucc, (addRightAut_generator X i).symm⟩
   exact (f.comp (braidImage X n).subtype).codRestrict _ (fun a => hf a a.property)
 
 end
@@ -366,8 +366,7 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
       ((f.toMonoidHom.comp (groupInImage (braidEndRepresentation X (n + k)))).comp
         (addRightStrands X n k))
       (presented_group_span (braidEndRepresentation X n) e)
-      (fun g => Pi.mem_unitary_iff.mpr (he g))
-      (fun g => Pi.mem_unitary_iff.mpr (hf (addRightStrands X n k g)))
+      he (fun g => hf (addRightStrands X n k g))
       (f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom))
     intro g
     change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _

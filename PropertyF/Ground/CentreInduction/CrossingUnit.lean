@@ -12,25 +12,6 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory 
 variable {T U S K R : D} (X : D)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The closed fusion map is characterized by its evaluation pairing. -/
-theorem closeFusionMap_evaluation (f : T ⊗ S ⟶ R) :
-    (closeFusionMap T S f ▷ S) ≫ ε_ S (Sᘁ) =
-      𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
-  have he := Dimensions.rightDualIso_evaluation
-      (@HasRightDual.exact D _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
-      (ExactPairing.tensor (X₁ := T) (X₂ := S) (Y₁ := Tᘁ) (Y₂ := Sᘁ))
-  change (rightDualTensorIso T S).hom ▷ (T ⊗ S) ≫
-    (𝟙 _ ⊗≫ (Sᘁ) ◁ (ε_ T (Tᘁ) ▷ S) ⊗≫ ε_ S (Sᘁ)) =
-      ε_ (T ⊗ S) ((T ⊗ S)ᘁ) at he
-  calc
-    _ = 𝟙 _ ⊗≫ (fᘁ ▷ (T ⊗ S)) ⊗≫ ε_ (T ⊗ S) ((T ⊗ S)ᘁ) := by
-      rw [← he]
-      dsimp [closeFusionMap]
-      monoidal
-    _ = 𝟙 _ ⊗≫ ((fᘁ ▷ (T ⊗ S)) ≫ ε_ (T ⊗ S) ((T ⊗ S)ᘁ)) := by monoidal
-    _ = _ := by rw [rightAdjointMate_comp_evaluation]; monoidal
-
-set_option backward.isDefEq.respectTransparency false in
 /-- Closing the tensor-unit unitor gives the unitor of the dual object. -/
 theorem closeFusionMap_unit (S : D) :
     closeFusionMap (𝟙_ D) S (λ_ S).hom = (ρ_ (Sᘁ)).hom := by

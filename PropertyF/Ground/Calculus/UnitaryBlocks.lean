@@ -220,11 +220,10 @@ abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ}
 
 /-- The represented elements span their image algebra. -/
 theorem groupInImage_span :
-    Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ := by
-  apply Submodule.map_injective_of_injective (groupImageAlgebra ρ).toSubmodule.subtype_injective
-  rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp']
-  change Submodule.span ℂ (Set.range (fun g => (groupInImage ρ g : A))) = _
-  simpa only [groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
+    Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ :=
+  (Submodule.map_injective_of_injective (groupImageAlgebra ρ).toSubmodule.subtype_injective) <| by
+    simpa only [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp',
+      Submodule.subtype_apply, groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
 
 end PropertyF.Ground.Calculus
 
@@ -246,7 +245,7 @@ theorem groupImageAlgebra_unitary_blocks :
     (Pi.evalMonoidHom _ i).comp (e.toMonoidHom.comp (groupInImage ρ))
   choose P hP using fun i : Fin n => exists_unitarizing_basis (blockRep i)
   let e' := e.trans (AlgEquiv.piCongrRight (fun i => unitConjugation (P i)))
-  refine ⟨n, d, e', hd, fun g i => ?_⟩
+  refine ⟨n, d, e', hd, fun g => Pi.mem_unitary_iff.mpr fun i => ?_⟩
   simpa [e', unitConjugation, blockRep] using hP i g
 
 universe v u

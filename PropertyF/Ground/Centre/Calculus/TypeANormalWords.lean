@@ -41,13 +41,11 @@ theorem commute_moveWord (i j : ℕ) (hji : j + 1 ≤ i) (him : i < m) :
 include hb hc in
 /-- Moving a crossing past the strand-moving word shifts its index by one.
 This is the main rewriting step for the type-A coset normal form. -/
-theorem moveWord_exchange :
-    ∀ j i, i + 1 < j → j ≤ m → s i * moveWord s j = moveWord s j * s (i + 1) := by
-  intro j
-  induction j with
-  | zero => intro i hi; omega
+theorem moveWord_exchange (j i : ℕ) (hij : i + 1 < j) (hjm : j ≤ m) :
+    s i * moveWord s j = moveWord s j * s (i + 1) := by
+  induction j generalizing i with
+  | zero => omega
   | succ j ih =>
-    intro i hij hjm
     by_cases h : i + 1 = j
     · subst j
       simp only [moveWord]
@@ -123,8 +121,8 @@ theorem exists_moveWord_coset {g : G}
     exact HasMoveWordCoset.mul_generator hrel i.isLt ih
   | inv_mul_cancel x hx y hy ih =>
     obtain ⟨i, rfl⟩ := hx
-    rw [inv_eq_of_mul_eq_one_left (hrel.square i.val i.isLt)]
-    exact HasMoveWordCoset.mul_generator hrel i.isLt ih
+    simpa only [inv_eq_of_mul_eq_one_left (hrel.square i.val i.isLt)] using
+      HasMoveWordCoset.mul_generator hrel i.isLt ih
 
 end PropertyF.Ground.CentreCalculus
 
@@ -153,8 +151,7 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
     intro G inst s _ hgen
     have htop : (⊥ : Subgroup G) = ⊤ := by simpa using hgen
     let : Subsingleton G := Subgroup.subsingleton_iff.mp (subsingleton_iff_bot_eq_top.mp htop)
-    have : Finite G := Finite.of_subsingleton
-    exact ⟨inferInstance, by simp [Nat.card_unique]⟩
+    exact ⟨Finite.of_subsingleton, by simp [Nat.card_unique]⟩
   | succ m ih =>
     intro G inst s hrel hgen
     let H := Subgroup.closure (Set.range (fun t : Fin m => s (t.val + 1)))
@@ -167,9 +164,9 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
         ← Set.range_comp, Function.comp_def, Subgroup.subtype_apply, ht _ (Fin.isLt _), H]
     obtain ⟨hfin, hcard⟩ := ih t (hrel.shift ht) htgen
     let : Finite H := hfin
-    have hcover (g : G) : ∃ j : Fin (m + 2), ∃ h : H, g = moveWord s j.val * h := by
-      obtain ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hrel (hgen.symm ▸ Subgroup.mem_top g)
-      exact ⟨⟨j, by omega⟩, ⟨h, hh⟩, he⟩
+    have hcover (g : G) : ∃ j : Fin (m + 2), ∃ h : H, g = moveWord s j.val * h :=
+      let ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hrel (hgen.symm ▸ Subgroup.mem_top g)
+      ⟨⟨j, by omega⟩, ⟨h, hh⟩, he⟩
     obtain ⟨hG, hbound⟩ := finite_card_le_of_coset_cover H (fun j : Fin (m + 2) ↦ moveWord s j.val) hcover
     exact ⟨hG, by simpa only [Nat.card_fin, Nat.factorial_succ] using
       hbound.trans (Nat.mul_le_mul_left (Nat.card (Fin (m + 2))) hcard)⟩
