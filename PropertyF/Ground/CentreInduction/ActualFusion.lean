@@ -80,12 +80,10 @@ def unitBlockLinear [HasRightDual S] :
     𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _
   map_add' := by
     intro x y
-    simp [monoidalComp, MonoidalPreadditive.add_whiskerRight,
-      MonoidalPreadditive.whiskerLeft_add, Preadditive.comp_add, Preadditive.add_comp]
+    simp [monoidalComp]
   map_smul' := by
     intro c x
-    simp [monoidalComp, MonoidalLinear.smul_whiskerRight,
-      MonoidalLinear.whiskerLeft_smul, Linear.comp_smul, Linear.smul_comp]
+    simp [monoidalComp]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The identity fusion endomorphism yields the centre intertwining diagram. -/
@@ -168,7 +166,7 @@ def homLinearEquivOfAdjunction {k : Type*} [CommSemiring k] {A : Type u} {B : Ty
   refine { (adj.homAddEquiv X Y).symm with map_smul' := ?_ }
   intro r f
   change (adj.homEquiv X Y).symm (r • f) = r • (adj.homEquiv X Y).symm f
-  simp [Adjunction.homEquiv_counit, Functor.map_smul, Linear.smul_comp]
+  simp [Adjunction.homEquiv_counit]
 
 end PropertyF.Ground.CentreInduction
 

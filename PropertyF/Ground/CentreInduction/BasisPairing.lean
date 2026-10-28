@@ -51,24 +51,18 @@ def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u}
     toFun := fun f => mixedCrossing X T U g f
     map_add' := by
       intro f f'
-      simp [mixedCrossing, closeFusionMap, tensorRightHomEquiv, Category.assoc,
-        tensorHom_def, MonoidalPreadditive.whiskerLeft_add, MonoidalPreadditive.add_whiskerRight,
-       Preadditive.comp_add, Preadditive.add_comp]
+      simp [mixedCrossing, closeFusionMap, tensorRightHomEquiv, tensorHom_def]
     map_smul' := by
       intro r f
-      simp [mixedCrossing, closeFusionMap, tensorRightHomEquiv, Category.assoc,
-        tensorHom_def, MonoidalLinear.whiskerLeft_smul, MonoidalLinear.smul_whiskerRight,
-       Linear.comp_smul, Linear.smul_comp] }
+      simp [mixedCrossing, closeFusionMap, tensorRightHomEquiv, tensorHom_def] }
   map_add' := by
     intro g g'
     ext f
-    simp [mixedCrossing, Category.assoc, tensorHom_def, MonoidalPreadditive.add_whiskerRight,
-      Preadditive.comp_add, Preadditive.add_comp]
+    simp [mixedCrossing, tensorHom_def]
   map_smul' := by
     intro r g
     ext f
-    simp [mixedCrossing, Category.assoc, tensorHom_def, MonoidalLinear.smul_whiskerRight,
-      Linear.comp_smul, Linear.smul_comp]
+    simp [mixedCrossing, tensorHom_def]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A finite splitting can be used to refine a simple-basis contraction. -/
@@ -82,7 +76,7 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
   have step (j : J) : (∑ a, F (simpleInclusion C (V j) i a ≫ q j)
         (r j ≫ simpleProjection C (V j) i a)) =
       ∑ b, F (simpleInclusion C W i b) (r j ≫ q j ≫ simpleProjection C W i b) := by
-    simpa [Category.assoc] using simpleBasis_contraction_natural (q j)
+    simpa using simpleBasis_contraction_natural (q j)
       ((LinearMap.lcomp ℂ E (Linear.leftComp ℂ (Sᶜ i) (r j))).comp F)
   simp_rw [step]
   rw [Finset.sum_comm]
@@ -143,8 +137,7 @@ theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     (Rᘁ ◁ h) ≫ closeFusionMap U S f =
       closeFusionMap T S ((h ▷ S) ≫ f) :=
   Dimensions.evaluation_ext (X := S) <| by
-    simp [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp,
-      monoidalComp]
+    simp [comp_whiskerRight, closeFusionMap_evaluation, whiskerLeft_comp, monoidalComp]
 
 variable (X : D) (h : T ⟶ U)
 

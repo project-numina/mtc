@@ -44,7 +44,7 @@ theorem rightDualTensorIso_monodromy :
     (M X Y)ᘁ ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X Y).hom ≫ M (Yᘁ) (Xᘁ) :=
   let : HasRightDual (Y ⊗ X) := hasRightDualTensor
-  by simp [Modular.doubleBraiding, comp_rightAdjointMate, Category.assoc,
+  by simp [Modular.doubleBraiding, comp_rightAdjointMate,
     rightDualTensorIso_braiding]
 
 /-- Inverse dual tensor comparison also transports monodromy. -/

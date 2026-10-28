@@ -27,8 +27,7 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
   (cancel_mono ((Center.forget D).map (doubleDualTensorIso B Z).hom)).1 <| by
     have hb := congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
     simp only [Center.comp_f] at hb
-    simpa [← transported_pivotal_tensor, Category.assoc, hb] using
-      transported_pivotal_natural p (β_ Z B).hom
+    simpa [← transported_pivotal_tensor, hb] using transported_pivotal_natural p (β_ Z B).hom
 
 omit [RightRigidCategory D] [RightRigidCategory (Center D)] in
 /-- A braiding equation against a positive centre object, transported along a

@@ -39,7 +39,7 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 /-- The double-dual comparison is natural in centre morphisms. -/
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (κ₂ Y).hom = (κ₂ X).hom ≫ ((f.fᘁ)ᘁ) := by
-  simpa [forgetDoubleDualIso, rightDualIsoMap, Category.assoc] using
+  simpa [forgetDoubleDualIso, rightDualIsoMap] using
     (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by simpa only [comp_rightAdjointMate] using
       (congrArg rightAdjointMate (CommSq.vert_inv ⟨forgetDualIso_natural f⟩).w).symm⟩).w
 
@@ -57,8 +57,7 @@ instance transportedPivotalHom_isIso (Z : 𝒵) : IsIso (transportedPivotalHom p
 theorem transported_pivotal_natural (f : X ⟶ Y) :
     f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f :=
   (cancel_mono (κ₂ Y).hom).1 <| by
-    simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_natural] using
-      p.naturality f.f
+    simpa [transportedPivotalHom, forgetDoubleDualIso_natural] using p.naturality f.f
 
 end PropertyF.Ground.CentreInduction
 
@@ -145,7 +144,7 @@ theorem forgetDoubleDualIso_tensor :
     (μ₂ X Y).hom.f ≫ (κ₂ (X ⊗ Y)).hom =
       ((κ₂ X).hom ⊗ₘ (κ₂ Y).hom) ≫
         (μ₂ X.1 Y.1).hom := by
-  simp [doubleDualTensorIso, rightDualIsoMap, forgetDoubleDualIso, Category.assoc,
+  simp [doubleDualTensorIso, rightDualIsoMap, forgetDoubleDualIso,
     reassoc_of% forgetDualIso_natural, reassoc_of% forgetDualIso_tensor_inv (Yᘁ) (Xᘁ),
     forgetDualIso_tensor_mate_inv X Y,
     ← reassoc_of% rightDualTensorIso_inv_natural (κ Y).inv (κ X).inv,
@@ -157,8 +156,7 @@ theorem transported_pivotal_tensor :
     (transportedPivotalHom p X ⊗ₘ transportedPivotalHom p Y) ≫
       (μ₂ X Y).hom.f = transportedPivotalHom p (X ⊗ Y) :=
   (Iso.eq_comp_inv (κ₂ (X ⊗ Y))).2 <| by
-    simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_tensor] using
-      (p.tensor X.1 Y.1).symm
+    simpa [transportedPivotalHom, forgetDoubleDualIso_tensor] using (p.tensor X.1 Y.1).symm
 
 /-! Unit coherence of centre dual and pivotal comparisons. -/
 
