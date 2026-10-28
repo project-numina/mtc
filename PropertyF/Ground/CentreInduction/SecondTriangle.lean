@@ -53,9 +53,9 @@ variable {C} in
 theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   (biproduct.ι V i ▷ S j) ≫ b (S j) ≫
     (S j ◁ (underlyingCounit C).app X) = 0 :=
-  letI : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
+  by
+    rw [crossing_counit_matrix]
     simp [crossingIndex, counit_column_finrank, hne]
-  by simp only [crossing_counit_matrix, Fintype.sum_empty, zero_comp]
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -104,7 +104,7 @@ theorem close_rightUnit_eval [HasRightDual A] [HasRightDual T] (e : A ≅ 𝟙_ 
   change z ≫ d = ε_ T (Tᘁ)
   apply (cancel_epi ((((Tᘁ : D) ⊗ T) ◁ e.hom) ≫ (ρ_ (Tᘁ ⊗ T)).hom)).1
   convert h using 1
-  · simp only [Category.assoc, ← rightUnitor_naturality, ← whisker_exchange_assoc,
+  · rw [Category.assoc, ← rightUnitor_naturality, ← whisker_exchange_assoc,
       comp_whiskerRight]
   · monoidal
 
