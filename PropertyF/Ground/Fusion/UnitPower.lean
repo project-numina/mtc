@@ -22,13 +22,10 @@ incoming edges. -/
 theorem balanced_flow_no_entry {s : Finset ι} (hclosed : ∀ i ∈ s, ∀ j ∉ s, b i j = 0)
     {i j : ι} (hi : i ∉ s) (hj : j ∈ s) : b i j = 0 := by
   classical
-  have hout : ∑ x ∈ s, ∑ y, b x y = ∑ x ∈ s, ∑ y ∈ s, b x y := by
-    exact Finset.sum_congr rfl fun x hx ↦
-      (Finset.sum_subset (Finset.subset_univ s) (fun y _ hy ↦ hclosed x hx y hy)).symm
-  have hbal : ∑ x ∈ s, ∑ y, b x y = ∑ x ∈ s, ∑ y, b y x :=
-    Finset.sum_congr rfl fun x _ ↦ hbalance x
   have hin : ∑ y ∈ s, ∑ x ∈ s, b x y = ∑ y ∈ s, ∑ x, b x y :=
-    Finset.sum_comm.trans (hout.symm.trans hbal)
+    Finset.sum_comm.trans ((Finset.sum_congr rfl fun x hx ↦
+      Finset.sum_subset (Finset.subset_univ s) (fun y _ hy ↦ hclosed x hx y hy)).trans
+        (Finset.sum_congr rfl fun x _ ↦ hbalance x))
   have hrow (y : ι) (hy : y ∈ s) : ∑ x ∈ s, b x y = ∑ x, b x y :=
     (Finset.sum_eq_sum_iff_of_le (fun z _ ↦
       Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ s) (fun x _ _ ↦ hb x z))).mp hin y hy
@@ -48,15 +45,15 @@ theorem balanced_flow_cycle {o : ι} (hout : ∃ j, 0 < b o j) :
   let s : Finset ι := Finset.univ.filter (fun i => ¬ Relation.ReflTransGen r i o)
   have hc : ∀ i ∈ s, ∀ j ∉ s, b i j = 0 := by
     intro i hi j hj
-    have hni : ¬ Relation.ReflTransGen r i o := (Finset.mem_filter.mp hi).2
     have hrj : Relation.ReflTransGen r j o := by
       simpa [s] using hj
-    exact le_antisymm (not_lt.mp fun h ↦ hni (Relation.ReflTransGen.head h hrj)) (hb i j)
+    exact le_antisymm (not_lt.mp fun h ↦ (Finset.mem_filter.mp hi).2
+      (Relation.ReflTransGen.head h hrj)) (hb i j)
   obtain ⟨j, hj⟩ := hout
-  have ho : o ∉ s := by simp [s, Relation.ReflTransGen.refl]
-  have hjs : j ∉ s := fun hjs ↦ (ne_of_gt hj) (balanced_flow_no_entry hb hbalance hc ho hjs)
   refine ⟨j, hj, ?_⟩
-  simpa [s] using hjs
+  simpa [s] using (show j ∉ s from fun hjs ↦
+    (ne_of_gt hj) (balanced_flow_no_entry hb hbalance hc
+      (by simp [s, Relation.ReflTransGen.refl]) hjs))
 
 end PropertyF.Ground
 
