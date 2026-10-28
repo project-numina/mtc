@@ -107,7 +107,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem simpleInclusion_independent
     (X : C.Obj) (k : Fin (rank C)) :
     LinearIndependent ℂ (simpleInclusion C X k) := by
-  classical
   refine Fintype.linearIndependent_iff.mpr fun g hg t ↦
     smul_left_injective ℂ (id_nonzero (simples C k)) ?_
   simpa [simpleInclusion, Category.assoc, Preadditive.sum_comp, Linear.smul_comp,
@@ -137,7 +136,6 @@ theorem simpleInclusionBasis_projection
     (t : Fin (simpleMultiplicity C k X)) :
     ((simpleInclusionBasis C X k).repr g t) • 𝟙 (simples C k) =
       g ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩ := by
-  classical
   simpa [Preadditive.sum_comp, Linear.smul_comp, simpleInclusionBasis_apply, simpleInclusion,
     Category.assoc, biproduct.ι_π] using
     congrArg (fun f : simples C k ⟶ X ↦
@@ -155,7 +153,6 @@ theorem simpleHom_postcomp_trace
       (simpleDecomposition C X).inv ≫ g ≫ (simpleDecomposition C X).hom ≫
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (simples C k)) :
     LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) = ∑ t, c t := by
-  classical
   rw [LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)]
   unfold Matrix.trace
   refine Finset.sum_congr rfl fun t _ ↦ ?_
@@ -173,7 +170,6 @@ theorem rootTrace_eq_simpleHom_trace_sum
     {X : C.Obj} (g : X ⟶ X) :
     unitScalar C (rootTrace C g) =
       ∑ k, LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) * rootDimension C k := by
-  classical
   let V := simplePiecesObject C X
   let e := simpleDecomposition C X
   let f : (⨁ V) ⟶ (⨁ V) := e.inv ≫ g ≫ e.hom

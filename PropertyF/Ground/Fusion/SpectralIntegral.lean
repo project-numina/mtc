@@ -61,7 +61,6 @@ variable {D} in
 /-- Every target simple FP dimension is integral over ℤ. -/
 theorem fpSimple_isIntegral (i : Fin (rank D)) :
     IsIntegral ℤ (fpSimple D i) := by
-  classical
   let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   let A : Matrix (Fin (rank D)) (Fin (rank D)) ℤ := fun k j =>
     fusionCoeff D i j k

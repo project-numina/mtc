@@ -28,7 +28,6 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 /-- A nonzero morphism into a simple object splits. -/
 theorem split_to_simple {S X : C} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
     ∃ s : S ⟶ X, s ≫ f = 𝟙 S := by
-  classical
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → C := fun p => T p.1

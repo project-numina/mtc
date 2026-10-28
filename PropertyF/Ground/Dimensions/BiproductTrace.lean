@@ -36,7 +36,6 @@ theorem cyclicTrace_decomposition
     {X : C} {Y : ι → C} (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
     trace X f = ∑ j, trace (Y j) (i j ≫ f ≫ q j) := by
-  classical
   conv_lhs => rw [← Category.id_comp f, ← h, Preadditive.sum_comp, map_sum]
   exact Finset.sum_congr rfl fun j _ ↦ by
     simpa only [Category.assoc] using hcyclic (q j) (i j ≫ f)

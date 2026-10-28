@@ -132,7 +132,6 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
     (hdom : ∀ k, ‖x k‖ ≤ N k)
     (heq : ∑ k, x k * (f k : ℂ) = ((∑ k, N k * f k : ℝ) : ℂ)) :
     ∀ k, x k = (N k : ℂ) := by
-  classical
   have hsum : ∑ k, (N k - (x k).re) * f k = 0 := by
     simpa only [Complex.re_sum, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
       mul_zero, sub_zero, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] using
@@ -156,7 +155,6 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
     (heig : ∀ i j, ∑ k, T i j k * d k = d i * d j) :
     ∀ i j k, T i j k * (d k / (f k : ℂ)) /
       ((d i / (f i : ℂ)) * (d j / (f j : ℂ))) = (N i j k : ℂ) := by
-  classical
   let q : ι → ℂ := fun i => d i / (f i : ℂ)
   have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ by
     simp [q, Complex.norm_real, abs_of_pos (hf i), hd i, ne_of_gt (hf i)]

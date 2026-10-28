@@ -59,7 +59,6 @@ variable {E : Type u} [Category.{v} E] [MonoidalCategory E] [BraidedCategory E]
 endomorphism space is simple. -/
 theorem simple_of_finrank_end_eq_one {X : E}
     (hdim : Module.finrank ℂ (X ⟶ X) = 1) : Simple X := by
-  classical
   let D : BraidedFusionCategory.{v,u} := { Obj := E }
   obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp (hdim ▸ Nat.zero_lt_one)
   have hid : (𝟙 X : X ⟶ X) ≠ 0 := fun h ↦

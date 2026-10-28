@@ -73,7 +73,6 @@ def fusionFlow (i j k : Fin (rank D)) : ℝ :=
 variable {D} in
 theorem fusionFlow_balance (i j : Fin (rank D)) :
     (∑ k, fusionFlow D i j k) = ∑ k, fusionFlow D i k j := by
-  classical
   simp only [fusionFlow, fusionCoeff_dual_symmetry D i j]
   calc
     _ = fpSimple D j * (∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k) := by
@@ -114,7 +113,6 @@ theorem unit_retract_tensorPower {E : Type u} [Category.{v} E] [MonoidalCategory
     [BraidedCategory E] [Abelian E] [Linear ℂ E] [RigidCategory E]
     [MonoidalPreadditive E] [MonoidalLinear ℂ E] [IsFusionCategory E]
     (X : E) [Simple X] : ∃ n, Nonempty (Retract (𝟙_ E) (tensorPower X (n + 1))) := by
-  classical
   let D : BraidedFusionCategory := { Obj := E }
   obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso D X
   obtain ⟨j, hj, hp⟩ := balanced_flow_cycle (b := fusionFlow D i) (o := unitIndex D)
@@ -178,7 +176,6 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 object using tensor products, finite sums, and retracts. -/
 theorem generatedBy_rightDual (X : D) :
     GeneratedBy X (Xᘁ) := by
-  classical
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := D)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → D := fun p => T p.1

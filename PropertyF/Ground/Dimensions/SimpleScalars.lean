@@ -138,7 +138,6 @@ theorem simple_scalar_biproduct_natural
     (f : (⨁ (fun i ↦ T (a i))) ⟶ (⨁ (fun j ↦ T (b j)))) :
     biproduct.map (fun i ↦ c (a i) • 𝟙 (T (a i))) ≫ f =
       f ≫ biproduct.map (fun j ↦ c (b j) • 𝟙 (T (b j))) := by
-  classical
   refine biproduct.hom_ext' _ _ fun i ↦ biproduct.hom_ext _ _ fun j ↦ ?_
   simp only [Category.assoc, biproduct.ι_map_assoc, biproduct.map_π,
     Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
@@ -216,7 +215,6 @@ def simpleScalarNatural (C : BraidedFusionCategory.{v,u})
 theorem simpleScalarNatural_app_simple
     (c : Fin (rank C) → ℂ) (i : Fin (rank C)) :
     (simpleScalarNatural C c).app (simples C i) = c i • 𝟙 (simples C i) := by
-  classical
   let X := simples C i
   let a : simplePieces C X := ⟨i, ⟨0, by
     simp [simpleMultiplicity, finrank_simples_hom, X]⟩⟩

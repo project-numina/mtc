@@ -54,7 +54,6 @@ theorem tensor_multiplicity_expanded (X Y : D.Obj) (k : Fin (rank D)) :
     simpleMultiplicity D k (X ⊗ Y) =
       ∑ i, ∑ j, simpleMultiplicity D i X *
         simpleMultiplicity D j Y * fusionCoeff D i j k := by
-  classical
   have he (j : Fin (rank D)) : simpleMultiplicity D k (X ⊗ simples D j) =
       ∑ i, simpleMultiplicity D i X * fusionCoeff D i j k := by
     rw [show simpleMultiplicity D k (X ⊗ simples D j) =
@@ -72,7 +71,6 @@ variable {D} in
 /-- FP dimension is multiplicative on tensor products. -/
 theorem fpDimension_tensor (X Y : D.Obj) :
     fpDimension D (X ⊗ Y) = fpDimension D X * fpDimension D Y := by
-  classical
   unfold fpDimension
   simp_rw [tensor_multiplicity_expanded, Nat.cast_sum, Nat.cast_mul]
   simp only [Finset.sum_mul, Finset.mul_sum, mul_assoc]
@@ -104,7 +102,6 @@ variable {D} in
 /-- FP dimension is invariant under taking a left dual. -/
 theorem fpDimension_leftDual (X : D.Obj) :
     fpDimension D (ᘁX) = fpDimension D X := by
-  classical
   unfold fpDimension
   simpa only [dual_multiplicity, fpSimple_dual] using
     (show (∑ i, (simpleMultiplicity D (dualIndex D i) X : ℝ) *
@@ -134,7 +131,6 @@ variable {D} in
 /-- FP dimension is additive over finite biproducts. -/
 theorem fpDimension_biproduct {ι : Type} [Fintype ι] (V : ι → D.Obj) :
     fpDimension D (⨁ V) = ∑ i, fpDimension D (V i) := by
-  classical
   simp only [fpDimension, finrank_hom_biproduct, Nat.cast_sum, Finset.sum_mul]
   exact Finset.sum_comm
 
@@ -145,7 +141,6 @@ theorem fpDimension_functor_decomposition (F : C.Obj ⥤ D.Obj) [F.Additive] (X 
     fpDimension D (F.obj X) = ∑ i,
       (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) :=
   (exists_canonical_decomposition C X).elim fun e ↦ by
-    classical
     simp [fpDimension_iso (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
       Fintype.sum_sigma]
 
@@ -154,7 +149,6 @@ variable {C D} in
 theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal]
     (X : C.Obj) :
     fpDimension D (F.obj X) = fpDimension C X := by
-  classical
   let f : Fin (rank C) → ℝ := fun i => fpDimension D (F.obj (simples C i))
   have hpos (i) : 0 < f i :=
     letI : Simple (simples C i) := simples_simple C i

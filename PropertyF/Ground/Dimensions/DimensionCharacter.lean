@@ -43,7 +43,6 @@ theorem pivotalDimension_decomposition :
     pivotalDimension C p X = ∑ i, (simpleMultiplicity C i X : ℂ) *
       pivotalDimension C p (simples C i) :=
   (exists_canonical_decomposition C X).elim fun e ↦ by
-    classical
     simp [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
       rightDimension_biproduct, Fintype.sum_sigma]
 
@@ -131,7 +130,6 @@ theorem isSpherical_iff_simple_dimensions
       p.leftTrace (𝟙 (simples C i)) = p.rightTrace (𝟙 (simples C i)) := by
   refine ⟨fun h i ↦ h _ _, ?_⟩
   intro hs X f
-  classical
   let V : (Σ i, Fin (simpleMultiplicity C i X)) → C.Obj := fun a ↦ simples C a.1
   let e : X ≅ ⨁ V := Classical.choice (exists_canonical_decomposition C X)
   let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
