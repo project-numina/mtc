@@ -55,6 +55,10 @@ instance positiveFull : (CategoryTheory.Center.ofBraided C).Full where
     intro X Y f
     exact ⟨f.f, CategoryTheory.Center.ext _ _ rfl⟩
 
+/-- The underlying component of a centre object's half-braiding. -/
+abbrev halfBraidingHom (Z : CategoryTheory.Center C) (U : C) : Z.1 ⊗ U ⟶ U ⊗ Z.1 :=
+  (Z.2.β U).hom
+
 /-- The two canonical images centralize one another in the actual centre. -/
 theorem positive_negative_centralize (X Y : C) :
     (β_ ((CategoryTheory.Center.ofBraided C).obj X) ((negative C).obj Y)).hom ≫
@@ -76,15 +80,14 @@ theorem centralizes_of_iso_left {A B T : CategoryTheory.Center C} (i : A ≅ B)
         (i.hom ▷ T) ≫ ((β_ B T).hom ≫ (β_ T B).hom) := by
       simp only [Category.assoc, BraidedCategory.braiding_naturality_left_assoc]
       rw [← BraidedCategory.braiding_naturality_right T i.hom]
-    _ = 𝟙 _ ≫ (i.hom ▷ T) := by rw [h]; simp
+    _ = 𝟙 _ ≫ (i.hom ▷ T) := by rw [h, Category.comp_id, Category.id_comp]
 
 omit [BraidedCategory C] in
 /-- Centralization is symmetric. -/
 theorem centralizes_symm {A B : CategoryTheory.Center C} (h : Centralizes A B) :
     Centralizes B A := by
-  unfold Centralizes at *
   apply (cancel_epi (β_ A B).hom).mp
-  simp only [← Category.assoc, h, Category.id_comp, Category.comp_id]
+  simpa only [Category.assoc, Category.id_comp, Category.comp_id] using congrArg (fun f ↦ f ≫ (β_ A B).hom) h
 
 /-- The corresponding test for the negative image. -/
 theorem centralizes_negative_image_iff (Y : CategoryTheory.Center C) :
@@ -206,8 +209,7 @@ theorem finiteDimensional_hom (K : Type*) [Field K] [Linear K C] [MonoidalLinear
     (X Y : CategoryTheory.Center C) [FiniteDimensional K (X.1 ⟶ Y.1)] :
     FiniteDimensional K (X ⟶ Y) :=
   FiniteDimensional.of_injective
-    (show (X ⟶ Y) →ₗ[K] (X.1 ⟶ Y.1) from
-      (CategoryTheory.Center.forget C).mapLinearMap K)
+    (show (X ⟶ Y) →ₗ[K] (X.1 ⟶ Y.1) from (CategoryTheory.Center.forget C).mapLinearMap K)
     (Functor.map_injective (CategoryTheory.Center.forget C))
 
 end PropertyF.Ground.Centre
@@ -237,12 +239,12 @@ def centerZero : CategoryTheory.Center C :=
 
 omit [HasZeroObject C] in
 /-- The forgetful functor detects zero objects. -/
-theorem isZero_of_forget (Z : CategoryTheory.Center C) (h : IsZero Z.1) : IsZero Z :=
+theorem isZero_of_forget {Z : CategoryTheory.Center C} (h : IsZero Z.1) : IsZero Z :=
   (IsZero.iff_id_eq_zero _).mpr (CategoryTheory.Center.ext _ _ (h.eq_of_src _ _))
 
 /-- The constructed centre object over zero is a zero object. -/
 theorem centerZero_isZero : IsZero (centerZero (C := C)) :=
-  isZero_of_forget _ (isZero_zero C)
+  isZero_of_forget (isZero_zero C)
 
 instance centerHasZeroObject : HasZeroObject (CategoryTheory.Center C) :=
   centerZero_isZero.hasZeroObject
