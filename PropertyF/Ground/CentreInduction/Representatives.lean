@@ -111,13 +111,11 @@ theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum D X) :
   | @cons X S K hs hk he ih =>
     obtain ⟨n, V, hv, ⟨e⟩⟩ := ih
     obtain ⟨eX⟩ := he
-    let W : Option (Fin n) → D := fun i => i.elim S V
-    let W' : Fin (n + 1) → D := fun i => W (finSuccEquiv n i)
-    refine ⟨n + 1, W', ?_, ?_⟩
-    · exact fun i => Option.rec (motive := fun o => Simple (W o)) hs hv (finSuccEquiv n i)
-    · let ei : Option (Fin n) ≃ Fin (n + 1) := (finSuccEquiv n).symm
-      let er : (⨁ W) ≅ ⨁ W' := biproduct.whiskerEquiv ei (fun i => eqToIso (by simp [W', ei]))
-      exact ⟨eX ≪≫ biprod.mapIso (Iso.refl S) e ≪≫ biprodOptionIso S V ≪≫ er⟩
+    let W : Fin (n + 1) → D := fun i => (finSuccEquiv n i).elim S V
+    refine ⟨n + 1, W, fun i ↦
+      Option.rec (motive := fun o ↦ Simple (o.elim S V)) hs hv (finSuccEquiv n i), ⟨?_⟩⟩
+    exact eX ≪≫ biprod.mapIso (Iso.refl S) e ≪≫ biprodOptionIso S V ≪≫
+      biproduct.whiskerEquiv (finSuccEquiv n).symm (fun i => eqToIso (by simp [W]))
 
 end PropertyF.Ground.CentreInduction
 

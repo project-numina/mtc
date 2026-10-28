@@ -133,7 +133,6 @@ theorem basis_eigenvalue_eq {K V : Type*} [CommSemiring K] [IsDomain K] [AddComm
 /-- A basis consisting of characters classifies every character. -/
 theorem characters_exhausted (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = (columns y).value)
     (χ : Character N) : ∃ y, χ = columns y := by
-  classical
   obtain ⟨y, hy⟩ := Function.ne_iff.mp
     (show b.equivFun χ.value ≠ 0 from fun h ↦ by
       have hzero : χ.value = 0 := b.equivFun.injective (by simpa using h)
@@ -197,7 +196,6 @@ theorem normalized_columns_linearIndependent {dual : ι → ι} {D : K} (hD : D 
   let A : Matrix ι ι K := fun x y => S x y / dimension y
   let B : Matrix ι ι K := fun x y => dimension x * S x (dual y) / D
   Matrix.linearIndependent_cols_of_det_ne_zero (Matrix.det_ne_zero_of_right_inverse (by
-    classical
     change A * B = 1
     ext x y
     rw [Matrix.mul_apply, Matrix.one_apply]

@@ -27,7 +27,6 @@ include hdual in
 /-- Different fusion characters are orthogonal for the standard Hermitian pairing. -/
 theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
     ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 := by
-  classical
   by_contra hw
   apply hne
   apply Character.ext
@@ -127,7 +126,6 @@ include hp in
 theorem categoricalS_square (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
     HasSSquare Sₚ (Ground.dualIndex C) (globalDimension C) := by
-  classical
   have hoff := square_off_dual_of_orthogonal (Ground.dualIndex C) (Ground.dualIndex_involutive C)
     (categoricalS_symmetric C p) (categoricalS_dual_conj C p hreal)
     (character_columns_orthogonal ⟨unitIndex C, fusionCoeff C⟩ (Ground.dualIndex C)
@@ -170,7 +168,6 @@ theorem globalDimension_ne_zero_of_invertibleS (hdet : (Sₚ).det ≠ 0)
     globalDimension C ≠ 0 := fun hz ↦
   let : Nonempty (Fin (rank C)) := ⟨unitIndex C⟩
   mul_ne_zero hdet hdet (by
-    classical
     have hs : Sₚ * Sₚ = 0 := by
       ext x y
       simp [Matrix.mul_apply, categoricalS_square C p hp hdet hreal, hz]
