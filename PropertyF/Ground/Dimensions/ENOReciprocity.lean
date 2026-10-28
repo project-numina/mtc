@@ -171,8 +171,7 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
     (hdim : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (hnorm : ∀ i, squaredNorm C (simples C i) =
       ((fpSimple C i ^ 2 : ℝ) : ℂ)) : p.IsSpherical := by
-  apply (isSpherical_iff_simple_dimensions C p).2
-  intro i
+  refine (isSpherical_iff_simple_dimensions C p).2 fun i ↦ ?_
   let X := simples C i
   let : Simple X := simples_simple C i
   have hh := target_squaredNorm_choice_independent C (p.iso X)
@@ -180,8 +179,8 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   rw [show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i,
     hnorm i, Complex.ofReal_pow] at hh
   apply (Ground.unitScalarEquiv C).injective
-  rw [← Ground.unitScalar_eq_equiv, ← Ground.unitScalar_eq_equiv]
-  rw [show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i]
+  rw [← Ground.unitScalar_eq_equiv, ← Ground.unitScalar_eq_equiv,
+    show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i]
   exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i)))
     (by simpa [pow_two] using hh.symm)
 
@@ -238,8 +237,6 @@ theorem normalized_defects_trivial
       (fun i => (rootDimension C i / (fpSimple C i : ℂ))⁻¹) := by
   classical
   let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
-  let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
-  change ScaledMultiplicityDefectsTrivial C c
   intro i j k
   let r := q k / (q i * q j)
   have hrnorm : ‖r‖ = 1 := by
@@ -248,7 +245,7 @@ theorem normalized_defects_trivial
   let : FiniteDimensional ℂ
     (simples C k ⟶ simples C i ⊗ simples C j) :=
     IsFusionCategory.hom_finite _ _
-  simpa [c, r, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_assoc] using
+  simpa [q, r, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_assoc] using
     (involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm (by
       change enoTraceMatrix C i j k * r = (fusionCoeff C i j k : ℂ)
       simpa [q, r, div_eq_mul_inv, mul_assoc] using
@@ -267,10 +264,8 @@ theorem positive_spherical_of_matrix_identities
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero C i)
     (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))))
-  have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) :=
-    (congrArg (fun z : ℂ ↦ z * rootDimension C i)
-      (inv_div (rootDimension C i) (fpSimple C i : ℂ))).trans
-        (div_mul_cancel₀ _ (rootDimension_ne_zero C i))
+  have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) := by
+    simp [c, q, rootDimension_ne_zero]
   let unitProof := rootSignTwist_unit_of_simple_dimension C hc (by
     simp only [hvalue, fpSimple_unit, Complex.ofReal_one])
   let p := rootPhasePivotal C c hc (normalized_defects_trivial C hinv heig hsat) unitProof
@@ -328,8 +323,8 @@ theorem squaredNorm_eq_root_norm_sq_of_reciprocity
     (htranspose : ENOTraceMatrixReciprocity C) (i : Fin (rank C)) :
     squaredNorm C (simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
   rw [squaredNorm_eq_rootDualSign_mul C i,
-    rootDimension_dual_conjugate_of_trace_reciprocity C hinv htranspose i]
-  rw [mul_mul_mul_comm, rootDualSign_sq, one_mul]
+    rootDimension_dual_conjugate_of_trace_reciprocity C hinv htranspose i,
+    mul_mul_mul_comm, rootDualSign_sq, one_mul]
   simpa using Complex.mul_conj' (rootDimension C i)
 
 end PropertyF.Ground.Dimensions
