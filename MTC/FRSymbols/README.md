@@ -3,7 +3,9 @@
 `FusionRules.lean` defines finite fusion multiplicities. `MatrixSymbols.lean`
 contains matrix-valued F and R blocks, their inverses, the pentagon, both
 hexagons, and unitarity relative to a complex embedding. `MatrixGauge.lean`
-describes changes of trivalent bases. These coherence equations are not yet a
+describes changes of trivalent bases. `Metric.lean` defines compatible positive
+Hermitian fusion-space metrics for nonorthonormal bases and requires F and R
+to preserve the induced tree metrics. These coherence equations are not yet a
 complete category reconstruction: triangle, rigidity, pivotal/ribbon
 structure and category-level comparison remain to be implemented.
 
