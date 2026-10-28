@@ -220,7 +220,7 @@ theorem tensorPermAction_adjacent (σ : Perm (Fin (n + 1))) :
         End.of (X ◁ ((tensorPermAction X hX (n + 1)) σ).asHom) := by
   rw [decomposeFin_eq_swap_fixHead, map_mul]
   change tensorPermAction X hX (n + 2) (adjacentSwap (0 : Fin (n + 1))) * _ = _
-  rw [tensorPermAction_swap, tensorPermAction_fixHead]
+  simp only [tensorPermAction_swap, tensorPermAction_fixHead]
   rfl
 
 end

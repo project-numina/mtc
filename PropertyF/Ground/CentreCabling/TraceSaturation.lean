@@ -42,17 +42,14 @@ include hM in
 only for the identity. -/
 theorem finiteOrder_matrix_trace_saturation :
     M.trace.re ≤ Fintype.card ι ∧
-      (M.trace.re = Fintype.card ι → M = 1) := by
-  obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
+      (M.trace.re = Fintype.card ι → M = 1) :=
+  let ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
   let U : Matrix ι ι ℂ := (P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)
   have ht : U.trace = M.trace := Matrix.trace_units_conj P M
-  constructor
-  · rw [← ht]
-    exact (Complex.re_le_norm _).trans (PropertyF.norm_trace_le_card hP)
-  · intro heq
+  ⟨ht ▸ (Complex.re_le_norm _).trans (PropertyF.norm_trace_le_card hP), fun heq ↦ by
     simpa [U, Matrix.mul_assoc, ← Units.val_mul] using
       congrArg (fun A : Matrix ι ι ℂ ↦ (↑(P⁻¹) : Matrix ι ι ℂ) * A * (P : Matrix ι ι ℂ))
-        (PropertyF.eq_one_of_re_trace_eq_card hP (by rwa [ht]))
+        (PropertyF.eq_one_of_re_trace_eq_card hP (ht.symm ▸ heq))⟩
 
 end PropertyF.Ground.CentreCabling
 
