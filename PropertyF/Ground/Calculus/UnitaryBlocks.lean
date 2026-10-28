@@ -114,16 +114,14 @@ omit [Finite G] in
 theorem groupImageAlgebra_toSubmodule (ρ : G →* A) :
     (groupImageAlgebra ρ).toSubmodule = Submodule.span ℂ (Set.range ρ) := by
   classical
-  apply le_antisymm
-  · rintro x ⟨a, rfl⟩
-    change MonoidAlgebra.lift ℂ A G ρ a ∈ Submodule.span ℂ (Set.range ρ)
-    rw [MonoidAlgebra.lift_apply]
-    apply Submodule.sum_mem
-    intro g hg
-    exact Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self g))
-  · apply Submodule.span_le.mpr
-    rintro x ⟨g, rfl⟩
-    exact ⟨MonoidAlgebra.of ℂ G g, MonoidAlgebra.lift_of ρ g⟩
+  have h : (groupAlgebraMap ρ).toLinearMap =
+      (Finsupp.linearCombination ℂ ρ).comp (MonoidAlgebra.coeffLinearEquiv ℂ).toLinearMap := by
+    apply LinearMap.ext
+    intro f
+    change MonoidAlgebra.lift ℂ A G ρ f = Finsupp.linearCombination ℂ ρ f.coeff
+    rw [MonoidAlgebra.lift_apply, Finsupp.linearCombination_apply]
+  change (groupAlgebraMap ρ).toLinearMap.range = _
+  rw [h, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Finsupp.range_linearCombination]
 
 /-- A finite group's image algebra is semisimple, by Maschke and passage to a quotient. -/
 theorem groupImageAlgebra_semisimple (ρ : G →* A) :

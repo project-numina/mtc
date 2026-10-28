@@ -185,7 +185,7 @@ theorem pair_operator_scalar_of_overlaps_equal
     overlapFresh, rightPartialTrace_whiskerLeft,
     rightPartialTrace_simple_ground C (X := X) (Y := X) p (groundUnitScalarEquiv C)] at h
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
-  simp only [hdim, htrace] at h
+  simp only [scalarTrace, hdim, htrace] at h
   have h' : (d : ℂ) • u = (f : ℂ) • (1 : End (X ⊗ X)) := by
     have hdiv : (d : ℂ) * f / d = (f : ℂ) := by field_simp
     rw [hdiv] at h

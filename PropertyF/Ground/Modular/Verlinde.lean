@@ -263,7 +263,8 @@ theorem rightPartialTrace_nested_simple (p : PivotalStructure (C := C))
   have ht2 := rightTrace_partialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y g)
   have ht3 := rightTrace_partialTrace p (Z ⊗ X) Y g
   rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd ht1,
-    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd ht2, ht3, hc]
+    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd ht2]
+  simp only [Calculus.scalarTrace, ht3, hc]
 
 
 end Nested

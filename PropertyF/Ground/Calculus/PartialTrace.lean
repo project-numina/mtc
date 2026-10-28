@@ -88,7 +88,8 @@ theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
     (p : PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (a : End Y)
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) :
-    a = (scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
+    a = (scalarTrace p scalar a / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
+  simp only [scalarTrace]
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ a.asHom
   have hcval : c = scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y)) := by
     apply (eq_div_iff hd).2
@@ -107,8 +108,8 @@ theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.H
     (hd : scalar (p.rightTrace (𝟙 X)) ≠ 0)
     (htrace : p.rightTrace (rightPartialTrace p X Y f).asHom = p.rightTrace f.asHom) :
     rightPartialTrace p X Y f =
-      (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
-  simpa only [htrace] using simple_end_eq_trace_smul p scalar (rightPartialTrace p X Y f) hd
+      (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
+  simpa only [scalarTrace, htrace] using simple_end_eq_trace_smul p scalar (rightPartialTrace p X Y f) hd
 
 /-- Closing a right tensor factor commutes with adding an identity factor on
 the left, with the associator made explicit. -/
