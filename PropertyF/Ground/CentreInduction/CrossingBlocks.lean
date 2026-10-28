@@ -13,9 +13,11 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
+-- The chosen simple representatives of the base category.
+local notation "Sᶜ" => simples C
 
 /-- The simple-indexed summand of the underlying induction object. -/
-abbrev inductionSummand (i : Fin (rank C)) : C.Obj := (simples C i ⊗ X) ⊗ (simples C i)ᘁ
+abbrev inductionSummand (i : Fin (rank C)) : C.Obj := (Sᶜ i ⊗ X) ⊗ (Sᶜ i)ᘁ
 
 /-- The finite direct sum underlying the induction object. No half-braiding is
 claimed here. -/
@@ -35,7 +37,7 @@ constructed from the induction half-braiding. -/
 def underlyingFunctor : C.Obj ⥤ C.Obj where
   obj := underlying C
   map {X Y} f := CategoryTheory.Limits.biproduct.map
-    (fun i : Fin (rank C) => (simples C i ◁ f) ▷ (simples C i)ᘁ)
+    (fun i : Fin (rank C) => (Sᶜ i ◁ f) ▷ (Sᶜ i)ᘁ)
   map_id X := biproduct.hom_ext' _ _ fun i => by simp [underlying]
   map_comp f g := biproduct.hom_ext' _ _ fun i => by
     simp [underlying, Category.assoc, whiskerLeft_comp, comp_whiskerRight]
@@ -52,6 +54,8 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
+-- The chosen simple representatives of the base category.
+local notation "Sᶜ" => simples C
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
@@ -90,39 +94,39 @@ theorem mixedCrossing_natural_middle {X Y : D} (h : X ⟶ Y) {T U R S : D}
 
 /-- The projection from the chosen simple decomposition of an object. -/
 def simpleProjection (V : C.Obj) (i : Fin (rank C))
-    (a : Fin (Module.finrank ℂ (simples C i ⟶ V))) : V ⟶ simples C i :=
+    (a : Fin (Module.finrank ℂ (Sᶜ i ⟶ V))) : V ⟶ Sᶜ i :=
   (simpleDecomposition C V).hom ≫ biproduct.π (simplePiecesObject C V) ⟨i,a⟩
 
 /-- The multiplicity index for a simple summand of `T ⊗ Sⱼ`. -/
 abbrev crossingIndex (T : C.Obj) (i j : Fin (rank C)) : Type :=
-  Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))
+  Fin (Module.finrank ℂ (Sᶜ i ⟶ T ⊗ Sᶜ j))
 
 /-- The inclusion attached to the canonical decomposition of `T ⊗ Sⱼ`. -/
 def crossingInclusion (T : C.Obj)
     (i j : Fin (rank C))
     (a : crossingIndex C T i j) :
-    simples C i ⟶ T ⊗ simples C j :=
-  simpleInclusion C (T ⊗ simples C j) i a
+    Sᶜ i ⟶ T ⊗ Sᶜ j :=
+  simpleInclusion C (T ⊗ Sᶜ j) i a
 
 /-- The corresponding projection from the same decomposition. -/
 def crossingProjection (T : C.Obj)
     (i j : Fin (rank C))
     (a : crossingIndex C T i j) :
-    T ⊗ simples C j ⟶ simples C i :=
-  simpleProjection C (T ⊗ simples C j) i a
+    T ⊗ Sᶜ j ⟶ Sᶜ i :=
+  simpleProjection C (T ⊗ Sᶜ j) i a
 
 /-- One simple-summand contribution to the induction crossing matrix. -/
 abbrev crossingSummand (X T : C.Obj) (i j : Fin (rank C)) (a : crossingIndex C T i j) :=
-  crossingBlock X T (simples C j)
+  crossingBlock X T (Sᶜ j)
     (crossingInclusion C T i j a) (crossingProjection C T i j a)
 
 /-- The crossing block obtained by composing two simple-summand decompositions. -/
 abbrev nestedCrossingBlock (X T U : C.Obj) (i k j : Fin (rank C))
     (a : crossingIndex C T i k) (b : crossingIndex C U k j) :=
-  crossingBlock X (T ⊗ U) (simples C j)
+  crossingBlock X (T ⊗ U) (Sᶜ j)
     (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
-      (α_ T U (simples C j)).inv)
-    ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
+      (α_ T U (Sᶜ j)).inv)
+    ((α_ T U (Sᶜ j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
       crossingProjection C T i k a)
 
 /-- Inclusion and projection of the same summand compose to the identity. -/
@@ -136,7 +140,7 @@ set_option backward.isDefEq.respectTransparency false in
 This is the completeness relation used for changes of fusion bases. -/
 theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
     (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
-      crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) = 𝟙 (T ⊗ simples C j) := by
+      crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) = 𝟙 (T ⊗ Sᶜ j) := by
   simp only [crossingProjection, simpleProjection, crossingInclusion, simpleInclusion,
     Category.assoc, ← Preadditive.comp_sum]
   simp_rw [← Category.assoc (biproduct.π _ _)]
@@ -151,7 +155,7 @@ def crossingCandidate :
   let V := inductionSummand C X
   (rightDistributor V T).hom ≫ biproduct.desc (fun i =>
     ∑ j, ∑ a : crossingIndex C T i j,
-      crossingBlock X T (simples C j)
+      crossingBlock X T (Sᶜ j)
         (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
           (T ◁ biproduct.ι V j))
 
