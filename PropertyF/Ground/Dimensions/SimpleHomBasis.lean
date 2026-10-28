@@ -31,11 +31,11 @@ theorem partialTraceWith_one {Y : C} (k : Y ≅ (Yᘁ)ᘁ) (X : C) :
     id_whiskerRight, Category.id_comp, whiskerLeft_comp, Category.assoc]
   monoidal
 
+variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Quantum dimensions multiply for any two double-dual isomorphisms, without
 a naturality or pivotal assumption. -/
 theorem rightQuantumTrace_tensor_scalar
-    [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C}
     (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ) :
     scalar (rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y)) =

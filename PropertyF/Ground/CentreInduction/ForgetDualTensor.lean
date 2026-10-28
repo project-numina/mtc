@@ -13,10 +13,11 @@ set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (Center D)]
 local notation "𝒵" => Center D
+variable {X Y : Center D}
 
 omit [RightRigidCategory D] in
 /-- Forgetting a centre mate computes the mate for the forgotten dual pairings. -/
-theorem forget_rightAdjointMate {X Y : 𝒵} (f : X ⟶ Y) :
+theorem forget_rightAdjointMate (f : X ⟶ Y) :
     (fᘁ).f = @rightAdjointMate D _ _ X.1 Y.1
       (show HasRightDual X.1 from { rightDual := (Xᘁ).1, exact := forgetPairing X })
       (show HasRightDual Y.1 from { rightDual := (Yᘁ).1, exact := forgetPairing Y }) f.f := by
@@ -27,12 +28,12 @@ theorem forget_rightAdjointMate {X Y : 𝒵} (f : X ⟶ Y) :
   rfl
 
 /-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
-theorem forgetDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
+theorem forgetDualIso_natural (f : X ⟶ Y) :
     (fᘁ).f ≫ (forgetDualIso X).hom = (forgetDualIso Y).hom ≫ (f.fᘁ) := by
   simp [forget_rightAdjointMate, forgetDualIso, rightDualIso, ← comp_rightAdjointMate]
 
 /-- The double-dual comparison is natural in centre morphisms. -/
-theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
+theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso Y).hom =
       (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
   simp only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap,
@@ -46,12 +47,14 @@ theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
   simpa only [comp_rightAdjointMate, rightDualIsoMap] using
     congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
 
+variable (p : PivotalStructure (C := D))
+
 /-- Transport a pivotal component along the forgotten double-dual comparison. -/
-def transportedPivotalHom (p : PivotalStructure (C := D)) (Z : 𝒵) :
+def transportedPivotalHom (Z : 𝒵) :
     Z.1 ⟶ ((Zᘁ)ᘁ).1 := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
 
 /-- The transported pivotal components are natural on centre morphisms. -/
-theorem transported_pivotal_natural (p : PivotalStructure (C := D)) {X Y : 𝒵} (f : X ⟶ Y) :
+theorem transported_pivotal_natural (f : X ⟶ Y) :
     f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f := by
   dsimp only [transportedPivotalHom]
   rw [← Category.assoc, Iso.comp_inv_eq]

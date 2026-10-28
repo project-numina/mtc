@@ -46,32 +46,22 @@ theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
   simp only [← Category.assoc]
   rw [forgetDualIso_tensor_inv (Yᘁ) (Xᘁ)]
   simp only [Category.assoc]
-  rw [forgetDualIso_tensor_mate_inv X Y]
-  rw [← Category.assoc ((rightDualTensorIso (Yᘁ).1 (Xᘁ).1).inv),
+  rw [forgetDualIso_tensor_mate_inv X Y,
+    ← Category.assoc ((rightDualTensorIso (Yᘁ).1 (Xᘁ).1).inv),
     ← rightDualTensorIso_inv_natural (forgetDualIso Y).inv (forgetDualIso X).inv]
   simp only [tensorHom_comp_tensorHom_assoc, Category.assoc]
 
+variable (p : PivotalStructure (C := D))
+
 /-- The transported pivotal components satisfy the tensor law after forgetting. -/
-theorem transported_pivotal_tensor (p : PivotalStructure (C := D)) (X Y : 𝒵) :
+theorem transported_pivotal_tensor (X Y : 𝒵) :
     (transportedPivotalHom p X ⊗ₘ transportedPivotalHom p Y) ≫
       (doubleDualTensorIso X Y).hom.f = transportedPivotalHom p (X ⊗ Y) := by
   dsimp only [transportedPivotalHom]
   rw [Iso.eq_comp_inv, Category.assoc, forgetDoubleDualIso_tensor]
   simpa [Category.assoc] using (p.tensor X.1 Y.1).symm
 
-end PropertyF.Ground.CentreInduction
-
-end
-
 /-! Unit coherence of centre dual and pivotal comparisons. -/
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreInduction
-universe v u
-set_option backward.isDefEq.respectTransparency false
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (Center D)]
-local notation "𝒵" => Center D
 
 omit [RightRigidCategory D] in
 /-- The right-dual unit comparison is preserved by centre forget. -/
@@ -119,15 +109,14 @@ theorem forgetDoubleDualIso_unit :
     Category.assoc]
   change e.inv.f ≫ (e.homᘁ).f ≫ (forgetDualIso (Uᘁ)).hom ≫
       (forgetDualIso U).invᘁ = b.inv ≫ b.homᘁ
-  rw [← Category.assoc (e.homᘁ).f, hn]
-  rw [← hu, comp_rightAdjointMate]
+  rw [← Category.assoc (e.homᘁ).f, hn, ← hu, comp_rightAdjointMate]
   simp only [Category.assoc]
   rw [← Category.assoc e.inv.f, hv]
   simp only [← comp_rightAdjointMate,
     Iso.inv_hom_id, rightAdjointMate_id, Category.comp_id]
 
 /-- Transported pivotal components preserve the tensor unit after forgetting. -/
-theorem transported_pivotal_unit (p : PivotalStructure (C := D)) :
+theorem transported_pivotal_unit :
     transportedPivotalHom p (𝟙_ (𝒵)) = (doubleDualUnitIso (C := 𝒵)).hom.f :=
   (Iso.comp_inv_eq (forgetDoubleDualIso (𝟙_ (𝒵)))).2 <|
     p.unit.trans (forgetDoubleDualIso_unit (D := D)).symm

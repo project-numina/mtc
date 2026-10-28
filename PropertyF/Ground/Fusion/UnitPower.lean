@@ -77,15 +77,17 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 
+variable (D : BraidedFusionCategory.{v,u})
+
 /-- The FP-weighted directed fusion graph is a balanced flow. -/
-def fusionFlow (D : BraidedFusionCategory.{v,u}) (i j k : Fin (rank D)) : ℝ :=
+def fusionFlow (i j k : Fin (rank D)) : ℝ :=
   fpSimple D j * (fusionCoeff D i j k : ℝ) * fpSimple D k
 
-theorem fusionFlow_nonneg (D : BraidedFusionCategory.{v,u}) (i j k : Fin (rank D)) :
+theorem fusionFlow_nonneg (i j k : Fin (rank D)) :
     0 ≤ fusionFlow D i j k :=
   mul_nonneg (mul_nonneg (fpSimple_pos D j).le (Nat.cast_nonneg _)) (fpSimple_pos D k).le
 
-theorem fusionFlow_balance (D : BraidedFusionCategory.{v,u}) (i j : Fin (rank D)) :
+theorem fusionFlow_balance (i j : Fin (rank D)) :
     (∑ k, fusionFlow D i j k) = ∑ k, fusionFlow D i k j := by
   classical
   calc
@@ -98,7 +100,7 @@ theorem fusionFlow_balance (D : BraidedFusionCategory.{v,u}) (i j : Fin (rank D)
       simp only [fusionFlow, Finset.mul_sum, ← fusionCoeff_dual_symmetry D i j, mul_comm]
 
 /-- A positive fusion coefficient gives an actual retract. -/
-theorem fusionCoeff_retract (D : BraidedFusionCategory.{v,u})
+theorem fusionCoeff_retract
     {i j k : Fin (rank D)} (h : 0 < fusionCoeff D i j k) :
     Nonempty (Retract (simples D k) (simples D i ⊗ simples D j)) := by
   let : FiniteDimensional ℂ (simples D k ⟶ simples D i ⊗ simples D j) :=
@@ -110,7 +112,7 @@ theorem fusionCoeff_retract (D : BraidedFusionCategory.{v,u})
 
 /-- Along a fusion path beginning at i, the endpoint is a retract of a
 positive tensor power of the simple i. -/
-theorem fusionPath_retract (D : BraidedFusionCategory.{v,u}) {i k : Fin (rank D)}
+theorem fusionPath_retract {i k : Fin (rank D)}
     (h : Relation.ReflTransGen (fun j k => 0 < fusionFlow D i j k) i k) :
     ∃ n, Nonempty (Retract (simples D k) (tensorPower (simples D i) (n + 1))) := by
   induction h with
@@ -134,7 +136,7 @@ theorem fusionPath_retract (D : BraidedFusionCategory.{v,u}) {i k : Fin (rank D)
     exact ⟨n + 1, ⟨s.trans t⟩⟩
 
 /-- A simple object has a positive tensor power containing the unit. -/
-theorem unit_retract_tensorPower (D : BraidedFusionCategory.{v,u})
+theorem unit_retract_tensorPower
     (X : D.Obj) [Simple X] : ∃ n, Nonempty (Retract (𝟙_ D.Obj) (tensorPower X (n + 1))) := by
   classical
   obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso D X
