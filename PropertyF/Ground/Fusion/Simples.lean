@@ -86,16 +86,17 @@ theorem simples_decompose (X : C.Obj) : ∃ m : Fin (rank C) → ℕ,
   (Classical.choose_spec (Classical.choose_spec
     (IsFusionCategory.finite_semisimple (C := C.Obj)))).2.2 X
 
-/-- Every simple object is isomorphic to one of the chosen representatives. -/
-theorem exists_simple_iso (X : C.Obj) [Simple X] :
-    ∃ i : Fin (rank C), Nonempty (X ≅ simples C i) := by
+/-- Every object with nonzero identity has a chosen simple retract. -/
+theorem exists_simple_retract {X : C.Obj} (hX : 𝟙 X ≠ 0) :
+    ∃ (i : Fin (rank C)) (s : X ⟶ simples C i) (t : simples C i ⟶ X),
+      s ≠ 0 ∧ t ≫ s = 𝟙 (simples C i) := by
   classical
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose C X
   let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
   have he : e.hom ≠ 0 := by
     intro h
-    apply id_nonzero X
-    simpa using (congrArg (fun t => t ≫ e.inv) h)
+    apply hX
+    simpa using (congrArg (fun f => f ≫ e.inv) h)
   have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra h
     push Not at h
@@ -104,15 +105,21 @@ theorem exists_simple_iso (X : C.Obj) [Simple X] :
     intro p
     simpa using h p
   obtain ⟨p, hp⟩ := hp
-  let : Simple (V p) := simples_simple C p.1
-  let : IsIso (e.hom ≫ biproduct.π V p) := CategoryTheory.isIso_of_hom_simple hp
-  exact ⟨p.1, ⟨asIso (e.hom ≫ biproduct.π V p)⟩⟩
+  refine ⟨p.1, e.hom ≫ biproduct.π V p, biproduct.ι V p ≫ e.inv, hp, ?_⟩
+  simp [V, Category.assoc]
+
+/-- Every simple object is isomorphic to one of the chosen representatives. -/
+theorem exists_simple_iso (X : C.Obj) [Simple X] :
+    ∃ i : Fin (rank C), Nonempty (X ≅ simples C i) := by
+  obtain ⟨i, s, _, hs, _⟩ := exists_simple_retract C (id_nonzero X)
+  let : Simple (simples C i) := simples_simple C i
+  let : IsIso s := CategoryTheory.isIso_of_hom_simple hs
+  exact ⟨i, ⟨asIso s⟩⟩
 
 /-- The tensor unit occurs among the representatives. -/
-theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ C.Obj) := by
-  let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
-  obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso C (𝟙_ C.Obj)
-  exact ⟨i, ⟨e.symm⟩⟩
+theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ C.Obj) :=
+  letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
+  (exists_simple_iso C (𝟙_ C.Obj)).imp fun _ h => h.map Iso.symm
 
 /-- Hom spaces between the chosen simples have the expected multiplicities. -/
 theorem finrank_simples_hom (i j : Fin (rank C)) :
