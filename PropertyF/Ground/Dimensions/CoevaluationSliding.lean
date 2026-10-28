@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.DefectNaturality
 /-! # Coevaluation sliding and reciprocity
 
 Sliding tensor defects through coevaluations yields reciprocity for trace matrices.
+
+## Main results
+
+* `tensorLeftHomLinearEquiv_postcomp`: describes composition under Frobenius reciprocity.
+* `enoTraceMatrix_reciprocity_of_coevaluation_sliding`: derives trace reciprocity from coevaluation sliding.
 -/
 
 @[expose] public noncomputable section

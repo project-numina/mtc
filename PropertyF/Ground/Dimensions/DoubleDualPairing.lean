@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 /-! # Double-dual pairings
 
 Tensor pairings satisfy the triangle identities and give the double-dual evaluation and coevaluation laws.
+
+## Main results
+
+* `tensorPairing_coevaluation_evaluation`: closes the middle pair of a tensor-product coevaluation.
+* `tensorPairing_evaluation_coevaluation`: gives the dual evaluation identity.
 -/
 
 @[expose] public noncomputable section

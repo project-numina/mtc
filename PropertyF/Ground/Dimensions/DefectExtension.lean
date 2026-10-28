@@ -11,6 +11,11 @@ public import PropertyF.Ground.Dimensions.TensorExtension
 /-! # Extending tensor-defect identities
 
 Duality, associativity and coevaluation identities extend root tensor-defect relations.
+
+## Main results
+
+* `rootTensorDefect_coevaluation`: relates the tensor defect to coevaluation.
+* `positive_spherical_of_nonunit_fourth_dual`: constructs a positive spherical structure from fourth-dual compatibility.
 -/
 
 @[expose] public noncomputable section

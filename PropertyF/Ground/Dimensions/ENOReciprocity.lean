@@ -13,6 +13,11 @@ public import PropertyF.Ground.Dimensions.ComplexSaturation
 /-! # Reciprocity and spherical dimensions
 
 Character duality, phase normalization and trace reciprocity control the dimensions of simple objects.
+
+## Main results
+
+* `pivotalDimension_dual_eq_conj`: identifies simple dimensions on duals with their complex conjugates.
+* `positive_spherical_of_matrix_identities`: uses trace matrix identities to construct a positive spherical structure.
 -/
 
 @[expose] public noncomputable section

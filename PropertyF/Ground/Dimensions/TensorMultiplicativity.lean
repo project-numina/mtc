@@ -5,6 +5,11 @@ public import PropertyF.Ground.Calculus.PartialTrace
 /-! # Tensor products of pivotal traces
 
 Partial traces establish multiplicativity of the pivotal trace on tensor products.
+
+## Main results
+
+* `rightTraceWith_partialTraceWith`: computes the total trace using an arbitrary double-dual partial trace.
+* `pivotalTrace_tensor`: proves multiplicativity of pivotal traces on tensor products.
 -/
 
 @[expose] public noncomputable section

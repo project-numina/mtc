@@ -8,6 +8,11 @@ public import PropertyF.Ground.Dimensions.PositiveCanonical
 /-! # Unit laws for dual tensor comparisons
 
 Right-dual and double-dual tensor comparisons are compatible with the unitors.
+
+## Main results
+
+* `rightDualTensorIso_unit_left`: relates the right-dual comparison to the left unitor.
+* `doubleDualTensorIso_unit_right`: establishes the corresponding right unit law for double duals.
 -/
 
 @[expose] public noncomputable section

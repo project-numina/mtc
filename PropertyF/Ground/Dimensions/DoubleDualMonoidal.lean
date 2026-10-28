@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
 /-! # Monoidality of the double dual
 
 Associativity of dual tensor comparisons gives the canonical monoidal double-dual functor.
+
+## Main results
+
+* `rightDualTensorIso_associativity`: proves associativity for the right-dual tensor comparison.
+* `doubleDualCoreMonoidal`: packages the double-dual comparison as monoidal data.
 -/
 
 @[expose] public noncomputable section

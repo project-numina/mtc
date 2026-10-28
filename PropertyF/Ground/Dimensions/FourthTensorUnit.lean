@@ -6,6 +6,11 @@ public import PropertyF.Ground.Dimensions.DefectNaturality
 /-! # Unit laws for the fourth-dual root
 
 The tensor unit and unit labels satisfy the coherence identities for the root tensor defect.
+
+## Main results
+
+* `rootTensorIso_unit_left`: computes the left unit component of the fourth-dual root comparison.
+* `rootTensorDefect_unit_right`: computes the tensor defect at the right unit.
 -/
 
 @[expose] public noncomputable section

@@ -7,6 +7,11 @@ public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 /-! # Traces on simple multiplicity spaces
 
 Partial traces and bases of simple multiplicity spaces describe tensor traces and matrix coefficients.
+
+## Main results
+
+* `rightQuantumTrace_tensor_scalar`: expresses tensor quantum traces as products of scalars.
+* `simpleInclusion`: constructs inclusion maps for a simple multiplicity space.
 -/
 
 @[expose] public noncomputable section

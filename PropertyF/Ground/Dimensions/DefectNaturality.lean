@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.RootDualLabel
 /-! # Naturality of tensor defects
 
 Naturality of the root tensor isomorphism and defect yields trace reciprocity identities.
+
+## Main results
+
+* `rootTensorIso_natural`: proves naturality of the tensor comparison for fourth-dual roots.
+* `rootTensorDefect_natural`: derives naturality of its defect.
 -/
 
 @[expose] public noncomputable section
