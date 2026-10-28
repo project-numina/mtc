@@ -10,20 +10,23 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+section
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+  [RigidCategory (CategoryTheory.Center D)]
+local notation "𝒵" => CategoryTheory.Center D
 
 /-- The sole remaining obstruction to lifting the pivotal structure is the
 half-braiding intertwining equation for the transported components. -/
-def PivotalComponentsCentral (p : Dimensions.PivotalStructure (C := C.Obj)) : Prop :=
-  ∀ (Z : CategoryTheory.Center C.Obj) (T : C.Obj),
+def PivotalComponentsCentral (p : Dimensions.PivotalStructure (C := D)) : Prop :=
+  ∀ (Z : 𝒵) (T : D),
     let u := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
     (u ▷ T) ≫ (((Zᘁ)ᘁ).2.β T).hom = (Z.2.β T).hom ≫ (T ◁ u)
 
 /-- Central transported components assemble into a pivotal structure on the
 actual centre; naturality, tensor and unit coherence are proved. -/
-def liftedPivotalStructure (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hc : PivotalComponentsCentral C p) :
-    Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj) where
+def liftedPivotalStructure (p : Dimensions.PivotalStructure (C := D))
+    (hc : PivotalComponentsCentral p) :
+    Dimensions.PivotalStructure (C := 𝒵) where
   iso Z := by
     let u := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
     let f : Z ⟶ ((Zᘁ)ᘁ) := ⟨u, hc Z⟩
@@ -45,29 +48,34 @@ def liftedPivotalStructure (p : Dimensions.PivotalStructure (C := C.Obj))
     all_goals rfl
 
 /-- The lifted component agrees with the original pivotal component. -/
-theorem liftedPivotalStructure_compatible (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hc : PivotalComponentsCentral C p) (Z : CategoryTheory.Center C.Obj) :
-    ((liftedPivotalStructure C p hc).iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom =
+theorem liftedPivotalStructure_compatible (p : Dimensions.PivotalStructure (C := D))
+    (hc : PivotalComponentsCentral p) (Z : 𝒵) :
+    ((liftedPivotalStructure p hc).iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom =
       (p.iso Z.1).hom := by
   simp [liftedPivotalStructure, Category.assoc]
+
+end
+
+variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+local notation "𝒵" => CategoryTheory.Center C.Obj
 
 /-- Centrality of the transported pivotal components yields centre fusion,
 positive sphericality, pseudo-unitarity and the categorical dimension square. -/
 theorem center_structure_of_pivotal_centrality
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
-    (hc : PivotalComponentsCentral C p) :
-    ∃ hFusion : IsFusionCategory (CategoryTheory.Center C.Obj),
+    (hc : PivotalComponentsCentral p) :
+    ∃ hFusion : IsFusionCategory (𝒵),
       letI := hFusion
-      let pZ := liftedPivotalStructure C p hc
+      let pZ := liftedPivotalStructure p hc
       pZ.IsSpherical ∧
       (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
         (simples (Integrate.bundledCenter C) i) =
           (fpSimple (Integrate.bundledCenter C) i : ℂ)) ∧
       PseudoUnitary (Integrate.bundledCenter C) ∧
       globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
-  center_structure_of_compatible_pivotal C p hsimple (liftedPivotalStructure C p hc)
-    (liftedPivotalStructure_compatible C p hc)
+  center_structure_of_compatible_pivotal C p hsimple (liftedPivotalStructure p hc)
+    (liftedPivotalStructure_compatible p hc)
 
 end PropertyF.Ground.CentreInduction
 
@@ -80,30 +88,31 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Functor.LaxMo
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [RightRigidCategory D] [RigidCategory (CategoryTheory.Center D)]
 
 /-- The positive centre embedding preserves right duals up to the canonical isomorphism. -/
-def positiveDualIso (T : C.Obj) :
-    ((CategoryTheory.Center.ofBraided C.Obj).obj T)ᘁ ≅
-      (CategoryTheory.Center.ofBraided C.Obj).obj (Tᘁ) :=
+def positiveDualIso (T : D) :
+    ((CategoryTheory.Center.ofBraided D).obj T)ᘁ ≅
+      (CategoryTheory.Center.ofBraided D).obj (Tᘁ) :=
   rightDualIso HasRightDual.exact (Centre.positiveExactPairing T (Tᘁ))
 
-theorem positiveDualIso_forget (T : C.Obj) :
-    (positiveDualIso C T).hom.f =
-      (forgetDualIso ((CategoryTheory.Center.ofBraided C.Obj).obj T)).hom := by
-  let F := CategoryTheory.Center.ofBraided C.Obj
-  have hc : (@ExactPairing.coevaluation (CategoryTheory.Center C.Obj) _ _ (F.obj T) (F.obj (Tᘁ))
+theorem positiveDualIso_forget (T : D) :
+    (positiveDualIso T).hom.f =
+      (forgetDualIso ((CategoryTheory.Center.ofBraided D).obj T)).hom := by
+  let F := CategoryTheory.Center.ofBraided D
+  have hc : (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _ (F.obj T) (F.obj (Tᘁ))
       (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) := by
     change (ε F ≫ F.map (η_ T (Tᘁ)) ≫ δ F T (Tᘁ)).f = _
     simp [F]
-  change (@ExactPairing.coevaluation (CategoryTheory.Center C.Obj) _ _
-    ((CategoryTheory.Center.ofBraided C.Obj).obj T) ((CategoryTheory.Center.ofBraided C.Obj).obj (Tᘁ))
+  change (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _
+    ((CategoryTheory.Center.ofBraided D).obj T) ((CategoryTheory.Center.ofBraided D).obj (Tᘁ))
     (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) at hc
-  have hc' : (@ExactPairing.coevaluation (CategoryTheory.Center C.Obj) _ _
-      ((CategoryTheory.Center.ofBraided C.Obj).obj T) ((CategoryTheory.Center.ofBraided C.Obj).obj (Tᘁ))
+  have hc' : (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _
+      ((CategoryTheory.Center.ofBraided D).obj T) ((CategoryTheory.Center.ofBraided D).obj (Tᘁ))
       (Centre.positiveExactPairing T (Tᘁ))).f =
-      η_ ((CategoryTheory.Center.ofBraided C.Obj).obj T).1
-        (((CategoryTheory.Center.ofBraided C.Obj).obj T).1ᘁ) := by
+      η_ ((CategoryTheory.Center.ofBraided D).obj T).1
+        (((CategoryTheory.Center.ofBraided D).obj T).1ᘁ) := by
     convert hc using 1; rfl
   unfold positiveDualIso forgetDualIso rightDualIso rightAdjointMate
   simp only [CategoryTheory.Center.comp_f, CategoryTheory.Center.rightUnitor_inv_f,
@@ -113,31 +122,31 @@ theorem positiveDualIso_forget (T : C.Obj) :
   rfl
 
 /-- The comparison between the double duals of an object and its positive lift. -/
-def positiveDoubleDualIso (T : C.Obj) :
-    (((CategoryTheory.Center.ofBraided C.Obj).obj T)ᘁ)ᘁ ≅
-      (CategoryTheory.Center.ofBraided C.Obj).obj ((Tᘁ)ᘁ) :=
-  Dimensions.rightDualIsoMap (positiveDualIso C T).symm ≪≫ positiveDualIso C (Tᘁ)
+def positiveDoubleDualIso (T : D) :
+    (((CategoryTheory.Center.ofBraided D).obj T)ᘁ)ᘁ ≅
+      (CategoryTheory.Center.ofBraided D).obj ((Tᘁ)ᘁ) :=
+  Dimensions.rightDualIsoMap (positiveDualIso T).symm ≪≫ positiveDualIso (Tᘁ)
 
-theorem positiveDualIso_inv_forget (T : C.Obj) :
-    (positiveDualIso C T).inv.f =
-      (forgetDualIso ((CategoryTheory.Center.ofBraided C.Obj).obj T)).inv := by
-  apply (cancel_mono (forgetDualIso ((CategoryTheory.Center.ofBraided C.Obj).obj T)).hom).1
+theorem positiveDualIso_inv_forget (T : D) :
+    (positiveDualIso T).inv.f =
+      (forgetDualIso ((CategoryTheory.Center.ofBraided D).obj T)).inv := by
+  apply (cancel_mono (forgetDualIso ((CategoryTheory.Center.ofBraided D).obj T)).hom).1
   rw [Iso.inv_hom_id]
-  rw [← positiveDualIso_forget C T, ← CategoryTheory.Center.comp_f, Iso.inv_hom_id]
+  rw [← positiveDualIso_forget T, ← CategoryTheory.Center.comp_f, Iso.inv_hom_id]
   rfl
 
-theorem positiveDoubleDualIso_forget (T : C.Obj) :
-    (positiveDoubleDualIso C T).hom.f =
-      (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided C.Obj).obj T)).hom := by
-  let F := CategoryTheory.Center.ofBraided C.Obj
+theorem positiveDoubleDualIso_forget (T : D) :
+    (positiveDoubleDualIso T).hom.f =
+      (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided D).obj T)).hom := by
+  let F := CategoryTheory.Center.ofBraided D
   let Z := F.obj T
-  let e := positiveDualIso C T
+  let e := positiveDualIso T
   have hnat := forgetDualIso_natural e.inv
-  have hi := positiveDualIso_inv_forget C T
-  have ho := positiveDualIso_forget C (Tᘁ)
+  have hi := positiveDualIso_inv_forget T
+  have ho := positiveDualIso_forget (Tᘁ)
   simp only [positiveDoubleDualIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap, CategoryTheory.Center.comp_f, forgetDoubleDualIso]
-  change (e.invᘁ).f ≫ (positiveDualIso C (Tᘁ)).hom.f =
+  change (e.invᘁ).f ≫ (positiveDualIso (Tᘁ)).hom.f =
     (forgetDualIso (Zᘁ)).hom ≫ (forgetDualIso Z).invᘁ
   rw [ho]
   change (e.invᘁ).f ≫ (forgetDualIso (F.obj (Tᘁ))).hom = _
@@ -146,23 +155,23 @@ theorem positiveDoubleDualIso_forget (T : C.Obj) :
   rw [hnat, hi]
 
 
-theorem positiveDoubleDualIso_inv_forget (T : C.Obj) :
-    (positiveDoubleDualIso C T).inv.f =
-      (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided C.Obj).obj T)).inv := by
-  apply (cancel_mono (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided C.Obj).obj T)).hom).1
+theorem positiveDoubleDualIso_inv_forget (T : D) :
+    (positiveDoubleDualIso T).inv.f =
+      (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided D).obj T)).inv := by
+  apply (cancel_mono (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided D).obj T)).hom).1
   rw [Iso.inv_hom_id]
-  rw [← positiveDoubleDualIso_forget C T, ← CategoryTheory.Center.comp_f, Iso.inv_hom_id]
+  rw [← positiveDoubleDualIso_forget T, ← CategoryTheory.Center.comp_f, Iso.inv_hom_id]
   rfl
 
 /-- The pivotal component transported to the positive centre lift. -/
-def positivePivotalComponent (p : Dimensions.PivotalStructure (C := C.Obj)) (T : C.Obj) :
-    (CategoryTheory.Center.ofBraided C.Obj).obj T ≅
-      (((CategoryTheory.Center.ofBraided C.Obj).obj T)ᘁ)ᘁ :=
-  (CategoryTheory.Center.ofBraided C.Obj).mapIso (p.iso T) ≪≫ (positiveDoubleDualIso C T).symm
+def positivePivotalComponent (p : Dimensions.PivotalStructure (C := D)) (T : D) :
+    (CategoryTheory.Center.ofBraided D).obj T ≅
+      (((CategoryTheory.Center.ofBraided D).obj T)ᘁ)ᘁ :=
+  (CategoryTheory.Center.ofBraided D).mapIso (p.iso T) ≪≫ (positiveDoubleDualIso T).symm
 
-theorem positivePivotalComponent_forget (p : Dimensions.PivotalStructure (C := C.Obj)) (T : C.Obj) :
-    (positivePivotalComponent C p T).hom.f = (p.iso T).hom ≫
-      (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided C.Obj).obj T)).inv := by
+theorem positivePivotalComponent_forget (p : Dimensions.PivotalStructure (C := D)) (T : D) :
+    (positivePivotalComponent p T).hom.f = (p.iso T).hom ≫
+      (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided D).obj T)).inv := by
   simp [positivePivotalComponent, positiveDoubleDualIso_inv_forget]
 
 end PropertyF.Ground.CentreInduction

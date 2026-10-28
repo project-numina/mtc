@@ -8,10 +8,11 @@ public import PropertyF.Ground.Dimensions.Pivotal
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The unit-labelled summand is isomorphic to the middle object. -/
-def unitSummandIso (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+def unitSummandIso (X : C.Obj) :
     (simples C (unitIndex C) ⊗ X) ⊗ (simples C (unitIndex C))ᘁ ≅ X := by
   let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   let d : (simples C (unitIndex C))ᘁ ≅ 𝟙_ C.Obj :=
@@ -21,7 +22,7 @@ def unitSummandIso (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Every object is a retract of its underlying induction sum through the
 unit-labelled component. -/
-def unitSummandRetract (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+def unitSummandRetract (X : C.Obj) :
     Retract X (underlying C X) where
   i := (unitSummandIso C X).inv ≫ biproduct.ι (fun i : Fin (rank C) => (simples C i ⊗ X) ⊗ (simples C i)ᘁ) (unitIndex C)
   r := biproduct.π (fun i : Fin (rank C) => (simples C i ⊗ X) ⊗ (simples C i)ᘁ) (unitIndex C) ≫ (unitSummandIso C X).hom
@@ -38,7 +39,7 @@ theorem tensor_middle_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit summand isomorphism is natural in the middle factor. -/
-theorem unitSummandIso_natural (C : BraidedFusionCategory.{v,u})
+theorem unitSummandIso_natural
     {X Y : C.Obj} (f : X ⟶ Y) :
     ((simples C (unitIndex C) ◁ f) ▷ (simples C (unitIndex C))ᘁ) ≫
         (unitSummandIso C Y).hom = (unitSummandIso C X).hom ≫ f := by
@@ -59,7 +60,7 @@ theorem unitSummandIso_natural (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-summand projection is natural. This is the candidate underlying
 counit for the centre-forgetful right adjunction. -/
-def underlyingCounit (C : BraidedFusionCategory.{v,u}) : underlyingFunctor C ⟶ 𝟭 C.Obj where
+def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
   app X := (unitSummandRetract C X).r
   naturality {X Y} f := by
     dsimp only [underlyingFunctor, unitSummandRetract, Functor.id_map]

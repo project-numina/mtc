@@ -66,10 +66,12 @@ theorem crossingBlock_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A split crossing block is independent of the chosen splitting of a simple. -/
-theorem crossingBlock_of_simple_split (X T : C.Obj) {R S : C.Obj} [Simple R]
+theorem crossingBlock_of_simple_split {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D]
+    [MonoidalLinear ℂ D] [HasKernels D] (X T : D) {R S : D} [Simple R]
+    [FiniteDimensional ℂ (R ⟶ R)]
     (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
     crossingBlock X T R S g f = crossingBlock X T R S e.hom e.inv := by
-  let : FiniteDimensional ℂ (R ⟶ R) := IsFusionCategory.hom_finite _ _
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ e.inv)
   obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (e.hom ≫ f)
   have hg : g = c • e.hom := by
@@ -89,11 +91,14 @@ theorem crossingBlock_of_simple_split (X T : C.Obj) {R S : C.Obj} [Simple R]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- For a simple object, any splitting gives the same unit crossing block. -/
-theorem crossingBlock_unit_of_split (X : C.Obj) {S : C.Obj} [Simple S]
-    (g : S ⟶ (𝟙_ C.Obj) ⊗ S) (f : (𝟙_ C.Obj) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
-    crossingBlock X (𝟙_ C.Obj) S S g f =
+theorem crossingBlock_unit_of_split {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D]
+    [MonoidalLinear ℂ D] [HasKernels D] (X : D) {S : D} [Simple S]
+    [FiniteDimensional ℂ (S ⟶ S)]
+    (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
+    crossingBlock X (𝟙_ D) S S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  rw [crossingBlock_of_simple_split C X (𝟙_ C.Obj) (λ_ S).symm g f h]
+  rw [crossingBlock_of_simple_split X (𝟙_ D) (λ_ S).symm g f h]
   exact crossingBlock_unit X S
 
 set_option backward.isDefEq.respectTransparency false in
@@ -128,7 +133,8 @@ theorem crossingCandidate_unit (X : C.Obj) :
       omega
     rw [Finset.sum_eq_single a]
     · let : Simple (simples C i) := simples_simple C i
-      rw [crossingBlock_unit_of_split C X
+      let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+      rw [crossingBlock_unit_of_split X
         (crossingInclusion C (𝟙_ C.Obj) i i a) (crossingProjection C (𝟙_ C.Obj) i i a)
         (crossingInclusion_projection C (𝟙_ C.Obj) i i a)]
       change ((ρ_ (V i)).hom ≫ (λ_ (V i)).inv) ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) =

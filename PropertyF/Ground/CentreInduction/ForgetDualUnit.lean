@@ -9,9 +9,10 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (CategoryTheory.Center D)]
+local notation "𝒵" => CategoryTheory.Center D
 
 /-- The inverse tensor comparison commutes with the forgotten dual isomorphisms. -/
-private theorem forgetDualIso_tensor_inv (X Y : CategoryTheory.Center D) :
+private theorem forgetDualIso_tensor_inv (X Y : 𝒵) :
     (rightDualTensorIso X Y).inv.f ≫ (forgetDualIso (X ⊗ Y)).hom =
       ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) ≫
         (rightDualTensorIso X.1 Y.1).inv := by
@@ -21,7 +22,7 @@ private theorem forgetDualIso_tensor_inv (X Y : CategoryTheory.Center D) :
   simp [← CategoryTheory.Center.comp_f, ← Category.assoc]
 
 /-- Taking mates of the tensor comparison also preserves its inverse. -/
-private theorem forgetDualIso_tensor_mate_inv (X Y : CategoryTheory.Center D) :
+private theorem forgetDualIso_tensor_mate_inv (X Y : 𝒵) :
     (rightDualTensorIso X Y).hom.fᘁ ≫ (forgetDualIso (X ⊗ Y)).invᘁ =
       (((forgetDualIso Y).inv ⊗ₘ (forgetDualIso X).inv)ᘁ) ≫
         (rightDualTensorIso X.1 Y.1).homᘁ := by
@@ -46,7 +47,7 @@ private theorem forgetDualIso_tensor_mate_inv (X Y : CategoryTheory.Center D) :
   rw [← Category.assoc, he, Category.id_comp]
   simp
 
-omit [RigidCategory (CategoryTheory.Center D)] in
+omit [RigidCategory (𝒵)] in
 /-- The inverse right-dual tensor comparison is natural in both arguments. -/
 private theorem rightDualTensorIso_inv_natural {A A' B B' : D}
     (f : A ⟶ A') (g : B ⟶ B') :
@@ -58,7 +59,7 @@ private theorem rightDualTensorIso_inv_natural {A A' B B' : D}
   simp
 
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
-theorem forgetDoubleDualIso_tensor (X Y : CategoryTheory.Center D) :
+theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
     (Dimensions.doubleDualTensorIso X Y).hom.f ≫ (forgetDoubleDualIso (X ⊗ Y)).hom =
       ((forgetDoubleDualIso X).hom ⊗ₘ (forgetDoubleDualIso Y).hom) ≫
         (Dimensions.doubleDualTensorIso X.1 Y.1).hom := by
@@ -76,7 +77,7 @@ theorem forgetDoubleDualIso_tensor (X Y : CategoryTheory.Center D) :
 
 /-- The transported pivotal components satisfy the tensor law after forgetting. -/
 theorem transported_pivotal_tensor
-    (p : Dimensions.PivotalStructure (C := D)) (X Y : CategoryTheory.Center D) :
+    (p : Dimensions.PivotalStructure (C := D)) (X Y : 𝒵) :
     (((p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv) ⊗ₘ
       ((p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv)) ≫
       (Dimensions.doubleDualTensorIso X Y).hom.f =
@@ -100,16 +101,17 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (CategoryTheory.Center D)]
+local notation "𝒵" => CategoryTheory.Center D
 
 omit [RightRigidCategory D] in
 /-- The right-dual unit comparison is preserved by centre forget. -/
 theorem forget_rightDualUnitIso :
-    (Dimensions.rightDualUnitIso (C := CategoryTheory.Center D)).hom.f =
-      (rightDualIso (forgetPairing (𝟙_ (CategoryTheory.Center D)))
+    (Dimensions.rightDualUnitIso (C := 𝒵)).hom.f =
+      (rightDualIso (forgetPairing (𝟙_ (𝒵)))
         (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).hom := by
-  have hc : (η_ (𝟙_ (CategoryTheory.Center D)) (𝟙_ (CategoryTheory.Center D))).f =
-      (ρ_ (𝟙_ (CategoryTheory.Center D)).1).inv := by
-    change (ρ_ (𝟙_ (CategoryTheory.Center D))).inv.f = _
+  have hc : (η_ (𝟙_ (𝒵)) (𝟙_ (𝒵))).f =
+      (ρ_ (𝟙_ (𝒵)).1).inv := by
+    change (ρ_ (𝟙_ (𝒵))).inv.f = _
     exact CategoryTheory.Center.rightUnitor_inv_f _
   unfold Dimensions.rightDualUnitIso rightDualIso rightAdjointMate
   simp only [CategoryTheory.Center.comp_f, CategoryTheory.Center.rightUnitor_inv_f,
@@ -119,21 +121,21 @@ theorem forget_rightDualUnitIso :
   rfl
 
 theorem forgetDualIso_unit :
-    (forgetDualIso (𝟙_ (CategoryTheory.Center D))).hom ≫
+    (forgetDualIso (𝟙_ (𝒵))).hom ≫
       (Dimensions.rightDualUnitIso (C := D)).hom =
-    (Dimensions.rightDualUnitIso (C := CategoryTheory.Center D)).hom.f := by
+    (Dimensions.rightDualUnitIso (C := 𝒵)).hom.f := by
   rw [forget_rightDualUnitIso]
-  exact rightDualIso_trans (forgetPairing (𝟙_ (CategoryTheory.Center D)))
+  exact rightDualIso_trans (forgetPairing (𝟙_ (𝒵)))
     HasRightDual.exact (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))
 
 theorem forgetDoubleDualIso_unit :
-    (Dimensions.doubleDualUnitIso (C := CategoryTheory.Center D)).hom.f ≫
-      (forgetDoubleDualIso (𝟙_ (CategoryTheory.Center D))).hom =
+    (Dimensions.doubleDualUnitIso (C := 𝒵)).hom.f ≫
+      (forgetDoubleDualIso (𝟙_ (𝒵))).hom =
     (Dimensions.doubleDualUnitIso (C := D)).hom := by
-  let U := 𝟙_ (CategoryTheory.Center D)
+  let U := 𝟙_ (𝒵)
   let : HasRightDual U := RightRigidCategory.rightDual U
   let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
-  let e := Dimensions.rightDualUnitIso (C := CategoryTheory.Center D)
+  let e := Dimensions.rightDualUnitIso (C := 𝒵)
   let b := Dimensions.rightDualUnitIso (C := D)
   have hu : (forgetDualIso U).hom ≫ b.hom = e.hom.f := forgetDualIso_unit (D := D)
   have hv : e.inv.f ≫ (forgetDualIso U).hom = b.inv := by
@@ -158,9 +160,9 @@ theorem forgetDoubleDualIso_unit :
 /-- Transported pivotal components preserve the tensor unit after forgetting. -/
 theorem transported_pivotal_unit (p : Dimensions.PivotalStructure (C := D)) :
     (p.iso (𝟙_ D)).hom ≫
-      (forgetDoubleDualIso (𝟙_ (CategoryTheory.Center D))).inv =
-    (Dimensions.doubleDualUnitIso (C := CategoryTheory.Center D)).hom.f := by
-  apply (cancel_mono (forgetDoubleDualIso (𝟙_ (CategoryTheory.Center D))).hom).1
+      (forgetDoubleDualIso (𝟙_ (𝒵))).inv =
+    (Dimensions.doubleDualUnitIso (C := 𝒵)).hom.f := by
+  apply (cancel_mono (forgetDoubleDualIso (𝟙_ (𝒵))).hom).1
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
   rw [forgetDoubleDualIso_unit, p.unit]
 

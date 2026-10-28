@@ -9,6 +9,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 set_option backward.isDefEq.respectTransparency false in
@@ -62,7 +63,7 @@ theorem crossingBlock_pre_test {D : Type u} [Category.{v} D] [MonoidalCategory D
 
 /-- Summing the crossing blocks removes the dependence on the chosen fusion
 basis, so a map of test objects can pass through each matrix entry. -/
-theorem crossingBlock_sum_natural_test (C : BraidedFusionCategory.{v,u})
+theorem crossingBlock_sum_natural_test
     (X T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
     (∑ b, (((simples C i ⊗ X) ⊗ (simples C i)ᘁ) ◁ h) ≫
       crossingBlock X U (simples C i) (simples C j)
@@ -76,7 +77,7 @@ theorem crossingBlock_sum_natural_test (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction crossing is natural in the crossed object. -/
-theorem crossingCandidate_natural_test (C : BraidedFusionCategory.{v,u})
+theorem crossingCandidate_natural_test
     (X : C.Obj) {T U : C.Obj} (h : T ⟶ U) :
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by

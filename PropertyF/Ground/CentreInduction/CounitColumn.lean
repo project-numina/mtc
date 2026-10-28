@@ -98,7 +98,8 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom := by
     rw [Finset.sum_eq_single a]
     · let : Simple (simples C i) := simples_simple C i
-      exact crossingBlock_of_simple_split C X (simples C i)
+      let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+      exact crossingBlock_of_simple_split X (simples C i)
         (simpleTensorUnitIso C i).symm _ _ (crossingInclusion_projection C (simples C i) i (unitIndex C) a)
     · intro b _ hne
       exact (hne (ha b)).elim
