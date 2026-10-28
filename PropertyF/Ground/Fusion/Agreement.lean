@@ -41,11 +41,10 @@ theorem positive_matrix_eigenspace_unique [Nonempty ι]
       simp only [smul_smul, mul_comm]
     simpa only [Matrix.mulVec, dotProduct, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hzero,
       mul_zero] using congrFun he i
-  have hall (j : ι) : y j - c * x j = 0 :=
-    (mul_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg
+  refine ⟨c, funext fun j ↦ sub_eq_zero.mp ?_⟩
+  exact (mul_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg
       (fun j _ => mul_nonneg (hA i j).le (hnonneg j))).mp hsum j
         (Finset.mem_univ j))).resolve_left (ne_of_gt (hA i j))
-  exact ⟨c, funext fun j ↦ sub_eq_zero.mp (hall j)⟩
 
 /-- Positive eigenvectors of a positive symmetric matrix agree when normalized
 at the same coordinate, even when their eigenvalues are initially different. -/
@@ -317,16 +316,15 @@ theorem exists_positive_common_eigenvector :
       ∀ i, ∃ d : ℝ, characterMatrix D i *ᵥ v = d • v := by
   classical
   let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
-  have hs : (totalFusionMatrix D).IsHermitian := Matrix.isHermitian_iff_isSymm.mpr
-    (Matrix.IsSymm.ext fun j k => totalFusionMatrix_symmetric D k j)
   obtain ⟨a, v, hvpos, hve⟩ := positive_symmetric_matrix_has_positive_eigenvector
-    hs (totalFusionMatrix_pos D)
+    (Matrix.isHermitian_iff_isSymm.mpr (Matrix.IsSymm.ext fun j k ↦
+      totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)
   refine ⟨v, hvpos, ?_⟩
   intro i
-  have hcomm := total_commutes_characterMatrix D i
   have hve' : totalFusionMatrix D *ᵥ (characterMatrix D i *ᵥ v) =
       a • (characterMatrix D i *ᵥ v) := by
-    rw [Matrix.mulVec_mulVec, hcomm.eq, ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul]
+    rw [Matrix.mulVec_mulVec, (total_commutes_characterMatrix D i).eq,
+      ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul]
   exact positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve hve'
 
 /-- A positive normalized character exists for the actual fusion rules. -/
@@ -411,23 +409,19 @@ theorem weighted_eigenvalue_bound {K : Type*} [NormedRing K] [NormMulClass K]
   let r := ‖v i‖ / f i
   have hvi : 0 < ‖v i‖ := (div_pos_iff_of_pos_right (hf i)).1 <|
     lt_of_lt_of_le (div_pos (norm_pos_iff.mpr hv) (hf i₀)) (hmax i₀ (Finset.mem_univ _))
-  have hvbound (j : ι) : ‖v j‖ ≤ r * f j := by
-    apply (div_le_iff₀ (hf j)).1
-    exact hmax j (Finset.mem_univ _)
-  have hbound : ‖z‖ * ‖v i‖ ≤ F * ‖v i‖ := by
-    calc
-      _ = ‖∑ j, T i j * v j‖ := by rw [heig i, norm_mul]
-      _ ≤ ∑ j, ‖T i j * v j‖ := by simpa using norm_sum_le Finset.univ (fun j => T i j * v j)
-      _ ≤ ∑ j, N i j * (r * f j) := Finset.sum_le_sum fun j _ ↦ by
-        rw [norm_mul]
-        exact mul_le_mul (hdom i j) (hvbound j) (norm_nonneg _) (hN i j)
-      _ = r * (∑ j, N i j * f j) := by
-        simp only [Finset.mul_sum, mul_left_comm]
-      _ = F * ‖v i‖ := by
-        rw [hfp i]
-        dsimp [r]
-        field_simp [ne_of_gt (hf i)]
-  exact le_of_mul_le_mul_right hbound hvi
+  apply le_of_mul_le_mul_right _ hvi
+  calc
+    _ = ‖∑ j, T i j * v j‖ := by rw [heig i, norm_mul]
+    _ ≤ ∑ j, ‖T i j * v j‖ := by simpa using norm_sum_le Finset.univ (fun j ↦ T i j * v j)
+    _ ≤ ∑ j, N i j * (r * f j) := Finset.sum_le_sum fun j _ ↦ by
+      rw [norm_mul]
+      exact mul_le_mul (hdom i j) ((div_le_iff₀ (hf j)).1 (hmax j (Finset.mem_univ _)))
+        (norm_nonneg _) (hN i j)
+    _ = r * (∑ j, N i j * f j) := by simp only [Finset.mul_sum, mul_left_comm]
+    _ = F * ‖v i‖ := by
+      rw [hfp i]
+      dsimp [r]
+      field_simp [ne_of_gt (hf i)]
 
 end PropertyF.Ground.Dimensions
 
