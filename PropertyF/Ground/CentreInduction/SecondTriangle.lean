@@ -101,7 +101,7 @@ theorem crossingUnitBlock_eval (X T : C.Obj) {A : C.Obj} (e : A ≅ 𝟙_ C.Obj)
   let us : (A ⊗ X) ⊗ Aᘁ ≅ X := ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ X
   let te : T ⊗ A ≅ T := whiskerLeftIso T e ≪≫ ρ_ T
-  crossingBlock C X T T A te.inv te.hom ≫ (T ◁ us.hom) =
+  crossingBlock X T T A te.inv te.hom ≫ (T ◁ us.hom) =
     𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
   dsimp only
   let d : Aᘁ ⟶ 𝟙_ C.Obj := (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom
@@ -193,7 +193,7 @@ theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
   rw [hc] at h
   let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   have hb := crossingUnitBlock_eval C X (simples C i) e
-  change crossingBlock C X (simples C i) (simples C i) (simples C (unitIndex C))
+  change crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
       (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
         (simples C i ◁ (unitSummandIso C X).hom) = _ at hb
   rw [hb] at h

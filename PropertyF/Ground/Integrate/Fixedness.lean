@@ -1,5 +1,6 @@
 module
-public import PropertyF.GaloisSymmetry
+public import Mathlib.Analysis.Complex.Basic
+public import Mathlib.Tactic
 
 /-! Numerical part of the paper's Galois fixedness argument, independent of
 any of the old input structures. The remaining hypotheses describe the real
@@ -7,6 +8,28 @@ conjugate bounds and the numerical witness supplied by the centre and rigidity
 arguments. -/
 
 @[expose] public noncomputable section
+
+namespace PropertyF
+
+/-- The final strict-inequality contradiction, including the inverse Galois
+transport of the positive dimension ratio. Lemma 3.2 supplies `hrigidity`.
+No assertion about all conjugates is assumed here. -/
+theorem galois_dimension_contradiction {δ δσ δτ f d : ℝ}
+    (σ : ℂ ≃+* ℂ) (hδ : 0 < δ) (hδσ : 0 < δσ) (hlt : δσ < δ)
+    (hδτ : σ (δτ : ℂ) = (δ : ℂ)) (hσδ : σ (δ : ℂ) = (δσ : ℂ))
+    (hσf : σ (f : ℂ) = (d : ℂ)) (hratio : f * δτ = δ)
+    (hf : 1 ≤ f) (hrigidity : f = |d|) : False := by
+  have ht := congrArg σ (show (f : ℂ) * (δτ : ℂ) = (δ : ℂ) by exact_mod_cast hratio)
+  rw [map_mul, hδτ, hσδ, hσf] at ht
+  have hreal : d * δ = δσ := by exact_mod_cast ht
+  have hd : 0 < d := by nlinarith
+  have hdlt : d < 1 := by nlinarith
+  rw [abs_of_pos hd] at hrigidity
+  linarith
+
+
+end PropertyF
+
 namespace PropertyF.Ground
 
 /-- The squared Galois dimension identity gives the positive ratio used by

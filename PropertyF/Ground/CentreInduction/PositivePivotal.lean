@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.CentreInduction.ForgetDualUnit
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
-public import PropertyF.Ground.Centre.ImageDuals
+public import PropertyF.Ground.Centre.Product
 
 section
 /-! Lift a pivotal structure once its transported components are central. -/

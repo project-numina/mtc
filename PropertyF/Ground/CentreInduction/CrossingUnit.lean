@@ -60,7 +60,7 @@ theorem closeFusionMap_unit (S : C.Obj) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical unit crossing block is the unitor comparison. -/
 theorem crossingBlock_unit (X S : C.Obj) :
-  crossingBlock C X (𝟙_ C.Obj) S S (λ_ S).inv (λ_ S).hom =
+  crossingBlock X (𝟙_ C.Obj) S S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
   dsimp only [crossingBlock]
   rw [closeFusionMap_unit C S]
@@ -71,7 +71,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- For a simple object, any splitting gives the same unit crossing block. -/
 theorem crossingBlock_unit_of_split (X : C.Obj) {S : C.Obj} [Simple S]
     (g : S ⟶ (𝟙_ C.Obj) ⊗ S) (f : (𝟙_ C.Obj) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
-    crossingBlock C X (𝟙_ C.Obj) S S g f =
+    crossingBlock X (𝟙_ C.Obj) S S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
   let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ (λ_ S).hom)
@@ -85,7 +85,7 @@ theorem crossingBlock_unit_of_split (X : C.Obj) {S : C.Obj} [Simple S]
     have hh := h
     rw [hg, hf] at hh
     simpa [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using hh
-  change mixedCrossingBilinear C X (𝟙_ C.Obj) (𝟙_ C.Obj) S S g f = _
+  change mixedCrossingBilinear X (𝟙_ C.Obj) (𝟙_ C.Obj) S S g f = _
   rw [hg, hf]
   simp only [map_smul, LinearMap.smul_apply, smul_smul]
   rw [mul_comm d c, hcd, one_smul]

@@ -9,7 +9,6 @@ public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Cabling.Strands
-public import PropertyF.Ground.Cabling.Pure
 
 
 
@@ -31,7 +30,6 @@ public import PropertyF.Ground.Cabling.Pure
 import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
 import all PropertyF.Ground.Integrate.DrinfeldComplete
-import all PropertyF.Ground.CentreCabling.TwistDual
 import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.Integrate.PivotalBalancedReduction
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
@@ -57,10 +55,7 @@ import all PropertyF.Ground.Dimensions.DoubleDualBraiding
 import all PropertyF.Ground.Dimensions.DualBraiding
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
-import all PropertyF.Ground.CentreRigid.Evaluation
-import all PropertyF.Ground.CentreRigid.Coevaluation
-import all PropertyF.Ground.CentreRigid.MateExplicit
-import all PropertyF.Ground.CentreRigid.Tensor
+import all PropertyF.Ground.Centre.Rigid
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
 import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.ImageCore
@@ -89,7 +84,6 @@ import all PropertyF.Ground.CentreInduction.Representatives
 import all PropertyF.Ground.CentreInduction.SecondTriangle
 import all PropertyF.Ground.CentreInduction.UnitSummand
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
-import all PropertyF.Ground.CentreRigid.MateEquations
 import all PropertyF.Ground.Dimensions.CoevaluationSliding
 import all PropertyF.Ground.Dimensions.DefectNaturality
 import all PropertyF.Ground.Dimensions.DoubleDualMonoidal
@@ -105,14 +99,10 @@ import all PropertyF.Arithmetic
 import all PropertyF.Axioms
 import all PropertyF.BlockTrace
 import all PropertyF.BraidAlgebra
-import all PropertyF.Center
 import all PropertyF.CenterBasics
 import all PropertyF.Definitions
-import all PropertyF.GaloisRigidity
-import all PropertyF.GaloisSymmetry
 import all PropertyF.Ground.Cabling.Generated
 import all PropertyF.Ground.Cabling.Naturality
-import all PropertyF.Ground.Cabling.Pure
 import all PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.Cabling.UnitPower
 import all PropertyF.Ground.Calculus.BraidWeights
@@ -122,34 +112,21 @@ import all PropertyF.Ground.Calculus.OverlapCoherence
 import all PropertyF.Ground.Calculus.PartialTrace
 import all PropertyF.Ground.Calculus.PositiveWeights
 import all PropertyF.Ground.Calculus.RightStrand
-import all PropertyF.Ground.Calculus.StrandCoherence
 import all PropertyF.Ground.Calculus.TensorPowerCoherence
-import all PropertyF.Ground.Calculus.ThreeBraid
 import all PropertyF.Ground.Calculus.ThreeRigidity
 import all PropertyF.Ground.Calculus.ThreeTrace
-import all PropertyF.Ground.Calculus.Unitarization
 import all PropertyF.Ground.Calculus.UnitaryBlocks
 import all PropertyF.Ground.Centre.Abelian
-import all PropertyF.Ground.Centre.AlternatingImage
 import all PropertyF.Ground.Centre.Averaging
-import all PropertyF.Ground.Centre.Biproduct
-import all PropertyF.Ground.Centre.Cokernel
-import all PropertyF.Ground.Centre.FiniteClosure
-import all PropertyF.Ground.Centre.GeneratedClosure
-import all PropertyF.Ground.Centre.ImageDuals
-import all PropertyF.Ground.Centre.Kernel
-import all PropertyF.Ground.Centre.Basic
-import all PropertyF.Ground.Centre.Product
 import all PropertyF.Ground.Centre.ProductClosure
+import all PropertyF.Ground.Centre.Product
+import all PropertyF.Ground.Centre.Basic
 import all PropertyF.Ground.Centre.ProductImages
-import all PropertyF.Ground.Centre.ReverseBraiding
 import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.CentreInduction.Adjunction
 import all PropertyF.Ground.CentreInduction.Underlying
 import all PropertyF.Ground.CentreModular.InductionDimension
-import all PropertyF.Ground.CentreRigid.Lift
-import all PropertyF.Ground.CentreRigid.Unit
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.ComplexSaturation
 import all PropertyF.Ground.Dimensions.DimensionCharacter
@@ -216,9 +193,7 @@ import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.Verlinde
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Target
-import all PropertyF.Main
 import all PropertyF.PowerBound
-import all PropertyF.TraceBound
 import all PropertyF.UnitaryTrace
 
 /-! Scan all currently integrated project declarations, including the ground
@@ -267,8 +242,6 @@ run_cmd do
       unless n == ``PropertyF.StandardInputs do
         throwError "unexpected forbidden theorem fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
-  unless (findIssue env ``PropertyF.propertyF_implies_weaklyIntegral).isSome do
-    throwError "dependency audit did not reject the imported conditional theorem"
   for n in #[``PropertyF.Ground.TargetStatement,
       ``PropertyF.Ground.unit_algebraMap_bijective,
       ``PropertyF.Ground.weaklyIntegral_of_globalFPDimension_fixed,

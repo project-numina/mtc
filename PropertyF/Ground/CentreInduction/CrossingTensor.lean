@@ -43,27 +43,28 @@ theorem closeFusionMap_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossing blocks compose to the block of their composite fusion maps. -/
-theorem crossingBlock_tensor (X : C.Obj) {T U S K R : C.Obj}
+theorem crossingBlock_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    (X : D) {T U S K R : D}
     (g₁ : R ⟶ T ⊗ K) (g₂ : K ⟶ U ⊗ S)
     (f₁ : T ⊗ K ⟶ R) (f₂ : U ⊗ S ⟶ K) :
-  crossingBlock C X (T ⊗ U) R S (g₁ ≫ (T ◁ g₂) ≫ (α_ T U S).inv)
+  crossingBlock X (T ⊗ U) R S (g₁ ≫ (T ◁ g₂) ≫ (α_ T U S).inv)
       ((α_ T U S).hom ≫ (T ◁ f₂) ≫ f₁) =
-    𝟙 _ ⊗≫ (crossingBlock C X T R K g₁ f₁ ▷ U) ⊗≫
-      (T ◁ crossingBlock C X U K S g₂ f₂) ⊗≫ 𝟙 _ := by
+    𝟙 _ ⊗≫ (crossingBlock X T R K g₁ f₁ ▷ U) ⊗≫
+      (T ◁ crossingBlock X U K S g₂ f₂) ⊗≫ 𝟙 _ := by
   let q := closeFusionMap T K R f₁
   let z := closeFusionMap U S K f₂
   calc
-    _ = 𝟙 _ ⊗≫ (g₁ ▷ (X ⊗ (((Rᘁ : C.Obj) ⊗ T) ⊗ U))) ⊗≫
-      ((((T ◁ g₂) ▷ X) ▷ (((Rᘁ : C.Obj) ⊗ T) ⊗ U)) ≫
+    _ = 𝟙 _ ⊗≫ (g₁ ▷ (X ⊗ (((Rᘁ : D) ⊗ T) ⊗ U))) ⊗≫
+      ((((T ◁ g₂) ▷ X) ▷ (((Rᘁ : D) ⊗ T) ⊗ U)) ≫
         (((T ⊗ (U ⊗ S)) ⊗ X) ◁ (q ▷ U))) ⊗≫
       (((T ⊗ (U ⊗ S)) ⊗ X) ◁ z) ⊗≫ 𝟙 _ := by
         dsimp only [crossingBlock]
         rw [closeFusionMap_tensor]
         simp only [tensorHom_def, comp_whiskerRight]
         monoidal
-    _ = 𝟙 _ ⊗≫ (g₁ ▷ (X ⊗ (((Rᘁ : C.Obj) ⊗ T) ⊗ U))) ⊗≫
+    _ = 𝟙 _ ⊗≫ (g₁ ▷ (X ⊗ (((Rᘁ : D) ⊗ T) ⊗ U))) ⊗≫
       (((((T ⊗ K) ⊗ X) ◁ (q ▷ U))) ≫
-        (((T ◁ g₂) ▷ X) ▷ ((Kᘁ : C.Obj) ⊗ U))) ⊗≫
+        (((T ◁ g₂) ▷ X) ▷ ((Kᘁ : D) ⊗ U))) ⊗≫
       (((T ⊗ (U ⊗ S)) ⊗ X) ◁ z) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = _ := by
       dsimp only [crossingBlock]

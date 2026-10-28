@@ -60,7 +60,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unit_block (Z : CategoryTheory.Center C.Obj) {T S R : C.Obj}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (( (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫
-      ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock C Z.1 T R S g f =
+      ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock Z.1 T R S g f =
       𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ (f ≫ g) ▷ Sᘁ ⊗≫
         𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _ := by
   let q := closeFusionMap T S R f
@@ -147,7 +147,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
 theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
-    (unitComponent C Z p.1 ▷ T) ≫ crossingBlock C Z.1 T (simples C p.1) (simples C j)
+    (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C p.1) (simples C j)
       (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)) =
     (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
   classical
@@ -197,7 +197,7 @@ theorem unitCandidate_central (Z : CategoryTheory.Center C.Obj) (T : C.Obj) :
     rw [← whiskerLeft_comp, hcomp]
   have hl : (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T ≫ (T ◁ biproduct.π V j) =
       ∑ i, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
-        (unitComponent C Z i ▷ T) ≫ crossingBlock C Z.1 T (simples C i) (simples C j)
+        (unitComponent C Z i ▷ T) ≫ crossingBlock Z.1 T (simples C i) (simples C j)
           (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
     rw [unitCandidate_sum]
     simp only [sum_whiskerRight, Preadditive.sum_comp, comp_whiskerRight, Category.assoc]

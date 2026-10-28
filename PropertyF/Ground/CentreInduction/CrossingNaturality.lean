@@ -15,11 +15,12 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the output of a crossing block composes the
 fusion inclusion with that map. -/
 @[reassoc]
-theorem crossingBlock_post_test (C : BraidedFusionCategory.{v,u})
-    (X : C.Obj) {T U R S : C.Obj} (h : T ⟶ U)
+theorem crossingBlock_post_test {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+    (X : D) {T U R S : D} (h : T ⟶ U)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    crossingBlock C X T R S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
-      mixedCrossingBilinear C X T U R S (g ≫ (h ▷ S)) f := by
+    crossingBlock X T R S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
+      mixedCrossingBilinear X T U R S (g ≫ (h ▷ S)) f := by
   simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk,
     comp_whiskerRight, Category.assoc]
   monoidal
@@ -47,11 +48,12 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the input of a crossing block composes the
 fusion projection with that map. -/
 @[reassoc]
-theorem crossingBlock_pre_test (C : BraidedFusionCategory.{v,u})
-    (X : C.Obj) {T U R S : C.Obj} (h : T ⟶ U)
+theorem crossingBlock_pre_test {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+    (X : D) {T U R S : D} (h : T ⟶ U)
     (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
-    (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock C X U R S g f =
-      mixedCrossingBilinear C X T U R S g ((h ▷ S) ≫ f) := by
+    (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U R S g f =
+      mixedCrossingBilinear X T U R S g ((h ▷ S) ≫ f) := by
   simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk]
   rw [associator_naturality_right_assoc]
   simp only [tensorHom_def, Category.assoc]
@@ -63,14 +65,14 @@ basis, so a map of test objects can pass through each matrix entry. -/
 theorem crossingBlock_sum_natural_test (C : BraidedFusionCategory.{v,u})
     (X T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
     (∑ b, (((simples C i ⊗ X) ⊗ (simples C i)ᘁ) ◁ h) ≫
-      crossingBlock C X U (simples C i) (simples C j)
+      crossingBlock X U (simples C i) (simples C j)
         (crossingInclusion C U i j b) (crossingProjection C U i j b)) =
-    ∑ a, crossingBlock C X T (simples C i) (simples C j)
+    ∑ a, crossingBlock X T (simples C i) (simples C j)
       (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
         (h ▷ ((simples C j ⊗ X) ⊗ (simples C j)ᘁ)) := by
   simp_rw [crossingBlock_pre_test, crossingBlock_post_test]
   exact (fusionBasis_contraction_natural C i j (h ▷ simples C j)
-    (mixedCrossingBilinear C X T U (simples C i) (simples C j))).symm
+    (mixedCrossingBilinear X T U (simples C i) (simples C j))).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction crossing is natural in the crossed object. -/

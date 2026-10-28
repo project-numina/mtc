@@ -15,7 +15,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingCandidate_matrix (X T : C.Obj) (i j : Fin (rank C)) :
   let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ biproduct.π V j) =
-    ∑ a, crossingBlock C X T (simples C i) (simples C j)
+    ∑ a, crossingBlock X T (simples C i) (simples C j)
       (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
   classical
   dsimp
@@ -35,7 +35,7 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
   (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
     ∑ k, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
       ∑ j, ∑ b : Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)),
-        crossingBlock C X (T ⊗ U) (simples C i) (simples C j)
+        crossingBlock X (T ⊗ U) (simples C i) (simples C j)
           (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
             (α_ T U (simples C j)).inv)
           ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
@@ -53,13 +53,13 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
           (T ◁ bU) ≫ (α_ T U (⨁ V)).inv) = _
       monoidal
     _ = 𝟙 _ ⊗≫ ((∑ k, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
-        crossingBlock C X T (simples C i) (simples C k)
+        crossingBlock X T (simples C i) (simples C k)
           (crossingInclusion C T i k a) (crossingProjection C T i k a) ≫
             (T ◁ biproduct.ι V k)) ▷ U) ⊗≫ (T ◁ bU) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
       dsimp only [bT]
       rw [crossingCandidate_on_summand]
     _ = ∑ k, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
-      𝟙 _ ⊗≫ (crossingBlock C X T (simples C i) (simples C k)
+      𝟙 _ ⊗≫ (crossingBlock X T (simples C i) (simples C k)
           (crossingInclusion C T i k a) (crossingProjection C T i k a) ▷ U) ⊗≫
         (T ◁ ((biproduct.ι V k ▷ U) ≫ bU)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
       simp only [monoidalComp, sum_whiskerRight, Preadditive.sum_comp, Preadditive.comp_sum]
@@ -76,7 +76,7 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
       intro a _
       have hU : (biproduct.ι V k ▷ U) ≫ bU =
         ∑ j, ∑ b : Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)),
-          crossingBlock C X U (simples C k) (simples C j)
+          crossingBlock X U (simples C k) (simples C j)
             (crossingInclusion C U k j b) (crossingProjection C U k j b) ≫
               (U ◁ biproduct.ι V j) := crossingCandidate_on_summand C X U k
       rw [hU]
@@ -110,14 +110,14 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
   have aux (j : Fin (rank C)) :
       (∑ b : Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)),
         ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
-          crossingBlock C X (T ⊗ U) (simples C i) (simples C j)
+          crossingBlock X (T ⊗ U) (simples C i) (simples C j)
             (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
               (α_ T U (simples C j)).inv)
             ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
               crossingProjection C T i k a) ≫ ((T ⊗ U) ◁ biproduct.ι V j)) =
       ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
         ∑ b : Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)),
-          crossingBlock C X (T ⊗ U) (simples C i) (simples C j)
+          crossingBlock X (T ⊗ U) (simples C i) (simples C j)
             (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
               (α_ T U (simples C j)).inv)
             ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
