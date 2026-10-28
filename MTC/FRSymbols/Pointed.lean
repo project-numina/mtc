@@ -57,6 +57,39 @@ def GaugeEquivalent (s t : Symbols G K) : Prop :=
 theorem gaugeEquivalent_refl (s : Symbols G K) : GaugeEquivalent s s := by
   refine ⟨⟨fun _ _ => 1, by simp, by simp⟩, ?_, ?_⟩ <;> simp
 
+/-- Reversing a change of fusion-space bases is again a gauge change. -/
+theorem gaugeEquivalent_symm {s t : Symbols G K} (h : GaugeEquivalent s t) :
+    GaugeEquivalent t s := by
+  obtain ⟨g, hf, hr⟩ := h
+  refine ⟨⟨fun a b => (g.u a b)⁻¹, by simp [g.zero_left], by simp [g.zero_right]⟩, ?_, ?_⟩
+  · intro a b c
+    apply mul_right_cancel (b := g.u a b * g.u (a + b) c * g.u b c * g.u a (b + c))
+    simpa [mul_assoc, mul_comm, mul_left_comm] using (hf a b c).symm
+  · intro a b
+    apply mul_right_cancel (b := g.u a b * g.u b a)
+    simpa [mul_assoc, mul_comm, mul_left_comm] using (hr a b).symm
+
+/-- Composing changes of fusion-space bases gives a gauge change. -/
+theorem gaugeEquivalent_trans {s t v : Symbols G K} (h₁ : GaugeEquivalent s t)
+    (h₂ : GaugeEquivalent t v) : GaugeEquivalent s v := by
+  obtain ⟨g, hgf, hgr⟩ := h₁
+  obtain ⟨h, hhf, hhr⟩ := h₂
+  refine ⟨⟨fun a b => g.u a b * h.u a b, by simp [g.zero_left, h.zero_left],
+    by simp [g.zero_right, h.zero_right]⟩, ?_, ?_⟩
+  · intro a b c
+    apply mul_right_cancel (b := t.F a b c)
+    simpa [mul_assoc, mul_comm, mul_left_comm] using
+      congrArg₂ (· * ·) (hgf a b c) (hhf a b c)
+  · intro a b
+    apply mul_right_cancel (b := t.R a b)
+    simpa [mul_assoc, mul_comm, mul_left_comm] using
+      congrArg₂ (· * ·) (hgr a b) (hhr a b)
+
+/-- Fixed-label gauge equivalence is an equivalence relation. -/
+theorem gaugeEquivalent_equivalence : Equivalence (GaugeEquivalent : Symbols G K → Symbols G K → Prop) :=
+  ⟨gaugeEquivalent_refl, fun h => gaugeEquivalent_symm h,
+    fun h₁ h₂ => gaugeEquivalent_trans h₁ h₂⟩
+
 /-- The self-braiding is invariant under a gauge change with fixed labels. -/
 theorem gaugeEquivalent_self_braiding {s t : Symbols G K}
     (h : GaugeEquivalent s t) (a : G) : t.R a a = s.R a a := by
