@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.ENOReciprocity
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
-public import PropertyF.Ground.Dimensions.SimplePairing
+public import PropertyF.Ground.Dimensions.SimpleHomBasis
 
 /-! # Dual labels and reciprocity
 

@@ -4,7 +4,7 @@ public import PropertyF.Ground.CentreInduction.SecondTriangle
 public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
-public import PropertyF.Ground.Dimensions.DoubleDualBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 
 /-! The pivotal structure of the base lifts to the rigid centre. -/

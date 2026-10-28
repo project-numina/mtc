@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.InjectiveFusion
-public import PropertyF.Ground.Dimensions.PositiveCanonical
+public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

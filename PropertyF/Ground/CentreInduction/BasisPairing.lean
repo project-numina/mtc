@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
-public import PropertyF.Ground.Dimensions.SimplePairing
+public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import Mathlib.LinearAlgebra.Dual.Basis
 
 /-! Dual bases for the actual fusion summand inclusions and projections. -/
