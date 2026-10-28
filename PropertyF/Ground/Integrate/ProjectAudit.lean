@@ -66,7 +66,6 @@ import all PropertyF.Ground.CentreInduction.InjectiveFusion
 import all PropertyF.Ground.CentreInduction.Representatives
 import all PropertyF.Ground.CentreInduction.SecondTriangle
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
-import all PropertyF.Ground.Dimensions.CoevaluationSliding
 import all PropertyF.Ground.Dimensions.DefectNaturality
 import all PropertyF.Ground.Dimensions.DoubleDualMonoidal
 import all PropertyF.Ground.Dimensions.DoubleDualPairing
@@ -103,10 +102,8 @@ import all PropertyF.Ground.Centre.ProductImages
 import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.Dimensions.BiproductTrace
-import all PropertyF.Ground.Dimensions.ComplexSaturation
 import all PropertyF.Ground.Dimensions.DimensionCharacter
 import all PropertyF.Ground.Dimensions.DimensionField
-import all PropertyF.Ground.Dimensions.Drinfeld
 import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.DualTensorNaturality
 import all PropertyF.Ground.Dimensions.ENOMatrices

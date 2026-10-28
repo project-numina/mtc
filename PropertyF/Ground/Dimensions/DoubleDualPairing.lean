@@ -6,7 +6,7 @@ public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Fusion.Agreement
-public import PropertyF.Ground.Dimensions.ComplexSaturation
+public import PropertyF.Ground.Dimensions.ENOMatrices
 
 /-! # Double-dual pairings and pivotal duality
 

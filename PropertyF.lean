@@ -35,9 +35,9 @@ public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Dimensions.Trace
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Dimensions.Drinfeld
+
 public import PropertyF.Ground.Dimensions.SimpleScalars
-public import PropertyF.Ground.Dimensions.ComplexSaturation
+
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import PropertyF.Ground.Dimensions.TensorExtension
@@ -57,7 +57,7 @@ public import PropertyF.Ground.Calculus.PositiveWeights
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Dimensions.RootDualLabel
 public import PropertyF.Ground.Dimensions.DefectNaturality
-public import PropertyF.Ground.Dimensions.CoevaluationSliding
+
 public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor

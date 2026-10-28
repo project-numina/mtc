@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Dimensions.Drinfeld
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Fusion.Simples
 public import Mathlib.Analysis.Complex.Polynomial.Basic
