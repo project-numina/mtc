@@ -21,6 +21,7 @@ spherical category with positive FP dimensions and invertible S matrix. -/
 
 @[expose] public noncomputable section
 open CategoryTheory
+open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
@@ -38,7 +39,7 @@ local notation "𝒇" => fpSimple Z
 /-- The Galois-unit label has dimension at least one, the Galois-unit column,
 and the modular global-dimension identity. -/
 theorem exists_modular_witness (hp : p.IsSpherical)
-    (hdim : Modular.HasFPSimpleDimensions Z p) (hdet : (𝒮).det ≠ 0) {δ : ℝ} (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
+    (hdim : HasFPSimpleDimensions Z p) (hdet : (𝒮).det ≠ 0) {δ : ℝ} (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) :
     ∃ y : Fin (rank Z), 1 ≤ 𝒇 y ∧
       IsGaloisUnitColumn Z p σ.symm y ∧
@@ -59,7 +60,7 @@ theorem exists_modular_witness (hp : p.IsSpherical)
 actual three-strand rigidity theorem applies, the required numerical witness
 follows from categorical modular data. -/
 theorem center_witness_of_categorical_modular_data (hp : p.IsSpherical)
-    (hdim : Modular.HasFPSimpleDimensions Z p) (hdet : (𝒮).det ≠ 0) {δ b : ℝ} (hδ : 0 < δ) (hb : 0 < b)
+    (hdim : HasFPSimpleDimensions Z p) (hdet : (𝒮).det ≠ 0) {δ b : ℝ} (hδ : 0 < δ) (hb : 0 < b)
     (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
     (hF : ∀ y, IsGaloisUnitColumn Z p σ.symm y → ObjectPropertyF (simples Z y)) :

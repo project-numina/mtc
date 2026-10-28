@@ -42,9 +42,9 @@ theorem positive_ratio_of_galois_square {τ : ℂ ≃+* ℂ} {δ b f : ℝ}
     (hτ : τ (δ : ℂ) = (b : ℂ))
     (hG : τ ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2) :
     f * b = δ := by
-  rw [map_pow, hτ] at hG
-  have hR : b ^ 2 = δ ^ 2 / f ^ 2 := by exact_mod_cast hG
-  have hR' := (eq_div_iff (pow_ne_zero 2 (ne_of_gt hf))).mp hR
+  have hR : b ^ 2 * f ^ 2 = δ ^ 2 := (eq_div_iff (pow_ne_zero 2 (ne_of_gt hf))).mp <| by
+    exact_mod_cast (show (b : ℂ) ^ 2 = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2 from by
+      simpa only [map_pow, hτ] using hG)
   nlinarith [sq_nonneg (f * b - δ), mul_pos hf hb]
 
 /-- The numerical witness supplied by a Galois-unit column. -/
