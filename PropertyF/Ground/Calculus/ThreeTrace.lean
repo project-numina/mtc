@@ -26,13 +26,11 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def imageGenerator (X : C) (n : ℕ) (i : Fin (n + 1)) : braidImage X n :=
   ⟨braidGenerator X n i, Subgroup.subset_closure (Set.mem_range_self _)⟩
 
-/-- The categorical square has finite order when its braid image is finite. -/
-theorem braid_square_finite_order {X : C} (h : ObjectPropertyF X) :
-    ∃ k : ℕ, k ≠ 0 ∧ (braidGenerator X 0 0 ^ 2) ^ k = 1 :=
-  let _ : Finite (braidImage X 0) := h 0
-  ((braidImage X 0).subtype.isOfFinOrder
-    (isOfFinOrder_of_finite ((imageGenerator X 0 0) ^ 2))).exists_pow_eq_one.imp
-      fun _ ⟨hk, hpow⟩ ↦ ⟨hk.ne', hpow⟩
+/-- Every element of a finite categorical braid image has finite order. -/
+theorem braidImage_isOfFinOrder {X : C} (h : ObjectPropertyF X) (n : ℕ) (g : braidImage X n) :
+    IsOfFinOrder (g : Aut (tensorPower X (n + 2))) :=
+  let _ : Finite (braidImage X n) := h n
+  (braidImage X n).subtype.isOfFinOrder (isOfFinOrder_of_finite g)
 
 end PropertyF.Ground.Calculus
 
