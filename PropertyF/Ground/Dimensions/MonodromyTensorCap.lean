@@ -34,8 +34,6 @@ theorem drinfeld_tensor_cap_factor [HasRightDual X] [HasRightDual (Xᘁ)]
   let a := (drinfeldIso X).hom
   let b := (drinfeldIso Y).hom
   let P := V ⊗ U
-  let q : ExactPairing P ((Uᘁ) ⊗ (Vᘁ)) := ExactPairing.tensor
-  change (a ⊗ₘ b) ▷ P ≫ @ExactPairing.evaluation C _ _ P _ q = _
   change (a ⊗ₘ b) ▷ P ≫
       (𝟙 _ ⊗≫ (Uᘁ) ◁ (ε_ V (Vᘁ) ▷ U) ⊗≫ ε_ U (Uᘁ)) = _
   calc

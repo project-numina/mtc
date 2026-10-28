@@ -51,10 +51,6 @@ theorem dual_braiding_tensor_evaluations [HasRightDual X] [HasRightDual Y] :
       ((Xᘁ) ⊗ (Yᘁ)) ◁ (β_ X Y).hom ≫ ε_ (Y ⊗ X) ((Xᘁ) ⊗ (Yᘁ)) := by
   let U := Xᘁ
   let V := Yᘁ
-  let p : ExactPairing (X ⊗ Y) (V ⊗ U) := ExactPairing.tensor
-  let q : ExactPairing (Y ⊗ X) (U ⊗ V) := ExactPairing.tensor
-  change (β_ U V).hom ▷ (X ⊗ Y) ≫ @ExactPairing.evaluation C _ _ _ _ p =
-    (U ⊗ V) ◁ (β_ X Y).hom ≫ @ExactPairing.evaluation C _ _ _ _ q
   change (β_ U V).hom ▷ (X ⊗ Y) ≫
     (𝟙 _ ⊗≫ V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V) =
     (U ⊗ V) ◁ (β_ X Y).hom ≫
@@ -82,9 +78,8 @@ theorem rightDualTensorIso_braiding [HasRightDual X] [HasRightDual Y]
       (rightDualTensorIso Y X).hom ≫ (β_ (Xᘁ) (Yᘁ)).hom :=
   evaluation_ext (X := X ⊗ Y) (by
     simp only [comp_whiskerRight_assoc, rightDualTensorIso_evaluation,
-      rightAdjointMate_comp_evaluation]
-    rw [dual_braiding_tensor_evaluations, ← whisker_exchange_assoc,
-      rightDualTensorIso_evaluation])
+      rightAdjointMate_comp_evaluation, dual_braiding_tensor_evaluations,
+      ← whisker_exchange_assoc])
 end PropertyF.Ground.Dimensions
 
 end
