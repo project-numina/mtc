@@ -88,8 +88,8 @@ theorem presented_intertwiner_map_star
     {n m : ℕ} {d : Fin n → ℕ} {k : Fin m → ℕ}
     (e : groupImageAlgebra ρ ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
     (f : groupImageAlgebra σ ≃ₐ[ℂ] ∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ)
-    (he : ∀ g i, e (groupInImage ρ g) i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ h i, f (groupInImage σ h) i ∈ Matrix.unitaryGroup (Fin (k i)) ℂ)
+    (he : IsUnitaryPresentation ρ e)
+    (hf : IsUnitaryPresentation σ f)
     (φ : (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ]
       (∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ))
     (hφ : ∀ g, φ (e (groupInImage ρ g)) = f (groupInImage σ (τ g)))
@@ -223,10 +223,8 @@ theorem addLeftBlocksIter_star (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ)
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
     (x : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
     addLeftBlocksIter X n k e f (star x) = star (addLeftBlocksIter X n k e f x) := by
   apply presented_intertwiner_map_star (braidEndRepresentation X n)
@@ -242,10 +240,8 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ) :
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f) :
     (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →⋆ₐ[ℂ]
       (∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) where
   toAlgHom := addLeftBlocksIter X n k e f
@@ -439,10 +435,8 @@ theorem addRightBlocksIter_star (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ)
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
     (x : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
     addRightBlocksIter X n k e f (star x) = star (addRightBlocksIter X n k e f x) := by
   apply presented_intertwiner_map_star (braidEndRepresentation X n)
@@ -458,10 +452,8 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ) :
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f) :
     (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →⋆ₐ[ℂ]
       (∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) where
   toAlgHom := addRightBlocksIter X n k e f

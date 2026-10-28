@@ -25,8 +25,7 @@ theorem exists_galois_braid_trace_weights
       (b : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (size i)) (Fin (size i)) ℂ)
       (w : Fin r → ℝ),
       (∀ i, 0 < size i) ∧
-      (∀ g i, b (groupInImage (braidEndRepresentation X n) g) i ∈
-        Matrix.unitaryGroup (Fin (size i)) ℂ) ∧
+      IsUnitaryPresentation (braidEndRepresentation X n) b ∧
       (∀ i, w i ≠ 0) ∧
       ∀ z : braidAlgebra X n, actualBraidTrace C X p n z =
         (PropertyF.Blocks.mk r size).trace w (b z) := by

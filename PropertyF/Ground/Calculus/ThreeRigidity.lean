@@ -86,8 +86,7 @@ theorem actual_braid_squares_equal_of_saturation
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (r : ℕ) (size : Fin r → ℕ)
     (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (size i)) (Fin (size i)) ℂ)
-    (he : ∀ g i, b (groupInImage (braidEndRepresentation X 1) g) i ∈
-      Matrix.unitaryGroup (Fin (size i)) ℂ)
+    (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
     (w : Fin r → ℝ) (hw : ∀ i, w i ≠ 0) (d f : ℝ) (hf : 0 < f)
     (htrace : ∀ z : braidAlgebra X 1, actualBraidTrace C X p 1 z =
       (PropertyF.Blocks.mk r size).trace w (b z))
@@ -261,8 +260,7 @@ theorem actual_three_strand_rigidity_of_trace_bound
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (r : ℕ) (size : Fin r → ℕ)
     (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (size i)) (Fin (size i)) ℂ)
-    (he : ∀ g i, b (groupInImage (braidEndRepresentation X 1) g) i ∈
-      Matrix.unitaryGroup (Fin (size i)) ℂ)
+    (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
     (w : Fin r → ℝ) (hw : ∀ i, w i ≠ 0)
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
     (hdim : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))

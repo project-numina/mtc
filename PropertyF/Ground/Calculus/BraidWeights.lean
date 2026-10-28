@@ -412,8 +412,7 @@ theorem exists_unitary_braid_trace_blocks
       (b : braidAlgebra X n ≃ₐ[ℂ] ∀ j, Matrix (Fin (d j)) (Fin (d j)) ℂ)
       (mult : Fin (Ground.rank C) → Fin r → ℕ),
       (∀ j, 0 < d j) ∧
-      (∀ g j, b (groupInImage (braidEndRepresentation X n) g) j ∈
-        Matrix.unitaryGroup (Fin (d j)) ℂ) ∧
+      IsUnitaryPresentation (braidEndRepresentation X n) b ∧
       (∀ j, ∃ i, 0 < mult i j) ∧
       (∀ i, Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2)) =
         ∑ j, mult i j * d j) ∧

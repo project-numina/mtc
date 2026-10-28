@@ -201,6 +201,11 @@ variable {G : Type*} [Group G] [Finite G]
 def groupInImage (ρ : G →* A) : G →* groupImageAlgebra ρ :=
   (groupAlgebraMap ρ).rangeRestrict.toMonoidHom.comp (MonoidAlgebra.of ℂ G)
 
+/-- A block presentation in which each represented group element is unitary. -/
+abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
+    (e : groupImageAlgebra ρ ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) : Prop :=
+  ∀ g i, e (groupInImage ρ g) i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ
+
 omit [Finite G] in
 /-- The group elements span their image algebra. -/
 theorem groupInImage_span (ρ : G →* A) :
@@ -229,8 +234,7 @@ unitary in each matrix block. This choice is simultaneous for the whole group. -
 theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ) (e : groupImageAlgebra ρ ≃ₐ[ℂ]
         ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ),
-      (∀ i, NeZero (d i)) ∧ ∀ g i, e (groupInImage ρ g) i ∈
-        Matrix.unitaryGroup (Fin (d i)) ℂ := by
+      (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation ρ e := by
   classical
   let _ : Fintype G := Fintype.ofFinite G
   obtain ⟨n, d, hd, ⟨e⟩⟩ := groupImageAlgebra_blocks ρ
@@ -256,8 +260,7 @@ realization of their actual endomorphism algebra. -/
 theorem braidAlgebra_unitary_blocks (X : C) (n : ℕ) (h : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
         ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ),
-      (∀ i, NeZero (d i)) ∧ ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-        Matrix.unitaryGroup (Fin (d i)) ℂ := by
+      (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation (braidEndRepresentation X n) e := by
   let _ : Finite (braidImage X n) := h
   exact groupImageAlgebra_unitary_blocks _
 

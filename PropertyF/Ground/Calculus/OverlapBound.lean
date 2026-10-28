@@ -164,10 +164,8 @@ theorem addRight_braid_unitary (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ)
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
     (u : braidAlgebra X n) (hu : ∀ i, e u i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) :
     ∀ j, f (addRightBraidAlgebraIter X n k u) j ∈ Matrix.unitaryGroup (Fin (q j)) ℂ := by
   simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
@@ -179,10 +177,8 @@ theorem addLeft_braid_unitary (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ)
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
     (u : braidAlgebra X n) (hu : ∀ i, e u i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) :
     ∀ j, f (addLeftBraidAlgebraIter X n k u) j ∈ Matrix.unitaryGroup (Fin (q j)) ℂ := by
   simpa [addLeftBlocksIterStarMap, addLeftBlocksIter] using
@@ -194,8 +190,7 @@ theorem overlapProduct_unitary (X : C) (t : ℕ)
     (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
       ∀ i, Matrix (Fin (d n i)) (Fin (d n i)) ℂ)
-    (he : ∀ n g i, e n (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d n i)) ℂ)
+    (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
     (u : braidAlgebra X t) (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ) :
     ∀ k i, e (overlapIndex t k) (overlapProduct X t u k) i ∈
       Matrix.unitaryGroup (Fin (d (overlapIndex t k) i)) ℂ := by
@@ -283,8 +278,7 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
       ∀ i, Matrix (Fin (d n i)) (Fin (d n i)) ℂ)
     (hd : ∀ n i, 0 < d n i)
-    (he : ∀ n g i, e n (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d n i)) ℂ)
+    (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
     (u : braidAlgebra X t)
     (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ)
     (hrec : ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
