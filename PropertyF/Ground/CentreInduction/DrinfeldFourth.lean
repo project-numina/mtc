@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.DualMonodromy
-public import PropertyF.Ground.CentreCabling.FiniteMonodromy
+public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.Dimensions.DefectExtension
 
 /-! Monoidality of the fourth dual from the Drinfeld tensor law. -/

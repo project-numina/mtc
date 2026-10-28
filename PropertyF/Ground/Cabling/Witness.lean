@@ -12,23 +12,6 @@ open scoped BigOperators
 namespace PropertyF
 universe v u
 
-/-- A homomorphism descends to the image of another homomorphism when the
-latter's kernel acts trivially. -/
-def imageFactor {G H K : Type*} [Group G] [Group H] [Group K]
-    (f : G →* H) (g : G →* K) (h : f.ker ≤ g.ker) : f.range →* K :=
-  (QuotientGroup.lift f.ker g h).comp (QuotientGroup.quotientKerEquivRange f).symm.toMonoidHom
-
-@[simp] theorem imageFactor_apply {G H K : Type*} [Group G] [Group H] [Group K]
-    (f : G →* H) (g : G →* K) (h : f.ker ≤ g.ker) (x : G) :
-    imageFactor f g h (f.rangeRestrict x) = g x := by
-  have heq : (QuotientGroup.quotientKerEquivRange f).symm (f.rangeRestrict x) =
-      (QuotientGroup.mk x : G ⧸ f.ker) := by
-    apply (QuotientGroup.quotientKerEquivRange f).injective
-    rw [MulEquiv.apply_symm_apply]
-    change f.rangeRestrict x = f.rangeRestrict x
-    rfl
-  simp [imageFactor, heq]
-
 /-- Restrict the categorical braid-word action to pure words, with its image
 as codomain. -/
 def pureWordAction {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -54,10 +37,11 @@ def cablingWitnessOfPureAction (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) (
   pureImage := pureBraidImage Y n
   finiteIndex := inferInstance
   cableImage := cable.range
-  restriction := imageFactor cable (pureWordAction Y n) hker
+  restriction := cable.rangeRestrict.liftOfSurjective cable.rangeRestrict_surjective
+    ⟨pureWordAction Y n, by simpa using hker⟩
   restriction_surjective := by
     intro a
     obtain ⟨w, rfl⟩ := pureWordAction_surjective Y n a
-    exact ⟨cable.rangeRestrict w, imageFactor_apply cable (pureWordAction Y n) hker w⟩
+    exact ⟨cable.rangeRestrict w, by simp⟩
 
 end PropertyF
