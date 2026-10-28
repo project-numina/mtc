@@ -103,7 +103,7 @@ end PropertyF.Ground.CentreRigid
 expose its compatibility with the units and counits of the tensor adjunctions. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
+open CategoryTheory CategoryTheory.MonoidalCategory PropertyF.Ground.Integrate
 namespace PropertyF.Ground.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
@@ -114,9 +114,8 @@ theorem dualMate_unit (Z : CategoryTheory.Center C) (U : C) :
         ((tensorLeft Z.1ᘁ).obj U) =
     (tensorRightAdjunction (ᘁZ.1) Z.1).unit.app U ≫
       (tensorRight Z.1).map ((Integrate.dualMateIso Z).inv.app U) := by
-  simpa [Integrate.dualMateIso] using
-    unit_conjugateEquiv_symm (tensorLeftAdjunction Z.1 Z.1ᘁ)
-      (tensorRightAdjunction (ᘁZ.1) Z.1) (Integrate.halfBraidingIso Z).hom U
+  simpa [Integrate.dualMateIso] using unit_conjugateEquiv_symm
+    (tensorLeftAdjunction Z.1 Z.1ᘁ) (tensorRightAdjunction (ᘁZ.1) Z.1) (halfBraidingIso Z).hom U
 
 end PropertyF.Ground.CentreRigid
 
@@ -130,13 +129,12 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The mate unit in terms of the actual base coevaluation maps. -/
 theorem dualMate_unit_explicit (Z : Center C) (U : C) :
-  (λ_ U).inv ≫ (η_ Z.1 Z.1ᘁ ▷ U) ≫ (α_ Z.1 Z.1ᘁ U).hom ≫
-    (Z.2.β (Z.1ᘁ ⊗ U)).hom =
+  (λ_ U).inv ≫ (η_ Z.1 Z.1ᘁ ▷ U) ≫ (α_ Z.1 Z.1ᘁ U).hom ≫ Centre.halfBraidingHom Z (Z.1ᘁ ⊗ U) =
   (ρ_ U).inv ≫ (U ◁ η_ (ᘁZ.1) Z.1) ≫ (α_ U (ᘁZ.1) Z.1).inv ≫
     ((Integrate.dualMateIso Z).inv.app U ▷ Z.1) := by
-  have h := CentreRigid.dualMate_unit Z U
   simpa [tensorRightAdjunction, tensorLeftAdjunction, Adjunction.mkOfHomEquiv, Adjunction.mk',
-    tensorRightHomEquiv, tensorLeftHomEquiv, Integrate.halfBraidingIso] using h
+    tensorRightHomEquiv, tensorLeftHomEquiv, Integrate.halfBraidingIso] using
+      CentreRigid.dualMate_unit Z U
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component identifies the two chosen duals compatibly with the crossed cup. -/
@@ -216,7 +214,7 @@ theorem coevaluation_sliding (Z : Center C) (U : C) :
 set_option backward.isDefEq.respectTransparency false in
 /-- If the normalized crossing is monoidal, the chosen coevaluation is a
 morphism in the actual centre, without further hypotheses. -/
-theorem coevaluation_central (Z : Center C)
+theorem coevaluation_central {Z : Center C}
     (hTensor : IsDualCrossingMonoidal Z) (U : C) :
     ((η_ Z.1 Z.1ᘁ) ▷ U) ≫ ((Z ⊗ dualObject Z hTensor).2.β U).hom =
       ((𝟙_ (Center C)).2.β U).hom ≫ (U ◁ η_ Z.1 Z.1ᘁ) := by
@@ -317,21 +315,21 @@ theorem evaluation_sliding (Z : Center C) (U : C) :
   let cInv : U ⊗ X ⟶ X ⊗ U := (Z.2.β U).inv
   let d : D ⊗ U ⟶ U ⊗ D := ((Integrate.dualCrossingIso Z).app U).hom
   have hslide := CentreRigid.coevaluation_sliding Z U
+  have hc : cInv ≫ c = 𝟙 (U ⊗ X) := by simp [cInv, c, X]
   apply (cancel_epi (α_ D X U).inv).1
   apply (tensorLeftHomEquiv (X ⊗ U) X D (U ⊗ (𝟙_ C))).injective
   apply (cancel_epi cInv).1
   apply (cancel_mono ((X ◁ (ρ_ U).hom) ≫ c)).1
-  simp only [tensorLeftHomEquiv, Equiv.coe_fn_mk]
+  dsimp only [tensorLeftHomEquiv, Equiv.coe_fn_mk]
   calc
     _ = 𝟙 (U ⊗ X) := by
       calc
         _ = 𝟙 (U ⊗ X) ⊗≫ cInv ⊗≫
           ((η_ X D ▷ X ⊗≫ X ◁ ε_ X D) ▷ U) ⊗≫ c ⊗≫ 𝟙 (U ⊗ X) := by monoidal
         _ = 𝟙 (U ⊗ X) ⊗≫ (cInv ≫ c) ⊗≫ 𝟙 (U ⊗ X) := by rw [evaluation_coevaluation'']; monoidal
-        _ = _ := by dsimp [cInv, c]; simp [monoidalComp]
+        _ = _ := by rw [hc]; monoidal
     _ = _ := by
       symm
-      have hc : cInv ≫ c = 𝟙 (U ⊗ X) := by simp [cInv, c, X]
       change 𝟙 U ⊗≫ (η_ X D ▷ U) ⊗≫ (X ◁ d) ⊗≫ (c ▷ D) ⊗≫ 𝟙 (U ⊗ (X ⊗ D)) =
         𝟙 U ⊗≫ (U ◁ η_ X D) ⊗≫ 𝟙 (U ⊗ (X ⊗ D)) at hslide
       calc
@@ -356,7 +354,7 @@ theorem evaluation_sliding (Z : Center C) (U : C) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The chosen base evaluation is a morphism of actual centre objects. -/
-theorem evaluation_central (Z : Center C)
+theorem evaluation_central {Z : Center C}
     (hTensor : IsDualCrossingMonoidal Z) (U : C) :
     ((ε_ Z.1 Z.1ᘁ) ▷ U) ≫ ((𝟙_ (Center C)).2.β U).hom =
       ((dualObject Z hTensor ⊗ Z).2.β U).hom ≫ (U ◁ ε_ Z.1 Z.1ᘁ) := by
@@ -376,7 +374,7 @@ theorem evaluation_central (Z : Center C)
 @[instance_reducible] def rigidCenter : RigidCategory (Center C) := by
   apply rigidOfMateCoherence
   intro Z
-  refine ⟨dualCrossing_tensor Z, coevaluation_central Z (dualCrossing_tensor Z),
-    evaluation_central Z (dualCrossing_tensor Z)⟩
+  refine ⟨dualCrossing_tensor Z, coevaluation_central (dualCrossing_tensor Z),
+    evaluation_central (dualCrossing_tensor Z)⟩
 
 end PropertyF.Ground.CentreRigid

@@ -23,16 +23,15 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- A finite-order complex matrix can be conjugated to a unitary matrix. -/
 theorem finiteOrder_matrix_unitarizable {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
-    ∃ P : (Matrix ι ι ℂ)ˣ, ((P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)) ∈ Matrix.unitaryGroup ι ℂ := by
-  classical
+    ∃ P : (Matrix ι ι ℂ)ˣ, ((P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)) ∈ Matrix.unitaryGroup ι ℂ :=
   let u : (Matrix ι ι ℂ)ˣ := hM.isUnit.unit
   have hufin : IsOfFinOrder u := Units.isOfFinOrder_val.mp (by simpa [u] using hM)
   let G := Subgroup.zpowers u
   let : Finite G := hufin.finite_zpowers
   let : Fintype G := Fintype.ofFinite G
-  obtain ⟨P, hP⟩ := Calculus.exists_unitarizing_basis G.subtype
+  let ⟨P, hP⟩ := Calculus.exists_unitarizing_basis G.subtype
   let g : G := ⟨u, Subgroup.mem_zpowers u⟩
-  exact ⟨P, by simpa [g, u] using hP g⟩
+  ⟨P, by simpa [g, u] using hP g⟩
 
 /-- A finite-order matrix has real trace at most its size, with equality
 only for the identity. -/
