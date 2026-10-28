@@ -43,19 +43,27 @@ def imageLabels : Set (Fin (rank (Integrate.bundledCenter C))) :=
 theorem imageLabels_subset_productLabels : imageLabels C ⊆ (↑(productLabels C) : Set _) :=
   fun a ha ↦ (mem_productLabels C a).mpr (canonicalImageRetract_product C ha)
 
-/-- The S-test on both canonical images detects the actual core if the relevant
-mixed monodromies have finite order. Only simple image constituents, and only
-labels passing this S-test, are needed for the finite-order hypothesis. -/
-theorem numericalImageCentralizer_subset_symmetricCore
-    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
-    (hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) p i =
-      (fpSimple (Integrate.bundledCenter C) i : ℂ))
-    (hfinite : ∀ y, (∀ a ∈ imageLabels C,
+variable (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
+
+/-- Image monodromy is finite for labels passing the numerical centralizer test. -/
+abbrev HasFiniteImageCentralizerMonodromy : Prop :=
+  ∀ y, (∀ a ∈ imageLabels C,
       Modular.categoricalS (Integrate.bundledCenter C) p a y =
         Modular.simpleDimension (Integrate.bundledCenter C) p a *
           Modular.simpleDimension (Integrate.bundledCenter C) p y) →
       ∀ a ∈ imageLabels C, IsOfFinOrder (End.of (Modular.doubleBraiding
-        (simples (Integrate.bundledCenter C) a) (simples (Integrate.bundledCenter C) y))))
+        (simples (Integrate.bundledCenter C) a) (simples (Integrate.bundledCenter C) y)))
+
+variable (hp : p.IsSpherical)
+  (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
+  (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
+
+include hdim in
+/-- The S-test on both canonical images detects the actual core if the relevant
+mixed monodromies have finite order. Only simple image constituents, and only
+labels passing this S-test, are needed for the finite-order hypothesis. -/
+theorem numericalImageCentralizer_subset_symmetricCore
+    (hfinite : HasFiniteImageCentralizerMonodromy C p)
     (y : Fin (rank (Integrate.bundledCenter C)))
     (hy : ∀ a ∈ imageLabels C, Modular.categoricalS (Integrate.bundledCenter C) p a y =
       Modular.simpleDimension (Integrate.bundledCenter C) p a *
@@ -66,9 +74,9 @@ theorem numericalImageCentralizer_subset_symmetricCore
     apply Centre.centralizes_symm
     change Modular.doubleBraiding X (simples Z y) = 𝟙 _
     apply doubleBraiding_eq_one_of_simple_constituents Z (CanonicalImageRetract C)
-      (fun r hr => canonicalImageRetract_of_retract C r hr) X (simples Z y) hX
+      (fun r hr => canonicalImageRetract_of_retract C r hr) hX
     intro a ha
-    exact doubleBraiding_eq_one_of_sTest_of_finite_order Z p hdim a y
+    exact doubleBraiding_eq_one_of_sTest_of_finite_order Z p hdim
       (hfinite y hy a ha) (hy a ha)
   constructor
   · intro X
@@ -76,19 +84,11 @@ theorem numericalImageCentralizer_subset_symmetricCore
   · intro X
     exact hc _ (Or.inr ⟨X, ⟨Retract.refl _⟩⟩)
 
+include hp hdet hdim in
 /-- The precise actual-core double-centralizer conclusion under the reduced
 finite-order condition for simple canonical-image constituents. -/
 theorem productLabels_doubleCentralizer_of_image_monodromy
-    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
-    (hp : p.IsSpherical) (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
-    (hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) p i =
-      (fpSimple (Integrate.bundledCenter C) i : ℂ))
-    (hfinite : ∀ y, (∀ a ∈ imageLabels C,
-      Modular.categoricalS (Integrate.bundledCenter C) p a y =
-        Modular.simpleDimension (Integrate.bundledCenter C) p a *
-          Modular.simpleDimension (Integrate.bundledCenter C) p y) →
-      ∀ a ∈ imageLabels C, IsOfFinOrder (End.of (Modular.doubleBraiding
-        (simples (Integrate.bundledCenter C) a) (simples (Integrate.bundledCenter C) y)))) :
+    (hfinite : HasFiniteImageCentralizerMonodromy C p) :
     ∀ x, (∀ y ∈ symmetricCore C, Modular.categoricalS (Integrate.bundledCenter C) p y x =
       Modular.simpleDimension (Integrate.bundledCenter C) p y *
         Modular.simpleDimension (Integrate.bundledCenter C) p x) →

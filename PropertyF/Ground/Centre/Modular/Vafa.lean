@@ -117,9 +117,7 @@ theorem vafaUnitClass_mul (z w : ℂˣ) :
 /-- Natural powers become scalar multiples in the Vafa vector space. -/
 theorem vafaUnitClass_pow (z : ℂˣ) (n : ℕ) :
     vafaUnitClass (z ^ n) = n • vafaUnitClass z := by
-  induction n with
-  | zero => simp [vafaUnitClass]
-  | succ n ih => rw [pow_succ, vafaUnitClass_mul, ih, succ_nsmul]
+  simp [vafaUnitClass]
 
 end PropertyF.Ground.CentreModular
 end
@@ -134,14 +132,14 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- An object automorphism acts linearly on maps from a fixed source. -/
-def homAction {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (S X : D) (a : X ≅ X) : (S ⟶ X) ≃ₗ[ℂ] (S ⟶ X) :=
-  CategoryTheory.Linear.homCongr ℂ (Iso.refl _) a
+def homAction {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D] [Preadditive D] [Linear R D]
+    (S X : D) (a : X ≅ X) : (S ⟶ X) ≃ₗ[R] (S ⟶ X) :=
+  CategoryTheory.Linear.homCongr R (Iso.refl _) a
 
 /-- The action on a Hom space respects composition of automorphisms. -/
-theorem homAction_trans {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (S X : D) (a b : X ≅ X) :
-    homAction S X (a ≪≫ b) = (homAction S X a).trans (homAction S X b) := by
+theorem homAction_trans {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
+    [Preadditive D] [Linear R D] {S X : D} (a b : X ≅ X) :
+    homAction (R := R) S X (a ≪≫ b) = (homAction (R := R) S X a).trans (homAction (R := R) S X b) := by
   ext f
   simp [homAction, CategoryTheory.Linear.homCongr_apply, Category.assoc]
 
@@ -149,7 +147,7 @@ theorem homAction_trans {D : Type u} [Category.{v} D] [Preadditive D] [Linear �
 valued in a real vector space that detects torsion. -/
 def fpDeterminant (X : C.Obj) (a : X ≅ X) :
     vafaUnitSpace :=
-  ∑ i, fpSimple C i • vafaUnitClass (homAction (simples C i) X a).det
+  ∑ i, fpSimple C i • vafaUnitClass (homAction (R := ℂ) (simples C i) X a).det
 
 /-- FP determinants turn composition into addition. -/
 theorem fpDeterminant_trans (X : C.Obj)
@@ -157,25 +155,24 @@ theorem fpDeterminant_trans (X : C.Obj)
       fpDeterminant C X a + fpDeterminant C X b := by
   unfold fpDeterminant
   simp_rw [homAction_trans, LinearEquiv.det_trans, vafaUnitClass_mul, smul_add]
-  rw [Finset.sum_add_distrib]
-  rw [add_comm]
+  rw [Finset.sum_add_distrib, add_comm]
 
 /-- The actual scalar automorphism of an object. -/
-def scalarIso {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (X : D) (z : ℂˣ) : X ≅ X where
-  hom := (z : ℂ) • 𝟙 X
-  inv := ((z⁻¹ : ℂˣ) : ℂ) • 𝟙 X
+def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
+    [Preadditive D] [Linear R D] (X : D) (z : Rˣ) : X ≅ X where
+  hom := (z : R) • 𝟙 X
+  inv := ((z⁻¹ : Rˣ) : R) • 𝟙 X
   hom_inv_id := by simp [Linear.comp_smul, smul_smul]
   inv_hom_id := by simp [Linear.comp_smul, smul_smul]
 
 /-- On a scalar map, each Hom-space determinant is the corresponding power. -/
-theorem homAction_det_scalar {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (S X : D) (z : ℂˣ) :
-    (homAction S X (scalarIso X z)).det = z ^ Module.finrank ℂ (S ⟶ X) := by
+theorem homAction_det_scalar {R : Type*} [Field R] {D : Type u} [Category.{v} D]
+    [Preadditive D] [Linear R D] {S X : D} (z : Rˣ) :
+    (homAction (R := R) S X (scalarIso X z)).det = z ^ Module.finrank R (S ⟶ X) := by
   apply Units.ext
   rw [LinearEquiv.coe_det]
-  change LinearMap.det _ = (z : ℂ) ^ _
-  have h : (homAction S X (scalarIso X z)).toLinearMap = (z : ℂ) • LinearMap.id := by
+  change LinearMap.det _ = (z : R) ^ _
+  have h : (homAction (R := R) S X (scalarIso X z)).toLinearMap = (z : R) • LinearMap.id := by
     ext f
     simp [homAction, scalarIso, CategoryTheory.Linear.homCongr_apply]
   rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one]
@@ -208,17 +205,17 @@ theorem fpDeterminant_conjugate
   intro i _
   congr 1
   let E := CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples C i)) e
-  have h : homAction (simples C i) Y (e.symm ≪≫ a ≪≫ e) =
-      ((E.symm.trans (homAction (simples C i) X a)).trans E) := by
+  have h : homAction (R := ℂ) (simples C i) Y (e.symm ≪≫ a ≪≫ e) =
+      ((E.symm.trans (homAction (R := ℂ) (simples C i) X a)).trans E) := by
     ext f
     simp [homAction, E, CategoryTheory.Linear.homCongr_apply,
       CategoryTheory.Linear.homCongr_symm_apply, Category.assoc]
   rw [h, LinearEquiv.det_conj]
 
 /-- Tensoring a scalar automorphism preserves the scalar action. -/
-theorem tensor_scalarIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
-    (X Y : D) (z : ℂˣ) :
+theorem tensor_scalarIso {R : Type*} [CommSemiring R] {D : Type u}
+    [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Linear R D]
+    [MonoidalPreadditive D] [MonoidalLinear R D] (X Y : D) (z : Rˣ) :
     Iso.refl X ⊗ᵢ scalarIso Y z = scalarIso (X ⊗ Y) z :=
   Iso.ext (by simp [scalarIso, tensorHom_def])
 
@@ -281,9 +278,10 @@ abbrev HasSimpleScalars : Prop :=
   ∀ i, (η.app (simples C i)).hom = (t i : ℂ) • 𝟙 (simples C i)
 
 /-- A natural automorphism acts on a Hom space by its scalar on the source. -/
-theorem homAction_natural_scalar {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (η : 𝟭 D ≅ 𝟭 D) (S X : D) (z : ℂ) (hz : (η.app S).hom = z • 𝟙 S) :
-    (homAction S X (η.app X)).toLinearMap = z • LinearMap.id := by
+theorem homAction_natural_scalar {R : Type*} [CommSemiring R] {D : Type u}
+    [Category.{v} D] [Preadditive D] [Linear R D] (η : 𝟭 D ≅ 𝟭 D) {S X : D}
+    (z : R) (hz : (η.app S).hom = z • 𝟙 S) :
+    (homAction (R := R) S X (η.app X)).toLinearMap = z • LinearMap.id := by
   ext f
   simpa [homAction, CategoryTheory.Linear.homCongr_apply,
     show η.hom.app S = z • 𝟙 S from hz] using η.hom.naturality f
@@ -298,12 +296,12 @@ theorem fpDeterminant_natural
   unfold fpDeterminant
   apply Finset.sum_congr rfl
   intro i _
-  have hd : (homAction (simples C i) X (η.app X)).det =
+  have hd : (homAction (R := ℂ) (simples C i) X (η.app X)).det =
       (t i) ^ Module.finrank ℂ (simples C i ⟶ X) := by
     apply Units.ext
     rw [LinearEquiv.coe_det]
     change LinearMap.det _ = (t i : ℂ) ^ _
-    rw [homAction_natural_scalar η (simples C i) X (t i : ℂ) (ht i), LinearMap.det_smul,
+    rw [homAction_natural_scalar η (t i : ℂ) (ht i), LinearMap.det_smul,
       LinearMap.det_id, mul_one]
   rw [hd, vafaUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
   simp only [smul_smul, mul_comm]
@@ -361,9 +359,9 @@ variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Hom into a binary biproduct is the product of the two Hom spaces. -/
-def homBiprodLinearEquiv {D : Type u} [Category.{v} D] [Preadditive D]
-    [Linear ℂ D] [HasBinaryBiproducts D] (S X Y : D) :
-    (S ⟶ X ⊞ Y) ≃ₗ[ℂ] ((S ⟶ X) × (S ⟶ Y)) where
+def homBiprodLinearEquiv {R : Type*} [CommSemiring R] {D : Type u}
+    [Category.{v} D] [Preadditive D] [Linear R D] [HasBinaryBiproducts D]
+    (S X Y : D) : (S ⟶ X ⊞ Y) ≃ₗ[R] ((S ⟶ X) × (S ⟶ Y)) where
   toFun f := (f ≫ biprod.fst, f ≫ biprod.snd)
   invFun f := f.1 ≫ biprod.inl + f.2 ≫ biprod.inr
   left_inv f := by ext <;> simp [Preadditive.add_comp, Category.assoc]
@@ -372,22 +370,22 @@ def homBiprodLinearEquiv {D : Type u} [Category.{v} D] [Preadditive D]
   map_smul' r f := by ext <;> simp
 
 /-- The determinant of the Hom action factors over a binary biproduct. -/
-theorem homAction_det_biprod {D : Type u} [Category.{v} D] [Preadditive D]
-    [Linear ℂ D] [HasBinaryBiproducts D] (S X Y : D)
-    [FiniteDimensional ℂ (S ⟶ X)] [FiniteDimensional ℂ (S ⟶ Y)]
+theorem homAction_det_biprod {R : Type*} [Field R] {D : Type u} [Category.{v} D] [Preadditive D]
+    [Linear R D] [HasBinaryBiproducts D] {S X Y : D}
+    [FiniteDimensional R (S ⟶ X)] [FiniteDimensional R (S ⟶ Y)]
     (a : X ≅ X) (b : Y ≅ Y) :
-    (homAction S (X ⊞ Y) (biprod.mapIso a b)).det =
-      (homAction S X a).det * (homAction S Y b).det := by
-  let E := homBiprodLinearEquiv S X Y
-  let A := homAction S (X ⊞ Y) (biprod.mapIso a b)
-  let L := homAction S X a
-  let R := homAction S Y b
-  have h : (E.symm.trans A).trans E = L.prodCongr R := by
-    ext f <;> simp [E, A, L, R, homBiprodLinearEquiv, homAction,
+    (homAction (R := R) S (X ⊞ Y) (biprod.mapIso a b)).det =
+      (homAction (R := R) S X a).det * (homAction (R := R) S Y b).det := by
+  let E := homBiprodLinearEquiv (R := R) S X Y
+  let A := homAction (R := R) S (X ⊞ Y) (biprod.mapIso a b)
+  let L := homAction (R := R) S X a
+  let right := homAction (R := R) S Y b
+  have h : (E.symm.trans A).trans E = L.prodCongr right := by
+    ext f <;> simp [E, A, L, right, homBiprodLinearEquiv, homAction,
       CategoryTheory.Linear.homCongr_apply, Category.assoc]
   apply Units.ext
   rw [← LinearEquiv.det_conj A E, h, LinearEquiv.coe_det]
-  change LinearMap.det (L.toLinearMap.prodMap R.toLinearMap) = _
+  change LinearMap.det (L.toLinearMap.prodMap right.toLinearMap) = _
   rw [LinearMap.det_prodMap]
   simp only [Units.val_mul, LinearEquiv.coe_det]
   rfl

@@ -19,9 +19,10 @@ categorical double braiding to its numerical S-matrix centrality test.
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+
 /-- A finite-order complex matrix can be conjugated to a unitary matrix. -/
-theorem finiteOrder_matrix_unitarizable {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (M : Matrix ι ι ℂ) (hM : IsOfFinOrder M) :
+theorem finiteOrder_matrix_unitarizable {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
     ∃ P : (Matrix ι ι ℂ)ˣ, ((P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)) ∈ Matrix.unitaryGroup ι ℂ := by
   classical
   let u : (Matrix ι ι ℂ)ˣ := hM.isUnit.unit
@@ -35,11 +36,10 @@ theorem finiteOrder_matrix_unitarizable {ι : Type*} [Fintype ι] [DecidableEq �
 
 /-- A finite-order matrix has real trace at most its size, with equality
 only for the identity. -/
-theorem finiteOrder_matrix_trace_saturation {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (M : Matrix ι ι ℂ) (hM : IsOfFinOrder M) :
+theorem finiteOrder_matrix_trace_saturation {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
     M.trace.re ≤ Fintype.card ι ∧
       (M.trace.re = Fintype.card ι → M = 1) := by
-  obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable M hM
+  obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
   let U : Matrix ι ι ℂ := (P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)
   have ht : U.trace = M.trace := by
     dsimp [U]
@@ -56,27 +56,20 @@ theorem finiteOrder_matrix_trace_saturation {ι : Type*} [Fintype ι] [Decidable
 
 end PropertyF.Ground.CentreCabling
 
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCabling
-universe v u
-
-end PropertyF.Ground.CentreCabling
-
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
+variable (D : Ground.BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := D.Obj))
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- In a fusion category with positive simple pivotal dimensions, a
 finite-order endomorphism whose pivotal trace equals the object's dimension
 is the identity. -/
 theorem finiteOrder_eq_one_of_trace_eq_dimension
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj))
     (hdim : ∀ i, Dimensions.groundUnitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
       (fpSimple D i : ℂ))
-    (X : D.Obj) (a : End X) (ha : IsOfFinOrder a)
+    {X : D.Obj} {a : End X} (ha : IsOfFinOrder a)
     (ht : p.rightTrace a.asHom = p.rightTrace (𝟙 X)) : a = 1 := by
   classical
   let m (i : Fin (rank D)) := Module.finrank ℂ (simples D i ⟶ X)
@@ -84,7 +77,7 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   let B := Calculus.groundEndBlockEquiv D X m e
   have hf (i : Fin (rank D)) : IsOfFinOrder (B a i) :=
     (Pi.evalMonoidHom _ i).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha)
-  have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation (B a i) (hf i)
+  have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation (hf i)
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
     have h1 := Calculus.pivotalTrace_groundEndBlocks D p (Dimensions.groundUnitScalarEquiv D) X m e a
@@ -106,10 +99,8 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
 /-- For a finite-order double braiding, the positive spherical S-test is
 equivalent to categorical centrality. -/
 theorem doubleBraiding_eq_one_of_sTest_of_finite_order
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj))
-    (hdim : ∀ i, Modular.simpleDimension D p i = (fpSimple D i : ℂ))
-    (i j : Fin (rank D))
+    (hdim : Modular.HasFPSimpleDimensions D p)
+    {i j : Fin (rank D)}
     (hfinite : IsOfFinOrder (End.of (Modular.doubleBraiding (simples D i) (simples D j))))
     (hs : Modular.categoricalS D p i j =
       Modular.simpleDimension D p i * Modular.simpleDimension D p j) :
@@ -130,8 +121,7 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     have hs' := hs
     change Ground.unitScalarEquiv D (p.rightTrace (Modular.doubleBraiding _ _)) = _ at hs'
     simpa [Dimensions.groundUnitScalarEquiv_apply, Ground.unitScalar_eq_equiv] using hs'.trans hd' 
-  have h := finiteOrder_eq_one_of_trace_eq_dimension D p hdim'
-    (simples D i ⊗ simples D j) _ hfinite ht
+  have h := finiteOrder_eq_one_of_trace_eq_dimension D p hdim' hfinite ht
   exact congrArg End.asHom h
 
 end PropertyF.Ground.CentreCabling
