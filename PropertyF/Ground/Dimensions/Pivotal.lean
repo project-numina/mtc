@@ -42,9 +42,11 @@ def doubleDualUnitIso : 𝟙_ C ≅ rightDualObject (rightDualObject (𝟙_ C)) 
   letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
   rightDualUnitIso.symm ≪≫ rightDualIsoMap rightDualUnitIso
 
+omit [RightRigidCategory C] in
 /-- Trace using a single chosen double-dual isomorphism; no pivotal structure
 is needed. -/
-def rightTraceWith {X : C} (j : X ≅ (Xᘁ)ᘁ) (f : X ⟶ X) : End (𝟙_ C) :=
+def rightTraceWith {X : C} [HasRightDual X] [HasRightDual (Xᘁ)]
+    (j : X ≅ (Xᘁ)ᘁ) (f : X ⟶ X) : End (𝟙_ C) :=
   End.of (η_ X (Xᘁ) ≫ ((f ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ))
 
 /-- A pivotal structure is a monoidal natural isomorphism from the identity
