@@ -25,11 +25,9 @@ theorem finrank_end_lt_of_split_epi (p : S ⟶ W) (q : W ⟶ Q)
     (Linear.leftComp k W q).comp (Linear.rightComp k Q s)
   have hinj : Function.Injective L := fun x y h => by
     simpa [L, s, Category.assoc] using congrArg (fun f => s ≫ f ≫ q) h
-  have hproper : LinearMap.range L ≠ ⊤ := by
-    intro hall
-    obtain ⟨x, hx⟩ := (LinearMap.range_eq_top.mp hall) (𝟙 W)
-    apply hp
-    simpa [L, s, ← Category.assoc, hq] using (congrArg (fun f => p ≫ f) hx).symm
+  have hproper : LinearMap.range L ≠ ⊤ := fun hall =>
+    let ⟨x, hx⟩ := (LinearMap.range_eq_top.mp hall) (𝟙 W)
+    hp <| by simpa [L, s, ← Category.assoc, hq] using (congrArg (fun f => p ≫ f) hx).symm
   simpa only [finrank_top, LinearMap.finrank_range_of_inj hinj] using
     Submodule.finrank_lt_finrank_of_lt (lt_top_iff_ne_top.mpr hproper)
 
