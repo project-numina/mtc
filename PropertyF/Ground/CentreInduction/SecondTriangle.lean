@@ -14,6 +14,8 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
+-- The chosen simple representatives of the base fusion category.
+local notation "S" => simples C
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Composing a crossing with the unit-summand counit selects one matrix column. -/
@@ -28,14 +30,14 @@ theorem crossing_counit_matrix (T : C.Obj) (i : Fin (rank C)) :
 /-! The unit-column matrix of the induction crossing. -/
 
 /-- Tensoring a simple by the chosen unit representative changes it by an isomorphism. -/
-def simpleTensorUnitIso (j : Fin (rank C)) : simples C j ⊗ simples C (unitIndex C) ≅ simples C j :=
-  let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
-  whiskerLeftIso (simples C j) e ≪≫ ρ_ (simples C j)
+def simpleTensorUnitIso (j : Fin (rank C)) : S j ⊗ S (unitIndex C) ≅ S j :=
+  let e : S (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
+  whiskerLeftIso (S j) e ≪≫ ρ_ (S j)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The counit crossing column has only diagonal simple summands. -/
 theorem counit_column_finrank (i j : Fin (rank C)) :
-    Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C (unitIndex C)) = if i = j then 1 else 0 :=
+    Module.finrank ℂ (S i ⟶ S j ⊗ S (unitIndex C)) = if i = j then 1 else 0 :=
   (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (simpleTensorUnitIso C j)).finrank_eq.trans
     (finrank_simples_hom C i j)
 
@@ -43,29 +45,29 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Off-diagonal counit crossing entries vanish. -/
 theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
-  (biproduct.ι V i ▷ simples C j) ≫ crossingCandidate C X (simples C j) ≫
-    (simples C j ◁ (underlyingCounit C).app X) = 0 := by
-  let : IsEmpty (crossingIndex C (simples C j) i (unitIndex C)) := by
+  (biproduct.ι V i ▷ S j) ≫ crossingCandidate C X (S j) ≫
+    (S j ◁ (underlyingCounit C).app X) = 0 := by
+  let : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
     simpa only [crossingIndex, counit_column_finrank, hne, ↓reduceIte] using (inferInstance : IsEmpty (Fin 0))
-  simpa only [Fintype.sum_empty, zero_comp] using crossing_counit_matrix C X (simples C j) i
+  simpa only [Fintype.sum_empty, zero_comp] using crossing_counit_matrix C X (S j) i
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
 theorem crossing_counit_diagonal (i : Fin (rank C)) :
   let V := inductionSummand C X
-  (biproduct.ι V i ▷ simples C i) ≫ crossingCandidate C X (simples C i) ≫
-    (simples C i ◁ (underlyingCounit C).app X) =
-      crossingBlock X (simples C i) (simples C (unitIndex C))
+  (biproduct.ι V i ▷ S i) ≫ crossingCandidate C X (S i) ≫
+    (S i ◁ (underlyingCounit C).app X) =
+      crossingBlock X (S i) (S (unitIndex C))
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
-          (simples C i ◁ (unitSummandIso C X).hom) := by
-  let : Unique (crossingIndex C (simples C i) i (unitIndex C)) := by
+          (S i ◁ (unitSummandIso C X).hom) := by
+  let : Unique (crossingIndex C (S i) i (unitIndex C)) := by
     simpa only [crossingIndex, counit_column_finrank, ↓reduceIte] using
       (inferInstance : Unique (Fin 1))
   dsimp only
-  rw [crossing_counit_matrix C X (simples C i) i, Fintype.sum_unique]
+  rw [crossing_counit_matrix C X (S i) i, Fintype.sum_unique]
   dsimp only [crossingSummand]
-  let : Simple (simples C i) := simples_simple C i
-  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  let : Simple (S i) := simples_simple C i
+  let : FiniteDimensional ℂ (S i ⟶ S i) := IsFusionCategory.hom_finite _ _
   rw [crossingBlock_of_simple_split X (simpleTensorUnitIso C i).symm _ _
     (crossingInclusion_projection default)]
   rfl
@@ -179,19 +181,21 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
+-- The chosen simple representatives of the base fusion category.
+local notation "S" => simples C
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component reduces to the corresponding counit-crossing matrix entry. -/
 theorem unit_matrix_reduce (i j : Fin (rank C)) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
-    ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) =
-  𝟙 _ ⊗≫ ((V i) ◁ η_ (simples C j) ((simples C j)ᘁ)) ⊗≫
-    (((biproduct.ι V i ▷ (simples C j)) ≫ crossingCandidate C X (simples C j) ≫
-      ((simples C j) ◁ (underlyingCounit C).app X)) ▷ (simples C j)ᘁ) ⊗≫ 𝟙 _ := by
+    ((S j ◁ (underlyingCounit C).app X) ▷ (S j)ᘁ) =
+  𝟙 _ ⊗≫ ((V i) ◁ η_ (S j) ((S j)ᘁ)) ⊗≫
+    (((biproduct.ι V i ▷ (S j)) ≫ crossingCandidate C X (S j) ≫
+      ((S j) ◁ (underlyingCounit C).app X)) ▷ (S j)ᘁ) ⊗≫ 𝟙 _ := by
   simpa [unitComponent, unitComponentAt, induction, halfBraidingOfCrossingCandidate,
     underlying, underlyingFunctor, inductionSummand, monoidalComp, Category.assoc] using
-    unitComponent_reduce (crossingCandidate C X (simples C j)) (biproduct.ι (inductionSummand C X) i)
+    unitComponent_reduce (crossingCandidate C X (S j)) (biproduct.ι (inductionSummand C X) i)
       ((underlyingCounit C).app X)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -199,7 +203,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
-    ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) = 0 := by
+    ((S j ◁ (underlyingCounit C).app X) ▷ (S j)ᘁ) = 0 := by
   simpa [monoidalComp, crossing_counit_offdiag C X hne] using unit_matrix_reduce C X i j
 
 set_option backward.isDefEq.respectTransparency false in
@@ -207,18 +211,18 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unit_diag (i : Fin (rank C)) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) i ≫
-    ((simples C i ◁ (underlyingCounit C).app X) ▷ (simples C i)ᘁ) = 𝟙 (V i) := by
+    ((S i ◁ (underlyingCounit C).app X) ▷ (S i)ᘁ) = 𝟙 (V i) := by
   dsimp only
   rw [unit_matrix_reduce, crossing_counit_diagonal C X i]
-  let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
-  rw [show crossingBlock X (simples C i) (simples C (unitIndex C))
+  let e : S (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
+  rw [show crossingBlock X (S i) (S (unitIndex C))
       (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
-        (simples C i ◁ (unitSummandIso C X).hom) = _ from
-      crossingUnitBlock_eval X (simples C i) e]
+        (S i ◁ (unitSummandIso C X).hom) = _ from
+      crossingUnitBlock_eval X (S i) e]
   dsimp only [Functor.id_obj]
   calc
-    _ = 𝟙 _ ⊗≫ ((simples C i ⊗ X) ◁ (((simples C i)ᘁ ◁ η_ (simples C i) ((simples C i)ᘁ)) ⊗≫
-      (ε_ (simples C i) ((simples C i)ᘁ) ▷ (simples C i)ᘁ))) ⊗≫ 𝟙 _ := by monoidal
+    _ = 𝟙 _ ⊗≫ ((S i ⊗ X) ◁ (((S i)ᘁ ◁ η_ (S i) ((S i)ᘁ)) ⊗≫
+      (ε_ (S i) ((S i)ᘁ) ▷ (S i)ᘁ))) ⊗≫ 𝟙 _ := by monoidal
     _ = _ := by rw [coevaluation_evaluation'']; monoidal
 
 set_option backward.isDefEq.respectTransparency false in

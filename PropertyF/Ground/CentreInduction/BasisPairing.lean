@@ -228,7 +228,7 @@ theorem crossingCandidate_natural_test {T U : C.Obj} (h : T ⟶ U) :
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
   let V := inductionSummand C X
-  refine biproduct_tensor_hom_ext V T fun i => ?_
+  refine rightDistributor_ext_left (f := V) fun i => ?_
   dsimp [V, underlying] at *
   rw [← whisker_exchange_assoc]
   simp only [crossingCandidate_on_summand, crossingCandidate_on_summand_assoc,
