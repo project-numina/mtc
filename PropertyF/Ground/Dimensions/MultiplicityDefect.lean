@@ -169,10 +169,9 @@ theorem involution_phase_eq_one_of_trace :
     exact Subsingleton.elim _ _
   have ht : LinearMap.trace ℂ V T ≠ 0 := left_ne_zero_of_mul
     (htrace ▸ (by exact_mod_cast hz : (Module.finrank ℂ V : ℂ) ≠ 0))
-  have htr : (starRingEnd ℂ) (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T :=
-    star_involution_trace hT
   have hconj := congrArg (starRingEnd ℂ) htrace
-  simp only [map_mul, map_natCast, htr] at hconj
+  simp only [map_mul, map_natCast, show (starRingEnd ℂ) (LinearMap.trace ℂ V T) = _ from
+    star_involution_trace hT] at hconj
   have hcconj : (starRingEnd ℂ) c = c := mul_left_cancel₀ ht (hconj.trans htrace.symm)
   have hc2 : c * c = 1 := by simpa [hcconj, hc] using Complex.mul_conj' c
   apply involution_eq_one_of_trace_eq_finrank (by

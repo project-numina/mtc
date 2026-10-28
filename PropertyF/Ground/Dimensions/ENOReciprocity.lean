@@ -83,14 +83,14 @@ dual root by a sign. -/
 theorem rootDual_differs_by_sign (X : C.Obj)
     [Simple X] : ∃ ε : ℂ, ε * ε = 1 ∧
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom =
-        ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom := by
-  let : Simple (Xᘁ) := simple_rightDual X
+        ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom :=
+  letI : Simple (Xᘁ) := simple_rightDual X
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
-  obtain ⟨ε, _, he⟩ := isomorphisms_scalar (k := ℂ) l k
-  exact ⟨ε, scalar_sq_eq_one_of_same_square l k ε he
-    ((congrArg (fun n ↦ (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C)).trans
-      (inverseDualRoot_square C X).symm), he⟩
+  (isomorphisms_scalar (k := ℂ) l k).elim fun ε ⟨_, he⟩ ↦
+    ⟨ε, scalar_sq_eq_one_of_same_square l k ε he
+      ((congrArg (fun n ↦ (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C)).trans
+        (inverseDualRoot_square C X).symm), he⟩
 
 end PropertyF.Ground.Dimensions
 
