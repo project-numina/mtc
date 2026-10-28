@@ -36,11 +36,9 @@ def braidWordAction (X : C) (n : ℕ) : BraidWords n →* braidImage X n :=
 /-- Every element of the categorical braid image is represented by a word. -/
 theorem braidWordAction_surjective (X : C) (n : ℕ) :
     Function.Surjective (braidWordAction X n) := by
-  intro a
-  have ha : a.val ∈ (FreeGroup.lift (braidGenerator X n)).range := by
-    rw [FreeGroup.range_lift_eq_closure]
-    exact a.property
-  obtain ⟨w, hw⟩ := ha
+  intro ⟨a, ha⟩
+  obtain ⟨w, hw⟩ : a ∈ (FreeGroup.lift (braidGenerator X n)).range := by
+    simpa only [FreeGroup.range_lift_eq_closure, braidImage] using ha
   exact ⟨w, Subtype.ext hw⟩
 
 end PropertyF
@@ -65,11 +63,8 @@ omit [BraidedCategory C] in
 @[simp] theorem tensorPowerMap_comp {X Y Z : C} (f : X ⟶ Y) (g : Y ⟶ Z) :
     ∀ n, tensorPowerMap (f ≫ g) n = tensorPowerMap f n ≫ tensorPowerMap g n
   | 0 => by simp [tensorPowerMap, tensorPower]
-  | n + 1 => by
-      simp only [tensorPowerMap, tensorPowerMap_comp f g n]
-      change (f ≫ g) ⊗ₘ (tensorPowerMap f n ≫ tensorPowerMap g n) =
-        (f ⊗ₘ tensorPowerMap f n) ≫ (g ⊗ₘ tensorPowerMap g n)
-      exact (tensorHom_comp_tensorHom _ _ _ _).symm
+  | n + 1 => (congrArg (fun h => (f ≫ g) ⊗ₘ h) (tensorPowerMap_comp f g n)).trans
+      (tensorHom_comp_tensorHom f (tensorPowerMap f n) g (tensorPowerMap g n)).symm
 
 
 /-- Naturality of the first adjacent braiding. -/
@@ -89,10 +84,7 @@ theorem braidGenerator_map_natural {X Y : C} (f : X ⟶ Y) (n : ℕ)
     (braidGenerator X n i).asIso.hom ≫ tensorPowerMap f (n + 2) =
       tensorPowerMap f (n + 2) ≫ (braidGenerator Y n i).asIso.hom := by
   induction n with
-  | zero =>
-    have hi : i = 0 := Fin.eq_zero i
-    subst i
-    exact braid_first_map f (tensorPowerMap f 0)
+  | zero => exact (Fin.eq_zero i).symm ▸ braid_first_map f (tensorPowerMap f 0)
   | succ n ih =>
     rcases i with ⟨i, hi⟩
     cases i with
@@ -162,9 +154,8 @@ theorem braidImageRetractMap_surjective {X Y : C} (r : Retract X Y) (n : ℕ) :
   simp
 /-- Property F passes from an object to any retract. -/
 theorem objectPropertyF_of_retract {X Y : C} (r : Retract X Y)
-    (hY : ObjectPropertyF Y) : ObjectPropertyF X := by
-  intro n
+    (hY : ObjectPropertyF Y) : ObjectPropertyF X := fun n ↦
   let _ : Finite (braidImage Y n) := hY n
-  exact Finite.of_surjective (braidImageRetractMap r n) (braidImageRetractMap_surjective r n)
+  Finite.of_surjective (braidImageRetractMap r n) (braidImageRetractMap_surjective r n)
 
 end PropertyF
