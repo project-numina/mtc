@@ -97,9 +97,8 @@ corresponding inverse dual isomorphism. -/
 theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :
     leftQuantumTrace j = rightQuantumTrace (rightDualIsoMap j).symm :=
   End.homEquiv.injective (by
-    simp only [leftQuantumTrace, rightQuantumTrace, rightDualIsoMap, Iso.symm_hom,
-      End.homEquiv_apply, tensorHom_def, id_whiskerRight, whiskerLeft_id,
-      Category.id_comp, Category.comp_id, rightAdjointMate_comp_evaluation])
+    simp [leftQuantumTrace, rightQuantumTrace, rightDualIsoMap, tensorHom_def,
+      rightAdjointMate_comp_evaluation])
 
 section
 variable {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
@@ -136,9 +135,8 @@ theorem leftTrace_eq_rightTraceWith_dual (p : PivotalStructure (C := C))
     {X : C} (f : X ⟶ X) :
     p.leftTrace f = rightTraceWith (rightDualIsoMap (p.iso X)).symm (fᘁ) :=
   End.homEquiv.injective (by
-    simp only [PivotalStructure.leftTrace, rightTraceWith, rightDualIsoMap, Iso.symm_hom,
-      End.homEquiv_apply, tensorHom_def, id_whiskerRight, whiskerLeft_id,
-      Category.id_comp, Category.comp_id, ← comp_rightAdjointMate, rightAdjointMate_comp_evaluation])
+    simp [PivotalStructure.leftTrace, rightTraceWith, rightDualIsoMap, tensorHom_def,
+      ← comp_rightAdjointMate, rightAdjointMate_comp_evaluation])
 
 /-- The inverse dual pivotal components are natural on dual morphisms. -/
 theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
