@@ -50,16 +50,6 @@ namespace PropertyF.Ground.Calculus
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The actual three-strand braid-image element has the categorical overlap
-trace, independently of any choice of matrix blocks. -/
-theorem actual_three_braid_trace (X : C.Obj) [Simple X] :
-    actualBraidTrace C p (braidInImage (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) =
-      scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) ^ 2 / pivotalDimension C p X := by
-  simpa [actualBraidTrace, braidEndRepresentation, threeGeneratorLeft, threeGeneratorRight,
-    imageGenerator, pivotalDimension, scalarTrace, unitScalar_eq_equiv] using
-    three_braid_trace C X p (Ground.unitScalarEquiv C)
-
 section LocalMonodromy
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
