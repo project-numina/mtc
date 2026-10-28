@@ -59,8 +59,8 @@ theorem drinfeld_unit_dual :
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let : HasRightDual ((Uᘁ)ᘁ) := RightRigidCategory.rightDual ((Uᘁ)ᘁ)
   let r : Uᘁ ≅ U := rightDualUnitIso
-  have hu : (doubleDualIso C U).hom = (r.inv ≫ (r.homᘁ)) := by
-    exact drinfeld_unit C
+  have hu : (doubleDualIso C U).hom = (r.inv ≫ (r.homᘁ)) :=
+    drinfeld_unit C
   have hb : (doubleDualIso C (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) = (r.homᘁ) := by
     rw [← (doubleDualIso_natural C r.hom), hu]
     simp only [Iso.hom_inv_id_assoc]
@@ -171,8 +171,8 @@ theorem root_components_coevaluation
   let X := simples C i
   let a : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   let e := rootDualSign C i
-  have ha : ((fourthDualRootNaturalIso C).app (Xᘁ)).hom = e • ((a.invᘁ)) := by
-    exact rootDualSign_component C i
+  have ha : ((fourthDualRootNaturalIso C).app (Xᘁ)).hom = e • ((a.invᘁ)) :=
+    rootDualSign_component C i
   change η_ X (Xᘁ) ≫ (a.hom ⊗ₘ ((fourthDualRootNaturalIso C).app (Xᘁ)).hom) =
     e • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)
   rw [ha]

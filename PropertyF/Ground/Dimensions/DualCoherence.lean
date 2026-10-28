@@ -22,7 +22,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem coevaluation_iso_map {C : Type u} [Category.{v} C] [MonoidalCategory C]
     [RightRigidCategory C] {X Y : C} (a : X ≅ Y) :
     η_ X (Xᘁ) ≫ (a.hom ⊗ₘ (a.invᘁ)) = η_ Y (Yᘁ) := by
-  simp only [tensorHom_def]
+  rw [tensorHom_def]
   have h := coevaluation_comp_rightAdjointMate a.inv
   calc
     _ = η_ X (Xᘁ) ≫ X ◁ (a.invᘁ) ≫ a.hom ▷ (Yᘁ) := by

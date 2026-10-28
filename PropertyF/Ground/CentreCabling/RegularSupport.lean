@@ -184,12 +184,12 @@ structure IsFusionSubring (D : Ground.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) : Prop extends IsDualFusionClosed D A where
   unit : unitIndex D ∈ A
 
-variable {A : Finset (Fin (rank D))} {a b k : Fin (rank D)}
+variable {A : Finset (Fin (rank D))} {a b : A} {k : Fin (rank D)}
 
 /-- Fusion coefficients vanish outside a fusion-closed set. -/
 theorem IsFusionClosed.fusionCoeff_eq_zero (hA : IsFusionClosed D A)
-    (ha : a ∈ A) (hb : b ∈ A) (hk : k ∉ A) : fusionCoeff D a b k = 0 :=
-  Nat.eq_zero_of_not_pos (fun h ↦ hk (hA a ha b hb k h))
+    (hk : k ∉ A) : fusionCoeff D a b k = 0 :=
+  Nat.eq_zero_of_not_pos (fun h ↦ hk (hA a a.property b b.property k h))
 
 /-- The FP-weighted regular vector supported on a set of simple labels. -/
 abbrev regularVector (D : Ground.BraidedFusionCategory.{v,u})
@@ -202,17 +202,17 @@ theorem regularVector_ne_zero_iff {i : Fin (rank D)} :
   simp [regularVector, ne_of_gt (fpSimple_pos D i)]
 
 /-- Fusion by a label in a fusion-closed set leaves the regular vector supported there. -/
-theorem regularVector_mul_eq_zero_of_not_mem (hA : IsFusionClosed D A) (ha : a ∈ A) (hk : k ∉ A) :
+theorem regularVector_mul_eq_zero_of_not_mem (hA : IsFusionClosed D A) (hk : k ∉ A) :
     ∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i = 0 := by
   classical
   apply Finset.sum_eq_zero
   intro i _
   by_cases hi : i ∈ A
-  · simp [regularVector, hi, hA.fusionCoeff_eq_zero ha hi hk]
+  · simp [regularVector, hi, hA.fusionCoeff_eq_zero (a := a) (b := ⟨i, hi⟩) hk]
   · rw [show regularVector D A i = 0 from ite_eq_right hi, mul_zero]
 
 /-- On its support, the regular vector has the FP eigenvalue. -/
-theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) (ha : a ∈ A) (hk : k ∈ A) :
+theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) {k : A} :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
   classical
@@ -222,7 +222,7 @@ theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) (ha : a ∈ A) (h
       rw [Ground.fusionCoeff_dual_symmetry D a k i]
       by_cases hi : i ∈ A
       · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi]
-      · simp [regularVector, hi, hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi]
+      · simp [regularVector, hi, hA.fusion.fusionCoeff_eq_zero (a := ⟨_, hA.dual _ a.2⟩) hi]
     _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
       simpa [fpSimple_dual] using
         (congrArg (fun z : ℝ ↦ (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)).symm
@@ -230,12 +230,12 @@ theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) (ha : a ∈ A) (h
 /-- The FP-weighted regular vector of a dual- and fusion-closed set of labels
 is an eigenvector for multiplication by each label in that set. -/
 theorem regular_vector_fusion_eigenvector (hA : IsDualFusionClosed D A)
-    (ha : a ∈ A) (k : Fin (rank D)) :
+    (k : Fin (rank D)) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * regularVector D A k := by
   by_cases hk : k ∈ A <;> simp only [regularVector, hk, ↓reduceIte, mul_zero]
-  · exact regularVector_mul_of_mem hA ha hk
-  · exact regularVector_mul_eq_zero_of_not_mem hA.fusion ha hk
+  · exact regularVector_mul_of_mem hA (a := a) (k := ⟨k, hk⟩)
+  · exact regularVector_mul_eq_zero_of_not_mem hA.fusion (a := a) hk
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support (hdim : HasFPSimpleDimensions D p)
@@ -246,7 +246,7 @@ theorem regularVector_fourier_support (hdim : HasFPSimpleDimensions D p)
     simpa only [sCentralizer, Set.mem_ofPred_eq, Finset.mem_coe, not_forall, exists_prop] using
       (show y ∉ sCentralizer D p (↑A : Set _) from fun h ↦ hy (hcore h))
   exact fourier_eq_zero_of_fusion_eigenvector hdim
-    (regular_vector_fusion_eigenvector hA ha) hne
+    (regular_vector_fusion_eigenvector hA (a := ⟨a, ha⟩)) hne
 
 /-- Numerical double-centralizer theorem for a fusion-closed set of simple
 labels. The supplied core must contain its numerical S-centralizer. -/

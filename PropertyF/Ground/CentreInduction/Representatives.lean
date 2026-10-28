@@ -129,9 +129,7 @@ theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum D X) :
   | zero hz =>
     let V : Fin 0 → D := Fin.elim0
     have hzero : IsZero (⨁ V) := (IsZero.iff_id_eq_zero _).mpr (by
-      apply biproduct.hom_ext
-      intro i
-      exact Fin.elim0 i)
+      simpa using (biproduct.total (f := V)).symm)
     exact ⟨0, V, by intro i; exact Fin.elim0 i, ⟨hz.iso hzero⟩⟩
   | @cons X S K hs hk he ih =>
     obtain ⟨n, V, hv, ⟨e⟩⟩ := ih

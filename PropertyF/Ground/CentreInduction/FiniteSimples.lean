@@ -185,15 +185,13 @@ theorem finite_simple_labels :
   have hL (i : Fin (rank C)) := Classical.choose_spec (finite_simple_subobject_labels C
     ((induction C).obj (simples C i)))
   let labels := (Finset.univ.biUnion (fun i => (L i).toFinset)).filter Simple
-  refine ⟨labels, ?_, ?_⟩
-  · intro T hT
-    exact (Finset.mem_filter.mp hT).2
-  · intro X hX
-    let : Simple X := hX
-    obtain ⟨i, t, ht⟩ := simple_mono_induced_simple C X
-    obtain ⟨T, hT, ⟨e⟩⟩ := hL i X hX ⟨t, ht⟩
-    refine ⟨T, Finset.mem_filter.mpr ⟨?_, Simple.of_iso e.symm⟩, ⟨e⟩⟩
-    exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, List.mem_toFinset.mpr hT⟩
+  refine ⟨labels, fun _ hT => (Finset.mem_filter.mp hT).2, ?_⟩
+  intro X hX
+  let : Simple X := hX
+  obtain ⟨i, t, ht⟩ := simple_mono_induced_simple C X
+  obtain ⟨T, hT, ⟨e⟩⟩ := hL i X hX ⟨t, ht⟩
+  refine ⟨T, Finset.mem_filter.mpr ⟨?_, Simple.of_iso e.symm⟩, ⟨e⟩⟩
+  exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, List.mem_toFinset.mpr hT⟩
 
 
 end PropertyF.Ground.CentreInduction

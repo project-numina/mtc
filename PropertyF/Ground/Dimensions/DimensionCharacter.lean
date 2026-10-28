@@ -48,10 +48,8 @@ theorem pivotalDimension_decomposition
     calc
       _ = p.rightTrace (𝟙 (⨁ V)) := p.rightTrace_id_iso e
       _ = ∑ a, p.rightTrace (𝟙 (V a)) := rightDimension_biproduct V p
-      _ = _ := by rw [Fintype.sum_sigma]; simp [V, Algebra.smul_def]
-  unfold pivotalDimension
-  simp only [Ground.unitScalar_eq_equiv, ht, map_sum, map_smul, smul_eq_mul]
-  rfl
+      _ = _ := by simp [Fintype.sum_sigma, V, Algebra.smul_def]
+  simp only [pivotalDimension, Ground.unitScalar_eq_equiv, ht, map_sum, map_smul, smul_eq_mul, m]
 
 /-- The pivotal dimension of the tensor unit is normalized to one. -/
 theorem pivotalDimension_unit

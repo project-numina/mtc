@@ -26,23 +26,12 @@ theorem galois_dimension_contradiction {j : R →+* K} {δ δσ δτ f d : R}
     {σ : K ≃+* K} (hδ : 0 < δ) (hδσ : 0 < δσ) (hlt : δσ < δ)
     (hδτ : σ (j δτ) = j δ) (hσδ : σ (j δ) = j δσ) (hσf : σ (j f) = j d)
     (hratio : f * δτ = δ) (hf : 1 ≤ f) (hrigidity : f = |d|) : False := by
-  have hreal : d * δ = δσ := j.injective <| by
-    simpa only [map_mul, hδτ, hσδ, hσf] using congrArg σ (congrArg j hratio)
+  have hreal : d * δ = δσ := j.injective <| by simpa [hδτ, hσδ, hσf] using congrArg (σ ∘ j) hratio
   nlinarith [abs_of_pos (show 0 < d by nlinarith)]
 
 end PropertyF
 
 namespace PropertyF.Ground
-
-/-- The squared Galois dimension identity gives the positive ratio used by
-the paper. No Galois automorphism is assumed to preserve square roots. -/
-theorem positive_ratio_of_galois_square {j : R →+* K} {τ : K ≃+* K} {δ b f : R}
-    (hδ : 0 < δ) (hb : 0 < b) (hf : 0 < f)
-    (hτ : τ (j δ) = j b) (hG : τ (j δ ^ 2) = j δ ^ 2 / j f ^ 2) : f * b = δ := by
-  refine (sq_eq_sq₀ (mul_pos hf hb).le hδ.le).mp (j.injective ?_)
-  simpa only [map_pow, map_mul, mul_pow, mul_comm] using
-    (eq_div_iff (pow_ne_zero 2 ((map_ne_zero j).2 (ne_of_gt hf)))).mp
-      (by simpa only [map_pow, hτ] using hG)
 
 /-- The numerical witness supplied by a Galois-unit column. -/
 abbrev HasGaloisDimensionWitness (j : R →+* K) (σ : K ≃+* K) (δ b : R) : Prop :=
