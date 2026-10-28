@@ -230,7 +230,7 @@ universe v u
 one is a component of a natural isomorphism from the identity, their ratio is
 an involution. -/
 theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
-    (F : C ⥤ C) (a : 𝟭 C ≅ F) (X : C) (b : X ≅ F.obj X)
+    (F : C ⥤ C) (a : 𝟭 C ≅ F) {X : C} (b : X ≅ F.obj X)
     (hsq : ((a.app X).hom ≫ F.map (a.app X).hom) = b.hom ≫ F.map b.hom) :
     let d := (a.app X) ≪≫ b.symm
     d.hom ≫ d.hom = 𝟙 X := by
@@ -323,7 +323,7 @@ theorem rootTensorDefect_involution_of_tensor_square {X Y : C.Obj}
     ((((fourthDualRootNaturalIso C).app (X ⊗ Y)).homᘁ)ᘁ) =
       (fourthDualIso C (X ⊗ Y)).hom at ha
   have h := natural_square_defect_involution (doubleDualFunctor C.Obj)
-    (fourthDualRootNaturalIso C) (X ⊗ Y) (rootTensorIso C X Y) (ha.trans hsq.symm)
+    (fourthDualRootNaturalIso C) (rootTensorIso C X Y) (ha.trans hsq.symm)
   exact h
 
 /-- The tensor-square comparison implies involutivity of every corresponding

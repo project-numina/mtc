@@ -206,7 +206,7 @@ theorem tensorPermutationTrace_fixHead (D : BraidedFusionCategory.{v,u})
       (fpDimension D X : ℂ) * unitScalar D (p.rightTrace ((tensorPermutationAction X hX n) σ).asHom) := by
   intro n σ
   rw [tensorPermutationAction_fixHead]
-  have ht := Dimensions.pivotalTrace_tensor p (unitScalarEquiv D) X (tensorPower X n)
+  have ht := Dimensions.pivotalTrace_tensor p (unitScalarEquiv D)
     (𝟙 X) ((tensorPermutationAction X hX n) σ).asHom
   simp only [id_tensorHom, ← unitScalar_eq_equiv] at ht
   change unitScalar D (p.rightTrace (X ◁ ((tensorPermutationAction X hX n) σ).asHom)) = _
