@@ -17,8 +17,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ (underlyingCounit C).app X) =
-    (∑ a, crossingBlock X T (simples C i) (simples C (unitIndex C))
-      (crossingInclusion C T i (unitIndex C) a) (crossingProjection C T i (unitIndex C) a)) ≫
+    (∑ a, crossingSummand C X T i (unitIndex C) a) ≫
       (T ◁ (unitSummandIso C X).hom) := by
   classical
   simpa only [underlyingCounit, unitSummandRetract, whiskerLeft_comp, Category.assoc] using
@@ -87,6 +86,7 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
   have hh := crossing_counit_matrix C X (simples C i) i
   rw [Fintype.sum_unique, show (default : crossingIndex C (simples C i) i (unitIndex C)) = a
     from Subsingleton.elim _ _] at hh
+  dsimp only [crossingSummand] at hh
   let : Simple (simples C i) := simples_simple C i
   let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   rw [crossingBlock_of_simple_split X (simpleTensorUnitIso C i).symm _ _
