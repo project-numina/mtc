@@ -7,10 +7,10 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [RigidCategory D]
+variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [LeftRigidCategory D]
 
 omit [Abelian D] in
-/-- Tensoring with any object preserves injectives in a rigid category. -/
+/-- Tensoring with any object preserves injectives in a left-rigid category. -/
 theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U) :=
   letI : (tensorRight (ᘁU)).IsRightAdjoint :=
     ⟨⟨tensorRight (ᘁ(ᘁU)), ⟨tensorRightAdjunction (ᘁ(ᘁU)) (ᘁU)⟩⟩⟩
@@ -36,9 +36,9 @@ theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
   letI (W : 𝒵) : IsArtinianObject W := center_artinian C W
   letI : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective X)
   letI (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
-  letI (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) :=
-    letI : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
-    Centre.finiteDimensional_hom ℂ A B
+  letI (A : 𝒵) : FiniteDimensional ℂ (A ⟶ A) :=
+    letI : FiniteDimensional ℂ (A.1 ⟶ A.1) := IsFusionCategory.hom_finite _ _
+    Centre.finiteDimensional_hom ℂ A A
   finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW =>
     ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
 

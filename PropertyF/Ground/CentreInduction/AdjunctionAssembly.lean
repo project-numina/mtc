@@ -17,10 +17,11 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 local notation "Sᶜ" => simples C
 attribute [local instance] Abelian.hasFiniteBiproducts
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 /-- A tensor factor isomorphic to the unit and its dual cancel around any object. -/
-def unitTensorIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (X : D) : (A ⊗ X) ⊗ Aᘁ ≅ X :=
+def unitTensorIso {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (X : D) :
+    (A ⊗ X) ⊗ Aᘁ ≅ X :=
   letI : HasRightDual (𝟙_ D) := hasRightDualUnit
   ((e ⊗ᵢ Iso.refl X) ⊗ᵢ rightDualIsoMap e.symm) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
@@ -42,16 +43,14 @@ def unitSummandRetract :
 /-- A fixed map on either outer tensor factor commutes with a map on the
 middle factor. -/
 @[reassoc]
-theorem tensor_middle_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    {A B U V X Y : D} (a : A ⟶ B) (d : U ⟶ V) (f : X ⟶ Y) :
+theorem tensor_middle_natural {A B U V X Y : D} (a : A ⟶ B) (d : U ⟶ V) (f : X ⟶ Y) :
     (((𝟙 A ⊗ₘ f) ⊗ₘ 𝟙 U)) ≫ ((a ⊗ₘ 𝟙 Y) ⊗ₘ d) =
       ((a ⊗ₘ 𝟙 X) ⊗ₘ d) ≫ (((𝟙 B ⊗ₘ f) ⊗ₘ 𝟙 V)) := by
   simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Cancelling tensor-unit factors is natural in the middle object. -/
-theorem unitTensorIso_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    {A X Y : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (f : X ⟶ Y) :
+theorem unitTensorIso_natural {A X Y : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (f : X ⟶ Y) :
     ((A ◁ f) ▷ Aᘁ) ≫ (unitTensorIso e Y).hom = (unitTensorIso e X).hom ≫ f := by
   dsimp [unitTensorIso, hasRightDualUnit]
   rw [Category.assoc, ← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc]

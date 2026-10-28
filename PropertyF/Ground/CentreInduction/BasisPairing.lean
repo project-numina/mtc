@@ -21,14 +21,18 @@ local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
 local instance (i : Fin (rank C)) : FiniteDimensional ℂ (Sᶜ i ⟶ Sᶜ i) :=
   IsFusionCategory.hom_finite _ _
 
+section
+variable {k : Type*} [CommSemiring k] {I J : Type} [Fintype I] [Fintype J]
+  [DecidableEq I] [DecidableEq J]
+variable {A B F : Type*} [AddCommMonoid A] [Module k A] [AddCommMonoid B] [Module k B]
+  [AddCommMonoid F] [Module k F]
+
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/
-theorem dualBasis_contraction_natural {k : Type*} [CommSemiring k] {I J : Type} [Fintype I] [Fintype J] [DecidableEq I] [DecidableEq J]
-    {A B E : Type*} [AddCommMonoid A] [Module k A] [AddCommMonoid B] [Module k B]
-    [AddCommMonoid E] [Module k E] (a : Module.Basis I k A) (b : Module.Basis J k B)
-    (L : A →ₗ[k] B) (F : B →ₗ[k] Module.Dual k A →ₗ[k] E) :
-    (∑ i, F (L (a i)) (a.dualBasis i)) =
-      ∑ j, F (b j) (Module.Dual.transpose L (b.dualBasis j)) := by
+theorem dualBasis_contraction_natural (a : Module.Basis I k A) (b : Module.Basis J k B)
+    (L : A →ₗ[k] B) (f : B →ₗ[k] Module.Dual k A →ₗ[k] F) :
+    (∑ i, f (L (a i)) (a.dualBasis i)) =
+      ∑ j, f (b j) (Module.Dual.transpose L (b.dualBasis j)) := by
   let c : I → J → k := fun i j => b.repr (L (a i)) j
   have hL (i : I) : L (a i) = ∑ j, c i j • b j := (b.sum_repr _).symm
   have hD (j : J) : Module.Dual.transpose L (b.dualBasis j) =
@@ -37,6 +41,7 @@ theorem dualBasis_contraction_natural {k : Type*} [CommSemiring k] {I J : Type} 
       (a.dualBasis.sum_repr (Module.Dual.transpose L (b.dualBasis j))).symm
   simp only [hL, hD, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]
   exact Finset.sum_comm
+end
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Simple projections form the dual basis to simple inclusions. -/

@@ -28,22 +28,23 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
   let b := (β_ Z B).hom
   have hn := transported_pivotal_natural p b
   rw [← transported_pivotal_tensor p B Z, ← transported_pivotal_tensor p Z B] at hn
-  have hb : (doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
-      (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (doubleDualTensorIso B Z).hom.f :=
-    congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
-  simp only [Category.assoc] at hn
-  rw [hb] at hn
+  have hb := congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
+  simp only [Center.comp_f] at hb
+  dsimp only [b] at hn
+  simp only [Category.assoc, hb] at hn
   apply (cancel_mono ((Center.forget D).map (doubleDualTensorIso B Z).hom)).1
   simpa [Category.assoc] using hn
 
 omit [RightRigidCategory D] [RightRigidCategory (Center D)] in
-/-- A braiding equation against a positive centre object, transported along an
-isomorphism, detects centrality of a map in the base category. -/
+/-- A braiding equation against a positive centre object, transported along a
+split monomorphism, detects centrality of a map in the base category. -/
 theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
-    (f : Z.1 ⟶ W.1) (g : T ⟶ B.1) [IsIso g]
+    (f : Z.1 ⟶ W.1) (g : T ⟶ B.1) [IsSplitMono g]
     (h : (β_ Z ((Center.ofBraided D).obj T)).hom.f ≫ (g ⊗ₘ f) =
       (f ⊗ₘ g) ≫ (β_ W B).hom.f) :
     (f ▷ T) ≫ (W.2.β T).hom = (Z.2.β T).hom ≫ (T ◁ f) :=
+  letI : IsSplitMono (g ▷ W.1) :=
+    IsSplitMono.mk' ((inferInstance : IsSplitMono g).exists_splitMono.some.map (tensorRight W.1))
   (cancel_mono (g ▷ W.1)).1 <| by
     rw [tensorHom_def' g f, tensorHom_def f g] at h
     change (Z.2.β T).hom ≫ ((T ◁ f) ≫ g ▷ W.1) =

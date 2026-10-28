@@ -58,9 +58,8 @@ theorem scalar_sq_eq_one_of_same_square {X : D} [Simple X]
   have hn : (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom ≠ 0 :=
     mono_ne_zero_of_id_ne_zero _ (id_nonzero X)
   apply smul_left_injective k hn
-  change (z * z) • (a.hom ≫ ((a.homᘁ)ᘁ)) = (1 : k) • (a.hom ≫ ((a.homᘁ)ᘁ))
-  simpa only [hz, rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul,
-    one_smul] using hsq
+  simpa only [Iso.trans_hom, rightDualIsoMap, hz, rightAdjointMate_smul,
+    Linear.smul_comp, Linear.comp_smul, smul_smul, one_smul] using hsq
 
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
