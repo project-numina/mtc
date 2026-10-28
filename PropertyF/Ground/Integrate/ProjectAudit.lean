@@ -57,10 +57,8 @@ import all PropertyF.Ground.CentreDimensions.PivotalTwist
 import all PropertyF.Ground.CentreInduction.ActualFusion
 import all PropertyF.Ground.CentreInduction.AdjunctionAssembly
 import all PropertyF.Ground.CentreInduction.BasisPairing
-import all PropertyF.Ground.CentreInduction.CounitColumn
 import all PropertyF.Ground.CentreInduction.CrossingBlocks
 import all PropertyF.Ground.CentreInduction.CrossingCoherence
-import all PropertyF.Ground.CentreInduction.CrossingNaturality
 import all PropertyF.Ground.CentreInduction.CrossingUnit
 import all PropertyF.Ground.CentreInduction.FiniteSimples
 import all PropertyF.Ground.CentreInduction.ForgetDual
@@ -118,7 +116,6 @@ import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Dimensions.IntrinsicNonzero
 import all PropertyF.Ground.Dimensions.MultiplicityDefect
 import all PropertyF.Ground.Dimensions.Pivotal
-import all PropertyF.Ground.Dimensions.PivotalTwist
 import all PropertyF.Ground.Dimensions.SimpleHomBasis
 import all PropertyF.Ground.Dimensions.SimpleScalars
 import all PropertyF.Ground.Dimensions.TensorExtension

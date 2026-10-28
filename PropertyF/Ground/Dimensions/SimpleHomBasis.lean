@@ -314,8 +314,8 @@ theorem simpleHomPairing_injective
   have h := congrArg (fun F : Module.Dual ℂ (S ⟶ X) => F f) hg
   change Ground.simpleEndScalar S (End.of (f ≫ g)) = 0 at h
   rw [hf] at h
-  have hh : Ground.simpleEndScalar S 1 = 0 := h
-  simp at hh
+  change Ground.simpleEndScalar S 1 = 0 at h
+  simp at h
 
 /-- The composition pairing is perfect for each representative simple. -/
 def simpleHomPairingEquiv (C : BraidedFusionCategory.{v,u})
@@ -327,15 +327,15 @@ def simpleHomPairingEquiv (C : BraidedFusionCategory.{v,u})
   let p := simpleHomPairing C (simples C i) X
   have hi := simpleHomPairing_injective C (simples C i) X
   have hd : Module.finrank ℂ (X ⟶ simples C i) =
-      Module.finrank ℂ (Module.Dual ℂ (simples C i ⟶ X)) := by
-    rw [Subspace.dual_finrank_eq]
-    exact finrank_to_simple_eq_from_simple C X i
+      Module.finrank ℂ (Module.Dual ℂ (simples C i ⟶ X)) :=
+    (finrank_to_simple_eq_from_simple C X i).trans
+      (Subspace.dual_finrank_eq (K := ℂ) (V := simples C i ⟶ X)).symm
   exact LinearEquiv.ofBijective p ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).1 hi⟩
 
 /-- Composition pairs precomposition on one Hom space with postcomposition on
 the other. -/
 theorem simpleHomPairing_natural
-    (S X : C.Obj) [Simple S] (g : X ⟶ S) (a : X ⟶ X) :
+    {S X : C.Obj} [Simple S] (g : X ⟶ S) (a : X ⟶ X) :
     simpleHomPairing C S X (a ≫ g) =
       Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairing C S X g) := by
   ext f

@@ -39,19 +39,6 @@ theorem pivotalDimension_dual_eq_conj
     exact one_ne_zero
   · exact pivotalDimension_character C p
 
-/-- Galois conjugates of pivotal dimensions also interchange complex
-conjugation and duality. -/
-theorem galois_pivotalDimension_dual_eq_conj
-    (p : PivotalStructure (C := C.Obj)) (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
-    σ (pivotalDimension C p (simples C (dualIndex C i))) =
-      star (σ (pivotalDimension C p (simples C i))) := by
-  apply fusion_character_dual_eq_conj C
-    (χ := fun j => σ (pivotalDimension C p (simples C j))) (i₀ := unitIndex C)
-  · obtain ⟨e⟩ := unitIndex_iso C
-    rw [pivotalDimension_iso C p e, pivotalDimension_unit, map_one]
-    exact one_ne_zero
-  · intro j k
-    simpa using congrArg σ (pivotalDimension_character C p j k)
 
 end PropertyF.Ground.Dimensions
 
