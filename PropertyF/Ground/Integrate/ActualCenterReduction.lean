@@ -95,18 +95,22 @@ theorem globalFPDimension_galois_sum_squares : σ (globalFPDimension C : ℂ) =
   simp only [globalFPDimension, Complex.ofReal_sum, Complex.ofReal_pow, map_sum, map_pow,
     fp_simple_galois_real]
 
+/-- A Galois conjugate of a simple FP dimension is bounded by that dimension. -/
+theorem fp_simple_galois_norm_le (i : Fin (rank C)) :
+    ‖σ (fpSimple C i : ℂ)‖ ≤ fpSimple C i :=
+  Dimensions.galois_character_norm_le_fpSimple C (χ := fun i ↦ (fpSimple C i : ℂ))
+    (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i
+
 /-- Global FP dimension has positive, FP-bounded real conjugates. -/
 theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalFPDimension C ∧
       σ (globalFPDimension C : ℂ) = (a : ℂ) := by
-  let χ : Fin (rank C) → ℂ := fun i => (fpSimple C i : ℂ)
-  let d : Fin (rank C) → ℝ := fun i => (σ (χ i)).re
+  let d : Fin (rank C) → ℝ := fun i ↦ (σ (fpSimple C i : ℂ)).re
   have hbound (i : Fin (rank C)) : |d i| ≤ fpSimple C i := by
-    convert Dimensions.galois_character_norm_le_fpSimple C (χ := χ) (i₀ := unitIndex C)
-      (by simp [χ, fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i using 1
+    convert fp_simple_galois_norm_le C σ i using 1
     rw [← fp_simple_galois_real C σ i]
-    simp [d, χ, Complex.norm_real, Real.norm_eq_abs]
+    simp [d, Complex.norm_real, Real.norm_eq_abs]
   exact ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
-      (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, by simp [d, χ, fpSimple_unit]⟩),
+      (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, by simp [d, fpSimple_unit]⟩),
     Dimensions.target_globalDimension_le_of_simple_bounds C hbound,
     globalFPDimension_galois_sum_squares C σ⟩
 
