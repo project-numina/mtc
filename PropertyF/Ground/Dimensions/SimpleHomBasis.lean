@@ -208,16 +208,12 @@ theorem simpleHomPairing_injective
     (S X : D) [Simple S] [FiniteDimensional k (S ⟶ S)]
     (hsplit : ∀ (g : X ⟶ S), g ≠ 0 → ∃ f : S ⟶ X, f ≫ g = 𝟙 S) :
     Function.Injective (simpleHomPairing (k := k) S X) := by
-  apply LinearMap.ker_eq_bot.mp
-  rw [LinearMap.ker_eq_bot']
-  intro g hg
+  refine LinearMap.ker_eq_bot.mp (LinearMap.ker_eq_bot'.mpr fun g hg ↦ ?_)
   by_contra hne
   obtain ⟨f, hf⟩ := hsplit g hne
   have h := congrArg (fun F : Module.Dual k (S ⟶ X) => F f) hg
   change Ground.simpleEndScalar (k := k) S (End.of (f ≫ g)) = 0 at h
-  rw [hf] at h
-  change Ground.simpleEndScalar (k := k) S 1 = 0 at h
-  simp at h
+  simp only [hf, show End.of (𝟙 S) = (1 : End S) from rfl, map_one, one_ne_zero] at h
 
 end
 
