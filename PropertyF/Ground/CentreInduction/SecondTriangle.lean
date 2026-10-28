@@ -164,12 +164,9 @@ theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
       (((((T ⊗ A) ⊗ X) ◁ q) ≫ (((T ◁ f) ▷ X) ▷ Aᘁ))) ⊗≫
       (((T ⊗ (𝟙_ D)) ⊗ X) ◁ d) ⊗≫ 𝟙 _ := by
         monoidal
-    _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ T ◁ g) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫
-      (((((T ◁ f) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ≫
-        (((T ⊗ (𝟙_ D)) ⊗ X) ◁ q))) ⊗≫
-      (((T ⊗ (𝟙_ D)) ⊗ X) ◁ d) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ (T ◁ (g ≫ f))) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫
       (((T ⊗ (𝟙_ D)) ⊗ X) ◁ (q ≫ d)) ⊗≫ 𝟙 _ := by
+        rw [whisker_exchange]
         simp [monoidalComp, Category.assoc, whiskerLeft_comp, comp_whiskerRight]
     _ = _ := by rw [hq, e.inv_hom_id]; simp; monoidal
 
