@@ -32,10 +32,9 @@ def groundSimpleScalar (C : BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C
 theorem groundSimpleScalar_smul_id (C : BraidedFusionCategory.{v,u})
     (i : Fin (Ground.rank C)) (a : End (Ground.simples C i)) :
     (groundSimpleScalar C i a) • 𝟙 (Ground.simples C i) = a.asHom := by
-  have h := (groundSimpleScalar C i).symm_apply_apply a
-  change (algebraMap ℂ (End (Ground.simples C i))) (groundSimpleScalar C i a) = a at h
-  have h' := congrArg End.asHom h
-  simpa [Algebra.algebraMap_eq_smul_one] using h'
+  have h : (algebraMap ℂ (End (Ground.simples C i))) (groundSimpleScalar C i a) = a :=
+    (groundSimpleScalar C i).symm_apply_apply a
+  simpa [Algebra.algebraMap_eq_smul_one] using congrArg End.asHom h
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple

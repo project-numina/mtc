@@ -21,14 +21,14 @@ def addLeftStrand (X : C) (n : ℕ) : braidImage X n →* braidImage X (n + 1) :
     change braidImage X n ≤ (braidImage X (n + 1)).comap f
     apply (Subgroup.closure_le _).mpr
     rintro _ ⟨i, rfl⟩
-    have hi : f (braidGenerator X n i) = braidGenerator X (n + 1) i.succ := by
-      apply Aut.ext
-      apply Iso.ext
-      rcases i with ⟨i, hi⟩
-      simp [f, Functor.mapAut, braidGenerator, tensorIso_hom, tensorLeft, id_tensorHom]
     change f (braidGenerator X n i) ∈ braidImage X (n + 1)
-    rw [hi]
-    exact Subgroup.subset_closure (Set.mem_range_self _)
+    apply Subgroup.subset_closure
+    refine ⟨i.succ, ?_⟩
+    apply Aut.ext
+    apply Iso.ext
+    rcases i with ⟨i, hi⟩
+    simp [f, Functor.mapAut, braidGenerator, tensorIso_hom, tensorLeft, id_tensorHom]
+    rfl
   exact (f.comp (braidImage X n).subtype).codRestrict _ (fun a => hf a a.property)
 
 omit [BraidedCategory C] in
