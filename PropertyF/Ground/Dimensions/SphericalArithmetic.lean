@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.PseudoUnitary
 public import PropertyF.Ground.Integrate.CharacterReality
-public import PropertyF.Ground.Modular.DimensionNonzero
+public import PropertyF.Ground.Modular.SMatrix
 open scoped BigOperators
 
 @[expose] public noncomputable section

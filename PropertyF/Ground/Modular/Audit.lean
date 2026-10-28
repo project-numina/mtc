@@ -26,20 +26,13 @@ import all PropertyF.Ground.Dimensions.IteratedTrace
 import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Modular.BraidIso
 import all PropertyF.Ground.Modular.BraidFunctor
-import all PropertyF.Ground.Modular.Characters
 import all PropertyF.Ground.Modular.Classification
-import all PropertyF.Ground.Modular.Labels
 import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.SMatrix
 import all PropertyF.Ground.Modular.SAdditivity
-import all PropertyF.Ground.Modular.HopfPartialTrace
 import all PropertyF.Ground.Modular.Verlinde
 import all PropertyF.Ground.Modular.CharacterStar
 import all PropertyF.Ground.Modular.SSquare
-import all PropertyF.Ground.Modular.Construction
-import all PropertyF.Ground.Modular.DimensionNonzero
-import all PropertyF.Ground.Modular.UnitDimension
-import all PropertyF.Ground.Modular.GaloisFromVerlinde
 import all PropertyF.Ground.Integrate.DependencyAudit
 meta import PropertyF.Ground.Integrate.DependencyAudit
 /-!

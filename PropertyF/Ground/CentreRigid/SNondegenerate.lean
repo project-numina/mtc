@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.CentreRigid.TransparentUnit
 public import PropertyF.Ground.CentreCabling.CoreCentrality
-public import PropertyF.Ground.CentreModular.KirbyCriterion
+public import PropertyF.Ground.CentreModular.TransparencyCriterion
 
 /-! Numerical nondegeneracy from categorical centre nondegeneracy. -/
 

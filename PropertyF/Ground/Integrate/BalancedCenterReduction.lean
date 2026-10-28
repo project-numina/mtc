@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Integrate.CoreIntegralityReduction
 public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
-public import PropertyF.Ground.CentreModular.VafaPivotal
+public import PropertyF.Ground.Centre.Modular.Vafa
 
 /-! The actual core and mixed-monodromy obligations from pivotal balancing. -/
 

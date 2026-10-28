@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Modular.DimensionNonzero
+public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Dimensions.BiproductTrace
 
 /-!
