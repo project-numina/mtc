@@ -18,29 +18,27 @@ namespace PropertyF.Ground.Dimensions
 
 universe v u
 section SimpleIsomorphisms
-variable {C : Type u} [Category.{v} C] [Preadditive C] [HasKernels C] [Linear ℂ C]
+variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
+
+/-- Inverting a scalar multiple of an isomorphism inverts the scalar. -/
+theorem iso_inv_eq_inv_smul {X Y : C} {j k : X ≅ Y} {c : ℂ} (hc : c ≠ 0)
+    (h : k.hom = c • j.hom) : k.inv = c⁻¹ • j.inv := by
+  apply (cancel_mono k.hom).1
+  simp only [Linear.smul_comp, ← Linear.comp_smul, Iso.inv_hom_id]
+  rw [h]
+  simp [hc, smul_smul]
 
 /-- Two isomorphisms from a simple object differ by a nonzero scalar and their inverses
 by its inverse. -/
-theorem isomorphisms_scalar {X Y : C} [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
+theorem isomorphisms_scalar [HasKernels C] {X Y : C} [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
     (j k : X ≅ Y) : ∃ c : ℂ, c ≠ 0 ∧ k.hom = c • j.hom ∧
     k.inv = c⁻¹ • j.inv := by
   obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ (k.hom ≫ j.inv)
-  have hhom : k.hom = c • j.hom := by
-    calc
-      k.hom = (k.hom ≫ j.inv) ≫ j.hom := by simp
-      _ = c • j.hom := by rw [← hc]; simp
-  have hc0 : c ≠ 0 := by
-    intro h
-    have : k.hom = 0 := by simp [h, hhom]
-    have : 𝟙 X = 0 := by simpa using congrArg (fun f => f ≫ k.inv) this
-    exact id_nonzero X this
-  have hinv : k.inv = c⁻¹ • j.inv := by
-    apply (cancel_mono k.hom).1
-    simp only [Linear.smul_comp, ← Linear.comp_smul, Iso.inv_hom_id]
-    rw [hhom]
-    simp [hc0, smul_smul]
-  exact ⟨c, hc0, hhom, hinv⟩
+  have hhom : k.hom = c • j.hom := (cancel_mono j.inv).1 (by
+    simpa only [Linear.smul_comp, Iso.hom_inv_id] using hc.symm)
+  have hc0 : c ≠ 0 := fun h ↦
+    mono_ne_zero_of_id_ne_zero k.hom (id_nonzero X) (by simpa [h] using hhom)
+  exact ⟨c, hc0, hhom, iso_inv_eq_inv_smul hc0 hhom⟩
 end SimpleIsomorphisms
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
@@ -55,7 +53,7 @@ theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional ℂ (X ⟶
       scalar (rightQuantumTrace k) * scalar (leftQuantumTrace k) := by
   obtain ⟨c, hc, hhom, hinv⟩ := isomorphisms_scalar j k
   have hr : rightQuantumTrace k = c • rightQuantumTrace j :=
-    rightQuantumTrace_smul_hom k j c hhom
+    rightQuantumTrace_smul_hom hhom
   have hl : leftQuantumTrace k = c⁻¹ • leftQuantumTrace j := by
     apply End.homEquiv.injective
     simp [leftQuantumTrace, hinv, tensorHom_def]

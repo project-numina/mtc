@@ -69,12 +69,8 @@ theorem rootPhaseTensorIso_inv
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (i j : Fin (rank C)) :
     (rootSignTensorIso C c hc (simples C i) (simples C j)).inv =
-      (c i * c j)⁻¹ • (rootTensorIso C (simples C i) (simples C j)).inv := by
-  have hn : c i * c j ≠ 0 := mul_ne_zero (hc i) (hc j)
-  apply (cancel_epi (rootSignTensorIso C c hc (simples C i) (simples C j)).hom).1
-  rw [Iso.hom_inv_id, rootSignTensorIso_hom]
-  simp only [Linear.smul_comp, Linear.comp_smul, smul_smul, Iso.hom_inv_id]
-  rw [inv_mul_cancel₀ hn, one_smul]
+      (c i * c j)⁻¹ • (rootTensorIso C (simples C i) (simples C j)).inv :=
+  iso_inv_eq_inv_smul (mul_ne_zero (hc i) (hc j)) (rootSignTensorIso_hom C c hc i j)
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseDefect_apply
@@ -181,7 +177,7 @@ theorem rootSignQuantumTrace_simple
   have hq : rightQuantumTrace ((rootSignTwist C c hc).app (simples C i)) =
       c i • rootTrace C (𝟙 (simples C i)) := by
     rw [rootTrace_id]
-    exact rightQuantumTrace_smul_hom _ _ _ (rootSignTwist_app_simple C c hc i)
+    exact rightQuantumTrace_smul_hom (rootSignTwist_app_simple C c hc i)
   rw [hq]
   unfold rootDimension
   simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
@@ -194,7 +190,7 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
   let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
   obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
-  rw [rightQuantumTrace_smul_hom _ _ _ hr, rightQuantumTrace_unitIso] at htrace
+  rw [rightQuantumTrace_smul_hom hr, rightQuantumTrace_unitIso] at htrace
   have hr1 : r = 1 := by
     simpa only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] using htrace
   simpa [hr1] using hr

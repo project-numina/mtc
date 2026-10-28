@@ -121,7 +121,7 @@ theorem distant_braid_commute (X : C) : ∀ (n : ℕ) (i j : Fin (n + 1)),
       cases n with
       | zero => omega
       | succ n =>
-        obtain ⟨j', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j) (by rintro rfl; simp at hij)
+        obtain ⟨j', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j) (by omega)
         obtain ⟨j'', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j') (by rintro rfl; simp at hij)
         exact first_distant_commute X n j''
     · obtain ⟨i', rfl⟩ := Fin.exists_succ_eq_of_ne_zero hi

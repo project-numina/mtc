@@ -124,7 +124,7 @@ theorem fourthDualRoot_unit_component :
   obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar u a
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
   have htrace : unitScalar C (rightQuantumTrace a) = r := by
-    rw [rightQuantumTrace_smul_hom a u r hr, hu, rightQuantumTrace_unitIso]
+    rw [rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
     simp only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one]
   simpa [a, (rootDimension_unit C).trans htrace, hu] using hr
 
