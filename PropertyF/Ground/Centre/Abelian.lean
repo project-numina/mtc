@@ -142,6 +142,7 @@ theorem sumHalfIso_snd (X Y : CategoryTheory.Center C) (U : C) :
 def centerBiprodFst (X Y : CategoryTheory.Center C) : centerBiprod X Y ⟶ X :=
   ⟨biprod.fst, fun U => sumHalfIso_fst X Y U⟩
 
+/-- The second biproduct projection as a centre morphism. -/
 def centerBiprodSnd (X Y : CategoryTheory.Center C) : centerBiprod X Y ⟶ Y :=
   ⟨biprod.snd, fun U => sumHalfIso_snd X Y U⟩
 

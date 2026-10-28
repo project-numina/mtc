@@ -96,32 +96,11 @@ theorem centralizes_symm {A B : CategoryTheory.Center C} (h : Centralizes A B) :
   apply (cancel_epi (β_ A B).hom).mp
   simp only [← Category.assoc, h, Category.id_comp, Category.comp_id]
 
-/-- The paper's half-braiding test is exactly centralization of the positive image. -/
-theorem centralizes_positive_image_iff (Y : CategoryTheory.Center C) :
-    (∀ X : C, Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X)) ↔
-      CentralizesPositive Y :=
-  ⟨fun h X ↦ congrArg CategoryTheory.Center.Hom.f (h X),
-    fun h X ↦ CategoryTheory.Center.ext _ _ (h X)⟩
-
 /-- The corresponding test for the negative image. -/
 theorem centralizes_negative_image_iff (Y : CategoryTheory.Center C) :
     (∀ X : C, Centralizes Y ((negative C).obj X)) ↔ CentralizesNegative Y :=
   ⟨fun h X ↦ congrArg CategoryTheory.Center.Hom.f (h X),
     fun h X ↦ CategoryTheory.Center.ext _ _ (h X)⟩
-
-/-- An object centralizing the positive image is canonically isomorphic to an
-object in the negative image, with the identity underlying morphism. -/
-def negativeIsoOfCentralizesPositive (Y : CategoryTheory.Center C)
-    (h : ∀ X : C, Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X)) :
-    Y ≅ (negative C).obj Y.1 := by
-  have hβ := (centralizesPositive_iff Y).mp ((centralizes_positive_image_iff Y).mp h)
-  let f : Y ⟶ (negative C).obj Y.1 :=
-    ⟨𝟙 _, fun X => by
-      change (𝟙 Y.1 ▷ X) ≫ (β_ X Y.1).inv = (Y.2.β X).hom ≫ (X ◁ 𝟙 Y.1)
-      simpa only [id_whiskerRight, whiskerLeft_id, Category.id_comp, Category.comp_id, Iso.symm_hom] using
-        (congrArg Iso.hom (hβ X)).symm⟩
-  letI : IsIso f.f := inferInstanceAs (IsIso (𝟙 Y.1))
-  exact CategoryTheory.Center.isoMk f
 
 /-- An object centralizing the negative image belongs to the positive image. -/
 def positiveIsoOfCentralizesNegative (Y : CategoryTheory.Center C)
