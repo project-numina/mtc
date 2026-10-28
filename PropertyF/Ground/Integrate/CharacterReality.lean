@@ -49,10 +49,10 @@ open CategoryTheory
 open scoped BigOperators Matrix ComplexOrder
 namespace PropertyF.Ground
 universe v u
+variable {ι K : Type*} [Fintype ι]
 
 /-- Left and right eigenvectors with nonzero pairing have the same eigenvalue. -/
-theorem eigenvalue_eq_of_dotProduct_ne_zero {ι K : Type*} [Fintype ι]
-    [CommSemiring K] [IsDomain K] {A : Matrix ι ι K} {u v : ι → K} {z w : K}
+theorem eigenvalue_eq_of_dotProduct_ne_zero [CommSemiring K] [IsDomain K] {A : Matrix ι ι K} {u v : ι → K} {z w : K}
     (h : A *ᵥ v = z • v) (ht : u ᵥ* A = w • u) (hn : u ⬝ᵥ v ≠ 0) : z = w :=
   mul_right_cancel₀ hn <| by
     simpa only [h, ht, dotProduct_smul, smul_dotProduct, smul_eq_mul] using
@@ -60,7 +60,7 @@ theorem eigenvalue_eq_of_dotProduct_ne_zero {ι K : Type*} [Fintype ι]
 
 /-- If a matrix has conjugation-invariant entries, its eigenvalue and that of
 its transpose on a common nonzero eigenvector are conjugate. -/
-theorem conjugate_of_transpose_eigenvector {ι K : Type*} [Fintype ι] [RCLike K]
+theorem conjugate_of_transpose_eigenvector [RCLike K]
     (A : Matrix ι ι K) (hA : ∀ i j, star (A i j) = A i j)
     {v : ι → K} (hv : v ≠ 0) {z w : K}
     (h : A *ᵥ v = z • v) (ht : Aᵀ *ᵥ v = w • v) : star w = z := by
@@ -70,12 +70,12 @@ theorem conjugate_of_transpose_eigenvector {ι K : Type*} [Fintype ι] [RCLike K
     (fun hz ↦ hv (dotProduct_star_self_eq_zero.mp hz))).symm
 
 /-- A multiplicative character is an eigenvector of each fusion matrix. -/
-theorem fusion_character_eigenvector {ι K : Type*} [Fintype ι] [Semiring K]
+theorem fusion_character_eigenvector [Semiring K]
     {N : ι → ι → ι → K} {χ : ι → K} (hchar : ∀ i j, χ i * χ j = ∑ k, N i j k * χ k)
     (i : ι) : (fun j k ↦ N i j k) *ᵥ χ = χ i • χ :=
   funext fun j ↦ (hchar i j).symm
 
-variable {ι K : Type*} [Fintype ι] [RCLike K] {N : ι → ι → ι → ℕ} {d : ι → ι}
+variable [RCLike K] {N : ι → ι → ι → ℕ} {d : ι → ι}
 variable {χ : ι → K} {i₀ : ι}
 variable (hN : ∀ i j k, N (d i) j k = N i k j)
 variable (hχ : χ i₀ ≠ 0) (hchar : ∀ i j, χ i * χ j = ∑ k, (N i j k : K) * χ k)
@@ -86,9 +86,8 @@ theorem fusion_character_dual_eq_conj (i : ι) : χ (d i) = star (χ i) := by
   simpa using congrArg star (conjugate_of_transpose_eigenvector (fun j k ↦ (N i j k : K))
     (fun j k ↦ star_natCast _) (fun hz ↦ hχ (congrFun hz i₀))
     (fusion_character_eigenvector hchar i) (by
-      have hA : (fun j k ↦ (N (d i) j k : K)) = (fun j k ↦ (N i j k : K))ᵀ :=
-        Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : K)) (hN i j k)
-      simpa only [hA] using fusion_character_eigenvector hchar (d i)))
+      change (fun j k ↦ (N i k j : K)) *ᵥ χ = χ (d i) • χ
+      simpa only [hN] using fusion_character_eigenvector hchar (d i)))
 
 variable (hdual : ∀ i, χ (d i) = χ i)
 include hdual
