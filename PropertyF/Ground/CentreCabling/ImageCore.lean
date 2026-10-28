@@ -24,17 +24,15 @@ def CanonicalImageRetract (X : CategoryTheory.Center C.Obj) : Prop :=
 
 omit [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)] in
 theorem canonicalImageRetract_of_retract {X Y : CategoryTheory.Center C.Obj}
-    (r : Retract X Y) (h : CanonicalImageRetract C Y) : CanonicalImageRetract C X := by
-  rcases h with ⟨A, ⟨s⟩⟩ | ⟨A, ⟨s⟩⟩
-  · exact Or.inl ⟨A, ⟨r.trans s⟩⟩
-  · exact Or.inr ⟨A, ⟨r.trans s⟩⟩
+    (r : Retract X Y) (h : CanonicalImageRetract C Y) : CanonicalImageRetract C X :=
+  h.elim (fun ⟨A, ⟨s⟩⟩ ↦ Or.inl ⟨A, ⟨r.trans s⟩⟩)
+    (fun ⟨A, ⟨s⟩⟩ ↦ Or.inr ⟨A, ⟨r.trans s⟩⟩)
 
 omit [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)] in
 theorem canonicalImageRetract_product {X : CategoryTheory.Center C.Obj}
-    (h : CanonicalImageRetract C X) : Centre.ProductRetract X := by
-  rcases h with ⟨A, ⟨s⟩⟩ | ⟨A, ⟨s⟩⟩
-  · exact Centre.productRetract_of_retract s (Centre.positive_productRetract A)
-  · exact Centre.productRetract_of_retract s (Centre.negative_productRetract A)
+    (h : CanonicalImageRetract C X) : Centre.ProductRetract X :=
+  h.elim (fun ⟨A, ⟨s⟩⟩ ↦ Centre.productRetract_of_retract s (Centre.positive_productRetract A))
+    (fun ⟨A, ⟨s⟩⟩ ↦ Centre.productRetract_of_retract s (Centre.negative_productRetract A))
 
 /-- Simple constituents of either canonical image. -/
 def imageLabels : Set (Fin (rank (Integrate.bundledCenter C))) :=

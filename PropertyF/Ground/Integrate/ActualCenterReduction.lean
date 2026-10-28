@@ -250,48 +250,6 @@ The overlap, modularity and product-retract reductions assemble the categorical
 inputs required by the final integrality argument. -/
 
 section
-/-! The final target follows from the centre and the overlap recurrence alone. -/
-
-@[expose] public noncomputable section
-namespace PropertyF.Ground
-universe v u
-
-/-- The original category needs no spherical-structure premise: its FP
-conjugate bounds follow from the self-dual fusion character. The actual
-modular centre, finite-image transfer and overlap recurrence remain explicit
-unproved premises of this reduction. -/
-theorem target_of_center_and_overlap
-    (hCenter : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ,
-      ∃ (Z : BraidedFusionCategory.{v,max u v}) (p : Dimensions.PivotalStructure (C := Z.Obj)),
-        p.IsSpherical ∧
-        (Modular.HasFPSimpleDimensions Z p) ∧
-        (Modular.categoricalS Z p).det ≠ 0 ∧
-        globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-        (∀ y, (∀ x, Modular.categoricalS Z p x y =
-          (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
-          ObjectPropertyF (simples Z y)) ∧
-        (∀ y, ObjectPropertyF (simples Z y) → TwistedOverlapTrace Z p σ y)) :
-    TargetStatement.{v,u} := by
-  apply target_of_bounded_conjugates_and_witness
-  · intro C _ _ σ
-    exact positive_bounded_conjugates_of_fp C σ
-  · intro C hPU hF σ a b _ _ _ hτ
-    obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp C σ.symm
-    have hbEq : b' = b := Complex.ofReal_injective (hb'eq.symm.trans hτ)
-    have hb : 0 < b := hbEq ▸ hb'
-    obtain ⟨Z, q, hq, hqDim, hdet, hglobal, hZf, hOverlap⟩ := hCenter C hPU hF σ
-    apply center_witness_of_categorical_modular_data Z q hq hqDim hdet
-      (globalFPDimension C) b (lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C))
-      hb hglobal σ hτ hZf
-    intro y hyF d hσ hS
-    exact rigidity_of_twisted_overlap Z q hqDim σ y hyF d hσ hS (hOverlap y hyF)
-
-end PropertyF.Ground
-end
-end
-
-section
 /-! Discharge overlap coherence and reduce the target to its modular centre. -/
 
 @[expose] public noncomputable section
@@ -300,16 +258,6 @@ namespace PropertyF.Ground
 universe v u
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The actual scalar-twisted overlap recurrence holds for every simple. -/
-theorem twistedOverlapTrace_proved (Z : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := Z.Obj)) (σ : ℂ ≃+* ℂ)
-    (y : Fin (rank Z)) : TwistedOverlapTrace Z p σ y := by
-  let D := ScalarTwist.category Z σ
-  let X : D.Obj := simples Z y
-  letI : Simple X := simples_simple Z y
-  intro u k
-  exact Calculus.overlap_trace_power D X (ScalarTwist.pivotal Z σ p) 1 u k
-
 /-- The target follows from an actual positive spherical modular centre with
 the global dimension and selected finite-braid-image properties. All of
 these centre facts remain explicit premises. -/
@@ -324,10 +272,23 @@ theorem target_of_modular_center
         (∀ y, (∀ x, Modular.categoricalS Z p x y =
           (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
           ObjectPropertyF (simples Z y))) : TargetStatement.{v,u} := by
-  apply target_of_center_and_overlap
-  intro C hPU hF σ
-  obtain ⟨Z, p, hp, hdim, hdet, hglobal, hfinite⟩ := hCenter C hPU hF σ
-  exact ⟨Z, p, hp, hdim, hdet, hglobal, hfinite, fun y _ => twistedOverlapTrace_proved Z p σ y⟩
+  apply target_of_bounded_conjugates_and_witness
+  · intro C _ _ σ
+    exact positive_bounded_conjugates_of_fp C σ
+  · intro C hPU hF σ a b _ _ _ hτ
+    obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp C σ.symm
+    have hb : 0 < b := (Complex.ofReal_injective (hb'eq.symm.trans hτ)) ▸ hb'
+    obtain ⟨Z, p, hp, hdim, hdet, hglobal, hfinite⟩ := hCenter C hPU hF σ
+    apply center_witness_of_categorical_modular_data Z p hp hdim hdet
+      (globalFPDimension C) b (lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C))
+      hb hglobal σ hτ hfinite
+    intro y hyF d hσ hS
+    apply rigidity_of_twisted_overlap Z p hdim σ y hyF d hσ hS
+    let D := ScalarTwist.category Z σ
+    let X : D.Obj := simples Z y
+    letI : Simple X := simples_simple Z y
+    intro u k
+    exact Calculus.overlap_trace_power D X (ScalarTwist.pivotal Z σ p) 1 u k
 
 end PropertyF.Ground
 end
@@ -384,11 +345,9 @@ universe v u v' u'
 theorem propertyF_of_center_productRetract (C : BraidedFusionCategory.{v,u})
     (Z : BraidedFusionCategory.{v',u'}) (F : Z.Obj ⥤ CategoryTheory.Center C.Obj)
     [F.Braided] [F.Faithful] (hF : HasPropertyF C.Obj)
-    (X : Z.Obj) (hX : Centre.ProductRetract (F.obj X)) : ObjectPropertyF X := by
-  have hf := Centre.productRetract_propertyF hX hF
-  intro n
-  letI : Finite (braidImage (F.obj X) n) := hf n
-  exact Finite.of_injective (Modular.braidImageFunctorIso F X n)
+    (X : Z.Obj) (hX : Centre.ProductRetract (F.obj X)) : ObjectPropertyF X := fun n ↦
+  letI : Finite (braidImage (F.obj X) n) := Centre.productRetract_propertyF hX hF n
+  Finite.of_injective (Modular.braidImageFunctorIso F X n)
     (Modular.braidImageFunctorIso F X n).injective
 
 /-- Replace the generated-label finite-image premise by actual product

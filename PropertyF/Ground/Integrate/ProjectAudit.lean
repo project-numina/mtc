@@ -244,7 +244,6 @@ run_cmd do
       ``PropertyF.Ground.fpDimension_functor_universe,
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
       ``PropertyF.Ground.rigidity_of_twisted_overlap,
-      ``PropertyF.Ground.target_of_center_and_overlap,
       ``PropertyF.Ground.target_of_modular_center,
       ``PropertyF.Ground.target_of_center_centralizers,
       ``PropertyF.Ground.target_of_center_product_retracts,

@@ -13,7 +13,7 @@ open PropertyF.Ground
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- The braided double-dual isomorphism is characterized by its evaluation map. -/
 theorem drinfeld_eval (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     (doubleDualIso C X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =

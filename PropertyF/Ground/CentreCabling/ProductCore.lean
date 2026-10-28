@@ -30,10 +30,10 @@ theorem mem_productLabels (i : Fin (rank (Integrate.bundledCenter C))) :
   classical
   simp [productLabels]
 
-theorem unit_mem_productLabels : unitIndex (Integrate.bundledCenter C) ∈ productLabels C := by
-  rw [mem_productLabels]
-  obtain ⟨e⟩ := unitIndex_iso (Integrate.bundledCenter C)
-  exact Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
+theorem unit_mem_productLabels : unitIndex (Integrate.bundledCenter C) ∈ productLabels C :=
+  (mem_productLabels C _).2 <| by
+    obtain ⟨e⟩ := unitIndex_iso (Integrate.bundledCenter C)
+    exact Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
 
 theorem dual_mem_productLabels (i : Fin (rank (Integrate.bundledCenter C)))
     (hi : i ∈ productLabels C) : dualIndex (Integrate.bundledCenter C) i ∈ productLabels C := by

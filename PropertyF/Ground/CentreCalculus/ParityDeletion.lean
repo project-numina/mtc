@@ -53,11 +53,9 @@ theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd
       unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1))
         (Equiv.Perm.decomposeFin.symm (q, σ))).asHom) =
       unitScalar C (p.rightTrace ((parityPermutationAction C hX odd n) σ).asHom)) :
-    ∃ m : ℕ, fpDimension C X = m := by
-  apply integral_of_trace_deletion C p hdim X (parityPermutationAction C hX odd)
-  · intro n σ
-    exact parityPermutationTrace_fixHead C p hdim hX odd σ
-  · exact hmoved
+    ∃ m : ℕ, fpDimension C X = m :=
+  integral_of_trace_deletion C p hdim X (parityPermutationAction C hX odd)
+    (fun _ σ ↦ parityPermutationTrace_fixHead C p hdim hX odd σ) hmoved
 
 end PropertyF.Ground.CentreCalculus
 
@@ -101,12 +99,8 @@ theorem movedTrace_of_adjacent (C : BraidedFusionCategory.{v,u})
     obtain ⟨j, rfl⟩ := Fin.exists_succ_eq_of_ne_zero hq
     let τ : Equiv.Perm (Fin (n + 1)) := Equiv.swap 0 j
     let T := fixHead (n + 1) τ
-    have ht0 : T 0 = 0 := by simp [T, fixHead]
-    have ht1 : T 1 = j.succ := by
-      change Equiv.Perm.decomposeFin.symm (0, τ) (Fin.succ 0) = _
-      simp [τ]
     have hswap : Equiv.swap 0 j.succ = T * Equiv.swap 0 1 * T⁻¹ := by
-      simpa [ht0, ht1] using Equiv.swap_apply_apply T (0 : Fin (n + 2)) 1
+      simpa [T, τ, fixHead] using Equiv.swap_apply_apply T (0 : Fin (n + 2)) 1
     have hd : Equiv.Perm.decomposeFin.symm (j.succ, σ) =
         T * (Equiv.Perm.decomposeFin.symm (1, τ⁻¹ * σ * τ)) * T⁻¹ := by
       rw [decomposeFin_eq_swap_fixHead, decomposeFin_eq_swap_fixHead, hswap]

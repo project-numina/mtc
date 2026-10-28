@@ -11,7 +11,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The tensor of natural-root components is natural. -/
 theorem rootTensorIso_natural
@@ -58,22 +58,22 @@ theorem rootTensorDefect_natural
 
 /-- The dual-label choice can be removed from the Frobenius defect equation. -/
 theorem enoTraceMatrix_reciprocity_of_rightDual_frobenius_defect
-    (hraw : ∀ i j k (g : Ground.simples C i ⊗ Ground.simples C k ⟶ Ground.simples C j),
-      letI : ExactPairing ((Ground.simples C i)ᘁ) (Ground.simples C i) :=
+    (hraw : ∀ i j k (g : simples C i ⊗ simples C k ⟶ simples C j),
+      letI : ExactPairing ((simples C i)ᘁ) (simples C i) :=
         BraidedCategory.exactPairing_swap _ _
-      Ground.tensorLeftHomLinearEquiv (Ground.simples C k) ((Ground.simples C i)ᘁ)
-          (Ground.simples C i) (Ground.simples C j)
-          ((rootTensorDefect C (Ground.simples C i) (Ground.simples C k)).hom ≫ g) =
-        rootDualSign C i • (Ground.tensorLeftHomLinearEquiv (Ground.simples C k)
-            ((Ground.simples C i)ᘁ) (Ground.simples C i) (Ground.simples C j) g ≫
-          (rootTensorDefect C ((Ground.simples C i)ᘁ) (Ground.simples C j)).hom)) :
+      Ground.tensorLeftHomLinearEquiv (simples C k) ((simples C i)ᘁ)
+          (simples C i) (simples C j)
+          ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
+        rootDualSign C i • (Ground.tensorLeftHomLinearEquiv (simples C k)
+            ((simples C i)ᘁ) (simples C i) (simples C j) g ≫
+          (rootTensorDefect C ((simples C i)ᘁ) (simples C j)).hom)) :
     ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
       rootDualSign C i * enoTraceMatrix C i k j := by
   apply enoTraceMatrix_reciprocity_of_frobenius_defect C
   intro i j k g
-  let : ExactPairing ((Ground.simples C i)ᘁ) (Ground.simples C i) :=
+  let : ExactPairing ((simples C i)ᘁ) (simples C i) :=
     BraidedCategory.exactPairing_swap _ _
-  have hn := rootTensorDefect_natural C (rightDualLabelIso C i).hom (𝟙 (Ground.simples C j))
+  have hn := rootTensorDefect_natural C (rightDualLabelIso C i).hom (𝟙 (simples C j))
   simp only [enoFrobeniusEquiv, LinearEquiv.trans_apply, Linear.homCongr_apply,
     Iso.refl_inv, Iso.refl_hom, Category.id_comp, tensorIso_hom] 
   rw [(hraw i j k g)]

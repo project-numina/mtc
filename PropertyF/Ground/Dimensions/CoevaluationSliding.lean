@@ -11,7 +11,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Linear ℂ D]
   [MonoidalPreadditive D] [MonoidalLinear ℂ D]
 
@@ -25,8 +25,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The Frobenius defect equation reduces to its value on the identity map. -/
 theorem enoTraceMatrix_reciprocity_of_coevaluation_defect
     (hunit : ∀ i k,
-      let X := Ground.simples C i
-      let K := Ground.simples C k
+      let X := simples C i
+      let K := simples C k
       letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
       Ground.tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom =
         rootDualSign C i • (Ground.tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
@@ -35,9 +35,9 @@ theorem enoTraceMatrix_reciprocity_of_coevaluation_defect
       rootDualSign C i * enoTraceMatrix C i k j := by
   apply enoTraceMatrix_reciprocity_of_rightDual_frobenius_defect C
   intro i j k g
-  let X := Ground.simples C i
-  let K := Ground.simples C k
-  let J := Ground.simples C j
+  let X := simples C i
+  let K := simples C k
+  let J := simples C j
   let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
   have hpost := tensorLeftHomLinearEquiv_postcomp K (Xᘁ) X (X ⊗ K) J
     (rootTensorDefect C X K).hom g
@@ -56,14 +56,14 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The ENO reciprocity identity only needs the defect to slide through the
 coevaluation of the swapped dual pairing. -/
 theorem enoTraceMatrix_reciprocity_of_coevaluation_sliding
     (hslide : ∀ i k,
-      let X := Ground.simples C i
-      let K := Ground.simples C k
+      let X := simples C i
+      let K := simples C k
       letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
       let η : K ⟶ (Xᘁ) ⊗ (X ⊗ K) :=
         (λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom
@@ -73,8 +73,8 @@ theorem enoTraceMatrix_reciprocity_of_coevaluation_sliding
       rootDualSign C i * enoTraceMatrix C i k j := by
   apply enoTraceMatrix_reciprocity_of_coevaluation_defect C
   intro i k
-  let X := Ground.simples C i
-  let K := Ground.simples C k
+  let X := simples C i
+  let K := simples C k
   let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
   change ((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
       (Xᘁ) ◁ (rootTensorDefect C X K).hom) =
