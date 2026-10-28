@@ -95,8 +95,9 @@ theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
   classical
   let X := simples C i ⊗ simples C j
   have hid : (rootSignDefect C c hc (simples C i) (simples C j)).hom = 𝟙 X :=
-    simpleInclusion_hom_ext C fun k t ↦ by
+    biproduct_decomposition_hom_ext (simpleDecomposition C X) fun ⟨k, t⟩ ↦ by
     let f := simpleInclusion C X k t
+    change f ≫ _ = f ≫ _
     simpa [f, X, rootPhaseDefect_apply, multiplicityDefect_apply] using
       congrArg (fun L ↦ L f) (hdef k)
   change ((rootSignTwist C c hc).app X).hom ≫ (rootSignTensorIso C c hc _ _).inv = 𝟙 X at hid
@@ -137,7 +138,7 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
         (doubleDualTensorIso (simples C i) (simples C j)).hom))
     (X Y : C.Obj) : (a.app (X ⊗ Y)).hom =
       ((a.app X).hom ⊗ₘ (a.app Y).hom) ≫ (doubleDualTensorIso X Y).hom := by
-  refine tensor_simples_hom_ext C fun sx sy ↦ ?_
+  refine tensor_decomposition_hom_ext (simpleDecomposition C X) (simpleDecomposition C Y) fun sx sy ↦ ?_
   have hn {A B : C.Obj} (f : A ⟶ B) :
       f ≫ (a.app B).hom = (a.app A).hom ≫ ((fᘁ)ᘁ) := a.hom.naturality f
   rw [hn (sx ⊗ₘ sy), hpair, Category.assoc, ← doubleDualTensorIso_natural,
