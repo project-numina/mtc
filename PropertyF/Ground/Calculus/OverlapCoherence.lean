@@ -26,33 +26,33 @@ variable {X : C} {n : ℕ} (a : braidAlgebra X n)
 theorem addLeftBraidAlgebra_asHom :
     ((addLeftBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
-      X ◁ (a : End (tensorPower X (n + 2))).asHom := rfl
+      X ◁ (a : End (braidTensorPower X n)).asHom := rfl
 
 /-- At the level of endomorphisms, right insertion is right whiskering,
 transported across the append isomorphism. -/
 theorem addRightBraidAlgebra_asHom :
     ((addRightBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
-      (appendIso X (n + 2)).inv ≫ ((a : End (tensorPower X (n + 2))).asHom ▷ X) ≫
+      (appendIso X (n + 2)).inv ≫ ((a : End (braidTensorPower X n)).asHom ▷ X) ≫
         (appendIso X (n + 2)).hom := rfl
 
 end SingleInsertion
 
 /-- Canonical left insertion isomorphism, indexed by the braid-algebra
 convention that index `n` has `n+2` strands. -/
-def insertLeftPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X k ⊗ tensorPower X (n + 2) ≅
+def insertLeftPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X k ⊗ braidTensorPower X n ≅
     tensorPower X ((n + k) + 2)
-  | 0 => λ_ (tensorPower X (n + 2))
-  | k + 1 => (α_ X (tensorPower X k) (tensorPower X (n + 2))) ≪≫
+  | 0 => λ_ (braidTensorPower X n)
+  | k + 1 => (α_ X (tensorPower X k) (braidTensorPower X n)) ≪≫
       (Iso.refl X ⊗ᵢ insertLeftPowerIso X n k)
 
 /-- Canonical right insertion isomorphism, built by appending one strand at
 a time on the right. -/
-def insertRightPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X (n + 2) ⊗ tensorPower X k ≅
+def insertRightPowerIso (X : C) (n : ℕ) : ∀ k, braidTensorPower X n ⊗ tensorPower X k ≅
     tensorPower X ((n + k) + 2)
-  | 0 => ρ_ (tensorPower X (n + 2))
-  | k + 1 => (Iso.refl (tensorPower X (n + 2)) ⊗ᵢ (appendIso X k).symm) ≪≫
-      (α_ (tensorPower X (n + 2)) (tensorPower X k) X).symm ≪≫
+  | 0 => ρ_ (braidTensorPower X n)
+  | k + 1 => (Iso.refl (braidTensorPower X n) ⊗ᵢ (appendIso X k).symm) ≪≫
+      (α_ (braidTensorPower X n) (tensorPower X k) X).symm ≪≫
       (insertRightPowerIso X n k ⊗ᵢ Iso.refl X) ≪≫ appendIso X ((n + k) + 2)
 
 section IteratedInsertion
@@ -66,7 +66,7 @@ theorem addLeftBraidAlgebraIter_asHom :
     ((addLeftBraidAlgebraIter X n k a : braidAlgebra X (n + k)) :
       End (tensorPower X ((n + k) + 2))).asHom =
       (insertLeftPowerIso X n k).inv ≫
-        (tensorPower X k ◁ (a : End (tensorPower X (n + 2))).asHom) ≫
+        (tensorPower X k ◁ (a : End (braidTensorPower X n)).asHom) ≫
           (insertLeftPowerIso X n k).hom := by
   induction k with
   | zero =>
@@ -88,7 +88,7 @@ theorem addRightBraidAlgebraIter_asHom :
     ((addRightBraidAlgebraIter X n k a : braidAlgebra X (n + k)) :
       End (tensorPower X ((n + k) + 2))).asHom =
       (insertRightPowerIso X n k).inv ≫
-        ((a : End (tensorPower X (n + 2))).asHom ▷ tensorPower X k) ≫
+        ((a : End (braidTensorPower X n)).asHom ▷ tensorPower X k) ≫
           (insertRightPowerIso X n k).hom := by
   induction k with
   | zero =>
@@ -139,7 +139,7 @@ def freshOverlapIso (X : C) (t k : ℕ) :
   (eqToIso (congrArg (tensorPower X) (overlap_prefix_count t k)) ⊗ᵢ
       Iso.refl (tensorPower X (t + 2))) ≪≫
     insertLeftPowerIso X t ((k + 1) * (t + 1)) ≪≫
-    eqToIso (congrArg (fun n => tensorPower X (n + 2)) (overlapIndex_formula t (k + 1)).symm)
+    eqToIso (congrArg (fun n => braidTensorPower X n) (overlapIndex_formula t (k + 1)).symm)
 
 /-- The left- and right-insertion isomorphisms agree on an overlap. -/
 abbrev HasOverlapCoherence (X : C) (t k : ℕ) : Prop :=
@@ -194,9 +194,9 @@ theorem freshOverlapIso_action :
       (F : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b) (u : braidAlgebra X t),
       (((Eq.mpr (congrArg (fun n => braidAlgebra X t →ₐ[ℂ] braidAlgebra X n) h) F) u :
         braidAlgebra X a) : End (tensorPower X (a + 2))).asHom =
-      (eqToIso (congrArg (fun n => tensorPower X (n + 2)) h)).hom ≫
+      (eqToIso (congrArg (fun n => braidTensorPower X n) h)).hom ≫
         ((F u : braidAlgebra X b) : End (tensorPower X (b + 2))).asHom ≫
-      (eqToIso (congrArg (fun n => tensorPower X (n + 2)) h)).inv := by
+      (eqToIso (congrArg (fun n => braidTensorPower X n) h)).inv := by
     intro a b h F u
     cases h
     simp

@@ -73,8 +73,7 @@ theorem productLabels_doubleCentralizer
     (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
     {core : Set (Fin (rank (𝒵 C)))}
     (hcore : sCentralizer (𝒵 C) p (↑(productLabels C) : Set _) ⊆ core) :
-    ∀ x ∈ sCentralizer (𝒵 C) p core,
-      Centre.ProductRetract (simples (𝒵 C) x) := fun x hx ↦
+    ∀ x ∈ sCentralizer (𝒵 C) p core, Centre.ProductRetract (simples (𝒵 C) x) := fun x hx ↦
   (mem_productLabels C x).mp <|
     doubleCentralizer_of_fusion_closed hfp hdet (productLabels_isFusionSubring C) hcore hx
 
@@ -179,8 +178,7 @@ theorem actual_symmetricCore_integrality {C : BraidedFusionCategory.{v,u}}
     [IsFusionCategory (CategoryTheory.Center C.Obj)]
     {p : PivotalStructure (C := (𝒵 C).Obj)}
     (hfp : IsFPSpherical (𝒵 C) p) :
-    ∀ y ∈ CentreCabling.symmetricCore C,
-      ∃ z : ℤ, Modular.simpleDimension (𝒵 C) p y = z :=
+    ∀ y ∈ CentreCabling.symmetricCore C, ∃ z : ℤ, Modular.simpleDimension (𝒵 C) p y = z :=
   fun y hy ↦ selfTransparent_simpleDimension_integer hfp
     (commonCentralizer_self (simples (𝒵 C) y) hy.1 hy.2)
 

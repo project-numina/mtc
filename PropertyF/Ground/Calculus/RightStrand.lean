@@ -150,7 +150,7 @@ variable [MonoidalCategory C] [BraidedCategory C] [MonoidalPreadditive C]
 actual braid-image spans. -/
 def addLeftBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + 1) :=
   imageAlgebraMap (braidEndRepresentation X n) (braidEndRepresentation X (n + 1))
-    (addLeftStrand X n) (functorEndAlgHom (tensorLeft X) (tensorPower X (n + 2))) (by
+    (addLeftStrand X n) (functorEndAlgHom (tensorLeft X) (braidTensorPower X n)) (by
       intro g
       rfl)
 
@@ -321,9 +321,9 @@ variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear 
 
 /-- Append a right identity strand as an algebra map on all endomorphisms. -/
 def appendRightEndAlgHom (X : C) (n : ℕ) :
-    End (tensorPower X (n + 2)) →ₐ[ℂ] End (tensorPower X ((n + 1) + 2)) :=
+    End (braidTensorPower X n) →ₐ[ℂ] End (tensorPower X ((n + 1) + 2)) :=
   (isoEndAlgEquiv (appendIso X (n + 2))).toAlgHom.comp
-    (functorEndAlgHom (tensorRight X) (tensorPower X (n + 2)))
+    (functorEndAlgHom (tensorRight X) (braidTensorPower X n))
 
 /-- The endomorphism map carries the categorical braid representation to
 the appended braid representation. -/

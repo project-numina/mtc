@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.Fusion.Multiplicity
+public import PropertyF.Ground.Dimensions.Trace
 public import Mathlib.CategoryTheory.Preadditive.HomOrthogonal
 public import Mathlib.CategoryTheory.Conj
 public import Mathlib.LinearAlgebra.Matrix.Reindex
@@ -18,7 +19,9 @@ namespace PropertyF.Ground.Calculus
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
-  [HasFiniteBiproducts C]
+
+section Biproduct
+variable [HasFiniteBiproducts C]
 
 open scoped Classical in
 /-- Orthogonal direct-sum endomorphisms decompose as matrix blocks over the
@@ -48,6 +51,8 @@ def orthogonalEndBlocks {ι α : Type} [Fintype α]
         intro i
         exact hS.matrixDecomposition_id i }
 
+end Biproduct
+
 /-- Conjugation by a categorical isomorphism is a complex-algebra equivalence
 on endomorphisms. -/
 def isoEndAlgEquiv {X Y : C} (e : X ≅ Y) : End X ≃ₐ[ℂ] End Y where
@@ -59,6 +64,19 @@ def isoEndAlgEquiv {X Y : C} (e : X ≅ Y) : End X ≃ₐ[ℂ] End Y where
   commutes' z := by
     apply End.ext
     simp [Algebra.algebraMap_eq_smul_one]
+
+section PivotalTrace
+
+variable [MonoidalCategory C] [RightRigidCategory C]
+
+/-- Pivotal trace is unchanged by categorical conjugation. -/
+theorem rightTrace_iso_conj (p : Dimensions.PivotalStructure (C := C))
+    {X Y : C} (e : X ≅ Y) (a : End X) :
+    p.rightTrace ((isoEndAlgEquiv e) a).asHom = p.rightTrace a.asHom := by
+  simpa [isoEndAlgEquiv, Iso.conj_apply_asHom, Category.assoc] using
+    p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
+
+end PivotalTrace
 
 variable (D : BraidedFusionCategory.{v,u})
 
