@@ -45,8 +45,7 @@ theorem parityPermutationTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd
     simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
       unitScalar_eq_equiv, map_smul, smul_eq_mul]
-    rw [hs, ← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
-      ht]
+    rw [hs, ← unitScalar_eq_equiv, ← unitScalar_eq_equiv, ht]
     ring
 
 include hdim in
@@ -88,8 +87,7 @@ theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
     (hadj : HasAdjacentTrace (permutationScalarTrace C p ρ)) :
     HasMovedTrace (permutationScalarTrace C p ρ) := by
   intro n q hq σ
-  simp only [HasAdjacentTrace, permutationScalarTrace] at hadj
-  simp only [permutationScalarTrace]
+  simp only [HasAdjacentTrace, permutationScalarTrace] at hadj ⊢
   cases n with
   | zero => exact (hq (Fin.eq_zero q)).elim
   | succ n =>
