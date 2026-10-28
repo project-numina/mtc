@@ -116,7 +116,7 @@ abbrev ENOTraceMatrixReciprocity (C : BraidedFusionCategory.{v,u}) : Prop :=
 
 variable {C} in
 theorem rootDualSign_sq (i : Fin (rank C)) :
-    rootDualSign C i * rootDualSign C i = 1 :=
+    IsInvolutiveElem (rootDualSign C i) :=
   (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).1
 
 variable {C} in
@@ -226,6 +226,10 @@ theorem rootPhasePivotal_dimension
   simpa only [pivotalDimension, rightTrace_id, rootPhasePivotal] using
     rootSignQuantumTrace_simple hc i
 
+/-- The root dimension normalized by the Frobenius–Perron dimension. -/
+abbrev normalizedRootDimension (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) : ℂ :=
+  rootDimension C i / (fpSimple C i : ℂ)
+
 variable (hinv : MultiplicityDefectsInvolutive C) (heig : ENOTraceMatrixEigenvector C)
 include hinv heig
 
@@ -233,21 +237,21 @@ include hinv heig
 theorem normalized_defects_trivial
     (hsat : ∀ i, ‖rootDimension C i‖ = fpSimple C i) :
     ScaledMultiplicityDefectsTrivial C
-      (fun i => (rootDimension C i / (fpSimple C i : ℂ))⁻¹) := by
+      (fun i ↦ (normalizedRootDimension C i)⁻¹) := by
   classical
-  let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
+  let q := normalizedRootDimension C
   intro i j k
   let r := q k / (q i * q j)
   have hrnorm : ‖r‖ = 1 := by
-    simp [r, q, Complex.norm_real, abs_of_pos (fpSimple_pos C _),
+    simp [r, q, normalizedRootDimension, Complex.norm_real, abs_of_pos (fpSimple_pos C _),
       hsat, ne_of_gt (fpSimple_pos C _)]
   let : FiniteDimensional ℂ
     (simples C k ⟶ simples C i ⊗ simples C j) :=
     IsFusionCategory.hom_finite _ _
-  simpa [q, r, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_assoc] using
+  simpa [q, r, normalizedRootDimension, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_assoc] using
     (involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm (by
       change enoTraceMatrix C i j k * r = (fusionCoeff C i j k : ℂ)
-      simpa [q, r, div_eq_mul_inv, mul_assoc] using
+      simpa [q, r, normalizedRootDimension, div_eq_mul_inv, mul_assoc] using
         (weighted_eigenvalue_saturation (N := fun i j k ↦ (fusionCoeff C i j k : ℝ))
           (fpSimple_pos C) (fpSimple_mul C) hsat
           (fun i j k ↦ enoTraceMatrix_norm_le_fusionCoeff (hinv i j k)) heig i j k)))
@@ -259,12 +263,12 @@ theorem positive_spherical_of_matrix_identities
     HasFPSphericalStructure C := by
   classical
   have hsat := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
-  let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
+  let q := normalizedRootDimension C
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero i)
     (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))))
   have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) := by
-    simp [c, q, rootDimension_ne_zero]
+    simp [c, q, normalizedRootDimension, rootDimension_ne_zero]
   let unitProof := rootSignTwist_unit_of_simple_dimension C hc (by
     simp only [hvalue, fpSimple_unit, Complex.ofReal_one])
   let p := rootPhasePivotal C c hc (normalized_defects_trivial C hinv heig hsat) unitProof

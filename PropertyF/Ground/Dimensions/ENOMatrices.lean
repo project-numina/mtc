@@ -96,8 +96,7 @@ abbrev RootNormIdentity (C : BraidedFusionCategory.{v,u}) : Prop :=
 variable {C} in
 /-- The trace of an involutive multiplicity defect is bounded by its multiplicity. -/
 theorem enoTraceMatrix_norm_le_fusionCoeff {i j k : Fin (rank C)}
-    (h : (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1) :
+    (h : IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap) :
     ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) := by
   let : FiniteDimensional ℂ (simples C k ⟶ simples C i ⊗ simples C j) :=
     IsFusionCategory.hom_finite _ _
@@ -110,8 +109,7 @@ variable {C} in
 matrix has the natural-root dimension vector as an eigenvector, ENO's FP
 bound follows. Both remaining identities are explicit hypotheses. -/
 theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
-    (hinv : ∀ j k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1)
+    (hinv : ∀ j k, IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap)
     (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j) :
     ‖rootDimension C i‖ ≤ fpSimple C i :=

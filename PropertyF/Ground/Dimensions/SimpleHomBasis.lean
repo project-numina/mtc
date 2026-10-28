@@ -169,8 +169,7 @@ variable {C} in
 /-- Involutivity of every multiplicity operator implies ENO's trace-matrix
 root-dimension eigenvector identity. -/
 theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}
-    (hinv : ∀ k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1) :
+    (hinv : ∀ k, IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap) :
     ∑ k, enoTraceMatrix C i j k * rootDimension C k = rootDimension C i * rootDimension C j := by
   let d := rootTensorDefect C (simples C i) (simples C j)
   have hop (k : Fin (rank C)) :
