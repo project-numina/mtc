@@ -118,6 +118,20 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 
+omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+/-- The left adjacent generator after removing the trailing tensor unit. -/
+theorem threeGeneratorLeft_end_transport (X : C) :
+    (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 0)) =
+      End.of ((α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom) :=
+  End.ext (threeGeneratorLeft_transport X)
+
+omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+/-- The right adjacent generator after removing the trailing tensor unit. -/
+theorem threeGeneratorRight_end_transport (X : C) :
+    (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 1)) =
+      End.of (X ◁ (β_ X X).hom) :=
+  End.ext (threeGeneratorRight_transport X)
+
 /-- The left three-strand generator in a chosen block presentation. -/
 def tripleBlockLeft (X : C) {r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
@@ -226,15 +240,7 @@ theorem three_braid_double_overlap (X : C) :
       (Aut.toEnd ((braidGenerator X 1 0) ^ 2 * (braidGenerator X 1 1) ^ 2)) =
     (isoEndAlgEquiv (α_ X X X))
       (overlapEndProduct X X X (selfMonodromy X) (selfMonodromy X)) := by
-  have ha : (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 0)) =
-      End.of ((α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom) := by
-    apply End.ext
-    exact threeGeneratorLeft_transport X
-  have hb : (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 1)) =
-      End.of (X ◁ (β_ X X).hom) := by
-    apply End.ext
-    exact threeGeneratorRight_transport X
-  rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, ha, hb]
+  rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, threeGeneratorLeft_end_transport, threeGeneratorRight_end_transport]
   apply End.ext
   simp [overlapEndProduct, insertRightIdentity, overlapFresh, selfMonodromy,
     isoEndAlgEquiv, Iso.conj_apply_asHom, pow_two, End.mul_asHom,

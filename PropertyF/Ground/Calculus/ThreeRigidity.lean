@@ -131,20 +131,14 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Equal actual three-strand squares make the two adjacent copies of double
 self-braiding equal in the conventional tensor-product parenthesization. -/
 theorem local_monodromy_of_three_squares_equal
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
+    {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+    [Preadditive C] [Linear ℂ C] (X : C)
     (h : Aut.toEnd (braidGenerator X 1 0 ^ 2) = Aut.toEnd (braidGenerator X 1 1 ^ 2)) :
     insertRightIdentity (X ⊗ X) X (selfMonodromy X) =
       overlapFresh X X X (selfMonodromy X) := by
-  have ha : (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 0)) =
-      End.of ((α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom) := by
-    apply End.ext
-    exact threeGeneratorLeft_transport X
-  have hb : (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 1)) =
-      End.of (X ◁ (β_ X X).hom) := by
-    apply End.ext
-    exact threeGeneratorRight_transport X
   have hh := congrArg (isoEndAlgEquiv (threePowerIso X)) h
-  simp only [map_pow, ha, hb] at hh
+  simp only [map_pow] at hh
+  rw [threeGeneratorLeft_end_transport X, threeGeneratorRight_end_transport X] at hh
   apply (isoEndAlgEquiv (α_ X X X)).injective
   apply End.ext
   have hhom := congrArg End.asHom hh
@@ -162,7 +156,7 @@ theorem local_monodromy_of_block_squares_equal
     (h : tripleBlockLeft X b ^ 2 = tripleBlockRight X b ^ 2) :
     insertRightIdentity (X ⊗ X) X (selfMonodromy X) =
       overlapFresh X X X (selfMonodromy X) := by
-  apply local_monodromy_of_three_squares_equal C X
+  apply local_monodromy_of_three_squares_equal X
   have hs : groupInImage (braidEndRepresentation X 1) (threeGeneratorLeft X ^ 2) =
       groupInImage (braidEndRepresentation X 1) (threeGeneratorRight X ^ 2) := by
     apply b.injective
