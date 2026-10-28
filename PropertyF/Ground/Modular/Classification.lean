@@ -169,8 +169,7 @@ involution, independently of categorical duality. -/
 theorem dual_involutive {R : Type*} [CommSemiring R]
     {S : Matrix ι ι R} {dual : ι → ι} {D : R}
     (hD : D ≠ 0) (hsym : ∀ x y, S x y = S y x)
-    (hsq : HasSSquare S dual D) :
-    Function.Involutive dual := by
+    (hsq : HasSSquare S dual D) : Function.Involutive dual := by
   intro y
   have hsym_sq : (∑ z, S (dual y) z * S z y) =
       ∑ z, S y z * S z (dual y) := by
@@ -182,20 +181,21 @@ theorem dual_involutive {R : Type*} [CommSemiring R]
 
 section NormalizedColumns
 variable {K : Type*} [Field K] {S : Matrix ι ι K} {dimension : ι → K}
+variable (hd : ∀ i, dimension i ≠ 0)
 
+include hd in
 /-- Nonzero normalized columns of an invertible matrix are distinct. -/
-theorem normalized_columns_injective (hdet : S.det ≠ 0) (hd : ∀ i, dimension i ≠ 0) :
+theorem normalized_columns_injective (hdet : S.det ≠ 0) :
     Function.Injective (fun j i ↦ S i j / dimension j) := fun a b h ↦
   (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply
     (dimension b) (dimension a) a b (hd b) (funext fun x ↦ by
       simpa [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
 
+include hd in
 /-- The normalized S columns are linearly independent. The proof constructs an
 explicit inverse from the S-square identity and nonzero dimensions. -/
-theorem normalized_columns_linearIndependent {dual : ι → ι} {D : K}
-    (hd : ∀ y, dimension y ≠ 0) (hD : D ≠ 0)
-    (hsym : ∀ x y, S x y = S y x)
-    (hsq : HasSSquare S dual D) :
+theorem normalized_columns_linearIndependent {dual : ι → ι} {D : K} (hD : D ≠ 0)
+    (hsym : ∀ x y, S x y = S y x) (hsq : HasSSquare S dual D) :
     LinearIndependent K (fun y x => S x y / dimension y) :=
   let A : Matrix ι ι K := fun x y => S x y / dimension y
   let B : Matrix ι ι K := fun x y => dimension x * S x (dual y) / D

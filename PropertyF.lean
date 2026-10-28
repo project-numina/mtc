@@ -6,9 +6,9 @@ public import PropertyF.Ground.CentreBundle.Fusion
 public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.Target
 public import PropertyF.Ground.Integrate.UnitScalar
-public import PropertyF.Ground.Fusion.FunctorDimension
+public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Fusion.SemisimpleSplit
-public import PropertyF.Ground.Fusion.GeneratedRigidity
+public import PropertyF.Ground.Fusion.UnitPower
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.DimensionField
@@ -35,10 +35,9 @@ public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Dimensions.Trace
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Dimensions.IntrinsicNonzero
-public import PropertyF.Ground.Dimensions.Drinfeld
+
 public import PropertyF.Ground.Dimensions.SimpleScalars
-public import PropertyF.Ground.Dimensions.ComplexSaturation
+
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import PropertyF.Ground.Dimensions.TensorExtension
@@ -58,7 +57,7 @@ public import PropertyF.Ground.Calculus.PositiveWeights
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Dimensions.RootDualLabel
 public import PropertyF.Ground.Dimensions.DefectNaturality
-public import PropertyF.Ground.Dimensions.CoevaluationSliding
+
 public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
@@ -80,7 +79,6 @@ public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.CentreInduction.BasisPairing
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 public import PropertyF.Ground.Dimensions.DoubleDualPairing
-public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 public import PropertyF.Ground.CentreCalculus.BraidRelations
 public import PropertyF.Ground.Centre.Calculus.TypeA
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
