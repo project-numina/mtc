@@ -41,34 +41,34 @@ theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
 
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
+local notation "Sₚ" => categoricalS C p
+local notation "dₚ" => simpleDimension C p
+
 /-- A nondegenerate S matrix has distinct normalized columns. -/
 theorem categoricalS_character_injective
-    (hdet : (categoricalS C p).det ≠ 0) :
-    Function.Injective (fun j i => categoricalS C p i j / simpleDimension C p j) := by
+    (hdet : (Sₚ).det ≠ 0) :
+    Function.Injective (fun j i => Sₚ i j / dₚ j) := by
   intro a b h
   have hl := Matrix.linearIndependent_cols_of_det_ne_zero hdet
-  apply hl.eq_of_smul_apply_eq_smul_apply (simpleDimension C p b) (simpleDimension C p a)
+  apply hl.eq_of_smul_apply_eq_smul_apply (dₚ b) (dₚ a)
     a b (simpleDimension_ne_zero C p b)
   funext x
   have hx := congrFun h x
   have hda := simpleDimension_ne_zero C p a
   have hdb := simpleDimension_ne_zero C p b
-  change simpleDimension C p b * categoricalS C p x a =
-    simpleDimension C p a * categoricalS C p x b
+  change dₚ b * Sₚ x a =
+    dₚ a * Sₚ x b
   field_simp [hda, hdb] at hx
   linear_combination hx
 
 /-- The columns of a nondegenerate categorical S matrix are orthogonal. -/
 theorem categoricalS_columns_orthogonal
-    (hdet : (categoricalS C p).det ≠ 0)
+    (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p)
     {a b : Fin (rank C)} (hab : a ≠ b) :
-    ∑ x, starRingEnd ℂ (categoricalS C p x a) * categoricalS C p x b = 0 := by
+    ∑ x, starRingEnd ℂ (Sₚ x a) * Sₚ x b = 0 := by
   let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  let cols (j : Fin (rank C)) : Character rules := {
-    value := fun x => categoricalS C p x j / simpleDimension C p j
-    unit_eq := by rw [categoricalS_symmetric C p, categoricalS_unit]; exact div_self (simpleDimension_ne_zero C p j)
-    mul_eq := fun i k => categoricalS_verlinde C p i k j }
+  let cols (j : Fin (rank C)) : Character rules := categoricalSCharacter C p j
   have hne : cols a ≠ cols b := by
     intro h
     apply hab
@@ -78,10 +78,10 @@ theorem categoricalS_columns_orthogonal
     (cols a) (cols b) hne
   have hda := simpleDimension_ne_zero C p a
   have hdb := simpleDimension_ne_zero C p b
-  have hsum : (∑ x, starRingEnd ℂ (categoricalS C p x a) * categoricalS C p x b) =
-      (∑ x, starRingEnd ℂ (categoricalS C p x a / simpleDimension C p a) *
-        (categoricalS C p x b / simpleDimension C p b)) *
-        (simpleDimension C p a * simpleDimension C p b) := by
+  have hsum : (∑ x, starRingEnd ℂ (Sₚ x a) * Sₚ x b) =
+      (∑ x, starRingEnd ℂ (Sₚ x a / dₚ a) *
+        (Sₚ x b / dₚ b)) *
+        (dₚ a * dₚ b) := by
     rw [Finset.sum_mul]
     apply Finset.sum_congr rfl
     intro x _
@@ -94,10 +94,10 @@ theorem categoricalS_columns_orthogonal
 
 /-- Nondegeneracy forces the off-charge-conjugation entries of S² to vanish. -/
 theorem categoricalS_square_off_dual
-    (hdet : (categoricalS C p).det ≠ 0)
+    (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p)
     (x y : Fin (rank C)) (hxy : x ≠ Ground.dualIndex C y) :
-    ∑ z, categoricalS C p x z * categoricalS C p z y = 0 := by
+    ∑ z, Sₚ x z * Sₚ z y = 0 := by
   have hne : Ground.dualIndex C x ≠ y := by
     intro h
     apply hxy
@@ -105,7 +105,7 @@ theorem categoricalS_square_off_dual
     simpa [Ground.dualIndex_involutive C x] using hh
   have ho := categoricalS_columns_orthogonal C p hdet hreal hne
   have hstar (z : Fin (rank C)) :
-      starRingEnd ℂ (categoricalS C p z (Ground.dualIndex C x)) = categoricalS C p x z := by
+      starRingEnd ℂ (Sₚ z (Ground.dualIndex C x)) = Sₚ x z := by
     rw [categoricalS_symmetric C p z, categoricalS_dual_conj C p hreal]
     simp
   simpa only [hstar] using ho
@@ -113,13 +113,13 @@ theorem categoricalS_square_off_dual
 
 /-- If the square of a matrix is supported on an involution, an invariant
 nonzero column forces all supported entries to agree. -/
-theorem square_support_constant [DecidableEq ι]
-    (S : Matrix ι ι ℂ) {δ : ι → ι} {u : ι} (hdual : Function.Involutive δ)
+theorem square_support_constant {R : Type*} [CommRing R] [IsDomain R] [DecidableEq ι]
+    (S : Matrix ι ι R) {δ : ι → ι} {u : ι} (hdual : Function.Involutive δ)
     (hunit : δ u = u) (hcol : ∀ x, S (δ x) u = S x u)
     (hne : ∀ x, S x u ≠ 0)
     (hoff : ∀ x y, x ≠ δ y → (∑ z, S x z * S z y) = 0) (x : ι) :
     (∑ z, S x z * S z (δ x)) = ∑ z, S u z * S z u := by
-  let a : ι → ℂ := fun x => ∑ z, S x z * S z (δ x)
+  let a : ι → R := fun x => ∑ z, S x z * S z (δ x)
   have hcross (x t : ι) (h : t ≠ δ x) : (∑ z, S x z * S z t) = 0 := by
     apply hoff x t
     intro hh
@@ -144,7 +144,7 @@ theorem square_support_constant [DecidableEq ι]
       rw [hoff t u hh, mul_zero]
     · intro h
       exact (h (Finset.mem_univ _)).elim
-  have hm := congrArg (fun M : Matrix ι ι ℂ => M x u) (Matrix.mul_assoc S S S)
+  have hm := congrArg (fun M : Matrix ι ι R => M x u) (Matrix.mul_assoc S S S)
   simp only [Matrix.mul_apply] at hm
   rw [hleft, hright] at hm
   have ha : a x = a u := mul_right_cancel₀ (hne x) (by simpa [mul_comm] using hm)
@@ -152,13 +152,12 @@ theorem square_support_constant [DecidableEq ι]
 
 /-- Nondegeneracy, sphericality, and real dimensions imply the S-square identity. -/
 theorem categoricalS_square (hp : p.IsSpherical)
-    (hdet : (categoricalS C p).det ≠ 0)
-    (hreal : HasRealSimpleDimensions C p)
-    (x y : Fin (rank C)) :
-    ∑ z, categoricalS C p x z * categoricalS C p z y =
-      if x = Ground.dualIndex C y then globalDimension C else 0 := by
+    (hdet : (Sₚ).det ≠ 0)
+    (hreal : HasRealSimpleDimensions C p) :
+    HasSSquare Sₚ (Ground.dualIndex C) (globalDimension C) := by
   classical
-  let S := categoricalS C p
+  intro x y
+  let S := Sₚ
   let u := unitIndex C
   let δ := Ground.dualIndex C
   let a : Fin (rank C) → ℂ := fun x => ∑ z, S x z * S z (δ x)
@@ -171,8 +170,8 @@ theorem categoricalS_square (hp : p.IsSpherical)
       (fun i j hij => categoricalS_square_off_dual C p hdet hreal i j hij) x
     simpa only [a, hunit] using h
   have hu : a u = globalDimension C := by
-    change (∑ z, categoricalS C p (unitIndex C) z *
-      categoricalS C p z (Ground.dualIndex C (unitIndex C))) = globalDimension C
+    change (∑ z, Sₚ (unitIndex C) z *
+      Sₚ z (Ground.dualIndex C (unitIndex C))) = globalDimension C
     rw [Ground.dualIndex_unit C]
     simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
     simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
@@ -205,18 +204,20 @@ namespace PropertyF.Ground.Modular
 
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
+local notation "Sₚ" => categoricalS C p
+local notation "dₚ" => simpleDimension C p
+
 /-- Invertibility and S-square force the global dimension to be nonzero. -/
 theorem globalDimension_ne_zero_of_invertibleS (hp : p.IsSpherical)
-    (hdet : (categoricalS C p).det ≠ 0)
+    (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
     globalDimension C ≠ 0 := by
   classical
   let _ : Nonempty (Fin (rank C)) := ⟨unitIndex C⟩
   intro hz
-  have hs : categoricalS C p * categoricalS C p = 0 := by
+  have hs : Sₚ * Sₚ = 0 := by
     ext x y
-    simp only [Matrix.mul_apply, Matrix.zero_apply, categoricalS_square C p hp hdet hreal, hz]
-    split_ifs <;> rfl
+    simp [Matrix.mul_apply, categoricalS_square C p hp hdet hreal, hz]
   have hh := congrArg Matrix.det hs
   rw [Matrix.det_mul, Matrix.det_zero] at hh
   exact mul_ne_zero hdet hdet hh
@@ -224,11 +225,10 @@ theorem globalDimension_ne_zero_of_invertibleS (hp : p.IsSpherical)
 /-- The S-column Galois action for any nondegenerate spherical category with
 real simple dimensions, without old input bundles. -/
 theorem categoricalS_galois_action_of_invertibleS (hp : p.IsSpherical)
-    (hdet : (categoricalS C p).det ≠ 0)
+    (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
-    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)), ∀ (σ : ℂ ≃+* ℂ) i j,
-      σ (categoricalS C p i j / simpleDimension C p j) =
-        categoricalS C p i (act σ j) / simpleDimension C p (act σ j) :=
+    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)),
+      IsGaloisColumnAction (Sₚ) (dₚ) act :=
   categoricalS_galois_action C p (Ground.dualIndex C)
     (globalDimension_ne_zero_of_invertibleS C p hp hdet hreal)
     (categoricalS_square C p hp hdet hreal) (categoricalS_verlinde C p)

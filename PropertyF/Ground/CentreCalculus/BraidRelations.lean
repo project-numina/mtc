@@ -102,15 +102,9 @@ theorem first_distant_commute (X : C) (n : ℕ) (j : Fin (n + 1)) :
     (braidGenerator X (n + 2) ⟨0, by omega⟩).asIso.hom ≫
       (braidGenerator X (n + 2) j.succ.succ).asIso.hom
   rcases j with ⟨j, hj⟩
-  simp only [Fin.succ, braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
-    Iso.refl_hom, tensorHom_id, id_tensorHom]
-  change (X ◁ X ◁ (braidGenerator X n ⟨j, hj⟩).asIso.hom) ≫
-      ((α_ X X (tensorPower X (n + 2))).inv ≫ (β_ X X).hom ▷ _ ≫
-        (α_ X X (tensorPower X (n + 2))).hom) =
-    ((α_ X X (tensorPower X (n + 2))).inv ≫ (β_ X X).hom ▷ _ ≫
-        (α_ X X (tensorPower X (n + 2))).hom) ≫
-      (X ◁ X ◁ (braidGenerator X n ⟨j, hj⟩).asIso.hom)
-  exact (Calculus.crossing_natural X _ _ (braidGenerator X n ⟨j, hj⟩).asIso.hom).symm
+  simpa only [Fin.succ, braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+    Iso.refl_hom, tensorHom_id, id_tensorHom] using
+    (Calculus.crossing_natural X _ _ (braidGenerator X n ⟨j, hj⟩).asIso.hom).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Crossings supported on disjoint pairs of strands commute. -/

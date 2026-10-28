@@ -42,12 +42,12 @@ theorem target_of_bounded_conjugates_and_witness
 by
   intro C hPU hF
   obtain ⟨D, σ, ⟨E⟩, hD⟩ := hPU
-  have hDF := Modular.conjugate_propertyF C D E hF
+  have hDF := Modular.conjugate_propertyF E hF
   have hfixed := galois_fixed_of_smaller_conjugate_witness (globalFPDimension D)
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D))
     (hConjugates D hD hDF) (hWitness D hD hDF)
   have hInt := weaklyIntegral_of_globalFPDimension_fixed D hfixed
-  rwa [Modular.conjugate_globalFPDimension C D E]
+  rwa [Modular.conjugate_globalFPDimension E]
 
 end PropertyF.Ground
 end
@@ -81,9 +81,7 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
   have hreal := CentreCabling.realSimpleDimensions_of_fp hdim
   obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hp hdet hreal
   let y := act σ.symm (unitIndex Z)
-  have hprop := Modular.galois_unit_properties (unitIndex Z) (Modular.categoricalS Z p)
-    (dualIndex Z) (Modular.simpleDimension Z p) (globalDimension Z)
-    (Modular.simpleDimension_ne_zero Z p)
+  have hprop := Modular.galois_unit_properties (Modular.simpleDimension_ne_zero Z p)
     (Modular.globalDimension_ne_zero_of_invertibleS Z p hp hdet hreal)
     (Modular.simpleDimension_unit Z p) (Modular.categorical_global_eq_sum_squares Z p hp)
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
