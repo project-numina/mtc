@@ -71,19 +71,10 @@ theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V 
   let F' : (simples C i ⟶ W) →ₗ[ℂ]
       Module.Dual ℂ (simples C i ⟶ V) →ₗ[ℂ] E :=
     (LinearMap.lcomp ℂ E P.symm.toLinearMap).comp F
-  have hproj (a) : P.symm (A.dualBasis a) = simpleProjection C V i a := by
-    apply P.injective
-    simpa [P, A] using (pairing_simpleProjection C V i a).symm
-  have hdual (b) : P.symm (Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q)
-      (B.dualBasis b)) = q ≫ simpleProjection C W i b := by
-    apply P.injective
-    rw [P.apply_symm_apply]
-    symm
-    rw [simpleHomPairingEquiv_natural, pairing_simpleProjection]
-  have h := dualBasis_contraction_natural A B (Linear.rightComp ℂ (simples C i) q) F'
-  simp only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply, LinearEquiv.coe_coe] at h
-  simp_rw [hproj, hdual] at h
-  simpa only [A, B, Dimensions.simpleInclusionBasis_apply] using h
+  simpa only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply,
+    LinearEquiv.coe_coe, A, B, P, Dimensions.simpleInclusionBasis_apply,
+    ← pairing_simpleProjection, ← simpleHomPairingEquiv_natural, LinearEquiv.symm_apply_apply] using
+    dualBasis_contraction_natural A B (Linear.rightComp ℂ (simples C i) q) F'
 
 /-- A mixed crossing block, with the input and output test strands allowed
 to differ, is bilinear in its two fusion morphisms. -/
@@ -136,10 +127,7 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
     simpa [F', Category.assoc] using simpleBasis_contraction_natural C i (q j) F'
   simp_rw [step]
   rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro b _
-  rw [← map_sum]
-  simp only [← Category.assoc, ← Preadditive.sum_comp, h, Category.id_comp]
+  simp_rw [← map_sum, ← Category.assoc, ← Preadditive.sum_comp, h, Category.id_comp]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Nested fusion decompositions give the direct crossing-block contraction. -/
