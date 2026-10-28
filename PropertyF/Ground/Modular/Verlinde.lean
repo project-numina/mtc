@@ -210,9 +210,8 @@ theorem doubleBraiding_tensor_factorization (Z X Y : C) :
     (α_ Z X Y).hom ≫ doubleBraiding Z (X ⊗ Y) ≫ (α_ Z X Y).inv =
       ((β_ Z X).hom ▷ Y) ≫ (α_ X Z Y).hom ≫ (X ◁ doubleBraiding Z Y) ≫
         (α_ X Z Y).inv ≫ ((β_ X Z).hom ▷ Y) := by
-  simp only [doubleBraiding, braiding_tensor_right_hom, braiding_tensor_left_hom,
-    whiskerLeft_comp, Category.assoc, Iso.hom_inv_id_assoc, Iso.inv_hom_id_assoc,
-    Iso.hom_inv_id, Category.comp_id]
+  simp [doubleBraiding, braiding_tensor_right_hom, braiding_tensor_left_hom,
+    whiskerLeft_comp, Category.assoc]
 
 end Braiding
 section Trace
