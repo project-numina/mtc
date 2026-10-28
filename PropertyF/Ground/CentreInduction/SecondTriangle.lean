@@ -192,10 +192,9 @@ theorem unit_diag :
   simp only [unit_matrix_reduce, crossing_counit_diagonal C X i]
   erw [crossingUnitBlock_eval X (S i) (Classical.choice (unitIndex_iso C))]
   dsimp only [Functor.id_obj]
-  calc
-    _ = 𝟙 _ ⊗≫ ((S i ⊗ X) ◁ (((S i)ᘁ ◁ η_ (S i) ((S i)ᘁ)) ⊗≫
-      (ε_ (S i) ((S i)ᘁ) ▷ (S i)ᘁ))) ⊗≫ 𝟙 _ := by monoidal
-    _ = _ := by rw [coevaluation_evaluation'']; monoidal
+  convert congrArg (fun (t : (S i)ᘁ ⊗ 𝟙_ C.Obj ⟶ 𝟙_ C.Obj ⊗ (S i)ᘁ) =>
+    𝟙 (V i) ⊗≫ ((S i ⊗ X) ◁ t) ⊗≫ 𝟙 (V i))
+    (coevaluation_evaluation'' (S i) ((S i)ᘁ)) using 1 <;> monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
