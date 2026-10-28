@@ -20,12 +20,12 @@ theorem fusionOfFiniteSemisimple
       (∀ X, ∃ m : Fin n → ℕ,
         Nonempty (X ≅ ⨁ (fun p : Σ i, Fin (m i) => S p.1)))) :
     IsFusionCategory (CategoryTheory.Center C.Obj) where
-  hom_finite X Y := by
-    let := IsFusionCategory.hom_finite (C := C.Obj) X.1 Y.1
-    exact Centre.finiteDimensional_hom ℂ X Y
-  unit_simple := by
-    let := IsFusionCategory.unit_simple (C := C.Obj)
-    exact Centre.centerUnitSimple
+  hom_finite X Y :=
+    letI := IsFusionCategory.hom_finite (C := C.Obj) X.1 Y.1
+    Centre.finiteDimensional_hom ℂ X Y
+  unit_simple :=
+    letI := IsFusionCategory.unit_simple (C := C.Obj)
+    Centre.centerUnitSimple
   finite_semisimple := h
 
 end PropertyF.Ground.CentreBundle

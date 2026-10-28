@@ -15,11 +15,11 @@ an integer. In a pseudo-unitary symmetric setting, the intended application is
 that these products are factorial multiples of exterior-power dimensions. -/
 theorem integral_of_nonnegative_falling_factorials {d : ℝ} (hd : 0 ≤ d)
     (h : ∀ n : ℕ, 0 ≤ ∏ k ∈ Finset.range n, (d - (k : ℝ))) :
-    ∃ m : ℕ, d = m := by
+    ∃ m : ℕ, d = m :=
   let m := ⌊d⌋₊
-  by_cases heq : d = (m : ℝ)
-  · exact ⟨m, heq⟩
-  · have hm : (m : ℝ) < d := lt_of_le_of_ne (Nat.floor_le hd) (Ne.symm heq)
+  if heq : d = (m : ℝ) then ⟨m, heq⟩
+  else by
+    have hm : (m : ℝ) < d := lt_of_le_of_ne (Nat.floor_le hd) (Ne.symm heq)
     have hm' : d < (m : ℝ) + 1 := Nat.lt_floor_add_one d
     have hprod : 0 < ∏ k ∈ Finset.range (m + 1), (d - (k : ℝ)) := by
       apply Finset.prod_pos
