@@ -237,10 +237,7 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
     exact (show w i = (φ e).trace from by
       simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one] using ht.symm).trans hk
   choose mult hm using hnat
-  refine ⟨mult, fun x => ?_⟩
-  have hx := hw x
-  change (φ x).trace = ∑ i, w i * (x i).trace at hx
-  simpa [hm] using hx
+  exact ⟨mult, fun x => by simpa [T, hm] using hw x⟩
 
 /-- A complex idempotent matrix with zero trace is zero. -/
 theorem idempotent_matrix_eq_zero_of_trace_eq_zero {m : ℕ}

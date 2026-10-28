@@ -183,20 +183,13 @@ theorem overlapProduct_unitary {X : C} {t : ℕ}
     intro i
     rw [overlapProduct, map_mul, Pi.mul_apply]
     apply Submonoid.mul_mem
-    · have hr : Blocks.IsUnitary ⟨_, d (overlapIndex t k + (t + 1))⟩
-          (e _ (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1)
-            (overlapProduct u k))) := by
-        simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
-          starMap_preserves_block_unitary
-            (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) ih
-      exact hr i
-    · let m := (k + 1) * (t + 1)
-      have hr : Blocks.IsUnitary ⟨_, d (t + m)⟩
-          (e (t + m) (addLeftBraidAlgebraIter X t m u)) := by
-        simpa [addLeftBlocksIterStarMap, addLeftBlocksIter] using
-          starMap_preserves_block_unitary
-            (addLeftBlocksIterStarMap X t m (e t) (e (t + m)) (he t) (he (t + m))) hu
-      have hcast : ∀ (a b : ℕ) (h : a = b)
+    · change e (overlapIndex t k + (t + 1))
+        (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) (overlapProduct u k)) i ∈
+          Matrix.unitaryGroup (Fin (d (overlapIndex t k + (t + 1)) i)) ℂ
+      simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
+        (starMap_preserves_block_unitary
+          (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) ih) i
+    · have hcast : ∀ (a b : ℕ) (h : a = b)
           (f : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b),
           Blocks.IsUnitary ⟨_, d b⟩ (e b (f u)) →
           Blocks.IsUnitary ⟨_, d a⟩
@@ -204,7 +197,10 @@ theorem overlapProduct_unitary {X : C} {t : ℕ}
         intro a b h f hunit
         cases h
         exact hunit
-      exact hcast _ _ (overlapIndex_formula t (k + 1)) _ hr i
+      exact hcast _ _ (overlapIndex_formula t (k + 1)) _ (by
+        simpa [addLeftBlocksIterStarMap, addLeftBlocksIter] using
+          starMap_preserves_block_unitary
+            (addLeftBlocksIterStarMap X t ((k + 1) * (t + 1)) (e t) (e _) (he t) (he _)) hu) i
 
 end PropertyF.Ground.Calculus
 

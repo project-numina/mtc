@@ -163,10 +163,9 @@ theorem pair_operator_scalar_of_overlaps_equal {X : C.Obj} [Simple X]
   simp only [scalarTrace, hdim, htrace] at h
   have h' : (d : ℂ) • u = (f : ℂ) • (1 : End (X ⊗ X)) := by
     have hs : End.of (X ◁ ((f : ℂ) • (1 : End X)).asHom) =
-        (f : ℂ) • (1 : End (X ⊗ X)) := by
-      apply End.ext
-      change X ◁ ((f : ℂ) • (𝟙 X)) = (f : ℂ) • (𝟙 (X ⊗ X))
-      rw [MonoidalLinear.whiskerLeft_smul, whiskerLeft_id]
+        (f : ℂ) • (1 : End (X ⊗ X)) :=
+      End.ext (by simp only [End.smul_asHom, End.one_asHom,
+        MonoidalLinear.whiskerLeft_smul, whiskerLeft_id])
     simpa only [mul_div_cancel_left₀ _ hd', hs] using h
   apply (smul_right_injective _ hd')
   simpa only [smul_smul, mul_div_cancel₀ _ hd'] using h'
