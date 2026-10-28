@@ -129,8 +129,7 @@ theorem exists_positive_multiplicity {X : D.Obj}
 
 /-- Tensoring an object on the left acts on simple multiplicities by its
 integer fusion matrix. -/
-theorem tensor_multiplicity (X Y : D.Obj)
-    (k : Fin (rank D)) :
+theorem tensor_multiplicity (X Y : D.Obj) (k : Fin (rank D)) :
     simpleMultiplicity D k (X ⊗ Y) =
       ∑ j, simpleMultiplicity D j Y *
         simpleMultiplicity D k (X ⊗ simples D j) := by
@@ -175,8 +174,7 @@ local notation "N" => fusionCoeff D
 
 /-- Associativity of fusion coefficients, derived from associativity of
 tensor products and finite semisimplicity. -/
-theorem fusionCoeff_assoc
-    (i j k l : Fin (rank D)) :
+theorem fusionCoeff_assoc (i j k l : Fin (rank D)) :
     ∑ r, N j k r * N i r l = ∑ r, N i j r * N r k l := by
   classical
   have h := (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples D l))
