@@ -156,15 +156,12 @@ set_option backward.isDefEq.respectTransparency false in
 theorem closeFusionMap_evaluation (f : T ⊗ S ⟶ R) :
     (closeFusionMap T S f ▷ S) ≫ ε_ S (Sᘁ) =
       𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
-  have he := Dimensions.rightDualIso_evaluation
-      (@HasRightDual.exact D _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
-      (ExactPairing.tensor (X₁ := T) (X₂ := S) (Y₁ := Tᘁ) (Y₂ := Sᘁ))
-  change (rightDualTensorIso T S).hom ▷ (T ⊗ S) ≫
-    (𝟙 _ ⊗≫ (Sᘁ) ◁ (ε_ T (Tᘁ) ▷ S) ⊗≫ ε_ S (Sᘁ)) =
-      ε_ (T ⊗ S) ((T ⊗ S)ᘁ) at he
   calc
     _ = 𝟙 _ ⊗≫ ((fᘁ ▷ (T ⊗ S)) ≫ ε_ (T ⊗ S) ((T ⊗ S)ᘁ)) := by
-      rw [← he]
+      erw [← Dimensions.rightDualIso_evaluation
+        (@HasRightDual.exact D _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
+        (ExactPairing.tensor (X₁ := T) (X₂ := S) (Y₁ := Tᘁ) (Y₂ := Sᘁ)),
+        ExactPairing.tensor_evaluation]
       dsimp [closeFusionMap]
       monoidal
     _ = _ := by rw [rightAdjointMate_comp_evaluation]; monoidal
