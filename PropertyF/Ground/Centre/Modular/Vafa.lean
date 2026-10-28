@@ -27,6 +27,11 @@ namespace PropertyF.Ground.CentreModular
 universe u v w
 variable (C : BraidedFusionCategory.{v,u})
 
+/-- A regular dimension vector is an eigenvector for every fusion operator. -/
+abbrev IsRegularFusionVector {ι K : Type*} [Fintype ι] [Semiring K]
+    (N : ι → ι → ι → K) (d : ι → K) : Prop :=
+  ∀ i k, (∑ j, d j * N i j k) = d i * d k
+
 /-- A derivation of fusion coefficients relative to a dimension character. -/
 abbrev IsFusionDerivation {ι K M : Type*} [Fintype ι] [Semiring K] [AddCommMonoid M] [Module K M]
     (N : ι → ι → ι → K) (d : ι → K) (b : ι → M) : Prop :=
@@ -37,7 +42,7 @@ variable {ι K M : Type*} [Fintype ι] [Field K] [AddCommGroup M] [Module K M]
 
 /-- A derivation vanishes when a regular eigenvector has nonzero squared norm. -/
 theorem derivation_vanishes_of_regular_eigenvector (N : ι → ι → ι → K) (d : ι → K)
-    (hreg : ∀ i k, (∑ j, d j * N i j k) = d i * d k) (hD : (∑ j, d j ^ 2) ≠ 0)
+    (hreg : IsRegularFusionVector N d) (hD : (∑ j, d j ^ 2) ≠ 0)
     (b : ι → M) (hderiv : IsFusionDerivation N d b) :
     ∀ i, b i = 0 := by
   classical
@@ -258,7 +263,7 @@ abbrev HasWeightedTwistBalance {ι K G : Type*} [Fintype ι] [Field K] [Algebra 
 theorem finite_order_of_weighted_twist_balance {ι K G : Type*} [Fintype ι] [Field K]
     [Algebra ℚ K] [Module.FaithfullyFlat ℚ K] [CommGroup G]
     (N : ι → ι → ι → K) (d : ι → K)
-    (hreg : ∀ i k, (∑ j, d j * N i j k) = d i * d k) (hD : (∑ j, d j ^ 2) ≠ 0)
+    (hreg : IsRegularFusionVector N d) (hD : (∑ j, d j ^ 2) ≠ 0)
     (hd : ∀ i, d i ≠ 0) (t : ι → G) (hbalance : HasWeightedTwistBalance N d t) :
     ∀ i, IsOfFinOrder (t i) := by
   have hderiv : IsFusionDerivation N d (fun i ↦ d i • rationalUnitClass (K := K) (t i)) := by

@@ -6,6 +6,7 @@ public import PropertyF.Ground.Dimensions.MultiplicityDefect
 
 /-! Reduction of mixed monodromy to the finite order of the pivotal twist. -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
@@ -78,9 +79,9 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist
 
 /-- The actual pivotal twist scalars, viewed as nonzero complex numbers. -/
 def pivotalTwistUnit (C : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (i : Fin (rank C)) : ℂˣ := by
+    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) : ℂˣ := by
   letI : Simple (simples C i) := simples_simple C i
-  exact Units.mk0 (Dimensions.pivotalBraidedTwistScalar C p (simples C i))
-    (Dimensions.pivotalBraidedTwistScalar_ne_zero C p (simples C i))
+  exact Units.mk0 (pivotalBraidedTwistScalar C p (simples C i))
+    (pivotalBraidedTwistScalar_ne_zero C p (simples C i))
 
 end PropertyF.Ground.CentreCabling
