@@ -3,7 +3,6 @@ public import PropertyF.Ground.CentreInduction.PositivePivotal
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
-public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.Dimensions.DefectExtension
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
@@ -122,7 +121,7 @@ theorem fourthDualIso_tensor :
   simp only [Category.assoc, drinfeld_inv_dual_tensor X Y]
   simp only [← tensorHom_comp_tensorHom_assoc, ← Category.assoc]
   rw [Category.assoc m.inv,
-    ← CentreCabling.doubleBraiding_natural (d X).hom (d Y).hom]
+    ← Modular.doubleBraiding_natural (d X).hom (d Y).hom]
   simp only [Category.assoc, show Modular.doubleBraiding X Y = m.hom from rfl,
     Iso.inv_hom_id_assoc]
 

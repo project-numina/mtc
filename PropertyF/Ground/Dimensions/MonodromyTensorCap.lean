@@ -44,8 +44,8 @@ theorem drinfeld_tensor_cap_factor :
       rw [whisker_exchange_assoc a (λ_ U).hom,
         whisker_exchange_assoc a (ε_ V (Vᘁ) ▷ U),
         whisker_exchange_assoc a (b ▷ V ▷ U), ← comp_whiskerRight_assoc,
-        associator_naturality_left]
-      rw [comp_whiskerRight, Category.assoc, associator_naturality_left_assoc]
+        associator_naturality_left, comp_whiskerRight, Category.assoc,
+        associator_naturality_left_assoc]
       monoidal
     _ = _ := by rw [drinfeld_eval, drinfeld_eval]; monoidal
 end PropertyF.Ground.Dimensions

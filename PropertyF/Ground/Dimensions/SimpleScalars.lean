@@ -138,10 +138,7 @@ theorem simple_scalar_biproduct_natural
     biproduct.map (fun i ↦ c (a i) • 𝟙 (T (a i))) ≫ f =
       f ≫ biproduct.map (fun j ↦ c (b j) • 𝟙 (T (b j))) := by
   classical
-  apply biproduct.hom_ext'
-  intro i
-  apply biproduct.hom_ext
-  intro j
+  refine biproduct.hom_ext' _ _ fun i ↦ biproduct.hom_ext _ _ fun j ↦ ?_
   simp only [Category.assoc, biproduct.ι_map_assoc, biproduct.map_π,
     Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
   let g := biproduct.ι (fun i ↦ T (a i)) i ≫ f ≫ biproduct.π (fun j ↦ T (b j)) j
@@ -221,19 +218,17 @@ theorem simpleScalarNatural_app_simple
   classical
   let X := simples C i
   let a : simplePieces C X := ⟨i, ⟨0, by
-    change 0 < Module.finrank ℂ (simples C i ⟶ simples C i)
-    simp [finrank_simples_hom]⟩⟩
+    simp [simpleMultiplicity, finrank_simples_hom, X]⟩⟩
   let e := simpleDecomposition C X
   let V := simplePiecesObject C X
   let s : X ⟶ X := biproduct.ι V a ≫ e.inv
-  let t : X ⟶ X := e.hom ≫ biproduct.π V a
-  have hst : s ≫ t = 𝟙 X := by simp [s, t, Category.assoc, V, a, X, simplePiecesObject]
+  have hst : s ≫ e.hom ≫ biproduct.π V a = 𝟙 X := by
+    simp [s, Category.assoc, V, a, X, simplePiecesObject]
   let : Simple X := simples_simple C i
   let : IsIso s := isIso_of_hom_simple (fun hz ↦
     id_nonzero X (by simpa [hz] using hst.symm))
   apply (cancel_epi s).1
-  change s ≫ simpleScalarComponent C c X = s ≫ (c i • 𝟙 X)
-  simp [s, simpleScalarComponent, e, V, a, Category.assoc]
+  simp [simpleScalarNatural, s, simpleScalarComponent, e, V, a, X, Category.assoc]
 
 /-- Nonzero scalar values on all simples extend to a natural automorphism of
 the identity functor. -/
