@@ -203,22 +203,15 @@ theorem transported_pivotal_tensor :
 
 /-! Unit coherence of centre dual and pivotal comparisons. -/
 
-omit [RightRigidCategory D] in
-/-- The right-dual unit comparison is preserved by centre forget. -/
-theorem forget_rightDualUnitIso :
-    (rightDualUnitIso (C := 𝒵)).hom.f =
-      (rightDualIso (forgetPairing (𝟙_ (𝒵)))
-        (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).hom :=
-  letI : HasRightDual (𝟙_ (𝒵)) := RightRigidCategory.rightDual _
-  forget_rightDualIso HasRightDual.exact exactPairingUnit exactPairingUnit
-    (Center.rightUnitor_inv_f _)
-
 /-- Forgetting preserves the unit comparison for right duals. -/
 theorem forgetDualIso_unit :
     (κ (𝟙_ (𝒵))).hom ≫ (rightDualUnitIso (C := D)).hom =
     (rightDualUnitIso (C := 𝒵)).hom.f :=
+  letI : HasRightDual (𝟙_ (𝒵)) := RightRigidCategory.rightDual _
   (rightDualIso_trans (forgetPairing (𝟙_ (𝒵))) HasRightDual.exact
-    (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).trans (forget_rightDualUnitIso (D := D)).symm
+    (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).trans
+      (forget_rightDualIso HasRightDual.exact exactPairingUnit exactPairingUnit
+        (Center.rightUnitor_inv_f _)).symm
 
 /-- Forgetting preserves the unit comparison for double right duals. -/
 theorem forgetDoubleDualIso_unit :
