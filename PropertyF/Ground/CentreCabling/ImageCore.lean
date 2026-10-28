@@ -31,11 +31,13 @@ def productLabels : Finset (Fin (rank (𝒵 C))) := by
   classical
   exact Finset.univ.filter (fun i => Centre.ProductRetract (simples (𝒵 C) i))
 
+/-- Product labels are exactly the labels of product retracts. -/
 theorem mem_productLabels (i : Fin (rank (𝒵 C))) :
     i ∈ productLabels C ↔ Centre.ProductRetract (simples (𝒵 C) i) := by
   classical
   simp [productLabels]
 
+/-- The unit label is a product label. -/
 theorem unit_mem_productLabels : unitIndex (𝒵 C) ∈ productLabels C :=
   let ⟨e⟩ := unitIndex_iso (𝒵 C)
   (mem_productLabels C _).2 <|
@@ -43,6 +45,7 @@ theorem unit_mem_productLabels : unitIndex (𝒵 C) ∈ productLabels C :=
 
 variable {i j : productLabels C}
 
+/-- Product labels are closed under duals. -/
 theorem dual_mem_productLabels : dualIndex (𝒵 C) i ∈ productLabels C :=
   let Z := 𝒵 C
   let X : CategoryTheory.Center C.Obj := simples Z i
@@ -117,6 +120,7 @@ end
 def imageLabels : Set (Fin (rank (𝒵 C))) :=
   {a | CanonicalImageRetract (simples (𝒵 C) a)}
 
+/-- Every canonical-image label is a product label. -/
 theorem imageLabels_subset_productLabels : imageLabels C ⊆ (↑(productLabels C) : Set _) :=
   fun a ha ↦ (mem_productLabels C a).mpr (canonicalImageRetract_product ha)
 

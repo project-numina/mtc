@@ -58,6 +58,7 @@ def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
 
 variable {X Y : C}
 
+/-- A map on the untraced factor passes through the left partial trace. -/
 theorem leftPartialTrace_right (a : End Y) (f : End (X ⊗ Y)) :
     leftPartialTrace p (f * insertLeftIdentity X a) =
       leftPartialTrace p f * a :=
