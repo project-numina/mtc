@@ -65,7 +65,9 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
   apply actual_three_strand_rigidity_of_trace_bound C p (b 1) (he 1)
     (hw 1) (htrace 1) ?_ hd hf hdim hS hfinite
   intro z hz
-  simpa [hdim, hfp, Complex.norm_real, Real.norm_eq_abs] using
-    sharp_trace_bound_for_presentations_of_overlap_identity C p z b hsize he hz (hrec z)
+  have hbound := sharp_trace_bound_of_overlap C p z (fun k =>
+    braid_trace_unitary_bound_ground C p (hsize _) (b _)
+      (overlapProduct z k) (overlapProduct_unitary b he hz k)) (hrec z)
+  simpa [hdim, hfp, Complex.norm_real, Real.norm_eq_abs] using hbound
 
 end PropertyF.Ground.Calculus
