@@ -64,8 +64,8 @@ theorem productLabels_doubleCentralizer
     ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p core,
       Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := fun x hx ↦
   (mem_productLabels C x).mp <|
-    doubleCentralizer_of_fusion_closed (Integrate.bundledCenter C) p hp hdet hdim
-      (productLabels C) core (unit_mem_productLabels C) (dual_mem_productLabels C)
+    doubleCentralizer_of_fusion_closed hp hdet hdim
+      (unit_mem_productLabels C) (dual_mem_productLabels C)
       (fun i hi j hj k hk ↦ constituent_mem_productLabels C i j k hi hj hk) hcore hx
 
 
