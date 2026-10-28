@@ -281,11 +281,6 @@ theorem totalFusionMatrix_eq_sum_characterMatrix :
   Matrix.ext fun j k ↦ by
     simpa [totalFusionMatrix, characterMatrix, Matrix.sum_apply] using totalFusionMatrix_symmetric D j k
 
-theorem total_commutes_characterMatrix (i : Fin (rank D)) :
-    Commute (totalFusionMatrix D) (characterMatrix D i) :=
-  (totalFusionMatrix_eq_sum_characterMatrix D).symm ▸
-    Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i
-
 /-- The total matrix has a strictly positive common eigenvector for all
 fusion matrices. -/
 theorem exists_positive_common_eigenvector :
@@ -296,7 +291,10 @@ theorem exists_positive_common_eigenvector :
     (Matrix.isHermitian_iff_isSymm.mpr (Matrix.IsSymm.ext fun j k ↦
       totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)
   refine ⟨v, hvpos, fun i ↦ positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve ?_⟩
-  rw [Matrix.mulVec_mulVec, (total_commutes_characterMatrix D i).eq,
+  rw [Matrix.mulVec_mulVec,
+    (show Commute (totalFusionMatrix D) (characterMatrix D i) from
+      (totalFusionMatrix_eq_sum_characterMatrix D).symm ▸
+        Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
     ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul]
 
 /-- A positive normalized character exists for the actual fusion rules. -/
@@ -477,16 +475,13 @@ theorem fpSimple_isFusionMultiplicative :
     dsimp
     exact_mod_cast fpSimple_mul D i j
 
-/-- The fusion matrix of a dual is the transpose of the original one. -/
-theorem fusionMatrix_dual (i : Fin (rank D)) :
-    fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ :=
-  Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : ℂ)) (fusionCoeff_dual_symmetry D i k j).symm
-
 variable {D} in
 /-- Dual simple objects have the same FP dimension. -/
 theorem fpSimple_dual (i : Fin (rank D)) :
-    fpSimple D (dualIndex D i) = fpSimple D i :=
-  by simp [fpSimple, fusionMatrix_dual, Matrix.spectralRadius_transpose]
+    fpSimple D (dualIndex D i) = fpSimple D i := by
+  simp only [fpSimple, show fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ from
+    Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : ℂ)) (fusionCoeff_dual_symmetry D i k j).symm,
+    Matrix.spectralRadius_transpose]
 
 variable {D} in
 /-- Every simple has FP dimension at least one. -/

@@ -70,13 +70,11 @@ def fusionFlow (i j k : Fin (rank D)) : ℝ :=
 variable {D} in
 theorem fusionFlow_balance (i j : Fin (rank D)) :
     (∑ k, fusionFlow D i j k) = ∑ k, fusionFlow D i k j := by
-  simp only [fusionFlow, fusionCoeff_dual_symmetry D i j]
-  calc
-    _ = fpSimple D j * (∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k) := by
-      simp only [Finset.mul_sum, mul_assoc]
-    _ = fpSimple D j * (∑ k, (fusionCoeff D (dualIndex D i) j k : ℝ) * fpSimple D k) := by
-      rw [← fpSimple_mul, ← fpSimple_mul, fpSimple_dual]
-    _ = _ := by simp only [Finset.mul_sum, mul_comm]
+  have h : (∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k) =
+      ∑ k, (fusionCoeff D (dualIndex D i) j k : ℝ) * fpSimple D k := by
+    rw [← fpSimple_mul, ← fpSimple_mul, fpSimple_dual]
+  simpa only [fusionFlow, fusionCoeff_dual_symmetry D i j, Finset.sum_mul, Finset.mul_sum,
+    mul_comm, mul_left_comm, mul_assoc] using congrArg (fun x ↦ x * fpSimple D j) h
 
 variable {D} in
 /-- A positive fusion coefficient gives an actual retract. -/
