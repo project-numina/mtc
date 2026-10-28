@@ -131,23 +131,21 @@ theorem isSpherical_iff_simple_dimensions
     (p : PivotalStructure (C := C.Obj)) :
     p.IsSpherical ↔ ∀ i : Fin (rank C),
       p.leftTrace (𝟙 (simples C i)) = p.rightTrace (𝟙 (simples C i)) := by
-  constructor
-  · intro h i
-    exact h _ _
-  · intro hs X f
-    classical
-    let m (i : Fin (rank C)) := simpleMultiplicity C i X
-    let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
-    obtain ⟨e⟩ := exists_canonical_decomposition C X
-    let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
-    obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple (k := ℂ)
-      (fun (a : Σ i, Fin (m i)) ↦ simples_simple C a.1)
-      (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
-    rw [show p.leftTrace f = p.leftTrace g from by
-          simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f)),
-      show p.rightTrace f = p.rightTrace g from by
-        simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f)),
-      htrace, leftTrace_biproduct_scalar_blocks p g hc]
-    exact Finset.sum_congr rfl fun a _ ↦ congrArg (fun t ↦ c a • t) (hs a.1)
+  refine ⟨fun h i ↦ h _ _, ?_⟩
+  intro hs X f
+  classical
+  let m (i : Fin (rank C)) := simpleMultiplicity C i X
+  let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
+  obtain ⟨e⟩ := exists_canonical_decomposition C X
+  let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
+  obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple (k := ℂ)
+    (fun (a : Σ i, Fin (m i)) ↦ simples_simple C a.1)
+    (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
+  rw [show p.leftTrace f = p.leftTrace g from by
+        simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f)),
+    show p.rightTrace f = p.rightTrace g from by
+      simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f)),
+    htrace, leftTrace_biproduct_scalar_blocks p g hc]
+  exact Finset.sum_congr rfl fun a _ ↦ congrArg (fun t ↦ c a • t) (hs a.1)
 
 end PropertyF.Ground.Dimensions
