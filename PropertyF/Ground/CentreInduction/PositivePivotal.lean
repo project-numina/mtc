@@ -80,11 +80,12 @@ def liftedPivotalStructure (hc : PivotalComponentsCentral p) :
     PivotalStructure (C := 𝒵) where
   iso Z := Center.isoMk ⟨transportedPivotalHom p Z, hc Z⟩
   naturality f := Center.ext _ _ (by
-    simpa only [Center.comp_f, Center.isoMk_hom] using transported_pivotal_natural p f)
+    simpa only [Center.comp_f, Center.isoMk_hom, transportedPivotalHom] using
+      transported_natural f (p.naturality f.f))
   tensor X Y := Center.ext _ _ (by
-    simpa only [Center.comp_f, Center.tensor_f, Center.isoMk_hom, Center.tensor_fst] using
-      (transported_pivotal_tensor p X Y).symm)
-  unit := Center.ext _ _ (transported_pivotal_unit p)
+    simpa only [Center.comp_f, Center.tensor_f, Center.isoMk_hom, Center.tensor_fst,
+      transportedPivotalHom] using (transported_tensor X Y (p.tensor X.1 Y.1).symm).symm)
+  unit := Center.ext _ _ (transported_unit p.unit)
 
 variable {p} in
 /-- The lifted component agrees with the original pivotal component. -/
