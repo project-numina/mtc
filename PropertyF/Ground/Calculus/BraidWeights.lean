@@ -29,12 +29,13 @@ def groundSimpleScalar (i : Fin (Ground.rank C)) :
     Ground.IsFusionCategory.hom_finite _ _
   exact simpleEndScalar _
 
+variable {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
+  (e : X ≅ ⨁ (simpleCopies C m)) (a : End X)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple
 biproduct component of the transported endomorphism. -/
-theorem groundEndBlockEquiv_diagonal {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
-    (e : X ≅ ⨁ (simpleCopies C m))
-    (a : End X) (i : Fin (Ground.rank C)) (j : Fin (m i)) :
+theorem groundEndBlockEquiv_diagonal (i : Fin (Ground.rank C)) (j : Fin (m i)) :
     groundEndBlockEquiv C e a i j j =
       groundSimpleScalar C i (End.of
         (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫
@@ -51,8 +52,7 @@ set_option backward.isDefEq.respectTransparency false in
 simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
 theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
-    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
-    (e : X ≅ ⨁ (simpleCopies C m)) (a : End X) :
+    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
     scalar (p.rightTrace a.asHom) = ∑ i,
       scalar (p.rightTrace (𝟙 (Ground.simples C i))) *
         (groundEndBlockEquiv C e a i).trace := by
@@ -342,7 +342,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
       ∑ j, (mult i j : ℂ) * (b a j).trace := by
     intro i
     simpa [F, braidToEndBlocks] using hmult i (b a)
-  rw [pivotalTrace_groundEndBlocks C p scalar e]
+  rw [pivotalTrace_groundEndBlocks C e _ p scalar]
   simp_rw [hi, Finset.mul_sum]
   rw [Finset.sum_comm]
   simp only [Finset.sum_mul, mul_assoc, mul_left_comm]

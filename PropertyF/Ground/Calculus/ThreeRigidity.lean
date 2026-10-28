@@ -174,15 +174,15 @@ section BlockRigidity
 variable {X : C.Obj} {r : ℕ} {size : Fin r → ℕ}
   (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
   (he : IsUnitaryBraidPresentation b) {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0)
-include he hw
+  {d f : ℝ} (htrace : IsTracePresentation C p b w)
+  (hbound : HasUnitaryTraceBound C p b (|d| * f ^ 2))
+include he hw htrace hbound
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Actual three-strand block generators have equal squares once their
 categorical weighted trace has the sharp bound and saturates it at `a²b²`.
 The remaining hypotheses are explicitly the trace weights and sharp bound. -/
-theorem actual_braid_squares_equal_of_saturation {d f : ℝ} (hf : 0 < f)
-    (htrace : IsTracePresentation C p b w)
-    (hbound : HasUnitaryTraceBound C p b (|d| * f ^ 2))
+theorem actual_braid_squares_equal_of_saturation (hf : 0 < f)
     (hvalue : actualBraidTrace C p
       (braidInImage
         (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2) :
@@ -206,17 +206,15 @@ theorem actual_braid_squares_equal_of_saturation {d f : ℝ} (hf : 0 < f)
 /-- Three-strand rigidity for a genuine braided pivotal fusion category,
 reduced to explicit real, nonzero trace weights and the sharp unitary bound. -/
 theorem actual_three_strand_rigidity_of_trace_bound [Simple X]
-    {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
+    (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hS : scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f)
-    (hfinite : ObjectPropertyF X)
-    (htrace : IsTracePresentation C p b w)
-    (hbound : HasUnitaryTraceBound C p b (|d| * f ^ 2)) : f = |d| :=
+    (hfinite : ObjectPropertyF X) : f = |d| :=
   dimension_eq_abs_of_scalar_monodromy C p hd hf hdim hfinite
     (pair_operator_scalar_of_overlaps_equal C p (selfMonodromy X) hd hdim hS
       (local_monodromy_of_block_squares_equal b
-        (actual_braid_squares_equal_of_saturation C p b he hw hf htrace hbound
+        (actual_braid_squares_equal_of_saturation C p b he hw htrace hbound hf
           (by rw [actual_three_braid_trace C p X, hdim, hS, mul_pow,
             pow_two (d : ℂ), mul_assoc, mul_div_cancel_left₀ _ (by exact_mod_cast hd)]))))
 
