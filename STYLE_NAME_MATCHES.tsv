@@ -3,7 +3,7 @@ PropertyF/Ground/Centre/Calculus/TypeANormalWords.lean	63	IsTypeAFamily.shift	.l
 PropertyF/Ground/Centre/Calculus/TypeANormalWords.lean	63	IsTypeAFamily.shift	.lake/packages/mathlib/Mathlib/CategoryTheory/Triangulated/Subcategory.lean	527	trW.shift
 PropertyF/Ground/Modular/Classification.lean	169	dual_involutive	.lake/packages/mathlib/Mathlib/Combinatorics/Matroid/Dual.lean	158	dual_involutive
 PropertyF/Ground/CentreInduction/CrossingCoherence.lean	32	weak_left	.lake/packages/mathlib/Mathlib/Data/Ordmap/Invariants.lean	777	Bounded.weak_left
-PropertyF/Ground/CentreInduction/CrossingCoherence.lean	48	weak_right	.lake/packages/mathlib/Mathlib/Data/Ordmap/Invariants.lean	781	Bounded.weak_right
+PropertyF/Ground/CentreInduction/CrossingCoherence.lean	52	weak_right	.lake/packages/mathlib/Mathlib/Data/Ordmap/Invariants.lean	781	Bounded.weak_right
 PropertyF/Ground/Centre/Calculus/TypeANormalWords.lean	63	IsTypeAFamily.shift	.lake/packages/mathlib/Mathlib/Probability/BrownianMotion/Basic.lean	235	IsPreBrownianReal.shift
 PropertyF/Ground/Centre/Calculus/TypeANormalWords.lean	63	IsTypeAFamily.shift	.lake/packages/mathlib/Mathlib/Probability/BrownianMotion/Basic.lean	319	IsBrownianReal.shift
 PropertyF/Ground/Centre/Calculus/TypeANormalWords.lean	63	IsTypeAFamily.shift	.lake/packages/mathlib/Mathlib/Probability/Distributions/Gaussian/IsGaussianProcess/Basic.lean	159	shift

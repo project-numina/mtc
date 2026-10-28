@@ -167,6 +167,7 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
   simpa [htrace] using hr
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 theorem rootSignTwist_unit_of_simple_dimension
     (hunit : c (unitIndex C) * rootDimension C (unitIndex C) = 1) :
     RootSignUnitLaw C c hc := by

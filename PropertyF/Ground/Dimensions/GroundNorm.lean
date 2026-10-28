@@ -82,14 +82,16 @@ section
 variable (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
 include hp
 
+variable {p} in
 /-- With any spherical structure the target norm of a simple object is its
 categorical dimension squared. -/
 theorem target_squaredNorm_eq_dimension_sq (X : C.Obj) [Simple X] :
     squaredNorm C X =
       (unitScalar C (rightQuantumTrace (p.iso X))) ^ 2 := by
   rw [target_squaredNorm_choice_independent C (p.iso X),
-    ← spherical_quantumTraces_eq p hp X, pow_two]
+    ← spherical_quantumTraces_eq hp X, pow_two]
 
+variable {p} in
 /-- The target's intrinsic global dimension is the sum of squared spherical
 simple dimensions, for any spherical structure. -/
 theorem target_globalDimension_eq_sum_squares :
@@ -97,7 +99,7 @@ theorem target_globalDimension_eq_sum_squares :
       (unitScalar C (rightQuantumTrace (p.iso (simples C i)))) ^ 2 :=
   Finset.sum_congr rfl fun i _ ↦
     let : Simple (simples C i) := simples_simple C i
-    target_squaredNorm_eq_dimension_sq C p hp (simples C i)
+    target_squaredNorm_eq_dimension_sq C hp (simples C i)
 
 end
 
