@@ -69,20 +69,10 @@ def crossingProjection (T : C.Obj)
   simpleProjection C (T ⊗ simples C j) i a
 
 /-- Inclusion and projection of the same summand compose to the identity. -/
-theorem crossingInclusion_projection (T : C.Obj)
-    (i j : Fin (rank C))
+theorem crossingInclusion_projection {C : BraidedFusionCategory.{v,u}} {T : C.Obj} {i j : Fin (rank C)}
     (a : crossingIndex C T i j) :
     crossingInclusion C T i j a ≫ crossingProjection C T i j a = 𝟙 (simples C i) := by
   simp [crossingInclusion, crossingProjection, simpleProjection, Dimensions.simpleInclusion, Category.assoc]
-
-/-- Distinct summand inclusions and projections have zero composite. -/
-theorem crossingInclusion_projection_ne (T : C.Obj)
-    (j : Fin (rank C))
-    (p q : Σ i : Fin (rank C), crossingIndex C T i j)
-    (hne : p ≠ q) :
-    crossingInclusion C T p.1 j p.2 ≫ crossingProjection C T q.1 j q.2 = 0 := by
-  simp [crossingInclusion, crossingProjection, simpleProjection, Dimensions.simpleInclusion, Category.assoc,
-    biproduct.ι_π_ne _ hne]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The projection/inclusion pairs resolve the identity on `T ⊗ Sⱼ`.

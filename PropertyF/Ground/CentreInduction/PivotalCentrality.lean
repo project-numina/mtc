@@ -93,7 +93,7 @@ def canonicalCenterPivotal {D : Type u} [Category.{v} D] [MonoidalCategory D]
 /-- A base pivotal structure with FP dimensions yields centre fusion, a
 positive spherical centre, pseudo-unitarity and the categorical dimension square. -/
 theorem center_structure_of_fp_pivotal
-    (p : Dimensions.PivotalStructure (C := C.Obj))
+    {p : Dimensions.PivotalStructure (C := C.Obj)}
     (hsimple : PivotalHasFPDimensions C p) :
     ∃ hFusion : IsFusionCategory (CategoryTheory.Center C.Obj),
       letI := hFusion
@@ -102,7 +102,7 @@ theorem center_structure_of_fp_pivotal
       PivotalHasFPDimensions 𝒵ᶠ pZ ∧
       PseudoUnitary 𝒵ᶠ ∧
       globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
-  center_structure_of_pivotal_centrality C p hsimple (pivotalComponentsCentral_proved p)
+  center_structure_of_pivotal_centrality C hsimple (pivotalComponentsCentral_proved p)
 
 end PropertyF.Ground.CentreInduction
 
@@ -127,14 +127,14 @@ theorem center_structure_of_pivotal_pseudoUnitary
         PseudoUnitary 𝒵ᶠ ∧
         globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 := by
   obtain ⟨q, _, hq⟩ := Dimensions.positive_spherical_of_pivotal_pseudoUnitary C p hpu
-  obtain ⟨hFusion, h⟩ := center_structure_of_fp_pivotal C q hq
+  obtain ⟨hFusion, h⟩ := center_structure_of_fp_pivotal C hq
   exact ⟨hFusion, canonicalCenterPivotal q, h⟩
 
 open CategoryTheory.Limits
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- A positive simple image centralizing the induced unit is the unit. -/
-theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
+theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
     (hcentral : Centre.Centralizes
       ((induction C).obj (𝟙_ C.Obj)) ((CategoryTheory.Center.ofBraided C.Obj).obj (simples C i))) :
     i = unitIndex C := by
@@ -175,7 +175,7 @@ theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
   simpa [hcoe] using hh.symm
 
 /-- Every transparent simple of the actual centre is the unit. -/
-theorem center_transparent_simple_iso_unit (Z : 𝒵) [Simple Z]
+theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
     (hcentral : ∀ W : 𝒵, Centre.Centralizes Z W) :
     Nonempty (Z ≅ 𝟙_ (𝒵)) := by
   let F := CategoryTheory.Center.ofBraided C.Obj
@@ -193,7 +193,7 @@ theorem center_transparent_simple_iso_unit (Z : 𝒵) [Simple Z]
   have hc : Centre.Centralizes ((induction C).obj (𝟙_ C.Obj)) (F.obj (simples C i)) := by
     apply Centre.centralizes_symm
     exact Centre.centralizes_of_iso_left e'.symm (hcentral _)
-  have hi := positive_simple_centralizes_induced_unit C i hc
+  have hi := positive_simple_centralizes_induced_unit C hc
   have es : simples C i ≅ 𝟙_ C.Obj := by
     subst i
     exact Classical.choice (unitIndex_iso C)

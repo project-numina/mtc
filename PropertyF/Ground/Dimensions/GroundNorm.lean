@@ -81,9 +81,8 @@ theorem target_squaredNorm_choice_independent
     squaredNorm C X =
       unitScalar C (rightQuantumTrace j) * unitScalar C (leftQuantumTrace j) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  unfold squaredNorm
-  simp only [Ground.unitScalar_eq_equiv]
-  exact squaredNorm_independent (Ground.unitScalarEquiv C) (doubleDualIso C X) j
+  simpa only [squaredNorm, Ground.unitScalar_eq_equiv] using
+    squaredNorm_independent (Ground.unitScalarEquiv C) (doubleDualIso C X) j
 
 /-- With any spherical structure the target norm of a simple object is its
 categorical dimension squared. -/

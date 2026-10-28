@@ -231,7 +231,7 @@ run_cmd do
       ``PropertyF.Ground.fpDimension_functor,
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
       ``PropertyF.Ground.galois_rigidity_of_propertyF,
-      ``PropertyF.Ground.target_of_actual_center,
+      ``PropertyF.Ground.weaklyIntegral_of_actual_center,
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
       ``PropertyF.Ground.drinfeld_tensor,
