@@ -22,7 +22,6 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 /-- A tensor factor isomorphic to the unit and its dual cancel around any object. -/
 def unitTensorIso {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (X : D) :
     (A ⊗ X) ⊗ Aᘁ ≅ X :=
-  letI : HasRightDual (𝟙_ D) := hasRightDualUnit
   ((e ⊗ᵢ Iso.refl X) ⊗ᵢ rightDualIsoMap e.symm) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
 
@@ -88,10 +87,8 @@ set_option backward.defeqAttrib.useBackward true in
 by the induced identification of its right dual with the unit. -/
 theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
     {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) :
-    letI : HasRightDual (𝟙_ D) := hasRightDualUnit
     η_ A Aᘁ ≫ (e.hom ▷ Aᘁ) ≫ (λ_ Aᘁ).hom ≫
       (rightDualIsoMap e.symm).hom = 𝟙 (𝟙_ D) := by
-  let : HasRightDual (𝟙_ D) := hasRightDualUnit
   rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc,
     show η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm).hom) = (ρ_ (𝟙_ D)).inv from
       coevaluation_iso_map e]
