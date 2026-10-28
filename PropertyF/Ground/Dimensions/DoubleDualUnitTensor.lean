@@ -99,11 +99,10 @@ theorem doubleDualTensorIso_unit_left :
   have hS : ((ρ_ (Xᘁ)).homᘁ) ≫ S₀.hom = (λ_ ((Xᘁ)ᘁ)).inv ≫ r.inv ▷ ((Xᘁ)ᘁ) :=
     rightDualTensorIso_unit_right (Xᘁ)
   have hS' : r.inv ▷ ((Xᘁ)ᘁ) ≫ S₀.inv ≫ ((ρ_ (Xᘁ)).invᘁ) = (λ_ ((Xᘁ)ᘁ)).hom := by
-    apply (cancel_epi (λ_ ((Xᘁ)ᘁ)).inv).1
-    simp only [Iso.inv_hom_id]
-    slice_lhs 1 2 => rw [← hS]
-    simp only [Category.assoc, Iso.hom_inv_id, Category.comp_id,
-      ← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
+    rw [← Category.assoc]
+    refine (Iso.comp_inv_eq (rightDualIsoMap (ρ_ (Xᘁ)))).2 ((Iso.comp_inv_eq S₀).2 ?_)
+    simpa only [rightDualIsoMap, Category.assoc] using
+      (Iso.inv_comp_eq (λ_ ((Xᘁ)ᘁ))).1 hS.symm
   change (r.inv ≫ (r.homᘁ)) ▷ ((Xᘁ)ᘁ) ≫
     (S.inv ≫ (R.homᘁ)) ≫ (((λ_ X).homᘁ)ᘁ) = (λ_ ((Xᘁ)ᘁ)).hom
   simp only [comp_whiskerRight, Category.assoc]
@@ -136,11 +135,10 @@ theorem doubleDualTensorIso_unit_right :
   have hS : ((λ_ (Xᘁ)).homᘁ) ≫ S₀.hom = (ρ_ ((Xᘁ)ᘁ)).inv ≫ ((Xᘁ)ᘁ) ◁ r.inv :=
     rightDualTensorIso_unit_left (Xᘁ)
   have hS' : ((Xᘁ)ᘁ) ◁ r.inv ≫ S₀.inv ≫ ((λ_ (Xᘁ)).invᘁ) = (ρ_ ((Xᘁ)ᘁ)).hom := by
-    apply (cancel_epi (ρ_ ((Xᘁ)ᘁ)).inv).1
-    simp only [Iso.inv_hom_id]
-    slice_lhs 1 2 => rw [← hS]
-    simp only [Category.assoc, Iso.hom_inv_id, Category.comp_id,
-      ← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
+    rw [← Category.assoc]
+    refine (Iso.comp_inv_eq (rightDualIsoMap (λ_ (Xᘁ)))).2 ((Iso.comp_inv_eq S₀).2 ?_)
+    simpa only [rightDualIsoMap, Category.assoc] using
+      (Iso.inv_comp_eq (ρ_ ((Xᘁ)ᘁ))).1 hS.symm
   change ((Xᘁ)ᘁ) ◁ (r.inv ≫ (r.homᘁ)) ≫
     (S.inv ≫ (R.homᘁ)) ≫ (((ρ_ X).homᘁ)ᘁ) = (ρ_ ((Xᘁ)ᘁ)).hom
   simp only [whiskerLeft_comp, Category.assoc]
