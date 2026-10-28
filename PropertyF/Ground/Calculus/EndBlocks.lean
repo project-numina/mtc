@@ -5,7 +5,12 @@ public import Mathlib.CategoryTheory.Conj
 public import Mathlib.LinearAlgebra.Matrix.Reindex
 public import Mathlib.RingTheory.SimpleModule.IsAlgClosed
 
-/-! Endomorphism algebras of direct sums of orthogonal objects. -/
+/-!
+# Endomorphism algebras of finite sums
+
+An endomorphism algebra of a finite sum of orthogonal objects decomposes into matrix
+blocks. `groundEndBlockEquiv` applies this to the simple objects of a fusion category.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

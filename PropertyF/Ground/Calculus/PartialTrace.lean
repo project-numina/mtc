@@ -3,7 +3,12 @@ public import PropertyF.Ground.Dimensions.Trace
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
-/-! Partial trace over the right tensor factor, constructed from duality. -/
+/-!
+# Partial pivotal trace
+
+The right partial trace closes a tensor factor using duality. Its compatibility with
+endomorphisms of the other factor yields formulas for simple objects.
+-/
 
 open PropertyF.Ground.Dimensions
 

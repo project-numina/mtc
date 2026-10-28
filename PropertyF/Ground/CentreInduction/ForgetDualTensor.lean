@@ -2,6 +2,8 @@ module
 public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 
+open PropertyF.Ground.Dimensions
+
 /-! Naturality of the comparison between centre duals and base duals. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -35,19 +37,19 @@ theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
       (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
   have hmate := congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
   simp only [comp_rightAdjointMate] at hmate
-  simp only [forgetDoubleDualIso, Iso.trans_hom, Dimensions.rightDualIsoMap,
+  simp only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap,
     Iso.symm_hom, Category.assoc]
   rw [← Category.assoc, forgetDualIso_natural (fᘁ)]
   simp only [Category.assoc]
   congr 1
-  change (fᘁ).fᘁ ≫ (Dimensions.rightDualIsoMap (forgetDualIso Y)).inv =
-    (Dimensions.rightDualIsoMap (forgetDualIso X)).inv ≫ ((f.fᘁ)ᘁ)
+  change (fᘁ).fᘁ ≫ (rightDualIsoMap (forgetDualIso Y)).inv =
+    (rightDualIsoMap (forgetDualIso X)).inv ≫ ((f.fᘁ)ᘁ)
   rw [Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
   exact hmate
 
 /-- The transported pivotal components are natural on centre morphisms. -/
 theorem transported_pivotal_natural
-    (p : Dimensions.PivotalStructure (C := D))
+    (p : PivotalStructure (C := D))
     {X Y : 𝒵} (f : X ⟶ Y) :
     f.f ≫ (p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv =
       (p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv ≫ ((fᘁ)ᘁ).f := by
@@ -97,8 +99,8 @@ private theorem rightDualIso_tensor_evaluation {X Y A B A' B' : D}
         (b ▷ ((𝟙_ D) ⊗ Y)) ⊗≫ ε_ Y B' := by monoidal
     _ = 𝟙 _ ⊗≫ B ◁ ((a ▷ X ≫ ε_ X A') ▷ Y) ⊗≫
         (b ▷ Y ≫ ε_ Y B') := by monoidal
-    _ = _ := by rw [Dimensions.rightDualIso_evaluation pX qX,
-      Dimensions.rightDualIso_evaluation pY qY]
+    _ = _ := by rw [rightDualIso_evaluation pX qX,
+      rightDualIso_evaluation pY qY]
 
 /-- The canonical comparison of duals preserves tensor products of pairings. -/
 theorem rightDualIso_tensor {X Y A B A' B' : D}
@@ -116,8 +118,8 @@ theorem rightDualIso_tensor {X Y A B A' B' : D}
   let : ExactPairing Y B := pY
   let : ExactPairing X A' := qX
   let : ExactPairing Y B' := qY
-  exact Dimensions.evaluation_ext
-    ((Dimensions.rightDualIso_evaluation
+  exact evaluation_ext
+    ((rightDualIso_evaluation
       (inferInstance : ExactPairing (X ⊗ Y) (B ⊗ A))
       (inferInstance : ExactPairing (X ⊗ Y) (B' ⊗ A'))).trans
       (rightDualIso_tensor_evaluation pX qX pY qY).symm)

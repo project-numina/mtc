@@ -6,7 +6,12 @@ public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.PowerBound
 
-/-! The ordinary weighted trace bound for actual braid algebras. -/
+/-!
+# Trace bounds from overlapping braids
+
+The categorical braid trace obeys a weighted unitary bound. Repeated overlapping
+products remain unitary, and their trace recurrence yields the sharper bound.
+-/
 
 open PropertyF.Ground.Dimensions
 
@@ -26,13 +31,13 @@ def actualBraidTrace {X : C.Obj} {n : ℕ} (a : braidAlgebra X n) : ℂ :=
 /-- A block presentation realizes the categorical braid trace with the given weights. -/
 abbrev IsTracePresentation {X : C.Obj}
     {n r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) (w : Fin r → ℝ) : Prop :=
+    (b : BraidBlockPresentation X n d) (w : Fin r → ℝ) : Prop :=
   ∀ z : braidAlgebra X n, actualBraidTrace C p z = (Blocks.mk r d).trace w (b z)
 
 /-- A uniform bound for the trace of unitary elements in a block presentation. -/
 abbrev HasUnitaryTraceBound {X : C.Obj}
     {n r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) (R : ℝ) : Prop :=
+    (b : BraidBlockPresentation X n d) (R : ℝ) : Prop :=
   ∀ a, Blocks.IsUnitary ⟨_, d⟩ (b a) → ‖actualBraidTrace C p a‖ ≤ R
 
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
@@ -45,7 +50,7 @@ theorem fpDimension_tensorPower (X : C.Obj) :
 section BraidTraceBound
 
 variable {X : C.Obj} {n r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
-  (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
+  (b : BraidBlockPresentation X n d)
 include hd
 
 /-- In actual categorical braid blocks, the norm of the pivotal trace of a
@@ -107,6 +112,7 @@ def overlapIndex (t : ℕ) : ℕ → ℕ
   | 0 => t
   | k + 1 => overlapIndex t k + (t + 1)
 
+/-- The number of strands added by repeated overlaps grows linearly. -/
 theorem overlapIndex_formula (t : ℕ) : ∀ k, overlapIndex t k = t + k * (t + 1)
   | 0 => by rw [overlapIndex, Nat.zero_mul, Nat.add_zero]
   | k + 1 => by simp [overlapIndex, overlapIndex_formula t k, Nat.succ_mul, Nat.add_assoc]
@@ -167,8 +173,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 presentations may be chosen independently at every strand count. -/
 theorem overlapProduct_unitary {X : C} {t : ℕ}
     {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
-    (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
-      Blocks.Algebra ⟨_, d n⟩)
+    (e : ∀ n, BraidBlockPresentation X n (d n))
     (he : ∀ n, IsUnitaryBraidPresentation (e n))
     {u : braidAlgebra X t} (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u)) :
     ∀ k, Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩
@@ -221,10 +226,11 @@ theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf :
     ring
   simpa only [hexp] using hbound k
 
+variable (p : PivotalStructure (C := C.Obj)) {X : C.Obj} {t : ℕ} (u : braidAlgebra X t)
+
 /-- Iterating a single overlap step gives the scaled power identity, without
 dividing by the simple dimension. -/
-theorem overlap_trace_power_of_step {X : C.Obj}
-    (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
+theorem overlap_trace_power_of_step
     (hstep : ∀ k, actualBraidTrace C p
         (overlapProduct u (k + 1)) *
         pivotalDimension C p X =
@@ -243,14 +249,10 @@ theorem overlap_trace_power_of_step {X : C.Obj}
 /-- The sharp bound works in any family of unitary braid-block presentations;
 it does not depend on a particular choice made by finite-group averaging. -/
 theorem sharp_trace_bound_for_presentations_of_overlap_identity
-    (X : C.Obj) [Simple X]
-    (p : PivotalStructure (C := C.Obj)) (t : ℕ)
-    (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
-    (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
-      Blocks.Algebra ⟨_, d n⟩)
+    [Simple X] {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
+    (e : ∀ n, BraidBlockPresentation X n (d n))
     (hd : ∀ n i, 0 < d n i)
     (he : ∀ n, IsUnitaryBraidPresentation (e n))
-    (u : braidAlgebra X t)
     (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u))
     (hrec : HasOverlapTracePower C p u) :
     ‖actualBraidTrace C p u‖ ≤

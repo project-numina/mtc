@@ -6,13 +6,18 @@ public import Mathlib.Tactic
 open CategoryTheory CategoryTheory.MonoidalCategory
 open PropertyF.Ground.Dimensions
 
-/-! Cast-free recursive tensor-power concatenation. -/
+/-!
+# Tensor-power concatenation
+
+The recursively defined `reverseConcatIso` proves coherence of the two ways to
+insert overlapping braid factors, and hence their trace recurrence.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Calculus
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 variable (X : C)
 
 /-- Concatenate tensor powers, recording the total in reverse arithmetic order
@@ -23,7 +28,6 @@ def reverseConcatIso : ∀ a b : ℕ,
   | a + 1, b => (α_ X (tensorPower X a) (tensorPower X b)) ≪≫
       (Iso.refl X ⊗ᵢ reverseConcatIso a b)
 
-omit [BraidedCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Concatenation with an empty right block is the right unitor. -/
 theorem reverseConcat_zero_right (a : ℕ) :
@@ -41,7 +45,6 @@ theorem reverseConcat_zero_right (a : ℕ) :
     rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ← whiskerLeft_comp, ih]
     monoidal
 
-omit [BraidedCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Adding one strand to the right commutes with tensor-power concatenation. -/
 theorem reverseConcat_succ_right (a b : ℕ) :
@@ -70,7 +73,6 @@ theorem reverseConcat_succ_right (a b : ℕ) :
       whiskerLeft_comp]
     monoidal
 
-omit [BraidedCategory C] in
 /-- Appending a strand commutes with equality transport of the prefix length. -/
 theorem appendIso_eqToHom_natural {i j : ℕ} (h : i = j) :
     (eqToHom (congrArg (tensorPower X) h) ▷ X) ≫ (appendIso X j).hom =
@@ -78,7 +80,6 @@ theorem appendIso_eqToHom_natural {i j : ℕ} (h : i = j) :
   cases h
   simp
 
-omit [BraidedCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right insertion is canonical reverse-indexed concatenation. -/
 theorem insertRightPowerIso_eq_reverseConcat (n k : ℕ) :
@@ -98,7 +99,6 @@ theorem insertRightPowerIso_eq_reverseConcat (n k : ℕ) :
       tensorIso_hom, Iso.refl_hom, tensorHom_id, id_tensorHom, Category.assoc,
       ih, comp_whiskerRight, appendIso_eqToHom_natural X h₀]
 
-omit [BraidedCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- A shared strand can be attached to the left block before concatenating
 the right tail, or kept as the head of the right block. -/
@@ -131,14 +131,12 @@ end PropertyF.Ground.Calculus
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Calculus
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
-  [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 
 
 section
 variable (X : C)
 
-omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion agrees with reverse-indexed concatenation. -/
 theorem insertLeftPowerIso_eq_reverseConcat (n k : ℕ) :
@@ -152,7 +150,6 @@ theorem insertLeftPowerIso_eq_reverseConcat (n k : ℕ) :
       Iso.refl_hom, id_tensorHom, Category.assoc]
     rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h), ← whiskerLeft_comp, ← ih]
 
-omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Concatenation is natural under equality transport of the left length. -/
 @[reassoc] theorem reverseConcat_eqToHom_left {a b : ℕ} (h : a = b) (c : ℕ) :
     (eqToHom (congrArg (tensorPower X) h) ▷ tensorPower X c) ≫
@@ -162,7 +159,6 @@ omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [Mon
   cases h
   simp
 
-omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- The two canonical overlap isomorphisms agree. -/
 theorem freshOverlapIso_eq_overlapPowerIso (t k : ℕ) :
