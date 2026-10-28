@@ -56,10 +56,10 @@ theorem positive_symmetric_eigenvector_unique (hsym : Aᵀ = A)
   have hdot : f ⬝ᵥ A *ᵥ g = g ⬝ᵥ A *ᵥ f := by
     simpa [hsym] using Matrix.dotProduct_transpose_mulVec A f g
   rw [hfe, hge, dotProduct_smul, dotProduct_smul, dotProduct_comm g f] at hdot
-  have hdotpos : 0 < f ⬝ᵥ g :=
-    Finset.sum_pos (fun i _ ↦ mul_pos (hfpos i) (hgpos i)) Finset.univ_nonempty
-  obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique hA hfpos hfe
-    (by rw [mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm]; exact hge)
+  obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique hA hfpos hfe (by
+    rw [mul_right_cancel₀ (ne_of_gt (Finset.sum_pos
+      (fun i _ ↦ mul_pos (hfpos i) (hgpos i)) Finset.univ_nonempty)) hdot.symm]
+    exact hge)
   rw [hc, show c = 1 from by simpa [hfunit, hgunit] using (congrFun hc i₀).symm, one_smul]
 
 end
@@ -88,16 +88,14 @@ theorem character_norm_le_fpSimple
     ‖χ i‖ ≤ fpSimple C i := by
   classical
   let A := (fusionMatrix C i)ᵀ
-  have heigen : A *ᵥ χ = χ i • χ := by
-    ext j
-    change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
-    exact (hchar i j).symm
   have hz : χ i ∈ spectrum ℂ A := by
     rw [← Matrix.spectrum_toLin']
     apply Module.End.HasEigenvalue.mem_spectrum
     apply Module.End.hasEigenvalue_of_hasEigenvector (x := χ)
     refine ⟨Module.End.mem_eigenspace_iff.mpr ?_, fun h ↦ hχ (congrFun h i₀)⟩
-    exact heigen
+    ext j
+    change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
+    exact (hchar i j).symm
   simpa [fpSimple, A, Matrix.spectralRadius_transpose] using
     ENNReal.toReal_mono
       (ne_of_lt (lt_of_le_of_lt (spectralRadius_le_nnnorm (𝕜 := ℂ) A) (by simp)))
@@ -467,16 +465,16 @@ theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
     ext j k
     change (((fusionCoeff D i j k : ℝ) : ℂ)) = _
     simp [fusionMatrix, fusionCoeff]
-  have hwe : A *ᵥ fpCharacter D = fpCharacter D i • fpCharacter D := by
-    ext j
-    change (∑ k, (fusionCoeff D i j k : ℝ) * fpCharacter D k) = _
-    exact (fpCharacter_mul D i j).symm
   obtain ⟨z, hz, hzmax⟩ := spectrum.exists_nnnorm_eq_spectralRadius B
   obtain ⟨v, hv⟩ := (Module.End.hasEigenvalue_iff_mem_spectrum.mpr
     (show z ∈ spectrum ℂ B.toLin' from by simpa using hz)).exists_hasEigenvector
   simpa only [fpSimple, ← Matrix.spectralRadius_transpose (fusionMatrix D i), ← hB,
     ← hzmax, ENNReal.coe_toReal, coe_nnnorm] using
-      complex_eigenvalue_le_positive_eigenvalue hwe
+      complex_eigenvalue_le_positive_eigenvalue
+        (show A *ᵥ fpCharacter D = fpCharacter D i • fpCharacter D from by
+          ext j
+          change (∑ k, (fusionCoeff D i j k : ℝ) * fpCharacter D k) = _
+          exact (fpCharacter_mul D i j).symm)
         (show A.map Complex.ofRealHom *ᵥ v = z • v from by
           simpa [B, Matrix.toLin'_apply] using hv.apply_eq_smul)
         (fun j k => Nat.cast_nonneg _) (fpCharacter_pos D) hv.2

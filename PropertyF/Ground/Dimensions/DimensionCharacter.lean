@@ -140,14 +140,14 @@ theorem isSpherical_iff_simple_dimensions
     let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
     obtain ⟨e⟩ := exists_canonical_decomposition C X
     let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
-    have hleft : p.leftTrace f = p.leftTrace g := by
-      simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f))
-    have hright : p.rightTrace f = p.rightTrace g := by
-      simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f))
     obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple (k := ℂ)
       (fun (a : Σ i, Fin (m i)) ↦ simples_simple C a.1)
       (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
-    rw [hleft, hright, htrace, leftTrace_biproduct_scalar_blocks p g hc]
+    rw [show p.leftTrace f = p.leftTrace g from by
+          simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f)),
+      show p.rightTrace f = p.rightTrace g from by
+        simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f)),
+      htrace, leftTrace_biproduct_scalar_blocks p g hc]
     exact Finset.sum_congr rfl fun a _ ↦ congrArg (fun t ↦ c a • t) (hs a.1)
 
 end PropertyF.Ground.Dimensions

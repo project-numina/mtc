@@ -94,10 +94,8 @@ theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
     apply simpleInclusion_hom_ext C
     intro k t
     let f := simpleInclusion C X k t
-    have hfd := congrArg (fun L => L f) (hdef k)
-    change (c k / (c i * c j)) • multiplicityDefect C i j k f = f at hfd
-    rw [multiplicityDefect_apply] at hfd
-    simpa [f, X, hfd] using rootPhaseDefect_apply C hc f
+    simpa [f, X, rootPhaseDefect_apply, multiplicityDefect_apply] using
+      congrArg (fun L ↦ L f) (hdef k)
   change ((rootSignTwist C c hc).app X).hom ≫ (rootSignTensorIso C c hc _ _).inv = 𝟙 X at hid
   apply Iso.ext
   simpa [X] using (Iso.comp_inv_eq (rootSignTensorIso C c hc _ _)).1 hid
