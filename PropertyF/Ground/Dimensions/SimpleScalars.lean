@@ -34,24 +34,6 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-/-- On a simple object, any two isomorphisms to a fixed target differ by a
-nonzero scalar. -/
-theorem isomorphisms_differ_by_scalar
-    {X Y : C.Obj} [Simple X] (e f : X ≅ Y) :
-    ∃ c : ℂ, c ≠ 0 ∧ f.hom = c • e.hom := by
-  let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ (f.hom ≫ e.inv)
-  have hhom : f.hom = c • e.hom := by
-    calc
-      f.hom = (f.hom ≫ e.inv) ≫ e.hom := by simp
-      _ = c • e.hom := by rw [← hc]; simp
-  have hc0 : c ≠ 0 := by
-    intro h
-    have hh : f.hom = 0 := by simp [h, hhom]
-    have hid : 𝟙 X = 0 := by simpa using congrArg (fun g => g ≫ f.inv) hh
-    exact id_nonzero X hid
-  exact ⟨c, hc0, hhom⟩
-
 /-- For every simple object, any prescribed fourth-dual isomorphism has a
 square root through the double dual. No monoidality or naturality is assumed. -/
 theorem exists_fourthDual_square_root
@@ -59,7 +41,8 @@ theorem exists_fourthDual_square_root
     ∃ a : X ≅ ((Xᘁ)ᘁ), a ≪≫ rightDualIsoMap (rightDualIsoMap a) = g := by
   let e := doubleDualIso C X
   let e2 := e ≪≫ rightDualIsoMap (rightDualIsoMap e)
-  obtain ⟨c, hc0, hc⟩ := isomorphisms_differ_by_scalar C e2 g
+  let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
+  obtain ⟨c, hc0, hc, _⟩ := isomorphisms_scalar e2 g
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq c (n := 2) (by decide)
   have hz0 : z ≠ 0 := by
     intro h

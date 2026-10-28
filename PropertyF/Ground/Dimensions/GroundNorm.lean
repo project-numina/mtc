@@ -16,14 +16,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
-  [Abelian C] [Linear ℂ C] [RigidCategory C]
-  [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+section SimpleIsomorphisms
+variable {C : Type u} [Category.{v} C] [Preadditive C] [HasKernels C] [Linear ℂ C]
 
-omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
-/-- Schur's lemma compares any two double-dual isomorphisms of a simple object. -/
-theorem doubleDualIso_scalar {X : C} [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
-    (j k : X ≅ (Xᘁ)ᘁ) : ∃ c : ℂ, c ≠ 0 ∧ k.hom = c • j.hom ∧
+/-- Two isomorphisms from a simple object differ by a nonzero scalar and their inverses
+by its inverse. -/
+theorem isomorphisms_scalar {X Y : C} [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
+    (j k : X ≅ Y) : ∃ c : ℂ, c ≠ 0 ∧ k.hom = c • j.hom ∧
     k.inv = c⁻¹ • j.inv := by
   obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ (k.hom ≫ j.inv)
   have hhom : k.hom = c • j.hom := by
@@ -41,6 +40,11 @@ theorem doubleDualIso_scalar {X : C} [Simple X] [FiniteDimensional ℂ (X ⟶ X)
     rw [hhom]
     simp [hc0, smul_smul]
   exact ⟨c, hc0, hhom, hinv⟩
+end SimpleIsomorphisms
+
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+  [Abelian C] [Linear ℂ C] [RigidCategory C]
+  [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 /-- The product of the two quantum traces on a simple object does not depend
 on the chosen double-dual isomorphism. -/
@@ -48,10 +52,9 @@ theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional ℂ (X ⟶
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (j k : X ≅ (Xᘁ)ᘁ) :
     scalar (rightQuantumTrace j) * scalar (leftQuantumTrace j) =
       scalar (rightQuantumTrace k) * scalar (leftQuantumTrace k) := by
-  obtain ⟨c, hc, hhom, hinv⟩ := doubleDualIso_scalar j k
-  have hr : rightQuantumTrace k = c • rightQuantumTrace j := by
-    apply End.homEquiv.injective
-    simp [rightQuantumTrace, hhom, tensorHom_def]
+  obtain ⟨c, hc, hhom, hinv⟩ := isomorphisms_scalar j k
+  have hr : rightQuantumTrace k = c • rightQuantumTrace j :=
+    rightQuantumTrace_smul_hom k j c hhom
   have hl : leftQuantumTrace k = c⁻¹ • leftQuantumTrace j := by
     apply End.homEquiv.injective
     simp [leftQuantumTrace, hinv, tensorHom_def]
