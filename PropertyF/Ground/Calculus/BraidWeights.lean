@@ -70,7 +70,7 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
       (eq_smul_one_of_algEquiv (groundSimpleScalar C i) (End.of _))
   have h := cyclicTrace_biproduct_scalar_blocks
     (fun Y => scalar.toLinearMap.comp (rightTraceLinear p Y))
-    (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) F z hc
+    (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z hc
   change scalar (p.rightTrace z) = ∑ q, groundEndBlockEquiv C e a q.1 q.2 q.2 *
     scalar (p.rightTrace (𝟙 (F q))) at h
   rw [← hz, h, Fintype.sum_sigma]

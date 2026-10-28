@@ -38,8 +38,7 @@ theorem all_injective_of_unit_retract {J U : D} [Injective J]
     (r : Retract (𝟙_ D) (J ⊗ U)) (X : D) : Injective X :=
   letI : Injective (J ⊗ U) := tensor_preserves_injective J U
   letI : Injective (𝟙_ D) := r.injective
-  letI : Injective ((𝟙_ D) ⊗ X) := tensor_preserves_injective (𝟙_ D) X
-  Injective.of_iso (λ_ X) inferInstance
+  Injective.of_iso (λ_ X) (tensor_preserves_injective (𝟙_ D) X)
 
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj

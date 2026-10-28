@@ -83,10 +83,8 @@ theorem crossingBlock_natural_middle {X Y : D} (h : X ⟶ Y) {T R S : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ crossingBlock Y T S g f =
       crossingBlock X T S g f ≫ (T ◁ ((S ◁ h) ▷ Sᘁ)) := by
-  dsimp [crossingBlock]
-  simp only [tensorHom_def, Category.assoc]
-  rw [associator_naturality_left_assoc]
-  rw [← comp_whiskerRight_assoc, whisker_exchange, comp_whiskerRight_assoc,
+  simp only [crossingBlock, tensorHom_def, Category.assoc]
+  rw [associator_naturality_left_assoc, ← comp_whiskerRight_assoc, whisker_exchange, comp_whiskerRight_assoc,
     ← whisker_exchange_assoc, associator_naturality_middle_assoc]
   simp only [associator_naturality_right_assoc]
   rw [← whiskerLeft_comp, associator_inv_naturality_middle,

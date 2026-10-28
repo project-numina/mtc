@@ -52,8 +52,7 @@ theorem transported_pivotal_natural
     f.f ≫ (p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv =
       (p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv ≫ ((fᘁ)ᘁ).f := by
   rw [← Category.assoc, Iso.comp_inv_eq]
-  simp only [Category.assoc, forgetDoubleDualIso_natural, Iso.inv_hom_id_assoc]
-  exact p.naturality f.f
+  simpa only [Category.assoc, forgetDoubleDualIso_natural, Iso.inv_hom_id_assoc] using p.naturality f.f
 
 end PropertyF.Ground.CentreInduction
 
