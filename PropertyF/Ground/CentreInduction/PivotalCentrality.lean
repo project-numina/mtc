@@ -91,14 +91,12 @@ def canonicalCenterPivotal {D : Type u} [Category.{v} D] [MonoidalCategory D]
 positive spherical centre, pseudo-unitarity and the categorical dimension square. -/
 theorem center_structure_of_fp_pivotal
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ)) :
+    (hsimple : PivotalHasFPDimensions C p) :
     ∃ hFusion : IsFusionCategory (CategoryTheory.Center C.Obj),
       letI := hFusion
       let pZ := canonicalCenterPivotal p
       pZ.IsSpherical ∧
-      (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
-        (simples (Integrate.bundledCenter C) i) =
-          (fpSimple (Integrate.bundledCenter C) i : ℂ)) ∧
+      PivotalHasFPDimensions (Integrate.bundledCenter C) pZ ∧
       PseudoUnitary (Integrate.bundledCenter C) ∧
       globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
   center_structure_of_pivotal_centrality C p hsimple (pivotalComponentsCentral_proved p)
@@ -118,9 +116,7 @@ theorem center_structure_of_pivotal_pseudoUnitary
       letI := hFusion
       ∃ pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj),
         pZ.IsSpherical ∧
-        (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
-          (simples (Integrate.bundledCenter C) i) =
-            (fpSimple (Integrate.bundledCenter C) i : ℂ)) ∧
+        PivotalHasFPDimensions (Integrate.bundledCenter C) pZ ∧
         PseudoUnitary (Integrate.bundledCenter C) ∧
         globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
   obtain ⟨q, _, hq⟩ := Dimensions.positive_spherical_of_pivotal_pseudoUnitary C p hpu

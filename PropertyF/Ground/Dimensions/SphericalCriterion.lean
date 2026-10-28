@@ -21,31 +21,14 @@ def leftTraceLinear (p : PivotalStructure (C := C)) (X : C) :
   map_add' := p.leftTrace_add
   map_smul' := p.leftTrace_smul
 
-/-- The left trace on a finite direct sum is the sum of diagonal block traces. -/
-theorem leftTrace_biproduct {ι : Type*} [Fintype ι] (F : ι → C) [HasBiproduct F]
-    (p : PivotalStructure (C := C)) (f : (⨁ F) ⟶ (⨁ F)) :
-    p.leftTrace f = ∑ i, p.leftTrace (biproduct.ι F i ≫ f ≫ biproduct.π F i) := by
-  classical
-  calc
-    _ = p.leftTrace ((∑ i, biproduct.π F i ≫ biproduct.ι F i) ≫ f) := by rw [biproduct.total]; simp
-    _ = ∑ i, p.leftTrace ((biproduct.π F i ≫ biproduct.ι F i) ≫ f) := by
-      rw [Preadditive.sum_comp]
-      exact map_sum (leftTraceLinear p _) _ _
-    _ = ∑ i, p.leftTrace (biproduct.ι F i ≫ f ≫ biproduct.π F i) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      simpa only [Category.assoc] using leftTrace_cyclic p (biproduct.π F i) (biproduct.ι F i ≫ f)
-
 /-- If diagonal blocks are scalar, the left trace is their dimension-weighted sum. -/
 theorem leftTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
     (F : ι → C) [HasBiproduct F] (p : PivotalStructure (C := C))
     (f : (⨁ F) ⟶ (⨁ F)) (c : ι → ℂ)
     (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
-    p.leftTrace f = ∑ i, c i • p.leftTrace (𝟙 (F i)) := by
-  rw [leftTrace_biproduct F p]
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [hc i, p.leftTrace_smul]
+    p.leftTrace f = ∑ i, c i • p.leftTrace (𝟙 (F i)) :=
+  cyclicTrace_biproduct_scalar_blocks (leftTraceLinear p)
+    (fun f g => leftTrace_cyclic p f g) F f c hc
 
 end PropertyF.Ground.Dimensions
 
