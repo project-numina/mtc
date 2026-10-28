@@ -41,11 +41,7 @@ theorem fourthDualRoot_unit_component :
       ((fourthDualRootNaturalIso C).app (simples C (unitIndex C))) a e
       (by simpa [doubleDualFunctor, a] using hn)
     change Ground.unitScalar C (rootTrace C (𝟙 (simples C (unitIndex C)))) = r
-    have hq : rootTrace C (𝟙 (simples C (unitIndex C))) =
-        rightQuantumTrace ((fourthDualRootNaturalIso C).app (simples C (unitIndex C))) := by
-      apply End.homEquiv.injective
-      simp [rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def]
-    rw [hq, ht, htrace]
+    rw [rootTrace_id C, ht, htrace]
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
   simpa [a, hdim, hu] using hr
 end PropertyF.Ground.Dimensions

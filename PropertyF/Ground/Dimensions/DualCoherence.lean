@@ -60,18 +60,21 @@ theorem trace_change_rightDual [RightRigidCategory C] {X Y Z : C}
   rw [coevaluation_rightDualIso_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The pivotal dimension of the tensor unit is one. -/
-theorem rightTrace_unit [RightRigidCategory C] (p : PivotalStructure (C := C)) : p.rightTrace (𝟙 (𝟙_ C)) = 1 := by
+/-- The canonical double-dual unit isomorphism has unit evaluation trace. -/
+theorem unitDoubleDual_trace [RightRigidCategory C] :
+    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+    letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
+    η_ (𝟙_ C) ((𝟙_ C)ᘁ) ≫
+      ((doubleDualUnitIso (C := C)).hom ⊗ₘ 𝟙 ((𝟙_ C)ᘁ)) ≫
+      ε_ ((𝟙_ C)ᘁ) (((𝟙_ C)ᘁ)ᘁ) = 𝟙 (𝟙_ C) := by
   let hp : ExactPairing (𝟙_ C) (rightDualObject (𝟙_ C)) :=
     @HasRightDual.exact C _ _ (𝟙_ C) (RightRigidCategory.rightDual (𝟙_ C))
   let hq : ExactPairing (𝟙_ C) (𝟙_ C) := exactPairingUnit
   let r := rightDualIso hp hq
-  apply End.homEquiv.injective
-  simp only [PivotalStructure.rightTrace, End.homEquiv_apply, End.one_asHom,
-    Category.id_comp, p.unit]
   change @ExactPairing.coevaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp ≫
     ((r.inv ≫ @rightAdjointMate C _ _ (rightDualObject (𝟙_ C)) (𝟙_ C)
-      (RightRigidCategory.rightDual _) (RightRigidCategory.rightDual _) r.hom) ⊗ₘ 𝟙 (rightDualObject (𝟙_ C))) ≫
+      (RightRigidCategory.rightDual _) (RightRigidCategory.rightDual _) r.hom) ⊗ₘ
+        𝟙 (rightDualObject (𝟙_ C))) ≫
       @ExactPairing.evaluation C _ _ (rightDualObject (𝟙_ C))
         (rightDualObject (rightDualObject (𝟙_ C)))
         (@HasRightDual.exact C _ _ _ (RightRigidCategory.rightDual _)) = 𝟙 (𝟙_ C)
@@ -86,5 +89,14 @@ theorem rightTrace_unit [RightRigidCategory C] (p : PivotalStructure (C := C)) :
     change (ρ_ (𝟙_ C)).inv ≫ (ρ_ (𝟙_ C)).hom = 𝟙 (𝟙_ C)
     exact Iso.inv_hom_id _
   exact (trace_change_rightDual hp hq r.inv).trans hfinal
+
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The pivotal dimension of the tensor unit is one. -/
+theorem rightTrace_unit [RightRigidCategory C] (p : PivotalStructure (C := C)) :
+    p.rightTrace (𝟙 (𝟙_ C)) = 1 := by
+  apply End.homEquiv.injective
+  simpa only [PivotalStructure.rightTrace, End.homEquiv_apply, End.one_asHom,
+    Category.id_comp, p.unit] using (unitDoubleDual_trace (C := C))
 
 end PropertyF.Ground.Dimensions

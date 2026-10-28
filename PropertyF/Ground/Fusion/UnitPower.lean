@@ -91,8 +91,6 @@ theorem fusionFlow_nonneg (D : BraidedFusionCategory.{v,u}) (i j k : Fin (rank D
 theorem fusionFlow_balance (D : BraidedFusionCategory.{v,u}) (i j : Fin (rank D)) :
     (∑ k, fusionFlow D i j k) = ∑ k, fusionFlow D i k j := by
   classical
-  have hc (k : Fin (rank D)) : fusionCoeff D i k j = fusionCoeff D (dualIndex D i) j k := by
-    rw [fusionCoeff_comm D i k, fusionCoeff_reciprocity_labels, fusionCoeff_comm]
   calc
     _ = fpSimple D j * (∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k) := by
       simp only [fusionFlow, Finset.mul_sum, mul_assoc]
@@ -100,9 +98,11 @@ theorem fusionFlow_balance (D : BraidedFusionCategory.{v,u}) (i j : Fin (rank D)
     _ = fpSimple D j * (fpSimple D (dualIndex D i) * fpSimple D j) := by rw [fpSimple_dual]
     _ = fpSimple D j * (∑ k, (fusionCoeff D (dualIndex D i) j k : ℝ) * fpSimple D k) := by rw [fpSimple_mul]
     _ = _ := by
-      simp only [fusionFlow, Finset.mul_sum, hc]
+      simp only [fusionFlow, Finset.mul_sum]
       apply Finset.sum_congr rfl
       intro k _
+      rw [fusionCoeff_comm D i k, fusionCoeff_reciprocity_labels D k i j,
+        fusionCoeff_comm D j (dualIndex D i)]
       ring
 
 /-- A positive fusion coefficient gives an actual retract. -/
