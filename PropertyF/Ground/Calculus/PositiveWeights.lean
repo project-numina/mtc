@@ -12,11 +12,12 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.Calculus
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 
 /-- Real Galois conjugates of positive simple dimensions yield nonzero real
 weights in every retained actual braid block, even if their signs differ. -/
 theorem exists_galois_braid_trace_weights
-    (C : BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (X : C.Obj) (n : ℕ)
     (hfinite : Finite (braidImage X n)) (p : PivotalStructure (C := C.Obj))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)
@@ -49,7 +50,7 @@ theorem exists_galois_braid_trace_weights
 one intrinsic overlap trace identity. All matrix blocks and weights are
 constructed from the actual finite braid images. -/
 theorem actual_rigidity_of_overlap_and_galois_dimensions
-    (C : BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
+    (X : C.Obj) [Simple X]
     (p : PivotalStructure (C := C.Obj))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)

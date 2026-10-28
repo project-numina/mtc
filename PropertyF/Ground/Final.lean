@@ -34,7 +34,7 @@ theorem target : TargetStatement.{v,u} := by
   have hInt : WeaklyIntegral (globalFPDimension D) := by
     apply weaklyIntegral_of_actual_center D hDF hspherical hdim hdet
       (center_globalDimension_square_of_actual_induction D pZ hspherical hdim)
-      (CentreCalculus.actual_symmetricCore_integrality hspherical hdim)
+      (CentreCalculus.actual_symmetricCore_integrality ⟨hspherical, hdim⟩)
     · intro y hy
       exact (CentreCabling.mem_productLabels D y).mpr
         (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)

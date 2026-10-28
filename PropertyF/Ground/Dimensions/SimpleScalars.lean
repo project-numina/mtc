@@ -165,6 +165,20 @@ def simpleDecomposition (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     X ≅ ⨁ (simplePiecesObject C X) :=
   Classical.choice (exists_canonical_decomposition C X)
 
+/-- The inclusion of a chosen simple summand in the canonical decomposition. -/
+def simpleInclusion (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
+    (k : Fin (rank C)) (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
+    simples C k ⟶ X :=
+  biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫ (simpleDecomposition C X).inv
+
+/-- Morphisms are determined by their restrictions to the chosen simple summands. -/
+theorem simpleInclusion_hom_ext {X Y : C.Obj} {f g : X ⟶ Y}
+    (h : ∀ i t, simpleInclusion C X i t ≫ f = simpleInclusion C X i t ≫ g) : f = g := by
+  apply (cancel_epi (simpleDecomposition C X).inv).1
+  apply biproduct.hom_ext'
+  intro a
+  simpa [simpleInclusion, Category.assoc] using h a.1 a.2
+
 /-- On each object, scalar multiplication on simple summands, transported
 through a chosen semisimple decomposition. -/
 def simpleScalarComponent (C : BraidedFusionCategory.{v,u})
@@ -289,16 +303,13 @@ theorem simpleScalarNatural_tensor_simples
       (c i * c j) • 𝟙 (simples C i ⊗ simples C j) := by
   classical
   let X := simples C i ⊗ simples C j
-  let e := simpleDecomposition C X
-  let V := simplePiecesObject C X
-  apply (cancel_epi e.inv).1
-  apply biproduct.hom_ext'
-  intro a
-  have hn := simpleScalarNatural_comp C c (biproduct.ι V a ≫ e.inv)
-  have hcoeff : fusionCoeff C i j a.1 ≠ 0 := by
-    change Module.finrank ℂ (simples C a.1 ⟶ X) ≠ 0
-    exact Nat.ne_of_gt (Nat.zero_lt_of_lt a.2.isLt)
-  simpa [V, X, simplePiecesObject, (hmul i j a.1 hcoeff), Category.assoc] using hn
+  apply simpleInclusion_hom_ext C
+  intro k t
+  have hn := simpleScalarNatural_comp C c (simpleInclusion C X k t)
+  have hcoeff : fusionCoeff C i j k ≠ 0 := by
+    change Module.finrank ℂ (simples C k ⟶ X) ≠ 0
+    exact Nat.ne_of_gt (Nat.zero_lt_of_lt t.isLt)
+  simpa [X, (hmul i j k hcoeff)] using hn
 
 /-- Scalar values satisfying the fusion support rule extend to a tensor
 natural endomorphism of the identity. -/

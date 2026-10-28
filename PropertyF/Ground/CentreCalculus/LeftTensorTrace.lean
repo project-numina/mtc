@@ -204,13 +204,13 @@ theorem tensorDual_coevaluation (X Y : C) :
   let r : A ≅ B := rightDualTensorIso X Y
   let t : Bᘁ ≅ E := rightDualTensorIso (Yᘁ) (Xᘁ)
   rw [← Dimensions.coevaluation_iso_map r.symm]
-  simp only [Iso.symm_hom, Iso.symm_inv, tensorHom_def, Category.assoc]
+  simp only [Iso.symm_hom, Iso.symm_inv, tensorHom_def]
   have he : η_ B E ≫ B ◁ t.inv = η_ B (Bᘁ) :=
     Dimensions.coevaluation_rightDualIso_inv HasRightDual.exact ExactPairing.tensor
   rw [← he]
   dsimp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap]
-  simp only [tensorHom_def, whiskerLeft_comp, Category.assoc]
+  simp only [whiskerLeft_comp, Category.assoc]
   rw [whisker_exchange_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -273,17 +273,20 @@ theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
     IsLeftTraceCompatibleAt p f :=
   (hp Y _).symm.trans <| (leftTrace_partialTrace p f).trans (hp _ _)
 
+/-- A chosen spherical pivotal structure whose simple dimensions are FP dimensions. -/
+abbrev IsFPSpherical (C : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) : Prop :=
+  p.IsSpherical ∧ Modular.HasFPSimpleDimensions C p
+
 /-- A self-transparent simple with sign-valued twist has integral FP
 dimension in any FP-valued spherical fusion category. -/
 theorem integral_of_spherical_and_twist_sign
     {C : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := C.Obj)}
-    (hp : p.IsSpherical)
-    (hdim : Modular.HasFPSimpleDimensions C p)
-    {X : C.Obj} [Simple X] (hX : SelfTransparent X)
+    (hfp : IsFPSpherical C p) {X : C.Obj} [Simple X] (hX : SelfTransparent X)
     (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
       Dimensions.pivotalBraidedTwistScalar C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m :=
-  integral_of_leftTrace_and_twist_sign hdim hX
-    (fun _ f ↦ spherical_rightTrace_leftPartialTrace p hp f) hsign
+  integral_of_leftTrace_and_twist_sign hfp.2 hX
+    (fun _ f ↦ spherical_rightTrace_leftPartialTrace p hfp.1 f) hsign
 
 end PropertyF.Ground.CentreCalculus
