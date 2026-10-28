@@ -84,22 +84,15 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object embeds in an induced base simple. -/
 theorem simple_mono_induced_simple (X : 𝒵) [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (simples C i), Mono f := by
-  have hx : ¬ IsZero X.1 := by
-    change ¬ IsZero ((CategoryTheory.Center.forget C.Obj).obj X)
-    rw [IsZero.iff_id_eq_zero, ← (CategoryTheory.Center.forget C.Obj).map_id,
-      Functor.map_eq_zero_iff]
-    exact id_nonzero X
+  have hx : ¬ IsZero X.1 := fun h => Simple.not_isZero X (Centre.isZero_of_forget h)
   obtain ⟨i, hi⟩ := exists_positive_multiplicity C hx
-  have hi' : 0 < Module.finrank ℂ (X.1 ⟶ simples C i) := by
-    rw [finrank_to_simple_eq_from_simple C]
-    exact hi
   let : FiniteDimensional ℂ (X.1 ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp hi'
+  obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp
+    (show 0 < Module.finrank ℂ (X.1 ⟶ simples C i) from by
+      simpa only [finrank_to_simple_eq_from_simple C] using hi)
   let e := homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj) (induction C)
     (actualAdjunction C) X (simples C i)
-  let t : X ⟶ (induction C).obj (simples C i) := e.symm g
-  have ht : t ≠ 0 := e.symm.map_eq_zero_iff.not.mpr hg
-  exact ⟨i, t, mono_of_nonzero_from_simple ht⟩
+  exact ⟨i, e.symm g, mono_of_nonzero_from_simple (e.symm.map_eq_zero_iff.not.mpr hg)⟩
 
 end PropertyF.Ground.CentreInduction
 
