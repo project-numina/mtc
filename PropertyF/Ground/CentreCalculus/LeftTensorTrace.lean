@@ -27,18 +27,14 @@ theorem leftPartialTrace_braiding_of_trace_compatibility
       Dimensions.pivotalBraidedTwistScalar C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   have hd : unitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    have h : Dimensions.pivotalDimension C p X ≠ 0 := by
-      obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso C X
-      rw [Dimensions.pivotalDimension_iso C p e]
-      exact Dimensions.pivotalDimension_simple_ne_zero C p i
-    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv] using h
+    simpa [Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using
+      Modular.unitScalar_rightTrace_ne_zero C p X
+  have hd' : unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
+    simpa [unitScalar_eq_equiv] using hd
   have hh := leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)
     (End.of (β_ X X).hom) hd ht
-  rw [← unitScalar_eq_equiv, Dimensions.pivotalTrace_selfBraiding] at hh
-  have hdim : unitScalarEquiv C (p.rightTrace (𝟙 X)) = Dimensions.pivotalDimension C p X := by
-    simp [Dimensions.pivotalDimension, unitScalar_eq_equiv]
-  rw [hdim, mul_div_cancel_right₀ _ (by simpa [hdim] using hd)] at hh
-  exact hh
+  simpa only [← unitScalar_eq_equiv, Dimensions.pivotalTrace_selfBraiding,
+    Dimensions.pivotalDimension, mul_div_cancel_right₀ _ hd'] using hh
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The closed first crossing with any spectator tensor factor is the same
@@ -72,8 +68,7 @@ set_option backward.isDefEq.respectTransparency false in
 pivotal twist scalar as its factor. -/
 theorem tensorPermutationTrace_adjacent_of_leftTrace
     (hX : SelfTransparent X)
-    (htotal : ∀ Y (f : End (X ⊗ Y)),
-      p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom)
+    (htotal : IsLeftTraceCompatible p X)
     (n : ℕ) (σ : Equiv.Perm (Fin (n + 1))) :
     unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 2))
       (Equiv.Perm.decomposeFin.symm (1, σ))).asHom) =
@@ -103,8 +98,7 @@ include hdim in
 compatibility and the sign of the actual pivotal twist scalar. -/
 theorem integral_of_leftTrace_and_twist_sign
     (hX : SelfTransparent X)
-    (htotal : ∀ Y (f : End (X ⊗ Y)),
-      p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom)
+    (htotal : IsLeftTraceCompatible p X)
     (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
       Dimensions.pivotalBraidedTwistScalar C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m := by
@@ -226,8 +220,8 @@ theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
     [MonoidalPreadditive C] [MonoidalLinear ℂ C]
     (p : Dimensions.PivotalStructure (C := C)) (hp : p.IsSpherical)
     (X Y : C) (f : End (X ⊗ Y)) :
-    p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom := by
-  rw [← hp Y _, leftTrace_partialTrace, hp]
+    p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom :=
+  (hp Y _).symm.trans <| (leftTrace_partialTrace p X Y f).trans (hp _ _)
 
 /-- A self-transparent simple with sign-valued twist has integral FP
 dimension in any FP-valued spherical fusion category. -/

@@ -24,6 +24,11 @@ def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) (X Y : C) :
     apply End.ext
     simp
 
+/-- Closing the left factor and then tracing agrees with the total trace. -/
+abbrev IsLeftTraceCompatible (p : Dimensions.PivotalStructure (C := C)) (X : C) : Prop :=
+  ∀ Y (f : End (X ⊗ Y)),
+    p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom
+
 /-- Inserting a map on the untraced right factor. -/
 def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
   End.of (X ◁ a.asHom)
@@ -58,8 +63,8 @@ theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.Ha
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
     (htrace : p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom) :
     leftPartialTrace p X Y f =
-      (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
-  simpa only [htrace] using
-    Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p X Y f) hd
+      (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) :=
+  (Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p X Y f) hd).trans <|
+    congrArg (fun t ↦ (scalar t / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y)) htrace
 
 end PropertyF.Ground.CentreCalculus

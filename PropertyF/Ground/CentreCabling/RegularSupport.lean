@@ -18,12 +18,20 @@ universe v u
 variable (D : Ground.BraidedFusionCategory.{v,u})
   (p : Dimensions.PivotalStructure (C := D.Obj))
 
+/-- Two simple labels satisfy the numerical S-matrix centrality test. -/
+abbrev sCentralizes (i j : Fin (rank D)) : Prop :=
+  Modular.categoricalS D p i j = Modular.simpleDimension D p i * Modular.simpleDimension D p j
+
+/-- The labels satisfying the numerical S-centrality test against a set. -/
+abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
+  {j | ∀ i ∈ A, sCentralizes D p i j}
+
 /-- The numerical S-centralizer is closed under dual labels when dimensions
 are the positive FP dimensions. -/
 theorem sCentralizer_closed_under_dual
     (hdim : Modular.HasFPSimpleDimensions D p)
     (i y : Fin (rank D))
-    (hi : Modular.categoricalS D p i y = Modular.simpleDimension D p i * Modular.simpleDimension D p y) :
+    (hi : sCentralizes D p i y) :
     Modular.categoricalS D p (dualIndex D i) y =
       Modular.simpleDimension D p (dualIndex D i) * Modular.simpleDimension D p y := by
   have hreal (a) : starRingEnd ℂ (Modular.simpleDimension D p a) = Modular.simpleDimension D p a := by
@@ -82,8 +90,7 @@ theorem nonzero_dual_coefficient_of_sCentralizer
     (hunit : f (unitIndex D) ≠ 0)
     (hsupport : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0)
     (x : Fin (rank D))
-    (hx : ∀ y ∈ core, Modular.categoricalS D p x y =
-      Modular.simpleDimension D p x * Modular.simpleDimension D p y) :
+    (hx : ∀ y ∈ core, sCentralizes D p x y) :
     f (dualIndex D x) ≠ 0 := by
   classical
   let T (y : Fin (rank D)) := ∑ i, Modular.categoricalS D p y i * f i
@@ -122,8 +129,7 @@ theorem doubleCentralizer_of_fourier_support
     (hunit : f (unitIndex D) ≠ 0)
     (hgenerated : ∀ y, f y ≠ 0 → y ∈ generated)
     (hsupport : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0) :
-    ∀ x, (∀ y ∈ core, Modular.categoricalS D p y x =
-      Modular.simpleDimension D p y * Modular.simpleDimension D p x) → x ∈ generated := by
+    sCentralizer D p core ⊆ generated := by
   intro x hx
   have hreal (j) : starRingEnd ℂ (Modular.simpleDimension D p j) = Modular.simpleDimension D p j := by
     rw [hdim]
@@ -132,8 +138,9 @@ theorem doubleCentralizer_of_fourier_support
       Modular.categoricalS D p (dualIndex D x) y =
         Modular.simpleDimension D p (dualIndex D x) * Modular.simpleDimension D p y := by
     apply sCentralizer_closed_under_dual D p hdim x y
+    unfold sCentralizes
     rw [Modular.categoricalS_symmetric]
-    simpa [mul_comm] using hx y hy
+    simpa [sCentralizes, mul_comm] using hx y hy
   have h := nonzero_dual_coefficient_of_sCentralizer D p hp hdet hreal f core
     hunit hsupport (dualIndex D x) hdual
   rw [dualIndex_involutive D x] at h
@@ -241,10 +248,8 @@ theorem doubleCentralizer_of_fusion_closed
     (hunit : unitIndex D ∈ A)
     (hdual : ∀ a ∈ A, dualIndex D a ∈ A)
     (hclosed : ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < fusionCoeff D a b k → k ∈ A)
-    (hcore : ∀ y, (∀ a ∈ A, Modular.categoricalS D p a y =
-      Modular.simpleDimension D p a * Modular.simpleDimension D p y) → y ∈ core) :
-    ∀ x, (∀ y ∈ core, Modular.categoricalS D p y x =
-      Modular.simpleDimension D p y * Modular.simpleDimension D p x) → x ∈ A := by
+    (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
+    sCentralizer D p core ⊆ (↑A : Set _) := by
   classical
   let f (i : Fin (rank D)) : ℂ := if i ∈ A then (fpSimple D i : ℂ) else 0
   have hu : f (unitIndex D) ≠ 0 := by
