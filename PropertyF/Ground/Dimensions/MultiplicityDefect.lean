@@ -170,7 +170,6 @@ theorem involution_phase_eq_one_of_trace :
     c • T = 1 := by
   by_cases hz : Module.finrank ℂ V = 0
   · let : Subsingleton V := Module.finrank_zero_iff.mp hz
-    ext x
     exact Subsingleton.elim _ _
   have ht : LinearMap.trace ℂ V T ≠ 0 := left_ne_zero_of_mul
     (htrace ▸ (by exact_mod_cast hz : (Module.finrank ℂ V : ℂ) ≠ 0))
