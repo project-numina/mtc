@@ -30,9 +30,9 @@ theorem fpDimension_nonneg (X : D.Obj) :
     0 ≤ fpDimension D X :=
   Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D i).le
 
-theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 := by
-  obtain ⟨e⟩ := unitIndex_iso D
-  rw [← fpDimension_iso D e, fpDimension_simple, fpSimple_unit]
+theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 :=
+  (unitIndex_iso D).elim fun e ↦
+    (fpDimension_iso D e).symm.trans ((fpDimension_simple D _).trans (fpSimple_unit D))
 
 /-- A nonzero object has a nonzero simple multiplicity. -/
 theorem exists_positive_multiplicity {X : D.Obj}

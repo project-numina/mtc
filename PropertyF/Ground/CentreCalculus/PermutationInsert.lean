@@ -61,10 +61,9 @@ theorem signedTraceSum_succ {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ}
   rw [← Equiv.Perm.decomposeFin.symm.sum_comp,
     Fintype.sum_prod_type, Fin.sum_univ_succ]
   simp only [sign_decomposeFin, ite_true, one_mul, hfixed, Fin.succ_ne_zero,
-    ite_false, hmoved _ (Fin.succ_ne_zero _), neg_mul]
-  simp only [Finset.sum_neg_distrib]
-  simp only [show ∀ (a b c : ℂ), a * (b * c) = b * (a * c) by intros; ring, ← Finset.mul_sum]
-  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+    ite_false, hmoved _ (Fin.succ_ne_zero _), neg_mul, Finset.sum_neg_distrib,
+    mul_left_comm, ← Finset.mul_sum,
+    Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
   ring
 
 /-- The deletion identities imply the falling-factorial signed trace sum.
@@ -208,12 +207,10 @@ theorem tensorPermutationTrace_fixHead {D : BraidedFusionCategory.{v,u}}
       (fpDimension D X : ℂ) * permutationScalarTrace D p (tensorPermutationAction X hX) n σ := by
   simp only [permutationScalarTrace]
   rw [tensorPermutationAction_fixHead]
-  have ht := Dimensions.pivotalTrace_tensor p (unitScalarEquiv D)
-    (𝟙 X) ((tensorPermutationAction X hX n) σ).asHom
-  simp only [id_tensorHom, ← unitScalar_eq_equiv] at ht
   change unitScalar D (p.rightTrace (X ◁ ((tensorPermutationAction X hX n) σ).asHom)) = _
-  rw [ht]
-  change Dimensions.pivotalDimension D p X * _ = _
-  rw [pivotalDimension_eq_fpDimension hdim]
+  simpa only [id_tensorHom, ← unitScalar_eq_equiv,
+    ← pivotalDimension_eq_fpDimension hdim, Dimensions.pivotalDimension] using
+    Dimensions.pivotalTrace_tensor p (unitScalarEquiv D)
+      (𝟙 X) ((tensorPermutationAction X hX n) σ).asHom
 
 end PropertyF.Ground.CentreCalculus
