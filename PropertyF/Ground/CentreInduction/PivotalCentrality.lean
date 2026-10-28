@@ -81,7 +81,7 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
   have hb : crossingCandidate C X S = (β_ S (underlying C X)).inv :=
     (Iso.comp_hom_eq_id (β_ S (underlying C X))).1 (congrArg Center.Hom.f hcentral)
   have hid : 𝟙 (V i) = 0 := by
-    rw [← unit_diag C X i, unit_matrix_reduce, hb]
+    rw [← unit_diag X i, unit_matrix_reduce, hb]
     dsimp only [underlying]
     rw [braiding_inv_naturality_left_assoc, ← whiskerLeft_comp, hz]
     simp [monoidalComp]

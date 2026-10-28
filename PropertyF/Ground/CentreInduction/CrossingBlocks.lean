@@ -170,6 +170,7 @@ def crossingTensorComposite (U : C.Obj) : underlying C X ⊗ (T ⊗ U) ⟶ (T �
     (T ◁ crossingCandidate C X U) ≫ (α_ _ _ _).inv
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The proposed crossing has the stated matrix entries on each induced
 simple summand. -/
 @[reassoc]
@@ -180,6 +181,7 @@ theorem crossingCandidate_on_summand (i : Fin (rank C)) :
     (biproduct.ι_desc _ i)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The proposed crossing is natural in the induction argument. -/
 theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj) :
     ((underlyingFunctor C).map h ▷ T) ≫ crossingCandidate C Y T =
