@@ -90,31 +90,35 @@ theorem integral_of_alternating_projector_trace {X : C.Obj}
     let ⟨Y, hY⟩ := Centre.alternatingProjector_trace ρ p
     ⟨Y, (congrArg (fun t ↦ (Nat.factorial n : ℂ) * unitScalar C t) hY.symm).trans hρ⟩
 
+variable {X : C.Obj} {n : ℕ} (ρ : Equiv.Perm (Fin n) →* End X)
+
+/-- The trace of an alternating projector is the signed average of traces. -/
+theorem rightTrace_alternatingProjector :
+    letI := permutationCardInvertible n
+    p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom) =
+      ⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
+        ∑ σ : Equiv.Perm (Fin n), (permutationSign ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
+  let := permutationCardInvertible n
+  rw [Centre.alternatingProjector, Centre.algebraAverage_eq_sum]
+  change p.rightTrace ((⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
+    ∑ σ : Equiv.Perm (Fin n), (permutationSign ℂ n σ : ℂ) • ρ σ).asHom) = _
+  simp only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul]
+  congr 1
+  simpa only [Dimensions.rightTraceLinear, LinearMap.coe_mk, AddHom.coe_mk,
+    p.rightTrace_smul] using
+    map_sum (Dimensions.rightTraceLinear p X)
+      (fun σ : Equiv.Perm (Fin n) ↦ (permutationSign ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
+
 /-- Multiplying the alternating-projector trace by the group order gives
-the signed sum of the actual categorical permutation traces. -/
-theorem alternatingProjector_scalar_trace {X : C.Obj} {n : ℕ}
-    (ρ : Equiv.Perm (Fin n) →* End X) :
+ the signed sum of the actual categorical permutation traces. -/
+theorem alternatingProjector_scalar_trace :
     letI := permutationCardInvertible n
     (Nat.factorial n : ℂ) * unitScalar C
       (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
       ∑ σ : Equiv.Perm (Fin n), (permutationSign ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom) := by
   let := permutationCardInvertible n
-  -- Both statements concern the same projector; its trace is the signed average.
-  have ht : p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom) =
-      ⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
-        ∑ σ : Equiv.Perm (Fin n),
-          (permutationSign ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
-    rw [Centre.alternatingProjector, Centre.algebraAverage_eq_sum]
-    change p.rightTrace ((⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
-      ∑ σ : Equiv.Perm (Fin n), (permutationSign ℂ n σ : ℂ) • ρ σ).asHom) = _
-    simp only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul]
-    congr 1
-    simpa only [Dimensions.rightTraceLinear, LinearMap.coe_mk, AddHom.coe_mk,
-      p.rightTrace_smul] using
-      map_sum (Dimensions.rightTraceLinear p X)
-        (fun σ : Equiv.Perm (Fin n) => (permutationSign ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
-  rw [ht, unitScalar_eq_equiv]
+  rw [rightTrace_alternatingProjector ρ, unitScalar_eq_equiv]
   simp only [map_smul, map_sum, smul_eq_mul, unitScalar_eq_equiv]
   have hc : (Fintype.card (Equiv.Perm (Fin n)) : ℂ) = (Nat.factorial n : ℂ) := by
     simp [Fintype.card_perm]

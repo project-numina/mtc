@@ -80,8 +80,6 @@ private theorem rightDualIso_tensor_evaluation {X Y A B A' B' : D}
   let : ExactPairing Y B := pY
   let : ExactPairing X A' := qX
   let : ExactPairing Y B' := qY
-  have hX := Dimensions.rightDualIso_evaluation pX qX
-  have hY := Dimensions.rightDualIso_evaluation pY qY
   let a := (rightDualIso pX qX).hom
   let b := (rightDualIso pY qY).hom
   change (b ⊗ₘ a) ▷ (X ⊗ Y) ≫
@@ -100,7 +98,8 @@ private theorem rightDualIso_tensor_evaluation {X Y A B A' B' : D}
         (b ▷ ((𝟙_ D) ⊗ Y)) ⊗≫ ε_ Y B' := by monoidal
     _ = 𝟙 _ ⊗≫ B ◁ ((a ▷ X ≫ ε_ X A') ▷ Y) ⊗≫
         (b ▷ Y ≫ ε_ Y B') := by monoidal
-    _ = _ := by rw [hX, hY]
+    _ = _ := by rw [Dimensions.rightDualIso_evaluation pX qX,
+      Dimensions.rightDualIso_evaluation pY qY]
 
 /-- The canonical comparison of duals preserves tensor products of pairings. -/
 theorem rightDualIso_tensor {X Y A B A' B' : D}
@@ -177,14 +176,12 @@ theorem forgetDualIso_tensor (X Y : CategoryTheory.Center D) :
       (forgetPairing X) (forgetPairing Y)
   let r := @ExactPairing.tensor D _ _ X.1 Y.1 (X.1ᘁ) (Y.1ᘁ)
       HasRightDual.exact HasRightDual.exact
-  have h1 := rightDualIso_trans p q r
-  have h2 := rightDualIso_trans p s r
   have h3 := rightDualIso_tensor (forgetPairing X) HasRightDual.exact
     (forgetPairing Y) HasRightDual.exact
   change (rightDualIso s r).hom = (forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom at h3
   rw [forget_rightDualTensorIso]
   change (rightDualIso p q).hom ≫ (rightDualIso q r).hom =
     (rightDualIso p s).hom ≫ _
-  rw [← h3, h1, h2]
+  rw [← h3, rightDualIso_trans p q r, rightDualIso_trans p s r]
 
 end PropertyF.Ground.CentreInduction

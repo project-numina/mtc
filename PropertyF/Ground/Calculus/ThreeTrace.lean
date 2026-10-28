@@ -186,7 +186,7 @@ theorem rightPartialTrace_overlap :
     rightPartialTrace p (overlapEndProduct v u) =
       (scalarTrace p scalar u / scalar (p.rightTrace (𝟙 X))) • v := by
   rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
-    rightPartialTrace_simple_ground D (X := X) (Y := Y) p scalar u]
+    rightPartialTrace_simple_ground D p scalar]
   exact End.ext (by simp)
 
 /-- The categorical trace obeys the overlap recurrence with no braid-span
@@ -195,8 +195,7 @@ theorem pivotalTrace_overlap :
     scalar (p.rightTrace (overlapEndProduct v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
-  rw [← Dimensions.rightTrace_partialTrace p (overlapEndProduct v u),
-    rightPartialTrace_overlap D p scalar v u]
+  rw [← Dimensions.rightTrace_partialTrace p, rightPartialTrace_overlap D p scalar]
   simp [scalarTrace, PivotalStructure.rightTrace_smul, mul_comm]
 
 end PropertyF.Ground.Calculus

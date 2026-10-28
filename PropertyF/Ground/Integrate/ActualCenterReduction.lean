@@ -21,6 +21,7 @@ spherical category with positive FP dimensions and invertible S matrix. -/
 
 @[expose] public noncomputable section
 open CategoryTheory
+open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
@@ -38,7 +39,7 @@ local notation "𝒇" => fpSimple Z
 /-- The Galois-unit label has dimension at least one, the Galois-unit column,
 and the modular global-dimension identity. -/
 theorem exists_modular_witness (hp : p.IsSpherical)
-    (hdim : Modular.HasFPSimpleDimensions Z p) (hdet : (𝒮).det ≠ 0) {δ : ℝ} (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
+    (hdim : HasFPSimpleDimensions Z p) (hdet : (𝒮).det ≠ 0) {δ : ℝ} (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) :
     ∃ y : Fin (rank Z), 1 ≤ 𝒇 y ∧
       IsGaloisUnitColumn Z p σ.symm y ∧
@@ -46,20 +47,20 @@ theorem exists_modular_witness (hp : p.IsSpherical)
   have hreal := CentreCabling.realSimpleDimensions_of_fp hdim
   obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hp hdet hreal
   let y := act σ.symm (unitIndex Z)
-  have hprop := Modular.galois_unit_properties (Modular.simpleDimension_ne_zero Z p)
+  obtain ⟨hcolumn, _, hG⟩ := Modular.galois_unit_properties (Modular.simpleDimension_ne_zero Z p)
     (Modular.globalDimension_ne_zero_of_invertibleS Z p hp hdet hreal)
     (Modular.simpleDimension_unit Z p) (Modular.categorical_global_eq_sum_squares Z p hp)
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
     (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
-  exact ⟨y, one_le_fpSimple Z y, by simpa only [IsGaloisUnitColumn, hdim] using hprop.1,
-    by simpa only [hglobal, hdim] using hprop.2.2⟩
+  exact ⟨y, one_le_fpSimple Z y, by simpa only [IsGaloisUnitColumn, hdim] using hcolumn,
+    by simpa only [hglobal, hdim] using hG⟩
 
 /-- Once the Galois-unit column is known to have finite braid image and the
 actual three-strand rigidity theorem applies, the required numerical witness
 follows from categorical modular data. -/
 theorem center_witness_of_categorical_modular_data (hp : p.IsSpherical)
-    (hdim : Modular.HasFPSimpleDimensions Z p) (hdet : (𝒮).det ≠ 0) {δ b : ℝ} (hδ : 0 < δ) (hb : 0 < b)
+    (hdim : HasFPSimpleDimensions Z p) (hdet : (𝒮).det ≠ 0) {δ b : ℝ} (hδ : 0 < δ) (hb : 0 < b)
     (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
     (hF : ∀ y, IsGaloisUnitColumn Z p σ.symm y → ObjectPropertyF (simples Z y)) :
@@ -102,10 +103,10 @@ theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalF
   let χ : Fin (rank C) → ℂ := fun i => (fpSimple C i : ℂ)
   let d : Fin (rank C) → ℝ := fun i => (σ (χ i)).re
   have hbound (i : Fin (rank C)) : |d i| ≤ fpSimple C i := by
-    have h := Dimensions.galois_character_norm_le_fpSimple C (χ := χ) (i₀ := unitIndex C)
-      (by simp [χ, fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i
-    rw [← fp_simple_galois_real C σ i] at h
-    simpa [d, χ, Complex.norm_real, Real.norm_eq_abs] using h
+    convert Dimensions.galois_character_norm_le_fpSimple C (χ := χ) (i₀ := unitIndex C)
+      (by simp [χ, fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i using 1
+    rw [← fp_simple_galois_real C σ i]
+    simp [d, χ, Complex.norm_real, Real.norm_eq_abs]
   exact ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
       (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, by simp [d, χ, fpSimple_unit]⟩),
     Dimensions.target_globalDimension_le_of_simple_bounds C d hbound,
