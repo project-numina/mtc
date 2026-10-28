@@ -19,10 +19,8 @@ private theorem forgetDualIso_tensor_inv :
     (rightDualTensorIso X Y).inv.f ≫ (forgetDualIso (X ⊗ Y)).hom =
       ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) ≫
         (rightDualTensorIso X.1 Y.1).inv :=
-  (Iso.eq_comp_inv (rightDualTensorIso X.1 Y.1)).2 <|
-    (Category.assoc _ _ _).trans <|
-      (congrArg ((rightDualTensorIso X Y).inv.f ≫ ·) (forgetDualIso_tensor X Y)).trans <|
-        ((Center.forget D).mapIso (rightDualTensorIso X Y)).inv_hom_id_assoc _
+  (CommSq.vert_inv (g := (Center.forget D).mapIso (rightDualTensorIso X Y))
+    (h := rightDualTensorIso X.1 Y.1) ⟨forgetDualIso_tensor X Y⟩).w.symm
 
 /-- Taking mates of the tensor comparison also preserves its inverse. -/
 private theorem forgetDualIso_tensor_mate_inv :

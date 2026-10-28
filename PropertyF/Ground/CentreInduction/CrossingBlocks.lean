@@ -61,21 +61,27 @@ def closeFusionMap (T S : D) {R : D} (f : T ⊗ S ⟶ R) : Rᘁ ⊗ T ⟶ Sᘁ :
   (fᘁ ▷ T) ≫ ((rightDualTensorIso T S).hom ▷ T) ≫
     (α_ (Sᘁ) (Tᘁ) T).hom ≫ (Sᘁ ◁ ε_ T (Tᘁ)) ≫ (ρ_ (Sᘁ)).hom
 
+/-- A crossing block with different input and output test strands. -/
+def mixedCrossing {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    (X T U : D) {R S : D} (g : R ⟶ U ⊗ S) (f : T ⊗ S ⟶ R) :
+    ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
+  (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S f) ≫
+    (α_ (U ⊗ S) X (Sᘁ)).hom ≫ (α_ U S (X ⊗ Sᘁ)).hom ≫
+      (U ◁ (α_ S X (Sᘁ)).inv)
+
 /-- The matrix entry associated to an inclusion `R ⟶ T ⊗ S` and a
 projection `T ⊗ S ⟶ R`. -/
 def crossingBlock (X T S : D) {R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ T ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
-  (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S f) ≫
-    (α_ (T ⊗ S) X (Sᘁ)).hom ≫ (α_ T S (X ⊗ Sᘁ)).hom ≫
-      (T ◁ (α_ S X (Sᘁ)).inv)
+  mixedCrossing X T T g f
 
-/-- A crossing matrix entry is natural in the middle induction factor. -/
+/-- A mixed crossing is natural in the middle induction factor. -/
 @[reassoc]
-theorem crossingBlock_natural_middle {X Y : D} (h : X ⟶ Y) {T R S : D}
-    (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ crossingBlock Y T S g f =
-      crossingBlock X T S g f ≫ (T ◁ ((S ◁ h) ▷ Sᘁ)) := by
-  simp only [crossingBlock, tensorHom_def, Category.assoc]
+theorem mixedCrossing_natural_middle {X Y : D} (h : X ⟶ Y) {T U R S : D}
+    (g : R ⟶ U ⊗ S) (f : T ⊗ S ⟶ R) :
+    (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ mixedCrossing Y T U g f =
+      mixedCrossing X T U g f ≫ (U ◁ ((S ◁ h) ▷ Sᘁ)) := by
+  simp only [mixedCrossing, tensorHom_def, Category.assoc]
   rw [associator_naturality_left_assoc, ← comp_whiskerRight_assoc, whisker_exchange, comp_whiskerRight_assoc,
     ← whisker_exchange_assoc, associator_naturality_middle_assoc]
   simp only [associator_naturality_right_assoc]
@@ -136,16 +142,6 @@ theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
   simp_rw [← Category.assoc (biproduct.π _ _)]
   rw [← Preadditive.sum_comp, biproduct.total, Category.id_comp, Iso.hom_inv_id]
 
-omit [RightRigidCategory D] in
-/-- Maps out of a tensor of a finite biproduct are determined by their summands. -/
-theorem biproduct_tensor_hom_ext [Preadditive D] [MonoidalPreadditive D]
-    [HasFiniteBiproducts D] {J : Type} [Finite J] (V : J → D) (T : D)
-    {W : D} {f g : (⨁ V) ⊗ T ⟶ W}
-    (h : ∀ i, (biproduct.ι V i ▷ T) ≫ f = (biproduct.ι V i ▷ T) ≫ g) : f = g :=
-  (cancel_epi (rightDistributor V T).inv).1 <|
-    biproduct.hom_ext' _ _ fun i => by
-      simpa only [biproduct_ι_comp_rightDistributor_inv_assoc] using h i
-
 variable (X T : C.Obj)
 
 /-- The finite matrix formula for the induction half-braiding. Its invertibility
@@ -177,13 +173,13 @@ theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj)
       crossingCandidate C X T ≫ (T ◁ (underlyingFunctor C).map h) := by
   let VX := inductionSummand C X
   let VY := inductionSummand C Y
-  refine biproduct_tensor_hom_ext VX T fun i => ?_
+  refine rightDistributor_ext_left (f := VX) fun i => ?_
   dsimp [VX, VY, underlying] at *
   simp only [← Category.assoc, ← comp_whiskerRight]
   simp only [underlyingFunctor, biproduct.ι_map, comp_whiskerRight, Category.assoc,
     crossingCandidate_on_summand, Preadditive.comp_sum, Preadditive.sum_comp]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun a _ => ?_
   rw [← whiskerLeft_comp]
-  simp only [biproduct.ι_map, whiskerLeft_comp, crossingBlock_natural_middle_assoc]
+  simp only [biproduct.ι_map, whiskerLeft_comp, crossingBlock, mixedCrossing_natural_middle_assoc]
 
 end PropertyF.Ground.CentreInduction
