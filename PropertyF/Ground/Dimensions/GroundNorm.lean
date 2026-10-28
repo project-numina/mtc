@@ -32,13 +32,11 @@ theorem iso_inv_eq_inv_smul {X Y : C} {j k' : X ≅ Y} {c : k} (hc : c ≠ 0)
 /-- Two isomorphisms from a simple object differ by a nonzero scalar. -/
 theorem isomorphisms_scalar [IsAlgClosed k] [HasKernels C] {X Y : C} [Simple X]
     [FiniteDimensional k (X ⟶ X)] (j l : X ≅ Y) :
-    ∃ c : k, c ≠ 0 ∧ l.hom = c • j.hom := by
-  obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id k (l.hom ≫ j.inv)
-  have hhom : l.hom = c • j.hom := (cancel_mono j.inv).1 (by
-    simpa only [Linear.smul_comp, Iso.hom_inv_id] using hc.symm)
-  have hc0 : c ≠ 0 := fun h ↦
-    mono_ne_zero_of_id_ne_zero l.hom (id_nonzero X) (by simpa [h] using hhom)
-  exact ⟨c, hc0, hhom⟩
+    ∃ c : k, c ≠ 0 ∧ l.hom = c • j.hom :=
+  (endomorphism_simple_eq_smul_id k (l.hom ≫ j.inv)).elim fun c hc ↦
+    let hhom : l.hom = c • j.hom := (cancel_mono j.inv).1 (by
+      simpa only [Linear.smul_comp, Iso.hom_inv_id] using hc.symm)
+    ⟨c, fun h ↦ mono_ne_zero_of_id_ne_zero l.hom (id_nonzero X) (by simpa [h] using hhom), hhom⟩
 end SimpleIsomorphisms
 
 variable {k : Type*} [Field k] [IsAlgClosed k] {C : Type u} [Category.{v} C]
