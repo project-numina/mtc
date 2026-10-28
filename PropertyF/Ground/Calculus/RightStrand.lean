@@ -301,28 +301,31 @@ theorem appendIso_succ (n : ℕ) : appendIso X (n+1) =
   (α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X n) := rfl
 
 set_option backward.isDefEq.respectTransparency false in
+/-- Appending preserves the first adjacent generator. -/
+private theorem addRightAut_first_generator (n : ℕ) : addRightAut X n (braidGenerator X n 0) =
+    braidGenerator X (n + 1) 0 := by
+  apply Aut.ext
+  apply Iso.ext
+  change (appendIso X (n + 2)).inv ≫ ((braidGenerator X n 0).asIso.hom ▷ X) ≫
+    (appendIso X (n + 2)).hom = (braidGenerator X (n + 1) 0).asIso.hom
+  simp only [← Fin.zero_eta, braidGenerator.eq_1, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
+    tensorHom_id]
+  change (appendIso X (n + 2)).inv ≫
+    (((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
+      (α_ X X (tensorPower X n)).hom) ▷ X) ≫ (appendIso X (n + 2)).hom =
+    (α_ X X (tensorPower X (n + 1))).inv ≫ (β_ X X).hom ▷ tensorPower X (n + 1) ≫
+      (α_ X X (tensorPower X (n + 1))).hom
+  rw [appendIso_succ X (n + 1), appendIso_succ X n]
+  exact append_first_two X _ _ (appendIso X n)
+
+set_option backward.isDefEq.respectTransparency false in
 /-- Appending a strand preserves each adjacent braid generator. -/
 theorem addRightAut_generator (n : ℕ) (i : Fin (n+1)) :
     addRightAut X n (braidGenerator X n i) = braidGenerator X (n+1) i.castSucc := by
-  have first (n : ℕ) : addRightAut X n (braidGenerator X n 0) =
-      braidGenerator X (n + 1) 0 := by
-    apply Aut.ext
-    apply Iso.ext
-    change (appendIso X (n + 2)).inv ≫ ((braidGenerator X n 0).asIso.hom ▷ X) ≫
-      (appendIso X (n + 2)).hom = (braidGenerator X (n + 1) 0).asIso.hom
-    simp only [← Fin.zero_eta, braidGenerator.eq_1, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
-      tensorHom_id]
-    change (appendIso X (n + 2)).inv ≫
-      (((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
-        (α_ X X (tensorPower X n)).hom) ▷ X) ≫ (appendIso X (n + 2)).hom =
-      (α_ X X (tensorPower X (n + 1))).inv ≫ (β_ X X).hom ▷ tensorPower X (n + 1) ≫
-        (α_ X X (tensorPower X (n + 1))).hom
-    rw [appendIso_succ X (n + 1), appendIso_succ X n]
-    exact append_first_two X _ _ (appendIso X n)
   induction n with
-  | zero => exact (Fin.eq_zero i).symm ▸ first 0
+  | zero => exact (Fin.eq_zero i).symm ▸ addRightAut_first_generator X 0
   | succ n ih =>
-    refine Fin.cases (first (n + 1)) (fun j => ?_) i
+    refine Fin.cases (addRightAut_first_generator X (n + 1)) (fun j => ?_) i
     rcases j with ⟨j, hj⟩
     apply Aut.ext
     apply Iso.ext
