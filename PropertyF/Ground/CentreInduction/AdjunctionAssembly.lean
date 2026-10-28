@@ -115,8 +115,8 @@ local notation "𝒵" => Center C.Obj
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Insert a coevaluation and move its object past the centre half-braiding. -/
-def unitComponentAt {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    (Z : Center D) (S : D) : Z.1 ⟶ (S ⊗ Z.1) ⊗ Sᘁ :=
+def unitComponentAt {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    (Z : Center D) (S : D) [HasRightDual S] : Z.1 ⟶ (S ⊗ Z.1) ⊗ Sᘁ :=
   (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫ (α_ Z.1 S (Sᘁ)).inv ≫ ((Z.2.β S).hom ▷ Sᘁ)
 
 /-- The unit component indexed by a simple object. -/
