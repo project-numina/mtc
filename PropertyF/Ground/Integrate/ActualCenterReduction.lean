@@ -142,10 +142,7 @@ theorem positive_bounded_conjugates_of_fp (C : BraidedFusionCategory.{v,u})
       σ (globalFPDimension C : ℂ) = (a : ℂ) := by
   let χ : Fin (rank C) → ℂ := fun i => (fpSimple C i : ℂ)
   have hχ : χ (unitIndex C) ≠ 0 := by simp [χ, fpSimple_unit]
-  have hchar : IsFusionMultiplicative C χ := by
-    intro i j
-    dsimp [χ]
-    exact_mod_cast fpSimple_mul C i j
+  have hchar : IsFusionMultiplicative C χ := fpSimple_isFusionMultiplicative C
   let d : Fin (rank C) → ℝ := fun i => (σ (χ i)).re
   have hbound (i : Fin (rank C)) : |d i| ≤ fpSimple C i := by
     have h := Dimensions.galois_character_norm_le_fpSimple C hχ hchar σ i
@@ -255,7 +252,7 @@ centralizer facts in the paper. These facts are explicit interim premises;
 no old hypothesis structure appears in the dependency cone. -/
 theorem target_of_center_centralizers
     (hCenter : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ,
+      HasPropertyF C.Obj →
       ∃ (Z : BraidedFusionCategory.{v,max u v}) (p : Dimensions.PivotalStructure (C := Z.Obj))
         (core generated : Set (Fin (rank Z))),
         p.IsSpherical ∧
@@ -269,7 +266,7 @@ theorem target_of_center_centralizers
   apply target_of_modular_center
   intro C hPU hF σ
   obtain ⟨Z, p, core, generated, hp, hdim, hdet, hglobal, hIntegral, hDouble, hFinite⟩ :=
-    hCenter C hPU hF σ
+    hCenter C hPU hF
   refine ⟨Z, p, hp, hdim, hdet, hglobal, ?_⟩
   intro y hColumn
   apply propertyF_of_galois_column Z p σ.symm core generated hIntegral hDouble hFinite y
@@ -304,7 +301,7 @@ retracts in Mathlib’s centre. The centre and centralizer facts remain explicit
 unproved premises of this reduction. -/
 theorem target_of_center_product_retracts
     (hCenter : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ,
+      HasPropertyF C.Obj →
       ∃ (Z : BraidedFusionCategory.{v,max u v}) (p : Dimensions.PivotalStructure (C := Z.Obj))
         (F : Z.Obj ⥤ CategoryTheory.Center C.Obj),
         Nonempty F.Braided ∧ F.Faithful ∧
@@ -319,9 +316,9 @@ theorem target_of_center_product_retracts
         (∀ y ∈ generated, Centre.ProductRetract (F.obj (simples Z y)))) :
     TargetStatement.{v,u} := by
   apply target_of_center_centralizers
-  intro C hPU hF σ
+  intro C hPU hF
   obtain ⟨Z, p, F, hB, hfaithful, core, generated, hp, hdim, hdet, hglobal,
-    hIntegral, hDouble, hProduct⟩ := hCenter C hPU hF σ
+    hIntegral, hDouble, hProduct⟩ := hCenter C hPU hF
   letI : F.Braided := hB.some
   letI : F.Faithful := hfaithful
   refine ⟨Z, p, core, generated, hp, hdim, hdet, hglobal, hIntegral, hDouble, ?_⟩
@@ -363,7 +360,7 @@ theorem target_of_actual_center
               Modular.simpleDimension Z p x * Modular.simpleDimension Z p y) → y ∈ generated) ∧
             (∀ y ∈ generated, Centre.ProductRetract (simples Z y))) : TargetStatement.{v,u} := by
   apply target_of_center_product_retracts
-  intro C hPU hF σ
+  intro C hPU hF
   obtain ⟨hR, hFusion, p, core, generated, hp, hdim, hdet, hglobal, hIntegral, hDouble, hProduct⟩ :=
     hCenter C hPU hF
   letI := hR
