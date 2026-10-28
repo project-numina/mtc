@@ -230,8 +230,8 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
       (d : ℂ) * 𝒇 y := by
     rw [ScalarTwist.rightTrace_twist Z σ p]
     exact hS
-  apply actual_rigidity_of_overlap_and_galois_dimensions D q X original transformed σ
-    hpos htrans hqdim d (𝒇 y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
+  apply actual_rigidity_of_overlap_and_galois_dimensions D q original transformed σ
+    hpos htrans hqdim X d (𝒇 y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
   exact Calculus.overlap_trace_power D q
 
 end PropertyF.Ground
