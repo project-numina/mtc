@@ -47,14 +47,9 @@ theorem averagedGram_invariant (h : G) :
     (Equiv.sum_comp (Equiv.mulRight h)
       (fun g => (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ)))
 
-end PropertyF.Ground.Calculus
-
 /-! A finite complex matrix representation can be conjugated into the unitary group. -/
 
-@[expose] public noncomputable section
-open Matrix
-open scoped BigOperators ComplexOrder MatrixOrder
-namespace PropertyF.Ground.Calculus
+open scoped MatrixOrder
 
 /-- Conjugating by a self-adjoint unit makes an isometry unitary. -/
 private theorem conjugate_mem_unitary {A : Type*} [Monoid A] [StarMul A]
@@ -63,10 +58,8 @@ private theorem conjugate_mem_unitary {A : Type*} [Monoid A] [StarMul A]
   (Units.mul_inv_mem_unitary (P * U) P).2 (by
     simpa only [star_mul, hP, pow_two, mul_assoc] using h)
 
-variable {G ι : Type*} [Group G] [Fintype G] [Fintype ι] [DecidableEq ι]
-
 /-- A single change of basis unitarizes every matrix in a finite group representation. -/
-theorem exists_unitarizing_basis (ρ : G →* (Matrix ι ι ℂ)ˣ) :
+theorem exists_unitarizing_basis :
     ∃ P : (Matrix ι ι ℂ)ˣ, ∀ g : G,
       ((↑(P * ρ g * P⁻¹) : Matrix ι ι ℂ) ∈ Matrix.unitaryGroup ι ℂ) := by
   classical
@@ -195,13 +188,13 @@ def unitConjugation (u : Aˣ) : A ≃ₐ[ℂ] A where
   commutes' z := by
     simp [Algebra.commutes, mul_assoc]
 
-variable {G : Type*} [Group G]
+variable {G : Type*} [Group G] (ρ : G →* A)
 
 /-- The image group, regarded as units in its own linear-span algebra. -/
-def groupInImage (ρ : G →* A) : G →* groupImageAlgebra ρ :=
+def groupInImage : G →* groupImageAlgebra ρ :=
   (groupAlgebraMap ρ).rangeRestrict.toMonoidHom.comp (MonoidAlgebra.of ℂ G)
 
-@[simp] theorem groupInImage_val (ρ : G →* A) (g : G) :
+@[simp] theorem groupInImage_val (g : G) :
     (groupInImage ρ g : A) = ρ g := MonoidAlgebra.lift_of ρ g
 
 /-- The canonical map from the categorical braid image into its span algebra. -/
@@ -216,12 +209,12 @@ abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCatego
   groupInImage_val _ _
 
 /-- A block presentation in which each represented group element is unitary. -/
-abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
+abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ}
     (e : GroupBlockPresentation ρ d) : Prop :=
   ∀ g, Blocks.IsUnitary ⟨_, d⟩ (e (groupInImage ρ g))
 
 /-- The group elements span their image algebra. -/
-theorem groupInImage_span (ρ : G →* A) :
+theorem groupInImage_span :
     Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ := by
   classical
   apply Submodule.map_injective_of_injective (groupImageAlgebra ρ).toSubmodule.subtype_injective
@@ -234,7 +227,7 @@ variable [Finite G]
 
 /-- A Wedderburn equivalence can be chosen so that every group element is
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
-theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
+theorem groupImageAlgebra_unitary_blocks :
     ∃ (n : ℕ) (d : Fin n → ℕ) (e : GroupBlockPresentation ρ d),
       (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation ρ e := by
   classical

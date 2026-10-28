@@ -53,9 +53,13 @@ def orthogonalEndBlocks {ι α : Type} [Fintype α]
 
 end Biproduct
 
+section Conjugation
+
+variable {X Y : C} (e : X ≅ Y)
+
 /-- Conjugation by a categorical isomorphism is a complex-algebra equivalence
 on endomorphisms. -/
-def isoEndAlgEquiv {X Y : C} (e : X ≅ Y) : End X ≃ₐ[ℂ] End Y where
+def isoEndAlgEquiv : End X ≃ₐ[ℂ] End Y where
   __ := e.conj.toEquiv
   map_mul' := e.conj.map_mul
   map_add' a b := by
@@ -70,13 +74,14 @@ section PivotalTrace
 variable [MonoidalCategory C] [RightRigidCategory C]
 
 /-- Pivotal trace is unchanged by categorical conjugation. -/
-theorem rightTrace_iso_conj (p : Dimensions.PivotalStructure (C := C))
-    {X Y : C} (e : X ≅ Y) (a : End X) :
+theorem rightTrace_iso_conj (p : Dimensions.PivotalStructure (C := C)) (a : End X) :
     p.rightTrace ((isoEndAlgEquiv e) a).asHom = p.rightTrace a.asHom := by
   simpa [isoEndAlgEquiv, Iso.conj_apply_asHom, Category.assoc] using
     p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
 
 end PivotalTrace
+
+end Conjugation
 
 variable (D : BraidedFusionCategory.{v,u})
 

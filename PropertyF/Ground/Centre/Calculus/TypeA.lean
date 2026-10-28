@@ -168,34 +168,28 @@ namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
+/-- A surjection identifies its kernel with a normal subgroup when the
+quotient has at most as many elements as the codomain. -/
+theorem ker_eq_of_card_quotient_le {G H : Type*} [Group G] [Group H]
+    (f : G →* H) (N : Subgroup G) [N.Normal] [Finite (G ⧸ N)]
+    (hN : N ≤ f.ker) (hf : Function.Surjective f) (hc : Nat.card (G ⧸ N) ≤ Nat.card H) :
+    f.ker = N :=
+  ((QuotientGroup.injective_lift_iff N f hN).mp
+    ((QuotientGroup.lift_surjective_of_surjective N f hf hN).bijective_of_nat_card_le hc).1).symm
+
 variable (n : ℕ)
 
 /-- The group presented by adjacent involutions with type-A relations. -/
 abbrev typeAGroup := BraidWords n ⧸ typeANormal n
 
-/-- Its canonical surjection to the strand permutation group. -/
-def typeAPermutation : typeAGroup n →* Perm (Fin (n + 2)) :=
-  QuotientGroup.lift _ (strandPermutation n) (typeARelations_permutation_trivial n)
-
-theorem typeAPermutation_surjective : Function.Surjective (typeAPermutation n) :=
-  Function.Surjective.of_comp (g := QuotientGroup.mk' (typeANormal n))
-    (strandPermutation_surjective n)
-
 /-- The missing presentation theorem would follow from a finite normal-form
 bound of at most `(n+2)!` words. -/
 theorem pureWords_eq_typeANormal_of_card_bound [Finite (typeAGroup n)]
     (hcard : Nat.card (typeAGroup n) ≤ Nat.factorial (n + 2)) :
-    (strandPermutation n).ker = typeANormal n := by
-  let : Fintype (typeAGroup n) := Fintype.ofFinite _
-  apply le_antisymm ?_ (typeARelations_permutation_trivial n)
-  intro w hw
-  have hs := typeAPermutation_surjective n
-  have hi : Function.Injective (typeAPermutation n) :=
-    ((Fintype.bijective_iff_surjective_and_card (typeAPermutation n)).2
-      ⟨hs, le_antisymm (by simpa [Nat.card_eq_fintype_card, Fintype.card_perm] using hcard)
-        (Fintype.card_le_of_surjective (typeAPermutation n) hs)⟩).1
-  exact (QuotientGroup.eq_one_iff w).mp <| hi <|
-    show strandPermutation n w = 1 from MonoidHom.mem_ker.mp hw
+    (strandPermutation n).ker = typeANormal n :=
+  ker_eq_of_card_quotient_le (strandPermutation n) (typeANormal n)
+    (typeARelations_permutation_trivial n) (strandPermutation_surjective n)
+    (by simpa [Nat.card_eq_fintype_card, Fintype.card_perm] using hcard)
 
 end PropertyF.Ground.CentreCalculus
 
