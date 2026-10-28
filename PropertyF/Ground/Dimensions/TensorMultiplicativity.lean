@@ -30,17 +30,16 @@ theorem rightTraceWith_tensor_pairing {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅
   let U := ((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)
   let p1 : ExactPairing (X ⊗ Y) ((X ⊗ Y)ᘁ) := HasRightDual.exact
   let p2 : ExactPairing (X ⊗ Y) V := ExactPairing.tensor
-  let q1 : ExactPairing V (Vᘁ) := HasRightDual.exact
-  let q2 : ExactPairing V U := ExactPairing.tensor
-  let s := rightDualIso q1 q2
+  let s : Vᘁ ≅ U := rightDualTensorIso (Yᘁ) (Xᘁ)
   let u := f ≫ (j.hom ⊗ₘ k.hom)
   have hr : η_ (X ⊗ Y) V ≫ ((u ≫ s.inv) ⊗ₘ 𝟙 V) ≫ ε_ V (Vᘁ) =
       η_ (X ⊗ Y) V ≫ (u ⊗ₘ 𝟙 V) ≫ ε_ V U := by
-    simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc]
-    rw [(rightDualIso_inv_evaluation q1 q2)]
+    simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc,
+      show s.inv ▷ V ≫ ε_ V (Vᘁ) = ε_ V U from
+        rightDualIso_inv_evaluation HasRightDual.exact ExactPairing.tensor]
   simpa only [rightTraceWith, End.homEquiv_apply, doubleDualTensorIso, Iso.trans_hom,
     Iso.symm_hom, tensorIso_hom, rightDualIsoMap, Category.assoc, rightDualTensorIso,
-    s, u, p1, p2, q1, q2, U, V] using (trace_change_rightDual p1 p2 (u ≫ s.inv)).trans hr
+    s, u, p1, p2, U, V] using (trace_change_rightDual p1 p2 (u ≫ s.inv)).trans hr
 
 
 omit [RightRigidCategory C] in
@@ -61,9 +60,8 @@ theorem rightTraceWith_partialTraceWith {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y �
   change (rightTraceWith j (partialTraceWith k X f).asHom).asHom =
     (rightTraceWith ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) f.asHom).asHom
   rw [rightTraceWith_tensor_pairing]
-  simp only [rightTraceWith, partialTraceWith]
-  rw [ExactPairing.tensor_coevaluation, ExactPairing.tensor_evaluation]
-  simp only [tensorHom_def, comp_whiskerRight]
+  simp only [rightTraceWith, partialTraceWith, ExactPairing.tensor_coevaluation,
+    ExactPairing.tensor_evaluation, tensorHom_def, comp_whiskerRight]
   monoidal
   simp
   rw [whisker_exchange_assoc j.hom (λ_ (Xᘁ)).hom,
