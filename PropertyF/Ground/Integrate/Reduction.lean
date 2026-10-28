@@ -1,8 +1,9 @@
 module
 public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Integrate.Fixedness
-public import PropertyF.Ground.Integrate.ConjugateBound
-public import PropertyF.Ground.Integrate.Conjugacy
+public import PropertyF.Ground.Integrate.CharacterReality
+public import PropertyF.Ground.Dimensions.DimensionCharacter
+public import PropertyF.Ground.Dimensions.GlobalInequality
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Fusion.Agreement
