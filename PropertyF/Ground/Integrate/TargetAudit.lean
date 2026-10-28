@@ -161,7 +161,6 @@ import all PropertyF.Ground.Modular.Verlinde
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Target
 import all PropertyF.PowerBound
-import all PropertyF.UnitaryTrace
 
 /-! Explicit final-theorem gate. This module intentionally fails to build until
 `PropertyF.Ground.target : PropertyF.Ground.TargetStatement` exists. It is not

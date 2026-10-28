@@ -169,7 +169,6 @@ import all PropertyF.Ground.Modular.Verlinde
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Target
 import all PropertyF.PowerBound
-import all PropertyF.UnitaryTrace
 
 /-! Scan all currently integrated project declarations, including the ground
 modules. `PropertyF.Audit` alone sees only its own imports. -/

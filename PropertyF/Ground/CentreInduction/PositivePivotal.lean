@@ -58,6 +58,7 @@ end
 
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
 /-- Centrality of the transported pivotal components yields centre fusion,
 positive sphericality, pseudo-unitarity and the categorical dimension square. -/
@@ -69,9 +70,9 @@ theorem center_structure_of_pivotal_centrality
       letI := hFusion
       let pZ := liftedPivotalStructure p hc
       pZ.IsSpherical ∧
-      PivotalHasFPDimensions (Integrate.bundledCenter C) pZ ∧
-      PseudoUnitary (Integrate.bundledCenter C) ∧
-      globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
+      PivotalHasFPDimensions 𝒵ᶠ pZ ∧
+      PseudoUnitary 𝒵ᶠ ∧
+      globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
   center_structure_of_compatible_pivotal C p hsimple (liftedPivotalStructure p hc)
     (liftedPivotalStructure_compatible p hc)
 

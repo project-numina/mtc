@@ -1,12 +1,14 @@
 module
 public import PropertyF.Ground.Calculus.BraidWeights
-public import PropertyF.UnitaryTrace
+public import PropertyF.BlockTrace
 public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.PowerBound
 
 /-! The ordinary weighted trace bound for actual braid algebras. -/
+
+open PropertyF.Ground.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -15,12 +17,18 @@ namespace PropertyF.Ground.Calculus
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 
+/-- Pivotal trace of an element of an actual categorical braid algebra. -/
+def actualBraidTrace (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
+    (p : PivotalStructure (C := C.Obj)) (n : ℕ) (a : braidAlgebra X n) : ℂ :=
+  groundUnitScalarEquiv C
+    (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
+
 /-- In actual categorical braid blocks, the norm of the pivotal trace of a
 unitary is bounded by the simple-multiplicity mass. The explicit dimension
 bound is supplied by the fusion/Perron and dimensions workstreams. -/
 theorem pivotalTrace_braid_unitary_bound
-    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
+    (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
+    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (fun q : Σ i, Fin (m i) => Ground.simples C q.1))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
@@ -56,40 +64,36 @@ theorem pivotalTrace_braid_unitary_bound
     _ = ∑ i, (m i : ℝ) * fp i := multiplicity_mass_eq m d mult fp hdim
 
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
-theorem fpDimension_tensorPower (C : Ground.BraidedFusionCategory.{v,u})
-    (X : C.Obj) (n : ℕ) : Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n := by
-  induction n with
-  | zero => simp [tensorPower, Ground.fpDimension_unit]
-  | succ n ih =>
-    simp only [tensorPower, Ground.fpDimension_tensor, ih, pow_succ]
-    ring
+theorem fpDimension_tensorPower (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+    ∀ n, Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n
+  | 0 => by simp [tensorPower, Ground.fpDimension_unit]
+  | n + 1 => by simp [tensorPower, Ground.fpDimension_tensor, fpDimension_tensorPower C X n,
+      pow_succ, mul_comm]
 
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
 theorem braid_trace_unitary_bound_ground
-    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
-    (p : Dimensions.PivotalStructure (C := C.Obj)) {r : ℕ} {d : Fin r → ℕ}
+    (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
+    (p : PivotalStructure (C := C.Obj)) {r : ℕ} {d : Fin r → ℕ}
     (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (a : braidAlgebra X n) (ha : ∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) :
-    ‖Dimensions.groundUnitScalarEquiv C
-      (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
-        Ground.fpDimension C X ^ (n + 2) := by
+    ‖actualBraidTrace C X p n a‖ ≤ Ground.fpDimension C X ^ (n + 2) := by
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
-  have hbound : ∀ i, ‖Dimensions.groundUnitScalarEquiv C
+  have hbound : ∀ i, ‖groundUnitScalarEquiv C
       (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ Ground.fpSimple C i := by
     intro i
     have h := Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
     simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension,
-      Dimensions.groundUnitScalarEquiv_apply] using h
-  have h := pivotalTrace_braid_unitary_bound C p (Dimensions.groundUnitScalarEquiv C)
+      groundUnitScalarEquiv_apply] using h
+  have h := pivotalTrace_braid_unitary_bound C p (groundUnitScalarEquiv C)
     e hd b hbound a ha
-  change ‖Dimensions.groundUnitScalarEquiv C
+  change ‖groundUnitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
       Ground.fpDimension C (tensorPower X (n + 2)) at h
-  simpa only [fpDimension_tensorPower] using h
+  simpa only [fpDimension_tensorPower, actualBraidTrace] using h
 
 end PropertyF.Ground.Calculus
 
@@ -108,10 +112,9 @@ def overlapIndex (t : ℕ) : ℕ → ℕ
   | 0 => t
   | k + 1 => overlapIndex t k + (t + 1)
 
-theorem overlapIndex_formula (t k : ℕ) : overlapIndex t k = t + k * (t + 1) := by
-  induction k with
-  | zero => simp [overlapIndex]
-  | succ k ih => simp [overlapIndex, ih, Nat.succ_mul, Nat.add_assoc]
+theorem overlapIndex_formula (t : ℕ) : ∀ k, overlapIndex t k = t + k * (t + 1)
+  | 0 => by simp [overlapIndex]
+  | k + 1 => by simp [overlapIndex, overlapIndex_formula t k, Nat.succ_mul, Nat.add_assoc]
 
 /-- Extend the existing product by `t+1` identity strands on the right. -/
 def overlapLeft (X : C) (t k : ℕ) :
@@ -145,12 +148,11 @@ theorem starMap_preserves_block_unitary {r s : ℕ} {d : Fin r → ℕ} {q : Fin
       (PropertyF.Blocks.Algebra ⟨_, q⟩))
     {u : PropertyF.Blocks.Algebra ⟨_, d⟩}
     (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ u) :
-    PropertyF.Blocks.IsUnitary ⟨_, q⟩ (F u) := by
-  intro j
-  apply Matrix.mem_unitaryGroup_iff.mpr
-  simpa only [map_mul, map_star, map_one, Pi.mul_apply, Pi.star_apply, Pi.one_apply] using
-    congrArg (fun x : PropertyF.Blocks.Algebra ⟨_, d⟩ => F x j)
-      (show u * star u = 1 from funext fun i => Matrix.mem_unitaryGroup_iff.mp (hu i))
+    PropertyF.Blocks.IsUnitary ⟨_, q⟩ (F u) := fun j =>
+  Matrix.mem_unitaryGroup_iff.mpr (by
+    simpa only [map_mul, map_star, map_one, Pi.mul_apply, Pi.star_apply, Pi.one_apply] using
+      congrArg (fun x : PropertyF.Blocks.Algebra ⟨_, d⟩ => F x j)
+        (show u * star u = 1 from funext fun i => Matrix.mem_unitaryGroup_iff.mp (hu i)))
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -185,7 +187,7 @@ theorem addLeft_braid_unitary {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
 /-- Successive actual overlapping products remain blockwise unitary. The
 presentations may be chosen independently at every strand count. -/
 theorem overlapProduct_unitary {X : C} {t : ℕ}
-    (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
+    {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
       PropertyF.Blocks.Algebra ⟨_, d n⟩)
     (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
@@ -236,24 +238,18 @@ theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf :
     ring
   simpa only [hexp] using hbound k
 
-/-- Pivotal trace of an element of an actual categorical braid algebra. -/
-def actualBraidTrace (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (n : ℕ) (a : braidAlgebra X n) : ℂ :=
-  Dimensions.groundUnitScalarEquiv C
-    (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
-
 /-- Iterating a single overlap step gives the scaled power identity, without
 dividing by the simple dimension. -/
 theorem overlap_trace_power_of_step
-    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj}
-    (p : Dimensions.PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
+    (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
+    (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
     (hstep : ∀ k, actualBraidTrace C X p (overlapIndex t (k + 1))
         (overlapProduct X t u (k + 1)) *
-        Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) =
+        pivotalDimension C p X =
       actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
         actualBraidTrace C X p t u) :
     ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+      (pivotalDimension C p X) ^ k =
         actualBraidTrace C X p t u ^ (k + 1) := by
   intro k
   induction k with
@@ -261,14 +257,14 @@ theorem overlap_trace_power_of_step
   | succ k ih =>
     rw [pow_succ, pow_succ]
     linear_combination (hstep k) *
-      (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k +
+      (pivotalDimension C p X) ^ k +
       ih * actualBraidTrace C X p t u
 
 /-- The sharp bound works in any family of unitary braid-block presentations;
 it does not depend on a particular choice made by finite-group averaging. -/
 theorem sharp_trace_bound_for_presentations_of_overlap_identity
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (t : ℕ)
+    (C : BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
+    (p : PivotalStructure (C := C.Obj)) (t : ℕ)
     (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
       PropertyF.Blocks.Algebra ⟨_, d n⟩)
@@ -277,23 +273,18 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (u : braidAlgebra X t)
     (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ)
     (hrec : ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+      (pivotalDimension C p X) ^ k =
         actualBraidTrace C X p t u ^ (k + 1)) :
     ‖actualBraidTrace C X p t u‖ ≤
-      ‖Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))‖ *
+      ‖pivotalDimension C p X‖ *
         Ground.fpDimension C X ^ (t + 1) := by
-  have hδ : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    intro h
-    apply Modular.pivotalTrace_simple_ne_zero C p X
-    apply (Dimensions.groundUnitScalarEquiv C).injective
-    simpa using h
-  have hf : 0 < Ground.fpDimension C X :=
-    lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X))
-  apply norm_bound_of_overlapIndex hδ hf t
+  simp only [pivotalDimension, ← groundUnitScalarEquiv_apply] at hrec ⊢
+  apply norm_bound_of_overlapIndex (Modular.unitScalar_rightTrace_ne_zero C p X)
+    (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X))) t
     (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec
   intro k
   have hbound := braid_trace_unitary_bound_ground C p
-    (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary r d e he hu k)
+    (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary e he hu k)
   change ‖actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)‖ ≤ _ at hbound
   exact hbound
 
