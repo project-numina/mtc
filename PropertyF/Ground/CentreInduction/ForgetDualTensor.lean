@@ -48,8 +48,7 @@ theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
   exact hmate
 
 /-- The transported pivotal components are natural on centre morphisms. -/
-theorem transported_pivotal_natural
-    (p : PivotalStructure (C := D))
+theorem transported_pivotal_natural (p : PivotalStructure (C := D))
     {X Y : 𝒵} (f : X ⟶ Y) :
     f.f ≫ (p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv =
       (p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv ≫ ((fᘁ)ᘁ).f := by
@@ -103,8 +102,7 @@ private theorem rightDualIso_tensor_evaluation {X Y A B A' B' : D}
       rightDualIso_evaluation pY qY]
 
 /-- The canonical comparison of duals preserves tensor products of pairings. -/
-theorem rightDualIso_tensor {X Y A B A' B' : D}
-    (pX : ExactPairing X A) (qX : ExactPairing X A')
+theorem rightDualIso_tensor {X Y A B A' B' : D} (pX : ExactPairing X A) (qX : ExactPairing X A')
     (pY : ExactPairing Y B) (qY : ExactPairing Y B') :
     (rightDualIso (@ExactPairing.tensor D _ _ X Y A B pX pY)
       (@ExactPairing.tensor D _ _ X Y A' B' qX qY)).hom =

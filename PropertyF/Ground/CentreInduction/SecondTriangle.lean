@@ -265,9 +265,8 @@ set_option backward.defeqAttrib.useBackward true in
 /-- Every matrix entry of the second triangle has the expected value. -/
 theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
   let V := inductionSummand C X
-  biproduct.ι V i ≫
-    (unitCandidate C ((induction C).obj X) ≫
-      (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
+  biproduct.ι V i ≫ (unitCandidate C ((induction C).obj X) ≫
+    (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
   dsimp [unitCandidate, underlyingFunctor, induction, underlying]
   simp only [Category.assoc, biproduct.map_π, biproduct.lift_π_assoc]
