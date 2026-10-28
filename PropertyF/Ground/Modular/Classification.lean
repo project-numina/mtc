@@ -36,7 +36,9 @@ namespace PropertyF.Ground.Modular
 /-- The data needed to state the character equations. No fusion-ring axioms are
 needed for the Galois action itself. -/
 structure FusionRules (ι : Type*) where
+  /-- The label of the unit object. -/
   unit : ι
+  /-- The multiplicity of the third label in the product of the first two. -/
   coeff : ι → ι → ι → ℕ
 
 /-- A function respects the multiplication encoded by fusion coefficients. -/
@@ -46,6 +48,7 @@ abbrev IsFusionCharacter {ι K : Type*} [Fintype ι] [Semiring K]
 
 /-- A normalized complex-valued character of integral fusion rules. -/
 structure Character {ι : Type*} [Fintype ι] (N : FusionRules ι) where
+  /-- The value of the character on each label. -/
   value : ι → ℂ
   unit_eq : value N.unit = 1
   mul_eq : IsFusionCharacter N value
@@ -143,15 +146,14 @@ theorem characters_exhausted (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = 
     (character_eigenvector N χ i) y hy
 
 
+open scoped Classical in
 /-- A linearly independent family of as many characters as labels is a
 complete, duplicate-free classification. -/
 theorem characters_bijective (hlin : LinearIndependent ℂ (fun y => (columns y).value)) :
-    Function.Bijective columns := by
-  classical
-  refine ⟨fun _ _ h ↦ hlin.injective (congrArg Character.value h), fun χ ↦ ?_⟩
-  let b := basisOfPiSpaceOfLinearIndependent hlin
-  exact (characters_exhausted N columns b
-    (fun y ↦ congrFun (coe_basisOfPiSpaceOfLinearIndependent hlin) y) χ).imp fun _ h ↦ h.symm
+    Function.Bijective columns :=
+  ⟨fun _ _ h ↦ hlin.injective (congrArg Character.value h), fun χ ↦
+    (characters_exhausted N columns (basisOfPiSpaceOfLinearIndependent hlin)
+      (fun y ↦ congrFun (coe_basisOfPiSpaceOfLinearIndependent hlin) y) χ).imp fun _ h ↦ h.symm⟩
 
 /-- Normalized columns satisfy the fusion-character equations. -/
 abbrev HasVerlindeFormula {ι : Type*} [Fintype ι] {K : Type*} [DivisionSemiring K]
@@ -187,9 +189,8 @@ include hd in
 /-- Nonzero normalized columns of an invertible matrix are distinct. -/
 theorem normalized_columns_injective (hdet : S.det ≠ 0) :
     Function.Injective (fun j i ↦ S i j / dimension j) := fun a b h ↦
-  (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply
-    (dimension b) (dimension a) a b (hd b) (funext fun x ↦ by
-      simpa [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
+  (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply _ _ a b (hd b)
+    (funext fun x ↦ by simpa [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
 
 include hd in
 /-- The normalized S columns are linearly independent. The proof constructs an
