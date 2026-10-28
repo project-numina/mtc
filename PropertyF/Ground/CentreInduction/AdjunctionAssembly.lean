@@ -46,8 +46,8 @@ variable {A B U V M N : D}
 middle factor. -/
 @[reassoc]
 theorem tensor_middle_natural (a : A ⟶ B) (d : U ⟶ V) (f : M ⟶ N) :
-    (((𝟙 A ⊗ₘ f) ⊗ₘ 𝟙 U)) ≫ ((a ⊗ₘ 𝟙 N) ⊗ₘ d) =
-      ((a ⊗ₘ 𝟙 M) ⊗ₘ d) ≫ (((𝟙 B ⊗ₘ f) ⊗ₘ 𝟙 V)) := by
+    ((𝟙 A ⊗ₘ f) ⊗ₘ 𝟙 U) ≫ ((a ⊗ₘ 𝟙 N) ⊗ₘ d) =
+      ((a ⊗ₘ 𝟙 M) ⊗ₘ d) ≫ ((𝟙 B ⊗ₘ f) ⊗ₘ 𝟙 V) := by
   simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
 
 set_option backward.isDefEq.respectTransparency false in

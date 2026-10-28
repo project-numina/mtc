@@ -11,7 +11,7 @@ an induced object then gives finite semisimple decompositions and a fusion struc
 -/
 
 section
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
@@ -78,8 +78,8 @@ theorem simple_mono_induced_simple [Simple X] :
     (fun _ ↦ IsFusionCategory.hom_finite _ _)
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
   let : Simple (Sᶜ i) := simples_simple C i
-  obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp
-    (show 0 < Module.finrank ℂ (X.1 ⟶ Sᶜ i) from by
+  obtain ⟨g, hg⟩ := finrank_pos_iff_exists_ne_zero.mp
+    (show 0 < finrank ℂ (X.1 ⟶ Sᶜ i) from by
       simpa only [finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
   let e := homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj) (induction C)
     (actualAdjunction C) X (Sᶜ i)
@@ -105,7 +105,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem finite_simple_subobject_labels (W : 𝒵) :
     ∃ L : List (𝒵), ∀ S : 𝒵, Simple S →
       (∃ t : S ⟶ W, Mono t) → ∃ T ∈ L, Nonempty (S ≅ T) := by
-  induction W using (measure fun Z : 𝒵 ↦ Module.finrank ℂ (Z.1 ⟶ Z.1)).wf.induction with
+  induction W using (measure fun Z : 𝒵 ↦ finrank ℂ (Z.1 ⟶ Z.1)).wf.induction with
   | h W ih =>
     by_cases hw : IsZero W
     · refine ⟨[], fun S hS ⟨t, ht⟩ => ?_⟩
