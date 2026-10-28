@@ -153,7 +153,6 @@ theorem center_positive_spherical_of_compatible_pivotal
     (center_pivotalDimension_forget C (hcompat _)).trans <|
       (pivotalDimension_eq_fp hsimple _).trans <| congrArg (fun x : ℝ => (x : ℂ)) <|
         (Integrate.center_forget_fpDimension C _).trans (fpDimension_simple i)
-  ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i =>
-    (congrArg star (hd i)).trans ((Complex.conj_ofReal _).trans (hd i).symm)), hd⟩
+  ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i ↦ by simp [hd i]), hd⟩
 
 end PropertyF.Ground.CentreInduction

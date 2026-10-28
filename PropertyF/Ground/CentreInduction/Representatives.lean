@@ -1,6 +1,7 @@
 module
 public import Mathlib.CategoryTheory.Abelian.Exact
 public import Mathlib.CategoryTheory.Simple
+public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.CategoryTheory.Linear.Basic
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
@@ -156,6 +157,19 @@ theorem simple_representatives_of_finite_cover [HasZeroMorphisms D]
     refine ⟨e q, ?_⟩
     simpa [S] using (show Nonempty (X ≅ (Quotient.out q).1) from
       ⟨iso ≪≫ Classical.choice (Quotient.exact (Quotient.out_eq q).symm)⟩)
+
+/-- A simple object with a nonzero map into a finite sum of simples is a summand. -/
+theorem simple_iso_biproduct_summand [Preadditive D] [HasKernels D] [HasFiniteBiproducts D]
+    {ι : Type*} [Fintype ι] {V : ι → D} (hV : ∀ i, Simple (V i))
+    {Z : D} [Simple Z] (f : Z ⟶ ⨁ V) (hf : f ≠ 0) :
+    ∃ i, Nonempty (Z ≅ V i) := by
+  obtain ⟨i, hi⟩ : ∃ i, f ≫ biproduct.π V i ≠ 0 := by
+    by_contra! h
+    apply hf
+    exact biproduct.hom_ext _ _ fun i => by simpa only [zero_comp] using h i
+  let : Simple (V i) := hV i
+  let : IsIso (f ≫ biproduct.π V i) := isIso_of_hom_simple hi
+  exact ⟨i, ⟨asIso (f ≫ biproduct.π V i)⟩⟩
 
 /-- Group finitely many objects by chosen representative labels. -/
 theorem regroup_biproduct [Preadditive D]

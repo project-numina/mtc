@@ -71,17 +71,16 @@ theorem center_artinian : IsArtinianObject X :=
   ⟨(centerUnderlyingRangeEmbedding X).wellFoundedLT⟩
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Every simple centre object embeds in an induced base simple. -/
-theorem simple_mono_induced_simple [Simple X] :
-    ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), Mono f := by
+/-- Every simple centre object has a nonzero map to an induced base simple. -/
+theorem simple_hom_induced_simple [Simple X] :
+    ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), f ≠ 0 := by
   obtain ⟨i, hi⟩ := exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
     (fun _ ↦ inferInstance)
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
   let : FiniteDimensional ℂ (X ⟶ (induction C).obj (Sᶜ i)) := Centre.finiteDimensional_hom ℂ _ _
-  obtain ⟨g, hg⟩ := finrank_pos_iff_exists_ne_zero.mp
+  exact ⟨i, finrank_pos_iff_exists_ne_zero.mp
     (show 0 < finrank ℂ (X ⟶ (induction C).obj (Sᶜ i)) from by
-      simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
-  exact ⟨i, g, mono_of_nonzero_from_simple hg⟩
+      simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)⟩
 
 end PropertyF.Ground.CentreInduction
 
@@ -142,19 +141,13 @@ theorem finite_simple_labels {U : 𝒵}
   let labels := (Finset.univ.biUnion fun i => Finset.univ.image (V i)).filter Simple
   refine ⟨labels, fun _ h => (Finset.mem_filter.mp h).2, fun Z hZ => ?_⟩
   let : Simple Z := hZ
-  obtain ⟨i, t, ht⟩ := simple_mono_induced_simple Z
-  let : Mono t := ht
+  obtain ⟨i, t, ht⟩ := simple_hom_induced_simple Z
   let g := t ≫ (hIso i).some.hom
-  have hg : g ≠ 0 := mono_ne_zero_of_id_ne_zero g (id_nonzero Z)
-  obtain ⟨j, hj⟩ : ∃ j, g ≫ biproduct.π (V i) j ≠ 0 := by
-    by_contra! h
-    apply hg
-    exact biproduct.hom_ext _ _ fun j => by simpa only [zero_comp] using h j
-  let : Simple (V i j) := hV i j
-  let : IsIso (g ≫ biproduct.π (V i) j) := isIso_of_hom_simple hj
+  have hg : g ≠ 0 := fun h => ht (zero_of_comp_mono _ h)
+  obtain ⟨j, e⟩ := simple_iso_biproduct_summand (hV i) g hg
   exact ⟨V i j, Finset.mem_filter.mpr ⟨Finset.mem_biUnion.mpr
     ⟨i, Finset.mem_univ _, Finset.mem_image.mpr ⟨j, Finset.mem_univ _, rfl⟩⟩,
-    hV i j⟩, ⟨asIso (g ≫ biproduct.π (V i) j)⟩⟩
+    hV i j⟩, e⟩
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract {U : 𝒵}
