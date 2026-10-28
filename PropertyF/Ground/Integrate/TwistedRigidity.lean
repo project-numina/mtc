@@ -197,18 +197,20 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 
+variable (Z : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj))
+local notation "𝒇" => fpSimple Z
+local notation "𝒮" => Modular.categoricalS Z p
+
 set_option backward.isDefEq.respectTransparency false in
 /-- For a positive pivotal category, all the dimension and scalar-twist
 premises of categorical rigidity follow from actual fusion data and the
 proved overlap trace recurrence. -/
-theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := Z.Obj))
-    (hdim : Modular.HasFPSimpleDimensions Z p)
+theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
     (σ : ℂ ≃+* ℂ) (y : Fin (rank Z))
     (hF : ObjectPropertyF (simples Z y)) (d : ℝ)
-    (hσ : σ (fpSimple Z y : ℂ) = (d : ℂ))
-    (hS : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y) :
-    fpSimple Z y = |d| := by
+    (hσ : σ (𝒇 y : ℂ) = (d : ℂ))
+    (hS : σ (𝒮 y y) = (d : ℂ) * 𝒇 y) :
+    𝒇 y = |d| := by
   let D := ScalarTwist.category Z σ
   let q := ScalarTwist.pivotal Z σ p
   let X : D.Obj := simples Z y
@@ -216,20 +218,20 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
   obtain ⟨original, transformed, hpos, htrans, hqdim⟩ :=
     ScalarTwist.exists_galois_fp_dimensions Z σ p hdim
   have hd : d ≠ 0 := fun hz ↦ (map_ne_zero σ).2
-    (show (fpSimple Z y : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (fpSimple_pos Z y)))
+    (show (𝒇 y : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (fpSimple_pos Z y)))
     (by simpa [hz] using hσ)
   have hXdim : Dimensions.pivotalDimension D q X = (d : ℂ) := by
     rw [ScalarTwist.pivotalDimension_twist, Dimensions.pivotalDimension, unitScalar_eq_equiv]
     change σ (Modular.simpleDimension Z p y) = _
     rw [hdim, hσ]
-  have hXfp : fpDimension D X = fpSimple Z y :=
+  have hXfp : fpDimension D X = 𝒇 y :=
     (ScalarTwist.fpDimension_twist Z σ _).trans (fpDimension_simple Z y)
   have hXS : Ground.unitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
-      (d : ℂ) * fpSimple Z y := by
+      (d : ℂ) * 𝒇 y := by
     rw [ScalarTwist.rightTrace_twist Z σ p]
     exact hS
   apply actual_rigidity_of_overlap_and_galois_dimensions D q X original transformed σ
-    hpos htrans hqdim d (fpSimple Z y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
+    hpos htrans hqdim d (𝒇 y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
   exact Calculus.overlap_trace_power D q
 
 end PropertyF.Ground
