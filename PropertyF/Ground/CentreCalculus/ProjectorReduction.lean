@@ -118,7 +118,9 @@ theorem alternatingProjector_scalar_trace (C : BraidedFusionCategory.{v,u})
       ⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
         ∑ σ : Equiv.Perm (Fin n),
           (Centre.permutationSign ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
-    rw [Centre.alternatingProjector_eq_sum]
+    rw [Centre.alternatingProjector, Centre.algebraAverage_eq_sum]
+    change p.rightTrace ((⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
+      ∑ σ : Equiv.Perm (Fin n), (Centre.permutationSign ℂ n σ : ℂ) • ρ σ).asHom) = _
     simp only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul]
     congr 1
     have h := map_sum (Dimensions.rightTraceLinear p X)
