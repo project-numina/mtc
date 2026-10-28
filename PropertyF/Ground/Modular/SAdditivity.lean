@@ -74,8 +74,7 @@ abbrev HasHopfProduct : Prop :=
 /-- The categorical Hopf-link product identity implies the Verlinde character
 equations once tensor products are decomposed into their simple summands. -/
 theorem categoricalS_verlinde_of_hopf_product (hopf : HasHopfProduct D p) :
-    HasVerlindeFormula ⟨unitIndex D, fusionCoeff D⟩ (Sₚ) (dₚ) := by
-  intro i j k
+    HasVerlindeFormula ⟨unitIndex D, fusionCoeff D⟩ (Sₚ) (dₚ) := fun i j k ↦ by
   have hk := hopf i j k
   rw [SEntry_tensor_decomposition] at hk
   simp_rw [← mul_div_assoc, ← Finset.sum_div]

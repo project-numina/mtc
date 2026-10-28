@@ -123,14 +123,12 @@ variable (columns : ι → Character N)
 theorem basis_eigenvalue_eq {K V : Type*} [CommSemiring K] [IsDomain K] [AddCommMonoid V] [Module K V]
     (b : Basis ι K V) (T : V →ₗ[K] V) (vals : ι → K) (v : V) (μ : K)
     (hb : ∀ j, T (b j) = vals j • b j) (hv : T v = μ • v)
-    (i : ι) (hi : b.equivFun v i ≠ 0) : μ = vals i := by
+    (i : ι) (hi : b.equivFun v i ≠ 0) : μ = vals i :=
   have hc : b.equivFun (T v) i = vals i * b.equivFun v i := by
     conv_lhs => rw [← b.sum_equivFun v]
     simp only [map_sum, map_smul, hb]
     simp [Finsupp.single_apply, mul_comm]
-  rw [hv] at hc
-  simp only [map_smul, Pi.smul_apply, smul_eq_mul] at hc
-  exact mul_right_cancel₀ hi hc
+  mul_right_cancel₀ hi (by simpa only [hv, map_smul, Pi.smul_apply, smul_eq_mul] using hc)
 
 /-- A basis consisting of characters classifies every character. -/
 theorem characters_exhausted (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = (columns y).value)
@@ -171,15 +169,13 @@ involution, independently of categorical duality. -/
 theorem dual_involutive {R : Type*} [CommSemiring R]
     {S : Matrix ι ι R} {dual : ι → ι} {D : R}
     (hD : D ≠ 0) (hsym : ∀ x y, S x y = S y x)
-    (hsq : HasSSquare S dual D) : Function.Involutive dual := by
-  intro y
-  have hsym_sq : (∑ z, S (dual y) z * S z y) =
-      ∑ z, S y z * S z (dual y) := by
-    simp_rw [hsym (dual y), hsym _ y, mul_comm]
-  by_contra hn
-  apply hD
-  simpa only [ite_eq_left rfl, ite_true, hsym_sq, hsq, ite_eq_right (Ne.symm hn)] using
-    (hsq (dual y) y).symm
+    (hsq : HasSSquare S dual D) : Function.Involutive dual :=
+  fun y ↦ Classical.byContradiction fun hn ↦ hD (by
+    have hsym_sq : (∑ z, S (dual y) z * S z y) =
+        ∑ z, S y z * S z (dual y) := by
+      simp_rw [hsym (dual y), hsym _ y, mul_comm]
+    simpa only [ite_eq_left rfl, ite_true, hsym_sq, hsq, ite_eq_right (Ne.symm hn)] using
+      (hsq (dual y) y).symm)
 
 section NormalizedColumns
 variable {K : Type*} [Field K] {S : Matrix ι ι K} {dimension : ι → K}
