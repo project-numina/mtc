@@ -22,12 +22,12 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
-  (hdim : HasFPSimpleDimensions C p)
+  (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
 
 include hdim in
 /-- Equality of positive simple dimensions and FP dimensions extends to every
 object, including zero objects and the images of split idempotents. -/
-theorem pivotalDimension_eq_fpDimension {X : C.Obj} : pivotalDimension C p X = (fpDimension C X : ℂ) := by
+theorem pivotalDimension_eq_fpDimension : pivotalDimension C p X = (fpDimension C X : ℂ) := by
   simpa [fpDimension, ← hdim, Modular.simpleDimension, pivotalDimension, unitScalar_eq_equiv] using
     pivotalDimension_decomposition C p X
 
@@ -43,7 +43,7 @@ abbrev HasFallingFactorialDimensions {A R : Type*} [CommRing R] (d : R) (dim : A
 actual object up to a positive scalar at every degree, the dimension is an
 integer. The remaining categorical task is to construct those objects and
 establish their dimensions using alternating projectors. -/
-theorem integral_of_exterior_dimensions {X : C.Obj}
+theorem integral_of_exterior_dimensions
     (hExterior : HasFallingFactorialDimensions (fpDimension C X) (fpDimension C)) :
     IsFPIntegral C X :=
   Centre.integral_of_nonnegative_falling_factorials (fpDimension_nonneg C X) fun n ↦
@@ -53,7 +53,7 @@ theorem integral_of_exterior_dimensions {X : C.Obj}
 include hdim in
 /-- The same reduction stated using actual pivotal dimensions, so that a
 split alternating projector can supply the witnesses. -/
-theorem integral_of_pivotal_exterior_dimensions {X : C.Obj}
+theorem integral_of_pivotal_exterior_dimensions
     (hExterior : HasFallingFactorialDimensions (fpDimension C X : ℂ) (pivotalDimension C p)) :
     IsFPIntegral C X :=
   integral_of_exterior_dimensions fun n ↦
@@ -70,7 +70,7 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
-  (hdim : HasFPSimpleDimensions C p)
+  (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
 
 /-- The symmetric-group order is invertible over the complex numbers. -/
 @[instance_reducible] def permutationCardInvertible (n : ℕ) :
@@ -80,7 +80,7 @@ variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
 include hdim in
 /-- A trace formula for actual alternating projectors implies integrality. The
 existence of the permutation action and the trace formula remain explicit. -/
-theorem integral_of_alternating_projector_trace {X : C.Obj}
+theorem integral_of_alternating_projector_trace
     (hTrace : ∀ n : ℕ, ∃ ρ : Equiv.Perm (Fin n) →* End (tensorPower X n),
       letI := permutationCardInvertible n
       (Nat.factorial n : ℂ) * unitScalar C
@@ -93,7 +93,7 @@ theorem integral_of_alternating_projector_trace {X : C.Obj}
     let ⟨Y, hY⟩ := Centre.alternatingProjector_trace ρ p
     ⟨Y, (congrArg (fun t ↦ (Nat.factorial n : ℂ) * unitScalar C t) hY.symm).trans hρ⟩
 
-variable {X : C.Obj} {n : ℕ} (ρ : Equiv.Perm (Fin n) →* End X)
+variable {n : ℕ} (ρ : Equiv.Perm (Fin n) →* End X)
 
 /-- The trace of an alternating projector is the signed average of traces. -/
 theorem rightTrace_alternatingProjector :
@@ -131,7 +131,7 @@ include hdim in
 /-- It suffices to evaluate the unnormalized signed trace sum for each
 permutation action. The existence and evaluation of these actions are still
 explicit hypotheses. -/
-theorem integral_of_signed_permutation_traces {X : C.Obj}
+theorem integral_of_signed_permutation_traces
     (hTrace : ∀ n : ℕ, ∃ ρ : Equiv.Perm (Fin n) →* End (tensorPower X n),
       (∑ σ : Equiv.Perm (Fin n), (permutationSign ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom)) =
