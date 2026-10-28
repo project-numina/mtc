@@ -26,6 +26,18 @@ open PropertyF.Ground.Dimensions
 
 namespace PropertyF.Ground.Modular
 
+/-- Verlinde's character equations give a fusion expansion for S-entry products. -/
+theorem fusion_character_product {ι K : Type*} [Fintype ι] [Field K]
+    {N : FusionRules ι} {S : Matrix ι ι K} {d : ι → K}
+    (hsym : ∀ x y, S x y = S y x) (hd : ∀ z, d z ≠ 0)
+    (hVerlinde : HasVerlindeFormula N S d) (x y z : ι) :
+    S x z * S z y = ∑ k, (N.coeff x y k : K) * (d z * S k z) := by
+  rw [hsym z y]
+  have h := hVerlinde x y z
+  simp_rw [← mul_div_assoc, ← Finset.sum_div] at h
+  field_simp [hd z] at h
+  simpa only [Finset.sum_mul, Finset.mul_sum, mul_left_comm, mul_comm, mul_assoc] using h
+
 /-- Complex automorphisms act on normalized S-matrix columns. -/
 abbrev IsGaloisColumnAction {ι : Type*} (S : Matrix ι ι ℂ) (d : ι → ℂ)
     (act : (ℂ ≃+* ℂ) →* Equiv.Perm ι) : Prop :=
@@ -254,6 +266,16 @@ theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X 
     simpa [t, Category.assoc] using doubleBraiding_tensor_factorization Z X Y
   rw [hfactor, rightPartialTrace_natural, Calculus.rightPartialTrace_whiskerLeft]
 
+/-- A scalar partial monodromy factors out of the tensor-product partial trace. -/
+theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) (Z X Y : C) (s : ℂ)
+    (hs : partialMonodromy p Z Y = s • 1) :
+    rightPartialTrace p (Z ⊗ X) Y
+      (End.of ((α_ Z X Y).hom ≫ doubleBraiding Z (X ⊗ Y) ≫ (α_ Z X Y).inv)) =
+    s • End.of (doubleBraiding Z X) := by
+  rw [partialTrace_doubleBraiding_factor, hs]
+  apply End.ext
+  simp [doubleBraiding]
+
 end MonodromyTrace
 
 /-- Double-braiding partial traces multiply on a simple surviving strand. -/
@@ -274,15 +296,10 @@ theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,
       rightPartialTrace p Z Y (End.of (doubleBraiding Z Y))
   rw [rightPartialTrace_nested_simple p (Ground.unitScalarEquiv D) Z X Y
     (simpleDimension_ne_zero D p k) f]
-  rw [partialTrace_doubleBraiding_factor]
-  change rightPartialTrace p Z Y (End.of (doubleBraiding Z Y)) = s • 1 at hs
-  dsimp only [partialMonodromy]
+  rw [partialTrace_doubleBraiding_scalar p Z X Y s hs, map_smul]
+  change s • rightPartialTrace p Z X (End.of (doubleBraiding Z X)) =
+    rightPartialTrace p Z X (End.of (doubleBraiding Z X)) * partialMonodromy p Z Y
   rw [hs]
-  have he : End.of ((β_ Z X).hom ≫ (X ◁ (s • (1 : End Z)).asHom) ≫ (β_ X Z).hom) =
-      s • End.of (doubleBraiding Z X) := by
-    apply End.ext
-    simp [doubleBraiding]
-  rw [he, map_smul]
   simp
 
 
