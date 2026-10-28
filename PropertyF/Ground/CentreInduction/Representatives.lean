@@ -76,9 +76,8 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
       let K := cokernel f
       let e : Z ≅ S ⊞ K := split.isoBinaryBiproduct
       have hk : m K < m Z := by
-        change Module.finrank k (K ⟶ K) < Module.finrank k (Z ⟶ Z)
-        rw [(CategoryTheory.Linear.homCongr k e e).finrank_eq]
-        exact finrank_end_complement_lt _ K (Simple.not_isZero _)
+        simpa only [m, (CategoryTheory.Linear.homCongr k e e).finrank_eq] using
+          finrank_end_complement_lt (k := k) S K (Simple.not_isZero S)
       exact .cons hS (ih K hk) ⟨e⟩
 
 end PropertyF.Ground.CentreInduction
@@ -101,14 +100,12 @@ def biprodOptionIso {ι : Type} [Fintype ι] (S : D) (V : ι → D) :
   let W : Option ι → D := fun o => o.elim S V
   refine { hom := biprod.desc (biproduct.ι W none)
               (biproduct.desc fun i => biproduct.ι W (some i))
-           inv := biproduct.desc (fun o => ?_)
+           inv := biproduct.desc (fun o => Option.rec (motive := fun o => W o ⟶ S ⊞ ⨁ V)
+             biprod.inl (fun i => biproduct.ι V i ≫ biprod.inr) o)
            hom_inv_id := ?_
            inv_hom_id := ?_ }
-  · cases o with
-    | none => exact biprod.inl
-    | some i => exact biproduct.ι V i ≫ biprod.inr
   · apply biprod.hom_ext'
-    · simp
+    · simp [W]
     · apply biproduct.hom_ext'
       intro i
       simp
@@ -134,11 +131,7 @@ theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum D X) :
     let W : Option (Fin n) → D := fun i => i.elim S V
     let W' : Fin (n + 1) → D := fun i => W (finSuccEquiv n i)
     refine ⟨n + 1, W', ?_, ?_⟩
-    · intro i
-      change Simple (W (finSuccEquiv n i))
-      cases h : finSuccEquiv n i with
-      | none => exact hs
-      | some j => exact hv j
+    · exact fun i => Option.rec (motive := fun o => Simple (W o)) hs hv (finSuccEquiv n i)
     · let ei : Option (Fin n) ≃ Fin (n + 1) := (finSuccEquiv n).symm
       let er : (⨁ W) ≅ ⨁ W' := biproduct.whiskerEquiv ei (fun i => eqToIso (by simp [W', ei]))
       exact ⟨eX ≪≫ biprod.mapIso (Iso.refl S) e ≪≫ biprodOptionIso S V ≪≫ er⟩
@@ -182,13 +175,10 @@ theorem simple_representatives_of_finite_cover [HasZeroMorphisms D]
       Quotient.mk R (Quotient.out (e.symm j)))
   · intro X hX
     obtain ⟨T, hT, ⟨iso⟩⟩ := hc X hX
-    let t : A := ⟨T, hT⟩
-    let q : Q := Quotient.mk R t
-    have hq : R t (Quotient.out q) := Quotient.exact (Quotient.out_eq q).symm
-    change Nonempty (T ≅ (Quotient.out q).1) at hq
+    let q : Q := Quotient.mk R ⟨T, hT⟩
     refine ⟨e q, ?_⟩
     simpa [S] using (show Nonempty (X ≅ (Quotient.out q).1) from
-      ⟨iso ≪≫ Classical.choice hq⟩)
+      ⟨iso ≪≫ Classical.choice (Quotient.exact (Quotient.out_eq q).symm)⟩)
 
 /-- Group finitely many objects by chosen representative labels. -/
 theorem regroup_biproduct [Preadditive D]
@@ -201,9 +191,7 @@ theorem regroup_biproduct [Preadditive D]
   let e (i : Fin n) : fiber i ≃ Fin (m i) := Fintype.equivFin (fiber i)
   let E : (Σ i, Fin (m i)) ≃ Fin k :=
     (Equiv.sigmaCongrRight (fun i => (e i).symm)).trans (Equiv.sigmaFiberEquiv idx)
-  have hE (p : Σ i, Fin (m i)) : idx (E p) = p.1 := by
-    change idx ((e p.1).symm p.2).1 = p.1
-    exact ((e p.1).symm p.2).2
+  have hE (p : Σ i, Fin (m i)) : idx (E p) = p.1 := ((e p.1).symm p.2).2
   exact ⟨m, ⟨(biproduct.whiskerEquiv E fun p =>
     Classical.choice (by simpa only [hE] using hIso (E p))).symm⟩⟩
 

@@ -31,8 +31,7 @@ theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
   apply (cancel_mono (T ◁ q.f)).1
   simp only [Category.assoc, ← whiskerLeft_comp, hg]
-  rw [← q.comm T, ← comp_whiskerRight_assoc, hg]
-  exact p.comm T
+  rw [← q.comm T, ← comp_whiskerRight_assoc, hg, p.comm]
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
 def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : Center D) (P : Subobject X) :

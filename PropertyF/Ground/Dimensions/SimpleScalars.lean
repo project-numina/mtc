@@ -184,11 +184,9 @@ def simpleInclusion (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 
 /-- Morphisms are determined by their restrictions to the chosen simple summands. -/
 theorem simpleInclusion_hom_ext {X Y : C.Obj} {f g : X ⟶ Y}
-    (h : ∀ i t, simpleInclusion C X i t ≫ f = simpleInclusion C X i t ≫ g) : f = g := by
-  apply (cancel_epi (simpleDecomposition C X).inv).1
-  apply biproduct.hom_ext'
-  intro a
-  simpa [simpleInclusion, Category.assoc] using h a.1 a.2
+    (h : ∀ i t, simpleInclusion C X i t ≫ f = simpleInclusion C X i t ≫ g) : f = g :=
+  (cancel_epi (simpleDecomposition C X).inv).1 (biproduct.hom_ext' _ _ fun a ↦ by
+    simpa [simpleInclusion, Category.assoc] using h a.1 a.2)
 
 /-- On each object, scalar multiplication on simple summands, transported
 through a chosen semisimple decomposition. -/
