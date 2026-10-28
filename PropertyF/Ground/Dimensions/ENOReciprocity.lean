@@ -22,56 +22,6 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-/-- Eigenvalues on a common eigenvector for a real matrix and its transpose
-are complex conjugates. -/
-theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
-    (A : Matrix ι ι ℂ) (hA : ∀ i j, star (A i j) = A i j)
-    (v : ι → ℂ) (hv : v ≠ 0) (z w : ℂ)
-    (h : A *ᵥ v = z • v) (ht : Aᵀ *ᵥ v = w • v) : star w = z := by
-  have hAt : Aᵀᴴ = A := by
-    ext i j
-    simp [Matrix.conjTranspose_apply, hA]
-  have hs : (star v) ᵥ* A = (star w) • (star v) := by
-    have hh := congrArg star ht
-    rw [Matrix.star_mulVec, hAt] at hh
-    simpa using hh
-  have hn : star v ⬝ᵥ v ≠ 0 := by
-    intro hz
-    exact hv (dotProduct_star_self_eq_zero.mp hz)
-  have heq : z * (star v ⬝ᵥ v) = (star w) * (star v ⬝ᵥ v) := by
-    calc
-      _ = star v ⬝ᵥ (A *ᵥ v) := by rw [h, dotProduct_smul]; rfl
-      _ = (star v ᵥ* A) ⬝ᵥ v := Matrix.dotProduct_mulVec _ _ _
-      _ = _ := by rw [hs, smul_dotProduct]; rfl
-  exact (mul_right_cancel₀ hn heq).symm
-
-/-- Every nonzero fusion character takes complex-conjugate values on dual
-simple objects, with no pivotal or spherical hypothesis. -/
-theorem fusion_character_dual_eq_conj
-    (χ : Fin (rank C) → ℂ) (i₀ : Fin (rank C)) (hχ : χ i₀ ≠ 0)
-    (hchar : ∀ i j, χ i * χ j = ∑ k, (Ground.fusionCoeff C i j k : ℂ) * χ k)
-    (i : Fin (rank C)) : χ (Ground.dualIndex C i) = star (χ i) := by
-  classical
-  let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
-    fun j k => (Ground.fusionCoeff C i j k : ℂ)
-  have hv : χ ≠ 0 := by
-    intro hz
-    apply hχ
-    exact congrFun hz i₀
-  have h : A *ᵥ χ = χ i • χ := by
-    ext j
-    change (∑ k, (Ground.fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
-    exact (hchar i j).symm
-  have ht : Aᵀ *ᵥ χ = χ (Ground.dualIndex C i) • χ := by
-    ext j
-    change (∑ k, (Ground.fusionCoeff C i k j : ℂ) * χ k) =
-      χ (Ground.dualIndex C i) * χ j
-    simp_rw [Ground.fusionCoeff_dual_transpose C i]
-    exact (hchar (Ground.dualIndex C i) j).symm
-  have heq := conjugate_of_transpose_eigenvector A (by intro j k; simp [A]) χ hv
-    (χ i) (χ (Ground.dualIndex C i)) h ht
-  simpa using (congrArg star heq)
-
 /-- Simple pivotal dimensions on duals are conjugate, for any pivotal
 structure on a genuine braided fusion category. -/
 theorem pivotalDimension_dual_eq_conj
@@ -79,7 +29,7 @@ theorem pivotalDimension_dual_eq_conj
     pivotalDimension C p (simples C (Ground.dualIndex C i)) =
       star (pivotalDimension C p (simples C i)) := by
   apply fusion_character_dual_eq_conj C
-    (fun j => pivotalDimension C p (simples C j)) (unitIndex C)
+    (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
   · obtain ⟨e⟩ := Ground.unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit]
     exact one_ne_zero
@@ -92,7 +42,7 @@ theorem galois_pivotalDimension_dual_eq_conj
     σ (pivotalDimension C p (simples C (Ground.dualIndex C i))) =
       star (σ (pivotalDimension C p (simples C i))) := by
   apply fusion_character_dual_eq_conj C
-    (fun j => σ (pivotalDimension C p (simples C j))) (unitIndex C)
+    (χ := fun j => σ (pivotalDimension C p (simples C j))) (i₀ := unitIndex C)
   · obtain ⟨e⟩ := Ground.unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit, map_one]
     exact one_ne_zero
@@ -295,12 +245,9 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 /-- A phase-twisted natural root becomes pivotal when its scaled multiplicity
-operators are identities and the double-dual tensorator is natural. -/
+operators are identities. -/
 def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
     (hdef : ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1)
     (hunit : ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom =
       (doubleDualUnitIso (C := C.Obj)).hom) : PivotalStructure (C := C.Obj) where
@@ -311,7 +258,7 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
       ((rootSignTwist C c hc).app X).hom ≫ ((fᘁ)ᘁ) at h
     exact h
   tensor X Y := by
-    apply doubleDualTensor_extension C (rootSignTwist C c hc) hnat
+    apply doubleDualTensor_extension C (rootSignTwist C c hc)
     intro i j
     exact congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C c hc (hdef i j))
   unit := hunit
@@ -319,15 +266,12 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhasePivotal_dimension
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
     (hdef : ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1)
     (hunit : ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom =
       (doubleDualUnitIso (C := C.Obj)).hom) (i : Fin (rank C)) :
-    pivotalDimension C (rootPhasePivotal C c hc hnat hdef hunit) (simples C i) =
+    pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
       c i * rootDimension C i := by
-  have ht : (rootPhasePivotal C c hc hnat hdef hunit).rightTrace (𝟙 (simples C i)) =
+  have ht : (rootPhasePivotal C c hc hdef hunit).rightTrace (𝟙 (simples C i)) =
       c i • rootTrace C (𝟙 (simples C i)) := by
     apply End.homEquiv.injective
     have h := rootSignTwist_app_simple C c hc i
@@ -339,18 +283,14 @@ theorem rootPhasePivotal_dimension
 
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/
-theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
+theorem positive_spherical_of_matrix_identities
     (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
     (hnorm : ∀ i, squaredNorm C (simples C i) =
       ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
+    HasFPSphericalStructure C := by
   classical
   have hsat := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
   let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
@@ -401,7 +341,7 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
     rw [hvalue, Ground.fpSimple_unit]
     norm_num
   let unitProof := rootSignTwist_unit_of_simple_dimension C c hc hu
-  let p := rootPhasePivotal C c hc hnat hdef unitProof
+  let p := rootPhasePivotal C c hc hdef unitProof
   have hp : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     intro i
     rw [rootPhasePivotal_dimension, hvalue]
@@ -468,7 +408,7 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
           _ = _ := by ring
       _ = ε * (rootDimension C (Ground.dualIndex C i) * rootDimension C j) := by rw [he]
       _ = _ := by ring
-  have hc := conjugate_of_transpose_eigenvector A hA d hv (d i) (ε * d (Ground.dualIndex C i)) h ht
+  have hc := conjugate_of_transpose_eigenvector A hA hv h ht
   have hc' := congrArg star hc
   simp only [star_mul, star_star, hεstar] at hc'
   calc
@@ -477,7 +417,7 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     _ = ε * star (d i) := by rw [hc']
 
 /-- ENO's trace reciprocity proves the intrinsic root-norm identity. -/
-theorem squaredNorm_eq_rootDimension_norm_sq_of_trace_reciprocity
+theorem squaredNorm_eq_root_norm_sq_of_reciprocity
     (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
