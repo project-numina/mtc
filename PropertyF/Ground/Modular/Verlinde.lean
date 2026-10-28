@@ -1,4 +1,5 @@
 module
+public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Fusion.SpectralIntegral
@@ -173,8 +174,8 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 /-- The dimension of the simple representative of the tensor unit is one. -/
 theorem simpleDimension_unit (C : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) : simpleDimension C p (unitIndex C) = 1 :=
-  (unitIndex_iso C).elim fun e ↦ by
-    simp only [simpleDimension, p.rightTrace_id_iso e, Dimensions.rightTrace_unit, map_one]
+  by simpa only [simpleDimension, ← Ground.unitScalar_eq_equiv, Dimensions.pivotalDimension] using
+    Dimensions.pivotalDimension_unitIndex C p
 
 end PropertyF.Ground.Modular
 end

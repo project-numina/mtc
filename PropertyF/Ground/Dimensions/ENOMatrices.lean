@@ -67,9 +67,8 @@ def rootTraceLinear (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Naturality of the square root makes its trace cyclic. -/
 theorem rootTrace_cyclic {X Y : C.Obj}
-    (f : X ⟶ Y) (g : Y ⟶ X) : rootTrace C (f ≫ g) = rootTrace C (g ≫ f) := by
-  apply rightTraceWith_cyclic
-  exact (fourthDualRootNaturalIso C).hom.naturality f
+    (f : X ⟶ Y) (g : Y ⟶ X) : rootTrace C (f ≫ g) = rootTrace C (g ≫ f) :=
+  rightTraceWith_cyclic f g ((fourthDualRootNaturalIso C).hom.naturality f)
 
 /-- The natural-root trace of the identity is invariant under isomorphism. -/
 theorem rootTrace_id_iso {X Y : C.Obj} (e : X ≅ Y) :
@@ -107,15 +106,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rootDimension_ne_zero (i : Fin (rank C)) :
     rootDimension C i ≠ 0 := by
   let : Simple (simples C i) := simples_simple C i
-  have h := rightQuantumTrace_simple_ne_zero C (X := simples C i)
-    ((fourthDualRootNaturalIso C).app (simples C i))
-  intro hz
-  apply h
-  apply (Ground.unitScalarEquiv C).injective
-  have hz' : unitScalar C (rightQuantumTrace
-      ((fourthDualRootNaturalIso C).app (simples C i))) = 0 := by
-    simpa [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def] using hz
-  simpa only [map_zero, ← Ground.unitScalar_eq_equiv] using hz'
+  change unitScalar C (rootTrace C (𝟙 (simples C i))) ≠ 0
+  rw [rootTrace_id, Ground.unitScalar_eq_equiv]
+  exact (Ground.unitScalarEquiv C).toRingEquiv.map_ne_zero_iff.mpr
+    (rightQuantumTrace_simple_ne_zero C (X := simples C i)
+      ((fourthDualRootNaturalIso C).app (simples C i)))
 
 /-- The matrix of traces of the actual natural-root multiplicity defects. -/
 def enoTraceMatrix (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :

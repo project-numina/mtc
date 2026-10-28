@@ -175,9 +175,9 @@ theorem actual_symmetricCore_integrality {C : BraidedFusionCategory.{v,u}}
     [RigidCategory (CategoryTheory.Center C.Obj)]
     [IsFusionCategory (CategoryTheory.Center C.Obj)]
     {p : PivotalStructure (C := (𝒵 C).Obj)}
-    (hfp : IsFPSpherical (𝒵 C) p) :
-    ∀ y ∈ CentreCabling.symmetricCore C, ∃ z : ℤ, Modular.simpleDimension (𝒵 C) p y = z :=
-  fun y hy ↦ selfTransparent_simpleDimension_integer hfp
-    (commonCentralizer_self (simples (𝒵 C) y) hy.1 hy.2)
+    (hfp : IsFPSpherical (𝒵 C) p) {y : CentreCabling.symmetricCore C} :
+    ∃ z : ℤ, Modular.simpleDimension (𝒵 C) p y = z :=
+  selfTransparent_simpleDimension_integer hfp
+    (commonCentralizer_self (simples (𝒵 C) y) y.property.1 y.property.2)
 
 end PropertyF.Ground.CentreCalculus
