@@ -278,15 +278,8 @@ theorem rootPhasePivotal_dimension
       (doubleDualUnitIso (C := C.Obj)).hom) (i : Fin (rank C)) :
     pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
       c i * rootDimension C i := by
-  have ht : (rootPhasePivotal C c hc hdef hunit).rightTrace (𝟙 (simples C i)) =
-      c i • rootTrace C (𝟙 (simples C i)) := by
-    apply End.homEquiv.injective
-    have h := rootSignTwist_app_simple C c hc i
-    change (rootSignTwist C c hc).hom.app (simples C i) = _ at h
-    simp [PivotalStructure.rightTrace, rootPhasePivotal, rootTrace, rightTraceWith, h, tensorHom_def]
-  unfold pivotalDimension rootDimension
-  rw [ht]
-  simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
+  simpa only [pivotalDimension, rightTrace_id, rootPhasePivotal] using
+    rootSignQuantumTrace_simple C c hc i
 
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/

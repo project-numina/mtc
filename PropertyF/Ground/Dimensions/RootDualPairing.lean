@@ -1,52 +1,10 @@
 module
 public import PropertyF.Ground.Dimensions.FourthDualUnit
 
-/-! # The unit and duality pairing for roots
+/-! # Duality pairing for roots
 
-Components of the fourth-dual root interact with the unit and duality coevaluation.
+Components of the fourth-dual root interact with the duality coevaluation.
 -/
-
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
-universe v u
-
-variable (C : BraidedFusionCategory.{v,u})
-set_option backward.isDefEq.respectTransparency false in
-/-- The actual natural fourth-dual root is its unit dimension times the
-canonical double-dual unit map. -/
-theorem fourthDualRoot_unit_component :
-    ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj)).hom =
-      rootDimension C (unitIndex C) • (doubleDualUnitIso (C := C.Obj)).hom := by
-  let U := 𝟙_ C.Obj
-  let : HasRightDual U := RightRigidCategory.rightDual U
-  let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
-  let : Simple U := IsFusionCategory.unit_simple
-  let : FiniteDimensional ℂ (U ⟶ U) := IsFusionCategory.hom_finite _ _
-  let a := (fourthDualRootNaturalIso C).app U
-  let u := doubleDualIso C U
-  obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar u a
-  have htrace : unitScalar C (rightQuantumTrace a) = r := by
-    have ht : rightQuantumTrace a = r • rightQuantumTrace u := by
-      apply End.homEquiv.injective
-      simp [rightQuantumTrace, hr, tensorHom_def]
-    rw [ht]
-    have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
-    rw [hu, rightQuantumTrace_unitIso]
-    simp only [← groundUnitScalarEquiv_apply, map_smul, map_one, smul_eq_mul, mul_one]
-  have hdim : rootDimension C (unitIndex C) = r := by
-    obtain ⟨e⟩ := unitIndex_iso C
-    have hn := (fourthDualRootNaturalIso C).hom.naturality e.hom
-    have ht := rightQuantumTrace_iso
-      ((fourthDualRootNaturalIso C).app (simples C (unitIndex C))) a e
-      (by simpa [doubleDualFunctor, a] using hn)
-    change unitScalar C (rootTrace C (𝟙 (simples C (unitIndex C)))) = r
-    rw [rootTrace_id C, ht, htrace]
-  have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
-  simpa [a, hdim, hu] using hr
-end PropertyF.Ground.Dimensions
-
-end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
