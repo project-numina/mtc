@@ -180,9 +180,8 @@ theorem unit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j) :
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) = 0 := by
   have h := unit_matrix_reduce C X i j
-  have hz := crossing_counit_offdiag C X i j hne
-  dsimp only at h hz
-  rw [hz] at h
+  dsimp only at h
+  rw [crossing_counit_offdiag C X i j hne] at h
   simpa [monoidalComp] using h
 
 set_option backward.isDefEq.respectTransparency false in
@@ -192,26 +191,20 @@ theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) i ≫
     ((simples C i ◁ (underlyingCounit C).app X) ▷ (simples C i)ᘁ) = 𝟙 (V i) := by
   have h := unit_matrix_reduce C X i i
-  have hc := crossing_counit_diagonal C X i
-  dsimp only at h hc
-  rw [hc] at h
+  dsimp only at h
+  rw [crossing_counit_diagonal C X i] at h
   let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   have hb := crossingUnitBlock_eval X (simples C i) e
   change crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
       (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
         (simples C i ◁ (unitSummandIso C X).hom) = _ at hb
   rw [hb] at h
-  have ht : (𝟙 (((simples C i ⊗ X) ⊗ (simples C i)ᘁ)) ⊗≫
-      (((simples C i ⊗ X) ⊗ (simples C i)ᘁ) ◁ η_ (simples C i) ((simples C i)ᘁ)) ⊗≫
-      ((𝟙 ((((simples C i ⊗ X) ⊗ (simples C i)ᘁ) ⊗ simples C i)) ⊗≫
-          ((simples C i ⊗ X) ◁ ε_ (simples C i) ((simples C i)ᘁ)) ⊗≫
-            𝟙 (simples C i ⊗ X)) ▷
-        (simples C i)ᘁ) ⊗≫ 𝟙 (((simples C i ⊗ X) ⊗ (simples C i)ᘁ))) = 𝟙 (((simples C i ⊗ X) ⊗ (simples C i)ᘁ)) := by
-    calc
-      _ = 𝟙 _ ⊗≫ ((simples C i ⊗ X) ◁ (((simples C i)ᘁ ◁ η_ (simples C i) ((simples C i)ᘁ)) ⊗≫
-        (ε_ (simples C i) ((simples C i)ᘁ) ▷ (simples C i)ᘁ))) ⊗≫ 𝟙 _ := by monoidal
-      _ = _ := by rw [coevaluation_evaluation'']; monoidal
-  exact h.trans ht
+  dsimp only [Functor.id_obj] at h ⊢
+  apply h.trans
+  calc
+    _ = 𝟙 _ ⊗≫ ((simples C i ⊗ X) ◁ (((simples C i)ᘁ ◁ η_ (simples C i) ((simples C i)ᘁ)) ⊗≫
+      (ε_ (simples C i) ((simples C i)ᘁ) ▷ (simples C i)ᘁ))) ⊗≫ 𝟙 _ := by monoidal
+    _ = _ := by rw [coevaluation_evaluation'']; monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
