@@ -104,7 +104,6 @@ theorem fourthDualRoot_unit_component :
     ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj)).hom =
       rootDimension C (unitIndex C) • (doubleDualUnitIso (C := C.Obj)).hom := by
   let U := 𝟙_ C.Obj
-  let : HasRightDual U := RightRigidCategory.rightDual U
   let a := (fourthDualRootNaturalIso C).app U
   let u := doubleDualIso C U
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) u a

@@ -25,7 +25,6 @@ theorem rootTensorIso_unit_left :
     (rootTensorIso C (𝟙_ C.Obj) X).hom =
       rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom := by
   let I := 𝟙_ C.Obj
-  let : HasRightDual I := RightRigidCategory.rightDual I
   apply (cancel_mono (rightDualIsoMap (rightDualIsoMap (λ_ X))).hom).1
   change (rootTensorIso C I X).hom ≫ (((λ_ X).homᘁ)ᘁ) =
     (rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (I ⊗ X)).hom) ≫
