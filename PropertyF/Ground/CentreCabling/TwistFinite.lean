@@ -13,7 +13,7 @@ universe v u
 /-- A natural endomorphism of the identity in a fusion category has a common
 finite order as soon as its components on the simple representatives do. -/
 theorem natural_end_finite_order_of_simples
-    (C : Ground.BraidedFusionCategory.{v,u}) (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
+    {C : Ground.BraidedFusionCategory.{v,u}} (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (h : ∀ i, IsOfFinOrder (End.of (α.app (Ground.simples C i)))) :
     ∃ n : ℕ, n ≠ 0 ∧ ∀ X, (End.of (α.app X)) ^ n = 1 := by
   obtain ⟨n, hn, hs⟩ := (IsOfFinOrder.pi h).exists_pow_eq_one
@@ -47,12 +47,12 @@ theorem tensor_end_pow {D : Type u} [Category.{v} D] [MonoidalCategory D]
 finite-order double braidings on every pair of objects. The balancing identity
 is stated explicitly and is not asserted here for the pivotal twist. -/
 theorem mixed_monodromy_finite_of_balanced_finite_twist
-    (C : Ground.BraidedFusionCategory.{v,u}) (θ : 𝟭 C.Obj ≅ 𝟭 C.Obj)
+    {C : Ground.BraidedFusionCategory.{v,u}} (θ : 𝟭 C.Obj ≅ 𝟭 C.Obj)
     (hfinite : ∀ i, IsOfFinOrder (End.of (θ.hom.app (Ground.simples C i))))
     (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
       (θ.hom.app X ⊗ₘ θ.hom.app Y) = θ.hom.app (X ⊗ Y))
     (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) := by
-  obtain ⟨n, hn, hp⟩ := natural_end_finite_order_of_simples C θ.hom hfinite
+  obtain ⟨n, hn, hp⟩ := natural_end_finite_order_of_simples θ.hom hfinite
   let t : End (X ⊗ Y) := End.of (θ.hom.app X ⊗ₘ θ.hom.app Y)
   let z : End (X ⊗ Y) := End.of (θ.hom.app (X ⊗ Y))
   let m : End (X ⊗ Y) := End.of (Modular.doubleBraiding X Y)
@@ -61,11 +61,10 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist
     rw [tensor_end_pow, hp X, hp Y]
     apply End.ext
     simp
-  have hc : Commute t m := End.ext (doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))
-  have hmt : t * m = z := End.ext (hbalance X Y)
   refine isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, ?_⟩
-  have h := hc.mul_pow n
-  rw [hmt, hp _, ht, one_mul] at h
+  have h := (show Commute t m from
+    End.ext (doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))).mul_pow n
+  rw [show t * m = z from End.ext (hbalance X Y), hp _, ht, one_mul] at h
   exact h.symm
 
 /-- The actual pivotal twist scalars, viewed as nonzero complex numbers. -/
