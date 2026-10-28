@@ -41,10 +41,6 @@ namespace PropertyF.Ground.CentreCalculus
 section
 variable {R : Type*} [CommRing R]
 
-/-- Signed permutation trace sum, with no categorical assumptions. -/
-def signedTraceSum (F : ∀ n : ℕ, Perm (Fin n) → R) (n : ℕ) : R :=
-  ∑ σ, (sgn R n σ : R) * F n σ
-
 /-- The sign changes precisely when the newly inserted point is moved. -/
 theorem sign_decomposeFin {n : ℕ} (p : Fin (n + 1)) (σ : Perm (Fin n)) :
     (sgn R (n + 1) (decomposeFin.symm (p, σ)) : R) =
@@ -58,7 +54,7 @@ variable {F : ∀ n : ℕ, Perm (Fin n) → R} {d : R} {n : ℕ}
 theorem signedTraceSum_succ
     (hfixed : ∀ σ, F (n + 1) (decomposeFin.symm (0, σ)) = d * F n σ)
     (hmoved : ∀ (p : Fin (n + 1)), p ≠ 0 → ∀ σ, F (n + 1) (decomposeFin.symm (p, σ)) = F n σ) :
-    signedTraceSum F (n + 1) = (d - (n : R)) * signedTraceSum F n := by
+    signedTraceSum (F (n + 1)) = (d - (n : R)) * signedTraceSum (F n) := by
   rw [signedTraceSum, ← decomposeFin.symm.sum_comp,
     Fintype.sum_prod_type, Fin.sum_univ_succ]
   simp only [signedTraceSum, sign_decomposeFin, ite_true, one_mul, hfixed, Fin.succ_ne_zero,
@@ -86,7 +82,7 @@ structure IsTraceDeletion (F : ∀ n : ℕ, Perm (Fin n) → R) (d : R) : Prop w
 This isolates the categorical trace calculation from the permutation sum. -/
 theorem signedTraceSum_falling
     (hzero : F 0 1 = 1) (h : IsTraceDeletion F d) (n : ℕ) :
-    signedTraceSum F n = ∏ k ∈ Finset.range n, (d - (k : R)) := by
+    signedTraceSum (F n) = ∏ k ∈ Finset.range n, (d - (k : R)) := by
   induction n with
   | zero =>
     simp [signedTraceSum, hzero, Centre.permutationSign]

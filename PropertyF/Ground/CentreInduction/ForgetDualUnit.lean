@@ -44,13 +44,10 @@ theorem forgetDoubleDualIso_tensor :
         (doubleDualTensorIso X.1 Y.1).hom := by
   dsimp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap, Center.comp_f, forgetDoubleDualIso]
-  rw [Category.assoc, ← Category.assoc ((rightDualTensorIso X Y).homᘁ).f,
-    forgetDualIso_natural]
-  rw [← Category.assoc, ← Category.assoc, forgetDualIso_tensor_inv (Yᘁ) (Xᘁ)]
-  rw [Category.assoc, forgetDualIso_tensor_mate_inv X Y, Category.assoc,
-    ← Category.assoc ((rightDualTensorIso (Yᘁ).1 (Xᘁ).1).inv),
-    ← rightDualTensorIso_inv_natural (forgetDualIso Y).inv (forgetDualIso X).inv]
-  simp only [tensorHom_comp_tensorHom_assoc, Category.assoc]
+  rw [Category.assoc, reassoc_of% forgetDualIso_natural,
+    reassoc_of% forgetDualIso_tensor_inv (Yᘁ) (Xᘁ), forgetDualIso_tensor_mate_inv X Y,
+    ← reassoc_of% rightDualTensorIso_inv_natural (forgetDualIso Y).inv (forgetDualIso X).inv,
+    tensorHom_comp_tensorHom_assoc]
 
 
 /-- The transported pivotal components satisfy the tensor law after forgetting. -/
@@ -101,9 +98,9 @@ theorem forgetDoubleDualIso_unit :
   rw [Category.assoc]
   change e.inv.f ≫ (e.homᘁ).f ≫ (forgetDualIso (Uᘁ)).hom ≫
       (forgetDualIso U).invᘁ = b.inv ≫ b.homᘁ
-  rw [← Category.assoc (e.homᘁ).f, hn, ← hu, comp_rightAdjointMate]
-  rw [Category.assoc, ← Category.assoc e.inv.f, hv]
-  simp only [← comp_rightAdjointMate, Iso.inv_hom_id_assoc]
+  rw [reassoc_of% hn, ← hu, comp_rightAdjointMate, Category.assoc,
+    ← Category.assoc e.inv.f, hv, ← comp_rightAdjointMate, Iso.inv_hom_id,
+    rightAdjointMate_id, Category.comp_id]
 
 /-- Transported pivotal components preserve the tensor unit after forgetting. -/
 theorem transported_pivotal_unit :

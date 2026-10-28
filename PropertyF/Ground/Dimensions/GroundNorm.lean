@@ -41,20 +41,20 @@ theorem isomorphisms_scalar [IsAlgClosed k] [HasKernels C] {X Y : C} [Simple X]
   exact ⟨c, hc0, hhom, iso_inv_eq_inv_smul hc0 hhom⟩
 end SimpleIsomorphisms
 
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
-  [Abelian C] [Linear ℂ C] [RigidCategory C]
-  [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable {k : Type*} [Field k] [IsAlgClosed k] {C : Type u} [Category.{v} C]
+  [MonoidalCategory C] [Preadditive C] [Linear k C] [RigidCategory C] [HasKernels C]
+  [MonoidalPreadditive C] [MonoidalLinear k C]
 
 /-- The product of the two quantum traces on a simple object does not depend
 on the chosen double-dual isomorphism. -/
-theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (j k : X ≅ (Xᘁ)ᘁ) :
+theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional k (X ⟶ X)]
+    (scalar : End (𝟙_ C) ≃ₐ[k] k) (j l : X ≅ (Xᘁ)ᘁ) :
     scalar (rightQuantumTrace j) * scalar (leftQuantumTrace j) =
-      scalar (rightQuantumTrace k) * scalar (leftQuantumTrace k) := by
-  obtain ⟨c, hc, hhom, hinv⟩ := isomorphisms_scalar (k := ℂ) j k
-  have hr : rightQuantumTrace k = c • rightQuantumTrace j :=
+      scalar (rightQuantumTrace l) * scalar (leftQuantumTrace l) := by
+  obtain ⟨c, hc, hhom, hinv⟩ := isomorphisms_scalar (k := k) j l
+  have hr : rightQuantumTrace l = c • rightQuantumTrace j :=
     rightQuantumTrace_smul_hom hhom
-  have hl : leftQuantumTrace k = c⁻¹ • leftQuantumTrace j := by
+  have hl : leftQuantumTrace l = c⁻¹ • leftQuantumTrace j := by
     apply End.homEquiv.injective
     simp [leftQuantumTrace, hinv, tensorHom_def]
   rw [hr, hl, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
