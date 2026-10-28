@@ -102,8 +102,7 @@ theorem dualIndex_iso (j : Fin (rank D)) :
   Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
 
 /-- Fusion reciprocity with the dual kept as an actual object. -/
-theorem fusionCoeff_reciprocity
-    (i j k : Fin (rank D)) :
+theorem fusionCoeff_reciprocity (i j k : Fin (rank D)) :
     fusionCoeff D i j k =
       simpleMultiplicity D i (simples D k ⊗ (ᘁ(simples D j))) :=
   letI : Simple (simples D i) := simples_simple D i
@@ -111,8 +110,7 @@ theorem fusionCoeff_reciprocity
     (finrank_to_simple_eq_from_simple _ (simples D i))
 
 /-- The usual fusion-coefficient Frobenius reciprocity identity. -/
-theorem fusionCoeff_reciprocity_labels
-    (i j k : Fin (rank D)) :
+theorem fusionCoeff_reciprocity_labels (i j k : Fin (rank D)) :
     fusionCoeff D i j k = fusionCoeff D k (dualIndex D j) i :=
   (dualIndex_iso D j).elim fun e ↦
     (fusionCoeff_reciprocity D i j k).trans
@@ -120,8 +118,7 @@ theorem fusionCoeff_reciprocity_labels
         (Iso.refl (simples D k) ⊗ᵢ e)).finrank_eq
 
 /-- Frobenius reciprocity and braiding exchange a tensor factor with its dual. -/
-theorem fusionCoeff_dual_symmetry
-    (i j k : Fin (rank D)) :
+theorem fusionCoeff_dual_symmetry (i j k : Fin (rank D)) :
     fusionCoeff D i k j = fusionCoeff D (dualIndex D i) j k :=
   (fusionCoeff_comm D i k j).trans
     ((fusionCoeff_reciprocity_labels D k i j).trans (fusionCoeff_comm D j (dualIndex D i) k))

@@ -156,8 +156,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- On a simple and its right dual the root carries the ordinary duality cup
 to the double-dual cup, with the ENO sign. -/
-theorem root_components_coevaluation
-    (i : Fin (rank C)) :
+theorem root_components_coevaluation (i : Fin (rank C)) :
     let X := simples C i
     η_ X (Xᘁ) ≫ (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom) =

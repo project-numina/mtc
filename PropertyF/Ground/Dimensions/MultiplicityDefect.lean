@@ -36,9 +36,8 @@ theorem fourthDualRootScalar_spec
       (doubleDualIso C (simples C i)).hom :=
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  let h := Classical.choose_spec (isomorphisms_scalar (k := ℂ)
-    (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
-  ⟨h.1, h.2.1⟩
+  (Classical.choose_spec (isomorphisms_scalar (k := ℂ)
+    (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))).imp_right And.left
 
 /-- The chosen simple square roots extend to a natural isomorphism from the
 identity to the double-dual functor. It is not asserted to be monoidal. -/
@@ -273,8 +272,7 @@ abbrev ScaledMultiplicityDefectsTrivial (C : BraidedFusionCategory.{v,u})
   ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1
 
 /-- The multiplicity operator is composition with the tensor defect. -/
-theorem multiplicityDefect_apply
-    {i j k : Fin (rank C)}
+theorem multiplicityDefect_apply {i j k : Fin (rank C)}
     (f : simples C k ⟶ simples C i ⊗ simples C j) :
     multiplicityDefect C i j k f =
       f ≫ (rootTensorDefect C (simples C i) (simples C j)).hom :=
@@ -317,8 +315,7 @@ theorem multiplicityDefect_involution_of_tensor_square {i j : Fin (rank C)} (k :
 set_option backward.isDefEq.respectTransparency false in
 /-- Squaring the root tensor map gives the tensor of the fourth-dual maps,
 with the canonical iterated double-dual tensor comparison. -/
-theorem rootTensor_square_eq_fourthDual_tensor
-    (X Y : C.Obj) :
+theorem rootTensor_square_eq_fourthDual_tensor (X Y : C.Obj) :
     (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
       ((fourthDualIso X).hom ⊗ₘ (fourthDualIso Y).hom) ≫
         (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫

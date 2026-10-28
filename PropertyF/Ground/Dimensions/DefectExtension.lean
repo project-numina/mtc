@@ -26,8 +26,7 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor defect acts on a simple duality cup by the product of the unit-root and dual signs. -/
-theorem rootTensorDefect_coevaluation
-    (i : Fin (rank C)) :
+theorem rootTensorDefect_coevaluation (i : Fin (rank C)) :
     let X := simples C i
     η_ X (Xᘁ) ≫ (rootTensorDefect C X (Xᘁ)).hom =
       (rootDimension C (unitIndex C) * rootDualSign C i) • η_ X (Xᘁ) := by
@@ -86,8 +85,7 @@ theorem rootTensorDefect_coevaluation_of_iso
     ← hc, Linear.smul_comp]
 set_option backward.isDefEq.respectTransparency false in
 /-- The root defect has the same eigenvalue on the braided-swapped cup. -/
-theorem rootTensorDefect_swapped_coevaluation
-    (i : Fin (rank C)) :
+theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
     let X := simples C i
     letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
     η_ (Xᘁ) X ≫ (rootTensorDefect C (Xᘁ) X).hom =
