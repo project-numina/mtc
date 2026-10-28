@@ -153,16 +153,12 @@ def braidImageRetractMap {X Y : C} (r : Retract X Y) (n : ℕ) :
   (braidWordAction Y n).liftOfSurjective (braidWordAction_surjective Y n)
     ⟨braidWordAction X n, braidWordAction_ker_le_of_retract r n⟩
 
-/-- The restriction map hits every braid word on the retract. -/
-theorem braidImageRetractMap_surjective {X Y : C} (r : Retract X Y) (n : ℕ) :
-    Function.Surjective (braidImageRetractMap r n) := fun a =>
-  let ⟨w, hw⟩ := braidWordAction_surjective X n a
-  ⟨braidWordAction Y n w, by simpa [braidImageRetractMap] using hw⟩
-
 /-- Property F passes from an object to any retract. -/
 theorem objectPropertyF_of_retract {X Y : C} (r : Retract X Y)
     (hY : ObjectPropertyF Y) : ObjectPropertyF X := fun n ↦
-  let _ : Finite (braidImage Y n) := hY n
-  Finite.of_surjective (braidImageRetractMap r n) (braidImageRetractMap_surjective r n)
+  letI := hY n
+  Finite.of_surjective (braidImageRetractMap r n) <| Function.Surjective.of_comp
+    (g := braidWordAction Y n) (by
+      simpa [braidImageRetractMap, Function.comp_def] using braidWordAction_surjective X n)
 
 end PropertyF

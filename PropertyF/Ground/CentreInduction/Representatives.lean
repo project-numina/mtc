@@ -164,10 +164,9 @@ theorem simple_representatives_of_finite_cover [HasZeroMorphisms D]
   refine ⟨n, S, ?_, ?_, ?_⟩
   · intro i
     exact hs _ (Quotient.out (e.symm i)).2
-  · intro i j hij
-    apply e.symm.injective
-    simpa using (Quotient.sound hij : Quotient.mk R (Quotient.out (e.symm i)) =
-      Quotient.mk R (Quotient.out (e.symm j)))
+  · exact fun i j hij => e.symm.injective (by
+      simpa using (Quotient.sound hij : Quotient.mk R (Quotient.out (e.symm i)) =
+        Quotient.mk R (Quotient.out (e.symm j))))
   · intro X hX
     obtain ⟨T, hT, ⟨iso⟩⟩ := hc X hX
     let q : Q := Quotient.mk R ⟨T, hT⟩
