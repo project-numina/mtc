@@ -52,11 +52,9 @@ def fourthDualIso (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 theorem fourthDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (fourthDualIso C Y).hom = (fourthDualIso C X).hom ≫ ((((fᘁ)ᘁ)ᘁ)ᘁ) := by
   have hinv : (doubleDualIso C (Yᘁ)).inv ≫ (fᘁ) =
-      (((fᘁ)ᘁ)ᘁ) ≫ (doubleDualIso C (Xᘁ)).inv := by
-    apply (cancel_mono (doubleDualIso C (Xᘁ)).hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [doubleDualIso_natural C (fᘁ)]
-    simp [← Category.assoc]
+      (((fᘁ)ᘁ)ᘁ) ≫ (doubleDualIso C (Xᘁ)).inv :=
+    (iso_inv_naturality_of_hom (doubleDualIso C (Yᘁ)) (doubleDualIso C (Xᘁ))
+      (doubleDualIso_natural C (fᘁ))).symm
   have hd := congrArg (fun (a : (((Yᘁ)ᘁ)ᘁ) ⟶ (Xᘁ)) => rightAdjointMate a) hinv
   simp only [comp_rightAdjointMate] at hd
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]

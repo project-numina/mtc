@@ -11,6 +11,15 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 
 universe v u
+
+/-- A commutative square with isomorphisms remains commutative after inverting them. -/
+theorem iso_inv_naturality_of_hom {D : Type u} [Category.{v} D] {W X Y Z : D}
+    (a : W ≅ X) (b : Y ≅ Z) {f : W ⟶ Y} {g : X ⟶ Z}
+    (h : f ≫ b.hom = a.hom ≫ g) : g ≫ b.inv = a.inv ≫ f := by
+  apply (Iso.comp_inv_eq b).2
+  rw [Category.assoc, Iso.eq_inv_comp]
+  exact h.symm
+
 section RightRigid
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
