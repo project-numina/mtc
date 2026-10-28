@@ -33,7 +33,7 @@ theorem center_finite_simple_sum_of_unit_retract {X : C.Obj} {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
     (Z : 𝒵) : FiniteSimpleSum (𝒵) Z := by
   let (W : 𝒵) : IsArtinianObject W := center_artinian C W
-  let : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective C X)
+  let : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective X)
   let (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
   let (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) :=
     let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _

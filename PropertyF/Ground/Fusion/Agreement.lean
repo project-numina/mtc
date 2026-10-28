@@ -246,7 +246,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
   classical
   let : Simple (simples D j) := simples_simple D j
   let : Simple (simples D k) := simples_simple D k
-  let : Simple (ᘁ(simples D k)) := simple_leftDual D (simples D k)
+  let : Simple (ᘁ(simples D k)) := simple_leftDual (simples D k)
   obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor (simples D j)
   let : (tensorLeft (simples D j)).Faithful :=
     PropertyF.tensorLeft_faithful_of_unit_retract s r hsr

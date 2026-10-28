@@ -193,7 +193,7 @@ theorem leftQuantumTrace_dual_component {C : Type u} [Category.{v} C] [MonoidalC
 pivotal or spherical structure. -/
 theorem target_squaredNorm_rightDual
     (X : C.Obj) [Simple X] : squaredNorm C (Xᘁ) = squaredNorm C X := by
-  let : Simple (Xᘁ) := simple_rightDual C X
+  let : Simple (Xᘁ) := simple_rightDual X
   let j := doubleDualIso C X
   rw [target_squaredNorm_choice_independent C (rightDualIsoMap j).symm,
     target_squaredNorm_choice_independent C j, ← leftQuantumTrace_eq_rightDual j,
