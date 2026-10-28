@@ -140,13 +140,10 @@ intrinsic norms are the squared norms of the given dimensions. -/
 theorem norm_saturation_of_pseudoUnitary {d : Fin (rank C) → ℂ}
     (hbound : ∀ i, ‖d i‖ ≤ fpSimple C i)
     (hnorm : ∀ i, squaredNorm C (simples C i) = ((‖d i‖ ^ 2 : ℝ) : ℂ))
-    (hpu : PseudoUnitary C) : ∀ i, ‖d i‖ = fpSimple C i := by
-  have hg : (∑ i, ‖d i‖ ^ 2) = globalFPDimension C := by
-    apply Complex.ofReal_injective
-    simpa only [PseudoUnitary, globalDimension, hnorm, ← Complex.ofReal_sum] using hpu
-  simpa only [abs_of_nonneg (norm_nonneg _)] using
-    (sum_sq_eq_sum_sq_iff (fun i ↦ by
-      simpa only [abs_of_nonneg (norm_nonneg _)] using hbound i)).1 hg
+    (hpu : PseudoUnitary C) : ∀ i, ‖d i‖ = fpSimple C i :=
+  fun i ↦ (abs_of_nonneg (norm_nonneg _)).symm.trans <|
+    (sum_sq_eq_sum_sq_iff (d := fun i ↦ ‖d i‖) (f := fpSimple C) (by simpa using hbound)).1
+      (Complex.ofReal_injective (by simpa [PseudoUnitary, globalDimension, globalFPDimension, hnorm] using hpu)) i
 
 /-- If some simple has real dimension one, the global sum is at least one. -/
 theorem global_sum_squares_one_le {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]

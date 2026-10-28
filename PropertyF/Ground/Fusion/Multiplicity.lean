@@ -176,8 +176,7 @@ theorem fusionCoeff_assoc (i j k l : Fin (rank D)) :
     simpleMultiplicity D l (simples D k ⊗ (simples D i ⊗ simples D j)) at h
   rw [tensor_multiplicity (simples D i) (simples D j ⊗ simples D k) l,
     tensor_multiplicity (simples D k) (simples D i ⊗ simples D j) l] at h
-  change (∑ r, fusionCoeff D j k r * fusionCoeff D i r l) =
-    ∑ r, fusionCoeff D i j r * fusionCoeff D k r l at h
-  simpa only [fusionCoeff_comm D k] using h
+  conv_rhs => simp only [← fusionCoeff_comm D k]
+  exact h
 
 end PropertyF.Ground
