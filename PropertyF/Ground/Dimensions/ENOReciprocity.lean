@@ -272,9 +272,8 @@ theorem positive_spherical_of_matrix_identities
   have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) := by
     dsimp [c, q]
     rw [inv_div, div_mul_cancel₀ _ (rootDimension_ne_zero C i)]
-  have hu : c (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
-    simp only [hvalue, fpSimple_unit, Complex.ofReal_one]
-  let unitProof := rootSignTwist_unit_of_simple_dimension C hc hu
+  let unitProof := rootSignTwist_unit_of_simple_dimension C hc (by
+    simp only [hvalue, fpSimple_unit, Complex.ofReal_one])
   let p := rootPhasePivotal C c hc (normalized_defects_trivial C hinv heig hsat) unitProof
   have hp (i) : pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     rw [rootPhasePivotal_dimension, hvalue]
@@ -314,10 +313,9 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     ext j
     change (∑ k, enoTraceMatrix C i k j * rootDimension C k) =
       (ε * rootDimension C (dualIndex C i)) * rootDimension C j
-    have he := congrArg (fun z : ℂ ↦ ε * z)
-      (enoTraceMatrix_eigenvector_of_involutions C (hinv (dualIndex C i) j))
-    dsimp only [ε] at he
-    simpa only [htranspose, Finset.mul_sum, ← mul_assoc, rootDualSign_sq, one_mul] using he
+    simpa only [ε, htranspose, Finset.mul_sum, ← mul_assoc, rootDualSign_sq, one_mul] using
+      congrArg (fun z : ℂ ↦ ε * z)
+        (enoTraceMatrix_eigenvector_of_involutions C (hinv (dualIndex C i) j))
   have hc := congrArg star (conjugate_of_transpose_eigenvector A hA
     (fun hz ↦ rootDimension_ne_zero C (unitIndex C) (congrFun hz _))
     (fusion_character_eigenvector (fun j k ↦
