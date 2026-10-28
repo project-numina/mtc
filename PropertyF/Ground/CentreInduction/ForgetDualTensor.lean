@@ -89,12 +89,8 @@ theorem forget_rightDualTensorIso :
     (rightDualTensorIso X Y).hom.f =
       (rightDualIso (forgetPairing (X ⊗ Y)) (tensorForgetPairing X Y)).hom :=
   forget_rightDualIso HasRightDual.exact ExactPairing.tensor (tensorForgetPairing X Y) <| by
-    let cx : 𝟙_ D ⟶ X.1 ⊗ (Xᘁ).1 := (η_ X (Xᘁ)).f
-    let cy : 𝟙_ D ⟶ Y.1 ⊗ (Yᘁ).1 := (η_ Y (Yᘁ)).f
-    change (η_ X (Xᘁ) ⊗≫ (X ◁ η_ Y (Yᘁ)) ▷ (Xᘁ) ⊗≫
-        𝟙 ((X ⊗ Y) ⊗ ((Yᘁ) ⊗ (Xᘁ)))).f =
-      (cx ⊗≫ (X.1 ◁ cy) ▷ (Xᘁ).1 ⊗≫ 𝟙 ((X.1 ⊗ Y.1) ⊗ ((Yᘁ).1 ⊗ (Xᘁ).1)))
-    simp [monoidalComp, cx, cy]
+    simp [ExactPairing.tensor_coevaluation, monoidalComp]
+    rfl
 
 /-- Forgetting centre duals preserves their tensor comparison. -/
 theorem forgetDualIso_tensor :
