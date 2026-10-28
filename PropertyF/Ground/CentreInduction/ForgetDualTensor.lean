@@ -38,10 +38,10 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 
 /-- The double-dual comparison is natural in centre morphisms. -/
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
-    ((fᘁ)ᘁ).f ≫ (κ₂ Y).hom = (κ₂ X).hom ≫ ((f.fᘁ)ᘁ) := by
+    CommSq ((fᘁ)ᘁ).f (κ₂ X).hom (κ₂ Y).hom ((f.fᘁ)ᘁ) := ⟨by
   simpa [forgetDoubleDualIso, rightDualIsoMap] using
     (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by simpa only [comp_rightAdjointMate] using
-      (congrArg rightAdjointMate (CommSq.vert_inv ⟨forgetDualIso_natural f⟩).w).symm⟩).w
+      (congrArg rightAdjointMate (CommSq.vert_inv ⟨forgetDualIso_natural f⟩).w).symm⟩).w⟩
 
 variable (p : PivotalStructure (C := D))
 
@@ -56,10 +56,9 @@ instance transportedPivotalHom_isIso (Z : 𝒵) : IsIso (transportedPivotalHom p
 /-- A naturality equation survives transport along the forgotten double-dual comparisons. -/
 theorem transported_natural (f : X ⟶ Y)
     {jX : X.1 ⟶ (X.1ᘁ)ᘁ} {jY : Y.1 ⟶ (Y.1ᘁ)ᘁ}
-    (h : f.f ≫ jY = jX ≫ ((f.fᘁ)ᘁ)) :
-    f.f ≫ (jY ≫ (κ₂ Y).inv) = (jX ≫ (κ₂ X).inv) ≫ ((fᘁ)ᘁ).f :=
-  (cancel_mono (κ₂ Y).hom).1 <| by
-    simpa [forgetDoubleDualIso_natural] using h
+    (h : CommSq f.f jX jY ((f.fᘁ)ᘁ)) :
+    CommSq f.f (jX ≫ (κ₂ X).inv) (jY ≫ (κ₂ Y).inv) ((fᘁ)ᘁ).f :=
+  h.vert_comp (forgetDoubleDualIso_natural f).vert_inv
 
 end PropertyF.Ground.CentreInduction
 
