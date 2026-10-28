@@ -71,10 +71,8 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
     (c := fun q => groundEndBlockEquiv C e a q.1 q.2 q.2)
     (fun ⟨i, j⟩ => by simpa [F, z, Category.assoc] using groundEndBlockEquiv_diagonal C e a i j)
-  change scalar (p.rightTrace z) = ∑ q, groundEndBlockEquiv C e a q.1 q.2 q.2 *
-    scalar (p.rightTrace (𝟙 (F q))) at h
-  rw [← hz, h, Fintype.sum_sigma]
-  simp [F, Matrix.trace, Finset.mul_sum, mul_comm]
+  simpa [rightTraceLinear, hz, F, Matrix.trace, Finset.mul_sum, mul_comm,
+    Fintype.sum_sigma] using h
 
 end PropertyF.Ground.Calculus
 
@@ -135,7 +133,6 @@ include hT in
 /-- A cyclic functional agrees with a multiple of the trace on matrix units. -/
 private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
     T (Matrix.single i j a) = T (Matrix.single i₀ i₀ 1) * (Matrix.single i j a).trace := by
-  classical
   by_cases hij : i = j
   · subst j
     have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
