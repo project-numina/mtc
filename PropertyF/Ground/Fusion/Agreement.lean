@@ -268,26 +268,20 @@ theorem characterMatrix_commute (i j : Fin (rank D)) :
     (fusionCoeff_assoc j i a b).trans (by simpa only [fusionCoeff_comm D j i] using
       (fusionCoeff_assoc i j a b).symm)
 
-/-- The total matrix has a strictly positive common eigenvector for all
-fusion matrices. -/
-theorem exists_positive_common_eigenvector :
-    ∃ (v : Fin (rank D) → ℝ), (∀ j, 0 < v j) ∧
-      ∀ i, ∃ d : ℝ, characterMatrix D i *ᵥ v = d • v :=
-  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
-  (positive_symmetric_matrix_has_positive_eigenvector
-    (Matrix.isHermitian_iff_isSymm.mpr (Matrix.IsSymm.ext fun j k ↦
-      totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)).elim fun _ ⟨v, hvpos, hve⟩ ↦
-    ⟨v, hvpos, fun i ↦ positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve (by
-      rw [Matrix.mulVec_mulVec,
-        (show Commute (totalFusionMatrix D) (characterMatrix D i) from
-          Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
-        ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul])⟩
-
 /-- A positive normalized character exists for the actual fusion rules. -/
 theorem exists_positive_character :
     ∃ f : Fin (rank D) → ℝ,
       (∀ i, 0 < f i) ∧ IsFusionMultiplicative D f := by
-  obtain ⟨v, hvpos, hve⟩ := exists_positive_common_eigenvector D
+  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  obtain ⟨_, v, hvpos, hvtotal⟩ := positive_symmetric_matrix_has_positive_eigenvector
+    (Matrix.isHermitian_iff_isSymm.mpr (Matrix.IsSymm.ext fun j k ↦
+      totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)
+  have hve (i : Fin (rank D)) : ∃ d, characterMatrix D i *ᵥ v = d • v :=
+    positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hvtotal (by
+      rw [Matrix.mulVec_mulVec,
+        (show Commute (totalFusionMatrix D) (characterMatrix D i) from
+          Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
+        ← Matrix.mulVec_mulVec, hvtotal, Matrix.mulVec_smul])
   let f : Fin (rank D) → ℝ := fun i => v i / v (unitIndex D)
   have hunit : v (unitIndex D) ≠ 0 := ne_of_gt (hvpos _)
   refine ⟨f, fun i => div_pos (hvpos i) (hvpos _), ?_⟩

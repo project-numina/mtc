@@ -106,8 +106,7 @@ matrix has the natural-root dimension vector as an eigenvector, ENO's FP
 bound follows. Both remaining identities are explicit hypotheses. -/
 theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
     (hinv : ∀ j k, IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap)
-    (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
-      rootDimension C i * rootDimension C j) :
+    (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k = rootDimension C i * rootDimension C j) :
     ‖rootDimension C i‖ ≤ fpSimple C i :=
   weighted_eigenvalue_bound (rootDimension_ne_zero (unitIndex C)) (fpSimple_pos C)
     (fun _ _ ↦ Nat.cast_nonneg _) (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff (hinv j k))
