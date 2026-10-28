@@ -130,15 +130,15 @@ integer fusion matrix. -/
 theorem tensor_multiplicity (X Y : D.Obj) (k : Fin (rank D)) :
     simpleMultiplicity D k (X ⊗ Y) =
       ∑ j, simpleMultiplicity D j Y *
-        simpleMultiplicity D k (X ⊗ simples D j) := by
-  obtain ⟨e⟩ := exists_canonical_decomposition D Y
-  dsimp only [simpleMultiplicity]
-  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
-      ((Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X _)).finrank_eq,
-    finrank_hom_biproduct, Fintype.sum_sigma]
-  refine Finset.sum_congr rfl fun j _ ↦ ?_
-  change (∑ _ : Fin (simpleMultiplicity D j Y), simpleMultiplicity D k (X ⊗ simples D j)) = _
-  simp
+        simpleMultiplicity D k (X ⊗ simples D j) :=
+  (exists_canonical_decomposition D Y).elim fun e ↦ by
+    dsimp only [simpleMultiplicity]
+    rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
+        ((Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X _)).finrank_eq,
+      finrank_hom_biproduct, Fintype.sum_sigma]
+    refine Finset.sum_congr rfl fun j _ ↦ ?_
+    change (∑ _ : Fin (simpleMultiplicity D j Y), simpleMultiplicity D k (X ⊗ simples D j)) = _
+    simp
 
 /-- Fusion coefficients are the actual Hom-space dimensions. -/
 def fusionCoeff (i j k : Fin (rank D)) : ℕ :=

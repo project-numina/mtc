@@ -165,16 +165,16 @@ FP values is spherical. -/
 theorem spherical_of_fp_dimensions_and_squaredNorms {p : PivotalStructure (C := C.Obj)}
     (hdim : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (hnorm : ∀ i, squaredNorm C (simples C i) =
-      ((fpSimple C i ^ 2 : ℝ) : ℂ)) : p.IsSpherical := by
-  refine (isSpherical_iff_simple_dimensions C p).2 fun i ↦ ?_
-  let X := simples C i
-  let : Simple X := simples_simple C i
-  have hh := target_squaredNorm_choice_independent (p.iso X)
-  rw [← rightTrace_id, ← leftTrace_id, ← pivotalDimension, hdim i, hnorm i, Complex.ofReal_pow] at hh
-  apply (Ground.unitScalarEquiv C).injective
-  rw [← Ground.unitScalar_eq_equiv, ← Ground.unitScalar_eq_equiv, ← pivotalDimension, hdim i]
-  exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i)))
-    (by simpa [pow_two] using hh.symm)
+      ((fpSimple C i ^ 2 : ℝ) : ℂ)) : p.IsSpherical :=
+  (isSpherical_iff_simple_dimensions C p).2 fun i ↦ by
+    let X := simples C i
+    let : Simple X := simples_simple C i
+    have hh := target_squaredNorm_choice_independent (p.iso X)
+    rw [← rightTrace_id, ← leftTrace_id, ← pivotalDimension, hdim i, hnorm i, Complex.ofReal_pow] at hh
+    apply (Ground.unitScalarEquiv C).injective
+    rw [← Ground.unitScalar_eq_equiv, ← Ground.unitScalar_eq_equiv, ← pivotalDimension, hdim i]
+    exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i)))
+      (by simpa [pow_two] using hh.symm)
 
 variable {C} in
 /-- ENO's trace-matrix bound and the root-norm identity turn global
@@ -250,8 +250,8 @@ variable {C} in
 root has real dimensions. The remaining categorical identities are explicit. -/
 theorem positive_spherical_of_matrix_identities
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
-    HasFPSphericalStructure C := by
-  have hsat := eno_root_norm_saturation_of_pseudoUnitary hinv heig hnorm hpu
+    HasFPSphericalStructure C :=
+  let hsat := eno_root_norm_saturation_of_pseudoUnitary hinv heig hnorm hpu
   let c : Fin (rank C) → ℂ := fun i ↦ (normalizedRootDimension C i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero i)
     (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))))
@@ -259,8 +259,9 @@ theorem positive_spherical_of_matrix_identities
     simp [c, normalizedRootDimension, rootDimension_ne_zero]
   let p := rootPhasePivotal C c hc (normalized_defects_trivial hinv heig hsat)
     (rootSignTwist_unit_of_simple_dimension hc (by simp [hvalue, fpSimple_unit]))
-  refine ⟨p, spherical_of_fp_dimensions_and_squaredNorms ?_ (by simp [hnorm, hsat]), ?_⟩ <;>
-    intro i <;> rw [rootPhasePivotal_dimension, hvalue]
+  have hp (i) : pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
+    rw [rootPhasePivotal_dimension, hvalue]
+  ⟨p, spherical_of_fp_dimensions_and_squaredNorms hp (by simp [hnorm, hsat]), hp⟩
 
 end PropertyF.Ground.Dimensions
 

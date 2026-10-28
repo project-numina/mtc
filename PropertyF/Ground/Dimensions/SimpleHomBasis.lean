@@ -180,15 +180,15 @@ variable {C} in
 root-dimension eigenvector identity. -/
 theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}
     (hinv : ∀ k, IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap) :
-    ∑ k, enoTraceMatrix C i j k * rootDimension C k = rootDimension C i * rootDimension C j := by
+    ∑ k, enoTraceMatrix C i j k * rootDimension C k = rootDimension C i * rootDimension C j :=
   let d := rootTensorDefect C (simples C i) (simples C j)
   have hop (k : Fin (rank C)) :
-      Linear.rightComp ℂ (simples C k) d.inv = (multiplicityDefect C i j k).toLinearMap := by
-    ext f
-    simpa [multiplicityDefect, Linear.homCongr_apply, Linear.homCongr_symm_apply, d] using
-      ((LinearEquiv.symm_apply_eq _).2 (congrArg (fun L ↦ L f) (hinv k)).symm :
-        (multiplicityDefect C i j k).symm f = multiplicityDefect C i j k f)
-  simpa only [enoTraceMatrix, hop, d, rootTrace_inverseDefect] using
+      Linear.rightComp ℂ (simples C k) d.inv = (multiplicityDefect C i j k).toLinearMap :=
+    LinearMap.ext fun f ↦ by
+      simpa [multiplicityDefect, Linear.homCongr_apply, Linear.homCongr_symm_apply, d] using
+        ((LinearEquiv.symm_apply_eq _).2 (congrArg (fun L ↦ L f) (hinv k)).symm :
+          (multiplicityDefect C i j k).symm f = multiplicityDefect C i j k f)
+  by simpa only [enoTraceMatrix, hop, d, rootTrace_inverseDefect] using
     (rootTrace_eq_simpleHom_trace_sum d.inv).symm
 
 end PropertyF.Ground.Dimensions
@@ -217,13 +217,13 @@ set_option backward.isDefEq.respectTransparency false in
 theorem simpleHomPairing_injective
     (S X : D) [Simple S] [FiniteDimensional k (S ⟶ S)]
     (hsplit : ∀ (g : X ⟶ S), g ≠ 0 → ∃ f : S ⟶ X, f ≫ g = 𝟙 S) :
-    Function.Injective (simpleHomPairing (k := k) S X) := by
-  refine LinearMap.ker_eq_bot.mp (LinearMap.ker_eq_bot'.mpr fun g hg ↦ ?_)
-  by_contra hne
-  obtain ⟨f, hf⟩ := hsplit g hne
-  have h := congrArg (fun F : Module.Dual k (S ⟶ X) => F f) hg
-  change Ground.simpleEndScalar (k := k) S (End.of (f ≫ g)) = 0 at h
-  simp only [hf, show End.of (𝟙 S) = (1 : End S) from rfl, map_one, one_ne_zero] at h
+    Function.Injective (simpleHomPairing (k := k) S X) :=
+  LinearMap.ker_eq_bot.mp (LinearMap.ker_eq_bot'.mpr fun g hg ↦ by
+    by_contra hne
+    obtain ⟨f, hf⟩ := hsplit g hne
+    have h := congrArg (fun F : Module.Dual k (S ⟶ X) => F f) hg
+    change Ground.simpleEndScalar (k := k) S (End.of (f ≫ g)) = 0 at h
+    simp only [hf, show End.of (𝟙 S) = (1 : End S) from rfl, map_one, one_ne_zero] at h)
 
 end
 

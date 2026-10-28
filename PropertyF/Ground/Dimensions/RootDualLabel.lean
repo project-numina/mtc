@@ -113,16 +113,16 @@ theorem trace_reciprocity_of_frobenius_defect
       enoFrobeniusEquiv C i k j ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
       rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
         (rootTensorDefect C (simples C (dualIndex C i)) (simples C j)).hom)) :
-    ENOTraceMatrixReciprocity C := by
-  refine trace_reciprocity_of_intertwining fun i j k v ↦ ?_
-  obtain ⟨g, rfl⟩ := (simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)).surjective v
-  have hm : (multiplicityDefect C i k j).toLinearMap =
-      Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom :=
-    LinearMap.ext fun f ↦ multiplicityDefect_apply C f
-  rw [hm]
-  erw [← simpleHomPairingEquiv_natural, enoReciprocityEquiv_pairing,
-    enoReciprocityEquiv_pairing, hcompat]
-  simp [multiplicityDefect_apply]
+    ENOTraceMatrixReciprocity C :=
+  trace_reciprocity_of_intertwining fun i j k v ↦ by
+    obtain ⟨g, rfl⟩ := (simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)).surjective v
+    have hm : (multiplicityDefect C i k j).toLinearMap =
+        Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom :=
+      LinearMap.ext fun f ↦ multiplicityDefect_apply C f
+    rw [hm]
+    erw [← simpleHomPairingEquiv_natural, enoReciprocityEquiv_pairing,
+      enoReciprocityEquiv_pairing, hcompat]
+    simp [multiplicityDefect_apply]
 
 end PropertyF.Ground.Dimensions
 

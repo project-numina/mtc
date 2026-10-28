@@ -129,17 +129,17 @@ theorem simple_scalar_biproduct_natural
     [HasBiproduct (fun i ↦ T (a i))] [HasBiproduct (fun j ↦ T (b j))]
     (f : (⨁ (fun i ↦ T (a i))) ⟶ (⨁ (fun j ↦ T (b j)))) :
     biproduct.map (fun i ↦ c (a i) • 𝟙 (T (a i))) ≫ f =
-      f ≫ biproduct.map (fun j ↦ c (b j) • 𝟙 (T (b j))) := by
-  refine biproduct.hom_ext' _ _ fun i ↦ biproduct.hom_ext _ _ fun j ↦ ?_
-  simp only [Category.assoc, biproduct.ι_map_assoc, biproduct.map_π,
-    Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
-  let g := biproduct.ι (fun i ↦ T (a i)) i ≫ f ≫ biproduct.π (fun j ↦ T (b j)) j
-  change c (a i) • g = c (b j) • g
-  let : ∀ i, Simple (T i) := hT
-  by_cases hg : g = 0
-  · simp [hg]
-  · let : IsIso g := isIso_of_hom_simple hg
-    rw [show c (a i) = c (b j) from congrArg c (hinj ⟨asIso g⟩)]
+      f ≫ biproduct.map (fun j ↦ c (b j) • 𝟙 (T (b j))) :=
+  biproduct.hom_ext' _ _ fun i ↦ biproduct.hom_ext _ _ fun j ↦ by
+    simp only [Category.assoc, biproduct.ι_map_assoc, biproduct.map_π,
+      Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
+    let g := biproduct.ι (fun i ↦ T (a i)) i ≫ f ≫ biproduct.π (fun j ↦ T (b j)) j
+    change c (a i) • g = c (b j) • g
+    let : ∀ i, Simple (T i) := hT
+    by_cases hg : g = 0
+    · simp [hg]
+    · let : IsIso g := isIso_of_hom_simple hg
+      rw [show c (a i) = c (b j) from congrArg c (hinj ⟨asIso g⟩)]
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts

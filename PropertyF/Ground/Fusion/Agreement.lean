@@ -158,15 +158,14 @@ if it has a positive coordinate. -/
 theorem positive_matrix_eigenvector_pos {k : Type*} [Semiring k] [LinearOrder k]
     [IsStrictOrderedRing k] {A : Matrix ι ι k} (hpos : ∀ i j, 0 < A i j) {v : ι → k}
     (hnonneg : ∀ i, 0 ≤ v i) (hpositive : ∃ i, 0 < v i)
-    {d : k} (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
-  obtain ⟨j, hj⟩ := hpositive
-  intro i
-  have hv : 0 < d * v i := by
-    change 0 < (d • v) i
-    rw [← heigen]
-    exact Finset.sum_pos' (fun k _ => mul_nonneg (hpos i k).le (hnonneg k))
-      ⟨j, Finset.mem_univ _, mul_pos (hpos i j) hj⟩
-  exact lt_of_le_of_ne (hnonneg i) (Ne.symm (right_ne_zero_of_mul (ne_of_gt hv)))
+    {d : k} (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i :=
+  hpositive.elim fun j hj i ↦ by
+    have hv : 0 < d * v i := by
+      change 0 < (d • v) i
+      rw [← heigen]
+      exact Finset.sum_pos' (fun k _ => mul_nonneg (hpos i k).le (hnonneg k))
+        ⟨j, Finset.mem_univ _, mul_pos (hpos i j) hj⟩
+    exact lt_of_le_of_ne (hnonneg i) (Ne.symm (right_ne_zero_of_mul (ne_of_gt hv)))
 
 variable [DecidableEq ι] [Nonempty ι]
 
@@ -285,17 +284,17 @@ theorem totalFusionMatrix_eq_sum_characterMatrix :
 fusion matrices. -/
 theorem exists_positive_common_eigenvector :
     ∃ (v : Fin (rank D) → ℝ), (∀ j, 0 < v j) ∧
-      ∀ i, ∃ d : ℝ, characterMatrix D i *ᵥ v = d • v := by
+      ∀ i, ∃ d : ℝ, characterMatrix D i *ᵥ v = d • v :=
   let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
-  obtain ⟨a, v, hvpos, hve⟩ := positive_symmetric_matrix_has_positive_eigenvector
+  (positive_symmetric_matrix_has_positive_eigenvector
     (Matrix.isHermitian_iff_isSymm.mpr (Matrix.IsSymm.ext fun j k ↦
-      totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)
-  refine ⟨v, hvpos, fun i ↦ positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve ?_⟩
-  rw [Matrix.mulVec_mulVec,
-    (show Commute (totalFusionMatrix D) (characterMatrix D i) from
-      (totalFusionMatrix_eq_sum_characterMatrix D).symm ▸
-        Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
-    ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul]
+      totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)).elim fun _ ⟨v, hvpos, hve⟩ ↦
+    ⟨v, hvpos, fun i ↦ positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve (by
+      rw [Matrix.mulVec_mulVec,
+        (show Commute (totalFusionMatrix D) (characterMatrix D i) from
+          (totalFusionMatrix_eq_sum_characterMatrix D).symm ▸
+            Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
+        ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul])⟩
 
 /-- A positive normalized character exists for the actual fusion rules. -/
 theorem exists_positive_character :
