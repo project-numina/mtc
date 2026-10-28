@@ -201,8 +201,7 @@ private theorem overlapRight_unitary (k : ℕ) {u : braidAlgebra X t}
       Blocks.IsUnitary ⟨_, d b⟩ (e b (f u)) →
       Blocks.IsUnitary ⟨_, d a⟩
         (e a ((Eq.mpr (congrArg (fun n => braidAlgebra X t →ₐ[ℂ] braidAlgebra X n) h) f) u)) := by
-    intro a b h f hunit
-    cases h
+    rintro a b rfl f hunit
     exact hunit
   exact hcast _ _ (overlapIndex_formula t (k + 1)) _ (by
     simpa [addLeftBlocksIterStarMap] using

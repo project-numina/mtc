@@ -87,9 +87,12 @@ lemma braid_first_map {X Y A B : C} (f : X ⟶ Y) (g : A ⟶ B) :
   simp only [← Category.assoc, tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id,
     braiding_naturality]
 
+section BraidNaturality
+
+variable {X Y : C} (f : X ⟶ Y) (n : ℕ)
+
 /-- Each adjacent braid generator is natural in arbitrary morphisms. -/
-theorem braidGenerator_map_natural {X Y : C} (f : X ⟶ Y) (n : ℕ)
-    (i : Fin (n + 1)) :
+theorem braidGenerator_map_natural (i : Fin (n + 1)) :
     (braidGenerator X n i).asIso.hom ≫ tensorPowerMap f (n + 2) =
       tensorPowerMap f (n + 2) ≫ (braidGenerator Y n i).asIso.hom := by
   induction n with
@@ -103,7 +106,7 @@ theorem braidGenerator_map_natural {X Y : C} (f : X ⟶ Y) (n : ℕ)
     simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id, ih]
 
 /-- Braiding words are natural in any morphism, not only in isomorphisms. -/
-theorem braidWord_map_natural {X Y : C} (f : X ⟶ Y) (n : ℕ) (w : BraidWords n) :
+theorem braidWord_map_natural (w : BraidWords n) :
     ((braidWordAction X n w).val).asIso.hom ≫ tensorPowerMap f (n + 2) =
       tensorPowerMap f (n + 2) ≫ ((braidWordAction Y n w).val).asIso.hom := by
   induction w using FreeGroup.induction_on with
@@ -117,6 +120,8 @@ theorem braidWord_map_natural {X Y : C} (f : X ⟶ Y) (n : ℕ) (w : BraidWords 
   | mul x y ihx ihy =>
     simp only [map_mul, Subgroup.coe_mul, Aut.mul_asIso, Iso.trans_hom, Category.assoc]
     rw [ihx, ← Category.assoc, ihy, Category.assoc]
+end BraidNaturality
+
 /-- Any braid word acting trivially on an object also acts trivially on its
 retract, by naturality of the tensor-power inclusion. -/
 theorem braidWordAction_ker_le_of_retract {X Y : C} (r : Retract X Y) (n : ℕ) :

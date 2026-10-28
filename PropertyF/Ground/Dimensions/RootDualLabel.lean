@@ -22,17 +22,12 @@ theorem positive_spherical_of_simple_fourth_and_reciprocity
     (htranspose : ENOTraceMatrixReciprocity C)
     (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
-  have hinv : MultiplicityDefectsInvolutive C := by
-    intro i j k
-    apply multiplicityDefect_involution_of_tensor_square C k
-    exact (rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm
-  have heig : ENOTraceMatrixEigenvector C := by
-    intro i j
-    exact enoTraceMatrix_eigenvector_of_involutions C (hinv i j)
-  have hnorm : RootNormIdentity C := by
-    intro i
-    exact squaredNorm_eq_root_norm_sq_of_reciprocity C hinv htranspose i
-  exact positive_spherical_of_matrix_identities C hinv heig hnorm hpu
+  have hinv : MultiplicityDefectsInvolutive C := fun i j k ↦
+    multiplicityDefect_involution_of_tensor_square C k
+      ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)
+  exact positive_spherical_of_matrix_identities C hinv
+    (fun i j ↦ enoTraceMatrix_eigenvector_of_involutions C (hinv i j))
+    (fun i ↦ squaredNorm_eq_root_norm_sq_of_reciprocity C hinv htranspose i) hpu
 
 
 end PropertyF.Ground.Dimensions
@@ -90,13 +85,9 @@ theorem trace_reciprocity_of_intertwining
     IsFusionCategory.hom_finite _ _
   have ht := congrArg (LinearMap.trace ℂ _) hconj
   simp only [LinearMap.trace_conj', LinearMap.trace_transpose', map_smul, smul_eq_mul] at ht
-  have hs := rootDualSign_sq C i
   change LinearMap.trace ℂ _ A = rootDualSign C i * LinearMap.trace ℂ _ B at ht
   change LinearMap.trace ℂ _ B = rootDualSign C i * LinearMap.trace ℂ _ A
-  calc
-    _ = (rootDualSign C i * rootDualSign C i) * LinearMap.trace ℂ _ B := by rw [hs, one_mul]
-    _ = rootDualSign C i * (rootDualSign C i * LinearMap.trace ℂ _ B) := by ring
-    _ = _ := by rw [← ht]
+  rw [ht, ← mul_assoc, rootDualSign_sq, one_mul]
 
 end PropertyF.Ground.Dimensions
 

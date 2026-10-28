@@ -59,10 +59,9 @@ theorem closeFusionMap_tensor {T U S K R : D} (f : T ⊗ K ⟶ R) (g : U ⊗ S �
       simp only [whiskerLeft_comp]
       monoidal
     _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by monoidal
-    _ = 𝟙 _ ⊗≫ ((closeFusionMap T K f ▷ (U ⊗ S)) ≫ ((Kᘁ : D) ◁ g)) ⊗≫ ε_ K (Kᘁ) := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (closeFusionMap T K f ▷ (U ⊗ S)) ⊗≫
       (closeFusionMap U S g ▷ S ≫ ε_ S (Sᘁ)) := by
-      rw [closeFusionMap_evaluation]
+      rw [whisker_exchange, closeFusionMap_evaluation]
       monoidal
     _ = _ := by monoidal
 
@@ -86,11 +85,8 @@ theorem crossingBlock_tensor (X : D) {T U S K R : D}
         rw [closeFusionMap_tensor]
         simp only [tensorHom_def, comp_whiskerRight]
         monoidal
-    _ = 𝟙 _ ⊗≫ (g₁ ▷ (X ⊗ (((Rᘁ : D) ⊗ T) ⊗ U))) ⊗≫
-      (((((T ⊗ K) ⊗ X) ◁ (q ▷ U))) ≫
-        (((T ◁ g₂) ▷ X) ▷ ((Kᘁ : D) ⊗ U))) ⊗≫
-      (((T ⊗ (U ⊗ S)) ⊗ X) ◁ z) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = _ := by
+      rw [← whisker_exchange]
       dsimp only [crossingBlock]
       simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
       monoidal
