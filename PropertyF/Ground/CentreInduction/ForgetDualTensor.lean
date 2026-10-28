@@ -157,23 +157,24 @@ local notation "𝒵" => Center D
 -- The dual and double-dual comparisons for the forgetful functor.
 local notation "κ" => forgetDualIso
 local notation "κ₂" => forgetDoubleDualIso
--- The tensor comparison for double right duals.
+-- The tensor comparisons for right duals and double right duals.
+local notation "τ" => rightDualTensorIso
 local notation "μ₂" => doubleDualTensorIso
 variable (p : PivotalStructure (C := D)) (X Y : Center D)
 
 /-- The inverse tensor comparison commutes with the forgotten dual isomorphisms. -/
 private theorem forgetDualIso_tensor_inv :
-    (rightDualTensorIso X Y).inv.f ≫ (κ (X ⊗ Y)).hom =
+    (τ X Y).inv.f ≫ (κ (X ⊗ Y)).hom =
       ((κ Y).hom ⊗ₘ (κ X).hom) ≫
-        (rightDualTensorIso X.1 Y.1).inv :=
-  (CommSq.vert_inv (g := (Center.forget D).mapIso (rightDualTensorIso X Y))
+        (τ X.1 Y.1).inv :=
+  (CommSq.vert_inv (g := (Center.forget D).mapIso (τ X Y))
     (h := rightDualTensorIso X.1 Y.1) ⟨forgetDualIso_tensor X Y⟩).w.symm
 
 /-- Taking mates of the tensor comparison also preserves its inverse. -/
 private theorem forgetDualIso_tensor_mate_inv :
-    (rightDualTensorIso X Y).hom.fᘁ ≫ (κ (X ⊗ Y)).invᘁ =
+    (τ X Y).hom.fᘁ ≫ (κ (X ⊗ Y)).invᘁ =
       (((κ Y).inv ⊗ₘ (κ X).inv)ᘁ) ≫
-        (rightDualTensorIso X.1 Y.1).homᘁ :=
+        (τ X.1 Y.1).homᘁ :=
   (CommSq.vert_inv (g := rightDualIsoMap ((κ Y) ⊗ᵢ (κ X)))
     (h := rightDualIsoMap (κ (X ⊗ Y))) ⟨by
       simpa only [comp_rightAdjointMate, rightDualIsoMap, tensorIso_hom] using

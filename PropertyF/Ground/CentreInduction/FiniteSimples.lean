@@ -156,7 +156,7 @@ end
 end
 
 /-! An injective-retract route to centre semisimplicity and fusion. -/
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits PropertyF.Ground.Dimensions
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
@@ -221,8 +221,8 @@ def unitRetractOfNonzeroCap {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre pivotal structure with nonzero trace on an induced object implies fusion. -/
-theorem center_fusion_of_nonzero_induced_trace (X : C.Obj)
-    (p : Dimensions.PivotalStructure (C := 𝒵))
+theorem center_fusion_of_nonzero_induced_trace {X : C.Obj}
+    (p : PivotalStructure (C := 𝒵))
     (hne : p.rightTrace (𝟙 ((induction C).obj X)) ≠ 0) :
     IsFusionCategory (𝒵) :=
   let J := (induction C).obj X
@@ -231,7 +231,7 @@ theorem center_fusion_of_nonzero_induced_trace (X : C.Obj)
   letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   letI : Simple (𝟙_ (𝒵)) := Centre.centerUnitSimple
   center_fusion_of_unit_retract C <| unitRetractOfNonzeroCap cap <| fun h =>
-    hne (End.ext (by simpa [Dimensions.PivotalStructure.rightTrace, Dimensions.rightTraceWith,
+    hne (End.ext (by simpa [PivotalStructure.rightTrace, rightTraceWith,
       cap, J, Category.assoc] using h))
 
 end PropertyF.Ground.CentreInduction

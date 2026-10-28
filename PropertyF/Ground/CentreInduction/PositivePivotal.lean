@@ -35,7 +35,7 @@ pivotal dimensions equal FP dimensions. -/
 theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions C p) [RigidCategory 𝒵ᶜ]
     {pZ : PivotalStructure (C := 𝒵ᶜ)}
     (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) : IsFusionCategory 𝒵ᶜ :=
-  center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ fun hz => by
+  center_fusion_of_nonzero_induced_trace C pZ fun hz => by
     have ht := forget_trace_of_pivotal_component hcompat (𝟙 _)
     change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
       (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht
