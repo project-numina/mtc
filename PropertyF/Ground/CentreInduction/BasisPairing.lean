@@ -93,7 +93,8 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
   have h : (∑ p, r p ≫ q p) = 𝟙 ((T ⊗ U) ⊗ Sᶜ j) := by
     simp only [r, q, J, Category.assoc, ← whiskerLeft_comp_assoc,
       ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum,
-      crossing_completeness, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id]
+      crossingProjection, crossingInclusion, simple_completeness, whiskerLeft_id,
+      Category.id_comp, Iso.hom_inv_id]
   simpa [J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection, crossingInclusion,
     crossingProjection, mixedCrossingBilinear, crossingBlock, Category.assoc] using
     simpleBasis_contraction_refinement q r h

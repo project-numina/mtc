@@ -105,8 +105,10 @@ theorem unit_sum (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), crossingIndex T i j,
     (unitComponent Z p.1 ▷ T) ≫ crossingSummand Z.1 T p.1 j p.2) =
       (Z.2.β T).hom ≫ (T ◁ unitComponent Z j) := by
-  erw [← unitBlockLinear_id (k := ℂ) Z T (simples C j), ← crossing_completeness C T j, map_sum]
-  simp only [unitComponent, crossingSummand, unit_block, unitBlockLinear, LinearMap.coe_mk, AddHom.coe_mk]
+  erw [← unitBlockLinear_id (k := ℂ) Z T (simples C j),
+    ← simple_completeness C (T ⊗ simples C j), map_sum]
+  simp only [unitComponent, crossingSummand, unit_block, unitBlockLinear, crossingProjection,
+    crossingInclusion, LinearMap.coe_mk, AddHom.coe_mk]
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in

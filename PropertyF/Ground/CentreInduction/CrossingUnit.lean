@@ -94,12 +94,10 @@ theorem crossingBlock_of_simple_split [HasRightDual R] [HasRightDual S] [Simple 
 
 variable (X : C.Obj) (i j : Fin (rank C))
 
-set_option backward.isDefEq.respectTransparency false in
-variable (C) in
-/-- The unit-strand decomposition has one diagonal simple summand. -/
-theorem unit_crossing_finrank :
-    Module.finrank ℂ (Sᶜ i ⟶ (𝟙_ C.Obj) ⊗ Sᶜ j) = if i = j then 1 else 0 :=
-  (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (λ_ (Sᶜ j))).finrank_eq.trans
+/-- An object isomorphic to a chosen simple has the same Hom-space multiplicities. -/
+theorem finrank_hom_simple_of_iso {V : C.Obj} (e : V ≅ Sᶜ j) :
+    Module.finrank ℂ (Sᶜ i ⟶ V) = if i = j then 1 else 0 :=
+  (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq.trans
     (finrank_simples_hom C i j)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -111,12 +109,13 @@ theorem crossingCandidate_unit_summand :
   simp only [crossingCandidate_on_summand, crossingSummand]
   rw [Finset.sum_eq_single_of_mem i (Finset.mem_univ i)]
   · let : Unique (crossingIndex (𝟙_ C.Obj) i i) := by
-      simpa [crossingIndex, unit_crossing_finrank] using (inferInstance : Unique (Fin 1))
+      simpa [crossingIndex, finrank_hom_simple_of_iso i i (λ_ (Sᶜ i))] using
+        (inferInstance : Unique (Fin 1))
     erw [Fintype.sum_unique, crossingBlock_of_simple_split (k := ℂ) X (λ_ (Sᶜ i)).symm
       (crossingInclusion (𝟙_ C.Obj) i i default) (crossingProjection (𝟙_ C.Obj) i i default)
-      (crossingInclusion_projection default), crossingBlock_unit, Category.assoc]
+      (simpleInclusion_projection default), crossingBlock_unit, Category.assoc]
   · intro j _ hne
-    simp [crossingIndex, unit_crossing_finrank, hne.symm]
+    simp [crossingIndex, finrank_hom_simple_of_iso i j (λ_ (Sᶜ j)), hne.symm]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The explicit induction crossing is normalized on the tensor unit. -/
