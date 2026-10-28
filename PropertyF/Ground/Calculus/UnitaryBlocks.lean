@@ -252,12 +252,17 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C]
 
+/-- A unitary block presentation of the categorical braid-image algebra. -/
+abbrev IsUnitaryBraidPresentation {X : C} {n r : ℕ} {d : Fin r → ℕ}
+    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=
+  IsUnitaryPresentation (braidEndRepresentation X n) e
+
 /-- Finite categorical braid images admit a simultaneous unitary block
 realization of their actual endomorphism algebra. -/
 theorem braidAlgebra_unitary_blocks (X : C) (n : ℕ) (h : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
         PropertyF.Blocks.Algebra ⟨_, d⟩),
-      (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation (braidEndRepresentation X n) e := by
+      (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e := by
   let _ : Finite (braidImage X n) := h
   exact groupImageAlgebra_unitary_blocks _
 

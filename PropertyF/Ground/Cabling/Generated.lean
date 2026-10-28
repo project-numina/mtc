@@ -30,10 +30,9 @@ def tensorPowerTensorIso (X : C) : ∀ n m : ℕ,
           (Iso.refl X ⊗ᵢ tensorPowerTensorIso X n m))
 
 /-- Any tensor power is in the generated closure. -/
-theorem generatedBy_tensorPower (X : C) (k : ℕ) : GeneratedBy X (tensorPower X k) := by
+theorem generatedBy_tensorPower (X : C) (k : ℕ) : GeneratedBy X (tensorPower X k) :=
   let f : Fin 1 → C := fun _ => tensorPower X k
-  refine ⟨1, fun _ => k, ⟨{ i := biproduct.ι f 0, r := biproduct.π f 0, retract := ?_ }⟩⟩
-  simp [f]
+  ⟨1, fun _ => k, ⟨{ i := biproduct.ι f 0, r := biproduct.π f 0, retract := by simp [f] }⟩⟩
 
 /-- The tensor unit belongs to the generated closure, including for `X = 0`. -/
 theorem generatedBy_unit (X : C) : GeneratedBy X (𝟙_ C) :=

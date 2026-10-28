@@ -375,7 +375,7 @@ theorem exists_unitary_braid_trace_blocks
       (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
       (mult : Fin (Ground.rank C) → Fin r → ℕ),
       (∀ j, 0 < d j) ∧
-      IsUnitaryPresentation (braidEndRepresentation X n) b ∧
+      IsUnitaryBraidPresentation b ∧
       (∀ j, ∃ i, 0 < mult i j) ∧
       (∀ i, Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2)) =
         ∑ j, mult i j * d j) ∧
