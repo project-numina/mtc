@@ -79,7 +79,7 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   classical
   let m (i : Fin (rank D)) := Module.finrank ℂ (simples D i ⟶ X)
   obtain ⟨e⟩ := exists_canonical_decomposition D X
-  let B := Calculus.groundEndBlockEquiv D X m e
+  let B := Calculus.groundEndBlockEquiv D e
   have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation
     ((Pi.evalMonoidHom _ i).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha))
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =

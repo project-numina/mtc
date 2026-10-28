@@ -51,8 +51,8 @@ theorem sCentralizes_dual {D : Ground.BraidedFusionCategory.{v,u}}
     sCentralizes D p (dualIndex D i) y := by
   dsimp only [sCentralizes] at hi ⊢
   have hreal := realSimpleDimensions_of_fp hdim
-  rw [Modular.categoricalS_dual_conj D p hreal i y, hi, map_mul, hreal, hreal]
-  rw [hdim (dualIndex D i), fpSimple_dual, ← hdim i]
+  rw [Modular.categoricalS_dual_conj D p hreal i y, hi, map_mul, hreal, hreal,
+    hdim (dualIndex D i), fpSimple_dual, ← hdim i]
 
 end PropertyF.Ground.CentreCabling
 

@@ -81,8 +81,8 @@ def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
 
 /-- A chosen simple-object decomposition gives the corresponding complex
 matrix-block decomposition of its endomorphism algebra. -/
-def groundEndBlockEquiv (X : D.Obj)
-    (m : Fin (Ground.rank D) → ℕ)
+def groundEndBlockEquiv {X : D.Obj}
+    {m : Fin (Ground.rank D) → ℕ}
     (e : X ≅ ⨁ (simpleCopies D m)) :
     End X ≃ₐ[ℂ] ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ := by
   classical

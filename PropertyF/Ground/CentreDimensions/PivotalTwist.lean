@@ -49,7 +49,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C}
     (d : X ≅ (Xᘁ)ᘁ)
     (hd : HasDrinfeldEvaluation d) :
-    Calculus.rightPartialTrace p X X (End.of (β_ X X).hom) =
+    Calculus.rightPartialTrace p (End.of (β_ X X).hom) =
       End.of ((p.iso X).hom ≫ d.inv) :=
   End.ext (by
     dsimp only [HasDrinfeldEvaluation] at hd
@@ -112,10 +112,8 @@ theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
-    θₚ X ≠ 0 := fun hz ↦
-  id_nonzero X (by
-    simpa [pivotalBraidedTwist_simple, hz] using
-      (pivotalBraidedTwist C p X).hom_inv_id.symm)
+    θₚ X ≠ 0 := fun hz ↦ id_nonzero X (by
+      simpa [pivotalBraidedTwist_simple, hz] using (pivotalBraidedTwist C p X).hom_inv_id.symm)
 
 /-- The trace of a simple self-braiding is twist scalar times dimension. -/
 theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
