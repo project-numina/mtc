@@ -130,11 +130,6 @@ def euclideanAbs (x : EuclideanSpace ℝ ι) : EuclideanSpace ℝ ι :=
 
 variable [Fintype ι]
 
-theorem euclideanAbs_norm (x : EuclideanSpace ℝ ι) :
-    ‖euclideanAbs x‖ = ‖x‖ :=
-  (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp (by
-    simp [EuclideanSpace.real_norm_sq_eq, euclideanAbs])
-
 /-- Replacing coordinates by absolute values cannot decrease the quadratic
 form of a matrix with nonnegative entries. -/
 theorem quadratic_le_abs
@@ -184,7 +179,9 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {A : Matrix ι ι ℝ}
     T.reApplyInnerSelf_continuous.continuousOn
   let y := euclideanAbs x
   have hynorm : ‖y‖ = ‖z‖ := by
-    simpa [y, euclideanAbs_norm] using hxmem
+    rw [show ‖y‖ = ‖x‖ from (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp (by
+      simp [EuclideanSpace.real_norm_sq_eq, y, euclideanAbs])]
+    simpa using hxmem
   have hyne : y ≠ 0 := norm_ne_zero_iff.mp (by simpa [hynorm] using norm_ne_zero_iff.mpr hz)
   have hynonneg (i : ι) : 0 ≤ y i := abs_nonneg _
   have hyexists : ∃ i, 0 < y i := by
