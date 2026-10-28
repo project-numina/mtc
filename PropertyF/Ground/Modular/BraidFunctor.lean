@@ -50,9 +50,8 @@ lemma braid_first_with_comparison (X A : C) {B : D} (g : B ≅ F.obj A) :
   have hn := braid_first (Iso.refl (F.obj X)) g
   simp only [tensorIso_hom, Iso.refl_hom, id_tensorHom] at hn
   rw [← Category.assoc, hn]
-  have h := congrArg (fun k => (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ k)
-    (braid_first_functor F X A)
-  simpa only [Category.assoc] using h
+  simpa only [Category.assoc] using
+    congrArg (fun k => (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ k) (braid_first_functor F X A)
 
 
 /-- Functoriality of the first generator on any tensor power. -/
@@ -80,9 +79,7 @@ theorem braidGenerator_functor (X : C) (n : ℕ) (i : Fin (n + 1)) :
       (tensorPowerComparison F X (n+2)).hom ≫ F.map (braidGenerator X n i).asIso.hom := by
   induction n with
   | zero =>
-    have hi : i = 0 := Fin.eq_zero i
-    subst i
-    exact braid_first_power F X 0
+    simpa only [Fin.eq_zero i] using braid_first_power F X 0
   | succ n ih =>
     rcases i with ⟨i, hi⟩
     cases i with

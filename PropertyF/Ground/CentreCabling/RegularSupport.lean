@@ -29,8 +29,9 @@ abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
 /-- Numerical S-centrality is symmetric. -/
 theorem sCentralizes_symm {D : Ground.BraidedFusionCategory.{v,u}}
     {p : Dimensions.PivotalStructure (C := D.Obj)} {i j : Fin (rank D)}
-    (h : sCentralizes D p i j) : sCentralizes D p j i := by
-  simpa [sCentralizes, Modular.categoricalS_symmetric D p j i, mul_comm] using h
+    (h : sCentralizes D p i j) : sCentralizes D p j i :=
+  (Modular.categoricalS_symmetric D p j i).trans <|
+    h.trans (mul_comm (Modular.simpleDimension D p i) (Modular.simpleDimension D p j))
 
 /-- FP-valued simple dimensions are fixed by complex conjugation. -/
 theorem realSimpleDimensions_of_fp {D : Ground.BraidedFusionCategory.{v,u}}

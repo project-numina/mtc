@@ -128,7 +128,7 @@ theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,
   rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
     (Ground.unitScalarEquiv D) (End.of (doubleBraiding (simples D k) X))
     (simpleDimension_ne_zero D p k)
-    (rightTrace_partialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)))
+    (rightTrace_partialTrace p (End.of (doubleBraiding (simples D k) X)))
 
 /-- Partial traces of double braiding multiply on a simple strand. -/
 abbrev HasMultiplicativePartialTrace (D : Ground.BraidedFusionCategory.{v,u})
@@ -144,16 +144,11 @@ theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCatego
     HasHopfProduct D p := by
   intro i j k
   let _ : Simple (simples D k) := simples_simple D k
-  have honene : (1 : End (simples D k)) ≠ 0 := by
-    intro h
-    have hh := congrArg End.asHom h
-    exact id_nonzero (simples D k) (by simpa using hh)
   have h := hcomp i j k
   rw [partialTrace_doubleBraiding_simple, partialTrace_doubleBraiding_simple,
     partialTrace_doubleBraiding_simple, smul_mul_smul, one_mul] at h
-  have hv := smul_left_injective ℂ honene h
-  have hd := simpleDimension_ne_zero D p k
-  field_simp [hd] at hv
+  have hv := smul_left_injective ℂ (one_ne_zero : (1 : End (simples D k)) ≠ 0) h
+  field_simp [simpleDimension_ne_zero D p k] at hv
   simpa only [SEntry_symmetric p (simples D k) (simples D i ⊗ simples D j),
     SEntry_symmetric p (simples D k) (simples D i),
     SEntry_symmetric p (simples D k) (simples D j), categoricalS] using hv
@@ -172,10 +167,9 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 
 /-- The dimension of the simple representative of the tensor unit is one. -/
 theorem simpleDimension_unit (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) : simpleDimension C p (unitIndex C) = 1 := by
-  obtain ⟨e⟩ := unitIndex_iso C
-  unfold simpleDimension
-  rw [p.rightTrace_id_iso e, Dimensions.rightTrace_unit, map_one]
+    (p : PivotalStructure (C := C.Obj)) : simpleDimension C p (unitIndex C) = 1 :=
+  (unitIndex_iso C).elim fun e ↦ by
+    simp only [simpleDimension, p.rightTrace_id_iso e, Dimensions.rightTrace_unit, map_one]
 
 end PropertyF.Ground.Modular
 end
@@ -242,10 +236,10 @@ theorem rightPartialTrace_nested_simple (p : PivotalStructure (C := C))
     simpa [g, Category.assoc] using
       p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
   rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd
-      (rightTrace_partialTrace p Z (X ⊗ Y) f),
+      (rightTrace_partialTrace p f),
     rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd
-      (rightTrace_partialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y g))]
-  simp only [Calculus.scalarTrace, rightTrace_partialTrace p (Z ⊗ X) Y g, hc]
+      (rightTrace_partialTrace p (rightPartialTrace p (Z ⊗ X) Y g))]
+  simp only [Calculus.scalarTrace, rightTrace_partialTrace p g, hc]
 
 
 end Nested

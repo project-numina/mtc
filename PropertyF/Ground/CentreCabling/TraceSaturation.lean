@@ -45,9 +45,9 @@ theorem finiteOrder_matrix_trace_saturation {M : Matrix ι ι ℂ} (hM : IsOfFin
   · rw [← ht]
     exact (Complex.re_le_norm _).trans (PropertyF.norm_trace_le_card hP)
   · intro heq
-    have hU : U = 1 := PropertyF.eq_one_of_re_trace_eq_card hP (by rw [ht]; exact heq)
-    have hh := congrArg (fun A : Matrix ι ι ℂ => (↑(P⁻¹) : Matrix ι ι ℂ) * A * (P : Matrix ι ι ℂ)) hU
-    simpa [U, Matrix.mul_assoc, ← Units.val_mul] using hh
+    simpa [U, Matrix.mul_assoc, ← Units.val_mul] using
+      congrArg (fun A : Matrix ι ι ℂ ↦ (↑(P⁻¹) : Matrix ι ι ℂ) * A * (P : Matrix ι ι ℂ))
+        (PropertyF.eq_one_of_re_trace_eq_card hP (by rwa [ht]))
 
 end PropertyF.Ground.CentreCabling
 

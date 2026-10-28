@@ -30,9 +30,8 @@ theorem doubleBraiding_eq_one_of_retract
     (h : Modular.doubleBraiding Z Y = 𝟙 _) : Modular.doubleBraiding X Y = 𝟙 _ := by
   have hh := Modular.doubleBraiding_natural_left r.i Y
   rw [h, Category.comp_id] at hh
-  have hh' := congrArg (fun t => t ≫ (r.r ▷ Y)) hh
   simpa only [Category.assoc, ← comp_whiskerRight, r.retract, id_whiskerRight,
-    Category.comp_id] using hh'
+    Category.comp_id] using congrArg (fun t ↦ t ≫ (r.r ▷ Y)) hh
 
 /-- If all the components of a finite biproduct centralize an object, their
 biproduct centralizes it. -/
@@ -60,11 +59,11 @@ theorem doubleBraiding_eq_one_of_simple_constituents
   classical
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
   let V : (Σ i, Fin (m i)) → D.Obj := fun a => simples D a.1
-  have hv (a : Σ i, Fin (m i)) : P (V a) := by
-    apply hP ((Retract.mk (biproduct.ι V a) (biproduct.π V a) (by simp)).trans (Retract.ofIso e.symm)) hX
-  have hb : Modular.doubleBraiding (⨁ V) Y = 𝟙 _ :=
-    doubleBraiding_eq_one_biproduct (fun a => h a.1 (hv a))
-  exact doubleBraiding_eq_one_of_retract (Retract.ofIso e) hb
+  apply doubleBraiding_eq_one_of_retract (Retract.ofIso e)
+  apply doubleBraiding_eq_one_biproduct
+  intro a
+  exact h a.1 <| hP
+    ((Retract.mk (biproduct.ι V a) (biproduct.π V a) (by simp)).trans (Retract.ofIso e.symm)) hX
 
 end PropertyF.Ground.CentreCabling
 
