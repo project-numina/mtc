@@ -85,7 +85,7 @@ theorem galois_pivotalDimension_norm_le_fpSimple (C : BraidedFusionCategory)
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i := by
   apply galois_character_norm_le_fpSimple C
-    (fun j => pivotalDimension C p (simples C j)) (unitIndex C)
+    (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
   · obtain ⟨e⟩ := Ground.unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit]
     exact one_ne_zero

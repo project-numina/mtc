@@ -58,6 +58,10 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
   simp only [Pi.smul_apply, smul_eq_mul]
   linarith [hall j]
 
+/-- A function on simple labels is multiplicative for the fusion rules. -/
+abbrev IsFusionMultiplicative (C : BraidedFusionCategory) (χ : Fin (rank C) → ℂ) : Prop :=
+  ∀ i j, χ i * χ j = ∑ k, (fusionCoeff C i j k : ℂ) * χ k
+
 end PropertyF.Ground
 
 end
@@ -70,9 +74,8 @@ namespace PropertyF.Ground.Dimensions
 /-- Each value of any nonzero fusion-ring character is bounded in absolute value
 by the spectral-radius FP dimension. No positivity of the character is needed. -/
 theorem character_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
-    (χ : Fin (Ground.rank C) → ℂ) (i₀ : Fin (Ground.rank C)) (hχ : χ i₀ ≠ 0)
-    (hchar : ∀ i j, χ i * χ j = ∑ k,
-      (Ground.fusionCoeff C i j k : ℂ) * χ k) (i : Fin (Ground.rank C)) :
+    {χ : Fin (Ground.rank C) → ℂ} {i₀ : Fin (Ground.rank C)} (hχ : χ i₀ ≠ 0)
+    (hchar : Ground.IsFusionMultiplicative C χ) (i : Fin (Ground.rank C)) :
     ‖χ i‖ ≤ Ground.fpSimple C i := by
   classical
   let A := (Ground.fusionMatrix C i)ᵀ
@@ -102,12 +105,11 @@ theorem character_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
 /-- Every complex field conjugate of a fusion character obeys the same FP
 bound, because field automorphisms preserve the integer fusion coefficients. -/
 theorem galois_character_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
-    (χ : Fin (Ground.rank C) → ℂ) (i₀ : Fin (Ground.rank C)) (hχ : χ i₀ ≠ 0)
-    (hchar : ∀ i j, χ i * χ j = ∑ k,
-      (Ground.fusionCoeff C i j k : ℂ) * χ k)
+    {χ : Fin (Ground.rank C) → ℂ} {i₀ : Fin (Ground.rank C)} (hχ : χ i₀ ≠ 0)
+    (hchar : Ground.IsFusionMultiplicative C χ)
     (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
     ‖σ (χ i)‖ ≤ Ground.fpSimple C i := by
-  apply character_norm_le_fpSimple C (fun j => σ (χ j)) i₀
+  apply character_norm_le_fpSimple C (χ := fun j => σ (χ j)) (i₀ := i₀)
   · exact (map_ne_zero σ).2 hχ
   · intro j k
     simpa using congrArg σ (hchar j k)
@@ -173,12 +175,12 @@ theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
   have : v i = 0 := le_antisymm (le_of_not_gt hn) (hnonneg i)
   simp [this] at *
 
-/-- A strictly positive symmetric real matrix has a strictly positive
-eigenvector. -/
-theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype ι]
+/-- A nonnegative symmetric real matrix has a nonnegative eigenvector with a
+positive coordinate. -/
+theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {ι : Type*} [Fintype ι]
     [DecidableEq ι] [Nonempty ι] (A : Matrix ι ι ℝ)
-    (hsym : A.IsHermitian) (hpos : ∀ i j, 0 < A i j) :
-    ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 < v i) ∧ A *ᵥ v = d • v := by
+    (hsym : A.IsHermitian) (hA : ∀ i j, 0 ≤ A i j) :
+    ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 ≤ v i) ∧ (∃ i, 0 < v i) ∧ A *ᵥ v = d • v := by
   classical
   let T : EuclideanSpace ℝ ι →L[ℝ] EuclideanSpace ℝ ι :=
     (Matrix.toEuclideanLin A).toContinuousLinearMap
@@ -214,7 +216,7 @@ theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype
     change (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf x ≤
       (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf y
     rw [matrix_quadratic_form, matrix_quadratic_form]
-    simpa [y, euclideanAbs] using quadratic_le_abs A (fun i j => (hpos i j).le) (fun i => x i)
+    simpa [y, euclideanAbs] using quadratic_le_abs A hA (fun i => x i)
   have hymax : IsMaxOn T.reApplyInnerSelf (Metric.sphere 0 ‖y‖) y := by
     intro w hw
     have hw' : w ∈ Metric.sphere (0 : EuclideanSpace ℝ ι) ‖z‖ := by simpa [hynorm] using hw
@@ -223,8 +225,16 @@ theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype
   let d := T.rayleighQuotient y
   have heigen' : A *ᵥ (fun i => y i) = d • (fun i => y i) := by
     simpa [T, d, Matrix.toLpLin_apply] using (congrArg ofLp heigen)
-  exact ⟨d, fun i => y i,
-    positive_matrix_eigenvector_pos A hpos (fun i => y i) hynonneg hyexists d heigen', heigen'⟩
+  exact ⟨d, fun i => y i, hynonneg, hyexists, heigen'⟩
+
+/-- A strictly positive symmetric real matrix has a strictly positive eigenvector. -/
+theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype ι]
+    [DecidableEq ι] [Nonempty ι] (A : Matrix ι ι ℝ)
+    (hsym : A.IsHermitian) (hpos : ∀ i j, 0 < A i j) :
+    ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 < v i) ∧ A *ᵥ v = d • v := by
+  obtain ⟨d, v, hv, hvpos, heigen⟩ :=
+    nonneg_symmetric_matrix_has_nonneg_eigenvector A hsym (fun i j => (hpos i j).le)
+  exact ⟨d, v, positive_matrix_eigenvector_pos A hpos v hv hvpos d heigen, heigen⟩
 
 end PropertyF.Ground
 
@@ -555,7 +565,7 @@ theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
     dsimp [χ]
     exact_mod_cast fpCharacter_mul D j k
   simpa [χ, Complex.norm_real, abs_of_pos (fpCharacter_pos D i)] using
-    (Dimensions.character_norm_le_fpSimple D χ (unitIndex D) hχ hchar i)
+    (Dimensions.character_norm_le_fpSimple D hχ hchar i)
 
 theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
     fpSimple D i ≤ fpCharacter D i := by
