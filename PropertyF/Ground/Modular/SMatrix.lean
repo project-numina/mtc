@@ -117,7 +117,7 @@ theorem categoricalS_unit (i : Fin (rank C)) :
 theorem categorical_global_eq_sum_squares (hp : p.IsSpherical) :
     Ground.globalDimension C = ∑ i, simpleDimension C p i ^ 2 := by
   simpa only [simpleDimension, ← Ground.unitScalar_eq_equiv, ← rightTrace_id] using
-    target_globalDimension_eq_sum_squares C p hp
+    target_globalDimension_eq_sum_squares C hp
 
 end
 
