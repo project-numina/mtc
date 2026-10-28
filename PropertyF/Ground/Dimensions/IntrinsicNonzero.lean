@@ -39,11 +39,6 @@ theorem leftQuantumTrace_dual_component {C : Type u} [Category.{v} C] [MonoidalC
     [RigidCategory C] {X : C} (j : X ≅ (Xᘁ)ᘁ) :
     leftQuantumTrace (rightDualIsoMap j).symm = rightQuantumTrace j := by
   rw [leftQuantumTrace_eq_rightDual]
-  have hdual : (rightDualIsoMap (rightDualIsoMap j).symm).symm =
-      rightDualIsoMap (rightDualIsoMap j) := by
-    apply Iso.ext
-    rfl
-  rw [hdual]
   exact (rightQuantumTrace_iso j (rightDualIsoMap (rightDualIsoMap j)) j (by rfl)).symm
 
 /-- The intrinsic squared norm is invariant under right duality, without any
