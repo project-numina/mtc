@@ -79,10 +79,8 @@ theorem leftPartialTrace_whiskerRight (Z : C) (f : End (X ⊗ Y)) :
 /-- Schur's lemma identifies the partial trace on a simple surviving strand
 once compatibility with total trace is known. -/
 theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C]
-    [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
-    (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
-    (htrace : IsLeftTraceCompatibleAt p f) :
+    [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)] (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
+    (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) (htrace : IsLeftTraceCompatibleAt p f) :
     leftPartialTrace p f =
       (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) :=
   (Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p f) hd).trans <|

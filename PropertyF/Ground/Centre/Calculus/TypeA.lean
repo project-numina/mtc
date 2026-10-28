@@ -234,9 +234,9 @@ theorem typeAGenerator_generates :
 
 /-- The quotient generators satisfy the type-A relations. -/
 theorem typeAGenerator_isTypeAFamily : IsTypeAFamily (g n) (n + 1) :=
-  ⟨(fun i hi ↦ typeAGenerator_square (i := ⟨i, hi⟩)),
-    (fun i hi ↦ typeAGenerator_adjacent (i := ⟨i, by omega⟩)),
-    (fun i j hij hj ↦ typeAGenerator_distant (i := ⟨i, by omega⟩) (j := ⟨j, hj⟩) hij)⟩
+  ⟨fun i hi ↦ typeAGenerator_square (i := ⟨i, hi⟩),
+    fun i hi ↦ typeAGenerator_adjacent (i := ⟨i, by omega⟩),
+    fun i j hij hj ↦ typeAGenerator_distant (i := ⟨i, by omega⟩) (j := ⟨j, hj⟩) hij⟩
 
 /-- The type-A presentation has exactly enough elements for the permutation
 surjection to be an isomorphism. -/
