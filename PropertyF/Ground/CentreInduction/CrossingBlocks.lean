@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Fusion.FunctorDimension
+public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 
 /-! The underlying object of the induction construction for the Drinfeld centre. -/

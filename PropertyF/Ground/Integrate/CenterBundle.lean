@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.Centre.Abelian
 public import Mathlib.CategoryTheory.Adjunction.Mates
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
-public import PropertyF.Ground.Fusion.FunctorDimension
+public import PropertyF.Ground.Fusion.ObjectDimension
 
 /-! # Dual half-braidings and the bundled centre
 

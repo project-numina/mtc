@@ -141,10 +141,7 @@ theorem quadratic_le_abs {ι : Type*} [Fintype ι]
     (A : Matrix ι ι ℝ) (hA : ∀ i j, 0 ≤ A i j) (x : ι → ℝ) :
     ∑ i, ∑ j, x i * A i j * x j ≤
       ∑ i, ∑ j, |x i| * A i j * |x j| := by
-  apply Finset.sum_le_sum
-  intro i _
-  apply Finset.sum_le_sum
-  intro j _
+  refine Finset.sum_le_sum fun i _ ↦ Finset.sum_le_sum fun j _ ↦ ?_
   simpa [abs_mul, mul_assoc, mul_comm, mul_left_comm] using
     (mul_le_mul_of_nonneg_left (le_abs_self (x i * x j)) (hA i j))
 

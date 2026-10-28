@@ -66,20 +66,12 @@ theorem rightDualTensorIso_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y')
         ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
       ((rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ)) ▷ (X ⊗ Y) ≫
         ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := by
-    have he := rightDualIso_evaluation
-      (@HasRightDual.exact C _ _ (X ⊗ Y) (RightRigidCategory.rightDual _))
-      (ExactPairing.tensor (X₁ := X) (X₂ := Y) (Y₁ := Xᘁ) (Y₂ := Yᘁ))
+    have he := rightDualTensorIso_evaluation X Y
     simp only [comp_whiskerRight_assoc] at *
-    change (rightDualTensorIso X Y).hom ▷ (X ⊗ Y) ≫
-      ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) = ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ) at he
     simp only [← Category.assoc, he]
     simp only [Category.assoc, rightAdjointMate_comp_evaluation]
     have aux := tensorPairing_evaluation_natural f g
-    have he' := rightDualIso_evaluation
-      (@HasRightDual.exact C _ _ (X' ⊗ Y') (RightRigidCategory.rightDual _))
-      (ExactPairing.tensor (X₁ := X') (X₂ := Y') (Y₁ := X'ᘁ) (Y₂ := Y'ᘁ))
-    change (rightDualTensorIso X' Y').hom ▷ (X' ⊗ Y') ≫
-      ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) = ε_ (X' ⊗ Y') ((X' ⊗ Y')ᘁ) at he'
+    have he' := rightDualTensorIso_evaluation X' Y'
     calc
       _ = (X' ⊗ Y')ᘁ ◁ (f ⊗ₘ g) ≫ (rightDualTensorIso X' Y').hom ▷ (X' ⊗ Y') ≫
           ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) := by rw [he']
