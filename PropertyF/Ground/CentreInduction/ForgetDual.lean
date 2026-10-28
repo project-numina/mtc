@@ -15,10 +15,10 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (Center D)]
+  [RightRigidCategory (Center D)]
 local notation "𝒵" => Center D
 
-omit [RightRigidCategory D] [RigidCategory (Center D)] in
+omit [RightRigidCategory D] [RightRigidCategory (Center D)] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Forgetting a centre pairing gives a pairing in the base category. -/
 @[instance_reducible] def forgetPairingOf {Z W : Center D} (p : ExactPairing Z W) :
@@ -46,7 +46,7 @@ omit [RightRigidCategory D] in
 @[instance_reducible] def forgetPairing (Z : 𝒵) : ExactPairing Z.1 ((Zᘁ).1) :=
   forgetPairingOf HasRightDual.exact
 
-omit [RightRigidCategory D] [RigidCategory (Center D)] in
+omit [RightRigidCategory D] [RightRigidCategory (Center D)] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Forgetting commutes with comparing two pairings when their coevaluations agree. -/
 theorem forget_rightDualIso {Z A B : Center D} (p : ExactPairing Z A) (q : ExactPairing Z B)

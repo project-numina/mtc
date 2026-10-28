@@ -10,7 +10,7 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (Center D)]
+  [RightRigidCategory (Center D)]
 local notation "𝒵" => Center D
 variable (p : PivotalStructure (C := D)) (X Y : Center D)
 
