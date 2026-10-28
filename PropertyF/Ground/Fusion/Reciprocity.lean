@@ -124,12 +124,9 @@ theorem dualIndex_involutive (D : BraidedFusionCategory.{v,u}) :
     rw [fusionCoeff_comm D i (dualIndex D i), fusionCoeff_reciprocity_labels,
       fusionCoeff_unit]
     simp
-  have hdual : fusionCoeff D i (dualIndex D i) (unitIndex D) =
-      if i = dualIndex D (dualIndex D i) then 1 else 0 := by
-    rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit]
+  rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit] at hunit
   by_contra h
-  simp [Ne.symm h] at hdual
-  omega
+  simp [Ne.symm h] at hunit
 
 /-- Duality permutes the simple labels. -/
 def dualEquiv (D : BraidedFusionCategory.{v,u}) : Equiv.Perm (Fin (rank D)) :=
