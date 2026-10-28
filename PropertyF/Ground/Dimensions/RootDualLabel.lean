@@ -82,17 +82,17 @@ theorem trace_reciprocity_of_intertwining
   let E := enoReciprocityEquiv C i k j
   let A := (multiplicityDefect C i k j).toLinearMap
   let B := (multiplicityDefect C (dualIndex C i) j k).toLinearMap
-  have hconj : E.conj (Module.Dual.transpose A) = rootDualSign C i • B := by
-    ext w
-    obtain ⟨v, rfl⟩ := E.surjective w
-    simpa [E, A, B, LinearEquiv.conj_apply] using hintertwine i j k v
   let : FiniteDimensional ℂ (simples C j ⟶ simples C i ⊗ simples C k) :=
     IsFusionCategory.hom_finite _ _
   let : FiniteDimensional ℂ (simples C k ⟶ simples C (dualIndex C i) ⊗ simples C j) :=
     IsFusionCategory.hom_finite _ _
-  have ht := congrArg (LinearMap.trace ℂ _) hconj
-  simp only [LinearMap.trace_conj', LinearMap.trace_transpose', map_smul, smul_eq_mul] at ht
-  change LinearMap.trace ℂ _ A = rootDualSign C i * LinearMap.trace ℂ _ B at ht
+  have ht : LinearMap.trace ℂ _ A = rootDualSign C i * LinearMap.trace ℂ _ B := by
+    simpa only [LinearMap.trace_conj', LinearMap.trace_transpose', map_smul, smul_eq_mul] using
+      congrArg (LinearMap.trace ℂ _) (show E.conj (Module.Dual.transpose A) =
+        rootDualSign C i • B from by
+          ext w
+          obtain ⟨v, rfl⟩ := E.surjective w
+          simpa [E, A, B, LinearEquiv.conj_apply] using hintertwine i j k v)
   change LinearMap.trace ℂ _ B = rootDualSign C i * LinearMap.trace ℂ _ A
   rw [ht, ← mul_assoc, rootDualSign_sq, one_mul]
 

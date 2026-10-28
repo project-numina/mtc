@@ -142,11 +142,11 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
       mul_zero, sub_zero, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] using
       (congrArg Complex.re heq).symm
   intro k
-  have hz := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ ↦
-    mul_nonneg (sub_nonneg.mpr ((Complex.re_le_norm _).trans (hdom j))) (hf j).le)).1
-      hsum k (Finset.mem_univ k)
-  have hre : (x k).re = N k :=
-    (sub_eq_zero.mp ((mul_eq_zero.mp hz).resolve_right (ne_of_gt (hf k)))).symm
+  have hre : (x k).re = N k := by
+    apply (sub_eq_zero.mp ?_).symm
+    exact (mul_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg (fun j _ ↦
+      mul_nonneg (sub_nonneg.mpr ((Complex.re_le_norm _).trans (hdom j))) (hf j).le)).1
+        hsum k (Finset.mem_univ k))).resolve_right (ne_of_gt (hf k))
   have him : (x k).im = 0 := Complex.abs_re_eq_norm.mp <| by
     rw [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))]
     exact le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)
