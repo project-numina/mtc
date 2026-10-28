@@ -75,7 +75,7 @@ theorem rightDualTensorIso_inv_natural {X X' Y Y' : C}
     (f : X ⟶ X') (g : Y ⟶ Y') :
     (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso X Y).inv =
       (rightDualTensorIso X' Y').inv ≫ ((f ⊗ₘ g)ᘁ) :=
-  iso_inv_naturality_of_hom (rightDualTensorIso_natural f g)
+  (CommSq.vert_inv (CommSq.mk (rightDualTensorIso_natural f g))).w
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is natural in both factors. -/
@@ -122,7 +122,7 @@ def fourthDualIso (X : C.Obj) :
 theorem fourthDualIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (fourthDualIso C Y).hom = (fourthDualIso C X).hom ≫ ((((fᘁ)ᘁ)ᘁ)ᘁ) := by
   have hd := congrArg (fun (a : (((Yᘁ)ᘁ)ᘁ) ⟶ (Xᘁ)) => rightAdjointMate a)
-    (iso_inv_naturality_of_hom (doubleDualIso_natural C (fᘁ))).symm
+    ((CommSq.vert_inv (CommSq.mk (doubleDualIso_natural C (fᘁ)))).w).symm
   rw [comp_rightAdjointMate, comp_rightAdjointMate] at hd
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
   rw [doubleDualIso_natural_assoc, hd]

@@ -322,16 +322,14 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
   have hε : ε * ε = 1 := rootDualSign_sq C i
   have hεstar : star ε = ε := by
     rcases mul_self_eq_one_iff.mp hε with h | h <;> simp [h]
-  have hA : ∀ j k, star (A j k) = A j k := by
-    intro j k
-    let : FiniteDimensional ℂ (simples C k ⟶ simples C i ⊗ simples C j) :=
+  have hA : ∀ j k, star (A j k) = A j k := fun j k ↦
+    letI : FiniteDimensional ℂ (simples C k ⟶ simples C i ⊗ simples C j) :=
       IsFusionCategory.hom_finite _ _
-    exact star_involution_trace (hinv i j k)
+    star_involution_trace (hinv i j k)
   have hv : d ≠ 0 := fun hz ↦ rootDimension_ne_zero C (unitIndex C) (congrFun hz _)
-  have h : A *ᵥ d = d i • d := by
-    ext j
-    change (∑ k, enoTraceMatrix C i j k * rootDimension C k) = rootDimension C i * rootDimension C j
-    exact enoTraceMatrix_eigenvector_of_involutions C (hinv i j)
+  have h : A *ᵥ d = d i • d :=
+    fusion_character_eigenvector (fun j k ↦ (enoTraceMatrix_eigenvector_of_involutions C
+      (hinv j k)).symm) i
   have ht : Aᵀ *ᵥ d = (ε * d (dualIndex C i)) • d := by
     ext j
     change (∑ k, enoTraceMatrix C i k j * rootDimension C k) =
@@ -343,13 +341,9 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
       _ = ε * ∑ k, ((ε * enoTraceMatrix C i k j) * rootDimension C k) := by
         simp only [Finset.mul_sum, ← mul_assoc, hε, one_mul]
       _ = _ := by rw [he]; ring
-  have hc := conjugate_of_transpose_eigenvector A hA hv h ht
-  have hc' := congrArg star hc
-  simp only [star_mul, star_star, hεstar] at hc'
-  calc
-    d (dualIndex C i) = (ε * ε) * d (dualIndex C i) := by rw [hε, one_mul]
-    _ = ε * (ε * d (dualIndex C i)) := by ring
-    _ = ε * star (d i) := by rw [hc']
+  have hc := congrArg star (conjugate_of_transpose_eigenvector A hA hv h ht)
+  simp only [star_mul, star_star, hεstar] at hc
+  rw [← hc, ← mul_assoc, hε, one_mul]
 
 /-- ENO's trace reciprocity proves the intrinsic root-norm identity. -/
 theorem squaredNorm_eq_root_norm_sq_of_reciprocity
@@ -359,12 +353,11 @@ theorem squaredNorm_eq_root_norm_sq_of_reciprocity
   rw [squaredNorm_eq_rootDualSign_mul C i,
     rootDimension_dual_conjugate_of_trace_reciprocity C hinv htranspose i]
   calc
-    _ = rootDimension C i * star (rootDimension C i) := by
-      calc
-        _ = (rootDualSign C i * rootDualSign C i) *
-          (rootDimension C i * star (rootDimension C i)) := by ring
-        _ = _ := by rw [rootDualSign_sq, one_mul]
-    _ = _ := by simpa using Complex.mul_conj' (rootDimension C i)
+    _ = (rootDualSign C i * rootDualSign C i) *
+        (rootDimension C i * star (rootDimension C i)) := by ring
+    _ = _ := by
+      rw [rootDualSign_sq, one_mul]
+      simpa using Complex.mul_conj' (rootDimension C i)
 
 end PropertyF.Ground.Dimensions
 
