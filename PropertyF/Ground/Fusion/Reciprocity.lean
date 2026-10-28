@@ -90,8 +90,8 @@ local instance (i : Fin (rank D)) : Simple (simples D i) := simples_simple D i
 local instance (i : Fin (rank D)) : Simple (ᘁ(simples D i)) := simple_leftDual _
 
 /-- The label of the left dual of a simple representative. -/
-def dualIndex (j : Fin (rank D)) : Fin (rank D) := by
-  exact Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
+def dualIndex (j : Fin (rank D)) : Fin (rank D) :=
+  Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
 
 variable {D} in
 theorem dualIndex_iso (j : Fin (rank D)) :

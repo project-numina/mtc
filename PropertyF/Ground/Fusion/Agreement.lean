@@ -497,8 +497,7 @@ theorem fpSimple_dual (i : Fin (rank D)) :
 variable {D} in
 /-- Every simple has FP dimension at least one. -/
 theorem one_le_fpSimple (i : Fin (rank D)) :
-    1 ≤ fpSimple D i := by
-  apply (one_le_sq_iff₀ (fpSimple_pos D i).le).mp
+    1 ≤ fpSimple D i := (one_le_sq_iff₀ (fpSimple_pos D i).le).mp <| by
   simpa only [fusionCoeff_dual_unit, Nat.cast_one, fpSimple_unit, one_mul,
     ← fpSimple_mul, fpSimple_dual, ← pow_two, one_pow] using
     (Finset.single_le_sum
