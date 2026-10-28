@@ -161,9 +161,8 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
   let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
   obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar (k := ℂ) (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
   rw [rightQuantumTrace_smul_hom hr, rightQuantumTrace_unitIso] at htrace
-  have hr1 : r = 1 := by
-    simpa only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] using htrace
-  simpa [hr1] using hr
+  simp only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] at htrace
+  simpa [htrace] using hr
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignTwist_unit_of_simple_dimension
