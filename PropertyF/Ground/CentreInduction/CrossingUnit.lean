@@ -29,7 +29,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The canonical unit crossing block is the unitor comparison. -/
 theorem crossingBlock_unit :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
-    (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
+    (ρ_ (conjugate S X)).hom ≫ (λ_ (conjugate S X)).inv := by
   simp [crossingBlock, mixedCrossing, closeFusionMap_unit, tensorHom_def]
 end
 
