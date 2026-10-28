@@ -4,15 +4,12 @@ public import PropertyF.Ground.Calculus.PartialTrace
 public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Dimensions.SimpleScalars
-public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Fusion.SemisimpleSplit
-public import PropertyF.Ground.Centre.Abelian
 public import PropertyF.Ground.Centre.Abelian
 public import Mathlib.CategoryTheory.Subobject.ArtinianObject
 public import Mathlib.CategoryTheory.Subobject.NoetherianObject
 public import Mathlib.RingTheory.Artinian.Module
 public import Mathlib.CategoryTheory.Abelian.Exact
-public import PropertyF.Ground.Fusion.SemisimpleSplit
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -166,6 +163,26 @@ theorem center_cokernel_measure_lt {S W : CategoryTheory.Center C.Obj}
   rw [finrank_top, LinearMap.finrank_range_of_inj hinj] at hlt
   exact hlt
 
+/-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
+private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]
+    {P W Q S : D} [Simple P] [Simple S] (p : P ⟶ W) [Mono p]
+    (t : S ⟶ W) [Mono t] (q : W ⟶ Q) (hpq : p ≫ q = 0)
+    (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
+    Nonempty (S ≅ P) ∨ Mono (t ≫ q) := by
+  by_cases hz : t ≫ q = 0
+  · have hk := Abelian.monoIsKernelOfCokernel (CokernelCofork.ofπ q hpq) hc
+    obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift' hk t hz
+    change S ⟶ P at g
+    change g ≫ p = t at hg
+    have ht : t ≠ 0 := fun h => id_nonzero S ((cancel_mono t).1 (by simp [h]))
+    have hg0 : g ≠ 0 := by
+      intro h
+      apply ht
+      simpa [h] using hg.symm
+    let : IsIso g := isIso_of_hom_simple hg0
+    exact Or.inl ⟨asIso g⟩
+  · exact Or.inr (mono_of_nonzero_from_simple hz)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre object has only finitely many isomorphism classes of simple subobjects. -/
 theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
@@ -196,22 +213,11 @@ theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
       intro S hS ⟨t, ht⟩
       let : Simple S := hS
       let : Mono t := ht
-      have ht0 : t ≠ 0 := fun h0 =>
-        id_nonzero S ((cancel_mono t).1 (by simp [h0]))
-      by_cases hz : t ≫ q = 0
-      · have hcok := PropertyF.Ground.Centre.centerCokernelIsColimit p
-        have hk := Abelian.monoIsKernelOfCokernel
-          (CokernelCofork.ofπ q (PropertyF.Ground.Centre.centerCokernel_condition p)) hcok
-        obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift' hk t hz
-        change S ⟶ (P : CategoryTheory.Center C.Obj) at g
-        change g ≫ p = t at hg
-        have hg0 : g ≠ 0 := by
-          intro h0
-          apply ht0
-          simpa [h0] using hg.symm
-        let : IsIso g := isIso_of_hom_simple hg0
-        exact ⟨P, by simp, ⟨asIso g⟩⟩
-      · let : Mono (t ≫ q) := mono_of_nonzero_from_simple hz
+      rcases simple_mono_cokernel p t q
+          (PropertyF.Ground.Centre.centerCokernel_condition p)
+          (PropertyF.Ground.Centre.centerCokernelIsColimit p) with hSP | hmono
+      · exact ⟨P, by simp, hSP⟩
+      · let : Mono (t ≫ q) := hmono
         obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, inferInstance⟩
         exact ⟨T, by simp [hT], hST⟩
 
