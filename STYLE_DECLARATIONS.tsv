@@ -833,7 +833,7 @@ PropertyF.BlockTrace	PropertyF.Blocks.recOn	definition	0	21	2	1	0	0	0	2677934594
 PropertyF.Ground.CentreInduction.FiniteSimples	_private.PropertyF.Ground.CentreInduction.FiniteSimples.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_FiniteSimples___macroRules__private_PropertyF_Ground_CentreInduction_FiniteSimples_0_PropertyF_Ground_CentreInduction_term𝒵_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Centre.Rigid	CategoryTheory.tensorLeftAdjunction.eq_1	theorem	0	159	2	1	0	3	0	1192528660
 PropertyF.Ground.CentreInduction.BasisPairing	PropertyF.Ground.CentreInduction.mixedCrossingBilinear._proof_3	theorem	1	305	8	2	0	9	2	498015870
-PropertyF.Ground.Dimensions.RootDualLabel	PropertyF.Ground.Dimensions.rightDualLabelIso	definition	1	46	2	0	0	0	0	3057653723
+PropertyF.Ground.Dimensions.ENOReciprocity	PropertyF.Ground.Dimensions.rightDualLabelIso	definition	1	46	2	0	0	0	0	3057653723
 PropertyF.Ground.Fusion.UnitPower	PropertyF.Ground.fusionFlow.eq_1	theorem	0	54	4	0	0	0	0	4050407263
 PropertyF.Ground.CentreInduction.DrinfeldTheorem	_private.PropertyF.Ground.CentreInduction.DrinfeldTheorem.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_DrinfeldTheorem___unexpand_PropertyF_Ground_Modular_doubleBraiding_1	definition	0	1	0	0	0	0	0	4242366553
 PropertyF.Ground.CentreCabling.ImageCore	PropertyF.Ground.CentreCabling.centralizes_imageRetract	theorem	1	213	5	3	0	2	5	2801215892
