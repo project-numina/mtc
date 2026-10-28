@@ -137,13 +137,10 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The canonical unit-column crossing block contracts by evaluation. -/
 theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
-  let d : Aᘁ ≅ 𝟙_ D := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
-  let us : (A ⊗ X) ⊗ Aᘁ ≅ X := ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫
-    ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
   let te : T ⊗ A ≅ T := whiskerLeftIso T e ≪≫ ρ_ T
-  crossingBlock X T A te.inv te.hom ≫ (T ◁ us.hom) =
+  crossingBlock X T A te.inv te.hom ≫ (T ◁ (unitTensorIso e X).hom) =
     𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
-  dsimp only
+  dsimp only [unitTensorIso]
   set δ : Aᘁ ≅ 𝟙_ D := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
   have hq : closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫ δ.hom = ε_ T (Tᘁ) :=
     close_rightUnit_eval T e
@@ -216,10 +213,7 @@ theorem unit_diag (i : Fin (rank C)) :
     ((S i ◁ (underlyingCounit C).app X) ▷ (S i)ᘁ) = 𝟙 (V i) := by
   simp only [unit_matrix_reduce, crossing_counit_diagonal C X i]
   let e : S (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
-  rw [show crossingBlock X (S i) (S (unitIndex C))
-      (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
-        (S i ◁ (unitSummandIso C X).hom) = _ from
-      crossingUnitBlock_eval X (S i) e]
+  erw [crossingUnitBlock_eval X (S i) e]
   dsimp only [Functor.id_obj]
   calc
     _ = 𝟙 _ ⊗≫ ((S i ⊗ X) ◁ (((S i)ᘁ ◁ η_ (S i) ((S i)ᘁ)) ⊗≫
