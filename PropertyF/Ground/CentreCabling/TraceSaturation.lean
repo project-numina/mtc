@@ -59,6 +59,15 @@ universe v u
 variable {D : Ground.BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := D.Obj)}
 attribute [local instance] Abelian.hasFiniteBiproducts
 
+/-- Positive weighted sums preserve equality when the terms are pointwise ordered. -/
+theorem eq_of_pos_weighted_sum_eq {ι R : Type*} [Fintype ι] [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    {w a b : ι → R}
+    (hw : ∀ i, 0 < w i) (hle : ∀ i, a i ≤ b i)
+    (hsum : (∑ i, w i * a i) = ∑ i, w i * b i) (i : ι) : a i = b i :=
+  mul_left_cancel₀ (ne_of_gt (hw i)) <|
+    (Finset.sum_eq_sum_iff_of_le (fun j _ ↦ mul_le_mul_of_nonneg_left (hle j) (hw j).le)).mp
+      hsum i (Finset.mem_univ i)
+
 /-- In a fusion category with positive simple pivotal dimensions, a
 finite-order endomorphism whose pivotal trace equals the object's dimension
 is the identity. -/
@@ -83,11 +92,8 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
     simp only [Modular.simpleDimension] at hdim
     simp only [Dimensions.groundUnitScalarEquiv_apply, Ground.unitScalar_eq_equiv, hdim] at hh
     simpa [B, Complex.re_sum, Complex.mul_re] using hh
-  have hle : ∀ i, fpSimple D i * (B a i).trace.re ≤ fpSimple D i * (m i : ℝ) :=
-    fun i => mul_le_mul_of_nonneg_left (by simpa using (hb i).1) (fpSimple_pos D i).le
-  have heq (i : Fin (rank D)) : (B a i).trace.re = (m i : ℝ) := by
-    have hh := (Finset.sum_eq_sum_iff_of_le (fun i _ => hle i)).mp hsum i (Finset.mem_univ i)
-    exact mul_left_cancel₀ (ne_of_gt (fpSimple_pos D i)) hh
+  have heq (i : Fin (rank D)) : (B a i).trace.re = (m i : ℝ) :=
+    eq_of_pos_weighted_sum_eq (fpSimple_pos D) (fun j ↦ by simpa using (hb j).1) hsum i
   apply B.injective
   apply funext
   intro i
@@ -105,16 +111,12 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     Modular.doubleBraiding (simples D i) (simples D j) = 𝟙 _ := by
   have ht : p.rightTrace (Modular.doubleBraiding (simples D i) (simples D j)) =
       p.rightTrace (𝟙 (simples D i ⊗ simples D j)) := by
-    apply (Dimensions.groundUnitScalarEquiv D).injective
-    have hd := Dimensions.pivotalDimension_tensor D p (simples D i) (simples D j)
-    have hd' : Modular.simpleDimension D p i * Modular.simpleDimension D p j =
-        Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i ⊗ simples D j))) := by
-      simpa [Modular.simpleDimension, Dimensions.pivotalDimension,
-        Ground.unitScalar_eq_equiv] using hd.symm
-    have hs' := hs
-    change Ground.unitScalarEquiv D (p.rightTrace (Modular.doubleBraiding _ _)) = _ at hs'
-    simpa [Dimensions.groundUnitScalarEquiv_apply, Ground.unitScalar_eq_equiv] using hs'.trans hd' 
-  have h := finiteOrder_eq_one_of_trace_eq_dimension hdim hfinite ht
-  exact congrArg End.asHom h
+    apply (Ground.unitScalarEquiv D).injective
+    change Modular.categoricalS D p i j = _
+    rw [hs]
+    simpa [Modular.simpleDimension, Dimensions.pivotalDimension,
+      Ground.unitScalar_eq_equiv] using
+      (Dimensions.pivotalDimension_tensor D p (simples D i) (simples D j)).symm
+  exact congrArg End.asHom (finiteOrder_eq_one_of_trace_eq_dimension hdim hfinite ht)
 
 end PropertyF.Ground.CentreCabling
