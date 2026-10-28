@@ -100,7 +100,7 @@ end
 namespace PropertyF.Ground.Dimensions
 
 section
-variable {k : Type*} [Field k] [CharZero k]
+variable {k : Type*} [Field k] [NeZero (2 : k)]
   {V : Type*} [AddCommGroup V] [Module k V] {T : V →ₗ[k] V}
 
 /-- The positive spectral projection of an involution is idempotent. -/
@@ -113,7 +113,7 @@ theorem involution_half_projection (hT : T * T = 1) :
   change P (P x) = P x
   simp only [P, LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply,
     map_smul, map_add, hinv, smul_add, smul_smul]
-  module
+  match_scalars <;> field_simp <;> ring
 
 variable [FiniteDimensional k V]
 
@@ -124,7 +124,8 @@ theorem involution_trace_formula (hT : T * T = 1) :
     ∃ m : ℕ, m ≤ Module.finrank k V ∧
       LinearMap.trace k V T = 2 * (m : k) - (Module.finrank k V : k) := by
   let P : V →ₗ[k] V := (2 : k)⁻¹ • (1 + T)
-  have htp := congrArg (LinearMap.trace k V) (show (2 : k) • P = 1 + T by simp [P, smul_smul])
+  have htp := congrArg (LinearMap.trace k V)
+    (show (2 : k) • P = 1 + T by simp [P, smul_smul, NeZero.ne (2 : k)])
   rw [map_smul, map_add, smul_eq_mul,
     (LinearMap.IsIdempotentElem.isProj_range P (involution_half_projection hT)).trace,
     show LinearMap.trace k V (1 : V →ₗ[k] V) = _ from LinearMap.trace_id k V] at htp
@@ -141,14 +142,15 @@ theorem involution_trace_integer_bound (hT : T * T = 1) :
       rw [abs_le]
       omega⟩
 
+omit [NeZero (2 : k)] in
 /-- An involution whose trace reaches the dimension is the identity. -/
-theorem involution_eq_one_of_trace_eq_finrank (hT : T * T = 1)
+theorem involution_eq_one_of_trace_eq_finrank [CharZero k] (hT : T * T = 1)
     (htrace : LinearMap.trace k V T = (Module.finrank k V : k)) : T = 1 := by
   let Q : V →ₗ[k] V := (2 : k)⁻¹ • (1 - T)
   have hq : IsIdempotentElem Q := by
     simpa [Q, sub_eq_add_neg] using involution_half_projection (T := -T) (by simpa using hT)
   have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff hq).mp (by simp [Q, htrace])
-  have hQ : (2 : k) • Q = 1 - T := by simp [Q, smul_smul]
+  have hQ : (2 : k) • Q = 1 - T := by simp [Q, smul_smul, NeZero.ne (2 : k)]
   exact (sub_eq_zero.mp (by simpa [hzero] using hQ.symm)).symm
 
 
