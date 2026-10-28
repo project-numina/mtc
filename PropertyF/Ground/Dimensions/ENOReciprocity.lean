@@ -176,13 +176,13 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   let : Simple X := simples_simple C i
   have hh := target_squaredNorm_choice_independent C (p.iso X)
   rw [← rightTrace_id, ← leftTrace_id] at hh
-  have hr : unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) := hdim i
-  rw [hr, hnorm i, Complex.ofReal_pow] at hh
-  have hf : (fpSimple C i : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))
-  have hl : unitScalar C (p.leftTrace (𝟙 X)) = (fpSimple C i : ℂ) :=
-    mul_left_cancel₀ hf (by simpa [pow_two] using hh.symm)
+  rw [show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i,
+    hnorm i, Complex.ofReal_pow] at hh
   apply (Ground.unitScalarEquiv C).injective
-  simpa only [← Ground.unitScalar_eq_equiv] using hl.trans hr.symm
+  rw [← Ground.unitScalar_eq_equiv, ← Ground.unitScalar_eq_equiv]
+  rw [show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i]
+  exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i)))
+    (by simpa [pow_two] using hh.symm)
 
 /-- ENO's trace-matrix bound and the root-norm identity turn global
 pseudo-unitarity into pointwise FP saturation. -/

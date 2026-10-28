@@ -170,8 +170,8 @@ theorem rightQuantumTrace_simple_ne_zero
   let _ : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   let s : 𝟙_ C ⟶ X ⊗ (Xᘁ) := ExactPairing.coevaluation X (Xᘁ)
   let _ : Simple (Xᘁ) := simple_rightDual X
-  have hs : s ≠ 0 := (exactPairing_ne_zero X (Xᘁ) (id_nonzero (Xᘁ))).1
-  obtain ⟨r₀, hr₀⟩ := split_from_simple s hs
+  obtain ⟨r₀, hr₀⟩ := split_from_simple s
+    ((exactPairing_ne_zero X (Xᘁ) (id_nonzero (Xᘁ))).1)
   have hr₀ne : r₀ ≠ 0 := fun h ↦
     id_nonzero (𝟙_ C) (by simpa [h] using hr₀.symm)
   let t : X ⊗ (Xᘁ) ≅ ((Xᘁ)ᘁ) ⊗ (Xᘁ) := j ⊗ᵢ Iso.refl _
@@ -187,12 +187,11 @@ theorem rightQuantumTrace_simple_ne_zero
         (CategoryTheory.Linear.homCongr ℂ (Iso.refl X) j.symm))).finrank_eq.trans
           (CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X)
   obtain ⟨z, hz⟩ := exists_smul_eq_of_finrank_eq_one hfin hr₀ne r
-  have hz0 : z ≠ 0 := fun h ↦ hr (by simpa [h] using hz.symm)
   intro hzero
-  have hhom : s ≫ r = 0 := by
-    simpa [rightQuantumTrace, s, r, t, ev, tensorIso_hom] using (congrArg End.asHom hzero)
-  exact (smul_ne_zero hz0 (id_nonzero _)) (by
-    simpa only [← hz, Linear.comp_smul, hr₀] using hhom)
+  apply (smul_ne_zero (fun h : z = 0 ↦ hr (by simpa [h] using hz.symm)) (id_nonzero (𝟙_ C)))
+  simpa only [← hz, Linear.comp_smul, hr₀] using
+    (show s ≫ r = 0 from by
+      simpa [rightQuantumTrace, s, r, t, ev, tensorIso_hom] using congrArg End.asHom hzero)
 
 
 end PropertyF.Ground.Dimensions

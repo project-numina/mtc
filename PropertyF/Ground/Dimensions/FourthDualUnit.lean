@@ -144,15 +144,13 @@ theorem rootDimension_unit_sq :
   let u := doubleDualIso C U
   let r := rootDimension C (unitIndex C)
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit (C := C.Obj))
-  have hr : a.hom = r • u.hom := by
-    simpa [a, r, hu] using fourthDualRoot_unit_component C
-  have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso U).hom :=
-    congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C)
-  have hfourth : (fourthDualIso U).hom = u.hom ≫ ((u.homᘁ)ᘁ) := by
-    have h := congrArg Iso.hom (fourthDualIso_unit (C := C.Obj))
-    rw [hu]
-    simpa only [Iso.trans_hom, rightDualIsoMap] using h
-  exact scalar_sq_eq_one_of_same_square u a r hr (hsq.trans hfourth)
+  apply scalar_sq_eq_one_of_same_square u a r (by
+    simpa [a, r, hu] using fourthDualRoot_unit_component C)
+  refine (show a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso U).hom from
+    congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C)).trans ?_
+  rw [hu]
+  simpa only [Iso.trans_hom, rightDualIsoMap] using
+    congrArg Iso.hom (fourthDualIso_unit (C := C.Obj))
 
 end PropertyF.Ground.Dimensions
 
@@ -176,12 +174,11 @@ theorem root_components_coevaluation
   let X := simples C i
   let a : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   let e := rootDualSign C i
-  have ha : ((fourthDualRootNaturalIso C).app (Xᘁ)).hom = e • ((a.invᘁ)) :=
-    rootDualSign_component C i
   change η_ X (Xᘁ) ≫ (a.hom ⊗ₘ ((fourthDualRootNaturalIso C).app (Xᘁ)).hom) =
     e • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)
-  rw [ha]
-  simp only [tensorHom_def, MonoidalLinear.whiskerLeft_smul, Linear.comp_smul]
+  rw [rootDualSign_component C i]
+  simp only [rightDualIsoMap, Iso.symm_hom, tensorHom_def,
+    MonoidalLinear.whiskerLeft_smul, Linear.comp_smul]
   congr 1
   simpa only [tensorHom_def, Category.assoc, doubleDualFunctor, Functor.id_obj] using
     coevaluation_iso_map a
