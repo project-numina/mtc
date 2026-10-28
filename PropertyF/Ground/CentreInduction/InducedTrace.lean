@@ -61,46 +61,6 @@ theorem center_fusion_of_compatible_pivotal (p : Dimensions.PivotalStructure (C 
   center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
     (induced_center_trace_ne_zero_of_compatible C p hsimple pZ hcompat)
 
-/-- A positive base pivotal structure supplies the nonzero induced dimension;
-only the displayed centre trace compatibility remains to be constructed. -/
-theorem center_fusion_of_positive_compatible_pivotal
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (d : Fin (rank C) → ℝ)
-    (hreal : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (d i : ℂ))
-    (hpos : ∀ i, 0 < d i)
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
-    (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
-      (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom) :
-    IsFusionCategory (CategoryTheory.Center C.Obj) := by
-  apply center_fusion_of_compatible_pivotal C p ?_ pZ hcompat
-  intro i
-  rw [hreal, Dimensions.positive_pivotalDimension_eq_fpSimple C p d hreal hpos]
 
-set_option backward.isDefEq.respectTransparency false in
-/-- A compatible positive pivotal lift splits the actual induction unit for
-any centre object. -/
-theorem center_induction_retract_of_positive_compatible_pivotal
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (d : Fin (rank C) → ℝ)
-    (hreal : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (d i : ℂ))
-    (hpos : ∀ i, 0 < d i) [RigidCategory (CategoryTheory.Center C.Obj)]
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
-    (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
-      (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom)
-    (Z : CategoryTheory.Center C.Obj) : Nonempty (Retract Z ((induction C).obj Z.1)) := by
-  have hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
-    intro i
-    rw [hreal, Dimensions.positive_pivotalDimension_eq_fpSimple C p d hreal hpos]
-  let J := (induction C).obj (𝟙_ C.Obj)
-  let cap : J ⊗ Jᘁ ⟶ 𝟙_ (CategoryTheory.Center C.Obj) :=
-    ((pZ.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
-  have htrace := induced_center_trace_ne_zero_of_compatible C p hsimple pZ hcompat
-  have hcap : η_ J (Jᘁ) ≫ cap ≠ 0 := by
-    intro hz
-    apply htrace
-    apply End.ext
-    simpa [Dimensions.PivotalStructure.rightTrace, cap, J, Category.assoc] using hz
-  exact center_induction_retract_of_unit_retract C (𝟙_ C.Obj) (Jᘁ)
-    (unit_retract_of_nonzero_cap C J cap hcap) Z
 
 end PropertyF.Ground.CentreInduction

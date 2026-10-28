@@ -1,7 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.PivotalUniqueness
-public import PropertyF.Ground.Dimensions.PositiveSpherical
-
+public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators

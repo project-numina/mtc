@@ -47,27 +47,7 @@ theorem comm_of_iso_unit (C : BraidedFusionCategory.{v,u})
       simpa only [Category.assoc] using congrArg (fun g => (X.2.β T).hom ≫ g)
         (whisker_exchange e.hom f).symm
 
-/-- The sliding equation holds on the unit-labelled test strand. -/
-theorem loopSum_comm_unitIndex (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (X Y : CategoryTheory.Center C.Obj) (f : X.1 ⟶ Y.1) :
-    (loopSum C p X Y f ▷ simples C (unitIndex C)) ≫
-        (Y.2.β (simples C (unitIndex C))).hom =
-      (X.2.β (simples C (unitIndex C))).hom ≫
-        (simples C (unitIndex C) ◁ loopSum C p X Y f) := by
-  obtain ⟨e⟩ := unitIndex_iso C
-  exact comm_of_iso_unit C X Y (loopSum C p X Y f) _ e
 
-/-- In fusion rank one the only simple test strand is the unit, so the
-loop-sliding condition is automatic for any pivotal structure. -/
-theorem simpleLoopCentrality_of_rank_one (C : BraidedFusionCategory.{v,u})
-    [Subsingleton (Fin (rank C))] (p : Dimensions.PivotalStructure (C := C.Obj)) :
-    SimpleLoopCentrality C p := by
-  intro X Y f i
-  have hi : i = unitIndex C := Subsingleton.elim _ _
-  obtain ⟨e⟩ := unitIndex_iso C
-  subst i
-  exact comm_of_iso_unit C X Y (loopSum C p X Y f) _ e
 
 end PropertyF.Ground.CentreInduction
 

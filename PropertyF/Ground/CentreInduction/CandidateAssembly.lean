@@ -40,8 +40,5 @@ def induction (C : BraidedFusionCategory.{v,u}) : C.Obj ⥤ CategoryTheory.Cente
   inductionOfHalfBraiding C (halfBraidingOfCrossingCandidate C)
     (halfBraidingOfCrossingCandidate_natural C)
 
-/-- Forgetting induction gives the finite sum of `Sᵢ ⊗ X ⊗ Sᵢ*`. -/
-theorem induction_forget_obj (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
-    ((induction C).obj X).1 = underlying C X := rfl
 
 end PropertyF.Ground.CentreInduction

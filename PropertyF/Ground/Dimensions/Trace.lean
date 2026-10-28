@@ -4,6 +4,35 @@ public import Mathlib.CategoryTheory.Monoidal.Linear
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
+namespace PropertyF.Ground.Dimensions
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+
+/-- Trace using a single chosen double-dual isomorphism; no pivotal structure
+is needed. -/
+def rightTraceWith {X : C} (j : X ≅ (Xᘁ)ᘁ) (f : X ⟶ X) : End (𝟙_ C) :=
+  End.of (η_ X (Xᘁ) ≫ ((f ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ))
+
+/-- Cyclicity needs naturality only for the two components involved. -/
+theorem rightTraceWith_cyclic {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
+    (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
+    rightTraceWith j (f ≫ g) = rightTraceWith k (g ≫ f) := by
+  apply End.homEquiv.injective
+  change η_ X (Xᘁ) ≫ (((f ≫ g) ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
+    η_ Y (Yᘁ) ≫ (((g ≫ f) ≫ k.hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ)
+  simp only [Category.assoc]
+  calc
+    _ = η_ X (Xᘁ) ≫ f ▷ (Xᘁ) ≫ g ▷ (Xᘁ) ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by simp [tensorHom_def, comp_whiskerRight]
+    _ = η_ Y (Yᘁ) ≫ Y ◁ fᘁ ≫ g ▷ (Xᘁ) ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [coevaluation_comp_rightAdjointMate_assoc]
+    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ X ◁ fᘁ ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc g (fᘁ)]
+    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ j.hom ▷ (Yᘁ) ≫ ((Xᘁ)ᘁ) ◁ fᘁ ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc j.hom (fᘁ)]
+    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ j.hom ▷ (Yᘁ) ≫ (fᘁ)ᘁ ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by rw [← rightAdjointMate_comp_evaluation]
+    _ = η_ Y (Yᘁ) ≫ ((g ≫ f ≫ k.hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
+      simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, hnat,
+        comp_whiskerRight, Category.assoc]
+
+end PropertyF.Ground.Dimensions
+
 namespace PropertyF.Ground.Dimensions.PivotalStructure
 
 universe v u
@@ -40,26 +69,8 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 
 /-- The right pivotal trace is cyclic. -/
 theorem rightTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
-    (f : X ⟶ Y) (g : Y ⟶ X) : p.rightTrace (f ≫ g) = p.rightTrace (g ≫ f) := by
-  apply End.homEquiv.injective
-  change η_ X (Xᘁ) ≫ (((f ≫ g) ≫ (p.iso X).hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
-    η_ Y (Yᘁ) ≫ (((g ≫ f) ≫ (p.iso Y).hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ)
-  simp only [Category.assoc]
-  calc
-    _ = η_ X (Xᘁ) ≫ f ▷ (Xᘁ) ≫ g ▷ (Xᘁ) ≫ (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by simp [tensorHom_def, comp_whiskerRight]
-    _ = η_ Y (Yᘁ) ≫ Y ◁ fᘁ ≫ g ▷ (Xᘁ) ≫ (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [coevaluation_comp_rightAdjointMate_assoc]
-    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ X ◁ fᘁ ≫ (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc g (fᘁ)]
-    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ (p.iso X).hom ▷ (Yᘁ) ≫ ((Xᘁ)ᘁ) ◁ fᘁ ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc (p.iso X).hom (fᘁ)]
-    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ (p.iso X).hom ▷ (Yᘁ) ≫ (fᘁ)ᘁ ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by rw [← rightAdjointMate_comp_evaluation]
-    _ = η_ Y (Yᘁ) ≫ ((g ≫ f ≫ (p.iso Y).hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
-      simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, p.naturality f,
-        comp_whiskerRight, Category.assoc]
-
-/-- In a spherical category the left pivotal trace is cyclic as well. -/
-theorem leftTrace_cyclic_of_spherical (p : PivotalStructure (C := C)) (hp : p.IsSpherical)
-    {X Y : C} (f : X ⟶ Y) (g : Y ⟶ X) : p.leftTrace (f ≫ g) = p.leftTrace (g ≫ f) := by
-  rw [hp X (f ≫ g), hp Y (g ≫ f)]
-  exact p.rightTrace_cyclic f g
+    (f : X ⟶ Y) (g : Y ⟶ X) : p.rightTrace (f ≫ g) = p.rightTrace (g ≫ f) :=
+  rightTraceWith_cyclic (p.iso X) (p.iso Y) f g (p.naturality f)
 
 /-- Pivotal dimensions are invariant under object isomorphism. -/
 theorem rightTrace_id_iso (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) :
@@ -82,29 +93,6 @@ theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :
     η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ ((j.invᘁ) ⊗ₘ 𝟙 ((Xᘁ)ᘁ)) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)
   simp only [tensorHom_def, id_whiskerRight, whiskerLeft_id, Category.id_comp, Category.comp_id]
   rw [rightAdjointMate_comp_evaluation]
-
-/-- Trace using a single chosen double-dual isomorphism; no pivotal structure
-is needed. -/
-def rightTraceWith {X : C} (j : X ≅ (Xᘁ)ᘁ) (f : X ⟶ X) : End (𝟙_ C) :=
-  End.of (η_ X (Xᘁ) ≫ ((f ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ))
-
-/-- Cyclicity needs naturality only for the two components involved. -/
-theorem rightTraceWith_cyclic {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
-    (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
-    rightTraceWith j (f ≫ g) = rightTraceWith k (g ≫ f) := by
-  apply End.homEquiv.injective
-  change η_ X (Xᘁ) ≫ (((f ≫ g) ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
-    η_ Y (Yᘁ) ≫ (((g ≫ f) ≫ k.hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ)
-  simp only [Category.assoc]
-  calc
-    _ = η_ X (Xᘁ) ≫ f ▷ (Xᘁ) ≫ g ▷ (Xᘁ) ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by simp [tensorHom_def, comp_whiskerRight]
-    _ = η_ Y (Yᘁ) ≫ Y ◁ fᘁ ≫ g ▷ (Xᘁ) ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [coevaluation_comp_rightAdjointMate_assoc]
-    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ X ◁ fᘁ ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc g (fᘁ)]
-    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ j.hom ▷ (Yᘁ) ≫ ((Xᘁ)ᘁ) ◁ fᘁ ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc j.hom (fᘁ)]
-    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ j.hom ▷ (Yᘁ) ≫ (fᘁ)ᘁ ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by rw [← rightAdjointMate_comp_evaluation]
-    _ = η_ Y (Yᘁ) ≫ ((g ≫ f ≫ k.hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
-      simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, hnat,
-        comp_whiskerRight, Category.assoc]
 
 /-- Compatible double-dual components have the same right quantum trace under
 an object isomorphism. -/

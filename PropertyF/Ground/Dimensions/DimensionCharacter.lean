@@ -66,26 +66,6 @@ theorem pivotalDimension_iso (C : Ground.BraidedFusionCategory.{v,u})
   unfold pivotalDimension
   rw [p.rightTrace_id_iso e]
 
-/-- Every simple pivotal dimension is an algebraic integer. -/
-theorem pivotalDimension_simple_isIntegral (C : Ground.BraidedFusionCategory)
-    (p : PivotalStructure (C := C.Obj)) (i : Fin (Ground.rank C)) :
-    IsIntegral ℤ (pivotalDimension C p (Ground.simples C i)) := by
-  apply character_value_isIntegral C
-    (fun j => pivotalDimension C p (Ground.simples C j)) (Ground.unitIndex C)
-  · obtain ⟨e⟩ := Ground.unitIndex_iso C
-    rw [pivotalDimension_iso C p e, pivotalDimension_unit]
-    exact one_ne_zero
-  · exact pivotalDimension_character C p
-
-/-- Every pivotal dimension is an algebraic integer. -/
-theorem pivotalDimension_isIntegral (C : Ground.BraidedFusionCategory)
-    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) :
-    IsIntegral ℤ (pivotalDimension C p X) := by
-  rw [pivotalDimension_decomposition]
-  apply IsIntegral.sum
-  intro i _
-  exact (isIntegral_natCast _).mul (pivotalDimension_simple_isIntegral C p i)
-
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
 its Frobenius–Perron dimension. -/
 theorem galois_pivotalDimension_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
