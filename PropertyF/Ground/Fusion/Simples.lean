@@ -45,8 +45,7 @@ theorem split_from_simple {S X : C} [Simple S] (f : S ⟶ X) (hf : f ≠ 0) :
   let : Simple (V p) := hsimple p.1
   let g : S ⟶ V p := f ≫ e.hom ≫ biproduct.π V p
   let : IsIso g := CategoryTheory.isIso_of_hom_simple hp
-  refine ⟨e.hom ≫ biproduct.π V p ≫ inv g, ?_⟩
-  simpa only [g, Category.assoc] using IsIso.hom_inv_id g
+  exact ⟨e.hom ≫ biproduct.π V p ≫ inv g, by simpa only [g, Category.assoc] using IsIso.hom_inv_id g⟩
 
 /-- The tensor unit is a retract of the left dual tensored with any simple
 object. This is the split-unit input for identity-strand embeddings. -/

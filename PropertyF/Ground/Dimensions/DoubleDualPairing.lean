@@ -170,9 +170,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Every pivotal structure preserves evaluation. -/
 theorem pivotal_evaluation :
     ((p.iso (Xᘁ)).hom ⊗ₘ (p.iso X).hom) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) = ε_ X (Xᘁ) := by
-  have h := p.naturality (ε_ X (Xᘁ))
-  rw [p.tensor, p.unit] at h
-  rw [← doubleDual_evaluation X, ← reassoc_of% h, Iso.hom_inv_id, Category.comp_id]
+  simpa [p.tensor, p.unit, doubleDual_evaluation, Category.assoc] using
+    (congrArg (· ≫ (doubleDualUnitIso (C := C)).inv) (p.naturality (ε_ X (Xᘁ)))).symm
 set_option backward.isDefEq.respectTransparency false in
 /-- A pivotal component on a dual is the inverse dual of the original component. -/
 theorem pivotal_dual :

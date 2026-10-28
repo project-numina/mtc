@@ -151,11 +151,9 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
     ∀ i j k, T i j k * (d k / (f k : ℂ)) /
       ((d i / (f i : ℂ)) * (d j / (f j : ℂ))) = (N i j k : ℂ) := by
   let q : ι → ℂ := fun i => d i / (f i : ℂ)
-  have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ by
-    simp [q, Complex.norm_real, abs_of_pos (hf i), hd i, ne_of_gt (hf i)]
+  have hq (i) : ‖q i‖ = 1 := by simp [q, Complex.norm_real, abs_of_pos (hf i), hd i, (hf i).ne']
   have hqn (i) : q i ≠ 0 := norm_ne_zero_iff.mp (by simp [hq])
-  have hrepr (i) : q i * (f i : ℂ) = d i :=
-    div_mul_cancel₀ _ (Complex.ofReal_ne_zero.mpr (ne_of_gt (hf i)))
+  have hrepr (i) : q i * (f i : ℂ) = d i := by simp [q, (hf i).ne']
   intro i j k
   let x : ι → ℂ := fun l => T i j l * q l / (q i * q j)
   apply complex_weighted_saturation (x := x) hf (fun l ↦ by

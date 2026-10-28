@@ -39,8 +39,7 @@ theorem rightDualTensorIso_unit_left :
       (q := HasRightDual.exact) (r := HasRightDual.exact) r.inv
       (rightDualIso_inv_evaluation HasRightDual.exact (inferInstance : ExactPairing I I)),
     ExactPairing.tensor_evaluation,
-    show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
-      (ρ_ I).hom from rfl]
+    show ε_ I I = (ρ_ I).hom from rfl]
   monoidal
 /-- Right dual tensor comparison is compatible with the right unitor. -/
 theorem rightDualTensorIso_unit_right :
@@ -57,8 +56,7 @@ theorem rightDualTensorIso_unit_right :
       (r := HasRightDual.exact) r.inv
       (rightDualIso_inv_evaluation HasRightDual.exact (inferInstance : ExactPairing I I)),
     ExactPairing.tensor_evaluation,
-    show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
-      (ρ_ I).hom from rfl]
+    show ε_ I I = (ρ_ I).hom from rfl]
   monoidal
 
 end PropertyF.Ground.Dimensions
