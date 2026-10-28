@@ -126,8 +126,7 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
   induction W using (measure m).wf.induction with
   | h W ih =>
     by_cases hw : IsZero W
-    · refine ⟨[], ?_⟩
-      intro S hS ⟨t, ht⟩
+    · refine ⟨[], fun S hS ⟨t, ht⟩ => ?_⟩
       let : Simple S := hS
       let : Mono t := ht
       exact (Simple.not_isZero S (IsZero.of_mono t hw)).elim
@@ -147,8 +146,7 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
           (Centre.centerCokernel_condition p)
           (Centre.centerCokernelIsColimit p) with hSP | hmono
       · exact ⟨P, List.Mem.head _, hSP⟩
-      · let : Mono (t ≫ q) := hmono
-        obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, inferInstance⟩
+      · obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, hmono⟩
         exact ⟨T, List.Mem.tail _ hT, hST⟩
 
 set_option backward.isDefEq.respectTransparency false in
