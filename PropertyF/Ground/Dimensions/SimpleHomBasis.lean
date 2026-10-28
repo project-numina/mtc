@@ -204,16 +204,6 @@ def simpleHomPairing (S X : D) [Simple S] [FiniteDimensional k (S ⟶ S)] :
     (End.linearEquiv (R := k) (X := S)).symm.toLinearMap)).comp (Linear.comp S X S).flip
 
 
-/-- Composition pairs precomposition on one Hom space with postcomposition on
-the other. -/
-theorem simpleHomPairing_natural
-    {S X Y : D} [Simple S] [FiniteDimensional k (S ⟶ S)] (g : Y ⟶ S) (a : X ⟶ Y) :
-    simpleHomPairing (k := k) S X (a ≫ g) =
-      Module.Dual.transpose (Linear.rightComp k S a) (simpleHomPairing (k := k) S Y g) :=
-  LinearMap.ext fun f ↦ by
-    simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
-
-
 set_option backward.isDefEq.respectTransparency false in
 /-- The composition pairing is nondegenerate when every nonzero map to the simple splits. -/
 theorem simpleHomPairing_injective
@@ -259,7 +249,11 @@ theorem simpleHomPairingEquiv_natural {S X Y : D} [Simple S] (g : Y ⟶ S) (a : 
     simpleHomPairingEquiv S X (a ≫ g) =
       Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairingEquiv S Y g) :=
   letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
-  simpleHomPairing_natural g a
+  by
+    change simpleHomPairing (k := ℂ) S X (a ≫ g) =
+      Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairing (k := ℂ) S Y g)
+    ext f
+    simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
 
 
 end PropertyF.Ground.Dimensions
