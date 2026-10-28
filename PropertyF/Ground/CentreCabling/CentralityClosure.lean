@@ -45,8 +45,8 @@ theorem doubleBraiding_eq_one_biproduct
   apply (cancel_epi (rightDistributor V Y).inv).mp
   apply biproduct.hom_ext'
   intro i
-  simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
-  rw [← Modular.doubleBraiding_natural_left (biproduct.ι V i) Y, h i]
+  rw [biproduct_ι_comp_rightDistributor_inv_assoc,
+    ← Modular.doubleBraiding_natural_left (biproduct.ι V i) Y, h i]
   simp
 
 /-- Any retract-closed object class centralizes Y when its simple members do. -/
