@@ -107,26 +107,30 @@ end
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Dimensions
 
+/-- The positive spectral projection of an involution is idempotent. -/
+theorem involution_half_projection {V : Type*} [AddCommGroup V] [Module ℂ V]
+    {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
+    IsIdempotentElem ((2 : ℂ)⁻¹ • (1 + T)) := by
+  have hinv (x : V) : T (T x) = x := by
+    simpa using (congrArg (fun f : V →ₗ[ℂ] V => f x) hT)
+  let P : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 + T)
+  change P * P = P
+  ext x
+  change P (P x) = P x
+  simp only [P, LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply,
+    map_smul, map_add, hinv, smul_add, smul_smul]
+  module
+
 /-- The trace of a complex involution is the difference of its positive and
 negative eigenspace dimensions. This is the finite-dimensional ingredient in
 ENO's trace matrices. -/
 theorem involution_trace_formula {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) :
+    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
     ∃ m : ℕ, m ≤ Module.finrank ℂ V ∧
       LinearMap.trace ℂ V T = 2 * (m : ℂ) - (Module.finrank ℂ V : ℂ) := by
   let P : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 + T)
-  have hinv (x : V) : T (T x) = x := by
-    simpa using (congrArg (fun f : V →ₗ[ℂ] V => f x) hT)
-  have hp : IsIdempotentElem P := by
-    change P * P = P
-    ext x
-    change P (P x) = P x
-    simp only [P, LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply,
-      map_smul, map_add, hinv, smul_add, smul_smul]
-    module
-  have hP : (2 : ℂ) • P = 1 + T := by
-    ext x
-    simp [P]
+  have hp : IsIdempotentElem P := involution_half_projection hT
+  have hP : (2 : ℂ) • P = 1 + T := by simp [P, smul_smul]
   have htp := congrArg (LinearMap.trace ℂ V) hP
   simp only [map_smul, map_add, smul_eq_mul] at htp
   refine ⟨Module.finrank ℂ (LinearMap.range P), (LinearMap.range P).finrank_le, ?_⟩
@@ -139,10 +143,10 @@ theorem involution_trace_formula {V : Type*} [AddCommGroup V] [Module ℂ V]
 /-- The trace of an involution is an integer whose absolute value is at most
 the dimension of its underlying vector space. -/
 theorem involution_trace_integer_bound {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) :
+    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
     ∃ n : ℤ, LinearMap.trace ℂ V T = (n : ℂ) ∧
       |n| ≤ (Module.finrank ℂ V : ℤ) := by
-  obtain ⟨m, hm, htrace⟩ := involution_trace_formula T hT
+  obtain ⟨m, hm, htrace⟩ := involution_trace_formula hT
   refine ⟨2 * (m : ℤ) - (Module.finrank ℂ V : ℤ), ?_, ?_⟩
   · simpa using htrace
   · have hm' : (m : ℤ) ≤ (Module.finrank ℂ V : ℤ) := by exact_mod_cast hm
@@ -152,32 +156,23 @@ theorem involution_trace_integer_bound {V : Type*} [AddCommGroup V] [Module ℂ 
 
 /-- An involution whose trace reaches the dimension is the identity. -/
 theorem involution_eq_one_of_trace_eq_finrank {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1)
+    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1)
     (htrace : LinearMap.trace ℂ V T = (Module.finrank ℂ V : ℂ)) : T = 1 := by
   let Q : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 - T)
-  have hinv (x : V) : T (T x) = x := by
-    simpa using (congrArg (fun f : V →ₗ[ℂ] V => f x) hT)
   have hq : IsIdempotentElem Q := by
-    change Q * Q = Q
-    ext x
-    change Q (Q x) = Q x
-    simp only [Q, LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply,
-      map_smul, map_sub, hinv, smul_sub, smul_smul]
-    module
+    simpa [Q, sub_eq_add_neg] using involution_half_projection (T := -T) (by simpa using hT)
   have hqt : LinearMap.trace ℂ V Q = 0 := by
     have hid : LinearMap.trace ℂ V (1 : V →ₗ[ℂ] V) = (Module.finrank ℂ V : ℂ) :=
       LinearMap.trace_id ℂ V
     simp [Q, hid, htrace]
   have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff hq).mp hqt
-  have hQ : (2 : ℂ) • Q = 1 - T := by
-    ext x
-    simp [Q]
+  have hQ : (2 : ℂ) • Q = 1 - T := by simp [Q, smul_smul]
   rw [hzero, smul_zero] at hQ
   exact (sub_eq_zero.mp hQ.symm).symm
 
 /-- A phase-scaled involution with maximal trace is the identity. -/
 theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) (c : ℂ)
+    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) {c : ℂ}
     (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
     c • T = 1 := by
   by_cases hz : Module.finrank ℂ V = 0
@@ -189,7 +184,7 @@ theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module �
     intro h
     rw [h, zero_mul] at htrace
     exact hdim htrace.symm
-  obtain ⟨n, hn, _⟩ := involution_trace_integer_bound T hT
+  obtain ⟨n, hn, _⟩ := involution_trace_integer_bound hT
   have htr : (starRingEnd ℂ) (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T := by rw [hn]; simp
   have hconj := congrArg (starRingEnd ℂ) htrace
   simp only [map_mul, map_natCast, htr] at hconj
@@ -199,22 +194,18 @@ theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module �
     rw [hcconj, hc] at h
     norm_num at h
     exact h
-  have hinv (x : V) : T (T x) = x := by
-    simpa using (congrArg (fun f : V →ₗ[ℂ] V => f x) hT)
   have hu : (c • T) * (c • T) = 1 := by
-    ext x
-    change c • T (c • T x) = x
-    simp [map_smul, smul_smul, hc2, hinv]
-  apply involution_eq_one_of_trace_eq_finrank (c • T) hu
+    rw [smul_mul_assoc, mul_smul_comm, smul_smul, hT, hc2, one_smul]
+  apply involution_eq_one_of_trace_eq_finrank hu
   simp only [map_smul, smul_eq_mul]
   rw [mul_comm, htrace]
 
 /-- The inverse phase also turns a maximal-trace involution into identity. -/
 theorem involution_phase_inv_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) (c : ℂ)
+    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) {c : ℂ}
     (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
     c⁻¹ • T = 1 := by
-  have h := involution_phase_eq_one_of_trace T hT c hc htrace
+  have h := involution_phase_eq_one_of_trace hT hc htrace
   have hs : T = c • (1 : V →ₗ[ℂ] V) := by
     simpa [smul_mul_assoc, hT] using (congrArg (fun F => F * T) h).symm
   have hc0 : c ≠ 0 := norm_ne_zero_iff.mp (by rw [hc]; norm_num)
@@ -324,7 +315,7 @@ theorem multiplicityDefect_trace_integer_bound {i j k : Fin (rank C)}
   let : FiniteDimensional ℂ
       (simples C k ⟶ simples C i ⊗ simples C j) :=
     IsFusionCategory.hom_finite _ _
-  exact involution_trace_integer_bound _ hinv
+  exact involution_trace_integer_bound hinv
 
 /-- If the tensor of the simple root components has the expected fourth-dual
 square, the resulting tensor defect is an involution. -/
