@@ -41,6 +41,7 @@ theorem rootTrace_cyclic {X Y : C.Obj}
 theorem rootTrace_id_iso {X Y : C.Obj} (e : X ≅ Y) :
     rootTrace C (𝟙 X) = rootTrace C (𝟙 Y) := by simpa using rootTrace_cyclic C e.hom e.inv
 
+variable {C} in
 /-- On a finite biproduct of simples, the natural-root trace is the sum of
 simple dimensions weighted by the scalar diagonal blocks. -/
 theorem rootTrace_biproduct_simple

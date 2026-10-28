@@ -129,6 +129,7 @@ theorem simpleInclusionBasis_apply
   congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) t
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Coordinates in the simple-inclusion basis are the scalar diagonal
 projections of the morphism. -/
 theorem simpleInclusionBasis_projection
@@ -144,6 +145,7 @@ theorem simpleInclusionBasis_projection
       ((simpleInclusionBasis C X k).sum_repr g)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Ordinary trace on a simple Hom space is the sum of scalar diagonal
 blocks in the chosen object decomposition. -/
 theorem simpleHom_postcomp_trace
@@ -161,9 +163,10 @@ theorem simpleHom_postcomp_trace
     simpleInclusionBasis_apply]
   apply smul_left_injective ℂ (id_nonzero (simples C k))
   simpa [simpleInclusion, Category.assoc, hc t] using
-    (simpleInclusionBasis_projection C (simpleInclusion C X k t ≫ g) t)
+    (simpleInclusionBasis_projection (simpleInclusion C X k t ≫ g) t)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The natural-root categorical trace equals the dimension-weighted sum of
 ordinary traces on the simple Hom spaces. -/
 theorem rootTrace_eq_simpleHom_trace_sum
@@ -176,11 +179,11 @@ theorem rootTrace_eq_simpleHom_trace_sum
   let f : (⨁ V) ⟶ (⨁ V) := e.inv ≫ g ≫ e.hom
   have heq : rootTrace C g = rootTrace C f := by
     simpa [f, Category.assoc] using (rootTrace_cyclic C e.hom (e.inv ≫ g))
-  obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple C V (fun a => simples_simple C a.1) f
+  obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple V (fun a => simples_simple C a.1) f
   rw [heq, ht]
   simp only [Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
-  rw [simpleHom_postcomp_trace C g (fun t ↦ c ⟨k, t⟩)
+  rw [simpleHom_postcomp_trace g (fun t ↦ c ⟨k, t⟩)
     (fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩), Finset.sum_mul]
   simp only [rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
 
@@ -199,7 +202,7 @@ theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}
       ((LinearEquiv.symm_apply_eq _).2 (congrArg (fun L ↦ L f) (hinv k)).symm :
         (multiplicityDefect C i j k).symm f = multiplicityDefect C i j k f)
   simpa only [enoTraceMatrix, hop, d, rootTrace_inverseDefect] using
-    (rootTrace_eq_simpleHom_trace_sum C d.inv).symm
+    (rootTrace_eq_simpleHom_trace_sum d.inv).symm
 
 end PropertyF.Ground.Dimensions
 

@@ -68,6 +68,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] IsFusionCategory.hom_finite
+variable {C} in
 /-- For every simple object of a genuine braided fusion category, the
 intrinsic squared norm in the target is independent of the chosen double-dual
 isomorphism. -/
@@ -82,16 +83,16 @@ section
 variable (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
 include hp
 
-variable {p} in
+variable {C p} in
 /-- With any spherical structure the target norm of a simple object is its
 categorical dimension squared. -/
 theorem target_squaredNorm_eq_dimension_sq (X : C.Obj) [Simple X] :
     squaredNorm C X =
       (unitScalar C (rightQuantumTrace (p.iso X))) ^ 2 := by
-  rw [target_squaredNorm_choice_independent C (p.iso X),
+  rw [target_squaredNorm_choice_independent (p.iso X),
     ← spherical_quantumTraces_eq hp X, pow_two]
 
-variable {p} in
+variable {C p} in
 /-- The target's intrinsic global dimension is the sum of squared spherical
 simple dimensions, for any spherical structure. -/
 theorem target_globalDimension_eq_sum_squares :
@@ -99,16 +100,15 @@ theorem target_globalDimension_eq_sum_squares :
       (unitScalar C (rightQuantumTrace (p.iso (simples C i)))) ^ 2 :=
   Finset.sum_congr rfl fun i _ ↦
     let : Simple (simples C i) := simples_simple C i
-    target_squaredNorm_eq_dimension_sq C hp (simples C i)
+    target_squaredNorm_eq_dimension_sq hp (simples C i)
 
 end
 
 /-- Intrinsic squared norms are invariant under object isomorphism. -/
 theorem target_squaredNorm_iso {X Y : C.Obj} (e : X ≅ Y) :
-    squaredNorm C X = squaredNorm C Y := by
-  obtain ⟨hr, hl⟩ := quantumTraces_iso e (j := doubleDualIso C X) (k := doubleDualIso C Y)
-    (drinfeldIso_natural e.hom)
-  simp only [squaredNorm, hr, hl]
+    squaredNorm C X = squaredNorm C Y :=
+  (quantumTraces_iso e (j := doubleDualIso C X) (k := doubleDualIso C Y)
+    (drinfeldIso_natural e.hom)).elim fun hr hl ↦ by simp only [squaredNorm, hr, hl]
 
 end PropertyF.Ground.Dimensions
 
@@ -131,11 +131,11 @@ theorem sum_sq_le_sum_sq_of_abs_le {k : Type*} [CommRing k] [LinearOrder k] [IsS
 theorem sum_sq_eq_sum_sq_iff {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
     {ι : Type*} [Fintype ι] {d f : ι → k}
     (hbound : ∀ i, |d i| ≤ f i) :
-    (∑ i, (d i) ^ 2) = ∑ i, (f i) ^ 2 ↔ ∀ i, |d i| = f i := by
-  rw [Finset.sum_eq_sum_iff_of_le
-    (fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2)]
-  simpa only [Finset.mem_univ, true_implies, sq_abs] using
-    (forall_congr' fun i ↦ sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i)))
+    (∑ i, (d i) ^ 2) = ∑ i, (f i) ^ 2 ↔ ∀ i, |d i| = f i :=
+  (Finset.sum_eq_sum_iff_of_le (fun i _ ↦
+    sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2)).trans <| by
+      simpa only [Finset.mem_univ, true_implies, sq_abs] using
+        (forall_congr' fun i ↦ sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i)))
 
 variable {C} in
 /-- A pseudo-unitary global dimension saturates every FP bound when the
@@ -166,14 +166,15 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+variable {C} in
 /-- The intrinsic squared norm is invariant under right duality, without any
 pivotal or spherical structure. -/
 theorem target_squaredNorm_rightDual
     (X : C.Obj) [Simple X] : squaredNorm C (Xᘁ) = squaredNorm C X := by
   let : Simple (Xᘁ) := simple_rightDual X
   let j := doubleDualIso C X
-  rw [target_squaredNorm_choice_independent C (rightDualIsoMap j).symm,
-    target_squaredNorm_choice_independent C j, ← leftQuantumTrace_eq_rightDual j,
+  rw [target_squaredNorm_choice_independent (rightDualIsoMap j).symm,
+    target_squaredNorm_choice_independent j, ← leftQuantumTrace_eq_rightDual j,
     leftQuantumTrace_eq_rightDual ((rightDualIsoMap j).symm),
     ← rightQuantumTrace_iso j rfl, mul_comm]
 

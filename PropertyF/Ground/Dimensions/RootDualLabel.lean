@@ -155,7 +155,7 @@ theorem rootDualSign_dual (i : Fin (rank C)) :
   let Y := simples C (dualIndex C i)
   let : Simple X := simples_simple C i
   have he : squaredNorm C Y = squaredNorm C X :=
-    (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans (target_squaredNorm_rightDual C X)
+    (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans (target_squaredNorm_rightDual X)
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
   rw [Ground.dualIndex_involutive] at he
   apply mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero i)

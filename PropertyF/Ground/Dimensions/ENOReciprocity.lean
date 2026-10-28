@@ -56,11 +56,11 @@ omit [RightRigidCategory D] in
 theorem scalar_sq_eq_one_of_same_square {X : D} [HasRightDual X] [HasRightDual (Xᘁ)]
     [HasRightDual ((Xᘁ)ᘁ)] [HasRightDual (((Xᘁ)ᘁ)ᘁ)] [Simple X]
     (a b : X ≅ (Xᘁ)ᘁ) (z : k) (hz : b.hom = z • a.hom)
-    (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 := by
-  apply smul_left_injective k (mono_ne_zero_of_id_ne_zero
-    (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom (id_nonzero X))
-  simpa only [Iso.trans_hom, rightDualIsoMap, hz, rightAdjointMate_smul,
-    Linear.smul_comp, Linear.comp_smul, smul_smul, one_smul] using hsq
+    (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 :=
+  smul_left_injective k (mono_ne_zero_of_id_ne_zero
+    (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom (id_nonzero X)) (by
+      simpa only [Iso.trans_hom, rightDualIsoMap, hz, rightAdjointMate_smul,
+        Linear.smul_comp, Linear.comp_smul, smul_smul, one_smul] using hsq)
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] IsFusionCategory.hom_finite
@@ -142,7 +142,7 @@ theorem squaredNorm_eq_rootDualSign_mul
   obtain ⟨u⟩ := dualIndex_iso i
   have hq : unitScalar C (rightQuantumTrace k) = rootDimension C (dualIndex C i) :=
     congrArg (unitScalar C) ((rootTrace_id C (Xᘁ)).symm.trans (rootTrace_id_iso C (e ≪≫ u)))
-  rw [target_squaredNorm_choice_independent C j, leftQuantumTrace_eq_rightDual j]
+  rw [target_squaredNorm_choice_independent j, leftQuantumTrace_eq_rightDual j]
   change unitScalar C (rightQuantumTrace j) * unitScalar C (rightQuantumTrace l) =
     rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i)
   rw [← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
@@ -173,7 +173,7 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   refine (isSpherical_iff_simple_dimensions C p).2 fun i ↦ ?_
   let X := simples C i
   let : Simple X := simples_simple C i
-  have hh := target_squaredNorm_choice_independent C (p.iso X)
+  have hh := target_squaredNorm_choice_independent (p.iso X)
   rw [← rightTrace_id, ← leftTrace_id,
     show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i,
     hnorm i, Complex.ofReal_pow] at hh
