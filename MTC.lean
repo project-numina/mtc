@@ -5,6 +5,7 @@ public import MTC.FRSymbols.FusionRules
 public import MTC.FRSymbols.MatrixSymbols
 public import MTC.FRSymbols.Pointed
 public import MTC.FRSymbols.ToricCode
+public import MTC.FRSymbols.ToricMatrix
 public import MTC.FRSymbols.ToricModularData
 public import MTC.FRSymbols.Trivial
 public import MTC.ModularData.Basic
