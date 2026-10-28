@@ -50,19 +50,17 @@ variable {A B U V M N : D}
 
 /-- A fixed map on either outer tensor factor commutes with a map on the
 middle factor. -/
-@[reassoc]
 theorem tensor_middle_natural (a : A ⟶ B) (d : U ⟶ V) (f : M ⟶ N) :
-    ((𝟙 A ⊗ₘ f) ⊗ₘ 𝟙 U) ≫ ((a ⊗ₘ 𝟙 N) ⊗ₘ d) =
-      ((a ⊗ₘ 𝟙 M) ⊗ₘ d) ≫ ((𝟙 B ⊗ₘ f) ⊗ₘ 𝟙 V) := by
-  simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
+    CommSq ((A ◁ f) ▷ U) ((a ▷ M) ⊗ₘ d) ((a ▷ N) ⊗ₘ d) ((B ◁ f) ▷ V) :=
+  ⟨by simp only [← id_tensorHom, ← tensorHom_id, tensorHom_comp_tensorHom,
+    Category.id_comp, Category.comp_id]⟩
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Cancelling tensor-unit factors is natural in the middle object. -/
 theorem unitTensorIso_natural [HasRightDual A] (e : A ≅ 𝟙_ D) (f : M ⟶ N) :
     ((A ◁ f) ▷ Aᘁ) ≫ (unitTensorIso e N).hom = (unitTensorIso e M).hom ≫ f := by
   dsimp [unitTensorIso, hasRightDualUnit]
-  rw [Category.assoc, ← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc,
-    id_tensorHom, tensorHom_id]
+  rw [Category.assoc, tensorHom_id, (tensor_middle_natural _ _ _).w_assoc]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
