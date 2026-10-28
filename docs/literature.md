@@ -188,6 +188,21 @@ and their translation to the frozen interface is part of the proof obligation.
     factorization. Müger, [arXiv:math/0201017](https://arxiv.org/abs/math/0201017).
     **High:** full fusion subcategories, centralizers and dimensions.
 
+
+29. **Simple FP dimensions as d-numbers — open question.** Is the FP
+    dimension of each simple object of a braided fusion category a d-number?
+    Ostrik, [Remark 1.9(i)](https://arxiv.org/html/0810.3242), asks this;
+    Remark 1.9(ii) records a nonbraided counterexample. **Medium–high:**
+    algebraic integers and Galois actions; exact candidate dimensions can be
+    checked using minimal-polynomial criteria. Status is based on this source
+    and a literature search, not a proof that no later solution exists.
+30. **Galois-stable dimension ideals — solved.** Global FP dimension is a
+    d-number for any fusion category, and each simple categorical squared norm
+    is a d-number in the braided case. Ostrik,
+    [Corollary 1.3 and Theorem 1.8](https://arxiv.org/html/0810.3242).
+    **High:** interpreting categorical squared norms and the Galois action;
+    numerical exact checks are substantially easier.
+
 ## Problem-list guides and Atlas scope
 
 Rowell–Wang, [Mathematics of Topological Quantum Computing](https://arxiv.org/abs/1705.06206),
