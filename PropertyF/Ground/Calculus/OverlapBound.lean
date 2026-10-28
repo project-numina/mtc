@@ -227,10 +227,11 @@ theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf :
     ring
   simpa only [hexp] using hbound k
 
+variable (p : PivotalStructure (C := C.Obj)) {X : C.Obj} {t : ℕ} (u : braidAlgebra X t)
+
 /-- Iterating a single overlap step gives the scaled power identity, without
 dividing by the simple dimension. -/
-theorem overlap_trace_power_of_step {X : C.Obj}
-    (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
+theorem overlap_trace_power_of_step
     (hstep : ∀ k, actualBraidTrace C p
         (overlapProduct u (k + 1)) *
         pivotalDimension C p X =
@@ -249,14 +250,11 @@ theorem overlap_trace_power_of_step {X : C.Obj}
 /-- The sharp bound works in any family of unitary braid-block presentations;
 it does not depend on a particular choice made by finite-group averaging. -/
 theorem sharp_trace_bound_for_presentations_of_overlap_identity
-    (X : C.Obj) [Simple X]
-    (p : PivotalStructure (C := C.Obj)) (t : ℕ)
-    (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
+    [Simple X] {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
       Blocks.Algebra ⟨_, d n⟩)
     (hd : ∀ n i, 0 < d n i)
     (he : ∀ n, IsUnitaryBraidPresentation (e n))
-    (u : braidAlgebra X t)
     (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u))
     (hrec : HasOverlapTracePower C p u) :
     ‖actualBraidTrace C p u‖ ≤

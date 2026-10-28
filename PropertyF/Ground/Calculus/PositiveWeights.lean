@@ -71,6 +71,6 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (hw 1) (htrace 1) ?_ hd hf hdim hS hfinite
   intro z hz
   simpa [hdim, hfp, Complex.norm_real, Real.norm_eq_abs] using
-    sharp_trace_bound_for_presentations_of_overlap_identity C X p 1 r size b hsize he z hz (hrec z)
+    sharp_trace_bound_for_presentations_of_overlap_identity C p z b hsize he hz (hrec z)
 
 end PropertyF.Ground.Calculus

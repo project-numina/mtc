@@ -245,12 +245,11 @@ theorem representation_trace_multiplicities {m : ℕ}
 theorem idempotent_matrix_eq_zero_of_trace_eq_zero {m : ℕ}
     {A : Matrix (Fin m) (Fin m) ℂ} (hA : A * A = A) (ht : A.trace = 0) : A = 0 :=
   Matrix.toLinAlgEquiv'.injective (by
-    simpa only [map_zero] using
-      (LinearMap.IsIdempotentElem.trace_eq_zero_iff
-        ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')).mp
-        (by
-          change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
-          simpa using ht))
+    simpa only [map_zero] using LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero
+      ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')
+      (by
+        change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
+        simpa only [Matrix.trace_toLin'_eq] using ht))
 
 include hd in
 /-- A faithful block-algebra representation has nonnegative integer
@@ -304,15 +303,6 @@ def braidToEndBlocks {X : C.Obj} {n : ℕ}
   (groundEndBlockEquiv C e).toAlgHom.comp
     ((braidAlgebra X n).val.comp b.symm.toAlgHom)
 
-/-- The categorical inclusion is faithful, so no finite braid-image block is lost. -/
-theorem braidToEndBlocks_injective {X : C.Obj}
-    {n : ℕ} {m : Fin (Ground.rank C) → ℕ}
-    (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
-    {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
-    Function.Injective (braidToEndBlocks C e b) :=
-  (groundEndBlockEquiv C e).injective.comp (Subtype.val_injective.comp b.symm.injective)
-
 variable (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
 
 /-- The categorical braid trace has the weights supplied by block multiplicities. -/
@@ -337,7 +327,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
       HasMultiplicityDecomposition m d mult ∧ HasMultiplicityTrace C p scalar b mult := by
   let F := braidToEndBlocks C e b
   obtain ⟨mult, hmult, hretained⟩ := faithful_block_representation_multiplicities hd F
-    (braidToEndBlocks_injective C e b)
+    ((groundEndBlockEquiv C e).injective.comp (Subtype.val_injective.comp b.symm.injective))
   have hdim : ∀ i, m i = ∑ j, mult i j * d j := by
     intro i
     exact_mod_cast (show (m i : ℂ) = ∑ j, (mult i j : ℂ) * d j from by
