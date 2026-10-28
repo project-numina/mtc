@@ -269,7 +269,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
   let : Simple (ᘁ(simples D k)) := simple_leftDual D (simples D k)
   obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor (simples D j)
   let : (tensorLeft (simples D j)).Faithful :=
-    PropertyF.tensorLeft_faithful_of_unit_retract _ _ s r hsr
+    PropertyF.tensorLeft_faithful_of_unit_retract s r hsr
   let Y : D.Obj := simples D j ⊗ (ᘁ(simples D k))
   have hid : (𝟙 Y : Y ⟶ Y) ≠ 0 := by
     intro h
