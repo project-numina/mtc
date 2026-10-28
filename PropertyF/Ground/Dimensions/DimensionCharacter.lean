@@ -152,6 +152,6 @@ theorem isSpherical_iff_simple_dimensions
       (fun (a : Σ i, Fin (m i)) ↦ simples_simple C a.1)
       (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
     rw [hleft, hright, htrace, leftTrace_biproduct_scalar_blocks p g hc]
-    exact Finset.sum_congr rfl fun a _ ↦ by rw [hs a.1]
+    exact Finset.sum_congr rfl fun a _ ↦ congrArg (fun t ↦ c a • t) (hs a.1)
 
 end PropertyF.Ground.Dimensions

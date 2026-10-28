@@ -184,10 +184,10 @@ theorem rootTensorDefect_slide_of_involution
       smul_smul, ← mul_assoc, hs, one_mul]
     rfl
   change η ≫ E = e • (η ≫ D)
-  have hloop' : η ≫ E ≫ D = e • η := by rw [hcomm]; exact hloop
+  rw [← hcomm] at hloop
   change D ≫ D = 𝟙 _ at hinv
   simpa only [Category.assoc, hinv, Category.comp_id, Linear.smul_comp] using
-    (congrArg (fun f => f ≫ D) hloop')
+    (congrArg (fun f => f ≫ D) hloop)
 end PropertyF.Ground.Dimensions
 
 end
