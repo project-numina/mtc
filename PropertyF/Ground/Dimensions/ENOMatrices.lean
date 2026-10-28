@@ -32,20 +32,6 @@ theorem rootTrace_id (X : C.Obj) :
   rightTraceWith_id _
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The root trace is linear in its endomorphism. -/
-def rootTraceLinear (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
-    (X ⟶ X) →ₗ[ℂ] End (𝟙_ C.Obj) where
-  toFun := rootTrace C
-  map_add' := by
-    intro f g
-    apply End.homEquiv.injective
-    simp [rootTrace, rightTraceWith, tensorHom_def]
-  map_smul' := by
-    intro z f
-    apply End.homEquiv.injective
-    simp [rootTrace, rightTraceWith, tensorHom_def]
-
-set_option backward.isDefEq.respectTransparency false in
 /-- Naturality of the square root makes its trace cyclic. -/
 theorem rootTrace_cyclic {X Y : C.Obj}
     (f : X ⟶ Y) (g : Y ⟶ X) : rootTrace C (f ≫ g) = rootTrace C (g ≫ f) :=
@@ -63,7 +49,7 @@ theorem rootTrace_biproduct_simple
     ∃ c : ι → ℂ,
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
       rootTrace C f = ∑ i, c i • rootTrace C (𝟙 (F i)) :=
-  cyclicTrace_biproduct_simple (rootTraceLinear C) (fun f g => rootTrace_cyclic C f g)
+  cyclicTrace_biproduct_simple (fun X ↦ rightTraceWithLinear ((fourthDualRootNaturalIso C).app X)) (fun f g => rootTrace_cyclic C f g)
     hs (fun _ => IsFusionCategory.hom_finite _ _) f
 
 end PropertyF.Ground.Dimensions
