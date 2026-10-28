@@ -226,16 +226,13 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
   change d.hom ≫ d.hom = 𝟙 X
   have hd : d.hom ≫ b.hom = (a.app X).hom := by simp [d, Category.assoc]
   have hn := a.hom.naturality d.hom
-  simp only [Functor.id_map] at hn
   change d.hom ≫ (a.app X).hom = (a.app X).hom ≫ F.map d.hom at hn
   have hc : b.hom ≫ F.map d.hom = d.hom ≫ b.hom := by
+    apply (cancel_epi d.hom).1
     calc
-      _ = d.inv ≫ (a.app X).hom ≫ F.map d.hom := by
-        rw [← hd]
-        simp [Category.assoc]
-      _ = d.inv ≫ d.hom ≫ (a.app X).hom := by
-        rw [← hn]
-      _ = d.hom ≫ b.hom := by simp [hd]
+      _ = (a.app X).hom ≫ F.map d.hom := by rw [← Category.assoc, hd]
+      _ = d.hom ≫ (a.app X).hom := hn.symm
+      _ = _ := by rw [← hd]
   apply (cancel_mono (b.hom ≫ F.map b.hom)).1
   calc
     (d.hom ≫ d.hom) ≫ (b.hom ≫ F.map b.hom) =
@@ -244,7 +241,7 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
     _ = (d.hom ≫ b.hom) ≫ F.map (d.hom ≫ b.hom) := by
       simp only [Functor.map_comp, Category.assoc]
     _ = b.hom ≫ F.map b.hom := by rw [hd, hsq]
-    _ = 𝟙 X ≫ (b.hom ≫ F.map b.hom) := by simp
+    _ = 𝟙 X ≫ (b.hom ≫ F.map b.hom) := (Category.id_comp _).symm
 
 end PropertyF.Ground.Dimensions
 
