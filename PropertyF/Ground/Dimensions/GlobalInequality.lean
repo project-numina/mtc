@@ -38,6 +38,25 @@ theorem global_sum_squares_eq_iff
   · intro heq i _
     rw [← heq i, sq_abs]
 
+/-- A pseudo-unitary global dimension saturates every FP bound when the
+intrinsic norms are the squared norms of the given dimensions. -/
+theorem norm_saturation_of_pseudoUnitary (d : Fin (rank C) → ℂ)
+    (hbound : ∀ i, ‖d i‖ ≤ fpSimple C i)
+    (hnorm : ∀ i, squaredNorm C (simples C i) = ((‖d i‖ ^ 2 : ℝ) : ℂ))
+    (hpu : PseudoUnitary C) : ∀ i, ‖d i‖ = fpSimple C i := by
+  have hb : ∀ i, |‖d i‖| ≤ fpSimple C i := by
+    intro i
+    simpa only [abs_of_nonneg (norm_nonneg _)] using hbound i
+  have hg : (∑ i, ‖d i‖ ^ 2) = globalFPDimension C := by
+    have h := hpu
+    change globalDimension C = (globalFPDimension C : ℂ) at h
+    unfold globalDimension at h
+    simp only [hnorm, ← Complex.ofReal_sum] at h
+    exact Complex.ofReal_injective h
+  intro i
+  simpa only [abs_of_nonneg (norm_nonneg _)] using
+    (global_sum_squares_eq_iff C (fun i => ‖d i‖) hb).1 hg i
+
 /-- If some simple has real dimension one, the global sum is at least one. -/
 theorem global_sum_squares_one_le {ι : Type*} [Fintype ι]
     (d : ι → ℝ) (h : ∃ i, d i = 1) : 1 ≤ ∑ i, (d i) ^ 2 := by

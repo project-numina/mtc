@@ -300,6 +300,11 @@ abbrev MultiplicityDefectsInvolutive (C : BraidedFusionCategory.{v,u}) : Prop :=
   ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
     (multiplicityDefect C i j k).toLinearMap = 1
 
+/-- Scalar twisting makes each multiplicity-defect operator the identity. -/
+abbrev ScaledMultiplicityDefectsTrivial (C : BraidedFusionCategory.{v,u})
+    (c : Fin (rank C) → ℂ) : Prop :=
+  ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1
+
 /-- The multiplicity operator is composition with the tensor defect. -/
 theorem multiplicityDefect_apply
     {i j k : Fin (rank C)}

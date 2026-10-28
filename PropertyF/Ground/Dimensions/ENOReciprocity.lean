@@ -224,21 +224,9 @@ theorem eno_root_norm_saturation_of_pseudoUnitary
     (hinv : MultiplicityDefectsInvolutive C)
     (heig : ENOTraceMatrixEigenvector C)
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
-    ∀ i, ‖rootDimension C i‖ = fpSimple C i := by
-  let d : Fin (rank C) → ℝ := fun i => ‖rootDimension C i‖
-  have hb : ∀ i, |d i| ≤ fpSimple C i := by
-    intro i
-    rw [abs_of_nonneg (norm_nonneg _)]
-    exact rootDimension_norm_le_fp_of_trace_matrix C (hinv i) (heig i)
-  have hg : (∑ i, d i ^ 2) = globalFPDimension C := by
-    have h := hpu
-    change globalDimension C = (globalFPDimension C : ℂ) at h
-    unfold globalDimension at h
-    simp only [hnorm, ← Complex.ofReal_sum] at h
-    exact Complex.ofReal_injective h
-  have h := (global_sum_squares_eq_iff C d hb).1 hg
-  intro i
-  simpa [d, abs_of_nonneg (norm_nonneg _)] using h i
+    ∀ i, ‖rootDimension C i‖ = fpSimple C i :=
+  norm_saturation_of_pseudoUnitary C (rootDimension C)
+    (fun i => rootDimension_norm_le_fp_of_trace_matrix C (hinv i) (heig i)) hnorm hpu
 
 end PropertyF.Ground.Dimensions
 
@@ -255,9 +243,8 @@ variable (C : BraidedFusionCategory.{v,u})
 operators are identities. -/
 def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
-    (hdef : ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1)
-    (hunit : ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom =
-      (doubleDualUnitIso (C := C.Obj)).hom) : PivotalStructure (C := C.Obj) where
+    (hdef : ScaledMultiplicityDefectsTrivial C c)
+    (hunit : RootSignUnitLaw C c hc) : PivotalStructure (C := C.Obj) where
   iso X := (rootSignTwist C c hc).app X
   naturality {X Y} f := by
     have h := (rootSignTwist C c hc).hom.naturality f
@@ -273,9 +260,8 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhasePivotal_dimension
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
-    (hdef : ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1)
-    (hunit : ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom =
-      (doubleDualUnitIso (C := C.Obj)).hom) (i : Fin (rank C)) :
+    (hdef : ScaledMultiplicityDefectsTrivial C c)
+    (hunit : RootSignUnitLaw C c hc) (i : Fin (rank C)) :
     pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
       c i * rootDimension C i := by
   simpa only [pivotalDimension, rightTrace_id, rootPhasePivotal] using
@@ -311,7 +297,7 @@ theorem positive_spherical_of_matrix_identities
     intro i j k
     simpa [q, div_eq_mul_inv, mul_assoc] using
       (fusion_complex_eigenvalue_saturation C (enoTraceMatrix C) (rootDimension C) hsat hdom heig i j k)
-  have hdef : ∀ i j k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1 := by
+  have hdef : ScaledMultiplicityDefectsTrivial C c := by
     intro i j k
     let r := q k / (q i * q j)
     have hrnorm : ‖r‖ = 1 := by
