@@ -53,13 +53,14 @@ theorem doubleBraiding_natural_right (X : C) {Y Z : C} (f : Y ⟶ Z) :
 
 /-- The trace of double braiding depends only on the isomorphism class. -/
 theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : Y ≅ Z) :
-    SEntry p X Y = SEntry p X Z := by
+    SEntry p X Y = SEntry p X Z :=
   let t := Iso.refl X ⊗ᵢ e
   have h := p.rightTrace_cyclic (doubleBraiding X Y ≫ t.hom) t.inv
-  rw [Category.assoc, Iso.hom_inv_id, Category.comp_id,
-    show doubleBraiding X Y ≫ t.hom = t.hom ≫ doubleBraiding X Z from
-      doubleBraiding_natural_right X e.hom, Iso.inv_hom_id_assoc] at h
-  exact h
+  by
+    rw [Category.assoc, Iso.hom_inv_id, Category.comp_id,
+      show doubleBraiding X Y ≫ t.hom = t.hom ≫ doubleBraiding X Z from
+        doubleBraiding_natural_right X e.hom, Iso.inv_hom_id_assoc] at h
+    exact h
 
 omit [RightRigidCategory C] in
 /-- The double braiding with the tensor unit is the identity. -/

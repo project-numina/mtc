@@ -33,8 +33,7 @@ lemma braidGenerator_zero (X : C) (n : ℕ) :
 lemma braid_first {X Y A B : C} (f : X ≅ Y) (g : A ≅ B) :
     (firstBraiding X A).hom ≫ (f ⊗ᵢ f ⊗ᵢ g).hom =
       (f ⊗ᵢ f ⊗ᵢ g).hom ≫ (firstBraiding Y B).hom := by
-  dsimp only [firstBraiding]
-  simp only [Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom, Category.assoc]
+  simp only [firstBraiding, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom, Category.assoc]
   rw [← associator_naturality, associator_inv_naturality_assoc]
   simp only [← Category.assoc, tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id,
     braiding_naturality]

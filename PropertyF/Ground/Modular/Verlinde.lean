@@ -53,14 +53,14 @@ Verlinde character equations, without an assumed character classification. -/
 theorem exists_galoisLabel_of_verlinde
     (hsym : ∀ x y, S x y = S y x) (hunit : ∀ x, S x N.unit = d x)
     (hsq : HasSSquare S dual D) (hVerlinde : HasVerlindeFormula N S d) :
-    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm ι, IsGaloisColumnAction S d act := by
+    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm ι, IsGaloisColumnAction S d act :=
   let columns : ι → Character N := fun j => {
     value := fun i => S i j / d j
-    unit_eq := by rw [hsym, hunit]; exact div_self (hd j)
+    unit_eq := by rw [hsym, hunit, div_self (hd j)]
     mul_eq := fun i k => hVerlinde i k j }
   let e : ι ≃ Character N := Equiv.ofBijective columns
     (characters_bijective N columns (normalized_columns_linearIndependent hd hD hsym hsq))
-  exact ⟨Character.galoisLabel e, fun σ i j ↦ (Character.galoisLabel_character e σ j i).symm⟩
+  ⟨Character.galoisLabel e, fun σ i j ↦ (Character.galoisLabel_character e σ j i).symm⟩
 
 end
 
@@ -237,16 +237,15 @@ partial traces agree with tracing the combined tensor factor. -/
 theorem rightPartialTrace_nested_simple {scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ} {Z X Y : C}
     [Simple Z] [FiniteDimensional ℂ (Z ⟶ Z)]
     (hd : scalar (p.rightTrace (𝟙 Z)) ≠ 0) (f : End (Z ⊗ (X ⊗ Y))) :
-    rightPartialTrace p f = rightPartialTrace p (rightPartialTrace p ((α_ Z X Y).symm.conj f)) := by
+    rightPartialTrace p f = rightPartialTrace p (rightPartialTrace p ((α_ Z X Y).symm.conj f)) :=
   let g := (α_ Z X Y).symm.conj f
   have hc : p.rightTrace g.asHom = p.rightTrace f.asHom := by
     simpa [g, Iso.conj_apply_asHom, Category.assoc] using
       p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
-  rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd
-      (rightTrace_partialTrace p f),
-    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd
-      (rightTrace_partialTrace p (rightPartialTrace p g))]
-  simp only [Calculus.scalarTrace, rightTrace_partialTrace p g, hc]
+  (rightPartialTrace_simple_of_trace_compatibility p scalar f hd (rightTrace_partialTrace p f)).trans (by
+    simpa only [Calculus.scalarTrace, rightTrace_partialTrace p g, hc] using
+      (rightPartialTrace_simple_of_trace_compatibility p scalar (rightPartialTrace p g) hd
+        (rightTrace_partialTrace p (rightPartialTrace p g))).symm)
 
 
 end Trace
