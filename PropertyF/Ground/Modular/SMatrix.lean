@@ -141,9 +141,9 @@ theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :
 
 /-- Every simple categorical dimension is nonzero, without pseudo-unitarity. -/
 theorem simpleDimension_ne_zero (i : Fin (rank C)) :
-    simpleDimension C p i ≠ 0 := by
-  let _ : Simple (simples C i) := simples_simple C i
-  exact unitScalar_rightTrace_ne_zero C p (simples C i)
+    simpleDimension C p i ≠ 0 :=
+  let : Simple (simples C i) := simples_simple C i
+  unitScalar_rightTrace_ne_zero C p (simples C i)
 
 end PropertyF.Ground.Modular
 end

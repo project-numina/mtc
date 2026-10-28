@@ -166,9 +166,9 @@ theorem transparent_of_S_test_and_balancing
       (fun _ _ => trivial) trivial
     intro i _
     exact hsimple i
-  have hc := congrArg (fun f => (β_ X (simples C k)).inv ≫ f ≫ (β_ X (simples C k)).hom) hx
   change Modular.doubleBraiding (simples C k) X = 𝟙 _
-  simpa [Modular.doubleBraiding, Category.assoc] using hc
+  simpa [Modular.doubleBraiding, Category.assoc] using
+    congrArg (fun f => (β_ X (simples C k)).inv ≫ f ≫ (β_ X (simples C k)).hom) hx
 
 /-- In a positive pivotal category with balanced twist, S is invertible if the
 unit is the only transparent simple object. -/
