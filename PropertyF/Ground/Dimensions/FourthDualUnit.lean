@@ -86,13 +86,6 @@ end
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple
-/-- The root dimension of the unit label is the root trace of the tensor unit. -/
-theorem rootDimension_unit :
-    rootDimension C (unitIndex C) =
-      unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj))) :=
-  (unitIndex_iso C).elim fun e ↦
-    congrArg (unitScalar C) ((rootTrace_id_iso C e).trans (rootTrace_id C _))
-
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual natural fourth-dual root is its unit dimension times the
 canonical double-dual unit map. -/
@@ -104,7 +97,11 @@ theorem fourthDualRoot_unit_component :
   let u := doubleDualIso C U
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) u a
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit (C := C.Obj))
-  rw [rootDimension_unit, rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
+  rw [show rootDimension C (unitIndex C) =
+      unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj))) from
+    (unitIndex_iso C).elim fun e ↦
+      congrArg (unitScalar C) ((rootTrace_id_iso C e).trans (rootTrace_id C _)),
+    rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
   simpa only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one, hu] using hr
 
 set_option backward.isDefEq.respectTransparency false in

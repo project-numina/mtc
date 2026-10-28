@@ -130,11 +130,6 @@ def euclideanAbs (x : EuclideanSpace ℝ ι) : EuclideanSpace ℝ ι :=
 
 variable [Fintype ι]
 
-theorem euclideanAbs_norm (x : EuclideanSpace ℝ ι) :
-    ‖euclideanAbs x‖ = ‖x‖ :=
-  (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp (by
-    simp [EuclideanSpace.real_norm_sq_eq, euclideanAbs])
-
 /-- Replacing coordinates by absolute values cannot decrease the quadratic
 form of a matrix with nonnegative entries. -/
 theorem quadratic_le_abs
@@ -149,9 +144,8 @@ theorem matrix_quadratic_form [DecidableEq ι]
     (A : Matrix ι ι ℝ) (x : EuclideanSpace ℝ ι) :
     (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf x =
       ∑ i, ∑ j, x i * A i j * x j := by
-  rw [Finset.sum_comm]
-  simp [ContinuousLinearMap.reApplyInnerSelf, EuclideanSpace.inner_eq_star_dotProduct,
-    Matrix.toLpLin_apply, Matrix.dot_mulVec_eq_sum_sum]
+  rw [Finset.sum_comm]; simp [ContinuousLinearMap.reApplyInnerSelf,
+    EuclideanSpace.inner_eq_star_dotProduct, Matrix.toLpLin_apply, Matrix.dot_mulVec_eq_sum_sum]
 
 /-- A nonnegative eigenvector of a positive matrix is positive in every coordinate
 if it has a positive coordinate. -/
@@ -185,7 +179,9 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {A : Matrix ι ι ℝ}
     T.reApplyInnerSelf_continuous.continuousOn
   let y := euclideanAbs x
   have hynorm : ‖y‖ = ‖z‖ := by
-    simpa [y, euclideanAbs_norm] using hxmem
+    rw [show ‖y‖ = ‖x‖ from (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp (by
+      simp [EuclideanSpace.real_norm_sq_eq, y, euclideanAbs])]
+    simpa using hxmem
   have hyne : y ≠ 0 := norm_ne_zero_iff.mp (by simpa [hynorm] using norm_ne_zero_iff.mpr hz)
   have hynonneg (i : ι) : 0 ≤ y i := abs_nonneg _
   have hyexists : ∃ i, 0 < y i := by
@@ -224,30 +220,36 @@ variable (D : BraidedFusionCategory)
 attribute [local instance] Abelian.hasFiniteBiproducts
 local instance (i : Fin (rank D)) : Simple (simples D i) := simples_simple D i
 
+/-- The transpose convention: its rows encode the fusion equations. -/
+def characterMatrix (D : BraidedFusionCategory) (i : Fin (rank D)) :
+    Matrix (Fin (rank D)) (Fin (rank D)) ℝ :=
+  fun j k => fusionCoeff D i j k
+
 /-- Sum of all simple fusion matrices, over the real numbers. -/
 def totalFusionMatrix (D : BraidedFusionCategory) :
     Matrix (Fin (rank D)) (Fin (rank D)) ℝ :=
-  fun j k => ∑ i, (fusionCoeff D i k j : ℝ)
+  ∑ i, characterMatrix D i
 
 /-- Duality and Frobenius reciprocity make the total fusion matrix symmetric. -/
 theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
     totalFusionMatrix D j k = totalFusionMatrix D k j := by
-  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry, show ⇑(dualEquiv D) = dualIndex D from rfl] using
-    Equiv.sum_comp (dualEquiv D) (fun i ↦ (fusionCoeff D i j k : ℝ))
+  simpa only [totalFusionMatrix, Matrix.sum_apply, characterMatrix, ← fusionCoeff_dual_symmetry,
+    show ⇑(dualEquiv D) = dualIndex D from rfl] using
+      Equiv.sum_comp (dualEquiv D) (fun i ↦ (fusionCoeff D i k j : ℝ))
 
 /-- The total fusion matrix is strictly positive in every entry. -/
 theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
     0 < totalFusionMatrix D j k := by
-  let : Simple (ᘁ(simples D k)) := simple_leftDual (simples D k)
-  obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor (simples D j)
-  let : (tensorLeft (simples D j)).Faithful :=
-    PropertyF.tensorLeft_faithful_of_unit_retract s r hsr
-  let Y : D.Obj := simples D j ⊗ (ᘁ(simples D k))
+  let : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
+  obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor (simples D k)
+  let : (tensorLeft (simples D k)).Faithful := PropertyF.tensorLeft_faithful_of_unit_retract s r hsr
+  let Y : D.Obj := simples D k ⊗ (ᘁ(simples D j))
   obtain ⟨i, hm⟩ := exists_positive_multiplicity (simples_decompose D Y)
-    (fun _ ↦ IsFusionCategory.hom_finite _ _) (fun h ↦ id_nonzero (ᘁ(simples D k))
-      ((tensorLeft (simples D j)).map_eq_zero_iff.mp
+    (fun _ ↦ IsFusionCategory.hom_finite _ _) (fun h ↦ id_nonzero (ᘁ(simples D j))
+      ((tensorLeft (simples D k)).map_eq_zero_iff.mp
         (by simpa [Y] using (IsZero.iff_id_eq_zero Y).mp h)))
-  exact Finset.sum_pos' (fun _ _ => Nat.cast_nonneg _)
+  simp only [totalFusionMatrix, Matrix.sum_apply, characterMatrix]; exact Finset.sum_pos'
+    (fun _ _ => Nat.cast_nonneg _)
     ⟨i, Finset.mem_univ _, Nat.cast_pos.mpr (by simpa only [fusionCoeff_reciprocity] using hm)⟩
 
 end PropertyF.Ground
@@ -263,22 +265,11 @@ namespace PropertyF.Ground
 
 variable (D : BraidedFusionCategory)
 
-/-- The transpose convention: its rows encode the fusion equations. -/
-def characterMatrix (D : BraidedFusionCategory) (i : Fin (rank D)) :
-    Matrix (Fin (rank D)) (Fin (rank D)) ℝ :=
-  fun j k => fusionCoeff D i j k
-
 theorem characterMatrix_commute (i j : Fin (rank D)) :
     Commute (characterMatrix D i) (characterMatrix D j) :=
-  Matrix.ext fun a b ↦ by
-    simp only [Matrix.mul_apply, characterMatrix]
-    exact_mod_cast (fusionCoeff_assoc j i a b).trans
-      (by simpa only [fusionCoeff_comm D j i] using (fusionCoeff_assoc i j a b).symm)
-
-theorem totalFusionMatrix_eq_sum_characterMatrix :
-    totalFusionMatrix D = ∑ i, characterMatrix D i :=
-  Matrix.ext fun j k ↦ by
-    simpa [totalFusionMatrix, characterMatrix, Matrix.sum_apply] using totalFusionMatrix_symmetric D j k
+  Matrix.ext fun a b ↦ by simp only [Matrix.mul_apply, characterMatrix]; exact_mod_cast
+    (fusionCoeff_assoc j i a b).trans (by simpa only [fusionCoeff_comm D j i] using
+      (fusionCoeff_assoc i j a b).symm)
 
 /-- The total matrix has a strictly positive common eigenvector for all
 fusion matrices. -/
@@ -292,8 +283,7 @@ theorem exists_positive_common_eigenvector :
     ⟨v, hvpos, fun i ↦ positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve (by
       rw [Matrix.mulVec_mulVec,
         (show Commute (totalFusionMatrix D) (characterMatrix D i) from
-          (totalFusionMatrix_eq_sum_characterMatrix D).symm ▸
-            Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
+          Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
         ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul])⟩
 
 /-- A positive normalized character exists for the actual fusion rules. -/
@@ -329,7 +319,7 @@ theorem character_total_eigenvector
     {f : Fin (rank D) → ℝ}
     (hf : IsFusionMultiplicative D f) :
     totalFusionMatrix D *ᵥ f = (∑ i, f i) • f := by
-  rw [totalFusionMatrix_eq_sum_characterMatrix, Matrix.sum_mulVec]
+  rw [totalFusionMatrix, Matrix.sum_mulVec]
   ext j
   simp only [Finset.sum_apply,
     Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Matrix.mulVec, dotProduct, characterMatrix,
@@ -478,9 +468,8 @@ variable {D} in
 /-- Dual simple objects have the same FP dimension. -/
 theorem fpSimple_dual (i : Fin (rank D)) :
     fpSimple D (dualIndex D i) = fpSimple D i := by
-  simp only [fpSimple, show fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ from
-    Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : ℂ)) (fusionCoeff_dual_symmetry D i k j).symm,
-    Matrix.spectralRadius_transpose]
+  simp only [fpSimple, Matrix.spectralRadius_transpose, show fusionMatrix D (dualIndex D i) =
+    (fusionMatrix D i)ᵀ from Matrix.ext fun j k ↦ congrArg Nat.cast (fusionCoeff_dual_symmetry D i k j).symm]
 
 variable {D} in
 /-- Every simple has FP dimension at least one. -/

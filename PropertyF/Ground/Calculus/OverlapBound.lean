@@ -85,8 +85,9 @@ theorem braid_trace_unitary_bound_ground :
     (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
       Ground.fpDimension C (braidTensorPower X n)
   exact pivotalTrace_braid_unitary_bound C p hd b (Ground.unitScalarEquiv C) e (fun i => by
-    simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension, unitScalar_eq_equiv] using
-      Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i) a ha
+    simpa only [pivotalDimension, unitScalar_eq_equiv] using character_norm_le_fpSimple
+      (i₀ := Ground.unitIndex C) ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
+      (pivotalDimension_character C p) i) a ha
 
 end BraidTraceBound
 

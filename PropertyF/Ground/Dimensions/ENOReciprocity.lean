@@ -15,32 +15,8 @@ Character duality, phase normalization and trace reciprocity control the dimensi
 
 ## Main results
 
-* `pivotalDimension_dual_eq_conj`: identifies simple dimensions on duals with their complex conjugates.
 * `positive_spherical_of_matrix_identities`: uses trace matrix identities to construct a positive spherical structure.
 -/
-
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-open scoped BigOperators Matrix ComplexOrder
-namespace PropertyF.Ground.Dimensions
-universe v u
-
-variable (C : BraidedFusionCategory.{v,u})
-variable {C} in
-/-- Simple pivotal dimensions on duals are conjugate, for any pivotal
-structure on a genuine braided fusion category. -/
-theorem pivotalDimension_dual_eq_conj
-    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
-    pivotalDimension C p (simples C (dualIndex C i)) =
-      star (pivotalDimension C p (simples C i)) :=
-  fusion_character_dual_eq_conj (i₀ := unitIndex C)
-    (fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm)
-    ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero) (pivotalDimension_character C p) i
-
-
-end PropertyF.Ground.Dimensions
-
-end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -214,8 +190,7 @@ set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 theorem rootPhasePivotal_dimension {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
     (hdef : ScaledMultiplicityDefectsTrivial C c) (hunit : RootSignUnitLaw C c hc)
-    (i : Fin (rank C)) :
-    pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
+    (i : Fin (rank C)) : pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
       c i * rootDimension C i := by
   simpa only [pivotalDimension, rightTrace_id, rootPhasePivotal] using
     rootSignQuantumTrace_simple hc i
@@ -287,7 +262,9 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
   let ε := rootDualSign C i
   have hε : ε * ε = 1 := rootDualSign_sq i
   have hεstar : star ε = ε := by
-    rcases mul_self_eq_one_iff.mp hε with h | h <;> simp [h]
+    rcases mul_self_eq_one_iff.mp hε with h | h
+    · rw [h, star_one]
+    · rw [h, star_neg, star_one]
   have hA : ∀ j k, star (A j k) = A j k := fun j k ↦ star_involution_trace (hinv i j k)
   have ht : Aᵀ *ᵥ d = (ε * d (dualIndex C i)) • d := by
     ext j
@@ -309,10 +286,8 @@ theorem squaredNorm_eq_root_norm_sq_of_reciprocity
     (hinv : MultiplicityDefectsInvolutive C)
     (htranspose : ENOTraceMatrixReciprocity C) (i : Fin (rank C)) :
     squaredNorm C (simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
-  rw [squaredNorm_eq_rootDualSign_mul i,
-    rootDimension_dual_conjugate_of_trace_reciprocity hinv htranspose i,
-    mul_mul_mul_comm, rootDualSign_sq, one_mul]
-  simpa using Complex.mul_conj' (rootDimension C i)
+  rw [squaredNorm_eq_rootDualSign_mul i, rootDimension_dual_conjugate_of_trace_reciprocity hinv htranspose i,
+    mul_mul_mul_comm, rootDualSign_sq, one_mul]; simpa using Complex.mul_conj' (rootDimension C i)
 
 end PropertyF.Ground.Dimensions
 
