@@ -89,7 +89,7 @@ theorem actual_braid_squares_equal_of_saturation
     (p : PivotalStructure (C := C.Obj))
     {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
-    (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
+    (he : IsUnitaryBraidPresentation b)
     {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0) {d f : ℝ} (hf : 0 < f)
     (htrace : IsTracePresentation C p b w)
     (hbound : HasUnitaryTraceBound C p b (|d| * f ^ 2))
@@ -254,7 +254,7 @@ theorem actual_three_strand_rigidity_of_trace_bound
     (p : PivotalStructure (C := C.Obj))
     {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
-    (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
+    (he : IsUnitaryBraidPresentation b)
     {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0)
     {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))

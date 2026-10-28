@@ -29,14 +29,8 @@ def Transparent (V : C) : Prop := ∀ X : C,
 
 /-- The same calculation for the negative canonical image. -/
 theorem centralizesNegative_iff (Y : CategoryTheory.Center C) :
-    CentralizesNegative Y ↔ IsPositive Y := by
-  constructor
-  · intro h X
-    apply Iso.ext
-    apply (cancel_mono (β_ Y.1 X).inv).mp
-    simpa using h X
-  · intro h X
-    rw [h X]
-    simp
+    CentralizesNegative Y ↔ IsPositive Y :=
+  ⟨fun h X => Iso.ext ((cancel_mono (β_ Y.1 X).inv).mp (by simpa using h X)),
+    fun h X => by rw [h X]; simp⟩
 
 end PropertyF

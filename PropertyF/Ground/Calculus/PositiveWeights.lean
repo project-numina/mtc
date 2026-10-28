@@ -26,7 +26,7 @@ theorem exists_galois_braid_trace_weights
       (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
       (w : Fin r → ℝ),
       (∀ i, 0 < size i) ∧
-      IsUnitaryPresentation (braidEndRepresentation X n) b ∧
+      IsUnitaryBraidPresentation b ∧
       (∀ i, w i ≠ 0) ∧
       IsTracePresentation C p b w := by
   classical

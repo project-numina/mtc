@@ -30,10 +30,9 @@ theorem squares_eq_of_central_product {G : Type*} [Group G] (a b : G)
 
 /-- The last scalar calculation of Lemma 3.2, including negative `d`. -/
 theorem fp_eq_abs_dim_of_finite_order {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
-    (h : ∃ n : ℕ, n ≠ 0 ∧ (f / d : ℂ) ^ n = 1) : f = |d| := by
-  obtain ⟨n, hn, heq⟩ := h
-  have hh := Complex.norm_eq_one_of_pow_eq_one heq hn
-  have hdiv : f / |d| = 1 := by simpa [norm_div, abs_of_pos hf] using hh
-  exact (div_eq_one_iff_eq (abs_ne_zero.mpr hd)).mp hdiv
+    (h : ∃ n : ℕ, n ≠ 0 ∧ (f / d : ℂ) ^ n = 1) : f = |d| :=
+  let ⟨_, hn, heq⟩ := h
+  (div_eq_one_iff_eq (abs_ne_zero.mpr hd)).mp (by
+    simpa [norm_div, abs_of_pos hf] using Complex.norm_eq_one_of_pow_eq_one heq hn)
 
 end PropertyF
