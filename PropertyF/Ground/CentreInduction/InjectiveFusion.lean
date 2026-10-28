@@ -44,18 +44,17 @@ theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U)
 omit [Abelian D] in
 /-- A unit retract of a tensor product with an injective makes every object injective. -/
 theorem all_injective_of_unit_retract (J U : D) [Injective J]
-    (r : Retract (𝟙_ D) (J ⊗ U)) (X : D) : Injective X := by
-  let : Injective (J ⊗ U) := tensor_preserves_injective J U
-  let : Injective (𝟙_ D) := r.injective
-  let : Injective ((𝟙_ D) ⊗ X) := tensor_preserves_injective (𝟙_ D) X
-  exact Injective.of_iso (λ_ X) inferInstance
+    (r : Retract (𝟙_ D) (J ⊗ U)) (X : D) : Injective X :=
+  letI : Injective (J ⊗ U) := tensor_preserves_injective J U
+  letI : Injective (𝟙_ D) := r.injective
+  letI : Injective ((𝟙_ D) ⊗ X) := tensor_preserves_injective (𝟙_ D) X
+  Injective.of_iso (λ_ X) inferInstance
 
 omit [Abelian D] [MonoidalCategory D] [RigidCategory D] in
 /-- Every monomorphism out of an injective object splits. -/
 theorem mono_splits_of_all_injective {X Y : D} (f : X ⟶ Y) [Mono f]
-    [Injective X] : IsSplitMono f := by
-  obtain ⟨r, hr⟩ := Injective.factors (𝟙 X) f
-  exact IsSplitMono.mk' { retraction := r, id := hr }
+    [Injective X] : IsSplitMono f :=
+  (Injective.factors (𝟙 X) f).elim fun r hr ↦ IsSplitMono.mk' { retraction := r, id := hr }
 
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
@@ -63,16 +62,16 @@ local notation "𝒵" => CategoryTheory.Center C.Obj
 /-- A unit retract of an induced object makes every centre object injective. -/
 theorem center_all_injective_of_unit_retract (X : C.Obj) (U : 𝒵)
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
-    (Z : 𝒵) : Injective Z := by
-  let : Injective ((induction C).obj X) := induction_injective C X
-  exact all_injective_of_unit_retract ((induction C).obj X) U r Z
+    (Z : 𝒵) : Injective Z :=
+  letI : Injective ((induction C).obj X) := induction_injective C X
+  all_injective_of_unit_retract ((induction C).obj X) U r Z
 
 /-- A unit retract of an induced object splits every centre monomorphism. -/
 theorem center_mono_splits_of_unit_retract (X : C.Obj) (U : 𝒵)
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
-    {Z W : 𝒵} (f : Z ⟶ W) [Mono f] : IsSplitMono f := by
-  let : Injective Z := center_all_injective_of_unit_retract C X U r Z
-  exact mono_splits_of_all_injective f
+    {Z W : 𝒵} (f : Z ⟶ W) [Mono f] : IsSplitMono f :=
+  letI : Injective Z := center_all_injective_of_unit_retract C X U r Z
+  mono_splits_of_all_injective f
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Under the unit-retract condition every centre object is a finite simple sum. -/

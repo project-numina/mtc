@@ -30,10 +30,10 @@ theorem mem_productLabels (i : Fin (rank (Integrate.bundledCenter C))) :
   classical
   simp [productLabels]
 
-theorem unit_mem_productLabels : unitIndex (Integrate.bundledCenter C) ∈ productLabels C := by
-  rw [mem_productLabels]
-  obtain ⟨e⟩ := unitIndex_iso (Integrate.bundledCenter C)
-  exact Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
+theorem unit_mem_productLabels : unitIndex (Integrate.bundledCenter C) ∈ productLabels C :=
+  let ⟨e⟩ := unitIndex_iso (Integrate.bundledCenter C)
+  (mem_productLabels C _).2 <|
+    Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
 
 theorem dual_mem_productLabels (i : Fin (rank (Integrate.bundledCenter C)))
     (hi : i ∈ productLabels C) : dualIndex (Integrate.bundledCenter C) i ∈ productLabels C := by
@@ -49,10 +49,10 @@ theorem dual_mem_productLabels (i : Fin (rank (Integrate.bundledCenter C)))
 theorem constituent_mem_productLabels
     (i j k : Fin (rank (Integrate.bundledCenter C)))
     (hi : i ∈ productLabels C) (hj : j ∈ productLabels C)
-    (hk : 0 < fusionCoeff (Integrate.bundledCenter C) i j k) : k ∈ productLabels C := by
-  rw [mem_productLabels] at hi hj ⊢
-  obtain ⟨r⟩ := Ground.fusionCoeff_retract (Integrate.bundledCenter C) i j k hk
-  exact Centre.productRetract_of_retract r (Centre.productRetract_tensor hi hj)
+    (hk : 0 < fusionCoeff (Integrate.bundledCenter C) i j k) : k ∈ productLabels C :=
+  let ⟨r⟩ := Ground.fusionCoeff_retract (Integrate.bundledCenter C) i j k hk
+  (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|
+    Centre.productRetract_tensor ((mem_productLabels C i).1 hi) ((mem_productLabels C j).1 hj)
 
 /-- The centre's product-retract labels satisfy the numerical double-centralizer
 inclusion whenever the chosen core contains their numerical centralizer. -/
@@ -61,19 +61,13 @@ theorem productLabels_doubleCentralizer
     (hp : p.IsSpherical) (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
     (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
     (core : Set (Fin (rank (Integrate.bundledCenter C))))
-    (hcore : ∀ y, (∀ a ∈ productLabels C,
-      Modular.categoricalS (Integrate.bundledCenter C) p a y =
-        Modular.simpleDimension (Integrate.bundledCenter C) p a *
-          Modular.simpleDimension (Integrate.bundledCenter C) p y) → y ∈ core) :
-    ∀ x, (∀ y ∈ core, Modular.categoricalS (Integrate.bundledCenter C) p y x =
-      Modular.simpleDimension (Integrate.bundledCenter C) p y *
-        Modular.simpleDimension (Integrate.bundledCenter C) p x) →
-      Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := by
-  intro x hx
-  apply (mem_productLabels C x).mp
-  exact doubleCentralizer_of_fusion_closed (Integrate.bundledCenter C) p hp hdet hdim
-    (productLabels C) core (unit_mem_productLabels C) (dual_mem_productLabels C)
-    (fun i hi j hj k hk => constituent_mem_productLabels C i j k hi hj hk) hcore x hx
+    (hcore : sCentralizer (Integrate.bundledCenter C) p (↑(productLabels C) : Set _) ⊆ core) :
+    ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p core,
+      Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := fun x hx ↦
+  (mem_productLabels C x).mp <|
+    doubleCentralizer_of_fusion_closed (Integrate.bundledCenter C) p hp hdet hdim
+      (productLabels C) core (unit_mem_productLabels C) (dual_mem_productLabels C)
+      (fun i hi j hj k hk ↦ constituent_mem_productLabels C i j k hi hj hk) hcore hx
 
 
 /-- Actual centre labels centralizing both canonical images. -/
