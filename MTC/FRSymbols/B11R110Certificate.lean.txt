@@ -18,4 +18,12 @@ theorem phase_unitary : Complex.normSq (cyclotomicEmbedding 70 entry_0_0) = 1 :=
     (Complex.isPrimitiveRoot_exp 70 (by decide)).norm'_eq_one (by decide)]
   norm_num
 
+/-- The same R entry is unitary inside the exact cyclotomic field. -/
+theorem exact_unitary : star entry_0_0 * entry_0_0 = 1 := by
+  rw [exact_phase, star_pow]
+  have hgen : star (cyclotomicGenerator 70) = (cyclotomicGenerator 70)⁻¹ :=
+    cyclotomicConj_generator 70
+  rw [hgen, inv_pow]
+  exact inv_mul_cancel₀ (pow_ne_zero 64 ((cyclotomicGenerator_primitive 70).ne_zero (by decide)))
+
 end AtlasGenerated.R11_1_1_0
