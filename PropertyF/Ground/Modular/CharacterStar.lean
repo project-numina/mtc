@@ -14,30 +14,6 @@ open scoped BigOperators
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Modular
 
-variable {ι : Type*} [Fintype ι] [DecidableEq ι]
-variable (N : FusionRules ι) (dual : ι → ι)
-variable (hdual : ∀ i j k, N.coeff i j k = N.coeff (dual i) k j)
-
-omit [DecidableEq ι] in
-include hdual in
-/-- Fusion duality balances two multiplicative functions under a ring endomorphism. -/
-theorem fusion_inner_balance {K : Type*} [CommSemiring K] (φ : K →+* K)
-    (χ ψ : ι → K) (hχ : IsFusionCharacter N χ) (hψ : IsFusionCharacter N ψ) (i : ι) :
-    ψ i * (∑ j, φ (χ j) * ψ j) = φ (χ (dual i)) * (∑ j, φ (χ j) * ψ j) := by
-  classical
-  calc
-    _ = ∑ j, φ (χ j) * (ψ i * ψ j) := by
-      simp only [Finset.mul_sum, mul_left_comm]
-    _ = ∑ j, ∑ k, φ (χ j) * ((N.coeff i j k : K) * ψ k) := by
-      simp only [hψ, Finset.mul_sum]
-    _ = ∑ k, ∑ j, ((N.coeff (dual i) k j : K) * φ (χ j)) * ψ k := by
-      rw [Finset.sum_comm]
-      simp only [hdual i, mul_comm, mul_assoc]
-    _ = ∑ k, φ (χ (dual i) * χ k) * ψ k := by
-      simp only [hχ, map_sum, Finset.sum_mul, map_mul, map_natCast]
-    _ = _ := by
-      simp only [map_mul, Finset.mul_sum, mul_left_comm, mul_assoc]
-
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
