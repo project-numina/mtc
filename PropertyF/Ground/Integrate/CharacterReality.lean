@@ -37,19 +37,19 @@ theorem fusion_character_eigenvector {ι K : Type*} [Fintype ι] [Semiring K]
     (i : ι) : (fun j k ↦ N i j k) *ᵥ χ = χ i • χ :=
   funext fun j ↦ (hchar i j).symm
 
-variable {ι : Type*} [Fintype ι] {N : ι → ι → ι → ℕ} {d : ι → ι}
-variable {χ : ι → ℂ} {i₀ : ι}
+variable {ι K : Type*} [Fintype ι] [RCLike K] {N : ι → ι → ι → ℕ} {d : ι → ι}
+variable {χ : ι → K} {i₀ : ι}
 variable (hN : ∀ i j k, N (d i) j k = N i k j)
-variable (hχ : χ i₀ ≠ 0) (hchar : ∀ i j, χ i * χ j = ∑ k, (N i j k : ℂ) * χ k)
+variable (hχ : χ i₀ ≠ 0) (hchar : ∀ i j, χ i * χ j = ∑ k, (N i j k : K) * χ k)
 include hN hχ hchar
 
 /-- A nonzero character takes conjugate values on labels with transposed multiplication matrices. -/
 theorem fusion_character_dual_eq_conj (i : ι) : χ (d i) = star (χ i) := by
-  simpa using congrArg star (conjugate_of_transpose_eigenvector (fun j k ↦ (N i j k : ℂ))
+  simpa using congrArg star (conjugate_of_transpose_eigenvector (fun j k ↦ (N i j k : K))
     (fun j k ↦ star_natCast _) (fun hz ↦ hχ (congrFun hz i₀))
     (fusion_character_eigenvector hchar i) (by
-      have hA : (fun j k ↦ (N (d i) j k : ℂ)) = (fun j k ↦ (N i j k : ℂ))ᵀ :=
-        Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : ℂ)) (hN i j k)
+      have hA : (fun j k ↦ (N (d i) j k : K)) = (fun j k ↦ (N i j k : K))ᵀ :=
+        Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : K)) (hN i j k)
       simpa only [hA] using fusion_character_eigenvector hchar (d i)))
 
 variable (hdual : ∀ i, χ (d i) = χ i)
@@ -61,7 +61,7 @@ theorem selfDual_character_real (i : ι) :
   (fusion_character_dual_eq_conj hN hχ hchar i).symm.trans (hdual i)
 
 /-- Every field conjugate of a self-dual fusion character is real as well. -/
-theorem selfDual_character_galois_real (σ : ℂ ≃+* ℂ) (i : ι) :
+theorem selfDual_character_galois_real (σ : K ≃+* K) (i : ι) :
     star (σ (χ i)) = σ (χ i) :=
   selfDual_character_real (χ := fun j ↦ σ (χ j)) (i₀ := i₀) hN ((map_ne_zero σ).2 hχ)
     (fun j k ↦ by simpa using congrArg σ (hchar j k)) (fun j ↦ by rw [hdual]) i
