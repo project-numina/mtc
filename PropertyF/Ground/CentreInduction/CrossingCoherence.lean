@@ -24,9 +24,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
-    ∑ k, ∑ a : crossingIndex C T i k,
-      ∑ j, ∑ b : crossingIndex C U k j,
-        nestedCrossingBlock C X T U i k j a b ≫ ((T ⊗ U) ◁ biproduct.ι V j) := by
+    ∑ k, ∑ a : crossingIndex C T i k, ∑ j, ∑ b : crossingIndex C U k j,
+      nestedCrossingBlock C X T U i k j a b ≫ ((T ⊗ U) ◁ biproduct.ι V j) := by
   dsimp only [nestedCrossingBlock]
   let V := inductionSummand C X
   let bT : (⨁ V) ⊗ T ⟶ T ⊗ (⨁ V) := crossingCandidate C X T

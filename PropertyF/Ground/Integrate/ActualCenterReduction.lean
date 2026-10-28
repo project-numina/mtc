@@ -106,9 +106,8 @@ theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalF
       σ (globalFPDimension C : ℂ) = (a : ℂ) :=
   let d : Fin (rank C) → ℝ := fun i ↦ (σ (fpSimple C i : ℂ)).re
   have hbound (i : Fin (rank C)) : |d i| ≤ fpSimple C i := by
-    convert fp_simple_galois_norm_le C σ i using 1
-    rw [← fp_simple_galois_real C σ i]
-    simp [d, Complex.norm_real, Real.norm_eq_abs]
+    simp only [d, ← Real.norm_eq_abs, ← Complex.norm_real, fp_simple_galois_real]
+    exact fp_simple_galois_norm_le C σ i
   ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
       (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, by simp [d, fpSimple_unit]⟩),
     Dimensions.target_globalDimension_le_of_simple_bounds C hbound,

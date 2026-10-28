@@ -22,9 +22,11 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+  {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M)
 
+include hM in
 /-- A finite-order complex matrix can be conjugated to a unitary matrix. -/
-theorem finiteOrder_matrix_unitarizable {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
+theorem finiteOrder_matrix_unitarizable :
     ∃ P : (Matrix ι ι ℂ)ˣ, ((P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)) ∈ Matrix.unitaryGroup ι ℂ :=
   let u : (Matrix ι ι ℂ)ˣ := hM.isUnit.unit
   have hufin : IsOfFinOrder u := Units.isOfFinOrder_val.mp (by simpa [u] using hM)
@@ -35,9 +37,10 @@ theorem finiteOrder_matrix_unitarizable {M : Matrix ι ι ℂ} (hM : IsOfFinOrde
   let g : G := ⟨u, Subgroup.mem_zpowers u⟩
   ⟨P, by simpa [g, u] using hP g⟩
 
+include hM in
 /-- A finite-order matrix has real trace at most its size, with equality
 only for the identity. -/
-theorem finiteOrder_matrix_trace_saturation {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
+theorem finiteOrder_matrix_trace_saturation :
     M.trace.re ≤ Fintype.card ι ∧
       (M.trace.re = Fintype.card ι → M = 1) := by
   obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
@@ -73,12 +76,10 @@ variable {ι : Type*} [Fintype ι] {J : ι → Type*}
   [∀ i, Fintype (J i)] [∀ i, DecidableEq (J i)]
 
 /-- A positive weighted maximal trace forces a finite-order matrix family to be the identity. -/
-theorem finiteOrder_matrices_eq_one_of_weighted_trace
-    (M : ∀ i, Matrix (J i) (J i) ℂ) (w : ι → ℝ)
+theorem finiteOrder_matrices_eq_one_of_weighted_trace (M : ∀ i, Matrix (J i) (J i) ℂ) (w : ι → ℝ)
     (hw : ∀ i, 0 < w i) (hM : ∀ i, IsOfFinOrder (M i))
-    (ht : (∑ i, w i * (M i).trace.re) = ∑ i, w i * (Fintype.card (J i) : ℝ)) :
-    ∀ i, M i = 1 := fun i ↦
-  (finiteOrder_matrix_trace_saturation (hM i)).2 <|
+    (ht : (∑ i, w i * (M i).trace.re) = ∑ i, w i * (Fintype.card (J i) : ℝ)) : ∀ i, M i = 1 :=
+  fun i ↦ (finiteOrder_matrix_trace_saturation (hM i)).2 <|
     eq_of_pos_weighted_sum_eq hw (fun j ↦ (finiteOrder_matrix_trace_saturation (hM j)).1) ht i
 
 /-- In a fusion category with positive simple pivotal dimensions, a
@@ -110,11 +111,9 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
 /-- For a finite-order double braiding, the positive spherical S-test is
 equivalent to categorical centrality. -/
 theorem doubleBraiding_eq_one_of_sTest_of_finite_order
-    (hdim : HasFPSimpleDimensions D p)
-    {i j : Fin (rank D)}
+    (hdim : HasFPSimpleDimensions D p) {i j : Fin (rank D)}
     (hfinite : IsOfFinOrder (End.of (doubleBraiding (simples D i) (simples D j))))
-    (hs : sCentralizes D p i j) :
-    doubleBraiding (simples D i) (simples D j) = 𝟙 _ := by
+    (hs : sCentralizes D p i j) : doubleBraiding (simples D i) (simples D j) = 𝟙 _ := by
   have ht : p.rightTrace (doubleBraiding (simples D i) (simples D j)) =
       p.rightTrace (𝟙 (simples D i ⊗ simples D j)) := by
     apply (Ground.unitScalarEquiv D).injective

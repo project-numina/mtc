@@ -62,7 +62,7 @@ end
 /-- The Frobenius–Perron dimensions form a regular fusion eigenvector. -/
 theorem fpSimple_regular (i k : Fin (rank C)) :
     (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
-  simp_rw [Modular.fusionCoeff_dual_adjoint C i]
+  simp_rw [Ground.fusionCoeff_dual_symmetry C i]
   simpa only [mul_comm, fpSimple_dual] using (fpSimple_mul C (dualIndex C i) k).symm
 
 /-- The FP regular-element cancellation at the heart of the determinant argument. -/
@@ -617,14 +617,13 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 theorem simple_multiplicity_expansion {M : Type w} [AddCommGroup M] [Module ℝ M]
     (f : C.Obj → M) (hiso : ∀ {X Y : C.Obj}, (X ≅ Y) → f X = f Y)
     (S : C.Obj) [Simple S] :
-    f S = ∑ i, (Module.finrank ℂ (simples C i ⟶ S) : ℝ) • f (simples C i) := by
-  classical
+    f S = ∑ i, (Module.finrank ℂ (simples C i ⟶ S) : ℝ) • f (simples C i) :=
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  obtain ⟨j, ⟨e⟩⟩ := exists_simple_iso C S
-  have hr (i : Fin (rank C)) : Module.finrank ℂ (simples C i ⟶ S) =
-      Module.finrank ℂ (simples C i ⟶ simples C j) :=
-    (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
-  simpa [hr, finrank_simples_hom] using hiso e
+  (exists_simple_iso C S).elim fun j hj ↦ hj.elim fun e ↦ by
+    have hr (i : Fin (rank C)) : Module.finrank ℂ (simples C i ⟶ S) =
+        Module.finrank ℂ (simples C i ⟶ simples C j) :=
+      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
+    simpa [hr, finrank_simples_hom] using hiso e
 
 /-- Any isomorphism-invariant additive object function is determined by
 its values on simples and the actual Hom-space multiplicities. -/

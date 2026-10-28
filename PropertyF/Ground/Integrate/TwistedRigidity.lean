@@ -58,16 +58,16 @@ instance : MonoidalLinear ℂ (Obj C σ) where
     exact MonoidalLinear.smul_whiskerRight _ _ _
 
 /-- Transport a finite basis across a field automorphism. -/
-theorem finite_twist (M : Type*) [AddCommGroup M] [m : Module ℂ M]
-    [FiniteDimensional ℂ M] (σ : ℂ ≃+* ℂ) :
-    @FiniteDimensional ℂ M _ _ (Module.compHom M σ.symm.toRingHom) :=
-  let b := Module.finBasis ℂ M
+theorem finite_twist {K : Type*} [Field K] (M : Type*) [AddCommGroup M] [m : Module K M]
+    [FiniteDimensional K M] (σ : K ≃+* K) :
+    @FiniteDimensional K M _ _ (Module.compHom M σ.symm.toRingHom) :=
+  let b := Module.finBasis K M
   let m' := Module.compHom M σ.symm.toRingHom
-  let b' := @Module.Basis.mapCoeffs _ ℂ M _ _ m b ℂ _ m' σ (by
+  let b' := @Module.Basis.mapCoeffs _ K M _ _ m b K _ m' σ (by
     intro a x
     conv_rhs => rw [← σ.symm_apply_apply a]
     rfl)
-  @Module.Basis.finiteDimensional_of_finite ℂ M _ _ m' _ _ b'
+  @Module.Basis.finiteDimensional_of_finite K M _ _ m' _ _ b'
 
 instance twistedFusion : IsFusionCategory (Obj C σ) where
   hom_finite X Y := by
@@ -110,10 +110,9 @@ local notation "pσ" => pivotal C σ p
 theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
     unitScalar Cσ f = σ (unitScalar C f) := by
   apply (unit_algebraMap_bijective Cσ).1
-  rw [algebraMap_unitScalar Cσ f]
-  change f = σ.symm (σ (unitScalar C f)) • (1 : End (𝟙_ C.Obj))
-  simpa only [σ.symm_apply_apply, ← Algebra.algebraMap_eq_smul_one] using
-    (algebraMap_unitScalar C f).symm
+  simp only [algebraMap_unitScalar Cσ f]
+  exact (algebraMap_unitScalar C f).symm.trans
+    (congrArg (fun z : ℂ ↦ z • (1 : End (𝟙_ C.Obj))) (σ.symm_apply_apply _).symm)
 
 /-- Pivotal dimensions transform by the specified field automorphism. -/
 theorem pivotalDimension_twist (X : C.Obj) :
@@ -138,14 +137,9 @@ theorem exists_galois_fp_dimensions (hdim : Modular.HasFPSimpleDimensions C p) :
       (∀ i, 0 < original i) ∧ (∀ i, σ (original i : ℂ) = (transformed i : ℂ)) ∧
       ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ i) = (transformed i : ℂ) := by
   obtain ⟨e, he⟩ := labels C σ p hdim
-  let original : Fin (rank Cσ) → ℝ := fun i ↦ fpSimple C (e.symm i)
-  let transformed : Fin (rank Cσ) → ℝ := fun i ↦ (σ (original i : ℂ)).re
-  refine ⟨original, transformed, fun i ↦ fpSimple_pos C _,
-    fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, ?_⟩
-  intro i
-  have hi := he (e.symm i)
-  rw [e.apply_symm_apply] at hi
-  simpa only [transformed, original, fp_simple_galois_real] using hi
+  refine ⟨fun i ↦ fpSimple C (e.symm i), fun i ↦ (σ (fpSimple C (e.symm i) : ℂ)).re,
+    fun i ↦ fpSimple_pos C _, fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, fun i ↦ ?_⟩
+  simpa only [e.apply_symm_apply, fp_simple_galois_real] using he (e.symm i)
 
 end PropertyF.Ground.ScalarTwist
 end

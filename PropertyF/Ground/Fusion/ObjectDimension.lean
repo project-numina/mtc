@@ -202,11 +202,7 @@ theorem fpDimension_functor (C : BraidedFusionCategory.{v,u})
       _ = fpDimension D (F.obj (simples C i ⊗ simples C j)) :=
         fpDimension_iso D (μIso F _ _)
       _ = _ := fpDimension_functor_decomposition C D F _
-  have heq : f = fpSimple C := positive_character_unique C f (fpSimple C)
-    hpos (fpSimple_pos C) hunit (fpSimple_unit C) hmul (fpSimple_mul C)
-  rw [fpDimension_functor_decomposition]
-  change (∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℝ) * f i) = _
-  rw [heq]
-  rfl
+  have heq : f = fpSimple C := positive_character_unique C hpos (fpSimple_pos C) hunit (fpSimple_unit C) hmul (fpSimple_mul C)
+  simpa only [fpDimension, ← heq, f] using fpDimension_functor_decomposition C D F X
 
 end PropertyF.Ground

@@ -92,10 +92,12 @@ theorem leftPartialTrace_inverse_braiding (X : D) :
 
 end
 
-include hp in
+section
+variable {X : C.Obj} [Simple X] (hX : SelfTransparent X)
+
+include hp hX in
 /-- On a self-transparent simple, the inverse twist is its twist scalar. -/
-theorem inverse_twist_eq_scalar_of_selfTransparent {X : C.Obj} [Simple X]
-    (hX : SelfTransparent X) :
+theorem inverse_twist_eq_scalar_of_selfTransparent :
     (doubleDualIso C X).hom ≫ (p.iso X).inv =
       θ C p X • 𝟙 X :=
   (congrArg End.asHom (show θ C p X • (1 : End X) = _ from by
@@ -104,10 +106,9 @@ theorem inverse_twist_eq_scalar_of_selfTransparent {X : C.Obj} [Simple X]
       braidedDoubleDualIso, doubleDualIso] using
       leftPartialTrace_inverse_braiding (p := p) X)).symm
 
-include hp in
+include hp hX in
 /-- In a spherical category, the twist of a self-transparent simple is a sign. -/
-theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
-    (hX : SelfTransparent X) :
+theorem pivotalTwist_sign_of_selfTransparent :
     θ C p X = 1 ∨
       θ C p X = -1 := by
   have ht : ((doubleDualIso C X).hom ≫ (p.iso X).inv) ≫
@@ -119,11 +120,13 @@ theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
   apply smul_left_injective ℂ (id_nonzero X)
   simpa only [Linear.smul_comp, Linear.comp_smul, Category.id_comp, smul_smul, one_smul] using ht
 
+end
+
 /-- Every self-transparent simple has integral FP dimension in an FP-valued
 spherical braided fusion category. -/
 theorem selfTransparent_simple_integral (hfp : IsFPSpherical C p) {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_spherical_and_twist_sign hfp hX
     (pivotalTwist_sign_of_selfTransparent (C := C) hfp.1 hX)
 

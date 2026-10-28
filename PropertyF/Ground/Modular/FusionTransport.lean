@@ -27,13 +27,15 @@ theorem simpleLabels_equiv (C D : Ground.BraidedFusionCategory.{v,u})
   classical
   let F := E.functor
   let S : Fin (rank C) → D.Obj := fun i => F.obj (simples C i)
-  apply simple_presentation_equiv D S
-  · intro i
-    let _ : Simple (simples C i) := simples_simple C i
-    exact simple_obj F (simples C i)
+  apply representatives_equiv S (simples D)
   · intro i j ⟨e⟩
     apply simples_injective C
     exact ⟨F.preimageIso e⟩
+  · exact fun _ _ ↦ simples_injective D
+  · intro i
+    let _ : Simple (simples C i) := simples_simple C i
+    let _ : Simple (S i) := simple_obj F (simples C i)
+    exact exists_simple_iso D (S i)
   · intro j
     let Y := simples D j
     let X := F.objPreimage Y

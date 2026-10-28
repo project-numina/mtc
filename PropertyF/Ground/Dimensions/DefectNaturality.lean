@@ -66,7 +66,7 @@ variable (C : BraidedFusionCategory.{v,u})
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Linear ℂ D]
   [MonoidalPreadditive D] [MonoidalLinear ℂ D]
 
-theorem tensorLeftHomLinearEquiv_postcomp (X Y Y' Z W : D) [ExactPairing Y Y']
+theorem tensorLeftHomLinearEquiv_postcomp {X Y' Z W : D} (Y : D) [ExactPairing Y Y']
     (f : Y' ⊗ X ⟶ Z) (g : Z ⟶ W) :
     tensorLeftHomLinearEquiv X Y Y' W (f ≫ g) =
       tensorLeftHomLinearEquiv X Y Y' Z f ≫ Y ◁ g :=
@@ -89,10 +89,8 @@ theorem trace_reciprocity_of_coeval_defect
   let K := simples C k
   let J := simples C j
   let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-  have hpost := tensorLeftHomLinearEquiv_postcomp K (Xᘁ) X (X ⊗ K) J
-    (rootTensorDefect C X K).hom g
-  have hpost' := tensorLeftHomLinearEquiv_postcomp K (Xᘁ) X (X ⊗ K) J
-    (𝟙 (X ⊗ K)) g
+  have hpost := tensorLeftHomLinearEquiv_postcomp (Xᘁ) (rootTensorDefect C X K).hom g
+  have hpost' := tensorLeftHomLinearEquiv_postcomp (Xᘁ) (𝟙 (X ⊗ K)) g
   have hn := rootTensorDefect_natural C (𝟙 (Xᘁ)) g
   simp only [id_tensorHom] at hn
   simp only [Category.id_comp] at hpost'
