@@ -38,8 +38,7 @@ theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
     (h : (β_ Z ((Center.ofBraided D).obj T)).hom.f ≫ (g ⊗ₘ f) =
       (f ⊗ₘ g) ≫ (β_ W B).hom.f) :
     (f ▷ T) ≫ (W.2.β T).hom = (Z.2.β T).hom ≫ (T ◁ f) :=
-  letI : IsSplitMono (g ▷ W.1) :=
-    IsSplitMono.mk' ((inferInstance : IsSplitMono g).exists_splitMono.some.map (tensorRight W.1))
+  letI : IsSplitMono (g ▷ W.1) := inferInstanceAs (IsSplitMono ((tensorRight W.1).map g))
   (cancel_mono (g ▷ W.1)).1 <| by
     rw [tensorHom_def' g f, tensorHom_def f g] at h
     change (Z.2.β T).hom ≫ ((T ◁ f) ≫ g ▷ W.1) =
@@ -50,8 +49,7 @@ theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
 theorem pivotalComponentsCentral_proved [BraidedCategory D] :
     PivotalComponentsCentral p := fun Z T ↦
   central_of_positive_braiding (transportedPivotalHom p Z)
-    (transportedPivotalHom p ((Center.ofBraided D).obj T))
-    (transported_pivotal_braiding p Z ((Center.ofBraided D).obj T))
+    (transportedPivotalHom p ((Center.ofBraided D).obj T)) (transported_pivotal_braiding p Z _)
 
 end PropertyF.Ground.CentreInduction
 
