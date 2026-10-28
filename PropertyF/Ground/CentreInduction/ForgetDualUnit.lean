@@ -17,9 +17,11 @@ local notation "𝒵" => Center D
 private theorem forgetDualIso_tensor_inv (X Y : 𝒵) :
     (rightDualTensorIso X Y).inv.f ≫ (forgetDualIso (X ⊗ Y)).hom =
       ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) ≫
-        (rightDualTensorIso X.1 Y.1).inv := by
-  rw [Iso.eq_comp_inv, Category.assoc, forgetDualIso_tensor]
-  simp [← Center.comp_f, ← Category.assoc]
+        (rightDualTensorIso X.1 Y.1).inv :=
+  (Iso.eq_comp_inv (rightDualTensorIso X.1 Y.1)).2 <|
+    (Category.assoc _ _ _).trans <|
+      (congrArg ((rightDualTensorIso X Y).inv.f ≫ ·) (forgetDualIso_tensor X Y)).trans <|
+        ((Center.forget D).mapIso (rightDualTensorIso X Y)).inv_hom_id_assoc _
 
 /-- Taking mates of the tensor comparison also preserves its inverse. -/
 private theorem forgetDualIso_tensor_mate_inv (X Y : 𝒵) :
@@ -39,14 +41,12 @@ theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
     (doubleDualTensorIso X Y).hom.f ≫ (forgetDoubleDualIso (X ⊗ Y)).hom =
       ((forgetDoubleDualIso X).hom ⊗ₘ (forgetDoubleDualIso Y).hom) ≫
         (doubleDualTensorIso X.1 Y.1).hom := by
-  simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
-    rightDualIsoMap, Center.comp_f, Category.assoc,
-    forgetDoubleDualIso]
-  rw [← Category.assoc ((rightDualTensorIso X Y).homᘁ).f, forgetDualIso_natural]
-  simp only [← Category.assoc]
-  rw [forgetDualIso_tensor_inv (Yᘁ) (Xᘁ)]
-  simp only [Category.assoc]
-  rw [forgetDualIso_tensor_mate_inv X Y,
+  dsimp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
+    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso]
+  rw [Category.assoc, ← Category.assoc ((rightDualTensorIso X Y).homᘁ).f,
+    forgetDualIso_natural]
+  rw [← Category.assoc, ← Category.assoc, forgetDualIso_tensor_inv (Yᘁ) (Xᘁ)]
+  rw [Category.assoc, forgetDualIso_tensor_mate_inv X Y, Category.assoc,
     ← Category.assoc ((rightDualTensorIso (Yᘁ).1 (Xᘁ).1).inv),
     ← rightDualTensorIso_inv_natural (forgetDualIso Y).inv (forgetDualIso X).inv]
   simp only [tensorHom_comp_tensorHom_assoc, Category.assoc]
@@ -97,23 +97,20 @@ theorem forgetDoubleDualIso_unit :
   let e := rightDualUnitIso (C := 𝒵)
   let b := rightDualUnitIso (C := D)
   have hu : (forgetDualIso U).hom ≫ b.hom = e.hom.f := forgetDualIso_unit (D := D)
-  have hv : e.inv.f ≫ (forgetDualIso U).hom = b.inv := by
-    apply (cancel_mono b.hom).1
-    rw [Category.assoc, hu, ← Center.comp_f, Iso.inv_hom_id]
-    simp
+  have hv : e.inv.f ≫ (forgetDualIso U).hom = b.inv :=
+    (Iso.comp_hom_eq_id b).1 <| (Category.assoc _ _ _).trans <|
+      (congrArg (e.inv.f ≫ ·) hu).trans (congrArg Center.Hom.f e.inv_hom_id)
   have hn := forgetDualIso_natural e.hom
   change (e.homᘁ).f ≫ (forgetDualIso (Uᘁ)).hom =
     (forgetDualIso U).hom ≫ (e.hom.fᘁ) at hn
-  simp only [doubleDualUnitIso, Iso.trans_hom, Iso.symm_hom,
-    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso,
-    Category.assoc]
+  dsimp only [doubleDualUnitIso, Iso.trans_hom, Iso.symm_hom,
+    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso]
+  rw [Category.assoc]
   change e.inv.f ≫ (e.homᘁ).f ≫ (forgetDualIso (Uᘁ)).hom ≫
       (forgetDualIso U).invᘁ = b.inv ≫ b.homᘁ
   rw [← Category.assoc (e.homᘁ).f, hn, ← hu, comp_rightAdjointMate]
-  simp only [Category.assoc]
-  rw [← Category.assoc e.inv.f, hv]
-  simp only [← comp_rightAdjointMate,
-    Iso.inv_hom_id, rightAdjointMate_id, Category.comp_id]
+  rw [Category.assoc, ← Category.assoc e.inv.f, hv]
+  simp only [← comp_rightAdjointMate, Iso.inv_hom_id_assoc]
 
 /-- Transported pivotal components preserve the tensor unit after forgetting. -/
 theorem transported_pivotal_unit :

@@ -21,10 +21,11 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 objects: precomposition corresponds to dualizing postcomposition. -/
 theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) (q : V ⟶ W)
     (f : W ⟶ simples C i) : simpleHomPairingEquiv C i V (q ≫ f) =
-    Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv C i W f) := by
-  ext g
-  simp [simpleHomPairingEquiv, simpleHomPairing,
-    Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
+    Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv C i W f) :=
+  letI : Simple (simples C i) := simples_simple C i
+  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  LinearMap.ext fun g => congrArg (fun k => Ground.simpleEndScalar (simples C i) (End.of k))
+    (Category.assoc g q f).symm
 
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/
@@ -54,7 +55,7 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
   rw [Module.Basis.dualBasis_apply_self]
   simp [simpleHomPairingEquiv, simpleHomPairing,
     simpleInclusion, simpleProjection, Category.assoc, biproduct.ι_π]
-  split_ifs <;> simp <;> exact End.ext rfl
+  split_ifs <;> first | exact map_one _ | exact map_zero _
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
 theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
@@ -135,8 +136,7 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
   have h : (∑ p, r p ≫ q p) = 𝟙 W := by
     simp only [r, q, Category.assoc, ← whiskerLeft_comp_assoc,
       ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum]
-    rw [crossing_completeness]
-    simp [W]
+    rw [crossing_completeness, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id]
   simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
     crossingInclusion, crossingProjection, mixedCrossingBilinear, crossingBlock, Category.assoc] using
     simpleBasis_contraction_refinement C i q r h
@@ -167,11 +167,11 @@ theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
   simp only [closeFusionMap, Category.assoc, comp_rightAdjointMate, comp_whiskerRight]
   rw [whisker_exchange_assoc]
   have hn := congrArg (fun k => k ▷ T) (rightDualTensorIso_natural h (𝟙 S))
-  simp only [tensorHom_id, rightAdjointMate_id, id_tensorHom, comp_whiskerRight] at hn
+  rw [tensorHom_id, rightAdjointMate_id, id_tensorHom, comp_whiskerRight,
+    comp_whiskerRight] at hn
   rw [reassoc_of% hn, whisker_exchange_assoc, associator_naturality_right_assoc,
     associator_naturality_middle_assoc]
-  simp only [← whiskerLeft_comp_assoc]
-  rw [rightAdjointMate_comp_evaluation]
+  rw [← whiskerLeft_comp_assoc, ← whiskerLeft_comp_assoc, rightAdjointMate_comp_evaluation]
 
 variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
   [MonoidalPreadditive D] [MonoidalLinear k D]
@@ -184,8 +184,7 @@ theorem crossingBlock_post_test (X : D) (h : T ⟶ U)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     crossingBlock X T S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
       mixedCrossingBilinear (k := k) X T U R S (g ≫ (h ▷ S)) f := by
-  simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk,
-    comp_whiskerRight, Category.assoc]
+  dsimp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -220,7 +219,7 @@ theorem crossingCandidate_natural_test (X : C.Obj) {T U : C.Obj} (h : T ⟶ U) :
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V T).inv).1
   refine biproduct.hom_ext' _ _ fun i => ?_
-  simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
+  rw [biproduct_ι_comp_rightDistributor_inv_assoc, biproduct_ι_comp_rightDistributor_inv_assoc]
   dsimp [V, underlying] at *
   rw [← whisker_exchange_assoc]
   simp only [crossingCandidate_on_summand, crossingCandidate_on_summand_assoc,

@@ -83,11 +83,11 @@ its Frobenius–Perron dimension. -/
 theorem galois_pivotalDimension_norm_le_fpSimple
     (p : PivotalStructure (C := C.Obj))
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
-    ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i := by
-  apply galois_character_norm_le_fpSimple C
+    ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i :=
+  galois_character_norm_le_fpSimple C
     (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
-  · simpa only [pivotalDimension_unitIndex] using (one_ne_zero : (1 : ℂ) ≠ 0)
-  · exact pivotalDimension_character C p
+    (by simpa only [pivotalDimension_unitIndex] using (one_ne_zero : (1 : ℂ) ≠ 0))
+    (pivotalDimension_character C p) σ i
 
 end PropertyF.Ground.Dimensions
 

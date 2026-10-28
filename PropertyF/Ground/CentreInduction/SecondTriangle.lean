@@ -74,8 +74,8 @@ theorem crossing_counit_diagonal (i : Fin (rank C)) :
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
           (simples C i ◁ (unitSummandIso C X).hom) := by
   let : Unique (crossingIndex C (simples C i) i (unitIndex C)) := by
-    simp only [crossingIndex, counit_column_finrank, ↓reduceIte]
-    infer_instance
+    simpa only [crossingIndex, counit_column_finrank, ↓reduceIte] using
+      (inferInstance : Unique (Fin 1))
   dsimp only
   rw [crossing_counit_matrix C X (simples C i) i, Fintype.sum_unique]
   dsimp only [crossingSummand]
@@ -109,7 +109,6 @@ theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N) (t : M ⟶ 
       (b ▷ Sᘁ) ⊗≫ ((S ◁ w) ▷ Sᘁ) ⊗≫ 𝟙 _ := by monoidal
     _ = _ := by
       rw [← whisker_exchange]
-      simp only [comp_whiskerRight]
       monoidal
 
 set_option backward.isDefEq.respectTransparency false in

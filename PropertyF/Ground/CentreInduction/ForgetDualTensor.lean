@@ -36,8 +36,7 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso Y).hom =
       (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
-  simp only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap,
-    Iso.symm_hom, Category.assoc]
+  dsimp only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap, Iso.symm_hom]
   rw [← Category.assoc, forgetDualIso_natural (fᘁ)]
   simp only [Category.assoc]
   congr 1

@@ -104,17 +104,17 @@ instance (n : ℕ) : (typeANormal n).Normal := inferInstanceAs
 /-- The full normal closure of the type-A braid relations acts trivially. -/
 theorem braidRelations_action_trivial (X : C) (n : ℕ) :
     Subgroup.normalClosure (braidRelations n) ≤
-      (FreeGroup.lift (braidGenerator X n)).ker := by
-  refine Subgroup.normalClosure_le_normal fun w hw ↦ MonoidHom.mem_ker.mpr ?_
-  rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
-    simp only [map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
-  · cases n with
-    | zero => omega
-    | succ n =>
-      let k : Fin (n + 1) := ⟨i.val, by omega⟩
-      simpa only [show k.castSucc = i from Fin.ext rfl, show k.succ = j from Fin.ext hij] using
-        adjacent_braid_relation X n k
-  · exact distant_braid_commute X n i j hij
+      (FreeGroup.lift (braidGenerator X n)).ker :=
+  Subgroup.normalClosure_le_normal fun w hw ↦ MonoidHom.mem_ker.mpr <| by
+    rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
+      simp only [map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
+    · cases n with
+      | zero => omega
+      | succ n =>
+        let k : Fin (n + 1) := ⟨i.val, by omega⟩
+        simpa only [show k.castSucc = i from Fin.ext rfl, show k.succ = j from Fin.ext hij] using
+          adjacent_braid_relation X n k
+    · exact distant_braid_commute X n i j hij
 
 /-- All standard symmetric-group relation words act trivially for a
 self-transparent object. -/
@@ -150,17 +150,15 @@ theorem adjacentSwaps_commute (hij : i.val + 1 < j.val) :
 
 /-- Every defining type-A relation also has trivial strand permutation. -/
 theorem typeARelations_permutation_trivial (n : ℕ) :
-    typeANormal n ≤ (strandPermutation n).ker := by
-  apply Subgroup.normalClosure_le_normal
-  intro w hw
-  apply MonoidHom.mem_ker.mpr
-  rcases hw with hw | hw
-  · obtain ⟨i, rfl⟩ := hw
-    exact Equiv.swap_mul_self _ _
-  · rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
-      simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
-    · exact adjacentSwaps_braid hij
-    · exact adjacentSwaps_commute hij
+    typeANormal n ≤ (strandPermutation n).ker :=
+  Subgroup.normalClosure_le_normal fun w hw ↦ MonoidHom.mem_ker.mpr <| by
+    rcases hw with hw | hw
+    · obtain ⟨i, rfl⟩ := hw
+      exact Equiv.swap_mul_self _ _
+    · rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
+        simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
+      · exact adjacentSwaps_braid hij
+      · exact adjacentSwaps_commute hij
 
 end PropertyF.Ground.CentreCalculus
 

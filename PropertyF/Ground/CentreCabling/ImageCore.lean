@@ -141,14 +141,12 @@ variable (hfinite : HasFiniteImageCentralizerMonodromy C p)
 include hdim hfinite hy in
 /-- The numerical image centralizer centralizes every canonical-image retract. -/
 theorem centralizes_imageRetract {X : CategoryTheory.Center C.Obj}
-    (hX : CanonicalImageRetract X) : Centre.Centralizes (simples (𝒵 C) y) X := by
-  apply Centre.centralizes_symm
-  change doubleBraiding X (simples (𝒵 C) y) = 𝟙 _
-  obtain ⟨m, ⟨e⟩⟩ := simples_decompose (𝒵 C) X
-  apply doubleBraiding_eq_one_of_constituents (simples (𝒵 C)) e CanonicalImageRetract
-    (fun r hr ↦ canonicalImageRetract_of_retract r hr) hX
-  intro a ha
-  exact doubleBraiding_eq_one_of_sTest_of_finite_order hdim (hfinite y hy a ha) (hy a ha)
+    (hX : CanonicalImageRetract X) : Centre.Centralizes (simples (𝒵 C) y) X :=
+  Centre.centralizes_symm <| by
+    obtain ⟨m, ⟨e⟩⟩ := simples_decompose (𝒵 C) X
+    exact doubleBraiding_eq_one_of_constituents (simples (𝒵 C)) e CanonicalImageRetract
+      (fun r hr ↦ canonicalImageRetract_of_retract r hr) hX fun a ha ↦
+        doubleBraiding_eq_one_of_sTest_of_finite_order hdim (hfinite y hy a ha) (hy a ha)
 
 include hdim hfinite hy in
 /-- The S-test on both canonical images detects the actual core if the relevant

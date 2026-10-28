@@ -96,15 +96,18 @@ theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :
   simp only [tensorHom_def, id_whiskerRight, whiskerLeft_id, Category.id_comp, Category.comp_id]
   rw [rightAdjointMate_comp_evaluation]
 
+section
+variable {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
+
 /-- Compatible double-dual components have the same right quantum trace under
 an object isomorphism. -/
-theorem rightQuantumTrace_iso {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
+theorem rightQuantumTrace_iso
     (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
     rightQuantumTrace j = rightQuantumTrace k := by
   simpa [rightTraceWith, rightQuantumTrace] using (rightTraceWith_cyclic e.hom e.inv hnat)
 
 /-- Compatibility of double-dual components is preserved by inverse duality. -/
-theorem dual_components_natural {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
+theorem dual_components_natural
     (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
     (e.invᘁ) ≫ (rightDualIsoMap k).symm.hom =
       (rightDualIsoMap j).symm.hom ≫ ((e.invᘁ)ᘁ)ᘁ := by
@@ -116,12 +119,14 @@ theorem dual_components_natural {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ
 
 /-- Both quantum traces are preserved when double-dual components are
 transported across an object isomorphism. -/
-theorem quantumTraces_iso {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
+theorem quantumTraces_iso
     (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
-    rightQuantumTrace j = rightQuantumTrace k ∧ leftQuantumTrace j = leftQuantumTrace k := by
-  refine ⟨rightQuantumTrace_iso e hnat, ?_⟩
-  simpa only [leftQuantumTrace_eq_rightDual] using
-    rightQuantumTrace_iso (rightDualIsoMap e.symm) (dual_components_natural e hnat)
+    rightQuantumTrace j = rightQuantumTrace k ∧ leftQuantumTrace j = leftQuantumTrace k :=
+  ⟨rightQuantumTrace_iso e hnat, by
+    simpa only [leftQuantumTrace_eq_rightDual] using
+      rightQuantumTrace_iso (rightDualIsoMap e.symm) (dual_components_natural e hnat)⟩
+
+end
 
 /-- Left trace is right trace on the dual endomorphism with the inverse dual
 pivotal component. -/

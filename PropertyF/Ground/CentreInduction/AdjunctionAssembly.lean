@@ -55,10 +55,9 @@ theorem unitSummandIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
     ((simples C (unitIndex C) ◁ f) ▷ (simples C (unitIndex C))ᘁ) ≫
         (unitSummandIso C Y).hom = (unitSummandIso C X).hom ≫ f := by
   dsimp [unitSummandIso]
-  simp only [Category.assoc]
-  rw [← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc]
-  simp only [id_tensorHom, tensorHom_id, rightUnitor_naturality]
-  rw [rightUnitor_naturality_assoc, leftUnitor_naturality, rightUnitor_naturality_assoc]
+  rw [Category.assoc, ← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc]
+  simp only [id_tensorHom, tensorHom_id, rightUnitor_naturality, Category.assoc]
+  rw [rightUnitor_naturality_assoc, leftUnitor_naturality]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-summand projection is natural. This is the candidate underlying
@@ -92,10 +91,9 @@ theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
     η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm ≪≫
       rightDualUnitIso).hom) = (ρ_ (𝟙_ D)).inv := by
   let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
-  simp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
-    tensorHom_def, whiskerLeft_comp]
-  rw [← Category.assoc (e.hom ▷ Aᘁ), ← tensorHom_def, ← Category.assoc,
-    coevaluation_iso_map]
+  dsimp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom]
+  rw [tensorHom_def, whiskerLeft_comp, ← Category.assoc (e.hom ▷ Aᘁ),
+    ← tensorHom_def, ← Category.assoc, coevaluation_iso_map]
   exact coevaluation_rightDualIso HasRightDual.exact exactPairingUnit
 
 end PropertyF.Ground.CentreInduction
@@ -134,9 +132,9 @@ theorem unitComponent_natural {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
     f.f ≫ unitComponent C Y i = unitComponent C X i ≫
       ((simples C i ◁ f.f) ▷ (simples C i)ᘁ) := by
   dsimp [unitComponent, unitComponentAt]
-  simp only [Category.assoc, rightUnitor_inv_naturality_assoc, ← whisker_exchange_assoc,
+  rw [Category.assoc, rightUnitor_inv_naturality_assoc, ← whisker_exchange_assoc,
     associator_inv_naturality_left_assoc]
-  simp only [← Category.assoc, ← comp_whiskerRight, f.comm]
+  simp only [Category.assoc, ← comp_whiskerRight, f.comm]
 
 
 end PropertyF.Ground.CentreInduction

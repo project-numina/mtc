@@ -1,17 +1,8 @@
-scripts/style/.EnvLintRun.lean:124:0: error: -- Found 13 errors in 1728 declarations (plus 1170 automatically generated ones) in PropertyF with 15 linters
-
-/- The `defsWithUnderscore` linter reports:
-FOUND definitions with an underscore in their name.
-This linter can be disabled with `@[nolint defsWithUnderscore]`. -/
--- PropertyF.Ground.CentreCalculus.ProjectorReduction
-#check PropertyF.Ground.CentreCalculus.instInvertibleComplexCastCardPermFin_propertyF /- The definition `PropertyF.Ground.CentreCalculus.instInvertibleComplexCastCardPermFin_propertyF` contains an underscore. This almost surely violates mathlib's naming convention; use lowerCamelCase or UpperCamelCase instead. -/
+scripts/style/.EnvLintRun.lean:121:0: error: -- Found 11 errors in 1725 declarations (plus 1169 automatically generated ones) in PropertyF with 15 linters
 
 /- The `docBlame` linter reports:
 DEFINITIONS ARE MISSING DOCUMENTATION STRINGS:
 This linter can be disabled with `@[nolint docBlame]`. -/
--- PropertyF.Ground.CentreCalculus.ProjectorReduction
-#check PropertyF.Ground.CentreCalculus.instInvertibleComplexCastCardPermFin_propertyF /- definition missing documentation string -/
-
 -- PropertyF.Ground.Target
 #check PropertyF.Ground.BraidedFusionCategory.Obj /- definition missing documentation string -/
 #check PropertyF.Ground.rank /- definition missing documentation string -/

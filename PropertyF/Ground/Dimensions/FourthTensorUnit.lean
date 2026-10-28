@@ -100,20 +100,18 @@ theorem rootTensorDefect_unit_right (X : C.Obj) :
 /-- The left-unit defect formula holds for the chosen simple representative. -/
 theorem rootTensorDefect_unitLabel_left (X : C.Obj) :
     (rootTensorDefect C (simples C (unitIndex C)) X).hom =
-      rootDimension C (unitIndex C) • 𝟙 (simples C (unitIndex C) ⊗ X) := by
-  obtain ⟨e⟩ := unitIndex_iso C
-  apply (cancel_mono (e.hom ▷ X)).1
-  simpa [rootTensorDefect_unit_left, Linear.comp_smul, Linear.smul_comp] using
-    (rootTensorDefect_natural C e.hom (𝟙 X)).symm
+      rootDimension C (unitIndex C) • 𝟙 (simples C (unitIndex C) ⊗ X) :=
+  (unitIndex_iso C).elim fun e ↦ (cancel_mono (e.hom ▷ X)).1 (by
+    simpa [rootTensorDefect_unit_left, Linear.comp_smul, Linear.smul_comp] using
+      (rootTensorDefect_natural C e.hom (𝟙 X)).symm)
 
 /-- The right-unit defect formula holds for the chosen simple representative. -/
 theorem rootTensorDefect_unitLabel_right (X : C.Obj) :
     (rootTensorDefect C X (simples C (unitIndex C))).hom =
-      rootDimension C (unitIndex C) • 𝟙 (X ⊗ simples C (unitIndex C)) := by
-  obtain ⟨e⟩ := unitIndex_iso C
-  apply (cancel_mono (X ◁ e.hom)).1
-  simpa [rootTensorDefect_unit_right, Linear.comp_smul, Linear.smul_comp] using
-    (rootTensorDefect_natural C (𝟙 X) e.hom).symm
+      rootDimension C (unitIndex C) • 𝟙 (X ⊗ simples C (unitIndex C)) :=
+  (unitIndex_iso C).elim fun e ↦ (cancel_mono (X ◁ e.hom)).1 (by
+    simpa [rootTensorDefect_unit_right, Linear.comp_smul, Linear.smul_comp] using
+      (rootTensorDefect_natural C (𝟙 X) e.hom).symm)
 
 
 end PropertyF.Ground.Dimensions

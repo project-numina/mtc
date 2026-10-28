@@ -37,15 +37,14 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The first braid generator is involutive on a self-transparent object. -/
 theorem braidGenerator_zero_involutive (n : ℕ) :
     b X n ⟨0, Nat.zero_lt_succ n⟩ *
-      b X n ⟨0, Nat.zero_lt_succ n⟩ = 1 := by
-  apply Aut.ext
-  apply Iso.ext
-  cases n <;>
-    simp only [Aut.mul_asIso, Aut.one_asIso, Iso.trans_hom, Iso.refl_hom,
-      braidGenerator, Iso.symm_hom, tensorIso_hom, tensorHom_id, Category.assoc,
-      Iso.hom_inv_id_assoc] <;>
-    rw [← Category.assoc ((β_ X X).hom ▷ _) ((β_ X X).hom ▷ _),
-      ← comp_whiskerRight, hX, id_whiskerRight, Category.id_comp, Iso.inv_hom_id]
+      b X n ⟨0, Nat.zero_lt_succ n⟩ = 1 :=
+  Aut.ext <| Iso.ext <| by
+    cases n <;>
+      simp only [Aut.mul_asIso, Aut.one_asIso, Iso.trans_hom, Iso.refl_hom,
+        braidGenerator, Iso.symm_hom, tensorIso_hom, tensorHom_id, Category.assoc,
+        Iso.hom_inv_id_assoc] <;>
+      rw [← Category.assoc ((β_ X X).hom ▷ _) ((β_ X X).hom ▷ _),
+        ← comp_whiskerRight, hX, id_whiskerRight, Category.id_comp, Iso.inv_hom_id]
 
 include hX in
 set_option backward.isDefEq.respectTransparency false in
@@ -96,18 +95,17 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A crossing on the first two strands commutes with any crossing after them. -/
 theorem first_distant_commute (n : ℕ) (j : Fin (n + 1)) :
     b X (n + 2) 0 * b X (n + 2) j.succ.succ =
-      b X (n + 2) j.succ.succ * b X (n + 2) 0 := by
-  apply Aut.ext
-  apply Iso.ext
-  simp only [Aut.mul_asIso, Iso.trans_hom]
-  change (b X (n + 2) j.succ.succ).asIso.hom ≫
-      (b X (n + 2) ⟨0, by omega⟩).asIso.hom =
-    (b X (n + 2) ⟨0, by omega⟩).asIso.hom ≫
-      (b X (n + 2) j.succ.succ).asIso.hom
-  rcases j with ⟨j, hj⟩
-  simpa only [Fin.succ, braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
-    Iso.refl_hom, tensorHom_id, id_tensorHom] using
-    (Calculus.first_pair_natural X (β_ X X).hom (b X n ⟨j, hj⟩).asIso.hom).symm
+      b X (n + 2) j.succ.succ * b X (n + 2) 0 :=
+  Aut.ext <| Iso.ext <| by
+    simp only [Aut.mul_asIso, Iso.trans_hom]
+    change (b X (n + 2) j.succ.succ).asIso.hom ≫
+        (b X (n + 2) ⟨0, by omega⟩).asIso.hom =
+      (b X (n + 2) ⟨0, by omega⟩).asIso.hom ≫
+        (b X (n + 2) j.succ.succ).asIso.hom
+    rcases j with ⟨j, hj⟩
+    simpa only [Fin.succ, braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+      Iso.refl_hom, tensorHom_id, id_tensorHom] using
+      (Calculus.first_pair_natural X (β_ X X).hom (b X n ⟨j, hj⟩).asIso.hom).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Crossings supported on disjoint pairs of strands commute. -/

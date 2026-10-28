@@ -43,7 +43,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_unit (S : D) :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  simp only [crossingBlock, closeFusionMap_unit, tensorHom_def]
+  dsimp only [crossingBlock]
+  rw [closeFusionMap_unit]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -57,7 +58,6 @@ theorem closeFusionMap_tensor (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
     _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫
       (closeFusionMap T K f ▷ K ≫ ε_ K (Kᘁ)) := by
       rw [closeFusionMap_evaluation]
-      simp only [whiskerLeft_comp]
       monoidal
     _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by monoidal
     _ = 𝟙 _ ⊗≫ (closeFusionMap T K f ▷ (U ⊗ S)) ⊗≫
@@ -84,7 +84,7 @@ theorem crossingBlock_tensor
       (((T ⊗ (U ⊗ S)) ⊗ X) ◁ z) ⊗≫ 𝟙 _ := by
         dsimp only [crossingBlock]
         rw [closeFusionMap_tensor]
-        simp only [tensorHom_def, comp_whiskerRight]
+        rw [tensorHom_def, comp_whiskerRight]
         monoidal
     _ = _ := by
       rw [← whisker_exchange]
@@ -136,15 +136,15 @@ theorem crossingCandidate_unit (X : C.Obj) :
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (𝟙_ C.Obj)).inv).1
   refine biproduct.hom_ext' _ _ fun i => ?_
-  simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
+  rw [biproduct_ι_comp_rightDistributor_inv_assoc, biproduct_ι_comp_rightDistributor_inv_assoc]
   change (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ crossingCandidate C X (𝟙_ C.Obj) =
     (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv
   rw [crossingCandidate_on_summand]
   dsimp only [crossingSummand]
   rw [Finset.sum_eq_single i]
   · let : Unique (crossingIndex C (𝟙_ C.Obj) i i) := by
-      simp only [crossingIndex, unit_crossing_finrank, ↓reduceIte]
-      infer_instance
+      simpa only [crossingIndex, unit_crossing_finrank, ↓reduceIte] using
+        (inferInstance : Unique (Fin 1))
     rw [Fintype.sum_unique]
     let : Simple (simples C i) := simples_simple C i
     let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
@@ -156,9 +156,9 @@ theorem crossingCandidate_unit (X : C.Obj) :
     simp only [Category.assoc, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]
   · intro j _ hne
     let : IsEmpty (crossingIndex C (𝟙_ C.Obj) i j) := by
-      simp only [crossingIndex, unit_crossing_finrank, Ne.symm hne, ↓reduceIte]
-      infer_instance
+      simpa only [crossingIndex, unit_crossing_finrank, Ne.symm hne, ↓reduceIte] using
+        (inferInstance : IsEmpty (Fin 0))
     exact Finset.sum_eq_zero fun a _ => isEmptyElim a
-  · simp
+  · exact fun hi => (hi (Finset.mem_univ i)).elim
 
 end PropertyF.Ground.CentreInduction

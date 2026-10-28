@@ -34,7 +34,7 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
     transported_pivotal_natural p b
   rw [hu, hu] at hn
   have hb := congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
-  simp only [Center.comp_f] at hb
+  dsimp only [Center.comp_f] at hb
   change (doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
     (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (doubleDualTensorIso B Z).hom.f at hb
   simp only [Category.assoc] at hn
@@ -92,8 +92,8 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
   let X := 𝟙_ C.Obj
   let S := simples C i
   let V := inductionSummand C X
-  have hz : biproduct.ι V i ≫ (underlyingCounit C).app X = 0 := by
-    simp [V, underlyingCounit, unitSummandRetract, ← Category.assoc, biproduct.ι_π_ne _ hi]
+  have hz : biproduct.ι V i ≫ (underlyingCounit C).app X = 0 :=
+    (biproduct.ι_π_ne_assoc V hi _).trans zero_comp
   have hb : crossingCandidate C X S = (β_ S (underlying C X)).inv :=
     (Iso.comp_hom_eq_id (β_ S (underlying C X))).1 (congrArg Center.Hom.f hcentral)
   have hid : 𝟙 (V i) = 0 := by
