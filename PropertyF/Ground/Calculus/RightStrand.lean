@@ -19,12 +19,10 @@ it on their entire linear span. In particular this applies to identity-strand
 embeddings once the braids are represented by unitary matrices. -/
 theorem map_star_of_mem_span (φ : A →ₐ[ℂ] B) (S : Set A)
     (hS : ∀ x ∈ S, φ (star x) = star (φ x))
-    {x : A} (hx : x ∈ Submodule.span ℂ S) : φ (star x) = star (φ x) := by
-  induction hx using Submodule.span_induction with
-  | mem x hx => exact hS x hx
-  | zero => simp
-  | add x y hx hy ihx ihy => simp [ihx, ihy]
-  | smul c x hx ih => simp [star_smul, ih]
+    {x : A} (hx : x ∈ Submodule.span ℂ S) : φ (star x) = star (φ x) :=
+  Submodule.span_induction hS (by simp)
+    (fun _ _ _ _ hx hy => by simp [hx, hy])
+    (fun _ _ _ hx => by simp [star_smul, hx]) hx
 
 /-- A unitary matrix's adjoint is the inverse of the corresponding unit. -/
 theorem star_eq_coe_inv_of_unitary {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -41,12 +39,12 @@ theorem map_star_of_group_span {G H : Type*} [Group G] [Group H]
     (hρ : ∀ g, star (ρ g) = ρ g⁻¹)
     (hσ : ∀ h, star (σ h) = σ h⁻¹)
     (hφ : ∀ g, φ (ρ g) = σ (τ g)) (x : A) :
-    φ (star x) = star (φ x) := by
-  apply map_star_of_mem_span φ (Set.range ρ)
-  · rintro _ ⟨g, rfl⟩
-    rw [hρ, hφ, hφ, hσ, map_inv]
-  · rw [hspan]
-    exact Submodule.mem_top
+    φ (star x) = star (φ x) :=
+  map_star_of_mem_span φ (Set.range ρ)
+    (fun _ h => by
+      obtain ⟨g, rfl⟩ := h
+      rw [hρ, hφ, hφ, hσ, map_inv])
+    (hspan.symm ▸ Submodule.mem_top)
 
 end PropertyF.Ground.Calculus
 
@@ -89,13 +87,11 @@ theorem presented_intertwiner_map_star
     (φ : (PropertyF.Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
       (PropertyF.Blocks.Algebra ⟨_, k⟩))
     (hφ : ∀ g, φ (e (groupInImage ρ g)) = f (groupInImage σ (τ g)))
-    (x : PropertyF.Blocks.Algebra ⟨_, d⟩) : φ (star x) = star (φ x) := by
+    (x : PropertyF.Blocks.Algebra ⟨_, d⟩) : φ (star x) = star (φ x) :=
   let ρ' := e.toMonoidHom.comp (groupInImage ρ)
   let σ' := f.toMonoidHom.comp (groupInImage σ)
-  apply map_star_of_group_span ρ' σ' τ φ (presented_group_span ρ e)
-  · exact unitary_block_star_inv ρ' he
-  · exact unitary_block_star_inv σ' hf
-  · exact hφ
+  map_star_of_group_span ρ' σ' τ φ (presented_group_span ρ e)
+    (unitary_block_star_inv ρ' he) (unitary_block_star_inv σ' hf) hφ x
 
 end PropertyF.Ground.Calculus
 

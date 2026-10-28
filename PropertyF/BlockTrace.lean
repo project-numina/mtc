@@ -22,12 +22,10 @@ def ColumnUnitary {ι : Type*} [Fintype ι] (U : Matrix ι ι ℂ) : Prop :=
 variable {ι : Type*} [Fintype ι]
 
 lemma columnUnitary_of_unitary [DecidableEq ι] {U : Matrix ι ι ℂ}
-    (hU : U ∈ Matrix.unitaryGroup ι ℂ) : ColumnUnitary U := by
-  intro j
-  have h := congrArg (fun A : Matrix ι ι ℂ => (A j j).re)
-    (Matrix.mem_unitaryGroup_iff'.mp hU)
+    (hU : U ∈ Matrix.unitaryGroup ι ℂ) : ColumnUnitary U := fun j => by
   simpa [Matrix.mul_apply, Matrix.star_apply, Complex.mul_re,
-    Complex.normSq_apply, pow_two] using h
+    Complex.normSq_apply, pow_two] using
+    congrArg (fun A : Matrix ι ι ℂ => (A j j).re) (Matrix.mem_unitaryGroup_iff'.mp hU)
 
 lemma entry_normSq_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : ι) :
     Complex.normSq (U i j) ≤ 1 :=
@@ -142,10 +140,8 @@ def signElement (B : Blocks) (w : Fin B.count → ℝ) : B.Algebra :=
   fun r => (if 0 ≤ w r then (1 : ℂ) else -1) • 1
 
 lemma signElement_unitary (B : Blocks) (w : Fin B.count → ℝ) :
-    B.IsUnitary (B.signElement w) := by
-  intro r
-  by_cases h : 0 ≤ w r <;>
-    simp [signElement, h, Matrix.mem_unitaryGroup_iff]
+    B.IsUnitary (B.signElement w) := fun r => by
+  by_cases h : 0 ≤ w r <;> simp [signElement, h, Matrix.mem_unitaryGroup_iff]
 
 lemma trace_signElement (B : Blocks) (w : Fin B.count → ℝ) :
     B.trace w (B.signElement w) = (B.mass w : ℂ) := by
@@ -169,10 +165,9 @@ theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
       _ = ‖B.trace w g‖ := hsat.symm
       _ ≤ ∑ r, ‖(w r : ℂ) * (g r).trace‖ := norm_sum_le _ _
       _ = _ := by simp
-  have hblock : ∀ r, ‖(g r).trace‖ = B.size r := by
-    intro r
-    have h := (Finset.sum_eq_sum_iff_of_le (fun r _ => hle r)).mp heq r (Finset.mem_univ r)
-    exact (mul_left_cancel₀ (abs_ne_zero.mpr (hw r))) h
+  have hblock : ∀ r, ‖(g r).trace‖ = B.size r := fun r =>
+    (mul_left_cancel₀ (abs_ne_zero.mpr (hw r)))
+      ((Finset.sum_eq_sum_iff_of_le (fun r _ => hle r)).mp heq r (Finset.mem_univ r))
   intro T
   funext r
   obtain ⟨z, hz⟩ := scalar_of_norm_trace_eq_card (columnUnitary_of_unitary (hg r))
