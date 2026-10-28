@@ -184,11 +184,12 @@ def overlapEndProduct (A X Y : C) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
 
 variable (D : BraidedFusionCategory.{v,u})
 
+variable {A X Y : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
+  (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y))
+
 /-- Tracing the new strands of the overlap gives the old operator times the
 normalized trace of the fresh operator. -/
-theorem rightPartialTrace_overlap {A X Y : D.Obj} [Simple X]
-    (p : PivotalStructure (C := D.Obj))
-    (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+theorem rightPartialTrace_overlap :
     rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
       (scalarTrace p scalar u / scalar (p.rightTrace (𝟙 X))) • v := by
   rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
@@ -197,9 +198,7 @@ theorem rightPartialTrace_overlap {A X Y : D.Obj} [Simple X]
 
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/
-theorem pivotalTrace_overlap {A X Y : D.Obj} [Simple X]
-    (p : PivotalStructure (C := D.Obj))
-    (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+theorem pivotalTrace_overlap :
     scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
