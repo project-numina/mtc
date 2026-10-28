@@ -104,10 +104,9 @@ include hδ hunit hcol hne hoff in
 theorem square_eq_of_support :
     HasSSquare S δ (∑ z, S u z * S z u) := by
   intro x y
-  by_cases hxy : x = δ y
-  · rw [ite_eq_left hxy, show y = δ x by rw [hxy, hδ]]
-    exact square_support_constant S hδ hunit hcol hne hoff x
-  · simpa only [ite_eq_right hxy] using hoff x y hxy
+  split_ifs with hxy
+  · simpa only [show y = δ x by rw [hxy, hδ]] using square_support_constant S hδ hunit hcol hne hoff x
+  · exact hoff x y hxy
 
 end SquareSupport
 
