@@ -93,9 +93,9 @@ theorem doubleDualTensorIso_associativity (X Y Z : C) :
       whiskerRightIso_inv, whiskerLeftIso_hom] using
       rightDualTensorIso_associativity (Zᘁ) (Yᘁ) (Xᘁ)
   have hrev : A.hom ≫ B.hom = F.hom ≫ E.inv ≫ D.inv ≫ C₀.hom := by
-    apply (cancel_epi F.inv).1
-    apply (cancel_mono C₀.inv).1
-    simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.hom_inv_id, Category.comp_id]
+    apply (Iso.inv_comp_eq F).1
+    rw [← Category.assoc E.inv D.inv C₀.hom]
+    apply (Iso.comp_inv_eq C₀).1
     simpa only [Iso.trans_inv, Iso.symm_inv, Category.assoc] using (congrArg Iso.inv heq).symm
   simp only [A, B, C₀, D, E, F, rightDualIsoMap, Iso.symm_hom,
     whiskerRightIso_hom, whiskerLeftIso_inv] at hrev
