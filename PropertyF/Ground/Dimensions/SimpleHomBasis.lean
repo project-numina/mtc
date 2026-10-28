@@ -89,17 +89,8 @@ theorem rootTrace_inverseDefect
   change unitScalar C (rightQuantumTrace
     (((a.app X) ⊗ᵢ (a.app Y)) ≪≫ doubleDualTensorIso X Y)) = _
   rw [Ground.unitScalar_eq_equiv]
-  let ax : X ≅ (Xᘁ)ᘁ := (a.app X)
-  let ay : Y ≅ (Yᘁ)ᘁ := (a.app Y)
-  have hp := rightQuantumTrace_tensor_scalar (Ground.unitScalarEquiv C) ax ay
-  change (Ground.unitScalarEquiv C) (rightQuantumTrace ((ax ⊗ᵢ ay) ≪≫ doubleDualTensorIso X Y)) =
-    rootDimension C i * rootDimension C j
-  rw [hp]
-  have hx : Ground.unitScalarEquiv C (rightQuantumTrace ax) = rootDimension C i := by
-    simp [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, ← Ground.unitScalar_eq_equiv, X, a, ax]
-  have hy : Ground.unitScalarEquiv C (rightQuantumTrace ay) = rootDimension C j := by
-    simp [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, ← Ground.unitScalar_eq_equiv, Y, a, ay]
-  rw [hx, hy]
+  simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, Functor.id_obj, X, Y, a] using
+    rightQuantumTrace_tensor_scalar (Ground.unitScalarEquiv C) (a.app X) (a.app Y)
 
 end PropertyF.Ground.Dimensions
 

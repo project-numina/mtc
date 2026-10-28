@@ -365,14 +365,8 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     simp_rw [htranspose] at he
     calc
       _ = ε * ∑ k, ((ε * enoTraceMatrix C i k j) * rootDimension C k) := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro k _
-        calc
-          _ = (ε * ε) * (enoTraceMatrix C i k j * rootDimension C k) := by rw [hε, one_mul]
-          _ = _ := by ring
-      _ = ε * (rootDimension C (dualIndex C i) * rootDimension C j) := by rw [he]
-      _ = _ := by ring
+        simp only [Finset.mul_sum, ← mul_assoc, hε, one_mul]
+      _ = _ := by rw [he]; ring
   have hc := conjugate_of_transpose_eigenvector A hA hv h ht
   have hc' := congrArg star hc
   simp only [star_mul, star_star, hεstar] at hc'
