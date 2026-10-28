@@ -104,14 +104,13 @@ variable {k : Type*} [Field k] [IsAlgClosed k] [Preadditive C] [Linear k C]
 theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
     {Y : C} [Simple Y] [FiniteDimensional k (Y ⟶ Y)]
     (a : End Y) (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) :
-    a = (scalarTrace p scalar a / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
-  unfold scalarTrace
-  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id k a.asHom
-  have hcval : c = scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y)) := by
+    a = (scalarTrace p scalar a / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) :=
+  let ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id k a.asHom
+  let hcval : c = scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y)) := by
     apply (eq_div_iff hd).2
     rw [← hc, p.rightTrace_smul]
     simp
-  exact End.ext (by simpa [← hcval] using hc.symm)
+  End.ext (by simpa [scalarTrace, ← hcval] using hc.symm)
 
 end SimpleTrace
 

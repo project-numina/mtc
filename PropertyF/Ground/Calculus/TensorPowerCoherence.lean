@@ -30,50 +30,48 @@ def reverseConcatIso : ∀ a b : ℕ,
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Concatenation with an empty right block is the right unitor. -/
-theorem reverseConcat_zero_right (a : ℕ) :
-    (reverseConcatIso X a 0).hom ≫
-      eqToHom (congrArg (tensorPower X) (by omega : 0 + a = a)) =
-        (ρ_ (tensorPower X a)).hom := by
-  induction a with
-  | zero =>
+theorem reverseConcat_zero_right : ∀ a : ℕ,
+    (reverseConcatIso X a 0).hom ≫ eqToHom (congrArg (tensorPower X) (Nat.zero_add a)) =
+      (ρ_ (tensorPower X a)).hom
+  | 0 => by
     simp only [reverseConcatIso, tensorPower, Nat.add_zero, eqToHom_refl, Category.comp_id]
     monoidal
-  | succ a ih =>
+  | a + 1 => by
     have h₀ : 0 + a = a := by omega
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, tensorPower, Category.assoc]
-    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ← whiskerLeft_comp, ih]
+    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ← whiskerLeft_comp,
+      reverseConcat_zero_right a]
     monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Adding one strand to the right commutes with tensor-power concatenation. -/
-theorem reverseConcat_succ_right (a b : ℕ) :
+theorem reverseConcat_succ_right : ∀ a b : ℕ,
     (reverseConcatIso X a (b + 1)).hom ≫
       eqToHom (congrArg (tensorPower X) (by omega : (b + 1) + a = (b + a) + 1)) =
     (tensorPower X a ◁ (appendIso X b).inv) ≫
       (α_ (tensorPower X a) (tensorPower X b) X).inv ≫
-      ((reverseConcatIso X a b).hom ▷ X) ≫ (appendIso X (b + a)).hom := by
-  induction a with
-  | zero => simp [reverseConcatIso, tensorPower]
-  | succ a ih =>
+      ((reverseConcatIso X a b).hom ▷ X) ≫ (appendIso X (b + a)).hom
+  | 0, b => by simp [reverseConcatIso, tensorPower]
+  | a + 1, b => by
     have h₀ : (b + 1) + a = (b + a) + 1 := by omega
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, comp_whiskerRight, Category.assoc]
-    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ← whiskerLeft_comp, ih]
+    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ← whiskerLeft_comp,
+      reverseConcat_succ_right a b]
     simp only [Nat.add_succ, appendIso_succ, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, whiskerLeft_comp]
     monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right insertion is canonical reverse-indexed concatenation. -/
-theorem insertRightPowerIso_eq_reverseConcat (n k : ℕ) :
+theorem insertRightPowerIso_eq_reverseConcat (n : ℕ) : ∀ k : ℕ,
     (insertRightPowerIso X n k).hom = (reverseConcatIso X (n + 2) k).hom ≫
-      eqToHom (congrArg (tensorPower X) (by omega : k + (n + 2) = (n + k) + 2)) := by
-  induction k with
-  | zero =>
+      eqToHom (congrArg (tensorPower X) (by omega : k + (n + 2) = (n + k) + 2))
+  | 0 => by
     simpa only [insertRightPowerIso, Nat.add_zero] using
       (reverseConcat_zero_right X (n + 2)).symm
-  | succ k ih =>
+  | k + 1 => by
     have h₀ : k + (n + 2) = (n + k) + 2 := by omega
     have h₁ : (k + 1) + (n + 2) = (k + (n + 2)) + 1 := by omega
     have h₂ : (k + (n + 2)) + 1 = (n + (k + 1)) + 2 := by omega
@@ -81,25 +79,25 @@ theorem insertRightPowerIso_eq_reverseConcat (n k : ℕ) :
       ← Category.assoc, reverseConcat_succ_right]
     simp only [insertRightPowerIso, Iso.trans_hom, Iso.symm_hom,
       tensorIso_hom, Iso.refl_hom, tensorHom_id, id_tensorHom, Category.assoc,
-      ih, comp_whiskerRight, eqToHom_whiskerRight,
+      insertRightPowerIso_eq_reverseConcat n k, comp_whiskerRight, eqToHom_whiskerRight,
       ← eqToHom_iso_hom_naturality (appendIso X) h₀]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A shared strand can be attached to the left block before concatenating
 the right tail, or kept as the head of the right block. -/
-theorem reverseConcat_overlap (a b : ℕ) :
+theorem reverseConcat_overlap : ∀ a b : ℕ,
     (reverseConcatIso X a (b + 1)).hom =
       (α_ (tensorPower X a) X (tensorPower X b)).inv ≫
       ((appendIso X a).hom ▷ tensorPower X b) ≫
       (reverseConcatIso X (a + 1) b).hom ≫
-      eqToHom (congrArg (tensorPower X) (by omega : b + (a + 1) = (b + 1) + a)) := by
-  induction a with
-  | zero => simp [reverseConcatIso, appendIso, tensorPower]
-  | succ a ih =>
+      eqToHom (congrArg (tensorPower X) (by omega : b + (a + 1) = (b + 1) + a))
+  | 0, b => by simp [reverseConcatIso, appendIso, tensorPower]
+  | a + 1, b => by
     have h₀ : b + (a + 1) = (b + 1) + a := by omega
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, Category.assoc]
-    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ih, appendIso_succ]
+    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), reverseConcat_overlap a b,
+      appendIso_succ]
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, whiskerLeft_comp, comp_whiskerRight, Category.assoc]
     monoidal
@@ -120,16 +118,16 @@ variable (X : C)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion agrees with reverse-indexed concatenation. -/
-theorem insertLeftPowerIso_eq_reverseConcat (n k : ℕ) :
+theorem insertLeftPowerIso_eq_reverseConcat (n : ℕ) : ∀ k : ℕ,
     (insertLeftPowerIso X n k).hom = (reverseConcatIso X k (n + 2)).hom ≫
-      eqToHom (congrArg (tensorPower X) (by omega : (n + 2) + k = (n + k) + 2)) := by
-  induction k with
-  | zero => simp [insertLeftPowerIso, reverseConcatIso]
-  | succ k ih =>
+      eqToHom (congrArg (tensorPower X) (by omega : (n + 2) + k = (n + k) + 2))
+  | 0 => by simp [insertLeftPowerIso, reverseConcatIso]
+  | k + 1 => by
     have h : (n + 2) + k = (n + k) + 2 := by omega
     simp only [insertLeftPowerIso, reverseConcatIso, Iso.trans_hom, tensorIso_hom,
       Iso.refl_hom, id_tensorHom, Category.assoc]
-    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h), ← whiskerLeft_comp, ← ih]
+    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h), ← whiskerLeft_comp,
+      ← insertLeftPowerIso_eq_reverseConcat n k]
 
 /-- Concatenation is natural under equality transport of the left length. -/
 @[reassoc] theorem reverseConcat_eqToHom_left {a b : ℕ} (h : a = b) (c : ℕ) :

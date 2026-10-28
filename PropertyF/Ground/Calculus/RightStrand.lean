@@ -238,8 +238,7 @@ variable {A B : C} (e : A ⊗ X ≅ B)
 theorem append_first_two :
   let E := (α_ X (X ⊗ A) X) ≪≫ (Iso.refl X ⊗ᵢ ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)))
   E.inv ≫ (((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ▷ X) ≫ E.hom =
-    (α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom := by
-  dsimp only
+    (α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom :=
   calc
     _ = (X ◁ X ◁ e.inv) ≫
         ((α_ X X (A ⊗ X)).inv ≫ (β_ X X).hom ▷ (A ⊗ X) ≫ (α_ X X (A ⊗ X)).hom) ≫

@@ -232,16 +232,16 @@ variable {G A : Type*} [Group G] [Ring A] [Algebra ℂ A] (ρ : G →* A) [Finit
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
 theorem groupImageAlgebra_unitary_blocks :
     ∃ (n : ℕ) (d : Fin n → ℕ) (e : GroupBlockPresentation ρ d),
-      (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation ρ e := by
-  classical
+      (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation ρ e :=
   let _ : Fintype G := Fintype.ofFinite G
-  obtain ⟨n, d, hd, ⟨e⟩⟩ := groupImageAlgebra_blocks ρ
+  let ⟨n, d, hd, ⟨e⟩⟩ := groupImageAlgebra_blocks ρ
   let blockRep (i : Fin n) : G →* Matrix (Fin (d i)) (Fin (d i)) ℂ :=
     (Pi.evalMonoidHom _ i).comp (e.toMonoidHom.comp (groupInImage ρ))
-  choose P hP using fun i : Fin n => exists_unitarizing_basis (blockRep i)
+  let P := fun i : Fin n => Classical.choose (exists_unitarizing_basis (blockRep i))
   let e' := e.trans (AlgEquiv.piCongrRight (fun i => unitConjugation (P i)))
-  refine ⟨n, d, e', hd, fun g => Pi.mem_unitary_iff.mpr fun i => ?_⟩
-  simpa [e', unitConjugation, blockRep] using hP i g
+  ⟨n, d, e', hd, fun g => Pi.mem_unitary_iff.mpr fun i => by
+    simpa [e', unitConjugation, blockRep, P] using
+      (Classical.choose_spec (exists_unitarizing_basis (blockRep i))) g⟩
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
