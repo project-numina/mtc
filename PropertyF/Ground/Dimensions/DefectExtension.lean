@@ -87,11 +87,8 @@ theorem rootTensorDefect_coevaluation_of_iso
   change d.hom ≫ (rootTensorDefect C Y (Yᘁ)).hom =
     (rootTensorDefect C X (Xᘁ)).hom ≫ d.hom at hn
   apply (cancel_mono d.hom).1
-  calc
-    _ = η_ X (Xᘁ) ≫ (d.hom ≫ (rootTensorDefect C Y (Yᘁ)).hom) := by
-      rw [hn, Category.assoc]
-    _ = η_ Y (Yᘁ) ≫ (rootTensorDefect C Y (Yᘁ)).hom := by rw [← Category.assoc, hc]
-    _ = _ := by rw [rootTensorDefect_coevaluation, ← hc, Linear.smul_comp]
+  rw [Category.assoc, ← hn, ← Category.assoc, hc, rootTensorDefect_coevaluation,
+    ← hc, Linear.smul_comp]
 set_option backward.isDefEq.respectTransparency false in
 /-- The root defect has the same eigenvalue on the braided-swapped cup. -/
 theorem rootTensorDefect_swapped_coevaluation
@@ -116,11 +113,7 @@ theorem rootTensorDefect_swapped_coevaluation
   change η_ A Q ≫ (rootTensorDefect C A Q).hom = _ at he
   rw [rootDualSign_dual] at he
   apply (cancel_mono (A ◁ r.hom)).1
-  calc
-    _ = η_ A X ≫ ((A ◁ r.hom) ≫ (rootTensorDefect C A Q).hom) := by
-      rw [hn, Category.assoc]
-    _ = η_ A Q ≫ (rootTensorDefect C A Q).hom := by rw [← Category.assoc, hc]
-    _ = _ := by rw [he, ← hc, Linear.smul_comp]
+  rw [Category.assoc, ← hn, ← Category.assoc, hc, he, ← hc, Linear.smul_comp]
 end PropertyF.Ground.Dimensions
 
 end
@@ -165,12 +158,7 @@ theorem rootTensorDefect_slide_of_involution
     (hinv : let X := simples C i
       (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom =
         𝟙 ((Xᘁ) ⊗ (X ⊗ K))) :
-    let X := simples C i
-    letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-    let η : K ⟶ (Xᘁ) ⊗ (X ⊗ K) :=
-      (λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom
-    η ≫ (Xᘁ) ◁ (rootTensorDefect C X K).hom =
-      rootDualSign C i • (η ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom) := by
+    RootTensorDefectSlide C i K := by
   let X := simples C i
   let A := Xᘁ
   let I := 𝟙_ C.Obj
@@ -221,10 +209,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem fourthDualIso_tensor_of_signed_defect
     {X Y : C.Obj} (z : ℂ) (hz : z * z = 1)
     (hd : (rootTensorDefect C X Y).hom = z • 𝟙 (X ⊗ Y)) :
-    (fourthDualIso C (X ⊗ Y)).hom =
-      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
+    fourthDualTensorLaw C X Y := by
   let T := rootTensorIso C X Y
   let A := (fourthDualRootNaturalIso C).app (X ⊗ Y)
   have ht : T.hom = z • A.hom :=
@@ -239,20 +224,14 @@ theorem fourthDualIso_tensor_of_signed_defect
 /-- The fourth-dual tensor law holds when the left factor is the chosen unit
 simple representative. -/
 theorem fourthDualIso_tensor_unitLabel_left (X : C.Obj) :
-    (fourthDualIso C (simples C (unitIndex C) ⊗ X)).hom =
-      ((fourthDualIso C (simples C (unitIndex C))).hom ⊗ₘ (fourthDualIso C X).hom) ≫
-        (doubleDualTensorIso (((simples C (unitIndex C))ᘁ)ᘁ) ((Xᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso (simples C (unitIndex C)) X).homᘁ)ᘁ) :=
+    fourthDualTensorLaw C (simples C (unitIndex C)) X :=
   fourthDualIso_tensor_of_signed_defect C (rootDimension C (unitIndex C))
     (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_left C X)
 
 /-- The fourth-dual tensor law holds when the right factor is the chosen unit
 simple representative. -/
 theorem fourthDualIso_tensor_unitLabel_right (X : C.Obj) :
-    (fourthDualIso C (X ⊗ simples C (unitIndex C))).hom =
-      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C (simples C (unitIndex C))).hom) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) (((simples C (unitIndex C))ᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso X (simples C (unitIndex C))).homᘁ)ᘁ) :=
+    fourthDualTensorLaw C X (simples C (unitIndex C)) :=
   fourthDualIso_tensor_of_signed_defect C (rootDimension C (unitIndex C))
     (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_right C X)
 end PropertyF.Ground.Dimensions

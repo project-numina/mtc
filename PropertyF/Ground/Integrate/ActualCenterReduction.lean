@@ -99,6 +99,14 @@ theorem galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K) (h : ∀ i, σ (�
     σ (φ (∑ i, d i ^ 2)) = φ (∑ i, e i ^ 2) := by
   simp only [map_sum, map_pow, h]
 
+/-- A bounded conjugate sum of squares is positive when one conjugate is one. -/
+theorem positive_galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K)
+    (h : ∀ i, σ (φ (d i)) = φ (e i)) (hone : ∃ i, e i = 1)
+    (hbound : ∑ i, e i ^ 2 ≤ ∑ i, d i ^ 2) :
+    ∃ a : ℝ, 0 < a ∧ a ≤ ∑ i, d i ^ 2 ∧ σ (φ (∑ i, d i ^ 2)) = φ a :=
+  ⟨∑ i, e i ^ 2, lt_of_lt_of_le zero_lt_one (Dimensions.global_sum_squares_one_le e hone),
+    hbound, galois_sum_squares σ h⟩
+
 variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 
 /-- Global FP dimension has positive, FP-bounded real conjugates. -/
@@ -109,12 +117,12 @@ theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalF
     simp only [d, ← Real.norm_eq_abs, ← Complex.norm_real, fp_simple_galois_real]
     exact Dimensions.galois_character_norm_le_fpSimple C (χ := fun i ↦ (fpSimple C i : ℂ))
       (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i
-  ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
-      (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, by simp [d, fpSimple_unit]⟩),
-    Dimensions.target_globalDimension_le_of_simple_bounds C hbound,
-    by
-      change σ ((algebraMap ℝ ℂ) (∑ i, fpSimple C i ^ 2)) = (algebraMap ℝ ℂ) (∑ i, d i ^ 2)
-      exact galois_sum_squares σ fun i ↦ (fp_simple_galois_real C σ i).symm⟩
+  by
+    change ∃ a : ℝ, 0 < a ∧ a ≤ ∑ i, fpSimple C i ^ 2 ∧
+      σ ((algebraMap ℝ ℂ) (∑ i, fpSimple C i ^ 2)) = (algebraMap ℝ ℂ) a
+    exact positive_galois_sum_squares σ (fun i ↦ (fp_simple_galois_real C σ i).symm)
+      ⟨unitIndex C, by simp [fpSimple_unit]⟩
+      (Dimensions.target_globalDimension_le_of_simple_bounds C hbound)
 
 end PropertyF.Ground
 end
