@@ -118,7 +118,7 @@ theorem center_transparent_label_eq_unit
   let D := Integrate.bundledCenter C
   let Y := simples D k
   letI : Simple Y := simples_simple D k
-  obtain ⟨e⟩ := CentreInduction.center_transparent_simple_iso_unit C Y (by
+  obtain ⟨e⟩ := CentreInduction.center_transparent_simple_iso_unit C (Z := Y) (by
     intro W
     exact hk W)
   obtain ⟨u⟩ := unitIndex_iso D

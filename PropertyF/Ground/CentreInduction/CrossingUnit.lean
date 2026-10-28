@@ -109,7 +109,7 @@ variable [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear 
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A split crossing block is independent of the chosen splitting of a simple. -/
-theorem crossingBlock_of_simple_split (X T : D) {R S : D} [Simple R]
+theorem crossingBlock_of_simple_split (X : D) {T R S : D} [Simple R]
     [FiniteDimensional ℂ (R ⟶ R)]
     (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
     crossingBlock X T R S g f = crossingBlock X T R S e.hom e.inv := by
@@ -137,7 +137,7 @@ theorem crossingBlock_unit_of_split (X : D) {S : D} [Simple S]
     (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock X (𝟙_ D) S S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv :=
-  (crossingBlock_of_simple_split X (𝟙_ D) (λ_ S).symm g f h).trans (crossingBlock_unit X S)
+  (crossingBlock_of_simple_split X (λ_ S).symm g f h).trans (crossingBlock_unit X S)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-strand decomposition has one diagonal simple summand. -/
@@ -174,7 +174,7 @@ theorem crossingCandidate_unit (X : C.Obj) :
     let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
     rw [crossingBlock_unit_of_split X
       (crossingInclusion C (𝟙_ C.Obj) i i a) (crossingProjection C (𝟙_ C.Obj) i i a)
-      (crossingInclusion_projection C (𝟙_ C.Obj) i i a)]
+      (crossingInclusion_projection a)]
     change ((ρ_ (V i)).hom ≫ (λ_ (V i)).inv) ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) =
       (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ (ρ_ (⨁ V)).hom ≫ (λ_ (⨁ V)).inv
     simp only [Category.assoc, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]
