@@ -48,17 +48,11 @@ theorem reverse_braidGenerator_succ (X : C) (n : ℕ) {i : Fin (n + 1)}
 
 theorem reverse_braidGenerator (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
     @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n i =
-      (braidGenerator X n i)⁻¹ := by
-  intro n
-  induction n with
-  | zero =>
-    intro i
-    fin_cases i
-    exact reverse_braidGenerator_zero X 0
-  | succ n ih =>
-    intro i
-    exact Fin.cases (reverse_braidGenerator_zero X (n + 1))
-      (fun j ↦ reverse_braidGenerator_succ X n (ih j)) i
+      (braidGenerator X n i)⁻¹ :=
+  fun n ↦ Nat.rec
+    (fun i ↦ Fin.cases (reverse_braidGenerator_zero X 0) (fun j ↦ Fin.elim0 j) i)
+    (fun n ih i ↦ Fin.cases (reverse_braidGenerator_zero X (n + 1))
+      (fun j ↦ reverse_braidGenerator_succ X n (ih j)) i) n
 
 end PropertyF.Ground.Centre
 
