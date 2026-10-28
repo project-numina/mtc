@@ -193,6 +193,7 @@ abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCatego
     [Preadditive C] [Linear ℂ C] (X : C) (n : ℕ) : braidImage X n →* braidAlgebra X n :=
   groupInImage (braidEndRepresentation X n)
 
+/-- The braid-image algebra map has the original categorical action as its value. -/
 @[simp] theorem braidInImage_val {C : Type*} [Category C] [MonoidalCategory C]
     [BraidedCategory C] [Preadditive C] [Linear ℂ C] (X : C) (n : ℕ) (g : braidImage X n) :
     (braidInImage X n g : End (tensorPower X (n + 2))) = braidEndRepresentation X n g :=

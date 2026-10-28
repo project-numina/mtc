@@ -41,13 +41,13 @@ set_option backward.isDefEq.respectTransparency false in
 biproduct component of the transported endomorphism. -/
 theorem groundEndBlockEquiv_diagonal (C : BraidedFusionCategory.{v,u})
     {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
-    (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
+    (e : X ≅ ⨁ (simpleCopies C m))
     (a : End X) (i : Fin (Ground.rank C)) (j : Fin (m i)) :
     groundEndBlockEquiv C X m e a i j j =
       groundSimpleScalar C i (End.of
-        (biproduct.ι (fun p : Σ i, Fin (m i) => Ground.simples C p.1) ⟨i, j⟩ ≫
+        (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫
           e.inv ≫ a.asHom ≫ e.hom ≫
-          biproduct.π (fun p : Σ i, Fin (m i) => Ground.simples C p.1) ⟨i, j⟩)) := by
+          biproduct.π (simpleCopies C m) ⟨i, j⟩)) := by
   classical
   simp [groundEndBlockEquiv, orthogonalEndBlocks, isoEndAlgEquiv,
     simpleFiberEquiv, groundSimpleScalar, HomOrthogonal.matrixDecompositionAddEquiv, HomOrthogonal.matrixDecomposition,
@@ -61,7 +61,7 @@ multiplicity blocks. -/
 theorem pivotalTrace_groundEndBlocks (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
-    (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1)) (a : End X) :
+    (e : X ≅ ⨁ (simpleCopies C m)) (a : End X) :
     scalar (p.rightTrace a.asHom) = ∑ i,
       scalar (p.rightTrace (𝟙 (Ground.simples C i))) *
         (groundEndBlockEquiv C X m e a i).trace := by
@@ -301,7 +301,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 algebra, expressed in their respective matrix-block presentations. -/
 def braidToEndBlocks (C : BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
     (m : Fin (Ground.rank C) → ℕ)
-    (e : tensorPower X (n + 2) ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
+    (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     (r : ℕ) (d : Fin r → ℕ)
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
@@ -312,7 +312,7 @@ def braidToEndBlocks (C : BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
 /-- The categorical inclusion is faithful, so no finite braid-image block is lost. -/
 theorem braidToEndBlocks_injective (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     {n : ℕ} {m : Fin (Ground.rank C) → ℕ}
-    (e : tensorPower X (n + 2) ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
+    (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     Function.Injective (braidToEndBlocks C X n m e r d b) :=
@@ -335,7 +335,7 @@ theorem pivotalTrace_braid_multiplicities
     (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
-    (e : tensorPower X (n + 2) ≅ ⨁ (fun q : Σ i, Fin (m i) => Ground.simples C q.1))
+    (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,

@@ -63,6 +63,10 @@ theorem groundSimples_orthogonal (C : BraidedFusionCategory.{v,u}) :
     let _ : IsIso f := isIso_of_hom_simple hf
     hij (Ground.simples_injective C ⟨asIso f⟩)
 
+/-- The family containing `m i` copies of each chosen simple object. -/
+abbrev simpleCopies (C : BraidedFusionCategory.{v,u}) (m : Fin (Ground.rank C) → ℕ)
+    (p : Σ i, Fin (m i)) : C.Obj := Ground.simples C p.1
+
 /-- The occurrences of label `i` in a dependent sum are indexed by `Fin (m i)`. -/
 def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
     {p : Σ j, Fin (m j) // p.1 = i} ≃ Fin (m i) where
@@ -78,7 +82,7 @@ def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
 matrix-block decomposition of its endomorphism algebra. -/
 def groundEndBlockEquiv (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
     (m : Fin (Ground.rank C) → ℕ)
-    (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1)) :
+    (e : X ≅ ⨁ (simpleCopies C m)) :
     End X ≃ₐ[ℂ] ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ := by
   classical
   let _ : HasFiniteBiproducts C.Obj := inferInstance
