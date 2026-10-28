@@ -212,10 +212,8 @@ theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
   have hf : ∀ i, 0 < f i := fpSimple_pos C
   have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ norm_div_ofReal_eq_one (hf i) (hd i)
   have hqn : ∀ i, q i ≠ 0 := fun i => norm_pos_iff.mp (by rw [hq]; norm_num)
-  have hrepr : ∀ i, q i * (f i : ℂ) = d i := by
-    intro i
-    dsimp [q]
-    field_simp [show (f i : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (hf i))]
+  have hrepr (i) : q i * (f i : ℂ) = d i :=
+    div_mul_cancel₀ _ (by exact_mod_cast (ne_of_gt (hf i)))
   intro i j k
   let x : Fin (rank C) → ℂ := fun l => T i j l * q l / (q i * q j)
   have hx : ∀ l, ‖x l‖ ≤ (fusionCoeff C i j l : ℝ) := by
@@ -228,8 +226,7 @@ theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
     calc
       _ = (∑ l, T i j l * d l) / (q i * q j) := by
         rw [Finset.sum_div]
-        apply Finset.sum_congr rfl
-        intro l _
+        refine Finset.sum_congr rfl fun l _ ↦ ?_
         rw [← hrepr l]
         dsimp [x]
         ring
