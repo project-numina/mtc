@@ -25,11 +25,10 @@ theorem braid_squares_equal_of_saturation (B : Blocks)
     (htrace : B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2) :
     a ^ 2 = b ^ 2 := by
   have hunit : B.IsUnitary ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) := by
-    intro r
-    simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Pi.mul_apply, Pi.pow_apply] using
-      (Matrix.unitaryGroup (Fin (B.size r)) ℂ).mul_mem
-        ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (ha r) 2)
-        ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (hb r) 2)
+    apply Pi.mem_unitary_iff.mp
+    simpa only [Units.val_mul, Units.val_pow_eq_pow_val] using
+      (unitary B.Algebra).mul_mem ((unitary B.Algebra).pow_mem (Pi.mem_unitary_iff.mpr ha) 2)
+        ((unitary B.Algebra).pow_mem (Pi.mem_unitary_iff.mpr hb) 2)
   have hsaturate : ‖B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra)‖ = B.mass w := by
     apply le_antisymm (B.norm_trace_le w hunit)
     rw [htrace]
@@ -98,7 +97,6 @@ theorem actual_braid_squares_equal_of_saturation {X : C.Obj}
   let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
   have hbnd : ∀ z : B.Algebra, B.IsUnitary z → ‖B.trace w z‖ ≤ |d| * f ^ 2 := by
     intro z hz
-    change ∀ i, z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ at hz
     simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
   have hv : B.trace w ((a ^ 2 * c ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2 := by
     change B.trace w (b (braidInImage X 1 (threeGeneratorLeft X)) ^ 2 *
