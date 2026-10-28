@@ -138,13 +138,9 @@ theorem unitComponent_natural
     f.f ≫ unitComponent C Y i = unitComponent C X i ≫
       ((simples C i ◁ f.f) ▷ (simples C i)ᘁ) := by
   dsimp [unitComponent, unitComponentAt]
-  simp only [Category.assoc]
-  rw [rightUnitor_inv_naturality_assoc, ← whisker_exchange_assoc,
+  simp only [Category.assoc, rightUnitor_inv_naturality_assoc, ← whisker_exchange_assoc,
     associator_inv_naturality_left_assoc]
-  simpa only [Category.assoc, comp_whiskerRight] using congrArg (fun g =>
-    (ρ_ X.1).inv ≫ (X.1 ◁ η_ (simples C i) ((simples C i)ᘁ)) ≫
-      (α_ X.1 (simples C i) ((simples C i)ᘁ)).inv ≫ (g ▷ (simples C i)ᘁ))
-    (f.comm (simples C i))
+  simp only [← Category.assoc, ← comp_whiskerRight, f.comm]
 
 
 end PropertyF.Ground.CentreInduction

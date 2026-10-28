@@ -35,8 +35,6 @@ theorem forgetDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
 theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso Y).hom =
       (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
-  have hmate := congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
-  simp only [comp_rightAdjointMate] at hmate
   simp only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap,
     Iso.symm_hom, Category.assoc]
   rw [← Category.assoc, forgetDualIso_natural (fᘁ)]
@@ -45,7 +43,8 @@ theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
   change (fᘁ).fᘁ ≫ (rightDualIsoMap (forgetDualIso Y)).inv =
     (rightDualIsoMap (forgetDualIso X)).inv ≫ ((f.fᘁ)ᘁ)
   rw [Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
-  exact hmate
+  simpa only [comp_rightAdjointMate, rightDualIsoMap] using
+    congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
 
 /-- The transported pivotal components are natural on centre morphisms. -/
 theorem transported_pivotal_natural (p : PivotalStructure (C := D))

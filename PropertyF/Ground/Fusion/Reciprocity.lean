@@ -110,6 +110,20 @@ theorem fusionCoeff_reciprocity_labels (D : BraidedFusionCategory.{v,u})
       (CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
         (Iso.refl (simples D k) ⊗ᵢ e)).finrank_eq
 
+/-- Frobenius reciprocity and braiding exchange a tensor factor with its dual. -/
+theorem fusionCoeff_dual_symmetry (D : BraidedFusionCategory.{v,u})
+    (i j k : Fin (rank D)) :
+    fusionCoeff D i k j = fusionCoeff D (dualIndex D i) j k := by
+  rw [fusionCoeff_comm D i k, fusionCoeff_reciprocity_labels D k i j,
+    fusionCoeff_comm D j (dualIndex D i)]
+
+/-- A simple object and its dual contain the tensor unit with multiplicity one. -/
+theorem fusionCoeff_dual_unit (D : BraidedFusionCategory.{v,u}) (i : Fin (rank D)) :
+    fusionCoeff D i (dualIndex D i) (unitIndex D) = 1 := by
+  rw [fusionCoeff_comm D i (dualIndex D i), fusionCoeff_reciprocity_labels,
+    fusionCoeff_unit]
+  simp
+
 /-- The label of the tensor unit is fixed by duality. -/
 theorem dualIndex_unit (D : BraidedFusionCategory.{v,u}) :
     dualIndex D (unitIndex D) = unitIndex D := by
@@ -120,10 +134,7 @@ theorem dualIndex_unit (D : BraidedFusionCategory.{v,u}) :
 theorem dualIndex_involutive (D : BraidedFusionCategory.{v,u}) :
     Function.Involutive (dualIndex D) := by
   intro i
-  have hunit : fusionCoeff D i (dualIndex D i) (unitIndex D) = 1 := by
-    rw [fusionCoeff_comm D i (dualIndex D i), fusionCoeff_reciprocity_labels,
-      fusionCoeff_unit]
-    simp
+  have hunit := fusionCoeff_dual_unit D i
   rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit] at hunit
   by_contra h
   simp [Ne.symm h] at hunit
@@ -155,24 +166,18 @@ theorem rightQuantumTrace_simple_ne_zero (C : BraidedFusionCategory.{v,u})
     exact (exactPairing_ne_zero (Xᘁ) ((Xᘁ)ᘁ) (id_nonzero ((Xᘁ)ᘁ))).2
   let r : X ⊗ (Xᘁ) ⟶ 𝟙_ C.Obj := t.hom ≫ ev
   have hr : r ≠ 0 := fun h ↦ hev ((cancel_epi t.hom).1 (by simpa [r] using h))
-  let e₁ := tensorRightHomLinearEquiv X (Xᘁ) ((Xᘁ)ᘁ) (𝟙_ C.Obj)
-  let e₂ := CategoryTheory.Linear.homCongr ℂ (Iso.refl X) (λ_ ((Xᘁ)ᘁ))
-  let e₃ := CategoryTheory.Linear.homCongr ℂ (Iso.refl X) (j).symm
-  have hfin : Module.finrank ℂ (X ⊗ (Xᘁ) ⟶ 𝟙_ C.Obj) = 1 := by
-    calc
-      _ = Module.finrank ℂ (X ⟶ X) := (e₁.trans (e₂.trans e₃)).finrank_eq
-      _ = 1 := CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X
+  have hfin : Module.finrank ℂ (X ⊗ (Xᘁ) ⟶ 𝟙_ C.Obj) = 1 :=
+    ((tensorRightHomLinearEquiv X (Xᘁ) ((Xᘁ)ᘁ) (𝟙_ C.Obj)).trans
+      ((CategoryTheory.Linear.homCongr ℂ (Iso.refl X) (λ_ ((Xᘁ)ᘁ))).trans
+        (CategoryTheory.Linear.homCongr ℂ (Iso.refl X) j.symm))).finrank_eq.trans
+          (CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X)
   obtain ⟨z, hz⟩ := exists_smul_eq_of_finrank_eq_one hfin hr₀ne r
-  have hz0 : z ≠ 0 := by
-    intro h
-    rw [h, zero_smul] at hz
-    exact hr hz.symm
+  have hz0 : z ≠ 0 := fun h ↦ hr (by simpa [h] using hz.symm)
   intro hzero
   have hhom : s ≫ r = 0 := by
     simpa [rightQuantumTrace, s, r, t, ev, tensorIso_hom] using (congrArg End.asHom hzero)
-  rw [← hz, Linear.comp_smul, hr₀] at hhom
-  have : z • (𝟙 (𝟙_ C.Obj)) ≠ 0 := smul_ne_zero hz0 (id_nonzero _)
-  exact this hhom
+  exact (smul_ne_zero hz0 (id_nonzero _)) (by
+    simpa only [← hz, Linear.comp_smul, hr₀] using hhom)
 
 
 end PropertyF.Ground.Dimensions

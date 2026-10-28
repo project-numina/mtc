@@ -66,10 +66,7 @@ factor, acting on the untraced object. -/
 theorem rightPartialTrace_one (p : PivotalStructure (C := C))
     (X Y : C) : rightPartialTrace p (X := X) (Y := Y) 1 =
       End.of ((ρ_ X).inv ≫ (X ◁ (p.rightTrace (𝟙 Y)).asHom) ≫ (ρ_ X).hom) :=
-  End.ext (by simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
-    End.one_asHom, id_whiskerRight, Category.comp_id, Iso.inv_hom_id_assoc,
-    PivotalStructure.rightTrace, Category.id_comp, tensorHom_def, whiskerLeft_id,
-    whiskerLeft_comp, Category.assoc])
+  End.ext (by simp [rightPartialTrace, PivotalStructure.rightTrace, tensorHom_def])
 
 variable (p : PivotalStructure (C := C)) (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ)
 
@@ -102,9 +99,6 @@ theorem rightPartialTrace_whiskerLeft {A X Y : C} (f : End (X ⊗ Y)) :
     rightPartialTrace p (End.of
       ((α_ A X Y).hom ≫ (A ◁ f.asHom) ≫ (α_ A X Y).inv)) =
       End.of (A ◁ (rightPartialTrace p f).asHom) :=
-  End.ext (by
-    simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
-      comp_whiskerRight, whiskerLeft_comp, Category.assoc]
-    monoidal)
+  End.ext (by simp [rightPartialTrace])
 
 end PropertyF.Ground.Calculus
