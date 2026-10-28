@@ -101,6 +101,7 @@ theorem unitBlockLinear_id [HasRightDual S] :
 variable (Z : Center C.Obj) (T : C.Obj)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
 theorem unit_sum (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
@@ -110,6 +111,7 @@ theorem unit_sum (j : Fin (rank C)) :
   simp only [unitComponent, crossingSummand, unit_block, unitBlockLinear, LinearMap.coe_mk, AddHom.coe_mk]
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
 theorem unitCandidate_central :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
@@ -120,13 +122,13 @@ theorem unitCandidate_central :
       show unitCandidate C Z ≫ biproduct.π V j = unitComponent C Z j from biproduct.lift_π _ _]
     simpa only [V, unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
       comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum,
-      Fintype.sum_sigma, crossingSummand] using unit_sum C Z T j
+      Fintype.sum_sigma, crossingSummand] using unit_sum Z T j
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/
 def actualAdjunction : Center.forget C.Obj ⊣ induction C where
   unit := {
-    app Z := ⟨unitCandidate C Z, unitCandidate_central C Z⟩
+    app Z := ⟨unitCandidate C Z, unitCandidate_central Z⟩
     naturality {X Y} f := by
       apply Center.ext
       change f.f ≫ unitCandidate C Y = unitCandidate C X ≫ (underlyingFunctor C).map f.f
@@ -134,13 +136,13 @@ def actualAdjunction : Center.forget C.Obj ⊣ induction C where
       simpa only [underlyingFunctor, unitCandidate, unitComponent, Category.assoc, biproduct.lift_π,
         biproduct.lift_π_assoc, biproduct.map_π] using unitComponentAt_natural (S := simples C i) f }
   counit := underlyingCounit C
-  left_triangle_components Z := unitCandidate_counit C Z
+  left_triangle_components Z := unitCandidate_counit Z
   right_triangle_components X := by
     apply Center.ext
     change unitCandidate C ((induction C).obj X) ≫
       (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X)
     refine biproduct.hom_ext' _ _ fun i => biproduct.hom_ext _ _ fun j => ?_
-    simpa [underlying, Category.assoc] using secondTriangle_entry C X i j
+    simpa [underlying, Category.assoc] using secondTriangle_entry X i j
 
 end PropertyF.Ground.CentreInduction
 
@@ -180,7 +182,7 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 
-variable (C : BraidedFusionCategory.{v,u})
+variable {C : BraidedFusionCategory.{v,u}}
 local notation "Sᶜ" => simples C
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 local notation "𝒵" => Center C.Obj
@@ -202,23 +204,25 @@ theorem finrank_hom_induction (Z : 𝒵) (X : C.Obj) :
 /-- The FP dimension of a centre object is the weighted Hom sum of its underlying object. -/
 theorem fpDimension_forget_sum [RigidCategory 𝒵] [IsFusionCategory 𝒵] (Z : 𝒵) :
     fpDimension 𝒵ᶠ Z = ∑ i, (finrank ℂ (Z.1 ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
-  (Integrate.center_forget_fpDimension C Z).symm.trans (fpDimension_eq_sum_to_simple C Z.1)
+  (Integrate.center_forget_fpDimension C Z).symm.trans (fpDimension_eq_sum_to_simple Z.1)
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
+variable (C) in
 /-- The centre's global FP dimension is the weighted sum of its induced simples. -/
 theorem globalFPDimension_eq_induction_sum [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ =
       ∑ i, fpSimple C i * fpDimension 𝒵ᶠ ((induction C).obj (Sᶜ i)) := by
   symm
-  simp_rw [fpDimension, finrank_hom_induction C, Finset.mul_sum]
+  simp_rw [fpDimension, finrank_hom_induction (C := C), Finset.mul_sum]
   rw [Finset.sum_comm]
   simp [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
-    ← Finset.mul_sum, ← fpDimension_forget_sum C, fpDimension_simple,
+    ← Finset.mul_sum, ← fpDimension_forget_sum (C := C), fpDimension_simple,
     globalFPDimension, pow_two]
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
+variable (C) in
 /-- If the actual centre has a fusion structure, its global FP dimension is the square
 of the base global FP dimension. -/
 theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFusionCategory 𝒵] :

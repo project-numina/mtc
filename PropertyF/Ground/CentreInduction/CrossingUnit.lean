@@ -8,7 +8,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 attribute [local instance] IsFusionCategory.hom_finite
-variable (C : BraidedFusionCategory.{v,u})
+variable {C : BraidedFusionCategory.{v,u}}
 -- Chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
 local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
@@ -95,6 +95,7 @@ theorem crossingBlock_of_simple_split [HasRightDual R] [HasRightDual S] [Simple 
 variable (X : C.Obj) (i j : Fin (rank C))
 
 set_option backward.isDefEq.respectTransparency false in
+variable (C) in
 /-- The unit-strand decomposition has one diagonal simple summand. -/
 theorem unit_crossing_finrank :
     Module.finrank ℂ (Sᶜ i ⟶ (𝟙_ C.Obj) ⊗ Sᶜ j) = if i = j then 1 else 0 :=
@@ -129,6 +130,6 @@ theorem crossingCandidate_unit :
       (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv :=
   rightDistributor_ext_left (f := inductionSummand C X) fun i => by
     simpa only [underlying, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc] using
-      crossingCandidate_unit_summand C X i
+      crossingCandidate_unit_summand X i
 
 end PropertyF.Ground.CentreInduction
