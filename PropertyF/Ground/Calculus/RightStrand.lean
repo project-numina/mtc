@@ -39,9 +39,19 @@ namespace PropertyF.Ground.Calculus
 variable {G H A B : Type*} [Group G] [Group H]
   [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B]
 
+/-- A unitary block representation sends group inversion to conjugate transpose. -/
+theorem unitary_block_star_inv {B : Blocks} (ρ : G →* B.Algebra)
+    (hu : ∀ g, B.IsUnitary (ρ g)) (g : G) :
+    star (ρ g) = ρ g⁻¹ :=
+  funext fun i => (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g).eq_inv_of_mul_eq_one_right
+    (Matrix.mem_unitaryGroup_iff'.mp (hu g i))
+
+section PresentedGroup
+
+variable (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ} (e : GroupBlockPresentation ρ d)
+
 /-- The group image spans any algebra-equivalent block presentation. -/
-theorem presented_group_span (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ}
-    (e : GroupBlockPresentation ρ d) :
+theorem presented_group_span :
     Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ := by
   classical
   change Submodule.span ℂ (Set.range (fun g => e (groupInImage ρ g))) = ⊤
@@ -50,22 +60,12 @@ theorem presented_group_span (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ}
   rw [← Submodule.map_span, groupInImage_span, Submodule.map_top]
   exact LinearMap.range_eq_top.mpr e.surjective
 
-/-- A unitary block representation sends group inversion to conjugate transpose. -/
-theorem unitary_block_star_inv {n : ℕ} {d : Fin n → ℕ}
-    (ρ : G →* Blocks.Algebra ⟨_, d⟩)
-    (hu : ∀ g, Blocks.IsUnitary ⟨_, d⟩ (ρ g)) (g : G) :
-    star (ρ g) = ρ g⁻¹ :=
-  funext fun i => (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g).eq_inv_of_mul_eq_one_right
-    (Matrix.mem_unitaryGroup_iff'.mp (hu g i))
-
 /-- Any algebra map intertwining two unitary block presentations is a star map.
 This gives the analytic part of identity-strand compatibility; the categorical
 strand map and its intertwining property must still be supplied separately. -/
 theorem presented_intertwiner_map_star
-    (ρ : G →* A) (σ : H →* B) (τ : G →* H)
-    {n m : ℕ} {d : Fin n → ℕ} {k : Fin m → ℕ}
-    (e : GroupBlockPresentation ρ d)
-    (f : GroupBlockPresentation σ k)
+    (σ : H →* B) (τ : G →* H)
+    {m : ℕ} {k : Fin m → ℕ} (f : GroupBlockPresentation σ k)
     (he : IsUnitaryPresentation ρ e)
     (hf : IsUnitaryPresentation σ f)
     (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
@@ -82,6 +82,8 @@ theorem presented_intertwiner_map_star
         unitary_block_star_inv (f.toMonoidHom.comp (groupInImage σ)) hf (τ g), map_inv]
   · rw [presented_group_span ρ e]
     exact Submodule.mem_top
+
+end PresentedGroup
 
 end PropertyF.Ground.Calculus
 
@@ -189,8 +191,8 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
       (Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom)
   map_star' x := by
-    apply presented_intertwiner_map_star (braidEndRepresentation X n)
-      (braidEndRepresentation X (n + k)) (addLeftStrands X n k) e f he hf
+    apply presented_intertwiner_map_star (braidEndRepresentation X n) e
+      (braidEndRepresentation X (n + k)) (addLeftStrands X n k) f he hf
       (f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom))
     intro g
     change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
@@ -221,14 +223,6 @@ def appendIso : ∀ n : ℕ, tensorPower X n ⊗ X ≅ tensorPower X (n + 1)
 def addRightAut (n : ℕ) : Aut (tensorPower X (n+2)) →* Aut (tensorPower X ((n+1)+2)) :=
   (appendIso X (n+2)).conjAut.toMonoidHom.comp ((tensorRight X).mapAut (tensorPower X (n+2)))
 
-omit [BraidedCategory C] in
-/-- Appending commutes with whiskering an endomorphism on the left. -/
-theorem append_step (A B : C) (e : A ⊗ X ≅ B) (f : A ⟶ A) :
-  ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)).inv ≫ ((X ◁ f) ▷ X) ≫
-    ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)).hom = X ◁ (e.inv ≫ (f ▷ X) ≫ e.hom) := by
-  dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  monoidal
-
 /-- The first crossing is natural in its tensor-power tail. -/
 @[reassoc]
 theorem crossing_natural (A B : C) (g : A ⟶ B) :
@@ -237,8 +231,20 @@ theorem crossing_natural (A B : C) (g : A ⟶ B) :
   simp only [Category.assoc, ← associator_naturality_right X X g,
     ← whisker_exchange_assoc, ← associator_inv_naturality_right_assoc]
 
+section Append
+
+variable {A B : C} (e : A ⊗ X ≅ B)
+
+omit [BraidedCategory C] in
+/-- Appending commutes with whiskering an endomorphism on the left. -/
+theorem append_step (f : A ⟶ A) :
+  let E := (α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)
+  E.inv ≫ ((X ◁ f) ▷ X) ≫ E.hom = X ◁ (e.inv ≫ (f ▷ X) ≫ e.hom) := by
+  dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
+  monoidal
+
 /-- Appending a strand commutes with the first crossing. -/
-theorem append_first_two (A B : C) (e : A ⊗ X ≅ B) :
+theorem append_first_two :
   let E := (α_ X (X ⊗ A) X) ≪≫
     (Iso.refl X ⊗ᵢ ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)))
   E.inv ≫ (((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ▷ X) ≫ E.hom =
@@ -256,6 +262,8 @@ theorem append_first_two (A B : C) (e : A ⊗ X ≅ B) :
       simp only [Category.assoc]
       rw [← crossing_natural_assoc X B (A ⊗ X) e.inv]
       simp [← whiskerLeft_comp]
+
+end Append
 
 omit [BraidedCategory C] in
 /-- The recursive form of the append isomorphism. -/
@@ -278,7 +286,7 @@ private theorem addRightAut_first_generator (n : ℕ) : addRightAut X n (braidGe
     (α_ X X (tensorPower X (n + 1))).inv ≫ (β_ X X).hom ▷ tensorPower X (n + 1) ≫
       (α_ X X (tensorPower X (n + 1))).hom
   rw [appendIso_succ X (n + 1), appendIso_succ X n]
-  exact append_first_two X _ _ (appendIso X n)
+  exact append_first_two X (appendIso X n)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Appending a strand preserves each adjacent braid generator. -/
@@ -372,8 +380,8 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
       (Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)
   map_star' x := by
-    apply presented_intertwiner_map_star (braidEndRepresentation X n)
-      (braidEndRepresentation X (n + k)) (addRightStrands X n k) e f he hf
+    apply presented_intertwiner_map_star (braidEndRepresentation X n) e
+      (braidEndRepresentation X (n + k)) (addRightStrands X n k) f he hf
       (f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom))
     intro g
     change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _

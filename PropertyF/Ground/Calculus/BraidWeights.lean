@@ -65,7 +65,7 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
   classical
   let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
-  have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj p e a
+  have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj e p a
   have h := cyclicTrace_biproduct_scalar_blocks
     (fun Y => scalar.toLinearMap.comp (rightTraceLinear p Y))
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
@@ -164,18 +164,17 @@ end
 /-- Every cyclic linear functional on a finite product of matrix algebras is
 a weighted sum of ordinary block traces. The weights may be arbitrary complex
 numbers; reality and categorical multiplicities require additional input. -/
-theorem cyclic_block_trace {n : ℕ} {d : Fin n → ℕ}
-    (T : (Blocks.Algebra ⟨_, d⟩) →ₗ[ℂ] ℂ)
+theorem cyclic_block_trace {B : Blocks} (T : B.Algebra →ₗ[ℂ] ℂ)
     (hT : ∀ X Y, T (X * Y) = T (Y * X)) :
-    ∃ w : Fin n → ℂ, ∀ X, T X = ∑ i, w i * (X i).trace := by
+    ∃ w : Fin B.count → ℂ, ∀ X, T X = ∑ i, w i * (X i).trace := by
   classical
-  let V : Fin n → Type := fun i => Matrix (Fin (d i)) (Fin (d i)) ℂ
-  let Tblock (i : Fin n) : V i →ₗ[ℂ] ℂ := T.comp (LinearMap.single ℂ V i)
-  have hc (i : Fin n) : ∀ X Y : V i, Tblock i (X * Y) = Tblock i (Y * X) := by
+  let V : Fin B.count → Type := fun i => Matrix (Fin (B.size i)) (Fin (B.size i)) ℂ
+  let Tblock (i : Fin B.count) : V i →ₗ[ℂ] ℂ := T.comp (LinearMap.single ℂ V i)
+  have hc (i : Fin B.count) : ∀ X Y : V i, Tblock i (X * Y) = Tblock i (Y * X) := by
     intro X Y
     change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
     simpa only [Pi.single_mul] using hT (Pi.single i X) (Pi.single i Y)
-  choose w hw using fun i : Fin n => cyclic_matrix_trace (Tblock i) (hc i)
+  choose w hw using fun i : Fin B.count => cyclic_matrix_trace (Tblock i) (hc i)
   refine ⟨w, fun X => ?_⟩
   conv_lhs => rw [← LinearMap.sum_single_apply V X]
   rw [map_sum]
@@ -213,9 +212,9 @@ theorem idempotent_matrix_eq_zero_of_trace_eq_zero (ht : A.trace = 0) : A = 0 :=
 end IdempotentTrace
 
 /-- A weighted block trace of an element supported in one block. -/
-theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
-    (i : Fin n) (A : Matrix (Fin (d i)) (Fin (d i)) ℂ) :
-    (∑ j, w j * (Pi.single (M := fun k => Matrix (Fin (d k)) (Fin (d k)) ℂ) i A j).trace) =
+theorem sum_trace_single {B : Blocks} (w : Fin B.count → ℂ)
+    (i : Fin B.count) (A : Matrix (Fin (B.size i)) (Fin (B.size i)) ℂ) :
+    (∑ j, w j * ((Pi.single i A : B.Algebra) j).trace) =
       w i * A.trace := by
   classical
   rw [Fintype.sum_eq_single i]
@@ -223,15 +222,15 @@ theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
   · intro j h
     rw [Pi.single_eq_of_ne h, Matrix.trace_zero, mul_zero]
 
-variable {n : ℕ} {d : Fin n → ℕ} (hd : ∀ i, 0 < d i)
+variable {B : Blocks} (hd : ∀ i, 0 < B.size i)
 
 include hd in
 /-- For any representation of a finite product of nonzero complex matrix
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the
 standard block traces. The integers are ranks of images of matrix units. -/
 theorem representation_trace_multiplicities {m : ℕ}
-    (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
-    ∃ mult : Fin n → ℕ, ∀ x, (φ x).trace = ∑ i, (mult i : ℂ) * (x i).trace := by
+    (φ : B.Algebra →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
+    ∃ mult : Fin B.count → ℕ, ∀ x, (φ x).trace = ∑ i, (mult i : ℂ) * (x i).trace := by
   classical
   let T := (Matrix.traceLinearMap (Fin m) ℂ ℂ).comp φ.toLinearMap
   obtain ⟨w, hw⟩ := cyclic_block_trace T (fun x y => by
@@ -239,8 +238,8 @@ theorem representation_trace_multiplicities {m : ℕ}
     simpa only [map_mul] using Matrix.trace_mul_comm (φ x) (φ y))
   have hnat : ∀ i, ∃ k : ℕ, w i = k := by
     intro i
-    let j : Fin (d i) := ⟨0, hd i⟩
-    let e : Blocks.Algebra ⟨_, d⟩ := Pi.single i (Matrix.single j j 1)
+    let j : Fin (B.size i) := ⟨0, hd i⟩
+    let e : B.Algebra := Pi.single i (Matrix.single j j 1)
     obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by
       rw [← map_mul]
       simp [e, ← Pi.single_mul, Matrix.single_mul_single_same])
@@ -252,21 +251,20 @@ theorem representation_trace_multiplicities {m : ℕ}
 include hd in
 /-- A faithful block-algebra representation has nonnegative integer
 multiplicities, and every source block occurs in at least one target block. -/
-theorem faithful_block_representation_multiplicities {m : ℕ}
-    {q : Fin m → ℕ} (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
-      (Blocks.Algebra ⟨_, q⟩)) (hinj : Function.Injective φ) :
-    ∃ mult : Fin m → Fin n → ℕ,
+theorem faithful_block_representation_multiplicities {B' : Blocks}
+    (φ : B.Algebra →ₐ[ℂ] B'.Algebra) (hinj : Function.Injective φ) :
+    ∃ mult : Fin B'.count → Fin B.count → ℕ,
       (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧
       (∀ j, ∃ i, 0 < mult i j) := by
   classical
-  choose mult hmult using fun i : Fin m =>
+  choose mult hmult using fun i : Fin B'.count =>
     representation_trace_multiplicities hd ((Pi.evalAlgHom ℂ _ i).comp φ)
   change ∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace at hmult
   refine ⟨mult, hmult, fun j => ?_⟩
   by_contra hn
   push Not at hn
-  let k : Fin (d j) := ⟨0, hd j⟩
-  let e : Blocks.Algebra ⟨_, d⟩ := Pi.single j (Matrix.single k k 1)
+  let k : Fin (B.size j) := ⟨0, hd j⟩
+  let e : B.Algebra := Pi.single j (Matrix.single k k 1)
   have hzero : φ e = 0 := by
     funext i
     apply idempotent_matrix_eq_zero_of_trace_eq_zero
@@ -274,7 +272,7 @@ theorem faithful_block_representation_multiplicities {m : ℕ}
         (congrFun (map_mul φ e e) i).symm
     · simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
         Nat.eq_zero_of_le_zero (hn i), Nat.cast_zero] using hmult i e
-  simpa [e] using congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k)
+  simpa [e] using congrArg (fun x : B.Algebra => x j k k)
     (hinj (show φ e = φ 0 from by simpa using hzero))
 
 end PropertyF.Ground.Calculus

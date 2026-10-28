@@ -163,12 +163,8 @@ namespace PropertyF.Ground.Calculus
 
 /-- A star-algebra map between products of matrix algebras preserves
 blockwise unitarity. -/
-theorem starMap_preserves_block_unitary {r s : ℕ} {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (F : (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
-      (Blocks.Algebra ⟨_, q⟩))
-    {u : Blocks.Algebra ⟨_, d⟩}
-    (hu : Blocks.IsUnitary ⟨_, d⟩ u) :
-    Blocks.IsUnitary ⟨_, q⟩ (F u) :=
+theorem starMap_preserves_block_unitary {B B' : Blocks} (F : B.Algebra →⋆ₐ[ℂ] B'.Algebra)
+    {u : B.Algebra} (hu : B.IsUnitary u) : B'.IsUnitary (F u) :=
   Pi.mem_unitary_iff.mp (Unitary.map_mem F (Pi.mem_unitary_iff.mpr hu))
 
 universe v u
