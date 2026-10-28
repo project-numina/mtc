@@ -77,9 +77,8 @@ theorem positiveDualIso_forget :
     (positiveDualIso T).hom.f = (forgetDualIso (Z⁺ T)).hom := by
   have hc : (@ExactPairing.coevaluation (Center D) _ _
       (Z⁺ T) (Z⁺ (Tᘁ))
-      (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) := by
-    change 𝟙 _ ≫ η_ T (Tᘁ) ≫ 𝟙 _ = _
-    exact (Category.id_comp _).trans (Category.comp_id _)
+      (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) :=
+    (Category.id_comp _).trans (Category.comp_id _)
   unfold positiveDualIso forgetDualIso rightDualIso rightAdjointMate
   simp only [Center.comp_f, Center.rightUnitor_inv_f,
     Center.leftUnitor_hom_f, Center.whiskerLeft_f,
