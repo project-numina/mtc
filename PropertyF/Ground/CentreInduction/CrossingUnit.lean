@@ -110,16 +110,12 @@ theorem unit_crossing_finrank (i j : Fin (rank C)) :
     (finrank_simples_hom C i j)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The explicit induction crossing is normalized on the tensor unit. -/
-theorem crossingCandidate_unit (X : C.Obj) :
-    crossingCandidate C X (𝟙_ C.Obj) =
-      (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv := by
-  let V := inductionSummand C X
-  apply (cancel_epi (rightDistributor V (𝟙_ C.Obj)).inv).1
-  refine biproduct.hom_ext' _ _ fun i => ?_
-  rw [biproduct_ι_comp_rightDistributor_inv_assoc, biproduct_ι_comp_rightDistributor_inv_assoc]
-  change (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ crossingCandidate C X (𝟙_ C.Obj) =
-    (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv
+/-- The unit crossing on each induction summand is the canonical unitor map. -/
+theorem crossingCandidate_unit_summand (X : C.Obj) (i : Fin (rank C)) :
+    let V := inductionSummand C X
+    (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ crossingCandidate C X (𝟙_ C.Obj) =
+      (ρ_ (V i)).hom ≫ (λ_ (V i)).inv ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) := by
+  dsimp only
   rw [crossingCandidate_on_summand]
   dsimp only [crossingSummand]
   rw [Finset.sum_eq_single i]
@@ -132,14 +128,25 @@ theorem crossingCandidate_unit (X : C.Obj) :
     rw [crossingBlock_unit_of_split X
       (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
       (crossingInclusion_projection default)]
-    change ((ρ_ (V i)).hom ≫ (λ_ (V i)).inv) ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) =
-      (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ (ρ_ (⨁ V)).hom ≫ (λ_ (⨁ V)).inv
-    simp only [Category.assoc, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]
+    exact Category.assoc _ _ _
   · intro j _ hne
     let : IsEmpty (crossingIndex C (𝟙_ C.Obj) i j) := by
       simpa only [crossingIndex, unit_crossing_finrank, Ne.symm hne, ↓reduceIte] using
         (inferInstance : IsEmpty (Fin 0))
     exact Finset.sum_eq_zero fun a _ => isEmptyElim a
   · exact fun hi => (hi (Finset.mem_univ i)).elim
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The explicit induction crossing is normalized on the tensor unit. -/
+theorem crossingCandidate_unit (X : C.Obj) :
+    crossingCandidate C X (𝟙_ C.Obj) =
+      (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv := by
+  let V := inductionSummand C X
+  apply (cancel_epi (rightDistributor V (𝟙_ C.Obj)).inv).1
+  refine biproduct.hom_ext' _ _ fun i => ?_
+  rw [biproduct_ι_comp_rightDistributor_inv_assoc, biproduct_ι_comp_rightDistributor_inv_assoc,
+    crossingCandidate_unit_summand]
+  dsimp only [underlying, V]
+  rw [← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]
 
 end PropertyF.Ground.CentreInduction
