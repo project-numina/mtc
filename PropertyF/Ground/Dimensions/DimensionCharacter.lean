@@ -80,7 +80,7 @@ theorem pivotalDimension_unitIndex (p : PivotalStructure (C := C.Obj)) :
 
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
 its Frobenius–Perron dimension. -/
-theorem galois_pivotalDimension_norm_le_fpSimple (C : BraidedFusionCategory)
+theorem galois_pivotalDimension_norm_le_fpSimple
     (p : PivotalStructure (C := C.Obj))
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i := by

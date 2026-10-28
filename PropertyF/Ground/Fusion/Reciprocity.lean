@@ -46,9 +46,11 @@ theorem finrank_end_leftDual [RigidCategory C] (X : C) :
     _ = Module.finrank ℂ (X ⟶ X) :=
       (CategoryTheory.Linear.homCongr ℂ (ρ_ X) (Iso.refl _)).finrank_eq
 
+variable (D : BraidedFusionCategory.{v,u})
+
 /-- In a finite semisimple category an object with a one-dimensional
 endomorphism space is simple. -/
-theorem simple_of_finrank_end_eq_one (D : BraidedFusionCategory.{v,u}) {X : D.Obj}
+theorem simple_of_finrank_end_eq_one {X : D.Obj}
     (hdim : Module.finrank ℂ (X ⟶ X) = 1) : Simple X := by
   classical
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
@@ -67,32 +69,32 @@ theorem simple_of_finrank_end_eq_one (D : BraidedFusionCategory.{v,u}) {X : D.Ob
   exact Simple.of_iso ⟨s, t, hst, hts⟩
 
 /-- Duals of simple objects remain simple. -/
-theorem simple_leftDual (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X] :
+theorem simple_leftDual (X : D.Obj) [Simple X] :
     Simple (ᘁX) :=
   letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   simple_of_finrank_end_eq_one D ((finrank_end_leftDual X).trans
     (CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X))
 
 /-- The right dual of a simple object in a braided fusion category is simple. -/
-theorem simple_rightDual (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X] :
+theorem simple_rightDual (X : D.Obj) [Simple X] :
     Simple (Xᘁ) :=
   letI : Simple (ᘁX) := simple_leftDual D X
   Simple.of_iso (leftDualIso HasLeftDual.exact (BraidedCategory.exactPairing_swap X (Xᘁ))).symm
 
 /-- The label of the left dual of a simple representative. -/
-def dualIndex (D : BraidedFusionCategory.{v,u}) (j : Fin (rank D)) : Fin (rank D) := by
+def dualIndex (j : Fin (rank D)) : Fin (rank D) := by
   letI : Simple (simples D j) := simples_simple D j
   letI : Simple (ᘁ(simples D j)) := simple_leftDual D (simples D j)
   exact Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
 
-theorem dualIndex_iso (D : BraidedFusionCategory.{v,u}) (j : Fin (rank D)) :
+theorem dualIndex_iso (j : Fin (rank D)) :
     Nonempty ((ᘁ(simples D j)) ≅ simples D (dualIndex D j)) :=
   letI : Simple (simples D j) := simples_simple D j
   letI : Simple (ᘁ(simples D j)) := simple_leftDual D (simples D j)
   Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
 
 /-- Fusion reciprocity with the dual kept as an actual object. -/
-theorem fusionCoeff_reciprocity (D : BraidedFusionCategory.{v,u})
+theorem fusionCoeff_reciprocity
     (i j k : Fin (rank D)) :
     fusionCoeff D i j k =
       Module.finrank ℂ (simples D i ⟶ simples D k ⊗ (ᘁ(simples D j))) :=
@@ -102,7 +104,7 @@ theorem fusionCoeff_reciprocity (D : BraidedFusionCategory.{v,u})
     _ = _ := finrank_to_simple_eq_from_simple D _ i
 
 /-- The usual fusion-coefficient Frobenius reciprocity identity. -/
-theorem fusionCoeff_reciprocity_labels (D : BraidedFusionCategory.{v,u})
+theorem fusionCoeff_reciprocity_labels
     (i j k : Fin (rank D)) :
     fusionCoeff D i j k = fusionCoeff D k (dualIndex D j) i :=
   (dualIndex_iso D j).elim fun e ↦
@@ -111,27 +113,27 @@ theorem fusionCoeff_reciprocity_labels (D : BraidedFusionCategory.{v,u})
         (Iso.refl (simples D k) ⊗ᵢ e)).finrank_eq
 
 /-- Frobenius reciprocity and braiding exchange a tensor factor with its dual. -/
-theorem fusionCoeff_dual_symmetry (D : BraidedFusionCategory.{v,u})
+theorem fusionCoeff_dual_symmetry
     (i j k : Fin (rank D)) :
     fusionCoeff D i k j = fusionCoeff D (dualIndex D i) j k := by
   rw [fusionCoeff_comm D i k, fusionCoeff_reciprocity_labels D k i j,
     fusionCoeff_comm D j (dualIndex D i)]
 
 /-- A simple object and its dual contain the tensor unit with multiplicity one. -/
-theorem fusionCoeff_dual_unit (D : BraidedFusionCategory.{v,u}) (i : Fin (rank D)) :
+theorem fusionCoeff_dual_unit (i : Fin (rank D)) :
     fusionCoeff D i (dualIndex D i) (unitIndex D) = 1 := by
   rw [fusionCoeff_comm D i (dualIndex D i), fusionCoeff_reciprocity_labels,
     fusionCoeff_unit]
   simp
 
 /-- The label of the tensor unit is fixed by duality. -/
-theorem dualIndex_unit (D : BraidedFusionCategory.{v,u}) :
+theorem dualIndex_unit :
     dualIndex D (unitIndex D) = unitIndex D := by
   simpa [fusionCoeff_unit, eq_comm] using
     (fusionCoeff_reciprocity_labels D (unitIndex D) (unitIndex D) (unitIndex D))
 
 /-- Duality is involutive on simple labels. -/
-theorem dualIndex_involutive (D : BraidedFusionCategory.{v,u}) :
+theorem dualIndex_involutive :
     Function.Involutive (dualIndex D) := by
   intro i
   have hunit := fusionCoeff_dual_unit D i
@@ -140,7 +142,7 @@ theorem dualIndex_involutive (D : BraidedFusionCategory.{v,u}) :
   simp [Ne.symm h] at hunit
 
 /-- Duality permutes the simple labels. -/
-def dualEquiv (D : BraidedFusionCategory.{v,u}) : Equiv.Perm (Fin (rank D)) :=
+def dualEquiv : Equiv.Perm (Fin (rank D)) :=
   ⟨dualIndex D, dualIndex D, dualIndex_involutive D, dualIndex_involutive D⟩
 
 end PropertyF.Ground
