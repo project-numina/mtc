@@ -84,15 +84,13 @@ theorem forgetDoubleDualIso_unit :
   have hu : (forgetDualIso U).hom ≫ b.hom = e.hom.f := forgetDualIso_unit (D := D)
   have hv : e.inv.f ≫ (forgetDualIso U).hom = b.inv :=
     (Iso.inv_comp_eq ((Center.forget D).mapIso e)).2 ((Iso.eq_comp_inv b).2 hu)
-  have hn := forgetDualIso_natural e.hom
-  change (e.homᘁ).f ≫ (forgetDualIso (Uᘁ)).hom =
-    (forgetDualIso U).hom ≫ (e.hom.fᘁ) at hn
   dsimp only [doubleDualUnitIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap, Center.comp_f, forgetDoubleDualIso]
   rw [Category.assoc]
   change e.inv.f ≫ (e.homᘁ).f ≫ (forgetDualIso (Uᘁ)).hom ≫
       (forgetDualIso U).invᘁ = b.inv ≫ b.homᘁ
-  rw [reassoc_of% hn, ← hu, comp_rightAdjointMate, Category.assoc,
+  erw [reassoc_of% forgetDualIso_natural e.hom]
+  rw [← hu, comp_rightAdjointMate, Category.assoc,
     ← Category.assoc e.inv.f, hv, ← comp_rightAdjointMate, Iso.inv_hom_id,
     rightAdjointMate_id, Category.comp_id]
 

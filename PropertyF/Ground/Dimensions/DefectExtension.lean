@@ -39,11 +39,11 @@ theorem rootTensorDefect_coevaluation (i : Fin (rank C)) :
   let b := (fourthDualRootNaturalIso C).app (Xᘁ)
   let t := rootTensorIso C X (Xᘁ)
   let e := rootDualSign C i
-  have hc := root_components_coevaluation C i
-  change η_ X (Xᘁ) ≫ (a.hom ⊗ₘ b.hom) = e • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) at hc
-  have hn := (fourthDualRootNaturalIso C).hom.naturality (η_ X (Xᘁ))
-  change η_ X (Xᘁ) ≫ ((fourthDualRootNaturalIso C).app W).hom =
-    ((fourthDualRootNaturalIso C).app I).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) at hn
+  have hc : η_ X (Xᘁ) ≫ (a.hom ⊗ₘ b.hom) = e • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) :=
+    root_components_coevaluation C i
+  have hn : η_ X (Xᘁ) ≫ ((fourthDualRootNaturalIso C).app W).hom =
+    ((fourthDualRootNaturalIso C).app I).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) :=
+    (fourthDualRootNaturalIso C).hom.naturality (η_ X (Xᘁ))
   have ht : η_ X (Xᘁ) ≫ t.hom =
       e • ((doubleDualUnitIso (C := C.Obj)).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ)) := by
     change η_ X (Xᘁ) ≫ ((a.hom ⊗ₘ b.hom) ≫ (doubleDualTensorIso X (Xᘁ)).hom) = _
@@ -96,10 +96,8 @@ theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
   let p : ExactPairing A X := BraidedCategory.exactPairing_swap X A
   let q : ExactPairing A Q := HasRightDual.exact
   let : ExactPairing A X := p
-  let : ExactPairing A Q := q
   let r : X ≅ Q := rightDualIso p q
-  have hc := coevaluation_rightDualIso p q
-  change η_ A X ≫ A ◁ r.hom = η_ A Q at hc
+  have hc : η_ A X ≫ A ◁ r.hom = η_ A Q := coevaluation_rightDualIso p q
   have hn := rootTensorDefect_natural C (𝟙 A) r.hom
   simp only [id_tensorHom] at hn
   have he := rootTensorDefect_coevaluation_of_iso C (dualIndex C i) (rightDualLabelIso C i)
