@@ -14,7 +14,7 @@ it extends from simple constituents to all objects in a retract-closed class.
 
 @[expose] public noncomputable section
 open PropertyF.Ground.Modular (doubleBraiding)
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
@@ -24,9 +24,8 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 theorem doubleBraiding_natural {X X' Y Y' : D} (f : X ⟶ X') (g : Y ⟶ Y') :
     doubleBraiding X Y ≫ (f ⊗ₘ g) =
       (f ⊗ₘ g) ≫ doubleBraiding X' Y' := by
-  rw [doubleBraiding, doubleBraiding, Category.assoc,
-    ← BraidedCategory.braiding_naturality g f, ← Category.assoc,
-    ← BraidedCategory.braiding_naturality f g, Category.assoc]
+  rw [doubleBraiding, doubleBraiding, Category.assoc, ← braiding_naturality g f,
+    ← Category.assoc, ← braiding_naturality f g, Category.assoc]
 
 
 /-- Centrality descends along a split inclusion. -/

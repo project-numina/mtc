@@ -94,12 +94,12 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   let B := Calculus.groundEndBlockEquiv D e
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
-    have h2 := Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) e 1
+    have h2 := Calculus.pivotalTrace_groundEndBlocks D e 1 p (Ground.unitScalarEquiv D)
     simp only [End.one_asHom] at h2
     change (∀ i, Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
       (fpSimple D i : ℂ)) at hdim
     simpa [hdim, B, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
-      ((Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) e a).symm.trans
+      ((Calculus.pivotalTrace_groundEndBlocks D e a p (Ground.unitScalarEquiv D)).symm.trans
         ((congrArg (Ground.unitScalarEquiv D) ht).trans h2))
   apply B.injective
   funext i

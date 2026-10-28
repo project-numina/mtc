@@ -13,19 +13,25 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
+section SingleInsertion
+
+variable {X : C} {n : ℕ} (a : braidAlgebra X n)
+
 /-- At the level of endomorphisms, left insertion is left whiskering. -/
-theorem addLeftBraidAlgebra_asHom {X : C} {n : ℕ} (a : braidAlgebra X n) :
+theorem addLeftBraidAlgebra_asHom :
     ((addLeftBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
       X ◁ (a : End (tensorPower X (n + 2))).asHom := rfl
 
 /-- At the level of endomorphisms, right insertion is right whiskering,
 transported across the append isomorphism. -/
-theorem addRightBraidAlgebra_asHom {X : C} {n : ℕ} (a : braidAlgebra X n) :
+theorem addRightBraidAlgebra_asHom :
     ((addRightBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
       (appendIso X (n + 2)).inv ≫ ((a : End (tensorPower X (n + 2))).asHom ▷ X) ≫
         (appendIso X (n + 2)).hom := rfl
+
+end SingleInsertion
 
 /-- Canonical left insertion isomorphism, indexed by the braid-algebra
 convention that index `n` has `n+2` strands. -/
@@ -35,10 +41,23 @@ def insertLeftPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X k ⊗ tensorPowe
   | k + 1 => (α_ X (tensorPower X k) (tensorPower X (n + 2))) ≪≫
       (Iso.refl X ⊗ᵢ insertLeftPowerIso X n k)
 
+/-- Canonical right insertion isomorphism, built by appending one strand at
+a time on the right. -/
+def insertRightPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X (n + 2) ⊗ tensorPower X k ≅
+    tensorPower X ((n + k) + 2)
+  | 0 => ρ_ (tensorPower X (n + 2))
+  | k + 1 => (Iso.refl (tensorPower X (n + 2)) ⊗ᵢ (appendIso X k).symm) ≪≫
+      (α_ (tensorPower X (n + 2)) (tensorPower X k) X).symm ≪≫
+      (insertRightPowerIso X n k ⊗ᵢ Iso.refl X) ≪≫ appendIso X ((n + k) + 2)
+
+section IteratedInsertion
+
+variable {X : C} {n : ℕ} (k : ℕ) (a : braidAlgebra X n)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion is one identity tensor factor, transported along
 the canonical tensor-power isomorphism. -/
-theorem addLeftBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlgebra X n) :
+theorem addLeftBraidAlgebraIter_asHom :
     ((addLeftBraidAlgebraIter X n k a : braidAlgebra X (n + k)) :
       End (tensorPower X ((n + k) + 2))).asHom =
       (insertLeftPowerIso X n k).inv ≫
@@ -57,19 +76,10 @@ theorem addLeftBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlge
       Category.assoc, tensorPower]
     monoidal
 
-/-- Canonical right insertion isomorphism, built by appending one strand at
-a time on the right. -/
-def insertRightPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X (n + 2) ⊗ tensorPower X k ≅
-    tensorPower X ((n + k) + 2)
-  | 0 => ρ_ (tensorPower X (n + 2))
-  | k + 1 => (Iso.refl (tensorPower X (n + 2)) ⊗ᵢ (appendIso X k).symm) ≪≫
-      (α_ (tensorPower X (n + 2)) (tensorPower X k) X).symm ≪≫
-      (insertRightPowerIso X n k ⊗ᵢ Iso.refl X) ≪≫ appendIso X ((n + k) + 2)
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right insertion is one identity tensor factor, transported along
 the canonical tensor-power isomorphism. -/
-theorem addRightBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlgebra X n) :
+theorem addRightBraidAlgebraIter_asHom :
     ((addRightBraidAlgebraIter X n k a : braidAlgebra X (n + k)) :
       End (tensorPower X ((n + k) + 2))).asHom =
       (insertRightPowerIso X n k).inv ≫
@@ -88,6 +98,8 @@ theorem addRightBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlg
       tensorHom_id, comp_whiskerRight, Category.assoc, id_tensorHom, whisker_exchange_assoc]
     rw [← associator_naturality_left_assoc]
     simp
+
+end IteratedInsertion
 
 end PropertyF.Ground.Calculus
 
@@ -143,9 +155,32 @@ abbrev IsLocalOverlapProduct {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t) 
     overlapEndProduct (previousOverlapLocal k u) (u : End (tensorPower X (t + 2)))
 
 set_option backward.isDefEq.respectTransparency false in
+/-- Under the overlap isomorphism the previous braid is exactly the local
+endomorphism with identity on the new tail. -/
+theorem overlapLeft_local {X : C} (t k : ℕ) (v : braidAlgebra X (overlapIndex t k)) :
+    (isoEndAlgEquiv (overlapPowerIso X t k).symm)
+      (overlapLeft X t k v : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
+    insertRightIdentity (tensorPower X (t + 1))
+      ((isoEndAlgEquiv (appendIso X (overlapIndex t k + 1)).symm)
+        (v : End (tensorPower X (overlapIndex t k + 2)))) := by
+  apply End.ext
+  change (overlapPowerIso X t k).hom ≫
+    ((addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v :
+      braidAlgebra X (overlapIndex t k + (t + 1))) :
+      End (tensorPower X ((overlapIndex t k + (t + 1)) + 2))).asHom ≫
+    (overlapPowerIso X t k).inv = _
+  rw [addRightBraidAlgebraIter_asHom]
+  simp [insertRightIdentity, isoEndAlgEquiv, Iso.conj_apply_asHom, overlapPowerIso,
+    tensorIso_hom, tensorIso_inv, tensorHom_id, comp_whiskerRight, Category.assoc]
+
+section LocalOverlap
+
+variable {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
+
+set_option backward.isDefEq.respectTransparency false in
 /-- The fresh algebra element is left whiskering along its canonical
 left-insertion isomorphism. -/
-theorem freshOverlapIso_action {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t) :
+theorem freshOverlapIso_action :
     (isoEndAlgEquiv (freshOverlapIso X t k))
       (End.of (tensorPower X (overlapIndex t k + 1) ◁
         (u : End (tensorPower X (t + 2))).asHom)) =
@@ -175,8 +210,7 @@ theorem freshOverlapIso_action {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t
 set_option backward.isDefEq.respectTransparency false in
 /-- Agreement of the two canonical tensor-power isomorphisms identifies the
 fresh actual braid factor with the local overlap factor. -/
-theorem overlapRight_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
-    (hiso : HasOverlapCoherence X t k) :
+theorem overlapRight_local_of_iso (hiso : HasOverlapCoherence X t k) :
     (isoEndAlgEquiv (overlapPowerIso X t k).symm)
       (overlapRight X t k u : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
     overlapFresh (tensorPower X (overlapIndex t k + 1))
@@ -186,39 +220,22 @@ theorem overlapRight_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra 
   simp [overlapFresh, isoEndAlgEquiv, Iso.conj_apply_asHom]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Under the overlap isomorphism the previous braid is exactly the local
-endomorphism with identity on the new tail. -/
-theorem overlapLeft_local {X : C} (t k : ℕ) (v : braidAlgebra X (overlapIndex t k)) :
-    (isoEndAlgEquiv (overlapPowerIso X t k).symm)
-      (overlapLeft X t k v : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
-    insertRightIdentity (tensorPower X (t + 1))
-      ((isoEndAlgEquiv (appendIso X (overlapIndex t k + 1)).symm)
-        (v : End (tensorPower X (overlapIndex t k + 2)))) := by
-  apply End.ext
-  change (overlapPowerIso X t k).hom ≫
-    ((addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v :
-      braidAlgebra X (overlapIndex t k + (t + 1))) :
-      End (tensorPower X ((overlapIndex t k + (t + 1)) + 2))).asHom ≫
-    (overlapPowerIso X t k).inv = _
-  rw [addRightBraidAlgebraIter_asHom]
-  simp [insertRightIdentity, isoEndAlgEquiv, Iso.conj_apply_asHom, overlapPowerIso,
-    tensorIso_hom, tensorIso_inv, tensorHom_id, comp_whiskerRight, Category.assoc]
-
-set_option backward.isDefEq.respectTransparency false in
 /-- A single coherence equality between the left- and right-insertion
 isomorphisms gives the entire actual overlap-product identification. -/
-theorem overlapProduct_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
-    (hiso : HasOverlapCoherence X t k) :
+theorem overlapProduct_local_of_iso (hiso : HasOverlapCoherence X t k) :
     IsLocalOverlapProduct k u := by
   simp only [IsLocalOverlapProduct, overlapProduct, Subalgebra.coe_mul, map_mul, overlapEndProduct,
     overlapLeft_local, overlapRight_local_of_iso k u hiso, previousOverlapLocal]
 
+end LocalOverlap
+
+variable (D : BraidedFusionCategory.{v,u}) {X : D.Obj} [Simple X]
+  (p : PivotalStructure (C := D.Obj)) {t : ℕ} (u : braidAlgebra X t)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Identifying the actual product with the local graphical overlap implies
 the precise one-step trace recurrence. -/
-theorem overlap_trace_step_of_coherence (D : BraidedFusionCategory.{v,u})
-    {X : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
-    {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
+theorem overlap_trace_step_of_coherence (k : ℕ)
     (hcoh : IsLocalOverlapProduct k u) :
     actualBraidTrace D p (overlapProduct u (k + 1)) *
         pivotalDimension D p X =
@@ -237,12 +254,9 @@ theorem overlap_trace_step_of_coherence (D : BraidedFusionCategory.{v,u})
 
 /-- Canonical isomorphism coherence supplies the scaled trace identity for
 every iterated actual overlapping braid-algebra product. -/
-theorem overlap_trace_power_of_isos (C : BraidedFusionCategory.{v,u})
-    {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
-    {t : ℕ} (u : braidAlgebra X t)
-    (hiso : ∀ k, HasOverlapCoherence X t k) :
-    HasOverlapTracePower C p u :=
-  overlap_trace_power_of_step C p u fun k ↦
-    overlap_trace_step_of_coherence C p k u (overlapProduct_local_of_iso k u (hiso k))
+theorem overlap_trace_power_of_isos (hiso : ∀ k, HasOverlapCoherence X t k) :
+    HasOverlapTracePower D p u :=
+  overlap_trace_power_of_step D p u fun k ↦
+    overlap_trace_step_of_coherence D p u k (overlapProduct_local_of_iso k u (hiso k))
 
 end PropertyF.Ground.Calculus

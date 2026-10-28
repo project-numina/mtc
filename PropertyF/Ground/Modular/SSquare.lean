@@ -27,10 +27,9 @@ include hdual in
 /-- Different fusion characters are orthogonal for the standard Hermitian pairing. -/
 theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
     ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 :=
-  (Function.ne_iff.mp (show χ.value ≠ ψ.value from fun h ↦ hne (Character.ext h))).elim fun i hi ↦
-    Classical.byContradiction fun hw ↦ hi (mul_right_cancel₀ hw (by
-      simpa [character_dual_conj N dual hdual χ i] using
-        fusion_inner_balance N dual hdual (starRingEnd ℂ) χ.value ψ.value χ.mul_eq ψ.mul_eq i)).symm
+  Classical.byContradiction fun hw ↦ hne (Character.ext (funext fun i ↦ (mul_right_cancel₀ hw (by
+    simpa [character_dual_conj N dual hdual χ i] using
+      fusion_inner_balance _ _ hdual (starRingEnd ℂ) χ.value ψ.value χ.mul_eq ψ.mul_eq i)).symm))
 
 include hdual in
 /-- Distinct normalized columns that are fusion characters are orthogonal. -/
@@ -98,11 +97,10 @@ theorem square_support_constant (x : ι) :
 include hδ hunit hcol hne hoff in
 /-- Involution support and an invariant nonzero column determine the entire square. -/
 theorem square_eq_of_support :
-    HasSSquare S δ (∑ z, S u z * S z u) := by
-  intro x y
-  split_ifs with hxy
-  · simpa only [show y = δ x by rw [hxy, hδ]] using square_support_constant S hδ hunit hcol hne hoff x
-  · exact hoff x y hxy
+    HasSSquare S δ (∑ z, S u z * S z u) :=
+  fun x y ↦ if h : x = δ y then by
+    simpa only [h, hδ y, ite_true] using square_support_constant S hδ hunit hcol hne hoff (δ y)
+  else by simpa only [ite_eq_right h] using hoff x y h
 
 end SquareSupport
 

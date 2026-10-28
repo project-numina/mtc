@@ -136,17 +136,17 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility
 set_option backward.isDefEq.respectTransparency false in
 /-- Left trace compatibility implies the local deletion law, with the actual
 pivotal twist scalar as its factor. -/
-theorem tensorPermutationTrace_adjacent_of_leftTrace
+theorem tensorPermTrace_adjacent_of_leftTrace
     (hX : SelfTransparent X)
     (htotal : IsLeftTraceCompatible p X)
     {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
-    unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 2))
+    unitScalar C (p.rightTrace ((tensorPermAction X hX (n + 2))
       (decomposeFin.symm (1, σ))).asHom) =
     θ C p X *
-      unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 1)) σ).asHom) := by
-  let f := (tensorPermutationAction X hX (n + 1)) σ
+      unitScalar C (p.rightTrace ((tensorPermAction X hX (n + 1)) σ).asHom) := by
+  let f := (tensorPermAction X hX (n + 1)) σ
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
-  rw [tensorPermutationAction_adjacent hX σ, ← htotal _ _]
+  rw [tensorPermAction_adjacent hX σ, ← htotal _ _]
   change unitScalar C (p.rightTrace (leftPartialTrace p (b * insertLeftIdentity X f)).asHom) = _
   rw [leftPartialTrace_right]
   dsimp only [b]
@@ -158,14 +158,14 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
 /-- A negative twist is corrected by the sign-twisted permutation action. -/
 theorem negativeParity_adjacentTrace (hX : SelfTransparent X)
     (htotal : IsLeftTraceCompatible p X) (hneg : θ C p X = -1) :
-    HasAdjacentTrace (permutationScalarTrace C p (parityPermutationAction C hX true)) := by
+    HasAdjacentTrace (permScalarTrace C p (parityPermAction C hX true)) := by
   intro n σ
   have hsign : (permutationSign ℂ (n + 2) (decomposeFin.symm (1, σ)) : ℂ) =
       -(permutationSign ℂ (n + 1) σ : ℂ) := by
     simpa using sign_decomposeFin 1 σ
-  rw [parityPermutationScalarTrace_true, parityPermutationScalarTrace_true, hsign]
-  dsimp only [permutationScalarTrace]
-  rw [tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ, hneg]
+  rw [parityPermScalarTrace_true, parityPermScalarTrace_true, hsign]
+  dsimp only [permScalarTrace]
+  rw [tensorPermTrace_adjacent_of_leftTrace (C := C) hX htotal σ, hneg]
   ring
 
 include hdim in
@@ -180,8 +180,8 @@ theorem integral_of_leftTrace_and_twist_sign
   rcases hsign with h | h
   · apply integral_of_parity_adjacent_trace hdim hX false
     intro n σ
-    simpa [permutationScalarTrace, parityPermutationAction, h] using
-      tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ
+    simpa [permScalarTrace, parityPermAction, h] using
+      tensorPermTrace_adjacent_of_leftTrace (C := C) hX htotal σ
   · exact integral_of_parity_adjacent_trace hdim hX true
       (negativeParity_adjacentTrace hX htotal h)
 

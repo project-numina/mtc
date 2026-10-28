@@ -25,7 +25,6 @@ This calculation does not require the centre to be fusion or the existence of
 its induction half-braiding. -/
 theorem fpDimension_underlying (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     fpDimension C (underlying C X) = globalFPDimension C * fpDimension C X := by
-  classical
   simp [underlying, fpDimension_biproduct, fpDimension_tensor, fpDimension_rightDual,
     fpDimension_simple, globalFPDimension, Finset.mul_sum, pow_two, mul_left_comm, mul_comm]
 
@@ -84,10 +83,8 @@ theorem crossingBlock_natural_middle {X Y : D} (h : X ⟶ Y) {T R S : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ crossingBlock Y T S g f =
       crossingBlock X T S g f ≫ (T ◁ ((S ◁ h) ▷ Sᘁ)) := by
-  dsimp [crossingBlock]
-  simp only [tensorHom_def, Category.assoc]
-  rw [associator_naturality_left_assoc]
-  rw [← comp_whiskerRight_assoc, whisker_exchange, comp_whiskerRight_assoc,
+  simp only [crossingBlock, tensorHom_def, Category.assoc]
+  rw [associator_naturality_left_assoc, ← comp_whiskerRight_assoc, whisker_exchange, comp_whiskerRight_assoc,
     ← whisker_exchange_assoc, associator_naturality_middle_assoc]
   simp only [associator_naturality_right_assoc]
   rw [← whiskerLeft_comp, associator_inv_naturality_middle,
@@ -145,7 +142,6 @@ theorem crossing_completeness (T : C.Obj)
         crossingIndex C T i j,
       crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) =
         𝟙 (T ⊗ simples C j) := by
-  classical
   simp only [crossingProjection, simpleProjection, crossingInclusion, Dimensions.simpleInclusion,
     Category.assoc, ← Preadditive.comp_sum]
   simp_rw [← Category.assoc (biproduct.π _ _)]
@@ -155,7 +151,6 @@ theorem crossing_completeness (T : C.Obj)
 and coherence are established in the subsequent induction modules. -/
 def crossingCandidate (X T : C.Obj) :
     underlying C X ⊗ T ⟶ T ⊗ underlying C X := by
-  classical
   let V := inductionSummand C X
   refine (rightDistributor V T).hom ≫ biproduct.desc (fun i => ?_)
   exact ∑ j, ∑ a : crossingIndex C T i j,
@@ -173,7 +168,6 @@ theorem crossingCandidate_on_summand
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
       ∑ j, ∑ a : crossingIndex C T i j,
         crossingSummand C X T i j a ≫ (T ◁ biproduct.ι V j) := by
-  classical
   simp only [crossingCandidate, biproduct_ι_comp_rightDistributor_hom_assoc,
     biproduct.ι_desc]
 
@@ -183,7 +177,6 @@ theorem crossingCandidate_natural_middle
     {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj) :
     ((underlyingFunctor C).map h ▷ T) ≫ crossingCandidate C Y T =
       crossingCandidate C X T ≫ (T ◁ (underlyingFunctor C).map h) := by
-  classical
   let VX := inductionSummand C X
   let VY := inductionSummand C Y
   apply (cancel_epi (rightDistributor VX T).inv).1

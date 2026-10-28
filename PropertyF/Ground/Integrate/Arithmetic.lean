@@ -22,9 +22,8 @@ transport of the positive dimension ratio. Lemma 3.2 supplies `hrigidity`.
 No assertion about all conjugates is assumed here. -/
 theorem galois_dimension_contradiction {δ δσ δτ f d : ℝ}
     {σ : ℂ ≃+* ℂ} (hδ : 0 < δ) (hδσ : 0 < δσ) (hlt : δσ < δ)
-    (hδτ : σ (δτ : ℂ) = (δ : ℂ)) (hσδ : σ (δ : ℂ) = (δσ : ℂ))
-    (hσf : σ (f : ℂ) = (d : ℂ)) (hratio : f * δτ = δ)
-    (hf : 1 ≤ f) (hrigidity : f = |d|) : False := by
+    (hδτ : σ (δτ : ℂ) = (δ : ℂ)) (hσδ : σ (δ : ℂ) = (δσ : ℂ)) (hσf : σ (f : ℂ) = (d : ℂ))
+    (hratio : f * δτ = δ) (hf : 1 ≤ f) (hrigidity : f = |d|) : False := by
   have hreal : d * δ = δσ := by
     exact_mod_cast (show (d : ℂ) * δ = (δσ : ℂ) from by
       simpa only [map_mul, hδτ, hσδ, hσf] using congrArg σ
@@ -39,10 +38,8 @@ namespace PropertyF.Ground
 /-- The squared Galois dimension identity gives the positive ratio used by
 the paper. No Galois automorphism is assumed to preserve square roots. -/
 theorem positive_ratio_of_galois_square {τ : ℂ ≃+* ℂ} {δ b f : ℝ}
-    (hδ : 0 < δ) (hb : 0 < b) (hf : 0 < f)
-    (hτ : τ (δ : ℂ) = (b : ℂ))
-    (hG : τ ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2) :
-    f * b = δ := by
+    (hδ : 0 < δ) (hb : 0 < b) (hf : 0 < f) (hτ : τ (δ : ℂ) = (b : ℂ))
+    (hG : τ ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2) : f * b = δ := by
   have hR : b ^ 2 * f ^ 2 = δ ^ 2 := (eq_div_iff (pow_ne_zero 2 (ne_of_gt hf))).mp <| by
     exact_mod_cast (show (b : ℂ) ^ 2 = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2 from by
       simpa only [map_pow, hτ] using hG)

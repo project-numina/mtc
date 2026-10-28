@@ -37,7 +37,7 @@ theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
       _ = _ := by rw [hs, smul_dotProduct]; rfl
   exact (mul_right_cancel₀ hn heq).symm
 
-variable {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)}
+variable {C} {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)}
 
 /-- A fusion character is an eigenvector of each fusion matrix. -/
 theorem fusion_character_eigenvector (hchar : IsFusionMultiplicative C χ) (i : Fin (rank C)) :
@@ -54,13 +54,13 @@ theorem fusion_character_dual_eq_conj (i : Fin (rank C)) : χ (dualIndex C i) = 
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
     fun j k => (fusionCoeff C i j k : ℂ)
   have ht : Aᵀ *ᵥ χ = χ (dualIndex C i) • χ := by
-    convert fusion_character_eigenvector C hchar (dualIndex C i) using 1
+    convert fusion_character_eigenvector (C := C) hchar (dualIndex C i) using 1
     congr 1
     ext j k
     change (fusionCoeff C i k j : ℂ) = _
     exact_mod_cast fusionCoeff_dual_transpose C i k j
   simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A])
-    (fun hz ↦ hχ (congrFun hz i₀)) (fusion_character_eigenvector C hchar i) ht)
+    (fun hz ↦ hχ (congrFun hz i₀)) (fusion_character_eigenvector (C := C) hchar i) ht)
 
 variable (hdual : ∀ i, χ (dualIndex C i) = χ i)
 include hdual
@@ -68,21 +68,22 @@ include hdual
 /-- A nonzero fusion character invariant under duality has real values. -/
 theorem selfDual_character_real (i : Fin (rank C)) :
     star (χ i) = χ i :=
-  (fusion_character_dual_eq_conj C hχ hchar i).symm.trans (hdual i)
+  (fusion_character_dual_eq_conj (C := C) hχ hchar i).symm.trans (hdual i)
 
 /-- Every field conjugate of a self-dual fusion character is real as well. -/
 theorem selfDual_character_galois_real (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     star (σ (χ i)) = σ (χ i) :=
-  selfDual_character_real C (χ := fun j ↦ σ (χ j)) (i₀ := i₀) ((map_ne_zero σ).2 hχ)
+  selfDual_character_real (C := C) (χ := fun j ↦ σ (χ j)) (i₀ := i₀) ((map_ne_zero σ).2 hχ)
     (fun j k ↦ by simpa using congrArg σ (hchar j k)) (fun j ↦ by rw [hdual]) i
 
 omit hχ hchar hdual
+variable (C)
 
 /-- Every Galois conjugate of an actual simple FP dimension is real. -/
 theorem fp_simple_galois_real (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     (((σ (fpSimple C i : ℂ)).re : ℝ) : ℂ) = σ (fpSimple C i : ℂ) :=
   Complex.conj_eq_iff_re.mp <| by simpa only [← Complex.star_def] using (
-    selfDual_character_galois_real C (χ := fun i ↦ (fpSimple C i : ℂ)) (i₀ := unitIndex C)
+    selfDual_character_galois_real (C := C) (χ := fun i ↦ (fpSimple C i : ℂ)) (i₀ := unitIndex C)
       (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) (by simp [fpSimple_dual]) σ i)
 
 end PropertyF.Ground

@@ -19,7 +19,7 @@ namespace PropertyF.Ground.Dimensions
 /-- A matrix dominated entrywise by a nonnegative matrix cannot have an
 eigenvalue larger than the latter's positive eigenvalue. -/
 theorem weighted_eigenvalue_bound {ι : Type*} [Fintype ι] (N : ι → ι → ℝ)
-    (T : ι → ι → ℂ) (f : ι → ℝ) (F : ℝ) (v : ι → ℂ) {z : ℂ}
+    (T : ι → ι → ℂ) (f : ι → ℝ) {F : ℝ} (v : ι → ℂ) {z : ℂ}
     {i₀ : ι} (hv : v i₀ ≠ 0) (hf : ∀ i, 0 < f i)
     (hN : ∀ i j, 0 ≤ N i j) (hdom : ∀ i j, ‖T i j‖ ≤ N i j)
     (hfp : ∀ i, ∑ j, N i j * f j = F * f i)
@@ -66,7 +66,7 @@ theorem fusion_dominated_eigenvalue_bound (C : BraidedFusionCategory)
     (hv : v i₀ ≠ 0) (hdom : ∀ j k, ‖T j k‖ ≤ fusionCoeff C i j k)
     (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ fpSimple C i :=
   weighted_eigenvalue_bound (fun j k => fusionCoeff C i j k) T
-    (fpSimple C) (fpSimple C i) v hv (fpSimple_pos C)
+    (fpSimple C) v hv (fpSimple_pos C)
     (fun _ _ => Nat.cast_nonneg _) hdom (fun j => (fpSimple_mul C i j).symm) heig
 
 end PropertyF.Ground.Dimensions
@@ -126,7 +126,7 @@ theorem rootTrace_biproduct_simple
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
       rootTrace C f = ∑ i, c i • rootTrace C (𝟙 (F i)) :=
   cyclicTrace_biproduct_simple (rootTraceLinear C) (fun f g => rootTrace_cyclic C f g)
-    F hs (fun _ => IsFusionCategory.hom_finite _ _) f
+    hs (fun _ => IsFusionCategory.hom_finite _ _) f
 
 end PropertyF.Ground.Dimensions
 
@@ -237,9 +237,9 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
 /-- Saturation of a complex fusion-matrix eigenvector forces every term to
 have the common phase of the product of the two eigenvector values. -/
 theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
-    (T : Fin (rank C) → Fin (rank C) →
-      Fin (rank C) → ℂ)
-    (d : Fin (rank C) → ℂ)
+    {T : Fin (rank C) → Fin (rank C) →
+      Fin (rank C) → ℂ}
+    {d : Fin (rank C) → ℂ}
     (hd : ∀ i, ‖d i‖ = fpSimple C i)
     (hdom : ∀ i j k, ‖T i j k‖ ≤ (fusionCoeff C i j k : ℝ))
     (heig : ∀ i j, ∑ k, T i j k * d k = d i * d j) :

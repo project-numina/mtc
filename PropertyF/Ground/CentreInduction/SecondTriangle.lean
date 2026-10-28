@@ -20,7 +20,6 @@ theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ (underlyingCounit C).app X) =
     (∑ a, crossingSummand C X T i (unitIndex C) a) ≫
       (T ◁ (unitSummandIso C X).hom) := by
-  classical
   simpa only [underlyingCounit, unitSummandRetract, whiskerLeft_comp, Category.assoc] using
     congrArg (fun k => k ≫ (T ◁ (unitSummandIso C X).hom))
       (crossingCandidate_matrix C X T i (unitIndex C))
@@ -58,10 +57,8 @@ theorem crossing_counit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j)
   let V := inductionSummand C X
   (biproduct.ι V i ▷ simples C j) ≫ crossingCandidate C X (simples C j) ≫
     (simples C j ◁ (underlyingCounit C).app X) = 0 := by
-  classical
   let : IsEmpty (crossingIndex C (simples C j) i (unitIndex C)) := by
-    simp only [crossingIndex, counit_column_finrank, hne, ↓reduceIte]
-    infer_instance
+    simpa only [crossingIndex, counit_column_finrank, hne, ↓reduceIte] using (inferInstance : IsEmpty (Fin 0))
   simpa only [Fintype.sum_empty, zero_comp] using crossing_counit_matrix C X (simples C j) i
 
 set_option backward.isDefEq.respectTransparency false in
@@ -73,7 +70,6 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
       crossingBlock X (simples C i) (simples C (unitIndex C))
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
           (simples C i ◁ (unitSummandIso C X).hom) := by
-  classical
   let a : crossingIndex C (simples C i) i (unitIndex C) :=
     ⟨0, by simp [counit_column_finrank]⟩
   let : Subsingleton (crossingIndex C (simples C i) i (unitIndex C)) := by

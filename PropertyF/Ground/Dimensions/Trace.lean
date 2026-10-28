@@ -125,8 +125,8 @@ theorem quantumTraces_iso {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
     (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
     rightQuantumTrace j = rightQuantumTrace k ∧ leftQuantumTrace j = leftQuantumTrace k := by
   refine ⟨rightQuantumTrace_iso e hnat, ?_⟩
-  rw [leftQuantumTrace_eq_rightDual, leftQuantumTrace_eq_rightDual]
-  exact rightQuantumTrace_iso (rightDualIsoMap e.symm) (dual_components_natural e hnat)
+  simpa only [leftQuantumTrace_eq_rightDual] using
+    rightQuantumTrace_iso (rightDualIsoMap e.symm) (dual_components_natural e hnat)
 
 /-- Left trace is right trace on the dual endomorphism with the inverse dual
 pivotal component. -/
@@ -144,10 +144,9 @@ theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
     {X Y : C} (f : X ⟶ Y) :
     (fᘁ) ≫ (rightDualIsoMap (p.iso X)).symm.hom =
       (rightDualIsoMap (p.iso Y)).symm.hom ≫ ((fᘁ)ᘁ)ᘁ := by
-  have hinv : (p.iso X).inv ≫ f = (fᘁ)ᘁ ≫ (p.iso Y).inv :=
-    (iso_inv_naturality_of_hom (p.naturality f)).symm
   simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using
-    (congrArg (fun (a : (Xᘁ)ᘁ ⟶ Y) => rightAdjointMate a) hinv)
+    congrArg (fun (a : (Xᘁ)ᘁ ⟶ Y) => rightAdjointMate a)
+      (iso_inv_naturality_of_hom (p.naturality f)).symm
 
 /-- The left pivotal trace is cyclic without requiring sphericality. -/
 theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
