@@ -96,11 +96,9 @@ theorem rightDualTensorIso_inv_natural {C : Type u} [Category.{v} C]
     [MonoidalCategory C] [RightRigidCategory C] {X X' Y Y' : C}
     (f : X ⟶ X') (g : Y ⟶ Y') :
     (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso X Y).inv =
-      (rightDualTensorIso X' Y').inv ≫ ((f ⊗ₘ g)ᘁ) := by
-  apply (cancel_mono (rightDualTensorIso X Y).hom).1
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [rightDualTensorIso_natural]
-  simp [← Category.assoc]
+      (rightDualTensorIso X' Y').inv ≫ ((f ⊗ₘ g)ᘁ) :=
+  iso_inv_naturality_of_hom (rightDualTensorIso X' Y') (rightDualTensorIso X Y)
+    (rightDualTensorIso_natural f g)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is natural in both factors. -/
