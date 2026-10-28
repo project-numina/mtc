@@ -189,7 +189,7 @@ theorem overlapRight_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra 
 set_option backward.isDefEq.respectTransparency false in
 /-- Under the overlap isomorphism the previous braid is exactly the local
 endomorphism with identity on the new tail. -/
-theorem overlapLeft_local (X : C) (t k : ℕ) (v : braidAlgebra X (overlapIndex t k)) :
+theorem overlapLeft_local {X : C} (t k : ℕ) (v : braidAlgebra X (overlapIndex t k)) :
     (isoEndAlgEquiv (overlapPowerIso X t k).symm)
       (overlapLeft X t k v : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
     insertRightIdentity (tensorPower X (t + 1))

@@ -35,7 +35,7 @@ biproduct component of the transported endomorphism. -/
 theorem groundEndBlockEquiv_diagonal {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
     (e : X ≅ ⨁ (simpleCopies C m))
     (a : End X) (i : Fin (Ground.rank C)) (j : Fin (m i)) :
-    groundEndBlockEquiv C X m e a i j j =
+    groundEndBlockEquiv C e a i j j =
       groundSimpleScalar C i (End.of
         (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫
           e.inv ≫ a.asHom ≫ e.hom ≫
@@ -55,7 +55,7 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
     (e : X ≅ ⨁ (simpleCopies C m)) (a : End X) :
     scalar (p.rightTrace a.asHom) = ∑ i,
       scalar (p.rightTrace (𝟙 (Ground.simples C i))) *
-        (groundEndBlockEquiv C X m e a i).trace := by
+        (groundEndBlockEquiv C e a i).trace := by
   classical
   let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
@@ -63,7 +63,7 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
     have h := p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
     simpa [z, Category.assoc] using h
   have hc (q : Σ i, Fin (m i)) : biproduct.ι F q ≫ z ≫ biproduct.π F q =
-      (groundEndBlockEquiv C X m e a q.1 q.2 q.2) • 𝟙 (F q) := by
+      (groundEndBlockEquiv C e a q.1 q.2 q.2) • 𝟙 (F q) := by
     rcases q with ⟨i, j⟩
     rw [groundEndBlockEquiv_diagonal]
     simpa [z, F, Category.assoc] using congrArg End.asHom
@@ -71,8 +71,8 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
   have h := cyclicTrace_biproduct_scalar_blocks
     (fun Y => scalar.toLinearMap.comp (rightTraceLinear p Y))
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) F z
-    (fun q => groundEndBlockEquiv C X m e a q.1 q.2 q.2) hc
-  change scalar (p.rightTrace z) = ∑ q, groundEndBlockEquiv C X m e a q.1 q.2 q.2 *
+    (fun q => groundEndBlockEquiv C e a q.1 q.2 q.2) hc
+  change scalar (p.rightTrace z) = ∑ q, groundEndBlockEquiv C e a q.1 q.2 q.2 *
     scalar (p.rightTrace (𝟙 (F q))) at h
   rw [← hz, h, Fintype.sum_sigma]
   simp [F, Matrix.trace, Finset.mul_sum, mul_comm]
@@ -304,7 +304,7 @@ def braidToEndBlocks {X : C.Obj} {n : ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
       (Blocks.Algebra ⟨_, m⟩) :=
-  (groundEndBlockEquiv C _ m e).toAlgHom.comp
+  (groundEndBlockEquiv C e).toAlgHom.comp
     ((braidAlgebra X n).val.comp b.symm.toAlgHom)
 
 /-- The categorical inclusion is faithful, so no finite braid-image block is lost. -/
@@ -314,7 +314,7 @@ theorem braidToEndBlocks_injective {X : C.Obj}
     {r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     Function.Injective (braidToEndBlocks C e b) :=
-  (groundEndBlockEquiv C _ m e).injective.comp (Subtype.val_injective.comp b.symm.injective)
+  (groundEndBlockEquiv C e).injective.comp (Subtype.val_injective.comp b.symm.injective)
 
 /-- The categorical braid trace has the weights supplied by block multiplicities. -/
 abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
@@ -347,7 +347,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     simp only [map_one, Pi.one_apply, Matrix.trace_one, Fintype.card_fin] at h
     exact_mod_cast h
   refine ⟨mult, hretained, hdim, fun a => ?_⟩
-  have hi : ∀ i, (groundEndBlockEquiv C _ m e (a : End (tensorPower X (n + 2))) i).trace =
+  have hi : ∀ i, (groundEndBlockEquiv C e (a : End (tensorPower X (n + 2))) i).trace =
       ∑ j, (mult i j : ℂ) * (b a j).trace := by
     intro i
     simpa [F, braidToEndBlocks] using hmult i (b a)
@@ -359,7 +359,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
 /-- Finite categorical braid images admit unitary blocks and natural-number
 multiplicities with the actual pivotal trace formula and retention. -/
 theorem exists_unitary_braid_trace_blocks
-    (X : C.Obj) (n : ℕ)
+    {X : C.Obj} {n : ℕ}
     (hfinite : Finite (braidImage X n))
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
     ∃ (r : ℕ) (d : Fin r → ℕ)
@@ -374,7 +374,7 @@ theorem exists_unitary_braid_trace_blocks
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
-  obtain ⟨r, d, b, hnonzero, hunitary⟩ := braidAlgebra_unitary_blocks X n hfinite
+  obtain ⟨r, d, b, hnonzero, hunitary⟩ := braidAlgebra_unitary_blocks hfinite
   have hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
   obtain ⟨mult, hret, hdim, htrace⟩ :=
     pivotalTrace_braid_multiplicities C p scalar e hd b
