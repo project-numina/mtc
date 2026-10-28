@@ -80,14 +80,13 @@ def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
 /-- The natural double-dual root squares to the natural braided fourth-dual
 isomorphism on every object. Monoidal compatibility remains a separate issue. -/
 theorem fourthDualRootNaturalSquare_eq :
-    fourthDualRootNaturalSquare C = fourthDualNaturalIso C.Obj := by
-  apply Iso.ext
-  refine natTrans_eq_of_simple_components C fun i ↦ ?_
-  change ((fourthDualRootNaturalIso C).app (simples C i)).hom ≫
-    ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
-      (fourthDualIso (simples C i)).hom
-  rw [fourthDualRootNaturalIso_app_simple]
-  exact congrArg Iso.hom (fourthDualSimpleRoot_sq C i)
+    fourthDualRootNaturalSquare C = fourthDualNaturalIso C.Obj :=
+  Iso.ext <| natTrans_eq_of_simple_components C fun i ↦ by
+    change ((fourthDualRootNaturalIso C).app (simples C i)).hom ≫
+      ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
+        (fourthDualIso (simples C i)).hom
+    rw [fourthDualRootNaturalIso_app_simple]
+    exact congrArg Iso.hom (fourthDualSimpleRoot_sq C i)
 
 end PropertyF.Ground.Dimensions
 
@@ -170,7 +169,6 @@ theorem involution_phase_eq_one_of_trace :
     c • T = 1 := by
   by_cases hz : Module.finrank ℂ V = 0
   · let : Subsingleton V := Module.finrank_zero_iff.mp hz
-    ext x
     exact Subsingleton.elim _ _
   have ht : LinearMap.trace ℂ V T ≠ 0 := left_ne_zero_of_mul
     (htrace ▸ (by exact_mod_cast hz : (Module.finrank ℂ V : ℂ) ≠ 0))
