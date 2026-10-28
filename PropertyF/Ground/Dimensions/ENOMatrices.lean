@@ -131,8 +131,7 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
     (heq : ∑ k, x k * (f k : ℂ) = ((∑ k, N k * f k : ℝ) : ℂ)) :
     ∀ k, x k = (N k : ℂ) := by
   have hsum : ∑ k, (N k - (x k).re) * f k = 0 := by
-    simpa only [Complex.re_sum, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
-      mul_zero, sub_zero, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] using
+    simpa [Complex.mul_re, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] using
       (congrArg Complex.re heq).symm
   intro k
   have hre : (x k).re = N k := (sub_eq_zero.mp <| (mul_eq_zero.mp
@@ -155,16 +154,15 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
   let q : ι → ℂ := fun i => d i / (f i : ℂ)
   have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ by
     simp [q, Complex.norm_real, abs_of_pos (hf i), hd i, ne_of_gt (hf i)]
-  have hqn : ∀ i, q i ≠ 0 := fun i ↦ norm_ne_zero_iff.mp (by rw [hq]; exact one_ne_zero)
+  have hqn (i) : q i ≠ 0 := norm_ne_zero_iff.mp (by simp [hq])
   have hrepr (i) : q i * (f i : ℂ) = d i :=
     div_mul_cancel₀ _ (Complex.ofReal_ne_zero.mpr (ne_of_gt (hf i)))
   intro i j k
   let x : ι → ℂ := fun l => T i j l * q l / (q i * q j)
-  have heq : ∑ l, x l * (f l : ℂ) = ((∑ l, N i j l * f l : ℝ) : ℂ) := by
-    simp only [x, div_mul_eq_mul_div, mul_assoc, hrepr, ← Finset.sum_div, heig]
-    rw [← hrepr i, ← hrepr j, ← hmul, Complex.ofReal_mul]
-    field_simp [hqn i, hqn j]
-  exact complex_weighted_saturation hf (fun l ↦ by
-    simpa [x, norm_div, norm_mul, hq] using hdom i j l) heq k
+  apply complex_weighted_saturation (x := x) hf (fun l ↦ by
+    simpa [x, norm_div, norm_mul, hq] using hdom i j l) ?_ k
+  simp only [x, div_mul_eq_mul_div, mul_assoc, hrepr, ← Finset.sum_div, heig]
+  rw [← hrepr i, ← hrepr j, ← hmul, Complex.ofReal_mul]
+  field_simp [hqn i, hqn j]
 
 end PropertyF.Ground.Dimensions
