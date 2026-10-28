@@ -255,9 +255,8 @@ theorem tensorBiproduct_hom_ext
     {Z : E} {f g : (⨁ F) ⊗ (⨁ G) ⟶ Z}
     (h : ∀ i j, (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ f =
       (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ g) : f = g := by
-  let r : ((⨁ F) ⊗ (⨁ G)) ≅ ⨁ (fun i => F i ⊗ (⨁ G)) := rightDistributor F (⨁ G)
-  refine (cancel_epi r.inv).1 (biproduct.hom_ext' _ _ fun i ↦ ?_)
-  simp only [r, biproduct_ι_comp_rightDistributor_inv_assoc]
+  refine (cancel_epi (rightDistributor F (⨁ G)).inv).1 (biproduct.hom_ext' _ _ fun i ↦ ?_)
+  simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
   refine (cancel_epi (leftDistributor (F i) G).inv).1 (biproduct.hom_ext' _ _ fun j ↦ ?_)
   simpa only [biproduct_ι_comp_leftDistributor_inv_assoc, tensorHom_def', Category.assoc] using h i j
 
