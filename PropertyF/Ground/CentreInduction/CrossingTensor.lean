@@ -12,17 +12,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A map to a right dual is determined by its evaluation. -/
 theorem dual_map_ext {V : C.Obj} (S : C.Obj) (f g : V ⟶ Sᘁ)
     (h : f ▷ S ≫ ε_ S (Sᘁ) = g ▷ S ≫ ε_ S (Sᘁ)) : f = g := by
-  have he := congrArg (tensorRightHomEquiv V S (Sᘁ) (𝟙_ C.Obj)) h
-  have hf := @tensorRightHomEquiv_whiskerRight_comp_evaluation C.Obj _ _ S V
-    (RightRigidCategory.rightDual S) f
-  have hg := @tensorRightHomEquiv_whiskerRight_comp_evaluation C.Obj _ _ S V
-    (RightRigidCategory.rightDual S) g
-  change (tensorRightHomEquiv V S (Sᘁ) (𝟙_ C.Obj)) (f ▷ S ≫ ε_ S (Sᘁ)) =
-    f ≫ (λ_ (Sᘁ)).inv at hf
-  change (tensorRightHomEquiv V S (Sᘁ) (𝟙_ C.Obj)) (g ▷ S ≫ ε_ S (Sᘁ)) =
-    g ≫ (λ_ (Sᘁ)).inv at hg
-  rw [hf, hg] at he
-  exact (cancel_mono (λ_ (Sᘁ)).inv).1 he
+  apply (cancel_mono (λ_ (Sᘁ)).inv).1
+  simpa only [tensorRightHomEquiv_whiskerRight_comp_evaluation] using
+    congrArg (tensorRightHomEquiv V S (Sᘁ) (𝟙_ C.Obj)) h
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a composite fusion map is the composite of the two closed maps. -/

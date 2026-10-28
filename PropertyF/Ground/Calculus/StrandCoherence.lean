@@ -14,8 +14,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 theorem addLeftBraidAlgebra_asHom (X : C) (n : ℕ) (a : braidAlgebra X n) :
     ((addLeftBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
-      X ◁ (a : End (tensorPower X (n + 2))).asHom := by
-  rfl
+      X ◁ (a : End (tensorPower X (n + 2))).asHom := rfl
 
 /-- At the level of endomorphisms, right insertion is right whiskering,
 transported across the append isomorphism. -/
@@ -23,8 +22,7 @@ theorem addRightBraidAlgebra_asHom (X : C) (n : ℕ) (a : braidAlgebra X n) :
     ((addRightBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
       (appendIso X (n + 2)).inv ≫ ((a : End (tensorPower X (n + 2))).asHom ▷ X) ≫
-        (appendIso X (n + 2)).hom := by
-  rfl
+        (appendIso X (n + 2)).hom := rfl
 
 /-- Canonical left insertion isomorphism, indexed by the braid-algebra
 convention that index `n` has `n+2` strands. -/
