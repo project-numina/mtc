@@ -79,15 +79,12 @@ theorem rootPhaseDefect_apply
     f ≫ (rootSignDefect C c hc (simples C i) (simples C j)).hom =
       (c k / (c i * c j)) • (f ≫ (rootTensorDefect C (simples C i) (simples C j)).hom) := by
   have hn := (simpleScalarNaturalIso C c hc).hom.naturality f
-  simp only [Functor.id_map] at hn
   change f ≫ ((simpleScalarNaturalIso C c hc).app (simples C i ⊗ simples C j)).hom =
     ((simpleScalarNaturalIso C c hc).app (simples C k)).hom ≫ f at hn
   rw [simpleScalarNaturalIso_app_simple] at hn
   simp only [Linear.smul_comp] at hn
   simp only [rootSignDefect, Iso.trans_hom, Iso.symm_hom, rootSignTwist, NatIso.trans_app,
-    Category.assoc]
-  rw [rootPhaseTensorIso_inv C c hc i j]
-  simp only [Linear.comp_smul]
+    Category.assoc, rootPhaseTensorIso_inv, Linear.comp_smul]
   rw [← Category.assoc, hn]
   simp [rootTensorDefect, Linear.smul_comp, smul_smul, div_eq_mul_inv, mul_comm]
 

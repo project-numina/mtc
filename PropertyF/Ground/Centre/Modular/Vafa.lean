@@ -27,6 +27,11 @@ namespace PropertyF.Ground.CentreModular
 universe u v w
 variable (C : BraidedFusionCategory.{v,u})
 
+/-- A regular dimension vector is an eigenvector for every fusion operator. -/
+abbrev IsRegularFusionVector {ι K : Type*} [Fintype ι] [Semiring K]
+    (N : ι → ι → ι → K) (d : ι → K) : Prop :=
+  ∀ i k, (∑ j, d j * N i j k) = d i * d k
+
 /-- A derivation of fusion coefficients relative to a dimension character. -/
 abbrev IsFusionDerivation {ι K M : Type*} [Fintype ι] [Semiring K] [AddCommMonoid M] [Module K M]
     (N : ι → ι → ι → K) (d : ι → K) (b : ι → M) : Prop :=
@@ -37,7 +42,7 @@ variable {ι K M : Type*} [Fintype ι] [Field K] [AddCommGroup M] [Module K M]
 
 /-- A derivation vanishes when a regular eigenvector has nonzero squared norm. -/
 theorem derivation_vanishes_of_regular_eigenvector (N : ι → ι → ι → K) (d : ι → K)
-    (hreg : ∀ i k, (∑ j, d j * N i j k) = d i * d k) (hD : (∑ j, d j ^ 2) ≠ 0)
+    (hreg : IsRegularFusionVector N d) (hD : (∑ j, d j ^ 2) ≠ 0)
     (b : ι → M) (hderiv : IsFusionDerivation N d b) :
     ∀ i, b i = 0 := by
   classical
@@ -59,21 +64,20 @@ theorem derivation_vanishes_of_regular_eigenvector (N : ι → ι → ι → K) 
 
 end
 
+/-- The Frobenius–Perron dimensions form a regular fusion eigenvector. -/
+theorem fpSimple_regular (i k : Fin (rank C)) :
+    (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
+  simp_rw [Modular.fusionCoeff_dual_adjoint C i]
+  simpa only [mul_comm, fpSimple_dual] using (fpSimple_mul C (dualIndex C i) k).symm
+
 /-- The FP regular-element cancellation at the heart of the determinant argument. -/
-theorem regular_fusion_derivation_vanishes
-    (M : Type w) [AddCommGroup M] [Module ℝ M]
-    (B : Fin (rank C) → Fin (rank C) → M)
+theorem regular_fusion_derivation_vanishes {M : Type w} {σ : Type*}
+    [AddCommGroup M] [Module ℝ M] (B : Fin (rank C) → σ → M)
     (hhex : ∀ z, IsFusionDerivation (fun i j k ↦ (fusionCoeff C i j k : ℝ))
-      (fpSimple C) (fun i ↦ B i z)) :
-    ∀ i z, B i z = 0 := by
-  have hreg (i k : Fin (rank C)) :
-      (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
-    simp_rw [Modular.fusionCoeff_dual_adjoint C i]
-    simpa only [mul_comm, fpSimple_dual] using (fpSimple_mul C (dualIndex C i) k).symm
-  intro i z
-  exact derivation_vanishes_of_regular_eigenvector
-    (fun i j k => (fusionCoeff C i j k : ℝ)) (fpSimple C) hreg
-    (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))) (fun i => B i z)
+      (fpSimple C) (fun i ↦ B i z)) : ∀ i z, B i z = 0 :=
+  fun i z ↦ derivation_vanishes_of_regular_eigenvector
+    (fun i j k ↦ (fusionCoeff C i j k : ℝ)) (fpSimple C) (fpSimple_regular C)
+    (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))) (fun i ↦ B i z)
     (hhex z) i
 
 end PropertyF.Ground.CentreModular
@@ -161,17 +165,22 @@ def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
   hom_inv_id := by simp [Linear.comp_smul, smul_smul]
   inv_hom_id := by simp [Linear.comp_smul, smul_smul]
 
+/-- A scalar linear equivalence has determinant equal to the scalar's dimension power. -/
+theorem linearEquiv_det_of_scalar {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
+    (e : V ≃ₗ[K] V) (z : Kˣ) (h : e.toLinearMap = (z : K) • LinearMap.id) :
+    e.det = z ^ Module.finrank K V := by
+  apply Units.ext
+  rw [LinearEquiv.coe_det]
+  change LinearMap.det e.toLinearMap = (z : K) ^ _
+  rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one]
+
 /-- On a scalar map, each Hom-space determinant is the corresponding power. -/
 theorem homAction_det_scalar {R : Type*} [Field R] {D : Type u} [Category.{v} D]
     [Preadditive D] [Linear R D] {S X : D} (z : Rˣ) :
     (homAction (R := R) S X (scalarIso X z)).det = z ^ Module.finrank R (S ⟶ X) :=
-  Units.ext (by
-    rw [LinearEquiv.coe_det]
-    change LinearMap.det _ = (z : R) ^ _
-    have h : (homAction (R := R) S X (scalarIso X z)).toLinearMap = (z : R) • LinearMap.id := by
-      ext f
-      simp [homAction, scalarIso, CategoryTheory.Linear.homCongr_apply]
-    rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one])
+  linearEquiv_det_of_scalar _ z (by
+    ext f
+    simp [homAction, scalarIso, CategoryTheory.Linear.homCongr_apply])
 
 /-- A scalar automorphism has FP determinant equal to its unit class weighted
 by the actual FP dimension of the object. -/
@@ -244,29 +253,25 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
-/-- The FP-weighted twist classes satisfy the fusion balance relation. -/
-abbrev HasFPWeightedTwistBalance (t : Fin (rank C) → ℂˣ) : Prop :=
-  ∀ i j, (∑ k, (fusionCoeff C i j k : ℝ) • (fpSimple C k • vafaUnitClass (t k))) =
-    (fpSimple C i * fpSimple C j) • (vafaUnitClass (t i) + vafaUnitClass (t j))
+/-- Weighted group classes satisfy the fusion balance relation. -/
+abbrev HasWeightedTwistBalance {ι K G : Type*} [Fintype ι] [Field K] [Algebra ℚ K]
+    [CommGroup G] (N : ι → ι → ι → K) (d : ι → K) (t : ι → G) : Prop :=
+  ∀ i j, (∑ k, N i j k • (d k • rationalUnitClass (K := K) (t k))) =
+    (d i * d j) • (rationalUnitClass (K := K) (t i) + rationalUnitClass (K := K) (t j))
 
-/-- The FP-weighted twist-balance relation forces all twist scalars to have
-finite order. This is a numerical consequence; the categorical balance
-relation is not assumed proved here. -/
-theorem finite_order_of_fp_twist_balance (t : Fin (rank C) → ℂˣ)
-    (hbalance : HasFPWeightedTwistBalance C t) :
+/-- A nondegenerate regular dimension character makes balanced twists torsion. -/
+theorem finite_order_of_weighted_twist_balance {ι K G : Type*} [Fintype ι] [Field K]
+    [Algebra ℚ K] [Module.FaithfullyFlat ℚ K] [CommGroup G]
+    (N : ι → ι → ι → K) (d : ι → K)
+    (hreg : IsRegularFusionVector N d) (hD : (∑ j, d j ^ 2) ≠ 0)
+    (hd : ∀ i, d i ≠ 0) (t : ι → G) (hbalance : HasWeightedTwistBalance N d t) :
     ∀ i, IsOfFinOrder (t i) := by
-  dsimp only [HasFPWeightedTwistBalance] at hbalance
-  let B : Fin (rank C) → Fin (rank C) → vafaUnitSpace :=
-    fun i _ => fpSimple C i • vafaUnitClass (t i)
-  have hhex : ∀ i j z, (∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
-      fpSimple C j • B i z + fpSimple C i • B j z := by
-    intro i j z
-    dsimp [B]
+  have hderiv : IsFusionDerivation N d (fun i ↦ d i • rationalUnitClass (K := K) (t i)) := by
+    intro i j
     simpa only [smul_add, smul_smul, mul_comm] using hbalance i j
   intro i
-  apply (rationalUnitClass_eq_zero_iff (K := ℝ) _).mp
-  apply (smul_eq_zero.mp ?_).resolve_left (ne_of_gt (fpSimple_pos C i))
-  exact regular_fusion_derivation_vanishes C vafaUnitSpace B (fun z i j ↦ hhex i j z) i (unitIndex C)
+  apply (rationalUnitClass_eq_zero_iff (K := K) _).mp
+  exact (smul_eq_zero.mp (derivation_vanishes_of_regular_eigenvector N d hreg hD _ hderiv i)).resolve_left (hd i)
 
 end PropertyF.Ground.CentreModular
 end
@@ -301,19 +306,13 @@ theorem fpDeterminant_natural
     (X : C.Obj) :
     fpDeterminant C (η.app X) = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) • (fpSimple C i • vafaUnitClass (t i)) := by
-  unfold fpDeterminant
+  simp only [fpDeterminant, vafaUnitClass]
   apply Finset.sum_congr rfl
   intro i _
-  have hd : (homAction (R := ℂ) (simples C i) X (η.app X)).det =
-      (t i) ^ Module.finrank ℂ (simples C i ⟶ X) := by
-    apply Units.ext
-    rw [LinearEquiv.coe_det]
-    change LinearMap.det _ = (t i : ℂ) ^ _
-    rw [homAction_natural_scalar η (t i : ℂ) (ht i), LinearMap.det_smul,
-      LinearMap.det_id, mul_one]
-  change fpSimple C i • vafaUnitClass (homAction (R := ℂ) (simples C i) X (η.app X)).det = _
-  rw [hd, vafaUnitClass, rationalUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
-  simp only [vafaUnitClass, smul_smul, mul_comm]
+  change fpSimple C i • rationalUnitClass (homAction (R := ℂ) (simples C i) X (η.app X)).det = _
+  rw [linearEquiv_det_of_scalar _ (t i) (homAction_natural_scalar η (t i : ℂ) (ht i)),
+    rationalUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
+  simp only [smul_smul, mul_comm]
 
 /-- A natural automorphism whose actual FP determinant satisfies the
 multiplicative balance on simple tensor products has finite-order simple
@@ -324,8 +323,11 @@ theorem natural_scalars_finite_of_fpDeterminant_balance
         fpDimension C (simples C i ⊗ simples C j) •
           (vafaUnitClass (t i) + vafaUnitClass (t j))) :
     ∀ i, IsOfFinOrder (t i) :=
-  finite_order_of_fp_twist_balance C t fun i j ↦ by
-    simpa only [fpDeterminant_natural C ht, fpDimension_tensor, fpDimension_simple, fusionCoeff] using hdet i j
+  finite_order_of_weighted_twist_balance (fun i j k ↦ (fusionCoeff C i j k : ℝ)) (fpSimple C)
+    (fpSimple_regular C) (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
+    (fun i ↦ ne_of_gt (fpSimple_pos C i)) t fun i j ↦ by
+      simpa only [vafaUnitClass, fpDeterminant_natural C ht, fpDimension_tensor,
+        fpDimension_simple, fusionCoeff] using hdet i j
 
 section
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
@@ -621,7 +623,7 @@ variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The multiplicity expansion of a simple object has a single nonzero term. -/
-theorem simple_multiplicity_expansion (M : Type w) [AddCommGroup M] [Module ℝ M]
+theorem simple_multiplicity_expansion {M : Type w} [AddCommGroup M] [Module ℝ M]
     (f : C.Obj → M) (hiso : ∀ {X Y : C.Obj}, (X ≅ Y) → f X = f Y)
     (S : C.Obj) [Simple S] :
     f S = ∑ i, (Module.finrank ℂ (simples C i ⟶ S) : ℝ) • f (simples C i) := by
@@ -635,7 +637,7 @@ theorem simple_multiplicity_expansion (M : Type w) [AddCommGroup M] [Module ℝ 
 
 /-- Any isomorphism-invariant additive object function is determined by
 its values on simples and the actual Hom-space multiplicities. -/
-theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Module ℝ M]
+theorem additive_object_function_decomposition {M : Type w} [AddCommGroup M] [Module ℝ M]
     (f : C.Obj → M)
     (hiso : ∀ {X Y : C.Obj}, (X ≅ Y) → f X = f Y)
     (hzero : ∀ X, IsZero X → f X = 0)
@@ -656,7 +658,7 @@ theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Mo
   | @cons W S K hs hk he ih =>
     obtain ⟨e⟩ := he
     let : Simple S := hs
-    rw [hiso e, hadd, simple_multiplicity_expansion C M f hiso S, ih,
+    rw [hiso e, hadd, simple_multiplicity_expansion C f hiso S, ih,
       ← Finset.sum_add_distrib]
     apply Finset.sum_congr rfl
     intro i _
@@ -686,7 +688,7 @@ theorem fpDeterminant_functor_natural_decomposition
     fpDeterminant C (η.app X) = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) •
         fpDeterminant C (η.app (simples C i)) :=
-  additive_object_function_decomposition C vafaUnitSpace (fun X ↦ fpDeterminant C (η.app X))
+  additive_object_function_decomposition C (fun X ↦ fpDeterminant C (η.app X))
     (fun {X Y} e ↦ by
       rw [functor_natural_app_conjugate F η e]
       exact fpDeterminant_conjugate C (F.mapIso e).symm (η.app Y))
@@ -836,7 +838,7 @@ theorem fpDeterminant_simple_monodromy_eq_zero (z i : Fin (rank C)) :
     monodromyDet C (simples C z) (simples C i) = 0 := by
   let B : Fin (rank C) → Fin (rank C) → vafaUnitSpace := fun i z =>
     monodromyDet C (simples C z) (simples C i)
-  refine regular_fusion_derivation_vanishes C vafaUnitSpace B ?_ i z
+  refine regular_fusion_derivation_vanishes C B ?_ i z
   intro z i j
   have h := fpDeterminant_monodromy_hexagon C hbalance z i j
   rw [fpDeterminant_monodromy_decomposition] at h

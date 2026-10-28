@@ -30,13 +30,7 @@ theorem exactPairing_ne_zero {C : Type u} [Category.{v} C] [MonoidalCategory C]
     apply hY
     simpa [Category.assoc] using
       congrArg (fun t => (ρ_ Y).inv ≫ t ≫ (λ_ Y).hom) ht.symm
-  constructor
-  · intro h
-    apply hzero
-    simp [h]
-  · intro h
-    apply hzero
-    simp [h]
+  constructor <;> intro h <;> apply hzero <;> simp [h]
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [BraidedCategory C] [Abelian C] [Linear ℂ C] [RigidCategory C]

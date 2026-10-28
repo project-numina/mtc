@@ -3,11 +3,13 @@ public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 
 /-! The twist sign and integral dimensions of self-transparent simples. -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Modular (HasFPSimpleDimensions)
+open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
-variable {C : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := C.Obj)}
-  (hp : p.IsSpherical) (hdim : Modular.HasFPSimpleDimensions C p)
+variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
+  (hp : p.IsSpherical) (hdim : HasFPSimpleDimensions C p)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The coevaluation characterizing the braided double-dual map. -/
@@ -75,7 +77,7 @@ include hp in
 theorem inverse_twist_eq_scalar_of_selfTransparent {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
     (doubleDualIso C X).hom ≫ (p.iso X).inv =
-      Dimensions.pivotalBraidedTwistScalar C p X • 𝟙 X := by
+      pivotalBraidedTwistScalar C p X • 𝟙 X := by
   have h := leftPartialTrace_inverse_braiding (C := C) (p := p) X
   rw [← ((β_ X X).inv_ext' hX), leftPartialTrace_braiding_of_trace_compatibility (C := C)
     (spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom))] at h
@@ -85,9 +87,8 @@ include hp in
 /-- In a spherical category, the twist of a self-transparent simple is a sign. -/
 theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
-    Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
-      Dimensions.pivotalBraidedTwistScalar C p X = -1 := by
-  let θ := Dimensions.pivotalBraidedTwistScalar C p X
+    pivotalBraidedTwistScalar C p X = 1 ∨
+      pivotalBraidedTwistScalar C p X = -1 := by
   have ht : ((doubleDualIso C X).hom ≫ (p.iso X).inv) ≫
       (Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X := by
     simp [Dimensions.pivotalBraidedTwist, Category.assoc]
@@ -96,7 +97,7 @@ theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
   simp only [Linear.smul_comp, Linear.comp_smul, Category.id_comp, smul_smul] at ht
   apply mul_self_eq_one_iff.mp
   apply smul_left_injective ℂ (id_nonzero X)
-  simpa [θ] using ht
+  simpa using ht
 
 /-- Every self-transparent simple has integral FP dimension in an FP-valued
 spherical braided fusion category. -/

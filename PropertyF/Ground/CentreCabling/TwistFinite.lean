@@ -6,6 +6,8 @@ public import PropertyF.Ground.Dimensions.MultiplicityDefect
 
 /-! Reduction of mixed monodromy to the finite order of the pivotal twist. -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Modular (doubleBraiding)
+open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
@@ -59,13 +61,13 @@ is stated explicitly and is not asserted here for the pivotal twist. -/
 theorem mixed_monodromy_finite_of_balanced_finite_twist
     {C : Ground.BraidedFusionCategory.{v,u}} (θ : 𝟭 C.Obj ≅ 𝟭 C.Obj)
     (hfinite : ∀ i, IsOfFinOrder (End.of (θ.hom.app (Ground.simples C i))))
-    (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
+    (hbalance : ∀ X Y, doubleBraiding X Y ≫
       (θ.hom.app X ⊗ₘ θ.hom.app Y) = θ.hom.app (X ⊗ Y))
-    (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) := by
+    (X Y : C.Obj) : IsOfFinOrder (End.of (doubleBraiding X Y)) := by
   obtain ⟨n, hn, hp⟩ := natural_end_finite_order_of_simples θ.hom hfinite
   let t : End (X ⊗ Y) := End.of (θ.hom.app X ⊗ₘ θ.hom.app Y)
   let z : End (X ⊗ Y) := End.of (θ.hom.app (X ⊗ Y))
-  let m : End (X ⊗ Y) := End.of (Modular.doubleBraiding X Y)
+  let m : End (X ⊗ Y) := End.of (doubleBraiding X Y)
   have ht : t ^ n = 1 := by
     change (End.of (θ.hom.app X ⊗ₘ θ.hom.app Y)) ^ n = 1
     rw [tensor_end_pow, hp X, hp Y]
@@ -78,9 +80,9 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist
 
 /-- The actual pivotal twist scalars, viewed as nonzero complex numbers. -/
 def pivotalTwistUnit (C : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (i : Fin (rank C)) : ℂˣ := by
+    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) : ℂˣ := by
   letI : Simple (simples C i) := simples_simple C i
-  exact Units.mk0 (Dimensions.pivotalBraidedTwistScalar C p (simples C i))
-    (Dimensions.pivotalBraidedTwistScalar_ne_zero C p (simples C i))
+  exact Units.mk0 (pivotalBraidedTwistScalar C p (simples C i))
+    (pivotalBraidedTwistScalar_ne_zero C p (simples C i))
 
 end PropertyF.Ground.CentreCabling

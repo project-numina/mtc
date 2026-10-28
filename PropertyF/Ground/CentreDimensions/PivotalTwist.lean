@@ -94,8 +94,8 @@ theorem pivotalBraidedTwist_natural {D : Type u} [Category.{v} D] [MonoidalCateg
   have hn : ((fᘁ)ᘁ) ≫ (d Y).inv = (d X).inv ≫ f := by
     apply (d X).eq_inv_comp.mpr
     simpa only [Category.assoc] using (d Y).comp_inv_eq.mpr (hd f).symm
-  simp only [Category.assoc]
-  rw [← Category.assoc, p.naturality, Category.assoc, hn]
+  simpa only [Category.assoc, hn] using
+    congrArg (fun g ↦ g ≫ (d Y).inv) (p.naturality f)
 /-- The twist scalar of a simple object. -/
 def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
   letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
@@ -107,10 +107,8 @@ local notation "θₚ" => pivotalBraidedTwistScalar C p
 theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
     (pivotalBraidedTwist C p X).hom = θₚ X • 𝟙 X :=
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  show (End.of (pivotalBraidedTwist C p X).hom).asHom =
-      (θₚ X • (1 : End X)).asHom from
-    congrArg End.asHom
-      ((Ground.simpleEndScalar X).injective (by simp [pivotalBraidedTwistScalar]))
+  congrArg End.asHom (show End.of (pivotalBraidedTwist C p X).hom = θₚ X • (1 : End X) from
+    (Ground.simpleEndScalar X).injective (by simp [pivotalBraidedTwistScalar]))
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
