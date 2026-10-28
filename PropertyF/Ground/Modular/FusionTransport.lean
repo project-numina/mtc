@@ -72,8 +72,8 @@ theorem conjugate_hom_finrank (C D : Ground.BraidedFusionCategory.{v,u})
   let _ : F.Additive := F.additive_of_preserves_binary_products
   let eqv : (X ⟶ Y) ≃+ (F.obj X ⟶ F.obj Y) :=
     AddEquiv.ofBijective F.mapAddHom ⟨F.map_injective, F.map_surjective⟩
-  have hr := lift_rank_eq_of_equiv_equiv σ eqv σ.bijective (fun z f => h.map_smul z f)
-  simpa only [Cardinal.toNat_lift, Module.finrank] using congrArg Cardinal.toNat hr
+  simpa only [Cardinal.toNat_lift, Module.finrank] using
+    congrArg Cardinal.toNat (lift_rank_eq_of_equiv_equiv σ eqv σ.bijective (fun z f => h.map_smul z f))
 
 /-- The semilinear equivalence preserves the categorical fusion coefficients. -/
 theorem conjugate_fusionCoeff (C D : Ground.BraidedFusionCategory.{v,u})

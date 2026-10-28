@@ -368,10 +368,7 @@ theorem natural_scalars_finite_of_fpDeterminant_balance
     ∀ i, IsOfFinOrder (t i) := by
   apply finite_order_of_fp_twist_balance C t
   intro i j
-  have h := hdet i j
-  rw [fpDeterminant_natural C η t ht, fpDimension_tensor, fpDimension_simple,
-    fpDimension_simple] at h
-  exact h
+  simpa only [fpDeterminant_natural C η t ht, fpDimension_tensor, fpDimension_simple, fusionCoeff] using hdet i j
 
 /-- The actual double braiding as an automorphism. -/
 def monodromyIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
@@ -584,23 +581,16 @@ theorem natural_app_biprod {D : Type u} [Category.{v} D] [Preadditive D]
     η.app (S ⊞ K) = biprod.mapIso (η.app S) (η.app K) := by
   apply Iso.ext
   apply biprod.hom_ext'
-  · have h := η.hom.naturality (biprod.inl : S ⟶ S ⊞ K)
-    change biprod.inl ≫ (η.app (S ⊞ K)).hom = (η.app S).hom ≫ biprod.inl at h
-    simpa using h
-  · have h := η.hom.naturality (biprod.inr : K ⟶ S ⊞ K)
-    change biprod.inr ≫ (η.app (S ⊞ K)).hom = (η.app K).hom ≫ biprod.inr at h
-    simpa using h
+  · simpa using η.hom.naturality (biprod.inl : S ⟶ S ⊞ K)
+  · simpa using η.hom.naturality (biprod.inr : K ⟶ S ⊞ K)
 
 /-- Naturality transports a component along any object isomorphism. -/
 theorem natural_app_conjugate {D : Type u} [Category.{v} D]
     (η : 𝟭 D ≅ 𝟭 D) {Y Z : D} (e : Y ≅ Z) :
     η.app Y = e ≪≫ η.app Z ≪≫ e.symm := by
   apply Iso.ext
-  have h := η.hom.naturality e.hom
-  change e.hom ≫ (η.app Z).hom = (η.app Y).hom ≫ e.hom at h
-  change (η.app Y).hom = e.hom ≫ (η.app Z).hom ≫ e.inv
-  rw [← Category.assoc, h]
-  simp [Category.assoc]
+  apply (cancel_mono e.hom).1
+  simpa [Category.assoc] using (η.hom.naturality e.hom).symm
 
 /-- Tensoring a conjugated automorphism conjugates its tensor extension. -/
 theorem tensor_conjugate_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -729,11 +719,8 @@ theorem functor_natural_app_conjugate {D : Type u} {E : Type*}
     [Category.{v} D] [Category E] (F : D ⥤ E) (η : F ≅ F) {X Y : D} (e : X ≅ Y) :
     η.app X = F.mapIso e ≪≫ η.app Y ≪≫ (F.mapIso e).symm := by
   apply Iso.ext
-  have h := η.hom.naturality e.hom
-  change F.map e.hom ≫ (η.app Y).hom = (η.app X).hom ≫ F.map e.hom at h
-  change (η.app X).hom = F.map e.hom ≫ (η.app Y).hom ≫ F.map e.inv
-  rw [← Category.assoc, h]
-  simp [Category.assoc, ← F.map_comp]
+  apply (cancel_mono (F.mapIso e).hom).1
+  simp
 
 /-- An additive functor's natural automorphism is block diagonal on a binary
 biproduct under its canonical comparison isomorphism. -/

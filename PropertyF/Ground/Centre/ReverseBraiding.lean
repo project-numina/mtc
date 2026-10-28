@@ -1,6 +1,8 @@
 module
 public import PropertyF.Definitions
-public import PropertyF.Transfer
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.GroupTheory.Perm.Basic
+public import Mathlib.Tactic
 public import Mathlib.Algebra.Group.Subgroup.Pointwise
 
 /-! Reversing the braiding inverts each actual adjacent braid generator. -/

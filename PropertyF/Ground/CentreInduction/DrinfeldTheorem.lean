@@ -1,9 +1,36 @@
 module
-public import PropertyF.Ground.CentreInduction.DualMonodromy
+public import PropertyF.Ground.CentreInduction.PositivePivotal
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
+public import PropertyF.Ground.Dimensions.DualBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.Dimensions.DefectExtension
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
+
+section
+/-! The dual functors transport monodromy through their tensorators. -/
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
+namespace PropertyF.Ground.CentreInduction
+universe v u
+set_option backward.isDefEq.respectTransparency false
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D] [RightRigidCategory D]
+
+/-- Right duality reverses the tensor factors of mixed monodromy. -/
+theorem rightDualTensorIso_monodromy {X Y : D} :
+    (Modular.doubleBraiding X Y)ᘁ ≫ (rightDualTensorIso X Y).hom =
+      (rightDualTensorIso X Y).hom ≫ Modular.doubleBraiding (Yᘁ) (Xᘁ) := by
+  unfold Modular.doubleBraiding
+  simp only [comp_rightAdjointMate, Category.assoc]
+  rw [Dimensions.rightDualTensorIso_braiding X Y]
+  rw [← Category.assoc ((β_ Y X).homᘁ), Dimensions.rightDualTensorIso_braiding Y X]
+  simp [Category.assoc]
+
+end PropertyF.Ground.CentreInduction
+
+end
+end
 
 /-! Monoidality of the fourth dual from the Drinfeld tensor law. -/
 @[expose] public noncomputable section
@@ -66,7 +93,7 @@ theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     Modular.doubleBraiding (Yᘁ) (Xᘁ) at hi
   have hi' := congrArg (fun z => rightAdjointMate z) hi
   simp only [comp_rightAdjointMate] at hi'
-  have hm := rightDualTensorIso_monodromy (Yᘁ) (Xᘁ)
+  have hm := rightDualTensorIso_monodromy (X := Yᘁ) (Y := Xᘁ)
   have hm' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫
       ((Modular.doubleBraiding (Yᘁ) (Xᘁ))ᘁ) =
       Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
@@ -74,14 +101,14 @@ theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     apply (cancel_mono (rightDualTensorIso (Yᘁ) (Xᘁ)).hom).1
     simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
     rw [hm]
-    simp [Category.assoc]
+    simp
   have ht := Dimensions.rightDualTensorIso_natural f g
   have ht' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ ((f ⊗ₘ g)ᘁ) =
       (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso (((Yᘁ)ᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)).inv := by
     apply (cancel_mono (rightDualTensorIso (((Yᘁ)ᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)).hom).1
     simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
     rw [ht]
-    simp [Category.assoc]
+    simp
   simp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
@@ -113,7 +140,7 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom := by
     apply (cancel_epi m.hom).1
-    simp only [Category.assoc, Iso.hom_inv_id_assoc]
+    simp only [Iso.hom_inv_id_assoc]
     exact h X Y
   have hv := drinfeld_inv_dual_tensor C h X Y
   have hn : Modular.doubleBraiding X Y ≫
@@ -126,13 +153,13 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
   rw [hu]
   simp only [Category.assoc]
   rw [hv]
-  simp only [← tensorHom_comp_tensorHom_assoc, Category.assoc]
+  simp only [← tensorHom_comp_tensorHom_assoc]
   have hn' : m.inv ≫ (((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
       Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)) =
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) := by
     rw [← hn]
     change m.inv ≫ (m.hom ≫ _) = _
-    simp [Category.assoc]
+    simp
   simp only [← Category.assoc]
   rw [Category.assoc m.inv, hn']
 
