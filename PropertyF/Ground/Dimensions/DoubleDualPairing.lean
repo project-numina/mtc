@@ -218,19 +218,11 @@ theorem pivotal_evaluation :
 set_option backward.isDefEq.respectTransparency false in
 /-- A pivotal component on a dual is the inverse dual of the original component. -/
 theorem pivotal_dual :
-    p.iso (Xᘁ) = (rightDualIsoMap (p.iso X)).symm := by
-  apply Iso.ext
-  change (p.iso (Xᘁ)).hom = ((p.iso X).inv)ᘁ
-  have h := pivotal_evaluation p X
-  simp only [tensorHom_def, Category.assoc] at h
-  rw [← (rightAdjointMate_comp_evaluation (p.iso X).hom)] at h
-  rw [← comp_whiskerRight_assoc] at h
-  apply (cancel_mono (rightDualIsoMap (p.iso X)).hom).1
-  change _ = (rightDualIsoMap (p.iso X)).inv ≫ (rightDualIsoMap (p.iso X)).hom
-  rw [Iso.inv_hom_id]
-  change (p.iso (Xᘁ)).hom ≫ ((p.iso X).hom)ᘁ = 𝟙 (Xᘁ)
-  apply evaluation_ext (X := X)
-  simpa only [id_whiskerRight, Category.id_comp] using h
+    p.iso (Xᘁ) = (rightDualIsoMap (p.iso X)).symm :=
+  Iso.ext <| show (p.iso (Xᘁ)).hom = ((p.iso X).inv)ᘁ from
+    evaluation_ext (X := (Xᘁ)ᘁ) <| (cancel_epi ((Xᘁ) ◁ (p.iso X).hom)).1 <| by
+      simpa only [tensorHom_def', Category.assoc] using
+        (pivotal_evaluation p X).trans (evaluation_iso_map (p.iso X)).symm
 end PropertyF.Ground.Dimensions
 
 end
@@ -242,13 +234,6 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-set_option backward.isDefEq.respectTransparency false in
-/-- The left dimension is the right dimension of the dual object. -/
-theorem pivotal_leftTrace_id_eq_rightTrace_dual {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RigidCategory C] (p : PivotalStructure (C := C)) (X : C) :
-    p.leftTrace (𝟙 X) = p.rightTrace (𝟙 (Xᘁ)) :=
-  by rw [leftTrace_id, rightTrace_id, pivotal_dual, leftQuantumTrace_eq_rightDual]
-
 /-- A pivotal fusion category is spherical exactly when all simple dimensions are real. -/
 theorem pivotal_spherical_iff_simple_dimensions_real
     (p : PivotalStructure (C := C.Obj)) :
@@ -257,18 +242,13 @@ theorem pivotal_spherical_iff_simple_dimensions_real
   have hdual (i : Fin (rank C)) :
       unitScalar C (p.leftTrace (𝟙 (simples C i))) =
         star (pivotalDimension C p (simples C i)) := by
-    rw [pivotal_leftTrace_id_eq_rightTrace_dual]
+    rw [leftTrace_id, leftQuantumTrace_eq_rightDual, ← pivotal_dual, ← rightTrace_id]
     change pivotalDimension C p ((simples C i)ᘁ) = _
     rw [pivotalDimension_iso C p (rightDualLabelIso C i), pivotalDimension_dual_eq_conj]
   rw [isSpherical_iff_simple_dimensions]
-  constructor
-  · intro h i
-    rw [← hdual, h i]
-    rfl
-  · intro h i
-    apply (unitScalarEquiv C).injective
-    simpa only [← unitScalar_eq_equiv, pivotalDimension] using
-      (hdual i).trans (h i)
+  refine forall_congr' fun i ↦ ?_
+  rw [← hdual i]
+  simp only [pivotalDimension, unitScalar_eq_equiv, (unitScalarEquiv C).injective.eq_iff]
 end PropertyF.Ground.Dimensions
 
 end
