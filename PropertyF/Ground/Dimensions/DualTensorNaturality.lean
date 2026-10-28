@@ -106,24 +106,12 @@ theorem drinfeld_eval (X : C.Obj) :
 @[reassoc]
 theorem doubleDualIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (doubleDualIso C Y).hom = (doubleDualIso C X).hom ≫ (fᘁ)ᘁ := by
-  have h : (f ≫ (doubleDualIso C Y).hom) ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) =
-      ((doubleDualIso C X).hom ≫ (fᘁ)ᘁ) ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
-    calc
-      _ = f ▷ (Yᘁ) ≫ (β_ Y (Yᘁ)).hom ≫ ε_ Y (Yᘁ) := by
-        rw [comp_whiskerRight_assoc, drinfeld_eval]
-      _ = (β_ X (Yᘁ)).hom ≫ (Yᘁ) ◁ f ≫ ε_ Y (Yᘁ) := by
-        rw [braiding_naturality_left_assoc]
-      _ = (β_ X (Yᘁ)).hom ≫ (fᘁ) ▷ X ≫ ε_ X (Xᘁ) := by
-        rw [rightAdjointMate_comp_evaluation]
-      _ = X ◁ (fᘁ) ≫ (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) := by
-        rw [braiding_naturality_right_assoc]
-      _ = X ◁ (fᘁ) ≫ (doubleDualIso C X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
-        rw [drinfeld_eval]
-      _ = (doubleDualIso C X).hom ▷ (Yᘁ) ≫ ((Xᘁ)ᘁ) ◁ (fᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
-        rw [whisker_exchange_assoc]
-      _ = ((doubleDualIso C X).hom ≫ (fᘁ)ᘁ) ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
-        rw [← rightAdjointMate_comp_evaluation, comp_whiskerRight_assoc]
-  exact evaluation_ext h
+  apply evaluation_ext (X := Yᘁ)
+  simp only [comp_whiskerRight_assoc]
+  rw [drinfeld_eval C Y, braiding_naturality_left_assoc,
+    ← rightAdjointMate_comp_evaluation, ← braiding_naturality_right_assoc,
+    ← drinfeld_eval C X, whisker_exchange_assoc,
+    ← rightAdjointMate_comp_evaluation]
 
 /-- The braided fourth-dual isomorphism, objectwise. -/
 def fourthDualIso (X : C.Obj) :

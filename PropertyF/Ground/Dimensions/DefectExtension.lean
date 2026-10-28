@@ -261,15 +261,11 @@ theorem rootTensorDefect_involution_extension
 theorem trace_reciprocity_of_fourth_dual
     (hfourth : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j)) :
-    ENOTraceMatrixReciprocity C := by
-  have hinv : ∀ X Y : C.Obj, (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
-    apply rootTensorDefect_involution_extension C
-    intro i j
-    apply rootTensorDefect_involution_of_tensor_square C
-    rw [rootTensor_square_eq_fourthDual_tensor, ← hfourth]
-  apply trace_reciprocity_of_coevaluation C
-  intro i k
-  exact rootTensorDefect_slide_of_involution C (simples C k) (hinv _ _)
+    ENOTraceMatrixReciprocity C :=
+  trace_reciprocity_of_coevaluation C fun _ _ ↦ rootTensorDefect_slide_of_involution C _
+    (rootTensorDefect_involution_extension C
+      (fun i j ↦ rootTensorDefect_involution_of_tensor_square C
+        ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)) _ _)
 
 /-- The fourth-dual law on non-unit simple pairs suffices for the canonical pseudo-unitary spherical structure. -/
 theorem positive_spherical_of_nonunit_fourth_dual
