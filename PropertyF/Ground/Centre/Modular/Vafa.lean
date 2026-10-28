@@ -901,7 +901,7 @@ monodromy to have finite order; no lantern relation is required. -/
 theorem mixed_monodromy_finite_of_pivotal_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p)
     (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) :=
-  CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist C
+  CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist
     (Dimensions.pivotalBraidedTwistNaturalIso C p)
     (pivotal_twist_finite_of_balancing C p hbalance) hbalance X Y
 
