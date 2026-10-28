@@ -56,14 +56,14 @@ theorem doubleBraiding_natural_right (X : C) {Y Z : C} (e : Y ≅ Z) :
 theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : Y ≅ Z) :
     SEntry p X Y = SEntry p X Z := by
   let t := Iso.refl X ⊗ᵢ e
-  have hn : doubleBraiding X Y ≫ t.hom = t.hom ≫ doubleBraiding X Z := by
-    exact doubleBraiding_natural_right X e
-  have h := p.rightTrace_cyclic (doubleBraiding X Y ≫ t.hom) t.inv
-  have hh : p.rightTrace (doubleBraiding X Y) =
-      p.rightTrace (t.inv ≫ doubleBraiding X Y ≫ t.hom) := by
-    simpa only [Category.assoc, Iso.hom_inv_id, Category.comp_id] using h
-  rw [hn, Iso.inv_hom_id_assoc] at hh
-  exact hh
+  calc
+    _ = p.rightTrace ((doubleBraiding X Y ≫ t.hom) ≫ t.inv) := by
+      simp [SEntry, Category.assoc]
+    _ = p.rightTrace (t.inv ≫ (doubleBraiding X Y ≫ t.hom)) := p.rightTrace_cyclic _ _
+    _ = _ := by
+      rw [show doubleBraiding X Y ≫ t.hom = t.hom ≫ doubleBraiding X Z from
+        doubleBraiding_natural_right X e, Iso.inv_hom_id_assoc]
+      rfl
 
 omit [RightRigidCategory C] in
 /-- The double braiding with the tensor unit is the identity. -/
@@ -107,11 +107,8 @@ theorem categoricalS_unit (i : Fin (rank C)) :
 /-- In the spherical case, global dimension is the sum of squared simple dimensions. -/
 theorem categorical_global_eq_sum_squares (hp : p.IsSpherical) :
     Ground.globalDimension C = ∑ i, simpleDimension C p i ^ 2 := by
-  rw [target_globalDimension_eq_sum_squares C p hp]
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [Ground.unitScalar_eq_equiv, ← rightTrace_id]
-  rfl
+  simpa only [simpleDimension, ← Ground.unitScalar_eq_equiv, ← rightTrace_id] using
+    target_globalDimension_eq_sum_squares C p hp
 
 end
 
@@ -139,7 +136,7 @@ variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.
 theorem pivotalTrace_simple_ne_zero (X : C.Obj) [Simple X] :
     p.rightTrace (𝟙 X) ≠ 0 := by
   simpa only [Dimensions.rightTrace_id] using
-    Dimensions.rightQuantumTrace_simple_ne_zero C X (p.iso X)
+    Dimensions.rightQuantumTrace_simple_ne_zero C (p.iso X)
 
 /-- The scalar pivotal trace of a simple object is nonzero. -/
 theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :

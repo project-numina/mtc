@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.ENOMatrices
 
+/-! # Saturation of complex eigenvalue bounds
+
+Equality in weighted complex bounds determines the phases of eigenvectors.
+-/
+
 @[expose] public noncomputable section
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
@@ -34,22 +39,22 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
 
 /-- Saturation of a complex fusion-matrix eigenvector forces every term to
 have the common phase of the product of the two eigenvector values. -/
-theorem fusion_complex_eigenvalue_saturation (C : PropertyF.Ground.BraidedFusionCategory)
-    (T : Fin (PropertyF.Ground.rank C) → Fin (PropertyF.Ground.rank C) →
-      Fin (PropertyF.Ground.rank C) → ℂ)
-    (d : Fin (PropertyF.Ground.rank C) → ℂ)
-    (hd : ∀ i, ‖d i‖ = PropertyF.Ground.fpSimple C i)
-    (hdom : ∀ i j k, ‖T i j k‖ ≤ (PropertyF.Ground.fusionCoeff C i j k : ℝ))
+theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
+    (T : Fin (rank C) → Fin (rank C) →
+      Fin (rank C) → ℂ)
+    (d : Fin (rank C) → ℂ)
+    (hd : ∀ i, ‖d i‖ = fpSimple C i)
+    (hdom : ∀ i j k, ‖T i j k‖ ≤ (fusionCoeff C i j k : ℝ))
     (heig : ∀ i j, ∑ k, T i j k * d k = d i * d j) :
     ∀ i j k,
-      T i j k * (d k / (PropertyF.Ground.fpSimple C k : ℂ)) /
-        ((d i / (PropertyF.Ground.fpSimple C i : ℂ)) *
-          (d j / (PropertyF.Ground.fpSimple C j : ℂ))) =
-        (PropertyF.Ground.fusionCoeff C i j k : ℂ) := by
+      T i j k * (d k / (fpSimple C k : ℂ)) /
+        ((d i / (fpSimple C i : ℂ)) *
+          (d j / (fpSimple C j : ℂ))) =
+        (fusionCoeff C i j k : ℂ) := by
   classical
-  let f := PropertyF.Ground.fpSimple C
-  let q : Fin (PropertyF.Ground.rank C) → ℂ := fun i => d i / (f i : ℂ)
-  have hf : ∀ i, 0 < f i := PropertyF.Ground.fpSimple_pos C
+  let f := fpSimple C
+  let q : Fin (rank C) → ℂ := fun i => d i / (f i : ℂ)
+  have hf : ∀ i, 0 < f i := fpSimple_pos C
   have hq : ∀ i, ‖q i‖ = 1 := by
     intro i
     dsimp [q]
@@ -61,14 +66,14 @@ theorem fusion_complex_eigenvalue_saturation (C : PropertyF.Ground.BraidedFusion
     dsimp [q]
     field_simp [show (f i : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (hf i))]
   intro i j k
-  let x : Fin (PropertyF.Ground.rank C) → ℂ := fun l => T i j l * q l / (q i * q j)
-  have hx : ∀ l, ‖x l‖ ≤ (PropertyF.Ground.fusionCoeff C i j l : ℝ) := by
+  let x : Fin (rank C) → ℂ := fun l => T i j l * q l / (q i * q j)
+  have hx : ∀ l, ‖x l‖ ≤ (fusionCoeff C i j l : ℝ) := by
     intro l
     dsimp [x]
     rw [norm_div, norm_mul, norm_mul, hq l, hq i, hq j]
     simpa using hdom i j l
   have heq : ∑ l, x l * (f l : ℂ) =
-      ((∑ l, (PropertyF.Ground.fusionCoeff C i j l : ℝ) * f l : ℝ) : ℂ) := by
+      ((∑ l, (fusionCoeff C i j l : ℝ) * f l : ℝ) : ℂ) := by
     calc
       _ = (∑ l, T i j l * d l) / (q i * q j) := by
         rw [Finset.sum_div]
@@ -81,8 +86,8 @@ theorem fusion_complex_eigenvalue_saturation (C : PropertyF.Ground.BraidedFusion
       _ = ((f i * f j : ℝ) : ℂ) := by
         rw [← hrepr i, ← hrepr j, Complex.ofReal_mul]
         field_simp [hqn i, hqn j]
-      _ = _ := by rw [PropertyF.Ground.fpSimple_mul]
-  exact complex_weighted_saturation (fun l => PropertyF.Ground.fusionCoeff C i j l) f x
+      _ = _ := by rw [fpSimple_mul]
+  exact complex_weighted_saturation (fun l => fusionCoeff C i j l) f x
     hf hx heq k
 
 end PropertyF.Ground.Dimensions

@@ -1,8 +1,111 @@
 module
+public import PropertyF.Definitions
+public import Mathlib.GroupTheory.OrderOfElement
+public import Mathlib.CategoryTheory.Conj
+public import Mathlib.Tactic
 public import PropertyF.Ground.Calculus.RightStrand
-public import PropertyF.Ground.Calculus.ThreeBraid
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Modular.SMatrix
+
+/-! Finiteness of categorical braid images supplies the finite-order condition
+for the squared braiding and for every representation of the braid image. -/
+
+@[expose] public section
+open CategoryTheory
+namespace PropertyF.Ground.Calculus
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+
+/-- An adjacent generator as an element of the actual categorical braid image. -/
+def imageGenerator (X : C) (n : ℕ) (i : Fin (n + 1)) : braidImage X n :=
+  ⟨braidGenerator X n i, Subgroup.subset_closure (Set.mem_range_self _)⟩
+
+/-- Every represented braid image element has finite order when the categorical
+image is finite. No faithfulness of the representation is required. -/
+theorem represented_braid_finite_order {H : Type*} [Monoid H]
+    {X : C} {n : ℕ} (h : Finite (braidImage X n))
+    (ρ : braidImage X n →* H) (g : braidImage X n) :
+    ∃ k : ℕ, k ≠ 0 ∧ (ρ g) ^ k = 1 := by
+  let _ : Finite (braidImage X n) := h
+  exact (ρ.isOfFinOrder (isOfFinOrder_of_finite g)).exists_pow_eq_one.imp
+    fun _ ⟨hk, hpow⟩ ↦ ⟨hk.ne', hpow⟩
+
+/-- In particular, the represented square of the two-strand self-braiding
+satisfies the `finite_order` condition needed for three-strand rigidity. -/
+theorem represented_square_finite_order {H : Type*} [Monoid H]
+    {X : C} (h : ObjectPropertyF X) (ρ : braidImage X 0 →* H) :
+    ∃ k : ℕ, k ≠ 0 ∧ (ρ ((imageGenerator X 0 0) ^ 2)) ^ k = 1 :=
+  represented_braid_finite_order (h 0) ρ _
+
+/-- The categorical square itself has finite order. -/
+theorem braid_square_finite_order {X : C} (h : ObjectPropertyF X) :
+    ∃ k : ℕ, k ≠ 0 ∧ (braidGenerator X 0 0 ^ 2) ^ k = 1 :=
+  represented_square_finite_order h (braidImage X 0).subtype
+
+end PropertyF.Ground.Calculus
+
+/-! The actual three-strand braid relation, including tensor-power unitors. -/
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace PropertyF.Ground.Calculus
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+
+/-- Remove the trailing tensor unit from the three-fold tensor power. -/
+def threePowerIso (X : C) : tensorPower X 3 ≅ X ⊗ (X ⊗ X) :=
+  Iso.refl X ⊗ᵢ (Iso.refl X ⊗ᵢ (ρ_ X))
+
+set_option backward.isDefEq.respectTransparency false in
+theorem threeGeneratorLeft_transport (X : C) :
+  ((threePowerIso X).conjAut (braidGenerator X 1 0)).asIso.hom =
+    (α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom := by
+  change (threePowerIso X).inv ≫ (braidGenerator X 1 _).asIso.hom ≫ (threePowerIso X).hom = _
+  dsimp only [threePowerIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
+    Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
+  simp only [id_tensorHom, tensorHom_id, Category.assoc]
+  monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+theorem threeGeneratorRight_transport (X : C) :
+  ((threePowerIso X).conjAut (braidGenerator X 1 1)).asIso.hom = X ◁ (β_ X X).hom := by
+  change (threePowerIso X).inv ≫ (braidGenerator X 1 _).asIso.hom ≫ (threePowerIso X).hom = _
+  dsimp only [threePowerIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
+    Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
+  simp only [id_tensorHom, tensorHom_id]
+  monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The categorical adjacent braidings satisfy Yang–Baxter. -/
+theorem three_braid_relation (X : C) :
+    braidGenerator X 1 0 * braidGenerator X 1 1 * braidGenerator X 1 0 =
+    braidGenerator X 1 1 * braidGenerator X 1 0 * braidGenerator X 1 1 := by
+  apply (threePowerIso X).conjAut.injective
+  apply Aut.ext
+  apply Iso.ext
+  simp only [map_mul, Aut.mul_asIso, Iso.trans_hom, threeGeneratorLeft_transport, threeGeneratorRight_transport, Category.assoc]
+  exact BraidedCategory.yang_baxter X X X
+
+/-- The two adjacent generators in the actual three-strand image. -/
+def threeGeneratorLeft (X : C) : braidImage X 1 := imageGenerator X 1 0
+
+/-- The right adjacent generator in the three-strand braid image. -/
+def threeGeneratorRight (X : C) : braidImage X 1 := imageGenerator X 1 1
+
+/-- The Yang–Baxter relation holds inside the actual categorical braid image. -/
+theorem three_braid_image_relation (X : C) :
+    threeGeneratorLeft X * threeGeneratorRight X * threeGeneratorLeft X =
+    threeGeneratorRight X * threeGeneratorLeft X * threeGeneratorRight X :=
+  Subtype.ext (three_braid_relation X)
+
+/-- Every representation of the actual three-strand image satisfies the braid relation. -/
+theorem three_braid_relation_map {H : Type*} [Monoid H] {X : C}
+    (ρ : braidImage X 1 →* H) :
+    ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) =
+    ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) := by
+  simpa only [map_mul] using congrArg ρ (three_braid_image_relation X)
+
+end PropertyF.Ground.Calculus
 
 /-! Two- and three-strand categorical braid embeddings. -/
 
@@ -15,14 +118,28 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 
+omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+/-- The left adjacent generator after removing the trailing tensor unit. -/
+theorem threeGeneratorLeft_end_transport (X : C) :
+    (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 0)) =
+      End.of ((α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom) :=
+  End.ext (threeGeneratorLeft_transport X)
+
+omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+/-- The right adjacent generator after removing the trailing tensor unit. -/
+theorem threeGeneratorRight_end_transport (X : C) :
+    (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 1)) =
+      End.of (X ◁ (β_ X X).hom) :=
+  End.ext (threeGeneratorRight_transport X)
+
 /-- The left three-strand generator in a chosen block presentation. -/
 def tripleBlockLeft (X : C) {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :=
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
   b (groupInImage (braidEndRepresentation X 1) (threeGeneratorLeft X))
 
 /-- The right three-strand generator in a chosen block presentation. -/
 def tripleBlockRight (X : C) {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :=
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
   b (groupInImage (braidEndRepresentation X 1) (threeGeneratorRight X))
 
 end PropertyF.Ground.Calculus
@@ -37,12 +154,12 @@ universe v u
 /-- In a genuine braided fusion category, the partial trace onto a simple
 surviving object is the total trace divided by its nonzero pivotal dimension. -/
 theorem rightPartialTrace_simple_ground (C : Ground.BraidedFusionCategory.{v,u})
-    (X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {X Y : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y)) :
     rightPartialTrace p X Y f =
       (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
   let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
-  apply rightPartialTrace_simple_of_trace_compatibility X Y p scalar f
+  apply rightPartialTrace_simple_of_trace_compatibility (X := X) (Y := Y) p scalar f
   · intro h
     apply Modular.pivotalTrace_simple_ne_zero C p X
     apply scalar.injective
@@ -71,25 +188,25 @@ def overlapEndProduct (A X Y : C) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
 /-- Tracing the new strands of the overlap gives the old operator times the
 normalized trace of the fresh operator. -/
 theorem rightPartialTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
-    (A X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {A X Y : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
       (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) • v := by
   rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
-    rightPartialTrace_simple_ground C X Y p scalar u]
+    rightPartialTrace_simple_ground C (X := X) (Y := Y) p scalar u]
   apply End.ext
   simp
 
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/
 theorem pivotalTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
-    (A X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {A X Y : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
   rw [← Dimensions.rightTrace_partialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u)]
-  rw [rightPartialTrace_overlap C A X Y p scalar v u]
+  rw [rightPartialTrace_overlap C p scalar v u]
   simp [Dimensions.PivotalStructure.rightTrace_smul, mul_comm]
 
 end PropertyF.Ground.Calculus
@@ -123,15 +240,7 @@ theorem three_braid_double_overlap (X : C) :
       (Aut.toEnd ((braidGenerator X 1 0) ^ 2 * (braidGenerator X 1 1) ^ 2)) =
     (isoEndAlgEquiv (α_ X X X))
       (overlapEndProduct X X X (selfMonodromy X) (selfMonodromy X)) := by
-  have ha : (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 0)) =
-      End.of ((α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom) := by
-    apply End.ext
-    exact threeGeneratorLeft_transport X
-  have hb : (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 1)) =
-      End.of (X ◁ (β_ X X).hom) := by
-    apply End.ext
-    exact threeGeneratorRight_transport X
-  rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, ha, hb]
+  rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, threeGeneratorLeft_end_transport, threeGeneratorRight_end_transport]
   apply End.ext
   simp [overlapEndProduct, insertRightIdentity, overlapFresh, selfMonodromy,
     isoEndAlgEquiv, Iso.conj_apply_asHom, pow_two, End.mul_asHom,
@@ -149,7 +258,7 @@ theorem three_braid_trace (D : Ground.BraidedFusionCategory.{v,u})
   have h := congrArg (fun z : End (X ⊗ (X ⊗ X)) => scalar (p.rightTrace z.asHom))
     (three_braid_double_overlap X)
   simp only [rightTrace_iso_conj] at h
-  rw [h, pivotalTrace_overlap D X X X p scalar]
+  rw [h, pivotalTrace_overlap D (X := X) p scalar]
   ring
 
 /-- Remove the trailing tensor unit from the two-fold tensor power. -/

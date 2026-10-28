@@ -74,7 +74,7 @@ theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V 
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A finite splitting can be used to refine a simple-basis contraction. -/
-theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] (V : J → C.Obj) (W : C.Obj)
+theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.Obj} {W : C.Obj}
     (i : Fin (rank C)) (q : ∀ j, V j ⟶ W) (r : ∀ j, W ⟶ V j)
     (h : (∑ j, r j ≫ q j) = 𝟙 W)
     {E : Type*} [AddCommGroup E] [Module ℂ E]
@@ -104,12 +104,12 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
     (∑ p : Dimensions.simplePieces C (U ⊗ simples C j),
       ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C p.1)),
-        crossingBlock C X (T ⊗ U) (simples C i) (simples C j)
+        crossingBlock X (T ⊗ U) (simples C i) (simples C j)
           (crossingInclusion C T i p.1 a ≫ (T ◁ crossingInclusion C U p.1 j p.2) ≫
             (α_ T U (simples C j)).inv)
           ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U p.1 j p.2) ≫
             crossingProjection C T i p.1 a)) =
-      ∑ b, crossingBlock C X (T ⊗ U) (simples C i) (simples C j)
+      ∑ b, crossingBlock X (T ⊗ U) (simples C i) (simples C j)
         (crossingInclusion C (T ⊗ U) i j b) (crossingProjection C (T ⊗ U) i j b) := by
   classical
   let J := Dimensions.simplePieces C (U ⊗ simples C j)
@@ -125,8 +125,8 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
           simp only [r, q, whiskerLeft_sum, Preadditive.comp_sum,
             Preadditive.sum_comp, whiskerLeft_comp, Category.assoc]
       _ = _ := by rw [crossing_completeness]; simp [W]
-  have hc := simpleBasis_contraction_refinement C V W i q r h
-    (mixedCrossingBilinear C X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
+  have hc := simpleBasis_contraction_refinement C i q r h
+    (mixedCrossingBilinear X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
   simpa [V, W, J, q, r, simpleProjection, crossingInclusion, crossingProjection,
     mixedCrossingBilinear, crossingBlock, Category.assoc] using hc
 

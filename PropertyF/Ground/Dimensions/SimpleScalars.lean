@@ -5,6 +5,11 @@ public import PropertyF.Ground.Fusion.Simples
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 public import PropertyF.Ground.Fusion.Multiplicity
 
+/-! # Scalar natural transformations
+
+Simple objects determine scalar components and natural roots of the fourth-dual isomorphism.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
@@ -28,7 +33,7 @@ end PropertyF.Ground.Dimensions
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- On a simple object, any two isomorphisms to a fixed target differ by a
 nonzero scalar. -/
 theorem isomorphisms_differ_by_scalar
@@ -50,7 +55,7 @@ theorem isomorphisms_differ_by_scalar
 /-- For every simple object, any prescribed fourth-dual isomorphism has a
 square root through the double dual. No monoidality or naturality is assumed. -/
 theorem exists_fourthDual_square_root
-    (X : C.Obj) [Simple X] (g : X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ)) :
+    {X : C.Obj} [Simple X] (g : X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ)) :
     ∃ a : X ≅ ((Xᘁ)ᘁ), a ≪≫ rightDualIsoMap (rightDualIsoMap a) = g := by
   let e := Ground.doubleDualIso C X
   let e2 := e ≪≫ rightDualIsoMap (rightDualIsoMap e)
@@ -70,19 +75,19 @@ theorem exists_fourthDual_square_root
 
 /-- A chosen square root of the natural braided fourth-dual map on each
 simple representative. -/
-def fourthDualSimpleRoot (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
-    Ground.simples C i ≅ ((Ground.simples C i)ᘁ)ᘁ := by
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
-  exact Classical.choose (exists_fourthDual_square_root C (Ground.simples C i)
-    (fourthDualIso C (Ground.simples C i)))
+def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
+    simples C i ≅ ((simples C i)ᘁ)ᘁ := by
+  let : Simple (simples C i) := Ground.simples_simple C i
+  exact Classical.choose (exists_fourthDual_square_root C
+    (fourthDualIso C (simples C i)))
 
 /-- The chosen simple component squares to the natural fourth-dual component. -/
-theorem fourthDualSimpleRoot_sq (i : Fin (Ground.rank C)) :
+theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :
     fourthDualSimpleRoot C i ≪≫ rightDualIsoMap (rightDualIsoMap (fourthDualSimpleRoot C i)) =
-      fourthDualIso C (Ground.simples C i) := by
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
-  exact Classical.choose_spec (exists_fourthDual_square_root C (Ground.simples C i)
-    (fourthDualIso C (Ground.simples C i)))
+      fourthDualIso C (simples C i) := by
+  let : Simple (simples C i) := Ground.simples_simple C i
+  exact Classical.choose_spec (exists_fourthDual_square_root C
+    (fourthDualIso C (simples C i)))
 
 end PropertyF.Ground.Dimensions
 
@@ -126,13 +131,13 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 /-- The canonical braided double-dual components form a natural isomorphism. -/
-def drinfeldNaturalIso (C : Ground.BraidedFusionCategory.{v,u}) :
+def drinfeldNaturalIso (C : BraidedFusionCategory.{v,u}) :
     𝟭 C.Obj ≅ doubleDualFunctor C.Obj :=
   NatIso.ofComponents (Ground.doubleDualIso C) (fun f => doubleDualIso_natural C f)
 
 /-- The canonical braided fourth-dual components form a natural
 isomorphism. Tensor compatibility is not asserted here. -/
-def fourthDualNaturalIso (C : Ground.BraidedFusionCategory.{v,u}) :
+def fourthDualNaturalIso (C : BraidedFusionCategory.{v,u}) :
     𝟭 C.Obj ≅ doubleDualFunctor C.Obj ⋙ doubleDualFunctor C.Obj :=
   NatIso.ofComponents (fourthDualIso C) (fun f => fourthDualIso_natural C f)
 
@@ -145,18 +150,18 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Diagonal scalar maps, indexed by isomorphism classes of simples, commute
 with all maps between finite sums of those simples. -/
 theorem simple_scalar_biproduct_natural
     {ι κ : Type*} [Fintype ι] [Fintype κ]
-    (a : ι → Fin (Ground.rank C)) (b : κ → Fin (Ground.rank C))
-    (c : Fin (Ground.rank C) → ℂ)
-    (f : (⨁ (fun i => Ground.simples C (a i))) ⟶ (⨁ (fun j => Ground.simples C (b j)))) :
-    biproduct.map (fun i => c (a i) • 𝟙 (Ground.simples C (a i))) ≫ f =
-      f ≫ biproduct.map (fun j => c (b j) • 𝟙 (Ground.simples C (b j))) := by
+    (a : ι → Fin (rank C)) (b : κ → Fin (rank C))
+    (c : Fin (rank C) → ℂ)
+    (f : (⨁ (fun i => simples C (a i))) ⟶ (⨁ (fun j => simples C (b j)))) :
+    biproduct.map (fun i => c (a i) • 𝟙 (simples C (a i))) ≫ f =
+      f ≫ biproduct.map (fun j => c (b j) • 𝟙 (simples C (b j))) := by
   classical
   apply biproduct.hom_ext'
   intro i
@@ -166,40 +171,40 @@ theorem simple_scalar_biproduct_natural
     Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
   by_cases h : a i = b j
   · rw [show c (a i) = c (b j) from congrArg c h]
-  · have hz : biproduct.ι (fun i => Ground.simples C (a i)) i ≫ f ≫
-        biproduct.π (fun j => Ground.simples C (b j)) j = 0 := by
+  · have hz : biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
+        biproduct.π (fun j => simples C (b j)) j = 0 := by
       by_contra hne
-      let : Simple (Ground.simples C (a i)) := Ground.simples_simple C _
-      let : Simple (Ground.simples C (b j)) := Ground.simples_simple C _
-      let : IsIso (biproduct.ι (fun i => Ground.simples C (a i)) i ≫ f ≫
-        biproduct.π (fun j => Ground.simples C (b j)) j) := isIso_of_hom_simple hne
-      exact h (Ground.simples_injective C _ _ ⟨asIso
-        (biproduct.ι (fun i => Ground.simples C (a i)) i ≫ f ≫
-          biproduct.π (fun j => Ground.simples C (b j)) j)⟩)
+      let : Simple (simples C (a i)) := Ground.simples_simple C _
+      let : Simple (simples C (b j)) := Ground.simples_simple C _
+      let : IsIso (biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
+        biproduct.π (fun j => simples C (b j)) j) := isIso_of_hom_simple hne
+      exact h (Ground.simples_injective C ⟨asIso
+        (biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
+          biproduct.π (fun j => simples C (b j)) j)⟩)
     simp [hz]
 
 /-- Index type for the canonical simple summands of an object. -/
-abbrev simplePieces (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :=
-  Σ i : Fin (Ground.rank C), Fin (Module.finrank ℂ (Ground.simples C i ⟶ X))
+abbrev simplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :=
+  Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ X))
 
-instance simplePieces_fintype (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+instance instFintypeSimplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     Fintype (simplePieces C X) := by
   unfold simplePieces
   infer_instance
 
 /-- The actual simple object at each canonical summand. -/
-abbrev simplePiecesObject (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
-    simplePieces C X → C.Obj := fun a => Ground.simples C a.1
+abbrev simplePiecesObject (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+    simplePieces C X → C.Obj := fun a => simples C a.1
 
 /-- A chosen decomposition into simple summands with canonical multiplicities. -/
-def simpleDecomposition (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+def simpleDecomposition (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     X ≅ ⨁ (simplePiecesObject C X) :=
   Classical.choice (Ground.exists_canonical_decomposition C X)
 
 /-- On each object, scalar multiplication on simple summands, transported
 through a chosen semisimple decomposition. -/
-def simpleScalarComponent (C : Ground.BraidedFusionCategory.{v,u})
-    (c : Fin (Ground.rank C) → ℂ) (X : C.Obj) : X ⟶ X :=
+def simpleScalarComponent (C : BraidedFusionCategory.{v,u})
+    (c : Fin (rank C) → ℂ) (X : C.Obj) : X ⟶ X :=
   (simpleDecomposition C X).hom ≫
     biproduct.map (fun a : simplePieces C X => c a.1 • 𝟙 (simplePiecesObject C X a)) ≫
     (simpleDecomposition C X).inv
@@ -207,14 +212,14 @@ def simpleScalarComponent (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- A scalar assigned to each simple isomorphism class extends to a natural
 endomorphism of the identity functor. -/
-def simpleScalarNatural (C : Ground.BraidedFusionCategory.{v,u})
-    (c : Fin (Ground.rank C) → ℂ) : 𝟭 C.Obj ⟶ 𝟭 C.Obj where
+def simpleScalarNatural (C : BraidedFusionCategory.{v,u})
+    (c : Fin (rank C) → ℂ) : 𝟭 C.Obj ⟶ 𝟭 C.Obj where
   app X := simpleScalarComponent C c X
   naturality {X Y} f := by
     let ex := simpleDecomposition C X
     let ey := simpleDecomposition C Y
-    let a : simplePieces C X → Fin (Ground.rank C) := fun i => i.1
-    let b : simplePieces C Y → Fin (Ground.rank C) := fun i => i.1
+    let a : simplePieces C X → Fin (rank C) := fun i => i.1
+    let b : simplePieces C Y → Fin (rank C) := fun i => i.1
     have h := simple_scalar_biproduct_natural C a b c (ex.inv ≫ f ≫ ey.hom)
     apply (cancel_epi ex.inv).1
     apply (cancel_mono ey.hom).1
@@ -225,12 +230,12 @@ def simpleScalarNatural (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- The natural extension acts by the prescribed scalar on each simple. -/
 theorem simpleScalarNatural_app_simple
-    (c : Fin (Ground.rank C) → ℂ) (i : Fin (Ground.rank C)) :
-    (simpleScalarNatural C c).app (Ground.simples C i) = c i • 𝟙 (Ground.simples C i) := by
+    (c : Fin (rank C) → ℂ) (i : Fin (rank C)) :
+    (simpleScalarNatural C c).app (simples C i) = c i • 𝟙 (simples C i) := by
   classical
-  let X := Ground.simples C i
+  let X := simples C i
   let a : simplePieces C X := ⟨i, ⟨0, by
-    change 0 < Module.finrank ℂ (Ground.simples C i ⟶ Ground.simples C i)
+    change 0 < Module.finrank ℂ (simples C i ⟶ simples C i)
     rw [Ground.finrank_simples_hom]
     simp⟩⟩
   let e := simpleDecomposition C X
@@ -251,8 +256,8 @@ theorem simpleScalarNatural_app_simple
 
 /-- Nonzero scalar values on all simples extend to a natural automorphism of
 the identity functor. -/
-def simpleScalarNaturalIso (C : Ground.BraidedFusionCategory.{v,u})
-    (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) : 𝟭 C.Obj ≅ 𝟭 C.Obj := by
+def simpleScalarNaturalIso (C : BraidedFusionCategory.{v,u})
+    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) : 𝟭 C.Obj ≅ 𝟭 C.Obj := by
   let component (X : C.Obj) : X ≅ X :=
     simpleDecomposition C X ≪≫
       biproduct.mapIso (fun a : simplePieces C X =>
@@ -267,10 +272,10 @@ def simpleScalarNaturalIso (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- On each simple, the natural automorphism has the prescribed scalar component. -/
 theorem simpleScalarNaturalIso_app_simple
-    (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (Ground.rank C)) :
-    ((simpleScalarNaturalIso C c hc).app (Ground.simples C i)).hom =
-      c i • 𝟙 (Ground.simples C i) := by
-  change simpleScalarComponent C c (Ground.simples C i) = _
+    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
+    ((simpleScalarNaturalIso C c hc).app (simples C i)).hom =
+      c i • 𝟙 (simples C i) := by
+  change simpleScalarComponent C c (simples C i) = _
   exact simpleScalarNatural_app_simple C c i
 
 /-- Maps out of a tensor product of finite biproducts are determined by their
@@ -295,13 +300,13 @@ theorem tensorBiproduct_hom_ext
 /-- If scalars multiply along every nonzero fusion coefficient, the natural
 scalar map has the expected tensor component on pairs of simple objects. -/
 theorem simpleScalarNatural_tensor_simples
-    (c : Fin (Ground.rank C) → ℂ)
+    (c : Fin (rank C) → ℂ)
     (hmul : ∀ i j k, Ground.fusionCoeff C i j k ≠ 0 → c k = c i * c j)
-    (i j : Fin (Ground.rank C)) :
-    (simpleScalarNatural C c).app (Ground.simples C i ⊗ Ground.simples C j) =
-      (c i * c j) • 𝟙 (Ground.simples C i ⊗ Ground.simples C j) := by
+    (i j : Fin (rank C)) :
+    (simpleScalarNatural C c).app (simples C i ⊗ simples C j) =
+      (c i * c j) • 𝟙 (simples C i ⊗ simples C j) := by
   classical
-  let X := Ground.simples C i ⊗ Ground.simples C j
+  let X := simples C i ⊗ simples C j
   let e := simpleDecomposition C X
   let V := simplePiecesObject C X
   apply (cancel_epi e.inv).1
@@ -310,18 +315,17 @@ theorem simpleScalarNatural_tensor_simples
   have hn := (simpleScalarNatural C c).naturality (biproduct.ι V a ≫ e.inv)
   simp only [Functor.id_map] at hn
   change (biproduct.ι V a ≫ e.inv) ≫ (simpleScalarNatural C c).app X =
-    (simpleScalarNatural C c).app (Ground.simples C a.1) ≫ biproduct.ι V a ≫ e.inv at hn
+    (simpleScalarNatural C c).app (simples C a.1) ≫ biproduct.ι V a ≫ e.inv at hn
   rw [simpleScalarNatural_app_simple] at hn
   have hcoeff : Ground.fusionCoeff C i j a.1 ≠ 0 := by
-    change Module.finrank ℂ (Ground.simples C a.1 ⟶ X) ≠ 0
+    change Module.finrank ℂ (simples C a.1 ⟶ X) ≠ 0
     exact Nat.ne_of_gt (Nat.zero_lt_of_lt a.2.isLt)
-  have hscalar := hmul i j a.1 hcoeff
-  simpa [V, X, simplePiecesObject, hscalar, Category.assoc] using hn
+  simpa [V, X, simplePiecesObject, (hmul i j a.1 hcoeff), Category.assoc] using hn
 
 /-- Scalar values satisfying the fusion support rule extend to a tensor
 natural endomorphism of the identity. -/
 theorem simpleScalarNatural_tensor
-    (c : Fin (Ground.rank C) → ℂ)
+    (c : Fin (rank C) → ℂ)
     (hmul : ∀ i j k, Ground.fusionCoeff C i j k ≠ 0 → c k = c i * c j)
     (X Y : C.Obj) :
     (simpleScalarNatural C c).app (X ⊗ Y) =
@@ -334,8 +338,8 @@ theorem simpleScalarNatural_tensor
   apply (cancel_epi (ex.symm ⊗ᵢ ey.symm).hom).1
   apply tensorBiproduct_hom_ext C V W
   intro a b
-  let sx : Ground.simples C a.1 ⟶ X := biproduct.ι V a ≫ ex.inv
-  let sy : Ground.simples C b.1 ⟶ Y := biproduct.ι W b ≫ ey.inv
+  let sx : simples C a.1 ⟶ X := biproduct.ι V a ≫ ex.inv
+  let sy : simples C b.1 ⟶ Y := biproduct.ι W b ≫ ey.inv
   have hx : sx ≫ (simpleScalarNatural C c).app X = c a.1 • sx := by
     have h := (simpleScalarNatural C c).naturality sx
     simp only [Functor.id_map, simpleScalarNatural_app_simple, Linear.smul_comp] at h
@@ -360,13 +364,12 @@ theorem simpleScalarNatural_tensor
 
 /-- The unit component is the identity when the unit scalar is one. -/
 theorem simpleScalarNatural_unit
-    (c : Fin (Ground.rank C) → ℂ) (hunit : c (Ground.unitIndex C) = 1) :
+    (c : Fin (rank C) → ℂ) (hunit : c (unitIndex C) = 1) :
     (simpleScalarNatural C c).app (𝟙_ C.Obj) = 𝟙 _ := by
   obtain ⟨e⟩ := Ground.unitIndex_iso C
   apply (cancel_epi e.hom).1
-  have h := (simpleScalarNatural C c).naturality e.hom
-  simp only [Functor.id_map, simpleScalarNatural_app_simple, hunit, one_smul] at h
-  simpa using h
+  simpa [simpleScalarNatural_app_simple, hunit] using
+    (simpleScalarNatural C c).naturality e.hom
 
 end PropertyF.Ground.Dimensions
 

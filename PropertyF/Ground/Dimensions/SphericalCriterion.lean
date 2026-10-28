@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 
+/-! # A criterion for sphericality
+
+Biproduct trace formulas reduce sphericality to the dimensions of simple objects.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
@@ -47,30 +52,28 @@ end PropertyF.Ground.Dimensions
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- In a fusion category it suffices to compare left and right dimensions on
 simple representatives to verify sphericality on all endomorphisms. -/
 theorem isSpherical_iff_simple_dimensions
     (p : PivotalStructure (C := C.Obj)) :
-    p.IsSpherical ↔ ∀ i : Fin (Ground.rank C),
-      p.leftTrace (𝟙 (Ground.simples C i)) = p.rightTrace (𝟙 (Ground.simples C i)) := by
+    p.IsSpherical ↔ ∀ i : Fin (rank C),
+      p.leftTrace (𝟙 (simples C i)) = p.rightTrace (𝟙 (simples C i)) := by
   constructor
   · intro h i
     exact h _ _
   · intro hs X f
     classical
-    let m (i : Fin (Ground.rank C)) := Module.finrank ℂ (Ground.simples C i ⟶ X)
-    let V : (Σ i, Fin (m i)) → C.Obj := fun a => Ground.simples C a.1
+    let m (i : Fin (rank C)) := Module.finrank ℂ (simples C i ⟶ X)
+    let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
     obtain ⟨e⟩ := Ground.exists_canonical_decomposition C X
     let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
     have hleft : p.leftTrace f = p.leftTrace g := by
-      have h := leftTrace_cyclic p e.hom (e.inv ≫ f)
-      simpa [g, Category.assoc] using h
+      simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f))
     have hright : p.rightTrace f = p.rightTrace g := by
-      have h := p.rightTrace_cyclic e.hom (e.inv ≫ f)
-      simpa [g, Category.assoc] using h
+      simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f))
     have hsimple : ∀ a, Simple (V a) := fun a => Ground.simples_simple C a.1
     have hfinite : ∀ a, FiniteDimensional ℂ (V a ⟶ V a) := fun a =>
       Ground.IsFusionCategory.hom_finite _ _

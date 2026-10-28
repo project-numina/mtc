@@ -18,7 +18,7 @@ variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
 open scoped Classical in
 /-- Orthogonal direct-sum endomorphisms decompose as matrix blocks over the
 endomorphism algebras of the constituents. -/
-def orthogonalEndBlocks {ι α : Type} [Fintype ι] [Fintype α]
+def orthogonalEndBlocks {ι α : Type} [Fintype α]
     (S : ι → C) (f : α → ι) (hS : HomOrthogonal S) :
     End (⨁ fun a => S (f a)) ≃ₐ[ℂ]
       ∀ i : ι, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) (End (S i)) := by
@@ -77,7 +77,7 @@ theorem groundSimples_orthogonal (C : Ground.BraidedFusionCategory.{v,u}) :
   intro f
   by_contra hf
   let _ : IsIso f := isIso_of_hom_simple hf
-  exact hij (Ground.simples_injective C i j ⟨asIso f⟩)
+  exact hij (Ground.simples_injective C ⟨asIso f⟩)
 
 /-- The occurrences of label `i` in a dependent sum are indexed by `Fin (m i)`. -/
 def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :

@@ -1,7 +1,6 @@
 module
-public import PropertyF.Ground.Calculus.Unitarization
-public import Mathlib.LinearAlgebra.Span.Defs
 public import PropertyF.Ground.Calculus.UnitaryBlocks
+public import Mathlib.LinearAlgebra.Span.Defs
 public import Mathlib.CategoryTheory.Linear.LinearFunctor
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Calculus.EndBlocks
@@ -30,13 +29,8 @@ theorem map_star_of_mem_span (φ : A →ₐ[ℂ] B) (S : Set A)
 /-- A unitary matrix's adjoint is the inverse of the corresponding unit. -/
 theorem star_eq_coe_inv_of_unitary {ι : Type*} [Fintype ι] [DecidableEq ι]
     (u : (Matrix ι ι ℂ)ˣ) (hu : (u : Matrix ι ι ℂ) ∈ Matrix.unitaryGroup ι ℂ) :
-    star (u : Matrix ι ι ℂ) = (↑u⁻¹ : Matrix ι ι ℂ) := by
-  have h : star (u : Matrix ι ι ℂ) * (u : Matrix ι ι ℂ) = 1 :=
-    Matrix.mem_unitaryGroup_iff'.mp hu
-  calc
-    star (u : Matrix ι ι ℂ) = star (u : Matrix ι ι ℂ) * ((u : Matrix ι ι ℂ) * ↑u⁻¹) := by simp
-    _ = (star (u : Matrix ι ι ℂ) * (u : Matrix ι ι ℂ)) * ↑u⁻¹ := by rw [mul_assoc]
-    _ = (↑u⁻¹ : Matrix ι ι ℂ) := by rw [h, one_mul]
+    star (u : Matrix ι ι ℂ) = (↑u⁻¹ : Matrix ι ι ℂ) :=
+  u.eq_inv_of_mul_eq_one_right (Matrix.mem_unitaryGroup_iff'.mp hu)
 
 /-- If a group spans an algebra and two representations have adjoint equal to
 inverse on group elements, every intertwining algebra map preserves adjoints.
@@ -66,7 +60,7 @@ variable {G H A B : Type*} [Group G] [Group H]
 
 /-- The group image spans any algebra-equivalent block presentation. -/
 theorem presented_group_span (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ}
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
+    (e : groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :
     Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ := by
   classical
   change Submodule.span ℂ (Set.range (fun g => e (groupInImage ρ g))) = ⊤
@@ -77,7 +71,7 @@ theorem presented_group_span (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ}
 
 /-- A unitary block representation sends group inversion to conjugate transpose. -/
 theorem unitary_block_star_inv {n : ℕ} {d : Fin n → ℕ}
-    (ρ : G →* ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
+    (ρ : G →* PropertyF.Blocks.Algebra ⟨_, d⟩)
     (hu : ∀ g i, ρ g i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) (g : G) :
     star (ρ g) = ρ g⁻¹ := by
   apply funext
@@ -92,14 +86,14 @@ strand map and its intertwining property must still be supplied separately. -/
 theorem presented_intertwiner_map_star
     (ρ : G →* A) (σ : H →* B) (τ : G →* H)
     {n m : ℕ} {d : Fin n → ℕ} {k : Fin m → ℕ}
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : groupImageAlgebra σ ≃ₐ[ℂ] ∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ)
-    (he : ∀ g i, e (groupInImage ρ g) i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ h i, f (groupInImage σ h) i ∈ Matrix.unitaryGroup (Fin (k i)) ℂ)
-    (φ : (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ]
-      (∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ))
+    (e : groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (f : groupImageAlgebra σ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, k⟩)
+    (he : IsUnitaryPresentation ρ e)
+    (hf : IsUnitaryPresentation σ f)
+    (φ : (PropertyF.Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
+      (PropertyF.Blocks.Algebra ⟨_, k⟩))
     (hφ : ∀ g, φ (e (groupInImage ρ g)) = f (groupInImage σ (τ g)))
-    (x : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) : φ (star x) = star (φ x) := by
+    (x : PropertyF.Blocks.Algebra ⟨_, d⟩) : φ (star x) = star (φ x) := by
   let ρ' := e.toMonoidHom.comp (groupInImage ρ)
   let σ' := f.toMonoidHom.comp (groupInImage σ)
   apply map_star_of_group_span ρ' σ' τ φ (presented_group_span ρ e)
@@ -117,11 +111,6 @@ namespace PropertyF.Ground.Calculus
 
 variable {G H A B : Type*} [Group G] [Group H]
   [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B]
-
-@[simp] theorem groupInImage_val (ρ : G →* A) (g : G) :
-    (groupInImage ρ g : A) = ρ g := by
-  change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
-  exact MonoidAlgebra.lift_of ρ g
 
 /-- An algebra map intertwining group representations carries the image
 algebra into the target image algebra. -/
@@ -185,10 +174,9 @@ def addLeftBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidAl
 
 /-- The identity-strand algebra map carries each actual braid to its inserted
 copy. -/
-theorem addLeftBraidAlgebra_group (X : C) (n : ℕ) (g : braidImage X n) :
+theorem addLeftBraidAlgebra_group {X : C} {n : ℕ} (g : braidImage X n) :
     addLeftBraidAlgebra X n (groupInImage (braidEndRepresentation X n) g) =
-      groupInImage (braidEndRepresentation X (n + 1)) (addLeftStrand X n g) := by
-  apply imageAlgebraMap_group
+      groupInImage (braidEndRepresentation X (n + 1)) (addLeftStrand X n g) := imageAlgebraMap_group _ _ _ _ _ g
 
 /-- Repeated left identity-strand insertion on the actual image groups. -/
 def addLeftStrands (X : C) (n : ℕ) : ∀ k, braidImage X n →* braidImage X (n + k)
@@ -202,7 +190,7 @@ def addLeftBraidAlgebraIter (X : C) (n : ℕ) :
   | k + 1 => (addLeftBraidAlgebra X (n + k)).comp (addLeftBraidAlgebraIter X n k)
 
 /-- Repeated insertion acts as expected on every actual braid. -/
-theorem addLeftBraidAlgebraIter_group (X : C) (n : ℕ) :
+theorem addLeftBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
       addLeftBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g) =
         groupInImage (braidEndRepresentation X (n + k)) (addLeftStrands X n k g)
@@ -210,30 +198,28 @@ theorem addLeftBraidAlgebraIter_group (X : C) (n : ℕ) :
   | k + 1, g => by
     change addLeftBraidAlgebra X (n + k)
       (addLeftBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g)) = _
-    rw [addLeftBraidAlgebraIter_group X n k g, addLeftBraidAlgebra_group]
+    rw [addLeftBraidAlgebraIter_group k g, addLeftBraidAlgebra_group]
     rfl
 
 /-- Repeated left insertion expressed in unitary matrix blocks. -/
 def addLeftBlocksIter (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) :
-    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ]
-      (∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) :=
+    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩) :
+    (PropertyF.Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
+      (PropertyF.Blocks.Algebra ⟨_, q⟩) :=
   f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left identity-strand insertion is star-preserving in independently
 chosen unitary block presentations. -/
-theorem addLeftBlocksIter_star (X : C) (n k : ℕ) {r s : ℕ}
+theorem addLeftBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ)
-    (x : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
+    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
+    (x : PropertyF.Blocks.Algebra ⟨_, d⟩) :
     addLeftBlocksIter X n k e f (star x) = star (addLeftBlocksIter X n k e f x) := by
   apply presented_intertwiner_map_star (braidEndRepresentation X n)
     (braidEndRepresentation X (n + k)) (addLeftStrands X n k) e f he hf
@@ -246,16 +232,14 @@ theorem addLeftBlocksIter_star (X : C) (n k : ℕ) {r s : ℕ}
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ) :
-    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →⋆ₐ[ℂ]
-      (∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) where
+    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f) :
+    (PropertyF.Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
+      (PropertyF.Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := addLeftBlocksIter X n k e f
-  map_star' := addLeftBlocksIter_star X n k e f he hf
+  map_star' := addLeftBlocksIter_star k e f he hf
 
 end PropertyF.Ground.Calculus
 
@@ -267,12 +251,14 @@ namespace PropertyF.Ground.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
+/-- Append one tensor factor to a right-associated tensor power. -/
 def appendIso (X : C) : ∀ n : ℕ, tensorPower X n ⊗ X ≅ tensorPower X (n + 1)
   | 0 => (λ_ X) ≪≫ (ρ_ X).symm
   | n + 1 => by
     simpa only [tensorPower] using
       ((α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X n))
 
+/-- Append an identity strand to an automorphism of a tensor power. -/
 def addRightAut (X : C) (n : ℕ) : Aut (tensorPower X (n+2)) →* Aut (tensorPower X ((n+1)+2)) :=
   (appendIso X (n+2)).conjAut.toMonoidHom.comp ((tensorRight X).mapAut (tensorPower X (n+2)))
 
@@ -399,10 +385,9 @@ def addRightBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidA
     (addRightStrand X n) (appendRightEndAlgHom X n) (appendRightEndAlgHom_group X n)
 
 /-- The induced algebra map carries every braid to the right-inserted braid. -/
-theorem addRightBraidAlgebra_group (X : C) (n : ℕ) (g : braidImage X n) :
+theorem addRightBraidAlgebra_group {X : C} {n : ℕ} (g : braidImage X n) :
     addRightBraidAlgebra X n (groupInImage (braidEndRepresentation X n) g) =
-      groupInImage (braidEndRepresentation X (n + 1)) (addRightStrand X n g) := by
-  apply imageAlgebraMap_group
+      groupInImage (braidEndRepresentation X (n + 1)) (addRightStrand X n g) := imageAlgebraMap_group _ _ _ _ _ g
 
 /-- Repeated right identity-strand insertion on the actual image groups. -/
 def addRightStrands (X : C) (n : ℕ) : ∀ k, braidImage X n →* braidImage X (n + k)
@@ -416,7 +401,7 @@ def addRightBraidAlgebraIter (X : C) (n : ℕ) :
   | k + 1 => (addRightBraidAlgebra X (n + k)).comp (addRightBraidAlgebraIter X n k)
 
 /-- Repeated insertion acts as expected on every actual braid. -/
-theorem addRightBraidAlgebraIter_group (X : C) (n : ℕ) :
+theorem addRightBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
       addRightBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g) =
         groupInImage (braidEndRepresentation X (n + k)) (addRightStrands X n k g)
@@ -424,30 +409,28 @@ theorem addRightBraidAlgebraIter_group (X : C) (n : ℕ) :
   | k + 1, g => by
     change addRightBraidAlgebra X (n + k)
       (addRightBraidAlgebraIter X n k (groupInImage (braidEndRepresentation X n) g)) = _
-    rw [addRightBraidAlgebraIter_group X n k g, addRightBraidAlgebra_group]
+    rw [addRightBraidAlgebraIter_group k g, addRightBraidAlgebra_group]
     rfl
 
 /-- Repeated right insertion expressed in unitary matrix blocks. -/
 def addRightBlocksIter (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) :
-    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ]
-      (∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) :=
+    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩) :
+    (PropertyF.Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
+      (PropertyF.Blocks.Algebra ⟨_, q⟩) :=
   f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right identity-strand insertion is star-preserving in independently
 chosen unitary block presentations. -/
-theorem addRightBlocksIter_star (X : C) (n k : ℕ) {r s : ℕ}
+theorem addRightBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ)
-    (x : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
+    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
+    (x : PropertyF.Blocks.Algebra ⟨_, d⟩) :
     addRightBlocksIter X n k e f (star x) = star (addRightBlocksIter X n k e f x) := by
   apply presented_intertwiner_map_star (braidEndRepresentation X n)
     (braidEndRepresentation X (n + k)) (addRightStrands X n k) e f he hf
@@ -460,15 +443,13 @@ theorem addRightBlocksIter_star (X : C) (n k : ℕ) {r s : ℕ}
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + k)) g) i ∈
-      Matrix.unitaryGroup (Fin (q i)) ℂ) :
-    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →⋆ₐ[ℂ]
-      (∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ) where
+    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
+    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
+    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f) :
+    (PropertyF.Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
+      (PropertyF.Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := addRightBlocksIter X n k e f
-  map_star' := addRightBlocksIter_star X n k e f he hf
+  map_star' := addRightBlocksIter_star k e f he hf
 
 end PropertyF.Ground.Calculus

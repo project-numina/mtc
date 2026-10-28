@@ -1,10 +1,105 @@
 module
+public import Mathlib.LinearAlgebra.Matrix.PosDef
+public import Mathlib.Analysis.Complex.Order
+public import Mathlib.Tactic
+public import Mathlib.Analysis.Matrix.Order
+public import Mathlib.LinearAlgebra.UnitaryGroup
 public import Mathlib.RepresentationTheory.Maschke
 public import Mathlib.RingTheory.SimpleModule.IsAlgClosed
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 public import Mathlib.RingTheory.Finiteness.Basic
 public import PropertyF.Definitions
-public import PropertyF.Ground.Calculus.Unitarization
+public import PropertyF.BlockTrace
+
+/-! A finite group representation preserves a positive definite Hermitian form.
+The unnormalized average avoids dividing by the group order. -/
+
+@[expose] public noncomputable section
+open Matrix
+open scoped BigOperators ComplexOrder
+namespace PropertyF.Ground.Calculus
+
+variable {G ι : Type*} [Group G] [Fintype G] [Fintype ι] [DecidableEq ι]
+
+/-- The Gram matrix of the sum of all pullbacks of the standard form. -/
+def averagedGram (ρ : G →* (Matrix ι ι ℂ)ˣ) : Matrix ι ι ℂ :=
+  ∑ g : G, (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ)
+
+/-- The averaged form is positive definite, even in dimension zero. -/
+theorem averagedGram_posDef (ρ : G →* (Matrix ι ι ℂ)ˣ) :
+    (averagedGram ρ).PosDef := by
+  classical
+  unfold averagedGram
+  apply Matrix.posDef_sum Finset.univ_nonempty
+  intro g _
+  exact Matrix.PosDef.conjTranspose_mul_self _
+    (Matrix.mulVec_injective_of_isUnit (Units.isUnit (ρ g)))
+
+/-- Every group element is an isometry for the averaged form. -/
+theorem averagedGram_invariant (ρ : G →* (Matrix ι ι ℂ)ˣ) (h : G) :
+    (↑(ρ h) : Matrix ι ι ℂ)ᴴ * averagedGram ρ * (↑(ρ h) : Matrix ι ι ℂ) = averagedGram ρ := by
+  classical
+  simp only [averagedGram, Matrix.mul_sum, Matrix.sum_mul]
+  calc
+    _ = ∑ g : G, (↑(ρ (g * h)) : Matrix ι ι ℂ)ᴴ * (↑(ρ (g * h)) : Matrix ι ι ℂ) := by
+      apply Finset.sum_congr rfl
+      intro g _
+      simp only [map_mul, Units.val_mul, Matrix.conjTranspose_mul]
+      simp only [Matrix.mul_assoc]
+    _ = ∑ g : G, (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ) := by
+      exact Equiv.sum_comp (Equiv.mulRight h)
+        (fun g => (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ))
+
+end PropertyF.Ground.Calculus
+
+/-! A finite complex matrix representation can be conjugated into the unitary group. -/
+
+@[expose] public noncomputable section
+open Matrix
+open scoped BigOperators ComplexOrder MatrixOrder
+namespace PropertyF.Ground.Calculus
+
+variable {G ι : Type*} [Group G] [Fintype G] [Fintype ι] [DecidableEq ι]
+
+/-- A single change of basis unitarizes every matrix in a finite group representation. -/
+theorem exists_unitarizing_basis (ρ : G →* (Matrix ι ι ℂ)ˣ) :
+    ∃ P : (Matrix ι ι ℂ)ˣ, ∀ g : G,
+      ((↑(P * ρ g * P⁻¹) : Matrix ι ι ℂ) ∈ Matrix.unitaryGroup ι ℂ) := by
+  classical
+  let A := averagedGram ρ
+  have hA : 0 ≤ A := (averagedGram_posDef ρ).posSemidef.nonneg
+  have hS : IsUnit (CFC.sqrt A) := (CFC.isUnit_sqrt_iff A hA).2
+    (averagedGram_posDef ρ).isUnit
+  let P : (Matrix ι ι ℂ)ˣ := hS.unit
+  have hP : (↑P : Matrix ι ι ℂ) = CFC.sqrt A := hS.unit_spec
+  have hself : star (↑P : Matrix ι ι ℂ) = ↑P := by
+    rw [hP]
+    exact (CFC.sqrt_nonneg A).star_eq
+  have hsquare : (↑P : Matrix ι ι ℂ) * (↑P : Matrix ι ι ℂ) = A := by
+    rw [hP, ← pow_two, CFC.sq_sqrt A hA]
+  refine ⟨P, fun g => ?_⟩
+  apply Matrix.mem_unitaryGroup_iff'.2
+  have hinv : (↑(ρ g) : Matrix ι ι ℂ)ᴴ * A * (↑(ρ g) : Matrix ι ι ℂ) = A :=
+    averagedGram_invariant ρ g
+  change star ((↑P : Matrix ι ι ℂ) * (↑(ρ g) : Matrix ι ι ℂ) * (↑(P⁻¹) : Matrix ι ι ℂ)) *
+    ((↑P : Matrix ι ι ℂ) * (↑(ρ g) : Matrix ι ι ℂ) * (↑(P⁻¹) : Matrix ι ι ℂ)) = 1
+  simp only [star_mul, hself, ← Matrix.star_eq_conjTranspose] at hinv ⊢
+  have hselfu : star P = P := Units.ext hself
+  have hselfinv : star (↑(P⁻¹) : Matrix ι ι ℂ) = ↑(P⁻¹) := by
+    have h : star (P⁻¹) = P⁻¹ := by simp [hselfu]
+    exact congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ)) h
+  rw [hselfinv]
+  calc
+    _ = (↑(P⁻¹) : Matrix ι ι ℂ) * (star (↑(ρ g) : Matrix ι ι ℂ) * A * ↑(ρ g)) * ↑(P⁻¹) := by
+      rw [← hsquare]
+      noncomm_ring
+    _ = (↑(P⁻¹) : Matrix ι ι ℂ) * (↑P * ↑P) * ↑(P⁻¹) := by rw [hinv, hsquare]
+    _ = 1 := by
+      change (↑(P⁻¹ * (P * P) * P⁻¹) : Matrix ι ι ℂ) = ↑(1 : (Matrix ι ι ℂ)ˣ)
+      congr 1
+      simp
+
+end PropertyF.Ground.Calculus
 
 /-! Wedderburn decomposition of the linear span of a finite group image. -/
 
@@ -55,7 +150,7 @@ theorem groupImageAlgebra_finite (ρ : G →* A) :
 matrix blocks. It is not assumed that the representation is faithful. -/
 theorem groupImageAlgebra_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ), (∀ i, NeZero (d i)) ∧
-      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) := by
+      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) := by
   let _ := groupImageAlgebra_semisimple ρ
   let _ := groupImageAlgebra_finite ρ
   exact IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
@@ -108,6 +203,17 @@ def groupInImage (ρ : G →* A) : G →* groupImageAlgebra ρ :=
   (groupAlgebraMap ρ).rangeRestrict.toMonoidHom.comp (MonoidAlgebra.of ℂ G)
 
 omit [Finite G] in
+@[simp] theorem groupInImage_val (ρ : G →* A) (g : G) :
+    (groupInImage ρ g : A) = ρ g := by
+  change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
+  exact MonoidAlgebra.lift_of ρ g
+
+/-- A block presentation in which each represented group element is unitary. -/
+abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
+    (e : groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=
+  ∀ g i, e (groupInImage ρ g) i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ
+
+omit [Finite G] in
 /-- The group elements span their image algebra. -/
 theorem groupInImage_span (ρ : G →* A) :
     Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ := by
@@ -117,26 +223,19 @@ theorem groupInImage_span (ρ : G →* A) :
   calc
     _ = Submodule.span ℂ (Set.range ρ) := by
       congr 1
-      ext x
-      simp only [Set.mem_image, Set.mem_range]
-      constructor
-      · rintro ⟨_, ⟨g, rfl⟩, rfl⟩
-        refine ⟨g, ?_⟩
-        change ρ g = MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g)
-        exact (MonoidAlgebra.lift_of ρ g).symm
-      · rintro ⟨g, rfl⟩
-        refine ⟨groupInImage ρ g, ⟨g, rfl⟩, ?_⟩
-        change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
-        exact MonoidAlgebra.lift_of ρ g
+      rw [← Set.range_comp']
+      change Set.range (fun g => (groupInImage ρ g : A)) = Set.range ρ
+      congr 1
+      funext g
+      exact groupInImage_val ρ g
     _ = (groupImageAlgebra ρ).toSubmodule := (groupImageAlgebra_toSubmodule ρ).symm
 
 /-- A Wedderburn equivalence can be chosen so that every group element is
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
 theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ) (e : groupImageAlgebra ρ ≃ₐ[ℂ]
-        ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ),
-      (∀ i, NeZero (d i)) ∧ ∀ g i, e (groupInImage ρ g) i ∈
-        Matrix.unitaryGroup (Fin (d i)) ℂ := by
+        PropertyF.Blocks.Algebra ⟨_, d⟩),
+      (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation ρ e := by
   classical
   let _ : Fintype G := Fintype.ofFinite G
   obtain ⟨n, d, hd, ⟨e⟩⟩ := groupImageAlgebra_blocks ρ
@@ -161,9 +260,8 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 realization of their actual endomorphism algebra. -/
 theorem braidAlgebra_unitary_blocks (X : C) (n : ℕ) (h : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
-        ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ),
-      (∀ i, NeZero (d i)) ∧ ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-        Matrix.unitaryGroup (Fin (d i)) ℂ := by
+        PropertyF.Blocks.Algebra ⟨_, d⟩),
+      (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation (braidEndRepresentation X n) e := by
   let _ : Finite (braidImage X n) := h
   exact groupImageAlgebra_unitary_blocks _
 

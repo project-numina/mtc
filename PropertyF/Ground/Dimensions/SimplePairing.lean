@@ -2,12 +2,17 @@ module
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import Mathlib.LinearAlgebra.Dual.Lemmas
 
+/-! # Pairings with simple objects
+
+Composition gives a nondegenerate linear pairing between morphism spaces to and from a simple object.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- A nonzero morphism to a simple object splits in the genuine fusion category. -/
@@ -20,8 +25,7 @@ theorem split_to_simple
   have he : e.inv ≫ g ≠ 0 := by
     intro h
     apply hg
-    have hh := congrArg (fun z => e.hom ≫ z) h
-    simpa [Category.assoc] using hh
+    simpa [Category.assoc] using (congrArg (fun z => e.hom ≫ z) h)
   have hp : ∃ a, biproduct.ι V a ≫ e.inv ≫ g ≠ 0 := by
     by_contra h
     push Not at h
@@ -30,14 +34,14 @@ theorem split_to_simple
     intro a
     simpa [Category.assoc] using h a
   obtain ⟨a, ha⟩ := hp
-  letI : Simple (V a) := Ground.simples_simple C a.1
+  let : Simple (V a) := Ground.simples_simple C a.1
   let h : V a ⟶ S := biproduct.ι V a ≫ e.inv ≫ g
-  letI : IsIso h := isIso_of_hom_simple ha
+  let : IsIso h := isIso_of_hom_simple ha
   refine ⟨inv h ≫ biproduct.ι V a ≫ e.inv, ?_⟩
-  simpa [h, Category.assoc] using IsIso.inv_hom_id h
+  simp [h, Category.assoc]
 
 /-- Schur's scalar isomorphism for any simple object. -/
-def simpleEndScalarEquiv (C : Ground.BraidedFusionCategory.{v,u})
+def simpleEndScalarEquiv (C : BraidedFusionCategory.{v,u})
     (S : C.Obj) [Simple S] : End S ≃ₐ[ℂ] ℂ := by
   letI : FiniteDimensional ℂ (S ⟶ S) := Ground.IsFusionCategory.hom_finite _ _
   apply (AlgEquiv.ofBijective (Algebra.ofId ℂ (End S)) ?_).symm
@@ -51,7 +55,7 @@ def simpleEndScalarEquiv (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- Composition induces the scalar-valued pairing between morphisms to and
 from a simple object. -/
-def simpleHomPairing (C : Ground.BraidedFusionCategory.{v,u})
+def simpleHomPairing (C : BraidedFusionCategory.{v,u})
     (S X : C.Obj) [Simple S] : (X ⟶ S) →ₗ[ℂ] Module.Dual ℂ (S ⟶ X) where
   toFun g := {
     toFun := fun f => simpleEndScalarEquiv C S (End.of (f ≫ g))
@@ -94,16 +98,16 @@ theorem simpleHomPairing_injective
   simp at hh
 
 /-- The composition pairing is perfect for each representative simple. -/
-def simpleHomPairingEquiv (C : Ground.BraidedFusionCategory.{v,u})
-    (i : Fin (Ground.rank C)) (X : C.Obj) :
-    (X ⟶ Ground.simples C i) ≃ₗ[ℂ] Module.Dual ℂ (Ground.simples C i ⟶ X) := by
-  letI : Simple (Ground.simples C i) := Ground.simples_simple C i
-  letI : FiniteDimensional ℂ (X ⟶ Ground.simples C i) := Ground.IsFusionCategory.hom_finite _ _
-  letI : FiniteDimensional ℂ (Ground.simples C i ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
-  let p := simpleHomPairing C (Ground.simples C i) X
-  have hi := simpleHomPairing_injective C (Ground.simples C i) X
-  have hd : Module.finrank ℂ (X ⟶ Ground.simples C i) =
-      Module.finrank ℂ (Module.Dual ℂ (Ground.simples C i ⟶ X)) := by
+def simpleHomPairingEquiv (C : BraidedFusionCategory.{v,u})
+    (i : Fin (rank C)) (X : C.Obj) :
+    (X ⟶ simples C i) ≃ₗ[ℂ] Module.Dual ℂ (simples C i ⟶ X) := by
+  letI : Simple (simples C i) := Ground.simples_simple C i
+  letI : FiniteDimensional ℂ (X ⟶ simples C i) := Ground.IsFusionCategory.hom_finite _ _
+  letI : FiniteDimensional ℂ (simples C i ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  let p := simpleHomPairing C (simples C i) X
+  have hi := simpleHomPairing_injective C (simples C i) X
+  have hd : Module.finrank ℂ (X ⟶ simples C i) =
+      Module.finrank ℂ (Module.Dual ℂ (simples C i ⟶ X)) := by
     rw [Subspace.dual_finrank_eq]
     exact Ground.finrank_to_simple_eq_from_simple C X i
   exact LinearEquiv.ofBijective p ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).1 hi⟩

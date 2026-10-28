@@ -2,20 +2,24 @@ module
 public import PropertyF.Ground.Target
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 
+/-! # The Drinfeld isomorphism
+
+The braided double-dual isomorphism is natural and induces the fourth-dual isomorphism.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 open PropertyF.Ground
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- The braided double-dual isomorphism is characterized by its evaluation map. -/
 theorem drinfeld_eval (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     (doubleDualIso C X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
-      (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) := by
-  have he := rightDualIso_evaluation (BraidedCategory.exactPairing_swap X (Xᘁ))
+      (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) :=
+  rightDualIso_evaluation (BraidedCategory.exactPairing_swap X (Xᘁ))
     (@HasRightDual.exact C.Obj _ _ (Xᘁ) (RightRigidCategory.rightDual (Xᘁ)))
-  exact he
 /-- The braided double-dual isomorphism is natural. -/
 @[reassoc]
 theorem doubleDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f : X ⟶ Y) :

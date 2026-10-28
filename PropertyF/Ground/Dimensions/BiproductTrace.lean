@@ -4,6 +4,11 @@ public import Mathlib.CategoryTheory.Preadditive.Biproducts
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
+/-! # Traces of biproducts
+
+Pivotal traces decompose over finite biproducts and their scalar blocks.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
@@ -21,9 +26,9 @@ def rightTraceLinear (p : PivotalStructure (C := C)) (X : C) :
 
 /-- The right trace decomposes across a finite family of maps summing to the identity. -/
 theorem rightTrace_decomposition {ι : Type*} [Fintype ι] (p : PivotalStructure (C := C))
-    (X : C) (Y : ι → C) (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
+    {X : C} {Y : ι → C} (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
-    p.rightTrace f = ∑ j, p.rightTrace (i j ≫ f ≫ q j) := by
+    p.rightTrace f = ∑ j, p.rightTrace (i j ≫ f ≫ q j) :=
   calc
     _ = p.rightTrace ((∑ j, q j ≫ i j) ≫ f) := by rw [h, Category.id_comp]
     _ = ∑ j, p.rightTrace ((q j ≫ i j) ≫ f) := by
@@ -38,7 +43,7 @@ theorem rightTrace_decomposition {ι : Type*} [Fintype ι] (p : PivotalStructure
 theorem rightTrace_biproduct {ι : Type*} [Fintype ι] (F : ι → C) [HasBiproduct F]
     (p : PivotalStructure (C := C)) (f : (⨁ F) ⟶ (⨁ F)) :
     p.rightTrace f = ∑ i, p.rightTrace (biproduct.ι F i ≫ f ≫ biproduct.π F i) :=
-  rightTrace_decomposition p _ F (biproduct.ι F) (biproduct.π F) biproduct.total f
+  rightTrace_decomposition p (biproduct.ι F) (biproduct.π F) biproduct.total f
 
 /-- Categorical dimensions are additive on finite direct sums. -/
 theorem rightDimension_biproduct {ι : Type*} [Fintype ι] (F : ι → C) [HasBiproduct F]

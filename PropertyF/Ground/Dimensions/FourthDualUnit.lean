@@ -1,12 +1,17 @@
 module
 public import PropertyF.Ground.Dimensions.CoevaluationSliding
 
+/-! # Fourth duals of the tensor unit
+
+The Drinfeld and fourth-dual maps satisfy the unit identities used for root dimensions.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The braided double-dual map has the canonical component on the unit. -/
 theorem drinfeld_unit :
@@ -29,8 +34,7 @@ theorem drinfeld_unit :
       rw [hn, Category.assoc, ← comp_whiskerRight, Iso.hom_inv_id, id_whiskerRight, Category.comp_id]
     rw [← whisker_exchange_assoc, ← Category.assoc, hc]
   change (doubleDualUnitIso (C := C.Obj)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
-  have he := (drinfeld_eval C U).trans h.symm
-  exact evaluation_ext he
+  exact evaluation_ext ((drinfeld_eval C U).trans h.symm)
 end PropertyF.Ground.Dimensions
 
 end
@@ -40,7 +44,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The Drinfeld map respects duality on the tensor unit. -/
 theorem drinfeld_unit_dual :
@@ -55,9 +59,8 @@ theorem drinfeld_unit_dual :
     exact rightDualUnitIso
   have hu : (Ground.doubleDualIso C U).hom = (r.inv ≫ (r.homᘁ)) := by
     exact drinfeld_unit C
-  have hn := doubleDualIso_natural C r.hom
   have hb : (Ground.doubleDualIso C (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) = (r.homᘁ) := by
-    rw [← hn, hu]
+    rw [← (doubleDualIso_natural C r.hom), hu]
     simp only [Iso.hom_inv_id_assoc]
   apply Iso.ext
   simp only [rightDualIsoMap, Iso.symm_hom]
@@ -95,10 +98,18 @@ theorem fourthDualIso_unit :
   rw [hu]
   apply Iso.ext
   rfl
+/-- The root dimension of the unit label is the root trace of the tensor unit. -/
+theorem rootDimension_unit :
+    rootDimension C (unitIndex C) =
+      Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj))) := by
+  obtain ⟨e⟩ := Ground.unitIndex_iso C
+  unfold rootDimension
+  rw [rootTrace_id_iso C e, rootTrace_id C]
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root dimension of the unit is a sign. -/
 theorem rootDimension_unit_sq :
-    rootDimension C (Ground.unitIndex C) * rootDimension C (Ground.unitIndex C) = 1 := by
+    rootDimension C (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
@@ -109,8 +120,7 @@ theorem rootDimension_unit_sq :
   let u := Ground.doubleDualIso C U
   obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar u a
   have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso C U).hom := by
-    have h := congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C)
-    exact h
+    exact (congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C))
   have hfourth : (fourthDualIso C U).hom = u.hom ≫ ((u.homᘁ)ᘁ) := by
     have h := congrArg Iso.hom (fourthDualIso_unit C)
     have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
@@ -139,19 +149,8 @@ theorem rootDimension_unit_sq :
       rw [hu, rightQuantumTrace_unitIso]
     rw [hunit]
     simp only [← groundUnitScalarEquiv_apply, map_smul, map_one, smul_eq_mul, mul_one]
-  have hdim : rootDimension C (Ground.unitIndex C) = r := by
-    obtain ⟨e⟩ := Ground.unitIndex_iso C
-    have hn := (fourthDualRootNaturalIso C).hom.naturality e.hom
-    have ht := rightQuantumTrace_iso
-      ((fourthDualRootNaturalIso C).app (Ground.simples C (Ground.unitIndex C))) a e
-      (by simpa [doubleDualFunctor, a] using hn)
-    change Ground.unitScalar C (rootTrace C (𝟙 (Ground.simples C (Ground.unitIndex C)))) = r
-    have hq : rootTrace C (𝟙 (Ground.simples C (Ground.unitIndex C))) =
-        rightQuantumTrace ((fourthDualRootNaturalIso C).app (Ground.simples C (Ground.unitIndex C))) := by
-      apply End.homEquiv.injective
-      simp [rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def]
-    rw [hq, ht, htrace]
-  simpa [hdim] using hr2
+  rw [rootDimension_unit C, htrace]
+  exact hr2
 
 end PropertyF.Ground.Dimensions
 

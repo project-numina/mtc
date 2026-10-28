@@ -9,14 +9,14 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
 theorem pivotalDimension_eq_fp (p : Dimensions.PivotalStructure (C := C.Obj))
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (X : C.Obj) : Dimensions.pivotalDimension C p X = (fpDimension C X : ℂ) := by
   rw [Dimensions.pivotalDimension_decomposition]
-  unfold fpDimension
-  simp only [Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast, hsimple]
+  simp only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast, hsimple]
 
 /-- The induction of the tensor unit has base pivotal dimension FPdim(C). -/
 theorem induced_unit_dimension (p : Dimensions.PivotalStructure (C := C.Obj))
@@ -28,8 +28,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The displayed trace compatibility makes the induced unit trace nonzero. -/
 theorem induced_center_trace_ne_zero_of_compatible (p : Dimensions.PivotalStructure (C := C.Obj))
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
+    [RigidCategory (𝒵)]
+    (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
       (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom) :
     pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj))) ≠ 0 := by
@@ -55,11 +55,11 @@ set_option backward.isDefEq.respectTransparency false in
 base pivotal dimensions equal FP dimensions. -/
 theorem center_fusion_of_compatible_pivotal (p : Dimensions.PivotalStructure (C := C.Obj))
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
+    [RigidCategory (𝒵)]
+    (pZ : Dimensions.PivotalStructure (C := 𝒵))
     (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
       (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom) :
-    IsFusionCategory (CategoryTheory.Center C.Obj) :=
+    IsFusionCategory (𝒵) :=
   center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
     (induced_center_trace_ne_zero_of_compatible C p hsimple pZ hcompat)
 
@@ -75,11 +75,14 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+  [RigidCategory (CategoryTheory.Center D)]
+local notation "𝒵" => CategoryTheory.Center D
 
+omit [RightRigidCategory D] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Forgetting a centre dual pair gives a dual pair in the base category. -/
-@[instance_reducible] def forgetPairing (Z : CategoryTheory.Center C.Obj) : ExactPairing Z.1 ((Zᘁ).1) where
+@[instance_reducible] def forgetPairing (Z : 𝒵) : ExactPairing Z.1 ((Zᘁ).1) where
   coevaluation' := (η_ Z (Zᘁ)).f
   evaluation' := (ε_ Z (Zᘁ)).f
   coevaluation_evaluation' := by
@@ -98,23 +101,23 @@ set_option backward.isDefEq.respectTransparency false in
       CategoryTheory.Center.leftUnitor_inv_f] using h
 
 /-- Compare the underlying centre dual with the chosen base dual. -/
-def forgetDualIso (Z : CategoryTheory.Center C.Obj) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=
-  rightDualIso (forgetPairing C Z) HasRightDual.exact
+def forgetDualIso (Z : 𝒵) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=
+  rightDualIso (forgetPairing Z) HasRightDual.exact
 
 /-- Compare the underlying centre double dual with the chosen base double dual. -/
-def forgetDoubleDualIso (Z : CategoryTheory.Center C.Obj) : (((Zᘁ)ᘁ).1) ≅ ((Z.1ᘁ)ᘁ) :=
-  forgetDualIso C (Zᘁ) ≪≫ Dimensions.rightDualIsoMap (forgetDualIso C Z).symm
+def forgetDoubleDualIso (Z : 𝒵) : (((Zᘁ)ᘁ).1) ≅ ((Z.1ᘁ)ᘁ) :=
+  forgetDualIso (Zᘁ) ≪≫ Dimensions.rightDualIsoMap (forgetDualIso Z).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Compatible pivotal components have equal traces after forgetting. -/
 theorem forget_trace_of_pivotal_component
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
-    (Z : CategoryTheory.Center C.Obj)
-    (hcompat : ((pZ.iso Z).hom.f) ≫ (forgetDoubleDualIso C Z).hom = (p.iso Z.1).hom) :
+    (p : Dimensions.PivotalStructure (C := D))
+    (pZ : Dimensions.PivotalStructure (C := 𝒵))
+    (Z : 𝒵)
+    (hcompat : ((pZ.iso Z).hom.f) ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     (pZ.rightTrace (𝟙 Z)).asHom.f = (p.rightTrace (𝟙 Z.1)).asHom := by
-  let e := forgetDualIso C Z
-  let e' := forgetDualIso C (Zᘁ)
+  let e := forgetDualIso Z
+  let e' := forgetDualIso (Zᘁ)
   let u : Z.1 ⟶ ((Zᘁ)ᘁ).1 := (pZ.iso Z).hom.f
   have hu : u ≫ e'.hom ≫ (e.invᘁ) = (p.iso Z.1).hom := by
     simpa [forgetDoubleDualIso, Dimensions.rightDualIsoMap, e, e', u, Category.assoc] using hcompat
@@ -122,9 +125,9 @@ theorem forget_trace_of_pivotal_component
     rw [← hu]
     simp only [Category.assoc, ← comp_rightAdjointMate, Iso.hom_inv_id,
       rightAdjointMate_id, Category.comp_id]
-  have heval := Dimensions.rightDualIso_evaluation (forgetPairing C (Zᘁ)) HasRightDual.exact
+  have heval := Dimensions.rightDualIso_evaluation (forgetPairing (Zᘁ)) HasRightDual.exact
   change (e'.hom ▷ ((Zᘁ).1)) ≫ ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) = (ε_ (Zᘁ) ((Zᘁ)ᘁ)).f at heval
-  have ht := Dimensions.trace_change_rightDual (forgetPairing C Z) HasRightDual.exact (p.iso Z.1).hom
+  have ht := Dimensions.trace_change_rightDual (forgetPairing Z) HasRightDual.exact (p.iso Z.1).hom
   change (η_ Z (Zᘁ)).f ≫ (((p.iso Z.1).hom ≫ (e.homᘁ)) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
       ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) =
     η_ Z.1 (Z.1ᘁ) ≫ ((p.iso Z.1).hom ⊗ₘ 𝟙 (Z.1ᘁ)) ≫ ε_ (Z.1ᘁ) ((Z.1ᘁ)ᘁ) at ht

@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.Pivotal
 
+/-! # Duality coherence
+
+Evaluation and coevaluation identities relate changes of duals and the associated traces.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -14,11 +19,10 @@ theorem coevaluation_rightDualIso {X Y Z : C} (p : ExactPairing X Y) (q : ExactP
       @ExactPairing.coevaluation C _ _ X Z q := by
   let hp : HasRightDual X := { rightDual := Y, exact := p }
   let hq : HasRightDual X := { rightDual := Z, exact := q }
-  have h := @coevaluation_comp_rightAdjointMate C _ _ X X hq hp (𝟙 X)
-  change (@ExactPairing.coevaluation C _ _ X Y p ≫ X ◁ (rightDualIso p q).hom) =
-    (@ExactPairing.coevaluation C _ _ X Z q ≫ (𝟙 X) ▷ Z) at h
-  rw [id_whiskerRight, Category.comp_id] at h
-  exact h
+  simpa only [id_whiskerRight, Category.comp_id] using
+    (show (@ExactPairing.coevaluation C _ _ X Y p ≫ X ◁ (rightDualIso p q).hom) =
+      (@ExactPairing.coevaluation C _ _ X Z q ≫ (𝟙 X) ▷ Z) from
+        @coevaluation_comp_rightAdjointMate C _ _ X X hq hp (𝟙 X))
 
 /-- The canonical isomorphism between two right duals transports evaluation. -/
 theorem rightDualIso_evaluation {X Y Z : C} (p : ExactPairing X Y) (q : ExactPairing X Z) :
@@ -26,11 +30,10 @@ theorem rightDualIso_evaluation {X Y Z : C} (p : ExactPairing X Y) (q : ExactPai
       @ExactPairing.evaluation C _ _ X Y p := by
   let hp : HasRightDual X := { rightDual := Y, exact := p }
   let hq : HasRightDual X := { rightDual := Z, exact := q }
-  have h := @rightAdjointMate_comp_evaluation C _ _ X X hq hp (𝟙 X)
-  change (rightDualIso p q).hom ▷ X ≫ @ExactPairing.evaluation C _ _ X Z q =
-    Y ◁ (𝟙 X) ≫ @ExactPairing.evaluation C _ _ X Y p at h
-  rw [whiskerLeft_id, Category.id_comp] at h
-  exact h
+  simpa only [whiskerLeft_id, Category.id_comp] using
+    (show (rightDualIso p q).hom ▷ X ≫ @ExactPairing.evaluation C _ _ X Z q =
+      Y ◁ (𝟙 X) ≫ @ExactPairing.evaluation C _ _ X Y p from
+        @rightAdjointMate_comp_evaluation C _ _ X X hq hp (𝟙 X))
 
 /-- The inverse dual comparison transports coevaluation in the reverse direction. -/
 theorem coevaluation_rightDualIso_inv {X Y Z : C} (p : ExactPairing X Y) (q : ExactPairing X Z) :
@@ -57,20 +60,21 @@ theorem trace_change_rightDual [RightRigidCategory C] {X Y Z : C}
   rw [coevaluation_rightDualIso_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The pivotal dimension of the tensor unit is one. -/
-theorem rightTrace_unit [RightRigidCategory C] (p : PivotalStructure (C := C)) : p.rightTrace (𝟙 (𝟙_ C)) = 1 := by
+/-- The canonical double-dual unit isomorphism has unit evaluation trace. -/
+theorem unitDoubleDual_trace [RightRigidCategory C] :
+    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+    letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
+    η_ (𝟙_ C) ((𝟙_ C)ᘁ) ≫
+      ((doubleDualUnitIso (C := C)).hom ⊗ₘ 𝟙 ((𝟙_ C)ᘁ)) ≫
+      ε_ ((𝟙_ C)ᘁ) (((𝟙_ C)ᘁ)ᘁ) = 𝟙 (𝟙_ C) := by
   let hp : ExactPairing (𝟙_ C) (rightDualObject (𝟙_ C)) :=
     @HasRightDual.exact C _ _ (𝟙_ C) (RightRigidCategory.rightDual (𝟙_ C))
   let hq : ExactPairing (𝟙_ C) (𝟙_ C) := exactPairingUnit
   let r := rightDualIso hp hq
-  have h := trace_change_rightDual hp hq r.inv
-  have hev := rightDualIso_inv_evaluation hp hq
-  apply End.homEquiv.injective
-  simp only [PivotalStructure.rightTrace, End.homEquiv_apply, End.one_asHom,
-    Category.id_comp, p.unit]
   change @ExactPairing.coevaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp ≫
     ((r.inv ≫ @rightAdjointMate C _ _ (rightDualObject (𝟙_ C)) (𝟙_ C)
-      (RightRigidCategory.rightDual _) (RightRigidCategory.rightDual _) r.hom) ⊗ₘ 𝟙 (rightDualObject (𝟙_ C))) ≫
+      (RightRigidCategory.rightDual _) (RightRigidCategory.rightDual _) r.hom) ⊗ₘ
+        𝟙 (rightDualObject (𝟙_ C))) ≫
       @ExactPairing.evaluation C _ _ (rightDualObject (𝟙_ C))
         (rightDualObject (rightDualObject (𝟙_ C)))
         (@HasRightDual.exact C _ _ _ (RightRigidCategory.rightDual _)) = 𝟙 (𝟙_ C)
@@ -81,9 +85,18 @@ theorem rightTrace_unit [RightRigidCategory C] (p : PivotalStructure (C := C)) :
     change @ExactPairing.coevaluation C _ _ (𝟙_ C) (𝟙_ C) hq ≫
       ((rightDualIso hp hq).inv ▷ (𝟙_ C) ≫
         @ExactPairing.evaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp) = 𝟙 (𝟙_ C)
-    rw [hev]
+    rw [(rightDualIso_inv_evaluation hp hq)]
     change (ρ_ (𝟙_ C)).inv ≫ (ρ_ (𝟙_ C)).hom = 𝟙 (𝟙_ C)
     exact Iso.inv_hom_id _
-  exact h.trans hfinal
+  exact (trace_change_rightDual hp hq r.inv).trans hfinal
+
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The pivotal dimension of the tensor unit is one. -/
+theorem rightTrace_unit [RightRigidCategory C] (p : PivotalStructure (C := C)) :
+    p.rightTrace (𝟙 (𝟙_ C)) = 1 := by
+  apply End.homEquiv.injective
+  simpa only [PivotalStructure.rightTrace, End.homEquiv_apply, End.one_asHom,
+    Category.id_comp, p.unit] using (unitDoubleDual_trace (C := C))
 
 end PropertyF.Ground.Dimensions

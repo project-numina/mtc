@@ -7,6 +7,11 @@ public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.ComplexSaturation
 
+/-! # Pivotal structures and pseudo-unitarity
+
+Duality and reality properties of pivotal dimensions lead to a positive spherical structure.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -40,8 +45,7 @@ theorem pivotal_dual {C : Type u} [Category.{v} C]
   change (p.iso (Xᘁ)).hom = ((p.iso X).inv)ᘁ
   have h := pivotal_evaluation p X
   simp only [tensorHom_def, Category.assoc] at h
-  have hm := rightAdjointMate_comp_evaluation (p.iso X).hom
-  rw [← hm] at h
+  rw [← (rightAdjointMate_comp_evaluation (p.iso X).hom)] at h
   rw [← comp_whiskerRight_assoc] at h
   have hk : (p.iso (Xᘁ)).hom ≫ ((p.iso X).hom)ᘁ = 𝟙 (Xᘁ) := by
     apply evaluation_ext (X := X)
@@ -60,7 +64,7 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The left dimension is the right dimension of the dual object. -/
 theorem pivotal_leftTrace_id_eq_rightTrace_dual {C : Type u} [Category.{v} C]
@@ -71,13 +75,13 @@ theorem pivotal_leftTrace_id_eq_rightTrace_dual {C : Type u} [Category.{v} C]
 /-- A pivotal fusion category is spherical exactly when all simple dimensions are real. -/
 theorem pivotal_spherical_iff_simple_dimensions_real
     (p : PivotalStructure (C := C.Obj)) :
-    p.IsSpherical ↔ ∀ i, star (pivotalDimension C p (Ground.simples C i)) =
-      pivotalDimension C p (Ground.simples C i) := by
-  have hdual (i : Fin (Ground.rank C)) :
-      Ground.unitScalar C (p.leftTrace (𝟙 (Ground.simples C i))) =
-        star (pivotalDimension C p (Ground.simples C i)) := by
+    p.IsSpherical ↔ ∀ i, star (pivotalDimension C p (simples C i)) =
+      pivotalDimension C p (simples C i) := by
+  have hdual (i : Fin (rank C)) :
+      Ground.unitScalar C (p.leftTrace (𝟙 (simples C i))) =
+        star (pivotalDimension C p (simples C i)) := by
     rw [pivotal_leftTrace_id_eq_rightTrace_dual]
-    change pivotalDimension C p ((Ground.simples C i)ᘁ) = _
+    change pivotalDimension C p ((simples C i)ᘁ) = _
     rw [pivotalDimension_iso C p (rightDualLabelIso C i), pivotalDimension_dual_eq_conj]
   rw [isSpherical_iff_simple_dimensions]
   constructor
@@ -97,27 +101,27 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The intrinsic norm is the product of the pivotal dimensions of a simple and its dual. -/
 theorem squaredNorm_eq_pivotal_dimension_product
-    (p : PivotalStructure (C := C.Obj)) (i : Fin (Ground.rank C)) :
-    Ground.squaredNorm C (Ground.simples C i) = pivotalDimension C p (Ground.simples C i) *
-      pivotalDimension C p (Ground.simples C (Ground.dualIndex C i)) := by
-  let X := Ground.simples C i
+    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
+    squaredNorm C (simples C i) = pivotalDimension C p (simples C i) *
+      pivotalDimension C p (simples C (Ground.dualIndex C i)) := by
+  let X := simples C i
   let : Simple X := Ground.simples_simple C i
-  rw [target_squaredNorm_choice_independent C X (p.iso X), leftQuantumTrace_eq_rightDual]
+  rw [target_squaredNorm_choice_independent C (p.iso X), leftQuantumTrace_eq_rightDual]
   rw [← pivotal_dual p X, ← rightTrace_id, ← rightTrace_id]
   change pivotalDimension C p X * pivotalDimension C p (Xᘁ) = _
   rw [pivotalDimension_iso C p (rightDualLabelIso C i)]
 
 /-- Each Galois-conjugate intrinsic norm is the squared norm of the corresponding conjugate pivotal dimension. -/
 theorem galois_squaredNorm_eq_pivotalDimension_norm_sq
-    (p : PivotalStructure (C := C.Obj)) (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
-    σ (Ground.squaredNorm C (Ground.simples C i)) =
-      ((‖σ (pivotalDimension C p (Ground.simples C i))‖ ^ 2 : ℝ) : ℂ) := by
+    (p : PivotalStructure (C := C.Obj)) (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
+    σ (squaredNorm C (simples C i)) =
+      ((‖σ (pivotalDimension C p (simples C i))‖ ^ 2 : ℝ) : ℂ) := by
   rw [squaredNorm_eq_pivotal_dimension_product C p i, map_mul, galois_pivotalDimension_dual_eq_conj]
-  simpa using Complex.mul_conj' (σ (pivotalDimension C p (Ground.simples C i)))
+  simpa using Complex.mul_conj' (σ (pivotalDimension C p (simples C i)))
 
 end PropertyF.Ground.Dimensions
 
@@ -128,14 +132,14 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Pseudo-unitarity saturates every pivotal simple-dimension FP bound. -/
 theorem pseudoUnitary_saturation_of_pivotal
     (p : PivotalStructure (C := C.Obj)) (hpu : Ground.PseudoUnitary C) :
-    ∀ i, ‖pivotalDimension C p (Ground.simples C i)‖ = Ground.fpSimple C i := by
-  let d : Fin (Ground.rank C) → ℝ := fun i => ‖pivotalDimension C p (Ground.simples C i)‖
-  have hb : ∀ i, |d i| ≤ Ground.fpSimple C i := by
+    ∀ i, ‖pivotalDimension C p (simples C i)‖ = fpSimple C i := by
+  let d : Fin (rank C) → ℝ := fun i => ‖pivotalDimension C p (simples C i)‖
+  have hb : ∀ i, |d i| ≤ fpSimple C i := by
     intro i
     rw [abs_of_nonneg (norm_nonneg _)]
     exact galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
@@ -145,29 +149,27 @@ theorem pseudoUnitary_saturation_of_pivotal
     apply Finset.sum_congr rfl
     intro i _
     exact galois_squaredNorm_eq_pivotalDimension_norm_sq C p (RingEquiv.refl ℂ) i
-  have heq : ∑ i, d i ^ 2 = Ground.globalFPDimension C := by
+  have heq : ∑ i, d i ^ 2 = globalFPDimension C := by
     apply Complex.ofReal_injective
     rw [← hg]
     exact hpu
-  have hs := (global_sum_squares_eq_iff C d hb).mp heq
   intro i
-  simpa [d, abs_of_nonneg (norm_nonneg _)] using hs i
+  simpa [d, abs_of_nonneg (norm_nonneg _)] using ((global_sum_squares_eq_iff C d hb).mp heq) i
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Twisting any pivotal structure by its saturated phases constructs the canonical positive spherical structure. -/
 theorem positive_spherical_of_pivotal_pseudoUnitary
     (p : PivotalStructure (C := C.Obj)) (hpu : Ground.PseudoUnitary C) :
-    ∃ q : PivotalStructure (C := C.Obj), q.IsSpherical ∧ ∀ i,
-      pivotalDimension C q (Ground.simples C i) = (Ground.fpSimple C i : ℂ) := by
-  let z : Fin (Ground.rank C) → ℂ := fun i => pivotalDimension C p (Ground.simples C i)
-  let f := Ground.fpSimple C
-  let q : Fin (Ground.rank C) → ℂ := fun i => z i / (f i : ℂ)
-  let c : Fin (Ground.rank C) → ℂ := fun i => (q i)⁻¹
+    HasFPSphericalStructure C := by
+  let z : Fin (rank C) → ℂ := fun i => pivotalDimension C p (simples C i)
+  let f := fpSimple C
+  let q : Fin (rank C) → ℂ := fun i => z i / (f i : ℂ)
+  let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hf (i) : (f i : ℂ) ≠ 0 := by exact_mod_cast (ne_of_gt (Ground.fpSimple_pos C i))
   have hz (i) : z i ≠ 0 := pivotalDimension_simple_ne_zero C p i
   have hq (i) : q i ≠ 0 := div_ne_zero (hz i) (hf i)
   have hc (i) : c i ≠ 0 := inv_ne_zero (hq i)
-  have hunit : c (Ground.unitIndex C) = 1 := by
+  have hunit : c (unitIndex C) = 1 := by
     obtain ⟨e⟩ := Ground.unitIndex_iso C
     dsimp [c, q, z, f]
     rw [pivotalDimension_iso C p e, pivotalDimension_unit, Ground.fpSimple_unit]
@@ -191,7 +193,7 @@ theorem positive_spherical_of_pivotal_pseudoUnitary
     rw [hqmul, mul_inv_rev]
     ring
   let P := pivotalScalarTwist C p c hc hunit hmul
-  have hvalue (i) : pivotalDimension C P (Ground.simples C i) = (f i : ℂ) := by
+  have hvalue (i) : pivotalDimension C P (simples C i) = (f i : ℂ) := by
     rw [pivotalDimension_scalarTwist_simple]
     change (q i)⁻¹ * z i = (f i : ℂ)
     dsimp [q]

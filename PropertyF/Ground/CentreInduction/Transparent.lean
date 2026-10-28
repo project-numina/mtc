@@ -27,9 +27,8 @@ theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
     rw [← Category.assoc, biproduct.ι_π_ne _ hi, zero_comp]
   have hm := congrArg CategoryTheory.Center.Hom.f hcentral
   change crossingCandidate C X S ≫ (β_ S (underlying C X)).hom = 𝟙 _ at hm
-  have hb : crossingCandidate C X S = (β_ S (underlying C X)).inv := by
-    apply (cancel_mono (β_ S (underlying C X)).hom).1
-    simp [hm]
+  have hb : crossingCandidate C X S = (β_ S (underlying C X)).inv :=
+    by simpa only [IsIso.Iso.inv_hom] using IsIso.eq_inv_of_inv_hom_id hm
   have hzero : (biproduct.ι V i ▷ S) ≫ crossingCandidate C X S ≫
       (S ◁ (underlyingCounit C).app X) = 0 := by
     rw [hb]

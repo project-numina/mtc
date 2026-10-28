@@ -38,7 +38,7 @@ theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 := by
   rw [← fpDimension_iso D e, fpDimension_simple, fpSimple_unit]
 
 /-- A nonzero object has a nonzero simple multiplicity. -/
-theorem exists_positive_multiplicity (X : D.Obj)
+theorem exists_positive_multiplicity {X : D.Obj}
     (hX : ¬ IsZero X) : ∃ i, 0 < Module.finrank ℂ (simples D i ⟶ X) := by
   classical
   have hid : (𝟙 X : X ⟶ X) ≠ 0 := by simpa [IsZero.iff_id_eq_zero] using hX
@@ -47,8 +47,7 @@ theorem exists_positive_multiplicity (X : D.Obj)
   have he : e.hom ≠ 0 := by
     intro h
     apply hid
-    have hh := congrArg (fun t => t ≫ e.inv) h
-    simpa using hh
+    simpa using (congrArg (fun t => t ≫ e.inv) h)
   have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra h
     push Not at h
@@ -57,16 +56,16 @@ theorem exists_positive_multiplicity (X : D.Obj)
     intro p
     simpa using h p
   obtain ⟨p, hp⟩ := hp
-  letI : FiniteDimensional ℂ (X ⟶ simples D p.1) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (X ⟶ simples D p.1) := IsFusionCategory.hom_finite _ _
   refine ⟨p.1, ?_⟩
   rw [← finrank_to_simple_eq_from_simple D X p.1]
   exact Module.finrank_pos_iff_exists_ne_zero.mpr ⟨_, hp⟩
 
 /-- Every nonzero object has FP dimension at least one. -/
-theorem one_le_fpDimension (X : D.Obj)
+theorem one_le_fpDimension {X : D.Obj}
     (hX : ¬ IsZero X) : 1 ≤ fpDimension D X := by
   classical
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity D X hX
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity D hX
   have hcoeff : (1 : ℝ) ≤ Module.finrank ℂ (simples D i ⟶ X) := by exact_mod_cast hi
   have hterm : (1 : ℝ) ≤
       (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i := by
@@ -162,12 +161,8 @@ theorem fpDimension_leftDual (X : D.Obj) :
   calc
     _ = ∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
         fpSimple D (dualIndex D i) := by simp_rw [fpSimple_dual]
-    _ = _ := ?_
-  have h := Equiv.sum_comp (dualEquiv D)
-    (fun i => (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i)
-  change (∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
-    fpSimple D (dualIndex D i)) = _ at h
-  exact h
+    _ = _ := Equiv.sum_comp (dualEquiv D)
+      (fun i => (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i)
 
 /-- FP dimension is invariant under taking a right dual. -/
 theorem fpDimension_rightDual (X : D.Obj) :

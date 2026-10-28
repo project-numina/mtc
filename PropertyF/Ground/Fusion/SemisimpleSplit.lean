@@ -9,6 +9,21 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
+
+section
+variable {C : Type u} [Category.{v} C] [HasZeroMorphisms C]
+
+/-- An epimorphism to an object with nonzero identity is nonzero. -/
+theorem epi_ne_zero_of_id_ne_zero {X Y : C} (f : X ⟶ Y) [Epi f]
+    (h : 𝟙 Y ≠ 0) : f ≠ 0 :=
+  fun hf ↦ h ((IsZero.iff_id_eq_zero Y).mp (IsZero.of_epi_eq_zero f hf))
+
+/-- A monomorphism from an object with nonzero identity is nonzero. -/
+theorem mono_ne_zero_of_id_ne_zero {X Y : C} (f : X ⟶ Y) [Mono f]
+    (h : 𝟙 X ≠ 0) : f ≠ 0 :=
+  fun hf ↦ h ((IsZero.iff_id_eq_zero X).mp (IsZero.of_mono_eq_zero f hf))
+end
+
 variable (D : BraidedFusionCategory.{v,u})
 
 /-- A nonzero morphism into a simple object splits. -/
@@ -30,9 +45,9 @@ theorem split_to_simple {S X : D.Obj} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
     intro p
     simpa [Category.assoc] using h p
   obtain ⟨p, hp⟩ := hc
-  letI : Simple (V p) := simples_simple D p.1
+  let : Simple (V p) := simples_simple D p.1
   let g : V p ⟶ S := biproduct.ι V p ≫ e.inv ≫ f
-  letI : IsIso g := CategoryTheory.isIso_of_hom_simple hp
+  let : IsIso g := CategoryTheory.isIso_of_hom_simple hp
   refine ⟨inv g ≫ biproduct.ι V p ≫ e.inv, ?_⟩
   simpa only [g, Category.assoc] using IsIso.inv_hom_id g
 
@@ -41,12 +56,9 @@ object and split the resulting nonzero map. -/
 theorem simple_projective (S : D.Obj) [Simple S] : Projective S where
   factors := by
     intro X Y g f hf
-    letI : Epi f := hf
-    have hne : (pullback.snd f g : pullback f g ⟶ S) ≠ 0 := by
-      intro h
-      have hz := IsZero.of_epi_eq_zero (pullback.snd f g) h
-      exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp hz)
-    obtain ⟨s, hs⟩ := split_to_simple D (pullback.snd f g) hne
+    let : Epi f := hf
+    obtain ⟨s, hs⟩ := split_to_simple D (pullback.snd f g)
+      (epi_ne_zero_of_id_ne_zero _ (id_nonzero S))
     refine ⟨s ≫ pullback.fst f g, ?_⟩
     rw [Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]
 
@@ -54,12 +66,9 @@ theorem simple_projective (S : D.Obj) [Simple S] : Projective S where
 theorem simple_injective (S : D.Obj) [Simple S] : Injective S where
   factors := by
     intro X Y g f hf
-    letI : Mono f := hf
-    have hne : (pushout.inr f g : S ⟶ pushout f g) ≠ 0 := by
-      intro h
-      have hz := IsZero.of_mono_eq_zero (pushout.inr f g) h
-      exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp hz)
-    obtain ⟨r, hr⟩ := split_from_simple (pushout.inr f g) hne
+    let : Mono f := hf
+    obtain ⟨r, hr⟩ := split_from_simple (pushout.inr f g)
+      (mono_ne_zero_of_id_ne_zero _ (id_nonzero S))
     refine ⟨pushout.inl f g ≫ r, ?_⟩
     rw [← Category.assoc, pushout.condition, Category.assoc, hr, Category.comp_id]
 
@@ -67,13 +76,13 @@ theorem simple_injective (S : D.Obj) [Simple S] : Injective S where
 theorem object_projective (X : D.Obj) : Projective X := by
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
   let V : (Σ i, Fin (m i)) → D.Obj := fun p => simples D p.1
-  letI : ∀ p, Projective (V p) := fun p => by
-    letI : Simple (V p) := simples_simple D p.1
+  let : ∀ p, Projective (V p) := fun p => by
+    let : Simple (V p) := simples_simple D p.1
     exact simple_projective D (V p)
   have hV : Projective (⨁ V) := by
     refine ⟨?_⟩
     intro A B g f hf
-    letI : Epi f := hf
+    let : Epi f := hf
     refine ⟨biproduct.desc (fun p => Projective.factorThru (biproduct.ι V p ≫ g) f), ?_⟩
     apply biproduct.hom_ext'
     intro p
@@ -84,20 +93,20 @@ theorem object_projective (X : D.Obj) : Projective X := by
 theorem object_injective (X : D.Obj) : Injective X := by
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
   let V : (Σ i, Fin (m i)) → D.Obj := fun p => simples D p.1
-  letI : ∀ p, Injective (V p) := fun p => by
-    letI : Simple (V p) := simples_simple D p.1
+  let : ∀ p, Injective (V p) := fun p => by
+    let : Simple (V p) := simples_simple D p.1
     exact simple_injective D (V p)
   exact Injective.of_iso e.symm inferInstance
 
 /-- Every epimorphism splits. -/
 theorem epi_splits {X Y : D.Obj} (f : X ⟶ Y) [Epi f] : IsSplitEpi f := by
-  letI : Projective Y := object_projective D Y
+  let : Projective Y := object_projective D Y
   obtain ⟨s, hs⟩ := Projective.factors (𝟙 Y) f
   exact IsSplitEpi.mk' { section_ := s, id := hs }
 
 /-- Every monomorphism splits. -/
 theorem mono_splits {X Y : D.Obj} (f : X ⟶ Y) [Mono f] : IsSplitMono f := by
-  letI : Injective X := object_injective D X
+  let : Injective X := object_injective D X
   obtain ⟨r, hr⟩ := Injective.factors (𝟙 X) f
   exact IsSplitMono.mk' { retraction := r, id := hr }
 

@@ -2,6 +2,12 @@ module
 public import Mathlib.Tactic
 public import Mathlib.Analysis.Complex.Basic
 
+/-!
+# Three-strand braid algebra
+
+A central product of squares forces equality of squares under the braid relation.
+-/
+
 @[expose] public section
 namespace PropertyF
 

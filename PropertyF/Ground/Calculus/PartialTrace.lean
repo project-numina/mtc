@@ -33,7 +33,7 @@ def insertRightIdentity (X Y : C) (a : End X) : End (X ⊗ Y) :=
 
 /-- Partial trace commutes with postcomposition on the untraced factor. -/
 theorem rightPartialTrace_left (p : Dimensions.PivotalStructure (C := C))
-    (X Y : C) (a : End X) (f : End (X ⊗ Y)) :
+    {X Y : C} (a : End X) (f : End (X ⊗ Y)) :
     rightPartialTrace p X Y (insertRightIdentity X Y a * f) =
       a * rightPartialTrace p X Y f := by
   apply End.ext
@@ -45,7 +45,7 @@ theorem rightPartialTrace_left (p : Dimensions.PivotalStructure (C := C))
 
 /-- Partial trace commutes with precomposition on the untraced factor. -/
 theorem rightPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
-    (X Y : C) (a : End X) (f : End (X ⊗ Y)) :
+    {X Y : C} (a : End X) (f : End (X ⊗ Y)) :
     rightPartialTrace p X Y (f * insertRightIdentity X Y a) =
       rightPartialTrace p X Y f * a := by
   apply End.ext
@@ -69,7 +69,7 @@ theorem rightPartialTrace_one (p : Dimensions.PivotalStructure (C := C))
 /-- The partial trace of an inserted endomorphism is the dimension of the
 closed factor times that endomorphism. -/
 theorem rightPartialTrace_insert (p : Dimensions.PivotalStructure (C := C))
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X Y : C) (a : End X) :
+    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C} (a : End X) :
     rightPartialTrace p X Y (insertRightIdentity X Y a) =
       (scalar (p.rightTrace (𝟙 Y))) • a := by
   have hscalar : p.rightTrace (𝟙 Y) = (scalar (p.rightTrace (𝟙 Y))) • (1 : End (𝟙_ C)) := by
@@ -102,7 +102,7 @@ theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
 
 /-- Schur's lemma reduces the simple-survivor partial-trace formula to the
 single, explicitly stated compatibility of iterated and total pivotal traces. -/
-theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C] (X Y : C)
+theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C] {X Y : C}
     [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
     (p : Dimensions.PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
@@ -115,7 +115,7 @@ theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.H
 /-- Closing a right tensor factor commutes with adding an identity factor on
 the left, with the associator made explicit. -/
 theorem rightPartialTrace_whiskerLeft (p : Dimensions.PivotalStructure (C := C))
-    (A X Y : C) (f : End (X ⊗ Y)) :
+    {A X Y : C} (f : End (X ⊗ Y)) :
     rightPartialTrace p (A ⊗ X) Y (End.of
       ((α_ A X Y).hom ≫ (A ◁ f.asHom) ≫ (α_ A X Y).inv)) =
       End.of (A ◁ (rightPartialTrace p X Y f).asHom) := by

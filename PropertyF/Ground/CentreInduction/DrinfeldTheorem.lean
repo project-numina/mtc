@@ -21,11 +21,8 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D] 
 theorem rightDualTensorIso_monodromy {X Y : D} :
     (Modular.doubleBraiding X Y)ᘁ ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X Y).hom ≫ Modular.doubleBraiding (Yᘁ) (Xᘁ) := by
-  unfold Modular.doubleBraiding
-  simp only [comp_rightAdjointMate, Category.assoc]
-  rw [Dimensions.rightDualTensorIso_braiding X Y]
-  rw [← Category.assoc ((β_ Y X).homᘁ), Dimensions.rightDualTensorIso_braiding Y X]
-  simp [Category.assoc]
+  simp [Modular.doubleBraiding, comp_rightAdjointMate, Category.assoc,
+    Dimensions.rightDualTensorIso_braiding]
 
 end PropertyF.Ground.CentreInduction
 
@@ -93,22 +90,13 @@ theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     Modular.doubleBraiding (Yᘁ) (Xᘁ) at hi
   have hi' := congrArg (fun z => rightAdjointMate z) hi
   simp only [comp_rightAdjointMate] at hi'
-  have hm := rightDualTensorIso_monodromy (X := Yᘁ) (Y := Xᘁ)
   have hm' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫
       ((Modular.doubleBraiding (Yᘁ) (Xᘁ))ᘁ) =
       Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
         (rightDualTensorIso (Yᘁ) (Xᘁ)).inv := by
-    apply (cancel_mono (rightDualTensorIso (Yᘁ) (Xᘁ)).hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [hm]
-    simp
-  have ht := Dimensions.rightDualTensorIso_natural f g
-  have ht' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ ((f ⊗ₘ g)ᘁ) =
-      (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso (((Yᘁ)ᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)).inv := by
-    apply (cancel_mono (rightDualTensorIso (((Yᘁ)ᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)).hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [ht]
-    simp
+    rw [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
+    exact rightDualTensorIso_monodromy
+  have ht' := rightDualTensorIso_inv_natural f g
   simp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
@@ -139,9 +127,7 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
   have hu : (doubleDualIso C (X ⊗ Y)).hom = m.inv ≫
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom := by
-    apply (cancel_epi m.hom).1
-    simp only [Iso.hom_inv_id_assoc]
-    exact h X Y
+    exact (Iso.eq_inv_comp m).2 (h X Y)
   have hv := drinfeld_inv_dual_tensor C h X Y
   have hn : Modular.doubleBraiding X Y ≫
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) =
@@ -169,10 +155,9 @@ pseudo-unitary base, without assuming an initial pivotal structure. -/
 theorem positive_spherical_of_drinfeld_tensor (h : DrinfeldTensorLaw C)
     (hpu : PseudoUnitary C) :
     ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
-  apply Dimensions.eno_pseudoUnitary_yields_positive_spherical_of_nonunit_fourthDual_tensor C _ hpu
-  intro i j _ _
-  exact fourthDualIso_tensor_of_drinfeld C h (simples C i) (simples C j)
+      Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) :=
+  Dimensions.positive_spherical_of_nonunit_fourth_dual C
+    (fun i j _ _ ↦ fourthDualIso_tensor_of_drinfeld C h (simples C i) (simples C j)) hpu
 
 end PropertyF.Ground.CentreInduction
 
@@ -185,9 +170,8 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 
 /-- The canonical Drinfeld isomorphism satisfies its tensor law. -/
-theorem drinfeldTensorLaw (C : BraidedFusionCategory.{v,u}) : DrinfeldTensorLaw C := by
-  intro X Y
-  exact CentreIntegrate.drinfeld_tensor_of_pairing_cap C X Y
+theorem drinfeldTensorLaw (C : BraidedFusionCategory.{v,u}) : DrinfeldTensorLaw C :=
+  fun X Y ↦ CentreIntegrate.drinfeld_tensor_of_pairing_cap C X Y
     (Dimensions.drinfeld_tensor_pairing_cap C X Y)
 
 

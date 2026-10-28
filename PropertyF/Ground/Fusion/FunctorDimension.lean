@@ -9,7 +9,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open CategoryTheory.Functor.Monoidal
 open scoped BigOperators
 namespace PropertyF.Ground
-universe v u
+universe v u v' u'
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- FP dimension is additive over finite biproducts. -/
@@ -17,14 +17,15 @@ theorem fpDimension_biproduct (D : BraidedFusionCategory.{v,u})
     {ι : Type} [Fintype ι] (V : ι → D.Obj) :
     fpDimension D (⨁ V) = ∑ i, fpDimension D (V i) := by
   classical
-  letI : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   unfold fpDimension
   simp_rw [finrank_hom_biproduct, Nat.cast_sum, Finset.sum_mul]
   exact Finset.sum_comm
 
 /-- Applying an additive functor to a canonical decomposition expresses the
 FP dimension of the image as the sum of the dimensions of image simples. -/
-theorem fpDimension_functor_decomposition (C D : BraidedFusionCategory.{v,u})
+theorem fpDimension_functor_decomposition (C : BraidedFusionCategory.{v,u})
+    (D : BraidedFusionCategory.{v',u'})
     (F : C.Obj ⥤ D.Obj) [F.Additive] (X : C.Obj) :
     fpDimension D (F.obj X) = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) * fpDimension D (F.obj (simples C i)) := by
@@ -37,7 +38,8 @@ theorem fpDimension_functor_decomposition (C D : BraidedFusionCategory.{v,u})
   simp [V, m]
 
 /-- An additive faithful strong monoidal functor preserves FP dimension. -/
-theorem fpDimension_functor (C D : BraidedFusionCategory.{v,u})
+theorem fpDimension_functor (C : BraidedFusionCategory.{v,u})
+    (D : BraidedFusionCategory.{v',u'})
     (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal] (X : C.Obj) :
     fpDimension D (F.obj X) = fpDimension C X := by
   classical
@@ -50,7 +52,7 @@ theorem fpDimension_functor (C D : BraidedFusionCategory.{v,u})
     have hid : (𝟙 (simples C i) : simples C i ⟶ simples C i) = 0 := by
       apply F.map_injective
       simpa using ((IsZero.iff_id_eq_zero _).mp hz)
-    letI : Simple (simples C i) := simples_simple C i
+    let : Simple (simples C i) := simples_simple C i
     exact id_nonzero _ hid
   have hunit : f (unitIndex C) = 1 := by
     obtain ⟨e⟩ := unitIndex_iso C

@@ -1,9 +1,8 @@
 module
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Cabling.Strands
-public import PropertyF.Ground.Calculus.StrandCoherence
-public import Mathlib.Tactic
 public import PropertyF.Ground.Calculus.OverlapCoherence
+public import Mathlib.Tactic
 
 open CategoryTheory CategoryTheory.MonoidalCategory
 @[expose] public noncomputable section
@@ -18,6 +17,7 @@ theorem castIso_hom_comp {A B D : C} (h : B = D) (e : A ≅ D) :
 
 variable [MonoidalCategory C] [BraidedCategory C] [Abelian C] [MonoidalPreadditive C]
 
+omit [BraidedCategory C] [Abelian C] [MonoidalPreadditive C] in
 /-- Expand the standard tensor-power comparison one factor on the left. -/
 theorem powerTensor_succ_general (X : C) (n m : ℕ) :
     (tensorPowerTensorIso X (n+1) m).hom ≫
@@ -179,7 +179,7 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
-omit [Linear ℂ C] [MonoidalLinear ℂ C] in
+omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion agrees with canonical concatenation, up to the
 arithmetic equality of strand counts. -/
@@ -204,7 +204,7 @@ theorem insertLeftPowerIso_eq_concat (X : C) (n k : ℕ) :
     simp only [insertLeftPowerIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom]
     rw [ih, whiskerLeft_comp, Category.assoc]
 
-omit [Linear ℂ C] [MonoidalLinear ℂ C] in
+omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Cast-free reverse concatenation agrees with the standard tensor-power
 concatenation up to the commutativity of the length indices. -/
@@ -229,7 +229,7 @@ theorem reverseConcat_eq_concat (X : C) (a b : ℕ) :
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom]
     rw [ih, whiskerLeft_comp, Category.assoc]
 
-omit [Linear ℂ C] [MonoidalLinear ℂ C] in
+omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion agrees with reverse-indexed concatenation. -/
 theorem insertLeftPowerIso_eq_reverseConcat (X : C) (n k : ℕ) :
@@ -247,7 +247,7 @@ omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [Mon
   cases h
   simp
 
-omit [Linear ℂ C] [MonoidalLinear ℂ C] in
+omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- The two canonical overlap isomorphisms agree. -/
 theorem freshOverlapIso_eq_overlapPowerIso (X : C) (t k : ℕ) :
@@ -267,11 +267,11 @@ theorem freshOverlapIso_eq_overlapPowerIso (X : C) (t k : ℕ) :
 /-- The intrinsic overlap trace identity holds for every actual braid-algebra
 element on a simple strand. -/
 theorem overlap_trace_power (C : Ground.BraidedFusionCategory.{v,u})
-    (X : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
-    (t : ℕ) (u : braidAlgebra X t) :
+    {X : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {t : ℕ} (u : braidAlgebra X t) :
     ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
       (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
         actualBraidTrace C X p t u ^ (k + 1) :=
-  overlap_trace_power_of_isos C X p t u (freshOverlapIso_eq_overlapPowerIso X t)
+  overlap_trace_power_of_isos C p u (freshOverlapIso_eq_overlapPowerIso X t)
 
 end PropertyF.Ground.Calculus

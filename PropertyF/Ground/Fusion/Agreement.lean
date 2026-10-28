@@ -30,9 +30,8 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
   have hnonneg (j : ι) : 0 ≤ y j - c * x j := by
     have hj := hmin j (Finset.mem_univ j)
     dsimp [c] at hj ⊢
-    have hmul := mul_le_mul_of_nonneg_right hj (hx j).le
     have : y i / x i * x j ≤ y j := by
-      simpa [div_mul_cancel₀ _ (ne_of_gt (hx j))] using hmul
+      simpa [div_mul_cancel₀ _ (ne_of_gt (hx j))] using (mul_le_mul_of_nonneg_right hj (hx j).le)
     linarith
   have hzero : y i - c * x i = 0 := by
     simp [c, div_mul_cancel₀ _ (ne_of_gt (hx i))]
@@ -59,6 +58,10 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
   simp only [Pi.smul_apply, smul_eq_mul]
   linarith [hall j]
 
+/-- A function on simple labels is multiplicative for the fusion rules. -/
+abbrev IsFusionMultiplicative (C : BraidedFusionCategory) (χ : Fin (rank C) → ℂ) : Prop :=
+  ∀ i j, χ i * χ j = ∑ k, (fusionCoeff C i j k : ℂ) * χ k
+
 end PropertyF.Ground
 
 end
@@ -71,9 +74,8 @@ namespace PropertyF.Ground.Dimensions
 /-- Each value of any nonzero fusion-ring character is bounded in absolute value
 by the spectral-radius FP dimension. No positivity of the character is needed. -/
 theorem character_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
-    (χ : Fin (Ground.rank C) → ℂ) (i₀ : Fin (Ground.rank C)) (hχ : χ i₀ ≠ 0)
-    (hchar : ∀ i j, χ i * χ j = ∑ k,
-      (Ground.fusionCoeff C i j k : ℂ) * χ k) (i : Fin (Ground.rank C)) :
+    {χ : Fin (Ground.rank C) → ℂ} {i₀ : Fin (Ground.rank C)} (hχ : χ i₀ ≠ 0)
+    (hchar : Ground.IsFusionMultiplicative C χ) (i : Fin (Ground.rank C)) :
     ‖χ i‖ ≤ Ground.fpSimple C i := by
   classical
   let A := (Ground.fusionMatrix C i)ᵀ
@@ -98,18 +100,16 @@ theorem character_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
     exact le_iSup_of_le (χ i) (le_iSup_of_le hz le_rfl)
   have htop : spectralRadius ℂ A ≠ ⊤ := by
     exact ne_of_lt (lt_of_le_of_lt (spectralRadius_le_nnnorm (𝕜 := ℂ) A) (by simp))
-  have hreal := ENNReal.toReal_mono htop hle
-  simpa [Ground.fpSimple, A, Matrix.spectralRadius_transpose] using hreal
+  simpa [Ground.fpSimple, A, Matrix.spectralRadius_transpose] using (ENNReal.toReal_mono htop hle)
 
 /-- Every complex field conjugate of a fusion character obeys the same FP
 bound, because field automorphisms preserve the integer fusion coefficients. -/
 theorem galois_character_norm_le_fpSimple (C : Ground.BraidedFusionCategory)
-    (χ : Fin (Ground.rank C) → ℂ) (i₀ : Fin (Ground.rank C)) (hχ : χ i₀ ≠ 0)
-    (hchar : ∀ i j, χ i * χ j = ∑ k,
-      (Ground.fusionCoeff C i j k : ℂ) * χ k)
+    {χ : Fin (Ground.rank C) → ℂ} {i₀ : Fin (Ground.rank C)} (hχ : χ i₀ ≠ 0)
+    (hchar : Ground.IsFusionMultiplicative C χ)
     (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
     ‖σ (χ i)‖ ≤ Ground.fpSimple C i := by
-  apply character_norm_le_fpSimple C (fun j => σ (χ j)) i₀
+  apply character_norm_le_fpSimple C (χ := fun j => σ (χ j)) (i₀ := i₀)
   · exact (map_ne_zero σ).2 hχ
   · intro j k
     simpa using congrArg σ (hchar j k)
@@ -126,7 +126,8 @@ open WithLp
 
 namespace PropertyF.Ground
 
-def euclideanAbs {ι : Type*} [Fintype ι] (x : EuclideanSpace ℝ ι) : EuclideanSpace ℝ ι :=
+/-- The coordinatewise absolute value of a real Euclidean vector. -/
+def euclideanAbs {ι : Type*} (x : EuclideanSpace ℝ ι) : EuclideanSpace ℝ ι :=
   toLp 2 (fun i => |x i|)
 
 theorem euclideanAbs_norm {ι : Type*} [Fintype ι] (x : EuclideanSpace ℝ ι) :
@@ -144,8 +145,8 @@ theorem quadratic_le_abs {ι : Type*} [Fintype ι]
   intro i _
   apply Finset.sum_le_sum
   intro j _
-  have h := mul_le_mul_of_nonneg_left (le_abs_self (x i * x j)) (hA i j)
-  simpa [abs_mul, mul_assoc, mul_comm, mul_left_comm] using h
+  simpa [abs_mul, mul_assoc, mul_comm, mul_left_comm] using
+    (mul_le_mul_of_nonneg_left (le_abs_self (x i * x j)) (hA i j))
 
 theorem matrix_quadratic_form {ι : Type*} [Fintype ι] [DecidableEq ι]
     (A : Matrix ι ι ℝ) (x : EuclideanSpace ℝ ι) :
@@ -155,12 +156,31 @@ theorem matrix_quadratic_form {ι : Type*} [Fintype ι] [DecidableEq ι]
     Matrix.toLpLin_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc,
     mul_comm, mul_left_comm]
 
-/-- A strictly positive symmetric real matrix has a strictly positive
-eigenvector. -/
-theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype ι]
+/-- A nonnegative eigenvector of a positive matrix is positive in every coordinate
+if it has a positive coordinate. -/
+theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
+    (A : Matrix ι ι ℝ) (hpos : ∀ i j, 0 < A i j) (v : ι → ℝ)
+    (hnonneg : ∀ i, 0 ≤ v i) (hpositive : ∃ i, 0 < v i)
+    (d : ℝ) (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
+  classical
+  obtain ⟨j, hj⟩ := hpositive
+  intro i
+  have hsum : 0 < ∑ k, A i k * v k :=
+    Finset.sum_pos' (fun k _ => mul_nonneg (hpos i k).le (hnonneg k))
+      ⟨j, Finset.mem_univ _, mul_pos (hpos i j) hj⟩
+  have hi := congrFun heigen i
+  simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hi
+  have : 0 < d * v i := by linarith
+  by_contra hn
+  have : v i = 0 := le_antisymm (le_of_not_gt hn) (hnonneg i)
+  simp [this] at *
+
+/-- A nonnegative symmetric real matrix has a nonnegative eigenvector with a
+positive coordinate. -/
+theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {ι : Type*} [Fintype ι]
     [DecidableEq ι] [Nonempty ι] (A : Matrix ι ι ℝ)
-    (hsym : A.IsHermitian) (hpos : ∀ i j, 0 < A i j) :
-    ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 < v i) ∧ A *ᵥ v = d • v := by
+    (hsym : A.IsHermitian) (hA : ∀ i j, 0 ≤ A i j) :
+    ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 ≤ v i) ∧ (∃ i, 0 < v i) ∧ A *ᵥ v = d • v := by
   classical
   let T : EuclideanSpace ℝ ι →L[ℝ] EuclideanSpace ℝ ι :=
     (Matrix.toEuclideanLin A).toContinuousLinearMap
@@ -196,7 +216,7 @@ theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype
     change (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf x ≤
       (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf y
     rw [matrix_quadratic_form, matrix_quadratic_form]
-    simpa [y, euclideanAbs] using quadratic_le_abs A (fun i j => (hpos i j).le) (fun i => x i)
+    simpa [y, euclideanAbs] using quadratic_le_abs A hA (fun i => x i)
   have hymax : IsMaxOn T.reApplyInnerSelf (Metric.sphere 0 ‖y‖) y := by
     intro w hw
     have hw' : w ∈ Metric.sphere (0 : EuclideanSpace ℝ ι) ‖z‖ := by simpa [hynorm] using hw
@@ -204,20 +224,17 @@ theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype
   have heigen := hself.eq_smul_self_of_isLocalExtrOn (Or.inr hymax.isLocalMaxOn)
   let d := T.rayleighQuotient y
   have heigen' : A *ᵥ (fun i => y i) = d • (fun i => y i) := by
-    have h := congrArg ofLp heigen
-    simpa [T, d, Matrix.toLpLin_apply] using h
-  obtain ⟨j, hj⟩ := hyexists
-  have hypos (i : ι) : 0 < y i := by
-    have hsum : 0 < ∑ k, A i k * y k :=
-      Finset.sum_pos' (fun k _ => mul_nonneg (hpos i k).le (hynonneg k))
-        ⟨j, Finset.mem_univ _, mul_pos (hpos i j) hj⟩
-    have hi := congrFun heigen' i
-    simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hi
-    have : 0 < d * y i := by linarith
-    by_contra hn
-    have : y i = 0 := le_antisymm (le_of_not_gt hn) (hynonneg i)
-    simp [this] at *
-  exact ⟨d, fun i => y i, hypos, heigen'⟩
+    simpa [T, d, Matrix.toLpLin_apply] using (congrArg ofLp heigen)
+  exact ⟨d, fun i => y i, hynonneg, hyexists, heigen'⟩
+
+/-- A strictly positive symmetric real matrix has a strictly positive eigenvector. -/
+theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype ι]
+    [DecidableEq ι] [Nonempty ι] (A : Matrix ι ι ℝ)
+    (hsym : A.IsHermitian) (hpos : ∀ i j, 0 < A i j) :
+    ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 < v i) ∧ A *ᵥ v = d • v := by
+  obtain ⟨d, v, hv, hvpos, heigen⟩ :=
+    nonneg_symmetric_matrix_has_nonneg_eigenvector A hsym (fun i j => (hpos i j).le)
+  exact ⟨d, v, positive_matrix_eigenvector_pos A hpos v hv hvpos d heigen, heigen⟩
 
 end PropertyF.Ground
 
@@ -251,20 +268,18 @@ theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
       rw [fusionCoeff_comm D i k, fusionCoeff_reciprocity_labels,
         fusionCoeff_comm D j (dualIndex D i)]
     _ = _ := by
-      have h := Equiv.sum_comp (dualEquiv D) (fun i => (fusionCoeff D i j k : ℝ))
-      change (∑ i, (fusionCoeff D (dualIndex D i) j k : ℝ)) = _ at h
-      exact h
+      exact Equiv.sum_comp (dualEquiv D) (fun i => (fusionCoeff D i j k : ℝ))
 
 /-- The total fusion matrix is strictly positive in every entry. -/
 theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
     0 < totalFusionMatrix D j k := by
   classical
-  letI : Simple (simples D j) := simples_simple D j
-  letI : Simple (simples D k) := simples_simple D k
-  letI : Simple (ᘁ(simples D k)) := simple_leftDual D (simples D k)
+  let : Simple (simples D j) := simples_simple D j
+  let : Simple (simples D k) := simples_simple D k
+  let : Simple (ᘁ(simples D k)) := simple_leftDual D (simples D k)
   obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor (simples D j)
-  letI : (tensorLeft (simples D j)).Faithful :=
-    PropertyF.tensorLeft_faithful_of_unit_retract _ _ s r hsr
+  let : (tensorLeft (simples D j)).Faithful :=
+    PropertyF.tensorLeft_faithful_of_unit_retract s r hsr
   let Y : D.Obj := simples D j ⊗ (ᘁ(simples D k))
   have hid : (𝟙 Y : Y ⟶ Y) ≠ 0 := by
     intro h
@@ -276,8 +291,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
   have he : e.hom ≠ 0 := by
     intro h
     apply hid
-    have hh := congrArg (fun t => t ≫ e.inv) h
-    simpa using hh
+    simpa using (congrArg (fun t => t ≫ e.inv) h)
   have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra h
     push Not at h
@@ -286,7 +300,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
     intro p
     simpa using h p
   obtain ⟨p, hp⟩ := hp
-  letI : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   have hm : 0 < Module.finrank ℂ (simples D p.1 ⟶ Y) := by
     rw [← finrank_to_simple_eq_from_simple D Y p.1]
     exact Module.finrank_pos_iff_exists_ne_zero.mpr ⟨_, hp⟩
@@ -359,7 +373,7 @@ theorem exists_positive_common_eigenvector :
     ∃ (v : Fin (rank D) → ℝ), (∀ j, 0 < v j) ∧
       ∀ i, ∃ d : ℝ, characterMatrix D i *ᵥ v = d • v := by
   classical
-  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   have hs : (totalFusionMatrix D).IsHermitian := by
     rw [Matrix.isHermitian_iff_isSymm]
     exact Matrix.IsSymm.ext (fun j k => totalFusionMatrix_symmetric D k j)
@@ -427,7 +441,7 @@ theorem positive_character_unique
     (hf : ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k)
     (hg : ∀ i j, g i * g j = ∑ k, (fusionCoeff D i j k : ℝ) * g k) : f = g := by
   classical
-  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   have hfe := character_total_eigenvector D f hf
   have hge := character_total_eigenvector D g hg
   have hsym : (totalFusionMatrix D)ᵀ = totalFusionMatrix D := by
@@ -449,8 +463,7 @@ theorem positive_character_unique
   obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique (totalFusionMatrix D)
     (totalFusionMatrix_pos D) f g hfpos _ hfe hge
   have hc1 : c = 1 := by
-    have h := congrFun hc (unitIndex D)
-    simpa [hfunit, hgunit] using h.symm
+    simpa [hfunit, hgunit] using (congrFun hc (unitIndex D)).symm
   rw [hc, hc1, one_smul]
 
 /-- The unique positive normalized character of the fusion rules. -/
@@ -551,13 +564,13 @@ theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
     intro j k
     dsimp [χ]
     exact_mod_cast fpCharacter_mul D j k
-  have h := Dimensions.character_norm_le_fpSimple D χ (unitIndex D) hχ hchar i
-  simpa [χ, Complex.norm_real, abs_of_pos (fpCharacter_pos D i)] using h
+  simpa [χ, Complex.norm_real, abs_of_pos (fpCharacter_pos D i)] using
+    (Dimensions.character_norm_le_fpSimple D hχ hchar i)
 
 theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
     fpSimple D i ≤ fpCharacter D i := by
   classical
-  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   let A := characterMatrix D i
   let B := A.map Complex.ofRealHom
   have hB : B = (fusionMatrix D i)ᵀ := by

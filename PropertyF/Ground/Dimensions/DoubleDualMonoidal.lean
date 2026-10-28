@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
 
+/-! # Monoidality of the double dual
+
+Associativity of dual tensor comparisons gives the canonical monoidal double-dual functor.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -206,8 +211,7 @@ theorem doubleDualTensorIso_associativity {C : Type u} [Category.{v} C]
   have hα : ((α_ (Zᘁ) (Yᘁ) (Xᘁ)).invᘁ) ≫ ((α_ (Zᘁ) (Yᘁ) (Xᘁ)).homᘁ) = 𝟙 _ := by
     rw [← comp_rightAdjointMate, Iso.hom_inv_id, rightAdjointMate_id]
   have hβ : (((α_ X Y Z).invᘁ)ᘁ) ≫ (((α_ X Y Z).homᘁ)ᘁ) = 𝟙 _ := by
-    have h := (rightDualIsoMap (rightDualIsoMap (α_ X Y Z))).inv_hom_id
-    exact h
+    exact ((rightDualIsoMap (rightDualIsoMap (α_ X Y Z))).inv_hom_id)
   slice_lhs 4 5 => rw [hα]
   simp only [Category.id_comp, Category.assoc]
   slice_lhs 6 7 => rw [hβ]
@@ -231,12 +235,12 @@ def doubleDualCoreMonoidal (C : Type u) [Category.{v} C] [MonoidalCategory C] [R
   μIso := doubleDualTensorIso
   μIso_hom_natural_left := by
     intro X Y f X'
-    have h := doubleDualTensorIso_natural f (𝟙 X')
-    simpa only [doubleDualFunctor, rightAdjointMate_id, tensorHom_id] using h
+    simpa only [doubleDualFunctor, rightAdjointMate_id, tensorHom_id] using
+      (doubleDualTensorIso_natural f (𝟙 X'))
   μIso_hom_natural_right := by
     intro X Y X' f
-    have h := doubleDualTensorIso_natural (𝟙 X') f
-    simpa only [doubleDualFunctor, rightAdjointMate_id, id_tensorHom] using h
+    simpa only [doubleDualFunctor, rightAdjointMate_id, id_tensorHom] using
+      (doubleDualTensorIso_natural (𝟙 X') f)
   associativity := by
     intro X Y Z
     exact doubleDualTensorIso_associativity X Y Z
@@ -247,6 +251,7 @@ def doubleDualCoreMonoidal (C : Type u) [Category.{v} C] [MonoidalCategory C] [R
     intro X
     exact (doubleDualTensorIso_unit_right X).symm
 
+/-- The canonical monoidal structure on the double-dual functor. -/
 @[instance_reducible] def doubleDualMonoidal (C : Type u) [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C] :
     (doubleDualFunctor C).Monoidal := (doubleDualCoreMonoidal C).toMonoidal
 end PropertyF.Ground.Dimensions
