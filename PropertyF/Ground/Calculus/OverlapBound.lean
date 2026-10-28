@@ -146,13 +146,11 @@ theorem starMap_preserves_block_unitary {r s : ℕ} {d : Fin r → ℕ} {q : Fin
     {u : PropertyF.Blocks.Algebra ⟨_, d⟩}
     (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ u) :
     PropertyF.Blocks.IsUnitary ⟨_, q⟩ (F u) := by
-  have h : u * star u = 1 := by
-    funext i
-    exact Matrix.mem_unitaryGroup_iff.mp (hu i)
   intro j
   apply Matrix.mem_unitaryGroup_iff.mpr
-  have hf := congrArg (fun x => x j) (congrArg F h)
-  simpa only [map_mul, map_star, map_one, Pi.mul_apply, Pi.star_apply, Pi.one_apply] using hf
+  simpa only [map_mul, map_star, map_one, Pi.mul_apply, Pi.star_apply, Pi.one_apply] using
+    congrArg (fun x : PropertyF.Blocks.Algebra ⟨_, d⟩ => F x j)
+      (show u * star u = 1 from funext fun i => Matrix.mem_unitaryGroup_iff.mp (hu i))
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -186,12 +184,12 @@ theorem addLeft_braid_unitary {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
 
 /-- Successive actual overlapping products remain blockwise unitary. The
 presentations may be chosen independently at every strand count. -/
-theorem overlapProduct_unitary (X : C) (t : ℕ)
+theorem overlapProduct_unitary {X : C} {t : ℕ}
     (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
       PropertyF.Blocks.Algebra ⟨_, d n⟩)
     (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
-    (u : braidAlgebra X t) (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ) :
+    {u : braidAlgebra X t} (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ) :
     ∀ k i, e (overlapIndex t k) (overlapProduct X t u k) i ∈
       Matrix.unitaryGroup (Fin (d (overlapIndex t k) i)) ℂ := by
   intro k
@@ -295,7 +293,7 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec
   intro k
   have hbound := braid_trace_unitary_bound_ground C X (overlapIndex t k) p
-    (r _) (d _) (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary X t r d e he u hu k)
+    (r _) (d _) (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary r d e he hu k)
   change ‖actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)‖ ≤ _ at hbound
   exact hbound
 

@@ -219,7 +219,7 @@ def addLeftBlocksIter (X : C) (n k : ℕ) {r s : ℕ}
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left identity-strand insertion is star-preserving in independently
 chosen unitary block presentations. -/
-theorem addLeftBlocksIter_star (X : C) (n k : ℕ) {r s : ℕ}
+theorem addLeftBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
@@ -245,7 +245,7 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     (PropertyF.Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
       (PropertyF.Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := addLeftBlocksIter X n k e f
-  map_star' := addLeftBlocksIter_star X n k e f he hf
+  map_star' := addLeftBlocksIter_star k e f he hf
 
 end PropertyF.Ground.Calculus
 
@@ -431,7 +431,7 @@ def addRightBlocksIter (X : C) (n k : ℕ) {r s : ℕ}
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right identity-strand insertion is star-preserving in independently
 chosen unitary block presentations. -/
-theorem addRightBlocksIter_star (X : C) (n k : ℕ) {r s : ℕ}
+theorem addRightBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
@@ -457,6 +457,6 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     (PropertyF.Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
       (PropertyF.Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := addRightBlocksIter X n k e f
-  map_star' := addRightBlocksIter_star X n k e f he hf
+  map_star' := addRightBlocksIter_star k e f he hf
 
 end PropertyF.Ground.Calculus
