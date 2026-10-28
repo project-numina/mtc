@@ -65,4 +65,14 @@ polynomial reduction, with deliberately corrupted entries rejected. The
 Python computation is not a Lean proof, and it does not verify that every
 required block is present or establish F/R coherence.
 
+The first five supplied F blocks fail ordinary matrix unitarity in their
+archived basis. For the first block, the exact first-row norm-squared reduction
+was independently checked with SymPy. This does not contradict the paper's
+unitary categorification: the basis may require a compatible inner product or
+a gauge change. Reproduce the bounded check with:
+
+```sh
+python3 MTC/FRSymbols/check_atlas_f.py data/symbols/B11-00119-F-symbols/fsymbols.aasym
+```
+
 Generated data remain under ignored `data/` pending redistribution terms.
