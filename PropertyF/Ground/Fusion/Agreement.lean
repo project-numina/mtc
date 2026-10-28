@@ -105,8 +105,7 @@ variable {C} in
 bound, because field automorphisms preserve the integer fusion coefficients. -/
 theorem galois_character_norm_le_fpSimple
     {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
-    (hchar : IsFusionMultiplicative C χ)
-    (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
+    (hchar : IsFusionMultiplicative C χ) (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     ‖σ (χ i)‖ ≤ fpSimple C i :=
   character_norm_le_fpSimple (i₀ := i₀)
     ((map_ne_zero σ).2 hχ) (fun j k ↦ by simpa using congrArg σ (hchar j k)) i
@@ -141,8 +140,7 @@ form of a matrix with nonnegative entries. -/
 theorem quadratic_le_abs
     {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
     {A : Matrix ι ι k} (hA : ∀ i j, 0 ≤ A i j) (x : ι → k) :
-    ∑ i, ∑ j, x i * A i j * x j ≤
-      ∑ i, ∑ j, |x i| * A i j * |x j| :=
+    ∑ i, ∑ j, x i * A i j * x j ≤ ∑ i, ∑ j, |x i| * A i j * |x j| :=
   Finset.sum_le_sum fun i _ ↦ Finset.sum_le_sum fun j _ ↦ by
     simpa [abs_mul, mul_assoc, mul_comm, mul_left_comm] using
       (mul_le_mul_of_nonneg_left (le_abs_self (x i * x j)) (hA i j))

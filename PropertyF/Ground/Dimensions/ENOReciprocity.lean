@@ -141,10 +141,8 @@ theorem squaredNorm_eq_rootDualSign_mul
   obtain ⟨u⟩ := dualIndex_iso i
   have hq : unitScalar C (rightQuantumTrace k) = rootDimension C (dualIndex C i) :=
     congrArg (unitScalar C) ((rootTrace_id C (Xᘁ)).symm.trans (rootTrace_id_iso C (e ≪≫ u)))
-  rw [target_squaredNorm_choice_independent j, leftQuantumTrace_eq_rightDual j]
-  change unitScalar C (rightQuantumTrace j) * unitScalar C (rightQuantumTrace l) =
-    rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i)
-  rw [← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
+  rw [target_squaredNorm_choice_independent j, leftQuantumTrace_eq_rightDual j,
+    ← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
       congrArg (unitScalar C) (rootTrace_id C X).symm), ← hq,
     rightQuantumTrace_smul_hom (rootDualSign_component i)]
   simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
@@ -186,8 +184,7 @@ variable {C} in
 /-- ENO's trace-matrix bound and the root-norm identity turn global
 pseudo-unitarity into pointwise FP saturation. -/
 theorem eno_root_norm_saturation_of_pseudoUnitary
-    (hinv : MultiplicityDefectsInvolutive C)
-    (heig : ENOTraceMatrixEigenvector C)
+    (hinv : MultiplicityDefectsInvolutive C) (heig : ENOTraceMatrixEigenvector C)
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     ∀ i, ‖rootDimension C i‖ = fpSimple C i :=
   norm_saturation_of_pseudoUnitary
@@ -292,8 +289,7 @@ variable {C} in
 /-- ENO's trace reciprocity identifies the dual root dimension with the
 signed complex conjugate of the original one. -/
 theorem rootDimension_dual_conjugate_of_trace_reciprocity
-    (hinv : MultiplicityDefectsInvolutive C)
-    (htranspose : ENOTraceMatrixReciprocity C)
+    (hinv : MultiplicityDefectsInvolutive C) (htranspose : ENOTraceMatrixReciprocity C)
     (i : Fin (rank C)) :
     rootDimension C (dualIndex C i) = rootDualSign C i * star (rootDimension C i) := by
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ := enoTraceMatrix C i

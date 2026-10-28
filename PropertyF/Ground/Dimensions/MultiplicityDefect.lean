@@ -59,9 +59,9 @@ theorem fourthDualRootNaturalIso_app_simple
 whose finite biproducts contain every object. -/
 theorem natTrans_eq_of_biproduct_components
     {D : Type u} [Category.{v} D] [HasZeroMorphisms D] [HasFiniteBiproducts D]
-    {ι : Type} [Fintype ι] {T : ι → D}
+    {ι : Type} [Fintype ι] {T : ι → D} {F : D ⥤ D} {α β : 𝟭 D ⟶ F}
     (hdecomp : ∀ X, HasBiproductDecomposition T X)
-    {F : D ⥤ D} {α β : 𝟭 D ⟶ F} (h : ∀ i, α.app (T i) = β.app (T i)) : α = β :=
+    (h : ∀ i, α.app (T i) = β.app (T i)) : α = β :=
   NatTrans.ext <| funext fun X ↦ (hdecomp X).elim fun m ⟨e⟩ ↦
     biproduct_decomposition_hom_ext e fun ⟨i, t⟩ ↦ by
       let s := biproduct.ι (fun p : Σ i, Fin (m i) ↦ T p.1) ⟨i, t⟩ ≫ e.inv
@@ -212,10 +212,8 @@ an involution. -/
 theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
     (F : C ⥤ C) (a : 𝟭 C ≅ F) {X : C} (b : X ≅ F.obj X)
     (hsq : ((a.app X).hom ≫ F.map (a.app X).hom) = b.hom ≫ F.map b.hom) :
-    let d := (a.app X) ≪≫ b.symm
-    IsInvolutiveHom d.hom := by
+    IsInvolutiveHom ((a.app X) ≪≫ b.symm).hom := by
   let d := (a.app X) ≪≫ b.symm
-  change d.hom ≫ d.hom = 𝟙 X
   have hd : d.hom ≫ b.hom = (a.app X).hom := by simp [d, Category.assoc]
   have hc : b.hom ≫ F.map d.hom = d.hom ≫ b.hom := by
     apply (cancel_epi d.hom).1

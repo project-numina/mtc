@@ -38,7 +38,6 @@ theorem drinfeld_unit :
     simp only [← whisker_exchange_assoc, reassoc_of% hn, Category.assoc,
       ← comp_whiskerRight_assoc, Iso.hom_inv_id, id_whiskerRight,
       Category.id_comp, U, braiding_tensorUnit_left]
-  change (doubleDualUnitIso (C := C)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
   exact evaluation_ext ((drinfeld_eval U).trans h.symm)
 end PropertyF.Ground.Dimensions
 
@@ -67,7 +66,6 @@ theorem drinfeld_unit_dual :
   let r : Uᘁ ≅ U := rightDualUnitIso
   have hu : drinfeldIso U = r.symm ≪≫ rightDualIsoMap r := Iso.ext drinfeld_unit
   apply Iso.ext
-  change (drinfeldIso (Uᘁ)).hom = ((drinfeldIso U).invᘁ)
   apply (cancel_mono (rightDualIsoMap (rightDualIsoMap r)).hom).1
   change (drinfeldIso (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) =
     ((drinfeldIso U).invᘁ) ≫ ((r.homᘁ)ᘁ)
@@ -111,9 +109,7 @@ theorem fourthDualRoot_unit_component :
   let u := doubleDualIso C U
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) u a
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit (C := C.Obj))
-  rw [rootDimension_unit]
-  change a.hom = unitScalar C (rightQuantumTrace a) • (doubleDualUnitIso (C := C.Obj)).hom
-  rw [rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
+  rw [rootDimension_unit, rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
   simpa only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one, hu] using hr
 
 set_option backward.isDefEq.respectTransparency false in

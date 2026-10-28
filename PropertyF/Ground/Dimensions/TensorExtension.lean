@@ -98,7 +98,6 @@ theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
     change f ≫ _ = f ≫ _
     simpa [f, X, rootPhaseDefect_apply, multiplicityDefect_apply] using
       congrArg (fun L ↦ L f) (hdef k)
-  change ((rootSignTwist C c hc).app X).hom ≫ (rootSignTensorIso C c hc _ _).inv = 𝟙 X at hid
   apply Iso.ext
   simpa [X] using (Iso.comp_inv_eq (rootSignTensorIso C c hc _ _)).1 hid
 

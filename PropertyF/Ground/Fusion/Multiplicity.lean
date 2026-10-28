@@ -100,8 +100,7 @@ theorem exists_canonical_decomposition (X : D.Obj) :
 theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
     [MonoidalCategory E] [BraidedCategory E] [Abelian E] [Linear ℂ E]
     [RigidCategory E] [MonoidalPreadditive E] [MonoidalLinear ℂ E] [IsFusionCategory E]
-    (X S : E) [Simple S] :
-    Module.finrank ℂ (X ⟶ S) = Module.finrank ℂ (S ⟶ X) := by
+    (X S : E) [Simple S] : Module.finrank ℂ (X ⟶ S) = Module.finrank ℂ (S ⟶ X) := by
   classical
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := E)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
