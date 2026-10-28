@@ -36,14 +36,6 @@ theorem natural_end_finite_order_of_components {ι : Type*} [Finite ι] (X : ι 
     let ψ := ((CategoryTheory.evaluation D D).obj Y).mapEnd (𝟭 D)
     ((map_pow ψ a n).symm.trans (congrArg ψ ha)).trans (map_one ψ)⟩
 
-/-- A natural endomorphism of the identity in a fusion category has a common
-finite order as soon as its components on the simple representatives do. -/
-theorem natural_end_finite_order_of_simples (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
-    (h : ∀ i, IsOfFinOrder (End.of (α.app (Ground.simples C i)))) :
-    ∃ n : ℕ, n ≠ 0 ∧ ∀ X, (End.of (α.app X)) ^ n = 1 :=
-  natural_end_finite_order_of_components (simples C)
-    (fun h ↦ Dimensions.natTrans_eq_of_simple_components C h) α h
-
 /-- Tensoring two endomorphisms commutes with taking powers. -/
 theorem tensor_end_pow [MonoidalCategory D]
     {X Y : D} (f : End X) (g : End Y) (n : ℕ) :
@@ -66,14 +58,13 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist (θ : 𝟭 C.Obj ≅ �
     (hfinite : ∀ i, IsOfFinOrder (End.of (θ.hom.app (Ground.simples C i))))
     (hbalance : IsBalancedTwist θ)
     (X Y : C.Obj) : IsOfFinOrder (End.of (doubleBraiding X Y)) := by
-  obtain ⟨n, hn, hp⟩ := natural_end_finite_order_of_simples θ.hom hfinite
+  obtain ⟨n, hn, hp⟩ := natural_end_finite_order_of_components (simples C)
+    (fun h ↦ Dimensions.natTrans_eq_of_simple_components C h) θ.hom hfinite
   let t : End (X ⊗ Y) := End.of (θ.hom.app X ⊗ₘ θ.hom.app Y)
   let z : End (X ⊗ Y) := End.of (θ.hom.app (X ⊗ Y))
   let m : End (X ⊗ Y) := End.of (doubleBraiding X Y)
   have ht : t ^ n = 1 := by
-    change (End.of (θ.hom.app X ⊗ₘ θ.hom.app Y)) ^ n = 1
-    rw [tensor_end_pow, hp X, hp Y]
-    exact End.ext (id_tensorHom_id X Y)
+    simp [t, tensor_end_pow (End.of (θ.hom.app X)) (End.of (θ.hom.app Y)) n, hp, End.ext_iff]
   refine isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, ?_⟩
   simpa only [show t * m = z from End.ext (hbalance X Y), z, hp, ht, one_mul] using
     ((show Commute t m from End.ext (doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))).mul_pow n).symm

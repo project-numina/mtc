@@ -48,16 +48,16 @@ theorem doubleBraiding_eq_one_biproduct [Abelian D] [MonoidalPreadditive D]
     ← Modular.doubleBraiding_natural_left (biproduct.ι V i) Y, h i]
   simp
 
-/-- Any retract-closed object class centralizes Y when its simple members do. -/
-theorem doubleBraiding_eq_one_of_simple_constituents
-    (D : Ground.BraidedFusionCategory.{v,u}) (P : D.Obj → Prop)
-    (hP : ∀ {X Z : D.Obj}, Retract X Z → P Z → P X)
-    {X Y : D.Obj} (hX : P X)
-    (h : ∀ i, P (simples D i) → doubleBraiding (simples D i) Y = 𝟙 _) :
+/-- A retract-closed object class centralizes Y when the constituents of a
+finite decomposition of X do. -/
+theorem doubleBraiding_eq_one_of_constituents [Abelian D] [MonoidalPreadditive D]
+    {ι : Type} [Fintype ι] (S : ι → D) {m : ι → ℕ} {X Y : D}
+    (e : X ≅ ⨁ (fun a : Σ i, Fin (m i) ↦ S a.1)) (P : D → Prop)
+    (hP : ∀ {X Z : D}, Retract X Z → P Z → P X) (hX : P X)
+    (h : ∀ i, P (S i) → doubleBraiding (S i) Y = 𝟙 _) :
     doubleBraiding X Y = 𝟙 _ := by
   classical
-  obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
-  let V : (Σ i, Fin (m i)) → D.Obj := fun a => simples D a.1
+  let V : (Σ i, Fin (m i)) → D := fun a ↦ S a.1
   apply doubleBraiding_eq_one_of_retract (Retract.ofIso e)
   apply doubleBraiding_eq_one_biproduct
   intro a
