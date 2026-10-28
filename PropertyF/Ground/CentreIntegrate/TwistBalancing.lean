@@ -1,11 +1,13 @@
 module
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
-public import PropertyF.Ground.Dimensions.IntrinsicNonzero
+public import PropertyF.Ground.Dimensions.DimensionCharacter
+public import PropertyF.Ground.Integrate.CharacterReality
+public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.CentreCabling.ImageCore
-public import PropertyF.Ground.Fusion.GeneratedRigidity
-public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
+public import PropertyF.Ground.Fusion.UnitPower
+public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Dimensions.DualBraiding
 
 /-!

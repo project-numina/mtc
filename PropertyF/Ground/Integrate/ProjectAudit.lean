@@ -73,7 +73,6 @@ import all PropertyF.Ground.Dimensions.DoubleDualPairing
 import all PropertyF.Ground.Dimensions.DoubleDualUnitTensor
 import all PropertyF.Ground.Dimensions.FourthDualUnit
 import all PropertyF.Ground.Dimensions.FourthTensorUnit
-import all PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 import all PropertyF.Ground.Dimensions.RootDualLabel
 import all PropertyF.Arithmetic
 import all PropertyF.BlockTrace
@@ -113,7 +112,6 @@ import all PropertyF.Ground.Dimensions.DualTensorNaturality
 import all PropertyF.Ground.Dimensions.ENOMatrices
 import all PropertyF.Ground.Dimensions.ENOReciprocity
 import all PropertyF.Ground.Dimensions.GroundNorm
-import all PropertyF.Ground.Dimensions.IntrinsicNonzero
 import all PropertyF.Ground.Dimensions.MultiplicityDefect
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.SimpleHomBasis
@@ -123,8 +121,6 @@ import all PropertyF.Ground.Dimensions.TensorMultiplicativity
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Final
 import all PropertyF.Ground.Fusion.Agreement
-import all PropertyF.Ground.Fusion.FunctorDimension
-import all PropertyF.Ground.Fusion.GeneratedRigidity
 import all PropertyF.Ground.Fusion.Multiplicity
 import all PropertyF.Ground.Fusion.ObjectDimension
 import all PropertyF.Ground.Fusion.Reciprocity

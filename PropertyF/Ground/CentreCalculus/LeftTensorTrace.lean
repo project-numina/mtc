@@ -3,7 +3,7 @@ public import PropertyF.Ground.CentreCalculus.ParityDeletion
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
-public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
+public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Modular.BraidIso
 public import PropertyF.Ground.Dimensions.DualCoherence
 

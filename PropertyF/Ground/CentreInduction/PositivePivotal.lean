@@ -1,8 +1,10 @@
 module
 public import PropertyF.Ground.CentreInduction.ForgetDualUnit
 public import PropertyF.Ground.Centre.Product
-public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
-public import PropertyF.Ground.Dimensions.IntrinsicNonzero
+public import PropertyF.Ground.Dimensions.DoubleDualPairing
+public import PropertyF.Ground.Dimensions.DimensionCharacter
+public import PropertyF.Ground.Integrate.CharacterReality
+public import PropertyF.Ground.Modular.SMatrix
 
 section
 /-! Lift a pivotal structure once its transported components are central. -/
