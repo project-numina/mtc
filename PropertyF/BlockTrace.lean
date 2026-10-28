@@ -114,11 +114,10 @@ lemma trace_signElement (B : Blocks) (w : Fin B.count → ℝ) :
   intro r _
   by_cases h : 0 ≤ w r <;> simp [h, abs_of_nonneg, abs_of_neg, lt_of_not_ge]
 
-/-- Equality in the weighted bound implies centrality when no weight vanishes.
-This is the equality argument in Lemma 3.2, proved using actual complex matrices. -/
-theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
-    (hw : ∀ r, w r ≠ 0) {g : B.Algebra} (hg : B.IsUnitary g)
-    (hsat : ‖B.trace w g‖ = B.mass w) : ∀ T : B.Algebra, g * T = T * g := by
+/-- Saturation of the weighted bound saturates every block with nonzero weight. -/
+theorem block_trace_norm_eq_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
+    {g : B.Algebra} (hg : B.IsUnitary g) (hsat : ‖B.trace w g‖ = B.mass w)
+    (r : Fin B.count) (hw : w r ≠ 0) : ‖(g r).trace‖ = B.size r := by
   have hle : ∀ r, |w r| * ‖(g r).trace‖ ≤ |w r| * B.size r := fun r =>
     mul_le_mul_of_nonneg_left
       (by simpa using norm_trace_le_card (hg r)) (abs_nonneg _)
@@ -128,15 +127,19 @@ theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
       _ = ‖B.trace w g‖ := hsat.symm
       _ ≤ ∑ r, ‖(w r : ℂ) * (g r).trace‖ := norm_sum_le _ _
       _ = _ := by simp
-  have hblock : ∀ r, ‖(g r).trace‖ = B.size r := fun r =>
-    (mul_left_cancel₀ (abs_ne_zero.mpr (hw r)))
-      ((Finset.sum_eq_sum_iff_of_le (fun r _ => hle r)).mp heq r (Finset.mem_univ r))
-  intro T
-  funext r
-  obtain ⟨z, hz⟩ := scalar_of_norm_trace_eq_card (hg r)
-    (by simpa using hblock r)
-  change g r * T r = T r * g r
-  rw [hz, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
+  exact (mul_left_cancel₀ (abs_ne_zero.mpr hw))
+    ((Finset.sum_eq_sum_iff_of_le (fun r _ => hle r)).mp heq r (Finset.mem_univ r))
+
+/-- Equality in the weighted bound implies centrality when no weight vanishes.
+This is the equality argument in Lemma 3.2, proved using actual complex matrices. -/
+theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
+    (hw : ∀ r, w r ≠ 0) {g : B.Algebra} (hg : B.IsUnitary g)
+    (hsat : ‖B.trace w g‖ = B.mass w) : ∀ T : B.Algebra, g * T = T * g :=
+  fun T => funext fun r =>
+    let ⟨z, hz⟩ := scalar_of_norm_trace_eq_card (hg r)
+      (by simpa using B.block_trace_norm_eq_of_saturation w hg hsat r (hw r))
+    show g r * T r = T r * g r from by
+      rw [hz, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
 
 end Blocks
 end PropertyF
