@@ -69,9 +69,8 @@ omit [RightRigidCategory C] in
 /-- The monodromy of two objects closed against their tensor-product dual. -/
 abbrev monodromyTensorCap [HasRightDual X] [HasRightDual Y] :
     (X ⊗ Y) ⊗ ((Yᘁ) ⊗ (Xᘁ)) ⟶ 𝟙_ C :=
-  let p : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := ExactPairing.tensor
   (Modular.doubleBraiding X Y ▷ ((Yᘁ) ⊗ (Xᘁ))) ≫
-    (β_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ))).hom ≫ @ExactPairing.evaluation C _ _ _ _ p
+    (β_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ))).hom ≫ ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ))
 
 omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
