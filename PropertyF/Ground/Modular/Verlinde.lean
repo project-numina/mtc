@@ -140,10 +140,9 @@ theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,
       (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 :=
   letI : Simple (simples D k) := simples_simple D k
   letI : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
-  rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
+  rightPartialTrace_simple (X := simples D k) (Y := X) p
     (Ground.unitScalarEquiv D) (End.of (doubleBraiding (simples D k) X))
     (simpleDimension_ne_zero D p k)
-    (rightTrace_partialTrace p (End.of (doubleBraiding (simples D k) X)))
 
 /-- Partial traces of double braiding multiply on a simple strand. -/
 abbrev HasMultiplicativePartialTrace (D : Ground.BraidedFusionCategory.{v,u})
@@ -242,11 +241,11 @@ theorem rightPartialTrace_nested_simple {scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ}
   have hc : p.rightTrace g.asHom = p.rightTrace f.asHom := by
     simpa [g, Iso.conj_apply_asHom, Category.assoc] using
       p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
-  rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd
-      (rightTrace_partialTrace p f),
-    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd
-      (rightTrace_partialTrace p (rightPartialTrace p g))]
-  simp only [Calculus.scalarTrace, rightTrace_partialTrace p g, hc]
+  rw [rightPartialTrace_simple (X := Z) (Y := X ⊗ Y) p scalar f hd,
+    rightPartialTrace_simple (X := Z) (Y := X) p scalar _ hd]
+  change (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Z))) • (1 : End Z) =
+    (scalar (p.rightTrace (rightPartialTrace p g).asHom) / scalar (p.rightTrace (𝟙 Z))) • 1
+  rw [rightTrace_partialTrace p g, hc]
 
 
 end Trace
