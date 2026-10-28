@@ -49,7 +49,7 @@ theorem closeFusionMap_tensor {T U S K R : C.Obj} (f : T ⊗ K ⟶ R) (g : U ⊗
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossing blocks compose to the block of their composite fusion maps. -/
-theorem crossingBlock_tensor (X T U S K R : C.Obj)
+theorem crossingBlock_tensor (X : C.Obj) {T U S K R : C.Obj}
     (g₁ : R ⟶ T ⊗ K) (g₂ : K ⟶ U ⊗ S)
     (f₁ : T ⊗ K ⟶ R) (f₂ : U ⊗ S ⟶ K) :
   crossingBlock C X (T ⊗ U) R S (g₁ ≫ (T ◁ g₂) ≫ (α_ T U S).inv)

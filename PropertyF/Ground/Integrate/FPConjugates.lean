@@ -1,5 +1,7 @@
 module
-public import PropertyF.Ground.Integrate.ConjugateBound
+public import PropertyF.Ground.Integrate.CharacterReality
+public import PropertyF.Ground.Dimensions.DimensionCharacter
+public import PropertyF.Ground.Dimensions.GlobalInequality
 public import PropertyF.Ground.Fusion.Agreement
 
 /-! The FP fusion character is self-dual, so all its conjugates are real

@@ -16,7 +16,7 @@ set_option backward.isDefEq.respectTransparency false in
 fusion inclusion with that map. -/
 @[reassoc]
 theorem crossingBlock_post_test (C : BraidedFusionCategory.{v,u})
-    (X T U R S : C.Obj) (h : T ⟶ U)
+    (X : C.Obj) {T U R S : C.Obj} (h : T ⟶ U)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     crossingBlock C X T R S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
       mixedCrossingBilinear C X T U R S (g ≫ (h ▷ S)) f := by
@@ -27,7 +27,7 @@ theorem crossingBlock_post_test (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a fusion map is natural in its test strand. -/
 theorem closeFusionMap_pre_test (C : BraidedFusionCategory.{v,u})
-    (T U R S : C.Obj) (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
+    {T U R S : C.Obj} (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     (Rᘁ ◁ h) ≫ closeFusionMap C U S R f =
       closeFusionMap C T S R ((h ▷ S) ≫ f) := by
   simp only [closeFusionMap, Category.assoc, comp_rightAdjointMate, comp_whiskerRight]
@@ -48,7 +48,7 @@ set_option backward.isDefEq.respectTransparency false in
 fusion projection with that map. -/
 @[reassoc]
 theorem crossingBlock_pre_test (C : BraidedFusionCategory.{v,u})
-    (X T U R S : C.Obj) (h : T ⟶ U)
+    (X : C.Obj) {T U R S : C.Obj} (h : T ⟶ U)
     (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
     (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock C X U R S g f =
       mixedCrossingBilinear C X T U R S g ((h ▷ S) ≫ f) := by
@@ -69,7 +69,7 @@ theorem crossingBlock_sum_natural_test (C : BraidedFusionCategory.{v,u})
       (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
         (h ▷ ((simples C j ⊗ X) ⊗ (simples C j)ᘁ)) := by
   simp_rw [crossingBlock_pre_test, crossingBlock_post_test]
-  exact (fusionBasis_contraction_natural C T U i j (h ▷ simples C j)
+  exact (fusionBasis_contraction_natural C i j (h ▷ simples C j)
     (mixedCrossingBilinear C X T U (simples C i) (simples C j))).symm
 
 set_option backward.isDefEq.respectTransparency false in

@@ -89,7 +89,7 @@ theorem dualBasis_contraction_natural {I J : Type} [Fintype I] [Fintype J] [Deci
 /-- The fusion-basis contraction is independent of which side of a map
 `T ⊗ Sⱼ ⟶ U ⊗ Sⱼ` is used to insert the decomposition. -/
 theorem fusionBasis_contraction_natural (C : BraidedFusionCategory.{v,u})
-    (T U : C.Obj) (i j : Fin (rank C))
+    {T U : C.Obj} (i j : Fin (rank C))
     (q : T ⊗ simples C j ⟶ U ⊗ simples C j)
     {E : Type*} [AddCommGroup E] [Module ℂ E]
     (F : (simples C i ⟶ U ⊗ simples C j) →ₗ[ℂ]

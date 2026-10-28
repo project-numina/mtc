@@ -57,7 +57,7 @@ theorem fusion_coevaluation {T S R : C.Obj} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component followed by a crossing block reduces to a fusion endomorphism. -/
-theorem unit_block (Z : CategoryTheory.Center C.Obj) (T S R : C.Obj)
+theorem unit_block (Z : CategoryTheory.Center C.Obj) {T S R : C.Obj}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (( (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫
       ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock C Z.1 T R S g f =
@@ -157,7 +157,7 @@ theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)
         crossingInclusion C T p.1 j p.2) := by
       apply Finset.sum_congr rfl
       intro p _
-      exact unit_block C Z T (simples C j) (simples C p.1)
+      exact unit_block C Z
         (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
     _ = unitBlockLinear C Z T (simples C j)
       (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),

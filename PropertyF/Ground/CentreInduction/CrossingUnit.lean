@@ -68,7 +68,7 @@ theorem crossingBlock_unit (X S : C.Obj) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- For a simple object, any splitting gives the same unit crossing block. -/
-theorem crossingBlock_unit_of_split (X S : C.Obj) [Simple S]
+theorem crossingBlock_unit_of_split (X : C.Obj) {S : C.Obj} [Simple S]
     (g : S ⟶ (𝟙_ C.Obj) ⊗ S) (f : (𝟙_ C.Obj) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock C X (𝟙_ C.Obj) S S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
@@ -122,7 +122,7 @@ theorem crossingCandidate_unit (X : C.Obj) :
       omega
     rw [Finset.sum_eq_single a]
     · let : Simple (simples C i) := simples_simple C i
-      rw [crossingBlock_unit_of_split C X (simples C i)
+      rw [crossingBlock_unit_of_split C X
         (crossingInclusion C (𝟙_ C.Obj) i i a) (crossingProjection C (𝟙_ C.Obj) i i a)
         (crossingInclusion_projection C (𝟙_ C.Obj) i i a)]
       change ((ρ_ (V i)).hom ≫ (λ_ (V i)).inv) ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) =

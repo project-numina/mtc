@@ -25,7 +25,7 @@ set_option backward.defeqAttrib.useBackward true in
 /-- An object isomorphic to the tensor unit has its coevaluation normalized
 by the induced identification of its right dual with the unit. -/
 theorem coevaluation_iso_unit (C : BraidedFusionCategory.{v,u})
-    (A : C.Obj) (e : A ≅ 𝟙_ C.Obj) :
+    {A : C.Obj} (e : A ≅ 𝟙_ C.Obj) :
     η_ A Aᘁ ≫ (e.hom ⊗ₘ (Dimensions.rightDualIsoMap e.symm ≪≫
       Dimensions.rightDualUnitIso).hom) = (ρ_ (𝟙_ C.Obj)).inv := by
   let : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
@@ -137,7 +137,7 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   let e : A ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   let d : Aᘁ ≅ 𝟙_ C.Obj := Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso
   have hn := Z.2.naturality e.hom
-  have hc := coevaluation_iso_unit C A e
+  have hc := coevaluation_iso_unit C e
   change (η_ A Aᘁ ≫ (e.hom ⊗ₘ d.hom)) = (ρ_ (𝟙_ C.Obj)).inv at hc
   change ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ A Aᘁ) ≫ (α_ Z.1 A Aᘁ).inv ≫
     ((Z.2.β A).hom ▷ Aᘁ)) ≫

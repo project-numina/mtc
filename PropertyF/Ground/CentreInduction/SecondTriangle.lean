@@ -212,7 +212,7 @@ theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Projecting a mapped induction unit selects its corresponding component. -/
-theorem unitCandidate_map_projection_general (Z : CategoryTheory.Center C.Obj) (X : C.Obj)
+theorem unitCandidate_map_projection_general (Z : CategoryTheory.Center C.Obj) {X : C.Obj}
     (f : Z.1 ⟶ X) (j : Fin (rank C)) :
   let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
   (unitCandidate C Z ≫ (underlyingFunctor C).map f) ≫ biproduct.π V j =
@@ -237,7 +237,7 @@ theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
       (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
   let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
-  have hp := unitCandidate_map_projection_general C ((induction C).obj X) X ((underlyingCounit C).app X) j
+  have hp := unitCandidate_map_projection_general C ((induction C).obj X) ((underlyingCounit C).app X) j
   have hh := congrArg (fun f => biproduct.ι V i ≫ f) hp
   simp only [Category.assoc] at hh
   change _ = _ at hh

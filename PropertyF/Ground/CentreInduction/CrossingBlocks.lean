@@ -30,7 +30,7 @@ def crossingBlock (C : BraidedFusionCategory.{v,u}) (X T R S : C.Obj)
 /-- A crossing matrix entry is natural in the middle induction factor. -/
 @[reassoc]
 theorem crossingBlock_natural_middle (C : BraidedFusionCategory.{v,u})
-    {X Y : C.Obj} (h : X ⟶ Y) (T R S : C.Obj)
+    {X Y : C.Obj} (h : X ⟶ Y) {T R S : C.Obj}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ crossingBlock C Y T R S g f =
       crossingBlock C X T R S g f ≫ (T ◁ ((S ◁ h) ▷ Sᘁ)) := by
@@ -165,7 +165,7 @@ theorem crossingCandidate_natural_middle (C : BraidedFusionCategory.{v,u})
   have hj' : (T ◁ biproduct.ι VX j) ≫ (T ◁ (underlyingFunctor C).map h) =
       (T ◁ ((simples C j ◁ h) ▷ (simples C j)ᘁ)) ≫ (T ◁ biproduct.ι VY j) := by
     simpa only [whiskerLeft_comp] using congrArg (fun g => T ◁ g) hj
-  have hblock := crossingBlock_natural_middle C h T (simples C i) (simples C j)
+  have hblock := crossingBlock_natural_middle C h
     (crossingInclusion C T i j a) (crossingProjection C T i j a)
   have hterm := congrArg (fun g => g ≫ (T ◁ biproduct.ι VY j)) hblock
   simp only [Category.assoc] at hterm ⊢

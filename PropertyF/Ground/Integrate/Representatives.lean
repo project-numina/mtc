@@ -40,20 +40,5 @@ theorem simple_presentation_equiv {n : ℕ} (S : Fin n → C.Obj)
     exact simples_injective C (f i) j ⟨ei.symm ≪≫ e⟩
   exact ⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, hf⟩
 
-/-- Any isomorphism-invariant quantity has a presentation-independent sum. -/
-theorem sum_simple_presentation {n : ℕ} (S : Fin n → C.Obj)
-    (hSimple : ∀ i, Simple (S i))
-    (hInjective : ∀ i j, Nonempty (S i ≅ S j) → i = j)
-    (hCover : ∀ j, ∃ i, Nonempty (S i ≅ simples C j))
-    {A : Type*} [AddCommMonoid A] (value : C.Obj → A)
-    (hValue : ∀ X Y, Simple X → Simple Y → Nonempty (X ≅ Y) → value X = value Y) :
-    ∑ i, value (S i) = ∑ j, value (simples C j) := by
-  obtain ⟨e, he⟩ := simple_presentation_equiv C S hSimple hInjective hCover
-  calc
-    _ = ∑ i, value (simples C (e i)) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact hValue _ _ (hSimple i) (simples_simple C (e i)) (he i)
-    _ = _ := e.sum_comp (fun j => value (simples C j))
 
 end PropertyF.Ground
