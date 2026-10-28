@@ -55,6 +55,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The Drinfeld map respects duality on the tensor unit. -/
 theorem drinfeld_unit_dual :
+    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
     drinfeldIso (rightDualObject (𝟙_ C)) =
       (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm := by
   let U : C := 𝟙_ C

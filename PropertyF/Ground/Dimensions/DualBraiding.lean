@@ -22,14 +22,12 @@ set_option backward.isDefEq.respectTransparency false in
 theorem braiding_cap_slide :
     (β_ U V).hom ▷ W ⊗≫ V ◁ f ⊗≫ (ρ_ V).hom =
       𝟙 ((U ⊗ V) ⊗ W) ⊗≫ U ◁ (β_ W V).inv ⊗≫ f ▷ V ⊗≫ (λ_ V).hom := by
-  have h := braiding_naturality_left f V
-  rw [braiding_tensor_left_hom] at h
-  have h' := congrArg (fun g => g ≫ (ρ_ V).hom) h
-  simp only [Category.assoc, braiding_rightUnitor] at h'
+  have h := congrArg (fun g => g ≫ (ρ_ V).hom) (braiding_naturality_left f V)
+  simp only [braiding_tensor_left_hom, Category.assoc, braiding_rightUnitor] at h
   calc
     _ = (α_ U V W).hom ≫ U ◁ (β_ W V).inv ≫ (α_ U W V).inv ≫
       (f ▷ V ≫ (λ_ V).hom) := by
-        rw [h']
+        rw [h]
         simp only [Iso.inv_hom_id_assoc, ← whiskerLeft_comp_assoc,
           Iso.inv_hom_id, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id_assoc]
         monoidal

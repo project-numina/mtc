@@ -46,8 +46,10 @@ theorem rightTraceWith_tensor_pairing {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅
     r, s, u, p1, p2, q1, q2] using (trace_change_rightDual p1 p2 (u ≫ s.inv)).trans hr
 
 
+omit [RightRigidCategory C] in
 /-- Close the right tensor factor using an arbitrary double-dual isomorphism. -/
-def partialTraceWith {Y : C} (k : Y ≅ (Yᘁ)ᘁ) (X : C) (f : End (X ⊗ Y)) : End X :=
+def partialTraceWith {Y : C} [HasRightDual Y] [HasRightDual (Yᘁ)]
+    (k : Y ≅ (Yᘁ)ᘁ) (X : C) (f : End (X ⊗ Y)) : End X :=
   End.of ((ρ_ X).inv ≫ (X ◁ η_ Y (Yᘁ)) ≫ (α_ X Y (Yᘁ)).inv ≫
     (f.asHom ▷ (Yᘁ)) ≫ (α_ X Y (Yᘁ)).hom ≫
     (X ◁ (k.hom ▷ (Yᘁ))) ≫ (X ◁ ε_ (Yᘁ) ((Yᘁ)ᘁ)) ≫ (ρ_ X).hom)
@@ -131,9 +133,11 @@ variable (p : PivotalStructure (C := C))
 
 variable (scalar : End (𝟙_ C) ≃ₐ[k] k)
 
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a right-factor endomorphism gives its scalar trace times the identity. -/
-theorem partialTraceWith_tensor_right_scalar {Y : C} (j : Y ≅ (Yᘁ)ᘁ)
+theorem partialTraceWith_tensor_right_scalar {Y : C} [HasRightDual Y] [HasRightDual (Yᘁ)]
+    (j : Y ≅ (Yᘁ)ᘁ)
     (X : C) (b : Y ⟶ Y) :
     partialTraceWith j X (End.of (𝟙 X ⊗ₘ b)) = scalar (rightTraceWith j b) • 1 := by
   have h : partialTraceWith j X (End.of (𝟙 X ⊗ₘ b)) =

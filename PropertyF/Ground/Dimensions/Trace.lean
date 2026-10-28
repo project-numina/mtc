@@ -18,16 +18,20 @@ theorem eq_smul_one_of_algEquiv {k : Type*} [CommSemiring k] {A : Type*}
     [Semiring A] [Algebra k A] (e : A ≃ₐ[k] k) (a : A) : a = e a • (1 : A) :=
   e.injective (by simp)
 
+omit [RightRigidCategory C] in
 /-- The right trace associated to a double-dual isomorphism is linear. -/
 def rightTraceWithLinear {k : Type*} [CommSemiring k] [Preadditive C] [Linear k C]
-    [MonoidalPreadditive C] [MonoidalLinear k C] {X : C} (j : X ≅ (Xᘁ)ᘁ) :
+    [MonoidalPreadditive C] [MonoidalLinear k C] {X : C} [HasRightDual X]
+    [HasRightDual (Xᘁ)] (j : X ≅ (Xᘁ)ᘁ) :
     (X ⟶ X) →ₗ[k] End (𝟙_ C) where
   toFun := rightTraceWith j
   map_add' f g := End.homEquiv.injective (by simp [rightTraceWith, tensorHom_def])
   map_smul' c f := End.homEquiv.injective (by simp [rightTraceWith, tensorHom_def])
 
+omit [RightRigidCategory C] in
 /-- Cyclicity needs naturality only for the two components involved. -/
-theorem rightTraceWith_cyclic {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
+theorem rightTraceWith_cyclic {X Y : C} [HasRightDual X] [HasRightDual Y]
+    [HasRightDual (Xᘁ)] [HasRightDual (Yᘁ)] {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
     (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
     rightTraceWith j (f ≫ g) = rightTraceWith k (g ≫ f) := by
   apply End.homEquiv.injective

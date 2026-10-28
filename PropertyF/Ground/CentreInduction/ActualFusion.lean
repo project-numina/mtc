@@ -120,8 +120,7 @@ theorem unit_sum (j : Fin (rank C)) :
       (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
   dsimp only [unitComponent]
   rw [← unitBlockLinear_id (k := ℂ) Z T (simples C j), ← crossing_completeness C T j, map_sum]
-  exact Finset.sum_congr rfl fun p _ => unit_block Z
-    (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
+  simp only [crossingSummand, unit_block, unitBlockLinear, LinearMap.coe_mk, AddHom.coe_mk]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
@@ -130,9 +129,8 @@ theorem unitCandidate_central :
       (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
   let V := inductionSummand C Z.1
   refine leftDistributor_ext_right (f := V) fun j => ?_
-  simp only [Category.assoc]
-  rw [← whiskerLeft_comp, show unitCandidate C Z ≫ biproduct.π V j =
-    unitComponent C Z j from biproduct.lift_π _ _]
+  simp only [Category.assoc, ← whiskerLeft_comp,
+    show unitCandidate C Z ≫ biproduct.π V j = unitComponent C Z j from biproduct.lift_π _ _]
   simpa only [V, unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
     comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum,
     Fintype.sum_sigma, crossingSummand] using unit_sum C Z T j
@@ -146,8 +144,8 @@ def actualAdjunction : Center.forget C.Obj ⊣ induction C where
       apply Center.ext
       change f.f ≫ unitCandidate C Y = unitCandidate C X ≫ (underlyingFunctor C).map f.f
       refine biproduct.hom_ext _ _ fun i => ?_
-      simp only [underlyingFunctor, unitCandidate, Category.assoc, biproduct.lift_π, biproduct.lift_π_assoc, biproduct.map_π]
-      simpa only [Category.assoc] using unitComponent_natural C f i }
+      simpa only [underlyingFunctor, unitCandidate, Category.assoc, biproduct.lift_π,
+        biproduct.lift_π_assoc, biproduct.map_π] using unitComponent_natural C f i }
   counit := underlyingCounit C
   left_triangle_components Z := unitCandidate_counit C Z
   right_triangle_components X := by
