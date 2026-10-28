@@ -94,29 +94,33 @@ variable (C : Ground.BraidedFusionCategory.{v,u})
   [RigidCategory (CategoryTheory.Center C.Obj)]
   [IsFusionCategory (CategoryTheory.Center C.Obj)]
 
-/-- Retracts of either canonical image, without taking mixed products. -/
-def CanonicalImageRetract (X : CategoryTheory.Center C.Obj) : Prop :=
-  (∃ A : C.Obj, Nonempty (Retract X ((CategoryTheory.Center.ofBraided C.Obj).obj A))) ∨
-  (∃ A : C.Obj, Nonempty (Retract X ((Centre.negative C.Obj).obj A)))
+section
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 
-omit [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)] in
-theorem canonicalImageRetract_of_retract {X Y : CategoryTheory.Center C.Obj}
-    (r : Retract X Y) (h : CanonicalImageRetract C Y) : CanonicalImageRetract C X :=
+/-- Retracts of either canonical image, without taking mixed products. -/
+def CanonicalImageRetract (X : CategoryTheory.Center D) : Prop :=
+  (∃ A : D, Nonempty (Retract X ((CategoryTheory.Center.ofBraided D).obj A))) ∨
+  (∃ A : D, Nonempty (Retract X ((Centre.negative D).obj A)))
+
+/-- Retracts of canonical-image retracts remain canonical-image retracts. -/
+theorem canonicalImageRetract_of_retract {X Y : CategoryTheory.Center D}
+    (r : Retract X Y) (h : CanonicalImageRetract Y) : CanonicalImageRetract X :=
   h.elim (fun ⟨A, ⟨s⟩⟩ ↦ Or.inl ⟨A, ⟨r.trans s⟩⟩)
     (fun ⟨A, ⟨s⟩⟩ ↦ Or.inr ⟨A, ⟨r.trans s⟩⟩)
 
-omit [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)] in
-theorem canonicalImageRetract_product {X : CategoryTheory.Center C.Obj}
-    (h : CanonicalImageRetract C X) : Centre.ProductRetract X :=
+/-- Every canonical-image retract is also a product retract. -/
+theorem canonicalImageRetract_product {X : CategoryTheory.Center D}
+    (h : CanonicalImageRetract X) : Centre.ProductRetract X :=
   h.elim (fun ⟨A, ⟨s⟩⟩ ↦ Centre.productRetract_of_retract s (Centre.positive_productRetract A))
     (fun ⟨A, ⟨s⟩⟩ ↦ Centre.productRetract_of_retract s (Centre.negative_productRetract A))
+end
 
 /-- Simple constituents of either canonical image. -/
 def imageLabels : Set (Fin (rank (𝒵 C))) :=
-  {a | CanonicalImageRetract C (simples (𝒵 C) a)}
+  {a | CanonicalImageRetract (simples (𝒵 C) a)}
 
 theorem imageLabels_subset_productLabels : imageLabels C ⊆ (↑(productLabels C) : Set _) :=
-  fun a ha ↦ (mem_productLabels C a).mpr (canonicalImageRetract_product C ha)
+  fun a ha ↦ (mem_productLabels C a).mpr (canonicalImageRetract_product ha)
 
 variable {p : PivotalStructure (C := (𝒵 C).Obj)}
 
@@ -137,11 +141,12 @@ variable (hfinite : HasFiniteImageCentralizerMonodromy C p)
 include hdim hfinite hy in
 /-- The numerical image centralizer centralizes every canonical-image retract. -/
 theorem centralizes_imageRetract {X : CategoryTheory.Center C.Obj}
-    (hX : CanonicalImageRetract C X) : Centre.Centralizes (simples (𝒵 C) y) X := by
+    (hX : CanonicalImageRetract X) : Centre.Centralizes (simples (𝒵 C) y) X := by
   apply Centre.centralizes_symm
   change doubleBraiding X (simples (𝒵 C) y) = 𝟙 _
-  apply doubleBraiding_eq_one_of_simple_constituents (𝒵 C) (CanonicalImageRetract C)
-    (fun r hr ↦ canonicalImageRetract_of_retract C r hr) hX
+  obtain ⟨m, ⟨e⟩⟩ := simples_decompose (𝒵 C) X
+  apply doubleBraiding_eq_one_of_constituents (simples (𝒵 C)) e CanonicalImageRetract
+    (fun r hr ↦ canonicalImageRetract_of_retract r hr) hX
   intro a ha
   exact doubleBraiding_eq_one_of_sTest_of_finite_order hdim (hfinite y hy a ha) (hy a ha)
 

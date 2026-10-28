@@ -39,8 +39,8 @@ theorem balanced_flow_no_entry {ι : Type*} [Fintype ι] {b : ι → ι → ℝ}
     have h := Finset.sum_sdiff (f := fun x => b x j) (Finset.subset_univ s)
     rw [← hrow j hj] at h
     linarith
-  have hmem : i ∈ Finset.univ \ s := Finset.mem_sdiff.mpr ⟨Finset.mem_univ i, hi⟩
-  exact (Finset.sum_eq_zero_iff_of_nonneg (fun x _ => hb x j)).mp hzero i hmem
+  exact (Finset.sum_eq_zero_iff_of_nonneg (fun x _ => hb x j)).mp hzero i
+    (Finset.mem_sdiff.mpr ⟨Finset.mem_univ i, hi⟩)
 
 /-- Every vertex with an outgoing edge in a finite balanced nonnegative flow
 lies on a directed cycle. -/
@@ -90,14 +90,13 @@ theorem fusionFlow_nonneg (i j k : Fin (rank D)) :
 theorem fusionFlow_balance (i j : Fin (rank D)) :
     (∑ k, fusionFlow D i j k) = ∑ k, fusionFlow D i k j := by
   classical
+  simp only [fusionFlow, fusionCoeff_dual_symmetry D i j]
   calc
     _ = fpSimple D j * (∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k) := by
-      simp only [fusionFlow, Finset.mul_sum, mul_assoc]
-    _ = fpSimple D j * (fpSimple D i * fpSimple D j) := by rw [← fpSimple_mul]
-    _ = fpSimple D j * (fpSimple D (dualIndex D i) * fpSimple D j) := by rw [fpSimple_dual]
-    _ = fpSimple D j * (∑ k, (fusionCoeff D (dualIndex D i) j k : ℝ) * fpSimple D k) := by rw [fpSimple_mul]
-    _ = _ := by
-      simp only [fusionFlow, Finset.mul_sum, ← fusionCoeff_dual_symmetry D i j, mul_comm]
+      simp only [Finset.mul_sum, mul_assoc]
+    _ = fpSimple D j * (∑ k, (fusionCoeff D (dualIndex D i) j k : ℝ) * fpSimple D k) := by
+      rw [← fpSimple_mul, ← fpSimple_mul, fpSimple_dual]
+    _ = _ := by simp only [Finset.mul_sum, mul_comm]
 
 /-- A positive fusion coefficient gives an actual retract. -/
 theorem fusionCoeff_retract
