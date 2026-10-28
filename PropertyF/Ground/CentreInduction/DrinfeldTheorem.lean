@@ -125,7 +125,7 @@ theorem fourthDualIso_tensor :
   let m : X ⊗ Y ≅ X ⊗ Y := (β_ X Y) ≪≫ (β_ Y X)
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap]
   rw [(Iso.eq_inv_comp m).2 (drinfeld_tensor X Y)]
-  simp only [Category.assoc, drinfeld_inv_dual_tensor X Y]
+  rw [Category.assoc, Category.assoc, drinfeld_inv_dual_tensor X Y]
   simp only [← tensorHom_comp_tensorHom_assoc, ← Category.assoc]
   rw [Category.assoc m.inv,
     ← Modular.doubleBraiding_natural (d X).hom (d Y).hom]
