@@ -10,6 +10,28 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 
 namespace PropertyF.Ground
 universe v u
+
+/-- The evaluation and coevaluation of a dual pair are nonzero when the right object is nonzero. -/
+theorem exactPairing_ne_zero {C : Type u} [Category.{v} C] [MonoidalCategory C]
+    [Preadditive C] [MonoidalPreadditive C] (X Y : C) [ExactPairing X Y]
+    (hY : 𝟙 Y ≠ 0) : ExactPairing.coevaluation X Y ≠ 0 ∧
+      ExactPairing.evaluation X Y ≠ 0 := by
+  have hzero : Y ◁ ExactPairing.coevaluation X Y ≫ (α_ Y X Y).inv ≫
+      ExactPairing.evaluation X Y ▷ Y ≠ 0 := by
+    intro h
+    have ht := ExactPairing.coevaluation_evaluation X Y
+    rw [h] at ht
+    apply hY
+    simpa [Category.assoc] using
+      congrArg (fun t => (ρ_ Y).inv ≫ t ≫ (λ_ Y).hom) ht.symm
+  constructor
+  · intro h
+    apply hzero
+    simp [h]
+  · intro h
+    apply hzero
+    simp [h]
+
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [BraidedCategory C] [Abelian C] [Linear ℂ C] [RigidCategory C]
   [MonoidalPreadditive C] [MonoidalLinear ℂ C] [IsFusionCategory C]
@@ -47,14 +69,8 @@ object. This is the split-unit input for identity-strand embeddings. -/
 theorem unit_retract_leftDual_tensor (X : C) [Simple X] :
     ∃ (s : 𝟙_ C ⟶ (ᘁX) ⊗ X) (r : (ᘁX) ⊗ X ⟶ 𝟙_ C), s ≫ r = 𝟙 (𝟙_ C) := by
   let : Simple (𝟙_ C) := IsFusionCategory.unit_simple (C := C)
-  have hcoe : ExactPairing.coevaluation (ᘁX) X ≠ 0 := by
-    intro h
-    have ht := ExactPairing.coevaluation_evaluation (ᘁX) X
-    rw [h] at ht
-    simp at ht
-    have ht' := congrArg (fun t => (ρ_ X).inv ≫ t ≫ (λ_ X).hom) ht
-    have hz : 𝟙 X = 0 := by simpa [Category.assoc] using ht'.symm
-    exact id_nonzero X hz
+  have hcoe : ExactPairing.coevaluation (ᘁX) X ≠ 0 :=
+    (exactPairing_ne_zero (ᘁX) X (id_nonzero X)).1
   obtain ⟨r, hr⟩ := split_from_simple (ExactPairing.coevaluation (ᘁX) X) hcoe
   exact ⟨_, r, hr⟩
 

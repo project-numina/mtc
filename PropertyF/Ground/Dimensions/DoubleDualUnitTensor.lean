@@ -1,9 +1,8 @@
 module
-public import PropertyF.Ground.Dimensions.RootDualPairing
+public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Fusion.Agreement
-public import PropertyF.Ground.Dimensions.PositiveCanonical
 
 /-! # Unit laws for dual tensor comparisons
 

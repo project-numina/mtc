@@ -151,39 +151,18 @@ theorem rightQuantumTrace_simple_ne_zero (C : BraidedFusionCategory.{v,u})
   let _ : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   let _ : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   let s : 𝟙_ C.Obj ⟶ X ⊗ (Xᘁ) := ExactPairing.coevaluation X (Xᘁ)
-  have hs : s ≠ 0 := by
-    intro hz
-    have ht := ExactPairing.evaluation_coevaluation X (Xᘁ)
-    change ExactPairing.coevaluation X (Xᘁ) = 0 at hz
-    rw [hz] at ht
-    simp at ht
-    have ht' := congrArg (fun t => (λ_ X).inv ≫ t ≫ (ρ_ X).hom) ht
-    have hid : 𝟙 X = 0 := by simpa [Category.assoc] using ht'.symm
-    exact id_nonzero X hid
+  let _ : Simple (Xᘁ) := simple_rightDual C X
+  have hs : s ≠ 0 := (exactPairing_ne_zero X (Xᘁ) (id_nonzero (Xᘁ))).1
   obtain ⟨r₀, hr₀⟩ := split_from_simple s hs
-  have hr₀ne : r₀ ≠ 0 := by
-    intro h
-    rw [h] at hr₀
-    simp at hr₀
-    exact id_nonzero (𝟙_ C.Obj) hr₀.symm
+  have hr₀ne : r₀ ≠ 0 := fun h ↦
+    id_nonzero (𝟙_ C.Obj) (by simpa [h] using hr₀.symm)
   let t : X ⊗ (Xᘁ) ≅ ((Xᘁ)ᘁ) ⊗ (Xᘁ) := j ⊗ᵢ Iso.refl _
   let ev : ((Xᘁ)ᘁ) ⊗ (Xᘁ) ⟶ 𝟙_ C.Obj := ExactPairing.evaluation (Xᘁ) ((Xᘁ)ᘁ)
   have hev : ev ≠ 0 := by
-    let _ : Simple ((Xᘁ)ᘁ) := Simple.of_iso (j).symm
-    intro hz
-    have ht := ExactPairing.coevaluation_evaluation (Xᘁ) ((Xᘁ)ᘁ)
-    change ExactPairing.evaluation (Xᘁ) ((Xᘁ)ᘁ) = 0 at hz
-    rw [hz] at ht
-    simp at ht
-    have ht' := congrArg (fun q => (ρ_ ((Xᘁ)ᘁ)).inv ≫ q ≫ (λ_ ((Xᘁ)ᘁ)).hom) ht
-    have hid : 𝟙 ((Xᘁ)ᘁ) = 0 := by simpa [Category.assoc] using ht'.symm
-    exact id_nonzero ((Xᘁ)ᘁ) hid
+    let _ : Simple ((Xᘁ)ᘁ) := Simple.of_iso j.symm
+    exact (exactPairing_ne_zero (Xᘁ) ((Xᘁ)ᘁ) (id_nonzero ((Xᘁ)ᘁ))).2
   let r : X ⊗ (Xᘁ) ⟶ 𝟙_ C.Obj := t.hom ≫ ev
-  have hr : r ≠ 0 := by
-    intro hz
-    have h := congrArg (fun f => t.inv ≫ f) hz
-    have : ev = 0 := by simpa [r, Category.assoc] using h
-    exact hev this
+  have hr : r ≠ 0 := fun h ↦ hev ((cancel_epi t.hom).1 (by simpa [r] using h))
   let e₁ := tensorRightHomLinearEquiv X (Xᘁ) ((Xᘁ)ᘁ) (𝟙_ C.Obj)
   let e₂ := CategoryTheory.Linear.homCongr ℂ (Iso.refl X) (λ_ ((Xᘁ)ᘁ))
   let e₃ := CategoryTheory.Linear.homCongr ℂ (Iso.refl X) (j).symm

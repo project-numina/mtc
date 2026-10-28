@@ -1,7 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Dimensions.SphericalCriterion
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 
 /-! # Pivotal scalar twists

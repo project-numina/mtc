@@ -36,7 +36,6 @@ import all PropertyF.Ground.CentreInduction.PivotalCentrality
 import all PropertyF.Ground.CentreInduction.PositivePivotal
 import all PropertyF.Ground.CentreIntegrate.TwistBalancing
 import all PropertyF.Ground.Dimensions.DefectExtension
-import all PropertyF.Ground.Dimensions.DoubleDualBraiding
 import all PropertyF.Ground.Dimensions.DualBraiding
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
@@ -72,7 +71,6 @@ import all PropertyF.Ground.Dimensions.FourthDualUnit
 import all PropertyF.Ground.Dimensions.FourthTensorUnit
 import all PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 import all PropertyF.Ground.Dimensions.RootDualLabel
-import all PropertyF.Ground.Dimensions.RootDualPairing
 import all PropertyF.Arithmetic
 import all PropertyF.BlockTrace
 import all PropertyF.BraidAlgebra
@@ -103,7 +101,6 @@ import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.CentreInduction.Adjunction
 import all PropertyF.Ground.CentreInduction.Underlying
-import all PropertyF.Ground.CentreModular.InductionDimension
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.ComplexSaturation
 import all PropertyF.Ground.Dimensions.DimensionCharacter
@@ -113,17 +110,13 @@ import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.DualTensorNaturality
 import all PropertyF.Ground.Dimensions.ENOMatrices
 import all PropertyF.Ground.Dimensions.ENOReciprocity
-import all PropertyF.Ground.Dimensions.GlobalInequality
 import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Dimensions.IntrinsicNonzero
 import all PropertyF.Ground.Dimensions.MultiplicityDefect
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.PivotalTwist
-import all PropertyF.Ground.Dimensions.PositiveCanonical
 import all PropertyF.Ground.Dimensions.SimpleHomBasis
-import all PropertyF.Ground.Dimensions.SimplePairing
 import all PropertyF.Ground.Dimensions.SimpleScalars
-import all PropertyF.Ground.Dimensions.SphericalCriterion
 import all PropertyF.Ground.Dimensions.TensorExtension
 import all PropertyF.Ground.Dimensions.TensorMultiplicativity
 import all PropertyF.Ground.Dimensions.Trace
