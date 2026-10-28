@@ -37,7 +37,7 @@ theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 :=
 /-- Every nonzero object has FP dimension at least one. -/
 theorem one_le_fpDimension {X : D.Obj}
     (hX : ¬ IsZero X) : 1 ≤ fpDimension D X :=
-  (exists_positive_multiplicity (simples D) (simples_decompose D X)
+  (exists_positive_multiplicity (simples_decompose D X)
     (fun _ ↦ IsFusionCategory.hom_finite _ _) hX).elim fun i hi ↦
     (one_le_mul_of_one_le_of_one_le (Nat.one_le_cast.mpr hi) (one_le_fpSimple i)).trans
       (Finset.single_le_sum

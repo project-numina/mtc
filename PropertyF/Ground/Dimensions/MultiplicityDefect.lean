@@ -59,7 +59,7 @@ theorem fourthDualRootNaturalIso_app_simple
 whose finite biproducts contain every object. -/
 theorem natTrans_eq_of_biproduct_components
     {D : Type u} [Category.{v} D] [HasZeroMorphisms D] [HasFiniteBiproducts D]
-    {ι : Type} [Fintype ι] (T : ι → D)
+    {ι : Type} [Fintype ι] {T : ι → D}
     (hdecomp : ∀ X, HasBiproductDecomposition T X)
     {F : D ⥤ D} {α β : 𝟭 D ⟶ F} (h : ∀ i, α.app (T i) = β.app (T i)) : α = β :=
   NatTrans.ext <| funext fun X ↦ (hdecomp X).elim fun m ⟨e⟩ ↦
@@ -79,7 +79,7 @@ def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
 isomorphism on every object. Monoidal compatibility remains a separate issue. -/
 theorem fourthDualRootNaturalSquare_eq :
     fourthDualRootNaturalSquare C = fourthDualNaturalIso C.Obj :=
-  Iso.ext <| natTrans_eq_of_biproduct_components (simples C) (simples_decompose C) fun i ↦ by
+  Iso.ext <| natTrans_eq_of_biproduct_components (simples_decompose C) fun i ↦ by
     change ((fourthDualRootNaturalIso C).app (simples C i)).hom ≫
       ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
         (fourthDualIso (simples C i)).hom

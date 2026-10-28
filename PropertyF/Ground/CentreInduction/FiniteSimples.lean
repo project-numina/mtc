@@ -74,7 +74,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem simple_mono_induced_simple [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), Mono f := by
   let : HasFiniteBiproducts C.Obj := Abelian.hasFiniteBiproducts
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity (simples C) (simples_decompose C X.1)
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity (simples_decompose C X.1)
     (fun _ ↦ IsFusionCategory.hom_finite _ _)
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
   let : Simple (Sᶜ i) := simples_simple C i
