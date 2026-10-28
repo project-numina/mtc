@@ -56,6 +56,13 @@ open Matrix
 open scoped BigOperators ComplexOrder MatrixOrder
 namespace PropertyF.Ground.Calculus
 
+/-- Conjugating by a self-adjoint unit makes an isometry unitary. -/
+private theorem conjugate_mem_unitary {A : Type*} [Monoid A] [StarMul A]
+    (P U : Aˣ) (hP : star P = P) (h : star U * P ^ 2 * U = P ^ 2) :
+    ((P * U * P⁻¹ : Aˣ) : A) ∈ unitary A :=
+  (Units.mul_inv_mem_unitary (P * U) P).2 (by
+    simpa only [star_mul, hP, pow_two, mul_assoc] using h)
+
 variable {G ι : Type*} [Group G] [Fintype G] [Fintype ι] [DecidableEq ι]
 
 /-- A single change of basis unitarizes every matrix in a finite group representation. -/
@@ -75,12 +82,10 @@ theorem exists_unitarizing_basis (ρ : G →* (Matrix ι ι ℂ)ˣ) :
   have hsquare : (↑P : Matrix ι ι ℂ) * (↑P : Matrix ι ι ℂ) = A := by
     rw [hP, ← pow_two, CFC.sq_sqrt A hA]
   refine ⟨P, fun g => ?_⟩
-  have hinv : star (ρ g) * P ^ 2 * ρ g = P ^ 2 := by
-    apply Units.ext
-    simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Units.coe_star,
-      pow_two, hsquare, ← Matrix.star_eq_conjTranspose] using averagedGram_invariant ρ g
-  apply (Units.mul_inv_mem_unitary (P * ρ g) P).2
-  simpa only [star_mul, hselfu, pow_two, mul_assoc] using hinv
+  apply conjugate_mem_unitary P (ρ g) hselfu
+  apply Units.ext
+  simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Units.coe_star,
+    pow_two, hsquare, ← Matrix.star_eq_conjTranspose] using averagedGram_invariant ρ g
 
 end PropertyF.Ground.Calculus
 

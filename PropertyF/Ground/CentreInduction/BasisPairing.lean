@@ -129,10 +129,8 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
 set_option backward.isDefEq.respectTransparency false in
 /-- Nested fusion decompositions give the direct crossing-block contraction. -/
 theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
-    (∑ p : simplePieces C (U ⊗ simples C j),
-      ∑ a : crossingIndex C T i p.1,
-        nestedCrossingBlock C X T U i p.1 j a p.2) =
-      ∑ b, crossingSummand C X (T ⊗ U) i j b := by
+    (∑ p : simplePieces C (U ⊗ simples C j), ∑ a : crossingIndex C T i p.1,
+      nestedCrossingBlock C X T U i p.1 j a p.2) = ∑ b, crossingSummand C X (T ⊗ U) i j b := by
   let J := simplePieces C (U ⊗ simples C j)
   let W := (T ⊗ U) ⊗ simples C j
   let V : J → C.Obj := fun p => T ⊗ simples C p.1

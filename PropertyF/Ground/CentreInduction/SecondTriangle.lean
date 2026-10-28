@@ -220,14 +220,10 @@ theorem unit_matrix_reduce (X : C.Obj) (i j : Fin (rank C)) :
   𝟙 _ ⊗≫ ((V i) ◁ η_ (simples C j) ((simples C j)ᘁ)) ⊗≫
     (((biproduct.ι V i ▷ (simples C j)) ≫ crossingCandidate C X (simples C j) ≫
       ((simples C j) ◁ (underlyingCounit C).app X)) ▷ (simples C j)ᘁ) ⊗≫ 𝟙 _ := by
-  let V := inductionSummand C X
-  let b : (⨁ V) ⊗ simples C j ⟶ simples C j ⊗ (⨁ V) := crossingCandidate C X (simples C j)
-  let w : (⨁ V) ⟶ X := (underlyingCounit C).app X
-  change biproduct.ι V i ≫ ((ρ_ (⨁ V)).inv ≫ ((⨁ V) ◁ η_ (simples C j) ((simples C j)ᘁ)) ≫
-    (α_ (⨁ V) (simples C j) ((simples C j)ᘁ)).inv ≫ (b ▷ (simples C j)ᘁ)) ≫
-      ((simples C j ◁ w) ▷ (simples C j)ᘁ) = _
-  simpa [V, b, w, underlying, monoidalComp, Category.assoc] using
-    unitComponent_reduce b (biproduct.ι V i) w
+  simpa [unitComponent, unitComponentAt, induction, halfBraidingOfCrossingCandidate,
+    underlying, underlyingFunctor, inductionSummand, monoidalComp, Category.assoc] using
+    unitComponent_reduce (crossingCandidate C X (simples C j)) (biproduct.ι (inductionSummand C X) i)
+      ((underlyingCounit C).app X)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The off-diagonal components of the second triangle vanish. -/
@@ -265,9 +261,8 @@ set_option backward.defeqAttrib.useBackward true in
 /-- Every matrix entry of the second triangle has the expected value. -/
 theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
   let V := inductionSummand C X
-  biproduct.ι V i ≫
-    (unitCandidate C ((induction C).obj X) ≫
-      (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
+  biproduct.ι V i ≫ (unitCandidate C ((induction C).obj X) ≫
+    (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
   dsimp [unitCandidate, underlyingFunctor, induction, underlying]
   simp only [Category.assoc, biproduct.map_π, biproduct.lift_π_assoc]

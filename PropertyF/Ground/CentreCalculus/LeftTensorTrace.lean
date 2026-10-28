@@ -158,7 +158,7 @@ theorem negativeParity_adjacentTrace (hneg : θ C p X = -1) :
   intro n σ
   have hsign : (permutationSign ℂ (n + 2) (decomposeFin.symm (1, σ)) : ℂ) =
       -(permutationSign ℂ (n + 1) σ : ℂ) := by
-    simpa using sign_decomposeFin 1 σ
+    simpa using sign_decomposeFin (R := ℂ) 1 σ
   rw [parityPermScalarTrace_true, parityPermScalarTrace_true, hsign,
     tensorPermTrace_adjacent_of_leftTrace (C := C) hX htotal σ, hneg]
   ring

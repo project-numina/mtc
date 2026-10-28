@@ -110,7 +110,7 @@ local notation "pσ" => pivotal C σ p
 theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
     unitScalar Cσ f = σ (unitScalar C f) := by
   apply (unit_algebraMap_bijective Cσ).1
-  rw [algebraMap_unitScalar Cσ f]
+  simp only [algebraMap_unitScalar Cσ f]
   exact (algebraMap_unitScalar C f).symm.trans
     (congrArg (fun z : ℂ ↦ z • (1 : End (𝟙_ C.Obj))) (σ.symm_apply_apply _).symm)
 
