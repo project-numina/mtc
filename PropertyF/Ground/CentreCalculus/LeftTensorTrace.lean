@@ -98,10 +98,10 @@ theorem leftPartialTrace_braiding_of_trace_compatibility
       θ C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   simpa only [← unitScalar_eq_equiv, Dimensions.pivotalTrace_selfBraiding,
-    pivotalDimension, mul_div_cancel_right₀ _ (show unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 from by
-      simpa [unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X)] using
+    pivotalDimension, mul_div_cancel_right₀ _ (Modular.unitScalar_rightTrace_ne_zero C p X)] using
     leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)
-      (End.of (β_ X X).hom) (Modular.unitScalar_rightTrace_ne_zero C p X) ht
+      (End.of (β_ X X).hom) (by simpa only [← unitScalar_eq_equiv] using
+        Modular.unitScalar_rightTrace_ne_zero C p X) ht
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The closed first crossing with any spectator tensor factor is the same
