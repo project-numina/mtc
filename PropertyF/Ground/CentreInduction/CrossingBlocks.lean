@@ -152,17 +152,18 @@ theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
         (biproduct.total (f := simplePiecesObject C (T ⊗ Sᶜ j)))
 
 variable (X T : C.Obj)
+-- The simple-indexed summands of the induced object.
+local notation "Vᶜ" => inductionSummand C X
 
 /-- The finite matrix formula for the induction half-braiding. Its invertibility
 and coherence are established in the subsequent induction modules. -/
 def crossingCandidate :
     underlying C X ⊗ T ⟶ T ⊗ underlying C X :=
-  let V := inductionSummand C X
-  (rightDistributor V T).hom ≫ biproduct.desc (fun i =>
+  (rightDistributor Vᶜ T).hom ≫ biproduct.desc (fun i =>
     ∑ j, ∑ a : crossingIndex C T i j,
       crossingBlock X T (Sᶜ j)
         (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
-          (T ◁ biproduct.ι V j))
+          (T ◁ biproduct.ι Vᶜ j))
 
 /-- The composite of two crossings, with the associators inserted. -/
 def crossingTensorComposite (U : C.Obj) : underlying C X ⊗ (T ⊗ U) ⟶ (T ⊗ U) ⊗ underlying C X :=
@@ -174,10 +175,9 @@ set_option backward.isDefEq.respectTransparency false in
 simple summand. -/
 @[reassoc]
 theorem crossingCandidate_on_summand (i : Fin (rank C)) :
-    let V := inductionSummand C X
-    (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
-      ∑ j, ∑ a : crossingIndex C T i j, crossingSummand C X T i j a ≫ (T ◁ biproduct.ι V j) :=
-  (biproduct_ι_comp_rightDistributor_hom_assoc (inductionSummand C X) T i _).trans
+    (biproduct.ι Vᶜ i ▷ T) ≫ crossingCandidate C X T =
+      ∑ j, ∑ a : crossingIndex C T i j, crossingSummand C X T i j a ≫ (T ◁ biproduct.ι Vᶜ j) :=
+  (biproduct_ι_comp_rightDistributor_hom_assoc Vᶜ T i _).trans
     (biproduct.ι_desc _ i)
 
 set_option backward.isDefEq.respectTransparency false in
