@@ -77,6 +77,7 @@ theorem cyclicTrace_biproduct_simple [HasKernels C]
 
 end SimpleTrace
 
+section
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 variable {ι : Type*} [Fintype ι]
@@ -101,16 +102,26 @@ theorem rightDimension_biproduct (F : ι → C) [HasBiproduct F]
     p.rightTrace (𝟙 (⨁ F)) = ∑ i, p.rightTrace (𝟙 (F i)) :=
   by simpa using rightTrace_biproduct F p (𝟙 (⨁ F))
 
+end
+
+section
+variable {k : Type*} [Field k] [IsAlgClosed k]
+  {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+  [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
+  {ι : Type*} [Fintype ι]
+
 /-- Schur's lemma gives the scalar diagonal blocks of any endomorphism of a
 finite direct sum of simple objects, and hence its weighted trace formula. -/
 theorem rightTrace_biproduct_simple [HasKernels C]
     {F : ι → C} [HasBiproduct F] (hs : ∀ i, Simple (F i))
-    (hfinite : ∀ i, FiniteDimensional ℂ (F i ⟶ F i))
+    (hfinite : ∀ i, FiniteDimensional k (F i ⟶ F i))
     (p : PivotalStructure (C := C)) (f : (⨁ F) ⟶ (⨁ F)) :
-    ∃ c : ι → ℂ,
+    ∃ c : ι → k,
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
       p.rightTrace f = ∑ i, c i • p.rightTrace (𝟙 (F i)) :=
-  cyclicTrace_biproduct_simple (fun X ↦ rightTraceWithLinear (k := ℂ) (p.iso X))
+  cyclicTrace_biproduct_simple (fun X ↦ rightTraceWithLinear (p.iso X))
     (fun f g ↦ p.rightTrace_cyclic f g) hs hfinite f
+
+end
 
 end PropertyF.Ground.Dimensions
