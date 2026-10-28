@@ -608,7 +608,6 @@ PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.categoricalS_verlinde
 PropertyF.Ground.CentreInduction.FiniteSimples	_private.PropertyF.Ground.CentreInduction.FiniteSimples.0.PropertyF.Ground.CentreInduction.center_factor._simp_1_3	theorem	1	126	4	5	0	2	0	2542281496
 PropertyF.Ground.CentreCalculus.ProjectorReduction	PropertyF.Ground.CentreCalculus.alternatingProjector_scalar_trace	theorem	1	312	1	4	0	0	0	2012328688
 PropertyF.Ground.CentreCabling.CentralityClosure	PropertyF.Ground.CentreCabling.doubleBraiding_eq_one_of_constituents	theorem	1	212	6	5	0	6	4	2827885296
-PropertyF.Ground.Dimensions.MonodromyTensorCap	PropertyF.Ground.Dimensions.drinfeld_tensor_pairing_cap	theorem	1	186	2	1	0	7	0	1331030638
 PropertyF.Ground.Fusion.Simples	PropertyF.Ground.unit_retract_leftDual_tensor	theorem	1	228	1	1	0	10	4	2444898139
 PropertyF.Ground.CentreCabling.RegularSupport	PropertyF.Ground.CentreCabling.regularVector	definition	1	15	3	0	0	0	0	3635234615
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.PivotalStructure.naturality	theorem	1	118	2	3	0	3	0	1166390652
@@ -2058,6 +2057,7 @@ PropertyF.Ground.CentreCalculus.ParityDeletion	_private.PropertyF.Ground.CentreC
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.simpleScalarNaturalIso	definition	1	52	3	0	0	0	1	1439373484
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.kernelHalfIso	definition	1	124	2	3	0	5	1	2047657023
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.FusionRules.ctorIdx	definition	0	7	1	1	0	0	0	2134691120
+PropertyF.Ground.Dimensions.GroundNorm	_private.PropertyF.Ground.Dimensions.GroundNorm.0.PropertyF.Ground.Dimensions.squaredNorm_independent.match_1_1	definition	1	589	6	3	0	6	2	3064442774
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.averagedGram	definition	1	56	1	2	0	4	0	2414268472
 PropertyF.Ground.Dimensions.DimensionCharacter	PropertyF.Ground.Dimensions.isSpherical_iff_simple_dimensions	theorem	1	96	2	0	0	0	0	1867461101
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.euclideanAbs.eq_1	theorem	1	64	1	1	0	0	0	2034242918
@@ -2266,7 +2266,6 @@ PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.rightTraceWith.e
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.instSimpleObjSimples_2	theorem	1	31	2	0	0	0	0	2268933870
 PropertyF.Ground.Integrate.ActualCenterReduction	_private.PropertyF.Ground.Integrate.ActualCenterReduction.0.PropertyF.Ground.exists_modular_witness.match_1_1	definition	1	323	6	1	0	0	2	3932523145
 PropertyF.Ground.CentreInduction.DrinfeldTheorem	_private.PropertyF.Ground.CentreInduction.DrinfeldTheorem.0.PropertyF.Ground.CentreInduction.termM_1	definition	0	1	0	0	0	0	0	1560175301
-PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.fourthDualSimpleRoot_sq	theorem	1	92	1	1	0	0	0	981181681
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerCokernelDesc._proof_1	theorem	1	204	3	4	0	4	2	2680984353
 PropertyF.Ground.Cabling.Naturality	_private.PropertyF.Ground.Cabling.Naturality.0.PropertyF.tensorPower.match_1.splitter	definition	0	25	4	0	0	0	0	413685589
 PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculus.fixHead	definition	1	55	1	0	0	0	0	2701545626
