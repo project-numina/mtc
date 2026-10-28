@@ -171,9 +171,9 @@ theorem fpDimension_twist (X : C.Obj) :
 /-- A pivotal trace scalar is carried through σ. -/
 theorem rightTrace_twist (p : Dimensions.PivotalStructure (C := C.Obj))
     {X : C.Obj} (f : X ⟶ X) :
-    Dimensions.groundUnitScalarEquiv (category C σ) ((pivotal C σ p).rightTrace f) =
-      σ (Dimensions.groundUnitScalarEquiv C (p.rightTrace f)) := by
-  simp only [Dimensions.groundUnitScalarEquiv_apply]
+    Ground.unitScalarEquiv (category C σ) ((pivotal C σ p).rightTrace f) =
+      σ (Ground.unitScalarEquiv C (p.rightTrace f)) := by
+  simp only [← Ground.unitScalar_eq_equiv]
   exact unitScalar_twist C σ _
 
 
@@ -216,10 +216,10 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
   have htrans : ∀ i, σ (original i : ℂ) = (transformed i : ℂ) := by
     intro i
     exact (hreal (e.symm i)).symm
-  have hqdim : ∀ i, Dimensions.groundUnitScalarEquiv D (q.rightTrace (𝟙 (simples D i))) =
+  have hqdim : ∀ i, Ground.unitScalarEquiv D (q.rightTrace (𝟙 (simples D i))) =
       (transformed i : ℂ) := by
     intro i
-    rw [Dimensions.groundUnitScalarEquiv_apply]
+    rw [← Ground.unitScalar_eq_equiv]
     change Dimensions.pivotalDimension D q (simples D i) = _
     have h := (he (e.symm i)).2
     rw [e.apply_symm_apply] at h
@@ -237,21 +237,19 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
     apply hn
     rw [hσ, hz]
     simp
-  have hXdim : Dimensions.groundUnitScalarEquiv D (q.rightTrace (𝟙 X)) = (d : ℂ) := by
-    change Dimensions.groundUnitScalarEquiv (ScalarTwist.category Z σ)
+  have hXdim : Ground.unitScalarEquiv D (q.rightTrace (𝟙 X)) = (d : ℂ) := by
+    change Ground.unitScalarEquiv (ScalarTwist.category Z σ)
       ((ScalarTwist.pivotal Z σ p).rightTrace (𝟙 (show (ScalarTwist.category Z σ).Obj from simples Z y))) = _
     rw [ScalarTwist.rightTrace_twist Z σ p]
-    rw [Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv]
     change σ (Modular.simpleDimension Z p y) = _
     rw [hdim, hσ]
   have hXfp : fpDimension D X = fpSimple Z y := by
     rw [ScalarTwist.fpDimension_twist, fpDimension_simple]
-  have hXS : Dimensions.groundUnitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
+  have hXS : Ground.unitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * fpSimple Z y := by
-    change Dimensions.groundUnitScalarEquiv (ScalarTwist.category Z σ)
+    change Ground.unitScalarEquiv (ScalarTwist.category Z σ)
       ((ScalarTwist.pivotal Z σ p).rightTrace (selfMonodromy (show (ScalarTwist.category Z σ).Obj from simples Z y)).asHom) = _
     rw [ScalarTwist.rightTrace_twist Z σ p]
-    rw [Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv]
     change σ (Modular.categoricalS Z p y y) = _
     exact hS
   apply actual_rigidity_of_overlap_and_galois_dimensions D X q original transformed σ

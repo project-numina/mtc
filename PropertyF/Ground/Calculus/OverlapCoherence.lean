@@ -237,18 +237,18 @@ theorem overlap_trace_step_of_coherence (D : Ground.BraidedFusionCategory.{v,u})
       overlapEndProduct (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))
         (previousOverlapLocal X t k u) (u : End (tensorPower X (t + 2)))) :
     actualBraidTrace D X p (overlapIndex t (k + 1)) (overlapProduct X t u (k + 1)) *
-        Dimensions.groundUnitScalarEquiv D (p.rightTrace (𝟙 X)) =
+        Ground.unitScalarEquiv D (p.rightTrace (𝟙 X)) =
       actualBraidTrace D X p (overlapIndex t k) (overlapProduct X t u k) *
         actualBraidTrace D X p t u := by
   have hh := congrArg
-    (fun z => Dimensions.groundUnitScalarEquiv D (p.rightTrace z.asHom)) hcoh
+    (fun z => Ground.unitScalarEquiv D (p.rightTrace z.asHom)) hcoh
   simp only [rightTrace_iso_conj] at hh
-  rw [pivotalTrace_overlap D (X := X) p (Dimensions.groundUnitScalarEquiv D)] at hh
+  rw [pivotalTrace_overlap D (X := X) p (Ground.unitScalarEquiv D)] at hh
   simp only [previousOverlapLocal, rightTrace_iso_conj] at hh
-  have hδ : Dimensions.groundUnitScalarEquiv D (p.rightTrace (𝟙 X)) ≠ 0 := by
+  have hδ : Ground.unitScalarEquiv D (p.rightTrace (𝟙 X)) ≠ 0 := by
     intro h
     apply Modular.pivotalTrace_simple_ne_zero D p X
-    apply (Dimensions.groundUnitScalarEquiv D).injective
+    apply (Ground.unitScalarEquiv D).injective
     simpa using h
   change actualBraidTrace D X p _ _ = actualBraidTrace D X p _ _ *
     (actualBraidTrace D X p t u / _) at hh
@@ -264,7 +264,7 @@ theorem overlap_trace_power_of_isos (C : Ground.BraidedFusionCategory.{v,u})
       (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
         overlapPowerIso X t k) :
     ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+      (Ground.unitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
         actualBraidTrace C X p t u ^ (k + 1) :=
   overlap_trace_power_of_step C p u fun k ↦
     overlap_trace_step_of_coherence C p k u (overlapProduct_local_of_iso k u (hiso k))

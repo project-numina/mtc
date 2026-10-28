@@ -81,14 +81,16 @@ theorem pivotalBraidedTwist_natural {X Y : C.Obj} (f : X ⟶ Y) :
   rw [← Category.assoc, p.naturality, Category.assoc, hn]
 /-- The twist scalar of a simple object. -/
 def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
-  simpleEndScalarEquiv C X (End.of (pivotalBraidedTwist C p X).hom)
+  letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
+  Ground.simpleEndScalar X (End.of (pivotalBraidedTwist C p X).hom)
 
 /-- On a simple object the twist acts by its scalar. -/
 theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
     (pivotalBraidedTwist C p X).hom = pivotalBraidedTwistScalar C p X • 𝟙 X := by
+  let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   change (End.of (pivotalBraidedTwist C p X).hom).asHom =
     (pivotalBraidedTwistScalar C p X • (1 : End X)).asHom
-  exact congrArg End.asHom ((simpleEndScalarEquiv C X).injective (by simp [pivotalBraidedTwistScalar]))
+  exact congrArg End.asHom ((Ground.simpleEndScalar X).injective (by simp [pivotalBraidedTwistScalar]))
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
@@ -112,7 +114,7 @@ theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
     p.rightTrace (β_ X X).hom at h
   rw [ht, PivotalStructure.rightTrace_smul] at h
   rw [← h]
-  simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul, pivotalDimension]
+  simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul, pivotalDimension]
 
 /-- The actual pivotal/Drinfeld twists form a natural automorphism. -/
 def pivotalBraidedTwistNaturalIso : 𝟭 C.Obj ≅ 𝟭 C.Obj :=

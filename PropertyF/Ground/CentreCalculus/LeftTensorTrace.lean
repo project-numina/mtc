@@ -28,8 +28,7 @@ theorem leftPartialTrace_braiding_of_trace_compatibility
       Dimensions.pivotalBraidedTwistScalar C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   have hd : unitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    simpa [Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using
-      Modular.unitScalar_rightTrace_ne_zero C p X
+    exact Modular.unitScalar_rightTrace_ne_zero C p X
   have hd' : unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
     simpa [unitScalar_eq_equiv] using hd
   have hh := leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)

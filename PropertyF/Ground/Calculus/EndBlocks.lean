@@ -55,18 +55,6 @@ def isoEndAlgEquiv {X Y : C} (e : X ≅ Y) : End X ≃ₐ[ℂ] End Y where
     apply End.ext
     simp [Algebra.algebraMap_eq_smul_one]
 
-/-- Schur's lemma identifies the endomorphism algebra of a simple object with ℂ. -/
-def simpleEndScalar [HasKernels C] (X : C) [Simple X]
-    [FiniteDimensional ℂ (X ⟶ X)] : End X ≃ₐ[ℂ] ℂ := by
-  apply (AlgEquiv.ofBijective (Algebra.ofId ℂ (End X)) ?_).symm
-  constructor
-  · exact RingHom.injective _
-  · intro a
-    obtain ⟨z, hz⟩ := endomorphism_simple_eq_smul_id ℂ a.asHom
-    refine ⟨z, ?_⟩
-    apply End.ext
-    simpa [Algebra.algebraMap_eq_smul_one] using hz
-
 /-- The chosen nonisomorphic simple representatives are Hom-orthogonal. -/
 theorem groundSimples_orthogonal (C : Ground.BraidedFusionCategory.{v,u}) :
     HomOrthogonal (Ground.simples C) := by

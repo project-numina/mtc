@@ -72,21 +72,21 @@ theorem braid_trace_unitary_bound_ground
     (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (a : braidAlgebra X n) (ha : ∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) :
-    ‖Dimensions.groundUnitScalarEquiv C
+    ‖Ground.unitScalarEquiv C
       (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
         Ground.fpDimension C X ^ (n + 2) := by
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
-  have hbound : ∀ i, ‖Dimensions.groundUnitScalarEquiv C
+  have hbound : ∀ i, ‖Ground.unitScalarEquiv C
       (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ Ground.fpSimple C i := by
     intro i
     have h := Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
     simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension,
-      Dimensions.groundUnitScalarEquiv_apply] using h
-  have h := pivotalTrace_braid_unitary_bound C p (Dimensions.groundUnitScalarEquiv C)
+      ← Ground.unitScalar_eq_equiv] using h
+  have h := pivotalTrace_braid_unitary_bound C p (Ground.unitScalarEquiv C)
     e hd b hbound a ha
-  change ‖Dimensions.groundUnitScalarEquiv C
+  change ‖Ground.unitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
       Ground.fpDimension C (tensorPower X (n + 2)) at h
   simpa only [fpDimension_tensorPower] using h
@@ -239,7 +239,7 @@ theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf :
 /-- Pivotal trace of an element of an actual categorical braid algebra. -/
 def actualBraidTrace (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
     (p : Dimensions.PivotalStructure (C := C.Obj)) (n : ℕ) (a : braidAlgebra X n) : ℂ :=
-  Dimensions.groundUnitScalarEquiv C
+  Ground.unitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
 
 /-- Iterating a single overlap step gives the scaled power identity, without
@@ -249,11 +249,11 @@ theorem overlap_trace_power_of_step
     (p : Dimensions.PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
     (hstep : ∀ k, actualBraidTrace C X p (overlapIndex t (k + 1))
         (overlapProduct X t u (k + 1)) *
-        Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) =
+        Ground.unitScalarEquiv C (p.rightTrace (𝟙 X)) =
       actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
         actualBraidTrace C X p t u) :
     ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+      (Ground.unitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
         actualBraidTrace C X p t u ^ (k + 1) := by
   intro k
   induction k with
@@ -261,7 +261,7 @@ theorem overlap_trace_power_of_step
   | succ k ih =>
     rw [pow_succ, pow_succ]
     linear_combination (hstep k) *
-      (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k +
+      (Ground.unitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k +
       ih * actualBraidTrace C X p t u
 
 /-- The sharp bound works in any family of unitary braid-block presentations;
@@ -277,15 +277,15 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (u : braidAlgebra X t)
     (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ)
     (hrec : ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+      (Ground.unitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
         actualBraidTrace C X p t u ^ (k + 1)) :
     ‖actualBraidTrace C X p t u‖ ≤
-      ‖Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))‖ *
+      ‖Ground.unitScalarEquiv C (p.rightTrace (𝟙 X))‖ *
         Ground.fpDimension C X ^ (t + 1) := by
-  have hδ : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
+  have hδ : Ground.unitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
     intro h
     apply Modular.pivotalTrace_simple_ne_zero C p X
-    apply (Dimensions.groundUnitScalarEquiv C).injective
+    apply (Ground.unitScalarEquiv C).injective
     simpa using h
   have hf : 0 < Ground.fpDimension C X :=
     lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X))

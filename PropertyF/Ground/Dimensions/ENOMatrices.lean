@@ -157,11 +157,11 @@ theorem rootDimension_ne_zero (i : Fin (rank C)) :
     ((fourthDualRootNaturalIso C).app (simples C i))
   intro hz
   apply h
-  apply (groundUnitScalarEquiv C).injective
+  apply (Ground.unitScalarEquiv C).injective
   have hz' : unitScalar C (rightQuantumTrace
       ((fourthDualRootNaturalIso C).app (simples C i))) = 0 := by
     simpa [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def] using hz
-  simpa only [map_zero, groundUnitScalarEquiv_apply] using hz'
+  simpa only [map_zero, ← Ground.unitScalar_eq_equiv] using hz'
 
 /-- The matrix of traces of the actual natural-root multiplicity defects. -/
 def enoTraceMatrix (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :

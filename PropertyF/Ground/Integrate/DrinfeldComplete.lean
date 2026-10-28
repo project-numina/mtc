@@ -36,7 +36,7 @@ theorem center_globalDimension_square_of_actual_induction
     (CentreInduction.induction C) (CentreInduction.actualAdjunction C)
     (fun _ ↦ ⟨Iso.refl _⟩) p hp fun i ↦ by
       simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-        Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hdim i
+        unitScalar_eq_equiv] using hdim i
 
 
 
@@ -90,7 +90,7 @@ theorem centerPivotal_hasFPDimensions (C : BraidedFusionCategory.{v,u})
     (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ) at hd
   intro i
   simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-    Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hd i
+    unitScalar_eq_equiv] using hd i
 
 end PropertyF.Ground
 end

@@ -66,7 +66,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 finite-order endomorphism whose pivotal trace equals the object's dimension
 is the identity. -/
 theorem finiteOrder_eq_one_of_trace_eq_dimension
-    (hdim : ∀ i, Dimensions.groundUnitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
+    (hdim : ∀ i, Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
       (fpSimple D i : ℂ))
     {X : D.Obj} {a : End X} (ha : IsOfFinOrder a)
     (ht : p.rightTrace a.asHom = p.rightTrace (𝟙 X)) : a = 1 := by
@@ -79,10 +79,10 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation (hf i)
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
-    have h1 := Calculus.pivotalTrace_groundEndBlocks D p (Dimensions.groundUnitScalarEquiv D) X m e a
-    have h2 := Calculus.pivotalTrace_groundEndBlocks D p (Dimensions.groundUnitScalarEquiv D) X m e 1
+    have h1 := Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) X m e a
+    have h2 := Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) X m e 1
     simp only [End.one_asHom] at h2
-    have hh := congrArg Complex.re (h1.symm.trans ((congrArg (Dimensions.groundUnitScalarEquiv D) ht).trans h2))
+    have hh := congrArg Complex.re (h1.symm.trans ((congrArg (Ground.unitScalarEquiv D) ht).trans h2))
     simpa [hdim, B, Complex.re_sum, Complex.mul_re] using hh
   have hle : ∀ i, fpSimple D i * (B a i).trace.re ≤ fpSimple D i * (m i : ℝ) :=
     fun i => mul_le_mul_of_nonneg_left (by simpa using (hb i).1) (fpSimple_pos D i).le
@@ -104,14 +104,13 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     (hs : Modular.categoricalS D p i j =
       Modular.simpleDimension D p i * Modular.simpleDimension D p j) :
     Modular.doubleBraiding (simples D i) (simples D j) = 𝟙 _ := by
-  have hdim' : ∀ k, Dimensions.groundUnitScalarEquiv D (p.rightTrace (𝟙 (simples D k))) =
+  have hdim' : ∀ k, Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D k))) =
       (fpSimple D k : ℂ) := by
     intro k
-    simpa [Modular.simpleDimension, Dimensions.groundUnitScalarEquiv_apply,
-      Ground.unitScalar_eq_equiv] using hdim k
+    simpa [Modular.simpleDimension] using hdim k
   have ht : p.rightTrace (Modular.doubleBraiding (simples D i) (simples D j)) =
       p.rightTrace (𝟙 (simples D i ⊗ simples D j)) := by
-    apply (Dimensions.groundUnitScalarEquiv D).injective
+    apply (Ground.unitScalarEquiv D).injective
     have hd := Dimensions.pivotalDimension_tensor D p (simples D i) (simples D j)
     have hd' : Modular.simpleDimension D p i * Modular.simpleDimension D p j =
         Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i ⊗ simples D j))) := by
@@ -119,7 +118,7 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
         Ground.unitScalar_eq_equiv] using hd.symm
     have hs' := hs
     change Ground.unitScalarEquiv D (p.rightTrace (Modular.doubleBraiding _ _)) = _ at hs'
-    simpa [Dimensions.groundUnitScalarEquiv_apply, Ground.unitScalar_eq_equiv] using hs'.trans hd' 
+    exact hs'.trans hd'
   have h := finiteOrder_eq_one_of_trace_eq_dimension D p hdim' hfinite ht
   exact congrArg End.asHom h
 
