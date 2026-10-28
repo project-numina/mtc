@@ -54,7 +54,7 @@ theorem counit_column_finrank (i j : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Off-diagonal counit crossing entries vanish. -/
-theorem crossing_counit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j) :
+theorem crossing_counit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ simples C j) ≫ crossingCandidate C X (simples C j) ≫
     (simples C j ◁ (underlyingCounit C).app X) = 0 := by
@@ -89,8 +89,8 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
     from Subsingleton.elim _ _] at hh
   let : Simple (simples C i) := simples_simple C i
   let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  rw [crossingBlock_of_simple_split X (simples C i) (simpleTensorUnitIso C i).symm _ _
-    (crossingInclusion_projection C (simples C i) i (unitIndex C) a)] at hh
+  rw [crossingBlock_of_simple_split X (simpleTensorUnitIso C i).symm _ _
+    (crossingInclusion_projection a)] at hh
   exact hh
 
 end PropertyF.Ground.CentreInduction

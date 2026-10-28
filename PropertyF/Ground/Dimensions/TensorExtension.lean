@@ -65,9 +65,6 @@ theorem rootSignTensorIso_hom
   simp [rootTensorIso, tensorHom_def, smul_smul, mul_comm]
 
 set_option backward.isDefEq.respectTransparency false in
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseTensorIso_inv
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (i j : Fin (rank C)) :
@@ -138,7 +135,6 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
-set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency false in
 /-- The right quantum trace of the canonical unit double-dual map is one. -/
 theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C)) = 1 := by

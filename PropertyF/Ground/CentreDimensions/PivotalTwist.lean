@@ -21,11 +21,10 @@ omit [RightRigidCategory C] [Preadditive C] [Linear ℂ C]
 theorem braid_self_slide (X A : C) (t : X ⟶ X) :
     (α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom ≫ X ◁ (t ▷ A) =
       (t ▷ (X ⊗ A)) ≫ (α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom := by
-  have hb := braiding_naturality_left t X
   calc
     _ = (α_ X X A).inv ≫ (((β_ X X).hom ≫ X ◁ t) ▷ A) ≫ (α_ X X A).hom := by monoidal
     _ = (α_ X X A).inv ≫ ((t ▷ X ≫ (β_ X X).hom) ▷ A) ≫ (α_ X X A).hom := by
-      rw [← hb]
+      rw [← braiding_naturality_left t X]
     _ = _ := by monoidal
 
 omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
@@ -107,13 +106,10 @@ theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
-    pivotalBraidedTwistScalar C p X ≠ 0 := by
-  intro hz
-  have ht := pivotalBraidedTwist_simple C p X
-  rw [hz, zero_smul] at ht
-  have hi := congrArg (fun f => f ≫ (pivotalBraidedTwist C p X).inv) ht
-  simp at hi
-  exact id_nonzero X hi
+    pivotalBraidedTwistScalar C p X ≠ 0 := fun hz ↦
+  id_nonzero X (by
+    simpa [pivotalBraidedTwist_simple, hz] using
+      (pivotalBraidedTwist C p X).hom_inv_id.symm)
 
 /-- The trace of a simple self-braiding is twist scalar times dimension. -/
 theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
@@ -121,11 +117,8 @@ theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
       pivotalBraidedTwistScalar C p X * pivotalDimension C p X := by
   have h := rightTrace_partialTrace p X X (End.of (β_ X X).hom)
   rw [rightPartialTrace_braiding p (Ground.doubleDualIso C X) (drinfeld_eval C X)] at h
-  have ht : (p.iso X).hom ≫ (Ground.doubleDualIso C X).inv =
-      pivotalBraidedTwistScalar C p X • 𝟙 X := pivotalBraidedTwist_simple C p X
-  change p.rightTrace ((p.iso X).hom ≫ (Ground.doubleDualIso C X).inv) =
-    p.rightTrace (β_ X X).hom at h
-  rw [ht, PivotalStructure.rightTrace_smul] at h
+  change p.rightTrace (pivotalBraidedTwist C p X).hom = p.rightTrace (β_ X X).hom at h
+  rw [pivotalBraidedTwist_simple, PivotalStructure.rightTrace_smul] at h
   rw [← h]
   simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul, pivotalDimension]
 

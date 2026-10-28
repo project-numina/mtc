@@ -16,24 +16,26 @@ abbrev PivotalHasFPDimensions (p : Dimensions.PivotalStructure (C := C.Obj)) : P
   ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ)
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
-theorem pivotalDimension_eq_fp (p : Dimensions.PivotalStructure (C := C.Obj))
+theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}}
+    {p : Dimensions.PivotalStructure (C := C.Obj)}
     (hsimple : PivotalHasFPDimensions C p)
     (X : C.Obj) : Dimensions.pivotalDimension C p X = (fpDimension C X : ℂ) := by
   rw [Dimensions.pivotalDimension_decomposition]
   simp only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast, hsimple]
 
 /-- The induction of the tensor unit has base pivotal dimension FPdim(C). -/
-theorem induced_unit_dimension (p : Dimensions.PivotalStructure (C := C.Obj))
+theorem induced_unit_dimension {C : BraidedFusionCategory.{v,u}}
+    {p : Dimensions.PivotalStructure (C := C.Obj)}
     (hsimple : PivotalHasFPDimensions C p) :
     Dimensions.pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
-  rw [pivotalDimension_eq_fp C p hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
+  rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The displayed trace compatibility makes the induced unit trace nonzero. -/
-theorem induced_center_trace_ne_zero_of_compatible (p : Dimensions.PivotalStructure (C := C.Obj))
+theorem induced_center_trace_ne_zero_of_compatible {p : Dimensions.PivotalStructure (C := C.Obj)}
     (hsimple : PivotalHasFPDimensions C p)
     [RigidCategory (𝒵)]
-    (pZ : Dimensions.PivotalStructure (C := 𝒵))
+    {pZ : Dimensions.PivotalStructure (C := 𝒵)}
     (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
       (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom) :
     pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj))) ≠ 0 := by
@@ -42,7 +44,7 @@ theorem induced_center_trace_ne_zero_of_compatible (p : Dimensions.PivotalStruct
     apply End.ext
     rw [← hcompat, hz]
     rfl
-  have hd := induced_unit_dimension C p hsimple
+  have hd := induced_unit_dimension hsimple
   change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
   rw [hbase] at hd
   have hne : (globalFPDimension C : ℂ) ≠ 0 := by
@@ -54,15 +56,15 @@ theorem induced_center_trace_ne_zero_of_compatible (p : Dimensions.PivotalStruct
 set_option backward.isDefEq.respectTransparency false in
 /-- A compatible centre pivotal structure constructs centre fusion when
 base pivotal dimensions equal FP dimensions. -/
-theorem center_fusion_of_compatible_pivotal (p : Dimensions.PivotalStructure (C := C.Obj))
+theorem center_fusion_of_compatible_pivotal {p : Dimensions.PivotalStructure (C := C.Obj)}
     (hsimple : PivotalHasFPDimensions C p)
     [RigidCategory (𝒵)]
-    (pZ : Dimensions.PivotalStructure (C := 𝒵))
+    {pZ : Dimensions.PivotalStructure (C := 𝒵)}
     (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
       (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom) :
     IsFusionCategory (𝒵) :=
   center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
-    (induced_center_trace_ne_zero_of_compatible C p hsimple pZ hcompat)
+    (induced_center_trace_ne_zero_of_compatible C hsimple hcompat)
 
 
 
@@ -112,9 +114,9 @@ def forgetDoubleDualIso (Z : 𝒵) : (((Zᘁ)ᘁ).1) ≅ ((Z.1ᘁ)ᘁ) :=
 set_option backward.isDefEq.respectTransparency false in
 /-- Compatible pivotal components have equal traces after forgetting. -/
 theorem forget_trace_of_pivotal_component
-    (p : Dimensions.PivotalStructure (C := D))
-    (pZ : Dimensions.PivotalStructure (C := 𝒵))
-    (Z : 𝒵)
+    {p : Dimensions.PivotalStructure (C := D)}
+    {pZ : Dimensions.PivotalStructure (C := 𝒵)}
+    {Z : 𝒵}
     (hcompat : ((pZ.iso Z).hom.f) ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     (pZ.rightTrace (𝟙 Z)).asHom.f = (p.rightTrace (𝟙 Z.1)).asHom := by
   let e := forgetDualIso Z

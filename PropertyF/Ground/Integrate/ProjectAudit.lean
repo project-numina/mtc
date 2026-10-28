@@ -52,7 +52,6 @@ import all PropertyF.Ground.Centre.Rigid
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
 import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.ImageCore
-import all PropertyF.Ground.CentreCabling.ProductCore
 import all PropertyF.Ground.CentreCabling.RegularSupport
 import all PropertyF.Ground.CentreCabling.TraceSaturation
 import all PropertyF.Ground.CentreCalculus.ProjectorReduction
@@ -232,7 +231,7 @@ run_cmd do
       ``PropertyF.Ground.fpDimension_functor,
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
       ``PropertyF.Ground.galois_rigidity_of_propertyF,
-      ``PropertyF.Ground.target_of_actual_center,
+      ``PropertyF.Ground.weaklyIntegral_of_actual_center,
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
       ``PropertyF.Ground.drinfeld_tensor,

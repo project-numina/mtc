@@ -55,9 +55,9 @@ theorem centerFusionOfPivotalPseudoUnitary
     (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hpu : PseudoUnitary C) :
     letI := CentreRigid.rigidCenter (C := C.Obj)
-    IsFusionCategory (CategoryTheory.Center C.Obj) := by
-  letI := CentreRigid.rigidCenter (C := C.Obj)
-  exact Classical.choose (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu)
+    IsFusionCategory (CategoryTheory.Center C.Obj) :=
+  let := CentreRigid.rigidCenter (C := C.Obj)
+  Classical.choose (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu)
 
 /-- The actual centre spherical pivotal structure constructed along the same route. -/
 def centerPivotalOfPivotalPseudoUnitary
@@ -117,7 +117,7 @@ theorem center_transparent_label_eq_unit
   let D := Integrate.bundledCenter C
   let Y := simples D k
   letI : Simple Y := simples_simple D k
-  obtain ⟨e⟩ := CentreInduction.center_transparent_simple_iso_unit C Y (by
+  obtain ⟨e⟩ := CentreInduction.center_transparent_simple_iso_unit C (Z := Y) (by
     intro W
     exact hk W)
   obtain ⟨u⟩ := unitIndex_iso D

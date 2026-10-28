@@ -170,51 +170,38 @@ open CategoryTheory
 namespace PropertyF.Ground
 universe v u
 
-/-- The target follows from explicit rigidity, fusion, modularity, dimension
-and centralizer assertions about the actual centre. Those assertions remain
-unproved premises of this reduction. -/
-theorem target_of_actual_center
-    (hCenter : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj →
-      ∃ (hR : RigidCategory (CategoryTheory.Center C.Obj)),
-        letI := hR
-        ∃ (hFusion : IsFusionCategory (CategoryTheory.Center C.Obj)),
-          letI := hFusion
-          let Z := Integrate.bundledCenter C
-          ∃ (p : Dimensions.PivotalStructure (C := Z.Obj))
-            (core generated : Set (Fin (rank Z))),
-            p.IsSpherical ∧
-            (Modular.HasFPSimpleDimensions Z p) ∧
-            (Modular.categoricalS Z p).det ≠ 0 ∧
-            globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-            (HasIntegralSimpleDimensionsOn Z p core) ∧
-            (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
-            (∀ y ∈ generated, Centre.ProductRetract (simples Z y))) : TargetStatement.{v,u} := by
-  intro C hPU hF
-  obtain ⟨D, σ, ⟨E⟩, hD⟩ := hPU
-  have hDF := Modular.conjugate_propertyF E hF
-  have hfixed := galois_fixed_of_smaller_conjugate_witness (globalFPDimension D)
-    (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D))
-    (positive_bounded_conjugates_of_fp D) (by
-      intro τ a b _ _ _ hτ
-      obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp D τ.symm
-      have hb : 0 < b := (Complex.ofReal_injective (hb'eq.symm.trans hτ)) ▸ hb'
-      obtain ⟨hR, hFusion, p, core, generated, hp, hdim, hdet, hglobal,
-        hIntegral, hDouble, hProduct⟩ := hCenter D hD hDF
-      letI := hR
-      letI := hFusion
-      let Z := Integrate.bundledCenter D
-      apply center_witness_of_categorical_modular_data Z hp hdim hdet
-        (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D)) hb hglobal τ hτ
-      intro y hColumn
-      apply propertyF_of_galois_column Z p τ.symm core generated hIntegral hDouble ?_ y
-      · intro x
-        rw [hdim y]
-        exact hColumn x
-      · intro i hi
-        exact Centre.productRetract_propertyF (hProduct i hi) hDF)
-  have hInt := weaklyIntegral_of_globalFPDimension_fixed D hfixed
-  rwa [Modular.conjugate_globalFPDimension E]
+/-- A modular actual centre with integral centralizer and finite braid-image
+retracts forces the global Frobenius–Perron dimension to be integral. -/
+theorem weaklyIntegral_of_actual_center
+    (C : BraidedFusionCategory.{v,u}) (hF : HasPropertyF C.Obj)
+    [RigidCategory (CategoryTheory.Center C.Obj)]
+    [IsFusionCategory (CategoryTheory.Center C.Obj)]
+    {p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)}
+    {core generated : Set (Fin (rank (Integrate.bundledCenter C)))}
+    (hp : p.IsSpherical) (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
+    (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
+    (hglobal : globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2)
+    (hIntegral : HasIntegralSimpleDimensionsOn (Integrate.bundledCenter C) p core)
+    (hDouble : CentreCabling.sCentralizer (Integrate.bundledCenter C) p core ⊆ generated)
+    (hProduct : ∀ y ∈ generated, Centre.ProductRetract (simples (Integrate.bundledCenter C) y)) :
+    WeaklyIntegral (globalFPDimension C) := by
+  apply weaklyIntegral_of_globalFPDimension_fixed C
+  apply galois_fixed_of_smaller_conjugate_witness (globalFPDimension C)
+    (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
+    (positive_bounded_conjugates_of_fp C)
+  intro τ a b _ _ _ hτ
+  obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp C τ.symm
+  have hb : 0 < b := (Complex.ofReal_injective (hb'eq.symm.trans hτ)) ▸ hb'
+  let Z := Integrate.bundledCenter C
+  apply center_witness_of_categorical_modular_data Z hp hdim hdet
+    (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)) hb hglobal τ hτ
+  intro y hColumn
+  apply propertyF_of_galois_column Z p τ.symm core generated hIntegral hDouble ?_ y
+  · intro x
+    rw [hdim y]
+    exact hColumn x
+  · intro i hi
+    exact Centre.productRetract_propertyF (hProduct i hi) hF
 
 end PropertyF.Ground
 end

@@ -56,9 +56,7 @@ theorem pivotalDimension_decomposition
 /-- The pivotal dimension of the tensor unit is normalized to one. -/
 theorem pivotalDimension_unit
     (p : PivotalStructure (C := C.Obj)) : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
-  unfold pivotalDimension
-  rw [rightTrace_unit]
-  simpa using unitScalar_algebraMap C 1
+  simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1
 
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor

@@ -43,7 +43,7 @@ def DrinfeldTensorLaw : Prop := ∀ X Y : C.Obj,
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom
 
-theorem drinfeld_tensor_inverse (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
+theorem drinfeld_tensor_inverse {C : BraidedFusionCategory.{v,u}} (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     (doubleDualIso C (X ⊗ Y)).inv =
       (Dimensions.doubleDualTensorIso X Y).inv ≫
         ((doubleDualIso C X).inv ⊗ₘ (doubleDualIso C Y).inv) ≫
@@ -69,7 +69,7 @@ theorem drinfeld_inv_natural {A B : C.Obj} (t : A ≅ B) :
 
 /-- The inverse dual Drinfeld map after the tensorator, in terms of the
 reversed dual factors and monodromy. -/
-theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
+theorem drinfeld_inv_dual_tensor {C : BraidedFusionCategory.{v,u}} (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     (Dimensions.doubleDualTensorIso X Y).hom ≫
       ((doubleDualIso C ((X ⊗ Y)ᘁ)).invᘁ) =
     Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
@@ -83,7 +83,7 @@ theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
   have hn := drinfeld_inv_natural C t
   have hn' := congrArg (fun z => rightAdjointMate z) hn
   simp only [comp_rightAdjointMate] at hn'
-  have hi := drinfeld_tensor_inverse C h (Yᘁ) (Xᘁ)
+  have hi := drinfeld_tensor_inverse h (Yᘁ) (Xᘁ)
   change (doubleDualIso C ((Yᘁ) ⊗ (Xᘁ))).inv = d.inv ≫ (f ⊗ₘ g) ≫
     Modular.doubleBraiding (Yᘁ) (Xᘁ) at hi
   have hi' := congrArg (fun z => rightAdjointMate z) hi
@@ -115,7 +115,7 @@ theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
 
 
 /-- The Drinfeld tensor law forces monoidality of the canonical fourth-dual map. -/
-theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
+theorem fourthDualIso_tensor_of_drinfeld {C : BraidedFusionCategory.{v,u}} (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     (Dimensions.fourthDualIso C (X ⊗ Y)).hom =
       ((Dimensions.fourthDualIso C X).hom ⊗ₘ (Dimensions.fourthDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
@@ -126,7 +126,7 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom := by
     exact (Iso.eq_inv_comp m).2 (h X Y)
-  have hv := drinfeld_inv_dual_tensor C h X Y
+  have hv := drinfeld_inv_dual_tensor h X Y
   have hn : Modular.doubleBraiding X Y ≫
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) =
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
@@ -150,11 +150,11 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
 
 /-- The Drinfeld tensor law constructs the canonical positive sphere in a
 pseudo-unitary base, without assuming an initial pivotal structure. -/
-theorem positive_spherical_of_drinfeld_tensor (h : DrinfeldTensorLaw C)
+theorem positive_spherical_of_drinfeld_tensor {C : BraidedFusionCategory.{v,u}} (h : DrinfeldTensorLaw C)
     (hpu : PseudoUnitary C) :
     ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
   Dimensions.positive_spherical_of_nonunit_fourth_dual C
-    (fun i j _ _ ↦ fourthDualIso_tensor_of_drinfeld C h (simples C i) (simples C j)) hpu
+    (fun i j _ _ ↦ fourthDualIso_tensor_of_drinfeld h (simples C i) (simples C j)) hpu
 
 end PropertyF.Ground.CentreInduction
 
@@ -177,6 +177,6 @@ structure with its actual FP dimensions, without any pivotal premise. -/
 theorem positive_spherical_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
     (hpu : PseudoUnitary C) :
     ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
-  positive_spherical_of_drinfeld_tensor C (drinfeldTensorLaw C) hpu
+  positive_spherical_of_drinfeld_tensor (drinfeldTensorLaw C) hpu
 
 end PropertyF.Ground.CentreInduction
