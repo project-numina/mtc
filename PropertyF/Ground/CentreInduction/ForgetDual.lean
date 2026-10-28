@@ -52,7 +52,6 @@ theorem induced_center_trace_ne_zero_of_compatible {p : Dimensions.PivotalStruct
   apply hne
   simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
 
-
 set_option backward.isDefEq.respectTransparency false in
 /-- A compatible centre pivotal structure constructs centre fusion when
 base pivotal dimensions equal FP dimensions. -/
@@ -65,8 +64,6 @@ theorem center_fusion_of_compatible_pivotal {p : Dimensions.PivotalStructure (C 
     IsFusionCategory (𝒵) :=
   center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
     (induced_center_trace_ne_zero_of_compatible C hsimple hcompat)
-
-
 
 end PropertyF.Ground.CentreInduction
 
@@ -148,10 +145,5 @@ theorem forget_trace_of_pivotal_component
     simp [comp_whiskerRight, Category.assoc, u]
   rw [hn, htrans, ht]
   simp [Dimensions.PivotalStructure.rightTrace]
-
-
-
-
-
 
 end PropertyF.Ground.CentreInduction

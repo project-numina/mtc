@@ -159,14 +159,9 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
     _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
       unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
         crossingInclusion C T p.1 j p.2) := by
-      apply Finset.sum_congr rfl
-      intro p _
-      exact unit_block Z
+      exact Finset.sum_congr rfl fun p _ => unit_block Z
         (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
-    _ = unitBlockLinear (k := ℂ) Z T (simples C j)
-      (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
-        crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) := by rw [map_sum]
-    _ = _ := by rw [crossing_completeness, unitBlockLinear_id]; rfl
+    _ = _ := by rw [← map_sum, crossing_completeness, unitBlockLinear_id]; rfl
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
@@ -308,9 +303,5 @@ theorem globalFPDimension_square_of_actual_induction (C : BraidedFusionCategory.
     (fun i j => (homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj)
       (induction C) (actualAdjunction C) (simples (Integrate.bundledCenter C) j)
       (simples C i)).finrank_eq)
-
-
-
-
 
 end PropertyF.Ground.CentreInduction

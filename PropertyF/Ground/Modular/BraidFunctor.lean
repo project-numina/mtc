@@ -113,9 +113,8 @@ lemma braidAutMap_injective (X : C) (n : ℕ) [F.Faithful] :
 braid-image subgroup, even if the functor is not faithful. -/
 theorem braidImage_map_eq (X : C) (n : ℕ) :
     (braidImage X n).map (braidAutMap F X n) = braidImage (F.obj X) n := by
-  simp only [braidImage, MonoidHom.map_closure, ← Set.range_comp,
-    show (braidAutMap F X n ∘ braidGenerator X n) = braidGenerator (F.obj X) n from
-      funext (braidAutMap_generator F X n)]
+  simpa only [braidImage, MonoidHom.map_closure, ← Set.range_comp, Function.comp_def] using
+    congrArg (fun f ↦ Subgroup.closure (Set.range f)) (funext (braidAutMap_generator F X n))
 
 /-- A braided functor induces a homomorphism on braid-image groups. -/
 def braidImageFunctorMap (X : C) (n : ℕ) : braidImage X n →* braidImage (F.obj X) n :=

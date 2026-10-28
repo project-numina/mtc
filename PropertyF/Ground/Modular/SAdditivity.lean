@@ -25,10 +25,8 @@ omit [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive 
 /-- Double braiding is natural in its first argument. -/
 theorem doubleBraiding_natural_left {X Z : C} (f : X ⟶ Z) (Y : C) :
     doubleBraiding X Y ≫ (f ▷ Y) = (f ▷ Y) ≫ doubleBraiding Z Y := by
-  unfold doubleBraiding
-  simp only [← tensorHom_id]
-  rw [Category.assoc, ← braiding_naturality (𝟙 Y) f, ← Category.assoc,
-    ← braiding_naturality f (𝟙 Y), Category.assoc]
+  rw [doubleBraiding, doubleBraiding, ← tensorHom_id, Category.assoc, ← braiding_naturality (𝟙 Y) f,
+    ← Category.assoc, ← braiding_naturality f (𝟙 Y), Category.assoc]
 
 /-- The S entry is additive over finite biproducts in its first argument. -/
 theorem SEntry_biproduct_left {ι : Type*} [Fintype ι] (V : ι → C) [HasBiproduct V]
