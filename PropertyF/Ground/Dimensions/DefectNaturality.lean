@@ -61,7 +61,7 @@ theorem trace_reciprocity_of_coeval_defect
       let K := simples C k
       letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
       tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom =
-        rootDualSign C i • (tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
+        (rootDualSign C i).1 • (tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
     ENOTraceMatrixReciprocity C :=
   trace_reciprocity_of_frobenius_defect fun i j k g ↦ by
@@ -102,7 +102,7 @@ abbrev RootTensorDefectSlide (C : BraidedFusionCategory.{v,u})
   let η : K ⟶ (Xᘁ) ⊗ (X ⊗ K) :=
     (λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom
   η ≫ (Xᘁ) ◁ (rootTensorDefect C X K).hom =
-    rootDualSign C i • (η ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)
+    (rootDualSign C i).1 • (η ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -117,7 +117,7 @@ theorem trace_reciprocity_of_coevaluation
     let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
     change ((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
         (Xᘁ) ◁ (rootTensorDefect C X K).hom) =
-      rootDualSign C i • (((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
+      (rootDualSign C i).1 • (((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
         (Xᘁ) ◁ 𝟙 (X ⊗ K)) ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)
     simpa only [RootTensorDefectSlide, whiskerLeft_id, Category.comp_id, Category.assoc] using hslide i k
 end PropertyF.Ground.Dimensions

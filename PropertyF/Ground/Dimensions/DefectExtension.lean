@@ -40,7 +40,7 @@ variable {C} in
 theorem rootTensorDefect_coevaluation (i : Fin (rank C)) :
     let X := simples C i
     η_ X (Xᘁ) ≫ (rootTensorDefect C X (Xᘁ)).hom =
-      (rootDimension C (unitIndex C) * rootDualSign C i) • η_ X (Xᘁ) := by
+      (rootDimension C (unitIndex C) * (rootDualSign C i).1) • η_ X (Xᘁ) := by
   let I := 𝟙_ C.Obj
   let : HasRightDual I := RightRigidCategory.rightDual I
   let X := simples C i
@@ -48,7 +48,7 @@ theorem rootTensorDefect_coevaluation (i : Fin (rank C)) :
   let a := (fourthDualRootNaturalIso C).app X
   let b := (fourthDualRootNaturalIso C).app (Xᘁ)
   let t := rootTensorIso C X (Xᘁ)
-  let e := rootDualSign C i
+  let e := (rootDualSign C i).1
   have hc : η_ X (Xᘁ) ≫ (a.hom ⊗ₘ b.hom) = e • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) :=
     root_components_coevaluation i
   have hn : η_ X (Xᘁ) ≫ ((fourthDualRootNaturalIso C).app W).hom =
@@ -63,7 +63,7 @@ theorem rootTensorDefect_coevaluation (i : Fin (rank C)) :
   change (η_ X (Xᘁ) ≫ (((fourthDualRootNaturalIso C).app W).hom ≫ t.inv)) ≫ t.hom = _
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp]
   rw [hn, fourthDualRoot_unit_component, Linear.smul_comp, ht, ← mul_smul, mul_assoc,
-    rootDualSign_sq, mul_one]
+    (rootDualSign C i).2.1, mul_one]
 end PropertyF.Ground.Dimensions
 
 end
@@ -81,7 +81,7 @@ variable {C} in
 theorem rootTensorDefect_coevaluation_of_iso
     {X : C.Obj} (i : Fin (rank C)) (a : X ≅ simples C i) :
     η_ X (Xᘁ) ≫ (rootTensorDefect C X (Xᘁ)).hom =
-      (rootDimension C (unitIndex C) * rootDualSign C i) • η_ X (Xᘁ) :=
+      (rootDimension C (unitIndex C) * (rootDualSign C i).1) • η_ X (Xᘁ) :=
   scalar_eigenvector_of_mono (s := (a ⊗ᵢ (rightDualIsoMap a).symm).hom)
     (coevaluation_iso_map a) (rootTensorDefect_natural C a.hom (rightDualIsoMap a).symm.hom)
     (rootTensorDefect_coevaluation i)
@@ -92,7 +92,7 @@ theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
     let X := simples C i
     letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
     η_ (Xᘁ) X ≫ (rootTensorDefect C (Xᘁ) X).hom =
-      (rootDimension C (unitIndex C) * rootDualSign C i) • η_ (Xᘁ) X :=
+      (rootDimension C (unitIndex C) * (rootDualSign C i).1) • η_ (Xᘁ) X :=
   let X := simples C i
   let A := Xᘁ
   letI : ExactPairing A X := BraidedCategory.exactPairing_swap X A
@@ -154,7 +154,7 @@ theorem rootTensorDefect_slide_of_involution
   let D := (rootTensorDefect C A (X ⊗ K)).hom
   let E := A ◁ (rootTensorDefect C X K).hom
   let u := rootDimension C (unitIndex C)
-  let e := rootDualSign C i
+  let e := (rootDualSign C i).1
   have hs : u * u = 1 := rootDimension_unit_sq C
   have hc : cup ≫ (rootTensorDefect C A X).hom = (u * e) • cup :=
     rootTensorDefect_swapped_coevaluation i

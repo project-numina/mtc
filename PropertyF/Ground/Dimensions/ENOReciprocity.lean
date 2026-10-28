@@ -79,24 +79,15 @@ variable (C : BraidedFusionCategory.{v,u})
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 /-- The sign comparing the root on a simple's dual to the inverse dual root. -/
 noncomputable def rootDualSign (C : BraidedFusionCategory.{v,u})
-    (i : Fin (rank C)) : ℂ :=
-  Classical.choose (rootDual_differs_by_sign C (simples C i))
+    (i : Fin (rank C)) : {ε : ℂ // ε * ε = 1 ∧
+      ((fourthDualRootNaturalIso C).app ((simples C i)ᘁ)).hom =
+        ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (simples C i))).symm.hom} :=
+  Classical.indefiniteDescription _ (rootDual_differs_by_sign C (simples C i))
 
 /-- The trace matrices of dual simples are transposes up to the dual-root sign. -/
 abbrev ENOTraceMatrixReciprocity (C : BraidedFusionCategory.{v,u}) : Prop :=
   ∀ i j k, enoTraceMatrix C (dualIndex C i) j k =
-    rootDualSign C i * enoTraceMatrix C i k j
-
-variable {C} in
-theorem rootDualSign_sq (i : Fin (rank C)) :
-    IsInvolutiveElem (rootDualSign C i) :=
-  (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).1
-
-variable {C} in
-theorem rootDualSign_component (i : Fin (rank C)) :
-    ((fourthDualRootNaturalIso C).app ((simples C i)ᘁ)).hom =
-      rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (simples C i))).symm.hom :=
-  (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).2
+    (rootDualSign C i).1 * enoTraceMatrix C i k j
 
 /-- Braiding identifies the right dual with the chosen left-dual representative. -/
 def rightDualLabelIso (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
@@ -110,7 +101,7 @@ variable {C} in
 simple and its dual, using the same sign as the dual-root component. -/
 theorem squaredNorm_eq_rootDualSign_mul
     (i : Fin (rank C)) :
-    squaredNorm C (simples C i) = rootDualSign C i * rootDimension C i *
+    squaredNorm C (simples C i) = (rootDualSign C i).1 * rootDimension C i *
       rootDimension C (dualIndex C i) := by
   let X := simples C i
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
@@ -120,9 +111,9 @@ theorem squaredNorm_eq_rootDualSign_mul
   rw [target_squaredNorm_choice_independent j, leftQuantumTrace_eq_rightDual j,
     ← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
       congrArg (unitScalar C) (rootTrace_id C X).symm), ← hq,
-    rightQuantumTrace_smul_hom (rootDualSign_component i)]
+    rightQuantumTrace_smul_hom ((rootDualSign C i).2.2)]
   simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
-  rw [mul_mul_mul_comm, rootDualSign_sq, one_mul]
+  rw [mul_mul_mul_comm, (rootDualSign C i).2.1, one_mul]
 
 end PropertyF.Ground.Dimensions
 
@@ -256,11 +247,11 @@ signed complex conjugate of the original one. -/
 theorem rootDimension_dual_conjugate_of_trace_reciprocity
     (hinv : MultiplicityDefectsInvolutive C) (htranspose : ENOTraceMatrixReciprocity C)
     (i : Fin (rank C)) :
-    rootDimension C (dualIndex C i) = rootDualSign C i * star (rootDimension C i) := by
+    rootDimension C (dualIndex C i) = (rootDualSign C i).1 * star (rootDimension C i) := by
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ := enoTraceMatrix C i
   let d := rootDimension C
-  let ε := rootDualSign C i
-  have hε : ε * ε = 1 := rootDualSign_sq i
+  let ε := (rootDualSign C i).1
+  have hε : ε * ε = 1 := (rootDualSign C i).2.1
   have hεstar : star ε = ε := by
     rcases mul_self_eq_one_iff.mp hε with h | h
     · rw [h, star_one]
@@ -270,7 +261,7 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     ext j
     change (∑ k, enoTraceMatrix C i k j * rootDimension C k) =
       (ε * rootDimension C (dualIndex C i)) * rootDimension C j
-    simpa only [ε, htranspose, Finset.mul_sum, ← mul_assoc, rootDualSign_sq, one_mul] using
+    simpa only [ε, htranspose, Finset.mul_sum, ← mul_assoc, (rootDualSign C i).2.1, one_mul] using
       congrArg (fun z : ℂ ↦ ε * z)
         (enoTraceMatrix_eigenvector_of_involutions (hinv (dualIndex C i) j))
   have hc := congrArg star (conjugate_of_transpose_eigenvector A hA
@@ -287,7 +278,7 @@ theorem squaredNorm_eq_root_norm_sq_of_reciprocity
     (htranspose : ENOTraceMatrixReciprocity C) (i : Fin (rank C)) :
     squaredNorm C (simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
   rw [squaredNorm_eq_rootDualSign_mul i, rootDimension_dual_conjugate_of_trace_reciprocity hinv htranspose i,
-    mul_mul_mul_comm, rootDualSign_sq, one_mul]; simpa using Complex.mul_conj' (rootDimension C i)
+    mul_mul_mul_comm, (rootDualSign C i).2.1, one_mul]; simpa using Complex.mul_conj' (rootDimension C i)
 
 end PropertyF.Ground.Dimensions
 
