@@ -119,7 +119,7 @@ theorem fourthDualRoot_unit_component :
   let : FiniteDimensional ℂ (U ⟶ U) := IsFusionCategory.hom_finite _ _
   let a := (fourthDualRootNaturalIso C).app U
   let u := doubleDualIso C U
-  obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar u a
+  obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar (k := ℂ) u a
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
   have htrace : unitScalar C (rightQuantumTrace a) = r := by
     rw [rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
