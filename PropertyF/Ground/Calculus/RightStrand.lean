@@ -68,10 +68,10 @@ variable (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ} (e : GroupBlockPresentati
 
 /-- The group image spans any algebra-equivalent block presentation. -/
 theorem presented_group_span :
-    Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ := by
-  change Submodule.span ℂ (Set.range (fun g => e.toLinearMap (groupInImage ρ g))) = ⊤
-  simpa only [Set.range_comp', ← Submodule.map_span, groupInImage_span, Submodule.map_top] using
-    (LinearMap.range_eq_top.mpr e.surjective : e.toLinearMap.range = ⊤)
+    Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ :=
+  show Submodule.span ℂ (Set.range (fun g => e.toLinearMap (groupInImage ρ g))) = ⊤ from by
+    simpa only [Set.range_comp', ← Submodule.map_span, groupInImage_span, Submodule.map_top]
+      using (LinearMap.range_eq_top.mpr e.surjective : e.toLinearMap.range = ⊤)
 
 end PresentedGroup
 
@@ -282,7 +282,7 @@ private theorem addRightAut_first_generator (n : ℕ) : addRightAut X n (braidGe
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Appending a strand preserves each adjacent braid generator. -/
-theorem addRightAut_generator (n : ℕ) (i : Fin (n+1)) :
+theorem addRightAut_generator {n : ℕ} (i : Fin (n+1)) :
     addRightAut X n (braidGenerator X n i) = braidGenerator X (n+1) i.castSucc := by
   induction n with
   | zero => exact (Fin.eq_zero i).symm ▸ addRightAut_first_generator X 0
@@ -312,7 +312,7 @@ def addRightStrand (n : ℕ) : braidImage X n →* braidImage X (n + 1) := by
     apply (Subgroup.closure_le _).mpr
     rintro _ ⟨i, rfl⟩
     change addRightAut X n (braidGenerator X n i) ∈ braidImage X (n + 1)
-    exact Subgroup.subset_closure ⟨i.castSucc, (addRightAut_generator X n i).symm⟩
+    exact Subgroup.subset_closure ⟨i.castSucc, (addRightAut_generator X i).symm⟩
   exact (f.comp (braidImage X n).subtype).codRestrict _ (fun a => hf a a.property)
 
 end

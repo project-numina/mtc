@@ -220,11 +220,10 @@ abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ}
 
 /-- The represented elements span their image algebra. -/
 theorem groupInImage_span :
-    Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ := by
-  apply Submodule.map_injective_of_injective (groupImageAlgebra ρ).toSubmodule.subtype_injective
-  rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp']
-  change Submodule.span ℂ (Set.range (fun g => (groupInImage ρ g : A))) = _
-  simpa only [groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
+    Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ :=
+  (Submodule.map_injective_of_injective (groupImageAlgebra ρ).toSubmodule.subtype_injective) <| by
+    simpa only [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp',
+      Submodule.subtype_apply, groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
 
 end PropertyF.Ground.Calculus
 
