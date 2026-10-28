@@ -214,8 +214,7 @@ theorem unit_diag (i : Fin (rank C)) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ u i ≫
     ((S i ◁ (underlyingCounit C).app X) ▷ (S i)ᘁ) = 𝟙 (V i) := by
-  dsimp only
-  rw [unit_matrix_reduce, crossing_counit_diagonal C X i]
+  simp only [unit_matrix_reduce, crossing_counit_diagonal C X i]
   let e : S (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   rw [show crossingBlock X (S i) (S (unitIndex C))
       (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
