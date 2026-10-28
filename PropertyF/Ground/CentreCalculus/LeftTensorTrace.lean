@@ -16,11 +16,11 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
+  (hdim : Modular.HasFPSimpleDimensions C p) (X : C.Obj) [Simple X]
 
 /-- Once left partial trace composes with total trace, Schur's lemma computes
 the closed crossing as the pivotal twist scalar. -/
 theorem leftPartialTrace_braiding_of_trace_compatibility
-    (X : C.Obj) [Simple X]
     (ht : p.rightTrace (leftPartialTrace p X X (End.of (β_ X X).hom)).asHom =
       p.rightTrace (β_ X X).hom) :
     leftPartialTrace p X X (End.of (β_ X X).hom) =
@@ -44,7 +44,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The closed first crossing with any spectator tensor factor is the same
 scalar on the entire untraced factor. -/
 theorem leftPartialTrace_firstGenerator_of_trace_compatibility
-    (X : C.Obj) [Simple X] (n : ℕ)
+    (n : ℕ)
     (ht : p.rightTrace (leftPartialTrace p X X (End.of (β_ X X).hom)).asHom =
       p.rightTrace (β_ X X).hom) :
     leftPartialTrace p X (tensorPower X (n + 1)) (Aut.toEnd (braidGenerator X n 0)) =
@@ -71,7 +71,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Left trace compatibility implies the local deletion law, with the actual
 pivotal twist scalar as its factor. -/
 theorem tensorPermutationTrace_adjacent_of_leftTrace
-    (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
+    (hX : SelfTransparent X)
     (htotal : ∀ Y (f : End (X ⊗ Y)),
       p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom)
     (n : ℕ) (σ : Equiv.Perm (Fin (n + 1))) :
@@ -98,11 +98,11 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
   simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul,
     unitScalar_eq_equiv, map_smul, smul_eq_mul, f]
 
+include hdim in
 /-- The symmetric integrality argument now needs only left iterated-trace
 compatibility and the sign of the actual pivotal twist scalar. -/
 theorem integral_of_leftTrace_and_twist_sign
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
+    (hX : SelfTransparent X)
     (htotal : ∀ Y (f : End (X ⊗ Y)),
       p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom)
     (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
@@ -234,8 +234,8 @@ dimension in any FP-valued spherical fusion category. -/
 theorem integral_of_spherical_and_twist_sign
     (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hp : p.IsSpherical)
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
+    (hdim : Modular.HasFPSimpleDimensions C p)
+    (X : C.Obj) [Simple X] (hX : SelfTransparent X)
     (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
       Dimensions.pivotalBraidedTwistScalar C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m :=

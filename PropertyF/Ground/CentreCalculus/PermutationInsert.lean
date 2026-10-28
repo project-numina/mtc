@@ -19,7 +19,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 /-- The actual self-transparent permutation action, including the trivial
 zero- and one-strand cases, as endomorphisms. -/
 def tensorPermutationAction (X : C)
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
+    (hX : SelfTransparent X) :
     ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n)
   | 0 => 1
   | 1 => 1
@@ -27,7 +27,7 @@ def tensorPermutationAction (X : C)
 
 /-- Every adjacent transposition acts by the actual categorical crossing. -/
 theorem tensorPermutationAction_swap {X : C}
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
+    (hX : SelfTransparent X)
     {n : ℕ} (i : Fin (n + 1)) :
     tensorPermutationAction X hX (n + 2) (Equiv.swap i.castSucc i.succ) =
       Aut.toEnd (braidGenerator X n i) :=
@@ -90,7 +90,7 @@ universe v u
 (possibly sign-twisted) family of actual actions. -/
 theorem integral_of_trace_deletion (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ)) (X : C.Obj)
+    (hdim : Modular.HasFPSimpleDimensions C p) (X : C.Obj)
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
     (hfixed : ∀ n σ,
       unitScalar C (p.rightTrace ((ρ (n + 1)) (Equiv.Perm.decomposeFin.symm (0, σ))).asHom) =
@@ -143,11 +143,13 @@ theorem fixHead_swap {n : ℕ} (i : Fin n) :
       Equiv.swap_apply_def, Fin.succ_inj]
     split_ifs <;> rfl
 
+section
+variable {X : C} (hX : SelfTransparent X)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Inserting a fixed first strand acts by tensoring the old automorphism
 on the left with the identity of the new strand. -/
-theorem permutationAction_fixHead {X : C}
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) {n : ℕ}
+theorem permutationAction_fixHead {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 2))) :
     permutationAction X hX (n + 1) (fixHead (n + 2) σ) =
       (tensorLeft X).mapAut (tensorPower X (n + 2)) (permutationAction X hX n σ) := by
@@ -169,8 +171,7 @@ theorem permutationAction_fixHead {X : C}
   exact DFunLike.congr_fun heq σ
 
 /-- Inserting a fixed strand tensors the permutation action with its identity. -/
-theorem tensorPermutationAction_fixHead {X : C}
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
+theorem tensorPermutationAction_fixHead :
     ∀ {n} (σ : Equiv.Perm (Fin n)),
       tensorPermutationAction X hX (n + 1) (fixHead n σ) =
         (tensorLeft X).mapEnd (tensorPower X n) (tensorPermutationAction X hX n σ) := by
@@ -193,13 +194,15 @@ theorem tensorPermutationAction_fixHead {X : C}
       rw [permutationAction_fixHead]
       rfl
 
+end
+
 set_option backward.isDefEq.respectTransparency false in
 /-- A fixed inserted strand contributes its positive categorical dimension to
  the actual permutation trace. -/
 theorem tensorPermutationTrace_fixHead (D : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := D.Obj))
-    (hdim : ∀ i, Modular.simpleDimension D p i = (fpSimple D i : ℂ))
-    (X : D.Obj) (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
+    (hdim : Modular.HasFPSimpleDimensions D p)
+    (X : D.Obj) (hX : SelfTransparent X) :
     ∀ n (σ : Equiv.Perm (Fin n)),
       unitScalar D (p.rightTrace ((tensorPermutationAction X hX (n + 1))
         (fixHead n σ)).asHom) =

@@ -16,8 +16,7 @@ theorem actual_symmetricCore_integrality (C : BraidedFusionCategory.{v,u})
     [IsFusionCategory (CategoryTheory.Center C.Obj)]
     (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
     (hp : p.IsSpherical)
-    (hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) p i =
-      (fpSimple (Integrate.bundledCenter C) i : ℂ)) :
+    (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p) :
     ∀ y ∈ CentreCabling.symmetricCore C,
       ∃ z : ℤ, Modular.simpleDimension (Integrate.bundledCenter C) p y = z :=
   fun y hy ↦ selfTransparent_simpleDimension_integer (Integrate.bundledCenter C) p hp hdim y

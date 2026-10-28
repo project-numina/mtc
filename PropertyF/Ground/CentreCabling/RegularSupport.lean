@@ -21,7 +21,7 @@ variable (D : Ground.BraidedFusionCategory.{v,u})
 /-- The numerical S-centralizer is closed under dual labels when dimensions
 are the positive FP dimensions. -/
 theorem sCentralizer_closed_under_dual
-    (hdim : ∀ a, Modular.simpleDimension D p a = (fpSimple D a : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     (i y : Fin (rank D))
     (hi : Modular.categoricalS D p i y = Modular.simpleDimension D p i * Modular.simpleDimension D p y) :
     Modular.categoricalS D p (dualIndex D i) y =
@@ -117,7 +117,7 @@ regular-vector identity. -/
 theorem doubleCentralizer_of_fourier_support
     (hp : p.IsSpherical)
     (hdet : (Modular.categoricalS D p).det ≠ 0)
-    (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     (f : Fin (rank D) → ℂ) (core generated : Set (Fin (rank D)))
     (hunit : f (unitIndex D) ≠ 0)
     (hgenerated : ∀ y, f y ≠ 0 → y ∈ generated)
@@ -150,7 +150,7 @@ variable (D : Ground.BraidedFusionCategory.{v,u})
 /-- The S-transform of a common FP eigenvector vanishes at every label whose
 normalized S character differs from the FP character on a chosen label. -/
 theorem fourier_eq_zero_of_fusion_eigenvector
-    (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     (f : Fin (rank D) → ℂ) (a y : Fin (rank D))
     (heigen : ∀ k, ∑ i, (fusionCoeff D a i k : ℂ) * f i = (fpSimple D a : ℂ) * f k)
     (hne : Modular.categoricalS D p a y ≠
@@ -236,7 +236,7 @@ labels. The supplied core must contain its numerical S-centralizer. -/
 theorem doubleCentralizer_of_fusion_closed
     (hp : p.IsSpherical)
     (hdet : (Modular.categoricalS D p).det ≠ 0)
-    (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     (A : Finset (Fin (rank D))) (core : Set (Fin (rank D)))
     (hunit : unitIndex D ∈ A)
     (hdual : ∀ a ∈ A, dualIndex D a ∈ A)
