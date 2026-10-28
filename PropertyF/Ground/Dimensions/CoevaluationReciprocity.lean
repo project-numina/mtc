@@ -41,26 +41,4 @@ theorem enoTraceMatrix_reciprocity_of_coevaluation_defect
   simp only [id_tensorHom] at hn
   simp only [Category.id_comp] at hpost'
   rw [hpost, hunit i k, Linear.smul_comp, Category.assoc, ← hn, ← Category.assoc, ← hpost']
-/-- Positive spherical existence from the remaining fourth-dual and
-coevaluation identities. -/
-theorem eno_pseudoUnitary_yields_positive_spherical_of_coevaluation
-    (C : Ground.BraidedFusionCategory.{v,u})
-    (hfourth : ∀ i j : Fin (Ground.rank C),
-      (fourthDualIso C (Ground.simples C i ⊗ Ground.simples C j)).hom =
-      ((fourthDualIso C (Ground.simples C i)).hom ⊗ₘ (fourthDualIso C (Ground.simples C j)).hom) ≫
-        (doubleDualTensorIso (((Ground.simples C i)ᘁ)ᘁ) (((Ground.simples C j)ᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso (Ground.simples C i) (Ground.simples C j)).homᘁ)ᘁ))
-    (hunit : ∀ i k,
-      let X := Ground.simples C i
-      let K := Ground.simples C k
-      letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-      Ground.tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom =
-        rootDualSign C i • (Ground.tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
-          (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom))
-    (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ) :=
-  eno_pseudoUnitary_yields_positive_spherical_of_simple_fourth_and_reciprocity C hfourth
-    (enoTraceMatrix_reciprocity_of_coevaluation_defect C hunit) hpu
-
 end PropertyF.Ground.Dimensions

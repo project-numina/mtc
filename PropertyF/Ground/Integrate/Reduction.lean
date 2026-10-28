@@ -4,7 +4,7 @@ public import PropertyF.Ground.Integrate.Fixedness
 public import PropertyF.Ground.Integrate.ConjugateBound
 public import PropertyF.Ground.Integrate.Conjugacy
 public import PropertyF.Ground.Modular.FusionTransport
-public import PropertyF.Ground.Dimensions.PositiveSpherical
+public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Fusion.Agreement
 
 /-! Bundle-free reduction of the target to FP invariance under conjugacy and the

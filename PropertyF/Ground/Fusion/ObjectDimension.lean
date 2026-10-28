@@ -31,13 +31,6 @@ theorem fpDimension_nonneg (D : BraidedFusionCategory) (X : D.Obj) :
   unfold fpDimension
   exact Finset.sum_nonneg (fun i _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D i).le)
 
-theorem fpDimension_isIntegral (D : BraidedFusionCategory) (X : D.Obj) :
-    IsIntegral ℤ (fpDimension D X) := by
-  unfold fpDimension
-  apply IsIntegral.sum
-  intro i _
-  exact (isIntegral_natCast _).mul (fpSimple_isIntegral D i)
-
 theorem fpDimension_unit (D : BraidedFusionCategory) : fpDimension D (𝟙_ D.Obj) = 1 := by
   obtain ⟨e⟩ := unitIndex_iso D
   rw [← fpDimension_iso D e, fpDimension_simple, fpSimple_unit]
