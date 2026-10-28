@@ -20,11 +20,11 @@ theorem fusionCoeff_dual_transpose (i j k : Fin (rank C)) :
   rw [fusionCoeff_comm C i j, fusionCoeff_reciprocity_labels,
     fusionCoeff_comm C k (dualIndex C i)]
 
-/-- Eigenvalues on a common eigenvector for a real matrix and its transpose
-are complex conjugates. -/
-theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
-    (A : Matrix ι ι ℂ) (hA : ∀ i j, star (A i j) = A i j)
-    {v : ι → ℂ} (hv : v ≠ 0) {z w : ℂ}
+/-- If a matrix has conjugation-invariant entries, its eigenvalue and that of
+its transpose on a common nonzero eigenvector are conjugate. -/
+theorem conjugate_of_transpose_eigenvector {ι K : Type*} [Fintype ι] [RCLike K]
+    (A : Matrix ι ι K) (hA : ∀ i j, star (A i j) = A i j)
+    {v : ι → K} (hv : v ≠ 0) {z w : K}
     (h : A *ᵥ v = z • v) (ht : Aᵀ *ᵥ v = w • v) : star w = z := by
   have hAt : Aᵀᴴ = A := Matrix.ext fun i j ↦ by simpa [Matrix.conjTranspose_apply] using hA i j
   have hs : (star v) ᵥ* A = (star w) • (star v) := by
@@ -37,13 +37,13 @@ theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
       _ = _ := by rw [hs, smul_dotProduct]; rfl
   exact (mul_right_cancel₀ hn heq).symm
 
-variable {C} {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)}
-
-/-- A fusion character is an eigenvector of each fusion matrix. -/
-theorem fusion_character_eigenvector (hchar : IsFusionMultiplicative C χ) (i : Fin (rank C)) :
-    (fun j k ↦ (fusionCoeff C i j k : ℂ)) *ᵥ χ = χ i • χ :=
+/-- A multiplicative character is an eigenvector of each fusion matrix. -/
+theorem fusion_character_eigenvector {ι K : Type*} [Fintype ι] [Semiring K]
+    {N : ι → ι → ι → K} {χ : ι → K} (hchar : ∀ i j, χ i * χ j = ∑ k, N i j k * χ k)
+    (i : ι) : (fun j k ↦ N i j k) *ᵥ χ = χ i • χ :=
   funext fun j ↦ (hchar i j).symm
 
+variable {C} {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)}
 variable (hχ : χ i₀ ≠ 0) (hchar : IsFusionMultiplicative C χ)
 include hχ hchar
 
@@ -54,13 +54,13 @@ theorem fusion_character_dual_eq_conj (i : Fin (rank C)) : χ (dualIndex C i) = 
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
     fun j k => (fusionCoeff C i j k : ℂ)
   have ht : Aᵀ *ᵥ χ = χ (dualIndex C i) • χ := by
-    convert fusion_character_eigenvector (C := C) hchar (dualIndex C i) using 1
+    convert fusion_character_eigenvector hchar (dualIndex C i) using 1
     congr 1
     ext j k
     change (fusionCoeff C i k j : ℂ) = _
     exact_mod_cast fusionCoeff_dual_transpose C i k j
   simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A])
-    (fun hz ↦ hχ (congrFun hz i₀)) (fusion_character_eigenvector (C := C) hchar i) ht)
+    (fun hz ↦ hχ (congrFun hz i₀)) (fusion_character_eigenvector hchar i) ht)
 
 variable (hdual : ∀ i, χ (dualIndex C i) = χ i)
 include hdual
