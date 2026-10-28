@@ -258,10 +258,11 @@ theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X 
     simpa [t, Iso.conj_apply_asHom, Category.assoc] using doubleBraiding_tensor_factorization Z X Y)
   by rw [hfactor, rightPartialTrace_natural, Calculus.rightPartialTrace_whiskerLeft]
 
-variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable {k : Type*} [CommSemiring k] [Preadditive C] [Linear k C]
+  [MonoidalPreadditive C] [MonoidalLinear k C]
 
 /-- A scalar partial monodromy factors out of the tensor-product partial trace. -/
-theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) {Z Y : C} (X : C) {s : ℂ}
+theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) {Z Y : C} (X : C) {s : k}
     (hs : partialMonodromy p Z Y = s • 1) :
     rightPartialTrace p ((α_ Z X Y).symm.conj (End.of (doubleBraiding Z (X ⊗ Y)))) =
     s • End.of (doubleBraiding Z X) := by
