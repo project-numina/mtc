@@ -104,7 +104,8 @@ def braidImageRetractMap {X Y : C} (r : Retract X Y) (n : ℕ) :
     braidImage Y n →* braidImage X n := by
   let f := braidWordAction Y n
   let g := braidWordAction X n
-  let q := imageFactor f g (braidWordAction_ker_le_of_retract r n)
+  let q := f.rangeRestrict.liftOfSurjective f.rangeRestrict_surjective
+    ⟨g, by simpa using braidWordAction_ker_le_of_retract r n⟩
   have hs := braidWordAction_surjective Y n
   let embed : braidImage Y n →* f.range :=
     (MonoidHom.id _).codRestrict f.range (fun y => hs y)
@@ -116,8 +117,11 @@ theorem braidImageRetractMap_surjective {X Y : C} (r : Retract X Y) (n : ℕ) :
   intro a
   obtain ⟨w, rfl⟩ := braidWordAction_surjective X n a
   refine ⟨braidWordAction Y n w, ?_⟩
-  exact imageFactor_apply (braidWordAction Y n) (braidWordAction X n)
-    (braidWordAction_ker_le_of_retract r n) w
+  change ((braidWordAction Y n).rangeRestrict.liftOfSurjective
+    (braidWordAction Y n).rangeRestrict_surjective
+    ⟨braidWordAction X n, by simpa using braidWordAction_ker_le_of_retract r n⟩)
+      ((braidWordAction Y n).rangeRestrict w) = braidWordAction X n w
+  simp
 /-- Property F passes from an object to any retract. -/
 theorem objectPropertyF_of_retract {X Y : C} (r : Retract X Y)
     (hY : ObjectPropertyF Y) : ObjectPropertyF X := by
