@@ -73,20 +73,17 @@ theorem leftPartialTrace_inverse_braiding :
     leftPartialTrace p (End.of (β_ X X).inv) =
       End.of ((braidedDoubleDualIso X).hom ≫ (p.iso X).inv) := by
   apply End.ext
-  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
   let t : X ⟶ X := (braidedDoubleDualIso X).hom ≫ (p.iso X).inv
-  rw [pivotal_coevaluation_factor (p := p) X]
-  simp only [comp_whiskerRight, Category.assoc]
+  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+    pivotal_coevaluation_factor (p := p) X, comp_whiskerRight, Category.assoc]
   -- The inverse crossings cancel after applying the inverse hexagon.
   have hmove : (Xᘁ ◁ t) ▷ X ≫ (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) =
       (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫ (Xᘁ ◁ (X ◁ t)) := by
-    rw [associator_naturality_middle_assoc]
-    simp only [← whiskerLeft_comp, braiding_inv_naturality_left]
+    simp only [associator_naturality_middle_assoc, ← whiskerLeft_comp,
+      braiding_inv_naturality_left]
   slice_lhs 4 6 => rw [hmove]
-  simp only [Category.assoc]
-  rw [associator_inv_naturality_right_assoc, whisker_exchange_assoc (ε_ X (Xᘁ)) t,
-    leftUnitor_naturality]
-  change _ = t
+  simp only [Category.assoc, associator_inv_naturality_right_assoc,
+    whisker_exchange_assoc (ε_ X (Xᘁ)) t, leftUnitor_naturality]
   simpa only [Category.assoc, Category.id_comp] using congrArg (fun f => f ≫ t) (inverse_crossing_snake X)
 
 end

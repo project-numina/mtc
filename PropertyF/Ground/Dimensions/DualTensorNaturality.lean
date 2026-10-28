@@ -137,11 +137,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The braided fourth-dual map intertwines duals with its inverse. -/
 theorem fourthDualIso_rightDual (X : C.Obj) :
     fourthDualIso C (Xᘁ) = (rightDualIsoMap (fourthDualIso C X)).symm := by
-  have hi : (doubleDualIso C ((Xᘁ)ᘁ)).inv = (((doubleDualIso C X).invᘁ)ᘁ) := by
-    have hh : doubleDualIso C ((Xᘁ)ᘁ) = rightDualIsoMap (rightDualIsoMap (doubleDualIso C X)) := by
-      apply Iso.ext
-      exact doubleDualIso_doubleDual C X
-    exact congrArg Iso.inv hh
+  have hi : (doubleDualIso C ((Xᘁ)ᘁ)).inv = (((doubleDualIso C X).invᘁ)ᘁ) :=
+    congrArg Iso.inv (Iso.ext (doubleDualIso_doubleDual C X) :
+      doubleDualIso C ((Xᘁ)ᘁ) = rightDualIsoMap (rightDualIsoMap (doubleDualIso C X)))
   apply Iso.ext
   simp only [fourthDualIso, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, rightDualIsoMap,
     comp_rightAdjointMate]

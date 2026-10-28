@@ -135,9 +135,8 @@ theorem rootTensorDefect_associativity (X Y Z : C.Obj) :
     have hF : Functor.OplaxMonoidal.δ (doubleDualFunctor C.Obj) A B = (doubleDualTensorIso A B).inv := rfl
     simpa [rootTensorDefect, rootTensorIso, hF] using
       (Functor.Monoidal.transport_δ (fourthDualRootNaturalIso C).symm A B)
-  have h := Functor.OplaxMonoidal.δ_comp_whiskerLeft_δ (𝟭 C.Obj) X Y Z
-  simp only [hd, Functor.id_obj, Functor.id_map] at h
-  exact h
+  simpa only [hd, Functor.id_obj, Functor.id_map] using
+    Functor.OplaxMonoidal.δ_comp_whiskerLeft_δ (𝟭 C.Obj) X Y Z
 end PropertyF.Ground.Dimensions
 
 end

@@ -75,6 +75,6 @@ theorem productRetract_rightDual (D : Ground.BraidedFusionCategory.{v,u})
     [RigidCategory (CategoryTheory.Center D.Obj)]
     [IsFusionCategory (CategoryTheory.Center D.Obj)]
     {Z : CategoryTheory.Center D.Obj} (hZ : ProductRetract Z) : ProductRetract (Zᘁ) :=
-  productRetract_generatedBy hZ (Ground.generatedBy_rightDual (Integrate.bundledCenter D) Z)
+  productRetract_generatedBy hZ (Ground.generatedBy_rightDual Z)
 
 end PropertyF.Ground.Centre
