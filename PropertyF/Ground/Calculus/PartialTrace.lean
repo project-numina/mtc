@@ -20,7 +20,7 @@ def scalarTrace (p : PivotalStructure (C := C)) (scalar : End (𝟙_ C) ≃ₐ[�
 
 /-- Close the right tensor factor using evaluation, coevaluation, and the
 pivotal isomorphism. -/
-def rightPartialTrace (p : PivotalStructure (C := C)) (X Y : C) :
+def rightPartialTrace (p : PivotalStructure (C := C)) {X Y : C} :
     End (X ⊗ Y) →ₗ[ℂ] End X where
   toFun f := End.of ((ρ_ X).inv ≫ (X ◁ η_ Y (Yᘁ)) ≫ (α_ X Y (Yᘁ)).inv ≫
     (f.asHom ▷ (Yᘁ)) ≫ (α_ X Y (Yᘁ)).hom ≫
@@ -40,8 +40,8 @@ def insertRightIdentity {X : C} (Y : C) (a : End X) : End (X ⊗ Y) :=
 /-- Partial trace commutes with postcomposition on the untraced factor. -/
 theorem rightPartialTrace_left (p : PivotalStructure (C := C))
     {X Y : C} (a : End X) (f : End (X ⊗ Y)) :
-    rightPartialTrace p X Y (insertRightIdentity Y a * f) =
-      a * rightPartialTrace p X Y f :=
+    rightPartialTrace p (insertRightIdentity Y a * f) =
+      a * rightPartialTrace p f :=
   End.ext (by simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
     End.mul_asHom, comp_whiskerRight, Category.assoc, associator_naturality_left_assoc,
     ← whisker_exchange_assoc, rightUnitor_naturality])
@@ -50,8 +50,8 @@ theorem rightPartialTrace_left (p : PivotalStructure (C := C))
 /-- Partial trace commutes with precomposition on the untraced factor. -/
 theorem rightPartialTrace_right (p : PivotalStructure (C := C))
     {X Y : C} (a : End X) (f : End (X ⊗ Y)) :
-    rightPartialTrace p X Y (f * insertRightIdentity Y a) =
-      rightPartialTrace p X Y f * a :=
+    rightPartialTrace p (f * insertRightIdentity Y a) =
+      rightPartialTrace p f * a :=
   End.ext (by simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
     End.mul_asHom, comp_whiskerRight, Category.assoc, ← associator_inv_naturality_left_assoc,
     whisker_exchange_assoc, ← rightUnitor_inv_naturality_assoc])
@@ -59,7 +59,7 @@ theorem rightPartialTrace_right (p : PivotalStructure (C := C))
 /-- Tracing an identity strand gives the categorical dimension of the closed
 factor, acting on the untraced object. -/
 theorem rightPartialTrace_one (p : PivotalStructure (C := C))
-    (X Y : C) : rightPartialTrace p X Y 1 =
+    (X Y : C) : rightPartialTrace p (X := X) (Y := Y) 1 =
       End.of ((ρ_ X).inv ≫ (X ◁ (p.rightTrace (𝟙 Y)).asHom) ≫ (ρ_ X).hom) :=
   End.ext (by simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
     End.one_asHom, id_whiskerRight, Category.comp_id, Iso.inv_hom_id_assoc,
@@ -71,7 +71,7 @@ variable (p : PivotalStructure (C := C)) (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ
 /-- The partial trace of an inserted endomorphism is the dimension of the
 closed factor times that endomorphism. -/
 theorem rightPartialTrace_insert {X Y : C} (a : End X) :
-    rightPartialTrace p X Y (insertRightIdentity Y a) =
+    rightPartialTrace p (insertRightIdentity Y a) =
       (scalar (p.rightTrace (𝟙 Y))) • a := by
   rw [← mul_one (insertRightIdentity Y a), rightPartialTrace_left, rightPartialTrace_one,
     eq_smul_one_of_algEquiv scalar (p.rightTrace (𝟙 Y))]
@@ -96,17 +96,17 @@ single, explicitly stated compatibility of iterated and total pivotal traces. -/
 theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C] {X Y : C}
     [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
     (f : End (X ⊗ Y)) (hd : scalar (p.rightTrace (𝟙 X)) ≠ 0)
-    (htrace : p.rightTrace (rightPartialTrace p X Y f).asHom = p.rightTrace f.asHom) :
-    rightPartialTrace p X Y f =
+    (htrace : p.rightTrace (rightPartialTrace p f).asHom = p.rightTrace f.asHom) :
+    rightPartialTrace p f =
       (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
-  simpa only [scalarTrace, htrace] using simple_end_eq_trace_smul p scalar (rightPartialTrace p X Y f) hd
+  simpa only [scalarTrace, htrace] using simple_end_eq_trace_smul p scalar (rightPartialTrace p f) hd
 
 /-- Closing a right tensor factor commutes with adding an identity factor on
 the left, with the associator made explicit. -/
 theorem rightPartialTrace_whiskerLeft {A X Y : C} (f : End (X ⊗ Y)) :
-    rightPartialTrace p (A ⊗ X) Y (End.of
+    rightPartialTrace p (End.of
       ((α_ A X Y).hom ≫ (A ◁ f.asHom) ≫ (α_ A X Y).inv)) =
-      End.of (A ◁ (rightPartialTrace p X Y f).asHom) :=
+      End.of (A ◁ (rightPartialTrace p f).asHom) :=
   End.ext (by
     simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
       comp_whiskerRight, whiskerLeft_comp, Category.assoc]

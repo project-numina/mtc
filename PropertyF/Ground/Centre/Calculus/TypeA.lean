@@ -136,7 +136,6 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
   apply MonoidHom.mem_ker.mpr
   rcases hw with hw | hw
   · obtain ⟨i, rfl⟩ := hw
-    simp only [strandPermutation, pow_two]
     exact Equiv.swap_mul_self _ _
   · rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
       simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
@@ -218,13 +217,10 @@ theorem typeAGenerator_distant {n i j : ℕ} (hij : i + 1 < j) (hj : j < n + 1) 
 theorem typeAGenerator_generates (n : ℕ) :
     Subgroup.closure (Set.range (fun i : Fin (n + 1) => typeAGenerator n i.val)) = ⊤ := by
   apply FreeGroup.lift_surjective_iff_closure_range_eq_top.mp
-  have h : FreeGroup.lift (fun i : Fin (n + 1) => typeAGenerator n i.val) =
-      QuotientGroup.mk' (typeANormal n) := by
-    apply FreeGroup.ext_hom
-    intro i
-    simp only [FreeGroup.lift_apply_of, typeAGenerator, dite_eq_left i.isLt]
-  rw [h]
-  exact QuotientGroup.mk'_surjective (typeANormal n)
+  convert QuotientGroup.mk'_surjective (typeANormal n) using 1
+  congr 1
+  ext i
+  simp only [FreeGroup.lift_apply_of, typeAGenerator, dite_eq_left i.isLt]
 
 /-- The type-A presentation has exactly enough elements for the permutation
 surjection to be an isomorphism. -/

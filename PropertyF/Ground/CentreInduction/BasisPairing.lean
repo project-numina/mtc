@@ -108,7 +108,6 @@ def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v
     simp [Category.assoc, tensorHom_def, MonoidalLinear.smul_whiskerRight,
       Linear.comp_smul, Linear.smul_comp]
 
-
 set_option backward.isDefEq.respectTransparency false in
 /-- A finite splitting can be used to refine a simple-basis contraction. -/
 theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.Obj} {W : C.Obj}

@@ -104,8 +104,6 @@ theorem drinfeld_inv_dual_tensor {C : BraidedFusionCategory.{v,u}} (h : Drinfeld
     Iso.trans_inv, Iso.symm_inv]
   simp only [comp_rightAdjointMate, Category.assoc, f, g, t]
 
-
-
 /-- The Drinfeld tensor law forces monoidality of the canonical fourth-dual map. -/
 theorem fourthDualIso_tensor_of_drinfeld {C : BraidedFusionCategory.{v,u}} (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     (Dimensions.fourthDualIso C (X ⊗ Y)).hom =
@@ -138,7 +136,6 @@ theorem fourthDualIso_tensor_of_drinfeld {C : BraidedFusionCategory.{v,u}} (h : 
     simp
   simp only [← Category.assoc]
   rw [Category.assoc m.inv, hn']
-
 
 end PropertyF.Ground.CentreInduction
 

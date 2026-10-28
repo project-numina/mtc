@@ -88,9 +88,7 @@ theorem crossingBlock_natural_middle {X Y : D} (h : X ⟶ Y) {T R S : D}
   simp only [tensorHom_def, Category.assoc]
   rw [associator_naturality_left_assoc]
   rw [← comp_whiskerRight_assoc, whisker_exchange, comp_whiskerRight_assoc,
-    ← whisker_exchange_assoc, associator_naturality_middle_assoc,
-    associator_naturality_right_assoc]
-  rw [associator_naturality_right_assoc]
+    ← whisker_exchange_assoc, associator_naturality_middle_assoc]
   simp only [associator_naturality_right_assoc]
   rw [← whiskerLeft_comp, associator_inv_naturality_middle,
     whiskerLeft_comp]
@@ -198,16 +196,12 @@ theorem crossingCandidate_natural_middle
   simp only [underlyingFunctor, biproduct.ι_map, comp_whiskerRight]
   simp only [Category.assoc, crossingCandidate_on_summand]
   simp only [Preadditive.comp_sum, Preadditive.sum_comp]
-  apply Finset.sum_congr rfl
-  intro j _
-  apply Finset.sum_congr rfl
-  intro a _
+  refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun a _ => ?_
   simp only [Category.assoc]
   rw [← whiskerLeft_comp]
   simp only [biproduct.ι_map, whiskerLeft_comp]
   simpa only [Category.assoc] using congrArg (fun g => g ≫ (T ◁ biproduct.ι VY j))
     (crossingBlock_natural_middle h
       (crossingInclusion C T i j a) (crossingProjection C T i j a))
-
 
 end PropertyF.Ground.CentreInduction
