@@ -74,6 +74,24 @@ private abbrev tensorPowerMap_retract {X Y : C} (r : Retract X Y) (n : ℕ) :
   r := tensorPowerMap r.r n
   retract := by rw [← tensorPowerMap_comp, r.retract, tensorPowerMap_id]
 
+omit [MonoidalCategory C] in
+/-- A morphism intertwining generators also intertwines every free-group word. -/
+private theorem freeGroup_natural {X Y : C} {ι : Type*} (a : ι → Aut X) (b : ι → Aut Y)
+    (f : X ⟶ Y) (h : ∀ i, (a i).asIso.hom ≫ f = f ≫ (b i).asIso.hom)
+    (w : FreeGroup ι) :
+    (FreeGroup.lift a w).asIso.hom ≫ f = f ≫ (FreeGroup.lift b w).asIso.hom := by
+  induction w using FreeGroup.induction_on with
+  | one => simp
+  | of i => simpa using h i
+  | inv_of i ih =>
+    simp only [map_inv, Aut.inv_asIso] at *
+    apply (cancel_epi (FreeGroup.lift a (FreeGroup.of i)).asIso.hom).mp
+    apply (cancel_mono (FreeGroup.lift b (FreeGroup.of i)).asIso.hom).mp
+    simpa [Category.assoc] using ih.symm
+  | mul x y ihx ihy =>
+    simp only [map_mul, Aut.mul_asIso, Iso.trans_hom, Category.assoc]
+    rw [ihx, ← Category.assoc, ihy, Category.assoc]
+
 variable [BraidedCategory C]
 
 /-- Naturality of the first adjacent braiding. -/
@@ -108,18 +126,10 @@ theorem braidGenerator_map_natural (i : Fin (n + 1)) :
 /-- Braiding words are natural in any morphism, not only in isomorphisms. -/
 theorem braidWord_map_natural (w : BraidWords n) :
     ((braidWordAction X n w).val).asIso.hom ≫ tensorPowerMap f (n + 2) =
-      tensorPowerMap f (n + 2) ≫ ((braidWordAction Y n w).val).asIso.hom := by
-  induction w using FreeGroup.induction_on with
-  | one => simp [braidWordAction]
-  | of i => simpa [braidWordAction] using braidGenerator_map_natural f n i
-  | inv_of i ih =>
-    simp only [map_inv, Subgroup.coe_inv, Aut.inv_asIso] at *
-    apply (cancel_epi ((braidWordAction X n (FreeGroup.of i)).val).asIso.hom).mp
-    apply (cancel_mono ((braidWordAction Y n (FreeGroup.of i)).val).asIso.hom).mp
-    simpa [Category.assoc] using ih.symm
-  | mul x y ihx ihy =>
-    simp only [map_mul, Subgroup.coe_mul, Aut.mul_asIso, Iso.trans_hom, Category.assoc]
-    rw [ihx, ← Category.assoc, ihy, Category.assoc]
+      tensorPowerMap f (n + 2) ≫ ((braidWordAction Y n w).val).asIso.hom :=
+  freeGroup_natural (braidGenerator X n) (braidGenerator Y n) (tensorPowerMap f (n + 2))
+    (braidGenerator_map_natural f n) w
+
 end BraidNaturality
 
 /-- Any braid word acting trivially on an object also acts trivially on its

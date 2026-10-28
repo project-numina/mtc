@@ -19,6 +19,7 @@ open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 local notation "sgn" => PropertyF.Ground.Centre.permutationSign
 open PropertyF.Ground.Dimensions
 open Equiv (Perm)
+open Fintype (card_perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCalculus
@@ -123,8 +124,7 @@ theorem alternatingProjector_scalar_trace :
       ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom) := by
   let := permutationCardInvertible n
-  simp [rightTrace_alternatingProjector, unitScalar_eq_equiv, Fintype.card_perm,
-    Nat.factorial_ne_zero]
+  simp [rightTrace_alternatingProjector, unitScalar_eq_equiv, card_perm, n.factorial_ne_zero]
 
 include hdim in
 /-- It suffices to evaluate the unnormalized signed trace sum for each
