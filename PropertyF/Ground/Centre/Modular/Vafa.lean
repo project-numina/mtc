@@ -517,12 +517,10 @@ theorem fpDeterminant_refl (X : C.Obj) :
 /-- The tensor determinant rule holds on any simple object. -/
 theorem fpDeterminant_tensor_of_simple
     (X S : C.Obj) [Simple S] (a : S ≅ S) :
-    HasTensorDeterminant C X a := by
+    HasTensorDeterminant C X a :=
   let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
-  obtain ⟨z, hz⟩ := endomorphism_simple_eq_smul_id ℂ a.hom
-  have hne : z ≠ 0 := fun h ↦ id_nonzero S (by simpa [← hz, h] using a.hom_inv_id.symm)
-  rw [show a = scalarIso S (Units.mk0 z hne) from Iso.ext hz.symm]
-  exact fpDeterminant_tensor_scalar C X S _
+  (Dimensions.isomorphisms_scalar (Iso.refl S) a).elim fun z ⟨hne, hz, _⟩ ↦
+    (show a = scalarIso S (Units.mk0 z hne) from Iso.ext hz).symm ▸ fpDeterminant_tensor_scalar C X S _
 
 /-- Components of a natural automorphism of a functor are conjugate along
 isomorphisms in the source. -/
@@ -778,9 +776,11 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
+local notation "m" => monodromyDet C
+
 /-- The FP determinant of monodromy is additive in the second tensor factor. -/
 theorem fpDeterminant_monodromy_tensor (Z X Y : C.Obj) :
-    monodromyDet C Z (X ⊗ Y) =
+    m Z (X ⊗ Y) =
       fpDeterminant C (Iso.refl X ⊗ᵢ monodromyIso Z Y) +
       fpDeterminant C (monodromyIso Z X ⊗ᵢ Iso.refl Y) := by
   simpa only [Iso.symm_symm_eq, monodromy_hexagon_iso, fpDeterminant_conjugate_trans] using
@@ -790,11 +790,9 @@ theorem fpDeterminant_monodromy_tensor (Z X Y : C.Obj) :
 of the two simple monodromy determinants, under simple twist balancing. -/
 theorem fpDeterminant_monodromy_hexagon
     {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
-    (hbalance : HasSimpleBalance C η t)
-    (z i j : Fin (rank C)) :
-    monodromyDet C (simples C z) (simples C i ⊗ simples C j) =
-      fpSimple C i • monodromyDet C (simples C z) (simples C j) +
-      fpSimple C j • monodromyDet C (simples C z) (simples C i) := by
+    (hbalance : HasSimpleBalance C η t) (z i j : Fin (rank C)) :
+    m (simples C z) (simples C i ⊗ simples C j) =
+      fpSimple C i • m (simples C z) (simples C j) + fpSimple C j • m (simples C z) (simples C i) := by
   simp only [fpDeterminant_monodromy_tensor C, fpDeterminant_tensor_simple_monodromy C hbalance,
     fpDeterminant_simple_monodromy_tensor C hbalance, fpDimension_simple]
 

@@ -97,9 +97,7 @@ instance (n : ℕ) : (typeANormal n).Normal := inferInstanceAs
 theorem braidRelations_action_trivial (X : C) (n : ℕ) :
     Subgroup.normalClosure (braidRelations n) ≤
       (FreeGroup.lift (braidGenerator X n)).ker := by
-  apply Subgroup.normalClosure_le_normal
-  intro w hw
-  apply MonoidHom.mem_ker.mpr
+  refine Subgroup.normalClosure_le_normal fun w hw ↦ MonoidHom.mem_ker.mpr ?_
   rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
     simp only [map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
   · cases n with
@@ -192,10 +190,8 @@ theorem pureWords_eq_typeANormal_of_card_bound (n : ℕ) [Finite (typeAGroup n)]
     ((Fintype.bijective_iff_surjective_and_card (typeAPermutation n)).2
       ⟨hs, le_antisymm (by simpa [Nat.card_eq_fintype_card, Fintype.card_perm] using hcard)
         (Fintype.card_le_of_surjective (typeAPermutation n) hs)⟩).1
-  apply (QuotientGroup.eq_one_iff w).mp
-  apply hi
-  change strandPermutation n w = 1
-  exact MonoidHom.mem_ker.mp hw
+  exact (QuotientGroup.eq_one_iff w).mp <| hi <|
+    show strandPermutation n w = 1 from MonoidHom.mem_ker.mp hw
 
 end PropertyF.Ground.CentreCalculus
 

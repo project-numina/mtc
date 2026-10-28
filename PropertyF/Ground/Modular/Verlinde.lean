@@ -32,11 +32,10 @@ theorem fusion_character_product {ι K : Type*} [Fintype ι] [Field K]
     (hsym : ∀ x y, S x y = S y x) (hd : ∀ z, d z ≠ 0)
     (hVerlinde : HasVerlindeFormula N S d) (x y z : ι) :
     S x z * S z y = ∑ k, (N.coeff x y k : K) * (d z * S k z) := by
-  rw [hsym z y]
   have h := hVerlinde x y z
   simp_rw [← mul_div_assoc, ← Finset.sum_div] at h
   field_simp [hd z] at h
-  simpa only [Finset.sum_mul, Finset.mul_sum, mul_left_comm, mul_comm, mul_assoc] using h
+  simpa only [hsym z y, Finset.sum_mul, Finset.mul_sum, mul_left_comm, mul_comm, mul_assoc] using h
 
 /-- Complex automorphisms act on normalized S-matrix columns. -/
 abbrev IsGaloisColumnAction {ι : Type*} (S : Matrix ι ι ℂ) (d : ι → ℂ)
