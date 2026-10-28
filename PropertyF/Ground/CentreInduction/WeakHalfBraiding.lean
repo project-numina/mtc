@@ -21,19 +21,6 @@ def crossingTensorComposite (T U : C.Obj) : A ⊗ (T ⊗ U) ⟶ (T ⊗ U) ⊗ A 
   (α_ _ _ _).inv ≫ (b T ▷ U) ≫ (α_ _ _ _).hom ≫
     (T ◁ b U) ≫ (α_ _ _ _).inv
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 end PropertyF.Ground.CentreInduction
 
 end
@@ -96,7 +83,6 @@ theorem weak_right : weakInverse b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
       (ε_ X Y ▷ (Y ⊗ A)) ⊗≫ 𝟙 _ := by rw [hc]
     _ = 𝟙 _ ⊗≫ ((Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y) ▷ A) ⊗≫ 𝟙 _ := by monoidal
     _ = _ := by rw [coevaluation_evaluation'']; monoidal
-
 
 include hn ht hu in
 /-- Tensor compatibility, naturality, and unit normalization imply that the

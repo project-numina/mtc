@@ -25,7 +25,6 @@ theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
     congrArg (fun k => k ≫ (T ◁ (unitSummandIso C X).hom))
       (crossingCandidate_matrix C X T i (unitIndex C))
 
-
 end PropertyF.Ground.CentreInduction
 
 end

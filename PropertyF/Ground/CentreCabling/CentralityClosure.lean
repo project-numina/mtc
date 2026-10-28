@@ -5,7 +5,12 @@ public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.Fusion.GeneratedRigidity
 public import PropertyF.Ground.Integrate.CenterBundle
 
-/-! Extend centrality from simple constituents to all product retracts. -/
+/-!
+# Centrality of product retracts
+
+Double-braiding centrality is preserved by retracts and finite biproducts, so
+it extends from simple constituents to all objects in a retract-closed class.
+-/
 
 @[expose] public noncomputable section
 open PropertyF.Ground.Modular (doubleBraiding)

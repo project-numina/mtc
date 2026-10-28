@@ -130,8 +130,8 @@ theorem doubleCentralizer_of_fourier_support
     (hunit : f (unitIndex D) ≠ 0)
     (hgenerated : ∀ y, f y ≠ 0 → y ∈ generated)
     (hsupport : ∀ y, y ∉ core → ∑ i, S D p y i * f i = 0) :
-    sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated x <| by
-  simpa only [dualIndex_involutive D x] using
+    sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated x <|
+  (dualIndex_involutive D x) ▸
     nonzero_dual_coefficient_of_sCentralizer hp hdet (realSimpleDimensions_of_fp hdim)
       hunit hsupport (x := dualIndex D x)
       (fun y hy ↦ sCentralizes_dual hdim (sCentralizes_symm (hx y hy)))
@@ -158,8 +158,7 @@ theorem sum_mul_eigenvalue {ι R : Type*} [Fintype ι] [CommSemiring R]
       rw [Finset.sum_comm]
       simp only [Finset.mul_sum, mul_left_comm, mul_comm]
     _ = d * ∑ i, χ i * f i := by
-      simp_rw [hf, Finset.mul_sum]
-      simp only [mul_left_comm]
+      simp_rw [hf, Finset.mul_sum, mul_left_comm]
 
 /-- The S-transform of a common FP eigenvector vanishes at every label whose
 normalized S character differs from the FP character on a chosen label. -/

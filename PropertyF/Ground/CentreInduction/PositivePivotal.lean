@@ -56,7 +56,6 @@ theorem liftedPivotalStructure_compatible {p : Dimensions.PivotalStructure (C :=
 
 end
 
-
 end PropertyF.Ground.CentreInduction
 
 end
@@ -121,7 +120,6 @@ theorem positiveDoubleDualIso_forget (T : D) :
   change (e.invᘁ).f ≫ (forgetDualIso (F.obj (Tᘁ))).hom =
     (forgetDualIso (Zᘁ)).hom ≫ e.inv.fᘁ at hnat
   rw [hnat, positiveDualIso_inv_forget]
-
 
 theorem positiveDoubleDualIso_inv_forget (T : D) :
     (positiveDoubleDualIso T).inv.f =
