@@ -63,27 +63,27 @@ theorem trace_reciprocity_of_coeval_defect
       tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom =
         rootDualSign C i • (tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
-    ENOTraceMatrixReciprocity C := by
-  refine trace_reciprocity_of_frobenius_defect fun i j k g ↦ ?_
-  let X := simples C i
-  let K := simples C k
-  let J := simples C j
-  let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-  have hpost := tensorLeftHomEquiv_naturality (Y := Xᘁ) (rootTensorDefect C X K).hom g
-  have hpost' := tensorLeftHomEquiv_naturality (Y := Xᘁ) (𝟙 (X ⊗ K)) g
-  change tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X J ((rootTensorDefect C X K).hom ≫ g) =
-    tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom ≫ (Xᘁ) ◁ g at hpost
-  change tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X J ((𝟙 (X ⊗ K)) ≫ g) =
-    tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫ (Xᘁ) ◁ g at hpost'
-  have hn := rootTensorDefect_natural C (𝟙 (Xᘁ)) g
-  simp only [id_tensorHom] at hn
-  simp only [Category.id_comp] at hpost'
-  have hnlabel := rootTensorDefect_natural C (rightDualLabelIso C i).hom (𝟙 J)
-  simp only [enoFrobeniusEquiv, LinearEquiv.trans_apply, Linear.homCongr_apply,
-    Iso.refl_inv, Iso.refl_hom, Category.id_comp, tensorIso_hom]
-  rw [hpost, hunit i k, Linear.smul_comp, Category.assoc, ← hn, ← Category.assoc, ← hpost']
-  dsimp only [X, K, J] at hnlabel ⊢
-  simp only [Linear.smul_comp, Category.assoc, ← hnlabel]
+    ENOTraceMatrixReciprocity C :=
+  trace_reciprocity_of_frobenius_defect fun i j k g ↦ by
+    let X := simples C i
+    let K := simples C k
+    let J := simples C j
+    let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
+    have hpost := tensorLeftHomEquiv_naturality (Y := Xᘁ) (rootTensorDefect C X K).hom g
+    have hpost' := tensorLeftHomEquiv_naturality (Y := Xᘁ) (𝟙 (X ⊗ K)) g
+    change tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X J ((rootTensorDefect C X K).hom ≫ g) =
+      tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom ≫ (Xᘁ) ◁ g at hpost
+    change tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X J ((𝟙 (X ⊗ K)) ≫ g) =
+      tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫ (Xᘁ) ◁ g at hpost'
+    have hn := rootTensorDefect_natural C (𝟙 (Xᘁ)) g
+    simp only [id_tensorHom] at hn
+    simp only [Category.id_comp] at hpost'
+    have hnlabel := rootTensorDefect_natural C (rightDualLabelIso C i).hom (𝟙 J)
+    simp only [enoFrobeniusEquiv, LinearEquiv.trans_apply, Linear.homCongr_apply,
+      Iso.refl_inv, Iso.refl_hom, Category.id_comp, tensorIso_hom]
+    rw [hpost, hunit i k, Linear.smul_comp, Category.assoc, ← hn, ← Category.assoc, ← hpost']
+    dsimp only [X, K, J] at hnlabel ⊢
+    simp only [Linear.smul_comp, Category.assoc, ← hnlabel]
 end PropertyF.Ground.Dimensions
 
 end
@@ -110,16 +110,16 @@ variable {C} in
 coevaluation of the swapped dual pairing. -/
 theorem trace_reciprocity_of_coevaluation
     (hslide : ∀ i k, RootTensorDefectSlide C i (simples C k)) :
-    ENOTraceMatrixReciprocity C := by
-  refine trace_reciprocity_of_coeval_defect fun i k ↦ ?_
-  let X := simples C i
-  let K := simples C k
-  let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-  change ((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
-      (Xᘁ) ◁ (rootTensorDefect C X K).hom) =
-    rootDualSign C i • (((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
-      (Xᘁ) ◁ 𝟙 (X ⊗ K)) ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)
-  simpa only [RootTensorDefectSlide, whiskerLeft_id, Category.comp_id, Category.assoc] using hslide i k
+    ENOTraceMatrixReciprocity C :=
+  trace_reciprocity_of_coeval_defect fun i k ↦ by
+    let X := simples C i
+    let K := simples C k
+    let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
+    change ((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
+        (Xᘁ) ◁ (rootTensorDefect C X K).hom) =
+      rootDualSign C i • (((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
+        (Xᘁ) ◁ 𝟙 (X ⊗ K)) ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)
+    simpa only [RootTensorDefectSlide, whiskerLeft_id, Category.comp_id, Category.assoc] using hslide i k
 end PropertyF.Ground.Dimensions
 
 end
