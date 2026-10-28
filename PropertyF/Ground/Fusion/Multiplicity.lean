@@ -134,18 +134,15 @@ theorem tensor_multiplicity (X Y : D.Obj) (k : Fin (rank D)) :
       ∑ j, simpleMultiplicity D j Y *
         simpleMultiplicity D k (X ⊗ simples D j) := by
   classical
-  let m : Fin (rank D) → ℕ := fun j => simpleMultiplicity D j Y
-  let V : (Σ j, Fin (m j)) → D.Obj := fun p => simples D p.1
   obtain ⟨e⟩ := exists_canonical_decomposition D Y
-  let e' : X ⊗ Y ≅ ⨁ (fun p => X ⊗ V p) :=
-    (Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X V
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   dsimp only [simpleMultiplicity]
-  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e').finrank_eq,
+  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
+      ((Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X _)).finrank_eq,
     finrank_hom_biproduct, Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun j _ ↦ ?_
-  change (∑ _ : Fin (m j), simpleMultiplicity D k (X ⊗ simples D j)) = _
-  simp [m]
+  change (∑ _ : Fin (simpleMultiplicity D j Y), simpleMultiplicity D k (X ⊗ simples D j)) = _
+  simp
 
 /-- Fusion coefficients are the actual Hom-space dimensions. -/
 def fusionCoeff (i j k : Fin (rank D)) : ℕ :=
