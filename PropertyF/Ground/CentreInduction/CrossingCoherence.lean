@@ -8,11 +8,11 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u}) (X T : C.Obj)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The matrix coefficients of the actual induction crossing. -/
-theorem crossingCandidate_matrix (X T : C.Obj) (i j : Fin (rank C)) :
+theorem crossingCandidate_matrix (i j : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ biproduct.π V j) =
     ∑ a, crossingSummand C X T i j a := by
@@ -21,7 +21,7 @@ theorem crossingCandidate_matrix (X T : C.Obj) (i j : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossings on a summand expand into nested fusion blocks. -/
-theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
+theorem crossingComposite_summand (U : C.Obj) (i : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
     ∑ k, ∑ a : crossingIndex C T i k, ∑ j, ∑ b : crossingIndex C U k j,
@@ -55,15 +55,14 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The induction crossing obeys the half-braiding tensor law. -/
-theorem crossingCandidate_tensor (X T U : C.Obj) :
+theorem crossingCandidate_tensor (U : C.Obj) :
     crossingCandidate C X (T ⊗ U) = crossingTensorComposite C X T U := by
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (T ⊗ U)).inv).1
   refine biproduct.hom_ext' _ _ fun i => ?_
   rw [biproduct_ι_comp_rightDistributor_inv_assoc, biproduct_ι_comp_rightDistributor_inv_assoc,
     crossingCandidate_on_summand, crossingComposite_summand]
-  simp only [← Preadditive.sum_comp]
-  simp_rw [← crossingBlock_refinement C X T U i]
+  simp_rw [← Preadditive.sum_comp, ← crossingBlock_refinement C X T U i]
   simp only [Fintype.sum_sigma, Preadditive.sum_comp]
   dsimp only [underlying, V] at *
   rw [Finset.sum_comm]
@@ -75,14 +74,14 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
   rw [Finset.sum_comm]
 
 /-- The actual matrix crossing is invertible by rigidity. -/
-theorem crossingCandidate_isIso (X T : C.Obj) :
+theorem crossingCandidate_isIso :
     IsIso (crossingCandidate C X T) :=
   weak_isIso (crossingCandidate C X) (crossingCandidate_natural_test C X)
     (crossingCandidate_tensor C X) (crossingCandidate_unit C X) T (ᘁT)
 
 /-- The explicit matrix crossings form an actual half-braiding on the
 induction sum, with no additional coherence assumptions. -/
-def halfBraidingOfCrossingCandidate (X : C.Obj) :
+def halfBraidingOfCrossingCandidate :
     HalfBraiding (underlying C X) where
   β T := by letI := crossingCandidate_isIso C X T; exact asIso (crossingCandidate C X T)
   monoidal T U := crossingCandidate_tensor C X T U

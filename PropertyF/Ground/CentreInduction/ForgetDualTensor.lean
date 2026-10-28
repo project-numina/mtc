@@ -105,12 +105,12 @@ theorem rightDualIso_tensor {X Y A B A' B' : D} (pX : ExactPairing X A) (qX : Ex
     (pY : ExactPairing Y B) (qY : ExactPairing Y B') :
     (rightDualIso (@ExactPairing.tensor D _ _ X Y A B pX pY)
       (@ExactPairing.tensor D _ _ X Y A' B' qX qY)).hom =
-        (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom := by
-  let : ExactPairing X A := pX
-  let : ExactPairing Y B := pY
-  let : ExactPairing X A' := qX
-  let : ExactPairing Y B' := qY
-  exact evaluation_ext
+        (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom :=
+  letI : ExactPairing X A := pX
+  letI : ExactPairing Y B := pY
+  letI : ExactPairing X A' := qX
+  letI : ExactPairing Y B' := qY
+  evaluation_ext
     ((rightDualIso_evaluation
       (inferInstance : ExactPairing (X ⊗ Y) (B ⊗ A))
       (inferInstance : ExactPairing (X ⊗ Y) (B' ⊗ A'))).trans
