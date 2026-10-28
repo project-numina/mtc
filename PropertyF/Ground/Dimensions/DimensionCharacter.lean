@@ -111,11 +111,11 @@ def leftTraceLinear (p : PivotalStructure (C := C)) (X : C) :
 /-- If diagonal blocks are scalar, the left trace is their dimension-weighted sum. -/
 theorem leftTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
     (F : ι → C) [HasBiproduct F] (p : PivotalStructure (C := C))
-    (f : (⨁ F) ⟶ (⨁ F)) (c : ι → ℂ)
+    (f : (⨁ F) ⟶ (⨁ F)) {c : ι → ℂ}
     (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
     p.leftTrace f = ∑ i, c i • p.leftTrace (𝟙 (F i)) :=
   cyclicTrace_biproduct_scalar_blocks (leftTraceLinear p)
-    (fun f g => leftTrace_cyclic p f g) F f c hc
+    (fun f g => leftTrace_cyclic p f g) F f hc
 
 end PropertyF.Ground.Dimensions
 
@@ -148,7 +148,7 @@ theorem isSpherical_iff_simple_dimensions
     have hfinite : ∀ a, FiniteDimensional ℂ (V a ⟶ V a) := fun a =>
       IsFusionCategory.hom_finite _ _
     obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple V hsimple hfinite p g
-    rw [hleft, hright, htrace, leftTrace_biproduct_scalar_blocks V p g c hc]
+    rw [hleft, hright, htrace, leftTrace_biproduct_scalar_blocks V p g hc]
     apply Finset.sum_congr rfl
     intro a _
     rw [hs a.1]
