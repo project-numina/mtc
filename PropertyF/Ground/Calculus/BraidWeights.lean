@@ -29,12 +29,13 @@ def groundSimpleScalar (i : Fin (Ground.rank C)) :
     Ground.IsFusionCategory.hom_finite _ _
   exact simpleEndScalar _
 
+variable {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
+  (e : X ≅ ⨁ (simpleCopies C m)) (a : End X)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple
 biproduct component of the transported endomorphism. -/
-theorem groundEndBlockEquiv_diagonal {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
-    (e : X ≅ ⨁ (simpleCopies C m))
-    (a : End X) (i : Fin (Ground.rank C)) (j : Fin (m i)) :
+theorem groundEndBlockEquiv_diagonal (i : Fin (Ground.rank C)) (j : Fin (m i)) :
     groundEndBlockEquiv C e a i j j =
       groundSimpleScalar C i (End.of
         (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫
@@ -51,8 +52,7 @@ set_option backward.isDefEq.respectTransparency false in
 simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
 theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
-    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
-    (e : X ≅ ⨁ (simpleCopies C m)) (a : End X) :
+    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
     scalar (p.rightTrace a.asHom) = ∑ i,
       scalar (p.rightTrace (𝟙 (Ground.simples C i))) *
         (groundEndBlockEquiv C e a i).trace := by
@@ -209,11 +209,13 @@ theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
   · intro j h
     rw [Pi.single_eq_of_ne h, Matrix.trace_zero, mul_zero]
 
+variable {n : ℕ} {d : Fin n → ℕ} (hd : ∀ i, 0 < d i)
+
+include hd in
 /-- For any representation of a finite product of nonzero complex matrix
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the
 standard block traces. The integers are ranks of images of matrix units. -/
-theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
-    (hd : ∀ i, 0 < d i)
+theorem representation_trace_multiplicities {m : ℕ}
     (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
     ∃ mult : Fin n → ℕ, ∀ x, (φ x).trace = ∑ i, (mult i : ℂ) * (x i).trace := by
   classical
@@ -244,11 +246,11 @@ theorem idempotent_matrix_eq_zero_of_trace_eq_zero {m : ℕ}
           change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
           simpa using ht))
 
+include hd in
 /-- A faithful block-algebra representation has nonnegative integer
 multiplicities, and every source block occurs in at least one target block. -/
-theorem faithful_block_representation_multiplicities {n m : ℕ}
-    {d : Fin n → ℕ} {q : Fin m → ℕ} (hd : ∀ i, 0 < d i)
-    (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
+theorem faithful_block_representation_multiplicities {m : ℕ}
+    {q : Fin m → ℕ} (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
       (Blocks.Algebra ⟨_, q⟩)) (hinj : Function.Injective φ) :
     ∃ mult : Fin m → Fin n → ℕ,
       (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧
@@ -339,7 +341,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
       ∑ j, (mult i j : ℂ) * (b a j).trace := by
     intro i
     simpa [F, braidToEndBlocks] using hmult i (b a)
-  rw [pivotalTrace_groundEndBlocks C p scalar e]
+  rw [pivotalTrace_groundEndBlocks C e _ p scalar]
   simp_rw [hi, Finset.mul_sum]
   rw [Finset.sum_comm]
   simp only [Finset.sum_mul, mul_assoc, mul_left_comm]

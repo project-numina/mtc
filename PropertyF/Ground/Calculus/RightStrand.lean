@@ -222,7 +222,6 @@ theorem append_step (A B : C) (e : A ⊗ X ≅ B) (f : A ⟶ A) :
   ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)).inv ≫ ((X ◁ f) ▷ X) ≫
     ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)).hom = X ◁ (e.inv ≫ (f ▷ X) ≫ e.hom) := by
   dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  simp only [id_tensorHom, whiskerLeft_comp, Category.assoc]
   monoidal
 
 /-- The first crossing is natural in its tensor-power tail. -/
@@ -230,9 +229,8 @@ theorem append_step (A B : C) (e : A ⊗ X ≅ B) (f : A ⟶ A) :
 theorem crossing_natural (A B : C) (g : A ⟶ B) :
     ((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ≫ X ◁ X ◁ g =
       X ◁ X ◁ g ≫ ((α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom) := by
-  simp only [Category.assoc]
-  rw [← associator_naturality_right X X g]
-  rw [← whisker_exchange_assoc, ← associator_inv_naturality_right_assoc]
+  simp only [Category.assoc, ← associator_naturality_right X X g,
+    ← whisker_exchange_assoc, ← associator_inv_naturality_right_assoc]
 
 /-- Appending a strand commutes with the first crossing. -/
 theorem append_first_two (A B : C) (e : A ⊗ X ≅ B) :
