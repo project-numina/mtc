@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.CentreInduction.Underlying
+public import PropertyF.Ground.CentreInduction.CrossingBlocks
 public import PropertyF.Ground.Dimensions.Pivotal
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Centre.Basic

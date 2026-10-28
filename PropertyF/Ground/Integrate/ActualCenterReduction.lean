@@ -9,7 +9,7 @@ public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Integrate.TwistedRigidity
-public import PropertyF.Ground.Dimensions.PivotalTwist
+public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.CentreCabling.RegularSupport

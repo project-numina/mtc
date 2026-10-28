@@ -1,6 +1,5 @@
 module
 public import PropertyF.Ground.Integrate.ProjectAudit
-public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
 public import PropertyF.Ground.Centre.Modular.Vafa
 public import PropertyF.Ground.CentreBundle.Fusion
@@ -39,7 +38,6 @@ public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Dimensions.Drinfeld
 public import PropertyF.Ground.Dimensions.SimpleScalars
-public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.ComplexSaturation
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
@@ -65,13 +63,11 @@ public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
 public import PropertyF.Ground.Dimensions.FourthTensorUnit
-public import PropertyF.Ground.CentreInduction.FiniteSum
 public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
 public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
 public import PropertyF.Ground.CentreInduction.CrossingUnit
 public import PropertyF.Ground.CentreInduction.CrossingCoherence
-public import PropertyF.Ground.CentreInduction.CounitColumn
 public import PropertyF.Ground.CentreInduction.SecondTriangle
 public import PropertyF.Ground.CentreInduction.ActualFusion
 public import PropertyF.Ground.CentreInduction.FiniteSimples
@@ -81,9 +77,7 @@ public import PropertyF.Ground.CentreInduction.ForgetDualTensor
 public import PropertyF.Ground.CentreInduction.PositivePivotal
 public import PropertyF.Ground.CentreInduction.DrinfeldTheorem
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
-public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.CentreInduction.BasisPairing
-public import PropertyF.Ground.CentreInduction.CrossingNaturality
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary

@@ -228,13 +228,6 @@ theorem simpleScalarNatural_app_simple
   change s ≫ simpleScalarComponent C c X = s ≫ (c i • 𝟙 X)
   simp [s, simpleScalarComponent, e, V, a, Category.assoc]
 
-/-- The natural scalar acts on a map from a simple object by its prescribed scalar. -/
-theorem simpleScalarNatural_comp {X : C.Obj} {i : Fin (rank C)}
-    (c : Fin (rank C) → ℂ) (s : simples C i ⟶ X) :
-    s ≫ (simpleScalarNatural C c).app X = c i • s := by
-  simpa [simpleScalarNatural_app_simple, Linear.smul_comp] using
-    (simpleScalarNatural C c).naturality s
-
 /-- Nonzero scalar values on all simples extend to a natural automorphism of
 the identity functor. -/
 def simpleScalarNaturalIso (C : BraidedFusionCategory.{v,u})
@@ -260,8 +253,8 @@ theorem simpleScalarNaturalIso_app_simple
 /-- Maps out of a tensor product of finite biproducts are determined by their
 restrictions to the tensor products of summand inclusions. -/
 theorem tensorBiproduct_hom_ext
-    {ι κ : Type} [Fintype ι] [Fintype κ] (F : ι → C.Obj) (G : κ → C.Obj)
-    {Z : C.Obj} (f g : (⨁ F) ⊗ (⨁ G) ⟶ Z)
+    {ι κ : Type} [Fintype ι] [Fintype κ] {F : ι → C.Obj} {G : κ → C.Obj}
+    {Z : C.Obj} {f g : (⨁ F) ⊗ (⨁ G) ⟶ Z}
     (h : ∀ i j, (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ f =
       (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ g) : f = g := by
   let r : ((⨁ F) ⊗ (⨁ G)) ≅ ⨁ (fun i => F i ⊗ (⨁ G)) := rightDistributor F (⨁ G)
@@ -278,7 +271,7 @@ theorem tensorBiproduct_hom_ext
 
 /-- Maps out of a tensor product are determined by their composites with
 tensors of maps from chosen simple objects. -/
-theorem tensor_simples_hom_ext {X Y Z : C.Obj} (f g : X ⊗ Y ⟶ Z)
+theorem tensor_simples_hom_ext {X Y Z : C.Obj} {f g : X ⊗ Y ⟶ Z}
     (h : ∀ {i j} (sx : simples C i ⟶ X) (sy : simples C j ⟶ Y),
       (sx ⊗ₘ sy) ≫ f = (sx ⊗ₘ sy) ≫ g) : f = g := by
   let ex := simpleDecomposition C X
@@ -286,61 +279,11 @@ theorem tensor_simples_hom_ext {X Y Z : C.Obj} (f g : X ⊗ Y ⟶ Z)
   let V := simplePiecesObject C X
   let W := simplePiecesObject C Y
   apply (cancel_epi (ex.symm ⊗ᵢ ey.symm).hom).1
-  apply tensorBiproduct_hom_ext C V W
+  apply tensorBiproduct_hom_ext C
   intro i j
   simpa [ex, ey, V, W, tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
     h (biproduct.ι V i ≫ ex.inv) (biproduct.ι W j ≫ ey.inv)
 
-/-- If scalars multiply along every nonzero fusion coefficient, the natural
-scalar map has the expected tensor component on pairs of simple objects. -/
-theorem simpleScalarNatural_tensor_simples
-    (c : Fin (rank C) → ℂ)
-    (hmul : ∀ i j k, fusionCoeff C i j k ≠ 0 → c k = c i * c j)
-    (i j : Fin (rank C)) :
-    (simpleScalarNatural C c).app (simples C i ⊗ simples C j) =
-      (c i * c j) • 𝟙 (simples C i ⊗ simples C j) := by
-  classical
-  let X := simples C i ⊗ simples C j
-  apply simpleInclusion_hom_ext C
-  intro k t
-  have hn := simpleScalarNatural_comp C c (simpleInclusion C X k t)
-  have hcoeff : fusionCoeff C i j k ≠ 0 := by
-    change Module.finrank ℂ (simples C k ⟶ X) ≠ 0
-    exact Nat.ne_of_gt (Nat.zero_lt_of_lt t.isLt)
-  simpa [X, (hmul i j k hcoeff)] using hn
-
-/-- Scalar values satisfying the fusion support rule extend to a tensor
-natural endomorphism of the identity. -/
-theorem simpleScalarNatural_tensor
-    (c : Fin (rank C) → ℂ)
-    (hmul : ∀ i j k, fusionCoeff C i j k ≠ 0 → c k = c i * c j)
-    (X Y : C.Obj) :
-    (simpleScalarNatural C c).app (X ⊗ Y) =
-      (simpleScalarNatural C c).app X ⊗ₘ (simpleScalarNatural C c).app Y := by
-  apply tensor_simples_hom_ext C
-  intro i j sx sy
-  have hx := simpleScalarNatural_comp C c sx
-  have hy := simpleScalarNatural_comp C c sy
-  have ht : (sx ⊗ₘ sy) ≫
-      ((simpleScalarNatural C c).app X ⊗ₘ (simpleScalarNatural C c).app Y) =
-      (c i * c j) • (sx ⊗ₘ sy) := by
-    rw [tensorHom_comp_tensorHom, hx, hy]
-    simp [tensorHom_def, smul_smul, mul_comm]
-  have hs : (sx ⊗ₘ sy) ≫ (simpleScalarNatural C c).app (X ⊗ Y) =
-      (c i * c j) • (sx ⊗ₘ sy) := by
-    have h := (simpleScalarNatural C c).naturality (sx ⊗ₘ sy)
-    simp only [Functor.id_map, simpleScalarNatural_tensor_simples C c hmul,
-      Linear.smul_comp] at h
-    simpa [Linear.smul_comp] using h
-  exact hs.trans ht.symm
-
-/-- The unit component is the identity when the unit scalar is one. -/
-theorem simpleScalarNatural_unit
-    (c : Fin (rank C) → ℂ) (hunit : c (unitIndex C) = 1) :
-    (simpleScalarNatural C c).app (𝟙_ C.Obj) = 𝟙 _ := by
-  obtain ⟨e⟩ := unitIndex_iso C
-  apply (cancel_epi e.hom).1
-  simpa [hunit] using simpleScalarNatural_comp C c e.hom
 
 end PropertyF.Ground.Dimensions
 

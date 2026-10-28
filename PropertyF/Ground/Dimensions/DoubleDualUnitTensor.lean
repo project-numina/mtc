@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
-public import PropertyF.Ground.Dimensions.PivotalTwist
+public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Fusion.Agreement
 
 /-! # Unit laws for dual tensor comparisons

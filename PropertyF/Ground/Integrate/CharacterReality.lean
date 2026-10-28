@@ -52,15 +52,14 @@ theorem fusion_character_dual_eq_conj (hχ : χ i₀ ≠ 0)
   classical
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
     fun j k => (fusionCoeff C i j k : ℂ)
-  have hv : χ ≠ 0 := fun hz ↦ hχ (congrFun hz i₀)
-  have h : A *ᵥ χ = χ i • χ := fusion_character_eigenvector C hchar i
   have ht : Aᵀ *ᵥ χ = χ (dualIndex C i) • χ := by
     convert fusion_character_eigenvector C hchar (dualIndex C i) using 1
     congr 1
     ext j k
     change (fusionCoeff C i k j : ℂ) = _
     exact_mod_cast fusionCoeff_dual_transpose C i k j
-  simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A]) hv h ht)
+  simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A])
+    (fun hz ↦ hχ (congrFun hz i₀)) (fusion_character_eigenvector C hchar i) ht)
 
 /-- A nonzero fusion character invariant under duality has real values. -/
 theorem selfDual_character_real (hχ : χ i₀ ≠ 0)

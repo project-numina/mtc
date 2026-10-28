@@ -6,7 +6,7 @@ public import Mathlib.LinearAlgebra.Determinant
 public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
 public import Mathlib.RingTheory.Localization.BaseChange
 public import PropertyF.Ground.CentreCabling.TwistFinite
-public import PropertyF.Ground.CentreInduction.FiniteSum
+public import PropertyF.Ground.CentreInduction.Representatives
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Fusion.SemisimpleSplit

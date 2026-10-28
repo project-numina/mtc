@@ -39,11 +39,16 @@ structure FusionRules (ι : Type*) where
   unit : ι
   coeff : ι → ι → ι → ℕ
 
+/-- A function respects the multiplication encoded by fusion coefficients. -/
+abbrev IsFusionCharacter {ι K : Type*} [Fintype ι] [Semiring K]
+    (N : FusionRules ι) (χ : ι → K) : Prop :=
+  ∀ i j, χ i * χ j = ∑ k, (N.coeff i j k : K) * χ k
+
 /-- A normalized complex-valued character of integral fusion rules. -/
 structure Character {ι : Type*} [Fintype ι] (N : FusionRules ι) where
   value : ι → ℂ
   unit_eq : value N.unit = 1
-  mul_eq : ∀ i j, value i * value j = ∑ k, (N.coeff i j k : ℂ) * value k
+  mul_eq : IsFusionCharacter N value
 
 namespace Character
 

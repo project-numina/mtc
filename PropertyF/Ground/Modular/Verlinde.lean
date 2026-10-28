@@ -67,12 +67,9 @@ theorem exists_galoisLabel_of_verlinde
 end
 
 section
-variable {ι K : Type*} [Fintype ι] [DecidableEq ι] [Field K] {u : ι}
+variable {ι K : Type*} [Fintype ι] [DecidableEq ι] [CommSemiring K]
 variable {S : Matrix ι ι K} {dual : ι → ι} {d : ι → K} {D : K}
-variable (hd : ∀ y, d y ≠ 0) (hD : D ≠ 0)
-include hd hD
 
-omit hd hD in
 /-- A Galois image of the dimension column determines a diagonal entry of S squared. -/
 theorem galois_unit_column_square
     (hglobal : D = ∑ x, d x ^ 2) (hsym : ∀ x y, S x y = S y x)
@@ -85,6 +82,14 @@ theorem galois_unit_column_square
     _ = ∑ x, S y x * S x y := by
       simp only [hsym y, hcol, pow_two]
     _ = _ := hsq y y
+
+end
+
+section
+variable {ι K : Type*} [Fintype ι] [DecidableEq ι] [Field K] {u : ι}
+variable {S : Matrix ι ι K} {dual : ι → ι} {d : ι → K} {D : K}
+variable (hd : ∀ y, d y ≠ 0) (hD : D ≠ 0)
+include hd hD
 
 /-- Proposition 2.1 from the numerical S identities and the character equation,
 with no modular-data hypothesis bundle. -/

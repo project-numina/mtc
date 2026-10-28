@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.Integrate.ActualCenterReduction
 public import PropertyF.Ground.CentreInduction.ActualFusion
-public import PropertyF.Ground.CentreInduction.PivotalTransfer
+public import PropertyF.Ground.CentreInduction.PositivePivotal
 public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
