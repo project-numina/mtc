@@ -125,18 +125,17 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : BraidedFusionCategory.{v,u})
-attribute [local instance] Abelian.hasFiniteBiproducts
-
 /-- Diagonal scalar maps, indexed by isomorphism classes of simples, commute
 with all maps between finite sums of those simples. -/
 theorem simple_scalar_biproduct_natural
-    {ι κ : Type*} [Fintype ι] [Fintype κ]
-    (a : ι → Fin (rank C)) (b : κ → Fin (rank C))
-    (c : Fin (rank C) → ℂ)
-    (f : (⨁ (fun i => simples C (a i))) ⟶ (⨁ (fun j => simples C (b j)))) :
-    biproduct.map (fun i => c (a i) • 𝟙 (simples C (a i))) ≫ f =
-      f ≫ biproduct.map (fun j => c (b j) • 𝟙 (simples C (b j))) := by
+    {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [Preadditive C]
+    [Linear k C] [HasKernels C] [HasFiniteBiproducts C] {L ι κ : Type*}
+    [Fintype ι] [Fintype κ] (T : L → C) (hT : ∀ i, Simple (T i))
+    (hinj : ∀ {i j}, Nonempty (T i ≅ T j) → i = j)
+    (a : ι → L) (b : κ → L) (c : L → k)
+    (f : (⨁ (fun i ↦ T (a i))) ⟶ (⨁ (fun j ↦ T (b j)))) :
+    biproduct.map (fun i ↦ c (a i) • 𝟙 (T (a i))) ≫ f =
+      f ≫ biproduct.map (fun j ↦ c (b j) • 𝟙 (T (b j))) := by
   classical
   apply biproduct.hom_ext'
   intro i
@@ -144,18 +143,20 @@ theorem simple_scalar_biproduct_natural
   intro j
   simp only [Category.assoc, biproduct.ι_map_assoc, biproduct.map_π,
     Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
-  let g := biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
-    biproduct.π (fun j => simples C (b j)) j
+  let g := biproduct.ι (fun i ↦ T (a i)) i ≫ f ≫ biproduct.π (fun j ↦ T (b j)) j
   change c (a i) • g = c (b j) • g
   by_cases h : a i = b j
   · rw [show c (a i) = c (b j) from congrArg c h]
   · have hz : g = 0 := by
       by_contra hne
-      let : Simple (simples C (a i)) := simples_simple C _
-      let : Simple (simples C (b j)) := simples_simple C _
+      let : Simple (T (a i)) := hT _
+      let : Simple (T (b j)) := hT _
       let : IsIso g := isIso_of_hom_simple hne
-      exact h (simples_injective C ⟨asIso g⟩)
+      exact h (hinj ⟨asIso g⟩)
     rw [hz, smul_zero, smul_zero]
+
+variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Index type for the canonical simple summands of an object. -/
 abbrev simplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :=
@@ -206,7 +207,8 @@ def simpleScalarNatural (C : BraidedFusionCategory.{v,u})
     let ey := simpleDecomposition C Y
     let a : simplePieces C X → Fin (rank C) := fun i => i.1
     let b : simplePieces C Y → Fin (rank C) := fun i => i.1
-    have h := simple_scalar_biproduct_natural C a b c (ex.inv ≫ f ≫ ey.hom)
+    have h := simple_scalar_biproduct_natural (simples C) (simples_simple C)
+      (fun h ↦ simples_injective C h) a b c (ex.inv ≫ f ≫ ey.hom)
     apply (cancel_epi ex.inv).1
     apply (cancel_mono ey.hom).1
     simp only [Functor.id_map, simpleScalarComponent]
