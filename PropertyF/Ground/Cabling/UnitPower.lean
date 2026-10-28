@@ -31,14 +31,15 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Cabling
 universe v u
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [Abelian D] [Linear ℂ D] [RigidCategory D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+  [Ground.IsFusionCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A positive tensor power containing the unit makes the simple generator's
 right dual a retract of a lower tensor power. -/
-theorem generatedBy_rightDual_of_unit_power {D : Type u} [Category.{v} D]
-    [MonoidalCategory D] [BraidedCategory D] [Abelian D] [Linear ℂ D] [RigidCategory D]
-    [MonoidalPreadditive D] [MonoidalLinear ℂ D] [Ground.IsFusionCategory D]
-    {X : D} [Simple X] {n : ℕ} (r : Retract (𝟙_ D) (tensorPower X (n + 1))) :
+theorem generatedBy_rightDual_of_unit_power {X : D} [Simple X] {n : ℕ}
+    (r : Retract (𝟙_ D) (tensorPower X (n + 1))) :
     GeneratedBy X (Xᘁ) := by
   let _ : Simple (𝟙_ D) := Ground.IsFusionCategory.unit_simple
   let _ : Simple (Xᘁ) := Ground.simple_rightDual X
