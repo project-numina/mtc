@@ -54,7 +54,7 @@ theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   (biproduct.ι V i ▷ S j) ≫ b (S j) ≫
     (S j ◁ (underlyingCounit C).app X) = 0 :=
   letI : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
-    simpa only [crossingIndex, counit_column_finrank, hne, ↓reduceIte] using (inferInstance : IsEmpty (Fin 0))
+    simp [crossingIndex, counit_column_finrank, hne]
   by simp only [crossing_counit_matrix, Fintype.sum_empty, zero_comp]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -67,8 +67,7 @@ theorem crossing_counit_diagonal :
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
           (S i ◁ (unitSummandIso C X).hom) := by
   let : Unique (crossingIndex C (S i) i (unitIndex C)) := by
-    simpa only [crossingIndex, counit_column_finrank, ↓reduceIte] using
-      (inferInstance : Unique (Fin 1))
+    simpa [crossingIndex, counit_column_finrank] using (inferInstance : Unique (Fin 1))
   simpa only [crossing_counit_matrix, Fintype.sum_unique, crossingSummand,
     Iso.symm_hom, Iso.symm_inv] using
     congrArg (· ≫ (S i ◁ (unitSummandIso C X).hom))
