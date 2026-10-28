@@ -64,15 +64,14 @@ theorem pivotalTrace_braid_unitary_bound
   have hmass : (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) = ∑ i, (m i : ℝ) * fp i := by
     simpa only [nsmul_eq_mul, mul_comm] using multiplicity_mass_eq m d mult fp hdim
   rw [htrace a, ← hmass]
-  refine (norm_sum_le _ _).trans ?_
-  apply Finset.sum_le_sum
-  intro j _
-  rw [norm_mul]
-  apply mul_le_mul ?_ (by simpa using norm_trace_le_card (Pi.mem_unitary_iff.mp ha j)) (norm_nonneg _)
-  · exact Finset.sum_nonneg fun i _ =>
-      mul_nonneg (Nat.cast_nonneg _) ((norm_nonneg _).trans (hbound i))
-  · exact (norm_sum_le _ _).trans <| Finset.sum_le_sum fun i _ => by
-      simpa using mul_le_mul_of_nonneg_left (hbound i) (Nat.cast_nonneg (mult i j))
+  exact (norm_sum_le _ _).trans <| Finset.sum_le_sum fun j _ => by
+    rw [norm_mul]
+    exact mul_le_mul
+      ((norm_sum_le _ _).trans <| Finset.sum_le_sum fun i _ => by
+        simpa using mul_le_mul_of_nonneg_left (hbound i) (Nat.cast_nonneg (mult i j)))
+      (by simpa using norm_trace_le_card (Pi.mem_unitary_iff.mp ha j)) (norm_nonneg _)
+      (Finset.sum_nonneg fun i _ =>
+        mul_nonneg (Nat.cast_nonneg _) ((norm_nonneg _).trans (hbound i)))
 
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/

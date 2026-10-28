@@ -155,6 +155,11 @@ def crossingCandidate :
         (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
           (T ◁ biproduct.ι V j))
 
+/-- The composite of two crossings, with the associators inserted. -/
+def crossingTensorComposite (U : C.Obj) : underlying C X ⊗ (T ⊗ U) ⟶ (T ⊗ U) ⊗ underlying C X :=
+  (α_ _ _ _).inv ≫ (crossingCandidate C X T ▷ U) ≫ (α_ _ _ _).hom ≫
+    (T ◁ crossingCandidate C X U) ≫ (α_ _ _ _).inv
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing has the stated matrix entries on each induced
 simple summand. -/
