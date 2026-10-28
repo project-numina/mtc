@@ -122,6 +122,12 @@ theorem rootDualSign_component (i : Fin (rank C)) :
       rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (simples C i))).symm.hom :=
   (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).2
 
+/-- Braiding identifies the right dual with the chosen left-dual representative. -/
+def rightDualLabelIso (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
+    (simples C i)ᘁ ≅ simples C (dualIndex C i) :=
+  leftDualIso (BraidedCategory.exactPairing_swap (simples C i) ((simples C i)ᘁ))
+    HasLeftDual.exact ≪≫ Classical.choice (dualIndex_iso i)
+
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 /-- Intrinsic simple norms are signed products of the root dimensions of a
@@ -133,11 +139,8 @@ theorem squaredNorm_eq_rootDualSign_mul
   let X := simples C i
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
-  let e : Xᘁ ≅ ᘁX := leftDualIso
-    (BraidedCategory.exactPairing_swap X (Xᘁ)) HasLeftDual.exact
-  obtain ⟨u⟩ := dualIndex_iso i
-  have hq : unitScalar C (rightQuantumTrace k) = rootDimension C (dualIndex C i) :=
-    congrArg (unitScalar C) ((rootTrace_id C (Xᘁ)).symm.trans (rootTrace_id_iso C (e ≪≫ u)))
+  have hq : unitScalar C (rightQuantumTrace k) = rootDimension C (dualIndex C i) := congrArg _
+    ((rootTrace_id C (Xᘁ)).symm.trans (rootTrace_id_iso C (rightDualLabelIso C i)))
   rw [target_squaredNorm_choice_independent j, leftQuantumTrace_eq_rightDual j,
     ← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
       congrArg (unitScalar C) (rootTrace_id C X).symm), ← hq,
@@ -167,12 +170,9 @@ theorem spherical_of_fp_dimensions_and_squaredNorms {p : PivotalStructure (C := 
   let X := simples C i
   let : Simple X := simples_simple C i
   have hh := target_squaredNorm_choice_independent (p.iso X)
-  rw [← rightTrace_id, ← leftTrace_id,
-    show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i,
-    hnorm i, Complex.ofReal_pow] at hh
+  rw [← rightTrace_id, ← leftTrace_id, ← pivotalDimension, hdim i, hnorm i, Complex.ofReal_pow] at hh
   apply (Ground.unitScalarEquiv C).injective
-  rw [← Ground.unitScalar_eq_equiv, ← Ground.unitScalar_eq_equiv,
-    show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i]
+  rw [← Ground.unitScalar_eq_equiv, ← Ground.unitScalar_eq_equiv, ← pivotalDimension, hdim i]
   exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i)))
     (by simpa [pow_two] using hh.symm)
 
@@ -213,8 +213,8 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 theorem rootPhasePivotal_dimension {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
-    (hdef : ScaledMultiplicityDefectsTrivial C c)
-    (hunit : RootSignUnitLaw C c hc) (i : Fin (rank C)) :
+    (hdef : ScaledMultiplicityDefectsTrivial C c) (hunit : RootSignUnitLaw C c hc)
+    (i : Fin (rank C)) :
     pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
       c i * rootDimension C i := by
   simpa only [pivotalDimension, rightTrace_id, rootPhasePivotal] using
@@ -241,10 +241,8 @@ theorem normalized_defects_trivial
       hsat, ne_of_gt (fpSimple_pos C _)]
   simpa [q, r, normalizedRootDimension, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_assoc] using
     (involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm (by
-      change enoTraceMatrix C i j k * r = (fusionCoeff C i j k : ℂ)
-      simpa [q, r, normalizedRootDimension, div_eq_mul_inv, mul_assoc] using
-        (weighted_eigenvalue_saturation (N := fun i j k ↦ (fusionCoeff C i j k : ℝ))
-          (fpSimple_pos C) (fpSimple_mul C) hsat
+      simpa [enoTraceMatrix, fusionCoeff, q, r, normalizedRootDimension, div_eq_mul_inv, mul_assoc] using
+        (weighted_eigenvalue_saturation (fpSimple_pos C) (fpSimple_mul C) hsat
           (fun i j k ↦ enoTraceMatrix_norm_le_fusionCoeff (hinv i j k)) heig i j k)))
 
 variable {C} in
@@ -254,19 +252,15 @@ theorem positive_spherical_of_matrix_identities
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
   have hsat := eno_root_norm_saturation_of_pseudoUnitary hinv heig hnorm hpu
-  let q := normalizedRootDimension C
-  let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
+  let c : Fin (rank C) → ℂ := fun i ↦ (normalizedRootDimension C i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero i)
     (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))))
   have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) := by
-    simp [c, q, normalizedRootDimension, rootDimension_ne_zero]
-  let unitProof := rootSignTwist_unit_of_simple_dimension hc (by
-    simp only [hvalue, fpSimple_unit, Complex.ofReal_one])
-  let p := rootPhasePivotal C c hc (normalized_defects_trivial hinv heig hsat) unitProof
-  have hp (i) : pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
-    rw [rootPhasePivotal_dimension, hvalue]
-  exact ⟨p, spherical_of_fp_dimensions_and_squaredNorms hp
-    (fun i ↦ by rw [hnorm i, hsat i]), hp⟩
+    simp [c, normalizedRootDimension, rootDimension_ne_zero]
+  let p := rootPhasePivotal C c hc (normalized_defects_trivial hinv heig hsat)
+    (rootSignTwist_unit_of_simple_dimension hc (by simp [hvalue, fpSimple_unit]))
+  refine ⟨p, spherical_of_fp_dimensions_and_squaredNorms ?_ (by simp [hnorm, hsat]), ?_⟩ <;>
+    intro i <;> rw [rootPhasePivotal_dimension, hvalue]
 
 end PropertyF.Ground.Dimensions
 

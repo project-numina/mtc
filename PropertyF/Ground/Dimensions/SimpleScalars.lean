@@ -75,13 +75,6 @@ def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
     simples C i ≅ ((simples C i)ᘁ)ᘁ :=
   Classical.choose (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
 
-variable {C} in
-/-- The chosen simple component squares to the natural fourth-dual component. -/
-theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :
-    fourthDualSimpleRoot C i ≪≫ rightDualIsoMap (rightDualIsoMap (fourthDualSimpleRoot C i)) =
-      fourthDualIso (simples C i) :=
-  Classical.choose_spec (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
-
 end PropertyF.Ground.Dimensions
 
 end
@@ -254,11 +247,11 @@ theorem tensorBiproduct_hom_ext
     {ι κ : Type} [Fintype ι] [Fintype κ] {F : ι → E} {G : κ → E}
     {Z : E} {f g : (⨁ F) ⊗ (⨁ G) ⟶ Z}
     (h : ∀ i j, (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ f =
-      (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ g) : f = g := by
-  refine (cancel_epi (rightDistributor F (⨁ G)).inv).1 (biproduct.hom_ext' _ _ fun i ↦ ?_)
-  simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
-  refine (cancel_epi (leftDistributor (F i) G).inv).1 (biproduct.hom_ext' _ _ fun j ↦ ?_)
-  simpa only [biproduct_ι_comp_leftDistributor_inv_assoc, tensorHom_def', Category.assoc] using h i j
+      (biproduct.ι F i ⊗ₘ biproduct.ι G j) ≫ g) : f = g :=
+  (cancel_epi (rightDistributor F (⨁ G)).inv).1 <| biproduct.hom_ext' _ _ fun i ↦ by
+    simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
+    exact (cancel_epi (leftDistributor (F i) G).inv).1 <| biproduct.hom_ext' _ _ fun j ↦ by
+      simpa only [biproduct_ι_comp_leftDistributor_inv_assoc, tensorHom_def', Category.assoc] using h i j
 
 /-- Tensor products of maps from decomposed summands jointly detect morphisms. -/
 theorem tensor_decomposition_hom_ext

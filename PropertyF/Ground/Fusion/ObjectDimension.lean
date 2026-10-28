@@ -62,10 +62,8 @@ theorem tensor_multiplicity_expanded (X Y : D.Obj) (k : Fin (rank D)) :
       tensor_multiplicity]
     change (∑ i, simpleMultiplicity D i X * fusionCoeff D j i k) = _
     simp_rw [fusionCoeff_comm D j]
-  rw [tensor_multiplicity]
-  simp_rw [he, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  simp only [mul_assoc, mul_comm]
+  rw [tensor_multiplicity, Finset.sum_comm]
+  simp [he, Finset.mul_sum, mul_comm, mul_left_comm]
 
 variable {D} in
 /-- FP dimension is multiplicative on tensor products. -/
@@ -102,8 +100,7 @@ variable {D} in
 /-- FP dimension is invariant under taking a left dual. -/
 theorem fpDimension_leftDual (X : D.Obj) :
     fpDimension D (ᘁX) = fpDimension D X := by
-  simpa only [fpDimension, dual_multiplicity, fpSimple_dual,
-    show ∀ i, dualEquiv D i = dualIndex D i from fun _ ↦ rfl] using
+  simpa only [fpDimension, dual_multiplicity, fpSimple_dual, show ⇑(dualEquiv D) = dualIndex D from rfl] using
     Equiv.sum_comp (dualEquiv D) (fun i ↦ (simpleMultiplicity D i X : ℝ) * fpSimple D i)
 
 variable {D} in

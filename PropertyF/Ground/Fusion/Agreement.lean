@@ -233,8 +233,7 @@ def totalFusionMatrix (D : BraidedFusionCategory) :
 /-- Duality and Frobenius reciprocity make the total fusion matrix symmetric. -/
 theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
     totalFusionMatrix D j k = totalFusionMatrix D k j := by
-  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry,
-    show ∀ i, dualEquiv D i = dualIndex D i from fun _ ↦ rfl] using
+  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry, show ⇑(dualEquiv D) = dualIndex D from rfl] using
     Equiv.sum_comp (dualEquiv D) (fun i ↦ (fusionCoeff D i j k : ℝ))
 
 /-- The total fusion matrix is strictly positive in every entry. -/
@@ -282,11 +281,6 @@ theorem totalFusionMatrix_eq_sum_characterMatrix :
   Matrix.ext fun j k ↦ by
     simpa [totalFusionMatrix, characterMatrix, Matrix.sum_apply] using totalFusionMatrix_symmetric D j k
 
-theorem total_commutes_characterMatrix (i : Fin (rank D)) :
-    Commute (totalFusionMatrix D) (characterMatrix D i) :=
-  (totalFusionMatrix_eq_sum_characterMatrix D).symm ▸
-    Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i
-
 /-- The total matrix has a strictly positive common eigenvector for all
 fusion matrices. -/
 theorem exists_positive_common_eigenvector :
@@ -297,7 +291,10 @@ theorem exists_positive_common_eigenvector :
     (Matrix.isHermitian_iff_isSymm.mpr (Matrix.IsSymm.ext fun j k ↦
       totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)
   refine ⟨v, hvpos, fun i ↦ positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve ?_⟩
-  rw [Matrix.mulVec_mulVec, (total_commutes_characterMatrix D i).eq,
+  rw [Matrix.mulVec_mulVec,
+    (show Commute (totalFusionMatrix D) (characterMatrix D i) from
+      (totalFusionMatrix_eq_sum_characterMatrix D).symm ▸
+        Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i).eq,
     ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul]
 
 /-- A positive normalized character exists for the actual fusion rules. -/
@@ -346,9 +343,6 @@ def fpCharacter (D : BraidedFusionCategory) : Fin (rank D) → ℝ :=
 variable {D} in
 theorem fpCharacter_pos (i : Fin (rank D)) :
     0 < fpCharacter D i := (Classical.choose_spec (exists_positive_character D)).1 i
-
-theorem fpCharacter_unit : fpCharacter D (unitIndex D) = 1 :=
-  (Classical.choose_spec (exists_positive_character D)).2.1
 
 variable {D} in
 theorem fpCharacter_mul (i j : Fin (rank D)) :
@@ -434,7 +428,8 @@ theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
     fpCharacter D i ≤ fpSimple D i := by
   simpa [Complex.norm_real, abs_of_pos (fpCharacter_pos i)] using
     (Dimensions.character_norm_le_fpSimple (χ := fun j ↦ (fpCharacter D j : ℂ))
-      (i₀ := unitIndex D) (by simp [fpCharacter_unit]) (fun j k ↦ by
+      (i₀ := unitIndex D) (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpCharacter_pos (unitIndex D))))
+      (fun j k ↦ by
         dsimp
         exact_mod_cast fpCharacter_mul j k) i)
 
@@ -480,16 +475,13 @@ theorem fpSimple_isFusionMultiplicative :
     dsimp
     exact_mod_cast fpSimple_mul D i j
 
-/-- The fusion matrix of a dual is the transpose of the original one. -/
-theorem fusionMatrix_dual (i : Fin (rank D)) :
-    fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ :=
-  Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : ℂ)) (fusionCoeff_dual_symmetry D i k j).symm
-
 variable {D} in
 /-- Dual simple objects have the same FP dimension. -/
 theorem fpSimple_dual (i : Fin (rank D)) :
-    fpSimple D (dualIndex D i) = fpSimple D i :=
-  by simp [fpSimple, fusionMatrix_dual, Matrix.spectralRadius_transpose]
+    fpSimple D (dualIndex D i) = fpSimple D i := by
+  simp only [fpSimple, show fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ from
+    Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : ℂ)) (fusionCoeff_dual_symmetry D i k j).symm,
+    Matrix.spectralRadius_transpose]
 
 variable {D} in
 /-- Every simple has FP dimension at least one. -/

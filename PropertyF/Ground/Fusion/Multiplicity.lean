@@ -117,12 +117,12 @@ theorem exists_positive_multiplicity {k : Type*} [Field k]
     {ι : Type} [Fintype ι] {T : ι → E} {X : E}
     (hdecomp : HasBiproductDecomposition T X)
     (hfinite : ∀ i, FiniteDimensional k (T i ⟶ X)) (hX : ¬ IsZero X) :
-    ∃ i, 0 < Module.finrank k (T i ⟶ X) := by
-  obtain ⟨i, s, t, hs, ht⟩ := exists_retract_of_biproduct_decomposition hdecomp (by
-    simpa [IsZero.iff_id_eq_zero] using hX)
-  let : FiniteDimensional k (T i ⟶ X) := hfinite i
-  exact ⟨i, Module.finrank_pos_iff_exists_ne_zero.mpr
-    ⟨t, fun ht0 ↦ hs (by rw [← Category.comp_id s, ← ht, ht0, zero_comp, comp_zero])⟩⟩
+    ∃ i, 0 < Module.finrank k (T i ⟶ X) :=
+  (exists_retract_of_biproduct_decomposition hdecomp (by
+    simpa [IsZero.iff_id_eq_zero] using hX)).elim fun i ⟨s, t, hs, ht⟩ ↦
+      let : FiniteDimensional k (T i ⟶ X) := hfinite i
+      ⟨i, Module.finrank_pos_iff_exists_ne_zero.mpr
+        ⟨t, fun ht0 ↦ hs (by rw [← Category.comp_id s, ← ht, ht0, zero_comp, comp_zero])⟩⟩
 
 variable {D} in
 /-- Tensoring an object on the left acts on simple multiplicities by its
@@ -176,8 +176,7 @@ theorem fusionCoeff_assoc (i j k l : Fin (rank D)) :
     simpleMultiplicity D l (simples D k ⊗ (simples D i ⊗ simples D j)) at h
   rw [tensor_multiplicity (simples D i) (simples D j ⊗ simples D k) l,
     tensor_multiplicity (simples D k) (simples D i ⊗ simples D j) l] at h
-  change (∑ r, fusionCoeff D j k r * fusionCoeff D i r l) =
-    ∑ r, fusionCoeff D i j r * fusionCoeff D k r l at h
-  simpa only [fusionCoeff_comm D k] using h
+  change ∑ r, N j k r * N i r l = ∑ r, N i j r * N k r l at h
+  simpa only [← fusionCoeff_comm D k] using h
 
 end PropertyF.Ground

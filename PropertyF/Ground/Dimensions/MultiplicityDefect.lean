@@ -48,12 +48,12 @@ variable {C} in
 /-- The natural extension has exactly the chosen simple components. -/
 theorem fourthDualRootNaturalIso_app_simple
     (i : Fin (rank C)) :
-    (fourthDualRootNaturalIso C).app (simples C i) = fourthDualSimpleRoot C i := by
-  apply Iso.ext
-  simp only [fourthDualRootNaturalIso, NatIso.trans_app, Iso.trans_hom,
-    simpleScalarNaturalIso_app_simple]
-  erw [Linear.smul_comp, Category.id_comp]
-  exact (fourthDualRootScalar_spec i).2.symm
+    (fourthDualRootNaturalIso C).app (simples C i) = fourthDualSimpleRoot C i :=
+  Iso.ext <| by
+    simp only [fourthDualRootNaturalIso, NatIso.trans_app, Iso.trans_hom,
+      simpleScalarNaturalIso_app_simple]
+    erw [Linear.smul_comp, Category.id_comp]
+    exact (fourthDualRootScalar_spec i).2.symm
 
 /-- Natural transformations from the identity are determined on a family
 whose finite biproducts contain every object. -/
@@ -83,7 +83,8 @@ theorem fourthDualRootNaturalSquare_eq :
       ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
         (fourthDualIso (simples C i)).hom
     rw [fourthDualRootNaturalIso_app_simple]
-    exact congrArg Iso.hom (fourthDualSimpleRoot_sq i)
+    exact congrArg Iso.hom (Classical.choose_spec
+      (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i))))
 
 end PropertyF.Ground.Dimensions
 
@@ -165,18 +166,15 @@ include hT hc htrace
 theorem involution_phase_eq_one_of_trace :
     c • T = 1 := by
   by_cases hz : Module.finrank ℂ V = 0
-  · let : Subsingleton V := Module.finrank_zero_iff.mp hz
-    exact Subsingleton.elim _ _
-  have ht : LinearMap.trace ℂ V T ≠ 0 := left_ne_zero_of_mul
-    (htrace ▸ (by exact_mod_cast hz : (Module.finrank ℂ V : ℂ) ≠ 0))
+  · let : Subsingleton V := Module.finrank_zero_iff.mp hz; exact Subsingleton.elim _ _
+  have ht : LinearMap.trace ℂ V T ≠ 0 := left_ne_zero_of_mul (htrace ▸ Nat.cast_ne_zero.mpr hz)
   have hconj := congrArg (starRingEnd ℂ) htrace
   simp only [map_mul, map_natCast, show (starRingEnd ℂ) (LinearMap.trace ℂ V T) = _ from
     star_involution_trace hT] at hconj
   have hcconj : (starRingEnd ℂ) c = c := mul_left_cancel₀ ht (hconj.trans htrace.symm)
   have hc2 : c * c = 1 := by simpa [hcconj, hc] using Complex.mul_conj' c
   apply involution_eq_one_of_trace_eq_finrank (by
-    change (c • T) * (c • T) = 1
-    rw [smul_mul_assoc, mul_smul_comm, smul_smul, hT, hc2, one_smul])
+    simp [IsInvolutiveElem, smul_smul, hT, hc2])
   rw [map_smul, smul_eq_mul, mul_comm, htrace]
 
 /-- The inverse phase also turns a maximal-trace involution into identity. -/

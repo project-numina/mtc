@@ -81,10 +81,8 @@ theorem monodromy_tensor_cap_expansion [HasRightDual X] [HasRightDual Y] :
       (X ◁ (β_ Y V).hom) ▷ U ⊗≫ ((β_ X V).hom ▷ Y) ▷ U ⊗≫
       V ◁ (X ◁ (β_ Y U).hom) ⊗≫ V ◁ ((β_ X U).hom ▷ Y) ⊗≫
       V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V := by
-  let W := X ⊗ Y
-  change (((β_ X Y).hom ≫ (β_ Y X).hom) ▷ P) ≫ (β_ W P).hom ≫
-      (𝟙 (P ⊗ W) ⊗≫ V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V) = _
-  dsimp only [W]
+  change (((β_ X Y).hom ≫ (β_ Y X).hom) ▷ P) ≫ (β_ (X ⊗ Y) P).hom ≫
+      (𝟙 (P ⊗ (X ⊗ Y)) ⊗≫ V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V) = _
   simp only [comp_whiskerRight, braiding_tensor_right_hom, braiding_tensor_left_hom]
   monoidal
 omit [RightRigidCategory C] in
@@ -191,13 +189,6 @@ theorem monodromy_tensor_cap_evaluated [HasRightDual X] [HasRightDual Y] :
     _ = _ := by
       simp only [b, g, monoidalComp, comp_whiskerRight, whiskerLeft_comp]
       monoidal
-omit [RightRigidCategory C] in
-/-- The actual Drinfeld tensor pairing cap identity holds for chosen duals. -/
-theorem drinfeld_tensor_pairing_cap [HasRightDual X] [HasRightDual (Xᘁ)]
-    [HasRightDual Y] [HasRightDual (Yᘁ)] : monodromyTensorCap X Y =
-      ((drinfeldIso X).hom ⊗ₘ (drinfeldIso Y).hom) ▷ ((Yᘁ) ⊗ (Xᘁ)) ≫
-        ε_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) :=
-  (monodromy_tensor_cap_evaluated X Y).trans (drinfeld_tensor_cap_factor X Y).symm
 end PropertyF.Ground.Dimensions
 
 end

@@ -204,9 +204,8 @@ theorem trace_reciprocity_of_fourth_dual
     (hfourth : SimpleFourthDualTensorLaw C) :
     ENOTraceMatrixReciprocity C :=
   trace_reciprocity_of_coevaluation fun _ _ ↦ rootTensorDefect_slide_of_involution _
-    (rootTensorDefect_involution_extension C
-      (fun i j ↦ rootTensorDefect_involution_of_tensor_square C
-        ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)) _ _)
+    (rootTensorDefect_involution_extension C (fun i j ↦ rootTensorDefect_involution_of_tensor_square C
+      ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)) _ _)
 
 end PropertyF.Ground.Dimensions
 
