@@ -72,10 +72,12 @@ theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) {U : 𝒵}
   let (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) := by
     let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
     exact PropertyF.Ground.Centre.finiteDimensional_hom ℂ A B
-  apply finiteSimpleSum_of_injective ?_ Z
+  apply finiteSimpleSum_of_injective (k := ℂ) ?_ Z
   intro W hW
   obtain ⟨P, hP⟩ := exists_simple_subobject hW
   exact ⟨P, P.arrow, hP, inferInstance⟩
+
+
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract (X : C.Obj) {U : 𝒵}

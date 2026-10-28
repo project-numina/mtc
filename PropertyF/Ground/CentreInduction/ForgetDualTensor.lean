@@ -122,28 +122,11 @@ theorem rightDualIso_tensor {X Y A B A' B' : D}
   let : ExactPairing Y B := pY
   let : ExactPairing X A' := qX
   let : ExactPairing Y B' := qY
-  have h := Dimensions.rightDualIso_evaluation
-    (inferInstance : ExactPairing (X ⊗ Y) (B ⊗ A))
-    (inferInstance : ExactPairing (X ⊗ Y) (B' ⊗ A'))
-  let a := (rightDualIso pX qX).hom
-  let b := (rightDualIso pY qY).hom
-  have ht : (b ⊗ₘ a) ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) (B' ⊗ A') =
-      ε_ (X ⊗ Y) (B ⊗ A) := rightDualIso_tensor_evaluation pX qX pY qY
-  have hh := h.trans ht.symm
-  let l := (rightDualIso (inferInstance : ExactPairing (X ⊗ Y) (B ⊗ A))
-    (inferInstance : ExactPairing (X ⊗ Y) (B' ⊗ A'))).hom
-  let r := b ⊗ₘ a
-  change l ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) (B' ⊗ A') =
-    r ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) (B' ⊗ A') at hh
-  let : HasRightDual (X ⊗ Y) := { rightDual := B' ⊗ A', exact := inferInstance }
-  have he (t : B ⊗ A ⟶ B' ⊗ A') :
-      (tensorRightHomEquiv (B ⊗ A) (X ⊗ Y) (B' ⊗ A') (𝟙_ D))
-        (t ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) (B' ⊗ A')) = t ≫ (λ_ (B' ⊗ A')).inv :=
-    @tensorRightHomEquiv_whiskerRight_comp_evaluation D _ _ (X ⊗ Y) (B ⊗ A) this t
-  change l = r
-  apply (cancel_mono (λ_ (B' ⊗ A')).inv).1
-  simpa only [he] using
-    congrArg (tensorRightHomEquiv (B ⊗ A) (X ⊗ Y) (B' ⊗ A') (𝟙_ D)) hh
+  exact Dimensions.evaluation_ext
+    ((Dimensions.rightDualIso_evaluation
+      (inferInstance : ExactPairing (X ⊗ Y) (B ⊗ A))
+      (inferInstance : ExactPairing (X ⊗ Y) (B' ⊗ A'))).trans
+      (rightDualIso_tensor_evaluation pX qX pY qY).symm)
 end PropertyF.Ground.CentreInduction
 
 end

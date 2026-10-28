@@ -78,10 +78,10 @@ theorem galois_unit_properties (hu : d u = 1)
     calc
       d y ^ 2 * σ D = ∑ x, (d y * σ (d x)) ^ 2 := by
         simp only [hglobal, map_sum, Finset.mul_sum, map_pow, mul_pow]
-      _ = ∑ x, S x y ^ 2 := by
-        simp only [hcol]
-      _ = ∑ x, S y x * S x y := by
-        simp only [hsym y, pow_two]
+      _ = ∑ x, S x y ^ 2 :=
+        (congrArg (fun f : ι → ℂ => ∑ x, f x ^ 2) (funext hcol)).symm
+      _ = ∑ x, S y x * S x y :=
+        Finset.sum_congr rfl fun x _ ↦ by rw [hsym y x, pow_two]
       _ = _ := hsq y y
   have hself : y = dual y := by
     by_contra hn
@@ -131,10 +131,10 @@ universe v u
 theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (k : Fin (rank D)) (X : D.Obj) :
     rightPartialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)) =
-      (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 := by
-  let _ : Simple (simples D k) := simples_simple D k
-  let _ : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
-  exact rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
+      (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 :=
+  letI : Simple (simples D k) := simples_simple D k
+  letI : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
+  rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
     (Ground.unitScalarEquiv D) (End.of (doubleBraiding (simples D k) X))
     (simpleDimension_ne_zero D p k)
     (rightTrace_partialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)))
@@ -164,20 +164,10 @@ theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCatego
     partialTrace_doubleBraiding_simple, smul_mul_smul, one_mul] at h
   have hv := smul_left_injective ℂ honene h
   have hd := simpleDimension_ne_zero D p k
-  have hval : Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D i ⊗ simples D j)) *
-      simpleDimension D p k =
-      Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D i)) *
-        Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D j)) := by
-    calc
-      _ = (Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D i ⊗ simples D j)) /
-          simpleDimension D p k) * simpleDimension D p k ^ 2 := by field_simp
-      _ = ((Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D i)) /
-          simpleDimension D p k) * (Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D j)) /
-          simpleDimension D p k)) * simpleDimension D p k ^ 2 := by rw [hv]
-      _ = _ := by field_simp
+  field_simp [hd] at hv
   simpa only [SEntry_symmetric p (simples D k) (simples D i ⊗ simples D j),
     SEntry_symmetric p (simples D k) (simples D i),
-    SEntry_symmetric p (simples D k) (simples D j), categoricalS] using hval
+    SEntry_symmetric p (simples D k) (simples D j), categoricalS] using hv
 
 end PropertyF.Ground.Modular
 end
@@ -260,13 +250,13 @@ theorem rightPartialTrace_nested_simple (p : PivotalStructure (C := C))
         (End.of ((α_ Z X Y).hom ≫ f.asHom ≫ (α_ Z X Y).inv))) := by
   let g : End ((Z ⊗ X) ⊗ Y) := End.of ((α_ Z X Y).hom ≫ f.asHom ≫ (α_ Z X Y).inv)
   have hc : p.rightTrace g.asHom = p.rightTrace f.asHom := by
-    have h := p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
-    simpa [g, Category.assoc] using h
-  have ht1 := rightTrace_partialTrace p Z (X ⊗ Y) f
-  have ht2 := rightTrace_partialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y g)
-  have ht3 := rightTrace_partialTrace p (Z ⊗ X) Y g
-  rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd ht1,
-    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd ht2, ht3, hc]
+    simpa [g, Category.assoc] using
+      p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
+  rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd
+      (rightTrace_partialTrace p Z (X ⊗ Y) f),
+    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd
+      (rightTrace_partialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y g)),
+    rightTrace_partialTrace p (Z ⊗ X) Y g, hc]
 
 
 end Nested

@@ -87,11 +87,11 @@ inductive FiniteSimpleSum (D : Type u) [Category.{v} D] [Preadditive D]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Finite-dimensional injective objects with simple subobjects split into finite simple sums. -/
-theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [Linear ℂ E]
-    [(A B : E) → FiniteDimensional ℂ (A ⟶ B)] [(Z : E) → Injective Z]
+theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [Linear k E]
+    [(A B : E) → FiniteDimensional k (A ⟶ B)] [(Z : E) → Injective Z]
     (hasSimple : ∀ {Z : E}, ¬ IsZero Z → ∃ (S : E) (f : S ⟶ Z), Simple S ∧ Mono f)
     (Z : E) : FiniteSimpleSum E Z := by
-  let m : E → ℕ := fun W => Module.finrank ℂ (W ⟶ W)
+  let m : E → ℕ := fun W => Module.finrank k (W ⟶ W)
   induction Z using (measure m).wf.induction with
   | h Z ih =>
     by_cases hz : IsZero Z
@@ -106,10 +106,10 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
       let K := cokernel f
       let e : Z ≅ S ⊞ K := split.isoBinaryBiproduct
       have hs : ¬ IsZero S := Simple.not_isZero _
-      have he : Module.finrank ℂ (Z ⟶ Z) = Module.finrank ℂ (S ⊞ K ⟶ S ⊞ K) :=
-        (CategoryTheory.Linear.homCongr ℂ e e).finrank_eq
+      have he : Module.finrank k (Z ⟶ Z) = Module.finrank k (S ⊞ K ⟶ S ⊞ K) :=
+        (CategoryTheory.Linear.homCongr k e e).finrank_eq
       have hk : m K < m Z := by
-        change Module.finrank ℂ (K ⟶ K) < Module.finrank ℂ (Z ⟶ Z)
+        change Module.finrank k (K ⟶ K) < Module.finrank k (Z ⟶ Z)
         rw [he]
         exact finrank_end_complement_lt _ K hs
       exact .cons hS (ih K hk) ⟨e⟩

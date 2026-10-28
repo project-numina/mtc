@@ -35,17 +35,9 @@ theorem character_inner_balance (χ ψ : Character N) (i : ι) :
       simp only [ψ.mul_eq, Finset.mul_sum]
     _ = ∑ k, ∑ j, ((N.coeff (dual i) k j : ℂ) * starRingEnd ℂ (χ.value j)) * ψ.value k := by
       rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro k _
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [hdual i j k]
-      ring
+      simp only [hdual i, mul_comm, mul_assoc]
     _ = ∑ k, starRingEnd ℂ (χ.value (dual i) * χ.value k) * ψ.value k := by
-      apply Finset.sum_congr rfl
-      intro k _
-      rw [χ.mul_eq, map_sum, Finset.sum_mul]
-      simp only [map_mul, map_natCast]
+      simp only [χ.mul_eq, map_sum, Finset.sum_mul, map_mul, map_natCast]
     _ = starRingEnd ℂ (χ.value (dual i)) * w := by
       simp only [w, map_mul, Finset.mul_sum, mul_left_comm, mul_assoc]
 
@@ -57,19 +49,15 @@ theorem character_dual_conj (χ : Character N) (i : ι) :
   classical
   let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * χ.value j
   have hw : w ≠ 0 := by
-    let r : ℝ := ∑ j, Complex.normSq (χ.value j)
-    have hr : 0 < r := by
-      have hh := Finset.single_le_sum (f := fun j => Complex.normSq (χ.value j))
-        (fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ N.unit)
-      have : 1 ≤ r := by simpa [r, χ.unit_eq] using hh
-      linarith
-    have hw' : w = (r : ℂ) := by
-      simp only [w, r, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]
+    have hr : 0 < ∑ j, Complex.normSq (χ.value j) :=
+      Finset.sum_pos' (fun j _ ↦ Complex.normSq_nonneg _)
+        ⟨N.unit, Finset.mem_univ _, by simp [χ.unit_eq]⟩
+    have hw' : w = ((∑ j, Complex.normSq (χ.value j) : ℝ) : ℂ) := by
+      simp only [w, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]
     rw [hw']
     exact_mod_cast ne_of_gt hr
-  have hbalance : χ.value i * w = starRingEnd ℂ (χ.value (dual i)) * w := by
-    simpa [w] using character_inner_balance N dual hdual χ χ i
-  have h := mul_right_cancel₀ hw hbalance
+  have h : χ.value i = starRingEnd ℂ (χ.value (dual i)) :=
+    mul_right_cancel₀ hw (by simpa [w] using character_inner_balance N dual hdual χ χ i)
   simpa using (congrArg (starRingEnd ℂ) h).symm
 
 /-- Actual fusion coefficients satisfy the adjointness relation. -/
@@ -104,8 +92,7 @@ theorem categoricalS_dual_conj
   change categoricalS C p (Ground.dualIndex C i) j / simpleDimension C p j =
     starRingEnd ℂ (categoricalS C p i j / simpleDimension C p j) at hh
   rw [map_div₀, hreal j] at hh
-  have hd := simpleDimension_ne_zero C p j
-  simpa [hd] using congrArg (fun z : ℂ => z * simpleDimension C p j) hh
+  exact (div_left_inj' (simpleDimension_ne_zero C p j)).mp hh
 
 /-- Real pivotal simple dimensions are invariant under dual labels. -/
 theorem simpleDimension_dual
