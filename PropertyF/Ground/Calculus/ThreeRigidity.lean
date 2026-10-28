@@ -66,20 +66,20 @@ section LocalMonodromy
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C]
 
+omit [Linear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Equal actual three-strand squares make the two adjacent copies of double
 self-braiding equal in the conventional tensor-product parenthesization. -/
 theorem local_monodromy_of_three_squares_equal (X : C)
     (h : Aut.toEnd (braidGenerator X 1 0 ^ 2) = Aut.toEnd (braidGenerator X 1 1 ^ 2)) :
     insertRightIdentity X (selfMonodromy X) = overlapFresh X (selfMonodromy X) := by
-  have hh := congrArg (isoEndAlgEquiv (threePowerIso X)) h
+  have hh := congrArg (threePowerIso X).conj h
   simp only [map_pow] at hh
   rw [threeGeneratorLeft_end_transport X, threeGeneratorRight_end_transport X] at hh
-  apply (isoEndAlgEquiv (α_ X X X)).injective
+  apply (α_ X X X).conj.injective
   apply End.ext
-  simpa [insertRightIdentity, overlapFresh, selfMonodromy, isoEndAlgEquiv,
-    Iso.conj_apply_asHom, pow_two, End.mul_asHom, comp_whiskerRight,
-    whiskerLeft_comp, Category.assoc] using congrArg End.asHom hh
+  simpa [insertRightIdentity, overlapFresh, selfMonodromy, Iso.conj_apply_asHom, pow_two,
+    End.mul_asHom, comp_whiskerRight, whiskerLeft_comp, Category.assoc] using congrArg End.asHom hh
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Equality of the actual block squares implies equality of the categorical

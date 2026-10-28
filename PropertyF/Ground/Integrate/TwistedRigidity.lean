@@ -120,6 +120,8 @@ theorem pivotalDimension_twist (X : C.Obj) :
     σ (Dimensions.pivotalDimension C p X) :=
   unitScalar_twist C σ _
 
+variable {p}
+
 /-- Match chosen simple representatives and transport pivotal dimensions. -/
 theorem labels (hdim : Modular.HasFPSimpleDimensions C p) :
     ∃ e : Fin (rank C) ≃ Fin (rank Cσ),
@@ -136,7 +138,7 @@ theorem exists_galois_fp_dimensions (hdim : Modular.HasFPSimpleDimensions C p) :
     ∃ original transformed : Fin (rank Cσ) → ℝ,
       (∀ i, 0 < original i) ∧ (∀ i, σ (original i : ℂ) = (transformed i : ℂ)) ∧
       ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ i) = (transformed i : ℂ) := by
-  obtain ⟨e, he⟩ := labels C σ p hdim
+  obtain ⟨e, he⟩ := labels C σ hdim
   refine ⟨fun i ↦ fpSimple C (e.symm i), fun i ↦ (σ (fpSimple C (e.symm i) : ℂ)).re,
     fun i ↦ fpSimple_pos C _, fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, fun i ↦ ?_⟩
   simpa only [e.apply_symm_apply, fp_simple_galois_real] using he (e.symm i)
@@ -207,7 +209,7 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
   let X : D.Obj := simples Z y
   letI : Simple X := simples_simple Z y
   let ⟨original, transformed, hpos, htrans, hqdim⟩ :=
-    ScalarTwist.exists_galois_fp_dimensions Z σ p hdim
+    ScalarTwist.exists_galois_fp_dimensions Z σ hdim
   have hd : d ≠ 0 := fun hz ↦ (map_ne_zero σ).2
     (show (𝒇 y : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (fpSimple_pos Z y)))
     (by simpa [hz] using hσ)
