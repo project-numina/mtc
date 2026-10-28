@@ -234,14 +234,10 @@ theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
   have hh := congrArg (fun f => biproduct.ι V i ≫ f) hp
   simp only [Category.assoc] at hh
   change _ = _ at hh
-  have hu : biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
-      ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) =
-      biproduct.ι V i ≫ biproduct.π V j := by
-    by_cases h : i = j
-    · subst j
-      simpa using unit_diag C X i
-    · simpa [biproduct.ι_π_ne V h] using unit_offdiag C X i j h
-  simpa [Category.assoc] using hh.trans hu
+  by_cases h : i = j
+  · subst j
+    simpa [Category.assoc] using hh.trans (unit_diag C X i)
+  · simpa [V, Category.assoc, biproduct.ι_π_ne _ h] using hh.trans (unit_offdiag C X i j h)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit and counit satisfy the second triangle. -/

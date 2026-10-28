@@ -36,18 +36,10 @@ theorem closeFusionMap_evaluation {T S R : D} (f : T ⊗ S ⟶ R) :
     _ = _ := by rw [rightAdjointMate_comp_evaluation]; monoidal
 
 set_option backward.isDefEq.respectTransparency false in
-/-- A map to a right dual is determined by its evaluation. -/
-theorem dual_map_ext {V : D} (S : D) (f g : V ⟶ Sᘁ)
-    (h : f ▷ S ≫ ε_ S (Sᘁ) = g ▷ S ≫ ε_ S (Sᘁ)) : f = g := by
-  apply (cancel_mono (λ_ (Sᘁ)).inv).1
-  simpa only [tensorRightHomEquiv_whiskerRight_comp_evaluation] using
-    congrArg (tensorRightHomEquiv V S (Sᘁ) (𝟙_ D)) h
-
-set_option backward.isDefEq.respectTransparency false in
 /-- Closing the tensor-unit unitor gives the unitor of the dual object. -/
 theorem closeFusionMap_unit (S : D) :
     closeFusionMap (𝟙_ D) S S (λ_ S).hom = (ρ_ (Sᘁ)).hom := by
-  apply dual_map_ext S
+  apply Dimensions.evaluation_ext (X := S)
   rw [closeFusionMap_evaluation]
   monoidal
 
@@ -66,7 +58,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem closeFusionMap_tensor {T U S K R : D} (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
   closeFusionMap (T ⊗ U) S R ((α_ T U S).hom ≫ (T ◁ g) ≫ f) =
     𝟙 _ ⊗≫ (closeFusionMap T K R f ▷ U) ⊗≫ closeFusionMap U S K g := by
-  apply dual_map_ext
+  apply Dimensions.evaluation_ext (X := S)
   rw [closeFusionMap_evaluation]
   calc
     _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ ((α_ T U S).hom ≫ (T ◁ g) ≫ f)) ⊗≫ ε_ R (Rᘁ) := rfl
