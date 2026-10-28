@@ -7,7 +7,6 @@ public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
-public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 public import PropertyF.Ground.Centre.Modular.Vafa
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
 public import PropertyF.Ground.CentreInduction.PivotalCentrality

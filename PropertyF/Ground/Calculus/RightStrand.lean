@@ -213,8 +213,8 @@ theorem addLeftBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
-    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
-    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
+    (he : IsUnitaryBraidPresentation e)
+    (hf : IsUnitaryBraidPresentation f)
     (x : PropertyF.Blocks.Algebra ⟨_, d⟩) :
     addLeftBlocksIter X n k e f (star x) = star (addLeftBlocksIter X n k e f x) := by
   apply presented_intertwiner_map_star (braidEndRepresentation X n)
@@ -230,8 +230,8 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
-    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
-    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f) :
+    (he : IsUnitaryBraidPresentation e)
+    (hf : IsUnitaryBraidPresentation f) :
     (PropertyF.Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
       (PropertyF.Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := addLeftBlocksIter X n k e f
@@ -413,8 +413,8 @@ theorem addRightBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
-    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
-    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
+    (he : IsUnitaryBraidPresentation e)
+    (hf : IsUnitaryBraidPresentation f)
     (x : PropertyF.Blocks.Algebra ⟨_, d⟩) :
     addRightBlocksIter X n k e f (star x) = star (addRightBlocksIter X n k e f x) := by
   apply presented_intertwiner_map_star (braidEndRepresentation X n)
@@ -430,8 +430,8 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
-    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
-    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f) :
+    (he : IsUnitaryBraidPresentation e)
+    (hf : IsUnitaryBraidPresentation f) :
     (PropertyF.Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
       (PropertyF.Blocks.Algebra ⟨_, q⟩) where
   toAlgHom := addRightBlocksIter X n k e f

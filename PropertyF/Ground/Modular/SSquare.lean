@@ -182,8 +182,9 @@ theorem categoricalS_galois_action_of_invertibleS (hp : p.IsSpherical)
     (hreal : HasRealSimpleDimensions C p) :
     ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)),
       IsGaloisColumnAction (Sₚ) (dₚ) act :=
-  categoricalS_galois_action C p (Ground.dualIndex C)
-    (globalDimension_ne_zero_of_invertibleS C p hp hdet hreal)
+  exists_galoisLabel_of_verlinde (N := ⟨unitIndex C, fusionCoeff C⟩)
+    (simpleDimension_ne_zero C p) (globalDimension_ne_zero_of_invertibleS C p hp hdet hreal)
+    (categoricalS_symmetric C p) (categoricalS_unit C p)
     (categoricalS_square C p hp hdet hreal) (categoricalS_verlinde C p)
 end PropertyF.Ground.Modular
 end

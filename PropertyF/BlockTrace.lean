@@ -34,9 +34,9 @@ lemma entry_normSq_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : �
   (Finset.single_le_sum (fun k _ => Complex.normSq_nonneg (U k j)) (Finset.mem_univ i)).trans_eq (hU j)
 
 lemma entry_norm_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : ι) :
-    ‖U i j‖ ≤ 1 := by
-  simpa only [Complex.normSq_eq_norm_sq, sq_le_one_iff₀ (norm_nonneg _)] using
-    entry_normSq_le_one hU i j
+    ‖U i j‖ ≤ 1 :=
+  (sq_le_one_iff₀ (norm_nonneg _)).mp
+    (Complex.normSq_eq_norm_sq _ ▸ entry_normSq_le_one hU i j)
 
 /-- The ordinary matrix trace estimate used twice in Section 3. -/
 theorem norm_trace_le_card {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) :
