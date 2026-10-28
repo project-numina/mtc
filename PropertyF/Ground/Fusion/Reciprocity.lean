@@ -88,16 +88,15 @@ end
 
 variable (D : BraidedFusionCategory.{v,u})
 local instance (i : Fin (rank D)) : Simple (simples D i) := simples_simple D i
+local instance (i : Fin (rank D)) : Simple (ᘁ(simples D i)) := simple_leftDual _
 
 /-- The label of the left dual of a simple representative. -/
 def dualIndex (j : Fin (rank D)) : Fin (rank D) := by
-  letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   exact Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
 
 variable {D} in
 theorem dualIndex_iso (j : Fin (rank D)) :
     Nonempty ((ᘁ(simples D j)) ≅ simples D (dualIndex D j)) :=
-  letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
 
 variable {D} in
@@ -150,7 +149,7 @@ def dualEquiv : Equiv.Perm (Fin (rank D)) :=
 end PropertyF.Ground
 
 namespace PropertyF.Ground.Dimensions
-attribute [local instance] IsFusionCategory.hom_finite
+attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Abelian C] [Linear ℂ C] [RigidCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -160,7 +159,6 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 theorem rightQuantumTrace_simple_ne_zero
     {X : C} [Simple X] (j : X ≅ (Xᘁ)ᘁ) :
     rightQuantumTrace j ≠ 0 := by
-  let _ : Simple (𝟙_ C) := IsFusionCategory.unit_simple
   let s : 𝟙_ C ⟶ X ⊗ (Xᘁ) := ExactPairing.coevaluation X (Xᘁ)
   let _ : Simple (Xᘁ) := simple_rightDual X
   obtain ⟨r₀, hr₀⟩ := split_from_simple s

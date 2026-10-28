@@ -51,10 +51,8 @@ variable {C} in
 theorem rootSignTwist_app_simple (i : Fin (rank C)) :
     ((rootSignTwist C c hc).app (simples C i)).hom =
       c i • ((fourthDualRootNaturalIso C).app (simples C i)).hom := by
-  change ((simpleScalarNaturalIso C c hc).app (simples C i)).hom ≫
-    ((fourthDualRootNaturalIso C).app (simples C i)).hom = _
-  simpa using congrArg (fun f ↦ f ≫ ((fourthDualRootNaturalIso C).app (simples C i)).hom)
-    (simpleScalarNaturalIso_app_simple hc i)
+  simp only [rootSignTwist, NatIso.trans_app, Iso.trans_hom, simpleScalarNaturalIso_app_simple]
+  erw [Linear.smul_comp, Category.id_comp]
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -130,6 +128,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
+  IsFusionCategory.unit_simple
 
 set_option backward.isDefEq.respectTransparency false in
 theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
@@ -161,7 +160,6 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
     {a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj}
     (htrace : unitScalar C (rightQuantumTrace (a.app (𝟙_ C.Obj))) = 1) :
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
-  let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
   rw [rightQuantumTrace_smul_hom hr, rightQuantumTrace_unitIso] at htrace
   simp only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] at htrace

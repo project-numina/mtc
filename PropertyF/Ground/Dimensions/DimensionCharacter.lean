@@ -62,8 +62,7 @@ theorem pivotalDimension_tensor (X Y : C.Obj) :
     pivotalTrace_tensor p (Ground.unitScalarEquiv C) (𝟙 X) (𝟙 Y)
 
 /-- Pivotal simple dimensions form a fusion character. -/
-theorem pivotalDimension_character
-    :
+theorem pivotalDimension_character :
     IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) :=
   fun i j ↦ (pivotalDimension_tensor C p (simples C i) (simples C j)).symm.trans
     (pivotalDimension_decomposition C p (X := _))

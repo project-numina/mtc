@@ -69,7 +69,7 @@ theorem fpSimple_isIntegral (i : Fin (rank D)) :
     ext k j
     change (((Module.finrank ℂ (simples D k ⟶ simples D i ⊗ simples D j) : ℤ) : ℂ)) = _
     simp [fusionMatrix]
-  apply IsIntegral.of_pow (by decide : 0 < 2)
+  apply IsIntegral.of_pow (Nat.zero_lt_succ 1)
   simpa only [hmatrix, fpSimple] using integer_matrix_spectralRadius_sq_isIntegral A
 
 /-- The target's global FP dimension is integral over ℤ, independently of

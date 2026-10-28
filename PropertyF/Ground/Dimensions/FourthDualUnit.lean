@@ -90,7 +90,7 @@ theorem fourthDualIso_unit :
 end
 
 variable (C : BraidedFusionCategory.{v,u})
-attribute [local instance] IsFusionCategory.hom_finite
+attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple
 /-- The root dimension of the unit label is the root trace of the tensor unit. -/
 theorem rootDimension_unit :
     rootDimension C (unitIndex C) =
@@ -106,7 +106,6 @@ theorem fourthDualRoot_unit_component :
       rootDimension C (unitIndex C) • (doubleDualUnitIso (C := C.Obj)).hom := by
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
-  let : Simple U := IsFusionCategory.unit_simple
   let a := (fourthDualRootNaturalIso C).app U
   let u := doubleDualIso C U
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) u a
@@ -122,7 +121,6 @@ theorem rootDimension_unit_sq :
     rootDimension C (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
-  let : Simple U := IsFusionCategory.unit_simple
   apply scalar_sq_eq_one_of_same_square (doubleDualUnitIso (C := C.Obj))
     ((fourthDualRootNaturalIso C).app U) (rootDimension C (unitIndex C))
     (fourthDualRoot_unit_component C)
