@@ -112,12 +112,8 @@ theorem groupImageAlgebra_toSubmodule :
   change (groupAlgebraMap ρ).toLinearMap.range = _
   rw [h, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Finsupp.range_linearCombination]
 
-variable [Finite G]
-
-open scoped Classical in
-/-- The image algebra is finite-dimensional, even when the ambient algebra is not. -/
-theorem groupImageAlgebra_finite :
-    Module.Finite ℂ (groupImageAlgebra ρ) :=
+/-- A finite monoid has a finite-dimensional image algebra. -/
+instance [Finite G] : Module.Finite ℂ (groupImageAlgebra ρ) :=
   Module.Finite.of_surjective (groupAlgebraMap ρ).rangeRestrict.toLinearMap
     (AlgHom.rangeRestrict_surjective (groupAlgebraMap ρ))
 
@@ -142,7 +138,6 @@ theorem groupImageAlgebra_blocks :
     ∃ (n : ℕ) (d : Fin n → ℕ), (∀ i, NeZero (d i)) ∧
       Nonempty (GroupBlockPresentation ρ d) :=
   let _ := groupImageAlgebra_semisimple ρ
-  let _ := groupImageAlgebra_finite ρ
   IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
 
 end PropertyF.Ground.Calculus

@@ -56,10 +56,9 @@ theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
     (hρ : ∀ g, ρ g ∈ unitary A) (hσ : ∀ g, σ g ∈ unitary B)
     (φ : A →ₗ[R] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
     φ (star x) = star (φ x) :=
-  map_star_of_mem_span φ (Set.range ρ) (fun _ h => h.elim fun g hg => hg ▸ by
-    rw [unitary_representation_star_inv ρ (hρ g), hφ, hφ,
-      unitary_representation_star_inv σ (hσ g)])
-    (hspan.symm ▸ Submodule.mem_top)
+  map_star_of_mem_span φ (Set.range ρ) (fun _ ⟨g, hg⟩ ↦ hg ▸ by
+    simp [unitary_representation_star_inv ρ (hρ g),
+      unitary_representation_star_inv σ (hσ g), hφ]) (hspan.symm ▸ Submodule.mem_top)
 
 end PropertyF.Ground.Calculus
 
