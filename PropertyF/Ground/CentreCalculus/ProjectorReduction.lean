@@ -43,7 +43,7 @@ theorem integral_of_exterior_dimensions (C : BraidedFusionCategory.{v,u})
       (∏ k ∈ Finset.range n, (fpDimension C X - (k : ℝ))) =
         (Nat.factorial n : ℝ) * fpDimension C Y) :
     ∃ m : ℕ, fpDimension C X = m := by
-  apply Centre.integral_of_nonnegative_falling_factorials _ (fpDimension_nonneg C X)
+  apply Centre.integral_of_nonnegative_falling_factorials (fpDimension_nonneg C X)
   intro n
   obtain ⟨Y, hY⟩ := hExterior n
   rw [hY]
