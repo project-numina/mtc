@@ -186,7 +186,7 @@ theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [Ha
     obtain ⟨T, hT, ⟨iso⟩⟩ := hc X hX
     let t : A := ⟨T, hT⟩
     let q : Q := Quotient.mk R t
-    have hq : R t (Quotient.out q) := Quotient.exact (by simp [q])
+    have hq : R t (Quotient.out q) := Quotient.exact (Quotient.out_eq q).symm
     change Nonempty (T ≅ (Quotient.out q).1) at hq
     refine ⟨e q, ?_⟩
     simpa [S] using (show Nonempty (X ≅ (Quotient.out q).1) from

@@ -175,7 +175,7 @@ theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj)
   let VY := inductionSummand C Y
   apply (cancel_epi (rightDistributor VX T).inv).1
   refine biproduct.hom_ext' _ _ fun i => ?_
-  simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
+  rw [biproduct_ι_comp_rightDistributor_inv_assoc, biproduct_ι_comp_rightDistributor_inv_assoc]
   dsimp [VX, VY, underlying] at *
   simp only [← Category.assoc, ← comp_whiskerRight]
   simp only [underlyingFunctor, biproduct.ι_map, comp_whiskerRight, Category.assoc,
