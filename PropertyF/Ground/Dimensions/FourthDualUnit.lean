@@ -112,6 +112,26 @@ theorem rootDimension_unit :
   rw [rootTrace_id_iso C e, rootTrace_id C]
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The actual natural fourth-dual root is its unit dimension times the
+canonical double-dual unit map. -/
+theorem fourthDualRoot_unit_component :
+    ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj)).hom =
+      rootDimension C (unitIndex C) • (doubleDualUnitIso (C := C.Obj)).hom := by
+  let U := 𝟙_ C.Obj
+  let : HasRightDual U := RightRigidCategory.rightDual U
+  let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
+  let : Simple U := IsFusionCategory.unit_simple
+  let : FiniteDimensional ℂ (U ⟶ U) := IsFusionCategory.hom_finite _ _
+  let a := (fourthDualRootNaturalIso C).app U
+  let u := doubleDualIso C U
+  obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar u a
+  have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
+  have htrace : unitScalar C (rightQuantumTrace a) = r := by
+    rw [rightQuantumTrace_smul_hom a u r hr, hu, rightQuantumTrace_unitIso]
+    simp only [← groundUnitScalarEquiv_apply, map_smul, map_one, smul_eq_mul, mul_one]
+  simpa [a, (rootDimension_unit C).trans htrace, hu] using hr
+
+set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root dimension of the unit is a sign. -/
 theorem rootDimension_unit_sq :
     rootDimension C (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
@@ -120,15 +140,16 @@ theorem rootDimension_unit_sq :
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let : HasRightDual ((Uᘁ)ᘁ) := RightRigidCategory.rightDual ((Uᘁ)ᘁ)
   let : Simple U := IsFusionCategory.unit_simple
-  let : FiniteDimensional ℂ (U ⟶ U) := IsFusionCategory.hom_finite _ _
   let a := (fourthDualRootNaturalIso C).app U
   let u := doubleDualIso C U
-  obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar u a
+  let r := rootDimension C (unitIndex C)
+  have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
+  have hr : a.hom = r • u.hom := by
+    simpa [a, r, hu] using fourthDualRoot_unit_component C
   have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso C U).hom := by
     exact (congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C))
   have hfourth : (fourthDualIso C U).hom = u.hom ≫ ((u.homᘁ)ᘁ) := by
     have h := congrArg Iso.hom (fourthDualIso_unit C)
-    have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
     rw [hu]
     simpa only [Iso.trans_hom, rightDualIsoMap] using h
   have hs : (r * r) • (fourthDualIso C U).hom = (1 : ℂ) • (fourthDualIso C U).hom := by
@@ -143,19 +164,7 @@ theorem rootDimension_unit_sq :
     have hh := congrArg (fun f => f ≫ (fourthDualIso C U).inv) h
     simp at hh
     exact id_nonzero U hh
-  have hr2 : r * r = 1 := smul_left_injective ℂ hn hs
-  have htrace : unitScalar C (rightQuantumTrace a) = r := by
-    have ht : rightQuantumTrace a = r • rightQuantumTrace u := by
-      apply End.homEquiv.injective
-      simp [rightQuantumTrace, hr, tensorHom_def]
-    rw [ht]
-    have hunit : rightQuantumTrace u = 1 := by
-      have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
-      rw [hu, rightQuantumTrace_unitIso]
-    rw [hunit]
-    simp only [← groundUnitScalarEquiv_apply, map_smul, map_one, smul_eq_mul, mul_one]
-  rw [rootDimension_unit C, htrace]
-  exact hr2
+  exact smul_left_injective ℂ hn hs
 
 end PropertyF.Ground.Dimensions
 
