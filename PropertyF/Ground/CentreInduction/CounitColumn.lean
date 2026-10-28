@@ -71,7 +71,7 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ simples C i) ≫ crossingCandidate C X (simples C i) ≫
     (simples C i ◁ (underlyingCounit C).app X) =
-      crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
+      crossingBlock X (simples C i) (simples C (unitIndex C))
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
           (simples C i ◁ (unitSummandIso C X).hom) := by
   classical

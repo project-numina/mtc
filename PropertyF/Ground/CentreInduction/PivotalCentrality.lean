@@ -106,7 +106,7 @@ end PropertyF.Ground.CentreInduction
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (C : BraidedFusionCategory.{v,u})
+variable {C : BraidedFusionCategory.{v,u}}
 local notation "𝒵" => CategoryTheory.Center C.Obj
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
@@ -124,6 +124,14 @@ theorem center_structure_of_pivotal_pseudoUnitary
   obtain ⟨hFusion, h⟩ := center_structure_of_fp_pivotal hq
   exact ⟨hFusion, canonicalCenterPivotal q, h⟩
 
+end PropertyF.Ground.CentreInduction
+
+namespace PropertyF.Ground.CentreInduction
+universe v u
+set_option backward.isDefEq.respectTransparency false
+variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
 open CategoryTheory.Limits
 attribute [local instance] Abelian.hasFiniteBiproducts
 

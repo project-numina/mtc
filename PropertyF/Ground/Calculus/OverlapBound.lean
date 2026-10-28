@@ -42,7 +42,7 @@ theorem pivotalTrace_braid_unitary_bound
     (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
-    (e : tensorPower X (n + 2) ≅ ⨁ (fun q : Σ i, Fin (m i) => Ground.simples C q.1))
+    (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
     {fp : Fin (Ground.rank C) → ℝ}
@@ -54,26 +54,16 @@ theorem pivotalTrace_braid_unitary_bound
   have hfp : ∀ i, 0 ≤ fp i := fun i => (norm_nonneg _).trans (hbound i)
   have hw (j : Fin r) :
       ‖∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤
-        ∑ i, (mult i j : ℝ) * fp i := by
-    calc
-      _ ≤ ∑ i, ‖(mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ := norm_sum_le _ _
-      _ = ∑ i, (mult i j : ℝ) * ‖scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ := by simp
-      _ ≤ _ := Finset.sum_le_sum fun i _ =>
-        mul_le_mul_of_nonneg_left (hbound i) (Nat.cast_nonneg _)
-  calc
-    _ = ‖∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
-      (b a j).trace‖ := by rw [htrace]
-    _ ≤ ∑ j, ‖(∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
-      (b a j).trace‖ := norm_sum_le _ _
-    _ ≤ ∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ) := by
-      apply Finset.sum_le_sum
-      intro j _
-      rw [norm_mul]
-      apply mul_le_mul (hw j)
-        (by simpa using norm_trace_le_card (ha j))
-        (norm_nonneg _)
-      exact Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (hfp i)
-    _ = ∑ i, (m i : ℝ) * fp i := multiplicity_mass_eq m d mult fp hdim
+        ∑ i, (mult i j : ℝ) * fp i :=
+    (norm_sum_le _ _).trans <| Finset.sum_le_sum fun i _ => by
+      simpa using mul_le_mul_of_nonneg_left (hbound i) (Nat.cast_nonneg (mult i j))
+  rw [htrace a, ← multiplicity_mass_eq m d mult fp hdim]
+  refine (norm_sum_le _ _).trans ?_
+  apply Finset.sum_le_sum
+  intro j _
+  rw [norm_mul]
+  apply mul_le_mul (hw j) (by simpa using norm_trace_le_card (ha j)) (norm_nonneg _)
+  exact Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (hfp i)
 
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
 theorem fpDimension_tensorPower (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
