@@ -128,16 +128,13 @@ theorem trace_reciprocity_of_frobenius_defect
   let : Simple (simples C j) := simples_simple C j
   let P := simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)
   obtain ⟨g, rfl⟩ := P.surjective v
-  let : FiniteDimensional ℂ (simples C j ⟶ simples C j) := IsFusionCategory.hom_finite _ _
-  have hn : Module.Dual.transpose (Linear.rightComp ℂ (simples C j)
-      (rootTensorDefect C (simples C i) (simples C k)).hom) (P g) =
-      P ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) :=
-    (simpleHomPairing_natural (k := ℂ) g _).symm
   have hm : (multiplicityDefect C i k j).toLinearMap =
       Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom := by
     ext f
     exact multiplicityDefect_apply C f
-  rw [hm, hn, enoReciprocityEquiv_pairing, enoReciprocityEquiv_pairing, hcompat]
+  rw [hm]
+  erw [← simpleHomPairingEquiv_natural, enoReciprocityEquiv_pairing,
+    enoReciprocityEquiv_pairing, hcompat]
   simp [multiplicityDefect_apply]
 
 end PropertyF.Ground.Dimensions
