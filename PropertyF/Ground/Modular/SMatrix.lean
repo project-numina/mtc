@@ -83,6 +83,10 @@ variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.
 def simpleDimension (i : Fin (rank C)) : ℂ :=
   Ground.unitScalarEquiv C (p.rightTrace (𝟙 (simples C i)))
 
+/-- The simple pivotal dimensions agree with Frobenius–Perron dimensions. -/
+abbrev HasFPSimpleDimensions : Prop :=
+  ∀ i, simpleDimension C p i = (fpSimple C i : ℂ)
+
 /-- The unnormalized categorical S-matrix, defined by double-braiding traces. -/
 def categoricalS : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
   fun i j => Ground.unitScalarEquiv C (SEntry p (simples C i) (simples C j))

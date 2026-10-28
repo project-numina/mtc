@@ -5,7 +5,7 @@ public import Mathlib.CategoryTheory.Preadditive.Biproducts
 public import Mathlib.LinearAlgebra.Determinant
 public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
 public import Mathlib.RingTheory.Localization.BaseChange
-public import PropertyF.Ground.CentreCabling.VafaTwist
+public import PropertyF.Ground.CentreCabling.TwistFinite
 public import PropertyF.Ground.CentreInduction.FiniteSum
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Fusion.ObjectDimension
@@ -1000,13 +1000,17 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
+/-- The pivotal twist satisfies the balancing equation. -/
+abbrev IsPivotalTwistBalanced (p : Dimensions.PivotalStructure (C := C.Obj)) : Prop :=
+  ∀ X Y, Modular.doubleBraiding X Y ≫
+    ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
+      (Dimensions.pivotalBraidedTwist C p Y).hom) =
+    (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom
+
 /-- Pivotal twist scalars have finite order whenever its actual balancing law
 holds; no lantern relation or modularity hypothesis is used. -/
 theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
-      ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
-        (Dimensions.pivotalBraidedTwist C p Y).hom) =
-      (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom) :
+    (hbalance : IsPivotalTwistBalanced C p) :
     ∀ i, IsOfFinOrder (End.of ((Dimensions.pivotalBraidedTwist C p (simples C i)).hom)) := by
   let η := Dimensions.pivotalBraidedTwistNaturalIso C p
   let t := CentreCabling.pivotalTwistUnit C p
@@ -1036,10 +1040,7 @@ theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C :=
 /-- The actual pivotal twist balancing law alone forces every mixed
 monodromy to have finite order; no lantern relation is required. -/
 theorem mixed_monodromy_finite_of_pivotal_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
-      ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
-        (Dimensions.pivotalBraidedTwist C p Y).hom) =
-      (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom)
+    (hbalance : IsPivotalTwistBalanced C p)
     (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) := by
   apply CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist C
     (Dimensions.pivotalBraidedTwistNaturalIso C p)

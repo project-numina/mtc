@@ -19,8 +19,15 @@ theorem squaredNorm_eq_of_choices (X : C.Obj) [Simple X]
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   unfold squaredNorm
   rw [unitScalar_eq_equiv, unitScalar_eq_equiv]
-  rw [← Dimensions.unitScalar_unique (unitScalarEquiv C) scalar (rightQuantumTrace j),
-      ← Dimensions.unitScalar_unique (unitScalarEquiv C) scalar (leftQuantumTrace j)]
+  have hscalar (a : End (𝟙_ C.Obj)) : (unitScalarEquiv C) a = scalar a := by
+    have h : algebraMap ℂ (End (𝟙_ C.Obj)) ((unitScalarEquiv C) a) = a := by
+      apply (unitScalarEquiv C).injective
+      simp
+    calc
+      (unitScalarEquiv C) a = scalar (algebraMap ℂ (End (𝟙_ C.Obj)) ((unitScalarEquiv C) a)) := by simp
+      _ = scalar a := by rw [h]
+  rw [← hscalar (rightQuantumTrace j),
+      ← hscalar (leftQuantumTrace j)]
   exact Dimensions.squaredNorm_independent (unitScalarEquiv C) (doubleDualIso C X) j
 
 end PropertyF.Ground

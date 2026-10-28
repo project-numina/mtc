@@ -1,6 +1,9 @@
 module
-public import PropertyF.Ground.Dimensions.PivotalPairing
-
+public import PropertyF.Ground.Dimensions.RootDualPairing
+public import PropertyF.Ground.Dimensions.IntrinsicNonzero
+public import PropertyF.Ground.Dimensions.PivotalTwist
+public import PropertyF.Ground.Fusion.Agreement
+public import PropertyF.Ground.Dimensions.PositiveCanonical
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

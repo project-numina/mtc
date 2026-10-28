@@ -1,5 +1,8 @@
 module
-public import PropertyF.Ground.CentreInduction.DoubleBraiding
+public import PropertyF.Ground.CentreInduction.PositivePivotal
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
+public import PropertyF.Ground.Dimensions.DualBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 

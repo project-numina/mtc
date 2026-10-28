@@ -131,21 +131,19 @@ lemma braidAutMap_generator (X : C) (n : ℕ) (i : Fin (n+1)) :
 lemma braidAutMap_injective (X : C) (n : ℕ) [F.Faithful] :
     Function.Injective (braidAutMap F X n) := by
   intro a b h
-  have h' := ((tensorPowerComparison F X (n+2)).symm.conjAut.injective h)
   apply Aut.ext
   apply Iso.ext
   apply F.map_injective
-  exact congrArg (fun a : Aut (F.obj (tensorPower X (n+2))) => a.asIso.hom) h'
+  exact congrArg (fun a : Aut (F.obj (tensorPower X (n+2))) => a.asIso.hom)
+    ((tensorPowerComparison F X (n+2)).symm.conjAut.injective h)
 
 /-- The functor map sends the source braid-image subgroup onto the target
 braid-image subgroup, even if the functor is not faithful. -/
 theorem braidImage_map_eq (X : C) (n : ℕ) :
     (braidImage X n).map (braidAutMap F X n) = braidImage (F.obj X) n := by
   rw [braidImage, MonoidHom.map_closure, ← Set.range_comp]
-  have heq : (braidAutMap F X n ∘ braidGenerator X n) = braidGenerator (F.obj X) n := by
-    funext i
-    exact braidAutMap_generator F X n i
-  rw [heq]
+  rw [show (braidAutMap F X n ∘ braidGenerator X n) = braidGenerator (F.obj X) n from
+    funext (braidAutMap_generator F X n)]
   rfl
 
 /-- A braided functor induces a homomorphism on braid-image groups. -/

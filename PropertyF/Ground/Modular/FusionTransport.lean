@@ -112,10 +112,9 @@ theorem conjugate_fpSimple (C D : Ground.BraidedFusionCategory.{v,u})
     (e : Fin (rank C) ≃ Fin (rank D))
     (he : ∀ i, Nonempty (h.equivalence.functor.obj (simples C i) ≅ simples D (e i)))
     (i : Fin (rank C)) : fpSimple C i = fpSimple D (e i) := by
-  have hm := conjugate_fusionMatrix C D h e he i
   unfold fpSimple
-  rw [← hm, spectralRadius_eq_of_unital, spectralRadius_eq_of_unital,
-    AlgEquiv.spectrum_eq]
+  rw [← conjugate_fusionMatrix C D h e he i, spectralRadius_eq_of_unital,
+    spectralRadius_eq_of_unital, AlgEquiv.spectrum_eq]
 
 
 /-- Galois conjugacy gives the label bijection and preserves each FP dimension. -/

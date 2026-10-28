@@ -85,7 +85,7 @@ theorem categoricalS_det_ne_zero_of_kirby
 /-- For FP-valued dimensions the unit Kirby loop is automatic and its value
 is nonzero. Thus only the vanishing on non-unit labels remains. -/
 theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
-    (hdim : ∀ i, simpleDimension C p i = (fpSimple C i : ℂ))
+    (hdim : HasFPSimpleDimensions C p)
     (hvanish : ∀ k, k ≠ unitIndex C →
       (∑ z, simpleDimension C p z * categoricalS C p k z) = 0) :
     (categoricalS C p).det ≠ 0 := by
@@ -104,7 +104,7 @@ theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
 /-- In a category with FP-valued dimensions, it suffices for the unit's
 normalized S character to be different from that of every other simple. -/
 theorem categoricalS_det_ne_zero_of_unit_character_unique
-    (hdim : ∀ i, simpleDimension C p i = (fpSimple C i : ℂ))
+    (hdim : HasFPSimpleDimensions C p)
     (hunique : ∀ k, k ≠ unitIndex C →
       (fun i => categoricalS C p i k / simpleDimension C p k) ≠
         (fun i => categoricalS C p i (unitIndex C) /
@@ -144,7 +144,7 @@ theorem categoricalS_det_ne_zero_of_unit_character_unique
 /-- For FP-valued simple dimensions, S is invertible if the only simple
 whose Hopf links all equal the product of dimensions is the unit. -/
 theorem categoricalS_det_ne_zero_of_trivial_S_centralizer
-    (hdim : ∀ i, simpleDimension C p i = (fpSimple C i : ℂ))
+    (hdim : HasFPSimpleDimensions C p)
     (htrivial : ∀ k, (∀ i, categoricalS C p i k =
       simpleDimension C p i * simpleDimension C p k) → k = unitIndex C) :
     (categoricalS C p).det ≠ 0 := by
@@ -171,11 +171,8 @@ variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C :
 /-- Positive FP dimensions and twist balancing upgrade the numerical S-test
 to actual transparency of a simple object. -/
 theorem transparent_of_S_test_and_balancing
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
-      ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
-        (Dimensions.pivotalBraidedTwist C p Y).hom) =
-      (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom)
+    (hdim : Modular.HasFPSimpleDimensions C p)
+    (hbalance : IsPivotalTwistBalanced C p)
     (k : Fin (rank C))
     (hs : ∀ i, Modular.categoricalS C p i k =
       Modular.simpleDimension C p i * Modular.simpleDimension C p k) :
@@ -198,11 +195,8 @@ theorem transparent_of_S_test_and_balancing
 /-- In a positive pivotal category with balanced twist, S is invertible if the
 unit is the only transparent simple object. -/
 theorem categoricalS_det_ne_zero_of_trivial_transparency
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
-      ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
-        (Dimensions.pivotalBraidedTwist C p Y).hom) =
-      (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom)
+    (hdim : Modular.HasFPSimpleDimensions C p)
+    (hbalance : IsPivotalTwistBalanced C p)
     (htrivial : ∀ k, Transparent (simples C k) → k = unitIndex C) :
     (Modular.categoricalS C p).det ≠ 0 := by
   apply categoricalS_det_ne_zero_of_trivial_S_centralizer C p hdim

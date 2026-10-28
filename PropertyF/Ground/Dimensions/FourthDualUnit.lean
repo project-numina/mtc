@@ -117,17 +117,4 @@ theorem rootDimension_unit_sq (C : Ground.BraidedFusionCategory.{v,u}) :
     rw [hq, ht, htrace]
   simpa [hdim] using hr2
 
-/-- The ENO dual sign of the tensor unit is positive. -/
-theorem rootDualSign_unit (C : Ground.BraidedFusionCategory.{v,u}) :
-    rootDualSign C (Ground.unitIndex C) = 1 := by
-  have hdual := Ground.dualIndex_unit C
-  have hnorm : Ground.squaredNorm C (Ground.simples C (Ground.unitIndex C)) = 1 := by
-    let : Simple (Ground.simples C (Ground.unitIndex C)) := Ground.simples_simple C _
-    let : Simple (𝟙_ C.Obj) := Ground.IsFusionCategory.unit_simple
-    obtain ⟨e⟩ := Ground.unitIndex_iso C
-    rw [target_squaredNorm_iso C e, target_squaredNorm_unit]
-  rw [squaredNorm_eq_rootDualSign_mul, hdual] at hnorm
-  have hs := rootDimension_unit_sq C
-  rwa [mul_assoc, hs, mul_one] at hnorm
-
 end PropertyF.Ground.Dimensions

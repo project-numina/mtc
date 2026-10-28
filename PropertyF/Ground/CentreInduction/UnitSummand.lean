@@ -68,29 +68,6 @@ def underlyingCounit (C : BraidedFusionCategory.{v,u}) : underlyingFunctor C ⟶
       biproduct.π (fun i : Fin (rank C) => (simples C i ⊗ X) ⊗ (simples C i)ᘁ)
         (unitIndex C) ≫ g) (unitSummandIso_natural C f)
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The unit-labelled inclusion is natural as well. -/
-def underlyingUnitSummand (C : BraidedFusionCategory.{v,u}) : 𝟭 C.Obj ⟶ underlyingFunctor C where
-  app X := (unitSummandRetract C X).i
-  naturality {X Y} f := by
-    dsimp only [underlyingFunctor, unitSummandRetract, Functor.id_map]
-    simp only [Category.assoc, biproduct.ι_map]
-    have h := unitSummandIso_natural C f
-    have hinv : f ≫ (unitSummandIso C Y).inv =
-        (unitSummandIso C X).inv ≫
-          ((simples C (unitIndex C) ◁ f) ▷ (simples C (unitIndex C))ᘁ) := by
-      apply (cancel_mono (unitSummandIso C Y).hom).1
-      simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-      rw [h]
-      simp
-    simpa only [Category.assoc] using congrArg (fun g => g ≫
-      biproduct.ι (fun i : Fin (rank C) => (simples C i ⊗ Y) ⊗ (simples C i)ᘁ)
-        (unitIndex C)) hinv
 
-/-- The unit-labelled natural inclusion splits the underlying projection. -/
-theorem underlyingUnitSummand_counit (C : BraidedFusionCategory.{v,u}) :
-    underlyingUnitSummand C ≫ underlyingCounit C = 𝟙 (𝟭 C.Obj) := by
-  ext X
-  exact (unitSummandRetract C X).retract
 
 end PropertyF.Ground.CentreInduction

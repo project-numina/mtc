@@ -51,32 +51,4 @@ theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional ℂ (X ⟶
   simp only [smul_eq_mul]
   field_simp
 
-omit [RigidCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
-/-- A complex-algebra identification of the unit endomorphism algebra with ℂ
-is unique whenever it exists. -/
-theorem unitScalar_unique (s t : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (a : End (𝟙_ C)) :
-    s a = t a := by
-  have hs : algebraMap ℂ (End (𝟙_ C)) (s a) = a := by
-    apply s.injective
-    simp
-  calc
-    s a = t (algebraMap ℂ (End (𝟙_ C)) (s a)) := by simp
-    _ = t a := by rw [hs]
-
-/-- The intrinsic global dimension is independent of all the choices in
-`GlobalDimensionData`, for fixed simple representatives. -/
-theorem globalDimensionData_independent [BraidedCategory C] (F : FusionData C)
-    (D E : GlobalDimensionData C F) :
-    (∑ i, D.unitScalar (rightQuantumTrace (D.doubleDualIso i)) *
-      D.unitScalar (leftQuantumTrace (D.doubleDualIso i))) =
-    (∑ i, E.unitScalar (rightQuantumTrace (E.doubleDualIso i)) *
-      E.unitScalar (leftQuantumTrace (E.doubleDualIso i))) := by
-  apply Finset.sum_congr rfl
-  intro i _
-  let : Simple (F.simpleObject i) := F.simple_is_simple i
-  let : FiniteDimensional ℂ (F.simpleObject i ⟶ F.simpleObject i) := F.hom_finite _ _
-  rw [← unitScalar_unique D.unitScalar E.unitScalar (rightQuantumTrace (E.doubleDualIso i)),
-      ← unitScalar_unique D.unitScalar E.unitScalar (leftQuantumTrace (E.doubleDualIso i))]
-  exact squaredNorm_independent D.unitScalar (D.doubleDualIso i) (E.doubleDualIso i)
-
 end PropertyF.Ground.Dimensions
