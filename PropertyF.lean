@@ -37,7 +37,6 @@ public import PropertyF.Ground.Calculus.BraidTraceBound
 public import PropertyF.Ground.Calculus.PartialTraceGround
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
-public import PropertyF.Ground.Cabling.Witness
 public import PropertyF.Ground.Cabling.Images
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.DimensionField
@@ -124,9 +123,6 @@ public import PropertyF.Ground.Cabling.UnitPower
 public import PropertyF.Ground.Cabling.FusionCycle
 public import PropertyF.Ground.Cabling.GeneralDual
 public import PropertyF.Ground.Cabling.Naturality
-public import PropertyF.Ground.Cabling.MoveHead
-public import PropertyF.Ground.Cabling.MoveHeadInsert
-public import PropertyF.Ground.Cabling.PowerCompare
 public import PropertyF.Ground.Cabling.PowerGeneral
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapUnitary

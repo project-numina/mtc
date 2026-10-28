@@ -84,50 +84,6 @@ theorem addLeftBraidAlgebra_group (X : C) (n : ℕ) (g : braidImage X n) :
       groupInImage (braidEndRepresentation X (n + 1)) (addLeftStrand X n g) := by
   apply imageAlgebraMap_group
 
-/-- Adding a left strand, expressed in independently chosen unitary matrix
-blocks at consecutive strand numbers. -/
-def addLeftBlockMap (X : C) (n : ℕ) {r s : ℕ} {d : Fin r → ℕ} {k : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + 1) ≃ₐ[ℂ] ∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ) :
-    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ]
-      (∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ) :=
-  f.toAlgHom.comp ((addLeftBraidAlgebra X n).comp e.symm.toAlgHom)
-
-set_option backward.isDefEq.respectTransparency false in
-/-- The actual left-strand map preserves the adjoint in any two unitary
-block presentations, regardless of their individual averaging choices. -/
-theorem addLeftBlockMap_star (X : C) (n : ℕ) {r s : ℕ}
-    {d : Fin r → ℕ} {k : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + 1) ≃ₐ[ℂ] ∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + 1)) g) i ∈
-      Matrix.unitaryGroup (Fin (k i)) ℂ)
-    (x : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
-    addLeftBlockMap X n e f (star x) = star (addLeftBlockMap X n e f x) := by
-  apply presented_intertwiner_map_star (braidEndRepresentation X n)
-    (braidEndRepresentation X (n + 1)) (addLeftStrand X n) e f he hf
-    (addLeftBlockMap X n e f)
-  intro g
-  change f (addLeftBraidAlgebra X n (e.symm (e (groupInImage (braidEndRepresentation X n) g)))) = _
-  rw [e.symm_apply_apply, addLeftBraidAlgebra_group]
-  rfl
-
-/-- Bundled star algebra map for the left identity-strand embedding. -/
-def addLeftBlockStarMap (X : C) (n : ℕ) {r s : ℕ}
-    {d : Fin r → ℕ} {k : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + 1) ≃ₐ[ℂ] ∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ)
-    (he : ∀ g i, e (groupInImage (braidEndRepresentation X n) g) i ∈
-      Matrix.unitaryGroup (Fin (d i)) ℂ)
-    (hf : ∀ g i, f (groupInImage (braidEndRepresentation X (n + 1)) g) i ∈
-      Matrix.unitaryGroup (Fin (k i)) ℂ) :
-    (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →⋆ₐ[ℂ]
-      (∀ i, Matrix (Fin (k i)) (Fin (k i)) ℂ) where
-  toAlgHom := addLeftBlockMap X n e f
-  map_star' := addLeftBlockMap_star X n e f he hf
-
 /-- Repeated left identity-strand insertion on the actual image groups. -/
 def addLeftStrands (X : C) (n : ℕ) : ∀ k, braidImage X n →* braidImage X (n + k)
   | 0 => MonoidHom.id _

@@ -33,24 +33,6 @@ theorem star_eq_coe_inv_of_unitary {ι : Type*} [Fintype ι] [DecidableEq ι]
     _ = (star (u : Matrix ι ι ℂ) * (u : Matrix ι ι ℂ)) * ↑u⁻¹ := by rw [mul_assoc]
     _ = (↑u⁻¹ : Matrix ι ι ℂ) := by rw [h, one_mul]
 
-/-- An algebra map intertwining two unitary group representations preserves
-adjoints on the span of the group image, independently of the chosen invariant
-inner products. -/
-theorem map_star_on_unitary_group_span {G ι κ : Type*} [Group G]
-    [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
-    (ρ : G →* (Matrix ι ι ℂ)ˣ) (σ : G →* (Matrix κ κ ℂ)ˣ)
-    (φ : Matrix ι ι ℂ →ₐ[ℂ] Matrix κ κ ℂ)
-    (hφ : ∀ g, φ (ρ g : Matrix ι ι ℂ) = (σ g : Matrix κ κ ℂ))
-    (hρ : ∀ g, (ρ g : Matrix ι ι ℂ) ∈ Matrix.unitaryGroup ι ℂ)
-    (hσ : ∀ g, (σ g : Matrix κ κ ℂ) ∈ Matrix.unitaryGroup κ ℂ)
-    {x : Matrix ι ι ℂ}
-    (hx : x ∈ Submodule.span ℂ (Set.range fun g => (ρ g : Matrix ι ι ℂ))) :
-    φ (star x) = star (φ x) := by
-  apply map_star_of_mem_span φ _ _ hx
-  rintro _ ⟨g, rfl⟩
-  rw [star_eq_coe_inv_of_unitary (ρ g) (hρ g), ← map_inv ρ, hφ,
-    hφ, star_eq_coe_inv_of_unitary (σ g) (hσ g), map_inv]
-
 /-- If a group spans an algebra and two representations have adjoint equal to
 inverse on group elements, every intertwining algebra map preserves adjoints.
 This captures identity-strand maps without assuming injectivity or surjectivity. -/

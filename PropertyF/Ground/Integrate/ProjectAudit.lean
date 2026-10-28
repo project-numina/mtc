@@ -17,7 +17,6 @@ public import PropertyF.Ground.Calculus.StarSpan
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
-public import PropertyF.Ground.Cabling.Witness
 
 
 
@@ -172,16 +171,12 @@ import all PropertyF.Ground.Cabling.FusionCycle
 import all PropertyF.Ground.Cabling.GeneralDual
 import all PropertyF.Ground.Cabling.Generated
 import all PropertyF.Ground.Cabling.Images
-import all PropertyF.Ground.Cabling.MoveHead
-import all PropertyF.Ground.Cabling.MoveHeadInsert
 import all PropertyF.Ground.Cabling.Naturality
-import all PropertyF.Ground.Cabling.PowerCompare
 import all PropertyF.Ground.Cabling.PowerGeneral
 import all PropertyF.Ground.Cabling.Pure
 import all PropertyF.Ground.Cabling.Rigidity
 import all PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.Cabling.UnitPower
-import all PropertyF.Ground.Cabling.Witness
 import all PropertyF.Ground.Calculus.Averaging
 import all PropertyF.Ground.Calculus.BraidBlocks
 import all PropertyF.Ground.Calculus.BraidTraceBound
