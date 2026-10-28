@@ -49,7 +49,7 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
           (T ◁ bU) ≫ (α_ T U (⨁ V)).inv) = _
       monoidal
     _ = ∑ k, ∑ a : crossingIndex C T i k,
-      𝟙 _ ⊗≫ (crossingBlock X T (simples C i) (simples C k)
+      𝟙 _ ⊗≫ (crossingBlock X T (simples C k)
           (crossingInclusion C T i k a) (crossingProjection C T i k a) ▷ U) ⊗≫
         (T ◁ ((biproduct.ι V k ▷ U) ≫ bU)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
       dsimp only [bT]

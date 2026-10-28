@@ -180,20 +180,13 @@ theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module �
     ext x
     exact Subsingleton.elim _ _
   have hdim : (Module.finrank ℂ V : ℂ) ≠ 0 := by exact_mod_cast hz
-  have ht : LinearMap.trace ℂ V T ≠ 0 := by
-    intro h
-    rw [h, zero_mul] at htrace
-    exact hdim htrace.symm
+  have ht : LinearMap.trace ℂ V T ≠ 0 := left_ne_zero_of_mul (htrace ▸ hdim)
   obtain ⟨n, hn, _⟩ := involution_trace_integer_bound hT
   have htr : (starRingEnd ℂ) (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T := by rw [hn]; simp
   have hconj := congrArg (starRingEnd ℂ) htrace
   simp only [map_mul, map_natCast, htr] at hconj
   have hcconj : (starRingEnd ℂ) c = c := mul_left_cancel₀ ht (hconj.trans htrace.symm)
-  have hc2 : c * c = 1 := by
-    have h := Complex.mul_conj' c
-    rw [hcconj, hc] at h
-    norm_num at h
-    exact h
+  have hc2 : c * c = 1 := by simpa [hcconj, hc] using Complex.mul_conj' c
   have hu : (c • T) * (c • T) = 1 := by
     rw [smul_mul_assoc, mul_smul_comm, smul_smul, hT, hc2, one_smul]
   apply involution_eq_one_of_trace_eq_finrank hu

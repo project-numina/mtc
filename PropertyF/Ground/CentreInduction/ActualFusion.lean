@@ -19,7 +19,7 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory 
 set_option backward.isDefEq.respectTransparency false in
 /-- Resolving a fusion strand commutes with coevaluation. -/
 theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S R f) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) =
+    𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S f) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) =
       𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) := by
   have hr : (𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫
       𝟙 ((T ⊗ S) ⊗ Sᘁ)) = (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)) (f ≫ g) := by
@@ -28,10 +28,10 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
   rw [hr]
   apply (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)).symm.injective
   simp only [Equiv.symm_apply_apply]
-  change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S R f) ⊗≫
+  change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S f) ⊗≫
     𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
       ((T ⊗ S) ◁ ε_ S (Sᘁ)) ≫ (ρ_ (T ⊗ S)).hom = f ≫ g
-  let q := closeFusionMap T S R f
+  let q := closeFusionMap T S f
   have hq := closeFusionMap_evaluation f
   change q ▷ S ≫ ε_ S (Sᘁ) = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) at hq
   change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫
@@ -62,10 +62,10 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unit_block (Z : CategoryTheory.Center D) {T S R : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (( (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫
-      ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock Z.1 T R S g f =
+      ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock Z.1 T S g f =
       𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ (f ≫ g) ▷ Sᘁ ⊗≫
         𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _ := by
-  let q := closeFusionMap T S R f
+  let q := closeFusionMap T S f
   let bR := (Z.2.β R).hom
   let bTS := (Z.2.β (T ⊗ S)).hom
   have hn : bR ≫ (g ▷ Z.1) = (Z.1 ◁ g) ≫ bTS := (Z.2.naturality g).symm
@@ -137,11 +137,8 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
       (α_ Z.1 S (Sᘁ)).inv ≫ (bS ▷ Sᘁ)))
   clear_value bT bS
   calc
-    _ = 𝟙 _ ⊗≫ (Z.1 ◁ T ◁ η_ S (Sᘁ)) ⊗≫
-      ((bT ▷ (S ⊗ Sᘁ)) ≫ ((T ⊗ Z.1) ◁ 𝟙 (S ⊗ Sᘁ))) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ T ◁ η_ S (Sᘁ)) ⊗≫ (bT ▷ (S ⊗ Sᘁ)) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp
+      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
     _ = 𝟙 _ ⊗≫ (((Z.1 ⊗ T) ◁ η_ S (Sᘁ)) ≫ (bT ▷ (S ⊗ Sᘁ))) ⊗≫
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by monoidal
     _ = 𝟙 _ ⊗≫ ((bT ▷ (𝟙_ D)) ≫ ((T ⊗ Z.1) ◁ η_ S (Sᘁ))) ⊗≫
@@ -152,7 +149,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
 theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
-    (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C p.1) (simples C j)
+    (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C j)
       (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)) =
     (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
   classical
@@ -180,26 +177,12 @@ theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
   apply biproduct.hom_ext
   intro j
   simp only [Category.assoc, leftDistributor_hom_comp_biproduct_π]
-  have hcomp : unitCandidate C Z ≫ biproduct.π V j = unitComponent C Z j := by
-    exact biproduct.lift_π _ _
-  have hr : (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) ≫ (T ◁ biproduct.π V j) =
-      (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
-    rw [← whiskerLeft_comp, hcomp]
-  have hl : (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T ≫ (T ◁ biproduct.π V j) =
-      ∑ i, ∑ a : crossingIndex C T i j,
-        (unitComponent C Z i ▷ T) ≫ crossingBlock Z.1 T (simples C i) (simples C j)
-          (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
-    rw [unitCandidate, biproduct.lift_eq]
-    simp only [sum_whiskerRight, Preadditive.sum_comp, comp_whiskerRight, Category.assoc]
-    apply Finset.sum_congr rfl
-    intro i _
-    have hm := crossingCandidate_matrix C Z.1 T i j
-    have hmi := congrArg (fun k => (unitComponent C Z i ▷ T) ≫ k) hm
-    simpa [Category.assoc, Preadditive.comp_sum] using hmi
-  calc
-    _ = _ := hl
-    _ = _ := by simpa [Fintype.sum_sigma] using unit_sum C Z T j
-    _ = _ := hr.symm
+  rw [← whiskerLeft_comp, show unitCandidate C Z ≫ biproduct.π V j =
+    unitComponent C Z j from biproduct.lift_π _ _]
+  dsimp only [V]
+  simp only [unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
+    comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum]
+  simpa only [Fintype.sum_sigma, crossingSummand, Category.assoc] using unit_sum C Z T j
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/

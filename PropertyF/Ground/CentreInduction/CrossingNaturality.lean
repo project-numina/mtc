@@ -17,8 +17,8 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a fusion map is natural in its test strand. -/
 theorem closeFusionMap_pre_test {T U R S : D} (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
-    (Rᘁ ◁ h) ≫ closeFusionMap U S R f =
-      closeFusionMap T S R ((h ▷ S) ≫ f) := by
+    (Rᘁ ◁ h) ≫ closeFusionMap U S f =
+      closeFusionMap T S ((h ▷ S) ≫ f) := by
   simp only [closeFusionMap, Category.assoc, comp_rightAdjointMate, comp_whiskerRight]
   rw [whisker_exchange_assoc]
   have hn := Dimensions.rightDualTensorIso_natural h (𝟙 S)
@@ -41,7 +41,7 @@ fusion inclusion with that map. -/
 @[reassoc]
 theorem crossingBlock_post_test (X : D) {T U R S : D} (h : T ⟶ U)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    crossingBlock X T R S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
+    crossingBlock X T S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
       mixedCrossingBilinear (k := k) X T U R S (g ≫ (h ▷ S)) f := by
   simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk,
     comp_whiskerRight, Category.assoc]
@@ -53,7 +53,7 @@ fusion projection with that map. -/
 @[reassoc]
 theorem crossingBlock_pre_test (X : D) {T U R S : D} (h : T ⟶ U)
     (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
-    (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U R S g f =
+    (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U S g f =
       mixedCrossingBilinear (k := k) X T U R S g ((h ▷ S) ≫ f) := by
   simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk]
   rw [associator_naturality_right_assoc]
@@ -66,9 +66,9 @@ basis, so a map of test objects can pass through each matrix entry. -/
 theorem crossingBlock_sum_natural_test
     (X T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
     (∑ b, (((simples C i ⊗ X) ⊗ (simples C i)ᘁ) ◁ h) ≫
-      crossingBlock X U (simples C i) (simples C j)
+      crossingBlock X U (simples C j)
         (crossingInclusion C U i j b) (crossingProjection C U i j b)) =
-    ∑ a, crossingBlock X T (simples C i) (simples C j)
+    ∑ a, crossingBlock X T (simples C j)
       (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
         (h ▷ ((simples C j ⊗ X) ⊗ (simples C j)ᘁ)) := by
   simp_rw [crossingBlock_pre_test (k := ℂ), crossingBlock_post_test (k := ℂ)]
