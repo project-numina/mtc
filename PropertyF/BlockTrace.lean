@@ -1,6 +1,8 @@
 module
 public import Mathlib.Analysis.Complex.Basic
+public import Mathlib.Analysis.Complex.Order
 public import Mathlib.LinearAlgebra.Matrix.Trace
+public import Mathlib.LinearAlgebra.Matrix.PosDef
 public import Mathlib.LinearAlgebra.UnitaryGroup
 public import Mathlib.Analysis.CStarAlgebra.Matrix
 public import Mathlib.Tactic
@@ -13,7 +15,7 @@ products of matrix algebras.
 -/
 
 @[expose] public section
-open scoped BigOperators ComplexConjugate
+open scoped BigOperators ComplexConjugate ComplexOrder Matrix
 namespace PropertyF
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -28,31 +30,12 @@ theorem norm_trace_le_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGrou
 /-- Saturation of the real trace estimate forces the identity matrix. -/
 theorem eq_one_of_re_trace_eq_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGroup ι ℂ)
     (ht : U.trace.re = Fintype.card ι) : U = 1 := by
-  have hcol (j : ι) : ∑ i, Complex.normSq (U i j) = 1 := by
-    simpa [Matrix.mul_apply, Matrix.star_apply, Complex.mul_re,
-      Complex.normSq_apply, pow_two] using
-      congrArg (fun A : Matrix ι ι ℂ => (A j j).re) (Matrix.mem_unitaryGroup_iff'.mp hU)
-  have hre : ∀ i, (U i i).re ≤ 1 := fun i =>
-    (Complex.re_le_norm _).trans (entry_norm_bound_of_unitary hU i i)
-  have hdiagRe : ∀ i, (U i i).re = 1 := fun i =>
-    (Finset.sum_eq_sum_iff_of_le (fun k _ => hre k)).mp
-      (by simpa [Matrix.trace, Matrix.diag] using ht) i (Finset.mem_univ i)
-  have hdiag : ∀ i, U i i = 1 := by
-    intro i
-    have h := (sq_le_one_iff₀ (norm_nonneg (U i i))).2 (entry_norm_bound_of_unitary hU i i)
-    rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply, hdiagRe] at h
-    have him : (U i i).im = 0 := by nlinarith [sq_nonneg (U i i).im]
-    apply Complex.ext <;> simp [hdiagRe, him]
-  ext i j
-  by_cases hij : i = j
-  · subst j; simp [hdiag]
-  · have hsum' : ∑ k ∈ Finset.univ.erase j, Complex.normSq (U k j) = 0 := by
-      have h := hcol j
-      rw [← Finset.add_sum_erase _ _ (Finset.mem_univ j), hdiag] at h
-      simpa using h
-    have hz := (Finset.sum_eq_zero_iff_of_nonneg
-      (fun k _ => Complex.normSq_nonneg (U k j))).mp hsum' i (by simp [hij])
-    simp [hij, Complex.normSq_eq_zero.mp hz]
+  apply sub_eq_zero.mp
+  apply Matrix.trace_conjTranspose_mul_self_eq_zero_iff.mp
+  have hu : Uᴴ * U = 1 := Matrix.mem_unitaryGroup_iff'.mp hU
+  apply Complex.ext <;>
+    simp [Matrix.conjTranspose_sub, sub_mul, mul_sub, hu, Matrix.trace_sub,
+      Matrix.trace_conjTranspose, ht]
 
 /-- Equality in the complex trace bound forces a scalar matrix. This includes
 zero-dimensional blocks and does not assume an eigenvalue decomposition. -/
