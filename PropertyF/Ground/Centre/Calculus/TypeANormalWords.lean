@@ -111,17 +111,13 @@ theorem HasMoveWordCoset.mul_generator {i : ℕ} {g : G} (hi : i < m)
 include hrel in
 /-- Every word in type-A generators has a strand-moving coset normal form. -/
 theorem exists_moveWord_coset {g : G}
-    (hg : g ∈ Subgroup.closure (Set.range (fun t : Fin m ↦ s t.val))) : HasMoveWordCoset s m g := by
-  let H := Subgroup.closure (Set.range (fun t : Fin (m - 1) ↦ s (t.val + 1)))
-  induction hg using Subgroup.closure_induction_left with
-  | one => exact ⟨0, Nat.zero_le _, 1, H.one_mem, by simp [moveWord]⟩
-  | mul_left x hx y hy ih =>
-    obtain ⟨i, rfl⟩ := hx
-    exact HasMoveWordCoset.mul_generator hrel i.isLt ih
-  | inv_mul_cancel x hx y hy ih =>
-    obtain ⟨i, rfl⟩ := hx
-    simpa only [inv_eq_of_mul_eq_one_left (hrel.square i.val i.isLt)] using
-      HasMoveWordCoset.mul_generator hrel i.isLt ih
+    (hg : g ∈ Subgroup.closure (Set.range (fun t : Fin m ↦ s t.val))) : HasMoveWordCoset s m g :=
+  Subgroup.closure_induction_left
+    ⟨0, Nat.zero_le _, 1, Subgroup.one_mem _, by simp [moveWord]⟩
+    (fun _ ⟨i, hi⟩ _ _ ih ↦ hi ▸ HasMoveWordCoset.mul_generator hrel i.isLt ih)
+    (fun _ ⟨i, hi⟩ _ _ ih ↦ hi ▸ by
+      simpa only [inv_eq_of_mul_eq_one_left (hrel.square i.val i.isLt)] using
+        HasMoveWordCoset.mul_generator hrel i.isLt ih) hg
 
 end PropertyF.Ground.CentreCalculus
 
