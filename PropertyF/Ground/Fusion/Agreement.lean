@@ -374,7 +374,7 @@ theorem exists_positive_character :
       simp only [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit] at h
       simp at h
       dsimp [f]
-      exact (eq_div_iff hunit).mpr (by linarith)
+      exact (eq_div_iff hunit).mpr h.symm
     have hrow := congrFun hd j
     simp only [Matrix.mulVec, dotProduct, characterMatrix, Pi.smul_apply, smul_eq_mul] at hrow
     rw [hscalar] at hrow
@@ -387,28 +387,27 @@ theorem exists_positive_character :
         simp [f, Finset.sum_div, mul_div_assoc]
 
 theorem character_total_eigenvector
-    (f : Fin (rank D) → ℝ)
+    {f : Fin (rank D) → ℝ}
     (hf : ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k) :
     totalFusionMatrix D *ᵥ f = (∑ i, f i) • f := by
   classical
   rw [totalFusionMatrix_eq_sum_characterMatrix, Matrix.sum_mulVec]
   ext j
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro i _
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
   change (∑ k, (fusionCoeff D i j k : ℝ) * f k) = f i * f j
   exact (hf i j).symm
 
 /-- The positive normalized fusion character is unique. -/
 theorem positive_character_unique
-    (f g : Fin (rank D) → ℝ) (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
+    {f g : Fin (rank D) → ℝ} (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
     (hfunit : f (unitIndex D) = 1) (hgunit : g (unitIndex D) = 1)
     (hf : ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k)
     (hg : ∀ i j, g i * g j = ∑ k, (fusionCoeff D i j k : ℝ) * g k) : f = g := by
   classical
   let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
-  have hfe := character_total_eigenvector D f hf
-  have hge := character_total_eigenvector D g hg
+  have hfe := character_total_eigenvector D hf
+  have hge := character_total_eigenvector D hg
   have hsym : (totalFusionMatrix D)ᵀ = totalFusionMatrix D := by
     apply Matrix.ext
     intro i j
@@ -502,11 +501,10 @@ namespace PropertyF.Ground
 
 /-- A positive real eigenvector bounds the modulus of every complex eigenvalue
 of a nonnegative real matrix. -/
-theorem complex_eigenvalue_le_positive_eigenvalue {ι : Type*} [Fintype ι] [Nonempty ι]
-    (A : Matrix ι ι ℝ) (hA : ∀ i j, 0 ≤ A i j) (w : ι → ℝ)
-    (hw : ∀ i, 0 < w i) (d : ℝ) (hwe : A *ᵥ w = d • w)
-    (z : ℂ) (v : ι → ℂ) (hv : v ≠ 0)
-    (hve : A.map Complex.ofRealHom *ᵥ v = z • v) : ‖z‖ ≤ d := by
+theorem complex_eigenvalue_le_positive_eigenvalue {ι : Type*} [Fintype ι]
+    {A : Matrix ι ι ℝ} {w : ι → ℝ} {d : ℝ} {z : ℂ} {v : ι → ℂ}
+    (hwe : A *ᵥ w = d • w) (hve : A.map Complex.ofRealHom *ᵥ v = z • v)
+    (hA : ∀ i j, 0 ≤ A i j) (hw : ∀ i, 0 < w i) (hv : v ≠ 0) : ‖z‖ ≤ d := by
   obtain ⟨i₀, hi₀⟩ := Function.ne_iff.mp hv
   apply Dimensions.weighted_eigenvalue_bound (fun i j => A i j)
     (fun i j => (A i j : ℂ)) w v hi₀ hw hA
@@ -560,9 +558,8 @@ theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
   obtain ⟨v, hv⟩ := (Module.End.hasEigenvalue_iff_mem_spectrum.mpr hz').exists_hasEigenvector
   have hve : A.map Complex.ofRealHom *ᵥ v = z • v := by
     simpa [B, Matrix.toLin'_apply] using hv.apply_eq_smul
-  have hbound := complex_eigenvalue_le_positive_eigenvalue A
-    (fun j k => Nat.cast_nonneg _) (fpCharacter D) (fpCharacter_pos D)
-    (fpCharacter D i) hwe z v hv.2 hve
+  have hbound := complex_eigenvalue_le_positive_eigenvalue hwe hve
+    (fun j k => Nat.cast_nonneg _) (fpCharacter_pos D) hv.2
   have hrad : fpSimple D i = ‖z‖ := by
     unfold fpSimple
     rw [← Matrix.spectralRadius_transpose (fusionMatrix D i), ← hB, ← hzmax]

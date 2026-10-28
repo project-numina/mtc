@@ -41,24 +41,27 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCalculus
 
+section
+variable {R : Type*} [CommRing R]
+
 /-- Signed permutation trace sum, with no categorical assumptions. -/
-def signedTraceSum (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (n : ℕ) : ℂ :=
-  ∑ σ, (permutationSign ℂ n σ : ℂ) * F n σ
+def signedTraceSum (F : ∀ n : ℕ, Equiv.Perm (Fin n) → R) (n : ℕ) : R :=
+  ∑ σ, (permutationSign R n σ : R) * F n σ
 
 /-- The sign changes precisely when the newly inserted point is moved. -/
 theorem sign_decomposeFin {n : ℕ} (p : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
-    (permutationSign ℂ (n + 1) (decomposeFin.symm (p, σ)) : ℂ) =
-      (if p = 0 then 1 else -1) * (permutationSign ℂ n σ : ℂ) := by
+    (permutationSign R (n + 1) (decomposeFin.symm (p, σ)) : R) =
+      (if p = 0 then 1 else -1) * (permutationSign R n σ : R) := by
   by_cases hp : p = 0 <;>
     simp [permutationSign, decomposeFin.symm_sign, hp]
 
-variable {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ} {d c : ℂ} {n : ℕ}
+variable {F : ∀ n : ℕ, Equiv.Perm (Fin n) → R} {d c : R} {n : ℕ}
 
 /-- A deletion identity for the trace gives the signed-sum recurrence. -/
 theorem signedTraceSum_succ
     (hfixed : ∀ σ, F (n + 1) (decomposeFin.symm (0, σ)) = d * F n σ)
     (hmoved : ∀ (p : Fin (n + 1)), p ≠ 0 → ∀ σ, F (n + 1) (decomposeFin.symm (p, σ)) = c * F n σ) :
-    signedTraceSum F (n + 1) = (d - (n : ℂ) * c) * signedTraceSum F n := by
+    signedTraceSum F (n + 1) = (d - (n : R) * c) * signedTraceSum F n := by
   unfold signedTraceSum
   rw [← decomposeFin.symm.sum_comp,
     Fintype.sum_prod_type, Fin.sum_univ_succ]
@@ -69,17 +72,17 @@ theorem signedTraceSum_succ
   ring
 
 /-- Deleting the first adjacent crossing leaves the permutation trace unchanged. -/
-abbrev HasAdjacentTrace (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) : Prop :=
+abbrev HasAdjacentTrace (F : ∀ n : ℕ, Equiv.Perm (Fin n) → R) : Prop :=
   ∀ n (σ : Equiv.Perm (Fin (n + 1))),
     F (n + 2) (decomposeFin.symm (1, σ)) = F (n + 1) σ
 
 /-- Deleting a moved strand leaves the permutation trace unchanged. -/
-abbrev HasMovedTrace (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) : Prop :=
+abbrev HasMovedTrace (F : ∀ n : ℕ, Equiv.Perm (Fin n) → R) : Prop :=
   ∀ n (p : Fin (n + 1)), p ≠ 0 → ∀ σ,
     F (n + 1) (decomposeFin.symm (p, σ)) = F n σ
 
 /-- The trace contribution of deleting a fixed or a moved strand. -/
-structure IsTraceDeletion (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (d : ℂ) : Prop where
+structure IsTraceDeletion (F : ∀ n : ℕ, Equiv.Perm (Fin n) → R) (d : R) : Prop where
   fixed : ∀ n σ, F (n + 1) (decomposeFin.symm (0, σ)) = d * F n σ
   moved : HasMovedTrace F
 
@@ -87,7 +90,7 @@ structure IsTraceDeletion (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (d : ℂ
 This isolates the categorical trace calculation from the permutation sum. -/
 theorem signedTraceSum_falling
     (hzero : F 0 1 = 1) (h : IsTraceDeletion F d) :
-    ∀ n, signedTraceSum F n = ∏ k ∈ Finset.range n, (d - (k : ℂ)) := by
+    ∀ n, signedTraceSum F n = ∏ k ∈ Finset.range n, (d - (k : R)) := by
   intro n
   induction n with
   | zero =>
@@ -97,6 +100,8 @@ theorem signedTraceSum_falling
     rw [signedTraceSum_succ (c := 1) (h.fixed n) (by simpa using h.moved n), ih,
       Finset.prod_range_succ]
     ring
+
+end
 
 universe v u
 /-- Scalar pivotal trace of a permutation action on a tensor power. -/

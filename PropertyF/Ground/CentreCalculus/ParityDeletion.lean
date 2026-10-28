@@ -49,7 +49,7 @@ theorem parityPermTrace_fixHead {n : ℕ} (σ : Equiv.Perm (Fin n)) :
   | true =>
     have hs : (permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
         (permutationSign ℂ n σ : ℂ) := by
-      simpa [fixHead] using sign_decomposeFin 0 σ
+      simpa [fixHead] using sign_decomposeFin (R := ℂ) 0 σ
     rw [parityPermScalarTrace_true, parityPermScalarTrace_true, hs,
       tensorPermTrace_fixHead hdim hX σ]
     ring

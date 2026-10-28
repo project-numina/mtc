@@ -106,15 +106,16 @@ theorem forget_trace_of_pivotal_component
   rw [hn, htrans, ht]
   simp [PivotalStructure.rightTrace]
 
+section
+variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵ᶜ" => Center C.Obj
+
 /-- A compatible centre pivotal structure constructs centre fusion when the base
 pivotal dimensions equal FP dimensions. -/
-theorem center_fusion_of_compatible_pivotal (C : BraidedFusionCategory.{v,u})
-    {p : PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p)
-    [RigidCategory (Center C.Obj)]
-    {pZ : PivotalStructure (C := Center C.Obj)}
-    (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) :
-    IsFusionCategory (Center C.Obj) := by
+theorem center_fusion_of_compatible_pivotal {p : PivotalStructure (C := C.Obj)}
+    (hsimple : PivotalHasFPDimensions C p) [RigidCategory 𝒵ᶜ]
+    {pZ : PivotalStructure (C := 𝒵ᶜ)}
+    (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) : IsFusionCategory 𝒵ᶜ := by
   apply center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
   intro hz
   have ht := forget_trace_of_pivotal_component hcompat
@@ -131,5 +132,7 @@ theorem center_fusion_of_compatible_pivotal (C : BraidedFusionCategory.{v,u})
     exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
   apply hne
   simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
+
+end
 
 end PropertyF.Ground.CentreInduction

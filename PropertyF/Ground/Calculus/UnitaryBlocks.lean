@@ -153,13 +153,16 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C]
 
+/-- The tensor power acted on by the braid algebra at index `n`. -/
+abbrev braidTensorPower (X : C) (n : ℕ) := tensorPower X (n + 2)
+
 /-- The actual braid image acting by endomorphisms of the tensor power. -/
 def braidEndRepresentation (X : C) (n : ℕ) :
-    braidImage X n →* End (tensorPower X (n + 2)) :=
+    braidImage X n →* End (braidTensorPower X n) :=
   Aut.toEnd.comp (braidImage X n).subtype
 
 /-- The subalgebra spanned by the genuine categorical braid image. -/
-def braidAlgebra (X : C) (n : ℕ) : Subalgebra ℂ (End (tensorPower X (n + 2))) :=
+def braidAlgebra (X : C) (n : ℕ) : Subalgebra ℂ (End (braidTensorPower X n)) :=
   groupImageAlgebra (braidEndRepresentation X n)
 
 /-- An equivalence from a categorical braid algebra to its matrix blocks. -/
@@ -204,7 +207,7 @@ abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCatego
 /-- The braid-image algebra map has the original categorical action as its value. -/
 @[simp] theorem braidInImage_val {C : Type*} [Category C] [MonoidalCategory C]
     [BraidedCategory C] [Preadditive C] [Linear ℂ C] {X : C} {n : ℕ} (g : braidImage X n) :
-    (braidInImage g : End (tensorPower X (n + 2))) = braidEndRepresentation X n g :=
+    (braidInImage g : End (braidTensorPower X n)) = braidEndRepresentation X n g :=
   groupInImage_val _ _
 
 /-- A block presentation in which each represented group element is unitary. -/
