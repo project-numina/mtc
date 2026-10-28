@@ -8,9 +8,16 @@ public import Mathlib.CategoryTheory.Simple
 public import Mathlib.CategoryTheory.Limits.Preserves.Shapes.Kernels
 public import Mathlib.CategoryTheory.Limits.Preserves.Basic
 
-/-! # Additive and abelian structure on the Drinfeld centre. -/
+/-!
+# Additive and abelian structure on the Drinfeld centre
 
-/-! Binary biproducts in the Drinfeld centre. -/
+Binary biproducts, kernels and cokernels are constructed on the underlying
+objects, with half-braidings induced by preservation under tensoring. The
+forgetful functor detects the relevant limits and colimits.
+
+The resulting `centerAbelian` construction supplies the abelian structure used
+for centre objects over a rigid abelian monoidal category.
+-/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Centre
