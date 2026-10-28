@@ -9,6 +9,12 @@ public import PropertyF.Ground.Modular.SMatrix
 
 open PropertyF.Ground.Dimensions
 
+/-! # Pivotal structures on the centre
+
+Compatible pivotal components lift to the centre. When the base pivotal dimensions agree with
+Frobenius–Perron dimensions, they also yield centre fusion and a positive spherical structure.
+-/
+
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
