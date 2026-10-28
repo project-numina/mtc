@@ -63,15 +63,13 @@ local notation "𝒵" => CategoryTheory.Center C.Obj
 positive sphericality, pseudo-unitarity and the categorical dimension square. -/
 theorem center_structure_of_pivotal_centrality
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (hsimple : PivotalHasFPDimensions C p)
     (hc : PivotalComponentsCentral p) :
     ∃ hFusion : IsFusionCategory (𝒵),
       letI := hFusion
       let pZ := liftedPivotalStructure p hc
       pZ.IsSpherical ∧
-      (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
-        (simples (Integrate.bundledCenter C) i) =
-          (fpSimple (Integrate.bundledCenter C) i : ℂ)) ∧
+      PivotalHasFPDimensions (Integrate.bundledCenter C) pZ ∧
       PseudoUnitary (Integrate.bundledCenter C) ∧
       globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
   center_structure_of_compatible_pivotal C p hsimple (liftedPivotalStructure p hc)

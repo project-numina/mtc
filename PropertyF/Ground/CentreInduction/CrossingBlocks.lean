@@ -10,19 +10,18 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Turn a map `T ⊗ S ⟶ R` into its right-dual mate
 `R* ⊗ T ⟶ S*`. -/
-def closeFusionMap {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    (T S R : D) (f : T ⊗ S ⟶ R) : Rᘁ ⊗ T ⟶ Sᘁ :=
+def closeFusionMap (T S R : D) (f : T ⊗ S ⟶ R) : Rᘁ ⊗ T ⟶ Sᘁ :=
   (fᘁ ▷ T) ≫ ((rightDualTensorIso T S).hom ▷ T) ≫
     (α_ (Sᘁ) (Tᘁ) T).hom ≫ (Sᘁ ◁ ε_ T (Tᘁ)) ≫ (ρ_ (Sᘁ)).hom
 
 /-- The matrix entry associated to an inclusion `R ⟶ T ⊗ S` and a
 projection `T ⊗ S ⟶ R`. -/
-def crossingBlock {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    (X T R S : D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+def crossingBlock (X T R S : D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ T ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
   (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S R f) ≫
     (α_ (T ⊗ S) X (Sᘁ)).hom ≫ (α_ T S (X ⊗ Sᘁ)).hom ≫
@@ -30,8 +29,7 @@ def crossingBlock {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigid
 
 /-- A crossing matrix entry is natural in the middle induction factor. -/
 @[reassoc]
-theorem crossingBlock_natural_middle {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    {X Y : D} (h : X ⟶ Y) {T R S : D}
+theorem crossingBlock_natural_middle {X Y : D} (h : X ⟶ Y) {T R S : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ crossingBlock Y T R S g f =
       crossingBlock X T R S g f ≫ (T ◁ ((S ◁ h) ▷ Sᘁ)) := by
