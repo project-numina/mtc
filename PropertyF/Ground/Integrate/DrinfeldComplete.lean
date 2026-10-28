@@ -19,17 +19,18 @@ open CategoryTheory
 namespace PropertyF.Ground
 universe v u
 
+variable (C : BraidedFusionCategory.{v,u})
+variable [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)]
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
+
 /-- The centre square follows from its actual induction adjunction as soon as
 its genuine fusion structure and FP-valued spherical structure are available. -/
 theorem center_globalDimension_square_of_actual_induction
-    (C : BraidedFusionCategory.{v,u})
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    [IsFusionCategory (CategoryTheory.Center C.Obj)]
-    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
+    {p : Dimensions.PivotalStructure (C := 𝒵ᶠ.Obj)}
     (hp : p.IsSpherical)
-    (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p) :
-    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
-  (Modular.categorical_global_eq_sum_squares (Integrate.bundledCenter C) p hp).trans <| by
+    (hdim : Modular.HasFPSimpleDimensions 𝒵ᶠ p) :
+    globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
+  (Modular.categorical_global_eq_sum_squares 𝒵ᶠ p hp).trans <| by
     simpa [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow] using
       congrArg (fun x : ℝ ↦ (x : ℂ)) (CentreInduction.globalFPDimension_square_of_actual_induction C)
 
@@ -54,17 +55,18 @@ universe v u
 set_option linter.style.haveILetI false
 set_option backward.isDefEq.respectTransparency false
 
+variable (C : BraidedFusionCategory.{v,u})
+variable [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)]
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
+
 /-- The actual rigid fusion centre has no non-unit transparent simple. -/
 theorem center_transparent_label_eq_unit
-    (C : BraidedFusionCategory.{v,u})
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    [IsFusionCategory (CategoryTheory.Center C.Obj)]
-    (k : Fin (rank (Integrate.bundledCenter C)))
-    (hk : Transparent (simples (Integrate.bundledCenter C) k)) :
-    k = unitIndex (Integrate.bundledCenter C) :=
-  let : Simple (simples (Integrate.bundledCenter C) k) := simples_simple _ k
+    (k : Fin (rank 𝒵ᶠ))
+    (hk : Transparent (simples 𝒵ᶠ k)) :
+    k = unitIndex 𝒵ᶠ :=
+  let : Simple (simples 𝒵ᶠ k) := simples_simple _ k
   simples_injective _ ⟨(CentreInduction.center_transparent_simple_iso_unit (C := C) hk).some ≪≫
-    (unitIndex_iso (Integrate.bundledCenter C)).some.symm⟩
+    (unitIndex_iso 𝒵ᶠ).some.symm⟩
 
 
 
