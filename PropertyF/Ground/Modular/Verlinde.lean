@@ -124,8 +124,8 @@ universe v u
 
 /-- The partial trace of monodromy, leaving the first strand open. -/
 abbrev partialMonodromy {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
-    [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C]
-    [MonoidalLinear ℂ C] (p : PivotalStructure (C := C)) (X Y : C) : End X :=
+    [RightRigidCategory C]
+    (p : PivotalStructure (C := C)) (X Y : C) : End X :=
   rightPartialTrace p (End.of (doubleBraiding X Y))
 
 /-- Closing one strand of a double braiding gives the normalized S scalar. -/
@@ -244,7 +244,7 @@ end Trace
 
 section MonodromyTrace
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
-  [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+  [RightRigidCategory C]
 
 /-- Partial tracing a tensor-product monodromy leaves a conjugated partial monodromy. -/
 theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X Y : C) :
@@ -256,6 +256,8 @@ theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X 
       End.of (((β_ Z X).hom ▷ Y) ≫ t.asHom ≫ ((β_ X Z).hom ▷ Y)) := End.ext (by
     simpa [t, Iso.conj_apply_asHom, Category.assoc] using doubleBraiding_tensor_factorization Z X Y)
   by rw [hfactor, rightPartialTrace_natural, Calculus.rightPartialTrace_whiskerLeft]
+
+variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 /-- A scalar partial monodromy factors out of the tensor-product partial trace. -/
 theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) {Z Y : C} (X : C) {s : ℂ}
