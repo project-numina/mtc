@@ -98,7 +98,7 @@ theorem leftTrace_id (p : PivotalStructure (C := C)) (X : C) :
   by simp [PivotalStructure.leftTrace, leftQuantumTrace]
 
 /-- In a spherical category the two quantum dimensions agree. -/
-theorem spherical_quantumTraces_eq (p : PivotalStructure (C := C))
+theorem spherical_quantumTraces_eq {p : PivotalStructure (C := C)}
     (hp : p.IsSpherical) (X : C) :
     rightQuantumTrace (p.iso X) = leftQuantumTrace (p.iso X) := by
   simpa only [← rightTrace_id, ← leftTrace_id] using (hp X (𝟙 X)).symm

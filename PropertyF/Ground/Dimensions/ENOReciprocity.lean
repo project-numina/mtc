@@ -166,7 +166,7 @@ variable {C} in
 /-- A pivotal structure whose simple dimensions and intrinsic norms are the
 FP values is spherical. -/
 theorem spherical_of_fp_dimensions_and_squaredNorms
-    (p : PivotalStructure (C := C.Obj))
+    {p : PivotalStructure (C := C.Obj)}
     (hdim : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (hnorm : ∀ i, squaredNorm C (simples C i) =
       ((fpSimple C i ^ 2 : ℝ) : ℂ)) : p.IsSpherical := by
@@ -271,12 +271,12 @@ theorem positive_spherical_of_matrix_identities
     (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))))
   have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) := by
     simp [c, q, normalizedRootDimension, rootDimension_ne_zero]
-  let unitProof := rootSignTwist_unit_of_simple_dimension C hc (by
+  let unitProof := rootSignTwist_unit_of_simple_dimension hc (by
     simp only [hvalue, fpSimple_unit, Complex.ofReal_one])
   let p := rootPhasePivotal C c hc (normalized_defects_trivial hinv heig hsat) unitProof
   have hp (i) : pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     rw [rootPhasePivotal_dimension, hvalue]
-  exact ⟨p, spherical_of_fp_dimensions_and_squaredNorms p hp
+  exact ⟨p, spherical_of_fp_dimensions_and_squaredNorms hp
     (fun i ↦ by rw [hnorm i, hsat i]), hp⟩
 
 end PropertyF.Ground.Dimensions
