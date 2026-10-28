@@ -269,21 +269,10 @@ theorem overlap_trace_power_of_step
   induction k with
   | zero => simp [overlapIndex, overlapProduct]
   | succ k ih =>
-    calc
-      _ = (actualBraidTrace C X p (overlapIndex t (k + 1))
-          (overlapProduct X t u (k + 1)) *
-          Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) *
-          (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k := by
-            rw [pow_succ]; ring
-      _ = (actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-          actualBraidTrace C X p t u) *
-          (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k := by rw [hstep k]
-      _ = (actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-          (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k) *
-          actualBraidTrace C X p t u := by ring
-      _ = _ := by
-        rw [ih]
-        exact (pow_succ _ (k + 1)).symm
+    rw [pow_succ, pow_succ]
+    linear_combination (hstep k) *
+      (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k +
+      ih * actualBraidTrace C X p t u
 
 /-- The sharp bound works in any family of unitary braid-block presentations;
 it does not depend on a particular choice made by finite-group averaging. -/

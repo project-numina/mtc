@@ -132,7 +132,7 @@ theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,
   let _ : Simple (simples D k) := simples_simple D k
   let _ : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
   have htrace := rightTrace_partialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X))
-  have h := rightPartialTrace_simple_of_trace_compatibility (simples D k) X p
+  have h := rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
     (Ground.unitScalarEquiv D) (End.of (doubleBraiding (simples D k) X))
     (simpleDimension_ne_zero D p k) htrace
   exact h
@@ -263,8 +263,8 @@ theorem rightPartialTrace_nested_simple (p : PivotalStructure (C := C))
   have ht1 := rightTrace_partialTrace p Z (X ⊗ Y) f
   have ht2 := rightTrace_partialTrace p Z X (rightPartialTrace p (Z ⊗ X) Y g)
   have ht3 := rightTrace_partialTrace p (Z ⊗ X) Y g
-  rw [rightPartialTrace_simple_of_trace_compatibility Z (X ⊗ Y) p scalar f hd ht1,
-    rightPartialTrace_simple_of_trace_compatibility Z X p scalar _ hd ht2, ht3, hc]
+  rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd ht1,
+    rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X) p scalar _ hd ht2, ht3, hc]
 
 
 end Nested

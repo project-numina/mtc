@@ -4,6 +4,12 @@ public import Mathlib.LinearAlgebra.Matrix.Trace
 public import Mathlib.LinearAlgebra.UnitaryGroup
 public import Mathlib.Tactic
 
+/-!
+# Trace bounds for unitary matrices
+
+Unitary column bounds and the equality case of the matrix trace estimate.
+-/
+
 @[expose] public section
 open scoped BigOperators ComplexConjugate
 namespace PropertyF
