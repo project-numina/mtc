@@ -224,14 +224,8 @@ theorem pivotal_evaluation {C : Type u} [Category.{v} C]
   have h := p.naturality (ε_ X (Xᘁ))
   change ε_ X (Xᘁ) ≫ (p.iso I).hom = (p.iso W).hom ≫ (((ε_ X (Xᘁ))ᘁ)ᘁ) at h
   rw [p.tensor, p.unit] at h
-  have he := doubleDual_evaluation X
-  calc
-    _ = ((p.iso (Xᘁ)).hom ⊗ₘ (p.iso X).hom) ≫
-      ((doubleDualTensorIso (Xᘁ) X).hom ≫ (((ε_ X (Xᘁ))ᘁ)ᘁ) ≫
-        (doubleDualUnitIso (C := C)).inv) := by rw [he]
-    _ = ε_ X (Xᘁ) := by
-      rw [← Category.assoc, ← Category.assoc, ← h]
-      simp
+  rw [← doubleDual_evaluation X, ← Category.assoc, ← Category.assoc, ← h]
+  simp
 set_option backward.isDefEq.respectTransparency false in
 /-- A pivotal component on a dual is the inverse dual of the original component. -/
 theorem pivotal_dual {C : Type u} [Category.{v} C]

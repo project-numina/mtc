@@ -44,12 +44,9 @@ theorem pivotalDimension_decomposition
   let m (i : Fin (rank C)) := Module.finrank ℂ (simples C i ⟶ X)
   let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
   obtain ⟨e⟩ := exists_canonical_decomposition C X
-  have ht : p.rightTrace (𝟙 X) = ∑ i, (m i : ℂ) • p.rightTrace (𝟙 (simples C i)) := by
-    calc
-      _ = p.rightTrace (𝟙 (⨁ V)) := p.rightTrace_id_iso e
-      _ = ∑ a, p.rightTrace (𝟙 (V a)) := rightDimension_biproduct V p
-      _ = _ := by simp [Fintype.sum_sigma, V, Algebra.smul_def]
-  simp only [pivotalDimension, Ground.unitScalar_eq_equiv, ht, map_sum, map_smul, smul_eq_mul, m]
+  rw [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
+    rightDimension_biproduct]
+  simp [Fintype.sum_sigma, pivotalDimension, Ground.unitScalar_eq_equiv]
 
 /-- The pivotal dimension of the tensor unit is normalized to one. -/
 theorem pivotalDimension_unit
@@ -76,6 +73,11 @@ theorem pivotalDimension_iso
     pivotalDimension C p X = pivotalDimension C p Y :=
   congrArg (unitScalar C) (p.rightTrace_id_iso e)
 
+/-- The pivotal dimension of the simple representative of the unit is one. -/
+theorem pivotalDimension_unitIndex (p : PivotalStructure (C := C.Obj)) :
+    pivotalDimension C p (simples C (unitIndex C)) = 1 :=
+  (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso C p e).trans (pivotalDimension_unit C p)
+
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
 its Frobenius–Perron dimension. -/
 theorem galois_pivotalDimension_norm_le_fpSimple (C : BraidedFusionCategory)
@@ -84,9 +86,7 @@ theorem galois_pivotalDimension_norm_le_fpSimple (C : BraidedFusionCategory)
     ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i := by
   apply galois_character_norm_le_fpSimple C
     (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
-  · obtain ⟨e⟩ := unitIndex_iso C
-    rw [pivotalDimension_iso C p e, pivotalDimension_unit]
-    exact one_ne_zero
+  · simpa only [pivotalDimension_unitIndex] using (one_ne_zero : (1 : ℂ) ≠ 0)
   · exact pivotalDimension_character C p
 
 end PropertyF.Ground.Dimensions
