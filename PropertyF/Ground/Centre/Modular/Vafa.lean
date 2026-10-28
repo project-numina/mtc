@@ -580,10 +580,10 @@ theorem fpDeterminant_tensor_natural (Y : C.Obj) : HasTensorDeterminantRule C η
     obtain ⟨e⟩ := he
     let : Simple S := hs
     let : PreservesBinaryBiproducts (𝟭 C.Obj) := preservesBinaryBiproducts_of_preservesBiproducts _
-    have hid : (𝟭 C.Obj).mapBiprod S K = Iso.refl (S ⊞ K) :=
-      Iso.ext (by apply biprod.hom_ext <;> simp)
     have hsum' : η.app (S ⊞ K) = biprod.mapIso (η.app S) (η.app K) := by
-      simpa [hid] using functor_natural_app_biprod (𝟭 C.Obj) η S K
+      simpa [show (𝟭 C.Obj).mapBiprod S K = Iso.refl (S ⊞ K) from
+        Iso.ext (by apply biprod.hom_ext <;> simp)] using
+          functor_natural_app_biprod (𝟭 C.Obj) η S K
     apply (tensorDeterminantRule_iff_of_iso C η X e).mpr
     change HasTensorDeterminant C X (η.app (S ⊞ K))
     rw [hsum']
@@ -675,8 +675,8 @@ theorem fpDeterminant_functor_natural_decomposition
     rw [functor_natural_app_conjugate F η e]
     exact fpDeterminant_conjugate C (F.mapIso e).symm (η.app Y)
   · intro X hX
-    have hη : η.app X = Iso.refl (F.obj X) := Iso.ext ((F.map_isZero hX).eq_of_src _ _)
-    rw [hη, fpDeterminant_refl]
+    rw [show η.app X = Iso.refl (F.obj X) from Iso.ext ((F.map_isZero hX).eq_of_src _ _),
+      fpDeterminant_refl]
   · intro X Y
     let : PreservesBinaryBiproducts F := preservesBinaryBiproducts_of_preservesBiproducts F
     rw [functor_natural_app_biprod F η X Y]

@@ -133,8 +133,7 @@ theorem categoricalS_square (hdet : (Sₚ).det ≠ 0)
       (fun i j hij => categoricalS_square_off_dual C p hdet hreal i j hij) x).trans ?_
     simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
     simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
-  · rw [ite_eq_right hxy]
-    exact categoricalS_square_off_dual C p hdet hreal x y hxy
+  · simpa only [ite_eq_right hxy] using categoricalS_square_off_dual C p hdet hreal x y hxy
 
 end PropertyF.Ground.Modular
 end

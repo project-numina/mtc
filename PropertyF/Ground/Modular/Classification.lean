@@ -111,28 +111,31 @@ theorem character_eigenvector (χ : Character N) (i : ι) :
 
 variable (columns : ι → Character N)
 
+/-- A nonzero basis coordinate of an eigenvector has the corresponding eigenvalue. -/
+theorem basis_eigenvalue_eq {K V : Type*} [CommSemiring K] [IsDomain K] [AddCommMonoid V] [Module K V]
+    (b : Basis ι K V) (T : V →ₗ[K] V) (vals : ι → K) (v : V) (μ : K)
+    (hb : ∀ j, T (b j) = vals j • b j) (hv : T v = μ • v)
+    (i : ι) (hi : b.equivFun v i ≠ 0) : μ = vals i := by
+  have hc : b.equivFun (T v) i = vals i * b.equivFun v i := by
+    conv_lhs => rw [← b.sum_equivFun v]
+    simp only [map_sum, map_smul, hb]
+    simp [Finsupp.single_apply, mul_comm]
+  rw [hv] at hc
+  simp only [map_smul, Pi.smul_apply, smul_eq_mul] at hc
+  exact mul_right_cancel₀ hi hc
+
 /-- A basis consisting of characters classifies every character. -/
 theorem characters_exhausted (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = (columns y).value)
     (χ : Character N) : ∃ y, χ = columns y := by
   classical
-  obtain ⟨y, hy⟩ : ∃ y, b.equivFun χ.value y ≠ 0 := by
-    by_contra! h
-    have hzero : χ.value = 0 := b.equivFun.injective (by ext y; simp [h y])
-    have := χ.unit_eq
-    simp [hzero] at this
-  have hb_eigen (i x : ι) : fusionOperator N i (b x) =
-      (columns x).value i • b x := by
-    rw [hb, character_eigenvector]
-  have hcoord (i : ι) : b.equivFun (fusionOperator N i χ.value) y =
-      (columns y).value i * b.equivFun χ.value y := by
-    conv_lhs => rw [← b.sum_equivFun χ.value]
-    simp only [map_sum, map_smul, hb_eigen]
-    simp [Finsupp.single_apply, mul_comm]
+  obtain ⟨y, hy⟩ := Function.ne_iff.mp
+    (show b.equivFun χ.value ≠ 0 from fun h ↦ by
+      have hzero : χ.value = 0 := b.equivFun.injective (by simpa using h)
+      simpa [hzero] using χ.unit_eq)
   refine ⟨y, Character.ext (funext fun i ↦ ?_)⟩
-  have he := hcoord i
-  rw [character_eigenvector] at he
-  simp only [map_smul, Pi.smul_apply, smul_eq_mul] at he
-  exact mul_right_cancel₀ hy he
+  exact basis_eigenvalue_eq b (fusionOperator N i) (fun j ↦ (columns j).value i)
+    χ.value (χ.value i) (fun j ↦ by rw [hb, character_eigenvector])
+    (character_eigenvector N χ i) y hy
 
 
 /-- A linearly independent family of as many characters as labels is a
@@ -186,16 +189,12 @@ theorem normalized_columns_linearIndependent {K : Type*} [Field K] {S : Matrix �
   classical
   let A : Matrix ι ι K := fun x y => S x y / dimension y
   let B : Matrix ι ι K := fun x y => dimension x * S x (dual y) / D
-  have hddual := dual_involutive hD hsym hsq
   have hab : A * B = 1 := by
     ext x y
     rw [Matrix.mul_apply, Matrix.one_apply]
     change (∑ z, (S x z / dimension z) * (dimension z * S z (dual y) / D)) = _
-    have hterm (z : ι) : (S x z / dimension z) *
-        (dimension z * S z (dual y) / D) = (S x z * S z (dual y)) / D := by
-      field_simp [hd z, hD]
-    simp_rw [hterm]
-    rw [← Finset.sum_div, hsq, hddual]
+    simp_rw [← mul_div_assoc, ← mul_assoc, div_mul_cancel₀ _ (hd _)]
+    rw [← Finset.sum_div, hsq, dual_involutive hD hsym hsq]
     split_ifs <;> simp [hD]
   exact Matrix.linearIndependent_cols_of_det_ne_zero (Matrix.det_ne_zero_of_right_inverse hab)
 
