@@ -139,10 +139,9 @@ private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
   · subst j
     have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
     simp only [Matrix.single_mul_single_same, mul_one, one_mul] at hdiag
-    have hscalar : Matrix.single i₀ i₀ a = a • Matrix.single i₀ i₀ (1 : ℂ) := by
-      simp [Matrix.smul_single]
-    rw [hdiag, hscalar, map_smul, Matrix.trace_single_eq_same]
-    simp [mul_comm]
+    rw [hdiag, Matrix.trace_single_eq_same, mul_comm]
+    change T (Matrix.single i₀ i₀ a) = a • T (Matrix.single i₀ i₀ 1)
+    rw [← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]
   · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
     simp only [Matrix.single_mul_single_same, one_mul,
       Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
@@ -232,15 +231,9 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
       rw [← map_mul]
       simp [e, ← Pi.single_mul, Matrix.single_mul_single_same])
     refine ⟨k, ?_⟩
-    have ht := hw e
-    change (φ e).trace = ∑ k, w k * (e k).trace at ht
-    exact (show w i = (φ e).trace from by
-      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one] using ht.symm).trans hk
+    simpa [T, e, sum_trace_single] using (hw e).symm.trans hk
   choose mult hm using hnat
-  refine ⟨mult, fun x => ?_⟩
-  have hx := hw x
-  change (φ x).trace = ∑ i, w i * (x i).trace at hx
-  simpa [hm] using hx
+  exact ⟨mult, fun x => by simpa [T, hm] using hw x⟩
 
 /-- A complex idempotent matrix with zero trace is zero. -/
 theorem idempotent_matrix_eq_zero_of_trace_eq_zero {m : ℕ}
@@ -273,13 +266,11 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
   let e : Blocks.Algebra ⟨_, d⟩ := Pi.single j (Matrix.single k k 1)
   have hzero : φ e = 0 := by
     funext i
-    have hidem : φ e i * φ e i = φ e i := by
-      simpa [e, ← Pi.single_mul, Matrix.single_mul_single_same] using
+    apply idempotent_matrix_eq_zero_of_trace_eq_zero
+    · simpa [e, ← Pi.single_mul, Matrix.single_mul_single_same] using
         (congrFun (map_mul φ e e) i).symm
-    have ht : (φ e i).trace = 0 := by
-      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
+    · simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
         Nat.eq_zero_of_le_zero (hn i), Nat.cast_zero] using hmult i e
-    exact idempotent_matrix_eq_zero_of_trace_eq_zero hidem ht
   simpa [e] using congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k)
     (hinj (show φ e = φ 0 from by simpa using hzero))
 
@@ -316,9 +307,10 @@ theorem braidToEndBlocks_injective {X : C.Obj}
     Function.Injective (braidToEndBlocks C e b) :=
   (groundEndBlockEquiv C e).injective.comp (Subtype.val_injective.comp b.symm.injective)
 
+variable (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
+
 /-- The categorical braid trace has the weights supplied by block multiplicities. -/
 abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
-    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {d : Fin r → ℕ} (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
     (mult : Fin (Ground.rank C) → Fin r → ℕ) : Prop :=
   ∀ a : braidAlgebra X n,
@@ -330,7 +322,6 @@ abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
 multiplicity-weight formula. Every retained braid block occurs in a simple
 constituent's multiplicity space. -/
 theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
-    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
@@ -360,8 +351,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
 multiplicities with the actual pivotal trace formula and retention. -/
 theorem exists_unitary_braid_trace_blocks
     {X : C.Obj} {n : ℕ}
-    (hfinite : Finite (braidImage X n))
-    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
+    (hfinite : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ)
       (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
       (mult : Fin (Ground.rank C) → Fin r → ℕ),
