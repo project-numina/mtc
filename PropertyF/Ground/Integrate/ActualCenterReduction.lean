@@ -91,14 +91,15 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 
-variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
+variable {ι K : Type*} [Fintype ι] [CommSemiring K] [Algebra ℝ K]
+local notation "φ" => algebraMap ℝ K
 
-/-- Every Galois conjugate of the global FP dimension is the sum of the
-squares of the real conjugates of the simple FP dimensions. -/
-theorem globalFPDimension_galois_sum_squares : σ (globalFPDimension C : ℂ) =
-      ((∑ i, (σ (fpSimple C i : ℂ)).re ^ 2 : ℝ) : ℂ) := by
-  simp only [globalFPDimension, Complex.ofReal_sum, Complex.ofReal_pow, map_sum, map_pow,
-    fp_simple_galois_real]
+/-- A conjugate of a sum of squares is the sum of the squares of its conjugates. -/
+theorem galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K) (h : ∀ i, σ (φ (d i)) = φ (e i)) :
+    σ (φ (∑ i, d i ^ 2)) = φ (∑ i, e i ^ 2) := by
+  simp only [map_sum, map_pow, h]
+
+variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 
 /-- Global FP dimension has positive, FP-bounded real conjugates. -/
 theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalFPDimension C ∧
@@ -111,7 +112,9 @@ theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalF
   ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
       (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, by simp [d, fpSimple_unit]⟩),
     Dimensions.target_globalDimension_le_of_simple_bounds C hbound,
-    globalFPDimension_galois_sum_squares C σ⟩
+    by
+      change σ ((algebraMap ℝ ℂ) (∑ i, fpSimple C i ^ 2)) = (algebraMap ℝ ℂ) (∑ i, d i ^ 2)
+      exact galois_sum_squares σ fun i ↦ (fp_simple_galois_real C σ i).symm⟩
 
 end PropertyF.Ground
 end
