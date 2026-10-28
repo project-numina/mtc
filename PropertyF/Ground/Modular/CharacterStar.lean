@@ -52,9 +52,8 @@ theorem character_dual_conj (χ : Character N) (i : ι) :
     have hr : 0 < ∑ j, Complex.normSq (χ.value j) :=
       Finset.sum_pos' (fun j _ ↦ Complex.normSq_nonneg _)
         ⟨N.unit, Finset.mem_univ _, by simp [χ.unit_eq]⟩
-    have hw' : w = ((∑ j, Complex.normSq (χ.value j) : ℝ) : ℂ) := by
-      simp only [w, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]
-    rw [hw']
+    rw [show w = ((∑ j, Complex.normSq (χ.value j) : ℝ) : ℂ) by
+      simp only [w, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]]
     exact_mod_cast ne_of_gt hr
   have h : χ.value i = starRingEnd ℂ (χ.value (dual i)) :=
     mul_right_cancel₀ hw (by simpa [w] using character_inner_balance N dual hdual χ χ i)

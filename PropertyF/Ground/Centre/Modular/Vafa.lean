@@ -201,6 +201,15 @@ theorem fpDeterminant_conjugate
       CategoryTheory.Linear.homCongr_symm_apply, Category.assoc]
   rw [h, LinearEquiv.det_conj]
 
+/-- Conjugation followed by composition adds the corresponding FP determinants. -/
+theorem fpDeterminant_conjugate_trans {X Y : C.Obj} (e : X ≅ Y)
+    (a : Y ≅ Y) (b : X ≅ X) :
+    fpDeterminant C X (e ≪≫ a ≪≫ e.symm ≪≫ b) =
+      fpDeterminant C Y a + fpDeterminant C X b := by
+  rw [← Iso.trans_assoc, ← Iso.trans_assoc, fpDeterminant_trans, Iso.trans_assoc]
+  congr 1
+  simpa only [Iso.symm_symm_eq] using fpDeterminant_conjugate C e.symm a
+
 /-- Tensoring a scalar automorphism preserves the scalar action. -/
 theorem tensor_scalarIso {R : Type*} [CommSemiring R] {D : Type u}
     [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Linear R D]
@@ -475,14 +484,8 @@ theorem fpDeterminant_tensor_of_simple
     HasTensorDeterminant C X a := by
   let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
   obtain ⟨z, hz⟩ := endomorphism_simple_eq_smul_id ℂ a.hom
-  have hne : z ≠ 0 := by
-    intro h
-    have ha : a.hom = 0 := by simpa [h] using hz.symm
-    have hh := a.hom_inv_id
-    simp [ha] at hh
-    exact id_nonzero _ hh.symm
-  have ha : a = scalarIso S (Units.mk0 z hne) := Iso.ext hz.symm
-  rw [ha]
+  have hne : z ≠ 0 := fun h ↦ id_nonzero S (by simpa [← hz, h] using a.hom_inv_id.symm)
+  rw [show a = scalarIso S (Units.mk0 z hne) from Iso.ext hz.symm]
   exact fpDeterminant_tensor_scalar C X S _
 
 /-- Components of a natural automorphism of a functor are conjugate along
@@ -545,8 +548,7 @@ theorem fpDeterminant_tensor_natural
     (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X Y : C.Obj) : HasTensorDeterminantRule C η X Y := by
   change fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ η.app Y) =
     fpDimension C X • fpDeterminant C Y (η.app Y)
-  have hY := base_finite_simple_sum C Y
-  induction hY with
+  induction base_finite_simple_sum C Y with
   | @zero W hz =>
     have hη : η.app W = Iso.refl W := Iso.ext (hz.eq_of_src _ _)
     have ht : Iso.refl X ⊗ᵢ Iso.refl W = Iso.refl (X ⊗ W) := Iso.ext (by simp)
@@ -762,22 +764,11 @@ theorem fpDeterminant_monodromy_tensor (Z X Y : C.Obj) :
     monodromyDet C Z (X ⊗ Y) =
       fpDeterminant C (X ⊗ (Z ⊗ Y)) (Iso.refl X ⊗ᵢ monodromyIso Z Y) +
       fpDeterminant C ((Z ⊗ X) ⊗ Y) (monodromyIso Z X ⊗ᵢ Iso.refl Y) := by
-  let t := α_ Z X Y
-  let u := ((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)
-  let q := Iso.refl X ⊗ᵢ monodromyIso Z Y
-  let r := monodromyIso Z X ⊗ᵢ Iso.refl Y
-  have hconj := fpDeterminant_conjugate C t.symm (monodromyIso Z (X ⊗ Y))
+  have h := fpDeterminant_conjugate C (α_ Z X Y).symm (monodromyIso Z (X ⊗ Y))
   change fpDeterminant C ((Z ⊗ X) ⊗ Y)
-    (t ≪≫ monodromyIso Z (X ⊗ Y) ≪≫ t.symm) = _ at hconj
-  rw [monodromy_hexagon_iso] at hconj
-  have hq := fpDeterminant_conjugate C u.symm q
-  change fpDeterminant C ((Z ⊗ X) ⊗ Y) (u ≪≫ q ≪≫ u.symm) = _ at hq
-  change fpDeterminant C ((Z ⊗ X) ⊗ Y) (u ≪≫ q ≪≫ u.symm ≪≫ r) = _ at hconj
-  have heq : (u ≪≫ q ≪≫ u.symm ≪≫ r) = (u ≪≫ q ≪≫ u.symm) ≪≫ r := by
-    apply Iso.ext
-    simp
-  rw [heq, fpDeterminant_trans, hq] at hconj
-  exact hconj.symm
+    ((α_ Z X Y) ≪≫ monodromyIso Z (X ⊗ Y) ≪≫ (α_ Z X Y).symm) = _ at h
+  rw [monodromy_hexagon_iso, fpDeterminant_conjugate_trans] at h
+  exact h.symm
 
 /-- The actual FP determinant of the monodromy hexagon is the weighted sum
 of the two simple monodromy determinants, under simple twist balancing. -/

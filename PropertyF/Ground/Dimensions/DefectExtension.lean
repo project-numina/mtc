@@ -275,22 +275,11 @@ theorem rootTensorDefect_involution_extension
       (rootTensorDefect C (simples C i) (simples C j)).hom =
         𝟙 (simples C i ⊗ simples C j)) (X Y : C.Obj) :
     (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
-  classical
-  let ex := simpleDecomposition C X
-  let ey := simpleDecomposition C Y
-  let V := simplePiecesObject C X
-  let W := simplePiecesObject C Y
-  apply (cancel_epi (ex.symm ⊗ᵢ ey.symm).hom).1
-  apply tensorBiproduct_hom_ext C V W
-  intro i j
-  let sx : simples C i.1 ⟶ X := biproduct.ι V i ≫ ex.inv
-  let sy : simples C j.1 ⟶ Y := biproduct.ι W j ≫ ey.inv
+  apply tensor_simples_hom_ext C
+  intro i j sx sy
   have hn := rootTensorDefect_natural C sx sy
-  have hh : (sx ⊗ₘ sy) ≫ ((rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom) =
-      (sx ⊗ₘ sy) ≫ 𝟙 (X ⊗ Y) := by
-    rw [← Category.assoc, hn, Category.assoc, hn, ← Category.assoc, hsimple, Category.id_comp, Category.comp_id]
-  simpa [sx, sy, ex, ey, V, W, tensorIso_hom, tensorHom_comp_tensorHom,
-    Category.assoc] using hh
+  rw [← Category.assoc, hn, Category.assoc, hn, ← Category.assoc, hsimple,
+    Category.id_comp, Category.comp_id]
 /-- The fourth-dual tensor law on simple pairs implies ENO trace reciprocity. -/
 theorem enoTraceMatrix_reciprocity_of_simple_fourth_dual
     (hfourth : ∀ i j : Fin (rank C),
