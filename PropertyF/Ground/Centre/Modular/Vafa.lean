@@ -262,9 +262,7 @@ theorem finite_order_of_fp_twist_balance (t : Fin (rank C) → ℂˣ)
       fpSimple C j • B i z + fpSimple C i • B j z := by
     intro i j z
     dsimp [B]
-    rw [hbalance]
-    simp only [smul_add, smul_smul]
-    rw [mul_comm (fpSimple C j) (fpSimple C i)]
+    simpa only [smul_add, smul_smul, mul_comm] using hbalance i j
   intro i
   apply (rationalUnitClass_eq_zero_iff (K := ℝ) _).mp
   apply (smul_eq_zero.mp ?_).resolve_left (ne_of_gt (fpSimple_pos C i))
@@ -829,11 +827,12 @@ theorem fpDeterminant_monodromy_decomposition
       (Module.finrank ℂ (simples C i ⟶ W) : ℝ) • monodromyDet C Z (simples C i) :=
   fpDeterminant_functor_natural_decomposition C (tensorLeft Z) (monodromyNaturalIso Z) W
 
+variable (ht : HasSimpleScalars C η t) (hbalance : HasSimpleBalance C η t)
+
+include hbalance in
 /-- Under simple twist balancing, the FP determinant of every simple mixed
 monodromy vanishes. -/
-theorem fpDeterminant_simple_monodromy_eq_zero
-    (hbalance : HasSimpleBalance C η t)
-    (z i : Fin (rank C)) :
+theorem fpDeterminant_simple_monodromy_eq_zero (z i : Fin (rank C)) :
     monodromyDet C (simples C z) (simples C i) = 0 := by
   let B : Fin (rank C) → Fin (rank C) → vafaUnitSpace := fun i z =>
     monodromyDet C (simples C z) (simples C i)
@@ -844,11 +843,10 @@ theorem fpDeterminant_simple_monodromy_eq_zero
   change (∑ k, (fusionCoeff C i j k : ℝ) • B k z) = _ at h
   simpa [B, add_comm] using h
 
+include ht hbalance in
 /-- Under an actual natural twist and its simple balancing equation,
 the simple twist scalars have finite order. -/
-theorem natural_scalars_finite_of_simple_balancing
-    (ht : HasSimpleScalars C η t)
-    (hbalance : HasSimpleBalance C η t) :
+theorem natural_scalars_finite_of_simple_balancing :
     ∀ i, IsOfFinOrder (t i) :=
   natural_scalars_finite_of_monodromy_determinant C ht hbalance fun i j ↦
     fpDeterminant_simple_monodromy_eq_zero C hbalance i j

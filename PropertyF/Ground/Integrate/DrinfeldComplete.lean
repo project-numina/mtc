@@ -34,8 +34,6 @@ theorem center_globalDimension_square_of_actual_induction
     simpa [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow] using
       congrArg (fun x : ℝ ↦ (x : ℂ)) (CentreInduction.globalFPDimension_square_of_actual_induction C)
 
-
-
 end PropertyF.Ground
 end
 end
@@ -68,8 +66,6 @@ theorem center_transparent_label_eq_unit
   simples_injective _ ⟨(CentreInduction.center_transparent_simple_iso_unit (C := C) hk).some ≪≫
     (unitIndex_iso 𝒵ᶠ).some.symm⟩
 
-
-
 end PropertyF.Ground
 end
 end
@@ -100,8 +96,6 @@ theorem pivotal_twist_balanced (C : BraidedFusionCategory.{v,u})
         (Dimensions.pivotalBraidedTwist C p Y).hom) =
       (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom :=
   CentreIntegrate.pivotal_balance_of_drinfeld_tensor p (doubleDualIso C) (drinfeld_tensor C X Y)
-
-
 
 end PropertyF.Ground
 end

@@ -4,9 +4,13 @@ public import Mathlib.CategoryTheory.Adjunction.Mates
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
 public import PropertyF.Ground.Fusion.FunctorDimension
 
+/-! # Dual half-braidings and the bundled centre
+
+Adjoint mates of half-braidings give the candidate dual crossing. When rigidity
+and fusion instances are available, the centre bundles as a braided fusion
+category and its forgetful functor preserves Frobenius–Perron dimension. -/
+
 section
-/-! Adjoint mates of centre half-braidings. The tensor law and the centrality
-of the dual evaluation and coevaluation are not established here. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -39,7 +43,6 @@ theorem dualCrossing_natural (Z : CategoryTheory.Center C) {U V : C} (f : U ⟶ 
       ((dualCrossingIso Z).app U).hom ≫ f ▷ (Z.1ᘁ) :=
   (dualCrossingIso Z).hom.naturality f
 
-
 end PropertyF.Ground.Integrate
 end
 end
@@ -54,8 +57,7 @@ variable (C : BraidedFusionCategory.{v,u})
 variable [RigidCategory (CategoryTheory.Center C.Obj)]
 variable [IsFusionCategory (CategoryTheory.Center C.Obj)]
 
-/-- The actual centre, provided its unproved rigidity and finite
-semisimplicity obligations are supplied as explicit instances. -/
+/-- The actual centre, equipped with supplied rigidity and fusion instances. -/
 def bundledCenter : BraidedFusionCategory.{v,max u v} where
   Obj := CategoryTheory.Center C.Obj
 
