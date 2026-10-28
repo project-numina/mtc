@@ -71,10 +71,8 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
     (c := fun q => groundEndBlockEquiv C e a q.1 q.2 q.2)
     (fun ⟨i, j⟩ => by simpa [F, z, Category.assoc] using groundEndBlockEquiv_diagonal C e a i j)
-  change scalar (p.rightTrace z) = ∑ q, groundEndBlockEquiv C e a q.1 q.2 q.2 *
-    scalar (p.rightTrace (𝟙 (F q))) at h
-  rw [← hz, h, Fintype.sum_sigma]
-  simp [F, Matrix.trace, Finset.mul_sum, mul_comm]
+  simpa [rightTraceLinear, hz, F, Matrix.trace, Finset.mul_sum, mul_comm,
+    Fintype.sum_sigma] using h
 
 end PropertyF.Ground.Calculus
 
@@ -135,7 +133,6 @@ include hT in
 /-- A cyclic functional agrees with a multiple of the trace on matrix units. -/
 private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
     T (Matrix.single i j a) = T (Matrix.single i₀ i₀ 1) * (Matrix.single i j a).trace := by
-  classical
   by_cases hij : i = j
   · subst j
     have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
@@ -193,13 +190,28 @@ end PropertyF.Ground.Calculus
 open scoped BigOperators
 namespace PropertyF.Ground.Calculus
 
+section IdempotentTrace
+
+variable {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A * A = A)
+include hA
+
 /-- The trace of an idempotent complex matrix is a nonnegative integer. -/
-theorem idempotent_matrix_trace_nat {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ}
-    (hA : A * A = A) : ∃ n : ℕ, A.trace = n :=
+theorem idempotent_matrix_trace_nat : ∃ n : ℕ, A.trace = n :=
   let p := A.toLin'
   have hp : IsIdempotentElem p := (show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv'
   ⟨Module.finrank ℂ (LinearMap.range p), by
     simpa only [p, Matrix.trace_toLin'_eq] using ((LinearMap.isProj_range_iff_isIdempotentElem p).2 hp).trace⟩
+
+/-- A complex idempotent matrix with zero trace is zero. -/
+theorem idempotent_matrix_eq_zero_of_trace_eq_zero (ht : A.trace = 0) : A = 0 :=
+  Matrix.toLinAlgEquiv'.injective (by
+    simpa only [map_zero] using LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero
+      ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')
+      (by
+        change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
+        simpa only [Matrix.trace_toLin'_eq] using ht))
+
+end IdempotentTrace
 
 /-- A weighted block trace of an element supported in one block. -/
 theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
@@ -237,16 +249,6 @@ theorem representation_trace_multiplicities {m : ℕ}
     simpa [T, e, sum_trace_single] using (hw e).symm.trans hk
   choose mult hm using hnat
   exact ⟨mult, fun x => by simpa [T, hm] using hw x⟩
-
-/-- A complex idempotent matrix with zero trace is zero. -/
-theorem idempotent_matrix_eq_zero_of_trace_eq_zero {m : ℕ}
-    {A : Matrix (Fin m) (Fin m) ℂ} (hA : A * A = A) (ht : A.trace = 0) : A = 0 :=
-  Matrix.toLinAlgEquiv'.injective (by
-    simpa only [map_zero] using LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero
-      ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')
-      (by
-        change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
-        simpa only [Matrix.trace_toLin'_eq] using ht))
 
 include hd in
 /-- A faithful block-algebra representation has nonnegative integer

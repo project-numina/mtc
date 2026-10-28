@@ -242,11 +242,7 @@ theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
   obtain ⟨n, d, hd, ⟨e⟩⟩ := groupImageAlgebra_blocks ρ
   let blockRep (i : Fin n) : G →* Matrix (Fin (d i)) (Fin (d i)) ℂ :=
     (Pi.evalMonoidHom _ i).comp (e.toMonoidHom.comp (groupInImage ρ))
-  have hu : ∀ i, ∃ P : (Matrix (Fin (d i)) (Fin (d i)) ℂ)ˣ,
-      ∀ g, ((↑(P * (blockRep i).toHomUnits g * P⁻¹) :
-        Matrix (Fin (d i)) (Fin (d i)) ℂ) ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) :=
-    fun i => exists_unitarizing_basis (blockRep i).toHomUnits
-  choose P hP using hu
+  choose P hP using fun i : Fin n => exists_unitarizing_basis (blockRep i).toHomUnits
   let e' := e.trans (AlgEquiv.piCongrRight (fun i => unitConjugation (P i)))
   refine ⟨n, d, e', hd, fun g i => ?_⟩
   simpa [e', unitConjugation, blockRep] using hP i g

@@ -69,9 +69,7 @@ theorem addLeftBraidAlgebraIter_asHom :
         (tensorPower X k ◁ (a : End (braidTensorPower X n)).asHom) ≫
           (insertLeftPowerIso X n k).hom := by
   induction k with
-  | zero =>
-    dsimp only [addLeftBraidAlgebraIter, insertLeftPowerIso, tensorPower]
-    monoidal
+  | zero => simp [addLeftBraidAlgebraIter, insertLeftPowerIso, tensorPower]
   | succ k ih =>
     change ((addLeftBraidAlgebra X (n + k) (addLeftBraidAlgebraIter X n k a) :
       braidAlgebra X (n + k + 1)) : End (tensorPower X ((n + k + 1) + 2))).asHom = _
@@ -91,9 +89,7 @@ theorem addRightBraidAlgebraIter_asHom :
         ((a : End (braidTensorPower X n)).asHom ▷ tensorPower X k) ≫
           (insertRightPowerIso X n k).hom := by
   induction k with
-  | zero =>
-    dsimp only [addRightBraidAlgebraIter, insertRightPowerIso, tensorPower]
-    monoidal
+  | zero => simp [addRightBraidAlgebraIter, insertRightPowerIso, tensorPower]
   | succ k ih =>
     change ((addRightBraidAlgebra X (n + k) (addRightBraidAlgebraIter X n k a) :
       braidAlgebra X (n + k + 1)) : End (tensorPower X ((n + k + 1) + 2))).asHom = _
@@ -197,8 +193,7 @@ theorem freshOverlapIso_action :
       (eqToIso (congrArg (fun n => braidTensorPower X n) h)).hom ≫
         ((F u : braidAlgebra X b) : End (tensorPower X (b + 2))).asHom ≫
       (eqToIso (congrArg (fun n => braidTensorPower X n) h)).inv := by
-    intro a b h F u
-    cases h
+    rintro a b rfl F u
     simp
   apply End.ext
   change (freshOverlapIso X t k).inv ≫
