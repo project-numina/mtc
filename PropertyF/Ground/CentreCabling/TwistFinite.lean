@@ -10,27 +10,37 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
 
+/-- A natural endomorphism has finite order if finitely many components detect
+it and each of those components has finite order. -/
+theorem natural_end_finite_order_of_components {D : Type u} [Category.{v} D]
+    {ι : Type*} [Fintype ι] (X : ι → D)
+    (hext : ∀ {α β : 𝟭 D ⟶ 𝟭 D}, (∀ i, α.app (X i) = β.app (X i)) → α = β)
+    (α : 𝟭 D ⟶ 𝟭 D) (h : ∀ i, IsOfFinOrder (End.of (α.app (X i)))) :
+    ∃ n : ℕ, n ≠ 0 ∧ ∀ Y, (End.of (α.app Y)) ^ n = 1 := by
+  obtain ⟨n, hn, hs⟩ := (IsOfFinOrder.pi h).exists_pow_eq_one
+  let a : End (𝟭 D) := End.of α
+  have happ (k : ℕ) (Y : D) : (a ^ k).asHom.app Y =
+      ((End.of (α.app Y)) ^ k).asHom := by
+    simpa [Functor.mapEnd, a] using congrArg End.asHom
+      (map_pow (((CategoryTheory.evaluation D D).obj Y).mapEnd (𝟭 D)) a k)
+  have ha : a ^ n = 1 := by
+    apply End.ext
+    apply hext
+    intro i
+    rw [happ]
+    simpa using congrArg End.asHom (congrFun hs i)
+  refine ⟨n, hn.ne', fun Y ↦ ?_⟩
+  let φ := ((CategoryTheory.evaluation D D).obj Y).mapEnd (𝟭 D)
+  exact ((map_pow φ a n).symm.trans (congrArg φ ha)).trans (map_one φ)
+
 /-- A natural endomorphism of the identity in a fusion category has a common
 finite order as soon as its components on the simple representatives do. -/
 theorem natural_end_finite_order_of_simples
     {C : Ground.BraidedFusionCategory.{v,u}} (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (h : ∀ i, IsOfFinOrder (End.of (α.app (Ground.simples C i)))) :
-    ∃ n : ℕ, n ≠ 0 ∧ ∀ X, (End.of (α.app X)) ^ n = 1 := by
-  obtain ⟨n, hn, hs⟩ := (IsOfFinOrder.pi h).exists_pow_eq_one
-  let a : End (𝟭 C.Obj) := End.of α
-  have happ (k : ℕ) (X : C.Obj) : (a ^ k).asHom.app X =
-      ((End.of (α.app X)) ^ k).asHom := by
-    simpa [Functor.mapEnd, a] using congrArg End.asHom
-      (map_pow (((CategoryTheory.evaluation C.Obj C.Obj).obj X).mapEnd (𝟭 C.Obj)) a k)
-  have ha : a ^ n = 1 := by
-    apply End.ext
-    apply Dimensions.natTrans_eq_of_simple_components C
-    intro i
-    rw [happ]
-    simpa using congrArg End.asHom (congrFun hs i)
-  refine ⟨n, hn.ne', fun X ↦ ?_⟩
-  let φ := ((CategoryTheory.evaluation C.Obj C.Obj).obj X).mapEnd (𝟭 C.Obj)
-  exact ((map_pow φ a n).symm.trans (congrArg φ ha)).trans (map_one φ)
+    ∃ n : ℕ, n ≠ 0 ∧ ∀ X, (End.of (α.app X)) ^ n = 1 :=
+  natural_end_finite_order_of_components (simples C)
+    (fun h ↦ Dimensions.natTrans_eq_of_simple_components C h) α h
 
 /-- Tensoring two endomorphisms commutes with taking powers. -/
 theorem tensor_end_pow {D : Type u} [Category.{v} D] [MonoidalCategory D]
