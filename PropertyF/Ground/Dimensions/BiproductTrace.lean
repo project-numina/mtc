@@ -33,11 +33,8 @@ theorem cyclicTrace_decomposition {ι : Type*} [Fintype ι]
   calc
     _ = trace X ((∑ j, q j ≫ i j) ≫ f) := by rw [h, Category.id_comp]
     _ = ∑ j, trace X ((q j ≫ i j) ≫ f) := by
-      rw [Preadditive.sum_comp]
-      exact map_sum (trace X) _ _
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro j _
+      simpa only [Preadditive.sum_comp] using map_sum (trace X) _ _
+    _ = _ := Finset.sum_congr rfl fun j _ ↦ by
       simpa only [Category.assoc] using hcyclic (q j) (i j ≫ f)
 
 /-- Each diagonal block on a biproduct of simple objects is a scalar. -/
