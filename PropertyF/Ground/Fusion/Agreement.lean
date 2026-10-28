@@ -199,10 +199,8 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {A : Matrix ι ι ℝ}
   have hyne : y ≠ 0 := norm_ne_zero_iff.mp (by simpa [hynorm] using norm_ne_zero_iff.mpr hz)
   have hynonneg (i : ι) : 0 ≤ y i := abs_nonneg _
   have hyexists : ∃ i, 0 < y i := by
-    by_contra! h
-    apply hyne
-    ext i
-    exact le_antisymm (h i) (hynonneg i)
+    obtain ⟨i, hi⟩ := Function.ne_iff.mp ((not_congr (WithLp.ext_iff 2)).mp hyne)
+    exact ⟨i, lt_of_le_of_ne (hynonneg i) (Ne.symm hi)⟩
   have hyquad : T.reApplyInnerSelf x ≤ T.reApplyInnerSelf y := by
     simpa [T, matrix_quadratic_form, y, euclideanAbs] using quadratic_le_abs hA (fun i ↦ x i)
   have hymax : IsMaxOn T.reApplyInnerSelf (Metric.sphere 0 ‖y‖) y :=
