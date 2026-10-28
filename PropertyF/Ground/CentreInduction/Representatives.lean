@@ -47,7 +47,7 @@ theorem finrank_end_complement_lt (S K : D)
     [FiniteDimensional k (S ⊞ K ⟶ S ⊞ K)] (hS : ¬ IsZero S) :
     Module.finrank k (K ⟶ K) < Module.finrank k (S ⊞ K ⟶ S ⊞ K) :=
   finrank_end_lt_of_split_epi (k := k) biprod.inl biprod.snd
-    ((IsZero.iff_isSplitMono_eq_zero (biprod.inl : S ⟶ S ⊞ K)).not.mp hS) (by simp)
+    ((IsZero.iff_isSplitMono_eq_zero (biprod.inl : S ⟶ S ⊞ K)).not.mp hS) biprod.inl_snd
 
 /-- Objects built from finitely many simple objects by binary direct sums,
 up to isomorphism. -/

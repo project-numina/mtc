@@ -20,6 +20,14 @@ theorem fusionCoeff_dual_transpose (i j k : Fin (rank C)) :
   rw [fusionCoeff_comm C i j, fusionCoeff_reciprocity_labels,
     fusionCoeff_comm C k (dualIndex C i)]
 
+/-- Left and right eigenvectors with nonzero pairing have the same eigenvalue. -/
+theorem eigenvalue_eq_of_dotProduct_ne_zero {ι K : Type*} [Fintype ι]
+    [CommSemiring K] [IsDomain K] {A : Matrix ι ι K} {u v : ι → K} {z w : K}
+    (h : A *ᵥ v = z • v) (ht : u ᵥ* A = w • u) (hn : u ⬝ᵥ v ≠ 0) : z = w :=
+  mul_right_cancel₀ hn <| by
+    simpa only [h, ht, dotProduct_smul, smul_dotProduct, smul_eq_mul] using
+      Matrix.dotProduct_mulVec u A v
+
 /-- If a matrix has conjugation-invariant entries, its eigenvalue and that of
 its transpose on a common nonzero eigenvector are conjugate. -/
 theorem conjugate_of_transpose_eigenvector {ι K : Type*} [Fintype ι] [RCLike K]
@@ -27,15 +35,9 @@ theorem conjugate_of_transpose_eigenvector {ι K : Type*} [Fintype ι] [RCLike K
     {v : ι → K} (hv : v ≠ 0) {z w : K}
     (h : A *ᵥ v = z • v) (ht : Aᵀ *ᵥ v = w • v) : star w = z := by
   have hAt : Aᵀᴴ = A := Matrix.ext fun i j ↦ by simpa [Matrix.conjTranspose_apply] using hA i j
-  have hs : (star v) ᵥ* A = (star w) • (star v) := by
-    simpa [Matrix.star_mulVec, hAt] using congrArg star ht
-  have hn : star v ⬝ᵥ v ≠ 0 := fun hz ↦ hv (dotProduct_star_self_eq_zero.mp hz)
-  have heq : z * (star v ⬝ᵥ v) = (star w) * (star v ⬝ᵥ v) := by
-    calc
-      _ = star v ⬝ᵥ (A *ᵥ v) := by rw [h, dotProduct_smul]; rfl
-      _ = (star v ᵥ* A) ⬝ᵥ v := Matrix.dotProduct_mulVec _ _ _
-      _ = _ := by rw [hs, smul_dotProduct]; rfl
-  exact (mul_right_cancel₀ hn heq).symm
+  exact (eigenvalue_eq_of_dotProduct_ne_zero h
+    (by simpa [Matrix.star_mulVec, hAt] using congrArg star ht)
+    (fun hz ↦ hv (dotProduct_star_self_eq_zero.mp hz))).symm
 
 /-- A multiplicative character is an eigenvector of each fusion matrix. -/
 theorem fusion_character_eigenvector {ι K : Type*} [Fintype ι] [Semiring K]
