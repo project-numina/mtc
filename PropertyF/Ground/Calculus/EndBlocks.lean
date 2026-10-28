@@ -90,8 +90,7 @@ variable (D : BraidedFusionCategory.{v,u})
 theorem groundSimples_orthogonal : HomOrthogonal (Ground.simples D) :=
   let _ : ∀ i, Simple (Ground.simples D i) := Ground.simples_simple D
   fun _i _j hij => subsingleton_of_forall_eq 0 fun f => Classical.byContradiction fun hf =>
-    let _ : IsIso f := isIso_of_hom_simple hf
-    hij (Ground.simples_injective D ⟨asIso f⟩)
+    hij (Ground.simples_injective D ⟨let _ : IsIso f := isIso_of_hom_simple hf; asIso f⟩)
 
 /-- The family containing `m i` copies of each chosen simple object. -/
 abbrev simpleCopies (m : Fin (Ground.rank D) → ℕ)

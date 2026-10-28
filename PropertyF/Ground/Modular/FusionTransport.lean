@@ -2,7 +2,7 @@ module
 public import Mathlib.LinearAlgebra.Dimension.Finrank
 public import Mathlib.LinearAlgebra.Matrix.Reindex
 public import PropertyF.Ground.Fusion.Multiplicity
-public import PropertyF.Ground.Integrate.Representatives
+public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Modular.BraidFunctor
 
 /-!

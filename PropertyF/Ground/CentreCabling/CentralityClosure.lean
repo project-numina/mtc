@@ -34,19 +34,17 @@ theorem doubleBraiding_eq_one_of_retract {X Z : D} (r : Retract X Z) {Y : D}
   simpa [h, Category.assoc, ← comp_whiskerRight, r.retract] using
     congrArg (fun t ↦ t ≫ (r.r ▷ Y)) (Modular.doubleBraiding_natural_left r.i Y)
 
+open scoped Classical in
 /-- If all the components of a finite biproduct centralize an object, their
 biproduct centralizes it. -/
 theorem doubleBraiding_eq_one_biproduct [Abelian D] [MonoidalPreadditive D]
     {J : Type} [Fintype J] {V : J → D} {Y : D}
     (h : ∀ i, doubleBraiding (V i) Y = 𝟙 _) :
-    doubleBraiding (⨁ V) Y = 𝟙 _ := by
-  classical
-  apply (cancel_epi (rightDistributor V Y).inv).mp
-  apply biproduct.hom_ext'
-  intro i
-  rw [biproduct_ι_comp_rightDistributor_inv_assoc,
-    ← Modular.doubleBraiding_natural_left (biproduct.ι V i) Y, h i]
-  simp
+    doubleBraiding (⨁ V) Y = 𝟙 _ :=
+  (cancel_epi (rightDistributor V Y).inv).mp <| biproduct.hom_ext' _ _ fun i ↦ by
+    rw [biproduct_ι_comp_rightDistributor_inv_assoc,
+      ← Modular.doubleBraiding_natural_left (biproduct.ι V i) Y, h i]
+    simp
 
 /-- A retract-closed object class centralizes Y when the constituents of a
 finite decomposition of X do. -/

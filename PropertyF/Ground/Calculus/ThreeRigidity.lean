@@ -98,18 +98,20 @@ theorem local_monodromy_of_block_squares_equal {X : C} {r : ℕ} {size : Fin r �
     threeGeneratorRight, imageGenerator] using
       congrArg (fun z : braidAlgebra X 1 => (z : End (tensorPower X 3))) hs
 
+omit [Preadditive C] [Linear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Finite categorical braid image gives finite order of the double
 self-braiding on the ordinary tensor product. -/
-theorem selfMonodromy_finite_order {X : C} (hfinite : ObjectPropertyF X) :
-    ∃ n : ℕ, n ≠ 0 ∧ selfMonodromy X ^ n = 1 := by
-  obtain ⟨n, hn, hpow⟩ := braid_square_finite_order hfinite
-  have hgen : (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd (braidGenerator X 0 0)) =
-      End.of ((β_ X X).hom) := End.ext (twoGenerator_transport X)
-  have h := congrArg (fun z => (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd z)) hpow
+theorem selfMonodromy_isOfFinOrder {X : C} (hfinite : ObjectPropertyF X) :
+    IsOfFinOrder (selfMonodromy X) := by
+  have h := (twoPowerIso X).conj.toMonoidHom.isOfFinOrder
+    (Aut.toEnd.isOfFinOrder (braidImage_isOfFinOrder hfinite 0 (imageGenerator X 0 0)))
+  change IsOfFinOrder ((twoPowerIso X).conj (Aut.toEnd (braidGenerator X 0 0))) at h
+  rw [show (twoPowerIso X).conj (Aut.toEnd (braidGenerator X 0 0)) =
+    End.of ((β_ X X).hom) from End.ext (twoGenerator_transport X)] at h
   have hs : (End.of ((β_ X X).hom) : End (X ⊗ X)) ^ 2 = selfMonodromy X :=
     End.ext (by simp [selfMonodromy, pow_two, End.mul_asHom])
-  exact ⟨n, hn, by simpa only [map_pow, map_one, hgen, hs] using h⟩
+  simpa only [hs] using h.pow (n := 2)
 
 end LocalMonodromy
 
@@ -144,9 +146,8 @@ theorem pair_operator_scalar_of_overlaps_equal {X : C.Obj} [Simple X]
 theorem end_one_ne_zero_of_pivotalDimension_ne_zero {X : C.Obj}
     (h : pivotalDimension C p X ≠ 0) :
     (1 : End X) ≠ 0 := fun hzero => h (by
-  simpa only [pivotalDimension, unitScalar_eq_equiv, End.one_asHom, End.zero_asHom,
-    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear p _).map_zero, map_zero] using
-    congrArg (fun z : End X => Ground.unitScalarEquiv C (p.rightTrace z.asHom)) hzero)
+  simp only [pivotalDimension, unitScalar_eq_equiv, ← End.one_asHom, hzero, End.zero_asHom,
+    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear p _).map_zero, map_zero])
 
 /-- A scalar double self-braiding of finite order has unit-modulus scalar,
 so the two real dimensions have equal absolute value. -/
@@ -157,9 +158,9 @@ theorem dimension_eq_abs_of_scalar_monodromy {X : C.Obj} {d f : ℝ} (hd : d ≠
     end_one_ne_zero_of_pivotalDimension_ne_zero C p (by
       rw [Dimensions.pivotalDimension_tensor, hdim]
       exact_mod_cast mul_ne_zero hd hd)
-  obtain ⟨n, hn, hpow⟩ := selfMonodromy_finite_order hfinite
+  obtain ⟨n, hn, hpow⟩ := (selfMonodromy_isOfFinOrder hfinite).exists_pow_eq_one
   apply fp_eq_abs_dim_of_finite_order hd hf
-  refine ⟨n, hn, ?_⟩
+  refine ⟨n, hn.ne', ?_⟩
   apply (smul_left_injective ℂ hnonzero)
   change ((f / d : ℂ) ^ n) • (1 : End (X ⊗ X)) = (1 : ℂ) • (1 : End (X ⊗ X))
   simpa [hscalar, smul_pow] using hpow
