@@ -62,14 +62,14 @@ theorem center_witness_of_categorical_modular_data (hfp : IsFPSpherical Z p)
     (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
     (hF : ∀ y, IsGaloisUnitColumn Z p σ.symm y → ObjectPropertyF (simples Z y)) :
-    HasGaloisDimensionWitness σ δ b :=
+    HasGaloisDimensionWitness (algebraMap ℝ ℂ) σ δ b :=
   let ⟨y, hf, hcolumn, hG⟩ := exists_modular_witness Z hfp hdet hglobal σ
   let d := (σ (𝒇 y : ℂ)).re
   let hσf : σ (𝒇 y : ℂ) = (d : ℂ) := (fp_simple_galois_real Z σ y).symm
   ⟨𝒇 y, d, hσf,
     positive_ratio_of_galois_square (j := algebraMap ℝ ℂ) hδ hb
       (lt_of_lt_of_le zero_lt_one hf) hτ hG, hf,
-    galois_rigidity_of_propertyF Z p hfp.2 σ y (hF y hcolumn) d hσf (by
+    galois_rigidity_of_propertyF Z p hfp.2 (hF y hcolumn) hσf (by
       rw [hcolumn y, hfp.2 y, map_mul, hσf, σ.apply_symm_apply])⟩
 
 end PropertyF.Ground
@@ -180,10 +180,11 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
     (hProduct : ∀ y ∈ generated, Centre.ProductRetract (simples 𝒵ᶠ y)) :
     WeaklyIntegral (globalFPDimension C) := by
   apply weaklyIntegral_of_galois_fixed (globalFPDimension_isIntegral C)
-  apply galois_fixed_of_smaller_conjugate_witness (globalFPDimension C)
+  apply galois_fixed_of_smaller_conjugate_witness (j := algebraMap ℝ ℂ) (globalFPDimension C)
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
     (positive_bounded_conjugates_of_fp C)
   intro τ a b _ _ _ hτ
+  change τ.symm (globalFPDimension C : ℂ) = (b : ℂ) at hτ
   obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp C τ.symm
   have hb : 0 < b := (Complex.ofReal_injective (hb'eq.symm.trans hτ)) ▸ hb'
   apply center_witness_of_categorical_modular_data 𝒵ᶠ hfp hdet

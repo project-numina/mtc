@@ -45,28 +45,23 @@ theorem positive_ratio_of_galois_square {j : R →+* K} {τ : K ≃+* K} {δ b f
       (by simpa only [map_pow, hτ] using hG)
 
 /-- The numerical witness supplied by a Galois-unit column. -/
-abbrev HasGaloisDimensionWitness (σ : ℂ ≃+* ℂ) (δ b : ℝ) : Prop :=
-  ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d|
+abbrev HasGaloisDimensionWitness (j : R →+* K) (σ : K ≃+* K) (δ b : R) : Prop :=
+  ∃ f d : R, σ (j f) = j d ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d|
 
 /-- If real conjugates are bounded above by δ and the centre/rigidity witness
 exists for each strictly smaller conjugate, every conjugate equals δ. -/
-theorem galois_fixed_of_smaller_conjugate_witness (δ : ℝ) (hδ : 0 < δ)
-    (hConjugates : ∀ σ : ℂ ≃+* ℂ, ∃ a : ℝ,
-      0 < a ∧ a ≤ δ ∧ σ (δ : ℂ) = (a : ℂ))
-    (hWitness : ∀ (σ : ℂ ≃+* ℂ) (a b : ℝ),
-      0 < a → a < δ → σ (δ : ℂ) = (a : ℂ) →
-      σ.symm (δ : ℂ) = (b : ℂ) →
-      HasGaloisDimensionWitness σ δ b) :
-    ∀ σ : ℂ ≃+* ℂ, σ (δ : ℂ) = (δ : ℂ) := by
+theorem galois_fixed_of_smaller_conjugate_witness {j : R →+* K} (δ : R) (hδ : 0 < δ)
+    (hConjugates : ∀ σ : K ≃+* K, ∃ a : R, 0 < a ∧ a ≤ δ ∧ σ (j δ) = j a)
+    (hWitness : ∀ (σ : K ≃+* K) (a b : R), 0 < a → a < δ → σ (j δ) = j a →
+      σ.symm (j δ) = j b → HasGaloisDimensionWitness j σ δ b) :
+    ∀ σ : K ≃+* K, σ (j δ) = j δ := by
   intro σ
   obtain ⟨a, ha, hale, haeq⟩ := hConjugates σ
   obtain ⟨b, _, _, hbeq⟩ := hConjugates σ.symm
   rcases lt_or_eq_of_le hale with halt | heq
   · obtain ⟨f, d, hσf, hratio, hf, hrigidity⟩ := hWitness σ a b ha halt haeq hbeq
-    exact (galois_dimension_contradiction (j := algebraMap ℝ ℂ) (σ := σ) hδ ha halt
-      (by
-        change σ (b : ℂ) = (δ : ℂ)
-        rw [← hbeq, σ.apply_symm_apply])
+    exact (galois_dimension_contradiction (j := j) (σ := σ) hδ ha halt
+      (by rw [← hbeq, σ.apply_symm_apply])
       haeq hσf hratio hf hrigidity).elim
   · simpa [heq] using haeq
 
