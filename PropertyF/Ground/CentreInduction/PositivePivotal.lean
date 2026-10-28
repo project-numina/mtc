@@ -1,6 +1,6 @@
 module
-public import PropertyF.Ground.CentreInduction.ForgetDualUnit
-public import PropertyF.Ground.CentreInduction.InjectiveFusion
+public import PropertyF.Ground.CentreInduction.ForgetDualTensor
+public import PropertyF.Ground.CentreInduction.FiniteSimples
 public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Dimensions.DimensionCharacter
@@ -142,12 +142,6 @@ theorem positiveDoubleDualIso_forget :
   simpa [positiveDoubleDualIso, forgetDoubleDualIso, rightDualIsoMap,
     positiveDualIso_forget, positiveDualIso_inv_forget] using forgetDualIso_natural (positiveDualIso T).inv
 
-/-- Forgetting also preserves the inverse positive double-dual comparison. -/
-theorem positiveDoubleDualIso_inv_forget :
-    (positiveDoubleDualIso T).inv.f = (κ₂ (Z⁺ T)).inv :=
-  (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDoubleDualIso T))
-    (κ₂ (Z⁺ T))).2 (positiveDoubleDualIso_forget T)
-
 /-- The pivotal component transported to the positive centre lift. -/
 def positivePivotalComponent :
     Z⁺ T ≅ ((Z⁺ T)ᘁ)ᘁ :=
@@ -156,7 +150,9 @@ def positivePivotalComponent :
 /-- Forgetting a positive pivotal component gives the transported component. -/
 theorem positivePivotalComponent_forget :
     (positivePivotalComponent p T).hom.f = transportedPivotalHom p (Z⁺ T) :=
-  congrArg ((p.iso T).hom ≫ ·) (positiveDoubleDualIso_inv_forget T)
+  congrArg ((p.iso T).hom ≫ ·) <|
+    (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDoubleDualIso T))
+      (κ₂ (Z⁺ T))).2 (positiveDoubleDualIso_forget T)
 
 end PropertyF.Ground.CentreInduction
 

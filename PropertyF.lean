@@ -63,13 +63,11 @@ public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
 public import PropertyF.Ground.Dimensions.FourthTensorUnit
 public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
-public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
 public import PropertyF.Ground.CentreInduction.CrossingUnit
 public import PropertyF.Ground.CentreInduction.CrossingCoherence
 public import PropertyF.Ground.CentreInduction.SecondTriangle
 public import PropertyF.Ground.CentreInduction.ActualFusion
 public import PropertyF.Ground.CentreInduction.FiniteSimples
-public import PropertyF.Ground.CentreInduction.InjectiveFusion
 public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.ForgetDualTensor
 public import PropertyF.Ground.CentreInduction.PositivePivotal

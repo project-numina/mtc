@@ -40,18 +40,20 @@ def unitSummandRetract :
   r := biproduct.π (inductionSummand C X) (unitIndex C) ≫ (unitSummandIso C X).hom
   retract := by simp [underlying, Category.assoc]
 
+variable {A B U V M N : D}
+
 /-- A fixed map on either outer tensor factor commutes with a map on the
 middle factor. -/
 @[reassoc]
-theorem tensor_middle_natural {A B U V X Y : D} (a : A ⟶ B) (d : U ⟶ V) (f : X ⟶ Y) :
-    (((𝟙 A ⊗ₘ f) ⊗ₘ 𝟙 U)) ≫ ((a ⊗ₘ 𝟙 Y) ⊗ₘ d) =
-      ((a ⊗ₘ 𝟙 X) ⊗ₘ d) ≫ (((𝟙 B ⊗ₘ f) ⊗ₘ 𝟙 V)) := by
+theorem tensor_middle_natural (a : A ⟶ B) (d : U ⟶ V) (f : M ⟶ N) :
+    (((𝟙 A ⊗ₘ f) ⊗ₘ 𝟙 U)) ≫ ((a ⊗ₘ 𝟙 N) ⊗ₘ d) =
+      ((a ⊗ₘ 𝟙 M) ⊗ₘ d) ≫ (((𝟙 B ⊗ₘ f) ⊗ₘ 𝟙 V)) := by
   simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Cancelling tensor-unit factors is natural in the middle object. -/
-theorem unitTensorIso_natural {A X Y : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (f : X ⟶ Y) :
-    ((A ◁ f) ▷ Aᘁ) ≫ (unitTensorIso e Y).hom = (unitTensorIso e X).hom ≫ f := by
+theorem unitTensorIso_natural [HasRightDual A] (e : A ≅ 𝟙_ D) (f : M ⟶ N) :
+    ((A ◁ f) ▷ Aᘁ) ≫ (unitTensorIso e N).hom = (unitTensorIso e M).hom ≫ f := by
   dsimp [unitTensorIso, hasRightDualUnit]
   rw [Category.assoc, ← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc]
   simp only [id_tensorHom, tensorHom_id]
@@ -89,9 +91,9 @@ theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
     η_ A Aᘁ ≫ (e.hom ▷ Aᘁ) ≫ (λ_ Aᘁ).hom ≫
       (rightDualIsoMap e.symm).hom = 𝟙 (𝟙_ D) := by
   let : HasRightDual (𝟙_ D) := hasRightDualUnit
-  have hc : η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm).hom) = (ρ_ (𝟙_ D)).inv :=
-    coevaluation_iso_map e
-  rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc, hc]
+  rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc,
+    show η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm).hom) = (ρ_ (𝟙_ D)).inv from
+      coevaluation_iso_map e]
   monoidal_coherence
 
 end PropertyF.Ground.CentreInduction

@@ -1,6 +1,74 @@
 module
 public import PropertyF.Ground.CentreInduction.CrossingUnit
 public import Mathlib.CategoryTheory.Monoidal.Center
+public import Mathlib.CategoryTheory.Monoidal.Rigid.Basic
+
+/-! # Induction crossing
+
+Rigidity makes a natural tensor-compatible crossing invertible. The matrix crossings of the
+induction object therefore define its half-braiding and the centre induction functor.
+-/
+
+section
+/-! A natural tensor-compatible crossing is invertible in a rigid category. -/
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing
+universe v u
+@[expose] public noncomputable section
+namespace PropertyF.Ground.CentreInduction
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+variable {A : C} (b : ∀ T : C, A ⊗ T ⟶ T ⊗ A)
+variable (hn : ∀ {T U} (f : T ⟶ U), (A ◁ f) ≫ b U = b T ≫ (f ▷ A))
+variable (ht : ∀ T U, b (T ⊗ U) =
+    (α_ _ _ _).inv ≫ (b T ▷ U) ≫ (α_ _ _ _).hom ≫ (T ◁ b U) ≫ (α_ _ _ _).inv)
+variable (hu : b (𝟙_ C) = (ρ_ A).hom ≫ (λ_ A).inv)
+variable (X Y : C) [ExactPairing X Y]
+
+/-- Bend the dual crossed strand to form the inverse crossing. -/
+def weakInverse : Y ⊗ A ⟶ A ⊗ Y :=
+  𝟙 _ ⊗≫ (Y ⊗ A) ◁ η_ X Y ⊗≫ (Y ◁ b X) ▷ Y ⊗≫ (ε_ X Y ▷ A) ▷ Y ⊗≫ 𝟙 _
+
+include hn ht hu in
+/-- The bent crossing is a right inverse. -/
+theorem weak_left : b Y ≫ weakInverse b X Y = 𝟙 (A ⊗ Y) := by
+  calc
+    _ = 𝟙 _ ⊗≫ ((b Y ▷ (𝟙_ C)) ≫ ((Y ⊗ A) ◁ η_ X Y)) ⊗≫
+      (Y ◁ b X) ▷ Y ⊗≫ (ε_ X Y ▷ A) ▷ Y ⊗≫ 𝟙 _ := by
+      dsimp [weakInverse]; monoidal
+    _ = 𝟙 _ ⊗≫ (((A ⊗ Y) ◁ η_ X Y) ≫ (b Y ▷ (X ⊗ Y))) ⊗≫
+      (Y ◁ b X) ▷ Y ⊗≫ (ε_ X Y ▷ A) ▷ Y ⊗≫ 𝟙 _ := by rw [whisker_exchange]
+    _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y)) ⊗≫
+      ((b (Y ⊗ X) ≫ ε_ X Y ▷ A) ▷ Y) ⊗≫ 𝟙 _ := by rw [ht Y X]; monoidal
+    _ = 𝟙 _ ⊗≫ (A ◁ (Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y)) ⊗≫ 𝟙 _ := by
+      rw [← hn (ε_ X Y), hu]
+      monoidal
+    _ = _ := by rw [coevaluation_evaluation'']; monoidal
+
+include hn ht hu in
+/-- The bent crossing is a left inverse. -/
+theorem weak_right : weakInverse b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
+  calc
+    _ = 𝟙 _ ⊗≫ (Y ⊗ A) ◁ η_ X Y ⊗≫ (Y ◁ b X) ▷ Y ⊗≫
+      ((ε_ X Y ▷ (A ⊗ Y)) ≫ ((𝟙_ C) ◁ b Y)) ⊗≫ 𝟙 _ := by
+      dsimp [weakInverse]; monoidal
+    _ = 𝟙 _ ⊗≫ (Y ⊗ A) ◁ η_ X Y ⊗≫ (Y ◁ b X) ▷ Y ⊗≫
+      (((Y ⊗ X) ◁ b Y) ≫ (ε_ X Y ▷ (Y ⊗ A))) ⊗≫ 𝟙 _ := by
+      rw [whisker_exchange]
+    _ = 𝟙 _ ⊗≫ (Y ◁ ((A ◁ η_ X Y) ≫ b (X ⊗ Y))) ⊗≫
+      (ε_ X Y ▷ (Y ⊗ A)) ⊗≫ 𝟙 _ := by rw [ht X Y]; monoidal
+    _ = 𝟙 _ ⊗≫ ((Y ◁ η_ X Y ⊗≫ ε_ X Y ▷ Y) ▷ A) ⊗≫ 𝟙 _ := by
+      rw [hn (η_ X Y), hu]
+      monoidal
+    _ = _ := by rw [coevaluation_evaluation'']; monoidal
+
+include hn ht hu in
+/-- Tensor compatibility, naturality, and unit normalization imply that the
+crossing is invertible on every object admitting a left dual. -/
+theorem weak_isIso (X : C) [ExactPairing X Y] : IsIso (b Y) :=
+  ⟨⟨weakInverse b X Y, weak_left b hn ht hu X Y, weak_right b hn ht hu X Y⟩⟩
+
+end PropertyF.Ground.CentreInduction
+end
+end
 
 /-! Tensor coherence of the actual induction crossing. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -69,17 +137,14 @@ theorem crossingCandidate_tensor :
       Finset.sum_comm (s := (Finset.univ : Finset (Fin (rank C))))
         (t := (Finset.univ : Finset (crossingIndex C T i _)))]
 
-/-- The actual matrix crossing is invertible by rigidity. -/
-theorem crossingCandidate_isIso :
-    IsIso (βᶜ T) :=
-  weak_isIso βᶜ (crossingCandidate_natural_test C X)
-    (crossingCandidate_tensor C X) (crossingCandidate_unit C X) T (ᘁT)
-
 /-- The explicit matrix crossings form an actual half-braiding on the
 induction sum, with no additional coherence assumptions. -/
 def halfBraidingOfCrossingCandidate :
     HalfBraiding (underlying C X) where
-  β T := by letI := crossingCandidate_isIso C X T; exact asIso (βᶜ T)
+  β T := by
+    letI := weak_isIso βᶜ (crossingCandidate_natural_test C X)
+      (crossingCandidate_tensor C X) (crossingCandidate_unit C X) T (ᘁT)
+    exact asIso (βᶜ T)
   monoidal T U := crossingCandidate_tensor C X T U
   naturality f := crossingCandidate_natural_test C X f
 

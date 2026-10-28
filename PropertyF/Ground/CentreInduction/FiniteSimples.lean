@@ -2,6 +2,13 @@ module
 public import PropertyF.Ground.CentreInduction.ActualFusion
 public import Mathlib.CategoryTheory.Subobject.ArtinianObject
 public import Mathlib.RingTheory.Artinian.Module
+public import Mathlib.CategoryTheory.Preadditive.Injective.Basic
+
+/-! # Finiteness and fusion of the centre
+
+The centre has finitely many simple isomorphism classes. A retract of the tensor unit through
+an induced object then gives finite semisimple decompositions and a fusion structure.
+-/
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -82,15 +89,6 @@ theorem simple_mono_induced_simple [Simple X] :
 
 /-! Finiteness of simple objects in the actual Drinfeld centre. -/
 
-set_option backward.isDefEq.respectTransparency false in
-/-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
-theorem center_cokernel_measure_lt {S W : 𝒵} (p : S ⟶ W) (hp : p ≠ 0) :
-    let Q := Centre.centerCokernel p
-    Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) :=
-  letI : IsSplitEpi (cokernel.π p.f) := epi_splits (cokernel.π p.f)
-  finrank_end_lt_of_split_epi p.f (cokernel.π p.f) (fun h => hp (Center.ext p 0 h))
-    (congrArg Center.Hom.f (Centre.centerCokernel_condition p))
-
 omit [MonoidalCategory D] in
 /-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
 private theorem simple_mono_cokernel [Abelian D] {P W Q S : D}
@@ -122,7 +120,9 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
       have hp : p ≠ 0 := mono_ne_zero_of_id_ne_zero p (id_nonzero _)
       let Q := Centre.centerCokernel p
       let q : W ⟶ Q := Centre.centerCokernelπ p
-      obtain ⟨L, hL⟩ := ih Q (center_cokernel_measure_lt C p hp)
+      let : IsSplitEpi (cokernel.π p.f) := epi_splits (cokernel.π p.f)
+      obtain ⟨L, hL⟩ := ih Q (finrank_end_lt_of_split_epi p.f (cokernel.π p.f)
+        (fun h => hp (Center.ext p 0 h)) (cokernel.condition p.f))
       refine ⟨P :: L, fun S hS ⟨t, ht⟩ => ?_⟩
       let : Simple S := hS
       let : Mono t := ht
@@ -154,3 +154,84 @@ end PropertyF.Ground.CentreInduction
 
 end
 end
+
+/-! An injective-retract route to centre semisimplicity and fusion. -/
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+universe v u
+@[expose] public noncomputable section
+namespace PropertyF.Ground.CentreInduction
+variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [LeftRigidCategory D]
+
+omit [Abelian D] [LeftRigidCategory D] in
+/-- Tensoring with an object whose first two left duals exist preserves injectives. -/
+theorem tensor_preserves_injective (J U : D)
+    [HasLeftDual U] [HasLeftDual (ᘁU)] [Injective J] : Injective (J ⊗ U) :=
+  letI : (tensorRight (ᘁU)).IsRightAdjoint :=
+    ⟨⟨tensorRight (ᘁ(ᘁU)), ⟨tensorRightAdjunction (ᘁ(ᘁU)) (ᘁU)⟩⟩⟩
+  (tensorRightAdjunction (ᘁU) U).map_injective J inferInstance
+
+omit [Abelian D] [LeftRigidCategory D] in
+/-- A unit retract of a tensor product with an injective makes an object with
+two left duals injective. -/
+theorem all_injective_of_unit_retract {J U : D} [Injective J]
+    [HasLeftDual U] [HasLeftDual (ᘁU)] (r : Retract (𝟙_ D) (J ⊗ U)) (X : D)
+    [HasLeftDual X] [HasLeftDual (ᘁX)] : Injective X :=
+  letI : Injective (J ⊗ U) := tensor_preserves_injective J U
+  letI : Injective (𝟙_ D) := r.injective
+  Injective.of_iso (λ_ X) (tensor_preserves_injective (𝟙_ D) X)
+
+variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (Center C.Obj)]
+local notation "𝒵" => Center C.Obj
+variable {X : C.Obj}
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Under the unit-retract condition every centre object is a finite simple sum. -/
+theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
+    (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
+    (Z : 𝒵) : FiniteSimpleSum (𝒵) Z :=
+  letI (W : 𝒵) : IsArtinianObject W := center_artinian C W
+  letI : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective X)
+  letI (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
+  letI (A : 𝒵) : FiniteDimensional ℂ (A ⟶ A) :=
+    letI : FiniteDimensional ℂ (A.1 ⟶ A.1) := IsFusionCategory.hom_finite _ _
+    Centre.finiteDimensional_hom ℂ A A
+  finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW =>
+    ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
+
+/-- Centre rigidity and the explicit unit retract imply centre fusion. -/
+theorem center_fusion_of_unit_retract {U : 𝒵}
+    (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
+    IsFusionCategory (𝒵) :=
+  let ⟨_, hsimple, hcover⟩ := finite_simple_labels C
+  let ⟨n, S, hS, hinj, hcover⟩ := simple_representatives_of_finite_cover hsimple hcover
+  CentreBundle.fusionOfFiniteSemisimple C ⟨n, S, hS, hinj, fun Z =>
+    let ⟨_, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract C r Z)
+    let ⟨m, ⟨a⟩⟩ := regroup_biproduct (fun j => hcover (V j) (hV j))
+    ⟨m, ⟨e ≪≫ a⟩⟩⟩
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A cap with nonzero unit composite gives a unit retract. -/
+def unitRetractOfNonzeroCap {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [Preadditive D] [HasKernels D] [Simple (𝟙_ D)]
+    {J : D} [HasRightDual J] (cap : J ⊗ Jᘁ ⟶ 𝟙_ D) (hne : η_ J (Jᘁ) ≫ cap ≠ 0) :
+    Retract (𝟙_ D) (J ⊗ Jᘁ) :=
+  letI : IsIso (η_ J (Jᘁ) ≫ cap) := isIso_of_hom_simple hne
+  { i := η_ J (Jᘁ), r := cap ≫ inv (η_ J (Jᘁ) ≫ cap)
+    retract := (Category.assoc _ _ _).symm.trans (IsIso.hom_inv_id _) }
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A centre pivotal structure with nonzero trace on an induced object implies fusion. -/
+theorem center_fusion_of_nonzero_induced_trace (X : C.Obj)
+    (p : Dimensions.PivotalStructure (C := 𝒵))
+    (hne : p.rightTrace (𝟙 ((induction C).obj X)) ≠ 0) :
+    IsFusionCategory (𝒵) :=
+  let J := (induction C).obj X
+  let cap : J ⊗ Jᘁ ⟶ 𝟙_ (𝒵) :=
+    ((p.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
+  letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
+  letI : Simple (𝟙_ (𝒵)) := Centre.centerUnitSimple
+  center_fusion_of_unit_retract C <| unitRetractOfNonzeroCap cap <| fun h =>
+    hne (End.ext (by simpa [Dimensions.PivotalStructure.rightTrace, Dimensions.rightTraceWith,
+      cap, J, Category.assoc] using h))
+
+end PropertyF.Ground.CentreInduction

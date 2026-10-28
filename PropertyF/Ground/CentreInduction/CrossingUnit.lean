@@ -1,5 +1,4 @@
 module
-public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
 public import PropertyF.Ground.CentreInduction.BasisPairing
 
 /-! Tensor-unit normalization for the explicit induction crossing. -/
@@ -97,14 +96,6 @@ theorem crossingBlock_of_simple_split [HasRightDual R] [HasRightDual S] [Simple 
   simp only [hg, hf, map_smul, LinearMap.smul_apply, smul_smul, mul_comm d c, hcd, one_smul]
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
-/-- For a simple object, any splitting gives the same unit crossing block. -/
-theorem crossingBlock_unit_of_split [HasRightDual S] [Simple S] [FiniteDimensional k (S ⟶ S)]
-    (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
-    crossingBlock X (𝟙_ D) S g f =
-      (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv :=
-  (crossingBlock_of_simple_split (k := k) X (λ_ S).symm g f h).trans (crossingBlock_unit X S)
-
 variable (X : C.Obj) (i j : Fin (rank C))
 
 set_option backward.isDefEq.respectTransparency false in
@@ -127,9 +118,10 @@ theorem crossingCandidate_unit_summand :
         (inferInstance : Unique (Fin 1))
     let : Simple (Sᶜ i) := simples_simple C i
     let : FiniteDimensional ℂ (Sᶜ i ⟶ Sᶜ i) := IsFusionCategory.hom_finite _ _
-    rw [Fintype.sum_unique, crossingBlock_unit_of_split (k := ℂ) X
+    rw [Fintype.sum_unique, crossingBlock_of_simple_split (k := ℂ) X (λ_ (Sᶜ i)).symm
       (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
-      (crossingInclusion_projection default), Category.assoc]
+      (crossingInclusion_projection default)]
+    erw [crossingBlock_unit, Category.assoc]
   · intro j _ hne
     let : IsEmpty (crossingIndex C (𝟙_ C.Obj) i j) := by
       simpa only [crossingIndex, unit_crossing_finrank, Ne.symm hne, ↓reduceIte] using
