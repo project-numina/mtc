@@ -29,9 +29,8 @@ theorem natural_end_finite_order_of_simples
   let a : End (𝟭 C.Obj) := End.of α
   have happ (k : ℕ) (X : C.Obj) : (a ^ k).asHom.app X =
       ((End.of (α.app X)) ^ k).asHom := by
-    induction k with
-    | zero => simp
-    | succ k ih => simp [pow_succ, End.mul_asHom, ih, a]
+    simpa [Functor.mapEnd, a] using congrArg End.asHom
+      (map_pow (((CategoryTheory.evaluation C.Obj C.Obj).obj X).mapEnd (𝟭 C.Obj)) a k)
   have ha : a ^ n = 1 := by
     apply End.ext
     apply Dimensions.natTrans_eq_of_simple_components C

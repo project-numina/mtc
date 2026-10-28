@@ -1,5 +1,6 @@
 module
-public import PropertyF.Ground.CentreDimensions.InvolutionTrace
+public import PropertyF.Ground.CentreDimensions.PivotalTwist
+public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 open CategoryTheory CategoryTheory.MonoidalCategory
 open PropertyF.Ground PropertyF.Ground.Dimensions
