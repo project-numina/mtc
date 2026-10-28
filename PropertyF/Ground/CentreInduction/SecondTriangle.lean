@@ -101,11 +101,8 @@ set_option backward.defeqAttrib.useBackward true in
 /-- Evaluation is normalized along an isomorphism with the tensor unit. -/
 theorem evaluation_iso_unit [HasRightDual A] (e : A ≅ 𝟙_ D) :
     ((rightDualIsoMap e.symm).hom ⊗ₘ e.hom) ≫
-      (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) := by
-  change ((rightDualIsoMap e.symm).hom ⊗ₘ e.hom) ≫ ε_ (𝟙_ D) (𝟙_ D) = _
-  simp only [rightDualIsoMap, Iso.symm_hom, tensorHom_def', Category.assoc]
-  erw [rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
-    whiskerLeft_id, Category.id_comp]
+      (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) :=
+  evaluation_iso_map e
 
 variable (X T : D)
 
