@@ -86,7 +86,7 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
       apply Finset.sum_congr rfl
       intro b _
       rw [crossingBlock_tensor]
-      simp only [whiskerLeft_comp, comp_whiskerRight]
+      simp only [whiskerLeft_comp]
       monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -99,8 +99,6 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
   apply biproduct.hom_ext'
   intro i
   simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
-  change (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingCandidate C X (T ⊗ U) =
-    (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U
   rw [crossingCandidate_on_summand, crossingComposite_summand]
   simp only [← Preadditive.sum_comp]
   simp_rw [← crossingBlock_refinement C X T U i]

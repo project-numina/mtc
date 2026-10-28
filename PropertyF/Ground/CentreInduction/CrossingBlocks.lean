@@ -42,7 +42,7 @@ theorem crossingBlock_natural_middle (C : BraidedFusionCategory.{v,u})
     ← whisker_exchange_assoc, associator_naturality_middle_assoc,
     associator_naturality_right_assoc]
   rw [associator_naturality_right_assoc]
-  simp only [associator_naturality_right_assoc, Category.assoc]
+  simp only [associator_naturality_right_assoc]
   rw [← whiskerLeft_comp, associator_inv_naturality_middle,
     whiskerLeft_comp]
 
@@ -129,7 +129,7 @@ theorem crossingCandidate_on_summand (C : BraidedFusionCategory.{v,u})
           (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
             (T ◁ biproduct.ι V j) := by
   classical
-  simp only [crossingCandidate, Category.assoc, biproduct_ι_comp_rightDistributor_hom_assoc,
+  simp only [crossingCandidate, biproduct_ι_comp_rightDistributor_hom_assoc,
     biproduct.ι_desc]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -153,7 +153,7 @@ theorem crossingCandidate_natural_middle (C : BraidedFusionCategory.{v,u})
   simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
   dsimp [VX, VY, underlying] at *
   simp only [← Category.assoc, hi i]
-  simp only [Category.assoc, crossingCandidate_on_summand, crossingCandidate_on_summand_assoc]
+  simp only [Category.assoc, crossingCandidate_on_summand]
   simp only [Preadditive.comp_sum, Preadditive.sum_comp]
   apply Finset.sum_congr rfl
   intro j _
@@ -172,12 +172,5 @@ theorem crossingCandidate_natural_middle (C : BraidedFusionCategory.{v,u})
   rw [hj']
   exact hterm
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The matrix crossing is a natural transformation in the induction
-argument, before proving that its components are isomorphisms. -/
-def crossingNaturalMiddle (C : BraidedFusionCategory.{v,u}) (T : C.Obj) :
-    underlyingFunctor C ⋙ tensorRight T ⟶ underlyingFunctor C ⋙ tensorLeft T where
-  app X := crossingCandidate C X T
-  naturality {X Y} f := crossingCandidate_natural_middle C f T
 
 end PropertyF.Ground.CentreInduction

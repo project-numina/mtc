@@ -22,7 +22,7 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
     Dimensions.simpleHomPairingEquiv C i V (simpleProjection C V i a) =
       (Dimensions.simpleInclusionBasis C V i).dualBasis a := by
   classical
-  letI : Simple (simples C i) := simples_simple C i
+  let : Simple (simples C i) := simples_simple C i
   let B := Dimensions.simpleInclusionBasis C V i
   apply B.ext
   intro b
@@ -42,7 +42,7 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
     rfl
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
-theorem simpleBasis_contraction_natural (V W : C.Obj) (i : Fin (rank C)) (q : V ⟶ W)
+theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V ⟶ W)
     {E : Type*} [AddCommGroup E] [Module ℂ E]
     (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
     (∑ a, F (Dimensions.simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
@@ -90,7 +90,7 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] (V : J → C.O
       { toFun := fun g => (F g).comp (Linear.leftComp ℂ (simples C i) (r j))
         map_add' := by intro x y; ext z; simp
         map_smul' := by intro x y; ext z; simp }
-    have hx := simpleBasis_contraction_natural C (V j) W i (q j) F'
+    have hx := simpleBasis_contraction_natural C i (q j) F'
     simpa [F', Category.assoc] using hx
   simp_rw [step]
   rw [Finset.sum_comm]

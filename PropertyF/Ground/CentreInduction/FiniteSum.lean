@@ -1,5 +1,16 @@
 module
-public import PropertyF.Ground.CentreInduction.Artinian
+public import PropertyF.Ground.Calculus.PartialTrace
+public import PropertyF.Ground.Centre.Basic
+public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Dimensions.SimpleScalars
+public import PropertyF.Ground.Centre.Basic
+public import PropertyF.Ground.Fusion.SemisimpleSplit
+public import PropertyF.Ground.Centre.Abelian
+public import PropertyF.Ground.Centre.Abelian
+public import Mathlib.CategoryTheory.Subobject.ArtinianObject
+public import Mathlib.CategoryTheory.Subobject.NoetherianObject
+public import Mathlib.RingTheory.Artinian.Module
+public import Mathlib.CategoryTheory.Abelian.Exact
 
 /-! A finite-step semisimple decomposition from split subobjects. -/
 
@@ -20,13 +31,13 @@ def diagonalEndMap (S K : D) : ((S ⟶ S) × (K ⟶ K)) →ₗ[ℂ] (S ⊞ K ⟶
     apply biprod.hom_ext' <;> apply biprod.hom_ext <;> simp
 
 /-- A block-diagonal endomorphism determines both diagonal blocks. -/
-theorem diagonalEndMap_injective (S K : D) : Function.Injective (diagonalEndMap S K) := by
+theorem diagonalEndMap_injective {S K : D} : Function.Injective (diagonalEndMap S K) := by
   intro a b h
   apply Prod.ext
-  · have h' := congrArg (fun f => biprod.inl ≫ f ≫ biprod.fst) h
-    simpa [diagonalEndMap, Category.assoc] using h'
-  · have h' := congrArg (fun f => biprod.inr ≫ f ≫ biprod.snd) h
-    simpa [diagonalEndMap, Category.assoc] using h'
+  · simpa [diagonalEndMap, Category.assoc] using
+      congrArg (fun f => biprod.inl ≫ f ≫ biprod.fst) h
+  · simpa [diagonalEndMap, Category.assoc] using
+      congrArg (fun f => biprod.inr ≫ f ≫ biprod.snd) h
 
 /-- Removing a nonzero direct summand strictly decreases the dimension of the
 endomorphism space. -/
@@ -37,7 +48,7 @@ theorem finrank_end_complement_lt (S K : D)
   have hpos : 0 < Module.finrank ℂ (S ⟶ S) :=
     Module.finrank_pos_iff_exists_ne_zero.mpr ⟨𝟙 S, (IsZero.iff_id_eq_zero S).not.mp hS⟩
   have hle := LinearMap.finrank_le_finrank_of_injective (f := diagonalEndMap S K)
-    (diagonalEndMap_injective S K)
+    (diagonalEndMap_injective (S := S) (K := K))
   rw [Module.finrank_prod] at hle
   omega
 
@@ -49,33 +60,5 @@ inductive FiniteSimpleSum (D : Type u) [Category.{v} D] [Preadditive D]
   | cons {X S K} : Simple S → FiniteSimpleSum D K → Nonempty (X ≅ S ⊞ K) →
       FiniteSimpleSum D X
 
-set_option backward.isDefEq.respectTransparency false in
-/-- Assuming the finite loop-sliding identity, every object of the actual
-centre is a finite binary sum of simple objects. -/
-theorem center_finite_simple_sum_of_loop_centrality (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hslide : SimpleLoopCentrality C p) (hne : globalDimension C ≠ 0)
-    (X : CategoryTheory.Center C.Obj) : FiniteSimpleSum (CategoryTheory.Center C.Obj) X := by
-  let m : CategoryTheory.Center C.Obj → ℕ := fun Z => Module.finrank ℂ (Z ⟶ Z)
-  induction X using (measure m).wf.induction with
-  | h X ih =>
-    by_cases hz : IsZero X
-    · exact .zero hz
-    · obtain ⟨S, K, hS, ⟨e⟩⟩ := exists_simple_biprod_of_loop_centrality C p hp hslide hne X hz
-      letI : Simple S := hS
-      letI : ∀ A B : CategoryTheory.Center C.Obj, FiniteDimensional ℂ (A ⟶ B) := by
-        intro A B
-        letI : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
-        exact Centre.finiteDimensional_hom ℂ A B
-      have hs : ¬ IsZero S := by
-        intro h
-        exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp h)
-      have he : Module.finrank ℂ (X ⟶ X) = Module.finrank ℂ (S ⊞ K ⟶ S ⊞ K) :=
-        (CategoryTheory.Linear.homCongr ℂ e e).finrank_eq
-      have hk : m K < m X := by
-        change Module.finrank ℂ (K ⟶ K) < Module.finrank ℂ (X ⟶ X)
-        rw [he]
-        exact finrank_end_complement_lt S K hs
-      exact .cons hS (ih K hk) ⟨e⟩
 
 end PropertyF.Ground.CentreInduction

@@ -10,7 +10,7 @@ variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A map to a right dual is determined by its evaluation. -/
-theorem dual_map_ext (V S : C.Obj) (f g : V ⟶ Sᘁ)
+theorem dual_map_ext {V : C.Obj} (S : C.Obj) (f g : V ⟶ Sᘁ)
     (h : f ▷ S ≫ ε_ S (Sᘁ) = g ▷ S ≫ ε_ S (Sᘁ)) : f = g := by
   have he := congrArg (tensorRightHomEquiv V S (Sᘁ) (𝟙_ C.Obj)) h
   have hf := @tensorRightHomEquiv_whiskerRight_comp_evaluation C.Obj _ _ S V
@@ -26,7 +26,7 @@ theorem dual_map_ext (V S : C.Obj) (f g : V ⟶ Sᘁ)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a composite fusion map is the composite of the two closed maps. -/
-theorem closeFusionMap_tensor (T U S K R : C.Obj) (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
+theorem closeFusionMap_tensor {T U S K R : C.Obj} (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
   closeFusionMap C (T ⊗ U) S R ((α_ T U S).hom ≫ (T ◁ g) ≫ f) =
     𝟙 _ ⊗≫ (closeFusionMap C T K R f ▷ U) ⊗≫ closeFusionMap C U S K g := by
   apply dual_map_ext C
@@ -65,7 +65,7 @@ theorem crossingBlock_tensor (X T U S K R : C.Obj)
       (((T ⊗ (U ⊗ S)) ⊗ X) ◁ z) ⊗≫ 𝟙 _ := by
         dsimp only [crossingBlock]
         rw [closeFusionMap_tensor]
-        simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
+        simp only [tensorHom_def, comp_whiskerRight]
         monoidal
     _ = 𝟙 _ ⊗≫ (g₁ ▷ (X ⊗ (((Rᘁ : C.Obj) ⊗ T) ⊗ U))) ⊗≫
       (((((T ⊗ K) ⊗ X) ◁ (q ▷ U))) ≫

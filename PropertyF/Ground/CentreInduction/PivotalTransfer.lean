@@ -95,7 +95,7 @@ theorem center_structure_of_compatible_pivotal
       PseudoUnitary (Integrate.bundledCenter C) ∧
       globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
   let J := (induction C).obj (𝟙_ C.Obj)
-  letI : IsFusionCategory (CategoryTheory.Center C.Obj) :=
+  let : IsFusionCategory (CategoryTheory.Center C.Obj) :=
     center_fusion_of_compatible_pivotal C p hsimple pZ
       (forget_trace_of_pivotal_component C p pZ J (hcompat J))
   refine ⟨inferInstance, ?_⟩

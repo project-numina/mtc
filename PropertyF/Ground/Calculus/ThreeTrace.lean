@@ -1,7 +1,98 @@
 module
-public import PropertyF.Ground.Calculus.ThreeEmbedding
-public import PropertyF.Ground.Calculus.OverlapTrace
+public import PropertyF.Ground.Calculus.RightStrand
+public import PropertyF.Ground.Calculus.ThreeBraid
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Modular.SMatrix
+
+/-! Two- and three-strand categorical braid embeddings. -/
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace PropertyF.Ground.Calculus
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+
+variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+
+
+/-- The left three-strand generator in a chosen block presentation. -/
+def tripleBlockLeft (X : C) {r : ℕ} {d : Fin r → ℕ}
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :=
+  b (groupInImage (braidEndRepresentation X 1) (threeGeneratorLeft X))
+
+/-- The right three-strand generator in a chosen block presentation. -/
+def tripleBlockRight (X : C) {r : ℕ} {d : Fin r → ℕ}
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :=
+  b (groupInImage (braidEndRepresentation X 1) (threeGeneratorRight X))
+
+end PropertyF.Ground.Calculus
+
+/-! Simple-strand partial trace from the constructed iterated trace law. -/
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace PropertyF.Ground.Calculus
+universe v u
+
+/-- In a genuine braided fusion category, the partial trace onto a simple
+surviving object is the total trace divided by its nonzero pivotal dimension. -/
+theorem rightPartialTrace_simple_ground (C : Ground.BraidedFusionCategory.{v,u})
+    (X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y)) :
+    rightPartialTrace p X Y f =
+      (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
+  let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  apply rightPartialTrace_simple_of_trace_compatibility X Y p scalar f
+  · intro h
+    apply Modular.pivotalTrace_simple_ne_zero C p X
+    apply scalar.injective
+    simpa using h
+  · exact Dimensions.rightTrace_partialTrace p X Y f
+
+end PropertyF.Ground.Calculus
+
+/-! The graphical recurrence for two overlapping endomorphisms. -/
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace PropertyF.Ground.Calculus
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [Preadditive C] [Linear ℂ C]
+
+/-- Embed a fresh endomorphism after a left spectator, with the associator
+explicit. -/
+def overlapFresh (A X Y : C) (u : End (X ⊗ Y)) : End ((A ⊗ X) ⊗ Y) :=
+  End.of ((α_ A X Y).hom ≫ (A ◁ u.asHom) ≫ (α_ A X Y).inv)
+
+/-- Multiply an old endomorphism by a new one sharing the middle factor. -/
+def overlapEndProduct (A X Y : C) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+    End ((A ⊗ X) ⊗ Y) := insertRightIdentity (A ⊗ X) Y v * overlapFresh A X Y u
+
+/-- Tracing the new strands of the overlap gives the old operator times the
+normalized trace of the fresh operator. -/
+theorem rightPartialTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
+    (A X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+    rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
+      (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) • v := by
+  rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
+    rightPartialTrace_simple_ground C X Y p scalar u]
+  apply End.ext
+  simp
+
+/-- The categorical trace obeys the overlap recurrence with no braid-span
+closure assumption on arbitrary partial traces. -/
+theorem pivotalTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
+    (A X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+    scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
+      scalar (p.rightTrace v.asHom) *
+        (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
+  rw [← Dimensions.rightTrace_partialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u)]
+  rw [rightPartialTrace_overlap C A X Y p scalar v u]
+  simp [Dimensions.PivotalStructure.rightTrace_smul, mul_comm]
+
+end PropertyF.Ground.Calculus
 
 /-! The trace of the actual three-strand double-monodromy braid. -/
 
@@ -75,51 +166,5 @@ theorem twoGenerator_transport (X : C) :
     Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
   simp only [id_tensorHom, tensorHom_id, Category.assoc]
   monoidal
-
-omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
-/-- The two-strand square has the trace of double self-braiding. -/
-theorem two_braid_square_trace [RightRigidCategory C]
-    (X : C) (p : Dimensions.PivotalStructure (C := C)) :
-    p.rightTrace (Aut.toEnd (braidGenerator X 0 0 ^ 2)).asHom =
-      p.rightTrace (selfMonodromy X).asHom := by
-  have h : (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd (braidGenerator X 0 0)) =
-      End.of ((β_ X X).hom) := by
-    apply End.ext
-    exact twoGenerator_transport X
-  have hh := rightTrace_iso_conj p (twoPowerIso X) (Aut.toEnd (braidGenerator X 0 0 ^ 2))
-  simp only [map_pow, h] at hh
-  simpa [selfMonodromy, pow_two, End.mul_asHom] using hh.symm
-
-/-- The two-strand double braid realizes the diagonal categorical S entry. -/
-theorem two_braid_square_trace_categoricalS (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj)) (i : Fin (Ground.rank D)) :
-    Ground.unitScalarEquiv D (p.rightTrace
-      (Aut.toEnd (braidGenerator (Ground.simples D i) 0 0 ^ 2)).asHom) =
-      Ground.Modular.categoricalS D p i i := by
-  simpa [Ground.Modular.categoricalS, Ground.Modular.SEntry,
-    Ground.Modular.doubleBraiding, selfMonodromy] using
-    congrArg (Ground.unitScalarEquiv D) (two_braid_square_trace (Ground.simples D i) p)
-
-/-- The three-strand formula in terms of the actual categorical S-matrix. -/
-theorem three_braid_trace_categoricalS (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj)) (i : Fin (Ground.rank D)) :
-    Ground.unitScalarEquiv D (p.rightTrace
-      (Aut.toEnd ((braidGenerator (Ground.simples D i) 1 0) ^ 2 *
-        (braidGenerator (Ground.simples D i) 1 1) ^ 2)).asHom) =
-      Ground.Modular.categoricalS D p i i ^ 2 / Ground.Modular.simpleDimension D p i := by
-  let _ : Simple (Ground.simples D i) := Ground.simples_simple D i
-  simpa [Ground.Modular.categoricalS, Ground.Modular.SEntry,
-    Ground.Modular.doubleBraiding, Ground.Modular.simpleDimension, selfMonodromy] using
-    (three_braid_trace D (Ground.simples D i) p (Ground.unitScalarEquiv D))
-
-/-- Applying a field automorphism transports the actual two-strand trace to
-its Galois-conjugate S entry. -/
-theorem two_braid_square_galois_trace (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj)) (i : Fin (Ground.rank D))
-    (σ : ℂ ≃+* ℂ) :
-    σ (Ground.unitScalarEquiv D (p.rightTrace
-      (Aut.toEnd (braidGenerator (Ground.simples D i) 0 0 ^ 2)).asHom)) =
-      σ (Ground.Modular.categoricalS D p i i) :=
-  congrArg σ (two_braid_square_trace_categoricalS D p i)
 
 end PropertyF.Ground.Calculus

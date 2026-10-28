@@ -1,6 +1,7 @@
 module
-public import PropertyF.Ground.Cabling.Witness
-public import PropertyF.Ground.Cabling.Images
+public import PropertyF.Ground.Cabling.Pure
+public import Mathlib.CategoryTheory.Conj
+public import Mathlib.Algebra.Group.Subgroup.Map
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 @[expose] public noncomputable section
 namespace PropertyF
@@ -27,12 +28,6 @@ omit [BraidedCategory C] in
         (f ⊗ₘ tensorPowerMap f n) ≫ (g ⊗ₘ tensorPowerMap g n)
       exact (tensorHom_comp_tensorHom _ _ _ _).symm
 
-/-- Tensor powers preserve retracts. -/
-def tensorPowerRetract {X Y : C} (r : Retract X Y) (n : ℕ) :
-    Retract (tensorPower X n) (tensorPower Y n) where
-  i := tensorPowerMap r.i n
-  r := tensorPowerMap r.r n
-  retract := by rw [← tensorPowerMap_comp, r.retract, tensorPowerMap_id]
 
 /-- Naturality of the first adjacent braiding. -/
 lemma braid_first_map {X Y A B : C} (f : X ⟶ Y) (g : A ⟶ B) :

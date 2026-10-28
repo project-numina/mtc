@@ -1,6 +1,9 @@
 module
-public import PropertyF.Ground.CentreCabling.FiniteMonodromy
-public import PropertyF.Ground.CentreCabling.ProductGenerated
+public import PropertyF.Ground.Calculus.ThreeRigidity
+public import PropertyF.Ground.Modular.SAdditivity
+public import PropertyF.Ground.Centre.ProductClosure
+public import PropertyF.Ground.Fusion.GeneratedRigidity
+public import PropertyF.Ground.Integrate.CenterBundle
 
 /-! Extend centrality from simple constituents to all product retracts. -/
 
@@ -9,6 +12,16 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
+
+/-- Double braiding is natural simultaneously in both strands. -/
+theorem doubleBraiding_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [BraidedCategory D] {X X' Y Y' : D} (f : X ⟶ X') (g : Y ⟶ Y') :
+    Modular.doubleBraiding X Y ≫ (f ⊗ₘ g) =
+      (f ⊗ₘ g) ≫ Modular.doubleBraiding X' Y' := by
+  unfold Modular.doubleBraiding
+  rw [Category.assoc, ← BraidedCategory.braiding_naturality g f,
+    ← Category.assoc, ← BraidedCategory.braiding_naturality f g, Category.assoc]
+
 
 /-- Centrality descends along a split inclusion. -/
 theorem doubleBraiding_eq_one_of_retract
@@ -54,3 +67,21 @@ theorem doubleBraiding_eq_one_of_simple_constituents
   exact doubleBraiding_eq_one_of_retract (Retract.ofIso e) Y hb
 
 end PropertyF.Ground.CentreCabling
+
+namespace PropertyF.Ground.Centre
+universe v u
+variable {C : Type u} [Category.{v} C] [Abelian C] [MonoidalCategory C]
+  [MonoidalPreadditive C] [RigidCategory C] [BraidedCategory C]
+attribute [local instance] Abelian.hasFiniteBiproducts
+
+omit [RigidCategory C] in
+/-- Once the actual centre is a rigid fusion category, duals of product
+retracts are product retracts, using fusion-category generation. -/
+theorem productRetract_rightDual (D : Ground.BraidedFusionCategory.{v,u})
+    [RigidCategory (CategoryTheory.Center D.Obj)]
+    [IsFusionCategory (CategoryTheory.Center D.Obj)]
+    {Z : CategoryTheory.Center D.Obj} (hZ : ProductRetract Z) :
+    ProductRetract (Zᘁ) :=
+  productRetract_generatedBy hZ (Ground.generatedBy_rightDual (Integrate.bundledCenter D) Z)
+
+end PropertyF.Ground.Centre

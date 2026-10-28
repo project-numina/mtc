@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
+public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
 
 /-! Reduction of mixed monodromy to the finite order of the pivotal twist. -/
@@ -93,5 +94,12 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist
   change IsOfFinOrder m
   rw [hm]
   exact ((hc.symm).pow_left _).isOfFinOrder_mul (htf.pow) hz
+
+/-- The actual pivotal twist scalars, viewed as nonzero complex numbers. -/
+def pivotalTwistUnit (C : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj)) (i : Fin (rank C)) : ℂˣ := by
+  letI : Simple (simples C i) := simples_simple C i
+  exact Units.mk0 (Dimensions.pivotalBraidedTwistScalar C p (simples C i))
+    (Dimensions.pivotalBraidedTwistScalar_ne_zero C p (simples C i))
 
 end PropertyF.Ground.CentreCabling

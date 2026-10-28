@@ -28,17 +28,6 @@ def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) (X Y : C) :
 def insertLeftIdentity (X Y : C) (a : End Y) : End (X ⊗ Y) :=
   End.of (X ◁ a.asHom)
 
-/-- Left partial trace is a bimodule map over the untraced factor. -/
-theorem leftPartialTrace_left (p : Dimensions.PivotalStructure (C := C))
-    (X Y : C) (a : End Y) (f : End (X ⊗ Y)) :
-    leftPartialTrace p X Y (insertLeftIdentity X Y a * f) =
-      a * leftPartialTrace p X Y f := by
-  apply End.ext
-  simp only [leftPartialTrace, insertLeftIdentity, LinearMap.coe_mk, AddHom.coe_mk,
-    End.mul_asHom, whiskerLeft_comp, Category.assoc]
-  rw [associator_inv_naturality_right_assoc]
-  rw [whisker_exchange_assoc, leftUnitor_naturality]
-
 theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
     (X Y : C) (a : End Y) (f : End (X ⊗ Y)) :
     leftPartialTrace p X Y (f * insertLeftIdentity X Y a) =
