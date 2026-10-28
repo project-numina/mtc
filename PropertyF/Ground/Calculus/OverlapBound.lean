@@ -221,18 +221,6 @@ namespace PropertyF.Ground.Calculus
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
-/-- A scaled overlap recurrence and bounds at its strand counts imply the sharp norm bound. -/
-theorem norm_bound_of_overlapIndex {K : Type*} [NormedRing K] [NormMulClass K] [NormOneClass K]
-    {δ z : K} {f : ℝ} (hδ : δ ≠ 0) (hf : 0 < f)
-    (t : ℕ) (a : ℕ → K) (hbound : ∀ k, ‖a k‖ ≤ f ^ (overlapIndex t k + 2))
-    (hrec : ∀ k, a k * δ ^ k = z ^ (k + 1)) : ‖z‖ ≤ ‖δ‖ * f ^ (t + 1) := by
-  apply norm_bound_of_overlap (m := t + 2) hδ hf a ?_ hrec
-  intro k
-  convert hbound k using 1
-  congr 1
-  simp [overlapIndex_formula]
-  ring
-
 variable (p : PivotalStructure (C := C.Obj)) {X : C.Obj} {t : ℕ} (u : braidAlgebra X t)
 
 /-- Iterating a single overlap step gives the scaled power identity, without
@@ -262,13 +250,14 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
       ‖pivotalDimension C p X‖ *
         Ground.fpDimension C X ^ (t + 1) := by
   simp only [HasOverlapTracePower, pivotalDimension, unitScalar_eq_equiv] at hrec ⊢
-  apply norm_bound_of_overlapIndex (Modular.unitScalar_rightTrace_ne_zero C p X)
-    (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X))) t
+  apply norm_bound_of_overlap (m := t + 2) (Modular.unitScalar_rightTrace_ne_zero C p X)
+    (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X)))
     (fun k => actualBraidTrace C p (overlapProduct u k)) ?_ hrec
   intro k
-  have hbound := braid_trace_unitary_bound_ground C p
-    (hd _) (e _) (overlapProduct u k) (overlapProduct_unitary e he hu k)
-  change ‖actualBraidTrace C p (overlapProduct u k)‖ ≤ _ at hbound
-  exact hbound
+  convert braid_trace_unitary_bound_ground C p (hd _) (e _) (overlapProduct u k)
+    (overlapProduct_unitary e he hu k) using 1
+  congr 1
+  rw [overlapIndex_formula, show t + 2 - 1 = t + 1 by omega]
+  ring
 
 end PropertyF.Ground.Calculus
