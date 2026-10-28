@@ -35,9 +35,9 @@ theorem drinfeld_unit :
     have hn := braiding_naturality_right U r.hom
     simp only [U, braiding_tensorUnit_left, unitors_equal, Iso.hom_inv_id,
       Category.comp_id] at hn
-    rw [← whisker_exchange_assoc, reassoc_of% hn]
-    simp only [Category.assoc, ← comp_whiskerRight_assoc, Iso.hom_inv_id,
-      id_whiskerRight, Category.id_comp, U, braiding_tensorUnit_left]
+    simp only [← whisker_exchange_assoc, reassoc_of% hn, Category.assoc,
+      ← comp_whiskerRight_assoc, Iso.hom_inv_id, id_whiskerRight,
+      Category.id_comp, U, braiding_tensorUnit_left]
   change (doubleDualUnitIso (C := C)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
   exact evaluation_ext ((drinfeld_eval U).trans h.symm)
 end PropertyF.Ground.Dimensions

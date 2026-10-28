@@ -148,8 +148,6 @@ theorem unitDoubleDual_trace :
   change η_ I Iᘁ ≫ ((r.inv ≫ r.homᘁ) ⊗ₘ 𝟙 Iᘁ) ≫ ε_ Iᘁ Iᘁᘁ = _
   apply (trace_change_rightDual hp hq r.inv).trans
   simp only [tensorHom_def, whiskerLeft_id, Category.comp_id]
-  change @ExactPairing.coevaluation C _ _ I I hq ≫
-    (r.inv ▷ I ≫ @ExactPairing.evaluation C _ _ I Iᘁ hp) = 𝟙 I
   erw [rightDualIso_inv_evaluation hp hq, Iso.inv_hom_id]
 
 
