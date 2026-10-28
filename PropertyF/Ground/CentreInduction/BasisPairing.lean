@@ -25,7 +25,7 @@ theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) (q : V ⟶ W)
     Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv (simples C i) W f) :=
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  simpleHomPairing_natural f q
+  simpleHomPairing_natural (k := ℂ) f q
 
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/

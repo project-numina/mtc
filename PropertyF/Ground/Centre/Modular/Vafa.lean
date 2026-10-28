@@ -886,7 +886,7 @@ theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C :=
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   by simpa [CentreCabling.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using
-    (Ground.simpleEndScalar (simples C i)).symm.toMonoidHom.isOfFinOrder
+    (Ground.simpleEndScalar (k := ℂ) (simples C i)).symm.toMonoidHom.isOfFinOrder
       (Units.isOfFinOrder_val.mpr (natural_scalars_finite_of_simple_balancing C
         (pivotal_twist_has_simple_scalars C p) (pivotal_twist_simple_balance C p hbalance) i))
 
