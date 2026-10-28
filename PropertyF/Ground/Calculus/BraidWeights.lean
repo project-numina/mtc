@@ -39,19 +39,19 @@ variable {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
   (e : X ≅ ⨁ (simpleCopies C m)) (a : End X)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- A diagonal matrix coefficient is the scalar of the corresponding simple
-biproduct component of the transported endomorphism. -/
+/-- A diagonal biproduct component is its block coefficient times the identity. -/
 theorem groundEndBlockEquiv_diagonal (i : Fin (Ground.rank C)) (j : Fin (m i)) :
-    groundEndBlockEquiv C e a i j j =
-      groundSimpleScalar C i (End.of
-        (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫
-          e.inv ≫ a.asHom ≫ e.hom ≫
-          biproduct.π (simpleCopies C m) ⟨i, j⟩)) := by
+    biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫ e.inv ≫ a.asHom ≫ e.hom ≫
+        biproduct.π (simpleCopies C m) ⟨i, j⟩ =
+      (groundEndBlockEquiv C e a i j j) • 𝟙 (Ground.simples C i) := by
   classical
-  simp [groundEndBlockEquiv, orthogonalEndBlocks, isoEndAlgEquiv,
-    simpleFiberEquiv, groundSimpleScalar, HomOrthogonal.matrixDecompositionAddEquiv, HomOrthogonal.matrixDecomposition,
-    Matrix.reindexAlgEquiv, Matrix.reindexRingEquiv, Matrix.reindexAddEquiv,
-    Matrix.reindex, Category.assoc, biproduct.components]
+  simpa [groundEndBlockEquiv, orthogonalEndBlocks, isoEndAlgEquiv,
+    simpleFiberEquiv, groundSimpleScalar, HomOrthogonal.matrixDecompositionAddEquiv,
+    HomOrthogonal.matrixDecomposition, Matrix.reindexAlgEquiv, Matrix.reindexRingEquiv,
+    Matrix.reindexAddEquiv, Matrix.reindex, Category.assoc, biproduct.components] using
+    congrArg End.asHom (eq_smul_one_of_algEquiv (groundSimpleScalar C i) (End.of
+      (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫ e.inv ≫ a.asHom ≫ e.hom ≫
+        biproduct.π (simpleCopies C m) ⟨i, j⟩)))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual pivotal trace on a fusion-category endomorphism is the sum of
@@ -66,15 +66,11 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
   let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
   have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj p e a
-  have hc (q : Σ i, Fin (m i)) : biproduct.ι F q ≫ z ≫ biproduct.π F q =
-      (groundEndBlockEquiv C e a q.1 q.2 q.2) • 𝟙 (F q) := by
-    rcases q with ⟨i, j⟩
-    rw [groundEndBlockEquiv_diagonal]
-    simpa [z, F, Category.assoc] using congrArg End.asHom
-      (eq_smul_one_of_algEquiv (groundSimpleScalar C i) (End.of _))
   have h := cyclicTrace_biproduct_scalar_blocks
     (fun Y => scalar.toLinearMap.comp (rightTraceLinear p Y))
-    (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z hc
+    (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
+    (c := fun q => groundEndBlockEquiv C e a q.1 q.2 q.2)
+    (fun ⟨i, j⟩ => by simpa [F, z, Category.assoc] using groundEndBlockEquiv_diagonal C e a i j)
   change scalar (p.rightTrace z) = ∑ q, groundEndBlockEquiv C e a q.1 q.2 q.2 *
     scalar (p.rightTrace (𝟙 (F q))) at h
   rw [← hz, h, Fintype.sum_sigma]
@@ -107,16 +103,19 @@ theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
 /-- The paper's Galois-transported multiplicity weights cannot vanish when
 all original constituent dimensions are positive and the block is retained. -/
 theorem transported_weight_ne_zero {ι : Type*} [Fintype ι]
-    (mult : ι → ℕ) (dim : ι → ℝ) (σ : ℂ ≃+* ℂ)
-    (hpos : ∀ i, 0 < dim i) (hret : ∃ i, 0 < mult i) :
-    (∑ i, (mult i : ℂ) * σ (dim i : ℂ)) ≠ 0 := by
+    (mult : ι → ℕ) (dim qdim : ι → ℝ) (σ : ℂ ≃+* ℂ)
+    (hpos : ∀ i, 0 < dim i) (htransport : ∀ i, σ (dim i : ℂ) = (qdim i : ℂ))
+    (hret : ∃ i, 0 < mult i) : (∑ i, (mult i : ℝ) * qdim i) ≠ 0 := by
   have hsum : 0 < ∑ i, (mult i : ℝ) * dim i := by
     obtain ⟨i, hi⟩ := hret
     exact Finset.sum_pos' (fun i _ => mul_nonneg (Nat.cast_nonneg _) (hpos i).le)
       ⟨i, Finset.mem_univ _, mul_pos (by exact_mod_cast hi) (hpos i)⟩
   intro hz
+  have hz' : (∑ i, (mult i : ℂ) * σ (dim i : ℂ)) = 0 := by
+    simpa only [htransport, ← Complex.ofReal_natCast, ← Complex.ofReal_mul,
+      ← Complex.ofReal_sum, Complex.ofReal_zero] using congrArg Complex.ofReal hz
   apply (ne_of_gt hsum)
-  exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz) :
+  exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz') :
     (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0)
 
 end PropertyF.Ground.Calculus
