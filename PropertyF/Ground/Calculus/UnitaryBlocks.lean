@@ -54,13 +54,6 @@ theorem averagedGram_posDef :
 
 open scoped MatrixOrder
 
-/-- Conjugating by a self-adjoint unit makes an isometry unitary. -/
-private theorem conjugate_mem_unitary {A : Type*} [Monoid A] [StarMul A]
-    (P U : Aˣ) (hP : star P = P) (h : star U * P ^ 2 * U = P ^ 2) :
-    ((P * U * P⁻¹ : Aˣ) : A) ∈ unitary A :=
-  (Units.mul_inv_mem_unitary (P * U) P).2 (by
-    simpa only [star_mul, hP, pow_two, mul_assoc] using h)
-
 /-- A single change of basis unitarizes every matrix in a finite group representation. -/
 theorem exists_unitarizing_basis :
     ∃ P : (Matrix ι ι ℂ)ˣ, ∀ g : G,
@@ -78,11 +71,12 @@ theorem exists_unitarizing_basis :
   have hsquare : (↑P : Matrix ι ι ℂ) * (↑P : Matrix ι ι ℂ) = A := by
     rw [hP, ← pow_two, CFC.sq_sqrt A hA]
   refine ⟨P, fun g => ?_⟩
-  apply conjugate_mem_unitary P (ρ.toHomUnits g) hselfu
+  apply (Units.mul_inv_mem_unitary (P * ρ.toHomUnits g) P).2
+  rw [star_mul, hselfu]
   apply Units.ext
-  simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Units.coe_star,
-    pow_two, hsquare, ← Matrix.star_eq_conjTranspose, MonoidHom.coe_toHomUnits, A] using
-      averagedGram_invariant ρ g
+  have h : star (ρ g) * A * ρ g = A := averagedGram_invariant ρ g
+  rw [← hsquare] at h
+  simpa only [Units.val_mul, Units.coe_star, MonoidHom.coe_toHomUnits, mul_assoc] using h
 
 end PropertyF.Ground.Calculus
 
@@ -263,13 +257,5 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 abbrev IsUnitaryBraidPresentation {X : C} {n r : ℕ} {d : Fin r → ℕ}
     (e : BraidBlockPresentation X n d) : Prop :=
   IsUnitaryPresentation (braidEndRepresentation X n) e
-
-/-- Finite categorical braid images admit a simultaneous unitary block
-realization of their actual endomorphism algebra. -/
-theorem braidAlgebra_unitary_blocks {X : C} {n : ℕ} (h : Finite (braidImage X n)) :
-    ∃ (r : ℕ) (d : Fin r → ℕ) (e : BraidBlockPresentation X n d),
-      (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e :=
-  let _ : Finite (braidImage X n) := h
-  groupImageAlgebra_unitary_blocks _
 
 end PropertyF.Ground.Calculus

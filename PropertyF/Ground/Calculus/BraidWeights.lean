@@ -348,7 +348,9 @@ theorem exists_unitary_braid_trace_blocks
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (braidTensorPower X n)
-  obtain ⟨r, d, b, hnonzero, hunitary⟩ := braidAlgebra_unitary_blocks hfinite
+  let _ : Finite (braidImage X n) := hfinite
+  obtain ⟨r, d, b, hnonzero, hunitary⟩ :=
+    groupImageAlgebra_unitary_blocks (braidEndRepresentation X n)
   have hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
   obtain ⟨mult, hret, hdim, htrace⟩ :=
     pivotalTrace_braid_multiplicities C p scalar e hd b
