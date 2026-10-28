@@ -49,7 +49,7 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
       have : Mono P.arrow.f := by
         change Mono ((Center.forget C.Obj).map P.arrow)
         infer_instance
-      let : IsSplitMono P.arrow.f := mono_splits C P.arrow.f
+      let : IsSplitMono P.arrow.f := mono_splits P.arrow.f
       have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange X P :=
         ⟨retraction P.arrow.f, rfl⟩
       obtain ⟨g, hg⟩ := h hm
@@ -59,7 +59,7 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
       have : Mono Q.arrow.f := by
         change Mono ((Center.forget C.Obj).map Q.arrow)
         infer_instance
-      let : IsSplitMono Q.arrow.f := mono_splits C Q.arrow.f
+      let : IsSplitMono Q.arrow.f := mono_splits Q.arrow.f
       obtain ⟨t, ht⟩ := center_factor P.arrow Q.arrow (P.arrow.f ≫ g) hg'
       apply Subobject.le_of_comm t
       apply Center.ext
@@ -113,7 +113,7 @@ theorem center_cokernel_measure_lt {S W : 𝒵} (p : S ⟶ W) (hp : p ≠ 0) :
   let Q := Centre.centerCokernel p
   let q : W.1 ⟶ Q.1 := (Centre.centerCokernelπ p).f
   letI : Epi q := inferInstanceAs (Epi (cokernel.π p.f))
-  letI : IsSplitEpi q := epi_splits C q
+  letI : IsSplitEpi q := epi_splits q
   letI : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
   finrank_end_lt_of_split_epi p.f q (fun h => hp (Center.ext p 0 h))
     (congrArg Center.Hom.f (Centre.centerCokernel_condition p))

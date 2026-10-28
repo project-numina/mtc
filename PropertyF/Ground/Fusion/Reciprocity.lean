@@ -41,14 +41,18 @@ theorem finrank_end_leftDual [RigidCategory C] (X : C) :
     (tensorLeftHomLinearEquiv (𝟙_ C) (ᘁX) X X).symm |>.trans
     (CategoryTheory.Linear.homCongr ℂ (ρ_ X) (Iso.refl _)) |>.finrank_eq
 
-variable (D : BraidedFusionCategory.{v,u})
+section
+variable {E : Type u} [Category.{v} E] [MonoidalCategory E] [BraidedCategory E]
+  [Abelian E] [Linear ℂ E] [RigidCategory E] [MonoidalPreadditive E] [MonoidalLinear ℂ E]
+  [IsFusionCategory E]
 
 /-- In a finite semisimple category an object with a one-dimensional
 endomorphism space is simple. -/
-theorem simple_of_finrank_end_eq_one {X : D.Obj}
+theorem simple_of_finrank_end_eq_one {X : E}
     (hdim : Module.finrank ℂ (X ⟶ X) = 1) : Simple X := by
   classical
-  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  let D : BraidedFusionCategory.{v,u} := { Obj := E }
+  let : ∀ A B : E, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   have hid : (𝟙 X : X ⟶ X) ≠ 0 := by
     obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp (by rw [hdim]; decide)
     exact fun h ↦ hf (((IsZero.iff_id_eq_zero X).mpr h).eq_of_src f 0)
@@ -64,28 +68,32 @@ theorem simple_of_finrank_end_eq_one {X : D.Obj}
   exact Simple.of_iso ⟨s, t, hst, hts⟩
 
 /-- Duals of simple objects remain simple. -/
-theorem simple_leftDual (X : D.Obj) [Simple X] :
+theorem simple_leftDual (X : E) [Simple X] :
     Simple (ᘁX) :=
   letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  simple_of_finrank_end_eq_one D ((finrank_end_leftDual X).trans
+  simple_of_finrank_end_eq_one ((finrank_end_leftDual X).trans
     (CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X))
 
 /-- The right dual of a simple object in a braided fusion category is simple. -/
-theorem simple_rightDual (X : D.Obj) [Simple X] :
+theorem simple_rightDual (X : E) [Simple X] :
     Simple (Xᘁ) :=
-  letI : Simple (ᘁX) := simple_leftDual D X
+  letI : Simple (ᘁX) := simple_leftDual X
   Simple.of_iso (leftDualIso HasLeftDual.exact (BraidedCategory.exactPairing_swap X (Xᘁ))).symm
+
+end
+
+variable (D : BraidedFusionCategory.{v,u})
 
 /-- The label of the left dual of a simple representative. -/
 def dualIndex (j : Fin (rank D)) : Fin (rank D) := by
   letI : Simple (simples D j) := simples_simple D j
-  letI : Simple (ᘁ(simples D j)) := simple_leftDual D (simples D j)
+  letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   exact Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
 
 theorem dualIndex_iso (j : Fin (rank D)) :
     Nonempty ((ᘁ(simples D j)) ≅ simples D (dualIndex D j)) :=
   letI : Simple (simples D j) := simples_simple D j
-  letI : Simple (ᘁ(simples D j)) := simple_leftDual D (simples D j)
+  letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
 
 /-- Fusion reciprocity with the dual kept as an actual object. -/
@@ -142,27 +150,31 @@ end PropertyF.Ground
 
 namespace PropertyF.Ground.Dimensions
 
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+  [Abelian C] [Linear ℂ C] [RigidCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+  [IsFusionCategory C]
+
 /-- A simple object has nonzero right quantum trace for any double-dual isomorphism. -/
-theorem rightQuantumTrace_simple_ne_zero (C : BraidedFusionCategory.{v,u})
-    {X : C.Obj} [Simple X] (j : X ≅ (Xᘁ)ᘁ) :
+theorem rightQuantumTrace_simple_ne_zero
+    {X : C} [Simple X] (j : X ≅ (Xᘁ)ᘁ) :
     rightQuantumTrace j ≠ 0 := by
-  let _ : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
+  let _ : Simple (𝟙_ C) := IsFusionCategory.unit_simple
   let _ : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  let s : 𝟙_ C.Obj ⟶ X ⊗ (Xᘁ) := ExactPairing.coevaluation X (Xᘁ)
-  let _ : Simple (Xᘁ) := simple_rightDual C X
+  let s : 𝟙_ C ⟶ X ⊗ (Xᘁ) := ExactPairing.coevaluation X (Xᘁ)
+  let _ : Simple (Xᘁ) := simple_rightDual X
   have hs : s ≠ 0 := (exactPairing_ne_zero X (Xᘁ) (id_nonzero (Xᘁ))).1
   obtain ⟨r₀, hr₀⟩ := split_from_simple s hs
   have hr₀ne : r₀ ≠ 0 := fun h ↦
-    id_nonzero (𝟙_ C.Obj) (by simpa [h] using hr₀.symm)
+    id_nonzero (𝟙_ C) (by simpa [h] using hr₀.symm)
   let t : X ⊗ (Xᘁ) ≅ ((Xᘁ)ᘁ) ⊗ (Xᘁ) := j ⊗ᵢ Iso.refl _
-  let ev : ((Xᘁ)ᘁ) ⊗ (Xᘁ) ⟶ 𝟙_ C.Obj := ExactPairing.evaluation (Xᘁ) ((Xᘁ)ᘁ)
+  let ev : ((Xᘁ)ᘁ) ⊗ (Xᘁ) ⟶ 𝟙_ C := ExactPairing.evaluation (Xᘁ) ((Xᘁ)ᘁ)
   have hev : ev ≠ 0 := by
     let _ : Simple ((Xᘁ)ᘁ) := Simple.of_iso j.symm
     exact (exactPairing_ne_zero (Xᘁ) ((Xᘁ)ᘁ) (id_nonzero ((Xᘁ)ᘁ))).2
-  let r : X ⊗ (Xᘁ) ⟶ 𝟙_ C.Obj := t.hom ≫ ev
+  let r : X ⊗ (Xᘁ) ⟶ 𝟙_ C := t.hom ≫ ev
   have hr : r ≠ 0 := fun h ↦ hev ((cancel_epi t.hom).1 (by simpa [r] using h))
-  have hfin : Module.finrank ℂ (X ⊗ (Xᘁ) ⟶ 𝟙_ C.Obj) = 1 :=
-    ((tensorRightHomLinearEquiv X (Xᘁ) ((Xᘁ)ᘁ) (𝟙_ C.Obj)).trans
+  have hfin : Module.finrank ℂ (X ⊗ (Xᘁ) ⟶ 𝟙_ C) = 1 :=
+    ((tensorRightHomLinearEquiv X (Xᘁ) ((Xᘁ)ᘁ) (𝟙_ C)).trans
       ((CategoryTheory.Linear.homCongr ℂ (Iso.refl X) (λ_ ((Xᘁ)ᘁ))).trans
         (CategoryTheory.Linear.homCongr ℂ (Iso.refl X) j.symm))).finrank_eq.trans
           (CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X)

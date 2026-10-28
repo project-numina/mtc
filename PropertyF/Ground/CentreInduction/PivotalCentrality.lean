@@ -103,7 +103,7 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
     simp [monoidalComp]
   let : Simple S := simples_simple C i
   let e : S ⊗ (Sᘁ) ≅ V i := whiskerRightIso (ρ_ S).symm (Sᘁ)
-  let : Simple (Sᘁ) := simple_rightDual C S
+  let : Simple (Sᘁ) := simple_rightDual S
   exact (exactPairing_ne_zero S (Sᘁ) (id_nonzero (Sᘁ))).1
     ((e.isZero_iff.mpr ((IsZero.iff_id_eq_zero _).2 hid)).eq_of_tgt _ _)
 

@@ -90,7 +90,7 @@ theorem rootDimension_ne_zero (i : Fin (rank C)) :
   change unitScalar C (rootTrace C (𝟙 (simples C i))) ≠ 0
   rw [rootTrace_id, Ground.unitScalar_eq_equiv]
   exact (Ground.unitScalarEquiv C).toRingEquiv.map_ne_zero_iff.mpr
-    (rightQuantumTrace_simple_ne_zero C (X := simples C i)
+    (rightQuantumTrace_simple_ne_zero (X := simples C i)
       ((fourthDualRootNaturalIso C).app (simples C i)))
 
 /-- The matrix of traces of the actual natural-root multiplicity defects. -/

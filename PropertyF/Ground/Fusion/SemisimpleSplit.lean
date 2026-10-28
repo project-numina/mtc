@@ -21,14 +21,17 @@ theorem epi_ne_zero_of_id_ne_zero {X Y : C} (f : X ⟶ Y) [Epi f]
 
 end
 
-variable (D : BraidedFusionCategory.{v,u})
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+  [Abelian C] [Linear ℂ C] [RigidCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+  [IsFusionCategory C]
 
 /-- A nonzero morphism into a simple object splits. -/
-theorem split_to_simple {S X : D.Obj} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
+theorem split_to_simple {S X : C} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
     ∃ s : S ⟶ X, s ≫ f = 𝟙 S := by
   classical
-  obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
-  let V : (Σ i, Fin (m i)) → D.Obj := fun p => simples D p.1
+  obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
+  obtain ⟨m, ⟨e⟩⟩ := hdecomp X
+  let V : (Σ i, Fin (m i)) → C := fun p => T p.1
   have hg : e.inv ≫ f ≠ 0 := fun h ↦ hf ((cancel_epi e.inv).1 (by simpa using h))
   have hc : ∃ p, biproduct.ι V p ≫ e.inv ≫ f ≠ 0 := by
     by_contra! h
@@ -37,7 +40,7 @@ theorem split_to_simple {S X : D.Obj} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
     intro p
     simpa [Category.assoc] using h p
   obtain ⟨p, hp⟩ := hc
-  let : Simple (V p) := simples_simple D p.1
+  let : Simple (V p) := hsimple p.1
   let g : V p ⟶ S := biproduct.ι V p ≫ e.inv ≫ f
   let : IsIso g := CategoryTheory.isIso_of_hom_simple hp
   refine ⟨inv g ≫ biproduct.ι V p ≫ e.inv, ?_⟩
@@ -45,17 +48,17 @@ theorem split_to_simple {S X : D.Obj} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
 
 /-- Every simple object is projective: pull an epimorphism back to the simple
 object and split the resulting nonzero map. -/
-theorem simple_projective (S : D.Obj) [Simple S] : Projective S where
+theorem simple_projective (S : C) [Simple S] : Projective S where
   factors := by
     intro X Y g f hf
     let : Epi f := hf
-    obtain ⟨s, hs⟩ := split_to_simple D (pullback.snd f g)
+    obtain ⟨s, hs⟩ := split_to_simple (pullback.snd f g)
       (epi_ne_zero_of_id_ne_zero _ (id_nonzero S))
     refine ⟨s ≫ pullback.fst f g, ?_⟩
     rw [Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]
 
 /-- Every simple object is injective, by the dual pushout argument. -/
-theorem simple_injective (S : D.Obj) [Simple S] : Injective S where
+theorem simple_injective (S : C) [Simple S] : Injective S where
   factors := by
     intro X Y g f hf
     let : Mono f := hf
@@ -65,12 +68,13 @@ theorem simple_injective (S : D.Obj) [Simple S] : Injective S where
     rw [← Category.assoc, pushout.condition, Category.assoc, hr, Category.comp_id]
 
 /-- Every object is projective. -/
-theorem object_projective (X : D.Obj) : Projective X := by
-  obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
-  let V : (Σ i, Fin (m i)) → D.Obj := fun p => simples D p.1
+theorem object_projective (X : C) : Projective X := by
+  obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
+  obtain ⟨m, ⟨e⟩⟩ := hdecomp X
+  let V : (Σ i, Fin (m i)) → C := fun p => T p.1
   let : ∀ p, Projective (V p) := fun p => by
-    let : Simple (V p) := simples_simple D p.1
-    exact simple_projective D (V p)
+    let : Simple (V p) := hsimple p.1
+    exact simple_projective (V p)
   have hV : Projective (⨁ V) := by
     refine ⟨?_⟩
     intro A B g f hf
@@ -82,24 +86,25 @@ theorem object_projective (X : D.Obj) : Projective X := by
   exact Projective.of_iso e.symm hV
 
 /-- Every object is injective. -/
-theorem object_injective (X : D.Obj) : Injective X := by
-  obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
-  let V : (Σ i, Fin (m i)) → D.Obj := fun p => simples D p.1
+theorem object_injective (X : C) : Injective X := by
+  obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
+  obtain ⟨m, ⟨e⟩⟩ := hdecomp X
+  let V : (Σ i, Fin (m i)) → C := fun p => T p.1
   let : ∀ p, Injective (V p) := fun p => by
-    let : Simple (V p) := simples_simple D p.1
-    exact simple_injective D (V p)
+    let : Simple (V p) := hsimple p.1
+    exact simple_injective (V p)
   exact Injective.of_iso e.symm inferInstance
 
 /-- Every epimorphism splits. -/
-theorem epi_splits {X Y : D.Obj} (f : X ⟶ Y) [Epi f] : IsSplitEpi f :=
-  letI : Projective Y := object_projective D Y
+theorem epi_splits {X Y : C} (f : X ⟶ Y) [Epi f] : IsSplitEpi f :=
+  letI : Projective Y := object_projective Y
   IsSplitEpi.mk' {
     section_ := Projective.factorThru (𝟙 Y) f
     id := Projective.factorThru_comp (𝟙 Y) f }
 
 /-- Every monomorphism splits. -/
-theorem mono_splits {X Y : D.Obj} (f : X ⟶ Y) [Mono f] : IsSplitMono f :=
-  letI : Injective X := object_injective D X
+theorem mono_splits {X Y : C} (f : X ⟶ Y) [Mono f] : IsSplitMono f :=
+  letI : Injective X := object_injective X
   IsSplitMono.mk' {
     retraction := Injective.factorThru (𝟙 X) f
     id := Injective.comp_factorThru (𝟙 X) f }
