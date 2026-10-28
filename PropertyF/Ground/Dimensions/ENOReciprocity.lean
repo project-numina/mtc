@@ -242,7 +242,6 @@ theorem normalized_defects_trivial
     (hsat : ∀ i, ‖rootDimension C i‖ = fpSimple C i) :
     ScaledMultiplicityDefectsTrivial C
       (fun i ↦ (normalizedRootDimension C i)⁻¹) := by
-  classical
   let q := normalizedRootDimension C
   intro i j k
   let r := q k / (q i * q j)
@@ -263,7 +262,6 @@ root has real dimensions. The remaining categorical identities are explicit. -/
 theorem positive_spherical_of_matrix_identities
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
-  classical
   have hsat := eno_root_norm_saturation_of_pseudoUnitary hinv heig hnorm hpu
   let q := normalizedRootDimension C
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
@@ -299,7 +297,6 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     (htranspose : ENOTraceMatrixReciprocity C)
     (i : Fin (rank C)) :
     rootDimension C (dualIndex C i) = rootDualSign C i * star (rootDimension C i) := by
-  classical
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ := enoTraceMatrix C i
   let d := rootDimension C
   let ε := rootDualSign C i

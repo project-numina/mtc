@@ -53,9 +53,9 @@ establish their dimensions using alternating projectors. -/
 theorem integral_of_exterior_dimensions
     (hExterior : HasFallingFactorialDimensions (fpDimension C X) (fpDimension C)) :
     IsFPIntegral C X :=
-  Centre.integral_of_nonnegative_falling_factorials (fpDimension_nonneg C X) fun n ↦
+  Centre.integral_of_nonnegative_falling_factorials (fpDimension_nonneg X) fun n ↦
     let ⟨Y, hY⟩ := hExterior n
-    hY ▸ mul_nonneg (Nat.cast_nonneg _) (fpDimension_nonneg C Y)
+    hY ▸ mul_nonneg (Nat.cast_nonneg _) (fpDimension_nonneg Y)
 
 include hdim in
 /-- The same reduction stated using actual pivotal dimensions, so that a

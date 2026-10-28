@@ -91,7 +91,6 @@ theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
     (hdef : ∀ k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1) :
     (rootSignTwist C c hc).app (simples C i ⊗ simples C j) =
       rootSignTensorIso C c hc (simples C i) (simples C j) := by
-  classical
   let X := simples C i ⊗ simples C j
   have hid : (rootSignDefect C c hc (simples C i) (simples C j)).hom = 𝟙 X :=
     biproduct_decomposition_hom_ext (simpleDecomposition C X) fun ⟨k, t⟩ ↦ by

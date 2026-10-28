@@ -155,7 +155,6 @@ theorem norm_saturation_of_pseudoUnitary {d : Fin (rank C) → ℂ}
 theorem global_sum_squares_one_le {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
     {ι : Type*} [Fintype ι] (d : ι → k) (h : ∃ i, d i = 1) : 1 ≤ ∑ i, (d i) ^ 2 :=
   h.elim fun i hi ↦ by
-    classical
     simpa [hi] using Finset.single_le_sum (fun j _ ↦ sq_nonneg (d j)) (Finset.mem_univ i)
 
 end PropertyF.Ground.Dimensions
