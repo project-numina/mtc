@@ -19,16 +19,11 @@ local notation "𝒵ᶠ" => Integrate.bundledCenter C
 /-- The scalar of a centre unit endomorphism is unchanged by forgetting. -/
 theorem center_unitScalar_forget (a : End (𝟙_ (𝒵))) :
     unitScalar 𝒵ᶠ a = unitScalar C (End.of a.asHom.f) := by
-  let z := unitScalar 𝒵ᶠ a
-  have h := algebraMap_unitScalar 𝒵ᶠ a
-  have hf := congrArg (fun x : End (𝟙_ (𝒵)) => x.asHom.f) h
-  have hb : End.of a.asHom.f = algebraMap ℂ (End (𝟙_ C.Obj)) z := by
-    apply End.ext
-    change a.asHom.f = z • 𝟙 (𝟙_ C.Obj)
-    change (z • 𝟙 (𝟙_ (𝒵))).f = a.asHom.f at hf
-    exact hf.symm
-  change z = unitScalar C (End.of a.asHom.f)
-  rw [hb, unitScalar_algebraMap]
+  apply (unit_algebraMap_bijective C).1
+  rw [algebraMap_unitScalar]
+  apply End.ext
+  change ((unitScalar 𝒵ᶠ a) • 𝟙 (𝟙_ (𝒵))).f = a.asHom.f
+  exact congrArg (fun x : End (𝟙_ (𝒵)) => x.asHom.f) (algebraMap_unitScalar 𝒵ᶠ a)
 
 /-- Compatible pivotal components have identical scalar dimensions after forgetting. -/
 theorem center_pivotalDimension_forget
