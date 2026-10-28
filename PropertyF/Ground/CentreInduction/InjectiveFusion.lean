@@ -56,7 +56,7 @@ variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center
 local notation "𝒵" => CategoryTheory.Center C.Obj
 
 /-- A unit retract of an induced object makes every centre object injective. -/
-theorem center_all_injective_of_unit_retract (X : C.Obj) {U : 𝒵}
+theorem center_all_injective_of_unit_retract {X : C.Obj} {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
     (Z : 𝒵) : Injective Z :=
   letI : Injective ((induction C).obj X) := induction_injective C X
@@ -64,11 +64,11 @@ theorem center_all_injective_of_unit_retract (X : C.Obj) {U : 𝒵}
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Under the unit-retract condition every centre object is a finite simple sum. -/
-theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) {U : 𝒵}
+theorem center_finite_simple_sum_of_unit_retract {X : C.Obj} {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
     (Z : 𝒵) : FiniteSimpleSum (𝒵) Z := by
   let (W : 𝒵) : IsArtinianObject W := center_artinian C W
-  let (W : 𝒵) : Injective W := center_all_injective_of_unit_retract C X r W
+  let (W : 𝒵) : Injective W := center_all_injective_of_unit_retract C r W
   let (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) := by
     let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
     exact PropertyF.Ground.Centre.finiteDimensional_hom ℂ A B
@@ -80,15 +80,15 @@ theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) {U : 𝒵}
 
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
-theorem center_fusion_of_unit_retract (X : C.Obj) {U : 𝒵}
+theorem center_fusion_of_unit_retract {X : C.Obj} {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
     IsFusionCategory (𝒵) := by
   obtain ⟨n, S, hS, hinj, hcover⟩ := finite_simple_representatives C
   apply PropertyF.Ground.CentreBundle.fusionOfFiniteSemisimple C
   refine ⟨n, S, hS, hinj, ?_⟩
   intro Z
-  obtain ⟨k, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract C X r Z)
-  obtain ⟨m, ⟨a⟩⟩ := regroup_biproduct S V (fun j => hcover (V j) (hV j))
+  obtain ⟨k, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract C r Z)
+  obtain ⟨m, ⟨a⟩⟩ := regroup_biproduct (fun j => hcover (V j) (hV j))
   exact ⟨m, ⟨e ≪≫ a⟩⟩
 
 
@@ -109,7 +109,7 @@ theorem center_fusion_of_nonzero_induced_cap (X : C.Obj)
     IsFusionCategory (𝒵) :=
   letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   letI : Simple (𝟙_ (𝒵)) := PropertyF.Ground.Centre.centerUnitSimple
-  center_fusion_of_unit_retract C X (unitRetractOfNonzeroCap cap hne)
+  center_fusion_of_unit_retract C (unitRetractOfNonzeroCap cap hne)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre pivotal structure with nonzero trace on an induced object implies fusion. -/
