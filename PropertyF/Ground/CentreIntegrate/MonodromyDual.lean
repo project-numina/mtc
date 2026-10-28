@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.CentreCabling.CoreCentrality
+public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.Cabling.GeneralDual
 public import PropertyF.Ground.Fusion.GeneratedRigidity
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

@@ -71,13 +71,4 @@ theorem fpDeterminant_scalar (C : BraidedFusionCategory.{v,u}) (X : C.Obj) (z : 
   intro i _
   simp only [← Nat.cast_smul_eq_nsmul ℝ, smul_smul, mul_comm]
 
-/-- On a simple object, vanishing of the scalar FP determinant detects
-finite order of the scalar. -/
-theorem fpDeterminant_scalar_simple_eq_zero_iff
-    (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) (z : ℂˣ) :
-    fpDeterminant C (simples C i) (scalarIso C (simples C i) z) = 0 ↔
-      IsOfFinOrder z := by
-  rw [fpDeterminant_scalar, fpDimension_simple, smul_eq_zero]
-  simp only [ne_of_gt (fpSimple_pos C i), false_or, vafaUnitClass_eq_zero_iff]
-
 end PropertyF.Ground.CentreModular

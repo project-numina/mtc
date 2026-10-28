@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.SimpleScalars
-public import PropertyF.Ground.Centre.Linear
+public import PropertyF.Ground.Centre.Basic
 
 /-! Detect centre morphisms on a finite set of simple objects. -/
 

@@ -1,5 +1,6 @@
 module
-public import PropertyF.Ground.CentreDimensions.RankOneCenter
+public import PropertyF.Ground.Dimensions.RankOneCriterion
+public import PropertyF.Ground.CentreInduction.RankOne
 public import Mathlib.CategoryTheory.Monoidal.Rigid.OfEquivalence
 
 @[expose] public noncomputable section
@@ -17,17 +18,4 @@ universe v u
     change F.Monoidal
     infer_instance
   exact rigidCategoryOfEquivalence e.toAdjunction
-/-- The actual rank-one centre has fusion and positive spherical structures,
-and its categorical dimension is the FP square, with no extra assumptions. -/
-theorem rankOne_center_spherical_and_globalDimension (C : Ground.BraidedFusionCategory.{v,u})
-    [Subsingleton (Fin (Ground.rank C))] :
-    letI : RigidCategory (CategoryTheory.Center C.Obj) := rankOne_centerRigid C
-    letI : Ground.IsFusionCategory (CategoryTheory.Center C.Obj) := Ground.CentreInduction.fusion_of_rank_one C
-    ∃ p : PivotalStructure (C := (Ground.Integrate.bundledCenter C).Obj), p.IsSpherical ∧
-      (∀ i, pivotalDimension (Ground.Integrate.bundledCenter C) p
-        (Ground.simples (Ground.Integrate.bundledCenter C) i) =
-          (Ground.fpSimple (Ground.Integrate.bundledCenter C) i : ℂ)) ∧
-      Ground.globalDimension (Ground.Integrate.bundledCenter C) = (Ground.globalFPDimension C : ℂ) ^ 2 := by
-  let : RigidCategory (CategoryTheory.Center C.Obj) := rankOne_centerRigid C
-  exact center_spherical_and_globalDimension_of_rank_one C
 end PropertyF.Ground.Dimensions

@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.UnitSummand
-public import PropertyF.Ground.Centre.Linear
+public import PropertyF.Ground.Centre.Basic
 
 /-! Candidate underlying unit of the centre induction adjunction. -/
 
