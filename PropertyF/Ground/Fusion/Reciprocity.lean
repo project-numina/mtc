@@ -143,10 +143,6 @@ theorem dualIndex_involutive :
 def dualEquiv : Equiv.Perm (Fin (rank D)) :=
   ⟨dualIndex D, dualIndex D, dualIndex_involutive D, dualIndex_involutive D⟩
 
-/-- The duality permutation acts by taking the dual label. -/
-@[simp]
-theorem dualEquiv_apply (i : Fin (rank D)) : dualEquiv D i = dualIndex D i := rfl
-
 end PropertyF.Ground
 
 namespace PropertyF.Ground.Dimensions
