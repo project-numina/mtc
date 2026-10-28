@@ -23,52 +23,48 @@ local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
 
 /-- The vacuum-column Kirby identity with loop value `D`. -/
-abbrev HasKirbyIdentity (D : ℂ) : Prop :=
-  ∀ k, (∑ z, dₚ z * Sₚ k z) = if k = unitIndex C then D else 0
+abbrev HasKirbyIdentity {ι K : Type*} [Fintype ι] [DecidableEq ι] [Semiring K]
+    (S : Matrix ι ι K) (d : ι → K) (u : ι) (D : K) : Prop :=
+  ∀ k, (∑ z, d z * S k z) = if k = u then D else 0
 
-/-- A product of S-matrix entries expands using the fusion coefficients. -/
-theorem categoricalS_product (x y z : Fin (rank C)) :
-    Sₚ x z * Sₚ z y = ∑ k, (fusionCoeff C x y k : ℂ) * (dₚ z * Sₚ k z) := by
-  rw [categoricalS_symmetric C p z y]
-  simpa only [SEntry_tensor_decomposition, Finset.sum_mul, Finset.mul_sum, mul_left_comm, mul_comm,
-    mul_assoc] using
-    (hopf_product_of_partialTrace_composition C p (partialTrace_doubleBraiding_tensor C p) x y z).symm
+section Kirby
+variable {ι K : Type*} [Fintype ι] [DecidableEq ι] [Field K]
+variable {N : FusionRules ι} {S : Matrix ι ι K} {d : ι → K} {dual : ι → ι} {D : K}
+variable (hsym : ∀ x y, S x y = S y x) (hd : ∀ z, d z ≠ 0)
+variable (hVerlinde : HasVerlindeFormula N S d)
+variable (hunit : ∀ x y, N.coeff x y N.unit = if x = dual y then 1 else 0)
 
-/-- The vacuum-column Kirby identity propagates to all S-square entries by
-the categorical Verlinde identity and fusion reciprocity. -/
-theorem categoricalS_square_of_kirby
-    (D : ℂ)
-    (hkirby : HasKirbyIdentity C p D) :
-    HasSSquare (Sₚ) (dualIndex C) D := by
-  classical
-  intro x y
-  simp_rw [categoricalS_product C p x y]
-  rw [Finset.sum_comm]
-  simp_rw [← Finset.mul_sum, hkirby]
-  rw [Finset.sum_eq_single_of_mem (unitIndex C) (Finset.mem_univ _)]
-  · simp only [ite_true]
-    rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit]
-    split_ifs <;> simp_all
-  · intro k _ hk
-    simp [hk]
+include hsym hd hVerlinde hunit in
+/-- The vacuum-column Kirby identity and fusion rules imply S squared is duality. -/
+theorem fusion_S_square_of_kirby (hkirby : HasKirbyIdentity S d N.unit D) : HasSSquare S dual D :=
+  fun x y ↦ by
+    classical
+    dsimp only [HasKirbyIdentity] at hkirby
+    simp_rw [fusion_character_product hsym hd hVerlinde x y]
+    rw [Finset.sum_comm]
+    simp_rw [← Finset.mul_sum, hkirby]
+    rw [Finset.sum_eq_single_of_mem N.unit (Finset.mem_univ _)]
+    · simp only [ite_true]
+      rw [hunit]
+      split_ifs <;> simp_all
+    · intro k _ hk
+      simp [hk]
 
-/-- A nonzero Kirby vacuum-loop scalar suffices for invertibility of the
-actual categorical S matrix. -/
-theorem categoricalS_det_ne_zero_of_kirby
-    (D : ℂ) (hD : D ≠ 0)
-    (hkirby : HasKirbyIdentity C p D) :
-    (Sₚ).det ≠ 0 :=
-  let S := Sₚ
-  let B : Matrix (Fin (rank C)) (Fin (rank C)) ℂ := fun x y ↦ S x (dualIndex C y) / D
+include hsym hd hVerlinde hunit in
+/-- A nonzero Kirby vacuum-loop scalar makes the S matrix invertible. -/
+theorem fusion_S_det_ne_zero_of_kirby (hdual : Function.Involutive dual) (hD : D ≠ 0)
+    (hkirby : HasKirbyIdentity S d N.unit D) : S.det ≠ 0 :=
+  let B : Matrix ι ι K := fun x y ↦ S x (dual y) / D
   Matrix.det_ne_zero_of_right_inverse (by
     classical
     ext x y
     rw [Matrix.mul_apply, Matrix.one_apply]
-    change (∑ z, S x z * (S z (dualIndex C y) / D)) = _
+    change (∑ z, S x z * (S z (dual y) / D)) = _
     simp_rw [← mul_div_assoc]
-    rw [← Finset.sum_div, categoricalS_square_of_kirby C p D hkirby,
-      dualIndex_involutive C]
-    split_ifs <;> simp [*])
+    rw [← Finset.sum_div, fusion_S_square_of_kirby hsym hd hVerlinde hunit hkirby, hdual]
+    split_ifs <;> simp [hD])
+
+end Kirby
 
 variable (hdim : HasFPSimpleDimensions C p)
 
@@ -80,7 +76,12 @@ theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
       (∑ z, dₚ z * Sₚ k z) = 0) :
     (Sₚ).det ≠ 0 := by
   classical
-  apply categoricalS_det_ne_zero_of_kirby C p (globalFPDimension C : ℂ)
+  apply fusion_S_det_ne_zero_of_kirby (N := ⟨unitIndex C, fusionCoeff C⟩)
+    (D := (globalFPDimension C : ℂ)) (categoricalS_symmetric C p)
+    (simpleDimension_ne_zero C p) (categoricalS_verlinde C p)
+    (fun x y ↦ by
+      change fusionCoeff C x y (unitIndex C) = _
+      rw [fusionCoeff_reciprocity_labels, fusionCoeff_unit]) (dualIndex_involutive C)
   · exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
   · intro k
     by_cases hk : k = unitIndex C

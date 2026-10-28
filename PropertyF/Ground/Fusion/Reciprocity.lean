@@ -54,11 +54,7 @@ theorem simple_of_finrank_end_eq_one (D : BraidedFusionCategory.{v,u}) {X : D.Ob
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   have hid : (𝟙 X : X ⟶ X) ≠ 0 := by
     obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp (by rw [hdim]; decide)
-    intro h
-    apply hf
-    calc
-      f = 𝟙 X ≫ f := (Category.id_comp f).symm
-      _ = 0 := by rw [h]; simp
+    exact fun h ↦ hf (((IsZero.iff_id_eq_zero X).mpr h).eq_of_src f 0)
   obtain ⟨i, s, t, _, hts⟩ := exists_simple_retract D hid
   let : Simple (simples D i) := simples_simple D i
   obtain ⟨z, hz⟩ := (finrank_eq_one_iff_of_nonzero' (K := ℂ) (𝟙 X) hid).mp hdim (s ≫ t)

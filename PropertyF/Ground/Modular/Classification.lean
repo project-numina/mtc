@@ -178,10 +178,20 @@ theorem dual_involutive {R : Type*} [CommSemiring R]
   simpa only [ite_eq_left rfl, ite_true, hsym_sq, hsq, ite_eq_right (Ne.symm hn)] using
     (hsq (dual y) y).symm
 
+section NormalizedColumns
+variable {K : Type*} [Field K] {S : Matrix ι ι K} {dimension : ι → K}
+
+/-- Nonzero normalized columns of an invertible matrix are distinct. -/
+theorem normalized_columns_injective (hdet : S.det ≠ 0) (hd : ∀ i, dimension i ≠ 0) :
+    Function.Injective (fun j i ↦ S i j / dimension j) := fun a b h ↦
+  (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply
+    (dimension b) (dimension a) a b (hd b) (funext fun x ↦ by
+      change dimension b * S x a = dimension a * S x b
+      simpa only [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
+
 /-- The normalized S columns are linearly independent. The proof constructs an
 explicit inverse from the S-square identity and nonzero dimensions. -/
-theorem normalized_columns_linearIndependent {K : Type*} [Field K] {S : Matrix ι ι K}
-    {dual : ι → ι} {dimension : ι → K} {D : K}
+theorem normalized_columns_linearIndependent {dual : ι → ι} {D : K}
     (hd : ∀ y, dimension y ≠ 0) (hD : D ≠ 0)
     (hsym : ∀ x y, S x y = S y x)
     (hsq : HasSSquare S dual D) :
@@ -198,6 +208,8 @@ theorem normalized_columns_linearIndependent {K : Type*} [Field K] {S : Matrix �
     rw [← Finset.sum_div, hsq, dual_involutive hD hsym hsq]
     split_ifs <;> simp [hD]))
 
+
+end NormalizedColumns
 
 end PropertyF.Ground.Modular
 end

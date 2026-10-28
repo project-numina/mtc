@@ -1,7 +1,10 @@
 module
 public import PropertyF.Ground.Fusion.Simples
 
-/-! Reindexing finite complete lists of simple objects. -/
+/-! # Simple-object representatives
+
+A finite complete list of pairwise nonisomorphic simple objects is equivalent
+to the chosen list of representatives. -/
 
 @[expose] public noncomputable section
 open CategoryTheory
@@ -28,6 +31,5 @@ theorem simple_presentation_equiv {n : ℕ} (S : Fin n → C.Obj)
   · intro j
     obtain ⟨i, e⟩ := hCover j
     exact ⟨i, simples_injective C ((hf i).elim fun ei ↦ e.map fun e ↦ ei.symm ≪≫ e)⟩
-
 
 end PropertyF.Ground

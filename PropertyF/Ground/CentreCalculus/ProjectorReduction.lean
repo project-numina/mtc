@@ -112,11 +112,10 @@ theorem alternatingProjector_scalar_trace {X : C.Obj} {n : ℕ}
       map_sum (Dimensions.rightTraceLinear p X)
         (fun σ : Equiv.Perm (Fin n) => (Centre.permutationSign ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
   rw [ht, unitScalar_eq_equiv]
-  simp only [map_smul, map_sum, smul_eq_mul]
+  simp only [map_smul, map_sum, smul_eq_mul, unitScalar_eq_equiv]
   have hc : (Fintype.card (Equiv.Perm (Fin n)) : ℂ) = (Nat.factorial n : ℂ) := by
     simp [Fintype.card_perm]
   rw [← hc, ← mul_assoc, mul_invOf_self, one_mul]
-  simp only [unitScalar_eq_equiv]
 
 include hdim in
 /-- It suffices to evaluate the unnormalized signed trace sum for each

@@ -30,20 +30,16 @@ local notation "𝒮" => Modular.categoricalS Z p
 local notation "𝒅" => Modular.simpleDimension Z p
 local notation "𝒇" => fpSimple Z
 
-/-- The actual Galois-unit label supplies the modular dimension identity, its
-self-column, a dimension at least one, and a real conjugate. This is independent
-of the centre-specific realization and finite-braid rigidity. -/
+/-- The Galois-unit label has dimension at least one, the Galois-unit column,
+and the modular global-dimension identity. -/
 theorem exists_modular_witness (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions Z p)
     (hdet : (𝒮).det ≠ 0)
     {δ : ℝ} (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) :
-    ∃ (y : Fin (rank Z)) (d : ℝ), 1 ≤ 𝒇 y ∧
-      σ (𝒇 y : ℂ) = (d : ℂ) ∧
-      (∀ x, 𝒮 x y =
-        (𝒇 y : ℂ) * σ.symm (𝒅 x)) ∧
-      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (𝒇 y : ℂ) ^ 2 ∧
-      𝒮 y y = (𝒇 y : ℂ) * σ.symm (𝒇 y : ℂ) := by
+    ∃ y : Fin (rank Z), 1 ≤ 𝒇 y ∧
+      (∀ x, 𝒮 x y = (𝒇 y : ℂ) * σ.symm (𝒅 x)) ∧
+      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (𝒇 y : ℂ) ^ 2 := by
   have hreal := CentreCabling.realSimpleDimensions_of_fp hdim
   obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hp hdet hreal
   let y := act σ.symm (unitIndex Z)
@@ -53,11 +49,9 @@ theorem exists_modular_witness (hp : p.IsSpherical)
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
     (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
-  refine ⟨y, (σ (𝒇 y : ℂ)).re, one_le_fpSimple Z y,
-    (fp_simple_galois_real Z σ y).symm, ?_, ?_, ?_⟩
+  refine ⟨y, one_le_fpSimple Z y, ?_, ?_⟩
   · simpa only [hdim] using hprop.1
   · simpa only [hglobal, hdim] using hprop.2.2
-  · simpa only [hdim] using hprop.1 y
 
 /-- Once the Galois-unit column is known to have finite braid image and the
 actual three-strand rigidity theorem applies, the required numerical witness
@@ -72,9 +66,12 @@ theorem center_witness_of_categorical_modular_data (hp : p.IsSpherical)
       (𝒇 y : ℂ) * σ.symm (𝒅 x)) →
       ObjectPropertyF (simples Z y)) :
     ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
-  let ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ := exists_modular_witness Z hp hdim hdet hglobal σ
-  ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ hσf hG hS
-    (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d hσf)⟩
+  let ⟨y, hf, hcolumn, hG⟩ := exists_modular_witness Z hp hdim hdet hglobal σ
+  let d := (σ (𝒇 y : ℂ)).re
+  ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ
+    (fp_simple_galois_real Z σ y).symm hG (by simpa only [hdim] using hcolumn y)
+    (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d
+      (fp_simple_galois_real Z σ y).symm)⟩
 
 end PropertyF.Ground
 end
@@ -134,20 +131,22 @@ abbrev HasIntegralSimpleDimensionsOn (Z : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := Z.Obj)) (core : Set (Fin (rank Z))) : Prop :=
   ∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z
 
+variable {Z : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := Z.Obj)}
+variable {τ : ℂ ≃+* ℂ} {core generated : Set (Fin (rank Z))}
+local notation "𝒮" => Modular.categoricalS Z p
+local notation "𝒅" => Modular.simpleDimension Z p
+
 /-- If the common centralizer has integral dimensions, its double centralizer
 contains a simple with the Galois-unit column. Any such simple has property F
 when property F holds throughout the generated subcategory. The two label
 sets and the categorical double-centralizer and finite-image results are
 explicit interim premises, not assumptions in the target. -/
-theorem propertyF_of_galois_column
-    (Z : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj))
-    (τ : ℂ ≃+* ℂ) (core generated : Set (Fin (rank Z)))
-    (hIntegral : HasIntegralSimpleDimensionsOn Z p core)
+theorem propertyF_of_galois_column (hIntegral : HasIntegralSimpleDimensionsOn Z p core)
     (hDouble : CentreCabling.sCentralizer Z p core ⊆ generated)
     (hFinite : ∀ y ∈ generated, ObjectPropertyF (simples Z y))
     (y : Fin (rank Z))
-    (hColumn : ∀ x, Modular.categoricalS Z p x y =
-      Modular.simpleDimension Z p y * τ (Modular.simpleDimension Z p x)) :
+    (hColumn : ∀ x, 𝒮 x y =
+      𝒅 y * τ (𝒅 x)) :
     ObjectPropertyF (simples Z y) :=
   hFinite y <| hDouble fun x hx ↦ by
     obtain ⟨z, hz⟩ := hIntegral x hx
@@ -197,7 +196,7 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
   apply center_witness_of_categorical_modular_data 𝒵ᶠ hp hdim hdet
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)) hb hglobal τ hτ
   intro y hColumn
-  apply propertyF_of_galois_column 𝒵ᶠ p τ.symm core generated hIntegral hDouble ?_ y
+  apply propertyF_of_galois_column hIntegral hDouble ?_ y
   · intro x
     rw [hdim y]
     exact hColumn x
