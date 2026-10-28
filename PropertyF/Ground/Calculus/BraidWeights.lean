@@ -210,14 +210,14 @@ theorem idempotent_matrix_eq_zero_of_trace_eq_zero (ht : A.trace = 0) : A = 0 :=
 
 end IdempotentTrace
 
+open scoped Classical in
 /-- A weighted block trace of an element supported in one block. -/
 theorem sum_trace_single {B : Blocks} (w : Fin B.count → ℂ)
     (i : Fin B.count) (A : Matrix (Fin (B.size i)) (Fin (B.size i)) ℂ) :
     (∑ j, w j * ((Pi.single i A : B.Algebra) j).trace) =
       w i * A.trace := by
-  classical
-  rw [Fintype.sum_eq_single i]
-  all_goals simp_all
+  simpa using Fintype.sum_eq_single i
+    (f := fun j => w j * ((Pi.single i A : B.Algebra) j).trace) (fun j h => by simp_all)
 
 variable {B : Blocks} (hd : ∀ i, 0 < B.size i)
 

@@ -49,12 +49,9 @@ theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
     (hρ : ∀ g, ρ g ∈ unitary A) (hσ : ∀ g, σ g ∈ unitary B)
     (φ : A →ₐ[R] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
     φ (star x) = star (φ x) := by
-  apply map_star_of_mem_span φ (Set.range ρ)
-  · rintro _ ⟨g, rfl⟩
-    rw [unitary_representation_star_inv ρ hρ, hφ, hφ,
-      unitary_representation_star_inv σ hσ]
-  · rw [hspan]
-    exact Submodule.mem_top
+  refine map_star_of_mem_span φ _ ?_ (hspan.symm ▸ Submodule.mem_top)
+  rintro _ ⟨g, rfl⟩
+  rw [unitary_representation_star_inv ρ hρ, hφ, hφ, unitary_representation_star_inv σ hσ]
 
 end PropertyF.Ground.Calculus
 
@@ -87,10 +84,10 @@ end PropertyF.Ground.Calculus
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Calculus
 
-variable {G H A B : Type*} [Group G] [Group H]
-  [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B]
+variable {G H A B : Type*} [Monoid G] [Monoid H]
+  [Semiring A] [Algebra ℂ A] [Semiring B] [Algebra ℂ B]
 
-/-- An algebra map intertwining group representations carries the image
+/-- An algebra map intertwining monoid representations carries the image
 algebra into the target image algebra. -/
 def imageAlgebraMap (ρ : G →* A) (σ : H →* B) (τ : G →* H)
     (F : A →ₐ[ℂ] B) (hF : ∀ g, F (ρ g) = σ (τ g)) :
@@ -110,7 +107,7 @@ def imageAlgebraMap (ρ : G →* A) (σ : H →* B) (τ : G →* H)
     simpa using (groupInImage σ (τ g)).property
   exact hspan hx
 
-/-- The induced algebra map intertwines the image-group representations. -/
+/-- The induced algebra map intertwines the image representations. -/
 theorem imageAlgebraMap_group (ρ : G →* A) (σ : H →* B) (τ : G →* H)
     (F : A →ₐ[ℂ] B) (hF : ∀ g, F (ρ g) = σ (τ g)) (g : G) :
     imageAlgebraMap ρ σ τ F hF (groupInImage ρ g) = groupInImage σ (τ g) :=
@@ -220,7 +217,7 @@ def addRightAut (n : ℕ) : Aut (tensorPower X (n+2)) →* Aut (tensorPower X ((
 
 /-- The first crossing is natural in its tensor-power tail. -/
 @[reassoc]
-theorem crossing_natural (A B : C) (g : A ⟶ B) :
+theorem crossing_natural {A B : C} (g : A ⟶ B) :
     ((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ≫ X ◁ X ◁ g =
       X ◁ X ◁ g ≫ ((α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom) := by
   simp only [Category.assoc, ← associator_naturality_right X X g,
@@ -254,7 +251,7 @@ theorem append_first_two :
           monoidal
     _ = _ := by
       simp only [Category.assoc]
-      rw [← crossing_natural_assoc X B (A ⊗ X) e.inv]
+      rw [← crossing_natural_assoc X e.inv]
       simp [← whiskerLeft_comp]
 
 end Append
@@ -327,17 +324,10 @@ def appendRightEndAlgHom (X : C) (n : ℕ) :
   (isoEndAlgEquiv (appendIso X (n + 2))).toAlgHom.comp
     (functorEndAlgHom (tensorRight X) (braidTensorPower X n))
 
-/-- The endomorphism map carries the categorical braid representation to
-the appended braid representation. -/
-theorem appendRightEndAlgHom_group (X : C) (n : ℕ) (g : braidImage X n) :
-    appendRightEndAlgHom X n (braidEndRepresentation X n g) =
-      braidEndRepresentation X (n + 1) (addRightStrand X n g) :=
-  End.ext rfl
-
 /-- Appending one right identity strand gives a map of actual braid algebras. -/
 def addRightBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + 1) :=
   imageAlgebraMap (braidEndRepresentation X n) (braidEndRepresentation X (n + 1))
-    (addRightStrand X n) (appendRightEndAlgHom X n) (appendRightEndAlgHom_group X n)
+    (addRightStrand X n) (appendRightEndAlgHom X n) (fun _ => End.ext rfl)
 
 /-- Repeated right identity-strand insertion on the actual image groups. -/
 def addRightStrands (X : C) (n : ℕ) : ∀ k, braidImage X n →* braidImage X (n + k)
