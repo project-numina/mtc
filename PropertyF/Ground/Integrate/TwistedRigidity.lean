@@ -10,9 +10,16 @@ public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Fusion.Agreement
 
 section
-/-! Scalar twisting along an arbitrary complex-field automorphism. The underlying
-category, monoidal structure, braiding and duality are unchanged; only the
-complex action on morphisms is precomposed with the inverse automorphism. -/
+/-! # Scalar twists and Galois rigidity
+
+Twisting by a complex-field automorphism preserves the category, monoidal structure,
+braiding and duality, while precomposing the action on morphisms with its inverse.
+
+## Main results
+
+* `ScalarTwist.category` bundles the twisted braided fusion category.
+* `ScalarTwist.pivotalDimension_twist` describes the transformed pivotal dimensions.
+* `galois_rigidity_of_propertyF` derives the Galois-column rigidity assertion. -/
 
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false

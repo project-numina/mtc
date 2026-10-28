@@ -8,7 +8,13 @@ public import PropertyF.Ground.Fusion.ObjectDimension
 
 Adjoint mates of half-braidings give the candidate dual crossing. When rigidity
 and fusion instances are available, the centre bundles as a braided fusion
-category and its forgetful functor preserves Frobenius–Perron dimension. -/
+category and its forgetful functor preserves Frobenius–Perron dimension.
+
+## Main results
+
+* `dualCrossingIso` constructs the natural crossing for a dual object.
+* `bundledCenter` packages the centre using its rigidity and fusion instances.
+* `center_forget_fpDimension` shows that forgetting preserves FP dimension. -/
 
 section
 

@@ -23,7 +23,13 @@ public import PropertyF.Arithmetic
 /-! # Galois arithmetic and the centre reduction
 
 The numerical descent and categorical centre witnesses combine to prove
-weak integrality from the actual centre and its finite braid images. -/
+weak integrality from the actual centre and its finite braid images.
+
+## Main results
+
+* `integral_eq_int_of_complex_galois_fixed` gives the arithmetic descent.
+* `center_witness_of_categorical_modular_data` constructs the numerical witness.
+* `weaklyIntegral_of_actual_center` assembles the centre reduction. -/
 
 /-! # Galois fixedness and integrality
 
@@ -211,8 +217,7 @@ local notation "φ" => algebraMap ℝ K
 
 /-- A conjugate of a sum of squares is the sum of the squares of its conjugates. -/
 theorem galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K) (h : ∀ i, σ (φ (d i)) = φ (e i)) :
-    σ (φ (∑ i, d i ^ 2)) = φ (∑ i, e i ^ 2) := by
-  simp only [map_sum, map_pow, h]
+    σ (φ (∑ i, d i ^ 2)) = φ (∑ i, e i ^ 2) := by simp only [map_sum, map_pow, h]
 
 /-- A bounded conjugate sum of squares is positive when one conjugate is one. -/
 theorem positive_galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K)
