@@ -69,18 +69,21 @@ theorem rightPartialTrace_whiskerLeft {A X Y : C} (f : End (X ⊗ Y)) :
       End.of (A ◁ (rightPartialTrace p f).asHom) :=
   End.ext (by simp [rightPartialTrace])
 
-variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+section ScalarTrace
+
+variable {k : Type*} [CommSemiring k] [Preadditive C] [Linear k C]
+  [MonoidalPreadditive C] [MonoidalLinear k C]
 
 /-- The partial trace commutes with scalar multiplication. -/
-@[simp] theorem rightPartialTrace_smul {X Y : C} (z : ℂ) (f : End (X ⊗ Y)) :
+@[simp] theorem rightPartialTrace_smul {X Y : C} (z : k) (f : End (X ⊗ Y)) :
     rightPartialTrace p (z • f) = z • rightPartialTrace p f :=
   End.ext (by simp [rightPartialTrace])
 
 /-- The scalar-valued pivotal trace of an endomorphism. -/
-def scalarTrace (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X : C} (f : End X) : ℂ :=
+def scalarTrace (scalar : End (𝟙_ C) ≃ₐ[k] k) {X : C} (f : End X) : k :=
   scalar (p.rightTrace f.asHom)
 
-variable (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ)
+variable (scalar : End (𝟙_ C) ≃ₐ[k] k)
 
 /-- The partial trace of an inserted endomorphism is the dimension of the
 closed factor times that endomorphism. -/
@@ -90,17 +93,26 @@ theorem rightPartialTrace_insert {X Y : C} (a : End X) :
   rw [← mul_one (insertRightIdentity Y a), rightPartialTrace_left, rightPartialTrace_one]
   exact End.ext (by rw [eq_smul_one_of_algEquiv scalar (p.rightTrace (𝟙 Y))]; simp)
 
+end ScalarTrace
+
+section SimpleTrace
+
+variable {k : Type*} [Field k] [IsAlgClosed k] [Preadditive C] [Linear k C]
+  [MonoidalPreadditive C] [MonoidalLinear k C] (scalar : End (𝟙_ C) ≃ₐ[k] k)
+
 /-- A simple endomorphism is determined by its pivotal trace. -/
 theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
-    {Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
+    {Y : C} [Simple Y] [FiniteDimensional k (Y ⟶ Y)]
     (a : End Y) (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) :
     a = (scalarTrace p scalar a / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
   unfold scalarTrace
-  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ a.asHom
+  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id k a.asHom
   have hcval : c = scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y)) := by
     apply (eq_div_iff hd).2
     rw [← hc, p.rightTrace_smul]
     simp
   exact End.ext (by simpa [← hcval] using hc.symm)
+
+end SimpleTrace
 
 end PropertyF.Ground.Calculus
