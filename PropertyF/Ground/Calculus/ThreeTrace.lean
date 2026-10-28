@@ -23,24 +23,24 @@ def imageGenerator (X : C) (n : ℕ) (i : Fin (n + 1)) : braidImage X n :=
 /-- Every represented braid image element has finite order when the categorical
 image is finite. No faithfulness of the representation is required. -/
 theorem represented_braid_finite_order {H : Type*} [Monoid H]
-    (X : C) (n : ℕ) (h : Finite (braidImage X n))
+    {X : C} {n : ℕ} (h : Finite (braidImage X n))
     (ρ : braidImage X n →* H) (g : braidImage X n) :
     ∃ k : ℕ, k ≠ 0 ∧ (ρ g) ^ k = 1 := by
   let _ : Finite (braidImage X n) := h
-  obtain ⟨k, hk, hpow⟩ := (ρ.isOfFinOrder (isOfFinOrder_of_finite g)).exists_pow_eq_one
-  exact ⟨k, hk.ne', hpow⟩
+  exact (ρ.isOfFinOrder (isOfFinOrder_of_finite g)).exists_pow_eq_one.imp
+    fun _ ⟨hk, hpow⟩ ↦ ⟨hk.ne', hpow⟩
 
 /-- In particular, the represented square of the two-strand self-braiding
 satisfies the `finite_order` condition needed for three-strand rigidity. -/
 theorem represented_square_finite_order {H : Type*} [Monoid H]
-    (X : C) (h : ObjectPropertyF X) (ρ : braidImage X 0 →* H) :
+    {X : C} (h : ObjectPropertyF X) (ρ : braidImage X 0 →* H) :
     ∃ k : ℕ, k ≠ 0 ∧ (ρ ((imageGenerator X 0 0) ^ 2)) ^ k = 1 :=
-  represented_braid_finite_order X 0 (h 0) ρ _
+  represented_braid_finite_order (h 0) ρ _
 
 /-- The categorical square itself has finite order. -/
-theorem braid_square_finite_order (X : C) (h : ObjectPropertyF X) :
+theorem braid_square_finite_order {X : C} (h : ObjectPropertyF X) :
     ∃ k : ℕ, k ≠ 0 ∧ (braidGenerator X 0 0 ^ 2) ^ k = 1 :=
-  represented_square_finite_order X h (braidImage X 0).subtype
+  represented_square_finite_order h (braidImage X 0).subtype
 
 end PropertyF.Ground.Calculus
 
@@ -98,7 +98,7 @@ theorem three_braid_image_relation (X : C) :
   Subtype.ext (three_braid_relation X)
 
 /-- Every representation of the actual three-strand image satisfies the braid relation. -/
-theorem three_braid_relation_map {H : Type*} [Monoid H] (X : C)
+theorem three_braid_relation_map {H : Type*} [Monoid H] {X : C}
     (ρ : braidImage X 1 →* H) :
     ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) =
     ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) := by
@@ -139,7 +139,7 @@ universe v u
 /-- In a genuine braided fusion category, the partial trace onto a simple
 surviving object is the total trace divided by its nonzero pivotal dimension. -/
 theorem rightPartialTrace_simple_ground (C : Ground.BraidedFusionCategory.{v,u})
-    (X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {X Y : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y)) :
     rightPartialTrace p X Y f =
       (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
@@ -178,7 +178,7 @@ theorem rightPartialTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
     rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
       (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) • v := by
   rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
-    rightPartialTrace_simple_ground C X Y p scalar u]
+    rightPartialTrace_simple_ground C (X := X) (Y := Y) p scalar u]
   apply End.ext
   simp
 

@@ -72,7 +72,7 @@ def flattenDependent (a : ℕ) (b : Fin a → ℕ) (f : (i : Fin a) → Fin (b i
     piPiIso (fun i => Fin (b i)) f ≪≫ (biproduct.isoProduct _).symm
 
 /-- Finite biproducts of generated objects are generated. -/
-theorem generatedBy_biproduct (X : C) (a : ℕ) (f : Fin a → C)
+theorem generatedBy_biproduct {X : C} {a : ℕ} (f : Fin a → C)
     (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
   classical
   have hex : ∀ i, ∃ (n : ℕ) (k : Fin n → ℕ), Nonempty (Retract (f i) (⨁ fun j => tensorPower X (k j))) := by
@@ -106,7 +106,7 @@ theorem generatedBy_finiteBiproduct (X : C) {J : Type} [Finite J] (f : J → C)
   let _ : Fintype J := Fintype.ofFinite J
   let e := Fintype.equivFin J
   let g : Fin (Fintype.card J) → C := fun i => f (e.symm i)
-  have hg := generatedBy_biproduct X _ g (fun i => hf (e.symm i))
+  have hg := generatedBy_biproduct g (fun i => hf (e.symm i))
   apply generatedBy_of_iso hg
   exact biproduct.whiskerEquiv e (fun j => eqToIso (by simp [g]))
 
@@ -151,7 +151,7 @@ theorem generatedBy_trans {X Y Z : C} (hY : GeneratedBy X Y) (hZ : GeneratedBy Y
     GeneratedBy X Z := by
   obtain ⟨a, k, ⟨r⟩⟩ := hZ
   exact generatedBy_retract
-    (generatedBy_biproduct X a (fun i => tensorPower Y (k i))
+    (generatedBy_biproduct (fun i => tensorPower Y (k i))
       (fun i => generatedBy_tensorPower_of_generated hY (k i))) r
 
 end PropertyF

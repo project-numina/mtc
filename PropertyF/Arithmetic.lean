@@ -26,8 +26,6 @@ theorem integer_of_galois_fixed {K : Type*} [Field K] [Algebra ℚ K]
     apply (isIntegral_algebraMap_iff (B := K)).mp
     simpa [hq] using hx
   obtain ⟨z, hz⟩ := IsIntegrallyClosed.algebraMap_eq_of_integral hqint
-  refine ⟨z, ?_⟩
-  rw [← hq, ← hz]
-  simp
+  exact ⟨z, by rw [← hq, ← hz]; simp⟩
 
 end PropertyF

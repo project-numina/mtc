@@ -265,10 +265,8 @@ theorem overlap_trace_power_of_isos (C : Ground.BraidedFusionCategory.{v,u})
         overlapPowerIso X t k) :
     ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
       (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
-        actualBraidTrace C X p t u ^ (k + 1) := by
-  apply overlap_trace_power_of_step C X p t u
-  intro k
-  apply overlap_trace_step_of_coherence C X p t k u
-  exact overlapProduct_local_of_iso X t k u (hiso k)
+        actualBraidTrace C X p t u ^ (k + 1) :=
+  overlap_trace_power_of_step C X p t u fun k ↦
+    overlap_trace_step_of_coherence C X p t k u (overlapProduct_local_of_iso X t k u (hiso k))
 
 end PropertyF.Ground.Calculus
