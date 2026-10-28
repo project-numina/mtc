@@ -11,6 +11,12 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground
 universe v u
 
+/-- A monomorphism from an object with nonzero identity is nonzero. -/
+theorem mono_ne_zero_of_id_ne_zero {C : Type u} [Category.{v} C] [HasZeroMorphisms C] {X Y : C}
+    (f : X ⟶ Y) [Mono f]
+    (h : 𝟙 X ≠ 0) : f ≠ 0 :=
+  fun hf ↦ h ((IsZero.iff_id_eq_zero X).mp (IsZero.of_mono_eq_zero f hf))
+
 /-- The evaluation and coevaluation of a dual pair are nonzero when the right object is nonzero. -/
 theorem exactPairing_ne_zero {C : Type u} [Category.{v} C] [MonoidalCategory C]
     [Preadditive C] [MonoidalPreadditive C] (X Y : C) [ExactPairing X Y]
@@ -45,11 +51,7 @@ theorem split_from_simple {S X : C} [Simple S] (f : S ⟶ X) (hf : f ≠ 0) :
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → C := fun p => T p.1
-  have hg : f ≫ e.hom ≠ 0 := by
-    intro h
-    apply hf
-    have := congrArg (fun t => t ≫ e.inv) h
-    simpa using this
+  have hg : f ≫ e.hom ≠ 0 := fun h ↦ hf ((cancel_mono e.hom).1 (by simpa using h))
   have hcomponent : ∃ p, f ≫ e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra h
     push Not at h
@@ -109,10 +111,7 @@ theorem exists_simple_retract {X : C.Obj} (hX : 𝟙 X ≠ 0) :
   classical
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose C X
   let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
-  have he : e.hom ≠ 0 := by
-    intro h
-    apply hX
-    simpa using (congrArg (fun f => f ≫ e.inv) h)
+  have he : e.hom ≠ 0 := mono_ne_zero_of_id_ne_zero e.hom hX
   have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra h
     push Not at h

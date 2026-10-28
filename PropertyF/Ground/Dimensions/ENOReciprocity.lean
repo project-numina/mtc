@@ -1,5 +1,4 @@
 module
-public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
@@ -369,10 +368,7 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
       LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap
     rw [hn]
     simp
-  have hv : d ≠ 0 := by
-    intro hz
-    apply rootDimension_ne_zero C (unitIndex C)
-    exact congrFun hz (unitIndex C)
+  have hv : d ≠ 0 := fun hz ↦ rootDimension_ne_zero C (unitIndex C) (congrFun hz _)
   have h : A *ᵥ d = d i • d := by
     ext j
     change (∑ k, enoTraceMatrix C i j k * rootDimension C k) = rootDimension C i * rootDimension C j
