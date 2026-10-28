@@ -68,10 +68,8 @@ instance negativeFull : (negative C).Full where
 /-- The two canonical images centralize one another in the actual centre. -/
 theorem positive_negative_centralize (X Y : C) :
     (β_ ((CategoryTheory.Center.ofBraided C).obj X) ((negative C).obj Y)).hom ≫
-      (β_ ((negative C).obj Y) ((CategoryTheory.Center.ofBraided C).obj X)).hom = 𝟙 _ := by
-  apply CategoryTheory.Center.ext
-  change (β_ X Y).hom ≫ (β_ X Y).inv = 𝟙 _
-  exact Iso.hom_inv_id _
+      (β_ ((negative C).obj Y) ((CategoryTheory.Center.ofBraided C).obj X)).hom = 𝟙 _ :=
+  CategoryTheory.Center.ext _ _ (Iso.hom_inv_id (β_ X Y))
 
 /-- Two centre objects centralize when their double braiding is the identity. -/
 def Centralizes (A B : CategoryTheory.Center C) : Prop :=

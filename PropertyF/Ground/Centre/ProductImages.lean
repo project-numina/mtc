@@ -166,9 +166,8 @@ theorem productBraidMap_injective (X Y : C) (n : ℕ) :
   intro a b hab
   apply Subtype.ext
   apply projections_jointly_injective X Y n
-  apply Prod.ext
-  · exact congrArg (fun x : braidImage X n × braidImage Y n => x.1.val) hab
-  · exact congrArg (fun x : braidImage X n × braidImage Y n => x.2.val) hab
+  exact Prod.ext (congrArg (fun x : braidImage X n × braidImage Y n => x.1.val) hab)
+    (congrArg (fun x : braidImage X n × braidImage Y n => x.2.val) hab)
 
 /-- Finite factor images imply a finite mixed-product braid image. -/
 theorem product_braidImage_finite (X Y : C) (n : ℕ)
