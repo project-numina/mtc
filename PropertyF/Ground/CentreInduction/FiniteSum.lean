@@ -29,13 +29,12 @@ def diagonalEndMap (S K : D) : ((S ⟶ S) × (K ⟶ K)) →ₗ[k] (S ⊞ K ⟶ S
     apply biprod.hom_ext' <;> apply biprod.hom_ext <;> simp
 
 /-- A block-diagonal endomorphism determines both diagonal blocks. -/
-theorem diagonalEndMap_injective {S K : D} : Function.Injective (diagonalEndMap (k := k) S K) := by
-  intro a b h
-  apply Prod.ext
-  · simpa [diagonalEndMap, Category.assoc] using
-      congrArg (fun f => biprod.inl ≫ f ≫ biprod.fst) h
-  · simpa [diagonalEndMap, Category.assoc] using
-      congrArg (fun f => biprod.inr ≫ f ≫ biprod.snd) h
+theorem diagonalEndMap_injective {S K : D} : Function.Injective (diagonalEndMap (k := k) S K) :=
+  fun a b h ↦ Prod.ext
+    (by simpa [diagonalEndMap, Category.assoc] using
+      congrArg (fun f => biprod.inl ≫ f ≫ biprod.fst) h)
+    (by simpa [diagonalEndMap, Category.assoc] using
+      congrArg (fun f => biprod.inr ≫ f ≫ biprod.snd) h)
 
 /-- Removing a nonzero direct summand strictly decreases the dimension of the
 endomorphism space. -/

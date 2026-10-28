@@ -37,9 +37,8 @@ theorem center_pivotalDimension_forget
     (hcompat : (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ Z =
       Dimensions.pivotalDimension C p Z.1 := by
-  unfold Dimensions.pivotalDimension
-  rw [center_unitScalar_forget]
-  rw [forget_trace_of_pivotal_component p pZ Z hcompat]
+  simp only [Dimensions.pivotalDimension, center_unitScalar_forget,
+    forget_trace_of_pivotal_component p pZ Z hcompat]
 
 /-- A compatible lift of a positive pivotal structure has the actual centre's
 FP dimensions, is spherical, and proves the centre's pseudo-unitarity. -/
@@ -59,9 +58,8 @@ theorem center_positive_spherical_of_compatible_pivotal
       (fpSimple D i : ℂ) := by
     rw [center_pivotalDimension_forget C p pZ _ (hcompat _),
       pivotalDimension_eq_fp C p hsimple]
-    have hf := Integrate.center_forget_fpDimension C (simples D i)
-    change fpDimension C (simples D i).1 = fpDimension D (simples D i) at hf
-    rw [hf, fpDimension_simple]
+    change (fpDimension C ((CategoryTheory.Center.forget C.Obj).obj (simples D i)) : ℂ) = _
+    rw [Integrate.center_forget_fpDimension C, fpDimension_simple]
   have hs : pZ.IsSpherical := by
     apply (Dimensions.pivotal_spherical_iff_simple_dimensions_real D pZ).2
     intro i

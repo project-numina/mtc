@@ -27,8 +27,32 @@ namespace PropertyF.Ground.CentreModular
 universe u v w
 variable (C : BraidedFusionCategory.{v,u})
 
-/-- The FP regular-element cancellation at the heart of the determinant
-argument: every additive fusion-bicharacter vanishes in characteristic zero. -/
+/-- A derivation vanishes when a regular eigenvector has nonzero squared norm. -/
+theorem derivation_vanishes_of_regular_eigenvector {ι K M : Type*} [Fintype ι] [Field K]
+    [AddCommGroup M] [Module K M] (N : ι → ι → ι → K) (d : ι → K)
+    (hreg : ∀ i k, (∑ j, d j * N i j k) = d i * d k)
+    (hD : (∑ j, d j ^ 2) ≠ 0) (b : ι → M)
+    (hderiv : ∀ i j, (∑ k, N i j k • b k) = d j • b i + d i • b j) :
+    ∀ i, b i = 0 := by
+  classical
+  intro i
+  let R : M := ∑ j, d j • b j
+  let D : K := ∑ j, d j ^ 2
+  have hsum : (∑ j, d j • ∑ k, N i j k • b k) = d i • R := by
+    simp only [Finset.smul_sum, smul_smul]
+    rw [Finset.sum_comm]
+    simp_rw [← Finset.sum_smul, hreg, mul_smul]
+    dsimp [R]
+    rw [Finset.smul_sum]
+  have hsum' : (∑ j, d j • ∑ k, N i j k • b k) = D • b i + d i • R := by
+    simp_rw [hderiv, smul_add, smul_smul]
+    simp only [Finset.sum_add_distrib, ← Finset.sum_smul, D, R, pow_two,
+      Finset.smul_sum, smul_smul, mul_comm]
+  have hzero : D • b i = 0 :=
+    add_right_cancel ((hsum'.symm.trans hsum).trans (zero_add (d i • R)).symm)
+  exact (smul_eq_zero.mp hzero).resolve_left hD
+
+/-- The FP regular-element cancellation at the heart of the determinant argument. -/
 theorem regular_fusion_derivation_vanishes
     (M : Type w) [AddCommGroup M] [Module ℝ M]
     (B : Fin (rank C) → Fin (rank C) → M)
@@ -36,30 +60,16 @@ theorem regular_fusion_derivation_vanishes
       (∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
         fpSimple C j • B i z + fpSimple C i • B j z) :
     ∀ i z, B i z = 0 := by
-  classical
-  intro i z
-  let R : M := ∑ j, fpSimple C j • B j z
-  let D : ℝ := ∑ j, fpSimple C j ^ 2
-  have hreg (k : Fin (rank C)) :
+  have hreg (i k : Fin (rank C)) :
       (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
     simp_rw [Modular.fusionCoeff_dual_adjoint C i]
     simpa only [mul_comm, fpSimple_dual] using (fpSimple_mul C (dualIndex C i) k).symm
-  have hsum : (∑ j, fpSimple C j • ∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
-      fpSimple C i • R := by
-    simp only [Finset.smul_sum, smul_smul]
-    rw [Finset.sum_comm]
-    simp_rw [← Finset.sum_smul, hreg, mul_smul]
-    dsimp [R]
-    rw [Finset.smul_sum]
-  have hsum' : (∑ j, fpSimple C j • ∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
-      D • B i z + fpSimple C i • R := by
-    simp_rw [hhex, smul_add, smul_smul]
-    simp only [Finset.sum_add_distrib, ← Finset.sum_smul, D, R, pow_two,
-      Finset.smul_sum, smul_smul, mul_comm]
-  have hzero : D • B i z = 0 :=
-    add_right_cancel ((hsum'.symm.trans hsum).trans (zero_add (fpSimple C i • R)).symm)
-  have hpos : D ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
-  exact (smul_eq_zero.mp hzero).resolve_left hpos
+  have hD : (∑ j, fpSimple C j ^ 2) ≠ 0 :=
+    ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
+  intro i z
+  exact derivation_vanishes_of_regular_eigenvector
+    (fun i j k => (fusionCoeff C i j k : ℝ)) (fpSimple C) hreg hD (fun i => B i z)
+    (fun i j => hhex i j z) i
 
 end PropertyF.Ground.CentreModular
 end
@@ -392,6 +402,34 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 local instance (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     PreservesBinaryBiproducts (tensorLeft X) := preservesBinaryBiproducts_of_preservesBiproducts _
 
+/-- Tensoring a biproduct automorphism respects the canonical biproduct comparison. -/
+theorem tensor_biprod_mapIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [Preadditive D] [HasBinaryBiproducts D]
+    (X : D) [(tensorLeft X).PreservesZeroMorphisms] {Y Z : D}
+    [PreservesBinaryBiproducts (tensorLeft X)] (a : Y ≅ Y) (b : Z ≅ Z) :
+    Iso.refl X ⊗ᵢ biprod.mapIso a b = (Functor.mapBiprod (tensorLeft X) Y Z) ≪≫
+      biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b) ≪≫
+        (Functor.mapBiprod (tensorLeft X) Y Z).symm := by
+  let e := Functor.mapBiprod (tensorLeft X) Y Z
+  let A := biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b)
+  change Iso.refl X ⊗ᵢ biprod.mapIso a b = e ≪≫ A ≪≫ e.symm
+  apply Iso.ext
+  apply (cancel_epi e.inv).1
+  have hleft : biprod.inl ≫ e.inv = X ◁ biprod.inl := by
+    rw [Functor.mapBiprod_inv, biprod.inl_desc]
+    rfl
+  have hright : biprod.inr ≫ e.inv = X ◁ biprod.inr := by
+    rw [Functor.mapBiprod_inv, biprod.inr_desc]
+    rfl
+  apply biprod.hom_ext' <;>
+    simp only [Iso.trans_hom, Iso.symm_hom, Iso.inv_hom_id_assoc] <;>
+    simp only [← Category.assoc, hleft, hright, tensorIso_hom, Iso.refl_hom, id_tensorHom,
+      ← whiskerLeft_comp] <;>
+    simp only [A, biprod.mapIso_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom] <;>
+    simp only [biprod.inl_map, biprod.inr_map, whiskerLeft_comp, Category.assoc]
+  · exact (congrArg (fun f => (X ◁ a.hom) ≫ f) hleft).symm
+  · exact (congrArg (fun f => (X ◁ b.hom) ≫ f) hright).symm
+
 /-- The tensor determinant identity is closed under binary direct sums. -/
 theorem fpDeterminant_tensor_biprod
     (X : C.Obj) {Y Z : C.Obj} (a : Y ≅ Y) (b : Z ≅ Z)
@@ -401,23 +439,8 @@ theorem fpDeterminant_tensor_biprod
       fpDimension C X • fpDeterminant C (Y ⊞ Z) (biprod.mapIso a b) := by
   let e := Functor.mapBiprod (tensorLeft X) Y Z
   let A := biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b)
-  have hc : Iso.refl X ⊗ᵢ biprod.mapIso a b = e ≪≫ A ≪≫ e.symm := by
-    apply Iso.ext
-    apply (cancel_epi e.inv).1
-    have hleft : biprod.inl ≫ e.inv = X ◁ biprod.inl := by
-      rw [Functor.mapBiprod_inv, biprod.inl_desc]
-      rfl
-    have hright : biprod.inr ≫ e.inv = X ◁ biprod.inr := by
-      rw [Functor.mapBiprod_inv, biprod.inr_desc]
-      rfl
-    apply biprod.hom_ext' <;>
-      simp only [Iso.trans_hom, Iso.symm_hom, Iso.inv_hom_id_assoc] <;>
-      simp only [← Category.assoc, hleft, hright, tensorIso_hom, Iso.refl_hom, id_tensorHom,
-        ← whiskerLeft_comp] <;>
-      simp only [A, biprod.mapIso_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom] <;>
-      simp only [biprod.inl_map, biprod.inr_map, whiskerLeft_comp, Category.assoc]
-    · exact (congrArg (fun f => (X ◁ a.hom) ≫ f) hleft).symm
-    · exact (congrArg (fun f => (X ◁ b.hom) ≫ f) hright).symm
+  have hc := tensor_biprod_mapIso X a b
+  change Iso.refl X ⊗ᵢ biprod.mapIso a b = e ≪≫ A ≪≫ e.symm at hc
   rw [hc]
   have hd := fpDeterminant_conjugate C e.symm A
   change fpDeterminant C (X ⊗ (Y ⊞ Z)) (e ≪≫ A ≪≫ e.symm) = fpDeterminant C _ A at hd
