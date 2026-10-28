@@ -34,6 +34,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def doubleBraiding (X Y : C) : X ⊗ Y ⟶ X ⊗ Y :=
   (β_ X Y).hom ≫ (β_ Y X).hom
 
+omit [RightRigidCategory C] in
+/-- Double braiding is natural simultaneously in both strands. -/
+theorem doubleBraiding_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y') :
+    doubleBraiding X Y ≫ (f ⊗ₘ g) = (f ⊗ₘ g) ≫ doubleBraiding X' Y' := by
+  rw [doubleBraiding, doubleBraiding, Category.assoc, ← braiding_naturality g f,
+    ← Category.assoc, ← braiding_naturality f g, Category.assoc]
+
 /-- The unnormalized S entry, valued in endomorphisms of the tensor unit. -/
 def SEntry (p : PivotalStructure (C := C)) (X Y : C) : End (𝟙_ C) :=
   p.rightTrace (doubleBraiding X Y)
@@ -47,9 +54,8 @@ omit [RightRigidCategory C] in
 /-- Double braiding is natural in the second object. -/
 theorem doubleBraiding_natural_right (X : C) {Y Z : C} (f : Y ⟶ Z) :
     doubleBraiding X Y ≫ (𝟙 X ⊗ₘ f) =
-      (𝟙 X ⊗ₘ f) ≫ doubleBraiding X Z := by
-  rw [doubleBraiding, doubleBraiding, Category.assoc, ← braiding_naturality f (𝟙 X),
-    ← Category.assoc, ← braiding_naturality (𝟙 X) f, Category.assoc]
+      (𝟙 X ⊗ₘ f) ≫ doubleBraiding X Z :=
+  doubleBraiding_natural (𝟙 X) f
 
 /-- The trace of double braiding depends only on the isomorphism class. -/
 theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : Y ≅ Z) :
