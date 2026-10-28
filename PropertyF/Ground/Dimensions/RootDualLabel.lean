@@ -44,6 +44,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 variable (i j k : Fin (rank C))
 
@@ -84,10 +85,6 @@ theorem trace_reciprocity_of_intertwining
   let E := enoReciprocityEquiv C i k j
   let A := (multiplicityDefect C i k j).toLinearMap
   let B := (multiplicityDefect C (dualIndex C i) j k).toLinearMap
-  let : FiniteDimensional ℂ (simples C j ⟶ simples C i ⊗ simples C k) :=
-    IsFusionCategory.hom_finite _ _
-  let : FiniteDimensional ℂ (simples C k ⟶ simples C (dualIndex C i) ⊗ simples C j) :=
-    IsFusionCategory.hom_finite _ _
   have ht : LinearMap.trace ℂ _ A = rootDualSign C i * LinearMap.trace ℂ _ B := by
     simpa only [LinearMap.trace_conj', LinearMap.trace_transpose', map_smul, smul_eq_mul] using
       congrArg (LinearMap.trace ℂ _) (show E.conj (Module.Dual.transpose A) =

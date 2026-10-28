@@ -120,14 +120,13 @@ open CategoryTheory.Functor.Monoidal
 open scoped BigOperators
 namespace PropertyF.Ground
 universe v u v' u'
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 variable (C : BraidedFusionCategory.{v,u}) (D : BraidedFusionCategory.{v',u'})
 
 /-- FP dimension is additive over finite biproducts. -/
 theorem fpDimension_biproduct {ι : Type} [Fintype ι] (V : ι → D.Obj) :
     fpDimension D (⨁ V) = ∑ i, fpDimension D (V i) := by
   classical
-  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   simp only [fpDimension, finrank_hom_biproduct, Nat.cast_sum, Finset.sum_mul]
   exact Finset.sum_comm
 

@@ -9,7 +9,7 @@ open CategoryTheory.Limits
 
 namespace PropertyF.Ground
 universe v u
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 section
 variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
@@ -61,7 +61,6 @@ theorem simple_of_finrank_end_eq_one {X : E}
     (hdim : Module.finrank ℂ (X ⟶ X) = 1) : Simple X := by
   classical
   let D : BraidedFusionCategory.{v,u} := { Obj := E }
-  let : ∀ A B : E, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp (hdim ▸ Nat.zero_lt_one)
   have hid : (𝟙 X : X ⟶ X) ≠ 0 := fun h ↦
     hf (((IsZero.iff_id_eq_zero X).mpr h).eq_of_src f 0)
@@ -76,7 +75,6 @@ theorem simple_of_finrank_end_eq_one {X : E}
 /-- Duals of simple objects remain simple. -/
 theorem simple_leftDual (X : E) [Simple X] :
     Simple (ᘁX) :=
-  letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   simple_of_finrank_end_eq_one ((finrank_end_leftDual (k := ℂ) X).trans
     (CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X))
 
@@ -152,6 +150,7 @@ def dualEquiv : Equiv.Perm (Fin (rank D)) :=
 end PropertyF.Ground
 
 namespace PropertyF.Ground.Dimensions
+attribute [local instance] IsFusionCategory.hom_finite
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Abelian C] [Linear ℂ C] [RigidCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -162,7 +161,6 @@ theorem rightQuantumTrace_simple_ne_zero
     {X : C} [Simple X] (j : X ≅ (Xᘁ)ᘁ) :
     rightQuantumTrace j ≠ 0 := by
   let _ : Simple (𝟙_ C) := IsFusionCategory.unit_simple
-  let _ : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   let s : 𝟙_ C ⟶ X ⊗ (Xᘁ) := ExactPairing.coevaluation X (Xᘁ)
   let _ : Simple (Xᘁ) := simple_rightDual X
   obtain ⟨r₀, hr₀⟩ := split_from_simple s

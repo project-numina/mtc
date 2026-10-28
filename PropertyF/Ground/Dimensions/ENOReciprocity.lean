@@ -63,6 +63,7 @@ theorem scalar_sq_eq_one_of_same_square {X : D} [HasRightDual X] [HasRightDual (
     Linear.smul_comp, Linear.comp_smul, smul_smul, one_smul] using hsq
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse dual of a natural fourth-dual square root is also a root at
 the dual object. -/
@@ -85,7 +86,6 @@ theorem rootDual_differs_by_sign (X : C.Obj)
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom =
         ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom := by
   let : Simple (Xᘁ) := simple_rightDual X
-  let : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := IsFusionCategory.hom_finite _ _
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
   obtain ⟨ε, _, he⟩ := isomorphisms_scalar (k := ℂ) l k
@@ -203,6 +203,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 /-- A phase-twisted natural root becomes pivotal when its scaled multiplicity
 operators are identities. -/
 def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
@@ -245,9 +246,6 @@ theorem normalized_defects_trivial
   have hrnorm : ‖r‖ = 1 := by
     simp [r, q, normalizedRootDimension, Complex.norm_real, abs_of_pos (fpSimple_pos C _),
       hsat, ne_of_gt (fpSimple_pos C _)]
-  let : FiniteDimensional ℂ
-    (simples C k ⟶ simples C i ⊗ simples C j) :=
-    IsFusionCategory.hom_finite _ _
   simpa [q, r, normalizedRootDimension, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_assoc] using
     (involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm (by
       change enoTraceMatrix C i j k * r = (fusionCoeff C i j k : ℂ)
@@ -288,6 +286,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 variable {C} in
 /-- ENO's trace reciprocity identifies the dual root dimension with the
 signed complex conjugate of the original one. -/
@@ -303,7 +302,6 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
   have hε : ε * ε = 1 := rootDualSign_sq i
   have hεstar : star ε = ε := by
     rcases mul_self_eq_one_iff.mp hε with h | h <;> simp [h]
-  let : ∀ X Y : C.Obj, FiniteDimensional ℂ (X ⟶ Y) := IsFusionCategory.hom_finite
   have hA : ∀ j k, star (A j k) = A j k := fun j k ↦ star_involution_trace (hinv i j k)
   have ht : Aᵀ *ᵥ d = (ε * d (dualIndex C i)) • d := by
     ext j

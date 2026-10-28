@@ -34,7 +34,7 @@ theorem drinfeld_unit :
     have hn := braiding_naturality_right U r.hom
     simp only [U, braiding_tensorUnit_left, unitors_equal, Iso.hom_inv_id,
       Category.comp_id] at hn
-    rw [← whisker_exchange_assoc, ← Category.assoc, hn]
+    rw [← whisker_exchange_assoc, reassoc_of% hn]
     simp only [Category.assoc, ← comp_whiskerRight_assoc, Iso.hom_inv_id,
       id_whiskerRight, Category.id_comp, U, braiding_tensorUnit_left]
   change (doubleDualUnitIso (C := C)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
@@ -90,6 +90,7 @@ theorem fourthDualIso_unit :
 end
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 /-- The root dimension of the unit label is the root trace of the tensor unit. -/
 theorem rootDimension_unit :
     rootDimension C (unitIndex C) =
@@ -106,7 +107,6 @@ theorem fourthDualRoot_unit_component :
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
   let : Simple U := IsFusionCategory.unit_simple
-  let : FiniteDimensional ℂ (U ⟶ U) := IsFusionCategory.hom_finite _ _
   let a := (fourthDualRootNaturalIso C).app U
   let u := doubleDualIso C U
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) u a

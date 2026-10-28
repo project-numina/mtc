@@ -67,6 +67,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 /-- For every simple object of a genuine braided fusion category, the
 intrinsic squared norm in the target is independent of the chosen double-dual
 isomorphism. -/
@@ -74,7 +75,6 @@ theorem target_squaredNorm_choice_independent
     {X : C.Obj} [Simple X] (j : X ≅ ((Xᘁ)ᘁ)) :
     squaredNorm C X =
       unitScalar C (rightQuantumTrace j) * unitScalar C (leftQuantumTrace j) :=
-  letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   by simpa only [squaredNorm, Ground.unitScalar_eq_equiv] using
     squaredNorm_independent (Ground.unitScalarEquiv C) (doubleDualIso C X) j
 

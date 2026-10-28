@@ -67,13 +67,13 @@ end PropertyF.Ground.Dimensions
 namespace PropertyF.Ground.Dimensions
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 /-- A chosen square root of the natural braided fourth-dual map on each
 simple representative. -/
 def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
     simples C i ≅ ((simples C i)ᘁ)ᘁ :=
-  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   Classical.choose (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
 
 variable {C} in
@@ -81,7 +81,6 @@ variable {C} in
 theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :
     fourthDualSimpleRoot C i ≪≫ rightDualIsoMap (rightDualIsoMap (fourthDualSimpleRoot C i)) =
       fourthDualIso (simples C i) :=
-  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   Classical.choose_spec (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
 
 end PropertyF.Ground.Dimensions
