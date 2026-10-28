@@ -174,14 +174,9 @@ theorem positive_spherical_of_pivotal_pseudoUnitary
     have hn : (fusionCoeff C i j k : ℂ) ≠ 0 := by exact_mod_cast hN
     have h := hphase i j k
     change (fusionCoeff C i j k : ℂ) * q k / (q i * q j) = _ at h
-    have hqmul : q k = q i * q j := by
-      have h' : (fusionCoeff C i j k : ℂ) * q k =
-          (fusionCoeff C i j k : ℂ) * (q i * q j) := by
-        exact (div_eq_iff (mul_ne_zero (hq i) (hq j))).mp h
-      exact mul_left_cancel₀ hn h'
-    dsimp [c]
-    rw [hqmul, mul_inv_rev]
-    ring
+    have hqmul : q k = q i * q j :=
+      mul_left_cancel₀ hn ((div_eq_iff (mul_ne_zero (hq i) (hq j))).mp h)
+    simp [c, hqmul, mul_comm]
   let P := pivotalScalarTwist C p c hc hunit hmul
   have hvalue (i) : pivotalDimension C P (simples C i) = (f i : ℂ) := by
     rw [pivotalDimension_scalarTwist_simple]

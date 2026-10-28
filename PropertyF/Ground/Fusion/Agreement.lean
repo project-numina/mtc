@@ -171,10 +171,7 @@ theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
   have hi := congrFun heigen i
   simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hi
   have hv : 0 < d * v i := hi ▸ hsum
-  have hne : v i ≠ 0 := by
-    intro h
-    simp [h] at hv
-  exact lt_of_le_of_ne (hnonneg i) (Ne.symm hne)
+  exact lt_of_le_of_ne (hnonneg i) (Ne.symm (right_ne_zero_of_mul (ne_of_gt hv)))
 
 /-- A nonnegative symmetric real matrix has a nonnegative eigenvector with a
 positive coordinate. -/
@@ -185,9 +182,9 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {ι : Type*} [Fintype ι]
   classical
   let T : EuclideanSpace ℝ ι →L[ℝ] EuclideanSpace ℝ ι :=
     (Matrix.toEuclideanLin A).toContinuousLinearMap
-  have hself : IsSelfAdjoint T := by
-    apply ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr
-    exact Matrix.isSymmetric_toEuclideanLin_iff.mpr hsym
+  have hself : IsSelfAdjoint T :=
+    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr
+      (Matrix.isSymmetric_toEuclideanLin_iff.mpr hsym)
   obtain ⟨z, hz⟩ : ∃ z : EuclideanSpace ℝ ι, z ≠ 0 := exists_ne 0
   have hcompact : IsCompact (Metric.sphere (0 : EuclideanSpace ℝ ι) ‖z‖) :=
     isCompact_sphere _ _
@@ -199,34 +196,26 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {ι : Type*} [Fintype ι]
     simpa using hxmem
   have hyne : y ≠ 0 := by
     intro h
-    have := hynorm
-    rw [h] at this
-    simp only [norm_zero] at this
-    exact hz (norm_eq_zero.mp this.symm)
+    apply hz
+    apply norm_eq_zero.mp
+    simpa [h] using hynorm.symm
   have hynonneg (i : ι) : 0 ≤ y i := abs_nonneg _
   have hyexists : ∃ i, 0 < y i := by
-    by_contra h
-    push Not at h
+    by_contra! h
     apply hyne
     ext i
-    have := hynonneg i
-    have := h i
-    simp only [PiLp.zero_apply]
-    linarith
+    exact le_antisymm (h i) (hynonneg i)
   have hyquad : T.reApplyInnerSelf x ≤ T.reApplyInnerSelf y := by
     change (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf x ≤
       (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf y
     rw [matrix_quadratic_form, matrix_quadratic_form]
     simpa [y, euclideanAbs] using quadratic_le_abs A hA (fun i => x i)
-  have hymax : IsMaxOn T.reApplyInnerSelf (Metric.sphere 0 ‖y‖) y := by
-    intro w hw
-    have hw' : w ∈ Metric.sphere (0 : EuclideanSpace ℝ ι) ‖z‖ := by simpa [hynorm] using hw
-    exact (hxmax hw').trans hyquad
+  have hymax : IsMaxOn T.reApplyInnerSelf (Metric.sphere 0 ‖y‖) y :=
+    fun _ hw ↦ (hxmax (by simpa [hynorm] using hw)).trans hyquad
   have heigen := hself.eq_smul_self_of_isLocalExtrOn (Or.inr hymax.isLocalMaxOn)
   let d := T.rayleighQuotient y
-  have heigen' : A *ᵥ (fun i => y i) = d • (fun i => y i) := by
-    simpa [T, d, Matrix.toLpLin_apply] using (congrArg ofLp heigen)
-  exact ⟨d, fun i => y i, hynonneg, hyexists, heigen'⟩
+  refine ⟨d, fun i => y i, hynonneg, hyexists, ?_⟩
+  simpa [T, d, Matrix.toLpLin_apply] using (congrArg ofLp heigen)
 
 /-- A strictly positive symmetric real matrix has a strictly positive eigenvector. -/
 theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype ι]
