@@ -70,7 +70,7 @@ theorem presented_group_span (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ}
 /-- A unitary block representation sends group inversion to conjugate transpose. -/
 theorem unitary_block_star_inv {n : ℕ} {d : Fin n → ℕ}
     (ρ : G →* Blocks.Algebra ⟨_, d⟩)
-    (hu : ∀ g i, ρ g i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) (g : G) :
+    (hu : ∀ g, Blocks.IsUnitary ⟨_, d⟩ (ρ g)) (g : G) :
     star (ρ g) = ρ g⁻¹ :=
   funext fun i => star_eq_coe_inv_of_unitary (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g) (hu g i)
 

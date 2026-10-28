@@ -207,35 +207,48 @@ theorem regularVector_ne_zero_iff {A : Finset (Fin (rank D))} {i : Fin (rank D)}
     regularVector D A i ≠ 0 ↔ i ∈ A := by
   simp [regularVector, ne_of_gt (fpSimple_pos D i)]
 
+/-- Fusion by a label in a fusion-closed set leaves the regular vector supported there. -/
+theorem regularVector_mul_eq_zero_of_not_mem {A : Finset (Fin (rank D))}
+    (hA : IsFusionClosed D A) {a k : Fin (rank D)} (ha : a ∈ A) (hk : k ∉ A) :
+    ∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i = 0 := by
+  classical
+  apply Finset.sum_eq_zero
+  intro i _
+  by_cases hi : i ∈ A
+  · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi,
+      hA.fusionCoeff_eq_zero ha hi hk, Nat.cast_zero, zero_mul]
+  · rw [show regularVector D A i = 0 from ite_eq_right hi, mul_zero]
+
+/-- On its support, the regular vector has the FP eigenvalue. -/
+theorem regularVector_mul_of_mem {A : Finset (Fin (rank D))}
+    (hA : IsDualFusionClosed D A) {a k : Fin (rank D)} (ha : a ∈ A) (hk : k ∈ A) :
+    (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
+      (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
+  classical
+  calc
+    _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
+      apply Finset.sum_congr rfl
+      intro i _
+      rw [Modular.fusionCoeff_dual_adjoint D a i k]
+      by_cases hi : i ∈ A
+      · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi]
+      · rw [show regularVector D A i = 0 from ite_eq_right hi,
+          hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi, Nat.cast_zero, zero_mul, zero_mul]
+    _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
+      simpa [fpSimple_dual] using
+        (congrArg (fun z : ℝ ↦ (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)).symm
+
 /-- The FP-weighted regular vector of a dual- and fusion-closed set of labels
 is an eigenvector for multiplication by each label in that set. -/
-theorem regular_vector_fusion_eigenvector
-    {A : Finset (Fin (rank D))}
+theorem regular_vector_fusion_eigenvector {A : Finset (Fin (rank D))}
     (hA : IsDualFusionClosed D A) {a : Fin (rank D)} (ha : a ∈ A) (k : Fin (rank D)) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * regularVector D A k := by
-  classical
-  simp only [regularVector]
   by_cases hk : k ∈ A
-  · rw [ite_eq_left hk]
-    calc
-      _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
-        apply Finset.sum_congr rfl
-        intro i _
-        rw [Modular.fusionCoeff_dual_adjoint D a i k]
-        by_cases hi : i ∈ A
-        · rw [ite_eq_left hi]
-        · rw [ite_eq_right hi, hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi,
-            Nat.cast_zero, zero_mul, zero_mul]
-      _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
-        simpa [fpSimple_dual] using
-          (congrArg (fun z : ℝ ↦ (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)).symm
-  · rw [ite_eq_right hk, mul_zero]
-    apply Finset.sum_eq_zero
-    intro i _
-    by_cases hi : i ∈ A
-    · rw [ite_eq_left hi, hA.fusion.fusionCoeff_eq_zero ha hi hk, Nat.cast_zero, zero_mul]
-    · rw [ite_eq_right hi, mul_zero]
+  · rw [show regularVector D A k = (fpSimple D k : ℂ) from ite_eq_left hk]
+    exact regularVector_mul_of_mem hA ha hk
+  · rw [show regularVector D A k = 0 from ite_eq_right hk, mul_zero]
+    exact regularVector_mul_eq_zero_of_not_mem hA.fusion ha hk
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support

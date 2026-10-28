@@ -51,8 +51,7 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     (fun x => hact σ.symm x (unitIndex Z))
   refine ⟨y, (σ (fpSimple Z y : ℂ)).re, one_le_fpSimple Z y,
     (fp_simple_galois_real Z σ y).symm, ?_, ?_, ?_⟩
-  · intro x
-    simpa only [hdim] using hprop.1 x
+  · simpa only [hdim] using hprop.1
   · simpa only [hglobal, hdim] using hprop.2.2
   · simpa only [hdim] using hprop.1 y
 

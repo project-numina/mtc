@@ -39,13 +39,11 @@ theorem forgetDoubleDualIso_natural {X Y : 𝒵} (f : X ⟶ Y) :
     Iso.symm_hom, Category.assoc]
   rw [← Category.assoc, forgetDualIso_natural (fᘁ)]
   simp only [Category.assoc]
-  have hk : (fᘁ).fᘁ ≫ (forgetDualIso Y).invᘁ =
-      (forgetDualIso X).invᘁ ≫ ((f.fᘁ)ᘁ) := by
-    change (fᘁ).fᘁ ≫ (Dimensions.rightDualIsoMap (forgetDualIso Y)).inv =
-      (Dimensions.rightDualIsoMap (forgetDualIso X)).inv ≫ ((f.fᘁ)ᘁ)
-    rw [Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
-    exact hmate
-  rw [hk]
+  congr 1
+  change (fᘁ).fᘁ ≫ (Dimensions.rightDualIsoMap (forgetDualIso Y)).inv =
+    (Dimensions.rightDualIsoMap (forgetDualIso X)).inv ≫ ((f.fᘁ)ᘁ)
+  rw [Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
+  exact hmate
 
 /-- The transported pivotal components are natural on centre morphisms. -/
 theorem transported_pivotal_natural
