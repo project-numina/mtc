@@ -25,21 +25,25 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 
+variable (Z : BraidedFusionCategory.{v,u}) {p : Dimensions.PivotalStructure (C := Z.Obj)}
+local notation "𝒮" => Modular.categoricalS Z p
+local notation "𝒅" => Modular.simpleDimension Z p
+local notation "𝒇" => fpSimple Z
+
 /-- The actual Galois-unit label supplies the modular dimension identity, its
 self-column, a dimension at least one, and a real conjugate. This is independent
 of the centre-specific realization and finite-braid rigidity. -/
-theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
-    {p : Dimensions.PivotalStructure (C := Z.Obj)} (hp : p.IsSpherical)
+theorem exists_modular_witness (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions Z p)
-    (hdet : (Modular.categoricalS Z p).det ≠ 0)
+    (hdet : (𝒮).det ≠ 0)
     {δ : ℝ} (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) :
-    ∃ (y : Fin (rank Z)) (d : ℝ), 1 ≤ fpSimple Z y ∧
-      σ (fpSimple Z y : ℂ) = (d : ℂ) ∧
-      (∀ x, Modular.categoricalS Z p x y =
-        (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) ∧
-      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (fpSimple Z y : ℂ) ^ 2 ∧
-      Modular.categoricalS Z p y y = (fpSimple Z y : ℂ) * σ.symm (fpSimple Z y : ℂ) := by
+    ∃ (y : Fin (rank Z)) (d : ℝ), 1 ≤ 𝒇 y ∧
+      σ (𝒇 y : ℂ) = (d : ℂ) ∧
+      (∀ x, 𝒮 x y =
+        (𝒇 y : ℂ) * σ.symm (𝒅 x)) ∧
+      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (𝒇 y : ℂ) ^ 2 ∧
+      𝒮 y y = (𝒇 y : ℂ) * σ.symm (𝒇 y : ℂ) := by
   have hreal := CentreCabling.realSimpleDimensions_of_fp hdim
   obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hp hdet hreal
   let y := act σ.symm (unitIndex Z)
@@ -49,7 +53,7 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
     (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
-  refine ⟨y, (σ (fpSimple Z y : ℂ)).re, one_le_fpSimple Z y,
+  refine ⟨y, (σ (𝒇 y : ℂ)).re, one_le_fpSimple Z y,
     (fp_simple_galois_real Z σ y).symm, ?_, ?_, ?_⟩
   · simpa only [hdim] using hprop.1
   · simpa only [hglobal, hdim] using hprop.2.2
@@ -58,15 +62,14 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
 /-- Once the Galois-unit column is known to have finite braid image and the
 actual three-strand rigidity theorem applies, the required numerical witness
 follows from categorical modular data. -/
-theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v,u})
-    {p : Dimensions.PivotalStructure (C := Z.Obj)} (hp : p.IsSpherical)
+theorem center_witness_of_categorical_modular_data (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions Z p)
-    (hdet : (Modular.categoricalS Z p).det ≠ 0)
+    (hdet : (𝒮).det ≠ 0)
     {δ b : ℝ} (hδ : 0 < δ) (hb : 0 < b)
     (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
-    (hF : ∀ y, (∀ x, Modular.categoricalS Z p x y =
-      (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
+    (hF : ∀ y, (∀ x, 𝒮 x y =
+      (𝒇 y : ℂ) * σ.symm (𝒅 x)) →
       ObjectPropertyF (simples Z y)) :
     ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
   let ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ := exists_modular_witness Z hp hdim hdet hglobal σ
@@ -168,20 +171,21 @@ open CategoryTheory
 namespace PropertyF.Ground
 universe v u
 
+variable (C : BraidedFusionCategory.{v,u})
+variable [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)]
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
+
 /-- A modular actual centre with integral centralizer and finite braid-image
 retracts forces the global Frobenius–Perron dimension to be integral. -/
-theorem weaklyIntegral_of_actual_center
-    (C : BraidedFusionCategory.{v,u}) (hF : HasPropertyF C.Obj)
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    [IsFusionCategory (CategoryTheory.Center C.Obj)]
-    {p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)}
-    {core generated : Set (Fin (rank (Integrate.bundledCenter C)))}
-    (hp : p.IsSpherical) (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
-    (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
-    (hglobal : globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2)
-    (hIntegral : HasIntegralSimpleDimensionsOn (Integrate.bundledCenter C) p core)
-    (hDouble : CentreCabling.sCentralizer (Integrate.bundledCenter C) p core ⊆ generated)
-    (hProduct : ∀ y ∈ generated, Centre.ProductRetract (simples (Integrate.bundledCenter C) y)) :
+theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
+    {p : Dimensions.PivotalStructure (C := 𝒵ᶠ.Obj)}
+    {core generated : Set (Fin (rank 𝒵ᶠ))}
+    (hp : p.IsSpherical) (hdim : Modular.HasFPSimpleDimensions 𝒵ᶠ p)
+    (hdet : (Modular.categoricalS 𝒵ᶠ p).det ≠ 0)
+    (hglobal : globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2)
+    (hIntegral : HasIntegralSimpleDimensionsOn 𝒵ᶠ p core)
+    (hDouble : CentreCabling.sCentralizer 𝒵ᶠ p core ⊆ generated)
+    (hProduct : ∀ y ∈ generated, Centre.ProductRetract (simples 𝒵ᶠ y)) :
     WeaklyIntegral (globalFPDimension C) := by
   apply weaklyIntegral_of_galois_fixed (globalFPDimension_isIntegral C)
   apply galois_fixed_of_smaller_conjugate_witness (globalFPDimension C)
@@ -190,11 +194,10 @@ theorem weaklyIntegral_of_actual_center
   intro τ a b _ _ _ hτ
   obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp C τ.symm
   have hb : 0 < b := (Complex.ofReal_injective (hb'eq.symm.trans hτ)) ▸ hb'
-  let Z := Integrate.bundledCenter C
-  apply center_witness_of_categorical_modular_data Z hp hdim hdet
+  apply center_witness_of_categorical_modular_data 𝒵ᶠ hp hdim hdet
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)) hb hglobal τ hτ
   intro y hColumn
-  apply propertyF_of_galois_column Z p τ.symm core generated hIntegral hDouble ?_ y
+  apply propertyF_of_galois_column 𝒵ᶠ p τ.symm core generated hIntegral hDouble ?_ y
   · intro x
     rw [hdim y]
     exact hColumn x
