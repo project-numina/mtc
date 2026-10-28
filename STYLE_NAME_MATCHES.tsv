@@ -2,7 +2,6 @@ project_file	project_line	project_name	mathlib_file	mathlib_line	mathlib_name
 PropertyF/Ground/Modular/Classification.lean	84	dual_involutive	.lake/packages/mathlib/Mathlib/Combinatorics/Matroid/Dual.lean	158	dual_involutive
 PropertyF/Ground/CentreInduction/WeakHalfBraiding.lean	23	weak_left	.lake/packages/mathlib/Mathlib/Data/Ordmap/Invariants.lean	777	Bounded.weak_left
 PropertyF/Ground/CentreInduction/WeakHalfBraiding.lean	44	weak_right	.lake/packages/mathlib/Mathlib/Data/Ordmap/Invariants.lean	781	Bounded.weak_right
-PropertyF/Ground/CentreInduction/Injectives.lean	11	base_injective	.lake/packages/mathlib/Mathlib/GroupTheory/PushoutI.lean	595	base_injective
 PropertyF/Ground/Modular/Classification.lean	84	dual_involutive	.lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/Different.lean	403	dual_involutive
 PropertyF/Ground/Final.lean	13	target	.lake/packages/mathlib/Mathlib/Topology/Homotopy/Path.lean	68	target
 PropertyF/Ground/Final.lean	13	target	.lake/packages/mathlib/Mathlib/Topology/Path.lean	102	target

@@ -1,7 +1,6 @@
 module
 public import PropertyF.Ground.Integrate.ScalarTwist
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Integrate.Conjugacy
 public import PropertyF.Ground.Modular.FusionTransport
 
 /-! Pivotal traces and finite braid images under scalar twisting. -/
@@ -15,10 +14,6 @@ variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 /-- The original pivotal maps satisfy the same categorical equations. -/
 def pivotal (p : Dimensions.PivotalStructure (C := C.Obj)) :
     Dimensions.PivotalStructure (C := (category C σ).Obj) := p
-
-/-- Sphericality only refers to categorical morphisms. -/
-theorem spherical (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) :
-    (pivotal C σ p).IsSpherical := hp
 
 /-- The twisted inverse unit-scalar map applies σ to the original scalar. -/
 theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
@@ -38,14 +33,6 @@ theorem pivotalDimension_twist (p : Dimensions.PivotalStructure (C := C.Obj)) (X
     Dimensions.pivotalDimension (category C σ) (pivotal C σ p) X =
     σ (Dimensions.pivotalDimension C p X) := by
   exact unitScalar_twist C σ _
-
-/-- Property F is preserved by scalar twisting. -/
-theorem propertyF_twist (hF : HasPropertyF C.Obj) : HasPropertyF (category C σ).Obj :=
-  Modular.conjugate_propertyF C (category C σ) (conjugate C σ) hF
-
-/-- Individual braid images are unchanged as groups. -/
-theorem objectPropertyF_twist (X : C.Obj) :
-    ObjectPropertyF X ↔ ObjectPropertyF (show (category C σ).Obj from X) := Iff.rfl
 
 /-- Match chosen simple representatives and transport both dimensions. -/
 theorem labels (p : Dimensions.PivotalStructure (C := C.Obj)) :

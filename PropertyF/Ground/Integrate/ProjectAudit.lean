@@ -1,15 +1,11 @@
 module
 public meta import PropertyF.Ground.Integrate.DependencyAudit
 public import PropertyF.Ground.Integrate.UnitScalar
-public import PropertyF.Ground.Integrate.Norm
-public import PropertyF.Ground.Integrate.StrandInclusion
 public import PropertyF.Ground.Integrate.Representatives
-public import PropertyF.Ground.Integrate.Conjugacy
 public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Final
 public import PropertyF.Ground.Modular.Labels
 public import PropertyF.Ground.Fusion.Reciprocity
-public import PropertyF.Ground.Integrate.Example
 public import PropertyF.Ground.Fusion.Splitting
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.Norm
@@ -72,7 +68,6 @@ import all PropertyF.Ground.CentreCalculus.ParityDeletion
 import all PropertyF.Ground.CentreCalculus.PermutationInsert
 import all PropertyF.Ground.Centre.Calculus.TypeANormalWords
 import all PropertyF.Ground.Centre.Calculus.TypeA
-import all PropertyF.Ground.Integrate.CoreIntegralityReduction
 import all PropertyF.Ground.CentreInduction.PivotalCentrality
 import all PropertyF.Ground.CentreInduction.PositivePivotal
 import all PropertyF.Ground.Integrate.PivotalOnlyReduction
@@ -156,7 +151,6 @@ import all PropertyF.Ground.Dimensions.RootDualPairing
 import all PropertyF.Ground.Dimensions.RootUnitComponent
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
-import all PropertyF.Ground.Integrate.NumericalCoreReduction
 import all PropertyF.Arithmetic
 import all PropertyF.Axioms
 import all PropertyF.BlockTrace
@@ -307,26 +301,16 @@ import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterProductBridge
 import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
-import all PropertyF.Ground.Integrate.ConditionalBridge
-import all PropertyF.Ground.Integrate.Conjugacy
-import all PropertyF.Ground.Integrate.ConjugateBound
 import all PropertyF.Ground.Integrate.DependencyAudit
-import all PropertyF.Ground.Integrate.DirectModular
-import all PropertyF.Ground.Integrate.Example
 import all PropertyF.Ground.Integrate.FPConjugates
-import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.FunctorUniverse
-import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
-import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
 import all PropertyF.Ground.Integrate.ScalarTwistModular
-import all PropertyF.Ground.Integrate.ScalarTwistNorm
 import all PropertyF.Ground.Integrate.ScalarTwistTransport
-import all PropertyF.Ground.Integrate.StrandInclusion
 import all PropertyF.Ground.Integrate.TwistedRigidity
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Modular.Audit
@@ -399,17 +383,10 @@ run_cmd do
       unless n == ``PropertyF.StandardInputs do
         throwError "unexpected forbidden theorem fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
-  unless (findIssue env ``PropertyF.Ground.target_of_legacy_standardInputs).isSome do
-    throwError "dependency audit did not reject the conditional target bridge"
-  unless (findIssue env ``PropertyF.Ground.legacyCategory).isSome do
-    throwError "dependency audit did not reject the old compatibility bundle"
   unless (findIssue env ``PropertyF.propertyF_implies_weaklyIntegral).isSome do
     throwError "dependency audit did not reject the imported conditional theorem"
   for n in #[``PropertyF.Ground.TargetStatement,
       ``PropertyF.Ground.unit_algebraMap_bijective,
-      ``PropertyF.Ground.Example.complexVectorSpaces,
-      ``PropertyF.Ground.squaredNorm_eq_of_choices,
-      ``PropertyF.Ground.simple_strand_inclusion,
       ``PropertyF.Ground.weaklyIntegral_of_globalFPDimension_fixed,
       ``PropertyF.Ground.Modular.conjugate_propertyF,
       ``PropertyF.Ground.target_of_galois_invariance_and_pseudo_fixedness,
@@ -427,22 +404,16 @@ run_cmd do
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,
-      ``PropertyF.Ground.globalFPDimension_presentation,
       ``PropertyF.Ground.ScalarTwist.conjugate,
       ``PropertyF.Ground.ScalarTwist.labels,
-      ``PropertyF.Ground.ScalarTwist.labels_S,
-      ``PropertyF.Ground.ScalarTwist.globalDimension_twist,
       ``PropertyF.Ground.fpDimension_functor_universe,
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
-      ``PropertyF.Ground.Integrate.dualCrossing_unit,
       ``PropertyF.Ground.rigidity_of_twisted_overlap,
       ``PropertyF.Ground.target_of_center_and_overlap,
       ``PropertyF.Ground.target_of_modular_center,
       ``PropertyF.Ground.target_of_center_centralizers,
       ``PropertyF.Ground.target_of_center_product_retracts,
       ``PropertyF.Ground.target_of_actual_center,
-      ``PropertyF.Ground.galois_rigidity,
-      ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
       ``PropertyF.Ground.drinfeld_tensor,
@@ -460,18 +431,12 @@ run_cmd do
       ``PropertyF.Ground.CentreIntegrate.doubleDualTensor_evaluation,
       ``PropertyF.Ground.CentreIntegrate.drinfeld_tensor_of_pairing_cap,
       ``PropertyF.Ground.CentreIntegrate.balance_of_drinfeld_tensor,
-      ``PropertyF.Ground.target_of_integral_numerical_center_core,
       ``PropertyF.Ground.center_globalDimension_square_of_actual_induction,
       ``PropertyF.Ground.target_of_center_image_monodromy_no_square,
-      ``PropertyF.Ground.weaklyIntegral_of_positive_modular_propertyF,
-      ``PropertyF.Ground.categoricalS_det_eq_zero_of_transparent_column,
       ``PropertyF.Ground.Calculus.actual_rigidity_of_overlap_and_galois_dimensions,
       ``PropertyF.Ground.Dimensions.fourthDualRootNaturalSquare_eq,
       ``PropertyF.Ground.selfDual_character_galois_real,
-      ``PropertyF.Ground.positive_bounded_conjugates_of_spherical,
       ``PropertyF.Ground.Calculus.exists_unitary_braid_trace_blocks,
-      ``PropertyF.Ground.sum_simple_presentation,
-      ``PropertyF.Ground.hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary,
       ``PropertyF.Ground.Dimensions.squaredNorm_independent] do
     if let some issue := findIssue env n then
       throwError "dependency audit failed for ground result {n}: {repr issue}"
