@@ -244,16 +244,14 @@ theorem doubleCentralizer_of_fusion_closed
   classical
   let f (i : Fin (rank D)) : ℂ := if i ∈ A then (fpSimple D i : ℂ) else 0
   have hu : f (unitIndex D) ≠ 0 := by
-    simp only [f, hunit, ite_true, ne_eq, Complex.ofReal_eq_zero]
-    exact ne_of_gt (fpSimple_pos D (unitIndex D))
+    simp [f, hunit, ne_of_gt (fpSimple_pos D (unitIndex D))]
   have hgen (i) (hi : f i ≠ 0) : i ∈ A := by
     by_contra hn
     exact hi (by simp [f, hn])
   have hs (y) (hy : y ∉ core) : ∑ i, Modular.categoricalS D p y i * f i = 0 := by
-    have hn : y ∉ sCentralizer D p (↑A : Set _) := fun h ↦ hy (hcore h)
-    have ha : ∃ a ∈ A, ¬sCentralizes D p a y := by
-      simpa only [sCentralizer, Set.mem_ofPred_eq, Finset.mem_coe, not_forall, exists_prop] using hn
-    obtain ⟨a, ha, hne⟩ := ha
+    obtain ⟨a, ha, hne⟩ : ∃ a ∈ A, ¬sCentralizes D p a y := by
+      simpa only [sCentralizer, Set.mem_ofPred_eq, Finset.mem_coe, not_forall, exists_prop] using
+        (show y ∉ sCentralizer D p (↑A : Set _) from fun h ↦ hy (hcore h))
     exact fourier_eq_zero_of_fusion_eigenvector hdim
       (regular_vector_fusion_eigenvector hdual hclosed ha) hne
   exact doubleCentralizer_of_fourier_support hp hdet hdim hu hgen hs

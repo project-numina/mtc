@@ -106,9 +106,8 @@ theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
       simp only [map_mul, map_inv, ← mul_assoc]
       simp [T, mul_assoc]
     rw [hd, permutationTrace_conj p (ρ (n + 2)) T _, hadj]
-    have hconj := permutationTrace_conj p (ρ (n + 1)) τ⁻¹ σ
-    simp only [inv_inv] at hconj
-    rw [hconj]
+    simpa only [inv_inv] using
+      congrArg (unitScalar C) (permutationTrace_conj p (ρ (n + 1)) τ⁻¹ σ)
 
 end PropertyF.Ground.CentreCalculus
 

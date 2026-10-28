@@ -31,7 +31,7 @@ theorem exists_galois_braid_trace_weights
       IsTracePresentation C p b w := by
   classical
   obtain ⟨r, size, b, mult, hsize, hunit, hret, _, htrace⟩ :=
-    exists_unitary_braid_trace_blocks C X n hfinite p (groundUnitScalarEquiv C)
+    exists_unitary_braid_trace_blocks C X n hfinite p (Ground.unitScalarEquiv C)
   let w : Fin r → ℝ := fun j => ∑ i, (mult i j : ℝ) * qdim i
   refine ⟨r, size, b, w, hsize, hunit, ?_, ?_⟩
   · intro j
@@ -40,7 +40,7 @@ theorem exists_galois_braid_trace_weights
       ← Complex.ofReal_sum] at hn
     exact_mod_cast hn
   · intro z
-    simp only [pivotalDimension, ← groundUnitScalarEquiv_apply] at hdim
+    simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
     rw [actualBraidTrace, htrace]
     simp only [Blocks.trace, w, Complex.ofReal_sum, Complex.ofReal_mul,
       Complex.ofReal_natCast, hdim]
@@ -58,7 +58,7 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hfp : Ground.fpDimension C X = f)
-    (hS : scalarTrace p (groundUnitScalarEquiv C) (selfMonodromy X) =
+    (hS : scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
     (hrec : ∀ u : braidAlgebra X 1, HasOverlapTracePower C p u) : f = |d| := by

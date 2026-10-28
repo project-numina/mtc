@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Dimensions.BiproductTrace
 
 /-!
@@ -80,10 +81,7 @@ equations once tensor products are decomposed into their simple summands. -/
 theorem categoricalS_verlinde_of_hopf_product (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj))
     (hopf : HasHopfProduct D p) :
-    ∀ i j k,
-      (categoricalS D p i k / simpleDimension D p k) *
-        (categoricalS D p j k / simpleDimension D p k) =
-      ∑ l, (fusionCoeff D i j l : ℂ) * (categoricalS D p l k / simpleDimension D p k) := by
+    HasVerlindeFormula ⟨unitIndex D, fusionCoeff D⟩ (categoricalS D p) (simpleDimension D p) := by
   intro i j k
   have hk := hopf i j k
   rw [SEntry_tensor_decomposition] at hk

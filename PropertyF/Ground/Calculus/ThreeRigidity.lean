@@ -58,12 +58,12 @@ theorem actual_three_braid_trace (C : BraidedFusionCategory.{v,u})
     (X : C.Obj) [Simple X] (p : PivotalStructure (C := C.Obj)) :
     actualBraidTrace C X p 1 (braidInImage X 1
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) =
-      scalarTrace p (groundUnitScalarEquiv C) (selfMonodromy X) ^ 2 /
+      scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) ^ 2 /
         pivotalDimension C p X := by
   simpa [actualBraidTrace, braidInImage_val, braidEndRepresentation,
     threeGeneratorLeft, threeGeneratorRight, imageGenerator, pivotalDimension, scalarTrace,
-    ← groundUnitScalarEquiv_apply] using
-    (three_braid_trace C X p (groundUnitScalarEquiv C))
+    unitScalar_eq_equiv] using
+    (three_braid_trace C X p (Ground.unitScalarEquiv C))
 
 /-- The modular self-entry identity makes the actual three-strand trace attain
 the value used in the saturation argument. -/
@@ -71,7 +71,7 @@ theorem actual_three_braid_saturates (C : BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {d f : ℝ} (hd : d ≠ 0)
     (hdim : pivotalDimension C p X = (d : ℂ))
-    (hS : scalarTrace p (groundUnitScalarEquiv C) (selfMonodromy X) =
+    (hS : scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f) :
     actualBraidTrace C X p 1 (braidInImage X 1
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2 := by
@@ -160,15 +160,15 @@ theorem pair_operator_scalar_of_overlaps_equal
     (p : PivotalStructure (C := C.Obj)) (u : End (X ⊗ X))
     {d f : ℝ} (hd : d ≠ 0)
     (hdim : pivotalDimension C p X = (d : ℂ))
-    (htrace : scalarTrace p (groundUnitScalarEquiv C) u = (d : ℂ) * f)
+    (htrace : scalarTrace p (Ground.unitScalarEquiv C) u = (d : ℂ) * f)
     (heq : insertRightIdentity (X ⊗ X) X u = overlapFresh X X X u) :
     u = (f / d : ℂ) • (1 : End (X ⊗ X)) := by
   simp only [scalarTrace] at htrace
-  simp only [pivotalDimension, ← groundUnitScalarEquiv_apply] at hdim
+  simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
   have h := congrArg (rightPartialTrace p (X ⊗ X) X) heq
-  rw [rightPartialTrace_insert p (groundUnitScalarEquiv C),
+  rw [rightPartialTrace_insert p (Ground.unitScalarEquiv C),
     overlapFresh, rightPartialTrace_whiskerLeft,
-    rightPartialTrace_simple_ground C (X := X) (Y := X) p (groundUnitScalarEquiv C)] at h
+    rightPartialTrace_simple_ground C (X := X) (Y := X) p (Ground.unitScalarEquiv C)] at h
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
   simp only [scalarTrace, hdim, htrace] at h
   have h' : (d : ℂ) • u = (f : ℂ) • (1 : End (X ⊗ X)) := by
@@ -213,10 +213,10 @@ theorem dimension_eq_abs_of_scalar_monodromy
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hfinite : ObjectPropertyF X)
     (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| := by
-  simp only [pivotalDimension, ← groundUnitScalarEquiv_apply] at hdim
+  simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
-  have hdim2 : groundUnitScalarEquiv C (p.rightTrace (𝟙 (X ⊗ X))) = (d : ℂ) ^ 2 := by
-    simpa [Dimensions.pivotalDimension, ← groundUnitScalarEquiv_apply, hdim, pow_two] using
+  have hdim2 : Ground.unitScalarEquiv C (p.rightTrace (𝟙 (X ⊗ X))) = (d : ℂ) ^ 2 := by
+    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, hdim, pow_two] using
       Dimensions.pivotalDimension_tensor C p X X
   have hnonzero : (1 : End (X ⊗ X)) ≠ 0 := by
     intro h
@@ -224,7 +224,7 @@ theorem dimension_eq_abs_of_scalar_monodromy
     simpa only [End.one_asHom, End.zero_asHom, hdim2,
       show p.rightTrace (0 : X ⊗ X ⟶ X ⊗ X) = 0 from (rightTraceLinear p _).map_zero,
       map_zero] using congrArg (fun z : End (X ⊗ X) =>
-        groundUnitScalarEquiv C (p.rightTrace z.asHom)) h
+        Ground.unitScalarEquiv C (p.rightTrace z.asHom)) h
   obtain ⟨n, hn, hpow⟩ := selfMonodromy_finite_order hfinite
   apply fp_eq_abs_dim_of_finite_order hd hf
   refine ⟨n, hn, ?_⟩
@@ -243,7 +243,7 @@ theorem actual_three_strand_rigidity_of_trace_bound
     {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0)
     {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
-    (hS : scalarTrace p (groundUnitScalarEquiv C) (selfMonodromy X) =
+    (hS : scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
     (htrace : IsTracePresentation C p b w)

@@ -177,11 +177,11 @@ theorem squaredNorm_eq_rootDualSign_mul
   change unitScalar C (rightQuantumTrace j) * unitScalar C (rightQuantumTrace l) =
     rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i)
   rw [← hx, ← hq, ht]
-  simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
+  simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
   have hs := rootDualSign_sq C i
   calc
-    _ = (rootDualSign C i * rootDualSign C i) * (groundUnitScalarEquiv C (rightQuantumTrace j) *
-      groundUnitScalarEquiv C (rightQuantumTrace l)) := by rw [hs, one_mul]
+    _ = (rootDualSign C i * rootDualSign C i) * (Ground.unitScalarEquiv C (rightQuantumTrace j) *
+      Ground.unitScalarEquiv C (rightQuantumTrace l)) := by rw [hs, one_mul]
     _ = _ := by ring
 
 end PropertyF.Ground.Dimensions
@@ -215,8 +215,8 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   have hl : unitScalar C (p.leftTrace (𝟙 X)) = (fpSimple C i : ℂ) := by
     apply mul_left_cancel₀ hf
     simpa [pow_two] using hh.symm
-  apply (groundUnitScalarEquiv C).injective
-  simpa only [groundUnitScalarEquiv_apply] using hl.trans hr.symm
+  apply (Ground.unitScalarEquiv C).injective
+  simpa only [← Ground.unitScalar_eq_equiv] using hl.trans hr.symm
 
 /-- ENO's trace-matrix bound and the root-norm identity turn global
 pseudo-unitarity into pointwise FP saturation. -/
@@ -314,7 +314,7 @@ theorem positive_spherical_of_matrix_identities
       dsimp [c, r]
       field_simp [hq0 i, hq0 j, hq0 k]
     rw [hfactor]
-    exact involution_phase_inv_eq_one_of_trace _ (hinv i j k) r hrnorm hrtrace
+    exact involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm hrtrace
   have hvalue : ∀ i, c i * rootDimension C i = (fpSimple C i : ℂ) := by
     intro i
     have hf : (fpSimple C i : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (fpSimple_pos C i)

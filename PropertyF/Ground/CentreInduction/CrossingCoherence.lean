@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.CentreInduction.BasisRefinement
+public import PropertyF.Ground.CentreInduction.CrossingUnit
 
 /-! Tensor coherence of the actual induction crossing. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

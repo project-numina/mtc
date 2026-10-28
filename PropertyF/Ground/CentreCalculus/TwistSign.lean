@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 
-/-! The parity of the twist of a self-transparent simple. -/
+/-! The twist sign and integral dimensions of self-transparent simples. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.CentreCalculus
@@ -71,28 +71,33 @@ theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
   simpa only [Category.assoc, Category.id_comp] using congrArg (fun f => f ≫ t) (inverse_crossing_snake X)
 
 include hp in
+/-- On a self-transparent simple, the inverse twist is its twist scalar. -/
+theorem inverse_twist_eq_scalar_of_selfTransparent {X : C.Obj} [Simple X]
+    (hX : SelfTransparent X) :
+    (doubleDualIso C X).hom ≫ (p.iso X).inv =
+      Dimensions.pivotalBraidedTwistScalar C p X • 𝟙 X := by
+  have hc : (β_ X X).hom = (β_ X X).inv := (β_ X X).inv_ext' hX
+  have htr := spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom)
+  have h := leftPartialTrace_inverse_braiding (C := C) (p := p) X
+  rw [← hc, leftPartialTrace_braiding_of_trace_compatibility (C := C) htr] at h
+  exact (congrArg End.asHom h).symm
+
+include hp in
 /-- In a spherical category, the twist of a self-transparent simple is a sign. -/
 theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
     Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
       Dimensions.pivotalBraidedTwistScalar C p X = -1 := by
   let θ := Dimensions.pivotalBraidedTwistScalar C p X
-  let t : X ⟶ X := (doubleDualIso C X).hom ≫ (p.iso X).inv
-  have hc : (β_ X X).hom = (β_ X X).inv := (β_ X X).inv_ext' hX
-  have htr := spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom)
-  have hp1 := leftPartialTrace_braiding_of_trace_compatibility (C := C) htr
-  have hp2 := leftPartialTrace_inverse_braiding (C := C) (p := p) X
-  rw [← hc] at hp2
-  have he : θ • 𝟙 X = t := by
-    have h := congrArg End.asHom (hp1.symm.trans hp2)
-    simpa [θ, t] using h
-  have ht : t ≫ (Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X := by
-    simp [t, Dimensions.pivotalBraidedTwist, Category.assoc]
-  rw [← he, Dimensions.pivotalBraidedTwist_simple] at ht
+  have ht : ((doubleDualIso C X).hom ≫ (p.iso X).inv) ≫
+      (Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X := by
+    simp [Dimensions.pivotalBraidedTwist, Category.assoc]
+  rw [inverse_twist_eq_scalar_of_selfTransparent (C := C) hp hX,
+    Dimensions.pivotalBraidedTwist_simple] at ht
   simp only [Linear.smul_comp, Linear.comp_smul, Category.id_comp, smul_smul] at ht
   have hsq : θ * θ = 1 := by
     apply smul_left_injective ℂ (id_nonzero X)
-    simpa using ht
+    simpa [θ] using ht
   exact mul_self_eq_one_iff.mp hsq
 
 include hp hdim in

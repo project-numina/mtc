@@ -755,9 +755,13 @@ theorem monodromy_hexagon_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
   Iso.ext (by simp [monodromyIso, tensorIso_hom, tensorHom_id, id_tensorHom, Category.assoc,
     ← comp_whiskerRight])
 
+/-- The FP determinant of the double braiding between two objects. -/
+abbrev monodromyDet (Z W : C.Obj) : vafaUnitSpace :=
+  fpDeterminant C (Z ⊗ W) (monodromyIso Z W)
+
 /-- The FP determinant of monodromy is additive in the second tensor factor. -/
 theorem fpDeterminant_monodromy_tensor (Z X Y : C.Obj) :
-    fpDeterminant C (Z ⊗ (X ⊗ Y)) (monodromyIso Z (X ⊗ Y)) =
+    monodromyDet C Z (X ⊗ Y) =
       fpDeterminant C (X ⊗ (Z ⊗ Y)) (Iso.refl X ⊗ᵢ monodromyIso Z Y) +
       fpDeterminant C ((Z ⊗ X) ⊗ Y) (monodromyIso Z X ⊗ᵢ Iso.refl Y) := by
   let t := α_ Z X Y
@@ -783,12 +787,9 @@ theorem fpDeterminant_monodromy_hexagon
     {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
     (hbalance : HasSimpleBalance C η t)
     (z i j : Fin (rank C)) :
-    fpDeterminant C (simples C z ⊗ (simples C i ⊗ simples C j))
-      (monodromyIso (simples C z) (simples C i ⊗ simples C j)) =
-    fpSimple C i • fpDeterminant C (simples C z ⊗ simples C j)
-      (monodromyIso (simples C z) (simples C j)) +
-    fpSimple C j • fpDeterminant C (simples C z ⊗ simples C i)
-      (monodromyIso (simples C z) (simples C i)) := by
+    monodromyDet C (simples C z) (simples C i ⊗ simples C j) =
+      fpSimple C i • monodromyDet C (simples C z) (simples C j) +
+      fpSimple C j • monodromyDet C (simples C z) (simples C i) := by
   rw [fpDeterminant_monodromy_tensor C,
     fpDeterminant_tensor_simple_monodromy C hbalance,
     fpDeterminant_simple_monodromy_tensor C hbalance,
@@ -823,9 +824,8 @@ def monodromyNaturalIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
 the second strand. -/
 theorem fpDeterminant_monodromy_decomposition
     (Z W : C.Obj) :
-    fpDeterminant C (Z ⊗ W) (monodromyIso Z W) = ∑ i,
-      (Module.finrank ℂ (simples C i ⟶ W) : ℝ) •
-        fpDeterminant C (Z ⊗ simples C i) (monodromyIso Z (simples C i)) :=
+    monodromyDet C Z W = ∑ i,
+      (Module.finrank ℂ (simples C i ⟶ W) : ℝ) • monodromyDet C Z (simples C i) :=
   fpDeterminant_functor_natural_decomposition C (tensorLeft Z) (monodromyNaturalIso Z) W
 
 /-- Under simple twist balancing, the FP determinant of every simple mixed
@@ -833,11 +833,9 @@ monodromy vanishes. -/
 theorem fpDeterminant_simple_monodromy_eq_zero
     (hbalance : HasSimpleBalance C η t)
     (z i : Fin (rank C)) :
-    fpDeterminant C (simples C z ⊗ simples C i)
-      (monodromyIso (simples C z) (simples C i)) = 0 := by
+    monodromyDet C (simples C z) (simples C i) = 0 := by
   let B : Fin (rank C) → Fin (rank C) → vafaUnitSpace := fun i z =>
-    fpDeterminant C (simples C z ⊗ simples C i)
-      (monodromyIso (simples C z) (simples C i))
+    monodromyDet C (simples C z) (simples C i)
   have hhex : ∀ i j z, (∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
       fpSimple C j • B i z + fpSimple C i • B j z := by
     intro i j z
@@ -915,8 +913,9 @@ theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C :=
   have hf' : IsOfFinOrder ((CentreCabling.pivotalTwistUnit C p i : ℂˣ) : ℂ) :=
     Units.isOfFinOrder_val.mpr (hf i)
   let : Simple (simples C i) := simples_simple C i
+  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   simpa [CentreCabling.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using
-    (Dimensions.simpleEndScalarEquiv C (simples C i)).symm.toMonoidHom.isOfFinOrder hf'
+    (Ground.simpleEndScalar (simples C i)).symm.toMonoidHom.isOfFinOrder hf'
 
 /-- The actual pivotal twist balancing law alone forces every mixed
 monodromy to have finite order; no lantern relation is required. -/

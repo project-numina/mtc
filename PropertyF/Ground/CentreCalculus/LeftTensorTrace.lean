@@ -2,7 +2,8 @@ module
 public import PropertyF.Ground.CentreCalculus.ParityDeletion
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Calculus.ThreeTrace
-public import PropertyF.Ground.CentreCalculus.LeftPartialTrace
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 public import PropertyF.Ground.Dimensions.DualCoherence
 
 /-!
@@ -13,6 +14,71 @@ partial-trace compatibility. Tensor-duality identities establish that
 compatibility in spherical categories.
 -/
 @[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace PropertyF.Ground.CentreCalculus
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+
+/-- Close the first factor using the pivotal left dual. -/
+def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) {X Y : C} :
+    End (X ⊗ Y) →ₗ[ℂ] End Y where
+  toFun f := End.of ((λ_ Y).inv ≫
+    ((η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ ((Xᘁ) ◁ (p.iso X).inv)) ▷ Y) ≫
+    (α_ (Xᘁ) X Y).hom ≫ ((Xᘁ) ◁ f.asHom) ≫
+    (α_ (Xᘁ) X Y).inv ≫ (ε_ X (Xᘁ) ▷ Y) ≫ (λ_ Y).hom)
+  map_add' f g := by
+    apply End.ext
+    simp
+  map_smul' z f := by
+    apply End.ext
+    simp
+
+/-- Closing the left factor and then tracing agrees with the total trace. -/
+abbrev IsLeftTraceCompatible (p : Dimensions.PivotalStructure (C := C)) (X : C) : Prop :=
+  ∀ Y (f : End (X ⊗ Y)),
+    p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom
+
+/-- Inserting a map on the untraced right factor. -/
+def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
+  End.of (X ◁ a.asHom)
+
+theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
+    {X Y : C} (a : End Y) (f : End (X ⊗ Y)) :
+    leftPartialTrace p (f * insertLeftIdentity X a) =
+      leftPartialTrace p f * a := by
+  apply End.ext
+  simp only [leftPartialTrace, insertLeftIdentity, LinearMap.coe_mk, AddHom.coe_mk,
+    End.mul_asHom, whiskerLeft_comp, Category.assoc]
+  rw [← associator_naturality_right_assoc]
+  rw [← whisker_exchange_assoc, ← leftUnitor_inv_naturality_assoc]
+
+/-- Closing the first factor commutes with a spectator factor on the right. -/
+theorem leftPartialTrace_whiskerRight (p : Dimensions.PivotalStructure (C := C))
+    {X Y : C} (Z : C) (f : End (X ⊗ Y)) :
+    leftPartialTrace p (End.of
+      ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
+      End.of ((leftPartialTrace p f).asHom ▷ Z) := by
+  apply End.ext
+  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+    comp_whiskerRight, whiskerLeft_comp, Category.assoc]
+  monoidal
+
+/-- Schur's lemma identifies the partial trace on a simple surviving strand
+once compatibility with total trace is known. -/
+theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C]
+    {X Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
+    (p : Dimensions.PivotalStructure (C := C))
+    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
+    (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
+    (htrace : p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom) :
+    leftPartialTrace p f =
+      (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) :=
+  (Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p f) hd).trans <|
+    congrArg (fun t ↦ (scalar t / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y)) htrace
+
+end PropertyF.Ground.CentreCalculus
+
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
@@ -28,8 +94,7 @@ theorem leftPartialTrace_braiding_of_trace_compatibility
       Dimensions.pivotalBraidedTwistScalar C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   have hd : unitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    simpa [Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using
-      Modular.unitScalar_rightTrace_ne_zero C p X
+    exact Modular.unitScalar_rightTrace_ne_zero C p X
   have hd' : unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
     simpa [unitScalar_eq_equiv] using hd
   have hh := leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)

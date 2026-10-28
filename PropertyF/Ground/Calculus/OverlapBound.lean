@@ -20,7 +20,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 /-- Pivotal trace of an element of an actual categorical braid algebra. -/
 def actualBraidTrace (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
     (p : PivotalStructure (C := C.Obj)) (n : ℕ) (a : braidAlgebra X n) : ℂ :=
-  groundUnitScalarEquiv C
+  Ground.unitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
 
 /-- A block presentation realizes the categorical braid trace with the given weights. -/
@@ -94,15 +94,15 @@ theorem braid_trace_unitary_bound_ground
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
-  have hbound : ∀ i, ‖groundUnitScalarEquiv C
+  have hbound : ∀ i, ‖Ground.unitScalarEquiv C
       (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ Ground.fpSimple C i := by
     intro i
     have h := Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
     simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension,
-      groundUnitScalarEquiv_apply] using h
-  have h := pivotalTrace_braid_unitary_bound C p (groundUnitScalarEquiv C)
+      unitScalar_eq_equiv] using h
+  have h := pivotalTrace_braid_unitary_bound C p (Ground.unitScalarEquiv C)
     e hd b hbound a ha
-  change ‖groundUnitScalarEquiv C
+  change ‖Ground.unitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
       Ground.fpDimension C (tensorPower X (n + 2)) at h
   simpa only [fpDimension_tensorPower, actualBraidTrace] using h
@@ -299,7 +299,7 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     ‖actualBraidTrace C X p t u‖ ≤
       ‖pivotalDimension C p X‖ *
         Ground.fpDimension C X ^ (t + 1) := by
-  simp only [HasOverlapTracePower, pivotalDimension, ← groundUnitScalarEquiv_apply] at hrec ⊢
+  simp only [HasOverlapTracePower, pivotalDimension, unitScalar_eq_equiv] at hrec ⊢
   apply norm_bound_of_overlapIndex (Modular.unitScalar_rightTrace_ne_zero C p X)
     (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X))) t
     (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec

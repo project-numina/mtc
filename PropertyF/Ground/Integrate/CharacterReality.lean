@@ -51,10 +51,7 @@ theorem fusion_character_dual_eq_conj (C : BraidedFusionCategory.{v,u})
   classical
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
     fun j k => (fusionCoeff C i j k : ℂ)
-  have hv : χ ≠ 0 := by
-    intro hz
-    apply hχ
-    exact congrFun hz i₀
+  have hv : χ ≠ 0 := fun hz ↦ hχ (congrFun hz i₀)
   have h : A *ᵥ χ = χ i • χ := by
     ext j
     change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
@@ -65,8 +62,7 @@ theorem fusion_character_dual_eq_conj (C : BraidedFusionCategory.{v,u})
       χ (dualIndex C i) * χ j
     simp_rw [fusionCoeff_dual_transpose C i]
     exact (hchar (dualIndex C i) j).symm
-  have heq := conjugate_of_transpose_eigenvector A (by intro j k; simp [A]) hv h ht
-  simpa using (congrArg star heq)
+  simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A]) hv h ht)
 
 /-- A nonzero fusion character invariant under duality has real values. -/
 theorem selfDual_character_real (C : BraidedFusionCategory)
