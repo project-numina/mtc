@@ -137,7 +137,7 @@ theorem rightPartialTrace_tensor_right (X : C) {Y : C} (b : Y ⟶ Y) :
       End.of ((ρ_ X).inv ≫ X ◁ (p.rightTrace b).asHom ≫ (ρ_ X).hom) := by
   apply End.ext
   simp only [rightPartialTrace,
-    PivotalStructure.rightTrace, tensorHom_def, id_whiskerRight, Category.id_comp,
+    PivotalStructure.rightTrace, rightTraceWith, tensorHom_def, id_whiskerRight, Category.id_comp,
     whiskerLeft_comp, comp_whiskerRight, Category.assoc]
   monoidal
 

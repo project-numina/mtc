@@ -57,7 +57,7 @@ factor, acting on the untraced object. -/
 theorem rightPartialTrace_one (p : PivotalStructure (C := C))
     (X Y : C) : rightPartialTrace p (X := X) (Y := Y) 1 =
       End.of ((ρ_ X).inv ≫ (X ◁ (p.rightTrace (𝟙 Y)).asHom) ≫ (ρ_ X).hom) :=
-  End.ext (by simp [rightPartialTrace, PivotalStructure.rightTrace, tensorHom_def])
+  End.ext (by simp [rightPartialTrace, PivotalStructure.rightTrace, rightTraceWith, tensorHom_def])
 
 variable (p : PivotalStructure (C := C))
 
