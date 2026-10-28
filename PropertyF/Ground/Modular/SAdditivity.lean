@@ -63,8 +63,7 @@ theorem SEntry_tensor_decomposition (i j k : Fin (rank D)) :
     Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
       ∑ l, (fusionCoeff D i j l : ℂ) * Sₚ l k := by
   obtain ⟨e⟩ := exists_canonical_decomposition D (simples D i ⊗ simples D j)
-  simp [SEntry_iso_left p e _, SEntry_biproduct_left, Fintype.sum_sigma,
-    categoricalS, nsmul_eq_mul, fusionCoeff]
+  simp [SEntry_iso_left p e _, SEntry_biproduct_left, Fintype.sum_sigma, categoricalS, fusionCoeff]
 
 
 /-- The Hopf-link product rule for simple objects. -/

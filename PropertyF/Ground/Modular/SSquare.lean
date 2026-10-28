@@ -27,10 +27,9 @@ include hdual in
 /-- Different fusion characters are orthogonal for the standard Hermitian pairing. -/
 theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
     ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 :=
-  let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j
   (Function.ne_iff.mp (show χ.value ≠ ψ.value from fun h ↦ hne (Character.ext h))).elim fun i hi ↦
     Classical.byContradiction fun hw ↦ hi (mul_right_cancel₀ hw (by
-      simpa [w, character_dual_conj N dual hdual χ i] using
+      simpa [character_dual_conj N dual hdual χ i] using
         fusion_inner_balance N dual hdual (starRingEnd ℂ) χ.value ψ.value χ.mul_eq ψ.mul_eq i)).symm
 
 include hdual in
@@ -170,9 +169,8 @@ theorem categoricalS_galois_action_of_invertibleS (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
     ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)),
       IsGaloisColumnAction (Sₚ) (dₚ) act :=
-  exists_galoisLabel_of_verlinde (N := ⟨unitIndex C, fusionCoeff C⟩)
-    (simpleDimension_ne_zero C p) (globalDimension_ne_zero_of_invertibleS C p hp hdet hreal)
-    (categoricalS_symmetric C p) (categoricalS_unit C p)
-    (categoricalS_square C p hp hdet hreal) (categoricalS_verlinde C p)
+  exists_galoisLabel_of_verlinde (simpleDimension_ne_zero C p)
+    (globalDimension_ne_zero_of_invertibleS C p hp hdet hreal) (categoricalS_symmetric C p)
+    (categoricalS_unit C p) (categoricalS_square C p hp hdet hreal) (categoricalS_verlinde C p)
 end PropertyF.Ground.Modular
 end

@@ -70,10 +70,8 @@ theorem regular_fusion_derivation_vanishes {M : Type w} {σ : Type*}
     [AddCommGroup M] [Module ℝ M] (B : Fin (rank C) → σ → M)
     (hhex : ∀ z, IsFusionDerivation (fun i j k ↦ (fusionCoeff C i j k : ℝ))
       (fpSimple C) (fun i ↦ B i z)) : ∀ i z, B i z = 0 :=
-  fun i z ↦ derivation_vanishes_of_regular_eigenvector
-    (fun i j k ↦ (fusionCoeff C i j k : ℝ)) (fpSimple C) (fpSimple_regular C)
-    (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))) (fun i ↦ B i z)
-    (hhex z) i
+  fun i z ↦ derivation_vanishes_of_regular_eigenvector _ _ (fpSimple_regular C)
+    (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))) _ (hhex z) i
 
 end PropertyF.Ground.CentreModular
 end
@@ -219,9 +217,8 @@ theorem fpDeterminant_conjugate_trans {X Y : C.Obj} (e : X ≅ Y)
     (a : Y ≅ Y) (b : X ≅ X) :
     fpDeterminant C (e ≪≫ a ≪≫ e.symm ≪≫ b) =
       fpDeterminant C a + fpDeterminant C b := by
-  rw [← Iso.trans_assoc, ← Iso.trans_assoc, fpDeterminant_trans, Iso.trans_assoc]
-  congr 1
-  simpa only [Iso.symm_symm_eq] using fpDeterminant_conjugate C e.symm a
+  rw [← Iso.trans_assoc, ← Iso.trans_assoc, fpDeterminant_trans, Iso.trans_assoc,
+    ← fpDeterminant_conjugate C e.symm a, Iso.symm_symm_eq]
 
 /-- Tensoring a scalar automorphism preserves the scalar action. -/
 theorem tensor_scalarIso {R : Type*} [CommSemiring R] {D : Type u}
@@ -426,9 +423,7 @@ theorem fpDeterminant_biprod
     fpDeterminant C (biprod.mapIso a b) =
       fpDeterminant C a + fpDeterminant C b := by
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  unfold fpDeterminant
-  simp_rw [homAction_det_biprod, vafaUnitClass, rationalUnitClass_mul, smul_add]
-  rw [Finset.sum_add_distrib]
+  simp [fpDeterminant, homAction_det_biprod, vafaUnitClass, rationalUnitClass_mul, Finset.sum_add_distrib]
 
 end PropertyF.Ground.CentreModular
 end
@@ -783,10 +778,8 @@ theorem fpDeterminant_monodromy_tensor (Z X Y : C.Obj) :
     monodromyDet C Z (X ⊗ Y) =
       fpDeterminant C (Iso.refl X ⊗ᵢ monodromyIso Z Y) +
       fpDeterminant C (monodromyIso Z X ⊗ᵢ Iso.refl Y) := by
-  have h := fpDeterminant_conjugate C (α_ Z X Y).symm (monodromyIso Z (X ⊗ Y))
-  change fpDeterminant C ((α_ Z X Y) ≪≫ monodromyIso Z (X ⊗ Y) ≪≫ (α_ Z X Y).symm) = _ at h
-  rw [monodromy_hexagon_iso, fpDeterminant_conjugate_trans] at h
-  exact h.symm
+  simpa only [Iso.symm_symm_eq, monodromy_hexagon_iso, fpDeterminant_conjugate_trans] using
+    (fpDeterminant_conjugate C (α_ Z X Y).symm (monodromyIso Z (X ⊗ Y))).symm
 
 /-- The actual FP determinant of the monodromy hexagon is the weighted sum
 of the two simple monodromy determinants, under simple twist balancing. -/
@@ -797,10 +790,8 @@ theorem fpDeterminant_monodromy_hexagon
     monodromyDet C (simples C z) (simples C i ⊗ simples C j) =
       fpSimple C i • monodromyDet C (simples C z) (simples C j) +
       fpSimple C j • monodromyDet C (simples C z) (simples C i) := by
-  rw [fpDeterminant_monodromy_tensor C,
-    fpDeterminant_tensor_simple_monodromy C hbalance,
-    fpDeterminant_simple_monodromy_tensor C hbalance,
-    fpDimension_simple, fpDimension_simple]
+  simp only [fpDeterminant_monodromy_tensor C, fpDeterminant_tensor_simple_monodromy C hbalance,
+    fpDeterminant_simple_monodromy_tensor C hbalance, fpDimension_simple]
 
 end PropertyF.Ground.CentreModular
 end
