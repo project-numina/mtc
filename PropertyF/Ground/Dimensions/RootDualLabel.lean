@@ -57,12 +57,10 @@ def rightDualLabelIso :
 def enoFrobeniusEquiv :
     (simples C i ⊗ simples C j ⟶ simples C k) ≃ₗ[ℂ]
       (simples C j ⟶ simples C (dualIndex C i) ⊗ simples C k) := by
-  let Xi := simples C i
-  let Xj := simples C j
-  let Xk := simples C k
-  letI : ExactPairing (Xiᘁ) Xi := BraidedCategory.exactPairing_swap Xi (Xiᘁ)
-  exact (tensorLeftHomLinearEquiv (k := ℂ) Xj (Xiᘁ) Xi Xk).trans
-    (Linear.homCongr ℂ (Iso.refl Xj) (rightDualLabelIso C i ⊗ᵢ Iso.refl Xk))
+  letI : ExactPairing ((simples C i)ᘁ) (simples C i) :=
+    BraidedCategory.exactPairing_swap _ _
+  exact (tensorLeftHomLinearEquiv (k := ℂ) _ _ _ _).trans
+    (Linear.homCongr ℂ (Iso.refl _) (rightDualLabelIso C i ⊗ᵢ Iso.refl _))
 
 /-- The actual ENO Frobenius/semisimple reciprocity isomorphism: the dual of
 one fusion multiplicity space is the dual-label multiplicity space. -/
@@ -128,13 +126,11 @@ theorem trace_reciprocity_of_frobenius_defect
         (rootTensorDefect C (simples C (dualIndex C i)) (simples C j)).hom)) :
     ENOTraceMatrixReciprocity C := by
   refine trace_reciprocity_of_intertwining C fun i j k v ↦ ?_
-  let : Simple (simples C j) := simples_simple C j
   let P := simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)
   obtain ⟨g, rfl⟩ := P.surjective v
   have hm : (multiplicityDefect C i k j).toLinearMap =
-      Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom := by
-    ext f
-    exact multiplicityDefect_apply C f
+      Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom :=
+    LinearMap.ext fun f ↦ multiplicityDefect_apply C f
   rw [hm]
   erw [← simpleHomPairingEquiv_natural, enoReciprocityEquiv_pairing,
     enoReciprocityEquiv_pairing, hcompat]

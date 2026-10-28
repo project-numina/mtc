@@ -128,24 +128,17 @@ theorem unitDoubleDual_trace [RightRigidCategory C] :
     η_ (𝟙_ C) ((𝟙_ C)ᘁ) ≫
       ((doubleDualUnitIso (C := C)).hom ⊗ₘ 𝟙 ((𝟙_ C)ᘁ)) ≫
       ε_ ((𝟙_ C)ᘁ) (((𝟙_ C)ᘁ)ᘁ) = 𝟙 (𝟙_ C) := by
-  let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
-  let : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
-  let hp : ExactPairing (𝟙_ C) (rightDualObject (𝟙_ C)) :=
-    @HasRightDual.exact C _ _ (𝟙_ C) (RightRigidCategory.rightDual (𝟙_ C))
-  let hq : ExactPairing (𝟙_ C) (𝟙_ C) := exactPairingUnit
+  let I := 𝟙_ C
+  let : HasRightDual I := RightRigidCategory.rightDual _
+  let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual _
+  let hp : ExactPairing I Iᘁ := HasRightDual.exact
+  let hq : ExactPairing I I := exactPairingUnit
   let r := rightDualIso hp hq
-  change @ExactPairing.coevaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp ≫
-    ((r.inv ≫ @rightAdjointMate C _ _ (rightDualObject (𝟙_ C)) (𝟙_ C)
-      (RightRigidCategory.rightDual _) (RightRigidCategory.rightDual _) r.hom) ⊗ₘ
-        𝟙 (rightDualObject (𝟙_ C))) ≫
-      @ExactPairing.evaluation C _ _ (rightDualObject (𝟙_ C))
-        (rightDualObject (rightDualObject (𝟙_ C)))
-        (@HasRightDual.exact C _ _ _ (RightRigidCategory.rightDual _)) = 𝟙 (𝟙_ C)
+  change η_ I Iᘁ ≫ ((r.inv ≫ r.homᘁ) ⊗ₘ 𝟙 Iᘁ) ≫ ε_ Iᘁ Iᘁᘁ = _
   apply (trace_change_rightDual hp hq r.inv).trans
   simp only [tensorHom_def, whiskerLeft_id, Category.comp_id]
-  change @ExactPairing.coevaluation C _ _ (𝟙_ C) (𝟙_ C) hq ≫
-    ((rightDualIso hp hq).inv ▷ (𝟙_ C) ≫
-      @ExactPairing.evaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp) = 𝟙 (𝟙_ C)
+  change @ExactPairing.coevaluation C _ _ I I hq ≫
+    (r.inv ▷ I ≫ @ExactPairing.evaluation C _ _ I Iᘁ hp) = 𝟙 I
   rw [rightDualIso_inv_evaluation hp hq]
   exact Iso.inv_hom_id _
 

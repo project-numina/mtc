@@ -63,18 +63,16 @@ theorem drinfeld_unit_dual :
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let : HasRightDual ((Uᘁ)ᘁ) := RightRigidCategory.rightDual ((Uᘁ)ᘁ)
   let r : Uᘁ ≅ U := rightDualUnitIso
-  have hu : (drinfeldIso U).hom = (r.inv ≫ (r.homᘁ)) :=
-    drinfeld_unit
+  have hu : drinfeldIso U = r.symm ≪≫ rightDualIsoMap r := Iso.ext drinfeld_unit
   apply Iso.ext
   change (drinfeldIso (Uᘁ)).hom = ((drinfeldIso U).invᘁ)
   apply (cancel_mono (rightDualIsoMap (rightDualIsoMap r)).hom).1
   change (drinfeldIso (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) =
     ((drinfeldIso U).invᘁ) ≫ ((r.homᘁ)ᘁ)
-  rw [← drinfeldIso_natural r.hom, hu, Iso.hom_inv_id_assoc]
-  rw [show (drinfeldIso U).inv = (r.invᘁ) ≫ r.hom from by
-      simpa only [Iso.trans_inv, Iso.symm_inv, rightDualIsoMap] using
-        congrArg Iso.inv (Iso.ext hu : drinfeldIso U = r.symm ≪≫ rightDualIsoMap r),
-    comp_rightAdjointMate, Category.assoc, ← comp_rightAdjointMate,
+  rw [← drinfeldIso_natural r.hom, hu]
+  simp only [Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, Iso.symm_inv, rightDualIsoMap,
+    Iso.hom_inv_id_assoc]
+  rw [comp_rightAdjointMate, Category.assoc, ← comp_rightAdjointMate,
     show (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Uᘁ) from (rightDualIsoMap r).hom_inv_id,
     rightAdjointMate_id, Category.comp_id]
 /-- The fourth-dual map has the canonical iterated unit component. -/
@@ -92,8 +90,7 @@ theorem fourthDualIso_unit :
   rw [show drinfeldIso ((𝟙_ C)ᘁ) =
       (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm from drinfeld_unit_dual,
     show drinfeldIso (𝟙_ C) = doubleDualUnitIso from Iso.ext (drinfeld_unit (C := C))]
-  apply Iso.ext
-  rfl
+  exact Iso.ext rfl
 
 end
 

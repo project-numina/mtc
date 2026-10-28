@@ -150,8 +150,7 @@ theorem rootTensorDefect_slide_of_involution
   let X := simples C i
   let A := Xᘁ
   let I := 𝟙_ C.Obj
-  let p : ExactPairing A X := BraidedCategory.exactPairing_swap X A
-  let : ExactPairing A X := p
+  let : ExactPairing A X := BraidedCategory.exactPairing_swap X A
   let cup : I ⟶ A ⊗ X := η_ A X
   let η : K ⟶ A ⊗ (X ⊗ K) := (λ_ K).inv ≫ cup ▷ K ≫ (α_ A X K).hom
   let D := (rootTensorDefect C A (X ⊗ K)).hom
@@ -164,9 +163,8 @@ theorem rootTensorDefect_slide_of_involution
   have hn := rootTensorDefect_natural C cup (𝟙 K)
   simp only [tensorHom_id] at hn
   have hu : (rootTensorDefect C I K).hom = u • 𝟙 (I ⊗ K) := rootTensorDefect_unit_left C K
-  have hcomm := rootTensorDefect_natural C (𝟙 A) (rootTensorDefect C X K).hom
-  simp only [id_tensorHom] at hcomm
-  change E ≫ D = D ≫ E at hcomm
+  have hcomm : E ≫ D = D ≫ E := by
+    simpa only [id_tensorHom] using rootTensorDefect_natural C (𝟙 A) (rootTensorDefect C X K).hom
   have hloop : η ≫ D ≫ E = e • η := by
     change ((λ_ K).inv ≫ cup ▷ K ≫ (α_ A X K).hom) ≫ D ≫ E = _
     rw [Category.assoc, rootTensorDefect_associativity]
