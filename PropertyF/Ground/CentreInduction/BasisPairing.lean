@@ -170,9 +170,8 @@ theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
   rw [whisker_exchange_assoc]
   have hn := congrArg (fun k => k ▷ T) (rightDualTensorIso_natural h (𝟙 S))
   simp only [tensorHom_id, rightAdjointMate_id, id_tensorHom, comp_whiskerRight] at hn
-  rw [reassoc_of% hn]
-  rw [whisker_exchange_assoc, associator_naturality_right_assoc]
-  rw [associator_naturality_middle_assoc]
+  rw [reassoc_of% hn, whisker_exchange_assoc, associator_naturality_right_assoc,
+    associator_naturality_middle_assoc]
   simp only [← whiskerLeft_comp_assoc]
   rw [rightAdjointMate_comp_evaluation]
 

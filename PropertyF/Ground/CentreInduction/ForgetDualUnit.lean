@@ -46,8 +46,8 @@ theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
   simp only [← Category.assoc]
   rw [forgetDualIso_tensor_inv (Yᘁ) (Xᘁ)]
   simp only [Category.assoc]
-  rw [forgetDualIso_tensor_mate_inv X Y]
-  rw [← Category.assoc ((rightDualTensorIso (Yᘁ).1 (Xᘁ).1).inv),
+  rw [forgetDualIso_tensor_mate_inv X Y,
+    ← Category.assoc ((rightDualTensorIso (Yᘁ).1 (Xᘁ).1).inv),
     ← rightDualTensorIso_inv_natural (forgetDualIso Y).inv (forgetDualIso X).inv]
   simp only [tensorHom_comp_tensorHom_assoc, Category.assoc]
 
@@ -119,8 +119,7 @@ theorem forgetDoubleDualIso_unit :
     Category.assoc]
   change e.inv.f ≫ (e.homᘁ).f ≫ (forgetDualIso (Uᘁ)).hom ≫
       (forgetDualIso U).invᘁ = b.inv ≫ b.homᘁ
-  rw [← Category.assoc (e.homᘁ).f, hn]
-  rw [← hu, comp_rightAdjointMate]
+  rw [← Category.assoc (e.homᘁ).f, hn, ← hu, comp_rightAdjointMate]
   simp only [Category.assoc]
   rw [← Category.assoc e.inv.f, hv]
   simp only [← comp_rightAdjointMate,
