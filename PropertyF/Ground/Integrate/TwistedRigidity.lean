@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.Target
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Modular.FusionTransport
-public import PropertyF.Ground.Fusion.FunctorDimension
+public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Calculus.PositiveWeights

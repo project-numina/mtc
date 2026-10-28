@@ -114,9 +114,7 @@ theorem dual_components_natural {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ
     (e.invᘁ) ≫ (rightDualIsoMap k).symm.hom =
       (rightDualIsoMap j).symm.hom ≫ ((e.invᘁ)ᘁ)ᘁ := by
   let ee := rightDualIsoMap (rightDualIsoMap e)
-  have hiso : e ≪≫ k = j ≪≫ ee := by
-    apply Iso.ext
-    exact hnat
+  have hiso : e ≪≫ k = j ≪≫ ee := Iso.ext hnat
   have hinv := congrArg (fun (a : X ≅ (Yᘁ)ᘁ) => a.inv) hiso
   simpa only [Iso.trans_inv, comp_rightAdjointMate, ee, rightDualIsoMap, Iso.symm_hom] using
     (congrArg (fun (a : (Yᘁ)ᘁ ⟶ X) => rightAdjointMate a) hinv)

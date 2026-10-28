@@ -246,16 +246,17 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
+section
+variable {ι K G : Type*} [Fintype ι] [Field K] [Algebra ℚ K] [CommGroup G]
+variable (N : ι → ι → ι → K) (d : ι → K)
+
 /-- Weighted group classes satisfy the fusion balance relation. -/
-abbrev HasWeightedTwistBalance {ι K G : Type*} [Fintype ι] [Field K] [Algebra ℚ K]
-    [CommGroup G] (N : ι → ι → ι → K) (d : ι → K) (t : ι → G) : Prop :=
+abbrev HasWeightedTwistBalance (t : ι → G) : Prop :=
   ∀ i j, (∑ k, N i j k • (d k • rationalUnitClass (K := K) (t k))) =
     (d i * d j) • (rationalUnitClass (K := K) (t i) + rationalUnitClass (K := K) (t j))
 
 /-- A nondegenerate regular dimension character makes balanced twists torsion. -/
-theorem finite_order_of_weighted_twist_balance {ι K G : Type*} [Fintype ι] [Field K]
-    [Algebra ℚ K] [Module.FaithfullyFlat ℚ K] [CommGroup G]
-    (N : ι → ι → ι → K) (d : ι → K)
+theorem finite_order_of_weighted_twist_balance [Module.FaithfullyFlat ℚ K]
     (hreg : IsRegularFusionVector N d) (hD : (∑ j, d j ^ 2) ≠ 0)
     (hd : ∀ i, d i ≠ 0) (t : ι → G) (hbalance : HasWeightedTwistBalance N d t) :
     ∀ i, IsOfFinOrder (t i) := by
@@ -265,6 +266,8 @@ theorem finite_order_of_weighted_twist_balance {ι K G : Type*} [Fintype ι] [Fi
   intro i
   apply (rationalUnitClass_eq_zero_iff (K := K) _).mp
   exact (smul_eq_zero.mp (derivation_vanishes_of_regular_eigenvector N d hreg hD _ hderiv i)).resolve_left (hd i)
+
+end
 
 end PropertyF.Ground.CentreModular
 end
@@ -294,9 +297,7 @@ theorem homAction_natural_scalar {R : Type*} [CommSemiring R] {D : Type u}
 
 /-- The actual FP determinant of a natural automorphism is the sum of its
 simple scalar classes, weighted by FP dimensions and Hom multiplicities. -/
-theorem fpDeterminant_natural
-    (ht : HasSimpleScalars C η t)
-    (X : C.Obj) :
+theorem fpDeterminant_natural (ht : HasSimpleScalars C η t) (X : C.Obj) :
     fpDeterminant C (η.app X) = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) • (fpSimple C i • vafaUnitClass (t i)) := by
   simp only [fpDeterminant, vafaUnitClass]

@@ -41,10 +41,10 @@ theorem exists_galois_braid_trace_weights
         ← Complex.ofReal_sum] using
           transported_weight_ne_zero (fun i => mult i j) original σ hpos (hret j))
   · intro z
-    simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
+    unfold pivotalDimension at hdim
     rw [actualBraidTrace, htrace]
     simp only [Blocks.trace, w, Complex.ofReal_sum, Complex.ofReal_mul,
-      Complex.ofReal_natCast, hdim]
+      Complex.ofReal_natCast, ← unitScalar_eq_equiv, hdim]
 
 /-- Categorical three-strand rigidity from real Galois dimension data and
 one intrinsic overlap trace identity. All matrix blocks and weights are

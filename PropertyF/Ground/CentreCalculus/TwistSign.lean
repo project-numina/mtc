@@ -30,6 +30,14 @@ theorem drinfeld_coevaluation (X : C.Obj) :
     (Xᘁ) ◁ (doubleDualIso C X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) at hc
   rw [← hc, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
 
+/-- Pivotal coevaluation factors through the braided double-dual comparison. -/
+theorem pivotal_coevaluation_factor (X : C.Obj) :
+    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv =
+      (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
+        (Xᘁ) ◁ ((doubleDualIso C X).hom ≫ (p.iso X).inv) := by
+  rw [← drinfeld_coevaluation (C := C) X, Category.assoc, ← whiskerLeft_comp,
+    Iso.inv_hom_id_assoc]
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse braiding cancels along the duality snake. -/
 theorem inverse_crossing_snake {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -59,12 +67,7 @@ theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
   apply End.ext
   simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
   let t : X ⟶ X := (doubleDualIso C X).hom ≫ (p.iso X).inv
-  have hcup : η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv =
-      (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫ (Xᘁ) ◁ t := by
-    dsimp [t]
-    rw [← drinfeld_coevaluation (C := C) X, Category.assoc, ← whiskerLeft_comp,
-      Iso.inv_hom_id_assoc]
-  rw [hcup]
+  rw [pivotal_coevaluation_factor (C := C) (p := p) X]
   simp only [comp_whiskerRight, Category.assoc]
   -- The inverse crossings cancel after applying the inverse hexagon.
   have hmove : (Xᘁ ◁ t) ▷ X ≫ (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) =

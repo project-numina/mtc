@@ -72,6 +72,21 @@ theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Equiv.Per
   refine Fin.cases ?_ (fun j => ?_) x <;>
     simp [fixHead, Equiv.Perm.mul_apply]
 
+/-- A moved-point extension is conjugate to the first adjacent extension. -/
+theorem decomposeFin_succ_conj {n : ℕ} (j : Fin (n + 1)) (σ : Equiv.Perm (Fin (n + 1))) :
+    let τ := Equiv.swap 0 j
+    let T := fixHead (n + 1) τ
+    decomposeFin.symm (j.succ, σ) =
+      T * decomposeFin.symm (1, τ⁻¹ * σ * τ) * T⁻¹ := by
+  let τ : Equiv.Perm (Fin (n + 1)) := Equiv.swap 0 j
+  let T := fixHead (n + 1) τ
+  change decomposeFin.symm (j.succ, σ) = T * decomposeFin.symm (1, τ⁻¹ * σ * τ) * T⁻¹
+  have hswap : Equiv.swap 0 j.succ = T * Equiv.swap 0 1 * T⁻¹ := by
+    simpa [T, τ, fixHead] using Equiv.swap_apply_apply T (0 : Fin (n + 2)) 1
+  rw [decomposeFin_eq_swap_fixHead, decomposeFin_eq_swap_fixHead, hswap]
+  simp only [map_mul, map_inv, ← mul_assoc]
+  simp [T, mul_assoc]
+
 /-- Traces of permutation representations are invariant under conjugation. -/
 theorem permutationTrace_conj {C : Type u} [Category.{v} C] [MonoidalCategory C]
     [RightRigidCategory C] (p : PivotalStructure (C := C)) {X : C}
@@ -96,14 +111,7 @@ theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
     obtain ⟨j, rfl⟩ := Fin.exists_succ_eq_of_ne_zero hq
     let τ : Equiv.Perm (Fin (n + 1)) := Equiv.swap 0 j
     let T := fixHead (n + 1) τ
-    have hswap : Equiv.swap 0 j.succ = T * Equiv.swap 0 1 * T⁻¹ := by
-      simpa [T, τ, fixHead] using Equiv.swap_apply_apply T (0 : Fin (n + 2)) 1
-    have hd : decomposeFin.symm (j.succ, σ) =
-        T * (decomposeFin.symm (1, τ⁻¹ * σ * τ)) * T⁻¹ := by
-      rw [decomposeFin_eq_swap_fixHead, decomposeFin_eq_swap_fixHead, hswap]
-      simp only [map_mul, map_inv, ← mul_assoc]
-      simp [T, mul_assoc]
-    rw [hd, permutationTrace_conj p (ρ (n + 2)) T _, hadj]
+    rw [decomposeFin_succ_conj j σ, permutationTrace_conj p (ρ (n + 2)) T _, hadj]
     simpa only [inv_inv] using
       congrArg (unitScalar C) (permutationTrace_conj p (ρ (n + 1)) τ⁻¹ σ)
 

@@ -41,7 +41,7 @@ theorem character_columns_orthogonal [DecidableEq ι] {S : Matrix ι ι ℂ} {d 
     (hreal : ∀ j, starRingEnd ℂ (d j) = d j) {a b : ι} (hab : a ≠ b) :
     ∑ x, starRingEnd ℂ (S x a) * S x b = 0 :=
   have hne : cols a ≠ cols b := fun h ↦
-    hab (normalized_columns_injective hdet hd (by
+    hab (normalized_columns_injective hd hdet (by
       funext i
       simpa only [hcols] using congrFun (congrArg Character.value h) i))
   (div_eq_zero_iff.mp (show (∑ x, starRingEnd ℂ (S x a) * S x b) / (d a * d b) = 0 from by

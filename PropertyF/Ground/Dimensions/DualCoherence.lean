@@ -56,6 +56,14 @@ theorem rightDualIso_evaluation {X Y Z : C} (p : ExactPairing X Y) (q : ExactPai
       Y ◁ (𝟙 X) ≫ @ExactPairing.evaluation C _ _ X Y p from
         @rightAdjointMate_comp_evaluation C _ _ X X hq hp (𝟙 X))
 
+/-- Evaluation is preserved by the canonical tensor comparison for right duals. -/
+theorem rightDualTensorIso_evaluation [RightRigidCategory C] (X Y : C) :
+    (rightDualTensorIso X Y).hom ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
+      ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ) :=
+  rightDualIso_evaluation
+    (@HasRightDual.exact C _ _ (X ⊗ Y) (RightRigidCategory.rightDual _))
+    (ExactPairing.tensor (X₁ := X) (X₂ := Y) (Y₁ := Xᘁ) (Y₂ := Yᘁ))
+
 /-- The inverse dual comparison transports coevaluation in the reverse direction. -/
 theorem coevaluation_rightDualIso_inv {X Y Z : C} (p : ExactPairing X Y) (q : ExactPairing X Z) :
     @ExactPairing.coevaluation C _ _ X Z q ≫ X ◁ (rightDualIso p q).inv =
@@ -76,9 +84,7 @@ theorem trace_change_rightDual [RightRigidCategory C] {X Y Z : C}
       ((u ≫ ((rightDualIso p q).hom)ᘁ) ⊗ₘ 𝟙 Y) ≫ ε_ Y (Yᘁ) =
     @ExactPairing.coevaluation C _ _ X Z q ≫ (u ⊗ₘ 𝟙 Z) ≫ ε_ Z (Zᘁ) := by
   simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc]
-  rw [rightAdjointMate_comp_evaluation]
-  rw [← whisker_exchange_assoc]
-  rw [coevaluation_rightDualIso_assoc]
+  rw [rightAdjointMate_comp_evaluation, ← whisker_exchange_assoc, coevaluation_rightDualIso_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual unit isomorphism has unit evaluation trace. -/

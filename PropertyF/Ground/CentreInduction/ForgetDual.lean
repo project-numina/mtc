@@ -1,6 +1,8 @@
 module
 public import PropertyF.Ground.CentreInduction.InjectiveFusion
-public import PropertyF.Ground.Dimensions.IntrinsicNonzero
+public import PropertyF.Ground.Dimensions.DimensionCharacter
+public import PropertyF.Ground.Integrate.CharacterReality
+public import PropertyF.Ground.Modular.SMatrix
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -23,47 +25,6 @@ theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}}
   simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
     hsimple] using Dimensions.pivotalDimension_decomposition C p X
 
-/-- The induction of the tensor unit has base pivotal dimension FPdim(C). -/
-theorem induced_unit_dimension {C : BraidedFusionCategory.{v,u}}
-    {p : Dimensions.PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p) :
-    Dimensions.pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
-  rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
-
-set_option backward.isDefEq.respectTransparency false in
-/-- The displayed trace compatibility makes the induced unit trace nonzero. -/
-theorem induced_center_trace_ne_zero_of_compatible {p : Dimensions.PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p)
-    [RigidCategory (𝒵)]
-    {pZ : Dimensions.PivotalStructure (C := 𝒵)}
-    (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
-      (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom) :
-    pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj))) ≠ 0 := by
-  intro hz
-  have hbase : (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = 0 := by
-    apply End.ext
-    rw [← hcompat, hz]
-    rfl
-  have hd := induced_unit_dimension hsimple
-  change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
-  rw [hbase] at hd
-  have hne : (globalFPDimension C : ℂ) ≠ 0 := by
-    exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
-  apply hne
-  simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
-
-set_option backward.isDefEq.respectTransparency false in
-/-- A compatible centre pivotal structure constructs centre fusion when
-base pivotal dimensions equal FP dimensions. -/
-theorem center_fusion_of_compatible_pivotal {p : Dimensions.PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p)
-    [RigidCategory (𝒵)]
-    {pZ : Dimensions.PivotalStructure (C := 𝒵)}
-    (hcompat : (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
-      (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom) :
-    IsFusionCategory (𝒵) :=
-  center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
-    (induced_center_trace_ne_zero_of_compatible C hsimple hcompat)
 
 end PropertyF.Ground.CentreInduction
 
@@ -145,5 +106,33 @@ theorem forget_trace_of_pivotal_component
     simp [comp_whiskerRight, Category.assoc, u]
   rw [hn, htrans, ht]
   simp [Dimensions.PivotalStructure.rightTrace]
+
+/-- A compatible centre pivotal structure constructs centre fusion when the base
+pivotal dimensions equal FP dimensions. -/
+theorem center_fusion_of_compatible_pivotal (C : BraidedFusionCategory.{v,u})
+    {p : Dimensions.PivotalStructure (C := C.Obj)}
+    (hsimple : PivotalHasFPDimensions C p)
+    [RigidCategory (CategoryTheory.Center C.Obj)]
+    {pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj)}
+    (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) :
+    IsFusionCategory (CategoryTheory.Center C.Obj) := by
+  apply center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ
+  intro hz
+  have ht := forget_trace_of_pivotal_component hcompat
+  change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
+    (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht
+  have hbase : p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj))) = 0 := by
+    apply End.ext
+    rw [← ht, hz]
+    rfl
+  have hd : Dimensions.pivotalDimension C p (underlying C (𝟙_ C.Obj)) =
+      (globalFPDimension C : ℂ) := by
+    rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
+  change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
+  rw [hbase] at hd
+  have hne : (globalFPDimension C : ℂ) ≠ 0 := by
+    exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
+  apply hne
+  simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
 
 end PropertyF.Ground.CentreInduction

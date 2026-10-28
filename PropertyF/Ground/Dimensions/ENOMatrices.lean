@@ -2,11 +2,14 @@ module
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.BiproductTrace
-public import PropertyF.Ground.Dimensions.IntrinsicNonzero
+public import PropertyF.Ground.Dimensions.DimensionCharacter
+public import PropertyF.Ground.Integrate.CharacterReality
+public import PropertyF.Ground.Modular.SMatrix
 
-/-! # Trace matrices and eigenvalue bounds
+/-! # Trace matrices, eigenvalue bounds, and saturation
 
 Weighted eigenvalue estimates and root traces produce matrix bounds for fusion coefficients.
+Saturated complex bounds determine the phases of their eigenvectors.
 -/
 
 @[expose] public noncomputable section
@@ -61,15 +64,10 @@ theorem fusion_dominated_eigenvalue_bound (C : BraidedFusionCategory)
     {i : Fin (rank C)} (T : Fin (rank C) → Fin (rank C) → ℂ)
     (v : Fin (rank C) → ℂ) (z : ℂ) (i₀ : Fin (rank C))
     (hv : v i₀ ≠ 0) (hdom : ∀ j k, ‖T j k‖ ≤ fusionCoeff C i j k)
-    (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ fpSimple C i := by
-  apply weighted_eigenvalue_bound (fun j k => fusionCoeff C i j k) T
+    (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ fpSimple C i :=
+  weighted_eigenvalue_bound (fun j k => fusionCoeff C i j k) T
     (fpSimple C) (fpSimple C i) v z i₀ hv (fpSimple_pos C)
-  · intro j k
-    exact Nat.cast_nonneg _
-  · exact hdom
-  · intro j
-    exact (fpSimple_mul C i j).symm
-  · exact heig
+    (fun _ _ => Nat.cast_nonneg _) hdom (fun j => (fpSimple_mul C i j).symm) heig
 
 end PropertyF.Ground.Dimensions
 
@@ -193,12 +191,96 @@ theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j) :
-    ‖rootDimension C i‖ ≤ fpSimple C i := by
-  apply fusion_dominated_eigenvalue_bound C (enoTraceMatrix C i) (rootDimension C)
+    ‖rootDimension C i‖ ≤ fpSimple C i :=
+  fusion_dominated_eigenvalue_bound C (enoTraceMatrix C i) (rootDimension C)
     (rootDimension C i) (unitIndex C) (rootDimension_ne_zero C _)
-  · exact fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv j k)
-  · exact heig
+    (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv j k)) heig
 
 end PropertyF.Ground.Dimensions
 
 end
+
+@[expose] public noncomputable section
+open scoped BigOperators
+namespace PropertyF.Ground.Dimensions
+
+/-- Dividing a complex number by its positive norm gives a unit-norm phase. -/
+theorem norm_div_ofReal_eq_one {z : ℂ} {r : ℝ} (hr : 0 < r) (h : ‖z‖ = r) :
+    ‖z / (r : ℂ)‖ = 1 := by
+  rw [norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr, h, div_self (ne_of_gt hr)]
+
+/-- If a complex weighted sum reaches its nonnegative termwise norm bound,
+all its positive-weight terms equal their respective bounds. -/
+theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
+    (N f : ι → ℝ) (x : ι → ℂ) (hf : ∀ k, 0 < f k)
+    (hdom : ∀ k, ‖x k‖ ≤ N k)
+    (heq : ∑ k, x k * (f k : ℂ) = ((∑ k, N k * f k : ℝ) : ℂ)) :
+    ∀ k, x k = (N k : ℂ) := by
+  classical
+  have hnonneg (k : ι) : 0 ≤ (N k - (x k).re) * f k :=
+    mul_nonneg (sub_nonneg.mpr (le_trans (Complex.re_le_norm _) (hdom k))) (le_of_lt (hf k))
+  have hsum : ∑ k, (N k - (x k).re) * f k = 0 := by
+    have hr := congrArg Complex.re heq
+    simp only [Complex.re_sum, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+      mul_zero, sub_zero] at hr
+    simp only [sub_mul, Finset.sum_sub_distrib]
+    linarith
+  intro k
+  have hz := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => hnonneg j)).1 hsum k (Finset.mem_univ k)
+  have hre : (x k).re = N k :=
+    (sub_eq_zero.mp ((mul_eq_zero.mp hz).resolve_right (ne_of_gt (hf k)))).symm
+  have him : (x k).im = 0 := Complex.abs_re_eq_norm.mp <| by
+    rw [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))]
+    exact le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)
+  apply Complex.ext <;> simp [hre, him]
+
+/-- Saturation of a complex fusion-matrix eigenvector forces every term to
+have the common phase of the product of the two eigenvector values. -/
+theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
+    (T : Fin (rank C) → Fin (rank C) →
+      Fin (rank C) → ℂ)
+    (d : Fin (rank C) → ℂ)
+    (hd : ∀ i, ‖d i‖ = fpSimple C i)
+    (hdom : ∀ i j k, ‖T i j k‖ ≤ (fusionCoeff C i j k : ℝ))
+    (heig : ∀ i j, ∑ k, T i j k * d k = d i * d j) :
+    ∀ i j k,
+      T i j k * (d k / (fpSimple C k : ℂ)) /
+        ((d i / (fpSimple C i : ℂ)) *
+          (d j / (fpSimple C j : ℂ))) =
+        (fusionCoeff C i j k : ℂ) := by
+  classical
+  let f := fpSimple C
+  let q : Fin (rank C) → ℂ := fun i => d i / (f i : ℂ)
+  have hf : ∀ i, 0 < f i := fpSimple_pos C
+  have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ norm_div_ofReal_eq_one (hf i) (hd i)
+  have hqn : ∀ i, q i ≠ 0 := fun i => norm_pos_iff.mp (by rw [hq]; norm_num)
+  have hrepr : ∀ i, q i * (f i : ℂ) = d i := by
+    intro i
+    dsimp [q]
+    field_simp [show (f i : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (hf i))]
+  intro i j k
+  let x : Fin (rank C) → ℂ := fun l => T i j l * q l / (q i * q j)
+  have hx : ∀ l, ‖x l‖ ≤ (fusionCoeff C i j l : ℝ) := by
+    intro l
+    dsimp [x]
+    rw [norm_div, norm_mul, norm_mul, hq l, hq i, hq j]
+    simpa using hdom i j l
+  have heq : ∑ l, x l * (f l : ℂ) =
+      ((∑ l, (fusionCoeff C i j l : ℝ) * f l : ℝ) : ℂ) := by
+    calc
+      _ = (∑ l, T i j l * d l) / (q i * q j) := by
+        rw [Finset.sum_div]
+        apply Finset.sum_congr rfl
+        intro l _
+        rw [← hrepr l]
+        dsimp [x]
+        ring
+      _ = (d i * d j) / (q i * q j) := by rw [heig]
+      _ = ((f i * f j : ℝ) : ℂ) := by
+        rw [← hrepr i, ← hrepr j, Complex.ofReal_mul]
+        field_simp [hqn i, hqn j]
+      _ = _ := by rw [fpSimple_mul]
+  exact complex_weighted_saturation (fun l => fusionCoeff C i j l) f x
+    hf hx heq k
+
+end PropertyF.Ground.Dimensions
