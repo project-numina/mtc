@@ -74,8 +74,7 @@ theorem inverseDualRoot_square (X : C.Obj) :
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   have h : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso X :=
     Iso.ext (congrArg (fun n ↦ (n.app X).hom) (fourthDualRootNaturalSquare_eq C))
-  rw [fourthDualIso_rightDual]
-  simpa only [Iso.trans_inv, rightDualIsoMap, Iso.symm_hom, Iso.symm_inv,
+  simpa only [fourthDualIso_rightDual, Iso.trans_inv, rightDualIsoMap, Iso.symm_hom, Iso.symm_inv,
     comp_rightAdjointMate] using congrArg (fun (e : X ≅ _) ↦ e.invᘁ) h
 
 set_option backward.isDefEq.respectTransparency false in
