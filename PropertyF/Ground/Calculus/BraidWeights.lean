@@ -217,9 +217,7 @@ theorem sum_trace_single {B : Blocks} (w : Fin B.count → ℂ)
       w i * A.trace := by
   classical
   rw [Fintype.sum_eq_single i]
-  · rw [Pi.single_eq_same]
-  · intro j h
-    rw [Pi.single_eq_of_ne h, Matrix.trace_zero, mul_zero]
+  all_goals simp_all
 
 variable {B : Blocks} (hd : ∀ i, 0 < B.size i)
 
