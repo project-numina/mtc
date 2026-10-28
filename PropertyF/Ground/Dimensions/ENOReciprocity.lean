@@ -74,8 +74,8 @@ theorem inverseDualRoot_square (X : C.Obj) :
       (((((rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom)ᘁ)ᘁ)) =
       (fourthDualIso C (Xᘁ)).hom := by
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
-  have hroot : j.hom ≫ ((j.homᘁ)ᘁ) = (fourthDualIso C X).hom := by
-    exact (congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C))
+  have hroot : j.hom ≫ ((j.homᘁ)ᘁ) = (fourthDualIso C X).hom :=
+    (congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C))
   have hiso : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso C X := by
     apply Iso.ext
     exact hroot
@@ -149,12 +149,10 @@ theorem squaredNorm_eq_rootDualSign_mul
   let e : Xᘁ ≅ ᘁX := leftDualIso
     (BraidedCategory.exactPairing_swap X (Xᘁ)) HasLeftDual.exact
   obtain ⟨u⟩ := dualIndex_iso C i
-  have hq : unitScalar C (rightQuantumTrace k) = rootDimension C (dualIndex C i) := by
-    change unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (Xᘁ))) = _
-    rw [← rootTrace_id C, rootTrace_id_iso C (e ≪≫ u)]
-    rfl
-  have hx : unitScalar C (rightQuantumTrace j) = rootDimension C i := by
-    simp only [rootDimension, rootTrace_id, X, j]
+  have hq : unitScalar C (rightQuantumTrace k) = rootDimension C (dualIndex C i) :=
+    congrArg (unitScalar C) ((rootTrace_id C (Xᘁ)).symm.trans (rootTrace_id_iso C (e ≪≫ u)))
+  have hx : unitScalar C (rightQuantumTrace j) = rootDimension C i :=
+    congrArg (unitScalar C) (rootTrace_id C X).symm
   have ht : rightQuantumTrace k = rootDualSign C i • rightQuantumTrace l :=
     rightQuantumTrace_smul_hom (rootDualSign_component C i)
   rw [target_squaredNorm_choice_independent C j, leftQuantumTrace_eq_rightDual j]

@@ -149,8 +149,7 @@ theorem star_involution_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
     star (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T := by
   obtain ⟨n, hn, _⟩ := involution_trace_integer_bound hT
-  rw [hn]
-  simp
+  simp [hn]
 
 /-- An involution whose trace reaches the dimension is the identity. -/
 theorem involution_eq_one_of_trace_eq_finrank {V : Type*} [AddCommGroup V] [Module ℂ V]
@@ -186,8 +185,7 @@ theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module �
   have hu : (c • T) * (c • T) = 1 := by
     rw [smul_mul_assoc, mul_smul_comm, smul_smul, hT, hc2, one_smul]
   apply involution_eq_one_of_trace_eq_finrank hu
-  simp only [map_smul, smul_eq_mul]
-  rw [mul_comm, htrace]
+  rw [map_smul, smul_eq_mul, mul_comm, htrace]
 
 /-- The inverse phase also turns a maximal-trace involution into identity. -/
 theorem involution_phase_inv_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module ℂ V]

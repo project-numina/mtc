@@ -29,8 +29,8 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
   let c := y i / x i
   have hnonneg (j : ι) : 0 ≤ y j - c * x j :=
     sub_nonneg.mpr ((le_div_iff₀ (hx j)).mp (hmin j (Finset.mem_univ j)))
-  have hzero : y i - c * x i = 0 := by
-    simp [c, div_mul_cancel₀ _ (ne_of_gt (hx i))]
+  have hzero : y i - c * x i = 0 :=
+    sub_eq_zero.mpr (div_mul_cancel₀ _ (ne_of_gt (hx i))).symm
   have hsum : ∑ j, A i j * (y j - c * x j) = 0 := by
     have ex := congrFun hxe i
     have ey := congrFun hye i
@@ -46,7 +46,7 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
         (Finset.mem_univ j))).resolve_left (ne_of_gt (hA i j))
   refine ⟨c, ?_⟩
   funext j
-  simp only [Pi.smul_apply, smul_eq_mul]
+  change y j = c * x j
   linarith [hall j]
 
 /-- A function on simple labels is multiplicative for the fusion rules. -/
@@ -75,9 +75,7 @@ theorem character_norm_le_fpSimple (C : BraidedFusionCategory)
     change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
     exact (hchar i j).symm
   have hzero : (Matrix.scalar (Fin (rank C)) (χ i) - A) *ᵥ χ = 0 := by
-    rw [Matrix.sub_mulVec, heigen]
-    ext j
-    simp [Matrix.scalar_apply]
+    rw [Matrix.sub_mulVec, heigen, Matrix.scalar_apply, Matrix.diagonal_const_mulVec, sub_self]
   have hdet : (Matrix.scalar (Fin (rank C)) (χ i) - A).det = 0 :=
     Matrix.det_eq_zero_of_mulVec_eq_zero_of_mem_nonZeroDivisors hzero
       (mem_nonZeroDivisors_of_ne_zero hχ)
@@ -89,8 +87,8 @@ theorem character_norm_le_fpSimple (C : BraidedFusionCategory)
   have hle : (‖χ i‖₊ : ℝ≥0∞) ≤ spectralRadius ℂ A := by
     rw [spectralRadius_eq_of_unital]
     exact le_iSup_of_le (χ i) (le_iSup_of_le hz le_rfl)
-  have htop : spectralRadius ℂ A ≠ ⊤ := by
-    exact ne_of_lt (lt_of_le_of_lt (spectralRadius_le_nnnorm (𝕜 := ℂ) A) (by simp))
+  have htop : spectralRadius ℂ A ≠ ⊤ :=
+    ne_of_lt (lt_of_le_of_lt (spectralRadius_le_nnnorm (𝕜 := ℂ) A) (by simp))
   simpa [fpSimple, A, Matrix.spectralRadius_transpose] using (ENNReal.toReal_mono htop hle)
 
 /-- Every complex field conjugate of a fusion character obeys the same FP
@@ -301,8 +299,9 @@ theorem characterMatrix_commute (i j : Fin (rank D)) :
     calc
       _ = ∑ k, fusionCoeff D j i k * fusionCoeff D k a b :=
         fusionCoeff_assoc D j i a b
-      _ = ∑ k, fusionCoeff D i j k * fusionCoeff D k a b := by
-        simp only [fusionCoeff_comm D j i]
+      _ = ∑ k, fusionCoeff D i j k * fusionCoeff D k a b :=
+        Finset.sum_congr rfl fun k _ ↦
+          congrArg (fun n => n * fusionCoeff D k a b) (fusionCoeff_comm D j i k)
       _ = _ := (fusionCoeff_assoc D i j a b).symm
   exact_mod_cast hn
 
@@ -351,14 +350,13 @@ theorem exists_positive_character :
   let f : Fin (rank D) → ℝ := fun i => v i / v (unitIndex D)
   have hunit : v (unitIndex D) ≠ 0 := ne_of_gt (hvpos _)
   refine ⟨f, fun i => div_pos (hvpos i) (hvpos _), ?_, ?_⟩
-  · simp [f, hunit]
+  · exact div_self hunit
   · intro i j
     obtain ⟨d, hd⟩ := hve i
     have hscalar : d = f i := by
       have h := congrFun hd (unitIndex D)
-      simp only [Matrix.mulVec, dotProduct, characterMatrix, Pi.smul_apply, smul_eq_mul] at h
-      simp only [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit] at h
-      simp at h
+      simp [Matrix.mulVec, dotProduct, characterMatrix,
+        fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit] at h
       dsimp [f]
       exact (eq_div_iff hunit).mpr h.symm
     have hrow := congrFun hd j
@@ -546,8 +544,7 @@ theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
     (fun j k => Nat.cast_nonneg _) (fpCharacter_pos D) hv.2
   have hrad : fpSimple D i = ‖z‖ := by
     unfold fpSimple
-    rw [← Matrix.spectralRadius_transpose (fusionMatrix D i), ← hB, ← hzmax]
-    simp
+    rw [← Matrix.spectralRadius_transpose (fusionMatrix D i), ← hB, ← hzmax, ENNReal.coe_toReal, coe_nnnorm]
   rw [hrad]
   exact hbound
 
