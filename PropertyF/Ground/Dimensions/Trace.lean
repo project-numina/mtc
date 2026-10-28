@@ -97,12 +97,11 @@ theorem rightQuantumTrace_smul_hom {k : Type*} [CommSemiring k] [Preadditive C] 
 /-- The left quantum trace of an isomorphism is the right quantum trace of the
 corresponding inverse dual isomorphism. -/
 theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :
-    leftQuantumTrace j = rightQuantumTrace (rightDualIsoMap j).symm := by
-  apply End.homEquiv.injective
-  change η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (𝟙 (Xᘁ) ⊗ₘ j.inv) ≫ ε_ X (Xᘁ) =
-    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ ((j.invᘁ) ⊗ₘ 𝟙 ((Xᘁ)ᘁ)) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)
-  simp only [tensorHom_def, id_whiskerRight, whiskerLeft_id, Category.id_comp, Category.comp_id]
-  rw [rightAdjointMate_comp_evaluation]
+    leftQuantumTrace j = rightQuantumTrace (rightDualIsoMap j).symm :=
+  End.homEquiv.injective (by
+    simp only [leftQuantumTrace, rightQuantumTrace, rightDualIsoMap, Iso.symm_hom,
+      End.homEquiv_apply, tensorHom_def, id_whiskerRight, whiskerLeft_id,
+      Category.id_comp, Category.comp_id, rightAdjointMate_comp_evaluation])
 
 section
 variable {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
@@ -137,12 +136,11 @@ end
 pivotal component. -/
 theorem leftTrace_eq_rightTraceWith_dual (p : PivotalStructure (C := C))
     {X : C} (f : X ⟶ X) :
-    p.leftTrace f = rightTraceWith (rightDualIsoMap (p.iso X)).symm (fᘁ) := by
-  apply End.homEquiv.injective
-  change η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (𝟙 (Xᘁ) ⊗ₘ ((p.iso X).inv ≫ f)) ≫ ε_ X (Xᘁ) =
-    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (((fᘁ) ≫ (p.iso X).invᘁ) ⊗ₘ 𝟙 ((Xᘁ)ᘁ)) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)
-  simp only [tensorHom_def, id_whiskerRight, whiskerLeft_id, Category.id_comp, Category.comp_id]
-  rw [← comp_rightAdjointMate, rightAdjointMate_comp_evaluation]
+    p.leftTrace f = rightTraceWith (rightDualIsoMap (p.iso X)).symm (fᘁ) :=
+  End.homEquiv.injective (by
+    simp only [PivotalStructure.leftTrace, rightTraceWith, rightDualIsoMap, Iso.symm_hom,
+      End.homEquiv_apply, tensorHom_def, id_whiskerRight, whiskerLeft_id,
+      Category.id_comp, Category.comp_id, ← comp_rightAdjointMate, rightAdjointMate_comp_evaluation])
 
 /-- The inverse dual pivotal components are natural on dual morphisms. -/
 theorem dual_pivotal_naturality (p : PivotalStructure (C := C))

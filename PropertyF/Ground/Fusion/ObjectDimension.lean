@@ -119,10 +119,10 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u v' u'
 attribute [local instance] Abelian.hasFiniteBiproducts
+variable (C : BraidedFusionCategory.{v,u}) (D : BraidedFusionCategory.{v',u'})
 
 /-- FP dimension is additive over finite biproducts. -/
-theorem fpDimension_biproduct (D : BraidedFusionCategory.{v,u})
-    {ι : Type} [Fintype ι] (V : ι → D.Obj) :
+theorem fpDimension_biproduct {ι : Type} [Fintype ι] (V : ι → D.Obj) :
     fpDimension D (⨁ V) = ∑ i, fpDimension D (V i) := by
   classical
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
@@ -132,9 +132,7 @@ theorem fpDimension_biproduct (D : BraidedFusionCategory.{v,u})
 
 /-- Applying an additive functor to a canonical decomposition expresses the
 FP dimension of the image as the sum of the dimensions of image simples. -/
-theorem fpDimension_functor_decomposition (C : BraidedFusionCategory.{v,u})
-    (D : BraidedFusionCategory.{v',u'})
-    (F : C.Obj ⥤ D.Obj) [F.Additive] (X : C.Obj) :
+theorem fpDimension_functor_decomposition (F : C.Obj ⥤ D.Obj) [F.Additive] (X : C.Obj) :
     fpDimension D (F.obj X) = ∑ i,
       (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) := by
   classical
@@ -146,9 +144,8 @@ theorem fpDimension_functor_decomposition (C : BraidedFusionCategory.{v,u})
   simp [V, m]
 
 /-- An additive faithful strong monoidal functor preserves FP dimension. -/
-theorem fpDimension_functor (C : BraidedFusionCategory.{v,u})
-    (D : BraidedFusionCategory.{v',u'})
-    (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal] (X : C.Obj) :
+theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal]
+    (X : C.Obj) :
     fpDimension D (F.obj X) = fpDimension C X := by
   classical
   let f : Fin (rank C) → ℝ := fun i => fpDimension D (F.obj (simples C i))
