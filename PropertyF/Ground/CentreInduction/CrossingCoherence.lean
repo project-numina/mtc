@@ -10,6 +10,8 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u}) (X T : C.Obj)
+-- Chosen simple representatives of the base category.
+local notation "Sᶜ" => simples C
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The matrix coefficients of the actual induction crossing. -/
@@ -37,7 +39,7 @@ theorem crossingComposite_summand (U : C.Obj) (i : Fin (rank C)) :
       dsimp only [crossingTensorComposite]
       monoidal
     _ = ∑ k, ∑ a : crossingIndex C T i k,
-      𝟙 _ ⊗≫ (crossingBlock X T (simples C k)
+      𝟙 _ ⊗≫ (crossingBlock X T (Sᶜ k)
           (crossingInclusion C T i k a) (crossingProjection C T i k a) ▷ U) ⊗≫
         (T ◁ ((biproduct.ι V k ▷ U) ≫ bU)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
       dsimp only [bT]
