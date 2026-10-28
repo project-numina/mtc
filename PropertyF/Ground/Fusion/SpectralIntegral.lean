@@ -16,8 +16,10 @@ open scoped BigOperators Matrix.Norms.Operator
 
 namespace PropertyF.Ground
 
+variable (D : BraidedFusionCategory)
+
 /-- The fusion matrix of the tensor unit is the identity. -/
-theorem fusionMatrix_unit (D : BraidedFusionCategory) :
+theorem fusionMatrix_unit :
     fusionMatrix D (unitIndex D) = 1 := by
   classical
   ext k j
@@ -26,14 +28,14 @@ theorem fusionMatrix_unit (D : BraidedFusionCategory) :
   simp [Matrix.one_apply]
 
 /-- The spectral-radius FP dimension is normalized on the tensor unit. -/
-theorem fpSimple_unit (D : BraidedFusionCategory) :
+theorem fpSimple_unit :
     fpSimple D (unitIndex D) = 1 := by
   classical
   letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   simp [fpSimple, fusionMatrix_unit, spectrum.spectralRadius_one]
 
 /-- The global FP dimension is at least one, from the unit contribution. -/
-theorem one_le_globalFPDimension (D : BraidedFusionCategory) :
+theorem one_le_globalFPDimension :
     1 ≤ globalFPDimension D := by
   classical
   unfold globalFPDimension
@@ -68,7 +70,7 @@ theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]
   exact hnorm
 
 /-- Every target simple FP dimension is integral over ℤ. -/
-theorem fpSimple_isIntegral (D : BraidedFusionCategory) (i : Fin (rank D)) :
+theorem fpSimple_isIntegral (i : Fin (rank D)) :
     IsIntegral ℤ (fpSimple D i) := by
   classical
   letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
@@ -84,7 +86,7 @@ theorem fpSimple_isIntegral (D : BraidedFusionCategory) (i : Fin (rank D)) :
 
 /-- The target's global FP dimension is integral over ℤ, independently of
 the construction of a positive fusion-ring character. -/
-theorem globalFPDimension_isIntegral (D : BraidedFusionCategory) :
+theorem globalFPDimension_isIntegral :
     IsIntegral ℤ (globalFPDimension D) := by
   unfold globalFPDimension
   apply IsIntegral.sum

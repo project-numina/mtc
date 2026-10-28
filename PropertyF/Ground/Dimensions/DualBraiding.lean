@@ -1,14 +1,48 @@
 module
-public import PropertyF.Ground.Dimensions.BraidingCapSlide
+public import PropertyF.Ground.Dimensions.Drinfeld
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+  [BraidedCategory C] [RightRigidCategory C]
+set_option backward.isDefEq.respectTransparency false in
+/-- A braiding slides past an evaluation cap with the inverse crossing on the dual strand. -/
+theorem braiding_cap_slide (X Y : C) :
+    (β_ (Xᘁ) Y).hom ▷ X ⊗≫ Y ◁ ε_ X (Xᘁ) ⊗≫ (ρ_ Y).hom =
+      𝟙 (((Xᘁ) ⊗ Y) ⊗ X) ⊗≫ (Xᘁ) ◁ (β_ X Y).inv ⊗≫ ε_ X (Xᘁ) ▷ Y ⊗≫ (λ_ Y).hom := by
+  have h := braiding_naturality_left (ε_ X (Xᘁ)) Y
+  rw [braiding_tensor_left_hom] at h
+  have h' := congrArg (fun f => f ≫ (ρ_ Y).hom) h
+  simp only [Category.assoc, braiding_rightUnitor] at h'
+  calc
+    _ = (α_ (Xᘁ) Y X).hom ≫ (Xᘁ) ◁ (β_ X Y).inv ≫ (α_ (Xᘁ) X Y).inv ≫
+      (ε_ X (Xᘁ) ▷ Y ≫ (λ_ Y).hom) := by
+        rw [h']
+        simp only [Iso.inv_hom_id_assoc, ← whiskerLeft_comp_assoc,
+          Iso.inv_hom_id, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id_assoc]
+        monoidal
+    _ = _ := by monoidal
+set_option backward.isDefEq.respectTransparency false in
+/-- The same cap slide for the reversed braiding. -/
+theorem braiding_inverse_cap_slide (X Y : C) :
+    (β_ Y (Xᘁ)).inv ▷ X ⊗≫ Y ◁ ε_ X (Xᘁ) ⊗≫ (ρ_ Y).hom =
+      𝟙 (((Xᘁ) ⊗ Y) ⊗ X) ⊗≫ (Xᘁ) ◁ (β_ Y X).hom ⊗≫ ε_ X (Xᘁ) ▷ Y ⊗≫ (λ_ Y).hom :=
+  @braiding_cap_slide C _ _ (reverseBraiding C) _ X Y
+end PropertyF.Ground.Dimensions
+
+end
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
+namespace PropertyF.Ground.Dimensions
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+  [BraidedCategory C] [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Sliding the crossing through both caps relates the two tensor evaluations. -/
-theorem dual_braiding_tensor_evaluations {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [BraidedCategory C] [RightRigidCategory C] (X Y : C) :
+theorem dual_braiding_tensor_evaluations (X Y : C) :
     let p : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := ExactPairing.tensor
     let q : ExactPairing (Y ⊗ X) ((Xᘁ) ⊗ (Yᘁ)) := ExactPairing.tensor
     (β_ (Xᘁ) (Yᘁ)).hom ▷ (X ⊗ Y) ≫ @ExactPairing.evaluation C _ _ _ _ p =
@@ -37,13 +71,11 @@ theorem dual_braiding_tensor_evaluations {C : Type u} [Category.{v} C] [Monoidal
     _ = _ := by monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- The right-dual tensor comparison transports a braiding to the braiding of the duals. -/
-theorem rightDualTensorIso_braiding {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [BraidedCategory C] [RightRigidCategory C] (X Y : C) :
+theorem rightDualTensorIso_braiding (X Y : C) :
     ((β_ X Y).homᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso Y X).hom ≫ (β_ (Xᘁ) (Yᘁ)).hom := by
   let U := Xᘁ
   let V := Yᘁ
-  let I := 𝟙_ C
   let W := X ⊗ Y
   let W' := Y ⊗ X
   let : HasRightDual W := RightRigidCategory.rightDual W
@@ -71,15 +103,8 @@ theorem rightDualTensorIso_braiding {C : Type u} [Category.{v} C] [MonoidalCateg
       (W'ᘁ) ◁ (β_ X Y).hom ≫ ε_ W' (W'ᘁ) := by
     dsimp [r]
     rw [comp_whiskerRight_assoc, hc, ← Category.assoc, ← whisker_exchange, Category.assoc, hq]
-  have h := hl.trans hr.symm
-  let : HasRightDual W := { rightDual := V ⊗ U, exact := p }
-  have hh := congrArg (tensorRightHomEquiv (W'ᘁ) W (V ⊗ U) (𝟙_ C)) h
-  have hL := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ W (W'ᘁ) this l
-  have hR := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ W (W'ᘁ) this r
-  change (tensorRightHomEquiv (W'ᘁ) W (V ⊗ U) I)
-    (l ▷ W ≫ @ExactPairing.evaluation C _ _ _ _ p) = l ≫ (λ_ (V ⊗ U)).inv at hL
-  change (tensorRightHomEquiv (W'ᘁ) W (V ⊗ U) I)
-    (r ▷ W ≫ @ExactPairing.evaluation C _ _ _ _ p) = r ≫ (λ_ (V ⊗ U)).inv at hR
-  rw [hL, hR] at hh
-  exact (cancel_mono (λ_ (V ⊗ U)).inv).1 hh
+  let : ExactPairing W (V ⊗ U) := p
+  exact evaluation_ext (hl.trans hr.symm)
 end PropertyF.Ground.Dimensions
+
+end

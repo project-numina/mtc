@@ -1,13 +1,49 @@
 module
-public import PropertyF.Ground.Dimensions.DrinfeldUnit
+public import PropertyF.Ground.Dimensions.CoevaluationSliding
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
+namespace PropertyF.Ground.Dimensions
+universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
+set_option backward.isDefEq.respectTransparency false in
+/-- The braided double-dual map has the canonical component on the unit. -/
+theorem drinfeld_unit :
+    (Ground.doubleDualIso C (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
+  let U : C.Obj := 𝟙_ C.Obj
+  let : HasRightDual U := RightRigidCategory.rightDual U
+  let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
+  let r : Uᘁ ≅ U := by
+    change rightDualObject (𝟙_ C.Obj) ≅ 𝟙_ C.Obj
+    exact rightDualUnitIso
+  have h : (r.inv ≫ (r.homᘁ)) ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) =
+      (β_ U (Uᘁ)).hom ≫ ε_ U (Uᘁ) := by
+    rw [comp_whiskerRight_assoc, rightAdjointMate_comp_evaluation]
+    have hb : (β_ U U).hom = 𝟙 (U ⊗ U) := by
+      change (β_ (𝟙_ C.Obj) (𝟙_ C.Obj)).hom = 𝟙 _
+      rw [braiding_tensorUnit_left, unitors_equal, Iso.hom_inv_id]
+    have hn := braiding_naturality_right U r.hom
+    rw [hb, Category.comp_id] at hn
+    have hc : U ◁ r.hom ≫ r.inv ▷ U = (β_ U (Uᘁ)).hom := by
+      rw [hn, Category.assoc, ← comp_whiskerRight, Iso.hom_inv_id, id_whiskerRight, Category.comp_id]
+    rw [← whisker_exchange_assoc, ← Category.assoc, hc]
+  change (doubleDualUnitIso (C := C.Obj)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
+  have he := (drinfeld_eval C U).trans h.symm
+  exact evaluation_ext he
+end PropertyF.Ground.Dimensions
+
+end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The Drinfeld map respects duality on the tensor unit. -/
-theorem drinfeld_unit_dual (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem drinfeld_unit_dual :
     Ground.doubleDualIso C (rightDualObject (𝟙_ C.Obj)) =
       (rightDualIsoMap (Ground.doubleDualIso C (𝟙_ C.Obj))).symm := by
   let U : C.Obj := 𝟙_ C.Obj
@@ -39,7 +75,7 @@ theorem drinfeld_unit_dual (C : Ground.BraidedFusionCategory.{v,u}) :
   rw [hui, comp_rightAdjointMate, Category.assoc, ← comp_rightAdjointMate,
     hcancel, rightAdjointMate_id, Category.comp_id]
 /-- The fourth-dual map has the canonical iterated unit component. -/
-theorem fourthDualIso_unit (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem fourthDualIso_unit :
     letI : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
     letI : HasRightDual ((𝟙_ C.Obj)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C.Obj)ᘁ)
     letI : HasRightDual (((𝟙_ C.Obj)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C.Obj)ᘁ)ᘁ)
@@ -61,7 +97,7 @@ theorem fourthDualIso_unit (C : Ground.BraidedFusionCategory.{v,u}) :
   rfl
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root dimension of the unit is a sign. -/
-theorem rootDimension_unit_sq (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem rootDimension_unit_sq :
     rootDimension C (Ground.unitIndex C) * rootDimension C (Ground.unitIndex C) = 1 := by
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
@@ -118,3 +154,5 @@ theorem rootDimension_unit_sq (C : Ground.BraidedFusionCategory.{v,u}) :
   simpa [hdim] using hr2
 
 end PropertyF.Ground.Dimensions
+
+end

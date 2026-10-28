@@ -6,10 +6,12 @@ public import Mathlib.LinearAlgebra.Dual.Lemmas
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- A nonzero morphism to a simple object splits in the genuine fusion category. -/
-theorem split_to_simple (C : Ground.BraidedFusionCategory.{v,u})
+theorem split_to_simple
     (X S : C.Obj) [Simple S] (g : X ⟶ S) (hg : g ≠ 0) :
     ∃ f : S ⟶ X, f ≫ g = 𝟙 S := by
   classical
@@ -78,7 +80,7 @@ def simpleHomPairing (C : Ground.BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The composition pairing is nondegenerate in the morphism-to-simple factor. -/
-theorem simpleHomPairing_injective (C : Ground.BraidedFusionCategory.{v,u})
+theorem simpleHomPairing_injective
     (S X : C.Obj) [Simple S] : Function.Injective (simpleHomPairing C S X) := by
   apply LinearMap.ker_eq_bot.mp
   rw [LinearMap.ker_eq_bot']
@@ -108,7 +110,7 @@ def simpleHomPairingEquiv (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- Composition pairs precomposition on one Hom space with postcomposition on
 the other. -/
-theorem simpleHomPairing_natural (C : Ground.BraidedFusionCategory.{v,u})
+theorem simpleHomPairing_natural
     (S X : C.Obj) [Simple S] (g : X ⟶ S) (a : X ⟶ X) :
     simpleHomPairing C S X (a ≫ g) =
       Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairing C S X g) := by

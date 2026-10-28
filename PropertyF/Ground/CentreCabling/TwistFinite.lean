@@ -1,8 +1,8 @@
 module
 public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
-public import PropertyF.Ground.Dimensions.NaturalRoots
 public import PropertyF.Ground.Fusion.Agreement
+public import PropertyF.Ground.Dimensions.MultiplicityDefect
 
 /-! Reduction of mixed monodromy to the finite order of the pivotal twist. -/
 @[expose] public noncomputable section
