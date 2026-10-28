@@ -205,7 +205,7 @@ theorem pivotal_spherical_iff_simple_dimensions_real
       unitScalar C (p.leftTrace (𝟙 (simples C i))) =
         star (pivotalDimension C p (simples C i)) := by
     rw [leftTrace_id, leftQuantumTrace_eq_rightDual, ← pivotal_dual, ← rightTrace_id]
-    exact (pivotalDimension_iso C p (rightDualLabelIso C i)).trans
+    exact (pivotalDimension_iso p (rightDualLabelIso C i)).trans
       (pivotalDimension_dual_eq_conj p i)
   rw [isSpherical_iff_simple_dimensions]
   refine forall_congr' fun i ↦ ?_

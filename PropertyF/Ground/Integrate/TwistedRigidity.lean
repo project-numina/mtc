@@ -133,7 +133,7 @@ theorem labels (hdim : Modular.HasFPSimpleDimensions C p) :
     ∃ e : Fin (rank C) ≃ Fin (rank Cσ),
       ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ (e i)) = σ (fpSimple C i : ℂ) :=
   let ⟨e, he⟩ := Modular.simpleLabels_equiv C Cσ (CategoryTheory.Equivalence.refl)
-  ⟨e, fun i ↦ (Dimensions.pivotalDimension_iso Cσ pσ (he i).some).symm.trans <| by
+  ⟨e, fun i ↦ (Dimensions.pivotalDimension_iso pσ (he i).some).symm.trans <| by
     change Dimensions.pivotalDimension Cσ pσ (simples C i) = _
     simp only [pivotalDimension_twist]
     simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using
@@ -172,7 +172,7 @@ theorem fpDimension_twist (X : C.Obj) :
   letI : F.Monoidal := by
     change (𝟭 C.Obj).Monoidal
     infer_instance
-  fpDimension_functor C (category C σ) F X
+  fpDimension_functor F X
 
 variable (p : Dimensions.PivotalStructure (C := C.Obj))
 local notation "Cσ" => category C σ
