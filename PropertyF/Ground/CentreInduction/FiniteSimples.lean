@@ -9,6 +9,7 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+local notation "Sᶜ" => simples C
 local notation "𝒵" => Center C.Obj
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
@@ -21,8 +22,8 @@ theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
   let : IsSplitMono (T ◁ q.f) :=
     IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
   apply (cancel_mono (T ◁ q.f)).1
-  simp only [Category.assoc, ← whiskerLeft_comp, hg]
-  rw [← q.comm T, ← comp_whiskerRight_assoc, hg, p.comm]
+  simp only [Category.assoc, ← whiskerLeft_comp, hg, ← q.comm T,
+    ← comp_whiskerRight_assoc, p.comm]
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
 def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : Center D) (P : Subobject X) :
@@ -36,16 +37,14 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
     intro P Q
     constructor
     · intro h
-      let : Mono P.arrow.f := inferInstanceAs (Mono ((Center.forget C.Obj).map P.arrow))
-      let : IsSplitMono P.arrow.f := mono_splits P.arrow.f
+      let : IsSplitMono P.arrow.f := mono_splits ((Center.forget C.Obj).map P.arrow)
       have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange X P :=
         ⟨retraction P.arrow.f, rfl⟩
       obtain ⟨g, hg⟩ := h hm
       change g ≫ Q.arrow.f = retraction P.arrow.f ≫ P.arrow.f at hg
       have hg' : (P.arrow.f ≫ g) ≫ Q.arrow.f = P.arrow.f := by
         rw [Category.assoc, hg, ← Category.assoc, IsSplitMono.id, Category.id_comp]
-      let : Mono Q.arrow.f := inferInstanceAs (Mono ((Center.forget C.Obj).map Q.arrow))
-      let : IsSplitMono Q.arrow.f := mono_splits Q.arrow.f
+      let : IsSplitMono Q.arrow.f := mono_splits ((Center.forget C.Obj).map Q.arrow)
       obtain ⟨t, ht⟩ := center_factor P.arrow Q.arrow (P.arrow.f ≫ g) hg'
       exact Subobject.le_of_comm t (Center.ext _ _ ((congrArg (· ≫ Q.arrow.f) ht).trans hg'))
     · intro h x hx
@@ -65,16 +64,16 @@ theorem center_artinian : IsArtinianObject X :=
 set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object embeds in an induced base simple. -/
 theorem simple_mono_induced_simple [Simple X] :
-    ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (simples C i), Mono f := by
+    ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), Mono f := by
   obtain ⟨i, hi⟩ := exists_positive_multiplicity C
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
-  let : Simple (simples C i) := simples_simple C i
-  let : FiniteDimensional ℂ (X.1 ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  let : Simple (Sᶜ i) := simples_simple C i
+  let : FiniteDimensional ℂ (X.1 ⟶ Sᶜ i) := IsFusionCategory.hom_finite _ _
   obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp
-    (show 0 < Module.finrank ℂ (X.1 ⟶ simples C i) from by
-      simpa only [finrank_to_simple_eq_from_simple _ (simples C i)] using hi)
+    (show 0 < Module.finrank ℂ (X.1 ⟶ Sᶜ i) from by
+      simpa only [finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
   let e := homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj) (induction C)
-    (actualAdjunction C) X (simples C i)
+    (actualAdjunction C) X (Sᶜ i)
   exact ⟨i, e.symm g, mono_of_nonzero_from_simple (e.symm.map_eq_zero_iff.not.mpr hg)⟩
 
 /-! Finiteness of simple objects in the actual Drinfeld centre. -/
@@ -86,8 +85,7 @@ theorem center_cokernel_measure_lt {S W : 𝒵} (p : S ⟶ W) (hp : p ≠ 0) :
     Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) :=
   let Q := Centre.centerCokernel p
   let q : W.1 ⟶ Q.1 := (Centre.centerCokernelπ p).f
-  letI : Epi q := inferInstanceAs (Epi (cokernel.π p.f))
-  letI : IsSplitEpi q := epi_splits q
+  letI : IsSplitEpi q := epi_splits (cokernel.π p.f)
   letI : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
   finrank_end_lt_of_split_epi p.f q (fun h => hp (Center.ext p 0 h))
     (congrArg Center.Hom.f (Centre.centerCokernel_condition p))
@@ -110,8 +108,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem finite_simple_subobject_labels (W : 𝒵) :
     ∃ L : List (𝒵), ∀ S : 𝒵, Simple S →
       (∃ t : S ⟶ W, Mono t) → ∃ T ∈ L, Nonempty (S ≅ T) := by
-  let m : 𝒵 → ℕ := fun Z => Module.finrank ℂ (Z.1 ⟶ Z.1)
-  induction W using (measure m).wf.induction with
+  induction W using (measure fun Z : 𝒵 ↦ Module.finrank ℂ (Z.1 ⟶ Z.1)).wf.induction with
   | h W ih =>
     by_cases hw : IsZero W
     · refine ⟨[], fun S hS ⟨t, ht⟩ => ?_⟩
@@ -141,7 +138,7 @@ theorem finite_simple_labels :
       ∀ X : 𝒵, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T) := by
   classical
   choose L hL using fun i : Fin (rank C) =>
-    finite_simple_subobject_labels C ((induction C).obj (simples C i))
+    finite_simple_subobject_labels C ((induction C).obj (Sᶜ i))
   let labels := (Finset.univ.biUnion (fun i => (L i).toFinset)).filter Simple
   refine ⟨labels, fun _ hT => (Finset.mem_filter.mp hT).2, fun X hX => ?_⟩
   let : Simple X := hX

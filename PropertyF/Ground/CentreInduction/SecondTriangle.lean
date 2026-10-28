@@ -213,8 +213,7 @@ theorem unit_diag (i : Fin (rank C)) :
   biproduct.ι V i ≫ u i ≫
     ((S i ◁ (underlyingCounit C).app X) ▷ (S i)ᘁ) = 𝟙 (V i) := by
   simp only [unit_matrix_reduce, crossing_counit_diagonal C X i]
-  let e : S (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
-  erw [crossingUnitBlock_eval X (S i) e]
+  erw [crossingUnitBlock_eval X (S i) (Classical.choice (unitIndex_iso C))]
   dsimp only [Functor.id_obj]
   calc
     _ = 𝟙 _ ⊗≫ ((S i ⊗ X) ◁ (((S i)ᘁ ◁ η_ (S i) ((S i)ᘁ)) ⊗≫

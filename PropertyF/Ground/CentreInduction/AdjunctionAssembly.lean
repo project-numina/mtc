@@ -15,6 +15,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
+local notation "Sᶜ" => simples C
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- A tensor factor isomorphic to the unit and its dual cancel around any object. -/
@@ -26,7 +27,7 @@ def unitTensorIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigid
 
 /-- The unit-labelled summand is isomorphic to the middle object. -/
 def unitSummandIso :
-    (simples C (unitIndex C) ⊗ X) ⊗ (simples C (unitIndex C))ᘁ ≅ X :=
+    (Sᶜ (unitIndex C) ⊗ X) ⊗ (Sᶜ (unitIndex C))ᘁ ≅ X :=
   unitTensorIso (Classical.choice (unitIndex_iso C)) X
 
 set_option backward.isDefEq.respectTransparency false in
@@ -109,6 +110,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
+local notation "Sᶜ" => simples C
 local notation "𝒵" => Center C.Obj
 attribute [local instance] Abelian.hasFiniteBiproducts
 
@@ -119,8 +121,8 @@ def unitComponentAt {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRig
 
 /-- The unit component indexed by a simple object. -/
 def unitComponent (Z : 𝒵) (i : Fin (rank C)) :
-    Z.1 ⟶ (simples C i ⊗ Z.1) ⊗ (simples C i)ᘁ :=
-  unitComponentAt Z (simples C i)
+    Z.1 ⟶ (Sᶜ i ⊗ Z.1) ⊗ (Sᶜ i)ᘁ :=
+  unitComponentAt Z (Sᶜ i)
 
 /-- The underlying map of the proposed adjunction unit. Centrality depends
 on constructing the induction half-braiding and is not asserted. -/
@@ -132,7 +134,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The proposed unit component is natural for genuine centre maps. -/
 theorem unitComponent_natural {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
     f.f ≫ unitComponent C Y i = unitComponent C X i ≫
-      ((simples C i ◁ f.f) ▷ (simples C i)ᘁ) := by
+      ((Sᶜ i ◁ f.f) ▷ (Sᶜ i)ᘁ) := by
   simp only [unitComponent, unitComponentAt, Category.assoc, rightUnitor_inv_naturality_assoc,
     ← whisker_exchange_assoc, associator_inv_naturality_left_assoc, ← comp_whiskerRight, f.comm]
 
