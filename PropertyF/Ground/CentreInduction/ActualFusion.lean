@@ -100,18 +100,6 @@ variable (Z : Center C.Obj) (T : C.Obj)
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
-/-- Fusion completeness gives the unit intertwining equation on a summand. -/
-theorem unit_sum (j : Fin (rank C)) :
-  (∑ p : Σ i : Fin (rank C), crossingIndex T i j,
-    (unitComponent Z p.1 ▷ T) ≫ crossingSummand Z.1 T p.1 j p.2) =
-      (Z.2.β T).hom ≫ (T ◁ unitComponent Z j) := by
-  erw [← unitBlockLinear_id (k := ℂ) Z T (simples C j),
-    ← simple_completeness C (T ⊗ simples C j), map_sum]
-  simp only [unitComponent, crossingSummand, unit_block, unitBlockLinear, crossingProjection,
-    crossingInclusion, LinearMap.coe_mk, AddHom.coe_mk]
-
-set_option backward.isDefEq.respectTransparency false in
-variable {C} in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
 theorem unitCandidate_central :
     (unitCandidate Z ▷ T) ≫ crossingCandidate Z.1 T =
@@ -120,9 +108,13 @@ theorem unitCandidate_central :
   leftDistributor_ext_right (f := V) fun j => by
     simp only [Category.assoc, ← whiskerLeft_comp,
       show unitCandidate Z ≫ biproduct.π V j = unitComponent Z j from biproduct.lift_π _ _]
-    simpa only [V, unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
+    simp only [V, unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
       comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum,
-      Fintype.sum_sigma, crossingSummand] using unit_sum Z T j
+      crossingSummand]
+    erw [← unitBlockLinear_id (k := ℂ) Z T (simples C j),
+      ← simple_completeness C (T ⊗ simples C j), map_sum]
+    simp only [unitComponent, unit_block, unitBlockLinear, crossingProjection,
+      crossingInclusion, LinearMap.coe_mk, AddHom.coe_mk, Fintype.sum_sigma]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/
@@ -142,7 +134,13 @@ def actualAdjunction : Center.forget C.Obj ⊣ induction C where
     change unitCandidate ((induction C).obj X) ≫
       (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying X)
     refine biproduct.hom_ext' _ _ fun i => biproduct.hom_ext _ _ fun j => ?_
-    simpa [underlying, Category.assoc] using secondTriangle_entry X i j
+    dsimp [unitCandidate, underlyingFunctor, induction, underlying]
+    simp only [Category.assoc, biproduct.map_π, biproduct.lift_π_assoc, Category.id_comp]
+    by_cases h : i = j
+    · subst j
+      simpa [Category.assoc, induction, underlyingFunctor, underlying] using unit_diag X i
+    · simpa [monoidalComp, crossing_counit_offdiag X h, biproduct.ι_π_ne _ h,
+        induction, underlying, underlyingFunctor] using unit_matrix_reduce X i j
 
 end PropertyF.Ground.CentreInduction
 

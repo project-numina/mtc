@@ -14,6 +14,7 @@ attribute [local instance] PropertyF.Ground.Centre.finiteDimensional_hom
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
+open CategoryTheory.Category
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
@@ -30,11 +31,9 @@ set_option backward.isDefEq.respectTransparency false in
 theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g :=
-  ⟨⟨g, fun T ↦
-    letI : IsSplitMono (T ◁ q.f) := inferInstanceAs (IsSplitMono ((tensorLeft T).map q.f))
+  ⟨⟨g, fun T ↦ letI : Mono (T ◁ q.f) := inferInstanceAs (Mono ((tensorLeft T).map q.f))
     (cancel_mono (T ◁ q.f)).1 <| by
-      simp only [Category.assoc, ← whiskerLeft_comp, hg, ← q.comm T,
-        ← comp_whiskerRight_assoc, p.comm]⟩, rfl⟩
+      simp only [assoc, ← whiskerLeft_comp, hg, ← q.comm, ← comp_whiskerRight_assoc, p.comm]⟩, rfl⟩
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
 def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : Center D) (P : Subobject X) :
@@ -54,7 +53,7 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
       obtain ⟨g, hg⟩ := h hm
       change g ≫ Q.arrow.f = retraction P.arrow.f ≫ P.arrow.f at hg
       have hg' : (P.arrow.f ≫ g) ≫ Q.arrow.f = P.arrow.f := by
-        rw [Category.assoc, hg, ← Category.assoc, IsSplitMono.id, Category.id_comp]
+        rw [assoc, hg, ← assoc, IsSplitMono.id, Category.id_comp]
       let : IsSplitMono Q.arrow.f := mono_splits ((Center.forget C.Obj).map Q.arrow)
       obtain ⟨t, ht⟩ := center_factor P.arrow Q.arrow (P.arrow.f ≫ g) hg'
       exact Subobject.le_of_comm t (Center.ext _ _ ((congrArg (· ≫ Q.arrow.f) ht).trans hg'))
@@ -62,7 +61,7 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
       obtain ⟨g, rfl⟩ := hx
       refine ⟨g ≫ (Subobject.ofLE P Q h).f, ?_⟩
       change (g ≫ (Subobject.ofLE P Q h).f) ≫ Q.arrow.f = g ≫ P.arrow.f
-      exact (Category.assoc _ _ _).trans <|
+      exact (assoc _ _ _).trans <|
         congrArg (g ≫ ·) (congrArg Center.Hom.f (Subobject.ofLE_arrow h)))
 
 variable (X : Center C.Obj)

@@ -181,20 +181,5 @@ theorem unit_diag :
     𝟙 (V i) ⊗≫ ((S i ⊗ X) ◁ t) ⊗≫ 𝟙 (V i))
     (coevaluation_evaluation'' (S i) ((S i)ᘁ)) using 1 <;> monoidal
 
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.defeqAttrib.useBackward true in
-/-- Every matrix entry of the second triangle has the expected value. -/
-theorem secondTriangle_entry :
-  biproduct.ι V i ≫ (unitCandidate ((induction C).obj X) ≫
-    (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
-      biproduct.ι V i ≫ biproduct.π V j := by
-  dsimp [unitCandidate, underlyingFunctor, induction, underlying]
-  simp only [Category.assoc, biproduct.map_π, biproduct.lift_π_assoc]
-  by_cases h : i = j
-  · subst j
-    simpa [Category.assoc, induction, underlyingFunctor, underlying] using unit_diag X i
-  · simpa [monoidalComp, crossing_counit_offdiag X h, biproduct.ι_π_ne _ h,
-      induction, underlying, underlyingFunctor] using unit_matrix_reduce X i j
-
 
 end PropertyF.Ground.CentreInduction
