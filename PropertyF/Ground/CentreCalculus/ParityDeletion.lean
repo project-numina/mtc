@@ -11,7 +11,7 @@ one-strand deletion formula for either parity choice. We write `tr C p ρ n σ`
 for the scalar pivotal trace of the permutation action.
 -/
 @[expose] public noncomputable section
-local notation "tr" => PropertyF.Ground.CentreCalculus.permutationScalarTrace
+local notation "tr" => PropertyF.Ground.CentreCalculus.permScalarTrace
 open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 open PropertyF.Ground.Centre (permutationSign)
 open Equiv.Perm (decomposeFin)
@@ -21,56 +21,52 @@ namespace PropertyF.Ground.CentreCalculus
 universe v u
 
 /-- Either the actual permutation action or its sign twist. -/
-def parityPermutationAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
+def parityPermAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (hX : SelfTransparent X) (odd : Bool) (n : ℕ) :
     Equiv.Perm (Fin n) →* End (tensorPower X n) :=
-  if odd then Centre.twistAction (permutationSign ℂ n) (tensorPermutationAction X hX n)
-  else tensorPermutationAction X hX n
+  if odd then Centre.twistAction (permutationSign ℂ n) (tensorPermAction X hX n)
+  else tensorPermAction X hX n
 
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : HasFPSimpleDimensions C p)
 
+/-- The sign-twisted permutation trace is the sign times the original trace. -/
+theorem parityPermScalarTrace_true {X : C.Obj} (hX : SelfTransparent X)
+    (n : ℕ) (σ : Equiv.Perm (Fin n)) :
+    tr C p (parityPermAction C hX true) n σ =
+      (permutationSign ℂ n σ : ℂ) * tr C p (tensorPermAction X hX) n σ := by
+  simp [permScalarTrace, parityPermAction, Centre.twistAction, p.rightTrace_smul,
+    unitScalar_eq_equiv, smul_eq_mul]
+
 include hdim in
 /-- Sign twist preserves the fixed-strand trace deletion identity. -/
-theorem parityPermutationTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
+theorem parityPermTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     {n : ℕ} (σ : Equiv.Perm (Fin n)) :
-    tr C p (parityPermutationAction C hX odd) (n + 1) (fixHead n σ) =
-    (fpDimension C X : ℂ) * tr C p (parityPermutationAction C hX odd) n σ := by
+    tr C p (parityPermAction C hX odd) (n + 1) (fixHead n σ) =
+    (fpDimension C X : ℂ) * tr C p (parityPermAction C hX odd) n σ := by
   cases odd with
-  | false => exact tensorPermutationTrace_fixHead hdim hX σ
+  | false => exact tensorPermTrace_fixHead hdim hX σ
   | true =>
     have hs : (permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
         (permutationSign ℂ n σ : ℂ) := by
       simpa [fixHead] using sign_decomposeFin 0 σ
-    have ht := tensorPermutationTrace_fixHead hdim hX σ
-    dsimp only [permutationScalarTrace] at ht
-    simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
-      MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
-      unitScalar_eq_equiv, map_smul, smul_eq_mul]
-    rw [hs, ← unitScalar_eq_equiv, ← unitScalar_eq_equiv, ht]
+    rw [parityPermScalarTrace_true, parityPermScalarTrace_true, hs,
+      tensorPermTrace_fixHead hdim hX σ]
     ring
 
 include hdim in
 /-- Once the moved-strand trace deletion identity is shown for one parity,
 positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
-    (hmoved : HasMovedTrace (tr C p (parityPermutationAction C hX odd))) :
+    (hmoved : HasMovedTrace (tr C p (parityPermAction C hX odd))) :
     ∃ m : ℕ, fpDimension C X = m :=
-  integral_of_trace_deletion hdim (parityPermutationAction C hX odd)
-    ⟨(fun _ σ ↦ parityPermutationTrace_fixHead hdim hX odd σ), hmoved⟩
+  integral_of_trace_deletion hdim (parityPermAction C hX odd)
+    ⟨(fun _ σ ↦ parityPermTrace_fixHead hdim hX odd σ), hmoved⟩
 
 end PropertyF.Ground.CentreCalculus
 
 namespace PropertyF.Ground.CentreCalculus
 open CategoryTheory CategoryTheory.MonoidalCategory
-
-/-- A one-point permutation extension is the swap of that point with zero,
-followed by the fixed-head extension of the smaller permutation. -/
-theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
-    decomposeFin.symm (q, σ) = Equiv.swap 0 q * fixHead n σ := by
-  ext x
-  refine Fin.cases ?_ (fun j => ?_) x <;>
-    simp [fixHead, Equiv.Perm.mul_apply]
 
 /-- A moved-point extension is conjugate to the first adjacent extension. -/
 theorem decomposeFin_succ_conj {n : ℕ} (j : Fin (n + 1)) (σ : Equiv.Perm (Fin (n + 1))) :
@@ -84,7 +80,6 @@ theorem decomposeFin_succ_conj {n : ℕ} (j : Fin (n + 1)) (σ : Equiv.Perm (Fin
   have hswap : Equiv.swap 0 j.succ = T * Equiv.swap 0 1 * T⁻¹ := by
     simpa [T, τ, fixHead] using Equiv.swap_apply_apply T (0 : Fin (n + 2)) 1
   rw [decomposeFin_eq_swap_fixHead, decomposeFin_eq_swap_fixHead, hswap]
-  simp only [map_mul, map_inv, ← mul_assoc]
   simp [T, mul_assoc]
 
 /-- Traces of permutation representations are invariant under conjugation. -/
@@ -104,7 +99,7 @@ theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
     (hadj : HasAdjacentTrace (tr C p ρ)) :
     HasMovedTrace (tr C p ρ) := by
   intro n q hq σ
-  simp only [HasAdjacentTrace, permutationScalarTrace] at hadj ⊢
+  simp only [HasAdjacentTrace, permScalarTrace] at hadj ⊢
   cases n with
   | zero => exact (hq (Fin.eq_zero q)).elim
   | succ n =>
@@ -128,9 +123,9 @@ include hdim in
 /-- Integrality reduces to the first-adjacent-crossing trace identity for
 one of the two actual parity choices. -/
 theorem integral_of_parity_adjacent_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
-    (hadj : HasAdjacentTrace (tr C p (parityPermutationAction C hX odd))) :
+    (hadj : HasAdjacentTrace (tr C p (parityPermAction C hX odd))) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_parity_moved_trace hdim hX odd
-    (movedTrace_of_adjacent (parityPermutationAction C hX odd) hadj)
+    (movedTrace_of_adjacent (parityPermAction C hX odd) hadj)
 
 end PropertyF.Ground.CentreCalculus

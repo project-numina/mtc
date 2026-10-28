@@ -24,8 +24,7 @@ abbrev SelfTransparent (X : C) : Prop :=
 theorem braidGenerator_succ (X : C) {n : ℕ} (k : Fin (n + 1)) :
     (tensorLeft X).mapAut (tensorPower X (n + 2)) (braidGenerator X n k) =
       braidGenerator X (n + 1) k.succ := by
-  apply Aut.ext
-  apply Iso.ext
+  ext
   rcases k with ⟨k, hk⟩
   simp [Functor.mapAut, braidGenerator, tensorIso_hom, tensorLeft, id_tensorHom]
 
@@ -36,10 +35,10 @@ theorem braidGenerator_zero_involutive {X : C} (hX : SelfTransparent X) (n : ℕ
       braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ = 1 := by
   apply Aut.ext
   apply Iso.ext
-  simp only [Aut.mul_asIso, Aut.one_asIso, Iso.trans_hom, Iso.refl_hom]
   cases n <;>
-    simp only [braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
-      Iso.refl_hom, tensorHom_id, Category.assoc, Iso.hom_inv_id_assoc] <;>
+    simp only [Aut.mul_asIso, Aut.one_asIso, Iso.trans_hom, Iso.refl_hom,
+      braidGenerator, Iso.symm_hom, tensorIso_hom, tensorHom_id, Category.assoc,
+      Iso.hom_inv_id_assoc] <;>
     rw [← Category.assoc ((β_ X X).hom ▷ _) ((β_ X X).hom ▷ _),
       ← comp_whiskerRight, hX, id_whiskerRight, Category.id_comp, Iso.inv_hom_id]
 

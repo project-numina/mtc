@@ -7,8 +7,12 @@ public import PropertyF.Ground.Calculus.RightStrand
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Modular.SMatrix
 
-/-! Finiteness of categorical braid images supplies the finite-order condition
-for the squared braiding and for every representation of the braid image. -/
+/-!
+# Traces of three-strand braids
+
+The categorical three-strand generators obey the braid relation and have finite
+order when the object has property F. Partial traces compute their overlap trace.
+-/
 
 open PropertyF.Ground.Dimensions
 
@@ -106,31 +110,35 @@ namespace PropertyF.Ground.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
-variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable [Preadditive C] [Linear ℂ C]
 
+section GeneratorTransport
 
-omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+variable (X : C)
+
 /-- The left adjacent generator after removing the trailing tensor unit. -/
-theorem threeGeneratorLeft_end_transport (X : C) :
+theorem threeGeneratorLeft_end_transport :
     (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 0)) =
       End.of ((α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom) :=
   End.ext (threeGeneratorLeft_transport X)
 
-omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The right adjacent generator after removing the trailing tensor unit. -/
-theorem threeGeneratorRight_end_transport (X : C) :
+theorem threeGeneratorRight_end_transport :
     (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 1)) =
       End.of (X ◁ (β_ X X).hom) :=
   End.ext (threeGeneratorRight_transport X)
 
+end GeneratorTransport
+
+variable [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable {X : C} {r : ℕ} {d : Fin r → ℕ} (b : BraidBlockPresentation X 1 d)
+
 /-- The left three-strand generator in a chosen block presentation. -/
-def tripleBlockLeft {X : C} {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
+def tripleBlockLeft :=
   b (braidInImage (threeGeneratorLeft X))
 
 /-- The right three-strand generator in a chosen block presentation. -/
-def tripleBlockRight {X : C} {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
+def tripleBlockRight :=
   b (braidInImage (threeGeneratorRight X))
 
 end PropertyF.Ground.Calculus

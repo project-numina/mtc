@@ -47,25 +47,26 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 @[expose] public noncomputable section
 namespace PropertyF
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 
 /-- The morphism obtained by tensoring n copies of a morphism. -/
 def tensorPowerMap {X Y : C} (f : X ⟶ Y) : ∀ n, tensorPower X n ⟶ tensorPower Y n
   | 0 => 𝟙 _
   | n + 1 => f ⊗ₘ tensorPowerMap f n
 
-omit [BraidedCategory C] in
 @[simp] theorem tensorPowerMap_id (X : C) : ∀ n, tensorPowerMap (𝟙 X) n = 𝟙 _
   | 0 => rfl
   | n + 1 => by simp [tensorPowerMap, tensorPowerMap_id X n, tensorPower]
 
-omit [BraidedCategory C] in
+/-- Tensor powers preserve composition of morphisms. -/
 @[simp] theorem tensorPowerMap_comp {X Y Z : C} (f : X ⟶ Y) (g : Y ⟶ Z) :
     ∀ n, tensorPowerMap (f ≫ g) n = tensorPowerMap f n ≫ tensorPowerMap g n
   | 0 => by simp [tensorPowerMap, tensorPower]
   | n + 1 => (congrArg (fun h => (f ≫ g) ⊗ₘ h) (tensorPowerMap_comp f g n)).trans
       (tensorHom_comp_tensorHom f (tensorPowerMap f n) g (tensorPowerMap g n)).symm
 
+
+variable [BraidedCategory C]
 
 /-- Naturality of the first adjacent braiding. -/
 lemma braid_first_map {X Y A B : C} (f : X ⟶ Y) (g : A ⟶ B) :

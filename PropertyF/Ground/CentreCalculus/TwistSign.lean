@@ -18,38 +18,45 @@ universe v u
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hp : p.IsSpherical) (hdim : HasFPSimpleDimensions C p)
 
+section
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
+  [BraidedCategory D] [RightRigidCategory D]
+variable {p : PivotalStructure (C := D)}
+
+/-- The braided comparison from an object to its double right dual. -/
+abbrev braidedDoubleDualIso (X : D) : X ≅ (Xᘁ)ᘁ :=
+  rightDualIso (BraidedCategory.exactPairing_swap X (Xᘁ)) inferInstance
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The coevaluation characterizing the braided double-dual map. -/
-theorem drinfeld_coevaluation (X : C.Obj) :
-    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (doubleDualIso C X).inv =
+theorem drinfeld_coevaluation (X : D) :
+    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (braidedDoubleDualIso X).inv =
       η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv := by
   let q : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
   let h : ExactPairing (Xᘁ) ((Xᘁ)ᘁ) := HasRightDual.exact
   have hc := Dimensions.coevaluation_rightDualIso q h
   change (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
-    (Xᘁ) ◁ (doubleDualIso C X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) at hc
+    (Xᘁ) ◁ (braidedDoubleDualIso X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) at hc
   rw [← hc, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
 
 /-- Pivotal coevaluation factors through the braided double-dual comparison. -/
-theorem pivotal_coevaluation_factor (X : C.Obj) :
+theorem pivotal_coevaluation_factor (X : D) :
     η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv =
       (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
-        (Xᘁ) ◁ ((doubleDualIso C X).hom ≫ (p.iso X).inv) := by
-  rw [← drinfeld_coevaluation (C := C) X, Category.assoc, ← whiskerLeft_comp,
+        (Xᘁ) ◁ ((braidedDoubleDualIso X).hom ≫ (p.iso X).inv) := by
+  rw [← drinfeld_coevaluation X, Category.assoc, ← whiskerLeft_comp,
     Iso.inv_hom_id_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse braiding cancels along the duality snake. -/
-theorem inverse_crossing_snake {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] (X : D) :
+theorem inverse_crossing_snake (X : D) :
     (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ ((β_ (Xᘁ) X).inv ▷ X) ≫
       (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫ (α_ (Xᘁ) X X).inv ≫
       (ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom = 𝟙 X := by
   calc
     _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
         ((β_ (Xᘁ ⊗ X) X).inv ≫ ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom := by
-          rw [braiding_tensor_left_inv]
-          simp [Category.assoc]
+          simp [braiding_tensor_left_inv, Category.assoc]
     _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
         X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ D) X).inv ≫ (λ_ X).hom := by
           rw [← braiding_inv_naturality_right]
@@ -58,16 +65,18 @@ theorem inverse_crossing_snake {D : Type u} [Category.{v} D] [MonoidalCategory D
       rw [ExactPairing.evaluation_coevaluation_assoc]
       simp
 
+variable [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the first strand of the inverse braiding gives the inverse
 pivotal/Drinfeld twist. -/
-theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
+theorem leftPartialTrace_inverse_braiding (X : D) :
     leftPartialTrace p (End.of (β_ X X).inv) =
-      End.of ((doubleDualIso C X).hom ≫ (p.iso X).inv) := by
+      End.of ((braidedDoubleDualIso X).hom ≫ (p.iso X).inv) := by
   apply End.ext
   simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
-  let t : X ⟶ X := (doubleDualIso C X).hom ≫ (p.iso X).inv
-  rw [pivotal_coevaluation_factor (C := C) (p := p) X]
+  let t : X ⟶ X := (braidedDoubleDualIso X).hom ≫ (p.iso X).inv
+  rw [pivotal_coevaluation_factor (p := p) X]
   simp only [comp_whiskerRight, Category.assoc]
   -- The inverse crossings cancel after applying the inverse hexagon.
   have hmove : (Xᘁ ◁ t) ▷ X ≫ (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) =
@@ -81,16 +90,19 @@ theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
   change _ = t
   simpa only [Category.assoc, Category.id_comp] using congrArg (fun f => f ≫ t) (inverse_crossing_snake X)
 
+end
+
 include hp in
 /-- On a self-transparent simple, the inverse twist is its twist scalar. -/
 theorem inverse_twist_eq_scalar_of_selfTransparent {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
     (doubleDualIso C X).hom ≫ (p.iso X).inv =
-      θ C p X • 𝟙 X := by
-  have h := leftPartialTrace_inverse_braiding (C := C) (p := p) X
-  rw [← ((β_ X X).inv_ext' hX), leftPartialTrace_braiding_of_trace_compatibility (C := C)
-    (spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom))] at h
-  exact (congrArg End.asHom h).symm
+      θ C p X • 𝟙 X :=
+  (congrArg End.asHom (show θ C p X • (1 : End X) = _ from by
+    simpa only [← ((β_ X X).inv_ext' hX), leftPartialTrace_braiding_of_trace_compatibility
+      (spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom)),
+      braidedDoubleDualIso, doubleDualIso] using
+      leftPartialTrace_inverse_braiding (p := p) X)).symm
 
 include hp in
 /-- In a spherical category, the twist of a self-transparent simple is a sign. -/
@@ -122,8 +134,6 @@ theorem selfTransparent_simpleDimension_integer (hfp : IsFPSpherical C p) {i : F
     ∃ z : ℤ, Modular.simpleDimension C p i = z :=
   let : Simple (simples C i) := simples_simple C i
   let ⟨m, hm⟩ := selfTransparent_simple_integral hfp hX
-  ⟨m, by
-    rw [hfp.2 i, ← fpDimension_simple C i, hm]
-    norm_cast⟩
+  ⟨m, by simp [hfp.2 i, ← fpDimension_simple C i, hm]⟩
 
 end PropertyF.Ground.CentreCalculus

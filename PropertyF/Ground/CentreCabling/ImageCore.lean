@@ -137,7 +137,7 @@ variable (hfinite : HasFiniteImageCentralizerMonodromy C p)
 
 include hdim hfinite hy in
 /-- The numerical image centralizer centralizes every canonical-image retract. -/
-theorem centralizes_canonicalImageRetract {X : CategoryTheory.Center C.Obj}
+theorem centralizes_imageRetract {X : CategoryTheory.Center C.Obj}
     (hX : CanonicalImageRetract C X) : Centre.Centralizes (simples (𝒵 C) y) X := by
   apply Centre.centralizes_symm
   change doubleBraiding X (simples (𝒵 C) y) = 𝟙 _
@@ -151,10 +151,9 @@ include hdim hfinite hy in
 mixed monodromies have finite order. Only simple image constituents, and only
 labels passing this S-test, are needed for the finite-order hypothesis. -/
 theorem numericalImageCentralizer_subset_symmetricCore : y ∈ symmetricCore C :=
-  ⟨fun X ↦ centralizes_canonicalImageRetract C hdim hfinite hy
-      (Or.inl ⟨X, ⟨Retract.refl _⟩⟩),
-   fun X ↦ centralizes_canonicalImageRetract C hdim hfinite hy
-      (Or.inr ⟨X, ⟨Retract.refl _⟩⟩)⟩
+  let h (X : CategoryTheory.Center C.Obj) := centralizes_imageRetract C hdim hfinite hy (X := X)
+  ⟨fun X ↦ h _ (Or.inl ⟨X, ⟨Retract.refl _⟩⟩),
+    fun X ↦ h _ (Or.inr ⟨X, ⟨Retract.refl _⟩⟩)⟩
 
 include hp hdet hdim in
 /-- The precise actual-core double-centralizer conclusion under the reduced

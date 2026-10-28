@@ -23,7 +23,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- The actual self-transparent permutation action, including the trivial
 zero- and one-strand cases, as endomorphisms. -/
-def tensorPermutationAction (X : C)
+def tensorPermAction (X : C)
     (hX : SelfTransparent X) :
     ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n)
   | 0 => 1
@@ -31,10 +31,10 @@ def tensorPermutationAction (X : C)
   | n + 2 => Aut.toEnd.comp (permutationAction X hX n)
 
 /-- Every adjacent transposition acts by the actual categorical crossing. -/
-theorem tensorPermutationAction_swap {X : C}
+theorem tensorPermAction_swap {X : C}
     (hX : SelfTransparent X)
     {n : ℕ} (i : Fin (n + 1)) :
-    tensorPermutationAction X hX (n + 2) (Equiv.swap i.castSucc i.succ) =
+    tensorPermAction X hX (n + 2) (Equiv.swap i.castSucc i.succ) =
       Aut.toEnd (braidGenerator X n i) :=
   congrArg Aut.toEnd (permutationAction_swap hX i)
 
@@ -103,13 +103,13 @@ theorem signedTraceSum_falling {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ} {d 
 
 universe v u
 /-- Scalar pivotal trace of a permutation action on a tensor power. -/
-abbrev permutationScalarTrace (C : BraidedFusionCategory.{v,u})
+abbrev permScalarTrace (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
     (n : ℕ) (σ : Equiv.Perm (Fin n)) : ℂ :=
   unitScalar C (p.rightTrace ((ρ n) σ).asHom)
 
-local notation "tr" => permutationScalarTrace
+local notation "tr" => permScalarTrace
 
 /-- Integrality follows from one-strand trace deletion for any compatible
 (possibly sign-twisted) family of actual actions. -/
@@ -133,7 +133,7 @@ end PropertyF.Ground.CentreCalculus
 
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
-local notation "tr" => permutationScalarTrace
+local notation "tr" => permScalarTrace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -147,6 +147,13 @@ def fixHead (n : ℕ) : Equiv.Perm (Fin n) →* Equiv.Perm (Fin (n + 1)) where
     ext x
     refine Fin.cases ?_ (fun j => ?_) x <;>
       simp [Equiv.Perm.mul_apply]
+
+/-- A one-point permutation extension is the swap of that point with zero,
+followed by the fixed-head extension of the smaller permutation. -/
+theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
+    decomposeFin.symm (q, σ) = Equiv.swap 0 q * fixHead n σ := by
+  ext x
+  induction x using Fin.cases <;> simp [fixHead, Equiv.Perm.mul_apply]
 
 theorem fixHead_swap {n : ℕ} (i : Fin n) :
     fixHead (n + 1) (Equiv.swap i.castSucc i.succ) =
@@ -171,8 +178,7 @@ theorem permutationAction_fixHead {n : ℕ}
   let g := ((tensorLeft X).mapAut (tensorPower X (n + 2))).comp (permutationAction X hX n)
   obtain ⟨w, rfl⟩ := strandPermutation_surjective n σ
   have hh : f.comp (strandPermutation n) = g.comp (strandPermutation n) := by
-    apply FreeGroup.ext_hom
-    intro i
+    refine FreeGroup.ext_hom _ _ fun i ↦ ?_
     change permutationAction X hX (n + 1) (fixHead (n + 2) (strandPermutation n (FreeGroup.of i))) =
       (tensorLeft X).mapAut (tensorPower X (n + 2))
         (permutationAction X hX n (strandPermutation n (FreeGroup.of i)))
@@ -181,39 +187,51 @@ theorem permutationAction_fixHead {n : ℕ}
   exact DFunLike.congr_fun hh w
 
 /-- Inserting a fixed strand tensors the permutation action with its identity. -/
-theorem tensorPermutationAction_fixHead :
+theorem tensorPermAction_fixHead :
     ∀ {n} (σ : Equiv.Perm (Fin n)),
-      tensorPermutationAction X hX (n + 1) (fixHead n σ) =
-        (tensorLeft X).mapEnd (tensorPower X n) (tensorPermutationAction X hX n σ) := by
+      tensorPermAction X hX (n + 1) (fixHead n σ) =
+        (tensorLeft X).mapEnd (tensorPower X n) (tensorPermAction X hX n σ) := by
   intro n σ
   rcases n with _ | _ | n
   · obtain rfl : σ = 1 := Subsingleton.elim _ _
-    simp [tensorPermutationAction, Functor.mapEnd]
+    simp [tensorPermAction, Functor.mapEnd]
     rfl
   · obtain rfl : σ = 1 := Equiv.ext fun x ↦ (Fin.eq_zero (σ x)).trans (Fin.eq_zero x).symm
-    simp [tensorPermutationAction, Functor.mapEnd]
+    simp [tensorPermAction, Functor.mapEnd]
     rfl
   · change Aut.toEnd (permutationAction X hX (n + 1) (fixHead (n + 2) σ)) = _
     rw [permutationAction_fixHead]
     rfl
+
+set_option backward.isDefEq.respectTransparency false in
+/-- An adjacent moved strand acts by the first crossing followed by fixed-head insertion. -/
+theorem tensorPermAction_adjacent {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
+    tensorPermAction X hX (n + 2) (decomposeFin.symm (1, σ)) =
+      (Aut.toEnd (braidGenerator X n 0) : End (X ⊗ tensorPower X (n + 1))) *
+        End.of (X ◁ ((tensorPermAction X hX (n + 1)) σ).asHom) := by
+  rw [decomposeFin_eq_swap_fixHead, map_mul]
+  change tensorPermAction X hX (n + 2)
+    (Equiv.swap (0 : Fin (n + 1)).castSucc (0 : Fin (n + 1)).succ) * _ = _
+  rw [tensorPermAction_swap, tensorPermAction_fixHead]
+  rfl
 
 end
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A fixed inserted strand contributes its positive categorical dimension to
  the actual permutation trace. -/
-theorem tensorPermutationTrace_fixHead {D : BraidedFusionCategory.{v,u}}
+theorem tensorPermTrace_fixHead {D : BraidedFusionCategory.{v,u}}
     {p : PivotalStructure (C := D.Obj)}
     (hdim : HasFPSimpleDimensions D p)
     {X : D.Obj} (hX : SelfTransparent X) {n : ℕ} (σ : Equiv.Perm (Fin n)) :
-      tr D p (tensorPermutationAction X hX) (n + 1) (fixHead n σ) =
-      (fpDimension D X : ℂ) * tr D p (tensorPermutationAction X hX) n σ := by
-  simp only [permutationScalarTrace]
-  rw [tensorPermutationAction_fixHead]
-  change unitScalar D (p.rightTrace (X ◁ ((tensorPermutationAction X hX n) σ).asHom)) = _
+      tr D p (tensorPermAction X hX) (n + 1) (fixHead n σ) =
+      (fpDimension D X : ℂ) * tr D p (tensorPermAction X hX) n σ := by
+  simp only [permScalarTrace]
+  rw [tensorPermAction_fixHead]
+  change unitScalar D (p.rightTrace (X ◁ ((tensorPermAction X hX n) σ).asHom)) = _
   simpa only [id_tensorHom, ← unitScalar_eq_equiv,
     ← pivotalDimension_eq_fpDimension hdim, pivotalDimension] using
     Dimensions.pivotalTrace_tensor p (unitScalarEquiv D)
-      (𝟙 X) ((tensorPermutationAction X hX n) σ).asHom
+      (𝟙 X) ((tensorPermAction X hX n) σ).asHom
 
 end PropertyF.Ground.CentreCalculus

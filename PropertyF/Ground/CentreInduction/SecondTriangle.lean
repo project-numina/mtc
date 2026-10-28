@@ -261,16 +261,6 @@ theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
-/-- Projecting a mapped induction unit selects its corresponding component. -/
-theorem unitCandidate_map_projection_general (Z : CategoryTheory.Center C.Obj) {X : C.Obj}
-    (f : Z.1 ⟶ X) (j : Fin (rank C)) :
-  let V := inductionSummand C X
-  (unitCandidate C Z ≫ (underlyingFunctor C).map f) ≫ biproduct.π V j =
-    unitComponent C Z j ≫ ((simples C j ◁ f) ▷ (simples C j)ᘁ) := by
-  simp [unitCandidate, underlyingFunctor, underlying]
-
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.defeqAttrib.useBackward true in
 /-- Every matrix entry of the second triangle has the expected value. -/
 theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
   let V := inductionSummand C X
@@ -278,22 +268,13 @@ theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
     (unitCandidate C ((induction C).obj X) ≫
       (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
-  let V := inductionSummand C X
-  have hh := congrArg (fun f => biproduct.ι V i ≫ f)
-    (unitCandidate_map_projection_general C ((induction C).obj X) ((underlyingCounit C).app X) j)
-  simp only [Category.assoc] at hh
-  change _ = _ at hh
+  dsimp [unitCandidate, underlyingFunctor, induction, underlying]
+  simp only [Category.assoc, biproduct.map_π, biproduct.lift_π_assoc]
   by_cases h : i = j
   · subst j
-    simpa [Category.assoc] using hh.trans (unit_diag C X i)
-  · simpa [V, Category.assoc, biproduct.ι_π_ne _ h] using hh.trans (unit_offdiag C X h)
+    simpa [Category.assoc, induction, underlyingFunctor, underlying] using unit_diag C X i
+  · rw [biproduct.ι_π_ne _ h]
+    exact unit_offdiag C X h
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The proposed induction unit and counit satisfy the second triangle. -/
-theorem secondTriangle (X : C.Obj) :
-    unitCandidate C ((induction C).obj X) ≫
-      (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X) := by
-  refine biproduct.hom_ext' _ _ fun i => biproduct.hom_ext _ _ fun j => ?_
-  simpa [underlying, Category.assoc] using secondTriangle_entry C X i j
 
 end PropertyF.Ground.CentreInduction

@@ -6,7 +6,12 @@ public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Calculus.EndBlocks
 public import Mathlib.Tactic
 
-/-! Compatibility of adjoints on algebras spanned by braid images. -/
+/-!
+# Strand insertion and unitary presentations
+
+Maps induced by adding strands act on braid-image algebras and preserve the adjoints
+of their unitary block presentations.
+-/
 
 @[expose] public section
 namespace PropertyF.Ground.Calculus
@@ -36,7 +41,7 @@ variable {G H A B : Type*} [Group G] [Group H]
 
 /-- The group image spans any algebra-equivalent block presentation. -/
 theorem presented_group_span (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ}
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
+    (e : GroupBlockPresentation ρ d) :
     Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ := by
   classical
   change Submodule.span ℂ (Set.range (fun g => e (groupInImage ρ g))) = ⊤
@@ -59,8 +64,8 @@ strand map and its intertwining property must still be supplied separately. -/
 theorem presented_intertwiner_map_star
     (ρ : G →* A) (σ : H →* B) (τ : G →* H)
     {n m : ℕ} {d : Fin n → ℕ} {k : Fin m → ℕ}
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : groupImageAlgebra σ ≃ₐ[ℂ] Blocks.Algebra ⟨_, k⟩)
+    (e : GroupBlockPresentation ρ d)
+    (f : GroupBlockPresentation σ k)
     (he : IsUnitaryPresentation ρ e)
     (hf : IsUnitaryPresentation σ f)
     (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
@@ -176,8 +181,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩)
+    (e : BraidBlockPresentation X n d)
+    (f : BraidBlockPresentation X (n + k) q)
     (he : IsUnitaryBraidPresentation e)
     (hf : IsUnitaryBraidPresentation f) :
     (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
@@ -359,8 +364,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩)
+    (e : BraidBlockPresentation X n d)
+    (f : BraidBlockPresentation X (n + k) q)
     (he : IsUnitaryBraidPresentation e)
     (hf : IsUnitaryBraidPresentation f) :
     (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
