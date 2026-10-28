@@ -294,24 +294,21 @@ def characterMatrix (D : BraidedFusionCategory) (i : Fin (rank D)) :
   fun j k => fusionCoeff D i j k
 
 theorem characterMatrix_commute (i j : Fin (rank D)) :
-    Commute (characterMatrix D i) (characterMatrix D j) := by
-  classical
-  exact Matrix.ext fun a b ↦ by
+    Commute (characterMatrix D i) (characterMatrix D j) :=
+  Matrix.ext fun a b ↦ by
     simp only [Matrix.mul_apply, characterMatrix]
     exact_mod_cast (fusionCoeff_assoc D j i a b).trans
       (by simpa only [fusionCoeff_comm D j i] using (fusionCoeff_assoc D i j a b).symm)
 
 theorem totalFusionMatrix_eq_sum_characterMatrix :
-    totalFusionMatrix D = ∑ i, characterMatrix D i := by
-  classical
-  exact Matrix.ext fun j k ↦ by
+    totalFusionMatrix D = ∑ i, characterMatrix D i :=
+  Matrix.ext fun j k ↦ by
     simpa [totalFusionMatrix, characterMatrix, Matrix.sum_apply] using totalFusionMatrix_symmetric D j k
 
 theorem total_commutes_characterMatrix (i : Fin (rank D)) :
-    Commute (totalFusionMatrix D) (characterMatrix D i) := by
-  classical
-  rw [totalFusionMatrix_eq_sum_characterMatrix]
-  exact Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i
+    Commute (totalFusionMatrix D) (characterMatrix D i) :=
+  (totalFusionMatrix_eq_sum_characterMatrix D).symm ▸
+    Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i
 
 /-- The total matrix has a strictly positive common eigenvector for all
 fusion matrices. -/
