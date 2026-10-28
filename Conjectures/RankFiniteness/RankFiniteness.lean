@@ -1,6 +1,6 @@
 module
 public import MTC.ModularData.Equivalence
-public import PropertyF.Ground.Modular.SMatrix
+public import MTC.PropertyF.NondegenerateSpherical
 
 /-!
 # Rank-finiteness for modular categories
@@ -26,7 +26,7 @@ T determine the category. It does not provide an effective bound on its size.
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground PropertyF.Ground.Dimensions PropertyF.Ground.Modular
+open PropertyF.Ground MTC.PropertyF
 
 namespace MTC.Conjectures.RankFiniteness
 universe v u
@@ -38,12 +38,9 @@ theorem rank_ne_zero (C : BraidedFusionCategory.{v,u}) : rank C ≠ 0 :=
 /-- There are finitely many braided tensor equivalence classes at each rank. -/
 theorem rankFiniteness (r : ℕ) :
     ∃ (n : ℕ) (reps : Fin n → BraidedFusionCategory.{v,u}),
-      (∀ i, rank (reps i) = r ∧
-        ∃ p : PivotalStructure (C := (reps i).Obj),
-          p.IsSpherical ∧ (categoricalS (reps i) p).det ≠ 0) ∧
+      (∀ i, rank (reps i) = r ∧ HasNondegenerateSphericalStructure (reps i)) ∧
       ∀ C : BraidedFusionCategory.{v,u}, rank C = r →
-        (∃ p : PivotalStructure (C := C.Obj),
-          p.IsSpherical ∧ (categoricalS C p).det ≠ 0) →
+        HasNondegenerateSphericalStructure C →
         ∃ i, Nonempty (MTC.BraidedTensorEquivalence C (reps i)) := by
   sorry
 
