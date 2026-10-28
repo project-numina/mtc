@@ -51,9 +51,8 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
       (simpleInclusionBasis C V i).dualBasis a := by
   refine (simpleInclusionBasis C V i).ext fun b => ?_
   rw [Module.Basis.dualBasis_apply_self]
-  simp [simpleHomPairingEquiv, simpleHomPairing,
-    simpleInclusion, simpleProjection, Category.assoc, biproduct.ι_π]
-  split_ifs <;> first | exact map_one _ | exact map_zero _
+  by_cases h : b = a <;> simp [simpleHomPairingEquiv, simpleHomPairing,
+    simpleInclusion, simpleProjection, Category.assoc, h]; rfl
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
 theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
@@ -165,13 +164,12 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The closed fusion map is characterized by its evaluation pairing. -/
 theorem closeFusionMap_evaluation (f : T ⊗ S ⟶ R) :
     (closeFusionMap T S f ▷ S) ≫ ε_ S (Sᘁ) =
-      𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
-  apply (tensorRightHomEquiv (Rᘁ ⊗ T) S Sᘁ (𝟙_ D)).injective
-  rw [tensorRightHomEquiv_whiskerRight_comp_evaluation]
-  have hc : 𝟙 ((Rᘁ ⊗ T) ⊗ S) ⊗≫ (Rᘁ ◁ f) ⊗≫ ε_ R Rᘁ =
-      (α_ Rᘁ T S).hom ≫ (Rᘁ ◁ f) ≫ ε_ R Rᘁ := by monoidal
-  rw [hc]
-  simp [closeFusionMap]
+      𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) :=
+  (tensorRightHomEquiv (Rᘁ ⊗ T) S Sᘁ (𝟙_ D)).injective <| by
+    rw [tensorRightHomEquiv_whiskerRight_comp_evaluation]
+    simp only [closeFusionMap, Category.assoc, Iso.hom_inv_id, Category.comp_id]
+    congr 1
+    monoidal
 
 
 set_option backward.isDefEq.respectTransparency false in

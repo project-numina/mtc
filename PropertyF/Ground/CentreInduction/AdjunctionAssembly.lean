@@ -126,11 +126,11 @@ def unitCandidate (Z : 𝒵) :
   biproduct.lift (unitComponent C Z)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The proposed unit component is natural for genuine centre maps. -/
-theorem unitComponent_natural {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
-    f.f ≫ unitComponent C Y i = unitComponent C X i ≫
-      ((Sᶜ i ◁ f.f) ▷ (Sᶜ i)ᘁ) := by
-  simp only [unitComponent, unitComponentAt, Category.assoc, rightUnitor_inv_naturality_assoc,
+/-- The unit component is natural for centre maps. -/
+theorem unitComponentAt_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    {S : D} [HasRightDual S] {X Y : Center D} (f : X ⟶ Y) :
+    f.f ≫ unitComponentAt Y S = unitComponentAt X S ≫ ((S ◁ f.f) ▷ Sᘁ) := by
+  simp only [unitComponentAt, Category.assoc, rightUnitor_inv_naturality_assoc,
     ← whisker_exchange_assoc, associator_inv_naturality_left_assoc, ← comp_whiskerRight, f.comm]
 
 

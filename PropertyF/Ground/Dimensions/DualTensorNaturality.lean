@@ -103,19 +103,23 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [RightRigidCategory C]
 
+omit [RightRigidCategory C] in
 /-- The braided isomorphism from an object to its double right dual. -/
-def drinfeldIso (X : C) : X ≅ (Xᘁ)ᘁ :=
+def drinfeldIso (X : C) [HasRightDual X] [HasRightDual (Xᘁ)] : X ≅ (Xᘁ)ᘁ :=
   rightDualIso (BraidedCategory.exactPairing_swap X (Xᘁ)) HasRightDual.exact
 
+omit [RightRigidCategory C] in
 /-- The braided double-dual isomorphism is characterized by its evaluation map. -/
-theorem drinfeld_eval (X : C) :
+theorem drinfeld_eval (X : C) [HasRightDual X] [HasRightDual (Xᘁ)] :
     (drinfeldIso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
       (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) :=
   rightDualIso_evaluation (BraidedCategory.exactPairing_swap X (Xᘁ))
-    (@HasRightDual.exact C _ _ (Xᘁ) (RightRigidCategory.rightDual (Xᘁ)))
+    (@HasRightDual.exact C _ _ (Xᘁ) inferInstance)
+omit [RightRigidCategory C] in
 /-- The braided double-dual isomorphism is natural. -/
 @[reassoc]
-theorem drinfeldIso_natural {X Y : C} (f : X ⟶ Y) :
+theorem drinfeldIso_natural {X Y : C} [HasRightDual X] [HasRightDual (Xᘁ)]
+    [HasRightDual Y] [HasRightDual (Yᘁ)] (f : X ⟶ Y) :
     f ≫ (drinfeldIso Y).hom = (drinfeldIso X).hom ≫ (fᘁ)ᘁ :=
   evaluation_ext (X := Yᘁ) (by
     simp only [comp_whiskerRight_assoc]
@@ -123,8 +127,10 @@ theorem drinfeldIso_natural {X Y : C} (f : X ⟶ Y) :
       ← rightAdjointMate_comp_evaluation, ← braiding_naturality_right_assoc,
       ← drinfeld_eval X, whisker_exchange_assoc, ← rightAdjointMate_comp_evaluation])
 
+omit [RightRigidCategory C] in
 /-- The braided fourth-dual isomorphism, objectwise. -/
-def fourthDualIso (X : C) :
+def fourthDualIso (X : C) [HasRightDual X] [HasRightDual (Xᘁ)]
+    [HasRightDual ((Xᘁ)ᘁ)] [HasRightDual (((Xᘁ)ᘁ)ᘁ)] :
     X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ) :=
   drinfeldIso X ≪≫ (rightDualIsoMap (drinfeldIso (Xᘁ))).symm
 
@@ -144,15 +150,20 @@ theorem fourthDualIso_natural {X Y : C} (f : X ⟶ Y) :
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
   rw [drinfeldIso_natural_assoc, hd]
 
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural braided double-dual map commutes with applying double dual. -/
-theorem drinfeldIso_doubleDual (X : C) :
+theorem drinfeldIso_doubleDual (X : C) [HasRightDual X] [HasRightDual (Xᘁ)]
+    [HasRightDual ((Xᘁ)ᘁ)] [HasRightDual (((Xᘁ)ᘁ)ᘁ)] :
     (drinfeldIso ((Xᘁ)ᘁ)).hom = (((drinfeldIso X).homᘁ)ᘁ) :=
   (cancel_epi (drinfeldIso X).hom).1 (drinfeldIso_natural (drinfeldIso X).hom)
 
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- The braided fourth-dual map intertwines duals with its inverse. -/
-theorem fourthDualIso_rightDual (X : C) :
+theorem fourthDualIso_rightDual (X : C) [HasRightDual X] [HasRightDual (Xᘁ)]
+    [HasRightDual ((Xᘁ)ᘁ)] [HasRightDual (((Xᘁ)ᘁ)ᘁ)]
+    [HasRightDual ((((Xᘁ)ᘁ)ᘁ)ᘁ)] :
     fourthDualIso (Xᘁ) = (rightDualIsoMap (fourthDualIso X)).symm := by
   have hi : (drinfeldIso ((Xᘁ)ᘁ)).inv = (((drinfeldIso X).invᘁ)ᘁ) :=
     congrArg Iso.inv (Iso.ext (drinfeldIso_doubleDual X) :
