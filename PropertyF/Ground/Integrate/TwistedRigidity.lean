@@ -106,10 +106,8 @@ def pivotal (p : Dimensions.PivotalStructure (C := C.Obj)) :
 /-- The twisted inverse unit-scalar map applies σ to the original scalar. -/
 theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
     unitScalar (category C σ) f = σ (unitScalar C f) := by
-  let f' : End (𝟙_ (category C σ).Obj) := f
-  change unitScalar (category C σ) f' = σ (unitScalar C f)
   apply (unit_algebraMap_bijective (category C σ)).1
-  rw [algebraMap_unitScalar (category C σ) f']
+  rw [algebraMap_unitScalar (category C σ) f]
   change f = _
   conv_lhs => rw [← algebraMap_unitScalar C f]
   simp only [Algebra.algebraMap_eq_smul_one]
@@ -123,14 +121,17 @@ theorem pivotalDimension_twist (p : Dimensions.PivotalStructure (C := C.Obj)) (X
   unitScalar_twist C σ _
 
 /-- Match chosen simple representatives and transport pivotal dimensions. -/
-theorem labels (p : Dimensions.PivotalStructure (C := C.Obj)) :
+theorem labels (p : Dimensions.PivotalStructure (C := C.Obj))
+    (hdim : Modular.HasFPSimpleDimensions C p) :
     ∃ e : Fin (rank C) ≃ Fin (rank (category C σ)),
       ∀ i, Dimensions.pivotalDimension (category C σ) (pivotal C σ p)
           (simples (category C σ) (e i)) =
-        σ (Dimensions.pivotalDimension C p (simples C i)) := by
+        σ (fpSimple C i : ℂ) := by
   obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C (category C σ) (CategoryTheory.Equivalence.refl)
   refine ⟨e, fun i ↦ ?_⟩
-  rw [← pivotalDimension_twist C σ p (simples C i)]
+  have hd : Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
+    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using hdim i
+  rw [← hd, ← pivotalDimension_twist C σ p (simples C i)]
   exact (Dimensions.pivotalDimension_iso (category C σ) (pivotal C σ p) (he i).some).symm
 
 end PropertyF.Ground.ScalarTwist
@@ -198,7 +199,7 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
   let q := ScalarTwist.pivotal Z σ p
   let X : D.Obj := simples Z y
   letI : Simple X := simples_simple Z y
-  obtain ⟨e, he⟩ := ScalarTwist.labels Z σ p
+  obtain ⟨e, he⟩ := ScalarTwist.labels Z σ p hdim
   let original : Fin (rank D) → ℝ := fun i => fpSimple Z (e.symm i)
   let transformed : Fin (rank D) → ℝ := fun i => (σ (original i : ℂ)).re
   have hreal := fp_simple_galois_real Z σ
@@ -210,11 +211,7 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
     intro i
     have hi := he (e.symm i)
     rw [e.apply_symm_apply] at hi
-    rw [hi]
-    simp only [transformed, original, hreal]
-    congr 1
-    simpa only [Dimensions.pivotalDimension, unitScalar_eq_equiv,
-      Modular.simpleDimension] using hdim (e.symm i)
+    simpa only [transformed, original, hreal] using hi
   have hd : d ≠ 0 := by
     intro hz
     have h : (fpSimple Z y : ℂ) ≠ 0 := by exact_mod_cast (ne_of_gt (fpSimple_pos Z y))

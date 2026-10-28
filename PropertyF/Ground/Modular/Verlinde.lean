@@ -108,10 +108,16 @@ open PropertyF.Ground.Dimensions PropertyF.Ground.Calculus
 namespace PropertyF.Ground.Modular
 universe v u
 
+/-- The partial trace of monodromy, leaving the first strand open. -/
+abbrev partialMonodromy {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+    [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C]
+    [MonoidalLinear ℂ C] (p : PivotalStructure (C := C)) (X Y : C) : End X :=
+  rightPartialTrace p X Y (End.of (doubleBraiding X Y))
+
 /-- Closing one strand of a double braiding gives the normalized S scalar. -/
 theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (k : Fin (rank D)) (X : D.Obj) :
-    rightPartialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)) =
+    partialMonodromy p (simples D k) X =
       (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 :=
   letI : Simple (simples D k) := simples_simple D k
   letI : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
@@ -124,12 +130,9 @@ theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,
 abbrev HasMultiplicativePartialTrace (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) : Prop :=
   ∀ i j k : Fin (rank D),
-    rightPartialTrace p (simples D k) (simples D i ⊗ simples D j)
-        (End.of (doubleBraiding (simples D k) (simples D i ⊗ simples D j))) =
-    rightPartialTrace p (simples D k) (simples D i)
-        (End.of (doubleBraiding (simples D k) (simples D i))) *
-    rightPartialTrace p (simples D k) (simples D j)
-        (End.of (doubleBraiding (simples D k) (simples D j)))
+    partialMonodromy p (simples D k) (simples D i ⊗ simples D j) =
+      partialMonodromy p (simples D k) (simples D i) *
+        partialMonodromy p (simples D k) (simples D j)
 
 /-- Multiplicative partial traces imply the Hopf-link product rule. -/
 theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCategory.{v,u})

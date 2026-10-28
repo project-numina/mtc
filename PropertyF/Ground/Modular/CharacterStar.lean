@@ -52,9 +52,8 @@ theorem character_dual_conj (χ : Character N) (i : ι) :
     have hr : 0 < ∑ j, Complex.normSq (χ.value j) :=
       Finset.sum_pos' (fun j _ ↦ Complex.normSq_nonneg _)
         ⟨N.unit, Finset.mem_univ _, by simp [χ.unit_eq]⟩
-    have hw' : w = ((∑ j, Complex.normSq (χ.value j) : ℝ) : ℂ) := by
-      simp only [w, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]
-    rw [hw']
+    rw [show w = ((∑ j, Complex.normSq (χ.value j) : ℝ) : ℂ) by
+      simp only [w, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]]
     exact_mod_cast ne_of_gt hr
   have h : χ.value i = starRingEnd ℂ (χ.value (dual i)) :=
     mul_right_cancel₀ hw (by simpa [w] using character_inner_balance N dual hdual χ χ i)
@@ -68,9 +67,12 @@ theorem fusionCoeff_dual_adjoint (C : Ground.BraidedFusionCategory) (i j k : Fin
 
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
+local notation "Sₚ" => categoricalS C p
+local notation "dₚ" => simpleDimension C p
+
 /-- Each normalized S-matrix column defines a fusion character. -/
 def categoricalSCharacter (j : Fin (rank C)) : Character ⟨unitIndex C, fusionCoeff C⟩ where
-  value i := categoricalS C p i j / simpleDimension C p j
+  value i := Sₚ i j / dₚ j
   unit_eq := by
     rw [categoricalS_symmetric C p, categoricalS_unit]
     exact div_self (simpleDimension_ne_zero C p j)
@@ -78,7 +80,7 @@ def categoricalSCharacter (j : Fin (rank C)) : Character ⟨unitIndex C, fusionC
 
 /-- The simple pivotal dimensions are fixed by complex conjugation. -/
 abbrev HasRealSimpleDimensions : Prop :=
-  ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j
+  ∀ j, starRingEnd ℂ (dₚ j) = dₚ j
 
 variable (hreal : HasRealSimpleDimensions C p)
 
@@ -86,19 +88,19 @@ include hreal in
 /-- With real simple dimensions, dualizing a label conjugates the corresponding
 categorical S entry. No categorical dual-trace identity is needed. -/
 theorem categoricalS_dual_conj (i j : Fin (rank C)) :
-    categoricalS C p (Ground.dualIndex C i) j = starRingEnd ℂ (categoricalS C p i j) := by
+    Sₚ (Ground.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) := by
   let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
   let χ : Character rules := categoricalSCharacter C p j
   have hh := character_dual_conj rules (Ground.dualIndex C) (fusionCoeff_dual_adjoint C) χ i
-  change categoricalS C p (Ground.dualIndex C i) j / simpleDimension C p j =
-    starRingEnd ℂ (categoricalS C p i j / simpleDimension C p j) at hh
+  change Sₚ (Ground.dualIndex C i) j / dₚ j =
+    starRingEnd ℂ (Sₚ i j / dₚ j) at hh
   rw [map_div₀, hreal j] at hh
   exact (div_left_inj' (simpleDimension_ne_zero C p j)).mp hh
 
 include hreal in
 /-- Real pivotal simple dimensions are invariant under dual labels. -/
 theorem simpleDimension_dual (i : Fin (rank C)) :
-    simpleDimension C p (Ground.dualIndex C i) = simpleDimension C p i := by
+    dₚ (Ground.dualIndex C i) = dₚ i := by
   simpa only [categoricalS_unit, hreal i] using
     categoricalS_dual_conj C p hreal i (unitIndex C)
 

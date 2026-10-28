@@ -140,7 +140,7 @@ theorem groupImageAlgebra_finite (ρ : G →* A) :
 matrix blocks. It is not assumed that the representation is faithful. -/
 theorem groupImageAlgebra_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ), (∀ i, NeZero (d i)) ∧
-      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
+      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
   let _ := groupImageAlgebra_semisimple ρ
   let _ := groupImageAlgebra_finite ρ
   IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
@@ -210,7 +210,7 @@ abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCatego
 
 /-- A block presentation in which each represented group element is unitary. -/
 abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=
+    (e : groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) : Prop :=
   ∀ g i, e (groupInImage ρ g) i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ
 
 omit [Finite G] in
@@ -228,7 +228,7 @@ theorem groupInImage_span (ρ : G →* A) :
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
 theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ) (e : groupImageAlgebra ρ ≃ₐ[ℂ]
-        PropertyF.Blocks.Algebra ⟨_, d⟩),
+        Blocks.Algebra ⟨_, d⟩),
       (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation ρ e := by
   classical
   let _ : Fintype G := Fintype.ofFinite G
@@ -252,14 +252,14 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- A unitary block presentation of the categorical braid-image algebra. -/
 abbrev IsUnitaryBraidPresentation {X : C} {n r : ℕ} {d : Fin r → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=
+    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) : Prop :=
   IsUnitaryPresentation (braidEndRepresentation X n) e
 
 /-- Finite categorical braid images admit a simultaneous unitary block
 realization of their actual endomorphism algebra. -/
 theorem braidAlgebra_unitary_blocks (X : C) (n : ℕ) (h : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
-        PropertyF.Blocks.Algebra ⟨_, d⟩),
+        Blocks.Algebra ⟨_, d⟩),
       (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e :=
   let _ : Finite (braidImage X n) := h
   groupImageAlgebra_unitary_blocks _

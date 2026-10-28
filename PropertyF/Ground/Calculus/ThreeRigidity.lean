@@ -16,7 +16,7 @@ namespace PropertyF.Ground.Calculus
 force the squares of the two braid generators to coincide. The trace bound,
 nonzero weights, and the trace value are explicit hypotheses, rather than a
 hypothesis structure. -/
-theorem braid_squares_equal_of_saturation (B : PropertyF.Blocks)
+theorem braid_squares_equal_of_saturation (B : Blocks)
     (w : Fin B.count → ℝ) (a b : B.Algebraˣ) (d f : ℝ)
     (hf : 0 < f) (hw : ∀ r, w r ≠ 0)
     (ha : B.IsUnitary (a : B.Algebra)) (hb : B.IsUnitary (b : B.Algebra))
@@ -31,16 +31,15 @@ theorem braid_squares_equal_of_saturation (B : PropertyF.Blocks)
         ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (ha r) 2)
         ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (hb r) 2)
   have hmass : B.mass w ≤ |d| * f ^ 2 := by
-    have h := hbound (B.signElement w) (B.signElement_unitary w)
-    rw [B.trace_signElement] at h
     have hm : 0 ≤ B.mass w :=
       Finset.sum_nonneg (fun r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _))
-    simpa [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hm] using h
+    simpa [B.trace_signElement, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hm] using
+      hbound (B.signElement w) (B.signElement_unitary w)
   have hsaturate : ‖B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra)‖ = B.mass w := by
     apply le_antisymm (B.norm_trace_le w hunit)
     rw [htrace]
     simpa [norm_pow, abs_of_pos hf] using hmass
-  exact PropertyF.squares_eq_of_central_product a b hbraid
+  exact squares_eq_of_central_product a b hbraid
     (Units.ext (B.central_of_saturation w hw hunit hsaturate b))
 
 end PropertyF.Ground.Calculus
@@ -63,7 +62,7 @@ theorem actual_three_braid_trace (C : BraidedFusionCategory.{v,u})
         pivotalDimension C p X := by
   simpa [actualBraidTrace, braidInImage_val, braidEndRepresentation,
     threeGeneratorLeft, threeGeneratorRight, imageGenerator, pivotalDimension, scalarTrace,
-    Ground.unitScalar_eq_equiv] using
+    unitScalar_eq_equiv] using
     (three_braid_trace C X p (Ground.unitScalarEquiv C))
 
 /-- The modular self-entry identity makes the actual three-strand trace attain
@@ -88,7 +87,7 @@ theorem actual_braid_squares_equal_of_saturation
     (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (p : PivotalStructure (C := C.Obj))
     {r : ℕ} {size : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
     (he : IsUnitaryBraidPresentation b)
     {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0) {d f : ℝ} (hf : 0 < f)
     (htrace : IsTracePresentation C p b w)
@@ -97,35 +96,24 @@ theorem actual_braid_squares_equal_of_saturation
       (braidInImage X 1
         (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2) :
     tripleBlockLeft X b ^ 2 = tripleBlockRight X b ^ 2 := by
-  let B : PropertyF.Blocks := ⟨r, size⟩
+  let B : Blocks := ⟨r, size⟩
   let ρ : braidImage X 1 →* B.Algebra :=
     b.toMonoidHom.comp (braidInImage X 1)
   let a : B.Algebraˣ := ρ.toHomUnits (threeGeneratorLeft X)
   let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
-  have ha : B.IsUnitary (a : B.Algebra) := he _
-  have hc : B.IsUnitary (c : B.Algebra) := he _
-  have hbraid : a * c * a = c * a * c := by
-    apply Units.ext
-    exact three_braid_relation_map ρ
   have hbnd : ∀ z : B.Algebra, B.IsUnitary z → ‖B.trace w z‖ ≤ |d| * f ^ 2 := by
     intro z hz
     change ∀ i, z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ at hz
-    have h := hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
-    simpa [htrace, B] using h
+    simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
   have hv : B.trace w ((a ^ 2 * c ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2 := by
-    have h := htrace (braidInImage X 1
-      (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2))
-    rw [hvalue] at h
     change B.trace w (b (braidInImage X 1 (threeGeneratorLeft X)) ^ 2 *
       b (braidInImage X 1 (threeGeneratorRight X)) ^ 2) = _
-    rw [← map_pow b, ← map_pow b, ← map_mul b]
-    rw [map_mul, map_pow, map_pow] at h
-    exact h.symm
-  have h := braid_squares_equal_of_saturation B w a c d f hf hw ha hc hbraid hbnd hv
-  have hh := congrArg (fun z : B.Algebraˣ => (z : B.Algebra)) h
-  change b (braidInImage X 1 (threeGeneratorLeft X)) ^ 2 =
-    b (braidInImage X 1 (threeGeneratorRight X)) ^ 2 at hh
-  exact hh
+    rw [← map_pow b, ← map_pow b, ← map_mul b,
+      ← map_pow (braidInImage X 1), ← map_pow (braidInImage X 1),
+      ← map_mul (braidInImage X 1), ← htrace, hvalue]
+  exact congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
+    (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
+      (Units.ext (three_braid_relation_map ρ)) hbnd hv)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Equal actual three-strand squares make the two adjacent copies of double
@@ -152,7 +140,7 @@ adjacent copies of double self-braiding. -/
 theorem local_monodromy_of_block_squares_equal
     {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
     [Preadditive C] [Linear ℂ C] {X : C} {r : ℕ} {size : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
     (h : tripleBlockLeft X b ^ 2 = tripleBlockRight X b ^ 2) :
     insertRightIdentity (X ⊗ X) X (selfMonodromy X) =
       overlapFresh X X X (selfMonodromy X) := by
@@ -176,7 +164,7 @@ theorem pair_operator_scalar_of_overlaps_equal
     (heq : insertRightIdentity (X ⊗ X) X u = overlapFresh X X X u) :
     u = (f / d : ℂ) • (1 : End (X ⊗ X)) := by
   simp only [scalarTrace] at htrace
-  simp only [pivotalDimension, Ground.unitScalar_eq_equiv] at hdim
+  simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
   have h := congrArg (rightPartialTrace p (X ⊗ X) X) heq
   rw [rightPartialTrace_insert p (Ground.unitScalarEquiv C),
     overlapFresh, rightPartialTrace_whiskerLeft,
@@ -225,11 +213,11 @@ theorem dimension_eq_abs_of_scalar_monodromy
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hfinite : ObjectPropertyF X)
     (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| := by
-  simp only [pivotalDimension, Ground.unitScalar_eq_equiv] at hdim
+  simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
   have hdim2 : Ground.unitScalarEquiv C (p.rightTrace (𝟙 (X ⊗ X))) = (d : ℂ) ^ 2 := by
     have h := Dimensions.pivotalDimension_tensor C p X X
-    simpa [Dimensions.pivotalDimension, Ground.unitScalar_eq_equiv,
+    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv,
       hdim, pow_two] using h
   have hnonzero : (1 : End (X ⊗ X)) ≠ 0 := by
     intro h
@@ -241,7 +229,7 @@ theorem dimension_eq_abs_of_scalar_monodromy
       simpa only [End.one_asHom, End.zero_asHom, hdim2, hz, map_zero] using ht
     exact (pow_ne_zero 2 hd') this
   obtain ⟨n, hn, hpow⟩ := selfMonodromy_finite_order hfinite
-  apply PropertyF.fp_eq_abs_dim_of_finite_order hd hf
+  apply fp_eq_abs_dim_of_finite_order hd hf
   refine ⟨n, hn, ?_⟩
   apply (smul_left_injective ℂ hnonzero)
   change ((f / d : ℂ) ^ n) • (1 : End (X ⊗ X)) = (1 : ℂ) • (1 : End (X ⊗ X))
@@ -253,7 +241,7 @@ theorem actual_three_strand_rigidity_of_trace_bound
     (C : BraidedFusionCategory.{v,u}) {X : C.Obj} [Simple X]
     (p : PivotalStructure (C := C.Obj))
     {r : ℕ} {size : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
     (he : IsUnitaryBraidPresentation b)
     {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0)
     {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)

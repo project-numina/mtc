@@ -13,10 +13,10 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- Schur's lemma identifies endomorphisms of the simple tensor unit with ℂ. -/
-theorem unit_algebraMap_bijective : Function.Bijective (algebraMap ℂ (End (𝟙_ C.Obj))) := by
+theorem unit_algebraMap_bijective : Function.Bijective (algebraMap ℂ (End (𝟙_ C.Obj))) :=
   let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
-  exact simple_algebraMap_bijective _
+  simple_algebraMap_bijective _
 
 /-- The canonical scalar identification is an algebra equivalence. -/
 def unitScalarEquiv : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ :=

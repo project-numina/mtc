@@ -171,13 +171,13 @@ theorem unit_matrix_reduce (X : C.Obj) (i j : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The off-diagonal components of the second triangle vanish. -/
-theorem unit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j) :
+theorem unit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) = 0 := by
   have h := unit_matrix_reduce C X i j
   dsimp only at h
-  rw [crossing_counit_offdiag C X i j hne] at h
+  rw [crossing_counit_offdiag C X hne] at h
   simpa [monoidalComp] using h
 
 set_option backward.isDefEq.respectTransparency false in
@@ -237,7 +237,7 @@ theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
   by_cases h : i = j
   · subst j
     simpa [Category.assoc] using hh.trans (unit_diag C X i)
-  · simpa [V, Category.assoc, biproduct.ι_π_ne _ h] using hh.trans (unit_offdiag C X i j h)
+  · simpa [V, Category.assoc, biproduct.ι_π_ne _ h] using hh.trans (unit_offdiag C X h)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit and counit satisfy the second triangle. -/

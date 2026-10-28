@@ -253,7 +253,7 @@ theorem overlap_trace_step_of_coherence (D : BraidedFusionCategory.{v,u})
   have hδ := Modular.unitScalar_rightTrace_ne_zero D p X
   change actualBraidTrace D X p _ _ = actualBraidTrace D X p _ _ *
     (actualBraidTrace D X p t u / _) at hh
-  simp only [pivotalDimension, Ground.unitScalar_eq_equiv]
+  simp only [pivotalDimension, unitScalar_eq_equiv]
   rw [hh]
   field_simp
 

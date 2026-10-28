@@ -99,7 +99,7 @@ def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
 /-- On a simple object the twist acts by its scalar. -/
 theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
     (pivotalBraidedTwist C p X).hom = pivotalBraidedTwistScalar C p X • 𝟙 X :=
-  letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   show (End.of (pivotalBraidedTwist C p X).hom).asHom =
       (pivotalBraidedTwistScalar C p X • (1 : End X)).asHom from
     congrArg End.asHom
