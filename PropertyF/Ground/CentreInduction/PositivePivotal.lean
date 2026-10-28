@@ -130,10 +130,8 @@ def positiveDoubleDualIso (T : D) :
 theorem positiveDualIso_inv_forget (T : D) :
     (positiveDualIso T).inv.f =
       (forgetDualIso ((CategoryTheory.Center.ofBraided D).obj T)).inv := by
-  apply (cancel_mono (forgetDualIso ((CategoryTheory.Center.ofBraided D).obj T)).hom).1
-  rw [Iso.inv_hom_id]
-  rw [← positiveDualIso_forget T, ← CategoryTheory.Center.comp_f, Iso.inv_hom_id]
-  rfl
+  change ((CategoryTheory.Center.forget D).mapIso (positiveDualIso T)).inv = _
+  exact (Iso.inv_eq_inv _ _).2 (positiveDualIso_forget T)
 
 theorem positiveDoubleDualIso_forget (T : D) :
     (positiveDoubleDualIso T).hom.f =
@@ -158,10 +156,8 @@ theorem positiveDoubleDualIso_forget (T : D) :
 theorem positiveDoubleDualIso_inv_forget (T : D) :
     (positiveDoubleDualIso T).inv.f =
       (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided D).obj T)).inv := by
-  apply (cancel_mono (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided D).obj T)).hom).1
-  rw [Iso.inv_hom_id]
-  rw [← positiveDoubleDualIso_forget T, ← CategoryTheory.Center.comp_f, Iso.inv_hom_id]
-  rfl
+  change ((CategoryTheory.Center.forget D).mapIso (positiveDoubleDualIso T)).inv = _
+  exact (Iso.inv_eq_inv _ _).2 (positiveDoubleDualIso_forget T)
 
 /-- The pivotal component transported to the positive centre lift. -/
 def positivePivotalComponent (p : Dimensions.PivotalStructure (C := D)) (T : D) :
