@@ -172,7 +172,10 @@ def actualAdjunction : CategoryTheory.Center.forget C.Obj ⊣ induction C where
   left_triangle_components Z := unitCandidate_counit C Z
   right_triangle_components X := by
     apply CategoryTheory.Center.ext
-    exact secondTriangle C X
+    change unitCandidate C ((induction C).obj X) ≫
+      (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X)
+    refine biproduct.hom_ext' _ _ fun i => biproduct.hom_ext _ _ fun j => ?_
+    simpa [underlying, Category.assoc] using secondTriangle_entry C X i j
 
 end PropertyF.Ground.CentreInduction
 

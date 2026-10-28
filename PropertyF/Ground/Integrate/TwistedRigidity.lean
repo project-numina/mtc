@@ -207,12 +207,12 @@ premises of categorical rigidity follow from actual fusion data and the
 proved overlap trace recurrence. -/
 theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
     (σ : ℂ ≃+* ℂ) (y : Fin (rank Z)) (hF : ObjectPropertyF (simples Z y)) (d : ℝ)
-    (hσ : σ (𝒇 y : ℂ) = (d : ℂ)) (hS : σ (𝒮 y y) = (d : ℂ) * 𝒇 y) : 𝒇 y = |d| := by
+    (hσ : σ (𝒇 y : ℂ) = (d : ℂ)) (hS : σ (𝒮 y y) = (d : ℂ) * 𝒇 y) : 𝒇 y = |d| :=
   let D := ScalarTwist.category Z σ
   let q := ScalarTwist.pivotal Z σ p
   let X : D.Obj := simples Z y
   letI : Simple X := simples_simple Z y
-  obtain ⟨original, transformed, hpos, htrans, hqdim⟩ :=
+  let ⟨original, transformed, hpos, htrans, hqdim⟩ :=
     ScalarTwist.exists_galois_fp_dimensions Z σ p hdim
   have hd : d ≠ 0 := fun hz ↦ (map_ne_zero σ).2
     (show (𝒇 y : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (fpSimple_pos Z y)))
@@ -227,9 +227,9 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
       (d : ℂ) * 𝒇 y := by
     rw [ScalarTwist.rightTrace_twist Z σ p]
     exact hS
-  apply actual_rigidity_of_overlap_and_galois_dimensions D q original transformed σ
+  actual_rigidity_of_overlap_and_galois_dimensions D q original transformed σ
     hpos htrans hqdim X d (𝒇 y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
-  exact Calculus.overlap_trace_power D q
+    (Calculus.overlap_trace_power D q)
 
 end PropertyF.Ground
 end
