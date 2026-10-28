@@ -160,6 +160,7 @@ theorem crossingCandidate_unit (X : C.Obj) :
   change (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ crossingCandidate C X (𝟙_ C.Obj) =
     (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv
   rw [crossingCandidate_on_summand]
+  dsimp only [crossingSummand]
   rw [Finset.sum_eq_single i]
   · have hdim : Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i) = 1 := by
       rw [unit_crossing_finrank]; simp

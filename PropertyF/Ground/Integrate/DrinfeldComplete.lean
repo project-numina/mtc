@@ -30,11 +30,9 @@ theorem center_globalDimension_square_of_actual_induction
     (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p) :
     globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
-  have h : globalDimension (Integrate.bundledCenter C) =
-      (globalFPDimension (Integrate.bundledCenter C) : ℂ) := by
-    rw [Modular.categorical_global_eq_sum_squares (Integrate.bundledCenter C) p hp]
-    simp [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow]
-  rw [h, CentreInduction.globalFPDimension_square_of_actual_induction C, Complex.ofReal_pow]
+  rw [← Complex.ofReal_pow, ← CentreInduction.globalFPDimension_square_of_actual_induction C,
+    Modular.categorical_global_eq_sum_squares (Integrate.bundledCenter C) p hp]
+  simp [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow]
 
 
 
@@ -114,15 +112,11 @@ theorem center_transparent_label_eq_unit
     [IsFusionCategory (CategoryTheory.Center C.Obj)]
     (k : Fin (rank (Integrate.bundledCenter C)))
     (hk : Transparent (simples (Integrate.bundledCenter C) k)) :
-    k = unitIndex (Integrate.bundledCenter C) := by
+    k = unitIndex (Integrate.bundledCenter C) :=
   let D := Integrate.bundledCenter C
-  let Y := simples D k
-  letI : Simple Y := simples_simple D k
-  obtain ⟨e⟩ := CentreInduction.center_transparent_simple_iso_unit C (Z := Y) (by
-    intro W
-    exact hk W)
-  obtain ⟨u⟩ := unitIndex_iso D
-  exact simples_injective D ⟨e ≪≫ u.symm⟩
+  let : Simple (simples D k) := simples_simple D k
+  simples_injective D ⟨(CentreInduction.center_transparent_simple_iso_unit C
+    (Z := simples D k) hk).some ≪≫ (unitIndex_iso D).some.symm⟩
 
 
 

@@ -68,6 +68,20 @@ def crossingProjection (T : C.Obj)
     T ⊗ simples C j ⟶ simples C i :=
   simpleProjection C (T ⊗ simples C j) i a
 
+/-- One simple-summand contribution to the induction crossing matrix. -/
+abbrev crossingSummand (X T : C.Obj) (i j : Fin (rank C)) (a : crossingIndex C T i j) :=
+  crossingBlock X T (simples C i) (simples C j)
+    (crossingInclusion C T i j a) (crossingProjection C T i j a)
+
+/-- The crossing block obtained by composing two simple-summand decompositions. -/
+abbrev nestedCrossingBlock (X T U : C.Obj) (i k j : Fin (rank C))
+    (a : crossingIndex C T i k) (b : crossingIndex C U k j) :=
+  crossingBlock X (T ⊗ U) (simples C i) (simples C j)
+    (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
+      (α_ T U (simples C j)).inv)
+    ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
+      crossingProjection C T i k a)
+
 /-- Inclusion and projection of the same summand compose to the identity. -/
 theorem crossingInclusion_projection {C : BraidedFusionCategory.{v,u}} {T : C.Obj} {i j : Fin (rank C)}
     (a : crossingIndex C T i j) :
@@ -110,9 +124,7 @@ theorem crossingCandidate_on_summand
     let V := inductionSummand C X
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
       ∑ j, ∑ a : crossingIndex C T i j,
-        crossingBlock X T (simples C i) (simples C j)
-          (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
-            (T ◁ biproduct.ι V j) := by
+        crossingSummand C X T i j a ≫ (T ◁ biproduct.ι V j) := by
   classical
   simp only [crossingCandidate, biproduct_ι_comp_rightDistributor_hom_assoc,
     biproduct.ι_desc]

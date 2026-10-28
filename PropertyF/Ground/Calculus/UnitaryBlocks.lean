@@ -64,32 +64,24 @@ theorem exists_unitarizing_basis (ρ : G →* (Matrix ι ι ℂ)ˣ) :
     (averagedGram_posDef ρ).isUnit
   let P : (Matrix ι ι ℂ)ˣ := hS.unit
   have hP : (↑P : Matrix ι ι ℂ) = CFC.sqrt A := hS.unit_spec
-  have hself : star (↑P : Matrix ι ι ℂ) = ↑P := by
+  have hselfu : star P = P := Units.ext (by
     rw [hP]
-    exact (CFC.sqrt_nonneg A).star_eq
+    exact (CFC.sqrt_nonneg A).star_eq)
   have hsquare : (↑P : Matrix ι ι ℂ) * (↑P : Matrix ι ι ℂ) = A := by
     rw [hP, ← pow_two, CFC.sq_sqrt A hA]
   refine ⟨P, fun g => ?_⟩
-  apply Matrix.mem_unitaryGroup_iff'.2
-  have hinv : (↑(ρ g) : Matrix ι ι ℂ)ᴴ * A * (↑(ρ g) : Matrix ι ι ℂ) = A :=
-    averagedGram_invariant ρ g
-  change star ((↑P : Matrix ι ι ℂ) * (↑(ρ g) : Matrix ι ι ℂ) * (↑(P⁻¹) : Matrix ι ι ℂ)) *
-    ((↑P : Matrix ι ι ℂ) * (↑(ρ g) : Matrix ι ι ℂ) * (↑(P⁻¹) : Matrix ι ι ℂ)) = 1
-  simp only [star_mul, hself, ← Matrix.star_eq_conjTranspose] at hinv ⊢
-  have hselfu : star P = P := Units.ext hself
-  have hselfinv : star (↑(P⁻¹) : Matrix ι ι ℂ) = ↑(P⁻¹) :=
-    congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ))
-      (show star (P⁻¹) = P⁻¹ from by simp [hselfu])
-  rw [hselfinv]
-  calc
-    _ = (↑(P⁻¹) : Matrix ι ι ℂ) * (star (↑(ρ g) : Matrix ι ι ℂ) * A * ↑(ρ g)) * ↑(P⁻¹) := by
-      rw [← hsquare]
-      noncomm_ring
-    _ = (↑(P⁻¹) : Matrix ι ι ℂ) * (↑P * ↑P) * ↑(P⁻¹) := by rw [hinv, hsquare]
-    _ = 1 := by
-      change (↑(P⁻¹ * (P * P) * P⁻¹) : Matrix ι ι ℂ) = ↑(1 : (Matrix ι ι ℂ)ˣ)
-      congr 1
-      simp
+  have hinv : star (ρ g) * P ^ 2 * ρ g = P ^ 2 := by
+    apply Units.ext
+    simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Units.coe_star,
+      pow_two, hsquare, ← Matrix.star_eq_conjTranspose] using averagedGram_invariant ρ g
+  have hunit : star (P * ρ g * P⁻¹) * (P * ρ g * P⁻¹) = 1 := by
+    simp only [star_mul, star_inv, hselfu]
+    calc
+      _ = P⁻¹ * (star (ρ g) * P ^ 2 * ρ g) * P⁻¹ := by simp only [pow_two]; group
+      _ = P⁻¹ * P ^ 2 * P⁻¹ := by rw [hinv]
+      _ = 1 := by group
+  exact Matrix.mem_unitaryGroup_iff'.2
+    (congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ)) hunit)
 
 end PropertyF.Ground.Calculus
 
@@ -201,6 +193,7 @@ abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCatego
     [Preadditive C] [Linear ℂ C] (X : C) (n : ℕ) : braidImage X n →* braidAlgebra X n :=
   groupInImage (braidEndRepresentation X n)
 
+/-- The braid-image algebra map has the original categorical action as its value. -/
 @[simp] theorem braidInImage_val {C : Type*} [Category C] [MonoidalCategory C]
     [BraidedCategory C] [Preadditive C] [Linear ℂ C] (X : C) (n : ℕ) (g : braidImage X n) :
     (braidInImage X n g : End (tensorPower X (n + 2))) = braidEndRepresentation X n g :=

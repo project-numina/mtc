@@ -29,16 +29,14 @@ theorem norm_trace_le_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGrou
 theorem eq_one_of_re_trace_eq_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGroup ι ℂ)
     (ht : U.trace.re = Fintype.card ι) : U = 1 := by
   have hcol (j : ι) : ∑ i, Complex.normSq (U i j) = 1 := by
-    have h := congrArg (fun A : Matrix ι ι ℂ => (A j j).re)
-      (Matrix.mem_unitaryGroup_iff'.mp hU)
     simpa [Matrix.mul_apply, Matrix.star_apply, Complex.mul_re,
-      Complex.normSq_apply, pow_two] using h
+      Complex.normSq_apply, pow_two] using
+      congrArg (fun A : Matrix ι ι ℂ => (A j j).re) (Matrix.mem_unitaryGroup_iff'.mp hU)
   have hre : ∀ i, (U i i).re ≤ 1 := fun i =>
     (Complex.re_le_norm _).trans (entry_norm_bound_of_unitary hU i i)
-  have hsum : ∑ i, (U i i).re = ∑ _i : ι, (1 : ℝ) := by
-    simpa [Matrix.trace, Matrix.diag] using ht
   have hdiagRe : ∀ i, (U i i).re = 1 := fun i =>
-    (Finset.sum_eq_sum_iff_of_le (fun k _ => hre k)).mp hsum i (Finset.mem_univ i)
+    (Finset.sum_eq_sum_iff_of_le (fun k _ => hre k)).mp
+      (by simpa [Matrix.trace, Matrix.diag] using ht) i (Finset.mem_univ i)
   have hdiag : ∀ i, U i i = 1 := by
     intro i
     have h := (sq_le_one_iff₀ (norm_nonneg (U i i))).2 (entry_norm_bound_of_unitary hU i i)

@@ -25,9 +25,9 @@ include hdim in
 /-- Equality of positive simple dimensions and FP dimensions extends to every
 object, including zero objects and the images of split idempotents. -/
 theorem pivotalDimension_eq_fpDimension {X : C.Obj} : Dimensions.pivotalDimension C p X = (fpDimension C X : ℂ) := by
-  rw [Dimensions.pivotalDimension_decomposition]
-  simp only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
-    ← hdim, Modular.simpleDimension, Dimensions.pivotalDimension, unitScalar_eq_equiv]
+  simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
+    ← hdim, Modular.simpleDimension, Dimensions.pivotalDimension, unitScalar_eq_equiv] using
+    Dimensions.pivotalDimension_decomposition C p X
 
 /-- If the falling factorial of an object's dimension is the dimension of an
 actual object up to a positive scalar at every degree, the dimension is an

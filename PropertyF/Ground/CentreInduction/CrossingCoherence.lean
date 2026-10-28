@@ -15,8 +15,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingCandidate_matrix (X T : C.Obj) (i j : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ biproduct.π V j) =
-    ∑ a, crossingBlock X T (simples C i) (simples C j)
-      (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
+    ∑ a, crossingSummand C X T i j a := by
   classical
   dsimp
   rw [crossingCandidate_on_summand_assoc]
@@ -35,12 +34,9 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
   (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
     ∑ k, ∑ a : crossingIndex C T i k,
       ∑ j, ∑ b : crossingIndex C U k j,
-        crossingBlock X (T ⊗ U) (simples C i) (simples C j)
-          (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
-            (α_ T U (simples C j)).inv)
-          ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
-            crossingProjection C T i k a) ≫ ((T ⊗ U) ◁ biproduct.ι V j) := by
+        nestedCrossingBlock C X T U i k j a b ≫ ((T ⊗ U) ◁ biproduct.ι V j) := by
   classical
+  dsimp only [nestedCrossingBlock]
   let V := inductionSummand C X
   let bT : (⨁ V) ⊗ T ⟶ T ⊗ (⨁ V) := crossingCandidate C X T
   let bU : (⨁ V) ⊗ U ⟶ U ⊗ (⨁ V) := crossingCandidate C X U
