@@ -134,20 +134,22 @@ abbrev HasIntegralSimpleDimensionsOn (Z : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := Z.Obj)) (core : Set (Fin (rank Z))) : Prop :=
   ∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z
 
+variable {Z : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := Z.Obj)}
+variable {τ : ℂ ≃+* ℂ} {core generated : Set (Fin (rank Z))}
+local notation "𝒮" => Modular.categoricalS Z p
+local notation "𝒅" => Modular.simpleDimension Z p
+
 /-- If the common centralizer has integral dimensions, its double centralizer
 contains a simple with the Galois-unit column. Any such simple has property F
 when property F holds throughout the generated subcategory. The two label
 sets and the categorical double-centralizer and finite-image results are
 explicit interim premises, not assumptions in the target. -/
-theorem propertyF_of_galois_column
-    (Z : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj))
-    (τ : ℂ ≃+* ℂ) (core generated : Set (Fin (rank Z)))
-    (hIntegral : HasIntegralSimpleDimensionsOn Z p core)
+theorem propertyF_of_galois_column (hIntegral : HasIntegralSimpleDimensionsOn Z p core)
     (hDouble : CentreCabling.sCentralizer Z p core ⊆ generated)
     (hFinite : ∀ y ∈ generated, ObjectPropertyF (simples Z y))
     (y : Fin (rank Z))
-    (hColumn : ∀ x, Modular.categoricalS Z p x y =
-      Modular.simpleDimension Z p y * τ (Modular.simpleDimension Z p x)) :
+    (hColumn : ∀ x, 𝒮 x y =
+      𝒅 y * τ (𝒅 x)) :
     ObjectPropertyF (simples Z y) :=
   hFinite y <| hDouble fun x hx ↦ by
     obtain ⟨z, hz⟩ := hIntegral x hx
@@ -197,7 +199,7 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
   apply center_witness_of_categorical_modular_data 𝒵ᶠ hp hdim hdet
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)) hb hglobal τ hτ
   intro y hColumn
-  apply propertyF_of_galois_column 𝒵ᶠ p τ.symm core generated hIntegral hDouble ?_ y
+  apply propertyF_of_galois_column hIntegral hDouble ?_ y
   · intro x
     rw [hdim y]
     exact hColumn x

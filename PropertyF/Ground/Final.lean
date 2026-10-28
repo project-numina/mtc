@@ -30,22 +30,19 @@ theorem target : TargetStatement.{v,u} := by
     simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
       unitScalar_eq_equiv] using hfp i
   have hbalance : CentreModular.IsPivotalTwistBalanced (Integrate.bundledCenter D) pZ :=
-    fun X Y ↦ pivotal_twist_balanced (Integrate.bundledCenter D) pZ X Y
+    pivotal_twist_balanced (Integrate.bundledCenter D) pZ
   have hdet := CentreModular.categoricalS_det_ne_zero_of_trivial_transparency
     (Integrate.bundledCenter D) pZ hdim hbalance (center_transparent_label_eq_unit D)
-  have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy D pZ := by
-    intro y _ a _
-    exact CentreModular.mixed_monodromy_finite_of_pivotal_balancing
+  have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy D pZ :=
+    fun _ _ _ _ ↦ CentreModular.mixed_monodromy_finite_of_pivotal_balancing
       (Integrate.bundledCenter D) pZ hbalance _ _
   have hInt : WeaklyIntegral (globalFPDimension D) := by
     apply weaklyIntegral_of_actual_center D hDF hspherical hdim hdet
-      (center_globalDimension_square_of_actual_induction D pZ hspherical hdim)
+      (center_globalDimension_square_of_actual_induction D hspherical hdim)
       (CentreCalculus.actual_symmetricCore_integrality ⟨hspherical, hdim⟩)
-    · intro y hy
-      exact (CentreCabling.mem_productLabels D y).mpr
+    · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mpr
         (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)
-    · intro y hy
-      exact (CentreCabling.mem_productLabels D y).mp hy
+    · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mp hy
   rwa [Modular.conjugate_globalFPDimension E]
 
 end PropertyF.Ground
