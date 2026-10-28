@@ -98,9 +98,7 @@ theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
     have hfd := congrArg (fun L => L f) (hdef k)
     change (c k / (c i * c j)) • multiplicityDefect C i j k f = f at hfd
     rw [multiplicityDefect_apply] at hfd
-    have ht := rootPhaseDefect_apply C hc f
-    rw [hfd] at ht
-    simpa [f, X] using ht
+    simpa [f, X, hfd] using rootPhaseDefect_apply C hc f
   change ((rootSignTwist C c hc).app X).hom ≫ (rootSignTensorIso C c hc _ _).inv = 𝟙 X at hid
   apply Iso.ext
   simpa [X] using (Iso.comp_inv_eq (rootSignTensorIso C c hc _ _)).1 hid
@@ -141,15 +139,10 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
       ((a.app X).hom ⊗ₘ (a.app Y).hom) ≫ (doubleDualTensorIso X Y).hom := by
   apply tensor_simples_hom_ext C
   intro i j sx sy
-  have hx := a.hom.naturality sx
-  have hy := a.hom.naturality sy
-  have hz := a.hom.naturality (sx ⊗ₘ sy)
-  change sx ≫ (a.app X).hom = (a.app (simples C i)).hom ≫ ((sxᘁ)ᘁ) at hx
-  change sy ≫ (a.app Y).hom = (a.app (simples C j)).hom ≫ ((syᘁ)ᘁ) at hy
-  change (sx ⊗ₘ sy) ≫ (a.app (X ⊗ Y)).hom =
-    (a.app (simples C i ⊗ simples C j)).hom ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) at hz
-  rw [hz, hpair, Category.assoc, ← doubleDualTensorIso_natural,
-    tensorHom_comp_tensorHom_assoc, ← hx, ← hy,
+  have hn {A B : C.Obj} (f : A ⟶ B) :
+      f ≫ (a.app B).hom = (a.app A).hom ≫ ((fᘁ)ᘁ) := a.hom.naturality f
+  rw [hn (sx ⊗ₘ sy), hpair, Category.assoc, ← doubleDualTensorIso_natural,
+    tensorHom_comp_tensorHom_assoc, ← hn sx, ← hn sy,
     ← tensorHom_comp_tensorHom, Category.assoc]
 
 variable {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)

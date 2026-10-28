@@ -137,14 +137,14 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
     (heq : ∑ k, x k * (f k : ℂ) = ((∑ k, N k * f k : ℝ) : ℂ)) :
     ∀ k, x k = (N k : ℂ) := by
   classical
-  have hnonneg (k : ι) : 0 ≤ (N k - (x k).re) * f k :=
-    mul_nonneg (sub_nonneg.mpr (le_trans (Complex.re_le_norm _) (hdom k))) (le_of_lt (hf k))
   have hsum : ∑ k, (N k - (x k).re) * f k = 0 := by
     simpa only [Complex.re_sum, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
       mul_zero, sub_zero, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] using
       (congrArg Complex.re heq).symm
   intro k
-  have hz := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => hnonneg j)).1 hsum k (Finset.mem_univ k)
+  have hz := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ ↦
+    mul_nonneg (sub_nonneg.mpr ((Complex.re_le_norm _).trans (hdom j))) (hf j).le)).1
+      hsum k (Finset.mem_univ k)
   have hre : (x k).re = N k :=
     (sub_eq_zero.mp ((mul_eq_zero.mp hz).resolve_right (ne_of_gt (hf k)))).symm
   have him : (x k).im = 0 := Complex.abs_re_eq_norm.mp <| by
@@ -169,11 +169,6 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
     div_mul_cancel₀ _ (Complex.ofReal_ne_zero.mpr (ne_of_gt (hf i)))
   intro i j k
   let x : ι → ℂ := fun l => T i j l * q l / (q i * q j)
-  have hx : ∀ l, ‖x l‖ ≤ N i j l := by
-    intro l
-    dsimp [x]
-    rw [norm_div, norm_mul, norm_mul, hq l, hq i, hq j]
-    simpa using hdom i j l
   have heq : ∑ l, x l * (f l : ℂ) = ((∑ l, N i j l * f l : ℝ) : ℂ) := by
     calc
       _ = (∑ l, T i j l * d l) / (q i * q j) := by
@@ -187,6 +182,7 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
         rw [← hrepr i, ← hrepr j, Complex.ofReal_mul]
         field_simp [hqn i, hqn j]
       _ = _ := by rw [hmul]
-  exact complex_weighted_saturation hf hx heq k
+  exact complex_weighted_saturation hf (fun l ↦ by
+    simpa [x, norm_div, norm_mul, hq] using hdom i j l) heq k
 
 end PropertyF.Ground.Dimensions
