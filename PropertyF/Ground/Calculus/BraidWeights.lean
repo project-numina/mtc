@@ -112,10 +112,9 @@ theorem transported_weight_ne_zero {ι : Type*} [Fintype ι]
     exact Finset.sum_pos' (fun i _ => mul_nonneg (Nat.cast_nonneg _) (hpos i).le)
       ⟨i, Finset.mem_univ _, mul_pos (by exact_mod_cast hi) (hpos i)⟩
   intro hz
-  have hzero : (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0 := by
-    apply σ.injective
-    simp [map_sum, map_mul, hz]
-  exact (ne_of_gt hsum) (by exact_mod_cast hzero)
+  apply (ne_of_gt hsum)
+  exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz) :
+    (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0)
 
 end PropertyF.Ground.Calculus
 
@@ -142,10 +141,10 @@ private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
     rw [hdiag, Matrix.trace_single_eq_same, mul_comm]
     change T (Matrix.single i₀ i₀ a) = a • T (Matrix.single i₀ i₀ 1)
     rw [← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]
-  · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
-    simp only [Matrix.single_mul_single_same, one_mul,
-      Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
-    rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
+  · rw [Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
+    simpa only [Matrix.single_mul_single_same, one_mul,
+      Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] using
+      hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
 
 include hT in
 /-- A cyclic linear functional on a complex matrix algebra is a scalar

@@ -217,9 +217,7 @@ theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf :
   apply norm_bound_of_overlap (m := t + 2) hδ hf a ?_ hrec
   intro k
   have hexp : overlapIndex t k + 2 = (k + 1) * ((t + 2) - 1) + 1 := by
-    rw [overlapIndex_formula]
-    have h : (t + 2) - 1 = t + 1 := by omega
-    rw [h]
+    rw [overlapIndex_formula, show (t + 2) - 1 = t + 1 by omega]
     ring
   simpa only [hexp] using hbound k
 

@@ -29,12 +29,12 @@ theorem braid_squares_equal_of_saturation (B : Blocks)
     simpa only [Units.val_mul, Units.val_pow_eq_pow_val] using
       (unitary B.Algebra).mul_mem ((unitary B.Algebra).pow_mem (Pi.mem_unitary_iff.mpr ha) 2)
         ((unitary B.Algebra).pow_mem (Pi.mem_unitary_iff.mpr hb) 2)
-  have hsaturate : ‖B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra)‖ = B.mass w := by
-    apply le_antisymm (B.norm_trace_le w hunit)
-    rw [htrace]
-    simpa [norm_pow, abs_of_pos hf] using B.mass_le_of_unitary_trace_bound w hbound
-  exact squares_eq_of_central_product a b hbraid
-    (Units.ext (B.central_of_saturation w hw hunit hsaturate b))
+  apply squares_eq_of_central_product a b hbraid
+  apply Units.ext
+  apply B.central_of_saturation w hw hunit ?_ b
+  apply le_antisymm (B.norm_trace_le w hunit)
+  rw [htrace]
+  simpa [norm_pow, abs_of_pos hf] using B.mass_le_of_unitary_trace_bound w hbound
 
 end PropertyF.Ground.Calculus
 
@@ -93,18 +93,16 @@ theorem actual_braid_squares_equal_of_saturation {X : C.Obj}
     b.toMonoidHom.comp (braidInImage (X := X) (n := 1))
   let a : B.Algebraˣ := ρ.toHomUnits (threeGeneratorLeft X)
   let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
-  have hbnd : ∀ z : B.Algebra, B.IsUnitary z → ‖B.trace w z‖ ≤ |d| * f ^ 2 := by
-    intro z hz
+  refine congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
+    (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
+      (Units.ext (three_braid_relation_map ρ)) ?_ ?_)
+  · intro z hz
     simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
-  have hv : B.trace w ((a ^ 2 * c ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2 := by
-    change B.trace w (b (braidInImage (threeGeneratorLeft X)) ^ 2 *
+  · change B.trace w (b (braidInImage (threeGeneratorLeft X)) ^ 2 *
       b (braidInImage (threeGeneratorRight X)) ^ 2) = _
     rw [← map_pow b, ← map_pow b, ← map_mul b,
       ← map_pow (braidInImage (X := X) (n := 1)), ← map_pow (braidInImage (X := X) (n := 1)),
       ← map_mul (braidInImage (X := X) (n := 1)), ← htrace, hvalue]
-  exact congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
-    (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
-      (Units.ext (three_braid_relation_map ρ)) hbnd hv)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Equal actual three-strand squares make the two adjacent copies of double
@@ -203,11 +201,10 @@ theorem dimension_eq_abs_of_scalar_monodromy {X : C.Obj}
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hfinite : ObjectPropertyF X)
     (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| := by
-  have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
   have hnonzero : (1 : End (X ⊗ X)) ≠ 0 :=
     end_one_ne_zero_of_pivotalDimension_ne_zero C p (by
       rw [Dimensions.pivotalDimension_tensor, hdim]
-      exact mul_ne_zero hd' hd')
+      exact_mod_cast mul_ne_zero hd hd)
   obtain ⟨n, hn, hpow⟩ := selfMonodromy_finite_order hfinite
   apply fp_eq_abs_dim_of_finite_order hd hf
   refine ⟨n, hn, ?_⟩
