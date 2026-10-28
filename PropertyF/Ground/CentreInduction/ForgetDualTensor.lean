@@ -85,20 +85,15 @@ private theorem rightDualIso_tensor_evaluation {X Y A B A' B' : D}
     (𝟙 _ ⊗≫ B' ◁ (ε_ X A' ▷ Y) ⊗≫ ε_ Y B') =
     (𝟙 _ ⊗≫ B ◁ (ε_ X A ▷ Y) ⊗≫ ε_ Y B)
   calc
-    _ = 𝟙 _ ⊗≫ (b ▷ ((A ⊗ X) ⊗ Y)) ⊗≫
-        B' ◁ ((a ▷ X ≫ ε_ X A') ▷ Y) ⊗≫ ε_ Y B' := by
+    _ = 𝟙 _ ⊗≫ ((b ▷ ((A ⊗ X) ⊗ Y)) ≫
+        B' ◁ ((a ▷ X ≫ ε_ X A') ▷ Y)) ⊗≫ ε_ Y B' := by
       simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
       monoidal
-    _ = 𝟙 _ ⊗≫ ((b ▷ ((A ⊗ X) ⊗ Y)) ≫
-        B' ◁ ((a ▷ X ≫ ε_ X A') ▷ Y)) ⊗≫ ε_ Y B' := by monoidal
     _ = 𝟙 _ ⊗≫ (B ◁ ((a ▷ X ≫ ε_ X A') ▷ Y) ≫
         b ▷ ((𝟙_ D) ⊗ Y)) ⊗≫ ε_ Y B' := by rw [whisker_exchange]
-    _ = 𝟙 _ ⊗≫ B ◁ ((a ▷ X ≫ ε_ X A') ▷ Y) ⊗≫
-        (b ▷ ((𝟙_ D) ⊗ Y)) ⊗≫ ε_ Y B' := by monoidal
-    _ = 𝟙 _ ⊗≫ B ◁ ((a ▷ X ≫ ε_ X A') ▷ Y) ⊗≫
-        (b ▷ Y ≫ ε_ Y B') := by monoidal
-    _ = _ := by rw [rightDualIso_evaluation pX qX,
-      rightDualIso_evaluation pY qY]
+    _ = _ := by
+      rw [← rightDualIso_evaluation pX qX, ← rightDualIso_evaluation pY qY]
+      monoidal
 
 /-- The canonical comparison of duals preserves tensor products of pairings. -/
 theorem rightDualIso_tensor {X Y A B A' B' : D} (pX : ExactPairing X A) (qX : ExactPairing X A')

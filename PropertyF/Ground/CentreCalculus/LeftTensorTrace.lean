@@ -19,9 +19,9 @@ twist scalar and `tr C p ρ n σ` for a scalar permutation trace.
 local notation "θ" => PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar
 local notation "tr" => PropertyF.Ground.CentreCalculus.permScalarTrace
 open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical)
-open PropertyF.Ground.Centre (permutationSign)
 open Equiv.Perm (decomposeFin)
 open PropertyF.Ground.Dimensions
+open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
@@ -137,7 +137,7 @@ include htotal in
 set_option backward.isDefEq.respectTransparency false in
 /-- Left trace compatibility implies the local deletion law, with the actual
 pivotal twist scalar as its factor. -/
-theorem tensorPermTrace_adjacent {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
+theorem tensorPermTrace_adjacent {n : ℕ} (σ : Perm (Fin (n + 1))) :
     tr C p (tensorPermAction X hX) (n + 2) (decomposeFin.symm (1, σ)) =
       θ C p X * tr C p (tensorPermAction X hX) (n + 1) σ := by
   dsimp only [permScalarTrace]
@@ -155,8 +155,7 @@ theorem tensorPermTrace_adjacent {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
 include htotal in
 /-- A negative twist is corrected by the sign-twisted permutation action. -/
 theorem negativeParity_adjacentTrace (hneg : θ C p X = -1) :
-    HasAdjacentTrace (tr C p (parityPermAction C hX true)) := by
-  intro n σ
+    HasAdjacentTrace (tr C p (parityPermAction C hX true)) := fun n σ ↦ by
   simp [parityPermScalarTrace_true, sign_decomposeFin, tensorPermTrace_adjacent hX htotal, hneg]
 
 include hdim hX htotal in

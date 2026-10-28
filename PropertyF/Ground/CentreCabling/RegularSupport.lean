@@ -65,7 +65,7 @@ variable {D : Ground.BraidedFusionCategory.{v,u}}
 
 include hp hdet hreal in
 /-- The S-transform of a vector, inverted using the categorical S-square identity. -/
-theorem categoricalS_fourier_inversion
+theorem sFourier_inversion
     (f : Fin (rank D) → ℂ) (x : Fin (rank D)) :
     sFourier D p (sFourier D p f) x = globalDimension D * f (dualIndex D x) := by
   classical
@@ -107,8 +107,8 @@ theorem nonzero_dual_coefficient_of_sCentralizer
     refine sum_mul_eq_mul_sum_of_supported core _ _ (sFourier D p f) _ hsupport fun y hy ↦ ?_
     rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
       Modular.categoricalS_unit]
-  rw [categoricalS_fourier_inversion hp hdet hreal f x,
-    categoricalS_fourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D] at heq
+  rw [sFourier_inversion hp hdet hreal f x,
+    sFourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D] at heq
   exact fun hz ↦ (mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
     (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit))
       (by simpa only [hz, mul_zero] using heq.symm)
@@ -184,9 +184,10 @@ structure IsFusionSubring (D : Ground.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) : Prop extends IsDualFusionClosed D A where
   unit : unitIndex D ∈ A
 
+variable {A : Finset (Fin (rank D))} {a b k : Fin (rank D)}
+
 /-- Fusion coefficients vanish outside a fusion-closed set. -/
-theorem IsFusionClosed.fusionCoeff_eq_zero {A : Finset (Fin (rank D))}
-    (hA : IsFusionClosed D A) {a b k : Fin (rank D)}
+theorem IsFusionClosed.fusionCoeff_eq_zero (hA : IsFusionClosed D A)
     (ha : a ∈ A) (hb : b ∈ A) (hk : k ∉ A) : fusionCoeff D a b k = 0 :=
   Nat.eq_zero_of_not_pos (fun h ↦ hk (hA a ha b hb k h))
 
@@ -195,15 +196,13 @@ abbrev regularVector (D : Ground.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) (i : Fin (rank D)) : ℂ :=
   if i ∈ A then (fpSimple D i : ℂ) else 0
 
-variable {A : Finset (Fin (rank D))}
-
 /-- The support of the regular vector is precisely the chosen set. -/
 theorem regularVector_ne_zero_iff {i : Fin (rank D)} :
     regularVector D A i ≠ 0 ↔ i ∈ A := by
   simp [regularVector, ne_of_gt (fpSimple_pos D i)]
 
 /-- Fusion by a label in a fusion-closed set leaves the regular vector supported there. -/
-theorem regularVector_mul_eq_zero_of_not_mem (hA : IsFusionClosed D A) {a k : Fin (rank D)} (ha : a ∈ A) (hk : k ∉ A) :
+theorem regularVector_mul_eq_zero_of_not_mem (hA : IsFusionClosed D A) (ha : a ∈ A) (hk : k ∉ A) :
     ∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i = 0 := by
   classical
   apply Finset.sum_eq_zero
@@ -213,7 +212,7 @@ theorem regularVector_mul_eq_zero_of_not_mem (hA : IsFusionClosed D A) {a k : Fi
   · rw [show regularVector D A i = 0 from ite_eq_right hi, mul_zero]
 
 /-- On its support, the regular vector has the FP eigenvalue. -/
-theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) {a k : Fin (rank D)} (ha : a ∈ A) (hk : k ∈ A) :
+theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) (ha : a ∈ A) (hk : k ∈ A) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
   classical
@@ -230,7 +229,8 @@ theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) {a k : Fin (rank 
 
 /-- The FP-weighted regular vector of a dual- and fusion-closed set of labels
 is an eigenvector for multiplication by each label in that set. -/
-theorem regular_vector_fusion_eigenvector (hA : IsDualFusionClosed D A) {a : Fin (rank D)} (ha : a ∈ A) (k : Fin (rank D)) :
+theorem regular_vector_fusion_eigenvector (hA : IsDualFusionClosed D A)
+    (ha : a ∈ A) (k : Fin (rank D)) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * regularVector D A k := by
   by_cases hk : k ∈ A <;> simp only [regularVector, hk, ↓reduceIte, mul_zero]

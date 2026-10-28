@@ -30,27 +30,26 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
   rw [hr]
   apply (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)).symm.injective
   simp only [Equiv.symm_apply_apply]
-  let q := closeFusionMap T S f
-  change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫
-    𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
-      ((T ⊗ S) ◁ ε_ S (Sᘁ)) ≫ (ρ_ (T ⊗ S)).hom = f ≫ g
+  dsimp only [tensorRightHomEquiv, Equiv.symm, Equiv.coe_fn_mk]
+  set q := closeFusionMap T S f
   calc
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ (q ▷ S)) ⊗≫
       ((g ▷ ((Sᘁ : D) ⊗ S)) ≫ ((T ⊗ S) ◁ ε_ S (Sᘁ))) ⊗≫ 𝟙 _ := by
         simp only [tensorHom_def']
         monoidal
-    _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ (q ▷ S)) ⊗≫
-      ((R ◁ ε_ S (Sᘁ)) ≫ (g ▷ (𝟙_ D))) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ ((q ▷ S) ≫ ε_ S (Sᘁ))) ⊗≫
-      (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by simp only [whiskerLeft_comp]; monoidal
+      (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by
+      rw [← whisker_exchange]
+      simp only [whiskerLeft_comp]
+      monoidal
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫
       (R ◁ (𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ))) ⊗≫
       (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by rw [closeFusionMap_evaluation f]
     _ = 𝟙 _ ⊗≫ ((η_ R (Rᘁ) ▷ (T ⊗ S)) ≫ (((R ⊗ Rᘁ) : D) ◁ f)) ⊗≫
       (R ◁ ε_ R (Rᘁ)) ⊗≫ g := by monoidal
-    _ = 𝟙 _ ⊗≫ (((𝟙_ D) ◁ f) ≫ (η_ R (Rᘁ) ▷ R)) ⊗≫
-      (R ◁ ε_ R (Rᘁ)) ⊗≫ g := by rw [whisker_exchange]
-    _ = f ⊗≫ ((η_ R (Rᘁ) ▷ R) ⊗≫ (R ◁ ε_ R (Rᘁ))) ⊗≫ g := by monoidal
+    _ = f ⊗≫ ((η_ R (Rᘁ) ▷ R) ⊗≫ (R ◁ ε_ R (Rᘁ))) ⊗≫ g := by
+      rw [← whisker_exchange]
+      monoidal
     _ = _ := by rw [evaluation_coevaluation'']; monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -76,11 +75,8 @@ theorem unit_block (Z : Center D) {T S R : D}
         rw [← Z.2.naturality g]
         simp only [comp_whiskerRight]
         monoidal
-    _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
-      ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
-      ((((Z.1 ⊗ (T ⊗ S)) ◁ q)) ≫ (bTS ▷ (Sᘁ))) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = _ := by
-      rw [← fusion_coevaluation g f]
+      rw [← whisker_exchange, ← fusion_coevaluation g f]
       simp only [tensorHom_def]
       monoidal
 
