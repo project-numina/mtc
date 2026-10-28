@@ -131,13 +131,13 @@ set_option backward.isDefEq.respectTransparency false in
 theorem braiding_cap_loop (X Y Z : C) (f : Y ⊗ Z ⟶ 𝟙_ C) :
     (β_ X Y).hom ▷ Z ⊗≫ Y ◁ (β_ X Z).hom ⊗≫ f ▷ X ⊗≫ (λ_ X).hom =
       𝟙 ((X ⊗ Y) ⊗ Z) ⊗≫ X ◁ f ⊗≫ (ρ_ X).hom := by
-  have h := congrArg (fun g ↦ g ≫ (λ_ X).hom) (braiding_naturality_right X f)
-  simp only [Category.assoc, braiding_leftUnitor] at h
   calc
     _ = (α_ X Y Z).hom ≫ (β_ X (Y ⊗ Z)).hom ≫ f ▷ X ≫ (λ_ X).hom := by
       rw [braiding_tensor_right_hom]
       monoidal
-    _ = _ := by rw [← h]; monoidal
+    _ = _ := by
+      rw [← braiding_naturality_right_assoc, braiding_leftUnitor]
+      monoidal
 omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Contract the first braiding loop in the monodromy evaluation. -/
