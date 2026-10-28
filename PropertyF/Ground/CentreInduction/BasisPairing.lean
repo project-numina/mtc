@@ -35,9 +35,8 @@ theorem simpleBasis_contraction_natural {i : Fin (rank C)} (q : V ⟶ W)
     (F : (Sᶜ i ⟶ W) →ₗ[ℂ] (V ⟶ Sᶜ i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
-  simpa only [LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply,
-    LinearEquiv.coe_coe, simpleInclusionBasis_apply,
-    ← pairing_simpleProjection, ← simpleHomPairingEquiv_natural, LinearEquiv.symm_apply_apply] using
+  simpa [simpleInclusionBasis_apply, ← pairing_simpleProjection,
+    ← simpleHomPairingEquiv_natural] using
     dualBasis_contraction_natural (simpleInclusionBasis C V i) (simpleInclusionBasis C W i)
       (Linear.rightComp ℂ (Sᶜ i) q)
       ((LinearMap.lcomp ℂ E (simpleHomPairingEquiv (Sᶜ i) V).symm.toLinearMap).comp F)
