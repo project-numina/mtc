@@ -9,8 +9,6 @@ public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.Centre.Modular.Vafa
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
-public import PropertyF.Ground.CentreIntegrate.TwistBalancing
-public import PropertyF.Ground.Dimensions.MonodromyTensorCap
 
 section
 /-! The constructed induction adjunction removes the centre square premise. -/
@@ -65,27 +63,6 @@ theorem center_transparent_label_eq_unit
   let : Simple (simples 𝒵ᶠ k) := simples_simple _ k
   simples_injective _ ⟨(CentreInduction.center_transparent_simple_iso_unit (C := C) hk).some ≪≫
     (unitIndex_iso 𝒵ᶠ).some.symm⟩
-
-end PropertyF.Ground
-end
-end
-
-section
-/-! The proved cap diagram supplies Drinfeld tensor coherence and balancing. -/
-
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground
-universe v u
-set_option linter.style.haveILetI false
-
-variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
-local notation "θ" => Dimensions.pivotalBraidedTwist C p
-
-/-- The twist of any pivotal braided fusion category is balanced. -/
-theorem pivotal_twist_balanced (X Y : C.Obj) :
-    Modular.doubleBraiding X Y ≫ ((θ X).hom ⊗ₘ (θ Y).hom) = (θ (X ⊗ Y)).hom :=
-  CentreIntegrate.pivotal_balance_of_drinfeld_tensor p (doubleDualIso C) (drinfeld_tensor C X Y)
 
 end PropertyF.Ground
 end
