@@ -57,19 +57,15 @@ theorem character_dual_conj (χ : Character N) (i : ι) :
   classical
   let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * χ.value j
   have hw : w ≠ 0 := by
-    let r : ℝ := ∑ j, Complex.normSq (χ.value j)
-    have hr : 0 < r := by
-      have hh := Finset.single_le_sum (f := fun j => Complex.normSq (χ.value j))
-        (fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ N.unit)
-      have : 1 ≤ r := by simpa [r, χ.unit_eq] using hh
-      linarith
-    have hw' : w = (r : ℂ) := by
-      simp only [w, r, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]
+    have hr : 0 < ∑ j, Complex.normSq (χ.value j) :=
+      Finset.sum_pos' (fun j _ ↦ Complex.normSq_nonneg _)
+        ⟨N.unit, Finset.mem_univ _, by simp [χ.unit_eq]⟩
+    have hw' : w = ((∑ j, Complex.normSq (χ.value j) : ℝ) : ℂ) := by
+      simp only [w, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]
     rw [hw']
     exact_mod_cast ne_of_gt hr
-  have hbalance : χ.value i * w = starRingEnd ℂ (χ.value (dual i)) * w := by
-    simpa [w] using character_inner_balance N dual hdual χ χ i
-  have h := mul_right_cancel₀ hw hbalance
+  have h : χ.value i = starRingEnd ℂ (χ.value (dual i)) :=
+    mul_right_cancel₀ hw (by simpa [w] using character_inner_balance N dual hdual χ χ i)
   simpa using (congrArg (starRingEnd ℂ) h).symm
 
 /-- Actual fusion coefficients satisfy the adjointness relation. -/

@@ -84,6 +84,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
+/-- Scaling the double-dual component scales its right quantum trace. -/
+theorem rightQuantumTrace_smul_hom [Preadditive C] [Linear ℂ C]
+    [MonoidalPreadditive C] [MonoidalLinear ℂ C] {X : C}
+    (j k : X ≅ (Xᘁ)ᘁ) (c : ℂ) (h : j.hom = c • k.hom) :
+    rightQuantumTrace j = c • rightQuantumTrace k :=
+  End.homEquiv.injective (by simp [rightQuantumTrace, h, tensorHom_def])
+
 /-- The left quantum trace of an isomorphism is the right quantum trace of the
 corresponding inverse dual isomorphism. -/
 theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :

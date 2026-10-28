@@ -586,6 +586,19 @@ universe v u w
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
+/-- The multiplicity expansion of a simple object has a single nonzero term. -/
+theorem simple_multiplicity_expansion (M : Type w) [AddCommGroup M] [Module ℝ M]
+    (f : C.Obj → M) (hiso : ∀ {X Y : C.Obj}, (X ≅ Y) → f X = f Y)
+    (S : C.Obj) [Simple S] :
+    f S = ∑ i, (Module.finrank ℂ (simples C i ⟶ S) : ℝ) • f (simples C i) := by
+  classical
+  let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  obtain ⟨j, ⟨e⟩⟩ := exists_simple_iso C S
+  have hr (i : Fin (rank C)) : Module.finrank ℂ (simples C i ⟶ S) =
+      Module.finrank ℂ (simples C i ⟶ simples C j) :=
+    (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
+  simpa [hr, finrank_simples_hom] using hiso e
+
 /-- Any isomorphism-invariant additive object function is determined by
 its values on simples and the actual Hom-space multiplicities. -/
 theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Module ℝ M]
@@ -597,13 +610,6 @@ theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Mo
     f X = ∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℝ) • f (simples C i) := by
   classical
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  have hsimple (S : C.Obj) [Simple S] :
-      f S = ∑ i, (Module.finrank ℂ (simples C i ⟶ S) : ℝ) • f (simples C i) := by
-    obtain ⟨j, ⟨e⟩⟩ := exists_simple_iso C S
-    have hr (i : Fin (rank C)) : Module.finrank ℂ (simples C i ⟶ S) =
-        Module.finrank ℂ (simples C i ⟶ simples C j) :=
-      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
-    simpa [hr, finrank_simples_hom] using hiso e
   have h := base_finite_simple_sum C X
   induction h with
   | @zero W hz =>
@@ -616,8 +622,8 @@ theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Mo
   | @cons W S K hs hk he ih =>
     obtain ⟨e⟩ := he
     let : Simple S := hs
-    rw [hiso e, hadd, hsimple S, ih]
-    rw [← Finset.sum_add_distrib]
+    rw [hiso e, hadd, simple_multiplicity_expansion C M f hiso S, ih,
+      ← Finset.sum_add_distrib]
     apply Finset.sum_congr rfl
     intro i _
     have hdim : Module.finrank ℂ (simples C i ⟶ W) =
@@ -652,21 +658,14 @@ theorem fpDeterminant_functor_natural_decomposition
     rw [functor_natural_app_conjugate F η e]
     exact fpDeterminant_conjugate C (F.mapIso e).symm (η.app Y)
   · intro X hX
-    have hFX : IsZero (F.obj X) := by
-      apply (IsZero.iff_id_eq_zero _).mpr
-      rw [← F.map_id, (IsZero.iff_id_eq_zero X).mp hX, F.map_zero]
-    have hη : η.app X = Iso.refl (F.obj X) := by
-      apply Iso.ext
-      exact hFX.eq_of_src _ _
+    have hη : η.app X = Iso.refl (F.obj X) := Iso.ext ((F.map_isZero hX).eq_of_src _ _)
     rw [hη, fpDeterminant_refl]
   · intro X Y
     let : PreservesBinaryBiproducts F := preservesBinaryBiproducts_of_preservesBiproducts F
     rw [functor_natural_app_biprod F η X Y]
-    have h := fpDeterminant_conjugate C (F.mapBiprod X Y).symm
-      (biprod.mapIso (η.app X) (η.app Y))
-    change fpDeterminant C (F.obj (X ⊞ Y))
-      (F.mapBiprod X Y ≪≫ biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm) = _ at h
-    rw [h, fpDeterminant_biprod]
+    simpa only [Iso.symm_symm_eq, fpDeterminant_biprod] using
+      fpDeterminant_conjugate C (F.mapBiprod X Y).symm
+        (biprod.mapIso (η.app X) (η.app Y))
 
 end PropertyF.Ground.CentreModular
 end

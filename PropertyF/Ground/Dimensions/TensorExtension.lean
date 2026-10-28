@@ -197,10 +197,8 @@ theorem rootSignQuantumTrace_simple
       c i * rootDimension C i := by
   have hq : rightQuantumTrace ((rootSignTwist C c hc).app (simples C i)) =
       c i • rootTrace C (𝟙 (simples C i)) := by
-    apply End.homEquiv.injective
-    have h := rootSignTwist_app_simple C c hc i
-    change (rootSignTwist C c hc).hom.app (simples C i) = _ at h
-    simp [rightQuantumTrace, rootTrace, rightTraceWith, h, tensorHom_def]
+    rw [rootTrace_id]
+    exact rightQuantumTrace_smul_hom _ _ _ (rootSignTwist_app_simple C c hc i)
   rw [hq]
   unfold rootDimension
   simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
