@@ -14,8 +14,8 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
 /-- An algebra equivalent to the scalar field is spanned by its identity. -/
-theorem eq_smul_one_of_algEquiv {A : Type*} [Semiring A] [Algebra ℂ A]
-    (e : A ≃ₐ[ℂ] ℂ) (a : A) : a = e a • (1 : A) :=
+theorem eq_smul_one_of_algEquiv {k : Type*} [CommSemiring k] {A : Type*}
+    [Semiring A] [Algebra k A] (e : A ≃ₐ[k] k) (a : A) : a = e a • (1 : A) :=
   e.injective (by simp)
 
 /-- Cyclicity needs naturality only for the two components involved. -/
@@ -36,24 +36,25 @@ end PropertyF.Ground.Dimensions
 namespace PropertyF.Ground.Dimensions.PivotalStructure
 
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C]
+  [MonoidalCategory C] [RightRigidCategory C]
+  [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
   (p : PivotalStructure (C := C)) {X : C}
 
-omit [Linear ℂ C] [MonoidalLinear ℂ C] in
+omit [Linear k C] [MonoidalLinear k C] in
 /-- The right trace is linear in its endomorphism argument. -/
 theorem rightTrace_add (f g : X ⟶ X) : p.rightTrace (f + g) = p.rightTrace f + p.rightTrace g :=
   End.homEquiv.injective (by simp [rightTrace, tensorHom_def])
 
-theorem rightTrace_smul (c : ℂ) (f : X ⟶ X) : p.rightTrace (c • f) = c • p.rightTrace f :=
+theorem rightTrace_smul (c : k) (f : X ⟶ X) : p.rightTrace (c • f) = c • p.rightTrace f :=
   End.homEquiv.injective (by simp [rightTrace, tensorHom_def])
 
-omit [Linear ℂ C] [MonoidalLinear ℂ C] in
+omit [Linear k C] [MonoidalLinear k C] in
 /-- The left trace is linear in its endomorphism argument. -/
 theorem leftTrace_add (f g : X ⟶ X) : p.leftTrace (f + g) = p.leftTrace f + p.leftTrace g :=
   End.homEquiv.injective (by simp [leftTrace, tensorHom_def])
 
-theorem leftTrace_smul (c : ℂ) (f : X ⟶ X) : p.leftTrace (c • f) = c • p.leftTrace f :=
+theorem leftTrace_smul (c : k) (f : X ⟶ X) : p.leftTrace (c • f) = c • p.leftTrace f :=
   End.homEquiv.injective (by simp [leftTrace, tensorHom_def])
 
 end PropertyF.Ground.Dimensions.PivotalStructure
@@ -80,10 +81,10 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
 /-- Scaling the double-dual component scales its right quantum trace. -/
-theorem rightQuantumTrace_smul_hom [Preadditive C] [Linear ℂ C]
-    [MonoidalPreadditive C] [MonoidalLinear ℂ C] {X : C}
-    {j k : X ≅ (Xᘁ)ᘁ} {c : ℂ} (h : j.hom = c • k.hom) :
-    rightQuantumTrace j = c • rightQuantumTrace k :=
+theorem rightQuantumTrace_smul_hom {k : Type*} [CommSemiring k] [Preadditive C] [Linear k C]
+    [MonoidalPreadditive C] [MonoidalLinear k C] {X : C}
+    {j l : X ≅ (Xᘁ)ᘁ} {c : k} (h : j.hom = c • l.hom) :
+    rightQuantumTrace j = c • rightQuantumTrace l :=
   End.homEquiv.injective (by simp [rightQuantumTrace, h, tensorHom_def])
 
 /-- The left quantum trace of an isomorphism is the right quantum trace of the

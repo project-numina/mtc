@@ -24,6 +24,11 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCalculus
 universe v u
+
+/-- Signed sum of a function on permutations of a finite set. -/
+def signedTraceSum {R : Type*} [CommRing R] {n : ℕ} (F : Perm (Fin n) → R) : R :=
+  ∑ σ, (sgn R n σ : R) * F σ
+
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
 
@@ -128,8 +133,7 @@ permutation action. The existence and evaluation of these actions are still
 explicit hypotheses. -/
 theorem integral_of_signed_permutation_traces
     (hTrace : ∀ n : ℕ, ∃ ρ : Perm (Fin n) →* End (tensorPower X n),
-      (∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) *
-        unitScalar C (p.rightTrace (ρ σ).asHom)) =
+      signedTraceSum (fun σ ↦ unitScalar C (p.rightTrace (ρ σ).asHom)) =
           ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
     IsFPIntegral C X :=
   integral_of_alternating_projector_trace hdim fun n ↦
