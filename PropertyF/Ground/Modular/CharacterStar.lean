@@ -25,11 +25,9 @@ theorem fusion_inner_balance {K : Type*} [CommSemiring K] (φ : K →+* K)
     (χ ψ : ι → K) (hχ : IsFusionCharacter N χ) (hψ : IsFusionCharacter N ψ) (i : ι) :
     ψ i * (∑ j, φ (χ j) * ψ j) = φ (χ (dual i)) * (∑ j, φ (χ j) * ψ j) := by
   classical
-  let w : K := ∑ j, φ (χ j) * ψ j
-  change ψ i * w = φ (χ (dual i)) * w
   calc
     _ = ∑ j, φ (χ j) * (ψ i * ψ j) := by
-      simp only [w, Finset.mul_sum, mul_left_comm]
+      simp only [Finset.mul_sum, mul_left_comm]
     _ = ∑ j, ∑ k, φ (χ j) * ((N.coeff i j k : K) * ψ k) := by
       simp only [hψ, Finset.mul_sum]
     _ = ∑ k, ∑ j, ((N.coeff (dual i) k j : K) * φ (χ j)) * ψ k := by
@@ -37,8 +35,8 @@ theorem fusion_inner_balance {K : Type*} [CommSemiring K] (φ : K →+* K)
       simp only [hdual i, mul_comm, mul_assoc]
     _ = ∑ k, φ (χ (dual i) * χ k) * ψ k := by
       simp only [hχ, map_sum, Finset.sum_mul, map_mul, map_natCast]
-    _ = φ (χ (dual i)) * w := by
-      simp only [w, map_mul, Finset.mul_sum, mul_left_comm, mul_assoc]
+    _ = _ := by
+      simp only [map_mul, Finset.mul_sum, mul_left_comm, mul_assoc]
 
 omit [DecidableEq ι] in
 include hdual in
@@ -89,8 +87,7 @@ theorem categoricalS_dual_conj (i j : Fin (rank C)) :
     Sₚ (Ground.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) :=
   (div_left_inj' (simpleDimension_ne_zero C p j)).mp (by
     simpa only [categoricalSCharacter, normalizedSColumn, map_div₀, hreal j] using
-      character_dual_conj ⟨unitIndex C, fusionCoeff C⟩ (Ground.dualIndex C)
-        (fusionCoeff_dual_adjoint C) (categoricalSCharacter C p j) i)
+      character_dual_conj _ _ (fusionCoeff_dual_adjoint C) (categoricalSCharacter C p j) i)
 
 include hreal in
 /-- Real pivotal simple dimensions are invariant under dual labels. -/

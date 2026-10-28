@@ -51,11 +51,10 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
       (Dimensions.simpleInclusionBasis C V i).dualBasis a := by
   classical
   let : Simple (simples C i) := simples_simple C i
-  let B := Dimensions.simpleInclusionBasis C V i
-  apply B.ext
+  apply (Dimensions.simpleInclusionBasis C V i).ext
   intro b
   rw [Module.Basis.dualBasis_apply_self]
-  simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
+  simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing,
     Dimensions.simpleInclusion, simpleProjection, Category.assoc, biproduct.ι_π]
   split_ifs <;> simp <;> exact End.ext rfl
 
@@ -107,7 +106,6 @@ def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v
     ext f
     simp [Category.assoc, tensorHom_def, MonoidalLinear.smul_whiskerRight,
       Linear.comp_smul, Linear.smul_comp]
-
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A finite splitting can be used to refine a simple-basis contraction. -/

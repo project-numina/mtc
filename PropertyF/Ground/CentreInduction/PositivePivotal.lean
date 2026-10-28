@@ -1,8 +1,10 @@
 module
 public import PropertyF.Ground.CentreInduction.ForgetDualUnit
 public import PropertyF.Ground.Centre.Product
-public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
-public import PropertyF.Ground.Dimensions.IntrinsicNonzero
+public import PropertyF.Ground.Dimensions.DoubleDualPairing
+public import PropertyF.Ground.Dimensions.DimensionCharacter
+public import PropertyF.Ground.Integrate.CharacterReality
+public import PropertyF.Ground.Modular.SMatrix
 
 section
 /-! Lift a pivotal structure once its transported components are central. -/
@@ -55,7 +57,6 @@ theorem liftedPivotalStructure_compatible {p : Dimensions.PivotalStructure (C :=
   simp [PivotalCompatibleAt, liftedPivotalStructure, Category.assoc]
 
 end
-
 
 end PropertyF.Ground.CentreInduction
 
@@ -121,7 +122,6 @@ theorem positiveDoubleDualIso_forget (T : D) :
   change (e.invᘁ).f ≫ (forgetDualIso (F.obj (Tᘁ))).hom =
     (forgetDualIso (Zᘁ)).hom ≫ e.inv.fᘁ at hnat
   rw [hnat, positiveDualIso_inv_forget]
-
 
 theorem positiveDoubleDualIso_inv_forget (T : D) :
     (positiveDoubleDualIso T).inv.f =

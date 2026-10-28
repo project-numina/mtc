@@ -110,12 +110,8 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
     rw [braiding_inv_naturality_left_assoc]
     simp only [← whiskerLeft_comp, hz, MonoidalPreadditive.whiskerLeft_zero,
       comp_zero]
-  have h := unit_matrix_reduce C X i i
-  change biproduct.ι V i ≫ unitComponent C ((induction C).obj X) i ≫
-    ((S ◁ (underlyingCounit C).app X) ▷ (Sᘁ)) = _ at h
-  rw [hzero] at h
   have hid : 𝟙 (V i) = 0 := by
-    rw [← unit_diag C X i, h]
+    rw [← unit_diag C X i, unit_matrix_reduce, hzero]
     simp [monoidalComp]
   let : Simple S := simples_simple C i
   let e : S ⊗ (Sᘁ) ≅ V i := whiskerRightIso (ρ_ S).symm (Sᘁ)
@@ -142,6 +138,5 @@ theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
   obtain rfl := positive_simple_centralizes_induced_unit
     (Centre.centralizes_symm (Centre.centralizes_of_iso_left e'.symm (hcentral _)))
   exact ⟨e' ≪≫ F.mapIso (unitIndex_iso C).some ≪≫ (CategoryTheory.Functor.Monoidal.εIso F).symm⟩
-
 
 end PropertyF.Ground.CentreInduction

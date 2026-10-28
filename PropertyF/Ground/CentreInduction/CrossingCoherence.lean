@@ -33,13 +33,10 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
   let V := inductionSummand C X
   let bT : (⨁ V) ⊗ T ⟶ T ⊗ (⨁ V) := crossingCandidate C X T
   let bU : (⨁ V) ⊗ U ⟶ U ⊗ (⨁ V) := crossingCandidate C X U
-  change (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U = _
   calc
     _ = 𝟙 _ ⊗≫ (((biproduct.ι V i ▷ T) ≫ bT) ▷ U) ⊗≫
       (T ◁ bU) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
-      change (biproduct.ι V i ▷ (T ⊗ U)) ≫
-        ((α_ (⨁ V) T U).inv ≫ (bT ▷ U) ≫ (α_ T (⨁ V) U).hom ≫
-          (T ◁ bU) ≫ (α_ T U (⨁ V)).inv) = _
+      dsimp only [crossingTensorComposite]
       monoidal
     _ = ∑ k, ∑ a : crossingIndex C T i k,
       𝟙 _ ⊗≫ (crossingBlock X T (simples C k)
@@ -48,24 +45,15 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
       dsimp only [bT]
       rw [crossingCandidate_on_summand]
       simp only [monoidalComp, sum_whiskerRight, Preadditive.sum_comp, Preadditive.comp_sum]
-      apply Finset.sum_congr rfl
-      intro k _
-      apply Finset.sum_congr rfl
-      intro a _
+      refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => ?_
       simp only [comp_whiskerRight, whiskerLeft_comp]
       monoidal
     _ = _ := by
-      apply Finset.sum_congr rfl
-      intro k _
-      apply Finset.sum_congr rfl
-      intro a _
+      refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => ?_
       dsimp only [bU]
       rw [crossingCandidate_on_summand]
       simp only [whiskerLeft_sum, monoidalComp, Preadditive.comp_sum, Preadditive.sum_comp]
-      apply Finset.sum_congr rfl
-      intro j _
-      apply Finset.sum_congr rfl
-      intro b _
+      refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun b _ => ?_
       rw [crossingBlock_tensor]
       simp only [whiskerLeft_comp]
       monoidal
@@ -93,8 +81,6 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
     rw [Finset.sum_comm (s := (Finset.univ : Finset (crossingIndex C U k j)))
       (t := (Finset.univ : Finset (crossingIndex C T i k)))]
   rw [Finset.sum_comm]
-
-
 
 /-- The actual matrix crossing is invertible by rigidity. -/
 theorem crossingCandidate_isIso (X T : C.Obj) :
@@ -125,6 +111,5 @@ def induction : C.Obj ⥤ CategoryTheory.Center C.Obj where
     change (underlyingFunctor C).map (f ≫ g) =
       (underlyingFunctor C).map f ≫ (underlyingFunctor C).map g
     exact (underlyingFunctor C).map_comp f g
-
 
 end PropertyF.Ground.CentreInduction

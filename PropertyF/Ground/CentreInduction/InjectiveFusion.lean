@@ -13,8 +13,6 @@ variable (C : BraidedFusionCategory.{v,u})
 theorem induction_injective (X : C.Obj) : Injective ((induction C).obj X) :=
   (actualAdjunction C).map_injective X (object_injective C X)
 
-
-
 end PropertyF.Ground.CentreInduction
 
 end
@@ -43,8 +41,6 @@ theorem all_injective_of_unit_retract {J U : D} [Injective J]
   letI : Injective ((𝟙_ D) ⊗ X) := tensor_preserves_injective (𝟙_ D) X
   Injective.of_iso (λ_ X) inferInstance
 
-
-
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
 
@@ -70,8 +66,6 @@ theorem center_finite_simple_sum_of_unit_retract {X : C.Obj} {U : 𝒵}
   obtain ⟨P, hP⟩ := exists_simple_subobject hW
   exact ⟨P, P.arrow, hP, inferInstance⟩
 
-
-
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract {X : C.Obj} {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
@@ -82,7 +76,6 @@ theorem center_fusion_of_unit_retract {X : C.Obj} {U : 𝒵}
   obtain ⟨k, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract C r Z)
   obtain ⟨m, ⟨a⟩⟩ := regroup_biproduct (fun j => hcover (V j) (hV j))
   exact ⟨m, ⟨e ≪≫ a⟩⟩
-
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A cap with nonzero unit composite gives a unit retract. -/
@@ -112,13 +105,10 @@ theorem center_fusion_of_nonzero_induced_trace (X : C.Obj)
   let J := (induction C).obj X
   let cap : J ⊗ Jᘁ ⟶ 𝟙_ (𝒵) :=
     ((p.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
-  have hcap : η_ J (Jᘁ) ≫ cap ≠ 0 := by
-    intro h
-    apply hne
-    apply End.ext
-    simpa [Dimensions.PivotalStructure.rightTrace, cap, J, Category.assoc] using h
-  exact center_fusion_of_nonzero_induced_cap C X cap hcap
-
-
+  apply center_fusion_of_nonzero_induced_cap C X cap
+  intro h
+  apply hne
+  apply End.ext
+  simpa [Dimensions.PivotalStructure.rightTrace, cap, J, Category.assoc] using h
 
 end PropertyF.Ground.CentreInduction

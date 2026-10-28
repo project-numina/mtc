@@ -53,8 +53,7 @@ include hd hD
 Verlinde character equations, without an assumed character classification. -/
 theorem exists_galoisLabel_of_verlinde
     (hsym : ∀ x y, S x y = S y x) (hunit : ∀ x, S x N.unit = d x)
-    (hsq : HasSSquare S dual D)
-    (hVerlinde : HasVerlindeFormula N S d) :
+    (hsq : HasSSquare S dual D) (hVerlinde : HasVerlindeFormula N S d) :
     ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm ι, IsGaloisColumnAction S d act := by
   let columns : ι → Character N := fun j => {
     value := fun i => S i j / d j
@@ -74,8 +73,7 @@ variable {S : Matrix ι ι K} {dual : ι → ι} {d : ι → K} {D : K}
 theorem galois_unit_column_square
     (hglobal : D = ∑ x, d x ^ 2) (hsym : ∀ x y, S x y = S y x)
     (hsq : HasSSquare S dual D) (σ : K ≃+* K) (y : ι)
-    (hcol : ∀ x, S x y = d y * σ (d x)) :
-    d y ^ 2 * σ D = if y = dual y then D else 0 := by
+    (hcol : ∀ x, S x y = d y * σ (d x)) : d y ^ 2 * σ D = if y = dual y then D else 0 := by
   calc
     d y ^ 2 * σ D = ∑ x, (d y * σ (d x)) ^ 2 := by
       simp only [hglobal, map_sum, Finset.mul_sum, map_pow, mul_pow]
@@ -93,9 +91,8 @@ include hd hD
 
 /-- Proposition 2.1 from the numerical S identities and the character equation,
 with no modular-data hypothesis bundle. -/
-theorem galois_unit_properties (hu : d u = 1)
-    (hglobal : D = ∑ x, d x ^ 2) (hsym : ∀ x y, S x y = S y x)
-    (hunit : ∀ x, S x u = d x) (hsq : HasSSquare S dual D)
+theorem galois_unit_properties (hu : d u = 1) (hglobal : D = ∑ x, d x ^ 2)
+    (hsym : ∀ x y, S x y = S y x) (hunit : ∀ x, S x u = d x) (hsq : HasSSquare S dual D)
     (σ : K ≃+* K) (y : ι) (hchar : ∀ x, σ (S x u / d u) = S x y / d y) :
     (∀ x, S x y = d y * σ (d x)) ∧ y = dual y ∧ σ D = D / d y ^ 2 := by
   have hcol (x : ι) : S x y = d y * σ (d x) :=
@@ -104,12 +101,10 @@ theorem galois_unit_properties (hu : d u = 1)
   have hsquare := galois_unit_column_square hglobal hsym hsq σ y hcol
   have hself : y = dual y := by
     by_contra hn
-    rw [ite_eq_right hn] at hsquare
-    exact mul_ne_zero (pow_ne_zero 2 (hd y))
-      (by simpa using σ.injective.ne hD) hsquare
-  refine ⟨hcol, hself, ?_⟩
-  apply (eq_div_iff (pow_ne_zero 2 (hd y))).mpr
-  rw [mul_comm, hsquare, ite_eq_left hself]
+    exact mul_ne_zero (pow_ne_zero 2 (hd y)) (show σ D ≠ 0 from by simpa using σ.injective.ne hD)
+      (by simpa only [ite_eq_right hn] using hsquare)
+  exact ⟨hcol, hself, (eq_div_iff (pow_ne_zero 2 (hd y))).mpr (by
+    simpa only [mul_comm, ite_eq_left hself] using hsquare)⟩
 
 end
 
@@ -226,7 +221,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 variable (p : PivotalStructure (C := C))
 
 /-- Partial trace is natural for morphisms on the surviving strand. -/
-theorem rightPartialTrace_natural {A B : C} (Y : C)
+theorem rightPartialTrace_natural {A B Y : C}
     (f : A ⟶ B) (g : B ⟶ A) (t : End (B ⊗ Y)) :
     rightPartialTrace p (End.of ((f ▷ Y) ≫ t.asHom ≫ (g ▷ Y))) =
       End.of (f ≫ (rightPartialTrace p t).asHom ≫ g) :=
@@ -241,15 +236,13 @@ theorem rightPartialTrace_natural {A B : C} (Y : C)
 variable [CategoryTheory.Limits.HasKernels C]
 /-- When the surviving object is simple with nonzero dimension, successive
 partial traces agree with tracing the combined tensor factor. -/
-theorem rightPartialTrace_nested_simple (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (Z X Y : C)
+theorem rightPartialTrace_nested_simple {scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ} {Z X Y : C}
     [Simple Z] [FiniteDimensional ℂ (Z ⟶ Z)]
     (hd : scalar (p.rightTrace (𝟙 Z)) ≠ 0) (f : End (Z ⊗ (X ⊗ Y))) :
-    rightPartialTrace p f =
-      rightPartialTrace p (rightPartialTrace p
-        (End.of ((α_ Z X Y).hom ≫ f.asHom ≫ (α_ Z X Y).inv))) := by
-  let g : End ((Z ⊗ X) ⊗ Y) := End.of ((α_ Z X Y).hom ≫ f.asHom ≫ (α_ Z X Y).inv)
+    rightPartialTrace p f = rightPartialTrace p (rightPartialTrace p ((α_ Z X Y).symm.conj f)) := by
+  let g := (α_ Z X Y).symm.conj f
   have hc : p.rightTrace g.asHom = p.rightTrace f.asHom := by
-    simpa [g, Category.assoc] using
+    simpa [g, Iso.conj_apply_asHom, Category.assoc] using
       p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
   rw [rightPartialTrace_simple_of_trace_compatibility (X := Z) (Y := X ⊗ Y) p scalar f hd
       (rightTrace_partialTrace p f),
@@ -266,26 +259,23 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- Partial tracing a tensor-product monodromy leaves a conjugated partial monodromy. -/
 theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X Y : C) :
-    rightPartialTrace p
-      (End.of ((α_ Z X Y).hom ≫ doubleBraiding Z (X ⊗ Y) ≫ (α_ Z X Y).inv)) =
+    rightPartialTrace p ((α_ Z X Y).symm.conj (End.of (doubleBraiding Z (X ⊗ Y)))) =
     End.of ((β_ Z X).hom ≫ (X ◁ (partialMonodromy p Z Y).asHom) ≫ (β_ X Z).hom) := by
   let t : End ((X ⊗ Z) ⊗ Y) := End.of ((α_ X Z Y).hom ≫
     (X ◁ doubleBraiding Z Y) ≫ (α_ X Z Y).inv)
-  have hfactor : End.of ((α_ Z X Y).hom ≫ doubleBraiding Z (X ⊗ Y) ≫ (α_ Z X Y).inv) =
+  have hfactor : (α_ Z X Y).symm.conj (End.of (doubleBraiding Z (X ⊗ Y))) =
       End.of (((β_ Z X).hom ▷ Y) ≫ t.asHom ≫ ((β_ X Z).hom ▷ Y)) := by
     apply End.ext
-    simpa [t, Category.assoc] using doubleBraiding_tensor_factorization Z X Y
+    simpa [t, Iso.conj_apply_asHom, Category.assoc] using doubleBraiding_tensor_factorization Z X Y
   rw [hfactor, rightPartialTrace_natural, Calculus.rightPartialTrace_whiskerLeft]
 
 /-- A scalar partial monodromy factors out of the tensor-product partial trace. -/
-theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) (Z X Y : C) (s : ℂ)
+theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) {Z Y : C} (X : C) {s : ℂ}
     (hs : partialMonodromy p Z Y = s • 1) :
-    rightPartialTrace p
-      (End.of ((α_ Z X Y).hom ≫ doubleBraiding Z (X ⊗ Y) ≫ (α_ Z X Y).inv)) =
+    rightPartialTrace p ((α_ Z X Y).symm.conj (End.of (doubleBraiding Z (X ⊗ Y)))) =
     s • End.of (doubleBraiding Z X) := by
   rw [partialTrace_doubleBraiding_factor, hs]
-  apply End.ext
-  simp [doubleBraiding]
+  exact End.ext (by simp [doubleBraiding])
 
 end MonodromyTrace
 
@@ -293,25 +283,16 @@ end MonodromyTrace
 theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) : HasMultiplicativePartialTrace D p := by
   intro i j k
-  let Z : D.Obj := simples D k
-  let X : D.Obj := simples D i
-  let Y : D.Obj := simples D j
-  let _ : Simple Z := simples_simple D k
-  let _ : FiniteDimensional ℂ (Z ⟶ Z) := Ground.IsFusionCategory.hom_finite _ _
-  let s : ℂ := Ground.unitScalarEquiv D (SEntry p Z Y) / simpleDimension D p k
-  let f : End (Z ⊗ (X ⊗ Y)) := End.of (doubleBraiding Z (X ⊗ Y))
-  have hs : partialMonodromy p Z Y = s • 1 :=
-    partialTrace_doubleBraiding_simple D p k Y
-  change rightPartialTrace p f =
-    rightPartialTrace p (End.of (doubleBraiding Z X)) *
-      rightPartialTrace p (End.of (doubleBraiding Z Y))
-  rw [rightPartialTrace_nested_simple p (Ground.unitScalarEquiv D) Z X Y
-    (simpleDimension_ne_zero D p k) f]
-  rw [partialTrace_doubleBraiding_scalar p Z X Y s hs, map_smul]
-  change s • rightPartialTrace p (End.of (doubleBraiding Z X)) =
-    rightPartialTrace p (End.of (doubleBraiding Z X)) * partialMonodromy p Z Y
-  rw [hs]
-  simp
+  let : Simple (simples D k) := simples_simple D k
+  let : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
+  let s := Ground.unitScalarEquiv D (SEntry p (simples D k) (simples D j)) / simpleDimension D p k
+  let f := End.of (doubleBraiding (simples D k) (simples D i ⊗ simples D j))
+  have hs : partialMonodromy p (simples D k) (simples D j) = s • 1 :=
+    partialTrace_doubleBraiding_simple D p k _
+  change rightPartialTrace p f = _
+  rw [rightPartialTrace_nested_simple p (simpleDimension_ne_zero D p k) f,
+    partialTrace_doubleBraiding_scalar p (simples D i) hs, map_smul, hs]
+  simp [partialMonodromy]
 
 
 /-- The normalized S columns satisfy the Verlinde fusion-character equations. -/

@@ -108,8 +108,7 @@ theorem conjugate_fusionMatrix (i : Fin (rank C)) :
 
 /-- The spectral-radius FP dimensions are invariant under Galois conjugation. -/
 theorem conjugate_fpSimple (i : Fin (rank C)) : fpSimple C i = fpSimple D (e i) := by
-  unfold fpSimple
-  rw [← conjugate_fusionMatrix h he i, spectralRadius_eq_of_unital,
+  rw [fpSimple, fpSimple, ← conjugate_fusionMatrix h he i, spectralRadius_eq_of_unital,
     spectralRadius_eq_of_unital, AlgEquiv.spectrum_eq]
 
 

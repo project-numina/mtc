@@ -1,11 +1,8 @@
-scripts/style/.EnvLintRun.lean:138:0: error: -- Found 18 errors in 1672 declarations (plus 1092 automatically generated ones) in PropertyF with 15 linters
+scripts/style/.EnvLintRun.lean:131:0: error: -- Found 16 errors in 1673 declarations (plus 1115 automatically generated ones) in PropertyF with 15 linters
 
 /- The `docBlame` linter reports:
 DEFINITIONS ARE MISSING DOCUMENTATION STRINGS:
 This linter can be disabled with `@[nolint docBlame]`. -/
--- PropertyF.Ground.Modular.BraidIso
-#check @PropertyF.Ground.Modular.tensorPowerIso /- definition missing documentation string -/
-
 -- PropertyF.Ground.Modular.Classification
 #check @PropertyF.Ground.Modular.FusionRules.unit /- definition missing documentation string -/
 #check @PropertyF.Ground.Modular.FusionRules.coeff /- definition missing documentation string -/
@@ -34,7 +31,3 @@ This linter can be disabled with `@[nolint unusedArguments]`. -/
 -- PropertyF.Ground.Dimensions.BiproductTrace
 #check @PropertyF.Ground.Dimensions.simple_biproduct_diagonal /- 1 unused argument:
   argument 7: [Fintype ι] -/
-
--- PropertyF.Ground.Modular.SSquare
-#check @PropertyF.Ground.Modular.square_support_constant /- 1 unused argument:
-  argument 6: [DecidableEq ι] -/

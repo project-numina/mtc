@@ -106,18 +106,15 @@ lemma braidAutMap_generator (X : C) (n : ℕ) (i : Fin (n+1)) :
 /-- Faithfulness makes the induced automorphism map injective. -/
 lemma braidAutMap_injective (X : C) (n : ℕ) [F.Faithful] :
     Function.Injective (braidAutMap F X n) := fun _ _ h ↦
-  Aut.ext (Iso.ext (F.map_injective (congrArg
-    (fun a : Aut (F.obj (tensorPower X (n+2))) => a.asIso.hom)
+  Aut.ext (Iso.ext (F.map_injective (congrArg (fun a : Aut _ ↦ a.asIso.hom)
     ((tensorPowerComparison F X (n+2)).symm.conjAut.injective h))))
 
 /-- The functor map sends the source braid-image subgroup onto the target
 braid-image subgroup, even if the functor is not faithful. -/
 theorem braidImage_map_eq (X : C) (n : ℕ) :
     (braidImage X n).map (braidAutMap F X n) = braidImage (F.obj X) n := by
-  rw [braidImage, MonoidHom.map_closure, ← Set.range_comp,
-    show (braidAutMap F X n ∘ braidGenerator X n) = braidGenerator (F.obj X) n from
-      funext (braidAutMap_generator F X n)]
-  rfl
+  simpa only [braidImage, MonoidHom.map_closure, ← Set.range_comp, Function.comp_def] using
+    congrArg (fun f ↦ Subgroup.closure (Set.range f)) (funext (braidAutMap_generator F X n))
 
 /-- A braided functor induces a homomorphism on braid-image groups. -/
 def braidImageFunctorMap (X : C) (n : ℕ) : braidImage X n →* braidImage (F.obj X) n :=
@@ -129,10 +126,9 @@ def braidImageFunctorMap (X : C) (n : ℕ) : braidImage X n →* braidImage (F.o
 /-- The map on braid-image groups is always surjective. -/
 theorem braidImageFunctorMap_surjective (X : C) (n : ℕ) :
     Function.Surjective (braidImageFunctorMap F X n) := fun y ↦
-  (Subgroup.mem_map.mp (show
-    (y : Aut (tensorPower (F.obj X) (n + 2))) ∈ (braidImage X n).map (braidAutMap F X n) from
-      (braidImage_map_eq F X n).symm ▸ y.property)).elim fun a ⟨ha, hy⟩ ↦
-    ⟨⟨a, ha⟩, Subtype.ext hy⟩
+  (Subgroup.mem_map.mp (show (y : Aut _) ∈ (braidImage X n).map (braidAutMap F X n) from
+    (braidImage_map_eq F X n).symm ▸ y.property)).elim fun a ⟨ha, hy⟩ ↦
+      ⟨⟨a, ha⟩, Subtype.ext hy⟩
 
 /-- A braided functor preserves finiteness of each object's braid images. -/
 theorem objectPropertyF_functor (X : C) (hX : ObjectPropertyF X) :

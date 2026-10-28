@@ -1,7 +1,12 @@
 module
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 
-/-! The twist sign and integral dimensions of self-transparent simples. -/
+/-!
+# Twist signs and integral dimensions
+
+The inverse-braiding trace identifies the inverse pivotal twist. On a
+self-transparent simple object the twist is a sign, giving integral dimension.
+-/
 @[expose] public noncomputable section
 open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 open PropertyF.Ground.Dimensions
@@ -66,9 +71,8 @@ theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
     simp only [← whiskerLeft_comp, braiding_inv_naturality_left]
   slice_lhs 4 6 => rw [hmove]
   simp only [Category.assoc]
-  rw [associator_inv_naturality_right_assoc]
-  rw [whisker_exchange_assoc (ε_ X (Xᘁ)) t]
-  rw [leftUnitor_naturality]
+  rw [associator_inv_naturality_right_assoc, whisker_exchange_assoc (ε_ X (Xᘁ)) t,
+    leftUnitor_naturality]
   change _ = t
   simpa only [Category.assoc, Category.id_comp] using congrArg (fun f => f ≫ t) (inverse_crossing_snake X)
 

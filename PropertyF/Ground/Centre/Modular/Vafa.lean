@@ -46,21 +46,16 @@ theorem derivation_vanishes_of_regular_eigenvector (N : ι → ι → ι → K) 
     (b : ι → M) (hderiv : IsFusionDerivation N d b) :
     ∀ i, b i = 0 := by
   classical
-  dsimp only [IsFusionDerivation] at hderiv
   intro i
   let R : M := ∑ j, d j • b j
-  let D : K := ∑ j, d j ^ 2
   have hsum : (∑ j, d j • ∑ k, N i j k • b k) = d i • R := by
     simp only [Finset.smul_sum, smul_smul]
     rw [Finset.sum_comm]
     simp_rw [← Finset.sum_smul, hreg, mul_smul]
-    dsimp [R]
-    rw [Finset.smul_sum]
-  apply (smul_eq_zero.mp ?_).resolve_left hD
-  apply add_right_cancel (b := d i • R)
-  rw [zero_add]
-  simpa only [hderiv, smul_add, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul,
-    D, R, pow_two, Finset.smul_sum, mul_comm] using hsum
+    rw [show R = ∑ j, d j • b j from rfl, Finset.smul_sum]
+  exact (smul_eq_zero.mp (add_right_cancel (b := d i • R) (by
+    simpa only [hderiv, smul_add, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul,
+      R, pow_two, Finset.smul_sum, mul_comm, zero_add] using hsum))).resolve_left hD
 
 end
 
@@ -168,11 +163,9 @@ def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
 /-- A scalar linear equivalence has determinant equal to the scalar's dimension power. -/
 theorem linearEquiv_det_of_scalar {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (e : V ≃ₗ[K] V) (z : Kˣ) (h : e.toLinearMap = (z : K) • LinearMap.id) :
-    e.det = z ^ Module.finrank K V := by
-  apply Units.ext
-  rw [LinearEquiv.coe_det]
-  change LinearMap.det e.toLinearMap = (z : K) ^ _
-  rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one]
+    e.det = z ^ Module.finrank K V :=
+  Units.ext (by simp only [LinearEquiv.coe_det, h, LinearMap.det_smul, LinearMap.det_id,
+    mul_one, Units.val_pow_eq_pow_val])
 
 /-- On a scalar map, each Hom-space determinant is the corresponding power. -/
 theorem homAction_det_scalar {R : Type*} [Field R] {D : Type u} [Category.{v} D]
@@ -253,16 +246,17 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
+section
+variable {ι K G : Type*} [Fintype ι] [Field K] [Algebra ℚ K] [CommGroup G]
+variable (N : ι → ι → ι → K) (d : ι → K)
+
 /-- Weighted group classes satisfy the fusion balance relation. -/
-abbrev HasWeightedTwistBalance {ι K G : Type*} [Fintype ι] [Field K] [Algebra ℚ K]
-    [CommGroup G] (N : ι → ι → ι → K) (d : ι → K) (t : ι → G) : Prop :=
+abbrev HasWeightedTwistBalance (t : ι → G) : Prop :=
   ∀ i j, (∑ k, N i j k • (d k • rationalUnitClass (K := K) (t k))) =
     (d i * d j) • (rationalUnitClass (K := K) (t i) + rationalUnitClass (K := K) (t j))
 
 /-- A nondegenerate regular dimension character makes balanced twists torsion. -/
-theorem finite_order_of_weighted_twist_balance {ι K G : Type*} [Fintype ι] [Field K]
-    [Algebra ℚ K] [Module.FaithfullyFlat ℚ K] [CommGroup G]
-    (N : ι → ι → ι → K) (d : ι → K)
+theorem finite_order_of_weighted_twist_balance [Module.FaithfullyFlat ℚ K]
     (hreg : IsRegularFusionVector N d) (hD : (∑ j, d j ^ 2) ≠ 0)
     (hd : ∀ i, d i ≠ 0) (t : ι → G) (hbalance : HasWeightedTwistBalance N d t) :
     ∀ i, IsOfFinOrder (t i) := by
@@ -272,6 +266,8 @@ theorem finite_order_of_weighted_twist_balance {ι K G : Type*} [Fintype ι] [Fi
   intro i
   apply (rationalUnitClass_eq_zero_iff (K := K) _).mp
   exact (smul_eq_zero.mp (derivation_vanishes_of_regular_eigenvector N d hreg hD _ hderiv i)).resolve_left (hd i)
+
+end
 
 end PropertyF.Ground.CentreModular
 end
@@ -294,16 +290,14 @@ abbrev HasSimpleScalars (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → �
 theorem homAction_natural_scalar {R : Type*} [CommSemiring R] {D : Type u}
     [Category.{v} D] [Preadditive D] [Linear R D] (η : 𝟭 D ≅ 𝟭 D) {S X : D}
     (z : R) (hz : (η.app S).hom = z • 𝟙 S) :
-    (homAction (R := R) S X (η.app X)).toLinearMap = z • LinearMap.id := by
-  ext f
-  simpa [homAction, CategoryTheory.Linear.homCongr_apply,
-    show η.hom.app S = z • 𝟙 S from hz] using η.hom.naturality f
+    (homAction (R := R) S X (η.app X)).toLinearMap = z • LinearMap.id :=
+  LinearMap.ext fun f ↦ by
+    simpa [homAction, CategoryTheory.Linear.homCongr_apply,
+      show η.hom.app S = z • 𝟙 S from hz] using η.hom.naturality f
 
 /-- The actual FP determinant of a natural automorphism is the sum of its
 simple scalar classes, weighted by FP dimensions and Hom multiplicities. -/
-theorem fpDeterminant_natural
-    (ht : HasSimpleScalars C η t)
-    (X : C.Obj) :
+theorem fpDeterminant_natural (ht : HasSimpleScalars C η t) (X : C.Obj) :
     fpDeterminant C (η.app X) = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) • (fpSimple C i • vafaUnitClass (t i)) := by
   simp only [fpDeterminant, vafaUnitClass]

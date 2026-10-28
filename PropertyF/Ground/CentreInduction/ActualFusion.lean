@@ -30,9 +30,6 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
   rw [hr]
   apply (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)).symm.injective
   simp only [Equiv.symm_apply_apply]
-  change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S f) ⊗≫
-    𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
-      ((T ⊗ S) ◁ ε_ S (Sᘁ)) ≫ (ρ_ (T ⊗ S)).hom = f ≫ g
   let q := closeFusionMap T S f
   have hq := closeFusionMap_evaluation f
   change q ▷ S ≫ ε_ S (Sᘁ) = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) at hq
@@ -74,13 +71,7 @@ theorem unit_block (Z : CategoryTheory.Center D) {T S R : D}
   have hf : (𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ)) =
       𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ Sᘁ) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) :=
     fusion_coevaluation g f
-  change (((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫ (bR ▷ Rᘁ)) ▷ T) ≫
-    ((α_ (R ⊗ Z.1) (Rᘁ) T).hom ≫ ((g ▷ Z.1) ⊗ₘ q) ≫
-      (α_ (T ⊗ S) Z.1 (Sᘁ)).hom ≫ (α_ T S (Z.1 ⊗ Sᘁ)).hom ≫
-        (T ◁ (α_ S Z.1 (Sᘁ)).inv)) =
-      𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ (f ≫ g) ▷ Sᘁ ⊗≫
-        𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ (bTS ▷ Sᘁ) ⊗≫ 𝟙 _
-  clear_value q bR bTS
+  dsimp only [crossingBlock]
   calc
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((bR ≫ (g ▷ Z.1)) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
@@ -131,13 +122,6 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
   simp only [id_whiskerRight]
   let bT := (Z.2.β T).hom
   let bS := (Z.2.β S).hom
-  change 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫
-      𝟙 ((T ⊗ S) ⊗ Sᘁ) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫
-    (((α_ Z.1 T S).inv ≫ (bT ▷ S) ≫ (α_ T Z.1 S).hom ≫ (T ◁ bS) ≫
-      (α_ T S Z.1).inv) ▷ Sᘁ) ⊗≫ 𝟙 (T ⊗ ((S ⊗ Z.1) ⊗ Sᘁ)) =
-    bT ≫ (T ◁ ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫
-      (α_ Z.1 S (Sᘁ)).inv ≫ (bS ▷ Sᘁ)))
-  clear_value bT bS
   calc
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ T ◁ η_ S (Sᘁ)) ⊗≫ (bT ▷ (S ⊗ Sᘁ)) ⊗≫
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
@@ -159,14 +143,9 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
     _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
       unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
         crossingInclusion C T p.1 j p.2) := by
-      apply Finset.sum_congr rfl
-      intro p _
-      exact unit_block Z
+      exact Finset.sum_congr rfl fun p _ => unit_block Z
         (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
-    _ = unitBlockLinear (k := ℂ) Z T (simples C j)
-      (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
-        crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) := by rw [map_sum]
-    _ = _ := by rw [crossing_completeness, unitBlockLinear_id]; rfl
+    _ = _ := by rw [← map_sum, crossing_completeness, unitBlockLinear_id]; rfl
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
@@ -209,61 +188,6 @@ end PropertyF.Ground.CentreInduction
 end
 end
 
-/-! The numerical consequence of the induction adjunction. -/
-
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-open scoped BigOperators
-set_option backward.isDefEq.respectTransparency false
-set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreInduction
-universe v u
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
-  [IsFusionCategory (CategoryTheory.Center C.Obj)]
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
-local notation "𝒵" => CategoryTheory.Center C.Obj
-
-/-- Once induced simple representatives have the expected underlying objects
-and the adjunction supplies the displayed Hom dimension equality, the global
-FP dimension of the actual centre is the square of that of the base. The
-hypotheses isolate the numerical contribution of the induction adjunction. -/
-theorem globalFPDimension_square_of_induction
-    (I : Fin (rank C) → (𝒵ᶠ).Obj)
-    (hI : ∀ i, Nonempty ((I i).1 ≅ underlying C (simples C i)))
-    (hadj : ∀ i j,
-      Module.finrank ℂ ((simples 𝒵ᶠ j : 𝒵) ⟶ I i) =
-      Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i)) :
-    globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
-  classical
-  have hdim (i : Fin (rank C)) :
-      fpDimension 𝒵ᶠ (I i) = globalFPDimension C * fpSimple C i := by
-    simpa only [fpDimension_underlying, fpDimension_simple] using
-      (show fpDimension 𝒵ᶠ (I i) = fpDimension C (I i).1 from
-        (Integrate.center_forget_fpDimension C (I i)).symm).trans
-          (fpDimension_iso C (hI i).some)
-  have hbase (j : Fin (rank 𝒵ᶠ)) :
-      ∑ i, (Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) : ℝ) * fpSimple C i =
-        fpSimple 𝒵ᶠ j := by
-    simpa only [fpDimension, ← finrank_to_simple_eq_from_simple C] using
-      (show fpDimension C (simples 𝒵ᶠ j).1 = fpSimple 𝒵ᶠ j from
-        (Integrate.center_forget_fpDimension C (simples 𝒵ᶠ j)).trans (fpDimension_simple 𝒵ᶠ j))
-  have hsum : (∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i)) = globalFPDimension 𝒵ᶠ := by
-    simp_rw [fpDimension, hadj, Finset.mul_sum]
-    rw [Finset.sum_comm]
-    simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc]
-    simp_rw [← Finset.mul_sum, hbase]
-    simp [globalFPDimension, pow_two]
-  calc
-    globalFPDimension 𝒵ᶠ = ∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i) := hsum.symm
-    _ = (globalFPDimension C) ^ 2 := by
-      simp_rw [hdim, mul_left_comm (fpSimple C _) (globalFPDimension C)]
-      rw [← Finset.mul_sum]
-      simp [globalFPDimension, pow_two]
-
-end PropertyF.Ground.CentreInduction
-
-end
-
 /-! A linear adjunction supplies the multiplicities needed for the FP-square calculation. -/
 
 @[expose] public noncomputable section
@@ -292,25 +216,53 @@ end
 /-! Centre fusion and FP dimension using the constructed induction adjunction. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.Limits
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 
+variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
+local notation "𝒵" => CategoryTheory.Center C.Obj
+
 set_option backward.isDefEq.respectTransparency false in
-/-- If the actual centre already has a fusion structure, its global FP
- dimension is the square of the base global FP dimension. -/
-theorem globalFPDimension_square_of_actual_induction (C : BraidedFusionCategory.{v,u})
+set_option backward.defeqAttrib.useBackward true in
+/-- If the actual centre has a fusion structure, its global FP dimension is the square
+of the base global FP dimension. -/
+theorem globalFPDimension_square_of_actual_induction
     [RigidCategory (CategoryTheory.Center C.Obj)]
     [IsFusionCategory (CategoryTheory.Center C.Obj)] :
-    globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 :=
-  globalFPDimension_square_of_induction C (fun i => (induction C).obj (simples C i))
-    (fun _ => ⟨Iso.refl _⟩)
-    (fun i j => (homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj)
-      (induction C) (actualAdjunction C) (simples (Integrate.bundledCenter C) j)
-      (simples C i)).finrank_eq)
-
-
-
+    globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
+  classical
+  let I (i : Fin (rank C)) := (induction C).obj (simples C i)
+  have hadj (i : Fin (rank C)) (j : Fin (rank 𝒵ᶠ)) :
+      Module.finrank ℂ ((simples 𝒵ᶠ j : 𝒵) ⟶ I i) =
+      Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) :=
+    (homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj)
+      (induction C) (actualAdjunction C) (simples 𝒵ᶠ j) (simples C i)).finrank_eq
+  have hdim (i : Fin (rank C)) :
+      fpDimension 𝒵ᶠ (I i) = globalFPDimension C * fpSimple C i := by
+    rw [← Integrate.center_forget_fpDimension C]
+    change fpDimension C (underlying C (simples C i)) = _
+    rw [fpDimension_underlying, fpDimension_simple]
+  have hbase (j : Fin (rank 𝒵ᶠ)) :
+      ∑ i, (Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) : ℝ) * fpSimple C i =
+        fpSimple 𝒵ᶠ j := by
+    simpa only [fpDimension, ← finrank_to_simple_eq_from_simple C] using
+      (show fpDimension C (simples 𝒵ᶠ j).1 = fpSimple 𝒵ᶠ j from
+        (Integrate.center_forget_fpDimension C (simples 𝒵ᶠ j)).trans (fpDimension_simple 𝒵ᶠ j))
+  have hsum : (∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i)) = globalFPDimension 𝒵ᶠ := by
+    simp_rw [fpDimension, hadj, Finset.mul_sum]
+    rw [Finset.sum_comm]
+    simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc]
+    simp_rw [← Finset.mul_sum, hbase]
+    simp [globalFPDimension, pow_two]
+  calc
+    globalFPDimension 𝒵ᶠ = ∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i) := hsum.symm
+    _ = (globalFPDimension C) ^ 2 := by
+      simp_rw [hdim, mul_left_comm (fpSimple C _) (globalFPDimension C)]
+      rw [← Finset.mul_sum]
+      simp [globalFPDimension, pow_two]
 
 
 end PropertyF.Ground.CentreInduction

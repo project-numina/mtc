@@ -4,48 +4,48 @@ public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
 
-/-! Reduction of mixed monodromy to the finite order of the pivotal twist. -/
+/-!
+# Finite-order monodromy
+
+Finite order on detecting components gives finite order for a natural
+endomorphism. For a balanced automorphism this implies finite-order monodromy.
+-/
 @[expose] public noncomputable section
 open PropertyF.Ground.Modular (doubleBraiding)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
+variable {D : Type u} [Category.{v} D]
+variable {C : Ground.BraidedFusionCategory.{v,u}}
 
 /-- A natural endomorphism has finite order if finitely many components detect
 it and each of those components has finite order. -/
-theorem natural_end_finite_order_of_components {D : Type u} [Category.{v} D]
-    {ι : Type*} [Finite ι] (X : ι → D)
+theorem natural_end_finite_order_of_components {ι : Type*} [Finite ι] (X : ι → D)
     (hext : ∀ {α β : 𝟭 D ⟶ 𝟭 D}, (∀ i, α.app (X i) = β.app (X i)) → α = β)
     (α : 𝟭 D ⟶ 𝟭 D) (h : ∀ i, IsOfFinOrder (End.of (α.app (X i)))) :
     ∃ n : ℕ, n ≠ 0 ∧ ∀ Y, (End.of (α.app Y)) ^ n = 1 := by
-  obtain ⟨n, hn, hs⟩ := (IsOfFinOrder.pi h).exists_pow_eq_one
   let a : End (𝟭 D) := End.of α
-  have happ (k : ℕ) (Y : D) : (a ^ k).asHom.app Y =
-      ((End.of (α.app Y)) ^ k).asHom := by
-    simpa [Functor.mapEnd, a] using congrArg End.asHom
-      (map_pow (((CategoryTheory.evaluation D D).obj Y).mapEnd (𝟭 D)) a k)
-  have ha : a ^ n = 1 := by
-    apply End.ext
-    apply hext
-    intro i
-    rw [happ]
-    simpa using congrArg End.asHom (congrFun hs i)
-  refine ⟨n, hn.ne', fun Y ↦ ?_⟩
-  let φ := ((CategoryTheory.evaluation D D).obj Y).mapEnd (𝟭 D)
-  exact ((map_pow φ a n).symm.trans (congrArg φ ha)).trans (map_one φ)
+  let φ : End (𝟭 D) →* (∀ i, End (X i)) :=
+    MonoidHom.pi fun i ↦ ((CategoryTheory.evaluation D D).obj (X i)).mapEnd (𝟭 D)
+  have hφ : Function.Injective φ := fun _ _ hbc ↦
+    End.ext <| hext fun i ↦ congrArg End.asHom (congrFun hbc i)
+  obtain ⟨n, hn, ha⟩ :=
+    (hφ.isOfFinOrder_iff.mp (show IsOfFinOrder (φ a) from IsOfFinOrder.pi h)).exists_pow_eq_one
+  exact ⟨n, hn.ne', fun Y ↦
+    let ψ := ((CategoryTheory.evaluation D D).obj Y).mapEnd (𝟭 D)
+    ((map_pow ψ a n).symm.trans (congrArg ψ ha)).trans (map_one ψ)⟩
 
 /-- A natural endomorphism of the identity in a fusion category has a common
 finite order as soon as its components on the simple representatives do. -/
-theorem natural_end_finite_order_of_simples
-    {C : Ground.BraidedFusionCategory.{v,u}} (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
+theorem natural_end_finite_order_of_simples (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (h : ∀ i, IsOfFinOrder (End.of (α.app (Ground.simples C i)))) :
     ∃ n : ℕ, n ≠ 0 ∧ ∀ X, (End.of (α.app X)) ^ n = 1 :=
   natural_end_finite_order_of_components (simples C)
     (fun h ↦ Dimensions.natTrans_eq_of_simple_components C h) α h
 
 /-- Tensoring two endomorphisms commutes with taking powers. -/
-theorem tensor_end_pow {D : Type u} [Category.{v} D] [MonoidalCategory D]
+theorem tensor_end_pow [MonoidalCategory D]
     {X Y : D} (f : End X) (g : End Y) (n : ℕ) :
     (End.of (f.asHom ⊗ₘ g.asHom)) ^ n =
       End.of ((f ^ n).asHom ⊗ₘ (g ^ n).asHom) := by
@@ -58,8 +58,7 @@ theorem tensor_end_pow {D : Type u} [Category.{v} D] [MonoidalCategory D]
 /-- A balanced natural automorphism with finite-order simple components has
 finite-order double braidings on every pair of objects. The balancing identity
 is stated explicitly and is not asserted here for the pivotal twist. -/
-theorem mixed_monodromy_finite_of_balanced_finite_twist
-    {C : Ground.BraidedFusionCategory.{v,u}} (θ : 𝟭 C.Obj ≅ 𝟭 C.Obj)
+theorem mixed_monodromy_finite_of_balanced_finite_twist (θ : 𝟭 C.Obj ≅ 𝟭 C.Obj)
     (hfinite : ∀ i, IsOfFinOrder (End.of (θ.hom.app (Ground.simples C i))))
     (hbalance : ∀ X Y, doubleBraiding X Y ≫
       (θ.hom.app X ⊗ₘ θ.hom.app Y) = θ.hom.app (X ⊗ Y))
@@ -71,8 +70,7 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist
   have ht : t ^ n = 1 := by
     change (End.of (θ.hom.app X ⊗ₘ θ.hom.app Y)) ^ n = 1
     rw [tensor_end_pow, hp X, hp Y]
-    apply End.ext
-    simp
+    exact End.ext (id_tensorHom_id X Y)
   refine isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, ?_⟩
   symm
   simpa only [show t * m = z from End.ext (hbalance X Y), z, hp, ht, one_mul] using

@@ -53,19 +53,11 @@ theorem unitSummandIso_natural
     {X Y : C.Obj} (f : X ⟶ Y) :
     ((simples C (unitIndex C) ◁ f) ▷ (simples C (unitIndex C))ᘁ) ≫
         (unitSummandIso C Y).hom = (unitSummandIso C X).hom ≫ f := by
-  let A := simples C (unitIndex C)
-  let e : A ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
-  let d : Aᘁ ≅ 𝟙_ C.Obj := Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso
-  change ((A ◁ f) ▷ Aᘁ) ≫
-      (((e ⊗ᵢ Iso.refl Y) ⊗ᵢ d) ≪≫ ((λ_ Y) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ Y).hom =
-      (((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫ ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ X).hom ≫ f
-  simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, Category.assoc]
-  rw [← id_tensorHom, ← tensorHom_id]
-  rw [tensor_middle_natural_assoc]
-  simp only [id_tensorHom,
-    tensorHom_id, rightUnitor_naturality]
-  rw [rightUnitor_naturality_assoc, leftUnitor_naturality]
-  rw [rightUnitor_naturality_assoc]
+  dsimp [unitSummandIso]
+  simp only [Category.assoc]
+  rw [← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc]
+  simp only [id_tensorHom, tensorHom_id, rightUnitor_naturality]
+  rw [rightUnitor_naturality_assoc, leftUnitor_naturality, rightUnitor_naturality_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-summand projection is natural. This is the candidate underlying
@@ -78,8 +70,6 @@ def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
     simpa only [Category.assoc] using congrArg (fun g =>
       biproduct.π (inductionSummand C X)
         (unitIndex C) ≫ g) (unitSummandIso_natural C f)
-
-
 
 end PropertyF.Ground.CentreInduction
 
@@ -190,10 +180,7 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   have hn := Z.2.naturality e.hom
   have hc := coevaluation_iso_unit e
   change (η_ A Aᘁ ≫ (e.hom ⊗ₘ d.hom)) = (ρ_ (𝟙_ C.Obj)).inv at hc
-  change ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ A Aᘁ) ≫ (α_ Z.1 A Aᘁ).inv ≫
-    ((Z.2.β A).hom ▷ Aᘁ)) ≫
-      (((e ⊗ᵢ Iso.refl Z.1) ⊗ᵢ d) ≪≫
-        ((λ_ Z.1) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ Z.1).hom = 𝟙 Z.1
+  dsimp only [unitComponent, unitSummandIso]
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_def,
     whiskerLeft_id, Category.comp_id, Category.assoc]
   rw [← comp_whiskerRight_assoc, ← hn]
@@ -207,6 +194,7 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
     rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc, hc]
     monoidal_coherence
   simp only [← whiskerLeft_comp_assoc]
+  dsimp only [A, e, d, Iso.trans_hom] at hunit
   simp only [Category.assoc] at hunit ⊢
   rw [hunit, whiskerLeft_id]
   simp

@@ -41,7 +41,7 @@ theorem character_columns_orthogonal [DecidableEq ι] {S : Matrix ι ι ℂ} {d 
     (hreal : ∀ j, starRingEnd ℂ (d j) = d j) {a b : ι} (hab : a ≠ b) :
     ∑ x, starRingEnd ℂ (S x a) * S x b = 0 :=
   have hne : cols a ≠ cols b := fun h ↦
-    hab (normalized_columns_injective hdet hd (by
+    hab (normalized_columns_injective hd hdet (by
       funext i
       simpa only [hcols] using congrFun (congrArg Character.value h) i))
   (div_eq_zero_iff.mp (show (∑ x, starRingEnd ℂ (S x a) * S x b) / (d a * d b) = 0 from by
@@ -60,10 +60,7 @@ theorem square_off_dual_of_orthogonal {J K : Type*} [Fintype J] [CommRing K] [St
     (hsym : ∀ x y, S x y = S y x) (hconj : ∀ x z, S (δ x) z = star (S x z))
     (horth : ∀ {a b}, a ≠ b → ∑ z, star (S z a) * S z b = 0)
     (x y : J) (hxy : x ≠ δ y) : ∑ z, S x z * S z y = 0 := by
-  have hstar (z : J) : star (S z (δ x)) = S x z := by
-    rw [hsym z, hconj]
-    simp
-  simpa only [hstar] using horth (fun (h : δ x = y) ↦ hxy (by
+  simpa only [hsym _ (δ x), hconj, star_star] using horth (fun (h : δ x = y) ↦ hxy (by
     simpa only [hdual x] using congrArg δ h))
 
 section SquareSupport

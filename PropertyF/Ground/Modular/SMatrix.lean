@@ -48,9 +48,8 @@ omit [RightRigidCategory C] in
 theorem doubleBraiding_natural_right (X : C) {Y Z : C} (f : Y ⟶ Z) :
     doubleBraiding X Y ≫ (𝟙 X ⊗ₘ f) =
       (𝟙 X ⊗ₘ f) ≫ doubleBraiding X Z := by
-  unfold doubleBraiding
-  rw [Category.assoc, ← braiding_naturality f (𝟙 X), ← Category.assoc,
-    ← braiding_naturality (𝟙 X) f, Category.assoc]
+  rw [doubleBraiding, doubleBraiding, Category.assoc, ← braiding_naturality f (𝟙 X),
+    ← Category.assoc, ← braiding_naturality (𝟙 X) f, Category.assoc]
 
 /-- The trace of double braiding depends only on the isomorphism class. -/
 theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : Y ≅ Z) :

@@ -194,20 +194,22 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def typeAGenerator (n i : ℕ) : typeAGroup n :=
   if h : i < n + 1 then QuotientGroup.mk' (typeANormal n) (FreeGroup.of ⟨i, h⟩) else 1
 
-theorem typeAGenerator_square {n i : ℕ} (hi : i < n + 1) :
+variable {n i j : ℕ}
+
+theorem typeAGenerator_square (hi : i < n + 1) :
     typeAGenerator n i * typeAGenerator n i = 1 := by
   simpa [typeAGenerator, hi, pow_two] using
     (QuotientGroup.eq_one_iff (N := typeANormal n) (FreeGroup.of (⟨i, hi⟩ : Fin (n + 1)) ^ 2)).mpr
       (Subgroup.subset_normalClosure (Or.inl ⟨⟨i, hi⟩, rfl⟩))
 
-theorem typeAGenerator_adjacent {n i : ℕ} (hi : i + 1 < n + 1) :
+theorem typeAGenerator_adjacent (hi : i + 1 < n + 1) :
     typeAGenerator n i * typeAGenerator n (i + 1) * typeAGenerator n i =
       typeAGenerator n (i + 1) * typeAGenerator n i * typeAGenerator n (i + 1) := by
   simp only [typeAGenerator, dite_eq_left hi, dite_eq_left (show i < n + 1 by omega), ← map_mul]
   exact QuotientGroup.eq_iff_div_mem.mpr <| Subgroup.subset_normalClosure <|
     Or.inr (Or.inl ⟨⟨i, by omega⟩, ⟨i + 1, hi⟩, rfl, rfl⟩)
 
-theorem typeAGenerator_distant {n i j : ℕ} (hij : i + 1 < j) (hj : j < n + 1) :
+theorem typeAGenerator_distant (hij : i + 1 < j) (hj : j < n + 1) :
     typeAGenerator n i * typeAGenerator n j = typeAGenerator n j * typeAGenerator n i := by
   simp only [typeAGenerator, dite_eq_left hj, dite_eq_left (show i < n + 1 by omega), ← map_mul]
   exact QuotientGroup.eq_iff_div_mem.mpr <| Subgroup.subset_normalClosure <|

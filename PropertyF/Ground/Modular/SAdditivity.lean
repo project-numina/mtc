@@ -25,10 +25,8 @@ omit [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive 
 /-- Double braiding is natural in its first argument. -/
 theorem doubleBraiding_natural_left {X Z : C} (f : X ⟶ Z) (Y : C) :
     doubleBraiding X Y ≫ (f ▷ Y) = (f ▷ Y) ≫ doubleBraiding Z Y := by
-  unfold doubleBraiding
-  simp only [← tensorHom_id]
-  rw [Category.assoc, ← braiding_naturality (𝟙 Y) f, ← Category.assoc,
-    ← braiding_naturality f (𝟙 Y), Category.assoc]
+  rw [doubleBraiding, doubleBraiding, ← tensorHom_id, Category.assoc, ← braiding_naturality (𝟙 Y) f,
+    ← Category.assoc, ← braiding_naturality f (𝟙 Y), Category.assoc]
 
 /-- The S entry is additive over finite biproducts in its first argument. -/
 theorem SEntry_biproduct_left {ι : Type*} [Fintype ι] (V : ι → C) [HasBiproduct V]
@@ -64,10 +62,9 @@ exactly the fusion coefficients. -/
 theorem SEntry_tensor_decomposition (i j k : Fin (rank D)) :
     Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
       ∑ l, (fusionCoeff D i j l : ℂ) * Sₚ l k := by
-  let X := simples D i ⊗ simples D j
-  obtain ⟨e⟩ := exists_canonical_decomposition D X
-  rw [SEntry_iso_left p e _, SEntry_biproduct_left]
-  simp [Fintype.sum_sigma, categoricalS, nsmul_eq_mul, fusionCoeff, X]
+  obtain ⟨e⟩ := exists_canonical_decomposition D (simples D i ⊗ simples D j)
+  simp [SEntry_iso_left p e _, SEntry_biproduct_left, Fintype.sum_sigma,
+    categoricalS, nsmul_eq_mul, fusionCoeff]
 
 
 /-- The Hopf-link product rule for simple objects. -/

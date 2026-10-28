@@ -37,16 +37,8 @@ theorem rightDualTensorIso_associativity {C : Type u} [Category.{v} C]
     qXY HasRightDual.exact
   let : ExactPairing A B := qA
   have hl : l ▷ A ≫ ε_ A B = ε_ A (Aᘁ) := by
-    have heXY := rightDualIso_evaluation
-      (@HasRightDual.exact C _ _ (X ⊗ Y) (RightRigidCategory.rightDual _))
-      (ExactPairing.tensor (X₁ := X) (X₂ := Y) (Y₁ := Xᘁ) (Y₂ := Yᘁ))
-    change (rightDualTensorIso X Y).hom ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
-      ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ) at heXY
-    have heA := rightDualIso_evaluation
-      (@HasRightDual.exact C _ _ A (RightRigidCategory.rightDual _))
-      (ExactPairing.tensor (X₁ := X ⊗ Y) (X₂ := Z) (Y₁ := (X ⊗ Y)ᘁ) (Y₂ := Zᘁ))
-    change (rightDualTensorIso (X ⊗ Y) Z).hom ▷ A ≫ ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) =
-      ε_ A (Aᘁ) at heA
+    have heXY := rightDualTensorIso_evaluation X Y
+    have heA := rightDualTensorIso_evaluation (X ⊗ Y) Z
     have he' : ((Zᘁ) ◁ (rightDualTensorIso X Y).hom) ▷ A ≫ ε_ A B =
         ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) := by
       change ((Zᘁ) ◁ (rightDualTensorIso X Y).hom) ▷ A ≫
@@ -95,8 +87,7 @@ theorem rightDualTensorIso_associativity {C : Type u} [Category.{v} C]
     let F := ((Y ⊗ Z)ᘁ) ⊗ (Xᘁ)
     let qD₀ : ExactPairing D F := @ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Y ⊗ Z)ᘁ)
       HasRightDual.exact HasRightDual.exact
-    have heYZ := rightDualIso_evaluation
-      (@HasRightDual.exact C _ _ (Y ⊗ Z) (RightRigidCategory.rightDual _)) qYZ
+    have heYZ := rightDualTensorIso_evaluation Y Z
     change (rightDualTensorIso Y Z).hom ▷ (Y ⊗ Z) ≫
       @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ =
       ε_ (Y ⊗ Z) ((Y ⊗ Z)ᘁ) at heYZ
@@ -125,8 +116,7 @@ theorem rightDualTensorIso_associativity {C : Type u} [Category.{v} C]
           ((rightDualTensorIso Y Z).hom ▷ (Y ⊗ Z) ≫
             @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ) := by monoidal
         _ = _ := by rw [heYZ]
-    have heD := rightDualIso_evaluation
-      (@HasRightDual.exact C _ _ D (RightRigidCategory.rightDual _)) qD₀
+    have heD := rightDualTensorIso_evaluation X (Y ⊗ Z)
     change (rightDualTensorIso X (Y ⊗ Z)).hom ▷ D ≫
       @ExactPairing.evaluation C _ _ D F qD₀ = ε_ D (Dᘁ) at heD
     change (((α_ X Y Z).invᘁ) ≫ (rightDualTensorIso X (Y ⊗ Z)).hom ≫

@@ -25,15 +25,14 @@ set_option backward.isDefEq.respectTransparency false in
 theorem center_factor {P Q X : CategoryTheory.Center D} (p : P ⟶ X) (q : Q ⟶ X)
     [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g := by
-  let t : P ⟶ Q := ⟨g, ?_⟩
-  · exact ⟨t, rfl⟩
-  · intro T
-    let : IsSplitMono (T ◁ q.f) :=
-      IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
-    apply (cancel_mono (T ◁ q.f)).1
-    simp only [Category.assoc, ← whiskerLeft_comp, hg]
-    rw [← q.comm T, ← comp_whiskerRight_assoc, hg]
-    exact p.comm T
+  refine ⟨⟨g, ?_⟩, rfl⟩
+  intro T
+  let : IsSplitMono (T ◁ q.f) :=
+    IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
+  apply (cancel_mono (T ◁ q.f)).1
+  simp only [Category.assoc, ← whiskerLeft_comp, hg]
+  rw [← q.comm T, ← comp_whiskerRight_assoc, hg]
+  exact p.comm T
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
 def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : CategoryTheory.Center D) (P : Subobject X) :
@@ -79,13 +78,12 @@ theorem center_artinian (X : 𝒵) : IsArtinianObject X :=
   let : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
   ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
 
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object embeds in an induced base simple. -/
 theorem simple_mono_induced_simple (X : 𝒵) [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (simples C i), Mono f := by
-  have hx : ¬ IsZero X.1 := fun h => Simple.not_isZero X (Centre.isZero_of_forget h)
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity C hx
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity C
+    (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
   let : FiniteDimensional ℂ (X.1 ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp
     (show 0 < Module.finrank ℂ (X.1 ⟶ simples C i) from by

@@ -95,11 +95,9 @@ theorem rightDualTensorIso_braiding (X Y : C) :
   let s : W'ᘁ ≅ U ⊗ V := rightDualTensorIso Y X
   let l : W'ᘁ ⟶ V ⊗ U := ((β_ X Y).homᘁ) ≫ t.hom
   let r : W'ᘁ ⟶ V ⊗ U := s.hom ≫ (β_ U V).hom
-  have hp := rightDualIso_evaluation
-    (@HasRightDual.exact C _ _ W (RightRigidCategory.rightDual W)) p
+  have hp := rightDualTensorIso_evaluation X Y
   change t.hom ▷ W ≫ @ExactPairing.evaluation C _ _ _ _ p = ε_ W (Wᘁ) at hp
-  have hq := rightDualIso_evaluation
-    (@HasRightDual.exact C _ _ W' (RightRigidCategory.rightDual W')) q
+  have hq := rightDualTensorIso_evaluation Y X
   change s.hom ▷ W' ≫ @ExactPairing.evaluation C _ _ _ _ q = ε_ W' (W'ᘁ) at hq
   have hc := dual_braiding_tensor_evaluations X Y
   change (β_ U V).hom ▷ W ≫ @ExactPairing.evaluation C _ _ _ _ p =

@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Integrate.CharacterReality
-public import PropertyF.Ground.Dimensions.IntrinsicNonzero
+public import PropertyF.Ground.Modular.SMatrix
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.ENOMatrices
