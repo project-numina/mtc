@@ -119,9 +119,9 @@ theorem rightQuantumTrace_iso :
 theorem dual_components_natural :
     (e.invᘁ) ≫ (rightDualIsoMap k).symm.hom =
       (rightDualIsoMap j).symm.hom ≫ ((e.invᘁ)ᘁ)ᘁ := by
-  let ee := rightDualIsoMap (rightDualIsoMap e)
-  simpa only [Iso.trans_inv, comp_rightAdjointMate, ee, rightDualIsoMap, Iso.symm_hom] using
-    congrArg (fun (a : X ≅ (Yᘁ)ᘁ) ↦ a.invᘁ) (Iso.ext hnat : e ≪≫ k = j ≪≫ ee)
+  simpa only [Iso.trans_inv, comp_rightAdjointMate, rightDualIsoMap, Iso.symm_hom] using
+    congrArg (fun (a : X ≅ (Yᘁ)ᘁ) ↦ a.invᘁ)
+      (Iso.ext hnat : e ≪≫ k = j ≪≫ rightDualIsoMap (rightDualIsoMap e))
 
 /-- Both quantum traces are preserved when double-dual components are
 transported across an object isomorphism. -/

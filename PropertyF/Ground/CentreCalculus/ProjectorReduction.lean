@@ -110,8 +110,8 @@ theorem rightTrace_alternatingProjector :
   change (Dimensions.rightTraceWithLinear (k := ℂ) (p.iso X))
     ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
       ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
-  simp only [End.smul_asHom, End.sum_asHom, map_smul, map_sum]
-  rfl
+  simp only [End.smul_asHom, End.sum_asHom, map_smul, map_sum,
+    Dimensions.rightTraceWithLinear, LinearMap.coe_mk, AddHom.coe_mk, PivotalStructure.rightTrace]
 
 /-- Multiplying the alternating-projector trace by the group order gives
  the signed sum of the actual categorical permutation traces. -/
