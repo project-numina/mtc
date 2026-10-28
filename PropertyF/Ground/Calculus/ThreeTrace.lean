@@ -7,8 +7,12 @@ public import PropertyF.Ground.Calculus.RightStrand
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Modular.SMatrix
 
-/-! Finiteness of categorical braid images supplies the finite-order condition
-for the squared braiding and for every representation of the braid image. -/
+/-!
+# Traces of three-strand braids
+
+The categorical three-strand generators obey the braid relation and have finite
+order when the object has property F. Partial traces compute their overlap trace.
+-/
 
 open PropertyF.Ground.Dimensions
 
@@ -125,12 +129,12 @@ theorem threeGeneratorRight_end_transport (X : C) :
 
 /-- The left three-strand generator in a chosen block presentation. -/
 def tripleBlockLeft {X : C} {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
+    (b : BraidBlockPresentation X 1 d) :=
   b (braidInImage (threeGeneratorLeft X))
 
 /-- The right three-strand generator in a chosen block presentation. -/
 def tripleBlockRight {X : C} {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
+    (b : BraidBlockPresentation X 1 d) :=
   b (braidInImage (threeGeneratorRight X))
 
 end PropertyF.Ground.Calculus

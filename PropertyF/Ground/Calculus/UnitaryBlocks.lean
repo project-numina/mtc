@@ -11,8 +11,12 @@ public import Mathlib.RingTheory.Finiteness.Basic
 public import PropertyF.Definitions
 public import PropertyF.BlockTrace
 
-/-! A finite group representation preserves a positive definite Hermitian form.
-The unnormalized average avoids dividing by the group order. -/
+/-!
+# Unitary blocks for braid images
+
+A finite group representation preserves an averaged positive definite form. Its image
+algebra has a matrix-block presentation in which the group acts unitarily.
+-/
 
 @[expose] public noncomputable section
 open Matrix
@@ -85,7 +89,7 @@ end PropertyF.Ground.Calculus
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Calculus
 
-variable {G A : Type*} [Group G] [Finite G] [Ring A] [Algebra ℂ A]
+variable {G A : Type*} [Group G] [Ring A] [Algebra ℂ A]
 variable (ρ : G →* A)
 
 /-- The group-algebra map associated to a representation in a complex algebra. -/
@@ -95,7 +99,6 @@ def groupAlgebraMap : MonoidAlgebra ℂ G →ₐ[ℂ] A :=
 /-- The complex algebra spanned by the group image. -/
 def groupImageAlgebra : Subalgebra ℂ A := (groupAlgebraMap ρ).range
 
-omit [Finite G] in
 /-- The image algebra has precisely the underlying linear span of the group image. -/
 theorem groupImageAlgebra_toSubmodule :
     (groupImageAlgebra ρ).toSubmodule = Submodule.span ℂ (Set.range ρ) := by
@@ -108,6 +111,8 @@ theorem groupImageAlgebra_toSubmodule :
     rw [MonoidAlgebra.lift_apply, Finsupp.linearCombination_apply]
   change (groupAlgebraMap ρ).toLinearMap.range = _
   rw [h, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Finsupp.range_linearCombination]
+
+variable [Finite G]
 
 open scoped Classical in
 /-- A finite group's image algebra is semisimple, by Maschke and passage to a quotient. -/
@@ -153,6 +158,10 @@ def braidEndRepresentation (X : C) (n : ℕ) :
 def braidAlgebra (X : C) (n : ℕ) : Subalgebra ℂ (End (tensorPower X (n + 2))) :=
   groupImageAlgebra (braidEndRepresentation X n)
 
+/-- An equivalence from a categorical braid algebra to its matrix blocks. -/
+abbrev BraidBlockPresentation {r : ℕ} (X : C) (n : ℕ) (d : Fin r → ℕ) :=
+  braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩
+
 end PropertyF.Ground.Calculus
 
 /-! Unitary representatives for finite-group Wedderburn blocks. -/
@@ -174,13 +183,12 @@ def unitConjugation (u : Aˣ) : A ≃ₐ[ℂ] A where
   commutes' z := by
     simp [Algebra.commutes, mul_assoc]
 
-variable {G : Type*} [Group G] [Finite G]
+variable {G : Type*} [Group G]
 
 /-- The image group, regarded as units in its own linear-span algebra. -/
 def groupInImage (ρ : G →* A) : G →* groupImageAlgebra ρ :=
   (groupAlgebraMap ρ).rangeRestrict.toMonoidHom.comp (MonoidAlgebra.of ℂ G)
 
-omit [Finite G] in
 @[simp] theorem groupInImage_val (ρ : G →* A) (g : G) :
     (groupInImage ρ g : A) = ρ g := MonoidAlgebra.lift_of ρ g
 
@@ -200,7 +208,6 @@ abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
     (e : groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) : Prop :=
   ∀ g, Blocks.IsUnitary ⟨_, d⟩ (e (groupInImage ρ g))
 
-omit [Finite G] in
 /-- The group elements span their image algebra. -/
 theorem groupInImage_span (ρ : G →* A) :
     Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ := by
@@ -210,6 +217,8 @@ theorem groupInImage_span (ρ : G →* A) :
   rw [← Set.range_comp']
   change Submodule.span ℂ (Set.range (fun g => (groupInImage ρ g : A))) = _
   simpa only [groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
+
+variable [Finite G]
 
 /-- A Wedderburn equivalence can be chosen so that every group element is
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
@@ -237,14 +246,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- A unitary block presentation of the categorical braid-image algebra. -/
 abbrev IsUnitaryBraidPresentation {X : C} {n r : ℕ} {d : Fin r → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) : Prop :=
+    (e : BraidBlockPresentation X n d) : Prop :=
   IsUnitaryPresentation (braidEndRepresentation X n) e
 
 /-- Finite categorical braid images admit a simultaneous unitary block
 realization of their actual endomorphism algebra. -/
 theorem braidAlgebra_unitary_blocks {X : C} {n : ℕ} (h : Finite (braidImage X n)) :
-    ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
-        Blocks.Algebra ⟨_, d⟩),
+    ∃ (r : ℕ) (d : Fin r → ℕ) (e : BraidBlockPresentation X n d),
       (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e :=
   let _ : Finite (braidImage X n) := h
   groupImageAlgebra_unitary_blocks _

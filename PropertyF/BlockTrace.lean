@@ -93,6 +93,7 @@ def mass (B : Blocks) (w : Fin B.count → ℝ) : ℝ :=
 
 variable (B : Blocks) (w : Fin B.count → ℝ)
 
+/-- The norm of a unitary weighted trace is bounded by the block mass. -/
 lemma norm_trace_le {u : B.Algebra}
     (hu : B.IsUnitary u) : ‖B.trace w u‖ ≤ B.mass w :=
   (norm_sum_le _ _).trans <| Finset.sum_le_sum fun r _ => by
@@ -107,6 +108,7 @@ lemma signElement_unitary :
     B.IsUnitary (B.signElement w) := fun r => by
   by_cases h : 0 ≤ w r <;> simp [signElement, h, Matrix.mem_unitaryGroup_iff]
 
+/-- The sign element attains the total weighted block mass. -/
 lemma trace_signElement :
     B.trace w (B.signElement w) = (B.mass w : ℂ) := by
   simp only [trace, mass, signElement, Matrix.trace_smul, Matrix.trace_one,
