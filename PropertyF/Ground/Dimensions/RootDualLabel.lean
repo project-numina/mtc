@@ -98,13 +98,6 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
-/-- The ENO reciprocity equivalence is the composition pairing followed by
-the actual Frobenius reciprocity map. -/
-theorem enoReciprocityEquiv_pairing {i j k : Fin (rank C)}
-    (g : simples C i ⊗ simples C j ⟶ simples C k) :
-    enoReciprocityEquiv C i j k (simpleHomPairingEquiv (simples C k) (simples C i ⊗ simples C j) g) =
-      enoFrobeniusEquiv C i j k g := by simp [enoReciprocityEquiv]
-
 variable {C} in
 /-- It is enough to prove the defect compatibility on ordinary categorical
 morphisms before applying the perfect-pairing duality. -/
@@ -120,9 +113,8 @@ theorem trace_reciprocity_of_frobenius_defect
         Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom :=
       LinearMap.ext fun f ↦ multiplicityDefect_apply C f
     rw [hm]
-    erw [← simpleHomPairingEquiv_natural, enoReciprocityEquiv_pairing,
-      enoReciprocityEquiv_pairing, hcompat]
-    simp [multiplicityDefect_apply]
+    erw [← simpleHomPairingEquiv_natural]
+    simp [enoReciprocityEquiv, hcompat, multiplicityDefect_apply]
 
 end PropertyF.Ground.Dimensions
 
