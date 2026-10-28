@@ -103,12 +103,10 @@ theorem doubleDualTensorIso_unit_left :
   change (r.inv ≫ (r.homᘁ)) ▷ ((Xᘁ)ᘁ) ≫
     (S.inv ≫ (R.homᘁ)) ≫ (((λ_ X).homᘁ)ᘁ) = (λ_ ((Xᘁ)ᘁ)).hom
   simp only [comp_whiskerRight, Category.assoc]
-  rw [hR']
-  slice_lhs 3 4 => rw [hs]
-  simp only [Category.assoc]
-  slice_lhs 2 3 => rw [← comp_whiskerRight, ← comp_rightAdjointMate, Iso.inv_hom_id,
-    rightAdjointMate_id, id_whiskerRight]
-  simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS'
+  rw [hR', reassoc_of% hs]
+  rw [← comp_whiskerRight_assoc (r.homᘁ) (r.invᘁ), ← comp_rightAdjointMate,
+    Iso.inv_hom_id, rightAdjointMate_id, id_whiskerRight, Category.id_comp]
+  exact hS'
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is right-unital. -/
@@ -136,12 +134,10 @@ theorem doubleDualTensorIso_unit_right :
   change ((Xᘁ)ᘁ) ◁ (r.inv ≫ (r.homᘁ)) ≫
     (S.inv ≫ (R.homᘁ)) ≫ (((ρ_ X).homᘁ)ᘁ) = (ρ_ ((Xᘁ)ᘁ)).hom
   simp only [whiskerLeft_comp, Category.assoc]
-  rw [hR']
-  slice_lhs 3 4 => rw [hs]
-  simp only [Category.assoc]
-  slice_lhs 2 3 => rw [← whiskerLeft_comp, ← comp_rightAdjointMate, Iso.inv_hom_id,
-    rightAdjointMate_id, whiskerLeft_id]
-  simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS'
+  rw [hR', reassoc_of% hs]
+  rw [← whiskerLeft_comp_assoc ((Xᘁ)ᘁ) (r.homᘁ) (r.invᘁ), ← comp_rightAdjointMate,
+    Iso.inv_hom_id, rightAdjointMate_id, whiskerLeft_id, Category.id_comp]
+  exact hS'
 
 end PropertyF.Ground.Dimensions
 

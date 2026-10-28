@@ -40,8 +40,8 @@ theorem rootTensorDefect_natural (f : X ⟶ X') (g : Y ⟶ Y') :
         (rootTensorIso C X' Y').inv) =
       (((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (rootTensorIso C X Y).inv) ≫ (f ⊗ₘ g)
   dsimp only [doubleDualFunctor] at ha ⊢
-  rw [← Category.assoc, ha, Category.assoc,
-    (CommSq.vert_inv (CommSq.mk (rootTensorIso_natural C f g))).w, Category.assoc]
+  rw [reassoc_of% ha, (CommSq.vert_inv (CommSq.mk (rootTensorIso_natural C f g))).w,
+    Category.assoc]
 
 
 end PropertyF.Ground.Dimensions
