@@ -67,6 +67,7 @@ def rightQuantumTrace [RigidCategory C] {X : C} (j : X ≅ (Xᘁ)ᘁ) : End (�
   End.of (ExactPairing.coevaluation X (Xᘁ) ≫
     (j.hom ⊗ₘ 𝟙 (Xᘁ)) ≫ ExactPairing.evaluation (Xᘁ) ((Xᘁ)ᘁ))
 
+/-- The left quantum trace determined by a double-dual isomorphism. -/
 def leftQuantumTrace [RigidCategory C] {X : C} (j : X ≅ (Xᘁ)ᘁ) : End (𝟙_ C) :=
   End.of (ExactPairing.coevaluation (Xᘁ) ((Xᘁ)ᘁ) ≫
     (𝟙 (Xᘁ) ⊗ₘ j.inv) ≫ ExactPairing.evaluation X (Xᘁ))
@@ -77,7 +78,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 retracts of finite sums of nonnegative tensor powers. By [EGNO 4.11.4] this is
 the generated fusion subcategory. Allowing exponent zero handles `X=0` uniformly.
 No finiteness assertion is part of this definition. -/
-def GeneratedBy [BraidedCategory C] [Abelian C] (X Y : C) : Prop :=
+def GeneratedBy [Abelian C] (X Y : C) : Prop :=
   ∃ (count : ℕ) (k : Fin count → ℕ),
     Nonempty (Retract Y (⨁ (fun i => tensorPower X (k i))))
 

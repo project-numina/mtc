@@ -36,15 +36,14 @@ theorem unit_mem_productLabels : unitIndex (Integrate.bundledCenter C) ∈ produ
     Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
 
 theorem dual_mem_productLabels (i : Fin (rank (Integrate.bundledCenter C)))
-    (hi : i ∈ productLabels C) : dualIndex (Integrate.bundledCenter C) i ∈ productLabels C := by
-  rw [mem_productLabels] at hi ⊢
+    (hi : i ∈ productLabels C) : dualIndex (Integrate.bundledCenter C) i ∈ productLabels C :=
   let Z := Integrate.bundledCenter C
   let X : CategoryTheory.Center C.Obj := simples Z i
-  have hr := Centre.productRetract_rightDual C hi
   let e : (ᘁX) ≅ (Xᘁ) := leftDualIso HasLeftDual.exact
     (BraidedCategory.exactPairing_swap X (Xᘁ))
-  obtain ⟨e'⟩ := dualIndex_iso Z i
-  exact Centre.productRetract_of_retract (Retract.ofIso (e'.symm ≪≫ e)) hr
+  let ⟨e'⟩ := dualIndex_iso Z i
+  (mem_productLabels C _).2 <| Centre.productRetract_of_retract (Retract.ofIso (e'.symm ≪≫ e))
+    (Centre.productRetract_rightDual C ((mem_productLabels C i).1 hi))
 
 theorem constituent_mem_productLabels
     (i j k : Fin (rank (Integrate.bundledCenter C)))
