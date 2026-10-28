@@ -50,9 +50,8 @@ are the positive FP dimensions. -/
 theorem sCentralizes_dual (hdim : HasFPSimpleDimensions D p)
     {i y : Fin (rank D)} (hi : sCentralizes D p i y) :
     sCentralizes D p (dualIndex D i) y := by
-  dsimp only [sCentralizes] at hi ⊢
-  simp only [Modular.categoricalS_dual_conj D p (realSimpleDimensions_of_fp hdim), hi, map_mul,
-    hdim, fpSimple_dual, Complex.conj_ofReal]
+  simpa [sCentralizes, Modular.categoricalS_dual_conj D p (realSimpleDimensions_of_fp hdim),
+    hdim, fpSimple_dual] using congrArg (starRingEnd ℂ) hi
 
 end PropertyF.Ground.CentreCabling
 
@@ -123,8 +122,7 @@ theorem doubleCentralizer_of_fourier_support
     (hfp : IsFPSpherical D p) {generated : Set (Fin (rank D))}
     (hunit : f (unitIndex D) ≠ 0) (hgenerated : Function.support f ⊆ generated)
     (hsupport : FourierSupportedOn D p f core) : sCentralizer D p core ⊆ generated :=
-  fun x hx ↦ hgenerated <|
-  (dualIndex_involutive D x) ▸
+  fun x hx ↦ hgenerated <| (dualIndex_involutive D x) ▸
     nonzero_dual_coefficient_of_sCentralizer hfp.1 hdet (realSimpleDimensions_of_fp hfp.2)
       hunit hsupport (fun y hy ↦ sCentralizes_dual hfp.2 (sCentralizes_symm (hx y hy)))
 
