@@ -171,10 +171,8 @@ theorem squaredNorm_eq_rootDualSign_mul
     change unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app X)) = _
     rw [← rootTrace_id C]
     rfl
-  have ht : rightQuantumTrace k = rootDualSign C i • rightQuantumTrace l := by
-    apply End.homEquiv.injective
-    have he : k.hom = rootDualSign C i • l.hom := rootDualSign_component C i
-    simp [rightQuantumTrace, he, tensorHom_def]
+  have ht : rightQuantumTrace k = rootDualSign C i • rightQuantumTrace l :=
+    rightQuantumTrace_smul_hom (rootDualSign_component C i)
   rw [target_squaredNorm_choice_independent C j, leftQuantumTrace_eq_rightDual j]
   change unitScalar C (rightQuantumTrace j) * unitScalar C (rightQuantumTrace l) =
     rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i)

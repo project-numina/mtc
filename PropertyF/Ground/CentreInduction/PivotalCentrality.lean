@@ -5,7 +5,6 @@ public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
-public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 
 /-! The pivotal structure of the base lifts to the rigid centre. -/
 @[expose] public noncomputable section
@@ -75,55 +74,6 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : Dimensions.Pivo
     (((Zᘁ)ᘁ).2.β T).hom ≫ u B ▷ ((Zᘁ)ᘁ).1 at hbeta
   simp only [Category.assoc, hbeta] at hc ⊢
   exact hc.symm
-end PropertyF.Ground.CentreInduction
-
-namespace PropertyF.Ground.CentreInduction
-universe v u
-set_option backward.isDefEq.respectTransparency false
-variable {C : BraidedFusionCategory.{v,u}} [RigidCategory (CategoryTheory.Center C.Obj)]
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
-
-/-- The actual rigid centre has a pivotal structure lifting any base pivotal structure. -/
-def canonicalCenterPivotal {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] [RigidCategory (CategoryTheory.Center D)]
-    (p : Dimensions.PivotalStructure (C := D)) :
-    Dimensions.PivotalStructure (C := CategoryTheory.Center D) :=
-  liftedPivotalStructure p (pivotalComponentsCentral_proved p)
-
-/-- A base pivotal structure with FP dimensions yields centre fusion, a
-positive spherical centre, pseudo-unitarity and the categorical dimension square. -/
-theorem center_structure_of_fp_pivotal
-    {p : Dimensions.PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p) :
-    ∃ hFusion : IsFusionCategory (CategoryTheory.Center C.Obj),
-      letI := hFusion
-      let pZ := canonicalCenterPivotal p
-      CenterPivotalData C pZ :=
-  center_structure_of_pivotal_centrality hsimple (pivotalComponentsCentral_proved p)
-
-end PropertyF.Ground.CentreInduction
-
-namespace PropertyF.Ground.CentreInduction
-universe v u
-set_option backward.isDefEq.respectTransparency false
-variable {C : BraidedFusionCategory.{v,u}}
-local notation "𝒵" => CategoryTheory.Center C.Obj
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
-
-/-- If a pseudo-unitary base category admits a pivotal structure, its actual
-rigid centre is fusion, positive spherical and pseudo-unitary with the expected
-global dimension. Pivotal existence and centre rigidity remain hypotheses. -/
-theorem center_structure_of_pivotal_pseudoUnitary
-    [RigidCategory (𝒵)]
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (hpu : PseudoUnitary C) :
-    ∃ hFusion : IsFusionCategory (𝒵),
-      letI := hFusion
-      ∃ pZ : Dimensions.PivotalStructure (C := 𝒵),
-        CenterPivotalData C pZ := by
-  obtain ⟨q, _, hq⟩ := Dimensions.positive_spherical_of_pivotal_pseudoUnitary C p hpu
-  obtain ⟨hFusion, h⟩ := center_structure_of_fp_pivotal hq
-  exact ⟨hFusion, canonicalCenterPivotal q, h⟩
-
 end PropertyF.Ground.CentreInduction
 
 namespace PropertyF.Ground.CentreInduction
