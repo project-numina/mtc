@@ -93,17 +93,18 @@ unit coefficient is nonzero, any label centralizing that support has a
 nonzero dual coefficient in the original vector. -/
 theorem nonzero_dual_coefficient_of_sCentralizer
     (hunit : f (unitIndex D) ≠ 0) (hsupport : FourierSupportedOn D p f core)
-    {x : Fin (rank D)} (hx : ∀ y ∈ core, sCentralizes D p x y) : f (dualIndex D x) ≠ 0 := by
-  have heq : sFourier D p (sFourier D p f) x =
-      dim D p x * sFourier D p (sFourier D p f) (unitIndex D) := by
-    refine sum_mul_eq_mul_sum_of_supported core _ _ (sFourier D p f) _ hsupport fun y hy ↦ ?_
-    rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
-      Modular.categoricalS_unit]
-  rw [sFourier_inversion hp hdet hreal f x,
-    sFourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D] at heq
-  exact fun hz ↦ (mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
+    {x : Fin (rank D)} (hx : ∀ y ∈ core, sCentralizes D p x y) : f (dualIndex D x) ≠ 0 :=
+  let heq : sFourier D p (sFourier D p f) x =
+      dim D p x * sFourier D p (sFourier D p f) (unitIndex D) :=
+    sum_mul_eq_mul_sum_of_supported core _ _ (sFourier D p f) _ hsupport fun y hy ↦ by
+      rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
+        Modular.categoricalS_unit]
+  fun hz ↦ (mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
     (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit))
-      (by simpa only [hz, mul_zero] using heq.symm)
+      (by
+        simpa only [sFourier_inversion hp hdet hreal f x,
+          sFourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D, hz, mul_zero] using
+          heq.symm)
 
 include hdet in
 /-- A vector supported on generated labels proves the exact double-centralizer

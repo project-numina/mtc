@@ -87,12 +87,12 @@ namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 variable {A : D}
 
-variable (X T : D)
+variable (X T : D) [HasRightDual A] [HasRightDual T]
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Closing the right unit isomorphism gives ordinary evaluation. -/
-theorem close_rightUnit_eval [HasRightDual A] [HasRightDual T] (e : A ≅ 𝟙_ D) :
+theorem close_rightUnit_eval (e : A ≅ 𝟙_ D) :
     closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
       (rightDualIsoMap e.symm).hom = ε_ T (Tᘁ) := by
   let d : Aᘁ ⟶ 𝟙_ D := (rightDualIsoMap e.symm).hom
@@ -111,7 +111,7 @@ theorem close_rightUnit_eval [HasRightDual A] [HasRightDual T] (e : A ≅ 𝟙_ 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The canonical unit-column crossing block contracts by evaluation. -/
-theorem crossingUnitBlock_eval [HasRightDual A] [HasRightDual T] (e : A ≅ 𝟙_ D) :
+theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
   let te : T ⊗ A ≅ T := whiskerLeftIso T e ≪≫ ρ_ T
   crossingBlock X T A te.inv te.hom ≫ (T ◁ (unitTensorIso e X).hom) =
     𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
