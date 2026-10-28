@@ -11,7 +11,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
-variable (C : BraidedFusionCategory.{v,u})
+variable {C : BraidedFusionCategory.{v,u}}
 -- Chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
 variable {V W : C.Obj} {E : Type*} [AddCommGroup E] [Module ℂ E]
@@ -84,7 +84,7 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
   have step (j : J) : (∑ a, F (simpleInclusion C (V j) i a ≫ q j)
         (r j ≫ simpleProjection C (V j) i a)) =
       ∑ b, F (simpleInclusion C W i b) (r j ≫ q j ≫ simpleProjection C W i b) := by
-    simpa [Category.assoc] using simpleBasis_contraction_natural C (q j)
+    simpa [Category.assoc] using simpleBasis_contraction_natural (q j)
       ((LinearMap.lcomp ℂ E (Linear.leftComp ℂ (Sᶜ i) (r j))).comp F)
   simp_rw [step]
   rw [Finset.sum_comm]
@@ -106,7 +106,7 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
     rw [crossing_completeness, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id]
   simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
     crossingInclusion, crossingProjection, mixedCrossingBilinear, mixedCrossing, crossingBlock, Category.assoc] using
-    simpleBasis_contraction_refinement C q r h
+    simpleBasis_contraction_refinement q r h
       (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (Sᶜ i) (Sᶜ j))
 
 end PropertyF.Ground.CentreInduction
@@ -120,7 +120,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
-variable (C : BraidedFusionCategory.{v,u})
+variable {C : BraidedFusionCategory.{v,u}}
 -- Chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -185,7 +185,7 @@ theorem crossingBlock_sum_natural_test
     ∑ a, crossingSummand C X T i j a ≫ (h ▷ ((Sᶜ j ⊗ X) ⊗ (Sᶜ j)ᘁ)) := by
   simpa only [crossingSummand, crossingBlock_pre_test, crossingBlock_post_test,
     mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk, crossingInclusion, crossingProjection, simpleProjection] using
-    (simpleBasis_contraction_natural C (h ▷ Sᶜ j)
+    (simpleBasis_contraction_natural (h ▷ Sᶜ j)
       (mixedCrossingBilinear (k := ℂ) X T U (Sᶜ i) (Sᶜ j))).symm
 
 set_option backward.isDefEq.respectTransparency false in
@@ -198,6 +198,6 @@ theorem crossingCandidate_natural_test {T U : C.Obj} (h : T ⟶ U) :
     simp only [crossingCandidate_on_summand, crossingCandidate_on_summand_assoc,
       Preadditive.comp_sum, Preadditive.sum_comp]
     simp_rw [Category.assoc, whisker_exchange, ← Category.assoc, ← Preadditive.sum_comp,
-      crossingBlock_sum_natural_test C X T U h i, ← Preadditive.sum_comp]
+      crossingBlock_sum_natural_test X T U h i, ← Preadditive.sum_comp]
 
 end PropertyF.Ground.CentreInduction

@@ -15,7 +15,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u})
+variable {C : BraidedFusionCategory.{v,u}}
 local notation "Sᶜ" => simples C
 local notation "𝒵" => Center C.Obj
 
@@ -68,7 +68,7 @@ variable (X : Center C.Obj)
 
 /-- Every actual centre object is Artinian, without spherical hypotheses. -/
 theorem center_artinian : IsArtinianObject X :=
-  ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
+  ⟨(centerUnderlyingRangeEmbedding X).wellFoundedLT⟩
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object embeds in an induced base simple. -/
@@ -111,7 +111,7 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
       let : Simple S := hS
       let : Mono t := ht
       exact (Simple.not_isZero S (IsZero.of_mono t hw)).elim
-    · let : IsArtinianObject W := center_artinian C W
+    · let : IsArtinianObject W := center_artinian W
       let P := simpleSubobject hw
       let p : P ⟶ W := simpleSubobjectArrow hw
       have hp : p ≠ 0 := mono_ne_zero_of_id_ne_zero p (id_nonzero _)
@@ -130,17 +130,18 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
           ⟨T, List.Mem.tail _ hT, hST⟩)
 
 set_option backward.isDefEq.respectTransparency false in
+variable (C) in
 /-- The actual centre has finitely many simple objects up to isomorphism. -/
 theorem finite_simple_labels :
     ∃ labels : Finset (𝒵), (∀ T ∈ labels, Simple T) ∧
       ∀ X : 𝒵, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T) := by
   classical
   choose L hL using fun i : Fin (rank C) =>
-    finite_simple_subobject_labels C ((induction C).obj (Sᶜ i))
+    finite_simple_subobject_labels ((induction C).obj (Sᶜ i))
   let labels := (Finset.univ.biUnion (fun i => (L i).toFinset)).filter Simple
   refine ⟨labels, fun _ hT => (Finset.mem_filter.mp hT).2, fun X hX => ?_⟩
   let : Simple X := hX
-  obtain ⟨i, t, ht⟩ := simple_mono_induced_simple C X
+  obtain ⟨i, t, ht⟩ := simple_mono_induced_simple X
   obtain ⟨T, hT, ⟨e⟩⟩ := hL i X hX ⟨t, ht⟩
   exact ⟨T, Finset.mem_filter.mpr
     ⟨Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, List.mem_toFinset.mpr hT⟩,
@@ -178,7 +179,7 @@ theorem all_injective_of_unit_retract {J U : D} [Injective J]
   letI : Injective (𝟙_ D) := r.injective
   Injective.of_iso (λ_ X) (tensor_preserves_injective (𝟙_ D) X)
 
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (Center C.Obj)]
+variable {C : BraidedFusionCategory.{v,u}} [RigidCategory (Center C.Obj)]
 local notation "𝒵" => Center C.Obj
 variable {X : C.Obj}
 
@@ -187,7 +188,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
     (Z : 𝒵) : FiniteSimpleSum (𝒵) Z :=
-  letI (W : 𝒵) : IsArtinianObject W := center_artinian C W
+  letI (W : 𝒵) : IsArtinianObject W := center_artinian W
   letI : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective X)
   letI (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
   letI (A : 𝒵) : FiniteDimensional ℂ (A ⟶ A) := Centre.finiteDimensional_hom ℂ A A
@@ -201,7 +202,7 @@ theorem center_fusion_of_unit_retract {U : 𝒵}
   let ⟨_, hsimple, hcover⟩ := finite_simple_labels C
   let ⟨n, S, hS, hinj, hcover⟩ := simple_representatives_of_finite_cover hsimple hcover
   CentreBundle.fusionOfFiniteSemisimple C ⟨n, S, hS, hinj, fun Z =>
-    let ⟨_, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract C r Z)
+    let ⟨_, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract r Z)
     let ⟨m, ⟨a⟩⟩ := regroup_biproduct (fun j => hcover (V j) (hV j))
     ⟨m, ⟨e ≪≫ a⟩⟩⟩
 
@@ -226,7 +227,7 @@ theorem center_fusion_of_nonzero_induced_trace {X : C.Obj}
     ((p.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
   letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   letI : Simple (𝟙_ (𝒵)) := Centre.centerUnitSimple
-  center_fusion_of_unit_retract C <| unitRetractOfNonzeroCap cap <| fun h =>
+  center_fusion_of_unit_retract <| unitRetractOfNonzeroCap cap <| fun h =>
     hne (End.ext (by simpa [PivotalStructure.rightTrace, rightTraceWith,
       cap, J, Category.assoc] using h))
 

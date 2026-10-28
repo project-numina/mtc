@@ -172,7 +172,7 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The underlying maps proposed for the induction unit and counit satisfy
 the first triangle identity. -/
-theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
+theorem unitCandidate_counit {C : BraidedFusionCategory.{v,u}}
     (Z : Center C.Obj) :
     unitCandidate C Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 :=
   (CategoryTheory.Limits.biproduct.lift_π_assoc (unitComponent C Z) (unitIndex C)
