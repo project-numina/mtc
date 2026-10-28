@@ -68,13 +68,14 @@ theorem leftPartialTrace_whiskerRight (Z : C) (f : End (X ⊗ Y)) :
     dsimp [leftPartialTrace]
     monoidal
 
+variable {k : Type*} [Field k] [IsAlgClosed k]
+    [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
+    [CategoryTheory.Limits.HasKernels C] [Simple Y] [FiniteDimensional k (Y ⟶ Y)]
+
 /-- Schur's lemma identifies the partial trace on a simple surviving strand
 once compatibility with total trace is known. -/
-theorem leftPartialTrace_simple_of_trace_compatibility
-    {k : Type*} [Field k] [IsAlgClosed k]
-    [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
-    [CategoryTheory.Limits.HasKernels C]
-    [Simple Y] [FiniteDimensional k (Y ⟶ Y)] (scalar : End (𝟙_ C) ≃ₐ[k] k) (f : End (X ⊗ Y))
+theorem leftPartialTrace_simple_of_trace_compatibility (scalar : End (𝟙_ C) ≃ₐ[k] k)
+    (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) (htrace : IsLeftTraceCompatibleAt p f) :
     leftPartialTrace p f =
       (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) :=
@@ -204,10 +205,9 @@ theorem tensorDual_coevaluation :
 set_option backward.isDefEq.respectTransparency false in
 /-- Left pivotal trace evaluated with the tensor dual pairing. -/
 theorem leftTrace_tensor_pairing (f : X ⊗ Y ⟶ X ⊗ Y) :
-    (p.leftTrace f).asHom =
-      η_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) ≫
-        ((Yᘁ) ⊗ (Xᘁ)) ◁ (((p.iso X).inv ⊗ₘ (p.iso Y).inv) ≫ f) ≫
-        ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := by
+    (p.leftTrace f).asHom = η_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) ≫
+      ((Yᘁ) ⊗ (Xᘁ)) ◁ (((p.iso X).inv ⊗ₘ (p.iso Y).inv) ≫ f) ≫
+      ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := by
   let A := X ⊗ Y
   let D := Aᘁ
   let E := (Yᘁ) ⊗ (Xᘁ)
