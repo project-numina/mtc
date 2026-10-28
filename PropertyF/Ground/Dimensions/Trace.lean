@@ -128,15 +128,6 @@ theorem quantumTraces_iso :
 
 end
 
-/-- Left trace is right trace on the dual endomorphism with the inverse dual
-pivotal component. -/
-theorem leftTrace_eq_rightTraceWith_dual (p : PivotalStructure (C := C))
-    {X : C} (f : X ⟶ X) :
-    p.leftTrace f = rightTraceWith (rightDualIsoMap (p.iso X)).symm (fᘁ) :=
-  End.homEquiv.injective (by
-    simp [PivotalStructure.leftTrace, rightTraceWith, rightDualIsoMap, tensorHom_def,
-      ← comp_rightAdjointMate, rightAdjointMate_comp_evaluation])
-
 /-- The inverse dual pivotal components are natural on dual morphisms. -/
 theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
     {X Y : C} (f : X ⟶ Y) :
@@ -148,7 +139,7 @@ theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
 /-- The left pivotal trace is cyclic without requiring sphericality. -/
 theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
     (f : X ⟶ Y) (g : Y ⟶ X) : p.leftTrace (f ≫ g) = p.leftTrace (g ≫ f) := by
-  simpa only [leftTrace_eq_rightTraceWith_dual, comp_rightAdjointMate] using
-    rightTraceWith_cyclic (gᘁ) (fᘁ) (dual_pivotal_naturality p g)
+  simpa [PivotalStructure.leftTrace, rightTraceWith, rightDualIsoMap, ← comp_rightAdjointMate,
+    rightAdjointMate_comp_evaluation] using rightTraceWith_cyclic (gᘁ) (fᘁ) (dual_pivotal_naturality p g)
 
 end PropertyF.Ground.Dimensions
