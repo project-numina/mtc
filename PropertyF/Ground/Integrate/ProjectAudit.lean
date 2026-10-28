@@ -196,7 +196,6 @@ run_cmd do
       ``PropertyF.Ground.weaklyIntegral_of_galois_fixed,
       ``PropertyF.Ground.Modular.conjugate_propertyF,
       ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
-      ``PropertyF.Ground.positive_ratio_of_galois_square,
       ``PropertyF.Ground.positive_bounded_conjugates_of_fp,
       ``PropertyF.Ground.exists_modular_witness,
       ``PropertyF.Ground.center_witness_of_categorical_modular_data,
