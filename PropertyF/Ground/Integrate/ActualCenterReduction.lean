@@ -208,7 +208,7 @@ theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalF
       σ ((algebraMap ℝ ℂ) (∑ i, fpSimple C i ^ 2)) = (algebraMap ℝ ℂ) a
     exact positive_galois_sum_squares σ (fun i ↦ (fp_simple_galois_real C σ i).symm)
       ⟨unitIndex C, by simp [fpSimple_unit]⟩
-      (Dimensions.target_globalDimension_le_of_simple_bounds C hbound)
+      (Dimensions.sum_sq_le_sum_sq_of_abs_le hbound)
 
 end PropertyF.Ground
 end
