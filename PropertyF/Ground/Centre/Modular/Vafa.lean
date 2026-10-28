@@ -54,19 +54,8 @@ theorem regular_fusion_derivation_vanishes
   have hsum' : (∑ j, fpSimple C j • ∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
       D • B i z + fpSimple C i • R := by
     simp_rw [hhex, smul_add, smul_smul]
-    rw [Finset.sum_add_distrib]
-    congr 1
-    · rw [← Finset.sum_smul]
-      congr 1
-      apply Finset.sum_congr rfl
-      intro j _
-      ring
-    · dsimp [R]
-      simp only [Finset.smul_sum, smul_smul]
-      apply Finset.sum_congr rfl
-      intro j _
-      congr 1
-      ring
+    simp only [Finset.sum_add_distrib, ← Finset.sum_smul, D, R, pow_two,
+      Finset.smul_sum, smul_smul, mul_comm]
   have hzero : D • B i z = 0 := by
     have h := hsum'.symm.trans hsum
     exact add_right_cancel (h.trans (zero_add (fpSimple C i • R)).symm)
@@ -501,12 +490,7 @@ theorem base_finite_simple_sum (X : C.Obj) :
 /-- Identity automorphisms have zero FP determinant. -/
 theorem fpDeterminant_refl (X : C.Obj) :
     fpDeterminant C X (Iso.refl X) = 0 := by
-  have h := fpDeterminant_trans C X (Iso.refl X) (Iso.refl X)
-  have h' : fpDeterminant C X (Iso.refl X) =
-      fpDeterminant C X (Iso.refl X) + fpDeterminant C X (Iso.refl X) := by
-    simpa using h
-  have h'' := (add_zero (fpDeterminant C X (Iso.refl X))).trans h'
-  exact (add_left_cancel h'').symm
+  simpa using (fpDeterminant_trans C X (Iso.refl X) (Iso.refl X))
 
 /-- The tensor determinant rule holds on any simple object. -/
 theorem fpDeterminant_tensor_of_simple

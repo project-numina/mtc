@@ -131,8 +131,7 @@ theorem characters_exhausted (columns : ι → Character N)
   have hcoord (i : ι) : b.equivFun (fusionOperator N i χ.value) y =
       (columns y).value i * b.equivFun χ.value y := by
     conv_lhs => rw [← b.sum_equivFun χ.value]
-    simp only [map_sum, map_smul]
-    simp only [hb_eigen, map_smul]
+    simp only [map_sum, map_smul, hb_eigen]
     simp [Finsupp.single_apply, mul_comm]
   have heval (i : ι) : χ.value i = (columns y).value i := by
     have he := hcoord i

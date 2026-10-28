@@ -222,17 +222,7 @@ theorem rigidity_of_twisted_overlap (Z : BraidedFusionCategory.{v,u})
   obtain ⟨e, he⟩ := ScalarTwist.labels Z σ p
   let original : Fin (rank D) → ℝ := fun i => fpSimple Z (e.symm i)
   let transformed : Fin (rank D) → ℝ := fun i => (σ (original i : ℂ)).re
-  have hreal (i : Fin (rank Z)) : (((σ (fpSimple Z i : ℂ)).re : ℝ) : ℂ) = σ (fpSimple Z i : ℂ) := by
-    let χ : Fin (rank Z) → ℂ := fun i => (fpSimple Z i : ℂ)
-    have hχ : χ (unitIndex Z) ≠ 0 := by simp [χ, fpSimple_unit]
-    have hchar : ∀ i j, χ i * χ j = ∑ k, (fusionCoeff Z i j k : ℂ) * χ k := by
-      intro i j
-      dsimp [χ]
-      exact_mod_cast fpSimple_mul Z i j
-    have hdual : ∀ i, χ (dualIndex Z i) = χ i := by intro i; simp [χ, fpSimple_dual]
-    apply Complex.conj_eq_iff_re.mp
-    simpa only [← Complex.star_def] using selfDual_character_galois_real Z χ (unitIndex Z)
-      hχ hchar hdual σ i
+  have hreal := fp_simple_galois_real Z σ
   have hpos : ∀ i, 0 < original i := fun i => fpSimple_pos Z _
   have htrans : ∀ i, σ (original i : ℂ) = (transformed i : ℂ) := by
     intro i

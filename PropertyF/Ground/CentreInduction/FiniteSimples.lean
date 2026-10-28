@@ -20,16 +20,13 @@ variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- An underlying factorization through a centre monomorphism is central. -/
-theorem center_factor {P Q X : CategoryTheory.Center C.Obj} (p : P ⟶ X) (q : Q ⟶ X)
-    [Mono q] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
+theorem center_factor {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    {P Q X : CategoryTheory.Center D} (p : P ⟶ X) (q : Q ⟶ X)
+    [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g := by
-  have : Mono q.f := by
-    change Mono ((CategoryTheory.Center.forget C.Obj).map q)
-    infer_instance
   let t : P ⟶ Q := ⟨g, ?_⟩
   · exact ⟨t, rfl⟩
   · intro T
-    let : IsSplitMono q.f := mono_splits C q.f
     let : IsSplitMono (T ◁ q.f) := IsSplitMono.mk'
       { retraction := T ◁ retraction q.f
         id := by rw [← whiskerLeft_comp, IsSplitMono.id, whiskerLeft_id] }
@@ -43,14 +40,15 @@ theorem center_factor {P Q X : CategoryTheory.Center C.Obj} (p : P ⟶ X) (q : Q
       _ = _ := by rw [← hg, whiskerLeft_comp]; simp [Category.assoc]
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
-def centerUnderlyingRange (X : CategoryTheory.Center C.Obj) (P : Subobject X) :
+def centerUnderlyingRange {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [Preadditive D] [Linear ℂ D] (X : CategoryTheory.Center D) (P : Subobject X) :
     Submodule ℂ (X.1 ⟶ X.1) := LinearMap.range (Linear.rightComp ℂ X.1 P.arrow.f)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Underlying endomorphism ranges detect the order of centre subobjects. -/
 def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
     Subobject X ↪o Submodule ℂ (X.1 ⟶ X.1) :=
-  OrderEmbedding.ofMapLEIff (centerUnderlyingRange C X) (by
+  OrderEmbedding.ofMapLEIff (centerUnderlyingRange X) (by
     intro P Q
     constructor
     · intro h
@@ -58,13 +56,17 @@ def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
         change Mono ((CategoryTheory.Center.forget C.Obj).map P.arrow)
         infer_instance
       let : IsSplitMono P.arrow.f := mono_splits C P.arrow.f
-      have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange C X P :=
+      have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange X P :=
         ⟨retraction P.arrow.f, rfl⟩
       obtain ⟨g, hg⟩ := h hm
       change g ≫ Q.arrow.f = retraction P.arrow.f ≫ P.arrow.f at hg
       have hg' : (P.arrow.f ≫ g) ≫ Q.arrow.f = P.arrow.f := by
         rw [Category.assoc, hg, ← Category.assoc, IsSplitMono.id, Category.id_comp]
-      obtain ⟨t, ht⟩ := center_factor C P.arrow Q.arrow (P.arrow.f ≫ g) hg'
+      have : Mono Q.arrow.f := by
+        change Mono ((CategoryTheory.Center.forget C.Obj).map Q.arrow)
+        infer_instance
+      let : IsSplitMono Q.arrow.f := mono_splits C Q.arrow.f
+      obtain ⟨t, ht⟩ := center_factor P.arrow Q.arrow (P.arrow.f ≫ g) hg'
       apply Subobject.le_of_comm t
       apply CategoryTheory.Center.ext
       change t.f ≫ Q.arrow.f = P.arrow.f
@@ -163,6 +165,26 @@ theorem center_cokernel_measure_lt {S W : CategoryTheory.Center C.Obj}
   rw [finrank_top, LinearMap.finrank_range_of_inj hinj] at hlt
   exact hlt
 
+/-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
+private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]
+    {P W Q S : D} [Simple P] [Simple S] (p : P ⟶ W) [Mono p]
+    (t : S ⟶ W) [Mono t] (q : W ⟶ Q) (hpq : p ≫ q = 0)
+    (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
+    Nonempty (S ≅ P) ∨ Mono (t ≫ q) := by
+  by_cases hz : t ≫ q = 0
+  · have hk := Abelian.monoIsKernelOfCokernel (CokernelCofork.ofπ q hpq) hc
+    obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift' hk t hz
+    change S ⟶ P at g
+    change g ≫ p = t at hg
+    have ht : t ≠ 0 := fun h => id_nonzero S ((cancel_mono t).1 (by simp [h]))
+    have hg0 : g ≠ 0 := by
+      intro h
+      apply ht
+      simpa [h] using hg.symm
+    let : IsIso g := isIso_of_hom_simple hg0
+    exact Or.inl ⟨asIso g⟩
+  · exact Or.inr (mono_of_nonzero_from_simple hz)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre object has only finitely many isomorphism classes of simple subobjects. -/
 theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
@@ -193,22 +215,11 @@ theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
       intro S hS ⟨t, ht⟩
       let : Simple S := hS
       let : Mono t := ht
-      have ht0 : t ≠ 0 := fun h0 =>
-        id_nonzero S ((cancel_mono t).1 (by simp [h0]))
-      by_cases hz : t ≫ q = 0
-      · have hcok := PropertyF.Ground.Centre.centerCokernelIsColimit p
-        have hk := Abelian.monoIsKernelOfCokernel
-          (CokernelCofork.ofπ q (PropertyF.Ground.Centre.centerCokernel_condition p)) hcok
-        obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift' hk t hz
-        change S ⟶ (P : CategoryTheory.Center C.Obj) at g
-        change g ≫ p = t at hg
-        have hg0 : g ≠ 0 := by
-          intro h0
-          apply ht0
-          simpa [h0] using hg.symm
-        let : IsIso g := isIso_of_hom_simple hg0
-        exact ⟨P, by simp, ⟨asIso g⟩⟩
-      · let : Mono (t ≫ q) := mono_of_nonzero_from_simple hz
+      rcases simple_mono_cokernel p t q
+          (PropertyF.Ground.Centre.centerCokernel_condition p)
+          (PropertyF.Ground.Centre.centerCokernelIsColimit p) with hSP | hmono
+      · exact ⟨P, by simp, hSP⟩
+      · let : Mono (t ≫ q) := hmono
         obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, inferInstance⟩
         exact ⟨T, by simp [hT], hST⟩
 
