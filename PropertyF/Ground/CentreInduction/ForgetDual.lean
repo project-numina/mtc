@@ -76,9 +76,7 @@ theorem forget_rightDualIso {Z A B : Center D} (p : ExactPairing Z A) (q : Exact
     (hc : (@ExactPairing.coevaluation (Center D) _ _ Z B q).f =
       @ExactPairing.coevaluation D _ _ Z.1 B.1 r) :
     (rightDualIso p q).hom.f = (rightDualIso (forgetPairingOf p) r).hom := by
-  unfold rightDualIso rightAdjointMate
-  simp only [Center.comp_f, Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
-    Center.whiskerLeft_f, Center.whiskerRight_f, Center.associator_inv_f, Center.id_f, hc]
+  simp [rightDualIso, rightAdjointMate, hc]
   rfl
 
 /-- Compare the underlying centre dual with the chosen base dual. -/
