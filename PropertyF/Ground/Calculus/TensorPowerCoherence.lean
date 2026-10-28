@@ -64,13 +64,6 @@ theorem reverseConcat_succ_right (a b : ℕ) :
       id_tensorHom, whiskerLeft_comp]
     monoidal
 
-/-- Appending a strand commutes with equality transport of the prefix length. -/
-theorem appendIso_eqToHom_natural {i j : ℕ} (h : i = j) :
-    (eqToHom (congrArg (tensorPower X) h) ▷ X) ≫ (appendIso X j).hom =
-      (appendIso X i).hom ≫ eqToHom (congrArg (tensorPower X) (congrArg Nat.succ h)) := by
-  cases h
-  simp
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right insertion is canonical reverse-indexed concatenation. -/
 theorem insertRightPowerIso_eq_reverseConcat (n k : ℕ) :
@@ -88,7 +81,8 @@ theorem insertRightPowerIso_eq_reverseConcat (n k : ℕ) :
       ← Category.assoc, reverseConcat_succ_right]
     simp only [insertRightPowerIso, Iso.trans_hom, Iso.symm_hom,
       tensorIso_hom, Iso.refl_hom, tensorHom_id, id_tensorHom, Category.assoc,
-      ih, comp_whiskerRight, appendIso_eqToHom_natural X h₀]
+      ih, comp_whiskerRight, eqToHom_whiskerRight,
+      ← eqToHom_iso_hom_naturality (appendIso X) h₀]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A shared strand can be attached to the left block before concatenating
@@ -165,6 +159,8 @@ theorem overlap_trace_power (C : BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {t : ℕ} (u : braidAlgebra X t) :
     HasOverlapTracePower C p u :=
-  overlap_trace_power_of_isos C p u (freshOverlapIso_eq_overlapPowerIso X t)
+  overlap_trace_power_of_step C p u fun k ↦
+    overlap_trace_step_of_coherence C p u k
+      (overlapProduct_local_of_iso k u (freshOverlapIso_eq_overlapPowerIso X t k))
 
 end PropertyF.Ground.Calculus
