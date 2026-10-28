@@ -26,10 +26,11 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle dual pair in the tensor-product coevaluation recovers
 the coevaluation of the right dual. -/
-theorem tensorPairing_coevaluation_evaluation :
+theorem tensorPairing_coevaluation_evaluation [HasRightDual X] [HasRightDual (Xᘁ)] :
     let W := (Xᘁ) ⊗ X
     let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
     letI : ExactPairing W V := ExactPairing.tensor
@@ -95,9 +96,10 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle pair in a tensor-product evaluation leaves the outer evaluation. -/
-theorem tensorPairing_evaluation_coevaluation :
+theorem tensorPairing_evaluation_coevaluation [HasRightDual X] [HasRightDual (Xᘁ)] :
     let W := X ⊗ (Xᘁ)
     let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
     letI : ExactPairing W V := ExactPairing.tensor
