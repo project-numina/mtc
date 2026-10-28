@@ -83,70 +83,6 @@ theorem simple_mono_induced_simple [Simple X] :
       simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
   exact ⟨i, g, mono_of_nonzero_from_simple hg⟩
 
-/-! Finiteness of simple objects in the actual Drinfeld centre. -/
-
-omit [MonoidalCategory D] in
-/-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
-private theorem simple_mono_cokernel [Abelian D] {P W Q S : D}
-    [Simple P] [Simple S] (p : P ⟶ W) [Mono p] (t : S ⟶ W) [Mono t] (q : W ⟶ Q)
-    (hpq : p ≫ q = 0) (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
-    Nonempty (S ≅ P) ∨ Mono (t ≫ q) :=
-  or_iff_not_imp_left.mpr fun h => mono_of_nonzero_from_simple fun hz => h <| by
-    obtain ⟨g, hg⟩ : {g : S ⟶ P // g ≫ p = t} := KernelFork.IsLimit.lift'
-      (Abelian.monoIsKernelOfCokernel (CokernelCofork.ofπ q hpq) hc) t hz
-    let : IsIso g := isIso_of_hom_simple (fun hg0 =>
-      mono_ne_zero_of_id_ne_zero t (id_nonzero S) (by simpa [hg0] using hg.symm))
-    exact ⟨asIso g⟩
-
-set_option backward.isDefEq.respectTransparency false in
-/-- A centre object has only finitely many isomorphism classes of simple subobjects. -/
-theorem finite_simple_subobject_labels (W : 𝒵) :
-    ∃ L : List (𝒵), ∀ S : 𝒵, Simple S →
-      (∃ t : S ⟶ W, Mono t) → ∃ T ∈ L, Nonempty (S ≅ T) := by
-  induction W using (measure fun Z : 𝒵 ↦ finrank ℂ (Z.1 ⟶ Z.1)).wf.induction with
-  | h W ih =>
-    by_cases hw : IsZero W
-    · refine ⟨[], fun S hS ⟨t, ht⟩ => ?_⟩
-      let : Simple S := hS
-      let : Mono t := ht
-      exact (Simple.not_isZero S (IsZero.of_mono t hw)).elim
-    · let : IsArtinianObject W := center_artinian W
-      let P := simpleSubobject hw
-      let p : P ⟶ W := simpleSubobjectArrow hw
-      have hp : p ≠ 0 := mono_ne_zero_of_id_ne_zero p (id_nonzero _)
-      let Q := Centre.centerCokernel p
-      let q : W ⟶ Q := Centre.centerCokernelπ p
-      let : IsSplitEpi (cokernel.π p.f) := epi_splits (cokernel.π p.f)
-      obtain ⟨L, hL⟩ := ih Q (finrank_end_lt_of_split_epi p.f (cokernel.π p.f)
-        (fun h => hp (Center.ext p 0 h)) (cokernel.condition p.f))
-      refine ⟨P :: L, fun S hS ⟨t, ht⟩ => ?_⟩
-      let : Simple S := hS
-      let : Mono t := ht
-      exact (simple_mono_cokernel p t q
-        (Centre.centerCokernel_condition p) (Centre.centerCokernelIsColimit p)).elim
-        (fun hSP => ⟨P, List.Mem.head _, hSP⟩) (fun hmono =>
-          let ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, hmono⟩
-          ⟨T, List.Mem.tail _ hT, hST⟩)
-
-set_option backward.isDefEq.respectTransparency false in
-variable (C) in
-/-- The actual centre has finitely many simple objects up to isomorphism. -/
-theorem finite_simple_labels :
-    ∃ labels : Finset (𝒵), (∀ T ∈ labels, Simple T) ∧
-      ∀ X : 𝒵, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T) := by
-  classical
-  choose L hL using fun i : Fin (rank C) =>
-    finite_simple_subobject_labels ((induction C).obj (Sᶜ i))
-  let labels := (Finset.univ.biUnion (fun i => (L i).toFinset)).filter Simple
-  refine ⟨labels, fun _ hT => (Finset.mem_filter.mp hT).2, fun X hX => ?_⟩
-  let : Simple X := hX
-  obtain ⟨i, t, ht⟩ := simple_mono_induced_simple X
-  obtain ⟨T, hT, ⟨e⟩⟩ := hL i X hX ⟨t, ht⟩
-  exact ⟨T, Finset.mem_filter.mpr
-    ⟨Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, List.mem_toFinset.mpr hT⟩,
-      Simple.of_iso e.symm⟩, ⟨e⟩⟩
-
-
 end PropertyF.Ground.CentreInduction
 
 end
@@ -194,11 +130,37 @@ theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
   finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW =>
     ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
 
+/-- The actual centre has finitely many simple objects up to isomorphism. -/
+theorem finite_simple_labels {U : 𝒵}
+    (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
+    ∃ labels : Finset 𝒵, (∀ T ∈ labels, Simple T) ∧
+      ∀ Z : 𝒵, Simple Z → ∃ T ∈ labels, Nonempty (Z ≅ T) := by
+  classical
+  choose n V hV hIso using fun i : Fin (rank C) =>
+    finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract r
+      ((induction C).obj (simples C i)))
+  let labels := (Finset.univ.biUnion fun i => Finset.univ.image (V i)).filter Simple
+  refine ⟨labels, fun _ h => (Finset.mem_filter.mp h).2, fun Z hZ => ?_⟩
+  let : Simple Z := hZ
+  obtain ⟨i, t, ht⟩ := simple_mono_induced_simple Z
+  let : Mono t := ht
+  let g := t ≫ (hIso i).some.hom
+  have hg : g ≠ 0 := mono_ne_zero_of_id_ne_zero g (id_nonzero Z)
+  obtain ⟨j, hj⟩ : ∃ j, g ≫ biproduct.π (V i) j ≠ 0 := by
+    by_contra! h
+    apply hg
+    exact biproduct.hom_ext _ _ fun j => by simpa only [zero_comp] using h j
+  let : Simple (V i j) := hV i j
+  let : IsIso (g ≫ biproduct.π (V i) j) := isIso_of_hom_simple hj
+  exact ⟨V i j, Finset.mem_filter.mpr ⟨Finset.mem_biUnion.mpr
+    ⟨i, Finset.mem_univ _, Finset.mem_image.mpr ⟨j, Finset.mem_univ _, rfl⟩⟩,
+    hV i j⟩, ⟨asIso (g ≫ biproduct.π (V i) j)⟩⟩
+
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
     IsFusionCategory (𝒵) :=
-  let ⟨_, hsimple, hcover⟩ := finite_simple_labels C
+  let ⟨_, hsimple, hcover⟩ := finite_simple_labels r
   let ⟨n, S, hS, hinj, hcover⟩ := simple_representatives_of_finite_cover hsimple hcover
   CentreBundle.fusionOfFiniteSemisimple C ⟨n, S, hS, hinj, fun Z =>
     let ⟨_, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract r Z)

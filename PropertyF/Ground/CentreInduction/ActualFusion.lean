@@ -188,23 +188,11 @@ local notation "𝒵ᶠ" => Integrate.bundledCenter C
 local notation "𝒵" => Center C.Obj
 local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
 
-/-- FP dimension is the weighted sum of Hom dimensions to simple objects. -/
-theorem fpDimension_eq_sum_to_simple (X : C.Obj) :
-    fpDimension C X = ∑ i, (finrank ℂ (X ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
-  Finset.sum_congr rfl fun i _ =>
-    congrArg (fun n : ℕ => (n : ℝ) * fpSimple C i)
-      (finrank_to_simple_eq_from_simple X (Sᶜ i)).symm
-
 /-- The induction adjunction preserves the dimensions of corresponding Hom spaces. -/
 theorem finrank_hom_induction (Z : 𝒵) (X : C.Obj) :
     finrank ℂ (Z ⟶ (induction C).obj X) = finrank ℂ (Z.1 ⟶ X) :=
   (homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj)
     (induction C) (actualAdjunction C) Z X).finrank_eq
-
-/-- The FP dimension of a centre object is the weighted Hom sum of its underlying object. -/
-theorem fpDimension_forget_sum [RigidCategory 𝒵] [IsFusionCategory 𝒵] (Z : 𝒵) :
-    fpDimension 𝒵ᶠ Z = ∑ i, (finrank ℂ (Z.1 ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
-  (Integrate.center_forget_fpDimension C Z).symm.trans (fpDimension_eq_sum_to_simple Z.1)
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
@@ -216,9 +204,10 @@ theorem globalFPDimension_eq_induction_sum [RigidCategory 𝒵] [IsFusionCategor
   symm
   simp_rw [fpDimension, finrank_hom_induction (C := C), Finset.mul_sum]
   rw [Finset.sum_comm]
-  simp [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
-    ← Finset.mul_sum, ← fpDimension_forget_sum (C := C), fpDimension_simple,
-    globalFPDimension, pow_two]
+  simp only [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
+    ← Finset.mul_sum, finrank_to_simple_eq_from_simple, globalFPDimension, pow_two]
+  change (∑ x, fpSimple 𝒵ᶠ x * fpDimension C (simples 𝒵ᶠ x).1) = _
+  simp [Integrate.center_forget_fpDimension C, fpDimension_simple]
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
