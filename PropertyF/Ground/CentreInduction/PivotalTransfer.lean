@@ -41,6 +41,17 @@ theorem center_pivotalDimension_forget
   simp only [Dimensions.pivotalDimension, center_unitScalar_forget,
     forget_trace_of_pivotal_component hcompat]
 
+end PropertyF.Ground.CentreInduction
+
+namespace PropertyF.Ground.CentreInduction
+universe v u
+set_option backward.isDefEq.respectTransparency false
+variable {C : BraidedFusionCategory.{v,u}}
+  [RigidCategory (CategoryTheory.Center C.Obj)]
+  [IsFusionCategory (CategoryTheory.Center C.Obj)]
+local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵ᶠ" => Integrate.bundledCenter C
+
 /-- A compatible lift of a positive pivotal structure has the actual centre's
 FP dimensions, is spherical, and proves the centre's pseudo-unitarity. -/
 theorem center_positive_spherical_of_compatible_pivotal
@@ -56,7 +67,7 @@ theorem center_positive_spherical_of_compatible_pivotal
   have hd (i : Fin (rank D)) : Dimensions.pivotalDimension D pZ (simples D i) =
       (fpSimple D i : ℂ) := by
     rw [center_pivotalDimension_forget C (hcompat _),
-      pivotalDimension_eq_fp C hsimple]
+      pivotalDimension_eq_fp hsimple]
     change (fpDimension C ((CategoryTheory.Center.forget C.Obj).obj (simples D i)) : ℂ) = _
     rw [Integrate.center_forget_fpDimension C, fpDimension_simple]
   have hs : pZ.IsSpherical := by
@@ -72,7 +83,7 @@ end PropertyF.Ground.CentreInduction
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+variable {C : BraidedFusionCategory.{v,u}} [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
@@ -95,7 +106,7 @@ theorem center_structure_of_compatible_pivotal
     center_fusion_of_compatible_pivotal C hsimple
       (forget_trace_of_pivotal_component (hcompat J))
   refine ⟨inferInstance, ?_⟩
-  obtain ⟨hs, hd, hpu⟩ := center_positive_spherical_of_compatible_pivotal C hsimple hcompat
+  obtain ⟨hs, hd, hpu⟩ := center_positive_spherical_of_compatible_pivotal hsimple hcompat
   refine ⟨hs, hd, hpu, ?_⟩
   change globalDimension 𝒵ᶠ = _
   rw [show globalDimension 𝒵ᶠ =

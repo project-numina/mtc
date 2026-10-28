@@ -54,44 +54,38 @@ theorem SEntry_iso_left (p : PivotalStructure (C := C)) {X Z : C} (e : X ≅ Z) 
   (SEntry_symmetric p X Y).trans <|
     (SEntry_iso_right p Y e).trans (SEntry_symmetric p Y Z)
 
+section
+variable (D : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := D.Obj))
+local notation "Sₚ" => categoricalS D p
+local notation "dₚ" => simpleDimension D p
+
 /-- Expanding a tensor product into simple summands expands its S entry with
 exactly the fusion coefficients. -/
-theorem SEntry_tensor_decomposition (D : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := D.Obj)) (i j k : Fin (rank D)) :
+theorem SEntry_tensor_decomposition (i j k : Fin (rank D)) :
     Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
-      ∑ l, (fusionCoeff D i j l : ℂ) * categoricalS D p l k := by
+      ∑ l, (fusionCoeff D i j l : ℂ) * Sₚ l k := by
   let X := simples D i ⊗ simples D j
-  let m : Fin (rank D) → ℕ := fun l => fusionCoeff D i j l
-  let V : (Σ l, Fin (m l)) → D.Obj := fun t => simples D t.1
   obtain ⟨e⟩ := exists_canonical_decomposition D X
-  have he : SEntry p X (simples D k) = SEntry p (⨁ V) (simples D k) :=
-    SEntry_iso_left p e _
-  rw [he, SEntry_biproduct_left]
-  simp [Fintype.sum_sigma, V, m, categoricalS, nsmul_eq_mul]
+  rw [SEntry_iso_left p e _, SEntry_biproduct_left]
+  simp [Fintype.sum_sigma, categoricalS, nsmul_eq_mul, fusionCoeff, X]
 
 
 /-- The Hopf-link product rule for simple objects. -/
-abbrev HasHopfProduct (D : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := D.Obj)) : Prop :=
+abbrev HasHopfProduct : Prop :=
   ∀ i j k, Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
-    simpleDimension D p k = categoricalS D p i k * categoricalS D p j k
+    dₚ k = Sₚ i k * Sₚ j k
 
 /-- The categorical Hopf-link product identity implies the Verlinde character
 equations once tensor products are decomposed into their simple summands. -/
-theorem categoricalS_verlinde_of_hopf_product (D : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := D.Obj))
-    (hopf : HasHopfProduct D p) :
-    HasVerlindeFormula ⟨unitIndex D, fusionCoeff D⟩ (categoricalS D p) (simpleDimension D p) := by
+theorem categoricalS_verlinde_of_hopf_product (hopf : HasHopfProduct D p) :
+    HasVerlindeFormula ⟨unitIndex D, fusionCoeff D⟩ (Sₚ) (dₚ) := by
   intro i j k
   have hk := hopf i j k
   rw [SEntry_tensor_decomposition] at hk
-  have hd := simpleDimension_ne_zero D p k
-  calc
-    _ = (categoricalS D p i k * categoricalS D p j k) / simpleDimension D p k ^ 2 := by ring
-    _ = ((∑ l, (fusionCoeff D i j l : ℂ) * categoricalS D p l k) *
-      simpleDimension D p k) / simpleDimension D p k ^ 2 := by rw [hk]
-    _ = (∑ l, (fusionCoeff D i j l : ℂ) * categoricalS D p l k) / simpleDimension D p k := by
-      field_simp
-    _ = _ := by rw [Finset.sum_div]; apply Finset.sum_congr rfl; intro l _; ring
+  simp_rw [← mul_div_assoc, ← Finset.sum_div]
+  field_simp [simpleDimension_ne_zero D p k]
+  simpa only [mul_assoc, mul_comm, mul_left_comm] using hk.symm
+
+end
 
 end PropertyF.Ground.Modular

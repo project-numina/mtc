@@ -32,10 +32,9 @@ def groundSimpleScalar (C : BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C
 theorem groundSimpleScalar_smul_id (C : BraidedFusionCategory.{v,u})
     (i : Fin (Ground.rank C)) (a : End (Ground.simples C i)) :
     (groundSimpleScalar C i a) • 𝟙 (Ground.simples C i) = a.asHom := by
-  have h := (groundSimpleScalar C i).symm_apply_apply a
-  change (algebraMap ℂ (End (Ground.simples C i))) (groundSimpleScalar C i a) = a at h
-  have h' := congrArg End.asHom h
-  simpa [Algebra.algebraMap_eq_smul_one] using h'
+  have h : (algebraMap ℂ (End (Ground.simples C i))) (groundSimpleScalar C i a) = a :=
+    (groundSimpleScalar C i).symm_apply_apply a
+  simpa [Algebra.algebraMap_eq_smul_one] using congrArg End.asHom h
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple
@@ -156,18 +155,14 @@ theorem cyclic_matrix_trace {ι : Type*} [Fintype ι] [DecidableEq ι]
         rw [hdiag, hscalar, map_smul, Matrix.trace_single_eq_same]
         simp [w, mul_comm]
       · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
-        have hz : Matrix.single i j a * Matrix.single i i (1 : ℂ) = 0 :=
-          Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1
-        simp only [Matrix.single_mul_single_same, one_mul, hz, map_zero] at hoff
+        simp only [Matrix.single_mul_single_same, one_mul,
+          Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
         rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
     induction X using Matrix.induction_on with
     | h_add X Y hX hY => simp [hX, hY, Matrix.trace_add, mul_add]
     | h_std_basis i j a => exact hs i j a
-  · have hempty : IsEmpty ι := not_nonempty_iff.mp hn
-    let _ := hempty
-    refine ⟨0, fun X => ?_⟩
-    have hX : X = 0 := Subsingleton.elim _ _
-    simp [hX]
+  · let _ : IsEmpty ι := not_nonempty_iff.mp hn
+    exact ⟨0, fun X => by simp [Subsingleton.elim X 0]⟩
 
 /-- Every cyclic linear functional on a finite product of matrix algebras is
 a weighted sum of ordinary block traces. The weights may be arbitrary complex
@@ -184,15 +179,12 @@ theorem cyclic_block_trace {n : ℕ} {d : Fin n → ℕ}
     change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
     rw [Pi.single_mul, Pi.single_mul]
     exact hT _ _
-  have hw : ∀ i, ∃ w : ℂ, ∀ X : V i, Tblock i X = w * X.trace :=
-    fun i => cyclic_matrix_trace (Tblock i) (hc i)
-  choose w hw using hw
+  choose w hw using fun i : Fin n => cyclic_matrix_trace (Tblock i) (hc i)
   refine ⟨w, fun X => ?_⟩
-  calc
-    T X = ∑ i, Tblock i (X i) := by
-      conv_lhs => rw [← LinearMap.sum_single_apply V X]
-      simp [Tblock]
-    _ = ∑ i, w i * (X i).trace := by simp [hw]
+  conv_lhs => rw [← LinearMap.sum_single_apply V X]
+  rw [map_sum]
+  change (∑ i, Tblock i (X i)) = _
+  simp only [hw]
 
 end PropertyF.Ground.Calculus
 
@@ -230,8 +222,7 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
     let e : Blocks.Algebra ⟨_, d⟩ := Pi.single i (Matrix.single j j 1)
     have he : e * e = e := by
       simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
-    have hφ : φ e * φ e = φ e := by rw [← map_mul, he]
-    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat hφ
+    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by rw [← map_mul, he])
     refine ⟨k, ?_⟩
     have ht := hw e
     have ht' : (φ e).trace = w i := by
@@ -269,11 +260,9 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
       (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧
       (∀ j, ∃ i, 0 < mult i j) := by
   classical
-  have hm : ∀ i, ∃ k : Fin n → ℕ, ∀ x,
-      (φ x i).trace = ∑ j, (k j : ℂ) * (x j).trace := by
-    intro i
-    exact representation_trace_multiplicities hd ((Pi.evalAlgHom ℂ _ i).comp φ)
-  choose mult hmult using hm
+  choose mult hmult using fun i : Fin m =>
+    representation_trace_multiplicities hd ((Pi.evalAlgHom ℂ _ i).comp φ)
+  change ∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace at hmult
   refine ⟨mult, hmult, fun j => ?_⟩
   by_contra hn
   push Not at hn
@@ -284,8 +273,7 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
   have hzero : φ e = 0 := by
     funext i
     have hidem : φ e i * φ e i = φ e i := by
-      have h := congrFun (map_mul φ e e) i
-      simpa [he] using h.symm
+      simpa [he] using (congrFun (map_mul φ e e) i).symm
     have ht : (φ e i).trace = 0 := by
       rw [hmult]
       rw [Finset.sum_eq_single j]

@@ -16,9 +16,7 @@ private theorem forgetDualIso_tensor_inv (X Y : 𝒵) :
     (rightDualTensorIso X Y).inv.f ≫ (forgetDualIso (X ⊗ Y)).hom =
       ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) ≫
         (rightDualTensorIso X.1 Y.1).inv := by
-  apply (cancel_mono (rightDualTensorIso X.1 Y.1).hom).1
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [forgetDualIso_tensor X Y]
+  rw [Iso.eq_comp_inv, Category.assoc, forgetDualIso_tensor]
   simp [← CategoryTheory.Center.comp_f, ← Category.assoc]
 
 /-- Taking mates of the tensor comparison also preserves its inverse. -/
@@ -61,12 +59,9 @@ theorem transported_pivotal_tensor
       ((p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv)) ≫
       (Dimensions.doubleDualTensorIso X Y).hom.f =
     (p.iso (X.1 ⊗ Y.1)).hom ≫ (forgetDoubleDualIso (X ⊗ Y)).inv := by
-  apply (cancel_mono (forgetDoubleDualIso (X ⊗ Y)).hom).1
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [forgetDoubleDualIso_tensor]
-  simp only [tensorHom_comp_tensorHom_assoc, Category.assoc, Iso.inv_hom_id,
-    Category.comp_id]
-  exact (p.tensor X.1 Y.1).symm
+  rw [Iso.eq_comp_inv, Category.assoc, forgetDoubleDualIso_tensor]
+  simpa only [tensorHom_comp_tensorHom_assoc, Category.assoc, Iso.inv_hom_id,
+    Category.comp_id] using (p.tensor X.1 Y.1).symm
 
 end PropertyF.Ground.CentreInduction
 
@@ -141,8 +136,6 @@ theorem transported_pivotal_unit (p : Dimensions.PivotalStructure (C := D)) :
     (p.iso (𝟙_ D)).hom ≫
       (forgetDoubleDualIso (𝟙_ (𝒵))).inv =
     (Dimensions.doubleDualUnitIso (C := 𝒵)).hom.f := by
-  apply (cancel_mono (forgetDoubleDualIso (𝟙_ (𝒵))).hom).1
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [forgetDoubleDualIso_unit, p.unit]
+  rw [Iso.comp_inv_eq, forgetDoubleDualIso_unit, p.unit]
 
 end PropertyF.Ground.CentreInduction

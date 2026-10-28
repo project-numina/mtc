@@ -80,7 +80,7 @@ end PropertyF.Ground.CentreInduction
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+variable {C : BraidedFusionCategory.{v,u}} [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
 /-- The actual rigid centre has a pivotal structure lifting any base pivotal structure. -/
@@ -102,7 +102,7 @@ theorem center_structure_of_fp_pivotal
       PivotalHasFPDimensions 𝒵ᶠ pZ ∧
       PseudoUnitary 𝒵ᶠ ∧
       globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
-  center_structure_of_pivotal_centrality C hsimple (pivotalComponentsCentral_proved p)
+  center_structure_of_pivotal_centrality hsimple (pivotalComponentsCentral_proved p)
 
 end PropertyF.Ground.CentreInduction
 
@@ -127,7 +127,7 @@ theorem center_structure_of_pivotal_pseudoUnitary
         PseudoUnitary 𝒵ᶠ ∧
         globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 := by
   obtain ⟨q, _, hq⟩ := Dimensions.positive_spherical_of_pivotal_pseudoUnitary C p hpu
-  obtain ⟨hFusion, h⟩ := center_structure_of_fp_pivotal C hq
+  obtain ⟨hFusion, h⟩ := center_structure_of_fp_pivotal hq
   exact ⟨hFusion, canonicalCenterPivotal q, h⟩
 
 open CategoryTheory.Limits

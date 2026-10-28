@@ -76,10 +76,9 @@ theorem inverse_twist_eq_scalar_of_selfTransparent {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
     (doubleDualIso C X).hom ≫ (p.iso X).inv =
       Dimensions.pivotalBraidedTwistScalar C p X • 𝟙 X := by
-  have hc : (β_ X X).hom = (β_ X X).inv := (β_ X X).inv_ext' hX
-  have htr := spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom)
   have h := leftPartialTrace_inverse_braiding (C := C) (p := p) X
-  rw [← hc, leftPartialTrace_braiding_of_trace_compatibility (C := C) htr] at h
+  rw [← ((β_ X X).inv_ext' hX), leftPartialTrace_braiding_of_trace_compatibility (C := C)
+    (spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom))] at h
   exact (congrArg End.asHom h).symm
 
 include hp in
@@ -95,10 +94,9 @@ theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
   rw [inverse_twist_eq_scalar_of_selfTransparent (C := C) hp hX,
     Dimensions.pivotalBraidedTwist_simple] at ht
   simp only [Linear.smul_comp, Linear.comp_smul, Category.id_comp, smul_smul] at ht
-  have hsq : θ * θ = 1 := by
-    apply smul_left_injective ℂ (id_nonzero X)
-    simpa [θ] using ht
-  exact mul_self_eq_one_iff.mp hsq
+  apply mul_self_eq_one_iff.mp
+  apply smul_left_injective ℂ (id_nonzero X)
+  simpa [θ] using ht
 
 include hp hdim in
 /-- Every self-transparent simple has integral FP dimension in an FP-valued

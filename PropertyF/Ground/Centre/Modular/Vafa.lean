@@ -44,12 +44,11 @@ theorem derivation_vanishes_of_regular_eigenvector {ι K M : Type*} [Fintype ι]
     simp_rw [← Finset.sum_smul, hreg, mul_smul]
     dsimp [R]
     rw [Finset.smul_sum]
-  have hsum' : (∑ j, d j • ∑ k, N i j k • b k) = D • b i + d i • R := by
-    simp_rw [hderiv, smul_add, smul_smul]
-    simp only [Finset.sum_add_distrib, ← Finset.sum_smul, D, R, pow_two,
-      Finset.smul_sum, smul_smul, mul_comm]
-  have hzero : D • b i = 0 :=
-    add_right_cancel ((hsum'.symm.trans hsum).trans (zero_add (d i • R)).symm)
+  have hzero : D • b i = 0 := by
+    apply add_right_cancel (b := d i • R)
+    rw [zero_add]
+    simpa only [hderiv, smul_add, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul,
+      D, R, pow_two, Finset.smul_sum, mul_comm] using hsum
   exact (smul_eq_zero.mp hzero).resolve_left hD
 
 /-- The FP regular-element cancellation at the heart of the determinant argument. -/
@@ -138,9 +137,8 @@ def fpDeterminant (X : C.Obj) (a : X ≅ X) :
 theorem fpDeterminant_trans {X : C.Obj}
     (a b : X ≅ X) : fpDeterminant C X (a ≪≫ b) =
       fpDeterminant C X a + fpDeterminant C X b := by
-  unfold fpDeterminant
-  simp_rw [homAction_trans, LinearEquiv.det_trans, vafaUnitClass_mul, smul_add]
-  rw [Finset.sum_add_distrib, add_comm]
+  simp [fpDeterminant, homAction_trans, LinearEquiv.det_trans, vafaUnitClass_mul,
+    smul_add, Finset.sum_add_distrib, add_comm]
 
 /-- The actual scalar automorphism of an object. -/
 def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
@@ -322,6 +320,10 @@ def monodromyIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCate
     (X Y : D) : X ⊗ Y ≅ X ⊗ Y :=
   (β_ X Y) ≪≫ (β_ Y X)
 
+/-- The FP determinant of the double braiding between two objects. -/
+abbrev monodromyDet (Z W : C.Obj) : vafaUnitSpace :=
+  fpDeterminant C (Z ⊗ W) (monodromyIso Z W)
+
 /-- The natural automorphism satisfies the balancing equation on simple pairs. -/
 abbrev HasSimpleBalance (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ) : Prop :=
   ∀ i j, η.app (simples C i ⊗ simples C j) =
@@ -334,10 +336,10 @@ categorical premises are explicit. -/
 theorem natural_scalars_finite_of_monodromy_determinant
     (ht : HasSimpleScalars C η t)
     (hbalance : HasSimpleBalance C η t)
-    (hmon : ∀ i j, fpDeterminant C (simples C i ⊗ simples C j)
-      (monodromyIso (simples C i) (simples C j)) = 0) :
+    (hmon : ∀ i j, monodromyDet C (simples C i) (simples C j) = 0) :
     ∀ i, IsOfFinOrder (t i) :=
   natural_scalars_finite_of_fpDeterminant_balance C ht fun i j ↦ by
+    dsimp only [monodromyDet] at hmon
     rw [hbalance, fpDeterminant_trans, hmon, add_zero, fpDeterminant_scalar,
       vafaUnitClass_mul]
 
@@ -748,17 +750,12 @@ variable (C : BraidedFusionCategory.{v,u})
 monodromy automorphisms. -/
 theorem monodromy_hexagon_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [BraidedCategory D] (Z X Y : D) :
+    let e := ((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)
     (α_ Z X Y) ≪≫ monodromyIso Z (X ⊗ Y) ≪≫ (α_ Z X Y).symm =
-      (((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)) ≪≫
-        (Iso.refl X ⊗ᵢ monodromyIso Z Y) ≪≫
-        (((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)).symm ≪≫
+      e ≪≫ (Iso.refl X ⊗ᵢ monodromyIso Z Y) ≪≫ e.symm ≪≫
         (monodromyIso Z X ⊗ᵢ Iso.refl Y) :=
   Iso.ext (by simp [monodromyIso, tensorIso_hom, tensorHom_id, id_tensorHom, Category.assoc,
     ← comp_whiskerRight])
-
-/-- The FP determinant of the double braiding between two objects. -/
-abbrev monodromyDet (Z W : C.Obj) : vafaUnitSpace :=
-  fpDeterminant C (Z ⊗ W) (monodromyIso Z W)
 
 /-- The FP determinant of monodromy is additive in the second tensor factor. -/
 theorem fpDeterminant_monodromy_tensor (Z X Y : C.Obj) :
@@ -875,17 +872,13 @@ theorem pivotal_twist_simple_balance (p : Dimensions.PivotalStructure (C := C.Ob
     HasSimpleBalance C (Dimensions.pivotalBraidedTwistNaturalIso C p)
       (CentreCabling.pivotalTwistUnit C p) := by
   intro i j
-  let η := Dimensions.pivotalBraidedTwistNaturalIso C p
-  let t := CentreCabling.pivotalTwistUnit C p
-  change η.app (simples C i ⊗ simples C j) =
-    scalarIso (simples C i ⊗ simples C j) (t i * t j) ≪≫
-      monodromyIso (simples C i) (simples C j)
   apply Iso.ext
   have h := hbalance (simples C i) (simples C j)
-  change Modular.doubleBraiding _ _ ≫ ((η.app (simples C i)).hom ⊗ₘ
-    (η.app (simples C j)).hom) = (η.app (simples C i ⊗ simples C j)).hom at h
-  have ht : HasSimpleScalars C η t := pivotal_twist_has_simple_scalars C p
-  rw [ht i, ht j] at h
+  change Modular.doubleBraiding _ _ ≫
+    (((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i)).hom ⊗ₘ
+      ((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C j)).hom) =
+      ((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i ⊗ simples C j)).hom at h
+  rw [pivotal_twist_has_simple_scalars C p i, pivotal_twist_has_simple_scalars C p j] at h
   simp only [tensorHom_def, MonoidalLinear.whiskerLeft_smul, MonoidalLinear.smul_whiskerRight,
     Linear.smul_comp, Linear.comp_smul, smul_smul] at h
   simpa [scalarIso, monodromyIso, Modular.doubleBraiding, Category.assoc,
@@ -896,25 +889,22 @@ holds; no lantern relation or modularity hypothesis is used. -/
 theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p) :
     ∀ i, IsOfFinOrder (End.of ((Dimensions.pivotalBraidedTwist C p (simples C i)).hom)) := by
-  have hf := natural_scalars_finite_of_simple_balancing C (pivotal_twist_has_simple_scalars C p)
-    (pivotal_twist_simple_balance C p hbalance)
   intro i
-  have hf' : IsOfFinOrder ((CentreCabling.pivotalTwistUnit C p i : ℂˣ) : ℂ) :=
-    Units.isOfFinOrder_val.mpr (hf i)
   let : Simple (simples C i) := simples_simple C i
   let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   simpa [CentreCabling.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using
-    (Ground.simpleEndScalar (simples C i)).symm.toMonoidHom.isOfFinOrder hf'
+    (Ground.simpleEndScalar (simples C i)).symm.toMonoidHom.isOfFinOrder
+      (Units.isOfFinOrder_val.mpr (natural_scalars_finite_of_simple_balancing C
+        (pivotal_twist_has_simple_scalars C p) (pivotal_twist_simple_balance C p hbalance) i))
 
 /-- The actual pivotal twist balancing law alone forces every mixed
 monodromy to have finite order; no lantern relation is required. -/
 theorem mixed_monodromy_finite_of_pivotal_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p)
-    (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) := by
-  apply CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist C
+    (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) :=
+  CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist C
     (Dimensions.pivotalBraidedTwistNaturalIso C p)
-  · exact pivotal_twist_finite_of_balancing C p hbalance
-  · exact hbalance
+    (pivotal_twist_finite_of_balancing C p hbalance) hbalance X Y
 
 end PropertyF.Ground.CentreModular
 end

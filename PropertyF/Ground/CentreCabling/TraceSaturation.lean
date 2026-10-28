@@ -41,14 +41,13 @@ theorem finiteOrder_matrix_trace_saturation {M : Matrix ι ι ℂ} (hM : IsOfFin
   obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
   let U : Matrix ι ι ℂ := (P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)
   have ht : U.trace = M.trace := Matrix.trace_units_conj P M
-  have hu : PropertyF.ColumnUnitary U := PropertyF.columnUnitary_of_unitary hP
   constructor
   · rw [← ht]
-    exact (Complex.re_le_norm _).trans (PropertyF.norm_trace_le_card hu)
+    exact (Complex.re_le_norm _).trans (PropertyF.norm_trace_le_card hP)
   · intro heq
-    have hU : U = 1 := PropertyF.eq_one_of_re_trace_eq_card hu (by rw [ht]; exact heq)
-    have hh := congrArg (fun A : Matrix ι ι ℂ => (↑(P⁻¹) : Matrix ι ι ℂ) * A * (P : Matrix ι ι ℂ)) hU
-    simpa [U, Matrix.mul_assoc, ← Units.val_mul] using hh
+    simpa [U, Matrix.mul_assoc, ← Units.val_mul] using
+      congrArg (fun A : Matrix ι ι ℂ ↦ (↑(P⁻¹) : Matrix ι ι ℂ) * A * (P : Matrix ι ι ℂ))
+        (PropertyF.eq_one_of_re_trace_eq_card hP (by rwa [ht]))
 
 end PropertyF.Ground.CentreCabling
 
@@ -87,10 +86,9 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
     have h2 := Calculus.pivotalTrace_groundEndBlocks D p (Ground.unitScalarEquiv D) e 1
     simp only [End.one_asHom] at h2
     have hh := congrArg Complex.re (h1.symm.trans ((congrArg (Ground.unitScalarEquiv D) ht).trans h2))
-    change (∀ i, Modular.simpleDimension D p i = (fpSimple D i : ℂ)) at hdim
-    simp only [Modular.simpleDimension] at hdim
-    simp only [hdim] at hh
-    simpa [B, Complex.re_sum, Complex.mul_re] using hh
+    change (∀ i, Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
+      (fpSimple D i : ℂ)) at hdim
+    simpa [hdim, B, Complex.re_sum, Complex.mul_re] using hh
   have heq (i : Fin (rank D)) : (B a i).trace.re = (m i : ℝ) :=
     eq_of_pos_weighted_sum_eq (fpSimple_pos D) (fun j ↦ by simpa using (hb j).1) hsum i
   apply B.injective

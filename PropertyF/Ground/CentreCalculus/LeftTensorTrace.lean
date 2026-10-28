@@ -4,6 +4,7 @@ public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
+public import PropertyF.Ground.Modular.BraidIso
 public import PropertyF.Ground.Dimensions.DualCoherence
 
 /-!
@@ -34,10 +35,14 @@ def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) {X Y : C} :
     apply End.ext
     simp
 
+/-- Closing the left factor and then tracing agrees with the total trace at an endomorphism. -/
+abbrev IsLeftTraceCompatibleAt (p : Dimensions.PivotalStructure (C := C))
+    {X Y : C} (f : End (X ⊗ Y)) : Prop :=
+  p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom
+
 /-- Closing the left factor and then tracing agrees with the total trace. -/
 abbrev IsLeftTraceCompatible (p : Dimensions.PivotalStructure (C := C)) (X : C) : Prop :=
-  ∀ Y (f : End (X ⊗ Y)),
-    p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom
+  ∀ Y (f : End (X ⊗ Y)), IsLeftTraceCompatibleAt p f
 
 /-- Inserting a map on the untraced right factor. -/
 def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
@@ -71,7 +76,7 @@ theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.Ha
     (p : Dimensions.PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
-    (htrace : p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom) :
+    (htrace : IsLeftTraceCompatibleAt p f) :
     leftPartialTrace p f =
       (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) :=
   (Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p f) hd).trans <|
@@ -88,36 +93,32 @@ variable {C : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C :
 /-- Once left partial trace composes with total trace, Schur's lemma computes
 the closed crossing as the pivotal twist scalar. -/
 theorem leftPartialTrace_braiding_of_trace_compatibility
-    (ht : p.rightTrace (leftPartialTrace p (End.of (β_ X X).hom)).asHom =
-      p.rightTrace (β_ X X).hom) :
+    (ht : IsLeftTraceCompatibleAt p (End.of (β_ X X).hom)) :
     leftPartialTrace p (End.of (β_ X X).hom) =
       Dimensions.pivotalBraidedTwistScalar C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  have hd : unitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    exact Modular.unitScalar_rightTrace_ne_zero C p X
-  have hd' : unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    simpa [unitScalar_eq_equiv] using hd
+  have hd : unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
+    simpa [unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X
   have hh := leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)
-    (End.of (β_ X X).hom) hd ht
+    (End.of (β_ X X).hom) (Modular.unitScalar_rightTrace_ne_zero C p X) ht
   simpa only [← unitScalar_eq_equiv, Dimensions.pivotalTrace_selfBraiding,
-    Dimensions.pivotalDimension, mul_div_cancel_right₀ _ hd'] using hh
+    Dimensions.pivotalDimension, mul_div_cancel_right₀ _ hd] using hh
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The closed first crossing with any spectator tensor factor is the same
 scalar on the entire untraced factor. -/
 theorem leftPartialTrace_firstGenerator_of_trace_compatibility
     (n : ℕ)
-    (ht : p.rightTrace (leftPartialTrace p (End.of (β_ X X).hom)).asHom =
-      p.rightTrace (β_ X X).hom) :
+    (ht : IsLeftTraceCompatibleAt p (End.of (β_ X X).hom)) :
     leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) =
       Dimensions.pivotalBraidedTwistScalar C p X • 1 := by
   have hg : (Aut.toEnd (braidGenerator X n 0)) = End.of
       ((α_ X X (tensorPower X n)).inv ≫ ((β_ X X).hom ▷ tensorPower X n) ≫
         (α_ X X (tensorPower X n)).hom) := by
     apply End.ext
-    change (braidGenerator X n ⟨0, by omega⟩).asIso.hom = _
-    simp only [braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
-      tensorHom_id]
+    change (braidGenerator X n 0).asIso.hom = _
+    simpa only [Modular.firstBraiding, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+      Iso.refl_hom, tensorHom_id] using Modular.braidGenerator_zero X n
   change leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = _
   dsimp only [tensorPower] at hg ⊢
   rw [hg]
@@ -278,7 +279,7 @@ theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
     [MonoidalPreadditive C] [MonoidalLinear ℂ C]
     (p : Dimensions.PivotalStructure (C := C)) (hp : p.IsSpherical)
     {X Y : C} (f : End (X ⊗ Y)) :
-    p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom :=
+    IsLeftTraceCompatibleAt p f :=
   (hp Y _).symm.trans <| (leftTrace_partialTrace p f).trans (hp _ _)
 
 /-- A self-transparent simple with sign-valued twist has integral FP

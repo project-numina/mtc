@@ -48,7 +48,7 @@ def liftedPivotalStructure (p : Dimensions.PivotalStructure (C := D))
     all_goals rfl
 
 /-- The lifted component agrees with the original pivotal component. -/
-theorem liftedPivotalStructure_compatible (p : Dimensions.PivotalStructure (C := D))
+theorem liftedPivotalStructure_compatible {p : Dimensions.PivotalStructure (C := D)}
     (hc : PivotalComponentsCentral p) (Z : 𝒵) :
     ((liftedPivotalStructure p hc).iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom =
       (p.iso Z.1).hom := by
@@ -56,7 +56,7 @@ theorem liftedPivotalStructure_compatible (p : Dimensions.PivotalStructure (C :=
 
 end
 
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+variable {C : BraidedFusionCategory.{v,u}} [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 
@@ -73,8 +73,8 @@ theorem center_structure_of_pivotal_centrality
       PivotalHasFPDimensions 𝒵ᶠ pZ ∧
       PseudoUnitary 𝒵ᶠ ∧
       globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
-  center_structure_of_compatible_pivotal C hsimple
-    (liftedPivotalStructure_compatible p hc)
+  center_structure_of_compatible_pivotal hsimple
+    (liftedPivotalStructure_compatible hc)
 
 end PropertyF.Ground.CentreInduction
 

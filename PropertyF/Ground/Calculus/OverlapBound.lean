@@ -70,7 +70,7 @@ theorem pivotalTrace_braid_unitary_bound
       intro j _
       rw [norm_mul]
       apply mul_le_mul (hw j)
-        (by simpa using norm_trace_le_card (columnUnitary_of_unitary (ha j)))
+        (by simpa using norm_trace_le_card (ha j))
         (norm_nonneg _)
       exact Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (hfp i)
     _ = ∑ i, (m i : ℝ) * fp i := multiplicity_mass_eq m d mult fp hdim
