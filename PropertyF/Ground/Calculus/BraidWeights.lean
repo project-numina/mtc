@@ -94,11 +94,16 @@ end PropertyF.Ground.Calculus
 open scoped BigOperators
 namespace PropertyF.Ground.Calculus
 
+/-- Dimensions obtained by decomposing a family into matrix blocks. -/
+abbrev HasMultiplicityDecomposition {ι κ : Type*} [Fintype κ]
+    (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) : Prop :=
+  ∀ i, m i = ∑ j, mult i j * d j
+
 /-- The block trace mass is the constituent multiplicity mass whenever the
 actual representation dimensions decompose into braid-block dimensions. -/
 theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
     (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → ℝ)
-    (hdim : ∀ i, m i = ∑ j, mult i j * d j) :
+    (hdim : HasMultiplicityDecomposition m d mult) :
     (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) =
       ∑ i, (m i : ℝ) * fp i := by
   simp only [hdim, Nat.cast_sum, Nat.cast_mul, Finset.sum_mul]
@@ -325,6 +330,16 @@ theorem braidToEndBlocks_injective (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     Function.Injective (braidToEndBlocks C X n m e r d b) :=
   (groundEndBlockEquiv C _ m e).injective.comp (Subtype.val_injective.comp b.symm.injective)
 
+/-- The categorical braid trace has the weights supplied by block multiplicities. -/
+abbrev HasMultiplicityTrace (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n r : ℕ}
+    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
+    {d : Fin r → ℕ} (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
+    (mult : Fin (Ground.rank C) → Fin r → ℕ) : Prop :=
+  ∀ a : braidAlgebra X n,
+    scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
+      ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
+        (b a j).trace
+
 /-- The actual categorical trace on the braid algebra has the paper's
 multiplicity-weight formula. Every retained braid block occurs in a simple
 constituent's multiplicity space. -/
@@ -337,11 +352,7 @@ theorem pivotalTrace_braid_multiplicities
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,
       (∀ j, ∃ i, 0 < mult i j) ∧
-      (∀ i, m i = ∑ j, mult i j * d j) ∧
-      ∀ a : braidAlgebra X n,
-        scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
-          ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
-            (b a j).trace := by
+      HasMultiplicityDecomposition m d mult ∧ HasMultiplicityTrace C p scalar b mult := by
   let F := braidToEndBlocks C X n m e r d b
   obtain ⟨mult, hmult, hretained⟩ := faithful_block_representation_multiplicities hd F
     (braidToEndBlocks_injective C e b)
@@ -375,12 +386,9 @@ theorem exists_unitary_braid_trace_blocks
       (∀ j, 0 < d j) ∧
       IsUnitaryBraidPresentation b ∧
       (∀ j, ∃ i, 0 < mult i j) ∧
-      (∀ i, Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2)) =
-        ∑ j, mult i j * d j) ∧
-      ∀ a : braidAlgebra X n,
-        scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
-          ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
-            (b a j).trace := by
+      HasMultiplicityDecomposition
+        (fun i => Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))) d mult ∧
+      HasMultiplicityTrace C p scalar b mult := by
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
