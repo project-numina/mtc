@@ -221,7 +221,6 @@ standard block traces. The integers are ranks of images of matrix units. -/
 theorem representation_trace_multiplicities {m : ℕ}
     (φ : B.Algebra →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
     ∃ mult : Fin B.count → ℕ, ∀ x, (φ x).trace = ∑ i, (mult i : ℂ) * (x i).trace := by
-  classical
   let T := (Matrix.traceLinearMap (Fin m) ℂ ℂ).comp φ.toLinearMap
   obtain ⟨w, hw⟩ := cyclic_block_trace T (fun x y => by
     change (φ (x * y)).trace = (φ (y * x)).trace
@@ -243,13 +242,11 @@ theorem faithful_block_representation_multiplicities {B' : Blocks}
     (φ : B.Algebra →ₐ[ℂ] B'.Algebra) (hinj : Function.Injective φ) :
     ∃ mult : Fin B'.count → Fin B.count → ℕ,
       (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧ (∀ j, ∃ i, 0 < mult i j) := by
-  classical
   choose mult hmult using fun i : Fin B'.count =>
     representation_trace_multiplicities hd ((Pi.evalAlgHom ℂ _ i).comp φ)
   change ∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace at hmult
   refine ⟨mult, hmult, fun j => ?_⟩
-  by_contra hn
-  push Not at hn
+  by_contra! hn
   let k : Fin (B.size j) := ⟨0, hd j⟩
   let e : B.Algebra := Pi.single j (Matrix.single k k 1)
   have hzero : φ e = 0 := by
