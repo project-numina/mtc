@@ -139,7 +139,7 @@ theorem crossingCandidate_unit (X : C.Obj) :
     crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv := by
   let V := inductionSummand C X
-  refine biproduct_tensor_hom_ext V (𝟙_ C.Obj) fun i => ?_
+  refine rightDistributor_ext_left (f := V) fun i => ?_
   rw [crossingCandidate_unit_summand]
   dsimp only [underlying, V]
   rw [← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]

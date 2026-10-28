@@ -94,7 +94,6 @@ import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.DimensionCharacter
-import all PropertyF.Ground.Dimensions.DimensionField
 import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.DualTensorNaturality
 import all PropertyF.Ground.Dimensions.ENOMatrices

@@ -40,7 +40,6 @@ theorem rootTensorDefect_coevaluation
   let a := (fourthDualRootNaturalIso C).app X
   let b := (fourthDualRootNaturalIso C).app (Xᘁ)
   let t := rootTensorIso C X (Xᘁ)
-  let u := rootDimension C (unitIndex C)
   let e := rootDualSign C i
   have hc := root_components_coevaluation C i
   change η_ X (Xᘁ) ≫ (a.hom ⊗ₘ b.hom) = e • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) at hc

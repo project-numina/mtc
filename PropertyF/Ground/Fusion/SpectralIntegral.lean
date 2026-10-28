@@ -54,13 +54,12 @@ theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]
     change Polynomial.eval₂ (Int.castRingHom ℂ) z A.charpoly = 0
     rw [Polynomial.eval₂_eq_eval_map, ← Matrix.charpoly_map]
     exact ((Matrix.mem_spectrum_iff_isRoot_charpoly.mp hz).eq_zero)
-  have hnorm : IsIntegral ℤ (‖z‖ ^ 2 : ℝ) :=
-    (isIntegral_algebraMap_iff (R := ℤ) (A := ℝ) (B := ℂ)).mp (by
-      change IsIntegral ℤ ((‖z‖ ^ 2 : ℝ) : ℂ)
-      rw [← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]
-      exact (hzint.map Complex.conjAe).mul hzint)
   change IsIntegral ℤ ((spectralRadius ℂ B).toReal ^ 2)
-  simpa only [← hzmax, ENNReal.coe_toReal, coe_nnnorm] using hnorm
+  rw [← hzmax, ENNReal.coe_toReal, coe_nnnorm]
+  apply (isIntegral_algebraMap_iff (R := ℤ) (A := ℝ) (B := ℂ)).mp
+  change IsIntegral ℤ ((‖z‖ ^ 2 : ℝ) : ℂ)
+  rw [← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]
+  exact (hzint.map Complex.conjAe).mul hzint
 
 /-- Every target simple FP dimension is integral over ℤ. -/
 theorem fpSimple_isIntegral (i : Fin (rank D)) :
@@ -73,9 +72,8 @@ theorem fpSimple_isIntegral (i : Fin (rank D)) :
     ext k j
     change (((Module.finrank ℂ (simples D k ⟶ simples D i ⊗ simples D j) : ℤ) : ℂ)) = _
     simp [fusionMatrix]
-  have hsquared := integer_matrix_spectralRadius_sq_isIntegral A
-  rw [hmatrix] at hsquared
-  exact IsIntegral.of_pow (by decide : 0 < 2) hsquared
+  apply IsIntegral.of_pow (by decide : 0 < 2)
+  simpa only [hmatrix, fpSimple] using integer_matrix_spectralRadius_sq_isIntegral A
 
 /-- The target's global FP dimension is integral over ℤ, independently of
 the construction of a positive fusion-ring character. -/

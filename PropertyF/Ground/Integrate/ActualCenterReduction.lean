@@ -16,7 +16,8 @@ public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.Tactic
 public import Mathlib.FieldTheory.IsSepClosed
 public import PropertyF.Ground.Fusion.SpectralIntegral
-public import PropertyF.Ground.Dimensions.DimensionField
+public import Mathlib.FieldTheory.IsAlgClosed.Classification
+public import Mathlib.Algebra.MvPolynomial.Equiv
 public import PropertyF.Arithmetic
 
 /-! # Galois arithmetic and the centre reduction
@@ -29,6 +30,34 @@ weak integrality from the actual centre and its finite braid images. -/
 A positive ratio and the centre's rigidity witness rule out smaller Galois
 conjugates. A real algebraic integer fixed by every complex automorphism is an
 integer, yielding the arithmetic descent used in the final theorem. -/
+
+@[expose] public noncomputable section
+namespace PropertyF.Ground
+
+/-- Every automorphism of a subfield extends to the ambient algebraically closed field.
+Choose a transcendence basis, apply the automorphism to coefficients while
+fixing the basis, and extend across the algebraic closure. -/
+private theorem extend_subfield_automorphism {L : Type*} [Field L] [IsAlgClosed L]
+    (K : Subfield L) (σ : K ≃+* K) :
+    ∃ τ : L ≃+* L, ∀ x : K, τ (x : L) = (σ x : L) := by
+  obtain ⟨s, hs⟩ := exists_isTranscendenceBasis K L
+  let v : s → L := fun x => x
+  let A := Algebra.adjoin K (Set.range v)
+  let e : MvPolynomial s K ≃ₐ[K] A := hs.1.aevalEquiv
+  let α : A ≃+* A := e.toRingEquiv.symm.trans
+    ((MvPolynomial.mapEquiv s σ).trans e.toRingEquiv)
+  let : IsAlgClosure A L := IsAlgClosed.isAlgClosure_of_transcendence_basis v hs
+  let τ : L ≃+* L := IsAlgClosure.equivOfEquiv L L α
+  refine ⟨τ, fun x => ?_⟩
+  have he : α (algebraMap K A x) = algebraMap K A (σ x) := by
+    apply e.symm.injective
+    simp [α, e]
+  simpa [he, Subfield.algebraMap_ofSubfield] using
+    IsAlgClosure.equivOfEquiv_algebraMap L L α (algebraMap K A x)
+
+end PropertyF.Ground
+
+end
 
 section
 
@@ -94,7 +123,7 @@ theorem integral_eq_int_of_complex_galois_fixed {δ : R} (hδr : IsIntegral ℤ 
   let x : K := ⟨ι δ, (minpoly.irreducible (hδ.tower_top (A := ℚ))).separable⟩
   let ⟨z, hz⟩ := integer_of_galois_fixed (x := x)
     ((isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by simpa [x] using hδ)) fun σ ↦ by
-      obtain ⟨τ, hτ⟩ := Dimensions.extend_complex_automorphism K.toSubfield σ.toRingEquiv
+      obtain ⟨τ, hτ⟩ := extend_subfield_automorphism K.toSubfield σ.toRingEquiv
       exact Subtype.ext ((hτ x).symm.trans (hfixed τ))
   ⟨z, (algebraMap R ℂ).injective (by simpa [x] using congrArg (fun y : K ↦ (y : ℂ)) hz)⟩
 
