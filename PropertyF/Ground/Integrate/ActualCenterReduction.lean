@@ -105,11 +105,10 @@ theorem positive_bounded_conjugates_of_fp (C : BraidedFusionCategory.{v,u})
     (σ : ℂ ≃+* ℂ) : ∃ a : ℝ, 0 < a ∧ a ≤ globalFPDimension C ∧
       σ (globalFPDimension C : ℂ) = (a : ℂ) := by
   let χ : Fin (rank C) → ℂ := fun i => (fpSimple C i : ℂ)
-  have hχ : χ (unitIndex C) ≠ 0 := by simp [χ, fpSimple_unit]
-  have hchar : IsFusionMultiplicative C χ := fpSimple_isFusionMultiplicative C
   let d : Fin (rank C) → ℝ := fun i => (σ (χ i)).re
   have hbound (i : Fin (rank C)) : |d i| ≤ fpSimple C i := by
-    have h := Dimensions.galois_character_norm_le_fpSimple C hχ hchar σ i
+    have h := Dimensions.galois_character_norm_le_fpSimple C (χ := χ) (i₀ := unitIndex C)
+      (by simp [χ, fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i
     rw [← fp_simple_galois_real C σ i] at h
     simpa [d, χ, Complex.norm_real, Real.norm_eq_abs] using h
   exact ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
