@@ -47,12 +47,6 @@ attribute [local instance] IsFusionCategory.hom_finite
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 variable (i j k : Fin (rank C))
 
-/-- Braiding identifies the right dual with the chosen left-dual representative. -/
-def rightDualLabelIso :
-    (simples C i)ᘁ ≅ simples C (dualIndex C i) :=
-  leftDualIso (BraidedCategory.exactPairing_swap (simples C i) ((simples C i)ᘁ))
-    HasLeftDual.exact ≪≫ Classical.choice (dualIndex_iso i)
-
 /-- Actual Frobenius reciprocity using the chosen dual-label identification. -/
 def enoFrobeniusEquiv :
     (simples C i ⊗ simples C j ⟶ simples C k) ≃ₗ[ℂ]
@@ -88,10 +82,8 @@ theorem trace_reciprocity_of_intertwining
   have ht : LinearMap.trace ℂ _ A = rootDualSign C i * LinearMap.trace ℂ _ B := by
     simpa only [LinearMap.trace_conj', LinearMap.trace_transpose', map_smul, smul_eq_mul] using
       congrArg (LinearMap.trace ℂ _) (show E.conj (Module.Dual.transpose A) =
-        rootDualSign C i • B from by
-          ext w
-          obtain ⟨v, rfl⟩ := E.surjective w
-          simpa [E, A, B, LinearEquiv.conj_apply] using hintertwine i j k v)
+        rootDualSign C i • B from LinearMap.ext fun w ↦ by
+          simpa [E, A, B, LinearEquiv.conj_apply] using hintertwine i j k (E.symm w))
   change LinearMap.trace ℂ _ B = rootDualSign C i * LinearMap.trace ℂ _ A
   rw [ht, ← mul_assoc, rootDualSign_sq, one_mul]
 
