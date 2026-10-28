@@ -89,7 +89,7 @@ variable {p} in
 theorem liftedPivotalStructure_compatible
     (hc : PivotalComponentsCentral p) (Z : 𝒵) :
     PivotalCompatibleAt p (liftedPivotalStructure p hc) Z := by
-  simp [PivotalCompatibleAt, liftedPivotalStructure, transportedPivotalHom, Category.assoc]
+  simp [PivotalCompatibleAt, liftedPivotalStructure, transportedPivotalHom]
 
 end
 

@@ -40,7 +40,7 @@ def underlyingFunctor : C.Obj ⥤ C.Obj where
     (fun i : Fin (rank C) => (Sᶜ i ◁ f) ▷ (Sᶜ i)ᘁ)
   map_id X := biproduct.hom_ext' _ _ fun i => by simp [underlying]
   map_comp f g := biproduct.hom_ext' _ _ fun i => by
-    simp [underlying, Category.assoc, whiskerLeft_comp, comp_whiskerRight]
+    simp [underlying, whiskerLeft_comp, comp_whiskerRight]
 
 end PropertyF.Ground.CentreInduction
 
@@ -134,7 +134,7 @@ abbrev nestedCrossingBlock (X T U : C.Obj) (i k j : Fin (rank C))
 theorem crossingInclusion_projection {C : BraidedFusionCategory.{v,u}} {T : C.Obj} {i j : Fin (rank C)}
     (a : crossingIndex C T i j) :
     crossingInclusion C T i j a ≫ crossingProjection C T i j a = 𝟙 (simples C i) := by
-  simp [crossingInclusion, crossingProjection, simpleProjection, simpleInclusion, Category.assoc]
+  simp [crossingInclusion, crossingProjection, simpleProjection, simpleInclusion]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The projection/inclusion pairs resolve the identity on `T ⊗ Sⱼ`.

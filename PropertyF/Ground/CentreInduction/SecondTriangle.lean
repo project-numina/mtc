@@ -30,7 +30,7 @@ variable {C} in
 theorem crossing_counit_matrix :
   (biproduct.ι V i ▷ T) ≫ b T ≫ (T ◁ (underlyingCounit C).app X) =
     (∑ a, crossingSummand C X T i (unitIndex C) a) ≫ (T ◁ (unitSummandIso C X).hom) := by
-  simpa [underlyingCounit, unitSummandRetract, Category.assoc] using
+  simpa [underlyingCounit, unitSummandRetract] using
     congrArg (· ≫ (T ◁ (unitSummandIso C X).hom)) (crossingCandidate_matrix X T i (unitIndex C))
 
 /-! The unit-column matrix of the induction crossing. -/
