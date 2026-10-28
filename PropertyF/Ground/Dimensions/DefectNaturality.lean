@@ -53,6 +53,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The Frobenius defect equation reduces to its value on the identity map. -/
 theorem trace_reciprocity_of_coeval_defect
     (hunit : ∀ i k,
@@ -63,7 +64,7 @@ theorem trace_reciprocity_of_coeval_defect
         rootDualSign C i • (tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
     ENOTraceMatrixReciprocity C := by
-  refine trace_reciprocity_of_frobenius_defect C fun i j k g ↦ ?_
+  refine trace_reciprocity_of_frobenius_defect fun i j k g ↦ ?_
   let X := simples C i
   let K := simples C k
   let J := simples C j
@@ -104,12 +105,13 @@ abbrev RootTensorDefectSlide (C : BraidedFusionCategory.{v,u})
     rootDualSign C i • (η ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The ENO reciprocity identity only needs the defect to slide through the
 coevaluation of the swapped dual pairing. -/
 theorem trace_reciprocity_of_coevaluation
     (hslide : ∀ i k, RootTensorDefectSlide C i (simples C k)) :
     ENOTraceMatrixReciprocity C := by
-  refine trace_reciprocity_of_coeval_defect C fun i k ↦ ?_
+  refine trace_reciprocity_of_coeval_defect fun i k ↦ ?_
   let X := simples C i
   let K := simples C k
   let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)

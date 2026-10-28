@@ -162,6 +162,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+variable {C} in
 /-- A pivotal structure whose simple dimensions and intrinsic norms are the
 FP values is spherical. -/
 theorem spherical_of_fp_dimensions_and_squaredNorms
@@ -182,6 +183,7 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i)))
     (by simpa [pow_two] using hh.symm)
 
+variable {C} in
 /-- ENO's trace-matrix bound and the root-norm identity turn global
 pseudo-unitarity into pointwise FP saturation. -/
 theorem eno_root_norm_saturation_of_pseudoUnitary
@@ -213,7 +215,7 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
   iso X := (rootSignTwist C c hc).app X
   naturality {_X _Y} f := (rootSignTwist C c hc).hom.naturality f
   tensor X Y := doubleDualTensor_extension C (rootSignTwist C c hc)
-    (fun i j ↦ congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C hc (hdef i j))) X Y
+    (fun i j ↦ congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects hc (hdef i j))) X Y
   unit := hunit
 
 set_option backward.isDefEq.respectTransparency false in
@@ -234,6 +236,7 @@ abbrev normalizedRootDimension (C : BraidedFusionCategory.{v,u}) (i : Fin (rank 
 variable (hinv : MultiplicityDefectsInvolutive C) (heig : ENOTraceMatrixEigenvector C)
 include hinv heig
 
+variable {C} in
 /-- Saturated root dimensions normalize every involutive multiplicity defect. -/
 theorem normalized_defects_trivial
     (hsat : ∀ i, ‖rootDimension C i‖ = fpSimple C i) :
@@ -254,13 +257,14 @@ theorem normalized_defects_trivial
           (fpSimple_pos C) (fpSimple_mul C) hsat
           (fun i j k ↦ enoTraceMatrix_norm_le_fusionCoeff (hinv i j k)) heig i j k)))
 
+variable {C} in
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/
 theorem positive_spherical_of_matrix_identities
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
   classical
-  have hsat := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
+  have hsat := eno_root_norm_saturation_of_pseudoUnitary hinv heig hnorm hpu
   let q := normalizedRootDimension C
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero i)
@@ -269,10 +273,10 @@ theorem positive_spherical_of_matrix_identities
     simp [c, q, normalizedRootDimension, rootDimension_ne_zero]
   let unitProof := rootSignTwist_unit_of_simple_dimension C hc (by
     simp only [hvalue, fpSimple_unit, Complex.ofReal_one])
-  let p := rootPhasePivotal C c hc (normalized_defects_trivial C hinv heig hsat) unitProof
+  let p := rootPhasePivotal C c hc (normalized_defects_trivial hinv heig hsat) unitProof
   have hp (i) : pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     rw [rootPhasePivotal_dimension, hvalue]
-  exact ⟨p, spherical_of_fp_dimensions_and_squaredNorms C p hp
+  exact ⟨p, spherical_of_fp_dimensions_and_squaredNorms p hp
     (fun i ↦ by rw [hnorm i, hsat i]), hp⟩
 
 end PropertyF.Ground.Dimensions
