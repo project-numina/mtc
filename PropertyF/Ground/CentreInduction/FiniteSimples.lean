@@ -90,7 +90,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Proper
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-attribute [local instance] IsFusionCategory.hom_finite
+attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple
 variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [LeftRigidCategory D]
 
 omit [Abelian D] [LeftRigidCategory D] in
@@ -173,7 +173,6 @@ theorem center_fusion_of_nonzero_induced_trace {X : C.Obj}
   let J := (induction C).obj X
   let cap : J ⊗ Jᘁ ⟶ 𝟙_ (𝒵) :=
     ((p.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
-  letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   letI : Simple (𝟙_ (𝒵)) := Centre.centerUnitSimple
   center_fusion_of_unit_retract <| unitRetractOfNonzeroCap cap <| fun h =>
     hne (End.ext (by simpa [PivotalStructure.rightTrace, rightTraceWith,
