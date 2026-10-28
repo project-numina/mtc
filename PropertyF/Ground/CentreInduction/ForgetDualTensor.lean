@@ -33,13 +33,12 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso Y).hom =
       (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
-  have hi := (CommSq.vert_inv (g := rightDualIsoMap (forgetDualIso X))
-    (h := rightDualIsoMap (forgetDualIso Y)) ⟨by
-      simpa only [comp_rightAdjointMate, rightDualIsoMap] using
-        (congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)).symm⟩).w
-  simp only [rightDualIsoMap] at hi
-  simp only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
-    Category.assoc, reassoc_of% forgetDualIso_natural, hi]
+  simpa only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
+    Category.assoc] using (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩
+    (CommSq.vert_inv (g := rightDualIsoMap (forgetDualIso X))
+      (h := rightDualIsoMap (forgetDualIso Y)) ⟨by
+        simpa only [comp_rightAdjointMate, rightDualIsoMap] using
+          (congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)).symm⟩)).w
 
 variable (p : PivotalStructure (C := D))
 
