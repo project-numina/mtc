@@ -28,21 +28,21 @@ include hdim in
 /-- Sign twist preserves the fixed-strand trace deletion identity. -/
 theorem parityPermutationTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     {n : ℕ} (σ : Equiv.Perm (Fin n)) :
-    unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1))
-      (fixHead n σ)).asHom) =
-    (fpDimension C X : ℂ) *
-      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd n) σ).asHom) := by
+    permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 1) (fixHead n σ) =
+    (fpDimension C X : ℂ) * permutationScalarTrace C p (parityPermutationAction C hX odd) n σ := by
   cases odd with
   | false => exact tensorPermutationTrace_fixHead C p hdim X hX n σ
   | true =>
     have hs : (Centre.permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
         (Centre.permutationSign ℂ n σ : ℂ) := by
       simpa [fixHead] using sign_decomposeFin 0 σ
-    simp only [parityPermutationAction, ↓reduceIte, Centre.twistAction,
+    have ht := tensorPermutationTrace_fixHead C p hdim X hX n σ
+    dsimp only [permutationScalarTrace] at ht
+    simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
       unitScalar_eq_equiv, map_smul, smul_eq_mul]
     rw [hs, ← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
-      tensorPermutationTrace_fixHead C p hdim X hX n σ]
+      ht]
     ring
 
 include hdim in
@@ -50,9 +50,9 @@ include hdim in
 positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hmoved : ∀ n (q : Fin (n + 1)), q ≠ 0 → ∀ σ,
-      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1))
-        (Equiv.Perm.decomposeFin.symm (q, σ))).asHom) =
-      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd n) σ).asHom)) :
+      permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 1)
+        (Equiv.Perm.decomposeFin.symm (q, σ)) =
+      permutationScalarTrace C p (parityPermutationAction C hX odd) n σ) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_trace_deletion C p hdim X (parityPermutationAction C hX odd)
     (fun _ σ ↦ parityPermutationTrace_fixHead C p hdim hX odd σ) hmoved
@@ -85,14 +85,13 @@ theorem movedTrace_of_adjacent (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj)) (X : C.Obj)
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
     (hadj : ∀ n (σ : Equiv.Perm (Fin (n + 1))),
-      unitScalar C (p.rightTrace ((ρ (n + 2))
-        (Equiv.Perm.decomposeFin.symm (1, σ))).asHom) =
-      unitScalar C (p.rightTrace ((ρ (n + 1)) σ).asHom)) :
+      permutationScalarTrace C p ρ (n + 2) (Equiv.Perm.decomposeFin.symm (1, σ)) =
+      permutationScalarTrace C p ρ (n + 1) σ) :
     ∀ n (q : Fin (n + 1)), q ≠ 0 → ∀ σ,
-      unitScalar C (p.rightTrace ((ρ (n + 1))
-        (Equiv.Perm.decomposeFin.symm (q, σ))).asHom) =
-      unitScalar C (p.rightTrace ((ρ n) σ).asHom) := by
+      permutationScalarTrace C p ρ (n + 1) (Equiv.Perm.decomposeFin.symm (q, σ)) =
+      permutationScalarTrace C p ρ n σ := by
   intro n q hq σ
+  simp only [permutationScalarTrace] at hadj ⊢
   cases n with
   | zero => exact (hq (Fin.eq_zero q)).elim
   | succ n =>
@@ -125,9 +124,9 @@ include hdim in
 one of the two actual parity choices. -/
 theorem integral_of_parity_adjacent_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hadj : ∀ n (σ : Equiv.Perm (Fin (n + 1))),
-      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 2))
-        (Equiv.Perm.decomposeFin.symm (1, σ))).asHom) =
-      unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1)) σ).asHom)) :
+      permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 2)
+        (Equiv.Perm.decomposeFin.symm (1, σ)) =
+      permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 1) σ) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_parity_moved_trace C p hdim hX odd
     (movedTrace_of_adjacent C p X (parityPermutationAction C hX odd) hadj)

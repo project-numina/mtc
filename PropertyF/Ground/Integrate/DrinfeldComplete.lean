@@ -1,5 +1,6 @@
 module
-public import PropertyF.Ground.CentreCabling.TargetReduction
+public import PropertyF.Ground.CentreCabling.ImageCore
+public import PropertyF.Ground.Integrate.ActualCenterReduction
 public import PropertyF.Ground.CentreInduction.ActualFusion
 public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
@@ -36,6 +37,7 @@ theorem center_globalDimension_square_of_actual_induction
     (fun _ ↦ ⟨Iso.refl _⟩) p hp fun i ↦ by
       simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
         Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hdim i
+
 
 
 end PropertyF.Ground
@@ -122,7 +124,7 @@ theorem target_of_pivotal_base_modular_balanced_center
         let D := Integrate.bundledCenter C
         (Modular.categoricalS D pZ).det ≠ 0 ∧
         (CentreModular.IsPivotalTwistBalanced D pZ)) : TargetStatement.{v,u} := by
-  apply target_of_center_image_monodromy
+  apply target_of_actual_center
   intro C hpu hF
   obtain ⟨p, hdet, hbalance⟩ := hCenter C hpu hF
   letI := CentreRigid.rigidCenter (C := C.Obj)
@@ -132,12 +134,19 @@ theorem target_of_pivotal_base_modular_balanced_center
     (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))
   obtain ⟨hspherical, _, _, _⟩ := hs
   have hdim := centerPivotal_hasFPDimensions C p hpu
-  refine ⟨CentreRigid.rigidCenter, inferInstance, pZ, hspherical, hdim, hdet,
+  have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy C pZ := by
+    intro y _ a _
+    exact CentreModular.mixed_monodromy_finite_of_pivotal_balancing
+      (Integrate.bundledCenter C) pZ hbalance _ _
+  refine ⟨CentreRigid.rigidCenter, inferInstance, pZ, CentreCabling.symmetricCore C,
+    (↑(CentreCabling.productLabels C) : Set _), hspherical, hdim, hdet,
     center_globalDimension_square_of_actual_induction C pZ hspherical hdim,
-    CentreCalculus.actual_symmetricCore_integrality C pZ hspherical hdim, ?_⟩
-  intro y _ a _
-  exact CentreModular.mixed_monodromy_finite_of_pivotal_balancing
-    (Integrate.bundledCenter C) pZ hbalance _ _
+    CentreCalculus.actual_symmetricCore_integrality C pZ hspherical hdim, ?_, ?_⟩
+  · intro y hy
+    exact (CentreCabling.mem_productLabels C y).mpr
+      (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy C pZ hspherical hdet hdim hfinite y hy)
+  · intro y hy
+    exact (CentreCabling.mem_productLabels C y).mp hy
 
 end PropertyF.Ground
 end

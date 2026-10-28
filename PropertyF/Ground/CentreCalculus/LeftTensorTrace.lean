@@ -105,7 +105,7 @@ theorem integral_of_leftTrace_and_twist_sign
   rcases hsign with h | h
   · apply integral_of_parity_adjacent_trace C p hdim hX false
     intro n σ
-    simpa [parityPermutationAction, h] using
+    simpa [permutationScalarTrace, parityPermutationAction, h] using
       tensorPermutationTrace_adjacent_of_leftTrace C p X hX htotal n σ
   · apply integral_of_parity_adjacent_trace C p hdim hX true
     intro n σ
@@ -113,7 +113,7 @@ theorem integral_of_leftTrace_and_twist_sign
         (Equiv.Perm.decomposeFin.symm (1, σ)) : ℂ) =
         -(Centre.permutationSign ℂ (n + 1) σ : ℂ) := by
       simpa using sign_decomposeFin 1 σ
-    simp only [parityPermutationAction, ↓reduceIte, Centre.twistAction,
+    simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
       unitScalar_eq_equiv, map_smul, smul_eq_mul, hsign']
     rw [← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
