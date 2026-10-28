@@ -20,18 +20,6 @@ Character duality, phase normalization and trace reciprocity control the dimensi
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-open scoped BigOperators Matrix ComplexOrder
-namespace PropertyF.Ground.Dimensions
-universe v u
-
-variable (C : BraidedFusionCategory.{v,u})
-
-end PropertyF.Ground.Dimensions
-
-end
-
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 variable {k : Type*} [Field k] {D : Type u} [Category.{v} D]
@@ -202,8 +190,7 @@ set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 theorem rootPhasePivotal_dimension {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
     (hdef : ScaledMultiplicityDefectsTrivial C c) (hunit : RootSignUnitLaw C c hc)
-    (i : Fin (rank C)) :
-    pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
+    (i : Fin (rank C)) : pivotalDimension C (rootPhasePivotal C c hc hdef hunit) (simples C i) =
       c i * rootDimension C i := by
   simpa only [pivotalDimension, rightTrace_id, rootPhasePivotal] using
     rootSignQuantumTrace_simple hc i
@@ -275,7 +262,9 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
   let ε := rootDualSign C i
   have hε : ε * ε = 1 := rootDualSign_sq i
   have hεstar : star ε = ε := by
-    rcases mul_self_eq_one_iff.mp hε with h | h <;> simp [h]
+    rcases mul_self_eq_one_iff.mp hε with h | h
+    · rw [h, star_one]
+    · rw [h, star_neg, star_one]
   have hA : ∀ j k, star (A j k) = A j k := fun j k ↦ star_involution_trace (hinv i j k)
   have ht : Aᵀ *ᵥ d = (ε * d (dualIndex C i)) • d := by
     ext j

@@ -205,7 +205,8 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
     (hsq : ((a.app X).hom ≫ F.map (a.app X).hom) = b.hom ≫ F.map b.hom) :
     IsInvolutiveHom ((a.app X) ≪≫ b.symm).hom := by
   let d := (a.app X) ≪≫ b.symm
-  have hd : d.hom ≫ b.hom = (a.app X).hom := by simp [d, Category.assoc]
+  have hd : d.hom ≫ b.hom = (a.app X).hom := by
+    rw [show d.hom = (a.app X).hom ≫ b.inv from rfl, Category.assoc, Iso.inv_hom_id, Category.comp_id]
   have hc : b.hom ≫ F.map d.hom = d.hom ≫ b.hom := by
     apply (cancel_epi d.hom).1
     rw [← Category.assoc, hd]
