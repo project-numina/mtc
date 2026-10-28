@@ -184,12 +184,8 @@ theorem homAction_det_scalar {D : Type u} [Category.{v} D] [Preadditive D] [Line
 by the actual FP dimension of the object. -/
 theorem fpDeterminant_scalar (X : C.Obj) (z : ℂˣ) :
     fpDeterminant C X (scalarIso X z) = fpDimension C X • vafaUnitClass z := by
-  unfold fpDeterminant fpDimension
-  simp_rw [homAction_det_scalar, vafaUnitClass_pow]
-  rw [Finset.sum_smul]
-  apply Finset.sum_congr rfl
-  intro i _
-  simp only [← Nat.cast_smul_eq_nsmul ℝ, smul_smul, mul_comm]
+  simp only [fpDeterminant, fpDimension, homAction_det_scalar, vafaUnitClass_pow,
+    ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, Finset.sum_smul, mul_comm]
 
 end PropertyF.Ground.CentreModular
 end

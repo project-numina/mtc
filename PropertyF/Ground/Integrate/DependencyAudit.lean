@@ -20,7 +20,8 @@ def forbidden : Array String := #[
   "PropertyF.CenterInputs", "PropertyF.DimensionField", "PropertyF.OverlapModel",
   "PropertyF.ThreeStrandModel", "PropertyF.ThreeStrandRealization",
   "PropertyF.ProductImageWitness", "PropertyF.CablingWitness",
-  "PropertyF.GeneratedInputs", "PropertyF.ModularData"]
+  "PropertyF.GeneratedInputs", "PropertyF.ModularData",
+  "PropertyF.Ground.DependencyAudit.ForbiddenFixture"]
 
 def isForbidden (n : Name) : Bool :=
   forbidden.any fun s => n.toString == s || n.toString.startsWith (s ++ ".")
@@ -83,14 +84,18 @@ partial def findIssue (env : Environment) (root : Name) : Option Issue := Id.run
         return some (.missingDeclaration n)
   return none
 
+/-- A synthetic forbidden type for testing dependency traversal. -/
+structure ForbiddenFixture where
+  value : Nat
+
 /-- Test fixture: a forbidden input hidden behind an ordinary definition. -/
-def hiddenInput : Prop := ∃ _H : PropertyF.BraidedFusionCategory.{0, 0}, True
+def hiddenInput : Prop := ∃ _H : ForbiddenFixture, True
 
 def hiddenInputWrapper : Prop := hiddenInput
 
 /-- A proof with a clean statement but a forbidden type inside its body. -/
 theorem hiddenProof : True :=
-  (Classical.em (Nonempty PropertyF.BraidedFusionCategory.{0,0})).elim
+  (Classical.em (Nonempty ForbiddenFixture)).elim
     (fun _ => True.intro) (fun _ => True.intro)
 
 open Lean Elab Command in
