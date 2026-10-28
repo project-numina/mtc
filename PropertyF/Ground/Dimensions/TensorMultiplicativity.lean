@@ -42,10 +42,9 @@ theorem rightTraceWith_tensor_pairing {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅
         @ExactPairing.evaluation C _ _ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) q2 := by
     simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc]
     rw [(rightDualIso_inv_evaluation q1 q2)]
-  have h := ht.trans hr
   simpa only [rightTraceWith, End.homEquiv_apply, doubleDualTensorIso, Iso.trans_hom,
     Iso.symm_hom, tensorIso_hom, rightDualIsoMap, Category.assoc, rightDualTensorIso,
-    r, s, u, p1, p2, q1, q2] using h
+    r, s, u, p1, p2, q1, q2] using ht.trans hr
 
 
 /-- Close the right tensor factor using an arbitrary double-dual isomorphism. -/

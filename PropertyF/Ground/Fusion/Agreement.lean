@@ -63,9 +63,7 @@ theorem positive_symmetric_eigenvector_unique {ι : Type*} [Fintype ι]
   have heq : a = b := mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm
   rw [← heq] at hge
   obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique hA hfpos hfe hge
-  have hc1 : c = 1 := by
-    simpa [hfunit, hgunit] using (congrFun hc i₀).symm
-  rw [hc, hc1, one_smul]
+  rw [hc, show c = 1 from by simpa [hfunit, hgunit] using (congrFun hc i₀).symm, one_smul]
 
 /-- A function on simple labels is multiplicative for the fusion rules. -/
 abbrev IsFusionMultiplicative {R : Type*} [Semiring R]
@@ -170,12 +168,11 @@ theorem positive_matrix_eigenvector_pos
   classical
   obtain ⟨j, hj⟩ := hpositive
   intro i
-  have hsum : 0 < ∑ k, A i k * v k :=
-    Finset.sum_pos' (fun k _ => mul_nonneg (hpos i k).le (hnonneg k))
+  have hv : 0 < d * v i := by
+    change 0 < (d • v) i
+    rw [← heigen]
+    exact Finset.sum_pos' (fun k _ => mul_nonneg (hpos i k).le (hnonneg k))
       ⟨j, Finset.mem_univ _, mul_pos (hpos i j) hj⟩
-  have hi := congrFun heigen i
-  simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hi
-  have hv : 0 < d * v i := hi ▸ hsum
   exact lt_of_le_of_ne (hnonneg i) (Ne.symm (right_ne_zero_of_mul (ne_of_gt hv)))
 
 variable [DecidableEq ι] [Nonempty ι]
@@ -465,16 +462,12 @@ of a nonnegative real matrix. -/
 theorem complex_eigenvalue_le_positive_eigenvalue {ι : Type*} [Fintype ι]
     {A : Matrix ι ι ℝ} {w : ι → ℝ} {d : ℝ} {z : ℂ} {v : ι → ℂ}
     (hwe : A *ᵥ w = d • w) (hve : A.map Complex.ofRealHom *ᵥ v = z • v)
-    (hA : ∀ i j, 0 ≤ A i j) (hw : ∀ i, 0 < w i) (hv : v ≠ 0) : ‖z‖ ≤ d := by
-  obtain ⟨i₀, hi₀⟩ := Function.ne_iff.mp hv
-  apply Dimensions.weighted_eigenvalue_bound (fun i j => A i j)
-    (fun i j => (A i j : ℂ)) w v hi₀ hw hA
-  · intro i j
-    simp [Complex.norm_real, abs_of_nonneg (hA i j)]
-  · intro i
-    simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hwe i
-  · intro i
-    simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hve i
+    (hA : ∀ i j, 0 ≤ A i j) (hw : ∀ i, 0 < w i) (hv : v ≠ 0) : ‖z‖ ≤ d :=
+  (Function.ne_iff.mp hv).elim fun _ hi ↦
+    Dimensions.weighted_eigenvalue_bound (fun i j ↦ A i j) (fun i j ↦ (A i j : ℂ)) w v hi hw hA
+      (fun i j ↦ by simp [Complex.norm_real, abs_of_nonneg (hA i j)])
+      (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hwe i)
+      (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hve i)
 
 end PropertyF.Ground
 
@@ -491,14 +484,11 @@ variable (D : BraidedFusionCategory)
 
 theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
     fpCharacter D i ≤ fpSimple D i := by
-  let χ : Fin (rank D) → ℂ := fun j => fpCharacter D j
-  have hχ : χ (unitIndex D) ≠ 0 := by simp [χ, fpCharacter_unit]
-  have hchar : ∀ j k, χ j * χ k = ∑ l, (fusionCoeff D j k l : ℂ) * χ l := by
-    intro j k
-    dsimp [χ]
-    exact_mod_cast fpCharacter_mul D j k
-  simpa [χ, Complex.norm_real, abs_of_pos (fpCharacter_pos D i)] using
-    (Dimensions.character_norm_le_fpSimple D hχ hchar i)
+  simpa [Complex.norm_real, abs_of_pos (fpCharacter_pos D i)] using
+    (Dimensions.character_norm_le_fpSimple D (χ := fun j ↦ (fpCharacter D j : ℂ))
+      (i₀ := unitIndex D) (by simp [fpCharacter_unit]) (fun j k ↦ by
+        dsimp
+        exact_mod_cast fpCharacter_mul D j k) i)
 
 theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
     fpSimple D i ≤ fpCharacter D i := by
@@ -561,14 +551,13 @@ theorem fpSimple_dual (i : Fin (rank D)) :
 theorem one_le_fpSimple (i : Fin (rank D)) :
     1 ≤ fpSimple D i := by
   classical
-  have hsum : 1 ≤ ∑ k, (fusionCoeff D i (dualIndex D i) k : ℝ) * fpSimple D k := by
-    have h := Finset.single_le_sum
+  apply (one_le_sq_iff₀ (fpSimple_pos D i).le).mp
+  simpa only [fusionCoeff_dual_unit, Nat.cast_one, fpSimple_unit, one_mul,
+    ← fpSimple_mul, fpSimple_dual, ← pow_two, one_pow] using
+    (Finset.single_le_sum
       (f := fun k => (fusionCoeff D i (dualIndex D i) k : ℝ) * fpSimple D k)
       (fun k _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D k).le)
-      (Finset.mem_univ (unitIndex D))
-    simpa [fusionCoeff_dual_unit, fpSimple_unit] using h
-  rw [← fpSimple_mul, fpSimple_dual] at hsum
-  exact (one_le_sq_iff₀ (fpSimple_pos D i).le).mp (by simpa only [pow_two] using hsum)
+      (Finset.mem_univ (unitIndex D)))
 
 end PropertyF.Ground
 
