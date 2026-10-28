@@ -65,10 +65,8 @@ theorem crossingCandidate_tensor (U : C.Obj) :
   dsimp only [underlying, V] at *
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun k _ => ?_
-  conv_lhs =>
-    enter [2, j]
-    rw [Finset.sum_comm (s := (Finset.univ : Finset (crossingIndex C U k j)))
-      (t := (Finset.univ : Finset (crossingIndex C T i k)))]
+  simp_rw [Finset.sum_comm (s := (Finset.univ : Finset (crossingIndex C U k _)))
+    (t := (Finset.univ : Finset (crossingIndex C T i k)))]
   rw [Finset.sum_comm]
 
 /-- The actual matrix crossing is invertible by rigidity. -/

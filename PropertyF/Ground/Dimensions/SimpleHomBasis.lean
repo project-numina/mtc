@@ -98,11 +98,10 @@ theorem simpleInclusion_independent
   let : Simple (simples C k) := simples_simple C k
   apply Fintype.linearIndependent_iff.mpr
   intro g hg t
-  have h := congrArg (fun f : simples C k ⟶ X =>
-    f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) hg
-  simp only [Preadditive.sum_comp, Linear.smul_comp, zero_comp, simpleInclusion,
-    Category.assoc, Iso.inv_hom_id_assoc] at h
-  exact smul_left_injective ℂ (id_nonzero (simples C k)) (by simpa [biproduct.ι_π] using h)
+  apply smul_left_injective ℂ (id_nonzero (simples C k))
+  simpa [simpleInclusion, Category.assoc, Preadditive.sum_comp, Linear.smul_comp,
+    biproduct.ι_π] using congrArg (fun f : simples C k ⟶ X ↦
+      f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) hg
 
 /-- The canonical summand inclusions form a basis of each simple Hom space. -/
 def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
