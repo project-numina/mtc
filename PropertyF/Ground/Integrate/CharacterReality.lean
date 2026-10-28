@@ -11,10 +11,11 @@ open CategoryTheory
 open scoped BigOperators Matrix ComplexOrder
 namespace PropertyF.Ground
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 
 /-- Frobenius reciprocity identifies the transpose of the fusion matrix of a
 simple with the fusion matrix of its dual. -/
-theorem fusionCoeff_dual_transpose (C : BraidedFusionCategory) (i j k : Fin (rank C)) :
+theorem fusionCoeff_dual_transpose (i j k : Fin (rank C)) :
     fusionCoeff C i j k = fusionCoeff C (dualIndex C i) k j := by
   rw [fusionCoeff_comm C i j, fusionCoeff_reciprocity_labels,
     fusionCoeff_comm C k (dualIndex C i)]
@@ -36,17 +37,17 @@ theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
       _ = _ := by rw [hs, smul_dotProduct]; rfl
   exact (mul_right_cancel₀ hn heq).symm
 
+variable {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)}
+
 /-- A fusion character is an eigenvector of each fusion matrix. -/
-theorem fusion_character_eigenvector (C : BraidedFusionCategory.{v,u})
-    {χ : Fin (rank C) → ℂ} (hchar : IsFusionMultiplicative C χ) (i : Fin (rank C)) :
+theorem fusion_character_eigenvector (hchar : IsFusionMultiplicative C χ) (i : Fin (rank C)) :
     (fun j k ↦ (fusionCoeff C i j k : ℂ)) *ᵥ χ = χ i • χ := by
   ext j
   exact (hchar i j).symm
 
 /-- Every nonzero fusion character takes complex-conjugate values on dual
 simple objects, with no pivotal or spherical hypothesis. -/
-theorem fusion_character_dual_eq_conj (C : BraidedFusionCategory.{v,u})
-    {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
+theorem fusion_character_dual_eq_conj (hχ : χ i₀ ≠ 0)
     (hchar : IsFusionMultiplicative C χ)
     (i : Fin (rank C)) : χ (dualIndex C i) = star (χ i) := by
   classical
@@ -63,16 +64,14 @@ theorem fusion_character_dual_eq_conj (C : BraidedFusionCategory.{v,u})
   simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A]) hv h ht)
 
 /-- A nonzero fusion character invariant under duality has real values. -/
-theorem selfDual_character_real (C : BraidedFusionCategory)
-    {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
+theorem selfDual_character_real (hχ : χ i₀ ≠ 0)
     (hchar : IsFusionMultiplicative C χ)
     (hdual : ∀ i, χ (dualIndex C i) = χ i) (i : Fin (rank C)) :
     star (χ i) = χ i :=
   (fusion_character_dual_eq_conj C hχ hchar i).symm.trans (hdual i)
 
 /-- Every field conjugate of a self-dual fusion character is real as well. -/
-theorem selfDual_character_galois_real (C : BraidedFusionCategory)
-    {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
+theorem selfDual_character_galois_real (hχ : χ i₀ ≠ 0)
     (hchar : IsFusionMultiplicative C χ)
     (hdual : ∀ i, χ (dualIndex C i) = χ i) (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     star (σ (χ i)) = σ (χ i) :=
@@ -80,8 +79,7 @@ theorem selfDual_character_galois_real (C : BraidedFusionCategory)
     (fun j k ↦ by simpa using congrArg σ (hchar j k)) (fun j ↦ by rw [hdual]) i
 
 /-- Every Galois conjugate of an actual simple FP dimension is real. -/
-theorem fp_simple_galois_real (C : BraidedFusionCategory.{v,u})
-    (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
+theorem fp_simple_galois_real (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     (((σ (fpSimple C i : ℂ)).re : ℝ) : ℂ) = σ (fpSimple C i : ℂ) := by
   apply Complex.conj_eq_iff_re.mp
   simpa only [← Complex.star_def] using
