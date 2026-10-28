@@ -58,8 +58,6 @@ public import PropertyF.Ground.Cabling.Naturality
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.OverlapCoherence
-public import PropertyF.Ground.Integrate.ScalarTwist
-public import PropertyF.Ground.Integrate.FunctorUniverse
 public import PropertyF.Ground.Integrate.TwistedRigidity
 public import PropertyF.Ground.Integrate.CenterBundle
 public import PropertyF.Ground.Integrate.CenterDualMate

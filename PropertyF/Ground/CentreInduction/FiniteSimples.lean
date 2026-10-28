@@ -4,15 +4,12 @@ public import PropertyF.Ground.Calculus.PartialTrace
 public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Dimensions.SimpleScalars
-public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Fusion.SemisimpleSplit
-public import PropertyF.Ground.Centre.Abelian
 public import PropertyF.Ground.Centre.Abelian
 public import Mathlib.CategoryTheory.Subobject.ArtinianObject
 public import Mathlib.CategoryTheory.Subobject.NoetherianObject
 public import Mathlib.RingTheory.Artinian.Module
 public import Mathlib.CategoryTheory.Abelian.Exact
-public import PropertyF.Ground.Fusion.SemisimpleSplit
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

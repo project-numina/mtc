@@ -77,7 +77,7 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.defeqAttrib.useBackward true in
 /-- A finite direct sum of product images retracts from a single product image. -/
-def productFunctor_finiteSumRetract {J : Type} [Fintype J] (X Y : J → C) :
+def productFunctorFiniteSumRetract {J : Type} [Fintype J] (X Y : J → C) :
     Retract (⨁ fun j => productFunctor.obj (X j, Y j))
       (productFunctor.obj (⨁ X, ⨁ Y)) where
   i := biproduct.desc fun j => productFunctor.map (biproduct.ι X j, biproduct.ι Y j)
@@ -110,7 +110,7 @@ theorem productRetract_finiteBiproduct {J : Type} [Fintype J]
         apply biproduct.hom_ext
         intro j
         simp [Category.assoc, (r j).retract] }
-  exact ⟨⨁ X, ⨁ Y, ⟨rr.trans (productFunctor_finiteSumRetract X Y)⟩⟩
+  exact ⟨⨁ X, ⨁ Y, ⟨rr.trans (productFunctorFiniteSumRetract X Y)⟩⟩
 
 omit [Preadditive C] [MonoidalPreadditive C] [HasBinaryBiproducts C]
   [HasZeroObject C] [HasFiniteBiproducts C] in

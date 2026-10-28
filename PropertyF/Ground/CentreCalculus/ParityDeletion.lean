@@ -21,11 +21,12 @@ def parityPermutationAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
   if odd then Centre.twistAction (Centre.permutationSign ℂ n) (tensorPermutationAction X hX n)
   else tensorPermutationAction X hX n
 
+variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
+  (hdim : Modular.HasFPSimpleDimensions C p)
+
+include hdim in
 /-- Sign twist preserves the fixed-strand trace deletion identity. -/
-theorem parityPermutationTrace_fixHead (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : Modular.HasFPSimpleDimensions C p)
-    {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
+theorem parityPermutationTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     {n : ℕ} (σ : Equiv.Perm (Fin n)) :
     unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1))
       (fixHead n σ)).asHom) =
@@ -44,12 +45,10 @@ theorem parityPermutationTrace_fixHead (C : BraidedFusionCategory.{v,u})
       tensorPermutationTrace_fixHead C p hdim X hX n σ]
     ring
 
+include hdim in
 /-- Once the moved-strand trace deletion identity is shown for one parity,
 positive dimensional integrality follows for the self-transparent object. -/
-theorem integral_of_parity_moved_trace (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : Modular.HasFPSimpleDimensions C p)
-    {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
+theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hmoved : ∀ n (q : Fin (n + 1)), q ≠ 0 → ∀ σ,
       unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1))
         (Equiv.Perm.decomposeFin.symm (q, σ))).asHom) =
@@ -124,12 +123,13 @@ namespace PropertyF.Ground.CentreCalculus
 open CategoryTheory CategoryTheory.MonoidalCategory
 universe v u
 
+variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
+  (hdim : Modular.HasFPSimpleDimensions C p)
+
+include hdim in
 /-- Integrality reduces to the first-adjacent-crossing trace identity for
 one of the two actual parity choices. -/
-theorem integral_of_parity_adjacent_trace (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : Modular.HasFPSimpleDimensions C p)
-    {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
+theorem integral_of_parity_adjacent_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hadj : ∀ n (σ : Equiv.Perm (Fin (n + 1))),
       unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 2))
         (Equiv.Perm.decomposeFin.symm (1, σ))).asHom) =

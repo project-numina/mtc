@@ -19,9 +19,10 @@ categorical double braiding to its numerical S-matrix centrality test.
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+
 /-- A finite-order complex matrix can be conjugated to a unitary matrix. -/
-theorem finiteOrder_matrix_unitarizable {ι : Type*} [Fintype ι] [DecidableEq ι]
-    {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
+theorem finiteOrder_matrix_unitarizable {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
     ∃ P : (Matrix ι ι ℂ)ˣ, ((P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)) ∈ Matrix.unitaryGroup ι ℂ := by
   classical
   let u : (Matrix ι ι ℂ)ˣ := hM.isUnit.unit
@@ -35,8 +36,7 @@ theorem finiteOrder_matrix_unitarizable {ι : Type*} [Fintype ι] [DecidableEq �
 
 /-- A finite-order matrix has real trace at most its size, with equality
 only for the identity. -/
-theorem finiteOrder_matrix_trace_saturation {ι : Type*} [Fintype ι] [DecidableEq ι]
-    {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
+theorem finiteOrder_matrix_trace_saturation {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
     M.trace.re ≤ Fintype.card ι ∧
       (M.trace.re = Fintype.card ι → M = 1) := by
   obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
@@ -60,14 +60,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 universe v u
+variable (D : Ground.BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := D.Obj))
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- In a fusion category with positive simple pivotal dimensions, a
 finite-order endomorphism whose pivotal trace equals the object's dimension
 is the identity. -/
 theorem finiteOrder_eq_one_of_trace_eq_dimension
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj))
     (hdim : ∀ i, Dimensions.groundUnitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
       (fpSimple D i : ℂ))
     {X : D.Obj} {a : End X} (ha : IsOfFinOrder a)
@@ -100,8 +99,6 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
 /-- For a finite-order double braiding, the positive spherical S-test is
 equivalent to categorical centrality. -/
 theorem doubleBraiding_eq_one_of_sTest_of_finite_order
-    (D : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj))
     (hdim : Modular.HasFPSimpleDimensions D p)
     {i j : Fin (rank D)}
     (hfinite : IsOfFinOrder (End.of (Modular.doubleBraiding (simples D i) (simples D j))))

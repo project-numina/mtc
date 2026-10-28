@@ -27,10 +27,7 @@ theorem target_of_center_image_monodromy
             globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
             (∀ y ∈ CentreCabling.symmetricCore C,
               ∃ z : ℤ, Modular.simpleDimension Z p y = z) ∧
-            (∀ y, (∀ a ∈ CentreCabling.imageLabels C,
-              Modular.categoricalS Z p a y = Modular.simpleDimension Z p a * Modular.simpleDimension Z p y) →
-              ∀ a ∈ CentreCabling.imageLabels C,
-                IsOfFinOrder (End.of (Modular.doubleBraiding (simples Z a) (simples Z y))))) :
+            (CentreCabling.HasFiniteImageCentralizerMonodromy C p)) :
     TargetStatement.{v,u} := by
   apply target_of_actual_center
   intro C hPU hF

@@ -161,12 +161,7 @@ import all PropertyF.Ground.Integrate.CenterBundle
 import all PropertyF.Ground.Integrate.CenterDualMate
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.DependencyAudit
-import all PropertyF.Ground.Integrate.Fixedness
-import all PropertyF.Ground.Integrate.FunctorUniverse
-import all PropertyF.Ground.Integrate.ModularWitness
-import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
-import all PropertyF.Ground.Integrate.ScalarTwist
 import all PropertyF.Ground.Integrate.TwistedRigidity
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Modular.BraidFunctor

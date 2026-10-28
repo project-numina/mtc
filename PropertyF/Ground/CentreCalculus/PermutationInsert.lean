@@ -143,11 +143,13 @@ theorem fixHead_swap {n : ℕ} (i : Fin n) :
       Equiv.swap_apply_def, Fin.succ_inj]
     split_ifs <;> rfl
 
+section
+variable {X : C} (hX : SelfTransparent X)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Inserting a fixed first strand acts by tensoring the old automorphism
 on the left with the identity of the new strand. -/
-theorem permutationAction_fixHead {X : C}
-    (hX : SelfTransparent X) {n : ℕ}
+theorem permutationAction_fixHead {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 2))) :
     permutationAction X hX (n + 1) (fixHead (n + 2) σ) =
       (tensorLeft X).mapAut (tensorPower X (n + 2)) (permutationAction X hX n σ) := by
@@ -169,8 +171,7 @@ theorem permutationAction_fixHead {X : C}
   exact DFunLike.congr_fun heq σ
 
 /-- Inserting a fixed strand tensors the permutation action with its identity. -/
-theorem tensorPermutationAction_fixHead {X : C}
-    (hX : SelfTransparent X) :
+theorem tensorPermutationAction_fixHead :
     ∀ {n} (σ : Equiv.Perm (Fin n)),
       tensorPermutationAction X hX (n + 1) (fixHead n σ) =
         (tensorLeft X).mapEnd (tensorPower X n) (tensorPermutationAction X hX n σ) := by
@@ -192,6 +193,8 @@ theorem tensorPermutationAction_fixHead {X : C}
       change Aut.toEnd (permutationAction X hX (n + 1) (fixHead (n + 2) σ)) = _
       rw [permutationAction_fixHead]
       rfl
+
+end
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A fixed inserted strand contributes its positive categorical dimension to
