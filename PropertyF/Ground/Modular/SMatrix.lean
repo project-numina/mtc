@@ -50,13 +50,6 @@ theorem SEntry_symmetric (p : PivotalStructure (C := C)) (X Y : C) :
     SEntry p X Y = SEntry p Y X :=
   p.rightTrace_cyclic (β_ X Y).hom (β_ Y X).hom
 
-omit [RightRigidCategory C] in
-/-- Double braiding is natural in the second object. -/
-theorem doubleBraiding_natural_right (X : C) {Y Z : C} (f : Y ⟶ Z) :
-    doubleBraiding X Y ≫ (𝟙 X ⊗ₘ f) =
-      (𝟙 X ⊗ₘ f) ≫ doubleBraiding X Z :=
-  doubleBraiding_natural (𝟙 X) f
-
 /-- The trace of double braiding depends only on the isomorphism class. -/
 theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : Y ≅ Z) :
     SEntry p X Y = SEntry p X Z :=
@@ -65,7 +58,7 @@ theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : 
   by
     rw [Category.assoc, Iso.hom_inv_id, Category.comp_id,
       show doubleBraiding X Y ≫ t.hom = t.hom ≫ doubleBraiding X Z from
-        doubleBraiding_natural_right X e.hom, Iso.inv_hom_id_assoc] at h
+        doubleBraiding_natural (𝟙 X) e.hom, Iso.inv_hom_id_assoc] at h
     exact h
 
 omit [RightRigidCategory C] in
