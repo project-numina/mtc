@@ -31,22 +31,22 @@ abbrev sCentralizes (i j : Fin (rank D)) : Prop :=
 abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
   {j | ∀ i ∈ A, sCentralizes D p i j}
 
+variable {D : Ground.BraidedFusionCategory.{v,u}}
+  {p : PivotalStructure (C := D.Obj)}
+
 /-- Numerical S-centrality is symmetric. -/
-theorem sCentralizes_symm {D : Ground.BraidedFusionCategory.{v,u}}
-    {p : PivotalStructure (C := D.Obj)} {i j : Fin (rank D)}
+theorem sCentralizes_symm {i j : Fin (rank D)}
     (h : sCentralizes D p i j) : sCentralizes D p j i :=
   (Modular.categoricalS_symmetric D p j i).trans <|
     h.trans (mul_comm (dim D p i) (dim D p j))
 
 /-- FP-valued simple dimensions are fixed by complex conjugation. -/
-theorem realSimpleDimensions_of_fp {D : Ground.BraidedFusionCategory.{v,u}}
-    {p : PivotalStructure (C := D.Obj)} (hdim : HasFPSimpleDimensions D p) :
+theorem realSimpleDimensions_of_fp (hdim : HasFPSimpleDimensions D p) :
     HasRealSimpleDimensions D p := fun j ↦ by simp [hdim]
 
 /-- The numerical S-centralizer is closed under dual labels when dimensions
 are the positive FP dimensions. -/
-theorem sCentralizes_dual {D : Ground.BraidedFusionCategory.{v,u}}
-    {p : PivotalStructure (C := D.Obj)} (hdim : HasFPSimpleDimensions D p)
+theorem sCentralizes_dual (hdim : HasFPSimpleDimensions D p)
     {i y : Fin (rank D)} (hi : sCentralizes D p i y) :
     sCentralizes D p (dualIndex D i) y := by
   dsimp only [sCentralizes] at hi ⊢
