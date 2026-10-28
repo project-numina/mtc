@@ -35,15 +35,26 @@ abbrev HasUnitaryTraceBound {X : C.Obj}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) (R : ℝ) : Prop :=
   ∀ a, Blocks.IsUnitary ⟨_, d⟩ (b a) → ‖actualBraidTrace C p a‖ ≤ R
 
+/-- The actual FP dimension of a tensor power is the corresponding power. -/
+theorem fpDimension_tensorPower (X : C.Obj) :
+    ∀ n, Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n
+  | 0 => by simp [tensorPower, Ground.fpDimension_unit]
+  | n + 1 => by simp [tensorPower, Ground.fpDimension_tensor, fpDimension_tensorPower X n,
+      pow_succ, mul_comm]
+
+section BraidTraceBound
+
+variable {X : C.Obj} {n r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
+  (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
+include hd
+
 /-- In actual categorical braid blocks, the norm of the pivotal trace of a
 unitary is bounded by the simple-multiplicity mass. The explicit dimension
 bound is supplied by the fusion/Perron and dimensions workstreams. -/
-theorem pivotalTrace_braid_unitary_bound {X : C.Obj} {n : ℕ}
+theorem pivotalTrace_braid_unitary_bound
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
-    {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
     {fp : Fin (Ground.rank C) → ℝ}
     (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ fp i)
     (a : braidAlgebra X n) (ha : Blocks.IsUnitary ⟨_, d⟩ (b a)) :
@@ -61,19 +72,9 @@ theorem pivotalTrace_braid_unitary_bound {X : C.Obj} {n : ℕ}
   · exact (norm_sum_le _ _).trans <| Finset.sum_le_sum fun i _ => by
       simpa using mul_le_mul_of_nonneg_left (hbound i) (Nat.cast_nonneg (mult i j))
 
-/-- The actual FP dimension of a tensor power is the corresponding power. -/
-theorem fpDimension_tensorPower (X : C.Obj) :
-    ∀ n, Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n
-  | 0 => by simp [tensorPower, Ground.fpDimension_unit]
-  | n + 1 => by simp [tensorPower, Ground.fpDimension_tensor, fpDimension_tensorPower X n,
-      pow_succ, mul_comm]
-
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
-theorem braid_trace_unitary_bound_ground {X : C.Obj} {n : ℕ}
-    {r : ℕ} {d : Fin r → ℕ}
-    (hd : ∀ j, 0 < d j)
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
+theorem braid_trace_unitary_bound_ground :
     HasUnitaryTraceBound C p b (Ground.fpDimension C X ^ (n + 2)) := by
   intro a ha
   let m : Fin (Ground.rank C) → ℕ := fun i =>
@@ -83,9 +84,11 @@ theorem braid_trace_unitary_bound_ground {X : C.Obj} {n : ℕ}
   change ‖Ground.unitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
       Ground.fpDimension C (tensorPower X (n + 2))
-  exact pivotalTrace_braid_unitary_bound C p (Ground.unitScalarEquiv C) e hd b (fun i => by
+  exact pivotalTrace_braid_unitary_bound C p hd b (Ground.unitScalarEquiv C) e (fun i => by
     simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension, unitScalar_eq_equiv] using
       Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i) a ha
+
+end BraidTraceBound
 
 end PropertyF.Ground.Calculus
 
@@ -180,7 +183,7 @@ theorem overlapProduct_unitary {X : C} {t : ℕ}
     · change e (overlapIndex t k + (t + 1))
         (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) (overlapProduct u k)) i ∈
           Matrix.unitaryGroup (Fin (d (overlapIndex t k + (t + 1)) i)) ℂ
-      simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
+      simpa [addRightBlocksIterStarMap] using
         (starMap_preserves_block_unitary
           (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) ih) i
     · have hcast : ∀ (a b : ℕ) (h : a = b)
@@ -192,7 +195,7 @@ theorem overlapProduct_unitary {X : C} {t : ℕ}
         cases h
         exact hunit
       exact hcast _ _ (overlapIndex_formula t (k + 1)) _ (by
-        simpa [addLeftBlocksIterStarMap, addLeftBlocksIter] using
+        simpa [addLeftBlocksIterStarMap] using
           starMap_preserves_block_unitary
             (addLeftBlocksIterStarMap X t ((k + 1) * (t + 1)) (e t) (e _) (he t) (he _)) hu) i
 
