@@ -89,6 +89,7 @@ theorem three_braid_relation (X : C) :
 /-- The two adjacent generators in the actual three-strand image. -/
 def threeGeneratorLeft (X : C) : braidImage X 1 := imageGenerator X 1 0
 
+/-- The right adjacent generator in the three-strand braid image. -/
 def threeGeneratorRight (X : C) : braidImage X 1 := imageGenerator X 1 1
 
 /-- The Yang–Baxter relation holds inside the actual categorical braid image. -/
@@ -119,12 +120,12 @@ variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear 
 
 /-- The left three-strand generator in a chosen block presentation. -/
 def tripleBlockLeft (X : C) {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :=
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
   b (groupInImage (braidEndRepresentation X 1) (threeGeneratorLeft X))
 
 /-- The right three-strand generator in a chosen block presentation. -/
 def tripleBlockRight (X : C) {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :=
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
   b (groupInImage (braidEndRepresentation X 1) (threeGeneratorRight X))
 
 end PropertyF.Ground.Calculus

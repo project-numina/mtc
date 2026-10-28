@@ -86,6 +86,7 @@ partial def findIssue (env : Environment) (root : Name) : Option Issue := Id.run
 
 /-- A synthetic forbidden type for testing dependency traversal. -/
 structure ForbiddenFixture where
+  /-- A field ensuring that the synthetic type has an ordinary constructor. -/
   value : Nat
 
 /-- Test fixture: a forbidden input hidden behind an ordinary definition. -/
