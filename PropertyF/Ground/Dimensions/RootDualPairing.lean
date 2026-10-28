@@ -21,12 +21,12 @@ theorem fourthDualRoot_unit_component :
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
-  let : Simple U := Ground.IsFusionCategory.unit_simple
-  let : FiniteDimensional ℂ (U ⟶ U) := Ground.IsFusionCategory.hom_finite _ _
+  let : Simple U := IsFusionCategory.unit_simple
+  let : FiniteDimensional ℂ (U ⟶ U) := IsFusionCategory.hom_finite _ _
   let a := (fourthDualRootNaturalIso C).app U
-  let u := Ground.doubleDualIso C U
+  let u := doubleDualIso C U
   obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar u a
-  have htrace : Ground.unitScalar C (rightQuantumTrace a) = r := by
+  have htrace : unitScalar C (rightQuantumTrace a) = r := by
     have ht : rightQuantumTrace a = r • rightQuantumTrace u := by
       apply End.homEquiv.injective
       simp [rightQuantumTrace, hr, tensorHom_def]
@@ -35,12 +35,12 @@ theorem fourthDualRoot_unit_component :
     rw [hu, rightQuantumTrace_unitIso]
     simp only [← groundUnitScalarEquiv_apply, map_smul, map_one, smul_eq_mul, mul_one]
   have hdim : rootDimension C (unitIndex C) = r := by
-    obtain ⟨e⟩ := Ground.unitIndex_iso C
+    obtain ⟨e⟩ := unitIndex_iso C
     have hn := (fourthDualRootNaturalIso C).hom.naturality e.hom
     have ht := rightQuantumTrace_iso
       ((fourthDualRootNaturalIso C).app (simples C (unitIndex C))) a e
       (by simpa [doubleDualFunctor, a] using hn)
-    change Ground.unitScalar C (rootTrace C (𝟙 (simples C (unitIndex C)))) = r
+    change unitScalar C (rootTrace C (𝟙 (simples C (unitIndex C)))) = r
     rw [rootTrace_id C, ht, htrace]
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
   simpa [a, hdim, hu] using hr

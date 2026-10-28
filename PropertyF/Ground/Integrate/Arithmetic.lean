@@ -19,7 +19,7 @@ namespace PropertyF
 transport of the positive dimension ratio. Lemma 3.2 supplies `hrigidity`.
 No assertion about all conjugates is assumed here. -/
 theorem galois_dimension_contradiction {δ δσ δτ f d : ℝ}
-    (σ : ℂ ≃+* ℂ) (hδ : 0 < δ) (hδσ : 0 < δσ) (hlt : δσ < δ)
+    {σ : ℂ ≃+* ℂ} (hδ : 0 < δ) (hδσ : 0 < δσ) (hlt : δσ < δ)
     (hδτ : σ (δτ : ℂ) = (δ : ℂ)) (hσδ : σ (δ : ℂ) = (δσ : ℂ))
     (hσf : σ (f : ℂ) = (d : ℂ)) (hratio : f * δτ = δ)
     (hf : 1 ≤ f) (hrigidity : f = |d|) : False := by
@@ -36,7 +36,7 @@ namespace PropertyF.Ground
 
 /-- The squared Galois dimension identity gives the positive ratio used by
 the paper. No Galois automorphism is assumed to preserve square roots. -/
-theorem positive_ratio_of_galois_square (τ : ℂ ≃+* ℂ) {δ b f : ℝ}
+theorem positive_ratio_of_galois_square {τ : ℂ ≃+* ℂ} {δ b f : ℝ}
     (hδ : 0 < δ) (hb : 0 < b) (hf : 0 < f)
     (hτ : τ (δ : ℂ) = (b : ℂ))
     (hG : τ ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2) :
@@ -51,7 +51,7 @@ theorem positive_ratio_of_galois_square (τ : ℂ ≃+* ℂ) {δ b f : ℝ}
   nlinarith [sq_nonneg (f * b - δ)]
 
 /-- Transport the Galois-unit S entry back to the chosen conjugate. -/
-theorem galois_unit_self_entry (σ : ℂ ≃+* ℂ) {S : ℂ} {f d : ℝ}
+theorem galois_unit_self_entry {σ : ℂ ≃+* ℂ} {S : ℂ} {f d : ℝ}
     (hS : S = (f : ℂ) * σ.symm (f : ℂ))
     (hd : σ (f : ℂ) = (d : ℂ)) : σ S = (d : ℂ) * f := by
   rw [hS, map_mul, hd, σ.apply_symm_apply]
@@ -59,7 +59,7 @@ theorem galois_unit_self_entry (σ : ℂ ≃+* ℂ) {S : ℂ} {f d : ℝ}
 /-- The modular global-dimension and unit-column identities, together with the
 three-strand rigidity conclusion for the self-entry, give the witness required
 by the final contradiction. -/
-theorem center_witness_of_modular_and_rigidity (σ : ℂ ≃+* ℂ) {δ b f d : ℝ} {S : ℂ}
+theorem center_witness_of_modular_and_rigidity {σ : ℂ ≃+* ℂ} {δ b f d : ℝ} {S : ℂ}
     (hδ : 0 < δ) (hb : 0 < b) (hf : 1 ≤ f)
     (hτ : σ.symm (δ : ℂ) = (b : ℂ))
     (hσf : σ (f : ℂ) = (d : ℂ))
@@ -67,8 +67,8 @@ theorem center_witness_of_modular_and_rigidity (σ : ℂ ≃+* ℂ) {δ b f d : 
     (hS : S = (f : ℂ) * σ.symm (f : ℂ))
     (hRigid : σ S = (d : ℂ) * f → f = |d|) :
     σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
-  ⟨hσf, positive_ratio_of_galois_square σ.symm hδ hb (lt_of_lt_of_le zero_lt_one hf) hτ hG,
-    hf, hRigid (galois_unit_self_entry σ hS hσf)⟩
+  ⟨hσf, positive_ratio_of_galois_square (τ := σ.symm) hδ hb (lt_of_lt_of_le zero_lt_one hf) hτ hG,
+    hf, hRigid (galois_unit_self_entry (σ := σ) hS hσf)⟩
 
 /-- If real conjugates are bounded above by δ and the centre/rigidity witness
 exists for each strictly smaller conjugate, every conjugate equals δ. -/
@@ -90,7 +90,7 @@ theorem galois_fixed_of_smaller_conjugate_witness (δ : ℝ) (hδ : 0 < δ)
       rw [← hbeq]
       exact σ.apply_symm_apply _
     obtain ⟨f, d, hσf, hratio, hf, hrigidity⟩ := hWitness σ a b ha halt haeq hbeq
-    exact (galois_dimension_contradiction σ hδ ha halt hback haeq hσf hratio hf hrigidity).elim
+    exact (galois_dimension_contradiction (σ := σ) hδ ha halt hback haeq hσf hratio hf hrigidity).elim
 
 end PropertyF.Ground
 end
