@@ -93,12 +93,10 @@ def vafaUnitClass (z : ℂˣ) : vafaUnitSpace := rationalUnitClass (K := ℝ) z
 theorem rationalUnitClass_eq_zero_iff {K G : Type*} [CommRing K] [Algebra ℚ K]
     [Module.FaithfullyFlat ℚ K] [CommGroup G] (z : G) :
     rationalUnitClass (K := K) z = 0 ↔ IsOfFinOrder z := by
-  rw [rationalUnitClass, Module.FaithfullyFlat.one_tmul_eq_zero_iff]
-  have hh := IsLocalizedModule.eq_zero_iff (nonZeroDivisors ℤ)
-    (TensorProduct.mk ℤ ℚ (Additive G) 1) (m := Additive.ofMul z)
-  change ((1 ⊗ₜ[ℤ] Additive.ofMul z : ℚ ⊗[ℤ] Additive G) = 0) ↔
-    ∃ s : nonZeroDivisors ℤ, (s : ℤ) • Additive.ofMul z = 0 at hh
-  rw [hh, isOfFinOrder_iff_zpow_eq_one]
+  rw [rationalUnitClass, Module.FaithfullyFlat.one_tmul_eq_zero_iff, isOfFinOrder_iff_zpow_eq_one]
+  refine (IsLocalizedModule.eq_zero_iff (nonZeroDivisors ℤ)
+    (TensorProduct.mk ℤ ℚ (Additive G) 1) (m := Additive.ofMul z)).trans ?_
+  change (∃ s : nonZeroDivisors ℤ, (s : ℤ) • Additive.ofMul z = 0) ↔ _
   simp only [Subtype.exists, mem_nonZeroDivisors_iff_ne_zero, exists_prop]
   rfl
 
@@ -301,13 +299,10 @@ simple scalar classes, weighted by FP dimensions and Hom multiplicities. -/
 theorem fpDeterminant_natural (ht : HasSimpleScalars C η t) (X : C.Obj) :
     fpDeterminant C (η.app X) = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) • (fpSimple C i • vafaUnitClass (t i)) := by
-  simp only [fpDeterminant, vafaUnitClass]
-  apply Finset.sum_congr rfl
-  intro i _
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
   change fpSimple C i • rationalUnitClass (homAction (R := ℂ) (simples C i) X (η.app X)).det = _
-  rw [linearEquiv_det_of_scalar _ (t i) (homAction_natural_scalar η (t i : ℂ) (ht i)),
-    rationalUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
-  simp only [smul_smul, mul_comm]
+  simp only [vafaUnitClass, linearEquiv_det_of_scalar _ (t i) (homAction_natural_scalar η (t i : ℂ) (ht i)),
+    rationalUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, mul_comm]
 
 /-- A natural automorphism whose actual FP determinant satisfies the
 multiplicative balance on simple tensor products has finite-order simple

@@ -75,12 +75,10 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object has a nonzero map to an induced base simple. -/
 theorem simple_hom_induced_simple [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), f ≠ 0 :=
-  let ⟨i, hi⟩ := exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
-    (fun _ ↦ inferInstance)
-    (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
-  ⟨i, finrank_pos_iff_exists_ne_zero.mp
-    (show 0 < finrank ℂ (X ⟶ (induction C).obj (Sᶜ i)) from by
-      simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)⟩
+  (exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
+    (fun _ ↦ inferInstance) (fun h ↦ Simple.not_isZero X (Centre.isZero_of_forget h))).imp
+    fun i hi ↦ (finrank_pos_iff_exists_ne_zero (R := ℂ)).mp (by
+      simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
 
 end PropertyF.Ground.CentreInduction
 
@@ -92,7 +90,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Proper
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-attribute [local instance] IsFusionCategory.hom_finite
+attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple
 variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [LeftRigidCategory D]
 
 omit [Abelian D] [LeftRigidCategory D] in
@@ -175,7 +173,6 @@ theorem center_fusion_of_nonzero_induced_trace {X : C.Obj}
   let J := (induction C).obj X
   let cap : J ⊗ Jᘁ ⟶ 𝟙_ (𝒵) :=
     ((p.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
-  letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   letI : Simple (𝟙_ (𝒵)) := Centre.centerUnitSimple
   center_fusion_of_unit_retract <| unitRetractOfNonzeroCap cap <| fun h =>
     hne (End.ext (by simpa [PivotalStructure.rightTrace, rightTraceWith,

@@ -145,10 +145,9 @@ theorem center_positive_spherical_of_compatible_pivotal
     pZ.IsSpherical ∧ PivotalHasFPDimensions 𝒵ᶠ pZ :=
   let D := 𝒵ᶠ
   let hd (i : Fin (rank D)) : pivotalDimension D pZ (simples D i) =
-      (fpSimple D i : ℂ) :=
-    (center_pivotalDimension_forget C (hcompat _)).trans <|
-      (pivotalDimension_eq_fp hsimple _).trans <| congrArg (fun x : ℝ => (x : ℂ)) <|
-        (Integrate.center_forget_fpDimension C _).trans (fpDimension_simple i)
+      (fpSimple D i : ℂ) := by
+    rw [center_pivotalDimension_forget C (hcompat _), pivotalDimension_eq_fp hsimple,
+      Integrate.center_forget_fpDimension C, fpDimension_simple]
   ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i ↦ by simp [hd i]), hd⟩
 
 end PropertyF.Ground.CentreInduction
