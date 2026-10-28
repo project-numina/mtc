@@ -170,8 +170,7 @@ def addLeftBraidAlgebraIter (X : C) (n : ℕ) :
 /-- Repeated insertion acts as expected on every actual braid. -/
 theorem addLeftBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
-      addLeftBraidAlgebraIter X n k (braidInImage g) =
-        braidInImage (addLeftStrands X n k g)
+      addLeftBraidAlgebraIter X n k (braidInImage g) = braidInImage (addLeftStrands X n k g)
   | 0, g => rfl
   | k + 1, g => by
     change addLeftBraidAlgebra X (n + k)
@@ -245,8 +244,7 @@ theorem append_step (f : A ⟶ A) :
 
 /-- Appending a strand commutes with the first crossing. -/
 theorem append_first_two :
-  let E := (α_ X (X ⊗ A) X) ≪≫
-    (Iso.refl X ⊗ᵢ ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)))
+  let E := (α_ X (X ⊗ A) X) ≪≫ (Iso.refl X ⊗ᵢ ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)))
   E.inv ≫ (((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ▷ X) ≫ E.hom =
     (α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom := by
   dsimp only
@@ -359,8 +357,7 @@ def addRightBraidAlgebraIter (X : C) (n : ℕ) :
 /-- Repeated insertion acts as expected on every actual braid. -/
 theorem addRightBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
-      addRightBraidAlgebraIter X n k (braidInImage g) =
-        braidInImage (addRightStrands X n k g)
+      addRightBraidAlgebraIter X n k (braidInImage g) = braidInImage (addRightStrands X n k g)
   | 0, g => rfl
   | k + 1, g => by
     change addRightBraidAlgebra X (n + k)
