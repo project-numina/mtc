@@ -15,7 +15,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem closeFusionMap_evaluation {T S R : D} (f : T ⊗ S ⟶ R) :
     (closeFusionMap T S f ▷ S) ≫ ε_ S (Sᘁ) =
       𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
-  have he := PropertyF.Ground.Dimensions.rightDualIso_evaluation
+  have he := Dimensions.rightDualIso_evaluation
       (@HasRightDual.exact D _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
       (ExactPairing.tensor (X₁ := T) (X₂ := S) (Y₁ := Tᘁ) (Y₂ := Sᘁ))
   change (rightDualTensorIso T S).hom ▷ (T ⊗ S) ≫

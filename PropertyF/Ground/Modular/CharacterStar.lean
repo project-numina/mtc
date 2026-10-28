@@ -54,12 +54,6 @@ theorem character_dual_conj (χ : Character N) (i : ι) :
     simpa using (mul_right_cancel₀ hw (by
       simpa [w] using fusion_inner_balance N dual hdual (starRingEnd ℂ) χ.value χ.value χ.mul_eq χ.mul_eq i)).symm)
 
-/-- Actual fusion coefficients satisfy the adjointness relation. -/
-theorem fusionCoeff_dual_adjoint (C : BraidedFusionCategory) (i j k : Fin (rank C)) :
-    fusionCoeff C i j k = fusionCoeff C (dualIndex C i) k j :=
-  (fusionCoeff_comm C i j k).trans <|
-    (fusionCoeff_reciprocity_labels C j i k).trans (fusionCoeff_comm C k (dualIndex C i) j)
-
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
@@ -87,7 +81,7 @@ theorem categoricalS_dual_conj (i j : Fin (rank C)) :
     Sₚ (Ground.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) :=
   (div_left_inj' (simpleDimension_ne_zero C p j)).mp (by
     simpa only [categoricalSCharacter, normalizedSColumn, map_div₀, hreal j] using
-      character_dual_conj _ _ (fusionCoeff_dual_adjoint C) (categoricalSCharacter C p j) i)
+      character_dual_conj _ _ (fun i j k ↦ Ground.fusionCoeff_dual_symmetry C i k j) (categoricalSCharacter C p j) i)
 
 include hreal in
 /-- Real pivotal simple dimensions are invariant under dual labels. -/

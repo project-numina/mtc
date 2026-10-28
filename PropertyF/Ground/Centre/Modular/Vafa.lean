@@ -62,7 +62,7 @@ end
 /-- The Frobenius–Perron dimensions form a regular fusion eigenvector. -/
 theorem fpSimple_regular (i k : Fin (rank C)) :
     (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
-  simp_rw [Modular.fusionCoeff_dual_adjoint C i]
+  simp_rw [Ground.fusionCoeff_dual_symmetry C i]
   simpa only [mul_comm, fpSimple_dual] using (fpSimple_mul C (dualIndex C i) k).symm
 
 /-- The FP regular-element cancellation at the heart of the determinant argument. -/

@@ -104,7 +104,7 @@ theorem categoricalS_det_ne_zero_of_unit_character_unique
   have hzero : (∑ z, dₚ z * (Sₚ z k / dₚ k)) = 0 := by
     simpa [χ, categoricalSCharacter, normalizedSColumn, categoricalS_unit, simpleDimension_unit, hdim,
       fpSimple_unit] using
-      character_orthogonal _ (dualIndex C) (fusionCoeff_dual_adjoint C)
+      character_orthogonal _ (dualIndex C) (fun i j k ↦ Ground.fusionCoeff_dual_symmetry C i k j)
         (χ (unitIndex C)) (χ k) (fun he ↦ hunique k hk (congrArg Character.value he).symm)
   simp_rw [← mul_div_assoc, ← Finset.sum_div] at hzero
   simpa only [categoricalS_symmetric C p k] using
