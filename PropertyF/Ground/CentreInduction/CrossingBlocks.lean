@@ -30,11 +30,6 @@ theorem fpDimension_underlying (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
   simp [underlying, fpDimension_biproduct, fpDimension_tensor, fpDimension_rightDual,
     fpDimension_simple, globalFPDimension, Finset.mul_sum, pow_two, mul_left_comm, mul_comm]
 
-end PropertyF.Ground.CentreInduction
-
-namespace PropertyF.Ground.CentreInduction
-attribute [local instance] CategoryTheory.Abelian.hasFiniteBiproducts
-
 /-- The induction sum is functorial in its middle factor. Its centre lift is
 constructed from the induction half-braiding. -/
 def underlyingFunctor (C : BraidedFusionCategory.{v,u}) : C.Obj ⥤ C.Obj where
