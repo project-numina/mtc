@@ -25,63 +25,43 @@ theorem rightDualTensorIso_associativity (X Y Z : C) :
     ((α_ X Y Z).invᘁ) ≫ (rightDualTensorIso X (Y ⊗ Z)).hom ≫
       (rightDualTensorIso Y Z).hom ▷ (Xᘁ) ≫ (α_ (Zᘁ) (Yᘁ) (Xᘁ)).hom := by
   let A := (X ⊗ Y) ⊗ Z
-  let K := Aᘁ
   let B := (Zᘁ) ⊗ ((Yᘁ) ⊗ (Xᘁ))
-  let l : K ⟶ B := (rightDualTensorIso (X ⊗ Y) Z).hom ≫
-      (Zᘁ) ◁ (rightDualTensorIso X Y).hom
-  let r : K ⟶ B := ((α_ X Y Z).invᘁ) ≫ (rightDualTensorIso X (Y ⊗ Z)).hom ≫
-      (rightDualTensorIso Y Z).hom ▷ (Xᘁ) ≫ (α_ (Zᘁ) (Yᘁ) (Xᘁ)).hom
   let qXY : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := ExactPairing.tensor
   let : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := qXY
   let qA : ExactPairing A B := @ExactPairing.tensor C _ _ (X ⊗ Y) Z ((Yᘁ) ⊗ (Xᘁ)) (Zᘁ)
     qXY HasRightDual.exact
   let : ExactPairing A B := qA
-  have hl : l ▷ A ≫ ε_ A B = ε_ A (Aᘁ) := by
-    have heXY := rightDualTensorIso_evaluation X Y
-    have heA := rightDualTensorIso_evaluation (X ⊗ Y) Z
-    have he' : ((Zᘁ) ◁ (rightDualTensorIso X Y).hom) ▷ A ≫ ε_ A B =
-        ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) :=
-      tensorPairing_evaluation_whiskerLeft (p := HasRightDual.exact) (q := qXY)
-        (r := HasRightDual.exact) (rightDualTensorIso X Y).hom heXY
-    change ((rightDualTensorIso (X ⊗ Y) Z).hom ≫
-      (Zᘁ) ◁ (rightDualTensorIso X Y).hom) ▷ A ≫ ε_ A B = _
-    rw [comp_whiskerRight_assoc, he', heA]
-  have hr : r ▷ A ≫ ε_ A B = ε_ A (Aᘁ) := by
-    let D := X ⊗ (Y ⊗ Z)
-    let E := ((Zᘁ) ⊗ (Yᘁ)) ⊗ (Xᘁ)
-    let qYZ : ExactPairing (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) := ExactPairing.tensor
-    let qD : ExactPairing D E := @ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Zᘁ) ⊗ (Yᘁ))
-      HasRightDual.exact qYZ
-    have ha : (α_ (Zᘁ) (Yᘁ) (Xᘁ)).hom ▷ A ≫
-        @ExactPairing.evaluation C _ _ A B qA =
-      E ◁ (α_ X Y Z).hom ≫ @ExactPairing.evaluation C _ _ D E qD := by
-      rw [@ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _ qXY HasRightDual.exact,
-        @ExactPairing.tensor_evaluation C _ _ X (Y ⊗ Z) _ _ HasRightDual.exact qYZ,
-        @ExactPairing.tensor_evaluation C _ _ X Y _ _ HasRightDual.exact HasRightDual.exact,
-        @ExactPairing.tensor_evaluation C _ _ Y Z _ _ HasRightDual.exact HasRightDual.exact]
-      monoidal
-    let F := ((Y ⊗ Z)ᘁ) ⊗ (Xᘁ)
-    let qD₀ : ExactPairing D F := @ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Y ⊗ Z)ᘁ)
-      HasRightDual.exact HasRightDual.exact
-    have heYZ := rightDualTensorIso_evaluation Y Z
-    change (rightDualTensorIso Y Z).hom ▷ (Y ⊗ Z) ≫
-      @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ =
-      ε_ (Y ⊗ Z) ((Y ⊗ Z)ᘁ) at heYZ
-    have hT : ((rightDualTensorIso Y Z).hom ▷ (Xᘁ)) ▷ D ≫
-        @ExactPairing.evaluation C _ _ D E qD = @ExactPairing.evaluation C _ _ D F qD₀ :=
-      tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := HasRightDual.exact)
-        (r := qYZ) (rightDualTensorIso Y Z).hom heYZ
-    have heD := rightDualTensorIso_evaluation X (Y ⊗ Z)
-    change (rightDualTensorIso X (Y ⊗ Z)).hom ▷ D ≫
-      @ExactPairing.evaluation C _ _ D F qD₀ = ε_ D (Dᘁ) at heD
-    change (((α_ X Y Z).invᘁ) ≫ (rightDualTensorIso X (Y ⊗ Z)).hom ≫
-      (rightDualTensorIso Y Z).hom ▷ (Xᘁ) ≫ (α_ (Zᘁ) (Yᘁ) (Xᘁ)).hom) ▷ A ≫
-        @ExactPairing.evaluation C _ _ A B qA = ε_ A (Aᘁ)
-    simp only [comp_whiskerRight_assoc]
-    rw [ha, ← whisker_exchange_assoc, hT, ← whisker_exchange_assoc, heD,
-      ← whisker_exchange_assoc, rightAdjointMate_comp_evaluation]
-    rw [← Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]
-  exact evaluation_ext (hl.trans hr.symm)
+  let D := X ⊗ (Y ⊗ Z)
+  let E := ((Zᘁ) ⊗ (Yᘁ)) ⊗ (Xᘁ)
+  let qYZ : ExactPairing (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) := ExactPairing.tensor
+  let qD : ExactPairing D E := @ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Zᘁ) ⊗ (Yᘁ))
+    HasRightDual.exact qYZ
+  have ha : (α_ (Zᘁ) (Yᘁ) (Xᘁ)).hom ▷ A ≫
+      @ExactPairing.evaluation C _ _ A B qA =
+    E ◁ (α_ X Y Z).hom ≫ @ExactPairing.evaluation C _ _ D E qD := by
+    rw [@ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _ qXY HasRightDual.exact,
+      @ExactPairing.tensor_evaluation C _ _ X (Y ⊗ Z) _ _ HasRightDual.exact qYZ,
+      @ExactPairing.tensor_evaluation C _ _ X Y _ _ HasRightDual.exact HasRightDual.exact,
+      @ExactPairing.tensor_evaluation C _ _ Y Z _ _ HasRightDual.exact HasRightDual.exact]
+    monoidal
+  let F := ((Y ⊗ Z)ᘁ) ⊗ (Xᘁ)
+  let qD₀ : ExactPairing D F := @ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Y ⊗ Z)ᘁ)
+    HasRightDual.exact HasRightDual.exact
+  have hT : ((rightDualTensorIso Y Z).hom ▷ (Xᘁ)) ▷ D ≫
+      @ExactPairing.evaluation C _ _ D E qD = @ExactPairing.evaluation C _ _ D F qD₀ :=
+    tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := HasRightDual.exact)
+      (r := qYZ) (rightDualTensorIso Y Z).hom (rightDualTensorIso_evaluation Y Z)
+  have he' : ((Zᘁ) ◁ (rightDualTensorIso X Y).hom) ▷ A ≫ ε_ A B =
+      ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) :=
+    tensorPairing_evaluation_whiskerLeft (p := HasRightDual.exact) (q := qXY)
+      (r := HasRightDual.exact) (rightDualTensorIso X Y).hom (rightDualTensorIso_evaluation X Y)
+  apply evaluation_ext (X := A)
+  simp only [comp_whiskerRight_assoc]
+  rw [he', rightDualTensorIso_evaluation (X ⊗ Y) Z]
+  symm
+  rw [ha, ← whisker_exchange_assoc, hT, ← whisker_exchange_assoc, rightDualTensorIso_evaluation X (Y ⊗ Z),
+    ← whisker_exchange_assoc, rightAdjointMate_comp_evaluation]
+  rw [← Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]
 
 end PropertyF.Ground.Dimensions
 
@@ -126,33 +106,23 @@ theorem doubleDualTensorIso_associativity (X Y Z : C) :
     simpa only [A, B, C₀, D, E, F, Iso.trans_hom, Iso.symm_hom, Iso.symm_inv, rightDualIsoMap,
       whiskerRightIso_inv, whiskerLeftIso_hom] using
       rightDualTensorIso_associativity (Zᘁ) (Yᘁ) (Xᘁ)
-  have hinv := congrArg Iso.inv heq
-  simp only [Iso.trans_inv, Iso.symm_inv, Category.assoc] at hinv
   have hrev : A.hom ≫ B.hom = F.hom ≫ E.inv ≫ D.inv ≫ C₀.hom := by
     apply (cancel_epi F.inv).1
     apply (cancel_mono C₀.inv).1
     simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.hom_inv_id, Category.comp_id]
-    simpa only [Category.assoc] using hinv.symm
-  have hrev' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ▷ ((Zᘁ)ᘁ) ≫
-      (rightDualTensorIso (Zᘁ) ((Yᘁ) ⊗ (Xᘁ))).inv =
-    (α_ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ((Zᘁ)ᘁ)).hom ≫
-      ((Xᘁ)ᘁ) ◁ (rightDualTensorIso (Zᘁ) (Yᘁ)).inv ≫
-        (rightDualTensorIso ((Zᘁ) ⊗ (Yᘁ)) (Xᘁ)).inv ≫ ((α_ (Zᘁ) (Yᘁ) (Xᘁ)).invᘁ) := by
-    simpa only [A, B, C₀, D, E, F, rightDualIsoMap, Iso.symm_hom,
-      whiskerRightIso_hom, whiskerLeftIso_inv] using hrev
+    simpa only [Iso.trans_inv, Iso.symm_inv, Category.assoc] using (congrArg Iso.inv heq).symm
+  simp only [A, B, C₀, D, E, F, rightDualIsoMap, Iso.symm_hom,
+    whiskerRightIso_hom, whiskerLeftIso_inv] at hrev
   slice_lhs 2 3 => rw [hmove1]
   simp only [Category.assoc]
-  slice_lhs 1 2 => rw [hrev']
+  slice_lhs 1 2 => rw [hrev]
   simp only [Category.assoc]
   slice_lhs 5 6 => rw [hdual]
   simp only [Category.assoc]
-  have hα : ((α_ (Zᘁ) (Yᘁ) (Xᘁ)).invᘁ) ≫ ((α_ (Zᘁ) (Yᘁ) (Xᘁ)).homᘁ) = 𝟙 _ := by
-    rw [← comp_rightAdjointMate, Iso.hom_inv_id, rightAdjointMate_id]
-  have hβ : (((α_ X Y Z).invᘁ)ᘁ) ≫ (((α_ X Y Z).homᘁ)ᘁ) = 𝟙 _ :=
-    ((rightDualIsoMap (rightDualIsoMap (α_ X Y Z))).inv_hom_id)
-  slice_lhs 4 5 => rw [hα]
+  slice_lhs 4 5 => rw [← comp_rightAdjointMate, Iso.hom_inv_id, rightAdjointMate_id]
   simp only [Category.id_comp, Category.assoc]
-  slice_lhs 6 7 => rw [hβ]
+  slice_lhs 6 7 => rw [← comp_rightAdjointMate, ← comp_rightAdjointMate,
+    Iso.inv_hom_id, rightAdjointMate_id, rightAdjointMate_id]
   simp only [Category.comp_id]
   slice_lhs 3 4 => rw [hmove2]
   simp only [Category.assoc]
