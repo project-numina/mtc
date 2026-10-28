@@ -17,22 +17,25 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 def fpDimension (D : BraidedFusionCategory) (X : D.Obj) : ℝ :=
   ∑ i, (simpleMultiplicity D i X : ℝ) * fpSimple D i
 
+variable {D} in
 theorem fpDimension_simple (j : Fin (rank D)) :
     fpDimension D (simples D j) = fpSimple D j :=
   by simp [fpDimension, finrank_simples_hom]
 
+variable {D} in
 theorem fpDimension_iso {X Y : D.Obj} (e : X ≅ Y) :
     fpDimension D X = fpDimension D Y :=
   Finset.sum_congr rfl fun i _ => congrArg (fun n : ℕ => (n : ℝ) * fpSimple D i)
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
 
+variable {D} in
 theorem fpDimension_nonneg (X : D.Obj) :
     0 ≤ fpDimension D X :=
   Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D i).le
 
 theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 :=
   (unitIndex_iso D).elim fun e ↦
-    (fpDimension_iso D e).symm.trans ((fpDimension_simple D _).trans (fpSimple_unit D))
+    (fpDimension_iso e).symm.trans ((fpDimension_simple _).trans (fpSimple_unit D))
 
 variable {D} in
 /-- Every nonzero object has FP dimension at least one. -/
@@ -65,6 +68,7 @@ theorem tensor_multiplicity_expanded (X Y : D.Obj) (k : Fin (rank D)) :
   rw [Finset.sum_comm]
   simp only [mul_assoc, mul_comm]
 
+variable {D} in
 /-- FP dimension is multiplicative on tensor products. -/
 theorem fpDimension_tensor (X Y : D.Obj) :
     fpDimension D (X ⊗ Y) = fpDimension D X * fpDimension D Y := by
@@ -96,6 +100,7 @@ theorem dual_multiplicity (X : D.Obj) (i : Fin (rank D)) :
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e) |>.finrank_eq |>.trans
     (finrank_to_simple_eq_from_simple X (simples D (dualIndex D i)))
 
+variable {D} in
 /-- FP dimension is invariant under taking a left dual. -/
 theorem fpDimension_leftDual (X : D.Obj) :
     fpDimension D (ᘁX) = fpDimension D X := by
@@ -107,11 +112,12 @@ theorem fpDimension_leftDual (X : D.Obj) :
         Equiv.sum_comp (dualEquiv D)
           (fun i ↦ (simpleMultiplicity D i X : ℝ) * fpSimple D i))
 
+variable {D} in
 /-- FP dimension is invariant under taking a right dual. -/
 theorem fpDimension_rightDual (X : D.Obj) :
     fpDimension D (Xᘁ) = fpDimension D X :=
-  (fpDimension_iso D (leftDualIso inferInstance
-    (BraidedCategory.exactPairing_swap X (Xᘁ)))).symm.trans (fpDimension_leftDual D X)
+  (fpDimension_iso (leftDualIso inferInstance
+    (BraidedCategory.exactPairing_swap X (Xᘁ)))).symm.trans (fpDimension_leftDual X)
 
 end PropertyF.Ground
 
@@ -140,7 +146,7 @@ theorem fpDimension_functor_decomposition (F : C.Obj ⥤ D.Obj) [F.Additive] (X 
       (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) :=
   (exists_canonical_decomposition C X).elim fun e ↦ by
     classical
-    simp [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
+    simp [fpDimension_iso (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
       Fintype.sum_sigma]
 
 variable {C D} in
@@ -156,9 +162,9 @@ theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.M
       id_nonzero _ (F.map_eq_zero_iff.mp (by simpa using (IsZero.iff_id_eq_zero _).mp hz)))
   have hunit : f (unitIndex C) = 1 :=
     (unitIndex_iso C).elim fun e ↦
-      (fpDimension_iso D (F.mapIso e ≪≫ (εIso F).symm)).trans (fpDimension_unit D)
+      (fpDimension_iso (F.mapIso e ≪≫ (εIso F).symm)).trans (fpDimension_unit D)
   have hmul (i j) : f i * f j = ∑ k, (fusionCoeff C i j k : ℝ) * f k :=
-    (fpDimension_tensor D _ _).symm.trans ((fpDimension_iso D (μIso F _ _)).trans
+    (fpDimension_tensor _ _).symm.trans ((fpDimension_iso (μIso F _ _)).trans
       (fpDimension_functor_decomposition F _))
   have heq : f = fpSimple C := positive_symmetric_eigenvector_unique (totalFusionMatrix_pos C)
     (Matrix.ext fun i j ↦ totalFusionMatrix_symmetric C j i) hpos (fpSimple_pos C)

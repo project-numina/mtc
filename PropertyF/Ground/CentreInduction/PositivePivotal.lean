@@ -206,7 +206,7 @@ theorem center_positive_spherical_of_compatible_pivotal
       (fpSimple D i : ℂ) :=
     (center_pivotalDimension_forget C (hcompat _)).trans <|
       (pivotalDimension_eq_fp hsimple _).trans <| congrArg (fun x : ℝ => (x : ℂ)) <|
-        (Integrate.center_forget_fpDimension C _).trans (fpDimension_simple D i)
+        (Integrate.center_forget_fpDimension C _).trans (fpDimension_simple i)
   ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i =>
     (congrArg star (hd i)).trans ((Complex.conj_ofReal _).trans (hd i).symm)), hd⟩
 
