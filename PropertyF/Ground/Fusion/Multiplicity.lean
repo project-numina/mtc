@@ -77,6 +77,7 @@ variable (D : BraidedFusionCategory.{v,u})
 abbrev simpleMultiplicity (i : Fin (rank D)) (X : D.Obj) : ℕ :=
   Module.finrank ℂ (simples D i ⟶ X)
 
+variable {D} in
 /-- A chosen simple's Hom dimension counts its copies in a decomposition. -/
 theorem finrank_simple_of_decomposition
     {X : D.Obj} (m : Fin (rank D) → ℕ)
@@ -94,7 +95,7 @@ theorem exists_canonical_decomposition (X : D.Obj) :
     Nonempty (X ≅ ⨁ (fun p : Σ i : Fin (rank D),
       Fin (simpleMultiplicity D i X) => simples D p.1)) := by
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
-  cases (funext (finrank_simple_of_decomposition D m e)).symm
+  cases (funext (finrank_simple_of_decomposition m e)).symm
   exact ⟨e⟩
 
 /-- Hom dimensions to and from a simple coincide in a semisimple category. -/
@@ -127,6 +128,7 @@ theorem exists_positive_multiplicity {X : D.Obj}
   exact ⟨i, Module.finrank_pos_iff_exists_ne_zero.mpr
     ⟨t, fun h ↦ id_nonzero (simples D i) (by simpa [h] using ht.symm)⟩⟩
 
+variable {D} in
 /-- Tensoring an object on the left acts on simple multiplicities by its
 integer fusion matrix. -/
 theorem tensor_multiplicity (X Y : D.Obj) (k : Fin (rank D)) :
@@ -169,6 +171,7 @@ theorem fusionCoeff_comm (i j k : Fin (rank D)) :
 
 local notation "N" => fusionCoeff D
 
+variable {D} in
 /-- Associativity of fusion coefficients, derived from associativity of
 tensor products and finite semisimplicity. -/
 theorem fusionCoeff_assoc (i j k l : Fin (rank D)) :
@@ -179,8 +182,8 @@ theorem fusionCoeff_assoc (i j k l : Fin (rank D)) :
       β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq
   change simpleMultiplicity D l (simples D i ⊗ (simples D j ⊗ simples D k)) =
     simpleMultiplicity D l (simples D k ⊗ (simples D i ⊗ simples D j)) at h
-  rw [tensor_multiplicity D (simples D i) (simples D j ⊗ simples D k) l,
-    tensor_multiplicity D (simples D k) (simples D i ⊗ simples D j) l] at h
+  rw [tensor_multiplicity (simples D i) (simples D j ⊗ simples D k) l,
+    tensor_multiplicity (simples D k) (simples D i ⊗ simples D j) l] at h
   change (∑ r, fusionCoeff D j k r * fusionCoeff D i r l) =
     ∑ r, fusionCoeff D i j r * fusionCoeff D k r l at h
   simpa only [fusionCoeff_comm D k] using h

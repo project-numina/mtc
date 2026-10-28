@@ -52,6 +52,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Closing the inverse tensor defect with the natural root gives the product
 of the two simple root dimensions. -/
 theorem rootTrace_inverseDefect (i j : Fin (rank C)) :
@@ -164,6 +165,7 @@ theorem rootTrace_eq_simpleHom_trace_sum
   simp only [rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Involutivity of every multiplicity operator implies ENO's trace-matrix
 root-dimension eigenvector identity. -/
 theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}

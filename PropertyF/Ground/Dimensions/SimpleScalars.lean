@@ -76,6 +76,7 @@ def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   Classical.choose (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
 
+variable {C} in
 /-- The chosen simple component squares to the natural fourth-dual component. -/
 theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :
     fourthDualSimpleRoot C i ≪≫ rightDualIsoMap (rightDualIsoMap (fourthDualSimpleRoot C i)) =
@@ -244,6 +245,7 @@ def simpleScalarNaturalIso (C : BraidedFusionCategory.{v,u})
   simp only [Functor.id_map, hcomponent]
   exact (simpleScalarNatural C c).naturality f
 
+variable {C} in
 /-- On each simple, the natural automorphism has the prescribed scalar component. -/
 theorem simpleScalarNaturalIso_app_simple
     {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
