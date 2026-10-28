@@ -133,17 +133,16 @@ variable {g : B.Algebra} (hg : B.IsUnitary g) (hsat : ‖B.trace w g‖ = B.mass
 include hg hsat
 
 /-- Saturation of the weighted bound saturates every block with nonzero weight. -/
-theorem block_trace_norm_eq_of_saturation (r : Fin B.count) (hw : w r ≠ 0) : ‖(g r).trace‖ = B.size r := by
-  have hle : ∀ r, |w r| * ‖(g r).trace‖ ≤ |w r| * B.size r := fun r =>
+theorem block_trace_norm_eq_of_saturation (r : Fin B.count) (hw : w r ≠ 0) : ‖(g r).trace‖ = B.size r :=
+  let hle : ∀ r, |w r| * ‖(g r).trace‖ ≤ |w r| * B.size r := fun r =>
     mul_le_mul_of_nonneg_left
       (by simpa using norm_trace_le_card (Pi.mem_unitary_iff.mp hg r)) (abs_nonneg _)
-  have heq : ∑ r, |w r| * ‖(g r).trace‖ = ∑ r, |w r| * B.size r := by
-    apply le_antisymm (Finset.sum_le_sum fun r _ => hle r)
-    calc
+  let heq : ∑ r, |w r| * ‖(g r).trace‖ = ∑ r, |w r| * B.size r :=
+    le_antisymm (Finset.sum_le_sum fun r _ => hle r) (calc
       _ = ‖B.trace w g‖ := hsat.symm
       _ ≤ ∑ r, ‖(w r : ℂ) * (g r).trace‖ := norm_sum_le _ _
-      _ = _ := by simp
-  exact (mul_left_cancel₀ (abs_ne_zero.mpr hw))
+      _ = _ := by simp)
+  (mul_left_cancel₀ (abs_ne_zero.mpr hw))
     ((Finset.sum_eq_sum_iff_of_le (fun r _ => hle r)).mp heq r (Finset.mem_univ r))
 
 /-- Equality in the weighted bound implies centrality when no weight vanishes.

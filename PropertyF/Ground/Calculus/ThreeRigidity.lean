@@ -28,17 +28,15 @@ theorem braid_squares_equal_of_saturation (B : Blocks)
     (hbraid : a * b * a = b * a * b)
     (hbound : ∀ u : B.Algebra, B.IsUnitary u → ‖B.trace w u‖ ≤ |d| * f ^ 2)
     (htrace : B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2) :
-    a ^ 2 = b ^ 2 := by
-  have hunit : B.IsUnitary ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) := by
+    a ^ 2 = b ^ 2 :=
+  let hunit : B.IsUnitary ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) := by
     simpa only [Units.val_mul, Units.val_pow_eq_pow_val] using
       (unitary B.Algebra).mul_mem ((unitary B.Algebra).pow_mem ha 2)
         ((unitary B.Algebra).pow_mem hb 2)
-  apply squares_eq_of_central_product a b hbraid
-  apply Units.ext
-  apply B.central_of_saturation w hunit ?_ hw b
-  apply le_antisymm (B.norm_trace_le w hunit)
-  rw [htrace]
-  simpa [norm_pow, abs_of_pos hf] using B.mass_le_of_unitary_trace_bound w hbound
+  squares_eq_of_central_product a b hbraid <| Units.ext <|
+    B.central_of_saturation w hunit (le_antisymm (B.norm_trace_le w hunit) (by
+      rw [htrace]
+      simpa [norm_pow, abs_of_pos hf] using B.mass_le_of_unitary_trace_bound w hbound)) hw b
 
 end PropertyF.Ground.Calculus
 
@@ -61,14 +59,13 @@ set_option backward.isDefEq.respectTransparency false in
 self-braiding equal in the conventional tensor-product parenthesization. -/
 theorem local_monodromy_of_three_squares_equal (X : C)
     (h : Aut.toEnd (braidGenerator X 1 0 ^ 2) = Aut.toEnd (braidGenerator X 1 1 ^ 2)) :
-    insertRightIdentity X (selfMonodromy X) = overlapFresh X (selfMonodromy X) := by
-  have hh := congrArg (threePowerIso X).conj h
-  simp only [map_pow] at hh
-  rw [threeGeneratorLeft_end_transport X, threeGeneratorRight_end_transport X] at hh
-  apply (α_ X X X).conj.injective
-  apply End.ext
-  simpa [insertRightIdentity, overlapFresh, selfMonodromy, Iso.conj_apply_asHom, pow_two,
-    End.mul_asHom, comp_whiskerRight, whiskerLeft_comp, Category.assoc] using congrArg End.asHom hh
+    insertRightIdentity X (selfMonodromy X) = overlapFresh X (selfMonodromy X) :=
+  (α_ X X X).conj.injective (End.ext (by
+    have hh := congrArg (threePowerIso X).conj h
+    simp only [map_pow] at hh
+    rw [threeGeneratorLeft_end_transport X, threeGeneratorRight_end_transport X] at hh
+    simpa [insertRightIdentity, overlapFresh, selfMonodromy, Iso.conj_apply_asHom, pow_two,
+      End.mul_asHom, comp_whiskerRight, whiskerLeft_comp, Category.assoc] using congrArg End.asHom hh))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Equality of the actual block squares implies equality of the categorical
@@ -76,15 +73,14 @@ adjacent copies of double self-braiding. -/
 theorem local_monodromy_of_block_squares_equal {X : C} {r : ℕ} {size : Fin r → ℕ}
     (b : BraidBlockPresentation X 1 size)
     (h : tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2) :
-    insertRightIdentity X (selfMonodromy X) = overlapFresh X (selfMonodromy X) := by
-  apply local_monodromy_of_three_squares_equal X
-  have hs : braidInImage (threeGeneratorLeft X ^ 2) =
-      braidInImage (threeGeneratorRight X ^ 2) := by
-    apply b.injective
-    simpa [tripleBlockLeft, tripleBlockRight, map_pow] using h
-  simpa [braidInImage_val, braidEndRepresentation, threeGeneratorLeft,
-    threeGeneratorRight, imageGenerator] using
-      congrArg (fun z : braidAlgebra X 1 => (z : End (tensorPower X 3))) hs
+    insertRightIdentity X (selfMonodromy X) = overlapFresh X (selfMonodromy X) :=
+  local_monodromy_of_three_squares_equal X (by
+    have hs : braidInImage (threeGeneratorLeft X ^ 2) =
+        braidInImage (threeGeneratorRight X ^ 2) := b.injective (by
+      simpa [tripleBlockLeft, tripleBlockRight, map_pow] using h)
+    simpa [braidInImage_val, braidEndRepresentation, threeGeneratorLeft,
+      threeGeneratorRight, imageGenerator] using
+        congrArg (fun z : braidAlgebra X 1 => (z : End (tensorPower X 3))) hs)
 
 omit [Preadditive C] [Linear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
@@ -136,23 +132,22 @@ theorem end_one_ne_zero_of_pivotalDimension_ne_zero {X : C.Obj}
     (h : pivotalDimension C p X ≠ 0) :
     (1 : End X) ≠ 0 := fun hzero => h (by
   simp only [pivotalDimension, unitScalar_eq_equiv, ← End.one_asHom, hzero, End.zero_asHom,
-    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear (k := ℂ) p _).map_zero, map_zero])
+    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceWithLinear (k := ℂ) (p.iso X)).map_zero,
+    map_zero])
 
 /-- A scalar double self-braiding of finite order has unit-modulus scalar,
 so the two real dimensions have equal absolute value. -/
 theorem dimension_eq_abs_of_scalar_monodromy {X : C.Obj} {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ)) (hfinite : ObjectPropertyF X)
-    (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| := by
-  have hnonzero : (1 : End (X ⊗ X)) ≠ 0 :=
+    (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| :=
+  let hnonzero : (1 : End (X ⊗ X)) ≠ 0 :=
     end_one_ne_zero_of_pivotalDimension_ne_zero C p (by
       rw [Dimensions.pivotalDimension_tensor, hdim]
       exact_mod_cast mul_ne_zero hd hd)
-  obtain ⟨n, hn, hpow⟩ := (selfMonodromy_isOfFinOrder hfinite).exists_pow_eq_one
-  apply fp_eq_abs_dim_of_finite_order hd hf
-  refine ⟨n, hn.ne', ?_⟩
-  apply (smul_left_injective ℂ hnonzero)
-  change ((f / d : ℂ) ^ n) • (1 : End (X ⊗ X)) = (1 : ℂ) • (1 : End (X ⊗ X))
-  simpa [hscalar, smul_pow] using hpow
+  let ⟨n, hn, hpow⟩ := (selfMonodromy_isOfFinOrder hfinite).exists_pow_eq_one
+  fp_eq_abs_dim_of_finite_order hd hf ⟨n, hn.ne', smul_left_injective ℂ hnonzero (by
+    change ((f / d : ℂ) ^ n) • (1 : End (X ⊗ X)) = (1 : ℂ) • (1 : End (X ⊗ X))
+    simpa [hscalar, smul_pow] using hpow)⟩
 
 section BlockRigidity
 
@@ -170,23 +165,24 @@ The remaining hypotheses are explicitly the trace weights and sharp bound. -/
 theorem actual_braid_squares_equal_of_saturation (hf : 0 < f)
     (hvalue : actualBraidTrace C p (braidInImage
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2) :
-    tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2 := by
+    tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2 :=
   let B : Blocks := ⟨r, size⟩
   let ρ : braidImage X 1 →* B.Algebra :=
     b.toMonoidHom.comp (braidInImage (X := X) (n := 1))
   let a : B.Algebraˣ := ρ.toHomUnits (threeGeneratorLeft X)
   let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
-  refine congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
+  congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
     (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
       (Units.ext (by simpa only [a, c, Units.val_mul, MonoidHom.coe_toHomUnits, map_mul] using
-        (congrArg ρ (three_braid_image_relation X)))) ?_ ?_)
-  · intro z hz
-    simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
-  · change B.trace w (b (braidInImage (threeGeneratorLeft X)) ^ 2 *
-      b (braidInImage (threeGeneratorRight X)) ^ 2) = _
-    rw [← map_pow b, ← map_pow b, ← map_mul b,
-      ← map_pow (braidInImage (X := X) (n := 1)), ← map_pow (braidInImage (X := X) (n := 1)),
-      ← map_mul (braidInImage (X := X) (n := 1)), ← htrace, hvalue]
+        (congrArg ρ (three_braid_image_relation X))))
+      (fun z hz => by
+        simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz))
+      (by
+        change B.trace w (b (braidInImage (threeGeneratorLeft X)) ^ 2 *
+          b (braidInImage (threeGeneratorRight X)) ^ 2) = _
+        rw [← map_pow b, ← map_pow b, ← map_mul b,
+          ← map_pow (braidInImage (X := X) (n := 1)), ← map_pow (braidInImage (X := X) (n := 1)),
+          ← map_mul (braidInImage (X := X) (n := 1)), ← htrace, hvalue]))
 
 /-- Three-strand rigidity for a genuine braided pivotal fusion category,
 reduced to explicit real, nonzero trace weights and the sharp unitary bound. -/

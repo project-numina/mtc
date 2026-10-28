@@ -55,22 +55,20 @@ def insertRightPowerIso (X : C) (n : ℕ) : ∀ k, braidTensorPower X n ⊗ tens
 
 section IteratedInsertion
 
-variable {X : C} {n : ℕ} (k : ℕ) (a : braidAlgebra X n)
+variable {X : C} {n : ℕ}
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion is one identity tensor factor, transported along
 the canonical tensor-power isomorphism. -/
-theorem addLeftBraidAlgebraIter_asHom :
+theorem addLeftBraidAlgebraIter_asHom : ∀ (k : ℕ) (a : braidAlgebra X n),
     ((addLeftBraidAlgebraIter X n k a : braidAlgebra X (n + k)) : End _).asHom =
-      (insertLeftPowerIso X n k).inv ≫ (tensorPower X k ◁ (a : End _).asHom) ≫
-        (insertLeftPowerIso X n k).hom := by
-  induction k with
-  | zero => simp [addLeftBraidAlgebraIter, insertLeftPowerIso, tensorPower]
-  | succ k ih =>
+      ((insertLeftPowerIso X n k).conj (End.of (tensorPower X k ◁ (a : End _).asHom))).asHom
+  | 0, a => by simp [addLeftBraidAlgebraIter, insertLeftPowerIso, tensorPower, Iso.conj_apply_asHom]
+  | k + 1, a => by
     change ((addLeftBraidAlgebra X (n + k) (addLeftBraidAlgebraIter X n k a) :
       braidAlgebra X (n + k + 1)) : End (tensorPower X ((n + k + 1) + 2))).asHom = _
-    rw [addLeftBraidAlgebra_asHom, ih]
-    simp only [insertLeftPowerIso, Iso.trans_hom, Iso.trans_inv, tensorIso_hom,
+    rw [addLeftBraidAlgebra_asHom, addLeftBraidAlgebraIter_asHom k a]
+    simp only [Iso.conj_apply_asHom, insertLeftPowerIso, Iso.trans_hom, Iso.trans_inv, tensorIso_hom,
       tensorIso_inv, Iso.refl_hom, Iso.refl_inv, id_tensorHom, whiskerLeft_comp,
       Category.assoc, tensorPower]
     monoidal
@@ -78,17 +76,15 @@ theorem addLeftBraidAlgebraIter_asHom :
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right insertion is one identity tensor factor, transported along
 the canonical tensor-power isomorphism. -/
-theorem addRightBraidAlgebraIter_asHom :
+theorem addRightBraidAlgebraIter_asHom : ∀ (k : ℕ) (a : braidAlgebra X n),
     ((addRightBraidAlgebraIter X n k a : braidAlgebra X (n + k)) : End _).asHom =
-      (insertRightPowerIso X n k).inv ≫ ((a : End _).asHom ▷ tensorPower X k) ≫
-        (insertRightPowerIso X n k).hom := by
-  induction k with
-  | zero => simp [addRightBraidAlgebraIter, insertRightPowerIso, tensorPower]
-  | succ k ih =>
+      ((insertRightPowerIso X n k).conj (End.of ((a : End _).asHom ▷ tensorPower X k))).asHom
+  | 0, a => by simp [addRightBraidAlgebraIter, insertRightPowerIso, tensorPower, Iso.conj_apply_asHom]
+  | k + 1, a => by
     change ((addRightBraidAlgebra X (n + k) (addRightBraidAlgebraIter X n k a) :
       braidAlgebra X (n + k + 1)) : End (tensorPower X ((n + k + 1) + 2))).asHom = _
-    rw [addRightBraidAlgebra_asHom, ih]
-    simp only [insertRightPowerIso, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
+    rw [addRightBraidAlgebra_asHom, addRightBraidAlgebraIter_asHom k a]
+    simp only [Iso.conj_apply_asHom, insertRightPowerIso, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
       Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv,
       tensorHom_id, comp_whiskerRight, Category.assoc, id_tensorHom, whisker_exchange_assoc]
     rw [← associator_naturality_left_assoc]
@@ -155,16 +151,16 @@ endomorphism with identity on the new tail. -/
 theorem overlapLeft_local {X : C} (t k : ℕ) (v : braidAlgebra X (overlapIndex t k)) :
     (overlapPowerIso X t k).symm.conj (overlapLeft X t k v : End _) =
     insertRightIdentity (tensorPower X (t + 1))
-      ((appendIso X (overlapIndex t k + 1)).symm.conj (v : End _)) := by
-  apply End.ext
-  change (overlapPowerIso X t k).hom ≫
-    ((addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v :
-      braidAlgebra X (overlapIndex t k + (t + 1))) :
-      End (tensorPower X ((overlapIndex t k + (t + 1)) + 2))).asHom ≫
-    (overlapPowerIso X t k).inv = _
-  rw [addRightBraidAlgebraIter_asHom]
-  simp [insertRightIdentity, Iso.conj_apply_asHom, overlapPowerIso,
-    tensorIso_hom, tensorIso_inv, tensorHom_id, comp_whiskerRight, Category.assoc]
+      ((appendIso X (overlapIndex t k + 1)).symm.conj (v : End _)) :=
+  End.ext (by
+    change (overlapPowerIso X t k).hom ≫
+      ((addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v :
+        braidAlgebra X (overlapIndex t k + (t + 1))) :
+        End (tensorPower X ((overlapIndex t k + (t + 1)) + 2))).asHom ≫
+      (overlapPowerIso X t k).inv = _
+    rw [addRightBraidAlgebraIter_asHom]
+    simp [insertRightIdentity, Iso.conj_apply_asHom, overlapPowerIso,
+      tensorIso_hom, tensorIso_inv, tensorHom_id, comp_whiskerRight, Category.assoc])
 
 section LocalOverlap
 
@@ -191,7 +187,7 @@ theorem freshOverlapIso_action :
     simp
   dsimp only [overlapRight]
   rw [hcast _ _ (overlapIndex_formula t (k + 1)), addLeftBraidAlgebraIter_asHom]
-  simp only [freshOverlapIso, Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv,
+  simp only [Iso.conj_apply_asHom, freshOverlapIso, Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv,
     Iso.refl_hom, Iso.refl_inv, tensorHom_id, Category.assoc]
   rw [← whisker_exchange_assoc]
   rw [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp]

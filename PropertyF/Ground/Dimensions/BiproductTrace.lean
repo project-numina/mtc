@@ -77,19 +77,6 @@ theorem cyclicTrace_biproduct_simple [HasKernels C]
 
 end SimpleTrace
 
-section
-variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C]
-  [MonoidalCategory C] [RightRigidCategory C] [Preadditive C] [Linear k C]
-  [MonoidalPreadditive C] [MonoidalLinear k C]
-
-/-- Right pivotal trace as a linear map on an endomorphism space. -/
-def rightTraceLinear (p : PivotalStructure (C := C)) (X : C) :
-    (X ⟶ X) →ₗ[k] End (𝟙_ C) where
-  toFun := p.rightTrace
-  map_add' := p.rightTrace_add
-  map_smul' := p.rightTrace_smul
-end
-
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 variable {ι : Type*} [Fintype ι]
@@ -99,7 +86,8 @@ theorem rightTrace_decomposition (p : PivotalStructure (C := C))
     {X : C} {Y : ι → C} (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
     p.rightTrace f = ∑ j, p.rightTrace (i j ≫ f ≫ q j) :=
-  cyclicTrace_decomposition (rightTraceLinear (k := ℂ) p) (fun f g => p.rightTrace_cyclic f g) i q h f
+  cyclicTrace_decomposition (fun X ↦ rightTraceWithLinear (k := ℂ) (p.iso X))
+    (fun f g ↦ p.rightTrace_cyclic f g) i q h f
 
 /-- The trace on a finite direct sum is the sum of traces of diagonal blocks. -/
 theorem rightTrace_biproduct (F : ι → C) [HasBiproduct F]
@@ -110,9 +98,8 @@ theorem rightTrace_biproduct (F : ι → C) [HasBiproduct F]
 /-- Categorical dimensions are additive on finite direct sums. -/
 theorem rightDimension_biproduct (F : ι → C) [HasBiproduct F]
     (p : PivotalStructure (C := C)) :
-    p.rightTrace (𝟙 (⨁ F)) = ∑ i, p.rightTrace (𝟙 (F i)) := by
-  rw [rightTrace_biproduct F p]
-  simp
+    p.rightTrace (𝟙 (⨁ F)) = ∑ i, p.rightTrace (𝟙 (F i)) :=
+  by simpa using rightTrace_biproduct F p (𝟙 (⨁ F))
 
 /-- Schur's lemma gives the scalar diagonal blocks of any endomorphism of a
 finite direct sum of simple objects, and hence its weighted trace formula. -/
@@ -123,7 +110,7 @@ theorem rightTrace_biproduct_simple [HasKernels C]
     ∃ c : ι → ℂ,
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
       p.rightTrace f = ∑ i, c i • p.rightTrace (𝟙 (F i)) :=
-  cyclicTrace_biproduct_simple (rightTraceLinear (k := ℂ) p) (fun f g => p.rightTrace_cyclic f g)
-    hs hfinite f
+  cyclicTrace_biproduct_simple (fun X ↦ rightTraceWithLinear (k := ℂ) (p.iso X))
+    (fun f g ↦ p.rightTrace_cyclic f g) hs hfinite f
 
 end PropertyF.Ground.Dimensions
