@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.ENOMatrices
-public import PropertyF.Ground.Dimensions.DualCoherence
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.GroundNorm
 
 /-! # Scalar twists and tensor extension
@@ -73,7 +73,7 @@ theorem rootPhaseTensorIso_inv
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseDefect_apply
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
-    (i j k : Fin (rank C))
+    {i j k : Fin (rank C)}
     (f : simples C k ⟶ simples C i ⊗ simples C j) :
     f ≫ (rootSignDefect C c hc (simples C i) (simples C j)).hom =
       (c k / (c i * c j)) • (f ≫ (rootTensorDefect C (simples C i) (simples C j)).hom) := by
@@ -93,7 +93,7 @@ theorem rootPhaseDefect_apply
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseTensor_compatible_of_scaled_defects (c : Fin (rank C) → ℂ)
-    (hc : ∀ i, c i ≠ 0) (i j : Fin (rank C))
+    (hc : ∀ i, c i ≠ 0) {i j : Fin (rank C)}
     (hdef : ∀ k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1) :
     (rootSignTwist C c hc).app (simples C i ⊗ simples C j) =
       rootSignTensorIso C c hc (simples C i) (simples C j) := by
@@ -109,7 +109,7 @@ theorem rootPhaseTensor_compatible_of_scaled_defects (c : Fin (rank C) → ℂ)
     have hfd := congrArg (fun L => L f) (hdef a.1)
     change (c a.1 / (c i * c j)) • multiplicityDefect C i j a.1 f = f at hfd
     rw [multiplicityDefect_apply] at hfd
-    have ht := rootPhaseDefect_apply C c hc i j a.1 f
+    have ht := rootPhaseDefect_apply C c hc f
     rw [hfd] at ht
     simpa [f, Category.assoc] using ht
   apply Iso.ext
@@ -149,9 +149,6 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 set_option backward.isDefEq.respectTransparency false in
 theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
     (hpair : ∀ i j, (a.app (simples C i ⊗ simples C j)).hom =
       (((a.app (simples C i)).hom ⊗ₘ (a.app (simples C j)).hom) ≫
         (doubleDualTensorIso (simples C i) (simples C j)).hom))
@@ -181,7 +178,7 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
       _ = (((a.app (simples C i.1)).hom ⊗ₘ (a.app (simples C j.1)).hom) ≫
         (doubleDualTensorIso _ _).hom) ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) := by rw [hpair]
       _ = ((a.app (simples C i.1)).hom ⊗ₘ (a.app (simples C j.1)).hom) ≫
-        ((((sxᘁ)ᘁ) ⊗ₘ ((syᘁ)ᘁ)) ≫ (doubleDualTensorIso X Y).hom) := by rw [Category.assoc, ← hnat]
+        ((((sxᘁ)ᘁ) ⊗ₘ ((syᘁ)ᘁ)) ≫ (doubleDualTensorIso X Y).hom) := by rw [Category.assoc, ← doubleDualTensorIso_natural]
       _ = ((sx ≫ (a.app X).hom) ⊗ₘ (sy ≫ (a.app Y).hom)) ≫ (doubleDualTensorIso X Y).hom := by
         rw [tensorHom_comp_tensorHom_assoc, ← hx, ← hy]
       _ = _ := by rw [← tensorHom_comp_tensorHom, Category.assoc]

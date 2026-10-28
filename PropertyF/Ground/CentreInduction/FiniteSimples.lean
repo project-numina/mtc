@@ -98,7 +98,7 @@ theorem simple_mono_induced_simple (X : CategoryTheory.Center C.Obj) [Simple X] 
       rw [(CategoryTheory.Center.forget C.Obj).map_id, (CategoryTheory.Center.forget C.Obj).map_zero]
       exact (IsZero.iff_id_eq_zero X.1).mp hz
     exact id_nonzero X hid
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity C X.1 hx
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity C hx
   have hi' : 0 < Module.finrank ℂ (X.1 ⟶ simples C i) := by
     rw [finrank_to_simple_eq_from_simple C]
     exact hi
@@ -251,8 +251,8 @@ theorem finite_simple_representatives :
     ∃ (n : ℕ) (S : Fin n → 𝒵),
       (∀ i, Simple (S i)) ∧
       (∀ i j, Nonempty (S i ≅ S j) → i = j) ∧
-      (∀ X : 𝒵, Simple X → ∃ i, Nonempty (X ≅ S i)) := by
-  obtain ⟨labels, hs, hc⟩ := finite_simple_labels C
-  exact simple_representatives_of_finite_cover labels hs hc
+      (∀ X : 𝒵, Simple X → ∃ i, Nonempty (X ≅ S i)) :=
+  (finite_simple_labels C).elim fun labels h ↦
+    simple_representatives_of_finite_cover labels h.1 h.2
 
 end PropertyF.Ground.CentreInduction

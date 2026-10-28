@@ -140,32 +140,5 @@ theorem rootTensorDefect_unitLabel_right (X : C.Obj) :
   rw [← rootTensorDefect_natural C (𝟙 X) e.hom, rootTensorDefect_unit_right]
   simp only [Linear.comp_smul, Linear.smul_comp, Category.comp_id, Category.id_comp]
 
-set_option backward.isDefEq.respectTransparency false in
-/-- Squaring the root tensor map gives the tensor of the fourth-dual maps,
-with the canonical iterated double-dual tensor comparison. -/
-theorem rootTensor_square_eq_fourthDual_tensor
-    (X Y : C.Obj) :
-    (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
-      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
-  have hx := congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C)
-  have hy := congrArg (fun n => (n.app Y).hom) (fourthDualRootNaturalSquare_eq C)
-  change ((fourthDualRootNaturalIso C).app X).hom ≫
-    ((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) = (fourthDualIso C X).hom at hx
-  change ((fourthDualRootNaturalIso C).app Y).hom ≫
-    ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ) = (fourthDualIso C Y).hom at hy
-  rw [← hx, ← hy]
-  simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
-    Category.assoc]
-  have hn := doubleDualTensorIso_natural ((fourthDualRootNaturalIso C).app X).hom
-    ((fourthDualRootNaturalIso C).app Y).hom
-  have hn2 := congrArg (fun f =>
-    (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
-      ((fourthDualRootNaturalIso C).app Y).hom) ≫ f ≫
-      (((doubleDualTensorIso X Y).homᘁ)ᘁ)) hn.symm
-  simp only [Functor.id_obj, doubleDualFunctor, Category.assoc] at hn2
-  rw [hn2]
-  rw [tensorHom_comp_tensorHom_assoc]
 
 end PropertyF.Ground.Dimensions

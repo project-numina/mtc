@@ -49,8 +49,7 @@ omit [Preadditive C] [MonoidalPreadditive C] [HasBinaryBiproducts C] in
 theorem productRetract_tensor {Z W : CategoryTheory.Center C}
     (hZ : ProductRetract Z) (hW : ProductRetract W) : ProductRetract (Z ⊗ W) :=
   match hZ, hW with
-  | ⟨X, Y, ⟨r⟩⟩, ⟨X', Y', ⟨s⟩⟩ =>
-    ⟨X ⊗ X', Y ⊗ Y', ⟨(tensorRetract r s).trans
+  | ⟨X, Y, ⟨r⟩⟩, ⟨X', Y', ⟨s⟩⟩ => ⟨X ⊗ X', Y ⊗ Y', ⟨(tensorRetract r s).trans
       (Retract.ofIso (CategoryTheory.Functor.Monoidal.μIso productFunctor (X,Y) (X',Y')))⟩⟩
 
 omit [Preadditive C] [MonoidalPreadditive C] [HasBinaryBiproducts C] in
@@ -58,7 +57,7 @@ omit [Preadditive C] [MonoidalPreadditive C] [HasBinaryBiproducts C] in
 theorem productRetract_propertyF {Z : CategoryTheory.Center C}
     (hZ : ProductRetract Z) (hC : HasPropertyF C) : ObjectPropertyF Z :=
   match hZ with
-  | ⟨X, Y, ⟨r⟩⟩ => productFunctor_retract_objectPropertyF X Y Z r (hC X) (hC Y)
+  | ⟨X, Y, ⟨r⟩⟩ => productFunctor_retract_objectPropertyF r (hC X) (hC Y)
 
 end PropertyF.Ground.Centre
 
@@ -96,7 +95,7 @@ def productFunctorFiniteSumRetract {J : Type} [Fintype J] (X Y : J → C) :
 
 /-- A finite direct sum of product retracts is a product retract. -/
 theorem productRetract_finiteBiproduct {J : Type} [Fintype J]
-    (Z : J → CategoryTheory.Center C) (h : ∀ j, ProductRetract (Z j)) :
+    {Z : J → CategoryTheory.Center C} (h : ∀ j, ProductRetract (Z j)) :
     ProductRetract (⨁ Z) := by
   classical
   choose X Y hxy using h
@@ -133,6 +132,6 @@ theorem productRetract_generatedBy {Z W : CategoryTheory.Center C}
     (hZ : ProductRetract Z) (hW : GeneratedBy Z W) : ProductRetract W :=
   match hW with
   | ⟨_, k, ⟨r⟩⟩ => productRetract_of_retract r
-      (productRetract_finiteBiproduct _ (fun i ↦ productRetract_tensorPower hZ (k i)))
+      (productRetract_finiteBiproduct (fun i ↦ productRetract_tensorPower hZ (k i)))
 
 end PropertyF.Ground.Centre

@@ -40,7 +40,7 @@ instance productMonoidal : (productFunctor (C := C)).Monoidal := by
 
 /-- Interchange of two tensor pairs respects braiding when both cross pairs centralize. -/
 theorem tensor_interchange_braiding {D : Type*} [Category* D] [MonoidalCategory D]
-    [BraidedCategory D] (A B C E : D)
+    [BraidedCategory D] {A B C E : D}
     (h : (β_ C B).hom = (β_ B C).inv)
     (h' : (β_ A E).hom = (β_ E A).inv) :
     tensorμ A C B E ≫ ((β_ A B).hom ⊗ₘ (β_ C E).hom) =
@@ -67,7 +67,7 @@ def productBraided : @Functor.Braided (C × C) _ _ (mixedBraiding (C := C))
   have hAE : (β_ A E).hom = (β_ E A).inv := by
     apply (cancel_mono (β_ E A).hom).mp
     simpa [A, E] using positive_negative_centralize X.1 Y.2
-  have h := tensor_interchange_braiding A B D E hDB hAE
+  have h := tensor_interchange_braiding hDB hAE
   apply CategoryTheory.Center.ext
   have h' := congrArg CategoryTheory.Center.Hom.f h
   have hμ (x y : C) : (Functor.LaxMonoidal.μ (negative C) x y).f = 𝟙 _ := rfl

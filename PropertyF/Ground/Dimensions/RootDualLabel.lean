@@ -16,33 +16,27 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 /-- It suffices to prove the fourth-dual tensor law on simple pairs; the
 construction uses no assumption about that law on arbitrary objects. -/
-theorem eno_pseudoUnitary_yields_positive_spherical_of_simple_fourth_and_reciprocity
+theorem positive_spherical_of_simple_fourth_and_reciprocity
     (hfourth : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j))
     (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
       rootDualSign C i * enoTraceMatrix C i k j)
     (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
+    HasFPSphericalStructure C := by
   have hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1 := by
     intro i j k
-    apply multiplicityDefect_involution_of_tensor_square C i j k
-    apply rootTensor_square_of_fourthDual_tensor C
-    · exact (doubleDualTensorIso_natural ((fourthDualRootNaturalIso C).app (simples C i)).hom
-        ((fourthDualRootNaturalIso C).app (simples C j)).hom).symm
-    · exact hfourth i j
+    apply multiplicityDefect_involution_of_tensor_square C k
+    exact (rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm
   have heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j := by
     intro i j
-    exact enoTraceMatrix_eigenvector_of_involutions C i j (hinv i j)
+    exact enoTraceMatrix_eigenvector_of_involutions C (hinv i j)
   have hnorm : ∀ i, squaredNorm C (simples C i) =
       ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
     intro i
-    exact squaredNorm_eq_rootDimension_norm_sq_of_trace_reciprocity C hinv htranspose i
-  apply eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities C hinv heig _ hnorm hpu
-  intro X X' Y Y' f g
-  exact doubleDualTensorIso_natural f g
+    exact squaredNorm_eq_root_norm_sq_of_reciprocity C hinv htranspose i
+  exact positive_spherical_of_matrix_identities C hinv heig hnorm hpu
 
 
 end PropertyF.Ground.Dimensions
@@ -134,7 +128,7 @@ def enoFrobeniusEquiv (C : BraidedFusionCategory.{v,u})
 /-- The ENO reciprocity equivalence is the composition pairing followed by
 the actual Frobenius reciprocity map. -/
 theorem enoReciprocityEquiv_pairing
-    (i j k : Fin (rank C))
+    {i j k : Fin (rank C)}
     (g : simples C i ⊗ simples C j ⟶ simples C k) :
     enoReciprocityEquiv C i j k (simpleHomPairingEquiv C k (simples C i ⊗ simples C j) g) =
       enoFrobeniusEquiv C i j k g := by simp [enoReciprocityEquiv, enoFrobeniusEquiv]
@@ -160,7 +154,7 @@ theorem enoTraceMatrix_reciprocity_of_frobenius_defect
   have hm : (multiplicityDefect C i k j).toLinearMap =
       Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom := by
     ext f
-    exact multiplicityDefect_apply C i k j f
+    exact multiplicityDefect_apply C f
   rw [hm]
   change P ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
     Module.Dual.transpose (Linear.rightComp ℂ (simples C j)

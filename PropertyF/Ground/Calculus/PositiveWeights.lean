@@ -5,6 +5,8 @@ public import PropertyF.Ground.Calculus.OverlapCoherence
 
 /-! Construction of real nonzero braid-block trace weights from dimensions. -/
 
+open PropertyF.Ground.Dimensions
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
@@ -15,11 +17,11 @@ universe v u
 weights in every retained actual braid block, even if their signs differ. -/
 theorem exists_galois_braid_trace_weights
     (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
-    (hfinite : Finite (braidImage X n)) (p : Dimensions.PivotalStructure (C := C.Obj))
+    (hfinite : Finite (braidImage X n)) (p : PivotalStructure (C := C.Obj))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)
     (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
-    (hdim : ∀ i, Dimensions.groundUnitScalarEquiv C
+    (hdim : ∀ i, groundUnitScalarEquiv C
       (p.rightTrace (𝟙 (Ground.simples C i))) = (qdim i : ℂ)) :
     ∃ (r : ℕ) (size : Fin r → ℕ)
       (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
@@ -31,7 +33,7 @@ theorem exists_galois_braid_trace_weights
         (PropertyF.Blocks.mk r size).trace w (b z) := by
   classical
   obtain ⟨r, size, b, mult, hsize, hunit, hret, _, htrace⟩ :=
-    exists_unitary_braid_trace_blocks C X n hfinite p (Dimensions.groundUnitScalarEquiv C)
+    exists_unitary_braid_trace_blocks C X n hfinite p (groundUnitScalarEquiv C)
   let w : Fin r → ℝ := fun j => ∑ i, (mult i j : ℝ) * qdim i
   refine ⟨r, size, b, w, hsize, hunit, ?_, ?_⟩
   · intro j
@@ -49,21 +51,21 @@ one intrinsic overlap trace identity. All matrix blocks and weights are
 constructed from the actual finite braid images. -/
 theorem actual_rigidity_of_overlap_and_galois_dimensions
     (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
-    (p : Dimensions.PivotalStructure (C := C.Obj))
+    (p : PivotalStructure (C := C.Obj))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)
     (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
-    (hqdim : ∀ i, Dimensions.groundUnitScalarEquiv C
+    (hqdim : ∀ i, groundUnitScalarEquiv C
       (p.rightTrace (𝟙 (Ground.simples C i))) = (qdim i : ℂ))
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
-    (hdim : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
+    (hdim : groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
     (hfp : Ground.fpDimension C X = f)
-    (hS : Dimensions.groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
+    (hS : groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
     (hrec : ∀ (u : braidAlgebra X 1) k,
       actualBraidTrace C X p (overlapIndex 1 k) (overlapProduct X 1 u k) *
-        (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
+        (groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
           actualBraidTrace C X p 1 u ^ (k + 1)) : f = |d| := by
   classical
   choose r size b w hsize he hw htrace using fun n =>

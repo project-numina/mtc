@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.SimpleScalars
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import Mathlib.CategoryTheory.Whiskering
 public import Mathlib.LinearAlgebra.Trace
 public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
@@ -230,7 +231,7 @@ universe v u
 one is a component of a natural isomorphism from the identity, their ratio is
 an involution. -/
 theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
-    (F : C ⥤ C) (a : 𝟭 C ≅ F) (X : C) (b : X ≅ F.obj X)
+    (F : C ⥤ C) (a : 𝟭 C ≅ F) {X : C} (b : X ≅ F.obj X)
     (hsq : ((a.app X).hom ≫ F.map (a.app X).hom) = b.hom ≫ F.map b.hom) :
     let d := (a.app X) ≪≫ b.symm
     d.hom ≫ d.hom = 𝟙 X := by
@@ -293,7 +294,7 @@ def multiplicityDefect (C : BraidedFusionCategory.{v,u})
 
 /-- The multiplicity operator is composition with the tensor defect. -/
 theorem multiplicityDefect_apply
-    (i j k : Fin (rank C))
+    {i j k : Fin (rank C)}
     (f : simples C k ⟶ simples C i ⊗ simples C j) :
     multiplicityDefect C i j k f =
       f ≫ (rootTensorDefect C (simples C i) (simples C j)).hom :=
@@ -302,7 +303,7 @@ theorem multiplicityDefect_apply
 set_option backward.isDefEq.respectTransparency false in
 /-- If the categorical multiplicity defect is involutive, its trace is an
 integer bounded by the actual fusion coefficient. -/
-theorem multiplicityDefect_trace_integer_bound (i j k : Fin (rank C))
+theorem multiplicityDefect_trace_integer_bound {i j k : Fin (rank C)}
     (hinv : (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ∃ n : ℤ, LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap = (n : ℂ) ∧
@@ -314,7 +315,7 @@ theorem multiplicityDefect_trace_integer_bound (i j k : Fin (rank C))
 
 /-- If the tensor of the simple root components has the expected fourth-dual
 square, the resulting tensor defect is an involution. -/
-theorem rootTensorDefect_involution_of_tensor_square (X Y : C.Obj)
+theorem rootTensorDefect_involution_of_tensor_square {X Y : C.Obj}
     (hsq : (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
       (fourthDualIso C (X ⊗ Y)).hom) :
     (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
@@ -323,12 +324,12 @@ theorem rootTensorDefect_involution_of_tensor_square (X Y : C.Obj)
     ((((fourthDualRootNaturalIso C).app (X ⊗ Y)).homᘁ)ᘁ) =
       (fourthDualIso C (X ⊗ Y)).hom at ha
   have h := natural_square_defect_involution (doubleDualFunctor C.Obj)
-    (fourthDualRootNaturalIso C) (X ⊗ Y) (rootTensorIso C X Y) (ha.trans hsq.symm)
+    (fourthDualRootNaturalIso C) (rootTensorIso C X Y) (ha.trans hsq.symm)
   exact h
 
 /-- The tensor-square comparison implies involutivity of every corresponding
 actual multiplicity-space operator. -/
-theorem multiplicityDefect_involution_of_tensor_square (i j k : Fin (rank C))
+theorem multiplicityDefect_involution_of_tensor_square {i j : Fin (rank C)} (k : Fin (rank C))
     (hsq : (rootTensorIso C (simples C i) (simples C j)).hom ≫
       (((rootTensorIso C (simples C i) (simples C j)).homᘁ)ᘁ) =
         (fourthDualIso C (simples C i ⊗ simples C j)).hom) :
@@ -337,7 +338,35 @@ theorem multiplicityDefect_involution_of_tensor_square (i j k : Fin (rank C))
   ext f
   change multiplicityDefect C i j k (multiplicityDefect C i j k f) = f
   rw [multiplicityDefect_apply, multiplicityDefect_apply, Category.assoc,
-    rootTensorDefect_involution_of_tensor_square C _ _ hsq, Category.comp_id]
+    rootTensorDefect_involution_of_tensor_square C hsq, Category.comp_id]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Squaring the root tensor map gives the tensor of the fourth-dual maps,
+with the canonical iterated double-dual tensor comparison. -/
+theorem rootTensor_square_eq_fourthDual_tensor
+    (X Y : C.Obj) :
+    (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
+      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
+        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
+          (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
+  have hx := congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C)
+  have hy := congrArg (fun n => (n.app Y).hom) (fourthDualRootNaturalSquare_eq C)
+  change ((fourthDualRootNaturalIso C).app X).hom ≫
+    ((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) = (fourthDualIso C X).hom at hx
+  change ((fourthDualRootNaturalIso C).app Y).hom ≫
+    ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ) = (fourthDualIso C Y).hom at hy
+  rw [← hx, ← hy]
+  simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
+    Category.assoc]
+  have hn := doubleDualTensorIso_natural ((fourthDualRootNaturalIso C).app X).hom
+    ((fourthDualRootNaturalIso C).app Y).hom
+  have hn2 := congrArg (fun f =>
+    (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
+      ((fourthDualRootNaturalIso C).app Y).hom) ≫ f ≫
+      (((doubleDualTensorIso X Y).homᘁ)ᘁ)) hn.symm
+  simp only [Functor.id_obj, doubleDualFunctor, Category.assoc] at hn2
+  rw [hn2]
+  rw [tensorHom_comp_tensorHom_assoc]
 
 /-- The fourth-dual isomorphism is compatible with tensoring two objects. -/
 abbrev fourthDualTensorLaw (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) : Prop :=
@@ -346,35 +375,6 @@ abbrev fourthDualTensorLaw (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) : Pro
       (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
         (((doubleDualTensorIso X Y).homᘁ)ᘁ)
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The tensor-square identity follows from naturality of the double-dual
-tensor comparison and the corresponding tensor law for the fourth dual. -/
-theorem rootTensor_square_of_fourthDual_tensor (X Y : C.Obj)
-    (hnat : (doubleDualTensorIso X Y).hom ≫
-        (((((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
-          ((fourthDualRootNaturalIso C).app Y).hom)ᘁ)ᘁ) =
-      (((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) ⊗ₘ
-        ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ)) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom)
-    (hfourth : fourthDualTensorLaw C X Y) :
-    (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
-      (fourthDualIso C (X ⊗ Y)).hom := by
-  have hx := congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C)
-  have hy := congrArg (fun n => (n.app Y).hom) (fourthDualRootNaturalSquare_eq C)
-  change ((fourthDualRootNaturalIso C).app X).hom ≫
-    ((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) = (fourthDualIso C X).hom at hx
-  change ((fourthDualRootNaturalIso C).app Y).hom ≫
-    ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ) = (fourthDualIso C Y).hom at hy
-  rw [hfourth, ← hx, ← hy]
-  simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
-    Category.assoc]
-  have hn2 := congrArg (fun f =>
-    (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
-      ((fourthDualRootNaturalIso C).app Y).hom) ≫ f ≫
-      (((doubleDualTensorIso X Y).homᘁ)ᘁ)) hnat
-  simp only [Category.assoc] at hn2
-  rw [hn2]
-  rw [tensorHom_comp_tensorHom_assoc]
 
 end PropertyF.Ground.Dimensions
 

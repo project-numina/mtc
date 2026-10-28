@@ -110,7 +110,7 @@ theorem squaredNorm_eq_pivotal_dimension_product
       pivotalDimension C p (simples C (Ground.dualIndex C i)) := by
   let X := simples C i
   let : Simple X := Ground.simples_simple C i
-  rw [target_squaredNorm_choice_independent C X (p.iso X), leftQuantumTrace_eq_rightDual]
+  rw [target_squaredNorm_choice_independent C (p.iso X), leftQuantumTrace_eq_rightDual]
   rw [← pivotal_dual p X, ← rightTrace_id, ← rightTrace_id]
   change pivotalDimension C p X * pivotalDimension C p (Xᘁ) = _
   rw [pivotalDimension_iso C p (rightDualLabelIso C i)]
@@ -160,8 +160,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Twisting any pivotal structure by its saturated phases constructs the canonical positive spherical structure. -/
 theorem positive_spherical_of_pivotal_pseudoUnitary
     (p : PivotalStructure (C := C.Obj)) (hpu : Ground.PseudoUnitary C) :
-    ∃ q : PivotalStructure (C := C.Obj), q.IsSpherical ∧ ∀ i,
-      pivotalDimension C q (simples C i) = (fpSimple C i : ℂ) := by
+    HasFPSphericalStructure C := by
   let z : Fin (rank C) → ℂ := fun i => pivotalDimension C p (simples C i)
   let f := fpSimple C
   let q : Fin (rank C) → ℂ := fun i => z i / (f i : ℂ)
