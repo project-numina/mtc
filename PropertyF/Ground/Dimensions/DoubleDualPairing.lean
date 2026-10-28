@@ -212,10 +212,10 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Every pivotal structure preserves evaluation. -/
-theorem pivotal_evaluation {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (p : PivotalStructure (C := C)) (X : C) :
+theorem pivotal_evaluation (p : PivotalStructure (C := C)) (X : C) :
     ((p.iso (Xᘁ)).hom ⊗ₘ (p.iso X).hom) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) = ε_ X (Xᘁ) := by
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
@@ -228,8 +228,7 @@ theorem pivotal_evaluation {C : Type u} [Category.{v} C]
   simp
 set_option backward.isDefEq.respectTransparency false in
 /-- A pivotal component on a dual is the inverse dual of the original component. -/
-theorem pivotal_dual {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (p : PivotalStructure (C := C)) (X : C) :
+theorem pivotal_dual (p : PivotalStructure (C := C)) (X : C) :
     p.iso (Xᘁ) = (rightDualIsoMap (p.iso X)).symm := by
   apply Iso.ext
   change (p.iso (Xᘁ)).hom = ((p.iso X).inv)ᘁ
