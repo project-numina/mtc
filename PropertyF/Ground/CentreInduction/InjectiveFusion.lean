@@ -24,8 +24,8 @@ theorem all_injective_of_unit_retract {J U : D} [Injective J]
   letI : Injective (𝟙_ D) := r.injective
   Injective.of_iso (λ_ X) (tensor_preserves_injective (𝟙_ D) X)
 
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
-local notation "𝒵" => CategoryTheory.Center C.Obj
+variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (Center C.Obj)]
+local notation "𝒵" => Center C.Obj
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Under the unit-retract condition every centre object is a finite simple sum. -/

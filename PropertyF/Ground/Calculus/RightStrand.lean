@@ -41,7 +41,7 @@ variable {G H A B : Type*} [Group G] [Group H]
 
 /-- The group image spans any algebra-equivalent block presentation. -/
 theorem presented_group_span (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ}
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
+    (e : GroupBlockPresentation ρ d) :
     Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ := by
   classical
   change Submodule.span ℂ (Set.range (fun g => e (groupInImage ρ g))) = ⊤
@@ -64,8 +64,8 @@ strand map and its intertwining property must still be supplied separately. -/
 theorem presented_intertwiner_map_star
     (ρ : G →* A) (σ : H →* B) (τ : G →* H)
     {n m : ℕ} {d : Fin n → ℕ} {k : Fin m → ℕ}
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : groupImageAlgebra σ ≃ₐ[ℂ] Blocks.Algebra ⟨_, k⟩)
+    (e : GroupBlockPresentation ρ d)
+    (f : GroupBlockPresentation σ k)
     (he : IsUnitaryPresentation ρ e)
     (hf : IsUnitaryPresentation σ f)
     (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]

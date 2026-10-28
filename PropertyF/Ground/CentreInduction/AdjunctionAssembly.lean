@@ -112,7 +112,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
-local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵" => Center C.Obj
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The component indexed by a simple object inserts its coevaluation and
@@ -162,7 +162,7 @@ set_option backward.defeqAttrib.useBackward true in
 /-- The underlying maps proposed for the induction unit and counit satisfy
 the first triangle identity. -/
 theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
-    (Z : CategoryTheory.Center C.Obj) :
+    (Z : Center C.Obj) :
     unitCandidate C Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 := by
   simp only [unitCandidate, underlyingCounit, unitSummandRetract,
     CategoryTheory.Limits.biproduct.lift_π_assoc]
