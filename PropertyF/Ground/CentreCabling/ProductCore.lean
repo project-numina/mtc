@@ -50,7 +50,7 @@ theorem constituent_mem_productLabels
     (i j k : Fin (rank (Integrate.bundledCenter C)))
     (hi : i ∈ productLabels C) (hj : j ∈ productLabels C)
     (hk : 0 < fusionCoeff (Integrate.bundledCenter C) i j k) : k ∈ productLabels C :=
-  let ⟨r⟩ := Ground.fusionCoeff_retract (Integrate.bundledCenter C) i j k hk
+  let ⟨r⟩ := Ground.fusionCoeff_retract (Integrate.bundledCenter C) hk
   (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|
     Centre.productRetract_tensor ((mem_productLabels C i).1 hi) ((mem_productLabels C j).1 hj)
 

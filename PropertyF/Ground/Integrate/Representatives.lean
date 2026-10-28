@@ -37,7 +37,7 @@ theorem simple_presentation_equiv {n : ℕ} (S : Fin n → C.Obj)
     obtain ⟨i, ⟨e⟩⟩ := hCover j
     obtain ⟨ei⟩ := hf i
     refine ⟨i, ?_⟩
-    exact simples_injective C (f i) j ⟨ei.symm ≪≫ e⟩
+    exact simples_injective C ⟨ei.symm ≪≫ e⟩
   exact ⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, hf⟩
 
 
