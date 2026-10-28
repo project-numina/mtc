@@ -156,16 +156,17 @@ end
 open CategoryTheory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable {D : Type u} [Category.{v} D]
 
 /-- A family contains one representative of each isomorphism class of simples. -/
-abbrev IsSimpleRepresentativeFamily {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
+abbrev IsSimpleRepresentativeFamily [HasZeroMorphisms D]
     {ι : Type*} (S : ι → D) : Prop :=
   (∀ i, Simple (S i)) ∧
     (∀ i j, Nonempty (S i ≅ S j) → i = j) ∧
     ∀ X : D, Simple X → ∃ i, Nonempty (X ≅ S i)
 
 /-- A finite covering family of simples can be deduplicated up to isomorphism. -/
-theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
+theorem simple_representatives_of_finite_cover [HasZeroMorphisms D]
     {labels : Finset D} (hs : ∀ T ∈ labels, Simple T)
     (hc : ∀ X : D, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T)) :
     ∃ (n : ℕ) (S : Fin n → D), IsSimpleRepresentativeFamily S := by
@@ -193,7 +194,7 @@ theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [Ha
       ⟨iso ≪≫ Classical.choice hq⟩)
 
 /-- Group finitely many objects by chosen representative labels. -/
-theorem regroup_biproduct {D : Type u} [Category.{v} D] [Preadditive D]
+theorem regroup_biproduct [Preadditive D]
     [HasFiniteBiproducts D] {n k : ℕ} {S : Fin n → D} {V : Fin k → D}
     (h : ∀ j, ∃ i, Nonempty (V j ≅ S i)) :
     ∃ m : Fin n → ℕ, Nonempty ((⨁ V) ≅ ⨁ (fun p : Σ i, Fin (m i) => S p.1)) := by
