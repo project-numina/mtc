@@ -29,11 +29,8 @@ theorem balanced_flow_no_entry {s : Finset ι} (hclosed : ∀ i ∈ s, ∀ j ∉
   have hrow (y : ι) (hy : y ∈ s) : ∑ x ∈ s, b x y = ∑ x, b x y :=
     (Finset.sum_eq_sum_iff_of_le (fun z _ ↦
       Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ s) (fun x _ _ ↦ hb x z))).mp hin y hy
-  have hzero : ∑ x ∈ Finset.univ \ s, b x j = 0 := add_right_cancel (by
-    simpa only [← hrow j hj, zero_add] using
-      Finset.sum_sdiff (f := fun x ↦ b x j) (Finset.subset_univ s))
-  exact (Finset.sum_eq_zero_iff_of_nonneg (fun x _ => hb x j)).mp hzero i
-    (Finset.mem_sdiff.mpr ⟨Finset.mem_univ i, hi⟩)
+  have hzero : ∑ x ∈ Finset.univ \ s, b x j = 0 := by simp [Finset.sum_sdiff_eq_sub, ← hrow j hj]
+  exact (Finset.sum_eq_zero_iff_of_nonneg (fun x _ ↦ hb x j)).mp hzero i (by simp [hi])
 
 /-- Every vertex with an outgoing edge in a finite balanced nonnegative flow
 lies on a directed cycle. -/
@@ -181,14 +178,11 @@ theorem generatedBy_rightDual (X : D) :
   let V : (Σ i, Fin (m i)) → D := fun p => T p.1
   have hv (p : Σ i, Fin (m i)) : GeneratedBy X (V p) :=
     generatedBy_retract (generatedBy_self X)
-      { i := biproduct.ι V p ≫ e.inv
-        r := e.hom ≫ biproduct.π V p
-        retract := by simp [Category.assoc] }
+      ((biproduct.bicone V).retract p |>.trans (Retract.ofIso e.symm))
   exact generatedBy_of_iso
     (generatedBy_retract (generatedBy_finiteBiproduct _ fun p ↦
       letI : Simple (V p) := hsimple p.1
-      generatedBy_trans (hv p) (simple_generatedBy_rightDual (V p)))
-      (dualFiniteBiproductRetract V))
+      generatedBy_trans (hv p) (simple_generatedBy_rightDual (V p))) (dualFiniteBiproductRetract V))
     (Dimensions.rightDualIsoMap e).symm
 
 end PropertyF.Ground
