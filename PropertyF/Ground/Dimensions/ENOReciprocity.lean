@@ -35,9 +35,7 @@ theorem pivotalDimension_dual_eq_conj
   apply fusion_character_dual_eq_conj (N := fusionCoeff C) (d := dualIndex C)
     (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
   · exact fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm
-  · obtain ⟨e⟩ := unitIndex_iso C
-    rw [pivotalDimension_iso C p e, pivotalDimension_unit]
-    exact one_ne_zero
+  · simpa only [pivotalDimension_unitIndex] using (one_ne_zero : (1 : ℂ) ≠ 0)
   · exact pivotalDimension_character C p
 
 
