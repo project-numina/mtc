@@ -178,7 +178,6 @@ variable (X : D)
 set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the output of a crossing block composes the
 fusion inclusion with that map. -/
-@[reassoc]
 theorem crossingBlock_post_test (h : T ⟶ U)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     crossingBlock X T S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
@@ -189,7 +188,6 @@ theorem crossingBlock_post_test (h : T ⟶ U)
 set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the input of a crossing block composes the
 fusion projection with that map. -/
-@[reassoc]
 theorem crossingBlock_pre_test (h : T ⟶ U)
     (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
     (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U S g f =
