@@ -112,10 +112,8 @@ theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
-    θₚ X ≠ 0 := fun hz ↦
-  id_nonzero X (by
-    simpa [pivotalBraidedTwist_simple, hz] using
-      (pivotalBraidedTwist C p X).hom_inv_id.symm)
+    θₚ X ≠ 0 := fun hz ↦ id_nonzero X (by
+      simpa [pivotalBraidedTwist_simple, hz] using (pivotalBraidedTwist C p X).hom_inv_id.symm)
 
 /-- The trace of a simple self-braiding is twist scalar times dimension. -/
 theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :

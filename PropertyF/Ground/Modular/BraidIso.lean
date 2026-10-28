@@ -46,9 +46,7 @@ theorem braidGenerator_natural (n : ℕ)
     (braidGenerator X n i).asIso.hom ≫ (tensorPowerIso f (n + 2)).hom =
       (tensorPowerIso f (n + 2)).hom ≫ (braidGenerator Y n i).asIso.hom := by
   induction n with
-  | zero =>
-    fin_cases i
-    exact braid_first f (tensorPowerIso f 0)
+  | zero => exact Fin.cases (braid_first f (tensorPowerIso f 0)) (fun j ↦ Fin.elim0 j) i
   | succ n ih =>
     refine Fin.cases ?_ (fun j ↦ ?_) i
     · exact braid_first f (tensorPowerIso f (n + 1))

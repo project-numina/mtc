@@ -87,8 +87,7 @@ theorem categoricalS_dual_conj (i j : Fin (rank C)) :
     Sₚ (Ground.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) :=
   (div_left_inj' (simpleDimension_ne_zero C p j)).mp (by
     simpa only [categoricalSCharacter, normalizedSColumn, map_div₀, hreal j] using
-      character_dual_conj ⟨unitIndex C, fusionCoeff C⟩ (Ground.dualIndex C)
-        (fusionCoeff_dual_adjoint C) (categoricalSCharacter C p j) i)
+      character_dual_conj _ _ (fusionCoeff_dual_adjoint C) (categoricalSCharacter C p j) i)
 
 include hreal in
 /-- Real pivotal simple dimensions are invariant under dual labels. -/
