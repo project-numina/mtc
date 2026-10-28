@@ -48,12 +48,12 @@ variable {C} in
 /-- The natural extension has exactly the chosen simple components. -/
 theorem fourthDualRootNaturalIso_app_simple
     (i : Fin (rank C)) :
-    (fourthDualRootNaturalIso C).app (simples C i) = fourthDualSimpleRoot C i := by
-  apply Iso.ext
-  simp only [fourthDualRootNaturalIso, NatIso.trans_app, Iso.trans_hom,
-    simpleScalarNaturalIso_app_simple]
-  erw [Linear.smul_comp, Category.id_comp]
-  exact (fourthDualRootScalar_spec i).2.symm
+    (fourthDualRootNaturalIso C).app (simples C i) = fourthDualSimpleRoot C i :=
+  Iso.ext <| by
+    simp only [fourthDualRootNaturalIso, NatIso.trans_app, Iso.trans_hom,
+      simpleScalarNaturalIso_app_simple]
+    erw [Linear.smul_comp, Category.id_comp]
+    exact (fourthDualRootScalar_spec i).2.symm
 
 /-- Natural transformations from the identity are determined on a family
 whose finite biproducts contain every object. -/

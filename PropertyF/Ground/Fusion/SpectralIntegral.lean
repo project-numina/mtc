@@ -69,10 +69,5 @@ theorem fpSimple_isIntegral (i : Fin (rank D)) :
   apply IsIntegral.of_pow (Nat.zero_lt_succ 1)
   simpa only [hmatrix, fpSimple] using integer_matrix_spectralRadius_sq_isIntegral A
 
-/-- The target's global FP dimension is integral over ℤ, independently of
-the construction of a positive fusion-ring character. -/
-theorem globalFPDimension_isIntegral :
-    IsIntegral ℤ (globalFPDimension D) :=
-  IsIntegral.sum _ fun i _ ↦ (fpSimple_isIntegral i).pow 2
 
 end PropertyF.Ground

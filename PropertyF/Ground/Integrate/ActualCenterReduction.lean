@@ -314,7 +314,8 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
     (hDouble : Modular.sCentralizer 𝒵ᶠ p core ⊆ generated)
     (hProduct : ∀ y ∈ generated, Centre.ProductRetract (simples 𝒵ᶠ y)) :
     WeaklyIntegral (globalFPDimension C) :=
-  integral_eq_int_of_complex_galois_fixed (globalFPDimension_isIntegral C) <|
+  integral_eq_int_of_complex_galois_fixed
+    (IsIntegral.sum _ fun i _ ↦ (fpSimple_isIntegral i).pow 2) <|
     galois_fixed_of_smaller_conjugate_witness (j := algebraMap ℝ ℂ) (globalFPDimension C)
       (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
       (positive_bounded_conjugates_of_fp C) fun τ _ _ _ _ hb _ hτ ↦

@@ -346,9 +346,6 @@ variable {D} in
 theorem fpCharacter_pos (i : Fin (rank D)) :
     0 < fpCharacter D i := (Classical.choose_spec (exists_positive_character D)).1 i
 
-theorem fpCharacter_unit : fpCharacter D (unitIndex D) = 1 :=
-  (Classical.choose_spec (exists_positive_character D)).2.1
-
 variable {D} in
 theorem fpCharacter_mul (i j : Fin (rank D)) :
     fpCharacter D i * fpCharacter D j =
@@ -433,7 +430,8 @@ theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
     fpCharacter D i ≤ fpSimple D i := by
   simpa [Complex.norm_real, abs_of_pos (fpCharacter_pos i)] using
     (Dimensions.character_norm_le_fpSimple (χ := fun j ↦ (fpCharacter D j : ℂ))
-      (i₀ := unitIndex D) (by simp [fpCharacter_unit]) (fun j k ↦ by
+      (i₀ := unitIndex D) (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpCharacter_pos (unitIndex D))))
+      (fun j k ↦ by
         dsimp
         exact_mod_cast fpCharacter_mul j k) i)
 

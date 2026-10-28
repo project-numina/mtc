@@ -45,13 +45,13 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The ENO tensor defect with a left unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_left :
     (rootTensorDefect C (𝟙_ C.Obj) X).hom =
-      rootDimension C (unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) := by
-  apply (cancel_mono (rootTensorIso C (𝟙_ C.Obj) X).hom).1
-  change (((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom ≫
-    (rootTensorIso C (𝟙_ C.Obj) X).inv) ≫ (rootTensorIso C (𝟙_ C.Obj) X).hom =
-      (rootDimension C (unitIndex C) • 𝟙 _) ≫ (rootTensorIso C (𝟙_ C.Obj) X).hom
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp]
-  erw [rootTensorIso_unit_left, Linear.comp_smul, smul_smul, rootDimension_unit_sq,
-    one_smul, Category.id_comp]
+      rootDimension C (unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) :=
+  (cancel_mono (rootTensorIso C (𝟙_ C.Obj) X).hom).1 <| by
+    change (((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom ≫
+      (rootTensorIso C (𝟙_ C.Obj) X).inv) ≫ (rootTensorIso C (𝟙_ C.Obj) X).hom =
+        (rootDimension C (unitIndex C) • 𝟙 _) ≫ (rootTensorIso C (𝟙_ C.Obj) X).hom
+    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp]
+    erw [rootTensorIso_unit_left, Linear.comp_smul, smul_smul, rootDimension_unit_sq,
+      one_smul, Category.id_comp]
 
 end PropertyF.Ground.Dimensions
