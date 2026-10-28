@@ -18,8 +18,10 @@ structure IsTypeAFamily (s : ℕ → G) (m : ℕ) : Prop where
   braid : ∀ i, i + 1 < m → s i * s (i + 1) * s i = s (i + 1) * s i * s (i + 1)
   commute : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i
 
+variable {s : ℕ → G} {m : ℕ}
+
 /-- Shifting a type-A family into a subgroup preserves its relations. -/
-theorem IsTypeAFamily.shift {H : Subgroup G} {s : ℕ → G} {t : ℕ → H} {m : ℕ}
+theorem IsTypeAFamily.shift {H : Subgroup G} {t : ℕ → H}
     (hrel : IsTypeAFamily s (m + 1))
     (ht : ∀ i, i < m → (t i : G) = s (i + 1)) : IsTypeAFamily t m :=
   ⟨fun i hi ↦ Subtype.ext <| by
@@ -37,7 +39,7 @@ def moveWord (s : ℕ → G) : ℕ → G
   | j + 1 => s j * moveWord s j
 
 /-- A generator beyond a word's support commutes with the word. -/
-theorem commute_moveWord {s : ℕ → G} {m : ℕ}
+theorem commute_moveWord
     (hc : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i)
     (i : ℕ) : ∀ j, j + 1 ≤ i → i < m →
       s i * moveWord s j = moveWord s j * s i := by
@@ -51,7 +53,7 @@ theorem commute_moveWord {s : ℕ → G} {m : ℕ}
 
 /-- Moving a crossing past the strand-moving word shifts its index by one.
 This is the main rewriting step for the type-A coset normal form. -/
-theorem moveWord_exchange {s : ℕ → G} {m : ℕ}
+theorem moveWord_exchange
     (hb : ∀ i, i + 1 < m → s i * s (i + 1) * s i = s (i + 1) * s i * s (i + 1))
     (hc : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i) :
     ∀ j i, i + 1 < j → j ≤ m →

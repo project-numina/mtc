@@ -16,11 +16,12 @@ open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
+variable {D : Type u} [Category.{v} D]
+variable {C : Ground.BraidedFusionCategory.{v,u}}
 
 /-- A natural endomorphism has finite order if finitely many components detect
 it and each of those components has finite order. -/
-theorem natural_end_finite_order_of_components {D : Type u} [Category.{v} D]
-    {ι : Type*} [Finite ι] (X : ι → D)
+theorem natural_end_finite_order_of_components {ι : Type*} [Finite ι] (X : ι → D)
     (hext : ∀ {α β : 𝟭 D ⟶ 𝟭 D}, (∀ i, α.app (X i) = β.app (X i)) → α = β)
     (α : 𝟭 D ⟶ 𝟭 D) (h : ∀ i, IsOfFinOrder (End.of (α.app (X i)))) :
     ∃ n : ℕ, n ≠ 0 ∧ ∀ Y, (End.of (α.app Y)) ^ n = 1 := by
@@ -37,15 +38,14 @@ theorem natural_end_finite_order_of_components {D : Type u} [Category.{v} D]
 
 /-- A natural endomorphism of the identity in a fusion category has a common
 finite order as soon as its components on the simple representatives do. -/
-theorem natural_end_finite_order_of_simples
-    {C : Ground.BraidedFusionCategory.{v,u}} (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
+theorem natural_end_finite_order_of_simples (α : 𝟭 C.Obj ⟶ 𝟭 C.Obj)
     (h : ∀ i, IsOfFinOrder (End.of (α.app (Ground.simples C i)))) :
     ∃ n : ℕ, n ≠ 0 ∧ ∀ X, (End.of (α.app X)) ^ n = 1 :=
   natural_end_finite_order_of_components (simples C)
     (fun h ↦ Dimensions.natTrans_eq_of_simple_components C h) α h
 
 /-- Tensoring two endomorphisms commutes with taking powers. -/
-theorem tensor_end_pow {D : Type u} [Category.{v} D] [MonoidalCategory D]
+theorem tensor_end_pow [MonoidalCategory D]
     {X Y : D} (f : End X) (g : End Y) (n : ℕ) :
     (End.of (f.asHom ⊗ₘ g.asHom)) ^ n =
       End.of ((f ^ n).asHom ⊗ₘ (g ^ n).asHom) := by
@@ -58,8 +58,7 @@ theorem tensor_end_pow {D : Type u} [Category.{v} D] [MonoidalCategory D]
 /-- A balanced natural automorphism with finite-order simple components has
 finite-order double braidings on every pair of objects. The balancing identity
 is stated explicitly and is not asserted here for the pivotal twist. -/
-theorem mixed_monodromy_finite_of_balanced_finite_twist
-    {C : Ground.BraidedFusionCategory.{v,u}} (θ : 𝟭 C.Obj ≅ 𝟭 C.Obj)
+theorem mixed_monodromy_finite_of_balanced_finite_twist (θ : 𝟭 C.Obj ≅ 𝟭 C.Obj)
     (hfinite : ∀ i, IsOfFinOrder (End.of (θ.hom.app (Ground.simples C i))))
     (hbalance : ∀ X Y, doubleBraiding X Y ≫
       (θ.hom.app X ⊗ₘ θ.hom.app Y) = θ.hom.app (X ⊗ Y))
