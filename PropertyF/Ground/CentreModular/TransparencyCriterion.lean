@@ -72,16 +72,14 @@ theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
     (hvanish : ∀ k, k ≠ unitIndex C →
       (∑ z, dₚ z * Sₚ k z) = 0) :
     (Sₚ).det ≠ 0 := by
-  apply fusion_S_det_ne_zero_of_kirby (N := ⟨unitIndex C, fusionCoeff C⟩)
+  refine fusion_S_det_ne_zero_of_kirby (N := ⟨unitIndex C, fusionCoeff C⟩)
     (D := (globalFPDimension C : ℂ)) (categoricalS_symmetric C p)
     (simpleDimension_ne_zero C p) (categoricalS_verlinde C p)
     (fun x y ↦ (fusionCoeff_reciprocity_labels (D := C) x y (unitIndex C)).trans
-      (fusionCoeff_unit C (dualIndex C y) x)) (dualIndex_involutive C)
+      (fusionCoeff_unit C (dualIndex C y) x)) (dualIndex_involutive C) ?_ (fun k ↦ ?_)
   · exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
-  · intro k
-    split_ifs with hk
-    · subst k
-      simp [categoricalS_symmetric C p, categoricalS_unit, hdim, globalFPDimension, pow_two]
+  · split_ifs with hk
+    · simp [hk, categoricalS_symmetric C p, categoricalS_unit, hdim, globalFPDimension, pow_two]
     · exact hvanish k hk
 
 include hdim in
@@ -90,18 +88,15 @@ normalized S character to be different from that of every other simple. -/
 theorem categoricalS_det_ne_zero_of_unit_character_unique
     (hunique : ∀ k, k ≠ unitIndex C →
       normalizedSColumn C p k ≠ normalizedSColumn C p (unitIndex C)) :
-    (Sₚ).det ≠ 0 := by
-  apply categoricalS_det_ne_zero_of_kirby_vanishes_off_unit C p hdim
-  intro k hk
-  let χ := categoricalSCharacter C p
-  have hzero : (∑ z, dₚ z * (Sₚ z k / dₚ k)) = 0 := by
-    simpa [χ, categoricalSCharacter, normalizedSColumn, categoricalS_unit, simpleDimension_unit, hdim,
-      fpSimple_unit] using
-      character_orthogonal _ (dualIndex C) (fun i j k ↦ Ground.fusionCoeff_dual_symmetry C i k j)
-        (χ (unitIndex C)) (χ k) (fun he ↦ hunique k hk (congrArg Character.value he).symm)
-  simp_rw [← mul_div_assoc, ← Finset.sum_div] at hzero
-  simpa only [categoricalS_symmetric C p k] using
-    (div_eq_zero_iff.mp hzero).resolve_right (simpleDimension_ne_zero C p k)
+    (Sₚ).det ≠ 0 :=
+  categoricalS_det_ne_zero_of_kirby_vanishes_off_unit C p hdim fun k hk ↦
+    (div_eq_zero_iff.mp (show (∑ z, dₚ z * Sₚ k z) / dₚ k = 0 from by
+      simpa [categoricalSCharacter, normalizedSColumn, categoricalS_unit, simpleDimension_unit, hdim,
+        fpSimple_unit, categoricalS_symmetric C p k, ← mul_div_assoc, ← Finset.sum_div] using
+        character_orthogonal _ (dualIndex C) (fun i j k ↦ Ground.fusionCoeff_dual_symmetry C i k j)
+          (categoricalSCharacter C p (unitIndex C)) (categoricalSCharacter C p k)
+          (fun he ↦ hunique k hk (congrArg Character.value he).symm))).resolve_right
+      (simpleDimension_ne_zero C p k)
 
 include hdim in
 /-- For FP-valued simple dimensions, S is invertible if the only simple
