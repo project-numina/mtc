@@ -144,24 +144,23 @@ abbrev nestedCrossingBlock (X T U : C.Obj) (i k j : Fin (rank C))
     ((α_ T U (Sᶜ j)).hom ≫ (T ◁ crossingProjection U k j b) ≫
       crossingProjection T i k a)
 
-/-- Inclusion and projection of the same summand compose to the identity. -/
-theorem crossingInclusion_projection {C : BraidedFusionCategory.{v,u}} {T : C.Obj} {i j : Fin (rank C)}
-    (a : crossingIndex T i j) :
-    crossingInclusion T i j a ≫ crossingProjection T i j a = 𝟙 (simples C i) := by
-  simp [crossingInclusion, crossingProjection, simpleProjection, simpleInclusion]
+/-- Inclusion and projection of the same simple summand compose to the identity. -/
+theorem simpleInclusion_projection {C : BraidedFusionCategory.{v,u}} {V : C.Obj}
+    {i : Fin (rank C)} (a : Fin (finrank ℂ (simples C i ⟶ V))) :
+    simpleInclusion C V i a ≫ simpleProjection V i a = 𝟙 (simples C i) := by
+  simp [simpleProjection, simpleInclusion]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The projection/inclusion pairs resolve the identity on `T ⊗ Sⱼ`.
-This is the completeness relation used for changes of fusion bases. -/
-theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
-    (∑ p : Σ i : Fin (rank C), crossingIndex T i j,
-      crossingProjection T p.1 j p.2 ≫ crossingInclusion T p.1 j p.2) = 𝟙 (T ⊗ Sᶜ j) :=
-  let e := simpleDecomposition C (T ⊗ Sᶜ j)
+/-- The simple-decomposition projection/inclusion pairs resolve the identity. -/
+theorem simple_completeness (V : C.Obj) :
+    (∑ p : simplePieces C V,
+      simpleProjection V p.1 p.2 ≫ simpleInclusion C V p.1 p.2) = 𝟙 V :=
+  let e := simpleDecomposition C V
   by
-    simpa [crossingProjection, simpleProjection, crossingInclusion, simpleInclusion,
+    simpa [simpleProjection, simpleInclusion,
       Category.assoc, Preadditive.comp_sum, Preadditive.sum_comp, e, -biproduct.total] using
       congrArg (fun f => e.hom ≫ f ≫ e.inv)
-        (biproduct.total (f := simplePiecesObject C (T ⊗ Sᶜ j)))
+        (biproduct.total (f := simplePiecesObject C V))
 
 variable (X T : C.Obj)
 -- The simple-indexed summands of the induced object.
