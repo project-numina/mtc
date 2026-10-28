@@ -64,7 +64,7 @@ def bundledCenter : BraidedFusionCategory.{v,max u v} where
 /-- The actual centre forgetful functor preserves FP dimension once the
 centre is proved to be a rigid fusion category. -/
 theorem center_forget_fpDimension (X : (bundledCenter C).Obj) :
-    fpDimension C ((CategoryTheory.Center.forget C.Obj).obj X) = fpDimension (bundledCenter C) X :=
+    fpDimension C X.1 = fpDimension (bundledCenter C) X :=
   @fpDimension_functor (bundledCenter C) C (CategoryTheory.Center.forget C.Obj)
     Centre.centerForgetAdditive Centre.centerForgetFaithful
     (show (CategoryTheory.Center.forget C.Obj).Monoidal from inferInstance) X
