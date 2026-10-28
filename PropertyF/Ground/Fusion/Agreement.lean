@@ -256,7 +256,8 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
   have hid : (𝟙 Y : Y ⟶ Y) ≠ 0 := fun h ↦
     id_nonzero (ᘁ(simples D k))
       ((tensorLeft (simples D j)).map_eq_zero_iff.mp (by simpa [Y] using h))
-  obtain ⟨i, hm⟩ := exists_positive_multiplicity D (fun h ↦ hid ((IsZero.iff_id_eq_zero Y).mp h))
+  obtain ⟨i, hm⟩ := exists_positive_multiplicity (simples D) (simples_decompose D Y)
+    (fun _ ↦ IsFusionCategory.hom_finite _ _) (fun h ↦ hid ((IsZero.iff_id_eq_zero Y).mp h))
   unfold totalFusionMatrix
   exact Finset.sum_pos' (fun _ _ => Nat.cast_nonneg _)
     ⟨i, Finset.mem_univ _, Nat.cast_pos.mpr (by simpa only [fusionCoeff_reciprocity] using hm)⟩

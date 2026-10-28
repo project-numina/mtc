@@ -58,17 +58,19 @@ theorem fourthDualRootNaturalIso_app_simple
     (doubleDualIso C (simples C i)).hom = _
   simpa using (fourthDualRootScalar_spec i).2.symm
 
-/-- Natural transformations from the identity are determined by their
-components on the simple representatives. -/
-theorem natTrans_eq_of_simple_components
-    {F : C.Obj ⥤ C.Obj} {α β : 𝟭 C.Obj ⟶ F}
-    (h : ∀ i, α.app (simples C i) = β.app (simples C i)) : α = β :=
-  NatTrans.ext <| funext fun X ↦ simpleInclusion_hom_ext C fun i t ↦ by
-    change simpleInclusion C X i t ≫ α.app X = simpleInclusion C X i t ≫ β.app X
-    simpa only [Functor.id_map] using
-      (α.naturality (simpleInclusion C X i t)).trans (by
-        rw [h i]
-        exact (β.naturality (simpleInclusion C X i t)).symm)
+/-- Natural transformations from the identity are determined on a family
+whose finite biproducts contain every object. -/
+theorem natTrans_eq_of_biproduct_components
+    {D : Type u} [Category.{v} D] [HasZeroMorphisms D] [HasFiniteBiproducts D]
+    {ι : Type} [Fintype ι] (T : ι → D)
+    (hdecomp : ∀ X, HasBiproductDecomposition T X)
+    {F : D ⥤ D} {α β : 𝟭 D ⟶ F} (h : ∀ i, α.app (T i) = β.app (T i)) : α = β :=
+  NatTrans.ext <| funext fun X ↦ (hdecomp X).elim fun m ⟨e⟩ ↦
+    biproduct_decomposition_hom_ext e fun ⟨i, t⟩ ↦ by
+      let s := biproduct.ι (fun p : Σ i, Fin (m i) ↦ T p.1) ⟨i, t⟩ ≫ e.inv
+      change s ≫ α.app X = s ≫ β.app X
+      simpa only [Functor.id_map] using
+        (α.naturality s).trans (by rw [h i]; exact (β.naturality s).symm)
 
 /-- The natural double-dual root, squared using the double-dual functor. -/
 def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
@@ -80,7 +82,7 @@ def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
 isomorphism on every object. Monoidal compatibility remains a separate issue. -/
 theorem fourthDualRootNaturalSquare_eq :
     fourthDualRootNaturalSquare C = fourthDualNaturalIso C.Obj :=
-  Iso.ext <| natTrans_eq_of_simple_components C fun i ↦ by
+  Iso.ext <| natTrans_eq_of_biproduct_components (simples C) (simples_decompose C) fun i ↦ by
     change ((fourthDualRootNaturalIso C).app (simples C i)).hom ≫
       ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
         (fourthDualIso (simples C i)).hom
@@ -272,18 +274,6 @@ theorem multiplicityDefect_apply {i j k : Fin (rank C)}
     multiplicityDefect C i j k f =
       f ≫ (rootTensorDefect C (simples C i) (simples C j)).hom :=
   by simp [multiplicityDefect, Linear.homCongr_apply]
-
-set_option backward.isDefEq.respectTransparency false in
-/-- If the categorical multiplicity defect is involutive, its trace is an
-integer bounded by the actual fusion coefficient. -/
-theorem multiplicityDefect_trace_integer_bound {i j k : Fin (rank C)}
-    (hinv : (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1) :
-    ∃ n : ℤ, LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap = (n : ℂ) ∧
-      |n| ≤ (fusionCoeff C i j k : ℤ) :=
-  letI : FiniteDimensional ℂ (simples C k ⟶ simples C i ⊗ simples C j) :=
-    IsFusionCategory.hom_finite _ _
-  involution_trace_integer_bound hinv
 
 /-- If the tensor of the simple root components has the expected fourth-dual
 square, the resulting tensor defect is an involution. -/
