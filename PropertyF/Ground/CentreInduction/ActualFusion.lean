@@ -207,29 +207,28 @@ theorem fpDimension_eq_sum_to_simple (X : C.Obj) :
     congrArg (fun n : ℕ => (n : ℝ) * fpSimple C i)
       (finrank_to_simple_eq_from_simple X (simples C i)).symm
 
+/-- The induction adjunction preserves the dimensions of corresponding Hom spaces. -/
+theorem finrank_hom_induction (Z : 𝒵) (X : C.Obj) :
+    Module.finrank ℂ (Z ⟶ (induction C).obj X) = Module.finrank ℂ (Z.1 ⟶ X) :=
+  (homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj)
+    (induction C) (actualAdjunction C) Z X).finrank_eq
+
+/-- The FP dimension of a centre object is the weighted Hom sum of its underlying object. -/
+theorem center_fpDimension_eq_sum_to_simple [RigidCategory 𝒵] [IsFusionCategory 𝒵] (Z : 𝒵) :
+    fpDimension 𝒵ᶠ Z = ∑ i, (Module.finrank ℂ (Z.1 ⟶ simples C i) : ℝ) * fpSimple C i :=
+  (Integrate.center_forget_fpDimension C Z).symm.trans (fpDimension_eq_sum_to_simple C Z.1)
+
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The centre's global FP dimension is the weighted sum of its induced simples. -/
 theorem globalFPDimension_eq_induction_sum [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ =
       ∑ i, fpSimple C i * fpDimension 𝒵ᶠ ((induction C).obj (simples C i)) := by
-  let I (i : Fin (rank C)) := (induction C).obj (simples C i)
-  have hadj (i : Fin (rank C)) (j : Fin (rank 𝒵ᶠ)) :
-      Module.finrank ℂ ((simples 𝒵ᶠ j : 𝒵) ⟶ I i) =
-      Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) :=
-    (homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj)
-      (induction C) (actualAdjunction C) (simples 𝒵ᶠ j) (simples C i)).finrank_eq
-  have hbase (j : Fin (rank 𝒵ᶠ)) :
-      ∑ i, (Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) : ℝ) * fpSimple C i =
-        fpSimple 𝒵ᶠ j :=
-    (fpDimension_eq_sum_to_simple C (simples 𝒵ᶠ j).1).symm.trans <|
-      (Integrate.center_forget_fpDimension C (simples 𝒵ᶠ j)).trans (fpDimension_simple 𝒵ᶠ j)
-  change globalFPDimension 𝒵ᶠ = ∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i)
   symm
-  simp_rw [fpDimension, hadj, Finset.mul_sum]
+  simp_rw [fpDimension, finrank_hom_induction C, Finset.mul_sum]
   rw [Finset.sum_comm]
   simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
-    ← Finset.mul_sum, hbase]
+    ← Finset.mul_sum, ← center_fpDimension_eq_sum_to_simple C, fpDimension_simple]
   simp [globalFPDimension, pow_two]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -238,10 +237,8 @@ set_option backward.defeqAttrib.useBackward true in
 of the base global FP dimension. -/
 theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
-  rw [globalFPDimension_eq_induction_sum C]
-  simp_rw [← Integrate.center_forget_fpDimension C]
-  change (∑ i, fpSimple C i * fpDimension C (underlying C (simples C i))) = _
-  simp [fpDimension_underlying, fpDimension_simple, globalFPDimension, pow_two,
+  simp_rw [globalFPDimension_eq_induction_sum C, ← Integrate.center_forget_fpDimension C]
+  simp [induction, fpDimension_underlying, fpDimension_simple, globalFPDimension, pow_two,
     Finset.mul_sum, mul_left_comm]
 
 end PropertyF.Ground.CentreInduction

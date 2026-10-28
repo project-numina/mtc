@@ -16,13 +16,12 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground
 universe v u
 
-/-- The actual Drinfeld map has the tensor coherence law in any braided
-fusion category. -/
-theorem drinfeld_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
-    Modular.doubleBraiding X Y ≫ (doubleDualIso C (X ⊗ Y)).hom =
-      ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
-        (doubleDualTensorIso X Y).hom :=
-  CentreIntegrate.drinfeld_tensor_of_pairing_cap (doubleDualIso C)
+/-- The Drinfeld map satisfies tensor coherence in a braided rigid category. -/
+theorem drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [BraidedCategory D] [RightRigidCategory D] (X Y : D) :
+    Modular.doubleBraiding X Y ≫ (drinfeldIso (X ⊗ Y)).hom =
+      ((drinfeldIso X).hom ⊗ₘ (drinfeldIso Y).hom) ≫ (doubleDualTensorIso X Y).hom :=
+  CentreIntegrate.drinfeld_tensor_of_pairing_cap drinfeldIso
     (drinfeld_eval (X ⊗ Y)) (drinfeld_tensor_pairing_cap X Y)
 
 end PropertyF.Ground
@@ -44,6 +43,13 @@ theorem rightDualTensorIso_monodromy {X Y : D} :
   simp [Modular.doubleBraiding, comp_rightAdjointMate, Category.assoc,
     rightDualTensorIso_braiding]
 
+/-- Inverse dual tensor comparison also transports monodromy. -/
+theorem rightDualTensorIso_inv_monodromy {X Y : D} :
+    (rightDualTensorIso X Y).inv ≫ (Modular.doubleBraiding X Y)ᘁ =
+      Modular.doubleBraiding (Yᘁ) (Xᘁ) ≫ (rightDualTensorIso X Y).inv :=
+  (CommSq.vert_inv (g := rightDualTensorIso X Y)
+    (h := rightDualTensorIso X Y) ⟨rightDualTensorIso_monodromy⟩).w.symm
+
 end PropertyF.Ground.CentreInduction
 
 end
@@ -55,9 +61,10 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj)
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [RightRigidCategory D] (X Y : D)
 -- The Drinfeld isomorphism of the base category.
-local notation "d" => doubleDualIso C
+local notation "d" => drinfeldIso
 
 /-- The inverse Drinfeld map satisfies the reversed tensor identity. -/
 theorem drinfeld_tensor_inverse :
@@ -67,10 +74,10 @@ theorem drinfeld_tensor_inverse :
     (doubleDualTensorIso X Y).inv ≫
       (d X ⊗ᵢ d Y).inv ≫ Modular.doubleBraiding X Y
   rw [Iso.eq_inv_comp, Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
-  exact (drinfeld_tensor C X Y).symm
+  exact (drinfeld_tensor X Y).symm
 
 /-- Formula for transporting the inverse Drinfeld map through an isomorphism. -/
-theorem drinfeld_inv_natural {A B : C.Obj} (t : A ≅ B) :
+theorem drinfeld_inv_natural {A B : D} (t : A ≅ B) :
     (d A).inv = (((t.homᘁ)ᘁ) ≫ (d B).inv) ≫ t.inv := by
   rw [Iso.eq_comp_inv, Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
   exact drinfeldIso_natural t.hom
@@ -86,15 +93,9 @@ theorem drinfeld_inv_dual_tensor :
   let t := rightDualTensorIso X Y
   let f := (d (Yᘁ)).inv
   let g := (d (Xᘁ)).inv
-  have hn' := congrArg (fun z => rightAdjointMate z) (drinfeld_inv_natural C t)
-  have hi' := congrArg (fun z => rightAdjointMate z) (drinfeld_tensor_inverse C (Yᘁ) (Xᘁ))
+  have hn' := congrArg (fun z => rightAdjointMate z) (drinfeld_inv_natural t)
+  have hi' := congrArg (fun z => rightAdjointMate z) (drinfeld_tensor_inverse (Yᘁ : D) (Xᘁ : D))
   simp only [comp_rightAdjointMate] at hn' hi'
-  have hm' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫
-      ((Modular.doubleBraiding (Yᘁ) (Xᘁ))ᘁ) =
-      Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
-        (rightDualTensorIso (Yᘁ) (Xᘁ)).inv :=
-    (CommSq.vert_inv (g := rightDualTensorIso (Yᘁ) (Xᘁ))
-      (h := rightDualTensorIso (Yᘁ) (Xᘁ)) ⟨rightDualTensorIso_monodromy⟩).w.symm
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
@@ -103,7 +104,8 @@ theorem drinfeld_inv_dual_tensor :
   simp only [comp_rightAdjointMate, Category.assoc]
   rw [← Category.assoc (t.homᘁ), ← comp_rightAdjointMate, Iso.inv_hom_id,
     rightAdjointMate_id, Category.id_comp]
-  rw [reassoc_of% hm', ← reassoc_of% rightDualTensorIso_inv_natural f g]
+  rw [reassoc_of% rightDualTensorIso_inv_monodromy,
+    ← reassoc_of% rightDualTensorIso_inv_natural f g]
   dsimp only [doubleDualTensorIso, rightDualIsoMap,
     Iso.trans_inv, Iso.symm_inv]
   simp only [comp_rightAdjointMate, Category.assoc, f, g, t]
@@ -115,11 +117,9 @@ theorem fourthDualIso_tensor :
         (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
           (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
   let m : X ⊗ Y ≅ X ⊗ Y := (β_ X Y) ≪≫ (β_ Y X)
-  have hd (Z : C.Obj) : drinfeldIso Z = d Z := rfl
-  simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom,
-    rightDualIsoMap, hd]
-  rw [(Iso.eq_inv_comp m).2 (drinfeld_tensor C X Y)]
-  simp only [Category.assoc, drinfeld_inv_dual_tensor C X Y]
+  simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap]
+  rw [(Iso.eq_inv_comp m).2 (drinfeld_tensor X Y)]
+  simp only [Category.assoc, drinfeld_inv_dual_tensor X Y]
   simp only [← tensorHom_comp_tensorHom_assoc, ← Category.assoc]
   rw [Category.assoc m.inv,
     ← CentreCabling.doubleBraiding_natural (d X).hom (d Y).hom]
@@ -141,7 +141,9 @@ structure with its actual FP dimensions, without any pivotal premise. -/
 theorem positive_spherical_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
     (hpu : PseudoUnitary C) :
     ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
-  positive_spherical_of_nonunit_fourth_dual C
-    (fun i j _ _ ↦ fourthDualIso_tensor C (simples C i) (simples C j)) hpu
+  let h (i j : Fin (rank C)) : fourthDualTensorLaw (simples C i) (simples C j) :=
+    fourthDualIso_tensor (simples C i) (simples C j)
+  positive_spherical_of_simple_fourth_and_reciprocity C h
+    (trace_reciprocity_of_fourth_dual C h) hpu
 
 end PropertyF.Ground.CentreInduction

@@ -23,28 +23,21 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
   [BraidedCategory D] [RightRigidCategory D]
 variable {p : PivotalStructure (C := D)}
 
-/-- The braided comparison from an object to its double right dual. -/
-abbrev braidedDoubleDualIso (X : D) : X ≅ (Xᘁ)ᘁ :=
-  rightDualIso (BraidedCategory.exactPairing_swap X (Xᘁ)) inferInstance
-
 variable (X : D)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The coevaluation characterizing the braided double-dual map. -/
 theorem drinfeld_coevaluation :
-    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (braidedDoubleDualIso X).inv =
-      η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv := by
-  have hc : (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
-      (Xᘁ) ◁ (braidedDoubleDualIso X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) :=
-    Dimensions.coevaluation_rightDualIso (BraidedCategory.exactPairing_swap X (Xᘁ))
-      (HasRightDual.exact : ExactPairing (Xᘁ) ((Xᘁ)ᘁ))
-  rw [← hc, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
+    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (drinfeldIso X).inv =
+      η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv :=
+  Dimensions.coevaluation_rightDualIso_inv (BraidedCategory.exactPairing_swap X (Xᘁ))
+    (HasRightDual.exact : ExactPairing (Xᘁ) ((Xᘁ)ᘁ))
 
 /-- Pivotal coevaluation factors through the braided double-dual comparison. -/
 theorem pivotal_coevaluation_factor :
     η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv =
       (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
-        (Xᘁ) ◁ ((braidedDoubleDualIso X).hom ≫ (p.iso X).inv) := by
+        (Xᘁ) ◁ ((drinfeldIso X).hom ≫ (p.iso X).inv) := by
   rw [← drinfeld_coevaluation X, Category.assoc, ← whiskerLeft_comp,
     Iso.inv_hom_id_assoc]
 
@@ -64,17 +57,15 @@ theorem inverse_crossing_snake :
     _ = 𝟙 X := by
       simp [ExactPairing.evaluation_coevaluation_assoc]
 
-variable [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the first strand of the inverse braiding gives the inverse
 pivotal/Drinfeld twist. -/
 theorem leftPartialTrace_inverse_braiding :
     leftPartialTrace p (End.of (β_ X X).inv) =
-      End.of ((braidedDoubleDualIso X).hom ≫ (p.iso X).inv) := by
+      End.of ((drinfeldIso X).hom ≫ (p.iso X).inv) := by
   apply End.ext
-  let t : X ⟶ X := (braidedDoubleDualIso X).hom ≫ (p.iso X).inv
-  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+  let t : X ⟶ X := (drinfeldIso X).hom ≫ (p.iso X).inv
+  simp only [leftPartialTrace,
     pivotal_coevaluation_factor (p := p) X, comp_whiskerRight, Category.assoc]
   -- The inverse crossings cancel after applying the inverse hexagon.
   have hmove : (Xᘁ ◁ t) ▷ X ≫ (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) =
@@ -99,7 +90,7 @@ theorem inverse_twist_eq_scalar_of_selfTransparent :
   (congrArg End.asHom (show θ C p X • (1 : End X) = _ from by
     simpa only [← ((β_ X X).inv_ext' hX), leftPartialTrace_braiding_of_trace_compatibility
       (spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom)),
-      braidedDoubleDualIso, doubleDualIso] using
+      drinfeldIso, doubleDualIso] using
       leftPartialTrace_inverse_braiding (p := p) X)).symm
 
 include hp hX in

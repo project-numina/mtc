@@ -148,6 +148,7 @@ theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Perm (Fin
   ext x
   induction x using Fin.cases <;> simp [fixHead, Equiv.Perm.mul_apply]
 
+/-- Inserting a fixed first strand shifts each adjacent swap by one position. -/
 theorem fixHead_swap {n : ℕ} (i : Fin n) :
     fixHead (n + 1) (adjacentSwap i) =
       adjacentSwap i.succ :=

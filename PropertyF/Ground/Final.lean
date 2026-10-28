@@ -100,7 +100,7 @@ theorem target : TargetStatement.{v,u} := by
       unitScalar_eq_equiv] using hfp i
   have hbalance : CentreModular.IsPivotalTwistBalanced (Integrate.bundledCenter D) pZ :=
     fun X Y ↦ CentreIntegrate.pivotal_balance_of_drinfeld_tensor pZ
-      (doubleDualIso (Integrate.bundledCenter D)) (drinfeld_tensor (Integrate.bundledCenter D) X Y)
+      (doubleDualIso (Integrate.bundledCenter D)) (drinfeld_tensor X Y)
   have hdet := CentreModular.categoricalS_det_ne_zero_of_trivial_transparency
     (Integrate.bundledCenter D) pZ hdim hbalance (center_transparent_label_eq_unit D)
   have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy D pZ :=

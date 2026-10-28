@@ -177,10 +177,10 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Closing a fusion map is natural in its test strand. -/
 theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     (Rᘁ ◁ h) ≫ closeFusionMap U S f =
-      closeFusionMap T S ((h ▷ S) ≫ f) := by
-  apply Dimensions.evaluation_ext (X := S)
-  simp only [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp]
-  monoidal
+      closeFusionMap T S ((h ▷ S) ≫ f) :=
+  Dimensions.evaluation_ext (X := S) <| by
+    simp only [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp]
+    monoidal
 
 variable (X : D)
 
