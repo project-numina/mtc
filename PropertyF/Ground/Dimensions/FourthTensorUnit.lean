@@ -20,16 +20,14 @@ universe v u
 
 /-- For an involutive scalar, an isomorphism is its scalar multiple precisely when
 the quotient of the two isomorphisms is scalar. -/
-theorem iso_comp_inv_eq_smul_iff_of_sq_one {D : Type u} [Category.{v} D]
-    [Preadditive D] [Linear ℂ D] {X Y : D} (a t : X ≅ Y) (z : ℂ) (hz : z * z = 1) :
+theorem iso_comp_inv_eq_smul_iff_of_sq_one {k : Type*} [CommSemiring k]
+    {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D]
+    {X Y : D} (a t : X ≅ Y) (z : k) (hz : z * z = 1) :
     a.hom ≫ t.inv = z • 𝟙 X ↔ t.hom = z • a.hom := by
   constructor
   · intro h
-    have hcomp : z • t.hom = a.hom := by
-      have h' := congrArg (fun f => f ≫ t.hom) h
-      simpa [Category.assoc, Linear.smul_comp] using h'.symm
-    have h' := congrArg (fun f => z • f) hcomp
-    simpa [smul_smul, hz] using h'
+    simpa [Category.assoc, Linear.smul_comp, smul_smul, hz] using
+      (congrArg (fun f ↦ z • (f ≫ t.hom)) h).symm
   · intro ht
     apply (cancel_mono t.hom).1
     simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp,
