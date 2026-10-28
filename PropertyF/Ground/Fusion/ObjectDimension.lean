@@ -140,8 +140,8 @@ theorem fpDimension_functor_decomposition (C : BraidedFusionCategory.{v,u})
   let m : Fin (rank C) → ℕ := fun i => Module.finrank ℂ (simples C i ⟶ X)
   let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
   obtain ⟨e⟩ := exists_canonical_decomposition C X
-  let e' : F.obj X ≅ ⨁ (fun p => F.obj (V p)) := F.mapIso e ≪≫ F.mapBiproduct V
-  rw [fpDimension_iso D e', fpDimension_biproduct, Fintype.sum_sigma]
+  rw [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct V), fpDimension_biproduct,
+    Fintype.sum_sigma]
   simp [V, m]
 
 /-- An additive faithful strong monoidal functor preserves FP dimension. -/
