@@ -107,12 +107,7 @@ theorem fusionPath_retract {i k : Fin (rank D)}
       exact_mod_cast (mul_pos_iff_of_pos_left (fpSimple_pos D j)).mp
         ((mul_pos_iff_of_pos_right (fpSimple_pos D k)).mp edge)
     obtain ⟨s⟩ := fusionCoeff_retract D hn
-    let t : Retract (simples D i ⊗ simples D j)
-        (simples D i ⊗ tensorPower (simples D i) (n + 1)) :=
-      { i := 𝟙 _ ⊗ₘ r.i
-        r := 𝟙 _ ⊗ₘ r.r
-        retract := by rw [tensorHom_comp_tensorHom, Category.id_comp, r.retract, id_tensorHom_id] }
-    exact ⟨n + 1, ⟨s.trans t⟩⟩
+    exact ⟨n + 1, ⟨s.trans (r.map (tensorLeft (simples D i)))⟩⟩
 
 /-- A simple object has a positive tensor power containing the unit. -/
 theorem unit_retract_tensorPower {E : Type u} [Category.{v} E] [MonoidalCategory E]

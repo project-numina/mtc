@@ -30,31 +30,21 @@ theorem rightDualTensorIso_associativity (X Y Z : C)
       (rightDualTensorIso Y Z).hom ▷ (Xᘁ) ≫ (α_ (Zᘁ) (Yᘁ) (Xᘁ)).hom := by
   let A := (X ⊗ Y) ⊗ Z
   let B := (Zᘁ) ⊗ ((Yᘁ) ⊗ (Xᘁ))
-  let qXY : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := ExactPairing.tensor
-  let qA : ExactPairing A B := @ExactPairing.tensor C _ _ (X ⊗ Y) Z ((Yᘁ) ⊗ (Xᘁ)) (Zᘁ)
-    qXY HasRightDual.exact
   let D := X ⊗ (Y ⊗ Z)
   let E := ((Zᘁ) ⊗ (Yᘁ)) ⊗ (Xᘁ)
-  let qYZ : ExactPairing (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) := ExactPairing.tensor
-  let qD : ExactPairing D E := @ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Zᘁ) ⊗ (Yᘁ))
-    HasRightDual.exact qYZ
   have ha : (α_ (Zᘁ) (Yᘁ) (Xᘁ)).hom ▷ A ≫
-      @ExactPairing.evaluation C _ _ A B qA =
-    E ◁ (α_ X Y Z).hom ≫ @ExactPairing.evaluation C _ _ D E qD := by
-    rw [@ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _ qXY HasRightDual.exact,
-      @ExactPairing.tensor_evaluation C _ _ X (Y ⊗ Z) _ _ HasRightDual.exact qYZ,
-      @ExactPairing.tensor_evaluation C _ _ X Y _ _ HasRightDual.exact HasRightDual.exact,
-      @ExactPairing.tensor_evaluation C _ _ Y Z _ _ HasRightDual.exact HasRightDual.exact]
+      ε_ A B = E ◁ (α_ X Y Z).hom ≫ ε_ D E := by
+    simp only [A, B, D, E, ExactPairing.tensor_evaluation]
     monoidal
   apply evaluation_ext (X := A)
   simp only [comp_whiskerRight_assoc]
-  rw [tensorPairing_evaluation_whiskerLeft (p := HasRightDual.exact) (q := qXY)
+  rw [tensorPairing_evaluation_whiskerLeft (p := HasRightDual.exact) (q := ExactPairing.tensor)
     (r := HasRightDual.exact) (rightDualTensorIso X Y).hom (rightDualTensorIso_evaluation X Y),
     rightDualTensorIso_evaluation (X ⊗ Y) Z]
   symm
   rw [ha, ← whisker_exchange_assoc,
     tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := HasRightDual.exact)
-      (r := qYZ) (rightDualTensorIso Y Z).hom (rightDualTensorIso_evaluation Y Z),
+      (r := ExactPairing.tensor) (rightDualTensorIso Y Z).hom (rightDualTensorIso_evaluation Y Z),
     ← whisker_exchange_assoc, rightDualTensorIso_evaluation X (Y ⊗ Z),
     ← whisker_exchange_assoc, rightAdjointMate_comp_evaluation]
   rw [← Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]

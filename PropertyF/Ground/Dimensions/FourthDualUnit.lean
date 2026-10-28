@@ -161,17 +161,13 @@ theorem root_components_coevaluation (i : Fin (rank C)) :
     η_ X (Xᘁ) ≫ (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom) =
       rootDualSign C i • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
-  let X := simples C i
-  let a : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
-  let e := rootDualSign C i
-  change η_ X (Xᘁ) ≫ (a.hom ⊗ₘ ((fourthDualRootNaturalIso C).app (Xᘁ)).hom) =
-    e • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)
+  dsimp only
   rw [rootDualSign_component C i]
   simp only [rightDualIsoMap, Iso.symm_hom, tensorHom_def,
     MonoidalLinear.whiskerLeft_smul, Linear.comp_smul]
   congr 1
   simpa only [tensorHom_def, Category.assoc, doubleDualFunctor, Functor.id_obj] using
-    coevaluation_iso_map a
+    coevaluation_iso_map ((fourthDualRootNaturalIso C).app (simples C i))
 
 end PropertyF.Ground.Dimensions
 
