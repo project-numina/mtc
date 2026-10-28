@@ -202,11 +202,11 @@ local notation "𝒵" => Center C.Obj
 
 /-- FP dimension is the weighted sum of Hom dimensions to simple objects. -/
 theorem fpDimension_eq_sum_to_simple (X : C.Obj) :
-    fpDimension C X = ∑ i, (Module.finrank ℂ (X ⟶ simples C i) : ℝ) * fpSimple C i := by
-  have hs (i : Fin (rank C)) :=
+    fpDimension C X = ∑ i, (Module.finrank ℂ (X ⟶ simples C i) : ℝ) * fpSimple C i :=
+  Finset.sum_congr rfl fun i _ =>
     letI : Simple (simples C i) := simples_simple C i
-    finrank_to_simple_eq_from_simple X (simples C i)
-  simp only [fpDimension, ← hs]
+    congrArg (fun n : ℕ => (n : ℝ) * fpSimple C i)
+      (finrank_to_simple_eq_from_simple X (simples C i)).symm
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in

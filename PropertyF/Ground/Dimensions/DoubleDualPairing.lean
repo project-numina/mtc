@@ -38,11 +38,8 @@ theorem tensorPairing_coevaluation_evaluation (X : C) :
   let q : ExactPairing W V := ExactPairing.tensor
   let : ExactPairing W V := q
   change @ExactPairing.coevaluation C _ _ W V q ≫ (ε_ X (Xᘁ) ▷ V) ≫ (λ_ V).hom = _
-  have hq : @ExactPairing.coevaluation C _ _ W V q =
-      (η_ (Xᘁ) ((Xᘁ)ᘁ) ⊗≫ ((Xᘁ) ◁ η_ X (Xᘁ)) ▷ ((Xᘁ)ᘁ) ⊗≫ 𝟙 (W ⊗ V)) :=
-    @ExactPairing.tensor_coevaluation C _ _ (Xᘁ) X _ _
-      HasRightDual.exact HasRightDual.exact
-  rw [hq]
+  rw [@ExactPairing.tensor_coevaluation C _ _ (Xᘁ) X _ _
+    HasRightDual.exact HasRightDual.exact]
   calc
     _ = η_ (Xᘁ) ((Xᘁ)ᘁ) ⊗≫
       (((Xᘁ) ◁ η_ X (Xᘁ) ≫ (α_ (Xᘁ) X (Xᘁ)).inv ≫ ε_ X (Xᘁ) ▷ (Xᘁ)) ▷ ((Xᘁ)ᘁ)) ⊗≫ 𝟙 _ := by
@@ -76,18 +73,16 @@ theorem rightDualEvaluation_coevaluation (X : C) :
   have hm := coevaluation_comp_rightAdjointMate (ε_ X (Xᘁ))
   change η_ I (Iᘁ) ≫ I ◁ ((ε_ X (Xᘁ))ᘁ) =
     η_ W (Wᘁ) ≫ (ε_ X (Xᘁ)) ▷ (Wᘁ) at hm
-  have hm' := congrArg (fun f => f ≫ I ◁ t.hom ≫ (λ_ V).hom) hm
-  have hc : @ExactPairing.coevaluation C _ _ W V q ≫ (ε_ X (Xᘁ) ▷ V) ≫ (λ_ V).hom =
-      η_ (Xᘁ) ((Xᘁ)ᘁ) := tensorPairing_coevaluation_evaluation X
   calc
     _ = ((ρ_ I).inv ≫ I ◁ r.inv ≫ I ◁ ((ε_ X (Xᘁ))ᘁ) ≫ I ◁ t.hom) ≫ (λ_ V).hom := by monoidal
     _ = (η_ W (Wᘁ) ≫ (ε_ X (Xᘁ)) ▷ (Wᘁ)) ≫ I ◁ t.hom ≫ (λ_ V).hom := by
-      simpa only [← Category.assoc, hu] using hm'
+      simpa only [← Category.assoc, hu] using
+        congrArg (fun f ↦ f ≫ I ◁ t.hom ≫ (λ_ V).hom) hm
     _ = @ExactPairing.coevaluation C _ _ W V q ≫ (ε_ X (Xᘁ) ▷ V) ≫ (λ_ V).hom := by
       rw [← ht]
       simp only [Category.assoc]
       rw [← whisker_exchange_assoc]
-    _ = _ := hc
+    _ = _ := tensorPairing_coevaluation_evaluation X
 end PropertyF.Ground.Dimensions
 
 end
@@ -110,11 +105,8 @@ theorem tensorPairing_evaluation_coevaluation (X : C) :
   let q : ExactPairing W V := ExactPairing.tensor
   let : ExactPairing W V := q
   change (ρ_ V).inv ≫ V ◁ η_ X (Xᘁ) ≫ @ExactPairing.evaluation C _ _ W V q = _
-  have hq : @ExactPairing.evaluation C _ _ W V q =
-      (𝟙 (V ⊗ W) ⊗≫ ((Xᘁ)ᘁ) ◁ (ε_ X (Xᘁ) ▷ (Xᘁ)) ⊗≫ ε_ (Xᘁ) ((Xᘁ)ᘁ)) :=
-    @ExactPairing.tensor_evaluation C _ _ X (Xᘁ) _ _
-      HasRightDual.exact HasRightDual.exact
-  rw [hq]
+  rw [@ExactPairing.tensor_evaluation C _ _ X (Xᘁ) _ _
+    HasRightDual.exact HasRightDual.exact]
   calc
     _ = 𝟙 V ⊗≫ (((Xᘁ)ᘁ) ◁ ((Xᘁ) ◁ η_ X (Xᘁ) ≫ (α_ (Xᘁ) X (Xᘁ)).inv ≫ ε_ X (Xᘁ) ▷ (Xᘁ))) ⊗≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
       simp only [whiskerLeft_comp]
@@ -145,19 +137,17 @@ theorem rightDualCoevaluation_evaluation (X : C) :
   change t.inv ▷ W ≫ ε_ W (Wᘁ) = @ExactPairing.evaluation C _ _ W V q at ht
   have hm := rightAdjointMate_comp_evaluation (η_ X (Xᘁ))
   change ((η_ X (Xᘁ))ᘁ) ▷ I ≫ ε_ I (Iᘁ) = Wᘁ ◁ η_ X (Xᘁ) ≫ ε_ W (Wᘁ) at hm
-  have hm' := congrArg (fun f => (ρ_ V).inv ≫ t.inv ▷ I ≫ f) hm
-  have hc : (ρ_ V).inv ≫ V ◁ η_ X (Xᘁ) ≫ @ExactPairing.evaluation C _ _ W V q =
-      ε_ (Xᘁ) ((Xᘁ)ᘁ) := tensorPairing_evaluation_coevaluation X
   change t.inv ≫ ((η_ X (Xᘁ))ᘁ) ≫ r.hom = _
   calc
     _ = (ρ_ V).inv ≫ t.inv ▷ I ≫ (((η_ X (Xᘁ))ᘁ) ▷ I ≫ ε_ I (Iᘁ)) := by
       rw [← hu]
       simp only [← Category.assoc, ← comp_whiskerRight]
       monoidal
-    _ = (ρ_ V).inv ≫ t.inv ▷ I ≫ (Wᘁ ◁ η_ X (Xᘁ) ≫ ε_ W (Wᘁ)) := hm'
+    _ = (ρ_ V).inv ≫ t.inv ▷ I ≫ (Wᘁ ◁ η_ X (Xᘁ) ≫ ε_ W (Wᘁ)) :=
+      congrArg (fun f ↦ (ρ_ V).inv ≫ t.inv ▷ I ≫ f) hm
     _ = (ρ_ V).inv ≫ V ◁ η_ X (Xᘁ) ≫ @ExactPairing.evaluation C _ _ W V q := by
       rw [← ht, whisker_exchange_assoc]
-    _ = _ := hc
+    _ = _ := tensorPairing_evaluation_coevaluation X
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves evaluation. -/
 theorem doubleDual_evaluation (X : C) :
@@ -173,14 +163,11 @@ theorem doubleDual_evaluation (X : C) :
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso (Xᘁ) X
   let s : Vᘁ ≅ (((Xᘁ)ᘁ)ᘁ) ⊗ ((Xᘁ)ᘁ) := rightDualTensorIso (Xᘁ) ((Xᘁ)ᘁ)
-  have he := rightDualEvaluation_coevaluation X
-  change r.inv ≫ ((ε_ X (Xᘁ))ᘁ) ≫ t.hom = η_ (Xᘁ) ((Xᘁ)ᘁ) at he
-  have hd := congrArg (fun f : I ⟶ V => fᘁ) he
+  have hd := congrArg (fun f : I ⟶ V ↦ fᘁ) (rightDualEvaluation_coevaluation X)
   simp only [comp_rightAdjointMate] at hd
-  have hc := rightDualCoevaluation_evaluation (Xᘁ)
-  change s.inv ≫ ((η_ (Xᘁ) ((Xᘁ)ᘁ))ᘁ) ≫ r.hom = _ at hc
   change (s.inv ≫ t.homᘁ) ≫ (((ε_ X (Xᘁ))ᘁ)ᘁ) ≫ (r.invᘁ ≫ r.hom) = _
-  simpa only [Category.assoc] using (congrArg (fun f => s.inv ≫ f ≫ r.hom) hd).trans hc
+  simpa only [Category.assoc] using
+    (congrArg (fun f ↦ s.inv ≫ f ≫ r.hom) hd).trans (rightDualCoevaluation_evaluation (Xᘁ))
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves coevaluation. -/
 theorem doubleDual_coevaluation (X : C) :
@@ -196,14 +183,11 @@ theorem doubleDual_coevaluation (X : C) :
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso X (Xᘁ)
   let s : Vᘁ ≅ ((Xᘁ)ᘁ) ⊗ (((Xᘁ)ᘁ)ᘁ) := rightDualTensorIso ((Xᘁ)ᘁ) (Xᘁ)
-  have he := rightDualCoevaluation_evaluation X
-  change t.inv ≫ ((η_ X (Xᘁ))ᘁ) ≫ r.hom = ε_ (Xᘁ) ((Xᘁ)ᘁ) at he
-  have hd := congrArg (fun f : V ⟶ I => fᘁ) he
+  have hd := congrArg (fun f : V ⟶ I ↦ fᘁ) (rightDualCoevaluation_evaluation X)
   simp only [comp_rightAdjointMate] at hd
-  have hc := rightDualEvaluation_coevaluation (Xᘁ)
-  change r.inv ≫ ((ε_ (Xᘁ) ((Xᘁ)ᘁ))ᘁ) ≫ s.hom = _ at hc
   change (r.inv ≫ r.homᘁ) ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) ≫ (t.invᘁ ≫ s.hom) = _
-  simpa only [Category.assoc] using (congrArg (fun f => r.inv ≫ f ≫ s.hom) hd).trans hc
+  simpa only [Category.assoc] using
+    (congrArg (fun f ↦ r.inv ≫ f ≫ s.hom) hd).trans (rightDualEvaluation_coevaluation (Xᘁ))
 end PropertyF.Ground.Dimensions
 
 end

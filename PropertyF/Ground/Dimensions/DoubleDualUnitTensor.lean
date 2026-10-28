@@ -118,9 +118,9 @@ theorem doubleDualTensorIso_unit_left :
   simp only [comp_whiskerRight, Category.assoc]
   rw [hR']
   slice_lhs 3 4 => rw [hs]
-  have hc : (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Iᘁ) := (rightDualIsoMap r).hom_inv_id
   simp only [Category.assoc]
-  slice_lhs 2 3 => rw [← comp_whiskerRight, hc, id_whiskerRight]
+  slice_lhs 2 3 => rw [← comp_whiskerRight, ← comp_rightAdjointMate, Iso.inv_hom_id,
+    rightAdjointMate_id, id_whiskerRight]
   simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS'
 
 set_option backward.isDefEq.respectTransparency false in
@@ -155,9 +155,9 @@ theorem doubleDualTensorIso_unit_right :
   simp only [whiskerLeft_comp, Category.assoc]
   rw [hR']
   slice_lhs 3 4 => rw [hs]
-  have hc : (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Iᘁ) := (rightDualIsoMap r).hom_inv_id
   simp only [Category.assoc]
-  slice_lhs 2 3 => rw [← whiskerLeft_comp, hc, whiskerLeft_id]
+  slice_lhs 2 3 => rw [← whiskerLeft_comp, ← comp_rightAdjointMate, Iso.inv_hom_id,
+    rightAdjointMate_id, whiskerLeft_id]
   simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS'
 
 end PropertyF.Ground.Dimensions
