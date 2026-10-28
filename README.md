@@ -27,13 +27,17 @@ modular data and categories realizing them, is one of the project's research goa
   The [dashboard](docs/STATUS.md) lists their status and sources; the
   [conjecture template](Conjectures/README.md) explains the metadata.
 - [AnyonAtlas/](AnyonAtlas/) contains generated, exact data when available, without `sorry`.
-  Data-checkable claims should specify their actual scope and evidence. Modular data alone do not
-  establish the existence of an MTC or its property F.
+  The [data guide](AnyonAtlas/README.md) describes downloading, validating and generating exact
+  records locally; the committed rank-one sample is checked in Lean. Data-checkable claims should
+  specify their actual scope and evidence. Modular data alone do not establish the existence of an
+  MTC or its property F.
 - [PropertyF/](PropertyF/) contains the existing proof, pending a later library reorganization.
 
 Research directions include property F and weak integrality, realizability of modular data via
 pentagon and hexagon equations, non-Chern–Simons examples, Galois orbits and condensations, and
-quantitative bounds on modular data at fixed rank.
+quantitative bounds on modular data at fixed rank. See the [literature catalog](docs/literature.md),
+[Atlas rank-growth study](docs/rank-growth.md), and [property F search guide](scripts/propf/README.md)
+for references, observations and limitations.
 
 [The Anyon Atlas](https://anyonatlas.org/) is due to Jonah Berean-Dutcher, Clay Córdova, Julio
 Parra-Martinez and Richard Tuddenham; see their [paper](https://arxiv.org/abs/2610.25439). It
