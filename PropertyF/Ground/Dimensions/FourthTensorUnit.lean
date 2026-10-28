@@ -63,11 +63,7 @@ theorem rootTensorIso_unit_left (X : C.Obj) :
   apply (cancel_mono L.hom).1
   change (rootTensorIso C I X).hom ≫ (((λ_ X).homᘁ)ᘁ) =
     (z • b.hom) ≫ (((λ_ X).homᘁ)ᘁ)
-  calc
-    _ = z • ((λ_ X).hom ≫ a.hom) := ht
-    _ = _ := by
-      simpa only [doubleDualFunctor, Functor.id_obj, Linear.smul_comp] using
-        (congrArg (fun f => z • f) hnat)
+  simpa only [Linear.smul_comp, ← hnat] using ht
 
 /-- The ENO tensor defect with a left unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_left (X : C.Obj) :
@@ -101,11 +97,7 @@ theorem rootTensorIso_unit_right (X : C.Obj) :
   apply (cancel_mono L.hom).1
   change (rootTensorIso C X I).hom ≫ (((ρ_ X).homᘁ)ᘁ) =
     (z • b.hom) ≫ (((ρ_ X).homᘁ)ᘁ)
-  calc
-    _ = z • ((ρ_ X).hom ≫ a.hom) := ht
-    _ = _ := by
-      simpa only [doubleDualFunctor, Functor.id_obj, Linear.smul_comp] using
-        (congrArg (fun f => z • f) hnat)
+  simpa only [Linear.smul_comp, ← hnat] using ht
 
 /-- The ENO tensor defect with a right unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_right (X : C.Obj) :
