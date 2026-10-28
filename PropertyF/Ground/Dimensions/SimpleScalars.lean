@@ -14,15 +14,20 @@ Simple objects determine scalar components and natural roots of the fourth-dual 
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+section
+variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C]
+  [MonoidalCategory C] [RightRigidCategory C] [Preadditive C] [Linear k C]
+  [MonoidalPreadditive C] [MonoidalLinear k C]
 
-/-- Right-dual mates are complex-linear in the morphism. -/
-theorem rightAdjointMate_smul {X Y : C} (c : ℂ) (f : X ⟶ Y) :
+/-- Right-dual mates are linear in the morphism. -/
+theorem rightAdjointMate_smul {X Y : C} (c : k) (f : X ⟶ Y) :
     (c • f)ᘁ = c • (fᘁ) := by simp [rightAdjointMate]
 
+end
+variable {k : Type*} [Field k] {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
+
 /-- Rescaling an isomorphism by a nonzero scalar preserves invertibility. -/
-def scaleIso {X Y : C} (e : X ≅ Y) (c : ℂ) (hc : c ≠ 0) : X ≅ Y where
+def scaleIso {X Y : C} (e : X ≅ Y) (c : k) (hc : c ≠ 0) : X ≅ Y where
   hom := c • e.hom
   inv := c⁻¹ • e.inv
   hom_inv_id := by simp [smul_smul, hc]
@@ -33,16 +38,18 @@ end PropertyF.Ground.Dimensions
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : BraidedFusionCategory.{v,u})
-/-- For every simple object, any prescribed fourth-dual isomorphism has a
-square root through the double dual. No monoidality or naturality is assumed. -/
+variable {k : Type*} [Field k] [IsAlgClosed k]
+  {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+  [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C] [HasKernels C]
+
+/-- A fourth-dual isomorphism on a simple object has a square root whenever
+there is a double-dual isomorphism. -/
 theorem exists_fourthDual_square_root
-    {X : C.Obj} [Simple X] (g : X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ)) :
+    {X : C} [Simple X] [FiniteDimensional k (X ⟶ X)]
+    (e : X ≅ (Xᘁ)ᘁ) (g : X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ)) :
     ∃ a : X ≅ ((Xᘁ)ᘁ), a ≪≫ rightDualIsoMap (rightDualIsoMap a) = g := by
-  let e := doubleDualIso C X
   let e2 := e ≪≫ rightDualIsoMap (rightDualIsoMap e)
-  let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  obtain ⟨c, hc0, hc, _⟩ := isomorphisms_scalar e2 g
+  obtain ⟨c, hc0, hc, _⟩ := isomorphisms_scalar (k := k) e2 g
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq c (n := 2) (by decide)
   have hz0 : z ≠ 0 := fun h ↦ hc0 (by simpa [h] using hz.symm)
   refine ⟨scaleIso e z hz0, ?_⟩
@@ -53,19 +60,27 @@ theorem exists_fourthDual_square_root
   change c • e2.hom = g.hom
   exact hc.symm
 
+end PropertyF.Ground.Dimensions
+
+namespace PropertyF.Ground.Dimensions
+universe v u
+variable (C : BraidedFusionCategory.{v,u})
+
 /-- A chosen square root of the natural braided fourth-dual map on each
 simple representative. -/
 def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
     simples C i ≅ ((simples C i)ᘁ)ᘁ :=
   letI : Simple (simples C i) := simples_simple C i
-  Classical.choose (exists_fourthDual_square_root C (fourthDualIso C (simples C i)))
+  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  Classical.choose (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso C (simples C i)))
 
 /-- The chosen simple component squares to the natural fourth-dual component. -/
 theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :
     fourthDualSimpleRoot C i ≪≫ rightDualIsoMap (rightDualIsoMap (fourthDualSimpleRoot C i)) =
       fourthDualIso C (simples C i) :=
   letI : Simple (simples C i) := simples_simple C i
-  Classical.choose_spec (exists_fourthDual_square_root C (fourthDualIso C (simples C i)))
+  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  Classical.choose_spec (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso C (simples C i)))
 
 end PropertyF.Ground.Dimensions
 
