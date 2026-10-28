@@ -97,9 +97,7 @@ instance (n : ℕ) : (typeANormal n).Normal := inferInstanceAs
 theorem braidRelations_action_trivial (X : C) (n : ℕ) :
     Subgroup.normalClosure (braidRelations n) ≤
       (FreeGroup.lift (braidGenerator X n)).ker := by
-  apply Subgroup.normalClosure_le_normal
-  intro w hw
-  apply MonoidHom.mem_ker.mpr
+  refine Subgroup.normalClosure_le_normal fun w hw ↦ MonoidHom.mem_ker.mpr ?_
   rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
     simp only [map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
   · cases n with
@@ -128,6 +126,25 @@ theorem swap_braid {α : Type*} [DecidableEq α] {a b c : α}
     (Equiv.swap_mul_swap_mul_swap hbc.symm hac.symm).trans
       ((Equiv.swap_comm a c).trans (Equiv.swap_mul_swap_mul_swap hab hac).symm)
 
+variable {n : ℕ} {i j : Fin (n + 1)}
+
+/-- Adjacent transpositions satisfy the braid relation. -/
+theorem adjacentSwaps_braid (hij : i.val + 1 = j.val) :
+    Equiv.swap i.castSucc i.succ * Equiv.swap j.castSucc j.succ * Equiv.swap i.castSucc i.succ =
+      Equiv.swap j.castSucc j.succ * Equiv.swap i.castSucc i.succ * Equiv.swap j.castSucc j.succ := by
+  rw [← (show i.succ = j.castSucc from Fin.ext hij)]
+  apply swap_braid <;> apply Fin.ne_of_val_ne <;>
+    simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
+
+/-- Distant adjacent transpositions commute. -/
+theorem adjacentSwaps_commute (hij : i.val + 1 < j.val) :
+    Equiv.swap i.castSucc i.succ * Equiv.swap j.castSucc j.succ =
+      Equiv.swap j.castSucc j.succ * Equiv.swap i.castSucc i.succ := by
+  apply (Equiv.Perm.disjoint_swap_swap ?_).commute.eq
+  simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil,
+    not_or, and_true, Fin.ext_iff, Fin.val_castSucc, Fin.val_succ, not_false_eq_true]
+  repeat' constructor <;> omega
+
 /-- Every defining type-A relation also has trivial strand permutation. -/
 theorem typeARelations_permutation_trivial (n : ℕ) :
     typeANormal n ≤ (strandPermutation n).ker := by
@@ -139,13 +156,8 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
     exact Equiv.swap_mul_self _ _
   · rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
       simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
-    · rw [← (show i.succ = j.castSucc from Fin.ext hij)]
-      apply swap_braid <;> apply Fin.ne_of_val_ne <;>
-        simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
-    · apply (Equiv.Perm.disjoint_swap_swap ?_).commute.eq
-      simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil,
-        not_or, and_true, Fin.ext_iff, Fin.val_castSucc, Fin.val_succ, not_false_eq_true]
-      repeat' constructor <;> omega
+    · exact adjacentSwaps_braid hij
+    · exact adjacentSwaps_commute hij
 
 end PropertyF.Ground.CentreCalculus
 
@@ -178,10 +190,8 @@ theorem pureWords_eq_typeANormal_of_card_bound (n : ℕ) [Finite (typeAGroup n)]
     ((Fintype.bijective_iff_surjective_and_card (typeAPermutation n)).2
       ⟨hs, le_antisymm (by simpa [Nat.card_eq_fintype_card, Fintype.card_perm] using hcard)
         (Fintype.card_le_of_surjective (typeAPermutation n) hs)⟩).1
-  apply (QuotientGroup.eq_one_iff w).mp
-  apply hi
-  change strandPermutation n w = 1
-  exact MonoidHom.mem_ker.mp hw
+  exact (QuotientGroup.eq_one_iff w).mp <| hi <|
+    show strandPermutation n w = 1 from MonoidHom.mem_ker.mp hw
 
 end PropertyF.Ground.CentreCalculus
 

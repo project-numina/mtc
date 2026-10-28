@@ -90,7 +90,6 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
     (hcentral : Centre.Centralizes
       ((induction C).obj (𝟙_ C.Obj)) ((CategoryTheory.Center.ofBraided C.Obj).obj (simples C i))) :
     i = unitIndex C := by
-  classical
   by_contra hi
   let X := 𝟙_ C.Obj
   let S := simples C i

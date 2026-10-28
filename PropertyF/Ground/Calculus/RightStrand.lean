@@ -6,7 +6,12 @@ public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Calculus.EndBlocks
 public import Mathlib.Tactic
 
-/-! Compatibility of adjoints on algebras spanned by braid images. -/
+/-!
+# Strand insertion and unitary presentations
+
+Maps induced by adding strands act on braid-image algebras and preserve the adjoints
+of their unitary block presentations.
+-/
 
 @[expose] public section
 namespace PropertyF.Ground.Calculus
@@ -176,8 +181,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩)
+    (e : BraidBlockPresentation X n d)
+    (f : BraidBlockPresentation X (n + k) q)
     (he : IsUnitaryBraidPresentation e)
     (hf : IsUnitaryBraidPresentation f) :
     (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
@@ -222,7 +227,6 @@ theorem append_step (A B : C) (e : A ⊗ X ≅ B) (f : A ⟶ A) :
   ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)).inv ≫ ((X ◁ f) ▷ X) ≫
     ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)).hom = X ◁ (e.inv ≫ (f ▷ X) ≫ e.hom) := by
   dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  simp only [id_tensorHom, whiskerLeft_comp, Category.assoc]
   monoidal
 
 /-- The first crossing is natural in its tensor-power tail. -/
@@ -230,9 +234,8 @@ theorem append_step (A B : C) (e : A ⊗ X ≅ B) (f : A ⟶ A) :
 theorem crossing_natural (A B : C) (g : A ⟶ B) :
     ((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ≫ X ◁ X ◁ g =
       X ◁ X ◁ g ≫ ((α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom) := by
-  simp only [Category.assoc]
-  rw [← associator_naturality_right X X g]
-  rw [← whisker_exchange_assoc, ← associator_inv_naturality_right_assoc]
+  simp only [Category.assoc, ← associator_naturality_right X X g,
+    ← whisker_exchange_assoc, ← associator_inv_naturality_right_assoc]
 
 /-- Appending a strand commutes with the first crossing. -/
 theorem append_first_two (A B : C) (e : A ⊗ X ≅ B) :
@@ -361,8 +364,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩)
+    (e : BraidBlockPresentation X n d)
+    (f : BraidBlockPresentation X (n + k) q)
     (he : IsUnitaryBraidPresentation e)
     (hf : IsUnitaryBraidPresentation f) :
     (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]

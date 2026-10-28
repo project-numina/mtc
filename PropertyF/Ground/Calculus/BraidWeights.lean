@@ -9,7 +9,13 @@ public import Mathlib.LinearAlgebra.Pi
 public import Mathlib.LinearAlgebra.Trace
 public import PropertyF.Ground.Calculus.UnitaryBlocks
 
-/-! The pivotal trace in the simple-constituent matrix decomposition. -/
+/-!
+# Braid traces and multiplicities
+
+The pivotal trace decomposes into traces on matrix blocks of simple constituents.
+Representations of braid algebras give nonnegative integral multiplicities, yielding
+`pivotalTrace_braid_multiplicities` and unitary trace presentations.
+-/
 
 open PropertyF.Ground.Dimensions
 
@@ -29,12 +35,13 @@ def groundSimpleScalar (i : Fin (Ground.rank C)) :
     Ground.IsFusionCategory.hom_finite _ _
   exact simpleEndScalar _
 
+variable {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
+  (e : X ≅ ⨁ (simpleCopies C m)) (a : End X)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple
 biproduct component of the transported endomorphism. -/
-theorem groundEndBlockEquiv_diagonal {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
-    (e : X ≅ ⨁ (simpleCopies C m))
-    (a : End X) (i : Fin (Ground.rank C)) (j : Fin (m i)) :
+theorem groundEndBlockEquiv_diagonal (i : Fin (Ground.rank C)) (j : Fin (m i)) :
     groundEndBlockEquiv C e a i j j =
       groundSimpleScalar C i (End.of
         (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫
@@ -51,8 +58,7 @@ set_option backward.isDefEq.respectTransparency false in
 simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
 theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
-    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
-    (e : X ≅ ⨁ (simpleCopies C m)) (a : End X) :
+    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
     scalar (p.rightTrace a.asHom) = ∑ i,
       scalar (p.rightTrace (𝟙 (Ground.simples C i))) *
         (groundEndBlockEquiv C e a i).trace := by
@@ -209,11 +215,13 @@ theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
   · intro j h
     rw [Pi.single_eq_of_ne h, Matrix.trace_zero, mul_zero]
 
+variable {n : ℕ} {d : Fin n → ℕ} (hd : ∀ i, 0 < d i)
+
+include hd in
 /-- For any representation of a finite product of nonzero complex matrix
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the
 standard block traces. The integers are ranks of images of matrix units. -/
-theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
-    (hd : ∀ i, 0 < d i)
+theorem representation_trace_multiplicities {m : ℕ}
     (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
     ∃ mult : Fin n → ℕ, ∀ x, (φ x).trace = ∑ i, (mult i : ℂ) * (x i).trace := by
   classical
@@ -237,18 +245,17 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
 theorem idempotent_matrix_eq_zero_of_trace_eq_zero {m : ℕ}
     {A : Matrix (Fin m) (Fin m) ℂ} (hA : A * A = A) (ht : A.trace = 0) : A = 0 :=
   Matrix.toLinAlgEquiv'.injective (by
-    simpa only [map_zero] using
-      (LinearMap.IsIdempotentElem.trace_eq_zero_iff
-        ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')).mp
-        (by
-          change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
-          simpa using ht))
+    simpa only [map_zero] using LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero
+      ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')
+      (by
+        change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
+        simpa only [Matrix.trace_toLin'_eq] using ht))
 
+include hd in
 /-- A faithful block-algebra representation has nonnegative integer
 multiplicities, and every source block occurs in at least one target block. -/
-theorem faithful_block_representation_multiplicities {n m : ℕ}
-    {d : Fin n → ℕ} {q : Fin m → ℕ} (hd : ∀ i, 0 < d i)
-    (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
+theorem faithful_block_representation_multiplicities {m : ℕ}
+    {q : Fin m → ℕ} (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
       (Blocks.Algebra ⟨_, q⟩)) (hinj : Function.Injective φ) :
     ∃ mult : Fin m → Fin n → ℕ,
       (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧
@@ -290,26 +297,17 @@ def braidToEndBlocks {X : C.Obj} {n : ℕ}
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
+    (b : BraidBlockPresentation X n d) :
     (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
       (Blocks.Algebra ⟨_, m⟩) :=
   (groundEndBlockEquiv C e).toAlgHom.comp
     ((braidAlgebra X n).val.comp b.symm.toAlgHom)
 
-/-- The categorical inclusion is faithful, so no finite braid-image block is lost. -/
-theorem braidToEndBlocks_injective {X : C.Obj}
-    {n : ℕ} {m : Fin (Ground.rank C) → ℕ}
-    (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
-    {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
-    Function.Injective (braidToEndBlocks C e b) :=
-  (groundEndBlockEquiv C e).injective.comp (Subtype.val_injective.comp b.symm.injective)
-
 variable (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
 
 /-- The categorical braid trace has the weights supplied by block multiplicities. -/
 abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
-    {d : Fin r → ℕ} (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
+    {d : Fin r → ℕ} (b : BraidBlockPresentation X n d)
     (mult : Fin (Ground.rank C) → Fin r → ℕ) : Prop :=
   ∀ a : braidAlgebra X n,
     scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
@@ -323,13 +321,13 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
-    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
+    (b : BraidBlockPresentation X n d) :
     ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,
       (∀ j, ∃ i, 0 < mult i j) ∧
       HasMultiplicityDecomposition m d mult ∧ HasMultiplicityTrace C p scalar b mult := by
   let F := braidToEndBlocks C e b
   obtain ⟨mult, hmult, hretained⟩ := faithful_block_representation_multiplicities hd F
-    (braidToEndBlocks_injective C e b)
+    ((groundEndBlockEquiv C e).injective.comp (Subtype.val_injective.comp b.symm.injective))
   have hdim : ∀ i, m i = ∑ j, mult i j * d j := by
     intro i
     exact_mod_cast (show (m i : ℂ) = ∑ j, (mult i j : ℂ) * d j from by
@@ -339,7 +337,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
       ∑ j, (mult i j : ℂ) * (b a j).trace := by
     intro i
     simpa [F, braidToEndBlocks] using hmult i (b a)
-  rw [pivotalTrace_groundEndBlocks C p scalar e]
+  rw [pivotalTrace_groundEndBlocks C e _ p scalar]
   simp_rw [hi, Finset.mul_sum]
   rw [Finset.sum_comm]
   simp only [Finset.sum_mul, mul_assoc, mul_left_comm]
@@ -350,7 +348,7 @@ theorem exists_unitary_braid_trace_blocks
     {X : C.Obj} {n : ℕ}
     (hfinite : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ)
-      (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
+      (b : BraidBlockPresentation X n d)
       (mult : Fin (Ground.rank C) → Fin r → ℕ),
       (∀ j, 0 < d j) ∧
       IsUnitaryBraidPresentation b ∧

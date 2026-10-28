@@ -7,8 +7,12 @@ public import PropertyF.Ground.Calculus.RightStrand
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Modular.SMatrix
 
-/-! Finiteness of categorical braid images supplies the finite-order condition
-for the squared braiding and for every representation of the braid image. -/
+/-!
+# Traces of three-strand braids
+
+The categorical three-strand generators obey the braid relation and have finite
+order when the object has property F. Partial traces compute their overlap trace.
+-/
 
 open PropertyF.Ground.Dimensions
 
@@ -55,7 +59,6 @@ theorem threeGeneratorLeft_transport :
   change (threePowerIso X).inv ≫ (braidGenerator X 1 _).asIso.hom ≫ (threePowerIso X).hom = _
   dsimp only [threePowerIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
     Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  simp only [id_tensorHom, tensorHom_id, Category.assoc]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -65,7 +68,6 @@ theorem threeGeneratorRight_transport :
   change (threePowerIso X).inv ≫ (braidGenerator X 1 _).asIso.hom ≫ (threePowerIso X).hom = _
   dsimp only [threePowerIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
     Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  simp only [id_tensorHom, tensorHom_id]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -127,12 +129,12 @@ theorem threeGeneratorRight_end_transport (X : C) :
 
 /-- The left three-strand generator in a chosen block presentation. -/
 def tripleBlockLeft {X : C} {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
+    (b : BraidBlockPresentation X 1 d) :=
   b (braidInImage (threeGeneratorLeft X))
 
 /-- The right three-strand generator in a chosen block presentation. -/
 def tripleBlockRight {X : C} {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
+    (b : BraidBlockPresentation X 1 d) :=
   b (braidInImage (threeGeneratorRight X))
 
 end PropertyF.Ground.Calculus
@@ -260,7 +262,6 @@ theorem twoGenerator_transport (X : C) :
   change (twoPowerIso X).inv ≫ (braidGenerator X 0 0).asIso.hom ≫ (twoPowerIso X).hom = _
   dsimp only [twoPowerIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
     Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  simp only [id_tensorHom, tensorHom_id, Category.assoc]
   monoidal
 
 end PropertyF.Ground.Calculus

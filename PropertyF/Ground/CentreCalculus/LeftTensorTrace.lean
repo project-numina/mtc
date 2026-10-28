@@ -146,22 +146,27 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
       unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 1)) σ).asHom) := by
   let f := (tensorPermutationAction X hX (n + 1)) σ
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
-  have hact : tensorPermutationAction X hX (n + 2)
-      (decomposeFin.symm (1, σ)) =
-      b * insertLeftIdentity X f := by
-    rw [decomposeFin_eq_swap_fixHead, map_mul]
-    change tensorPermutationAction X hX (n + 2)
-      (Equiv.swap (0 : Fin (n + 1)).castSucc (0 : Fin (n + 1)).succ) * _ = _
-    rw [tensorPermutationAction_swap, tensorPermutationAction_fixHead]
-    change b * _ = b * _
-    congr 1
-  rw [hact, ← htotal _ _, leftPartialTrace_right]
-  change unitScalar C (p.rightTrace ((leftPartialTrace p b * f).asHom)) = _
+  rw [tensorPermutationAction_adjacent hX σ, ← htotal _ _]
+  change unitScalar C (p.rightTrace (leftPartialTrace p (b * insertLeftIdentity X f)).asHom) = _
+  rw [leftPartialTrace_right]
   dsimp only [b]
-  rw [
-    leftPartialTrace_firstGenerator_of_trace_compatibility (C := C) n (htotal X (End.of (β_ X X).hom))]
+  rw [leftPartialTrace_firstGenerator_of_trace_compatibility (C := C) n
+    (htotal X (End.of (β_ X X).hom))]
   simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul,
     unitScalar_eq_equiv, map_smul, smul_eq_mul, f]
+
+/-- A negative twist is corrected by the sign-twisted permutation action. -/
+theorem negativeParity_adjacentTrace (hX : SelfTransparent X)
+    (htotal : IsLeftTraceCompatible p X) (hneg : θ C p X = -1) :
+    HasAdjacentTrace (permutationScalarTrace C p (parityPermutationAction C hX true)) := by
+  intro n σ
+  have hsign : (permutationSign ℂ (n + 2) (decomposeFin.symm (1, σ)) : ℂ) =
+      -(permutationSign ℂ (n + 1) σ : ℂ) := by
+    simpa using sign_decomposeFin 1 σ
+  rw [parityPermutationScalarTrace_true, parityPermutationScalarTrace_true, hsign]
+  dsimp only [permutationScalarTrace]
+  rw [tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ, hneg]
+  ring
 
 include hdim in
 /-- The symmetric integrality argument now needs only left iterated-trace
@@ -177,18 +182,8 @@ theorem integral_of_leftTrace_and_twist_sign
     intro n σ
     simpa [permutationScalarTrace, parityPermutationAction, h] using
       tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ
-  · apply integral_of_parity_adjacent_trace hdim hX true
-    intro n σ
-    have hsign' : (permutationSign ℂ (n + 2)
-        (decomposeFin.symm (1, σ)) : ℂ) =
-        -(permutationSign ℂ (n + 1) σ : ℂ) := by
-      simpa using sign_decomposeFin 1 σ
-    simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
-      MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
-      unitScalar_eq_equiv, map_smul, smul_eq_mul, hsign']
-    rw [← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
-      tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ, h]
-    ring
+  · exact integral_of_parity_adjacent_trace hdim hX true
+      (negativeParity_adjacentTrace hX htotal h)
 
 end PropertyF.Ground.CentreCalculus
 

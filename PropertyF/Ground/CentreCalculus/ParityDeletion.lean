@@ -30,6 +30,15 @@ def parityPermutationAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : HasFPSimpleDimensions C p)
 
+/-- The sign-twisted permutation trace is the sign times the original trace. -/
+theorem parityPermutationScalarTrace_true {X : C.Obj} (hX : SelfTransparent X)
+    (n : ℕ) (σ : Equiv.Perm (Fin n)) :
+    tr C p (parityPermutationAction C hX true) n σ =
+      (permutationSign ℂ n σ : ℂ) * tr C p (tensorPermutationAction X hX) n σ := by
+  simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
+    MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
+    unitScalar_eq_equiv, map_smul, smul_eq_mul]
+
 include hdim in
 /-- Sign twist preserves the fixed-strand trace deletion identity. -/
 theorem parityPermutationTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
@@ -42,12 +51,8 @@ theorem parityPermutationTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd
     have hs : (permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
         (permutationSign ℂ n σ : ℂ) := by
       simpa [fixHead] using sign_decomposeFin 0 σ
-    have ht := tensorPermutationTrace_fixHead hdim hX σ
-    dsimp only [permutationScalarTrace] at ht
-    simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
-      MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
-      unitScalar_eq_equiv, map_smul, smul_eq_mul]
-    rw [hs, ← unitScalar_eq_equiv, ← unitScalar_eq_equiv, ht]
+    rw [parityPermutationScalarTrace_true, parityPermutationScalarTrace_true, hs,
+      tensorPermutationTrace_fixHead hdim hX σ]
     ring
 
 include hdim in
@@ -64,13 +69,19 @@ end PropertyF.Ground.CentreCalculus
 namespace PropertyF.Ground.CentreCalculus
 open CategoryTheory CategoryTheory.MonoidalCategory
 
-/-- A one-point permutation extension is the swap of that point with zero,
-followed by the fixed-head extension of the smaller permutation. -/
-theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
-    decomposeFin.symm (q, σ) = Equiv.swap 0 q * fixHead n σ := by
-  ext x
-  refine Fin.cases ?_ (fun j => ?_) x <;>
-    simp [fixHead, Equiv.Perm.mul_apply]
+/-- A moved-point extension is conjugate to the first adjacent extension. -/
+theorem decomposeFin_succ_conj {n : ℕ} (j : Fin (n + 1)) (σ : Equiv.Perm (Fin (n + 1))) :
+    let τ := Equiv.swap 0 j
+    let T := fixHead (n + 1) τ
+    decomposeFin.symm (j.succ, σ) =
+      T * decomposeFin.symm (1, τ⁻¹ * σ * τ) * T⁻¹ := by
+  let τ : Equiv.Perm (Fin (n + 1)) := Equiv.swap 0 j
+  let T := fixHead (n + 1) τ
+  change decomposeFin.symm (j.succ, σ) = T * decomposeFin.symm (1, τ⁻¹ * σ * τ) * T⁻¹
+  have hswap : Equiv.swap 0 j.succ = T * Equiv.swap 0 1 * T⁻¹ := by
+    simpa [T, τ, fixHead] using Equiv.swap_apply_apply T (0 : Fin (n + 2)) 1
+  rw [decomposeFin_eq_swap_fixHead, decomposeFin_eq_swap_fixHead, hswap]
+  simp [T, mul_assoc]
 
 /-- Traces of permutation representations are invariant under conjugation. -/
 theorem permutationTrace_conj {C : Type u} [Category.{v} C] [MonoidalCategory C]
@@ -96,14 +107,7 @@ theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
     obtain ⟨j, rfl⟩ := Fin.exists_succ_eq_of_ne_zero hq
     let τ : Equiv.Perm (Fin (n + 1)) := Equiv.swap 0 j
     let T := fixHead (n + 1) τ
-    have hswap : Equiv.swap 0 j.succ = T * Equiv.swap 0 1 * T⁻¹ := by
-      simpa [T, τ, fixHead] using Equiv.swap_apply_apply T (0 : Fin (n + 2)) 1
-    have hd : decomposeFin.symm (j.succ, σ) =
-        T * (decomposeFin.symm (1, τ⁻¹ * σ * τ)) * T⁻¹ := by
-      rw [decomposeFin_eq_swap_fixHead, decomposeFin_eq_swap_fixHead, hswap]
-      simp only [map_mul, map_inv, ← mul_assoc]
-      simp [T, mul_assoc]
-    rw [hd, permutationTrace_conj p (ρ (n + 2)) T _, hadj]
+    rw [decomposeFin_succ_conj j σ, permutationTrace_conj p (ρ (n + 2)) T _, hadj]
     simpa only [inv_inv] using
       congrArg (unitScalar C) (permutationTrace_conj p (ρ (n + 1)) τ⁻¹ σ)
 

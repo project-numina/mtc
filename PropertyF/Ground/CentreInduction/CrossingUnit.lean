@@ -46,9 +46,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_unit (X S : D) :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  dsimp only [crossingBlock]
-  rw [closeFusionMap_unit S]
-  simp only [tensorHom_def]
+  simp only [crossingBlock, closeFusionMap_unit, tensorHom_def]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -144,7 +142,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingCandidate_unit (X : C.Obj) :
     crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv := by
-  classical
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (𝟙_ C.Obj)).inv).1
   apply biproduct.hom_ext'
