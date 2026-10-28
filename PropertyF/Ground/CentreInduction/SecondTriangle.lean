@@ -85,15 +85,6 @@ namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 variable {A : D}
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The unit component followed by a map can be expressed through a crossing. -/
-theorem unitComponent_reduce {M N X S : D} [HasRightDual S] (b : N ⊗ S ⟶ S ⊗ N) (t : M ⟶ N) (w : N ⟶ X) :
-    t ≫ ((ρ_ N).inv ≫ (N ◁ η_ S (Sᘁ)) ≫ (α_ N S (Sᘁ)).inv ≫ (b ▷ Sᘁ)) ≫
-      ((S ◁ w) ▷ Sᘁ) =
-    𝟙 _ ⊗≫ (M ◁ η_ S (Sᘁ)) ⊗≫ ((t ▷ S ≫ b ≫ (S ◁ w)) ▷ Sᘁ) ⊗≫ 𝟙 _ := by
-  simp [monoidalComp, Category.assoc, rightUnitor_inv_naturality_assoc,
-    ← whisker_exchange_assoc, -whiskerRight_id]
-
 variable (X T : D)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -176,9 +167,9 @@ theorem unit_matrix_reduce :
   𝟙 _ ⊗≫ ((V i) ◁ η_ (S j) ((S j)ᘁ)) ⊗≫
     (((biproduct.ι V i ▷ (S j)) ≫ b (S j) ≫
       ((S j) ◁ (underlyingCounit C).app X)) ▷ (S j)ᘁ) ⊗≫ 𝟙 _ := by
-  simpa [unitComponent, unitComponentAt, induction, halfBraidingOfCrossingCandidate,
-    underlying, underlyingFunctor, inductionSummand, monoidalComp, Category.assoc] using
-    unitComponent_reduce (b (S j)) (biproduct.ι _ i) ((underlyingCounit C).app X)
+  simp [unitComponent, unitComponentAt, induction, halfBraidingOfCrossingCandidate,
+    underlying, underlyingFunctor, inductionSummand, monoidalComp, Category.assoc,
+    rightUnitor_inv_naturality_assoc, ← whisker_exchange_assoc, -whiskerRight_id]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/
