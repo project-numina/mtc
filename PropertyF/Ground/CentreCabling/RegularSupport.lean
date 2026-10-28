@@ -65,7 +65,7 @@ variable {D : Ground.BraidedFusionCategory.{v,u}}
 
 include hp hdet hreal in
 /-- The S-transform of a vector, inverted using the categorical S-square identity. -/
-theorem categoricalS_fourier_inversion
+theorem sFourier_inversion
     (f : Fin (rank D) → ℂ) (x : Fin (rank D)) :
     sFourier D p (sFourier D p f) x = globalDimension D * f (dualIndex D x) := by
   classical
@@ -107,8 +107,8 @@ theorem nonzero_dual_coefficient_of_sCentralizer
     refine sum_mul_eq_mul_sum_of_supported core _ _ (sFourier D p f) _ hsupport fun y hy ↦ ?_
     rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
       Modular.categoricalS_unit]
-  rw [categoricalS_fourier_inversion hp hdet hreal f x,
-    categoricalS_fourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D] at heq
+  rw [sFourier_inversion hp hdet hreal f x,
+    sFourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D] at heq
   exact fun hz ↦ (mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
     (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit))
       (by simpa only [hz, mul_zero] using heq.symm)
