@@ -208,10 +208,8 @@ theorem doubleBraiding_tensor_factorization (Z X Y : C) :
 end Braiding
 section Trace
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 variable (p : PivotalStructure (C := C))
 
-omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Partial trace is natural for morphisms on the surviving strand. -/
 theorem rightPartialTrace_natural {A B Y : C}
     (f : A ⟶ B) (g : B ⟶ A) (t : End (B ⊗ Y)) :
@@ -225,11 +223,13 @@ theorem rightPartialTrace_natural {A B Y : C}
     rw [associator_naturality_left_assoc, ← whisker_exchange_assoc,
       ← whisker_exchange_assoc, rightUnitor_naturality])
 
-variable [CategoryTheory.Limits.HasKernels C]
+variable {k : Type*} [Field k] [IsAlgClosed k] [Preadditive C] [Linear k C]
+  [MonoidalPreadditive C] [MonoidalLinear k C] [CategoryTheory.Limits.HasKernels C]
+
 /-- When the surviving object is simple with nonzero dimension, successive
 partial traces agree with tracing the combined tensor factor. -/
-theorem rightPartialTrace_nested_simple {scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ} {Z X Y : C}
-    [Simple Z] [FiniteDimensional ℂ (Z ⟶ Z)]
+theorem rightPartialTrace_nested_simple {scalar : End (𝟙_ C) ≃ₐ[k] k} {Z X Y : C}
+    [Simple Z] [FiniteDimensional k (Z ⟶ Z)]
     (hd : scalar (p.rightTrace (𝟙 Z)) ≠ 0) (f : End (Z ⊗ (X ⊗ Y))) :
     rightPartialTrace p f = rightPartialTrace p (rightPartialTrace p ((α_ Z X Y).symm.conj f)) :=
   let g := (α_ Z X Y).symm.conj f
