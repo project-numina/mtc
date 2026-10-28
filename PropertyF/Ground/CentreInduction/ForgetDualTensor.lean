@@ -115,33 +115,23 @@ omit [RightRigidCategory D] in
 /-- The forgotten tensor dual agrees with the tensor pairing of forgotten duals. -/
 theorem forget_rightDualTensorIso :
     (rightDualTensorIso X Y).hom.f =
-      (rightDualIso (forgetPairing (X ⊗ Y)) (tensorForgetPairing X Y)).hom := by
-  have hc : (η_ (X ⊗ Y) (Yᘁ ⊗ Xᘁ)).f =
-      @ExactPairing.coevaluation D _ _ (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1)
-        (tensorForgetPairing X Y) := by
+      (rightDualIso (forgetPairing (X ⊗ Y)) (tensorForgetPairing X Y)).hom :=
+  forget_rightDualIso HasRightDual.exact ExactPairing.tensor (tensorForgetPairing X Y) <| by
     let cx : 𝟙_ D ⟶ X.1 ⊗ (Xᘁ).1 := (η_ X (Xᘁ)).f
     let cy : 𝟙_ D ⟶ Y.1 ⊗ (Yᘁ).1 := (η_ Y (Yᘁ)).f
     change (η_ X (Xᘁ) ⊗≫ (X ◁ η_ Y (Yᘁ)) ▷ (Xᘁ) ⊗≫
         𝟙 ((X ⊗ Y) ⊗ ((Yᘁ) ⊗ (Xᘁ)))).f =
       (cx ⊗≫ (X.1 ◁ cy) ▷ (Xᘁ).1 ⊗≫ 𝟙 ((X.1 ⊗ Y.1) ⊗ ((Yᘁ).1 ⊗ (Xᘁ).1)))
     simp [monoidalComp, cx, cy]
-  exact forget_rightDualIso HasRightDual.exact ExactPairing.tensor (tensorForgetPairing X Y) hc
 
 /-- Forgetting centre duals preserves their tensor comparison. -/
 theorem forgetDualIso_tensor :
     (forgetDualIso (X ⊗ Y)).hom ≫ (rightDualTensorIso X.1 Y.1).hom =
       (rightDualTensorIso X Y).hom.f ≫
         ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) := by
-  let p := forgetPairing (X ⊗ Y)
-  let q := (HasRightDual.exact : ExactPairing (X.1 ⊗ Y.1) ((X.1 ⊗ Y.1)ᘁ))
-  let s := tensorForgetPairing X Y
-  let r := @ExactPairing.tensor D _ _ X.1 Y.1 (X.1ᘁ) (Y.1ᘁ)
-      HasRightDual.exact HasRightDual.exact
   rw [forget_rightDualTensorIso]
-  change (rightDualIso p q).hom ≫ (rightDualIso q r).hom =
-    (rightDualIso p s).hom ≫ _
-  dsimp only [forgetDualIso]
+  dsimp only [forgetDualIso, rightDualTensorIso]
   rw [← rightDualIso_tensor (forgetPairing X) HasRightDual.exact
-    (forgetPairing Y) HasRightDual.exact, rightDualIso_trans p q r, rightDualIso_trans p s r]
+    (forgetPairing Y) HasRightDual.exact, rightDualIso_trans, rightDualIso_trans]
 
 end PropertyF.Ground.CentreInduction
