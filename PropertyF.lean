@@ -77,7 +77,6 @@ public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
 public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
 public import PropertyF.Ground.CentreInduction.CrossingUnit
-public import PropertyF.Ground.CentreInduction.BasisRefinement
 public import PropertyF.Ground.CentreInduction.CrossingCoherence
 public import PropertyF.Ground.CentreInduction.CounitColumn
 public import PropertyF.Ground.CentreInduction.SecondTriangle

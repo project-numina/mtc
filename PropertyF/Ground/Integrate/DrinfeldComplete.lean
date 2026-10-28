@@ -34,9 +34,7 @@ theorem center_globalDimension_square_of_actual_induction
     globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
   CentreModular.center_globalDimension_of_adjunction C
     (CentreInduction.induction C) (CentreInduction.actualAdjunction C)
-    (fun _ ↦ ⟨Iso.refl _⟩) p hp fun i ↦ by
-      simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-        Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hdim i
+    (fun _ ↦ ⟨Iso.refl _⟩) p hp hdim
 
 
 
@@ -82,12 +80,10 @@ theorem centerPivotal_hasFPDimensions (C : BraidedFusionCategory.{v,u})
       (centerPivotalOfPivotalPseudoUnitary C p hpu) := by
   letI := CentreRigid.rigidCenter (C := C.Obj)
   letI := centerFusionOfPivotalPseudoUnitary C p hpu
-  have hs := Classical.choose_spec (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))
-  obtain ⟨_, hd, _, _⟩ := hs
-  change ∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C)
-    (centerPivotalOfPivotalPseudoUnitary C p hpu)
-    (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ) at hd
+  have hd := (Classical.choose_spec (Classical.choose_spec
+    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))).2.1
+  change CentreInduction.PivotalHasFPDimensions (Integrate.bundledCenter C)
+    (centerPivotalOfPivotalPseudoUnitary C p hpu) at hd
   intro i
   simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
     Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hd i

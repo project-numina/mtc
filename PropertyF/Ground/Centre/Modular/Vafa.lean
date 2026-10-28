@@ -86,10 +86,7 @@ def vafaUnitClass (z : ℂˣ) : vafaUnitSpace := 1 ⊗ₜ[ℚ] (1 ⊗ₜ[ℤ] Ad
 
 /-- The unit class vanishes exactly for a root of unity. -/
 theorem vafaUnitClass_eq_zero_iff (z : ℂˣ) : vafaUnitClass z = 0 ↔ IsOfFinOrder z := by
-  have h : (1 ⊗ₜ[ℚ] (1 ⊗ₜ[ℤ] Additive.ofMul z) : vafaUnitSpace) = 0 ↔
-      (1 ⊗ₜ[ℤ] Additive.ofMul z : ℚ ⊗[ℤ] Additive ℂˣ) = 0 :=
-    Module.FaithfullyFlat.one_tmul_eq_zero_iff ℚ (ℚ ⊗[ℤ] Additive ℂˣ) _
-  rw [vafaUnitClass, h]
+  rw [vafaUnitClass, Module.FaithfullyFlat.one_tmul_eq_zero_iff]
   have hh := IsLocalizedModule.eq_zero_iff (nonZeroDivisors ℤ)
     (TensorProduct.mk ℤ ℚ (Additive ℂˣ) 1) (m := Additive.ofMul z)
   change ((1 ⊗ₜ[ℤ] Additive.ofMul z : ℚ ⊗[ℤ] Additive ℂˣ) = 0) ↔
@@ -184,6 +181,10 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
+/-- Tensoring an automorphism scales its FP determinant by the tensor factor's dimension. -/
+abbrev HasTensorDeterminant (X : C.Obj) {Y : C.Obj} (a : Y ≅ Y) : Prop :=
+  fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ a) = fpDimension C X • fpDeterminant C Y a
+
 /-- FP determinants are invariant under actual categorical conjugation. -/
 theorem fpDeterminant_conjugate
     {X Y : C.Obj} (e : X ≅ Y) (a : X ≅ X) :
@@ -210,8 +211,8 @@ theorem tensor_scalarIso {R : Type*} [CommSemiring R] {D : Type u}
 /-- The tensor-product determinant rule when the second automorphism is scalar. -/
 theorem fpDeterminant_tensor_scalar
     (X Y : C.Obj) (z : ℂˣ) :
-    fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ scalarIso Y z) =
-      fpDimension C X • fpDeterminant C Y (scalarIso Y z) := by
+    HasTensorDeterminant C X (scalarIso Y z) := by
+  dsimp only [HasTensorDeterminant]
   rw [tensor_scalarIso, fpDeterminant_scalar, fpDeterminant_scalar, fpDimension_tensor, mul_smul]
 
 end PropertyF.Ground.CentreModular
@@ -431,10 +432,9 @@ theorem tensor_biprod_mapIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
 /-- The tensor determinant identity is closed under binary direct sums. -/
 theorem fpDeterminant_tensor_biprod
     (X : C.Obj) {Y Z : C.Obj} (a : Y ≅ Y) (b : Z ≅ Z)
-    (ha : fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ a) = fpDimension C X • fpDeterminant C Y a)
-    (hb : fpDeterminant C (X ⊗ Z) (Iso.refl X ⊗ᵢ b) = fpDimension C X • fpDeterminant C Z b) :
-    fpDeterminant C (X ⊗ (Y ⊞ Z)) (Iso.refl X ⊗ᵢ biprod.mapIso a b) =
-      fpDimension C X • fpDeterminant C (Y ⊞ Z) (biprod.mapIso a b) := by
+    (ha : HasTensorDeterminant C X a) (hb : HasTensorDeterminant C X b) :
+    HasTensorDeterminant C X (biprod.mapIso a b) := by
+  dsimp only [HasTensorDeterminant] at ha hb ⊢
   let e := Functor.mapBiprod (tensorLeft X) Y Z
   let A := biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b)
   rw [tensor_biprod_mapIso]
@@ -474,8 +474,7 @@ theorem fpDeterminant_refl (X : C.Obj) :
 /-- The tensor determinant rule holds on any simple object. -/
 theorem fpDeterminant_tensor_of_simple
     (X S : C.Obj) [Simple S] (a : S ≅ S) :
-    fpDeterminant C (X ⊗ S) (Iso.refl X ⊗ᵢ a) =
-      fpDimension C X • fpDeterminant C S a := by
+    HasTensorDeterminant C X a := by
   let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
   obtain ⟨z, hz⟩ := endomorphism_simple_eq_smul_id ℂ a.hom
   have hne : z ≠ 0 := by
@@ -524,8 +523,7 @@ theorem tensor_conjugate_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 /-- The tensor determinant equation for a natural automorphism at two objects. -/
 abbrev HasTensorDeterminantRule (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X Y : C.Obj) : Prop :=
-  fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ η.app Y) =
-    fpDimension C X • fpDeterminant C Y (η.app Y)
+  HasTensorDeterminant C X (η.app Y)
 
 /-- The tensor determinant equation is invariant under isomorphism in its second object. -/
 theorem tensorDeterminantRule_iff_of_iso (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X : C.Obj)
@@ -541,6 +539,7 @@ theorem tensorDeterminantRule_iff_of_iso (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X : C
   change (fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ η.app Y) =
     fpDimension C X • fpDeterminant C Y (η.app Y)) ↔ _
   rw [hη, tensor_conjugate_iso, hl, hr]
+  rfl
 
 /-- The categorical FP determinant tensor rule holds for components of
 any natural automorphism, by semisimplicity. -/
@@ -677,13 +676,14 @@ variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
 of an arbitrary natural automorphism. -/
 theorem fpDeterminant_tensor_scalar_natural
     (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X Y : C.Obj) (z : ℂˣ) :
-    fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ (scalarIso Y z ≪≫ η.app Y)) =
-      fpDimension C X • fpDeterminant C Y (scalarIso Y z ≪≫ η.app Y) := by
+    HasTensorDeterminant C X (scalarIso Y z ≪≫ η.app Y) := by
+  dsimp only [HasTensorDeterminant]
   have h : (Iso.refl X ⊗ᵢ (scalarIso Y z ≪≫ η.app Y)) =
       (Iso.refl X ⊗ᵢ scalarIso Y z) ≪≫ (Iso.refl X ⊗ᵢ η.app Y) :=
     Iso.ext (by simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp])
-  rw [h, fpDeterminant_trans, fpDeterminant_trans, fpDeterminant_tensor_scalar,
-    fpDeterminant_tensor_natural, smul_add]
+  have hn : fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ η.app Y) =
+      fpDimension C X • fpDeterminant C Y (η.app Y) := fpDeterminant_tensor_natural C η X Y
+  rw [h, fpDeterminant_trans, fpDeterminant_trans, fpDeterminant_tensor_scalar, hn, smul_add]
 
 /-- Balancing identifies the mixed double braiding of two simples with a
 scalar multiple of the twist component. -/
@@ -702,10 +702,7 @@ for every simple mixed monodromy. -/
 theorem fpDeterminant_tensor_simple_monodromy
     (hbalance : HasSimpleBalance C η t)
     (X : C.Obj) (i j : Fin (rank C)) :
-    fpDeterminant C (X ⊗ (simples C i ⊗ simples C j))
-      (Iso.refl X ⊗ᵢ monodromyIso (simples C i) (simples C j)) =
-      fpDimension C X • fpDeterminant C (simples C i ⊗ simples C j)
-        (monodromyIso (simples C i) (simples C j)) := by
+    HasTensorDeterminant C X (monodromyIso (simples C i) (simples C j)) := by
   rw [monodromy_simple_eq_scalar_natural C hbalance]
   exact fpDeterminant_tensor_scalar_natural C η X _ _
 

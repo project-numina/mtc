@@ -262,9 +262,7 @@ theorem overlap_trace_power_of_isos (C : BraidedFusionCategory.{v,u})
     (hiso : ∀ k, freshOverlapIso X t k =
       (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
         overlapPowerIso X t k) :
-    ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (pivotalDimension C p X) ^ k =
-        actualBraidTrace C X p t u ^ (k + 1) :=
+    HasOverlapTracePower C p u :=
   overlap_trace_power_of_step C p u fun k ↦
     overlap_trace_step_of_coherence C p k u (overlapProduct_local_of_iso k u (hiso k))
 
