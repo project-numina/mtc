@@ -15,19 +15,12 @@ namespace PropertyF
 theorem le_of_power_bounds {a b c : ℝ} (ha : 0 < a)
     (h : ∀ k : ℕ, b ^ (k + 1) ≤ a ^ (k + 1) * c) : b ≤ a := by
   by_contra hb
-  have hab : a < b := lt_of_not_ge hb
-  have hr : 1 < b / a := (lt_div_iff₀ ha).2 (by simpa using hab)
-  obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt (max c 1) hr
-  have hbound : (b / a) ^ n ≤ max c 1 := by
-    cases n with
-    | zero => simp
-    | succ k =>
-      rw [div_pow]
-      apply (div_le_iff₀ (pow_pos ha _)).2
-      exact (h k).trans (by
-        simpa [mul_comm] using mul_le_mul_of_nonneg_left (le_max_left c 1)
-          (pow_nonneg ha.le (k + 1)))
-  exact (not_lt_of_ge hbound) hn
+  have hr : 1 < b / a := (lt_div_iff₀ ha).2 (by simpa using (lt_of_not_ge hb : a < b))
+  obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt c hr
+  have hbound : (b / a) ^ (n + 1) ≤ c := by
+    rw [div_pow, div_le_iff₀ (pow_pos ha _)]
+    simpa [mul_comm] using h n
+  exact (not_lt_of_ge hbound) (hn.trans_le (pow_le_pow_right₀ hr.le (Nat.le_succ n)))
 
 /-- Numerical conclusion of the overlapping-block argument (paper, Lemma 3.1).
 `h` is the inequality obtained after tracing the overlapping product. -/

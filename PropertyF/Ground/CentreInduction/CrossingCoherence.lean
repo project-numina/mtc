@@ -17,15 +17,8 @@ theorem crossingCandidate_matrix (X T : C.Obj) (i j : Fin (rank C)) :
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ biproduct.π V j) =
     ∑ a, crossingSummand C X T i j a := by
   classical
-  dsimp
-  rw [crossingCandidate_on_summand_assoc]
-  rw [Preadditive.sum_comp, Finset.sum_eq_single j]
-  · simp only [Preadditive.sum_comp, Category.assoc, ← whiskerLeft_comp,
-      biproduct.ι_π_self, whiskerLeft_id, Category.comp_id]
-  · intro k _ hne
-    simp only [Preadditive.sum_comp, Category.assoc, ← whiskerLeft_comp]
-    simp [biproduct.ι_π_ne _ hne]
-  · simp
+  simp [crossingCandidate_on_summand_assoc, Preadditive.sum_comp, Category.assoc,
+    ← whiskerLeft_comp, biproduct.ι_π, whiskerLeft_dite, comp_dite, crossingSummand]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossings on a summand expand into nested fusion blocks. -/

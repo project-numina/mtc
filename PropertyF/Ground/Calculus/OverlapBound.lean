@@ -166,32 +166,6 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
-section StrandUnitarity
-
-variable {X : C} {n : ℕ} (k : ℕ) {r s : ℕ} {d : Fin r → ℕ} {q : Fin s → ℕ}
-  (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-  (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩)
-  (he : IsUnitaryBraidPresentation e) (hf : IsUnitaryBraidPresentation f)
-  {u : braidAlgebra X n} (hu : Blocks.IsUnitary ⟨_, d⟩ (e u))
-
-include he hf hu
-
-/-- Adding right identity strands preserves unitarity in any compatible
-presentations of the actual braid-image algebras. -/
-theorem addRight_braid_unitary :
-    Blocks.IsUnitary ⟨_, q⟩ (f (addRightBraidAlgebraIter X n k u)) := by
-  simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
-    starMap_preserves_block_unitary (addRightBlocksIterStarMap X n k e f he hf) hu
-
-/-- Adding left identity strands preserves unitarity in any compatible
-presentations of the actual braid-image algebras. -/
-theorem addLeft_braid_unitary :
-    Blocks.IsUnitary ⟨_, q⟩ (f (addLeftBraidAlgebraIter X n k u)) := by
-  simpa [addLeftBlocksIterStarMap, addLeftBlocksIter] using
-    starMap_preserves_block_unitary (addLeftBlocksIterStarMap X n k e f he hf) hu
-
-end StrandUnitarity
-
 /-- Successive actual overlapping products remain blockwise unitary. The
 presentations may be chosen independently at every strand count. -/
 theorem overlapProduct_unitary {X : C} {t : ℕ}
@@ -209,10 +183,19 @@ theorem overlapProduct_unitary {X : C} {t : ℕ}
     intro i
     rw [overlapProduct, map_mul, Pi.mul_apply]
     apply Submonoid.mul_mem
-    · exact addRight_braid_unitary (t + 1)
-        (e _) (e _) (he _) (he _) ih i
-    · have hr := addLeft_braid_unitary ((k + 1) * (t + 1))
-        (e t) (e _) (he t) (he _) hu
+    · have hr : Blocks.IsUnitary ⟨_, d (overlapIndex t k + (t + 1))⟩
+          (e _ (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1)
+            (overlapProduct X t u k))) := by
+        simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
+          starMap_preserves_block_unitary
+            (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) ih
+      exact hr i
+    · let m := (k + 1) * (t + 1)
+      have hr : Blocks.IsUnitary ⟨_, d (t + m)⟩
+          (e (t + m) (addLeftBraidAlgebraIter X t m u)) := by
+        simpa [addLeftBlocksIterStarMap, addLeftBlocksIter] using
+          starMap_preserves_block_unitary
+            (addLeftBlocksIterStarMap X t m (e t) (e (t + m)) (he t) (he (t + m))) hu
       have hcast : ∀ (a b : ℕ) (h : a = b)
           (f : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b),
           Blocks.IsUnitary ⟨_, d b⟩ (e b (f u)) →

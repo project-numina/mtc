@@ -14,20 +14,21 @@ Falling factorials and alternating-projector traces then provide integrality
 criteria for objects and simple dimensions.
 -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCalculus
 universe v u
-variable {C : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := C.Obj)}
+variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : Modular.HasFPSimpleDimensions C p)
 
 include hdim in
 /-- Equality of positive simple dimensions and FP dimensions extends to every
 object, including zero objects and the images of split idempotents. -/
-theorem pivotalDimension_eq_fpDimension {X : C.Obj} : Dimensions.pivotalDimension C p X = (fpDimension C X : ℂ) := by
+theorem pivotalDimension_eq_fpDimension {X : C.Obj} : pivotalDimension C p X = (fpDimension C X : ℂ) := by
   simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
-    ← hdim, Modular.simpleDimension, Dimensions.pivotalDimension, unitScalar_eq_equiv] using
-    Dimensions.pivotalDimension_decomposition C p X
+    ← hdim, Modular.simpleDimension, pivotalDimension, unitScalar_eq_equiv] using
+    pivotalDimension_decomposition C p X
 
 /-- If the falling factorial of an object's dimension is the dimension of an
 actual object up to a positive scalar at every degree, the dimension is an
@@ -47,7 +48,7 @@ include hdim in
 split alternating projector can supply the witnesses. -/
 theorem integral_of_pivotal_exterior_dimensions {X : C.Obj}
     (hExterior : ∀ n : ℕ, ∃ Y : C.Obj,
-      (Nat.factorial n : ℂ) * Dimensions.pivotalDimension C p Y =
+      (Nat.factorial n : ℂ) * pivotalDimension C p Y =
         ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_exterior_dimensions fun n ↦
@@ -63,7 +64,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCalculus
 universe v u
-variable {C : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := C.Obj)}
+variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : Modular.HasFPSimpleDimensions C p)
 
 /-- The symmetric-group order is invertible over the complex numbers. -/
