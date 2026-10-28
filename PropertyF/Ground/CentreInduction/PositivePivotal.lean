@@ -81,7 +81,7 @@ def liftedPivotalStructure (hc : PivotalComponentsCentral p) :
   iso Z := Center.isoMk ⟨transportedPivotalHom p Z, hc Z⟩
   naturality f := Center.ext _ _ (by
     simpa only [Center.comp_f, Center.isoMk_hom, transportedPivotalHom] using
-      transported_natural f (p.naturality f.f))
+      (transported_natural f ⟨p.naturality f.f⟩).w)
   tensor X Y := Center.ext _ _ (by
     simpa only [Center.comp_f, Center.tensor_f, Center.isoMk_hom, Center.tensor_fst,
       transportedPivotalHom] using (transported_tensor X Y (p.tensor X.1 Y.1).symm).symm)

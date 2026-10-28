@@ -46,12 +46,6 @@ theorem rightDualTensorIso_monodromy :
   let : HasRightDual (Y ⊗ X) := hasRightDualTensor
   ⟨by simp [Modular.doubleBraiding, comp_rightAdjointMate, rightDualTensorIso_braiding]⟩
 
-/-- Inverse dual tensor comparison also transports monodromy. -/
-theorem rightDualTensorIso_inv_monodromy :
-    (rightDualTensorIso X Y).inv ≫ (M X Y)ᘁ =
-      M (Yᘁ) (Xᘁ) ≫ (rightDualTensorIso X Y).inv :=
-  (CommSq.vert_inv rightDualTensorIso_monodromy).w.symm
-
 end PropertyF.Ground.CentreInduction
 
 end
@@ -75,9 +69,10 @@ local notation "M" => Modular.doubleBraiding
 /-- The inverse Drinfeld map satisfies the reversed tensor identity. -/
 theorem drinfeld_tensor_inverse :
     (d (X ⊗ Y)).inv = (μ₂ X Y).inv ≫
-      ((d X).inv ⊗ₘ (d Y).inv) ≫ M X Y := by
-  rw [← tensorIso_inv, Iso.eq_inv_comp, Iso.eq_inv_comp, ← Category.assoc,
-    Iso.comp_inv_eq, drinfeld_tensor, tensorIso_hom]
+      ((d X).inv ⊗ₘ (d Y).inv) ≫ M X Y :=
+  (Iso.eq_inv_comp (μ₂ X Y)).2 <| by
+    simpa only [tensorIso_inv] using
+      (CommSq.vert_inv (g := d X ⊗ᵢ d Y) (h := d (X ⊗ Y)) ⟨drinfeld_tensor X Y⟩).w
 
 omit [RightRigidCategory D] in
 /-- The inverse Drinfeld map is natural in the object. -/
@@ -105,7 +100,7 @@ theorem drinfeld_inv_dual_tensor :
   simp only [hn', hi', comp_rightAdjointMate, Category.assoc]
   rw [← Category.assoc (t.homᘁ), ← comp_rightAdjointMate, Iso.inv_hom_id,
     rightAdjointMate_id, Category.id_comp]
-  rw [reassoc_of% rightDualTensorIso_inv_monodromy,
+  rw [reassoc_of% (CommSq.vert_inv rightDualTensorIso_monodromy).w.symm,
     ← reassoc_of% rightDualTensorIso_inv_natural f g]
   simp only [doubleDualTensorIso, rightDualIsoMap, Iso.trans_inv, Iso.symm_inv,
     comp_rightAdjointMate, Category.assoc, f, g, t]
