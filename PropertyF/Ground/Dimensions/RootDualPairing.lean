@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.FourthDualUnit
+public import PropertyF.Ground.Dimensions.DualCoherence
 
 /-! # Duality pairing for roots
 
@@ -31,19 +32,9 @@ theorem root_components_coevaluation
   rw [ha]
   simp only [tensorHom_def, MonoidalLinear.whiskerLeft_smul, Linear.comp_smul]
   congr 1
-  have h := coevaluation_comp_rightAdjointMate a.inv
-  calc
-    _ = η_ X (Xᘁ) ≫ X ◁ (a.invᘁ) ≫ a.hom ▷ (((Xᘁ)ᘁ)ᘁ) := by
-      simpa only [doubleDualFunctor, Functor.id_obj, Category.assoc] using
-        congrArg (fun z => η_ X (Xᘁ) ≫ z) (whisker_exchange a.hom (a.invᘁ)).symm
-    _ = η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) ≫ a.inv ▷ (((Xᘁ)ᘁ)ᘁ) ≫
-        a.hom ▷ (((Xᘁ)ᘁ)ᘁ) := by
-      simpa only [doubleDualFunctor, Functor.id_obj, Category.assoc] using
-        congrArg (fun z => z ≫ a.hom ▷ (((Xᘁ)ᘁ)ᘁ)) h
-    _ = _ := by
-      have hi : (a.inv ▷ (((Xᘁ)ᘁ)ᘁ)) ≫ a.hom ▷ (((Xᘁ)ᘁ)ᘁ) = 𝟙 _ := by
-        rw [← comp_whiskerRight, Iso.inv_hom_id, id_whiskerRight]
-      simp only [hi, Category.comp_id]
+  simpa only [tensorHom_def, Category.assoc, doubleDualFunctor, Functor.id_obj] using
+    coevaluation_iso_map a
+
 end PropertyF.Ground.Dimensions
 
 end
