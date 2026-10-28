@@ -6,7 +6,6 @@ public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Centre.Abelian
 public import Mathlib.CategoryTheory.Subobject.ArtinianObject
-public import Mathlib.CategoryTheory.Subobject.NoetherianObject
 public import Mathlib.RingTheory.Artinian.Module
 public import Mathlib.CategoryTheory.Abelian.Exact
 
