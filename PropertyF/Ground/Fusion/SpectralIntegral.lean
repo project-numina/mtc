@@ -18,10 +18,12 @@ namespace PropertyF.Ground
 
 variable (D : BraidedFusionCategory)
 
+/-- The tensor unit supplies a simple label. -/
+local instance (D : BraidedFusionCategory) : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+
 /-- The spectral-radius FP dimension is normalized on the tensor unit. -/
 theorem fpSimple_unit :
     fpSimple D (unitIndex D) = 1 :=
-  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   by rw [fpSimple, show fusionMatrix D (unitIndex D) = 1 from Matrix.ext fun k j ↦ by
     change (fusionCoeff D (unitIndex D) j k : ℂ) = _
     simp [fusionCoeff_unit, Matrix.one_apply], spectrum.spectralRadius_one, ENNReal.toReal_one]
@@ -54,7 +56,6 @@ variable {D} in
 /-- Every target simple FP dimension is integral over ℤ. -/
 theorem fpSimple_isIntegral (i : Fin (rank D)) :
     IsIntegral ℤ (fpSimple D i) := by
-  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   let A : Matrix (Fin (rank D)) (Fin (rank D)) ℤ := fun k j =>
     fusionCoeff D i j k
   have hmatrix : A.map (Int.castRingHom ℂ) = fusionMatrix D i := by

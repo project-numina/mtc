@@ -286,10 +286,8 @@ theorem squaredNorm_eq_root_norm_sq_of_reciprocity
     (hinv : MultiplicityDefectsInvolutive C)
     (htranspose : ENOTraceMatrixReciprocity C) (i : Fin (rank C)) :
     squaredNorm C (simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
-  rw [squaredNorm_eq_rootDualSign_mul i,
-    rootDimension_dual_conjugate_of_trace_reciprocity hinv htranspose i,
-    mul_mul_mul_comm, rootDualSign_sq, one_mul]
-  simpa using Complex.mul_conj' (rootDimension C i)
+  rw [squaredNorm_eq_rootDualSign_mul i, rootDimension_dual_conjugate_of_trace_reciprocity hinv htranspose i,
+    mul_mul_mul_comm, rootDualSign_sq, one_mul]; simpa using Complex.mul_conj' (rootDimension C i)
 
 end PropertyF.Ground.Dimensions
 
