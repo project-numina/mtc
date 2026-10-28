@@ -40,9 +40,8 @@ theorem represented_square_finite_order {H : Type*} [Monoid H]
 
 /-- The categorical square itself has finite order. -/
 theorem braid_square_finite_order (X : C) (h : ObjectPropertyF X) :
-    ∃ k : ℕ, k ≠ 0 ∧ (braidGenerator X 0 0 ^ 2) ^ k = 1 := by
-  obtain ⟨k, hk, hpow⟩ := represented_square_finite_order X h (braidImage X 0).subtype
-  exact ⟨k, hk, hpow⟩
+    ∃ k : ℕ, k ≠ 0 ∧ (braidGenerator X 0 0 ^ 2) ^ k = 1 :=
+  represented_square_finite_order X h (braidImage X 0).subtype
 
 end PropertyF.Ground.Calculus
 
@@ -96,15 +95,15 @@ def threeGeneratorRight (X : C) : braidImage X 1 := imageGenerator X 1 1
 /-- The Yang–Baxter relation holds inside the actual categorical braid image. -/
 theorem three_braid_image_relation (X : C) :
     threeGeneratorLeft X * threeGeneratorRight X * threeGeneratorLeft X =
-    threeGeneratorRight X * threeGeneratorLeft X * threeGeneratorRight X := by
-  apply Subtype.ext
-  exact three_braid_relation X
+    threeGeneratorRight X * threeGeneratorLeft X * threeGeneratorRight X :=
+  Subtype.ext (three_braid_relation X)
 
 /-- Every representation of the actual three-strand image satisfies the braid relation. -/
 theorem three_braid_relation_map {H : Type*} [Monoid H] (X : C)
     (ρ : braidImage X 1 →* H) :
     ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) =
-    ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) := by simpa only [map_mul] using congrArg ρ (three_braid_image_relation X)
+    ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) := by
+  simpa only [map_mul] using congrArg ρ (three_braid_image_relation X)
 
 end PropertyF.Ground.Calculus
 

@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Integrate.CoreIntegralityReduction
+public import PropertyF.Ground.Integrate.PivotalOnlyReduction
 public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 public import PropertyF.Ground.CentreModular.VafaPivotal
 

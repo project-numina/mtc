@@ -56,7 +56,6 @@ import all PropertyF.Ground.CentreCalculus.ParityDeletion
 import all PropertyF.Ground.CentreCalculus.PermutationInsert
 import all PropertyF.Ground.Centre.Calculus.TypeANormalWords
 import all PropertyF.Ground.Centre.Calculus.TypeA
-import all PropertyF.Ground.Integrate.CoreIntegralityReduction
 import all PropertyF.Ground.CentreInduction.PivotalCentrality
 import all PropertyF.Ground.CentreInduction.PositivePivotal
 import all PropertyF.Ground.Integrate.PivotalOnlyReduction
@@ -140,16 +139,12 @@ import all PropertyF.Ground.Dimensions.RootDualPairing
 import all PropertyF.Ground.Dimensions.RootUnitComponent
 import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
-import all PropertyF.Ground.Integrate.NumericalCoreReduction
 import all PropertyF.Arithmetic
 import all PropertyF.Axioms
 import all PropertyF.BlockTrace
 import all PropertyF.BraidAlgebra
-import all PropertyF.Center
 import all PropertyF.CenterBasics
 import all PropertyF.Definitions
-import all PropertyF.GaloisRigidity
-import all PropertyF.GaloisSymmetry
 import all PropertyF.Ground.Cabling.Generated
 import all PropertyF.Ground.Cabling.Naturality
 import all PropertyF.Ground.Cabling.Strands
@@ -262,26 +257,16 @@ import all PropertyF.Ground.Integrate.CenterOnlyReduction
 import all PropertyF.Ground.Integrate.CenterProductBridge
 import all PropertyF.Ground.Integrate.CenterReductionComplete
 import all PropertyF.Ground.Integrate.CharacterReality
-import all PropertyF.Ground.Integrate.ConditionalBridge
-import all PropertyF.Ground.Integrate.Conjugacy
-import all PropertyF.Ground.Integrate.ConjugateBound
 import all PropertyF.Ground.Integrate.DependencyAudit
-import all PropertyF.Ground.Integrate.DirectModular
-import all PropertyF.Ground.Integrate.Example
 import all PropertyF.Ground.Integrate.FPConjugates
-import all PropertyF.Ground.Integrate.FPRepresentatives
 import all PropertyF.Ground.Integrate.Fixedness
 import all PropertyF.Ground.Integrate.FunctorUniverse
-import all PropertyF.Ground.Integrate.LegacyBridge
 import all PropertyF.Ground.Integrate.ModularWitness
-import all PropertyF.Ground.Integrate.Norm
 import all PropertyF.Ground.Integrate.Reduction
 import all PropertyF.Ground.Integrate.Representatives
 import all PropertyF.Ground.Integrate.ScalarTwist
 import all PropertyF.Ground.Integrate.ScalarTwistModular
-import all PropertyF.Ground.Integrate.ScalarTwistNorm
 import all PropertyF.Ground.Integrate.ScalarTwistTransport
-import all PropertyF.Ground.Integrate.StrandInclusion
 import all PropertyF.Ground.Integrate.TwistedRigidity
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Modular.Audit
@@ -302,9 +287,7 @@ import all PropertyF.Ground.Modular.SSquare
 import all PropertyF.Ground.Modular.UnitDimension
 import all PropertyF.Ground.Modular.Verlinde
 import all PropertyF.Ground.Target
-import all PropertyF.Main
 import all PropertyF.PowerBound
-import all PropertyF.TraceBound
 import all PropertyF.UnitaryTrace
 
 /-! Explicit final-theorem gate. This module intentionally fails to build until

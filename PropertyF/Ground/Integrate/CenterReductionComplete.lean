@@ -20,17 +20,6 @@ theorem twistedOverlapTrace_proved (Z : BraidedFusionCategory.{v,u})
   intro u k
   exact Calculus.overlap_trace_power D X (ScalarTwist.pivotal Z σ p) 1 u k
 
-/-- Galois-column rigidity for an actual positive pivotal category. -/
-theorem galois_rigidity (Z : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := Z.Obj))
-    (hdim : ∀ i, Modular.simpleDimension Z p i = (fpSimple Z i : ℂ))
-    (σ : ℂ ≃+* ℂ) (y : Fin (rank Z))
-    (hF : ObjectPropertyF (simples Z y)) (d : ℝ)
-    (hσ : σ (fpSimple Z y : ℂ) = (d : ℂ))
-    (hS : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y) :
-    fpSimple Z y = |d| :=
-  rigidity_of_twisted_overlap Z p hdim σ y hF d hσ hS (twistedOverlapTrace_proved Z p σ y)
-
 /-- The target follows from an actual positive spherical modular centre with
 the global dimension and selected finite-braid-image properties. All of
 these centre facts remain explicit premises. -/

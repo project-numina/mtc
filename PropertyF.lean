@@ -22,7 +22,6 @@ public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreBundle.Fusion
 public import PropertyF.Ground.CentreRigid.Lift
 public import PropertyF.Ground.CentreRigid.Unit
-public import PropertyF.Ground.Integrate.DirectModular
 public import PropertyF.Ground.Target
 public import PropertyF.Ground.Integrate.UnitScalar
 public import PropertyF.Ground.Fusion.Splitting
@@ -115,7 +114,6 @@ public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Integrate.ScalarTwist
 public import PropertyF.Ground.Integrate.ScalarTwistTransport
 public import PropertyF.Ground.Integrate.ScalarTwistModular
-public import PropertyF.Ground.Integrate.ScalarTwistNorm
 public import PropertyF.Ground.Integrate.FPConjugates
 public import PropertyF.Ground.Integrate.FunctorUniverse
 public import PropertyF.Ground.Integrate.TwistedRigidity
@@ -204,9 +202,7 @@ public import PropertyF.Ground.CentreCabling.ProductCore
 public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.CentreCabling.TargetReduction
 public import PropertyF.Ground.Integrate.CenterSquareReduction
-public import PropertyF.Ground.Integrate.NumericalCoreReduction
 public import PropertyF.Ground.Integrate.PivotalOnlyReduction
-public import PropertyF.Ground.Integrate.CoreIntegralityReduction
 public import PropertyF.Ground.Integrate.BalancedCenterReduction
 public import PropertyF.Ground.Integrate.TransparentCenterReduction
 public import PropertyF.Ground.Integrate.PivotalBalancedReduction
@@ -244,7 +240,7 @@ public import PropertyF.Ground.CentreCabling.TwistDual
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
-The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
+The main theorem is `PropertyF.Ground.target`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/

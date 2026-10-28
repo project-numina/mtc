@@ -37,11 +37,5 @@ theorem dualCrossing_natural (Z : CategoryTheory.Center C) {U V : C} (f : U ⟶ 
       ((dualCrossingIso Z).app U).hom ≫ f ▷ (Z.1ᘁ) :=
   (dualCrossingIso Z).hom.naturality f
 
-/-- Its unit component is the canonical unitor comparison. -/
-theorem dualCrossing_unit (Z : CategoryTheory.Center C) :
-    (dualCrossingIso Z).app (𝟙_ C) = (ρ_ (Z.1ᘁ)) ≪≫ (λ_ (Z.1ᘁ)).symm := by
-  apply Iso.ext
-  simp [dualCrossingIso, dualMateUnit]
-  monoidal
 
 end PropertyF.Ground.Integrate
