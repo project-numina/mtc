@@ -49,15 +49,12 @@ theorem scalar_of_norm_trace_eq_card (ht : ‖U.trace‖ = Fintype.card ι) : �
   let z : ℂ := U.trace / (Fintype.card ι : ℂ)
   have hz : ‖z‖ = 1 := by simp [z, ht, hn]
   have hzmul : conj z * z = 1 := by simp [Complex.conj_mul', hz]
-  have hV : conj z • U ∈ Matrix.unitaryGroup ι ℂ := by
-    apply Unitary.smul_mem_of_mem _ hU
-    simpa [Unitary.mem_iff, mul_comm] using hzmul
+  have hV : conj z • U ∈ Matrix.unitaryGroup ι ℂ :=
+    Unitary.smul_mem_of_mem (by simpa [Unitary.mem_iff, mul_comm] using hzmul) hU
   have htr : (conj z • U).trace.re = Fintype.card ι := by
-    have hc : U.trace = z * (Fintype.card ι : ℂ) := by
-      dsimp [z]
-      rw [div_mul_cancel₀ _ (by exact_mod_cast hn : (Fintype.card ι : ℂ) ≠ 0)]
-    rw [Matrix.trace_smul, smul_eq_mul, hc, ← mul_assoc, hzmul, one_mul]
-    simp
+    have hc : U.trace = z * (Fintype.card ι : ℂ) :=
+      (div_mul_cancel₀ _ (by exact_mod_cast hn : (Fintype.card ι : ℂ) ≠ 0)).symm
+    simp [Matrix.trace_smul, hc, ← mul_assoc, hzmul]
   refine ⟨z, ?_⟩
   simpa [smul_smul, mul_comm z (conj z), hzmul] using
     congrArg (fun V : Matrix ι ι ℂ => z • V) (eq_one_of_re_trace_eq_card hV htr)
