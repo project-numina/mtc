@@ -89,17 +89,17 @@ theorem rootTrace_inverseDefect
   rw [ht]
   change unitScalar C (rightQuantumTrace
     (((a.app X) ⊗ᵢ (a.app Y)) ≪≫ doubleDualTensorIso X Y)) = _
-  rw [← groundUnitScalarEquiv_apply]
+  rw [Ground.unitScalar_eq_equiv]
   let ax : X ≅ (Xᘁ)ᘁ := (a.app X)
   let ay : Y ≅ (Yᘁ)ᘁ := (a.app Y)
-  have hp := rightQuantumTrace_tensor_scalar (groundUnitScalarEquiv C) ax ay
-  change (groundUnitScalarEquiv C) (rightQuantumTrace ((ax ⊗ᵢ ay) ≪≫ doubleDualTensorIso X Y)) =
+  have hp := rightQuantumTrace_tensor_scalar (Ground.unitScalarEquiv C) ax ay
+  change (Ground.unitScalarEquiv C) (rightQuantumTrace ((ax ⊗ᵢ ay) ≪≫ doubleDualTensorIso X Y)) =
     rootDimension C i * rootDimension C j
   rw [hp]
-  have hx : groundUnitScalarEquiv C (rightQuantumTrace ax) = rootDimension C i := by
-    simp [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, groundUnitScalarEquiv_apply, X, a, ax]
-  have hy : groundUnitScalarEquiv C (rightQuantumTrace ay) = rootDimension C j := by
-    simp [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, groundUnitScalarEquiv_apply, Y, a, ay]
+  have hx : Ground.unitScalarEquiv C (rightQuantumTrace ax) = rootDimension C i := by
+    simp [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, ← Ground.unitScalar_eq_equiv, X, a, ax]
+  have hy : Ground.unitScalarEquiv C (rightQuantumTrace ay) = rootDimension C j := by
+    simp [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, ← Ground.unitScalar_eq_equiv, Y, a, ay]
   rw [hx, hy]
 
 end PropertyF.Ground.Dimensions
@@ -222,7 +222,7 @@ theorem rootTrace_eq_simpleHom_trace_sum
     simpa [f, Category.assoc] using (rootTrace_cyclic C e.hom (e.inv ≫ g))
   obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple C V (fun a => simples_simple C a.1) f
   rw [heq, ht]
-  simp only [← groundUnitScalarEquiv_apply, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
+  simp only [Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
   apply Finset.sum_congr rfl
   intro k _
   have hblock : ∀ t, biproduct.ι V ⟨k, t⟩ ≫ e.inv ≫ g ≫ e.hom ≫ biproduct.π V ⟨k, t⟩ =
@@ -232,9 +232,9 @@ theorem rootTrace_eq_simpleHom_trace_sum
   rw [(simpleHom_postcomp_trace C g (fun t => c ⟨k,t⟩) hblock), Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro t _
-  change c ⟨k, t⟩ * (groundUnitScalarEquiv C (rootTrace C (𝟙 (simples C k)))) =
+  change c ⟨k, t⟩ * (Ground.unitScalarEquiv C (rootTrace C (𝟙 (simples C k)))) =
     c ⟨k, t⟩ * rootDimension C k
-  rw [groundUnitScalarEquiv_apply]
+  rw [← Ground.unitScalar_eq_equiv]
   rfl
 
 set_option backward.isDefEq.respectTransparency false in

@@ -45,6 +45,11 @@ theorem crossingBlock_natural_middle {X Y : D} (h : X ⟶ Y) {T R S : D}
   rw [← whiskerLeft_comp, associator_inv_naturality_middle,
     whiskerLeft_comp]
 
+/-- The projection from the chosen simple decomposition of an object. -/
+def simpleProjection (V : C.Obj) (i : Fin (rank C))
+    (a : Fin (Module.finrank ℂ (simples C i ⟶ V))) : V ⟶ simples C i :=
+  (Dimensions.simpleDecomposition C V).hom ≫ biproduct.π (Dimensions.simplePiecesObject C V) ⟨i,a⟩
+
 /-- The multiplicity index for a simple summand of `T ⊗ Sⱼ`. -/
 abbrev crossingIndex (T : C.Obj) (i j : Fin (rank C)) : Type :=
   Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))
@@ -61,15 +66,14 @@ def crossingProjection (T : C.Obj)
     (i j : Fin (rank C))
     (a : crossingIndex C T i j) :
     T ⊗ simples C j ⟶ simples C i :=
-  (Dimensions.simpleDecomposition C (T ⊗ simples C j)).hom ≫
-    biproduct.π (Dimensions.simplePiecesObject C (T ⊗ simples C j)) ⟨i, a⟩
+  simpleProjection C (T ⊗ simples C j) i a
 
 /-- Inclusion and projection of the same summand compose to the identity. -/
 theorem crossingInclusion_projection (T : C.Obj)
     (i j : Fin (rank C))
     (a : crossingIndex C T i j) :
     crossingInclusion C T i j a ≫ crossingProjection C T i j a = 𝟙 (simples C i) := by
-  simp [crossingInclusion, crossingProjection, Dimensions.simpleInclusion, Category.assoc]
+  simp [crossingInclusion, crossingProjection, simpleProjection, Dimensions.simpleInclusion, Category.assoc]
 
 /-- Distinct summand inclusions and projections have zero composite. -/
 theorem crossingInclusion_projection_ne (T : C.Obj)
@@ -77,7 +81,7 @@ theorem crossingInclusion_projection_ne (T : C.Obj)
     (p q : Σ i : Fin (rank C), crossingIndex C T i j)
     (hne : p ≠ q) :
     crossingInclusion C T p.1 j p.2 ≫ crossingProjection C T q.1 j q.2 = 0 := by
-  simp [crossingInclusion, crossingProjection, Dimensions.simpleInclusion, Category.assoc,
+  simp [crossingInclusion, crossingProjection, simpleProjection, Dimensions.simpleInclusion, Category.assoc,
     biproduct.ι_π_ne _ hne]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -90,7 +94,7 @@ theorem crossing_completeness (T : C.Obj)
       crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) =
         𝟙 (T ⊗ simples C j) := by
   classical
-  simp only [crossingProjection, crossingInclusion, Dimensions.simpleInclusion,
+  simp only [crossingProjection, simpleProjection, crossingInclusion, Dimensions.simpleInclusion,
     Category.assoc, ← Preadditive.comp_sum]
   simp_rw [← Category.assoc (biproduct.π _ _)]
   rw [← Preadditive.sum_comp, biproduct.total, Category.id_comp, Iso.hom_inv_id]

@@ -41,33 +41,30 @@ def insertRightIdentity (X Y : C) (a : End X) : End (X ⊗ Y) :=
 theorem rightPartialTrace_left (p : PivotalStructure (C := C))
     {X Y : C} (a : End X) (f : End (X ⊗ Y)) :
     rightPartialTrace p X Y (insertRightIdentity X Y a * f) =
-      a * rightPartialTrace p X Y f := by
-  apply End.ext
-  simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
+      a * rightPartialTrace p X Y f :=
+  End.ext (by simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
     End.mul_asHom, comp_whiskerRight, Category.assoc, associator_naturality_left_assoc,
-    ← whisker_exchange_assoc, rightUnitor_naturality]
+    ← whisker_exchange_assoc, rightUnitor_naturality])
 
 
 /-- Partial trace commutes with precomposition on the untraced factor. -/
 theorem rightPartialTrace_right (p : PivotalStructure (C := C))
     {X Y : C} (a : End X) (f : End (X ⊗ Y)) :
     rightPartialTrace p X Y (f * insertRightIdentity X Y a) =
-      rightPartialTrace p X Y f * a := by
-  apply End.ext
-  simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
+      rightPartialTrace p X Y f * a :=
+  End.ext (by simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
     End.mul_asHom, comp_whiskerRight, Category.assoc, ← associator_inv_naturality_left_assoc,
-    whisker_exchange_assoc, ← rightUnitor_inv_naturality_assoc]
+    whisker_exchange_assoc, ← rightUnitor_inv_naturality_assoc])
 
 /-- Tracing an identity strand gives the categorical dimension of the closed
 factor, acting on the untraced object. -/
 theorem rightPartialTrace_one (p : PivotalStructure (C := C))
     (X Y : C) : rightPartialTrace p X Y 1 =
-      End.of ((ρ_ X).inv ≫ (X ◁ (p.rightTrace (𝟙 Y)).asHom) ≫ (ρ_ X).hom) := by
-  apply End.ext
-  simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+      End.of ((ρ_ X).inv ≫ (X ◁ (p.rightTrace (𝟙 Y)).asHom) ≫ (ρ_ X).hom) :=
+  End.ext (by simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
     End.one_asHom, id_whiskerRight, Category.comp_id, Iso.inv_hom_id_assoc,
     PivotalStructure.rightTrace, Category.id_comp, tensorHom_def, whiskerLeft_id,
-    whiskerLeft_comp, Category.assoc]
+    whiskerLeft_comp, Category.assoc])
 
 /-- The partial trace of an inserted endomorphism is the dimension of the
 closed factor times that endomorphism. -/
@@ -117,10 +114,10 @@ theorem rightPartialTrace_whiskerLeft (p : PivotalStructure (C := C))
     {A X Y : C} (f : End (X ⊗ Y)) :
     rightPartialTrace p (A ⊗ X) Y (End.of
       ((α_ A X Y).hom ≫ (A ◁ f.asHom) ≫ (α_ A X Y).inv)) =
-      End.of (A ◁ (rightPartialTrace p X Y f).asHom) := by
-  apply End.ext
-  simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
-    comp_whiskerRight, whiskerLeft_comp, Category.assoc]
-  monoidal
+      End.of (A ◁ (rightPartialTrace p X Y f).asHom) :=
+  End.ext (by
+    simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+      comp_whiskerRight, whiskerLeft_comp, Category.assoc]
+    monoidal)
 
 end PropertyF.Ground.Calculus

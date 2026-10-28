@@ -39,7 +39,7 @@ theorem center_globalDimension_of_adjunction
     rw [show Dimensions.pivotalDimension (Integrate.bundledCenter C) p
         (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ) by
       simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-        Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hdim i]
+        unitScalar_eq_equiv] using hdim i]
   change globalDimension (Integrate.bundledCenter C) =
     (globalFPDimension (Integrate.bundledCenter C) : ℂ) at hpu
   rw [hpu, CentreInduction.globalFPDimension_square_of_adjunction C I adj hI, Complex.ofReal_pow]

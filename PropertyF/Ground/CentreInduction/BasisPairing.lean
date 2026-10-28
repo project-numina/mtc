@@ -58,11 +58,6 @@ theorem dualBasis_contraction_natural {k : Type*} [CommSemiring k] {I J : Type} 
       rw [hD j]
       simp
 
-/-- The projection from the chosen simple decomposition of an object. -/
-def simpleProjection (V : C.Obj) (i : Fin (rank C))
-    (a : Fin (Module.finrank ℂ (simples C i ⟶ V))) : V ⟶ simples C i :=
-  (Dimensions.simpleDecomposition C V).hom ≫ biproduct.π (Dimensions.simplePiecesObject C V) ⟨i,a⟩
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Simple projections form the dual basis to simple inclusions. -/
 theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
@@ -77,17 +72,13 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
   rw [Module.Basis.dualBasis_apply_self]
   by_cases hab : b = a
   · subst b
-    have hh : Dimensions.simpleInclusion C V i a ≫ simpleProjection C V i a = 𝟙 _ := by
-      simp [Dimensions.simpleInclusion, simpleProjection, Category.assoc]
-    simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B, hh]
-    apply End.ext
-    rfl
-  · have hz : Dimensions.simpleInclusion C V i b ≫ simpleProjection C V i a = 0 := by
-      simp [Dimensions.simpleInclusion, simpleProjection, Category.assoc,
-        biproduct.ι_π_ne _ (show (⟨i,b⟩ : Dimensions.simplePieces C V) ≠ ⟨i,a⟩ by simpa using hab)]
-    simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B, hz, hab]
-    apply End.ext
-    rfl
+    simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
+      Dimensions.simpleInclusion, simpleProjection, Category.assoc]
+    exact End.ext rfl
+  · simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
+      Dimensions.simpleInclusion, simpleProjection, Category.assoc,
+      biproduct.ι_π_ne _ (show (⟨i,b⟩ : Dimensions.simplePieces C V) ≠ ⟨i,a⟩ by simpa using hab), hab]
+    exact End.ext rfl
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
 theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V ⟶ W)
@@ -101,10 +92,7 @@ theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V 
   let P := Dimensions.simpleHomPairingEquiv C i V
   let F' : (simples C i ⟶ W) →ₗ[ℂ]
       Module.Dual ℂ (simples C i ⟶ V) →ₗ[ℂ] E :=
-    { toFun := fun g => (F g).comp P.symm.toLinearMap
-      map_add' := by intro x y; ext z; simp
-      map_smul' := by intro r x; ext z; simp }
-  have h := dualBasis_contraction_natural A B (Linear.rightComp ℂ (simples C i) q) F'
+    (LinearMap.lcomp ℂ E P.symm.toLinearMap).comp F
   have hproj (a) : P.symm (A.dualBasis a) = simpleProjection C V i a := by
     apply P.injective
     simpa [P, A] using (pairing_simpleProjection C V i a).symm
@@ -114,9 +102,8 @@ theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V 
     rw [P.apply_symm_apply]
     symm
     rw [simpleHomPairingEquiv_natural, pairing_simpleProjection]
-  change (∑ a, F (A a ≫ q) (P.symm (A.dualBasis a))) =
-    ∑ b, F (B b) (P.symm (Module.Dual.transpose
-      (Linear.rightComp ℂ (simples C i) q) (B.dualBasis b))) at h
+  have h := dualBasis_contraction_natural A B (Linear.rightComp ℂ (simples C i) q) F'
+  simp only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply, LinearEquiv.coe_coe] at h
   simp_rw [hproj, hdual] at h
   simpa only [A, B, Dimensions.simpleInclusionBasis_apply] using h
 
@@ -167,11 +154,8 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
         (r j ≫ simpleProjection C (V j) i a)) =
       ∑ b, F (Dimensions.simpleInclusion C W i b) (r j ≫ q j ≫ simpleProjection C W i b) := by
     let F' : (simples C i ⟶ W) →ₗ[ℂ] (V j ⟶ simples C i) →ₗ[ℂ] E :=
-      { toFun := fun g => (F g).comp (Linear.leftComp ℂ (simples C i) (r j))
-        map_add' := by intro x y; ext z; simp
-        map_smul' := by intro x y; ext z; simp }
-    have hx := simpleBasis_contraction_natural C i (q j) F'
-    simpa [F', Category.assoc] using hx
+      (LinearMap.lcomp ℂ E (Linear.leftComp ℂ (simples C i) (r j))).comp F
+    simpa [F', Category.assoc] using simpleBasis_contraction_natural C i (q j) F'
   simp_rw [step]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl

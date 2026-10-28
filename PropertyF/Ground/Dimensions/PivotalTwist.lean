@@ -66,6 +66,6 @@ theorem pivotalDimension_scalarTwist_simple
     rw [simpleScalarNaturalIso_app_simple]
     simp
   rw [ht]
-  simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
+  simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
 
 end PropertyF.Ground.Dimensions
