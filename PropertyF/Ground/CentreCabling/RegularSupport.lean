@@ -191,6 +191,12 @@ theorem fourier_eq_zero_of_fusion_eigenvector
 abbrev IsFusionClosed (D : Ground.BraidedFusionCategory.{v,u}) (A : Finset (Fin (rank D))) : Prop :=
   ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < fusionCoeff D a b k → k ∈ A
 
+/-- A set of simple labels closed under duals and fusion constituents. -/
+structure IsDualFusionClosed (D : Ground.BraidedFusionCategory.{v,u})
+    (A : Finset (Fin (rank D))) : Prop where
+  dual : ∀ a ∈ A, dualIndex D a ∈ A
+  fusion : IsFusionClosed D A
+
 /-- Fusion coefficients vanish outside a fusion-closed set. -/
 theorem IsFusionClosed.fusionCoeff_eq_zero {A : Finset (Fin (rank D))}
     (hA : IsFusionClosed D A) {a b k : Fin (rank D)}
@@ -211,9 +217,7 @@ theorem regularVector_ne_zero_iff {A : Finset (Fin (rank D))} {i : Fin (rank D)}
 is an eigenvector for multiplication by each label in that set. -/
 theorem regular_vector_fusion_eigenvector
     {A : Finset (Fin (rank D))}
-    (hdual : ∀ a ∈ A, dualIndex D a ∈ A)
-    (hclosed : IsFusionClosed D A)
-    {a : Fin (rank D)} (ha : a ∈ A) (k : Fin (rank D)) :
+    (hA : IsDualFusionClosed D A) {a : Fin (rank D)} (ha : a ∈ A) (k : Fin (rank D)) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * regularVector D A k := by
   classical
@@ -227,7 +231,7 @@ theorem regular_vector_fusion_eigenvector
         rw [Modular.fusionCoeff_dual_adjoint D a i k]
         by_cases hi : i ∈ A
         · simp [hi]
-        · simp [hi, hclosed.fusionCoeff_eq_zero (hdual a ha) hk hi]
+        · simp [hi, hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi]
       _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
         have hh := congrArg (fun z : ℝ => (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)
         simpa [fpSimple_dual] using hh.symm
@@ -235,21 +239,20 @@ theorem regular_vector_fusion_eigenvector
     apply Finset.sum_eq_zero
     intro i _
     by_cases hi : i ∈ A
-    · simp [hi, hclosed.fusionCoeff_eq_zero ha hi hk]
+    · simp [hi, hA.fusion.fusionCoeff_eq_zero ha hi hk]
     · simp [hi]
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support
     (hdim : Modular.HasFPSimpleDimensions D p)
     {A : Finset (Fin (rank D))} {core : Set (Fin (rank D))}
-    (hdual : ∀ a ∈ A, dualIndex D a ∈ A) (hclosed : IsFusionClosed D A)
-    (hcore : sCentralizer D p (↑A : Set _) ⊆ core) {y : Fin (rank D)} (hy : y ∉ core) :
+    (hA : IsDualFusionClosed D A) (hcore : sCentralizer D p (↑A : Set _) ⊆ core) {y : Fin (rank D)} (hy : y ∉ core) :
     ∑ i, Modular.categoricalS D p y i * regularVector D A i = 0 := by
   obtain ⟨a, ha, hne⟩ : ∃ a ∈ A, ¬sCentralizes D p a y := by
     simpa only [sCentralizer, Set.mem_ofPred_eq, Finset.mem_coe, not_forall, exists_prop] using
       (show y ∉ sCentralizer D p (↑A : Set _) from fun h ↦ hy (hcore h))
   exact fourier_eq_zero_of_fusion_eigenvector hdim
-    (regular_vector_fusion_eigenvector hdual hclosed ha) hne
+    (regular_vector_fusion_eigenvector hA ha) hne
 
 /-- Numerical double-centralizer theorem for a fusion-closed set of simple
 labels. The supplied core must contain its numerical S-centralizer. -/
@@ -259,12 +262,11 @@ theorem doubleCentralizer_of_fusion_closed
     (hdim : Modular.HasFPSimpleDimensions D p)
     {A : Finset (Fin (rank D))} {core : Set (Fin (rank D))}
     (hunit : unitIndex D ∈ A)
-    (hdual : ∀ a ∈ A, dualIndex D a ∈ A)
-    (hclosed : IsFusionClosed D A)
+    (hA : IsDualFusionClosed D A)
     (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
     sCentralizer D p core ⊆ (↑A : Set _) :=
   doubleCentralizer_of_fourier_support hp hdet hdim (f := regularVector D A)
     (regularVector_ne_zero_iff.mpr hunit) (fun _ hi ↦ regularVector_ne_zero_iff.mp hi)
-    (fun _ hy ↦ regularVector_fourier_support hdim hdual hclosed hcore hy)
+    (fun _ hy ↦ regularVector_fourier_support hdim hA hcore hy)
 
 end PropertyF.Ground.CentreCabling
