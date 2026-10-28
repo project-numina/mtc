@@ -1,7 +1,5 @@
 module
 public import PropertyF.Ground.Integrate.ProjectAudit
-public import PropertyF.Ground.CentreCabling.ProductGenerated
-public import PropertyF.Ground.CentreCalculus.Core
 public import PropertyF.Ground.CentreInduction.Underlying
 public import PropertyF.Ground.CentreInduction.Adjunction
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
@@ -220,16 +218,13 @@ public import PropertyF.Ground.Dimensions.DefectCoevaluation
 public import PropertyF.Ground.CentreCalculus.BraidRelations
 public import PropertyF.Ground.Centre.Calculus.TypeA
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
-public import PropertyF.Ground.CentreCalculus.ParityCorrection
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 public import PropertyF.Ground.CentreCabling.RegularSupport
-public import PropertyF.Ground.CentreCabling.FiniteMonodromy
 public import PropertyF.Ground.CentreCabling.TraceSaturation
 public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.CentreCabling.ProductCore
 public import PropertyF.Ground.CentreCabling.ImageCore
-public import PropertyF.Ground.CentreCabling.CoreCentrality
 public import PropertyF.Ground.CentreCabling.TargetReduction
 public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.Integrate.NumericalCoreReduction
@@ -260,9 +255,6 @@ public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 
 public import PropertyF.Ground.CentreCabling.TwistFinite
-public import PropertyF.Ground.CentreCabling.VafaTwist
-public import PropertyF.Ground.CentreCabling.VafaDeterminant
-public import PropertyF.Ground.CentreCabling.VafaLanternReduction
 public import PropertyF.Ground.Dimensions.DrinfeldTensorCap
 public import PropertyF.Ground.CentreCabling.TwistDual
 

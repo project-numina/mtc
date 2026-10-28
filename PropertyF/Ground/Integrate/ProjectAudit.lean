@@ -52,10 +52,6 @@ import all PropertyF.Ground.CentreCalculus.TwistSign
 import all PropertyF.Ground.CentreModular.VafaPivotal
 import all PropertyF.Ground.Integrate.BalancedCenterReduction
 import all PropertyF.Ground.CentreCabling.TwistFinite
-import all PropertyF.Ground.CentreCabling.VafaAlgebra
-import all PropertyF.Ground.CentreCabling.VafaDeterminant
-import all PropertyF.Ground.CentreCabling.VafaLanternReduction
-import all PropertyF.Ground.CentreCabling.VafaTwist
 import all PropertyF.Ground.CentreModular.AdditiveDecomposition
 import all PropertyF.Ground.CentreModular.VafaBiproduct
 import all PropertyF.Ground.CentreModular.VafaCompletion
@@ -98,14 +94,11 @@ import all PropertyF.Ground.CentreRigid.MateExplicit
 import all PropertyF.Ground.CentreRigid.Tensor
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
 import all PropertyF.Ground.CentreCabling.CentralityClosure
-import all PropertyF.Ground.CentreCabling.CoreCentrality
-import all PropertyF.Ground.CentreCabling.FiniteMonodromy
 import all PropertyF.Ground.CentreCabling.ImageCore
 import all PropertyF.Ground.CentreCabling.ProductCore
 import all PropertyF.Ground.CentreCabling.RegularSupport
 import all PropertyF.Ground.CentreCabling.TargetReduction
 import all PropertyF.Ground.CentreCabling.TraceSaturation
-import all PropertyF.Ground.CentreCalculus.ParityCorrection
 import all PropertyF.Ground.CentreCalculus.ProjectorReduction
 import all PropertyF.Ground.CentreDimensions.BraidingTrace
 import all PropertyF.Ground.CentreDimensions.PivotalTwist
@@ -238,8 +231,6 @@ import all PropertyF.Ground.Centre.ProductImages
 import all PropertyF.Ground.Centre.ReverseBraiding
 import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
-import all PropertyF.Ground.CentreCabling.ProductGenerated
-import all PropertyF.Ground.CentreCalculus.Core
 import all PropertyF.Ground.CentreInduction.Adjunction
 import all PropertyF.Ground.CentreInduction.Underlying
 import all PropertyF.Ground.CentreModular.InductionDimension
