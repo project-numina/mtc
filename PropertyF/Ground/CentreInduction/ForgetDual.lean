@@ -85,16 +85,13 @@ theorem forget_trace_of_pivotal_component
       e, e', u, Category.assoc] using hcompat
   have heval : (e'.hom ▷ ((Zᘁ).1)) ≫ ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) = (ε_ (Zᘁ) ((Zᘁ)ᘁ)).f :=
     rightDualIso_evaluation (forgetPairing (Zᘁ)) HasRightDual.exact
-  have ht : (η_ Z (Zᘁ)).f ≫ (((f.f ≫ (p.iso Z.1).hom) ≫ (e.homᘁ)) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
-      ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) =
-    η_ Z.1 (Z.1ᘁ) ≫ ((f.f ≫ (p.iso Z.1).hom) ⊗ₘ 𝟙 (Z.1ᘁ)) ≫ ε_ (Z.1ᘁ) ((Z.1ᘁ)ᘁ) :=
-    trace_change_rightDual (forgetPairing Z) HasRightDual.exact (f.f ≫ (p.iso Z.1).hom)
   have hn : (pZ.rightTrace f).asHom.f =
       (η_ Z (Zᘁ)).f ≫ ((f.f ≫ u ≫ e'.hom) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
         ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) := by
     simp [PivotalStructure.rightTrace, rightTraceWith, tensorHom_def, ← heval,
       comp_whiskerRight, Category.assoc, u]
-  rw [hn, htrans, ← Category.assoc f.f (p.iso Z.1).hom (e.homᘁ), ht]
+  rw [hn, htrans, ← Category.assoc f.f (p.iso Z.1).hom (e.homᘁ)]
+  erw [trace_change_rightDual (forgetPairing Z) HasRightDual.exact (f.f ≫ (p.iso Z.1).hom)]
   rfl
 
 end PropertyF.Ground.CentreInduction
