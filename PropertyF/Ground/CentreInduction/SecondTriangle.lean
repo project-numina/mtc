@@ -150,7 +150,7 @@ theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
   have hq : closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫ δ.hom = ε_ T (Tᘁ) :=
     close_rightUnit_eval T e
   clear_value δ
-  simp only [crossingBlock, Iso.trans_hom, Iso.trans_inv, whiskerLeftIso_hom,
+  simp only [crossingBlock, mixedCrossing, Iso.trans_hom, Iso.trans_inv, whiskerLeftIso_hom,
     whiskerLeftIso_inv, tensorIso_hom, Iso.refl_hom, tensorHom_def, whiskerLeft_id,
     Category.comp_id]
   set d : Aᘁ ⟶ 𝟙_ D := δ.hom

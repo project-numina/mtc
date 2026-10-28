@@ -73,29 +73,26 @@ def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v
     [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (X T U R S : D) : (R ⟶ U ⊗ S) →ₗ[k]
       (T ⊗ S ⟶ R) →ₗ[k] (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
   toFun g := {
-    toFun := fun f =>
-      (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S f) ≫
-        (α_ (U ⊗ S) X (Sᘁ)).hom ≫ (α_ U S (X ⊗ Sᘁ)).hom ≫
-          (U ◁ (α_ S X (Sᘁ)).inv)
+    toFun := fun f => mixedCrossing X T U g f
     map_add' := by
       intro f f'
-      simp [closeFusionMap, rightAdjointMate, Category.assoc,
+      simp [mixedCrossing, closeFusionMap, rightAdjointMate, Category.assoc,
         tensorHom_def, MonoidalPreadditive.whiskerLeft_add, MonoidalPreadditive.add_whiskerRight,
        Preadditive.comp_add, Preadditive.add_comp]
     map_smul' := by
       intro r f
-      simp [closeFusionMap, rightAdjointMate, Category.assoc,
+      simp [mixedCrossing, closeFusionMap, rightAdjointMate, Category.assoc,
         tensorHom_def, MonoidalLinear.whiskerLeft_smul, MonoidalLinear.smul_whiskerRight,
        Linear.comp_smul, Linear.smul_comp] }
   map_add' := by
     intro g g'
     ext f
-    simp [Category.assoc, tensorHom_def, MonoidalPreadditive.add_whiskerRight,
+    simp [mixedCrossing, Category.assoc, tensorHom_def, MonoidalPreadditive.add_whiskerRight,
       Preadditive.comp_add, Preadditive.add_comp]
   map_smul' := by
     intro r g
     ext f
-    simp [Category.assoc, tensorHom_def, MonoidalLinear.smul_whiskerRight,
+    simp [mixedCrossing, Category.assoc, tensorHom_def, MonoidalLinear.smul_whiskerRight,
       Linear.comp_smul, Linear.smul_comp]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -132,7 +129,7 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
       ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum]
     rw [crossing_completeness, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id]
   simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
-    crossingInclusion, crossingProjection, mixedCrossingBilinear, crossingBlock, Category.assoc] using
+    crossingInclusion, crossingProjection, mixedCrossingBilinear, mixedCrossing, crossingBlock, Category.assoc] using
     simpleBasis_contraction_refinement C i q r h
       (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
 
@@ -181,8 +178,6 @@ theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
   simp only [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp]
   monoidal
 
-variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
-  [MonoidalPreadditive D] [MonoidalLinear k D]
 variable (X : D)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -192,8 +187,8 @@ fusion inclusion with that map. -/
 theorem crossingBlock_post_test (h : T ⟶ U)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     crossingBlock X T S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
-      mixedCrossingBilinear (k := k) X T U R S (g ≫ (h ▷ S)) f := by
-  dsimp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk]
+      mixedCrossing X T U (g ≫ (h ▷ S)) f := by
+  dsimp only [crossingBlock, mixedCrossing]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -203,9 +198,8 @@ fusion projection with that map. -/
 theorem crossingBlock_pre_test (h : T ⟶ U)
     (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
     (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U S g f =
-      mixedCrossingBilinear (k := k) X T U R S g ((h ▷ S) ≫ f) := by
-  simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk,
-    tensorHom_def, Category.assoc]
+      mixedCrossing X T U g ((h ▷ S) ≫ f) := by
+  simp only [crossingBlock, mixedCrossing, tensorHom_def, Category.assoc]
   rw [associator_naturality_right_assoc, ← whisker_exchange_assoc, ← whiskerLeft_comp_assoc,
     closeFusionMap_pre_test, whisker_exchange_assoc]
 
@@ -217,8 +211,8 @@ theorem crossingBlock_sum_natural_test
     (T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
     (∑ b, (((simples C i ⊗ X) ⊗ (simples C i)ᘁ) ◁ h) ≫ crossingSummand C X U i j b) =
     ∑ a, crossingSummand C X T i j a ≫ (h ▷ ((simples C j ⊗ X) ⊗ (simples C j)ᘁ)) := by
-  simpa only [crossingSummand, crossingBlock_pre_test (k := ℂ), crossingBlock_post_test (k := ℂ),
-    crossingInclusion, crossingProjection, simpleProjection] using
+  simpa only [crossingSummand, crossingBlock_pre_test, crossingBlock_post_test,
+    mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk, crossingInclusion, crossingProjection, simpleProjection] using
     (simpleBasis_contraction_natural C i (h ▷ simples C j)
       (mixedCrossingBilinear (k := ℂ) X T U (simples C i) (simples C j))).symm
 
