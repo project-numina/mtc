@@ -88,32 +88,33 @@ theorem simple_rightDual (X : E) [Simple X] :
 end
 
 variable (D : BraidedFusionCategory.{v,u})
+local instance (i : Fin (rank D)) : Simple (simples D i) := simples_simple D i
 
 /-- The label of the left dual of a simple representative. -/
 def dualIndex (j : Fin (rank D)) : Fin (rank D) := by
-  letI : Simple (simples D j) := simples_simple D j
   letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   exact Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
 
+variable {D} in
 theorem dualIndex_iso (j : Fin (rank D)) :
     Nonempty ((ᘁ(simples D j)) ≅ simples D (dualIndex D j)) :=
-  letI : Simple (simples D j) := simples_simple D j
   letI : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
 
+variable {D} in
 /-- Fusion reciprocity with the dual kept as an actual object. -/
 theorem fusionCoeff_reciprocity (i j k : Fin (rank D)) :
     fusionCoeff D i j k =
       simpleMultiplicity D i (simples D k ⊗ (ᘁ(simples D j))) :=
-  letI : Simple (simples D i) := simples_simple D i
   (finrank_frobenius_reciprocity (k := ℂ) (simples D i) (simples D j) (simples D k)).trans
     (finrank_to_simple_eq_from_simple _ (simples D i))
 
+variable {D} in
 /-- The usual fusion-coefficient Frobenius reciprocity identity. -/
 theorem fusionCoeff_reciprocity_labels (i j k : Fin (rank D)) :
     fusionCoeff D i j k = fusionCoeff D k (dualIndex D j) i :=
-  (dualIndex_iso D j).elim fun e ↦
-    (fusionCoeff_reciprocity D i j k).trans
+  (dualIndex_iso j).elim fun e ↦
+    (fusionCoeff_reciprocity i j k).trans
       (CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
         (Iso.refl (simples D k) ⊗ᵢ e)).finrank_eq
 
@@ -121,8 +122,9 @@ theorem fusionCoeff_reciprocity_labels (i j k : Fin (rank D)) :
 theorem fusionCoeff_dual_symmetry (i j k : Fin (rank D)) :
     fusionCoeff D i k j = fusionCoeff D (dualIndex D i) j k :=
   (fusionCoeff_comm D i k j).trans
-    ((fusionCoeff_reciprocity_labels D k i j).trans (fusionCoeff_comm D j (dualIndex D i) k))
+    ((fusionCoeff_reciprocity_labels k i j).trans (fusionCoeff_comm D j (dualIndex D i) k))
 
+variable {D} in
 /-- A simple object and its dual contain the tensor unit with multiplicity one. -/
 theorem fusionCoeff_dual_unit (i : Fin (rank D)) :
     fusionCoeff D i (dualIndex D i) (unitIndex D) = 1 := by
@@ -133,14 +135,14 @@ theorem fusionCoeff_dual_unit (i : Fin (rank D)) :
 theorem dualIndex_unit :
     dualIndex D (unitIndex D) = unitIndex D := by
   simpa [fusionCoeff_unit, eq_comm] using
-    (fusionCoeff_reciprocity_labels D (unitIndex D) (unitIndex D) (unitIndex D))
+    (fusionCoeff_reciprocity_labels (unitIndex D) (unitIndex D) (unitIndex D))
 
 /-- Duality is involutive on simple labels. -/
 theorem dualIndex_involutive :
     Function.Involutive (dualIndex D) :=
   fun i ↦ by simpa [fusionCoeff_unit, eq_comm] using
-    ((fusionCoeff_reciprocity_labels D i (dualIndex D i) (unitIndex D)).symm.trans
-      (fusionCoeff_dual_unit D i))
+    ((fusionCoeff_reciprocity_labels i (dualIndex D i) (unitIndex D)).symm.trans
+      (fusionCoeff_dual_unit i))
 
 /-- Duality permutes the simple labels. -/
 def dualEquiv : Equiv.Perm (Fin (rank D)) :=
@@ -163,14 +165,14 @@ theorem rightQuantumTrace_simple_ne_zero
   let s : 𝟙_ C ⟶ X ⊗ (Xᘁ) := ExactPairing.coevaluation X (Xᘁ)
   let _ : Simple (Xᘁ) := simple_rightDual X
   obtain ⟨r₀, hr₀⟩ := split_from_simple s
-    ((exactPairing_ne_zero X (Xᘁ) (id_nonzero (Xᘁ))).1)
+    ((exactPairing_ne_zero X (id_nonzero (Xᘁ))).1)
   have hr₀ne : r₀ ≠ 0 := fun h ↦
     id_nonzero (𝟙_ C) (by simpa [h] using hr₀.symm)
   let t : X ⊗ (Xᘁ) ≅ ((Xᘁ)ᘁ) ⊗ (Xᘁ) := j ⊗ᵢ Iso.refl _
   let ev : ((Xᘁ)ᘁ) ⊗ (Xᘁ) ⟶ 𝟙_ C := ExactPairing.evaluation (Xᘁ) ((Xᘁ)ᘁ)
   have hev : ev ≠ 0 := by
     let _ : Simple ((Xᘁ)ᘁ) := Simple.of_iso j.symm
-    exact (exactPairing_ne_zero (Xᘁ) ((Xᘁ)ᘁ) (id_nonzero ((Xᘁ)ᘁ))).2
+    exact (exactPairing_ne_zero (Xᘁ) (id_nonzero ((Xᘁ)ᘁ))).2
   let r : X ⊗ (Xᘁ) ⟶ 𝟙_ C := t.hom ≫ ev
   have hr : r ≠ 0 := fun h ↦ hev ((cancel_epi t.hom).1 (by simpa [r] using h))
   have hfin : Module.finrank ℂ (X ⊗ (Xᘁ) ⟶ 𝟙_ C) = 1 :=

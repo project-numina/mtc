@@ -52,6 +52,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Closing the inverse tensor defect with the natural root gives the product
 of the two simple root dimensions. -/
 theorem rootTrace_inverseDefect (i j : Fin (rank C)) :
@@ -77,13 +78,13 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 set_option backward.isDefEq.respectTransparency false in
 theorem simpleInclusion_independent
     (X : C.Obj) (k : Fin (rank C)) :
     LinearIndependent ℂ (simpleInclusion C X k) := by
   classical
-  let : Simple (simples C k) := simples_simple C k
   refine Fintype.linearIndependent_iff.mpr fun g hg t ↦
     smul_left_injective ℂ (id_nonzero (simples C k)) ?_
   simpa [simpleInclusion, Category.assoc, Preadditive.sum_comp, Linear.smul_comp,
@@ -132,7 +133,6 @@ theorem simpleHom_postcomp_trace
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (simples C k)) :
     LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) = ∑ t, c t := by
   classical
-  let : Simple (simples C k) := simples_simple C k
   let : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   rw [LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)]
   unfold Matrix.trace
@@ -165,6 +165,7 @@ theorem rootTrace_eq_simpleHom_trace_sum
   simp only [rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Involutivity of every multiplicity operator implies ENO's trace-matrix
 root-dimension eigenvector identity. -/
 theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}

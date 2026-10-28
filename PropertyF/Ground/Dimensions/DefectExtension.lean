@@ -23,8 +23,19 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+/-- A scalar eigenvector pulls back along a monomorphism intertwining two endomorphisms. -/
+theorem scalar_eigenvector_of_mono {k : Type*} [CommSemiring k]
+    {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D]
+    {I A B : D} {u : I ⟶ A} {v : I ⟶ B} {s : A ⟶ B} [Mono s]
+    {f : A ⟶ A} {g : B ⟶ B} {c : k}
+    (hu : u ≫ s = v) (hfg : s ≫ g = f ≫ s) (hv : v ≫ g = c • v) :
+    u ≫ f = c • u :=
+  (cancel_mono s).1 <| by
+    rw [Category.assoc, ← hfg, ← Category.assoc, hu, hv, ← hu, Linear.smul_comp]
+
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The root tensor defect acts on a simple duality cup by the product of the unit-root and dual signs. -/
 theorem rootTensorDefect_coevaluation (i : Fin (rank C)) :
     let X := simples C i
@@ -39,7 +50,7 @@ theorem rootTensorDefect_coevaluation (i : Fin (rank C)) :
   let t := rootTensorIso C X (Xᘁ)
   let e := rootDualSign C i
   have hc : η_ X (Xᘁ) ≫ (a.hom ⊗ₘ b.hom) = e • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) :=
-    root_components_coevaluation C i
+    root_components_coevaluation i
   have hn : η_ X (Xᘁ) ≫ ((fourthDualRootNaturalIso C).app W).hom =
     ((fourthDualRootNaturalIso C).app I).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) :=
     (fourthDualRootNaturalIso C).hom.naturality (η_ X (Xᘁ))
@@ -65,6 +76,7 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The cup eigenvalue is invariant under changing the simple representative. -/
 theorem rootTensorDefect_coevaluation_of_iso
     {X : C.Obj} (i : Fin (rank C)) (a : X ≅ simples C i) :
@@ -77,10 +89,9 @@ theorem rootTensorDefect_coevaluation_of_iso
   have hn := rootTensorDefect_natural C a.hom b.hom
   change d.hom ≫ (rootTensorDefect C Y (Yᘁ)).hom =
     (rootTensorDefect C X (Xᘁ)).hom ≫ d.hom at hn
-  apply (cancel_mono d.hom).1
-  rw [Category.assoc, ← hn, ← Category.assoc, hc, rootTensorDefect_coevaluation,
-    ← hc, Linear.smul_comp]
+  exact scalar_eigenvector_of_mono hc hn (rootTensorDefect_coevaluation i)
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The root defect has the same eigenvalue on the braided-swapped cup. -/
 theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
     let X := simples C i
@@ -97,11 +108,10 @@ theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
   have hc : η_ A X ≫ A ◁ r.hom = η_ A Q := coevaluation_rightDualIso p q
   have hn := rootTensorDefect_natural C (𝟙 A) r.hom
   simp only [id_tensorHom] at hn
-  have he := rootTensorDefect_coevaluation_of_iso C (dualIndex C i) (rightDualLabelIso C i)
+  have he := rootTensorDefect_coevaluation_of_iso (dualIndex C i) (rightDualLabelIso C i)
   change η_ A Q ≫ (rootTensorDefect C A Q).hom = _ at he
   rw [rootDualSign_dual] at he
-  apply (cancel_mono (A ◁ r.hom)).1
-  rw [Category.assoc, ← hn, ← Category.assoc, hc, he, ← hc, Linear.smul_comp]
+  exact scalar_eigenvector_of_mono hc hn he
 end PropertyF.Ground.Dimensions
 
 end
@@ -139,6 +149,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The signed three-object cup slide follows from involutivity of its outer tensor defect. -/
 theorem rootTensorDefect_slide_of_involution
     {i : Fin (rank C)} (K : C.Obj)
@@ -158,7 +169,7 @@ theorem rootTensorDefect_slide_of_involution
   let e := rootDualSign C i
   have hs : u * u = 1 := rootDimension_unit_sq C
   have hc : cup ≫ (rootTensorDefect C A X).hom = (u * e) • cup :=
-    rootTensorDefect_swapped_coevaluation C i
+    rootTensorDefect_swapped_coevaluation i
   have hn := rootTensorDefect_natural C cup (𝟙 K)
   simp only [tensorHom_id] at hn
   have hu : (rootTensorDefect C I K).hom = u • 𝟙 (I ⊗ K) := rootTensorDefect_unit_left C K
@@ -205,7 +216,7 @@ theorem rootTensorDefect_involution_extension
 theorem trace_reciprocity_of_fourth_dual
     (hfourth : SimpleFourthDualTensorLaw C) :
     ENOTraceMatrixReciprocity C :=
-  trace_reciprocity_of_coevaluation C fun _ _ ↦ rootTensorDefect_slide_of_involution C _
+  trace_reciprocity_of_coevaluation C fun _ _ ↦ rootTensorDefect_slide_of_involution _
     (rootTensorDefect_involution_extension C
       (fun i j ↦ rootTensorDefect_involution_of_tensor_square C
         ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)) _ _)

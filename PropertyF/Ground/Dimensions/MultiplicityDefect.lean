@@ -20,32 +20,33 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 /-- Scalar comparing the chosen simple fourth-dual square root to the
 braided double-dual component. -/
 def fourthDualRootScalar (C : BraidedFusionCategory.{v,u})
     (i : Fin (rank C)) : ℂ := by
-  let : Simple (simples C i) := simples_simple C i
   let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   exact Classical.choose (isomorphisms_scalar (k := ℂ)
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
+variable {C} in
 theorem fourthDualRootScalar_spec
     (i : Fin (rank C)) : fourthDualRootScalar C i ≠ 0 ∧
     (fourthDualSimpleRoot C i).hom = fourthDualRootScalar C i •
       (doubleDualIso C (simples C i)).hom :=
-  letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  (Classical.choose_spec (isomorphisms_scalar (k := ℂ)
-    (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))).imp_right And.left
+  Classical.choose_spec (isomorphisms_scalar (k := ℂ)
+    (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
 /-- The chosen simple square roots extend to a natural isomorphism from the
 identity to the double-dual functor. It is not asserted to be monoidal. -/
 def fourthDualRootNaturalIso (C : BraidedFusionCategory.{v,u}) :
     𝟭 C.Obj ≅ doubleDualFunctor C.Obj :=
-  simpleScalarNaturalIso C (fourthDualRootScalar C) (fun i => (fourthDualRootScalar_spec C i).1) ≪≫
+  simpleScalarNaturalIso C (fourthDualRootScalar C) (fun i => (fourthDualRootScalar_spec i).1) ≪≫
     drinfeldNaturalIso C.Obj
 
+variable {C} in
 /-- The natural extension has exactly the chosen simple components. -/
 theorem fourthDualRootNaturalIso_app_simple
     (i : Fin (rank C)) :
@@ -55,21 +56,19 @@ theorem fourthDualRootNaturalIso_app_simple
     simpleScalarNaturalIso_app_simple]
   change (fourthDualRootScalar C i • 𝟙 (simples C i)) ≫
     (doubleDualIso C (simples C i)).hom = _
-  simpa using (fourthDualRootScalar_spec C i).2.symm
+  simpa using (fourthDualRootScalar_spec i).2.symm
 
 /-- Natural transformations from the identity are determined by their
 components on the simple representatives. -/
 theorem natTrans_eq_of_simple_components
     {F : C.Obj ⥤ C.Obj} {α β : 𝟭 C.Obj ⟶ F}
-    (h : ∀ i, α.app (simples C i) = β.app (simples C i)) : α = β := by
-  apply NatTrans.ext
-  funext X
-  refine simpleInclusion_hom_ext C fun i t ↦ ?_
-  change simpleInclusion C X i t ≫ α.app X = simpleInclusion C X i t ≫ β.app X
-  simpa only [Functor.id_map] using
-    (α.naturality (simpleInclusion C X i t)).trans (by
-      rw [h i]
-      exact (β.naturality (simpleInclusion C X i t)).symm)
+    (h : ∀ i, α.app (simples C i) = β.app (simples C i)) : α = β :=
+  NatTrans.ext <| funext fun X ↦ simpleInclusion_hom_ext C fun i t ↦ by
+    change simpleInclusion C X i t ≫ α.app X = simpleInclusion C X i t ≫ β.app X
+    simpa only [Functor.id_map] using
+      (α.naturality (simpleInclusion C X i t)).trans (by
+        rw [h i]
+        exact (β.naturality (simpleInclusion C X i t)).symm)
 
 /-- The natural double-dual root, squared using the double-dual functor. -/
 def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
@@ -86,7 +85,7 @@ theorem fourthDualRootNaturalSquare_eq :
       ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
         (fourthDualIso (simples C i)).hom
     rw [fourthDualRootNaturalIso_app_simple]
-    exact congrArg Iso.hom (fourthDualSimpleRoot_sq C i)
+    exact congrArg Iso.hom (fourthDualSimpleRoot_sq i)
 
 end PropertyF.Ground.Dimensions
 

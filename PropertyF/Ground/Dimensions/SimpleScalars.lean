@@ -51,7 +51,7 @@ theorem exists_fourthDual_square_root
     (e : X ≅ (Xᘁ)ᘁ) (g : X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ)) :
     ∃ a : X ≅ ((Xᘁ)ᘁ), a ≪≫ rightDualIsoMap (rightDualIsoMap a) = g := by
   let e2 := e ≪≫ rightDualIsoMap (rightDualIsoMap e)
-  obtain ⟨c, hc0, hc, _⟩ := isomorphisms_scalar (k := k) e2 g
+  obtain ⟨c, hc0, hc⟩ := isomorphisms_scalar (k := k) e2 g
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq c (n := 2) (by decide)
   have hz0 : z ≠ 0 := fun h ↦ hc0 (by simpa [h] using hz.symm)
   refine ⟨scaleIso e z hz0, ?_⟩
@@ -67,20 +67,20 @@ end PropertyF.Ground.Dimensions
 namespace PropertyF.Ground.Dimensions
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 /-- A chosen square root of the natural braided fourth-dual map on each
 simple representative. -/
 def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
     simples C i ≅ ((simples C i)ᘁ)ᘁ :=
-  letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   Classical.choose (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
 
+variable {C} in
 /-- The chosen simple component squares to the natural fourth-dual component. -/
 theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :
     fourthDualSimpleRoot C i ≪≫ rightDualIsoMap (rightDualIsoMap (fourthDualSimpleRoot C i)) =
       fourthDualIso (simples C i) :=
-  letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   Classical.choose_spec (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
 
@@ -245,6 +245,7 @@ def simpleScalarNaturalIso (C : BraidedFusionCategory.{v,u})
   simp only [Functor.id_map, hcomponent]
   exact (simpleScalarNatural C c).naturality f
 
+variable {C} in
 /-- On each simple, the natural automorphism has the prescribed scalar component. -/
 theorem simpleScalarNaturalIso_app_simple
     {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :

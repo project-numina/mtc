@@ -38,10 +38,11 @@ theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 :=
 theorem one_le_fpDimension {X : D.Obj}
     (hX : ¬ IsZero X) : 1 ≤ fpDimension D X :=
   (exists_positive_multiplicity D hX).elim fun i hi ↦
-    (one_le_mul_of_one_le_of_one_le (Nat.one_le_cast.mpr hi) (one_le_fpSimple D i)).trans
+    (one_le_mul_of_one_le_of_one_le (Nat.one_le_cast.mpr hi) (one_le_fpSimple i)).trans
       (Finset.single_le_sum
         (fun j _ ↦ mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D j).le) (Finset.mem_univ i))
 
+variable {D} in
 /-- Hom multiplicities of a tensor product are the convolution of the
 multiplicities of its factors with the fusion coefficients. -/
 theorem tensor_multiplicity_expanded (X Y : D.Obj) (k : Fin (rank D)) :
@@ -78,11 +79,12 @@ theorem fpDimension_tensor (X Y : D.Obj) :
   rw [← Finset.mul_sum, ← Finset.mul_sum, ← fpSimple_mul]
   ring
 
+variable {D} in
 /-- Multiplicity of a simple in a dual object equals the multiplicity of its
 dual in the original object. -/
 theorem dual_multiplicity (X : D.Obj) (i : Fin (rank D)) :
     simpleMultiplicity D i (ᘁX) = simpleMultiplicity D (dualIndex D i) X := by
-  obtain ⟨e⟩ := dualIndex_iso D i
+  obtain ⟨e⟩ := dualIndex_iso i
   let : Simple (simples D (dualIndex D i)) := simples_simple D _
   exact (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁX : D.Obj)).symm).trans
     (tensorLeftHomLinearEquiv (k := ℂ) (simples D i) (ᘁX) X (𝟙_ D.Obj)).symm |>.trans
@@ -157,8 +159,8 @@ theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.M
       (fpDimension_functor_decomposition C D F _))
   have heq : f = fpSimple C := positive_symmetric_eigenvector_unique (totalFusionMatrix_pos C)
     (Matrix.ext fun i j ↦ totalFusionMatrix_symmetric C j i) hpos (fpSimple_pos C)
-    hunit (fpSimple_unit C) (character_total_eigenvector C hmul)
-    (character_total_eigenvector C (fpSimple_mul C))
+    hunit (fpSimple_unit C) (character_total_eigenvector hmul)
+    (character_total_eigenvector (fpSimple_mul C))
   simpa only [fpDimension, ← heq, f] using fpDimension_functor_decomposition C D F X
 
 end PropertyF.Ground

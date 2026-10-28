@@ -19,7 +19,7 @@ theorem mono_ne_zero_of_id_ne_zero {C : Type u} [Category.{v} C] [HasZeroMorphis
 
 /-- The evaluation and coevaluation of a dual pair are nonzero when the right object is nonzero. -/
 theorem exactPairing_ne_zero {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [Preadditive C] [MonoidalPreadditive C] (X Y : C) [ExactPairing X Y]
+    [Preadditive C] [MonoidalPreadditive C] (X : C) {Y : C} [ExactPairing X Y]
     (hY : 𝟙 Y ≠ 0) : ExactPairing.coevaluation X Y ≠ 0 ∧
       ExactPairing.evaluation X Y ≠ 0 := by
   constructor <;> intro h <;> apply hY <;>
@@ -55,7 +55,7 @@ theorem unit_retract_leftDual_tensor (X : C) [Simple X] :
     ∃ (s : 𝟙_ C ⟶ (ᘁX) ⊗ X) (r : (ᘁX) ⊗ X ⟶ 𝟙_ C), s ≫ r = 𝟙 (𝟙_ C) :=
   letI : Simple (𝟙_ C) := IsFusionCategory.unit_simple (C := C)
   ⟨_, split_from_simple (ExactPairing.coevaluation (ᘁX) X)
-    (exactPairing_ne_zero (ᘁX) X (id_nonzero X)).1⟩
+    (exactPairing_ne_zero (ᘁX) (id_nonzero X)).1⟩
 
 end PropertyF.Ground
 
@@ -74,6 +74,8 @@ variable (C : BraidedFusionCategory.{v,u})
 theorem simples_simple (i : Fin (rank C)) : Simple (simples C i) :=
   (Classical.choose_spec (Classical.choose_spec
     (IsFusionCategory.finite_semisimple (C := C.Obj)))).1 i
+
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 theorem simples_injective {i j : Fin (rank C)}
     (h : Nonempty (simples C i ≅ simples C j)) : i = j :=
@@ -102,8 +104,7 @@ theorem exists_simple_retract {X : C.Obj} (hX : 𝟙 X ≠ 0) :
 /-- Every simple object is isomorphic to one of the chosen representatives. -/
 theorem exists_simple_iso (X : C.Obj) [Simple X] :
     ∃ i : Fin (rank C), Nonempty (X ≅ simples C i) :=
-  (exists_simple_retract C (id_nonzero X)).imp fun i ⟨s, _, hs, _⟩ ↦
-    letI : Simple (simples C i) := simples_simple C i
+  (exists_simple_retract C (id_nonzero X)).imp fun _i ⟨s, _, hs, _⟩ ↦
     letI : IsIso s := CategoryTheory.isIso_of_hom_simple hs
     ⟨asIso s⟩
 
@@ -116,8 +117,6 @@ theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ 
 theorem finrank_simples_hom (i j : Fin (rank C)) :
     Module.finrank ℂ (simples C i ⟶ simples C j) = if i = j then 1 else 0 := by
   classical
-  let : Simple (simples C i) := simples_simple C i
-  let : Simple (simples C j) := simples_simple C j
   let : ∀ X Y : C.Obj, FiniteDimensional ℂ (X ⟶ Y) := IsFusionCategory.hom_finite
   simp only [CategoryTheory.finrank_hom_simple_simple ℂ,
     show Nonempty (simples C i ≅ simples C j) ↔ i = j from

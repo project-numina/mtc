@@ -69,6 +69,7 @@ def rootDimension (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) : ℂ :=
   unitScalar C (rootTrace C (𝟙 (simples C i)))
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- All natural-root simple dimensions are nonzero. -/
 theorem rootDimension_ne_zero (i : Fin (rank C)) :
     rootDimension C i ≠ 0 :=
@@ -92,6 +93,7 @@ abbrev ENOTraceMatrixEigenvector (C : BraidedFusionCategory.{v,u}) : Prop :=
 abbrev RootNormIdentity (C : BraidedFusionCategory.{v,u}) : Prop :=
   ∀ i, squaredNorm C (simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)
 
+variable {C} in
 /-- The trace of an involutive multiplicity defect is bounded by its multiplicity. -/
 theorem enoTraceMatrix_norm_le_fusionCoeff {i j k : Fin (rank C)}
     (h : (multiplicityDefect C i j k).toLinearMap *
@@ -101,6 +103,7 @@ theorem enoTraceMatrix_norm_le_fusionCoeff {i j k : Fin (rank C)}
   simp only [enoTraceMatrix, hn, Complex.norm_intCast, ← Int.cast_abs]
   exact_mod_cast hb
 
+variable {C} in
 /-- Once the categorical multiplicity defects are involutive and their trace
 matrix has the natural-root dimension vector as an eigenvector, ENO's FP
 bound follows. Both remaining identities are explicit hypotheses. -/
@@ -111,8 +114,8 @@ theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
       rootDimension C i * rootDimension C j) :
     ‖rootDimension C i‖ ≤ fpSimple C i :=
   weighted_eigenvalue_bound (fun j k ↦ fusionCoeff C i j k) (enoTraceMatrix C i)
-    (fpSimple C) (rootDimension C) (rootDimension_ne_zero C (unitIndex C)) (fpSimple_pos C)
-    (fun _ _ ↦ Nat.cast_nonneg _) (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv j k))
+    (fpSimple C) (rootDimension C) (rootDimension_ne_zero (unitIndex C)) (fpSimple_pos C)
+    (fun _ _ ↦ Nat.cast_nonneg _) (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff (hinv j k))
     (fun j ↦ (fpSimple_mul C i j).symm) heig
 
 end PropertyF.Ground.Dimensions
