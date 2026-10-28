@@ -16,14 +16,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground
 universe v u
 
-/-- The actual Drinfeld map has the tensor coherence law in any braided
-fusion category. -/
-theorem drinfeld_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
-    Modular.doubleBraiding X Y ≫ (doubleDualIso C (X ⊗ Y)).hom =
-      ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
-        (doubleDualTensorIso X Y).hom :=
-  CentreIntegrate.drinfeld_tensor_of_pairing_cap (doubleDualIso C)
-    (drinfeld_eval C (X ⊗ Y)) (drinfeld_tensor_pairing_cap C X Y)
+/-- The Drinfeld map satisfies tensor coherence in a braided rigid category. -/
+theorem drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [BraidedCategory D] [RightRigidCategory D] (X Y : D) :
+    Modular.doubleBraiding X Y ≫ (drinfeldIso (X ⊗ Y)).hom =
+      ((drinfeldIso X).hom ⊗ₘ (drinfeldIso Y).hom) ≫ (doubleDualTensorIso X Y).hom :=
+  CentreIntegrate.drinfeld_tensor_of_pairing_cap drinfeldIso
+    (drinfeld_eval (X ⊗ Y)) (drinfeld_tensor_pairing_cap X Y)
 
 end PropertyF.Ground
 end
@@ -62,9 +61,10 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj)
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [RightRigidCategory D] (X Y : D)
 -- The Drinfeld isomorphism of the base category.
-local notation "d" => doubleDualIso C
+local notation "d" => drinfeldIso
 
 /-- The inverse Drinfeld map satisfies the reversed tensor identity. -/
 theorem drinfeld_tensor_inverse :
@@ -74,13 +74,13 @@ theorem drinfeld_tensor_inverse :
     (doubleDualTensorIso X Y).inv ≫
       (d X ⊗ᵢ d Y).inv ≫ Modular.doubleBraiding X Y
   rw [Iso.eq_inv_comp, Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
-  exact (drinfeld_tensor C X Y).symm
+  exact (drinfeld_tensor X Y).symm
 
 /-- Formula for transporting the inverse Drinfeld map through an isomorphism. -/
-theorem drinfeld_inv_natural {A B : C.Obj} (t : A ≅ B) :
+theorem drinfeld_inv_natural {A B : D} (t : A ≅ B) :
     (d A).inv = (((t.homᘁ)ᘁ) ≫ (d B).inv) ≫ t.inv := by
   rw [Iso.eq_comp_inv, Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
-  exact doubleDualIso_natural C t.hom
+  exact drinfeldIso_natural t.hom
 
 /-- The inverse dual Drinfeld map after the tensorator, in terms of the
 reversed dual factors and monodromy. -/
@@ -93,8 +93,8 @@ theorem drinfeld_inv_dual_tensor :
   let t := rightDualTensorIso X Y
   let f := (d (Yᘁ)).inv
   let g := (d (Xᘁ)).inv
-  have hn' := congrArg (fun z => rightAdjointMate z) (drinfeld_inv_natural C t)
-  have hi' := congrArg (fun z => rightAdjointMate z) (drinfeld_tensor_inverse C (Yᘁ) (Xᘁ))
+  have hn' := congrArg (fun z => rightAdjointMate z) (drinfeld_inv_natural t)
+  have hi' := congrArg (fun z => rightAdjointMate z) (drinfeld_tensor_inverse (Yᘁ : D) (Xᘁ : D))
   simp only [comp_rightAdjointMate] at hn' hi'
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap, Category.assoc]
@@ -112,15 +112,14 @@ theorem drinfeld_inv_dual_tensor :
 
 /-- The Drinfeld tensor law forces monoidality of the canonical fourth-dual map. -/
 theorem fourthDualIso_tensor :
-    (fourthDualIso C (X ⊗ Y)).hom =
-      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
+    (fourthDualIso (X ⊗ Y)).hom =
+      ((fourthDualIso X).hom ⊗ₘ (fourthDualIso Y).hom) ≫
         (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
           (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
   let m : X ⊗ Y ≅ X ⊗ Y := (β_ X Y) ≪≫ (β_ Y X)
-  simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom,
-    rightDualIsoMap]
-  rw [(Iso.eq_inv_comp m).2 (drinfeld_tensor C X Y)]
-  simp only [Category.assoc, drinfeld_inv_dual_tensor C X Y]
+  simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap]
+  rw [(Iso.eq_inv_comp m).2 (drinfeld_tensor X Y)]
+  simp only [Category.assoc, drinfeld_inv_dual_tensor X Y]
   simp only [← tensorHom_comp_tensorHom_assoc, ← Category.assoc]
   rw [Category.assoc m.inv,
     ← CentreCabling.doubleBraiding_natural (d X).hom (d Y).hom]
@@ -142,7 +141,9 @@ structure with its actual FP dimensions, without any pivotal premise. -/
 theorem positive_spherical_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
     (hpu : PseudoUnitary C) :
     ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
-  positive_spherical_of_nonunit_fourth_dual C
-    (fun i j _ _ ↦ fourthDualIso_tensor C (simples C i) (simples C j)) hpu
+  let h (i j : Fin (rank C)) : fourthDualTensorLaw C (simples C i) (simples C j) :=
+    fourthDualIso_tensor (simples C i) (simples C j)
+  positive_spherical_of_simple_fourth_and_reciprocity C h
+    (trace_reciprocity_of_fourth_dual C h) hpu
 
 end PropertyF.Ground.CentreInduction

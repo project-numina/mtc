@@ -16,7 +16,6 @@ Duality, associativity and coevaluation identities extend root tensor-defect rel
 ## Main results
 
 * `rootTensorDefect_coevaluation`: relates the tensor defect to coevaluation.
-* `positive_spherical_of_nonunit_fourth_dual`: constructs a positive spherical structure from fourth-dual compatibility.
 -/
 
 @[expose] public noncomputable section
@@ -194,44 +193,6 @@ end PropertyF.Ground.Dimensions
 end
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
-universe v u
-
-variable (C : BraidedFusionCategory.{v,u})
-set_option backward.isDefEq.respectTransparency false in
-/-- A signed scalar tensor defect forces the fourth-dual tensor law. -/
-theorem fourthDualIso_tensor_of_signed_defect
-    {X Y : C.Obj} (z : ℂ) (hz : z * z = 1)
-    (hd : (rootTensorDefect C X Y).hom = z • 𝟙 (X ⊗ Y)) :
-    fourthDualTensorLaw C X Y := by
-  let T := rootTensorIso C X Y
-  let A := (fourthDualRootNaturalIso C).app (X ⊗ Y)
-  have hsq : T.hom ≫ ((T.homᘁ)ᘁ) = (fourthDualIso C (X ⊗ Y)).hom := by
-    rw [(iso_comp_inv_eq_smul_iff_of_sq_one A T z hz).1 hd]
-    simp only [rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul,
-      hz, one_smul]
-    exact congrArg (fun n => (n.app (X ⊗ Y)).hom) (fourthDualRootNaturalSquare_eq C)
-  exact hsq.symm.trans (rootTensor_square_eq_fourthDual_tensor C X Y)
-
-/-- The fourth-dual tensor law holds when the left factor is the chosen unit
-simple representative. -/
-theorem fourthDualIso_tensor_unitLabel_left (X : C.Obj) :
-    fourthDualTensorLaw C (simples C (unitIndex C)) X :=
-  fourthDualIso_tensor_of_signed_defect C (rootDimension C (unitIndex C))
-    (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_left C X)
-
-/-- The fourth-dual tensor law holds when the right factor is the chosen unit
-simple representative. -/
-theorem fourthDualIso_tensor_unitLabel_right (X : C.Obj) :
-    fourthDualTensorLaw C X (simples C (unitIndex C)) :=
-  fourthDualIso_tensor_of_signed_defect C (rootDimension C (unitIndex C))
-    (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_right C X)
-end PropertyF.Ground.Dimensions
-
-end
-
-@[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
@@ -260,24 +221,6 @@ theorem trace_reciprocity_of_fourth_dual
       (fun i j ↦ rootTensorDefect_involution_of_tensor_square C
         ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)) _ _)
 
-/-- The fourth-dual law on non-unit simple pairs suffices for the canonical pseudo-unitary spherical structure. -/
-theorem positive_spherical_of_nonunit_fourth_dual
-    (hfourth : ∀ i j : Fin (rank C), i ≠ unitIndex C → j ≠ unitIndex C →
-      fourthDualTensorLaw C (simples C i) (simples C j))
-    (hpu : PseudoUnitary C) :
-    HasFPSphericalStructure C := by
-  have hsimple : ∀ i j : Fin (rank C),
-      fourthDualTensorLaw C (simples C i) (simples C j) := by
-    intro i j
-    by_cases hi : i = unitIndex C
-    · subst i
-      exact fourthDualIso_tensor_unitLabel_left C (simples C j)
-    · by_cases hj : j = unitIndex C
-      · subst j
-        exact fourthDualIso_tensor_unitLabel_right C (simples C i)
-      · exact hfourth i j hi hj
-  exact positive_spherical_of_simple_fourth_and_reciprocity C hsimple
-    (trace_reciprocity_of_fourth_dual C hsimple) hpu
 end PropertyF.Ground.Dimensions
 
 end
