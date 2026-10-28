@@ -150,13 +150,21 @@ theorem fpDeterminant_trans {X : C.Obj}
   simp [fpDeterminant, homAction_trans, LinearEquiv.det_trans, vafaUnitClass, rationalUnitClass_mul,
     smul_add, Finset.sum_add_distrib, add_comm]
 
+section ScalarIso
+variable {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D] [Preadditive D] [Linear R D]
+
 /-- The actual scalar automorphism of an object. -/
-def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
-    [Preadditive D] [Linear R D] (X : D) (z : Rˣ) : X ≅ X where
+def scalarIso (X : D) (z : Rˣ) : X ≅ X where
   hom := (z : R) • 𝟙 X
   inv := ((z⁻¹ : Rˣ) : R) • 𝟙 X
   hom_inv_id := by simp [Linear.comp_smul, smul_smul]
   inv_hom_id := by simp [Linear.comp_smul, smul_smul]
+
+/-- Inverting a scalar automorphism inverts its scalar. -/
+@[simp]
+theorem scalarIso_symm (X : D) (z : Rˣ) : (scalarIso X z).symm = scalarIso X z⁻¹ := Iso.ext rfl
+
+end ScalarIso
 
 /-- A scalar linear equivalence has determinant equal to the scalar's dimension power. -/
 theorem linearEquiv_det_of_scalar {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
@@ -370,9 +378,7 @@ theorem natural_scalars_finite_of_monodromy_determinant
     ∀ i, IsOfFinOrder (t i) :=
   natural_scalars_finite_of_fpDeterminant_balance C ht fun i j ↦ by
     dsimp only [monodromyDet] at hmon
-    rw [hbalance, fpDeterminant_trans, hmon, add_zero,
-      fpDeterminant_scalar C (simples C i ⊗ simples C j), vafaUnitClass, rationalUnitClass_mul]
-    simp only [vafaUnitClass]
+    simp [hbalance, fpDeterminant_trans, hmon, fpDeterminant_scalar, vafaUnitClass, rationalUnitClass_mul]
 
 end PropertyF.Ground.CentreModular
 end
@@ -529,7 +535,7 @@ theorem functor_natural_app_conjugate {D : Type u} {E : Type*}
 biproduct under its canonical comparison isomorphism. -/
 theorem functor_natural_app_biprod {D : Type u} {E : Type*}
     [Category.{v} D] [Category E] [Preadditive D] [Preadditive E]
-    [HasBinaryBiproducts D] [HasBinaryBiproducts E]
+    [HasBinaryBiproducts D]
     (F : D ⥤ E) [F.Additive] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
     η.app (X ⊞ Y) = F.mapBiprod X Y ≪≫
       biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm :=
@@ -725,9 +731,8 @@ theorem monodromy_simple_eq_scalar_natural (i j : Fin (rank C)) :
     monodromyIso (simples C i) (simples C j) =
       scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ ≪≫
         η.app (simples C i ⊗ simples C j) := by
-  rw [hbalance, show scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ =
-    (scalarIso (simples C i ⊗ simples C j) (t i * t j)).symm from Iso.ext rfl,
-    Iso.symm_self_id_assoc]
+  simpa only [← hbalance i j, scalarIso_symm] using
+    (Iso.symm_self_id_assoc (scalarIso _ (t i * t j)) (monodromyIso (simples C i) (simples C j))).symm
 
 include hbalance in
 /-- Under the explicit balancing equation, the tensor determinant rule holds

@@ -163,6 +163,21 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
   simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul,
     unitScalar_eq_equiv, map_smul, smul_eq_mul, f]
 
+/-- A negative twist is corrected by the sign-twisted permutation action. -/
+theorem negativeParity_adjacentTrace (hX : SelfTransparent X)
+    (htotal : IsLeftTraceCompatible p X) (hneg : θ C p X = -1) :
+    HasAdjacentTrace (permutationScalarTrace C p (parityPermutationAction C hX true)) := by
+  intro n σ
+  have hsign : (permutationSign ℂ (n + 2) (decomposeFin.symm (1, σ)) : ℂ) =
+      -(permutationSign ℂ (n + 1) σ : ℂ) := by
+    simpa using sign_decomposeFin 1 σ
+  simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
+    MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
+    unitScalar_eq_equiv, map_smul, smul_eq_mul, hsign]
+  rw [← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
+    tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ, hneg]
+  ring
+
 include hdim in
 /-- The symmetric integrality argument now needs only left iterated-trace
 compatibility and the sign of the actual pivotal twist scalar. -/
@@ -177,18 +192,8 @@ theorem integral_of_leftTrace_and_twist_sign
     intro n σ
     simpa [permutationScalarTrace, parityPermutationAction, h] using
       tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ
-  · apply integral_of_parity_adjacent_trace hdim hX true
-    intro n σ
-    have hsign' : (permutationSign ℂ (n + 2)
-        (decomposeFin.symm (1, σ)) : ℂ) =
-        -(permutationSign ℂ (n + 1) σ : ℂ) := by
-      simpa using sign_decomposeFin 1 σ
-    simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
-      MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
-      unitScalar_eq_equiv, map_smul, smul_eq_mul, hsign']
-    rw [← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
-      tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ, h]
-    ring
+  · exact integral_of_parity_adjacent_trace hdim hX true
+      (negativeParity_adjacentTrace hX htotal h)
 
 end PropertyF.Ground.CentreCalculus
 

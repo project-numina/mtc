@@ -138,11 +138,10 @@ theorem unitComponent_natural
   simp only [Category.assoc]
   rw [rightUnitor_inv_naturality_assoc, ← whisker_exchange_assoc,
     associator_inv_naturality_left_assoc]
-  have hc := congrArg (fun g => g ▷ (simples C i)ᘁ) (f.comm (simples C i))
-  simp only [comp_whiskerRight] at hc
-  simpa only [Category.assoc] using congrArg (fun g =>
+  simpa only [Category.assoc, comp_whiskerRight] using congrArg (fun g =>
     (ρ_ X.1).inv ≫ (X.1 ◁ η_ (simples C i) ((simples C i)ᘁ)) ≫
-      (α_ X.1 (simples C i) ((simples C i)ᘁ)).inv ≫ g) hc
+      (α_ X.1 (simples C i) ((simples C i)ᘁ)).inv ≫ (g ▷ (simples C i)ᘁ))
+    (f.comm (simples C i))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The underlying left triangle reduces to the unit-labelled coevaluation

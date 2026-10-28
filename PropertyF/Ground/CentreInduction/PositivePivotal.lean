@@ -201,10 +201,8 @@ theorem center_positive_spherical_of_compatible_pivotal
       pivotalDimension_eq_fp hsimple]
     change (fpDimension C ((CategoryTheory.Center.forget C.Obj).obj (simples D i)) : ℂ) = _
     rw [Integrate.center_forget_fpDimension C, fpDimension_simple]
-  refine ⟨?_, hd⟩
-  apply (Dimensions.pivotal_spherical_iff_simple_dimensions_real D pZ).2
+  refine ⟨(Dimensions.pivotal_spherical_iff_simple_dimensions_real D pZ).2 ?_, hd⟩
   intro i
-  rw [hd]
-  simp
+  simp [hd]
 
 end PropertyF.Ground.CentreInduction
