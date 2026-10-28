@@ -181,15 +181,15 @@ theorem propertyF_of_galois_column
     (Z : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj))
     (τ : ℂ ≃+* ℂ) (core generated : Set (Fin (rank Z)))
     (hIntegral : ∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z)
-    (hDouble : ∀ y, (∀ x ∈ core, Modular.categoricalS Z p x y =
-      Modular.simpleDimension Z p x * Modular.simpleDimension Z p y) → y ∈ generated)
+    (hDouble : CentreCabling.sCentralizer Z p core ⊆ generated)
     (hFinite : ∀ y ∈ generated, ObjectPropertyF (simples Z y))
     (y : Fin (rank Z))
     (hColumn : ∀ x, Modular.categoricalS Z p x y =
       Modular.simpleDimension Z p y * τ (Modular.simpleDimension Z p x)) :
     ObjectPropertyF (simples Z y) :=
-  hFinite y <| hDouble y fun x hx ↦ by
+  hFinite y <| hDouble fun x hx ↦ by
     obtain ⟨z, hz⟩ := hIntegral x hx
+    change Modular.categoricalS Z p x y = Modular.simpleDimension Z p x * Modular.simpleDimension Z p y
     rw [hColumn, hz, map_intCast, mul_comm]
 
 end PropertyF.Ground
@@ -260,8 +260,7 @@ theorem target_of_center_centralizers
         (Modular.categoricalS Z p).det ≠ 0 ∧
         globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
         (∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z) ∧
-        (∀ y, (∀ x ∈ core, Modular.categoricalS Z p x y =
-          Modular.simpleDimension Z p x * Modular.simpleDimension Z p y) → y ∈ generated) ∧
+        (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
         (∀ y ∈ generated, ObjectPropertyF (simples Z y))) : TargetStatement.{v,u} := by
   apply target_of_modular_center
   intro C hPU hF σ
@@ -311,8 +310,7 @@ theorem target_of_center_product_retracts
         (Modular.categoricalS Z p).det ≠ 0 ∧
         globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
         (∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z) ∧
-        (∀ y, (∀ x ∈ core, Modular.categoricalS Z p x y =
-          Modular.simpleDimension Z p x * Modular.simpleDimension Z p y) → y ∈ generated) ∧
+        (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
         (∀ y ∈ generated, Centre.ProductRetract (F.obj (simples Z y)))) :
     TargetStatement.{v,u} := by
   apply target_of_center_centralizers
@@ -356,8 +354,7 @@ theorem target_of_actual_center
             (Modular.categoricalS Z p).det ≠ 0 ∧
             globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
             (∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z) ∧
-            (∀ y, (∀ x ∈ core, Modular.categoricalS Z p x y =
-              Modular.simpleDimension Z p x * Modular.simpleDimension Z p y) → y ∈ generated) ∧
+            (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
             (∀ y ∈ generated, Centre.ProductRetract (simples Z y))) : TargetStatement.{v,u} := by
   apply target_of_center_product_retracts
   intro C hPU hF
