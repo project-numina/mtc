@@ -110,18 +110,4 @@ theorem exists_unitary_braid_trace_blocks
     pivotalTrace_braid_multiplicities C X n p scalar m e r d hd b
   exact ⟨r, d, b, mult, hd, hunitary, hret, hdim, htrace⟩
 
-/-- If the actual categorical dimensions are Galois transforms of positive
-original dimensions, every retained categorical braid-trace weight is nonzero. -/
-theorem categorical_transported_weight_ne_zero
-    (C : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
-    (σ : ℂ ≃+* ℂ) (original : Fin (Ground.rank C) → ℝ)
-    (hpositive : ∀ i, 0 < original i)
-    (htransport : ∀ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) = σ (original i : ℂ))
-    {r : ℕ} (mult : Fin (Ground.rank C) → Fin r → ℕ)
-    (hretained : ∀ j, ∃ i, 0 < mult i j) (j : Fin r) :
-    (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) ≠ 0 := by
-  simp_rw [htransport]
-  exact transported_weight_ne_zero (fun i => mult i j) original σ hpositive (hretained j)
-
 end PropertyF.Ground.Calculus

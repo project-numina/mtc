@@ -133,7 +133,7 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
   apply MonoidHom.mem_ker.mpr
   rcases hw with hw | hw
   · obtain ⟨i, rfl⟩ := hw
-    simp only [strandPermutation, FreeGroup.lift_apply_of, pow_two]
+    simp only [strandPermutation, pow_two]
     exact Equiv.swap_mul_self _ _
   · rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩
     · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]

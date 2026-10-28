@@ -82,7 +82,7 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
   let f := (tensorPermutationAction X hX (n + 1)) σ
   have hswap : tensorPermutationAction X hX (n + 2) (Equiv.swap 0 1) =
       Aut.toEnd (braidGenerator X n 0) := by
-    convert tensorPermutationAction_swap X hX n 0 using 1 <;> congr 2
+    convert tensorPermutationAction_swap X hX n 0 using 1; congr 2
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   have hact : tensorPermutationAction X hX (n + 2)
       (Equiv.Perm.decomposeFin.symm (1, σ)) =
@@ -186,10 +186,10 @@ theorem leftTrace_tensor_pairing (p : Dimensions.PivotalStructure (C := C))
     Iso.ext (p.tensor X Y)
   rw [tensorDual_coevaluation, hp]
   simp only [Iso.trans_inv, tensorIso_inv, tensorHom_def, id_whiskerRight,
-    whiskerLeft_id, Category.comp_id, whiskerLeft_comp, Category.assoc]
+    Category.comp_id, whiskerLeft_comp, Category.assoc]
   dsimp only [A, D, E, r] at *
   simp only [Category.id_comp, ← whiskerLeft_comp_assoc, Iso.hom_inv_id_assoc,
-    Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]
+    whiskerLeft_id, Category.id_comp]
   rw [← whisker_exchange_assoc, ← hev]
 
 set_option backward.isDefEq.respectTransparency false in

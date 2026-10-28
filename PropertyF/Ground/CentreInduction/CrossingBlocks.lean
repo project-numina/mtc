@@ -172,12 +172,5 @@ theorem crossingCandidate_natural_middle (C : BraidedFusionCategory.{v,u})
   rw [hj']
   exact hterm
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The matrix crossing is a natural transformation in the induction
-argument, before proving that its components are isomorphisms. -/
-def crossingNaturalMiddle (C : BraidedFusionCategory.{v,u}) (T : C.Obj) :
-    underlyingFunctor C ⋙ tensorRight T ⟶ underlyingFunctor C ⋙ tensorLeft T where
-  app X := crossingCandidate C X T
-  naturality {X Y} f := crossingCandidate_natural_middle C f T
 
 end PropertyF.Ground.CentreInduction

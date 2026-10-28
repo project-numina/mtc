@@ -7,7 +7,6 @@ public import PropertyF.PowerBound
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 
-
 namespace PropertyF.Ground.Calculus
 universe v u
 
@@ -62,41 +61,6 @@ theorem overlap_trace_power_of_step
       _ = _ := by
         rw [ih]
         exact (pow_succ _ (k + 1)).symm
-
-/-- The sharp bound follows from the single remaining categorical coherence:
-the displayed scaled overlap trace identity. All unitary blocks and the
-ordinary power bound are obtained from actual finite braid images. -/
-theorem sharp_trace_bound_of_overlap_identity
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (t : ℕ)
-    (hfinite : ∀ n, Finite (braidImage X n)) :
-    ∃ (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
-      (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
-        ∀ i, Matrix (Fin (d n i)) (Fin (d n i)) ℂ),
-      ∀ u : braidAlgebra X t,
-        (∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ) →
-        (∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-          (Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))) ^ k =
-            actualBraidTrace C X p t u ^ (k + 1)) →
-        ‖actualBraidTrace C X p t u‖ ≤
-          ‖Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X))‖ *
-            Ground.fpDimension C X ^ (t + 1) := by
-  obtain ⟨r, d, e, hd, he, hunit⟩ := exists_unitary_overlap_presentations X hfinite
-  refine ⟨r, d, e, fun u hu hrec => ?_⟩
-  have hδ : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    intro h
-    apply Modular.pivotalTrace_simple_ne_zero C p X
-    apply (Dimensions.groundUnitScalarEquiv C).injective
-    simpa using h
-  have hf : 0 < Ground.fpDimension C X :=
-    lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C X (Simple.not_isZero X))
-  apply norm_bound_of_overlapIndex hδ hf t
-    (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec
-  intro k
-  have hbound := braid_trace_unitary_bound_ground C X (overlapIndex t k) p
-    (r _) (d _) (fun i => Nat.pos_of_ne_zero (hd _ i).ne) (e _) (overlapProduct X t u k) (hunit t u hu k)
-  change ‖actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)‖ ≤ _ at hbound
-  exact hbound
 
 /-- The sharp bound works in any family of unitary braid-block presentations;
 it does not depend on a particular choice made by finite-group averaging. -/

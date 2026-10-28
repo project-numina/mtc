@@ -63,53 +63,6 @@ theorem fpDimension_tensorPower (C : Ground.BraidedFusionCategory.{v,u})
     simp only [tensorPower, Ground.fpDimension_tensor, ih, pow_succ]
     ring
 
-/-- Finite braid image constructs unitary blocks in which the ordinary
-categorical trace bound is the n-strand FP-dimension power. -/
-theorem exists_unitary_braid_trace_power_bound
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
-    (hfinite : Finite (braidImage X n))
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
-    (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ Ground.fpSimple C i) :
-    ∃ (r : ℕ) (d : Fin r → ℕ)
-      (b : braidAlgebra X n ≃ₐ[ℂ] ∀ j, Matrix (Fin (d j)) (Fin (d j)) ℂ),
-      (∀ j, 0 < d j) ∧
-      (∀ g j, b (groupInImage (braidEndRepresentation X n) g) j ∈
-        Matrix.unitaryGroup (Fin (d j)) ℂ) ∧
-      ∀ a : braidAlgebra X n, (∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) →
-        ‖scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
-          Ground.fpDimension C X ^ (n + 2) := by
-  let m : Fin (Ground.rank C) → ℕ := fun i =>
-    Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
-  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
-  obtain ⟨r, d, b, hnonzero, hunitary⟩ := braidAlgebra_unitary_blocks X n hfinite
-  have hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
-  refine ⟨r, d, b, hd, hunitary, fun a ha => ?_⟩
-  have h := pivotalTrace_braid_unitary_bound C X n p scalar m e r d hd b
-    (Ground.fpSimple C) hbound a ha
-  change ‖scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
-    Ground.fpDimension C (tensorPower X (n + 2)) at h
-  simpa only [fpDimension_tensorPower] using h
-
-/-- In a genuine pivotal braided fusion category the ordinary unitary trace
-power bound requires no separate dimension-bound hypothesis. -/
-theorem exists_unitary_braid_trace_power_bound_ground
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
-    (hfinite : Finite (braidImage X n)) (p : Dimensions.PivotalStructure (C := C.Obj)) :
-    ∃ (r : ℕ) (d : Fin r → ℕ)
-      (b : braidAlgebra X n ≃ₐ[ℂ] ∀ j, Matrix (Fin (d j)) (Fin (d j)) ℂ),
-      (∀ j, 0 < d j) ∧
-      (∀ g j, b (groupInImage (braidEndRepresentation X n) g) j ∈
-        Matrix.unitaryGroup (Fin (d j)) ℂ) ∧
-      ∀ a : braidAlgebra X n, (∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) →
-        ‖Dimensions.groundUnitScalarEquiv C
-          (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
-            Ground.fpDimension C X ^ (n + 2) := by
-  apply exists_unitary_braid_trace_power_bound C X n hfinite p (Dimensions.groundUnitScalarEquiv C)
-  intro i
-  have h := Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
-  simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension,
-    Dimensions.groundUnitScalarEquiv_apply] using h
-
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
 theorem braid_trace_unitary_bound_ground

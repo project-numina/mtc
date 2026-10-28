@@ -60,15 +60,6 @@ abbrev generatedCategory (X : C) := (show ObjectProperty C from GeneratedBy X).F
 abbrev generatedInclusion (X : C) : generatedCategory X ⥤ C :=
   (show ObjectProperty C from GeneratedBy X).ι
 
-/-- The inclusion has precisely the generated objects as its essential image. -/
-theorem generatedInclusion_essentialImage (X Y : C) :
-    GeneratedBy X Y ↔ ∃ Z : generatedCategory X, Nonempty ((generatedInclusion X).obj Z ≅ Y) := by
-  constructor
-  · intro h
-    exact ⟨⟨Y, h⟩, ⟨Iso.refl Y⟩⟩
-  · rintro ⟨Z, ⟨e⟩⟩
-    exact generatedBy_of_iso Z.property e.symm
-
 /-- The full subcategory on the generated objects contains the unit. -/
 instance generatedBy_containsUnit (X : C) : ObjectProperty.ContainsUnit (GeneratedBy X) where
   prop_unit := generatedBy_unit X

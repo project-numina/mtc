@@ -132,7 +132,7 @@ theorem distant_braid_commute (X : C) : ∀ (n : ℕ) (i j : Fin (n + 1)),
         omega
       | succ n =>
         refine Fin.cases ?_ (fun j' => ?_) j
-        · intro h; simp only [Fin.val_succ, Fin.val_zero] at h; omega
+        · intro h; simp only [Fin.val_zero] at h; omega
         · refine Fin.cases ?_ (fun j'' => ?_) j'
           · intro h; simp only [Fin.val_succ, Fin.val_zero] at h; omega
           · intro h

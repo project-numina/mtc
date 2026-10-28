@@ -22,12 +22,14 @@ def CanonicalImageRetract (X : CategoryTheory.Center C.Obj) : Prop :=
   (∃ A : C.Obj, Nonempty (Retract X ((CategoryTheory.Center.ofBraided C.Obj).obj A))) ∨
   (∃ A : C.Obj, Nonempty (Retract X ((Centre.negative C.Obj).obj A)))
 
+omit [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)] in
 theorem canonicalImageRetract_of_retract {X Y : CategoryTheory.Center C.Obj}
     (r : Retract X Y) (h : CanonicalImageRetract C Y) : CanonicalImageRetract C X := by
   rcases h with ⟨A, ⟨s⟩⟩ | ⟨A, ⟨s⟩⟩
   · exact Or.inl ⟨A, ⟨r.trans s⟩⟩
   · exact Or.inr ⟨A, ⟨r.trans s⟩⟩
 
+omit [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)] in
 theorem canonicalImageRetract_product {X : CategoryTheory.Center C.Obj}
     (h : CanonicalImageRetract C X) : Centre.ProductRetract X := by
   rcases h with ⟨A, ⟨s⟩⟩ | ⟨A, ⟨s⟩⟩
@@ -96,29 +98,5 @@ theorem productLabels_doubleCentralizer_of_image_monodromy
   apply numericalImageCentralizer_subset_symmetricCore C p hdim hfinite y
   intro a ha
   exact hy a (imageLabels_subset_productLabels C ha)
-
-end PropertyF.Ground.CentreCabling
-
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCabling
-universe v u
-
-/-- Centrality is preserved when tensoring the second strand. -/
-theorem doubleBraiding_eq_one_tensor_right
-    {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
-    (Z X Y : D) (hX : Modular.doubleBraiding Z X = 𝟙 _)
-    (hY : Modular.doubleBraiding Z Y = 𝟙 _) :
-    Modular.doubleBraiding Z (X ⊗ Y) = 𝟙 _ := by
-  have hβ : (β_ X Z).hom = (β_ Z X).inv := by
-    apply (cancel_epi (β_ Z X).hom).mp
-    simpa [Modular.doubleBraiding] using hX
-  have hf := Modular.doubleBraiding_tensor_factorization Z X Y
-  rw [hY] at hf
-  simp only [whiskerLeft_id, Category.id_comp, Category.comp_id,
-    Iso.hom_inv_id_assoc, hβ, ← comp_whiskerRight, Iso.hom_inv_id,
-    id_whiskerRight] at hf
-  apply (cancel_epi (α_ Z X Y).hom).mp
-  apply (cancel_mono (α_ Z X Y).inv).mp
-  simpa using hf
 
 end PropertyF.Ground.CentreCabling

@@ -92,22 +92,4 @@ theorem overlapProduct_unitary (X : C) (t : ℕ)
         exact hcast _ _ (overlapIndex_formula t (k + 1)) _ hr
       exact hs i
 
-/-- Finite actual braid images provide presentations in which every repeated
-overlap of a block-unitary element is block-unitary. -/
-theorem exists_unitary_overlap_presentations (X : C)
-    (hfinite : ∀ n, Finite (braidImage X n)) :
-    ∃ (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
-      (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
-        ∀ i, Matrix (Fin (d n i)) (Fin (d n i)) ℂ),
-      (∀ n i, NeZero (d n i)) ∧
-      (∀ n g i, e n (groupInImage (braidEndRepresentation X n) g) i ∈
-        Matrix.unitaryGroup (Fin (d n i)) ℂ) ∧
-      ∀ t (u : braidAlgebra X t),
-        (∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ) →
-        ∀ k i, e (overlapIndex t k) (overlapProduct X t u k) i ∈
-          Matrix.unitaryGroup (Fin (d (overlapIndex t k) i)) ℂ := by
-  classical
-  choose r d e hd he using fun n => braidAlgebra_unitary_blocks X n (hfinite n)
-  exact ⟨r, d, e, hd, he, fun t u hu => overlapProduct_unitary X t r d e he u hu⟩
-
 end PropertyF.Ground.Calculus

@@ -44,7 +44,7 @@ theorem finiteOrder_matrix_trace_saturation {ι : Type*} [Fintype ι] [Decidable
   have ht : U.trace = M.trace := by
     dsimp [U]
     rw [Matrix.trace_mul_cycle]
-    simp [← Units.val_mul]
+    simp
   have hu : PropertyF.ColumnUnitary U := PropertyF.columnUnitary_of_unitary hP
   constructor
   · rw [← ht]

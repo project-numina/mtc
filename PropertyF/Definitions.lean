@@ -155,13 +155,6 @@ instance braidImageAll_group [BraidedCategory C] (X : C) (n : ℕ) :
     | zero => exact inferInstanceAs (Group ↥(⊥ : Subgroup (Aut (tensorPower X 1))))
     | succ n => exact inferInstanceAs (Group (braidImage X n))
 
-/-- Property F gives finite braid images at every strand count. -/
-theorem ObjectPropertyF.braidImageAll_finite [BraidedCategory C] {X : C}
-    (hX : ObjectPropertyF X) : ∀ n, Finite (braidImageAll X n)
-  | 0 => by dsimp [braidImageAll]; infer_instance
-  | 1 => by dsimp [braidImageAll]; infer_instance
-  | n + 2 => hX n
-
 /-- The additive, idempotent-complete tensor closure of an object, described by
 retracts of finite sums of nonnegative tensor powers. By [EGNO 4.11.4] this is
 the generated fusion subcategory. Allowing exponent zero handles `X=0` uniformly.
@@ -206,8 +199,5 @@ theorem hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary (C : BraidedFusionCateg
     HasPseudoUnitaryGaloisConjugate C :=
   ⟨C, RingEquiv.refl ℂ, ⟨GaloisConjugate.refl C⟩, h⟩
 
-/-- The Naidu–Rowell conjecture, stated for context; its converse is not claimed. -/
-def PropertyFConjecture : Prop := ∀ C : BraidedFusionCategory.{v,u},
-  HasPropertyF C.Obj ↔ WeaklyIntegral C.fusion.globalFPDimension
 
 end PropertyF

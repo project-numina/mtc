@@ -17,7 +17,6 @@ public import PropertyF.Ground.Calculus.StarSpan
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
-public import PropertyF.Ground.Cabling.Witness
 
 
 
@@ -36,14 +35,12 @@ public import PropertyF.Ground.Cabling.Witness
 
 
 
-import all PropertyF.Ground.CentreInduction.DrinfeldFourth
 import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
 import all PropertyF.Ground.Integrate.DrinfeldComplete
 import all PropertyF.Ground.CentreInduction.DualMonodromy
 import all PropertyF.Ground.CentreInduction.FiniteMonodromyModular
 import all PropertyF.Ground.Dimensions.DrinfeldTensorCap
-import all PropertyF.Ground.CentreInduction.DirectDual
 import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.Integrate.PivotalBalancedReduction
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
@@ -75,8 +72,6 @@ import all PropertyF.Ground.CentreCalculus.PermutationInsert
 import all PropertyF.Ground.Centre.Calculus.TypeANormalWords
 import all PropertyF.Ground.Centre.Calculus.TypeA
 import all PropertyF.Ground.Integrate.CoreIntegralityReduction
-import all PropertyF.Ground.CentreInduction.DoubleBraiding
-import all PropertyF.Ground.CentreInduction.DualBraiding
 import all PropertyF.Ground.CentreInduction.PivotalCentrality
 import all PropertyF.Ground.CentreInduction.PositivePivotal
 import all PropertyF.Ground.Integrate.PivotalOnlyReduction
@@ -90,9 +85,6 @@ import all PropertyF.Ground.Dimensions.DoubleDualBraiding
 import all PropertyF.Ground.Dimensions.DualBraiding
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.PivotalLift
-import all PropertyF.Ground.CentreInduction.DualTensorComparison
-import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
-import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
 import all PropertyF.Ground.CentreRigid.Evaluation
 import all PropertyF.Ground.CentreRigid.Coevaluation
@@ -110,44 +102,30 @@ import all PropertyF.Ground.CentreDimensions.BraidingTrace
 import all PropertyF.Ground.CentreDimensions.PivotalTwist
 import all PropertyF.Ground.CentreInduction.ActualFusion
 import all PropertyF.Ground.CentreInduction.AdjunctionAssembly
-import all PropertyF.Ground.CentreInduction.AdjunctionMatrix
-import all PropertyF.Ground.CentreInduction.Artinian
 import all PropertyF.Ground.CentreInduction.Averaging
 import all PropertyF.Ground.CentreInduction.BasisPairing
 import all PropertyF.Ground.CentreInduction.BasisRefinement
-import all PropertyF.Ground.CentreInduction.Biproducts
 import all PropertyF.Ground.CentreInduction.CandidateAssembly
-import all PropertyF.Ground.CentreInduction.CenterLength
 import all PropertyF.Ground.CentreInduction.CounitColumn
 import all PropertyF.Ground.CentreInduction.CrossingBlocks
 import all PropertyF.Ground.CentreInduction.CrossingCoherence
 import all PropertyF.Ground.CentreInduction.CrossingNaturality
 import all PropertyF.Ground.CentreInduction.CrossingTensor
 import all PropertyF.Ground.CentreInduction.CrossingUnit
-import all PropertyF.Ground.CentreInduction.Dominance
-import all PropertyF.Ground.CentreInduction.FiniteLabels
 import all PropertyF.Ground.CentreInduction.FiniteSimples
 import all PropertyF.Ground.CentreInduction.FiniteSum
-import all PropertyF.Ground.CentreInduction.FirstTriangle
 import all PropertyF.Ground.CentreInduction.ForgetDual
-import all PropertyF.Ground.CentreInduction.Fusion
-import all PropertyF.Ground.CentreInduction.HomTranspose
 import all PropertyF.Ground.CentreInduction.InducedTrace
 import all PropertyF.Ground.CentreInduction.InjectiveFusion
 import all PropertyF.Ground.CentreInduction.Injectives
 import all PropertyF.Ground.CentreInduction.PartialTrace
-import all PropertyF.Ground.CentreInduction.PseudoUnitary
 import all PropertyF.Ground.CentreInduction.RankOne
 import all PropertyF.Ground.CentreInduction.Representatives
 import all PropertyF.Ground.CentreInduction.SecondTriangle
 import all PropertyF.Ground.CentreInduction.SimpleDetection
 import all PropertyF.Ground.CentreInduction.Splitting
 import all PropertyF.Ground.CentreInduction.TensorDetection
-import all PropertyF.Ground.CentreInduction.UnitCandidate
 import all PropertyF.Ground.CentreInduction.UnitCentrality
-import all PropertyF.Ground.CentreInduction.UnitCoevaluation
-import all PropertyF.Ground.CentreInduction.UnitDiagram
-import all PropertyF.Ground.CentreInduction.UnitNormalization
 import all PropertyF.Ground.CentreInduction.UnitSummand
 import all PropertyF.Ground.CentreInduction.UnitTest
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
@@ -192,16 +170,12 @@ import all PropertyF.Ground.Cabling.FusionCycle
 import all PropertyF.Ground.Cabling.GeneralDual
 import all PropertyF.Ground.Cabling.Generated
 import all PropertyF.Ground.Cabling.Images
-import all PropertyF.Ground.Cabling.MoveHead
-import all PropertyF.Ground.Cabling.MoveHeadInsert
 import all PropertyF.Ground.Cabling.Naturality
-import all PropertyF.Ground.Cabling.PowerCompare
 import all PropertyF.Ground.Cabling.PowerGeneral
 import all PropertyF.Ground.Cabling.Pure
 import all PropertyF.Ground.Cabling.Rigidity
 import all PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.Cabling.UnitPower
-import all PropertyF.Ground.Cabling.Witness
 import all PropertyF.Ground.Calculus.Averaging
 import all PropertyF.Ground.Calculus.BraidBlocks
 import all PropertyF.Ground.Calculus.BraidTraceBound
@@ -252,7 +226,6 @@ import all PropertyF.Ground.Centre.ReverseBraiding
 import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.CentreInduction.Adjunction
-import all PropertyF.Ground.CentreInduction.GlobalSquare
 import all PropertyF.Ground.CentreInduction.Underlying
 import all PropertyF.Ground.CentreModular.InductionDimension
 import all PropertyF.Ground.CentreRigid.Lift
