@@ -12,20 +12,24 @@ section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+  [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+
 set_option backward.isDefEq.respectTransparency false in
-/-- Closing one strand of the self-braiding gives the pivotal/Drinfeld twist. -/
-theorem rightPartialTrace_braiding (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) :
+/-- Closing self-braiding gives the pivotal twist determined by a compatible double-dual isomorphism. -/
+theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C}
+    (d : X ≅ (Xᘁ)ᘁ)
+    (hd : d.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) = (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ)) :
     Calculus.rightPartialTrace p X X (End.of (β_ X X).hom) =
-      End.of ((p.iso X).hom ≫ (Ground.doubleDualIso C X).inv) := by
+      End.of ((p.iso X).hom ≫ d.inv) := by
   apply End.ext
   simp only [Calculus.rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
-  let t : X ⟶ X := (p.iso X).hom ≫ (Ground.doubleDualIso C X).inv
+  let t : X ⟶ X := (p.iso X).hom ≫ d.inv
   have hclose : (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
       t ▷ (Xᘁ) ≫ (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) := by
     dsimp [t]
     simp only [comp_whiskerRight_assoc]
-    rw [← drinfeld_eval, ← Category.assoc, ← comp_whiskerRight]
+    rw [← hd, ← Category.assoc, ← comp_whiskerRight]
     simp
   have hg : (ρ_ X).inv ≫ X ◁ η_ X (Xᘁ) ≫ (α_ X X (Xᘁ)).inv ≫
       (β_ X X).hom ▷ (Xᘁ) ≫ (α_ X X (Xᘁ)).hom ≫
@@ -105,7 +109,7 @@ theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
     Ground.unitScalar C (p.rightTrace (β_ X X).hom) =
       pivotalBraidedTwistScalar C p X * pivotalDimension C p X := by
   have h := rightTrace_partialTrace p X X (End.of (β_ X X).hom)
-  rw [rightPartialTrace_braiding] at h
+  rw [rightPartialTrace_braiding p (Ground.doubleDualIso C X) (drinfeld_eval C X)] at h
   have ht : (p.iso X).hom ≫ (Ground.doubleDualIso C X).inv =
       pivotalBraidedTwistScalar C p X • 𝟙 X := pivotalBraidedTwist_simple C p X
   change p.rightTrace ((p.iso X).hom ≫ (Ground.doubleDualIso C X).inv) =

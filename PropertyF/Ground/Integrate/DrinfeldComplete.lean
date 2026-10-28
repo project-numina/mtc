@@ -262,8 +262,8 @@ theorem drinfeld_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
     Modular.doubleBraiding X Y ≫ (doubleDualIso C (X ⊗ Y)).hom =
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom :=
-  CentreIntegrate.drinfeld_tensor_of_pairing_cap C X Y
-    (Dimensions.drinfeld_tensor_pairing_cap C X Y)
+  CentreIntegrate.drinfeld_tensor_of_pairing_cap X Y (doubleDualIso C)
+    (Dimensions.drinfeld_eval C (X ⊗ Y)) (Dimensions.drinfeld_tensor_pairing_cap C X Y)
 
 /-- The twist of any pivotal braided fusion category is balanced. -/
 theorem pivotal_twist_balanced (C : BraidedFusionCategory.{v,u})
@@ -272,7 +272,7 @@ theorem pivotal_twist_balanced (C : BraidedFusionCategory.{v,u})
       ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
         (Dimensions.pivotalBraidedTwist C p Y).hom) =
       (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom :=
-  CentreIntegrate.pivotal_balance_of_drinfeld_tensor C p X Y (drinfeld_tensor C X Y)
+  CentreIntegrate.pivotal_balance_of_drinfeld_tensor p X Y (doubleDualIso C) (drinfeld_tensor C X Y)
 
 /-- The frozen target follows once the pseudo-unitary property-F base is
 shown to admit a pivotal structure. That existence is the sole premise. -/

@@ -171,8 +171,8 @@ universe v u
 
 /-- The canonical Drinfeld isomorphism satisfies its tensor law. -/
 theorem drinfeldTensorLaw (C : BraidedFusionCategory.{v,u}) : DrinfeldTensorLaw C :=
-  fun X Y ↦ CentreIntegrate.drinfeld_tensor_of_pairing_cap C X Y
-    (Dimensions.drinfeld_tensor_pairing_cap C X Y)
+  fun X Y ↦ CentreIntegrate.drinfeld_tensor_of_pairing_cap X Y (doubleDualIso C)
+    (Dimensions.drinfeld_eval C (X ⊗ Y)) (Dimensions.drinfeld_tensor_pairing_cap C X Y)
 
 
 /-- Every pseudo-unitary braided fusion category has a positive spherical
