@@ -12,13 +12,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.Calculus
 universe v u
-variable (C : BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 
 /-- Real Galois conjugates of positive simple dimensions yield nonzero real
 weights in every retained actual braid block, even if their signs differ. -/
 theorem exists_galois_braid_trace_weights
     {X : C.Obj} {n : ℕ}
-    (hfinite : Finite (braidImage X n)) (p : PivotalStructure (C := C.Obj))
+    (hfinite : Finite (braidImage X n))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)
     (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
@@ -32,7 +32,7 @@ theorem exists_galois_braid_trace_weights
       IsTracePresentation C p b w := by
   classical
   obtain ⟨r, size, b, mult, hsize, hunit, hret, _, htrace⟩ :=
-    exists_unitary_braid_trace_blocks C hfinite p (Ground.unitScalarEquiv C)
+    exists_unitary_braid_trace_blocks C p (Ground.unitScalarEquiv C) hfinite
   let w : Fin r → ℝ := fun j => ∑ i, (mult i j : ℝ) * qdim i
   refine ⟨r, size, b, w, hsize, hunit, ?_, ?_⟩
   · intro j
@@ -51,7 +51,6 @@ one intrinsic overlap trace identity. All matrix blocks and weights are
 constructed from the actual finite braid images. -/
 theorem actual_rigidity_of_overlap_and_galois_dimensions
     (X : C.Obj) [Simple X]
-    (p : PivotalStructure (C := C.Obj))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)
     (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
@@ -65,7 +64,7 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (hrec : ∀ u : braidAlgebra X 1, HasOverlapTracePower C p u) : f = |d| := by
   classical
   choose r size b w hsize he hw htrace using fun n =>
-    exists_galois_braid_trace_weights C (hfinite n) p original qdim σ hpos htransport hqdim
+    exists_galois_braid_trace_weights C p (hfinite n) original qdim σ hpos htransport hqdim
   apply actual_three_strand_rigidity_of_trace_bound C p (b 1) (he 1)
     (hw 1) hd hf hdim hS hfinite (htrace 1)
   intro z hz

@@ -307,9 +307,10 @@ theorem braidToEndBlocks_injective {X : C.Obj}
     Function.Injective (braidToEndBlocks C e b) :=
   (groundEndBlockEquiv C e).injective.comp (Subtype.val_injective.comp b.symm.injective)
 
+variable (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
+
 /-- The categorical braid trace has the weights supplied by block multiplicities. -/
 abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
-    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {d : Fin r → ℕ} (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
     (mult : Fin (Ground.rank C) → Fin r → ℕ) : Prop :=
   ∀ a : braidAlgebra X n,
@@ -321,7 +322,6 @@ abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
 multiplicity-weight formula. Every retained braid block occurs in a simple
 constituent's multiplicity space. -/
 theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
-    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
@@ -351,8 +351,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
 multiplicities with the actual pivotal trace formula and retention. -/
 theorem exists_unitary_braid_trace_blocks
     {X : C.Obj} {n : ℕ}
-    (hfinite : Finite (braidImage X n))
-    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
+    (hfinite : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ)
       (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
       (mult : Fin (Ground.rank C) → Fin r → ℕ),

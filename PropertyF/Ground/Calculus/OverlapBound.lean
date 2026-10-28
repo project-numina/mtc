@@ -16,23 +16,22 @@ open scoped BigOperators
 namespace PropertyF.Ground.Calculus
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
-variable (C : BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 
 /-- Pivotal trace of an element of an actual categorical braid algebra. -/
-def actualBraidTrace {X : C.Obj}
-    (p : PivotalStructure (C := C.Obj)) {n : ℕ} (a : braidAlgebra X n) : ℂ :=
+def actualBraidTrace {X : C.Obj} {n : ℕ} (a : braidAlgebra X n) : ℂ :=
   Ground.unitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
 
 /-- A block presentation realizes the categorical braid trace with the given weights. -/
 abbrev IsTracePresentation {X : C.Obj}
-    (p : PivotalStructure (C := C.Obj)) {n r : ℕ} {d : Fin r → ℕ}
+    {n r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) (w : Fin r → ℝ) : Prop :=
   ∀ z : braidAlgebra X n, actualBraidTrace C p z = (Blocks.mk r d).trace w (b z)
 
 /-- A uniform bound for the trace of unitary elements in a block presentation. -/
 abbrev HasUnitaryTraceBound {X : C.Obj}
-    (p : PivotalStructure (C := C.Obj)) {n r : ℕ} {d : Fin r → ℕ}
+    {n r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) (R : ℝ) : Prop :=
   ∀ a, Blocks.IsUnitary ⟨_, d⟩ (b a) → ‖actualBraidTrace C p a‖ ≤ R
 
@@ -40,7 +39,7 @@ abbrev HasUnitaryTraceBound {X : C.Obj}
 unitary is bounded by the simple-multiplicity mass. The explicit dimension
 bound is supplied by the fusion/Perron and dimensions workstreams. -/
 theorem pivotalTrace_braid_unitary_bound {X : C.Obj} {n : ℕ}
-    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
+    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
@@ -72,7 +71,7 @@ theorem fpDimension_tensorPower (X : C.Obj) :
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
 theorem braid_trace_unitary_bound_ground {X : C.Obj} {n : ℕ}
-    (p : PivotalStructure (C := C.Obj)) {r : ℕ} {d : Fin r → ℕ}
+    {r : ℕ} {d : Fin r → ℕ}
     (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     HasUnitaryTraceBound C p b (Ground.fpDimension C X ^ (n + 2)) := by
