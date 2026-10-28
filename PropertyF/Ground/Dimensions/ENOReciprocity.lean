@@ -47,11 +47,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+  [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
 
 /-- Scalar multiples with the same double-dual square differ by a sign. -/
-theorem scalar_sq_eq_one_of_same_square {D : Type u} [Category.{v} D]
-    [MonoidalCategory D] [RightRigidCategory D] [Preadditive D] [Linear ℂ D]
-    [MonoidalPreadditive D] [MonoidalLinear ℂ D] {X : D} [Simple X]
+theorem scalar_sq_eq_one_of_same_square {X : D} [Simple X]
     (a b : X ≅ (Xᘁ)ᘁ) (z : ℂ) (hz : b.hom = z • a.hom)
     (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 := by
   have hn : (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom ≠ 0 :=

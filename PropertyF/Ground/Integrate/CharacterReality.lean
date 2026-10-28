@@ -66,16 +66,22 @@ theorem selfDual_character_galois_real (σ : K ≃+* K) (i : ι) :
   selfDual_character_real (χ := fun j ↦ σ (χ j)) (i₀ := i₀) hN ((map_ne_zero σ).2 hχ)
     (fun j k ↦ by simpa using congrArg σ (hchar j k)) (fun j ↦ by rw [hdual]) i
 
+/-- A conjugate of a self-dual character is the image of its real part. -/
+theorem selfDual_character_galois_re (σ : K ≃+* K) (i : ι) :
+    (RCLike.re (σ (χ i)) : K) = σ (χ i) :=
+  RCLike.conj_eq_iff_re.mp <| by
+    simpa only [← RCLike.star_def] using selfDual_character_galois_real hN hχ hchar hdual σ i
+
 omit hN hχ hchar hdual
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- Every Galois conjugate of an actual simple FP dimension is real. -/
 theorem fp_simple_galois_real (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     (((σ (fpSimple C i : ℂ)).re : ℝ) : ℂ) = σ (fpSimple C i : ℂ) :=
-  Complex.conj_eq_iff_re.mp <| by simpa only [← Complex.star_def] using (
-    selfDual_character_galois_real (N := fusionCoeff C) (d := dualIndex C)
+  by simpa only [RCLike.re_eq_complex_re, RCLike.ofReal_eq_complex_ofReal] using
+    selfDual_character_galois_re (N := fusionCoeff C) (d := dualIndex C)
       (χ := fun i ↦ (fpSimple C i : ℂ)) (i₀ := unitIndex C)
       (fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm)
-      (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) (by simp [fpSimple_dual]) σ i)
+      (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) (by simp [fpSimple_dual]) σ i
 
 end PropertyF.Ground

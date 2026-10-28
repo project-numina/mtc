@@ -63,9 +63,7 @@ end PropertyF.Ground.Calculus
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Calculus
 
-variable {G H A B : Type*} [Group G] [Group H]
-  [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B]
-
+variable {G A : Type*} [Monoid G] [Ring A] [Algebra ℂ A]
 
 section PresentedGroup
 
@@ -74,12 +72,9 @@ variable (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ} (e : GroupBlockPresentati
 /-- The group image spans any algebra-equivalent block presentation. -/
 theorem presented_group_span :
     Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ := by
-  classical
-  change Submodule.span ℂ (Set.range (fun g => e (groupInImage ρ g))) = ⊤
-  rw [Set.range_comp']
-  change Submodule.span ℂ (e.toLinearEquiv.toLinearMap '' Set.range (groupInImage ρ)) = ⊤
-  rw [← Submodule.map_span, groupInImage_span, Submodule.map_top]
-  exact LinearMap.range_eq_top.mpr e.surjective
+  change Submodule.span ℂ (Set.range (fun g => e.toLinearMap (groupInImage ρ g))) = ⊤
+  simpa only [Set.range_comp', ← Submodule.map_span, groupInImage_span, Submodule.map_top] using
+    (LinearMap.range_eq_top.mpr e.surjective : e.toLinearMap.range = ⊤)
 
 end PresentedGroup
 

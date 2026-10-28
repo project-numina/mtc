@@ -166,12 +166,14 @@ theorem fpDimension_twist (X : C.Obj) :
     infer_instance
   fpDimension_functor C (category C σ) F X
 
+variable (p : Dimensions.PivotalStructure (C := C.Obj))
+local notation "Cσ" => category C σ
+local notation "pσ" => pivotal C σ p
+
 /-- A pivotal trace scalar is carried through σ. -/
-theorem rightTrace_twist (p : Dimensions.PivotalStructure (C := C.Obj))
-    {X : C.Obj} (f : X ⟶ X) :
-    Ground.unitScalarEquiv (category C σ) ((pivotal C σ p).rightTrace f) =
-      σ (Ground.unitScalarEquiv C (p.rightTrace f)) :=
-  ((unitScalar_eq_equiv (category C σ) _).symm.trans (unitScalar_twist C σ _)).trans
+theorem rightTrace_twist {X : C.Obj} (f : X ⟶ X) :
+    Ground.unitScalarEquiv Cσ ((pσ).rightTrace f) = σ (Ground.unitScalarEquiv C (p.rightTrace f)) :=
+  ((unitScalar_eq_equiv Cσ _).symm.trans (unitScalar_twist C σ _)).trans
     (congrArg σ (unitScalar_eq_equiv C _))
 
 end PropertyF.Ground.ScalarTwist

@@ -84,7 +84,7 @@ end PropertyF.Ground.Calculus
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Calculus
 
-variable {G A : Type*} [Monoid G] [Ring A] [Algebra ℂ A]
+variable {G A : Type*} [Monoid G] [Semiring A] [Algebra ℂ A]
 variable (ρ : G →* A)
 
 /-- The monoid-algebra map associated to a representation in a complex algebra. -/
@@ -116,7 +116,7 @@ variable [Finite G]
 open scoped Classical in
 /-- The image algebra is finite-dimensional, even when the ambient algebra is not. -/
 theorem groupImageAlgebra_finite :
-    FiniteDimensional ℂ (groupImageAlgebra ρ) :=
+    Module.Finite ℂ (groupImageAlgebra ρ) :=
   Module.Finite.of_surjective (groupAlgebraMap ρ).rangeRestrict.toLinearMap
     (AlgHom.rangeRestrict_surjective (groupAlgebraMap ρ))
 
@@ -220,10 +220,8 @@ abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ}
 /-- The represented elements span their image algebra. -/
 theorem groupInImage_span :
     Submodule.span ℂ (Set.range (groupInImage ρ)) = ⊤ := by
-  classical
   apply Submodule.map_injective_of_injective (groupImageAlgebra ρ).toSubmodule.subtype_injective
-  rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype]
-  rw [← Set.range_comp']
+  rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp']
   change Submodule.span ℂ (Set.range (fun g => (groupInImage ρ g : A))) = _
   simpa only [groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
 
