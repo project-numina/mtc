@@ -2,6 +2,7 @@ module
 public import MTC.FRSymbols.FusionRules
 public import Mathlib.Data.Matrix.Mul
 public import Mathlib.Algebra.Star.Basic
+public import Mathlib.Basic.Complex.Basic
 
 /-!
 # Matrix-valued F and R symbols
@@ -99,6 +100,15 @@ def Unitary [StarRing K] : Prop :=
     s.Finv a b c d j i = star (s.F a b c d i j)) ∧
   (∀ a b c (i : Fin (n.N a b c)) (j : Fin (n.N b a c)),
     s.Rinv a b c j i = star (s.R a b c i j))
+
+/-- Unitarity relative to a specified complex embedding of the exact
+coefficients. This formulation does not require a star instance on the
+coefficient field; together with `Invertible` it checks the F/R blocks. -/
+def UnitaryVia (ι : K →+* ℂ) : Prop :=
+  (∀ a b c d (i : LeftTree n a b c d) (j : RightTree n a b c d),
+    ι (s.Finv a b c d j i) = star (ι (s.F a b c d i j))) ∧
+  (∀ a b c (i : Fin (n.N a b c)) (j : Fin (n.N b a c)),
+    ι (s.Rinv a b c j i) = star (ι (s.R a b c i j)))
 
 /-- The coherence checks, separate from the additional fusion-system axioms. -/
 def Coherent : Prop := s.Invertible ∧ s.Pentagon ∧ s.Hexagon₁ ∧ s.Hexagon₂

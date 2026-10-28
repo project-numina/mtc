@@ -60,4 +60,13 @@ theorem matrix_hexagon₂ : matrixSymbols.Hexagon₂ := by
 theorem matrix_unitary : matrixSymbols.Unitary := by
   simp [MatrixSymbols.Unitary, matrixSymbols]
 
+/-- The same blocks are unitary under the usual embedding of integers in ℂ. -/
+theorem matrix_unitary_via : matrixSymbols.UnitaryVia (Int.castRingHom ℂ) := by
+  constructor
+  · intro a b c d i j
+    simp [matrixSymbols]
+  · intro a b c i j
+    simp only [matrixSymbols]
+    split_ifs <;> simp
+
 end MTC.FRSymbols.Pointed.ToricCode
