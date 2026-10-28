@@ -86,7 +86,7 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u}) (X T U : C.Obj) (i j : Fin (rank C))
+variable {C : BraidedFusionCategory.{v,u}} (X T U : C.Obj) (i j : Fin (rank C))
 -- Chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
 -- The simple-indexed summands of the induced object.
@@ -126,7 +126,7 @@ theorem crossingCandidate_tensor :
     βᶜ (T ⊗ U) = crossingTensorComposite C X T U :=
   rightDistributor_ext_left (f := inductionSummand C X) fun i => by
     rw [crossingCandidate_on_summand, crossingComposite_summand]
-    simp_rw [← Preadditive.sum_comp, ← crossingBlock_refinement C X T U i]
+    simp_rw [← Preadditive.sum_comp, ← crossingBlock_refinement X T U i]
     simp only [Fintype.sum_sigma, Preadditive.sum_comp]
     dsimp only [underlying] at *
     rw [Finset.sum_comm]
@@ -140,16 +140,17 @@ induction sum, with no additional coherence assumptions. -/
 def halfBraidingOfCrossingCandidate :
     HalfBraiding (underlying C X) where
   β T := by
-    letI := weak_isIso βᶜ (crossingCandidate_natural_test C X)
-      (crossingCandidate_tensor C X) (crossingCandidate_unit C X) T (ᘁT)
+    letI := weak_isIso βᶜ (crossingCandidate_natural_test X)
+      (crossingCandidate_tensor X) (crossingCandidate_unit X) T (ᘁT)
     exact asIso (βᶜ T)
-  monoidal T U := crossingCandidate_tensor C X T U
-  naturality f := crossingCandidate_natural_test C X f
+  monoidal T U := crossingCandidate_tensor X T U
+  naturality f := crossingCandidate_natural_test X f
 
+variable (C) in
 /-- The actual induction functor to Mathlib's Drinfeld centre. -/
 def induction : C.Obj ⥤ Center C.Obj where
-  obj X := ⟨underlying C X, halfBraidingOfCrossingCandidate C X⟩
-  map f := ⟨(underlyingFunctor C).map f, crossingCandidate_natural_middle C f⟩
+  obj X := ⟨underlying C X, halfBraidingOfCrossingCandidate X⟩
+  map f := ⟨(underlyingFunctor C).map f, crossingCandidate_natural_middle f⟩
   map_id X := Center.ext _ _ ((underlyingFunctor C).map_id X)
   map_comp f g := Center.ext _ _ ((underlyingFunctor C).map_comp f g)
 

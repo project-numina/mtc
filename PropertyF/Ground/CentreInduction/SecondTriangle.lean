@@ -25,12 +25,13 @@ local notation "V" => inductionSummand C X
 variable (T : C.Obj) (i j : Fin (rank C))
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Composing a crossing with the unit-summand counit selects one matrix column. -/
 theorem crossing_counit_matrix :
   (biproduct.ι V i ▷ T) ≫ b T ≫ (T ◁ (underlyingCounit C).app X) =
     (∑ a, crossingSummand C X T i (unitIndex C) a) ≫ (T ◁ (unitSummandIso C X).hom) := by
   simpa only [underlyingCounit, unitSummandRetract, whiskerLeft_comp, Category.assoc] using
-    congrArg (· ≫ (T ◁ (unitSummandIso C X).hom)) (crossingCandidate_matrix C X T i (unitIndex C))
+    congrArg (· ≫ (T ◁ (unitSummandIso C X).hom)) (crossingCandidate_matrix X T i (unitIndex C))
 
 /-! The unit-column matrix of the induction crossing. -/
 
@@ -47,6 +48,7 @@ theorem counit_column_finrank :
     (finrank_simples_hom C i j)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Off-diagonal counit crossing entries vanish. -/
 theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   (biproduct.ι V i ▷ S j) ≫ b (S j) ≫
@@ -56,6 +58,7 @@ theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   by simp only [crossing_counit_matrix, Fintype.sum_empty, zero_comp]
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
 theorem crossing_counit_diagonal :
   (biproduct.ι V i ▷ S i) ≫ b (S i) ≫
@@ -148,7 +151,7 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
+variable {C : BraidedFusionCategory.{v,u}} (X : C.Obj)
 -- The chosen simple representatives of the base fusion category.
 local notation "S" => simples C
 -- The induction crossing on the object X.
@@ -176,7 +179,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unit_diag :
   biproduct.ι V i ≫ u i ≫
     ((S i ◁ (underlyingCounit C).app X) ▷ (S i)ᘁ) = 𝟙 (V i) := by
-  simp only [unit_matrix_reduce, crossing_counit_diagonal C X i]
+  simp only [unit_matrix_reduce, crossing_counit_diagonal X i]
   erw [crossingUnitBlock_eval X (S i) (Classical.choice (unitIndex_iso C))]
   dsimp only [Functor.id_obj]
   convert congrArg (fun (t : (S i)ᘁ ⊗ 𝟙_ C.Obj ⟶ 𝟙_ C.Obj ⊗ (S i)ᘁ) =>
@@ -194,9 +197,9 @@ theorem secondTriangle_entry :
   simp only [Category.assoc, biproduct.map_π, biproduct.lift_π_assoc]
   by_cases h : i = j
   · subst j
-    simpa [Category.assoc, induction, underlyingFunctor, underlying] using unit_diag C X i
-  · simpa [monoidalComp, crossing_counit_offdiag C X h, biproduct.ι_π_ne _ h,
-      induction, underlying, underlyingFunctor] using unit_matrix_reduce C X i j
+    simpa [Category.assoc, induction, underlyingFunctor, underlying] using unit_diag X i
+  · simpa [monoidalComp, crossing_counit_offdiag X h, biproduct.ι_π_ne _ h,
+      induction, underlying, underlyingFunctor] using unit_matrix_reduce X i j
 
 
 end PropertyF.Ground.CentreInduction
