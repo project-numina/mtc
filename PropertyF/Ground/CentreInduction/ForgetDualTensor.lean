@@ -106,14 +106,9 @@ private theorem rightDualIso_tensor_evaluation {X Y A B A' B' : D}
 theorem rightDualIso_tensor {X Y A B A' B' : D}
     (pX : ExactPairing X A) (qX : ExactPairing X A')
     (pY : ExactPairing Y B) (qY : ExactPairing Y B') :
-    letI := pX
-    letI := pY
-    let p := (inferInstance : ExactPairing (X ⊗ Y) (B ⊗ A))
-    letI := qX
-    letI := qY
-    let q := (inferInstance : ExactPairing (X ⊗ Y) (B' ⊗ A'))
-    (rightDualIso p q).hom = (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom := by
-  dsimp only
+    (rightDualIso (@ExactPairing.tensor D _ _ X Y A B pX pY)
+      (@ExactPairing.tensor D _ _ X Y A' B' qX qY)).hom =
+        (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom := by
   let : ExactPairing X A := pX
   let : ExactPairing Y B := pY
   let : ExactPairing X A' := qX
@@ -137,6 +132,12 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory 
   [RigidCategory (Center D)]
 local notation "𝒵" => Center D
 
+omit [RightRigidCategory D] in
+/-- Tensor the forgotten dual pairings of two centre objects. -/
+abbrev tensorForgetPairing (X Y : 𝒵) :
+    ExactPairing (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1) :=
+  @ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1 (forgetPairing X) (forgetPairing Y)
+
 theorem rightDualIso_trans {E : Type u} [Category.{v} E] [MonoidalCategory E]
     {X A B E : E} (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X E) :
     (rightDualIso p q).hom ≫ (rightDualIso q r).hom = (rightDualIso p r).hom := by
@@ -146,14 +147,10 @@ omit [RightRigidCategory D] in
 /-- The forgotten tensor dual agrees with the tensor pairing of forgotten duals. -/
 theorem forget_rightDualTensorIso (X Y : 𝒵) :
     (rightDualTensorIso X Y).hom.f =
-      (rightDualIso (forgetPairing (X ⊗ Y))
-        (show ExactPairing (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1) from
-          @ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1
-            (forgetPairing X) (forgetPairing Y))).hom := by
+      (rightDualIso (forgetPairing (X ⊗ Y)) (tensorForgetPairing X Y)).hom := by
   have hc : (η_ (X ⊗ Y) (Yᘁ ⊗ Xᘁ)).f =
       @ExactPairing.coevaluation D _ _ (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1)
-        (@ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1
-          (forgetPairing X) (forgetPairing Y)) := by
+        (tensorForgetPairing X Y) := by
     let cx : 𝟙_ D ⟶ X.1 ⊗ (Xᘁ).1 := (η_ X (Xᘁ)).f
     let cy : 𝟙_ D ⟶ Y.1 ⊗ (Yᘁ).1 := (η_ Y (Yᘁ)).f
     change (η_ X (Xᘁ) ⊗≫ (X ◁ η_ Y (Yᘁ)) ▷ (Xᘁ) ⊗≫
@@ -174,8 +171,7 @@ theorem forgetDualIso_tensor (X Y : 𝒵) :
         ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) := by
   let p := forgetPairing (X ⊗ Y)
   let q := (HasRightDual.exact : ExactPairing (X.1 ⊗ Y.1) ((X.1 ⊗ Y.1)ᘁ))
-  let s := @ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1
-      (forgetPairing X) (forgetPairing Y)
+  let s := tensorForgetPairing X Y
   let r := @ExactPairing.tensor D _ _ X.1 Y.1 (X.1ᘁ) (Y.1ᘁ)
       HasRightDual.exact HasRightDual.exact
   have h3 := rightDualIso_tensor (forgetPairing X) HasRightDual.exact
