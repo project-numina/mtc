@@ -55,9 +55,9 @@ theorem simpleHomPairingEquiv_natural
 
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/
-theorem dualBasis_contraction_natural {k : Type*} [Field k] {I J : Type} [Fintype I] [Fintype J] [DecidableEq I] [DecidableEq J]
-    {A B E : Type*} [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
-    [AddCommGroup E] [Module k E] (a : Module.Basis I k A) (b : Module.Basis J k B)
+theorem dualBasis_contraction_natural {k : Type*} [CommSemiring k] {I J : Type} [Fintype I] [Fintype J] [DecidableEq I] [DecidableEq J]
+    {A B E : Type*} [AddCommMonoid A] [Module k A] [AddCommMonoid B] [Module k B]
+    [AddCommMonoid E] [Module k E] (a : Module.Basis I k A) (b : Module.Basis J k B)
     (L : A →ₗ[k] B) (F : B →ₗ[k] Module.Dual k A →ₗ[k] E) :
     (∑ i, F (L (a i)) (a.dualBasis i)) =
       ∑ j, F (b j) (Module.Dual.transpose L (b.dualBasis j)) := by

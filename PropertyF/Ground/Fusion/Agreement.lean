@@ -609,6 +609,13 @@ theorem fpSimple_mul (i j : Fin (rank D)) :
       ∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k :=
   by simp only [fpSimple_eq_fpCharacter, fpCharacter_mul]
 
+/-- FP dimensions form a complex-valued fusion character. -/
+theorem fpSimple_isFusionMultiplicative :
+    IsFusionMultiplicative D (fun i ↦ (fpSimple D i : ℂ)) := by
+  intro i j
+  dsimp
+  exact_mod_cast fpSimple_mul D i j
+
 /-- The fusion matrix of a dual is the transpose of the original one. -/
 theorem fusionMatrix_dual (i : Fin (rank D)) :
     fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ := by

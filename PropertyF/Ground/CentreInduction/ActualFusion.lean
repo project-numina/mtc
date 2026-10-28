@@ -175,13 +175,11 @@ theorem unitCandidate_sum (Z : CategoryTheory.Center C.Obj) :
   unitCandidate C Z = ∑ i, unitComponent C Z i ≫ biproduct.ι V i := by
   classical
   let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
-  have h := congrArg (fun f => unitCandidate C Z ≫ f) (biproduct.total (f := V))
   have hp (i) : unitCandidate C Z ≫ biproduct.π V i = unitComponent C Z i :=
     biproduct.lift_π _ _
-  simp only [Preadditive.comp_sum, ← Category.assoc, hp] at h
   have hid : unitCandidate C Z ≫ 𝟙 (⨁ V) = unitCandidate C Z := Category.comp_id _
-  rw [hid] at h
-  exact h.symm
+  simpa only [hid, Preadditive.comp_sum, ← Category.assoc, hp] using
+    (congrArg (fun f => unitCandidate C Z ≫ f) (biproduct.total (f := V))).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/

@@ -16,7 +16,7 @@ universe v u
 /-- Once induced simple representatives have the expected underlying objects
 and the adjunction supplies the displayed Hom dimension equality, the global
 FP dimension of the actual centre is the square of that of the base. The
-hypotheses explicitly isolate the still-unconstructed induction adjunction. -/
+hypotheses isolate the numerical contribution of the induction adjunction. -/
 theorem globalFPDimension_square_of_induction
     (C : BraidedFusionCategory.{v,u})
     [RigidCategory (CategoryTheory.Center C.Obj)]

@@ -95,14 +95,12 @@ theorem nonzero_dual_coefficient_of_sCentralizer
       Modular.simpleDimension D p x *
         (∑ y, Modular.categoricalS D p (unitIndex D) y * T y) := by
     rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro y _
+    refine Finset.sum_congr rfl fun y _ ↦ ?_
     by_cases hy : y ∈ core
     · rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
         Modular.categoricalS_unit]
       ring
-    · have hz : T y = 0 := hsupport y hy
-      simp [hz]
+    · simp [show T y = 0 from hsupport y hy]
   have hxinv := categoricalS_fourier_inversion D p hp hdet hreal f x
   have huinv := categoricalS_fourier_inversion D p hp hdet hreal f (unitIndex D)
   change (∑ y, Modular.categoricalS D p x y * T y) = _ at hxinv
@@ -111,8 +109,7 @@ theorem nonzero_dual_coefficient_of_sCentralizer
   have hn := mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
     (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit)
   intro hz
-  rw [hz, mul_zero] at heq
-  exact hn heq.symm
+  exact hn (by simpa only [hz, mul_zero] using heq.symm)
 
 include hp hdet in
 /-- A vector supported on generated labels proves the exact double-centralizer
@@ -143,6 +140,23 @@ universe v u
 variable (D : Ground.BraidedFusionCategory.{v,u})
   (p : Dimensions.PivotalStructure (C := D.Obj))
 
+/-- A character pairing with an eigenvector has the same eigenvalue on both sides. -/
+theorem sum_mul_eigenvalue {ι R : Type*} [Fintype ι] [CommSemiring R]
+    (N : ι → ι → R) (χ f : ι → R) {c d : R}
+    (hχ : ∀ i, c * χ i = ∑ k, N i k * χ k)
+    (hf : ∀ k, ∑ i, N i k * f i = d * f k) :
+    c * (∑ i, χ i * f i) = d * ∑ i, χ i * f i := by
+  classical
+  calc
+    _ = ∑ i, (c * χ i) * f i := by simp [Finset.mul_sum, mul_assoc]
+    _ = ∑ i, ∑ k, N i k * χ k * f i := by simp_rw [hχ, Finset.sum_mul]
+    _ = ∑ k, χ k * ∑ i, N i k * f i := by
+      rw [Finset.sum_comm]
+      simp only [Finset.mul_sum, mul_left_comm, mul_comm]
+    _ = d * ∑ i, χ i * f i := by
+      simp_rw [hf, Finset.mul_sum]
+      simp only [mul_left_comm]
+
 /-- The S-transform of a common FP eigenvector vanishes at every label whose
 normalized S character differs from the FP character on a chosen label. -/
 theorem fourier_eq_zero_of_fusion_eigenvector
@@ -156,27 +170,10 @@ theorem fourier_eq_zero_of_fusion_eigenvector
   let χ (i : Fin (rank D)) := Modular.categoricalS D p i y / Modular.simpleDimension D p y
   let T : ℂ := ∑ i, χ i * f i
   have ht : χ a * T = (fpSimple D a : ℂ) * T := by
-    calc
-      _ = ∑ i, (χ a * χ i) * f i := by simp [T, Finset.mul_sum, mul_assoc]
-      _ = ∑ i, ∑ k, (fusionCoeff D a i k : ℂ) * χ k * f i := by
-        apply Finset.sum_congr rfl
-        intro i _
-        rw [Modular.categoricalS_verlinde D p a i y]
-        simp only [Finset.sum_mul, χ]
-      _ = ∑ k, χ k * (∑ i, (fusionCoeff D a i k : ℂ) * f i) := by
-        rw [Finset.sum_comm]
-        apply Finset.sum_congr rfl
-        intro k _
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro i _
-        ring
-      _ = (fpSimple D a : ℂ) * T := by
-        simp_rw [heigen]
-        simp only [T, Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro k _
-        ring
+    apply sum_mul_eigenvalue (fun i k ↦ (fusionCoeff D a i k : ℂ)) χ f
+    · intro i
+      exact Modular.categoricalS_verlinde D p a i y
+    · exact heigen
   have hχ : χ a ≠ (fpSimple D a : ℂ) := fun h ↦ hne <| by
     simpa [χ, hdim] using (div_eq_iff (Modular.simpleDimension_ne_zero D p y)).mp h
   have hT : T = 0 := (mul_eq_mul_right_iff.mp ht).resolve_left hχ
@@ -244,24 +241,16 @@ theorem doubleCentralizer_of_fusion_closed
   have hu : f (unitIndex D) ≠ 0 := by
     simp only [f, hunit, ite_true, ne_eq, Complex.ofReal_eq_zero]
     exact ne_of_gt (fpSimple_pos D (unitIndex D))
-  have hgen : ∀ i, f i ≠ 0 → i ∈ (↑A : Set (Fin (rank D))) := by
-    intro i hi
+  have hgen (i) (hi : f i ≠ 0) : i ∈ A := by
     by_contra hn
-    change i ∉ A at hn
     exact hi (by simp [f, hn])
-  have hs : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0 := by
-    intro y hy
-    have ha : ∃ a ∈ A, Modular.categoricalS D p a y ≠
-        Modular.simpleDimension D p a * Modular.simpleDimension D p y := by
-      by_contra hn
-      apply hy
-      apply hcore
-      push Not at hn
-      exact hn
+  have hs (y) (hy : y ∉ core) : ∑ i, Modular.categoricalS D p y i * f i = 0 := by
+    have hn : y ∉ sCentralizer D p (↑A : Set _) := fun h ↦ hy (hcore h)
+    have ha : ∃ a ∈ A, ¬sCentralizes D p a y := by
+      simpa only [sCentralizer, Set.mem_ofPred_eq, Finset.mem_coe, not_forall, exists_prop] using hn
     obtain ⟨a, ha, hne⟩ := ha
-    apply fourier_eq_zero_of_fusion_eigenvector D p hdim f a y
-    · exact regular_vector_fusion_eigenvector D A hdual hclosed a ha
-    · exact hne
+    exact fourier_eq_zero_of_fusion_eigenvector D p hdim f a y
+      (regular_vector_fusion_eigenvector D A hdual hclosed a ha) hne
   exact doubleCentralizer_of_fourier_support D p hp hdet hdim f core (↑A : Set _) hu hgen hs
 
 end PropertyF.Ground.CentreCabling

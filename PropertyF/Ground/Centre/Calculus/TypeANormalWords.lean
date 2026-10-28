@@ -139,8 +139,7 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
     have htop : (⊥ : Subgroup G) = ⊤ := by simpa using hgen
     let : Subsingleton G := Subgroup.subsingleton_iff.mp (subsingleton_iff_bot_eq_top.mp htop)
     have : Finite G := Finite.of_subsingleton
-    refine ⟨inferInstance, ?_⟩
-    simp [Nat.card_unique]
+    exact ⟨inferInstance, by simp [Nat.card_unique]⟩
   | succ m ih =>
     intro G inst s hrel hgen
     let H := Subgroup.closure (Set.range (fun t : Fin m => s (t.val + 1)))
@@ -153,8 +152,7 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
       congr 1
       rw [← Set.range_comp]
       congr 1
-      funext q
-      exact ht q.val q.isLt
+      exact funext fun q ↦ ht q.val q.isLt
     obtain ⟨hfin, hcard⟩ := ih t (hrel.shift ht) htgen
     let : Finite H := hfin
     let f : Fin (m + 2) × H → G := fun a => moveWord s a.1.val * a.2
@@ -162,8 +160,7 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
       intro g
       have hg : g ∈ Subgroup.closure (Set.range (fun q : Fin (m + 1) => s q.val)) := by rw [hgen]; trivial
       obtain ⟨j, hj, h, hh, he⟩ := exists_moveWord_coset hrel hg
-      refine ⟨(⟨j, by omega⟩, ⟨h, by simpa [H] using hh⟩), ?_⟩
-      exact he.symm
+      exact ⟨(⟨j, by omega⟩, ⟨h, by simpa [H] using hh⟩), he.symm⟩
     let : Finite G := Finite.of_surjective f hf
     refine ⟨inferInstance, ?_⟩
     calc
