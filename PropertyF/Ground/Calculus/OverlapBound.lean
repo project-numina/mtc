@@ -71,7 +71,7 @@ theorem pivotalTrace_braid_unitary_bound
   apply Finset.sum_le_sum
   intro j _
   rw [norm_mul]
-  apply mul_le_mul ?_ (by simpa using norm_trace_le_card (ha j)) (norm_nonneg _)
+  apply mul_le_mul ?_ (by simpa using norm_trace_le_card (Pi.mem_unitary_iff.mp ha j)) (norm_nonneg _)
   · exact Finset.sum_nonneg fun i _ =>
       mul_nonneg (Nat.cast_nonneg _) ((norm_nonneg _).trans (hbound i))
   · exact (norm_sum_le _ _).trans <| Finset.sum_le_sum fun i _ => by
@@ -161,12 +161,6 @@ end PropertyF.Ground.Calculus
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Calculus
 
-/-- A star-algebra map between products of matrix algebras preserves
-blockwise unitarity. -/
-theorem starMap_preserves_block_unitary {B B' : Blocks} (F : B.Algebra →⋆ₐ[ℂ] B'.Algebra)
-    {u : B.Algebra} (hu : B.IsUnitary u) : B'.IsUnitary (F u) :=
-  Pi.mem_unitary_iff.mp (Unitary.map_mem F (Pi.mem_unitary_iff.mpr hu))
-
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -182,10 +176,11 @@ include he
 private theorem overlapLeft_unitary (k : ℕ) {v : braidAlgebra X (overlapIndex t k)}
     (hv : Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩ (e _ v)) :
     Blocks.IsUnitary ⟨_, d (overlapIndex t (k + 1))⟩ (e _ (overlapLeft X t k v)) := by
-  change Blocks.IsUnitary ⟨_, d (overlapIndex t k + (t + 1))⟩
-    (e _ (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v))
+  change e (overlapIndex t k + (t + 1))
+    (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v) ∈
+      unitary (Blocks.Algebra ⟨_, d (overlapIndex t k + (t + 1))⟩)
   simpa [addRightBlocksIterStarMap] using
-    starMap_preserves_block_unitary
+    Unitary.map_mem
       (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) hv
 
 /-- Inserting a fresh overlapping factor preserves unitarity. -/
@@ -201,7 +196,7 @@ private theorem overlapRight_unitary (k : ℕ) {u : braidAlgebra X t}
     exact hunit
   exact hcast _ _ (overlapIndex_formula t (k + 1)) _ (by
     simpa [addLeftBlocksIterStarMap] using
-      starMap_preserves_block_unitary
+      Unitary.map_mem
         (addLeftBlocksIterStarMap X t ((k + 1) * (t + 1)) (e t) (e _) (he t) (he _)) hu)
 
 /-- Successive actual overlapping products remain blockwise unitary. The
@@ -214,10 +209,9 @@ theorem overlapProduct_unitary {u : braidAlgebra X t}
   induction k with
   | zero => exact hu
   | succ k ih =>
-    intro i
-    rw [overlapProduct, map_mul, Pi.mul_apply]
-    exact Submonoid.mul_mem _ (overlapLeft_unitary e he k ih i)
-      (overlapRight_unitary e he k hu i)
+    rw [overlapProduct, map_mul]
+    exact (unitary _).mul_mem (overlapLeft_unitary e he k ih)
+      (overlapRight_unitary e he k hu)
 
 end OverlapUnitary
 
