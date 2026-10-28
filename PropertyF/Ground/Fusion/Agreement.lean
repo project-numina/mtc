@@ -233,8 +233,7 @@ def totalFusionMatrix (D : BraidedFusionCategory) :
 /-- Duality and Frobenius reciprocity make the total fusion matrix symmetric. -/
 theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
     totalFusionMatrix D j k = totalFusionMatrix D k j := by
-  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry,
-    show ∀ i, dualEquiv D i = dualIndex D i from fun _ ↦ rfl] using
+  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry, show ⇑(dualEquiv D) = dualIndex D from rfl] using
     Equiv.sum_comp (dualEquiv D) (fun i ↦ (fusionCoeff D i j k : ℝ))
 
 /-- The total fusion matrix is strictly positive in every entry. -/
