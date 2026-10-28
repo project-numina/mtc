@@ -41,17 +41,16 @@ variable {X Y : D} [HasRightDual X] [HasRightDual Y] [HasRightDual (X ⊗ Y)]
 
 /-- Right duality reverses the tensor factors of mixed monodromy. -/
 theorem rightDualTensorIso_monodromy :
-    (M X Y)ᘁ ≫ (rightDualTensorIso X Y).hom =
-      (rightDualTensorIso X Y).hom ≫ M (Yᘁ) (Xᘁ) :=
+    CommSq ((M X Y)ᘁ) (rightDualTensorIso X Y).hom (rightDualTensorIso X Y).hom
+      (M (Yᘁ) (Xᘁ)) :=
   let : HasRightDual (Y ⊗ X) := hasRightDualTensor
-  by simp [Modular.doubleBraiding, comp_rightAdjointMate,
-    rightDualTensorIso_braiding]
+  ⟨by simp [Modular.doubleBraiding, comp_rightAdjointMate, rightDualTensorIso_braiding]⟩
 
 /-- Inverse dual tensor comparison also transports monodromy. -/
 theorem rightDualTensorIso_inv_monodromy :
     (rightDualTensorIso X Y).inv ≫ (M X Y)ᘁ =
       M (Yᘁ) (Xᘁ) ≫ (rightDualTensorIso X Y).inv :=
-  (CommSq.vert_inv ⟨rightDualTensorIso_monodromy⟩).w.symm
+  (CommSq.vert_inv rightDualTensorIso_monodromy).w.symm
 
 end PropertyF.Ground.CentreInduction
 
