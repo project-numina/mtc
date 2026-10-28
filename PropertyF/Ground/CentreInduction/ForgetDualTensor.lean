@@ -137,6 +137,7 @@ abbrev tensorForgetPairing :
   @ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1 (forgetPairing X) (forgetPairing Y)
 
 omit [RightRigidCategory D] [RigidCategory (Center D)] in
+/-- Comparing duals successively agrees with comparing them directly. -/
 theorem rightDualIso_trans {X A B F : D}
     (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X F) :
     (rightDualIso p q).hom ≫ (rightDualIso q r).hom = (rightDualIso p r).hom := by

@@ -34,10 +34,12 @@ abbrev HasFPSphericalStructure (C : BraidedFusionCategory.{v,u}) : Prop :=
   ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
     pivotalDimension C p (simples C i) = (fpSimple C i : ℂ)
 
+variable (p : PivotalStructure (C := C.Obj))
+
 /-- Pivotal dimension is a sum of simple dimensions with the actual Hom-space
 multiplicities, for any pivotal structure. -/
 theorem pivotalDimension_decomposition
-    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) :
+    (X : C.Obj) :
     pivotalDimension C p X = ∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℂ) *
       pivotalDimension C p (simples C i) := by
   classical
@@ -50,38 +52,37 @@ theorem pivotalDimension_decomposition
 
 /-- The pivotal dimension of the tensor unit is normalized to one. -/
 theorem pivotalDimension_unit
-    (p : PivotalStructure (C := C.Obj)) : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
+    : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
   simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1
 
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor
-    (p : PivotalStructure (C := C.Obj)) (X Y : C.Obj) :
+    (X Y : C.Obj) :
     pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
   simpa [pivotalDimension, Ground.unitScalar_eq_equiv] using
     pivotalTrace_tensor p (Ground.unitScalarEquiv C) (𝟙 X) (𝟙 Y)
 
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character
-    (p : PivotalStructure (C := C.Obj)) :
+    :
     IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) :=
   fun i j ↦ (pivotalDimension_tensor C p (simples C i) (simples C j)).symm.trans
     (pivotalDimension_decomposition C p _)
 
 /-- Pivotal dimension is invariant under object isomorphism. -/
 theorem pivotalDimension_iso
-    (p : PivotalStructure (C := C.Obj)) {X Y : C.Obj} (e : X ≅ Y) :
+    {X Y : C.Obj} (e : X ≅ Y) :
     pivotalDimension C p X = pivotalDimension C p Y :=
   congrArg (unitScalar C) (p.rightTrace_id_iso e)
 
 /-- The pivotal dimension of the simple representative of the unit is one. -/
-theorem pivotalDimension_unitIndex (p : PivotalStructure (C := C.Obj)) :
+theorem pivotalDimension_unitIndex :
     pivotalDimension C p (simples C (unitIndex C)) = 1 :=
   (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso C p e).trans (pivotalDimension_unit C p)
 
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
 its Frobenius–Perron dimension. -/
 theorem galois_pivotalDimension_norm_le_fpSimple
-    (p : PivotalStructure (C := C.Obj))
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i :=
   galois_character_norm_le_fpSimple C

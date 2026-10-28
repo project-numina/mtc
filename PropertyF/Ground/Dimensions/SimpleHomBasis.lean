@@ -268,7 +268,7 @@ theorem simpleHomPairing_injective
   rw [LinearMap.ker_eq_bot']
   intro g hg
   by_contra hne
-  obtain ⟨f, hf⟩ := Ground.split_to_simple C g hne
+  obtain ⟨f, hf⟩ := Ground.split_to_simple g hne
   have h := congrArg (fun F : Module.Dual ℂ (S ⟶ X) => F f) hg
   change Ground.simpleEndScalar S (End.of (f ≫ g)) = 0 at h
   rw [hf] at h

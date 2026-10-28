@@ -39,7 +39,7 @@ theorem generatedBy_rightDual_of_unit_power (D : BraidedFusionCategory.{v,u})
     {X : D.Obj} [Simple X] {n : ℕ} (r : Retract (𝟙_ D.Obj) (tensorPower X (n + 1))) :
     GeneratedBy X (Xᘁ) := by
   let _ : Simple (𝟙_ D.Obj) := Ground.IsFusionCategory.unit_simple
-  let _ : Simple (Xᘁ) := Ground.simple_rightDual D X
+  let _ : Simple (Xᘁ) := Ground.simple_rightDual X
   let : IsSplitMono r.i := r.instIsSplitMonoI
   let f : Xᘁ ⊗ 𝟙_ D.Obj ⟶ tensorPower X n :=
     (Ground.tensorLeftHomLinearEquiv (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)).symm r.i

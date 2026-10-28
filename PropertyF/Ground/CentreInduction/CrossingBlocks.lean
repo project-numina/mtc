@@ -41,11 +41,8 @@ def underlyingFunctor (C : BraidedFusionCategory.{v,u}) : C.Obj ⥤ C.Obj where
   obj := underlying C
   map {X Y} f := CategoryTheory.Limits.biproduct.map
     (fun i : Fin (rank C) => (simples C i ◁ f) ▷ (simples C i)ᘁ)
-  map_id X := by
-    refine biproduct.hom_ext' _ _ fun i => ?_
-    simp [underlying]
-  map_comp f g := by
-    refine biproduct.hom_ext' _ _ fun i => ?_
+  map_id X := biproduct.hom_ext' _ _ fun i => by simp [underlying]
+  map_comp f g := biproduct.hom_ext' _ _ fun i => by
     simp [underlying, Category.assoc, whiskerLeft_comp, comp_whiskerRight]
 
 end PropertyF.Ground.CentreInduction
@@ -149,13 +146,13 @@ variable (X T : C.Obj)
 /-- The finite matrix formula for the induction half-braiding. Its invertibility
 and coherence are established in the subsequent induction modules. -/
 def crossingCandidate :
-    underlying C X ⊗ T ⟶ T ⊗ underlying C X := by
+    underlying C X ⊗ T ⟶ T ⊗ underlying C X :=
   let V := inductionSummand C X
-  refine (rightDistributor V T).hom ≫ biproduct.desc (fun i => ?_)
-  exact ∑ j, ∑ a : crossingIndex C T i j,
-    crossingBlock X T (simples C j)
-      (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
-        (T ◁ biproduct.ι V j)
+  (rightDistributor V T).hom ≫ biproduct.desc (fun i =>
+    ∑ j, ∑ a : crossingIndex C T i j,
+      crossingBlock X T (simples C j)
+        (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
+          (T ◁ biproduct.ι V j))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing has the stated matrix entries on each induced
@@ -184,8 +181,6 @@ theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj)
     crossingCandidate_on_summand, Preadditive.comp_sum, Preadditive.sum_comp]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun a _ => ?_
   rw [← whiskerLeft_comp]
-  simp only [biproduct.ι_map, whiskerLeft_comp]
-  simpa only [Category.assoc] using crossingBlock_natural_middle_assoc h
-    (crossingInclusion C T i j a) (crossingProjection C T i j a) (T ◁ biproduct.ι VY j)
+  simp only [biproduct.ι_map, whiskerLeft_comp, crossingBlock_natural_middle_assoc]
 
 end PropertyF.Ground.CentreInduction

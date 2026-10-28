@@ -49,13 +49,12 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [BraidedCategory C] [RightRigidCategory C]
+variable (X Y : C)
 set_option backward.isDefEq.respectTransparency false in
 /-- Sliding the crossing through both caps relates the two tensor evaluations. -/
-theorem dual_braiding_tensor_evaluations (X Y : C) :
-    let p : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := ExactPairing.tensor
-    let q : ExactPairing (Y ⊗ X) ((Xᘁ) ⊗ (Yᘁ)) := ExactPairing.tensor
-    (β_ (Xᘁ) (Yᘁ)).hom ▷ (X ⊗ Y) ≫ @ExactPairing.evaluation C _ _ _ _ p =
-      ((Xᘁ) ⊗ (Yᘁ)) ◁ (β_ X Y).hom ≫ @ExactPairing.evaluation C _ _ _ _ q := by
+theorem dual_braiding_tensor_evaluations :
+    (β_ (Xᘁ) (Yᘁ)).hom ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
+      ((Xᘁ) ⊗ (Yᘁ)) ◁ (β_ X Y).hom ≫ ε_ (Y ⊗ X) ((Xᘁ) ⊗ (Yᘁ)) := by
   let U := Xᘁ
   let V := Yᘁ
   let p : ExactPairing (X ⊗ Y) (V ⊗ U) := ExactPairing.tensor
@@ -80,7 +79,7 @@ theorem dual_braiding_tensor_evaluations (X Y : C) :
     _ = _ := by monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- The right-dual tensor comparison transports a braiding to the braiding of the duals. -/
-theorem rightDualTensorIso_braiding (X Y : C) :
+theorem rightDualTensorIso_braiding :
     ((β_ X Y).homᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso Y X).hom ≫ (β_ (Xᘁ) (Yᘁ)).hom := by
   apply evaluation_ext (X := X ⊗ Y)

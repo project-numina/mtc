@@ -499,7 +499,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 theorem base_finite_simple_sum (X : C.Obj) :
     CentreInduction.FiniteSimpleSum C.Obj X := by
   let (A B : C.Obj) : FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite _ _
-  let (W : C.Obj) : Injective W := object_injective C W
+  let (W : C.Obj) : Injective W := object_injective W
   apply CentreInduction.finiteSimpleSum_of_injective (k := ℂ) ?_ X
   intro W hW
   obtain ⟨i, hi⟩ := exists_positive_multiplicity C hW

@@ -91,14 +91,7 @@ def halfBraidingOfCrossingCandidate :
 def induction : C.Obj ⥤ Center C.Obj where
   obj X := ⟨underlying C X, halfBraidingOfCrossingCandidate C X⟩
   map f := ⟨(underlyingFunctor C).map f, crossingCandidate_natural_middle C f⟩
-  map_id X := by
-    apply Center.ext
-    change (underlyingFunctor C).map (𝟙 X) = 𝟙 ((underlyingFunctor C).obj X)
-    exact (underlyingFunctor C).map_id X
-  map_comp f g := by
-    apply Center.ext
-    change (underlyingFunctor C).map (f ≫ g) =
-      (underlyingFunctor C).map f ≫ (underlyingFunctor C).map g
-    exact (underlyingFunctor C).map_comp f g
+  map_id X := Center.ext _ _ ((underlyingFunctor C).map_id X)
+  map_comp f g := Center.ext _ _ ((underlyingFunctor C).map_comp f g)
 
 end PropertyF.Ground.CentreInduction

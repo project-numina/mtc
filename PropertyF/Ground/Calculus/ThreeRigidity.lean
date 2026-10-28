@@ -87,8 +87,7 @@ adjacent copies of double self-braiding. -/
 theorem local_monodromy_of_block_squares_equal {X : C} {r : ℕ} {size : Fin r → ℕ}
     (b : BraidBlockPresentation X 1 size)
     (h : tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2) :
-    insertRightIdentity X (selfMonodromy X) =
-      overlapFresh X (selfMonodromy X) := by
+    insertRightIdentity X (selfMonodromy X) = overlapFresh X (selfMonodromy X) := by
   apply local_monodromy_of_three_squares_equal X
   have hs : braidInImage (threeGeneratorLeft X ^ 2) =
       braidInImage (threeGeneratorRight X ^ 2) := by

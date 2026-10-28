@@ -37,19 +37,12 @@ def liftedPivotalStructure (hc : PivotalComponentsCentral p) :
     let f : Z ⟶ ((Zᘁ)ᘁ) := ⟨u, hc Z⟩
     letI : IsIso f.f := by change IsIso u; dsimp only [u, transportedPivotalHom]; infer_instance
     exact Center.isoMk f
-  naturality f := by
-    apply Center.ext
-    simpa only [Center.comp_f, Center.isoMk_hom] using
-      transported_pivotal_natural p f
-  tensor X Y := by
-    apply Center.ext
-    simpa only [Center.comp_f, Center.tensor_f,
-      Center.isoMk_hom, Center.tensor_fst] using
-      (transported_pivotal_tensor p X Y).symm
-  unit := by
-    apply Center.ext
-    simp only [Center.isoMk_hom]
-    exact transported_pivotal_unit p
+  naturality f := Center.ext _ _ (by
+    simpa only [Center.comp_f, Center.isoMk_hom] using transported_pivotal_natural p f)
+  tensor X Y := Center.ext _ _ (by
+    simpa only [Center.comp_f, Center.tensor_f, Center.isoMk_hom, Center.tensor_fst] using
+      (transported_pivotal_tensor p X Y).symm)
+  unit := Center.ext _ _ (transported_pivotal_unit p)
 
 /-- The lifted component agrees with the original pivotal component. -/
 theorem liftedPivotalStructure_compatible {p : PivotalStructure (C := D)}
@@ -176,14 +169,14 @@ FP dimensions on the centre. -/
 theorem center_positive_spherical_of_compatible_pivotal
     {p : PivotalStructure (C := C.Obj)} (hsimple : PivotalHasFPDimensions C p)
     {pZ : PivotalStructure (C := 𝒵)} (hcompat : ∀ Z : 𝒵, PivotalCompatibleAt p pZ Z) :
-    pZ.IsSpherical ∧ PivotalHasFPDimensions 𝒵ᶠ pZ := by
+    pZ.IsSpherical ∧ PivotalHasFPDimensions 𝒵ᶠ pZ :=
   let D := 𝒵ᶠ
-  have hd (i : Fin (rank D)) : pivotalDimension D pZ (simples D i) =
+  let hd (i : Fin (rank D)) : pivotalDimension D pZ (simples D i) =
       (fpSimple D i : ℂ) :=
     (center_pivotalDimension_forget C (hcompat _)).trans <|
       (pivotalDimension_eq_fp hsimple _).trans <| congrArg (fun x : ℝ => (x : ℂ)) <|
         (Integrate.center_forget_fpDimension C _).trans (fpDimension_simple D i)
-  exact ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i =>
+  ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i =>
     (congrArg star (hd i)).trans ((Complex.conj_ofReal _).trans (hd i).symm)), hd⟩
 
 end PropertyF.Ground.CentreInduction

@@ -57,6 +57,7 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj)
 
+/-- The inverse Drinfeld map satisfies the reversed tensor identity. -/
 theorem drinfeld_tensor_inverse :
     (doubleDualIso C (X ⊗ Y)).inv = (doubleDualTensorIso X Y).inv ≫
       ((doubleDualIso C X).inv ⊗ₘ (doubleDualIso C Y).inv) ≫ Modular.doubleBraiding X Y := by
