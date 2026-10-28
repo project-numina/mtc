@@ -126,10 +126,10 @@ def overlapRight (X : C) (t k : ℕ) :
   exact addLeftBraidAlgebraIter X t ((k + 1) * (t + 1))
 
 /-- The actual product of `k+1` successive overlapping braid-algebra elements. -/
-def overlapProduct (X : C) (t : ℕ) (u : braidAlgebra X t) :
+def overlapProduct {X : C} {t : ℕ} (u : braidAlgebra X t) :
     ∀ k : ℕ, braidAlgebra X (overlapIndex t k)
   | 0 => u
-  | k + 1 => overlapLeft X t k (overlapProduct X t u k) * overlapRight X t k u
+  | k + 1 => overlapLeft X t k (overlapProduct u k) * overlapRight X t k u
 
 end PropertyF.Ground.Calculus
 
@@ -141,7 +141,7 @@ universe v u
 /-- The scaled trace of overlapping products is the corresponding trace power. -/
 abbrev HasOverlapTracePower (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t) : Prop :=
-  ∀ k, actualBraidTrace C p (overlapProduct X t u k) *
+  ∀ k, actualBraidTrace C p (overlapProduct u k) *
     (pivotalDimension C p X) ^ k = actualBraidTrace C p u ^ (k + 1)
 
 end PropertyF.Ground.Calculus
@@ -175,7 +175,7 @@ theorem overlapProduct_unitary {X : C} {t : ℕ}
     (he : ∀ n, IsUnitaryBraidPresentation (e n))
     {u : braidAlgebra X t} (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u)) :
     ∀ k, Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩
-      (e (overlapIndex t k) (overlapProduct X t u k)) := by
+      (e (overlapIndex t k) (overlapProduct u k)) := by
   intro k
   induction k with
   | zero => exact hu
@@ -185,7 +185,7 @@ theorem overlapProduct_unitary {X : C} {t : ℕ}
     apply Submonoid.mul_mem
     · have hr : Blocks.IsUnitary ⟨_, d (overlapIndex t k + (t + 1))⟩
           (e _ (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1)
-            (overlapProduct X t u k))) := by
+            (overlapProduct u k))) := by
         simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
           starMap_preserves_block_unitary
             (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) ih
@@ -235,9 +235,9 @@ dividing by the simple dimension. -/
 theorem overlap_trace_power_of_step {X : C.Obj}
     (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
     (hstep : ∀ k, actualBraidTrace C p
-        (overlapProduct X t u (k + 1)) *
+        (overlapProduct u (k + 1)) *
         pivotalDimension C p X =
-      actualBraidTrace C p (overlapProduct X t u k) *
+      actualBraidTrace C p (overlapProduct u k) *
         actualBraidTrace C p u) :
     HasOverlapTracePower C p u := by
   intro k
@@ -268,11 +268,11 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
   simp only [HasOverlapTracePower, pivotalDimension, unitScalar_eq_equiv] at hrec ⊢
   apply norm_bound_of_overlapIndex (Modular.unitScalar_rightTrace_ne_zero C p X)
     (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X))) t
-    (fun k => actualBraidTrace C p (overlapProduct X t u k)) ?_ hrec
+    (fun k => actualBraidTrace C p (overlapProduct u k)) ?_ hrec
   intro k
   have hbound := braid_trace_unitary_bound_ground C p
-    (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary e he hu k)
-  change ‖actualBraidTrace C p (overlapProduct X t u k)‖ ≤ _ at hbound
+    (hd _) (e _) (overlapProduct u k) (overlapProduct_unitary e he hu k)
+  change ‖actualBraidTrace C p (overlapProduct u k)‖ ≤ _ at hbound
   exact hbound
 
 end PropertyF.Ground.Calculus

@@ -22,9 +22,7 @@ omit [DecidableEq ι] in
 include hdual in
 /-- Fusion duality balances two multiplicative functions under a ring endomorphism. -/
 theorem fusion_inner_balance {K : Type*} [CommSemiring K] (φ : K →+* K)
-    (χ ψ : ι → K)
-    (hχ : ∀ i j, χ i * χ j = ∑ k, (N.coeff i j k : K) * χ k)
-    (hψ : ∀ i j, ψ i * ψ j = ∑ k, (N.coeff i j k : K) * ψ k) (i : ι) :
+    (χ ψ : ι → K) (hχ : IsFusionCharacter N χ) (hψ : IsFusionCharacter N ψ) (i : ι) :
     ψ i * (∑ j, φ (χ j) * ψ j) = φ (χ (dual i)) * (∑ j, φ (χ j) * ψ j) := by
   classical
   let w : K := ∑ j, φ (χ j) * ψ j
