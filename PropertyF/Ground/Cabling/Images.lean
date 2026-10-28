@@ -10,23 +10,6 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open CategoryTheory.Functor.Monoidal
 namespace PropertyF
 
-/-- An injective homomorphism carrying corresponding generators to each other
-restricts to an isomorphism of the subgroups they generate. -/
-def generatedImageEquiv {G H ι : Type*} [Group G] [Group H]
-    (f : G →* H) (hf : Function.Injective f) (g : ι → G) (h : ι → H)
-    (hgen : ∀ i, f (g i) = h i) :
-    Subgroup.closure (Set.range g) ≃* Subgroup.closure (Set.range h) := by
-  have heq : (Subgroup.closure (Set.range g)).map f = Subgroup.closure (Set.range h) := by
-    rw [MonoidHom.map_closure]
-    congr 1
-    ext x
-    simp only [Set.mem_image, Set.mem_range]
-    constructor
-    · rintro ⟨_, ⟨i, rfl⟩, rfl⟩
-      exact ⟨i, (hgen i).symm⟩
-    · rintro ⟨i, rfl⟩
-      exact ⟨g i, ⟨i, rfl⟩, hgen i⟩
-  exact (Subgroup.closure (Set.range g)).equivMapOfInjective f hf |>.trans (MulEquiv.subgroupCongr heq)
 
 universe v u w z
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -40,23 +23,5 @@ def tensorPowerFunctorIso (F : C ⥤ D) [F.Monoidal] (X : C) : ∀ n,
   | n + 1 => (Iso.refl (F.obj X) ⊗ᵢ tensorPowerFunctorIso F X n) ≪≫
       μIso F X (tensorPower X n)
 
-/-- The group isomorphism between braid images follows from the coherence
-identity on each braid generator and faithfulness of the functor. -/
-def braidImageEquivOfGeneratorCoherence (F : C ⥤ D) [F.Monoidal] [F.Faithful]
-    (X : C) (n : ℕ)
-    (hgen : ∀ i, ((tensorPowerFunctorIso F X (n + 2)).symm.conjAut.toMonoidHom.comp
-      (F.mapAut (tensorPower X (n + 2)))) (braidGenerator X n i) =
-        braidGenerator (F.obj X) n i) : braidImage X n ≃* braidImage (F.obj X) n := by
-  let f := (tensorPowerFunctorIso F X (n + 2)).symm.conjAut.toMonoidHom.comp
-    (F.mapAut (tensorPower X (n + 2)))
-  have hf : Function.Injective f := by
-    intro a b hab
-    have h : F.map (a.asIso.hom) = F.map (b.asIso.hom) := by
-      have hm := (tensorPowerFunctorIso F X (n + 2)).symm.conjAut.injective hab
-      exact congrArg (fun x : Aut (F.obj (tensorPower X (n + 2))) => x.asIso.hom) hm
-    apply Aut.ext
-    apply Iso.ext
-    exact F.map_injective h
-  exact generatedImageEquiv f hf _ _ hgen
 
 end PropertyF

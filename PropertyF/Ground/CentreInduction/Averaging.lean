@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.PartialTrace
-public import PropertyF.Ground.Centre.Linear
+public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Modular.SMatrix
 
 /-! The spherical loop average on underlying maps of centre objects. -/

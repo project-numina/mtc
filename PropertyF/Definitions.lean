@@ -199,8 +199,5 @@ theorem hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary (C : BraidedFusionCateg
     HasPseudoUnitaryGaloisConjugate C :=
   ⟨C, RingEquiv.refl ℂ, ⟨GaloisConjugate.refl C⟩, h⟩
 
-/-- The Naidu–Rowell conjecture, stated for context; its converse is not claimed. -/
-def PropertyFConjecture : Prop := ∀ C : BraidedFusionCategory.{v,u},
-  HasPropertyF C.Obj ↔ WeaklyIntegral C.fusion.globalFPDimension
 
 end PropertyF

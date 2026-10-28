@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Centre.Embeddings
+public import PropertyF.Ground.Centre.Basic
 
 /-! The underlying bifunctor of the canonical centre product construction.
 The source here is the ordinary product category, not the Deligne tensor product;

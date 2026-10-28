@@ -12,10 +12,6 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
-/-- The actual two-strand generator, expressed in a chosen block presentation. -/
-def pairBlockGenerator (X : C) {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X 0 ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :=
-  b (groupInImage (braidEndRepresentation X 0) (imageGenerator X 0 0))
 
 /-- The left three-strand generator in a chosen block presentation. -/
 def tripleBlockLeft (X : C) {r : ℕ} {d : Fin r → ℕ}
