@@ -105,12 +105,12 @@ local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 set_option backward.isDefEq.respectTransparency false in
 theorem simpleInclusion_independent
     (X : C.Obj) (k : Fin (rank C)) :
-    LinearIndependent ℂ (simpleInclusion C X k) := by
-  refine Fintype.linearIndependent_iff.mpr fun g hg t ↦
-    smul_left_injective ℂ (id_nonzero (simples C k)) ?_
-  simpa [simpleInclusion, Category.assoc, Preadditive.sum_comp, Linear.smul_comp,
-    biproduct.ι_π] using congrArg (fun f : simples C k ⟶ X ↦
-      f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) hg
+    LinearIndependent ℂ (simpleInclusion C X k) :=
+  Fintype.linearIndependent_iff.mpr fun g hg t ↦
+    smul_left_injective ℂ (id_nonzero (simples C k)) (by
+      simpa [simpleInclusion, Category.assoc, Preadditive.sum_comp, Linear.smul_comp,
+        biproduct.ι_π] using congrArg (fun f : simples C k ⟶ X ↦
+          f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) hg)
 
 /-- The canonical summand inclusions form a basis of each simple Hom space. -/
 def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
@@ -134,11 +134,8 @@ theorem simpleInclusionBasis_projection {X : C.Obj} {k : Fin (rank C)} (g : simp
     (t : Fin (simpleMultiplicity C k X)) :
     ((simpleInclusionBasis C X k).repr g t) • 𝟙 (simples C k) =
       g ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩ := by
-  simpa [Preadditive.sum_comp, Linear.smul_comp, simpleInclusionBasis_apply, simpleInclusion,
-    Category.assoc, biproduct.ι_π] using
-    congrArg (fun f : simples C k ⟶ X ↦
-      f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩)
-      ((simpleInclusionBasis C X k).sum_repr g)
+  conv_rhs => rw [← (simpleInclusionBasis C X k).sum_repr g]
+  simp [Preadditive.sum_comp, Linear.smul_comp, simpleInclusion, Category.assoc, biproduct.ι_π]
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -149,14 +146,13 @@ theorem simpleHom_postcomp_trace {X : C.Obj} {k : Fin (rank C)} (g : X ⟶ X)
     (hc : ∀ t, biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫
       (simpleDecomposition C X).inv ≫ g ≫ (simpleDecomposition C X).hom ≫
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (simples C k)) :
-    LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) = ∑ t, c t := by
-  rw [LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)]
-  refine Finset.sum_congr rfl fun t _ ↦ ?_
-  simp only [Matrix.diag_apply, LinearMap.toMatrix_apply, Linear.rightComp_apply,
-    simpleInclusionBasis_apply]
-  apply smul_left_injective ℂ (id_nonzero (simples C k))
-  simpa [simpleInclusion, Category.assoc, hc t] using
-    (simpleInclusionBasis_projection (simpleInclusion C X k t ≫ g) t)
+    LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) = ∑ t, c t :=
+  (LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)
+    (Linear.rightComp ℂ (simples C k) g)).trans <|
+    Finset.sum_congr rfl fun t _ ↦ smul_left_injective ℂ (id_nonzero (simples C k)) (by
+      simpa [Matrix.diag_apply, LinearMap.toMatrix_apply, Linear.rightComp_apply,
+        simpleInclusion, Category.assoc, hc t] using
+          simpleInclusionBasis_projection (simpleInclusion C X k t ≫ g) t)
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
