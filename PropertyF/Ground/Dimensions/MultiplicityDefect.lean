@@ -68,10 +68,10 @@ theorem natTrans_eq_of_simple_components
   apply simpleInclusion_hom_ext C
   intro i t
   change simpleInclusion C X i t ≫ α.app X = simpleInclusion C X i t ≫ β.app X
-  have hα := α.naturality (simpleInclusion C X i t)
-  have hβ := β.naturality (simpleInclusion C X i t)
-  simp only [Functor.id_map] at hα hβ
-  rw [hα, hβ, h i]
+  simpa only [Functor.id_map] using
+    (α.naturality (simpleInclusion C X i t)).trans (by
+      rw [h i]
+      exact (β.naturality (simpleInclusion C X i t)).symm)
 
 /-- The natural double-dual root, squared using the double-dual functor. -/
 def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
@@ -154,12 +154,9 @@ theorem involution_eq_one_of_trace_eq_finrank (hT : T * T = 1)
   let Q : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 - T)
   have hq : IsIdempotentElem Q := by
     simpa [Q, sub_eq_add_neg] using involution_half_projection (T := -T) (by simpa using hT)
-  have hqt : LinearMap.trace ℂ V Q = 0 := by
-    simp [Q, htrace]
-  have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff hq).mp hqt
+  have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff hq).mp (by simp [Q, htrace])
   have hQ : (2 : ℂ) • Q = 1 - T := by simp [Q, smul_smul]
-  rw [hzero, smul_zero] at hQ
-  exact (sub_eq_zero.mp hQ.symm).symm
+  exact (sub_eq_zero.mp (by simpa [hzero] using hQ.symm)).symm
 
 /-- A phase-scaled involution with maximal trace is the identity. -/
 theorem involution_phase_eq_one_of_trace (hT : T * T = 1) {c : ℂ}
