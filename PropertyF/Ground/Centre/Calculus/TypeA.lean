@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.CentreCalculus.BraidRelations
 public import PropertyF.Ground.Centre.Basic
-public import PropertyF.Ground.Cabling.Pure
+public import PropertyF.Ground.Cabling.Naturality
 public import Mathlib.GroupTheory.PresentedGroup
 public import Mathlib.GroupTheory.Perm.Sign
 public import Mathlib.GroupTheory.QuotientGroup.Defs

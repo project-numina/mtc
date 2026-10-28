@@ -66,9 +66,9 @@ theorem numericalImageCentralizer_subset_symmetricCore
     apply Centre.centralizes_symm
     change Modular.doubleBraiding X (simples Z y) = 𝟙 _
     apply doubleBraiding_eq_one_of_simple_constituents Z (CanonicalImageRetract C)
-      (fun r hr => canonicalImageRetract_of_retract C r hr) X (simples Z y) hX
+      (fun r hr => canonicalImageRetract_of_retract C r hr) hX
     intro a ha
-    exact doubleBraiding_eq_one_of_sTest_of_finite_order Z p hdim a y
+    exact doubleBraiding_eq_one_of_sTest_of_finite_order Z p hdim
       (hfinite y hy a ha) (hy a ha)
   constructor
   · intro X
