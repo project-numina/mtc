@@ -332,13 +332,10 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     ext j
     change (∑ k, enoTraceMatrix C i k j * rootDimension C k) =
       (ε * rootDimension C (dualIndex C i)) * rootDimension C j
-    have he := enoTraceMatrix_eigenvector_of_involutions C
-      (hinv (dualIndex C i) j)
-    simp_rw [htranspose] at he
-    calc
-      _ = ε * ∑ k, ((ε * enoTraceMatrix C i k j) * rootDimension C k) := by
-        simp only [Finset.mul_sum, ← mul_assoc, hε, one_mul]
-      _ = _ := by rw [he]; ring
+    have he := congrArg (fun z : ℂ ↦ ε * z)
+      (enoTraceMatrix_eigenvector_of_involutions C (hinv (dualIndex C i) j))
+    dsimp only [ε] at he
+    simpa only [htranspose, Finset.mul_sum, ← mul_assoc, rootDualSign_sq, one_mul] using he
   have hc := congrArg star (conjugate_of_transpose_eigenvector A hA hv h ht)
   simp only [star_mul, star_star, hεstar] at hc
   rw [← hc, ← mul_assoc, hε, one_mul]
