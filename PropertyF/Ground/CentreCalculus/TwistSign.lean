@@ -27,9 +27,11 @@ variable {p : PivotalStructure (C := D)}
 abbrev braidedDoubleDualIso (X : D) : X ≅ (Xᘁ)ᘁ :=
   rightDualIso (BraidedCategory.exactPairing_swap X (Xᘁ)) inferInstance
 
+variable (X : D)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The coevaluation characterizing the braided double-dual map. -/
-theorem drinfeld_coevaluation (X : D) :
+theorem drinfeld_coevaluation :
     η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (braidedDoubleDualIso X).inv =
       η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv := by
   let q : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
@@ -40,7 +42,7 @@ theorem drinfeld_coevaluation (X : D) :
   rw [← hc, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
 
 /-- Pivotal coevaluation factors through the braided double-dual comparison. -/
-theorem pivotal_coevaluation_factor (X : D) :
+theorem pivotal_coevaluation_factor :
     η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv =
       (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
         (Xᘁ) ◁ ((braidedDoubleDualIso X).hom ≫ (p.iso X).inv) := by
@@ -49,7 +51,7 @@ theorem pivotal_coevaluation_factor (X : D) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse braiding cancels along the duality snake. -/
-theorem inverse_crossing_snake (X : D) :
+theorem inverse_crossing_snake :
     (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ ((β_ (Xᘁ) X).inv ▷ X) ≫
       (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫ (α_ (Xᘁ) X X).inv ≫
       (ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom = 𝟙 X := by
@@ -70,7 +72,7 @@ variable [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the first strand of the inverse braiding gives the inverse
 pivotal/Drinfeld twist. -/
-theorem leftPartialTrace_inverse_braiding (X : D) :
+theorem leftPartialTrace_inverse_braiding :
     leftPartialTrace p (End.of (β_ X X).inv) =
       End.of ((braidedDoubleDualIso X).hom ≫ (p.iso X).inv) := by
   apply End.ext
