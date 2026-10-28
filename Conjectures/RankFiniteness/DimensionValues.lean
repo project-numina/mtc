@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Modular.SMatrix
+public import MTC.PropertyF.NondegenerateSpherical
 
 /-!
 # Rank-finiteness for global FP-dimension values
@@ -25,7 +25,7 @@ separate open effective-dimension question.
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground PropertyF.Ground.Dimensions PropertyF.Ground.Modular
+open PropertyF.Ground MTC.PropertyF
 
 namespace MTC.Conjectures.RankFiniteness
 universe v u
@@ -33,8 +33,7 @@ universe v u
 /-- Fixed rank admits only finitely many global FP-dimension values. -/
 theorem dimensionValuesFinite (r : ℕ) :
     {d : ℝ | ∃ C : BraidedFusionCategory.{v,u}, rank C = r ∧
-      (∃ p : PivotalStructure (C := C.Obj),
-        p.IsSpherical ∧ (categoricalS C p).det ≠ 0) ∧
+      HasNondegenerateSphericalStructure C ∧
       globalFPDimension C = d}.Finite := by
   sorry
 

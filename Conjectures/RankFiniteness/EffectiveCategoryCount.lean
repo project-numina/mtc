@@ -1,6 +1,6 @@
 module
 public import MTC.ModularData.Equivalence
-public import PropertyF.Ground.Modular.SMatrix
+public import MTC.PropertyF.NondegenerateSpherical
 public import Mathlib.Computability.Partrec
 
 /-!
@@ -26,7 +26,7 @@ Lean rank-one category example remain future work.
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground PropertyF.Ground.Dimensions PropertyF.Ground.Modular
+open PropertyF.Ground MTC.PropertyF
 
 namespace MTC.Conjectures.RankFiniteness
 universe v u
@@ -36,12 +36,9 @@ theorem effectiveCategoryCount :
     ∃ f : ℕ → ℕ, Computable f ∧ ∀ r : ℕ,
       ∃ (n : ℕ) (reps : Fin n → BraidedFusionCategory.{v,u}),
         n ≤ f r ∧
-        (∀ i, rank (reps i) = r ∧
-          ∃ p : PivotalStructure (C := (reps i).Obj),
-            p.IsSpherical ∧ (categoricalS (reps i) p).det ≠ 0) ∧
+        (∀ i, rank (reps i) = r ∧ HasNondegenerateSphericalStructure (reps i)) ∧
         ∀ C : BraidedFusionCategory.{v,u}, rank C = r →
-          (∃ p : PivotalStructure (C := C.Obj),
-            p.IsSpherical ∧ (categoricalS C p).det ≠ 0) →
+          HasNondegenerateSphericalStructure C →
           ∃ i, Nonempty (MTC.BraidedTensorEquivalence C (reps i)) := by
   sorry
 

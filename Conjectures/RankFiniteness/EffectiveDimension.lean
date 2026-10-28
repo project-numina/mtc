@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Modular.SMatrix
+public import MTC.PropertyF.NondegenerateSpherical
 public import Mathlib.Computability.Partrec
 
 /-!
@@ -25,7 +25,7 @@ construction satisfying the categorical hypotheses remains to be supplied.
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground PropertyF.Ground.Dimensions PropertyF.Ground.Modular
+open PropertyF.Ground MTC.PropertyF
 
 namespace MTC.Conjectures.RankFiniteness
 universe v u
@@ -35,8 +35,7 @@ spherical braided fusion categories with nondegenerate categorical S. -/
 theorem effectiveDimension :
     ∃ f : ℕ → ℕ, Computable f ∧
       ∀ C : BraidedFusionCategory.{v,u},
-        (∃ p : PivotalStructure (C := C.Obj),
-          p.IsSpherical ∧ (categoricalS C p).det ≠ 0) →
+        HasNondegenerateSphericalStructure C →
         globalFPDimension C ≤ (f (rank C) : ℝ) := by
   sorry
 
