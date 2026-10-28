@@ -143,13 +143,10 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
   let q (p : J) : V p ⟶ W := (T ◁ crossingInclusion C U p.1 j p.2) ≫ (α_ T U (simples C j)).inv
   let r (p : J) : W ⟶ V p := (α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U p.1 j p.2)
   have h : (∑ p, r p ≫ q p) = 𝟙 W := by
-    calc
-      _ = (α_ T U (simples C j)).hom ≫
-        (T ◁ (∑ p : J, crossingProjection C U p.1 j p.2 ≫ crossingInclusion C U p.1 j p.2)) ≫
-        (α_ T U (simples C j)).inv := by
-          simp only [r, q, whiskerLeft_sum, Preadditive.comp_sum,
-            Preadditive.sum_comp, whiskerLeft_comp, Category.assoc]
-      _ = _ := by rw [crossing_completeness]; simp [W]
+    simp only [r, q, Category.assoc, ← whiskerLeft_comp_assoc,
+      ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum]
+    rw [crossing_completeness]
+    simp [W]
   have hc := simpleBasis_contraction_refinement C i q r h
     (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
   simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
