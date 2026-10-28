@@ -122,9 +122,9 @@ theorem conjugate_labels :
 
 /-- The target's global FP dimension is invariant under Galois conjugacy. -/
 theorem conjugate_globalFPDimension :
-    globalFPDimension C = globalFPDimension D := by
-  obtain ⟨e, he⟩ := conjugate_labels h
-  simpa only [globalFPDimension, he] using e.sum_comp (fun j => fpSimple D j ^ 2)
+    globalFPDimension C = globalFPDimension D :=
+  (conjugate_labels h).elim fun e he ↦ by
+    simpa only [globalFPDimension, he] using e.sum_comp (fun j => fpSimple D j ^ 2)
 
 
 /-- Ground version of braid-image invariance for a conjugate category. -/

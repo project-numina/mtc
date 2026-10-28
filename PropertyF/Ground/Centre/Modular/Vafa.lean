@@ -304,10 +304,9 @@ theorem natural_scalars_finite_of_fpDeterminant_balance
       (η.app (simples C i ⊗ simples C j)) =
         fpDimension C (simples C i ⊗ simples C j) •
           (vafaUnitClass (t i) + vafaUnitClass (t j))) :
-    ∀ i, IsOfFinOrder (t i) := by
-  apply finite_order_of_fp_twist_balance C t
-  intro i j
-  simpa only [fpDeterminant_natural C ht, fpDimension_tensor, fpDimension_simple, fusionCoeff] using hdet i j
+    ∀ i, IsOfFinOrder (t i) :=
+  finite_order_of_fp_twist_balance C t fun i j ↦ by
+    simpa only [fpDeterminant_natural C ht, fpDimension_tensor, fpDimension_simple, fusionCoeff] using hdet i j
 
 /-- The actual double braiding as an automorphism. -/
 def monodromyIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
@@ -328,11 +327,10 @@ theorem natural_scalars_finite_of_monodromy_determinant
     (hbalance : HasSimpleBalance C η t)
     (hmon : ∀ i j, fpDeterminant C (simples C i ⊗ simples C j)
       (monodromyIso (simples C i) (simples C j)) = 0) :
-    ∀ i, IsOfFinOrder (t i) := by
-  apply natural_scalars_finite_of_fpDeterminant_balance C ht
-  intro i j
-  rw [hbalance, fpDeterminant_trans, hmon, add_zero, fpDeterminant_scalar,
-    vafaUnitClass_mul]
+    ∀ i, IsOfFinOrder (t i) :=
+  natural_scalars_finite_of_fpDeterminant_balance C ht fun i j ↦ by
+    rw [hbalance, fpDeterminant_trans, hmon, add_zero, fpDeterminant_scalar,
+      vafaUnitClass_mul]
 
 end PropertyF.Ground.CentreModular
 end
@@ -702,9 +700,9 @@ for every simple mixed monodromy. -/
 theorem fpDeterminant_tensor_simple_monodromy
     (hbalance : HasSimpleBalance C η t)
     (X : C.Obj) (i j : Fin (rank C)) :
-    HasTensorDeterminant C X (monodromyIso (simples C i) (simples C j)) := by
-  rw [monodromy_simple_eq_scalar_natural C hbalance]
-  exact fpDeterminant_tensor_scalar_natural C η X _ _
+    HasTensorDeterminant C X (monodromyIso (simples C i) (simples C j)) :=
+  (monodromy_simple_eq_scalar_natural C hbalance i j).symm ▸
+    fpDeterminant_tensor_scalar_natural C η X _ _
 
 /-- Braiding transports tensoring an automorphism on the right to tensoring it
 on the left, preserving its categorical FP determinant. -/
@@ -728,9 +726,9 @@ theorem fpDeterminant_simple_monodromy_tensor
     fpDeterminant C ((simples C i ⊗ simples C j) ⊗ X)
       (monodromyIso (simples C i) (simples C j) ⊗ᵢ Iso.refl X) =
       fpDimension C X • fpDeterminant C (simples C i ⊗ simples C j)
-        (monodromyIso (simples C i) (simples C j)) := by
-  rw [fpDeterminant_tensor_flip]
-  exact fpDeterminant_tensor_simple_monodromy C hbalance X i j
+        (monodromyIso (simples C i) (simples C j)) :=
+  (fpDeterminant_tensor_flip C X (monodromyIso (simples C i) (simples C j))).trans
+    (fpDeterminant_tensor_simple_monodromy C hbalance X i j)
 
 end PropertyF.Ground.CentreModular
 end
@@ -850,10 +848,9 @@ the simple twist scalars have finite order. -/
 theorem natural_scalars_finite_of_simple_balancing
     (ht : HasSimpleScalars C η t)
     (hbalance : HasSimpleBalance C η t) :
-    ∀ i, IsOfFinOrder (t i) := by
-  apply natural_scalars_finite_of_monodromy_determinant C ht hbalance
-  intro i j
-  exact fpDeterminant_simple_monodromy_eq_zero C hbalance i j
+    ∀ i, IsOfFinOrder (t i) :=
+  natural_scalars_finite_of_monodromy_determinant C ht hbalance fun i j ↦
+    fpDeterminant_simple_monodromy_eq_zero C hbalance i j
 
 end PropertyF.Ground.CentreModular
 end

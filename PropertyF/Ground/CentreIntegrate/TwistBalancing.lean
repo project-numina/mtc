@@ -104,8 +104,7 @@ theorem pivotal_balance_of_drinfeld_tensor (p : PivotalStructure (C := D)) {X Y 
       ((d X).hom ⊗ₘ (d Y).hom) ≫ (doubleDualTensorIso X Y).hom) :
     Modular.doubleBraiding X Y ≫
       (((p.iso X).hom ≫ (d X).inv) ⊗ₘ ((p.iso Y).hom ≫ (d Y).inv)) =
-        (p.iso (X ⊗ Y)).hom ≫ (d (X ⊗ Y)).inv := by
-  rw [balance_of_drinfeld_tensor p d h]
-  exact CentreCabling.doubleBraiding_natural _ _
+        (p.iso (X ⊗ Y)).hom ≫ (d (X ⊗ Y)).inv :=
+  (CentreCabling.doubleBraiding_natural _ _).trans (balance_of_drinfeld_tensor p d h).symm
 
 end PropertyF.Ground.CentreIntegrate
