@@ -17,10 +17,10 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+variable {X X' Y Y' : C.Obj}
 set_option backward.isDefEq.respectTransparency false in
 /-- The tensor of natural-root components is natural. -/
-theorem rootTensorIso_natural
-    {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y') :
+theorem rootTensorIso_natural (f : X ⟶ X') (g : Y ⟶ Y') :
     (f ⊗ₘ g) ≫ (rootTensorIso C X' Y').hom =
       (rootTensorIso C X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) := by
   have hn {A B : C.Obj} (h : A ⟶ B) :
@@ -32,8 +32,7 @@ theorem rootTensorIso_natural
     ← Category.assoc, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom, hn f, hn g]
 
 /-- The multiplicativity defect is natural in both variables. -/
-theorem rootTensorDefect_natural
-    {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y') :
+theorem rootTensorDefect_natural (f : X ⟶ X') (g : Y ⟶ Y') :
     (f ⊗ₘ g) ≫ (rootTensorDefect C X' Y').hom =
       (rootTensorDefect C X Y).hom ≫ (f ⊗ₘ g) := by
   have ha : (f ⊗ₘ g) ≫ ((fourthDualRootNaturalIso C).app (X' ⊗ Y')).hom =

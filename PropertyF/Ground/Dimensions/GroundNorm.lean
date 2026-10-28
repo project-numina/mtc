@@ -80,11 +80,13 @@ theorem target_squaredNorm_choice_independent
   simpa only [squaredNorm, Ground.unitScalar_eq_equiv] using
     squaredNorm_independent (Ground.unitScalarEquiv C) (doubleDualIso C X) j
 
+section
+variable (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
+include hp
+
 /-- With any spherical structure the target norm of a simple object is its
 categorical dimension squared. -/
-theorem target_squaredNorm_eq_dimension_sq
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (X : C.Obj) [Simple X] :
+theorem target_squaredNorm_eq_dimension_sq (X : C.Obj) [Simple X] :
     squaredNorm C X =
       (unitScalar C (rightQuantumTrace (p.iso X))) ^ 2 := by
   rw [target_squaredNorm_choice_independent C (p.iso X),
@@ -92,13 +94,14 @@ theorem target_squaredNorm_eq_dimension_sq
 
 /-- The target's intrinsic global dimension is the sum of squared spherical
 simple dimensions, for any spherical structure. -/
-theorem target_globalDimension_eq_sum_squares
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) :
+theorem target_globalDimension_eq_sum_squares :
     globalDimension C = ∑ i : Fin (rank C),
       (unitScalar C (rightQuantumTrace (p.iso (simples C i)))) ^ 2 :=
   Finset.sum_congr rfl fun i _ ↦
     let : Simple (simples C i) := simples_simple C i
     target_squaredNorm_eq_dimension_sq C p hp (simples C i)
+
+end
 
 /-- Intrinsic squared norms are invariant under simple-object isomorphism,
 without assuming a pivotal or spherical structure. -/

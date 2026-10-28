@@ -25,10 +25,11 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
+variable (X : C)
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle dual pair in the tensor-product coevaluation recovers
 the coevaluation of the right dual. -/
-theorem tensorPairing_coevaluation_evaluation (X : C) :
+theorem tensorPairing_coevaluation_evaluation :
     let W := (Xᘁ) ⊗ X
     let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
     letI : ExactPairing W V := ExactPairing.tensor
@@ -51,7 +52,7 @@ theorem tensorPairing_coevaluation_evaluation (X : C) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Dualizing evaluation and transporting the dual of a tensor product gives
 the coevaluation of the dual object. -/
-theorem rightDualEvaluation_coevaluation (X : C) :
+theorem rightDualEvaluation_coevaluation :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (rightDualUnitIso (C := C)).inv ≫ ((ε_ X (Xᘁ))ᘁ) ≫
       (rightDualTensorIso (Xᘁ) X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) := by
@@ -93,9 +94,10 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
+variable (X : C)
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle pair in a tensor-product evaluation leaves the outer evaluation. -/
-theorem tensorPairing_evaluation_coevaluation (X : C) :
+theorem tensorPairing_evaluation_coevaluation :
     let W := X ⊗ (Xᘁ)
     let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
     letI : ExactPairing W V := ExactPairing.tensor
@@ -116,7 +118,7 @@ theorem tensorPairing_evaluation_coevaluation (X : C) :
       monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- Dualizing coevaluation gives the evaluation of the right dual. -/
-theorem rightDualCoevaluation_evaluation (X : C) :
+theorem rightDualCoevaluation_evaluation :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (rightDualTensorIso X (Xᘁ)).inv ≫ ((η_ X (Xᘁ))ᘁ) ≫
       (rightDualUnitIso (C := C)).hom = ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
@@ -150,7 +152,7 @@ theorem rightDualCoevaluation_evaluation (X : C) :
     _ = _ := tensorPairing_evaluation_coevaluation X
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves evaluation. -/
-theorem doubleDual_evaluation (X : C) :
+theorem doubleDual_evaluation :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (doubleDualTensorIso (Xᘁ) X).hom ≫ (((ε_ X (Xᘁ))ᘁ)ᘁ) ≫
       (doubleDualUnitIso (C := C)).inv = ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
@@ -170,7 +172,7 @@ theorem doubleDual_evaluation (X : C) :
     (congrArg (fun f ↦ s.inv ≫ f ≫ r.hom) hd).trans (rightDualCoevaluation_evaluation (Xᘁ))
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves coevaluation. -/
-theorem doubleDual_coevaluation (X : C) :
+theorem doubleDual_coevaluation :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (doubleDualUnitIso (C := C)).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) ≫
       (doubleDualTensorIso X (Xᘁ)).inv = η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
@@ -197,9 +199,10 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+variable (p : PivotalStructure (C := C)) (X : C)
 set_option backward.isDefEq.respectTransparency false in
 /-- Every pivotal structure preserves evaluation. -/
-theorem pivotal_evaluation (p : PivotalStructure (C := C)) (X : C) :
+theorem pivotal_evaluation :
     ((p.iso (Xᘁ)).hom ⊗ₘ (p.iso X).hom) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) = ε_ X (Xᘁ) := by
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
@@ -212,7 +215,7 @@ theorem pivotal_evaluation (p : PivotalStructure (C := C)) (X : C) :
   simp
 set_option backward.isDefEq.respectTransparency false in
 /-- A pivotal component on a dual is the inverse dual of the original component. -/
-theorem pivotal_dual (p : PivotalStructure (C := C)) (X : C) :
+theorem pivotal_dual :
     p.iso (Xᘁ) = (rightDualIsoMap (p.iso X)).symm := by
   apply Iso.ext
   change (p.iso (Xᘁ)).hom = ((p.iso X).inv)ᘁ
