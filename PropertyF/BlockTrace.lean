@@ -81,9 +81,8 @@ namespace Blocks
 /-- Product of the complex matrix algebras in the decomposition. -/
 abbrev Algebra (B : Blocks) := ∀ r, Matrix (Fin (B.size r)) (Fin (B.size r)) ℂ
 
-/-- Blockwise unitarity. -/
-def IsUnitary (B : Blocks) (u : B.Algebra) : Prop :=
-  ∀ r, u r ∈ Matrix.unitaryGroup (Fin (B.size r)) ℂ
+/-- Unitarity in the product of matrix blocks. -/
+abbrev IsUnitary (B : Blocks) (u : B.Algebra) : Prop := u ∈ unitary B.Algebra
 
 /-- Weighted sum of the block traces. -/
 def trace (B : Blocks) (w : Fin B.count → ℝ) (u : B.Algebra) : ℂ :=
@@ -104,7 +103,7 @@ lemma norm_trace_le {u : B.Algebra}
     (hu : B.IsUnitary u) : ‖B.trace w u‖ ≤ B.mass w :=
   (norm_sum_le _ _).trans <| Finset.sum_le_sum fun r _ => by
     simpa using mul_le_mul_of_nonneg_left
-      (by simpa using norm_trace_le_card (hu r)) (abs_nonneg (w r))
+      (by simpa using norm_trace_le_card (Pi.mem_unitary_iff.mp hu r)) (abs_nonneg (w r))
 
 /-- The sign element used on page 4, equation (3). -/
 def signElement : B.Algebra :=
@@ -112,7 +111,7 @@ def signElement : B.Algebra :=
 
 /-- The sign element is unitary in every block. -/
 lemma signElement_unitary :
-    B.IsUnitary (B.signElement w) := fun r => by
+    B.IsUnitary (B.signElement w) := Pi.mem_unitary_iff.mpr fun r => by
   by_cases h : 0 ≤ w r <;> simp [signElement, h, Matrix.mem_unitaryGroup_iff]
 
 /-- The sign element attains the total weighted block mass. -/
@@ -138,7 +137,7 @@ include hg hsat
 theorem block_trace_norm_eq_of_saturation (r : Fin B.count) (hw : w r ≠ 0) : ‖(g r).trace‖ = B.size r := by
   have hle : ∀ r, |w r| * ‖(g r).trace‖ ≤ |w r| * B.size r := fun r =>
     mul_le_mul_of_nonneg_left
-      (by simpa using norm_trace_le_card (hg r)) (abs_nonneg _)
+      (by simpa using norm_trace_le_card (Pi.mem_unitary_iff.mp hg r)) (abs_nonneg _)
   have heq : ∑ r, |w r| * ‖(g r).trace‖ = ∑ r, |w r| * B.size r := by
     apply le_antisymm (Finset.sum_le_sum fun r _ => hle r)
     calc
@@ -151,7 +150,7 @@ theorem block_trace_norm_eq_of_saturation (r : Fin B.count) (hw : w r ≠ 0) : �
 /-- Equality in the weighted bound implies centrality when no weight vanishes.
 This is the equality argument in Lemma 3.2, proved using actual complex matrices. -/
 theorem central_of_saturation (hw : ∀ r, w r ≠ 0) : ∀ T : B.Algebra, g * T = T * g :=
-  fun T => funext fun r => (scalar_of_norm_trace_eq_card (hg r)
+  fun T => funext fun r => (scalar_of_norm_trace_eq_card (Pi.mem_unitary_iff.mp hg r)
     (by simpa using B.block_trace_norm_eq_of_saturation w hg hsat r (hw r))).elim fun _ hz =>
       by simp [hz]
 

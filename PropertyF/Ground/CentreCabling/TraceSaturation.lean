@@ -96,11 +96,10 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
     simpa [hdim, B, End.one_asHom, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
       ((Calculus.pivotalTrace_groundEndBlocks D e a p (Ground.unitScalarEquiv D)).symm.trans
         ((congrArg (Ground.unitScalarEquiv D) ht).trans h2))
-  apply B.injective
-  funext i
-  simpa using finiteOrder_matrices_eq_one_of_weighted_trace (B a) (fpSimple D)
-    (fpSimple_pos D) (fun j ↦ (Pi.evalMonoidHom _ j).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha))
-    (by simpa only [Fintype.card_fin] using hsum) i
+  exact B.injective <| funext fun i ↦ by
+    simpa using finiteOrder_matrices_eq_one_of_weighted_trace (B a) (fpSimple D)
+      (fpSimple_pos D) (fun j ↦ (Pi.evalMonoidHom _ j).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha))
+      (by simpa only [Fintype.card_fin] using hsum) i
 
 /-- For a finite-order double braiding, the positive spherical S-test is
 equivalent to categorical centrality. -/

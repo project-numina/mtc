@@ -77,8 +77,8 @@ theorem adjacent_braid_relation (n : ℕ) (i : Fin (n + 1)) :
   | zero => simpa [Fin.eq_zero i] using Calculus.three_braid_relation X
   | succ n ih =>
     refine Fin.cases ?_ (fun j => ?_) i
-    · convert congrArg (Calculus.addRightAut X (n + 1)) (ih 0) using 1 <;>
-        simp only [map_mul, Calculus.addRightAut_generator] <;> congr 2
+    · simpa [map_mul, Calculus.addRightAut_generator] using
+        congrArg (Calculus.addRightAut X (n + 1)) (ih 0)
     · have h := congrArg ((tensorLeft X).mapAut (tensorPower X (n + 3))) (ih j)
       simp only [map_mul, braidGenerator_succ] at h
       convert h using 1 <;> congr 2
@@ -106,18 +106,18 @@ theorem distant_braid_commute (n : ℕ) (i j : Fin (n + 1)) (hij : i.val + 1 < j
   induction n with
   | zero => omega
   | succ n ih =>
-    by_cases hi : i = 0
-    · subst i
+    induction i using Fin.cases with
+    | zero =>
       cases n with
       | zero => omega
       | succ n =>
         obtain ⟨j', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j) (by omega)
         obtain ⟨j'', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j') (by rintro rfl; simp at hij)
         exact first_distant_commute X n j''
-    · obtain ⟨i', rfl⟩ := Fin.exists_succ_eq_of_ne_zero hi
+    | succ i =>
       obtain ⟨j', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j) (by rintro rfl; simp at hij)
       simpa only [map_mul, braidGenerator_succ] using
         congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2)))
-          (ih i' j' (by simpa using hij))
+          (ih i j' (by simpa using hij))
 
 end PropertyF.Ground.CentreCalculus
