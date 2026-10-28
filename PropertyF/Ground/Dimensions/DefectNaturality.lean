@@ -106,18 +106,21 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+/-- The signed tensor defect slides across the coevaluation of a simple object. -/
+abbrev RootTensorDefectSlide (C : BraidedFusionCategory.{v,u})
+    (i : Fin (rank C)) (K : C.Obj) : Prop :=
+  let X := simples C i
+  letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
+  let η : K ⟶ (Xᘁ) ⊗ (X ⊗ K) :=
+    (λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom
+  η ≫ (Xᘁ) ◁ (rootTensorDefect C X K).hom =
+    rootDualSign C i • (η ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The ENO reciprocity identity only needs the defect to slide through the
 coevaluation of the swapped dual pairing. -/
 theorem trace_reciprocity_of_coevaluation
-    (hslide : ∀ i k,
-      let X := simples C i
-      let K := simples C k
-      letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-      let η : K ⟶ (Xᘁ) ⊗ (X ⊗ K) :=
-        (λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom
-      η ≫ (Xᘁ) ◁ (rootTensorDefect C X K).hom =
-        rootDualSign C i • (η ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
+    (hslide : ∀ i k, RootTensorDefectSlide C i (simples C k)) :
     ENOTraceMatrixReciprocity C := by
   apply trace_reciprocity_of_coeval_defect C
   intro i k
@@ -128,7 +131,7 @@ theorem trace_reciprocity_of_coevaluation
       (Xᘁ) ◁ (rootTensorDefect C X K).hom) =
     rootDualSign C i • (((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
       (Xᘁ) ◁ 𝟙 (X ⊗ K)) ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)
-  simpa only [whiskerLeft_id, Category.comp_id, Category.assoc] using hslide i k
+  simpa only [RootTensorDefectSlide, whiskerLeft_id, Category.comp_id, Category.assoc] using hslide i k
 end PropertyF.Ground.Dimensions
 
 end
