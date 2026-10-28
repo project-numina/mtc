@@ -54,18 +54,16 @@ theorem unit_block [HasRightDual R] [HasRightDual S] (Z : Center D) (g : R ⟶ T
       𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ (f ≫ g) ▷ Sᘁ ⊗≫
         𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _ := by
   let q := closeFusionMap T S f
-  let bR := (Z.2.β R).hom
-  let bTS := (Z.2.β (T ⊗ S)).hom
   dsimp only [unitComponentAt, crossingBlock, mixedCrossing]
   calc
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
-      ((bR ≫ (g ▷ Z.1)) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
+      (((Z.2.β R).hom ≫ (g ▷ Z.1)) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
       ((T ⊗ S) ◁ (Z.1 ◁ q)) ⊗≫ 𝟙 _ := by
         rw [tensorHom_def, comp_whiskerRight]
         monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
-      ((bTS ▷ ((Rᘁ : D) ⊗ T)) ≫ (((T ⊗ S) ⊗ Z.1) ◁ q)) ⊗≫ 𝟙 _ := by
+      (((Z.2.β (T ⊗ S)).hom ▷ ((Rᘁ : D) ⊗ T)) ≫ (((T ⊗ S) ⊗ Z.1) ◁ q)) ⊗≫ 𝟙 _ := by
         rw [← Z.2.naturality g]
         monoidal
     _ = _ := by
