@@ -1,40 +1,10 @@
 module
-public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Calculus.OverlapCoherence
 public import Mathlib.Tactic
 
 open CategoryTheory CategoryTheory.MonoidalCategory
 open PropertyF.Ground.Dimensions
-
-@[expose] public noncomputable section
-namespace PropertyF
-universe v u
-variable {C : Type u} [Category.{v} C]
-
-theorem castIso_hom_comp {A B D : C} (h : B = D) (e : A ≅ D) :
-    (cast (congrArg (fun Z : C => A ≅ Z) h.symm) e).hom ≫ eqToHom h = e.hom := by
-  cases h
-  simp
-
-variable [MonoidalCategory C] [BraidedCategory C] [Abelian C] [MonoidalPreadditive C]
-
-omit [BraidedCategory C] [Abelian C] [MonoidalPreadditive C] in
-/-- Expand the standard tensor-power comparison one factor on the left. -/
-theorem powerTensor_succ_general (X : C) (n m : ℕ) :
-    (tensorPowerTensorIso X (n+1) m).hom ≫
-      eqToHom (congrArg (tensorPower X) (by omega : (n+1)+m = (n+m)+1)) =
-    ((α_ X (tensorPower X n) (tensorPower X m)) ≪≫
-      (Iso.refl X ⊗ᵢ tensorPowerTensorIso X n m)).hom := by
-  have h : tensorPower X ((n+1)+m) = X ⊗ tensorPower X (n+m) := by
-    change tensorPower X ((n+1)+m) = tensorPower X ((n+m)+1)
-    congr 1
-    omega
-  let e := (α_ X (tensorPower X n) (tensorPower X m)) ≪≫
-    (Iso.refl X ⊗ᵢ tensorPowerTensorIso X n m)
-  change (cast (congrArg (fun Z : C => ((X ⊗ tensorPower X n) ⊗ tensorPower X m) ≅ Z) h.symm) e).hom ≫ eqToHom h = e.hom
-  exact castIso_hom_comp h e
-end PropertyF
 
 /-! Cast-free recursive tensor-power concatenation. -/
 
@@ -183,61 +153,21 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
-/-- Repeated left insertion agrees with canonical concatenation, up to the
-arithmetic equality of strand counts. -/
-theorem insertLeftPowerIso_eq_concat (X : C) (n k : ℕ) :
-    (insertLeftPowerIso X n k).hom =
-      (tensorPowerTensorIso X k (n + 2)).hom ≫
-        eqToHom (congrArg (tensorPower X) (by omega : k + (n + 2) = (n + k) + 2)) := by
-  induction k with
-  | zero =>
-    change (λ_ (tensorPower X (n + 2))).hom = _
-    symm
-    apply castIso_hom_comp
-  | succ k ih =>
-    have h₁ : (k + 1) + (n + 2) = (k + (n + 2)) + 1 := by omega
-    have h₂ : k + (n + 2) = (n + k) + 2 := by omega
-    have hcomp :
-        eqToHom (congrArg (tensorPower X) (by omega : (k + 1) + (n + 2) = (n + (k + 1)) + 2)) =
-        eqToHom (congrArg (tensorPower X) h₁) ≫
-          (X ◁ eqToHom (congrArg (tensorPower X) h₂)) := by
-      rw [whiskerLeft_eqToHom, eqToHom_trans]
-    rw [hcomp, ← Category.assoc, powerTensor_succ_general]
-    simp only [insertLeftPowerIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom]
-    rw [ih, whiskerLeft_comp, Category.assoc]
-
-omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
-set_option backward.isDefEq.respectTransparency false in
-/-- Cast-free reverse concatenation agrees with the standard tensor-power
-concatenation up to the commutativity of the length indices. -/
-theorem reverseConcat_eq_concat (X : C) (a b : ℕ) :
-    (reverseConcatIso X a b).hom =
-      (tensorPowerTensorIso X a b).hom ≫
-        eqToHom (congrArg (tensorPower X) (by omega : a + b = b + a)) := by
-  induction a with
-  | zero =>
-    change (λ_ (tensorPower X b)).hom = _
-    symm
-    apply castIso_hom_comp
-  | succ a ih =>
-    have h₁ : (a + 1) + b = (a + b) + 1 := by omega
-    have h₂ : a + b = b + a := by omega
-    have hcomp :
-        eqToHom (congrArg (tensorPower X) (by omega : (a + 1) + b = b + (a + 1))) =
-        eqToHom (congrArg (tensorPower X) h₁) ≫
-          (X ◁ eqToHom (congrArg (tensorPower X) h₂)) := by
-      rw [whiskerLeft_eqToHom, eqToHom_trans]
-    rw [hcomp, ← Category.assoc, powerTensor_succ_general]
-    simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom]
-    rw [ih, whiskerLeft_comp, Category.assoc]
-
-omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
-set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion agrees with reverse-indexed concatenation. -/
 theorem insertLeftPowerIso_eq_reverseConcat (X : C) (n k : ℕ) :
     (insertLeftPowerIso X n k).hom = (reverseConcatIso X k (n + 2)).hom ≫
       eqToHom (congrArg (tensorPower X) (by omega : (n + 2) + k = (n + k) + 2)) := by
-  rw [insertLeftPowerIso_eq_concat, reverseConcat_eq_concat, Category.assoc, eqToHom_trans]
+  induction k with
+  | zero => simp [insertLeftPowerIso, reverseConcatIso]
+  | succ k ih =>
+    have h : (n + 2) + k = (n + k) + 2 := by omega
+    have hcomp : eqToHom (congrArg (tensorPower X)
+        (by omega : (n + 2) + (k + 1) = (n + (k + 1)) + 2)) =
+        X ◁ eqToHom (congrArg (tensorPower X) h) := by
+      rw [whiskerLeft_eqToHom]
+    simp only [insertLeftPowerIso, reverseConcatIso, Iso.trans_hom, tensorIso_hom,
+      Iso.refl_hom, id_tensorHom, Category.assoc]
+    rw [hcomp, ← whiskerLeft_comp, ← ih]
 
 omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Concatenation is natural under equality transport of the left length. -/

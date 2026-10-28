@@ -51,17 +51,13 @@ theorem generatedBy_rightDual_of_unit_power (D : BraidedFusionCategory.{v,u})
     (tensorLeftHomEquiv (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)).symm r.i
   have hf : f ≠ 0 := by
     intro h
-    let e := tensorLeftHomEquiv (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)
-    have he0 : e 0 = 0 := by simp [e, tensorLeftHomEquiv]
     apply hi
-    have he : e (e.symm r.i) = e 0 := congrArg e h
-    simpa only [Equiv.apply_symm_apply, he0] using he
+    have he := congrArg (tensorLeftHomEquiv (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)) h
+    dsimp only [f] at he
+    rw [Equiv.apply_symm_apply] at he
+    simpa [tensorLeftHomEquiv] using he
   let g : Xᘁ ⟶ tensorPower X n := (ρ_ (Xᘁ)).inv ≫ f
-  have hg : g ≠ 0 := by
-    intro h
-    apply hf
-    have hh := congrArg (fun z => (ρ_ (Xᘁ)).hom ≫ z) h
-    simpa [g, Category.assoc] using hh
+  have hg : g ≠ 0 := by simpa [g] using hf
   obtain ⟨s, hs⟩ := Ground.split_from_simple g hg
   exact generatedBy_retract (generatedBy_tensorPower X n) { i := g, r := s, retract := hs }
 end PropertyF.Ground.Cabling

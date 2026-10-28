@@ -41,9 +41,9 @@ theorem generatedBy_unit (X : C) : GeneratedBy X (𝟙_ C) :=
 
 /-- The generated closure is closed under retracts. -/
 theorem generatedBy_retract {X Y Z : C} (hY : GeneratedBy X Y) (h : Retract Z Y) :
-    GeneratedBy X Z := by
-  obtain ⟨n, k, ⟨r⟩⟩ := hY
-  exact ⟨n, k, ⟨h.trans r⟩⟩
+    GeneratedBy X Z :=
+  let ⟨n, k, ⟨r⟩⟩ := hY
+  ⟨n, k, ⟨h.trans r⟩⟩
 
 /-- The generated closure is invariant under isomorphism. -/
 theorem generatedBy_of_iso {X Y Z : C} (hY : GeneratedBy X Y) (e : Z ≅ Y) :
@@ -75,11 +75,7 @@ def flattenDependent (a : ℕ) (b : Fin a → ℕ) (f : (i : Fin a) → Fin (b i
 theorem generatedBy_biproduct {X : C} {a : ℕ} (f : Fin a → C)
     (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
   classical
-  have hex : ∀ i, ∃ (n : ℕ) (k : Fin n → ℕ), Nonempty (Retract (f i) (⨁ fun j => tensorPower X (k j))) := by
-    intro i
-    obtain ⟨n, k, ⟨r⟩⟩ := hf i
-    exact ⟨n, k, ⟨r⟩⟩
-  choose n k hr using hex
+  choose n k hr using hf
   let r : ∀ i, Retract (f i) (⨁ fun j => tensorPower X (k i j)) := fun i => (hr i).some
   let h : Fin a → C := fun i => ⨁ fun j => tensorPower X (k i j)
   let R : Retract (⨁ f) (⨁ h) := {
@@ -106,9 +102,8 @@ theorem generatedBy_finiteBiproduct {X : C} {J : Type} [Finite J] (f : J → C)
   let _ : Fintype J := Fintype.ofFinite J
   let e := Fintype.equivFin J
   let g : Fin (Fintype.card J) → C := fun i => f (e.symm i)
-  have hg := generatedBy_biproduct g (fun i => hf (e.symm i))
-  apply generatedBy_of_iso hg
-  exact biproduct.whiskerEquiv e (fun j => eqToIso (by simp [g]))
+  exact generatedBy_of_iso (generatedBy_biproduct g (fun i => hf (e.symm i)))
+    (biproduct.whiskerEquiv e (fun j => eqToIso (by simp [g])))
 
 variable [MonoidalPreadditive C]
 /-- Distribute tensor product over two finite biproducts. -/
