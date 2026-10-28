@@ -130,6 +130,11 @@ noncomputable def rootDualSign (C : BraidedFusionCategory.{v,u})
   letI : Simple (simples C i) := Ground.simples_simple C i
   exact Classical.choose (rootDual_differs_by_sign C (simples C i))
 
+/-- The trace matrices of dual simples are transposes up to the dual-root sign. -/
+abbrev ENOTraceMatrixReciprocity (C : BraidedFusionCategory.{v,u}) : Prop :=
+  ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
+    rootDualSign C i * enoTraceMatrix C i k j
+
 theorem rootDualSign_sq (i : Fin (rank C)) :
     rootDualSign C i * rootDualSign C i = 1 := by
   let : Simple (simples C i) := Ground.simples_simple C i
@@ -216,12 +221,9 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
 /-- ENO's trace-matrix bound and the root-norm identity turn global
 pseudo-unitarity into pointwise FP saturation. -/
 theorem eno_root_norm_saturation_of_pseudoUnitary
-    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1)
-    (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
-      rootDimension C i * rootDimension C j)
-    (hnorm : ∀ i, squaredNorm C (simples C i) =
-      ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
+    (hinv : MultiplicityDefectsInvolutive C)
+    (heig : ENOTraceMatrixEigenvector C)
+    (hnorm : RootNormIdentity C) (hpu : Ground.PseudoUnitary C) :
     ∀ i, ‖rootDimension C i‖ = fpSimple C i := by
   let d : Fin (rank C) → ℝ := fun i => ‖rootDimension C i‖
   have hb : ∀ i, |d i| ≤ fpSimple C i := by
@@ -289,12 +291,9 @@ theorem rootPhasePivotal_dimension
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/
 theorem positive_spherical_of_matrix_identities
-    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1)
-    (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
-      rootDimension C i * rootDimension C j)
-    (hnorm : ∀ i, squaredNorm C (simples C i) =
-      ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)) (hpu : Ground.PseudoUnitary C) :
+    (hinv : MultiplicityDefectsInvolutive C)
+    (heig : ENOTraceMatrixEigenvector C)
+    (hnorm : RootNormIdentity C) (hpu : Ground.PseudoUnitary C) :
     HasFPSphericalStructure C := by
   classical
   have hsat := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
@@ -368,10 +367,8 @@ variable (C : BraidedFusionCategory.{v,u})
 /-- ENO's trace reciprocity identifies the dual root dimension with the
 signed complex conjugate of the original one. -/
 theorem rootDimension_dual_conjugate_of_trace_reciprocity
-    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1)
-    (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j)
+    (hinv : MultiplicityDefectsInvolutive C)
+    (htranspose : ENOTraceMatrixReciprocity C)
     (i : Fin (rank C)) :
     rootDimension C (Ground.dualIndex C i) = rootDualSign C i * star (rootDimension C i) := by
   classical
@@ -423,10 +420,8 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
 
 /-- ENO's trace reciprocity proves the intrinsic root-norm identity. -/
 theorem squaredNorm_eq_root_norm_sq_of_reciprocity
-    (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1)
-    (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j) (i : Fin (rank C)) :
+    (hinv : MultiplicityDefectsInvolutive C)
+    (htranspose : ENOTraceMatrixReciprocity C) (i : Fin (rank C)) :
     squaredNorm C (simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
   rw [squaredNorm_eq_rootDualSign_mul C i,
     rootDimension_dual_conjugate_of_trace_reciprocity C hinv htranspose i]

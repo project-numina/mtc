@@ -36,8 +36,7 @@ theorem enoTraceMatrix_reciprocity_of_coevaluation_defect
       Ground.tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom =
         rootDualSign C i • (Ground.tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
-    ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j := by
+    ENOTraceMatrixReciprocity C := by
   apply enoTraceMatrix_reciprocity_of_dual_frobenius_defect C
   intro i j k g
   let X := simples C i
@@ -74,8 +73,7 @@ theorem enoTraceMatrix_reciprocity_of_coevaluation_sliding
         (λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom
       η ≫ (Xᘁ) ◁ (rootTensorDefect C X K).hom =
         rootDualSign C i • (η ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
-    ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j := by
+    ENOTraceMatrixReciprocity C := by
   apply enoTraceMatrix_reciprocity_of_coevaluation_defect C
   intro i k
   let X := simples C i

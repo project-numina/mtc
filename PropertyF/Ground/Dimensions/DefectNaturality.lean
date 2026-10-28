@@ -72,8 +72,7 @@ theorem enoTraceMatrix_reciprocity_of_dual_frobenius_defect
         rootDualSign C i • (Ground.tensorLeftHomLinearEquiv (simples C k)
             ((simples C i)ᘁ) (simples C i) (simples C j) g ≫
           (rootTensorDefect C ((simples C i)ᘁ) (simples C j)).hom)) :
-    ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j := by
+    ENOTraceMatrixReciprocity C := by
   apply enoTraceMatrix_reciprocity_of_frobenius_defect C
   intro i j k g
   let : ExactPairing ((simples C i)ᘁ) (simples C i) :=

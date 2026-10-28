@@ -315,7 +315,7 @@ theorem rootTensorDefect_involution_extension
 theorem enoTraceMatrix_reciprocity_of_simple_fourth_dual
     (hfourth : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j)) :
-    ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k = rootDualSign C i * enoTraceMatrix C i k j := by
+    ENOTraceMatrixReciprocity C := by
   have hinv : ∀ X Y : C.Obj, (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
     apply rootTensorDefect_involution_extension C
     intro i j
