@@ -1,5 +1,7 @@
 module
 public import PropertyF.Ground.CentreInduction.ActualFusion
+public import Mathlib.CategoryTheory.Subobject.ArtinianObject
+public import Mathlib.RingTheory.Artinian.Module
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
