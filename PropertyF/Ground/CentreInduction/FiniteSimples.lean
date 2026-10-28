@@ -29,8 +29,7 @@ theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g :=
   ⟨⟨g, fun T ↦
-    letI : IsSplitMono (T ◁ q.f) :=
-      IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
+    letI : IsSplitMono (T ◁ q.f) := inferInstanceAs (IsSplitMono ((tensorLeft T).map q.f))
     (cancel_mono (T ◁ q.f)).1 <| by
       simp only [Category.assoc, ← whiskerLeft_comp, hg, ← q.comm T,
         ← comp_whiskerRight_assoc, p.comm]⟩, rfl⟩
