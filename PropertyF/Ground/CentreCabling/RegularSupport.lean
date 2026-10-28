@@ -27,8 +27,9 @@ abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
   {j | ∀ i ∈ A, sCentralizes D p i j}
 
 /-- Numerical S-centrality is symmetric. -/
-theorem sCentralizes_symm {i j : Fin (rank D)} (h : sCentralizes D p i j) :
-    sCentralizes D p j i := by
+theorem sCentralizes_symm {D : Ground.BraidedFusionCategory.{v,u}}
+    {p : Dimensions.PivotalStructure (C := D.Obj)} {i j : Fin (rank D)}
+    (h : sCentralizes D p i j) : sCentralizes D p j i := by
   simpa [sCentralizes, Modular.categoricalS_symmetric D p j i, mul_comm] using h
 
 /-- FP-valued simple dimensions are fixed by complex conjugation. -/
@@ -40,12 +41,11 @@ theorem realSimpleDimensions_of_fp {D : Ground.BraidedFusionCategory.{v,u}}
 
 /-- The numerical S-centralizer is closed under dual labels when dimensions
 are the positive FP dimensions. -/
-theorem sCentralizer_closed_under_dual
-    (hdim : Modular.HasFPSimpleDimensions D p)
-    (i y : Fin (rank D))
-    (hi : sCentralizes D p i y) :
-    Modular.categoricalS D p (dualIndex D i) y =
-      Modular.simpleDimension D p (dualIndex D i) * Modular.simpleDimension D p y := by
+theorem sCentralizes_dual {D : Ground.BraidedFusionCategory.{v,u}}
+    {p : Dimensions.PivotalStructure (C := D.Obj)} (hdim : Modular.HasFPSimpleDimensions D p)
+    {i y : Fin (rank D)} (hi : sCentralizes D p i y) :
+    sCentralizes D p (dualIndex D i) y := by
+  dsimp only [sCentralizes] at hi ⊢
   have hreal := realSimpleDimensions_of_fp hdim
   rw [Modular.categoricalS_dual_conj D p hreal i y, hi, map_mul, hreal, hreal]
   rw [hdim (dualIndex D i), fpSimple_dual, ← hdim i]
@@ -126,7 +126,7 @@ theorem doubleCentralizer_of_fourier_support
   intro x hx
   have hreal := realSimpleDimensions_of_fp hdim
   have hdual (y) (hy : y ∈ core) :=
-    sCentralizer_closed_under_dual D p hdim x y (sCentralizes_symm D p (hx y hy))
+    sCentralizes_dual hdim (sCentralizes_symm (hx y hy))
   have h := nonzero_dual_coefficient_of_sCentralizer D p hp hdet hreal f core
     hunit hsupport (dualIndex D x) hdual
   rw [dualIndex_involutive D x] at h
