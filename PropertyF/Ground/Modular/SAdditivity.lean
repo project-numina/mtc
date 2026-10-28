@@ -56,15 +56,16 @@ local notation "dₚ" => simpleDimension D p
 /-- Expanding a tensor product into simple summands expands its S entry with
 exactly the fusion coefficients. -/
 theorem SEntry_tensor_decomposition (i j k : Fin (rank D)) :
-    Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
+    Ground.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
       ∑ l, (fusionCoeff D i j l : ℂ) * Sₚ l k := by
   obtain ⟨e⟩ := exists_canonical_decomposition D (simples D i ⊗ simples D j)
+  rw [Ground.unitScalar_eq_equiv]
   simp [SEntry_iso_left p e _, SEntry_biproduct_left, Fintype.sum_sigma, categoricalS, fusionCoeff]
 
 
 /-- The Hopf-link product rule for simple objects. -/
 abbrev HasHopfProduct : Prop :=
-  ∀ i j k, Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
+  ∀ i j k, Ground.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
     dₚ k = Sₚ i k * Sₚ j k
 
 /-- The categorical Hopf-link product identity implies the Verlinde character

@@ -132,10 +132,12 @@ abbrev partialMonodromy {C : Type u} [Category.{v} C] [MonoidalCategory C] [Brai
 theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (k : Fin (rank D)) (X : D.Obj) :
     partialMonodromy p (simples D k) X =
-      (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 :=
+      (Ground.unitScalar D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 :=
   letI : Simple (simples D k) := simples_simple D k
   letI : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
-  rightPartialTrace_simple p (Ground.unitScalarEquiv D) _ (simpleDimension_ne_zero D p k)
+  by
+    rw [Ground.unitScalar_eq_equiv]
+    exact rightPartialTrace_simple p (Ground.unitScalarEquiv D) _ (simpleDimension_ne_zero D p k)
 
 /-- Partial traces of double braiding multiply on a simple strand. -/
 abbrev HasMultiplicativePartialTrace (D : Ground.BraidedFusionCategory.{v,u})
@@ -156,7 +158,8 @@ theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCatego
   field_simp [simpleDimension_ne_zero D p k] at hv
   simpa only [SEntry_symmetric p (simples D k) (simples D i ⊗ simples D j),
     SEntry_symmetric p (simples D k) (simples D i),
-    SEntry_symmetric p (simples D k) (simples D j), categoricalS] using hv
+    SEntry_symmetric p (simples D k) (simples D j), categoricalS,
+    ← Ground.unitScalar_eq_equiv] using hv
 
 end PropertyF.Ground.Modular
 end
