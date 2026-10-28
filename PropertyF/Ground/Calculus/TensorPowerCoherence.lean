@@ -35,13 +35,9 @@ theorem reverseConcat_zero_right (X : C) (a : ℕ) :
     monoidal
   | succ a ih =>
     have h₀ : 0 + a = a := by omega
-    have h : 0 + (a + 1) = a + 1 := by omega
-    have hcomp : eqToHom (congrArg (tensorPower X) h) =
-        X ◁ eqToHom (congrArg (tensorPower X) h₀) := by
-      rw [whiskerLeft_eqToHom]
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, tensorPower, Category.assoc]
-    rw [hcomp, ← whiskerLeft_comp, ih]
+    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ← whiskerLeft_comp, ih]
     monoidal
 
 omit [BraidedCategory C] in
@@ -62,13 +58,9 @@ theorem reverseConcat_succ_right (X : C) (a b : ℕ) :
     simp [Category.assoc]
   | succ a ih =>
     have h₀ : (b + 1) + a = (b + a) + 1 := by omega
-    have h : (b + 1) + (a + 1) = (b + (a + 1)) + 1 := by omega
-    have hcomp : eqToHom (congrArg (tensorPower X) h) =
-        X ◁ eqToHom (congrArg (tensorPower X) h₀) := by
-      rw [whiskerLeft_eqToHom]
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, comp_whiskerRight, Category.assoc]
-    rw [hcomp, ← whiskerLeft_comp, ih]
+    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ← whiskerLeft_comp, ih]
     have happ : appendIso X (b + (a + 1)) =
         (α_ X (tensorPower X (b + a)) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X (b + a)) :=
       appendIso_succ X (b + a)
@@ -99,11 +91,8 @@ theorem insertRightPowerIso_eq_reverseConcat (X : C) (n k : ℕ) :
     have h₀ : k + (n + 2) = (n + k) + 2 := by omega
     have h₁ : (k + 1) + (n + 2) = (k + (n + 2)) + 1 := by omega
     have h₂ : (k + (n + 2)) + 1 = (n + (k + 1)) + 2 := by omega
-    have hcomp : eqToHom (congrArg (tensorPower X)
-        (by omega : (k + 1) + (n + 2) = (n + (k + 1)) + 2)) =
-        eqToHom (congrArg (tensorPower X) h₁) ≫ eqToHom (congrArg (tensorPower X) h₂) := by
-      rw [eqToHom_trans]
-    rw [hcomp, ← Category.assoc, reverseConcat_succ_right]
+    rw [← eqToHom_trans (congrArg (tensorPower X) h₁) (congrArg (tensorPower X) h₂),
+      ← Category.assoc, reverseConcat_succ_right]
     simp only [insertRightPowerIso, Iso.trans_hom, Iso.symm_hom,
       tensorIso_hom, Iso.refl_hom, tensorHom_id, id_tensorHom, Category.assoc]
     rw [ih, comp_whiskerRight]
@@ -128,14 +117,9 @@ theorem reverseConcat_overlap (X : C) (a b : ℕ) :
     monoidal
   | succ a ih =>
     have h₀ : b + (a + 1) = (b + 1) + a := by omega
-    have h : b + ((a + 1) + 1) = (b + 1) + (a + 1) := by omega
-    have hcomp : eqToHom (congrArg (tensorPower X) h) =
-        X ◁ eqToHom (congrArg (tensorPower X) h₀) := by
-      rw [whiskerLeft_eqToHom]
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, Category.assoc]
-    rw [hcomp]
-    rw [ih, appendIso_succ]
+    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ih, appendIso_succ]
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, whiskerLeft_comp, comp_whiskerRight, Category.assoc]
     monoidal
@@ -161,13 +145,9 @@ theorem insertLeftPowerIso_eq_reverseConcat (X : C) (n k : ℕ) :
   | zero => simp [insertLeftPowerIso, reverseConcatIso]
   | succ k ih =>
     have h : (n + 2) + k = (n + k) + 2 := by omega
-    have hcomp : eqToHom (congrArg (tensorPower X)
-        (by omega : (n + 2) + (k + 1) = (n + (k + 1)) + 2)) =
-        X ◁ eqToHom (congrArg (tensorPower X) h) := by
-      rw [whiskerLeft_eqToHom]
     simp only [insertLeftPowerIso, reverseConcatIso, Iso.trans_hom, tensorIso_hom,
       Iso.refl_hom, id_tensorHom, Category.assoc]
-    rw [hcomp, ← whiskerLeft_comp, ← ih]
+    rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h), ← whiskerLeft_comp, ← ih]
 
 omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Concatenation is natural under equality transport of the left length. -/
