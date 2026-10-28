@@ -323,13 +323,9 @@ theorem rootTensorDefect_involution_of_tensor_square {X Y : C.Obj}
     (hsq : (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
       (fourthDualIso C (X ⊗ Y)).hom) :
     (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
-  have ha := congrArg (fun n => (n.app (X ⊗ Y)).hom) (fourthDualRootNaturalSquare_eq C)
-  change ((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫
-    ((((fourthDualRootNaturalIso C).app (X ⊗ Y)).homᘁ)ᘁ) =
-      (fourthDualIso C (X ⊗ Y)).hom at ha
-  have h := natural_square_defect_involution (doubleDualFunctor C.Obj)
-    (fourthDualRootNaturalIso C) (rootTensorIso C X Y) (ha.trans hsq.symm)
-  exact h
+  exact natural_square_defect_involution (doubleDualFunctor C.Obj)
+    (fourthDualRootNaturalIso C) (rootTensorIso C X Y)
+    ((congrArg (fun n => (n.app (X ⊗ Y)).hom) (fourthDualRootNaturalSquare_eq C)).trans hsq.symm)
 
 /-- The tensor-square comparison implies involutivity of every corresponding
 actual multiplicity-space operator. -/

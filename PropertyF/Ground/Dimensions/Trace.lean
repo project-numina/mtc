@@ -155,9 +155,8 @@ theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
 /-- The left pivotal trace is cyclic without requiring sphericality. -/
 theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
     (f : X ⟶ Y) (g : Y ⟶ X) : p.leftTrace (f ≫ g) = p.leftTrace (g ≫ f) := by
-  rw [leftTrace_eq_rightTraceWith_dual, leftTrace_eq_rightTraceWith_dual,
-    comp_rightAdjointMate, comp_rightAdjointMate]
-  exact rightTraceWith_cyclic (rightDualIsoMap (p.iso X)).symm
-    (rightDualIsoMap (p.iso Y)).symm (gᘁ) (fᘁ) (dual_pivotal_naturality p g)
+  simpa only [leftTrace_eq_rightTraceWith_dual, comp_rightAdjointMate] using
+    rightTraceWith_cyclic (rightDualIsoMap (p.iso X)).symm
+      (rightDualIsoMap (p.iso Y)).symm (gᘁ) (fᘁ) (dual_pivotal_naturality p g)
 
 end PropertyF.Ground.Dimensions

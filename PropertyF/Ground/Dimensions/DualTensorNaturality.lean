@@ -22,11 +22,10 @@ theorem evaluation_ext {C : Type u} [Category.{v} C] [MonoidalCategory C] {X Y Z
   let hDual : HasRightDual X := { rightDual := Y, exact := inferInstance }
   let : HasRightDual X := hDual
   have h' := congrArg (tensorRightHomEquiv Z X Y (𝟙_ C)) h
-  have hL := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ X Z hDual f
-  have hR := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ X Z hDual g
-  change (tensorRightHomEquiv Z X Y (𝟙_ C)) (f ▷ X ≫ ε_ X Y) = f ≫ (λ_ Y).inv at hL
-  change (tensorRightHomEquiv Z X Y (𝟙_ C)) (g ▷ X ≫ ε_ X Y) = g ≫ (λ_ Y).inv at hR
-  rw [hL, hR] at h'
+  rw [show (tensorRightHomEquiv Z X Y (𝟙_ C)) (f ▷ X ≫ ε_ X Y) = f ≫ (λ_ Y).inv from
+      @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ X Z hDual f,
+    show (tensorRightHomEquiv Z X Y (𝟙_ C)) (g ▷ X ≫ ε_ X Y) = g ≫ (λ_ Y).inv from
+      @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ X Z hDual g] at h'
   exact (cancel_mono (λ_ Y).inv).1 h'
 
 set_option backward.isDefEq.respectTransparency false in
