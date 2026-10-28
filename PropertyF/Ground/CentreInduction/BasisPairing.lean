@@ -167,9 +167,7 @@ theorem closeFusionMap_evaluation (f : T ⊗ S ⟶ R) :
       𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) :=
   (tensorRightHomEquiv (Rᘁ ⊗ T) S Sᘁ (𝟙_ D)).injective <| by
     rw [tensorRightHomEquiv_whiskerRight_comp_evaluation]
-    simp only [closeFusionMap, Category.assoc, Iso.hom_inv_id, Category.comp_id]
-    congr 1
-    monoidal
+    simp [closeFusionMap, monoidalComp]
 
 
 set_option backward.isDefEq.respectTransparency false in
@@ -178,8 +176,7 @@ theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     (Rᘁ ◁ h) ≫ closeFusionMap U S f =
       closeFusionMap T S ((h ▷ S) ≫ f) :=
   Dimensions.evaluation_ext (X := S) <| by
-    simp only [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp]
-    monoidal
+    simp [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp, monoidalComp]
 
 variable (X : D)
 
