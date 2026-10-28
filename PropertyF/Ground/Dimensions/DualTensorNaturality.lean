@@ -29,9 +29,11 @@ theorem evaluation_ext {C : Type u} [Category.{v} C] [MonoidalCategory C] {X Y Z
       @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ X Z hDual g] at h'
   exact (cancel_mono (λ_ Y).inv).1 h'
 
+variable {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y')
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Evaluation of tensor pairings is natural in both factors. -/
-theorem tensorPairing_evaluation_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y') : ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g) ≫ ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) =
+theorem tensorPairing_evaluation_natural : ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g) ≫ ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) =
         (gᘁ ⊗ₘ fᘁ) ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := by
   change ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g) ≫
     (𝟙 _ ⊗≫ (Y'ᘁ) ◁ (ε_ X' (X'ᘁ) ▷ Y') ⊗≫ ε_ Y' (Y'ᘁ)) =
@@ -60,7 +62,7 @@ theorem tensorPairing_evaluation_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y �
     _ = _ := by simp only [tensorHom_def', comp_whiskerRight]; monoidal
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rightDualTensorIso_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y') :
+theorem rightDualTensorIso_natural :
     ((f ⊗ₘ g)ᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ) := by
   apply evaluation_ext (X := X ⊗ Y)
@@ -71,15 +73,14 @@ theorem rightDualTensorIso_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y')
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse right-dual tensor comparison is natural. -/
-theorem rightDualTensorIso_inv_natural {X X' Y Y' : C}
-    (f : X ⟶ X') (g : Y ⟶ Y') :
+theorem rightDualTensorIso_inv_natural :
     (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso X Y).inv =
       (rightDualTensorIso X' Y').inv ≫ ((f ⊗ₘ g)ᘁ) :=
   (CommSq.vert_inv (CommSq.mk (rightDualTensorIso_natural f g))).w
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is natural in both factors. -/
-theorem doubleDualTensorIso_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y') :
+theorem doubleDualTensorIso_natural :
     (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
       (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) := by
   have h1' := rightDualTensorIso_inv_natural (gᘁ) (fᘁ)

@@ -47,12 +47,8 @@ theorem split_from_simple {S X : C} [Simple S] (f : S ⟶ X) (hf : f ≠ 0) :
   let V : (Σ i, Fin (m i)) → C := fun p => T p.1
   have hg : f ≫ e.hom ≠ 0 := fun h ↦ hf ((cancel_mono e.hom).1 (by simpa using h))
   have hcomponent : ∃ p, f ≫ e.hom ≫ biproduct.π V p ≠ 0 := by
-    by_contra h
-    push Not at h
-    apply hg
-    apply biproduct.hom_ext
-    intro p
-    simpa [Category.assoc] using h p
+    by_contra! h
+    exact hg (biproduct.hom_ext _ _ fun p ↦ by simpa only [zero_comp, Category.assoc] using h p)
   obtain ⟨p, hp⟩ := hcomponent
   let : Simple (V p) := hsimple p.1
   let g : S ⟶ V p := f ≫ e.hom ≫ biproduct.π V p
@@ -105,12 +101,8 @@ theorem exists_simple_retract {X : C.Obj} (hX : 𝟙 X ≠ 0) :
   let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
   have he : e.hom ≠ 0 := mono_ne_zero_of_id_ne_zero e.hom hX
   have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
-    by_contra h
-    push Not at h
-    apply he
-    apply biproduct.hom_ext
-    intro p
-    simpa using h p
+    by_contra! h
+    exact he (biproduct.hom_ext _ _ fun p ↦ by simpa only [zero_comp] using h p)
   obtain ⟨p, hp⟩ := hp
   refine ⟨p.1, e.hom ≫ biproduct.π V p, biproduct.ι V p ≫ e.inv, hp, ?_⟩
   simp [V, Category.assoc]

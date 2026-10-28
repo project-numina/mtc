@@ -41,15 +41,16 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
+variable (i j k : Fin (rank C))
+
 /-- Braiding identifies the right dual with the chosen left-dual representative. -/
-def rightDualLabelIso (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
+def rightDualLabelIso :
     (simples C i)ᘁ ≅ simples C (dualIndex C i) :=
   leftDualIso (BraidedCategory.exactPairing_swap (simples C i) ((simples C i)ᘁ))
     HasLeftDual.exact ≪≫ Classical.choice (dualIndex_iso C i)
 
 /-- Actual Frobenius reciprocity using the chosen dual-label identification. -/
-def enoFrobeniusEquiv (C : BraidedFusionCategory.{v,u})
-    (i j k : Fin (rank C)) :
+def enoFrobeniusEquiv :
     (simples C i ⊗ simples C j ⟶ simples C k) ≃ₗ[ℂ]
       (simples C j ⟶ simples C (dualIndex C i) ⊗ simples C k) := by
   let Xi := simples C i
@@ -61,8 +62,7 @@ def enoFrobeniusEquiv (C : BraidedFusionCategory.{v,u})
 
 /-- The actual ENO Frobenius/semisimple reciprocity isomorphism: the dual of
 one fusion multiplicity space is the dual-label multiplicity space. -/
-def enoReciprocityEquiv (C : BraidedFusionCategory.{v,u})
-    (i j k : Fin (rank C)) :
+def enoReciprocityEquiv :
     Module.Dual ℂ (simples C k ⟶ simples C i ⊗ simples C j) ≃ₗ[ℂ]
       (simples C j ⟶ simples C (dualIndex C i) ⊗ simples C k) :=
   (simpleHomPairingEquiv (simples C k) (simples C i ⊗ simples C j)).symm.trans

@@ -21,32 +21,33 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
+section
+variable (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
+
 /-- The fourth-dual root twisted by scalar signs on simple objects. -/
-def rootSignTwist (C : BraidedFusionCategory.{v,u})
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) :
+def rootSignTwist :
     𝟭 C.Obj ≅ doubleDualFunctor C.Obj :=
   simpleScalarNaturalIso C c hc ≪≫ fourthDualRootNaturalIso C
 
 /-- The scalar-twisted root has the canonical double-dual unit component. -/
-abbrev RootSignUnitLaw (C : BraidedFusionCategory.{v,u})
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) : Prop :=
+abbrev RootSignUnitLaw : Prop :=
   ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom
 
 /-- The tensor comparison induced by the sign-twisted root. -/
-def rootSignTensorIso (C : BraidedFusionCategory.{v,u})
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (X Y : C.Obj) :
+def rootSignTensorIso (X Y : C.Obj) :
     X ⊗ Y ≅ ((X ⊗ Y)ᘁ)ᘁ :=
   ((rootSignTwist C c hc).app X ⊗ᵢ (rootSignTwist C c hc).app Y) ≪≫
     doubleDualTensorIso X Y
 
 /-- The defect of the sign-twisted root tensor comparison. -/
-def rootSignDefect (C : BraidedFusionCategory.{v,u})
-    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (X Y : C.Obj) : X ⊗ Y ≅ X ⊗ Y :=
+def rootSignDefect (X Y : C.Obj) : X ⊗ Y ≅ X ⊗ Y :=
   (rootSignTwist C c hc).app (X ⊗ Y) ≪≫ (rootSignTensorIso C c hc X Y).symm
 
+end
+variable {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
+
 set_option backward.isDefEq.respectTransparency false in
-theorem rootSignTwist_app_simple
-    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
+theorem rootSignTwist_app_simple (i : Fin (rank C)) :
     ((rootSignTwist C c hc).app (simples C i)).hom =
       c i • ((fourthDualRootNaturalIso C).app (simples C i)).hom := by
   change ((simpleScalarNaturalIso C c hc).app (simples C i)).hom ≫
@@ -55,8 +56,7 @@ theorem rootSignTwist_app_simple
   simp
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootSignTensorIso_hom
-    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i j : Fin (rank C)) :
+theorem rootSignTensorIso_hom (i j : Fin (rank C)) :
     (rootSignTensorIso C c hc (simples C i) (simples C j)).hom =
       (c i * c j) • (rootTensorIso C (simples C i) (simples C j)).hom := by
   change (((rootSignTwist C c hc).app (simples C i)).hom ⊗ₘ
@@ -64,17 +64,13 @@ theorem rootSignTensorIso_hom
   rw [rootSignTwist_app_simple, rootSignTwist_app_simple]
   simp [rootTensorIso, tensorHom_def, smul_smul, mul_comm]
 
-theorem rootPhaseTensorIso_inv
-    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
-    (i j : Fin (rank C)) :
+theorem rootPhaseTensorIso_inv (i j : Fin (rank C)) :
     (rootSignTensorIso C c hc (simples C i) (simples C j)).inv =
       (c i * c j)⁻¹ • (rootTensorIso C (simples C i) (simples C j)).inv :=
   iso_inv_eq_inv_smul (mul_ne_zero (hc i) (hc j)) (rootSignTensorIso_hom C hc i j)
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootPhaseDefect_apply
-    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
-    {i j k : Fin (rank C)}
+theorem rootPhaseDefect_apply {i j k : Fin (rank C)}
     (f : simples C k ⟶ simples C i ⊗ simples C j) :
     f ≫ (rootSignDefect C c hc (simples C i) (simples C j)).hom =
       (c k / (c i * c j)) • (f ≫ (rootTensorDefect C (simples C i) (simples C j)).hom) := by
@@ -89,8 +85,7 @@ theorem rootPhaseDefect_apply
   simp [rootTensorDefect, Linear.smul_comp, smul_smul, div_eq_mul_inv, mul_comm]
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootPhaseTensor_compatible_of_scaled_defects {c : Fin (rank C) → ℂ}
-    (hc : ∀ i, c i ≠ 0) {i j : Fin (rank C)}
+theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
     (hdef : ∀ k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1) :
     (rootSignTwist C c hc).app (simples C i ⊗ simples C j) =
       rootSignTensorIso C c hc (simples C i) (simples C j) := by
@@ -157,9 +152,10 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
     tensorHom_comp_tensorHom_assoc, ← hx, ← hy,
     ← tensorHom_comp_tensorHom, Category.assoc]
 
+variable {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
+
 set_option backward.isDefEq.respectTransparency false in
-theorem rootSignQuantumTrace_simple
-    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
+theorem rootSignQuantumTrace_simple (i : Fin (rank C)) :
     unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (simples C i))) =
       c i * rootDimension C i := by
   simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul] using
@@ -180,7 +176,6 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignTwist_unit_of_simple_dimension
-    {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0)
     (hunit : c (unitIndex C) * rootDimension C (unitIndex C) = 1) :
     RootSignUnitLaw C c hc := by
   apply naturalDoubleDual_unit_eq_of_trace_one

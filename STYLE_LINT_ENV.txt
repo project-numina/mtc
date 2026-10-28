@@ -1,4 +1,4 @@
-scripts/style/.EnvLintRun.lean:121:0: error: -- Found 11 errors in 1719 declarations (plus 1184 automatically generated ones) in PropertyF with 15 linters
+scripts/style/.EnvLintRun.lean:120:0: error: -- Found 11 errors in 1720 declarations (plus 1200 automatically generated ones) in PropertyF with 15 linters
 
 /- The `docBlame` linter reports:
 DEFINITIONS ARE MISSING DOCUMENTATION STRINGS:

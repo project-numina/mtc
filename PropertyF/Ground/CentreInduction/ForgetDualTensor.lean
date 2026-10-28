@@ -72,38 +72,23 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 variable {X Y A B A' B' : D} (pX : ExactPairing X A) (qX : ExactPairing X A')
   (pY : ExactPairing Y B) (qY : ExactPairing Y B')
 
-/-- Tensoring dual-comparison maps preserves the tensor evaluation pairing. -/
-private theorem rightDualIso_tensor_evaluation :
-    letI := pX
-    letI := pY
-    letI := qX
-    letI := qY
-    ((rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom) ▷ (X ⊗ Y) ≫
-      ε_ (X ⊗ Y) (B' ⊗ A') = ε_ (X ⊗ Y) (B ⊗ A) := by
+/-- The canonical comparison of duals preserves tensor products of pairings. -/
+theorem rightDualIso_tensor :
+    (rightDualIso (@ExactPairing.tensor D _ _ X Y A B pX pY)
+      (@ExactPairing.tensor D _ _ X Y A' B' qX qY)).hom =
+        (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom := by
   let : ExactPairing X A := pX
   let : ExactPairing Y B := pY
   let : ExactPairing X A' := qX
   let : ExactPairing Y B' := qY
+  apply evaluation_ext (X := X ⊗ Y)
+  rw [rightDualIso_evaluation]
+  symm
   rw [tensorHom_def, comp_whiskerRight_assoc,
     tensorPairing_evaluation_whiskerLeft (p := pX) (q := qX) (r := qY)
       (rightDualIso pX qX).hom (rightDualIso_evaluation pX qX),
     tensorPairing_evaluation_whiskerRight (p := pX) (q := pY) (r := qY)
       (rightDualIso pY qY).hom (rightDualIso_evaluation pY qY)]
-
-/-- The canonical comparison of duals preserves tensor products of pairings. -/
-theorem rightDualIso_tensor :
-    (rightDualIso (@ExactPairing.tensor D _ _ X Y A B pX pY)
-      (@ExactPairing.tensor D _ _ X Y A' B' qX qY)).hom =
-        (rightDualIso pY qY).hom ⊗ₘ (rightDualIso pX qX).hom :=
-  letI : ExactPairing X A := pX
-  letI : ExactPairing Y B := pY
-  letI : ExactPairing X A' := qX
-  letI : ExactPairing Y B' := qY
-  evaluation_ext
-    ((rightDualIso_evaluation
-      (inferInstance : ExactPairing (X ⊗ Y) (B ⊗ A))
-      (inferInstance : ExactPairing (X ⊗ Y) (B' ⊗ A'))).trans
-      (rightDualIso_tensor_evaluation pX qX pY qY).symm)
 end PropertyF.Ground.CentreInduction
 
 end

@@ -58,7 +58,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingCandidate_tensor (U : C.Obj) :
     crossingCandidate C X (T ⊗ U) = crossingTensorComposite C X T U := by
   let V := inductionSummand C X
-  refine biproduct_tensor_hom_ext V (T ⊗ U) fun i => ?_
+  refine rightDistributor_ext_left (f := V) fun i => ?_
   rw [crossingCandidate_on_summand, crossingComposite_summand]
   simp_rw [← Preadditive.sum_comp, ← crossingBlock_refinement C X T U i]
   simp only [Fintype.sum_sigma, Preadditive.sum_comp]

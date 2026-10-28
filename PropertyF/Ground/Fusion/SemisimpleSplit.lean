@@ -35,10 +35,7 @@ theorem split_to_simple {S X : C} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
   have hg : e.inv ≫ f ≠ 0 := fun h ↦ hf ((cancel_epi e.inv).1 (by simpa using h))
   have hc : ∃ p, biproduct.ι V p ≫ e.inv ≫ f ≠ 0 := by
     by_contra! h
-    apply hg
-    apply biproduct.hom_ext'
-    intro p
-    simpa [Category.assoc] using h p
+    exact hg (biproduct.hom_ext' _ _ fun p ↦ by simpa only [comp_zero, Category.assoc] using h p)
   obtain ⟨p, hp⟩ := hc
   let : Simple (V p) := hsimple p.1
   let g : V p ⟶ S := biproduct.ι V p ≫ e.inv ≫ f
@@ -80,9 +77,7 @@ theorem object_projective (X : C) : Projective X := by
     intro A B g f hf
     let : Epi f := hf
     refine ⟨biproduct.desc (fun p => Projective.factorThru (biproduct.ι V p ≫ g) f), ?_⟩
-    apply biproduct.hom_ext'
-    intro p
-    simp
+    exact biproduct.hom_ext' _ _ fun p ↦ by simp
   exact Projective.of_iso e.symm hV
 
 /-- Every object is injective. -/

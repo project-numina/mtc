@@ -163,9 +163,12 @@ theorem star_involution_trace (hT : T * T = 1) :
   obtain ⟨n, hn, _⟩ := involution_trace_integer_bound hT
   simp [hn]
 
+variable (hT : T * T = 1) {c : ℂ} (hc : ‖c‖ = 1)
+  (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ))
+include hT hc htrace
+
 /-- A phase-scaled involution with maximal trace is the identity. -/
-theorem involution_phase_eq_one_of_trace (hT : T * T = 1) {c : ℂ}
-    (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
+theorem involution_phase_eq_one_of_trace :
     c • T = 1 := by
   by_cases hz : Module.finrank ℂ V = 0
   · let : Subsingleton V := Module.finrank_zero_iff.mp hz
@@ -185,8 +188,7 @@ theorem involution_phase_eq_one_of_trace (hT : T * T = 1) {c : ℂ}
   rw [map_smul, smul_eq_mul, mul_comm, htrace]
 
 /-- The inverse phase also turns a maximal-trace involution into identity. -/
-theorem involution_phase_inv_eq_one_of_trace (hT : T * T = 1) {c : ℂ}
-    (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
+theorem involution_phase_inv_eq_one_of_trace :
     c⁻¹ • T = 1 := by
   have hs : T = c • (1 : V →ₗ[ℂ] V) := by
     simpa [smul_mul_assoc, hT] using

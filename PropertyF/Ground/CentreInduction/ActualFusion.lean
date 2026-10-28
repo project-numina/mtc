@@ -60,7 +60,7 @@ theorem unit_block (Z : Center D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
   let q := closeFusionMap T S f
   let bR := (Z.2.β R).hom
   let bTS := (Z.2.β (T ⊗ S)).hom
-  dsimp only [unitComponentAt, crossingBlock]
+  dsimp only [unitComponentAt, crossingBlock, mixedCrossing]
   calc
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((bR ≫ (g ▷ Z.1)) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫

@@ -43,8 +43,6 @@ theorem pivotalDimension_decomposition
     pivotalDimension C p X = ∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℂ) *
       pivotalDimension C p (simples C i) := by
   classical
-  let m (i : Fin (rank C)) := Module.finrank ℂ (simples C i ⟶ X)
-  let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
   obtain ⟨e⟩ := exists_canonical_decomposition C X
   rw [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
     rightDimension_biproduct]
@@ -143,13 +141,10 @@ theorem isSpherical_iff_simple_dimensions
       simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f))
     have hright : p.rightTrace f = p.rightTrace g := by
       simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f))
-    have hsimple : ∀ a, Simple (V a) := fun a => simples_simple C a.1
-    have hfinite : ∀ a, FiniteDimensional ℂ (V a ⟶ V a) := fun a =>
-      IsFusionCategory.hom_finite _ _
-    obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple hsimple hfinite p g
+    obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple
+      (fun (a : Σ i, Fin (m i)) ↦ simples_simple C a.1)
+      (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
     rw [hleft, hright, htrace, leftTrace_biproduct_scalar_blocks p g hc]
-    apply Finset.sum_congr rfl
-    intro a _
-    rw [hs a.1]
+    exact Finset.sum_congr rfl fun a _ ↦ by rw [hs a.1]
 
 end PropertyF.Ground.Dimensions

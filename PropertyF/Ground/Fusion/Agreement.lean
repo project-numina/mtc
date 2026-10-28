@@ -16,13 +16,17 @@ open scoped BigOperators Matrix
 
 namespace PropertyF.Ground
 
+section
+variable {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k]
+  {ι : Type*} [Fintype ι] {A : Matrix ι ι k} (hA : ∀ i j, 0 < A i j)
+include hA
+
 /-- For a strictly positive matrix, the eigenspace of any strictly positive
 eigenvector is one-dimensional. No spectral theorem is assumed. -/
-theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι]
-    {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 < A i j)
-    {x y : ι → ℝ} (hx : ∀ i, 0 < x i) {d : ℝ}
+theorem positive_matrix_eigenspace_unique [Nonempty ι]
+    {x y : ι → k} (hx : ∀ i, 0 < x i) {d : k}
     (hxe : A *ᵥ x = d • x) (hye : A *ᵥ y = d • y) :
-    ∃ c : ℝ, y = c • x := by
+    ∃ c : k, y = c • x := by
   classical
   obtain ⟨i, _, hmin⟩ := Finset.exists_min_image Finset.univ (fun j => y j / x j)
     Finset.univ_nonempty
@@ -48,11 +52,10 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
 
 /-- Positive eigenvectors of a positive symmetric matrix agree when normalized
 at the same coordinate, even when their eigenvalues are initially different. -/
-theorem positive_symmetric_eigenvector_unique {ι : Type*} [Fintype ι]
-    {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 < A i j) (hsym : Aᵀ = A)
-    {f g : ι → ℝ} (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
+theorem positive_symmetric_eigenvector_unique (hsym : Aᵀ = A)
+    {f g : ι → k} (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
     {i₀ : ι} (hfunit : f i₀ = 1) (hgunit : g i₀ = 1)
-    {a b : ℝ} (hfe : A *ᵥ f = a • f) (hge : A *ᵥ g = b • g) : f = g := by
+    {a b : k} (hfe : A *ᵥ f = a • f) (hge : A *ᵥ g = b • g) : f = g := by
   classical
   let : Nonempty ι := ⟨i₀⟩
   have hdot : f ⬝ᵥ A *ᵥ g = g ⬝ᵥ A *ᵥ f := by
@@ -64,6 +67,8 @@ theorem positive_symmetric_eigenvector_unique {ι : Type*} [Fintype ι]
   rw [← heq] at hge
   obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique hA hfpos hfe hge
   rw [hc, show c = 1 from by simpa [hfunit, hgunit] using (congrFun hc i₀).symm, one_smul]
+
+end
 
 /-- A function on simple labels is multiplicative for the fusion rules. -/
 abbrev IsFusionMultiplicative {R : Type*} [Semiring R]
@@ -162,9 +167,10 @@ theorem matrix_quadratic_form [DecidableEq ι]
 /-- A nonnegative eigenvector of a positive matrix is positive in every coordinate
 if it has a positive coordinate. -/
 theorem positive_matrix_eigenvector_pos
-    {A : Matrix ι ι ℝ} (hpos : ∀ i j, 0 < A i j) {v : ι → ℝ}
+    {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
+    {A : Matrix ι ι k} (hpos : ∀ i j, 0 < A i j) {v : ι → k}
     (hnonneg : ∀ i, 0 ≤ v i) (hpositive : ∃ i, 0 < v i)
-    {d : ℝ} (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
+    {d : k} (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
   classical
   obtain ⟨j, hj⟩ := hpositive
   intro i
