@@ -191,13 +191,4 @@ theorem braidImages_of_essentiallySurjective [F.Faithful] [F.EssSurj]
   exact ⟨X, ⟨(braidImageIso (F.objObjPreimageIso Y) n).symm.trans
     (braidImageFunctorIso F X n).symm⟩⟩
 
-/-- The conjugate braid-image input follows from the actual braided equivalence;
-semilinearity is not needed for this group-theoretic conclusion. -/
-theorem conjugate_images {C D : BraidedFusionCategory.{v,u}} {σ : ℂ ≃+* ℂ}
-    (h : GaloisConjugate C D σ) (Y : D.Obj) (n : ℕ) :
-    ∃ X : C.Obj, Nonempty (braidImage Y n ≃* braidImage X n) := by
-  let _ := h.monoidal
-  let _ := h.braided
-  exact braidImages_of_essentiallySurjective h.equivalence.functor Y n
-
 end PropertyF.Ground.Modular

@@ -71,8 +71,6 @@ import all PropertyF.Ground.CentreInduction.PivotalCentrality
 import all PropertyF.Ground.CentreInduction.PositivePivotal
 import all PropertyF.Ground.Integrate.PivotalOnlyReduction
 import all PropertyF.Ground.CentreIntegrate.TwistBalancing
-import all PropertyF.Ground.CentreIntegrate.MonodromyDual
-import all PropertyF.Ground.CentreIntegrate.TwistDual
 import all PropertyF.Ground.Dimensions.BraidingCapSlide
 import all PropertyF.Ground.Dimensions.DefectAssociativity
 import all PropertyF.Ground.Dimensions.DefectExtension
@@ -88,7 +86,6 @@ import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
 import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
 import all PropertyF.Ground.CentreRigid.Evaluation
-import all PropertyF.Ground.CentreIntegrate.TwistSign
 import all PropertyF.Ground.CentreRigid.Coevaluation
 import all PropertyF.Ground.CentreRigid.MateExplicit
 import all PropertyF.Ground.CentreRigid.Tensor
@@ -386,7 +383,6 @@ import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
 import all PropertyF.Ground.Modular.HopfPartialTrace
 import all PropertyF.Ground.Modular.Labels
-import all PropertyF.Ground.Modular.PseudoGalois
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Modular.SMatrix
 import all PropertyF.Ground.Modular.SSquare
