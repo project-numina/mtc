@@ -29,9 +29,11 @@ theorem evaluation_ext {C : Type u} [Category.{v} C] [MonoidalCategory C] {X Y Z
 
 variable {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y')
 
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Evaluation of tensor pairings is natural in both factors. -/
-theorem tensorPairing_evaluation_natural : ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g) ≫ ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) =
+theorem tensorPairing_evaluation_natural [HasRightDual X] [HasRightDual X']
+    [HasRightDual Y] [HasRightDual Y'] : ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g) ≫ ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) =
         (gᘁ ⊗ₘ fᘁ) ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := by
   change ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g) ≫
     (𝟙 _ ⊗≫ (Y'ᘁ) ◁ (ε_ X' (X'ᘁ) ▷ Y') ⊗≫ ε_ Y' (Y'ᘁ)) =
@@ -59,8 +61,10 @@ theorem tensorPairing_evaluation_natural : ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g
         rw [whisker_exchange]
     _ = _ := by simp only [tensorHom_def', comp_whiskerRight]; monoidal
 
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
-theorem rightDualTensorIso_natural :
+theorem rightDualTensorIso_natural [HasRightDual X] [HasRightDual X']
+    [HasRightDual Y] [HasRightDual Y'] [HasRightDual (X ⊗ Y)] [HasRightDual (X' ⊗ Y')] :
     ((f ⊗ₘ g)ᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ) :=
   evaluation_ext (X := X ⊗ Y) (by
@@ -69,9 +73,11 @@ theorem rightDualTensorIso_natural :
       ← rightDualTensorIso_evaluation X' Y', whisker_exchange_assoc,
       tensorPairing_evaluation_natural])
 
+omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse right-dual tensor comparison is natural. -/
-theorem rightDualTensorIso_inv_natural :
+theorem rightDualTensorIso_inv_natural [HasRightDual X] [HasRightDual X']
+    [HasRightDual Y] [HasRightDual Y'] [HasRightDual (X ⊗ Y)] [HasRightDual (X' ⊗ Y')] :
     (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso X Y).inv =
       (rightDualTensorIso X' Y').inv ≫ ((f ⊗ₘ g)ᘁ) :=
   (CommSq.vert_inv (CommSq.mk (rightDualTensorIso_natural f g))).w
