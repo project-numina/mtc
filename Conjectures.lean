@@ -9,3 +9,10 @@ public import Conjectures.Fusion.SimpleDimensionAlgebraicInteger
 public import Conjectures.Fusion.SimpleDimensionLowerBound
 public import Conjectures.Fusion.WeaklyIntegralPseudoUnitary
 public import Conjectures.Fusion.WeaklyIntegralSquares
+public import Conjectures.PropertyF.FusionRulesInvariance
+public import Conjectures.Fusion.DualDimensions
+public import Conjectures.Fusion.FusionDimensionCharacter
+public import Conjectures.Fusion.InvertibleDimension
+public import Conjectures.Galois.GlobalFPDimension
+public import Conjectures.Galois.SimpleFPDimension
+public import Conjectures.Galois.SquaredNorm
