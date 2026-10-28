@@ -44,8 +44,7 @@ theorem rootTensorDefect_natural
       (rootTensorDefect C X Y).hom ≫ (f ⊗ₘ g) := by
   have hni : (((f ⊗ₘ g)ᘁ)ᘁ) ≫ (rootTensorIso C X' Y').inv =
       (rootTensorIso C X Y).inv ≫ (f ⊗ₘ g) :=
-    iso_inv_naturality_of_hom (rootTensorIso C X Y) (rootTensorIso C X' Y')
-      (rootTensorIso_natural C f g)
+    iso_inv_naturality_of_hom (rootTensorIso_natural C f g)
   have ha : (f ⊗ₘ g) ≫ ((fourthDualRootNaturalIso C).app (X' ⊗ Y')).hom =
       ((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) :=
     (fourthDualRootNaturalIso C).hom.naturality (f ⊗ₘ g)
@@ -56,7 +55,7 @@ theorem rootTensorDefect_natural
   rw [← Category.assoc, ha, Category.assoc, hni, Category.assoc]
 
 /-- The dual-label choice can be removed from the Frobenius defect equation. -/
-theorem enoTraceMatrix_reciprocity_of_dual_frobenius_defect
+theorem trace_reciprocity_of_dual_defect
     (hraw : ∀ i j k (g : simples C i ⊗ simples C k ⟶ simples C j),
       letI : ExactPairing ((simples C i)ᘁ) (simples C i) :=
         BraidedCategory.exactPairing_swap _ _
@@ -67,7 +66,7 @@ theorem enoTraceMatrix_reciprocity_of_dual_frobenius_defect
             ((simples C i)ᘁ) (simples C i) (simples C j) g ≫
           (rootTensorDefect C ((simples C i)ᘁ) (simples C j)).hom)) :
     ENOTraceMatrixReciprocity C := by
-  apply enoTraceMatrix_reciprocity_of_frobenius_defect C
+  apply trace_reciprocity_of_frobenius_defect C
   intro i j k g
   let : ExactPairing ((simples C i)ᘁ) (simples C i) :=
     BraidedCategory.exactPairing_swap _ _

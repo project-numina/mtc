@@ -161,7 +161,7 @@ theorem rightPartialTrace_simple_ground (C : BraidedFusionCategory.{v,u})
   let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
   rightPartialTrace_simple_of_trace_compatibility (X := X) (Y := Y) p scalar f
     (by simpa only [map_zero] using scalar.injective.ne (Modular.pivotalTrace_simple_ne_zero C p X))
-    (Dimensions.rightTrace_partialTrace p X Y f)
+    (Dimensions.rightTrace_partialTrace p f)
 
 end PropertyF.Ground.Calculus
 
@@ -202,7 +202,7 @@ theorem pivotalTrace_overlap (C : BraidedFusionCategory.{v,u})
     scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
-  rw [← Dimensions.rightTrace_partialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u),
+  rw [← Dimensions.rightTrace_partialTrace p (overlapEndProduct A X Y v u),
     rightPartialTrace_overlap C p scalar v u]
   simp [scalarTrace, PivotalStructure.rightTrace_smul, mul_comm]
 

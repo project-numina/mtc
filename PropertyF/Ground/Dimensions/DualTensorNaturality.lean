@@ -96,8 +96,7 @@ theorem rightDualTensorIso_inv_natural {C : Type u} [Category.{v} C]
     (f : X ⟶ X') (g : Y ⟶ Y') :
     (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso X Y).inv =
       (rightDualTensorIso X' Y').inv ≫ ((f ⊗ₘ g)ᘁ) :=
-  iso_inv_naturality_of_hom (rightDualTensorIso X' Y') (rightDualTensorIso X Y)
-    (rightDualTensorIso_natural f g)
+  iso_inv_naturality_of_hom (rightDualTensorIso_natural f g)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is natural in both factors. -/

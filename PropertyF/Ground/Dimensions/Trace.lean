@@ -19,7 +19,7 @@ def rightTraceWith {X : C} (j : X ≅ (Xᘁ)ᘁ) (f : X ⟶ X) : End (𝟙_ C) :
   End.of (η_ X (Xᘁ) ≫ ((f ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ))
 
 /-- Cyclicity needs naturality only for the two components involved. -/
-theorem rightTraceWith_cyclic {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
+theorem rightTraceWith_cyclic {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
     (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
     rightTraceWith j (f ≫ g) = rightTraceWith k (g ≫ f) := by
   apply End.homEquiv.injective
@@ -71,7 +71,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 /-- The right pivotal trace is cyclic. -/
 theorem rightTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
     (f : X ⟶ Y) (g : Y ⟶ X) : p.rightTrace (f ≫ g) = p.rightTrace (g ≫ f) :=
-  rightTraceWith_cyclic (p.iso X) (p.iso Y) f g (p.naturality f)
+  rightTraceWith_cyclic f g (p.naturality f)
 
 /-- Pivotal dimensions are invariant under object isomorphism. -/
 theorem rightTrace_id_iso (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) :
@@ -103,13 +103,13 @@ theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :
 
 /-- Compatible double-dual components have the same right quantum trace under
 an object isomorphism. -/
-theorem rightQuantumTrace_iso {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
+theorem rightQuantumTrace_iso {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
     (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
     rightQuantumTrace j = rightQuantumTrace k := by
-  simpa [rightTraceWith, rightQuantumTrace] using (rightTraceWith_cyclic j k e.hom e.inv hnat)
+  simpa [rightTraceWith, rightQuantumTrace] using (rightTraceWith_cyclic e.hom e.inv hnat)
 
 /-- Compatibility of double-dual components is preserved by inverse duality. -/
-theorem dual_components_natural {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
+theorem dual_components_natural {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
     (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
     (e.invᘁ) ≫ (rightDualIsoMap k).symm.hom =
       (rightDualIsoMap j).symm.hom ≫ ((e.invᘁ)ᘁ)ᘁ := by
@@ -123,13 +123,12 @@ theorem dual_components_natural {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ
 
 /-- Both quantum traces are preserved when double-dual components are
 transported across an object isomorphism. -/
-theorem quantumTraces_iso {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
+theorem quantumTraces_iso {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
     (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
     rightQuantumTrace j = rightQuantumTrace k ∧ leftQuantumTrace j = leftQuantumTrace k := by
-  refine ⟨rightQuantumTrace_iso j k e hnat, ?_⟩
+  refine ⟨rightQuantumTrace_iso e hnat, ?_⟩
   rw [leftQuantumTrace_eq_rightDual, leftQuantumTrace_eq_rightDual]
-  exact rightQuantumTrace_iso (rightDualIsoMap j).symm (rightDualIsoMap k).symm
-    (rightDualIsoMap e.symm) (dual_components_natural j k e hnat)
+  exact rightQuantumTrace_iso (rightDualIsoMap e.symm) (dual_components_natural e hnat)
 
 /-- Left trace is right trace on the dual endomorphism with the inverse dual
 pivotal component. -/
@@ -148,7 +147,7 @@ theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
     (fᘁ) ≫ (rightDualIsoMap (p.iso X)).symm.hom =
       (rightDualIsoMap (p.iso Y)).symm.hom ≫ ((fᘁ)ᘁ)ᘁ := by
   have hinv : (p.iso X).inv ≫ f = (fᘁ)ᘁ ≫ (p.iso Y).inv :=
-    (iso_inv_naturality_of_hom (p.iso X) (p.iso Y) (p.naturality f)).symm
+    (iso_inv_naturality_of_hom (p.naturality f)).symm
   simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using
     (congrArg (fun (a : (Xᘁ)ᘁ ⟶ Y) => rightAdjointMate a) hinv)
 
@@ -156,7 +155,6 @@ theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
 theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
     (f : X ⟶ Y) (g : Y ⟶ X) : p.leftTrace (f ≫ g) = p.leftTrace (g ≫ f) := by
   simpa only [leftTrace_eq_rightTraceWith_dual, comp_rightAdjointMate] using
-    rightTraceWith_cyclic (rightDualIsoMap (p.iso X)).symm
-      (rightDualIsoMap (p.iso Y)).symm (gᘁ) (fᘁ) (dual_pivotal_naturality p g)
+    rightTraceWith_cyclic (gᘁ) (fᘁ) (dual_pivotal_naturality p g)
 
 end PropertyF.Ground.Dimensions
