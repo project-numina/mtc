@@ -50,16 +50,6 @@ namespace PropertyF.Ground.Calculus
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The actual three-strand braid-image element has the categorical overlap
-trace, independently of any choice of matrix blocks. -/
-theorem actual_three_braid_trace (X : C.Obj) [Simple X] :
-    actualBraidTrace C p (braidInImage (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) =
-      scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) ^ 2 / pivotalDimension C p X := by
-  simpa [actualBraidTrace, braidEndRepresentation, threeGeneratorLeft, threeGeneratorRight,
-    imageGenerator, pivotalDimension, scalarTrace, unitScalar_eq_equiv] using
-    three_braid_trace C X p (Ground.unitScalarEquiv C)
-
 section LocalMonodromy
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -188,7 +178,8 @@ theorem actual_braid_squares_equal_of_saturation (hf : 0 < f)
   let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
   refine congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
     (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
-      (Units.ext (three_braid_relation_map ρ)) ?_ ?_)
+      (Units.ext (by simpa only [a, c, Units.val_mul, MonoidHom.coe_toHomUnits, map_mul] using
+        (congrArg ρ (three_braid_image_relation X)))) ?_ ?_)
   · intro z hz
     simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
   · change B.trace w (b (braidInImage (threeGeneratorLeft X)) ^ 2 *

@@ -41,10 +41,6 @@ namespace PropertyF.Ground.CentreCalculus
 section
 variable {R : Type*} [CommRing R]
 
-/-- Signed permutation trace sum, with no categorical assumptions. -/
-def signedTraceSum (F : ∀ n : ℕ, Perm (Fin n) → R) (n : ℕ) : R :=
-  ∑ σ, (sgn R n σ : R) * F n σ
-
 /-- The sign changes precisely when the newly inserted point is moved. -/
 theorem sign_decomposeFin {n : ℕ} (p : Fin (n + 1)) (σ : Perm (Fin n)) :
     (sgn R (n + 1) (decomposeFin.symm (p, σ)) : R) =
@@ -58,7 +54,7 @@ variable {F : ∀ n : ℕ, Perm (Fin n) → R} {d : R} {n : ℕ}
 theorem signedTraceSum_succ
     (hfixed : ∀ σ, F (n + 1) (decomposeFin.symm (0, σ)) = d * F n σ)
     (hmoved : ∀ (p : Fin (n + 1)), p ≠ 0 → ∀ σ, F (n + 1) (decomposeFin.symm (p, σ)) = F n σ) :
-    signedTraceSum F (n + 1) = (d - (n : R)) * signedTraceSum F n := by
+    signedTraceSum (F (n + 1)) = (d - (n : R)) * signedTraceSum (F n) := by
   rw [signedTraceSum, ← decomposeFin.symm.sum_comp,
     Fintype.sum_prod_type, Fin.sum_univ_succ]
   simp only [signedTraceSum, sign_decomposeFin, ite_true, one_mul, hfixed, Fin.succ_ne_zero,
@@ -86,7 +82,7 @@ structure IsTraceDeletion (F : ∀ n : ℕ, Perm (Fin n) → R) (d : R) : Prop w
 This isolates the categorical trace calculation from the permutation sum. -/
 theorem signedTraceSum_falling
     (hzero : F 0 1 = 1) (h : IsTraceDeletion F d) (n : ℕ) :
-    signedTraceSum F n = ∏ k ∈ Finset.range n, (d - (k : R)) := by
+    signedTraceSum (F n) = ∏ k ∈ Finset.range n, (d - (k : R)) := by
   induction n with
   | zero =>
     simp [signedTraceSum, hzero, Centre.permutationSign]
@@ -118,14 +114,12 @@ theorem integral_of_trace_deletion {C : BraidedFusionCategory} {p : PivotalStruc
     (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
     (ρ : ∀ n : ℕ, Perm (Fin n) →* End (tensorPower X n))
     (h : IsTraceDeletion (tr C p ρ) (fpDimension C X : ℂ)) : IsFPIntegral C X := by
-  let F := tr C p ρ
-  have hz : F 0 1 = 1 := by
+  have hz : tr C p ρ 0 1 = 1 := by
     change unitScalarEquiv C (p.rightTrace (((ρ 0) 1).asHom)) = 1
     rw [map_one]
-    change unitScalarEquiv C (p.rightTrace (𝟙 (𝟙_ C.Obj))) = 1
-    rw [Dimensions.rightTrace_unit, map_one]
+    simpa only [End.one_asHom, tensorPower, Dimensions.rightTrace_unit] using (map_one (unitScalarEquiv C))
   refine integral_of_signed_permutation_traces hdim fun n ↦ ⟨ρ n, ?_⟩
-  simpa [F, permScalarTrace, scalarPermTrace, signedTraceSum, ← unitScalar_eq_equiv] using
+  simpa [permScalarTrace, scalarPermTrace, signedTraceSum, ← unitScalar_eq_equiv] using
     signedTraceSum_falling hz h n
 
 end PropertyF.Ground.CentreCalculus
@@ -177,7 +171,6 @@ theorem permAction_fixHead
       (tensorLeft X).mapAut (tensorPower X (n + 2)) (permAction X hX n σ) := by
   let f := (permAction X hX (n + 1)).comp (fixHead (n + 2))
   let g := ((tensorLeft X).mapAut (tensorPower X (n + 2))).comp (permAction X hX n)
-  obtain ⟨w, rfl⟩ := strandPermutation_surjective n σ
   have hh : f.comp (strandPermutation n) = g.comp (strandPermutation n) :=
     FreeGroup.ext_hom _ _ fun i ↦ by
       change permAction X hX (n + 1) (fixHead (n + 2) (strandPermutation n (FreeGroup.of i))) =
@@ -186,7 +179,7 @@ theorem permAction_fixHead
       simpa only [strandPermutation, FreeGroup.lift_apply_of, fixHead_swap, permAction_swap] using
         (braidGenerator_succ X i).symm
 
-  exact DFunLike.congr_fun hh w
+  exact DFunLike.congr_fun ((MonoidHom.cancel_right (strandPermutation_surjective n)).mp hh) σ
 
 /-- Inserting a fixed strand tensors the permutation action with its identity. -/
 theorem tensorPermAction_fixHead :

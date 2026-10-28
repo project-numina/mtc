@@ -60,12 +60,12 @@ variable {X Y : C}
 
 theorem leftPartialTrace_right (a : End Y) (f : End (X ⊗ Y)) :
     leftPartialTrace p (f * insertLeftIdentity X a) =
-      leftPartialTrace p f * a := by
-  apply End.ext
-  simp only [leftPartialTrace, insertLeftIdentity, LinearMap.coe_mk, AddHom.coe_mk,
-    End.mul_asHom, whiskerLeft_comp, Category.assoc]
-  rw [← associator_naturality_right_assoc, ← whisker_exchange_assoc,
-    ← leftUnitor_inv_naturality_assoc]
+      leftPartialTrace p f * a :=
+  End.ext <| by
+    simp only [leftPartialTrace, insertLeftIdentity, LinearMap.coe_mk, AddHom.coe_mk,
+      End.mul_asHom, whiskerLeft_comp, Category.assoc]
+    rw [← associator_naturality_right_assoc, ← whisker_exchange_assoc,
+      ← leftUnitor_inv_naturality_assoc]
 
 /-- Closing the first factor commutes with a spectator factor on the right. -/
 theorem leftPartialTrace_whiskerRight (Z : C) (f : End (X ⊗ Y)) :

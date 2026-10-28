@@ -84,21 +84,11 @@ private theorem rightDualIso_tensor_evaluation :
   let : ExactPairing Y B := pY
   let : ExactPairing X A' := qX
   let : ExactPairing Y B' := qY
-  let a := (rightDualIso pX qX).hom
-  let b := (rightDualIso pY qY).hom
-  change (b ⊗ₘ a) ▷ (X ⊗ Y) ≫
-    (𝟙 _ ⊗≫ B' ◁ (ε_ X A' ▷ Y) ⊗≫ ε_ Y B') =
-    (𝟙 _ ⊗≫ B ◁ (ε_ X A ▷ Y) ⊗≫ ε_ Y B)
-  calc
-    _ = 𝟙 _ ⊗≫ ((b ▷ ((A ⊗ X) ⊗ Y)) ≫
-        B' ◁ ((a ▷ X ≫ ε_ X A') ▷ Y)) ⊗≫ ε_ Y B' := by
-      simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
-      monoidal
-    _ = 𝟙 _ ⊗≫ (B ◁ ((a ▷ X ≫ ε_ X A') ▷ Y) ≫
-        b ▷ ((𝟙_ D) ⊗ Y)) ⊗≫ ε_ Y B' := by rw [whisker_exchange]
-    _ = _ := by
-      rw [← rightDualIso_evaluation pX qX, ← rightDualIso_evaluation pY qY]
-      monoidal
+  rw [tensorHom_def, comp_whiskerRight_assoc,
+    tensorPairing_evaluation_whiskerLeft (p := pX) (q := qX) (r := qY)
+      (rightDualIso pX qX).hom (rightDualIso_evaluation pX qX),
+    tensorPairing_evaluation_whiskerRight (p := pX) (q := pY) (r := qY)
+      (rightDualIso pY qY).hom (rightDualIso_evaluation pY qY)]
 
 /-- The canonical comparison of duals preserves tensor products of pairings. -/
 theorem rightDualIso_tensor :
@@ -168,12 +158,11 @@ theorem forgetDualIso_tensor :
   let s := tensorForgetPairing X Y
   let r := @ExactPairing.tensor D _ _ X.1 Y.1 (X.1ᘁ) (Y.1ᘁ)
       HasRightDual.exact HasRightDual.exact
-  have h3 := rightDualIso_tensor (forgetPairing X) HasRightDual.exact
-    (forgetPairing Y) HasRightDual.exact
-  change (rightDualIso s r).hom = (forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom at h3
   rw [forget_rightDualTensorIso]
   change (rightDualIso p q).hom ≫ (rightDualIso q r).hom =
     (rightDualIso p s).hom ≫ _
-  rw [← h3, rightDualIso_trans p q r, rightDualIso_trans p s r]
+  dsimp only [forgetDualIso]
+  rw [← rightDualIso_tensor (forgetPairing X) HasRightDual.exact
+    (forgetPairing Y) HasRightDual.exact, rightDualIso_trans p q r, rightDualIso_trans p s r]
 
 end PropertyF.Ground.CentreInduction

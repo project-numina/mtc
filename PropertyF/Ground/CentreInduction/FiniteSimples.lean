@@ -31,8 +31,7 @@ theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
   apply (cancel_mono (T ◁ q.f)).1
   simp only [Category.assoc, ← whiskerLeft_comp, hg]
-  rw [← q.comm T, ← comp_whiskerRight_assoc, hg]
-  exact p.comm T
+  rw [← q.comm T, ← comp_whiskerRight_assoc, hg, p.comm]
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
 def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : Center D) (P : Subobject X) :
@@ -108,10 +107,8 @@ private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D] {
     (hpq : p ≫ q = 0) (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
     Nonempty (S ≅ P) ∨ Mono (t ≫ q) := by
   by_cases hz : t ≫ q = 0
-  · obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift'
+  · obtain ⟨g, hg⟩ : {g : S ⟶ P // g ≫ p = t} := KernelFork.IsLimit.lift'
       (Abelian.monoIsKernelOfCokernel (CokernelCofork.ofπ q hpq) hc) t hz
-    change S ⟶ P at g
-    change g ≫ p = t at hg
     let : IsIso g := isIso_of_hom_simple (fun h =>
       id_nonzero S ((cancel_mono t).1 (by simpa [h] using hg.symm)))
     exact Or.inl ⟨asIso g⟩
@@ -126,8 +123,7 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
   induction W using (measure m).wf.induction with
   | h W ih =>
     by_cases hw : IsZero W
-    · refine ⟨[], ?_⟩
-      intro S hS ⟨t, ht⟩
+    · refine ⟨[], fun S hS ⟨t, ht⟩ => ?_⟩
       let : Simple S := hS
       let : Mono t := ht
       exact (Simple.not_isZero S (IsZero.of_mono t hw)).elim
@@ -147,8 +143,7 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
           (Centre.centerCokernel_condition p)
           (Centre.centerCokernelIsColimit p) with hSP | hmono
       · exact ⟨P, List.Mem.head _, hSP⟩
-      · let : Mono (t ≫ q) := hmono
-        obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, inferInstance⟩
+      · obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, hmono⟩
         exact ⟨T, List.Mem.tail _ hT, hST⟩
 
 set_option backward.isDefEq.respectTransparency false in

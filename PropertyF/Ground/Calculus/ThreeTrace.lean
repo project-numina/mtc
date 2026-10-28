@@ -4,7 +4,7 @@ public import Mathlib.GroupTheory.OrderOfElement
 public import Mathlib.CategoryTheory.Conj
 public import Mathlib.Tactic
 public import PropertyF.Ground.Calculus.RightStrand
-public import PropertyF.Ground.Dimensions.TensorMultiplicativity
+public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Modular.SMatrix
 
 /-!
@@ -80,13 +80,6 @@ theorem three_braid_image_relation :
   Subtype.ext (three_braid_relation X)
 
 end
-
-/-- Every representation of the actual three-strand image satisfies the braid relation. -/
-theorem three_braid_relation_map {H : Type*} [Monoid H] {X : C}
-    (ρ : braidImage X 1 →* H) :
-    ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) =
-    ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) := by
-  simpa only [map_mul] using congrArg ρ (three_braid_image_relation X)
 
 end PropertyF.Ground.Calculus
 
@@ -215,14 +208,24 @@ theorem three_braid_double_overlap (X : C) :
     Iso.conj_apply_asHom, pow_two, End.mul_asHom, comp_whiskerRight, whiskerLeft_comp,
     Category.assoc]
 
-/-- The three-strand trace is the square of the double-braiding trace,
-normalized by the pivotal dimension of the shared simple strand. -/
-theorem three_braid_trace (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X]
-    (p : PivotalStructure (C := D.Obj)) (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) :
-    scalarTrace p scalar (Aut.toEnd (braidGenerator X 1 0 ^ 2 * braidGenerator X 1 1 ^ 2)) =
-      scalarTrace p scalar (selfMonodromy X) ^ 2 / scalar (p.rightTrace (𝟙 X)) := by
-  rw [scalarTrace, scalarTrace, ← rightTrace_iso_conj (threePowerIso X) p,
-    three_braid_double_overlap, rightTrace_iso_conj, pivotalTrace_overlap, pow_two, mul_div_assoc]
+/-- Pivotal trace of an element of an actual categorical braid algebra. -/
+def actualBraidTrace (D : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := D.Obj))
+    {X : D.Obj} {n : ℕ} (a : braidAlgebra X n) : ℂ :=
+  Ground.unitScalarEquiv D (p.rightTrace (a : End (braidTensorPower X n)).asHom)
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The trace of the three-strand overlap is the squared monodromy trace,
+normalized by the pivotal dimension. -/
+theorem actual_three_braid_trace (D : BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := D.Obj)) (X : D.Obj) [Simple X] :
+    actualBraidTrace D p (braidInImage (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) =
+      scalarTrace p (Ground.unitScalarEquiv D) (selfMonodromy X) ^ 2 / pivotalDimension D p X := by
+  simp only [actualBraidTrace, threeGeneratorLeft, threeGeneratorRight, imageGenerator,
+    SubmonoidClass.mk_pow, MulMemClass.mk_mul_mk, braidInImage_val, braidEndRepresentation,
+    MonoidHom.coe_comp, Subgroup.coe_subtype, Function.comp_apply, pivotalDimension,
+    unitScalar_eq_equiv, scalarTrace]
+  rw [← rightTrace_iso_conj (threePowerIso X) p, three_braid_double_overlap,
+    rightTrace_iso_conj, pivotalTrace_overlap, pow_two, mul_div_assoc]
 
 /-- Remove the trailing tensor unit from the two-fold tensor power. -/
 def twoPowerIso (X : C) : tensorPower X 2 ≅ X ⊗ X :=
