@@ -101,7 +101,6 @@ set_option backward.defeqAttrib.useBackward true in
 /-- A binary sum with a finite biproduct is a biproduct indexed by `Option`. -/
 def biprodOptionIso {ι : Type} [Fintype ι] (S : D) (V : ι → D) :
     S ⊞ (⨁ V) ≅ ⨁ (fun o : Option ι => o.elim S V) := by
-  classical
   let W : Option ι → D := fun o => o.elim S V
   refine { hom := biprod.desc (biproduct.ι W none)
               (biproduct.desc fun i => biproduct.ι W (some i))
@@ -126,7 +125,6 @@ def biprodOptionIso {ι : Type} [Fintype ι] (S : D) (V : ι → D) :
 single finite biproduct of simple objects. -/
 theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum D X) :
     ∃ (n : ℕ) (V : Fin n → D), (∀ i, Simple (V i)) ∧ Nonempty (X ≅ ⨁ V) := by
-  classical
   induction hX with
   | zero hz =>
     let V : Fin 0 → D := Fin.elim0
@@ -173,7 +171,6 @@ theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [Ha
     {labels : Finset D} (hs : ∀ T ∈ labels, Simple T)
     (hc : ∀ X : D, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T)) :
     ∃ (n : ℕ) (S : Fin n → D), IsSimpleRepresentativeFamily S := by
-  classical
   let A := { T : D // T ∈ labels }
   let R : Setoid A := Setoid.comap Subtype.val (isIsomorphicSetoid D)
   let Q := Quotient R
@@ -203,7 +200,6 @@ theorem regroup_biproduct {D : Type u} [Category.{v} D] [Preadditive D]
     [HasFiniteBiproducts D] {n k : ℕ} {S : Fin n → D} {V : Fin k → D}
     (h : ∀ j, ∃ i, Nonempty (V j ≅ S i)) :
     ∃ m : Fin n → ℕ, Nonempty ((⨁ V) ≅ ⨁ (fun p : Σ i, Fin (m i) => S p.1)) := by
-  classical
   choose idx hIso using h
   let fiber (i : Fin n) := { j : Fin k // idx j = i }
   let m (i : Fin n) := Fintype.card (fiber i)

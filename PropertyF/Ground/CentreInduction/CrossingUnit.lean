@@ -144,7 +144,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingCandidate_unit (X : C.Obj) :
     crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv := by
-  classical
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (𝟙_ C.Obj)).inv).1
   apply biproduct.hom_ext'

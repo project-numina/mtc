@@ -16,7 +16,6 @@ theorem crossingCandidate_matrix (X T : C.Obj) (i j : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ biproduct.π V j) =
     ∑ a, crossingSummand C X T i j a := by
-  classical
   simp [crossingCandidate_on_summand_assoc, Preadditive.sum_comp, Category.assoc,
     ← whiskerLeft_comp, biproduct.ι_π, whiskerLeft_dite, comp_dite, crossingSummand]
 
@@ -28,7 +27,6 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
     ∑ k, ∑ a : crossingIndex C T i k,
       ∑ j, ∑ b : crossingIndex C U k j,
         nestedCrossingBlock C X T U i k j a b ≫ ((T ⊗ U) ◁ biproduct.ι V j) := by
-  classical
   dsimp only [nestedCrossingBlock]
   let V := inductionSummand C X
   let bT : (⨁ V) ⊗ T ⟶ T ⊗ (⨁ V) := crossingCandidate C X T
@@ -62,7 +60,6 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The induction crossing obeys the half-braiding tensor law. -/
 theorem crossingCandidate_tensor (X T U : C.Obj) :
     crossingCandidate C X (T ⊗ U) = crossingTensorComposite C X T U := by
-  classical
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (T ⊗ U)).inv).1
   apply biproduct.hom_ext'
