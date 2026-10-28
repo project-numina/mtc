@@ -15,8 +15,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g := by
-  refine ⟨⟨g, ?_⟩, rfl⟩
-  intro T
+  refine ⟨⟨g, fun T => ?_⟩, rfl⟩
   let : IsSplitMono (T ◁ q.f) :=
     IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
   apply (cancel_mono (T ◁ q.f)).1
