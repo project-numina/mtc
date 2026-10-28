@@ -11,7 +11,8 @@ public import PropertyF.Ground.Centre.Calculus.TypeANormalWords
 # The type-A presentation of the symmetric group
 
 Square, adjacent braid and distant-commutativity relations give a quotient of
-the free group. The notation `s i` denotes the adjacent swap at position `i`. A normal-form cardinality bound identifies this quotient with
+the free group. The notation `s i` denotes the adjacent swap at position `i`,
+and `g n i` denotes the corresponding type-A quotient generator. A normal-form cardinality bound identifies this quotient with
 the symmetric group, so self-transparent braid actions factor through it.
 -/
 @[expose] public noncomputable section
@@ -168,34 +169,28 @@ namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
+/-- A surjection identifies its kernel with a normal subgroup when the
+quotient has at most as many elements as the codomain. -/
+theorem ker_eq_of_card_quotient_le {G H : Type*} [Group G] [Group H]
+    (f : G →* H) (N : Subgroup G) [N.Normal] [Finite (G ⧸ N)]
+    (hN : N ≤ f.ker) (hf : Function.Surjective f) (hc : Nat.card (G ⧸ N) ≤ Nat.card H) :
+    f.ker = N :=
+  ((QuotientGroup.injective_lift_iff N f hN).mp
+    ((QuotientGroup.lift_surjective_of_surjective N f hf hN).bijective_of_nat_card_le hc).1).symm
+
 variable (n : ℕ)
 
 /-- The group presented by adjacent involutions with type-A relations. -/
 abbrev typeAGroup := BraidWords n ⧸ typeANormal n
 
-/-- Its canonical surjection to the strand permutation group. -/
-def typeAPermutation : typeAGroup n →* Perm (Fin (n + 2)) :=
-  QuotientGroup.lift _ (strandPermutation n) (typeARelations_permutation_trivial n)
-
-theorem typeAPermutation_surjective : Function.Surjective (typeAPermutation n) :=
-  Function.Surjective.of_comp (g := QuotientGroup.mk' (typeANormal n))
-    (strandPermutation_surjective n)
-
 /-- The missing presentation theorem would follow from a finite normal-form
 bound of at most `(n+2)!` words. -/
 theorem pureWords_eq_typeANormal_of_card_bound [Finite (typeAGroup n)]
     (hcard : Nat.card (typeAGroup n) ≤ Nat.factorial (n + 2)) :
-    (strandPermutation n).ker = typeANormal n := by
-  let : Fintype (typeAGroup n) := Fintype.ofFinite _
-  apply le_antisymm ?_ (typeARelations_permutation_trivial n)
-  intro w hw
-  have hs := typeAPermutation_surjective n
-  have hi : Function.Injective (typeAPermutation n) :=
-    ((Fintype.bijective_iff_surjective_and_card (typeAPermutation n)).2
-      ⟨hs, le_antisymm (by simpa [Nat.card_eq_fintype_card, Fintype.card_perm] using hcard)
-        (Fintype.card_le_of_surjective (typeAPermutation n) hs)⟩).1
-  exact (QuotientGroup.eq_one_iff w).mp <| hi <|
-    show strandPermutation n w = 1 from MonoidHom.mem_ker.mp hw
+    (strandPermutation n).ker = typeANormal n :=
+  ker_eq_of_card_quotient_le (strandPermutation n) (typeANormal n)
+    (typeARelations_permutation_trivial n) (strandPermutation_surjective n)
+    (by simpa [Nat.card_eq_fintype_card, Fintype.card_perm] using hcard)
 
 end PropertyF.Ground.CentreCalculus
 
@@ -208,31 +203,34 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def typeAGenerator (n i : ℕ) : typeAGroup n :=
   if h : i < n + 1 then QuotientGroup.mk' (typeANormal n) (FreeGroup.of ⟨i, h⟩) else 1
 
-variable {n i j : ℕ}
+local notation "g" => typeAGenerator
 
-theorem typeAGenerator_square (hi : i < n + 1) :
-    typeAGenerator n i * typeAGenerator n i = 1 := by
-  simpa [typeAGenerator, hi, pow_two] using (QuotientGroup.eq_one_iff
-    (N := typeANormal n) _).mpr (Subgroup.subset_normalClosure (Or.inl ⟨⟨i, hi⟩, rfl⟩))
+variable {n : ℕ}
 
-theorem typeAGenerator_adjacent (hi : i + 1 < n + 1) :
-    typeAGenerator n i * typeAGenerator n (i + 1) * typeAGenerator n i =
-      typeAGenerator n (i + 1) * typeAGenerator n i * typeAGenerator n (i + 1) := by
-  simp only [typeAGenerator, dite_eq_left hi, dite_eq_left (show i < n + 1 by omega), ← map_mul]
+theorem typeAGenerator_square {i : Fin (n + 1)} :
+    g n i.val * g n i.val = 1 := by
+  simpa [typeAGenerator, i.isLt, pow_two] using (QuotientGroup.eq_one_iff
+    (N := typeANormal n) _).mpr (Subgroup.subset_normalClosure (Or.inl ⟨i, rfl⟩))
+
+theorem typeAGenerator_adjacent {i : Fin n} :
+    g n i.val * g n (i.val + 1) * g n i.val =
+      g n (i.val + 1) * g n i.val * g n (i.val + 1) := by
+  have hi : i.val + 1 < n + 1 := Nat.succ_lt_succ i.isLt
+  simp only [typeAGenerator, dite_eq_left hi, dite_eq_left (Nat.lt_succ_of_lt i.isLt), ← map_mul]
   exact QuotientGroup.eq_iff_div_mem.mpr <| Subgroup.subset_normalClosure <|
-    Or.inr (Or.inl ⟨⟨i, by omega⟩, ⟨i + 1, hi⟩, rfl, rfl⟩)
+    Or.inr (Or.inl ⟨⟨i.val, by omega⟩, ⟨i.val + 1, hi⟩, rfl, rfl⟩)
 
-theorem typeAGenerator_distant (hij : i + 1 < j) (hj : j < n + 1) :
-    typeAGenerator n i * typeAGenerator n j = typeAGenerator n j * typeAGenerator n i := by
-  simp only [typeAGenerator, dite_eq_left hj, dite_eq_left (show i < n + 1 by omega), ← map_mul]
+theorem typeAGenerator_distant {i j : Fin (n + 1)} (hij : i.val + 1 < j.val) :
+    g n i.val * g n j.val = g n j.val * g n i.val := by
+  simp only [typeAGenerator, dite_eq_left i.isLt, dite_eq_left j.isLt, ← map_mul]
   exact QuotientGroup.eq_iff_div_mem.mpr <| Subgroup.subset_normalClosure <|
-    Or.inr (Or.inr ⟨⟨i, by omega⟩, ⟨j, hj⟩, hij, rfl⟩)
+    Or.inr (Or.inr ⟨i, j, hij, rfl⟩)
 
 variable (n : ℕ)
 
 /-- The quotient is generated by its adjacent generators. -/
 theorem typeAGenerator_generates :
-    Subgroup.closure (Set.range (fun i : Fin (n + 1) => typeAGenerator n i.val)) = ⊤ := by
+    Subgroup.closure (Set.range (fun i : Fin (n + 1) => g n i.val)) = ⊤ := by
   apply FreeGroup.lift_surjective_iff_closure_range_eq_top.mp
   convert QuotientGroup.mk'_surjective (typeANormal n) using 1
   congr 1
@@ -244,8 +242,10 @@ surjection to be an isomorphism. -/
 theorem typeA_finite_card : Finite (typeAGroup n) ∧
     Nat.card (typeAGroup n) ≤ Nat.factorial (n + 2) :=
   finite_card_of_typeA (n + 1) (typeAGenerator n)
-    ⟨(fun _ hi ↦ typeAGenerator_square hi), (fun _ hi ↦ typeAGenerator_adjacent hi),
-      (fun _ _ hij hj ↦ typeAGenerator_distant hij hj)⟩ (typeAGenerator_generates n)
+    ⟨(fun i hi ↦ typeAGenerator_square (i := ⟨i, hi⟩)),
+      (fun i hi ↦ typeAGenerator_adjacent (i := ⟨i, by omega⟩)),
+      (fun i j hij hj ↦ typeAGenerator_distant (i := ⟨i, by omega⟩) (j := ⟨j, hj⟩) hij)⟩
+    (typeAGenerator_generates n)
 
 /-- The kernel of the strand permutation is exactly the normal subgroup
 generated by the type-A relations. -/

@@ -22,15 +22,9 @@ set_option backward.isDefEq.respectTransparency false in
 theorem coevaluation_iso_map {C : Type u} [Category.{v} C] [MonoidalCategory C]
     [RightRigidCategory C] {X Y : C} (a : X ≅ Y) :
     η_ X (Xᘁ) ≫ (a.hom ⊗ₘ (a.invᘁ)) = η_ Y (Yᘁ) := by
-  simp only [tensorHom_def]
-  have h := coevaluation_comp_rightAdjointMate a.inv
-  calc
-    _ = η_ X (Xᘁ) ≫ X ◁ (a.invᘁ) ≫ a.hom ▷ (Yᘁ) := by
-      simpa only [Category.assoc] using
-        congrArg (fun z => η_ X (Xᘁ) ≫ z) (whisker_exchange a.hom (a.invᘁ)).symm
-    _ = η_ Y (Yᘁ) ≫ a.inv ▷ (Yᘁ) ≫ a.hom ▷ (Yᘁ) := by
-      simpa only [Category.assoc] using congrArg (fun z => z ≫ a.hom ▷ (Yᘁ)) h
-    _ = _ := by simp only [← comp_whiskerRight, Iso.inv_hom_id, id_whiskerRight, Category.comp_id]
+  rw [tensorHom_def, ← whisker_exchange, ← Category.assoc,
+    coevaluation_comp_rightAdjointMate, Category.assoc, ← comp_whiskerRight,
+    Iso.inv_hom_id, id_whiskerRight, Category.comp_id]
 
 
 /-- The canonical isomorphism between two right duals transports coevaluation. -/

@@ -109,8 +109,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
 theorem center_cokernel_measure_lt {S W : 𝒵}
     (p : S ⟶ W) (hp : p ≠ 0) :
-    Module.finrank ℂ ((Centre.centerCokernel p).1 ⟶ (Centre.centerCokernel p).1) <
-      Module.finrank ℂ (W.1 ⟶ W.1) := by
+    let Q := Centre.centerCokernel p
+    Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) := by
   let Q := Centre.centerCokernel p
   let q : W.1 ⟶ Q.1 := (Centre.centerCokernelπ p).f
   have : Epi q := by
@@ -122,10 +122,9 @@ theorem center_cokernel_measure_lt {S W : 𝒵}
     (congrArg Center.Hom.f (Centre.centerCokernel_condition p))
 
 /-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
-private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]
-    {P W Q S : D} [Simple P] [Simple S] (p : P ⟶ W) [Mono p]
-    (t : S ⟶ W) [Mono t] (q : W ⟶ Q) (hpq : p ≫ q = 0)
-    (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
+private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D] {P W Q S : D}
+    [Simple P] [Simple S] (p : P ⟶ W) [Mono p] (t : S ⟶ W) [Mono t] (q : W ⟶ Q)
+    (hpq : p ≫ q = 0) (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
     Nonempty (S ≅ P) ∨ Mono (t ≫ q) := by
   by_cases hz : t ≫ q = 0
   · obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift'
@@ -185,15 +184,13 @@ theorem finite_simple_labels :
   have hL (i : Fin (rank C)) := Classical.choose_spec (finite_simple_subobject_labels C
     ((induction C).obj (simples C i)))
   let labels := (Finset.univ.biUnion (fun i => (L i).toFinset)).filter Simple
-  refine ⟨labels, ?_, ?_⟩
-  · intro T hT
-    exact (Finset.mem_filter.mp hT).2
-  · intro X hX
-    let : Simple X := hX
-    obtain ⟨i, t, ht⟩ := simple_mono_induced_simple C X
-    obtain ⟨T, hT, ⟨e⟩⟩ := hL i X hX ⟨t, ht⟩
-    refine ⟨T, Finset.mem_filter.mpr ⟨?_, Simple.of_iso e.symm⟩, ⟨e⟩⟩
-    exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, List.mem_toFinset.mpr hT⟩
+  refine ⟨labels, fun _ hT => (Finset.mem_filter.mp hT).2, ?_⟩
+  intro X hX
+  let : Simple X := hX
+  obtain ⟨i, t, ht⟩ := simple_mono_induced_simple C X
+  obtain ⟨T, hT, ⟨e⟩⟩ := hL i X hX ⟨t, ht⟩
+  refine ⟨T, Finset.mem_filter.mpr ⟨?_, Simple.of_iso e.symm⟩, ⟨e⟩⟩
+  exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, List.mem_toFinset.mpr hT⟩
 
 
 end PropertyF.Ground.CentreInduction

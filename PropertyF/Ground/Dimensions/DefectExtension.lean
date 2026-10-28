@@ -54,8 +54,7 @@ theorem rootTensorDefect_coevaluation
   have ht : η_ X (Xᘁ) ≫ t.hom =
       e • ((doubleDualUnitIso (C := C.Obj)).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ)) := by
     change η_ X (Xᘁ) ≫ ((a.hom ⊗ₘ b.hom) ≫ (doubleDualTensorIso X (Xᘁ)).hom) = _
-    rw [← Category.assoc, hc]
-    simp only [Linear.smul_comp]
+    rw [← Category.assoc, hc, Linear.smul_comp]
     congr 1
     apply (cancel_mono (doubleDualTensorIso X (Xᘁ)).inv).1
     simpa only [Category.assoc, Iso.hom_inv_id, Category.comp_id] using hdual.symm

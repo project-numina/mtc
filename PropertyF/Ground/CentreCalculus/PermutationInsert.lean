@@ -32,11 +32,6 @@ def tensorPermAction (X : C)
   | 1 => 1
   | n + 2 => Aut.toEnd.comp (permAction X hX n)
 
-/-- Every adjacent transposition acts by the actual categorical crossing. -/
-theorem tensorPermAction_swap {X : C} (hX : SelfTransparent X) {n : ℕ} (i : Fin (n + 1)) :
-    tensorPermAction X hX (n + 2) (adjacentSwap i) = Aut.toEnd (braidGenerator X n i) :=
-  congrArg Aut.toEnd (permAction_swap hX i)
-
 end PropertyF.Ground.CentreCalculus
 
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -106,12 +101,18 @@ theorem signedTraceSum_falling
 end
 
 universe v u
-/-- Scalar pivotal trace of a permutation action on a tensor power. -/
+/-- Evaluate the pivotal trace of a permutation action in any codomain. -/
+abbrev scalarPermTrace {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    {R : Type*} (p : PivotalStructure (C := D)) (scalar : End (𝟙_ D) → R) {X : D}
+    (ρ : ∀ n : ℕ, Perm (Fin n) →* End (tensorPower X n))
+    (n : ℕ) (σ : Perm (Fin n)) : R :=
+  scalar (p.rightTrace ((ρ n) σ).asHom)
+
+/-- The scalar pivotal trace of a permutation action in a fusion category. -/
 abbrev permScalarTrace (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) {X : C.Obj}
-    (ρ : ∀ n : ℕ, Perm (Fin n) →* End (tensorPower X n))
-    (n : ℕ) (σ : Perm (Fin n)) : ℂ :=
-  unitScalar C (p.rightTrace ((ρ n) σ).asHom)
+    (ρ : ∀ n : ℕ, Perm (Fin n) →* End (tensorPower X n)) :=
+  scalarPermTrace p (unitScalar C) ρ
 
 local notation "tr" => permScalarTrace
 
@@ -168,12 +169,17 @@ theorem fixHead_swap {n : ℕ} (i : Fin n) :
   split_ifs <;> rfl
 
 section
-variable {X : C} (hX : SelfTransparent X)
+variable {X : C} (hX : SelfTransparent X) {n : ℕ}
+
+/-- Every adjacent transposition acts by the actual categorical crossing. -/
+theorem tensorPermAction_swap (i : Fin (n + 1)) :
+    tensorPermAction X hX (n + 2) (adjacentSwap i) = Aut.toEnd (braidGenerator X n i) :=
+  congrArg Aut.toEnd (permAction_swap hX i)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Inserting a fixed first strand acts by tensoring the old automorphism
 on the left with the identity of the new strand. -/
-theorem permAction_fixHead {n : ℕ}
+theorem permAction_fixHead
     (σ : Perm (Fin (n + 2))) :
     permAction X hX (n + 1) (fixHead (n + 2) σ) =
       (tensorLeft X).mapAut (tensorPower X (n + 2)) (permAction X hX n σ) := by
@@ -208,13 +214,12 @@ theorem tensorPermAction_fixHead :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- An adjacent moved strand acts by the first crossing followed by fixed-head insertion. -/
-theorem tensorPermAction_adjacent {n : ℕ} (σ : Perm (Fin (n + 1))) :
+theorem tensorPermAction_adjacent (σ : Perm (Fin (n + 1))) :
     tensorPermAction X hX (n + 2) (decomposeFin.symm (1, σ)) =
       (Aut.toEnd (braidGenerator X n 0) : End (X ⊗ tensorPower X (n + 1))) *
         End.of (X ◁ ((tensorPermAction X hX (n + 1)) σ).asHom) := by
   rw [decomposeFin_eq_swap_fixHead, map_mul]
-  change tensorPermAction X hX (n + 2)
-    (adjacentSwap (0 : Fin (n + 1))) * _ = _
+  change tensorPermAction X hX (n + 2) (adjacentSwap (0 : Fin (n + 1))) * _ = _
   rw [tensorPermAction_swap, tensorPermAction_fixHead]
   rfl
 
@@ -227,7 +232,7 @@ theorem tensorPermTrace_fixHead {D : BraidedFusionCategory} {p : PivotalStructur
     (hdim : HasFPSimpleDimensions D p) {X : D.Obj} (hX : SelfTransparent X)
     {n : ℕ} (σ : Perm (Fin n)) : tr D p (tensorPermAction X hX) (n + 1) (fixHead n σ) =
       (fpDimension D X : ℂ) * tr D p (tensorPermAction X hX) n σ := by
-  simp only [permScalarTrace]
+  simp only [permScalarTrace, scalarPermTrace]
   rw [tensorPermAction_fixHead]
   change unitScalar D (p.rightTrace (X ◁ ((tensorPermAction X hX n) σ).asHom)) = _
   simpa only [id_tensorHom, ← unitScalar_eq_equiv,

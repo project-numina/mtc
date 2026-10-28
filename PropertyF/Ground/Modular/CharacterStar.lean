@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Modular.Verlinde
-public import Mathlib.Analysis.Complex.Norm
+public import PropertyF.Ground.Integrate.CharacterReality
 
 /-!
 # Duality and complex conjugation of fusion characters
@@ -38,22 +38,6 @@ theorem fusion_inner_balance {K : Type*} [CommSemiring K] (φ : K →+* K)
     _ = _ := by
       simp only [map_mul, Finset.mul_sum, mul_left_comm, mul_assoc]
 
-omit [DecidableEq ι] in
-include hdual in
-/-- Fusion duality makes every normalized character compatible with conjugation. -/
-theorem character_dual_conj (χ : Character N) (i : ι) :
-    χ.value (dual i) = starRingEnd ℂ (χ.value i) :=
-  let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * χ.value j
-  have hw : w ≠ 0 := by
-    classical
-    rw [show w = ((∑ j, Complex.normSq (χ.value j) : ℝ) : ℂ) by
-      simp only [w, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]]
-    exact_mod_cast ne_of_gt (Finset.sum_pos' (fun j _ ↦ Complex.normSq_nonneg _)
-      ⟨N.unit, Finset.mem_univ _, by simp [χ.unit_eq]⟩)
-  (starRingEnd ℂ).injective (by
-    simpa using (mul_right_cancel₀ hw (by
-      simpa [w] using fusion_inner_balance N dual hdual (starRingEnd ℂ) χ.value χ.value χ.mul_eq χ.mul_eq i)).symm)
-
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
@@ -80,8 +64,10 @@ categorical S entry. No categorical dual-trace identity is needed. -/
 theorem categoricalS_dual_conj (i j : Fin (rank C)) :
     Sₚ (Ground.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) :=
   (div_left_inj' (simpleDimension_ne_zero C p j)).mp (by
-    simpa only [categoricalSCharacter, normalizedSColumn, map_div₀, hreal j] using
-      character_dual_conj _ _ (fun i j k ↦ Ground.fusionCoeff_dual_symmetry C i k j) (categoricalSCharacter C p j) i)
+    simpa only [categoricalSCharacter, normalizedSColumn, ← starRingEnd_apply, map_div₀, hreal j] using
+      Ground.fusion_character_dual_eq_conj (i₀ := unitIndex C)
+        (fun a b c ↦ (Ground.fusionCoeff_dual_symmetry C a b c).symm)
+        (by simp [(categoricalSCharacter C p j).unit_eq]) (categoricalSCharacter C p j).mul_eq i)
 
 include hreal in
 /-- Real pivotal simple dimensions are invariant under dual labels. -/

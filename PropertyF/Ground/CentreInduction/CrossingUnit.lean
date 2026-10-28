@@ -114,8 +114,7 @@ theorem crossingBlock_of_simple_split (X : D) {T R S : D} [Simple R]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- For a simple object, any splitting gives the same unit crossing block. -/
-theorem crossingBlock_unit_of_split (X : D) {S : D} [Simple S]
-    [FiniteDimensional ℂ (S ⟶ S)]
+theorem crossingBlock_unit_of_split (X : D) {S : D} [Simple S] [FiniteDimensional ℂ (S ⟶ S)]
     (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock X (𝟙_ D) S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv :=
@@ -143,18 +142,15 @@ theorem crossingCandidate_unit (X : C.Obj) :
   rw [crossingCandidate_on_summand]
   dsimp only [crossingSummand]
   rw [Finset.sum_eq_single i]
-  · let a : crossingIndex C (𝟙_ C.Obj) i i := ⟨0, by simp [unit_crossing_finrank]⟩
-    let : Subsingleton (crossingIndex C (𝟙_ C.Obj) i i) := by
+  · let : Unique (crossingIndex C (𝟙_ C.Obj) i i) := by
       simp only [crossingIndex, unit_crossing_finrank, ↓reduceIte]
       infer_instance
-    let : Unique (crossingIndex C (𝟙_ C.Obj) i i) :=
-      ⟨⟨a⟩, fun b => Subsingleton.elim b a⟩
-    rw [Fintype.sum_unique, show (default : crossingIndex C (𝟙_ C.Obj) i i) = a from Subsingleton.elim _ _]
+    rw [Fintype.sum_unique]
     let : Simple (simples C i) := simples_simple C i
     let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
     rw [crossingBlock_unit_of_split X
-      (crossingInclusion C (𝟙_ C.Obj) i i a) (crossingProjection C (𝟙_ C.Obj) i i a)
-      (crossingInclusion_projection a)]
+      (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
+      (crossingInclusion_projection default)]
     change ((ρ_ (V i)).hom ≫ (λ_ (V i)).inv) ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) =
       (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ (ρ_ (⨁ V)).hom ≫ (λ_ (⨁ V)).inv
     simp only [Category.assoc, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]

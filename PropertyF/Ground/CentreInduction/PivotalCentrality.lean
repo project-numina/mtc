@@ -20,13 +20,11 @@ local notation "𝒵" => Center D
 
 /-- Transported pivotal components respect the braiding between centre objects. -/
 private theorem transported_pivotal_braiding (p : PivotalStructure (C := D)) (Z B : 𝒵) :
-    let u (W : 𝒵) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
-      (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
+    let u := transportedPivotalHom p
     (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
       (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f := by
   dsimp only
-  let u (W : 𝒵) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
-    (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
+  let u := transportedPivotalHom p
   have hu (X Y : 𝒵) :
       u (X ⊗ Y) = (u X ⊗ₘ u Y) ≫ (doubleDualTensorIso X Y).hom.f :=
     (transported_pivotal_tensor p X Y).symm
@@ -52,15 +50,12 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : PivotalStructur
   intro Z T
   let F := Center.ofBraided D
   let B := F.obj T
-  let u (W : 𝒵) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
-    (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
+  let u := transportedPivotalHom p
   have hc := transported_pivotal_braiding p Z B
   change (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
     (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f at hc
   let j := (positivePivotalComponent p T).hom
-  have hj : j.f = u B := by
-    change _ = (p.iso T).hom ≫ (forgetDoubleDualIso B).inv
-    exact positivePivotalComponent_forget p T
+  have hj : j.f = u B := positivePivotalComponent_forget p T
   let : IsIso (u B) := by
     rw [← hj]
     change IsIso ((Center.forget D).map j)
@@ -118,12 +113,8 @@ theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
     Nonempty (Z ≅ 𝟙_ (𝒵)) := by
   let F := Center.ofBraided C.Obj
   let e := Centre.positiveIsoOfCentralizesNegative Z (fun X => hcentral ((Centre.negative C.Obj).obj X))
-  let : F.PreservesMonomorphisms := {
-    preserves := fun f => by
-      intro _
-      apply (Center.forget C.Obj).mono_of_mono_map
-      change Mono f
-      infer_instance }
+  let : F.PreservesMonomorphisms := ⟨fun f _ =>
+    (Center.forget C.Obj).mono_of_mono_map (show Mono f from inferInstance)⟩
   let : Simple (F.obj Z.1) := Simple.of_iso e.symm
   let : Simple Z.1 := Functor.simple_of_simple_obj F Z.1
   obtain ⟨i, ⟨s⟩⟩ := exists_simple_iso C Z.1

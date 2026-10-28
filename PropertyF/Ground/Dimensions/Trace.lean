@@ -25,16 +25,11 @@ theorem rightTraceWith_cyclic {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)�
   apply End.homEquiv.injective
   change η_ X (Xᘁ) ≫ (((f ≫ g) ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
     η_ Y (Yᘁ) ≫ (((g ≫ f) ≫ k.hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ)
-  simp only [Category.assoc]
-  calc
-    _ = η_ X (Xᘁ) ≫ f ▷ (Xᘁ) ≫ g ▷ (Xᘁ) ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by simp [tensorHom_def, comp_whiskerRight]
-    _ = η_ Y (Yᘁ) ≫ Y ◁ fᘁ ≫ g ▷ (Xᘁ) ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [coevaluation_comp_rightAdjointMate_assoc]
-    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ X ◁ fᘁ ≫ j.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc g (fᘁ)]
-    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ j.hom ▷ (Yᘁ) ≫ ((Xᘁ)ᘁ) ◁ fᘁ ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by rw [whisker_exchange_assoc j.hom (fᘁ)]
-    _ = η_ Y (Yᘁ) ≫ g ▷ (Yᘁ) ≫ j.hom ▷ (Yᘁ) ≫ (fᘁ)ᘁ ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by rw [← rightAdjointMate_comp_evaluation]
-    _ = η_ Y (Yᘁ) ≫ ((g ≫ f ≫ k.hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
-      simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, hnat,
-        comp_whiskerRight, Category.assoc]
+  simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight,
+    Category.assoc]
+  rw [← coevaluation_comp_rightAdjointMate_assoc, whisker_exchange_assoc g (fᘁ),
+    whisker_exchange_assoc j.hom (fᘁ), ← rightAdjointMate_comp_evaluation,
+    ← comp_whiskerRight_assoc j.hom (fᘁᘁ), ← hnat, comp_whiskerRight_assoc]
 
 end PropertyF.Ground.Dimensions
 

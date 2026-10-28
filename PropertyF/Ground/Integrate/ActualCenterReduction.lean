@@ -67,8 +67,12 @@ theorem center_witness_of_categorical_modular_data (hfp : IsFPSpherical Z p)
   let d := (σ (𝒇 y : ℂ)).re
   let hσf : σ (𝒇 y : ℂ) = (d : ℂ) := (fp_simple_galois_real Z σ y).symm
   ⟨𝒇 y, d, hσf,
-    positive_ratio_of_galois_square (j := algebraMap ℝ ℂ) hδ hb
-      (lt_of_lt_of_le zero_lt_one hf) hτ hG, hf,
+    (by
+      refine (sq_eq_sq₀ (mul_pos (lt_of_lt_of_le zero_lt_one hf) hb).le hδ.le).mp ?_
+      apply Complex.ofReal_injective
+      simpa only [Complex.ofReal_mul, Complex.ofReal_pow, mul_pow, mul_comm] using
+        (eq_div_iff (pow_ne_zero 2 (by exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one hf))))).mp
+          (by simpa only [map_pow, hτ] using hG)), hf,
     galois_rigidity_of_propertyF Z p hfp.2 (hF y hcolumn) hσf (by
       rw [hcolumn y, hfp.2 y, map_mul, hσf, σ.apply_symm_apply])⟩
 
@@ -96,19 +100,14 @@ theorem globalFPDimension_galois_sum_squares : σ (globalFPDimension C : ℂ) =
   simp only [globalFPDimension, Complex.ofReal_sum, Complex.ofReal_pow, map_sum, map_pow,
     fp_simple_galois_real]
 
-/-- A Galois conjugate of a simple FP dimension is bounded by that dimension. -/
-theorem fp_simple_galois_norm_le (i : Fin (rank C)) :
-    ‖σ (fpSimple C i : ℂ)‖ ≤ fpSimple C i :=
-  Dimensions.galois_character_norm_le_fpSimple C (χ := fun i ↦ (fpSimple C i : ℂ))
-    (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i
-
 /-- Global FP dimension has positive, FP-bounded real conjugates. -/
 theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalFPDimension C ∧
       σ (globalFPDimension C : ℂ) = (a : ℂ) :=
   let d : Fin (rank C) → ℝ := fun i ↦ (σ (fpSimple C i : ℂ)).re
   have hbound (i : Fin (rank C)) : |d i| ≤ fpSimple C i := by
     simp only [d, ← Real.norm_eq_abs, ← Complex.norm_real, fp_simple_galois_real]
-    exact fp_simple_galois_norm_le C σ i
+    exact Dimensions.galois_character_norm_le_fpSimple C (χ := fun i ↦ (fpSimple C i : ℂ))
+      (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i
   ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
       (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, by simp [d, fpSimple_unit]⟩),
     Dimensions.target_globalDimension_le_of_simple_bounds C hbound,
@@ -179,7 +178,7 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
     (hDouble : Modular.sCentralizer 𝒵ᶠ p core ⊆ generated)
     (hProduct : ∀ y ∈ generated, Centre.ProductRetract (simples 𝒵ᶠ y)) :
     WeaklyIntegral (globalFPDimension C) := by
-  apply weaklyIntegral_of_galois_fixed (globalFPDimension_isIntegral C)
+  apply integral_eq_int_of_complex_galois_fixed (globalFPDimension_isIntegral C)
   apply galois_fixed_of_smaller_conjugate_witness (j := algebraMap ℝ ℂ) (globalFPDimension C)
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
     (positive_bounded_conjugates_of_fp C)

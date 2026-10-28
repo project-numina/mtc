@@ -153,15 +153,9 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
   change sy ≫ (a.app Y).hom = (a.app (simples C j)).hom ≫ ((syᘁ)ᘁ) at hy
   change (sx ⊗ₘ sy) ≫ (a.app (X ⊗ Y)).hom =
     (a.app (simples C i ⊗ simples C j)).hom ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) at hz
-  calc
-    _ = (a.app (simples C i ⊗ simples C j)).hom ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) := hz
-    _ = (((a.app (simples C i)).hom ⊗ₘ (a.app (simples C j)).hom) ≫
-      (doubleDualTensorIso _ _).hom) ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) := by rw [hpair]
-    _ = ((a.app (simples C i)).hom ⊗ₘ (a.app (simples C j)).hom) ≫
-      ((((sxᘁ)ᘁ) ⊗ₘ ((syᘁ)ᘁ)) ≫ (doubleDualTensorIso X Y).hom) := by rw [Category.assoc, ← doubleDualTensorIso_natural]
-    _ = ((sx ≫ (a.app X).hom) ⊗ₘ (sy ≫ (a.app Y).hom)) ≫ (doubleDualTensorIso X Y).hom := by
-      rw [tensorHom_comp_tensorHom_assoc, ← hx, ← hy]
-    _ = _ := by rw [← tensorHom_comp_tensorHom, Category.assoc]
+  rw [hz, hpair, Category.assoc, ← doubleDualTensorIso_natural,
+    tensorHom_comp_tensorHom_assoc, ← hx, ← hy,
+    ← tensorHom_comp_tensorHom, Category.assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignQuantumTrace_simple

@@ -63,24 +63,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rightDualTensorIso_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y') :
     ((f ⊗ₘ g)ᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ) := by
-  have h : (((f ⊗ₘ g)ᘁ) ≫ (rightDualTensorIso X Y).hom) ▷ (X ⊗ Y) ≫
-        ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
-      ((rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ)) ▷ (X ⊗ Y) ≫
-        ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := by
-    have he := rightDualTensorIso_evaluation X Y
-    simp only [comp_whiskerRight_assoc] at *
-    simp only [← Category.assoc, he]
-    simp only [Category.assoc, rightAdjointMate_comp_evaluation]
-    have aux := tensorPairing_evaluation_natural f g
-    have he' := rightDualTensorIso_evaluation X' Y'
-    calc
-      _ = (X' ⊗ Y')ᘁ ◁ (f ⊗ₘ g) ≫ (rightDualTensorIso X' Y').hom ▷ (X' ⊗ Y') ≫
-          ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) := by rw [he']
-      _ = (rightDualTensorIso X' Y').hom ▷ (X ⊗ Y) ≫
-          ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g) ≫ ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) := by
-            rw [whisker_exchange_assoc]
-      _ = _ := by rw [aux]
-  exact evaluation_ext h
+  apply evaluation_ext (X := X ⊗ Y)
+  simp only [comp_whiskerRight_assoc]
+  rw [rightDualTensorIso_evaluation, rightAdjointMate_comp_evaluation,
+    ← rightDualTensorIso_evaluation X' Y', whisker_exchange_assoc,
+    tensorPairing_evaluation_natural]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse right-dual tensor comparison is natural. -/
@@ -98,7 +85,7 @@ theorem doubleDualTensorIso_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y'
       (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) := by
   have h1' := rightDualTensorIso_inv_natural (gᘁ) (fᘁ)
   have h2 := congrArg (fun m => rightAdjointMate m) (rightDualTensorIso_natural f g)
-  simp only [comp_rightAdjointMate] at h2
+  rw [comp_rightAdjointMate, comp_rightAdjointMate] at h2
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
   rw [← Category.assoc, h1', Category.assoc, ← h2]
 end PropertyF.Ground.Dimensions
@@ -149,7 +136,7 @@ theorem fourthDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f
     f ≫ (fourthDualIso C Y).hom = (fourthDualIso C X).hom ≫ ((((fᘁ)ᘁ)ᘁ)ᘁ) := by
   have hd := congrArg (fun (a : (((Yᘁ)ᘁ)ᘁ) ⟶ (Xᘁ)) => rightAdjointMate a)
     (iso_inv_naturality_of_hom (doubleDualIso_natural C (fᘁ))).symm
-  simp only [comp_rightAdjointMate] at hd
+  rw [comp_rightAdjointMate, comp_rightAdjointMate] at hd
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
   rw [doubleDualIso_natural_assoc, hd]
 

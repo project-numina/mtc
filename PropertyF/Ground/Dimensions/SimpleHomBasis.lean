@@ -50,8 +50,7 @@ theorem rightQuantumTrace_tensor_scalar
       scalar (rightQuantumTrace k) • rightQuantumTrace j := by
     apply End.homEquiv.injective
     simpa [rightTraceWith, rightQuantumTrace, tensorHom_def] using (congrArg End.asHom h.symm)
-  rw [ht, map_smul]
-  simp [mul_comm]
+  rw [ht, map_smul, smul_eq_mul, mul_comm]
 
 end PropertyF.Ground.Dimensions
 
@@ -70,27 +69,13 @@ theorem rootTrace_inverseDefect
     (i j : Fin (rank C)) :
     unitScalar C (rootTrace C (rootTensorDefect C (simples C i) (simples C j)).inv) =
       rootDimension C i * rootDimension C j := by
-  let X := simples C i
-  let Y := simples C j
-  let a := fourthDualRootNaturalIso C
-  let b := rootTensorIso C X Y
-  let d := rootTensorDefect C X Y
-  have hd : d.inv ≫ (a.app (X ⊗ Y)).hom = b.hom := by
-    simp [d, rootTensorDefect, b, a, Category.assoc]
-  have ht : rootTrace C d.inv = rightQuantumTrace b := by
-    apply End.homEquiv.injective
-    change η_ (X ⊗ Y) ((X ⊗ Y)ᘁ) ≫
-      ((d.inv ≫ (a.app (X ⊗ Y)).hom) ⊗ₘ 𝟙 ((X ⊗ Y)ᘁ)) ≫
-        ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
-      η_ (X ⊗ Y) ((X ⊗ Y)ᘁ) ≫ (b.hom ⊗ₘ 𝟙 ((X ⊗ Y)ᘁ)) ≫
-        ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ)
-    rw [hd]
-  rw [ht]
-  change unitScalar C (rightQuantumTrace
-    (((a.app X) ⊗ᵢ (a.app Y)) ≪≫ doubleDualTensorIso X Y)) = _
-  rw [Ground.unitScalar_eq_equiv]
-  simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, Functor.id_obj, X, Y, a] using
-    rightQuantumTrace_tensor_scalar (Ground.unitScalarEquiv C) (a.app X) (a.app Y)
+  simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, rootTrace,
+    rightTraceWith, rightQuantumTrace, rootTensorDefect, rootTensorIso,
+    Iso.trans_inv, Iso.symm_inv, Functor.id_obj, Category.assoc, Iso.inv_hom_id_assoc,
+    Iso.inv_hom_id, Category.id_comp, Category.comp_id] using
+      rightQuantumTrace_tensor_scalar (Ground.unitScalarEquiv C)
+        ((fourthDualRootNaturalIso C).app (simples C i))
+        ((fourthDualRootNaturalIso C).app (simples C j))
 
 end PropertyF.Ground.Dimensions
 
