@@ -74,14 +74,8 @@ theorem exists_unitarizing_basis (ρ : G →* (Matrix ι ι ℂ)ˣ) :
     apply Units.ext
     simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Units.coe_star,
       pow_two, hsquare, ← Matrix.star_eq_conjTranspose] using averagedGram_invariant ρ g
-  have hunit : star (P * ρ g * P⁻¹) * (P * ρ g * P⁻¹) = 1 := by
-    simp only [star_mul, star_inv, hselfu]
-    calc
-      _ = P⁻¹ * (star (ρ g) * P ^ 2 * ρ g) * P⁻¹ := by simp only [pow_two]; group
-      _ = P⁻¹ * P ^ 2 * P⁻¹ := by rw [hinv]
-      _ = 1 := by group
-  exact Matrix.mem_unitaryGroup_iff'.2
-    (congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ)) hunit)
+  apply (Units.mul_inv_mem_unitary (P * ρ g) P).2
+  simpa only [star_mul, hselfu, pow_two, mul_assoc] using hinv
 
 end PropertyF.Ground.Calculus
 

@@ -57,20 +57,18 @@ actual categorical S matrix. -/
 theorem categoricalS_det_ne_zero_of_kirby
     (D : ℂ) (hD : D ≠ 0)
     (hkirby : HasKirbyIdentity C p D) :
-    (Sₚ).det ≠ 0 := by
-  classical
+    (Sₚ).det ≠ 0 :=
   let S := Sₚ
-  let B : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
-    fun x y => S x (dualIndex C y) / D
-  have hSB : S * B = 1 := by
+  let B : Matrix (Fin (rank C)) (Fin (rank C)) ℂ := fun x y ↦ S x (dualIndex C y) / D
+  Matrix.det_ne_zero_of_right_inverse (by
+    classical
     ext x y
     rw [Matrix.mul_apply, Matrix.one_apply]
     change (∑ z, S x z * (S z (dualIndex C y) / D)) = _
     simp_rw [← mul_div_assoc]
     rw [← Finset.sum_div, categoricalS_square_of_kirby C p D hkirby,
       dualIndex_involutive C]
-    split_ifs <;> simp [*]
-  exact Matrix.det_ne_zero_of_right_inverse hSB
+    split_ifs <;> simp [*])
 
 variable (hdim : HasFPSimpleDimensions C p)
 
@@ -98,9 +96,7 @@ include hdim in
 normalized S character to be different from that of every other simple. -/
 theorem categoricalS_det_ne_zero_of_unit_character_unique
     (hunique : ∀ k, k ≠ unitIndex C →
-      (fun i => Sₚ i k / dₚ k) ≠
-        (fun i => Sₚ i (unitIndex C) /
-          dₚ (unitIndex C))) :
+      normalizedSColumn C p k ≠ normalizedSColumn C p (unitIndex C)) :
     (Sₚ).det ≠ 0 := by
   classical
   apply categoricalS_det_ne_zero_of_kirby_vanishes_off_unit C p hdim
@@ -109,7 +105,8 @@ theorem categoricalS_det_ne_zero_of_unit_character_unique
   let cols (j : Fin (rank C)) : Character rules := categoricalSCharacter C p j
   have hzero : (∑ z, dₚ z *
       (Sₚ z k / dₚ k)) = 0 := by
-    simpa [cols, categoricalSCharacter, categoricalS_unit, simpleDimension_unit, hdim, fpSimple_unit] using
+    simpa [cols, categoricalSCharacter, normalizedSColumn, categoricalS_unit, simpleDimension_unit, hdim,
+      fpSimple_unit] using
       character_orthogonal rules (dualIndex C) (fusionCoeff_dual_adjoint C)
         (cols (unitIndex C)) (cols k) (fun he ↦ hunique k hk (congrArg Character.value he).symm)
   simp_rw [← mul_div_assoc, ← Finset.sum_div] at hzero
@@ -125,7 +122,7 @@ theorem categoricalS_det_ne_zero_of_trivial_S_centralizer
     (Sₚ).det ≠ 0 :=
   categoricalS_det_ne_zero_of_unit_character_unique C p hdim fun k hk heq ↦
     hk (htrivial k fun i ↦ (div_eq_iff (simpleDimension_ne_zero C p k)).mp (by
-      simpa only [categoricalS_unit, simpleDimension_unit, div_one] using congrFun heq i))
+      simpa only [normalizedSColumn, categoricalS_unit, simpleDimension_unit, div_one] using congrFun heq i))
 
 end PropertyF.Ground.CentreModular
 end

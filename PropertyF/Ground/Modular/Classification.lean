@@ -185,18 +185,18 @@ theorem normalized_columns_linearIndependent {K : Type*} [Field K] {S : Matrix �
     (hd : ∀ y, dimension y ≠ 0) (hD : D ≠ 0)
     (hsym : ∀ x y, S x y = S y x)
     (hsq : HasSSquare S dual D) :
-    LinearIndependent K (fun y x => S x y / dimension y) := by
-  classical
+    LinearIndependent K (fun y x => S x y / dimension y) :=
   let A : Matrix ι ι K := fun x y => S x y / dimension y
   let B : Matrix ι ι K := fun x y => dimension x * S x (dual y) / D
-  have hab : A * B = 1 := by
+  Matrix.linearIndependent_cols_of_det_ne_zero (Matrix.det_ne_zero_of_right_inverse (by
+    classical
+    change A * B = 1
     ext x y
     rw [Matrix.mul_apply, Matrix.one_apply]
     change (∑ z, (S x z / dimension z) * (dimension z * S z (dual y) / D)) = _
     simp_rw [← mul_div_assoc, ← mul_assoc, div_mul_cancel₀ _ (hd _)]
     rw [← Finset.sum_div, hsq, dual_involutive hD hsym hsq]
-    split_ifs <;> simp [hD]
-  exact Matrix.linearIndependent_cols_of_det_ne_zero (Matrix.det_ne_zero_of_right_inverse hab)
+    split_ifs <;> simp [hD]))
 
 
 end PropertyF.Ground.Modular

@@ -87,6 +87,10 @@ abbrev HasFPSimpleDimensions : Prop :=
 def categoricalS : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
   fun i j => Ground.unitScalarEquiv C (SEntry p (simples C i) (simples C j))
 
+/-- A normalized column of the categorical S-matrix. -/
+def normalizedSColumn (j : Fin (rank C)) : Fin (rank C) → ℂ :=
+  fun i ↦ categoricalS C p i j / simpleDimension C p j
+
 /-- The categorical S-matrix is symmetric. -/
 theorem categoricalS_symmetric (i j : Fin (rank C)) :
     categoricalS C p i j = categoricalS C p j i :=

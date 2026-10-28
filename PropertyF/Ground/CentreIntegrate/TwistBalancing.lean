@@ -46,18 +46,32 @@ abbrev HasDrinfeldTensorEquation (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ) (X Y : D) : Pr
   Modular.doubleBraiding X Y ≫ (d (X ⊗ Y)).hom =
     ((d X).hom ⊗ₘ (d Y).hom) ≫ (doubleDualTensorIso X Y).hom
 
+/-- The automorphism obtained by comparing a pivotal map with a double-dual map. -/
+abbrev relativeTwist (p : PivotalStructure (C := D))
+    (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ) (X : D) : X ≅ X := p.iso X ≪≫ (d X).symm
+
+section Twist
+variable (p : PivotalStructure (C := D)) (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
+
 /-- A compatible double-dual tensor equation implies pivotal twist balancing. -/
-theorem balance_of_drinfeld_tensor (p : PivotalStructure (C := D)) {X Y : D}
-    (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
-    (h : HasDrinfeldTensorEquation d X Y) :
-    (p.iso (X ⊗ Y)).hom ≫ (d (X ⊗ Y)).inv =
-      (((p.iso X).hom ≫ (d X).inv) ⊗ₘ ((p.iso Y).hom ≫ (d Y).inv)) ≫
-        Modular.doubleBraiding X Y := by
+theorem balance_of_drinfeld_tensor {X Y : D} (h : HasDrinfeldTensorEquation d X Y) :
+    (relativeTwist p d (X ⊗ Y)).hom =
+      (relativeTwist p d X ⊗ᵢ relativeTwist p d Y).hom ≫ Modular.doubleBraiding X Y := by
   dsimp only [HasDrinfeldTensorEquation] at h
+  simp only [relativeTwist, Iso.trans_hom, Iso.symm_hom, tensorIso_hom]
   apply (cancel_mono (d (X ⊗ Y)).hom).1
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
   rw [h, p.tensor, ← Category.assoc, tensorHom_comp_tensorHom]
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+
+/-- In the usual convention, twist balancing has monodromy first. -/
+theorem pivotal_balance_of_drinfeld_tensor {X Y : D} (h : HasDrinfeldTensorEquation d X Y) :
+    Modular.doubleBraiding X Y ≫ (relativeTwist p d X ⊗ᵢ relativeTwist p d Y).hom =
+      (relativeTwist p d (X ⊗ Y)).hom :=
+  (CentreCabling.doubleBraiding_natural _ _).trans (balance_of_drinfeld_tensor p d h).symm
+
+
+end Twist
 
 /-- The tensor-pairing cap identity for a double-dual comparison. -/
 abbrev HasDrinfeldTensorCap (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ) (X Y : D) : Prop :=
@@ -71,9 +85,7 @@ abbrev HasDrinfeldTensorCap (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ) (X Y : D) : Prop :=
 
 /-- The tensor-pairing cap identity implies the Drinfeld tensor equation. -/
 theorem drinfeld_tensor_of_pairing_cap {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
-    (hd : (d (X ⊗ Y)).hom ▷ ((X ⊗ Y)ᘁ) ≫
-        ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
-      (β_ (X ⊗ Y) ((X ⊗ Y)ᘁ)).hom ≫ ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ))
+    (hd : HasDrinfeldEvaluation (d (X ⊗ Y)))
     (hcap : HasDrinfeldTensorCap d X Y) :
     HasDrinfeldTensorEquation d X Y := by
   let W := X ⊗ Y
@@ -90,19 +102,12 @@ theorem drinfeld_tensor_of_pairing_cap {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ
     ((d X).hom ⊗ₘ (d Y).hom) ▷ Wᘁ ≫
       (((Xᘁ)ᘁ ⊗ (Yᘁ)ᘁ) ◁ t.hom) ≫ @ExactPairing.evaluation D _ _ V _ q at hs
   apply evaluation_ext (X := Wᘁ)
+  dsimp only [HasDrinfeldEvaluation] at hd
   rw [comp_whiskerRight_assoc, hd, ← he, hs]
   rw [← braiding_naturality_right_assoc]
   rw [← whisker_exchange_assoc, ← whisker_exchange_assoc]
   dsimp only [HasDrinfeldTensorCap] at hcap
   rw [hcap]
 
-/-- In the usual convention, twist balancing has monodromy first. -/
-theorem pivotal_balance_of_drinfeld_tensor (p : PivotalStructure (C := D)) {X Y : D}
-    (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
-    (h : HasDrinfeldTensorEquation d X Y) :
-    Modular.doubleBraiding X Y ≫
-      (((p.iso X).hom ≫ (d X).inv) ⊗ₘ ((p.iso Y).hom ≫ (d Y).inv)) =
-        (p.iso (X ⊗ Y)).hom ≫ (d (X ⊗ Y)).inv :=
-  (CentreCabling.doubleBraiding_natural _ _).trans (balance_of_drinfeld_tensor p d h).symm
 
 end PropertyF.Ground.CentreIntegrate

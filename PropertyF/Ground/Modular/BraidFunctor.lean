@@ -41,12 +41,10 @@ lemma braid_first_functor (X A : C) :
 
 /-- The first adjacent braid remains natural after comparing the remaining tensor factors. -/
 lemma braid_first_with_comparison (X A : C) {B : D} (g : B ≅ F.obj A) :
-    (firstBraiding (F.obj X) B).hom ≫
-      (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ (F.obj X ◁ (μIso F X A).hom) ≫
-        (μIso F X (X ⊗ A)).hom =
-      (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ (F.obj X ◁ (μIso F X A).hom) ≫
-        (μIso F X (X ⊗ A)).hom ≫
-        F.map (firstBraiding X A).hom := by
+    let h := (F.obj X ◁ (F.obj X ◁ g.hom)) ≫
+      (F.obj X ◁ (μIso F X A).hom) ≫ (μIso F X (X ⊗ A)).hom
+    (firstBraiding (F.obj X) B).hom ≫ h = h ≫ F.map (firstBraiding X A).hom := by
+  dsimp only
   have hn := braid_first (Iso.refl (F.obj X)) g
   simp only [tensorIso_hom, Iso.refl_hom, id_tensorHom] at hn
   rw [← Category.assoc, hn]
@@ -96,15 +94,14 @@ def braidAutMap (X : C) (n : ℕ) : Aut (tensorPower X (n+2)) →*
 
 /-- The induced map on automorphisms carries each braid generator to its namesake. -/
 lemma braidAutMap_generator (X : C) (n : ℕ) (i : Fin (n+1)) :
-    braidAutMap F X n (braidGenerator X n i) = braidGenerator (F.obj X) n i := by
-  apply Aut.ext
-  apply Iso.ext
-  simp only [braidAutMap, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom,
-    Iso.conjAut_apply, Iso.trans_hom, Iso.symm_hom, Functor.mapAut]
-  change (tensorPowerComparison F X (n+2)).hom ≫ F.map (braidGenerator X n i).asIso.hom ≫
-      (tensorPowerComparison F X (n+2)).inv = (braidGenerator (F.obj X) n i).asIso.hom
-  rw [← Category.assoc, ← braidGenerator_functor F X n i, Category.assoc,
-    Iso.hom_inv_id, Category.comp_id]
+    braidAutMap F X n (braidGenerator X n i) = braidGenerator (F.obj X) n i :=
+  Aut.ext (Iso.ext (by
+    simp only [braidAutMap, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom,
+      Iso.conjAut_apply, Iso.trans_hom, Iso.symm_hom, Functor.mapAut]
+    change (tensorPowerComparison F X (n+2)).hom ≫ F.map (braidGenerator X n i).asIso.hom ≫
+        (tensorPowerComparison F X (n+2)).inv = (braidGenerator (F.obj X) n i).asIso.hom
+    rw [← Category.assoc, ← braidGenerator_functor F X n i, Category.assoc,
+      Iso.hom_inv_id, Category.comp_id]))
 
 /-- Faithfulness makes the induced automorphism map injective. -/
 lemma braidAutMap_injective (X : C) (n : ℕ) [F.Faithful] :
