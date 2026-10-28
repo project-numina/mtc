@@ -11,7 +11,6 @@ public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Fusion.UnitPower
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Generated
-public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Centre.Abelian
 public import PropertyF.Ground.Centre.ProductImages
 public import PropertyF.Ground.Centre.Product
