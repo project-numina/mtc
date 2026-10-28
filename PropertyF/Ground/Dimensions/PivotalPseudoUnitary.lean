@@ -2,18 +2,18 @@ module
 public import PropertyF.Ground.Dimensions.DoubleDualPairing
 public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
-public import PropertyF.Ground.Dimensions.PivotalTwist
+public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.ComplexSaturation
 
 /-! # Pivotal structures and pseudo-unitarity
 
-Duality and reality properties of pivotal dimensions lead to a positive spherical structure.
+Duality and reality properties of pivotal dimensions characterize spherical structures.
 
 ## Main results
 
 * `pivotal_dual`: relates pivotal components on dual objects.
-* `positive_spherical_of_pivotal_pseudoUnitary`: produces a positive spherical structure from pseudo-unitarity.
+* `pivotal_spherical_iff_simple_dimensions_real`: characterizes spherical structures.
 -/
 
 @[expose] public noncomputable section
@@ -96,98 +96,6 @@ theorem pivotal_spherical_iff_simple_dimensions_real
     apply (unitScalarEquiv C).injective
     simpa only [← unitScalar_eq_equiv, pivotalDimension] using
       (hdual i).trans (h i)
-end PropertyF.Ground.Dimensions
-
-end
-
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
-universe v u
-
-variable (C : BraidedFusionCategory.{v,u})
-set_option backward.isDefEq.respectTransparency false in
-/-- The intrinsic norm is the product of the pivotal dimensions of a simple and its dual. -/
-theorem squaredNorm_eq_pivotal_dimension_product
-    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
-    squaredNorm C (simples C i) = pivotalDimension C p (simples C i) *
-      pivotalDimension C p (simples C (dualIndex C i)) := by
-  let X := simples C i
-  let : Simple X := simples_simple C i
-  rw [target_squaredNorm_choice_independent C (p.iso X), leftQuantumTrace_eq_rightDual]
-  rw [← pivotal_dual p X, ← rightTrace_id, ← rightTrace_id]
-  change pivotalDimension C p X * pivotalDimension C p (Xᘁ) = _
-  rw [pivotalDimension_iso C p (rightDualLabelIso C i)]
-
-/-- Each Galois-conjugate intrinsic norm is the squared norm of the corresponding conjugate pivotal dimension. -/
-theorem galois_squaredNorm_eq_pivotalDimension_norm_sq
-    (p : PivotalStructure (C := C.Obj)) (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
-    σ (squaredNorm C (simples C i)) =
-      ((‖σ (pivotalDimension C p (simples C i))‖ ^ 2 : ℝ) : ℂ) := by
-  rw [squaredNorm_eq_pivotal_dimension_product C p i, map_mul, galois_pivotalDimension_dual_eq_conj]
-  simpa using Complex.mul_conj' (σ (pivotalDimension C p (simples C i)))
-
-end PropertyF.Ground.Dimensions
-
-end
-
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
-universe v u
-
-variable (C : BraidedFusionCategory.{v,u})
-set_option backward.isDefEq.respectTransparency false in
-/-- Pseudo-unitarity saturates every pivotal simple-dimension FP bound. -/
-theorem pseudoUnitary_saturation_of_pivotal
-    (p : PivotalStructure (C := C.Obj)) (hpu : PseudoUnitary C) :
-    ∀ i, ‖pivotalDimension C p (simples C i)‖ = fpSimple C i :=
-  norm_saturation_of_pseudoUnitary C (fun i => pivotalDimension C p (simples C i))
-    (fun i => galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i)
-    (fun i => galois_squaredNorm_eq_pivotalDimension_norm_sq C p (RingEquiv.refl ℂ) i) hpu
-
-set_option backward.isDefEq.respectTransparency false in
-/-- Twisting any pivotal structure by its saturated phases constructs the canonical positive spherical structure. -/
-theorem positive_spherical_of_pivotal_pseudoUnitary
-    (p : PivotalStructure (C := C.Obj)) (hpu : PseudoUnitary C) :
-    HasFPSphericalStructure C := by
-  let z : Fin (rank C) → ℂ := fun i => pivotalDimension C p (simples C i)
-  let f := fpSimple C
-  let q : Fin (rank C) → ℂ := fun i => z i / (f i : ℂ)
-  let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
-  have hf (i) : (f i : ℂ) ≠ 0 := by exact_mod_cast (ne_of_gt (fpSimple_pos C i))
-  have hz (i) : z i ≠ 0 := pivotalDimension_simple_ne_zero C p i
-  have hq (i) : q i ≠ 0 := div_ne_zero (hz i) (hf i)
-  have hc (i) : c i ≠ 0 := inv_ne_zero (hq i)
-  have hunit : c (unitIndex C) = 1 := by
-    obtain ⟨e⟩ := unitIndex_iso C
-    dsimp [c, q, z, f]
-    rw [pivotalDimension_iso C p e, pivotalDimension_unit, fpSimple_unit]
-    norm_num
-  have hsat : ∀ i, ‖z i‖ = f i := pseudoUnitary_saturation_of_pivotal C p hpu
-  have hphase := fusion_complex_eigenvalue_saturation C
-    (fun i j k => (fusionCoeff C i j k : ℂ)) z hsat
-    (by intro i j k; simp)
-    (by intro i j; simpa [z] using (pivotalDimension_character C p i j).symm)
-  have hmul : ∀ i j k, fusionCoeff C i j k ≠ 0 → c k = c i * c j := by
-    intro i j k hN
-    have hn : (fusionCoeff C i j k : ℂ) ≠ 0 := by exact_mod_cast hN
-    have h := hphase i j k
-    change (fusionCoeff C i j k : ℂ) * q k / (q i * q j) = _ at h
-    have hqmul : q k = q i * q j :=
-      mul_left_cancel₀ hn ((div_eq_iff (mul_ne_zero (hq i) (hq j))).mp h)
-    simp [c, hqmul, mul_comm]
-  let P := pivotalScalarTwist C p c hc hunit hmul
-  have hvalue (i) : pivotalDimension C P (simples C i) = (f i : ℂ) := by
-    rw [pivotalDimension_scalarTwist_simple]
-    change (q i)⁻¹ * z i = (f i : ℂ)
-    dsimp [q]
-    field_simp [hz i, hf i]
-  refine ⟨P, ?_, hvalue⟩
-  apply (pivotal_spherical_iff_simple_dimensions_real C P).2
-  intro i
-  rw [hvalue]
-  simp
 end PropertyF.Ground.Dimensions
 
 end
