@@ -122,11 +122,8 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility
   change leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = _
   dsimp only [tensorPower] at hg ⊢
   rw [hg]
-  have hw := leftPartialTrace_whiskerRight p (tensorPower X n) (End.of (β_ X X).hom)
-  change leftPartialTrace p (End.of
-      ((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
-        (α_ X X (tensorPower X n)).hom)) = _ at hw
-  rw [hw, leftPartialTrace_braiding_of_trace_compatibility (C := C) ht]
+  rw [leftPartialTrace_whiskerRight p (tensorPower X n) (End.of (β_ X X).hom),
+    leftPartialTrace_braiding_of_trace_compatibility (C := C) ht]
   apply End.ext
   simp
 
@@ -142,14 +139,14 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
     Dimensions.pivotalBraidedTwistScalar C p X *
       unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 1)) σ).asHom) := by
   let f := (tensorPermutationAction X hX (n + 1)) σ
-  have hswap : tensorPermutationAction X hX (n + 2) (Equiv.swap 0 1) =
-      Aut.toEnd (braidGenerator X n 0) := by
-    convert tensorPermutationAction_swap (n := n) hX 0 using 1; congr 2
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   have hact : tensorPermutationAction X hX (n + 2)
       (Equiv.Perm.decomposeFin.symm (1, σ)) =
       b * insertLeftIdentity X f := by
-    rw [decomposeFin_eq_swap_fixHead, map_mul, hswap, tensorPermutationAction_fixHead]
+    rw [decomposeFin_eq_swap_fixHead, map_mul]
+    change tensorPermutationAction X hX (n + 2)
+      (Equiv.swap (0 : Fin (n + 1)).castSucc (0 : Fin (n + 1)).succ) * _ = _
+    rw [tensorPermutationAction_swap, tensorPermutationAction_fixHead]
     change b * _ = b * _
     congr 1
   rw [hact, ← htotal _ _, leftPartialTrace_right]
@@ -206,10 +203,8 @@ theorem tensorDual_coevaluation (X Y : C) :
   let E := ((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)
   let r : A ≅ B := rightDualTensorIso X Y
   let t : Bᘁ ≅ E := rightDualTensorIso (Yᘁ) (Xᘁ)
-  have hn : η_ A (Aᘁ) = η_ B (Bᘁ) ≫ r.inv ▷ (Bᘁ) ≫ A ◁ (r.homᘁ) := by
-    simpa only [Iso.symm_hom, Iso.symm_inv, tensorHom_def, Category.assoc] using
-      (Dimensions.coevaluation_iso_map r.symm).symm
-  rw [hn]
+  rw [← Dimensions.coevaluation_iso_map r.symm]
+  simp only [Iso.symm_hom, Iso.symm_inv, tensorHom_def, Category.assoc]
   have he : η_ B E ≫ B ◁ t.inv = η_ B (Bᘁ) :=
     Dimensions.coevaluation_rightDualIso_inv HasRightDual.exact ExactPairing.tensor
   rw [← he]
@@ -235,9 +230,9 @@ theorem leftTrace_tensor_pairing (p : Dimensions.PivotalStructure (C := C))
     (@HasRightDual.exact C _ _ A (RightRigidCategory.rightDual A)) q
   change r.inv ▷ A ≫ ε_ A D = @ExactPairing.evaluation C _ _ A E q at hev
   change η_ D (Dᘁ) ≫ (𝟙 D ⊗ₘ ((p.iso A).inv ≫ f)) ≫ ε_ A D = _
-  have hp : p.iso (X ⊗ Y) = (p.iso X ⊗ᵢ p.iso Y) ≪≫ Dimensions.doubleDualTensorIso X Y :=
-    Iso.ext (p.tensor X Y)
-  rw [tensorDual_coevaluation, hp]
+  rw [tensorDual_coevaluation,
+    show p.iso (X ⊗ Y) = (p.iso X ⊗ᵢ p.iso Y) ≪≫ Dimensions.doubleDualTensorIso X Y from
+      Iso.ext (p.tensor X Y)]
   simp only [Iso.trans_inv, tensorIso_inv, tensorHom_def, id_whiskerRight,
     whiskerLeft_comp, Category.assoc]
   dsimp only [A, D, E, r] at *
@@ -257,11 +252,7 @@ theorem leftTrace_partialTrace [Preadditive C] [Linear ℂ C]
   rw [leftTrace_tensor_pairing]
   simp only [Dimensions.PivotalStructure.leftTrace, leftPartialTrace,
     LinearMap.coe_mk, AddHom.coe_mk]
-  have hc : η_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) =
-      η_ (Yᘁ) ((Yᘁ)ᘁ) ⊗≫ ((Yᘁ) ◁ η_ (Xᘁ) ((Xᘁ)ᘁ)) ▷ ((Yᘁ)ᘁ) ⊗≫ 𝟙 _ := rfl
-  have he : ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
-      𝟙 (((Yᘁ) ⊗ (Xᘁ)) ⊗ (X ⊗ Y)) ⊗≫ ((Yᘁ) : C) ◁ (ε_ X (Xᘁ) ▷ Y) ⊗≫ ε_ Y (Yᘁ) := rfl
-  rw [hc, he]
+  rw [ExactPairing.tensor_coevaluation, ExactPairing.tensor_evaluation]
   simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
   monoidal
   simp

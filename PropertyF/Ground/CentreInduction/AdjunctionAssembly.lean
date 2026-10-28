@@ -104,17 +104,12 @@ theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
   let p : ExactPairing (𝟙_ D) ((𝟙_ D)ᘁ) := HasRightDual.exact
   let q : ExactPairing (𝟙_ D) (𝟙_ D) := exactPairingUnit
   have hu := Dimensions.coevaluation_rightDualIso p q
-  have he := coevaluation_comp_rightAdjointMate e.inv
-  change η_ A Aᘁ ≫ A ◁ (e.invᘁ) = η_ (𝟙_ D) ((𝟙_ D)ᘁ) ≫ e.inv ▷ _ at he
   change η_ (𝟙_ D) ((𝟙_ D)ᘁ) ≫
     (𝟙_ D) ◁ Dimensions.rightDualUnitIso.hom = (ρ_ (𝟙_ D)).inv at hu
-  simp only [Iso.trans_hom, Dimensions.rightDualIsoMap, Iso.symm_inv, Iso.symm_hom, Category.assoc,
-    tensorHom_def', whiskerLeft_comp]
-  rw [← Category.assoc, he]
-  simp only [Category.assoc]
-  rw [← whisker_exchange_assoc]
-  rw [← comp_whiskerRight, Iso.inv_hom_id, id_whiskerRight, Category.comp_id]
-  exact hu
+  simp only [Iso.trans_hom, Dimensions.rightDualIsoMap, Iso.symm_hom,
+    tensorHom_def, whiskerLeft_comp]
+  rw [← Category.assoc (e.hom ▷ Aᘁ), ← tensorHom_def, ← Category.assoc,
+    Dimensions.coevaluation_iso_map, hu]
 
 end PropertyF.Ground.CentreInduction
 

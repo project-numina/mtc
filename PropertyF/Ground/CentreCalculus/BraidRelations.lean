@@ -80,12 +80,10 @@ theorem adjacent_braid_relation (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
   | succ n ih =>
     intro i
     refine Fin.cases ?_ (fun j => ?_) i
-    · have h := congrArg (Calculus.addRightAut X (n + 1)) (ih 0)
-      simp only [map_mul, Calculus.addRightAut_generator] at h
-      convert h using 1 <;> congr 2
+    · convert congrArg (Calculus.addRightAut X (n + 1)) (ih 0) using 1 <;>
+        simp only [map_mul, Calculus.addRightAut_generator] <;> congr 2
     · have h := congrArg ((tensorLeft X).mapAut (tensorPower X (n + 3))) (ih j)
-      simp only [map_mul] at h
-      simp only [braidGenerator_succ] at h
+      simp only [map_mul, braidGenerator_succ] at h
       convert h using 1 <;> congr 2
 
 set_option backward.isDefEq.respectTransparency false in
@@ -115,24 +113,21 @@ theorem distant_braid_commute (X : C) : ∀ (n : ℕ) (i j : Fin (n + 1)),
   induction n with
   | zero =>
     intro i j hij
-    have hj := j.isLt
     omega
   | succ n ih =>
     intro i j hij
     by_cases hi : i = 0
     · subst i
       cases n with
-      | zero =>
-        have hj := j.isLt
-        omega
+      | zero => omega
       | succ n =>
         obtain ⟨j', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j) (by rintro rfl; simp at hij)
         obtain ⟨j'', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j') (by rintro rfl; simp at hij)
         exact first_distant_commute X n j''
     · obtain ⟨i', rfl⟩ := Fin.exists_succ_eq_of_ne_zero hi
       obtain ⟨j', rfl⟩ := Fin.exists_succ_eq_of_ne_zero (x := j) (by rintro rfl; simp at hij)
-      have hh := congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2)))
-        (ih i' j' (by simpa using hij))
-      simpa only [map_mul, braidGenerator_succ] using hh
+      simpa only [map_mul, braidGenerator_succ] using
+        congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2)))
+          (ih i' j' (by simpa using hij))
 
 end PropertyF.Ground.CentreCalculus
