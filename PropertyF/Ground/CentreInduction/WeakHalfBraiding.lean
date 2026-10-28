@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.CentreInduction.CrossingNaturality
+public import PropertyF.Ground.CentreInduction.BasisPairing
 public import PropertyF.Ground.Dimensions.SimpleScalars
 public import PropertyF.Ground.Centre.Basic
 

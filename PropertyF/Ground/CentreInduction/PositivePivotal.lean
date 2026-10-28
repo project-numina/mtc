@@ -112,17 +112,15 @@ theorem positiveDoubleDualIso_forget (T : D) :
   let Z := F.obj T
   let e := positiveDualIso T
   have hnat := forgetDualIso_natural e.inv
-  have hi := positiveDualIso_inv_forget T
-  have ho := positiveDualIso_forget (Tᘁ)
   simp only [positiveDoubleDualIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap, CategoryTheory.Center.comp_f, forgetDoubleDualIso]
   change (e.invᘁ).f ≫ (positiveDualIso (Tᘁ)).hom.f =
     (forgetDualIso (Zᘁ)).hom ≫ (forgetDualIso Z).invᘁ
-  rw [ho]
+  rw [positiveDualIso_forget]
   change (e.invᘁ).f ≫ (forgetDualIso (F.obj (Tᘁ))).hom = _
   change (e.invᘁ).f ≫ (forgetDualIso (F.obj (Tᘁ))).hom =
     (forgetDualIso (Zᘁ)).hom ≫ e.inv.fᘁ at hnat
-  rw [hnat, hi]
+  rw [hnat, positiveDualIso_inv_forget]
 
 
 theorem positiveDoubleDualIso_inv_forget (T : D) :
