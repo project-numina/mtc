@@ -39,38 +39,20 @@ def homBiproductLinearEquiv
     (X : C) (V : ι → C) : (X ⟶ ⨁ V) ≃ₗ[k] (∀ i, X ⟶ V i) where
   toFun f i := f ≫ biproduct.π V i
   invFun f := biproduct.lift f
-  left_inv f := by
-    apply biproduct.hom_ext
-    intro i
-    simp
-  right_inv f := by
-    funext i
-    simp
-  map_add' f g := by
-    funext i
-    simp
-  map_smul' z f := by
-    funext i
-    simp
+  left_inv f := biproduct.hom_ext _ _ fun i ↦ by simp
+  right_inv f := funext fun i ↦ by simp
+  map_add' f g := funext fun i ↦ by simp
+  map_smul' z f := funext fun i ↦ by simp
 
 /-- The Hom space out of a finite biproduct is the product of the Hom spaces. -/
 def biproductHomLinearEquiv
     (V : ι → C) (X : C) : (⨁ V ⟶ X) ≃ₗ[k] (∀ i, V i ⟶ X) where
   toFun f i := biproduct.ι V i ≫ f
   invFun f := biproduct.desc f
-  left_inv f := by
-    apply biproduct.hom_ext'
-    intro i
-    simp
-  right_inv f := by
-    funext i
-    simp
-  map_add' f g := by
-    funext i
-    simp
-  map_smul' z f := by
-    funext i
-    simp
+  left_inv f := biproduct.hom_ext' _ _ fun i ↦ by simp
+  right_inv f := funext fun i ↦ by simp
+  map_add' f g := funext fun i ↦ by simp
+  map_smul' z f := funext fun i ↦ by simp
 
 end
 
@@ -126,10 +108,9 @@ theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
   rw [(CategoryTheory.Linear.homCongr ℂ e (Iso.refl S)).finrank_eq,
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl S) e).finrank_eq,
     finrank_biproduct_hom, finrank_hom_biproduct]
-  apply Finset.sum_congr rfl
-  intro p _
-  rw [CategoryTheory.finrank_hom_simple_simple ℂ,
-    CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
+  exact Finset.sum_congr rfl fun p _ ↦ by
+    rw [CategoryTheory.finrank_hom_simple_simple ℂ,
+      CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
 
 /-- Tensoring an object on the left acts on simple multiplicities by its
 integer fusion matrix. -/
