@@ -97,11 +97,11 @@ theorem fpDimension_leftDual (X : D.Obj) :
     fpDimension D (ᘁX) = fpDimension D X := by
   classical
   unfold fpDimension
-  have h := Equiv.sum_comp (dualEquiv D)
-    (fun i ↦ (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i)
-  change (∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
-    fpSimple D (dualIndex D i)) = _ at h
-  simpa only [dual_multiplicity, fpSimple_dual] using h
+  simpa only [dual_multiplicity, fpSimple_dual] using
+    (show (∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
+      fpSimple D (dualIndex D i)) = _ from
+        Equiv.sum_comp (dualEquiv D)
+          (fun i ↦ (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i))
 
 /-- FP dimension is invariant under taking a right dual. -/
 theorem fpDimension_rightDual (X : D.Obj) :
