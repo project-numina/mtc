@@ -1,5 +1,10 @@
 module
-public import PropertyF.Ground.CentreInduction.Splitting
+public import PropertyF.Ground.Calculus.PartialTrace
+public import PropertyF.Ground.Centre.Basic
+public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.CentreInduction.SimpleDetection
+public import PropertyF.Ground.Fusion.SemisimpleSplit
+public import PropertyF.Ground.Centre.Cokernel
 public import PropertyF.Ground.CentreRigid.Unit
 
 /-! The unit-strand case of the centre intertwining equation. -/

@@ -93,19 +93,6 @@ theorem categoricalS_dual_conj (C : Ground.BraidedFusionCategory)
   have h := congrArg (fun z : ℂ => z * simpleDimension C p j) hh
   simpa [hd] using h
 
-/-- S is equivariant with respect to duality on the two indices. -/
-theorem categoricalS_dual_symmetric (C : Ground.BraidedFusionCategory)
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hreal : ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j)
-    (i j : Fin (rank C)) :
-    categoricalS C p (Ground.dualIndex C i) j = categoricalS C p i (Ground.dualIndex C j) := by
-  calc
-    _ = starRingEnd ℂ (categoricalS C p i j) := categoricalS_dual_conj C p hreal i j
-    _ = starRingEnd ℂ (categoricalS C p j i) := congrArg (starRingEnd ℂ) (categoricalS_symmetric C p i j)
-    _ = categoricalS C p (Ground.dualIndex C j) i := (categoricalS_dual_conj C p hreal j i).symm
-    _ = _ := categoricalS_symmetric C p _ _
-
-
 /-- Real pivotal simple dimensions are invariant under dual labels. -/
 theorem simpleDimension_dual (C : Ground.BraidedFusionCategory)
     (p : Dimensions.PivotalStructure (C := C.Obj))

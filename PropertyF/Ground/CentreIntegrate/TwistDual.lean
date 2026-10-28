@@ -1,6 +1,7 @@
 module
 public import PropertyF.Ground.CentreIntegrate.TwistSign
 public import PropertyF.Ground.CentreCabling.TwistDual
+public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.CentreIntegrate.MonodromyDual
 public import PropertyF.Ground.Dimensions.PivotalDual
 public import PropertyF.Ground.Dimensions.SphericalReal
@@ -18,7 +19,7 @@ pivotal twist scalar. -/
 theorem pivotalTwistScalar_rightDual (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
     (hp : p.IsSpherical) (i : Fin (rank C)) :
     letI : Simple (simples C i) := simples_simple C i
-    letI : Simple ((simples C i)ᘁ) := simple_rightDual C (simples C i)
+    letI : Simple ((simples C i)ᘁ) := Ground.simple_rightDual C (simples C i)
     pivotalBraidedTwistScalar C p ((simples C i)ᘁ) = pivotalBraidedTwistScalar C p (simples C i) :=
   CentreCabling.spherical_twistScalar_rightDual C p hp i
 
@@ -34,7 +35,7 @@ theorem twist_sign_of_spherical_dual_pair_tensor
     pivotalBraidedTwistScalar C p (simples C i) = 1 ∨
       pivotalBraidedTwistScalar C p (simples C i) = -1 := by
   letI : Simple (simples C i) := simples_simple C i
-  letI : Simple ((simples C i)ᘁ) := simple_rightDual C (simples C i)
+  letI : Simple ((simples C i)ᘁ) := Ground.simple_rightDual C (simples C i)
   apply twist_sign_of_dual_and_tensor C p i ?_ htensor
   rw [pivotalBraidedTwist_simple, pivotalTwistScalar_rightDual C p hp i]
 
