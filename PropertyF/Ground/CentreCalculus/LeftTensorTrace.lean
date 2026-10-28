@@ -72,8 +72,7 @@ theorem leftPartialTrace_whiskerRight
       ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
       End.of ((leftPartialTrace p f).asHom ▷ Z) := by
   apply End.ext
-  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
-    comp_whiskerRight, whiskerLeft_comp, Category.assoc]
+  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
   monoidal
 
 /-- Schur's lemma identifies the partial trace on a simple surviving strand

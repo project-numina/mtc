@@ -34,7 +34,7 @@ def tensorPermAction (X : C)
 theorem tensorPermAction_swap {X : C}
     (hX : SelfTransparent X)
     {n : ℕ} (i : Fin (n + 1)) :
-    tensorPermAction X hX (n + 2) (Equiv.swap i.castSucc i.succ) =
+    tensorPermAction X hX (n + 2) (adjacentSwap i) =
       Aut.toEnd (braidGenerator X n i) :=
   congrArg Aut.toEnd (permutationAction_swap hX i)
 
@@ -156,8 +156,9 @@ theorem decomposeFin_eq_swap_fixHead {n : ℕ} (q : Fin (n + 1)) (σ : Equiv.Per
   induction x using Fin.cases <;> simp [fixHead, Equiv.Perm.mul_apply]
 
 theorem fixHead_swap {n : ℕ} (i : Fin n) :
-    fixHead (n + 1) (Equiv.swap i.castSucc i.succ) =
-      Equiv.swap i.succ.castSucc i.succ.succ := by
+    fixHead (n + 1) (adjacentSwap i) =
+      adjacentSwap i.succ := by
+  dsimp only [adjacentSwap]
   have h : i.succ.castSucc = i.castSucc.succ := Fin.ext rfl
   rw [h]
   ext x
@@ -211,7 +212,7 @@ theorem tensorPermAction_adjacent {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
         End.of (X ◁ ((tensorPermAction X hX (n + 1)) σ).asHom) := by
   rw [decomposeFin_eq_swap_fixHead, map_mul]
   change tensorPermAction X hX (n + 2)
-    (Equiv.swap (0 : Fin (n + 1)).castSucc (0 : Fin (n + 1)).succ) * _ = _
+    (adjacentSwap (0 : Fin (n + 1))) * _ = _
   rw [tensorPermAction_swap, tensorPermAction_fixHead]
   rfl
 
