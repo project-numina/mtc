@@ -20,12 +20,11 @@ local notation "𝒵" => Center D
 
 /-- Transported pivotal components respect the braiding between centre objects. -/
 private theorem transported_pivotal_braiding (p : PivotalStructure (C := D)) (Z B : 𝒵) :
-    let u (W : 𝒵) : W.1 ⟶ ((Wᘁ)ᘁ).1 := (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
+    let u := transportedPivotalHom p
     (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
       (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f := by
   dsimp only
-  let u (W : 𝒵) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
-    (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
+  let u := transportedPivotalHom p
   have hu (X Y : 𝒵) :
       u (X ⊗ Y) = (u X ⊗ₘ u Y) ≫ (doubleDualTensorIso X Y).hom.f :=
     (transported_pivotal_tensor p X Y).symm
@@ -51,15 +50,12 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : PivotalStructur
   intro Z T
   let F := Center.ofBraided D
   let B := F.obj T
-  let u (W : 𝒵) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
-    (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
+  let u := transportedPivotalHom p
   have hc := transported_pivotal_braiding p Z B
   change (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
     (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f at hc
   let j := (positivePivotalComponent p T).hom
-  have hj : j.f = u B := by
-    change _ = (p.iso T).hom ≫ (forgetDoubleDualIso B).inv
-    exact positivePivotalComponent_forget p T
+  have hj : j.f = u B := positivePivotalComponent_forget p T
   let : IsIso (u B) := by
     rw [← hj]
     change IsIso ((Center.forget D).map j)

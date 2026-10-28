@@ -109,8 +109,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
 theorem center_cokernel_measure_lt {S W : 𝒵}
     (p : S ⟶ W) (hp : p ≠ 0) :
-    Module.finrank ℂ ((Centre.centerCokernel p).1 ⟶ (Centre.centerCokernel p).1) <
-      Module.finrank ℂ (W.1 ⟶ W.1) := by
+    let Q := Centre.centerCokernel p
+    Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) := by
   let Q := Centre.centerCokernel p
   let q : W.1 ⟶ Q.1 := (Centre.centerCokernelπ p).f
   have : Epi q := by

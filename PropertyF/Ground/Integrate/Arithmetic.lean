@@ -64,20 +64,23 @@ field or standard-input hypothesis. -/
 @[expose] public noncomputable section
 namespace PropertyF.Ground
 universe v u
+variable {R : Type*} [Field R] [Algebra R ℂ]
+local notation "ι" => algebraMap R ℂ
 
-/-- A real algebraic integer fixed by every complex automorphism is an integer. -/
-theorem weaklyIntegral_of_galois_fixed {δ : ℝ} (hδr : IsIntegral ℤ δ)
-    (hfixed : ∀ τ : ℂ ≃+* ℂ, τ (δ : ℂ) = (δ : ℂ)) : WeaklyIntegral δ :=
-  let hδ := (isIntegral_algebraMap_iff (R := ℤ) (A := ℝ) (B := ℂ)).mpr hδr
-  let K := Dimensions.dimensionNormalField (δ : ℂ)
-  let ⟨hK, hfin, hgal⟩ := Dimensions.finite_galois_normal_field (δ : ℂ) (hδ.tower_top (A := ℚ))
+/-- An algebraic integer in a complex subfield fixed by every complex automorphism is an integer. -/
+theorem integral_eq_int_of_complex_galois_fixed {δ : R} (hδr : IsIntegral ℤ δ)
+    (hfixed : ∀ τ : ℂ ≃+* ℂ, τ (ι δ) = ι δ) : ∃ z : ℤ, δ = z :=
+  let hδ := (isIntegral_algebraMap_iff (R := ℤ) (A := R) (B := ℂ)).mpr hδr
+  let K := Dimensions.dimensionNormalField (ι δ)
+  let ⟨hK, hfin, hgal⟩ := Dimensions.finite_galois_normal_field (ι δ)
+    (hδ.tower_top (A := ℚ))
   letI : FiniteDimensional ℚ K := hfin
   letI : IsGalois ℚ K := hgal
-  let x : K := ⟨(δ : ℂ), hK⟩
+  let x : K := ⟨ι δ, hK⟩
   let ⟨z, hz⟩ := integer_of_galois_fixed (x := x)
     ((isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by simpa [x] using hδ)) fun σ ↦ by
       obtain ⟨τ, hτ⟩ := Dimensions.extend_complex_automorphism K.toSubfield σ.toRingEquiv
       exact Subtype.ext ((hτ x).symm.trans (hfixed τ))
-  ⟨z, by simpa [x] using congrArg Complex.re (congrArg (fun y : K ↦ (y : ℂ)) hz)⟩
+  ⟨z, (algebraMap R ℂ).injective (by simpa [x] using congrArg (fun y : K ↦ (y : ℂ)) hz)⟩
 
 end PropertyF.Ground

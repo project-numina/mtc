@@ -53,9 +53,9 @@ theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
 
 /-- The transported pivotal components satisfy the tensor law after forgetting. -/
 theorem transported_pivotal_tensor (p : PivotalStructure (C := D)) (X Y : 𝒵) :
-    (((p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv) ⊗ₘ
-      ((p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv)) ≫ (doubleDualTensorIso X Y).hom.f =
-    (p.iso (X.1 ⊗ Y.1)).hom ≫ (forgetDoubleDualIso (X ⊗ Y)).inv := by
+    (transportedPivotalHom p X ⊗ₘ transportedPivotalHom p Y) ≫
+      (doubleDualTensorIso X Y).hom.f = transportedPivotalHom p (X ⊗ Y) := by
+  dsimp only [transportedPivotalHom]
   rw [Iso.eq_comp_inv, Category.assoc, forgetDoubleDualIso_tensor]
   simpa [Category.assoc] using (p.tensor X.1 Y.1).symm
 
@@ -130,9 +130,7 @@ theorem forgetDoubleDualIso_unit :
 
 /-- Transported pivotal components preserve the tensor unit after forgetting. -/
 theorem transported_pivotal_unit (p : PivotalStructure (C := D)) :
-    (p.iso (𝟙_ D)).hom ≫
-      (forgetDoubleDualIso (𝟙_ (𝒵))).inv =
-    (doubleDualUnitIso (C := 𝒵)).hom.f :=
+    transportedPivotalHom p (𝟙_ (𝒵)) = (doubleDualUnitIso (C := 𝒵)).hom.f :=
   (Iso.comp_inv_eq (forgetDoubleDualIso (𝟙_ (𝒵)))).2 <|
     p.unit.trans (forgetDoubleDualIso_unit (D := D)).symm
 
