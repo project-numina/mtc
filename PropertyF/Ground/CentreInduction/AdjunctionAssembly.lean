@@ -38,7 +38,7 @@ def unitSummandRetract :
     Retract X (underlying C X) where
   i := (unitSummandIso C X).inv ≫ biproduct.ι (inductionSummand C X) (unitIndex C)
   r := biproduct.π (inductionSummand C X) (unitIndex C) ≫ (unitSummandIso C X).hom
-  retract := by simp [underlying, Category.assoc]
+  retract := by simp [underlying]
 
 variable {A B U V M N : D}
 
@@ -65,7 +65,7 @@ counit for the centre-forgetful right adjunction. -/
 def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
   app X := (unitSummandRetract C X).r
   naturality {X Y} f := by
-    simpa [underlyingFunctor, unitSummandRetract, unitSummandIso, Category.assoc] using congrArg (fun g =>
+    simpa [underlyingFunctor, unitSummandRetract, unitSummandIso] using congrArg (fun g =>
       biproduct.π (inductionSummand C X)
         (unitIndex C) ≫ g) (unitTensorIso_natural (Classical.choice (unitIndex_iso C)) f)
 
