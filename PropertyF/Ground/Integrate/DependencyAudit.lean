@@ -1,5 +1,4 @@
 module
-public import PropertyF.Axioms
 public import PropertyF.Ground.Target
 public import Lean.Util.FoldConsts
 public import Lean.Util.CollectAxioms
@@ -85,13 +84,13 @@ partial def findIssue (env : Environment) (root : Name) : Option Issue := Id.run
   return none
 
 /-- Test fixture: a forbidden input hidden behind an ordinary definition. -/
-def hiddenInput : Prop := ∃ _H : PropertyF.StandardInputs.{0, 0}, True
+def hiddenInput : Prop := ∃ _H : PropertyF.BraidedFusionCategory.{0, 0}, True
 
 def hiddenInputWrapper : Prop := hiddenInput
 
 /-- A proof with a clean statement but a forbidden type inside its body. -/
 theorem hiddenProof : True :=
-  (Classical.em (Nonempty PropertyF.StandardInputs.{0,0})).elim
+  (Classical.em (Nonempty PropertyF.BraidedFusionCategory.{0,0})).elim
     (fun _ => True.intro) (fun _ => True.intro)
 
 open Lean Elab Command in

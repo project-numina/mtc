@@ -83,7 +83,6 @@ import all PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 import all PropertyF.Ground.Dimensions.RootDualLabel
 import all PropertyF.Ground.Dimensions.RootDualPairing
 import all PropertyF.Arithmetic
-import all PropertyF.Axioms
 import all PropertyF.BlockTrace
 import all PropertyF.BraidAlgebra
 import all PropertyF.CenterBasics
