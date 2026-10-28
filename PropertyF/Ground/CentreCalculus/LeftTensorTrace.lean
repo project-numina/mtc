@@ -204,13 +204,13 @@ theorem tensorDual_coevaluation (X Y : C) :
   let r : A ≅ B := rightDualTensorIso X Y
   let t : Bᘁ ≅ E := rightDualTensorIso (Yᘁ) (Xᘁ)
   rw [← Dimensions.coevaluation_iso_map r.symm]
-  simp only [Iso.symm_hom, Iso.symm_inv, tensorHom_def]
+  rw [Iso.symm_hom, Iso.symm_inv, tensorHom_def]
   have he : η_ B E ≫ B ◁ t.inv = η_ B (Bᘁ) :=
     Dimensions.coevaluation_rightDualIso_inv HasRightDual.exact ExactPairing.tensor
   rw [← he]
   dsimp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap]
-  simp only [whiskerLeft_comp, Category.assoc]
+  simp only [tensorHom_def, whiskerLeft_comp, Category.assoc]
   rw [whisker_exchange_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
