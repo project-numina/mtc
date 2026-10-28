@@ -94,7 +94,6 @@ nonzero dual coefficient in the original vector. -/
 theorem nonzero_dual_coefficient_of_sCentralizer
     (hunit : f (unitIndex D) ≠ 0) (hsupport : FourierSupportedOn D p f core)
     {x : Fin (rank D)} (hx : ∀ y ∈ core, sCentralizes D p x y) : f (dualIndex D x) ≠ 0 := by
-  classical
   have heq : sFourier D p (sFourier D p f) x =
       dim D p x * sFourier D p (sFourier D p f) (unitIndex D) := by
     refine sum_mul_eq_mul_sum_of_supported core _ _ (sFourier D p f) _ hsupport fun y hy ↦ ?_
@@ -147,14 +146,11 @@ theorem fourier_eq_zero_of_fusion_eigenvector (hdim : HasFPSimpleDimensions D p)
     {f : Fin (rank D) → ℂ} {a y : Fin (rank D)}
     (heigen : ∀ k, ∑ i, (fusionCoeff D a i k : ℂ) * f i = (fpSimple D a : ℂ) * f k)
     (hne : S D p a y ≠ dim D p a * dim D p y) : sFourier D p f y = 0 := by
-  classical
   let χ (i : Fin (rank D)) := S D p i y / dim D p y
   let T : ℂ := ∑ i, χ i * f i
-  have ht : χ a * T = (fpSimple D a : ℂ) * T := by
-    apply sum_mul_eigenvalue (fun i k ↦ (fusionCoeff D a i k : ℂ)) χ f
-    · intro i
-      exact Modular.categoricalS_verlinde D p a i y
-    · exact heigen
+  have ht : χ a * T = (fpSimple D a : ℂ) * T :=
+    sum_mul_eigenvalue (fun i k ↦ (fusionCoeff D a i k : ℂ)) χ f
+      (fun i ↦ Modular.categoricalS_verlinde D p a i y) heigen
   have hχ : χ a ≠ (fpSimple D a : ℂ) := fun h ↦ hne <| by
     simpa [χ, hdim] using (div_eq_iff (Modular.simpleDimension_ne_zero D p y)).mp h
   apply (div_eq_zero_iff.mp ?_).resolve_right (Modular.simpleDimension_ne_zero D p y)
@@ -210,7 +206,6 @@ theorem regularVector_ne_zero_iff {i : Fin (rank D)} :
 theorem regularVector_mul (hA : IsDualFusionClosed D A) {k : A} :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
-  classical
   calc
     _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
       refine Finset.sum_congr rfl fun i _ ↦ ?_

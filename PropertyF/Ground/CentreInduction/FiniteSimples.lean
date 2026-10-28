@@ -78,10 +78,11 @@ theorem simple_mono_induced_simple [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (simples C i), Mono f := by
   obtain ⟨i, hi⟩ := exists_positive_multiplicity C
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
+  let : Simple (simples C i) := simples_simple C i
   let : FiniteDimensional ℂ (X.1 ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp
     (show 0 < Module.finrank ℂ (X.1 ⟶ simples C i) from by
-      simpa only [finrank_to_simple_eq_from_simple C] using hi)
+      simpa only [finrank_to_simple_eq_from_simple _ (simples C i)] using hi)
   let e := homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj) (induction C)
     (actualAdjunction C) X (simples C i)
   exact ⟨i, e.symm g, mono_of_nonzero_from_simple (e.symm.map_eq_zero_iff.not.mpr hg)⟩

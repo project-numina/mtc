@@ -245,7 +245,7 @@ theorem groupImageAlgebra_unitary_blocks :
     (Pi.evalMonoidHom _ i).comp (e.toMonoidHom.comp (groupInImage ρ))
   choose P hP using fun i : Fin n => exists_unitarizing_basis (blockRep i)
   let e' := e.trans (AlgEquiv.piCongrRight (fun i => unitConjugation (P i)))
-  refine ⟨n, d, e', hd, fun g i => ?_⟩
+  refine ⟨n, d, e', hd, fun g => Pi.mem_unitary_iff.mpr fun i => ?_⟩
   simpa [e', unitConjugation, blockRep] using hP i g
 
 universe v u

@@ -16,15 +16,7 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 variable {V W : C.Obj} {E : Type*} [AddCommGroup E] [Module ℂ E]
 attribute [local instance] Abelian.hasFiniteBiproducts
-
-/-- The perfect pairing is natural for maps between different underlying
-objects: precomposition corresponds to dualizing postcomposition. -/
-theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) (q : V ⟶ W)
-    (f : W ⟶ simples C i) : simpleHomPairingEquiv C i V (q ≫ f) =
-    Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv C i W f) :=
-  letI : Simple (simples C i) := simples_simple C i
-  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  simpleHomPairing_natural f q
+local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/
@@ -47,7 +39,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Simple projections form the dual basis to simple inclusions. -/
 theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ V))) :
-    simpleHomPairingEquiv C i V (simpleProjection C V i a) =
+    simpleHomPairingEquiv (simples C i) V (simpleProjection C V i a) =
       (simpleInclusionBasis C V i).dualBasis a := by
   let : Simple (simples C i) := simples_simple C i
   refine (simpleInclusionBasis C V i).ext fun b => ?_
@@ -61,15 +53,19 @@ theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
     (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
+  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  have hn (f : W ⟶ simples C i) : simpleHomPairingEquiv (simples C i) V (q ≫ f) =
+      Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q)
+        (simpleHomPairingEquiv (simples C i) W f) := simpleHomPairing_natural f q
   let A := simpleInclusionBasis C V i
   let B := simpleInclusionBasis C W i
-  let P := simpleHomPairingEquiv C i V
+  let P := simpleHomPairingEquiv (simples C i) V
   let F' : (simples C i ⟶ W) →ₗ[ℂ]
       Module.Dual ℂ (simples C i ⟶ V) →ₗ[ℂ] E :=
     (LinearMap.lcomp ℂ E P.symm.toLinearMap).comp F
   simpa only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply,
     LinearEquiv.coe_coe, A, B, P, simpleInclusionBasis_apply,
-    ← pairing_simpleProjection, ← simpleHomPairingEquiv_natural, LinearEquiv.symm_apply_apply] using
+    ← pairing_simpleProjection, ← hn, LinearEquiv.symm_apply_apply] using
     dualBasis_contraction_natural A B (Linear.rightComp ℂ (simples C i) q) F'
 
 /-- A mixed crossing block, with the input and output test strands allowed

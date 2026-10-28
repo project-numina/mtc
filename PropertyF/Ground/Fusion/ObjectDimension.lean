@@ -42,8 +42,9 @@ theorem exists_positive_multiplicity {X : D.Obj}
   have hid : (𝟙 X : X ⟶ X) ≠ 0 := by simpa [IsZero.iff_id_eq_zero] using hX
   obtain ⟨i, s, _, hs, _⟩ := exists_simple_retract D hid
   let : FiniteDimensional ℂ (X ⟶ simples D i) := IsFusionCategory.hom_finite _ _
+  let : Simple (simples D i) := simples_simple D i
   refine ⟨i, ?_⟩
-  rw [← finrank_to_simple_eq_from_simple D X i]
+  rw [← finrank_to_simple_eq_from_simple X (simples D i)]
   exact Module.finrank_pos_iff_exists_ne_zero.mpr ⟨s, hs⟩
 
 /-- Every nonzero object has FP dimension at least one. -/
@@ -101,13 +102,14 @@ theorem dual_multiplicity (X : D.Obj) (i : Fin (rank D)) :
     Module.finrank ℂ (simples D i ⟶ ᘁX) =
       Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) := by
   obtain ⟨e⟩ := dualIndex_iso D i
+  let : Simple (simples D (dualIndex D i)) := simples_simple D _
   exact (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁX : D.Obj)).symm).trans
     (tensorLeftHomLinearEquiv (simples D i) (ᘁX) X (𝟙_ D.Obj)).symm |>.trans
     (CategoryTheory.Linear.homCongr ℂ (β_ X (simples D i)) (Iso.refl _)) |>.trans
     (tensorLeftHomLinearEquiv X (ᘁ(simples D i)) (simples D i) (𝟙_ D.Obj)) |>.trans
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁ(simples D i) : D.Obj))) |>.trans
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e) |>.finrank_eq |>.trans
-    (finrank_to_simple_eq_from_simple D X _)
+    (finrank_to_simple_eq_from_simple X (simples D (dualIndex D i)))
 
 /-- FP dimension is invariant under taking a left dual. -/
 theorem fpDimension_leftDual (X : D.Obj) :
