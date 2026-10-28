@@ -43,6 +43,7 @@ omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ 
 abbrev HasDrinfeldEvaluation {X : C} (d : X ≅ (Xᘁ)ᘁ) : Prop :=
   d.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) = (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ)
 
+omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing self-braiding gives the pivotal twist determined by a compatible double-dual isomorphism. -/
 theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C} (d : X ≅ (Xᘁ)ᘁ)
@@ -51,7 +52,7 @@ theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C} (d : 
       End.of ((p.iso X).hom ≫ d.inv) :=
   End.ext (by
     dsimp only [HasDrinfeldEvaluation] at hd
-    simp only [Calculus.rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
+    simp only [Calculus.rightPartialTrace]
     let t : X ⟶ X := (p.iso X).hom ≫ d.inv
     have hclose : (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
         t ▷ (Xᘁ) ≫ (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) := by
