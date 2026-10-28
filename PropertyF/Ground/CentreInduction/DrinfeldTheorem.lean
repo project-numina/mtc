@@ -50,8 +50,7 @@ theorem rightDualTensorIso_monodromy :
 theorem rightDualTensorIso_inv_monodromy :
     (rightDualTensorIso X Y).inv ≫ (M X Y)ᘁ =
       M (Yᘁ) (Xᘁ) ≫ (rightDualTensorIso X Y).inv :=
-  (CommSq.vert_inv (g := rightDualTensorIso X Y)
-    (h := rightDualTensorIso X Y) ⟨rightDualTensorIso_monodromy⟩).w.symm
+  (CommSq.vert_inv ⟨rightDualTensorIso_monodromy⟩).w.symm
 
 end PropertyF.Ground.CentreInduction
 
