@@ -123,8 +123,7 @@ theorem trace_reciprocity_of_frobenius_defect
         (rootTensorDefect C (simples C (dualIndex C i)) (simples C j)).hom)) :
     ENOTraceMatrixReciprocity C := by
   refine trace_reciprocity_of_intertwining fun i j k v ↦ ?_
-  let P := simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)
-  obtain ⟨g, rfl⟩ := P.surjective v
+  obtain ⟨g, rfl⟩ := (simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)).surjective v
   have hm : (multiplicityDefect C i k j).toLinearMap =
       Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom :=
     LinearMap.ext fun f ↦ multiplicityDefect_apply C f
@@ -149,9 +148,8 @@ variable {C} in
 theorem rootDualSign_dual (i : Fin (rank C)) :
     rootDualSign C (dualIndex C i) = rootDualSign C i := by
   let X := simples C i
-  let Y := simples C (dualIndex C i)
   let : Simple X := simples_simple C i
-  have he : squaredNorm C Y = squaredNorm C X :=
+  have he : squaredNorm C (simples C (dualIndex C i)) = squaredNorm C X :=
     (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans (target_squaredNorm_rightDual X)
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
   rw [Ground.dualIndex_involutive] at he
