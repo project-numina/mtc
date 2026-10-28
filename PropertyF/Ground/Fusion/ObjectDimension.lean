@@ -120,14 +120,13 @@ open CategoryTheory.Functor.Monoidal
 open scoped BigOperators
 namespace PropertyF.Ground
 universe v u v' u'
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 variable (C : BraidedFusionCategory.{v,u}) (D : BraidedFusionCategory.{v',u'})
 
 /-- FP dimension is additive over finite biproducts. -/
 theorem fpDimension_biproduct {ι : Type} [Fintype ι] (V : ι → D.Obj) :
     fpDimension D (⨁ V) = ∑ i, fpDimension D (V i) := by
   classical
-  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   simp only [fpDimension, finrank_hom_biproduct, Nat.cast_sum, Finset.sum_mul]
   exact Finset.sum_comm
 
@@ -138,9 +137,8 @@ theorem fpDimension_functor_decomposition (F : C.Obj ⥤ D.Obj) [F.Additive] (X 
       (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) := by
   classical
   obtain ⟨e⟩ := exists_canonical_decomposition C X
-  rw [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
+  simp [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
     Fintype.sum_sigma]
-  simp
 
 /-- An additive faithful strong monoidal functor preserves FP dimension. -/
 theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal]

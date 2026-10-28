@@ -11,7 +11,7 @@ open scoped BigOperators
 
 namespace PropertyF.Ground
 universe v u
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 section
 variable {k : Type*} [Field k] [IsAlgClosed k]
   {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
@@ -84,7 +84,6 @@ theorem finrank_simple_of_decomposition
     (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => simples D p.1)) (i : Fin (rank D)) :
     simpleMultiplicity D i X = m i := by
   classical
-  let : ∀ Y Z : D.Obj, FiniteDimensional ℂ (Y ⟶ Z) := IsFusionCategory.hom_finite
   dsimp only [simpleMultiplicity]
   rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq,
     finrank_hom_biproduct, Fintype.sum_sigma]
@@ -108,12 +107,11 @@ theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := E)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → E := fun p ↦ T p.1
-  let : ∀ A B : E, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   let : ∀ p, Simple (V p) := fun p ↦ hsimple p.1
-  rw [(CategoryTheory.Linear.homCongr ℂ e (Iso.refl S)).finrank_eq,
+  simp only [(CategoryTheory.Linear.homCongr ℂ e (Iso.refl S)).finrank_eq,
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl S) e).finrank_eq,
-    finrank_biproduct_hom, finrank_hom_biproduct]
-  simp only [CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
+    finrank_biproduct_hom, finrank_hom_biproduct,
+    CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
 
 /-- A nonzero object decomposed over a finite family has a nonzero multiplicity. -/
 theorem exists_positive_multiplicity {k : Type*} [Field k]
@@ -138,7 +136,6 @@ theorem tensor_multiplicity (X Y : D.Obj) (k : Fin (rank D)) :
         simpleMultiplicity D k (X ⊗ simples D j) := by
   classical
   obtain ⟨e⟩ := exists_canonical_decomposition D Y
-  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   dsimp only [simpleMultiplicity]
   rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
       ((Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X _)).finrank_eq,

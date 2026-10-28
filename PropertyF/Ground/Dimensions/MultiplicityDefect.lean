@@ -19,14 +19,13 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 /-- Scalar comparing the chosen simple fourth-dual square root to the
 braided double-dual component. -/
 def fourthDualRootScalar (C : BraidedFusionCategory.{v,u})
     (i : Fin (rank C)) : ℂ := by
-  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   exact Classical.choose (isomorphisms_scalar (k := ℂ)
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
@@ -35,7 +34,6 @@ theorem fourthDualRootScalar_spec
     (i : Fin (rank C)) : fourthDualRootScalar C i ≠ 0 ∧
     (fourthDualSimpleRoot C i).hom = fourthDualRootScalar C i •
       (doubleDualIso C (simples C i)).hom :=
-  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   Classical.choose_spec (isomorphisms_scalar (k := ℂ)
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
@@ -54,9 +52,8 @@ theorem fourthDualRootNaturalIso_app_simple
   apply Iso.ext
   simp only [fourthDualRootNaturalIso, NatIso.trans_app, Iso.trans_hom,
     simpleScalarNaturalIso_app_simple]
-  change (fourthDualRootScalar C i • 𝟙 (simples C i)) ≫
-    (doubleDualIso C (simples C i)).hom = _
-  simpa using (fourthDualRootScalar_spec i).2.symm
+  erw [Linear.smul_comp, Category.id_comp]
+  exact (fourthDualRootScalar_spec i).2.symm
 
 /-- Natural transformations from the identity are determined on a family
 whose finite biproducts contain every object. -/
@@ -226,8 +223,7 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
     exact (a.hom.naturality d.hom).symm
   apply (cancel_mono (b.hom ≫ F.map b.hom)).1
   simp only [Category.assoc]
-  rw [← reassoc_of% hc, reassoc_of% hd, ← Functor.map_comp, hd, hsq]
-  exact (Category.id_comp _).symm
+  erw [← reassoc_of% hc, reassoc_of% hd, ← Functor.map_comp, hd, hsq, Category.id_comp]
 
 end PropertyF.Ground.Dimensions
 

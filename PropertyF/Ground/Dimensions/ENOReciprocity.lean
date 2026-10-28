@@ -63,6 +63,7 @@ theorem scalar_sq_eq_one_of_same_square {X : D} [HasRightDual X] [HasRightDual (
     Linear.smul_comp, Linear.comp_smul, smul_smul, one_smul] using hsq
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse dual of a natural fourth-dual square root is also a root at
 the dual object. -/
@@ -85,7 +86,6 @@ theorem rootDual_differs_by_sign (X : C.Obj)
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom =
         ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom := by
   let : Simple (Xᘁ) := simple_rightDual X
-  let : FiniteDimensional ℂ ((Xᘁ) ⟶ (Xᘁ)) := IsFusionCategory.hom_finite _ _
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
   obtain ⟨ε, _, he⟩ := isomorphisms_scalar (k := ℂ) l k
@@ -162,6 +162,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+variable {C} in
 /-- A pivotal structure whose simple dimensions and intrinsic norms are the
 FP values is spherical. -/
 theorem spherical_of_fp_dimensions_and_squaredNorms
@@ -182,6 +183,7 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i)))
     (by simpa [pow_two] using hh.symm)
 
+variable {C} in
 /-- ENO's trace-matrix bound and the root-norm identity turn global
 pseudo-unitarity into pointwise FP saturation. -/
 theorem eno_root_norm_saturation_of_pseudoUnitary
@@ -203,6 +205,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 /-- A phase-twisted natural root becomes pivotal when its scaled multiplicity
 operators are identities. -/
 def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
@@ -212,7 +215,7 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
   iso X := (rootSignTwist C c hc).app X
   naturality {_X _Y} f := (rootSignTwist C c hc).hom.naturality f
   tensor X Y := doubleDualTensor_extension C (rootSignTwist C c hc)
-    (fun i j ↦ congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C hc (hdef i j))) X Y
+    (fun i j ↦ congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects hc (hdef i j))) X Y
   unit := hunit
 
 set_option backward.isDefEq.respectTransparency false in
@@ -233,6 +236,7 @@ abbrev normalizedRootDimension (C : BraidedFusionCategory.{v,u}) (i : Fin (rank 
 variable (hinv : MultiplicityDefectsInvolutive C) (heig : ENOTraceMatrixEigenvector C)
 include hinv heig
 
+variable {C} in
 /-- Saturated root dimensions normalize every involutive multiplicity defect. -/
 theorem normalized_defects_trivial
     (hsat : ∀ i, ‖rootDimension C i‖ = fpSimple C i) :
@@ -245,9 +249,6 @@ theorem normalized_defects_trivial
   have hrnorm : ‖r‖ = 1 := by
     simp [r, q, normalizedRootDimension, Complex.norm_real, abs_of_pos (fpSimple_pos C _),
       hsat, ne_of_gt (fpSimple_pos C _)]
-  let : FiniteDimensional ℂ
-    (simples C k ⟶ simples C i ⊗ simples C j) :=
-    IsFusionCategory.hom_finite _ _
   simpa [q, r, normalizedRootDimension, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_assoc] using
     (involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm (by
       change enoTraceMatrix C i j k * r = (fusionCoeff C i j k : ℂ)
@@ -256,13 +257,14 @@ theorem normalized_defects_trivial
           (fpSimple_pos C) (fpSimple_mul C) hsat
           (fun i j k ↦ enoTraceMatrix_norm_le_fusionCoeff (hinv i j k)) heig i j k)))
 
+variable {C} in
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/
 theorem positive_spherical_of_matrix_identities
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
   classical
-  have hsat := eno_root_norm_saturation_of_pseudoUnitary C hinv heig hnorm hpu
+  have hsat := eno_root_norm_saturation_of_pseudoUnitary hinv heig hnorm hpu
   let q := normalizedRootDimension C
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero i)
@@ -271,10 +273,10 @@ theorem positive_spherical_of_matrix_identities
     simp [c, q, normalizedRootDimension, rootDimension_ne_zero]
   let unitProof := rootSignTwist_unit_of_simple_dimension C hc (by
     simp only [hvalue, fpSimple_unit, Complex.ofReal_one])
-  let p := rootPhasePivotal C c hc (normalized_defects_trivial C hinv heig hsat) unitProof
+  let p := rootPhasePivotal C c hc (normalized_defects_trivial hinv heig hsat) unitProof
   have hp (i) : pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     rw [rootPhasePivotal_dimension, hvalue]
-  exact ⟨p, spherical_of_fp_dimensions_and_squaredNorms C p hp
+  exact ⟨p, spherical_of_fp_dimensions_and_squaredNorms p hp
     (fun i ↦ by rw [hnorm i, hsat i]), hp⟩
 
 end PropertyF.Ground.Dimensions
@@ -288,6 +290,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 variable {C} in
 /-- ENO's trace reciprocity identifies the dual root dimension with the
 signed complex conjugate of the original one. -/
@@ -303,7 +306,6 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
   have hε : ε * ε = 1 := rootDualSign_sq i
   have hεstar : star ε = ε := by
     rcases mul_self_eq_one_iff.mp hε with h | h <;> simp [h]
-  let : ∀ X Y : C.Obj, FiniteDimensional ℂ (X ⟶ Y) := IsFusionCategory.hom_finite
   have hA : ∀ j k, star (A j k) = A j k := fun j k ↦ star_involution_trace (hinv i j k)
   have ht : Aᵀ *ᵥ d = (ε * d (dualIndex C i)) • d := by
     ext j

@@ -67,6 +67,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 /-- For every simple object of a genuine braided fusion category, the
 intrinsic squared norm in the target is independent of the chosen double-dual
 isomorphism. -/
@@ -74,7 +75,6 @@ theorem target_squaredNorm_choice_independent
     {X : C.Obj} [Simple X] (j : X ≅ ((Xᘁ)ᘁ)) :
     squaredNorm C X =
       unitScalar C (rightQuantumTrace j) * unitScalar C (leftQuantumTrace j) :=
-  letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   by simpa only [squaredNorm, Ground.unitScalar_eq_equiv] using
     squaredNorm_independent (Ground.unitScalarEquiv C) (doubleDualIso C X) j
 
@@ -132,12 +132,8 @@ theorem sum_sq_eq_sum_sq_iff {k : Type*} [CommRing k] [LinearOrder k] [IsStrictO
     (∑ i, (d i) ^ 2) = ∑ i, (f i) ^ 2 ↔ ∀ i, |d i| = f i := by
   rw [Finset.sum_eq_sum_iff_of_le
     (fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2)]
-  constructor
-  · intro heq i
-    apply (sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i))).mp
-    simpa only [sq_abs] using heq i (Finset.mem_univ i)
-  · intro heq i _
-    rw [← heq i, sq_abs]
+  simpa only [Finset.mem_univ, true_implies, sq_abs] using
+    (forall_congr' fun i ↦ sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i)))
 
 variable {C} in
 /-- A pseudo-unitary global dimension saturates every FP bound when the
