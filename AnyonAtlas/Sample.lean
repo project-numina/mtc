@@ -35,12 +35,12 @@ noncomputable def CyclotomicExpression.value (x : CyclotomicExpression) : ℂ :=
 example : rankOne.id = "B01-00000" ∧ rankOne.rank = 1 := by decide
 
 /-- The exported S entry agrees with the checked modular-data example. -/
-theorem rankOne_s : (((rankOne.s[0]!)[0]!).value) = MTC.ModularData.trivial.S 0 0 := by
+theorem rankOne_s : (((rankOne.s[0]!)[0]!).value) = (MTC.ModularData.trivial ℂ).S 0 0 := by
   norm_num [rankOne, CyclotomicExpression.value, CyclotomicTerm.value,
     MTC.ModularData.trivial, Matrix.one_apply]
 
 /-- The exported T entry agrees with the checked modular-data example. -/
-theorem rankOne_t : ((rankOne.t[0]!).value) = MTC.ModularData.trivial.twist 0 := by
+theorem rankOne_t : ((rankOne.t[0]!).value) = (MTC.ModularData.trivial ℂ).twist 0 := by
   norm_num [rankOne, CyclotomicExpression.value, CyclotomicTerm.value,
     MTC.ModularData.trivial]
 
