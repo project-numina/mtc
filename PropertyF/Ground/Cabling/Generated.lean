@@ -30,10 +30,9 @@ def tensorPowerTensorIso (X : C) : ∀ n m : ℕ,
           (Iso.refl X ⊗ᵢ tensorPowerTensorIso X n m))
 
 /-- Any tensor power is in the generated closure. -/
-theorem generatedBy_tensorPower (X : C) (k : ℕ) : GeneratedBy X (tensorPower X k) := by
+theorem generatedBy_tensorPower (X : C) (k : ℕ) : GeneratedBy X (tensorPower X k) :=
   let f : Fin 1 → C := fun _ => tensorPower X k
-  refine ⟨1, fun _ => k, ⟨{ i := biproduct.ι f 0, r := biproduct.π f 0, retract := ?_ }⟩⟩
-  simp [f]
+  ⟨1, fun _ => k, ⟨{ i := biproduct.ι f 0, r := biproduct.π f 0, retract := by simp [f] }⟩⟩
 
 /-- The tensor unit belongs to the generated closure, including for `X = 0`. -/
 theorem generatedBy_unit (X : C) : GeneratedBy X (𝟙_ C) :=
@@ -97,12 +96,11 @@ theorem generatedBy_biproduct {X : C} {a : ℕ} (f : Fin a → C)
 
 /-- Generated objects are closed under biproducts indexed by any finite type. -/
 theorem generatedBy_finiteBiproduct {X : C} {J : Type} [Finite J] (f : J → C)
-    (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
-  classical
+    (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) :=
   let _ : Fintype J := Fintype.ofFinite J
   let e := Fintype.equivFin J
   let g : Fin (Fintype.card J) → C := fun i => f (e.symm i)
-  exact generatedBy_of_iso (generatedBy_biproduct g (fun i => hf (e.symm i)))
+  generatedBy_of_iso (generatedBy_biproduct g (fun i => hf (e.symm i)))
     (biproduct.whiskerEquiv e (fun j => eqToIso (by simp [g])))
 
 variable [MonoidalPreadditive C]
@@ -123,15 +121,15 @@ def sumPowersTensorIso (X : C) (a b : ℕ) (k : Fin a → ℕ) (l : Fin b → �
 
 /-- The generated objects are closed under tensor product. -/
 theorem generatedBy_tensor {X Y Z : C} (hY : GeneratedBy X Y) (hZ : GeneratedBy X Z) :
-    GeneratedBy X (Y ⊗ Z) := by
-  obtain ⟨a, k, ⟨rY⟩⟩ := hY
-  obtain ⟨b, l, ⟨rZ⟩⟩ := hZ
+    GeneratedBy X (Y ⊗ Z) :=
+  let ⟨a, k, ⟨rY⟩⟩ := hY
+  let ⟨b, l, ⟨rZ⟩⟩ := hZ
   let r : Retract (Y ⊗ Z) ((⨁ fun i => tensorPower X (k i)) ⊗
       (⨁ fun j => tensorPower X (l j))) :=
     { i := rY.i ⊗ₘ rZ.i
       r := rY.r ⊗ₘ rZ.r
       retract := by rw [tensorHom_comp_tensorHom, rY.retract, rZ.retract, id_tensorHom_id] }
-  exact ⟨a * b, fun p => k (finProdFinEquiv.symm p).1 + l (finProdFinEquiv.symm p).2,
+  ⟨a * b, fun p => k (finProdFinEquiv.symm p).1 + l (finProdFinEquiv.symm p).2,
     ⟨r.trans (Retract.ofIso (sumPowersTensorIso X a b k l))⟩⟩
 /-- Tensor powers of a generated object remain generated. -/
 theorem generatedBy_tensorPower_of_generated {X Y : C} (hY : GeneratedBy X Y) :

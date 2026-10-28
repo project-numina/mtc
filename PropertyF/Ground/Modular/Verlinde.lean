@@ -26,12 +26,6 @@ open PropertyF.Ground.Dimensions
 
 namespace PropertyF.Ground.Modular
 
-/-- Normalized columns satisfy the fusion-character equations. -/
-abbrev HasVerlindeFormula {ι : Type*} [Fintype ι] {K : Type*} [DivisionSemiring K]
-    (N : FusionRules ι) (S : Matrix ι ι K) (d : ι → K) : Prop :=
-  ∀ i j y, (S i y / d y) * (S j y / d y) =
-    ∑ k, (N.coeff i j k : K) * (S k y / d y)
-
 /-- Complex automorphisms act on normalized S-matrix columns. -/
 abbrev IsGaloisColumnAction {ι : Type*} (S : Matrix ι ι ℂ) (d : ι → ℂ)
     (act : (ℂ ≃+* ℂ) →* Equiv.Perm ι) : Prop :=
@@ -94,19 +88,6 @@ theorem galois_unit_properties (hu : d u = 1)
 
 end
 
-/-- Once S-square and Verlinde are proved categorically, the corresponding
-normalized S-columns carry the genuine action of all complex automorphisms. -/
-theorem categoricalS_galois_action (C : Ground.BraidedFusionCategory)
-    (p : PivotalStructure (C := C.Obj)) (dual : Fin (rank C) → Fin (rank C))
-    (hD : globalDimension C ≠ 0)
-    (hsq : HasSSquare (categoricalS C p) dual (globalDimension C))
-    (hVerlinde : HasVerlindeFormula ⟨unitIndex C, fusionCoeff C⟩
-      (categoricalS C p) (simpleDimension C p)) :
-    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)),
-      IsGaloisColumnAction (categoricalS C p) (simpleDimension C p) act :=
-  exists_galoisLabel_of_verlinde (N := ⟨unitIndex C, fusionCoeff C⟩)
-    (simpleDimension_ne_zero C p) hD (categoricalS_symmetric C p) (categoricalS_unit C p)
-    hsq hVerlinde
 
 
 

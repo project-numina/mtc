@@ -183,9 +183,7 @@ omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [Mon
 set_option backward.isDefEq.respectTransparency false in
 /-- The two canonical overlap isomorphisms agree. -/
 theorem freshOverlapIso_eq_overlapPowerIso (X : C) (t k : ℕ) :
-    freshOverlapIso X t k =
-      (α_ (tensorPower X (overlapIndex t k + 1)) X (tensorPower X (t + 1))).symm ≪≫
-        overlapPowerIso X t k := by
+    HasOverlapCoherence X t k := by
   apply Iso.ext
   simp only [freshOverlapIso, overlapPowerIso, Iso.trans_hom, Iso.symm_hom,
     tensorIso_hom, Iso.refl_hom, tensorHom_id]

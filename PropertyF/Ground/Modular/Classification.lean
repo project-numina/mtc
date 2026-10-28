@@ -145,6 +145,12 @@ theorem characters_bijective (columns : ι → Character N)
   exact (characters_exhausted N columns b
     (fun y ↦ congrFun (coe_basisOfPiSpaceOfLinearIndependent hlin) y) χ).imp fun _ h ↦ h.symm
 
+/-- Normalized columns satisfy the fusion-character equations. -/
+abbrev HasVerlindeFormula {ι : Type*} [Fintype ι] {K : Type*} [DivisionSemiring K]
+    (N : FusionRules ι) (S : Matrix ι ι K) (d : ι → K) : Prop :=
+  ∀ i j y, (S i y / d y) * (S j y / d y) =
+    ∑ k, (N.coeff i j k : K) * (S k y / d y)
+
 /-- The square of an S-matrix is a scalar multiple of duality. -/
 abbrev HasSSquare {R : Type*} [Semiring R] (S : Matrix ι ι R) (dual : ι → ι)
     (D : R) : Prop :=
