@@ -128,13 +128,10 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
     (unitComponent C Z p.1 ▷ T) ≫ crossingSummand C Z.1 T p.1 j p.2) =
       (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
-  calc
-    _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
-      unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
-        crossingInclusion C T p.1 j p.2) := by
-      exact Finset.sum_congr rfl fun p _ => unit_block Z
-        (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
-    _ = _ := by rw [← map_sum, crossing_completeness, unitBlockLinear_id]; rfl
+  simp only [unitComponent]
+  rw [← unitBlockLinear_id (k := ℂ) Z T (simples C j), ← crossing_completeness C T j, map_sum]
+  exact Finset.sum_congr rfl fun p _ => unit_block Z
+    (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
