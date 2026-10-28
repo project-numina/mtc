@@ -18,6 +18,8 @@ Source: Author, arXiv:0000.00000, Conjecture 1
 Declaration: MTC.Conjectures.Topic.exampleConjecture
 -/
 
+public section
+
 namespace MTC.Conjectures.Topic
 
 /-- A human-readable description of the precise statement. -/

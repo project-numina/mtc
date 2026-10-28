@@ -6,3 +6,5 @@
 
 /data/
 /SEED_STATUS.md
+
+__pycache__/
