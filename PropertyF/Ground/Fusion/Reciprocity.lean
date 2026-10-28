@@ -59,48 +59,29 @@ theorem simple_of_finrank_end_eq_one (D : BraidedFusionCategory.{v,u}) {X : D.Ob
     calc
       f = 𝟙 X ≫ f := (Category.id_comp f).symm
       _ = 0 := by rw [h]; simp
-  obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
-  let V : (Σ i, Fin (m i)) → D.Obj := fun p => simples D p.1
-  have he : e.hom ≠ 0 := by
-    intro h
-    apply hid
-    simpa using (congrArg (fun t => t ≫ e.inv) h)
-  have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
-    by_contra h
-    push Not at h
-    apply he
-    apply biproduct.hom_ext
-    intro p
-    simpa using h p
-  obtain ⟨p, _⟩ := hp
-  let : Simple (V p) := simples_simple D p.1
-  let s : X ⟶ V p := e.hom ≫ biproduct.π V p
-  let t : V p ⟶ X := biproduct.ι V p ≫ e.inv
-  have hts : t ≫ s = 𝟙 (V p) := by simp [s, t, Category.assoc]
+  obtain ⟨i, s, t, _, hts⟩ := exists_simple_retract D hid
+  let : Simple (simples D i) := simples_simple D i
   obtain ⟨z, hz⟩ := (finrank_eq_one_iff_of_nonzero' (K := ℂ) (𝟙 X) hid).mp hdim (s ≫ t)
-  have hz' : z • 𝟙 (V p) = 𝟙 (V p) := by
+  have hz' : z • 𝟙 (simples D i) = 𝟙 (simples D i) := by
     simpa [Category.assoc, hts] using (congrArg (fun f => t ≫ f ≫ s) hz)
   have hz1 : z = 1 := by
-    apply smul_left_injective ℂ (id_nonzero (V p))
+    apply smul_left_injective ℂ (id_nonzero (simples D i))
     simpa using hz'
   have hst : s ≫ t = 𝟙 X := by simpa [hz1] using hz.symm
   exact Simple.of_iso ⟨s, t, hst, hts⟩
 
 /-- Duals of simple objects remain simple. -/
 theorem simple_leftDual (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X] :
-    Simple (ᘁX) := by
-  apply simple_of_finrank_end_eq_one D
-  rw [finrank_end_leftDual]
-  let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  exact CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X
+    Simple (ᘁX) :=
+  letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
+  simple_of_finrank_end_eq_one D ((finrank_end_leftDual X).trans
+    (CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X))
 
 /-- The right dual of a simple object in a braided fusion category is simple. -/
 theorem simple_rightDual (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X] :
-    Simple (Xᘁ) := by
-  let : Simple (ᘁX) := simple_leftDual D X
-  let e : (ᘁX) ≅ (Xᘁ) :=
-    leftDualIso HasLeftDual.exact (BraidedCategory.exactPairing_swap X (Xᘁ))
-  exact Simple.of_iso e.symm
+    Simple (Xᘁ) :=
+  letI : Simple (ᘁX) := simple_leftDual D X
+  Simple.of_iso (leftDualIso HasLeftDual.exact (BraidedCategory.exactPairing_swap X (Xᘁ))).symm
 
 /-- The label of the left dual of a simple representative. -/
 def dualIndex (D : BraidedFusionCategory.{v,u}) (j : Fin (rank D)) : Fin (rank D) := by
