@@ -234,14 +234,6 @@ section Append
 
 variable {A B : C} (e : A ⊗ X ≅ B)
 
-omit [BraidedCategory C] in
-/-- Appending commutes with whiskering an endomorphism on the left. -/
-theorem append_step (f : A ⟶ A) :
-  let E := (α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)
-  E.inv ≫ ((X ◁ f) ▷ X) ≫ E.hom = X ◁ (e.inv ≫ (f ▷ X) ≫ e.hom) := by
-  dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  monoidal
-
 /-- Appending a strand commutes with the first crossing. -/
 theorem append_first_two :
   let E := (α_ X (X ⊗ A) X) ≪≫ (Iso.refl X ⊗ᵢ ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)))
@@ -307,7 +299,10 @@ theorem addRightAut_generator {n : ℕ} (i : Fin (n+1)) :
     simp only [Fin.succ_mk, Fin.castSucc_mk, braidGenerator, tensorIso_hom, Iso.refl_hom, id_tensorHom]
     change (appendIso X (n+3)).inv ≫ ((X ◁ (braidGenerator X n ⟨j, hj⟩).asIso.hom) ▷ X) ≫
       (appendIso X (n+3)).hom = X ◁ (braidGenerator X (n+1) (⟨j, hj⟩ : Fin (n+1)).castSucc).asIso.hom
-    rw [appendIso_succ X (n+2), append_step, h]
+    rw [← h, appendIso_succ X (n + 2)]
+    dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom,
+      Iso.refl_inv]
+    monoidal
 
 /-- Appending one identity strand on the right maps the actual braid image to
 the larger actual braid image. -/
