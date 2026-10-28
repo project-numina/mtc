@@ -117,7 +117,7 @@ theorem crossingCandidate_unit_summand (X : C.Obj) (i : Fin (rank C)) :
     (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (V i)).hom ≫ (λ_ (V i)).inv ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) := by
   simp only [crossingCandidate_on_summand, crossingSummand]
-  rw [Finset.sum_eq_single i]
+  rw [Finset.sum_eq_single_of_mem i (Finset.mem_univ i)]
   · let : Unique (crossingIndex C (𝟙_ C.Obj) i i) := by
       simpa only [crossingIndex, unit_crossing_finrank, ↓reduceIte] using
         (inferInstance : Unique (Fin 1))
@@ -131,8 +131,7 @@ theorem crossingCandidate_unit_summand (X : C.Obj) (i : Fin (rank C)) :
     let : IsEmpty (crossingIndex C (𝟙_ C.Obj) i j) := by
       simpa only [crossingIndex, unit_crossing_finrank, Ne.symm hne, ↓reduceIte] using
         (inferInstance : IsEmpty (Fin 0))
-    exact Finset.sum_eq_zero fun a _ => isEmptyElim a
-  · exact fun hi => (hi (Finset.mem_univ i)).elim
+    exact Fintype.sum_empty _
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The explicit induction crossing is normalized on the tensor unit. -/
