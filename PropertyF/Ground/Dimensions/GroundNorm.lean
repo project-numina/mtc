@@ -52,12 +52,10 @@ theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional k (X ⟶ X
     scalar (rightQuantumTrace j) * scalar (leftQuantumTrace j) =
       scalar (rightQuantumTrace l) * scalar (leftQuantumTrace l) := by
   obtain ⟨c, hc, hhom, hinv⟩ := isomorphisms_scalar (k := k) j l
-  have hr : rightQuantumTrace l = c • rightQuantumTrace j :=
-    rightQuantumTrace_smul_hom hhom
   have hl : leftQuantumTrace l = c⁻¹ • leftQuantumTrace j := by
     apply End.homEquiv.injective
     simp [leftQuantumTrace, hinv, tensorHom_def]
-  rw [hr, hl, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
+  rw [rightQuantumTrace_smul_hom hhom, hl, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
   field_simp
 
 end PropertyF.Ground.Dimensions
@@ -109,11 +107,9 @@ theorem target_squaredNorm_iso
     squaredNorm C X = squaredNorm C Y := by
   let j := doubleDualIso C X
   let k : Y ≅ (Yᘁ)ᘁ := e.symm ≪≫ j ≪≫ rightDualIsoMap (rightDualIsoMap e)
-  have hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ := by
-    simp [k, rightDualIsoMap]
-  have h := quantumTraces_iso e hnat
+  obtain ⟨hr, hl⟩ := quantumTraces_iso e (j := j) (k := k) (by simp [k, rightDualIsoMap])
   rw [target_squaredNorm_choice_independent C j,
-      target_squaredNorm_choice_independent C k, h.1, h.2]
+      target_squaredNorm_choice_independent C k, hr, hl]
 
 end PropertyF.Ground.Dimensions
 

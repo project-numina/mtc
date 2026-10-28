@@ -105,16 +105,15 @@ theorem forget_trace_of_pivotal_component
   let e' := forgetDualIso (Zᘁ)
   let u : Z.1 ⟶ ((Zᘁ)ᘁ).1 := (pZ.iso Z).hom.f
   have htrans : u ≫ e'.hom = (p.iso Z.1).hom ≫ (e.homᘁ) := by
-    change u ≫ e'.hom = (p.iso Z.1).hom ≫ (rightDualIsoMap e.symm).inv
     apply (Iso.eq_comp_inv (rightDualIsoMap e.symm)).2
     simpa [PivotalCompatibleAt, forgetDoubleDualIso, rightDualIsoMap,
       e, e', u, Category.assoc] using hcompat
-  have heval := rightDualIso_evaluation (forgetPairing (Zᘁ)) HasRightDual.exact
-  change (e'.hom ▷ ((Zᘁ).1)) ≫ ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) = (ε_ (Zᘁ) ((Zᘁ)ᘁ)).f at heval
-  have ht := trace_change_rightDual (forgetPairing Z) HasRightDual.exact (p.iso Z.1).hom
-  change (η_ Z (Zᘁ)).f ≫ (((p.iso Z.1).hom ≫ (e.homᘁ)) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
+  have heval : (e'.hom ▷ ((Zᘁ).1)) ≫ ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) = (ε_ (Zᘁ) ((Zᘁ)ᘁ)).f :=
+    rightDualIso_evaluation (forgetPairing (Zᘁ)) HasRightDual.exact
+  have ht : (η_ Z (Zᘁ)).f ≫ (((p.iso Z.1).hom ≫ (e.homᘁ)) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
       ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) =
-    η_ Z.1 (Z.1ᘁ) ≫ ((p.iso Z.1).hom ⊗ₘ 𝟙 (Z.1ᘁ)) ≫ ε_ (Z.1ᘁ) ((Z.1ᘁ)ᘁ) at ht
+    η_ Z.1 (Z.1ᘁ) ≫ ((p.iso Z.1).hom ⊗ₘ 𝟙 (Z.1ᘁ)) ≫ ε_ (Z.1ᘁ) ((Z.1ᘁ)ᘁ) :=
+    trace_change_rightDual (forgetPairing Z) HasRightDual.exact (p.iso Z.1).hom
   have hn : (pZ.rightTrace (𝟙 Z)).asHom.f =
       (η_ Z (Zᘁ)).f ≫ ((u ≫ e'.hom) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
         ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) := by
@@ -141,14 +140,14 @@ theorem center_fusion_of_compatible_pivotal {p : PivotalStructure (C := C.Obj)}
   change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
     (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht
   have hbase : p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj))) = 0 :=
-    End.ext (by rw [← ht, hz]; rfl)
+    End.ext (ht.symm.trans (congrArg (fun a => a.asHom.f) hz))
   have hd : pivotalDimension C p (underlying C (𝟙_ C.Obj)) =
       (globalFPDimension C : ℂ) := by
     rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
   change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
   rw [hbase] at hd
-  have hne : (globalFPDimension C : ℂ) ≠ 0 := by
-    exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
+  have hne : (globalFPDimension C : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr
+    (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
   apply hne
   simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
 

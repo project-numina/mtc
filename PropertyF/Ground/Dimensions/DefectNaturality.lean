@@ -23,24 +23,19 @@ theorem rootTensorIso_natural
     {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y') :
     (f ⊗ₘ g) ≫ (rootTensorIso C X' Y').hom =
       (rootTensorIso C X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) := by
-  have hf : f ≫ ((fourthDualRootNaturalIso C).app X').hom =
-      ((fourthDualRootNaturalIso C).app X).hom ≫ ((fᘁ)ᘁ) :=
-    (fourthDualRootNaturalIso C).hom.naturality f
-  have hg : g ≫ ((fourthDualRootNaturalIso C).app Y').hom =
-      ((fourthDualRootNaturalIso C).app Y).hom ≫ ((gᘁ)ᘁ) :=
-    (fourthDualRootNaturalIso C).hom.naturality g
+  have hn {A B : C.Obj} (h : A ⟶ B) :
+      h ≫ ((fourthDualRootNaturalIso C).app B).hom =
+        ((fourthDualRootNaturalIso C).app A).hom ≫ ((hᘁ)ᘁ) :=
+    (fourthDualRootNaturalIso C).hom.naturality h
   simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom]
   rw [Category.assoc, ← doubleDualTensorIso_natural, ← Category.assoc,
-    ← Category.assoc, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom, hf, hg]
+    ← Category.assoc, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom, hn f, hn g]
 
 /-- The multiplicativity defect is natural in both variables. -/
 theorem rootTensorDefect_natural
     {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y') :
     (f ⊗ₘ g) ≫ (rootTensorDefect C X' Y').hom =
       (rootTensorDefect C X Y).hom ≫ (f ⊗ₘ g) := by
-  have hni : (((f ⊗ₘ g)ᘁ)ᘁ) ≫ (rootTensorIso C X' Y').inv =
-      (rootTensorIso C X Y).inv ≫ (f ⊗ₘ g) :=
-    (CommSq.vert_inv (CommSq.mk (rootTensorIso_natural C f g))).w
   have ha : (f ⊗ₘ g) ≫ ((fourthDualRootNaturalIso C).app (X' ⊗ Y')).hom =
       ((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) :=
     (fourthDualRootNaturalIso C).hom.naturality (f ⊗ₘ g)
@@ -48,7 +43,8 @@ theorem rootTensorDefect_natural
         (rootTensorIso C X' Y').inv) =
       (((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (rootTensorIso C X Y).inv) ≫ (f ⊗ₘ g)
   dsimp only [doubleDualFunctor] at ha ⊢
-  rw [← Category.assoc, ha, Category.assoc, hni, Category.assoc]
+  rw [← Category.assoc, ha, Category.assoc,
+    (CommSq.vert_inv (CommSq.mk (rootTensorIso_natural C f g))).w, Category.assoc]
 
 
 end PropertyF.Ground.Dimensions

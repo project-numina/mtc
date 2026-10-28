@@ -136,7 +136,7 @@ theorem end_one_ne_zero_of_pivotalDimension_ne_zero {X : C.Obj}
     (h : pivotalDimension C p X ≠ 0) :
     (1 : End X) ≠ 0 := fun hzero => h (by
   simp only [pivotalDimension, unitScalar_eq_equiv, ← End.one_asHom, hzero, End.zero_asHom,
-    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear p _).map_zero, map_zero])
+    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear (k := ℂ) p _).map_zero, map_zero])
 
 /-- A scalar double self-braiding of finite order has unit-modulus scalar,
 so the two real dimensions have equal absolute value. -/
