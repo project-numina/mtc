@@ -109,17 +109,17 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
 theorem center_cokernel_measure_lt {S W : 𝒵}
     (p : S ⟶ W) (hp : p ≠ 0) :
-    Module.finrank ℂ ((PropertyF.Ground.Centre.centerCokernel p).1 ⟶
-      (PropertyF.Ground.Centre.centerCokernel p).1) < Module.finrank ℂ (W.1 ⟶ W.1) := by
-  let Q := PropertyF.Ground.Centre.centerCokernel p
-  let q : W.1 ⟶ Q.1 := (PropertyF.Ground.Centre.centerCokernelπ p).f
+    Module.finrank ℂ ((Centre.centerCokernel p).1 ⟶ (Centre.centerCokernel p).1) <
+      Module.finrank ℂ (W.1 ⟶ W.1) := by
+  let Q := Centre.centerCokernel p
+  let q : W.1 ⟶ Q.1 := (Centre.centerCokernelπ p).f
   have : Epi q := by
     change Epi (cokernel.π p.f)
     infer_instance
   let : IsSplitEpi q := epi_splits C q
   let : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
   exact finrank_end_lt_of_split_epi p.f q (fun h => hp (by ext; exact h))
-    (congrArg Center.Hom.f (PropertyF.Ground.Centre.centerCokernel_condition p))
+    (congrArg Center.Hom.f (Centre.centerCokernel_condition p))
 
 /-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
 private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]
@@ -158,16 +158,16 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
       let p : (P : 𝒵) ⟶ W := P.arrow
       have hp : p ≠ 0 := fun h0 =>
         id_nonzero _ ((cancel_mono p).1 (by simp [h0]))
-      let Q := PropertyF.Ground.Centre.centerCokernel p
-      let q : W ⟶ Q := PropertyF.Ground.Centre.centerCokernelπ p
+      let Q := Centre.centerCokernel p
+      let q : W ⟶ Q := Centre.centerCokernelπ p
       obtain ⟨L, hL⟩ := ih Q (center_cokernel_measure_lt C p hp)
       refine ⟨(P : 𝒵) :: L, ?_⟩
       intro S hS ⟨t, ht⟩
       let : Simple S := hS
       let : Mono t := ht
       rcases simple_mono_cokernel p t q
-          (PropertyF.Ground.Centre.centerCokernel_condition p)
-          (PropertyF.Ground.Centre.centerCokernelIsColimit p) with hSP | hmono
+          (Centre.centerCokernel_condition p)
+          (Centre.centerCokernelIsColimit p) with hSP | hmono
       · exact ⟨P, by simp, hSP⟩
       · let : Mono (t ≫ q) := hmono
         obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, inferInstance⟩
