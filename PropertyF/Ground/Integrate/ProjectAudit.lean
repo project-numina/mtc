@@ -214,7 +214,7 @@ run_cmd do
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
   for n in #[``PropertyF.Ground.TargetStatement,
       ``PropertyF.Ground.unit_algebraMap_bijective,
-      ``PropertyF.Ground.weaklyIntegral_of_globalFPDimension_fixed,
+      ``PropertyF.Ground.weaklyIntegral_of_galois_fixed,
       ``PropertyF.Ground.Modular.conjugate_propertyF,
       ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
       ``PropertyF.Ground.positive_ratio_of_galois_square,
