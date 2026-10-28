@@ -35,10 +35,8 @@ theorem rightTraceWith_cyclic {X Y : C} [HasRightDual X] [HasRightDual Y]
     (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
     rightTraceWith j (f ≫ g) = rightTraceWith k (g ≫ f) := by
   apply End.homEquiv.injective
-  change η_ X (Xᘁ) ≫ (((f ≫ g) ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
-    η_ Y (Yᘁ) ≫ (((g ≫ f) ≫ k.hom) ⊗ₘ 𝟙 (Yᘁ)) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ)
-  simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight,
-    Category.assoc]
+  simp only [rightTraceWith, End.homEquiv_apply, tensorHom_def, whiskerLeft_id,
+    Category.comp_id, comp_whiskerRight, Category.assoc]
   rw [← coevaluation_comp_rightAdjointMate_assoc, whisker_exchange_assoc g (fᘁ),
     whisker_exchange_assoc j.hom (fᘁ), ← rightAdjointMate_comp_evaluation,
     ← comp_whiskerRight_assoc j.hom (fᘁᘁ), ← hnat, comp_whiskerRight_assoc]

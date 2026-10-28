@@ -271,15 +271,10 @@ tensors of maps from chosen simple objects. -/
 theorem tensor_simples_hom_ext {X Y Z : C.Obj} {f g : X ⊗ Y ⟶ Z}
     (h : ∀ {i j} (sx : simples C i ⟶ X) (sy : simples C j ⟶ Y),
       (sx ⊗ₘ sy) ≫ f = (sx ⊗ₘ sy) ≫ g) : f = g := by
-  let ex := simpleDecomposition C X
-  let ey := simpleDecomposition C Y
-  let V := simplePiecesObject C X
-  let W := simplePiecesObject C Y
-  apply (cancel_epi (ex.symm ⊗ᵢ ey.symm).hom).1
-  apply tensorBiproduct_hom_ext
-  intro i j
-  simpa [ex, ey, V, W, tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
-    h (biproduct.ι V i ≫ ex.inv) (biproduct.ι W j ≫ ey.inv)
+  apply (cancel_epi ((simpleDecomposition C X).symm ⊗ᵢ (simpleDecomposition C Y).symm).hom).1
+  refine tensorBiproduct_hom_ext fun i j ↦ ?_
+  simpa [simpleInclusion, tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
+    h (simpleInclusion C X i.1 i.2) (simpleInclusion C Y j.1 j.2)
 
 
 end PropertyF.Ground.Dimensions

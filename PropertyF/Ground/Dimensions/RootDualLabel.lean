@@ -127,8 +127,7 @@ theorem trace_reciprocity_of_frobenius_defect
       rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
         (rootTensorDefect C (simples C (dualIndex C i)) (simples C j)).hom)) :
     ENOTraceMatrixReciprocity C := by
-  apply trace_reciprocity_of_intertwining C
-  intro i j k v
+  refine trace_reciprocity_of_intertwining C fun i j k v ↦ ?_
   let : Simple (simples C j) := simples_simple C j
   let P := simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)
   obtain ⟨g, rfl⟩ := P.surjective v

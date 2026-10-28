@@ -133,8 +133,7 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
         (doubleDualTensorIso (simples C i) (simples C j)).hom))
     (X Y : C.Obj) : (a.app (X ⊗ Y)).hom =
       ((a.app X).hom ⊗ₘ (a.app Y).hom) ≫ (doubleDualTensorIso X Y).hom := by
-  apply tensor_simples_hom_ext C
-  intro i j sx sy
+  refine tensor_simples_hom_ext C fun sx sy ↦ ?_
   have hn {A B : C.Obj} (f : A ⟶ B) :
       f ≫ (a.app B).hom = (a.app A).hom ≫ ((fᘁ)ᘁ) := a.hom.naturality f
   rw [hn (sx ⊗ₘ sy), hpair, Category.assoc, ← doubleDualTensorIso_natural,
