@@ -245,10 +245,9 @@ theorem leftTrace_partialTrace [Preadditive C] [Linear ℂ C]
   apply End.homEquiv.injective
   change (p.leftTrace (leftPartialTrace p f).asHom).asHom = (p.leftTrace f.asHom).asHom
   rw [leftTrace_tensor_pairing]
-  simp only [PivotalStructure.leftTrace, leftPartialTrace,
-    LinearMap.coe_mk, AddHom.coe_mk]
-  rw [ExactPairing.tensor_coevaluation, ExactPairing.tensor_evaluation]
-  simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
+  simp only [PivotalStructure.leftTrace, leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+    ExactPairing.tensor_coevaluation, ExactPairing.tensor_evaluation, tensorHom_def,
+    comp_whiskerRight, whiskerLeft_comp]
   monoidal
   simp
   simp only [← whiskerLeft_comp_assoc]
