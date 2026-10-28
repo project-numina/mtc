@@ -2,6 +2,8 @@ module
 public import PropertyF.Ground.CentreInduction.CrossingCoherence
 public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 
+open PropertyF.Ground.Dimensions
+
 /-! Duality identities for the induction counit and triangle. -/
 /-! Matrix reductions for the induction adjunction. -/
 section
@@ -117,15 +119,15 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Evaluation is normalized along an isomorphism with the tensor unit. -/
 theorem evaluation_iso_unit {A : D} (e : A ≅ 𝟙_ D) :
-    ((Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom ⊗ₘ e.hom) ≫
+    ((rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom ⊗ₘ e.hom) ≫
       (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) := by
   let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
   let p : ExactPairing (𝟙_ D) ((𝟙_ D)ᘁ) := HasRightDual.exact
   let q : ExactPairing (𝟙_ D) (𝟙_ D) := exactPairingUnit
-  simp only [Iso.trans_hom, Dimensions.rightDualIsoMap, Iso.symm_hom,
+  simp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
     tensorHom_def', comp_whiskerRight, Category.assoc]
-  rw [show Dimensions.rightDualUnitIso.hom ▷ (𝟙_ D) ≫ (ρ_ (𝟙_ D)).hom =
-    ε_ (𝟙_ D) ((𝟙_ D)ᘁ) from Dimensions.rightDualIso_evaluation p q,
+  rw [show rightDualUnitIso.hom ▷ (𝟙_ D) ≫ (ρ_ (𝟙_ D)).hom =
+    ε_ (𝟙_ D) ((𝟙_ D)ᘁ) from rightDualIso_evaluation p q,
     rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
     whiskerLeft_id, Category.id_comp]
 
@@ -134,8 +136,8 @@ set_option backward.defeqAttrib.useBackward true in
 /-- Closing the right unit isomorphism gives ordinary evaluation. -/
 theorem close_rightUnit_eval (T : D) {A : D} (e : A ≅ 𝟙_ D) :
     closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
-      (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom = ε_ T (Tᘁ) := by
-  let d := (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom
+      (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom = ε_ T (Tᘁ) := by
+  let d := (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom
   let z := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
   have h := closeFusionMap_evaluation ((T ◁ e.hom) ≫ (ρ_ T).hom)
   rw [← evaluation_iso_unit e] at h
@@ -157,14 +159,14 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The canonical unit-column crossing block contracts by evaluation. -/
 theorem crossingUnitBlock_eval (X T : D) {A : D} (e : A ≅ 𝟙_ D) :
-  let d : Aᘁ ≅ 𝟙_ D := Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso
+  let d : Aᘁ ≅ 𝟙_ D := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
   let us : (A ⊗ X) ⊗ Aᘁ ≅ X := ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
   let te : T ⊗ A ≅ T := whiskerLeftIso T e ≪≫ ρ_ T
   crossingBlock X T A te.inv te.hom ≫ (T ◁ us.hom) =
     𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
   dsimp only
-  let d : Aᘁ ⟶ 𝟙_ D := (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom
+  let d : Aᘁ ⟶ 𝟙_ D := (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom
   let q : Tᘁ ⊗ T ⟶ Aᘁ := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
   have hq : q ≫ d = ε_ T (Tᘁ) := close_rightUnit_eval T e
   simp only [crossingBlock, Iso.trans_hom, Iso.trans_inv, whiskerLeftIso_hom,
@@ -172,7 +174,6 @@ theorem crossingUnitBlock_eval (X T : D) {A : D} (e : A ≅ 𝟙_ D) :
     Category.comp_id]
   let f : A ⟶ 𝟙_ D := e.hom
   let g : 𝟙_ D ⟶ A := e.inv
-  have hgf : g ≫ f = 𝟙 (𝟙_ D) := e.inv_hom_id
   change ((α_ (T ⊗ X) (Tᘁ) T).hom ≫
     ((((ρ_ T).inv ≫ T ◁ g) ▷ X ▷ ((Tᘁ : D) ⊗ T)) ≫
       (((T ⊗ A) ⊗ X) ◁ q)) ≫
@@ -180,7 +181,7 @@ theorem crossingUnitBlock_eval (X T : D) {A : D} (e : A ≅ 𝟙_ D) :
       T ◁ (α_ A X (Aᘁ)).inv) ≫
     T ◁ (((f ▷ X ▷ (Aᘁ)) ≫ ((𝟙_ D ⊗ X) ◁ d)) ≫
       ((λ_ X).hom ▷ (𝟙_ D)) ≫ (ρ_ X).hom) = _
-  clear_value f g d q
+  clear_value d q
   calc
     _ = 𝟙 _ ⊗≫ ((((ρ_ T).inv ≫ T ◁ g) ▷ X) ▷ ((Tᘁ : D) ⊗ T)) ⊗≫
       (((((T ⊗ A) ⊗ X) ◁ q) ≫ (((T ◁ f) ▷ X) ▷ Aᘁ))) ⊗≫
@@ -195,7 +196,7 @@ theorem crossingUnitBlock_eval (X T : D) {A : D} (e : A ≅ 𝟙_ D) :
       (((T ⊗ (𝟙_ D)) ⊗ X) ◁ (q ≫ d)) ⊗≫ 𝟙 _ := by
         simp only [whiskerLeft_comp, comp_whiskerRight]
         simp [monoidalComp, Category.assoc]
-    _ = _ := by rw [hq, hgf]; simp; monoidal
+    _ = _ := by rw [hq, e.inv_hom_id]; simp; monoidal
 
 end PropertyF.Ground.CentreInduction
 

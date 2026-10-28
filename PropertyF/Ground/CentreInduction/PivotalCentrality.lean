@@ -6,6 +6,8 @@ public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 
+open PropertyF.Ground.Dimensions
+
 /-! The pivotal structure of the base lifts to the rigid centre. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
@@ -16,7 +18,7 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory 
   [RigidCategory (CategoryTheory.Center D)]
 
 /-- Transported pivotal components respect the braiding between centre objects. -/
-private theorem transported_pivotal_braiding (p : Dimensions.PivotalStructure (C := D)) (Z B : CategoryTheory.Center D) :
+private theorem transported_pivotal_braiding (p : PivotalStructure (C := D)) (Z B : CategoryTheory.Center D) :
     let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
       (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
     (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
@@ -25,26 +27,26 @@ private theorem transported_pivotal_braiding (p : Dimensions.PivotalStructure (C
   let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
     (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
   have hu (X Y : CategoryTheory.Center D) :
-      u (X ⊗ Y) = (u X ⊗ₘ u Y) ≫ (Dimensions.doubleDualTensorIso X Y).hom.f :=
+      u (X ⊗ Y) = (u X ⊗ₘ u Y) ≫ (doubleDualTensorIso X Y).hom.f :=
     (transported_pivotal_tensor p X Y).symm
   let b := (β_ Z B).hom
   have hn : b.f ≫ u (B ⊗ Z) = u (Z ⊗ B) ≫ ((bᘁ)ᘁ).f :=
     by simpa [u, Category.assoc] using transported_pivotal_natural p b
   rw [hu, hu] at hn
-  have hb := congrArg CategoryTheory.Center.Hom.f (Dimensions.doubleDualTensorIso_braiding Z B)
+  have hb := congrArg CategoryTheory.Center.Hom.f (doubleDualTensorIso_braiding Z B)
   simp only [CategoryTheory.Center.comp_f] at hb
-  change (Dimensions.doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
-    (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (Dimensions.doubleDualTensorIso B Z).hom.f at hb
+  change (doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
+    (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (doubleDualTensorIso B Z).hom.f at hb
   simp only [Category.assoc] at hn
   rw [hb] at hn
-  let : IsIso (Dimensions.doubleDualTensorIso B Z).hom.f := by
-    change IsIso ((CategoryTheory.Center.forget D).map (Dimensions.doubleDualTensorIso B Z).hom)
+  let : IsIso (doubleDualTensorIso B Z).hom.f := by
+    change IsIso ((CategoryTheory.Center.forget D).map (doubleDualTensorIso B Z).hom)
     infer_instance
-  apply (cancel_mono (Dimensions.doubleDualTensorIso B Z).hom.f).1
+  apply (cancel_mono (doubleDualTensorIso B Z).hom.f).1
   simpa [Category.assoc] using hn
 
 /-- Every transported base pivotal component is a morphism in the actual centre. -/
-theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : Dimensions.PivotalStructure (C := D)) :
+theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : PivotalStructure (C := D)) :
     PivotalComponentsCentral p := by
   intro Z T
   let F := CategoryTheory.Center.ofBraided D
