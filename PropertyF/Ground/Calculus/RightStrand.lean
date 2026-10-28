@@ -16,6 +16,17 @@ of their unitary block presentations.
 @[expose] public section
 namespace PropertyF.Ground.Calculus
 
+section UnitaryRepresentation
+
+variable {G A : Type*} [Group G] [Monoid A] [StarMul A]
+
+/-- A unitary representation sends group inversion to the adjoint. -/
+theorem unitary_representation_star_inv (ρ : G →* A)
+    (hρ : ∀ g, ρ g ∈ unitary A) (g : G) : star (ρ g) = ρ g⁻¹ :=
+  (ρ.toHomUnits g).eq_inv_of_mul_eq_one_right (Unitary.star_mul_self_of_mem (hρ g))
+
+end UnitaryRepresentation
+
 variable {A B : Type*} [Ring A] [Ring B] [Algebra ℂ A] [Algebra ℂ B]
   [StarRing A] [StarRing B] [StarModule ℂ A] [StarModule ℂ B]
 
@@ -29,6 +40,22 @@ theorem map_star_of_mem_span (φ : A →ₐ[ℂ] B) (S : Set A)
     (fun _ _ _ _ hx hy => by simp [hx, hy])
     (fun _ _ _ hx => by simp [star_smul, hx]) hx
 
+variable {G : Type*} [Group G]
+
+/-- An algebra map intertwining unitary representations is a star map when
+the source representation spans the source algebra. -/
+theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
+    (hspan : Submodule.span ℂ (Set.range ρ) = ⊤)
+    (hρ : ∀ g, ρ g ∈ unitary A) (hσ : ∀ g, σ g ∈ unitary B)
+    (φ : A →ₐ[ℂ] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
+    φ (star x) = star (φ x) := by
+  apply map_star_of_mem_span φ (Set.range ρ)
+  · rintro _ ⟨g, rfl⟩
+    rw [unitary_representation_star_inv ρ hρ, hφ, hφ,
+      unitary_representation_star_inv σ hσ]
+  · rw [hspan]
+    exact Submodule.mem_top
+
 end PropertyF.Ground.Calculus
 
 /-! Compatibility of unitary block realizations under maps of group images. -/
@@ -39,12 +66,6 @@ namespace PropertyF.Ground.Calculus
 variable {G H A B : Type*} [Group G] [Group H]
   [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B]
 
-/-- A unitary block representation sends group inversion to conjugate transpose. -/
-theorem unitary_block_star_inv {B : Blocks} (ρ : G →* B.Algebra)
-    (hu : ∀ g, B.IsUnitary (ρ g)) (g : G) :
-    star (ρ g) = ρ g⁻¹ :=
-  funext fun i => (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g).eq_inv_of_mul_eq_one_right
-    (Matrix.mem_unitaryGroup_iff'.mp (hu g i))
 
 section PresentedGroup
 
@@ -61,20 +82,6 @@ theorem presented_group_span :
   exact LinearMap.range_eq_top.mpr e.surjective
 
 end PresentedGroup
-
-/-- An algebra map intertwining unitary representations is a star map when
-its source representation spans the source algebra. -/
-theorem unitary_intertwiner_map_star {P Q : Blocks}
-    (ρ : G →* P.Algebra) (σ : G →* Q.Algebra)
-    (hspan : Submodule.span ℂ (Set.range ρ) = ⊤)
-    (hρ : ∀ g, P.IsUnitary (ρ g)) (hσ : ∀ g, Q.IsUnitary (σ g))
-    (φ : P.Algebra →ₐ[ℂ] Q.Algebra) (hφ : ∀ g, φ (ρ g) = σ g)
-    (x : P.Algebra) : φ (star x) = star (φ x) := by
-  apply map_star_of_mem_span φ (Set.range ρ)
-  · rintro _ ⟨g, rfl⟩
-    rw [unitary_block_star_inv ρ hρ, hφ, hφ, unitary_block_star_inv σ hσ]
-  · rw [hspan]
-    exact Submodule.mem_top
 
 
 end PropertyF.Ground.Calculus
@@ -183,8 +190,9 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
       (e.toMonoidHom.comp (groupInImage (braidEndRepresentation X n)))
       ((f.toMonoidHom.comp (groupInImage (braidEndRepresentation X (n + k)))).comp
         (addLeftStrands X n k))
-      (presented_group_span (braidEndRepresentation X n) e) he
-      (fun g => hf (addLeftStrands X n k g))
+      (presented_group_span (braidEndRepresentation X n) e)
+      (fun g => Pi.mem_unitary_iff.mpr (he g))
+      (fun g => Pi.mem_unitary_iff.mpr (hf (addLeftStrands X n k g)))
       (f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom))
     intro g
     change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
@@ -371,8 +379,9 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
       (e.toMonoidHom.comp (groupInImage (braidEndRepresentation X n)))
       ((f.toMonoidHom.comp (groupInImage (braidEndRepresentation X (n + k)))).comp
         (addRightStrands X n k))
-      (presented_group_span (braidEndRepresentation X n) e) he
-      (fun g => hf (addRightStrands X n k g))
+      (presented_group_span (braidEndRepresentation X n) e)
+      (fun g => Pi.mem_unitary_iff.mpr (he g))
+      (fun g => Pi.mem_unitary_iff.mpr (hf (addRightStrands X n k g)))
       (f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom))
     intro g
     change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
