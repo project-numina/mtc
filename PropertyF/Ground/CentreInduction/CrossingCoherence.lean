@@ -9,13 +9,13 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u}) (X T : C.Obj)
+variable (C : BraidedFusionCategory.{v,u}) (X T U : C.Obj) (i j : Fin (rank C))
 -- Chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The matrix coefficients of the actual induction crossing. -/
-theorem crossingCandidate_matrix (i j : Fin (rank C)) :
+theorem crossingCandidate_matrix :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ biproduct.π V j) =
     ∑ a, crossingSummand C X T i j a := by
@@ -24,7 +24,7 @@ theorem crossingCandidate_matrix (i j : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossings on a summand expand into nested fusion blocks. -/
-theorem crossingComposite_summand (U : C.Obj) (i : Fin (rank C)) :
+theorem crossingComposite_summand :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
     ∑ k, ∑ a : crossingIndex C T i k, ∑ j, ∑ b : crossingIndex C U k j,
@@ -58,7 +58,7 @@ theorem crossingComposite_summand (U : C.Obj) (i : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The induction crossing obeys the half-braiding tensor law. -/
-theorem crossingCandidate_tensor (U : C.Obj) :
+theorem crossingCandidate_tensor :
     crossingCandidate C X (T ⊗ U) = crossingTensorComposite C X T U := by
   refine rightDistributor_ext_left (f := inductionSummand C X) fun i => ?_
   rw [crossingCandidate_on_summand, crossingComposite_summand]

@@ -111,16 +111,18 @@ theorem crossingBlock_unit_of_split [HasRightDual S] [Simple S] [FiniteDimension
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv :=
   (crossingBlock_of_simple_split (k := k) X (λ_ S).symm g f h).trans (crossingBlock_unit X S)
 
+variable (X : C.Obj) (i j : Fin (rank C))
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-strand decomposition has one diagonal simple summand. -/
-theorem unit_crossing_finrank (i j : Fin (rank C)) :
+theorem unit_crossing_finrank :
     Module.finrank ℂ (Sᶜ i ⟶ (𝟙_ C.Obj) ⊗ Sᶜ j) = if i = j then 1 else 0 :=
   (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (λ_ (Sᶜ j))).finrank_eq.trans
     (finrank_simples_hom C i j)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit crossing on each induction summand is the canonical unitor map. -/
-theorem crossingCandidate_unit_summand (X : C.Obj) (i : Fin (rank C)) :
+theorem crossingCandidate_unit_summand :
     let V := inductionSummand C X
     (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (V i)).hom ≫ (λ_ (V i)).inv ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) := by
@@ -143,7 +145,7 @@ theorem crossingCandidate_unit_summand (X : C.Obj) (i : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The explicit induction crossing is normalized on the tensor unit. -/
-theorem crossingCandidate_unit (X : C.Obj) :
+theorem crossingCandidate_unit :
     crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv :=
   rightDistributor_ext_left (f := inductionSummand C X) fun i => by
