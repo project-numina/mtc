@@ -51,7 +51,7 @@ theorem algebraAverage_idempotent (ρ : G →* A) :
 def permutationSign (k : Type*) [CommRing k] (n : ℕ) : Equiv.Perm (Fin n) →* kˣ :=
   (Units.map (Int.castRingHom k)).comp Equiv.Perm.sign
 
-variable (n : ℕ) [Invertible (Fintype.card (Equiv.Perm (Fin n)) : k)]
+variable {n : ℕ} [Invertible (Fintype.card (Equiv.Perm (Fin n)) : k)]
 
 /-- The alternating projector associated with a symmetric-group action. -/
 def alternatingProjector (ρ : Equiv.Perm (Fin n) →* A) : A :=
@@ -59,13 +59,13 @@ def alternatingProjector (ρ : Equiv.Perm (Fin n) →* A) : A :=
 
 /-- The alternating projector is idempotent before making any splitting assumption. -/
 theorem alternatingProjector_idempotent (ρ : Equiv.Perm (Fin n) →* A) :
-    alternatingProjector (k := k) n ρ * alternatingProjector (k := k) n ρ =
-      alternatingProjector (k := k) n ρ :=
+    alternatingProjector (k := k) ρ * alternatingProjector (k := k) ρ =
+      alternatingProjector (k := k) ρ :=
   algebraAverage_idempotent _
 
 /-- The alternating projector is the normalized signed sum of permutation operators. -/
 theorem alternatingProjector_eq_sum (ρ : Equiv.Perm (Fin n) →* A) :
-    alternatingProjector (k := k) n ρ =
+    alternatingProjector (k := k) ρ =
       ⅟(Fintype.card (Equiv.Perm (Fin n)) : k) •
         ∑ σ : Equiv.Perm (Fin n), ((permutationSign k n σ : k) • ρ σ) :=
   algebraAverage_eq_sum _
@@ -81,14 +81,14 @@ namespace PropertyF.Ground.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
   [IsIdempotentComplete C]
-variable (X : C) (n : ℕ) [Invertible (Fintype.card (Equiv.Perm (Fin n)) : ℂ)]
+variable {X : C} {n : ℕ} [Invertible (Fintype.card (Equiv.Perm (Fin n)) : ℂ)]
 
 /-- A symmetric-group action on an object has a split alternating projector. -/
 theorem alternatingProjector_splits (ρ : Equiv.Perm (Fin n) →* End X) :
     ∃ (Y : C) (i : Y ⟶ X) (r : X ⟶ Y),
-      i ≫ r = 𝟙 Y ∧ r ≫ i = (alternatingProjector (k := ℂ) n ρ).asHom :=
-  IsIdempotentComplete.idempotents_split X (alternatingProjector (k := ℂ) n ρ).asHom
-    (by simpa only [End.mul_asHom] using congrArg End.asHom (alternatingProjector_idempotent (k := ℂ) n ρ))
+      i ≫ r = 𝟙 Y ∧ r ≫ i = (alternatingProjector (k := ℂ) ρ).asHom :=
+  IsIdempotentComplete.idempotents_split X (alternatingProjector (k := ℂ) ρ).asHom
+    (by simpa only [End.mul_asHom] using congrArg End.asHom (alternatingProjector_idempotent (k := ℂ) ρ))
 
 variable [MonoidalCategory C] [RightRigidCategory C]
   [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -97,8 +97,8 @@ omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The trace of the alternating projector is the dimension of its split image. -/
 theorem alternatingProjector_trace (ρ : Equiv.Perm (Fin n) →* End X)
     (p : PropertyF.Ground.Dimensions.PivotalStructure (C := C)) :
-    ∃ Y : C, p.rightTrace ((alternatingProjector (k := ℂ) n ρ).asHom) = p.rightTrace (𝟙 Y) :=
-  match alternatingProjector_splits X n ρ with
+    ∃ Y : C, p.rightTrace ((alternatingProjector (k := ℂ) ρ).asHom) = p.rightTrace (𝟙 Y) :=
+  match alternatingProjector_splits ρ with
   | ⟨Y, i, r, hir, hri⟩ => ⟨Y, by rw [← hri, p.rightTrace_cyclic, hir]⟩
 
 end PropertyF.Ground.Centre

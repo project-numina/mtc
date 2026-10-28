@@ -89,14 +89,14 @@ theorem integral_of_alternating_projector_trace (C : BraidedFusionCategory.{v,u}
     (hTrace : ∀ n : ℕ, ∃ ρ : Equiv.Perm (Fin n) →* End (tensorPower X n),
       letI := permutationCardInvertible n
       (Nat.factorial n : ℂ) * unitScalar C
-        (p.rightTrace ((Centre.alternatingProjector (k := ℂ) n ρ).asHom)) =
+        (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
           ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
     ∃ m : ℕ, fpDimension C X = m := by
   apply integral_of_pivotal_exterior_dimensions C p hdim X
   intro n
   obtain ⟨ρ, hρ⟩ := hTrace n
   letI := permutationCardInvertible n
-  obtain ⟨Y, hY⟩ := Centre.alternatingProjector_trace (tensorPower X n) n ρ p
+  obtain ⟨Y, hY⟩ := Centre.alternatingProjector_trace ρ p
   refine ⟨Y, ?_⟩
   unfold Dimensions.pivotalDimension
   rw [← hY]
@@ -109,12 +109,12 @@ theorem alternatingProjector_scalar_trace (C : BraidedFusionCategory.{v,u})
     (ρ : Equiv.Perm (Fin n) →* End X) :
     letI := permutationCardInvertible n
     (Nat.factorial n : ℂ) * unitScalar C
-      (p.rightTrace ((Centre.alternatingProjector (k := ℂ) n ρ).asHom)) =
+      (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
       ∑ σ : Equiv.Perm (Fin n), (Centre.permutationSign ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom) := by
   letI := permutationCardInvertible n
   -- Both statements concern the same projector; its trace is the signed average.
-  have ht : p.rightTrace ((Centre.alternatingProjector (k := ℂ) n ρ).asHom) =
+  have ht : p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom) =
       ⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
         ∑ σ : Equiv.Perm (Fin n),
           (Centre.permutationSign ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by

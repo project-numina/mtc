@@ -29,7 +29,7 @@ theorem reverse_braidGenerator_zero (X : C) (n : ℕ) :
     tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv, Category.assoc]
 
 /-- A reversed braid generator is inverted when the index is shifted. -/
-theorem reverse_braidGenerator_succ (X : C) (n : ℕ) {i : Fin (n + 1)}
+theorem reverse_braidGenerator_succ {X : C} {n : ℕ} {i : Fin (n + 1)}
     (h : @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n i =
       (braidGenerator X n i)⁻¹) :
     @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X (n + 1) i.succ =
@@ -45,12 +45,12 @@ theorem reverse_braidGenerator_succ (X : C) (n : ℕ) {i : Fin (n + 1)}
     (Iso.refl X ⊗ᵢ (braidGenerator X n ⟨i, hi⟩).asIso).inv
   rw [tensorIso_inv, Iso.refl_inv]
 
-theorem reverse_braidGenerator (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
+theorem reverse_braidGenerator (X : C) {n : ℕ} (i : Fin (n + 1)) :
     @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n i =
       (braidGenerator X n i)⁻¹ :=
   Nat.rec (Fin.cases (reverse_braidGenerator_zero X 0) (fun j ↦ Fin.elim0 j))
     (fun n ih i ↦ Fin.cases (reverse_braidGenerator_zero X (n + 1))
-      (fun j ↦ reverse_braidGenerator_succ X n (ih j)) i)
+      (fun j ↦ reverse_braidGenerator_succ (ih j)) i) n i
 
 end PropertyF.Ground.Centre
 
@@ -99,15 +99,15 @@ def sndBraidMap (X Y : C) (n : ℕ) :
   @Modular.braidAutMap (C × C) _ _ (mixedBraiding (C := C)) C _ _
     (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n
 
-theorem fstBraidMap_generator (X Y : C) (n : ℕ) (i : Fin (n+1)) :
+theorem fstBraidMap_generator (X Y : C) {n : ℕ} (i : Fin (n+1)) :
     fstBraidMap X Y n (braidGenerator (X,Y) n i) = braidGenerator X n i :=
   Modular.braidAutMap_generator (CategoryTheory.Prod.fst C C) (X,Y) n i
 
-theorem sndBraidMap_generator (X Y : C) (n : ℕ) (i : Fin (n+1)) :
+theorem sndBraidMap_generator (X Y : C) {n : ℕ} (i : Fin (n+1)) :
     sndBraidMap X Y n (braidGenerator (X,Y) n i) = (braidGenerator Y n i)⁻¹ :=
   (@Modular.braidAutMap_generator (C × C) _ _ (mixedBraiding (C := C)) C _ _
     (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n i).trans
-      (reverse_braidGenerator Y n i)
+      (reverse_braidGenerator Y i)
 
 /-- The two projected automorphisms jointly detect an automorphism of a tensor power. -/
 theorem projections_jointly_injective (X Y : C) (n : ℕ) :
