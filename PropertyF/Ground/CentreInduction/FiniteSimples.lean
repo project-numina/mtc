@@ -122,10 +122,9 @@ theorem center_cokernel_measure_lt {S W : 𝒵}
     (congrArg Center.Hom.f (Centre.centerCokernel_condition p))
 
 /-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
-private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]
-    {P W Q S : D} [Simple P] [Simple S] (p : P ⟶ W) [Mono p]
-    (t : S ⟶ W) [Mono t] (q : W ⟶ Q) (hpq : p ≫ q = 0)
-    (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
+private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D] {P W Q S : D}
+    [Simple P] [Simple S] (p : P ⟶ W) [Mono p] (t : S ⟶ W) [Mono t] (q : W ⟶ Q)
+    (hpq : p ≫ q = 0) (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
     Nonempty (S ≅ P) ∨ Mono (t ≫ q) := by
   by_cases hz : t ≫ q = 0
   · obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift'

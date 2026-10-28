@@ -79,8 +79,7 @@ theorem drinfeld_inv_dual_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj)
       ((doubleDualIso C ((X ⊗ Y)ᘁ)).invᘁ) =
     Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
       (((doubleDualIso C (Xᘁ)).invᘁ) ⊗ₘ ((doubleDualIso C (Yᘁ)).invᘁ)) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
+        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫ (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
   let t := rightDualTensorIso X Y
   let f := (doubleDualIso C (Yᘁ)).inv
   let g := (doubleDualIso C (Xᘁ)).inv

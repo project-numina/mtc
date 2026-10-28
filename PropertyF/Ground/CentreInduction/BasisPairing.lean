@@ -18,11 +18,9 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The perfect pairing is natural for maps between different underlying
 objects: precomposition corresponds to dualizing postcomposition. -/
-theorem simpleHomPairingEquiv_natural
-    (i : Fin (rank C)) {V W : C.Obj} (q : V ⟶ W) (f : W ⟶ simples C i) :
-    simpleHomPairingEquiv C i V (q ≫ f) =
-      Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q)
-        (simpleHomPairingEquiv C i W f) := by
+theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) {V W : C.Obj} (q : V ⟶ W)
+    (f : W ⟶ simples C i) : simpleHomPairingEquiv C i V (q ≫ f) =
+    Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv C i W f) := by
   ext g
   simp [simpleHomPairingEquiv, simpleHomPairing,
     Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
@@ -59,9 +57,8 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
   split_ifs <;> simp <;> exact End.ext rfl
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
-theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V ⟶ W)
-    {E : Type*} [AddCommGroup E] [Module ℂ E]
-    (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
+theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V ⟶ W) {E : Type*}
+    [AddCommGroup E] [Module ℂ E] (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
   let A := simpleInclusionBasis C V i

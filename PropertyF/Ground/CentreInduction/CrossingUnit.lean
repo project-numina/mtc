@@ -114,8 +114,7 @@ theorem crossingBlock_of_simple_split (X : D) {T R S : D} [Simple R]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- For a simple object, any splitting gives the same unit crossing block. -/
-theorem crossingBlock_unit_of_split (X : D) {S : D} [Simple S]
-    [FiniteDimensional ℂ (S ⟶ S)]
+theorem crossingBlock_unit_of_split (X : D) {S : D} [Simple S] [FiniteDimensional ℂ (S ⟶ S)]
     (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock X (𝟙_ D) S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv :=
