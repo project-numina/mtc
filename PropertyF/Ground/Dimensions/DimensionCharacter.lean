@@ -141,7 +141,7 @@ theorem isSpherical_iff_simple_dimensions
       simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f))
     have hright : p.rightTrace f = p.rightTrace g := by
       simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f))
-    obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple
+    obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple (k := ℂ)
       (fun (a : Σ i, Fin (m i)) ↦ simples_simple C a.1)
       (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
     rw [hleft, hright, htrace, leftTrace_biproduct_scalar_blocks p g hc]

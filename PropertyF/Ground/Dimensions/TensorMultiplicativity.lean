@@ -89,9 +89,7 @@ open PropertyF.Ground.Calculus
 namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
-omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Closing the right tensor factor and then the left gives the total pivotal trace. -/
 theorem rightTrace_partialTrace (p : PivotalStructure (C := C)) {X Y : C} (f : End (X ⊗ Y)) :
   p.rightTrace (rightPartialTrace p f).asHom = p.rightTrace f.asHom := by
@@ -103,13 +101,14 @@ end PropertyF.Ground.Dimensions
 
 namespace PropertyF.Ground.Calculus
 
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable {k : Type*} [Field k] [IsAlgClosed k]
+  {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+  [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
 
 /-- The partial trace on a simple object is its normalized total trace. -/
 theorem rightPartialTrace_simple [CategoryTheory.Limits.HasKernels C] {X Y : C}
-    [Simple X] [FiniteDimensional ℂ (X ⟶ X)] (p : Dimensions.PivotalStructure (C := C))
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
+    [Simple X] [FiniteDimensional k (X ⟶ X)] (p : Dimensions.PivotalStructure (C := C))
+    (scalar : End (𝟙_ C) ≃ₐ[k] k) (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 X)) ≠ 0) :
     rightPartialTrace p f =
       (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
@@ -125,12 +124,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open PropertyF.Ground.Calculus
 namespace PropertyF.Ground.Dimensions
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable {k : Type*} [CommSemiring k]
+  {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+  [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
 
 variable (p : PivotalStructure (C := C))
 
-omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+omit [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C] in
 /-- Closing the right tensor factor of an inserted endomorphism. -/
 theorem rightPartialTrace_tensor_right (X : C) {Y : C} (b : Y ⟶ Y) :
     rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) =
@@ -141,7 +141,7 @@ theorem rightPartialTrace_tensor_right (X : C) {Y : C} (b : Y ⟶ Y) :
     whiskerLeft_comp, comp_whiskerRight, Category.assoc]
   monoidal
 
-variable (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ)
+variable (scalar : End (𝟙_ C) ≃ₐ[k] k)
 
 /-- The right partial trace of an inserted right-factor endomorphism is scalar. -/
 theorem rightPartialTrace_one_tensor (X : C) {Y : C} (b : Y ⟶ Y) :
