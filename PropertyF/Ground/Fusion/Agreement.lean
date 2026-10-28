@@ -114,11 +114,9 @@ theorem galois_character_norm_le_fpSimple
     {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
     (hchar : IsFusionMultiplicative C χ)
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
-    ‖σ (χ i)‖ ≤ fpSimple C i := by
-  apply character_norm_le_fpSimple C (χ := fun j => σ (χ j)) (i₀ := i₀)
-  · exact (map_ne_zero σ).2 hχ
-  · intro j k
-    simpa using congrArg σ (hchar j k)
+    ‖σ (χ i)‖ ≤ fpSimple C i :=
+  character_norm_le_fpSimple C (χ := fun j ↦ σ (χ j)) (i₀ := i₀)
+    ((map_ne_zero σ).2 hχ) (fun j k ↦ by simpa using congrArg σ (hchar j k)) i
 
 end PropertyF.Ground.Dimensions
 
@@ -544,17 +542,15 @@ theorem fpSimple_mul (i j : Fin (rank D)) :
 
 /-- FP dimensions form a complex-valued fusion character. -/
 theorem fpSimple_isFusionMultiplicative :
-    IsFusionMultiplicative D (fun i ↦ (fpSimple D i : ℂ)) := by
-  intro i j
-  dsimp
-  exact_mod_cast fpSimple_mul D i j
+    IsFusionMultiplicative D (fun i ↦ (fpSimple D i : ℂ)) :=
+  fun i j ↦ by
+    dsimp
+    exact_mod_cast fpSimple_mul D i j
 
 /-- The fusion matrix of a dual is the transpose of the original one. -/
 theorem fusionMatrix_dual (i : Fin (rank D)) :
-    fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ := by
-  ext j k
-  change (fusionCoeff D (dualIndex D i) k j : ℂ) = (fusionCoeff D i j k : ℂ)
-  rw [← fusionCoeff_dual_symmetry D i k j]
+    fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ :=
+  Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : ℂ)) (fusionCoeff_dual_symmetry D i k j).symm
 
 /-- Dual simple objects have the same FP dimension. -/
 theorem fpSimple_dual (i : Fin (rank D)) :

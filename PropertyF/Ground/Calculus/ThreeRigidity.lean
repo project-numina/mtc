@@ -178,7 +178,8 @@ theorem actual_braid_squares_equal_of_saturation (hf : 0 < f)
   let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
   refine congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
     (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
-      (Units.ext (three_braid_relation_map ρ)) ?_ ?_)
+      (Units.ext (by simpa only [a, c, Units.val_mul, MonoidHom.coe_toHomUnits, map_mul] using
+        (congrArg ρ (three_braid_image_relation X)))) ?_ ?_)
   · intro z hz
     simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
   · change B.trace w (b (braidInImage (threeGeneratorLeft X)) ^ 2 *
