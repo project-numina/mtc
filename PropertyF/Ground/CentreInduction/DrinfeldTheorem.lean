@@ -35,15 +35,20 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D] [RightRigidCategory D]
 
+omit [RightRigidCategory D] in
 /-- Right duality reverses the tensor factors of mixed monodromy. -/
-theorem rightDualTensorIso_monodromy {X Y : D} :
+theorem rightDualTensorIso_monodromy {X Y : D}
+    [HasRightDual X] [HasRightDual Y] [HasRightDual (X ⊗ Y)] :
     (Modular.doubleBraiding X Y)ᘁ ≫ (rightDualTensorIso X Y).hom =
-      (rightDualTensorIso X Y).hom ≫ Modular.doubleBraiding (Yᘁ) (Xᘁ) := by
-  simp [Modular.doubleBraiding, comp_rightAdjointMate, Category.assoc,
+      (rightDualTensorIso X Y).hom ≫ Modular.doubleBraiding (Yᘁ) (Xᘁ) :=
+  let : HasRightDual (Y ⊗ X) := hasRightDualTensor
+  by simp [Modular.doubleBraiding, comp_rightAdjointMate, Category.assoc,
     rightDualTensorIso_braiding]
 
+omit [RightRigidCategory D] in
 /-- Inverse dual tensor comparison also transports monodromy. -/
-theorem rightDualTensorIso_inv_monodromy {X Y : D} :
+theorem rightDualTensorIso_inv_monodromy {X Y : D}
+    [HasRightDual X] [HasRightDual Y] [HasRightDual (X ⊗ Y)] :
     (rightDualTensorIso X Y).inv ≫ (Modular.doubleBraiding X Y)ᘁ =
       Modular.doubleBraiding (Yᘁ) (Xᘁ) ≫ (rightDualTensorIso X Y).inv :=
   (CommSq.vert_inv (g := rightDualTensorIso X Y)
@@ -75,8 +80,10 @@ theorem drinfeld_tensor_inverse :
   rw [Iso.eq_inv_comp, Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
   exact (drinfeld_tensor X Y).symm
 
+omit [RightRigidCategory D] in
 /-- Formula for transporting the inverse Drinfeld map through an isomorphism. -/
-theorem drinfeld_inv_natural {A B : D} (t : A ≅ B) :
+theorem drinfeld_inv_natural {A B : D} [HasRightDual A] [HasRightDual (Aᘁ)]
+    [HasRightDual B] [HasRightDual (Bᘁ)] (t : A ≅ B) :
     (d A).inv = (((t.homᘁ)ᘁ) ≫ (d B).inv) ≫ t.inv := by
   rw [Iso.eq_comp_inv, Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
   exact drinfeldIso_natural t.hom

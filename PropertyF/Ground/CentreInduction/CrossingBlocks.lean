@@ -145,8 +145,8 @@ theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
       crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) = 𝟙 (T ⊗ Sᶜ j) := by
   simp only [crossingProjection, simpleProjection, crossingInclusion, simpleInclusion,
     Category.assoc, ← Preadditive.comp_sum]
-  simp_rw [← Category.assoc (biproduct.π _ _)]
-  rw [← Preadditive.sum_comp, biproduct.total, Category.id_comp, Iso.hom_inv_id]
+  simp only [← Category.assoc (biproduct.π _ _), ← Preadditive.sum_comp, biproduct.total,
+    Category.id_comp, Iso.hom_inv_id]
 
 variable (X T : C.Obj)
 

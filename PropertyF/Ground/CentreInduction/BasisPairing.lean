@@ -164,13 +164,12 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The closed fusion map is characterized by its evaluation pairing. -/
 theorem closeFusionMap_evaluation (f : T ⊗ S ⟶ R) :
     (closeFusionMap T S f ▷ S) ≫ ε_ S (Sᘁ) =
-      𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
-  apply (tensorRightHomEquiv (Rᘁ ⊗ T) S Sᘁ (𝟙_ D)).injective
-  rw [tensorRightHomEquiv_whiskerRight_comp_evaluation]
-  have hc : 𝟙 ((Rᘁ ⊗ T) ⊗ S) ⊗≫ (Rᘁ ◁ f) ⊗≫ ε_ R Rᘁ =
-      (α_ Rᘁ T S).hom ≫ (Rᘁ ◁ f) ≫ ε_ R Rᘁ := by monoidal
-  rw [hc]
-  simp [closeFusionMap]
+      𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) :=
+  (tensorRightHomEquiv (Rᘁ ⊗ T) S Sᘁ (𝟙_ D)).injective <| by
+    rw [tensorRightHomEquiv_whiskerRight_comp_evaluation]
+    simp only [closeFusionMap, Category.assoc, Iso.hom_inv_id, Category.comp_id]
+    congr 1
+    monoidal
 
 
 set_option backward.isDefEq.respectTransparency false in
