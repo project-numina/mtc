@@ -4,6 +4,7 @@ public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
+public import PropertyF.Ground.Modular.BraidIso
 public import PropertyF.Ground.Dimensions.DualCoherence
 
 /-!
@@ -115,9 +116,9 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility
       ((α_ X X (tensorPower X n)).inv ≫ ((β_ X X).hom ▷ tensorPower X n) ≫
         (α_ X X (tensorPower X n)).hom) := by
     apply End.ext
-    change (braidGenerator X n ⟨0, by omega⟩).asIso.hom = _
-    simp only [braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
-      tensorHom_id]
+    change (braidGenerator X n 0).asIso.hom = _
+    simpa only [Modular.firstBraiding, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+      Iso.refl_hom, tensorHom_id] using Modular.braidGenerator_zero X n
   change leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = _
   dsimp only [tensorPower] at hg ⊢
   rw [hg]
