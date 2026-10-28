@@ -29,7 +29,7 @@ theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
   change crossingCandidate C X S ≫ (β_ S (underlying C X)).hom = 𝟙 _ at hm
   have hb : crossingCandidate C X S = (β_ S (underlying C X)).inv := by
     apply (cancel_mono (β_ S (underlying C X)).hom).1
-    simpa [hm] using hm
+    simp [hm]
   have hzero : (biproduct.ι V i ▷ S) ≫ crossingCandidate C X S ≫
       (S ◁ (underlyingCounit C).app X) = 0 := by
     rw [hb]

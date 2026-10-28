@@ -27,7 +27,10 @@ theorem spherical_selfBraiding_trace_dual
   have heq : ((β_ X X).homᘁ) = e.hom ≫ (β_ (Xᘁ) (Xᘁ)).hom ≫ e.inv := by
     rw [← Category.assoc, ← hb, Category.assoc, Iso.hom_inv_id, Category.comp_id]
   calc
-    _ = p.rightTrace ((β_ X X).homᘁ) := (Dimensions.spherical_rightTrace_dual p hp _).symm
+    _ = p.rightTrace ((β_ X X).homᘁ) := by
+      rw [← hp (X ⊗ X) ((β_ X X).hom), Dimensions.leftTrace_eq_rightTraceWith_dual,
+        ← Dimensions.pivotal_dual p (X ⊗ X)]
+      rfl
     _ = p.rightTrace (e.hom ≫ (β_ (Xᘁ) (Xᘁ)).hom ≫ e.inv) := by rw [heq]
     _ = _ := by simpa [Category.assoc] using hc
 

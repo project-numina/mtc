@@ -242,4 +242,5 @@ theorem globalFPDimension_square_of_actual_induction (C : BraidedFusionCategory.
 
 
 
+
 end PropertyF.Ground.CentreInduction

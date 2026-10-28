@@ -2,7 +2,13 @@ module
 public import PropertyF.Ground.CentreInduction.UnitSummand
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Centre.Basic
-public import PropertyF.Ground.CentreInduction.UnitTest
+public import PropertyF.Ground.Calculus.PartialTrace
+public import PropertyF.Ground.Centre.Basic
+public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Dimensions.SimpleScalars
+public import PropertyF.Ground.Fusion.SemisimpleSplit
+public import PropertyF.Ground.Centre.Cokernel
+public import PropertyF.Ground.CentreRigid.Unit
 public import PropertyF.Ground.CentreRigid.Unit
 public import PropertyF.Ground.CentreInduction.Representatives
 public import PropertyF.Ground.CentreBundle.Fusion

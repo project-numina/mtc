@@ -3,7 +3,8 @@ public import PropertyF.Ground.CentreInduction.ActualFusion
 public import PropertyF.Ground.Calculus.PartialTrace
 public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Modular.SMatrix
-public import PropertyF.Ground.CentreInduction.SimpleDetection
+public import PropertyF.Ground.Dimensions.SimpleScalars
+public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Centre.Cokernel
 public import PropertyF.Ground.Centre.Abelian
@@ -39,7 +40,7 @@ theorem center_factor {P Q X : CategoryTheory.Center C.Obj} (p : P ⟶ X) (q : Q
     have hq := congrArg (fun k => (g ▷ T) ≫ k) (q.comm T).symm
     have hg' := congrArg (fun k => (k ▷ T) ≫ (X.2.β T).hom) hg
     calc
-      _ = (g ▷ T) ≫ (q.f ▷ T) ≫ ((X.2.β T).hom) := by simpa [Category.assoc] using hq
+      _ = (g ▷ T) ≫ (q.f ▷ T) ≫ ((X.2.β T).hom) := by simp [Category.assoc]
       _ = (p.f ▷ T) ≫ ((X.2.β T).hom) := by simpa [comp_whiskerRight, Category.assoc] using hg'
       _ = ((P.2.β T).hom) ≫ (T ◁ p.f) := p.comm T
       _ = _ := by rw [← hg, whiskerLeft_comp]; simp [Category.assoc]

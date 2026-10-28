@@ -30,6 +30,7 @@ universe v u
 namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [RigidCategory D]
 
+omit [Abelian D] in
 /-- Tensoring with any object preserves injectives in a rigid abelian category. -/
 theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U) := by
   let L := tensorRight (ᘁU)
@@ -48,6 +49,7 @@ theorem all_injective_of_unit_retract (J U : D) [Injective J]
   let : Injective ((𝟙_ D) ⊗ X) := tensor_preserves_injective (𝟙_ D) X
   exact Injective.of_iso (λ_ X) inferInstance
 
+omit [Abelian D] [MonoidalCategory D] [RigidCategory D] in
 /-- Every monomorphism out of an injective object splits. -/
 theorem mono_splits_of_all_injective {X Y : D} (f : X ⟶ Y) [Mono f]
     [Injective X] : IsSplitMono f := by

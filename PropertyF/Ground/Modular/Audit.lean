@@ -11,7 +11,10 @@ import all PropertyF.Ground.Fusion.Splitting
 import all PropertyF.Ground.Fusion.Simples
 import all PropertyF.Ground.Fusion.Multiplicity
 import all PropertyF.Ground.Fusion.Reciprocity
-import all PropertyF.Ground.Fusion.MatrixIntegral
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
+import Mathlib.LinearAlgebra.Matrix.Adjugate
+import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
 import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Integrate.Representatives

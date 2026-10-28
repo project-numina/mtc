@@ -103,7 +103,7 @@ theorem positiveDualIso_forget (T : C.Obj) :
       (Centre.positiveExactPairing T (Tᘁ))).f =
       η_ ((CategoryTheory.Center.ofBraided C.Obj).obj T).1
         (((CategoryTheory.Center.ofBraided C.Obj).obj T).1ᘁ) := by
-    convert hc using 1 <;> rfl
+    convert hc using 1; rfl
   unfold positiveDualIso forgetDualIso rightDualIso rightAdjointMate
   simp only [CategoryTheory.Center.comp_f, CategoryTheory.Center.rightUnitor_inv_f,
     CategoryTheory.Center.leftUnitor_hom_f, CategoryTheory.Center.whiskerLeft_f,

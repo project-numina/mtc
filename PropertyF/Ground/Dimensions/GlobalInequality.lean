@@ -8,16 +8,6 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-/-- Once the simple spherical dimensions are real, the intrinsic global
-dimension is their sum of squares. -/
-theorem target_globalDimension_real (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (d : Fin (Ground.rank C) → ℝ)
-    (hd : ∀ i, Ground.unitScalar C (rightQuantumTrace (p.iso (Ground.simples C i))) = (d i : ℂ)) :
-    Ground.globalDimension C = ((∑ i, (d i) ^ 2 : ℝ) : ℂ) := by
-  rw [target_globalDimension_eq_sum_squares C p hp]
-  simp [hd, Complex.ofReal_sum, Complex.ofReal_pow]
-
 /-- The global inequality follows from the simple-object estimates; this
 separates the sum-of-squares argument from the remaining ENO estimate. -/
 theorem target_globalDimension_le_of_simple_bounds (C : Ground.BraidedFusionCategory.{v,u})

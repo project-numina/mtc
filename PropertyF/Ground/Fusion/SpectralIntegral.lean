@@ -1,6 +1,9 @@
 module
 public import PropertyF.Ground.Fusion.Multiplicity
-public import PropertyF.Ground.Fusion.MatrixIntegral
+public import Mathlib.Analysis.Complex.Basic
+public import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
+public import Mathlib.LinearAlgebra.Matrix.Adjugate
+public import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
 public import Mathlib.Analysis.Normed.Algebra.GelfandFormula
 public import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs
 public import Mathlib.Analysis.Matrix.Normed
@@ -37,12 +40,6 @@ theorem one_le_globalFPDimension (D : BraidedFusionCategory) :
   have h := Finset.single_le_sum (f := fun i => fpSimple D i ^ 2)
     (fun i _ => sq_nonneg (fpSimple D i)) (Finset.mem_univ (unitIndex D))
   simpa [fpSimple_unit] using h
-
-/-- A pseudo-unitary category has nonzero global dimension. -/
-theorem globalDimension_ne_zero_of_pseudoUnitary (D : BraidedFusionCategory)
-    (h : PseudoUnitary D) : globalDimension D ≠ 0 := by
-  rw [h]
-  exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D)))
 
 /-- The squared spectral radius of an integer matrix is integral over ℤ.
 The index type is nonempty so that the complex matrix algebra is nontrivial. -/

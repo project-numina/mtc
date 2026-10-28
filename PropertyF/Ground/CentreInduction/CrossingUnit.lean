@@ -76,11 +76,9 @@ theorem crossingBlock_unit_of_split (X S : C.Obj) [Simple S]
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ (λ_ S).hom)
   obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ ((λ_ S).inv ≫ f)
   have hg : g = c • (λ_ S).inv := by
-    have hh := congrArg (fun k => k ≫ (λ_ S).inv) hc
-    simpa [Category.assoc] using hh.symm
+    simpa [Category.assoc] using (congrArg (fun k => k ≫ (λ_ S).inv) hc).symm
   have hf : f = d • (λ_ S).hom := by
-    have hh := congrArg (fun k => (λ_ S).hom ≫ k) hd
-    simpa [Category.assoc] using hh.symm
+    simpa [Category.assoc] using (congrArg (fun k => (λ_ S).hom ≫ k) hd).symm
   have hcd : c * d = 1 := by
     apply (smul_left_injective ℂ (id_nonzero S))
     have hh := h

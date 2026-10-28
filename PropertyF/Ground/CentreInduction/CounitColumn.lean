@@ -33,11 +33,9 @@ theorem crossingBlock_of_simple_split (X T R S : C.Obj) [Simple R]
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ e.inv)
   obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (e.hom ≫ f)
   have hg : g = c • e.hom := by
-    have hh := congrArg (fun k => k ≫ e.hom) hc
-    simpa [Category.assoc] using hh.symm
+    simpa [Category.assoc] using (congrArg (fun k => k ≫ e.hom) hc).symm
   have hf : f = d • e.inv := by
-    have hh := congrArg (fun k => e.inv ≫ k) hd
-    simpa [Category.assoc] using hh.symm
+    simpa [Category.assoc] using (congrArg (fun k => e.inv ≫ k) hd).symm
   have hcd : c * d = 1 := by
     apply (smul_left_injective ℂ (id_nonzero R))
     have hh := h

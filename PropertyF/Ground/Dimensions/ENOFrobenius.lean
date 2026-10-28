@@ -58,23 +58,4 @@ theorem enoTraceMatrix_reciprocity_of_frobenius_defect
   rw [← hn, enoReciprocityEquiv_pairing, enoReciprocityEquiv_pairing, hcompat]
   simp [multiplicityDefect_apply]
 
-/-- The genuine positive spherical structure follows from the fourth-dual
-tensor law on simple pairs and the Frobenius defect compatibility. -/
-theorem eno_pseudoUnitary_yields_positive_spherical_of_frobenius_defect
-    (C : Ground.BraidedFusionCategory.{v,u})
-    (hfourth : ∀ i j : Fin (Ground.rank C),
-      (fourthDualIso C (Ground.simples C i ⊗ Ground.simples C j)).hom =
-      ((fourthDualIso C (Ground.simples C i)).hom ⊗ₘ (fourthDualIso C (Ground.simples C j)).hom) ≫
-        (doubleDualTensorIso (((Ground.simples C i)ᘁ)ᘁ) (((Ground.simples C j)ᘁ)ᘁ)).hom ≫
-          (((doubleDualTensorIso (Ground.simples C i) (Ground.simples C j)).homᘁ)ᘁ))
-    (hcompat : ∀ i j k (g : Ground.simples C i ⊗ Ground.simples C k ⟶ Ground.simples C j),
-      enoFrobeniusEquiv C i k j ((rootTensorDefect C (Ground.simples C i) (Ground.simples C k)).hom ≫ g) =
-      rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
-        (rootTensorDefect C (Ground.simples C (Ground.dualIndex C i)) (Ground.simples C j)).hom))
-    (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ) :=
-  eno_pseudoUnitary_yields_positive_spherical_of_simple_fourth_and_reciprocity C hfourth
-    (enoTraceMatrix_reciprocity_of_frobenius_defect C hcompat) hpu
-
 end PropertyF.Ground.Dimensions
