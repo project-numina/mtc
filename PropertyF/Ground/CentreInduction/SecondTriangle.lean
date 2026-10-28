@@ -126,12 +126,11 @@ theorem evaluation_iso_unit {A : D} (e : A ≅ 𝟙_ D) :
   let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
   let p : ExactPairing (𝟙_ D) ((𝟙_ D)ᘁ) := HasRightDual.exact
   let q : ExactPairing (𝟙_ D) (𝟙_ D) := exactPairingUnit
-  have hu := Dimensions.rightDualIso_evaluation p q
-  change Dimensions.rightDualUnitIso.hom ▷ (𝟙_ D) ≫ (ρ_ (𝟙_ D)).hom =
-    ε_ (𝟙_ D) ((𝟙_ D)ᘁ) at hu
   simp only [Iso.trans_hom, Dimensions.rightDualIsoMap, Iso.symm_hom,
     tensorHom_def', comp_whiskerRight, Category.assoc]
-  rw [hu, rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
+  rw [show Dimensions.rightDualUnitIso.hom ▷ (𝟙_ D) ≫ (ρ_ (𝟙_ D)).hom =
+    ε_ (𝟙_ D) ((𝟙_ D)ᘁ) from Dimensions.rightDualIso_evaluation p q,
+    rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
     whiskerLeft_id, Category.id_comp]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -253,11 +252,10 @@ theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
   dsimp only at h
   rw [crossing_counit_diagonal C X i] at h
   let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
-  have hb := crossingUnitBlock_eval X (simples C i) e
-  change crossingBlock X (simples C i) (simples C (unitIndex C))
+  rw [show crossingBlock X (simples C i) (simples C (unitIndex C))
       (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
-        (simples C i ◁ (unitSummandIso C X).hom) = _ at hb
-  rw [hb] at h
+        (simples C i ◁ (unitSummandIso C X).hom) = _ from
+      crossingUnitBlock_eval X (simples C i) e] at h
   dsimp only [Functor.id_obj] at h ⊢
   apply h.trans
   calc
