@@ -138,7 +138,6 @@ theorem simple_scalar_biproduct_natural
     (f : (⨁ (fun i ↦ T (a i))) ⟶ (⨁ (fun j ↦ T (b j)))) :
     biproduct.map (fun i ↦ c (a i) • 𝟙 (T (a i))) ≫ f =
       f ≫ biproduct.map (fun j ↦ c (b j) • 𝟙 (T (b j))) := by
-  classical
   refine biproduct.hom_ext' _ _ fun i ↦ biproduct.hom_ext _ _ fun j ↦ ?_
   simp only [Category.assoc, biproduct.ι_map_assoc, biproduct.map_π,
     Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
@@ -158,9 +157,7 @@ abbrev simplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :=
   Σ i : Fin (rank C), Fin (simpleMultiplicity C i X)
 
 instance instFintypeSimplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
-    Fintype (simplePieces C X) := by
-  unfold simplePieces
-  infer_instance
+    Fintype (simplePieces C X) := inferInstance
 
 /-- The actual simple object at each canonical summand. -/
 abbrev simplePiecesObject (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
@@ -216,7 +213,6 @@ def simpleScalarNatural (C : BraidedFusionCategory.{v,u})
 theorem simpleScalarNatural_app_simple
     (c : Fin (rank C) → ℂ) (i : Fin (rank C)) :
     (simpleScalarNatural C c).app (simples C i) = c i • 𝟙 (simples C i) := by
-  classical
   let X := simples C i
   let a : simplePieces C X := ⟨i, ⟨0, by
     simp [simpleMultiplicity, finrank_simples_hom, X]⟩⟩
@@ -273,11 +269,10 @@ theorem tensor_decomposition_hom_ext
     {ι κ : Type} [Fintype ι] [Fintype κ] {F : ι → E} {G : κ → E} {X Y Z : E}
     (eX : X ≅ ⨁ F) (eY : Y ≅ ⨁ G) {f g : X ⊗ Y ⟶ Z}
     (h : ∀ {i j} (sx : F i ⟶ X) (sy : G j ⟶ Y),
-      (sx ⊗ₘ sy) ≫ f = (sx ⊗ₘ sy) ≫ g) : f = g := by
-  apply (cancel_epi (eX.symm ⊗ᵢ eY.symm).hom).1
-  refine tensorBiproduct_hom_ext fun i j ↦ ?_
-  simpa [tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
-    h (biproduct.ι F i ≫ eX.inv) (biproduct.ι G j ≫ eY.inv)
+      (sx ⊗ₘ sy) ≫ f = (sx ⊗ₘ sy) ≫ g) : f = g :=
+  (cancel_epi (eX.symm ⊗ᵢ eY.symm).hom).1 <| tensorBiproduct_hom_ext fun i j ↦ by
+    simpa [tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
+      h (biproduct.ι F i ≫ eX.inv) (biproduct.ι G j ≫ eY.inv)
 
 
 end PropertyF.Ground.Dimensions

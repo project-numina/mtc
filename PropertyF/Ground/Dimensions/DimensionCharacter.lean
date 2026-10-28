@@ -43,7 +43,6 @@ theorem pivotalDimension_decomposition :
     pivotalDimension C p X = ∑ i, (simpleMultiplicity C i X : ℂ) *
       pivotalDimension C p (simples C i) :=
   (exists_canonical_decomposition C X).elim fun e ↦ by
-    classical
     simp [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
       rightDimension_biproduct, Fintype.sum_sigma]
 
@@ -131,18 +130,16 @@ theorem isSpherical_iff_simple_dimensions
       p.leftTrace (𝟙 (simples C i)) = p.rightTrace (𝟙 (simples C i)) := by
   refine ⟨fun h i ↦ h _ _, ?_⟩
   intro hs X f
-  classical
   let V : (Σ i, Fin (simpleMultiplicity C i X)) → C.Obj := fun a ↦ simples C a.1
   let e : X ≅ ⨁ V := Classical.choice (exists_canonical_decomposition C X)
   let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
   obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple (k := ℂ)
     (fun (a : Σ i, Fin (simpleMultiplicity C i X)) ↦ simples_simple C a.1)
     (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
-  rw [show p.leftTrace f = p.leftTrace g from by
+  simp only [show p.leftTrace f = p.leftTrace g from by
         simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f)),
     show p.rightTrace f = p.rightTrace g from by
       simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f)),
-    htrace, leftTrace_biproduct_scalar_blocks p g hc]
-  exact Finset.sum_congr rfl fun a _ ↦ congrArg (fun t ↦ c a • t) (hs a.1)
+    htrace, leftTrace_biproduct_scalar_blocks p g hc, V, hs]
 
 end PropertyF.Ground.Dimensions

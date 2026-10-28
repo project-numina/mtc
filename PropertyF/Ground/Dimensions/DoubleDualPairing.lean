@@ -58,11 +58,10 @@ theorem rightDualEvaluation_coevaluation :
   let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso (Xᘁ) X
-  have hu : (ρ_ I).inv ≫ I ◁ r.inv = η_ I (Iᘁ) := coevaluation_rightDualIso_inv
-    (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
-    (exactPairingUnit (C := C))
-  have ht : η_ W (Wᘁ) ≫ W ◁ t.hom = η_ W V := coevaluation_rightDualIso
-    (@HasRightDual.exact C _ _ W (RightRigidCategory.rightDual W)) ExactPairing.tensor
+  have hu : (ρ_ I).inv ≫ I ◁ r.inv = η_ I (Iᘁ) :=
+    coevaluation_rightDualIso_inv HasRightDual.exact (exactPairingUnit (C := C))
+  have ht : η_ W (Wᘁ) ≫ W ◁ t.hom = η_ W V :=
+    coevaluation_rightDualIso HasRightDual.exact ExactPairing.tensor
   calc
     _ = ((ρ_ I).inv ≫ I ◁ r.inv ≫ I ◁ ((ε_ X (Xᘁ))ᘁ) ≫ I ◁ t.hom) ≫ (λ_ V).hom := by monoidal
     _ = (η_ W (Wᘁ) ≫ (ε_ X (Xᘁ)) ▷ (Wᘁ)) ≫ I ◁ t.hom ≫ (λ_ V).hom := by
@@ -113,12 +112,10 @@ theorem rightDualCoevaluation_evaluation :
   let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso X (Xᘁ)
-  have hu : r.hom ▷ I ≫ (ρ_ I).hom = ε_ I (Iᘁ) := rightDualIso_evaluation
-    (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
-    (exactPairingUnit (C := C))
-  have ht : t.inv ▷ W ≫ ε_ W (Wᘁ) = ε_ W V := rightDualIso_inv_evaluation
-    (@HasRightDual.exact C _ _ W (RightRigidCategory.rightDual W)) ExactPairing.tensor
-  change t.inv ≫ ((η_ X (Xᘁ))ᘁ) ≫ r.hom = _
+  have hu : r.hom ▷ I ≫ (ρ_ I).hom = ε_ I (Iᘁ) :=
+    rightDualIso_evaluation HasRightDual.exact (exactPairingUnit (C := C))
+  have ht : t.inv ▷ W ≫ ε_ W (Wᘁ) = ε_ W V :=
+    rightDualIso_inv_evaluation HasRightDual.exact ExactPairing.tensor
   calc
     _ = (ρ_ V).inv ≫ t.inv ▷ I ≫ (((η_ X (Xᘁ))ᘁ) ▷ I ≫ ε_ I (Iᘁ)) := by
       rw [← hu]

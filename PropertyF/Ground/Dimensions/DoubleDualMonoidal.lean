@@ -151,7 +151,7 @@ theorem doubleDualTensorIso_braiding {C : Type u} [Category.{v} C] [MonoidalCate
       (β_ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫ (doubleDualTensorIso Y X).hom := by
   have hd := congrArg (fun f => rightAdjointMate f) (rightDualTensorIso_braiding X Y)
   rw [comp_rightAdjointMate, comp_rightAdjointMate] at hd
-  simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
-  rw [hd, reassoc_of%
-    ((CommSq.vert_inv (CommSq.mk (rightDualTensorIso_braiding (Xᘁ) (Yᘁ)))).w).symm]
+  simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc,
+    hd, reassoc_of%
+      ((CommSq.vert_inv (CommSq.mk (rightDualTensorIso_braiding (Xᘁ) (Yᘁ)))).w).symm]
 end PropertyF.Ground.Dimensions

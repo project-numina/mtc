@@ -59,7 +59,6 @@ variable {E : Type u} [Category.{v} E] [MonoidalCategory E] [BraidedCategory E]
 endomorphism space is simple. -/
 theorem simple_of_finrank_end_eq_one {X : E}
     (hdim : Module.finrank ℂ (X ⟶ X) = 1) : Simple X := by
-  classical
   let D : BraidedFusionCategory.{v,u} := { Obj := E }
   obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp (hdim ▸ Nat.zero_lt_one)
   have hid : (𝟙 X : X ⟶ X) ≠ 0 := fun h ↦
@@ -91,8 +90,8 @@ local instance (i : Fin (rank D)) : Simple (simples D i) := simples_simple D i
 local instance (i : Fin (rank D)) : Simple (ᘁ(simples D i)) := simple_leftDual _
 
 /-- The label of the left dual of a simple representative. -/
-def dualIndex (j : Fin (rank D)) : Fin (rank D) := by
-  exact Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
+def dualIndex (j : Fin (rank D)) : Fin (rank D) :=
+  Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
 
 variable {D} in
 theorem dualIndex_iso (j : Fin (rank D)) :

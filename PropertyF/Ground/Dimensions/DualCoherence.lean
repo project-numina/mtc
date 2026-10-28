@@ -123,8 +123,8 @@ theorem trace_change_rightDual {X Y Z : C} [HasRightDual Y] [HasRightDual Z]
     @ExactPairing.coevaluation C _ _ X Y p ≫
       ((u ≫ ((rightDualIso p q).hom)ᘁ) ⊗ₘ 𝟙 Y) ≫ ε_ Y (Yᘁ) =
     @ExactPairing.coevaluation C _ _ X Z q ≫ (u ⊗ₘ 𝟙 Z) ≫ ε_ Z (Zᘁ) := by
-  simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc]
-  rw [rightAdjointMate_comp_evaluation, ← whisker_exchange_assoc, coevaluation_rightDualIso_assoc]
+  simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc,
+    rightAdjointMate_comp_evaluation, ← whisker_exchange_assoc, coevaluation_rightDualIso_assoc]
 
 end
 
@@ -148,8 +148,6 @@ theorem unitDoubleDual_trace :
   change η_ I Iᘁ ≫ ((r.inv ≫ r.homᘁ) ⊗ₘ 𝟙 Iᘁ) ≫ ε_ Iᘁ Iᘁᘁ = _
   apply (trace_change_rightDual hp hq r.inv).trans
   simp only [tensorHom_def, whiskerLeft_id, Category.comp_id]
-  change @ExactPairing.coevaluation C _ _ I I hq ≫
-    (r.inv ▷ I ≫ @ExactPairing.evaluation C _ _ I Iᘁ hp) = 𝟙 I
   erw [rightDualIso_inv_evaluation hp hq, Iso.inv_hom_id]
 
 

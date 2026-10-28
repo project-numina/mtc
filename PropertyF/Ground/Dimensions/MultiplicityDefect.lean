@@ -25,8 +25,8 @@ local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 /-- Scalar comparing the chosen simple fourth-dual square root to the
 braided double-dual component. -/
 def fourthDualRootScalar (C : BraidedFusionCategory.{v,u})
-    (i : Fin (rank C)) : ℂ := by
-  exact Classical.choose (isomorphisms_scalar (k := ℂ)
+    (i : Fin (rank C)) : ℂ :=
+  Classical.choose (isomorphisms_scalar (k := ℂ)
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
 variable {C} in

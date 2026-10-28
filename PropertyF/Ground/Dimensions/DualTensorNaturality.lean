@@ -114,8 +114,8 @@ theorem doubleDualTensorIso_natural :
       (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) := by
   have h2 := congrArg (fun m => rightAdjointMate m) (rightDualTensorIso_natural f g)
   rw [comp_rightAdjointMate, comp_rightAdjointMate] at h2
-  simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
-  rw [reassoc_of% (rightDualTensorIso_inv_natural (gᘁ) (fᘁ)), ← h2]
+  simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc,
+    reassoc_of% (rightDualTensorIso_inv_natural (gᘁ) (fᘁ)), ← h2]
 end PropertyF.Ground.Dimensions
 
 @[expose] public noncomputable section
@@ -171,8 +171,8 @@ theorem fourthDualIso_natural {X Y : C} (f : X ⟶ Y) :
   have hd := congrArg (fun (a : (((Yᘁ)ᘁ)ᘁ) ⟶ (Xᘁ)) => rightAdjointMate a)
     ((CommSq.vert_inv (CommSq.mk (drinfeldIso_natural (fᘁ)))).w).symm
   rw [comp_rightAdjointMate, comp_rightAdjointMate] at hd
-  simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
-  rw [drinfeldIso_natural_assoc, hd]
+  simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc,
+    drinfeldIso_natural_assoc, hd]
 
 omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
@@ -194,8 +194,7 @@ theorem fourthDualIso_rightDual (X : C) [HasRightDual X] [HasRightDual (Xᘁ)]
       drinfeldIso ((Xᘁ)ᘁ) = rightDualIsoMap (rightDualIsoMap (drinfeldIso X)))
   apply Iso.ext
   simp only [fourthDualIso, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, rightDualIsoMap,
-    comp_rightAdjointMate]
-  rw [hi]
+    comp_rightAdjointMate, hi]
   change (drinfeldIso (Xᘁ)).hom ≫ (((((drinfeldIso X).invᘁ)ᘁ)ᘁ)) =
     ((drinfeldIso X).invᘁ) ≫ ((((drinfeldIso (Xᘁ)).homᘁ)ᘁ))
   simpa only [drinfeldIso_doubleDual] using (drinfeldIso_natural ((drinfeldIso X).invᘁ)).symm

@@ -74,8 +74,7 @@ theorem inverseDualRoot_square (X : C.Obj) :
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   have h : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso X :=
     Iso.ext (congrArg (fun n ↦ (n.app X).hom) (fourthDualRootNaturalSquare_eq C))
-  rw [fourthDualIso_rightDual]
-  simpa only [Iso.trans_inv, rightDualIsoMap, Iso.symm_hom, Iso.symm_inv,
+  simpa only [fourthDualIso_rightDual, Iso.trans_inv, rightDualIsoMap, Iso.symm_hom, Iso.symm_inv,
     comp_rightAdjointMate] using congrArg (fun (e : X ≅ _) ↦ e.invᘁ) h
 
 set_option backward.isDefEq.respectTransparency false in
@@ -106,8 +105,8 @@ variable (C : BraidedFusionCategory.{v,u})
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 /-- The sign comparing the root on a simple's dual to the inverse dual root. -/
 noncomputable def rootDualSign (C : BraidedFusionCategory.{v,u})
-    (i : Fin (rank C)) : ℂ := by
-  exact Classical.choose (rootDual_differs_by_sign C (simples C i))
+    (i : Fin (rank C)) : ℂ :=
+  Classical.choose (rootDual_differs_by_sign C (simples C i))
 
 /-- The trace matrices of dual simples are transposes up to the dual-root sign. -/
 abbrev ENOTraceMatrixReciprocity (C : BraidedFusionCategory.{v,u}) : Prop :=
@@ -242,7 +241,6 @@ theorem normalized_defects_trivial
     (hsat : ∀ i, ‖rootDimension C i‖ = fpSimple C i) :
     ScaledMultiplicityDefectsTrivial C
       (fun i ↦ (normalizedRootDimension C i)⁻¹) := by
-  classical
   let q := normalizedRootDimension C
   intro i j k
   let r := q k / (q i * q j)
@@ -263,7 +261,6 @@ root has real dimensions. The remaining categorical identities are explicit. -/
 theorem positive_spherical_of_matrix_identities
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
-  classical
   have hsat := eno_root_norm_saturation_of_pseudoUnitary hinv heig hnorm hpu
   let q := normalizedRootDimension C
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
@@ -299,7 +296,6 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     (htranspose : ENOTraceMatrixReciprocity C)
     (i : Fin (rank C)) :
     rootDimension C (dualIndex C i) = rootDualSign C i * star (rootDimension C i) := by
-  classical
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ := enoTraceMatrix C i
   let d := rootDimension C
   let ε := rootDualSign C i
