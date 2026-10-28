@@ -97,10 +97,10 @@ variable {C} in
 /-- The trace of an involutive multiplicity defect is bounded by its multiplicity. -/
 theorem enoTraceMatrix_norm_le_fusionCoeff {i j k : Fin (rank C)}
     (h : IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap) :
-    ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) := by
-  obtain ⟨n, hn, hb⟩ := involution_trace_integer_bound h
-  simp only [enoTraceMatrix, hn, Complex.norm_intCast, ← Int.cast_abs]
-  exact_mod_cast hb
+    ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) :=
+  (involution_trace_integer_bound h).elim fun _ ⟨hn, hb⟩ ↦ by
+    simp only [enoTraceMatrix, hn, Complex.norm_intCast, ← Int.cast_abs]
+    exact_mod_cast hb
 
 variable {C} in
 /-- Once the categorical multiplicity defects are involutive and their trace
