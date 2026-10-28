@@ -186,12 +186,22 @@ theorem fourier_eq_zero_of_fusion_eigenvector
     field_simp [Modular.simpleDimension_ne_zero D p y]
   rw [hs, hT, mul_zero]
 
+/-- A set of simple labels is closed under fusion constituents. -/
+abbrev IsFusionClosed (A : Finset (Fin (rank D))) : Prop :=
+  ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < fusionCoeff D a b k → k ∈ A
+
+/-- Fusion coefficients vanish outside a fusion-closed set. -/
+theorem IsFusionClosed.fusionCoeff_eq_zero {A : Finset (Fin (rank D))}
+    (hA : IsFusionClosed D A) {a b k : Fin (rank D)}
+    (ha : a ∈ A) (hb : b ∈ A) (hk : k ∉ A) : fusionCoeff D a b k = 0 :=
+  Nat.eq_zero_of_not_pos (fun h ↦ hk (hA a ha b hb k h))
+
 /-- The FP-weighted regular vector of a dual- and fusion-closed set of labels
 is an eigenvector for multiplication by each label in that set. -/
 theorem regular_vector_fusion_eigenvector
     (A : Finset (Fin (rank D)))
     (hdual : ∀ a ∈ A, dualIndex D a ∈ A)
-    (hclosed : ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < fusionCoeff D a b k → k ∈ A)
+    (hclosed : IsFusionClosed D A)
     (a : Fin (rank D)) (ha : a ∈ A) (k : Fin (rank D)) :
     (∑ i, (fusionCoeff D a i k : ℂ) * (if i ∈ A then (fpSimple D i : ℂ) else 0)) =
       (fpSimple D a : ℂ) * (if k ∈ A then (fpSimple D k : ℂ) else 0) := by
@@ -205,11 +215,7 @@ theorem regular_vector_fusion_eigenvector
         rw [Modular.fusionCoeff_dual_adjoint D a i k]
         by_cases hi : i ∈ A
         · simp [hi]
-        · have hn : fusionCoeff D (dualIndex D a) k i = 0 := by
-            apply Nat.eq_zero_of_not_pos
-            intro hp
-            exact hi (hclosed (dualIndex D a) (hdual a ha) k hk i hp)
-          simp [hi, hn]
+        · simp [hi, hclosed.fusionCoeff_eq_zero D (hdual a ha) hk hi]
       _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
         have hh := congrArg (fun z : ℝ => (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)
         simpa [fpSimple_dual] using hh.symm
@@ -217,11 +223,7 @@ theorem regular_vector_fusion_eigenvector
     apply Finset.sum_eq_zero
     intro i _
     by_cases hi : i ∈ A
-    · have hn : fusionCoeff D a i k = 0 := by
-        apply Nat.eq_zero_of_not_pos
-        intro hp
-        exact hk (hclosed a ha i hi k hp)
-      simp [hi, hn]
+    · simp [hi, hclosed.fusionCoeff_eq_zero D ha hi hk]
     · simp [hi]
 
 /-- Numerical double-centralizer theorem for a fusion-closed set of simple
@@ -233,7 +235,7 @@ theorem doubleCentralizer_of_fusion_closed
     (A : Finset (Fin (rank D))) (core : Set (Fin (rank D)))
     (hunit : unitIndex D ∈ A)
     (hdual : ∀ a ∈ A, dualIndex D a ∈ A)
-    (hclosed : ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < fusionCoeff D a b k → k ∈ A)
+    (hclosed : IsFusionClosed D A)
     (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
     sCentralizer D p core ⊆ (↑A : Set _) := by
   classical
