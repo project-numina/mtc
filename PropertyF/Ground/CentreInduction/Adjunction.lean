@@ -31,27 +31,20 @@ theorem globalFPDimension_square_of_induction
   classical
   have hdim (i : Fin (rank C)) :
       fpDimension 𝒵ᶠ (I i) = globalFPDimension C * fpSimple C i := by
-    obtain ⟨e⟩ := hI i
-    rw [← Integrate.center_forget_fpDimension C (I i)]
-    change fpDimension C (I i).1 = _
-    rw [fpDimension_iso C e, fpDimension_underlying, fpDimension_simple]
+    simpa only [fpDimension_underlying, fpDimension_simple] using
+      (show fpDimension 𝒵ᶠ (I i) = fpDimension C (I i).1 from
+        (Integrate.center_forget_fpDimension C (I i)).symm).trans
+          (fpDimension_iso C (hI i).some)
   have hbase (j : Fin (rank 𝒵ᶠ)) :
       ∑ i, (Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) : ℝ) * fpSimple C i =
         fpSimple 𝒵ᶠ j := by
-    rw [← fpDimension_simple 𝒵ᶠ j,
-      ← Integrate.center_forget_fpDimension C _]
-    change _ = fpDimension C (simples 𝒵ᶠ j).1
-    simp only [fpDimension]
-    simp_rw [finrank_to_simple_eq_from_simple C]
+    simpa only [fpDimension, ← finrank_to_simple_eq_from_simple C] using
+      (show fpDimension C (simples 𝒵ᶠ j).1 = fpSimple 𝒵ᶠ j from
+        (Integrate.center_forget_fpDimension C (simples 𝒵ᶠ j)).trans (fpDimension_simple 𝒵ᶠ j))
   have hsum : (∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i)) = globalFPDimension 𝒵ᶠ := by
-    simp_rw [fpDimension]
-    simp_rw [hadj]
-    simp_rw [Finset.mul_sum]
+    simp_rw [fpDimension, hadj, Finset.mul_sum]
     rw [Finset.sum_comm]
-    conv_lhs =>
-      enter [2, j, 2, i]
-      rw [mul_comm (fpSimple C i), mul_comm _ (fpSimple 𝒵ᶠ j),
-        mul_assoc]
+    simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc]
     simp_rw [← Finset.mul_sum, hbase]
     simp [globalFPDimension, pow_two]
   calc
