@@ -23,7 +23,7 @@ theorem exists_galois_braid_trace_weights
     (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
     (hdim : ∀ i, pivotalDimension C p (Ground.simples C i) = (qdim i : ℂ)) :
     ∃ (r : ℕ) (size : Fin r → ℕ)
-      (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
+      (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
       (w : Fin r → ℝ),
       (∀ i, 0 < size i) ∧
       IsUnitaryBraidPresentation b ∧
@@ -42,7 +42,7 @@ theorem exists_galois_braid_trace_weights
   · intro z
     simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
     rw [actualBraidTrace, htrace]
-    simp only [PropertyF.Blocks.trace, w, Complex.ofReal_sum, Complex.ofReal_mul,
+    simp only [Blocks.trace, w, Complex.ofReal_sum, Complex.ofReal_mul,
       Complex.ofReal_natCast, hdim]
 
 /-- Categorical three-strand rigidity from real Galois dimension data and
