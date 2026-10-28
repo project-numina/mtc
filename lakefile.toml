@@ -1,6 +1,6 @@
 name = "property-f-lean"
 version = "0.1.0"
-defaultTargets = ["PropertyF"]
+defaultTargets = ["PropertyF", "MTC", "Conjectures", "AnyonAtlas"]
 moreLeanArgs = ["-j2", "-M3000"]
 
 [[require]]
@@ -11,3 +11,12 @@ rev = "v4.35.0"
 [[lean_lib]]
 name = "PropertyF"
 
+
+[[lean_lib]]
+name = "MTC"
+
+[[lean_lib]]
+name = "Conjectures"
+
+[[lean_lib]]
+name = "AnyonAtlas"
