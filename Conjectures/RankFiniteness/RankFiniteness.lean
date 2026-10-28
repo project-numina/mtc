@@ -31,6 +31,10 @@ open PropertyF.Ground PropertyF.Ground.Dimensions PropertyF.Ground.Modular
 namespace MTC.Conjectures.RankFiniteness
 universe v u
 
+/-- The tensor unit supplies a simple label, so rank zero is impossible. -/
+theorem rank_ne_zero (C : BraidedFusionCategory.{v,u}) : rank C ≠ 0 :=
+  Nat.ne_of_gt (Fin.pos_iff_nonempty.mpr ⟨unitIndex C⟩)
+
 /-- There are finitely many braided tensor equivalence classes at each rank. -/
 theorem rankFiniteness (r : ℕ) :
     ∃ (n : ℕ) (reps : Fin n → BraidedFusionCategory.{v,u}),
