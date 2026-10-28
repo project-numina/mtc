@@ -279,7 +279,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
   let : Simple (ᘁ(simples D k)) := simple_leftDual D (simples D k)
   obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor (simples D j)
   let : (tensorLeft (simples D j)).Faithful :=
-    PropertyF.tensorLeft_faithful_of_unit_retract _ _ s r hsr
+    PropertyF.tensorLeft_faithful_of_unit_retract s r hsr
   let Y : D.Obj := simples D j ⊗ (ᘁ(simples D k))
   have hid : (𝟙 Y : Y ⟶ Y) ≠ 0 := by
     intro h
@@ -608,6 +608,13 @@ theorem fpSimple_mul (i j : Fin (rank D)) :
     fpSimple D i * fpSimple D j =
       ∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k :=
   by simp only [fpSimple_eq_fpCharacter, fpCharacter_mul]
+
+/-- FP dimensions form a complex-valued fusion character. -/
+theorem fpSimple_isFusionMultiplicative :
+    IsFusionMultiplicative D (fun i ↦ (fpSimple D i : ℂ)) := by
+  intro i j
+  dsimp
+  exact_mod_cast fpSimple_mul D i j
 
 /-- The fusion matrix of a dual is the transpose of the original one. -/
 theorem fusionMatrix_dual (i : Fin (rank D)) :

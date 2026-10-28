@@ -442,36 +442,14 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 /-- Every base object is a finite iterated binary sum of simple objects. -/
 theorem base_finite_simple_sum (X : C.Obj) :
     CentreInduction.FiniteSimpleSum C.Obj X := by
-  let m : C.Obj → ℕ := fun W => Module.finrank ℂ (W ⟶ W)
-  induction X using (measure m).wf.induction with
-  | h X ih =>
-    by_cases hz : IsZero X
-    · exact .zero hz
-    · obtain ⟨i, hi⟩ := exists_positive_multiplicity C hz
-      let S := simples C i
-      let : Simple S := simples_simple C i
-      let : FiniteDimensional ℂ (S ⟶ X) := IsFusionCategory.hom_finite _ _
-      obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp hi
-      let : Mono f := mono_of_nonzero_from_simple hf
-      obtain ⟨r, hr⟩ := split_from_simple f hf
-      let : IsSplitMono f := IsSplitMono.mk' { retraction := r, id := hr }
-      let E := ShortComplex.cokernelSequence f
-      let split : E.Splitting := ShortComplex.Splitting.ofExactOfRetraction E
-        (ShortComplex.cokernelSequence_exact f) (retraction f)
-        (IsSplitMono.id f) inferInstance
-      let K := cokernel f
-      let e : X ≅ S ⊞ K := split.isoBinaryBiproduct
-      let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-      have hs : ¬ IsZero S := by
-        intro h
-        exact id_nonzero _ ((IsZero.iff_id_eq_zero _).mp h)
-      have he : Module.finrank ℂ (X ⟶ X) = Module.finrank ℂ (S ⊞ K ⟶ S ⊞ K) :=
-        (CategoryTheory.Linear.homCongr ℂ e e).finrank_eq
-      have hk : m K < m X := by
-        change Module.finrank ℂ (K ⟶ K) < Module.finrank ℂ (X ⟶ X)
-        rw [he]
-        exact CentreInduction.finrank_end_complement_lt _ K hs
-      exact .cons (simples_simple C i) (ih K hk) ⟨e⟩
+  let (A B : C.Obj) : FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite _ _
+  let (W : C.Obj) : Injective W := object_injective C W
+  apply CentreInduction.finiteSimpleSum_of_injective ?_ X
+  intro W hW
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity C hW
+  let : Simple (simples C i) := simples_simple C i
+  obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp hi
+  exact ⟨simples C i, f, simples_simple C i, mono_of_nonzero_from_simple hf⟩
 
 /-- Identity automorphisms have zero FP determinant. -/
 theorem fpDeterminant_refl (X : C.Obj) :

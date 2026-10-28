@@ -56,34 +56,6 @@ theorem mono_splits_of_all_injective {X Y : D} (f : X ⟶ Y) [Mono f]
     [Injective X] : IsSplitMono f :=
   (Injective.factors (𝟙 X) f).elim fun r hr ↦ IsSplitMono.mk' { retraction := r, id := hr }
 
-omit [MonoidalCategory D] [RigidCategory D] in
-/-- An artinian category with finite-dimensional homs and injective objects has finite simple sums. -/
-private theorem finiteSimpleSum_of_injective [Linear ℂ D]
-    [(A B : D) → FiniteDimensional ℂ (A ⟶ B)]
-    [(Z : D) → IsArtinianObject Z] [(Z : D) → Injective Z]
-    (Z : D) : FiniteSimpleSum D Z := by
-  let m : D → ℕ := fun W => Module.finrank ℂ (W ⟶ W)
-  induction Z using (measure m).wf.induction with
-  | h Z ih =>
-    by_cases hz : IsZero Z
-    · exact .zero hz
-    · obtain ⟨P, hP⟩ := exists_simple_subobject hz
-      let : Simple (P : D) := hP
-      obtain ⟨r, hr⟩ := Injective.factors (𝟙 (P : D)) P.arrow
-      let E := ShortComplex.cokernelSequence P.arrow
-      let split : E.Splitting := ShortComplex.Splitting.ofExactOfRetraction E
-        (ShortComplex.cokernelSequence_exact P.arrow) r hr inferInstance
-      let K := cokernel P.arrow
-      let e : Z ≅ (P : D) ⊞ K := split.isoBinaryBiproduct
-      have hs : ¬ IsZero (P : D) := Simple.not_isZero _
-      have he : Module.finrank ℂ (Z ⟶ Z) = Module.finrank ℂ ((P : D) ⊞ K ⟶ (P : D) ⊞ K) :=
-        (CategoryTheory.Linear.homCongr ℂ e e).finrank_eq
-      have hk : m K < m Z := by
-        change Module.finrank ℂ (K ⟶ K) < Module.finrank ℂ (Z ⟶ Z)
-        rw [he]
-        exact finrank_end_complement_lt _ K hs
-      exact .cons hP (ih K hk) ⟨e⟩
-
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
 
@@ -111,7 +83,10 @@ theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) {U : 𝒵}
   let (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) := by
     let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
     exact PropertyF.Ground.Centre.finiteDimensional_hom ℂ A B
-  exact finiteSimpleSum_of_injective Z
+  apply finiteSimpleSum_of_injective ?_ Z
+  intro W hW
+  obtain ⟨P, hP⟩ := exists_simple_subobject hW
+  exact ⟨P, P.arrow, hP, inferInstance⟩
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract (X : C.Obj) {U : 𝒵}
