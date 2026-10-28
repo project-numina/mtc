@@ -59,12 +59,6 @@ open PropertyF.Ground
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-section
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
-  [BraidedCategory C] [RightRigidCategory C]
-
-end
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Expand monodromy and tensor braiding into their six individual crossings. -/
 theorem monodromy_tensor_cap_expansion (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
@@ -131,10 +125,12 @@ theorem monodromy_tensor_cap_braid_reordered (C : BraidedFusionCategory.{v,u}) (
     _ = _ := by
       simp only [monoidalComp, whiskerLeft_comp]
       monoidal
+section
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+
 set_option backward.isDefEq.respectTransparency false in
 /-- A braiding loop around a morphism into the tensor unit contracts by naturality. -/
-theorem braiding_cap_loop {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [BraidedCategory C] (X Y Z : C) (f : Y ⊗ Z ⟶ 𝟙_ C) :
+theorem braiding_cap_loop (X Y Z : C) (f : Y ⊗ Z ⟶ 𝟙_ C) :
     (β_ X Y).hom ▷ Z ⊗≫ Y ◁ (β_ X Z).hom ⊗≫ f ▷ X ⊗≫ (λ_ X).hom =
       𝟙 ((X ⊗ Y) ⊗ Z) ⊗≫ X ◁ f ⊗≫ (ρ_ X).hom := by
   have hn := braiding_naturality_right X f
@@ -145,6 +141,8 @@ theorem braiding_cap_loop {C : Type u} [Category.{v} C] [MonoidalCategory C]
       rw [braiding_tensor_right_hom]
       monoidal
     _ = _ := by rw [← h]; monoidal
+end
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Contract the first braiding loop in the monodromy evaluation. -/
 theorem monodromy_tensor_cap_remove_loop (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :

@@ -99,9 +99,10 @@ end
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Dimensions
 
+variable {V : Type*} [AddCommGroup V] [Module ℂ V] {T : V →ₗ[ℂ] V}
+
 /-- The positive spectral projection of an involution is idempotent. -/
-theorem involution_half_projection {V : Type*} [AddCommGroup V] [Module ℂ V]
-    {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
+theorem involution_half_projection (hT : T * T = 1) :
     IsIdempotentElem ((2 : ℂ)⁻¹ • (1 + T)) := by
   have hinv (x : V) : T (T x) = x := congrArg (fun f : V →ₗ[ℂ] V ↦ f x) hT
   let P : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 + T)
@@ -112,11 +113,12 @@ theorem involution_half_projection {V : Type*} [AddCommGroup V] [Module ℂ V]
     map_smul, map_add, hinv, smul_add, smul_smul]
   module
 
+variable [FiniteDimensional ℂ V]
+
 /-- The trace of a complex involution is the difference of its positive and
 negative eigenspace dimensions. This is the finite-dimensional ingredient in
 ENO's trace matrices. -/
-theorem involution_trace_formula {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
+theorem involution_trace_formula (hT : T * T = 1) :
     ∃ m : ℕ, m ≤ Module.finrank ℂ V ∧
       LinearMap.trace ℂ V T = 2 * (m : ℂ) - (Module.finrank ℂ V : ℂ) := by
   let P : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 + T)
@@ -131,8 +133,7 @@ theorem involution_trace_formula {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 /-- The trace of an involution is an integer whose absolute value is at most
 the dimension of its underlying vector space. -/
-theorem involution_trace_integer_bound {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
+theorem involution_trace_integer_bound (hT : T * T = 1) :
     ∃ n : ℤ, LinearMap.trace ℂ V T = (n : ℂ) ∧
       |n| ≤ (Module.finrank ℂ V : ℤ) := by
   obtain ⟨m, hm, htrace⟩ := involution_trace_formula hT
@@ -142,15 +143,13 @@ theorem involution_trace_integer_bound {V : Type*} [AddCommGroup V] [Module ℂ 
     omega
 
 /-- The trace of a complex involution is real. -/
-theorem star_involution_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
+theorem star_involution_trace (hT : T * T = 1) :
     star (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T := by
   obtain ⟨n, hn, _⟩ := involution_trace_integer_bound hT
   simp [hn]
 
 /-- An involution whose trace reaches the dimension is the identity. -/
-theorem involution_eq_one_of_trace_eq_finrank {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1)
+theorem involution_eq_one_of_trace_eq_finrank (hT : T * T = 1)
     (htrace : LinearMap.trace ℂ V T = (Module.finrank ℂ V : ℂ)) : T = 1 := by
   let Q : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 - T)
   have hq : IsIdempotentElem Q := by
@@ -163,8 +162,7 @@ theorem involution_eq_one_of_trace_eq_finrank {V : Type*} [AddCommGroup V] [Modu
   exact (sub_eq_zero.mp hQ.symm).symm
 
 /-- A phase-scaled involution with maximal trace is the identity. -/
-theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) {c : ℂ}
+theorem involution_phase_eq_one_of_trace (hT : T * T = 1) {c : ℂ}
     (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
     c • T = 1 := by
   by_cases hz : Module.finrank ℂ V = 0
@@ -185,8 +183,7 @@ theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module �
   rw [map_smul, smul_eq_mul, mul_comm, htrace]
 
 /-- The inverse phase also turns a maximal-trace involution into identity. -/
-theorem involution_phase_inv_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) {c : ℂ}
+theorem involution_phase_inv_eq_one_of_trace (hT : T * T = 1) {c : ℂ}
     (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
     c⁻¹ • T = 1 := by
   have h := involution_phase_eq_one_of_trace hT hc htrace

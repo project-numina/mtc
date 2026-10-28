@@ -16,10 +16,10 @@ Dual tensor comparisons make the double-dual functor monoidal and preserve the b
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Canonical right-dual tensor comparisons respect associativity. -/
-theorem rightDualTensorIso_associativity {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X Y Z : C) :
+theorem rightDualTensorIso_associativity (X Y Z : C) :
     (rightDualTensorIso (X ⊗ Y) Z).hom ≫
       (Zᘁ) ◁ (rightDualTensorIso X Y).hom =
     ((α_ X Y Z).invᘁ) ≫ (rightDualTensorIso X (Y ⊗ Z)).hom ≫
@@ -136,10 +136,10 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison respects associativity. -/
-theorem doubleDualTensorIso_associativity {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X Y Z : C) :
+theorem doubleDualTensorIso_associativity (X Y Z : C) :
     (doubleDualTensorIso X Y).hom ▷ ((Zᘁ)ᘁ) ≫ (doubleDualTensorIso (X ⊗ Y) Z).hom ≫
       (((α_ X Y Z).homᘁ)ᘁ) =
     (α_ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ((Zᘁ)ᘁ)).hom ≫

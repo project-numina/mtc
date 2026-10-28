@@ -113,9 +113,11 @@ theorem unitBlockLinear_id (Z : Center D) (T S : D) :
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
     _ = _ := by rw [whisker_exchange]; monoidal
 
+variable (Z : Center C.Obj) (T : C.Obj)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
-theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
+theorem unit_sum (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
     (unitComponent C Z p.1 ▷ T) ≫ crossingSummand C Z.1 T p.1 j p.2) =
       (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
@@ -126,7 +128,7 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
-theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
+theorem unitCandidate_central :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
       (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
   let V := inductionSummand C Z.1

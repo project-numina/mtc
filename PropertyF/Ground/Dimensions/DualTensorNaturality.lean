@@ -71,8 +71,7 @@ theorem rightDualTensorIso_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y')
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse right-dual tensor comparison is natural. -/
-theorem rightDualTensorIso_inv_natural {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] {X X' Y Y' : C}
+theorem rightDualTensorIso_inv_natural {X X' Y Y' : C}
     (f : X ⟶ X') (g : Y ⟶ Y') :
     (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso X Y).inv =
       (rightDualTensorIso X' Y').inv ≫ ((f ⊗ₘ g)ᘁ) :=
