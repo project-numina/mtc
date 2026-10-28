@@ -505,12 +505,32 @@ theorem tensor_conjugate_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
       (Iso.refl X ⊗ᵢ e) ≪≫ (Iso.refl X ⊗ᵢ a) ≪≫ (Iso.refl X ⊗ᵢ e).symm :=
   Iso.ext (by simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp])
 
+/-- The tensor determinant equation for a natural automorphism at two objects. -/
+abbrev HasTensorDeterminantRule (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X Y : C.Obj) : Prop :=
+  fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ η.app Y) =
+    fpDimension C X • fpDeterminant C Y (η.app Y)
+
+/-- The tensor determinant equation is invariant under isomorphism in its second object. -/
+theorem tensorDeterminantRule_iff_of_iso (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X : C.Obj)
+    {Y Z : C.Obj} (e : Y ≅ Z) :
+    HasTensorDeterminantRule C η X Y ↔ HasTensorDeterminantRule C η X Z := by
+  have he : (𝟭 C.Obj).mapIso e = e := Iso.ext rfl
+  have hη : η.app Y = e ≪≫ η.app Z ≪≫ e.symm := by
+    simpa only [he] using functor_natural_app_conjugate (𝟭 C.Obj) η e
+  have hl := fpDeterminant_conjugate C (Iso.refl X ⊗ᵢ e).symm
+    (Iso.refl X ⊗ᵢ η.app Z)
+  have hr := fpDeterminant_conjugate C e.symm (η.app Z)
+  simp only [Iso.symm_symm_eq] at hl hr
+  change (fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ η.app Y) =
+    fpDimension C X • fpDeterminant C Y (η.app Y)) ↔ _
+  rw [hη, tensor_conjugate_iso, hl, hr]
+
 /-- The categorical FP determinant tensor rule holds for components of
 any natural automorphism, by semisimplicity. -/
 theorem fpDeterminant_tensor_natural
-    (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X Y : C.Obj) :
-    fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ η.app Y) =
-      fpDimension C X • fpDeterminant C Y (η.app Y) := by
+    (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X Y : C.Obj) : HasTensorDeterminantRule C η X Y := by
+  change fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ η.app Y) =
+    fpDimension C X • fpDeterminant C Y (η.app Y)
   have hY := base_finite_simple_sum C Y
   induction hY with
   | @zero W hz =>
@@ -519,30 +539,16 @@ theorem fpDeterminant_tensor_natural
     simp only [hη, ht, fpDeterminant_refl, smul_zero]
   | @cons Y S K hs hk he ih =>
     obtain ⟨e⟩ := he
-    have hS : fpDeterminant C (X ⊗ S) (Iso.refl X ⊗ᵢ η.app S) =
-        fpDimension C X • fpDeterminant C S (η.app S) := by
-      let : Simple S := hs
-      exact fpDeterminant_tensor_of_simple C X S (η.app S)
-    have hsum := fpDeterminant_tensor_biprod C X (η.app S) (η.app K) hS ih
+    let : Simple S := hs
+    have hsum := fpDeterminant_tensor_biprod C X (η.app S) (η.app K)
+      (fpDeterminant_tensor_of_simple C X S (η.app S)) ih
     let : PreservesBinaryBiproducts (𝟭 C.Obj) := preservesBinaryBiproducts_of_preservesBiproducts _
-    have hid : (𝟭 C.Obj).mapBiprod S K = Iso.refl (S ⊞ K) := by
-      apply Iso.ext
-      apply biprod.hom_ext <;> simp
+    have hid : (𝟭 C.Obj).mapBiprod S K = Iso.refl (S ⊞ K) :=
+      Iso.ext (by apply biprod.hom_ext <;> simp)
     have hsum' : η.app (S ⊞ K) = biprod.mapIso (η.app S) (η.app K) := by
       simpa [hid] using functor_natural_app_biprod (𝟭 C.Obj) η S K
     rw [← hsum'] at hsum
-    have he : (𝟭 C.Obj).mapIso e = e := Iso.ext rfl
-    have hη : η.app Y = e ≪≫ η.app (S ⊞ K) ≪≫ e.symm := by
-      simpa only [he] using functor_natural_app_conjugate (𝟭 C.Obj) η e
-    rw [hη, tensor_conjugate_iso]
-    have hl := fpDeterminant_conjugate C (Iso.refl X ⊗ᵢ e).symm
-      (Iso.refl X ⊗ᵢ η.app (S ⊞ K))
-    have hr := fpDeterminant_conjugate C e.symm (η.app (S ⊞ K))
-    change fpDeterminant C (X ⊗ Y) ((Iso.refl X ⊗ᵢ e) ≪≫
-      (Iso.refl X ⊗ᵢ η.app (S ⊞ K)) ≪≫ (Iso.refl X ⊗ᵢ e).symm) = _ at hl
-    change fpDeterminant C Y (e ≪≫ η.app (S ⊞ K) ≪≫ e.symm) = _ at hr
-    rw [hl, hr]
-    exact hsum
+    exact (tensorDeterminantRule_iff_of_iso C η X e).mpr hsum
 
 end PropertyF.Ground.CentreModular
 end

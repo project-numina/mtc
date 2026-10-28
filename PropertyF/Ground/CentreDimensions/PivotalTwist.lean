@@ -15,6 +15,32 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
+omit [RightRigidCategory C] [Preadditive C] [Linear ℂ C]
+  [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+/-- An endomorphism slides across the first self-braiding. -/
+theorem braid_self_slide (X A : C) (t : X ⟶ X) :
+    (α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom ≫ X ◁ (t ▷ A) =
+      (t ▷ (X ⊗ A)) ≫ (α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom := by
+  have hb := braiding_naturality_left t X
+  calc
+    _ = (α_ X X A).inv ≫ (((β_ X X).hom ≫ X ◁ t) ▷ A) ≫ (α_ X X A).hom := by
+      simp only [comp_whiskerRight]; monoidal
+    _ = (α_ X X A).inv ≫ ((t ▷ X ≫ (β_ X X).hom) ▷ A) ≫ (α_ X X A).hom := by
+      rw [← hb]
+    _ = _ := by simp only [comp_whiskerRight]; monoidal
+
+omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+/-- Closing a braided strand against its dual gives the identity. -/
+theorem braided_self_close (X : C) :
+    (ρ_ X).inv ≫ X ◁ η_ X (Xᘁ) ≫ (α_ X X (Xᘁ)).inv ≫
+      (β_ X X).hom ▷ (Xᘁ) ≫ (α_ X X (Xᘁ)).hom ≫
+      X ◁ (β_ X (Xᘁ)).hom ≫ X ◁ ε_ X (Xᘁ) ≫ (ρ_ X).hom = 𝟙 X := by
+  slice_lhs 4 6 => rw [← hexagon_forward]
+  simp only [Category.assoc, Iso.inv_hom_id_assoc]
+  rw [braiding_naturality_right_assoc]
+  rw [rightUnitor_inv_braiding_assoc, ExactPairing.evaluation_coevaluation_assoc]
+  simp
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing self-braiding gives the pivotal twist determined by a compatible double-dual isomorphism. -/
 theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C}
@@ -36,30 +62,12 @@ theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C}
       X ◁ ((p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ)) ≫ (ρ_ X).hom = t := by
     rw [hclose]
     simp only [whiskerLeft_comp]
-    have hs : (α_ X X (Xᘁ)).inv ≫ (β_ X X).hom ▷ (Xᘁ) ≫ (α_ X X (Xᘁ)).hom ≫
-        X ◁ (t ▷ (Xᘁ)) = (t ▷ (X ⊗ (Xᘁ))) ≫ (α_ X X (Xᘁ)).inv ≫
-          (β_ X X).hom ▷ (Xᘁ) ≫ (α_ X X (Xᘁ)).hom := by
-      have hb := braiding_naturality_left t X
-      calc
-        _ = (α_ X X (Xᘁ)).inv ≫ (((β_ X X).hom ≫ X ◁ t) ▷ (Xᘁ)) ≫
-            (α_ X X (Xᘁ)).hom := by simp only [comp_whiskerRight]; monoidal
-        _ = (α_ X X (Xᘁ)).inv ≫ ((t ▷ X ≫ (β_ X X).hom) ▷ (Xᘁ)) ≫
-            (α_ X X (Xᘁ)).hom := by rw [← hb]
-        _ = _ := by simp only [comp_whiskerRight]; monoidal
     simp only [Category.assoc]
-    slice_lhs 3 6 => rw [hs]
+    slice_lhs 3 6 => rw [braid_self_slide]
     simp only [Category.assoc]
     rw [whisker_exchange_assoc]
     rw [← rightUnitor_inv_naturality_assoc]
-    have hc : (ρ_ X).inv ≫ X ◁ η_ X (Xᘁ) ≫ (α_ X X (Xᘁ)).inv ≫
-        (β_ X X).hom ▷ (Xᘁ) ≫ (α_ X X (Xᘁ)).hom ≫
-        X ◁ (β_ X (Xᘁ)).hom ≫ X ◁ ε_ X (Xᘁ) ≫ (ρ_ X).hom = 𝟙 X := by
-      slice_lhs 4 6 => rw [← hexagon_forward]
-      simp only [Category.assoc, Iso.inv_hom_id_assoc]
-      rw [braiding_naturality_right_assoc]
-      rw [rightUnitor_inv_braiding_assoc, ExactPairing.evaluation_coevaluation_assoc]
-      simp
-    rw [hc, Category.comp_id]
+    rw [braided_self_close, Category.comp_id]
   simpa only [whiskerLeft_comp, Category.assoc, t] using hg
 end PropertyF.Ground.Dimensions
 end
