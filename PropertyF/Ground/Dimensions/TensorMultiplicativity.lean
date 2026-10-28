@@ -65,11 +65,7 @@ theorem rightTraceWith_partialTraceWith {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y �
     (rightTraceWith ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) f.asHom).asHom
   rw [rightTraceWith_tensor_pairing]
   simp only [rightTraceWith, partialTraceWith]
-  have hc : η_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
-      η_ X (Xᘁ) ⊗≫ (X ◁ η_ Y (Yᘁ)) ▷ (Xᘁ) ⊗≫ 𝟙 _ := rfl
-  have he : ε_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) =
-      𝟙 (((Xᘁ)ᘁ ⊗ (Yᘁ)ᘁ) ⊗ (Yᘁ ⊗ Xᘁ)) ⊗≫ ((Xᘁ)ᘁ : C) ◁ (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ (Xᘁ)) ⊗≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := rfl
-  rw [hc, he]
+  rw [ExactPairing.tensor_coevaluation, ExactPairing.tensor_evaluation]
   simp only [tensorHom_def, comp_whiskerRight]
   monoidal
   simp
