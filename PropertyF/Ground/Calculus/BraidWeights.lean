@@ -65,9 +65,7 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
   classical
   let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
-  have hz : p.rightTrace z = p.rightTrace a.asHom := by
-    have h := p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
-    simpa [z, Category.assoc] using h
+  have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj p e a
   have hc (q : Σ i, Fin (m i)) : biproduct.ι F q ≫ z ≫ biproduct.π F q =
       (groundEndBlockEquiv C e a q.1 q.2 q.2) • 𝟙 (F q) := by
     rcases q with ⟨i, j⟩

@@ -218,14 +218,6 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def selfMonodromy (X : C) : End (X ⊗ X) :=
   End.of ((β_ X X).hom ≫ (β_ X X).hom)
 
-omit [BraidedCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
-/-- Pivotal trace is unchanged by categorical conjugation. -/
-theorem rightTrace_iso_conj [RightRigidCategory C]
-    (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) (a : End X) :
-    p.rightTrace ((isoEndAlgEquiv e) a).asHom = p.rightTrace a.asHom := by
-  simpa [isoEndAlgEquiv, Iso.conj_apply_asHom, Category.assoc] using
-    p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
-
 omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The actual braid `a²b²` becomes the graphical overlap of two copies of
 double self-braiding after the standard tensor-power and associator isomorphisms. -/
