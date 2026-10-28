@@ -14,11 +14,12 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
+variable {V W : C.Obj}
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The perfect pairing is natural for maps between different underlying
 objects: precomposition corresponds to dualizing postcomposition. -/
-theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) {V W : C.Obj} (q : V ⟶ W)
+theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) (q : V ⟶ W)
     (f : W ⟶ simples C i) : simpleHomPairingEquiv C i V (q ≫ f) =
     Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv C i W f) := by
   ext g
@@ -57,7 +58,7 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
   split_ifs <;> simp <;> exact End.ext rfl
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
-theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V ⟶ W) {E : Type*}
+theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W) {E : Type*}
     [AddCommGroup E] [Module ℂ E] (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
@@ -158,10 +159,11 @@ variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+variable {T U R S : D}
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a fusion map is natural in its test strand. -/
-theorem closeFusionMap_pre_test {T U R S : D} (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
+theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     (Rᘁ ◁ h) ≫ closeFusionMap U S f =
       closeFusionMap T S ((h ▷ S) ≫ f) := by
   simp only [closeFusionMap, Category.assoc, comp_rightAdjointMate, comp_whiskerRight]
@@ -181,7 +183,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the output of a crossing block composes the
 fusion inclusion with that map. -/
 @[reassoc]
-theorem crossingBlock_post_test (X : D) {T U R S : D} (h : T ⟶ U)
+theorem crossingBlock_post_test (X : D) (h : T ⟶ U)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     crossingBlock X T S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
       mixedCrossingBilinear (k := k) X T U R S (g ≫ (h ▷ S)) f := by
@@ -193,7 +195,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the input of a crossing block composes the
 fusion projection with that map. -/
 @[reassoc]
-theorem crossingBlock_pre_test (X : D) {T U R S : D} (h : T ⟶ U)
+theorem crossingBlock_pre_test (X : D) (h : T ⟶ U)
     (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
     (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U S g f =
       mixedCrossingBilinear (k := k) X T U R S g ((h ▷ S) ≫ f) := by

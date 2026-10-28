@@ -41,7 +41,7 @@ theorem unit_mem_productLabels : unitIndex (𝒵 C) ∈ productLabels C :=
   (mem_productLabels C _).2 <|
     Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
 
-variable {i j : productLabels C} {k : Fin (rank (𝒵 C))}
+variable {i j : productLabels C}
 
 theorem dual_mem_productLabels : dualIndex (𝒵 C) i ∈ productLabels C :=
   let Z := 𝒵 C
@@ -52,15 +52,17 @@ theorem dual_mem_productLabels : dualIndex (𝒵 C) i ∈ productLabels C :=
   (mem_productLabels C _).2 <| Centre.productRetract_of_retract (Retract.ofIso (e'.symm ≪≫ e))
     (Centre.productRetract_rightDual C ((mem_productLabels C i).1 i.property))
 
-theorem constituent_mem_productLabels (hk : 0 < fusionCoeff (𝒵 C) i j k) : k ∈ productLabels C :=
-  let ⟨r⟩ := Ground.fusionCoeff_retract (𝒵 C) hk
+/-- Every constituent label of two product labels is itself a product label. -/
+theorem constituent_mem_productLabels
+    (k : {k : Fin (rank (𝒵 C)) // 0 < fusionCoeff (𝒵 C) i j k}) : k.val ∈ productLabels C :=
+  let ⟨r⟩ := Ground.fusionCoeff_retract (𝒵 C) k.property
   (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|
-    Centre.productRetract_tensor ((mem_productLabels C i).1 i.property) ((mem_productLabels C j).1 j.property)
+    Centre.productRetract_tensor ((mem_productLabels C i).1 i.2) ((mem_productLabels C j).1 j.2)
 
 /-- The product-retract labels form a fusion subring. -/
 theorem productLabels_isFusionSubring : IsFusionSubring (𝒵 C) (productLabels C) :=
   ⟨⟨(fun i hi ↦ dual_mem_productLabels C (i := ⟨i, hi⟩)),
-    (fun i hi j hj _ hk ↦ constituent_mem_productLabels C (i := ⟨i, hi⟩) (j := ⟨j, hj⟩) hk)⟩,
+    (fun i hi j hj k hk ↦ constituent_mem_productLabels C (i := ⟨i, hi⟩) (j := ⟨j, hj⟩) ⟨k, hk⟩)⟩,
     unit_mem_productLabels C⟩
 
 /-- The centre's product-retract labels satisfy the numerical double-centralizer

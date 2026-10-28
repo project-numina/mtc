@@ -74,16 +74,12 @@ theorem character_norm_le_fpSimple (C : BraidedFusionCategory)
     ext j
     change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
     exact (hchar i j).symm
-  have hzero : (Matrix.scalar (Fin (rank C)) (χ i) - A) *ᵥ χ = 0 := by
-    rw [Matrix.sub_mulVec, heigen, Matrix.scalar_apply, Matrix.diagonal_const_mulVec, sub_self]
-  have hdet : (Matrix.scalar (Fin (rank C)) (χ i) - A).det = 0 :=
-    Matrix.det_eq_zero_of_mulVec_eq_zero_of_mem_nonZeroDivisors hzero
-      (mem_nonZeroDivisors_of_ne_zero hχ)
   have hz : χ i ∈ spectrum ℂ A := by
-    apply Matrix.mem_spectrum_iff_isRoot_charpoly.mpr
-    change Polynomial.eval (χ i) A.charpoly = 0
-    rw [Matrix.eval_charpoly]
-    exact hdet
+    rw [← Matrix.spectrum_toLin']
+    apply Module.End.HasEigenvalue.mem_spectrum
+    apply Module.End.hasEigenvalue_of_hasEigenvector (x := χ)
+    refine ⟨Module.End.mem_eigenspace_iff.mpr ?_, fun h ↦ hχ (congrFun h i₀)⟩
+    exact heigen
   have hle : (‖χ i‖₊ : ℝ≥0∞) ≤ spectralRadius ℂ A := by
     rw [spectralRadius_eq_of_unital]
     exact le_iSup_of_le (χ i) (le_iSup_of_le hz le_rfl)
