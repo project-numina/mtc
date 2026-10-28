@@ -17,11 +17,11 @@ and nondegeneracy. The loop identity for the actual centre remains open. -/
 open scoped BigOperators
 namespace PropertyF.Ground.CentreModular
 open Modular
+variable (C : BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 /-- The vacuum-column Kirby identity propagates to all S-square entries by
 the categorical Verlinde identity and fusion reciprocity. -/
 theorem categoricalS_square_of_kirby
-    (C : BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
     (D : ℂ)
     (hkirby : ∀ k, (∑ z, simpleDimension C p z * categoricalS C p k z) =
       if k = unitIndex C then D else 0)
@@ -64,7 +64,6 @@ theorem categoricalS_square_of_kirby
 /-- A nonzero Kirby vacuum-loop scalar suffices for invertibility of the
 actual categorical S matrix. -/
 theorem categoricalS_det_ne_zero_of_kirby
-    (C : BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
     (D : ℂ) (hD : D ≠ 0)
     (hkirby : ∀ k, (∑ z, simpleDimension C p z * categoricalS C p k z) =
       if k = unitIndex C then D else 0) :
@@ -86,7 +85,6 @@ theorem categoricalS_det_ne_zero_of_kirby
 /-- For FP-valued dimensions the unit Kirby loop is automatic and its value
 is nonzero. Thus only the vanishing on non-unit labels remains. -/
 theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
-    (C : BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : ∀ i, simpleDimension C p i = (fpSimple C i : ℂ))
     (hvanish : ∀ k, k ≠ unitIndex C →
       (∑ z, simpleDimension C p z * categoricalS C p k z) = 0) :
@@ -106,7 +104,6 @@ theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
 /-- In a category with FP-valued dimensions, it suffices for the unit's
 normalized S character to be different from that of every other simple. -/
 theorem categoricalS_det_ne_zero_of_unit_character_unique
-    (C : BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : ∀ i, simpleDimension C p i = (fpSimple C i : ℂ))
     (hunique : ∀ k, k ≠ unitIndex C →
       (fun i => categoricalS C p i k / simpleDimension C p k) ≠
@@ -147,7 +144,6 @@ theorem categoricalS_det_ne_zero_of_unit_character_unique
 /-- For FP-valued simple dimensions, S is invertible if the only simple
 whose Hopf links all equal the product of dimensions is the unit. -/
 theorem categoricalS_det_ne_zero_of_trivial_S_centralizer
-    (C : BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : ∀ i, simpleDimension C p i = (fpSimple C i : ℂ))
     (htrivial : ∀ k, (∀ i, categoricalS C p i k =
       simpleDimension C p i * simpleDimension C p k) → k = unitIndex C) :
@@ -170,11 +166,11 @@ set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
 namespace PropertyF.Ground.CentreModular
 universe v u
+variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 /-- Positive FP dimensions and twist balancing upgrade the numerical S-test
 to actual transparency of a simple object. -/
 theorem transparent_of_S_test_and_balancing
-    (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
     (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
       ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
@@ -202,7 +198,6 @@ theorem transparent_of_S_test_and_balancing
 /-- In a positive pivotal category with balanced twist, S is invertible if the
 unit is the only transparent simple object. -/
 theorem categoricalS_det_ne_zero_of_trivial_transparency
-    (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
     (hbalance : ∀ X Y, Modular.doubleBraiding X Y ≫
       ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ

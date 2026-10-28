@@ -83,11 +83,16 @@ theorem fusionCoeff_dual_adjoint (C : Ground.BraidedFusionCategory) (i j k : Fin
     fusionCoeff C i j k = fusionCoeff C (Ground.dualIndex C i) k j := by
   rw [fusionCoeff_comm C i j, fusionCoeff_reciprocity_labels, fusionCoeff_comm]
 
+variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
+
+/-- The simple pivotal dimensions are fixed by complex conjugation. -/
+abbrev HasRealSimpleDimensions : Prop :=
+  ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j
+
 /-- With real simple dimensions, dualizing a label conjugates the corresponding
 categorical S entry. No categorical dual-trace identity is needed. -/
-theorem categoricalS_dual_conj (C : Ground.BraidedFusionCategory)
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hreal : ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j)
+theorem categoricalS_dual_conj
+    (hreal : HasRealSimpleDimensions C p)
     (i j : Fin (rank C)) :
     categoricalS C p (Ground.dualIndex C i) j = starRingEnd ℂ (categoricalS C p i j) := by
   let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
@@ -104,9 +109,8 @@ theorem categoricalS_dual_conj (C : Ground.BraidedFusionCategory)
   simpa [hd] using congrArg (fun z : ℂ => z * simpleDimension C p j) hh
 
 /-- Real pivotal simple dimensions are invariant under dual labels. -/
-theorem simpleDimension_dual (C : Ground.BraidedFusionCategory)
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hreal : ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j)
+theorem simpleDimension_dual
+    (hreal : HasRealSimpleDimensions C p)
     (i : Fin (rank C)) :
     simpleDimension C p (Ground.dualIndex C i) = simpleDimension C p i := by
   simpa only [categoricalS_unit, hreal i] using

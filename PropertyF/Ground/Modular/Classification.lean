@@ -194,8 +194,7 @@ theorem normalized_columns_linearIndependent (S : Matrix ι ι ℂ)
     simp_rw [hterm]
     rw [← Finset.sum_div, hsq, hddual]
     split_ifs <;> simp [hD]
-  have hdet := Matrix.det_ne_zero_of_right_inverse hab
-  exact Matrix.linearIndependent_cols_of_det_ne_zero hdet
+  exact Matrix.linearIndependent_cols_of_det_ne_zero (Matrix.det_ne_zero_of_right_inverse hab)
 
 
 end PropertyF.Ground.Modular

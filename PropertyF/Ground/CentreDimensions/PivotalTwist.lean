@@ -64,14 +64,13 @@ section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 /-- The pivotal/Drinfeld twist on an object. -/
-def pivotalBraidedTwist (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) : X ≅ X :=
+def pivotalBraidedTwist (X : C.Obj) : X ≅ X :=
   p.iso X ≪≫ (Ground.doubleDualIso C X).symm
 
 /-- The pivotal/Drinfeld twist is natural. -/
-theorem pivotalBraidedTwist_natural (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) {X Y : C.Obj} (f : X ⟶ Y) :
+theorem pivotalBraidedTwist_natural {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (pivotalBraidedTwist C p Y).hom = (pivotalBraidedTwist C p X).hom ≫ f := by
   have hn : ((fᘁ)ᘁ) ≫ (Ground.doubleDualIso C Y).inv =
       (Ground.doubleDualIso C X).inv ≫ f := by
@@ -82,13 +81,11 @@ theorem pivotalBraidedTwist_natural (C : Ground.BraidedFusionCategory.{v,u})
   simp only [pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom, Category.assoc]
   rw [← Category.assoc, p.naturality, Category.assoc, hn]
 /-- The twist scalar of a simple object. -/
-def pivotalBraidedTwistScalar (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) [Simple X] : ℂ :=
+def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
   simpleEndScalarEquiv C X (End.of (pivotalBraidedTwist C p X).hom)
 
 /-- On a simple object the twist acts by its scalar. -/
-theorem pivotalBraidedTwist_simple (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) [Simple X] :
+theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
     (pivotalBraidedTwist C p X).hom = pivotalBraidedTwistScalar C p X • 𝟙 X := by
   have h : End.of (pivotalBraidedTwist C p X).hom =
       pivotalBraidedTwistScalar C p X • (1 : End X) := by
@@ -97,8 +94,7 @@ theorem pivotalBraidedTwist_simple (C : Ground.BraidedFusionCategory.{v,u})
   simpa using congrArg End.asHom h
 
 /-- A simple twist scalar is nonzero. -/
-theorem pivotalBraidedTwistScalar_ne_zero (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) [Simple X] :
+theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
     pivotalBraidedTwistScalar C p X ≠ 0 := by
   intro hz
   have ht := pivotalBraidedTwist_simple C p X
@@ -108,8 +104,7 @@ theorem pivotalBraidedTwistScalar_ne_zero (C : Ground.BraidedFusionCategory.{v,u
   exact id_nonzero X hi
 
 /-- The trace of a simple self-braiding is twist scalar times dimension. -/
-theorem pivotalTrace_selfBraiding (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) [Simple X] :
+theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
     Ground.unitScalar C (p.rightTrace (β_ X X).hom) =
       pivotalBraidedTwistScalar C p X * pivotalDimension C p X := by
   have h := rightTrace_partialTrace p X X (End.of (β_ X X).hom)
@@ -123,8 +118,7 @@ theorem pivotalTrace_selfBraiding (C : Ground.BraidedFusionCategory.{v,u})
   simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul, pivotalDimension]
 
 /-- The actual pivotal/Drinfeld twists form a natural automorphism. -/
-def pivotalBraidedTwistNaturalIso (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) : 𝟭 C.Obj ≅ 𝟭 C.Obj :=
+def pivotalBraidedTwistNaturalIso : 𝟭 C.Obj ≅ 𝟭 C.Obj :=
   NatIso.ofComponents (pivotalBraidedTwist C p) (fun f => pivotalBraidedTwist_natural C p f)
 
 
