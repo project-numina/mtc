@@ -65,8 +65,7 @@ counit for the centre-forgetful right adjunction. -/
 def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
   app X := (unitSummandRetract C X).r
   naturality {X Y} f := by
-    simpa only [underlyingFunctor, unitSummandRetract, unitSummandIso, Functor.id_map,
-      Category.assoc, biproduct.map_π_assoc] using congrArg (fun g =>
+    simpa [underlyingFunctor, unitSummandRetract, unitSummandIso, Category.assoc] using congrArg (fun g =>
       biproduct.π (inductionSummand C X)
         (unitIndex C) ≫ g) (unitTensorIso_natural (Classical.choice (unitIndex_iso C)) f)
 

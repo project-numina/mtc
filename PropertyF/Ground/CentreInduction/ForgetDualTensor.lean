@@ -39,8 +39,7 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 /-- The double-dual comparison is natural in centre morphisms. -/
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (κ₂ Y).hom = (κ₂ X).hom ≫ ((f.fᘁ)ᘁ) := by
-  simpa only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
-    Category.assoc] using (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by
+  simpa [forgetDoubleDualIso, rightDualIsoMap, Category.assoc] using (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by
       simpa only [comp_rightAdjointMate] using (congrArg (fun m => rightAdjointMate m)
         (CommSq.vert_inv (g := κ Y) (h := κ X) ⟨forgetDualIso_natural f⟩).w).symm⟩).w
 
