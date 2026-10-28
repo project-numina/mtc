@@ -131,7 +131,6 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
     (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C j)
       (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)) =
     (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
-  classical
   calc
     _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
       unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
@@ -145,7 +144,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
       (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
-  classical
   let V := inductionSummand C Z.1
   apply (cancel_mono (leftDistributor T V).hom).1
   apply biproduct.hom_ext
@@ -226,7 +224,6 @@ theorem globalFPDimension_square_of_actual_induction
     [RigidCategory (CategoryTheory.Center C.Obj)]
     [IsFusionCategory (CategoryTheory.Center C.Obj)] :
     globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
-  classical
   let I (i : Fin (rank C)) := (induction C).obj (simples C i)
   have hadj (i : Fin (rank C)) (j : Fin (rank 𝒵ᶠ)) :
       Module.finrank ℂ ((simples 𝒵ᶠ j : 𝒵) ⟶ I i) =

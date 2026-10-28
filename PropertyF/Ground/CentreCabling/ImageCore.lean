@@ -132,29 +132,29 @@ variable (hp : p.IsSpherical)
   (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
   (hdim : HasFPSimpleDimensions (𝒵 C) p)
 
-include hdim in
+variable (hfinite : HasFiniteImageCentralizerMonodromy C p)
+  {y : Fin (rank (𝒵 C))} (hy : y ∈ sCentralizer (𝒵 C) p (imageLabels C))
+
+include hdim hfinite hy in
+/-- The numerical image centralizer centralizes every canonical-image retract. -/
+theorem centralizes_canonicalImageRetract {X : CategoryTheory.Center C.Obj}
+    (hX : CanonicalImageRetract C X) : Centre.Centralizes (simples (𝒵 C) y) X := by
+  apply Centre.centralizes_symm
+  change doubleBraiding X (simples (𝒵 C) y) = 𝟙 _
+  apply doubleBraiding_eq_one_of_simple_constituents (𝒵 C) (CanonicalImageRetract C)
+    (fun r hr ↦ canonicalImageRetract_of_retract C r hr) hX
+  intro a ha
+  exact doubleBraiding_eq_one_of_sTest_of_finite_order hdim (hfinite y hy a ha) (hy a ha)
+
+include hdim hfinite hy in
 /-- The S-test on both canonical images detects the actual core if the relevant
 mixed monodromies have finite order. Only simple image constituents, and only
 labels passing this S-test, are needed for the finite-order hypothesis. -/
-theorem numericalImageCentralizer_subset_symmetricCore
-    (hfinite : HasFiniteImageCentralizerMonodromy C p)
-    {y : Fin (rank (𝒵 C))}
-    (hy : y ∈ sCentralizer (𝒵 C) p (imageLabels C)) : y ∈ symmetricCore C := by
-  let Z := 𝒵 C
-  have hc (X : CategoryTheory.Center C.Obj) (hX : CanonicalImageRetract C X) :
-      Centre.Centralizes (simples Z y) X := by
-    apply Centre.centralizes_symm
-    change doubleBraiding X (simples Z y) = 𝟙 _
-    apply doubleBraiding_eq_one_of_simple_constituents Z (CanonicalImageRetract C)
-      (fun r hr => canonicalImageRetract_of_retract C r hr) hX
-    intro a ha
-    exact doubleBraiding_eq_one_of_sTest_of_finite_order hdim
-      (hfinite y hy a ha) (hy a ha)
-  constructor
-  · intro X
-    exact hc _ (Or.inl ⟨X, ⟨Retract.refl _⟩⟩)
-  · intro X
-    exact hc _ (Or.inr ⟨X, ⟨Retract.refl _⟩⟩)
+theorem numericalImageCentralizer_subset_symmetricCore : y ∈ symmetricCore C :=
+  ⟨fun X ↦ centralizes_canonicalImageRetract C hdim hfinite hy
+      (Or.inl ⟨X, ⟨Retract.refl _⟩⟩),
+   fun X ↦ centralizes_canonicalImageRetract C hdim hfinite hy
+      (Or.inr ⟨X, ⟨Retract.refl _⟩⟩)⟩
 
 include hp hdet hdim in
 /-- The precise actual-core double-centralizer conclusion under the reduced
