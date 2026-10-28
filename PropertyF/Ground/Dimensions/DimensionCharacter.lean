@@ -36,10 +36,10 @@ abbrev HasFPSphericalStructure (C : BraidedFusionCategory.{v,u}) : Prop :=
 
 variable (p : PivotalStructure (C := C.Obj))
 
+variable {X : C.Obj} in
 /-- Pivotal dimension is a sum of simple dimensions with the actual Hom-space
 multiplicities, for any pivotal structure. -/
-theorem pivotalDimension_decomposition
-    (X : C.Obj) :
+theorem pivotalDimension_decomposition :
     pivotalDimension C p X = ∑ i, (simpleMultiplicity C i X : ℂ) *
       pivotalDimension C p (simples C i) := by
   classical
@@ -53,7 +53,7 @@ theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStr
     (hsimple : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (X : C.Obj) : pivotalDimension C p X = (fpDimension C X : ℂ) := by
   simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
-    hsimple] using pivotalDimension_decomposition C p X
+    hsimple] using pivotalDimension_decomposition C p (X := X)
 
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor
@@ -67,7 +67,7 @@ theorem pivotalDimension_character
     :
     IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) :=
   fun i j ↦ (pivotalDimension_tensor C p (simples C i) (simples C j)).symm.trans
-    (pivotalDimension_decomposition C p _)
+    (pivotalDimension_decomposition C p (X := _))
 
 /-- Pivotal dimension is invariant under object isomorphism. -/
 theorem pivotalDimension_iso

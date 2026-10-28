@@ -104,9 +104,10 @@ theorem rightTrace_biproduct (F : ι → C) [HasBiproduct F]
     p.rightTrace f = ∑ i, p.rightTrace (biproduct.ι F i ≫ f ≫ biproduct.π F i) :=
   rightTrace_decomposition p (biproduct.ι F) (biproduct.π F) biproduct.total f
 
+variable {F : ι → C} [HasBiproduct F]
+
 /-- Categorical dimensions are additive on finite direct sums. -/
-theorem rightDimension_biproduct (F : ι → C) [HasBiproduct F]
-    (p : PivotalStructure (C := C)) :
+theorem rightDimension_biproduct (p : PivotalStructure (C := C)) :
     p.rightTrace (𝟙 (⨁ F)) = ∑ i, p.rightTrace (𝟙 (F i)) :=
   by simpa using rightTrace_biproduct F p (𝟙 (⨁ F))
 

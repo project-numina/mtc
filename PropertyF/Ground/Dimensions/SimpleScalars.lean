@@ -110,14 +110,14 @@ universe v u
 /-- The canonical braided double-dual components form a natural isomorphism. -/
 def drinfeldNaturalIso (C : Type u) [Category.{v} C] [MonoidalCategory C]
     [BraidedCategory C] [RightRigidCategory C] : 𝟭 C ≅ doubleDualFunctor C :=
-  NatIso.ofComponents drinfeldIso (fun f ↦ drinfeldIso_natural f)
+  NatIso.ofComponents (fun X ↦ drinfeldIso X) (fun f ↦ drinfeldIso_natural f)
 
 /-- The canonical braided fourth-dual components form a natural
 isomorphism. Tensor compatibility is not asserted here. -/
 def fourthDualNaturalIso (C : Type u) [Category.{v} C] [MonoidalCategory C]
     [BraidedCategory C] [RightRigidCategory C] :
     𝟭 C ≅ doubleDualFunctor C ⋙ doubleDualFunctor C :=
-  NatIso.ofComponents fourthDualIso (fun f ↦ fourthDualIso_natural f)
+  NatIso.ofComponents (fun X ↦ fourthDualIso X) (fun f ↦ fourthDualIso_natural f)
 
 end PropertyF.Ground.Dimensions
 
