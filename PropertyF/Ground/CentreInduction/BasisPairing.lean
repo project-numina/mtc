@@ -37,26 +37,10 @@ theorem dualBasis_contraction_natural {k : Type*} [CommSemiring k] {I J : Type} 
   have hL (i : I) : L (a i) = ∑ j, c i j • b j := (b.sum_repr _).symm
   have hD (j : J) : Module.Dual.transpose L (b.dualBasis j) =
       ∑ i, c i j • a.dualBasis i := by
-    calc
-      _ = ∑ i, (a.dualBasis.repr (Module.Dual.transpose L (b.dualBasis j)) i) •
-        a.dualBasis i := (a.dualBasis.sum_repr _).symm
-      _ = _ := by
-        apply Finset.sum_congr rfl
-        intro i _
-        simp [c, Module.Basis.dualBasis_repr,
-          Module.Dual.transpose_apply]
-  calc
-    _ = ∑ i, ∑ j, c i j • F (b j) (a.dualBasis i) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [hL i]
-      simp
-    _ = ∑ j, ∑ i, c i j • F (b j) (a.dualBasis i) := Finset.sum_comm
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [hD j]
-      simp
+    simpa [c, Module.Basis.dualBasis_repr, Module.Dual.transpose_apply] using
+      (a.dualBasis.sum_repr (Module.Dual.transpose L (b.dualBasis j))).symm
+  simp only [hL, hD, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]
+  exact Finset.sum_comm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Simple projections form the dual basis to simple inclusions. -/
@@ -70,15 +54,9 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
   apply B.ext
   intro b
   rw [Module.Basis.dualBasis_apply_self]
-  by_cases hab : b = a
-  · subst b
-    simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
-      Dimensions.simpleInclusion, simpleProjection, Category.assoc]
-    exact End.ext rfl
-  · simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
-      Dimensions.simpleInclusion, simpleProjection, Category.assoc,
-      biproduct.ι_π_ne _ (show (⟨i,b⟩ : Dimensions.simplePieces C V) ≠ ⟨i,a⟩ by simpa using hab), hab]
-    exact End.ext rfl
+  simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
+    Dimensions.simpleInclusion, simpleProjection, Category.assoc, biproduct.ι_π]
+  split_ifs <;> simp <;> exact End.ext rfl
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
 theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V ⟶ W)
