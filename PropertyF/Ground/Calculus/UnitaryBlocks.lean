@@ -220,10 +220,8 @@ theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
   classical
   let _ : Fintype G := Fintype.ofFinite G
   obtain ⟨n, d, hd, ⟨e⟩⟩ := groupImageAlgebra_blocks ρ
-  let blockRep : ∀ i : Fin n, G →* Matrix (Fin (d i)) (Fin (d i)) ℂ := fun i =>
-    { toFun := fun g => e (groupInImage ρ g) i
-      map_one' := by simp
-      map_mul' := by intros; simp }
+  let blockRep (i : Fin n) : G →* Matrix (Fin (d i)) (Fin (d i)) ℂ :=
+    (Pi.evalMonoidHom _ i).comp (e.toMonoidHom.comp (groupInImage ρ))
   have hu : ∀ i, ∃ P : (Matrix (Fin (d i)) (Fin (d i)) ℂ)ˣ,
       ∀ g, ((↑(P * (blockRep i).toHomUnits g * P⁻¹) :
         Matrix (Fin (d i)) (Fin (d i)) ℂ) ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) :=

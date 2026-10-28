@@ -38,7 +38,7 @@ abbrev HasUnitaryTraceBound {X : C.Obj}
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
 theorem fpDimension_tensorPower (X : C.Obj) :
     ∀ n, Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n
-  | 0 => by simp [tensorPower, Ground.fpDimension_unit]
+  | 0 => Ground.fpDimension_unit C
   | n + 1 => by simp [tensorPower, Ground.fpDimension_tensor, fpDimension_tensorPower X n,
       pow_succ, mul_comm]
 
@@ -108,7 +108,7 @@ def overlapIndex (t : ℕ) : ℕ → ℕ
   | k + 1 => overlapIndex t k + (t + 1)
 
 theorem overlapIndex_formula (t : ℕ) : ∀ k, overlapIndex t k = t + k * (t + 1)
-  | 0 => by simp [overlapIndex]
+  | 0 => by rw [overlapIndex, Nat.zero_mul, Nat.add_zero]
   | k + 1 => by simp [overlapIndex, overlapIndex_formula t k, Nat.succ_mul, Nat.add_assoc]
 
 /-- Extend the existing product by `t+1` identity strands on the right. -/

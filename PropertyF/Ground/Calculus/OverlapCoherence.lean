@@ -46,7 +46,7 @@ theorem addLeftBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlge
           (insertLeftPowerIso X n k).hom := by
   induction k with
   | zero =>
-    simp only [addLeftBraidAlgebraIter, insertLeftPowerIso, tensorPower]
+    dsimp only [addLeftBraidAlgebraIter, insertLeftPowerIso, tensorPower]
     monoidal
   | succ k ih =>
     change ((addLeftBraidAlgebra X (n + k) (addLeftBraidAlgebraIter X n k a) :
@@ -77,7 +77,7 @@ theorem addRightBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlg
           (insertRightPowerIso X n k).hom := by
   induction k with
   | zero =>
-    simp only [addRightBraidAlgebraIter, insertRightPowerIso, tensorPower]
+    dsimp only [addRightBraidAlgebraIter, insertRightPowerIso, tensorPower]
     monoidal
   | succ k ih =>
     change ((addRightBraidAlgebra X (n + k) (addRightBraidAlgebraIter X n k a) :
@@ -85,8 +85,7 @@ theorem addRightBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlg
     rw [addRightBraidAlgebra_asHom, ih]
     simp only [insertRightPowerIso, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
       Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv,
-      tensorHom_id, comp_whiskerRight, Category.assoc]
-    simp only [id_tensorHom, whisker_exchange_assoc]
+      tensorHom_id, comp_whiskerRight, Category.assoc, id_tensorHom, whisker_exchange_assoc]
     rw [← associator_naturality_left_assoc]
     simp
 
@@ -227,13 +226,14 @@ theorem overlap_trace_step_of_coherence (D : BraidedFusionCategory.{v,u})
         actualBraidTrace D p u := by
   have hh := congrArg
     (fun z => Ground.unitScalarEquiv D (p.rightTrace z.asHom)) hcoh
-  simp only [rightTrace_iso_conj] at hh
-  rw [pivotalTrace_overlap D (X := X) p (Ground.unitScalarEquiv D)] at hh
-  simp only [previousOverlapLocal, rightTrace_iso_conj] at hh
+  rw [rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p (Ground.unitScalarEquiv D)] at hh
+  unfold previousOverlapLocal at hh
+  rw [rightTrace_iso_conj] at hh
   change actualBraidTrace D p _ = actualBraidTrace D p _ *
     (actualBraidTrace D p u / _) at hh
-  simp only [pivotalDimension, unitScalar_eq_equiv]
-  rw [hh, mul_assoc, div_mul_cancel₀ _ (Modular.unitScalar_rightTrace_ne_zero D p X)]
+  unfold pivotalDimension
+  rw [unitScalar_eq_equiv, hh, mul_assoc,
+    div_mul_cancel₀ _ (Modular.unitScalar_rightTrace_ne_zero D p X)]
 
 /-- Canonical isomorphism coherence supplies the scaled trace identity for
 every iterated actual overlapping braid-algebra product. -/

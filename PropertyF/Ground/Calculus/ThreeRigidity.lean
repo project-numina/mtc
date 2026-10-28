@@ -150,14 +150,15 @@ theorem pair_operator_scalar_of_overlaps_equal {X : C.Obj} [Simple X]
     (htrace : scalarTrace p (Ground.unitScalarEquiv C) u = (d : ℂ) * f)
     (heq : insertRightIdentity X u = overlapFresh X u) :
     u = (f / d : ℂ) • (1 : End (X ⊗ X)) := by
-  simp only [scalarTrace] at htrace
-  simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
+  unfold scalarTrace at htrace
+  unfold pivotalDimension at hdim
+  rw [unitScalar_eq_equiv] at hdim
   have h := congrArg (rightPartialTrace p (X := X ⊗ X) (Y := X)) heq
   rw [rightPartialTrace_insert p (Ground.unitScalarEquiv C),
     overlapFresh, rightPartialTrace_whiskerLeft,
     rightPartialTrace_simple_ground C (X := X) (Y := X) p (Ground.unitScalarEquiv C)] at h
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
-  simp only [scalarTrace, hdim, htrace] at h
+  rw [scalarTrace, hdim, htrace] at h
   have h' : (d : ℂ) • u = (f : ℂ) • (1 : End (X ⊗ X)) := by
     have hs : End.of (X ◁ ((f : ℂ) • (1 : End X)).asHom) =
         (f : ℂ) • (1 : End (X ⊗ X)) :=

@@ -82,7 +82,7 @@ theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
     {Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
     (a : End Y) (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) :
     a = (scalarTrace p scalar a / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
-  simp only [scalarTrace]
+  unfold scalarTrace
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ a.asHom
   have hcval : c = scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y)) := by
     apply (eq_div_iff hd).2
