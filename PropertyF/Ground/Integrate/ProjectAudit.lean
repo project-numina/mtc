@@ -158,7 +158,6 @@ import all PropertyF.Ground.Fusion.UnitPower
 import all PropertyF.Ground.Integrate.ActualCenterReduction
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterBundle
-import all PropertyF.Ground.Integrate.CenterDualMate
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Representatives
@@ -241,9 +240,9 @@ run_cmd do
       ``PropertyF.Ground.fpSimple_mul,
       ``PropertyF.Ground.ScalarTwist.conjugate,
       ``PropertyF.Ground.ScalarTwist.labels,
-      ``PropertyF.Ground.fpDimension_functor_universe,
+      ``PropertyF.Ground.fpDimension_functor,
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
-      ``PropertyF.Ground.rigidity_of_twisted_overlap,
+      ``PropertyF.Ground.galois_rigidity_of_propertyF,
       ``PropertyF.Ground.target_of_modular_center,
       ``PropertyF.Ground.target_of_center_centralizers,
       ``PropertyF.Ground.target_of_center_product_retracts,

@@ -24,17 +24,15 @@ def CanonicalImageRetract (X : CategoryTheory.Center C.Obj) : Prop :=
 
 omit [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)] in
 theorem canonicalImageRetract_of_retract {X Y : CategoryTheory.Center C.Obj}
-    (r : Retract X Y) (h : CanonicalImageRetract C Y) : CanonicalImageRetract C X := by
-  rcases h with ⟨A, ⟨s⟩⟩ | ⟨A, ⟨s⟩⟩
-  · exact Or.inl ⟨A, ⟨r.trans s⟩⟩
-  · exact Or.inr ⟨A, ⟨r.trans s⟩⟩
+    (r : Retract X Y) (h : CanonicalImageRetract C Y) : CanonicalImageRetract C X :=
+  h.elim (fun ⟨A, ⟨s⟩⟩ ↦ Or.inl ⟨A, ⟨r.trans s⟩⟩)
+    (fun ⟨A, ⟨s⟩⟩ ↦ Or.inr ⟨A, ⟨r.trans s⟩⟩)
 
 omit [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)] in
 theorem canonicalImageRetract_product {X : CategoryTheory.Center C.Obj}
-    (h : CanonicalImageRetract C X) : Centre.ProductRetract X := by
-  rcases h with ⟨A, ⟨s⟩⟩ | ⟨A, ⟨s⟩⟩
-  · exact Centre.productRetract_of_retract s (Centre.positive_productRetract A)
-  · exact Centre.productRetract_of_retract s (Centre.negative_productRetract A)
+    (h : CanonicalImageRetract C X) : Centre.ProductRetract X :=
+  h.elim (fun ⟨A, ⟨s⟩⟩ ↦ Centre.productRetract_of_retract s (Centre.positive_productRetract A))
+    (fun ⟨A, ⟨s⟩⟩ ↦ Centre.productRetract_of_retract s (Centre.negative_productRetract A))
 
 /-- Simple constituents of either canonical image. -/
 def imageLabels : Set (Fin (rank (Integrate.bundledCenter C))) :=
@@ -47,10 +45,7 @@ variable (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)
 
 /-- Image monodromy is finite for labels passing the numerical centralizer test. -/
 abbrev HasFiniteImageCentralizerMonodromy : Prop :=
-  ∀ y, (∀ a ∈ imageLabels C,
-      Modular.categoricalS (Integrate.bundledCenter C) p a y =
-        Modular.simpleDimension (Integrate.bundledCenter C) p a *
-          Modular.simpleDimension (Integrate.bundledCenter C) p y) →
+  ∀ y ∈ sCentralizer (Integrate.bundledCenter C) p (imageLabels C),
       ∀ a ∈ imageLabels C, IsOfFinOrder (End.of (Modular.doubleBraiding
         (simples (Integrate.bundledCenter C) a) (simples (Integrate.bundledCenter C) y)))
 
@@ -65,9 +60,7 @@ labels passing this S-test, are needed for the finite-order hypothesis. -/
 theorem numericalImageCentralizer_subset_symmetricCore
     (hfinite : HasFiniteImageCentralizerMonodromy C p)
     (y : Fin (rank (Integrate.bundledCenter C)))
-    (hy : ∀ a ∈ imageLabels C, Modular.categoricalS (Integrate.bundledCenter C) p a y =
-      Modular.simpleDimension (Integrate.bundledCenter C) p a *
-        Modular.simpleDimension (Integrate.bundledCenter C) p y) : y ∈ symmetricCore C := by
+    (hy : y ∈ sCentralizer (Integrate.bundledCenter C) p (imageLabels C)) : y ∈ symmetricCore C := by
   let Z := Integrate.bundledCenter C
   have hc (X : CategoryTheory.Center C.Obj) (hX : CanonicalImageRetract C X) :
       Centre.Centralizes (simples Z y) X := by
@@ -89,14 +82,10 @@ include hp hdet hdim in
 finite-order condition for simple canonical-image constituents. -/
 theorem productLabels_doubleCentralizer_of_image_monodromy
     (hfinite : HasFiniteImageCentralizerMonodromy C p) :
-    ∀ x, (∀ y ∈ symmetricCore C, Modular.categoricalS (Integrate.bundledCenter C) p y x =
-      Modular.simpleDimension (Integrate.bundledCenter C) p y *
-        Modular.simpleDimension (Integrate.bundledCenter C) p x) →
-      Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := by
-  apply productLabels_doubleCentralizer C p hp hdet hdim (symmetricCore C)
-  intro y hy
-  apply numericalImageCentralizer_subset_symmetricCore C p hdim hfinite y
-  intro a ha
-  exact hy a (imageLabels_subset_productLabels C ha)
+    ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p (symmetricCore C),
+      Centre.ProductRetract (simples (Integrate.bundledCenter C) x) :=
+  productLabels_doubleCentralizer C p hp hdet hdim (symmetricCore C) fun y hy ↦
+    numericalImageCentralizer_subset_symmetricCore C p hdim hfinite y fun a ha ↦
+      hy a (imageLabels_subset_productLabels C ha)
 
 end PropertyF.Ground.CentreCabling

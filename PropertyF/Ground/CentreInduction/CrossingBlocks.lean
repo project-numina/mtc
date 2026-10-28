@@ -9,6 +9,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Turn a map `T ⊗ S ⟶ R` into its right-dual mate
@@ -47,14 +48,14 @@ theorem crossingBlock_natural_middle {D : Type u} [Category.{v} D] [MonoidalCate
     whiskerLeft_comp]
 
 /-- The inclusion attached to the canonical decomposition of `T ⊗ Sⱼ`. -/
-def crossingInclusion (C : BraidedFusionCategory.{v,u}) (T : C.Obj)
+def crossingInclusion (T : C.Obj)
     (i j : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))) :
     simples C i ⟶ T ⊗ simples C j :=
   Dimensions.simpleInclusion C (T ⊗ simples C j) i a
 
 /-- The corresponding projection from the same decomposition. -/
-def crossingProjection (C : BraidedFusionCategory.{v,u}) (T : C.Obj)
+def crossingProjection (T : C.Obj)
     (i j : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))) :
     T ⊗ simples C j ⟶ simples C i :=
@@ -62,14 +63,14 @@ def crossingProjection (C : BraidedFusionCategory.{v,u}) (T : C.Obj)
     biproduct.π (Dimensions.simplePiecesObject C (T ⊗ simples C j)) ⟨i, a⟩
 
 /-- Inclusion and projection of the same summand compose to the identity. -/
-theorem crossingInclusion_projection (C : BraidedFusionCategory.{v,u}) (T : C.Obj)
+theorem crossingInclusion_projection (T : C.Obj)
     (i j : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))) :
     crossingInclusion C T i j a ≫ crossingProjection C T i j a = 𝟙 (simples C i) := by
   simp [crossingInclusion, crossingProjection, Dimensions.simpleInclusion, Category.assoc]
 
 /-- Distinct summand inclusions and projections have zero composite. -/
-theorem crossingInclusion_projection_ne (C : BraidedFusionCategory.{v,u}) (T : C.Obj)
+theorem crossingInclusion_projection_ne (T : C.Obj)
     (j : Fin (rank C))
     (p q : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)))
     (hne : p ≠ q) :
@@ -80,7 +81,7 @@ theorem crossingInclusion_projection_ne (C : BraidedFusionCategory.{v,u}) (T : C
 set_option backward.isDefEq.respectTransparency false in
 /-- The projection/inclusion pairs resolve the identity on `T ⊗ Sⱼ`.
 This is the completeness relation used for changes of fusion bases. -/
-theorem crossing_completeness (C : BraidedFusionCategory.{v,u}) (T : C.Obj)
+theorem crossing_completeness (T : C.Obj)
     (j : Fin (rank C)) :
     (∑ p : Σ i : Fin (rank C),
         Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
@@ -106,7 +107,7 @@ theorem crossing_completeness (C : BraidedFusionCategory.{v,u}) (T : C.Obj)
 /-- The finite matrix formula proposed for the induction half-braiding. This
 is only a morphism; invertibility, naturality, the tensor law, and compatibility
 with the induction functor are not yet proved. -/
-def crossingCandidate (C : BraidedFusionCategory.{v,u}) (X T : C.Obj) :
+def crossingCandidate (X T : C.Obj) :
     underlying C X ⊗ T ⟶ T ⊗ underlying C X := by
   classical
   let V : Fin (rank C) → C.Obj := fun i => (simples C i ⊗ X) ⊗ (simples C i)ᘁ
@@ -120,7 +121,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing has the stated matrix entries on each induced
 simple summand. -/
 @[reassoc]
-theorem crossingCandidate_on_summand (C : BraidedFusionCategory.{v,u})
+theorem crossingCandidate_on_summand
     (X T : C.Obj) (i : Fin (rank C)) :
     let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
@@ -134,7 +135,7 @@ theorem crossingCandidate_on_summand (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing is natural in the induction argument. -/
-theorem crossingCandidate_natural_middle (C : BraidedFusionCategory.{v,u})
+theorem crossingCandidate_natural_middle
     {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj) :
     ((underlyingFunctor C).map h ▷ T) ≫ crossingCandidate C Y T =
       crossingCandidate C X T ≫ (T ◁ (underlyingFunctor C).map h) := by

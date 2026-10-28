@@ -32,10 +32,9 @@ theorem commonCentralizer_self (Y : CategoryTheory.Center C)
 
 
 /-- Adjacent transpositions generate the full symmetric group. -/
-theorem strandPermutation_surjective (n : ℕ) : Function.Surjective (strandPermutation n) := by
-  apply FreeGroup.lift_surjective_iff_closure_range_eq_top.mpr
-  apply Subgroup.closure_eq_top_of_mclosure_eq_top
-  exact Equiv.Perm.mclosure_swap_castSucc_succ (n + 1)
+theorem strandPermutation_surjective (n : ℕ) : Function.Surjective (strandPermutation n) :=
+  FreeGroup.lift_surjective_iff_closure_range_eq_top.mpr <|
+    Subgroup.closure_eq_top_of_mclosure_eq_top <| Equiv.Perm.mclosure_swap_castSucc_succ (n + 1)
 
 /-- Pure-word triviality is the precise remaining condition for the actual
 braid action to factor through the symmetric group. -/
@@ -176,10 +175,9 @@ abbrev typeAGroup (n : ℕ) := BraidWords n ⧸ typeANormal n
 def typeAPermutation (n : ℕ) : typeAGroup n →* Equiv.Perm (Fin (n + 2)) :=
   QuotientGroup.lift _ (strandPermutation n) (typeARelations_permutation_trivial n)
 
-theorem typeAPermutation_surjective (n : ℕ) : Function.Surjective (typeAPermutation n) := by
-  intro σ
-  obtain ⟨w, hw⟩ := strandPermutation_surjective n σ
-  exact ⟨QuotientGroup.mk' (typeANormal n) w, hw⟩
+theorem typeAPermutation_surjective (n : ℕ) : Function.Surjective (typeAPermutation n) :=
+  Function.Surjective.of_comp (g := QuotientGroup.mk' (typeANormal n))
+    (strandPermutation_surjective n)
 
 /-- The missing presentation theorem would follow from a finite normal-form
 bound of at most `(n+2)!` words. -/

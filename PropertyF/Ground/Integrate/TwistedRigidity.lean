@@ -6,6 +6,7 @@ public import PropertyF.Ground.Fusion.FunctorDimension
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Calculus.PositiveWeights
+public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Fusion.Agreement
 
 section
@@ -191,29 +192,17 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 
-/-- The actual overlap trace recurrence on the σ-twist of a chosen simple. -/
-def TwistedOverlapTrace (Z : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := Z.Obj))
-    (σ : ℂ ≃+* ℂ) (y : Fin (rank Z)) : Prop :=
-  ∀ (u : braidAlgebra (show (ScalarTwist.category Z σ).Obj from simples Z y) 1) k,
-      actualBraidTrace (ScalarTwist.category Z σ) (show (ScalarTwist.category Z σ).Obj from simples Z y) (ScalarTwist.pivotal Z σ p)
-          (overlapIndex 1 k) (overlapProduct (show (ScalarTwist.category Z σ).Obj from simples Z y) 1 u k) *
-        (Dimensions.groundUnitScalarEquiv (ScalarTwist.category Z σ)
-          ((ScalarTwist.pivotal Z σ p).rightTrace (𝟙 (show (ScalarTwist.category Z σ).Obj from simples Z y)))) ^ k =
-      actualBraidTrace (ScalarTwist.category Z σ) (show (ScalarTwist.category Z σ).Obj from simples Z y) (ScalarTwist.pivotal Z σ p) 1 u ^ (k + 1)
-
 set_option backward.isDefEq.respectTransparency false in
 /-- For a positive pivotal category, all the dimension and scalar-twist
-premises of categorical rigidity follow from actual fusion data. The sole
-remaining braid-calculus premise is the displayed overlap trace recurrence. -/
-theorem rigidity_of_twisted_overlap (Z : BraidedFusionCategory.{v,u})
+premises of categorical rigidity follow from actual fusion data and the
+proved overlap trace recurrence. -/
+theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := Z.Obj))
     (hdim : Modular.HasFPSimpleDimensions Z p)
     (σ : ℂ ≃+* ℂ) (y : Fin (rank Z))
     (hF : ObjectPropertyF (simples Z y)) (d : ℝ)
     (hσ : σ (fpSimple Z y : ℂ) = (d : ℂ))
-    (hS : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y)
-    (hrec : TwistedOverlapTrace Z p σ y) :
+    (hS : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y) :
     fpSimple Z y = |d| := by
   let D := ScalarTwist.category Z σ
   let q := ScalarTwist.pivotal Z σ p
@@ -265,8 +254,10 @@ theorem rigidity_of_twisted_overlap (Z : BraidedFusionCategory.{v,u})
     rw [Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv]
     change σ (Modular.categoricalS Z p y y) = _
     exact hS
-  exact actual_rigidity_of_overlap_and_galois_dimensions D X q original transformed σ
-    hpos htrans hqdim d (fpSimple Z y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF hrec
+  apply actual_rigidity_of_overlap_and_galois_dimensions D X q original transformed σ
+    hpos htrans hqdim d (fpSimple Z y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
+  intro u k
+  exact Calculus.overlap_trace_power D q u k
 
 end PropertyF.Ground
 end

@@ -202,6 +202,12 @@ variable {G : Type*} [Group G] [Finite G]
 def groupInImage (ρ : G →* A) : G →* groupImageAlgebra ρ :=
   (groupAlgebraMap ρ).rangeRestrict.toMonoidHom.comp (MonoidAlgebra.of ℂ G)
 
+omit [Finite G] in
+@[simp] theorem groupInImage_val (ρ : G →* A) (g : G) :
+    (groupInImage ρ g : A) = ρ g := by
+  change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
+  exact MonoidAlgebra.lift_of ρ g
+
 /-- A block presentation in which each represented group element is unitary. -/
 abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
     (e : groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=
@@ -217,17 +223,11 @@ theorem groupInImage_span (ρ : G →* A) :
   calc
     _ = Submodule.span ℂ (Set.range ρ) := by
       congr 1
-      ext x
-      simp only [Set.mem_image, Set.mem_range]
-      constructor
-      · rintro ⟨_, ⟨g, rfl⟩, rfl⟩
-        refine ⟨g, ?_⟩
-        change ρ g = MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g)
-        exact (MonoidAlgebra.lift_of ρ g).symm
-      · rintro ⟨g, rfl⟩
-        refine ⟨groupInImage ρ g, ⟨g, rfl⟩, ?_⟩
-        change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
-        exact MonoidAlgebra.lift_of ρ g
+      rw [← Set.range_comp']
+      change Set.range (fun g => (groupInImage ρ g : A)) = Set.range ρ
+      congr 1
+      funext g
+      exact groupInImage_val ρ g
     _ = (groupImageAlgebra ρ).toSubmodule := (groupImageAlgebra_toSubmodule ρ).symm
 
 /-- A Wedderburn equivalence can be chosen so that every group element is

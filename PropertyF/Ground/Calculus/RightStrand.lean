@@ -112,11 +112,6 @@ namespace PropertyF.Ground.Calculus
 variable {G H A B : Type*} [Group G] [Group H]
   [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B]
 
-@[simp] theorem groupInImage_val (ρ : G →* A) (g : G) :
-    (groupInImage ρ g : A) = ρ g := by
-  change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
-  exact MonoidAlgebra.lift_of ρ g
-
 /-- An algebra map intertwining group representations carries the image
 algebra into the target image algebra. -/
 def imageAlgebraMap (ρ : G →* A) (σ : H →* B) (τ : G →* H)

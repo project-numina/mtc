@@ -60,7 +60,6 @@ public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Integrate.TwistedRigidity
 public import PropertyF.Ground.Integrate.CenterBundle
-public import PropertyF.Ground.Integrate.CenterDualMate
 public import PropertyF.Ground.Integrate.ActualCenterReduction
 public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.PositiveWeights
