@@ -47,10 +47,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ S j) ≫ b (S j) ≫
-    (S j ◁ (underlyingCounit C).app X) = 0 := by
-  let : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
+    (S j ◁ (underlyingCounit C).app X) = 0 :=
+  letI : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
     simpa only [crossingIndex, counit_column_finrank, hne, ↓reduceIte] using (inferInstance : IsEmpty (Fin 0))
-  simpa only [Fintype.sum_empty, zero_comp] using crossing_counit_matrix C X (S j) i
+  (crossing_counit_matrix C X (S j) i).trans <|
+    (congrArg (· ≫ (S j ◁ (unitSummandIso C X).hom)) (Fintype.sum_empty _)).trans zero_comp
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
@@ -66,12 +67,12 @@ theorem crossing_counit_diagonal (i : Fin (rank C)) :
       (inferInstance : Unique (Fin 1))
   dsimp only
   rw [crossing_counit_matrix C X (S i) i, Fintype.sum_unique]
-  dsimp only [crossingSummand]
   let : Simple (S i) := simples_simple C i
   let : FiniteDimensional ℂ (S i ⟶ S i) := IsFusionCategory.hom_finite _ _
-  rw [crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
-    (crossingInclusion_projection default)]
-  rfl
+  simpa only [crossingSummand, Iso.symm_hom, Iso.symm_inv] using
+    congrArg (· ≫ (S i ◁ (unitSummandIso C X).hom))
+      (crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
+        (crossingInclusion_projection default))
 
 end PropertyF.Ground.CentreInduction
 
@@ -96,14 +97,6 @@ theorem unitComponent_reduce {M N X S : D} [HasRightDual S] (b : N ⊗ S ⟶ S �
     ← whisker_exchange_assoc]
   monoidal
 
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.defeqAttrib.useBackward true in
-/-- Evaluation is normalized along an isomorphism with the tensor unit. -/
-theorem evaluation_iso_unit [HasRightDual A] (e : A ≅ 𝟙_ D) :
-    ((rightDualIsoMap e.symm).hom ⊗ₘ e.hom) ≫
-      (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) :=
-  evaluation_iso_map e
-
 variable (X T : D)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -115,7 +108,7 @@ theorem close_rightUnit_eval [HasRightDual A] [HasRightDual T] (e : A ≅ 𝟙_ 
   let d : Aᘁ ⟶ 𝟙_ D := (rightDualIsoMap e.symm).hom
   let z := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
   have h := closeFusionMap_evaluation ((T ◁ e.hom) ≫ (ρ_ T).hom)
-  simp only [← evaluation_iso_unit e, tensorHom_def', monoidalComp, whiskerLeft_comp,
+  simp only [← evaluation_iso_map e, tensorHom_def', monoidalComp, whiskerLeft_comp,
     Category.assoc, whisker_exchange_assoc, ← comp_whiskerRight_assoc] at h
   change (z ≫ d) ▷ A ≫ (𝟙_ D ◁ e.hom) ≫ (ρ_ (𝟙_ D)).hom = _ at h
   change z ≫ d = ε_ T (Tᘁ)
@@ -193,14 +186,6 @@ theorem unit_matrix_reduce (i j : Fin (rank C)) :
       ((underlyingCounit C).app X)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The off-diagonal components of the second triangle vanish. -/
-theorem unit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
-  let V := inductionSummand C X
-  biproduct.ι V i ≫ u j ≫
-    ((S j ◁ (underlyingCounit C).app X) ▷ (S j)ᘁ) = 0 := by
-  simpa [monoidalComp, crossing_counit_offdiag C X hne] using unit_matrix_reduce C X i j
-
-set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/
 theorem unit_diag (i : Fin (rank C)) :
   let V := inductionSummand C X
@@ -226,7 +211,8 @@ theorem secondTriangle_entry (i j : Fin (rank C)) : let V := inductionSummand C 
   by_cases h : i = j
   · subst j
     simpa [Category.assoc, induction, underlyingFunctor, underlying] using unit_diag C X i
-  · simpa only [biproduct.ι_π_ne _ h, induction, underlying, underlyingFunctor] using unit_offdiag C X h
+  · simpa [monoidalComp, crossing_counit_offdiag C X h, biproduct.ι_π_ne _ h,
+      induction, underlying, underlyingFunctor] using unit_matrix_reduce C X i j
 
 
 end PropertyF.Ground.CentreInduction

@@ -20,14 +20,6 @@ universe v u
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
-/-- Double braiding is natural simultaneously in both strands. -/
-theorem doubleBraiding_natural {X X' Y Y' : D} (f : X ⟶ X') (g : Y ⟶ Y') :
-    doubleBraiding X Y ≫ (f ⊗ₘ g) =
-      (f ⊗ₘ g) ≫ doubleBraiding X' Y' := by
-  rw [doubleBraiding, doubleBraiding, Category.assoc, ← braiding_naturality g f,
-    ← Category.assoc, ← braiding_naturality f g, Category.assoc]
-
-
 /-- Centrality descends along a split inclusion. -/
 theorem doubleBraiding_eq_one_of_retract {X Z : D} (r : Retract X Z) {Y : D}
     (h : doubleBraiding Z Y = 𝟙 _) : doubleBraiding X Y = 𝟙 _ := by

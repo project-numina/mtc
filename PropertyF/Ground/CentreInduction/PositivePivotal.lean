@@ -30,11 +30,6 @@ abbrev PivotalHasFPDimensions (p : PivotalStructure (C := C.Obj)) : Prop :=
 
 variable {p : PivotalStructure (C := C.Obj)}
 
-/-- The pivotal dimension of the underlying induced unit is the global FP dimension. -/
-theorem pivotalDimension_underlying_unit (hsimple : PivotalHasFPDimensions C p) :
-    pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
-  rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
-
 /-- A compatible centre pivotal structure constructs centre fusion when the base
 pivotal dimensions equal FP dimensions. -/
 theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions C p) [RigidCategory 𝒵ᶜ]
@@ -44,7 +39,8 @@ theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions C 
   have ht := forget_trace_of_pivotal_component hcompat (𝟙 _)
   change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
     (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht
-  have hd := pivotalDimension_underlying_unit C hsimple
+  have hd : pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
+    rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
   change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
   rw [show p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj))) = 0 from
     End.ext (ht.symm.trans (congrArg (fun a => a.asHom.f) hz))] at hd
