@@ -91,9 +91,8 @@ theorem unitComponent_reduce {M N X S : D} [HasRightDual S] (b : N ⊗ S ⟶ S �
     t ≫ ((ρ_ N).inv ≫ (N ◁ η_ S (Sᘁ)) ≫ (α_ N S (Sᘁ)).inv ≫ (b ▷ Sᘁ)) ≫
       ((S ◁ w) ▷ Sᘁ) =
     𝟙 _ ⊗≫ (M ◁ η_ S (Sᘁ)) ⊗≫ ((t ▷ S ≫ b ≫ (S ◁ w)) ▷ Sᘁ) ⊗≫ 𝟙 _ := by
-  simp only [monoidalComp, Category.assoc, rightUnitor_inv_naturality_assoc,
-    ← whisker_exchange_assoc]
-  monoidal
+  simp [monoidalComp, Category.assoc, rightUnitor_inv_naturality_assoc,
+    ← whisker_exchange_assoc, -whiskerRight_id]
 
 variable (X T : D)
 
