@@ -66,10 +66,11 @@ theorem rightPartialTrace_one (p : PivotalStructure (C := C))
     PivotalStructure.rightTrace, Category.id_comp, tensorHom_def, whiskerLeft_id,
     whiskerLeft_comp, Category.assoc])
 
+variable (p : PivotalStructure (C := C)) (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ)
+
 /-- The partial trace of an inserted endomorphism is the dimension of the
 closed factor times that endomorphism. -/
-theorem rightPartialTrace_insert (p : PivotalStructure (C := C))
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C} (a : End X) :
+theorem rightPartialTrace_insert {X Y : C} (a : End X) :
     rightPartialTrace p X Y (insertRightIdentity X Y a) =
       (scalar (p.rightTrace (𝟙 Y))) • a := by
   have hscalar : p.rightTrace (𝟙 Y) = (scalar (p.rightTrace (𝟙 Y))) • (1 : End (𝟙_ C)) := by
@@ -81,9 +82,7 @@ theorem rightPartialTrace_insert (p : PivotalStructure (C := C))
 /-- A simple endomorphism is determined by its pivotal trace. -/
 theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
     {Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
-    (p : PivotalStructure (C := C))
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (a : End Y)
-    (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) :
+    (a : End Y) (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) :
     a = (scalarTrace p scalar a / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
   simp only [scalarTrace]
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ a.asHom
@@ -98,9 +97,7 @@ theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
 single, explicitly stated compatibility of iterated and total pivotal traces. -/
 theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C] {X Y : C}
     [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
-    (p : PivotalStructure (C := C))
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
-    (hd : scalar (p.rightTrace (𝟙 X)) ≠ 0)
+    (f : End (X ⊗ Y)) (hd : scalar (p.rightTrace (𝟙 X)) ≠ 0)
     (htrace : p.rightTrace (rightPartialTrace p X Y f).asHom = p.rightTrace f.asHom) :
     rightPartialTrace p X Y f =
       (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
@@ -108,8 +105,7 @@ theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.H
 
 /-- Closing a right tensor factor commutes with adding an identity factor on
 the left, with the associator made explicit. -/
-theorem rightPartialTrace_whiskerLeft (p : PivotalStructure (C := C))
-    {A X Y : C} (f : End (X ⊗ Y)) :
+theorem rightPartialTrace_whiskerLeft {A X Y : C} (f : End (X ⊗ Y)) :
     rightPartialTrace p (A ⊗ X) Y (End.of
       ((α_ A X Y).hom ≫ (A ◁ f.asHom) ≫ (α_ A X Y).inv)) =
       End.of (A ◁ (rightPartialTrace p X Y f).asHom) :=

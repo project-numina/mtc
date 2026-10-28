@@ -20,21 +20,22 @@ open scoped BigOperators ComplexOrder
 namespace PropertyF.Ground.Calculus
 
 variable {G ι : Type*} [Group G] [Fintype G] [Fintype ι] [DecidableEq ι]
+variable (ρ : G →* (Matrix ι ι ℂ)ˣ)
 
 /-- The Gram matrix of the sum of all pullbacks of the standard form. -/
-def averagedGram (ρ : G →* (Matrix ι ι ℂ)ˣ) : Matrix ι ι ℂ :=
+def averagedGram : Matrix ι ι ℂ :=
   ∑ g : G, (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ)
 
 open scoped Classical in
 /-- The averaged form is positive definite, even in dimension zero. -/
-theorem averagedGram_posDef (ρ : G →* (Matrix ι ι ℂ)ˣ) :
+theorem averagedGram_posDef :
     (averagedGram ρ).PosDef :=
   Matrix.posDef_sum Finset.univ_nonempty fun g _ =>
     Matrix.PosDef.conjTranspose_mul_self _
       (Matrix.mulVec_injective_of_isUnit (Units.isUnit (ρ g)))
 
 /-- Every group element is an isometry for the averaged form. -/
-theorem averagedGram_invariant (ρ : G →* (Matrix ι ι ℂ)ˣ) (h : G) :
+theorem averagedGram_invariant (h : G) :
     (↑(ρ h) : Matrix ι ι ℂ)ᴴ * averagedGram ρ * (↑(ρ h) : Matrix ι ι ℂ) = averagedGram ρ := by
   classical
   simpa only [averagedGram, Matrix.mul_sum, Matrix.sum_mul, Equiv.coe_mulRight, map_mul,
@@ -85,17 +86,18 @@ end PropertyF.Ground.Calculus
 namespace PropertyF.Ground.Calculus
 
 variable {G A : Type*} [Group G] [Finite G] [Ring A] [Algebra ℂ A]
+variable (ρ : G →* A)
 
 /-- The group-algebra map associated to a representation in a complex algebra. -/
-def groupAlgebraMap (ρ : G →* A) : MonoidAlgebra ℂ G →ₐ[ℂ] A :=
+def groupAlgebraMap : MonoidAlgebra ℂ G →ₐ[ℂ] A :=
   MonoidAlgebra.lift ℂ A G ρ
 
 /-- The complex algebra spanned by the group image. -/
-def groupImageAlgebra (ρ : G →* A) : Subalgebra ℂ A := (groupAlgebraMap ρ).range
+def groupImageAlgebra : Subalgebra ℂ A := (groupAlgebraMap ρ).range
 
 omit [Finite G] in
 /-- The image algebra has precisely the underlying linear span of the group image. -/
-theorem groupImageAlgebra_toSubmodule (ρ : G →* A) :
+theorem groupImageAlgebra_toSubmodule :
     (groupImageAlgebra ρ).toSubmodule = Submodule.span ℂ (Set.range ρ) := by
   classical
   have h : (groupAlgebraMap ρ).toLinearMap =
@@ -109,7 +111,7 @@ theorem groupImageAlgebra_toSubmodule (ρ : G →* A) :
 
 open scoped Classical in
 /-- A finite group's image algebra is semisimple, by Maschke and passage to a quotient. -/
-theorem groupImageAlgebra_semisimple (ρ : G →* A) :
+theorem groupImageAlgebra_semisimple :
     IsSemisimpleRing (groupImageAlgebra ρ) :=
   let _ : NeZero (Nat.card G : ℂ) := ⟨by exact_mod_cast (Nat.card_ne_zero.mpr ⟨⟨1⟩, inferInstance⟩ : Nat.card G ≠ 0)⟩
   RingHom.isSemisimpleRing_of_surjective (groupAlgebraMap ρ).rangeRestrict.toRingHom
@@ -117,14 +119,14 @@ theorem groupImageAlgebra_semisimple (ρ : G →* A) :
 
 open scoped Classical in
 /-- The image algebra is finite-dimensional, even when the ambient algebra is not. -/
-theorem groupImageAlgebra_finite (ρ : G →* A) :
+theorem groupImageAlgebra_finite :
     FiniteDimensional ℂ (groupImageAlgebra ρ) :=
   Module.Finite.of_surjective (groupAlgebraMap ρ).rangeRestrict.toLinearMap
     (AlgHom.rangeRestrict_surjective (groupAlgebraMap ρ))
 
 /-- The finite group image algebra is a finite product of nonempty complex
 matrix blocks. It is not assumed that the representation is faithful. -/
-theorem groupImageAlgebra_blocks (ρ : G →* A) :
+theorem groupImageAlgebra_blocks :
     ∃ (n : ℕ) (d : Fin n → ℕ), (∀ i, NeZero (d i)) ∧
       Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
   let _ := groupImageAlgebra_semisimple ρ

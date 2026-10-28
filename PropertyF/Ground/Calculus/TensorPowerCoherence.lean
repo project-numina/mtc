@@ -13,19 +13,20 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+variable (X : C)
 
 /-- Concatenate tensor powers, recording the total in reverse arithmetic order
 so that the recursive associators need no casts. -/
-def reverseConcatIso (X : C) : ∀ a b : ℕ,
+def reverseConcatIso : ∀ a b : ℕ,
     tensorPower X a ⊗ tensorPower X b ≅ tensorPower X (b + a)
   | 0, b => λ_ (tensorPower X b)
   | a + 1, b => (α_ X (tensorPower X a) (tensorPower X b)) ≪≫
-      (Iso.refl X ⊗ᵢ reverseConcatIso X a b)
+      (Iso.refl X ⊗ᵢ reverseConcatIso a b)
 
 omit [BraidedCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Concatenation with an empty right block is the right unitor. -/
-theorem reverseConcat_zero_right (X : C) (a : ℕ) :
+theorem reverseConcat_zero_right (a : ℕ) :
     (reverseConcatIso X a 0).hom ≫
       eqToHom (congrArg (tensorPower X) (by omega : 0 + a = a)) =
         (ρ_ (tensorPower X a)).hom := by
@@ -43,7 +44,7 @@ theorem reverseConcat_zero_right (X : C) (a : ℕ) :
 omit [BraidedCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Adding one strand to the right commutes with tensor-power concatenation. -/
-theorem reverseConcat_succ_right (X : C) (a b : ℕ) :
+theorem reverseConcat_succ_right (a b : ℕ) :
     (reverseConcatIso X a (b + 1)).hom ≫
       eqToHom (congrArg (tensorPower X) (by omega : (b + 1) + a = (b + a) + 1)) =
     (tensorPower X a ◁ (appendIso X b).inv) ≫
@@ -71,7 +72,7 @@ theorem reverseConcat_succ_right (X : C) (a b : ℕ) :
 
 omit [BraidedCategory C] in
 /-- Appending a strand commutes with equality transport of the prefix length. -/
-theorem appendIso_eqToHom_natural (X : C) {i j : ℕ} (h : i = j) :
+theorem appendIso_eqToHom_natural {i j : ℕ} (h : i = j) :
     (eqToHom (congrArg (tensorPower X) h) ▷ X) ≫ (appendIso X j).hom =
       (appendIso X i).hom ≫ eqToHom (congrArg (tensorPower X) (congrArg Nat.succ h)) := by
   cases h
@@ -80,7 +81,7 @@ theorem appendIso_eqToHom_natural (X : C) {i j : ℕ} (h : i = j) :
 omit [BraidedCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right insertion is canonical reverse-indexed concatenation. -/
-theorem insertRightPowerIso_eq_reverseConcat (X : C) (n k : ℕ) :
+theorem insertRightPowerIso_eq_reverseConcat (n k : ℕ) :
     (insertRightPowerIso X n k).hom = (reverseConcatIso X (n + 2) k).hom ≫
       eqToHom (congrArg (tensorPower X) (by omega : k + (n + 2) = (n + k) + 2)) := by
   induction k with
@@ -103,7 +104,7 @@ omit [BraidedCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- A shared strand can be attached to the left block before concatenating
 the right tail, or kept as the head of the right block. -/
-theorem reverseConcat_overlap (X : C) (a b : ℕ) :
+theorem reverseConcat_overlap (a b : ℕ) :
     (reverseConcatIso X a (b + 1)).hom =
       (α_ (tensorPower X a) X (tensorPower X b)).inv ≫
       ((appendIso X a).hom ▷ tensorPower X b) ≫
@@ -135,10 +136,14 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
+
+section
+variable (X : C)
+
 omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion agrees with reverse-indexed concatenation. -/
-theorem insertLeftPowerIso_eq_reverseConcat (X : C) (n k : ℕ) :
+theorem insertLeftPowerIso_eq_reverseConcat (n k : ℕ) :
     (insertLeftPowerIso X n k).hom = (reverseConcatIso X k (n + 2)).hom ≫
       eqToHom (congrArg (tensorPower X) (by omega : (n + 2) + k = (n + k) + 2)) := by
   induction k with
@@ -151,7 +156,7 @@ theorem insertLeftPowerIso_eq_reverseConcat (X : C) (n k : ℕ) :
 
 omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Concatenation is natural under equality transport of the left length. -/
-@[reassoc] theorem reverseConcat_eqToHom_left (X : C) {a b : ℕ} (h : a = b) (c : ℕ) :
+@[reassoc] theorem reverseConcat_eqToHom_left {a b : ℕ} (h : a = b) (c : ℕ) :
     (eqToHom (congrArg (tensorPower X) h) ▷ tensorPower X c) ≫
       (reverseConcatIso X b c).hom =
     (reverseConcatIso X a c).hom ≫
@@ -162,7 +167,7 @@ omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [Mon
 omit [BraidedCategory C] [Abelian C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- The two canonical overlap isomorphisms agree. -/
-theorem freshOverlapIso_eq_overlapPowerIso (X : C) (t k : ℕ) :
+theorem freshOverlapIso_eq_overlapPowerIso (t k : ℕ) :
     HasOverlapCoherence X t k := by
   apply Iso.ext
   simp only [freshOverlapIso, overlapPowerIso, Iso.trans_hom, Iso.symm_hom,
@@ -173,6 +178,8 @@ theorem freshOverlapIso_eq_overlapPowerIso (X : C) (t k : ℕ) :
   rw [reverseConcat_eqToHom_left_assoc X (overlap_prefix_count t k)]
   rw [reverseConcat_overlap X (overlapIndex t k + 1) (t + 1)]
   simp only [Category.assoc, eqToHom_trans]
+
+end
 
 /-- The intrinsic overlap trace identity holds for every actual braid-algebra
 element on a simple strand. -/
