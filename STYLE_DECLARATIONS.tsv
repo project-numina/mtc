@@ -354,7 +354,6 @@ PropertyF.Ground.CentreInduction.SecondTriangle	CategoryTheory.HalfBraiding.mk.c
 PropertyF.Ground.CentreInduction.CrossingUnit	PropertyF.Ground.CentreInduction.crossingCandidate_unit_summand	theorem	1	174	2	1	0	0	0	1982976298
 PropertyF.Ground.Modular.SSquare	_private.PropertyF.Ground.Modular.SSquare.0.PropertyF.Ground.Modular._aux_PropertyF_Ground_Modular_SSquare___macroRules__private_PropertyF_Ground_Modular_SSquare_0_PropertyF_Ground_Modular_termSₚ_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.CentreInduction.BasisPairing	PropertyF.Ground.CentreInduction.instSimpleObjSimples	theorem	1	31	1	1	0	0	0	410782781
-PropertyF.Ground.CentreInduction.AdjunctionAssembly	PropertyF.Ground.CentreInduction.unitComponentAt_iso_unit	theorem	1	118	2	2	0	3	0	278014058
 PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.tensorLeftHomLinearEquiv	definition	1	146	4	2	0	8	2	3818834169
 PropertyF.Ground.Target	PropertyF.Ground.rank._proof_1	theorem	1	53	4	0	0	0	0	3679627973
 PropertyF.Ground.CentreInduction.DrinfeldTheorem	PropertyF.Ground.CentreInduction.drinfeld_tensor_inverse	theorem	1	148	2	1	0	4	0	558601814
