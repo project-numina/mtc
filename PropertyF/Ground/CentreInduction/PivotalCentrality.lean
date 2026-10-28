@@ -28,7 +28,7 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
     have hb := congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
     simp only [Center.comp_f] at hb
     have hn : (β_ Z B).hom.f ≫ u (B ⊗ Z) = u (Z ⊗ B) ≫ (((β_ Z B).homᘁ)ᘁ).f :=
-      transported_natural (β_ Z B).hom (p.naturality (β_ Z B).hom.f)
+      (transported_natural (β_ Z B).hom ⟨p.naturality (β_ Z B).hom.f⟩).w
     have ht (X Y : 𝒵) : (u X ⊗ₘ u Y) ≫ (doubleDualTensorIso X Y).hom.f = u (X ⊗ Y) :=
       transported_tensor X Y (p.tensor X.1 Y.1).symm
     simpa [← ht, hb] using hn
