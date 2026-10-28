@@ -25,8 +25,10 @@ abbrev BraidWords (n : ℕ) := FreeGroup (Fin (n + 1))
 def strandPermutation (n : ℕ) : BraidWords n →* Equiv.Perm (Fin (n + 2)) :=
   FreeGroup.lift (fun i => Equiv.swap i.castSucc i.succ)
 
+variable (X : C) (n : ℕ)
+
 /-- Evaluate a word in the actual categorical braid generators. -/
-def braidWordAction (X : C) (n : ℕ) : BraidWords n →* braidImage X n :=
+def braidWordAction : BraidWords n →* braidImage X n :=
   (FreeGroup.lift (braidGenerator X n)).codRestrict (braidImage X n) (by
     intro w
     change (FreeGroup.lift (braidGenerator X n)) w ∈ Subgroup.closure (Set.range (braidGenerator X n))
@@ -34,7 +36,7 @@ def braidWordAction (X : C) (n : ℕ) : BraidWords n →* braidImage X n :=
     exact ⟨w, rfl⟩)
 
 /-- Every element of the categorical braid image is represented by a word. -/
-theorem braidWordAction_surjective (X : C) (n : ℕ) :
+theorem braidWordAction_surjective :
     Function.Surjective (braidWordAction X n) := fun ⟨a, ha⟩ =>
   let ⟨w, hw⟩ : a ∈ (FreeGroup.lift (braidGenerator X n)).range := by
     simpa only [FreeGroup.range_lift_eq_closure, braidImage] using ha

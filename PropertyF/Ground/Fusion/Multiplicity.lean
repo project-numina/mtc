@@ -161,12 +161,11 @@ theorem unitIndex_iso (D : BraidedFusionCategory.{v,u}) :
   Classical.choose_spec (exists_unit_iso D)
 
 theorem fusionCoeff_unit (D : BraidedFusionCategory.{v,u}) (j k : Fin (rank D)) :
-    fusionCoeff D (unitIndex D) j k = if k = j then 1 else 0 := by
-  obtain ⟨e⟩ := unitIndex_iso D
-  unfold fusionCoeff
-  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
-    ((e ⊗ᵢ Iso.refl (simples D j)) ≪≫ λ_ (simples D j))).finrank_eq]
-  exact finrank_simples_hom D k j
+    fusionCoeff D (unitIndex D) j k = if k = j then 1 else 0 :=
+  (unitIndex_iso D).elim fun e ↦
+    ((CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
+      ((e ⊗ᵢ Iso.refl (simples D j)) ≪≫ λ_ (simples D j))).finrank_eq).trans
+      (finrank_simples_hom D k j)
 
 theorem fusionCoeff_comm (D : BraidedFusionCategory.{v,u}) (i j k : Fin (rank D)) :
     fusionCoeff D i j k = fusionCoeff D j i k :=

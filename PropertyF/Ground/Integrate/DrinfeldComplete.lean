@@ -8,7 +8,6 @@ public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.Centre.Modular.Vafa
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
-public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
 
@@ -35,56 +34,6 @@ theorem center_globalDimension_square_of_actual_induction
       congrArg (fun x : ℝ ↦ (x : ℂ)) (CentreInduction.globalFPDimension_square_of_actual_induction C)
 
 
-
-end PropertyF.Ground
-end
-end
-
-section
-/-! Centre fusion and sphericality from any base pivotal structure. -/
-
-@[expose] public noncomputable section
-open CategoryTheory
-namespace PropertyF.Ground
-universe v u
-set_option linter.style.haveILetI false
-
-/-- The fusion instance constructed from a pivotal pseudo-unitary base. -/
-theorem centerFusionOfPivotalPseudoUnitary
-    (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hpu : PseudoUnitary C) :
-    letI := CentreRigid.rigidCenter (C := C.Obj)
-    IsFusionCategory (CategoryTheory.Center C.Obj) :=
-  let := CentreRigid.rigidCenter (C := C.Obj)
-  Classical.choose (CentreInduction.center_structure_of_pivotal_pseudoUnitary p hpu)
-
-/-- The actual centre spherical pivotal structure constructed along the same route. -/
-def centerPivotalOfPivotalPseudoUnitary
-    (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hpu : PseudoUnitary C) :
-    letI := CentreRigid.rigidCenter (C := C.Obj)
-    Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj) := by
-  letI := CentreRigid.rigidCenter (C := C.Obj)
-  letI := centerFusionOfPivotalPseudoUnitary C p hpu
-  exact Classical.choose (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary p hpu))
-
-/-- The constructed centre pivotal dimensions are its FP dimensions. -/
-theorem centerPivotal_hasFPDimensions (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (hpu : PseudoUnitary C) :
-    letI := CentreRigid.rigidCenter (C := C.Obj)
-    letI := centerFusionOfPivotalPseudoUnitary C p hpu
-    Modular.HasFPSimpleDimensions (Integrate.bundledCenter C)
-      (centerPivotalOfPivotalPseudoUnitary C p hpu) := by
-  letI := CentreRigid.rigidCenter (C := C.Obj)
-  letI := centerFusionOfPivotalPseudoUnitary C p hpu
-  have hd := (Classical.choose_spec (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary p hpu))).2.1
-  change CentreInduction.PivotalHasFPDimensions (Integrate.bundledCenter C)
-    (centerPivotalOfPivotalPseudoUnitary C p hpu) at hd
-  intro i
-  simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-    unitScalar_eq_equiv] using hd i
 
 end PropertyF.Ground
 end

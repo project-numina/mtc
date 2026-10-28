@@ -11,10 +11,12 @@ public import PropertyF.Ground.CentreCalculus.TwistSign
 Product-retract labels are closed under tensor constituents and duals.
 The two canonical images test membership in the actual symmetric core.
 Centrality under product retracts identifies that core with its numerical
-product centralizer, under the stated finite-monodromy hypotheses.
+product centralizer, under the stated finite-monodromy hypotheses. We write
+`𝒵 C` for the bundled centre of `C`.
 -/
 
 @[expose] public noncomputable section
+local notation "𝒵" => PropertyF.Ground.Integrate.bundledCenter
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCabling
 universe v u
@@ -23,23 +25,23 @@ variable (C : Ground.BraidedFusionCategory.{v,u})
   [IsFusionCategory (CategoryTheory.Center C.Obj)]
 
 /-- The actual centre simple labels which are retracts of product images. -/
-def productLabels : Finset (Fin (rank (Integrate.bundledCenter C))) := by
+def productLabels : Finset (Fin (rank (𝒵 C))) := by
   classical
-  exact Finset.univ.filter (fun i => Centre.ProductRetract (simples (Integrate.bundledCenter C) i))
+  exact Finset.univ.filter (fun i => Centre.ProductRetract (simples (𝒵 C) i))
 
-theorem mem_productLabels (i : Fin (rank (Integrate.bundledCenter C))) :
-    i ∈ productLabels C ↔ Centre.ProductRetract (simples (Integrate.bundledCenter C) i) := by
+theorem mem_productLabels (i : Fin (rank (𝒵 C))) :
+    i ∈ productLabels C ↔ Centre.ProductRetract (simples (𝒵 C) i) := by
   classical
   simp [productLabels]
 
-theorem unit_mem_productLabels : unitIndex (Integrate.bundledCenter C) ∈ productLabels C :=
-  let ⟨e⟩ := unitIndex_iso (Integrate.bundledCenter C)
+theorem unit_mem_productLabels : unitIndex (𝒵 C) ∈ productLabels C :=
+  let ⟨e⟩ := unitIndex_iso (𝒵 C)
   (mem_productLabels C _).2 <|
     Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
 
-theorem dual_mem_productLabels {i : Fin (rank (Integrate.bundledCenter C))}
-    (hi : i ∈ productLabels C) : dualIndex (Integrate.bundledCenter C) i ∈ productLabels C :=
-  let Z := Integrate.bundledCenter C
+theorem dual_mem_productLabels {i : Fin (rank (𝒵 C))}
+    (hi : i ∈ productLabels C) : dualIndex (𝒵 C) i ∈ productLabels C :=
+  let Z := 𝒵 C
   let X : CategoryTheory.Center C.Obj := simples Z i
   let e : (ᘁX) ≅ (Xᘁ) := leftDualIso HasLeftDual.exact
     (BraidedCategory.exactPairing_swap X (Xᘁ))
@@ -48,23 +50,23 @@ theorem dual_mem_productLabels {i : Fin (rank (Integrate.bundledCenter C))}
     (Centre.productRetract_rightDual C ((mem_productLabels C i).1 hi))
 
 theorem constituent_mem_productLabels
-    {i j k : Fin (rank (Integrate.bundledCenter C))}
+    {i j k : Fin (rank (𝒵 C))}
     (hi : i ∈ productLabels C) (hj : j ∈ productLabels C)
-    (hk : 0 < fusionCoeff (Integrate.bundledCenter C) i j k) : k ∈ productLabels C :=
-  let ⟨r⟩ := Ground.fusionCoeff_retract (Integrate.bundledCenter C) hk
+    (hk : 0 < fusionCoeff (𝒵 C) i j k) : k ∈ productLabels C :=
+  let ⟨r⟩ := Ground.fusionCoeff_retract (𝒵 C) hk
   (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|
     Centre.productRetract_tensor ((mem_productLabels C i).1 hi) ((mem_productLabels C j).1 hj)
 
 /-- The centre's product-retract labels satisfy the numerical double-centralizer
 inclusion whenever the chosen core contains their numerical centralizer. -/
 theorem productLabels_doubleCentralizer
-    {p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)}
-    (hp : p.IsSpherical) (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
-    (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
-    {core : Set (Fin (rank (Integrate.bundledCenter C)))}
-    (hcore : sCentralizer (Integrate.bundledCenter C) p (↑(productLabels C) : Set _) ⊆ core) :
-    ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p core,
-      Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := fun x hx ↦
+    {p : Dimensions.PivotalStructure (C := (𝒵 C).Obj)}
+    (hp : p.IsSpherical) (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
+    (hdim : Modular.HasFPSimpleDimensions (𝒵 C) p)
+    {core : Set (Fin (rank (𝒵 C)))}
+    (hcore : sCentralizer (𝒵 C) p (↑(productLabels C) : Set _) ⊆ core) :
+    ∀ x ∈ sCentralizer (𝒵 C) p core,
+      Centre.ProductRetract (simples (𝒵 C) x) := fun x hx ↦
   (mem_productLabels C x).mp <|
     doubleCentralizer_of_fusion_closed hp hdet hdim
       (unit_mem_productLabels C)
@@ -73,10 +75,10 @@ theorem productLabels_doubleCentralizer
 
 
 /-- Actual centre labels centralizing both canonical images. -/
-def symmetricCore : Set (Fin (rank (Integrate.bundledCenter C))) :=
-  {y | (∀ X : C.Obj, Centre.Centralizes (simples (Integrate.bundledCenter C) y)
+def symmetricCore : Set (Fin (rank (𝒵 C))) :=
+  {y | (∀ X : C.Obj, Centre.Centralizes (simples (𝒵 C) y)
       ((CategoryTheory.Center.ofBraided C.Obj).obj X)) ∧
-    (∀ X : C.Obj, Centre.Centralizes (simples (Integrate.bundledCenter C) y)
+    (∀ X : C.Obj, Centre.Centralizes (simples (𝒵 C) y)
       ((Centre.negative C.Obj).obj X))}
 
 end PropertyF.Ground.CentreCabling
@@ -106,24 +108,24 @@ theorem canonicalImageRetract_product {X : CategoryTheory.Center C.Obj}
     (fun ⟨A, ⟨s⟩⟩ ↦ Centre.productRetract_of_retract s (Centre.negative_productRetract A))
 
 /-- Simple constituents of either canonical image. -/
-def imageLabels : Set (Fin (rank (Integrate.bundledCenter C))) :=
-  {a | CanonicalImageRetract C (simples (Integrate.bundledCenter C) a)}
+def imageLabels : Set (Fin (rank (𝒵 C))) :=
+  {a | CanonicalImageRetract C (simples (𝒵 C) a)}
 
 theorem imageLabels_subset_productLabels : imageLabels C ⊆ (↑(productLabels C) : Set _) :=
   fun a ha ↦ (mem_productLabels C a).mpr (canonicalImageRetract_product C ha)
 
-variable {p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)}
+variable {p : Dimensions.PivotalStructure (C := (𝒵 C).Obj)}
 
 /-- Image monodromy is finite for labels passing the numerical centralizer test. -/
 abbrev HasFiniteImageCentralizerMonodromy
-    (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)) : Prop :=
-  ∀ y ∈ sCentralizer (Integrate.bundledCenter C) p (imageLabels C),
+    (p : Dimensions.PivotalStructure (C := (𝒵 C).Obj)) : Prop :=
+  ∀ y ∈ sCentralizer (𝒵 C) p (imageLabels C),
       ∀ a ∈ imageLabels C, IsOfFinOrder (End.of (Modular.doubleBraiding
-        (simples (Integrate.bundledCenter C) a) (simples (Integrate.bundledCenter C) y)))
+        (simples (𝒵 C) a) (simples (𝒵 C) y)))
 
 variable (hp : p.IsSpherical)
-  (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
-  (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
+  (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
+  (hdim : Modular.HasFPSimpleDimensions (𝒵 C) p)
 
 include hdim in
 /-- The S-test on both canonical images detects the actual core if the relevant
@@ -131,9 +133,9 @@ mixed monodromies have finite order. Only simple image constituents, and only
 labels passing this S-test, are needed for the finite-order hypothesis. -/
 theorem numericalImageCentralizer_subset_symmetricCore
     (hfinite : HasFiniteImageCentralizerMonodromy C p)
-    {y : Fin (rank (Integrate.bundledCenter C))}
-    (hy : y ∈ sCentralizer (Integrate.bundledCenter C) p (imageLabels C)) : y ∈ symmetricCore C := by
-  let Z := Integrate.bundledCenter C
+    {y : Fin (rank (𝒵 C))}
+    (hy : y ∈ sCentralizer (𝒵 C) p (imageLabels C)) : y ∈ symmetricCore C := by
+  let Z := 𝒵 C
   have hc (X : CategoryTheory.Center C.Obj) (hX : CanonicalImageRetract C X) :
       Centre.Centralizes (simples Z y) X := by
     apply Centre.centralizes_symm
@@ -154,8 +156,8 @@ include hp hdet hdim in
 finite-order condition for simple canonical-image constituents. -/
 theorem productLabels_doubleCentralizer_of_image_monodromy
     (hfinite : HasFiniteImageCentralizerMonodromy C p) :
-    ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p (symmetricCore C),
-      Centre.ProductRetract (simples (Integrate.bundledCenter C) x) :=
+    ∀ x ∈ sCentralizer (𝒵 C) p (symmetricCore C),
+      Centre.ProductRetract (simples (𝒵 C) x) :=
   productLabels_doubleCentralizer C hp hdet hdim fun _ hy ↦
     numericalImageCentralizer_subset_symmetricCore C hdim hfinite fun a ha ↦
       hy a (imageLabels_subset_productLabels C ha)
@@ -171,11 +173,11 @@ spherical structure. -/
 theorem actual_symmetricCore_integrality {C : BraidedFusionCategory.{v,u}}
     [RigidCategory (CategoryTheory.Center C.Obj)]
     [IsFusionCategory (CategoryTheory.Center C.Obj)]
-    {p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj)}
-    (hfp : IsFPSpherical (Integrate.bundledCenter C) p) :
+    {p : Dimensions.PivotalStructure (C := (𝒵 C).Obj)}
+    (hfp : IsFPSpherical (𝒵 C) p) :
     ∀ y ∈ CentreCabling.symmetricCore C,
-      ∃ z : ℤ, Modular.simpleDimension (Integrate.bundledCenter C) p y = z :=
+      ∃ z : ℤ, Modular.simpleDimension (𝒵 C) p y = z :=
   fun y hy ↦ selfTransparent_simpleDimension_integer hfp
-    (commonCentralizer_self (simples (Integrate.bundledCenter C) y) hy.1 hy.2)
+    (commonCentralizer_self (simples (𝒵 C) y) hy.1 hy.2)
 
 end PropertyF.Ground.CentreCalculus

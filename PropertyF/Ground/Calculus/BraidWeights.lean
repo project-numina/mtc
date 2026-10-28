@@ -230,15 +230,14 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
     intro i
     let j : Fin (d i) := ⟨0, hd i⟩
     let e : Blocks.Algebra ⟨_, d⟩ := Pi.single i (Matrix.single j j 1)
-    have he : e * e = e := by
-      simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
-    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by rw [← map_mul, he])
+    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by
+      rw [← map_mul]
+      simp [e, ← Pi.single_mul, Matrix.single_mul_single_same])
     refine ⟨k, ?_⟩
     have ht := hw e
-    have ht' : (φ e).trace = w i := by
-      change (φ e).trace = ∑ k, w k * (e k).trace at ht
-      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one] using ht
-    exact ht'.symm.trans hk
+    change (φ e).trace = ∑ k, w k * (e k).trace at ht
+    exact (show w i = (φ e).trace from by
+      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one] using ht.symm).trans hk
   choose mult hm using hnat
   refine ⟨mult, fun x => ?_⟩
   have hx := hw x
@@ -274,19 +273,17 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
   push Not at hn
   let k : Fin (d j) := ⟨0, hd j⟩
   let e : Blocks.Algebra ⟨_, d⟩ := Pi.single j (Matrix.single k k 1)
-  have he : e * e = e := by
-    simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
   have hzero : φ e = 0 := by
     funext i
     have hidem : φ e i * φ e i = φ e i := by
-      simpa [he] using (congrFun (map_mul φ e e) i).symm
+      simpa [e, ← Pi.single_mul, Matrix.single_mul_single_same] using
+        (congrFun (map_mul φ e e) i).symm
     have ht : (φ e i).trace = 0 := by
       simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
         Nat.eq_zero_of_le_zero (hn i), Nat.cast_zero] using hmult i e
     exact idempotent_matrix_eq_zero_of_trace_eq_zero hidem ht
-  have hezero : e = 0 := hinj (by simpa using hzero)
-  have hentry := congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k) hezero
-  simp [e] at hentry
+  simpa [e] using congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k)
+    (hinj (show φ e = φ 0 from by simpa using hzero))
 
 end PropertyF.Ground.Calculus
 
