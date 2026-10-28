@@ -51,8 +51,7 @@ theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
     (S j ◁ (underlyingCounit C).app X) = 0 :=
   letI : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
     simpa only [crossingIndex, counit_column_finrank, hne, ↓reduceIte] using (inferInstance : IsEmpty (Fin 0))
-  (crossing_counit_matrix C X (S j) i).trans <|
-    (congrArg (· ≫ (S j ◁ (unitSummandIso C X).hom)) (Fintype.sum_empty _)).trans zero_comp
+  by simp only [crossing_counit_matrix, Fintype.sum_empty, zero_comp]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
@@ -184,8 +183,7 @@ theorem unit_matrix_reduce :
       ((S j) ◁ (underlyingCounit C).app X)) ▷ (S j)ᘁ) ⊗≫ 𝟙 _ := by
   simpa [unitComponent, unitComponentAt, induction, halfBraidingOfCrossingCandidate,
     underlying, underlyingFunctor, inductionSummand, monoidalComp, Category.assoc] using
-    unitComponent_reduce (b (S j)) (biproduct.ι (inductionSummand C X) i)
-      ((underlyingCounit C).app X)
+    unitComponent_reduce (b (S j)) (biproduct.ι _ i) ((underlyingCounit C).app X)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/
