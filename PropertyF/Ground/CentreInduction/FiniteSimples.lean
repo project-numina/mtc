@@ -166,8 +166,7 @@ def unitRetractOfNonzeroCap {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre pivotal structure with nonzero trace on an induced object implies fusion. -/
-theorem center_fusion_of_nonzero_induced_trace {X : C.Obj}
-    (p : PivotalStructure (C := 𝒵))
+theorem center_fusion_of_nonzero_induced_trace (p : PivotalStructure (C := 𝒵))
     (hne : p.rightTrace (𝟙 ((induction C).obj X)) ≠ 0) :
     IsFusionCategory (𝒵) :=
   let J := (induction C).obj X

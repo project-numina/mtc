@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 
-open PropertyF.Ground.Dimensions
+open PropertyF.Ground.Dimensions Algebra
 
 /-! Dual bases for the actual fusion summand inclusions and projections. -/
 
@@ -26,9 +26,8 @@ theorem pairing_simpleProjection {V : C.Obj} {i : Fin (rank C)}
     simpleHomPairingEquiv (Sᶜ i) V (simpleProjection C V i a) =
       (simpleInclusionBasis C V i).dualBasis a :=
   LinearMap.ext fun g => (simpleEndScalar (k := ℂ) (Sᶜ i)).symm.injective <| End.ext <| by
-    simpa [Module.Basis.dualBasis_apply, simpleHomPairingEquiv, simpleHomPairing,
-      simpleProjection, simpleEndScalar, Algebra.algebraMap_eq_smul_one] using
-      (simpleInclusionBasis_projection g a).symm
+    simpa [Module.Basis.dualBasis_apply, simpleHomPairingEquiv, simpleHomPairing, simpleProjection,
+      simpleEndScalar, algebraMap_eq_smul_one] using (simpleInclusionBasis_projection g a).symm
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
 theorem simpleBasis_contraction_natural {i : Fin (rank C)} (q : V ⟶ W)
@@ -147,13 +146,12 @@ theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     simp [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp,
       monoidalComp]
 
-variable (X : D)
+variable (X : D) (h : T ⟶ U)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the output of a crossing block composes the
 fusion inclusion with that map. -/
-theorem crossingBlock_post_test (h : T ⟶ U)
-    (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+theorem crossingBlock_post_test (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     crossingBlock X T S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
       mixedCrossing X T U (g ≫ (h ▷ S)) f := by
   dsimp only [crossingBlock, mixedCrossing]
@@ -162,8 +160,7 @@ theorem crossingBlock_post_test (h : T ⟶ U)
 set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the input of a crossing block composes the
 fusion projection with that map. -/
-theorem crossingBlock_pre_test (h : T ⟶ U)
-    (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
+theorem crossingBlock_pre_test (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
     (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U S g f =
       mixedCrossing X T U g ((h ▷ S) ≫ f) := by
   simp only [crossingBlock, mixedCrossing, tensorHom_def, Category.assoc]
