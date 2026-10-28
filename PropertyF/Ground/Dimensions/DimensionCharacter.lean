@@ -5,6 +5,11 @@ public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.GroundNorm
 
+/-! # Pivotal dimension characters
+
+Pivotal dimension is additive on decompositions and multiplicative on tensor products.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators

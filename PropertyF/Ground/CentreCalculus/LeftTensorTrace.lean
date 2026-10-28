@@ -71,7 +71,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Left trace compatibility implies the local deletion law, with the actual
 pivotal twist scalar as its factor. -/
 theorem tensorPermutationTrace_adjacent_of_leftTrace
-    (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
+    (X : C.Obj) [Simple X] (hX : SelfTransparent X)
     (htotal : ∀ Y (f : End (X ⊗ Y)),
       p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom)
     (n : ℕ) (σ : Equiv.Perm (Fin (n + 1))) :
@@ -101,8 +101,8 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
 /-- The symmetric integrality argument now needs only left iterated-trace
 compatibility and the sign of the actual pivotal twist scalar. -/
 theorem integral_of_leftTrace_and_twist_sign
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
+    (hdim : Modular.HasFPSimpleDimensions C p)
+    (X : C.Obj) [Simple X] (hX : SelfTransparent X)
     (htotal : ∀ Y (f : End (X ⊗ Y)),
       p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom)
     (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
@@ -234,8 +234,8 @@ dimension in any FP-valued spherical fusion category. -/
 theorem integral_of_spherical_and_twist_sign
     (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hp : p.IsSpherical)
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    (X : C.Obj) [Simple X] (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
+    (hdim : Modular.HasFPSimpleDimensions C p)
+    (X : C.Obj) [Simple X] (hX : SelfTransparent X)
     (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
       Dimensions.pivotalBraidedTwistScalar C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m :=

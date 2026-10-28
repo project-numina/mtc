@@ -77,7 +77,7 @@ def squareRelations (n : ℕ) : Set (BraidWords n) :=
 powers of a self-centralizing object. The full pure-word kernel also involves
 the braid and distant-commutativity relations. -/
 theorem squareRelations_action_trivial {X : C}
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) :
+    (hX : SelfTransparent X) (n : ℕ) :
     Subgroup.normalClosure (squareRelations n) ≤
       (FreeGroup.lift (braidGenerator X n)).ker := by
   apply Subgroup.normalClosure_le_normal
@@ -118,7 +118,7 @@ theorem braidRelations_action_trivial (X : C) (n : ℕ) :
 /-- All standard symmetric-group relation words act trivially for a
 self-transparent object. -/
 theorem typeARelations_action_trivial {X : C}
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) :
+    (hX : SelfTransparent X) (n : ℕ) :
     Subgroup.normalClosure (squareRelations n ∪ braidRelations n) ≤
       (FreeGroup.lift (braidGenerator X n)).ker := by
   simpa only [Subgroup.normalClosure_union] using
@@ -278,7 +278,7 @@ theorem pureWords_eq_typeANormal (n : ℕ) :
 
 /-- Self-transparent categorical braid actions factor through permutations. -/
 def permutationAction (X : C)
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) :
+    (hX : SelfTransparent X) (n : ℕ) :
     Equiv.Perm (Fin (n + 2)) →* Aut (tensorPower X (n + 2)) :=
   permutationActionOfPureTrivial X n (by
     rw [pureWords_eq_typeANormal n]
@@ -286,7 +286,7 @@ def permutationAction (X : C)
 
 /-- The descended action sends adjacent swaps to the actual braid generators. -/
 theorem permutationAction_swap {X : C}
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) {n : ℕ} (i : Fin (n + 1)) :
+    (hX : SelfTransparent X) {n : ℕ} (i : Fin (n + 1)) :
     permutationAction X hX n (Equiv.swap i.castSucc i.succ) = braidGenerator X n i :=
   permutationActionOfPureTrivial_swap X n _ i
 

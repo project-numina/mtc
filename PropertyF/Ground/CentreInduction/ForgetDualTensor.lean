@@ -24,11 +24,7 @@ theorem forget_rightAdjointMate {X Y : CategoryTheory.Center C.Obj} (f : X ⟶ Y
 /-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
 theorem forgetDualIso_natural {X Y : CategoryTheory.Center C.Obj} (f : X ⟶ Y) :
     (fᘁ).f ≫ (forgetDualIso C X).hom = (forgetDualIso C Y).hom ≫ (f.fᘁ) := by
-  rw [forget_rightAdjointMate]
-  unfold forgetDualIso rightDualIso
-  simp only
-  rw [← @comp_rightAdjointMate, ← @comp_rightAdjointMate]
-  simp
+  simp [forget_rightAdjointMate, forgetDualIso, rightDualIso, ← comp_rightAdjointMate]
 
 /-- The double-dual comparison is natural in centre morphisms. -/
 theorem forgetDoubleDualIso_natural {X Y : CategoryTheory.Center C.Obj} (f : X ⟶ Y) :

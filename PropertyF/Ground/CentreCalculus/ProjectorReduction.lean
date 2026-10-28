@@ -23,7 +23,7 @@ universe v u
 object, including zero objects and the images of split idempotents. -/
 theorem pivotalDimension_eq_fpDimension (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions C p)
     (X : C.Obj) : Dimensions.pivotalDimension C p X = (fpDimension C X : ℂ) := by
   rw [Dimensions.pivotalDimension_decomposition]
   unfold fpDimension
@@ -53,7 +53,7 @@ theorem integral_of_exterior_dimensions (C : BraidedFusionCategory.{v,u})
 split alternating projector can supply the witnesses. -/
 theorem integral_of_pivotal_exterior_dimensions (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions C p)
     (X : C.Obj)
     (hExterior : ∀ n : ℕ, ∃ Y : C.Obj,
       (Nat.factorial n : ℂ) * Dimensions.pivotalDimension C p Y =
@@ -84,7 +84,7 @@ universe v u
 existence of the permutation action and the trace formula remain explicit. -/
 theorem integral_of_alternating_projector_trace (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions C p)
     (X : C.Obj)
     (hTrace : ∀ n : ℕ, ∃ ρ : Equiv.Perm (Fin n) →* End (tensorPower X n),
       letI := permutationCardInvertible n
@@ -140,7 +140,7 @@ permutation action. The existence and evaluation of these actions are still
 explicit hypotheses. -/
 theorem integral_of_signed_permutation_traces (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions C p)
     (X : C.Obj)
     (hTrace : ∀ n : ℕ, ∃ ρ : Equiv.Perm (Fin n) →* End (tensorPower X n),
       (∑ σ : Equiv.Perm (Fin n), (Centre.permutationSign ℂ n σ : ℂ) *

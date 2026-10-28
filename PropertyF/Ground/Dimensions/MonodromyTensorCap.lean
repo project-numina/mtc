@@ -2,6 +2,11 @@ module
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Modular.SMatrix
 
+/-! # Tensor caps and monodromy
+
+Braiding and evaluation identities simplify the tensor-cap expression for monodromy.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 open PropertyF.Ground
@@ -102,7 +107,7 @@ theorem monodromy_tensor_cap_braid_reordered (C : BraidedFusionCategory.{v,u}) (
       (((β_ Y X).hom ▷ V ⊗≫ X ◁ (β_ Y V).hom ⊗≫ (β_ X V).hom ▷ Y) ▷ U) ⊗≫
       V ◁ (X ◁ (β_ Y U).hom) ⊗≫ V ◁ ((β_ X U).hom ▷ Y) ⊗≫
       V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V := by
-        simp only [monoidalComp, comp_whiskerRight, whiskerLeft_comp]
+        simp only [monoidalComp, comp_whiskerRight]
         monoidal
     _ = 𝟙 (W ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫
       ((𝟙 ((Y ⊗ X) ⊗ V) ⊗≫ (Y ◁ (β_ X V).hom ⊗≫ (β_ Y V).hom ▷ X ⊗≫ V ◁ (β_ Y X).hom) ⊗≫ 𝟙 ((V ⊗ X) ⊗ Y)) ▷ U) ⊗≫
@@ -119,7 +124,7 @@ theorem monodromy_tensor_cap_braid_reordered (C : BraidedFusionCategory.{v,u}) (
       V ◁ (𝟙 ((Y ⊗ X) ⊗ U) ⊗≫ (Y ◁ (β_ X U).hom ⊗≫ (β_ Y U).hom ▷ X ⊗≫ U ◁ (β_ Y X).hom) ⊗≫ 𝟙 ((U ⊗ X) ⊗ Y)) ⊗≫
       V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V := by rw [yang_baxter']
     _ = _ := by
-      simp only [monoidalComp, comp_whiskerRight, whiskerLeft_comp]
+      simp only [monoidalComp, whiskerLeft_comp]
       monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- A braiding loop around an evaluation cap contracts by naturality. -/

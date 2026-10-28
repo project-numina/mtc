@@ -48,8 +48,7 @@ mixed monodromies have finite order. Only simple image constituents, and only
 labels passing this S-test, are needed for the finite-order hypothesis. -/
 theorem numericalImageCentralizer_subset_symmetricCore
     (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
-    (hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) p i =
-      (fpSimple (Integrate.bundledCenter C) i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
     (hfinite : ∀ y, (∀ a ∈ imageLabels C,
       Modular.categoricalS (Integrate.bundledCenter C) p a y =
         Modular.simpleDimension (Integrate.bundledCenter C) p a *
@@ -81,8 +80,7 @@ finite-order condition for simple canonical-image constituents. -/
 theorem productLabels_doubleCentralizer_of_image_monodromy
     (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
     (hp : p.IsSpherical) (hdet : (Modular.categoricalS (Integrate.bundledCenter C) p).det ≠ 0)
-    (hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) p i =
-      (fpSimple (Integrate.bundledCenter C) i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p)
     (hfinite : ∀ y, (∀ a ∈ imageLabels C,
       Modular.categoricalS (Integrate.bundledCenter C) p a y =
         Modular.simpleDimension (Integrate.bundledCenter C) p a *

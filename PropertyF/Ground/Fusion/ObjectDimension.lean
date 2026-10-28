@@ -47,8 +47,7 @@ theorem exists_positive_multiplicity (X : D.Obj)
   have he : e.hom ≠ 0 := by
     intro h
     apply hid
-    have hh := congrArg (fun t => t ≫ e.inv) h
-    simpa using hh
+    simpa using (congrArg (fun t => t ≫ e.inv) h)
   have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra h
     push Not at h
@@ -57,7 +56,7 @@ theorem exists_positive_multiplicity (X : D.Obj)
     intro p
     simpa using h p
   obtain ⟨p, hp⟩ := hp
-  letI : FiniteDimensional ℂ (X ⟶ simples D p.1) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (X ⟶ simples D p.1) := IsFusionCategory.hom_finite _ _
   refine ⟨p.1, ?_⟩
   rw [← finrank_to_simple_eq_from_simple D X p.1]
   exact Module.finrank_pos_iff_exists_ne_zero.mpr ⟨_, hp⟩

@@ -14,6 +14,11 @@ public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
 public import Mathlib.FieldTheory.IsAlgClosed.Classification
 public import Mathlib.Algebra.MvPolynomial.Equiv
 
+/-! # Fields of dimensions
+
+Finite normal fields contain the algebraic values needed for dimension arguments.
+-/
+
 @[expose] public noncomputable section
 open IntermediateField
 namespace PropertyF.Ground.Dimensions

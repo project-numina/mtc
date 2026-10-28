@@ -16,7 +16,7 @@ universe v u
 
 /-- Either the actual permutation action or its sign twist. -/
 def parityPermutationAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool) (n : ℕ) :
+    (hX : SelfTransparent X) (odd : Bool) (n : ℕ) :
     Equiv.Perm (Fin n) →* End (tensorPower X n) :=
   if odd then Centre.twistAction (Centre.permutationSign ℂ n) (tensorPermutationAction X hX n)
   else tensorPermutationAction X hX n
@@ -24,8 +24,8 @@ def parityPermutationAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
 /-- Sign twist preserves the fixed-strand trace deletion identity. -/
 theorem parityPermutationTrace_fixHead (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    {X : C.Obj} (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool)
+    (hdim : Modular.HasFPSimpleDimensions C p)
+    {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     {n : ℕ} (σ : Equiv.Perm (Fin n)) :
     unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1))
       (fixHead n σ)).asHom) =
@@ -48,8 +48,8 @@ theorem parityPermutationTrace_fixHead (C : BraidedFusionCategory.{v,u})
 positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    {X : C.Obj} (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool)
+    (hdim : Modular.HasFPSimpleDimensions C p)
+    {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hmoved : ∀ n (q : Fin (n + 1)), q ≠ 0 → ∀ σ,
       unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 1))
         (Equiv.Perm.decomposeFin.symm (q, σ))).asHom) =
@@ -128,8 +128,8 @@ universe v u
 one of the two actual parity choices. -/
 theorem integral_of_parity_adjacent_trace (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
-    {X : C.Obj} (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (odd : Bool)
+    (hdim : Modular.HasFPSimpleDimensions C p)
+    {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hadj : ∀ n (σ : Equiv.Perm (Fin (n + 1))),
       unitScalar C (p.rightTrace ((parityPermutationAction C hX odd (n + 2))
         (Equiv.Perm.decomposeFin.symm (1, σ))).asHom) =

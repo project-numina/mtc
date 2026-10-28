@@ -22,7 +22,7 @@ theorem target_of_center_image_monodromy
           let Z := Integrate.bundledCenter C
           ∃ (p : Dimensions.PivotalStructure (C := Z.Obj)),
             p.IsSpherical ∧
-            (∀ i, Modular.simpleDimension Z p i = (fpSimple Z i : ℂ)) ∧
+            (Modular.HasFPSimpleDimensions Z p) ∧
             (Modular.categoricalS Z p).det ≠ 0 ∧
             globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
             (∀ y ∈ CentreCabling.symmetricCore C,

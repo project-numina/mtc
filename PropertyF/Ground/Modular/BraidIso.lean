@@ -49,8 +49,7 @@ theorem conjugate_braidGenerator {X Y : C} (f : X ≅ Y) (n : ℕ)
   apply Aut.ext
   apply Iso.ext
   simp only [Iso.conjAut_apply, Iso.trans_hom, Iso.symm_hom]
-  rw [braidGenerator_natural]
-  simp
+  rw [braidGenerator_natural, Iso.inv_hom_id_assoc]
 
 /-- Isomorphic objects have isomorphic braid-image groups. -/
 def braidImageIso {X Y : C} (f : X ≅ Y) (n : ℕ) : braidImage X n ≃* braidImage Y n := by

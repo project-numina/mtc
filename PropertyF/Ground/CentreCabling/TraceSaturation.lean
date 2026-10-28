@@ -102,7 +102,7 @@ equivalent to categorical centrality. -/
 theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     (D : Ground.BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := D.Obj))
-    (hdim : ∀ i, Modular.simpleDimension D p i = (fpSimple D i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     {i j : Fin (rank D)}
     (hfinite : IsOfFinOrder (End.of (Modular.doubleBraiding (simples D i) (simples D j))))
     (hs : Modular.categoricalS D p i j =

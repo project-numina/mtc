@@ -69,7 +69,7 @@ theorem leftPartialTrace_inverse_braiding (C : BraidedFusionCategory.{v,u})
 theorem pivotalTwist_sign_of_selfTransparent (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
     (X : C.Obj) [Simple X]
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
+    (hX : SelfTransparent X) :
     Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
       Dimensions.pivotalBraidedTwistScalar C p X = -1 := by
   let θ := Dimensions.pivotalBraidedTwistScalar C p X
@@ -95,9 +95,9 @@ theorem pivotalTwist_sign_of_selfTransparent (C : BraidedFusionCategory.{v,u})
 spherical braided fusion category. -/
 theorem selfTransparent_simple_integral (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions C p)
     (X : C.Obj) [Simple X]
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
+    (hX : SelfTransparent X) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_spherical_and_twist_sign C p hp hdim X hX
     (pivotalTwist_sign_of_selfTransparent C p hp X hX)
@@ -106,7 +106,7 @@ theorem selfTransparent_simple_integral (C : BraidedFusionCategory.{v,u})
 an integer. -/
 theorem selfTransparent_simpleDimension_integer (C : BraidedFusionCategory.{v,u})
     (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (hdim : ∀ i, Modular.simpleDimension C p i = (fpSimple C i : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions C p)
     (i : Fin (rank C))
     (hX : (β_ (simples C i) (simples C i)).hom ≫
       (β_ (simples C i) (simples C i)).hom = 𝟙 _) :

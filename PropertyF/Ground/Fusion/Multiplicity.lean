@@ -68,7 +68,7 @@ theorem finrank_simple_of_decomposition (D : BraidedFusionCategory.{v,u})
     (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => simples D p.1)) (i : Fin (rank D)) :
     Module.finrank ℂ (simples D i ⟶ X) = m i := by
   classical
-  letI : ∀ Y Z : D.Obj, FiniteDimensional ℂ (Y ⟶ Z) := IsFusionCategory.hom_finite
+  let : ∀ Y Z : D.Obj, FiniteDimensional ℂ (Y ⟶ Z) := IsFusionCategory.hom_finite
   calc
     Module.finrank ℂ (simples D i ⟶ X) =
         Module.finrank ℂ (simples D i ⟶ ⨁ (fun p : Σ j, Fin (m j) => simples D p.1)) :=
@@ -97,7 +97,7 @@ theorem finrank_to_simple_eq_from_simple (D : BraidedFusionCategory.{v,u})
   classical
   let m : Fin (rank D) → ℕ := fun j => Module.finrank ℂ (simples D j ⟶ X)
   obtain ⟨e⟩ := exists_canonical_decomposition D X
-  letI : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   calc
     _ = Module.finrank ℂ (⨁ (fun p : Σ j, Fin (m j) => simples D p.1) ⟶ simples D i) :=
       (CategoryTheory.Linear.homCongr ℂ e (Iso.refl _)).finrank_eq
@@ -120,7 +120,7 @@ theorem tensor_multiplicity (D : BraidedFusionCategory.{v,u}) (X Y : D.Obj)
   obtain ⟨e⟩ := exists_canonical_decomposition D Y
   let e' : X ⊗ Y ≅ ⨁ (fun p => X ⊗ V p) :=
     (Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X V
-  letI : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   calc
     Module.finrank ℂ (simples D k ⟶ X ⊗ Y) =
         Module.finrank ℂ (simples D k ⟶ ⨁ (fun p => X ⊗ V p)) :=
