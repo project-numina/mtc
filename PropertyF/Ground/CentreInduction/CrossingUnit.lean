@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
+public import PropertyF.Ground.CentreInduction.BasisPairing
 
 /-! Tensor-unit normalization for the explicit induction crossing. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing CategoryTheory.Limits
@@ -8,6 +9,8 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+-- Chosen simple representatives of the base category.
+local notation "Sᶜ" => simples C
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 variable {T U S K R : D} (X : D)
 
@@ -24,8 +27,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_unit (S : D) :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  dsimp only [crossingBlock, mixedCrossing]
-  rw [closeFusionMap_unit]
+  simp only [crossingBlock, mixedCrossing, closeFusionMap_unit]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -104,8 +106,8 @@ theorem crossingBlock_unit_of_split [Simple S] [FiniteDimensional k (S ⟶ S)]
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-strand decomposition has one diagonal simple summand. -/
 theorem unit_crossing_finrank (i j : Fin (rank C)) :
-    Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C j) = if i = j then 1 else 0 :=
-  (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (λ_ (simples C j))).finrank_eq.trans
+    Module.finrank ℂ (Sᶜ i ⟶ (𝟙_ C.Obj) ⊗ Sᶜ j) = if i = j then 1 else 0 :=
+  (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (λ_ (Sᶜ j))).finrank_eq.trans
     (finrank_simples_hom C i j)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -122,8 +124,8 @@ theorem crossingCandidate_unit_summand (X : C.Obj) (i : Fin (rank C)) :
       simpa only [crossingIndex, unit_crossing_finrank, ↓reduceIte] using
         (inferInstance : Unique (Fin 1))
     rw [Fintype.sum_unique]
-    let : Simple (simples C i) := simples_simple C i
-    let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+    let : Simple (Sᶜ i) := simples_simple C i
+    let : FiniteDimensional ℂ (Sᶜ i ⟶ Sᶜ i) := IsFusionCategory.hom_finite _ _
     rw [crossingBlock_unit_of_split (k := ℂ) X
       (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
       (crossingInclusion_projection default), Category.assoc]

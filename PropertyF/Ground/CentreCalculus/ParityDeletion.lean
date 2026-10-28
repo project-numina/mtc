@@ -100,16 +100,10 @@ variable (p : PivotalStructure (C := D)) (scalar : End (𝟙_ D) ≃ₐ[ℂ] ℂ
 theorem parityPermTrace_fixHead (σ : Perm (Fin n)) :
     scalarPermTrace p scalar (parityPermAction D hX odd) (n + 1) (fixHead n σ) =
       scalar (p.rightTrace (𝟙 X)) * scalarPermTrace p scalar (parityPermAction D hX odd) n σ := by
-  cases odd with
-  | false => exact tensorPermTrace_fixHead p scalar hX σ
-  | true =>
-    change scalarPermTrace p scalar.toLinearMap (parityPermAction D hX true) (n + 1) (fixHead n σ) =
-      scalar (p.rightTrace (𝟙 X)) * scalarPermTrace p scalar.toLinearMap (parityPermAction D hX true) n σ
-    rw [scalarPermTrace_parity p scalar.toLinearMap, scalarPermTrace_parity p scalar.toLinearMap]
-    change (sgn ℂ (n + 1) (fixHead n σ) : ℂ) *
-        scalarPermTrace p scalar (tensorPermAction X hX) (n + 1) (fixHead n σ) = _
-    rw [tensorPermTrace_fixHead p scalar hX σ]
-    simp [fixHead, sign_decomposeFin, mul_left_comm]
+  cases odd <;>
+    simpa [parityPermAction, scalarPermTrace, Centre.twistAction, p.rightTrace_smul,
+      smul_eq_mul, fixHead, sign_decomposeFin, mul_left_comm] using
+        tensorPermTrace_fixHead p scalar hX σ
 end
 
 variable (odd : Bool)
@@ -120,7 +114,7 @@ positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace (hmoved : HasMovedTrace (tr C p (parityPermAction C.Obj hX odd))) :
     IsFPIntegral C X :=
   integral_of_trace_deletion hdim (parityPermAction C.Obj hX odd) ⟨(fun _ σ ↦ by
-    simpa [fixHead, ← unitScalar_eq_equiv, ← pivotalDimension_eq_fpDimension hdim, pivotalDimension]
+    simpa [fixHead, ← unitScalar_eq_equiv, ← pivotalDimension_eq_fp (pivotalDimensions_on_simples hdim) _, pivotalDimension]
       using parityPermTrace_fixHead p (unitScalarEquiv C) hX odd σ), hmoved⟩
 
 include hdim in

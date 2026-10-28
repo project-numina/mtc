@@ -61,19 +61,18 @@ simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
 theorem pivotalTrace_groundEndBlocks :
     scalar (p.rightTrace a.asHom) =
-      ∑ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) * (groundEndBlockEquiv C e a i).trace :=
+      ∑ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) * (groundEndBlockEquiv C e a i).trace := by
   let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
-  let hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj e p a
-  let h := cyclicTrace_biproduct_scalar_blocks
+  have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj e p a
+  have h := cyclicTrace_biproduct_scalar_blocks
     (fun Y => scalar.toLinearMap.comp (rightTraceWithLinear (p.iso Y)))
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
     (c := fun q => groundEndBlockEquiv C e a q.1 q.2 q.2)
     (fun ⟨i, j⟩ => by simpa [F, z, Category.assoc] using groundEndBlockEquiv_diagonal C e a i j)
-  by
-    rw [← hz]
-    simpa [rightTraceWithLinear, PivotalStructure.rightTrace, F, Matrix.trace, Finset.mul_sum, mul_comm,
-      Fintype.sum_sigma] using h
+  rw [← hz]
+  simpa [rightTraceWithLinear, PivotalStructure.rightTrace, F, Matrix.trace, Finset.mul_sum, mul_comm,
+    Fintype.sum_sigma] using h
 
 end PropertyF.Ground.Calculus
 
@@ -165,17 +164,16 @@ numbers; reality and categorical multiplicities require additional input. -/
 theorem cyclic_block_trace {B : Blocks} (T : B.Algebra →ₗ[ℂ] ℂ)
     (hT : ∀ X Y, T (X * Y) = T (Y * X)) :
     ∃ w : Fin B.count → ℂ, ∀ X, T X = ∑ i, w i * (X i).trace := by
-  classical
   let V : Fin B.count → Type := fun i => Matrix (Fin (B.size i)) (Fin (B.size i)) ℂ
   let Tblock (i : Fin B.count) : V i →ₗ[ℂ] ℂ := T.comp (LinearMap.single ℂ V i)
-  have hc (i : Fin B.count) : ∀ X Y : V i, Tblock i (X * Y) = Tblock i (Y * X) := by
-    intro X Y
-    change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
-    simpa only [Pi.single_mul] using hT (Pi.single i X) (Pi.single i Y)
+  have hc (i : Fin B.count) : ∀ X Y : V i, Tblock i (X * Y) = Tblock i (Y * X) :=
+    fun X Y => by
+      change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
+      simpa only [Pi.single_mul] using hT (Pi.single i X) (Pi.single i Y)
   choose w hw using fun i : Fin B.count => cyclic_matrix_trace (Tblock i) (hc i)
-  refine ⟨w, fun X => ?_⟩
-  simp only [← hw, Tblock, LinearMap.comp_apply, LinearMap.single_apply, ← map_sum,
-    LinearMap.sum_single_apply]
+  exact ⟨w, fun X => by
+    simp only [← hw, Tblock, LinearMap.comp_apply, LinearMap.single_apply, ← map_sum,
+      LinearMap.sum_single_apply]⟩
 
 end PropertyF.Ground.Calculus
 
@@ -222,20 +220,17 @@ standard block traces. The integers are ranks of images of matrix units. -/
 theorem representation_trace_multiplicities {m : ℕ}
     (φ : B.Algebra →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
     ∃ mult : Fin B.count → ℕ, ∀ x, (φ x).trace = ∑ i, (mult i : ℂ) * (x i).trace := by
-  classical
   let T := (Matrix.traceLinearMap (Fin m) ℂ ℂ).comp φ.toLinearMap
   obtain ⟨w, hw⟩ := cyclic_block_trace T (fun x y => by
     change (φ (x * y)).trace = (φ (y * x)).trace
     simpa only [map_mul] using Matrix.trace_mul_comm (φ x) (φ y))
-  have hnat : ∀ i, ∃ k : ℕ, w i = k := by
-    intro i
+  have hnat : ∀ i, ∃ k : ℕ, w i = k := fun i =>
     let j : Fin (B.size i) := ⟨0, hd i⟩
     let e : B.Algebra := Pi.single i (Matrix.single j j 1)
-    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by
+    let ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by
       rw [← map_mul]
       simp [e, ← Pi.single_mul, Matrix.single_mul_single_same])
-    refine ⟨k, ?_⟩
-    simpa [T, e, sum_trace_single] using (hw e).symm.trans hk
+    ⟨k, by simpa [T, e, sum_trace_single] using (hw e).symm.trans hk⟩
   choose mult hm using hnat
   exact ⟨mult, fun x => by simpa [T, hm] using hw x⟩
 
@@ -246,13 +241,11 @@ theorem faithful_block_representation_multiplicities {B' : Blocks}
     (φ : B.Algebra →ₐ[ℂ] B'.Algebra) (hinj : Function.Injective φ) :
     ∃ mult : Fin B'.count → Fin B.count → ℕ,
       (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧ (∀ j, ∃ i, 0 < mult i j) := by
-  classical
   choose mult hmult using fun i : Fin B'.count =>
     representation_trace_multiplicities hd ((Pi.evalAlgHom ℂ _ i).comp φ)
   change ∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace at hmult
   refine ⟨mult, hmult, fun j => ?_⟩
-  by_contra hn
-  push Not at hn
+  by_contra! hn
   let k : Fin (B.size j) := ⟨0, hd j⟩
   let e : B.Algebra := Pi.single j (Matrix.single k k 1)
   have hzero : φ e = 0 := by

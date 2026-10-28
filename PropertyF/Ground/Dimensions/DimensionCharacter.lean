@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
-public import PropertyF.Ground.Fusion.Agreement
+public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Dimensions.GroundNorm
 
 /-! # Pivotal dimension characters
@@ -47,6 +47,13 @@ theorem pivotalDimension_decomposition
   rw [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
     rightDimension_biproduct]
   simp [Fintype.sum_sigma, pivotalDimension, Ground.unitScalar_eq_equiv]
+
+/-- Agreement with FP dimension on simples extends to all objects. -/
+theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
+    (hsimple : ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
+    (X : C.Obj) : pivotalDimension C p X = (fpDimension C X : ℂ) := by
+  simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
+    hsimple] using pivotalDimension_decomposition C p X
 
 /-- The pivotal dimension of the tensor unit is normalized to one. -/
 theorem pivotalDimension_unit

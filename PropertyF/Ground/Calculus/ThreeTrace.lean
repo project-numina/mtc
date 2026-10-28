@@ -202,9 +202,9 @@ theorem three_braid_double_overlap (X : C) :
     (threePowerIso X).conj
       (Aut.toEnd ((braidGenerator X 1 0) ^ 2 * (braidGenerator X 1 1) ^ 2)) =
     (α_ X X X).conj (overlapEndProduct (selfMonodromy X) (selfMonodromy X)) := by
-  rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, threeGeneratorLeft_end_transport, threeGeneratorRight_end_transport]
   apply End.ext
-  simp [overlapEndProduct, insertRightIdentity, overlapFresh, selfMonodromy,
+  simp [map_mul, threeGeneratorLeft_end_transport, threeGeneratorRight_end_transport,
+    overlapEndProduct, insertRightIdentity, overlapFresh, selfMonodromy,
     Iso.conj_apply_asHom, pow_two, End.mul_asHom, comp_whiskerRight, whiskerLeft_comp,
     Category.assoc]
 

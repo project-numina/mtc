@@ -33,11 +33,10 @@ variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
 
 include hdim in
-/-- Equality of positive simple dimensions and FP dimensions extends to every
-object, including zero objects and the images of split idempotents. -/
-theorem pivotalDimension_eq_fpDimension : pivotalDimension C p X = (fpDimension C X : ℂ) := by
-  simpa [fpDimension, ← hdim, Modular.simpleDimension, pivotalDimension, unitScalar_eq_equiv] using
-    pivotalDimension_decomposition C p X
+/-- Positive simple dimensions agree with pivotal dimensions on the simple family. -/
+theorem pivotalDimensions_on_simples :
+    ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := fun i => by
+  simpa only [pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using hdim i
 
 /-- The Frobenius–Perron dimension of an object is a natural number. -/
 abbrev IsFPIntegral (C : BraidedFusionCategory.{v,u}) (X : C.Obj) : Prop :=
@@ -65,7 +64,7 @@ theorem integral_of_pivotal_exterior
     (hExterior : HasFallingFactorialDimensions (fpDimension C X : ℂ) (pivotalDimension C p)) :
     IsFPIntegral C X :=
   integral_of_exterior_dimensions fun n ↦ (hExterior n).imp fun Y hY ↦
-    Complex.ofReal_injective <| by simpa [pivotalDimension_eq_fpDimension hdim] using hY
+    Complex.ofReal_injective <| by simpa [pivotalDimension_eq_fp (pivotalDimensions_on_simples hdim) _] using hY
 
 end PropertyF.Ground.CentreCalculus
 

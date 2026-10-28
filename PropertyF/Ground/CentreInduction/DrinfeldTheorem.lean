@@ -56,20 +56,22 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj)
+-- The Drinfeld isomorphism of the base category.
+local notation "d" => doubleDualIso C
 
 /-- The inverse Drinfeld map satisfies the reversed tensor identity. -/
 theorem drinfeld_tensor_inverse :
-    (doubleDualIso C (X ⊗ Y)).inv = (doubleDualTensorIso X Y).inv ≫
-      ((doubleDualIso C X).inv ⊗ₘ (doubleDualIso C Y).inv) ≫ Modular.doubleBraiding X Y := by
-  change (doubleDualIso C (X ⊗ Y)).inv =
+    (d (X ⊗ Y)).inv = (doubleDualTensorIso X Y).inv ≫
+      ((d X).inv ⊗ₘ (d Y).inv) ≫ Modular.doubleBraiding X Y := by
+  change (d (X ⊗ Y)).inv =
     (doubleDualTensorIso X Y).inv ≫
-      (doubleDualIso C X ⊗ᵢ doubleDualIso C Y).inv ≫ Modular.doubleBraiding X Y
+      (d X ⊗ᵢ d Y).inv ≫ Modular.doubleBraiding X Y
   rw [Iso.eq_inv_comp, Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
   exact (drinfeld_tensor C X Y).symm
 
 /-- Formula for transporting the inverse Drinfeld map through an isomorphism. -/
 theorem drinfeld_inv_natural {A B : C.Obj} (t : A ≅ B) :
-    (doubleDualIso C A).inv = (((t.homᘁ)ᘁ) ≫ (doubleDualIso C B).inv) ≫ t.inv := by
+    (d A).inv = (((t.homᘁ)ᘁ) ≫ (d B).inv) ≫ t.inv := by
   rw [Iso.eq_comp_inv, Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
   exact doubleDualIso_natural C t.hom
 
@@ -77,13 +79,13 @@ theorem drinfeld_inv_natural {A B : C.Obj} (t : A ≅ B) :
 reversed dual factors and monodromy. -/
 theorem drinfeld_inv_dual_tensor :
     (doubleDualTensorIso X Y).hom ≫
-      ((doubleDualIso C ((X ⊗ Y)ᘁ)).invᘁ) =
+      ((d ((X ⊗ Y)ᘁ)).invᘁ) =
     Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
-      (((doubleDualIso C (Xᘁ)).invᘁ) ⊗ₘ ((doubleDualIso C (Yᘁ)).invᘁ)) ≫
+      (((d (Xᘁ)).invᘁ) ⊗ₘ ((d (Yᘁ)).invᘁ)) ≫
         (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫ (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
   let t := rightDualTensorIso X Y
-  let f := (doubleDualIso C (Yᘁ)).inv
-  let g := (doubleDualIso C (Xᘁ)).inv
+  let f := (d (Yᘁ)).inv
+  let g := (d (Xᘁ)).inv
   have hn' := congrArg (fun z => rightAdjointMate z) (drinfeld_inv_natural C t)
   have hi' := congrArg (fun z => rightAdjointMate z) (drinfeld_tensor_inverse C (Yᘁ) (Xᘁ))
   simp only [comp_rightAdjointMate] at hn' hi'
@@ -96,7 +98,7 @@ theorem drinfeld_inv_dual_tensor :
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
-    (doubleDualIso C ((X ⊗ Y)ᘁ)).invᘁ = _
+    (d ((X ⊗ Y)ᘁ)).invᘁ = _
   rw [hn', hi']
   simp only [comp_rightAdjointMate, Category.assoc]
   rw [← Category.assoc (t.homᘁ), ← comp_rightAdjointMate, Iso.inv_hom_id,
@@ -119,7 +121,7 @@ theorem fourthDualIso_tensor :
   simp only [Category.assoc, drinfeld_inv_dual_tensor C X Y]
   simp only [← tensorHom_comp_tensorHom_assoc, ← Category.assoc]
   rw [Category.assoc m.inv,
-    ← CentreCabling.doubleBraiding_natural (doubleDualIso C X).hom (doubleDualIso C Y).hom]
+    ← CentreCabling.doubleBraiding_natural (d X).hom (d Y).hom]
   simp only [Category.assoc, show Modular.doubleBraiding X Y = m.hom from rfl,
     Iso.inv_hom_id_assoc]
 
