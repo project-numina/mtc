@@ -72,10 +72,8 @@ def Centralizes (A B : CategoryTheory.Center C) : Prop :=
 omit [BraidedCategory C] in
 /-- Centralization is invariant under isomorphism in its first argument. -/
 theorem centralizes_of_iso_left {A B T : CategoryTheory.Center C} (i : A ≅ B)
-    (h : Centralizes B T) : Centralizes A T := by
-  unfold Centralizes at *
-  apply (cancel_mono (i.hom ▷ T)).mp
-  calc
+    (h : Centralizes B T) : Centralizes A T :=
+  (cancel_mono (i.hom ▷ T)).mp <| calc
     ((β_ A T).hom ≫ (β_ T A).hom) ≫ (i.hom ▷ T) =
         (i.hom ▷ T) ≫ ((β_ B T).hom ≫ (β_ T B).hom) := by
       simp only [Category.assoc, BraidedCategory.braiding_naturality_left_assoc]
