@@ -76,7 +76,7 @@ def squareRelations (n : ℕ) : Set (BraidWords n) :=
 /-- Every square relation and all its conjugates act trivially on tensor
 powers of a self-centralizing object. The full pure-word kernel also involves
 the braid and distant-commutativity relations. -/
-theorem squareRelations_action_trivial (X : C)
+theorem squareRelations_action_trivial {X : C}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) :
     Subgroup.normalClosure (squareRelations n) ≤
       (FreeGroup.lift (braidGenerator X n)).ker := by
@@ -84,7 +84,7 @@ theorem squareRelations_action_trivial (X : C)
   rintro _ ⟨i, rfl⟩
   apply MonoidHom.mem_ker.mpr
   simp only [pow_two, map_mul, FreeGroup.lift_apply_of]
-  exact braidGenerator_involutive X hX n i
+  exact braidGenerator_involutive hX n i
 
 /-- Adjacent Yang–Baxter and distant commutation words in the free group. -/
 def braidRelations (n : ℕ) : Set (BraidWords n) :=
@@ -117,12 +117,12 @@ theorem braidRelations_action_trivial (X : C) (n : ℕ) :
 
 /-- All standard symmetric-group relation words act trivially for a
 self-transparent object. -/
-theorem typeARelations_action_trivial (X : C)
+theorem typeARelations_action_trivial {X : C}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) :
     Subgroup.normalClosure (squareRelations n ∪ braidRelations n) ≤
       (FreeGroup.lift (braidGenerator X n)).ker := by
-  rw [Subgroup.normalClosure_union]
-  exact sup_le (squareRelations_action_trivial X hX n) (braidRelations_action_trivial X n)
+  simpa only [Subgroup.normalClosure_union] using
+    sup_le (squareRelations_action_trivial hX n) (braidRelations_action_trivial X n)
 
 /-- Every defining type-A relation also has trivial strand permutation. -/
 theorem typeARelations_permutation_trivial (n : ℕ) :
@@ -215,10 +215,8 @@ def typeAGenerator (n i : ℕ) : typeAGroup n :=
 
 theorem typeAGenerator_square (n i : ℕ) (hi : i < n + 1) :
     typeAGenerator n i * typeAGenerator n i = 1 := by
-  have hw : FreeGroup.of (⟨i, hi⟩ : Fin (n + 1)) ^ 2 ∈ typeANormal n := by
-    apply Subgroup.subset_normalClosure
-    left
-    exact ⟨⟨i, hi⟩, rfl⟩
+  have hw : FreeGroup.of (⟨i, hi⟩ : Fin (n + 1)) ^ 2 ∈ typeANormal n :=
+    Subgroup.subset_normalClosure (Or.inl ⟨⟨i, hi⟩, rfl⟩)
   have hh := (QuotientGroup.eq_one_iff _).mpr hw
   simpa [typeAGenerator, hi, pow_two] using hh
 
@@ -229,11 +227,8 @@ theorem typeAGenerator_adjacent (n i : ℕ) (hi : i + 1 < n + 1) :
   let b : Fin (n + 1) := ⟨i + 1, hi⟩
   let w : BraidWords n := (FreeGroup.of a * FreeGroup.of b * FreeGroup.of a) *
     (FreeGroup.of b * FreeGroup.of a * FreeGroup.of b)⁻¹
-  have hw : w ∈ typeANormal n := by
-    apply Subgroup.subset_normalClosure
-    right
-    left
-    exact ⟨a, b, rfl, rfl⟩
+  have hw : w ∈ typeANormal n :=
+    Subgroup.subset_normalClosure (Or.inr (Or.inl ⟨a, b, rfl, rfl⟩))
   have hh := (QuotientGroup.eq_one_iff _).mpr hw
   change (QuotientGroup.mk' (typeANormal n)) w = 1 at hh
   simpa only [w, map_mul, map_inv, mul_inv_eq_one, typeAGenerator, dite_eq_left hi,
@@ -244,11 +239,8 @@ theorem typeAGenerator_distant (n i j : ℕ) (hij : i + 1 < j) (hj : j < n + 1) 
   let a : Fin (n + 1) := ⟨i, by omega⟩
   let b : Fin (n + 1) := ⟨j, hj⟩
   let w : BraidWords n := (FreeGroup.of a * FreeGroup.of b) * (FreeGroup.of b * FreeGroup.of a)⁻¹
-  have hw : w ∈ typeANormal n := by
-    apply Subgroup.subset_normalClosure
-    right
-    right
-    exact ⟨a, b, hij, rfl⟩
+  have hw : w ∈ typeANormal n :=
+    Subgroup.subset_normalClosure (Or.inr (Or.inr ⟨a, b, hij, rfl⟩))
   have hh := (QuotientGroup.eq_one_iff _).mpr hw
   change (QuotientGroup.mk' (typeANormal n)) w = 1 at hh
   simpa only [w, map_mul, map_inv, mul_inv_eq_one, typeAGenerator, dite_eq_left hj,
@@ -290,11 +282,11 @@ def permutationAction (X : C)
     Equiv.Perm (Fin (n + 2)) →* Aut (tensorPower X (n + 2)) :=
   permutationActionOfPureTrivial X n (by
     rw [pureWords_eq_typeANormal n]
-    exact typeARelations_action_trivial X hX n)
+    exact typeARelations_action_trivial hX n)
 
 /-- The descended action sends adjacent swaps to the actual braid generators. -/
-theorem permutationAction_swap (X : C)
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) (i : Fin (n + 1)) :
+theorem permutationAction_swap {X : C}
+    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) {n : ℕ} (i : Fin (n + 1)) :
     permutationAction X hX n (Equiv.swap i.castSucc i.succ) = braidGenerator X n i :=
   permutationActionOfPureTrivial_swap X n _ i
 

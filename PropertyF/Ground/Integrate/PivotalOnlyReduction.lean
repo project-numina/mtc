@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Integrate.NumericalCoreReduction
+public import PropertyF.Ground.Integrate.CenterSquareReduction
 public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.CentreRigid.Evaluation
 public import PropertyF.Ground.CentreInduction.ForgetDual

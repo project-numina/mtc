@@ -26,12 +26,12 @@ def tensorPermutationAction (X : C)
   | n + 2 => Aut.toEnd.comp (permutationAction X hX n)
 
 /-- Every adjacent transposition acts by the actual categorical crossing. -/
-theorem tensorPermutationAction_swap (X : C)
+theorem tensorPermutationAction_swap {X : C}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X))
-    (n : ℕ) (i : Fin (n + 1)) :
+    {n : ℕ} (i : Fin (n + 1)) :
     tensorPermutationAction X hX (n + 2) (Equiv.swap i.castSucc i.succ) =
       Aut.toEnd (braidGenerator X n i) :=
-  congrArg Aut.toEnd (permutationAction_swap X hX n i)
+  congrArg Aut.toEnd (permutationAction_swap hX i)
 
 end PropertyF.Ground.CentreCalculus
 
@@ -146,7 +146,7 @@ theorem fixHead_swap (n : ℕ) (i : Fin n) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Inserting a fixed first strand acts by tensoring the old automorphism
 on the left with the identity of the new strand. -/
-theorem permutationAction_fixHead (X : C)
+theorem permutationAction_fixHead {X : C}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 2))) :
     permutationAction X hX (n + 1) (fixHead (n + 2) σ) =
@@ -169,7 +169,7 @@ theorem permutationAction_fixHead (X : C)
   exact DFunLike.congr_fun heq σ
 
 /-- Inserting a fixed strand tensors the permutation action with its identity. -/
-theorem tensorPermutationAction_fixHead (X : C)
+theorem tensorPermutationAction_fixHead {X : C}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
     ∀ {n} (σ : Equiv.Perm (Fin n)),
       tensorPermutationAction X hX (n + 1) (fixHead n σ) =

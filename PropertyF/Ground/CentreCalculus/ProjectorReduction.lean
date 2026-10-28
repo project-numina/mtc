@@ -150,8 +150,6 @@ theorem integral_of_signed_permutation_traces (C : BraidedFusionCategory.{v,u})
   apply integral_of_alternating_projector_trace C p hdim X
   intro n
   obtain ⟨ρ, hρ⟩ := hTrace n
-  refine ⟨ρ, ?_⟩
-  rw [alternatingProjector_scalar_trace]
-  exact hρ
+  exact ⟨ρ, (alternatingProjector_scalar_trace C p _ n ρ).trans hρ⟩
 
 end PropertyF.Ground.CentreCalculus

@@ -82,7 +82,7 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
   let f := (tensorPermutationAction X hX (n + 1)) σ
   have hswap : tensorPermutationAction X hX (n + 2) (Equiv.swap 0 1) =
       Aut.toEnd (braidGenerator X n 0) := by
-    convert tensorPermutationAction_swap X hX n 0 using 1; congr 2
+    convert tensorPermutationAction_swap (n := n) hX 0 using 1; congr 2
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   have hact : tensorPermutationAction X hX (n + 2)
       (Equiv.Perm.decomposeFin.symm (1, σ)) =

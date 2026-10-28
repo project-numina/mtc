@@ -30,35 +30,5 @@ theorem rightTrace_twist (p : Dimensions.PivotalStructure (C := C.Obj))
   simp only [Dimensions.groundUnitScalarEquiv_apply]
   exact unitScalar_twist C σ _
 
-/-- A double-braiding trace is carried through σ. -/
-theorem SEntry_twist (p : Dimensions.PivotalStructure (C := C.Obj))
-    (X Y : C.Obj) :
-    unitScalarEquiv (category C σ) (Modular.SEntry (pivotal C σ p) X Y) =
-      σ (unitScalarEquiv C (Modular.SEntry p X Y)) := by
-  simp only [← unitScalar_eq_equiv]
-  exact unitScalar_twist C σ _
-
-/-- One bijection transports simple FP dimensions, pivotal dimensions and all S entries. -/
-theorem labels_S (p : Dimensions.PivotalStructure (C := C.Obj)) :
-    ∃ e : Fin (rank C) ≃ Fin (rank (category C σ)),
-      (∀ i, fpSimple C i = fpSimple (category C σ) (e i)) ∧
-      (∀ i, Dimensions.pivotalDimension (category C σ) (pivotal C σ p)
-          (simples (category C σ) (e i)) =
-        σ (Dimensions.pivotalDimension C p (simples C i))) ∧
-      (∀ i j, Modular.categoricalS (category C σ) (pivotal C σ p) (e i) (e j) =
-        σ (Modular.categoricalS C p i j)) := by
-  obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C (category C σ) (conjugate C σ).equivalence
-  refine ⟨e, Modular.conjugate_fpSimple C (category C σ) (conjugate C σ) e he, ?_, ?_⟩
-  · intro i
-    rw [← pivotalDimension_twist C σ p (simples C i)]
-    exact (Dimensions.pivotalDimension_iso (category C σ) (pivotal C σ p) (he i).some).symm
-  · intro i j
-    unfold Modular.categoricalS
-    rw [← SEntry_twist C σ p (simples C i) (simples C j)]
-    congr 1
-    rw [← Modular.SEntry_iso_right (pivotal C σ p) _ (he j).some]
-    rw [Modular.SEntry_symmetric, ← Modular.SEntry_iso_right (pivotal C σ p) _ (he i).some,
-      Modular.SEntry_symmetric]
-    rfl
 
 end PropertyF.Ground.ScalarTwist
