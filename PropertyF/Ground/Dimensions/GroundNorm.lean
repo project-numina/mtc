@@ -4,6 +4,7 @@ public import PropertyF.Definitions
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 public import PropertyF.Ground.Dimensions.Trace
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Fusion.Simples
 public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.Integrate.UnitScalar
@@ -23,10 +24,10 @@ variable {k : Type*} [Field k] {C : Type u} [Category.{v} C] [Preadditive C] [Li
 
 /-- Inverting a scalar multiple of an isomorphism inverts the scalar. -/
 theorem iso_inv_eq_inv_smul {X Y : C} {j k' : X ≅ Y} {c : k} (hc : c ≠ 0)
-    (h : k'.hom = c • j.hom) : k'.inv = c⁻¹ • j.inv := by
-  apply (cancel_mono k'.hom).1
-  simp only [Linear.smul_comp, ← Linear.comp_smul, Iso.inv_hom_id]
-  rw [h, smul_smul, inv_mul_cancel₀ hc, one_smul, Iso.inv_hom_id]
+    (h : k'.hom = c • j.hom) : k'.inv = c⁻¹ • j.inv :=
+  (cancel_mono k'.hom).1 <| by
+    simp only [Linear.smul_comp, ← Linear.comp_smul, Iso.inv_hom_id]
+    rw [h, smul_smul, inv_mul_cancel₀ hc, one_smul, Iso.inv_hom_id]
 
 /-- Two isomorphisms from a simple object differ by a nonzero scalar and their inverses
 by its inverse. -/
@@ -75,9 +76,9 @@ isomorphism. -/
 theorem target_squaredNorm_choice_independent
     {X : C.Obj} [Simple X] (j : X ≅ ((Xᘁ)ᘁ)) :
     squaredNorm C X =
-      unitScalar C (rightQuantumTrace j) * unitScalar C (leftQuantumTrace j) := by
-  let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  simpa only [squaredNorm, Ground.unitScalar_eq_equiv] using
+      unitScalar C (rightQuantumTrace j) * unitScalar C (leftQuantumTrace j) :=
+  letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
+  by simpa only [squaredNorm, Ground.unitScalar_eq_equiv] using
     squaredNorm_independent (Ground.unitScalarEquiv C) (doubleDualIso C X) j
 
 section
@@ -103,16 +104,12 @@ theorem target_globalDimension_eq_sum_squares :
 
 end
 
-/-- Intrinsic squared norms are invariant under simple-object isomorphism,
-without assuming a pivotal or spherical structure. -/
-theorem target_squaredNorm_iso
-    {X Y : C.Obj} [Simple X] [Simple Y] (e : X ≅ Y) :
+/-- Intrinsic squared norms are invariant under object isomorphism. -/
+theorem target_squaredNorm_iso {X Y : C.Obj} (e : X ≅ Y) :
     squaredNorm C X = squaredNorm C Y := by
-  let j := doubleDualIso C X
-  let k : Y ≅ (Yᘁ)ᘁ := e.symm ≪≫ j ≪≫ rightDualIsoMap (rightDualIsoMap e)
-  obtain ⟨hr, hl⟩ := quantumTraces_iso e (j := j) (k := k) (by simp [k, rightDualIsoMap])
-  rw [target_squaredNorm_choice_independent C j,
-      target_squaredNorm_choice_independent C k, hr, hl]
+  obtain ⟨hr, hl⟩ := quantumTraces_iso e (j := doubleDualIso C X) (k := doubleDualIso C Y)
+    (drinfeldIso_natural e.hom)
+  simp only [squaredNorm, hr, hl]
 
 end PropertyF.Ground.Dimensions
 

@@ -33,13 +33,13 @@ omit [RightRigidCategory C] in
 theorem rightTraceWith_cyclic {X Y : C} [HasRightDual X] [HasRightDual Y]
     [HasRightDual (Xᘁ)] [HasRightDual (Yᘁ)] {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
     (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
-    rightTraceWith j (f ≫ g) = rightTraceWith k (g ≫ f) := by
-  apply End.homEquiv.injective
-  simp only [rightTraceWith, End.homEquiv_apply, tensorHom_def, whiskerLeft_id,
-    Category.comp_id, comp_whiskerRight, Category.assoc]
-  rw [← coevaluation_comp_rightAdjointMate_assoc, whisker_exchange_assoc g (fᘁ),
-    whisker_exchange_assoc j.hom (fᘁ), ← rightAdjointMate_comp_evaluation,
-    ← comp_whiskerRight_assoc j.hom (fᘁᘁ), ← hnat, comp_whiskerRight_assoc]
+    rightTraceWith j (f ≫ g) = rightTraceWith k (g ≫ f) :=
+  End.homEquiv.injective (by
+    simp only [rightTraceWith, End.homEquiv_apply, tensorHom_def, whiskerLeft_id,
+      Category.comp_id, comp_whiskerRight, Category.assoc]
+    rw [← coevaluation_comp_rightAdjointMate_assoc, whisker_exchange_assoc g (fᘁ),
+      whisker_exchange_assoc j.hom (fᘁ), ← rightAdjointMate_comp_evaluation,
+      ← comp_whiskerRight_assoc j.hom (fᘁᘁ), ← hnat, comp_whiskerRight_assoc])
 
 end PropertyF.Ground.Dimensions
 

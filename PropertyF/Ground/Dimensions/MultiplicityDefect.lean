@@ -303,10 +303,10 @@ theorem multiplicityDefect_involution_of_tensor_square {i j : Fin (rank C)} (k :
       (((rootTensorIso C (simples C i) (simples C j)).homᘁ)ᘁ) =
         (fourthDualIso (simples C i ⊗ simples C j)).hom) :
     (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1 := by
-  ext f
-  simp [multiplicityDefect_apply, Category.assoc,
-    rootTensorDefect_involution_of_tensor_square C hsq]
+      (multiplicityDefect C i j k).toLinearMap = 1 :=
+  LinearMap.ext fun f ↦ by
+    simp [multiplicityDefect_apply, Category.assoc,
+      rootTensorDefect_involution_of_tensor_square C hsq]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Squaring the root tensor map gives the tensor of the fourth-dual maps,
