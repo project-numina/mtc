@@ -141,10 +141,9 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
     ((Finset.sum_eq_zero_iff_of_nonneg (fun j _ ↦
       mul_nonneg (sub_nonneg.mpr ((Complex.re_le_norm _).trans (hdom j))) (hf j).le)).1
         hsum k (Finset.mem_univ k))).resolve_right (ne_of_gt (hf k))).symm
-  have him : (x k).im = 0 := Complex.abs_re_eq_norm.mp <| by
-    rw [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))]
-    exact le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)
-  exact Complex.ext hre him
+  exact Complex.ext hre (Complex.abs_re_eq_norm.mp (by
+    simpa only [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))] using
+      le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)))
 
 /-- Saturation of a weighted complex eigenvector forces each entry to have
   the phase of the product of its eigenvector values. -/

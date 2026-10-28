@@ -45,12 +45,10 @@ theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]
     IsIntegral ℤ ((spectralRadius ℂ (A.map (Int.castRingHom ℂ))).toReal ^ 2) := by
   let B : Matrix ι ι ℂ := A.map (Int.castRingHom ℂ)
   obtain ⟨z, hz, hzmax⟩ := spectrum.exists_nnnorm_eq_spectralRadius B
-  have hzint : IsIntegral ℤ z := by
-    refine ⟨A.charpoly, A.charpoly_monic, ?_⟩
+  have hzint : IsIntegral ℤ z := ⟨A.charpoly, A.charpoly_monic, by
     change Polynomial.eval₂ (Int.castRingHom ℂ) z A.charpoly = 0
     rw [Polynomial.eval₂_eq_eval_map, ← Matrix.charpoly_map]
-    exact ((Matrix.mem_spectrum_iff_isRoot_charpoly.mp hz).eq_zero)
-  change IsIntegral ℤ ((spectralRadius ℂ B).toReal ^ 2)
+    exact ((Matrix.mem_spectrum_iff_isRoot_charpoly.mp hz).eq_zero)⟩
   rw [← hzmax, ENNReal.coe_toReal, coe_nnnorm]
   apply (isIntegral_algebraMap_iff (R := ℤ) (A := ℝ) (B := ℂ)).mp
   change IsIntegral ℤ ((‖z‖ ^ 2 : ℝ) : ℂ)

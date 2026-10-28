@@ -176,12 +176,11 @@ theorem rootTrace_eq_simpleHom_trace_sum
   have heq : rootTrace C g = rootTrace C f := by
     simpa [f, Category.assoc] using (rootTrace_cyclic C e.hom (e.inv ≫ g))
   obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple V (fun a => simples_simple C a.1) f
-  rw [heq, ht]
-  simp only [Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
+  simp only [heq, ht, Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
-  rw [simpleHom_postcomp_trace g (fun t ↦ c ⟨k, t⟩)
-    (fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩), Finset.sum_mul]
-  simp only [rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
+  simp only [simpleHom_postcomp_trace g (fun t ↦ c ⟨k, t⟩)
+    (fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩), Finset.sum_mul,
+    rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
