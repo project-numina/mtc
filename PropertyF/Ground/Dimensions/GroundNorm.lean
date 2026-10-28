@@ -115,7 +115,7 @@ theorem target_squaredNorm_iso
   let k : Y ≅ (Yᘁ)ᘁ := e.symm ≪≫ j ≪≫ rightDualIsoMap (rightDualIsoMap e)
   have hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ := by
     simp [k, rightDualIsoMap]
-  have h := quantumTraces_iso j k e hnat
+  have h := quantumTraces_iso e hnat
   rw [target_squaredNorm_choice_independent C j,
       target_squaredNorm_choice_independent C k, h.1, h.2]
 

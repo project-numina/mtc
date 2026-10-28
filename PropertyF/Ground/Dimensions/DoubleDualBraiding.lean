@@ -36,7 +36,7 @@ theorem doubleDualTensorIso_braiding {C : Type u} [Category.{v} C] [MonoidalCate
   have hb := rightDualTensorIso_braiding U V
   change ((β_ U V).homᘁ) ≫ a.hom = b.hom ≫ (β_ (Uᘁ) (Vᘁ)).hom at hb
   have hm : b.inv ≫ ((β_ U V).homᘁ) = (β_ (Uᘁ) (Vᘁ)).hom ≫ a.inv :=
-    (iso_inv_naturality_of_hom b a hb).symm
+    (iso_inv_naturality_of_hom hb).symm
   change (b.inv ≫ t.homᘁ) ≫ (((β_ X Y).homᘁ)ᘁ) =
     (β_ (Uᘁ) (Vᘁ)).hom ≫ (a.inv ≫ s.homᘁ)
   simp only [Category.assoc, hd]

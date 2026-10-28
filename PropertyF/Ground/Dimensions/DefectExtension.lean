@@ -281,7 +281,7 @@ theorem rootTensorDefect_involution_extension
   rw [← Category.assoc, hn, Category.assoc, hn, ← Category.assoc, hsimple,
     Category.id_comp, Category.comp_id]
 /-- The fourth-dual tensor law on simple pairs implies ENO trace reciprocity. -/
-theorem enoTraceMatrix_reciprocity_of_simple_fourth_dual
+theorem trace_reciprocity_of_fourth_dual
     (hfourth : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j)) :
     ENOTraceMatrixReciprocity C := by
@@ -290,7 +290,7 @@ theorem enoTraceMatrix_reciprocity_of_simple_fourth_dual
     intro i j
     apply rootTensorDefect_involution_of_tensor_square C
     rw [rootTensor_square_eq_fourthDual_tensor, ← hfourth]
-  apply enoTraceMatrix_reciprocity_of_coevaluation_sliding C
+  apply trace_reciprocity_of_coevaluation C
   intro i k
   exact rootTensorDefect_slide_of_involution C (simples C k) (hinv _ _)
 
@@ -311,7 +311,7 @@ theorem positive_spherical_of_nonunit_fourth_dual
         exact fourthDualIso_tensor_unitLabel_right C (simples C i)
       · exact hfourth i j hi hj
   exact positive_spherical_of_simple_fourth_and_reciprocity C hsimple
-    (enoTraceMatrix_reciprocity_of_simple_fourth_dual C hsimple) hpu
+    (trace_reciprocity_of_fourth_dual C hsimple) hpu
 end PropertyF.Ground.Dimensions
 
 end

@@ -119,7 +119,7 @@ theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
 theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
     Ground.unitScalar C (p.rightTrace (β_ X X).hom) =
       pivotalBraidedTwistScalar C p X * pivotalDimension C p X := by
-  have h := rightTrace_partialTrace p X X (End.of (β_ X X).hom)
+  have h := rightTrace_partialTrace p (End.of (β_ X X).hom)
   rw [rightPartialTrace_braiding p (Ground.doubleDualIso C X) (drinfeld_eval C X)] at h
   have ht : (p.iso X).hom ≫ (Ground.doubleDualIso C X).inv =
       pivotalBraidedTwistScalar C p X • 𝟙 X := pivotalBraidedTwist_simple C p X
