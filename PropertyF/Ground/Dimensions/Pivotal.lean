@@ -84,13 +84,4 @@ theorem spherical_quantumTraces_eq (p : PivotalStructure (C := C))
   rw [← rightTrace_id, ← leftTrace_id]
   exact (hp X (𝟙 X)).symm
 
-/-- In a spherical category the intrinsic norm formed from a pivotal component
-is the square of its categorical dimension. -/
-theorem spherical_norm_eq_dimension_sq [Preadditive C] [Linear ℂ C]
-    (p : PivotalStructure (C := C)) (hp : p.IsSpherical)
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X : C) :
-    scalar (rightQuantumTrace (p.iso X)) * scalar (leftQuantumTrace (p.iso X)) =
-      (scalar (rightQuantumTrace (p.iso X))) ^ 2 := by
-  rw [← spherical_quantumTraces_eq p hp X, pow_two]
-
 end PropertyF.Ground.Dimensions

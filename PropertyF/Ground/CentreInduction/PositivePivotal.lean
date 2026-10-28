@@ -90,14 +90,4 @@ theorem positivePivotalComponent_forget (p : Dimensions.PivotalStructure (C := C
       (forgetDoubleDualIso C ((CategoryTheory.Center.ofBraided C.Obj).obj T)).inv := by
   simp [positivePivotalComponent, positiveDoubleDualIso_inv_forget]
 
-/-- Transported pivotal components are central on canonical positive images. -/
-theorem pivotalComponentsCentral_positive (p : Dimensions.PivotalStructure (C := C.Obj))
-    (T U : C.Obj) :
-    let Z := (CategoryTheory.Center.ofBraided C.Obj).obj T
-    let u := (p.iso T).hom ≫ (forgetDoubleDualIso C Z).inv
-    (u ▷ U) ≫ (((Zᘁ)ᘁ).2.β U).hom = (Z.2.β U).hom ≫ (U ◁ u) := by
-  have h := (positivePivotalComponent C p T).hom.comm U
-  rw [positivePivotalComponent_forget] at h
-  exact h
-
 end PropertyF.Ground.CentreInduction

@@ -21,19 +21,6 @@ def partialTraceHom (p : Dimensions.PivotalStructure (C := C)) (X Y T : C) :
   map_add' f g := by simp
   map_smul' z f := by simp
 
-/-- Closing a right identity strand scales a morphism by the pivotal
-trace of the strand. -/
-theorem partialTraceHom_whisker (p : Dimensions.PivotalStructure (C := C))
-    (X Y T : C) (f : X ⟶ Y) :
-    partialTraceHom p X Y T (f ▷ T) =
-      f ≫ (ρ_ Y).inv ≫ (Y ◁ (p.rightTrace (𝟙 T)).asHom) ≫ (ρ_ Y).hom := by
-  simp only [partialTraceHom, LinearMap.coe_mk, AddHom.coe_mk,
-    Dimensions.PivotalStructure.rightTrace,
-    Category.id_comp, tensorHom_def, whiskerLeft_id, Category.comp_id,
-    whiskerLeft_comp, Category.assoc]
-  rw [← associator_inv_naturality_left_assoc]
-  simp only [Iso.inv_hom_id_assoc]
-  rw [whisker_exchange_assoc, ← rightUnitor_inv_naturality_assoc]
 
 end PropertyF.Ground.CentreInduction
 

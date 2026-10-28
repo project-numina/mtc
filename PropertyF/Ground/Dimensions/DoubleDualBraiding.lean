@@ -39,9 +39,4 @@ theorem doubleDualTensorIso_braiding {C : Type u} [Category.{v} C] [MonoidalCate
     (β_ (Uᘁ) (Vᘁ)).hom ≫ (a.inv ≫ s.homᘁ)
   simp only [Category.assoc, hd]
   rw [← Category.assoc, hm, Category.assoc]
-/-- The canonical double-dual functor is braided strong monoidal. -/
-@[instance_reducible] def doubleDualBraided (C : Type u) [Category.{v} C] [MonoidalCategory C]
-    [BraidedCategory C] [RightRigidCategory C] : (doubleDualFunctor C).Braided where
-  __ := doubleDualMonoidal C
-  braided X Y := doubleDualTensorIso_braiding X Y
 end PropertyF.Ground.Dimensions

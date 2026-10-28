@@ -9,21 +9,6 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The two quantum traces of the canonical unit double-dual map agree. -/
-theorem leftQuantumTrace_unitIso : leftQuantumTrace (doubleDualUnitIso (C := C)) = rightQuantumTrace (doubleDualUnitIso (C := C)) := by
-  rw [leftQuantumTrace_eq_rightDual]
-  let j := doubleDualUnitIso (C := C)
-  let r := rightDualUnitIso (C := C)
-  have hnat : r.hom ≫ j.hom = (rightDualIsoMap j).symm.hom ≫ (rightDualIsoMap (rightDualIsoMap r)).hom := by
-    dsimp [j, r, doubleDualUnitIso, rightDualIsoMap]
-    simp only [Iso.hom_inv_id_assoc]
-    let _ : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
-    let _ : HasRightDual (rightDualObject (𝟙_ C)) := RightRigidCategory.rightDual _
-    rw [comp_rightAdjointMate]
-    simp [← Category.assoc, ← comp_rightAdjointMate]
-
-  exact rightQuantumTrace_iso (rightDualIsoMap j).symm j r hnat
-
 set_option backward.isDefEq.respectTransparency false in
 /-- The right quantum trace of the canonical unit double-dual map is one. -/
 theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C)) = 1 := by
@@ -52,14 +37,5 @@ theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C
     change (ρ_ (𝟙_ C)).inv ≫ (ρ_ (𝟙_ C)).hom = 𝟙 (𝟙_ C)
     exact Iso.inv_hom_id _
   exact h.trans hfinal
-
-/-- The intrinsic squared norm of the tensor unit is one, without any
-pivotal or spherical structure. -/
-theorem target_squaredNorm_unit (C : Ground.BraidedFusionCategory.{v,u}) :
-    Ground.squaredNorm C (𝟙_ C.Obj) = 1 := by
-  let : Simple (𝟙_ C.Obj) := Ground.IsFusionCategory.unit_simple
-  rw [target_squaredNorm_choice_independent C (𝟙_ C.Obj) (doubleDualUnitIso (C := C.Obj))]
-  rw [leftQuantumTrace_unitIso, rightQuantumTrace_unitIso]
-  simp [Ground.unitScalar_eq_equiv]
 
 end PropertyF.Ground.Dimensions

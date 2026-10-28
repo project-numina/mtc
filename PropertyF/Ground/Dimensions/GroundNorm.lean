@@ -70,39 +70,4 @@ theorem target_squaredNorm_iso (C : Ground.BraidedFusionCategory.{v,u})
   rw [target_squaredNorm_choice_independent C X j,
       target_squaredNorm_choice_independent C Y k, h.1, h.2]
 
-/-- Any complete, pairwise nonisomorphic finite list of simple objects can
-be used to compute the intrinsic global dimension. -/
-theorem target_globalDimension_independent_simples (C : Ground.BraidedFusionCategory.{v,u})
-    {n : ℕ} (T : Fin n → C.Obj) (hs : ∀ i, Simple (T i))
-    (hinj : ∀ i j, Nonempty (T i ≅ T j) → i = j)
-    (hcomplete : ∀ X : C.Obj, Simple X → ∃ i, Nonempty (X ≅ T i)) :
-    Ground.globalDimension C = ∑ i, Ground.squaredNorm C (T i) := by
-  classical
-  let f : Fin (Ground.rank C) → Fin n := fun i =>
-    Classical.choose (hcomplete (Ground.simples C i) (Ground.simples_simple C i))
-  have hf (i : Fin (Ground.rank C)) : Nonempty (Ground.simples C i ≅ T (f i)) :=
-    Classical.choose_spec (hcomplete (Ground.simples C i) (Ground.simples_simple C i))
-  have finj : Function.Injective f := by
-    intro i j hij
-    obtain ⟨ei⟩ := hf i
-    obtain ⟨ej⟩ := hf j
-    apply Ground.simples_injective C i j
-    exact ⟨ei ≪≫ eqToIso (congrArg T hij) ≪≫ ej.symm⟩
-  have fsurj : Function.Surjective f := by
-    intro i
-    let : Simple (T i) := hs i
-    obtain ⟨j, ⟨e⟩⟩ := Ground.exists_simple_iso C (T i)
-    refine ⟨j, ?_⟩
-    apply (hinj _ _ ?_).symm
-    obtain ⟨e'⟩ := hf j
-    exact ⟨e ≪≫ e'⟩
-  let eqv : Fin (Ground.rank C) ≃ Fin n := Equiv.ofBijective f ⟨finj, fsurj⟩
-  unfold Ground.globalDimension
-  apply Fintype.sum_equiv eqv
-  intro i
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
-  let : Simple (T (f i)) := hs (f i)
-  obtain ⟨e⟩ := hf i
-  exact target_squaredNorm_iso C e
-
 end PropertyF.Ground.Dimensions

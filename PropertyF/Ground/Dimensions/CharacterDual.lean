@@ -88,48 +88,4 @@ theorem galois_pivotalDimension_dual_eq_conj (C : Ground.BraidedFusionCategory.{
   · intro j k
     simpa using congrArg σ (pivotalDimension_character C p j k)
 
-/-- Every Galois conjugate of a spherical simple squared norm is real,
-without assuming that dimensions on duals are equal. -/
-theorem spherical_squaredNorm_galois_real (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
-    star (σ (Ground.squaredNorm C (Ground.simples C i))) =
-      σ (Ground.squaredNorm C (Ground.simples C i)) := by
-  let X := Ground.simples C i
-  letI : Simple X := Ground.simples_simple C i
-  let e : Xᘁ ≅ ᘁX := leftDualIso
-    (BraidedCategory.exactPairing_swap X (Xᘁ)) (HasLeftDual.exact)
-  obtain ⟨u⟩ := Ground.dualIndex_iso C i
-  have h := spherical_pivotalDimension_rightDual_sq C p hp X
-  rw [pivotalDimension_iso C p (e ≪≫ u)] at h
-  have hz := congrArg σ h
-  simp only [map_pow, galois_pivotalDimension_dual_eq_conj] at hz
-  rw [target_squaredNorm_eq_dimension_sq C p hp, ← rightTrace_id]
-  change star (σ (pivotalDimension C p X ^ 2)) = σ (pivotalDimension C p X ^ 2)
-  simpa only [map_pow, star_pow] using hz
-
-/-- The categorical global dimension of a spherical braided fusion category
-is totally real under complex Galois automorphisms. -/
-theorem spherical_globalDimension_galois_real (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) (σ : ℂ ≃+* ℂ) :
-    star (σ (Ground.globalDimension C)) = σ (Ground.globalDimension C) := by
-  unfold Ground.globalDimension
-  rw [map_sum, star_sum]
-  apply Finset.sum_congr rfl
-  intro i _
-  exact spherical_squaredNorm_galois_real C p hp σ i
-
-/-- The norm of every Galois conjugate of a spherical simple squared norm is
-bounded by the square of its FP dimension. -/
-theorem spherical_squaredNorm_galois_norm_le_fp_sq (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
-    ‖σ (Ground.squaredNorm C (Ground.simples C i))‖ ≤ Ground.fpSimple C i ^ 2 := by
-  letI : Simple (Ground.simples C i) := Ground.simples_simple C i
-  rw [target_squaredNorm_eq_dimension_sq C p hp, ← rightTrace_id]
-  change ‖σ (pivotalDimension C p (Ground.simples C i) ^ 2)‖ ≤ _
-  rw [map_pow, norm_pow]
-  have hb := galois_pivotalDimension_norm_le_fpSimple C p σ i
-  nlinarith [norm_nonneg (σ (pivotalDimension C p (Ground.simples C i)))]
-
 end PropertyF.Ground.Dimensions
