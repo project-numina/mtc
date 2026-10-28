@@ -144,13 +144,12 @@ theorem tensorPermTrace_adjacent {n : ℕ} (σ : Perm (Fin (n + 1))) :
   let f := (tensorPermAction X hX (n + 1)) σ
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   rw [tensorPermAction_adjacent hX σ, ← htotal _ _]
-  change unitScalar C (p.rightTrace (leftPartialTrace p (b * insertLeftIdentity X f)).asHom) = _
+  change unitScalarEquiv C (p.rightTrace (leftPartialTrace p (b * insertLeftIdentity X f)).asHom) = _
   rw [leftPartialTrace_right]
   dsimp only [b]
   rw [leftPartialTrace_firstGenerator_of_trace_compatibility (C := C) n
     (htotal X (End.of (β_ X X).hom))]
-  simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul,
-    unitScalar_eq_equiv, map_smul, smul_eq_mul, f]
+  simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul, map_smul, smul_eq_mul, f]
 
 include htotal in
 /-- A negative twist is corrected by the sign-twisted permutation action. -/

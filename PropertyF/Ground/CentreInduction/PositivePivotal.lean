@@ -19,18 +19,18 @@ section
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (Center D)]
 local notation "𝒵" => Center D
+variable (p : PivotalStructure (C := D))
 
 /-- The sole remaining obstruction to lifting the pivotal structure is the
 half-braiding intertwining equation for the transported components. -/
-def PivotalComponentsCentral (p : PivotalStructure (C := D)) : Prop :=
+def PivotalComponentsCentral : Prop :=
   ∀ (Z : 𝒵) (T : D),
     (transportedPivotalHom p Z ▷ T) ≫ (((Zᘁ)ᘁ).2.β T).hom =
       (Z.2.β T).hom ≫ (T ◁ transportedPivotalHom p Z)
 
 /-- Central transported components assemble into a pivotal structure on the
 actual centre; naturality, tensor and unit coherence are proved. -/
-def liftedPivotalStructure (p : PivotalStructure (C := D))
-    (hc : PivotalComponentsCentral p) :
+def liftedPivotalStructure (hc : PivotalComponentsCentral p) :
     PivotalStructure (C := 𝒵) where
   iso Z := by
     let u := transportedPivotalHom p Z
@@ -117,13 +117,15 @@ theorem positiveDoubleDualIso_inv_forget (T : D) :
   (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDoubleDualIso T))
     (forgetDoubleDualIso (Z⁺ T))).2 (positiveDoubleDualIso_forget T)
 
+variable (p : PivotalStructure (C := D))
+
 /-- The pivotal component transported to the positive centre lift. -/
-def positivePivotalComponent (p : PivotalStructure (C := D)) (T : D) :
+def positivePivotalComponent (T : D) :
     Z⁺ T ≅ ((Z⁺ T)ᘁ)ᘁ :=
   (Center.ofBraided D).mapIso (p.iso T) ≪≫ (positiveDoubleDualIso T).symm
 
 /-- Forgetting a positive pivotal component gives the transported component. -/
-theorem positivePivotalComponent_forget (p : PivotalStructure (C := D)) (T : D) :
+theorem positivePivotalComponent_forget (T : D) :
     (positivePivotalComponent p T).hom.f = transportedPivotalHom p (Z⁺ T) :=
   congrArg ((p.iso T).hom ≫ ·) (positiveDoubleDualIso_inv_forget T)
 
