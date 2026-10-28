@@ -57,21 +57,17 @@ theorem crossingBlock_tensor
       ((α_ T U S).hom ≫ (T ◁ f₂) ≫ f₁) =
     𝟙 _ ⊗≫ (crossingBlock X T K g₁ f₁ ▷ U) ⊗≫
       (T ◁ crossingBlock X U S g₂ f₂) ⊗≫ 𝟙 _ := by
-  let q := closeFusionMap T K f₁
-  let z := closeFusionMap U S f₂
-  calc
-    _ = 𝟙 _ ⊗≫ (g₁ ▷ (X ⊗ (((Rᘁ : D) ⊗ T) ⊗ U))) ⊗≫
-      ((((T ◁ g₂) ▷ X) ▷ (((Rᘁ : D) ⊗ T) ⊗ U)) ≫
-        (((T ⊗ (U ⊗ S)) ⊗ X) ◁ (q ▷ U))) ⊗≫
-      (((T ⊗ (U ⊗ S)) ⊗ X) ◁ z) ⊗≫ 𝟙 _ := by
-        dsimp only [crossingBlock, mixedCrossing]
-        rw [closeFusionMap_tensor, tensorHom_def, comp_whiskerRight]
-        monoidal
-    _ = _ := by
-      rw [← whisker_exchange]
-      dsimp only [crossingBlock, mixedCrossing]
-      simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
-      monoidal
+  dsimp only [crossingBlock, mixedCrossing]
+  rw [closeFusionMap_tensor]
+  simp only [tensorHom_def, comp_whiskerRight]
+  convert congrArg (fun h : (((T ⊗ K) ⊗ X) ⊗ (((Rᘁ : D) ⊗ T) ⊗ U) ⟶
+      ((T ⊗ (U ⊗ S)) ⊗ X) ⊗ ((Kᘁ : D) ⊗ U)) =>
+    𝟙 (((R ⊗ X) ⊗ Rᘁ) ⊗ (T ⊗ U)) ⊗≫
+      (g₁ ▷ (X ⊗ (((Rᘁ : D) ⊗ T) ⊗ U))) ⊗≫ h ⊗≫
+      (((T ⊗ (U ⊗ S)) ⊗ X) ◁ closeFusionMap U S f₂) ⊗≫
+        𝟙 ((T ⊗ U) ⊗ ((S ⊗ X) ⊗ Sᘁ)))
+    (whisker_exchange ((T ◁ g₂) ▷ X) (closeFusionMap T K f₁ ▷ U)).symm using 1 <;> monoidal
+
 end
 
 variable {k : Type*} [Field k] [IsAlgClosed k] [Preadditive D] [Linear k D]
