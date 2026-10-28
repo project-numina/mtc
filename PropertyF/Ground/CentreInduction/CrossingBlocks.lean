@@ -144,9 +144,11 @@ theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
   simp_rw [← Category.assoc (biproduct.π _ _)]
   rw [← Preadditive.sum_comp, biproduct.total, Category.id_comp, Iso.hom_inv_id]
 
+variable (X T : C.Obj)
+
 /-- The finite matrix formula for the induction half-braiding. Its invertibility
 and coherence are established in the subsequent induction modules. -/
-def crossingCandidate (X T : C.Obj) :
+def crossingCandidate :
     underlying C X ⊗ T ⟶ T ⊗ underlying C X := by
   let V := inductionSummand C X
   refine (rightDistributor V T).hom ≫ biproduct.desc (fun i => ?_)
@@ -159,7 +161,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing has the stated matrix entries on each induced
 simple summand. -/
 @[reassoc]
-theorem crossingCandidate_on_summand (X T : C.Obj) (i : Fin (rank C)) :
+theorem crossingCandidate_on_summand (i : Fin (rank C)) :
     let V := inductionSummand C X
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
       ∑ j, ∑ a : crossingIndex C T i j, crossingSummand C X T i j a ≫ (T ◁ biproduct.ι V j) :=
