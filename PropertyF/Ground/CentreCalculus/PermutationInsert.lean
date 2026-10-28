@@ -113,14 +113,14 @@ local notation "tr" => permScalarTrace
 theorem integral_of_trace_deletion {C : BraidedFusionCategory} {p : PivotalStructure (C := C.Obj)}
     (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
     (ρ : ∀ n : ℕ, Perm (Fin n) →* End (tensorPower X n))
-    (h : IsTraceDeletion (tr C p ρ) (fpDimension C X : ℂ)) : IsFPIntegral C X := by
-  have hz : tr C p ρ 0 1 = 1 := by
+    (h : IsTraceDeletion (tr C p ρ) (fpDimension C X : ℂ)) : IsFPIntegral C X :=
+  let hz : tr C p ρ 0 1 = 1 := by
     change unitScalarEquiv C (p.rightTrace (((ρ 0) 1).asHom)) = 1
     rw [map_one]
     simpa only [End.one_asHom, tensorPower, Dimensions.rightTrace_unit] using (map_one (unitScalarEquiv C))
-  refine integral_of_signed_permutation_traces hdim fun n ↦ ⟨ρ n, ?_⟩
-  simpa [permScalarTrace, scalarPermTrace, signedTraceSum, ← unitScalar_eq_equiv] using
-    signedTraceSum_falling hz h n
+  integral_of_signed_permutation_traces hdim fun n ↦ ⟨ρ n, by
+    simpa [permScalarTrace, scalarPermTrace, signedTraceSum, ← unitScalar_eq_equiv] using
+      signedTraceSum_falling hz h n⟩
 
 end PropertyF.Ground.CentreCalculus
 

@@ -135,14 +135,12 @@ theorem tensorPermTrace_adjacent {n : ℕ} (σ : Perm (Fin (n + 1))) :
     scalarPermTrace p scalar (tensorPermAction X hX) (n + 2) (decomposeFin.symm (1, σ)) =
       t * scalarPermTrace p scalar (tensorPermAction X hX) (n + 1) σ := by
   dsimp only [scalarPermTrace]
-  let f := (tensorPermAction X hX (n + 1)) σ
-  let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   rw [tensorPermAction_adjacent hX σ, ← htotal _ _]
-  change scalar (p.rightTrace (leftPartialTrace p (b * insertLeftIdentity X f)).asHom) = _
-  rw [leftPartialTrace_right]
-  dsimp only [b]
-  rw [hfirst n]
-  simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul, map_smul, smul_eq_mul, f]
+  change scalar (p.rightTrace (leftPartialTrace p
+    ((Aut.toEnd (braidGenerator X n 0) : End (X ⊗ tensorPower X (n + 1))) *
+      insertLeftIdentity X ((tensorPermAction X hX (n + 1)) σ))).asHom) = _
+  rw [leftPartialTrace_right, hfirst n]
+  simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul, map_smul, smul_eq_mul]
 
 include htotal hfirst in
 /-- A negative crossing scalar is corrected by the sign-twisted action. -/
