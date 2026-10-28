@@ -18,7 +18,7 @@ variable (C : BraidedFusionCategory.{v,u})
 construction uses no assumption about that law on arbitrary objects. -/
 theorem positive_spherical_of_simple_fourth_and_reciprocity
     (hfourth : ∀ i j : Fin (rank C),
-      fourthDualTensorLaw C (simples C i) (simples C j))
+      fourthDualTensorLaw (simples C i) (simples C j))
     (htranspose : ENOTraceMatrixReciprocity C)
     (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C :=
