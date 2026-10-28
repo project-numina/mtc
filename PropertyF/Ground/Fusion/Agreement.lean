@@ -149,7 +149,8 @@ theorem euclideanAbs_norm (x : EuclideanSpace ℝ ι) :
 /-- Replacing coordinates by absolute values cannot decrease the quadratic
 form of a matrix with nonnegative entries. -/
 theorem quadratic_le_abs
-    {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 ≤ A i j) (x : ι → ℝ) :
+    {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
+    {A : Matrix ι ι k} (hA : ∀ i j, 0 ≤ A i j) (x : ι → k) :
     ∑ i, ∑ j, x i * A i j * x j ≤
       ∑ i, ∑ j, |x i| * A i j * |x j| := by
   refine Finset.sum_le_sum fun i _ ↦ Finset.sum_le_sum fun j _ ↦ ?_
@@ -203,11 +204,7 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {A : Matrix ι ι ℝ}
   have hynorm : ‖y‖ = ‖z‖ := by
     rw [euclideanAbs_norm]
     simpa using hxmem
-  have hyne : y ≠ 0 := by
-    intro h
-    apply hz
-    apply norm_eq_zero.mp
-    simpa [h] using hynorm.symm
+  have hyne : y ≠ 0 := norm_ne_zero_iff.mp (by simpa [hynorm] using norm_ne_zero_iff.mpr hz)
   have hynonneg (i : ι) : 0 ≤ y i := abs_nonneg _
   have hyexists : ∃ i, 0 < y i := by
     by_contra! h
@@ -276,22 +273,10 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
   have hid : (𝟙 Y : Y ⟶ Y) ≠ 0 := fun h ↦
     id_nonzero (ᘁ(simples D k))
       ((tensorLeft (simples D j)).map_eq_zero_iff.mp (by simpa [Y] using h))
-  obtain ⟨i, f, _, hf, _⟩ := exists_simple_retract D hid
-  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  have hm : 0 < Module.finrank ℂ (simples D i ⟶ Y) := by
-    let : Simple (simples D i) := simples_simple D i
-    rw [← finrank_to_simple_eq_from_simple Y (simples D i)]
-    exact Module.finrank_pos_iff_exists_ne_zero.mpr ⟨f, hf⟩
-  have hc : 0 < fusionCoeff D i k j := by
-    rw [fusionCoeff_reciprocity_labels]
-    obtain ⟨e'⟩ := dualIndex_iso D k
-    change 0 < Module.finrank ℂ (simples D i ⟶ simples D j ⊗ simples D (dualIndex D k))
-    rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
-      (Iso.refl (simples D j) ⊗ᵢ e'.symm)).finrank_eq]
-    exact hm
+  obtain ⟨i, hm⟩ := exists_positive_multiplicity D (fun h ↦ hid ((IsZero.iff_id_eq_zero Y).mp h))
   unfold totalFusionMatrix
   exact Finset.sum_pos' (fun _ _ => Nat.cast_nonneg _)
-    ⟨i, Finset.mem_univ _, Nat.cast_pos.mpr hc⟩
+    ⟨i, Finset.mem_univ _, Nat.cast_pos.mpr (by simpa only [fusionCoeff_reciprocity] using hm)⟩
 
 end PropertyF.Ground
 
@@ -389,10 +374,9 @@ theorem character_total_eigenvector
   classical
   rw [totalFusionMatrix_eq_sum_characterMatrix, Matrix.sum_mulVec]
   ext j
-  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
-  refine Finset.sum_congr rfl fun i _ ↦ ?_
-  change (∑ k, (fusionCoeff D i j k : ℝ) * f k) = f i * f j
-  exact (hf i j).symm
+  simp only [Finset.sum_apply,
+    Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Matrix.mulVec, dotProduct, characterMatrix,
+    ← hf]
 
 /-- The unique positive normalized character of the fusion rules. -/
 def fpCharacter (D : BraidedFusionCategory) : Fin (rank D) → ℝ :=
