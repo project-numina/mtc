@@ -39,8 +39,7 @@ abbrev HasUnitaryTraceBound {X : C.Obj}
 /-- In actual categorical braid blocks, the norm of the pivotal trace of a
 unitary is bounded by the simple-multiplicity mass. The explicit dimension
 bound is supplied by the fusion/Perron and dimensions workstreams. -/
-theorem pivotalTrace_braid_unitary_bound
-    {X : C.Obj} {n : ℕ}
+theorem pivotalTrace_braid_unitary_bound {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
@@ -75,8 +74,7 @@ theorem fpDimension_tensorPower (X : C.Obj) :
 
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
-theorem braid_trace_unitary_bound_ground
-    {X : C.Obj} {n : ℕ}
+theorem braid_trace_unitary_bound_ground {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) {r : ℕ} {d : Fin r → ℕ}
     (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
@@ -254,8 +252,7 @@ theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf :
 
 /-- Iterating a single overlap step gives the scaled power identity, without
 dividing by the simple dimension. -/
-theorem overlap_trace_power_of_step
-    {X : C.Obj}
+theorem overlap_trace_power_of_step {X : C.Obj}
     (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
     (hstep : ∀ k, actualBraidTrace C X p (overlapIndex t (k + 1))
         (overlapProduct X t u (k + 1)) *

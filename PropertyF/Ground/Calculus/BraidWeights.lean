@@ -39,8 +39,7 @@ theorem groundSimpleScalar_smul_id (i : Fin (Ground.rank C)) (a : End (Ground.si
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple
 biproduct component of the transported endomorphism. -/
-theorem groundEndBlockEquiv_diagonal
-    {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
+theorem groundEndBlockEquiv_diagonal {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
     (e : X ≅ ⨁ (simpleCopies C m))
     (a : End X) (i : Fin (Ground.rank C)) (j : Fin (m i)) :
     groundEndBlockEquiv C X m e a i j j =
@@ -58,8 +57,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The actual pivotal trace on a fusion-category endomorphism is the sum of
 simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
-theorem pivotalTrace_groundEndBlocks
-    (p : PivotalStructure (C := C.Obj))
+theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
     (e : X ≅ ⨁ (simpleCopies C m)) (a : End X) :
     scalar (p.rightTrace a.asHom) = ∑ i,
@@ -332,8 +330,7 @@ abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
 /-- The actual categorical trace on the braid algebra has the paper's
 multiplicity-weight formula. Every retained braid block occurs in a simple
 constituent's multiplicity space. -/
-theorem pivotalTrace_braid_multiplicities
-    {X : C.Obj} {n : ℕ}
+theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
