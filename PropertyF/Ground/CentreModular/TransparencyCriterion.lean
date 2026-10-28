@@ -38,7 +38,6 @@ include hsym hd hVerlinde hunit in
 /-- The vacuum-column Kirby identity and fusion rules imply S squared is duality. -/
 theorem fusion_S_square_of_kirby (hkirby : HasKirbyIdentity S d N.unit D) : HasSSquare S dual D :=
   fun x y ↦ by
-    classical
     dsimp only [HasKirbyIdentity] at hkirby
     simp_rw [fusion_character_product hsym hd hVerlinde x y]
     rw [Finset.sum_comm]
@@ -55,7 +54,6 @@ theorem fusion_S_det_ne_zero_of_kirby (hdual : Function.Involutive dual) (hD : D
     (hkirby : HasKirbyIdentity S d N.unit D) : S.det ≠ 0 :=
   let B : Matrix ι ι K := fun x y ↦ S x (dual y) / D
   Matrix.det_ne_zero_of_right_inverse (by
-    classical
     ext x y
     rw [Matrix.mul_apply, Matrix.one_apply]
     change (∑ z, S x z * (S z (dual y) / D)) = _
@@ -74,7 +72,6 @@ theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
     (hvanish : ∀ k, k ≠ unitIndex C →
       (∑ z, dₚ z * Sₚ k z) = 0) :
     (Sₚ).det ≠ 0 := by
-  classical
   apply fusion_S_det_ne_zero_of_kirby (N := ⟨unitIndex C, fusionCoeff C⟩)
     (D := (globalFPDimension C : ℂ)) (categoricalS_symmetric C p)
     (simpleDimension_ne_zero C p) (categoricalS_verlinde C p)
@@ -96,7 +93,6 @@ theorem categoricalS_det_ne_zero_of_unit_character_unique
     (hunique : ∀ k, k ≠ unitIndex C →
       normalizedSColumn C p k ≠ normalizedSColumn C p (unitIndex C)) :
     (Sₚ).det ≠ 0 := by
-  classical
   apply categoricalS_det_ne_zero_of_kirby_vanishes_off_unit C p hdim
   intro k hk
   let χ := categoricalSCharacter C p

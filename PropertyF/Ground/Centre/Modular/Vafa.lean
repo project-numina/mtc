@@ -45,7 +45,6 @@ theorem derivation_vanishes_of_regular_eigenvector (N : ι → ι → ι → K) 
     (hreg : IsRegularFusionVector N d) (hD : (∑ j, d j ^ 2) ≠ 0)
     (b : ι → M) (hderiv : IsFusionDerivation N d b) :
     ∀ i, b i = 0 := by
-  classical
   intro i
   let R : M := ∑ j, d j • b j
   have hsum : (∑ j, d j • ∑ k, N i j k • b k) = d i • R := by
@@ -621,7 +620,6 @@ theorem additive_object_function_decomposition {M : Type w} [AddCommMonoid M]
     (hadd : ∀ X Y, f (X ⊞ Y) = f X + f Y)
     (X : C.Obj) :
     f X = ∑ i, Module.finrank ℂ (simples C i ⟶ X) • f (simples C i) := by
-  classical
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   induction base_finite_simple_sum C X with
   | @zero W hz =>
