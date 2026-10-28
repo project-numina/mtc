@@ -112,12 +112,10 @@ def mass (B : Blocks) (w : Fin B.count → ℝ) : ℝ :=
   ∑ r, |w r| * B.size r
 
 lemma norm_trace_le (B : Blocks) (w : Fin B.count → ℝ) {u : B.Algebra}
-    (hu : B.IsUnitary u) : ‖B.trace w u‖ ≤ B.mass w := calc
-    ‖B.trace w u‖ ≤ ∑ r, ‖(w r : ℂ) * (u r).trace‖ := norm_sum_le _ _
-    _ = ∑ r, |w r| * ‖(u r).trace‖ := by simp
-    _ ≤ B.mass w := Finset.sum_le_sum fun r _ =>
-      mul_le_mul_of_nonneg_left
-        (by simpa using norm_trace_le_card (hu r)) (abs_nonneg _)
+    (hu : B.IsUnitary u) : ‖B.trace w u‖ ≤ B.mass w :=
+  (norm_sum_le _ _).trans <| Finset.sum_le_sum fun r _ => by
+    simpa using mul_le_mul_of_nonneg_left
+      (by simpa using norm_trace_le_card (hu r)) (abs_nonneg (w r))
 
 /-- The sign element used on page 4, equation (3). -/
 def signElement (B : Blocks) (w : Fin B.count → ℝ) : B.Algebra :=

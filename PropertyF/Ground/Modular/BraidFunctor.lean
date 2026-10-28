@@ -59,16 +59,11 @@ lemma braid_first_power (X : C) (n : ℕ) :
     (braidGenerator (F.obj X) n 0).asIso.hom ≫ (tensorPowerComparison F X (n+2)).hom =
       (tensorPowerComparison F X (n+2)).hom ≫ F.map (braidGenerator X n 0).asIso.hom := by
   rw [braidGenerator_zero, braidGenerator_zero]
-  change ((α_ (F.obj X) (F.obj X) (tensorPower (F.obj X) n)).symm ≪≫
-      ((β_ (F.obj X) (F.obj X)) ⊗ᵢ Iso.refl (tensorPower (F.obj X) n)) ≪≫
-       α_ (F.obj X) (F.obj X) (tensorPower (F.obj X) n)).hom ≫
-      ((Iso.refl (F.obj X) ⊗ᵢ ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X n) ≪≫
-        μIso F X (tensorPower X n))) ≪≫ μIso F X (X ⊗ tensorPower X n)).hom =
-      ((Iso.refl (F.obj X) ⊗ᵢ ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X n) ≪≫
-        μIso F X (tensorPower X n))) ≪≫ μIso F X (X ⊗ tensorPower X n)).hom ≫
-      F.map (((α_ X X (tensorPower X n)).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl (tensorPower X n)) ≪≫
-        α_ X X (tensorPower X n)).hom)
-  simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom, whiskerLeft_comp,
+  let e := (Iso.refl (F.obj X) ⊗ᵢ ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X n) ≪≫
+    μIso F X (tensorPower X n))) ≪≫ μIso F X (X ⊗ tensorPower X n)
+  change (firstBraiding (F.obj X) (tensorPower (F.obj X) n)).hom ≫ e.hom =
+    e.hom ≫ F.map (firstBraiding X (tensorPower X n)).hom
+  simp only [e, Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom, whiskerLeft_comp,
     Category.assoc]
   simpa only [Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom, Category.assoc] using
     braid_first_with_comparison F X (tensorPower X n) (tensorPowerComparison F X n)
@@ -81,14 +76,12 @@ theorem braidGenerator_functor (X : C) (n : ℕ) (i : Fin (n + 1)) :
   | zero =>
     simpa only [Fin.eq_zero i] using braid_first_power F X 0
   | succ n ih =>
-    rcases i with ⟨i, hi⟩
-    cases i with
-    | zero => exact braid_first_power F X (n+1)
-    | succ i =>
-      change (𝟙 (F.obj X) ⊗ₘ (braidGenerator (F.obj X) n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso.hom) ≫
+    refine Fin.cases ?_ (fun j ↦ ?_) i
+    · exact braid_first_power F X (n+1)
+    · change (𝟙 (F.obj X) ⊗ₘ (braidGenerator (F.obj X) n j).asIso.hom) ≫
           ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X (n+2)) ≪≫ μIso F X (tensorPower X (n+2))).hom =
         ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X (n+2)) ≪≫ μIso F X (tensorPower X (n+2))).hom ≫
-          F.map (𝟙 X ⊗ₘ (braidGenerator X n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso.hom)
+          F.map (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom)
       simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom, μIso_hom]
       rw [← Category.assoc, ← whiskerLeft_comp, ih, whiskerLeft_comp, Category.assoc,
         μ_natural_right]

@@ -675,8 +675,8 @@ theorem fpDeterminant_functor_natural_decomposition
     rw [functor_natural_app_conjugate F η e]
     exact fpDeterminant_conjugate C (F.mapIso e).symm (η.app Y)
   · intro X hX
-    have hη : η.app X = Iso.refl (F.obj X) := Iso.ext ((F.map_isZero hX).eq_of_src _ _)
-    rw [hη, fpDeterminant_refl]
+    rw [show η.app X = Iso.refl (F.obj X) from Iso.ext ((F.map_isZero hX).eq_of_src _ _),
+      fpDeterminant_refl]
   · intro X Y
     let : PreservesBinaryBiproducts F := preservesBinaryBiproducts_of_preservesBiproducts F
     rw [functor_natural_app_biprod F η X Y]

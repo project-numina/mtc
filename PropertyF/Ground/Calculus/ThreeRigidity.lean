@@ -75,9 +75,9 @@ theorem actual_three_braid_saturates (C : BraidedFusionCategory.{v,u})
       (d : ℂ) * f) :
     actualBraidTrace C X p 1 (braidInImage X 1
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2 := by
-  rw [actual_three_braid_trace C X p, hdim, hS]
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
-  field_simp
+  rw [actual_three_braid_trace C X p, hdim, hS, mul_pow, pow_two (d : ℂ), mul_assoc,
+    mul_div_cancel_left₀ _ hd']
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Actual three-strand block generators have equal squares once their
@@ -172,16 +172,14 @@ theorem pair_operator_scalar_of_overlaps_equal
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
   simp only [scalarTrace, hdim, htrace] at h
   have h' : (d : ℂ) • u = (f : ℂ) • (1 : End (X ⊗ X)) := by
-    have hdiv : (d : ℂ) * f / d = (f : ℂ) := by field_simp
     have hs : End.of (X ◁ ((f : ℂ) • (1 : End X)).asHom) =
         (f : ℂ) • (1 : End (X ⊗ X)) := by
       apply End.ext
       change X ◁ ((f : ℂ) • (𝟙 X)) = (f : ℂ) • (𝟙 (X ⊗ X))
       rw [MonoidalLinear.whiskerLeft_smul, whiskerLeft_id]
-    simpa only [hdiv, hs] using h
+    simpa only [mul_div_cancel_left₀ _ hd', hs] using h
   apply (smul_right_injective _ hd')
-  have hdiv : (d : ℂ) * (f / d) = (f : ℂ) := by field_simp
-  simpa only [smul_smul, hdiv] using h'
+  simpa only [smul_smul, mul_div_cancel₀ _ hd'] using h'
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Finite categorical braid image gives finite order of the double
@@ -192,9 +190,7 @@ theorem selfMonodromy_finite_order {C : Type u} [Category.{v} C]
     ∃ n : ℕ, n ≠ 0 ∧ selfMonodromy X ^ n = 1 := by
   obtain ⟨n, hn, hpow⟩ := braid_square_finite_order hfinite
   have hgen : (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd (braidGenerator X 0 0)) =
-      End.of ((β_ X X).hom) := by
-    apply End.ext
-    exact twoGenerator_transport X
+      End.of ((β_ X X).hom) := End.ext (twoGenerator_transport X)
   have h := congrArg (fun z => (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd z)) hpow
   simp only [map_pow, map_one, hgen] at h
   refine ⟨n, hn, ?_⟩

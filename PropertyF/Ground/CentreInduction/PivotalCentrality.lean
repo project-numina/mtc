@@ -4,7 +4,7 @@ public import PropertyF.Ground.CentreInduction.SecondTriangle
 public import PropertyF.Ground.Centre.Basic
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
-public import PropertyF.Ground.Dimensions.DoubleDualBraiding
+public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 
 /-! The pivotal structure of the base lifts to the rigid centre. -/
@@ -98,10 +98,7 @@ theorem center_structure_of_fp_pivotal
     ∃ hFusion : IsFusionCategory (CategoryTheory.Center C.Obj),
       letI := hFusion
       let pZ := canonicalCenterPivotal p
-      pZ.IsSpherical ∧
-      PivotalHasFPDimensions 𝒵ᶠ pZ ∧
-      PseudoUnitary 𝒵ᶠ ∧
-      globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
+      CenterPivotalData C pZ :=
   center_structure_of_pivotal_centrality hsimple (pivotalComponentsCentral_proved p)
 
 end PropertyF.Ground.CentreInduction
@@ -122,10 +119,7 @@ theorem center_structure_of_pivotal_pseudoUnitary
     ∃ hFusion : IsFusionCategory (𝒵),
       letI := hFusion
       ∃ pZ : Dimensions.PivotalStructure (C := 𝒵),
-        pZ.IsSpherical ∧
-        PivotalHasFPDimensions 𝒵ᶠ pZ ∧
-        PseudoUnitary 𝒵ᶠ ∧
-        globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 := by
+        CenterPivotalData C pZ := by
   obtain ⟨q, _, hq⟩ := Dimensions.positive_spherical_of_pivotal_pseudoUnitary C p hpu
   obtain ⟨hFusion, h⟩ := center_structure_of_fp_pivotal hq
   exact ⟨hFusion, canonicalCenterPivotal q, h⟩

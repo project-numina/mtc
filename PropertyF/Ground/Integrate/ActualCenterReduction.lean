@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Dimensions.GlobalInequality
+public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Fusion.Agreement
@@ -10,7 +10,6 @@ public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Integrate.TwistedRigidity
 public import PropertyF.Ground.Dimensions.PivotalTwist
-public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.CentreCabling.RegularSupport
@@ -91,6 +90,17 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 
+/-- Every Galois conjugate of the global FP dimension is the sum of the
+squares of the real conjugates of the simple FP dimensions. -/
+theorem globalFPDimension_galois_sum_squares (C : BraidedFusionCategory.{v,u})
+    (σ : ℂ ≃+* ℂ) : σ (globalFPDimension C : ℂ) =
+      ((∑ i, (σ (fpSimple C i : ℂ)).re ^ 2 : ℝ) : ℂ) := by
+  simp only [globalFPDimension, Complex.ofReal_sum, Complex.ofReal_pow, map_sum, map_pow]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [← fp_simple_galois_real C σ i]
+  norm_cast
+
 /-- Global FP dimension has positive, FP-bounded real conjugates. -/
 theorem positive_bounded_conjugates_of_fp (C : BraidedFusionCategory.{v,u})
     (σ : ℂ ≃+* ℂ) : ∃ a : ℝ, 0 < a ∧ a ≤ globalFPDimension C ∧
@@ -103,18 +113,10 @@ theorem positive_bounded_conjugates_of_fp (C : BraidedFusionCategory.{v,u})
     have h := Dimensions.galois_character_norm_le_fpSimple C hχ hchar σ i
     rw [← fp_simple_galois_real C σ i] at h
     simpa [d, χ, Complex.norm_real, Real.norm_eq_abs] using h
-  have hone : d (unitIndex C) = 1 := by simp [d, χ, fpSimple_unit]
-  refine ⟨∑ i, (d i) ^ 2, ?_, ?_, ?_⟩
-  · exact lt_of_lt_of_le zero_lt_one
-      (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, hone⟩)
-  · exact Dimensions.target_globalDimension_le_of_simple_bounds C d hbound
-  · have hglobal : (globalFPDimension C : ℂ) = ∑ i, (χ i) ^ 2 := by
-      simp [globalFPDimension, χ, Complex.ofReal_sum, Complex.ofReal_pow]
-    rw [hglobal, map_sum, Complex.ofReal_sum]
-    apply Finset.sum_congr rfl
-    intro i _
-    rw [map_pow, ← fp_simple_galois_real C σ i]
-    norm_cast
+  exact ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
+      (Dimensions.global_sum_squares_one_le d ⟨unitIndex C, by simp [d, χ, fpSimple_unit]⟩),
+    Dimensions.target_globalDimension_le_of_simple_bounds C d hbound,
+    globalFPDimension_galois_sum_squares C σ⟩
 
 end PropertyF.Ground
 end
@@ -185,7 +187,7 @@ theorem weaklyIntegral_of_actual_center
     (hDouble : CentreCabling.sCentralizer (Integrate.bundledCenter C) p core ⊆ generated)
     (hProduct : ∀ y ∈ generated, Centre.ProductRetract (simples (Integrate.bundledCenter C) y)) :
     WeaklyIntegral (globalFPDimension C) := by
-  apply weaklyIntegral_of_globalFPDimension_fixed C
+  apply weaklyIntegral_of_galois_fixed (globalFPDimension_isIntegral C)
   apply galois_fixed_of_smaller_conjugate_witness (globalFPDimension C)
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
     (positive_bounded_conjugates_of_fp C)

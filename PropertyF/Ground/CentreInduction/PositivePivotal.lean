@@ -50,9 +50,8 @@ def liftedPivotalStructure (p : Dimensions.PivotalStructure (C := D))
 /-- The lifted component agrees with the original pivotal component. -/
 theorem liftedPivotalStructure_compatible {p : Dimensions.PivotalStructure (C := D)}
     (hc : PivotalComponentsCentral p) (Z : 𝒵) :
-    ((liftedPivotalStructure p hc).iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom =
-      (p.iso Z.1).hom := by
-  simp [liftedPivotalStructure, Category.assoc]
+    PivotalCompatibleAt p (liftedPivotalStructure p hc) Z := by
+  simp [PivotalCompatibleAt, liftedPivotalStructure, Category.assoc]
 
 end
 
@@ -69,10 +68,7 @@ theorem center_structure_of_pivotal_centrality
     ∃ hFusion : IsFusionCategory (𝒵),
       letI := hFusion
       let pZ := liftedPivotalStructure p hc
-      pZ.IsSpherical ∧
-      PivotalHasFPDimensions 𝒵ᶠ pZ ∧
-      PseudoUnitary 𝒵ᶠ ∧
-      globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
+      CenterPivotalData C pZ :=
   center_structure_of_compatible_pivotal hsimple
     (liftedPivotalStructure_compatible hc)
 
