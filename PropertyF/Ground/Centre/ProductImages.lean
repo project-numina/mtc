@@ -8,7 +8,16 @@ public import PropertyF.Ground.Centre.Product
 public import PropertyF.Ground.Modular.BraidFunctor
 public import PropertyF.Ground.Cabling.Naturality
 
-/-! Reversing the braiding inverts each actual adjacent braid generator. -/
+/-!
+# Braid images of centre product objects
+
+Reversing a braiding inverts the adjacent braid generators. In the product
+category with the mixed braiding, the two projections jointly detect braid
+automorphisms, and their images lie in the braid images of the two factors.
+
+Consequently `productFunctor_objectPropertyF` transfers finite braid images
+to the product of the positive and negative centre embeddings.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

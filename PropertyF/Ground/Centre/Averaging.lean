@@ -5,10 +5,16 @@ public import Mathlib.GroupTheory.Perm.Sign
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import Mathlib.CategoryTheory.Idempotents.Basic
 
-/-! # Averaging and alternating projectors. -/
+/-!
+# Averaging and alternating projectors
 
-/-! Finite-group averaging in an arbitrary algebra. Applying this to a sign-twisted
-symmetric-group action gives the categorical antisymmetrizer once that action is built. -/
+Averaging a finite group action in an algebra gives an idempotent when the
+group order is invertible. Twisting a symmetric-group action by its sign
+character gives the alternating projector.
+
+In an idempotent-complete linear category the projector splits, and its
+pivotal trace is the trace of the identity on its split image.
+-/
 @[expose] public noncomputable section
 open scoped BigOperators
 namespace PropertyF.Ground.Centre
