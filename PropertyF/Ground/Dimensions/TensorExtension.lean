@@ -168,13 +168,8 @@ theorem rootSignQuantumTrace_simple
     {c : Fin (rank C) → ℂ} (hc : ∀ i, c i ≠ 0) (i : Fin (rank C)) :
     unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (simples C i))) =
       c i * rootDimension C i := by
-  have hq : rightQuantumTrace ((rootSignTwist C c hc).app (simples C i)) =
-      c i • rootTrace C (𝟙 (simples C i)) := by
-    rw [rootTrace_id]
-    exact rightQuantumTrace_smul_hom (rootSignTwist_app_simple C hc i)
-  rw [hq]
-  unfold rootDimension
-  simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
+  simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul] using
+    congrArg (Ground.unitScalarEquiv C) (rightQuantumTrace_smul_hom (rootSignTwist_app_simple C hc i))
 
 set_option backward.isDefEq.respectTransparency false in
 theorem naturalDoubleDual_unit_eq_of_trace_one
