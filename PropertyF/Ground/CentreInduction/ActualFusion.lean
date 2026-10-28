@@ -214,14 +214,18 @@ open CategoryTheory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
 
+set_option backward.isDefEq.respectTransparency false in
 /-- If the actual centre already has a fusion structure, its global FP
  dimension is the square of the base global FP dimension. -/
 theorem globalFPDimension_square_of_actual_induction (C : BraidedFusionCategory.{v,u})
     [RigidCategory (CategoryTheory.Center C.Obj)]
     [IsFusionCategory (CategoryTheory.Center C.Obj)] :
     globalFPDimension (Integrate.bundledCenter C) = (globalFPDimension C) ^ 2 :=
-  globalFPDimension_square_of_adjunction C (induction C) (actualAdjunction C)
+  globalFPDimension_square_of_induction C (fun i => (induction C).obj (simples C i))
     (fun _ => ⟨Iso.refl _⟩)
+    (fun i j => (homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj)
+      (induction C) (actualAdjunction C) (simples (Integrate.bundledCenter C) j)
+      (simples C i)).finrank_eq)
 
 
 

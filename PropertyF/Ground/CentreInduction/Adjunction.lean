@@ -86,20 +86,4 @@ def homLinearEquivOfAdjunction {k : Type*} [CommSemiring k] {A : Type u} {B : Ty
   change (adj.homEquiv X Y).symm (r • f) = r • (adj.homEquiv X Y).symm f
   simp [Adjunction.homEquiv_counit, Functor.map_smul, Linear.smul_comp]
 
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
-  [IsFusionCategory (CategoryTheory.Center C.Obj)]
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
-local notation "𝒵" => CategoryTheory.Center C.Obj
-
-/-- A linear right adjoint of the centre forgetful functor, with the stated
-underlying objects, gives the actual centre global FP-square formula. -/
-theorem globalFPDimension_square_of_adjunction
-    (I : C.Obj ⥤ 𝒵)
-    (adj : CategoryTheory.Center.forget C.Obj ⊣ I)
-    (hI : ∀ i, Nonempty ((I.obj (simples C i)).1 ≅ underlying C (simples C i))) :
-    globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 :=
-  globalFPDimension_square_of_induction C (fun i => I.obj (simples C i)) hI
-    (fun i j => (homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj) I adj
-      (simples 𝒵ᶠ j) (simples C i)).finrank_eq)
-
 end PropertyF.Ground.CentreInduction

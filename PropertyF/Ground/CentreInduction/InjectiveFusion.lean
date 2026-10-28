@@ -77,8 +77,7 @@ theorem center_fusion_of_unit_retract {X : C.Obj} {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
     IsFusionCategory (𝒵) := by
   obtain ⟨n, S, hS, hinj, hcover⟩ := finite_simple_representatives C
-  apply PropertyF.Ground.CentreBundle.fusionOfFiniteSemisimple C
-  refine ⟨n, S, hS, hinj, ?_⟩
+  refine PropertyF.Ground.CentreBundle.fusionOfFiniteSemisimple C ⟨n, S, hS, hinj, ?_⟩
   intro Z
   obtain ⟨k, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract C r Z)
   obtain ⟨m, ⟨a⟩⟩ := regroup_biproduct (fun j => hcover (V j) (hV j))

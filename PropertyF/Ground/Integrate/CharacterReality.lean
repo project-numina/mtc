@@ -41,9 +41,8 @@ variable {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)}
 
 /-- A fusion character is an eigenvector of each fusion matrix. -/
 theorem fusion_character_eigenvector (hchar : IsFusionMultiplicative C χ) (i : Fin (rank C)) :
-    (fun j k ↦ (fusionCoeff C i j k : ℂ)) *ᵥ χ = χ i • χ := by
-  ext j
-  exact (hchar i j).symm
+    (fun j k ↦ (fusionCoeff C i j k : ℂ)) *ᵥ χ = χ i • χ :=
+  funext fun j ↦ (hchar i j).symm
 
 /-- Every nonzero fusion character takes complex-conjugate values on dual
 simple objects, with no pivotal or spherical hypothesis. -/
@@ -80,11 +79,11 @@ theorem selfDual_character_galois_real (hχ : χ i₀ ≠ 0)
 
 /-- Every Galois conjugate of an actual simple FP dimension is real. -/
 theorem fp_simple_galois_real (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
-    (((σ (fpSimple C i : ℂ)).re : ℝ) : ℂ) = σ (fpSimple C i : ℂ) := by
-  apply Complex.conj_eq_iff_re.mp
-  simpa only [← Complex.star_def] using
-    selfDual_character_galois_real C (χ := fun i ↦ (fpSimple C i : ℂ))
-      (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C)
-      (by intro i; simp [fpSimple_dual]) σ i
+    (((σ (fpSimple C i : ℂ)).re : ℝ) : ℂ) = σ (fpSimple C i : ℂ) :=
+  Complex.conj_eq_iff_re.mp <| by
+    simpa only [← Complex.star_def] using
+      selfDual_character_galois_real C (χ := fun i ↦ (fpSimple C i : ℂ))
+        (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C)
+        (by intro i; simp [fpSimple_dual]) σ i
 
 end PropertyF.Ground

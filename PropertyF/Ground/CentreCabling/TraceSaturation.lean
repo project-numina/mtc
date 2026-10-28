@@ -16,6 +16,7 @@ positive dimensions, trace saturation detects an identity, relating the
 categorical double braiding to its numerical S-matrix centrality test.
 -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Modular (HasFPSimpleDimensions doubleBraiding)
 open PropertyF.Ground.Dimensions
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
@@ -72,7 +73,7 @@ theorem eq_of_pos_weighted_sum_eq {ι R : Type*} [Fintype ι] [CommRing R] [Line
 finite-order endomorphism whose pivotal trace equals the object's dimension
 is the identity. -/
 theorem finiteOrder_eq_one_of_trace_eq_dimension
-    (hdim : Modular.HasFPSimpleDimensions D p)
+    (hdim : HasFPSimpleDimensions D p)
     {X : D.Obj} {a : End X} (ha : IsOfFinOrder a)
     (ht : p.rightTrace a.asHom = p.rightTrace (𝟙 X)) : a = 1 := by
   classical
@@ -99,13 +100,13 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
 /-- For a finite-order double braiding, the positive spherical S-test is
 equivalent to categorical centrality. -/
 theorem doubleBraiding_eq_one_of_sTest_of_finite_order
-    (hdim : Modular.HasFPSimpleDimensions D p)
+    (hdim : HasFPSimpleDimensions D p)
     {i j : Fin (rank D)}
-    (hfinite : IsOfFinOrder (End.of (Modular.doubleBraiding (simples D i) (simples D j))))
+    (hfinite : IsOfFinOrder (End.of (doubleBraiding (simples D i) (simples D j))))
     (hs : Modular.categoricalS D p i j =
       Modular.simpleDimension D p i * Modular.simpleDimension D p j) :
-    Modular.doubleBraiding (simples D i) (simples D j) = 𝟙 _ := by
-  have ht : p.rightTrace (Modular.doubleBraiding (simples D i) (simples D j)) =
+    doubleBraiding (simples D i) (simples D j) = 𝟙 _ := by
+  have ht : p.rightTrace (doubleBraiding (simples D i) (simples D j)) =
       p.rightTrace (𝟙 (simples D i ⊗ simples D j)) := by
     apply (Ground.unitScalarEquiv D).injective
     change Modular.categoricalS D p i j = _
