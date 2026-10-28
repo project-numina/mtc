@@ -28,6 +28,7 @@ theorem doubleBraiding_natural_left {X Z : C} (f : X ⟶ Z) (Y : C) :
   rw [doubleBraiding, doubleBraiding, ← tensorHom_id, Category.assoc, ← braiding_naturality (𝟙 Y) f,
     ← Category.assoc, ← braiding_naturality f (𝟙 Y), Category.assoc]
 
+omit [Linear ℂ C] [MonoidalLinear ℂ C] in
 /-- The S entry is additive over finite biproducts in its first argument. -/
 theorem SEntry_biproduct_left {ι : Type*} [Fintype ι] (V : ι → C) [HasBiproduct V]
     (p : PivotalStructure) (Y : C) :

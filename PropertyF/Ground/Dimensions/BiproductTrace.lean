@@ -79,15 +79,23 @@ end SimpleTrace
 
 section
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+  [Preadditive C] [MonoidalPreadditive C]
 variable {ι : Type*} [Fintype ι]
+
+local instance : MonoidalLinear ℤ C where
+  whiskerLeft_smul := by
+    intro X Y Z r f
+    exact (tensorLeft X).map_zsmul
+  smul_whiskerRight := by
+    intro r Y Z f X
+    exact (tensorRight X).map_zsmul
 
 /-- The right trace decomposes across a finite family of maps summing to the identity. -/
 theorem rightTrace_decomposition (p : PivotalStructure (C := C))
     {X : C} {Y : ι → C} (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
     p.rightTrace f = ∑ j, p.rightTrace (i j ≫ f ≫ q j) :=
-  cyclicTrace_decomposition (fun X ↦ rightTraceWithLinear (k := ℂ) (p.iso X))
+  cyclicTrace_decomposition (fun X ↦ rightTraceWithLinear (k := ℤ) (p.iso X))
     (fun f g ↦ p.rightTrace_cyclic f g) i q h f
 
 /-- The trace on a finite direct sum is the sum of traces of diagonal blocks. -/

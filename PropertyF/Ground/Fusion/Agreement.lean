@@ -165,7 +165,7 @@ theorem matrix_quadratic_form [DecidableEq ι]
 /-- A nonnegative eigenvector of a positive matrix is positive in every coordinate
 if it has a positive coordinate. -/
 theorem positive_matrix_eigenvector_pos
-    {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
+    {k : Type*} [Semiring k] [LinearOrder k] [IsStrictOrderedRing k]
     {A : Matrix ι ι k} (hpos : ∀ i j, 0 < A i j) {v : ι → k}
     (hnonneg : ∀ i, 0 ≤ v i) (hpositive : ∃ i, 0 < v i)
     {d : k} (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
@@ -400,8 +400,9 @@ namespace PropertyF.Ground.Dimensions
 
 /-- A matrix dominated entrywise by a nonnegative matrix cannot have an
 eigenvalue larger than the latter's positive eigenvalue. -/
-theorem weighted_eigenvalue_bound {ι : Type*} [Fintype ι] (N : ι → ι → ℝ)
-    (T : ι → ι → ℂ) (f : ι → ℝ) {F : ℝ} (v : ι → ℂ) {z : ℂ}
+theorem weighted_eigenvalue_bound {K : Type*} [NormedRing K] [NormMulClass K]
+    {ι : Type*} [Fintype ι] (N : ι → ι → ℝ)
+    (T : ι → ι → K) (f : ι → ℝ) {F : ℝ} (v : ι → K) {z : K}
     {i₀ : ι} (hv : v i₀ ≠ 0) (hf : ∀ i, 0 < f i)
     (hN : ∀ i j, 0 ≤ N i j) (hdom : ∀ i j, ‖T i j‖ ≤ N i j)
     (hfp : ∀ i, ∑ j, N i j * f j = F * f i)
