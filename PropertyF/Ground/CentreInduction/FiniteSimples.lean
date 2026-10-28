@@ -75,12 +75,10 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object has a nonzero map to an induced base simple. -/
 theorem simple_hom_induced_simple [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), f ≠ 0 :=
-  let ⟨i, hi⟩ := exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
-    (fun _ ↦ inferInstance)
-    (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
-  ⟨i, finrank_pos_iff_exists_ne_zero.mp
-    (show 0 < finrank ℂ (X ⟶ (induction C).obj (Sᶜ i)) from by
-      simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)⟩
+  (exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
+    (fun _ ↦ inferInstance) (fun h ↦ Simple.not_isZero X (Centre.isZero_of_forget h))).imp
+    fun i hi ↦ (finrank_pos_iff_exists_ne_zero (R := ℂ)).mp (by
+      simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
 
 end PropertyF.Ground.CentreInduction
 
