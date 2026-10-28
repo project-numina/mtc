@@ -90,22 +90,13 @@ theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     Modular.doubleBraiding (Yᘁ) (Xᘁ) at hi
   have hi' := congrArg (fun z => rightAdjointMate z) hi
   simp only [comp_rightAdjointMate] at hi'
-  have hm := rightDualTensorIso_monodromy (X := Yᘁ) (Y := Xᘁ)
   have hm' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫
       ((Modular.doubleBraiding (Yᘁ) (Xᘁ))ᘁ) =
       Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
         (rightDualTensorIso (Yᘁ) (Xᘁ)).inv := by
-    apply (cancel_mono (rightDualTensorIso (Yᘁ) (Xᘁ)).hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [hm]
-    simp
-  have ht := Dimensions.rightDualTensorIso_natural f g
-  have ht' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ ((f ⊗ₘ g)ᘁ) =
-      (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso (((Yᘁ)ᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)).inv := by
-    apply (cancel_mono (rightDualTensorIso (((Yᘁ)ᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)).hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [ht]
-    simp
+    rw [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
+    exact rightDualTensorIso_monodromy
+  have ht' := rightDualTensorIso_inv_natural f g
   simp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
@@ -136,9 +127,7 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
   have hu : (doubleDualIso C (X ⊗ Y)).hom = m.inv ≫
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom := by
-    apply (cancel_epi m.hom).1
-    simp only [Iso.hom_inv_id_assoc]
-    exact h X Y
+    exact (Iso.eq_inv_comp m).2 (h X Y)
   have hv := drinfeld_inv_dual_tensor C h X Y
   have hn : Modular.doubleBraiding X Y ≫
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) =

@@ -49,14 +49,12 @@ private theorem forgetDualIso_tensor_mate_inv (X Y : 𝒵) :
 
 omit [RigidCategory (𝒵)] in
 /-- The inverse right-dual tensor comparison is natural in both arguments. -/
-private theorem rightDualTensorIso_inv_natural {A A' B B' : D}
+theorem rightDualTensorIso_inv_natural {A A' B B' : D}
     (f : A ⟶ A') (g : B ⟶ B') :
     (rightDualTensorIso A' B').inv ≫ ((f ⊗ₘ g)ᘁ) =
       (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso A B).inv := by
-  apply (cancel_mono (rightDualTensorIso A B).hom).1
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [Dimensions.rightDualTensorIso_natural f g]
-  simp
+  rw [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
+  exact Dimensions.rightDualTensorIso_natural f g
 
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
 theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :

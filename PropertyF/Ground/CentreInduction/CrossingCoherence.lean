@@ -107,24 +107,11 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro k _
-  have aux (j : Fin (rank C)) :
-      (∑ b : Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)),
-        ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
-          crossingBlock X (T ⊗ U) (simples C i) (simples C j)
-            (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
-              (α_ T U (simples C j)).inv)
-            ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
-              crossingProjection C T i k a) ≫ ((T ⊗ U) ◁ biproduct.ι V j)) =
-      ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
-        ∑ b : Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)),
-          crossingBlock X (T ⊗ U) (simples C i) (simples C j)
-            (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
-              (α_ T U (simples C j)).inv)
-            ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
-              crossingProjection C T i k a) ≫ ((T ⊗ U) ◁ biproduct.ι V j) := by
-    exact Finset.sum_comm
-  dsimp only [V] at aux
-  simp_rw [aux]
+  conv_lhs =>
+    enter [2, j]
+    rw [Finset.sum_comm (s := (Finset.univ : Finset (Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)))))
+      (t := (Finset.univ : Finset (Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)))))]
   rw [Finset.sum_comm]
+
 
 end PropertyF.Ground.CentreInduction

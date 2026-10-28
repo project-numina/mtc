@@ -118,6 +118,20 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 
+omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+/-- The left adjacent generator after removing the trailing tensor unit. -/
+theorem threeGeneratorLeft_end_transport (X : C) :
+    (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 0)) =
+      End.of ((α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom) :=
+  End.ext (threeGeneratorLeft_transport X)
+
+omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+/-- The right adjacent generator after removing the trailing tensor unit. -/
+theorem threeGeneratorRight_end_transport (X : C) :
+    (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 1)) =
+      End.of (X ◁ (β_ X X).hom) :=
+  End.ext (threeGeneratorRight_transport X)
+
 /-- The left three-strand generator in a chosen block presentation. -/
 def tripleBlockLeft (X : C) {r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
@@ -174,7 +188,7 @@ def overlapEndProduct (A X Y : C) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
 /-- Tracing the new strands of the overlap gives the old operator times the
 normalized trace of the fresh operator. -/
 theorem rightPartialTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
-    (A X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {A X Y : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
       (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) • v := by
@@ -186,13 +200,13 @@ theorem rightPartialTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/
 theorem pivotalTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
-    (A X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {A X Y : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
   rw [← Dimensions.rightTrace_partialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u)]
-  rw [rightPartialTrace_overlap C A X Y p scalar v u]
+  rw [rightPartialTrace_overlap C p scalar v u]
   simp [Dimensions.PivotalStructure.rightTrace_smul, mul_comm]
 
 end PropertyF.Ground.Calculus
@@ -226,15 +240,7 @@ theorem three_braid_double_overlap (X : C) :
       (Aut.toEnd ((braidGenerator X 1 0) ^ 2 * (braidGenerator X 1 1) ^ 2)) =
     (isoEndAlgEquiv (α_ X X X))
       (overlapEndProduct X X X (selfMonodromy X) (selfMonodromy X)) := by
-  have ha : (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 0)) =
-      End.of ((α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom) := by
-    apply End.ext
-    exact threeGeneratorLeft_transport X
-  have hb : (isoEndAlgEquiv (threePowerIso X)) (Aut.toEnd (braidGenerator X 1 1)) =
-      End.of (X ◁ (β_ X X).hom) := by
-    apply End.ext
-    exact threeGeneratorRight_transport X
-  rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, ha, hb]
+  rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, threeGeneratorLeft_end_transport, threeGeneratorRight_end_transport]
   apply End.ext
   simp [overlapEndProduct, insertRightIdentity, overlapFresh, selfMonodromy,
     isoEndAlgEquiv, Iso.conj_apply_asHom, pow_two, End.mul_asHom,
@@ -252,7 +258,7 @@ theorem three_braid_trace (D : Ground.BraidedFusionCategory.{v,u})
   have h := congrArg (fun z : End (X ⊗ (X ⊗ X)) => scalar (p.rightTrace z.asHom))
     (three_braid_double_overlap X)
   simp only [rightTrace_iso_conj] at h
-  rw [h, pivotalTrace_overlap D X X X p scalar]
+  rw [h, pivotalTrace_overlap D (X := X) p scalar]
   ring
 
 /-- Remove the trailing tensor unit from the two-fold tensor power. -/
