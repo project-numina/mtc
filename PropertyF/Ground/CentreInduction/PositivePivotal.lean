@@ -89,8 +89,9 @@ def liftedPivotalStructure (hc : PivotalComponentsCentral p) :
       (transported_pivotal_tensor p X Y).symm)
   unit := Center.ext _ _ (transported_pivotal_unit p)
 
+variable {p} in
 /-- The lifted component agrees with the original pivotal component. -/
-theorem liftedPivotalStructure_compatible {p : PivotalStructure (C := D)}
+theorem liftedPivotalStructure_compatible
     (hc : PivotalComponentsCentral p) (Z : 𝒵) :
     PivotalCompatibleAt p (liftedPivotalStructure p hc) Z := by
   simp [PivotalCompatibleAt, liftedPivotalStructure, transportedPivotalHom, Category.assoc]
