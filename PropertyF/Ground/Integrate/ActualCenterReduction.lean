@@ -67,7 +67,7 @@ theorem center_witness_of_categorical_modular_data (hp : p.IsSpherical)
     (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
     (hF : ∀ y, IsGaloisUnitColumn Z p σ.symm y → ObjectPropertyF (simples Z y)) :
-    ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
+    HasGaloisDimensionWitness σ δ b :=
   let ⟨y, hf, hcolumn, hG⟩ := exists_modular_witness Z hp hdim hdet hglobal σ
   let d := (σ (𝒇 y : ℂ)).re
   ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ
@@ -90,17 +90,17 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 
+variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
+
 /-- Every Galois conjugate of the global FP dimension is the sum of the
 squares of the real conjugates of the simple FP dimensions. -/
-theorem globalFPDimension_galois_sum_squares (C : BraidedFusionCategory.{v,u})
-    (σ : ℂ ≃+* ℂ) : σ (globalFPDimension C : ℂ) =
+theorem globalFPDimension_galois_sum_squares : σ (globalFPDimension C : ℂ) =
       ((∑ i, (σ (fpSimple C i : ℂ)).re ^ 2 : ℝ) : ℂ) := by
   simp only [globalFPDimension, Complex.ofReal_sum, Complex.ofReal_pow, map_sum, map_pow,
     fp_simple_galois_real]
 
 /-- Global FP dimension has positive, FP-bounded real conjugates. -/
-theorem positive_bounded_conjugates_of_fp (C : BraidedFusionCategory.{v,u})
-    (σ : ℂ ≃+* ℂ) : ∃ a : ℝ, 0 < a ∧ a ≤ globalFPDimension C ∧
+theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalFPDimension C ∧
       σ (globalFPDimension C : ℂ) = (a : ℂ) := by
   let χ : Fin (rank C) → ℂ := fun i => (fpSimple C i : ℂ)
   let d : Fin (rank C) → ℝ := fun i => (σ (χ i)).re

@@ -180,10 +180,7 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   have hn := Z.2.naturality e.hom
   have hc := coevaluation_iso_unit e
   change (η_ A Aᘁ ≫ (e.hom ⊗ₘ d.hom)) = (ρ_ (𝟙_ C.Obj)).inv at hc
-  change ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ A Aᘁ) ≫ (α_ Z.1 A Aᘁ).inv ≫
-    ((Z.2.β A).hom ▷ Aᘁ)) ≫
-      (((e ⊗ᵢ Iso.refl Z.1) ⊗ᵢ d) ≪≫
-        ((λ_ Z.1) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ Z.1).hom = 𝟙 Z.1
+  dsimp only [unitComponent, unitSummandIso]
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_def,
     whiskerLeft_id, Category.comp_id, Category.assoc]
   rw [← comp_whiskerRight_assoc, ← hn]
@@ -197,6 +194,7 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
     rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc, hc]
     monoidal_coherence
   simp only [← whiskerLeft_comp_assoc]
+  dsimp only [A, e, d, Iso.trans_hom] at hunit
   simp only [Category.assoc] at hunit ⊢
   rw [hunit, whiskerLeft_id]
   simp
