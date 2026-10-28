@@ -126,22 +126,16 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-/-- The global inequality follows from the simple-object estimates; this
-separates the sum-of-squares argument from the remaining ENO estimate. -/
-theorem target_globalDimension_le_of_simple_bounds
-    {d : Fin (rank C) → ℝ}
-    (hbound : ∀ i, |d i| ≤ fpSimple C i) :
-    ∑ i, (d i) ^ 2 ≤ globalFPDimension C :=
+/-- Pointwise absolute-value bounds imply the corresponding sum-of-squares bound. -/
+theorem sum_sq_le_sum_sq_of_abs_le {ι : Type*} [Fintype ι] {d f : ι → ℝ}
+    (hbound : ∀ i, |d i| ≤ f i) : ∑ i, (d i) ^ 2 ≤ ∑ i, (f i) ^ 2 :=
   Finset.sum_le_sum fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2
 
-/-- If each real simple dimension is bounded by its FP dimension, equality of
-the global sums is equivalent to saturation at every simple. -/
-theorem global_sum_squares_eq_iff
-    {d : Fin (rank C) → ℝ}
-    (hbound : ∀ i, |d i| ≤ fpSimple C i) :
-    (∑ i, (d i) ^ 2) = globalFPDimension C ↔
-      ∀ i, |d i| = fpSimple C i := by
-  rw [globalFPDimension, Finset.sum_eq_sum_iff_of_le
+/-- A sum-of-squares bound is saturated precisely when every term is saturated. -/
+theorem sum_sq_eq_sum_sq_iff {ι : Type*} [Fintype ι] {d f : ι → ℝ}
+    (hbound : ∀ i, |d i| ≤ f i) :
+    (∑ i, (d i) ^ 2) = ∑ i, (f i) ^ 2 ↔ ∀ i, |d i| = f i := by
+  rw [Finset.sum_eq_sum_iff_of_le
     (fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2)]
   constructor
   · intro heq i
@@ -163,7 +157,7 @@ theorem norm_saturation_of_pseudoUnitary {d : Fin (rank C) → ℂ}
     simpa only [PseudoUnitary, globalDimension, hnorm, ← Complex.ofReal_sum] using hpu
   intro i
   simpa only [abs_of_nonneg (norm_nonneg _)] using
-    (global_sum_squares_eq_iff C hb).1 hg i
+    (sum_sq_eq_sum_sq_iff hb).1 hg i
 
 /-- If some simple has real dimension one, the global sum is at least one. -/
 theorem global_sum_squares_one_le {ι : Type*} [Fintype ι]

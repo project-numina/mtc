@@ -20,11 +20,11 @@ open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
-variable (C : BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The unit-labelled summand is isomorphic to the middle object. -/
-def unitSummandIso (X : C.Obj) :
+def unitSummandIso :
     (simples C (unitIndex C) ⊗ X) ⊗ (simples C (unitIndex C))ᘁ ≅ X :=
   let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   let d : (simples C (unitIndex C))ᘁ ≅ 𝟙_ C.Obj :=
@@ -34,7 +34,7 @@ def unitSummandIso (X : C.Obj) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Every object is a retract of its underlying induction sum through the
 unit-labelled component. -/
-def unitSummandRetract (X : C.Obj) :
+def unitSummandRetract :
     Retract X (underlying C X) where
   i := (unitSummandIso C X).inv ≫ biproduct.ι (inductionSummand C X) (unitIndex C)
   r := biproduct.π (inductionSummand C X) (unitIndex C) ≫ (unitSummandIso C X).hom

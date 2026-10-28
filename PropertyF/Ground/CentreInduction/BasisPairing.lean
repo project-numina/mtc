@@ -24,8 +24,7 @@ theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) (q : V ⟶ W)
     Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv C i W f) :=
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  LinearMap.ext fun g => congrArg (fun k => Ground.simpleEndScalar (simples C i) (End.of k))
-    (Category.assoc g q f).symm
+  simpleHomPairing_natural f q
 
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/
@@ -201,10 +200,12 @@ theorem crossingBlock_pre_test (h : T ⟶ U)
   rw [associator_naturality_right_assoc, ← whisker_exchange_assoc, ← whiskerLeft_comp_assoc,
     closeFusionMap_pre_test, whisker_exchange_assoc]
 
+variable (X : C.Obj)
+
 /-- Summing the crossing blocks removes the dependence on the chosen fusion
 basis, so a map of test objects can pass through each matrix entry. -/
 theorem crossingBlock_sum_natural_test
-    (X T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
+    (T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
     (∑ b, (((simples C i ⊗ X) ⊗ (simples C i)ᘁ) ◁ h) ≫ crossingSummand C X U i j b) =
     ∑ a, crossingSummand C X T i j a ≫ (h ▷ ((simples C j ⊗ X) ⊗ (simples C j)ᘁ)) := by
   simpa only [crossingSummand, crossingBlock_pre_test (k := ℂ), crossingBlock_post_test (k := ℂ),
@@ -214,7 +215,7 @@ theorem crossingBlock_sum_natural_test
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction crossing is natural in the crossed object. -/
-theorem crossingCandidate_natural_test (X : C.Obj) {T U : C.Obj} (h : T ⟶ U) :
+theorem crossingCandidate_natural_test {T U : C.Obj} (h : T ⟶ U) :
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
   let V := inductionSummand C X
