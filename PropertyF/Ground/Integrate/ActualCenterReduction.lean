@@ -68,11 +68,10 @@ theorem center_witness_of_categorical_modular_data (hp : p.IsSpherical)
     ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
   let ⟨y, hf, hcolumn, hG⟩ := exists_modular_witness Z hp hdim hdet hglobal σ
   let d := (σ (𝒇 y : ℂ)).re
-  have hσf : σ (𝒇 y : ℂ) = (d : ℂ) := (fp_simple_galois_real Z σ y).symm
-  have hS : 𝒮 y y = (𝒇 y : ℂ) * σ.symm (𝒇 y : ℂ) := by
-    simpa only [hdim] using hcolumn y
-  ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ hσf hG hS
-    (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d hσf)⟩
+  ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ
+    (fp_simple_galois_real Z σ y).symm hG (by simpa only [hdim] using hcolumn y)
+    (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d
+      (fp_simple_galois_real Z σ y).symm)⟩
 
 end PropertyF.Ground
 end
