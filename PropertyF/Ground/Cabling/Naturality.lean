@@ -121,11 +121,10 @@ theorem braidWordAction_ker_le_of_retract {X Y : C} (r : Retract X Y) (n : ℕ) 
   apply Iso.ext
   have nat := braidWord_map_natural r.i n w
   rw [hw] at nat
-  have hi : Mono (tensorPowerMap r.i (n + 2)) := by
-    let _ : IsSplitMono (tensorPowerMap r.i (n + 2)) := ⟨⟨{retraction := tensorPowerMap r.r (n + 2), id := by rw [← tensorPowerMap_comp, r.retract, tensorPowerMap_id]}⟩⟩
-    infer_instance
-  apply (cancel_mono (tensorPowerMap r.i (n + 2))).mp
-  simpa using nat
+  let : IsSplitMono (tensorPowerMap r.i (n + 2)) := ⟨⟨{
+    retraction := tensorPowerMap r.r (n + 2)
+    id := by rw [← tensorPowerMap_comp, r.retract, tensorPowerMap_id] }⟩⟩
+  exact (cancel_mono (tensorPowerMap r.i (n + 2))).mp (by simpa using nat)
 
 /-- Restriction to a retract induces a surjective homomorphism of braid images. -/
 def braidImageRetractMap {X Y : C} (r : Retract X Y) (n : ℕ) :

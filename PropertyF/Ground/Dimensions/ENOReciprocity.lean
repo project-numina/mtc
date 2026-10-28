@@ -361,11 +361,9 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     rcases mul_self_eq_one_iff.mp hε with h | h <;> simp [h]
   have hA : ∀ j k, star (A j k) = A j k := by
     intro j k
-    obtain ⟨n, hn, _⟩ := multiplicityDefect_trace_integer_bound C (hinv i j k)
-    change star (LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap) =
-      LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap
-    rw [hn]
-    simp
+    let : FiniteDimensional ℂ (simples C k ⟶ simples C i ⊗ simples C j) :=
+      IsFusionCategory.hom_finite _ _
+    exact star_involution_trace (hinv i j k)
   have hv : d ≠ 0 := fun hz ↦ rootDimension_ne_zero C (unitIndex C) (congrFun hz _)
   have h : A *ᵥ d = d i • d := by
     ext j

@@ -58,10 +58,9 @@ theorem moveWord_exchange {s : ℕ → G} {m : ℕ}
     intro i hij hjm
     by_cases h : i + 1 = j
     · subst j
-      have hcomm := commute_moveWord hc (i + 1) i (by omega) (by omega)
       simp only [moveWord]
       rw [← mul_assoc, ← mul_assoc, hb i (by omega)]
-      simp only [mul_assoc, hcomm]
+      simp only [mul_assoc, commute_moveWord hc (i + 1) i (by omega) (by omega)]
     · simp only [moveWord]
       rw [← mul_assoc, hc i j (by omega) (by omega), mul_assoc,
         ih i (by omega) (by omega), ← mul_assoc]

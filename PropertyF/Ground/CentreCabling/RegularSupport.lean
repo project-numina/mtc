@@ -9,10 +9,13 @@ public import PropertyF.Ground.Fusion.Reciprocity
 
 The equality locus of a fusion character is closed under constituents.
 Fourier inversion and the FP-weighted regular eigenvector then give the
-numerical double-centralizer inclusion.
+numerical double-centralizer inclusion. The local notations `S D p` and
+`dim D p` denote the categorical S-matrix and simple dimensions.
 -/
 @[expose] public noncomputable section
 open scoped BigOperators
+local notation "S" => PropertyF.Ground.Modular.categoricalS
+local notation "dim" => PropertyF.Ground.Modular.simpleDimension
 namespace PropertyF.Ground.CentreCabling
 universe v u
 variable (D : Ground.BraidedFusionCategory.{v,u})
@@ -20,7 +23,7 @@ variable (D : Ground.BraidedFusionCategory.{v,u})
 
 /-- Two simple labels satisfy the numerical S-matrix centrality test. -/
 abbrev sCentralizes (i j : Fin (rank D)) : Prop :=
-  Modular.categoricalS D p i j = Modular.simpleDimension D p i * Modular.simpleDimension D p j
+  S D p i j = dim D p i * dim D p j
 
 /-- The labels satisfying the numerical S-centrality test against a set. -/
 abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
@@ -31,7 +34,7 @@ theorem sCentralizes_symm {D : Ground.BraidedFusionCategory.{v,u}}
     {p : Dimensions.PivotalStructure (C := D.Obj)} {i j : Fin (rank D)}
     (h : sCentralizes D p i j) : sCentralizes D p j i :=
   (Modular.categoricalS_symmetric D p j i).trans <|
-    h.trans (mul_comm (Modular.simpleDimension D p i) (Modular.simpleDimension D p j))
+    h.trans (mul_comm (dim D p i) (dim D p j))
 
 /-- FP-valued simple dimensions are fixed by complex conjugation. -/
 theorem realSimpleDimensions_of_fp {D : Ground.BraidedFusionCategory.{v,u}}
@@ -58,19 +61,19 @@ namespace PropertyF.Ground.CentreCabling
 universe v u
 variable {D : Ground.BraidedFusionCategory.{v,u}}
   {p : Dimensions.PivotalStructure (C := D.Obj)}
-  (hp : p.IsSpherical) (hdet : (Modular.categoricalS D p).det ≠ 0)
+  (hp : p.IsSpherical) (hdet : (S D p).det ≠ 0)
   (hreal : Modular.HasRealSimpleDimensions D p)
 
 include hp hdet hreal in
 /-- The S-transform of a vector, inverted using the categorical S-square identity. -/
 theorem categoricalS_fourier_inversion
     (f : Fin (rank D) → ℂ) (x : Fin (rank D)) :
-    (∑ y, Modular.categoricalS D p x y *
-      (∑ i, Modular.categoricalS D p y i * f i)) =
+    (∑ y, S D p x y *
+      (∑ i, S D p y i * f i)) =
       globalDimension D * f (dualIndex D x) := by
   classical
   calc
-    _ = ∑ i, (∑ y, Modular.categoricalS D p x y * Modular.categoricalS D p y i) * f i := by
+    _ = ∑ i, (∑ y, S D p x y * S D p y i) * f i := by
       simp only [Finset.mul_sum, Finset.sum_mul, mul_assoc]
       rw [Finset.sum_comm]
     _ = ∑ i, (if x = dualIndex D i then globalDimension D else 0) * f i := by
@@ -98,14 +101,14 @@ nonzero dual coefficient in the original vector. -/
 theorem nonzero_dual_coefficient_of_sCentralizer
     {f : Fin (rank D) → ℂ} {core : Set (Fin (rank D))}
     (hunit : f (unitIndex D) ≠ 0)
-    (hsupport : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0)
+    (hsupport : ∀ y, y ∉ core → ∑ i, S D p y i * f i = 0)
     {x : Fin (rank D)} (hx : ∀ y ∈ core, sCentralizes D p x y) :
     f (dualIndex D x) ≠ 0 := by
   classical
-  let T (y : Fin (rank D)) := ∑ i, Modular.categoricalS D p y i * f i
-  have heq : (∑ y, Modular.categoricalS D p x y * T y) =
-      Modular.simpleDimension D p x *
-        (∑ y, Modular.categoricalS D p (unitIndex D) y * T y) := by
+  let T (y : Fin (rank D)) := ∑ i, S D p y i * f i
+  have heq : (∑ y, S D p x y * T y) =
+      dim D p x *
+        (∑ y, S D p (unitIndex D) y * T y) := by
     refine sum_mul_eq_mul_sum_of_supported core _ _ T _ hsupport fun y hy ↦ ?_
     rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
       Modular.categoricalS_unit]
@@ -126,7 +129,7 @@ theorem doubleCentralizer_of_fourier_support
     {f : Fin (rank D) → ℂ} {core generated : Set (Fin (rank D))}
     (hunit : f (unitIndex D) ≠ 0)
     (hgenerated : ∀ y, f y ≠ 0 → y ∈ generated)
-    (hsupport : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0) :
+    (hsupport : ∀ y, y ∉ core → ∑ i, S D p y i * f i = 0) :
     sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated x <| by
   simpa only [dualIndex_involutive D x] using
     nonzero_dual_coefficient_of_sCentralizer hp hdet (realSimpleDimensions_of_fp hdim)
@@ -164,11 +167,11 @@ theorem fourier_eq_zero_of_fusion_eigenvector
     (hdim : Modular.HasFPSimpleDimensions D p)
     {f : Fin (rank D) → ℂ} {a y : Fin (rank D)}
     (heigen : ∀ k, ∑ i, (fusionCoeff D a i k : ℂ) * f i = (fpSimple D a : ℂ) * f k)
-    (hne : Modular.categoricalS D p a y ≠
-      Modular.simpleDimension D p a * Modular.simpleDimension D p y) :
-    ∑ i, Modular.categoricalS D p y i * f i = 0 := by
+    (hne : S D p a y ≠
+      dim D p a * dim D p y) :
+    ∑ i, S D p y i * f i = 0 := by
   classical
-  let χ (i : Fin (rank D)) := Modular.categoricalS D p i y / Modular.simpleDimension D p y
+  let χ (i : Fin (rank D)) := S D p i y / dim D p y
   let T : ℂ := ∑ i, χ i * f i
   have ht : χ a * T = (fpSimple D a : ℂ) * T := by
     apply sum_mul_eigenvalue (fun i k ↦ (fusionCoeff D a i k : ℂ)) χ f
@@ -255,7 +258,7 @@ theorem regularVector_fourier_support
     (hdim : Modular.HasFPSimpleDimensions D p)
     {A : Finset (Fin (rank D))} {core : Set (Fin (rank D))}
     (hA : IsDualFusionClosed D A) (hcore : sCentralizer D p (↑A : Set _) ⊆ core) {y : Fin (rank D)} (hy : y ∉ core) :
-    ∑ i, Modular.categoricalS D p y i * regularVector D A i = 0 := by
+    ∑ i, S D p y i * regularVector D A i = 0 := by
   obtain ⟨a, ha, hne⟩ : ∃ a ∈ A, ¬sCentralizes D p a y := by
     simpa only [sCentralizer, Set.mem_ofPred_eq, Finset.mem_coe, not_forall, exists_prop] using
       (show y ∉ sCentralizer D p (↑A : Set _) from fun h ↦ hy (hcore h))
@@ -266,7 +269,7 @@ theorem regularVector_fourier_support
 labels. The supplied core must contain its numerical S-centralizer. -/
 theorem doubleCentralizer_of_fusion_closed
     (hp : p.IsSpherical)
-    (hdet : (Modular.categoricalS D p).det ≠ 0)
+    (hdet : (S D p).det ≠ 0)
     (hdim : Modular.HasFPSimpleDimensions D p)
     {A : Finset (Fin (rank D))} {core : Set (Fin (rank D))}
     (hunit : unitIndex D ∈ A)

@@ -126,9 +126,7 @@ theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X : C) {
 theorem rightPartialTrace_one_tensor (p : PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X : C) {Y : C} (b : Y ⟶ Y) :
     rightPartialTrace p X Y (End.of (𝟙 X ⊗ₘ b)) = scalar (p.rightTrace b) • 1 := by
-  rw [rightPartialTrace_tensor_right p X b,
-    show p.rightTrace b = scalar (p.rightTrace b) • (1 : End (𝟙_ C)) from
-      scalar.injective (by simp)]
+  rw [rightPartialTrace_tensor_right p X b, eq_smul_one_of_algEquiv scalar (p.rightTrace b)]
   apply End.ext
   simp
 
