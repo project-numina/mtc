@@ -24,11 +24,16 @@ universe v u
 variable {D : Ground.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
 
+/-- The S-matrix transform of a vector on the simple labels. -/
+abbrev sFourier (D : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := D.Obj)) (f : Fin (rank D) → ℂ) (y : Fin (rank D)) : ℂ :=
+  ∑ i, S D p y i * f i
+
 /-- The S-transform of a vector vanishes outside the given set. -/
 abbrev FourierSupportedOn (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (f : Fin (rank D) → ℂ)
     (core : Set (Fin (rank D))) : Prop :=
-  ∀ y ∉ core, ∑ i, S D p y i * f i = 0
+  ∀ y ∉ core, sFourier D p f y = 0
 
 /-- Numerical S-centrality is symmetric. -/
 theorem sCentralizes_symm {i j : Fin (rank D)}
@@ -64,10 +69,9 @@ include hp hdet hreal in
 /-- The S-transform of a vector, inverted using the categorical S-square identity. -/
 theorem categoricalS_fourier_inversion
     (f : Fin (rank D) → ℂ) (x : Fin (rank D)) :
-    (∑ y, S D p x y *
-      (∑ i, S D p y i * f i)) =
-      globalDimension D * f (dualIndex D x) := by
+    sFourier D p (sFourier D p f) x = globalDimension D * f (dualIndex D x) := by
   classical
+  dsimp only [sFourier]
   calc
     _ = ∑ i, (∑ y, S D p x y * S D p y i) * f i := by
       simp only [Finset.mul_sum, Finset.sum_mul, mul_assoc]
@@ -102,14 +106,11 @@ theorem nonzero_dual_coefficient_of_sCentralizer
     {x : Fin (rank D)} (hx : ∀ y ∈ core, sCentralizes D p x y) :
     f (dualIndex D x) ≠ 0 := by
   classical
-  let T (y : Fin (rank D)) := ∑ i, S D p y i * f i
-  have heq : (∑ y, S D p x y * T y) =
-      dim D p x *
-        (∑ y, S D p (unitIndex D) y * T y) := by
-    refine sum_mul_eq_mul_sum_of_supported core _ _ T _ hsupport fun y hy ↦ ?_
+  have heq : sFourier D p (sFourier D p f) x =
+      dim D p x * sFourier D p (sFourier D p f) (unitIndex D) := by
+    refine sum_mul_eq_mul_sum_of_supported core _ _ (sFourier D p f) _ hsupport fun y hy ↦ ?_
     rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
       Modular.categoricalS_unit]
-  dsimp only [T] at heq
   rw [categoricalS_fourier_inversion hp hdet hreal f x,
     categoricalS_fourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D] at heq
   exact fun hz ↦ (mul_ne_zero (Modular.simpleDimension_ne_zero D p x)
@@ -164,7 +165,7 @@ theorem fourier_eq_zero_of_fusion_eigenvector
     (heigen : ∀ k, ∑ i, (fusionCoeff D a i k : ℂ) * f i = (fpSimple D a : ℂ) * f k)
     (hne : S D p a y ≠
       dim D p a * dim D p y) :
-    ∑ i, S D p y i * f i = 0 := by
+    sFourier D p f y = 0 := by
   classical
   let χ (i : Fin (rank D)) := S D p i y / dim D p y
   let T : ℂ := ∑ i, χ i * f i
@@ -176,7 +177,7 @@ theorem fourier_eq_zero_of_fusion_eigenvector
   have hχ : χ a ≠ (fpSimple D a : ℂ) := fun h ↦ hne <| by
     simpa [χ, hdim] using (div_eq_iff (Modular.simpleDimension_ne_zero D p y)).mp h
   apply (div_eq_zero_iff.mp ?_).resolve_right (Modular.simpleDimension_ne_zero D p y)
-  simpa only [T, χ, div_mul_eq_mul_div, ← Finset.sum_div,
+  simpa only [sFourier, T, χ, div_mul_eq_mul_div, ← Finset.sum_div,
     Modular.categoricalS_symmetric D p y] using (mul_eq_mul_right_iff.mp ht).resolve_left hχ
 
 /-- A set of simple labels is closed under fusion constituents. -/
@@ -229,8 +230,7 @@ theorem regularVector_mul_of_mem {A : Finset (Fin (rank D))}
   classical
   calc
     _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
-      apply Finset.sum_congr rfl
-      intro i _
+      refine Finset.sum_congr rfl fun i _ ↦ ?_
       rw [Modular.fusionCoeff_dual_adjoint D a i k]
       by_cases hi : i ∈ A
       · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi]

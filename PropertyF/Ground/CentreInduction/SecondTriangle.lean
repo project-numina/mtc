@@ -276,12 +276,5 @@ theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
   · rw [biproduct.ι_π_ne _ h]
     exact unit_offdiag C X h
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The proposed induction unit and counit satisfy the second triangle. -/
-theorem secondTriangle (X : C.Obj) :
-    unitCandidate C ((induction C).obj X) ≫
-      (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X) := by
-  refine biproduct.hom_ext' _ _ fun i => biproduct.hom_ext _ _ fun j => ?_
-  simpa [underlying, Category.assoc] using secondTriangle_entry C X i j
 
 end PropertyF.Ground.CentreInduction
