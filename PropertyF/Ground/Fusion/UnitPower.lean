@@ -71,6 +71,7 @@ variable (D : BraidedFusionCategory.{v,u})
 def fusionFlow (i j k : Fin (rank D)) : ℝ :=
   fpSimple D j * (fusionCoeff D i j k : ℝ) * fpSimple D k
 
+variable {D} in
 theorem fusionFlow_balance (i j : Fin (rank D)) :
     (∑ k, fusionFlow D i j k) = ∑ k, fusionFlow D i k j := by
   classical
@@ -82,6 +83,7 @@ theorem fusionFlow_balance (i j : Fin (rank D)) :
       rw [← fpSimple_mul, ← fpSimple_mul, fpSimple_dual]
     _ = _ := by simp only [Finset.mul_sum, mul_comm]
 
+variable {D} in
 /-- A positive fusion coefficient gives an actual retract. -/
 theorem fusionCoeff_retract
     {i j k : Fin (rank D)} (h : 0 < fusionCoeff D i j k) :
@@ -91,6 +93,7 @@ theorem fusionCoeff_retract
   (Module.finrank_pos_iff_exists_ne_zero.mp h).elim fun f hf ↦
     (split_from_simple f hf).elim fun r hr ↦ ⟨{ i := f, r := r, retract := hr }⟩
 
+variable {D} in
 /-- Along a fusion path beginning at i, the endpoint is a retract of a
 positive tensor power of the simple i. -/
 theorem fusionPath_retract {i k : Fin (rank D)}
@@ -105,7 +108,7 @@ theorem fusionPath_retract {i k : Fin (rank D)}
       change 0 < fpSimple D j * (fusionCoeff D i j k : ℝ) * fpSimple D k at edge
       exact_mod_cast (mul_pos_iff_of_pos_left (fpSimple_pos D j)).mp
         ((mul_pos_iff_of_pos_right (fpSimple_pos D k)).mp edge)
-    obtain ⟨s⟩ := fusionCoeff_retract D hn
+    obtain ⟨s⟩ := fusionCoeff_retract hn
     exact ⟨n + 1, ⟨s.trans (r.map (tensorLeft (simples D i)))⟩⟩
 
 /-- A simple object has a positive tensor power containing the unit. -/
@@ -119,14 +122,14 @@ theorem unit_retract_tensorPower {E : Type u} [Category.{v} E] [MonoidalCategory
   obtain ⟨j, hj, hp⟩ := balanced_flow_cycle (b := fusionFlow D i) (o := unitIndex D)
     (fun j k ↦ mul_nonneg (mul_nonneg (fpSimple_pos D j).le (Nat.cast_nonneg _))
       (fpSimple_pos D k).le)
-    (fusionFlow_balance D i) ⟨i, by
+    (fusionFlow_balance i) ⟨i, by
       simpa [fusionFlow, fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, fpSimple_unit] using
         fpSimple_pos D i⟩
   have hji : j = i := by
     simpa [fusionFlow, fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit,
       fpSimple_unit, apply_ite, fpSimple_pos D] using hj
   subst j
-  obtain ⟨n, ⟨r⟩⟩ := fusionPath_retract D hp
+  obtain ⟨n, ⟨r⟩⟩ := fusionPath_retract hp
   obtain ⟨u⟩ := unitIndex_iso D
   exact ⟨n, ⟨(Retract.ofIso u.symm).trans (r.trans (Retract.ofIso (Modular.tensorPowerIso e.symm _)))⟩⟩
 

@@ -283,8 +283,8 @@ theorem characterMatrix_commute (i j : Fin (rank D)) :
     Commute (characterMatrix D i) (characterMatrix D j) :=
   Matrix.ext fun a b ↦ by
     simp only [Matrix.mul_apply, characterMatrix]
-    exact_mod_cast (fusionCoeff_assoc D j i a b).trans
-      (by simpa only [fusionCoeff_comm D j i] using (fusionCoeff_assoc D i j a b).symm)
+    exact_mod_cast (fusionCoeff_assoc j i a b).trans
+      (by simpa only [fusionCoeff_comm D j i] using (fusionCoeff_assoc i j a b).symm)
 
 theorem totalFusionMatrix_eq_sum_characterMatrix :
     totalFusionMatrix D = ∑ i, characterMatrix D i :=
@@ -343,6 +343,7 @@ theorem exists_positive_character :
       _ = ∑ k, (fusionCoeff D i j k : ℝ) * f k := by
         simp [f, Finset.sum_div, mul_div_assoc]
 
+variable {D} in
 theorem character_total_eigenvector
     {f : Fin (rank D) → ℝ}
     (hf : IsFusionMultiplicative D f) :
@@ -358,12 +359,14 @@ theorem character_total_eigenvector
 def fpCharacter (D : BraidedFusionCategory) : Fin (rank D) → ℝ :=
   Classical.choose (exists_positive_character D)
 
+variable {D} in
 theorem fpCharacter_pos (i : Fin (rank D)) :
     0 < fpCharacter D i := (Classical.choose_spec (exists_positive_character D)).1 i
 
 theorem fpCharacter_unit : fpCharacter D (unitIndex D) = 1 :=
   (Classical.choose_spec (exists_positive_character D)).2.1
 
+variable {D} in
 theorem fpCharacter_mul (i j : Fin (rank D)) :
     fpCharacter D i * fpCharacter D j =
       ∑ k, (fusionCoeff D i j k : ℝ) * fpCharacter D k :=
@@ -447,11 +450,11 @@ variable (D : BraidedFusionCategory)
 
 theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
     fpCharacter D i ≤ fpSimple D i := by
-  simpa [Complex.norm_real, abs_of_pos (fpCharacter_pos D i)] using
+  simpa [Complex.norm_real, abs_of_pos (fpCharacter_pos i)] using
     (Dimensions.character_norm_le_fpSimple D (χ := fun j ↦ (fpCharacter D j : ℂ))
       (i₀ := unitIndex D) (by simp [fpCharacter_unit]) (fun j k ↦ by
         dsimp
-        exact_mod_cast fpCharacter_mul D j k) i)
+        exact_mod_cast fpCharacter_mul j k) i)
 
 theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
     fpSimple D i ≤ fpCharacter D i := by
@@ -471,10 +474,10 @@ theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
         (show A *ᵥ fpCharacter D = fpCharacter D i • fpCharacter D from by
           ext j
           change (∑ k, (fusionCoeff D i j k : ℝ) * fpCharacter D k) = _
-          exact (fpCharacter_mul D i j).symm)
+          exact (fpCharacter_mul i j).symm)
         (show A.map Complex.ofRealHom *ᵥ v = z • v from by
           simpa [B, Matrix.toLin'_apply] using hv.apply_eq_smul)
-        (fun j k => Nat.cast_nonneg _) (fpCharacter_pos D) hv.2
+        (fun j k => Nat.cast_nonneg _) (fpCharacter_pos) hv.2
 
 /-- The target spectral-radius FP dimension is the unique positive character. -/
 theorem fpSimple_eq_fpCharacter (i : Fin (rank D)) :
@@ -482,7 +485,7 @@ theorem fpSimple_eq_fpCharacter (i : Fin (rank D)) :
   le_antisymm (fpSimple_le_fpCharacter D i) (fpCharacter_le_fpSimple D i)
 
 theorem fpSimple_pos (i : Fin (rank D)) :
-    0 < fpSimple D i := (fpSimple_eq_fpCharacter D i).symm ▸ fpCharacter_pos D i
+    0 < fpSimple D i := (fpSimple_eq_fpCharacter D i).symm ▸ fpCharacter_pos i
 
 theorem fpSimple_mul (i j : Fin (rank D)) :
     fpSimple D i * fpSimple D j =
@@ -501,11 +504,13 @@ theorem fusionMatrix_dual (i : Fin (rank D)) :
     fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ :=
   Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : ℂ)) (fusionCoeff_dual_symmetry D i k j).symm
 
+variable {D} in
 /-- Dual simple objects have the same FP dimension. -/
 theorem fpSimple_dual (i : Fin (rank D)) :
     fpSimple D (dualIndex D i) = fpSimple D i :=
   by simp [fpSimple, fusionMatrix_dual, Matrix.spectralRadius_transpose]
 
+variable {D} in
 /-- Every simple has FP dimension at least one. -/
 theorem one_le_fpSimple (i : Fin (rank D)) :
     1 ≤ fpSimple D i := by

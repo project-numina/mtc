@@ -143,6 +143,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- On a simple and its right dual the root carries the ordinary duality cup
 to the double-dual cup, with the ENO sign. -/
 theorem root_components_coevaluation (i : Fin (rank C)) :
@@ -151,7 +152,7 @@ theorem root_components_coevaluation (i : Fin (rank C)) :
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom) =
       rootDualSign C i • η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
   dsimp only
-  rw [rootDualSign_component C i]
+  rw [rootDualSign_component i]
   simp only [rightDualIsoMap, Iso.symm_hom, tensorHom_def,
     MonoidalLinear.whiskerLeft_smul, Linear.comp_smul]
   congr 1

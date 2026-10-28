@@ -57,6 +57,7 @@ theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]
   rw [← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]
   exact (hzint.map Complex.conjAe).mul hzint
 
+variable {D} in
 /-- Every target simple FP dimension is integral over ℤ. -/
 theorem fpSimple_isIntegral (i : Fin (rank D)) :
     IsIntegral ℤ (fpSimple D i) := by
@@ -75,6 +76,6 @@ theorem fpSimple_isIntegral (i : Fin (rank D)) :
 the construction of a positive fusion-ring character. -/
 theorem globalFPDimension_isIntegral :
     IsIntegral ℤ (globalFPDimension D) :=
-  IsIntegral.sum _ fun i _ ↦ (fpSimple_isIntegral D i).pow 2
+  IsIntegral.sum _ fun i _ ↦ (fpSimple_isIntegral i).pow 2
 
 end PropertyF.Ground
