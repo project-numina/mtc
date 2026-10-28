@@ -135,12 +135,11 @@ theorem involution_trace_formula (hT : T * T = 1) :
 the dimension of its underlying vector space. -/
 theorem involution_trace_integer_bound (hT : T * T = 1) :
     ∃ n : ℤ, LinearMap.trace k V T = (n : k) ∧
-      |n| ≤ (Module.finrank k V : ℤ) := by
-  obtain ⟨m, hm, htrace⟩ := involution_trace_formula hT
-  refine ⟨2 * (m : ℤ) - (Module.finrank k V : ℤ), ?_, ?_⟩
-  · simpa using htrace
-  · rw [abs_le]
-    omega
+      |n| ≤ (Module.finrank k V : ℤ) :=
+  (involution_trace_formula hT).elim fun m ⟨hm, htrace⟩ ↦
+    ⟨2 * (m : ℤ) - (Module.finrank k V : ℤ), by simpa using htrace, by
+      rw [abs_le]
+      omega⟩
 
 /-- An involution whose trace reaches the dimension is the identity. -/
 theorem involution_eq_one_of_trace_eq_finrank (hT : T * T = 1)
@@ -189,9 +188,9 @@ theorem involution_phase_eq_one_of_trace (hT : T * T = 1) {c : ℂ}
 theorem involution_phase_inv_eq_one_of_trace (hT : T * T = 1) {c : ℂ}
     (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
     c⁻¹ • T = 1 := by
-  have h := involution_phase_eq_one_of_trace hT hc htrace
   have hs : T = c • (1 : V →ₗ[ℂ] V) := by
-    simpa [smul_mul_assoc, hT] using (congrArg (fun F => F * T) h).symm
+    simpa [smul_mul_assoc, hT] using
+      (congrArg (fun F ↦ F * T) (involution_phase_eq_one_of_trace hT hc htrace)).symm
   have hc0 : c ≠ 0 := norm_ne_zero_iff.mp (by rw [hc]; norm_num)
   rw [hs, smul_smul, inv_mul_cancel₀ hc0, one_smul]
 
@@ -312,9 +311,8 @@ theorem multiplicityDefect_involution_of_tensor_square {i j : Fin (rank C)} (k :
     (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1 := by
   ext f
-  change multiplicityDefect C i j k (multiplicityDefect C i j k f) = f
-  rw [multiplicityDefect_apply, multiplicityDefect_apply, Category.assoc,
-    rootTensorDefect_involution_of_tensor_square C hsq, Category.comp_id]
+  simp [multiplicityDefect_apply, Category.assoc,
+    rootTensorDefect_involution_of_tensor_square C hsq]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Squaring the root tensor map gives the tensor of the fourth-dual maps,
