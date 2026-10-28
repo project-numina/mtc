@@ -6,6 +6,11 @@ public import PropertyF.Ground.Dimensions.Trace
 public import PropertyF.Ground.Fusion.Simples
 public import PropertyF.Ground.Integrate.UnitScalar
 
+/-! # Intrinsic squared norms
+
+Squared norms are independent of duality choices and are invariant under object isomorphism.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions

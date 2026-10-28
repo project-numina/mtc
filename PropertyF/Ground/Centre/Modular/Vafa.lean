@@ -22,40 +22,6 @@ Determinant relations and tensor decompositions imply finiteness of mixed monodr
 @[expose] public noncomputable section
 
 section
-/-! Fourier support of the FP-weighted regular element of a fusion-closed
-collection of simple labels. -/
-
-open scoped BigOperators
-namespace PropertyF.Ground.CentreModular
-open Modular
-
-/-- The FP-weighted regular element of a dual-closed fusion-closed collection
-is an eigenvector for multiplication by each of its labels. -/
-theorem regular_coeff_eigenvector
-    (C : BraidedFusionCategory) (B : Finset (Fin (rank C)))
-    (hdual : ∀ a ∈ B, dualIndex C a ∈ B)
-    (hclosed : ∀ a ∈ B, ∀ b ∈ B, ∀ k,
-      fusionCoeff C a b k ≠ 0 → k ∈ B)
-    (a : Fin (rank C)) (ha : a ∈ B) (k : Fin (rank C)) (hk : k ∈ B) :
-    (∑ i ∈ B, (fusionCoeff C a i k : ℝ) * fpSimple C i) =
-      fpSimple C a * fpSimple C k := by
-  classical
-  simp_rw [fusionCoeff_dual_adjoint C a]
-  calc
-    _ = ∑ i, (fusionCoeff C (dualIndex C a) k i : ℝ) * fpSimple C i := by
-      apply Finset.sum_subset (Finset.subset_univ B)
-      intro i _ hi
-      have hz : fusionCoeff C (dualIndex C a) k i = 0 := by
-        by_contra hn
-        exact hi (hclosed (dualIndex C a) (hdual a ha) k hk i hn)
-      simp [hz]
-    _ = fpSimple C (dualIndex C a) * fpSimple C k := (fpSimple_mul C _ _).symm
-    _ = _ := by rw [fpSimple_dual]
-
-end PropertyF.Ground.CentreModular
-end
-
-section
 open scoped BigOperators
 namespace PropertyF.Ground.CentreModular
 universe u v w
@@ -76,10 +42,8 @@ theorem regular_fusion_derivation_vanishes
   let D : ℝ := ∑ j, fpSimple C j ^ 2
   have hreg (k : Fin (rank C)) :
       (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
-    have h := regular_coeff_eigenvector C Finset.univ
-      (fun _ _ => Finset.mem_univ _) (fun _ _ _ _ _ _ => Finset.mem_univ _)
-      i (Finset.mem_univ _) k (Finset.mem_univ _)
-    simpa only [mul_comm] using h
+    simp_rw [Modular.fusionCoeff_dual_adjoint C i]
+    simpa only [mul_comm, fpSimple_dual] using (fpSimple_mul C (dualIndex C i) k).symm
   have hsum : (∑ j, fpSimple C j • ∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
       fpSimple C i • R := by
     simp only [Finset.smul_sum, smul_smul]
@@ -169,31 +133,30 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
-/-- The linear automorphism induced on Hom from a chosen simple. -/
-def simpleHomAction (X : C.Obj)
-    (i : Fin (rank C)) (a : X ≅ X) :
-    (simples C i ⟶ X) ≃ₗ[ℂ] (simples C i ⟶ X) :=
+/-- An object automorphism acts linearly on maps from a fixed source. -/
+def homAction {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
+    (S X : D) (a : X ≅ X) : (S ⟶ X) ≃ₗ[ℂ] (S ⟶ X) :=
   CategoryTheory.Linear.homCongr ℂ (Iso.refl _) a
 
-theorem simpleHomAction_trans (X : C.Obj)
-    (i : Fin (rank C)) (a b : X ≅ X) :
-    simpleHomAction C X i (a ≪≫ b) =
-      (simpleHomAction C X i a).trans (simpleHomAction C X i b) := by
+/-- The action on a Hom space respects composition of automorphisms. -/
+theorem homAction_trans {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
+    (S X : D) (a b : X ≅ X) :
+    homAction S X (a ≪≫ b) = (homAction S X a).trans (homAction S X b) := by
   ext f
-  simp [simpleHomAction, CategoryTheory.Linear.homCongr_apply, Category.assoc]
+  simp [homAction, CategoryTheory.Linear.homCongr_apply, Category.assoc]
 
 /-- The actual FP-weighted categorical determinant of an automorphism,
 valued in a real vector space that detects torsion. -/
 def fpDeterminant (X : C.Obj) (a : X ≅ X) :
     vafaUnitSpace :=
-  ∑ i, fpSimple C i • vafaUnitClass (simpleHomAction C X i a).det
+  ∑ i, fpSimple C i • vafaUnitClass (homAction (simples C i) X a).det
 
 /-- FP determinants turn composition into addition. -/
 theorem fpDeterminant_trans (X : C.Obj)
     (a b : X ≅ X) : fpDeterminant C X (a ≪≫ b) =
       fpDeterminant C X a + fpDeterminant C X b := by
   unfold fpDeterminant
-  simp_rw [simpleHomAction_trans, LinearEquiv.det_trans, vafaUnitClass_mul, smul_add]
+  simp_rw [homAction_trans, LinearEquiv.det_trans, vafaUnitClass_mul, smul_add]
   rw [Finset.sum_add_distrib]
   rw [add_comm]
 
@@ -206,17 +169,15 @@ def scalarIso {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
   inv_hom_id := by simp [Linear.comp_smul, smul_smul]
 
 /-- On a scalar map, each Hom-space determinant is the corresponding power. -/
-theorem simpleHomAction_det_scalar (X : C.Obj)
-    (i : Fin (rank C)) (z : ℂˣ) :
-    (simpleHomAction C X i (scalarIso X z)).det =
-      z ^ Module.finrank ℂ (simples C i ⟶ X) := by
+theorem homAction_det_scalar {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
+    (S X : D) (z : ℂˣ) :
+    (homAction S X (scalarIso X z)).det = z ^ Module.finrank ℂ (S ⟶ X) := by
   apply Units.ext
   rw [LinearEquiv.coe_det]
   change LinearMap.det _ = (z : ℂ) ^ _
-  have h : (simpleHomAction C X i (scalarIso X z)).toLinearMap =
-      (z : ℂ) • LinearMap.id := by
+  have h : (homAction S X (scalarIso X z)).toLinearMap = (z : ℂ) • LinearMap.id := by
     ext f
-    simp [simpleHomAction, scalarIso, CategoryTheory.Linear.homCongr_apply]
+    simp [homAction, scalarIso, CategoryTheory.Linear.homCongr_apply]
   rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one]
 
 /-- A scalar automorphism has FP determinant equal to its unit class weighted
@@ -224,7 +185,7 @@ by the actual FP dimension of the object. -/
 theorem fpDeterminant_scalar (X : C.Obj) (z : ℂˣ) :
     fpDeterminant C X (scalarIso X z) = fpDimension C X • vafaUnitClass z := by
   unfold fpDeterminant fpDimension
-  simp_rw [simpleHomAction_det_scalar, vafaUnitClass_pow]
+  simp_rw [homAction_det_scalar, vafaUnitClass_pow]
   rw [Finset.sum_smul]
   apply Finset.sum_congr rfl
   intro i _
@@ -251,10 +212,10 @@ theorem fpDeterminant_conjugate
   intro i _
   congr 1
   let E := CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples C i)) e
-  have h : simpleHomAction C Y i (e.symm ≪≫ a ≪≫ e) =
-      ((E.symm.trans (simpleHomAction C X i a)).trans E) := by
+  have h : homAction (simples C i) Y (e.symm ≪≫ a ≪≫ e) =
+      ((E.symm.trans (homAction (simples C i) X a)).trans E) := by
     ext f
-    simp [simpleHomAction, E, CategoryTheory.Linear.homCongr_apply,
+    simp [homAction, E, CategoryTheory.Linear.homCongr_apply,
       CategoryTheory.Linear.homCongr_symm_apply, Category.assoc]
   rw [h, LinearEquiv.det_conj]
 
@@ -262,9 +223,8 @@ theorem fpDeterminant_conjugate
 theorem tensor_scalarIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
     (X Y : D) (z : ℂˣ) :
-    Iso.refl X ⊗ᵢ scalarIso Y z = scalarIso (X ⊗ Y) z := by
-  apply Iso.ext
-  simp [scalarIso, tensorHom_def]
+    Iso.refl X ⊗ᵢ scalarIso Y z = scalarIso (X ⊗ Y) z :=
+  Iso.ext (by simp [scalarIso, tensorHom_def])
 
 /-- The tensor-product determinant rule when the second automorphism is scalar. -/
 theorem fpDeterminant_tensor_scalar
@@ -324,15 +284,13 @@ variable (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ)
 abbrev HasSimpleScalars : Prop :=
   ∀ i, (η.app (simples C i)).hom = (t i : ℂ) • 𝟙 (simples C i)
 
-/-- A natural automorphism acts on each simple Hom space by its scalar on the
-simple source, including in the presence of repeated simple summands. -/
-theorem simpleHomAction_natural_scalar
-    (ht : HasSimpleScalars C η t)
-    (X : C.Obj) (i : Fin (rank C)) :
-    (simpleHomAction C X i (η.app X)).toLinearMap = (t i : ℂ) • LinearMap.id := by
+/-- A natural automorphism acts on a Hom space by its scalar on the source. -/
+theorem homAction_natural_scalar {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
+    (η : 𝟭 D ≅ 𝟭 D) (S X : D) (z : ℂ) (hz : (η.app S).hom = z • 𝟙 S) :
+    (homAction S X (η.app X)).toLinearMap = z • LinearMap.id := by
   ext f
-  simpa [simpleHomAction, CategoryTheory.Linear.homCongr_apply,
-    show η.hom.app (simples C i) = (t i : ℂ) • 𝟙 (simples C i) from ht i] using η.hom.naturality f
+  simpa [homAction, CategoryTheory.Linear.homCongr_apply,
+    show η.hom.app S = z • 𝟙 S from hz] using η.hom.naturality f
 
 /-- The actual FP determinant of a natural automorphism is the sum of its
 simple scalar classes, weighted by FP dimensions and Hom multiplicities. -/
@@ -344,12 +302,12 @@ theorem fpDeterminant_natural
   unfold fpDeterminant
   apply Finset.sum_congr rfl
   intro i _
-  have hd : (simpleHomAction C X i (η.app X)).det =
+  have hd : (homAction (simples C i) X (η.app X)).det =
       (t i) ^ Module.finrank ℂ (simples C i ⟶ X) := by
     apply Units.ext
     rw [LinearEquiv.coe_det]
     change LinearMap.det _ = (t i : ℂ) ^ _
-    rw [simpleHomAction_natural_scalar C η t ht X i, LinearMap.det_smul,
+    rw [homAction_natural_scalar η (simples C i) X (t i : ℂ) (ht i), LinearMap.det_smul,
       LinearMap.det_id, mul_one]
   rw [hd, vafaUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
   simp only [smul_smul, mul_comm]
@@ -417,19 +375,19 @@ def homBiprodLinearEquiv {D : Type u} [Category.{v} D] [Preadditive D]
   map_add' f g := by ext <;> simp
   map_smul' r f := by ext <;> simp
 
-/-- The determinant on simple Hom spaces factors over a binary biproduct. -/
-theorem simpleHomAction_det_biprod
-    (X Y : C.Obj) (a : X ≅ X) (b : Y ≅ Y) (i : Fin (rank C)) :
-    (simpleHomAction C (X ⊞ Y) i (biprod.mapIso a b)).det =
-      (simpleHomAction C X i a).det * (simpleHomAction C Y i b).det := by
-  let : FiniteDimensional ℂ (simples C i ⟶ X) := IsFusionCategory.hom_finite _ _
-  let : FiniteDimensional ℂ (simples C i ⟶ Y) := IsFusionCategory.hom_finite _ _
-  let E := homBiprodLinearEquiv (simples C i) X Y
-  let A := simpleHomAction C (X ⊞ Y) i (biprod.mapIso a b)
-  let L := simpleHomAction C X i a
-  let R := simpleHomAction C Y i b
+/-- The determinant of the Hom action factors over a binary biproduct. -/
+theorem homAction_det_biprod {D : Type u} [Category.{v} D] [Preadditive D]
+    [Linear ℂ D] [HasBinaryBiproducts D] (S X Y : D)
+    [FiniteDimensional ℂ (S ⟶ X)] [FiniteDimensional ℂ (S ⟶ Y)]
+    (a : X ≅ X) (b : Y ≅ Y) :
+    (homAction S (X ⊞ Y) (biprod.mapIso a b)).det =
+      (homAction S X a).det * (homAction S Y b).det := by
+  let E := homBiprodLinearEquiv S X Y
+  let A := homAction S (X ⊞ Y) (biprod.mapIso a b)
+  let L := homAction S X a
+  let R := homAction S Y b
   have h : (E.symm.trans A).trans E = L.prodCongr R := by
-    ext f <;> simp [E, A, L, R, homBiprodLinearEquiv, simpleHomAction,
+    ext f <;> simp [E, A, L, R, homBiprodLinearEquiv, homAction,
       CategoryTheory.Linear.homCongr_apply, Category.assoc]
   apply Units.ext
   rw [← LinearEquiv.det_conj A E, h, LinearEquiv.coe_det]
@@ -443,8 +401,9 @@ theorem fpDeterminant_biprod
     (X Y : C.Obj) (a : X ≅ X) (b : Y ≅ Y) :
     fpDeterminant C (X ⊞ Y) (biprod.mapIso a b) =
       fpDeterminant C X a + fpDeterminant C Y b := by
+  let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   unfold fpDeterminant
-  simp_rw [simpleHomAction_det_biprod, vafaUnitClass_mul, smul_add]
+  simp_rw [homAction_det_biprod, vafaUnitClass_mul, smul_add]
   rw [Finset.sum_add_distrib]
 
 end PropertyF.Ground.CentreModular
@@ -586,18 +545,15 @@ theorem natural_app_biprod {D : Type u} [Category.{v} D] [Preadditive D]
 /-- Naturality transports a component along any object isomorphism. -/
 theorem natural_app_conjugate {D : Type u} [Category.{v} D]
     (η : 𝟭 D ≅ 𝟭 D) {Y Z : D} (e : Y ≅ Z) :
-    η.app Y = e ≪≫ η.app Z ≪≫ e.symm := by
-  apply Iso.ext
-  apply (cancel_mono e.hom).1
-  simpa [Category.assoc] using (η.hom.naturality e.hom).symm
+    η.app Y = e ≪≫ η.app Z ≪≫ e.symm :=
+  Iso.ext ((cancel_mono e.hom).1 (by simpa [Category.assoc] using (η.hom.naturality e.hom).symm))
 
 /-- Tensoring a conjugated automorphism conjugates its tensor extension. -/
 theorem tensor_conjugate_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
     (X : D) {Y Z : D} (e : Y ≅ Z) (a : Z ≅ Z) :
     (Iso.refl X ⊗ᵢ (e ≪≫ a ≪≫ e.symm)) =
-      (Iso.refl X ⊗ᵢ e) ≪≫ (Iso.refl X ⊗ᵢ a) ≪≫ (Iso.refl X ⊗ᵢ e).symm := by
-  apply Iso.ext
-  simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp]
+      (Iso.refl X ⊗ᵢ e) ≪≫ (Iso.refl X ⊗ᵢ a) ≪≫ (Iso.refl X ⊗ᵢ e).symm :=
+  Iso.ext (by simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp])
 
 /-- The categorical FP determinant tensor rule holds for components of
 any natural automorphism, by semisimplicity. -/
@@ -716,10 +672,8 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 isomorphisms in the source. -/
 theorem functor_natural_app_conjugate {D : Type u} {E : Type*}
     [Category.{v} D] [Category E] (F : D ⥤ E) (η : F ≅ F) {X Y : D} (e : X ≅ Y) :
-    η.app X = F.mapIso e ≪≫ η.app Y ≪≫ (F.mapIso e).symm := by
-  apply Iso.ext
-  apply (cancel_mono (F.mapIso e).hom).1
-  simp
+    η.app X = F.mapIso e ≪≫ η.app Y ≪≫ (F.mapIso e).symm :=
+  Iso.ext ((cancel_mono (F.mapIso e).hom).1 (by simp))
 
 /-- An additive functor's natural automorphism is block diagonal on a binary
 biproduct under its canonical comparison isomorphism. -/
@@ -876,10 +830,9 @@ theorem monodromy_hexagon_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
       (((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)) ≪≫
         (Iso.refl X ⊗ᵢ monodromyIso Z Y) ≪≫
         (((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)).symm ≪≫
-        (monodromyIso Z X ⊗ᵢ Iso.refl Y) := by
-  apply Iso.ext
-  simp [monodromyIso, tensorIso_hom, tensorHom_id, id_tensorHom, Category.assoc,
-    ← comp_whiskerRight]
+        (monodromyIso Z X ⊗ᵢ Iso.refl Y) :=
+  Iso.ext (by simp [monodromyIso, tensorIso_hom, tensorHom_id, id_tensorHom, Category.assoc,
+    ← comp_whiskerRight])
 
 /-- The actual FP determinant of the monodromy hexagon is the weighted sum
 of the two simple monodromy determinants, under simple twist balancing. -/

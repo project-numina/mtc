@@ -15,8 +15,8 @@ def tensorPowerIso {X Y : C} (f : X ≅ Y) : ∀ n, tensorPower X n ≅ tensorPo
 lemma braidGenerator_zero (X : C) (n : ℕ) :
     (braidGenerator X n 0).asIso.hom =
       ((α_ X X (tensorPower X n)).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl (tensorPower X n)) ≪≫
-        α_ X X (tensorPower X n)).hom := by
-  cases n <;> rfl
+        α_ X X (tensorPower X n)).hom :=
+  Nat.casesOn n rfl (fun _ ↦ rfl)
 
 /-- Naturality of the first adjacent braiding, with its associators. -/
 lemma braid_first {X Y A B : C} (f : X ≅ Y) (g : A ≅ B) :

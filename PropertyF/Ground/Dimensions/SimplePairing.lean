@@ -2,6 +2,11 @@ module
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import Mathlib.LinearAlgebra.Dual.Lemmas
 
+/-! # Pairings with simple objects
+
+Composition gives a nondegenerate linear pairing between morphism spaces to and from a simple object.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
@@ -20,8 +25,7 @@ theorem split_to_simple
   have he : e.inv ≫ g ≠ 0 := by
     intro h
     apply hg
-    have hh := congrArg (fun z => e.hom ≫ z) h
-    simpa [Category.assoc] using hh
+    simpa [Category.assoc] using (congrArg (fun z => e.hom ≫ z) h)
   have hp : ∃ a, biproduct.ι V a ≫ e.inv ≫ g ≠ 0 := by
     by_contra h
     push Not at h
@@ -30,11 +34,11 @@ theorem split_to_simple
     intro a
     simpa [Category.assoc] using h a
   obtain ⟨a, ha⟩ := hp
-  letI : Simple (V a) := Ground.simples_simple C a.1
+  let : Simple (V a) := Ground.simples_simple C a.1
   let h : V a ⟶ S := biproduct.ι V a ≫ e.inv ≫ g
-  letI : IsIso h := isIso_of_hom_simple ha
+  let : IsIso h := isIso_of_hom_simple ha
   refine ⟨inv h ≫ biproduct.ι V a ≫ e.inv, ?_⟩
-  simpa [h, Category.assoc] using IsIso.inv_hom_id h
+  simp [h, Category.assoc]
 
 /-- Schur's scalar isomorphism for any simple object. -/
 def simpleEndScalarEquiv (C : Ground.BraidedFusionCategory.{v,u})

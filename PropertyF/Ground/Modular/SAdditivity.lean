@@ -49,8 +49,9 @@ theorem SEntry_biproduct_left {ι : Type*} [Fintype ι] (V : ι → C) [HasBipro
 omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The S entry is invariant under isomorphism in its first argument. -/
 theorem SEntry_iso_left (p : PivotalStructure (C := C)) {X Z : C} (e : X ≅ Z) (Y : C) :
-    SEntry p X Y = SEntry p Z Y := by
-  rw [SEntry_symmetric p X Y, SEntry_iso_right p Y e, SEntry_symmetric p Y Z]
+    SEntry p X Y = SEntry p Z Y :=
+  (SEntry_symmetric p X Y).trans <|
+    (SEntry_iso_right p Y e).trans (SEntry_symmetric p Y Z)
 
 /-- Expanding a tensor product into simple summands expands its S entry with
 exactly the fusion coefficients. -/

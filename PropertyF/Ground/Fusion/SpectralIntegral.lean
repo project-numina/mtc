@@ -31,7 +31,7 @@ theorem fusionMatrix_unit :
 theorem fpSimple_unit :
     fpSimple D (unitIndex D) = 1 := by
   classical
-  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   simp [fpSimple, fusionMatrix_unit, spectrum.spectralRadius_one]
 
 /-- The global FP dimension is at least one, from the unit contribution. -/
@@ -39,9 +39,9 @@ theorem one_le_globalFPDimension :
     1 ≤ globalFPDimension D := by
   classical
   unfold globalFPDimension
-  have h := Finset.single_le_sum (f := fun i => fpSimple D i ^ 2)
-    (fun i _ => sq_nonneg (fpSimple D i)) (Finset.mem_univ (unitIndex D))
-  simpa [fpSimple_unit] using h
+  simpa [fpSimple_unit] using
+    (Finset.single_le_sum (f := fun i => fpSimple D i ^ 2)
+      (fun i _ => sq_nonneg (fpSimple D i)) (Finset.mem_univ (unitIndex D)))
 
 /-- The squared spectral radius of an integer matrix is integral over ℤ.
 The index type is nonempty so that the complex matrix algebra is nontrivial. -/
@@ -50,12 +50,11 @@ theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]
     IsIntegral ℤ ((spectralRadius ℂ (A.map (Int.castRingHom ℂ))).toReal ^ 2) := by
   let B : Matrix ι ι ℂ := A.map (Int.castRingHom ℂ)
   obtain ⟨z, hz, hzmax⟩ := spectrum.exists_nnnorm_eq_spectralRadius B
-  have hroot := (Matrix.mem_spectrum_iff_isRoot_charpoly.mp hz).eq_zero
   have hzint : IsIntegral ℤ z := by
     refine ⟨A.charpoly, A.charpoly_monic, ?_⟩
     change Polynomial.eval₂ (Int.castRingHom ℂ) z A.charpoly = 0
     rw [Polynomial.eval₂_eq_eval_map, ← Matrix.charpoly_map]
-    exact hroot
+    exact ((Matrix.mem_spectrum_iff_isRoot_charpoly.mp hz).eq_zero)
   have hconj : IsIntegral ℤ (starRingEnd ℂ z) := hzint.map Complex.conjAe
   have hprod : IsIntegral ℤ (starRingEnd ℂ z * z) := hconj.mul hzint
   have hnorm : IsIntegral ℤ (‖z‖ ^ 2 : ℝ) := by
@@ -73,7 +72,7 @@ theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]
 theorem fpSimple_isIntegral (i : Fin (rank D)) :
     IsIntegral ℤ (fpSimple D i) := by
   classical
-  letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
+  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   let A : Matrix (Fin (rank D)) (Fin (rank D)) ℤ := fun k j =>
     fusionCoeff D i j k
   have hmatrix : A.map (Int.castRingHom ℂ) = fusionMatrix D i := by

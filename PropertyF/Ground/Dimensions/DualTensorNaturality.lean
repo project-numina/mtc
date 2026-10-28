@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.DualCoherence
 
+/-! # Naturality of dual tensor comparisons
+
+Evaluation pairings establish naturality of the right-dual and double-dual tensor isomorphisms.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

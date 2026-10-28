@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.FourthDualUnit
 
+/-! # The unit and duality pairing for roots
+
+Components of the fourth-dual root interact with the unit and duality coevaluation.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

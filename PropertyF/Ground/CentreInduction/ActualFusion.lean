@@ -17,7 +17,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Resolving a fusion strand commutes with coevaluation. -/
 theorem fusion_coevaluation {T S R : C.Obj} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap C T S R f) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) =
+    𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S R f) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) =
       𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) := by
   have hr : (𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫
       𝟙 ((T ⊗ S) ⊗ Sᘁ)) = (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)) (f ≫ g) := by
@@ -26,11 +26,11 @@ theorem fusion_coevaluation {T S R : C.Obj} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶
   rw [hr]
   apply (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)).symm.injective
   simp only [Equiv.symm_apply_apply]
-  change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap C T S R f) ⊗≫
+  change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S R f) ⊗≫
     𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
       ((T ⊗ S) ◁ ε_ S (Sᘁ)) ≫ (ρ_ (T ⊗ S)).hom = f ≫ g
-  let q := closeFusionMap C T S R f
-  have hq := closeFusionMap_evaluation C f
+  let q := closeFusionMap T S R f
+  have hq := closeFusionMap_evaluation f
   change q ▷ S ≫ ε_ S (Sᘁ) = 𝟙 _ ⊗≫ ((Rᘁ : C.Obj) ◁ f) ⊗≫ ε_ R (Rᘁ) at hq
   change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫
     𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
@@ -57,13 +57,13 @@ theorem fusion_coevaluation {T S R : C.Obj} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component followed by a crossing block reduces to a fusion endomorphism. -/
-theorem unit_block (Z : CategoryTheory.Center C.Obj) (T S R : C.Obj)
+theorem unit_block (Z : CategoryTheory.Center C.Obj) {T S R : C.Obj}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (( (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫
       ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock C Z.1 T R S g f =
       𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ (f ≫ g) ▷ Sᘁ ⊗≫
         𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _ := by
-  let q := closeFusionMap C T S R f
+  let q := closeFusionMap T S R f
   let bR := (Z.2.β R).hom
   let bTS := (Z.2.β (T ⊗ S)).hom
   have hn : bR ≫ (g ▷ Z.1) = (Z.1 ◁ g) ≫ bTS := (Z.2.naturality g).symm
@@ -157,7 +157,7 @@ theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)
         crossingInclusion C T p.1 j p.2) := by
       apply Finset.sum_congr rfl
       intro p _
-      exact unit_block C Z T (simples C j) (simples C p.1)
+      exact unit_block C Z
         (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
     _ = unitBlockLinear C Z T (simples C j)
       (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),

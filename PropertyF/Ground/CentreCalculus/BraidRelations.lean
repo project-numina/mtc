@@ -17,7 +17,7 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- Adding a strand on the left shifts the braid generator by one. -/
-theorem braidGenerator_succ (X : C) (n : ℕ) (k : Fin (n + 1)) :
+theorem braidGenerator_succ (X : C) {n : ℕ} (k : Fin (n + 1)) :
     (tensorLeft X).mapAut (tensorPower X (n + 2)) (braidGenerator X n k) =
       braidGenerator X (n + 1) k.succ := by
   apply Aut.ext
