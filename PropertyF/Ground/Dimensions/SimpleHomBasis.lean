@@ -21,16 +21,6 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
-set_option backward.isDefEq.respectTransparency false in
-/-- Closing an identity strand gives the right quantum trace as a scalar. -/
-theorem partialTraceWith_one {Y : C} (k : Y ≅ (Yᘁ)ᘁ) (X : C) :
-    partialTraceWith k X 1 =
-      End.of ((ρ_ X).inv ≫ X ◁ (rightQuantumTrace k).asHom ≫ (ρ_ X).hom) := by
-  apply End.ext
-  simp only [partialTraceWith, rightQuantumTrace, End.one_asHom,
-    id_whiskerRight, Category.id_comp, whiskerLeft_comp, Category.assoc]
-  monoidal
-
 variable {R : Type*} [CommSemiring R] [Preadditive C] [Linear R C]
   [MonoidalPreadditive C] [MonoidalLinear R C]
 set_option backward.isDefEq.respectTransparency false in
@@ -42,9 +32,8 @@ theorem rightQuantumTrace_tensor_scalar
     scalar (rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y)) =
       scalar (rightQuantumTrace j) * scalar (rightQuantumTrace k) := by
   have hpt : partialTraceWith k X 1 = scalar (rightQuantumTrace k) • 1 := by
-    rw [partialTraceWith_one, eq_smul_one_of_algEquiv scalar (rightQuantumTrace k)]
-    apply End.ext
-    simp
+    simpa only [id_tensorHom_id, show End.of (𝟙 (X ⊗ Y)) = (1 : End (X ⊗ Y)) from rfl,
+      rightTraceWith_id] using partialTraceWith_tensor_right_scalar scalar k X (𝟙 Y)
   have ht : rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) =
       scalar (rightQuantumTrace k) • rightQuantumTrace j := by
     apply End.homEquiv.injective
@@ -259,6 +248,18 @@ def simpleHomPairingEquiv {D : Type u} [Category.{v} D] [MonoidalCategory D]
     (finrank_to_simple_eq_from_simple X S).trans
       (Subspace.dual_finrank_eq (K := ℂ) (V := S ⟶ X)).symm
   exact LinearEquiv.ofBijective p ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).1 hi⟩
+
+
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [Abelian D] [Linear ℂ D] [RigidCategory D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+  [IsFusionCategory D]
+
+/-- The perfect pairing commutes with precomposition. -/
+theorem simpleHomPairingEquiv_natural {S X Y : D} [Simple S] (g : Y ⟶ S) (a : X ⟶ Y) :
+    simpleHomPairingEquiv S X (a ≫ g) =
+      Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairingEquiv S Y g) :=
+  letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
+  simpleHomPairing_natural g a
 
 
 end PropertyF.Ground.Dimensions

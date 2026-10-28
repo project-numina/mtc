@@ -129,23 +129,20 @@ variable {k : Type*} [CommSemiring k]
 
 variable (p : PivotalStructure (C := C))
 
-omit [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C] in
-/-- Closing the right tensor factor of an inserted endomorphism. -/
-theorem rightPartialTrace_tensor_right (X : C) {Y : C} (b : Y ⟶ Y) :
-    rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) =
-      End.of ((ρ_ X).inv ≫ X ◁ (p.rightTrace b).asHom ≫ (ρ_ X).hom) := by
-  apply End.ext
-  simp only [rightPartialTrace,
-    PivotalStructure.rightTrace, rightTraceWith, tensorHom_def, id_whiskerRight, Category.id_comp,
-    whiskerLeft_comp, comp_whiskerRight, Category.assoc]
-  monoidal
-
 variable (scalar : End (𝟙_ C) ≃ₐ[k] k)
 
-/-- The right partial trace of an inserted right-factor endomorphism is scalar. -/
-theorem rightPartialTrace_one_tensor (X : C) {Y : C} (b : Y ⟶ Y) :
-    rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) = scalar (p.rightTrace b) • 1 := by
-  rw [rightPartialTrace_tensor_right p X b, eq_smul_one_of_algEquiv scalar (p.rightTrace b)]
+set_option backward.isDefEq.respectTransparency false in
+/-- Closing a right-factor endomorphism gives its scalar trace times the identity. -/
+theorem partialTraceWith_tensor_right_scalar {Y : C} (j : Y ≅ (Yᘁ)ᘁ)
+    (X : C) (b : Y ⟶ Y) :
+    partialTraceWith j X (End.of (𝟙 X ⊗ₘ b)) = scalar (rightTraceWith j b) • 1 := by
+  have h : partialTraceWith j X (End.of (𝟙 X ⊗ₘ b)) =
+      End.of ((ρ_ X).inv ≫ X ◁ (rightTraceWith j b).asHom ≫ (ρ_ X).hom) := by
+    apply End.ext
+    simp only [partialTraceWith, rightTraceWith, tensorHom_def, id_whiskerRight,
+      Category.id_comp, whiskerLeft_comp, comp_whiskerRight, Category.assoc]
+    monoidal
+  rw [h, eq_smul_one_of_algEquiv scalar (rightTraceWith j b)]
   apply End.ext
   simp
 
@@ -154,7 +151,9 @@ theorem rightPartialTrace_tensor {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
     rightPartialTrace p (End.of (a ⊗ₘ b)) = scalar (p.rightTrace b) • End.of a := by
   rw [show End.of (a ⊗ₘ b) = End.of (𝟙 X ⊗ₘ b) * insertRightIdentity Y (End.of a) from
       End.ext (by simp [insertRightIdentity, tensorHom_def]),
-    rightPartialTrace_right, rightPartialTrace_one_tensor p scalar X b,
+    rightPartialTrace_right,
+    show rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) = scalar (p.rightTrace b) • 1 from
+      partialTraceWith_tensor_right_scalar scalar (p.iso Y) X b,
     smul_mul_assoc, one_mul]
 
 /-- Pivotal trace is multiplicative on tensor products of endomorphisms. -/

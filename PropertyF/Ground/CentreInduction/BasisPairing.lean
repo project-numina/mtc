@@ -55,9 +55,6 @@ theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
     (F : (Sᶜ i ⟶ W) →ₗ[ℂ] (V ⟶ Sᶜ i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
-  have hn (f : W ⟶ Sᶜ i) : simpleHomPairingEquiv (Sᶜ i) V (q ≫ f) =
-      Module.Dual.transpose (Linear.rightComp ℂ (Sᶜ i) q)
-        (simpleHomPairingEquiv (Sᶜ i) W f) := simpleHomPairing_natural f q
   let A := simpleInclusionBasis C V i
   let B := simpleInclusionBasis C W i
   let P := simpleHomPairingEquiv (Sᶜ i) V
@@ -66,7 +63,7 @@ theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
     (LinearMap.lcomp ℂ E P.symm.toLinearMap).comp F
   simpa only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply,
     LinearEquiv.coe_coe, A, B, P, simpleInclusionBasis_apply,
-    ← pairing_simpleProjection, ← hn, LinearEquiv.symm_apply_apply] using
+    ← pairing_simpleProjection, ← simpleHomPairingEquiv_natural, LinearEquiv.symm_apply_apply] using
     dualBasis_contraction_natural A B (Linear.rightComp ℂ (Sᶜ i) q) F'
 
 /-- A mixed crossing block, with the input and output test strands allowed
