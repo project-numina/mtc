@@ -7,9 +7,11 @@ public import PropertyF.Ground.CentreCalculus.PermutationInsert
 
 Twisting by permutation sign relates signed and unsigned trace criteria.
 The fixed-head and adjacent-crossing identities reduce integrality to a
-one-strand deletion formula for either parity choice.
+one-strand deletion formula for either parity choice. We write `tr C p ρ n σ`
+for the scalar pivotal trace of the permutation action.
 -/
 @[expose] public noncomputable section
+local notation "tr" => PropertyF.Ground.CentreCalculus.permutationScalarTrace
 open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 open PropertyF.Ground.Centre (permutationSign)
 open Equiv.Perm (decomposeFin)
@@ -32,8 +34,8 @@ include hdim in
 /-- Sign twist preserves the fixed-strand trace deletion identity. -/
 theorem parityPermutationTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     {n : ℕ} (σ : Equiv.Perm (Fin n)) :
-    permutationScalarTrace C p (parityPermutationAction C hX odd) (n + 1) (fixHead n σ) =
-    (fpDimension C X : ℂ) * permutationScalarTrace C p (parityPermutationAction C hX odd) n σ := by
+    tr C p (parityPermutationAction C hX odd) (n + 1) (fixHead n σ) =
+    (fpDimension C X : ℂ) * tr C p (parityPermutationAction C hX odd) n σ := by
   cases odd with
   | false => exact tensorPermutationTrace_fixHead hdim hX σ
   | true =>
@@ -52,7 +54,7 @@ include hdim in
 /-- Once the moved-strand trace deletion identity is shown for one parity,
 positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
-    (hmoved : HasMovedTrace (permutationScalarTrace C p (parityPermutationAction C hX odd))) :
+    (hmoved : HasMovedTrace (tr C p (parityPermutationAction C hX odd))) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_trace_deletion hdim (parityPermutationAction C hX odd)
     ⟨(fun _ σ ↦ parityPermutationTrace_fixHead hdim hX odd σ), hmoved⟩
@@ -84,8 +86,8 @@ strands. -/
 theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
     {p : PivotalStructure (C := C.Obj)} {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
-    (hadj : HasAdjacentTrace (permutationScalarTrace C p ρ)) :
-    HasMovedTrace (permutationScalarTrace C p ρ) := by
+    (hadj : HasAdjacentTrace (tr C p ρ)) :
+    HasMovedTrace (tr C p ρ) := by
   intro n q hq σ
   simp only [HasAdjacentTrace, permutationScalarTrace] at hadj ⊢
   cases n with
@@ -118,7 +120,7 @@ include hdim in
 /-- Integrality reduces to the first-adjacent-crossing trace identity for
 one of the two actual parity choices. -/
 theorem integral_of_parity_adjacent_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
-    (hadj : HasAdjacentTrace (permutationScalarTrace C p (parityPermutationAction C hX odd))) :
+    (hadj : HasAdjacentTrace (tr C p (parityPermutationAction C hX odd))) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_parity_moved_trace hdim hX odd
     (movedTrace_of_adjacent (parityPermutationAction C hX odd) hadj)
