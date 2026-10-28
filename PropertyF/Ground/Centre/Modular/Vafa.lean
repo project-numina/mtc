@@ -896,24 +896,22 @@ holds; no lantern relation or modularity hypothesis is used. -/
 theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p) :
     ∀ i, IsOfFinOrder (End.of ((Dimensions.pivotalBraidedTwist C p (simples C i)).hom)) := by
-  have hf := natural_scalars_finite_of_simple_balancing C (pivotal_twist_has_simple_scalars C p)
-    (pivotal_twist_simple_balance C p hbalance)
   intro i
-  have hf' : IsOfFinOrder ((CentreCabling.pivotalTwistUnit C p i : ℂˣ) : ℂ) :=
-    Units.isOfFinOrder_val.mpr (hf i)
   let : Simple (simples C i) := simples_simple C i
+  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   simpa [CentreCabling.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using
-    (Dimensions.simpleEndScalarEquiv C (simples C i)).symm.toMonoidHom.isOfFinOrder hf'
+    (Ground.simpleEndScalar (simples C i)).symm.toMonoidHom.isOfFinOrder
+      (Units.isOfFinOrder_val.mpr (natural_scalars_finite_of_simple_balancing C
+        (pivotal_twist_has_simple_scalars C p) (pivotal_twist_simple_balance C p hbalance) i))
 
 /-- The actual pivotal twist balancing law alone forces every mixed
 monodromy to have finite order; no lantern relation is required. -/
 theorem mixed_monodromy_finite_of_pivotal_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p)
-    (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) := by
-  apply CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist C
+    (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) :=
+  CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist C
     (Dimensions.pivotalBraidedTwistNaturalIso C p)
-  · exact pivotal_twist_finite_of_balancing C p hbalance
-  · exact hbalance
+    (pivotal_twist_finite_of_balancing C p hbalance) hbalance X Y
 
 end PropertyF.Ground.CentreModular
 end

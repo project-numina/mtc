@@ -61,13 +61,9 @@ theorem SEntry_tensor_decomposition (D : Ground.BraidedFusionCategory.{v,u})
     Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
       ∑ l, (fusionCoeff D i j l : ℂ) * categoricalS D p l k := by
   let X := simples D i ⊗ simples D j
-  let m : Fin (rank D) → ℕ := fun l => fusionCoeff D i j l
-  let V : (Σ l, Fin (m l)) → D.Obj := fun t => simples D t.1
   obtain ⟨e⟩ := exists_canonical_decomposition D X
-  have he : SEntry p X (simples D k) = SEntry p (⨁ V) (simples D k) :=
-    SEntry_iso_left p e _
-  rw [he, SEntry_biproduct_left]
-  simp [Fintype.sum_sigma, V, m, categoricalS, nsmul_eq_mul]
+  rw [SEntry_iso_left p e _, SEntry_biproduct_left]
+  simp [Fintype.sum_sigma, categoricalS, nsmul_eq_mul, fusionCoeff, X]
 
 
 /-- The Hopf-link product rule for simple objects. -/

@@ -86,7 +86,7 @@ theorem centerPivotal_hasFPDimensions (C : BraidedFusionCategory.{v,u})
     (centerPivotalOfPivotalPseudoUnitary C p hpu) at hd
   intro i
   simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-    Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hd i
+    unitScalar_eq_equiv] using hd i
 
 end PropertyF.Ground
 end

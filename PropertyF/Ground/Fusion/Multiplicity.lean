@@ -14,6 +14,23 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
 
+/-- Schur's lemma identifies the scalar algebra with the endomorphism algebra
+of a finite-dimensional simple object. -/
+theorem simple_algebraMap_bijective [HasKernels C] (X : C) [Simple X]
+    [FiniteDimensional ℂ (X ⟶ X)] : Function.Bijective (algebraMap ℂ (End X)) := by
+  constructor
+  · exact RingHom.injective _
+  · intro a
+    obtain ⟨z, hz⟩ := endomorphism_simple_eq_smul_id ℂ a.asHom
+    refine ⟨z, ?_⟩
+    apply End.ext
+    simpa [Algebra.algebraMap_eq_smul_one] using hz
+
+/-- The endomorphism algebra of a finite-dimensional simple object is the scalar field. -/
+def simpleEndScalar [HasKernels C] (X : C) [Simple X]
+    [FiniteDimensional ℂ (X ⟶ X)] : End X ≃ₐ[ℂ] ℂ :=
+  (AlgEquiv.ofBijective (Algebra.ofId ℂ (End X)) (simple_algebraMap_bijective X)).symm
+
 /-- The Hom space into a finite biproduct is the product of the Hom spaces. -/
 def homBiproductLinearEquiv {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
     (X : C) (V : ι → C) : (X ⟶ ⨁ V) ≃ₗ[ℂ] (∀ i, X ⟶ V i) where
