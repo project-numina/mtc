@@ -97,9 +97,8 @@ theorem galois_unit_properties (hu : d u = 1) (hglobal : D = ∑ x, d x ^ 2)
     ((div_eq_iff (hd y)).mp (by simpa only [hunit, hu, div_one] using (hchar x).symm)).trans
       (mul_comm _ _)
   have hsquare := galois_unit_column_square hglobal hsym hsq σ y hcol
-  have hself : y = dual y := by
-    by_contra hn
-    exact mul_ne_zero (pow_ne_zero 2 (hd y)) (show σ D ≠ 0 from by simpa using σ.injective.ne hD)
+  have hself : y = dual y := Classical.byContradiction fun hn ↦
+    mul_ne_zero (pow_ne_zero 2 (hd y)) (show σ D ≠ 0 from by simpa using σ.injective.ne hD)
       (by simpa only [ite_eq_right hn] using hsquare)
   exact ⟨hcol, hself, (eq_div_iff (pow_ne_zero 2 (hd y))).mpr (by
     simpa only [mul_comm, ite_eq_left hself] using hsquare)⟩
