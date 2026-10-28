@@ -196,16 +196,17 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+local notation "Sᶜ" => simples C
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 local notation "𝒵" => Center C.Obj
 
 /-- FP dimension is the weighted sum of Hom dimensions to simple objects. -/
 theorem fpDimension_eq_sum_to_simple (X : C.Obj) :
-    fpDimension C X = ∑ i, (Module.finrank ℂ (X ⟶ simples C i) : ℝ) * fpSimple C i :=
+    fpDimension C X = ∑ i, (Module.finrank ℂ (X ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
   Finset.sum_congr rfl fun i _ =>
-    letI : Simple (simples C i) := simples_simple C i
+    letI : Simple (Sᶜ i) := simples_simple C i
     congrArg (fun n : ℕ => (n : ℝ) * fpSimple C i)
-      (finrank_to_simple_eq_from_simple X (simples C i)).symm
+      (finrank_to_simple_eq_from_simple X (Sᶜ i)).symm
 
 /-- The induction adjunction preserves the dimensions of corresponding Hom spaces. -/
 theorem finrank_hom_induction (Z : 𝒵) (X : C.Obj) :
@@ -215,7 +216,7 @@ theorem finrank_hom_induction (Z : 𝒵) (X : C.Obj) :
 
 /-- The FP dimension of a centre object is the weighted Hom sum of its underlying object. -/
 theorem center_fpDimension_eq_sum_to_simple [RigidCategory 𝒵] [IsFusionCategory 𝒵] (Z : 𝒵) :
-    fpDimension 𝒵ᶠ Z = ∑ i, (Module.finrank ℂ (Z.1 ⟶ simples C i) : ℝ) * fpSimple C i :=
+    fpDimension 𝒵ᶠ Z = ∑ i, (Module.finrank ℂ (Z.1 ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
   (Integrate.center_forget_fpDimension C Z).symm.trans (fpDimension_eq_sum_to_simple C Z.1)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -223,7 +224,7 @@ set_option backward.defeqAttrib.useBackward true in
 /-- The centre's global FP dimension is the weighted sum of its induced simples. -/
 theorem globalFPDimension_eq_induction_sum [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ =
-      ∑ i, fpSimple C i * fpDimension 𝒵ᶠ ((induction C).obj (simples C i)) := by
+      ∑ i, fpSimple C i * fpDimension 𝒵ᶠ ((induction C).obj (Sᶜ i)) := by
   symm
   simp_rw [fpDimension, finrank_hom_induction C, Finset.mul_sum]
   rw [Finset.sum_comm]
