@@ -69,13 +69,17 @@ theorem SEntry_tensor_decomposition (D : Ground.BraidedFusionCategory.{v,u})
   simp [Fintype.sum_sigma, V, m, categoricalS, nsmul_eq_mul]
 
 
+/-- The Hopf-link product rule for simple objects. -/
+abbrev HasHopfProduct (D : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := D.Obj)) : Prop :=
+  ∀ i j k, Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
+    simpleDimension D p k = categoricalS D p i k * categoricalS D p j k
+
 /-- The categorical Hopf-link product identity implies the Verlinde character
 equations once tensor products are decomposed into their simple summands. -/
 theorem categoricalS_verlinde_of_hopf_product (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj))
-    (hopf : ∀ i j k,
-      Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
-        simpleDimension D p k = categoricalS D p i k * categoricalS D p j k) :
+    (hopf : HasHopfProduct D p) :
     ∀ i j k,
       (categoricalS D p i k / simpleDimension D p k) *
         (categoricalS D p j k / simpleDimension D p k) =
