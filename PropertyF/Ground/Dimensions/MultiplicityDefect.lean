@@ -103,8 +103,7 @@ namespace PropertyF.Ground.Dimensions
 theorem involution_half_projection {V : Type*} [AddCommGroup V] [Module ℂ V]
     {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
     IsIdempotentElem ((2 : ℂ)⁻¹ • (1 + T)) := by
-  have hinv (x : V) : T (T x) = x := by
-    simpa using (congrArg (fun f : V →ₗ[ℂ] V => f x) hT)
+  have hinv (x : V) : T (T x) = x := congrArg (fun f : V →ₗ[ℂ] V ↦ f x) hT
   let P : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 + T)
   change P * P = P
   ext x
@@ -127,9 +126,7 @@ theorem involution_trace_formula {V : Type*} [AddCommGroup V] [Module ℂ V]
   simp only [map_smul, map_add, smul_eq_mul] at htp
   refine ⟨Module.finrank ℂ (LinearMap.range P), (LinearMap.range P).finrank_le, ?_⟩
   rw [((LinearMap.IsIdempotentElem.isProj_range P hp).trace)] at htp
-  have hid : LinearMap.trace ℂ V (1 : V →ₗ[ℂ] V) = (Module.finrank ℂ V : ℂ) :=
-    LinearMap.trace_id ℂ V
-  rw [hid] at htp
+  rw [show LinearMap.trace ℂ V (1 : V →ₗ[ℂ] V) = _ from LinearMap.trace_id ℂ V] at htp
   linear_combination -htp
 
 /-- The trace of an involution is an integer whose absolute value is at most
@@ -142,7 +139,7 @@ theorem involution_trace_integer_bound {V : Type*} [AddCommGroup V] [Module ℂ 
   refine ⟨2 * (m : ℤ) - (Module.finrank ℂ V : ℤ), ?_, ?_⟩
   · simpa using htrace
   · rw [abs_le]
-    constructor <;> omega
+    omega
 
 /-- The trace of a complex involution is real. -/
 theorem star_involution_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
@@ -223,19 +220,15 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
   change d.hom ≫ (a.app X).hom = (a.app X).hom ≫ F.map d.hom at hn
   have hc : b.hom ≫ F.map d.hom = d.hom ≫ b.hom := by
     apply (cancel_epi d.hom).1
-    calc
-      _ = (a.app X).hom ≫ F.map d.hom := by rw [← Category.assoc, hd]
-      _ = d.hom ≫ (a.app X).hom := hn.symm
-      _ = _ := by rw [← hd]
+    rw [← Category.assoc, hd, ← hn]
   apply (cancel_mono (b.hom ≫ F.map b.hom)).1
-  calc
-    (d.hom ≫ d.hom) ≫ (b.hom ≫ F.map b.hom) =
-        d.hom ≫ (d.hom ≫ b.hom) ≫ F.map b.hom := by simp [Category.assoc]
-    _ = d.hom ≫ (b.hom ≫ F.map d.hom) ≫ F.map b.hom := by rw [hc]
-    _ = (d.hom ≫ b.hom) ≫ F.map (d.hom ≫ b.hom) := by
-      simp only [Functor.map_comp, Category.assoc]
-    _ = b.hom ≫ F.map b.hom := by rw [hd, hsq]
-    _ = 𝟙 X ≫ (b.hom ≫ F.map b.hom) := (Category.id_comp _).symm
+  simp only [Category.assoc]
+  slice_lhs 2 3 => rw [← hc]
+  simp only [Category.assoc]
+  slice_lhs 3 4 => rw [← Functor.map_comp, hd]
+  slice_lhs 1 2 => rw [hd]
+  rw [hsq]
+  exact (Category.id_comp _).symm
 
 end PropertyF.Ground.Dimensions
 
@@ -341,14 +334,9 @@ theorem rootTensor_square_eq_fourthDual_tensor
   rw [← hx, ← hy]
   simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
     Category.assoc]
-  have hn := doubleDualTensorIso_natural ((fourthDualRootNaturalIso C).app X).hom
-    ((fourthDualRootNaturalIso C).app Y).hom
-  have hn2 := congrArg (fun f =>
-    (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
-      ((fourthDualRootNaturalIso C).app Y).hom) ≫ f ≫
-      (((doubleDualTensorIso X Y).homᘁ)ᘁ)) hn.symm
-  simp only [Functor.id_obj, doubleDualFunctor, Category.assoc] at hn2
-  rw [hn2, tensorHom_comp_tensorHom_assoc]
+  slice_lhs 2 3 => rw [← doubleDualTensorIso_natural]
+  simp only [doubleDualFunctor, Category.assoc]
+  rw [tensorHom_comp_tensorHom_assoc]
 
 /-- The fourth-dual isomorphism is compatible with tensoring two objects. -/
 abbrev fourthDualTensorLaw (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) : Prop :=

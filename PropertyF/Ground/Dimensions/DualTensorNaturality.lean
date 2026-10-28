@@ -63,24 +63,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rightDualTensorIso_natural {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y') :
     ((f ⊗ₘ g)ᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ) := by
-  have h : (((f ⊗ₘ g)ᘁ) ≫ (rightDualTensorIso X Y).hom) ▷ (X ⊗ Y) ≫
-        ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
-      ((rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ)) ▷ (X ⊗ Y) ≫
-        ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := by
-    have he := rightDualTensorIso_evaluation X Y
-    simp only [comp_whiskerRight_assoc] at *
-    simp only [← Category.assoc, he]
-    simp only [Category.assoc, rightAdjointMate_comp_evaluation]
-    have aux := tensorPairing_evaluation_natural f g
-    have he' := rightDualTensorIso_evaluation X' Y'
-    calc
-      _ = (X' ⊗ Y')ᘁ ◁ (f ⊗ₘ g) ≫ (rightDualTensorIso X' Y').hom ▷ (X' ⊗ Y') ≫
-          ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) := by rw [he']
-      _ = (rightDualTensorIso X' Y').hom ▷ (X ⊗ Y) ≫
-          ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g) ≫ ε_ (X' ⊗ Y') ((Y'ᘁ) ⊗ (X'ᘁ)) := by
-            rw [whisker_exchange_assoc]
-      _ = _ := by rw [aux]
-  exact evaluation_ext h
+  apply evaluation_ext (X := X ⊗ Y)
+  simp only [comp_whiskerRight_assoc]
+  rw [rightDualTensorIso_evaluation, rightAdjointMate_comp_evaluation,
+    ← rightDualTensorIso_evaluation X' Y', whisker_exchange_assoc,
+    tensorPairing_evaluation_natural]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse right-dual tensor comparison is natural. -/
