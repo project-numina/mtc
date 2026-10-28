@@ -127,7 +127,7 @@ theorem labels (hdim : Modular.HasFPSimpleDimensions C p) :
   let ⟨e, he⟩ := Modular.simpleLabels_equiv C Cσ (CategoryTheory.Equivalence.refl)
   ⟨e, fun i ↦ (Dimensions.pivotalDimension_iso Cσ pσ (he i).some).symm.trans <| by
     change Dimensions.pivotalDimension Cσ pσ (simples C i) = _
-    rw [pivotalDimension_twist]
+    simp only [pivotalDimension_twist]
     simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using
       congrArg σ (hdim i)⟩
 
