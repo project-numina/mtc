@@ -73,7 +73,7 @@ theorem rootPhaseTensorIso_inv
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseDefect_apply
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
-    (i j k : Fin (rank C))
+    {i j k : Fin (rank C)}
     (f : simples C k ⟶ simples C i ⊗ simples C j) :
     f ≫ (rootSignDefect C c hc (simples C i) (simples C j)).hom =
       (c k / (c i * c j)) • (f ≫ (rootTensorDefect C (simples C i) (simples C j)).hom) := by
@@ -93,7 +93,7 @@ theorem rootPhaseDefect_apply
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseTensor_compatible_of_scaled_defects (c : Fin (rank C) → ℂ)
-    (hc : ∀ i, c i ≠ 0) (i j : Fin (rank C))
+    (hc : ∀ i, c i ≠ 0) {i j : Fin (rank C)}
     (hdef : ∀ k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1) :
     (rootSignTwist C c hc).app (simples C i ⊗ simples C j) =
       rootSignTensorIso C c hc (simples C i) (simples C j) := by
@@ -109,7 +109,7 @@ theorem rootPhaseTensor_compatible_of_scaled_defects (c : Fin (rank C) → ℂ)
     have hfd := congrArg (fun L => L f) (hdef a.1)
     change (c a.1 / (c i * c j)) • multiplicityDefect C i j a.1 f = f at hfd
     rw [multiplicityDefect_apply] at hfd
-    have ht := rootPhaseDefect_apply C c hc i j a.1 f
+    have ht := rootPhaseDefect_apply C c hc f
     rw [hfd] at ht
     simpa [f, Category.assoc] using ht
   apply Iso.ext

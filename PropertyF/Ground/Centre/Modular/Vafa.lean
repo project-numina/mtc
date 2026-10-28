@@ -454,7 +454,7 @@ theorem base_finite_simple_sum (X : C.Obj) :
   | h X ih =>
     by_cases hz : IsZero X
     · exact .zero hz
-    · obtain ⟨i, hi⟩ := exists_positive_multiplicity C X hz
+    · obtain ⟨i, hi⟩ := exists_positive_multiplicity C hz
       let S := simples C i
       let : Simple S := simples_simple C i
       let : FiniteDimensional ℂ (S ⟶ X) := IsFusionCategory.hom_finite _ _
@@ -702,9 +702,8 @@ theorem fpDeterminant_tensor_scalar_natural
     fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ (scalarIso Y z ≪≫ η.app Y)) =
       fpDimension C X • fpDeterminant C Y (scalarIso Y z ≪≫ η.app Y) := by
   have h : (Iso.refl X ⊗ᵢ (scalarIso Y z ≪≫ η.app Y)) =
-      (Iso.refl X ⊗ᵢ scalarIso Y z) ≪≫ (Iso.refl X ⊗ᵢ η.app Y) := by
-    apply Iso.ext
-    simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp]
+      (Iso.refl X ⊗ᵢ scalarIso Y z) ≪≫ (Iso.refl X ⊗ᵢ η.app Y) :=
+    Iso.ext (by simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp])
   rw [h, fpDeterminant_trans, fpDeterminant_trans, fpDeterminant_tensor_scalar,
     fpDeterminant_tensor_natural, smul_add]
 
@@ -716,12 +715,8 @@ theorem monodromy_simple_eq_scalar_natural
     monodromyIso (simples C i) (simples C j) =
       scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ ≪≫
         η.app (simples C i ⊗ simples C j) := by
-  rw [hbalance]
-  have h : scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ =
-      (scalarIso (simples C i ⊗ simples C j) (t i * t j)).symm := by
-    apply Iso.ext
-    rfl
-  rw [h]
+  rw [hbalance, show scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ =
+    (scalarIso (simples C i ⊗ simples C j) (t i * t j)).symm from Iso.ext rfl]
   simp
 
 /-- Under the explicit balancing equation, the tensor determinant rule holds

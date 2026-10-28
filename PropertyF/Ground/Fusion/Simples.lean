@@ -76,7 +76,7 @@ theorem simples_simple (i : Fin (rank C)) : Simple (simples C i) :=
   (Classical.choose_spec (Classical.choose_spec
     (IsFusionCategory.finite_semisimple (C := C.Obj)))).1 i
 
-theorem simples_injective (i j : Fin (rank C))
+theorem simples_injective {i j : Fin (rank C)}
     (h : Nonempty (simples C i ≅ simples C j)) : i = j :=
   (Classical.choose_spec (Classical.choose_spec
     (IsFusionCategory.finite_semisimple (C := C.Obj)))).2.1 i j h
@@ -123,7 +123,7 @@ theorem finrank_simples_hom (i j : Fin (rank C)) :
   let : ∀ X Y : C.Obj, FiniteDimensional ℂ (X ⟶ Y) := IsFusionCategory.hom_finite
   rw [CategoryTheory.finrank_hom_simple_simple ℂ]
   congr 1
-  exact propext ⟨simples_injective C i j, fun h => by subst j; exact ⟨Iso.refl _⟩⟩
+  exact propext ⟨simples_injective C, fun h => by subst j; exact ⟨Iso.refl _⟩⟩
 
 end PropertyF.Ground
 

@@ -212,8 +212,7 @@ theorem globalDimension_ne_zero_of_invertibleS (hp : p.IsSpherical)
   intro hz
   have hs : categoricalS C p * categoricalS C p = 0 := by
     ext x y
-    simp only [Matrix.mul_apply, Matrix.zero_apply, categoricalS_square C p hp hdet hreal, hz]
-    split_ifs <;> rfl
+    simp [Matrix.mul_apply, categoricalS_square C p hp hdet hreal, hz]
   have hh := congrArg Matrix.det hs
   rw [Matrix.det_mul, Matrix.det_zero] at hh
   exact mul_ne_zero hdet hdet hh

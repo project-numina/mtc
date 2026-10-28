@@ -224,7 +224,7 @@ theorem center_transparent_label_eq_unit
     intro W
     exact hk W)
   obtain ⟨u⟩ := unitIndex_iso D
-  exact simples_injective D k (unitIndex D) ⟨e ≪≫ u.symm⟩
+  exact simples_injective D ⟨e ≪≫ u.symm⟩
 
 /-- The frozen target follows from base pivotal existence and balancing of
 its constructed centre twist. These two obligations remain explicit. -/

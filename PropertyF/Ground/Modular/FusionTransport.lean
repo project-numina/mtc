@@ -32,7 +32,7 @@ theorem simpleLabels_equiv (C D : Ground.BraidedFusionCategory.{v,u})
     let _ : Simple (simples C i) := simples_simple C i
     exact simple_obj F (simples C i)
   · intro i j ⟨e⟩
-    apply simples_injective C i j
+    apply simples_injective C
     exact ⟨F.preimageIso e⟩
   · intro j
     let Y := simples D j
@@ -84,9 +84,7 @@ variable (he : ∀ i, Nonempty (h.equivalence.functor.obj (simples C i) ≅ simp
 include he
 
 /-- The semilinear equivalence preserves the categorical fusion coefficients. -/
-theorem conjugate_fusionCoeff
-
-    (i j k : Fin (rank C)) : fusionCoeff C i j k = fusionCoeff D (e i) (e j) (e k) := by
+theorem conjugate_fusionCoeff (i j k : Fin (rank C)) : fusionCoeff C i j k = fusionCoeff D (e i) (e j) (e k) := by
   let F := h.equivalence.functor
   let _ := h.monoidal
   let a := (he i).some
@@ -100,9 +98,7 @@ theorem conjugate_fusionCoeff
 
 
 /-- Conjugation transports the target's fusion matrix by reindexing. -/
-theorem conjugate_fusionMatrix
-
-    (i : Fin (rank C)) :
+theorem conjugate_fusionMatrix (i : Fin (rank C)) :
     Matrix.reindexAlgEquiv ℂ ℂ e (fusionMatrix C i) = fusionMatrix D (e i) := by
   ext k j
   have hc := conjugate_fusionCoeff h he i (e.symm j) (e.symm k)
@@ -111,9 +107,7 @@ theorem conjugate_fusionMatrix
     Matrix.submatrix_apply] using congrArg (fun n : ℕ => (n : ℂ)) hc
 
 /-- The spectral-radius FP dimensions are invariant under Galois conjugation. -/
-theorem conjugate_fpSimple
-
-    (i : Fin (rank C)) : fpSimple C i = fpSimple D (e i) := by
+theorem conjugate_fpSimple (i : Fin (rank C)) : fpSimple C i = fpSimple D (e i) := by
   unfold fpSimple
   rw [← conjugate_fusionMatrix h he i, spectralRadius_eq_of_unital,
     spectralRadius_eq_of_unital, AlgEquiv.spectrum_eq]
@@ -131,10 +125,7 @@ theorem conjugate_labels :
 theorem conjugate_globalFPDimension :
     globalFPDimension C = globalFPDimension D := by
   obtain ⟨e, he⟩ := conjugate_labels h
-  unfold globalFPDimension
-  calc
-    ∑ i, fpSimple C i ^ 2 = ∑ i, fpSimple D (e i) ^ 2 := by simp only [he]
-    _ = ∑ j, fpSimple D j ^ 2 := e.sum_comp (fun j => fpSimple D j ^ 2)
+  simpa only [globalFPDimension, he] using e.sum_comp (fun j => fpSimple D j ^ 2)
 
 
 /-- Ground version of braid-image invariance for a conjugate category. -/

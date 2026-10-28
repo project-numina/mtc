@@ -29,11 +29,8 @@ lemma columnUnitary_of_unitary [DecidableEq ι] {U : Matrix ι ι ℂ}
     Complex.normSq_apply, pow_two] using h
 
 lemma entry_normSq_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : ι) :
-    Complex.normSq (U i j) ≤ 1 := by
-  calc
-    Complex.normSq (U i j) ≤ ∑ k, Complex.normSq (U k j) :=
-      Finset.single_le_sum (fun k _ => Complex.normSq_nonneg (U k j)) (Finset.mem_univ i)
-    _ = 1 := hU j
+    Complex.normSq (U i j) ≤ 1 :=
+  (Finset.single_le_sum (fun k _ => Complex.normSq_nonneg (U k j)) (Finset.mem_univ i)).trans_eq (hU j)
 
 lemma entry_norm_le_one {U : Matrix ι ι ℂ} (hU : ColumnUnitary U) (i j : ι) :
     ‖U i j‖ ≤ 1 := by

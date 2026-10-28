@@ -90,7 +90,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 /-- Closing the right tensor factor of an inserted endomorphism. -/
-theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X Y : C) (b : Y ⟶ Y) :
+theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X : C) {Y : C} (b : Y ⟶ Y) :
     rightPartialTrace p X Y (End.of (𝟙 X ⊗ₘ b)) =
       End.of ((ρ_ X).inv ≫ X ◁ (p.rightTrace b).asHom ≫ (ρ_ X).hom) := by
   apply End.ext
@@ -101,9 +101,9 @@ theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X Y : C)
 
 /-- The right partial trace of an inserted right-factor endomorphism is scalar. -/
 theorem rightPartialTrace_one_tensor (p : PivotalStructure (C := C))
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X Y : C) (b : Y ⟶ Y) :
+    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X : C) {Y : C} (b : Y ⟶ Y) :
     rightPartialTrace p X Y (End.of (𝟙 X ⊗ₘ b)) = scalar (p.rightTrace b) • 1 := by
-  rw [rightPartialTrace_tensor_right p X Y b,
+  rw [rightPartialTrace_tensor_right p X b,
     show p.rightTrace b = scalar (p.rightTrace b) • (1 : End (𝟙_ C)) from
       scalar.injective (by simp)]
   apply End.ext
@@ -111,19 +111,19 @@ theorem rightPartialTrace_one_tensor (p : PivotalStructure (C := C))
 
 /-- The partial trace of a tensor product is the left factor times the trace of the right. -/
 theorem rightPartialTrace_tensor (p : PivotalStructure (C := C))
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X Y : C) (a : X ⟶ X) (b : Y ⟶ Y) :
+    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
     rightPartialTrace p X Y (End.of (a ⊗ₘ b)) = scalar (p.rightTrace b) • End.of a := by
   rw [show End.of (a ⊗ₘ b) = End.of (𝟙 X ⊗ₘ b) * insertRightIdentity X Y (End.of a) from
       End.ext (by simp [insertRightIdentity, tensorHom_def]),
-    rightPartialTrace_right, rightPartialTrace_one_tensor p scalar X Y b]
+    rightPartialTrace_right, rightPartialTrace_one_tensor p scalar X b]
   simp
 
 /-- Pivotal trace is multiplicative on tensor products of endomorphisms. -/
 theorem pivotalTrace_tensor (p : PivotalStructure (C := C))
-    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X Y : C) (a : X ⟶ X) (b : Y ⟶ Y) :
+    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
     scalar (p.rightTrace (a ⊗ₘ b)) = scalar (p.rightTrace a) * scalar (p.rightTrace b) := by
   have h := rightTrace_partialTrace p X Y (End.of (a ⊗ₘ b))
-  rw [rightPartialTrace_tensor p scalar X Y a b] at h
+  rw [rightPartialTrace_tensor p scalar a b] at h
   have hs : p.rightTrace (a ⊗ₘ b) = scalar (p.rightTrace b) • p.rightTrace a := by
     simpa [PivotalStructure.rightTrace_smul] using h.symm
   rw [hs, map_smul]

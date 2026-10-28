@@ -288,7 +288,7 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     apply (Dimensions.groundUnitScalarEquiv C).injective
     simpa using h
   have hf : 0 < Ground.fpDimension C X :=
-    lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C X (Simple.not_isZero X))
+    lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X))
   apply norm_bound_of_overlapIndex hδ hf t
     (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec
   intro k

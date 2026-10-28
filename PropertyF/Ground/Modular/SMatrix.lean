@@ -56,14 +56,12 @@ theorem doubleBraiding_natural_right (X : C) {Y Z : C} (e : Y ≅ Z) :
 theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : Y ≅ Z) :
     SEntry p X Y = SEntry p X Z := by
   let t := Iso.refl X ⊗ᵢ e
-  calc
-    _ = p.rightTrace ((doubleBraiding X Y ≫ t.hom) ≫ t.inv) := by
-      simp [SEntry, Category.assoc]
-    _ = p.rightTrace (t.inv ≫ (doubleBraiding X Y ≫ t.hom)) := p.rightTrace_cyclic _ _
-    _ = _ := by
-      rw [show doubleBraiding X Y ≫ t.hom = t.hom ≫ doubleBraiding X Z from
-        doubleBraiding_natural_right X e, Iso.inv_hom_id_assoc]
-      rfl
+  have hn : doubleBraiding X Y ≫ t.hom = t.hom ≫ doubleBraiding X Z :=
+    doubleBraiding_natural_right X e
+  have h := p.rightTrace_cyclic (doubleBraiding X Y ≫ t.hom) t.inv
+  simp only [Category.assoc, Iso.hom_inv_id, Category.comp_id] at h
+  rw [hn, Iso.inv_hom_id_assoc] at h
+  exact h
 
 omit [RightRigidCategory C] in
 /-- The double braiding with the tensor unit is the identity. -/
@@ -100,9 +98,8 @@ theorem categoricalS_symmetric (i j : Fin (rank C)) :
 theorem categoricalS_unit (i : Fin (rank C)) :
     categoricalS C p i (unitIndex C) = simpleDimension C p i := by
   obtain ⟨e⟩ := unitIndex_iso C
-  change Ground.unitScalarEquiv C (SEntry p (simples C i) (simples C (unitIndex C))) = _
-  rw [SEntry_iso_right p (simples C i) e, SEntry_unit]
-  rfl
+  simpa [categoricalS, simpleDimension, SEntry_unit] using
+    congrArg (Ground.unitScalarEquiv C) (SEntry_iso_right p (simples C i) e)
 
 /-- In the spherical case, global dimension is the sum of squared simple dimensions. -/
 theorem categorical_global_eq_sum_squares (hp : p.IsSpherical) :
@@ -136,7 +133,7 @@ variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.
 theorem pivotalTrace_simple_ne_zero (X : C.Obj) [Simple X] :
     p.rightTrace (𝟙 X) ≠ 0 := by
   simpa only [Dimensions.rightTrace_id] using
-    Dimensions.rightQuantumTrace_simple_ne_zero C X (p.iso X)
+    Dimensions.rightQuantumTrace_simple_ne_zero C (p.iso X)
 
 /-- The scalar pivotal trace of a simple object is nonzero. -/
 theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :
