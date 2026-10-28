@@ -58,8 +58,7 @@ theorem crossing_counit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j)
   (biproduct.ι V i ▷ simples C j) ≫ crossingCandidate C X (simples C j) ≫
     (simples C j ◁ (underlyingCounit C).app X) = 0 := by
   let : IsEmpty (crossingIndex C (simples C j) i (unitIndex C)) := by
-    simp only [crossingIndex, counit_column_finrank, hne, ↓reduceIte]
-    infer_instance
+    simpa only [crossingIndex, counit_column_finrank, hne, ↓reduceIte] using (inferInstance : IsEmpty (Fin 0))
   simpa only [Fintype.sum_empty, zero_comp] using crossing_counit_matrix C X (simples C j) i
 
 set_option backward.isDefEq.respectTransparency false in

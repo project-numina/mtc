@@ -46,9 +46,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_unit (X S : D) :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  dsimp only [crossingBlock]
-  rw [closeFusionMap_unit S]
-  simp only [tensorHom_def]
+  simp only [crossingBlock, closeFusionMap_unit, tensorHom_def]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in

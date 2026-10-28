@@ -237,8 +237,7 @@ theorem crossingCandidate_natural_test
     Preadditive.comp_sum, Preadditive.sum_comp]
   apply Finset.sum_congr rfl
   intro j _
-  simp only [Category.assoc, whisker_exchange]
-  simpa only [Category.assoc, Preadditive.sum_comp, V] using congrArg (fun g => g ≫ (U ◁ biproduct.ι V j))
-    (crossingBlock_sum_natural_test C X T U h i j)
+  simpa only [Category.assoc, whisker_exchange, Preadditive.sum_comp, V] using
+    congrArg (fun g => g ≫ (U ◁ biproduct.ι V j)) (crossingBlock_sum_natural_test C X T U h i j)
 
 end PropertyF.Ground.CentreInduction
