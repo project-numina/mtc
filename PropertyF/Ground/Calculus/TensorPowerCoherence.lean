@@ -54,23 +54,14 @@ theorem reverseConcat_succ_right (a b : ℕ) :
       (α_ (tensorPower X a) (tensorPower X b) X).inv ≫
       ((reverseConcatIso X a b).hom ▷ X) ≫ (appendIso X (b + a)).hom := by
   induction a with
-  | zero =>
-    simp only [reverseConcatIso, tensorPower, Nat.add_zero, eqToHom_refl, Category.comp_id]
-    have hc : (α_ (𝟙_ C) (tensorPower X b) X).inv ≫ (λ_ (tensorPower X b)).hom ▷ X =
-        (λ_ (tensorPower X b ⊗ X)).hom := by monoidal
-    simp only [← Category.assoc, hc, leftUnitor_naturality]
-    simp [Category.assoc]
+  | zero => simp [reverseConcatIso, tensorPower]
   | succ a ih =>
     have h₀ : (b + 1) + a = (b + a) + 1 := by omega
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
       id_tensorHom, comp_whiskerRight, Category.assoc]
     rw [← whiskerLeft_eqToHom X (congrArg (tensorPower X) h₀), ← whiskerLeft_comp, ih]
-    have happ : appendIso X (b + (a + 1)) =
-        (α_ X (tensorPower X (b + a)) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X (b + a)) :=
-      appendIso_succ X (b + a)
-    rw [happ]
-    simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom,
-      whiskerLeft_comp]
+    simp only [Nat.add_succ, appendIso_succ, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,
+      id_tensorHom, whiskerLeft_comp]
     monoidal
 
 /-- Appending a strand commutes with equality transport of the prefix length. -/
@@ -109,11 +100,7 @@ theorem reverseConcat_overlap (a b : ℕ) :
       (reverseConcatIso X (a + 1) b).hom ≫
       eqToHom (congrArg (tensorPower X) (by omega : b + (a + 1) = (b + 1) + a)) := by
   induction a with
-  | zero =>
-    simp only [reverseConcatIso, appendIso, tensorPower, Nat.add_zero, eqToHom_refl,
-      Category.comp_id, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
-      id_tensorHom, comp_whiskerRight]
-    monoidal
+  | zero => simp [reverseConcatIso, appendIso, tensorPower]
   | succ a ih =>
     have h₀ : b + (a + 1) = (b + 1) + a := by omega
     simp only [reverseConcatIso, Iso.trans_hom, tensorIso_hom, Iso.refl_hom,

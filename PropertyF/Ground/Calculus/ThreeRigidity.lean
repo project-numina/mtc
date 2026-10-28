@@ -112,10 +112,9 @@ theorem selfMonodromy_finite_order {X : C} (hfinite : ObjectPropertyF X) :
   have hgen : (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd (braidGenerator X 0 0)) =
       End.of ((β_ X X).hom) := End.ext (twoGenerator_transport X)
   have h := congrArg (fun z => (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd z)) hpow
-  simp only [map_pow, map_one, hgen] at h
   have hs : (End.of ((β_ X X).hom) : End (X ⊗ X)) ^ 2 = selfMonodromy X :=
     End.ext (by simp [selfMonodromy, pow_two, End.mul_asHom])
-  exact ⟨n, hn, hs ▸ h⟩
+  exact ⟨n, hn, by simpa only [map_pow, map_one, hgen, hs] using h⟩
 
 end LocalMonodromy
 
