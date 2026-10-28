@@ -48,12 +48,25 @@ theorem exists_galoisLabel_of_verlinde
     value := fun i => S i j / d j
     unit_eq := by rw [hsym, hunit]; exact div_self (hd j)
     mul_eq := fun i k => hVerlinde i k j }
-  have hlin : LinearIndependent ℂ (fun j => (columns j).value) :=
-    normalized_columns_linearIndependent hd hD hsym hsq
-  let e : ι ≃ Character N := Equiv.ofBijective columns (characters_bijective N columns hlin)
-  refine ⟨Character.galoisLabel e, ?_⟩
-  intro σ i j
-  exact (Character.galoisLabel_character e σ j i).symm
+  let e : ι ≃ Character N := Equiv.ofBijective columns
+    (characters_bijective N columns (normalized_columns_linearIndependent hd hD hsym hsq))
+  exact ⟨Character.galoisLabel e, fun σ i j ↦ (Character.galoisLabel_character e σ j i).symm⟩
+
+omit hd hD in
+/-- A Galois image of the dimension column determines a diagonal entry of S squared. -/
+theorem galois_unit_column_square
+    (hglobal : D = ∑ x, d x ^ 2) (hsym : ∀ x y, S x y = S y x)
+    (hsq : HasSSquare S dual D) (σ : ℂ ≃+* ℂ) (y : ι)
+    (hcol : ∀ x, S x y = d y * σ (d x)) :
+    d y ^ 2 * σ D = if y = dual y then D else 0 := by
+  calc
+    d y ^ 2 * σ D = ∑ x, (d y * σ (d x)) ^ 2 := by
+      simp only [hglobal, map_sum, Finset.mul_sum, map_pow, mul_pow]
+    _ = ∑ x, S x y ^ 2 :=
+      (congrArg (fun f : ι → ℂ => ∑ x, f x ^ 2) (funext hcol)).symm
+    _ = ∑ x, S y x * S x y :=
+      Finset.sum_congr rfl fun x _ ↦ by rw [hsym y x, pow_two]
+    _ = _ := hsq y y
 
 /-- Proposition 2.1 from the numerical S identities and the character equation,
 with no modular-data hypothesis bundle. -/
@@ -64,19 +77,10 @@ theorem galois_unit_properties (hu : d u = 1)
     (σ : ℂ ≃+* ℂ) (y : ι)
     (hchar : ∀ x, σ (S x u / d u) = S x y / d y) :
     (∀ x, S x y = d y * σ (d x)) ∧ y = dual y ∧ σ D = D / d y ^ 2 := by
-  have hcol (x : ι) : S x y = d y * σ (d x) := by
-    have hh := hchar x
-    rw [hunit, hu, div_one] at hh
-    exact (div_eq_iff (hd y)).mp hh.symm |>.trans (mul_comm _ _)
-  have hsquare : d y ^ 2 * σ D = if y = dual y then D else 0 := by
-    calc
-      d y ^ 2 * σ D = ∑ x, (d y * σ (d x)) ^ 2 := by
-        simp only [hglobal, map_sum, Finset.mul_sum, map_pow, mul_pow]
-      _ = ∑ x, S x y ^ 2 :=
-        (congrArg (fun f : ι → ℂ => ∑ x, f x ^ 2) (funext hcol)).symm
-      _ = ∑ x, S y x * S x y :=
-        Finset.sum_congr rfl fun x _ ↦ by rw [hsym y x, pow_two]
-      _ = _ := hsq y y
+  have hcol (x : ι) : S x y = d y * σ (d x) :=
+    ((div_eq_iff (hd y)).mp (by simpa only [hunit, hu, div_one] using (hchar x).symm)).trans
+      (mul_comm _ _)
+  have hsquare := galois_unit_column_square hglobal hsym hsq σ y hcol
   have hself : y = dual y := by
     by_contra hn
     rw [ite_eq_right hn] at hsquare
