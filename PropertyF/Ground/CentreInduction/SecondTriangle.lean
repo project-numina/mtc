@@ -68,7 +68,7 @@ theorem crossing_counit_diagonal (i : Fin (rank C)) :
   dsimp only [crossingSummand]
   let : Simple (S i) := simples_simple C i
   let : FiniteDimensional ℂ (S i ⟶ S i) := IsFusionCategory.hom_finite _ _
-  rw [crossingBlock_of_simple_split X (simpleTensorUnitIso C i).symm _ _
+  rw [crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
     (crossingInclusion_projection default)]
   rfl
 

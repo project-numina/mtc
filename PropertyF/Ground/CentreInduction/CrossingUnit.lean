@@ -71,34 +71,35 @@ theorem crossingBlock_tensor
       simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
       monoidal
 
-variable [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D] [HasKernels D]
+variable {k : Type*} [Field k] [IsAlgClosed k] [Preadditive D] [Linear k D]
+  [MonoidalPreadditive D] [MonoidalLinear k D] [HasKernels D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A split crossing block is independent of the chosen splitting of a simple. -/
 theorem crossingBlock_of_simple_split [Simple R]
-    [FiniteDimensional ℂ (R ⟶ R)]
+    [FiniteDimensional k (R ⟶ R)]
     (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
     crossingBlock X T S g f = crossingBlock X T S e.hom e.inv := by
-  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ e.inv)
-  obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (e.hom ≫ f)
+  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id k (g ≫ e.inv)
+  obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id k (e.hom ≫ f)
   have hg : g = c • e.hom := by
     simpa [Category.assoc] using (congrArg (fun k => k ≫ e.hom) hc).symm
   have hf : f = d • e.inv := by
     simpa [Category.assoc] using (congrArg (fun k => e.inv ≫ k) hd).symm
   have hcd : c * d = 1 := by
-    apply (smul_left_injective ℂ (id_nonzero R))
+    apply (smul_left_injective k (id_nonzero R))
     simpa [hg, hf, Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using h
-  change mixedCrossingBilinear (k := ℂ) X T T R S g f = _
+  change mixedCrossingBilinear (k := k) X T T R S g f = _
   simp only [hg, hf, map_smul, LinearMap.smul_apply, smul_smul, mul_comm d c, hcd, one_smul]
   rfl
 
 set_option backward.isDefEq.respectTransparency false in
 /-- For a simple object, any splitting gives the same unit crossing block. -/
-theorem crossingBlock_unit_of_split [Simple S] [FiniteDimensional ℂ (S ⟶ S)]
+theorem crossingBlock_unit_of_split [Simple S] [FiniteDimensional k (S ⟶ S)]
     (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock X (𝟙_ D) S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv :=
-  (crossingBlock_of_simple_split X (λ_ S).symm g f h).trans (crossingBlock_unit X S)
+  (crossingBlock_of_simple_split (k := k) X (λ_ S).symm g f h).trans (crossingBlock_unit X S)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-strand decomposition has one diagonal simple summand. -/
@@ -123,7 +124,7 @@ theorem crossingCandidate_unit_summand (X : C.Obj) (i : Fin (rank C)) :
     rw [Fintype.sum_unique]
     let : Simple (simples C i) := simples_simple C i
     let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-    rw [crossingBlock_unit_of_split X
+    rw [crossingBlock_unit_of_split (k := ℂ) X
       (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
       (crossingInclusion_projection default), Category.assoc]
   · intro j _ hne
