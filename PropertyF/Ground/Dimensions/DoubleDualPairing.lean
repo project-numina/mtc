@@ -26,6 +26,7 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
+local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
 omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle dual pair in the tensor-product coevaluation recovers
@@ -49,11 +50,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Dualizing evaluation and transporting the dual of a tensor product gives
 the coevaluation of the dual object. -/
 theorem rightDualEvaluation_coevaluation :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (rightDualUnitIso (C := C)).inv ≫ ((ε_ X (Xᘁ))ᘁ) ≫
       (rightDualTensorIso (Xᘁ) X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) := by
   let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual I
   let W := (Xᘁ) ⊗ X
   let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
@@ -82,6 +81,7 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
+local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
 omit [RightRigidCategory C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle pair in a tensor-product evaluation leaves the outer evaluation. -/
@@ -104,11 +104,9 @@ theorem tensorPairing_evaluation_coevaluation [HasRightDual X] [HasRightDual (X�
 set_option backward.isDefEq.respectTransparency false in
 /-- Dualizing coevaluation gives the evaluation of the right dual. -/
 theorem rightDualCoevaluation_evaluation :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (rightDualTensorIso X (Xᘁ)).inv ≫ ((η_ X (Xᘁ))ᘁ) ≫
       (rightDualUnitIso (C := C)).hom = ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
   let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual I
   let W := X ⊗ (Xᘁ)
   let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
@@ -132,11 +130,9 @@ theorem rightDualCoevaluation_evaluation :
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves evaluation. -/
 theorem doubleDual_evaluation :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (doubleDualTensorIso (Xᘁ) X).hom ≫ (((ε_ X (Xᘁ))ᘁ)ᘁ) ≫
       (doubleDualUnitIso (C := C)).inv = ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
   let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual I
   let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : ((Xᘁ) ⊗ X)ᘁ ≅ V := rightDualTensorIso (Xᘁ) X
@@ -149,11 +145,9 @@ theorem doubleDual_evaluation :
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves coevaluation. -/
 theorem doubleDual_coevaluation :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (doubleDualUnitIso (C := C)).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) ≫
       (doubleDualTensorIso X (Xᘁ)).inv = η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
   let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual I
   let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : (X ⊗ (Xᘁ))ᘁ ≅ V := rightDualTensorIso X (Xᘁ)

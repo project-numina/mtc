@@ -240,7 +240,7 @@ theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalF
   let d : Fin (rank C) → ℝ := fun i ↦ (σ (fpSimple C i : ℂ)).re
   have hbound (i : Fin (rank C)) : |d i| ≤ fpSimple C i := by
     simp only [d, ← Real.norm_eq_abs, ← Complex.norm_real, fp_simple_galois_real]
-    exact Dimensions.galois_character_norm_le_fpSimple C (χ := fun i ↦ (fpSimple C i : ℂ))
+    exact Dimensions.galois_character_norm_le_fpSimple (χ := fun i ↦ (fpSimple C i : ℂ))
       (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i
   by
     change ∃ a : ℝ, 0 < a ∧ a ≤ ∑ i, fpSimple C i ^ 2 ∧
