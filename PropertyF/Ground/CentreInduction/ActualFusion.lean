@@ -57,14 +57,13 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A unit component followed by a crossing block reduces to a fusion endomorphism. -/
 theorem unit_block (Z : Center D) {T S R : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    (( (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫
-      ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock Z.1 T S g f =
+    (unitComponentAt Z R ▷ T) ≫ crossingBlock Z.1 T S g f =
       𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ (f ≫ g) ▷ Sᘁ ⊗≫
         𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _ := by
   let q := closeFusionMap T S f
   let bR := (Z.2.β R).hom
   let bTS := (Z.2.β (T ⊗ S)).hom
-  dsimp only [crossingBlock]
+  dsimp only [unitComponentAt, crossingBlock]
   calc
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((bR ≫ (g ▷ Z.1)) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
@@ -107,10 +106,9 @@ def unitBlockLinear (Z : Center D) (T S : D) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The identity fusion endomorphism yields the centre intertwining diagram. -/
 theorem unitBlockLinear_id (Z : Center D) (T S : D) :
-    unitBlockLinear (k := k) Z T S (𝟙 (T ⊗ S)) = (Z.2.β T).hom ≫ (T ◁
-      ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫ (α_ Z.1 S (Sᘁ)).inv ≫
-        ((Z.2.β S).hom ▷ Sᘁ))) := by
-  dsimp only [unitBlockLinear, LinearMap.coe_mk, AddHom.coe_mk]
+    unitBlockLinear (k := k) Z T S (𝟙 (T ⊗ S)) =
+      (Z.2.β T).hom ≫ (T ◁ unitComponentAt Z S) := by
+  dsimp only [unitBlockLinear, unitComponentAt, LinearMap.coe_mk, AddHom.coe_mk]
   rw [Z.2.monoidal]
   simp only [id_whiskerRight]
   let bT := (Z.2.β T).hom
@@ -128,9 +126,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
 theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
-    (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C j)
-      (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)) =
-    (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
+    (unitComponent C Z p.1 ▷ T) ≫ crossingSummand C Z.1 T p.1 j p.2) =
+      (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
   calc
     _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
       unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫

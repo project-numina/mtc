@@ -50,9 +50,7 @@ theorem parityPermTrace_fixHead {n : ℕ} (σ : Equiv.Perm (Fin n)) :
     have hs : (permutationSign ℂ (n + 1) (fixHead n σ) : ℂ) =
         (permutationSign ℂ n σ : ℂ) := by
       simpa [fixHead] using sign_decomposeFin (R := ℂ) 0 σ
-    rw [parityPermScalarTrace_true, parityPermScalarTrace_true, hs,
-      tensorPermTrace_fixHead hdim hX σ]
-    ring
+    simp only [parityPermScalarTrace_true, hs, tensorPermTrace_fixHead hdim hX σ, mul_left_comm]
 
 include hdim in
 /-- Once the moved-strand trace deletion identity is shown for one parity,

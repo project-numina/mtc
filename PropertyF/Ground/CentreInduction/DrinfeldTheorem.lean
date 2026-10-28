@@ -58,10 +58,8 @@ set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u})
 
 theorem drinfeld_tensor_inverse (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
-    (doubleDualIso C (X ⊗ Y)).inv =
-      (doubleDualTensorIso X Y).inv ≫
-        ((doubleDualIso C X).inv ⊗ₘ (doubleDualIso C Y).inv) ≫
-          Modular.doubleBraiding X Y := by
+    (doubleDualIso C (X ⊗ Y)).inv = (doubleDualTensorIso X Y).inv ≫
+      ((doubleDualIso C X).inv ⊗ₘ (doubleDualIso C Y).inv) ≫ Modular.doubleBraiding X Y := by
   change (doubleDualIso C (X ⊗ Y)).inv =
     (doubleDualTensorIso X Y).inv ≫
       (doubleDualIso C X ⊗ᵢ doubleDualIso C Y).inv ≫ Modular.doubleBraiding X Y
