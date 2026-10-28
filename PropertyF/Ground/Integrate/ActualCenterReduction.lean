@@ -93,19 +93,7 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
   let f := fpSimple Z y
-  let χ : Fin (rank Z) → ℂ := fun i => (fpSimple Z i : ℂ)
-  have hχ : χ (unitIndex Z) ≠ 0 := by simp [χ, fpSimple_unit]
-  have hchar : ∀ i j, χ i * χ j = ∑ k, (fusionCoeff Z i j k : ℂ) * χ k := by
-    intro i j
-    dsimp [χ]
-    exact_mod_cast fpSimple_mul Z i j
-  have hdual : ∀ i, χ (dualIndex Z i) = χ i := by
-    intro i
-    simp [χ, fpSimple_dual]
-  have hreal' : (((σ (f : ℂ)).re : ℝ) : ℂ) = σ (f : ℂ) := by
-    apply Complex.conj_eq_iff_re.mp
-    simpa only [← Complex.star_def] using selfDual_character_galois_real Z χ (unitIndex Z)
-      hχ hchar hdual σ y
+  have hreal' := fp_simple_galois_real Z σ y
   refine ⟨y, f, (σ (f : ℂ)).re, one_le_fpSimple Z y, rfl, hreal'.symm,
     hprop.2.1, ?_, ?_, ?_⟩
   · intro x
@@ -131,11 +119,7 @@ theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v
     (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
     (hF : ∀ y, (∀ x, Modular.categoricalS Z p x y =
       (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
-      ObjectPropertyF (simples Z y))
-    (hRigid : ∀ y, ObjectPropertyF (simples Z y) → ∀ d : ℝ,
-      σ (fpSimple Z y : ℂ) = (d : ℂ) →
-      σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y →
-      fpSimple Z y = |d|) :
+      ObjectPropertyF (simples Z y)) :
     ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
   obtain ⟨y, f, d, hf, hfy, hσf, _, hcolumn, hG, hS⟩ :=
     exists_modular_witness Z p hp hdim hdet δ hglobal σ
@@ -147,7 +131,7 @@ theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v
   have htrace' : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y := by
     simpa only [hfy] using htrace
   have hσf' : σ (fpSimple Z y : ℂ) = (d : ℂ) := by simpa only [hfy] using hσf
-  simpa only [hfy] using hRigid y hyF d hσf' htrace'
+  simpa only [hfy] using galois_rigidity_of_propertyF Z p hdim σ y hyF d hσf' htrace'
 
 end PropertyF.Ground
 end
@@ -267,8 +251,6 @@ theorem target_of_modular_center
     apply center_witness_of_categorical_modular_data Z p hp hdim hdet
       (globalFPDimension C) b (lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C))
       hb hglobal σ hτ hfinite
-    intro y hyF d hσ hS
-    exact galois_rigidity_of_propertyF Z p hdim σ y hyF d hσ hS
 
 end PropertyF.Ground
 end
