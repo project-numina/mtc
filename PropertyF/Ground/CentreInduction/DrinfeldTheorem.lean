@@ -75,8 +75,8 @@ local notation "M" => Modular.doubleBraiding
 theorem drinfeld_tensor_inverse :
     (d (X ⊗ Y)).inv = (μ₂ X Y).inv ≫
       ((d X).inv ⊗ₘ (d Y).inv) ≫ M X Y := by
-  rw [← tensorIso_inv, Iso.eq_inv_comp, Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
-  exact (drinfeld_tensor X Y).symm
+  rw [← tensorIso_inv, Iso.eq_inv_comp, Iso.eq_inv_comp, ← Category.assoc,
+    Iso.comp_inv_eq, drinfeld_tensor, tensorIso_hom]
 
 omit [RightRigidCategory D] in
 /-- Formula for transporting the inverse Drinfeld map through an isomorphism. -/
