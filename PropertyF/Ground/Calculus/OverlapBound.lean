@@ -237,14 +237,10 @@ theorem overlap_trace_power_of_step
       (pivotalDimension C p X) ^ k +
       ih * actualBraidTrace C p u
 
-/-- The sharp bound works in any family of unitary braid-block presentations;
-it does not depend on a particular choice made by finite-group averaging. -/
-theorem sharp_trace_bound_for_presentations_of_overlap_identity
-    [Simple X] {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
-    (e : ∀ n, BraidBlockPresentation X n (d n))
-    (hd : ∀ n i, 0 < d n i)
-    (he : ∀ n, IsUnitaryBraidPresentation (e n))
-    (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u))
+/-- Bounds for the overlapping traces and their recurrence imply the sharp bound. -/
+theorem sharp_trace_bound_of_overlap [Simple X]
+    (hbound : ∀ k, ‖actualBraidTrace C p (overlapProduct u k)‖ ≤
+      Ground.fpDimension C X ^ (overlapIndex t k + 2))
     (hrec : HasOverlapTracePower C p u) :
     ‖actualBraidTrace C p u‖ ≤
       ‖pivotalDimension C p X‖ *
@@ -254,8 +250,7 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X)))
     (fun k => actualBraidTrace C p (overlapProduct u k)) ?_ hrec
   intro k
-  convert braid_trace_unitary_bound_ground C p (hd _) (e _) (overlapProduct u k)
-    (overlapProduct_unitary e he hu k) using 1
+  convert hbound k using 1
   congr 1
   rw [overlapIndex_formula, show t + 2 - 1 = t + 1 by omega]
   ring
