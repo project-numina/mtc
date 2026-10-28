@@ -48,8 +48,8 @@ theorem rightDualTensorIso_associativity {C : Type u} [Category.{v} C]
         convert @ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _ qXY HasRightDual.exact using 1
         monoidal
       have hq2 : ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) =
-        (𝟙 _ ⊗≫ (Zᘁ : C) ◁ (ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ) ▷ Z) ⊗≫ ε_ Z (Zᘁ)) := by
-        exact @ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _
+        (𝟙 _ ⊗≫ (Zᘁ : C) ◁ (ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ) ▷ Z) ⊗≫ ε_ Z (Zᘁ)) :=
+        @ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _
           HasRightDual.exact HasRightDual.exact
       rw [hq, hq2]
       calc
@@ -75,11 +75,11 @@ theorem rightDualTensorIso_associativity {C : Type u} [Category.{v} C]
       E ◁ (α_ X Y Z).hom ≫
         (@ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Zᘁ) ⊗ (Yᘁ)) HasRightDual.exact qYZ).evaluation'
       have hxy : @ExactPairing.evaluation C _ _ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) qXY =
-          (𝟙 _ ⊗≫ (Yᘁ : C) ◁ (ε_ X (Xᘁ) ▷ Y) ⊗≫ ε_ Y (Yᘁ)) := by
-        exact @ExactPairing.tensor_evaluation C _ _ X Y _ _ HasRightDual.exact HasRightDual.exact
+          (𝟙 _ ⊗≫ (Yᘁ : C) ◁ (ε_ X (Xᘁ) ▷ Y) ⊗≫ ε_ Y (Yᘁ)) :=
+        @ExactPairing.tensor_evaluation C _ _ X Y _ _ HasRightDual.exact HasRightDual.exact
       have hyz : @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ =
-          (𝟙 _ ⊗≫ (Zᘁ : C) ◁ (ε_ Y (Yᘁ) ▷ Z) ⊗≫ ε_ Z (Zᘁ)) := by
-        exact @ExactPairing.tensor_evaluation C _ _ Y Z _ _ HasRightDual.exact HasRightDual.exact
+          (𝟙 _ ⊗≫ (Zᘁ : C) ◁ (ε_ Y (Yᘁ) ▷ Z) ⊗≫ ε_ Z (Zᘁ)) :=
+        @ExactPairing.tensor_evaluation C _ _ Y Z _ _ HasRightDual.exact HasRightDual.exact
       unfold ExactPairing.tensor
       dsimp [A, B, D, E]
       rw [hxy, hyz]
@@ -193,8 +193,8 @@ theorem doubleDualTensorIso_associativity {C : Type u} [Category.{v} C]
   simp only [Category.assoc]
   have hα : ((α_ (Zᘁ) (Yᘁ) (Xᘁ)).invᘁ) ≫ ((α_ (Zᘁ) (Yᘁ) (Xᘁ)).homᘁ) = 𝟙 _ := by
     rw [← comp_rightAdjointMate, Iso.hom_inv_id, rightAdjointMate_id]
-  have hβ : (((α_ X Y Z).invᘁ)ᘁ) ≫ (((α_ X Y Z).homᘁ)ᘁ) = 𝟙 _ := by
-    exact ((rightDualIsoMap (rightDualIsoMap (α_ X Y Z))).inv_hom_id)
+  have hβ : (((α_ X Y Z).invᘁ)ᘁ) ≫ (((α_ X Y Z).homᘁ)ᘁ) = 𝟙 _ :=
+    ((rightDualIsoMap (rightDualIsoMap (α_ X Y Z))).inv_hom_id)
   slice_lhs 4 5 => rw [hα]
   simp only [Category.id_comp, Category.assoc]
   slice_lhs 6 7 => rw [hβ]

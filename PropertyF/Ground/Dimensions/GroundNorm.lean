@@ -26,8 +26,7 @@ theorem iso_inv_eq_inv_smul {X Y : C} {j k : X ≅ Y} {c : ℂ} (hc : c ≠ 0)
     (h : k.hom = c • j.hom) : k.inv = c⁻¹ • j.inv := by
   apply (cancel_mono k.hom).1
   simp only [Linear.smul_comp, ← Linear.comp_smul, Iso.inv_hom_id]
-  rw [h]
-  simp [hc, smul_smul]
+  rw [h, smul_smul, inv_mul_cancel₀ hc, one_smul, Iso.inv_hom_id]
 
 /-- Two isomorphisms from a simple object differ by a nonzero scalar and their inverses
 by its inverse. -/
@@ -58,8 +57,7 @@ theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional ℂ (X ⟶
   have hl : leftQuantumTrace k = c⁻¹ • leftQuantumTrace j := by
     apply End.homEquiv.injective
     simp [leftQuantumTrace, hinv, tensorHom_def]
-  rw [hr, hl, map_smul, map_smul]
-  simp only [smul_eq_mul]
+  rw [hr, hl, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
   field_simp
 
 end PropertyF.Ground.Dimensions
