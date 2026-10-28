@@ -86,6 +86,7 @@ theorem rootPhaseDefect_apply {i j k : Fin (rank C)}
   simp [rootTensorDefect, Linear.smul_comp, smul_smul, div_eq_mul_inv, mul_comm]
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
     (hdef : ∀ k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1) :
     (rootSignTwist C c hc).app (simples C i ⊗ simples C j) =

@@ -19,6 +19,7 @@ variable (C : BraidedFusionCategory.{v,u})
 abbrev SimpleFourthDualTensorLaw : Prop :=
   ∀ i j : Fin (rank C), fourthDualTensorLaw (simples C i) (simples C j)
 
+variable {C} in
 /-- It suffices to prove the fourth-dual tensor law on simple pairs; the
 construction uses no assumption about that law on arbitrary objects. -/
 theorem positive_spherical_of_simple_fourth_and_reciprocity
@@ -29,7 +30,7 @@ theorem positive_spherical_of_simple_fourth_and_reciprocity
   let hinv : MultiplicityDefectsInvolutive C := fun i j k ↦
     multiplicityDefect_involution_of_tensor_square C k
       ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)
-  positive_spherical_of_matrix_identities C hinv
+  positive_spherical_of_matrix_identities hinv
     (fun i j ↦ enoTraceMatrix_eigenvector_of_involutions (hinv i j))
     (fun i ↦ squaredNorm_eq_root_norm_sq_of_reciprocity hinv htranspose i) hpu
 
@@ -71,6 +72,7 @@ def enoReciprocityEquiv :
   (simpleHomPairingEquiv (simples C k) (simples C i ⊗ simples C j)).symm.trans
     (enoFrobeniusEquiv C i j k)
 
+variable {C} in
 /-- The categorical operator intertwining under the actual reciprocity
 isomorphism implies ENO's trace-transpose relation. -/
 theorem trace_reciprocity_of_intertwining
@@ -114,6 +116,7 @@ theorem enoReciprocityEquiv_pairing
     enoReciprocityEquiv C i j k (simpleHomPairingEquiv (simples C k) (simples C i ⊗ simples C j) g) =
       enoFrobeniusEquiv C i j k g := by simp [enoReciprocityEquiv]
 
+variable {C} in
 /-- It is enough to prove the defect compatibility on ordinary categorical
 morphisms before applying the perfect-pairing duality. -/
 theorem trace_reciprocity_of_frobenius_defect
@@ -122,7 +125,7 @@ theorem trace_reciprocity_of_frobenius_defect
       rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
         (rootTensorDefect C (simples C (dualIndex C i)) (simples C j)).hom)) :
     ENOTraceMatrixReciprocity C := by
-  refine trace_reciprocity_of_intertwining C fun i j k v ↦ ?_
+  refine trace_reciprocity_of_intertwining fun i j k v ↦ ?_
   let P := simpleHomPairingEquiv (simples C j) (simples C i ⊗ simples C k)
   obtain ⟨g, rfl⟩ := P.surjective v
   have hm : (multiplicityDefect C i k j).toLinearMap =

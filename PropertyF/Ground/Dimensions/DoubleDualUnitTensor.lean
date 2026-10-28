@@ -40,9 +40,9 @@ theorem rightDualTensorIso_unit_left :
       (r := HasRightDual.exact) r.inv (rightDualIso_inv_evaluation
         (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
         (inferInstance : ExactPairing I I)),
-    ExactPairing.tensor_evaluation]
-  rw [show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
-    (ρ_ I).hom from rfl]
+    ExactPairing.tensor_evaluation,
+    show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
+      (ρ_ I).hom from rfl]
   monoidal
 /-- Right dual tensor comparison is compatible with the right unitor. -/
 theorem rightDualTensorIso_unit_right :
@@ -61,9 +61,9 @@ theorem rightDualTensorIso_unit_right :
       (r := @HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I)) r.inv
       (rightDualIso_inv_evaluation (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
         (inferInstance : ExactPairing I I)),
-    ExactPairing.tensor_evaluation]
-  rw [show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
-    (ρ_ I).hom from rfl]
+    ExactPairing.tensor_evaluation,
+    show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
+      (ρ_ I).hom from rfl]
   monoidal
 
 end PropertyF.Ground.Dimensions
@@ -103,8 +103,8 @@ theorem doubleDualTensorIso_unit_left :
   change (r.inv ≫ (r.homᘁ)) ▷ ((Xᘁ)ᘁ) ≫
     (S.inv ≫ (R.homᘁ)) ≫ (((λ_ X).homᘁ)ᘁ) = (λ_ ((Xᘁ)ᘁ)).hom
   simp only [comp_whiskerRight, Category.assoc]
-  rw [hR', reassoc_of% hs]
-  rw [← comp_whiskerRight_assoc (r.homᘁ) (r.invᘁ), ← comp_rightAdjointMate,
+  rw [hR', reassoc_of% hs,
+    ← comp_whiskerRight_assoc (r.homᘁ) (r.invᘁ), ← comp_rightAdjointMate,
     Iso.inv_hom_id, rightAdjointMate_id, id_whiskerRight, Category.id_comp]
   exact hS'
 
@@ -134,8 +134,8 @@ theorem doubleDualTensorIso_unit_right :
   change ((Xᘁ)ᘁ) ◁ (r.inv ≫ (r.homᘁ)) ≫
     (S.inv ≫ (R.homᘁ)) ≫ (((ρ_ X).homᘁ)ᘁ) = (ρ_ ((Xᘁ)ᘁ)).hom
   simp only [whiskerLeft_comp, Category.assoc]
-  rw [hR', reassoc_of% hs]
-  rw [← whiskerLeft_comp_assoc ((Xᘁ)ᘁ) (r.homᘁ) (r.invᘁ), ← comp_rightAdjointMate,
+  rw [hR', reassoc_of% hs,
+    ← whiskerLeft_comp_assoc ((Xᘁ)ᘁ) (r.homᘁ) (r.invᘁ), ← comp_rightAdjointMate,
     Iso.inv_hom_id, rightAdjointMate_id, whiskerLeft_id, Category.id_comp]
   exact hS'
 
