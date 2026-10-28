@@ -207,11 +207,10 @@ theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
     (∑ j, w j * (Pi.single (M := fun k => Matrix (Fin (d k)) (Fin (d k)) ℂ) i A j).trace) =
       w i * A.trace := by
   classical
-  rw [Finset.sum_eq_single i]
+  rw [Fintype.sum_eq_single i]
   · simp
-  · intro j _ h
+  · intro j h
     simp [Pi.single_eq_of_ne h]
-  · simp
 
 /-- For any representation of a finite product of nonzero complex matrix
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the

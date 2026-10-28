@@ -188,8 +188,7 @@ theorem normalized_columns_injective (hdet : S.det ≠ 0) (hd : ∀ i, dimension
     Function.Injective (fun j i ↦ S i j / dimension j) := fun a b h ↦
   (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply
     (dimension b) (dimension a) a b (hd b) (funext fun x ↦ by
-      change dimension b * S x a = dimension a * S x b
-      simpa only [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
+      simpa [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
 
 /-- The normalized S columns are linearly independent. The proof constructs an
 explicit inverse from the S-square identity and nonzero dimensions. -/
