@@ -165,12 +165,9 @@ theorem unitComponentAt_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory
     CentreRigid.halfBraiding_unit Z]
   simp only [comp_whiskerRight, Category.assoc]
   rw [triangle_assoc_comp_right_assoc, ← whisker_exchange_assoc]
-  simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp]
-  have hunit := coevaluation_iso_unit e
-  simp only [← whiskerLeft_comp_assoc]
-  dsimp only [Iso.trans_hom] at hunit
-  simp only [Category.assoc] at hunit ⊢
-  rw [hunit, whiskerLeft_id]
+  simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp,
+    ← whiskerLeft_comp_assoc, Category.assoc]
+  erw [coevaluation_iso_unit e, whiskerLeft_id]
   simp
 
 set_option backward.isDefEq.respectTransparency false in

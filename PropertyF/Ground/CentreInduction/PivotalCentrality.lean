@@ -28,10 +28,9 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
   let b := (β_ Z B).hom
   have hn := transported_pivotal_natural p b
   rw [← transported_pivotal_tensor p B Z, ← transported_pivotal_tensor p Z B] at hn
-  have hb := congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
-  dsimp only [Center.comp_f] at hb
-  change (doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
-    (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (doubleDualTensorIso B Z).hom.f at hb
+  have hb : (doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
+      (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f ≫ (doubleDualTensorIso B Z).hom.f :=
+    congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
   simp only [Category.assoc] at hn
   rw [hb] at hn
   apply (cancel_mono ((Center.forget D).map (doubleDualTensorIso B Z).hom)).1
@@ -49,8 +48,7 @@ theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
   rw [tensorHom_def' g f, tensorHom_def f g] at h
   change (Z.2.β T).hom ≫ ((T ◁ f) ≫ g ▷ W.1) =
     ((f ▷ T) ≫ W.1 ◁ g) ≫ (W.2.β B.1).hom at h
-  have hn := W.2.naturality g
-  simpa only [Category.assoc, hn] using h.symm
+  simpa only [Category.assoc, W.2.naturality g] using h.symm
 
 /-- Every transported base pivotal component is a morphism in the actual centre. -/
 theorem pivotalComponentsCentral_proved [BraidedCategory D] :
