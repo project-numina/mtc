@@ -80,8 +80,9 @@ theorem character_dual_conj (χ : Character N) (i : ι) :
 
 /-- Actual fusion coefficients satisfy the adjointness relation. -/
 theorem fusionCoeff_dual_adjoint (C : Ground.BraidedFusionCategory) (i j k : Fin (rank C)) :
-    fusionCoeff C i j k = fusionCoeff C (Ground.dualIndex C i) k j := by
-  rw [fusionCoeff_comm C i j, fusionCoeff_reciprocity_labels, fusionCoeff_comm]
+    fusionCoeff C i j k = fusionCoeff C (Ground.dualIndex C i) k j :=
+  (fusionCoeff_comm C i j k).trans <|
+    (fusionCoeff_reciprocity_labels C j i k).trans (fusionCoeff_comm C k (Ground.dualIndex C i) j)
 
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 

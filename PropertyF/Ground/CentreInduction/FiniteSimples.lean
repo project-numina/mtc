@@ -20,16 +20,13 @@ variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- An underlying factorization through a centre monomorphism is central. -/
-theorem center_factor {P Q X : CategoryTheory.Center C.Obj} (p : P ⟶ X) (q : Q ⟶ X)
-    [Mono q] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
+theorem center_factor {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    {P Q X : CategoryTheory.Center D} (p : P ⟶ X) (q : Q ⟶ X)
+    [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g := by
-  have : Mono q.f := by
-    change Mono ((CategoryTheory.Center.forget C.Obj).map q)
-    infer_instance
   let t : P ⟶ Q := ⟨g, ?_⟩
   · exact ⟨t, rfl⟩
   · intro T
-    let : IsSplitMono q.f := mono_splits C q.f
     let : IsSplitMono (T ◁ q.f) := IsSplitMono.mk'
       { retraction := T ◁ retraction q.f
         id := by rw [← whiskerLeft_comp, IsSplitMono.id, whiskerLeft_id] }
@@ -43,14 +40,15 @@ theorem center_factor {P Q X : CategoryTheory.Center C.Obj} (p : P ⟶ X) (q : Q
       _ = _ := by rw [← hg, whiskerLeft_comp]; simp [Category.assoc]
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
-def centerUnderlyingRange (X : CategoryTheory.Center C.Obj) (P : Subobject X) :
+def centerUnderlyingRange {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [Preadditive D] [Linear ℂ D] (X : CategoryTheory.Center D) (P : Subobject X) :
     Submodule ℂ (X.1 ⟶ X.1) := LinearMap.range (Linear.rightComp ℂ X.1 P.arrow.f)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Underlying endomorphism ranges detect the order of centre subobjects. -/
 def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
     Subobject X ↪o Submodule ℂ (X.1 ⟶ X.1) :=
-  OrderEmbedding.ofMapLEIff (centerUnderlyingRange C X) (by
+  OrderEmbedding.ofMapLEIff (centerUnderlyingRange X) (by
     intro P Q
     constructor
     · intro h
@@ -58,13 +56,17 @@ def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
         change Mono ((CategoryTheory.Center.forget C.Obj).map P.arrow)
         infer_instance
       let : IsSplitMono P.arrow.f := mono_splits C P.arrow.f
-      have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange C X P :=
+      have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange X P :=
         ⟨retraction P.arrow.f, rfl⟩
       obtain ⟨g, hg⟩ := h hm
       change g ≫ Q.arrow.f = retraction P.arrow.f ≫ P.arrow.f at hg
       have hg' : (P.arrow.f ≫ g) ≫ Q.arrow.f = P.arrow.f := by
         rw [Category.assoc, hg, ← Category.assoc, IsSplitMono.id, Category.id_comp]
-      obtain ⟨t, ht⟩ := center_factor C P.arrow Q.arrow (P.arrow.f ≫ g) hg'
+      have : Mono Q.arrow.f := by
+        change Mono ((CategoryTheory.Center.forget C.Obj).map Q.arrow)
+        infer_instance
+      let : IsSplitMono Q.arrow.f := mono_splits C Q.arrow.f
+      obtain ⟨t, ht⟩ := center_factor P.arrow Q.arrow (P.arrow.f ≫ g) hg'
       apply Subobject.le_of_comm t
       apply CategoryTheory.Center.ext
       change t.f ≫ Q.arrow.f = P.arrow.f

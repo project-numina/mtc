@@ -58,7 +58,8 @@ theorem fusion_coevaluation {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component followed by a crossing block reduces to a fusion endomorphism. -/
-theorem unit_block (Z : CategoryTheory.Center C.Obj) {T S R : C.Obj}
+theorem unit_block {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    (Z : CategoryTheory.Center D) {T S R : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (( (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫
       ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock Z.1 T R S g f =
@@ -80,20 +81,20 @@ theorem unit_block (Z : CategoryTheory.Center C.Obj) {T S R : C.Obj}
   clear_value q bR bTS
   calc
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
-      ((bR ≫ (g ▷ Z.1)) ▷ ((Rᘁ : C.Obj) ⊗ T)) ⊗≫
+      ((bR ≫ (g ▷ Z.1)) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
       ((T ⊗ S) ◁ (Z.1 ◁ q)) ⊗≫ 𝟙 _ := by
         simp only [tensorHom_def, comp_whiskerRight]
         monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
-      (((Z.1 ◁ g) ≫ bTS) ▷ ((Rᘁ : C.Obj) ⊗ T)) ⊗≫
+      (((Z.1 ◁ g) ≫ bTS) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
       ((T ⊗ S) ◁ (Z.1 ◁ q)) ⊗≫ 𝟙 _ := by rw [hn]
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
-      ((Z.1 ◁ g) ▷ ((Rᘁ : C.Obj) ⊗ T)) ⊗≫
-      ((bTS ▷ ((Rᘁ : C.Obj) ⊗ T)) ≫ (((T ⊗ S) ⊗ Z.1) ◁ q)) ⊗≫ 𝟙 _ := by
+      ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
+      ((bTS ▷ ((Rᘁ : D) ⊗ T)) ≫ (((T ⊗ S) ⊗ Z.1) ◁ q)) ⊗≫ 𝟙 _ := by
         simp only [comp_whiskerRight]
         monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
-      ((Z.1 ◁ g) ▷ ((Rᘁ : C.Obj) ⊗ T)) ⊗≫
+      ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
       ((((Z.1 ⊗ (T ⊗ S)) ◁ q)) ≫ (bTS ▷ (Sᘁ))) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫
       (bTS ▷ Sᘁ) ⊗≫ 𝟙 _ := by simp only [tensorHom_def]; monoidal
@@ -101,7 +102,8 @@ theorem unit_block (Z : CategoryTheory.Center C.Obj) {T S R : C.Obj}
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-block diagram depends linearly on its fusion endomorphism. -/
-def unitBlockLinear (Z : CategoryTheory.Center C.Obj) (T S : C.Obj) :
+def unitBlockLinear {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D] (Z : CategoryTheory.Center D) (T S : D) :
     (T ⊗ S ⟶ T ⊗ S) →ₗ[ℂ] (Z.1 ⊗ T ⟶ T ⊗ ((S ⊗ Z.1) ⊗ Sᘁ)) where
   toFun h := 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ h ▷ Sᘁ ⊗≫
     𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _
@@ -116,8 +118,9 @@ def unitBlockLinear (Z : CategoryTheory.Center C.Obj) (T S : C.Obj) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The identity fusion endomorphism yields the centre intertwining diagram. -/
-theorem unitBlockLinear_id (Z : CategoryTheory.Center C.Obj) (T S : C.Obj) :
-    unitBlockLinear C Z T S (𝟙 (T ⊗ S)) = (Z.2.β T).hom ≫ (T ◁
+theorem unitBlockLinear_id {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D] (Z : CategoryTheory.Center D) (T S : D) :
+    unitBlockLinear Z T S (𝟙 (T ⊗ S)) = (Z.2.β T).hom ≫ (T ◁
       ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫ (α_ Z.1 S (Sᘁ)).inv ≫
         ((Z.2.β S).hom ▷ Sᘁ))) := by
   dsimp only [unitBlockLinear, LinearMap.coe_mk, AddHom.coe_mk]
@@ -140,7 +143,7 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center C.Obj) (T S : C.Obj) :
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp
     _ = 𝟙 _ ⊗≫ (((Z.1 ⊗ T) ◁ η_ S (Sᘁ)) ≫ (bT ▷ (S ⊗ Sᘁ))) ⊗≫
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by monoidal
-    _ = 𝟙 _ ⊗≫ ((bT ▷ (𝟙_ C.Obj)) ≫ ((T ⊗ Z.1) ◁ η_ S (Sᘁ))) ⊗≫
+    _ = 𝟙 _ ⊗≫ ((bT ▷ (𝟙_ D)) ≫ ((T ⊗ Z.1) ◁ η_ S (Sᘁ))) ⊗≫
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = _ := by monoidal
 
@@ -154,13 +157,13 @@ theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)
   classical
   calc
     _ = ∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
-      unitBlockLinear C Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
+      unitBlockLinear Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
         crossingInclusion C T p.1 j p.2) := by
       apply Finset.sum_congr rfl
       intro p _
-      exact unit_block C Z
+      exact unit_block Z
         (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
-    _ = unitBlockLinear C Z T (simples C j)
+    _ = unitBlockLinear Z T (simples C j)
       (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
         crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) := by rw [map_sum]
     _ = _ := by rw [crossing_completeness, unitBlockLinear_id]; rfl

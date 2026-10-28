@@ -11,6 +11,13 @@ def tensorPowerIso {X Y : C} (f : X ≅ Y) : ∀ n, tensorPower X n ≅ tensorPo
   | 0 => Iso.refl _
   | n + 1 => f ⊗ᵢ tensorPowerIso f n
 
+/-- The first braid generator is the associated braiding on the first two strands. -/
+lemma braidGenerator_zero (X : C) (n : ℕ) :
+    (braidGenerator X n 0).asIso.hom =
+      ((α_ X X (tensorPower X n)).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl (tensorPower X n)) ≪≫
+        α_ X X (tensorPower X n)).hom :=
+  Nat.casesOn n rfl (fun _ ↦ rfl)
+
 /-- Naturality of the first adjacent braiding, with its associators. -/
 lemma braid_first {X Y A B : C} (f : X ≅ Y) (g : A ≅ B) :
     ((α_ X X A).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl A) ≪≫ α_ X X A).hom ≫
@@ -28,8 +35,7 @@ theorem braidGenerator_natural {X Y : C} (f : X ≅ Y) (n : ℕ)
       (tensorPowerIso f (n + 2)).hom ≫ (braidGenerator Y n i).asIso.hom := by
   induction n with
   | zero =>
-    have hi : i = 0 := Fin.eq_zero i
-    subst i
+    fin_cases i
     exact braid_first f (tensorPowerIso f 0)
   | succ n ih =>
     rcases i with ⟨i, hi⟩

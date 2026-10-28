@@ -62,15 +62,7 @@ lemma braid_first_with_comparison (X A : C) {B : D} (g : B ≅ F.obj A) :
 lemma braid_first_power (X : C) (n : ℕ) :
     (braidGenerator (F.obj X) n 0).asIso.hom ≫ (tensorPowerComparison F X (n+2)).hom =
       (tensorPowerComparison F X (n+2)).hom ≫ F.map (braidGenerator X n 0).asIso.hom := by
-  have hgen (Z : C) (k : ℕ) : (braidGenerator Z k 0).asIso.hom =
-      ((α_ Z Z (tensorPower Z k)).symm ≪≫ ((β_ Z Z) ⊗ᵢ Iso.refl (tensorPower Z k)) ≪≫
-        α_ Z Z (tensorPower Z k)).hom := by
-    cases k <;> rfl
-  have hgenD (Z : D) (k : ℕ) : (braidGenerator Z k 0).asIso.hom =
-      ((α_ Z Z (tensorPower Z k)).symm ≪≫ ((β_ Z Z) ⊗ᵢ Iso.refl (tensorPower Z k)) ≪≫
-        α_ Z Z (tensorPower Z k)).hom := by
-    cases k <;> rfl
-  rw [hgenD, hgen]
+  rw [braidGenerator_zero, braidGenerator_zero]
   change ((α_ (F.obj X) (F.obj X) (tensorPower (F.obj X) n)).symm ≪≫
       ((β_ (F.obj X) (F.obj X)) ⊗ᵢ Iso.refl (tensorPower (F.obj X) n)) ≪≫
        α_ (F.obj X) (F.obj X) (tensorPower (F.obj X) n)).hom ≫
