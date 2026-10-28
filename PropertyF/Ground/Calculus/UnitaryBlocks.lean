@@ -200,6 +200,16 @@ omit [Finite G] in
   change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
   exact MonoidAlgebra.lift_of ρ g
 
+/-- The canonical map from the categorical braid image into its span algebra. -/
+abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCategory C]
+    [Preadditive C] [Linear ℂ C] (X : C) (n : ℕ) : braidImage X n →* braidAlgebra X n :=
+  groupInImage (braidEndRepresentation X n)
+
+@[simp] theorem braidInImage_val {C : Type*} [Category C] [MonoidalCategory C]
+    [BraidedCategory C] [Preadditive C] [Linear ℂ C] (X : C) (n : ℕ) (g : braidImage X n) :
+    (braidInImage X n g : End (tensorPower X (n + 2))) = braidEndRepresentation X n g :=
+  groupInImage_val _ _
+
 /-- A block presentation in which each represented group element is unitary. -/
 abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
     (e : groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=

@@ -57,11 +57,11 @@ set_option backward.isDefEq.respectTransparency false in
 trace, independently of any choice of matrix blocks. -/
 theorem actual_three_braid_trace (C : BraidedFusionCategory.{v,u})
     (X : C.Obj) [Simple X] (p : PivotalStructure (C := C.Obj)) :
-    actualBraidTrace C X p 1 (groupInImage (braidEndRepresentation X 1)
+    actualBraidTrace C X p 1 (braidInImage X 1
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) =
       scalarTrace p (groundUnitScalarEquiv C) (selfMonodromy X) ^ 2 /
         pivotalDimension C p X := by
-  simpa [actualBraidTrace, groupInImage_val, braidEndRepresentation,
+  simpa [actualBraidTrace, braidInImage_val, braidEndRepresentation,
     threeGeneratorLeft, threeGeneratorRight, imageGenerator, pivotalDimension, scalarTrace,
     ← groundUnitScalarEquiv_apply] using
     (three_braid_trace C X p (groundUnitScalarEquiv C))
@@ -74,7 +74,7 @@ theorem actual_three_braid_saturates (C : BraidedFusionCategory.{v,u})
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hS : scalarTrace p (groundUnitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f) :
-    actualBraidTrace C X p 1 (groupInImage (braidEndRepresentation X 1)
+    actualBraidTrace C X p 1 (braidInImage X 1
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2 := by
   rw [actual_three_braid_trace C X p, hdim, hS]
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
@@ -97,12 +97,12 @@ theorem actual_braid_squares_equal_of_saturation
       (∀ i, b z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ) →
       ‖actualBraidTrace C X p 1 z‖ ≤ |d| * f ^ 2)
     (hvalue : actualBraidTrace C X p 1
-      (groupInImage (braidEndRepresentation X 1)
+      (braidInImage X 1
         (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2) :
     tripleBlockLeft X b ^ 2 = tripleBlockRight X b ^ 2 := by
   let B : PropertyF.Blocks := ⟨r, size⟩
   let ρ : braidImage X 1 →* B.Algebra :=
-    b.toMonoidHom.comp (groupInImage (braidEndRepresentation X 1))
+    b.toMonoidHom.comp (braidInImage X 1)
   let a : B.Algebraˣ := ρ.toHomUnits (threeGeneratorLeft X)
   let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
   have ha : B.IsUnitary (a : B.Algebra) := he _
@@ -116,18 +116,18 @@ theorem actual_braid_squares_equal_of_saturation
     have h := hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
     simpa [htrace, B] using h
   have hv : B.trace w ((a ^ 2 * c ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2 := by
-    have h := htrace (groupInImage (braidEndRepresentation X 1)
+    have h := htrace (braidInImage X 1
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2))
     rw [hvalue] at h
-    change B.trace w (b (groupInImage (braidEndRepresentation X 1) (threeGeneratorLeft X)) ^ 2 *
-      b (groupInImage (braidEndRepresentation X 1) (threeGeneratorRight X)) ^ 2) = _
-    rw [← map_pow, ← map_pow, ← map_mul]
+    change B.trace w (b (braidInImage X 1 (threeGeneratorLeft X)) ^ 2 *
+      b (braidInImage X 1 (threeGeneratorRight X)) ^ 2) = _
+    rw [← map_pow b, ← map_pow b, ← map_mul b]
     rw [map_mul, map_pow, map_pow] at h
     exact h.symm
   have h := braid_squares_equal_of_saturation B w a c d f hf hw ha hc hbraid hbnd hv
   have hh := congrArg (fun z : B.Algebraˣ => (z : B.Algebra)) h
-  change b (groupInImage (braidEndRepresentation X 1) (threeGeneratorLeft X)) ^ 2 =
-    b (groupInImage (braidEndRepresentation X 1) (threeGeneratorRight X)) ^ 2 at hh
+  change b (braidInImage X 1 (threeGeneratorLeft X)) ^ 2 =
+    b (braidInImage X 1 (threeGeneratorRight X)) ^ 2 at hh
   exact hh
 
 set_option backward.isDefEq.respectTransparency false in
@@ -160,12 +160,12 @@ theorem local_monodromy_of_block_squares_equal
     insertRightIdentity (X ⊗ X) X (selfMonodromy X) =
       overlapFresh X X X (selfMonodromy X) := by
   apply local_monodromy_of_three_squares_equal X
-  have hs : groupInImage (braidEndRepresentation X 1) (threeGeneratorLeft X ^ 2) =
-      groupInImage (braidEndRepresentation X 1) (threeGeneratorRight X ^ 2) := by
+  have hs : braidInImage X 1 (threeGeneratorLeft X ^ 2) =
+      braidInImage X 1 (threeGeneratorRight X ^ 2) := by
     apply b.injective
     simpa [tripleBlockLeft, tripleBlockRight, map_pow] using h
   have hm := congrArg (fun z : braidAlgebra X 1 => (z : End (tensorPower X 3))) hs
-  simpa [groupInImage_val, braidEndRepresentation, threeGeneratorLeft,
+  simpa [braidInImage_val, braidEndRepresentation, threeGeneratorLeft,
     threeGeneratorRight, imageGenerator] using hm
 
 /-- If the same pair operator occurs on either adjacent pair, partial trace
