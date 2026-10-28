@@ -26,7 +26,7 @@ variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 /-- Pivotal trace of an element of an actual categorical braid algebra. -/
 def actualBraidTrace {X : C.Obj} {n : ℕ} (a : braidAlgebra X n) : ℂ :=
   Ground.unitScalarEquiv C
-    (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
+    (p.rightTrace (a : End (braidTensorPower X n)).asHom)
 
 /-- A block presentation realizes the categorical braid trace with the given weights. -/
 abbrev IsTracePresentation {X : C.Obj}
@@ -59,11 +59,11 @@ bound is supplied by the fusion/Perron and dimensions workstreams. -/
 theorem pivotalTrace_braid_unitary_bound
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
-    (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
+    (e : braidTensorPower X n ≅ ⨁ (simpleCopies C m))
     {fp : Fin (Ground.rank C) → ℝ}
     (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ fp i)
     (a : braidAlgebra X n) (ha : Blocks.IsUnitary ⟨_, d⟩ (b a)) :
-    ‖scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
+    ‖scalar (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
       ∑ i, (m i : ℝ) * fp i := by
   obtain ⟨mult, _, hdim, htrace⟩ := pivotalTrace_braid_multiplicities C p scalar e hd b
   rw [htrace a, ← multiplicity_mass_eq m d mult fp hdim]
@@ -83,12 +83,12 @@ theorem braid_trace_unitary_bound_ground :
     HasUnitaryTraceBound C p b (Ground.fpDimension C X ^ (n + 2)) := by
   intro a ha
   let m : Fin (Ground.rank C) → ℕ := fun i =>
-    Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
-  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
+    Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)
+  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (braidTensorPower X n)
   rw [← fpDimension_tensorPower]
   change ‖Ground.unitScalarEquiv C
-    (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
-      Ground.fpDimension C (tensorPower X (n + 2))
+    (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
+      Ground.fpDimension C (braidTensorPower X n)
   exact pivotalTrace_braid_unitary_bound C p hd b (Ground.unitScalarEquiv C) e (fun i => by
     simpa only [RingEquiv.refl_apply, Dimensions.pivotalDimension, unitScalar_eq_equiv] using
       Dimensions.galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i) a ha
