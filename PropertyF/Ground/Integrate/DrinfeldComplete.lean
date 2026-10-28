@@ -10,7 +10,7 @@ public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 public import PropertyF.Ground.Centre.Modular.Vafa
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
-public import PropertyF.Ground.CentreInduction.Transparent
+public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
 

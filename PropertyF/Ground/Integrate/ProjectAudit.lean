@@ -30,7 +30,6 @@ public import PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
 import all PropertyF.Ground.Integrate.DrinfeldComplete
-import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
 import all PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 import all PropertyF.Ground.CentreCalculus.TwistSign
@@ -64,12 +63,10 @@ import all PropertyF.Ground.CentreInduction.ActualFusion
 import all PropertyF.Ground.CentreInduction.AdjunctionAssembly
 import all PropertyF.Ground.CentreInduction.BasisPairing
 import all PropertyF.Ground.CentreInduction.BasisRefinement
-import all PropertyF.Ground.CentreInduction.CandidateAssembly
 import all PropertyF.Ground.CentreInduction.CounitColumn
 import all PropertyF.Ground.CentreInduction.CrossingBlocks
 import all PropertyF.Ground.CentreInduction.CrossingCoherence
 import all PropertyF.Ground.CentreInduction.CrossingNaturality
-import all PropertyF.Ground.CentreInduction.CrossingTensor
 import all PropertyF.Ground.CentreInduction.CrossingUnit
 import all PropertyF.Ground.CentreInduction.FiniteSimples
 import all PropertyF.Ground.CentreInduction.FiniteSum
@@ -77,7 +74,6 @@ import all PropertyF.Ground.CentreInduction.ForgetDual
 import all PropertyF.Ground.CentreInduction.InjectiveFusion
 import all PropertyF.Ground.CentreInduction.Representatives
 import all PropertyF.Ground.CentreInduction.SecondTriangle
-import all PropertyF.Ground.CentreInduction.UnitSummand
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
 import all PropertyF.Ground.Dimensions.CoevaluationSliding
 import all PropertyF.Ground.Dimensions.DefectNaturality
