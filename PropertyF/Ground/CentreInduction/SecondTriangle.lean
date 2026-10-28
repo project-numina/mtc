@@ -125,10 +125,12 @@ theorem evaluation_iso_unit (e : A ≅ 𝟙_ D) :
     rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
     whiskerLeft_id, Category.id_comp]
 
+variable (X T : D)
+
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Closing the right unit isomorphism gives ordinary evaluation. -/
-theorem close_rightUnit_eval (T : D) (e : A ≅ 𝟙_ D) :
+theorem close_rightUnit_eval (e : A ≅ 𝟙_ D) :
     closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
       (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom = ε_ T (Tᘁ) := by
   let d := (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom
@@ -152,7 +154,7 @@ theorem close_rightUnit_eval (T : D) (e : A ≅ 𝟙_ D) :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The canonical unit-column crossing block contracts by evaluation. -/
-theorem crossingUnitBlock_eval (X T : D) (e : A ≅ 𝟙_ D) :
+theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
   let d : Aᘁ ≅ 𝟙_ D := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
   let us : (A ⊗ X) ⊗ Aᘁ ≅ X := ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X

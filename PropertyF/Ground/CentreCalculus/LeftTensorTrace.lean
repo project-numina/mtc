@@ -117,15 +117,12 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility (n : ℕ)
     leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = θ C p X • 1 := by
   have hg : (Aut.toEnd (braidGenerator X n 0)) = End.of
       ((α_ X X (tensorPower X n)).inv ≫ ((β_ X X).hom ▷ tensorPower X n) ≫
-        (α_ X X (tensorPower X n)).hom) := by
-    apply End.ext
+        (α_ X X (tensorPower X n)).hom) := End.ext <| by
     change (braidGenerator X n 0).asIso.hom = _
     simpa only [Modular.firstBraiding, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
       Iso.refl_hom, tensorHom_id] using Modular.braidGenerator_zero X n
-  change leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = _
   dsimp only [tensorPower] at hg ⊢
-  rw [hg]
-  rw [leftPartialTrace_whiskerRight p (tensorPower X n) (End.of (β_ X X).hom),
+  rw [hg, leftPartialTrace_whiskerRight p (tensorPower X n) (End.of (β_ X X).hom),
     leftPartialTrace_braiding_of_trace_compatibility (C := C) ht]
   apply End.ext
   simp
@@ -257,9 +254,9 @@ theorem leftTrace_partialTrace [Preadditive C] [Linear ℂ C]
   monoidal
   simp
   simp only [← whiskerLeft_comp_assoc]
-  rw [leftUnitor_inv_naturality_assoc]
-  rw [whisker_exchange_assoc (η_ (Xᘁ) ((Xᘁ)ᘁ)) (p.iso Y).inv]
-  rw [associator_naturality_right_assoc]
+  rw [leftUnitor_inv_naturality_assoc,
+    whisker_exchange_assoc (η_ (Xᘁ) ((Xᘁ)ᘁ)) (p.iso Y).inv,
+    associator_naturality_right_assoc]
   simp only [whiskerLeft_comp, Category.assoc]
   simp only [← whiskerLeft_comp_assoc]
   rw [whisker_exchange_assoc (p.iso X).inv (p.iso Y).inv]

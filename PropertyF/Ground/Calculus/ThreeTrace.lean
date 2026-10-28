@@ -26,12 +26,6 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def imageGenerator (X : C) (n : ℕ) (i : Fin (n + 1)) : braidImage X n :=
   ⟨braidGenerator X n i, Subgroup.subset_closure (Set.mem_range_self _)⟩
 
-/-- Every element of a finite categorical braid image has finite order. -/
-theorem braidImage_isOfFinOrder {X : C} (h : ObjectPropertyF X) (n : ℕ) (g : braidImage X n) :
-    IsOfFinOrder (g : Aut (tensorPower X (n + 2))) :=
-  let _ : Finite (braidImage X n) := h n
-  (braidImage X n).subtype.isOfFinOrder (isOfFinOrder_of_finite g)
-
 end PropertyF.Ground.Calculus
 
 /-! The actual three-strand braid relation, including tensor-power unitors. -/

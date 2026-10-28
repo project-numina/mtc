@@ -36,15 +36,10 @@ theorem finrank_frobenius_reciprocity [RigidCategory C] (X Y Z : C) :
 dimension, obtained using both rigidity adjunctions. -/
 theorem finrank_end_leftDual [RigidCategory C] (X : C) :
     Module.finrank ℂ ((ᘁX) ⟶ (ᘁX)) = Module.finrank ℂ (X ⟶ X) :=
-  calc
-    _ = Module.finrank ℂ ((𝟙_ C) ⊗ (ᘁX) ⟶ (ᘁX)) :=
-      (CategoryTheory.Linear.homCongr ℂ (λ_ (ᘁX)).symm (Iso.refl _)).finrank_eq
-    _ = Module.finrank ℂ ((𝟙_ C) ⟶ (ᘁX) ⊗ X) :=
-      (tensorRightHomLinearEquiv (𝟙_ C) (ᘁX) X (ᘁX)).finrank_eq
-    _ = Module.finrank ℂ (X ⊗ (𝟙_ C) ⟶ X) :=
-      (tensorLeftHomLinearEquiv (𝟙_ C) (ᘁX) X X).finrank_eq.symm
-    _ = Module.finrank ℂ (X ⟶ X) :=
-      (CategoryTheory.Linear.homCongr ℂ (ρ_ X) (Iso.refl _)).finrank_eq
+  (CategoryTheory.Linear.homCongr ℂ (λ_ (ᘁX)).symm (Iso.refl _)).trans
+    (tensorRightHomLinearEquiv (𝟙_ C) (ᘁX) X (ᘁX)) |>.trans
+    (tensorLeftHomLinearEquiv (𝟙_ C) (ᘁX) X X).symm |>.trans
+    (CategoryTheory.Linear.homCongr ℂ (ρ_ X) (Iso.refl _)) |>.finrank_eq
 
 variable (D : BraidedFusionCategory.{v,u})
 
