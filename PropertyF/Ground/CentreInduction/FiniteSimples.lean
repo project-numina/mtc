@@ -4,6 +4,12 @@ public import Mathlib.CategoryTheory.Subobject.ArtinianObject
 public import Mathlib.RingTheory.Artinian.Module
 public import Mathlib.CategoryTheory.Preadditive.Injective.Basic
 
+/-! # Finiteness and fusion of the centre
+
+The centre has finitely many simple isomorphism classes. A retract of the tensor unit through
+an induced object then gives finite semisimple decompositions and a fusion structure.
+-/
+
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
