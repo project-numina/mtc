@@ -13,7 +13,6 @@ public import PropertyF.Ground.Fusion.FunctorDimension
 public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Fusion.GeneratedRigidity
 public import PropertyF.Ground.Cabling.Strands
-public import PropertyF.Ground.Cabling.Pure
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Centre.Abelian
@@ -58,7 +57,6 @@ public import PropertyF.Ground.Cabling.UnitPower
 public import PropertyF.Ground.Cabling.Naturality
 public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.OverlapBound
-public import PropertyF.Ground.Calculus.StrandCoherence
 public import PropertyF.Ground.Calculus.OverlapCoherence
 public import PropertyF.Ground.Integrate.ScalarTwist
 public import PropertyF.Ground.Integrate.ScalarTwistTransport
@@ -152,7 +150,7 @@ public import PropertyF.Ground.CentreCabling.TwistDual
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
 
 /-! Formalization of `paper/property-f-simplified.pdf`.
-The main theorem is `PropertyF.propertyF_implies_weaklyIntegral`.
+The main theorem is `PropertyF.Ground.target`.
 Its explicit standard-input and realization assumptions are in `PropertyF.Axioms`.
 See `FORMALIZATION.md` for the complete assumption ledger.
 -/

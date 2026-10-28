@@ -1,7 +1,7 @@
 module
 public import PropertyF.Definitions
 public import Mathlib.Tactic
-public import PropertyF.Ground.Calculus.ThreeBraid
+public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.RightStrand
 
 /-!

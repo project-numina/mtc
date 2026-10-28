@@ -1,9 +1,8 @@
 module
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Cabling.Strands
-public import PropertyF.Ground.Calculus.StrandCoherence
-public import Mathlib.Tactic
 public import PropertyF.Ground.Calculus.OverlapCoherence
+public import Mathlib.Tactic
 
 open CategoryTheory CategoryTheory.MonoidalCategory
 @[expose] public noncomputable section

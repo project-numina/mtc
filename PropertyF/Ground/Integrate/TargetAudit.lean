@@ -92,14 +92,10 @@ import all PropertyF.Arithmetic
 import all PropertyF.Axioms
 import all PropertyF.BlockTrace
 import all PropertyF.BraidAlgebra
-import all PropertyF.Center
 import all PropertyF.CenterBasics
 import all PropertyF.Definitions
-import all PropertyF.GaloisRigidity
-import all PropertyF.GaloisSymmetry
 import all PropertyF.Ground.Cabling.Generated
 import all PropertyF.Ground.Cabling.Naturality
-import all PropertyF.Ground.Cabling.Pure
 import all PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.Cabling.UnitPower
 import all PropertyF.Ground.Calculus.BraidWeights
@@ -109,12 +105,9 @@ import all PropertyF.Ground.Calculus.OverlapCoherence
 import all PropertyF.Ground.Calculus.PartialTrace
 import all PropertyF.Ground.Calculus.PositiveWeights
 import all PropertyF.Ground.Calculus.RightStrand
-import all PropertyF.Ground.Calculus.StrandCoherence
 import all PropertyF.Ground.Calculus.TensorPowerCoherence
-import all PropertyF.Ground.Calculus.ThreeBraid
 import all PropertyF.Ground.Calculus.ThreeRigidity
 import all PropertyF.Ground.Calculus.ThreeTrace
-import all PropertyF.Ground.Calculus.Unitarization
 import all PropertyF.Ground.Calculus.UnitaryBlocks
 import all PropertyF.Ground.Centre.Abelian
 import all PropertyF.Ground.Centre.Averaging
@@ -193,9 +186,7 @@ import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.Verlinde
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Target
-import all PropertyF.Main
 import all PropertyF.PowerBound
-import all PropertyF.TraceBound
 import all PropertyF.UnitaryTrace
 
 /-! Explicit final-theorem gate. This module intentionally fails to build until

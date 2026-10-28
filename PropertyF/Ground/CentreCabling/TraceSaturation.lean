@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Calculus.Unitarization
+public import PropertyF.Ground.Calculus.UnitaryBlocks
 public import PropertyF.UnitaryTrace
 public import Mathlib.GroupTheory.OrderOfElement
 public import PropertyF.Ground.Modular.SMatrix
