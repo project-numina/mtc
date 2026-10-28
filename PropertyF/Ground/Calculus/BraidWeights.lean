@@ -222,8 +222,7 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
     let e : Blocks.Algebra ⟨_, d⟩ := Pi.single i (Matrix.single j j 1)
     have he : e * e = e := by
       simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
-    have hφ : φ e * φ e = φ e := by rw [← map_mul, he]
-    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat hφ
+    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by rw [← map_mul, he])
     refine ⟨k, ?_⟩
     have ht := hw e
     have ht' : (φ e).trace = w i := by
@@ -261,11 +260,9 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
       (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧
       (∀ j, ∃ i, 0 < mult i j) := by
   classical
-  have hm : ∀ i, ∃ k : Fin n → ℕ, ∀ x,
-      (φ x i).trace = ∑ j, (k j : ℂ) * (x j).trace := by
-    intro i
-    exact representation_trace_multiplicities hd ((Pi.evalAlgHom ℂ _ i).comp φ)
-  choose mult hmult using hm
+  choose mult hmult using fun i : Fin m =>
+    representation_trace_multiplicities hd ((Pi.evalAlgHom ℂ _ i).comp φ)
+  change ∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace at hmult
   refine ⟨mult, hmult, fun j => ?_⟩
   by_contra hn
   push Not at hn
@@ -276,8 +273,7 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
   have hzero : φ e = 0 := by
     funext i
     have hidem : φ e i * φ e i = φ e i := by
-      have h := congrFun (map_mul φ e e) i
-      simpa [he] using h.symm
+      simpa [he] using (congrFun (map_mul φ e e) i).symm
     have ht : (φ e i).trace = 0 := by
       rw [hmult]
       rw [Finset.sum_eq_single j]

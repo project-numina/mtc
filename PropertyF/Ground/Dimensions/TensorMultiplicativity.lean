@@ -94,7 +94,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 /-- Closing the right tensor factor and then the left gives the total pivotal trace. -/
-theorem rightTrace_partialTrace (p : PivotalStructure (C := C)) (X Y : C) (f : End (X ⊗ Y)) :
+theorem rightTrace_partialTrace (p : PivotalStructure (C := C)) {X Y : C} (f : End (X ⊗ Y)) :
   p.rightTrace (rightPartialTrace p X Y f).asHom = p.rightTrace f.asHom := by
   simpa only [rightTraceWith, PivotalStructure.rightTrace, partialTraceWith,
     rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk, Iso.trans_hom, tensorIso_hom,
@@ -145,7 +145,7 @@ theorem rightPartialTrace_tensor (p : PivotalStructure (C := C))
 theorem pivotalTrace_tensor (p : PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
     scalar (p.rightTrace (a ⊗ₘ b)) = scalar (p.rightTrace a) * scalar (p.rightTrace b) := by
-  have h := rightTrace_partialTrace p X Y (End.of (a ⊗ₘ b))
+  have h := rightTrace_partialTrace p (End.of (a ⊗ₘ b))
   rw [rightPartialTrace_tensor p scalar a b] at h
   have hs : p.rightTrace (a ⊗ₘ b) = scalar (p.rightTrace b) • p.rightTrace a := by
     simpa [PivotalStructure.rightTrace_smul] using h.symm

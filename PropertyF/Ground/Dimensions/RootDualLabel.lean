@@ -68,7 +68,7 @@ def enoReciprocityEquiv (C : BraidedFusionCategory.{v,u})
 
 /-- The categorical operator intertwining under the actual reciprocity
 isomorphism implies ENO's trace-transpose relation. -/
-theorem enoTraceMatrix_reciprocity_of_operator_intertwining
+theorem trace_reciprocity_of_intertwining
     (hintertwine : ∀ i j k
       (v : Module.Dual ℂ (simples C j ⟶ simples C i ⊗ simples C k)),
       enoReciprocityEquiv C i k j
@@ -130,13 +130,13 @@ theorem enoReciprocityEquiv_pairing
 
 /-- It is enough to prove the defect compatibility on ordinary categorical
 morphisms before applying the perfect-pairing duality. -/
-theorem enoTraceMatrix_reciprocity_of_frobenius_defect
+theorem trace_reciprocity_of_frobenius_defect
     (hcompat : ∀ i j k (g : simples C i ⊗ simples C k ⟶ simples C j),
       enoFrobeniusEquiv C i k j ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
       rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
         (rootTensorDefect C (simples C (dualIndex C i)) (simples C j)).hom)) :
     ENOTraceMatrixReciprocity C := by
-  apply enoTraceMatrix_reciprocity_of_operator_intertwining C
+  apply trace_reciprocity_of_intertwining C
   intro i j k v
   let : Simple (simples C j) := simples_simple C j
   let P := simpleHomPairingEquiv C j (simples C i ⊗ simples C k)

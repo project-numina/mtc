@@ -218,8 +218,8 @@ theorem rootSignTwist_unit_of_simple_dimension
   obtain ⟨e⟩ := unitIndex_iso C
   have hn := (rootSignTwist C c hc).hom.naturality e.hom
   have hq := rightQuantumTrace_iso
-    ((rootSignTwist C c hc).app (simples C (unitIndex C)))
-    ((rootSignTwist C c hc).app (𝟙_ C.Obj)) e (by simpa [doubleDualFunctor] using hn)
+    (j := (rootSignTwist C c hc).app (simples C (unitIndex C)))
+    (k := (rootSignTwist C c hc).app (𝟙_ C.Obj)) e (by simpa [doubleDualFunctor] using hn)
   rw [← hq, rootSignQuantumTrace_simple, hunit]
 
 
