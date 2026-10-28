@@ -143,8 +143,7 @@ theorem trace_reciprocity_of_frobenius_defect
   let g := P.symm v
   have hv : P g = v := P.apply_symm_apply v
   rw [← hv]
-  have hn := simpleHomPairing_natural C (simples C j)
-    (simples C i ⊗ simples C k) g
+  have hn := simpleHomPairing_natural C g
     (rootTensorDefect C (simples C i) (simples C k)).hom
   have hm : (multiplicityDefect C i k j).toLinearMap =
       Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom := by

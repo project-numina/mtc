@@ -22,9 +22,7 @@ theorem simple_algebraMap_bijective [HasKernels C] (X : C) [Simple X]
   · exact RingHom.injective _
   · intro a
     obtain ⟨z, hz⟩ := endomorphism_simple_eq_smul_id ℂ a.asHom
-    refine ⟨z, ?_⟩
-    apply End.ext
-    simpa [Algebra.algebraMap_eq_smul_one] using hz
+    exact ⟨z, End.ext (by simpa [Algebra.algebraMap_eq_smul_one] using hz)⟩
 
 /-- The endomorphism algebra of a finite-dimensional simple object is the scalar field. -/
 def simpleEndScalar [HasKernels C] (X : C) [Simple X]

@@ -52,8 +52,7 @@ theorem simple_biproduct_diagonal [HasKernels C] {ι : Type*} [Fintype ι]
     let : FiniteDimensional ℂ (F i ⟶ F i) := hfinite i
     obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ (biproduct.ι F i ≫ f ≫ biproduct.π F i)
     exact ⟨c, hc.symm⟩
-  choose c hc using h
-  exact ⟨c, hc⟩
+  exact Classical.skolem.mp h
 /-- Scalar diagonal blocks give the corresponding weighted cyclic trace. -/
 theorem cyclicTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
     (trace : ∀ X : C, (X ⟶ X) →ₗ[ℂ] A)

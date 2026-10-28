@@ -114,7 +114,6 @@ import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Dimensions.IntrinsicNonzero
 import all PropertyF.Ground.Dimensions.MultiplicityDefect
 import all PropertyF.Ground.Dimensions.Pivotal
-import all PropertyF.Ground.Dimensions.PivotalTwist
 import all PropertyF.Ground.Dimensions.SimpleHomBasis
 import all PropertyF.Ground.Dimensions.SimpleScalars
 import all PropertyF.Ground.Dimensions.TensorExtension
