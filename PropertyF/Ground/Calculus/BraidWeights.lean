@@ -67,11 +67,11 @@ theorem pivotalTrace_groundEndBlocks :
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
   have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj e p a
   have h := cyclicTrace_biproduct_scalar_blocks
-    (fun Y => scalar.toLinearMap.comp (rightTraceLinear p Y))
+    (fun Y => scalar.toLinearMap.comp (rightTraceWithLinear (p.iso Y)))
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
     (c := fun q => groundEndBlockEquiv C e a q.1 q.2 q.2)
     (fun ⟨i, j⟩ => by simpa [F, z, Category.assoc] using groundEndBlockEquiv_diagonal C e a i j)
-  simpa [rightTraceLinear, hz, F, Matrix.trace, Finset.mul_sum, mul_comm,
+  simpa [rightTraceWithLinear, rightTraceWith_pivotal, hz, F, Matrix.trace, Finset.mul_sum, mul_comm,
     Fintype.sum_sigma] using h
 
 end PropertyF.Ground.Calculus

@@ -159,9 +159,8 @@ variable [FiniteDimensional ℂ V]
 
 /-- The trace of a complex involution is real. -/
 theorem star_involution_trace (hT : T * T = 1) :
-    star (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T := by
-  obtain ⟨n, hn, _⟩ := involution_trace_integer_bound hT
-  simp [hn]
+    star (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T :=
+  (involution_trace_integer_bound hT).elim fun _ ⟨hn, _⟩ ↦ by simp [hn]
 
 variable (hT : T * T = 1) {c : ℂ} (hc : ‖c‖ = 1)
   (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ))

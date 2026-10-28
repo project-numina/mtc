@@ -35,18 +35,6 @@ theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 :=
   (unitIndex_iso D).elim fun e ↦
     (fpDimension_iso D e).symm.trans ((fpDimension_simple D _).trans (fpSimple_unit D))
 
-/-- A nonzero object has a nonzero simple multiplicity. -/
-theorem exists_positive_multiplicity {X : D.Obj}
-    (hX : ¬ IsZero X) : ∃ i, 0 < Module.finrank ℂ (simples D i ⟶ X) := by
-  classical
-  have hid : (𝟙 X : X ⟶ X) ≠ 0 := by simpa [IsZero.iff_id_eq_zero] using hX
-  obtain ⟨i, s, _, hs, _⟩ := exists_simple_retract D hid
-  let : FiniteDimensional ℂ (X ⟶ simples D i) := IsFusionCategory.hom_finite _ _
-  let : Simple (simples D i) := simples_simple D i
-  refine ⟨i, ?_⟩
-  rw [← finrank_to_simple_eq_from_simple X (simples D i)]
-  exact Module.finrank_pos_iff_exists_ne_zero.mpr ⟨s, hs⟩
-
 /-- Every nonzero object has FP dimension at least one. -/
 theorem one_le_fpDimension {X : D.Obj}
     (hX : ¬ IsZero X) : 1 ≤ fpDimension D X := by
