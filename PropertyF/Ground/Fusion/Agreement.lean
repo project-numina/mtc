@@ -33,13 +33,12 @@ theorem positive_matrix_eigenspace_unique [Nonempty ι]
   let c := y i / x i
   have hnonneg (j : ι) : 0 ≤ y j - c * x j :=
     sub_nonneg.mpr ((le_div_iff₀ (hx j)).mp (hmin j (Finset.mem_univ j)))
-  have hzero : y i - c * x i = 0 :=
-    sub_eq_zero.mpr (div_mul_cancel₀ _ (ne_of_gt (hx i))).symm
   have hsum : ∑ j, A i j * (y j - c * x j) = 0 := by
     have he : A *ᵥ (y - c • x) = d • (y - c • x) := by
       rw [Matrix.mulVec_sub, Matrix.mulVec_smul, hye, hxe, smul_sub]
       simp only [smul_smul, mul_comm]
-    simpa only [Matrix.mulVec, dotProduct, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hzero,
+    simpa only [Matrix.mulVec, dotProduct, Pi.sub_apply, Pi.smul_apply, smul_eq_mul,
+      show y i - c * x i = 0 from sub_eq_zero.mpr (div_mul_cancel₀ _ (ne_of_gt (hx i))).symm,
       mul_zero] using congrFun he i
   refine ⟨c, funext fun j ↦ sub_eq_zero.mp ?_⟩
   exact (mul_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg
@@ -59,9 +58,8 @@ theorem positive_symmetric_eigenvector_unique (hsym : Aᵀ = A)
   rw [hfe, hge, dotProduct_smul, dotProduct_smul, dotProduct_comm g f] at hdot
   have hdotpos : 0 < f ⬝ᵥ g :=
     Finset.sum_pos (fun i _ ↦ mul_pos (hfpos i) (hgpos i)) Finset.univ_nonempty
-  have heq : a = b := mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm
-  rw [← heq] at hge
-  obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique hA hfpos hfe hge
+  obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique hA hfpos hfe
+    (by rw [mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm]; exact hge)
   rw [hc, show c = 1 from by simpa [hfunit, hgunit] using (congrFun hc i₀).symm, one_smul]
 
 end
@@ -192,26 +190,19 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {A : Matrix ι ι ℝ}
     ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr
       (Matrix.isSymmetric_toEuclideanLin_iff.mpr hsym)
   obtain ⟨z, hz⟩ : ∃ z : EuclideanSpace ℝ ι, z ≠ 0 := exists_ne 0
-  have hcompact : IsCompact (Metric.sphere (0 : EuclideanSpace ℝ ι) ‖z‖) :=
-    isCompact_sphere _ _
-  obtain ⟨x, hxmem, hxmax⟩ := hcompact.exists_isMaxOn ⟨z, by simp⟩
+  obtain ⟨x, hxmem, hxmax⟩ := (isCompact_sphere (0 : EuclideanSpace ℝ ι) ‖z‖).exists_isMaxOn
+    ⟨z, by simp⟩
     T.reApplyInnerSelf_continuous.continuousOn
   let y := euclideanAbs x
   have hynorm : ‖y‖ = ‖z‖ := by
-    rw [euclideanAbs_norm]
-    simpa using hxmem
+    simpa [y, euclideanAbs_norm] using hxmem
   have hyne : y ≠ 0 := norm_ne_zero_iff.mp (by simpa [hynorm] using norm_ne_zero_iff.mpr hz)
   have hynonneg (i : ι) : 0 ≤ y i := abs_nonneg _
   have hyexists : ∃ i, 0 < y i := by
-    by_contra! h
-    apply hyne
-    ext i
-    exact le_antisymm (h i) (hynonneg i)
+    obtain ⟨i, hi⟩ := Function.ne_iff.mp ((not_congr (WithLp.ext_iff 2)).mp hyne)
+    exact ⟨i, lt_of_le_of_ne (hynonneg i) (Ne.symm hi)⟩
   have hyquad : T.reApplyInnerSelf x ≤ T.reApplyInnerSelf y := by
-    change (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf x ≤
-      (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf y
-    rw [matrix_quadratic_form, matrix_quadratic_form]
-    simpa [y, euclideanAbs] using quadratic_le_abs hA (fun i => x i)
+    simpa [T, matrix_quadratic_form, y, euclideanAbs] using quadratic_le_abs hA (fun i ↦ x i)
   have hymax : IsMaxOn T.reApplyInnerSelf (Metric.sphere 0 ‖y‖) y :=
     fun _ hw ↦ (hxmax (by simpa [hynorm] using hw)).trans hyquad
   have heigen := hself.eq_smul_self_of_isLocalExtrOn (Or.inr hymax.isLocalMaxOn)
@@ -341,11 +332,10 @@ theorem exists_positive_character :
   · intro i j
     obtain ⟨d, hd⟩ := hve i
     have hscalar : d = f i := by
-      have h := congrFun hd (unitIndex D)
-      simp [Matrix.mulVec, dotProduct, characterMatrix,
-        fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit] at h
-      dsimp [f]
-      exact (eq_div_iff hunit).mpr h.symm
+      apply (eq_div_iff hunit).mpr
+      simpa [Matrix.mulVec, dotProduct, characterMatrix,
+        fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit] using
+          (congrFun hd (unitIndex D)).symm
     have hrow := congrFun hd j
     simp only [Matrix.mulVec, dotProduct, characterMatrix, Pi.smul_apply, smul_eq_mul] at hrow
     rw [hscalar] at hrow
@@ -482,11 +472,11 @@ theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
     change (∑ k, (fusionCoeff D i j k : ℝ) * fpCharacter D k) = _
     exact (fpCharacter_mul D i j).symm
   obtain ⟨z, hz, hzmax⟩ := spectrum.exists_nnnorm_eq_spectralRadius B
-  have hz' : z ∈ spectrum ℂ B.toLin' := by simpa using hz
-  obtain ⟨v, hv⟩ := (Module.End.hasEigenvalue_iff_mem_spectrum.mpr hz').exists_hasEigenvector
-  have hve : A.map Complex.ofRealHom *ᵥ v = z • v := by
-    simpa [B, Matrix.toLin'_apply] using hv.apply_eq_smul
-  have hbound := complex_eigenvalue_le_positive_eigenvalue hwe hve
+  obtain ⟨v, hv⟩ := (Module.End.hasEigenvalue_iff_mem_spectrum.mpr
+    (show z ∈ spectrum ℂ B.toLin' from by simpa using hz)).exists_hasEigenvector
+  have hbound := complex_eigenvalue_le_positive_eigenvalue hwe
+    (show A.map Complex.ofRealHom *ᵥ v = z • v from by
+      simpa [B, Matrix.toLin'_apply] using hv.apply_eq_smul)
     (fun j k => Nat.cast_nonneg _) (fpCharacter_pos D) hv.2
   simpa only [fpSimple, ← Matrix.spectralRadius_transpose (fusionMatrix D i), ← hB,
     ← hzmax, ENNReal.coe_toReal, coe_nnnorm] using hbound
