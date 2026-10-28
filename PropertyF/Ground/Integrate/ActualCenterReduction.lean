@@ -13,6 +13,7 @@ public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Centre.ProductClosure
+public import PropertyF.Ground.CentreCabling.RegularSupport
 public import PropertyF.Ground.Integrate.CenterBundle
 
 section
@@ -77,11 +78,7 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
         (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) ∧
       σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (fpSimple Z y : ℂ) ^ 2 ∧
       Modular.categoricalS Z p y y = (fpSimple Z y : ℂ) * σ.symm (fpSimple Z y : ℂ) := by
-  have hreal : ∀ j, starRingEnd ℂ (Modular.simpleDimension Z p j) =
-      Modular.simpleDimension Z p j := by
-    intro j
-    rw [hdim]
-    simp
+  have hreal := CentreCabling.realSimpleDimensions_of_fp hdim
   obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hp hdet hreal
   let y := act σ.symm (unitIndex Z)
   have hprop := Modular.galois_unit_properties (unitIndex Z) (Modular.categoricalS Z p)
