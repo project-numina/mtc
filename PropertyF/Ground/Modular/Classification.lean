@@ -106,10 +106,8 @@ def fusionOperator (i : ι) : (ι → ℂ) →ₗ[ℂ] (ι → ℂ) :=
 omit [DecidableEq ι] in
 /-- A character is a simultaneous eigenvector of all fusion operators. -/
 theorem character_eigenvector (χ : Character N) (i : ι) :
-    fusionOperator N i χ.value = χ.value i • χ.value := by
-  ext j
-  change (∑ k, (N.coeff i j k : ℂ) * χ.value k) = χ.value i * χ.value j
-  exact (χ.mul_eq i j).symm
+    fusionOperator N i χ.value = χ.value i • χ.value :=
+  funext fun j ↦ (χ.mul_eq i j).symm
 
 /-- A basis consisting of characters classifies every character. -/
 theorem characters_exhausted (columns : ι → Character N)

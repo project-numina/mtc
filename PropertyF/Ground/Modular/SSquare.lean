@@ -53,13 +53,10 @@ theorem categoricalS_character_injective
   apply hl.eq_of_smul_apply_eq_smul_apply (dₚ b) (dₚ a)
     a b (simpleDimension_ne_zero C p b)
   funext x
-  have hx := congrFun h x
-  have hda := simpleDimension_ne_zero C p a
-  have hdb := simpleDimension_ne_zero C p b
-  change dₚ b * Sₚ x a =
-    dₚ a * Sₚ x b
-  field_simp [hda, hdb] at hx
-  linear_combination hx
+  change dₚ b * Sₚ x a = dₚ a * Sₚ x b
+  simpa only [mul_comm] using
+    (div_eq_div_iff (simpleDimension_ne_zero C p a) (simpleDimension_ne_zero C p b)).mp
+      (congrFun h x)
 
 /-- The columns of a nondegenerate categorical S matrix are orthogonal. -/
 theorem categoricalS_columns_orthogonal

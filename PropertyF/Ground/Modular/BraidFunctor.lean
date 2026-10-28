@@ -121,13 +121,10 @@ lemma braidAutMap_generator (X : C) (n : ℕ) (i : Fin (n+1)) :
 
 /-- Faithfulness makes the induced automorphism map injective. -/
 lemma braidAutMap_injective (X : C) (n : ℕ) [F.Faithful] :
-    Function.Injective (braidAutMap F X n) := by
-  intro a b h
-  apply Aut.ext
-  apply Iso.ext
-  apply F.map_injective
-  exact congrArg (fun a : Aut (F.obj (tensorPower X (n+2))) => a.asIso.hom)
-    ((tensorPowerComparison F X (n+2)).symm.conjAut.injective h)
+    Function.Injective (braidAutMap F X n) := fun _ _ h ↦
+  Aut.ext (Iso.ext (F.map_injective (congrArg
+    (fun a : Aut (F.obj (tensorPower X (n+2))) => a.asIso.hom)
+    ((tensorPowerComparison F X (n+2)).symm.conjAut.injective h))))
 
 /-- The functor map sends the source braid-image subgroup onto the target
 braid-image subgroup, even if the functor is not faithful. -/
@@ -156,19 +153,15 @@ theorem braidImageFunctorMap_surjective (X : C) (n : ℕ) :
 
 /-- A braided functor preserves finiteness of each object's braid images. -/
 theorem objectPropertyF_functor (X : C) (hX : ObjectPropertyF X) :
-    ObjectPropertyF (F.obj X) := by
-  intro n
-  let _ : Finite (braidImage X n) := hX n
-  exact Finite.of_surjective (braidImageFunctorMap F X n) (braidImageFunctorMap_surjective F X n)
+    ObjectPropertyF (F.obj X) := fun n ↦
+  letI : Finite (braidImage X n) := hX n
+  Finite.of_surjective (braidImageFunctorMap F X n) (braidImageFunctorMap_surjective F X n)
 
 /-- A faithful braided functor induces isomorphisms on braid-image groups. -/
 def braidImageFunctorIso (X : C) (n : ℕ) [F.Faithful] :
-    braidImage X n ≃* braidImage (F.obj X) n := by
-  let m := braidAutMap F X n
-  have hm : (braidImage X n).map m = braidImage (F.obj X) n :=
-    braidImage_map_eq F X n
-  exact ((braidImage X n).equivMapOfInjective m (braidAutMap_injective F X n)).trans
-    (MulEquiv.subgroupCongr hm)
+    braidImage X n ≃* braidImage (F.obj X) n :=
+  ((braidImage X n).equivMapOfInjective (braidAutMap F X n) (braidAutMap_injective F X n)).trans
+    (MulEquiv.subgroupCongr (braidImage_map_eq F X n))
 
 
 /-- Essential surjectivity handles arbitrary target objects. -/

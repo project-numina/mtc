@@ -69,9 +69,8 @@ theorem doubleBraiding_unit (X : C) : doubleBraiding X (𝟙_ C) = 𝟙 (X ⊗ �
 
 /-- The unit column of the unnormalized S entry is categorical dimension. -/
 theorem SEntry_unit (p : PivotalStructure (C := C)) (X : C) :
-    SEntry p X (𝟙_ C) = p.rightTrace (𝟙 X) := by
-  rw [SEntry, doubleBraiding_unit]
-  exact p.rightTrace_id_iso (ρ_ X)
+    SEntry p X (𝟙_ C) = p.rightTrace (𝟙 X) :=
+  (congrArg p.rightTrace (doubleBraiding_unit X)).trans (p.rightTrace_id_iso (ρ_ X))
 
 section
 variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))

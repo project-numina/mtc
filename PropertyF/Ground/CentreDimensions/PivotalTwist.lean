@@ -89,10 +89,11 @@ def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
 
 /-- On a simple object the twist acts by its scalar. -/
 theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
-    (pivotalBraidedTwist C p X).hom = pivotalBraidedTwistScalar C p X • 𝟙 X := by
-  change (End.of (pivotalBraidedTwist C p X).hom).asHom =
-    (pivotalBraidedTwistScalar C p X • (1 : End X)).asHom
-  exact congrArg End.asHom ((simpleEndScalarEquiv C X).injective (by simp [pivotalBraidedTwistScalar]))
+    (pivotalBraidedTwist C p X).hom = pivotalBraidedTwistScalar C p X • 𝟙 X :=
+  show (End.of (pivotalBraidedTwist C p X).hom).asHom =
+      (pivotalBraidedTwistScalar C p X • (1 : End X)).asHom from
+    congrArg End.asHom
+      ((simpleEndScalarEquiv C X).injective (by simp [pivotalBraidedTwistScalar]))
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
