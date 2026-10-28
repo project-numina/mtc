@@ -67,10 +67,9 @@ def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
 /-- The chosen simple component squares to the natural fourth-dual component. -/
 theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :
     fourthDualSimpleRoot C i ≪≫ rightDualIsoMap (rightDualIsoMap (fourthDualSimpleRoot C i)) =
-      fourthDualIso C (simples C i) := by
-  let : Simple (simples C i) := simples_simple C i
-  exact Classical.choose_spec (exists_fourthDual_square_root C
-    (fourthDualIso C (simples C i)))
+      fourthDualIso C (simples C i) :=
+  letI : Simple (simples C i) := simples_simple C i
+  Classical.choose_spec (exists_fourthDual_square_root C (fourthDualIso C (simples C i)))
 
 end PropertyF.Ground.Dimensions
 

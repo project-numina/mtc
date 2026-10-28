@@ -90,10 +90,10 @@ def dualIndex (D : BraidedFusionCategory.{v,u}) (j : Fin (rank D)) : Fin (rank D
   exact Classical.choose (exists_simple_iso D (ᘁ(simples D j)))
 
 theorem dualIndex_iso (D : BraidedFusionCategory.{v,u}) (j : Fin (rank D)) :
-    Nonempty ((ᘁ(simples D j)) ≅ simples D (dualIndex D j)) := by
-  let : Simple (simples D j) := simples_simple D j
-  let : Simple (ᘁ(simples D j)) := simple_leftDual D (simples D j)
-  exact Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
+    Nonempty ((ᘁ(simples D j)) ≅ simples D (dualIndex D j)) :=
+  letI : Simple (simples D j) := simples_simple D j
+  letI : Simple (ᘁ(simples D j)) := simple_leftDual D (simples D j)
+  Classical.choose_spec (exists_simple_iso D (ᘁ(simples D j)))
 
 /-- Fusion reciprocity with the dual kept as an actual object. -/
 theorem fusionCoeff_reciprocity (D : BraidedFusionCategory.{v,u})
