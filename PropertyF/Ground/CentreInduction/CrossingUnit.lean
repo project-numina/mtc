@@ -22,14 +22,10 @@ theorem closeFusionMap_evaluation {T S R : D} (f : T ⊗ S ⟶ R) :
     (𝟙 _ ⊗≫ (Sᘁ) ◁ (ε_ T (Tᘁ) ▷ S) ⊗≫ ε_ S (Sᘁ)) =
       ε_ (T ⊗ S) ((T ⊗ S)ᘁ) at he
   calc
-    _ = 𝟙 _ ⊗≫ ((fᘁ) ▷ (T ⊗ S)) ⊗≫
-      ((rightDualTensorIso T S).hom ▷ (T ⊗ S)) ⊗≫
-      ((Sᘁ) ◁ (ε_ T (Tᘁ) ▷ S)) ⊗≫ ε_ S (Sᘁ) := by
-      dsimp [closeFusionMap]; monoidal
-    _ = 𝟙 _ ⊗≫ (fᘁ ▷ (T ⊗ S)) ⊗≫
-      ((rightDualTensorIso T S).hom ▷ (T ⊗ S) ≫
-        (𝟙 _ ⊗≫ (Sᘁ) ◁ (ε_ T (Tᘁ) ▷ S) ⊗≫ ε_ S (Sᘁ))) := by monoidal
-    _ = 𝟙 _ ⊗≫ (fᘁ ▷ (T ⊗ S)) ⊗≫ ε_ (T ⊗ S) ((T ⊗ S)ᘁ) := by rw [he]
+    _ = 𝟙 _ ⊗≫ (fᘁ ▷ (T ⊗ S)) ⊗≫ ε_ (T ⊗ S) ((T ⊗ S)ᘁ) := by
+      rw [← he]
+      dsimp [closeFusionMap]
+      monoidal
     _ = 𝟙 _ ⊗≫ ((fᘁ ▷ (T ⊗ S)) ≫ ε_ (T ⊗ S) ((T ⊗ S)ᘁ)) := by monoidal
     _ = _ := by rw [rightAdjointMate_comp_evaluation]; monoidal
 
@@ -57,18 +53,17 @@ theorem closeFusionMap_tensor {T U S K R : D} (f : T ⊗ K ⟶ R) (g : U ⊗ S �
   apply Dimensions.evaluation_ext (X := S)
   rw [closeFusionMap_evaluation]
   calc
-    _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
-      simp only [whiskerLeft_comp]; monoidal
     _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫
-      (𝟙 (((Rᘁ : D) ⊗ T) ⊗ K) ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ)) := by monoidal
-    _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫
-      (closeFusionMap T K f ▷ K ≫ ε_ K (Kᘁ)) := by rw [closeFusionMap_evaluation]
+      (closeFusionMap T K f ▷ K ≫ ε_ K (Kᘁ)) := by
+      rw [closeFusionMap_evaluation]
+      simp only [whiskerLeft_comp]
+      monoidal
     _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by monoidal
     _ = 𝟙 _ ⊗≫ ((closeFusionMap T K f ▷ (U ⊗ S)) ≫ ((Kᘁ : D) ◁ g)) ⊗≫ ε_ K (Kᘁ) := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (closeFusionMap T K f ▷ (U ⊗ S)) ⊗≫
-      (𝟙 (((Kᘁ : D) ⊗ U) ⊗ S) ⊗≫ ((Kᘁ : D) ◁ g) ⊗≫ ε_ K (Kᘁ)) := by monoidal
-    _ = 𝟙 _ ⊗≫ (closeFusionMap T K f ▷ (U ⊗ S)) ⊗≫
-      (closeFusionMap U S g ▷ S ≫ ε_ S (Sᘁ)) := by rw [closeFusionMap_evaluation]
+      (closeFusionMap U S g ▷ S ≫ ε_ S (Sᘁ)) := by
+      rw [closeFusionMap_evaluation]
+      monoidal
     _ = _ := by monoidal
 
 set_option backward.isDefEq.respectTransparency false in

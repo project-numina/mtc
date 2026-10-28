@@ -18,6 +18,7 @@ denotes the permutation sign in the scalar ring.
 open PropertyF.Ground.Modular (HasFPSimpleDimensions)
 local notation "sgn" => PropertyF.Ground.Centre.permutationSign
 open PropertyF.Ground.Dimensions
+open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.CentreCalculus
@@ -54,7 +55,7 @@ theorem integral_of_exterior_dimensions
 include hdim in
 /-- The same reduction stated using actual pivotal dimensions, so that a
 split alternating projector can supply the witnesses. -/
-theorem integral_of_pivotal_exterior_dimensions
+theorem integral_of_pivotal_exterior
     (hExterior : HasFallingFactorialDimensions (fpDimension C X : ℂ) (pivotalDimension C p)) :
     IsFPIntegral C X :=
   integral_of_exterior_dimensions fun n ↦
@@ -75,43 +76,43 @@ variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
 
 /-- The symmetric-group order is invertible over the complex numbers. -/
 @[instance_reducible] def permutationCardInvertible (n : ℕ) :
-    Invertible (Fintype.card (Equiv.Perm (Fin n)) : ℂ) :=
+    Invertible (Fintype.card (Perm (Fin n)) : ℂ) :=
   invertibleOfNonzero (by exact_mod_cast Fintype.card_ne_zero)
 
 include hdim in
 /-- A trace formula for actual alternating projectors implies integrality. The
 existence of the permutation action and the trace formula remain explicit. -/
 theorem integral_of_alternating_projector_trace
-    (hTrace : ∀ n : ℕ, ∃ ρ : Equiv.Perm (Fin n) →* End (tensorPower X n),
+    (hTrace : ∀ n : ℕ, ∃ ρ : Perm (Fin n) →* End (tensorPower X n),
       letI := permutationCardInvertible n
       (Nat.factorial n : ℂ) * unitScalar C
         (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
           ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
     IsFPIntegral C X :=
-  integral_of_pivotal_exterior_dimensions hdim fun n ↦
+  integral_of_pivotal_exterior hdim fun n ↦
     let ⟨ρ, hρ⟩ := hTrace n
     let := permutationCardInvertible n
     let ⟨Y, hY⟩ := Centre.alternatingProjector_trace ρ p
     ⟨Y, (congrArg (fun t ↦ (Nat.factorial n : ℂ) * unitScalar C t) hY.symm).trans hρ⟩
 
-variable {n : ℕ} (ρ : Equiv.Perm (Fin n) →* End X)
+variable {n : ℕ} (ρ : Perm (Fin n) →* End X)
 
 /-- The trace of an alternating projector is the signed average of traces. -/
 theorem rightTrace_alternatingProjector :
     letI := permutationCardInvertible n
     p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom) =
-      ⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
-        ∑ σ : Equiv.Perm (Fin n), (sgn ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
+      ⅟(Fintype.card (Perm (Fin n)) : ℂ) •
+        ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
   let := permutationCardInvertible n
   rw [Centre.alternatingProjector, Centre.algebraAverage_eq_sum]
-  change p.rightTrace ((⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
-    ∑ σ : Equiv.Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
+  change p.rightTrace ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
+    ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
   simp only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul]
   congr 1
   simpa only [Dimensions.rightTraceLinear, LinearMap.coe_mk, AddHom.coe_mk,
     p.rightTrace_smul] using
     map_sum (Dimensions.rightTraceLinear p X)
-      (fun σ : Equiv.Perm (Fin n) ↦ (sgn ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
+      (fun σ : Perm (Fin n) ↦ (sgn ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
 
 /-- Multiplying the alternating-projector trace by the group order gives
  the signed sum of the actual categorical permutation traces. -/
@@ -119,12 +120,12 @@ theorem alternatingProjector_scalar_trace :
     letI := permutationCardInvertible n
     (Nat.factorial n : ℂ) * unitScalar C
       (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
-      ∑ σ : Equiv.Perm (Fin n), (sgn ℂ n σ : ℂ) *
+      ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom) := by
   let := permutationCardInvertible n
   rw [rightTrace_alternatingProjector ρ, unitScalar_eq_equiv]
   simp only [map_smul, map_sum, smul_eq_mul, unitScalar_eq_equiv]
-  have hc : (Fintype.card (Equiv.Perm (Fin n)) : ℂ) = (Nat.factorial n : ℂ) := by
+  have hc : (Fintype.card (Perm (Fin n)) : ℂ) = (Nat.factorial n : ℂ) := by
     simp [Fintype.card_perm]
   rw [← hc, ← mul_assoc, mul_invOf_self, one_mul]
 
@@ -133,8 +134,8 @@ include hdim in
 permutation action. The existence and evaluation of these actions are still
 explicit hypotheses. -/
 theorem integral_of_signed_permutation_traces
-    (hTrace : ∀ n : ℕ, ∃ ρ : Equiv.Perm (Fin n) →* End (tensorPower X n),
-      (∑ σ : Equiv.Perm (Fin n), (sgn ℂ n σ : ℂ) *
+    (hTrace : ∀ n : ℕ, ∃ ρ : Perm (Fin n) →* End (tensorPower X n),
+      (∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom)) =
           ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
     IsFPIntegral C X :=

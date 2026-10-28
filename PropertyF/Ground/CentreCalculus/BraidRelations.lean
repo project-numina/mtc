@@ -9,8 +9,10 @@ public import PropertyF.Ground.Calculus.RightStrand
 
 Self-transparency makes each adjacent generator involutive. Neighbouring
 generators satisfy the braid relation, and disjoint generators commute.
+We write `b X n i` for the braid generator on the tensor power of `X`.
 -/
 @[expose] public noncomputable section
+local notation "b" => PropertyF.braidGenerator
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
@@ -22,8 +24,8 @@ abbrev SelfTransparent (X : C) : Prop :=
 
 /-- Adding a strand on the left shifts the braid generator by one. -/
 theorem braidGenerator_succ (X : C) {n : ℕ} (k : Fin (n + 1)) :
-    (tensorLeft X).mapAut (tensorPower X (n + 2)) (braidGenerator X n k) =
-      braidGenerator X (n + 1) k.succ := by
+    (tensorLeft X).mapAut (tensorPower X (n + 2)) (b X n k) =
+      b X (n + 1) k.succ := by
   ext
   rcases k with ⟨k, hk⟩
   simp [Functor.mapAut, braidGenerator, tensorIso_hom, tensorLeft, id_tensorHom]
@@ -34,8 +36,8 @@ include hX in
 set_option backward.isDefEq.respectTransparency false in
 /-- The first braid generator is involutive on a self-transparent object. -/
 theorem braidGenerator_zero_involutive (n : ℕ) :
-    braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ *
-      braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ = 1 := by
+    b X n ⟨0, Nat.zero_lt_succ n⟩ *
+      b X n ⟨0, Nat.zero_lt_succ n⟩ = 1 := by
   apply Aut.ext
   apply Iso.ext
   cases n <;>
@@ -49,7 +51,7 @@ include hX in
 set_option backward.isDefEq.respectTransparency false in
 /-- Self-transparency makes each adjacent braid generator an involution. -/
 theorem braidGenerator_involutive :
-    ∀ (n : ℕ) (i : Fin (n + 1)), braidGenerator X n i * braidGenerator X n i = 1 := by
+    ∀ (n : ℕ) (i : Fin (n + 1)), b X n i * b X n i = 1 := by
   intro n
   induction n with
   | zero =>
@@ -72,10 +74,10 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 /-- Every neighboring pair of actual tensor-power braid generators satisfies
 Yang–Baxter. -/
 theorem adjacent_braid_relation : ∀ (n : ℕ) (i : Fin (n + 1)),
-    braidGenerator X (n + 1) i.castSucc * braidGenerator X (n + 1) i.succ *
-      braidGenerator X (n + 1) i.castSucc =
-    braidGenerator X (n + 1) i.succ * braidGenerator X (n + 1) i.castSucc *
-      braidGenerator X (n + 1) i.succ := by
+    b X (n + 1) i.castSucc * b X (n + 1) i.succ *
+      b X (n + 1) i.castSucc =
+    b X (n + 1) i.succ * b X (n + 1) i.castSucc *
+      b X (n + 1) i.succ := by
   intro n
   induction n with
   | zero =>
@@ -93,26 +95,26 @@ theorem adjacent_braid_relation : ∀ (n : ℕ) (i : Fin (n + 1)),
 set_option backward.isDefEq.respectTransparency false in
 /-- A crossing on the first two strands commutes with any crossing after them. -/
 theorem first_distant_commute (n : ℕ) (j : Fin (n + 1)) :
-    braidGenerator X (n + 2) 0 * braidGenerator X (n + 2) j.succ.succ =
-      braidGenerator X (n + 2) j.succ.succ * braidGenerator X (n + 2) 0 := by
+    b X (n + 2) 0 * b X (n + 2) j.succ.succ =
+      b X (n + 2) j.succ.succ * b X (n + 2) 0 := by
   apply Aut.ext
   apply Iso.ext
   simp only [Aut.mul_asIso, Iso.trans_hom]
-  change (braidGenerator X (n + 2) j.succ.succ).asIso.hom ≫
-      (braidGenerator X (n + 2) ⟨0, by omega⟩).asIso.hom =
-    (braidGenerator X (n + 2) ⟨0, by omega⟩).asIso.hom ≫
-      (braidGenerator X (n + 2) j.succ.succ).asIso.hom
+  change (b X (n + 2) j.succ.succ).asIso.hom ≫
+      (b X (n + 2) ⟨0, by omega⟩).asIso.hom =
+    (b X (n + 2) ⟨0, by omega⟩).asIso.hom ≫
+      (b X (n + 2) j.succ.succ).asIso.hom
   rcases j with ⟨j, hj⟩
   simpa only [Fin.succ, braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
     Iso.refl_hom, tensorHom_id, id_tensorHom] using
-    (Calculus.crossing_natural X _ _ (braidGenerator X n ⟨j, hj⟩).asIso.hom).symm
+    (Calculus.crossing_natural X _ _ (b X n ⟨j, hj⟩).asIso.hom).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Crossings supported on disjoint pairs of strands commute. -/
 theorem distant_braid_commute : ∀ (n : ℕ) (i j : Fin (n + 1)),
     i.val + 1 < j.val →
-    braidGenerator X n i * braidGenerator X n j =
-      braidGenerator X n j * braidGenerator X n i := by
+    b X n i * b X n j =
+      b X n j * b X n i := by
   intro n
   induction n with
   | zero =>

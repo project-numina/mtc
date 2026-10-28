@@ -111,9 +111,10 @@ theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N)
   calc
     _ = 𝟙 _ ⊗≫ ((t ▷ (𝟙_ D)) ≫ (N ◁ η_ S (Sᘁ))) ⊗≫
       (b ▷ Sᘁ) ⊗≫ ((S ◁ w) ▷ Sᘁ) ⊗≫ 𝟙 _ := by monoidal
-    _ = 𝟙 _ ⊗≫ ((M ◁ η_ S (Sᘁ)) ≫ (t ▷ (S ⊗ Sᘁ))) ⊗≫
-      (b ▷ Sᘁ) ⊗≫ ((S ◁ w) ▷ Sᘁ) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
-    _ = _ := by simp only [comp_whiskerRight]; monoidal
+    _ = _ := by
+      rw [← whisker_exchange]
+      simp only [comp_whiskerRight]
+      monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
