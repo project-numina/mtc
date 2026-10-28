@@ -140,10 +140,8 @@ theorem finite_simple_labels :
     ∃ labels : Finset (𝒵), (∀ T ∈ labels, Simple T) ∧
       ∀ X : 𝒵, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T) := by
   classical
-  let L (i : Fin (rank C)) := Classical.choose (finite_simple_subobject_labels C
-    ((induction C).obj (simples C i)))
-  have hL (i : Fin (rank C)) := Classical.choose_spec (finite_simple_subobject_labels C
-    ((induction C).obj (simples C i)))
+  choose L hL using fun i : Fin (rank C) =>
+    finite_simple_subobject_labels C ((induction C).obj (simples C i))
   let labels := (Finset.univ.biUnion (fun i => (L i).toFinset)).filter Simple
   refine ⟨labels, fun _ hT => (Finset.mem_filter.mp hT).2, fun X hX => ?_⟩
   let : Simple X := hX
