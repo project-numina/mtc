@@ -31,7 +31,7 @@ theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
   (Function.ne_iff.mp (show χ.value ≠ ψ.value from fun h ↦ hne (Character.ext h))).elim fun i hi ↦
     Classical.byContradiction fun hw ↦ hi (mul_right_cancel₀ hw (by
       simpa [w, character_dual_conj N dual hdual χ i] using
-        character_inner_balance N dual hdual χ ψ i)).symm
+        fusion_inner_balance N dual hdual (starRingEnd ℂ) χ.value ψ.value χ.mul_eq ψ.mul_eq i)).symm
 
 include hdual in
 /-- Distinct normalized columns that are fusion characters are orthogonal. -/

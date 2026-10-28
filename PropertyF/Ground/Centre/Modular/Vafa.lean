@@ -160,17 +160,22 @@ def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
   hom_inv_id := by simp [Linear.comp_smul, smul_smul]
   inv_hom_id := by simp [Linear.comp_smul, smul_smul]
 
+/-- A scalar linear equivalence has determinant equal to the scalar's dimension power. -/
+theorem linearEquiv_det_of_scalar {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
+    (e : V ≃ₗ[K] V) (z : Kˣ) (h : e.toLinearMap = (z : K) • LinearMap.id) :
+    e.det = z ^ Module.finrank K V := by
+  apply Units.ext
+  rw [LinearEquiv.coe_det]
+  change LinearMap.det e.toLinearMap = (z : K) ^ _
+  rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one]
+
 /-- On a scalar map, each Hom-space determinant is the corresponding power. -/
 theorem homAction_det_scalar {R : Type*} [Field R] {D : Type u} [Category.{v} D]
     [Preadditive D] [Linear R D] {S X : D} (z : Rˣ) :
     (homAction (R := R) S X (scalarIso X z)).det = z ^ Module.finrank R (S ⟶ X) :=
-  Units.ext (by
-    rw [LinearEquiv.coe_det]
-    change LinearMap.det _ = (z : R) ^ _
-    have h : (homAction (R := R) S X (scalarIso X z)).toLinearMap = (z : R) • LinearMap.id := by
-      ext f
-      simp [homAction, scalarIso, CategoryTheory.Linear.homCongr_apply]
-    rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one])
+  linearEquiv_det_of_scalar _ z (by
+    ext f
+    simp [homAction, scalarIso, CategoryTheory.Linear.homCongr_apply])
 
 /-- A scalar automorphism has FP determinant equal to its unit class weighted
 by the actual FP dimension of the object. -/
@@ -300,12 +305,8 @@ theorem fpDeterminant_natural
   apply Finset.sum_congr rfl
   intro i _
   have hd : (homAction (R := ℂ) (simples C i) X (η.app X)).det =
-      (t i) ^ Module.finrank ℂ (simples C i ⟶ X) := by
-    apply Units.ext
-    rw [LinearEquiv.coe_det]
-    change LinearMap.det _ = (t i : ℂ) ^ _
-    rw [homAction_natural_scalar η (t i : ℂ) (ht i), LinearMap.det_smul,
-      LinearMap.det_id, mul_one]
+      (t i) ^ Module.finrank ℂ (simples C i ⟶ X) :=
+    linearEquiv_det_of_scalar _ (t i) (homAction_natural_scalar η (t i : ℂ) (ht i))
   change fpSimple C i • vafaUnitClass (homAction (R := ℂ) (simples C i) X (η.app X)).det = _
   rw [hd, vafaUnitClass, rationalUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
   simp only [vafaUnitClass, smul_smul, mul_comm]
@@ -619,7 +620,7 @@ variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The multiplicity expansion of a simple object has a single nonzero term. -/
-theorem simple_multiplicity_expansion (M : Type w) [AddCommGroup M] [Module ℝ M]
+theorem simple_multiplicity_expansion {M : Type w} [AddCommGroup M] [Module ℝ M]
     (f : C.Obj → M) (hiso : ∀ {X Y : C.Obj}, (X ≅ Y) → f X = f Y)
     (S : C.Obj) [Simple S] :
     f S = ∑ i, (Module.finrank ℂ (simples C i ⟶ S) : ℝ) • f (simples C i) := by
@@ -633,7 +634,7 @@ theorem simple_multiplicity_expansion (M : Type w) [AddCommGroup M] [Module ℝ 
 
 /-- Any isomorphism-invariant additive object function is determined by
 its values on simples and the actual Hom-space multiplicities. -/
-theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Module ℝ M]
+theorem additive_object_function_decomposition {M : Type w} [AddCommGroup M] [Module ℝ M]
     (f : C.Obj → M)
     (hiso : ∀ {X Y : C.Obj}, (X ≅ Y) → f X = f Y)
     (hzero : ∀ X, IsZero X → f X = 0)
@@ -654,7 +655,7 @@ theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Mo
   | @cons W S K hs hk he ih =>
     obtain ⟨e⟩ := he
     let : Simple S := hs
-    rw [hiso e, hadd, simple_multiplicity_expansion C M f hiso S, ih,
+    rw [hiso e, hadd, simple_multiplicity_expansion C f hiso S, ih,
       ← Finset.sum_add_distrib]
     apply Finset.sum_congr rfl
     intro i _
@@ -684,7 +685,7 @@ theorem fpDeterminant_functor_natural_decomposition
     fpDeterminant C (η.app X) = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) •
         fpDeterminant C (η.app (simples C i)) :=
-  additive_object_function_decomposition C vafaUnitSpace (fun X ↦ fpDeterminant C (η.app X))
+  additive_object_function_decomposition C (fun X ↦ fpDeterminant C (η.app X))
     (fun {X Y} e ↦ by
       rw [functor_natural_app_conjugate F η e]
       exact fpDeterminant_conjugate C (F.mapIso e).symm (η.app Y))
