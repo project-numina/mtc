@@ -53,7 +53,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem inverse_crossing_snake :
     (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ ((β_ (Xᘁ) X).inv ▷ X) ≫
       (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫ (α_ (Xᘁ) X X).inv ≫
-      (ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom = 𝟙 X := by
+      (ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom = 𝟙 X :=
   calc
     _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
         ((β_ (Xᘁ ⊗ X) X).inv ≫ ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom := by
