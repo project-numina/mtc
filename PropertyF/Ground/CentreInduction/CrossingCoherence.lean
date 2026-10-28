@@ -82,10 +82,8 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
 /-- The actual matrix crossing is invertible by rigidity. -/
 theorem crossingCandidate_isIso (X T : C.Obj) :
     IsIso (crossingCandidate C X T) :=
-  weak_isIso (crossingCandidate C X)
-    (fun f => crossingCandidate_natural_test C X f)
-    (fun T U => crossingCandidate_tensor C X T U)
-    (crossingCandidate_unit C X) T (ᘁT)
+  weak_isIso (crossingCandidate C X) (crossingCandidate_natural_test C X)
+    (crossingCandidate_tensor C X) (crossingCandidate_unit C X) T (ᘁT)
 
 /-- The explicit matrix crossings form an actual half-braiding on the
 induction sum, with no additional coherence assumptions. -/
