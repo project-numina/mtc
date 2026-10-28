@@ -52,4 +52,17 @@ invertibility or unitarity, check coherence, or match modular data. It expects
 an already verified and unpacked payload and does not check the catalog hash.
 The optional certificate checks that this specific imported R entry equals
 `ζ₇₀⁶⁴` and has complex norm one; it does not certify the other blocks.
+To check the downloaded R blocks independently with exact integer polynomial
+arithmetic (SymPy is used only to construct `Φₙ`), run:
+
+```sh
+python3 MTC/FRSymbols/check_atlas_r.py data/symbols/B11-00119-R-symbols/rsymbols.aasym
+```
+
+The downloaded snapshot has 917 R blocks; all pass this exact Python check.
+Four 2×2 blocks and one 4×4 block were also checked by independent SymPy
+polynomial reduction, with deliberately corrupted entries rejected. The
+Python computation is not a Lean proof, and it does not verify that every
+required block is present or establish F/R coherence.
+
 Generated data remain under ignored `data/` pending redistribution terms.

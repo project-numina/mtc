@@ -4,6 +4,7 @@ import io
 import unittest
 
 from import_atlas_block import read_block
+from check_atlas_r import CyclotomicArithmetic
 
 
 class BlockReaderTest(unittest.TestCase):
@@ -27,6 +28,17 @@ class BlockReaderTest(unittest.TestCase):
     def test_nonzero_padding_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "padding"):
             read_block(io.BytesIO(bytes([1, 2, 3, 0])), 2, 2)
+
+
+class CyclotomicArithmeticTest(unittest.TestCase):
+    def test_primitive_cube_root_and_unitary_matrix(self):
+        field = CyclotomicArithmetic(3, 2)
+        zeta = (1, (0, 1))
+        conjugate = field.conjugate(zeta)
+        self.assertEqual(field.multiply(zeta, conjugate), field.one)
+        self.assertEqual(field.add(field.add(field.one, zeta), conjugate), field.zero)
+        self.assertTrue(field.unitary(2, 2, [zeta, field.zero, field.zero, conjugate]))
+        self.assertFalse(field.unitary(2, 2, [field.zero, field.zero, field.zero, conjugate]))
 
 
 if __name__ == "__main__":
