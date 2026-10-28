@@ -1,4 +1,0 @@
-Mathlib default linter warnings from lake build PropertyF (including replayed modules).
-Warning blocks: 0
-
-

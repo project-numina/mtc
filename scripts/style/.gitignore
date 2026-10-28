@@ -1,5 +1,0 @@
-.*.lean
-.*.tsv
-.*.log
-.sample-modules
-__pycache__/
