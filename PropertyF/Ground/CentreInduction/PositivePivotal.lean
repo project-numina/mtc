@@ -188,10 +188,8 @@ local notation "𝒵ᶠ" => Integrate.bundledCenter C
 /-- A compatible lift of a positive pivotal structure is spherical and has
 FP dimensions on the centre. -/
 theorem center_positive_spherical_of_compatible_pivotal
-    {p : PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p)
-    {pZ : PivotalStructure (C := 𝒵)}
-    (hcompat : ∀ Z : 𝒵, PivotalCompatibleAt p pZ Z) :
+    {p : PivotalStructure (C := C.Obj)} (hsimple : PivotalHasFPDimensions C p)
+    {pZ : PivotalStructure (C := 𝒵)} (hcompat : ∀ Z : 𝒵, PivotalCompatibleAt p pZ Z) :
     pZ.IsSpherical ∧ PivotalHasFPDimensions 𝒵ᶠ pZ := by
   let D := 𝒵ᶠ
   have hd (i : Fin (rank D)) : pivotalDimension D pZ (simples D i) =
