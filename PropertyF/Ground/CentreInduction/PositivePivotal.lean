@@ -34,19 +34,19 @@ variable {p : PivotalStructure (C := C.Obj)}
 pivotal dimensions equal FP dimensions. -/
 theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions C p) [RigidCategory 𝒵ᶜ]
     {pZ : PivotalStructure (C := 𝒵ᶜ)}
-    (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) : IsFusionCategory 𝒵ᶜ := by
-  refine center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ fun hz => ?_
-  have ht := forget_trace_of_pivotal_component hcompat (𝟙 _)
-  change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
-    (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht
-  have hd : pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
-    rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
-  change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
-  rw [show p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj))) = 0 from
-    End.ext (ht.symm.trans (congrArg (fun a => a.asHom.f) hz))] at hd
-  exact (Complex.ofReal_ne_zero.mpr
-    (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))) <|
-      by simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
+    (hcompat : PivotalCompatibleAt p pZ ((induction C).obj (𝟙_ C.Obj))) : IsFusionCategory 𝒵ᶜ :=
+  center_fusion_of_nonzero_induced_trace C (𝟙_ C.Obj) pZ fun hz => by
+    have ht := forget_trace_of_pivotal_component hcompat (𝟙 _)
+    change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
+      (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht
+    have hd : pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
+      rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
+    change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
+    rw [show p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj))) = 0 from
+      End.ext (ht.symm.trans (congrArg (fun a => a.asHom.f) hz))] at hd
+    exact (Complex.ofReal_ne_zero.mpr
+      (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))) <|
+        by simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
 
 end PropertyF.Ground.CentreInduction
 
