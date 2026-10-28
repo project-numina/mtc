@@ -161,9 +161,9 @@ theorem rightPartialTrace_tensor {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
 /-- Pivotal trace is multiplicative on tensor products of endomorphisms. -/
 theorem pivotalTrace_tensor {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
     scalar (p.rightTrace (a ⊗ₘ b)) = scalar (p.rightTrace a) * scalar (p.rightTrace b) := by
-  have h := rightTrace_partialTrace p (End.of (a ⊗ₘ b))
-  rw [rightPartialTrace_tensor p scalar a b] at h
-  simpa [PivotalStructure.rightTrace_smul, smul_eq_mul, mul_comm] using congrArg scalar h.symm
+  simpa only [rightPartialTrace_tensor p scalar a b, End.smul_asHom,
+    PivotalStructure.rightTrace_smul, map_smul, smul_eq_mul, mul_comm] using
+    congrArg scalar (rightTrace_partialTrace p (End.of (a ⊗ₘ b))).symm
 
 end PropertyF.Ground.Dimensions
 
