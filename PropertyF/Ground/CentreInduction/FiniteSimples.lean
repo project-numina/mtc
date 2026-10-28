@@ -80,9 +80,9 @@ def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
       rw [Category.assoc, hfactor])
 
 /-- Every actual centre object is Artinian, without spherical hypotheses. -/
-theorem center_artinian (X : CategoryTheory.Center C.Obj) : IsArtinianObject X := by
+theorem center_artinian (X : CategoryTheory.Center C.Obj) : IsArtinianObject X :=
   let : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
-  exact ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
+  ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
 
 
 set_option backward.isDefEq.respectTransparency false in
@@ -90,14 +90,10 @@ set_option backward.isDefEq.respectTransparency false in
 theorem simple_mono_induced_simple (X : CategoryTheory.Center C.Obj) [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (simples C i), Mono f := by
   have hx : ¬ IsZero X.1 := by
-    intro hz
-    have hid : (𝟙 X : X ⟶ X) = 0 := by
-      apply CategoryTheory.Center.ext
-      change (CategoryTheory.Center.forget C.Obj).map (𝟙 X) =
-        (CategoryTheory.Center.forget C.Obj).map 0
-      rw [(CategoryTheory.Center.forget C.Obj).map_id, (CategoryTheory.Center.forget C.Obj).map_zero]
-      exact (IsZero.iff_id_eq_zero X.1).mp hz
-    exact id_nonzero X hid
+    change ¬ IsZero ((CategoryTheory.Center.forget C.Obj).obj X)
+    rw [IsZero.iff_id_eq_zero, ← (CategoryTheory.Center.forget C.Obj).map_id,
+      Functor.map_eq_zero_iff]
+    exact id_nonzero X
   obtain ⟨i, hi⟩ := exists_positive_multiplicity C hx
   have hi' : 0 < Module.finrank ℂ (X.1 ⟶ simples C i) := by
     rw [finrank_to_simple_eq_from_simple C]
@@ -107,11 +103,7 @@ theorem simple_mono_induced_simple (X : CategoryTheory.Center C.Obj) [Simple X] 
   let e := homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj) (induction C)
     (actualAdjunction C) X (simples C i)
   let t : X ⟶ (induction C).obj (simples C i) := e.symm g
-  have ht : t ≠ 0 := by
-    intro ht
-    apply hg
-    have := congrArg e ht
-    simpa [t] using this
+  have ht : t ≠ 0 := e.symm.map_eq_zero_iff.not.mpr hg
   exact ⟨i, t, mono_of_nonzero_from_simple ht⟩
 
 end PropertyF.Ground.CentreInduction
@@ -135,36 +127,13 @@ theorem center_cokernel_measure_lt {S W : 𝒵}
       (PropertyF.Ground.Centre.centerCokernel p).1) < Module.finrank ℂ (W.1 ⟶ W.1) := by
   let Q := PropertyF.Ground.Centre.centerCokernel p
   let q : W.1 ⟶ Q.1 := (PropertyF.Ground.Centre.centerCokernelπ p).f
-  have hq : p.f ≫ q = 0 := congrArg CategoryTheory.Center.Hom.f (PropertyF.Ground.Centre.centerCokernel_condition p)
   have : Epi q := by
     change Epi (cokernel.π p.f)
     infer_instance
   let : IsSplitEpi q := epi_splits C q
-  let s : Q.1 ⟶ W.1 := section_ q
-  have hs : s ≫ q = 𝟙 Q.1 := IsSplitEpi.id q
-  let L : (Q.1 ⟶ Q.1) →ₗ[ℂ] (W.1 ⟶ W.1) :=
-    (Linear.leftComp ℂ W.1 q).comp (Linear.rightComp ℂ Q.1 s)
-  have hinj : Function.Injective L := by
-    intro x y h
-    have hh := congrArg (fun k => s ≫ k ≫ q) h
-    simpa [L, s, Category.assoc, hs] using hh
-  have hproper : LinearMap.range L ≠ ⊤ := by
-    intro hall
-    have hh : (𝟙 W.1) ∈ LinearMap.range L := by rw [hall]; trivial
-    obtain ⟨x, hx⟩ := hh
-    have he := congrArg (fun k => p.f ≫ k) hx
-    have hz : p.f = 0 := by
-      change p.f ≫ (q ≫ x ≫ s) = p.f ≫ 𝟙 W.1 at he
-      simp only [← Category.assoc, hq, zero_comp, Category.comp_id] at he
-      exact he.symm
-    apply hp
-    apply CategoryTheory.Center.ext
-    exact hz
   let : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
-  let : FiniteDimensional ℂ (Q.1 ⟶ Q.1) := IsFusionCategory.hom_finite _ _
-  have hlt := Submodule.finrank_lt_finrank_of_lt (lt_top_iff_ne_top.mpr hproper)
-  rw [finrank_top, LinearMap.finrank_range_of_inj hinj] at hlt
-  exact hlt
+  exact finrank_end_lt_of_split_epi p.f q (fun h => hp (by ext; exact h))
+    (congrArg CategoryTheory.Center.Hom.f (PropertyF.Ground.Centre.centerCokernel_condition p))
 
 /-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
 private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]
