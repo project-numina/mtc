@@ -75,6 +75,7 @@ theorem center_fusion_of_nonzero_induced_trace (X : C.Obj)
   letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   letI : Simple (𝟙_ (𝒵)) := Centre.centerUnitSimple
   center_fusion_of_unit_retract C <| unitRetractOfNonzeroCap cap <| fun h =>
-    hne (End.ext (by simpa [Dimensions.PivotalStructure.rightTrace, cap, J, Category.assoc] using h))
+    hne (End.ext (by simpa [Dimensions.PivotalStructure.rightTrace, Dimensions.rightTraceWith,
+      cap, J, Category.assoc] using h))
 
 end PropertyF.Ground.CentreInduction

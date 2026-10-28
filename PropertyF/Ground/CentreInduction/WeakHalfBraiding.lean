@@ -1,7 +1,5 @@
 module
 public import PropertyF.Ground.CentreInduction.BasisPairing
-public import PropertyF.Ground.Dimensions.SimpleScalars
-public import PropertyF.Ground.Centre.Basic
 
 section
 /-! The induction crossing tensor law is detected on pairs of simple objects. -/

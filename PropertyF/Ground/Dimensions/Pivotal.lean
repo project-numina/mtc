@@ -60,8 +60,7 @@ namespace PivotalStructure
 
 /-- Right pivotal trace, an endomorphism of the tensor unit. -/
 def rightTrace (p : PivotalStructure (C := C)) {X : C} (f : X ⟶ X) : End (𝟙_ C) :=
-  End.of (ExactPairing.coevaluation X (Xᘁ) ≫
-    ((f ≫ (p.iso X).hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ExactPairing.evaluation (Xᘁ) ((Xᘁ)ᘁ))
+  rightTraceWith (p.iso X) f
 
 /-- Left pivotal trace, using the inverse pivotal isomorphism. -/
 def leftTrace (p : PivotalStructure (C := C)) {X : C} (f : X ⟶ X) : End (𝟙_ C) :=

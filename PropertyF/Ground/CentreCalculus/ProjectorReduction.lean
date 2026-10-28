@@ -110,9 +110,10 @@ theorem rightTrace_alternatingProjector :
   rw [Centre.alternatingProjector, Centre.algebraAverage_eq_sum]
   change p.rightTrace ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
     ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
+  have htrace (f : X ⟶ X) : rightTraceWith (p.iso X) f = p.rightTrace f := rfl
   simpa only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul,
     Dimensions.rightTraceWithLinear, LinearMap.coe_mk, AddHom.coe_mk,
-    Dimensions.rightTraceWith_pivotal] using
+    htrace] using
     congrArg (fun x : End (𝟙_ C.Obj) ↦
       (⅟(Fintype.card (Perm (Fin n)) : ℂ)) • x) <|
         map_sum (Dimensions.rightTraceWithLinear (k := ℂ) (p.iso X))
