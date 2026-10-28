@@ -22,9 +22,11 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreCabling
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+  {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M)
 
+include hM in
 /-- A finite-order complex matrix can be conjugated to a unitary matrix. -/
-theorem finiteOrder_matrix_unitarizable {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
+theorem finiteOrder_matrix_unitarizable :
     ∃ P : (Matrix ι ι ℂ)ˣ, ((P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)) ∈ Matrix.unitaryGroup ι ℂ :=
   let u : (Matrix ι ι ℂ)ˣ := hM.isUnit.unit
   have hufin : IsOfFinOrder u := Units.isOfFinOrder_val.mp (by simpa [u] using hM)
@@ -35,9 +37,10 @@ theorem finiteOrder_matrix_unitarizable {M : Matrix ι ι ℂ} (hM : IsOfFinOrde
   let g : G := ⟨u, Subgroup.mem_zpowers u⟩
   ⟨P, by simpa [g, u] using hP g⟩
 
+include hM in
 /-- A finite-order matrix has real trace at most its size, with equality
 only for the identity. -/
-theorem finiteOrder_matrix_trace_saturation {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M) :
+theorem finiteOrder_matrix_trace_saturation :
     M.trace.re ≤ Fintype.card ι ∧
       (M.trace.re = Fintype.card ι → M = 1) := by
   obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM

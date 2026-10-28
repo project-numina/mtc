@@ -51,9 +51,8 @@ theorem sCentralizes_dual (hdim : HasFPSimpleDimensions D p)
     {i y : Fin (rank D)} (hi : sCentralizes D p i y) :
     sCentralizes D p (dualIndex D i) y := by
   dsimp only [sCentralizes] at hi ⊢
-  have hreal := realSimpleDimensions_of_fp hdim
-  rw [Modular.categoricalS_dual_conj D p hreal i y, hi, map_mul, hreal, hreal,
-    hdim (dualIndex D i), fpSimple_dual, ← hdim i]
+  simp only [Modular.categoricalS_dual_conj D p (realSimpleDimensions_of_fp hdim), hi, map_mul,
+    hdim, fpSimple_dual, Complex.conj_ofReal]
 
 end PropertyF.Ground.CentreCabling
 
@@ -198,14 +197,15 @@ abbrev regularVector (D : Ground.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) (i : Fin (rank D)) : ℂ :=
   if i ∈ A then (fpSimple D i : ℂ) else 0
 
+variable {A : Finset (Fin (rank D))}
+
 /-- The support of the regular vector is precisely the chosen set. -/
-theorem regularVector_ne_zero_iff {A : Finset (Fin (rank D))} {i : Fin (rank D)} :
+theorem regularVector_ne_zero_iff {i : Fin (rank D)} :
     regularVector D A i ≠ 0 ↔ i ∈ A := by
   simp [regularVector, ne_of_gt (fpSimple_pos D i)]
 
 /-- Fusion by a label in a fusion-closed set leaves the regular vector supported there. -/
-theorem regularVector_mul_eq_zero_of_not_mem {A : Finset (Fin (rank D))}
-    (hA : IsFusionClosed D A) {a k : Fin (rank D)} (ha : a ∈ A) (hk : k ∉ A) :
+theorem regularVector_mul_eq_zero_of_not_mem (hA : IsFusionClosed D A) {a k : Fin (rank D)} (ha : a ∈ A) (hk : k ∉ A) :
     ∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i = 0 := by
   classical
   apply Finset.sum_eq_zero
@@ -215,8 +215,7 @@ theorem regularVector_mul_eq_zero_of_not_mem {A : Finset (Fin (rank D))}
   · rw [show regularVector D A i = 0 from ite_eq_right hi, mul_zero]
 
 /-- On its support, the regular vector has the FP eigenvalue. -/
-theorem regularVector_mul_of_mem {A : Finset (Fin (rank D))}
-    (hA : IsDualFusionClosed D A) {a k : Fin (rank D)} (ha : a ∈ A) (hk : k ∈ A) :
+theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) {a k : Fin (rank D)} (ha : a ∈ A) (hk : k ∈ A) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
   classical
@@ -233,8 +232,7 @@ theorem regularVector_mul_of_mem {A : Finset (Fin (rank D))}
 
 /-- The FP-weighted regular vector of a dual- and fusion-closed set of labels
 is an eigenvector for multiplication by each label in that set. -/
-theorem regular_vector_fusion_eigenvector {A : Finset (Fin (rank D))}
-    (hA : IsDualFusionClosed D A) {a : Fin (rank D)} (ha : a ∈ A) (k : Fin (rank D)) :
+theorem regular_vector_fusion_eigenvector (hA : IsDualFusionClosed D A) {a : Fin (rank D)} (ha : a ∈ A) (k : Fin (rank D)) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * regularVector D A k := by
   by_cases hk : k ∈ A <;> simp only [regularVector, hk, ↓reduceIte, mul_zero]
@@ -243,8 +241,7 @@ theorem regular_vector_fusion_eigenvector {A : Finset (Fin (rank D))}
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support (hdim : HasFPSimpleDimensions D p)
-    {A : Finset (Fin (rank D))} {core : Set _}
-    (hA : IsDualFusionClosed D A) (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
+    {core : Set _} (hA : IsDualFusionClosed D A) (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
     FourierSupportedOn D p (regularVector D A) core := by
   intro y hy
   obtain ⟨a, ha, hne⟩ : ∃ a ∈ A, ¬sCentralizes D p a y := by
@@ -257,7 +254,7 @@ theorem regularVector_fourier_support (hdim : HasFPSimpleDimensions D p)
 labels. The supplied core must contain its numerical S-centralizer. -/
 theorem doubleCentralizer_of_fusion_closed
     (hfp : IsFPSpherical D p) (hdet : (S D p).det ≠ 0)
-    {A : Finset (Fin (rank D))} {core : Set _} (hA : IsFusionSubring D A)
+    {core : Set _} (hA : IsFusionSubring D A)
     (hcore : sCentralizer D p (↑A : Set _) ⊆ core) : sCentralizer D p core ⊆ (↑A : Set _) :=
   doubleCentralizer_of_fourier_support hdet hfp (f := regularVector D A)
     (regularVector_ne_zero_iff.mpr hA.unit) (fun _ hi ↦ regularVector_ne_zero_iff.mp hi)
