@@ -58,7 +58,8 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [bc : BraidedCategory C]
-local instance : BraidedCategory (C × C) := mixedBraiding
+/-- The product category uses the ordinary braiding on the first factor and its reverse on the second. -/
+local instance mixedBraidingCategory : BraidedCategory (C × C) := mixedBraiding
 
 instance fstMonoidal : (CategoryTheory.Prod.fst C C).Monoidal :=
   Functor.CoreMonoidal.toMonoidal { εIso := Iso.refl _, μIso := fun _ _ => Iso.refl _ }

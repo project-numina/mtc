@@ -20,9 +20,8 @@ theorem groupAverage_idempotent : GroupAlgebra.average k G * GroupAlgebra.averag
     GroupAlgebra.average k G := by
   conv_lhs => lhs; rw [GroupAlgebra.average]
   simp only [Algebra.smul_mul_assoc, Finset.sum_mul, MonoidAlgebra.of_apply,
-    GroupAlgebra.mul_average_left]
-  simp only [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul k,
-    smul_smul, invOf_mul_self, one_smul]
+    GroupAlgebra.mul_average_left, Finset.sum_const, Finset.card_univ,
+    ← Nat.cast_smul_eq_nsmul k, smul_smul, invOf_mul_self, one_smul]
 
 variable {k G} {A : Type*} [Ring A] [Algebra k A]
 
