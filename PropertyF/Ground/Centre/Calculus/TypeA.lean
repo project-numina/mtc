@@ -40,19 +40,20 @@ theorem strandPermutation_surjective (n : ℕ) : Function.Surjective (strandPerm
 abbrev adjacentSwap {n : ℕ} (i : Fin n) : Equiv.Perm (Fin (n + 1)) :=
   Equiv.swap i.castSucc i.succ
 
+variable (X : C) (n : ℕ)
+  (h : (strandPermutation n).ker ≤ (FreeGroup.lift (braidGenerator X n)).ker)
+
 /-- Pure-word triviality is the precise remaining condition for the actual
 braid action to factor through the symmetric group. -/
-def permActionOfPureTrivial (X : C) (n : ℕ)
-    (h : (strandPermutation n).ker ≤ (FreeGroup.lift (braidGenerator X n)).ker) :
+def permActionOfPureTrivial :
     Equiv.Perm (Fin (n + 2)) →* Aut (tensorPower X (n + 2)) :=
   (QuotientGroup.lift _ (FreeGroup.lift (braidGenerator X n)) h).comp
     (QuotientGroup.liftEquiv _ (strandPermutation_surjective n) rfl).symm.toMonoidHom
 
 /-- The descended action takes each adjacent transposition to its actual
 categorical braid generator. -/
-theorem permActionOfPureTrivial_swap (X : C) (n : ℕ)
-    (h : (strandPermutation n).ker ≤ (FreeGroup.lift (braidGenerator X n)).ker)
-    (i : Fin (n + 1)) : permActionOfPureTrivial X n h (adjacentSwap i) = braidGenerator X n i :=
+theorem permActionOfPureTrivial_swap (i : Fin (n + 1)) :
+    permActionOfPureTrivial X n h (adjacentSwap i) = braidGenerator X n i :=
   let e := QuotientGroup.liftEquiv (strandPermutation n).ker (strandPermutation_surjective n) rfl
   (congrArg (QuotientGroup.lift _ (FreeGroup.lift (braidGenerator X n)) h)
     (e.symm_apply_apply (QuotientGroup.mk' (strandPermutation n).ker (FreeGroup.of i)))).trans
@@ -254,7 +255,7 @@ theorem pureWords_eq_typeANormal :
   pureWords_eq_typeANormal_of_card_bound n hc
 
 /-- Self-transparent categorical braid actions factor through permutations. -/
-def permutationAction (X : C)
+def permAction (X : C)
     (hX : SelfTransparent X) (n : ℕ) :
     Equiv.Perm (Fin (n + 2)) →* Aut (tensorPower X (n + 2)) :=
   permActionOfPureTrivial X n (by
@@ -262,9 +263,9 @@ def permutationAction (X : C)
     exact typeARelations_action_trivial hX n)
 
 /-- The descended action sends adjacent swaps to the actual braid generators. -/
-theorem permutationAction_swap {X : C}
+theorem permAction_swap {X : C}
     (hX : SelfTransparent X) {n : ℕ} (i : Fin (n + 1)) :
-    permutationAction X hX n (adjacentSwap i) = braidGenerator X n i :=
+    permAction X hX n (adjacentSwap i) = braidGenerator X n i :=
   permActionOfPureTrivial_swap X n _ i
 
 end PropertyF.Ground.CentreCalculus
