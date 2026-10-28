@@ -94,11 +94,9 @@ theorem fourthDualIso_unit :
   let : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
   let : HasRightDual (((𝟙_ C)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C)ᘁ)ᘁ)
   unfold fourthDualIso
-  have hdual := drinfeld_unit_dual (C := C)
-  change drinfeldIso ((𝟙_ C)ᘁ) =
-    (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm at hdual
-  have hu : drinfeldIso (𝟙_ C) = doubleDualUnitIso := Iso.ext (drinfeld_unit (C := C))
-  rw [hdual, hu]
+  rw [show drinfeldIso ((𝟙_ C)ᘁ) =
+      (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm from drinfeld_unit_dual,
+    show drinfeldIso (𝟙_ C) = doubleDualUnitIso from Iso.ext (drinfeld_unit (C := C))]
   apply Iso.ext
   rfl
 
@@ -127,10 +125,10 @@ theorem fourthDualRoot_unit_component :
   let u := doubleDualIso C U
   obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar (k := ℂ) u a
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit (C := C.Obj))
-  have htrace : unitScalar C (rightQuantumTrace a) = r := by
-    rw [rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
-    simp only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one]
-  simpa [a, (rootDimension_unit C).trans htrace, hu] using hr
+  rw [rootDimension_unit]
+  change a.hom = unitScalar C (rightQuantumTrace a) • (doubleDualUnitIso (C := C.Obj)).hom
+  rw [rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
+  simpa only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one, hu] using hr
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root dimension of the unit is a sign. -/

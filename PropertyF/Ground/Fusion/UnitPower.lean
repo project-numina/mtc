@@ -45,10 +45,8 @@ theorem balanced_flow_cycle {o : ι} (hout : ∃ j, 0 < b o j) :
   let s : Finset ι := Finset.univ.filter (fun i => ¬ Relation.ReflTransGen r i o)
   have hc : ∀ i ∈ s, ∀ j ∉ s, b i j = 0 := by
     intro i hi j hj
-    have hrj : Relation.ReflTransGen r j o := by
-      simpa [s] using hj
     exact le_antisymm (not_lt.mp fun h ↦ (Finset.mem_filter.mp hi).2
-      (Relation.ReflTransGen.head h hrj)) (hb i j)
+      (Relation.ReflTransGen.head h (by simpa [s] using hj))) (hb i j)
   obtain ⟨j, hj⟩ := hout
   refine ⟨j, hj, ?_⟩
   simpa [s] using (show j ∉ s from fun hjs ↦
