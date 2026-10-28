@@ -6,6 +6,10 @@ public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Fusion.Reciprocity
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
 
+/-! # Nonzero simple dimensions
+
+Simple pivotal dimensions are nonzero and squared norms are compatible with right duals.
+-/
 open scoped BigOperators
 
 @[expose] public noncomputable section
@@ -16,8 +20,8 @@ namespace PropertyF.Ground.Dimensions
 theorem pivotalDimension_simple_ne_zero (C : Ground.BraidedFusionCategory)
     (p : PivotalStructure (C := C.Obj)) (i : Fin (Ground.rank C)) :
     pivotalDimension C p (Ground.simples C i) ≠ 0 := by
-  have h := Ground.Modular.simpleDimension_ne_zero C p i
-  simpa [Ground.Modular.simpleDimension, pivotalDimension, Ground.unitScalar_eq_equiv] using h
+  simpa [Ground.Modular.simpleDimension, pivotalDimension, Ground.unitScalar_eq_equiv] using
+    (Ground.Modular.simpleDimension_ne_zero C p i)
 
 end PropertyF.Ground.Dimensions
 

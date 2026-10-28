@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 
+/-! # Double-dual pairings
+
+Tensor pairings satisfy the triangle identities and give the double-dual evaluation and coevaluation laws.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -167,8 +172,7 @@ theorem doubleDual_evaluation (X : C) :
   have hc := rightDualCoevaluation_evaluation (Xᘁ)
   change s.inv ≫ ((η_ (Xᘁ) ((Xᘁ)ᘁ))ᘁ) ≫ r.hom = _ at hc
   change (s.inv ≫ t.homᘁ) ≫ (((ε_ X (Xᘁ))ᘁ)ᘁ) ≫ (r.invᘁ ≫ r.hom) = _
-  have hx := congrArg (fun f => s.inv ≫ f ≫ r.hom) hd
-  simpa only [Category.assoc] using hx.trans hc
+  simpa only [Category.assoc] using (congrArg (fun f => s.inv ≫ f ≫ r.hom) hd).trans hc
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves coevaluation. -/
 theorem doubleDual_coevaluation (X : C) :
@@ -191,8 +195,7 @@ theorem doubleDual_coevaluation (X : C) :
   have hc := rightDualEvaluation_coevaluation (Xᘁ)
   change r.inv ≫ ((ε_ (Xᘁ) ((Xᘁ)ᘁ))ᘁ) ≫ s.hom = _ at hc
   change (r.inv ≫ r.homᘁ) ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) ≫ (t.invᘁ ≫ s.hom) = _
-  have hx := congrArg (fun f => r.inv ≫ f ≫ s.hom) hd
-  simpa only [Category.assoc] using hx.trans hc
+  simpa only [Category.assoc] using (congrArg (fun f => r.inv ≫ f ≫ s.hom) hd).trans hc
 end PropertyF.Ground.Dimensions
 
 end

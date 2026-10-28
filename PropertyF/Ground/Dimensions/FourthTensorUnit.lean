@@ -3,6 +3,11 @@ public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
 public import PropertyF.Ground.Dimensions.RootDualPairing
 public import PropertyF.Ground.Dimensions.DefectNaturality
 
+/-! # Unit laws for the fourth-dual root
+
+The tensor unit and unit labels satisfy the coherence identities for the root tensor defect.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -38,8 +43,8 @@ theorem rootTensorIso_unit_left (X : C.Obj) :
   calc
     _ = z • ((λ_ X).hom ≫ a.hom) := ht
     _ = _ := by
-      have hh := congrArg (fun f => z • f) hnat
-      simpa only [doubleDualFunctor, Functor.id_obj, Linear.smul_comp] using hh
+      simpa only [doubleDualFunctor, Functor.id_obj, Linear.smul_comp] using
+        (congrArg (fun f => z • f) hnat)
 
 /-- The ENO tensor defect with a left unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_left (X : C.Obj) :
@@ -90,8 +95,8 @@ theorem rootTensorIso_unit_right (X : C.Obj) :
   calc
     _ = z • ((ρ_ X).hom ≫ a.hom) := ht
     _ = _ := by
-      have hh := congrArg (fun f => z • f) hnat
-      simpa only [doubleDualFunctor, Functor.id_obj, Linear.smul_comp] using hh
+      simpa only [doubleDualFunctor, Functor.id_obj, Linear.smul_comp] using
+        (congrArg (fun f => z • f) hnat)
 
 /-- The ENO tensor defect with a right unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_right (X : C.Obj) :

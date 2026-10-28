@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 
+/-! # A criterion for sphericality
+
+Biproduct trace formulas reduce sphericality to the dimensions of simple objects.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
@@ -66,11 +71,9 @@ theorem isSpherical_iff_simple_dimensions
     obtain ⟨e⟩ := Ground.exists_canonical_decomposition C X
     let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
     have hleft : p.leftTrace f = p.leftTrace g := by
-      have h := leftTrace_cyclic p e.hom (e.inv ≫ f)
-      simpa [g, Category.assoc] using h
+      simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f))
     have hright : p.rightTrace f = p.rightTrace g := by
-      have h := p.rightTrace_cyclic e.hom (e.inv ≫ f)
-      simpa [g, Category.assoc] using h
+      simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f))
     have hsimple : ∀ a, Simple (V a) := fun a => Ground.simples_simple C a.1
     have hfinite : ∀ a, FiniteDimensional ℂ (V a ⟶ V a) := fun a =>
       Ground.IsFusionCategory.hom_finite _ _

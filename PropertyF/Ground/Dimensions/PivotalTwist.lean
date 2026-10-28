@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.SphericalCriterion
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 
+/-! # Pivotal scalar twists
+
+Scalar natural transformations twist pivotal structures and their simple dimensions.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

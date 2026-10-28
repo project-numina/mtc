@@ -2,6 +2,11 @@ module
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 
+/-! # Braiding of double duals
+
+The double-dual tensor comparison preserves the braiding.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions

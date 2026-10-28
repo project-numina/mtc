@@ -8,6 +8,11 @@ public import PropertyF.Ground.Dimensions.FourthTensorUnit
 public import PropertyF.Ground.Dimensions.CoevaluationSliding
 public import PropertyF.Ground.Dimensions.TensorExtension
 
+/-! # Extending tensor-defect identities
+
+Duality, associativity and coevaluation identities extend root tensor-defect relations.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -142,14 +147,14 @@ theorem rootTensorDefect_associativity (X Y Z : C.Obj) :
     (rootTensorDefect C X (Y ⊗ Z)).hom ≫ X ◁ (rootTensorDefect C Y Z).hom =
       (α_ X Y Z).inv ≫ (rootTensorDefect C (X ⊗ Y) Z).hom ≫
         (rootTensorDefect C X Y).hom ▷ Z ≫ (α_ X Y Z).hom := by
-  letI : (doubleDualFunctor C.Obj).Monoidal := doubleDualMonoidal C.Obj
-  letI : (doubleDualFunctor C.Obj).OplaxMonoidal := (doubleDualMonoidal C.Obj).toOplaxMonoidal
-  letI : (𝟭 C.Obj).OplaxMonoidal :=
+  let : (doubleDualFunctor C.Obj).Monoidal := doubleDualMonoidal C.Obj
+  let : (doubleDualFunctor C.Obj).OplaxMonoidal := (doubleDualMonoidal C.Obj).toOplaxMonoidal
+  let : (𝟭 C.Obj).OplaxMonoidal :=
     (Functor.Monoidal.transport (fourthDualRootNaturalIso C).symm).toOplaxMonoidal
   have hd (A B : C.Obj) : Functor.OplaxMonoidal.δ (𝟭 C.Obj) A B = (rootTensorDefect C A B).hom := by
     have hF : Functor.OplaxMonoidal.δ (doubleDualFunctor C.Obj) A B = (doubleDualTensorIso A B).inv := rfl
-    have h := Functor.Monoidal.transport_δ (fourthDualRootNaturalIso C).symm A B
-    simpa [rootTensorDefect, rootTensorIso, hF] using h
+    simpa [rootTensorDefect, rootTensorIso, hF] using
+      (Functor.Monoidal.transport_δ (fourthDualRootNaturalIso C).symm A B)
   have h := Functor.OplaxMonoidal.δ_comp_whiskerLeft_δ (𝟭 C.Obj) X Y Z
   simp only [hd, Functor.id_obj, Functor.id_map] at h
   exact h
@@ -209,8 +214,8 @@ theorem rootTensorDefect_slide_of_involution
   change η ≫ E = e • (η ≫ D)
   have hloop' : η ≫ E ≫ D = e • η := by rw [hcomm]; exact hloop
   change D ≫ D = 𝟙 _ at hinv
-  have hh := congrArg (fun f => f ≫ D) hloop'
-  simpa only [Category.assoc, hinv, Category.comp_id, Linear.smul_comp] using hh
+  simpa only [Category.assoc, hinv, Category.comp_id, Linear.smul_comp] using
+    (congrArg (fun f => f ≫ D) hloop')
 end PropertyF.Ground.Dimensions
 
 end

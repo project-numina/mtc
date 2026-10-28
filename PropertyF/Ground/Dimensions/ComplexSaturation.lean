@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.ENOMatrices
 
+/-! # Saturation of complex eigenvalue bounds
+
+Equality in weighted complex bounds determines the phases of eigenvectors.
+-/
+
 @[expose] public noncomputable section
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
