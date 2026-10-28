@@ -185,10 +185,9 @@ variable {A X Y : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
 normalized trace of the fresh operator. -/
 theorem rightPartialTrace_overlap :
     rightPartialTrace p (overlapEndProduct v u) =
-      (scalarTrace p scalar u / scalar (p.rightTrace (𝟙 X))) • v := by
-  rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
-    rightPartialTrace_simple_ground D p scalar]
-  exact End.ext (by simp)
+      (scalarTrace p scalar u / scalar (p.rightTrace (𝟙 X))) • v :=
+  End.ext (by simp [overlapEndProduct, overlapFresh, rightPartialTrace_left,
+    rightPartialTrace_whiskerLeft, rightPartialTrace_simple_ground D p scalar])
 
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/
@@ -236,10 +235,9 @@ theorem three_braid_trace (D : BraidedFusionCategory.{v,u})
     scalarTrace p scalar (Aut.toEnd ((braidGenerator X 1 0) ^ 2 *
       (braidGenerator X 1 1) ^ 2)) =
     scalarTrace p scalar (selfMonodromy X) ^ 2 / scalar (p.rightTrace (𝟙 X)) := by
-  unfold scalarTrace
-  rw [← rightTrace_iso_conj p (threePowerIso X), three_braid_double_overlap,
-    rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p scalar]
-  ring
+  rw [scalarTrace, scalarTrace, ← rightTrace_iso_conj p (threePowerIso X),
+    three_braid_double_overlap, rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p scalar,
+    pow_two, mul_div_assoc]
 
 /-- Remove the trailing tensor unit from the two-fold tensor power. -/
 def twoPowerIso (X : C) : tensorPower X 2 ≅ X ⊗ X :=

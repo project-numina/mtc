@@ -96,8 +96,7 @@ theorem fourthDualIso_unit :
   have hdual := drinfeld_unit_dual C
   change doubleDualIso C ((𝟙_ C.Obj)ᘁ) =
     (rightDualIsoMap (doubleDualIso C (𝟙_ C.Obj))).symm at hdual
-  rw [hdual]
-  rw [hu]
+  rw [hdual, hu]
   apply Iso.ext
   rfl
 /-- The root dimension of the unit label is the root trace of the tensor unit. -/
@@ -142,8 +141,8 @@ theorem rootDimension_unit_sq :
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
   have hr : a.hom = r • u.hom := by
     simpa [a, r, hu] using fourthDualRoot_unit_component C
-  have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso C U).hom := by
-    exact (congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C))
+  have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso C U).hom :=
+    congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C)
   have hfourth : (fourthDualIso C U).hom = u.hom ≫ ((u.homᘁ)ᘁ) := by
     have h := congrArg Iso.hom (fourthDualIso_unit C)
     rw [hu]

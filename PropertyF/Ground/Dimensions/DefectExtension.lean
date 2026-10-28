@@ -62,8 +62,7 @@ theorem rootTensorDefect_coevaluation
   apply (cancel_mono t.hom).1
   change (η_ X (Xᘁ) ≫ (((fourthDualRootNaturalIso C).app W).hom ≫ t.inv)) ≫ t.hom = _
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp]
-  rw [hn, hunit, Linear.smul_comp, ht]
-  rw [← mul_smul, mul_assoc, he, mul_one]
+  rw [hn, hunit, Linear.smul_comp, ht, ← mul_smul, mul_assoc, he, mul_one]
 end PropertyF.Ground.Dimensions
 
 end

@@ -9,11 +9,12 @@ public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 
 Self-transparent tensor powers carry permutation actions. We relate their
 signed traces to one-strand deletion and insertion identities. The notation
-`tr C p ρ n σ` is the scalar pivotal trace of the permutation action.
+`tr C p ρ n σ` is the scalar pivotal trace of the permutation action, and
+`sgn R n σ` is the permutation sign in the scalar ring.
 -/
 @[expose] public noncomputable section
 open PropertyF.Ground.Modular (HasFPSimpleDimensions)
-open PropertyF.Ground.Centre (permutationSign)
+local notation "sgn" => PropertyF.Ground.Centre.permutationSign
 open Equiv.Perm (decomposeFin)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -46,14 +47,14 @@ variable {R : Type*} [CommRing R]
 
 /-- Signed permutation trace sum, with no categorical assumptions. -/
 def signedTraceSum (F : ∀ n : ℕ, Equiv.Perm (Fin n) → R) (n : ℕ) : R :=
-  ∑ σ, (permutationSign R n σ : R) * F n σ
+  ∑ σ, (sgn R n σ : R) * F n σ
 
 /-- The sign changes precisely when the newly inserted point is moved. -/
 theorem sign_decomposeFin {n : ℕ} (p : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
-    (permutationSign R (n + 1) (decomposeFin.symm (p, σ)) : R) =
-      (if p = 0 then 1 else -1) * (permutationSign R n σ : R) := by
+    (sgn R (n + 1) (decomposeFin.symm (p, σ)) : R) =
+      (if p = 0 then 1 else -1) * (sgn R n σ : R) := by
   by_cases hp : p = 0 <;>
-    simp [permutationSign, decomposeFin.symm_sign, hp]
+    simp [Centre.permutationSign, decomposeFin.symm_sign, hp]
 
 variable {F : ∀ n : ℕ, Equiv.Perm (Fin n) → R} {d c : R} {n : ℕ}
 
@@ -95,7 +96,7 @@ theorem signedTraceSum_falling
   induction n with
   | zero =>
     let : Unique (Equiv.Perm (Fin 0)) := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩
-    simp [signedTraceSum, hzero, permutationSign]
+    simp [signedTraceSum, hzero, Centre.permutationSign]
   | succ n ih =>
     rw [signedTraceSum_succ (c := 1) (h.fixed n) (by simpa using h.moved n), ih,
       Finset.prod_range_succ]

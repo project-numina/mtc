@@ -73,12 +73,11 @@ theorem rightTraceWith_partialTraceWith {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y �
   simp only [tensorHom_def, comp_whiskerRight]
   monoidal
   simp
-  rw [whisker_exchange_assoc j.hom (λ_ (Xᘁ)).hom]
-  rw [whisker_exchange_assoc j.hom (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ (Xᘁ))]
-  rw [whisker_exchange_assoc j.hom (k.hom ▷ (Yᘁ) ▷ (Xᘁ))]
-  rw [← associator_naturality_left_assoc j.hom (Y ⊗ Yᘁ) (Xᘁ)]
-  rw [← comp_whiskerRight_assoc, ← associator_naturality_left]
-  rw [comp_whiskerRight, Category.assoc]
+  rw [whisker_exchange_assoc j.hom (λ_ (Xᘁ)).hom,
+    whisker_exchange_assoc j.hom (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ (Xᘁ)),
+    whisker_exchange_assoc j.hom (k.hom ▷ (Yᘁ) ▷ (Xᘁ)),
+    ← associator_naturality_left_assoc j.hom (Y ⊗ Yᘁ) (Xᘁ),
+    ← comp_whiskerRight_assoc, ← associator_naturality_left, comp_whiskerRight, Category.assoc]
 
 
 end PropertyF.Ground.Dimensions

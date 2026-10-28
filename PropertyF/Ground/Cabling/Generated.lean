@@ -112,8 +112,7 @@ theorem generatedBy_biproduct {X : C} {a : ℕ} (f : Fin a → C)
 /-- Generated objects are closed under biproducts indexed by any finite type. -/
 theorem generatedBy_finiteBiproduct {X : C} {J : Type} [Finite J] (f : J → C)
     (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) :=
-  let _ : Fintype J := Fintype.ofFinite J
-  let e := Fintype.equivFin J
+  let ⟨_, ⟨e⟩⟩ := Finite.exists_equiv_fin J
   generatedBy_of_iso (generatedBy_biproduct (fun i => f (e.symm i)) (fun i => hf (e.symm i)))
     (biproduct.whiskerEquiv e (fun j => eqToIso (by simp)))
 
