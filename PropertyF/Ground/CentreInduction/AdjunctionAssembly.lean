@@ -51,8 +51,7 @@ theorem tensor_middle_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit summand isomorphism is natural in the middle factor. -/
-theorem unitSummandIso_natural
-    {X Y : C.Obj} (f : X ⟶ Y) :
+theorem unitSummandIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
     ((simples C (unitIndex C) ◁ f) ▷ (simples C (unitIndex C))ᘁ) ≫
         (unitSummandIso C Y).hom = (unitSummandIso C X).hom ≫ f := by
   dsimp [unitSummandIso]
@@ -131,8 +130,7 @@ def unitCandidate (Z : 𝒵) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed unit component is natural for genuine centre maps. -/
-theorem unitComponent_natural
-    {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
+theorem unitComponent_natural {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
     f.f ≫ unitComponent C Y i = unitComponent C X i ≫
       ((simples C i ◁ f.f) ▷ (simples C i)ᘁ) := by
   dsimp [unitComponent, unitComponentAt]

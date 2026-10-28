@@ -41,11 +41,8 @@ theorem averagedGram_posDef :
 /-- Every group element is an isometry for the averaged form. -/
 theorem averagedGram_invariant (h : G) :
     (↑(ρ h) : Matrix ι ι ℂ)ᴴ * averagedGram ρ * (↑(ρ h) : Matrix ι ι ℂ) = averagedGram ρ := by
-  classical
-  simpa only [averagedGram, Matrix.mul_sum, Matrix.sum_mul, Equiv.coe_mulRight, map_mul,
-    Units.val_mul, Matrix.conjTranspose_mul, Matrix.mul_assoc] using
-    (Equiv.sum_comp (Equiv.mulRight h)
-      (fun g => (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ)))
+  simpa [averagedGram, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_assoc] using
+    (Equiv.sum_comp (Equiv.mulRight h) fun g => (ρ g : Matrix ι ι ℂ)ᴴ * (ρ g : Matrix ι ι ℂ))
 
 /-! A finite complex matrix representation can be conjugated into the unitary group. -/
 

@@ -215,8 +215,7 @@ theorem crossingBlock_sum_natural_test
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction crossing is natural in the crossed object. -/
-theorem crossingCandidate_natural_test
-    (X : C.Obj) {T U : C.Obj} (h : T ⟶ U) :
+theorem crossingCandidate_natural_test (X : C.Obj) {T U : C.Obj} (h : T ⟶ U) :
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
   let V := inductionSummand C X
