@@ -100,24 +100,16 @@ theorem positiveDualIso_forget (T : D) :
     (positiveDualIso T).hom.f =
       (forgetDualIso ((CategoryTheory.Center.ofBraided D).obj T)).hom := by
   let F := CategoryTheory.Center.ofBraided D
-  have hc : (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _ (F.obj T) (F.obj (Tᘁ))
+  have hc : (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _
+      ((CategoryTheory.Center.ofBraided D).obj T) ((CategoryTheory.Center.ofBraided D).obj (Tᘁ))
       (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) := by
     change (ε F ≫ F.map (η_ T (Tᘁ)) ≫ δ F T (Tᘁ)).f = _
     simp [F]
-  change (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _
-    ((CategoryTheory.Center.ofBraided D).obj T) ((CategoryTheory.Center.ofBraided D).obj (Tᘁ))
-    (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) at hc
-  have hc' : (@ExactPairing.coevaluation (CategoryTheory.Center D) _ _
-      ((CategoryTheory.Center.ofBraided D).obj T) ((CategoryTheory.Center.ofBraided D).obj (Tᘁ))
-      (Centre.positiveExactPairing T (Tᘁ))).f =
-      η_ ((CategoryTheory.Center.ofBraided D).obj T).1
-        (((CategoryTheory.Center.ofBraided D).obj T).1ᘁ) := by
-    convert hc using 1; rfl
   unfold positiveDualIso forgetDualIso rightDualIso rightAdjointMate
   simp only [CategoryTheory.Center.comp_f, CategoryTheory.Center.rightUnitor_inv_f,
     CategoryTheory.Center.leftUnitor_hom_f, CategoryTheory.Center.whiskerLeft_f,
     CategoryTheory.Center.whiskerRight_f, CategoryTheory.Center.associator_inv_f,
-    CategoryTheory.Center.id_f, hc']
+    CategoryTheory.Center.id_f, hc]
   rfl
 
 /-- The comparison between the double duals of an object and its positive lift. -/
