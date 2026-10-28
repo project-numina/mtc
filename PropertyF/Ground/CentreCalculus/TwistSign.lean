@@ -34,11 +34,10 @@ set_option backward.isDefEq.respectTransparency false in
 theorem drinfeld_coevaluation :
     η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (braidedDoubleDualIso X).inv =
       η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv := by
-  let q : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-  let h : ExactPairing (Xᘁ) ((Xᘁ)ᘁ) := HasRightDual.exact
-  have hc := Dimensions.coevaluation_rightDualIso q h
-  change (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
-    (Xᘁ) ◁ (braidedDoubleDualIso X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) at hc
+  have hc : (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
+      (Xᘁ) ◁ (braidedDoubleDualIso X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) :=
+    Dimensions.coevaluation_rightDualIso (BraidedCategory.exactPairing_swap X (Xᘁ))
+      (HasRightDual.exact : ExactPairing (Xᘁ) ((Xᘁ)ᘁ))
   rw [← hc, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
 
 /-- Pivotal coevaluation factors through the braided double-dual comparison. -/

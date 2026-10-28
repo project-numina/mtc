@@ -103,10 +103,9 @@ theorem leftPartialTrace_braiding_of_trace_compatibility
     leftPartialTrace p (End.of (β_ X X).hom) =
       θ C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  have hd : unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    simpa [unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X
   simpa only [← unitScalar_eq_equiv, Dimensions.pivotalTrace_selfBraiding,
-    pivotalDimension, mul_div_cancel_right₀ _ hd] using
+    pivotalDimension, mul_div_cancel_right₀ _ (show unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 from by
+      simpa [unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X)] using
     leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)
       (End.of (β_ X X).hom) (Modular.unitScalar_rightTrace_ne_zero C p X) ht
 
@@ -170,16 +169,16 @@ include hdim hX htotal in
 /-- The symmetric integrality argument now needs only left iterated-trace
 compatibility and the sign of the actual pivotal twist scalar. -/
 theorem integral_of_leftTrace_and_twist_sign (hsign : θ C p X = 1 ∨ θ C p X = -1) :
-    IsFPIntegral C X := by
-  have hfirst (n : ℕ) : leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = θ C p X • 1 :=
+    IsFPIntegral C X :=
+  let hfirst (n : ℕ) : leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = θ C p X • 1 :=
     leftPartialTrace_firstGenerator_of_trace_compatibility (C := C) n
       (htotal X (End.of (β_ X X).hom))
-  rcases hsign with h | h
-  · exact integral_of_parity_adjacent_trace hdim hX false fun n σ ↦ by
+  hsign.elim
+    (fun h ↦ integral_of_parity_adjacent_trace hdim hX false fun n σ ↦ by
       simpa [permScalarTrace, scalarPermTrace, parityPermAction, h] using
-        tensorPermTrace_adjacent p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst σ
-  · exact integral_of_parity_adjacent_trace hdim hX true
-      (negativeParity_adjacentTrace p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst h)
+        tensorPermTrace_adjacent p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst σ)
+    (fun h ↦ integral_of_parity_adjacent_trace hdim hX true
+      (negativeParity_adjacentTrace p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst h))
 
 end PropertyF.Ground.CentreCalculus
 
