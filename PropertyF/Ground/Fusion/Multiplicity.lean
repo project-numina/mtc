@@ -59,14 +59,13 @@ end
 section
 variable {k : Type*} [Field k] {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
   {ι : Type*} [Fintype ι]
+  {X : C} {V : ι → C} [HasBiproduct V]
 
-theorem finrank_hom_biproduct
-    (X : C) (V : ι → C) [HasBiproduct V] [∀ i, FiniteDimensional k (X ⟶ V i)] :
+theorem finrank_hom_biproduct [∀ i, FiniteDimensional k (X ⟶ V i)] :
     Module.finrank k (X ⟶ ⨁ V) = ∑ i, Module.finrank k (X ⟶ V i) :=
   by rw [(homBiproductLinearEquiv (k := k) X V).finrank_eq, Module.finrank_pi_fintype]
 
-theorem finrank_biproduct_hom
-    (V : ι → C) [HasBiproduct V] (X : C) [∀ i, FiniteDimensional k (V i ⟶ X)] :
+theorem finrank_biproduct_hom [∀ i, FiniteDimensional k (V i ⟶ X)] :
     Module.finrank k (⨁ V ⟶ X) = ∑ i, Module.finrank k (V i ⟶ X) :=
   by rw [(biproductHomLinearEquiv (k := k) V X).finrank_eq, Module.finrank_pi_fintype]
 

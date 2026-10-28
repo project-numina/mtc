@@ -51,8 +51,10 @@ variable {k : Type*} [Field k] {D : Type u} [Category.{v} D]
   [MonoidalCategory D] [RightRigidCategory D]
   [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D]
 
+omit [RightRigidCategory D] in
 /-- Scalar multiples with the same double-dual square differ by a sign. -/
-theorem scalar_sq_eq_one_of_same_square {X : D} [Simple X]
+theorem scalar_sq_eq_one_of_same_square {X : D} [HasRightDual X] [HasRightDual (Xᘁ)]
+    [HasRightDual ((Xᘁ)ᘁ)] [HasRightDual (((Xᘁ)ᘁ)ᘁ)] [Simple X]
     (a b : X ≅ (Xᘁ)ᘁ) (z : k) (hz : b.hom = z • a.hom)
     (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 := by
   have hn : (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom ≠ 0 :=

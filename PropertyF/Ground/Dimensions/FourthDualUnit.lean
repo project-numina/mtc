@@ -22,6 +22,8 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The braided double-dual map has the canonical component on the unit. -/
 theorem drinfeld_unit :
+    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+    letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
     (drinfeldIso (𝟙_ C)).hom = (doubleDualUnitIso (C := C)).hom := by
   let U : C := 𝟙_ C
   let : HasRightDual U := RightRigidCategory.rightDual U
