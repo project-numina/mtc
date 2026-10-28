@@ -19,8 +19,6 @@ theorem closeFusionMap_evaluation {T S R : D} (f : T ⊗ S ⟶ R) :
       (@HasRightDual.exact D _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
       (ExactPairing.tensor (X₁ := T) (X₂ := S) (Y₁ := Tᘁ) (Y₂ := Sᘁ))
   change (rightDualTensorIso T S).hom ▷ (T ⊗ S) ≫
-    ε_ (T ⊗ S) ((Sᘁ) ⊗ (Tᘁ)) = ε_ (T ⊗ S) ((T ⊗ S)ᘁ) at he
-  change (rightDualTensorIso T S).hom ▷ (T ⊗ S) ≫
     (𝟙 _ ⊗≫ (Sᘁ) ◁ (ε_ T (Tᘁ) ▷ S) ⊗≫ ε_ S (Sᘁ)) =
       ε_ (T ⊗ S) ((T ⊗ S)ᘁ) at he
   calc
@@ -61,7 +59,6 @@ theorem closeFusionMap_tensor {T U S K R : D} (f : T ⊗ K ⟶ R) (g : U ⊗ S �
   apply Dimensions.evaluation_ext (X := S)
   rw [closeFusionMap_evaluation]
   calc
-    _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ ((α_ T U S).hom ≫ (T ◁ g) ≫ f)) ⊗≫ ε_ R (Rᘁ) := rfl
     _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
       simp only [whiskerLeft_comp]; monoidal
     _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫

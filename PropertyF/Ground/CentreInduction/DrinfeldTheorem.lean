@@ -70,24 +70,17 @@ theorem drinfeld_inv_dual_tensor {C : BraidedFusionCategory.{v,u}} (h : Drinfeld
         (Dimensions.doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
           (((Dimensions.doubleDualTensorIso X Y).homᘁ)ᘁ) := by
   let t := rightDualTensorIso X Y
-  let d := Dimensions.doubleDualTensorIso (Yᘁ) (Xᘁ)
   let f := (doubleDualIso C (Yᘁ)).inv
   let g := (doubleDualIso C (Xᘁ)).inv
-  have hn := drinfeld_inv_natural C t
-  have hn' := congrArg (fun z => rightAdjointMate z) hn
-  simp only [comp_rightAdjointMate] at hn'
-  have hi := drinfeld_tensor_inverse h (Yᘁ) (Xᘁ)
-  change (doubleDualIso C ((Yᘁ) ⊗ (Xᘁ))).inv = d.inv ≫ (f ⊗ₘ g) ≫
-    Modular.doubleBraiding (Yᘁ) (Xᘁ) at hi
-  have hi' := congrArg (fun z => rightAdjointMate z) hi
-  simp only [comp_rightAdjointMate] at hi'
+  have hn' := congrArg (fun z => rightAdjointMate z) (drinfeld_inv_natural C t)
+  have hi' := congrArg (fun z => rightAdjointMate z) (drinfeld_tensor_inverse h (Yᘁ) (Xᘁ))
+  simp only [comp_rightAdjointMate] at hn' hi'
   have hm' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫
       ((Modular.doubleBraiding (Yᘁ) (Xᘁ))ᘁ) =
       Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
         (rightDualTensorIso (Yᘁ) (Xᘁ)).inv := by
     rw [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
     exact rightDualTensorIso_monodromy
-  have ht' := (Dimensions.rightDualTensorIso_inv_natural f g).symm
   simp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
@@ -98,9 +91,10 @@ theorem drinfeld_inv_dual_tensor {C : BraidedFusionCategory.{v,u}} (h : Drinfeld
     rightAdjointMate_id, Category.id_comp]
   rw [← Category.assoc (rightDualTensorIso (Yᘁ) (Xᘁ)).inv, hm']
   simp only [Category.assoc]
-  rw [← Category.assoc (rightDualTensorIso (Yᘁ) (Xᘁ)).inv, ht']
+  rw [← Category.assoc (rightDualTensorIso (Yᘁ) (Xᘁ)).inv,
+    ← Dimensions.rightDualTensorIso_inv_natural f g]
   simp only [Category.assoc]
-  dsimp only [d, Dimensions.doubleDualTensorIso, Dimensions.rightDualIsoMap,
+  dsimp only [Dimensions.doubleDualTensorIso, Dimensions.rightDualIsoMap,
     Iso.trans_inv, Iso.symm_inv]
   simp only [comp_rightAdjointMate, Category.assoc, f, g, t]
 
@@ -111,31 +105,17 @@ theorem fourthDualIso_tensor_of_drinfeld {C : BraidedFusionCategory.{v,u}} (h : 
         (Dimensions.doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
           (((Dimensions.doubleDualTensorIso X Y).homᘁ)ᘁ) := by
   let m : X ⊗ Y ≅ X ⊗ Y := (β_ X Y) ≪≫ (β_ Y X)
-  have hm : m.hom = Modular.doubleBraiding X Y := rfl
-  have hu : (doubleDualIso C (X ⊗ Y)).hom = m.inv ≫
-      ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
-        (Dimensions.doubleDualTensorIso X Y).hom := by
-    exact (Iso.eq_inv_comp m).2 (h X Y)
-  have hv := drinfeld_inv_dual_tensor h X Y
-  have hn : Modular.doubleBraiding X Y ≫
-      ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) =
-      ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
-        Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) := by
-    exact CentreCabling.doubleBraiding_natural (doubleDualIso C X).hom (doubleDualIso C Y).hom
   simp only [Dimensions.fourthDualIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap]
-  rw [hu]
+  rw [(Iso.eq_inv_comp m).2 (h X Y)]
   simp only [Category.assoc]
-  rw [hv]
+  rw [drinfeld_inv_dual_tensor h X Y]
   simp only [← tensorHom_comp_tensorHom_assoc]
-  have hn' : m.inv ≫ (((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
-      Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)) =
-      ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) := by
-    rw [← hn]
-    change m.inv ≫ (m.hom ≫ _) = _
-    simp
   simp only [← Category.assoc]
-  rw [Category.assoc m.inv, hn']
+  rw [Category.assoc m.inv,
+    ← CentreCabling.doubleBraiding_natural (doubleDualIso C X).hom (doubleDualIso C Y).hom]
+  simp only [Category.assoc, show Modular.doubleBraiding X Y = m.hom from rfl,
+    Iso.inv_hom_id_assoc]
 
 end PropertyF.Ground.CentreInduction
 

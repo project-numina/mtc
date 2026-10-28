@@ -285,8 +285,8 @@ theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
       (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
   let V := inductionSummand C X
-  have hp := unitCandidate_map_projection_general C ((induction C).obj X) ((underlyingCounit C).app X) j
-  have hh := congrArg (fun f => biproduct.ι V i ≫ f) hp
+  have hh := congrArg (fun f => biproduct.ι V i ≫ f)
+    (unitCandidate_map_projection_general C ((induction C).obj X) ((underlyingCounit C).app X) j)
   simp only [Category.assoc] at hh
   change _ = _ at hh
   by_cases h : i = j
@@ -299,10 +299,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem secondTriangle (X : C.Obj) :
     unitCandidate C ((induction C).obj X) ≫
       (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X) := by
-  apply biproduct.hom_ext'
-  intro i
-  apply biproduct.hom_ext
-  intro j
+  refine biproduct.hom_ext' _ _ fun i => biproduct.hom_ext _ _ fun j => ?_
   simpa [underlying, Category.assoc] using secondTriangle_entry C X i j
 
 end PropertyF.Ground.CentreInduction

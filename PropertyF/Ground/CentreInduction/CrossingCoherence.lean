@@ -33,13 +33,10 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
   let V := inductionSummand C X
   let bT : (⨁ V) ⊗ T ⟶ T ⊗ (⨁ V) := crossingCandidate C X T
   let bU : (⨁ V) ⊗ U ⟶ U ⊗ (⨁ V) := crossingCandidate C X U
-  change (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U = _
   calc
     _ = 𝟙 _ ⊗≫ (((biproduct.ι V i ▷ T) ≫ bT) ▷ U) ⊗≫
       (T ◁ bU) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
-      change (biproduct.ι V i ▷ (T ⊗ U)) ≫
-        ((α_ (⨁ V) T U).inv ≫ (bT ▷ U) ≫ (α_ T (⨁ V) U).hom ≫
-          (T ◁ bU) ≫ (α_ T U (⨁ V)).inv) = _
+      dsimp only [crossingTensorComposite]
       monoidal
     _ = ∑ k, ∑ a : crossingIndex C T i k,
       𝟙 _ ⊗≫ (crossingBlock X T (simples C k)
