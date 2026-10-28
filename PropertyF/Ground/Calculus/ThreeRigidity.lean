@@ -60,19 +60,6 @@ theorem actual_three_braid_trace
     unitScalar_eq_equiv] using
     (three_braid_trace C X p (Ground.unitScalarEquiv C))
 
-/-- The modular self-entry identity makes the actual three-strand trace attain
-the value used in the saturation argument. -/
-theorem actual_three_braid_saturates
-    {X : C.Obj} [Simple X]
-    {d f : ℝ} (hd : d ≠ 0)
-    (hdim : pivotalDimension C p X = (d : ℂ))
-    (hS : scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) =
-      (d : ℂ) * f) :
-    actualBraidTrace C p (braidInImage
-      (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2 := by
-  rw [actual_three_braid_trace C p X, hdim, hS, mul_pow, pow_two (d : ℂ), mul_assoc,
-    mul_div_cancel_left₀ _ (by exact_mod_cast hd)]
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Actual three-strand block generators have equal squares once their
 categorical weighted trace has the sharp bound and saturates it at `a²b²`.
@@ -231,6 +218,7 @@ theorem actual_three_strand_rigidity_of_trace_bound {X : C.Obj} [Simple X]
     (pair_operator_scalar_of_overlaps_equal C p (selfMonodromy X) hd hdim hS
       (local_monodromy_of_block_squares_equal b
         (actual_braid_squares_equal_of_saturation C p b he hw hf htrace hbound
-          (actual_three_braid_saturates C p hd hdim hS))))
+          (by rw [actual_three_braid_trace C p X, hdim, hS, mul_pow,
+            pow_two (d : ℂ), mul_assoc, mul_div_cancel_left₀ _ (by exact_mod_cast hd)]))))
 
 end PropertyF.Ground.Calculus
