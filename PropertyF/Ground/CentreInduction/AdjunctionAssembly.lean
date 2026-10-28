@@ -19,6 +19,11 @@ local notation "Sᶜ" => simples C
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
+/-- Cancel outer tensor factors using maps to the tensor unit. -/
+def unitTensorHom {A B : D} (f : A ⟶ 𝟙_ D) (d : B ⟶ 𝟙_ D) (X : D) :
+    (A ⊗ X) ⊗ B ⟶ X :=
+  ((f ⊗ₘ 𝟙 X) ⊗ₘ d) ≫ ((λ_ X).hom ⊗ₘ 𝟙 (𝟙_ D)) ≫ (ρ_ X).hom
+
 /-- A tensor factor isomorphic to the unit and its dual cancel around any object. -/
 def unitTensorIso {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (X : D) :
     (A ⊗ X) ⊗ Aᘁ ≅ X :=
@@ -150,22 +155,30 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
-/-- The unit component associated to an object isomorphic to the tensor unit
-is inverse to the canonical identification of its tensor factors. -/
-theorem unitComponentAt_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    (Z : Center D) {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) :
-    unitComponentAt Z A ≫ (unitTensorIso e Z.1).hom = 𝟙 Z.1 := by
-  dsimp only [unitComponentAt, unitTensorIso]
-  simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_def,
-    whiskerLeft_id, Category.comp_id, Category.assoc]
-  rw [← comp_whiskerRight_assoc, ← Z.2.naturality e.hom, comp_whiskerRight_assoc,
+/-- A unit component cancels against maps satisfying the coevaluation unit equation. -/
+theorem unitComponentAt_unit_factor {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    (Z : Center D) {A : D} [HasRightDual A] (f : A ⟶ 𝟙_ D) (d : Aᘁ ⟶ 𝟙_ D)
+    (h : η_ A Aᘁ ≫ (f ▷ Aᘁ) ≫ (λ_ Aᘁ).hom ≫ d = 𝟙 (𝟙_ D)) :
+    unitComponentAt Z A ≫ unitTensorHom f d Z.1 = 𝟙 Z.1 := by
+  dsimp only [unitComponentAt, unitTensorHom]
+  simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, Category.assoc]
+  rw [← comp_whiskerRight_assoc, ← Z.2.naturality f, comp_whiskerRight_assoc,
     ← associator_inv_naturality_middle_assoc, ← whiskerLeft_comp_assoc,
     CentreRigid.halfBraiding_unit Z]
   simp only [comp_whiskerRight, Category.assoc]
   rw [triangle_assoc_comp_right_assoc, ← whisker_exchange_assoc]
   simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp,
     ← whiskerLeft_comp_assoc, Category.assoc]
-  simp [reassoc_of% coevaluation_iso_unit e, whiskerLeft_id]
+  simp only [h, whiskerLeft_id, Category.id_comp, Iso.inv_hom_id]
+
+set_option backward.isDefEq.respectTransparency false in
+set_option backward.defeqAttrib.useBackward true in
+/-- The unit component associated to an object isomorphic to the tensor unit
+is inverse to the canonical identification of its tensor factors. -/
+theorem unitComponentAt_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    (Z : Center D) {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) :
+    unitComponentAt Z A ≫ (unitTensorIso e Z.1).hom = 𝟙 Z.1 :=
+  unitComponentAt_unit_factor Z e.hom (rightDualIsoMap e.symm).hom (coevaluation_iso_unit e)
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
