@@ -16,9 +16,9 @@ Evaluation pairings establish naturality of dual tensor isomorphisms and the Dri
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 /-- A morphism into a dual object is determined by its evaluation pairing. -/
-theorem evaluation_ext {C : Type u} [Category.{v} C] [MonoidalCategory C] {X Y Z : C} [ExactPairing X Y] {f g : Z ⟶ Y}
+theorem evaluation_ext {X Y Z : C} [ExactPairing X Y] {f g : Z ⟶ Y}
     (h : f ▷ X ≫ ε_ X Y = g ▷ X ≫ ε_ X Y) : f = g := by
   let hDual : HasRightDual X := { rightDual := Y, exact := inferInstance }
   let : HasRightDual X := hDual
@@ -27,6 +27,7 @@ theorem evaluation_ext {C : Type u} [Category.{v} C] [MonoidalCategory C] {X Y Z
       (congrArg (tensorRightHomEquiv Z X Y (𝟙_ C)) h).trans
         (@tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ X Z hDual g)
 
+variable [RightRigidCategory C]
 variable {X X' Y Y' : C} (f : X ⟶ X') (g : Y ⟶ Y')
 
 omit [RightRigidCategory C] in

@@ -238,12 +238,6 @@ theorem normalized_defects_trivial
   classical
   let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
-  have hphase (i j k) : enoTraceMatrix C i j k * (q k / (q i * q j)) =
-      (fusionCoeff C i j k : ℂ) := by
-    simpa [q, div_eq_mul_inv, mul_assoc] using
-      (weighted_eigenvalue_saturation (N := fun i j k ↦ (fusionCoeff C i j k : ℝ))
-        (fpSimple_pos C) (fpSimple_mul C) hsat
-        (fun i j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv i j k)) heig i j k)
   change ScaledMultiplicityDefectsTrivial C c
   intro i j k
   let r := q k / (q i * q j)
@@ -256,7 +250,12 @@ theorem normalized_defects_trivial
   have hfactor : c k / (c i * c j) = r⁻¹ := by
     simp [c, r, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_assoc]
   rw [hfactor]
-  exact involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm (hphase i j k)
+  apply involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm
+  change enoTraceMatrix C i j k * r = (fusionCoeff C i j k : ℂ)
+  simpa [q, r, div_eq_mul_inv, mul_assoc] using
+    (weighted_eigenvalue_saturation (N := fun i j k ↦ (fusionCoeff C i j k : ℝ))
+      (fpSimple_pos C) (fpSimple_mul C) hsat
+      (fun i j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv i j k)) heig i j k)
 
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/

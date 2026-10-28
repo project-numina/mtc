@@ -19,8 +19,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Coevaluation is transported by an isomorphism and its inverse right dual. -/
-theorem coevaluation_iso_map {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    {X Y : C} [HasRightDual X] [HasRightDual Y] (a : X ≅ Y) :
+theorem coevaluation_iso_map {X Y : C} [HasRightDual X] [HasRightDual Y] (a : X ≅ Y) :
     η_ X (Xᘁ) ≫ (a.hom ⊗ₘ (a.invᘁ)) = η_ Y (Yᘁ) := by
   rw [tensorHom_def, ← whisker_exchange, ← Category.assoc,
     coevaluation_comp_rightAdjointMate, Category.assoc, ← comp_whiskerRight,
