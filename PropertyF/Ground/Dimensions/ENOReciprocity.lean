@@ -47,22 +47,20 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+variable {k : Type*} [Field k] {D : Type u} [Category.{v} D]
+  [MonoidalCategory D] [RightRigidCategory D]
+  [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D]
 
 /-- Scalar multiples with the same double-dual square differ by a sign. -/
 theorem scalar_sq_eq_one_of_same_square {X : D} [Simple X]
-    (a b : X ≅ (Xᘁ)ᘁ) (z : ℂ) (hz : b.hom = z • a.hom)
+    (a b : X ≅ (Xᘁ)ᘁ) (z : k) (hz : b.hom = z • a.hom)
     (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 := by
   have hn : (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom ≠ 0 :=
     mono_ne_zero_of_id_ne_zero _ (id_nonzero X)
-  apply smul_left_injective ℂ hn
-  change (z * z) • (a.hom ≫ ((a.homᘁ)ᘁ)) = (1 : ℂ) • (a.hom ≫ ((a.homᘁ)ᘁ))
-  calc
-    _ = b.hom ≫ ((b.homᘁ)ᘁ) := by
-      rw [hz]
-      simp only [rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul]
-    _ = _ := by simpa using hsq
+  apply smul_left_injective k hn
+  change (z * z) • (a.hom ≫ ((a.homᘁ)ᘁ)) = (1 : k) • (a.hom ≫ ((a.homᘁ)ᘁ))
+  simpa only [hz, rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul,
+    one_smul] using hsq
 
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
@@ -154,11 +152,7 @@ theorem squaredNorm_eq_rootDualSign_mul
     rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i)
   rw [← hx, ← hq, ht]
   simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
-  have hs := rootDualSign_sq C i
-  calc
-    _ = (rootDualSign C i * rootDualSign C i) * (Ground.unitScalarEquiv C (rightQuantumTrace j) *
-      Ground.unitScalarEquiv C (rightQuantumTrace l)) := by rw [hs, one_mul]
-    _ = _ := by ring
+  rw [mul_mul_mul_comm, rootDualSign_sq, one_mul]
 
 end PropertyF.Ground.Dimensions
 
@@ -186,8 +180,7 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   rw [← rightTrace_id, ← leftTrace_id] at hh
   have hr : unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) := hdim i
   rw [hr, hnorm i, Complex.ofReal_pow] at hh
-  have hf : (fpSimple C i : ℂ) ≠ 0 := by
-    exact_mod_cast ne_of_gt (fpSimple_pos C i)
+  have hf : (fpSimple C i : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))
   have hl : unitScalar C (p.leftTrace (𝟙 X)) = (fpSimple C i : ℂ) :=
     mul_left_cancel₀ hf (by simpa [pow_two] using hh.symm)
   apply (Ground.unitScalarEquiv C).injective
@@ -280,14 +273,13 @@ theorem positive_spherical_of_matrix_identities
   let q : Fin (rank C) → ℂ := fun i => rootDimension C i / (fpSimple C i : ℂ)
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero C i)
-    (by exact_mod_cast ne_of_gt (fpSimple_pos C i)))
+    (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))))
   have hdef : ScaledMultiplicityDefectsTrivial C c := normalized_defects_trivial C hinv heig hsat
   have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) := by
     dsimp [c, q]
     rw [inv_div, div_mul_cancel₀ _ (rootDimension_ne_zero C i)]
   have hu : c (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
-    rw [hvalue, fpSimple_unit]
-    norm_num
+    simp only [hvalue, fpSimple_unit, Complex.ofReal_one]
   let unitProof := rootSignTwist_unit_of_simple_dimension C hc hu
   let p := rootPhasePivotal C c hc hdef unitProof
   have hp (i) : pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by

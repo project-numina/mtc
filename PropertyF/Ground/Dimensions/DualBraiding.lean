@@ -82,12 +82,12 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The right-dual tensor comparison transports a braiding to the braiding of the duals. -/
 theorem rightDualTensorIso_braiding :
     ((β_ X Y).homᘁ) ≫ (rightDualTensorIso X Y).hom =
-      (rightDualTensorIso Y X).hom ≫ (β_ (Xᘁ) (Yᘁ)).hom := by
-  apply evaluation_ext (X := X ⊗ Y)
-  simp only [comp_whiskerRight_assoc, rightDualTensorIso_evaluation,
-    rightAdjointMate_comp_evaluation]
-  rw [dual_braiding_tensor_evaluations, ← whisker_exchange_assoc,
-    rightDualTensorIso_evaluation]
+      (rightDualTensorIso Y X).hom ≫ (β_ (Xᘁ) (Yᘁ)).hom :=
+  evaluation_ext (X := X ⊗ Y) (by
+    simp only [comp_whiskerRight_assoc, rightDualTensorIso_evaluation,
+      rightAdjointMate_comp_evaluation]
+    rw [dual_braiding_tensor_evaluations, ← whisker_exchange_assoc,
+      rightDualTensorIso_evaluation])
 end PropertyF.Ground.Dimensions
 
 end
