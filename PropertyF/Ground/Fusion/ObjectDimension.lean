@@ -161,12 +161,8 @@ theorem fpDimension_leftDual (X : D.Obj) :
   calc
     _ = ∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
         fpSimple D (dualIndex D i) := by simp_rw [fpSimple_dual]
-    _ = _ := ?_
-  have h := Equiv.sum_comp (dualEquiv D)
-    (fun i => (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i)
-  change (∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
-    fpSimple D (dualIndex D i)) = _ at h
-  exact h
+    _ = _ := Equiv.sum_comp (dualEquiv D)
+      (fun i => (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i)
 
 /-- FP dimension is invariant under taking a right dual. -/
 theorem fpDimension_rightDual (X : D.Obj) :
