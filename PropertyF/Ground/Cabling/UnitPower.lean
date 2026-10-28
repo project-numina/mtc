@@ -44,13 +44,12 @@ theorem generatedBy_rightDual_of_unit_power (D : BraidedFusionCategory.{v,u})
   let _ : Simple (𝟙_ D.Obj) := Ground.IsFusionCategory.unit_simple
   let _ : Simple (Xᘁ) := Ground.simple_rightDual D X
   let : IsSplitMono r.i := r.instIsSplitMonoI
-  have hi : r.i ≠ 0 := Ground.mono_ne_zero_of_id_ne_zero r.i (id_nonzero (𝟙_ D.Obj))
   let f : Xᘁ ⊗ 𝟙_ D.Obj ⟶ tensorPower X n :=
     (Ground.tensorLeftHomLinearEquiv (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)).symm r.i
   have hf : f ≠ 0 := (Ground.tensorLeftHomLinearEquiv
-    (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)).symm.map_ne_zero_iff.mpr hi
+    (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)).symm.map_ne_zero_iff.mpr
+      (Ground.mono_ne_zero_of_id_ne_zero r.i (id_nonzero (𝟙_ D.Obj)))
   let g : Xᘁ ⟶ tensorPower X n := (ρ_ (Xᘁ)).inv ≫ f
-  have hg : g ≠ 0 := by simpa [g] using hf
-  obtain ⟨s, hs⟩ := Ground.split_from_simple g hg
+  obtain ⟨s, hs⟩ := Ground.split_from_simple g (by simpa [g] using hf)
   exact generatedBy_retract (generatedBy_tensorPower X n) { i := g, r := s, retract := hs }
 end PropertyF.Ground.Cabling

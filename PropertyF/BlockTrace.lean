@@ -22,10 +22,9 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- The ordinary matrix trace estimate used twice in Section 3. -/
 theorem norm_trace_le_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGroup ι ℂ) :
-    ‖U.trace‖ ≤ Fintype.card ι := calc
-    ‖U.trace‖ ≤ ∑ i, ‖U i i‖ := norm_sum_le _ _
-    _ ≤ ∑ _i : ι, (1 : ℝ) := Finset.sum_le_sum fun i _ => entry_norm_bound_of_unitary hU i i
-    _ = Fintype.card ι := by simp
+    ‖U.trace‖ ≤ Fintype.card ι := by
+  simpa [Matrix.trace] using (norm_sum_le Finset.univ (fun i => U i i)).trans
+    (Finset.sum_le_sum fun i _ => entry_norm_bound_of_unitary hU i i)
 
 /-- Saturation of the real trace estimate forces the identity matrix. -/
 theorem eq_one_of_re_trace_eq_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGroup ι ℂ)

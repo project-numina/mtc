@@ -25,7 +25,7 @@ theorem squares_eq_of_central_product {G : Type*} [Group G] (a b : G)
   have hAc : Commute (a ^ 2) (a * b) := (Commute.refl a).pow_left 2 |>.mul_right hAb
   calc
     a ^ 2 = (a * b) * a ^ 2 * (a * b)⁻¹ := hAc.symm.mul_inv_cancel.symm
-    _ = ((a * b) * a * (a * b)⁻¹) ^ 2 := by simp only [pow_two]; group
+    _ = ((a * b) * a * (a * b)⁻¹) ^ 2 := conj_pow.symm
     _ = b ^ 2 := by rw [hconj]
 
 /-- The last scalar calculation of Lemma 3.2, including negative `d`. -/
