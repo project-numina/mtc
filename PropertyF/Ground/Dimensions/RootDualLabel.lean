@@ -23,10 +23,8 @@ variable {C} in
 /-- It suffices to prove the fourth-dual tensor law on simple pairs; the
 construction uses no assumption about that law on arbitrary objects. -/
 theorem positive_spherical_of_simple_fourth_and_reciprocity
-    (hfourth : SimpleFourthDualTensorLaw C)
-    (htranspose : ENOTraceMatrixReciprocity C)
-    (hpu : PseudoUnitary C) :
-    HasFPSphericalStructure C :=
+    (hfourth : SimpleFourthDualTensorLaw C) (htranspose : ENOTraceMatrixReciprocity C)
+    (hpu : PseudoUnitary C) : HasFPSphericalStructure C :=
   let hinv : MultiplicityDefectsInvolutive C := fun i j k ↦
     multiplicityDefect_involution_of_tensor_square C k
       ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)

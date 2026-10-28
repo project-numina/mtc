@@ -212,10 +212,8 @@ an involution. -/
 theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
     (F : C ⥤ C) (a : 𝟭 C ≅ F) {X : C} (b : X ≅ F.obj X)
     (hsq : ((a.app X).hom ≫ F.map (a.app X).hom) = b.hom ≫ F.map b.hom) :
-    let d := (a.app X) ≪≫ b.symm
-    IsInvolutiveHom d.hom := by
+    IsInvolutiveHom ((a.app X) ≪≫ b.symm).hom := by
   let d := (a.app X) ≪≫ b.symm
-  change d.hom ≫ d.hom = 𝟙 X
   have hd : d.hom ≫ b.hom = (a.app X).hom := by simp [d, Category.assoc]
   have hc : b.hom ≫ F.map d.hom = d.hom ≫ b.hom := by
     apply (cancel_epi d.hom).1
