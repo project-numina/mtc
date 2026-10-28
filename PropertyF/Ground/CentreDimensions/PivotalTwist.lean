@@ -110,7 +110,7 @@ theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
       θₚ X * pivotalDimension C p X := by
   have h : p.rightTrace (pivotalBraidedTwist C p X).hom = p.rightTrace (β_ X X).hom := by
     simpa only [pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom,
-      rightPartialTrace_braiding p (Ground.doubleDualIso C X) (drinfeld_eval C X)] using
+      rightPartialTrace_braiding p (Ground.doubleDualIso C X) (drinfeld_eval X)] using
       rightTrace_partialTrace p (End.of (β_ X X).hom)
   simpa only [pivotalBraidedTwist_simple, PivotalStructure.rightTrace_smul,
     Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul, pivotalDimension] using
@@ -120,7 +120,7 @@ theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
 def pivotalBraidedTwistNaturalIso : 𝟭 C.Obj ≅ 𝟭 C.Obj :=
   NatIso.ofComponents (pivotalBraidedTwist C p) (fun f ↦ by
     simpa only [Functor.id_map, pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom] using
-      pivotalBraidedTwist_natural p (Ground.doubleDualIso C) (fun f ↦ doubleDualIso_natural C f) f)
+      pivotalBraidedTwist_natural p (Ground.doubleDualIso C) (fun f ↦ drinfeldIso_natural f) f)
 
 
 end PropertyF.Ground.Dimensions

@@ -69,9 +69,9 @@ the dual object. -/
 theorem inverseDualRoot_square (X : C.Obj) :
     (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom ≫
       (((((rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom)ᘁ)ᘁ)) =
-      (fourthDualIso C (Xᘁ)).hom := by
+      (fourthDualIso (Xᘁ)).hom := by
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
-  have h : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso C X :=
+  have h : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso X :=
     Iso.ext (congrArg (fun n ↦ (n.app X).hom) (fourthDualRootNaturalSquare_eq C))
   rw [fourthDualIso_rightDual]
   simpa only [Iso.trans_inv, rightDualIsoMap, Iso.symm_hom, Iso.symm_inv,
