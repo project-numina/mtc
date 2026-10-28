@@ -205,12 +205,11 @@ theorem rootTensorDefect_involution_extension
     (hsimple : ∀ i j, (rootTensorDefect C (simples C i) (simples C j)).hom ≫
       (rootTensorDefect C (simples C i) (simples C j)).hom =
         𝟙 (simples C i ⊗ simples C j)) (X Y : C.Obj) :
-    (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
-  apply tensor_simples_hom_ext C
-  intro i j sx sy
-  have hn := rootTensorDefect_natural C sx sy
-  rw [← Category.assoc, hn, Category.assoc, hn, ← Category.assoc, hsimple,
-    Category.id_comp, Category.comp_id]
+    (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) :=
+  tensor_simples_hom_ext C fun sx sy ↦ by
+    rw [← Category.assoc, rootTensorDefect_natural C sx sy, Category.assoc,
+      rootTensorDefect_natural C sx sy, ← Category.assoc, hsimple,
+      Category.id_comp, Category.comp_id]
 /-- The fourth-dual tensor law on simple pairs implies ENO trace reciprocity. -/
 theorem trace_reciprocity_of_fourth_dual
     (hfourth : SimpleFourthDualTensorLaw C) :
