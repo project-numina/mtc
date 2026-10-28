@@ -264,13 +264,11 @@ abbrev HasWeightedTwistBalance (t : ι → G) : Prop :=
 theorem finite_order_of_weighted_twist_balance [Module.FaithfullyFlat ℚ K]
     (hreg : IsRegularFusionVector N d) (hD : (∑ j, d j ^ 2) ≠ 0)
     (hd : ∀ i, d i ≠ 0) (t : ι → G) (hbalance : HasWeightedTwistBalance N d t) :
-    ∀ i, IsOfFinOrder (t i) := by
-  have hderiv : IsFusionDerivation N d (fun i ↦ d i • rationalUnitClass (K := K) (t i)) := by
-    intro i j
-    simpa only [smul_add, smul_smul, mul_comm] using hbalance i j
-  intro i
-  apply (rationalUnitClass_eq_zero_iff (K := K) _).mp
-  exact (smul_eq_zero.mp (derivation_vanishes_of_regular_eigenvector N d hreg hD _ hderiv i)).resolve_left (hd i)
+    ∀ i, IsOfFinOrder (t i) :=
+  have hderiv : IsFusionDerivation N d (fun i ↦ d i • rationalUnitClass (K := K) (t i)) :=
+    fun i j ↦ by simpa only [smul_add, smul_smul, mul_comm] using hbalance i j
+  fun i ↦ (rationalUnitClass_eq_zero_iff (K := K) _).mp <|
+    (smul_eq_zero.mp (derivation_vanishes_of_regular_eigenvector N d hreg hD _ hderiv i)).resolve_left (hd i)
 
 end
 
@@ -713,12 +711,11 @@ theorem fpDeterminant_tensor_scalar_natural
     (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (X Y : C.Obj) (z : ℂˣ) :
     HasTensorDeterminant C X (scalarIso Y z ≪≫ η.app Y) := by
   dsimp only [HasTensorDeterminant]
-  have h : (Iso.refl X ⊗ᵢ (scalarIso Y z ≪≫ η.app Y)) =
-      (Iso.refl X ⊗ᵢ scalarIso Y z) ≪≫ (Iso.refl X ⊗ᵢ η.app Y) :=
-    Iso.ext (by simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp])
-  have hn : fpDeterminant C (Iso.refl X ⊗ᵢ η.app Y) =
-      fpDimension C X • fpDeterminant C (η.app Y) := fpDeterminant_tensor_natural C η X Y
-  rw [h, fpDeterminant_trans, fpDeterminant_trans, fpDeterminant_tensor_scalar, hn, smul_add]
+  rw [show (Iso.refl X ⊗ᵢ (scalarIso Y z ≪≫ η.app Y)) =
+      (Iso.refl X ⊗ᵢ scalarIso Y z) ≪≫ (Iso.refl X ⊗ᵢ η.app Y) from
+        Iso.ext (by simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp]),
+    fpDeterminant_trans, fpDeterminant_trans, fpDeterminant_tensor_scalar,
+    fpDeterminant_tensor_natural C η X Y, smul_add]
 
 variable (hbalance : HasSimpleBalance C η t)
 

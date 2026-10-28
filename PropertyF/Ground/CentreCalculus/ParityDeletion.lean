@@ -28,20 +28,20 @@ def parityPermAction (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
   else tensorPermAction X hX n
 
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
-  (hdim : HasFPSimpleDimensions C p)
+  (hdim : HasFPSimpleDimensions C p) {X : C.Obj} (hX : SelfTransparent X)
 
 /-- The sign-twisted permutation trace is the sign times the original trace. -/
-theorem parityPermScalarTrace_true {X : C.Obj} (hX : SelfTransparent X)
-    (n : ℕ) (σ : Equiv.Perm (Fin n)) :
+theorem parityPermScalarTrace_true (n : ℕ) (σ : Equiv.Perm (Fin n)) :
     tr C p (parityPermAction C hX true) n σ =
       (permutationSign ℂ n σ : ℂ) * tr C p (tensorPermAction X hX) n σ := by
   simp [permScalarTrace, parityPermAction, Centre.twistAction, p.rightTrace_smul,
     unitScalar_eq_equiv, smul_eq_mul]
 
+variable (odd : Bool)
+
 include hdim in
 /-- Sign twist preserves the fixed-strand trace deletion identity. -/
-theorem parityPermTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
-    {n : ℕ} (σ : Equiv.Perm (Fin n)) :
+theorem parityPermTrace_fixHead {n : ℕ} (σ : Equiv.Perm (Fin n)) :
     tr C p (parityPermAction C hX odd) (n + 1) (fixHead n σ) =
     (fpDimension C X : ℂ) * tr C p (parityPermAction C hX odd) n σ := by
   cases odd with
@@ -57,8 +57,7 @@ theorem parityPermTrace_fixHead {X : C.Obj} (hX : SelfTransparent X) (odd : Bool
 include hdim in
 /-- Once the moved-strand trace deletion identity is shown for one parity,
 positive dimensional integrality follows for the self-transparent object. -/
-theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
-    (hmoved : HasMovedTrace (tr C p (parityPermAction C hX odd))) :
+theorem integral_of_parity_moved_trace (hmoved : HasMovedTrace (tr C p (parityPermAction C hX odd))) :
     IsFPIntegral C X :=
   integral_of_trace_deletion hdim (parityPermAction C hX odd)
     ⟨(fun _ σ ↦ parityPermTrace_fixHead hdim hX odd σ), hmoved⟩

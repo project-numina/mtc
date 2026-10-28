@@ -98,10 +98,9 @@ theorem rootDual_differs_by_sign (X : C.Obj)
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
   obtain ⟨ε, _, he, _⟩ := isomorphisms_scalar l k
   refine ⟨ε, ?_, he⟩
-  have hk : k.hom ≫ ((k.homᘁ)ᘁ) = (fourthDualIso C (Xᘁ)).hom := by
-    exact (congrArg (fun n => (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C))
-  have hl : l.hom ≫ ((l.homᘁ)ᘁ) = (fourthDualIso C (Xᘁ)).hom := inverseDualRoot_square C X
-  exact scalar_sq_eq_one_of_same_square l k ε he (hk.trans hl.symm)
+  exact scalar_sq_eq_one_of_same_square l k ε he
+    ((congrArg (fun n => (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C)).trans
+      (inverseDualRoot_square C X).symm)
 
 end PropertyF.Ground.Dimensions
 
@@ -155,9 +154,7 @@ theorem squaredNorm_eq_rootDualSign_mul
     rw [← rootTrace_id C, rootTrace_id_iso C (e ≪≫ u)]
     rfl
   have hx : unitScalar C (rightQuantumTrace j) = rootDimension C i := by
-    change unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app X)) = _
-    rw [← rootTrace_id C]
-    rfl
+    simp only [rootDimension, rootTrace_id, X, j]
   have ht : rightQuantumTrace k = rootDualSign C i • rightQuantumTrace l :=
     rightQuantumTrace_smul_hom (rootDualSign_component C i)
   rw [target_squaredNorm_choice_independent C j, leftQuantumTrace_eq_rightDual j]

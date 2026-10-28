@@ -28,12 +28,12 @@ def tensorPermAction (X : C)
     ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n)
   | 0 => 1
   | 1 => 1
-  | n + 2 => Aut.toEnd.comp (permutationAction X hX n)
+  | n + 2 => Aut.toEnd.comp (permAction X hX n)
 
 /-- Every adjacent transposition acts by the actual categorical crossing. -/
 theorem tensorPermAction_swap {X : C} (hX : SelfTransparent X) {n : ℕ} (i : Fin (n + 1)) :
     tensorPermAction X hX (n + 2) (adjacentSwap i) = Aut.toEnd (braidGenerator X n i) :=
-  congrArg Aut.toEnd (permutationAction_swap hX i)
+  congrArg Aut.toEnd (permAction_swap hX i)
 
 end PropertyF.Ground.CentreCalculus
 
@@ -166,19 +166,19 @@ variable {X : C} (hX : SelfTransparent X)
 set_option backward.isDefEq.respectTransparency false in
 /-- Inserting a fixed first strand acts by tensoring the old automorphism
 on the left with the identity of the new strand. -/
-theorem permutationAction_fixHead {n : ℕ}
+theorem permAction_fixHead {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 2))) :
-    permutationAction X hX (n + 1) (fixHead (n + 2) σ) =
-      (tensorLeft X).mapAut (tensorPower X (n + 2)) (permutationAction X hX n σ) := by
-  let f := (permutationAction X hX (n + 1)).comp (fixHead (n + 2))
-  let g := ((tensorLeft X).mapAut (tensorPower X (n + 2))).comp (permutationAction X hX n)
+    permAction X hX (n + 1) (fixHead (n + 2) σ) =
+      (tensorLeft X).mapAut (tensorPower X (n + 2)) (permAction X hX n σ) := by
+  let f := (permAction X hX (n + 1)).comp (fixHead (n + 2))
+  let g := ((tensorLeft X).mapAut (tensorPower X (n + 2))).comp (permAction X hX n)
   obtain ⟨w, rfl⟩ := strandPermutation_surjective n σ
   have hh : f.comp (strandPermutation n) = g.comp (strandPermutation n) := by
     refine FreeGroup.ext_hom _ _ fun i ↦ ?_
-    change permutationAction X hX (n + 1) (fixHead (n + 2) (strandPermutation n (FreeGroup.of i))) =
+    change permAction X hX (n + 1) (fixHead (n + 2) (strandPermutation n (FreeGroup.of i))) =
       (tensorLeft X).mapAut (tensorPower X (n + 2))
-        (permutationAction X hX n (strandPermutation n (FreeGroup.of i)))
-    simp only [strandPermutation, FreeGroup.lift_apply_of, fixHead_swap, permutationAction_swap]
+        (permAction X hX n (strandPermutation n (FreeGroup.of i)))
+    simp only [strandPermutation, FreeGroup.lift_apply_of, fixHead_swap, permAction_swap]
     exact (braidGenerator_succ X i).symm
   exact DFunLike.congr_fun hh w
 
@@ -195,8 +195,8 @@ theorem tensorPermAction_fixHead :
   · obtain rfl : σ = 1 := Equiv.ext fun x ↦ (Fin.eq_zero (σ x)).trans (Fin.eq_zero x).symm
     simp [tensorPermAction, Functor.mapEnd]
     rfl
-  · change Aut.toEnd (permutationAction X hX (n + 1) (fixHead (n + 2) σ)) = _
-    rw [permutationAction_fixHead]
+  · change Aut.toEnd (permAction X hX (n + 1) (fixHead (n + 2) σ)) = _
+    rw [permAction_fixHead]
     rfl
 
 set_option backward.isDefEq.respectTransparency false in

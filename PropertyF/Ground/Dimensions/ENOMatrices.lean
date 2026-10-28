@@ -178,11 +178,9 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
   have hnonneg (k : ι) : 0 ≤ (N k - (x k).re) * f k :=
     mul_nonneg (sub_nonneg.mpr (le_trans (Complex.re_le_norm _) (hdom k))) (le_of_lt (hf k))
   have hsum : ∑ k, (N k - (x k).re) * f k = 0 := by
-    have hr := congrArg Complex.re heq
-    simp only [Complex.re_sum, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
-      mul_zero, sub_zero] at hr
-    simp only [sub_mul, Finset.sum_sub_distrib]
-    linarith
+    simpa only [Complex.re_sum, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+      mul_zero, sub_zero, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] using
+      (congrArg Complex.re heq).symm
   intro k
   have hz := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => hnonneg j)).1 hsum k (Finset.mem_univ k)
   have hre : (x k).re = N k :=
