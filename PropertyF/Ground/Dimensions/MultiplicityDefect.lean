@@ -146,6 +146,14 @@ theorem involution_trace_integer_bound {V : Type*} [AddCommGroup V] [Module ℂ 
     rw [abs_le]
     constructor <;> omega
 
+/-- The trace of a complex involution is real. -/
+theorem star_involution_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1) :
+    star (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T := by
+  obtain ⟨n, hn, _⟩ := involution_trace_integer_bound hT
+  rw [hn]
+  simp
+
 /-- An involution whose trace reaches the dimension is the identity. -/
 theorem involution_eq_one_of_trace_eq_finrank {V : Type*} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] {T : V →ₗ[ℂ] V} (hT : T * T = 1)
@@ -173,8 +181,8 @@ theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module �
     exact Subsingleton.elim _ _
   have hdim : (Module.finrank ℂ V : ℂ) ≠ 0 := by exact_mod_cast hz
   have ht : LinearMap.trace ℂ V T ≠ 0 := left_ne_zero_of_mul (htrace ▸ hdim)
-  obtain ⟨n, hn, _⟩ := involution_trace_integer_bound hT
-  have htr : (starRingEnd ℂ) (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T := by rw [hn]; simp
+  have htr : (starRingEnd ℂ) (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T :=
+    star_involution_trace hT
   have hconj := congrArg (starRingEnd ℂ) htrace
   simp only [map_mul, map_natCast, htr] at hconj
   have hcconj : (starRingEnd ℂ) c = c := mul_left_cancel₀ ht (hconj.trans htrace.symm)

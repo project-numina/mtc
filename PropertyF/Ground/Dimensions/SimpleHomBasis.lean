@@ -40,11 +40,8 @@ theorem rightQuantumTrace_tensor_scalar
     (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ) :
     scalar (rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y)) =
       scalar (rightQuantumTrace j) * scalar (rightQuantumTrace k) := by
-  have hscalar : rightQuantumTrace k = scalar (rightQuantumTrace k) • (1 : End (𝟙_ C)) := by
-    apply scalar.injective
-    simp
   have hpt : partialTraceWith k X 1 = scalar (rightQuantumTrace k) • 1 := by
-    rw [partialTraceWith_one, hscalar]
+    rw [partialTraceWith_one, eq_smul_one_of_algEquiv scalar (rightQuantumTrace k)]
     apply End.ext
     simp
   have h := rightTraceWith_partialTraceWith j k (1 : End (X ⊗ Y))
