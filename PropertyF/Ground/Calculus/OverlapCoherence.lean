@@ -242,11 +242,4 @@ theorem overlap_trace_step_of_coherence (k : ℕ)
   rw [unitScalar_eq_equiv, hh, mul_assoc,
     div_mul_cancel₀ _ (Modular.unitScalar_rightTrace_ne_zero D p X)]
 
-/-- Canonical isomorphism coherence supplies the scaled trace identity for
-every iterated actual overlapping braid-algebra product. -/
-theorem overlap_trace_power_of_isos (hiso : ∀ k, HasOverlapCoherence X t k) :
-    HasOverlapTracePower D p u :=
-  overlap_trace_power_of_step D p u fun k ↦
-    overlap_trace_step_of_coherence D p u k (overlapProduct_local_of_iso k u (hiso k))
-
 end PropertyF.Ground.Calculus

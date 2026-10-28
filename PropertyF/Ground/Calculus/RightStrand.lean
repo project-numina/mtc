@@ -215,11 +215,12 @@ def appendIso : ∀ n : ℕ, tensorPower X n ⊗ X ≅ tensorPower X (n + 1)
 def addRightAut (n : ℕ) : Aut (tensorPower X (n+2)) →* Aut (tensorPower X ((n+1)+2)) :=
   (appendIso X (n+2)).conjAut.toMonoidHom.comp ((tensorRight X).mapAut (tensorPower X (n+2)))
 
-/-- The first crossing is natural in its tensor-power tail. -/
+omit [BraidedCategory C] in
+/-- An endomorphism of the first two factors is natural in the tail. -/
 @[reassoc]
-theorem crossing_natural {A B : C} (g : A ⟶ B) :
-    ((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ≫ X ◁ X ◁ g =
-      X ◁ X ◁ g ≫ ((α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom) := by
+theorem firstPair_natural (f : X ⊗ X ⟶ X ⊗ X) {A B : C} (g : A ⟶ B) :
+    ((α_ X X A).inv ≫ f ▷ A ≫ (α_ X X A).hom) ≫ X ◁ X ◁ g =
+      X ◁ X ◁ g ≫ ((α_ X X B).inv ≫ f ▷ B ≫ (α_ X X B).hom) := by
   simp only [Category.assoc, ← associator_naturality_right X X g,
     ← whisker_exchange_assoc, ← associator_inv_naturality_right_assoc]
 
@@ -251,7 +252,7 @@ theorem append_first_two :
           monoidal
     _ = _ := by
       simp only [Category.assoc]
-      rw [← crossing_natural_assoc X e.inv]
+      rw [← firstPair_natural_assoc X (β_ X X).hom e.inv]
       simp [← whiskerLeft_comp]
 
 end Append
