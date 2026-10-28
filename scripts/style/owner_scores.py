@@ -70,17 +70,25 @@ def main():
             match = entries[(module, decl["name"].split(".")[-1])]
             decls[group].append((decl, match[0] if len(match) == 1 else None))
 
-    print("Owner | files median/p90 | theorems | proof | tactics | statement lines | chars | type nodes | matched")
+    print("All numeric pairs are median/p90. Type metrics come from the last survey.")
     for group in ("coord", "centre", "centre calculus", "induction", "modularity", "fusion", "cabling"):
         rows = decls[group]
         parsed = [d for d, _ in rows]
         matched = [r for _, r in rows if r and int(r["type_nodes"]) < 999999]
         source = lambda key: metric([d[key] for d in parsed])
         tactics = metric([d["steps"] for d in parsed if d["tactic"]])
-        print(f"{group} | {metric(files[group])} | {len(parsed)} | {source('proof_lines')} | "
-              f"{tactics} | {source('statement_lines')} | {source('statement_chars')} | "
-              f"{metric([int(r['type_nodes']) for r in matched])} | {len(matched)}/{len(parsed)}")
-    print("Type-node metrics use STYLE_DECLARATIONS.tsv; refresh the survey after source changes.", file=sys.stderr)
+        elaborated = lambda key: metric([int(r[key]) for r in matched])
+        names = metric([len(d["name"].split(".")[-1]) for d in parsed])
+        terms = sum(not d["tactic"] for d in parsed)
+        print(f"{group}: files {metric(files[group])} (max {max(files[group])}), "
+              f"theorems {len(parsed)}, proof {source('proof_lines')}, tactics {tactics}, "
+              f"statement lines {source('statement_lines')}, chars {source('statement_chars')}")
+        print(f"  nodes {elaborated('type_nodes')}, binders explicit {elaborated('explicit')}, "
+              f"implicit {elaborated('implicit')}, instance {elaborated('instance')}, "
+              f"hypotheses {elaborated('hypotheses')}; matched {len(matched)}/{len(parsed)}")
+        print(f"  have {source('have')}, simp {source('simp')}, names {names}, "
+              f"non-tactic proofs {terms}/{len(parsed)}")
+    print("Refresh STYLE_DECLARATIONS.tsv after source changes.", file=sys.stderr)
 
 
 if __name__ == "__main__":
