@@ -81,12 +81,11 @@ def positiveDualIso (T : D) : (Z⁺ T)ᘁ ≅ Z⁺ (Tᘁ) :=
 /-- Forgetting the positive dual comparison gives the base dual comparison. -/
 theorem positiveDualIso_forget (T : D) :
     (positiveDualIso T).hom.f = (forgetDualIso (Z⁺ T)).hom := by
-  let F := Center.ofBraided D
   have hc : (@ExactPairing.coevaluation (Center D) _ _
       (Z⁺ T) (Z⁺ (Tᘁ))
       (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) := by
-    change (ε F ≫ F.map (η_ T (Tᘁ)) ≫ δ F T (Tᘁ)).f = _
-    simp [F]
+    change 𝟙 _ ≫ η_ T (Tᘁ) ≫ 𝟙 _ = _
+    exact (Category.id_comp _).trans (Category.comp_id _)
   unfold positiveDualIso forgetDualIso rightDualIso rightAdjointMate
   simp only [Center.comp_f, Center.rightUnitor_inv_f,
     Center.leftUnitor_hom_f, Center.whiskerLeft_f,
@@ -184,8 +183,7 @@ theorem center_positive_spherical_of_compatible_pivotal
     (center_pivotalDimension_forget C (hcompat _)).trans <|
       (pivotalDimension_eq_fp hsimple _).trans <| congrArg (fun x : ℝ => (x : ℂ)) <|
         (Integrate.center_forget_fpDimension C _).trans (fpDimension_simple D i)
-  refine ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 ?_, hd⟩
-  intro i
-  simp [hd]
+  exact ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i =>
+    (congrArg star (hd i)).trans ((Complex.conj_ofReal _).trans (hd i).symm)), hd⟩
 
 end PropertyF.Ground.CentreInduction

@@ -41,7 +41,6 @@ theorem fusion_coevaluation (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ ((q ▷ S) ≫ ε_ S (Sᘁ))) ⊗≫
       (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by
       rw [← whisker_exchange]
-      simp only [whiskerLeft_comp]
       monoidal
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫
       (R ◁ (𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ))) ⊗≫
@@ -73,7 +72,6 @@ theorem unit_block (Z : Center D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
       ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
       ((bTS ▷ ((Rᘁ : D) ⊗ T)) ≫ (((T ⊗ S) ⊗ Z.1) ◁ q)) ⊗≫ 𝟙 _ := by
         rw [← Z.2.naturality g]
-        simp only [comp_whiskerRight]
         monoidal
     _ = _ := by
       rw [← whisker_exchange, ← fusion_coevaluation g f]
@@ -110,7 +108,7 @@ theorem unitBlockLinear_id (Z : Center D) (T S : D) :
   let bS := (Z.2.β S).hom
   calc
     _ = 𝟙 _ ⊗≫ (((Z.1 ⊗ T) ◁ η_ S (Sᘁ)) ≫ (bT ▷ (S ⊗ Sᘁ))) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
+      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by monoidal
     _ = _ := by rw [whisker_exchange]; monoidal
 
 variable (Z : Center C.Obj) (T : C.Obj)
@@ -121,7 +119,7 @@ theorem unit_sum (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
     (unitComponent C Z p.1 ▷ T) ≫ crossingSummand C Z.1 T p.1 j p.2) =
       (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
-  simp only [unitComponent]
+  dsimp only [unitComponent]
   rw [← unitBlockLinear_id (k := ℂ) Z T (simples C j), ← crossing_completeness C T j, map_sum]
   exact Finset.sum_congr rfl fun p _ => unit_block Z
     (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
