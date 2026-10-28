@@ -405,9 +405,8 @@ theorem weighted_eigenvalue_bound {K : Type*} [NormedRing K] [NormMulClass K]
         (norm_nonneg _) (hN i j)
     _ = r * (∑ j, N i j * f j) := by simp only [Finset.mul_sum, mul_left_comm]
     _ = F * ‖v i‖ := by
-      rw [hfp i]
-      dsimp [r]
-      field_simp [ne_of_gt (hf i)]
+      rw [hfp i, mul_left_comm, show r * f i = ‖v i‖ from
+        div_mul_cancel₀ _ (ne_of_gt (hf i))]
 
 end PropertyF.Ground.Dimensions
 

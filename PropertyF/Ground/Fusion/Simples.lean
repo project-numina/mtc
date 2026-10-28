@@ -68,7 +68,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 
 namespace PropertyF.Ground
 universe v u
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 variable (C : BraidedFusionCategory.{v,u})
 
 theorem simples_simple (i : Fin (rank C)) : Simple (simples C i) :=
@@ -126,7 +126,6 @@ theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ 
 theorem finrank_simples_hom (i j : Fin (rank C)) :
     Module.finrank ℂ (simples C i ⟶ simples C j) = if i = j then 1 else 0 := by
   classical
-  let : ∀ X Y : C.Obj, FiniteDimensional ℂ (X ⟶ Y) := IsFusionCategory.hom_finite
   simp only [CategoryTheory.finrank_hom_simple_simple ℂ,
     show Nonempty (simples C i ≅ simples C j) ↔ i = j from
       ⟨simples_injective C, fun h ↦ by subst j; exact ⟨Iso.refl _⟩⟩]

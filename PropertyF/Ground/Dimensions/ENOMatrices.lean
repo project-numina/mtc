@@ -63,6 +63,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 /-- The dimension of a simple object with respect to the natural double-dual
 square root. -/
 def rootDimension (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) : ℂ :=
@@ -98,8 +99,6 @@ variable {C} in
 theorem enoTraceMatrix_norm_le_fusionCoeff {i j k : Fin (rank C)}
     (h : IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap) :
     ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) := by
-  let : FiniteDimensional ℂ (simples C k ⟶ simples C i ⊗ simples C j) :=
-    IsFusionCategory.hom_finite _ _
   obtain ⟨n, hn, hb⟩ := involution_trace_integer_bound h
   simp only [enoTraceMatrix, hn, Complex.norm_intCast, ← Int.cast_abs]
   exact_mod_cast hb
@@ -139,11 +138,10 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
       mul_zero, sub_zero, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] using
       (congrArg Complex.re heq).symm
   intro k
-  have hre : (x k).re = N k := by
-    apply (sub_eq_zero.mp ?_).symm
-    exact (mul_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg (fun j _ ↦
+  have hre : (x k).re = N k := (sub_eq_zero.mp <| (mul_eq_zero.mp
+    ((Finset.sum_eq_zero_iff_of_nonneg (fun j _ ↦
       mul_nonneg (sub_nonneg.mpr ((Complex.re_le_norm _).trans (hdom j))) (hf j).le)).1
-        hsum k (Finset.mem_univ k))).resolve_right (ne_of_gt (hf k))
+        hsum k (Finset.mem_univ k))).resolve_right (ne_of_gt (hf k))).symm
   have him : (x k).im = 0 := Complex.abs_re_eq_norm.mp <| by
     rw [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))]
     exact le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)

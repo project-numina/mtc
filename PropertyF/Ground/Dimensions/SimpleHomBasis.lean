@@ -77,7 +77,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 set_option backward.isDefEq.respectTransparency false in
@@ -94,9 +94,8 @@ theorem simpleInclusion_independent
 /-- The canonical summand inclusions form a basis of each simple Hom space. -/
 def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
     (X : C.Obj) (k : Fin (rank C)) :
-    Module.Basis (Fin (simpleMultiplicity C k X)) ℂ (simples C k ⟶ X) := by
-  letI : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
-  exact basisOfLinearIndependentOfCardEqFinrank' (simpleInclusion C X k)
+    Module.Basis (Fin (simpleMultiplicity C k X)) ℂ (simples C k ⟶ X) :=
+  basisOfLinearIndependentOfCardEqFinrank' (simpleInclusion C X k)
     (simpleInclusion_independent C X k) (Fintype.card_fin _)
 
 @[simp]
@@ -104,7 +103,6 @@ theorem simpleInclusionBasis_apply
     (X : C.Obj) (k : Fin (rank C))
     (t : Fin (simpleMultiplicity C k X)) :
     simpleInclusionBasis C X k t = simpleInclusion C X k t :=
-  letI : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) t
 
 set_option backward.isDefEq.respectTransparency false in
@@ -133,7 +131,6 @@ theorem simpleHom_postcomp_trace
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (simples C k)) :
     LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) = ∑ t, c t := by
   classical
-  let : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   rw [LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)]
   unfold Matrix.trace
   refine Finset.sum_congr rfl fun t _ ↦ ?_
@@ -218,14 +215,13 @@ theorem simpleHomPairing_injective
 end
 
 variable (C : BraidedFusionCategory.{v,u})
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 
 /-- The composition pairing is perfect for a simple object. -/
 def simpleHomPairingEquiv {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [BraidedCategory D] [Abelian D] [Linear ℂ D] [RigidCategory D]
     [MonoidalPreadditive D] [MonoidalLinear ℂ D] [IsFusionCategory D]
     (S X : D) [Simple S] : (X ⟶ S) ≃ₗ[ℂ] Module.Dual ℂ (S ⟶ X) := by
-  letI : ∀ A B : D, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   let p := simpleHomPairing (k := ℂ) S X
   have hi := simpleHomPairing_injective (k := ℂ) S X fun g hg ↦ Ground.split_to_simple g hg
   have hd : Module.finrank ℂ (X ⟶ S) = Module.finrank ℂ (Module.Dual ℂ (S ⟶ X)) :=

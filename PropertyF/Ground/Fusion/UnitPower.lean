@@ -64,6 +64,7 @@ namespace PropertyF.Ground
 universe v u
 
 variable (D : BraidedFusionCategory.{v,u})
+attribute [local instance] IsFusionCategory.hom_finite
 
 /-- The FP-weighted directed fusion graph is a balanced flow. -/
 def fusionFlow (i j k : Fin (rank D)) : ℝ :=
@@ -86,7 +87,6 @@ variable {D} in
 theorem fusionCoeff_retract
     {i j k : Fin (rank D)} (h : 0 < fusionCoeff D i j k) :
     Nonempty (Retract (simples D k) (simples D i ⊗ simples D j)) :=
-  letI := IsFusionCategory.hom_finite (simples D k) (simples D i ⊗ simples D j)
   letI := simples_simple D k
   (Module.finrank_pos_iff_exists_ne_zero.mp h).elim fun f hf ↦
     (split_from_simple f hf).elim fun r hr ↦ ⟨{ i := f, r := r, retract := hr }⟩
