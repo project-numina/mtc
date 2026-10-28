@@ -65,9 +65,6 @@ theorem rootSignTensorIso_hom
   simp [rootTensorIso, tensorHom_def, smul_smul, mul_comm]
 
 set_option backward.isDefEq.respectTransparency false in
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseTensorIso_inv
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (i j : Fin (rank C)) :
@@ -139,7 +136,6 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
 set_option backward.isDefEq.respectTransparency false in
-set_option backward.isDefEq.respectTransparency false in
 /-- The right quantum trace of the canonical unit double-dual map is one. -/
 theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C)) = 1 := by
   apply End.homEquiv.injective
@@ -194,7 +190,7 @@ theorem rootSignQuantumTrace_simple
     exact rightQuantumTrace_smul_hom _ _ _ (rootSignTwist_app_simple C c hc i)
   rw [hq]
   unfold rootDimension
-  simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
+  simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
 
 set_option backward.isDefEq.respectTransparency false in
 theorem naturalDoubleDual_unit_eq_of_trace_one
@@ -210,7 +206,7 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
     simp [rightQuantumTrace, hr', tensorHom_def]
   rw [ht, rightQuantumTrace_unitIso] at htrace
   have hr1 : r = 1 := by
-    simpa only [← groundUnitScalarEquiv_apply, map_smul, map_one, smul_eq_mul, mul_one] using htrace
+    simpa only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] using htrace
   simpa [hr1] using hr
 
 set_option backward.isDefEq.respectTransparency false in

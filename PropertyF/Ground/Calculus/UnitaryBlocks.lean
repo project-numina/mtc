@@ -77,9 +77,9 @@ theorem exists_unitarizing_basis (ρ : G →* (Matrix ι ι ℂ)ˣ) :
     ((↑P : Matrix ι ι ℂ) * (↑(ρ g) : Matrix ι ι ℂ) * (↑(P⁻¹) : Matrix ι ι ℂ)) = 1
   simp only [star_mul, hself, ← Matrix.star_eq_conjTranspose] at hinv ⊢
   have hselfu : star P = P := Units.ext hself
-  have hselfinv : star (↑(P⁻¹) : Matrix ι ι ℂ) = ↑(P⁻¹) := by
-    have h : star (P⁻¹) = P⁻¹ := by simp [hselfu]
-    exact congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ)) h
+  have hselfinv : star (↑(P⁻¹) : Matrix ι ι ℂ) = ↑(P⁻¹) :=
+    congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ))
+      (show star (P⁻¹) = P⁻¹ from by simp [hselfu])
   rw [hselfinv]
   calc
     _ = (↑(P⁻¹) : Matrix ι ι ℂ) * (star (↑(ρ g) : Matrix ι ι ℂ) * A * ↑(ρ g)) * ↑(P⁻¹) := by
@@ -140,7 +140,7 @@ theorem groupImageAlgebra_finite (ρ : G →* A) :
 matrix blocks. It is not assumed that the representation is faithful. -/
 theorem groupImageAlgebra_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ), (∀ i, NeZero (d i)) ∧
-      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
+      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
   let _ := groupImageAlgebra_semisimple ρ
   let _ := groupImageAlgebra_finite ρ
   IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
@@ -194,9 +194,7 @@ def groupInImage (ρ : G →* A) : G →* groupImageAlgebra ρ :=
 
 omit [Finite G] in
 @[simp] theorem groupInImage_val (ρ : G →* A) (g : G) :
-    (groupInImage ρ g : A) = ρ g := by
-  change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
-  exact MonoidAlgebra.lift_of ρ g
+    (groupInImage ρ g : A) = ρ g := MonoidAlgebra.lift_of ρ g
 
 /-- The canonical map from the categorical braid image into its span algebra. -/
 abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCategory C]
@@ -210,7 +208,7 @@ abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCatego
 
 /-- A block presentation in which each represented group element is unitary. -/
 abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=
+    (e : groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) : Prop :=
   ∀ g i, e (groupInImage ρ g) i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ
 
 omit [Finite G] in
@@ -228,7 +226,7 @@ theorem groupInImage_span (ρ : G →* A) :
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
 theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ) (e : groupImageAlgebra ρ ≃ₐ[ℂ]
-        PropertyF.Blocks.Algebra ⟨_, d⟩),
+        Blocks.Algebra ⟨_, d⟩),
       (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation ρ e := by
   classical
   let _ : Fintype G := Fintype.ofFinite G
@@ -252,14 +250,14 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- A unitary block presentation of the categorical braid-image algebra. -/
 abbrev IsUnitaryBraidPresentation {X : C} {n r : ℕ} {d : Fin r → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=
+    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) : Prop :=
   IsUnitaryPresentation (braidEndRepresentation X n) e
 
 /-- Finite categorical braid images admit a simultaneous unitary block
 realization of their actual endomorphism algebra. -/
 theorem braidAlgebra_unitary_blocks (X : C) (n : ℕ) (h : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
-        PropertyF.Blocks.Algebra ⟨_, d⟩),
+        Blocks.Algebra ⟨_, d⟩),
       (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e :=
   let _ : Finite (braidImage X n) := h
   groupImageAlgebra_unitary_blocks _

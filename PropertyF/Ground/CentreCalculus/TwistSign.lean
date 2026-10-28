@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 
-/-! The parity of the twist of a self-transparent simple. -/
+/-! The twist sign and integral dimensions of self-transparent simples. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.CentreCalculus
@@ -78,10 +78,9 @@ theorem inverse_twist_eq_scalar_of_selfTransparent {X : C.Obj} [Simple X]
       Dimensions.pivotalBraidedTwistScalar C p X • 𝟙 X := by
   have hc : (β_ X X).hom = (β_ X X).inv := (β_ X X).inv_ext' hX
   have htr := spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom)
-  have h1 := leftPartialTrace_braiding_of_trace_compatibility (C := C) htr
-  have h2 := leftPartialTrace_inverse_braiding (C := C) (p := p) X
-  rw [← hc] at h2
-  exact congrArg End.asHom (h2.symm.trans h1)
+  have h := leftPartialTrace_inverse_braiding (C := C) (p := p) X
+  rw [← hc, leftPartialTrace_braiding_of_trace_compatibility (C := C) htr] at h
+  exact (congrArg End.asHom h).symm
 
 include hp in
 /-- In a spherical category, the twist of a self-transparent simple is a sign. -/

@@ -50,7 +50,7 @@ theorem induced_center_trace_ne_zero_of_compatible {p : Dimensions.PivotalStruct
   have hne : (globalFPDimension C : ℂ) ≠ 0 := by
     exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
   apply hne
-  simpa only [← Dimensions.groundUnitScalarEquiv_apply, map_zero] using hd.symm
+  simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
 
 
 set_option backward.isDefEq.respectTransparency false in

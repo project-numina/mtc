@@ -150,9 +150,8 @@ theorem fpDimension_leftDual (X : D.Obj) :
 
 /-- FP dimension is invariant under taking a right dual. -/
 theorem fpDimension_rightDual (X : D.Obj) :
-    fpDimension D (Xᘁ) = fpDimension D X := by
-  let e : (ᘁX : D.Obj) ≅ Xᘁ :=
-    leftDualIso inferInstance (BraidedCategory.exactPairing_swap X (Xᘁ))
-  rw [← fpDimension_iso D e, fpDimension_leftDual]
+    fpDimension D (Xᘁ) = fpDimension D X :=
+  (fpDimension_iso D (leftDualIso inferInstance
+    (BraidedCategory.exactPairing_swap X (Xᘁ)))).symm.trans (fpDimension_leftDual D X)
 
 end PropertyF.Ground

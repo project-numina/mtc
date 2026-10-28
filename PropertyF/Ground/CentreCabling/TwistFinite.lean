@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.CentreCabling.ImageCore
+public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.MultiplicityDefect

@@ -7,7 +7,6 @@ public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.CentreInduction.ForgetDual
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
-public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 public import PropertyF.Ground.Centre.Modular.Vafa
 public import PropertyF.Ground.CentreModular.TransparencyCriterion
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
@@ -56,9 +55,9 @@ theorem centerFusionOfPivotalPseudoUnitary
     (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
     (hpu : PseudoUnitary C) :
     letI := CentreRigid.rigidCenter (C := C.Obj)
-    IsFusionCategory (CategoryTheory.Center C.Obj) := by
-  letI := CentreRigid.rigidCenter (C := C.Obj)
-  exact Classical.choose (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu)
+    IsFusionCategory (CategoryTheory.Center C.Obj) :=
+  let := CentreRigid.rigidCenter (C := C.Obj)
+  Classical.choose (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu)
 
 /-- The actual centre spherical pivotal structure constructed along the same route. -/
 def centerPivotalOfPivotalPseudoUnitary
@@ -86,7 +85,7 @@ theorem centerPivotal_hasFPDimensions (C : BraidedFusionCategory.{v,u})
     (centerPivotalOfPivotalPseudoUnitary C p hpu) at hd
   intro i
   simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-    Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hd i
+    unitScalar_eq_equiv] using hd i
 
 end PropertyF.Ground
 end

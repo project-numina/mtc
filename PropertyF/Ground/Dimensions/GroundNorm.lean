@@ -73,19 +73,6 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-/-- The target's scalar extraction is an algebra equivalence, as a
-consequence of the fusion-category axioms. -/
-def groundUnitScalarEquiv (C : BraidedFusionCategory.{v,u}) :
-    End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ :=
-  (AlgEquiv.ofBijective (Algebra.ofId ℂ (End (𝟙_ C.Obj)))
-    (unit_algebraMap_bijective C)).symm
-
-theorem groundUnitScalarEquiv_apply
-    (a : End (𝟙_ C.Obj)) : groundUnitScalarEquiv C a = unitScalar C a := by
-  apply (unit_algebraMap_bijective C).1
-  rw [Ground.algebraMap_unitScalar]
-  exact (groundUnitScalarEquiv C).symm_apply_apply a
-
 /-- For every simple object of a genuine braided fusion category, the
 intrinsic squared norm in the target is independent of the chosen double-dual
 isomorphism. -/
@@ -94,9 +81,8 @@ theorem target_squaredNorm_choice_independent
     squaredNorm C X =
       unitScalar C (rightQuantumTrace j) * unitScalar C (leftQuantumTrace j) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  unfold squaredNorm
-  simp only [← groundUnitScalarEquiv_apply]
-  exact squaredNorm_independent (groundUnitScalarEquiv C) (doubleDualIso C X) j
+  simpa only [squaredNorm, Ground.unitScalar_eq_equiv] using
+    squaredNorm_independent (Ground.unitScalarEquiv C) (doubleDualIso C X) j
 
 /-- With any spherical structure the target norm of a simple object is its
 categorical dimension squared. -/

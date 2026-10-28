@@ -98,11 +98,9 @@ public import PropertyF.Ground.CentreCalculus.BraidRelations
 public import PropertyF.Ground.Centre.Calculus.TypeA
 public import PropertyF.Ground.CentreCalculus.ProjectorReduction
 public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
-public import PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 public import PropertyF.Ground.CentreCabling.RegularSupport
 public import PropertyF.Ground.CentreCabling.TraceSaturation
 public import PropertyF.Ground.CentreCabling.CentralityClosure
-public import PropertyF.Ground.CentreCabling.ProductCore
 public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.Integrate.DrinfeldComplete
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing

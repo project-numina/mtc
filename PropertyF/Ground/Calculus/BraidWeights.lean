@@ -32,10 +32,9 @@ def groundSimpleScalar (C : BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C
 theorem groundSimpleScalar_smul_id (C : BraidedFusionCategory.{v,u})
     (i : Fin (Ground.rank C)) (a : End (Ground.simples C i)) :
     (groundSimpleScalar C i a) • 𝟙 (Ground.simples C i) = a.asHom := by
-  have h := (groundSimpleScalar C i).symm_apply_apply a
-  change (algebraMap ℂ (End (Ground.simples C i))) (groundSimpleScalar C i a) = a at h
-  have h' := congrArg End.asHom h
-  simpa [Algebra.algebraMap_eq_smul_one] using h'
+  have h : (algebraMap ℂ (End (Ground.simples C i))) (groundSimpleScalar C i a) = a :=
+    (groundSimpleScalar C i).symm_apply_apply a
+  simpa [Algebra.algebraMap_eq_smul_one] using congrArg End.asHom h
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple
@@ -77,13 +76,13 @@ theorem pivotalTrace_groundEndBlocks (C : BraidedFusionCategory.{v,u})
     rcases q with ⟨i, j⟩
     rw [groundEndBlockEquiv_diagonal]
     simpa [z, F, Category.assoc] using (groundSimpleScalar_smul_id C i _).symm
-  have h := cyclicTrace_biproduct_scalar_blocks (rightTraceLinear p)
-    (fun f g => p.rightTrace_cyclic f g) F z
+  have h := cyclicTrace_biproduct_scalar_blocks
+    (fun Y => scalar.toLinearMap.comp (rightTraceLinear p Y))
+    (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) F z
     (fun q => groundEndBlockEquiv C X m e a q.1 q.2 q.2) hc
-  have h' := congrArg scalar h
-  simp only [map_sum, map_smul, smul_eq_mul, rightTraceLinear, LinearMap.coe_mk,
-    AddHom.coe_mk] at h'
-  rw [← hz, h', Fintype.sum_sigma]
+  change scalar (p.rightTrace z) = ∑ q, groundEndBlockEquiv C X m e a q.1 q.2 q.2 *
+    scalar (p.rightTrace (𝟙 (F q))) at h
+  rw [← hz, h, Fintype.sum_sigma]
   simp [F, Matrix.trace, Finset.mul_sum, mul_comm]
 
 end PropertyF.Ground.Calculus
@@ -94,11 +93,16 @@ end PropertyF.Ground.Calculus
 open scoped BigOperators
 namespace PropertyF.Ground.Calculus
 
+/-- Dimensions obtained by decomposing a family into matrix blocks. -/
+abbrev HasMultiplicityDecomposition {ι κ : Type*} [Fintype κ]
+    (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) : Prop :=
+  ∀ i, m i = ∑ j, mult i j * d j
+
 /-- The block trace mass is the constituent multiplicity mass whenever the
 actual representation dimensions decompose into braid-block dimensions. -/
 theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
     (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → ℝ)
-    (hdim : ∀ i, m i = ∑ j, mult i j * d j) :
+    (hdim : HasMultiplicityDecomposition m d mult) :
     (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) =
       ∑ i, (m i : ℝ) * fp i := by
   simp only [hdim, Nat.cast_sum, Nat.cast_mul, Finset.sum_mul]
@@ -151,24 +155,20 @@ theorem cyclic_matrix_trace {ι : Type*} [Fintype ι] [DecidableEq ι]
         rw [hdiag, hscalar, map_smul, Matrix.trace_single_eq_same]
         simp [w, mul_comm]
       · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
-        have hz : Matrix.single i j a * Matrix.single i i (1 : ℂ) = 0 :=
-          Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1
-        simp only [Matrix.single_mul_single_same, one_mul, hz, map_zero] at hoff
+        simp only [Matrix.single_mul_single_same, one_mul,
+          Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
         rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
     induction X using Matrix.induction_on with
     | h_add X Y hX hY => simp [hX, hY, Matrix.trace_add, mul_add]
     | h_std_basis i j a => exact hs i j a
-  · have hempty : IsEmpty ι := not_nonempty_iff.mp hn
-    let _ := hempty
-    refine ⟨0, fun X => ?_⟩
-    have hX : X = 0 := Subsingleton.elim _ _
-    simp [hX]
+  · let _ : IsEmpty ι := not_nonempty_iff.mp hn
+    exact ⟨0, fun X => by simp [Subsingleton.elim X 0]⟩
 
 /-- Every cyclic linear functional on a finite product of matrix algebras is
 a weighted sum of ordinary block traces. The weights may be arbitrary complex
 numbers; reality and categorical multiplicities require additional input. -/
 theorem cyclic_block_trace {n : ℕ} {d : Fin n → ℕ}
-    (T : (PropertyF.Blocks.Algebra ⟨_, d⟩) →ₗ[ℂ] ℂ)
+    (T : (Blocks.Algebra ⟨_, d⟩) →ₗ[ℂ] ℂ)
     (hT : ∀ X Y, T (X * Y) = T (Y * X)) :
     ∃ w : Fin n → ℂ, ∀ X, T X = ∑ i, w i * (X i).trace := by
   classical
@@ -179,15 +179,12 @@ theorem cyclic_block_trace {n : ℕ} {d : Fin n → ℕ}
     change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
     rw [Pi.single_mul, Pi.single_mul]
     exact hT _ _
-  have hw : ∀ i, ∃ w : ℂ, ∀ X : V i, Tblock i X = w * X.trace :=
-    fun i => cyclic_matrix_trace (Tblock i) (hc i)
-  choose w hw using hw
+  choose w hw using fun i : Fin n => cyclic_matrix_trace (Tblock i) (hc i)
   refine ⟨w, fun X => ?_⟩
-  calc
-    T X = ∑ i, Tblock i (X i) := by
-      conv_lhs => rw [← LinearMap.sum_single_apply V X]
-      simp [Tblock]
-    _ = ∑ i, w i * (X i).trace := by simp [hw]
+  conv_lhs => rw [← LinearMap.sum_single_apply V X]
+  rw [map_sum]
+  change (∑ i, Tblock i (X i)) = _
+  simp only [hw]
 
 end PropertyF.Ground.Calculus
 
@@ -201,9 +198,7 @@ namespace PropertyF.Ground.Calculus
 theorem idempotent_matrix_trace_nat {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ}
     (hA : A * A = A) : ∃ n : ℕ, A.trace = n :=
   let p := A.toLin'
-  have hp : IsIdempotentElem p := by
-    change A.toLin' * A.toLin' = A.toLin'
-    rw [Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hA]
+  have hp : IsIdempotentElem p := (show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv'
   ⟨Module.finrank ℂ (LinearMap.range p), by
     simpa only [p, Matrix.trace_toLin'_eq] using ((LinearMap.isProj_range_iff_isIdempotentElem p).2 hp).trace⟩
 
@@ -212,7 +207,7 @@ algebras, its ordinary trace is a nonnegative integer-weighted sum of the
 standard block traces. The integers are ranks of images of matrix units. -/
 theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
     (hd : ∀ i, 0 < d i)
-    (φ : (PropertyF.Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
+    (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
     ∃ mult : Fin n → ℕ, ∀ x, (φ x).trace = ∑ i, (mult i : ℂ) * (x i).trace := by
   classical
   let T := (Matrix.traceLinearMap (Fin m) ℂ ℂ).comp φ.toLinearMap
@@ -224,7 +219,7 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
   have hnat : ∀ i, ∃ k : ℕ, w i = k := by
     intro i
     let j : Fin (d i) := ⟨0, hd i⟩
-    let e : PropertyF.Blocks.Algebra ⟨_, d⟩ := Pi.single i (Matrix.single j j 1)
+    let e : Blocks.Algebra ⟨_, d⟩ := Pi.single i (Matrix.single j j 1)
     have he : e * e = e := by
       simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
     have hφ : φ e * φ e = φ e := by rw [← map_mul, he]
@@ -247,21 +242,21 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
 
 /-- A complex idempotent matrix with zero trace is zero. -/
 theorem idempotent_matrix_eq_zero_of_trace_eq_zero {m : ℕ}
-    {A : Matrix (Fin m) (Fin m) ℂ} (hA : A * A = A) (ht : A.trace = 0) : A = 0 := by
-  apply Matrix.toLinAlgEquiv'.injective
-  rw [map_zero]
-  change A.toLin' = 0
-  apply (LinearMap.IsIdempotentElem.trace_eq_zero_iff ?_).mp
-  · simpa using ht
-  · change A.toLin' * A.toLin' = A.toLin'
-    rw [Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hA]
+    {A : Matrix (Fin m) (Fin m) ℂ} (hA : A * A = A) (ht : A.trace = 0) : A = 0 :=
+  Matrix.toLinAlgEquiv'.injective (by
+    simpa only [map_zero] using
+      (LinearMap.IsIdempotentElem.trace_eq_zero_iff
+        ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')).mp
+        (by
+          change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
+          simpa using ht))
 
 /-- A faithful block-algebra representation has nonnegative integer
 multiplicities, and every source block occurs in at least one target block. -/
 theorem faithful_block_representation_multiplicities {n m : ℕ}
     {d : Fin n → ℕ} {q : Fin m → ℕ} (hd : ∀ i, 0 < d i)
-    (φ : (PropertyF.Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
-      (PropertyF.Blocks.Algebra ⟨_, q⟩)) (hinj : Function.Injective φ) :
+    (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
+      (Blocks.Algebra ⟨_, q⟩)) (hinj : Function.Injective φ) :
     ∃ mult : Fin m → Fin n → ℕ,
       (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧
       (∀ j, ∃ i, 0 < mult i j) := by
@@ -275,7 +270,7 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
   by_contra hn
   push Not at hn
   let k : Fin (d j) := ⟨0, hd j⟩
-  let e : PropertyF.Blocks.Algebra ⟨_, d⟩ := Pi.single j (Matrix.single k k 1)
+  let e : Blocks.Algebra ⟨_, d⟩ := Pi.single j (Matrix.single k k 1)
   have he : e * e = e := by
     simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
   have hzero : φ e = 0 := by
@@ -292,7 +287,7 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
       · simp
     exact idempotent_matrix_eq_zero_of_trace_eq_zero hidem ht
   have hezero : e = 0 := hinj (by simpa using hzero)
-  have hentry := congrArg (fun x : PropertyF.Blocks.Algebra ⟨_, d⟩ => x j k k) hezero
+  have hentry := congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k) hezero
   simp [e] at hentry
 
 end PropertyF.Ground.Calculus
@@ -312,9 +307,9 @@ def braidToEndBlocks (C : BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
     (m : Fin (Ground.rank C) → ℕ)
     (e : tensorPower X (n + 2) ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
     (r : ℕ) (d : Fin r → ℕ)
-    (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :
-    (PropertyF.Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
-      (PropertyF.Blocks.Algebra ⟨_, m⟩) :=
+    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
+    (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
+      (Blocks.Algebra ⟨_, m⟩) :=
   (groundEndBlockEquiv C _ m e).toAlgHom.comp
     ((braidAlgebra X n).val.comp b.symm.toAlgHom)
 
@@ -323,9 +318,19 @@ theorem braidToEndBlocks_injective (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     {n : ℕ} {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
     {r : ℕ} {d : Fin r → ℕ}
-    (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :
+    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     Function.Injective (braidToEndBlocks C X n m e r d b) :=
   (groundEndBlockEquiv C _ m e).injective.comp (Subtype.val_injective.comp b.symm.injective)
+
+/-- The categorical braid trace has the weights supplied by block multiplicities. -/
+abbrev HasMultiplicityTrace (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n r : ℕ}
+    (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
+    {d : Fin r → ℕ} (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
+    (mult : Fin (Ground.rank C) → Fin r → ℕ) : Prop :=
+  ∀ a : braidAlgebra X n,
+    scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
+      ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
+        (b a j).trace
 
 /-- The actual categorical trace on the braid algebra has the paper's
 multiplicity-weight formula. Every retained braid block occurs in a simple
@@ -336,14 +341,10 @@ theorem pivotalTrace_braid_multiplicities
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (fun q : Σ i, Fin (m i) => Ground.simples C q.1))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
-    (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :
+    (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :
     ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,
       (∀ j, ∃ i, 0 < mult i j) ∧
-      (∀ i, m i = ∑ j, mult i j * d j) ∧
-      ∀ a : braidAlgebra X n,
-        scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
-          ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
-            (b a j).trace := by
+      HasMultiplicityDecomposition m d mult ∧ HasMultiplicityTrace C p scalar b mult := by
   let F := braidToEndBlocks C X n m e r d b
   obtain ⟨mult, hmult, hretained⟩ := faithful_block_representation_multiplicities hd F
     (braidToEndBlocks_injective C e b)
@@ -372,17 +373,14 @@ theorem exists_unitary_braid_trace_blocks
     (hfinite : Finite (braidImage X n))
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
     ∃ (r : ℕ) (d : Fin r → ℕ)
-      (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+      (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
       (mult : Fin (Ground.rank C) → Fin r → ℕ),
       (∀ j, 0 < d j) ∧
       IsUnitaryBraidPresentation b ∧
       (∀ j, ∃ i, 0 < mult i j) ∧
-      (∀ i, Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2)) =
-        ∑ j, mult i j * d j) ∧
-      ∀ a : braidAlgebra X n,
-        scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
-          ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
-            (b a j).trace := by
+      HasMultiplicityDecomposition
+        (fun i => Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))) d mult ∧
+      HasMultiplicityTrace C p scalar b mult := by
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))

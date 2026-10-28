@@ -28,10 +28,8 @@ include hdual in
 theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
     ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 := by
   let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j
-  obtain ⟨i, hi⟩ : ∃ i, χ.value i ≠ ψ.value i := by
-    by_contra h
-    push Not at h
-    exact hne (Character.ext (funext h))
+  obtain ⟨i, hi⟩ := Function.ne_iff.mp (show χ.value ≠ ψ.value from
+    fun h ↦ hne (Character.ext h))
   by_contra hw
   exact hi (mul_right_cancel₀ hw (by
     simpa [w, character_dual_conj N dual hdual χ i] using
@@ -47,9 +45,8 @@ theorem categoricalS_character_injective
     (hdet : (Sₚ).det ≠ 0) :
     Function.Injective (fun j i => Sₚ i j / dₚ j) := by
   intro a b h
-  have hl := Matrix.linearIndependent_cols_of_det_ne_zero hdet
-  apply hl.eq_of_smul_apply_eq_smul_apply (dₚ b) (dₚ a)
-    a b (simpleDimension_ne_zero C p b)
+  apply (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply
+    (dₚ b) (dₚ a) a b (simpleDimension_ne_zero C p b)
   funext x
   change dₚ b * Sₚ x a = dₚ a * Sₚ x b
   simpa only [mul_comm] using

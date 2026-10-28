@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.Target
+public import PropertyF.Ground.Fusion.Multiplicity
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
@@ -12,22 +13,16 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- Schur's lemma identifies endomorphisms of the simple tensor unit with ℂ. -/
-theorem unit_algebraMap_bijective : Function.Bijective (algebraMap ℂ (End (𝟙_ C.Obj))) := by
+theorem unit_algebraMap_bijective : Function.Bijective (algebraMap ℂ (End (𝟙_ C.Obj))) :=
   let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
-  let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) :=
-    IsFusionCategory.hom_finite _ _
-  constructor
-  · exact (algebraMap ℂ (End (𝟙_ C.Obj))).injective
-  · intro f
-    obtain ⟨z, hz⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ f.asHom
-    refine ⟨z, ?_⟩
-    apply End.ext
-    simpa [Algebra.algebraMap_eq_smul_one] using hz
+  let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
+  simple_algebraMap_bijective _
 
 /-- The canonical scalar identification is an algebra equivalence. -/
 def unitScalarEquiv : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ :=
-  (AlgEquiv.ofBijective (Algebra.ofId ℂ (End (𝟙_ C.Obj)))
-    (unit_algebraMap_bijective C)).symm
+  letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
+  letI : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
+  simpleEndScalar _
 
 /-- The scalar inverse used by the ground target really inverts the canonical
 algebra map; no fallback value is reachable. -/

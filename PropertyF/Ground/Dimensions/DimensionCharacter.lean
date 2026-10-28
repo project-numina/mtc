@@ -50,22 +50,20 @@ theorem pivotalDimension_decomposition
       _ = ∑ a, p.rightTrace (𝟙 (V a)) := rightDimension_biproduct V p
       _ = _ := by rw [Fintype.sum_sigma]; simp [V, Algebra.smul_def]
   unfold pivotalDimension
-  simp only [← groundUnitScalarEquiv_apply, ht, map_sum, map_smul, smul_eq_mul]
+  simp only [Ground.unitScalar_eq_equiv, ht, map_sum, map_smul, smul_eq_mul]
   rfl
 
 /-- The pivotal dimension of the tensor unit is normalized to one. -/
 theorem pivotalDimension_unit
     (p : PivotalStructure (C := C.Obj)) : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
-  unfold pivotalDimension
-  rw [rightTrace_unit]
-  simpa using unitScalar_algebraMap C 1
+  simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1
 
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor
     (p : PivotalStructure (C := C.Obj)) (X Y : C.Obj) :
     pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
-  simpa [pivotalDimension, ← groundUnitScalarEquiv_apply] using
-    pivotalTrace_tensor p (groundUnitScalarEquiv C) (𝟙 X) (𝟙 Y)
+  simpa [pivotalDimension, Ground.unitScalar_eq_equiv] using
+    pivotalTrace_tensor p (Ground.unitScalarEquiv C) (𝟙 X) (𝟙 Y)
 
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character

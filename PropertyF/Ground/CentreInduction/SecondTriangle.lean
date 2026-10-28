@@ -175,10 +175,9 @@ theorem unit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) = 0 := by
-  have h := unit_matrix_reduce C X i j
-  dsimp only at h
-  rw [crossing_counit_offdiag C X hne] at h
-  simpa [monoidalComp] using h
+  dsimp only
+  rw [unit_matrix_reduce, crossing_counit_offdiag C X hne]
+  simp [monoidalComp]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/
@@ -210,15 +209,7 @@ theorem unitCandidate_map_projection_general (Z : CategoryTheory.Center C.Obj) {
   let V := inductionSummand C X
   (unitCandidate C Z ≫ (underlyingFunctor C).map f) ≫ biproduct.π V j =
     unitComponent C Z j ≫ ((simples C j ◁ f) ▷ (simples C j)ᘁ) := by
-  let V := inductionSummand C X
-  let W : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
-  let g : ∀ k, W k ⟶ V k := fun k => (simples C k ◁ f) ▷ (simples C k)ᘁ
-  change (biproduct.lift (unitComponent C Z) ≫ biproduct.map g) ≫ biproduct.π V j =
-    unitComponent C Z j ≫ g j
-  calc
-    _ = biproduct.lift (unitComponent C Z) ≫ (biproduct.map g ≫ biproduct.π V j) := by rw [Category.assoc]
-    _ = biproduct.lift (unitComponent C Z) ≫ (biproduct.π W j ≫ g j) := by rw [biproduct.map_π]
-    _ = _ := by rw [← Category.assoc, biproduct.lift_π]
+  simp [unitCandidate, underlyingFunctor, underlying]
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
