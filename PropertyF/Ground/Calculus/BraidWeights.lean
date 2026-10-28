@@ -201,9 +201,7 @@ namespace PropertyF.Ground.Calculus
 theorem idempotent_matrix_trace_nat {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ}
     (hA : A * A = A) : ∃ n : ℕ, A.trace = n :=
   let p := A.toLin'
-  have hp : IsIdempotentElem p := by
-    change A.toLin' * A.toLin' = A.toLin'
-    rw [Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hA]
+  have hp : IsIdempotentElem p := (show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv'
   ⟨Module.finrank ℂ (LinearMap.range p), by
     simpa only [p, Matrix.trace_toLin'_eq] using ((LinearMap.isProj_range_iff_isIdempotentElem p).2 hp).trace⟩
 
@@ -247,14 +245,14 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
 
 /-- A complex idempotent matrix with zero trace is zero. -/
 theorem idempotent_matrix_eq_zero_of_trace_eq_zero {m : ℕ}
-    {A : Matrix (Fin m) (Fin m) ℂ} (hA : A * A = A) (ht : A.trace = 0) : A = 0 := by
-  apply Matrix.toLinAlgEquiv'.injective
-  rw [map_zero]
-  change A.toLin' = 0
-  apply (LinearMap.IsIdempotentElem.trace_eq_zero_iff ?_).mp
-  · simpa using ht
-  · change A.toLin' * A.toLin' = A.toLin'
-    rw [Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hA]
+    {A : Matrix (Fin m) (Fin m) ℂ} (hA : A * A = A) (ht : A.trace = 0) : A = 0 :=
+  Matrix.toLinAlgEquiv'.injective (by
+    simpa only [map_zero] using
+      (LinearMap.IsIdempotentElem.trace_eq_zero_iff
+        ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')).mp
+        (by
+          change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
+          simpa using ht))
 
 /-- A faithful block-algebra representation has nonnegative integer
 multiplicities, and every source block occurs in at least one target block. -/
