@@ -149,6 +149,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
+open CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -173,23 +174,14 @@ theorem unitComponentAt_unit_factor {D : Type u} [Category.{v} D] [MonoidalCateg
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
-/-- The unit component associated to an object isomorphic to the tensor unit
-is inverse to the canonical identification of its tensor factors. -/
-theorem unitComponentAt_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    (Z : Center D) {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) :
-    unitComponentAt Z A ≫ (unitTensorIso e Z.1).hom = 𝟙 Z.1 :=
-  unitComponentAt_unit_factor Z e.hom (rightDualIsoMap e.symm).hom (coevaluation_iso_unit e)
-
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.defeqAttrib.useBackward true in
 /-- The underlying maps proposed for the induction unit and counit satisfy
 the first triangle identity. -/
 theorem unitCandidate_counit {C : BraidedFusionCategory.{v,u}}
     (Z : Center C.Obj) :
     unitCandidate Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 :=
-  (CategoryTheory.Limits.biproduct.lift_π_assoc (unitComponent Z) (unitIndex C)
-    (unitSummandIso Z.1).hom).trans
-      (unitComponentAt_iso_unit Z (Classical.choice (unitIndex_iso C)))
+  let e := Classical.choice (unitIndex_iso C)
+  (biproduct.lift_π_assoc (unitComponent Z) (unitIndex C) (unitSummandIso Z.1).hom).trans
+    (unitComponentAt_unit_factor Z e.hom (rightDualIsoMap e.symm).hom (coevaluation_iso_unit e))
 
 end PropertyF.Ground.CentreInduction
 

@@ -201,7 +201,6 @@ theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj)
     ((underlyingFunctor C).map h ▷ T) ≫ crossingCandidate Y T =
       crossingCandidate X T ≫ (T ◁ (underlyingFunctor C).map h) :=
   rightDistributor_ext_left (f := inductionSummand X) fun i => by
-    dsimp [underlying] at *
     simp only [← Category.assoc, ← comp_whiskerRight]
     simp only [underlyingFunctor, biproduct.ι_map, comp_whiskerRight, Category.assoc,
       crossingCandidate_on_summand, Preadditive.comp_sum, Preadditive.sum_comp,
