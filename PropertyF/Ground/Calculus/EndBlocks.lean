@@ -77,7 +77,7 @@ theorem groundSimples_orthogonal (C : Ground.BraidedFusionCategory.{v,u}) :
   intro f
   by_contra hf
   let _ : IsIso f := isIso_of_hom_simple hf
-  exact hij (Ground.simples_injective C i j ⟨asIso f⟩)
+  exact hij (Ground.simples_injective C ⟨asIso f⟩)
 
 /-- The occurrences of label `i` in a dependent sum are indexed by `Fin (m i)`. -/
 def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :

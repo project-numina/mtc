@@ -38,7 +38,7 @@ theorem integral_of_exterior_dimensions (X : C.Obj)
       (∏ k ∈ Finset.range n, (fpDimension C X - (k : ℝ))) =
         (Nat.factorial n : ℝ) * fpDimension C Y) :
     ∃ m : ℕ, fpDimension C X = m :=
-  Centre.integral_of_nonnegative_falling_factorials _ (fpDimension_nonneg C X) fun n ↦
+  Centre.integral_of_nonnegative_falling_factorials (fpDimension_nonneg C X) fun n ↦
     let ⟨Y, hY⟩ := hExterior n
     hY.symm ▸ mul_nonneg (Nat.cast_nonneg _) (fpDimension_nonneg C Y)
 
@@ -78,13 +78,13 @@ theorem integral_of_alternating_projector_trace (X : C.Obj)
     (hTrace : ∀ n : ℕ, ∃ ρ : Equiv.Perm (Fin n) →* End (tensorPower X n),
       letI := permutationCardInvertible n
       (Nat.factorial n : ℂ) * unitScalar C
-        (p.rightTrace ((Centre.alternatingProjector (k := ℂ) n ρ).asHom)) =
+        (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
           ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_pivotal_exterior_dimensions C p hdim X fun n ↦
     let ⟨ρ, hρ⟩ := hTrace n
     let := permutationCardInvertible n
-    let ⟨Y, hY⟩ := Centre.alternatingProjector_trace (tensorPower X n) n ρ p
+    let ⟨Y, hY⟩ := Centre.alternatingProjector_trace ρ p
     ⟨Y, (congrArg (fun t ↦ (Nat.factorial n : ℂ) * unitScalar C t) hY.symm).trans hρ⟩
 
 /-- Multiplying the alternating-projector trace by the group order gives
@@ -93,12 +93,12 @@ theorem alternatingProjector_scalar_trace (X : C.Obj) (n : ℕ)
     (ρ : Equiv.Perm (Fin n) →* End X) :
     letI := permutationCardInvertible n
     (Nat.factorial n : ℂ) * unitScalar C
-      (p.rightTrace ((Centre.alternatingProjector (k := ℂ) n ρ).asHom)) =
+      (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
       ∑ σ : Equiv.Perm (Fin n), (Centre.permutationSign ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom) := by
   let := permutationCardInvertible n
   -- Both statements concern the same projector; its trace is the signed average.
-  have ht : p.rightTrace ((Centre.alternatingProjector (k := ℂ) n ρ).asHom) =
+  have ht : p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom) =
       ⅟(Fintype.card (Equiv.Perm (Fin n)) : ℂ) •
         ∑ σ : Equiv.Perm (Fin n),
           (Centre.permutationSign ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by

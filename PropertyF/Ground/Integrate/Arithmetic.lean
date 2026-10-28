@@ -26,10 +26,8 @@ theorem galois_dimension_contradiction {δ δσ δτ f d : ℝ}
   have ht := congrArg σ (show (f : ℂ) * (δτ : ℂ) = (δ : ℂ) by exact_mod_cast hratio)
   rw [map_mul, hδτ, hσδ, hσf] at ht
   have hreal : d * δ = δσ := by exact_mod_cast ht
-  have hd : 0 < d := by nlinarith
-  have hdlt : d < 1 := by nlinarith
-  rw [abs_of_pos hd] at hrigidity
-  linarith
+  rw [abs_of_pos (by nlinarith : 0 < d)] at hrigidity
+  nlinarith
 
 
 end PropertyF

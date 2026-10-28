@@ -32,7 +32,7 @@ theorem simpleLabels_equiv (C D : Ground.BraidedFusionCategory.{v,u})
     let _ : Simple (simples C i) := simples_simple C i
     exact simple_obj F (simples C i)
   · intro i j ⟨e⟩
-    apply simples_injective C i j
+    apply simples_injective C
     exact ⟨F.preimageIso e⟩
   · intro j
     let Y := simples D j

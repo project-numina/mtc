@@ -58,7 +58,7 @@ theorem weighted_eigenvalue_bound {ι : Type*} [Fintype ι] (N : ι → ι → �
 /-- ENO's trace-matrix eigenvalues are bounded by the FP dimension whenever
 their entries are dominated by fusion multiplicities. -/
 theorem fusion_dominated_eigenvalue_bound (C : BraidedFusionCategory)
-    (i : Fin (rank C)) (T : Fin (rank C) → Fin (rank C) → ℂ)
+    {i : Fin (rank C)} (T : Fin (rank C) → Fin (rank C) → ℂ)
     (v : Fin (rank C) → ℂ) (z : ℂ) (i₀ : Fin (rank C))
     (hv : v i₀ ≠ 0) (hdom : ∀ j k, ‖T j k‖ ≤ Ground.fusionCoeff C i j k)
     (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ fpSimple C i := by
@@ -183,7 +183,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rootDimension_ne_zero (i : Fin (rank C)) :
     rootDimension C i ≠ 0 := by
   let : Simple (simples C i) := Ground.simples_simple C i
-  have h := rightQuantumTrace_simple_ne_zero C (simples C i)
+  have h := rightQuantumTrace_simple_ne_zero C (X := simples C i)
     ((fourthDualRootNaturalIso C).app (simples C i))
   intro hz
   apply h
@@ -201,16 +201,16 @@ def enoTraceMatrix (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
 /-- Once the categorical multiplicity defects are involutive and their trace
 matrix has the natural-root dimension vector as an eigenvector, ENO's FP
 bound follows. Both remaining identities are explicit hypotheses. -/
-theorem rootDimension_norm_le_fp_of_trace_matrix (i : Fin (rank C))
+theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
     (hinv : ∀ j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j) :
     ‖rootDimension C i‖ ≤ fpSimple C i := by
-  apply fusion_dominated_eigenvalue_bound C i (enoTraceMatrix C i) (rootDimension C)
+  apply fusion_dominated_eigenvalue_bound C (enoTraceMatrix C i) (rootDimension C)
     (rootDimension C i) (unitIndex C) (rootDimension_ne_zero C _)
   · intro j k
-    obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C i j k (hinv j k)
+    obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C (hinv j k)
     change ‖LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap‖ ≤ _
     rw [hn, Complex.norm_intCast, ← Int.cast_abs]
     exact_mod_cast hb

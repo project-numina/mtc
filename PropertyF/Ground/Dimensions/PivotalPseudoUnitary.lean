@@ -110,7 +110,7 @@ theorem squaredNorm_eq_pivotal_dimension_product
       pivotalDimension C p (simples C (Ground.dualIndex C i)) := by
   let X := simples C i
   let : Simple X := Ground.simples_simple C i
-  rw [target_squaredNorm_choice_independent C X (p.iso X), leftQuantumTrace_eq_rightDual]
+  rw [target_squaredNorm_choice_independent C (p.iso X), leftQuantumTrace_eq_rightDual]
   rw [← pivotal_dual p X, ← rightTrace_id, ← rightTrace_id]
   change pivotalDimension C p X * pivotalDimension C p (Xᘁ) = _
   rw [pivotalDimension_iso C p (rightDualLabelIso C i)]

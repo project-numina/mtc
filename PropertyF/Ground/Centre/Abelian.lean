@@ -43,10 +43,10 @@ private theorem inr_mapBiprod_inv (X Y : CategoryTheory.Center C) (U : C) :
 
 @[reassoc]
 theorem inl_sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
-    biprod.inl ▷ U ≫ (sumHalfIso X Y U).hom = (X.2.β U).hom ≫ U ◁ biprod.inl := by
+    biprod.inl ▷ U ≫ (sumHalfIso X Y U).hom = halfBraidingHom X U ≫ U ◁ biprod.inl := by
   have h : biprod.inl ▷ U ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).hom = biprod.inl := by
     apply (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
-    simp only [Functor.mapBiprod_inv, biprod.inl_desc]
+    rw [Functor.mapBiprod_inv, biprod.inl_desc]
     rfl
   dsimp only [sumHalfIso, Iso.trans_hom, Iso.symm_hom]
   rw [← Category.assoc, ← Category.assoc, h]
@@ -56,10 +56,10 @@ theorem inl_sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
 
 @[reassoc]
 theorem inr_sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
-    biprod.inr ▷ U ≫ (sumHalfIso X Y U).hom = (Y.2.β U).hom ≫ U ◁ biprod.inr := by
+    biprod.inr ▷ U ≫ (sumHalfIso X Y U).hom = halfBraidingHom Y U ≫ U ◁ biprod.inr := by
   have h : biprod.inr ▷ U ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).hom = biprod.inr := by
     apply (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
-    simp only [Functor.mapBiprod_inv, biprod.inr_desc]
+    rw [Functor.mapBiprod_inv, biprod.inr_desc]
     rfl
   dsimp only [sumHalfIso, Iso.trans_hom, Iso.symm_hom]
   rw [← Category.assoc, ← Category.assoc, h]
@@ -119,7 +119,7 @@ def centerBiprodInr (X Y : CategoryTheory.Center C) : Y ⟶ centerBiprod X Y :=
 
 /-- The first projection commutes with the sum half-braiding. -/
 theorem sumHalfIso_fst (X Y : CategoryTheory.Center C) (U : C) :
-    biprod.fst ▷ U ≫ (X.2.β U).hom = (sumHalfIso X Y U).hom ≫ U ◁ biprod.fst := by
+    biprod.fst ▷ U ≫ halfBraidingHom X U = (sumHalfIso X Y U).hom ≫ U ◁ biprod.fst := by
   apply (cancel_epi (Functor.mapBiprod (tensorRight U) X.1 Y.1).inv).mp
   apply biprod.hom_ext'
   · simp only [← Category.assoc, Functor.mapBiprod_inv, biprod.inl_desc]
@@ -129,7 +129,7 @@ theorem sumHalfIso_fst (X Y : CategoryTheory.Center C) (U : C) :
 
 /-- The second projection commutes with the sum half-braiding. -/
 theorem sumHalfIso_snd (X Y : CategoryTheory.Center C) (U : C) :
-    biprod.snd ▷ U ≫ (Y.2.β U).hom = (sumHalfIso X Y U).hom ≫ U ◁ biprod.snd := by
+    biprod.snd ▷ U ≫ halfBraidingHom Y U = (sumHalfIso X Y U).hom ≫ U ◁ biprod.snd := by
   apply (cancel_epi (Functor.mapBiprod (tensorRight U) X.1 Y.1).inv).mp
   apply biprod.hom_ext'
   · simp only [← Category.assoc, Functor.mapBiprod_inv, biprod.inl_desc]
@@ -214,23 +214,20 @@ set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The kernel inclusion intertwines the induced half-braiding. -/
 @[reassoc]
-theorem kernelHalfIso_ι {X Y : CategoryTheory.Center C} (f : X ⟶ Y) (U : C) :
+theorem kernelHalfIso_ι {X Y : CategoryTheory.Center C} (f : X ⟶ Y) {U : C} :
     (kernelHalfIso f U).hom ≫ U ◁ kernel.ι f.f =
       (kernel.ι f.f ▷ U) ≫ (X.2.β U).hom := by
   simp only [kernelHalfIso, Iso.trans_hom, Iso.symm_hom, Category.assoc]
   change (PreservesKernel.iso (tensorRight U) f.f).hom ≫
     (kernel.mapIso (f.f ▷ U) (U ◁ f.f) (X.2.β U) (Y.2.β U) (f.comm U)).hom ≫
     ((PreservesKernel.iso (tensorLeft U) f.f).inv ≫ (tensorLeft U).map (kernel.ι f.f)) = _
-  rw [PreservesKernel.iso_inv_ι, kernel.mapIso_hom]
-  simp only [kernel.map, PreservesKernel.iso_hom]
+  rw [PreservesKernel.iso_inv_ι, kernel.mapIso_hom, PreservesKernel.iso_hom]
   change kernelComparison f.f (tensorRight U) ≫
       (kernel.lift (U ◁ f.f) (kernel.ι (f.f ▷ U) ≫ (X.2.β U).hom) _ ≫
         kernel.ι (U ◁ f.f)) = _
   rw [kernel.lift_ι, ← Category.assoc]
-  change (kernelComparison f.f (tensorRight U) ≫ kernel.ι ((tensorRight U).map f.f)) ≫
-      (X.2.β U).hom = _
-  rw [kernelComparison_comp_ι]
-  rfl
+  exact congrArg (fun g ↦ g ≫ (X.2.β U).hom)
+    (kernelComparison_comp_ι f.f (tensorRight U))
 
 /-- Naturality of the induced kernel half-braiding. -/
 theorem kernelHalfIso_naturality {X Y : CategoryTheory.Center C} (f : X ⟶ Y)
@@ -244,7 +241,7 @@ theorem kernelHalfIso_naturality {X Y : CategoryTheory.Center C} (f : X ⟶ Y)
   rw [← Category.assoc, ← whisker_exchange, Category.assoc, kernelHalfIso_ι]
   rw [← Category.assoc, whisker_exchange, Category.assoc, HalfBraiding.naturality]
   simpa only [Category.assoc] using
-    congrArg (fun k => k ≫ g ▷ X.1) (kernelHalfIso_ι f U).symm
+    congrArg (fun k => k ≫ g ▷ X.1) (kernelHalfIso_ι (U := U) f).symm
 
 /-- Tensor compatibility of the induced kernel half-braiding. -/
 theorem kernelHalfIso_monoidal {X Y : CategoryTheory.Center C} (f : X ⟶ Y) (U V : C) :
@@ -271,7 +268,7 @@ def centerKernel {X Y : CategoryTheory.Center C} (f : X ⟶ Y) : CategoryTheory.
 
 /-- Kernel inclusion as a morphism in the centre. -/
 def centerKernelι {X Y : CategoryTheory.Center C} (f : X ⟶ Y) : centerKernel f ⟶ X :=
-  ⟨kernel.ι f.f, fun U => (kernelHalfIso_ι f U).symm⟩
+  ⟨kernel.ι f.f, fun U => (kernelHalfIso_ι (U := U) f).symm⟩
 
 /-- The kernel inclusion followed by the original map is zero. -/
 theorem centerKernel_condition {X Y : CategoryTheory.Center C} (f : X ⟶ Y) :
@@ -333,14 +330,14 @@ instance centerForgetPreservesMonomorphisms : (CategoryTheory.Center.forget C).P
     exact congrArg CategoryTheory.Center.Hom.f hzero
 
 /-- An object whose underlying object is simple is simple in the centre. -/
-theorem centerSimple_of_underlying (Z : CategoryTheory.Center C) [Simple Z.1] : Simple Z := by
-  have : Simple ((CategoryTheory.Center.forget C).obj Z) := by change Simple Z.1; infer_instance
-  exact (CategoryTheory.Center.forget C).simple_of_simple_obj Z
+theorem centerSimple_of_underlying {Z : CategoryTheory.Center C} [Simple Z.1] : Simple Z :=
+  have : Simple ((CategoryTheory.Center.forget C).obj Z) := ‹Simple Z.1›
+  (CategoryTheory.Center.forget C).simple_of_simple_obj Z
 
 /-- A simple underlying tensor unit remains simple in the centre. -/
-theorem centerUnitSimple [Simple (𝟙_ C)] : Simple (𝟙_ (CategoryTheory.Center C)) := by
-  have : Simple (𝟙_ (CategoryTheory.Center C)).1 := by change Simple (𝟙_ C); infer_instance
-  exact centerSimple_of_underlying _
+theorem centerUnitSimple [Simple (𝟙_ C)] : Simple (𝟙_ (CategoryTheory.Center C)) :=
+  have : Simple (𝟙_ (CategoryTheory.Center C)).1 := ‹Simple (𝟙_ C)›
+  centerSimple_of_underlying
 
 end PropertyF.Ground.Centre
 
@@ -370,24 +367,20 @@ set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.defeqAttrib.useBackward true in
 /-- The cokernel projection intertwines the induced half-braiding. -/
 @[reassoc]
-theorem cokernelHalfIso_π {X Y : CategoryTheory.Center C} (f : X ⟶ Y) (U : C) :
+theorem cokernelHalfIso_π {X Y : CategoryTheory.Center C} (f : X ⟶ Y) {U : C} :
     cokernel.π f.f ▷ U ≫ (cokernelHalfIso f U).hom =
       (Y.2.β U).hom ≫ U ◁ cokernel.π f.f := by
-  simp only [cokernelHalfIso, Iso.trans_hom, Iso.symm_hom]
-  rw [← Category.assoc, ← Category.assoc]
+  simp only [cokernelHalfIso, Iso.trans_hom, Iso.symm_hom, ← Category.assoc]
   change (((tensorRight U).map (cokernel.π f.f) ≫ (PreservesCokernel.iso (tensorRight U) f.f).hom) ≫
       (cokernel.mapIso (f.f ▷ U) (U ◁ f.f) (X.2.β U) (Y.2.β U) (f.comm U)).hom) ≫
       (PreservesCokernel.iso (tensorLeft U) f.f).inv = _
-  rw [PreservesCokernel.π_iso_hom, cokernel.mapIso_hom]
-  simp only [cokernel.map, PreservesCokernel.iso_inv]
+  rw [PreservesCokernel.π_iso_hom, cokernel.mapIso_hom, PreservesCokernel.iso_inv]
   change (cokernel.π (f.f ▷ U) ≫ cokernel.desc (f.f ▷ U)
     ((Y.2.β U).hom ≫ cokernel.π (U ◁ f.f)) _) ≫
       cokernelComparison f.f (tensorLeft U) = _
   rw [cokernel.π_desc, Category.assoc]
-  change (Y.2.β U).hom ≫ (cokernel.π ((tensorLeft U).map f.f) ≫
-    cokernelComparison f.f (tensorLeft U)) = _
-  rw [π_comp_cokernelComparison]
-  rfl
+  exact congrArg (fun g ↦ (Y.2.β U).hom ≫ g)
+    (π_comp_cokernelComparison f.f (tensorLeft U))
 
 /-- Naturality of the induced cokernel half-braiding. -/
 theorem cokernelHalfIso_naturality {X Y : CategoryTheory.Center C} (f : X ⟶ Y)
@@ -427,7 +420,7 @@ def centerCokernel {X Y : CategoryTheory.Center C} (f : X ⟶ Y) : CategoryTheor
 
 /-- Cokernel projection as a morphism in the centre. -/
 def centerCokernelπ {X Y : CategoryTheory.Center C} (f : X ⟶ Y) : Y ⟶ centerCokernel f :=
-  ⟨cokernel.π f.f, fun U => cokernelHalfIso_π f U⟩
+  ⟨cokernel.π f.f, fun U => cokernelHalfIso_π (U := U) f⟩
 
 /-- The original map followed by the cokernel projection is zero. -/
 theorem centerCokernel_condition {X Y : CategoryTheory.Center C} (f : X ⟶ Y) :

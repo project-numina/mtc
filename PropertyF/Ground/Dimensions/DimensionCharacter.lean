@@ -55,7 +55,7 @@ theorem pivotalDimension_tensor
     (p : PivotalStructure (C := C.Obj)) (X Y : C.Obj) :
     pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
   simpa [pivotalDimension, ← groundUnitScalarEquiv_apply] using
-    pivotalTrace_tensor p (groundUnitScalarEquiv C) X Y (𝟙 X) (𝟙 Y)
+    pivotalTrace_tensor p (groundUnitScalarEquiv C) (𝟙 X) (𝟙 Y)
 
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character

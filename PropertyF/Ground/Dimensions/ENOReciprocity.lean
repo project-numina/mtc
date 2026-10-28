@@ -213,7 +213,7 @@ theorem squaredNorm_eq_rootDualSign_mul
     apply End.homEquiv.injective
     have he : k.hom = rootDualSign C i • l.hom := rootDualSign_component C i
     simp [rightQuantumTrace, he, tensorHom_def]
-  rw [target_squaredNorm_choice_independent C X j, leftQuantumTrace_eq_rightDual j]
+  rw [target_squaredNorm_choice_independent C j, leftQuantumTrace_eq_rightDual j]
   change Ground.unitScalar C (rightQuantumTrace j) * Ground.unitScalar C (rightQuantumTrace l) =
     rootDualSign C i * rootDimension C i * rootDimension C (Ground.dualIndex C i)
   rw [← hx, ← hq, ht]
@@ -246,7 +246,7 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   intro i
   let X := simples C i
   let : Simple X := Ground.simples_simple C i
-  have hh := target_squaredNorm_choice_independent C X (p.iso X)
+  have hh := target_squaredNorm_choice_independent C (p.iso X)
   rw [← rightTrace_id, ← leftTrace_id] at hh
   have hr : Ground.unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) := hdim i
   rw [hr, hnorm i, Complex.ofReal_pow] at hh
@@ -272,7 +272,7 @@ theorem eno_root_norm_saturation_of_pseudoUnitary
   have hb : ∀ i, |d i| ≤ fpSimple C i := by
     intro i
     rw [abs_of_nonneg (norm_nonneg _)]
-    exact rootDimension_norm_le_fp_of_trace_matrix C i (hinv i) (heig i)
+    exact rootDimension_norm_le_fp_of_trace_matrix C (hinv i) (heig i)
   have hg : (∑ i, d i ^ 2) = globalFPDimension C := by
     have h := hpu
     change Ground.globalDimension C = (globalFPDimension C : ℂ) at h
@@ -313,7 +313,7 @@ def rootPhasePivotal (C : BraidedFusionCategory.{v,u})
   tensor X Y := by
     apply doubleDualTensor_extension C (rootSignTwist C c hc) hnat
     intro i j
-    exact congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C c hc i j (hdef i j))
+    exact congrArg Iso.hom (rootPhaseTensor_compatible_of_scaled_defects C c hc (hdef i j))
   unit := hunit
 
 set_option backward.isDefEq.respectTransparency false in
@@ -365,7 +365,7 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
   have hc : ∀ i, c i ≠ 0 := fun i => inv_ne_zero (hq0 i)
   have hdom : ∀ i j k, ‖enoTraceMatrix C i j k‖ ≤ (Ground.fusionCoeff C i j k : ℝ) := by
     intro i j k
-    obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C i j k (hinv i j k)
+    obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C (hinv i j k)
     change ‖LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap‖ ≤ _
     rw [hn, Complex.norm_intCast, ← Int.cast_abs]
     exact_mod_cast hb
@@ -438,7 +438,7 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
     rcases mul_self_eq_one_iff.mp hε with h | h <;> simp [h]
   have hA : ∀ j k, star (A j k) = A j k := by
     intro j k
-    obtain ⟨n, hn, _⟩ := multiplicityDefect_trace_integer_bound C i j k (hinv i j k)
+    obtain ⟨n, hn, _⟩ := multiplicityDefect_trace_integer_bound C (hinv i j k)
     change star (LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap) =
       LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap
     rw [hn]
@@ -450,12 +450,12 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
   have h : A *ᵥ d = d i • d := by
     ext j
     change (∑ k, enoTraceMatrix C i j k * rootDimension C k) = rootDimension C i * rootDimension C j
-    exact enoTraceMatrix_eigenvector_of_involutions C i j (hinv i j)
+    exact enoTraceMatrix_eigenvector_of_involutions C (hinv i j)
   have ht : Aᵀ *ᵥ d = (ε * d (Ground.dualIndex C i)) • d := by
     ext j
     change (∑ k, enoTraceMatrix C i k j * rootDimension C k) =
       (ε * rootDimension C (Ground.dualIndex C i)) * rootDimension C j
-    have he := enoTraceMatrix_eigenvector_of_involutions C (Ground.dualIndex C i) j
+    have he := enoTraceMatrix_eigenvector_of_involutions C
       (hinv (Ground.dualIndex C i) j)
     simp_rw [htranspose] at he
     calc

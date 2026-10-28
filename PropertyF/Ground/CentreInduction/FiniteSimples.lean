@@ -98,7 +98,7 @@ theorem simple_mono_induced_simple (X : CategoryTheory.Center C.Obj) [Simple X] 
       rw [(CategoryTheory.Center.forget C.Obj).map_id, (CategoryTheory.Center.forget C.Obj).map_zero]
       exact (IsZero.iff_id_eq_zero X.1).mp hz
     exact id_nonzero X hid
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity C X.1 hx
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity C hx
   have hi' : 0 < Module.finrank ℂ (X.1 ⟶ simples C i) := by
     rw [finrank_to_simple_eq_from_simple C]
     exact hi
