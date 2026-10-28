@@ -108,10 +108,8 @@ theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum D X) :
     ∃ (n : ℕ) (V : Fin n → D), (∀ i, Simple (V i)) ∧ Nonempty (X ≅ ⨁ V) := by
   induction hX with
   | zero hz =>
-    let V : Fin 0 → D := Fin.elim0
-    have hzero : IsZero (⨁ V) := (IsZero.iff_id_eq_zero _).2 <|
-      biproduct.hom_ext' _ _ fun i => Fin.elim0 i
-    exact ⟨0, V, fun i => Fin.elim0 i, ⟨hz.iso hzero⟩⟩
+    refine ⟨0, Fin.elim0, fun i => Fin.elim0 i, ⟨hz.iso ?_⟩⟩
+    exact (IsZero.iff_id_eq_zero _).2 (biproduct.hom_ext' _ _ fun i => Fin.elim0 i)
   | @cons X S K hs hk he ih =>
     obtain ⟨n, V, hv, ⟨e⟩⟩ := ih
     obtain ⟨eX⟩ := he

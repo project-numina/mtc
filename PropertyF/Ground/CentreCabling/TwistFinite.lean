@@ -67,7 +67,7 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist (θ : 𝟭 C.Obj ≅ �
   refine isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, ?_⟩
   simpa only [show t * m = End.of (θ.hom.app (X ⊗ Y)) from End.ext (hbalance X Y),
     hp, ht, one_mul] using
-    ((show Commute t m from End.ext (doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))).mul_pow n).symm
+    ((show Commute t m from End.ext (Modular.doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))).mul_pow n).symm
 
 /-- The actual pivotal twist scalars, viewed as nonzero complex numbers. -/
 def pivotalTwistUnit (C : Ground.BraidedFusionCategory.{v,u})

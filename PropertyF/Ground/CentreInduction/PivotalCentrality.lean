@@ -43,21 +43,20 @@ theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
     (f : Z.1 ⟶ W.1) (g : T ⟶ B.1) [IsIso g]
     (h : (β_ Z ((Center.ofBraided D).obj T)).hom.f ≫ (g ⊗ₘ f) =
       (f ⊗ₘ g) ≫ (β_ W B).hom.f) :
-    (f ▷ T) ≫ (W.2.β T).hom = (Z.2.β T).hom ≫ (T ◁ f) := by
-  apply (cancel_mono (g ▷ W.1)).1
-  rw [tensorHom_def' g f, tensorHom_def f g] at h
-  change (Z.2.β T).hom ≫ ((T ◁ f) ≫ g ▷ W.1) =
-    ((f ▷ T) ≫ W.1 ◁ g) ≫ (W.2.β B.1).hom at h
-  simpa only [Category.assoc, W.2.naturality g] using h.symm
+    (f ▷ T) ≫ (W.2.β T).hom = (Z.2.β T).hom ≫ (T ◁ f) :=
+  (cancel_mono (g ▷ W.1)).1 <| by
+    rw [tensorHom_def' g f, tensorHom_def f g] at h
+    change (Z.2.β T).hom ≫ ((T ◁ f) ≫ g ▷ W.1) =
+      ((f ▷ T) ≫ W.1 ◁ g) ≫ (W.2.β B.1).hom at h
+    simpa only [Category.assoc, W.2.naturality g] using h.symm
 
 /-- Every transported base pivotal component is a morphism in the actual centre. -/
 theorem pivotalComponentsCentral_proved [BraidedCategory D] :
-    PivotalComponentsCentral p := by
-  intro Z T
-  let B := (Center.ofBraided D).obj T
-  apply central_of_positive_braiding (T := T) (B := (Bᘁ)ᘁ) (transportedPivotalHom p Z)
-    ((Center.forget D).map (positivePivotalComponent p T).hom)
-  simpa only [B, Center.forget, positivePivotalComponent_forget] using transported_pivotal_braiding p Z B
+    PivotalComponentsCentral p := fun Z T ↦
+  central_of_positive_braiding (T := T) (B := (((Center.ofBraided D).obj T)ᘁ)ᘁ)
+    (transportedPivotalHom p Z) ((Center.forget D).map (positivePivotalComponent p T).hom) <| by
+      simpa only [Center.forget, positivePivotalComponent_forget] using
+        transported_pivotal_braiding p Z ((Center.ofBraided D).obj T)
 
 end PropertyF.Ground.CentreInduction
 

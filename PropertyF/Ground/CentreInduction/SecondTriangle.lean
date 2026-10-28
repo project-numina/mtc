@@ -47,10 +47,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ S j) ≫ b (S j) ≫
-    (S j ◁ (underlyingCounit C).app X) = 0 := by
-  let : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
+    (S j ◁ (underlyingCounit C).app X) = 0 :=
+  letI : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
     simpa only [crossingIndex, counit_column_finrank, hne, ↓reduceIte] using (inferInstance : IsEmpty (Fin 0))
-  simpa only [Fintype.sum_empty, zero_comp] using crossing_counit_matrix C X (S j) i
+  (crossing_counit_matrix C X (S j) i).trans <|
+    (congrArg (· ≫ (S j ◁ (unitSummandIso C X).hom)) (Fintype.sum_empty _)).trans zero_comp
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
@@ -66,12 +67,12 @@ theorem crossing_counit_diagonal (i : Fin (rank C)) :
       (inferInstance : Unique (Fin 1))
   dsimp only
   rw [crossing_counit_matrix C X (S i) i, Fintype.sum_unique]
-  dsimp only [crossingSummand]
   let : Simple (S i) := simples_simple C i
   let : FiniteDimensional ℂ (S i ⟶ S i) := IsFusionCategory.hom_finite _ _
-  rw [crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
-    (crossingInclusion_projection default)]
-  rfl
+  simpa only [crossingSummand, Iso.symm_hom, Iso.symm_inv] using
+    congrArg (· ≫ (S i ◁ (unitSummandIso C X).hom))
+      (crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
+        (crossingInclusion_projection default))
 
 end PropertyF.Ground.CentreInduction
 
