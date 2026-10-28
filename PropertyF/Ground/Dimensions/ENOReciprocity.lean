@@ -141,8 +141,8 @@ theorem squaredNorm_eq_rootDualSign_mul
   obtain ⟨u⟩ := dualIndex_iso i
   have hq : unitScalar C (rightQuantumTrace k) = rootDimension C (dualIndex C i) :=
     congrArg (unitScalar C) ((rootTrace_id C (Xᘁ)).symm.trans (rootTrace_id_iso C (e ≪≫ u)))
-  rw [target_squaredNorm_choice_independent j, leftQuantumTrace_eq_rightDual j]
-  rw [← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
+  rw [target_squaredNorm_choice_independent j, leftQuantumTrace_eq_rightDual j,
+    ← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
       congrArg (unitScalar C) (rootTrace_id C X).symm), ← hq,
     rightQuantumTrace_smul_hom (rootDualSign_component i)]
   simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]

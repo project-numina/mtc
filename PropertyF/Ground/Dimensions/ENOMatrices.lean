@@ -47,8 +47,7 @@ simple dimensions weighted by the scalar diagonal blocks. -/
 theorem rootTrace_biproduct_simple
     {ι : Type*} [Fintype ι] (F : ι → C.Obj) [HasBiproduct F]
     (hs : ∀ i, Simple (F i)) (f : (⨁ F) ⟶ (⨁ F)) :
-    ∃ c : ι → ℂ, HasScalarDiagonal F f c ∧
-      rootTrace C f = ∑ i, c i • rootTrace C (𝟙 (F i)) :=
+    ∃ c : ι → ℂ, HasScalarDiagonal F f c ∧ rootTrace C f = ∑ i, c i • rootTrace C (𝟙 (F i)) :=
   cyclicTrace_biproduct_simple (fun X ↦ rightTraceWithLinear ((fourthDualRootNaturalIso C).app X)) (fun f g => rootTrace_cyclic C f g)
     hs (fun _ => IsFusionCategory.hom_finite _ _) f
 
@@ -162,12 +161,9 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
   intro i j k
   let x : ι → ℂ := fun l => T i j l * q l / (q i * q j)
   have heq : ∑ l, x l * (f l : ℂ) = ((∑ l, N i j l * f l : ℝ) : ℂ) := by
-    calc
-      _ = (∑ l, T i j l * d l) / (q i * q j) := by
-        simp only [x, div_mul_eq_mul_div, mul_assoc, hrepr, Finset.sum_div]
-      _ = _ := by
-        rw [heig, ← hrepr i, ← hrepr j, ← hmul, Complex.ofReal_mul]
-        field_simp [hqn i, hqn j]
+    simp only [x, div_mul_eq_mul_div, mul_assoc, hrepr, ← Finset.sum_div, heig]
+    rw [← hrepr i, ← hrepr j, ← hmul, Complex.ofReal_mul]
+    field_simp [hqn i, hqn j]
   exact complex_weighted_saturation hf (fun l ↦ by
     simpa [x, norm_div, norm_mul, hq] using hdom i j l) heq k
 

@@ -109,8 +109,7 @@ theorem fourthDualRoot_unit_component :
   let u := doubleDualIso C U
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) u a
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit (C := C.Obj))
-  rw [rootDimension_unit]
-  rw [rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
+  rw [rootDimension_unit, rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
   simpa only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one, hu] using hr
 
 set_option backward.isDefEq.respectTransparency false in
