@@ -2,7 +2,15 @@ module
 public import PropertyF.Ground.Fusion.Agreement
 public import Mathlib.CategoryTheory.Preadditive.AdditiveFunctor
 
-/-! Frobenius–Perron dimension of an arbitrary object. -/
+/-! # Frobenius–Perron dimensions of objects
+
+`fpDimension` is the sum of simple multiplicities weighted by `fpSimple`.
+It is invariant under isomorphisms and duality, additive on finite biproducts,
+and multiplicative under tensor products. Faithful additive monoidal functors
+preserve it.
+
+See Etingof–Gelaki–Nikshych–Ostrik, *Tensor Categories*, §3.3.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

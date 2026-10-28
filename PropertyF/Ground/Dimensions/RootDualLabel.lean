@@ -5,7 +5,10 @@ public import PropertyF.Ground.Dimensions.SimpleHomBasis
 
 /-! # Dual labels and reciprocity
 
-Frobenius reciprocity and the fourth-dual tensor law imply trace reciprocity on simple labels.
+`enoFrobeniusEquiv` and `enoReciprocityEquiv` realize Frobenius reciprocity on
+the chosen simple objects. Compatibility of the tensor defect with these
+equivalences yields trace reciprocity, while `rootDualSign_dual` compares the
+signs on a label and its dual.
 -/
 
 @[expose] public noncomputable section
