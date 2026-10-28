@@ -154,7 +154,6 @@ theorem simpleHom_postcomp_trace
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (simples C k)) :
     LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) = ∑ t, c t := by
   rw [LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)]
-  unfold Matrix.trace
   refine Finset.sum_congr rfl fun t _ ↦ ?_
   simp only [Matrix.diag_apply, LinearMap.toMatrix_apply, Linear.rightComp_apply,
     simpleInclusionBasis_apply]

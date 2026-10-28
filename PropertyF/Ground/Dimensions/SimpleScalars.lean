@@ -157,9 +157,7 @@ abbrev simplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :=
   Σ i : Fin (rank C), Fin (simpleMultiplicity C i X)
 
 instance instFintypeSimplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
-    Fintype (simplePieces C X) := by
-  unfold simplePieces
-  infer_instance
+    Fintype (simplePieces C X) := inferInstance
 
 /-- The actual simple object at each canonical summand. -/
 abbrev simplePiecesObject (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
@@ -271,11 +269,10 @@ theorem tensor_decomposition_hom_ext
     {ι κ : Type} [Fintype ι] [Fintype κ] {F : ι → E} {G : κ → E} {X Y Z : E}
     (eX : X ≅ ⨁ F) (eY : Y ≅ ⨁ G) {f g : X ⊗ Y ⟶ Z}
     (h : ∀ {i j} (sx : F i ⟶ X) (sy : G j ⟶ Y),
-      (sx ⊗ₘ sy) ≫ f = (sx ⊗ₘ sy) ≫ g) : f = g := by
-  apply (cancel_epi (eX.symm ⊗ᵢ eY.symm).hom).1
-  refine tensorBiproduct_hom_ext fun i j ↦ ?_
-  simpa [tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
-    h (biproduct.ι F i ≫ eX.inv) (biproduct.ι G j ≫ eY.inv)
+      (sx ⊗ₘ sy) ≫ f = (sx ⊗ₘ sy) ≫ g) : f = g :=
+  (cancel_epi (eX.symm ⊗ᵢ eY.symm).hom).1 <| tensorBiproduct_hom_ext fun i j ↦ by
+    simpa [tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
+      h (biproduct.ι F i ≫ eX.inv) (biproduct.ι G j ≫ eY.inv)
 
 
 end PropertyF.Ground.Dimensions
