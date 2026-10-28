@@ -46,7 +46,7 @@ def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u}
     [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (X T U R S : D)
     [HasRightDual R] [HasRightDual S] :
     (R ⟶ U ⊗ S) →ₗ[k] (T ⊗ S ⟶ R) →ₗ[k]
-      (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
+      (conjugate R X ⊗ T ⟶ U ⊗ conjugate S X) where
   toFun g := {
     toFun := fun f => mixedCrossing X T U g f
     map_add' := by
@@ -145,7 +145,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the output of a crossing block composes the
 fusion inclusion with that map. -/
 theorem crossingBlock_post_test (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    crossingBlock X T S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
+    crossingBlock X T S g f ≫ (h ▷ conjugate S X) =
       mixedCrossing X T U (g ≫ (h ▷ S)) f := by
   dsimp only [crossingBlock, mixedCrossing]
   monoidal
@@ -154,7 +154,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the input of a crossing block composes the
 fusion projection with that map. -/
 theorem crossingBlock_pre_test (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
-    (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U S g f =
+    (conjugate R X ◁ h) ≫ crossingBlock X U S g f =
       mixedCrossing X T U g ((h ▷ S) ≫ f) := by
   simp only [crossingBlock, mixedCrossing, tensorHom_def, Category.assoc]
   rw [associator_naturality_right_assoc, ← whisker_exchange_assoc, ← whiskerLeft_comp_assoc,
@@ -164,13 +164,14 @@ end
 variable (X : C.Obj)
 -- The induction crossing on the fixed middle object.
 local notation "βᶜ" => crossingCandidate C X
+local notation "Vᶜ" => inductionSummand C X
 
 /-- Summing the crossing blocks removes the dependence on the chosen fusion
 basis, so a map of test objects can pass through each matrix entry. -/
 theorem crossingBlock_sum_natural_test
     (T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
-    (∑ b, (((Sᶜ i ⊗ X) ⊗ (Sᶜ i)ᘁ) ◁ h) ≫ crossingSummand C X U i j b) =
-    ∑ a, crossingSummand C X T i j a ≫ (h ▷ ((Sᶜ j ⊗ X) ⊗ (Sᶜ j)ᘁ)) := by
+    (∑ b, (Vᶜ i ◁ h) ≫ crossingSummand C X U i j b) =
+    ∑ a, crossingSummand C X T i j a ≫ (h ▷ Vᶜ j) := by
   simpa only [crossingSummand, crossingBlock_pre_test, crossingBlock_post_test,
     mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk, crossingInclusion,
     crossingProjection, simpleProjection] using
