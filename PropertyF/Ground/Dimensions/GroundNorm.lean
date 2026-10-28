@@ -105,10 +105,9 @@ end
 
 /-- Intrinsic squared norms are invariant under object isomorphism. -/
 theorem target_squaredNorm_iso {X Y : C.Obj} (e : X ≅ Y) :
-    squaredNorm C X = squaredNorm C Y := by
-  obtain ⟨hr, hl⟩ := quantumTraces_iso e (j := doubleDualIso C X) (k := doubleDualIso C Y)
-    (drinfeldIso_natural e.hom)
-  simp only [squaredNorm, hr, hl]
+    squaredNorm C X = squaredNorm C Y :=
+  (quantumTraces_iso e (j := doubleDualIso C X) (k := doubleDualIso C Y)
+    (drinfeldIso_natural e.hom)).elim fun hr hl ↦ by simp only [squaredNorm, hr, hl]
 
 end PropertyF.Ground.Dimensions
 
@@ -131,11 +130,11 @@ theorem sum_sq_le_sum_sq_of_abs_le {k : Type*} [CommRing k] [LinearOrder k] [IsS
 theorem sum_sq_eq_sum_sq_iff {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
     {ι : Type*} [Fintype ι] {d f : ι → k}
     (hbound : ∀ i, |d i| ≤ f i) :
-    (∑ i, (d i) ^ 2) = ∑ i, (f i) ^ 2 ↔ ∀ i, |d i| = f i := by
-  rw [Finset.sum_eq_sum_iff_of_le
-    (fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2)]
-  simpa only [Finset.mem_univ, true_implies, sq_abs] using
-    (forall_congr' fun i ↦ sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i)))
+    (∑ i, (d i) ^ 2) = ∑ i, (f i) ^ 2 ↔ ∀ i, |d i| = f i :=
+  (Finset.sum_eq_sum_iff_of_le (fun i _ ↦
+    sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2)).trans <| by
+      simpa only [Finset.mem_univ, true_implies, sq_abs] using
+        (forall_congr' fun i ↦ sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i)))
 
 variable {C} in
 /-- A pseudo-unitary global dimension saturates every FP bound when the

@@ -41,11 +41,11 @@ variable {X : C.Obj} in
 multiplicities, for any pivotal structure. -/
 theorem pivotalDimension_decomposition :
     pivotalDimension C p X = ∑ i, (simpleMultiplicity C i X : ℂ) *
-      pivotalDimension C p (simples C i) := by
-  classical
-  obtain ⟨e⟩ := exists_canonical_decomposition C X
-  simp [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
-    rightDimension_biproduct, Fintype.sum_sigma]
+      pivotalDimension C p (simples C i) :=
+  (exists_canonical_decomposition C X).elim fun e ↦ by
+    classical
+    simp [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
+      rightDimension_biproduct, Fintype.sum_sigma]
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
 theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}

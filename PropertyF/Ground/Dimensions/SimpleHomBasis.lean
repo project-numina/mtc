@@ -129,6 +129,7 @@ theorem simpleInclusionBasis_apply
   congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) t
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Coordinates in the simple-inclusion basis are the scalar diagonal
 projections of the morphism. -/
 theorem simpleInclusionBasis_projection
@@ -144,6 +145,7 @@ theorem simpleInclusionBasis_projection
       ((simpleInclusionBasis C X k).sum_repr g)
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Ordinary trace on a simple Hom space is the sum of scalar diagonal
 blocks in the chosen object decomposition. -/
 theorem simpleHom_postcomp_trace
@@ -161,7 +163,7 @@ theorem simpleHom_postcomp_trace
     simpleInclusionBasis_apply]
   apply smul_left_injective ℂ (id_nonzero (simples C k))
   simpa [simpleInclusion, Category.assoc, hc t] using
-    (simpleInclusionBasis_projection C (simpleInclusion C X k t ≫ g) t)
+    (simpleInclusionBasis_projection (simpleInclusion C X k t ≫ g) t)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root categorical trace equals the dimension-weighted sum of
@@ -180,7 +182,7 @@ theorem rootTrace_eq_simpleHom_trace_sum
   rw [heq, ht]
   simp only [Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
-  rw [simpleHom_postcomp_trace C g (fun t ↦ c ⟨k, t⟩)
+  rw [simpleHom_postcomp_trace g (fun t ↦ c ⟨k, t⟩)
     (fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩), Finset.sum_mul]
   simp only [rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
 

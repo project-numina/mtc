@@ -134,11 +134,11 @@ theorem fpDimension_biproduct {ι : Type} [Fintype ι] (V : ι → D.Obj) :
 FP dimension of the image as the sum of the dimensions of image simples. -/
 theorem fpDimension_functor_decomposition (F : C.Obj ⥤ D.Obj) [F.Additive] (X : C.Obj) :
     fpDimension D (F.obj X) = ∑ i,
-      (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) := by
-  classical
-  obtain ⟨e⟩ := exists_canonical_decomposition C X
-  simp [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
-    Fintype.sum_sigma]
+      (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) :=
+  (exists_canonical_decomposition C X).elim fun e ↦ by
+    classical
+    simp [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct _), fpDimension_biproduct,
+      Fintype.sum_sigma]
 
 /-- An additive faithful strong monoidal functor preserves FP dimension. -/
 theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.Monoidal]

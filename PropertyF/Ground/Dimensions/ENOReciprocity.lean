@@ -56,11 +56,11 @@ omit [RightRigidCategory D] in
 theorem scalar_sq_eq_one_of_same_square {X : D} [HasRightDual X] [HasRightDual (Xᘁ)]
     [HasRightDual ((Xᘁ)ᘁ)] [HasRightDual (((Xᘁ)ᘁ)ᘁ)] [Simple X]
     (a b : X ≅ (Xᘁ)ᘁ) (z : k) (hz : b.hom = z • a.hom)
-    (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 := by
-  apply smul_left_injective k (mono_ne_zero_of_id_ne_zero
-    (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom (id_nonzero X))
-  simpa only [Iso.trans_hom, rightDualIsoMap, hz, rightAdjointMate_smul,
-    Linear.smul_comp, Linear.comp_smul, smul_smul, one_smul] using hsq
+    (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 :=
+  smul_left_injective k (mono_ne_zero_of_id_ne_zero
+    (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom (id_nonzero X)) (by
+      simpa only [Iso.trans_hom, rightDualIsoMap, hz, rightAdjointMate_smul,
+        Linear.smul_comp, Linear.comp_smul, smul_smul, one_smul] using hsq)
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] IsFusionCategory.hom_finite
