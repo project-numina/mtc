@@ -197,10 +197,9 @@ include hA
 
 /-- The trace of an idempotent complex matrix is a nonnegative integer. -/
 theorem idempotent_matrix_trace_nat : ∃ n : ℕ, A.trace = n :=
-  let p := A.toLin'
-  have hp : IsIdempotentElem p := (show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv'
-  ⟨Module.finrank ℂ (LinearMap.range p), by
-    simpa only [p, Matrix.trace_toLin'_eq] using ((LinearMap.isProj_range_iff_isIdempotentElem p).2 hp).trace⟩
+  ⟨_, by simpa only [Matrix.trace_toLin'_eq] using
+    ((LinearMap.isProj_range_iff_isIdempotentElem A.toLin').2
+      ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')).trace⟩
 
 /-- A complex idempotent matrix with zero trace is zero. -/
 theorem idempotent_matrix_eq_zero_of_trace_eq_zero (ht : A.trace = 0) : A = 0 :=

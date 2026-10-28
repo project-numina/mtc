@@ -92,6 +92,10 @@ def mass (B : Blocks) (w : Fin B.count → ℝ) : ℝ :=
 
 variable (B : Blocks) (w : Fin B.count → ℝ)
 
+/-- Weighted block mass is nonnegative. -/
+lemma mass_nonneg : 0 ≤ B.mass w :=
+  Finset.sum_nonneg fun _r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _)
+
 /-- The norm of a unitary weighted trace is bounded by the block mass. -/
 lemma norm_trace_le {u : B.Algebra}
     (hu : B.IsUnitary u) : ‖B.trace w u‖ ≤ B.mass w :=
@@ -119,10 +123,8 @@ lemma trace_signElement :
 /-- A bound on all unitary traces bounds the total weighted block mass. -/
 lemma mass_le_of_unitary_trace_bound {R : ℝ}
     (hbound : ∀ u, B.IsUnitary u → ‖B.trace w u‖ ≤ R) : B.mass w ≤ R := by
-  have hm : 0 ≤ B.mass w :=
-    Finset.sum_nonneg (fun r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _))
-  simpa [B.trace_signElement, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hm] using
-    hbound (B.signElement w) (B.signElement_unitary w)
+  simpa [B.trace_signElement, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_nonneg (B.mass_nonneg w)] using hbound (B.signElement w) (B.signElement_unitary w)
 
 /-- Saturation of the weighted bound saturates every block with nonzero weight. -/
 theorem block_trace_norm_eq_of_saturation
@@ -148,8 +150,7 @@ theorem central_of_saturation
   fun T => funext fun r =>
     let ⟨z, hz⟩ := scalar_of_norm_trace_eq_card (hg r)
       (by simpa using B.block_trace_norm_eq_of_saturation w hg hsat r (hw r))
-    show g r * T r = T r * g r from by
-      rw [hz, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
+    by simp [hz]
 
 end Blocks
 end PropertyF
