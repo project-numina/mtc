@@ -111,19 +111,24 @@ def forgetDualIso (Z : 𝒵) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=
 def forgetDoubleDualIso (Z : 𝒵) : (((Zᘁ)ᘁ).1) ≅ ((Z.1ᘁ)ᘁ) :=
   forgetDualIso (Zᘁ) ≪≫ Dimensions.rightDualIsoMap (forgetDualIso Z).symm
 
+/-- A centre pivotal component agrees with the base component after forgetting. -/
+abbrev PivotalCompatibleAt (p : Dimensions.PivotalStructure (C := D))
+    (pZ : Dimensions.PivotalStructure (C := 𝒵)) (Z : 𝒵) : Prop :=
+  (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Compatible pivotal components have equal traces after forgetting. -/
 theorem forget_trace_of_pivotal_component
     {p : Dimensions.PivotalStructure (C := D)}
     {pZ : Dimensions.PivotalStructure (C := 𝒵)}
     {Z : 𝒵}
-    (hcompat : ((pZ.iso Z).hom.f) ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
+    (hcompat : PivotalCompatibleAt p pZ Z) :
     (pZ.rightTrace (𝟙 Z)).asHom.f = (p.rightTrace (𝟙 Z.1)).asHom := by
   let e := forgetDualIso Z
   let e' := forgetDualIso (Zᘁ)
   let u : Z.1 ⟶ ((Zᘁ)ᘁ).1 := (pZ.iso Z).hom.f
   have hu : u ≫ e'.hom ≫ (e.invᘁ) = (p.iso Z.1).hom := by
-    simpa [forgetDoubleDualIso, Dimensions.rightDualIsoMap, e, e', u, Category.assoc] using hcompat
+    simpa [PivotalCompatibleAt, forgetDoubleDualIso, Dimensions.rightDualIsoMap, e, e', u, Category.assoc] using hcompat
   have htrans : u ≫ e'.hom = (p.iso Z.1).hom ≫ (e.homᘁ) := by
     rw [← hu]
     simp only [Category.assoc, ← comp_rightAdjointMate, Iso.hom_inv_id,
