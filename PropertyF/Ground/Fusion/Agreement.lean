@@ -330,10 +330,7 @@ theorem total_commutes_characterMatrix (i : Fin (rank D)) :
     Commute (totalFusionMatrix D) (characterMatrix D i) := by
   classical
   rw [totalFusionMatrix_eq_sum_characterMatrix]
-  change (∑ j, characterMatrix D j) * characterMatrix D i =
-    characterMatrix D i * (∑ j, characterMatrix D j)
-  rw [Finset.sum_mul, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun j _ ↦ characterMatrix_commute D j i
+  exact Commute.sum_left _ _ _ fun j _ ↦ characterMatrix_commute D j i
 
 /-- The total matrix has a strictly positive common eigenvector for all
 fusion matrices. -/
