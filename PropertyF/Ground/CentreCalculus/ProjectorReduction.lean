@@ -32,33 +32,33 @@ theorem pivotalDimension_eq_fpDimension {X : C.Obj} : pivotalDimension C p X = (
     ← hdim, Modular.simpleDimension, pivotalDimension, unitScalar_eq_equiv] using
     pivotalDimension_decomposition C p X
 
+/-- Every falling factorial is a factorial multiple of a value of `dim`. -/
+abbrev HasFallingFactorialDimensions {A R : Type*} [CommRing R] (d : R) (dim : A → R) : Prop :=
+  ∀ n : ℕ, ∃ Y, (Nat.factorial n : R) * dim Y = ∏ k ∈ Finset.range n, (d - (k : R))
+
 /-- If the falling factorial of an object's dimension is the dimension of an
 actual object up to a positive scalar at every degree, the dimension is an
 integer. The remaining categorical task is to construct those objects and
 establish their dimensions using alternating projectors. -/
 theorem integral_of_exterior_dimensions {X : C.Obj}
-    (hExterior : ∀ n : ℕ, ∃ Y : C.Obj,
-      (∏ k ∈ Finset.range n, (fpDimension C X - (k : ℝ))) =
-        (Nat.factorial n : ℝ) * fpDimension C Y) :
+    (hExterior : HasFallingFactorialDimensions (fpDimension C X) (fpDimension C)) :
     ∃ m : ℕ, fpDimension C X = m :=
   Centre.integral_of_nonnegative_falling_factorials (fpDimension_nonneg C X) fun n ↦
     let ⟨Y, hY⟩ := hExterior n
-    hY.symm ▸ mul_nonneg (Nat.cast_nonneg _) (fpDimension_nonneg C Y)
+    hY ▸ mul_nonneg (Nat.cast_nonneg _) (fpDimension_nonneg C Y)
 
 include hdim in
 /-- The same reduction stated using actual pivotal dimensions, so that a
 split alternating projector can supply the witnesses. -/
 theorem integral_of_pivotal_exterior_dimensions {X : C.Obj}
-    (hExterior : ∀ n : ℕ, ∃ Y : C.Obj,
-      (Nat.factorial n : ℂ) * pivotalDimension C p Y =
-        ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
+    (hExterior : HasFallingFactorialDimensions (fpDimension C X : ℂ) (pivotalDimension C p)) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_exterior_dimensions fun n ↦
     let ⟨Y, hY⟩ := hExterior n
     ⟨Y, Complex.ofReal_injective <| by
       rw [pivotalDimension_eq_fpDimension hdim] at hY
       simpa only [Complex.ofReal_prod, Complex.ofReal_sub, Complex.ofReal_natCast,
-        Complex.ofReal_mul] using hY.symm⟩
+        Complex.ofReal_mul] using hY⟩
 
 end PropertyF.Ground.CentreCalculus
 

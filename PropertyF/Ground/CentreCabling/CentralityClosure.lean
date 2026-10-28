@@ -5,18 +5,23 @@ public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.Fusion.UnitPower
 public import PropertyF.Ground.Integrate.CenterBundle
 
-/-! Extend centrality from simple constituents to all product retracts. -/
+/-!
+# Centrality of product retracts
+
+Double-braiding centrality is preserved by retracts and finite biproducts, so
+it extends from simple constituents to all objects in a retract-closed class.
+-/
 
 @[expose] public noncomputable section
 open PropertyF.Ground.Modular (doubleBraiding)
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreCabling
 universe v u
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Double braiding is natural simultaneously in both strands. -/
-theorem doubleBraiding_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] {X X' Y Y' : D} (f : X ⟶ X') (g : Y ⟶ Y') :
+theorem doubleBraiding_natural {X X' Y Y' : D} (f : X ⟶ X') (g : Y ⟶ Y') :
     doubleBraiding X Y ≫ (f ⊗ₘ g) =
       (f ⊗ₘ g) ≫ doubleBraiding X' Y' := by
   rw [doubleBraiding, doubleBraiding, Category.assoc,
@@ -25,9 +30,7 @@ theorem doubleBraiding_natural {D : Type u} [Category.{v} D] [MonoidalCategory D
 
 
 /-- Centrality descends along a split inclusion. -/
-theorem doubleBraiding_eq_one_of_retract
-    {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
-    {X Z : D} (r : Retract X Z) {Y : D}
+theorem doubleBraiding_eq_one_of_retract {X Z : D} (r : Retract X Z) {Y : D}
     (h : doubleBraiding Z Y = 𝟙 _) : doubleBraiding X Y = 𝟙 _ := by
   have hh := Modular.doubleBraiding_natural_left r.i Y
   rw [h, Category.comp_id] at hh
@@ -36,9 +39,7 @@ theorem doubleBraiding_eq_one_of_retract
 
 /-- If all the components of a finite biproduct centralize an object, their
 biproduct centralizes it. -/
-theorem doubleBraiding_eq_one_biproduct
-    {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D]
-    [MonoidalPreadditive D] [BraidedCategory D]
+theorem doubleBraiding_eq_one_biproduct [Abelian D] [MonoidalPreadditive D]
     {J : Type} [Fintype J] {V : J → D} {Y : D}
     (h : ∀ i, doubleBraiding (V i) Y = 𝟙 _) :
     doubleBraiding (⨁ V) Y = 𝟙 _ := by

@@ -24,9 +24,10 @@ namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable (p : PivotalStructure (C := C))
 
 /-- Close the first factor using the pivotal left dual. -/
-def leftPartialTrace (p : PivotalStructure (C := C)) {X Y : C} :
+def leftPartialTrace {X Y : C} :
     End (X ⊗ Y) →ₗ[ℂ] End Y where
   toFun f := End.of ((λ_ Y).inv ≫
     ((η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ ((Xᘁ) ◁ (p.iso X).inv)) ▷ Y) ≫
@@ -40,19 +41,19 @@ def leftPartialTrace (p : PivotalStructure (C := C)) {X Y : C} :
     simp
 
 /-- Closing the left factor and then tracing agrees with the total trace at an endomorphism. -/
-abbrev IsLeftTraceCompatibleAt (p : PivotalStructure (C := C))
+abbrev IsLeftTraceCompatibleAt
     {X Y : C} (f : End (X ⊗ Y)) : Prop :=
   p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom
 
 /-- Closing the left factor and then tracing agrees with the total trace. -/
-abbrev IsLeftTraceCompatible (p : PivotalStructure (C := C)) (X : C) : Prop :=
+abbrev IsLeftTraceCompatible (X : C) : Prop :=
   ∀ Y (f : End (X ⊗ Y)), IsLeftTraceCompatibleAt p f
 
 /-- Inserting a map on the untraced right factor. -/
 def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
   End.of (X ◁ a.asHom)
 
-theorem leftPartialTrace_right (p : PivotalStructure (C := C))
+theorem leftPartialTrace_right
     {X Y : C} (a : End Y) (f : End (X ⊗ Y)) :
     leftPartialTrace p (f * insertLeftIdentity X a) =
       leftPartialTrace p f * a := by
@@ -63,7 +64,7 @@ theorem leftPartialTrace_right (p : PivotalStructure (C := C))
     ← leftUnitor_inv_naturality_assoc]
 
 /-- Closing the first factor commutes with a spectator factor on the right. -/
-theorem leftPartialTrace_whiskerRight (p : PivotalStructure (C := C))
+theorem leftPartialTrace_whiskerRight
     {X Y : C} (Z : C) (f : End (X ⊗ Y)) :
     leftPartialTrace p (End.of
       ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
@@ -77,7 +78,6 @@ theorem leftPartialTrace_whiskerRight (p : PivotalStructure (C := C))
 once compatibility with total trace is known. -/
 theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C]
     {X Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
-    (p : PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
     (htrace : IsLeftTraceCompatibleAt p f) :
@@ -194,6 +194,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+variable (p : PivotalStructure (C := C))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Coevaluation of the chosen dual of a tensor product, expressed in the
@@ -218,7 +219,7 @@ theorem tensorDual_coevaluation (X Y : C) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Left pivotal trace evaluated with the tensor dual pairing. -/
-theorem leftTrace_tensor_pairing (p : PivotalStructure (C := C))
+theorem leftTrace_tensor_pairing
     (X Y : C) (f : X ⊗ Y ⟶ X ⊗ Y) :
     (p.leftTrace f).asHom =
       η_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) ≫
@@ -248,7 +249,7 @@ set_option backward.isDefEq.respectTransparency false in
 left pivotal trace. -/
 theorem leftTrace_partialTrace [Preadditive C] [Linear ℂ C]
     [MonoidalPreadditive C] [MonoidalLinear ℂ C]
-    (p : PivotalStructure (C := C)) {X Y : C} (f : End (X ⊗ Y)) :
+    {X Y : C} (f : End (X ⊗ Y)) :
     p.leftTrace (leftPartialTrace p f).asHom = p.leftTrace f.asHom := by
   apply End.homEquiv.injective
   change (p.leftTrace (leftPartialTrace p f).asHom).asHom = (p.leftTrace f.asHom).asHom
@@ -271,8 +272,7 @@ theorem leftTrace_partialTrace [Preadditive C] [Linear ℂ C]
 pivotal trace after the remaining strand is closed. -/
 theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
     [MonoidalPreadditive C] [MonoidalLinear ℂ C]
-    (p : PivotalStructure (C := C)) (hp : p.IsSpherical)
-    {X Y : C} (f : End (X ⊗ Y)) :
+    (hp : p.IsSpherical) {X Y : C} (f : End (X ⊗ Y)) :
     IsLeftTraceCompatibleAt p f :=
   (hp Y _).symm.trans <| (leftTrace_partialTrace p f).trans (hp _ _)
 

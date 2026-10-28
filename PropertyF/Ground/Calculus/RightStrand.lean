@@ -187,34 +187,7 @@ theorem addLeftBraidAlgebraIter_group {X : C} {n : ℕ} :
     rw [addLeftBraidAlgebraIter_group k g]
     exact imageAlgebraMap_group _ _ _ _ _ _
 
-/-- Repeated left insertion expressed in unitary matrix blocks. -/
-def addLeftBlocksIter (X : C) (n k : ℕ) {r s : ℕ}
-    {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩) :
-    (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
-      (Blocks.Algebra ⟨_, q⟩) :=
-  f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom)
-
 set_option backward.isDefEq.respectTransparency false in
-/-- Repeated left identity-strand insertion is star-preserving in independently
-chosen unitary block presentations. -/
-theorem addLeftBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
-    {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩)
-    (he : IsUnitaryBraidPresentation e)
-    (hf : IsUnitaryBraidPresentation f)
-    (x : Blocks.Algebra ⟨_, d⟩) :
-    addLeftBlocksIter X n k e f (star x) = star (addLeftBlocksIter X n k e f x) := by
-  apply presented_intertwiner_map_star (braidEndRepresentation X n)
-    (braidEndRepresentation X (n + k)) (addLeftStrands X n k) e f he hf
-    (addLeftBlocksIter X n k e f)
-  intro g
-  change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
-  rw [e.symm_apply_apply, addLeftBraidAlgebraIter_group]
-  rfl
-
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
@@ -224,8 +197,15 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     (hf : IsUnitaryBraidPresentation f) :
     (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
       (Blocks.Algebra ⟨_, q⟩) where
-  toAlgHom := addLeftBlocksIter X n k e f
-  map_star' := addLeftBlocksIter_star k e f he hf
+  toAlgHom := f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom)
+  map_star' x := by
+    apply presented_intertwiner_map_star (braidEndRepresentation X n)
+      (braidEndRepresentation X (n + k)) (addLeftStrands X n k) e f he hf
+      (f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom))
+    intro g
+    change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
+    rw [e.symm_apply_apply, addLeftBraidAlgebraIter_group]
+    rfl
 
 end PropertyF.Ground.Calculus
 
@@ -392,34 +372,7 @@ theorem addRightBraidAlgebraIter_group {X : C} {n : ℕ} :
     rw [addRightBraidAlgebraIter_group k g]
     exact imageAlgebraMap_group _ _ _ _ _ _
 
-/-- Repeated right insertion expressed in unitary matrix blocks. -/
-def addRightBlocksIter (X : C) (n k : ℕ) {r s : ℕ}
-    {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩) :
-    (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
-      (Blocks.Algebra ⟨_, q⟩) :=
-  f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)
-
 set_option backward.isDefEq.respectTransparency false in
-/-- Repeated right identity-strand insertion is star-preserving in independently
-chosen unitary block presentations. -/
-theorem addRightBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
-    {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] Blocks.Algebra ⟨_, q⟩)
-    (he : IsUnitaryBraidPresentation e)
-    (hf : IsUnitaryBraidPresentation f)
-    (x : Blocks.Algebra ⟨_, d⟩) :
-    addRightBlocksIter X n k e f (star x) = star (addRightBlocksIter X n k e f x) := by
-  apply presented_intertwiner_map_star (braidEndRepresentation X n)
-    (braidEndRepresentation X (n + k)) (addRightStrands X n k) e f he hf
-    (addRightBlocksIter X n k e f)
-  intro g
-  change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
-  rw [e.symm_apply_apply, addRightBraidAlgebraIter_group]
-  rfl
-
 /-- The repeated identity-strand insertion as a star algebra map. -/
 def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
@@ -429,7 +382,14 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     (hf : IsUnitaryBraidPresentation f) :
     (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
       (Blocks.Algebra ⟨_, q⟩) where
-  toAlgHom := addRightBlocksIter X n k e f
-  map_star' := addRightBlocksIter_star k e f he hf
+  toAlgHom := f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)
+  map_star' x := by
+    apply presented_intertwiner_map_star (braidEndRepresentation X n)
+      (braidEndRepresentation X (n + k)) (addRightStrands X n k) e f he hf
+      (f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom))
+    intro g
+    change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
+    rw [e.symm_apply_apply, addRightBraidAlgebraIter_group]
+    rfl
 
 end PropertyF.Ground.Calculus

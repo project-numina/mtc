@@ -30,9 +30,6 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
   rw [hr]
   apply (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)).symm.injective
   simp only [Equiv.symm_apply_apply]
-  change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap T S f) ⊗≫
-    𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
-      ((T ⊗ S) ◁ ε_ S (Sᘁ)) ≫ (ρ_ (T ⊗ S)).hom = f ≫ g
   let q := closeFusionMap T S f
   have hq := closeFusionMap_evaluation f
   change q ▷ S ≫ ε_ S (Sᘁ) = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) at hq
@@ -74,13 +71,7 @@ theorem unit_block (Z : CategoryTheory.Center D) {T S R : D}
   have hf : (𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ)) =
       𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ Sᘁ) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) :=
     fusion_coevaluation g f
-  change (((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫ (bR ▷ Rᘁ)) ▷ T) ≫
-    ((α_ (R ⊗ Z.1) (Rᘁ) T).hom ≫ ((g ▷ Z.1) ⊗ₘ q) ≫
-      (α_ (T ⊗ S) Z.1 (Sᘁ)).hom ≫ (α_ T S (Z.1 ⊗ Sᘁ)).hom ≫
-        (T ◁ (α_ S Z.1 (Sᘁ)).inv)) =
-      𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ (f ≫ g) ▷ Sᘁ ⊗≫
-        𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ (bTS ▷ Sᘁ) ⊗≫ 𝟙 _
-  clear_value q bR bTS
+  dsimp only [crossingBlock]
   calc
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((bR ≫ (g ▷ Z.1)) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
@@ -131,13 +122,6 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
   simp only [id_whiskerRight]
   let bT := (Z.2.β T).hom
   let bS := (Z.2.β S).hom
-  change 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫
-      𝟙 ((T ⊗ S) ⊗ Sᘁ) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫
-    (((α_ Z.1 T S).inv ≫ (bT ▷ S) ≫ (α_ T Z.1 S).hom ≫ (T ◁ bS) ≫
-      (α_ T S Z.1).inv) ▷ Sᘁ) ⊗≫ 𝟙 (T ⊗ ((S ⊗ Z.1) ⊗ Sᘁ)) =
-    bT ≫ (T ◁ ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫
-      (α_ Z.1 S (Sᘁ)).inv ≫ (bS ▷ Sᘁ)))
-  clear_value bT bS
   calc
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ T ◁ η_ S (Sᘁ)) ⊗≫ (bT ▷ (S ⊗ Sᘁ)) ⊗≫
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal

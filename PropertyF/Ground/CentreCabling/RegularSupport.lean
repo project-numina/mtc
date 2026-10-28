@@ -31,22 +31,22 @@ abbrev sCentralizes (i j : Fin (rank D)) : Prop :=
 abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
   {j | ∀ i ∈ A, sCentralizes D p i j}
 
+variable {D : Ground.BraidedFusionCategory.{v,u}}
+  {p : PivotalStructure (C := D.Obj)}
+
 /-- Numerical S-centrality is symmetric. -/
-theorem sCentralizes_symm {D : Ground.BraidedFusionCategory.{v,u}}
-    {p : PivotalStructure (C := D.Obj)} {i j : Fin (rank D)}
+theorem sCentralizes_symm {i j : Fin (rank D)}
     (h : sCentralizes D p i j) : sCentralizes D p j i :=
   (Modular.categoricalS_symmetric D p j i).trans <|
     h.trans (mul_comm (dim D p i) (dim D p j))
 
 /-- FP-valued simple dimensions are fixed by complex conjugation. -/
-theorem realSimpleDimensions_of_fp {D : Ground.BraidedFusionCategory.{v,u}}
-    {p : PivotalStructure (C := D.Obj)} (hdim : HasFPSimpleDimensions D p) :
+theorem realSimpleDimensions_of_fp (hdim : HasFPSimpleDimensions D p) :
     HasRealSimpleDimensions D p := fun j ↦ by simp [hdim]
 
 /-- The numerical S-centralizer is closed under dual labels when dimensions
 are the positive FP dimensions. -/
-theorem sCentralizes_dual {D : Ground.BraidedFusionCategory.{v,u}}
-    {p : PivotalStructure (C := D.Obj)} (hdim : HasFPSimpleDimensions D p)
+theorem sCentralizes_dual (hdim : HasFPSimpleDimensions D p)
     {i y : Fin (rank D)} (hi : sCentralizes D p i y) :
     sCentralizes D p (dualIndex D i) y := by
   dsimp only [sCentralizes] at hi ⊢
@@ -130,8 +130,8 @@ theorem doubleCentralizer_of_fourier_support
     (hunit : f (unitIndex D) ≠ 0)
     (hgenerated : ∀ y, f y ≠ 0 → y ∈ generated)
     (hsupport : ∀ y, y ∉ core → ∑ i, S D p y i * f i = 0) :
-    sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated x <| by
-  simpa only [dualIndex_involutive D x] using
+    sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated x <|
+  (dualIndex_involutive D x) ▸
     nonzero_dual_coefficient_of_sCentralizer hp hdet (realSimpleDimensions_of_fp hdim)
       hunit hsupport (x := dualIndex D x)
       (fun y hy ↦ sCentralizes_dual hdim (sCentralizes_symm (hx y hy)))
@@ -158,8 +158,7 @@ theorem sum_mul_eigenvalue {ι R : Type*} [Fintype ι] [CommSemiring R]
       rw [Finset.sum_comm]
       simp only [Finset.mul_sum, mul_left_comm, mul_comm]
     _ = d * ∑ i, χ i * f i := by
-      simp_rw [hf, Finset.mul_sum]
-      simp only [mul_left_comm]
+      simp_rw [hf, Finset.mul_sum, mul_left_comm]
 
 /-- The S-transform of a common FP eigenvector vanishes at every label whose
 normalized S character differs from the FP character on a chosen label. -/

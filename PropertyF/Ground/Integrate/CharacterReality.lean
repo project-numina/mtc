@@ -44,11 +44,12 @@ theorem fusion_character_eigenvector (hchar : IsFusionMultiplicative C χ) (i : 
     (fun j k ↦ (fusionCoeff C i j k : ℂ)) *ᵥ χ = χ i • χ :=
   funext fun j ↦ (hchar i j).symm
 
+variable (hχ : χ i₀ ≠ 0) (hchar : IsFusionMultiplicative C χ)
+include hχ hchar
+
 /-- Every nonzero fusion character takes complex-conjugate values on dual
 simple objects, with no pivotal or spherical hypothesis. -/
-theorem fusion_character_dual_eq_conj (hχ : χ i₀ ≠ 0)
-    (hchar : IsFusionMultiplicative C χ)
-    (i : Fin (rank C)) : χ (dualIndex C i) = star (χ i) := by
+theorem fusion_character_dual_eq_conj (i : Fin (rank C)) : χ (dualIndex C i) = star (χ i) := by
   classical
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
     fun j k => (fusionCoeff C i j k : ℂ)
@@ -61,20 +62,21 @@ theorem fusion_character_dual_eq_conj (hχ : χ i₀ ≠ 0)
   simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A])
     (fun hz ↦ hχ (congrFun hz i₀)) (fusion_character_eigenvector C hchar i) ht)
 
+variable (hdual : ∀ i, χ (dualIndex C i) = χ i)
+include hdual
+
 /-- A nonzero fusion character invariant under duality has real values. -/
-theorem selfDual_character_real (hχ : χ i₀ ≠ 0)
-    (hchar : IsFusionMultiplicative C χ)
-    (hdual : ∀ i, χ (dualIndex C i) = χ i) (i : Fin (rank C)) :
+theorem selfDual_character_real (i : Fin (rank C)) :
     star (χ i) = χ i :=
   (fusion_character_dual_eq_conj C hχ hchar i).symm.trans (hdual i)
 
 /-- Every field conjugate of a self-dual fusion character is real as well. -/
-theorem selfDual_character_galois_real (hχ : χ i₀ ≠ 0)
-    (hchar : IsFusionMultiplicative C χ)
-    (hdual : ∀ i, χ (dualIndex C i) = χ i) (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
+theorem selfDual_character_galois_real (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     star (σ (χ i)) = σ (χ i) :=
   selfDual_character_real C (χ := fun j ↦ σ (χ j)) (i₀ := i₀) ((map_ne_zero σ).2 hχ)
     (fun j k ↦ by simpa using congrArg σ (hchar j k)) (fun j ↦ by rw [hdual]) i
+
+omit hχ hchar hdual
 
 /-- Every Galois conjugate of an actual simple FP dimension is real. -/
 theorem fp_simple_galois_real (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
