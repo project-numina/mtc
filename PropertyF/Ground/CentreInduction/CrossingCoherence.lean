@@ -12,12 +12,13 @@ namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u}) (X T U : C.Obj) (i j : Fin (rank C))
 -- Chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
+-- The simple-indexed summands of the induced object.
+local notation "Vᶜ" => inductionSummand C X
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The matrix coefficients of the actual induction crossing. -/
 theorem crossingCandidate_matrix :
-  let V := inductionSummand C X
-  (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ biproduct.π V j) =
+  (biproduct.ι Vᶜ i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ biproduct.π Vᶜ j) =
     ∑ a, crossingSummand C X T i j a := by
   simp [crossingCandidate_on_summand_assoc, Preadditive.sum_comp, Category.assoc,
     ← whiskerLeft_comp, biproduct.ι_π, whiskerLeft_dite, comp_dite, crossingSummand]
@@ -25,10 +26,9 @@ theorem crossingCandidate_matrix :
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossings on a summand expand into nested fusion blocks. -/
 theorem crossingComposite_summand :
-  let V := inductionSummand C X
-  (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
+  (biproduct.ι Vᶜ i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
     ∑ k, ∑ a : crossingIndex C T i k, ∑ j, ∑ b : crossingIndex C U k j,
-      nestedCrossingBlock C X T U i k j a b ≫ ((T ⊗ U) ◁ biproduct.ι V j) := by
+      nestedCrossingBlock C X T U i k j a b ≫ ((T ⊗ U) ◁ biproduct.ι Vᶜ j) := by
   dsimp only [nestedCrossingBlock]
   let V := inductionSummand C X
   let bT : (⨁ V) ⊗ T ⟶ T ⊗ (⨁ V) := crossingCandidate C X T

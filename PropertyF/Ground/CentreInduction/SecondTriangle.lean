@@ -18,12 +18,13 @@ variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 local notation "S" => simples C
 -- The induction crossing on the object X.
 local notation "b" => crossingCandidate C X
+-- Its simple-indexed summands.
+local notation "V" => inductionSummand C X
 variable (T : C.Obj) (i j : Fin (rank C))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Composing a crossing with the unit-summand counit selects one matrix column. -/
 theorem crossing_counit_matrix :
-  let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ b T ≫ (T ◁ (underlyingCounit C).app X) =
     (∑ a, crossingSummand C X T i (unitIndex C) a) ≫ (T ◁ (unitSummandIso C X).hom) := by
   simpa only [underlyingCounit, unitSummandRetract, whiskerLeft_comp, Category.assoc] using
@@ -46,7 +47,6 @@ theorem counit_column_finrank :
 set_option backward.isDefEq.respectTransparency false in
 /-- Off-diagonal counit crossing entries vanish. -/
 theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
-  let V := inductionSummand C X
   (biproduct.ι V i ▷ S j) ≫ b (S j) ≫
     (S j ◁ (underlyingCounit C).app X) = 0 :=
   letI : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
@@ -56,7 +56,6 @@ theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
 theorem crossing_counit_diagonal :
-  let V := inductionSummand C X
   (biproduct.ι V i ▷ S i) ≫ b (S i) ≫
     (S i ◁ (underlyingCounit C).app X) =
       crossingBlock X (S i) (S (unitIndex C))
@@ -169,12 +168,13 @@ local notation "S" => simples C
 local notation "b" => crossingCandidate C X
 -- Unit components of the induced object.
 local notation "u" => unitComponent C (Functor.obj (induction C) X)
+-- Its simple-indexed summands.
+local notation "V" => inductionSummand C X
 variable (i j : Fin (rank C))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component reduces to the corresponding counit-crossing matrix entry. -/
 theorem unit_matrix_reduce :
-  let V := inductionSummand C X
   biproduct.ι V i ≫ u j ≫
     ((S j ◁ (underlyingCounit C).app X) ▷ (S j)ᘁ) =
   𝟙 _ ⊗≫ ((V i) ◁ η_ (S j) ((S j)ᘁ)) ⊗≫
@@ -187,7 +187,6 @@ theorem unit_matrix_reduce :
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/
 theorem unit_diag :
-  let V := inductionSummand C X
   biproduct.ι V i ≫ u i ≫
     ((S i ◁ (underlyingCounit C).app X) ▷ (S i)ᘁ) = 𝟙 (V i) := by
   simp only [unit_matrix_reduce, crossing_counit_diagonal C X i]
@@ -201,7 +200,7 @@ theorem unit_diag :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Every matrix entry of the second triangle has the expected value. -/
-theorem secondTriangle_entry : let V := inductionSummand C X
+theorem secondTriangle_entry :
   biproduct.ι V i ≫ (unitCandidate C ((induction C).obj X) ≫
     (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
