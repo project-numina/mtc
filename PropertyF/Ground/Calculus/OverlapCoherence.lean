@@ -2,7 +2,12 @@ module
 public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.ThreeTrace
 
-/-! Tensor-power coherence for the concrete strand insertions. -/
+/-!
+# Coherence of overlapping braid products
+
+Canonical tensor-power isomorphisms identify strand insertions with local operators.
+Their coherence implies the recurrence for traces of overlapping products.
+-/
 
 open PropertyF.Ground.Dimensions
 

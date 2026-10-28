@@ -35,9 +35,8 @@ theorem braided_self_close (X : C) :
       X ◁ (β_ X (Xᘁ)).hom ≫ X ◁ ε_ X (Xᘁ) ≫ (ρ_ X).hom = 𝟙 X := by
   slice_lhs 4 6 => rw [← hexagon_forward]
   simp only [Category.assoc, Iso.inv_hom_id_assoc]
-  rw [braiding_naturality_right_assoc]
-  rw [rightUnitor_inv_braiding_assoc, ExactPairing.evaluation_coevaluation_assoc,
-    Iso.inv_hom_id, Iso.inv_hom_id_assoc]
+  rw [braiding_naturality_right_assoc, rightUnitor_inv_braiding_assoc,
+    ExactPairing.evaluation_coevaluation_assoc, Iso.inv_hom_id, Iso.inv_hom_id_assoc]
 
 omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- A double-dual map satisfies the Drinfeld evaluation identity. -/

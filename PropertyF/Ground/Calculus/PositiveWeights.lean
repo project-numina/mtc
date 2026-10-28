@@ -3,7 +3,12 @@ public import PropertyF.Ground.Calculus.ThreeRigidity
 public import PropertyF.Ground.Calculus.BraidWeights
 public import PropertyF.Ground.Calculus.OverlapCoherence
 
-/-! Construction of real nonzero braid-block trace weights from dimensions. -/
+/-!
+# Nonzero weights for braid traces
+
+Galois transport of positive constituent dimensions gives nonzero braid-block trace
+weights. These weights supply the hypotheses of the three-strand rigidity argument.
+-/
 
 open PropertyF.Ground.Dimensions
 
@@ -25,7 +30,7 @@ theorem exists_galois_braid_trace_weights
     {X : C.Obj} {n : ℕ}
     (hfinite : Finite (braidImage X n)) :
     ∃ (r : ℕ) (size : Fin r → ℕ)
-      (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
+      (b : BraidBlockPresentation X n size)
       (w : Fin r → ℝ),
       (∀ i, 0 < size i) ∧
       IsUnitaryBraidPresentation b ∧
@@ -66,6 +71,6 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (hw 1) (htrace 1) ?_ hd hf hdim hS hfinite
   intro z hz
   simpa [hdim, hfp, Complex.norm_real, Real.norm_eq_abs] using
-    sharp_trace_bound_for_presentations_of_overlap_identity C X p 1 r size b hsize he z hz (hrec z)
+    sharp_trace_bound_for_presentations_of_overlap_identity C p z b hsize he hz (hrec z)
 
 end PropertyF.Ground.Calculus

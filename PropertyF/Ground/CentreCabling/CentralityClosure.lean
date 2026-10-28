@@ -31,10 +31,8 @@ theorem doubleBraiding_natural {X X' Y Y' : D} (f : X ⟶ X') (g : Y ⟶ Y') :
 /-- Centrality descends along a split inclusion. -/
 theorem doubleBraiding_eq_one_of_retract {X Z : D} (r : Retract X Z) {Y : D}
     (h : doubleBraiding Z Y = 𝟙 _) : doubleBraiding X Y = 𝟙 _ := by
-  have hh := Modular.doubleBraiding_natural_left r.i Y
-  rw [h, Category.comp_id] at hh
-  simpa only [Category.assoc, ← comp_whiskerRight, r.retract, id_whiskerRight,
-    Category.comp_id] using congrArg (fun t ↦ t ≫ (r.r ▷ Y)) hh
+  simpa [h, Category.assoc, ← comp_whiskerRight, r.retract] using
+    congrArg (fun t ↦ t ≫ (r.r ▷ Y)) (Modular.doubleBraiding_natural_left r.i Y)
 
 /-- If all the components of a finite biproduct centralize an object, their
 biproduct centralizes it. -/
