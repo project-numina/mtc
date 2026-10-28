@@ -40,9 +40,8 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (κ₂ Y).hom = (κ₂ X).hom ≫ ((f.fᘁ)ᘁ) := by
   simpa [forgetDoubleDualIso, rightDualIsoMap, Category.assoc] using
-    (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by
-      simpa only [comp_rightAdjointMate] using (congrArg (fun m => rightAdjointMate m)
-        (CommSq.vert_inv (g := κ Y) (h := κ X) ⟨forgetDualIso_natural f⟩).w).symm⟩).w
+    (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by simpa only [comp_rightAdjointMate] using
+      (congrArg rightAdjointMate (CommSq.vert_inv ⟨forgetDualIso_natural f⟩).w).symm⟩).w
 
 variable (p : PivotalStructure (C := D))
 
@@ -130,8 +129,7 @@ private theorem forgetDualIso_tensor_inv :
     (τ X Y).inv.f ≫ (κ (X ⊗ Y)).hom =
       ((κ Y).hom ⊗ₘ (κ X).hom) ≫
         (τ X.1 Y.1).inv :=
-  (CommSq.vert_inv (g := (Center.forget D).mapIso (τ X Y))
-    (h := rightDualTensorIso X.1 Y.1) ⟨forgetDualIso_tensor X Y⟩).w.symm
+  (CommSq.vert_inv (g := (Center.forget D).mapIso (τ X Y)) ⟨forgetDualIso_tensor X Y⟩).w.symm
 
 /-- Taking mates of the tensor comparison also preserves its inverse. -/
 private theorem forgetDualIso_tensor_mate_inv :
@@ -139,8 +137,8 @@ private theorem forgetDualIso_tensor_mate_inv :
       (((κ Y).inv ⊗ₘ (κ X).inv)ᘁ) ≫
         (τ X.1 Y.1).homᘁ :=
   by simpa only [comp_rightAdjointMate, tensorIso_inv] using
-    congrArg (fun m => rightAdjointMate m) (CommSq.horiz_inv
-      (f := κ (X ⊗ Y)) (i := (κ Y) ⊗ᵢ (κ X)) ⟨forgetDualIso_tensor X Y⟩).w
+    congrArg rightAdjointMate (CommSq.horiz_inv
+      (i := (κ Y) ⊗ᵢ (κ X)) ⟨forgetDualIso_tensor X Y⟩).w
 
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
 theorem forgetDoubleDualIso_tensor :
