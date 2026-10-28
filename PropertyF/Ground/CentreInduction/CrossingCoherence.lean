@@ -3,6 +3,12 @@ public import PropertyF.Ground.CentreInduction.CrossingUnit
 public import Mathlib.CategoryTheory.Monoidal.Center
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Basic
 
+/-! # Induction crossing
+
+Rigidity makes a natural tensor-compatible crossing invertible. The matrix crossings of the
+induction object therefore define its half-braiding and the centre induction functor.
+-/
+
 section
 /-! A natural tensor-compatible crossing is invertible in a rigid category. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing
