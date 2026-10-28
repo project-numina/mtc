@@ -20,7 +20,7 @@ namespace PropertyF.Ground.Dimensions
 theorem pivotalDimension_simple_ne_zero (C : BraidedFusionCategory)
     (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
     pivotalDimension C p (simples C i) ≠ 0 := by
-  simpa [Ground.Modular.simpleDimension, pivotalDimension, Ground.unitScalar_eq_equiv] using
+  simpa [Ground.Modular.simpleDimension, pivotalDimension, unitScalar_eq_equiv] using
     (Ground.Modular.simpleDimension_ne_zero C p i)
 
 end PropertyF.Ground.Dimensions
@@ -45,8 +45,8 @@ theorem leftQuantumTrace_dual_component {C : Type u} [Category.{v} C] [MonoidalC
 pivotal or spherical structure. -/
 theorem target_squaredNorm_rightDual
     (X : C.Obj) [Simple X] : squaredNorm C (Xᘁ) = squaredNorm C X := by
-  let : Simple (Xᘁ) := Ground.simple_rightDual C X
-  let j := Ground.doubleDualIso C X
+  let : Simple (Xᘁ) := simple_rightDual C X
+  let j := doubleDualIso C X
   rw [target_squaredNorm_choice_independent C (rightDualIsoMap j).symm,
     target_squaredNorm_choice_independent C j]
   rw [← leftQuantumTrace_eq_rightDual j, leftQuantumTrace_dual_component]

@@ -66,10 +66,10 @@ theorem enoTraceMatrix_reciprocity_of_dual_frobenius_defect
     (hraw : ∀ i j k (g : simples C i ⊗ simples C k ⟶ simples C j),
       letI : ExactPairing ((simples C i)ᘁ) (simples C i) :=
         BraidedCategory.exactPairing_swap _ _
-      Ground.tensorLeftHomLinearEquiv (simples C k) ((simples C i)ᘁ)
+      tensorLeftHomLinearEquiv (simples C k) ((simples C i)ᘁ)
           (simples C i) (simples C j)
           ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
-        rootDualSign C i • (Ground.tensorLeftHomLinearEquiv (simples C k)
+        rootDualSign C i • (tensorLeftHomLinearEquiv (simples C k)
             ((simples C i)ᘁ) (simples C i) (simples C j) g ≫
           (rootTensorDefect C ((simples C i)ᘁ) (simples C j)).hom)) :
     ENOTraceMatrixReciprocity C := by
