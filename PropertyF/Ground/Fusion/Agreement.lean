@@ -307,13 +307,9 @@ theorem exists_positive_common_eigenvector :
   obtain ⟨a, v, hvpos, hve⟩ := positive_symmetric_matrix_has_positive_eigenvector
     (Matrix.isHermitian_iff_isSymm.mpr (Matrix.IsSymm.ext fun j k ↦
       totalFusionMatrix_symmetric D k j)) (totalFusionMatrix_pos D)
-  refine ⟨v, hvpos, ?_⟩
-  intro i
-  have hve' : totalFusionMatrix D *ᵥ (characterMatrix D i *ᵥ v) =
-      a • (characterMatrix D i *ᵥ v) := by
-    rw [Matrix.mulVec_mulVec, (total_commutes_characterMatrix D i).eq,
-      ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul]
-  exact positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve hve'
+  refine ⟨v, hvpos, fun i ↦ positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve ?_⟩
+  rw [Matrix.mulVec_mulVec, (total_commutes_characterMatrix D i).eq,
+    ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul]
 
 /-- A positive normalized character exists for the actual fusion rules. -/
 theorem exists_positive_character :

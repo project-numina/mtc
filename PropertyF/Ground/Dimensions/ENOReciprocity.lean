@@ -173,8 +173,8 @@ theorem spherical_of_fp_dimensions_and_squaredNorms
   let X := simples C i
   let : Simple X := simples_simple C i
   have hh := target_squaredNorm_choice_independent C (p.iso X)
-  rw [← rightTrace_id, ← leftTrace_id] at hh
-  rw [show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i,
+  rw [← rightTrace_id, ← leftTrace_id,
+    show unitScalar C (p.rightTrace (𝟙 X)) = (fpSimple C i : ℂ) from hdim i,
     hnorm i, Complex.ofReal_pow] at hh
   apply (Ground.unitScalarEquiv C).injective
   rw [← Ground.unitScalar_eq_equiv, ← Ground.unitScalar_eq_equiv,

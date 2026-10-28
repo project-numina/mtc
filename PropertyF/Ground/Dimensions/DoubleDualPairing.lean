@@ -137,10 +137,9 @@ theorem doubleDual_evaluation :
       (doubleDualUnitIso (C := C)).inv = ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
-  let W := (Xᘁ) ⊗ X
   let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
-  let t : Wᘁ ≅ V := rightDualTensorIso (Xᘁ) X
+  let t : ((Xᘁ) ⊗ X)ᘁ ≅ V := rightDualTensorIso (Xᘁ) X
   let s : Vᘁ ≅ (((Xᘁ)ᘁ)ᘁ) ⊗ ((Xᘁ)ᘁ) := rightDualTensorIso (Xᘁ) ((Xᘁ)ᘁ)
   have hd := congrArg (fun f : I ⟶ V ↦ fᘁ) (rightDualEvaluation_coevaluation X)
   simp only [comp_rightAdjointMate] at hd
@@ -155,10 +154,9 @@ theorem doubleDual_coevaluation :
       (doubleDualTensorIso X (Xᘁ)).inv = η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
-  let W := X ⊗ (Xᘁ)
   let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
-  let t : Wᘁ ≅ V := rightDualTensorIso X (Xᘁ)
+  let t : (X ⊗ (Xᘁ))ᘁ ≅ V := rightDualTensorIso X (Xᘁ)
   let s : Vᘁ ≅ ((Xᘁ)ᘁ) ⊗ (((Xᘁ)ᘁ)ᘁ) := rightDualTensorIso ((Xᘁ)ᘁ) (Xᘁ)
   have hd := congrArg (fun f : V ⟶ I ↦ fᘁ) (rightDualCoevaluation_evaluation X)
   simp only [comp_rightAdjointMate] at hd

@@ -130,17 +130,14 @@ theorem positiveDualIso_forget :
 def positiveDoubleDualIso : ((Z⁺ T)ᘁ)ᘁ ≅ Z⁺ ((Tᘁ)ᘁ) :=
   rightDualIsoMap (positiveDualIso T).symm ≪≫ positiveDualIso (Tᘁ)
 
-/-- Forgetting also preserves the inverse positive dual comparison. -/
-theorem positiveDualIso_inv_forget :
-    (positiveDualIso T).inv.f = (κ (Z⁺ T)).inv :=
-  (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDualIso T))
-    (κ (Z⁺ T))).2 (positiveDualIso_forget T)
-
 /-- Forgetting the positive double-dual comparison gives the base comparison. -/
 theorem positiveDoubleDualIso_forget :
     (positiveDoubleDualIso T).hom.f = (κ₂ (Z⁺ T)).hom := by
+  have h : (positiveDualIso T).inv.f = (κ (Z⁺ T)).inv :=
+    (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDualIso T))
+      (κ (Z⁺ T))).2 (positiveDualIso_forget T)
   simpa [positiveDoubleDualIso, forgetDoubleDualIso, rightDualIsoMap,
-    positiveDualIso_forget, positiveDualIso_inv_forget] using forgetDualIso_natural (positiveDualIso T).inv
+    positiveDualIso_forget, h] using forgetDualIso_natural (positiveDualIso T).inv
 
 /-- The pivotal component transported to the positive centre lift. -/
 def positivePivotalComponent :
