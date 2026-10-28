@@ -17,6 +17,8 @@ variable (C : BraidedFusionCategory.{v,u})
 variable {V W : C.Obj} {E : Type*} [AddCommGroup E] [Module ℂ E]
 attribute [local instance] Abelian.hasFiniteBiproducts
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
+local instance (i : Fin (rank C)) : FiniteDimensional ℂ (simples C i ⟶ simples C i) :=
+  IsFusionCategory.hom_finite _ _
 
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/
@@ -41,7 +43,6 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ V))) :
     simpleHomPairingEquiv (simples C i) V (simpleProjection C V i a) =
       (simpleInclusionBasis C V i).dualBasis a := by
-  let : Simple (simples C i) := simples_simple C i
   refine (simpleInclusionBasis C V i).ext fun b => ?_
   rw [Module.Basis.dualBasis_apply_self]
   simp [simpleHomPairingEquiv, simpleHomPairing,
@@ -53,7 +54,6 @@ theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
     (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
-  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   have hn (f : W ⟶ simples C i) : simpleHomPairingEquiv (simples C i) V (q ≫ f) =
       Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q)
         (simpleHomPairingEquiv (simples C i) W f) := simpleHomPairing_natural f q
