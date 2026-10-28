@@ -107,16 +107,11 @@ theorem rightTrace_alternatingProjector :
       ⅟(Fintype.card (Perm (Fin n)) : ℂ) •
         ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
   rw [Centre.alternatingProjector, Centre.algebraAverage_eq_sum]
-  change p.rightTrace ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
-    ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
-  have htrace (f : X ⟶ X) : rightTraceWith (p.iso X) f = p.rightTrace f := rfl
-  simpa only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul,
-    Dimensions.rightTraceWithLinear, LinearMap.coe_mk, AddHom.coe_mk,
-    htrace] using
-    congrArg (fun x : End (𝟙_ C.Obj) ↦
-      (⅟(Fintype.card (Perm (Fin n)) : ℂ)) • x) <|
-        map_sum (Dimensions.rightTraceWithLinear (k := ℂ) (p.iso X))
-          (fun σ : Perm (Fin n) ↦ (sgn ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
+  change (Dimensions.rightTraceWithLinear (k := ℂ) (p.iso X))
+    ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
+      ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
+  simp only [End.smul_asHom, End.sum_asHom, map_smul, map_sum]
+  rfl
 
 /-- Multiplying the alternating-projector trace by the group order gives
  the signed sum of the actual categorical permutation traces. -/
