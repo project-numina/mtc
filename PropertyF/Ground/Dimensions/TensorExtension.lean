@@ -74,8 +74,7 @@ theorem rootPhaseTensorIso_inv
   apply (cancel_epi (rootSignTensorIso C c hc (simples C i) (simples C j)).hom).1
   rw [Iso.hom_inv_id, rootSignTensorIso_hom]
   simp only [Linear.smul_comp, Linear.comp_smul, smul_smul, Iso.hom_inv_id]
-  have hr : (c i * c j)⁻¹ * (c i * c j) = 1 := inv_mul_cancel₀ hn
-  rw [hr, one_smul]
+  rw [inv_mul_cancel₀ hn, one_smul]
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootPhaseDefect_apply
@@ -89,13 +88,12 @@ theorem rootPhaseDefect_apply
   change f ≫ ((simpleScalarNaturalIso C c hc).app (simples C i ⊗ simples C j)).hom =
     ((simpleScalarNaturalIso C c hc).app (simples C k)).hom ≫ f at hn
   rw [simpleScalarNaturalIso_app_simple] at hn
-  have hn' : f ≫ ((simpleScalarNaturalIso C c hc).app (simples C i ⊗ simples C j)).hom =
-      c k • f := by simpa [Linear.smul_comp] using hn
+  simp only [Linear.smul_comp] at hn
   simp only [rootSignDefect, Iso.trans_hom, Iso.symm_hom, rootSignTwist, NatIso.trans_app,
     Category.assoc]
   rw [rootPhaseTensorIso_inv C c hc i j]
   simp only [Linear.comp_smul]
-  rw [← Category.assoc, hn']
+  rw [← Category.assoc, hn]
   simp [rootTensorDefect, Linear.smul_comp, smul_smul, div_eq_mul_inv, mul_comm]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -106,23 +104,19 @@ theorem rootPhaseTensor_compatible_of_scaled_defects (c : Fin (rank C) → ℂ)
       rootSignTensorIso C c hc (simples C i) (simples C j) := by
   classical
   let X := simples C i ⊗ simples C j
-  let e := simpleDecomposition C X
-  let V := simplePiecesObject C X
   have hid : (rootSignDefect C c hc (simples C i) (simples C j)).hom = 𝟙 X := by
-    apply (cancel_epi e.inv).1
-    apply biproduct.hom_ext'
-    intro a
-    let f : simples C a.1 ⟶ X := biproduct.ι V a ≫ e.inv
-    have hfd := congrArg (fun L => L f) (hdef a.1)
-    change (c a.1 / (c i * c j)) • multiplicityDefect C i j a.1 f = f at hfd
+    apply simpleInclusion_hom_ext C
+    intro k t
+    let f := simpleInclusion C X k t
+    have hfd := congrArg (fun L => L f) (hdef k)
+    change (c k / (c i * c j)) • multiplicityDefect C i j k f = f at hfd
     rw [multiplicityDefect_apply] at hfd
     have ht := rootPhaseDefect_apply C c hc f
     rw [hfd] at ht
-    simpa [f, Category.assoc] using ht
+    simpa [f, X] using ht
+  change ((rootSignTwist C c hc).app X).hom ≫ (rootSignTensorIso C c hc _ _).inv = 𝟙 X at hid
   apply Iso.ext
-  have hid' : ((rootSignTwist C c hc).app X).hom ≫ (rootSignTensorIso C c hc _ _).inv = 𝟙 X := hid
-  apply (cancel_mono (rootSignTensorIso C c hc _ _).inv).1
-  simpa [X] using hid'
+  simpa [X] using (Iso.comp_inv_eq (rootSignTensorIso C c hc _ _)).1 hid
 
 
 end PropertyF.Ground.Dimensions
@@ -200,11 +194,7 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
   let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
   obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
-  have ht : rightQuantumTrace (a.app (𝟙_ C.Obj)) = r • rightQuantumTrace (doubleDualUnitIso (C := C.Obj)) := by
-    apply End.homEquiv.injective
-    have hr' : a.hom.app (𝟙_ C.Obj) = r • (doubleDualUnitIso (C := C.Obj)).hom := hr
-    simp [rightQuantumTrace, hr', tensorHom_def]
-  rw [ht, rightQuantumTrace_unitIso] at htrace
+  rw [rightQuantumTrace_smul_hom _ _ _ hr, rightQuantumTrace_unitIso] at htrace
   have hr1 : r = 1 := by
     simpa only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] using htrace
   simpa [hr1] using hr

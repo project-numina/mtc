@@ -61,25 +61,17 @@ theorem fourthDualRootNaturalIso_app_simple
 /-- Natural transformations from the identity are determined by their
 components on the simple representatives. -/
 theorem natTrans_eq_of_simple_components
-    (F : C.Obj ⥤ C.Obj) (α β : 𝟭 C.Obj ⟶ F)
+    {F : C.Obj ⥤ C.Obj} {α β : 𝟭 C.Obj ⟶ F}
     (h : ∀ i, α.app (simples C i) = β.app (simples C i)) : α = β := by
   apply NatTrans.ext
   funext X
-  classical
-  obtain ⟨m, ⟨e⟩⟩ := simples_decompose C X
-  let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
-  have hs : α.app (⨁ V) = β.app (⨁ V) := by
-    apply biproduct.hom_ext'
-    intro a
-    have hα := α.naturality (biproduct.ι V a)
-    have hβ := β.naturality (biproduct.ι V a)
-    simp only [Functor.id_map] at hα hβ
-    rw [hα, hβ, h a.1]
-  apply (cancel_mono (F.map e.hom)).1
-  have hα := α.naturality e.hom
-  have hβ := β.naturality e.hom
+  apply simpleInclusion_hom_ext C
+  intro i t
+  change simpleInclusion C X i t ≫ α.app X = simpleInclusion C X i t ≫ β.app X
+  have hα := α.naturality (simpleInclusion C X i t)
+  have hβ := β.naturality (simpleInclusion C X i t)
   simp only [Functor.id_map] at hα hβ
-  rw [← hα, ← hβ, hs]
+  rw [hα, hβ, h i]
 
 /-- The natural double-dual root, squared using the double-dual functor. -/
 def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
