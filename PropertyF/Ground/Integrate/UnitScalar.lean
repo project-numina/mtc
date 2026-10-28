@@ -7,7 +7,12 @@ public import Mathlib.Analysis.Complex.Polynomial.Basic
 /-! # Scalars on the tensor unit
 
 Schur's lemma identifies the endomorphisms of the tensor unit with complex
-scalars. The inverse agrees with the scalar map in the target statement. -/
+scalars. The inverse agrees with the scalar map in the target statement.
+
+## Main results
+
+* `unit_algebraMap_bijective` identifies unit endomorphisms with scalars.
+* `unitScalar_eq_equiv` relates the target's scalar map to this equivalence. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
