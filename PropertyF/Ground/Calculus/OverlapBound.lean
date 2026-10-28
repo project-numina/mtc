@@ -23,6 +23,18 @@ def actualBraidTrace (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
   groundUnitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
 
+/-- A block presentation realizes the categorical braid trace with the given weights. -/
+abbrev IsTracePresentation (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
+    (p : PivotalStructure (C := C.Obj)) {n r : ℕ} {d : Fin r → ℕ}
+    (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) (w : Fin r → ℝ) : Prop :=
+  ∀ z : braidAlgebra X n, actualBraidTrace C X p n z = (PropertyF.Blocks.mk r d).trace w (b z)
+
+/-- A uniform bound for the trace of unitary elements in a block presentation. -/
+abbrev HasUnitaryTraceBound (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
+    (p : PivotalStructure (C := C.Obj)) {n r : ℕ} {d : Fin r → ℕ}
+    (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) (R : ℝ) : Prop :=
+  ∀ a, (∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) → ‖actualBraidTrace C X p n a‖ ≤ R
+
 /-- In actual categorical braid blocks, the norm of the pivotal trace of a
 unitary is bounded by the simple-multiplicity mass. The explicit dimension
 bound is supplied by the fusion/Perron and dimensions workstreams. -/
@@ -76,9 +88,9 @@ theorem braid_trace_unitary_bound_ground
     (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) {r : ℕ} {d : Fin r → ℕ}
     (hd : ∀ j, 0 < d j)
-    (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
-    (a : braidAlgebra X n) (ha : ∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) :
-    ‖actualBraidTrace C X p n a‖ ≤ Ground.fpDimension C X ^ (n + 2) := by
+    (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :
+    HasUnitaryTraceBound C p b (Ground.fpDimension C X ^ (n + 2)) := by
+  intro a ha
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
@@ -132,6 +144,19 @@ def overlapProduct (X : C) (t : ℕ) (u : braidAlgebra X t) :
     ∀ k : ℕ, braidAlgebra X (overlapIndex t k)
   | 0 => u
   | k + 1 => overlapLeft X t k (overlapProduct X t u k) * overlapRight X t k u
+
+end PropertyF.Ground.Calculus
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace PropertyF.Ground.Calculus
+universe v u
+
+/-- The scaled trace of overlapping products is the corresponding trace power. -/
+abbrev HasOverlapTracePower (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
+    (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t) : Prop :=
+  ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
+    (pivotalDimension C p X) ^ k = actualBraidTrace C X p t u ^ (k + 1)
 
 end PropertyF.Ground.Calculus
 
@@ -248,9 +273,7 @@ theorem overlap_trace_power_of_step
         pivotalDimension C p X =
       actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
         actualBraidTrace C X p t u) :
-    ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (pivotalDimension C p X) ^ k =
-        actualBraidTrace C X p t u ^ (k + 1) := by
+    HasOverlapTracePower C p u := by
   intro k
   induction k with
   | zero => simp [overlapIndex, overlapProduct]
@@ -272,13 +295,11 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
     (u : braidAlgebra X t)
     (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ)
-    (hrec : ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-      (pivotalDimension C p X) ^ k =
-        actualBraidTrace C X p t u ^ (k + 1)) :
+    (hrec : HasOverlapTracePower C p u) :
     ‖actualBraidTrace C X p t u‖ ≤
       ‖pivotalDimension C p X‖ *
         Ground.fpDimension C X ^ (t + 1) := by
-  simp only [pivotalDimension, ← groundUnitScalarEquiv_apply] at hrec ⊢
+  simp only [HasOverlapTracePower, pivotalDimension, ← groundUnitScalarEquiv_apply] at hrec ⊢
   apply norm_bound_of_overlapIndex (Modular.unitScalar_rightTrace_ne_zero C p X)
     (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X))) t
     (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec
