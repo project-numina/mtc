@@ -40,31 +40,33 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
   apply (cancel_mono (doubleDualTensorIso B Z).hom.f).1
   simpa [Category.assoc] using hn
 
+omit [RightRigidCategory D] [RigidCategory (Center D)] in
+/-- A braiding equation against a positive centre object, transported along an
+isomorphism, detects centrality of a map in the base category. -/
+theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
+    (f : Z.1 ⟶ W.1) (g : T ⟶ B.1) [IsIso g]
+    (h : (β_ Z ((Center.ofBraided D).obj T)).hom.f ≫ (g ⊗ₘ f) =
+      (f ⊗ₘ g) ≫ (β_ W B).hom.f) :
+    (f ▷ T) ≫ (W.2.β T).hom = (Z.2.β T).hom ≫ (T ◁ f) := by
+  apply (cancel_mono (g ▷ W.1)).1
+  rw [tensorHom_def' g f, tensorHom_def f g] at h
+  change (Z.2.β T).hom ≫ ((T ◁ f) ≫ g ▷ W.1) =
+    ((f ▷ T) ≫ W.1 ◁ g) ≫ (W.2.β B.1).hom at h
+  have hn := W.2.naturality g
+  simpa only [Category.assoc, hn] using h.symm
+
 /-- Every transported base pivotal component is a morphism in the actual centre. -/
 theorem pivotalComponentsCentral_proved [BraidedCategory D] :
     PivotalComponentsCentral p := by
   intro Z T
-  let F := Center.ofBraided D
-  let B := F.obj T
-  let u := transportedPivotalHom p
-  have hc := transported_pivotal_braiding p Z B
-  dsimp only at hc
-  let : IsIso (u B) := by
-    change IsIso (transportedPivotalHom p ((Center.ofBraided D).obj T))
-    rw [← positivePivotalComponent_forget p T]
+  let B := (Center.ofBraided D).obj T
+  let g := (positivePivotalComponent p T).hom.f
+  let : IsIso g := by
     change IsIso ((Center.forget D).map (positivePivotalComponent p T).hom)
     infer_instance
-  have hbeta := ((Zᘁ)ᘁ).2.naturality (u B)
-  change (u Z ▷ T) ≫ (((Zᘁ)ᘁ).2.β T).hom =
-    (Z.2.β T).hom ≫ (T ◁ u Z)
-  apply (cancel_mono ((u B) ▷ ((Zᘁ)ᘁ).1)).1
-  rw [tensorHom_def' (u B) (u Z), tensorHom_def (u Z) (u B)] at hc
-  change (Z.2.β T).hom ≫ ((T ◁ u Z) ≫ u B ▷ ((Zᘁ)ᘁ).1) =
-    ((u Z ▷ T) ≫ ((Zᘁ)ᘁ).1 ◁ u B) ≫
-      (((Zᘁ)ᘁ).2.β ((Bᘁ)ᘁ).1).hom at hc
-  change ((Zᘁ)ᘁ).1 ◁ u B ≫ (((Zᘁ)ᘁ).2.β ((Bᘁ)ᘁ).1).hom =
-    (((Zᘁ)ᘁ).2.β T).hom ≫ u B ▷ ((Zᘁ)ᘁ).1 at hbeta
-  simpa only [Category.assoc, hbeta] using hc.symm
+  apply central_of_positive_braiding (T := T) (B := (Bᘁ)ᘁ) (transportedPivotalHom p Z) g
+  simpa only [g, B, positivePivotalComponent_forget] using transported_pivotal_braiding p Z B
+
 end PropertyF.Ground.CentreInduction
 
 namespace PropertyF.Ground.CentreInduction
