@@ -71,12 +71,12 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     (hdet : (Modular.categoricalS Z p).det ≠ 0)
     (δ : ℝ) (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) :
-    ∃ (y : Fin (rank Z)) (f d : ℝ), 1 ≤ f ∧ f = fpSimple Z y ∧
-      σ (f : ℂ) = (d : ℂ) ∧ y = dualIndex Z y ∧
+    ∃ (y : Fin (rank Z)) (d : ℝ), 1 ≤ fpSimple Z y ∧
+      σ (fpSimple Z y : ℂ) = (d : ℂ) ∧
       (∀ x, Modular.categoricalS Z p x y =
-        (f : ℂ) * σ.symm (Modular.simpleDimension Z p x)) ∧
-      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2 ∧
-      Modular.categoricalS Z p y y = (f : ℂ) * σ.symm (f : ℂ) := by
+        (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) ∧
+      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (fpSimple Z y : ℂ) ^ 2 ∧
+      Modular.categoricalS Z p y y = (fpSimple Z y : ℂ) * σ.symm (fpSimple Z y : ℂ) := by
   have hreal : ∀ j, starRingEnd ℂ (Modular.simpleDimension Z p j) =
       Modular.simpleDimension Z p j := by
     intro j
@@ -92,10 +92,8 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
     (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
-  let f := fpSimple Z y
-  have hreal' := fp_simple_galois_real Z σ y
-  refine ⟨y, f, (σ (f : ℂ)).re, one_le_fpSimple Z y, rfl, hreal'.symm,
-    hprop.2.1, ?_, ?_, ?_⟩
+  refine ⟨y, (σ (fpSimple Z y : ℂ)).re, one_le_fpSimple Z y,
+    (fp_simple_galois_real Z σ y).symm, ?_, ?_, ?_⟩
   · intro x
     have h := hprop.1 x
     rw [hdim] at h
@@ -121,17 +119,10 @@ theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v
       (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
       ObjectPropertyF (simples Z y)) :
     ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
-  obtain ⟨y, f, d, hf, hfy, hσf, _, hcolumn, hG, hS⟩ :=
+  obtain ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ :=
     exists_modular_witness Z p hp hdim hdet δ hglobal σ
-  have hyF : ObjectPropertyF (simples Z y) := by
-    apply hF y
-    simpa only [hfy] using hcolumn
-  refine ⟨f, d, center_witness_of_modular_and_rigidity σ hδ hb hf hτ hσf hG hS ?_⟩
-  intro htrace
-  have htrace' : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y := by
-    simpa only [hfy] using htrace
-  have hσf' : σ (fpSimple Z y : ℂ) = (d : ℂ) := by simpa only [hfy] using hσf
-  simpa only [hfy] using galois_rigidity_of_propertyF Z p hdim σ y hyF d hσf' htrace'
+  exact ⟨_, d, center_witness_of_modular_and_rigidity σ hδ hb hf hτ hσf hG hS
+    (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d hσf)⟩
 
 end PropertyF.Ground
 end
