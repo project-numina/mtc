@@ -517,12 +517,10 @@ theorem fpDeterminant_refl (X : C.Obj) :
 /-- The tensor determinant rule holds on any simple object. -/
 theorem fpDeterminant_tensor_of_simple
     (X S : C.Obj) [Simple S] (a : S ≅ S) :
-    HasTensorDeterminant C X a := by
+    HasTensorDeterminant C X a :=
   let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
-  obtain ⟨z, hz⟩ := endomorphism_simple_eq_smul_id ℂ a.hom
-  have hne : z ≠ 0 := fun h ↦ id_nonzero S (by simpa [← hz, h] using a.hom_inv_id.symm)
-  rw [show a = scalarIso S (Units.mk0 z hne) from Iso.ext hz.symm]
-  exact fpDeterminant_tensor_scalar C X S _
+  (Dimensions.isomorphisms_scalar (Iso.refl S) a).elim fun z ⟨hne, hz, _⟩ ↦
+    (show a = scalarIso S (Units.mk0 z hne) from Iso.ext hz).symm ▸ fpDeterminant_tensor_scalar C X S _
 
 /-- Components of a natural automorphism of a functor are conjugate along
 isomorphisms in the source. -/

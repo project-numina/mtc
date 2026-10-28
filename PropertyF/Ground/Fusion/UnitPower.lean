@@ -18,7 +18,7 @@ theorem balanced_flow_no_entry {ι : Type*} [Fintype ι] (b : ι → ι → ℝ)
     (hb : ∀ i j, 0 ≤ b i j)
     (hbalance : ∀ i, (∑ j, b i j) = ∑ j, b j i)
     (s : Finset ι) (hclosed : ∀ i ∈ s, ∀ j ∉ s, b i j = 0)
-    (i j : ι) (hi : i ∉ s) (hj : j ∈ s) : b i j = 0 := by
+    {i j : ι} (hi : i ∉ s) (hj : j ∈ s) : b i j = 0 := by
   classical
   have hout : ∑ x ∈ s, ∑ y, b x y = ∑ x ∈ s, ∑ y ∈ s, b x y := by
     apply Finset.sum_congr rfl
@@ -47,7 +47,7 @@ lies on a directed cycle. -/
 theorem balanced_flow_cycle {ι : Type*} [Fintype ι] (b : ι → ι → ℝ)
     (hb : ∀ i j, 0 ≤ b i j)
     (hbalance : ∀ i, (∑ j, b i j) = ∑ j, b j i)
-    (o : ι) (hout : ∃ j, 0 < b o j) :
+    {o : ι} (hout : ∃ j, 0 < b o j) :
     ∃ j, 0 < b o j ∧ Relation.ReflTransGen (fun i j => 0 < b i j) j o := by
   classical
   let r : ι → ι → Prop := fun i j => 0 < b i j
@@ -63,7 +63,7 @@ theorem balanced_flow_cycle {ι : Type*} [Fintype ι] (b : ι → ι → ℝ)
   have ho : o ∉ s := by simp [s, Relation.ReflTransGen.refl]
   have hjs : j ∉ s := by
     intro hjs
-    exact (ne_of_gt hj) (balanced_flow_no_entry b hb hbalance s hc o j ho hjs)
+    exact (ne_of_gt hj) (balanced_flow_no_entry b hb hbalance s hc ho hjs)
   refine ⟨j, hj, ?_⟩
   simpa [s] using hjs
 
@@ -150,7 +150,7 @@ theorem unit_retract_tensorPower (D : BraidedFusionCategory.{v,u})
     rw [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, ite_eq_left rfl, Nat.cast_one]
     simpa [fpSimple_unit] using fpSimple_pos D i
   obtain ⟨j, hj, hp⟩ := balanced_flow_cycle (fusionFlow D i) (fusionFlow_nonneg D i)
-    (fusionFlow_balance D i) (unitIndex D) ⟨i, hout⟩
+    (fusionFlow_balance D i) ⟨i, hout⟩
   have hji : j = i := by
     unfold fusionFlow at hj
     rw [fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit] at hj

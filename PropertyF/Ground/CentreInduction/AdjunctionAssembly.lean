@@ -93,13 +93,11 @@ theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
   let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
   let p : ExactPairing (𝟙_ D) ((𝟙_ D)ᘁ) := HasRightDual.exact
   let q : ExactPairing (𝟙_ D) (𝟙_ D) := exactPairingUnit
-  have hu := Dimensions.coevaluation_rightDualIso p q
-  change η_ (𝟙_ D) ((𝟙_ D)ᘁ) ≫
-    (𝟙_ D) ◁ Dimensions.rightDualUnitIso.hom = (ρ_ (𝟙_ D)).inv at hu
   simp only [Iso.trans_hom, Dimensions.rightDualIsoMap, Iso.symm_hom,
     tensorHom_def, whiskerLeft_comp]
   rw [← Category.assoc (e.hom ▷ Aᘁ), ← tensorHom_def, ← Category.assoc,
-    Dimensions.coevaluation_iso_map, hu]
+    Dimensions.coevaluation_iso_map]
+  exact Dimensions.coevaluation_rightDualIso p q
 
 end PropertyF.Ground.CentreInduction
 
@@ -177,13 +175,10 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   let A := simples C (unitIndex C)
   let e : A ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   let d : Aᘁ ≅ 𝟙_ C.Obj := Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso
-  have hn := Z.2.naturality e.hom
-  have hc := coevaluation_iso_unit e
-  change (η_ A Aᘁ ≫ (e.hom ⊗ₘ d.hom)) = (ρ_ (𝟙_ C.Obj)).inv at hc
   dsimp only [unitComponent, unitSummandIso]
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_def,
     whiskerLeft_id, Category.comp_id, Category.assoc]
-  rw [← comp_whiskerRight_assoc, ← hn]
+  rw [← comp_whiskerRight_assoc, ← Z.2.naturality e.hom]
   rw [comp_whiskerRight_assoc, ← associator_inv_naturality_middle_assoc]
   rw [← whiskerLeft_comp_assoc]
   rw [CentreRigid.halfBraiding_unit Z]
@@ -191,7 +186,8 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   rw [triangle_assoc_comp_right_assoc, ← whisker_exchange_assoc]
   simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp]
   have hunit : η_ A Aᘁ ≫ (e.hom ▷ Aᘁ) ≫ (λ_ Aᘁ).hom ≫ d.hom = 𝟙 (𝟙_ C.Obj) := by
-    rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc, hc]
+    rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc,
+      coevaluation_iso_unit e]
     monoidal_coherence
   simp only [← whiskerLeft_comp_assoc]
   dsimp only [A, e, d, Iso.trans_hom] at hunit

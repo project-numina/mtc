@@ -131,7 +131,7 @@ variable (C : BraidedFusionCategory.{v,u})
 /-- The global inequality follows from the simple-object estimates; this
 separates the sum-of-squares argument from the remaining ENO estimate. -/
 theorem target_globalDimension_le_of_simple_bounds
-    (d : Fin (rank C) → ℝ)
+    {d : Fin (rank C) → ℝ}
     (hbound : ∀ i, |d i| ≤ fpSimple C i) :
     ∑ i, (d i) ^ 2 ≤ globalFPDimension C :=
   Finset.sum_le_sum fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2
@@ -139,7 +139,7 @@ theorem target_globalDimension_le_of_simple_bounds
 /-- If each real simple dimension is bounded by its FP dimension, equality of
 the global sums is equivalent to saturation at every simple. -/
 theorem global_sum_squares_eq_iff
-    (d : Fin (rank C) → ℝ)
+    {d : Fin (rank C) → ℝ}
     (hbound : ∀ i, |d i| ≤ fpSimple C i) :
     (∑ i, (d i) ^ 2) = globalFPDimension C ↔
       ∀ i, |d i| = fpSimple C i := by
@@ -154,7 +154,7 @@ theorem global_sum_squares_eq_iff
 
 /-- A pseudo-unitary global dimension saturates every FP bound when the
 intrinsic norms are the squared norms of the given dimensions. -/
-theorem norm_saturation_of_pseudoUnitary (d : Fin (rank C) → ℂ)
+theorem norm_saturation_of_pseudoUnitary {d : Fin (rank C) → ℂ}
     (hbound : ∀ i, ‖d i‖ ≤ fpSimple C i)
     (hnorm : ∀ i, squaredNorm C (simples C i) = ((‖d i‖ ^ 2 : ℝ) : ℂ))
     (hpu : PseudoUnitary C) : ∀ i, ‖d i‖ = fpSimple C i := by
@@ -169,7 +169,7 @@ theorem norm_saturation_of_pseudoUnitary (d : Fin (rank C) → ℂ)
     exact Complex.ofReal_injective h
   intro i
   simpa only [abs_of_nonneg (norm_nonneg _)] using
-    (global_sum_squares_eq_iff C (fun i => ‖d i‖) hb).1 hg i
+    (global_sum_squares_eq_iff C hb).1 hg i
 
 /-- If some simple has real dimension one, the global sum is at least one. -/
 theorem global_sum_squares_one_le {ι : Type*} [Fintype ι]

@@ -90,11 +90,8 @@ theorem pivotalBraidedTwist_natural {D : Type u} [Category.{v} D] [MonoidalCateg
     (hd : ∀ {X Y : D} (f : X ⟶ Y), f ≫ (d Y).hom = (d X).hom ≫ (fᘁ)ᘁ)
     {X Y : D} (f : X ⟶ Y) :
     f ≫ ((p.iso Y).hom ≫ (d Y).inv) = ((p.iso X).hom ≫ (d X).inv) ≫ f := by
-  have hn : ((fᘁ)ᘁ) ≫ (d Y).inv = (d X).inv ≫ f := by
-    apply (d X).eq_inv_comp.mpr
-    simpa only [Category.assoc] using (d Y).comp_inv_eq.mpr (hd f).symm
-  simpa only [Category.assoc, hn] using
-    congrArg (fun g ↦ g ≫ (d Y).inv) (p.naturality f)
+  apply (cancel_mono (d Y).hom).1
+  simpa [Category.assoc, hd f] using p.naturality f
 /-- The twist scalar of a simple object. -/
 def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
   letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _

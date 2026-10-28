@@ -60,50 +60,6 @@ theorem actual_three_braid_trace
     unitScalar_eq_equiv] using
     (three_braid_trace C X p (Ground.unitScalarEquiv C))
 
-/-- The modular self-entry identity makes the actual three-strand trace attain
-the value used in the saturation argument. -/
-theorem actual_three_braid_saturates
-    {X : C.Obj} [Simple X]
-    {d f : ℝ} (hd : d ≠ 0)
-    (hdim : pivotalDimension C p X = (d : ℂ))
-    (hS : scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) =
-      (d : ℂ) * f) :
-    actualBraidTrace C p (braidInImage
-      (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2 := by
-  rw [actual_three_braid_trace C p X, hdim, hS, mul_pow, pow_two (d : ℂ), mul_assoc,
-    mul_div_cancel_left₀ _ (by exact_mod_cast hd)]
-
-set_option backward.isDefEq.respectTransparency false in
-/-- Actual three-strand block generators have equal squares once their
-categorical weighted trace has the sharp bound and saturates it at `a²b²`.
-The remaining hypotheses are explicitly the trace weights and sharp bound. -/
-theorem actual_braid_squares_equal_of_saturation {X : C.Obj}
-    {r : ℕ} {size : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
-    (he : IsUnitaryBraidPresentation b)
-    {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0) {d f : ℝ} (hf : 0 < f)
-    (htrace : IsTracePresentation C p b w)
-    (hbound : HasUnitaryTraceBound C p b (|d| * f ^ 2))
-    (hvalue : actualBraidTrace C p
-      (braidInImage
-        (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2) :
-    tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2 := by
-  let B : Blocks := ⟨r, size⟩
-  let ρ : braidImage X 1 →* B.Algebra :=
-    b.toMonoidHom.comp (braidInImage (X := X) (n := 1))
-  let a : B.Algebraˣ := ρ.toHomUnits (threeGeneratorLeft X)
-  let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
-  refine congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
-    (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
-      (Units.ext (three_braid_relation_map ρ)) ?_ ?_)
-  · intro z hz
-    simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
-  · change B.trace w (b (braidInImage (threeGeneratorLeft X)) ^ 2 *
-      b (braidInImage (threeGeneratorRight X)) ^ 2) = _
-    rw [← map_pow b, ← map_pow b, ← map_mul b,
-      ← map_pow (braidInImage (X := X) (n := 1)), ← map_pow (braidInImage (X := X) (n := 1)),
-      ← map_mul (braidInImage (X := X) (n := 1)), ← htrace, hvalue]
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Equal actual three-strand squares make the two adjacent copies of double
 self-braiding equal in the conventional tensor-product parenthesization. -/
@@ -213,13 +169,43 @@ theorem dimension_eq_abs_of_scalar_monodromy {X : C.Obj}
   change ((f / d : ℂ) ^ n) • (1 : End (X ⊗ X)) = (1 : ℂ) • (1 : End (X ⊗ X))
   simpa [hscalar, smul_pow] using hpow
 
+section BlockRigidity
+
+variable {X : C.Obj} {r : ℕ} {size : Fin r → ℕ}
+  (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
+  (he : IsUnitaryBraidPresentation b) {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0)
+include he hw
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Actual three-strand block generators have equal squares once their
+categorical weighted trace has the sharp bound and saturates it at `a²b²`.
+The remaining hypotheses are explicitly the trace weights and sharp bound. -/
+theorem actual_braid_squares_equal_of_saturation {d f : ℝ} (hf : 0 < f)
+    (htrace : IsTracePresentation C p b w)
+    (hbound : HasUnitaryTraceBound C p b (|d| * f ^ 2))
+    (hvalue : actualBraidTrace C p
+      (braidInImage
+        (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2) :
+    tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2 := by
+  let B : Blocks := ⟨r, size⟩
+  let ρ : braidImage X 1 →* B.Algebra :=
+    b.toMonoidHom.comp (braidInImage (X := X) (n := 1))
+  let a : B.Algebraˣ := ρ.toHomUnits (threeGeneratorLeft X)
+  let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
+  refine congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
+    (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
+      (Units.ext (three_braid_relation_map ρ)) ?_ ?_)
+  · intro z hz
+    simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
+  · change B.trace w (b (braidInImage (threeGeneratorLeft X)) ^ 2 *
+      b (braidInImage (threeGeneratorRight X)) ^ 2) = _
+    rw [← map_pow b, ← map_pow b, ← map_mul b,
+      ← map_pow (braidInImage (X := X) (n := 1)), ← map_pow (braidInImage (X := X) (n := 1)),
+      ← map_mul (braidInImage (X := X) (n := 1)), ← htrace, hvalue]
+
 /-- Three-strand rigidity for a genuine braided pivotal fusion category,
 reduced to explicit real, nonzero trace weights and the sharp unitary bound. -/
-theorem actual_three_strand_rigidity_of_trace_bound {X : C.Obj} [Simple X]
-    {r : ℕ} {size : Fin r → ℕ}
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
-    (he : IsUnitaryBraidPresentation b)
-    {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0)
+theorem actual_three_strand_rigidity_of_trace_bound [Simple X]
     {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hS : scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) =
@@ -231,6 +217,9 @@ theorem actual_three_strand_rigidity_of_trace_bound {X : C.Obj} [Simple X]
     (pair_operator_scalar_of_overlaps_equal C p (selfMonodromy X) hd hdim hS
       (local_monodromy_of_block_squares_equal b
         (actual_braid_squares_equal_of_saturation C p b he hw hf htrace hbound
-          (actual_three_braid_saturates C p hd hdim hS))))
+          (by rw [actual_three_braid_trace C p X, hdim, hS, mul_pow,
+            pow_two (d : ℂ), mul_assoc, mul_div_cancel_left₀ _ (by exact_mod_cast hd)]))))
+
+end BlockRigidity
 
 end PropertyF.Ground.Calculus
