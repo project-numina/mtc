@@ -60,26 +60,4 @@ theorem finite_galois_normal_field (x : ℂ) (hx : IsIntegral ℚ x) :
   · exact IntermediateField.le_normalClosure L (IntermediateField.subset_adjoin ℚ {x} (by simp))
   · exact normalClosure.is_finiteDimensional ℚ L ℂ
 
-/-- An integral global dimension has all of the field-theoretic data required
-by `DimensionField`. The remaining categorical input is its integrality. -/
-def dimensionFieldOfIntegral (δ : ℝ) (hδ : IsIntegral ℤ (δ : ℂ)) : DimensionField δ := by
-  let K := dimensionNormalField (δ : ℂ)
-  have h := finite_galois_normal_field (δ : ℂ) (hδ.tower_top (A := ℚ))
-  let : FiniteDimensional ℚ K := h.2.1
-  let : IsGalois ℚ K := h.2.2
-  let x : K := ⟨(δ : ℂ), h.1⟩
-  refine { field := K.toSubfield
-           finite := ?_
-           galois := ?_
-           element := x
-           element_eq := rfl
-           integral := ?_
-           extend := ?_ }
-  · exact inferInstanceAs (FiniteDimensional ℚ K)
-  · exact inferInstanceAs (IsGalois ℚ K)
-  · exact (isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by
-      simpa [x] using hδ)
-  · intro σ
-    exact extend_complex_automorphism K.toSubfield σ.toRingEquiv
-
 end PropertyF.Ground.Dimensions

@@ -78,23 +78,6 @@ theorem involution_eq_one_of_trace_eq_finrank {V : Type*} [AddCommGroup V] [Modu
   rw [hzero, smul_zero] at hQ
   exact (sub_eq_zero.mp hQ.symm).symm
 
-/-- An involution whose trace has maximal magnitude is the corresponding
-scalar sign times the identity. -/
-theorem involution_eq_sign_of_trace_eq {V : Type*} [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) (s : ℂ)
-    (hs : s * s = 1) (htrace : LinearMap.trace ℂ V T = s * (Module.finrank ℂ V : ℂ)) :
-    T = s • (1 : V →ₗ[ℂ] V) := by
-  rcases mul_self_eq_one_iff.mp hs with h | h
-  · subst s
-    simpa using involution_eq_one_of_trace_eq_finrank T hT (by simpa using htrace)
-  · subst s
-    have hneg : (-T) * (-T) = 1 := by simpa using hT
-    have ht : LinearMap.trace ℂ V (-T) = (Module.finrank ℂ V : ℂ) := by
-      simp only [map_neg, neg_one_mul] at htrace ⊢
-      rw [htrace, neg_neg]
-    have h := involution_eq_one_of_trace_eq_finrank (-T) hneg ht
-    simpa using congrArg Neg.neg h
-
 /-- A phase-scaled involution with maximal trace is the identity. -/
 theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) (c : ℂ)

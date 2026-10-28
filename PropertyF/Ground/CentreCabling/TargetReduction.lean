@@ -35,8 +35,8 @@ theorem target_of_center_image_monodromy
   apply target_of_actual_center
   intro C hPU hF
   obtain ⟨hR, hFusion, p, hp, hdim, hdet, hglobal, hintegral, hfinite⟩ := hCenter C hPU hF
-  letI := hR
-  letI := hFusion
+  let := hR
+  let := hFusion
   refine ⟨hR, hFusion, p, CentreCabling.symmetricCore C,
     (↑(CentreCabling.productLabels C) : Set _), hp, hdim, hdet, hglobal, hintegral, ?_, ?_⟩
   · intro y hy

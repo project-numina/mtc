@@ -205,7 +205,7 @@ theorem regular_vector_fusion_eigenvector
       (fpSimple D a : ℂ) * (if k ∈ A then (fpSimple D k : ℂ) else 0) := by
   classical
   by_cases hk : k ∈ A
-  · simp only [hk, if_true]
+  · simp only [hk, ite_true]
     calc
       _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
         apply Finset.sum_congr rfl
@@ -221,7 +221,7 @@ theorem regular_vector_fusion_eigenvector
       _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
         have hh := congrArg (fun z : ℝ => (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)
         simpa [fpSimple_dual] using hh.symm
-  · simp only [hk, if_false, mul_zero]
+  · simp only [hk, ite_false, mul_zero]
     apply Finset.sum_eq_zero
     intro i _
     by_cases hi : i ∈ A
@@ -249,7 +249,7 @@ theorem doubleCentralizer_of_fusion_closed
   classical
   let f (i : Fin (rank D)) : ℂ := if i ∈ A then (fpSimple D i : ℂ) else 0
   have hu : f (unitIndex D) ≠ 0 := by
-    simp only [f, hunit, if_true, ne_eq, Complex.ofReal_eq_zero]
+    simp only [f, hunit, ite_true, ne_eq, Complex.ofReal_eq_zero]
     exact ne_of_gt (fpSimple_pos D (unitIndex D))
   have hgen : ∀ i, f i ≠ 0 → i ∈ (↑A : Set (Fin (rank D))) := by
     intro i hi

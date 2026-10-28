@@ -25,7 +25,7 @@ theorem leftPartialTrace_braiding_of_trace_compatibility
       p.rightTrace (β_ X X).hom) :
     leftPartialTrace p X X (End.of (β_ X X).hom) =
       Dimensions.pivotalBraidedTwistScalar C p X • (1 : End X) := by
-  letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   have hd : unitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
     have h : Dimensions.pivotalDimension C p X ≠ 0 := by
       obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso C X
@@ -119,7 +119,7 @@ theorem integral_of_leftTrace_and_twist_sign
         (Equiv.Perm.decomposeFin.symm (1, σ)) : ℂ) =
         -(Centre.permutationSign ℂ (n + 1) σ : ℂ) := by
       simpa using sign_decomposeFin (n + 1) 1 σ
-    simp only [parityPermutationAction, Bool.true_eq, ↓reduceIte, Centre.twistAction,
+    simp only [parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
       unitScalar_eq_equiv, map_smul, smul_eq_mul, hsign']
     rw [← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
@@ -151,7 +151,7 @@ theorem tensorDual_coevaluation (X Y : C) :
   change η_ A (Aᘁ) ≫ A ◁ (r.invᘁ) = η_ B (Bᘁ) ≫ r.inv ▷ (Bᘁ) at hn
   have hn' : η_ A (Aᘁ) = η_ B (Bᘁ) ≫ r.inv ▷ (Bᘁ) ≫ A ◁ (r.homᘁ) := by
     let k : Aᘁ ≅ Bᘁ := Dimensions.rightDualIsoMap r.symm
-    letI : IsIso (r.invᘁ) := by change IsIso k.hom; infer_instance
+    let : IsIso (r.invᘁ) := by change IsIso k.hom; infer_instance
     apply (cancel_mono (A ◁ (r.invᘁ))).1
     simp only [Category.assoc, ← whiskerLeft_comp, ← comp_rightAdjointMate, Iso.inv_hom_id,
       rightAdjointMate_id, whiskerLeft_id, Category.comp_id]

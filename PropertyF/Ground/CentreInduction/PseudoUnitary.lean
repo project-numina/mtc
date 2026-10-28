@@ -13,7 +13,9 @@ universe v u
 nonzero, because its global FP dimension is at least one. -/
 theorem globalDimension_ne_zero_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
     (hPU : PseudoUnitary C) : globalDimension C ≠ 0 :=
-  Ground.globalDimension_ne_zero_of_pseudoUnitary C hPU
+by
+  rw [hPU]
+  exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
 
 /-- For pseudo-unitary C the fusion assembly needs no separate nonzero
 global-dimension premise. The adjunction and loop-sliding identity remain
@@ -26,6 +28,6 @@ theorem fusion_of_pseudoUnitary_and_induction (C : BraidedFusionCategory.{v,u})
     (adj : CategoryTheory.Center.forget C.Obj ⊣ I) :
     IsFusionCategory (CategoryTheory.Center C.Obj) :=
   fusion_of_adjunction_and_loop C p hp hslide
-    (Ground.globalDimension_ne_zero_of_pseudoUnitary C hPU) I adj
+    (globalDimension_ne_zero_of_pseudoUnitary C hPU) I adj
 
 end PropertyF.Ground.CentreInduction

@@ -27,8 +27,8 @@ theorem finiteOrder_matrix_unitarizable {ι : Type*} [Fintype ι] [DecidableEq �
   let u : (Matrix ι ι ℂ)ˣ := hM.isUnit.unit
   have hufin : IsOfFinOrder u := Units.isOfFinOrder_val.mp (by simpa [u] using hM)
   let G := Subgroup.zpowers u
-  letI : Finite G := hufin.finite_zpowers
-  letI : Fintype G := Fintype.ofFinite G
+  let : Finite G := hufin.finite_zpowers
+  let : Fintype G := Fintype.ofFinite G
   obtain ⟨P, hP⟩ := Calculus.exists_unitarizing_basis G.subtype
   let g : G := ⟨u, Subgroup.mem_zpowers u⟩
   exact ⟨P, by simpa [g, u] using hP g⟩

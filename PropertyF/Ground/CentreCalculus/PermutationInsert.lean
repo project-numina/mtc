@@ -60,8 +60,8 @@ theorem signedTraceSum_succ (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ)
   unfold signedTraceSum
   rw [← Equiv.Perm.decomposeFin.symm.sum_comp,
     Fintype.sum_prod_type, Fin.sum_univ_succ]
-  simp only [sign_decomposeFin, if_true, one_mul, hfixed, Fin.succ_ne_zero,
-    if_false, hmoved _ (Fin.succ_ne_zero _), neg_mul]
+  simp only [sign_decomposeFin, ite_true, one_mul, hfixed, Fin.succ_ne_zero,
+    ite_false, hmoved _ (Fin.succ_ne_zero _), neg_mul]
   simp only [Finset.sum_neg_distrib]
   simp only [show ∀ (a b c : ℂ), a * (b * c) = b * (a * c) by intros; ring, ← Finset.mul_sum]
   simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
@@ -78,7 +78,7 @@ theorem signedTraceSum_falling (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (d 
   intro n
   induction n with
   | zero =>
-    letI : Unique (Equiv.Perm (Fin 0)) := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩
+    let : Unique (Equiv.Perm (Fin 0)) := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩
     simp [signedTraceSum, hzero, Centre.permutationSign]
   | succ n ih =>
     rw [signedTraceSum_succ F d 1 n (hfixed n) (by simpa using hmoved n), ih,

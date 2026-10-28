@@ -54,6 +54,6 @@ theorem fusion_of_pseudoUnitary_actual_induction (C : BraidedFusionCategory.{v,u
     [RigidCategory (CategoryTheory.Center C.Obj)] (hPU : PseudoUnitary C)
     (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
     (hslide : SimpleLoopCentrality C p) : IsFusionCategory (CategoryTheory.Center C.Obj) :=
-  fusion_of_actual_induction C p hp hslide (Ground.globalDimension_ne_zero_of_pseudoUnitary C hPU)
+  fusion_of_actual_induction C p hp hslide (globalDimension_ne_zero_of_pseudoUnitary C hPU)
 
 end PropertyF.Ground.CentreInduction
