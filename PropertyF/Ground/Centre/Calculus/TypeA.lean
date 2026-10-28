@@ -141,8 +141,9 @@ theorem adjacentSwaps_braid (hij : i.val + 1 = j.val) :
     s i * s j * s i = s j * s i * s j := by
   simpa only [adjacentSwap, ← (show i.succ = j.castSucc from Fin.ext hij)] using
     swap_braid (a := i.castSucc) (b := i.succ) (c := j.succ)
-      (Fin.ne_of_val_ne (by simp)) (Fin.ne_of_val_ne (by simp; omega))
-      (Fin.ne_of_val_ne (by simp; omega))
+      (ne_of_lt i.castSucc_lt_succ)
+      (ne_of_lt (Fin.castSucc_lt_succ_iff.mpr (show i ≤ j from by omega)))
+      (ne_of_lt (Fin.succ_lt_succ_iff.mpr (show i < j from by omega)))
 
 /-- Distant adjacent transpositions commute. -/
 theorem adjacentSwaps_commute (hij : i.val + 1 < j.val) :
