@@ -224,14 +224,12 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : BraidedFusionCategory.{v,u})
-attribute [local instance] Abelian.hasFiniteBiproducts
+section
+variable {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D] [HasKernels D]
 
 /-- Composition induces the scalar-valued pairing between morphisms to and
 from a simple object. -/
-def simpleHomPairing (C : BraidedFusionCategory.{v,u})
-    (S X : C.Obj) [Simple S] : (X ⟶ S) →ₗ[ℂ] Module.Dual ℂ (S ⟶ X) := by
-  letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
+def simpleHomPairing (S X : D) [Simple S] [FiniteDimensional ℂ (S ⟶ S)] : (X ⟶ S) →ₗ[ℂ] Module.Dual ℂ (S ⟶ X) := by
   exact {
     toFun g := {
       toFun := fun f => Ground.simpleEndScalar S (End.of (f ≫ g))
@@ -259,11 +257,27 @@ def simpleHomPairing (C : BraidedFusionCategory.{v,u})
       exact map_smul _ _ _
   }
 
+
+/-- Composition pairs precomposition on one Hom space with postcomposition on
+the other. -/
+theorem simpleHomPairing_natural
+    {S X Y : D} [Simple S] [FiniteDimensional ℂ (S ⟶ S)] (g : Y ⟶ S) (a : X ⟶ Y) :
+    simpleHomPairing S X (a ≫ g) =
+      Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairing S Y g) := by
+  ext f
+  simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
+
+end
+
+section
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [Abelian D] [Linear ℂ D] [RigidCategory D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+  [IsFusionCategory D]
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The composition pairing is nondegenerate in the morphism-to-simple factor. -/
 theorem simpleHomPairing_injective
-    (S X : C.Obj) [Simple S] : Function.Injective (simpleHomPairing C S X) := by
-  let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
+    (S X : D) [Simple S] [FiniteDimensional ℂ (S ⟶ S)] : Function.Injective (simpleHomPairing S X) := by
   apply LinearMap.ker_eq_bot.mp
   rw [LinearMap.ker_eq_bot']
   intro g hg
@@ -275,28 +289,26 @@ theorem simpleHomPairing_injective
   change Ground.simpleEndScalar S 1 = 0 at h
   simp at h
 
+end
+
+variable (C : BraidedFusionCategory.{v,u})
+attribute [local instance] Abelian.hasFiniteBiproducts
+
 /-- The composition pairing is perfect for each representative simple. -/
 def simpleHomPairingEquiv (C : BraidedFusionCategory.{v,u})
     (i : Fin (rank C)) (X : C.Obj) :
     (X ⟶ simples C i) ≃ₗ[ℂ] Module.Dual ℂ (simples C i ⟶ X) := by
   letI : Simple (simples C i) := simples_simple C i
+  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   letI : FiniteDimensional ℂ (X ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   letI : FiniteDimensional ℂ (simples C i ⟶ X) := IsFusionCategory.hom_finite _ _
-  let p := simpleHomPairing C (simples C i) X
-  have hi := simpleHomPairing_injective C (simples C i) X
+  let p := simpleHomPairing (simples C i) X
+  have hi := simpleHomPairing_injective (simples C i) X
   have hd : Module.finrank ℂ (X ⟶ simples C i) =
       Module.finrank ℂ (Module.Dual ℂ (simples C i ⟶ X)) :=
     (finrank_to_simple_eq_from_simple C X i).trans
       (Subspace.dual_finrank_eq (K := ℂ) (V := simples C i ⟶ X)).symm
   exact LinearEquiv.ofBijective p ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).1 hi⟩
 
-/-- Composition pairs precomposition on one Hom space with postcomposition on
-the other. -/
-theorem simpleHomPairing_natural
-    {S X : C.Obj} [Simple S] (g : X ⟶ S) (a : X ⟶ X) :
-    simpleHomPairing C S X (a ≫ g) =
-      Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairing C S X g) := by
-  ext f
-  simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
 
 end PropertyF.Ground.Dimensions
