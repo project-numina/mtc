@@ -15,10 +15,8 @@ variable (C : BraidedFusionCategory.{v,u})
 -- Chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
 variable {V W : C.Obj} {E : Type*} [AddCommGroup E] [Module ℂ E]
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
-local instance (i : Fin (rank C)) : FiniteDimensional ℂ (Sᶜ i ⟶ Sᶜ i) :=
-  IsFusionCategory.hom_finite _ _
 
 
 set_option backward.isDefEq.respectTransparency false in
