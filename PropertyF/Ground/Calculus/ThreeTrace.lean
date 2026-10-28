@@ -235,7 +235,7 @@ theorem three_braid_trace (D : BraidedFusionCategory.{v,u})
     scalarTrace p scalar (Aut.toEnd ((braidGenerator X 1 0) ^ 2 *
       (braidGenerator X 1 1) ^ 2)) =
     scalarTrace p scalar (selfMonodromy X) ^ 2 / scalar (p.rightTrace (𝟙 X)) := by
-  rw [scalarTrace, scalarTrace, ← rightTrace_iso_conj p (threePowerIso X),
+  rw [scalarTrace, scalarTrace, ← rightTrace_iso_conj (threePowerIso X) p,
     three_braid_double_overlap, rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p scalar,
     pow_two, mul_div_assoc]
 

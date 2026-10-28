@@ -15,8 +15,7 @@ variable {C : Type u} [Category.{v} C] {ι κ : Type*}
 
 /-- Two complete, pairwise nonisomorphic families of objects have equivalent indices. -/
 theorem representatives_equiv (S : ι → C) (T : κ → C)
-    (hS : ∀ i j, Nonempty (S i ≅ S j) → i = j)
-    (hT : ∀ i j, Nonempty (T i ≅ T j) → i = j)
+    (hS : ∀ i j, Nonempty (S i ≅ S j) → i = j) (hT : ∀ i j, Nonempty (T i ≅ T j) → i = j)
     (hST : ∀ i, ∃ j, Nonempty (S i ≅ T j)) (hTS : ∀ j, ∃ i, Nonempty (S i ≅ T j)) :
     ∃ e : ι ≃ κ, ∀ i, Nonempty (S i ≅ T (e i)) := by
   classical
