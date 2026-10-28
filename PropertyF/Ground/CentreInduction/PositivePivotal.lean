@@ -76,11 +76,7 @@ def PivotalComponentsCentral : Prop :=
 actual centre; naturality, tensor and unit coherence are proved. -/
 def liftedPivotalStructure (hc : PivotalComponentsCentral p) :
     PivotalStructure (C := 𝒵) where
-  iso Z :=
-    let f : Z ⟶ ((Zᘁ)ᘁ) := ⟨transportedPivotalHom p Z, hc Z⟩
-    letI : IsIso f.f := inferInstanceAs
-      (IsIso ((p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv))
-    Center.isoMk f
+  iso Z := Center.isoMk ⟨transportedPivotalHom p Z, hc Z⟩
   naturality f := Center.ext _ _ (by
     simpa only [Center.comp_f, Center.isoMk_hom] using transported_pivotal_natural p f)
   tensor X Y := Center.ext _ _ (by
