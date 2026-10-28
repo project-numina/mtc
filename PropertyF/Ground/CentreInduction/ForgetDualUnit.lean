@@ -94,14 +94,15 @@ theorem forget_rightDualUnitIso :
     CategoryTheory.Center.id_f, hc]
   rfl
 
+/-- Forgetting preserves the unit comparison for right duals. -/
 theorem forgetDualIso_unit :
     (forgetDualIso (𝟙_ (𝒵))).hom ≫
       (Dimensions.rightDualUnitIso (C := D)).hom =
-    (Dimensions.rightDualUnitIso (C := 𝒵)).hom.f := by
-  rw [forget_rightDualUnitIso]
-  exact rightDualIso_trans (forgetPairing (𝟙_ (𝒵)))
-    HasRightDual.exact (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))
+    (Dimensions.rightDualUnitIso (C := 𝒵)).hom.f :=
+  (rightDualIso_trans (forgetPairing (𝟙_ (𝒵))) HasRightDual.exact
+    (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).trans (forget_rightDualUnitIso (D := D)).symm
 
+/-- Forgetting preserves the unit comparison for double right duals. -/
 theorem forgetDoubleDualIso_unit :
     (Dimensions.doubleDualUnitIso (C := 𝒵)).hom.f ≫
       (forgetDoubleDualIso (𝟙_ (𝒵))).hom =

@@ -85,15 +85,12 @@ theorem braidGenerator_map_natural {X Y : C} (f : X ⟶ Y) (n : ℕ)
   induction n with
   | zero => exact (Fin.eq_zero i).symm ▸ braid_first_map f (tensorPowerMap f 0)
   | succ n ih =>
-    rcases i with ⟨i, hi⟩
-    cases i with
-    | zero => exact braid_first_map f (tensorPowerMap f (n + 1))
-    | succ i =>
-      change (𝟙 X ⊗ₘ (braidGenerator X n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso.hom) ≫
-          (f ⊗ₘ tensorPowerMap f (n + 2)) =
-        (f ⊗ₘ tensorPowerMap f (n + 2)) ≫
-          (𝟙 Y ⊗ₘ (braidGenerator Y n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso.hom)
-      simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id, ih]
+    refine Fin.cases (braid_first_map f (tensorPowerMap f (n + 1))) (fun j => ?_) i
+    change (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom) ≫
+        (f ⊗ₘ tensorPowerMap f (n + 2)) =
+      (f ⊗ₘ tensorPowerMap f (n + 2)) ≫
+        (𝟙 Y ⊗ₘ (braidGenerator Y n j).asIso.hom)
+    simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id, ih]
 
 /-- Braiding words are natural in any morphism, not only in isomorphisms. -/
 theorem braidWord_map_natural {X Y : C} (f : X ⟶ Y) (n : ℕ) (w : BraidWords n) :

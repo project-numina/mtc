@@ -76,8 +76,7 @@ theorem rightPartialTrace_insert (p : PivotalStructure (C := C))
     apply scalar.injective
     simp
   rw [← mul_one (insertRightIdentity X Y a), rightPartialTrace_left, rightPartialTrace_one, hscalar]
-  apply End.ext
-  simp
+  exact End.ext (by simp)
 
 /-- A simple endomorphism is determined by its pivotal trace. -/
 theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
@@ -92,8 +91,7 @@ theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
     apply (eq_div_iff hd).2
     rw [← hc, p.rightTrace_smul]
     simp
-  apply End.ext
-  simpa [← hcval] using hc.symm
+  exact End.ext (by simpa [← hcval] using hc.symm)
 
 
 /-- Schur's lemma reduces the simple-survivor partial-trace formula to the

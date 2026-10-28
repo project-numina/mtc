@@ -13,11 +13,6 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
-/-- Trace using a single chosen double-dual isomorphism; no pivotal structure
-is needed. -/
-def rightTraceWith {X : C} (j : X ≅ (Xᘁ)ᘁ) (f : X ⟶ X) : End (𝟙_ C) :=
-  End.of (η_ X (Xᘁ) ≫ ((f ≫ j.hom) ⊗ₘ 𝟙 (Xᘁ)) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ))
-
 /-- Cyclicity needs naturality only for the two components involved. -/
 theorem rightTraceWith_cyclic {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
     (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :

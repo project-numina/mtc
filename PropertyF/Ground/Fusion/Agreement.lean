@@ -573,7 +573,7 @@ theorem fpSimple_eq_fpCharacter (i : Fin (rank D)) :
   le_antisymm (fpSimple_le_fpCharacter D i) (fpCharacter_le_fpSimple D i)
 
 theorem fpSimple_pos (i : Fin (rank D)) :
-    0 < fpSimple D i := by rw [fpSimple_eq_fpCharacter]; exact fpCharacter_pos D i
+    0 < fpSimple D i := (fpSimple_eq_fpCharacter D i).symm ▸ fpCharacter_pos D i
 
 theorem fpSimple_mul (i j : Fin (rank D)) :
     fpSimple D i * fpSimple D j =

@@ -53,11 +53,10 @@ theorem braidGenerator_natural (n : ℕ)
 /-- Conjugation by the tensor-power isomorphism takes generators to generators. -/
 theorem conjugate_braidGenerator (n : ℕ)
     (i : Fin (n + 1)) :
-    (tensorPowerIso f (n + 2)).conjAut (braidGenerator X n i) = braidGenerator Y n i := by
-  apply Aut.ext
-  apply Iso.ext
-  simp only [Iso.conjAut_apply, Iso.trans_hom, Iso.symm_hom]
-  rw [braidGenerator_natural, Iso.inv_hom_id_assoc]
+    (tensorPowerIso f (n + 2)).conjAut (braidGenerator X n i) = braidGenerator Y n i :=
+  Aut.ext (Iso.ext (by
+    simp only [Iso.conjAut_apply, Iso.trans_hom, Iso.symm_hom]
+    rw [braidGenerator_natural, Iso.inv_hom_id_assoc]))
 
 include f in
 /-- Isomorphic objects have isomorphic braid-image groups. -/
