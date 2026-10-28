@@ -125,8 +125,7 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
       let Q := Centre.centerCokernel p
       let q : W ⟶ Q := Centre.centerCokernelπ p
       obtain ⟨L, hL⟩ := ih Q (center_cokernel_measure_lt C p hp)
-      refine ⟨P :: L, ?_⟩
-      intro S hS ⟨t, ht⟩
+      refine ⟨P :: L, fun S hS ⟨t, ht⟩ => ?_⟩
       let : Simple S := hS
       let : Mono t := ht
       exact (simple_mono_cokernel p t q

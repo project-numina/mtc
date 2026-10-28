@@ -64,15 +64,13 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
       let : Simple S := hS
       let : Mono f := hf
       obtain ⟨r, hr⟩ := Injective.factors (𝟙 S) f
-      let seq := ShortComplex.cokernelSequence f
-      let split : seq.Splitting := ShortComplex.Splitting.ofExactOfRetraction seq
-        (ShortComplex.cokernelSequence_exact f) r hr inferInstance
-      let K := cokernel f
-      let e : Z ≅ S ⊞ K := split.isoBinaryBiproduct
-      have hk : m K < m Z := by
+      let e : Z ≅ S ⊞ cokernel f :=
+        (ShortComplex.Splitting.ofExactOfRetraction (ShortComplex.cokernelSequence f)
+          (ShortComplex.cokernelSequence_exact f) r hr inferInstance).isoBinaryBiproduct
+      have hk : m (cokernel f) < m Z := by
         simpa only [m, (CategoryTheory.Linear.homCongr k e e).finrank_eq] using
-          finrank_end_complement_lt (k := k) S K (Simple.not_isZero S)
-      exact .cons hS (ih K hk) ⟨e⟩
+          finrank_end_complement_lt (k := k) S (cokernel f) (Simple.not_isZero S)
+      exact .cons hS (ih (cokernel f) hk) ⟨e⟩
 
 end PropertyF.Ground.CentreInduction
 
@@ -155,14 +153,11 @@ theorem simple_representatives_of_finite_cover [HasZeroMorphisms D]
   let : Finite Q := Finite.of_surjective (Quotient.mk R) Quotient.mk_surjective
   obtain ⟨n, ⟨e⟩⟩ := Finite.exists_equiv_fin Q
   let S : Fin n → D := fun i => (Quotient.out (e.symm i)).1
-  refine ⟨n, S, ?_, ?_, ?_⟩
-  · intro i
-    exact hs _ (Quotient.out (e.symm i)).2
+  refine ⟨n, S, fun i => hs _ (Quotient.out (e.symm i)).2, ?_, fun X hX => ?_⟩
   · exact fun i j hij => e.symm.injective (by
       simpa using (Quotient.sound hij : Quotient.mk R (Quotient.out (e.symm i)) =
         Quotient.mk R (Quotient.out (e.symm j))))
-  · intro X hX
-    obtain ⟨T, hT, ⟨iso⟩⟩ := hc X hX
+  · obtain ⟨T, hT, ⟨iso⟩⟩ := hc X hX
     let q : Q := Quotient.mk R ⟨T, hT⟩
     refine ⟨e q, ?_⟩
     simpa [S] using (show Nonempty (X ≅ (Quotient.out q).1) from

@@ -116,9 +116,7 @@ theorem crossingCandidate_unit_summand (X : C.Obj) (i : Fin (rank C)) :
     let V := inductionSummand C X
     (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (V i)).hom ≫ (λ_ (V i)).inv ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) := by
-  dsimp only
-  rw [crossingCandidate_on_summand]
-  dsimp only [crossingSummand]
+  simp only [crossingCandidate_on_summand, crossingSummand]
   rw [Finset.sum_eq_single i]
   · let : Unique (crossingIndex C (𝟙_ C.Obj) i i) := by
       simpa only [crossingIndex, unit_crossing_finrank, ↓reduceIte] using
