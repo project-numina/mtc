@@ -56,7 +56,7 @@ theorem center_positive_spherical_of_compatible_pivotal
   have hd (i : Fin (rank D)) : Dimensions.pivotalDimension D pZ (simples D i) =
       (fpSimple D i : ℂ) := by
     rw [center_pivotalDimension_forget C (hcompat _),
-      pivotalDimension_eq_fp C hsimple]
+      pivotalDimension_eq_fp hsimple]
     change (fpDimension C ((CategoryTheory.Center.forget C.Obj).obj (simples D i)) : ℂ) = _
     rw [Integrate.center_forget_fpDimension C, fpDimension_simple]
   have hs : pZ.IsSpherical := by

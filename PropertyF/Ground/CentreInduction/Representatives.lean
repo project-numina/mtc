@@ -77,7 +77,7 @@ universe v u
 
 /-- A finite covering family of simples can be deduplicated up to isomorphism. -/
 theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
-    (labels : Finset D) (hs : ∀ T ∈ labels, Simple T)
+    {labels : Finset D} (hs : ∀ T ∈ labels, Simple T)
     (hc : ∀ X : D, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T)) :
     ∃ (n : ℕ) (S : Fin n → D),
       (∀ i, Simple (S i)) ∧
@@ -111,7 +111,7 @@ theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [Ha
 
 /-- Group finitely many objects by chosen representative labels. -/
 theorem regroup_biproduct {D : Type u} [Category.{v} D] [Preadditive D]
-    [HasFiniteBiproducts D] {n k : ℕ} (S : Fin n → D) (V : Fin k → D)
+    [HasFiniteBiproducts D] {n k : ℕ} {S : Fin n → D} {V : Fin k → D}
     (h : ∀ j, ∃ i, Nonempty (V j ≅ S i)) :
     ∃ m : Fin n → ℕ, Nonempty ((⨁ V) ≅ ⨁ (fun p : Σ i, Fin (m i) => S p.1)) := by
   classical

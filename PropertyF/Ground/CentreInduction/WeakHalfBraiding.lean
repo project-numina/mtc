@@ -45,7 +45,7 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
-variable (A : C) (b : ∀ T : C, A ⊗ T ⟶ T ⊗ A)
+variable {A : C} (b : ∀ T : C, A ⊗ T ⟶ T ⊗ A)
 variable (hn : ∀ {T U} (f : T ⟶ U), (A ◁ f) ≫ b U = b T ≫ (f ▷ A))
 variable (ht : ∀ T U, b (T ⊗ U) =
     (α_ _ _ _).inv ≫ (b T ▷ U) ≫ (α_ _ _ _).hom ≫ (T ◁ b U) ≫ (α_ _ _ _).inv)
@@ -58,7 +58,7 @@ def weakInverse : Y ⊗ A ⟶ A ⊗ Y :=
 
 include hn ht hu in
 /-- The bent crossing is a right inverse. -/
-theorem weak_left : b Y ≫ weakInverse A b X Y = 𝟙 (A ⊗ Y) := by
+theorem weak_left : b Y ≫ weakInverse b X Y = 𝟙 (A ⊗ Y) := by
   have he : b (Y ⊗ X) ≫ (ε_ X Y ▷ A) =
       (A ◁ ε_ X Y) ≫ ((ρ_ A).hom ≫ (λ_ A).inv) := by
     rw [← hn (ε_ X Y), hu]
@@ -79,7 +79,7 @@ theorem weak_left : b Y ≫ weakInverse A b X Y = 𝟙 (A ⊗ Y) := by
 
 include hn ht hu in
 /-- The bent crossing is a left inverse. -/
-theorem weak_right : weakInverse A b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
+theorem weak_right : weakInverse b X Y ≫ b Y = 𝟙 (Y ⊗ A) := by
   have hc : (A ◁ η_ X Y) ≫ b (X ⊗ Y) =
       ((ρ_ A).hom ≫ (λ_ A).inv) ≫ (η_ X Y ▷ A) := by
     rw [hn (η_ X Y), hu]
@@ -104,9 +104,9 @@ crossing is invertible on every object admitting a left dual. -/
 theorem weak_isIso (X : C) [ExactPairing X Y] : IsIso (b Y) := by
   let e : A ⊗ Y ≅ Y ⊗ A :=
     { hom := b Y
-      inv := weakInverse A b X Y
-      hom_inv_id := weak_left A b hn ht hu X Y
-      inv_hom_id := weak_right A b hn ht hu X Y }
+      inv := weakInverse b X Y
+      hom_inv_id := weak_left b hn ht hu X Y
+      inv_hom_id := weak_right b hn ht hu X Y }
   exact e.isIso_hom
 
 end PropertyF.Ground.CentreInduction
