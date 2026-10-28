@@ -26,10 +26,10 @@ theorem crossingBlock_post_test (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a fusion map is natural in its test strand. -/
-theorem closeFusionMap_pre_test (C : BraidedFusionCategory.{v,u})
-    {T U R S : C.Obj} (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
-    (Rᘁ ◁ h) ≫ closeFusionMap C U S R f =
-      closeFusionMap C T S R ((h ▷ S) ≫ f) := by
+theorem closeFusionMap_pre_test {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] {T U R S : D} (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
+    (Rᘁ ◁ h) ≫ closeFusionMap U S R f =
+      closeFusionMap T S R ((h ▷ S) ≫ f) := by
   simp only [closeFusionMap, Category.assoc, comp_rightAdjointMate, comp_whiskerRight]
   rw [whisker_exchange_assoc]
   have hn := Dimensions.rightDualTensorIso_natural h (𝟙 S)

@@ -3,9 +3,8 @@ public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.CentreInduction.PositivePivotal
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
-public import PropertyF.Ground.Dimensions.PivotalDual
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 public import PropertyF.Ground.Fusion.Reciprocity
-public import PropertyF.Ground.Dimensions.SphericalReal
 
 /-! Compatibility of pivotal twists with duals in spherical categories. -/
 @[expose] public noncomputable section

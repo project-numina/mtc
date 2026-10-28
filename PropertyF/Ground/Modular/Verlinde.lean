@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.DualCoherence
-public import PropertyF.Ground.Dimensions.IteratedTrace
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Fusion.SpectralIntegral
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Modular.SMatrix

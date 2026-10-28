@@ -6,8 +6,7 @@ public import PropertyF.Ground.CentreCabling.TwistDual
 public import PropertyF.Ground.Fusion.Reciprocity
 public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.Fusion.GeneratedRigidity
-public import PropertyF.Ground.Dimensions.PivotalDual
-public import PropertyF.Ground.Dimensions.SphericalReal
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 public import PropertyF.Ground.Dimensions.DualBraiding
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 open PropertyF.Ground PropertyF.Ground.Dimensions

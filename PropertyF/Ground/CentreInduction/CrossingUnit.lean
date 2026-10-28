@@ -11,11 +11,12 @@ variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The closed fusion map is characterized by its evaluation pairing. -/
-theorem closeFusionMap_evaluation {T S R : C.Obj} (f : T ⊗ S ⟶ R) :
-    (closeFusionMap C T S R f ▷ S) ≫ ε_ S (Sᘁ) =
-      𝟙 _ ⊗≫ ((Rᘁ : C.Obj) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
+theorem closeFusionMap_evaluation {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] {T S R : D} (f : T ⊗ S ⟶ R) :
+    (closeFusionMap T S R f ▷ S) ≫ ε_ S (Sᘁ) =
+      𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
   have he := PropertyF.Ground.Dimensions.rightDualIso_evaluation
-      (@HasRightDual.exact C.Obj _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
+      (@HasRightDual.exact D _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
       (ExactPairing.tensor (X₁ := T) (X₂ := S) (Y₁ := Tᘁ) (Y₂ := Sᘁ))
   change (rightDualTensorIso T S).hom ▷ (T ⊗ S) ≫
     ε_ (T ⊗ S) ((Sᘁ) ⊗ (Tᘁ)) = ε_ (T ⊗ S) ((T ⊗ S)ᘁ) at he
@@ -37,11 +38,11 @@ theorem closeFusionMap_evaluation {T S R : C.Obj} (f : T ⊗ S ⟶ R) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the tensor-unit unitor gives the unitor of the dual object. -/
 theorem closeFusionMap_unit (S : C.Obj) :
-    closeFusionMap C (𝟙_ C.Obj) S S (λ_ S).hom = (ρ_ (Sᘁ)).hom := by
-  let f := closeFusionMap C (𝟙_ C.Obj) S S (λ_ S).hom
+    closeFusionMap (𝟙_ C.Obj) S S (λ_ S).hom = (ρ_ (Sᘁ)).hom := by
+  let f := closeFusionMap (𝟙_ C.Obj) S S (λ_ S).hom
   let g := (ρ_ (Sᘁ)).hom
   have h : (f ▷ S) ≫ ε_ S (Sᘁ) = (g ▷ S) ≫ ε_ S (Sᘁ) := by
-    rw [show f = closeFusionMap C (𝟙_ C.Obj) S S (λ_ S).hom from rfl, closeFusionMap_evaluation]
+    rw [show f = closeFusionMap (𝟙_ C.Obj) S S (λ_ S).hom from rfl, closeFusionMap_evaluation]
     dsimp [g]
     monoidal
   have he := congrArg (tensorRightHomEquiv ((Sᘁ) ⊗ (𝟙_ C.Obj)) S (Sᘁ) (𝟙_ C.Obj)) h

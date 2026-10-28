@@ -58,12 +58,12 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Closing the right unit isomorphism gives ordinary evaluation. -/
 theorem close_rightUnit_eval (T : C.Obj) {A : C.Obj} (e : A ≅ 𝟙_ C.Obj) :
-    closeFusionMap C T A T ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
+    closeFusionMap T A T ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
       (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom = ε_ T (Tᘁ) := by
   let d : Aᘁ ⟶ 𝟙_ C.Obj := (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom
-  let z := closeFusionMap C T A T ((T ◁ e.hom) ≫ (ρ_ T).hom)
+  let z := closeFusionMap T A T ((T ◁ e.hom) ≫ (ρ_ T).hom)
   have he : (d ⊗ₘ e.hom) ≫ (ρ_ (𝟙_ C.Obj)).hom = ε_ A (Aᘁ) := evaluation_iso_unit C e
-  have hz := closeFusionMap_evaluation C ((T ◁ e.hom) ≫ (ρ_ T).hom)
+  have hz := closeFusionMap_evaluation ((T ◁ e.hom) ≫ (ρ_ T).hom)
   change (z ▷ A) ≫ ε_ A (Aᘁ) =
     𝟙 _ ⊗≫ ((Tᘁ : C.Obj) ◁ ((T ◁ e.hom) ≫ (ρ_ T).hom)) ⊗≫ ε_ T (Tᘁ) at hz
   change z ≫ d = ε_ T (Tᘁ)
@@ -105,7 +105,7 @@ theorem crossingUnitBlock_eval (X T : C.Obj) {A : C.Obj} (e : A ≅ 𝟙_ C.Obj)
     𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
   dsimp only
   let d : Aᘁ ⟶ 𝟙_ C.Obj := (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom
-  let q : Tᘁ ⊗ T ⟶ Aᘁ := closeFusionMap C T A T ((T ◁ e.hom) ≫ (ρ_ T).hom)
+  let q : Tᘁ ⊗ T ⟶ Aᘁ := closeFusionMap T A T ((T ◁ e.hom) ≫ (ρ_ T).hom)
   have hq : q ≫ d = ε_ T (Tᘁ) := close_rightUnit_eval C T e
   simp only [crossingBlock, Iso.trans_hom, Iso.trans_inv, whiskerLeftIso_hom,
     whiskerLeftIso_inv, tensorIso_hom, Iso.refl_hom, tensorHom_def, whiskerLeft_id,

@@ -13,8 +13,8 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Turn a map `T ⊗ S ⟶ R` into its right-dual mate
 `R* ⊗ T ⟶ S*`. -/
-def closeFusionMap (C : BraidedFusionCategory.{v,u})
-    (T S R : C.Obj) (f : T ⊗ S ⟶ R) : Rᘁ ⊗ T ⟶ Sᘁ :=
+def closeFusionMap {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    (T S R : D) (f : T ⊗ S ⟶ R) : Rᘁ ⊗ T ⟶ Sᘁ :=
   (fᘁ ▷ T) ≫ ((rightDualTensorIso T S).hom ▷ T) ≫
     (α_ (Sᘁ) (Tᘁ) T).hom ≫ (Sᘁ ◁ ε_ T (Tᘁ)) ≫ (ρ_ (Sᘁ)).hom
 
@@ -23,7 +23,7 @@ projection `T ⊗ S ⟶ R`. -/
 def crossingBlock (C : BraidedFusionCategory.{v,u}) (X T R S : C.Obj)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ T ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
-  (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap C T S R f) ≫
+  (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S R f) ≫
     (α_ (T ⊗ S) X (Sᘁ)).hom ≫ (α_ T S (X ⊗ Sᘁ)).hom ≫
       (T ◁ (α_ S X (Sᘁ)).inv)
 

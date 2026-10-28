@@ -42,23 +42,19 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 
 omit [Linear ℂ C] [MonoidalLinear ℂ C] in
 /-- The right trace is linear in its endomorphism argument. -/
-theorem rightTrace_add (f g : X ⟶ X) : p.rightTrace (f + g) = p.rightTrace f + p.rightTrace g := by
-  apply End.homEquiv.injective
-  simp [rightTrace, tensorHom_def]
+theorem rightTrace_add (f g : X ⟶ X) : p.rightTrace (f + g) = p.rightTrace f + p.rightTrace g :=
+  End.homEquiv.injective (by simp [rightTrace, tensorHom_def])
 
-theorem rightTrace_smul (c : ℂ) (f : X ⟶ X) : p.rightTrace (c • f) = c • p.rightTrace f := by
-  apply End.homEquiv.injective
-  simp [rightTrace, tensorHom_def]
+theorem rightTrace_smul (c : ℂ) (f : X ⟶ X) : p.rightTrace (c • f) = c • p.rightTrace f :=
+  End.homEquiv.injective (by simp [rightTrace, tensorHom_def])
 
 omit [Linear ℂ C] [MonoidalLinear ℂ C] in
 /-- The left trace is linear in its endomorphism argument. -/
-theorem leftTrace_add (f g : X ⟶ X) : p.leftTrace (f + g) = p.leftTrace f + p.leftTrace g := by
-  apply End.homEquiv.injective
-  simp [leftTrace, tensorHom_def]
+theorem leftTrace_add (f g : X ⟶ X) : p.leftTrace (f + g) = p.leftTrace f + p.leftTrace g :=
+  End.homEquiv.injective (by simp [leftTrace, tensorHom_def])
 
-theorem leftTrace_smul (c : ℂ) (f : X ⟶ X) : p.leftTrace (c • f) = c • p.leftTrace f := by
-  apply End.homEquiv.injective
-  simp [leftTrace, tensorHom_def]
+theorem leftTrace_smul (c : ℂ) (f : X ⟶ X) : p.leftTrace (c • f) = c • p.leftTrace f :=
+  End.homEquiv.injective (by simp [leftTrace, tensorHom_def])
 
 end PropertyF.Ground.Dimensions.PivotalStructure
 
@@ -74,8 +70,7 @@ theorem rightTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
 
 /-- Pivotal dimensions are invariant under object isomorphism. -/
 theorem rightTrace_id_iso (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) :
-    p.rightTrace (𝟙 X) = p.rightTrace (𝟙 Y) := by
-  simpa using p.rightTrace_cyclic e.hom e.inv
+    p.rightTrace (𝟙 X) = p.rightTrace (𝟙 Y) := by simpa using p.rightTrace_cyclic e.hom e.inv
 
 end PropertyF.Ground.Dimensions.PivotalStructure
 

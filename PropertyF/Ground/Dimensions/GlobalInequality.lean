@@ -8,9 +8,10 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- The global inequality follows from the simple-object estimates; this
 separates the sum-of-squares argument from the remaining ENO estimate. -/
-theorem target_globalDimension_le_of_simple_bounds (C : Ground.BraidedFusionCategory.{v,u})
+theorem target_globalDimension_le_of_simple_bounds
     (d : Fin (Ground.rank C) → ℝ)
     (hbound : ∀ i, |d i| ≤ Ground.fpSimple C i) :
     ∑ i, (d i) ^ 2 ≤ Ground.globalFPDimension C := by
@@ -24,7 +25,7 @@ theorem target_globalDimension_le_of_simple_bounds (C : Ground.BraidedFusionCate
 
 /-- If each real simple dimension is bounded by its FP dimension, equality of
 the global sums is equivalent to saturation at every simple. -/
-theorem global_sum_squares_eq_iff (C : Ground.BraidedFusionCategory.{v,u})
+theorem global_sum_squares_eq_iff
     (d : Fin (Ground.rank C) → ℝ)
     (hbound : ∀ i, |d i| ≤ Ground.fpSimple C i) :
     (∑ i, (d i) ^ 2) = Ground.globalFPDimension C ↔

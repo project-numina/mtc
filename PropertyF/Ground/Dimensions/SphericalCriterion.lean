@@ -46,11 +46,13 @@ end PropertyF.Ground.Dimensions
 
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- In a fusion category it suffices to compare left and right dimensions on
 simple representatives to verify sphericality on all endomorphisms. -/
-theorem isSpherical_iff_simple_dimensions (C : Ground.BraidedFusionCategory.{v,u})
+theorem isSpherical_iff_simple_dimensions
     (p : PivotalStructure (C := C.Obj)) :
     p.IsSpherical ↔ ∀ i : Fin (Ground.rank C),
       p.leftTrace (𝟙 (Ground.simples C i)) = p.rightTrace (𝟙 (Ground.simples C i)) := by

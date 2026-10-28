@@ -128,7 +128,7 @@ def mixedCrossingBilinear (C : BraidedFusionCategory.{v,u})
       (T ⊗ S ⟶ R) →ₗ[ℂ] (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
   toFun g := {
     toFun := fun f =>
-      (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap C T S R f) ≫
+      (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S R f) ≫
         (α_ (U ⊗ S) X (Sᘁ)).hom ≫ (α_ U S (X ⊗ Sᘁ)).hom ≫
           (U ◁ (α_ S X (Sᘁ)).inv)
     map_add' := by

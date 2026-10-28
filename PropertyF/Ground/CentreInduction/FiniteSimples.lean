@@ -181,21 +181,13 @@ theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
       intro S hS ⟨t, ht⟩
       let : Simple S := hS
       let : Mono t := ht
-      have ht0 : t = 0 := hw.eq_of_tgt _ _
-      have hid : 𝟙 S = 0 := by
-        apply (cancel_mono t).1
-        simp [ht0]
-      exact (id_nonzero S hid).elim
+      exact (Simple.not_isZero S (IsZero.of_mono t hw)).elim
     · let : IsArtinianObject W := center_artinian C W
       obtain ⟨P, hP⟩ := exists_simple_subobject hw
       let : Simple (P : CategoryTheory.Center C.Obj) := hP
       let p : (P : CategoryTheory.Center C.Obj) ⟶ W := P.arrow
-      have hp : p ≠ 0 := by
-        intro h0
-        have hid : 𝟙 (P : CategoryTheory.Center C.Obj) = 0 := by
-          apply (cancel_mono p).1
-          simp [h0]
-        exact id_nonzero _ hid
+      have hp : p ≠ 0 := fun h0 =>
+        id_nonzero _ ((cancel_mono p).1 (by simp [h0]))
       let Q := PropertyF.Ground.Centre.centerCokernel p
       let q : W ⟶ Q := PropertyF.Ground.Centre.centerCokernelπ p
       have hlt : m Q < m W := center_cokernel_measure_lt C p hp
@@ -204,12 +196,8 @@ theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
       intro S hS ⟨t, ht⟩
       let : Simple S := hS
       let : Mono t := ht
-      have ht0 : t ≠ 0 := by
-        intro h0
-        have hid : 𝟙 S = 0 := by
-          apply (cancel_mono t).1
-          simp [h0]
-        exact id_nonzero S hid
+      have ht0 : t ≠ 0 := fun h0 =>
+        id_nonzero S ((cancel_mono t).1 (by simp [h0]))
       by_cases hz : t ≫ q = 0
       · have hcok := PropertyF.Ground.Centre.centerCokernelIsColimit p
         have hk := Abelian.monoIsKernelOfCokernel
