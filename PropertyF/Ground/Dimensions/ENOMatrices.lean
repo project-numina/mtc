@@ -61,15 +61,10 @@ theorem fusion_dominated_eigenvalue_bound (C : BraidedFusionCategory)
     {i : Fin (rank C)} (T : Fin (rank C) → Fin (rank C) → ℂ)
     (v : Fin (rank C) → ℂ) (z : ℂ) (i₀ : Fin (rank C))
     (hv : v i₀ ≠ 0) (hdom : ∀ j k, ‖T j k‖ ≤ fusionCoeff C i j k)
-    (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ fpSimple C i := by
-  apply weighted_eigenvalue_bound (fun j k => fusionCoeff C i j k) T
+    (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ fpSimple C i :=
+  weighted_eigenvalue_bound (fun j k => fusionCoeff C i j k) T
     (fpSimple C) (fpSimple C i) v z i₀ hv (fpSimple_pos C)
-  · intro j k
-    exact Nat.cast_nonneg _
-  · exact hdom
-  · intro j
-    exact (fpSimple_mul C i j).symm
-  · exact heig
+    (fun _ _ => Nat.cast_nonneg _) hdom (fun j => (fpSimple_mul C i j).symm) heig
 
 end PropertyF.Ground.Dimensions
 
@@ -193,11 +188,10 @@ theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j) :
-    ‖rootDimension C i‖ ≤ fpSimple C i := by
-  apply fusion_dominated_eigenvalue_bound C (enoTraceMatrix C i) (rootDimension C)
+    ‖rootDimension C i‖ ≤ fpSimple C i :=
+  fusion_dominated_eigenvalue_bound C (enoTraceMatrix C i) (rootDimension C)
     (rootDimension C i) (unitIndex C) (rootDimension_ne_zero C _)
-  · exact fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv j k)
-  · exact heig
+    (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv j k)) heig
 
 end PropertyF.Ground.Dimensions
 

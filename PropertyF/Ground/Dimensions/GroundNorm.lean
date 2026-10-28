@@ -98,12 +98,10 @@ simple dimensions, for any spherical structure. -/
 theorem target_globalDimension_eq_sum_squares
     (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) :
     globalDimension C = ∑ i : Fin (rank C),
-      (unitScalar C (rightQuantumTrace (p.iso (simples C i)))) ^ 2 := by
-  unfold globalDimension
-  apply Finset.sum_congr rfl
-  intro i _
-  let : Simple (simples C i) := simples_simple C i
-  exact target_squaredNorm_eq_dimension_sq C p hp (simples C i)
+      (unitScalar C (rightQuantumTrace (p.iso (simples C i)))) ^ 2 :=
+  Finset.sum_congr rfl fun i _ ↦
+    let : Simple (simples C i) := simples_simple C i
+    target_squaredNorm_eq_dimension_sq C p hp (simples C i)
 
 /-- Intrinsic squared norms are invariant under simple-object isomorphism,
 without assuming a pivotal or spherical structure. -/

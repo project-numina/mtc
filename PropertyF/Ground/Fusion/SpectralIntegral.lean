@@ -24,8 +24,7 @@ theorem fusionMatrix_unit :
   classical
   ext k j
   change (fusionCoeff D (unitIndex D) j k : ℂ) = _
-  rw [fusionCoeff_unit]
-  simp [Matrix.one_apply]
+  simp [fusionCoeff_unit, Matrix.one_apply]
 
 /-- The spectral-radius FP dimension is normalized on the tensor unit. -/
 theorem fpSimple_unit :

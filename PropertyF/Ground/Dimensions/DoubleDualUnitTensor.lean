@@ -34,11 +34,7 @@ theorem rightDualTensorIso_unit_left (X : C) :
   let l : (Xᘁ) ⟶ J := ((λ_ X).homᘁ) ≫ (rightDualTensorIso I X).hom
   let s : (Xᘁ) ⟶ J := (ρ_ (Xᘁ)).inv ≫ (Xᘁ) ◁ r.inv
   have hl : l ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J = (Xᘁ) ◁ (λ_ X).hom ≫ ε_ X (Xᘁ) := by
-    have he := rightDualIso_evaluation
-      (@HasRightDual.exact C _ _ (I ⊗ X) (RightRigidCategory.rightDual _))
-      (ExactPairing.tensor (X₁ := I) (X₂ := X) (Y₁ := Iᘁ) (Y₂ := Xᘁ))
-    change (rightDualTensorIso I X).hom ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J =
-      ε_ (I ⊗ X) ((I ⊗ X)ᘁ) at he
+    have he := rightDualTensorIso_evaluation I X
     dsimp only [l]
     rw [comp_whiskerRight_assoc, he, rightAdjointMate_comp_evaluation]
   have hs : s ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J = (Xᘁ) ◁ (λ_ X).hom ≫ ε_ X (Xᘁ) := by
@@ -71,11 +67,7 @@ theorem rightDualTensorIso_unit_right (X : C) :
   let l : (Xᘁ) ⟶ J := ((ρ_ X).homᘁ) ≫ (rightDualTensorIso X I).hom
   let s : (Xᘁ) ⟶ J := (λ_ (Xᘁ)).inv ≫ r.inv ▷ (Xᘁ)
   have hl : l ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J = (Xᘁ) ◁ (ρ_ X).hom ≫ ε_ X (Xᘁ) := by
-    have he := rightDualIso_evaluation
-      (@HasRightDual.exact C _ _ (X ⊗ I) (RightRigidCategory.rightDual _))
-      (ExactPairing.tensor (X₁ := X) (X₂ := I) (Y₁ := Xᘁ) (Y₂ := Iᘁ))
-    change (rightDualTensorIso X I).hom ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J =
-      ε_ (X ⊗ I) ((X ⊗ I)ᘁ) at he
+    have he := rightDualTensorIso_evaluation X I
     dsimp only [l]
     rw [comp_whiskerRight_assoc, he, rightAdjointMate_comp_evaluation]
   have hs : s ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J = (Xᘁ) ◁ (ρ_ X).hom ≫ ε_ X (Xᘁ) := by

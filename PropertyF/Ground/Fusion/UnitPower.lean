@@ -22,10 +22,8 @@ theorem balanced_flow_no_entry {ι : Type*} [Fintype ι] (b : ι → ι → ℝ)
     apply Finset.sum_congr rfl
     intro x hx
     exact (Finset.sum_subset (Finset.subset_univ s) (fun y _ hy => hclosed x hx y hy)).symm
-  have hbal : ∑ x ∈ s, ∑ y, b x y = ∑ x ∈ s, ∑ y, b y x := by
-    apply Finset.sum_congr rfl
-    intro x _
-    exact hbalance x
+  have hbal : ∑ x ∈ s, ∑ y, b x y = ∑ x ∈ s, ∑ y, b y x :=
+    Finset.sum_congr rfl fun x _ ↦ hbalance x
   have hin : ∑ y ∈ s, ∑ x ∈ s, b x y = ∑ y ∈ s, ∑ x, b x y := by
     calc
       _ = ∑ x ∈ s, ∑ y ∈ s, b x y := Finset.sum_comm
