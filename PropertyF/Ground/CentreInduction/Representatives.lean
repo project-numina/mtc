@@ -75,14 +75,18 @@ open CategoryTheory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
 
+/-- A family contains one representative of each isomorphism class of simples. -/
+abbrev IsSimpleRepresentativeFamily {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
+    {ι : Type*} (S : ι → D) : Prop :=
+  (∀ i, Simple (S i)) ∧
+    (∀ i j, Nonempty (S i ≅ S j) → i = j) ∧
+    ∀ X : D, Simple X → ∃ i, Nonempty (X ≅ S i)
+
 /-- A finite covering family of simples can be deduplicated up to isomorphism. -/
 theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
     {labels : Finset D} (hs : ∀ T ∈ labels, Simple T)
     (hc : ∀ X : D, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T)) :
-    ∃ (n : ℕ) (S : Fin n → D),
-      (∀ i, Simple (S i)) ∧
-      (∀ i j, Nonempty (S i ≅ S j) → i = j) ∧
-      (∀ X : D, Simple X → ∃ i, Nonempty (X ≅ S i)) := by
+    ∃ (n : ℕ) (S : Fin n → D), IsSimpleRepresentativeFamily S := by
   classical
   let A := { T : D // T ∈ labels }
   let R : Setoid A := Setoid.comap Subtype.val (isIsomorphicSetoid D)

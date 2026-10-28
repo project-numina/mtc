@@ -51,8 +51,7 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     (fun x => hact σ.symm x (unitIndex Z))
   refine ⟨y, (σ (fpSimple Z y : ℂ)).re, one_le_fpSimple Z y,
     (fp_simple_galois_real Z σ y).symm, ?_, ?_, ?_⟩
-  · intro x
-    simpa only [hdim] using hprop.1 x
+  · simpa only [hdim] using hprop.1
   · simpa only [hglobal, hdim] using hprop.2.2
   · simpa only [hdim] using hprop.1 y
 
@@ -69,10 +68,9 @@ theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v
     (hF : ∀ y, (∀ x, Modular.categoricalS Z p x y =
       (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
       ObjectPropertyF (simples Z y)) :
-    ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
-  obtain ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ :=
-    exists_modular_witness Z hp hdim hdet hglobal σ
-  exact ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ hσf hG hS
+    ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
+  let ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ := exists_modular_witness Z hp hdim hdet hglobal σ
+  ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ hσf hG hS
     (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d hσf)⟩
 
 end PropertyF.Ground
@@ -106,11 +104,10 @@ theorem positive_bounded_conjugates_of_fp (C : BraidedFusionCategory.{v,u})
     (σ : ℂ ≃+* ℂ) : ∃ a : ℝ, 0 < a ∧ a ≤ globalFPDimension C ∧
       σ (globalFPDimension C : ℂ) = (a : ℂ) := by
   let χ : Fin (rank C) → ℂ := fun i => (fpSimple C i : ℂ)
-  have hχ : χ (unitIndex C) ≠ 0 := by simp [χ, fpSimple_unit]
-  have hchar : IsFusionMultiplicative C χ := fpSimple_isFusionMultiplicative C
   let d : Fin (rank C) → ℝ := fun i => (σ (χ i)).re
   have hbound (i : Fin (rank C)) : |d i| ≤ fpSimple C i := by
-    have h := Dimensions.galois_character_norm_le_fpSimple C hχ hchar σ i
+    have h := Dimensions.galois_character_norm_le_fpSimple C (χ := χ) (i₀ := unitIndex C)
+      (by simp [χ, fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i
     rw [← fp_simple_galois_real C σ i] at h
     simpa [d, χ, Complex.norm_real, Real.norm_eq_abs] using h
   exact ⟨∑ i, (d i) ^ 2, lt_of_lt_of_le zero_lt_one
@@ -151,8 +148,7 @@ theorem propertyF_of_galois_column
     ObjectPropertyF (simples Z y) :=
   hFinite y <| hDouble fun x hx ↦ by
     obtain ⟨z, hz⟩ := hIntegral x hx
-    change Modular.categoricalS Z p x y = Modular.simpleDimension Z p x * Modular.simpleDimension Z p y
-    rw [hColumn, hz, map_intCast, mul_comm]
+    simpa only [CentreCabling.sCentralizes, hz, map_intCast, mul_comm] using hColumn x
 
 end PropertyF.Ground
 end

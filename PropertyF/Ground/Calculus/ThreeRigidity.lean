@@ -50,11 +50,12 @@ end PropertyF.Ground.Calculus
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Calculus
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual three-strand braid-image element has the categorical overlap
 trace, independently of any choice of matrix blocks. -/
-theorem actual_three_braid_trace (C : BraidedFusionCategory.{v,u})
+theorem actual_three_braid_trace
     (X : C.Obj) [Simple X] (p : PivotalStructure (C := C.Obj)) :
     actualBraidTrace C X p 1 (braidInImage X 1
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) =
@@ -67,7 +68,7 @@ theorem actual_three_braid_trace (C : BraidedFusionCategory.{v,u})
 
 /-- The modular self-entry identity makes the actual three-strand trace attain
 the value used in the saturation argument. -/
-theorem actual_three_braid_saturates (C : BraidedFusionCategory.{v,u})
+theorem actual_three_braid_saturates
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {d f : ℝ} (hd : d ≠ 0)
     (hdim : pivotalDimension C p X = (d : ℂ))
@@ -84,7 +85,7 @@ set_option backward.isDefEq.respectTransparency false in
 categorical weighted trace has the sharp bound and saturates it at `a²b²`.
 The remaining hypotheses are explicitly the trace weights and sharp bound. -/
 theorem actual_braid_squares_equal_of_saturation
-    (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
+    {X : C.Obj}
     (p : PivotalStructure (C := C.Obj))
     {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
@@ -156,7 +157,7 @@ theorem local_monodromy_of_block_squares_equal
 /-- If the same pair operator occurs on either adjacent pair, partial trace
 forces that operator to be scalar. -/
 theorem pair_operator_scalar_of_overlaps_equal
-    (C : BraidedFusionCategory.{v,u}) {X : C.Obj} [Simple X]
+    {X : C.Obj} [Simple X]
     (p : PivotalStructure (C := C.Obj)) (u : End (X ⊗ X))
     {d f : ℝ} (hd : d ≠ 0)
     (hdim : pivotalDimension C p X = (d : ℂ))
@@ -203,7 +204,7 @@ theorem selfMonodromy_finite_order {C : Type u} [Category.{v} C]
 /-- A scalar double self-braiding of finite order has unit-modulus scalar,
 so the two real dimensions have equal absolute value. -/
 theorem dimension_eq_abs_of_scalar_monodromy
-    (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
+    {X : C.Obj}
     (p : PivotalStructure (C := C.Obj))
     {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
@@ -231,7 +232,7 @@ theorem dimension_eq_abs_of_scalar_monodromy
 /-- Three-strand rigidity for a genuine braided pivotal fusion category,
 reduced to explicit real, nonzero trace weights and the sharp unitary bound. -/
 theorem actual_three_strand_rigidity_of_trace_bound
-    (C : BraidedFusionCategory.{v,u}) {X : C.Obj} [Simple X]
+    {X : C.Obj} [Simple X]
     (p : PivotalStructure (C := C.Obj))
     {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)

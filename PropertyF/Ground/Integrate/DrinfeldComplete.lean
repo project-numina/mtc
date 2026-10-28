@@ -29,10 +29,10 @@ theorem center_globalDimension_square_of_actual_induction
     (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
     (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p) :
-    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
-  rw [← Complex.ofReal_pow, ← CentreInduction.globalFPDimension_square_of_actual_induction C,
-    Modular.categorical_global_eq_sum_squares (Integrate.bundledCenter C) p hp]
-  simp [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow]
+    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
+  (Modular.categorical_global_eq_sum_squares (Integrate.bundledCenter C) p hp).trans <| by
+    simpa [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow] using
+      congrArg (fun x : ℝ ↦ (x : ℂ)) (CentreInduction.globalFPDimension_square_of_actual_induction C)
 
 
 
@@ -113,10 +113,9 @@ theorem center_transparent_label_eq_unit
     (k : Fin (rank (Integrate.bundledCenter C)))
     (hk : Transparent (simples (Integrate.bundledCenter C) k)) :
     k = unitIndex (Integrate.bundledCenter C) :=
-  let D := Integrate.bundledCenter C
-  let : Simple (simples D k) := simples_simple D k
-  simples_injective D ⟨(CentreInduction.center_transparent_simple_iso_unit C
-    (Z := simples D k) hk).some ≪≫ (unitIndex_iso D).some.symm⟩
+  let : Simple (simples (Integrate.bundledCenter C) k) := simples_simple _ k
+  simples_injective _ ⟨(CentreInduction.center_transparent_simple_iso_unit (C := C) hk).some ≪≫
+    (unitIndex_iso (Integrate.bundledCenter C)).some.symm⟩
 
 
 

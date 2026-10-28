@@ -137,11 +137,8 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
       (α_ Z.1 S (Sᘁ)).inv ≫ (bS ▷ Sᘁ)))
   clear_value bT bS
   calc
-    _ = 𝟙 _ ⊗≫ (Z.1 ◁ T ◁ η_ S (Sᘁ)) ⊗≫
-      ((bT ▷ (S ⊗ Sᘁ)) ≫ ((T ⊗ Z.1) ◁ 𝟙 (S ⊗ Sᘁ))) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ T ◁ η_ S (Sᘁ)) ⊗≫ (bT ▷ (S ⊗ Sᘁ)) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp
+      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
     _ = 𝟙 _ ⊗≫ (((Z.1 ⊗ T) ◁ η_ S (Sᘁ)) ≫ (bT ▷ (S ⊗ Sᘁ))) ⊗≫
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by monoidal
     _ = 𝟙 _ ⊗≫ ((bT ▷ (𝟙_ D)) ≫ ((T ⊗ Z.1) ◁ η_ S (Sᘁ))) ⊗≫
@@ -180,26 +177,12 @@ theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
   apply biproduct.hom_ext
   intro j
   simp only [Category.assoc, leftDistributor_hom_comp_biproduct_π]
-  have hcomp : unitCandidate C Z ≫ biproduct.π V j = unitComponent C Z j := by
-    exact biproduct.lift_π _ _
-  have hr : (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) ≫ (T ◁ biproduct.π V j) =
-      (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
-    rw [← whiskerLeft_comp, hcomp]
-  have hl : (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T ≫ (T ◁ biproduct.π V j) =
-      ∑ i, ∑ a : crossingIndex C T i j,
-        (unitComponent C Z i ▷ T) ≫ crossingBlock Z.1 T (simples C j)
-          (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
-    rw [unitCandidate, biproduct.lift_eq]
-    simp only [sum_whiskerRight, Preadditive.sum_comp, comp_whiskerRight, Category.assoc]
-    apply Finset.sum_congr rfl
-    intro i _
-    have hm := crossingCandidate_matrix C Z.1 T i j
-    have hmi := congrArg (fun k => (unitComponent C Z i ▷ T) ≫ k) hm
-    simpa [Category.assoc, Preadditive.comp_sum] using hmi
-  calc
-    _ = _ := hl
-    _ = _ := by simpa [Fintype.sum_sigma] using unit_sum C Z T j
-    _ = _ := hr.symm
+  rw [← whiskerLeft_comp, show unitCandidate C Z ≫ biproduct.π V j =
+    unitComponent C Z j from biproduct.lift_π _ _]
+  dsimp only [V]
+  simp only [unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
+    comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum]
+  simpa only [Fintype.sum_sigma, crossingSummand, Category.assoc] using unit_sum C Z T j
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/

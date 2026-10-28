@@ -38,7 +38,7 @@ theorem commute_moveWord {s : ℕ → G} {m : ℕ}
       s i * moveWord s j = moveWord s j * s i := by
   intro j
   induction j with
-  | zero => simp [moveWord]
+  | zero => exact fun _ _ ↦ (mul_one _).trans (one_mul _).symm
   | succ j ih =>
     intro hji him
     simp only [moveWord, ← mul_assoc]
