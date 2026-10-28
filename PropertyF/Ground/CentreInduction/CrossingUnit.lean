@@ -138,11 +138,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The explicit induction crossing is normalized on the tensor unit. -/
 theorem crossingCandidate_unit (X : C.Obj) :
     crossingCandidate C X (𝟙_ C.Obj) =
-      (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv := by
-  let V := inductionSummand C X
-  refine rightDistributor_ext_left (f := V) fun i => ?_
-  rw [crossingCandidate_unit_summand]
-  dsimp only [underlying, V]
-  rw [← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]
+      (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv :=
+  rightDistributor_ext_left (f := inductionSummand C X) fun i => by
+    simpa only [underlying, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc] using
+      crossingCandidate_unit_summand C X i
 
 end PropertyF.Ground.CentreInduction

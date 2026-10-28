@@ -35,17 +35,15 @@ theorem exists_galois_braid_trace_weights
       (∀ i, 0 < size i) ∧
       IsUnitaryBraidPresentation b ∧
       (∀ i, w i ≠ 0) ∧
-      IsTracePresentation C p b w := by
-  classical
-  obtain ⟨r, size, b, mult, hsize, hunit, hret, _, htrace⟩ :=
+      IsTracePresentation C p b w :=
+  let ⟨r, size, b, mult, hsize, hunit, hret, _, htrace⟩ :=
     exists_unitary_braid_trace_blocks C p (Ground.unitScalarEquiv C) hfinite
   let w : Fin r → ℝ := fun j => ∑ i, (mult i j : ℝ) * qdim i
-  refine ⟨r, size, b, w, hsize, hunit, ?_, ?_⟩
-  · exact fun j => transported_weight_ne_zero (fun i => mult i j) original qdim σ
-      hpos htransport (hret j)
-  · intro z
-    unfold pivotalDimension at hqdim
-    simpa [actualBraidTrace, Blocks.trace, w, ← unitScalar_eq_equiv, hqdim] using htrace z
+  ⟨r, size, b, w, hsize, hunit,
+    (fun j => transported_weight_ne_zero (fun i => mult i j) original qdim σ
+      hpos htransport (hret j)), fun z => by
+      unfold pivotalDimension at hqdim
+      simpa [actualBraidTrace, Blocks.trace, w, ← unitScalar_eq_equiv, hqdim] using htrace z⟩
 
 /-- Categorical three-strand rigidity from real Galois dimension data and
 one intrinsic overlap trace identity. All matrix blocks and weights are

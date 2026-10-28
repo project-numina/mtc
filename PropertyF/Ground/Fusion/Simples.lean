@@ -127,9 +127,9 @@ theorem finrank_simples_hom (i j : Fin (rank C)) :
   let : Simple (simples C i) := simples_simple C i
   let : Simple (simples C j) := simples_simple C j
   let : ∀ X Y : C.Obj, FiniteDimensional ℂ (X ⟶ Y) := IsFusionCategory.hom_finite
-  rw [CategoryTheory.finrank_hom_simple_simple ℂ]
-  congr 1
-  exact propext ⟨simples_injective C, fun h => by subst j; exact ⟨Iso.refl _⟩⟩
+  simp only [CategoryTheory.finrank_hom_simple_simple ℂ,
+    show Nonempty (simples C i ≅ simples C j) ↔ i = j from
+      ⟨simples_injective C, fun h ↦ by subst j; exact ⟨Iso.refl _⟩⟩]
 
 end PropertyF.Ground
 

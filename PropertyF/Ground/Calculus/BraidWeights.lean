@@ -61,18 +61,19 @@ simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
 theorem pivotalTrace_groundEndBlocks :
     scalar (p.rightTrace a.asHom) =
-      ∑ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) * (groundEndBlockEquiv C e a i).trace := by
-  classical
+      ∑ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) * (groundEndBlockEquiv C e a i).trace :=
   let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
-  have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj e p a
-  have h := cyclicTrace_biproduct_scalar_blocks
+  let hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj e p a
+  let h := cyclicTrace_biproduct_scalar_blocks
     (fun Y => scalar.toLinearMap.comp (rightTraceWithLinear (p.iso Y)))
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
     (c := fun q => groundEndBlockEquiv C e a q.1 q.2 q.2)
     (fun ⟨i, j⟩ => by simpa [F, z, Category.assoc] using groundEndBlockEquiv_diagonal C e a i j)
-  simpa [rightTraceWithLinear, rightTraceWith_pivotal, hz, F, Matrix.trace, Finset.mul_sum, mul_comm,
-    Fintype.sum_sigma] using h
+  by
+    rw [← hz]
+    simpa [rightTraceWithLinear, PivotalStructure.rightTrace, F, Matrix.trace, Finset.mul_sum, mul_comm,
+      Fintype.sum_sigma] using h
 
 end PropertyF.Ground.Calculus
 
@@ -101,18 +102,17 @@ all original constituent dimensions are positive and the block is retained. -/
 theorem transported_weight_ne_zero {ι : Type*} [Fintype ι]
     (mult : ι → ℕ) (dim qdim : ι → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < dim i) (htransport : ∀ i, σ (dim i : ℂ) = (qdim i : ℂ))
-    (hret : ∃ i, 0 < mult i) : (∑ i, (mult i : ℝ) * qdim i) ≠ 0 := by
-  have hsum : 0 < ∑ i, (mult i : ℝ) * dim i := by
+    (hret : ∃ i, 0 < mult i) : (∑ i, (mult i : ℝ) * qdim i) ≠ 0 := fun hz ↦
+  let hsum : 0 < ∑ i, (mult i : ℝ) * dim i := by
     obtain ⟨i, hi⟩ := hret
     exact Finset.sum_pos' (fun i _ => mul_nonneg (Nat.cast_nonneg _) (hpos i).le)
       ⟨i, Finset.mem_univ _, mul_pos (by exact_mod_cast hi) (hpos i)⟩
-  intro hz
-  have hz' : (∑ i, (mult i : ℂ) * σ (dim i : ℂ)) = 0 := by
+  let hz' : (∑ i, (mult i : ℂ) * σ (dim i : ℂ)) = 0 := by
     simpa only [htransport, ← Complex.ofReal_natCast, ← Complex.ofReal_mul,
       ← Complex.ofReal_sum, Complex.ofReal_zero] using congrArg Complex.ofReal hz
-  apply (ne_of_gt hsum)
-  exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz') :
-    (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0)
+  (ne_of_gt hsum) (by
+    exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz') :
+      (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0))
 
 end PropertyF.Ground.Calculus
 
@@ -310,23 +310,21 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     (b : BraidBlockPresentation X n d) :
     ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,
       (∀ j, ∃ i, 0 < mult i j) ∧
-      HasMultiplicityDecomposition m d mult ∧ HasMultiplicityTrace C p scalar b mult := by
+      HasMultiplicityDecomposition m d mult ∧ HasMultiplicityTrace C p scalar b mult :=
   let F := braidToEndBlocks C e b
-  obtain ⟨mult, hmult, hretained⟩ := faithful_block_representation_multiplicities hd F
+  let ⟨mult, hmult, hretained⟩ := faithful_block_representation_multiplicities hd F
     ((groundEndBlockEquiv C e).injective.comp (Subtype.val_injective.comp b.symm.injective))
-  have hdim : ∀ i, m i = ∑ j, mult i j * d j := by
-    intro i
+  let hdim : ∀ i, m i = ∑ j, mult i j * d j := fun i => by
     exact_mod_cast (show (m i : ℂ) = ∑ j, (mult i j : ℂ) * d j from by
       simpa only [map_one, Pi.one_apply, Matrix.trace_one, Fintype.card_fin] using hmult i 1)
-  refine ⟨mult, hretained, hdim, fun a => ?_⟩
-  have hi : ∀ i, (groundEndBlockEquiv C e (a : End (braidTensorPower X n)) i).trace =
-      ∑ j, (mult i j : ℂ) * (b a j).trace := by
-    intro i
-    simpa [F, braidToEndBlocks] using hmult i (b a)
-  rw [pivotalTrace_groundEndBlocks C e _ p scalar]
-  simp_rw [hi, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  simp only [Finset.sum_mul, mul_assoc, mul_left_comm]
+  ⟨mult, hretained, hdim, fun a => by
+    have hi : ∀ i, (groundEndBlockEquiv C e (a : End (braidTensorPower X n)) i).trace =
+        ∑ j, (mult i j : ℂ) * (b a j).trace := fun i => by
+      simpa [F, braidToEndBlocks] using hmult i (b a)
+    rw [pivotalTrace_groundEndBlocks C e _ p scalar]
+    simp_rw [hi, Finset.mul_sum]
+    rw [Finset.sum_comm]
+    simp only [Finset.sum_mul, mul_assoc, mul_left_comm]⟩
 
 /-- Finite categorical braid images admit unitary blocks and natural-number
 multiplicities with the actual pivotal trace formula and retention. -/
@@ -341,16 +339,13 @@ theorem exists_unitary_braid_trace_blocks
       (∀ j, ∃ i, 0 < mult i j) ∧
       HasMultiplicityDecomposition
         (fun i => Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)) d mult ∧
-      HasMultiplicityTrace C p scalar b mult := by
-  let m : Fin (Ground.rank C) → ℕ := fun i =>
-    Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)
-  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (braidTensorPower X n)
+      HasMultiplicityTrace C p scalar b mult :=
+  let ⟨e⟩ := Ground.exists_canonical_decomposition C (braidTensorPower X n)
   let _ : Finite (braidImage X n) := hfinite
-  obtain ⟨r, d, b, hnonzero, hunitary⟩ :=
+  let ⟨r, d, b, hnonzero, hunitary⟩ :=
     groupImageAlgebra_unitary_blocks (braidEndRepresentation X n)
-  have hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
-  obtain ⟨mult, hret, hdim, htrace⟩ :=
-    pivotalTrace_braid_multiplicities C p scalar e hd b
-  exact ⟨r, d, b, mult, hd, hunitary, hret, hdim, htrace⟩
+  let hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
+  let ⟨mult, hret, hdim, htrace⟩ := pivotalTrace_braid_multiplicities C p scalar e hd b
+  ⟨r, d, b, mult, hd, hunitary, hret, hdim, htrace⟩
 
 end PropertyF.Ground.Calculus

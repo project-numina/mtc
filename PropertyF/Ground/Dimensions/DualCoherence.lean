@@ -148,9 +148,9 @@ theorem unitDoubleDual_trace [RightRigidCategory C] :
 set_option backward.isDefEq.respectTransparency false in
 /-- The pivotal dimension of the tensor unit is one. -/
 theorem rightTrace_unit [RightRigidCategory C] (p : PivotalStructure (C := C)) :
-    p.rightTrace (𝟙 (𝟙_ C)) = 1 := by
-  apply End.homEquiv.injective
-  simpa only [PivotalStructure.rightTrace, End.homEquiv_apply, End.one_asHom,
-    Category.id_comp, p.unit] using (unitDoubleDual_trace (C := C))
+    p.rightTrace (𝟙 (𝟙_ C)) = 1 :=
+  End.homEquiv.injective (by
+    simpa only [PivotalStructure.rightTrace, rightTraceWith, End.homEquiv_apply, End.one_asHom,
+      Category.id_comp, p.unit] using (unitDoubleDual_trace (C := C)))
 
 end PropertyF.Ground.Dimensions

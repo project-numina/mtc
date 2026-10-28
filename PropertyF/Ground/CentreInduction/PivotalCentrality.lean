@@ -25,14 +25,9 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
     (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
       (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f := by
   dsimp only
-  let u := transportedPivotalHom p
-  have hu (X Y : 𝒵) :
-      u (X ⊗ Y) = (u X ⊗ₘ u Y) ≫ (doubleDualTensorIso X Y).hom.f :=
-    (transported_pivotal_tensor p X Y).symm
   let b := (β_ Z B).hom
-  have hn : b.f ≫ u (B ⊗ Z) = u (Z ⊗ B) ≫ ((bᘁ)ᘁ).f :=
-    transported_pivotal_natural p b
-  rw [hu, hu] at hn
+  have hn := transported_pivotal_natural p b
+  rw [← transported_pivotal_tensor p B Z, ← transported_pivotal_tensor p Z B] at hn
   have hb := congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
   dsimp only [Center.comp_f] at hb
   change (doubleDualTensorIso Z B).hom.f ≫ ((bᘁ)ᘁ).f =
@@ -54,11 +49,10 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] :
   let u := transportedPivotalHom p
   have hc := transported_pivotal_braiding p Z B
   dsimp only at hc
-  let j := (positivePivotalComponent p T).hom
-  have hj : j.f = u B := positivePivotalComponent_forget p T
   let : IsIso (u B) := by
-    rw [← hj]
-    change IsIso ((Center.forget D).map j)
+    change IsIso (transportedPivotalHom p ((Center.ofBraided D).obj T))
+    rw [← positivePivotalComponent_forget p T]
+    change IsIso ((Center.forget D).map (positivePivotalComponent p T).hom)
     infer_instance
   have hbeta := ((Zᘁ)ᘁ).2.naturality (u B)
   change (u Z ▷ T) ≫ (((Zᘁ)ᘁ).2.β T).hom =
@@ -70,8 +64,7 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] :
       (((Zᘁ)ᘁ).2.β ((Bᘁ)ᘁ).1).hom at hc
   change ((Zᘁ)ᘁ).1 ◁ u B ≫ (((Zᘁ)ᘁ).2.β ((Bᘁ)ᘁ).1).hom =
     (((Zᘁ)ᘁ).2.β T).hom ≫ u B ▷ ((Zᘁ)ᘁ).1 at hbeta
-  simp only [Category.assoc, hbeta] at hc ⊢
-  exact hc.symm
+  simpa only [Category.assoc, hbeta] using hc.symm
 end PropertyF.Ground.CentreInduction
 
 namespace PropertyF.Ground.CentreInduction
