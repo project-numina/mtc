@@ -8,3 +8,5 @@ public import MTC.FRSymbols.ToricCode
 public import MTC.PropertyF.FusionRules
 public import MTC.FRSymbols.Pointed
 public import MTC.ModularData.CategoricalS
+public import MTC.FRSymbols.MatrixSymbols
+public import MTC.FRSymbols.Trivial
