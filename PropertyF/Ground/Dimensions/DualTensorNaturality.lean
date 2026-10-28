@@ -91,7 +91,7 @@ theorem doubleDualTensorIso_natural :
   have h2 := congrArg (fun m => rightAdjointMate m) (rightDualTensorIso_natural f g)
   rw [comp_rightAdjointMate, comp_rightAdjointMate] at h2
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
-  rw [← Category.assoc, rightDualTensorIso_inv_natural (gᘁ) (fᘁ), Category.assoc, ← h2]
+  rw [reassoc_of% (rightDualTensorIso_inv_natural (gᘁ) (fᘁ)), ← h2]
 end PropertyF.Ground.Dimensions
 
 @[expose] public noncomputable section
