@@ -81,13 +81,10 @@ variable {C} in
 theorem rootTensorDefect_coevaluation_of_iso
     {X : C.Obj} (i : Fin (rank C)) (a : X ≅ simples C i) :
     η_ X (Xᘁ) ≫ (rootTensorDefect C X (Xᘁ)).hom =
-      (rootDimension C (unitIndex C) * rootDualSign C i) • η_ X (Xᘁ) := by
-  let Y := simples C i
-  let b := (rightDualIsoMap a).symm
-  let d := a ⊗ᵢ b
-  have hc : η_ X (Xᘁ) ≫ d.hom = η_ Y (Yᘁ) := coevaluation_iso_map a
-  have hn := rootTensorDefect_natural C a.hom b.hom
-  exact scalar_eigenvector_of_mono hc hn (rootTensorDefect_coevaluation i)
+      (rootDimension C (unitIndex C) * rootDualSign C i) • η_ X (Xᘁ) :=
+  scalar_eigenvector_of_mono (s := (a ⊗ᵢ (rightDualIsoMap a).symm).hom)
+    (coevaluation_iso_map a) (rootTensorDefect_natural C a.hom (rightDualIsoMap a).symm.hom)
+    (rootTensorDefect_coevaluation i)
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 /-- The root defect has the same eigenvalue on the braided-swapped cup. -/
@@ -95,17 +92,17 @@ theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
     let X := simples C i
     letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
     η_ (Xᘁ) X ≫ (rootTensorDefect C (Xᘁ) X).hom =
-      (rootDimension C (unitIndex C) * rootDualSign C i) • η_ (Xᘁ) X := by
+      (rootDimension C (unitIndex C) * rootDualSign C i) • η_ (Xᘁ) X :=
   let X := simples C i
   let A := Xᘁ
   let Q := (Xᘁ)ᘁ
-  let : ExactPairing A X := BraidedCategory.exactPairing_swap X A
+  letI : ExactPairing A X := BraidedCategory.exactPairing_swap X A
   let r : X ≅ Q := rightDualIso inferInstance HasRightDual.exact
-  have hc : η_ A X ≫ A ◁ r.hom = η_ A Q := coevaluation_rightDualIso inferInstance HasRightDual.exact
-  have he := rootTensorDefect_coevaluation_of_iso (dualIndex C i) (rightDualLabelIso C i)
-  rw [rootDualSign_dual] at he
-  exact scalar_eigenvector_of_mono hc (by
-    simpa only [id_tensorHom] using rootTensorDefect_natural C (𝟙 A) r.hom) he
+  scalar_eigenvector_of_mono (s := A ◁ r.hom)
+    (coevaluation_rightDualIso inferInstance HasRightDual.exact)
+    (by simpa only [id_tensorHom] using rootTensorDefect_natural C (𝟙 A) r.hom)
+    (by simpa only [rootDualSign_dual] using
+      rootTensorDefect_coevaluation_of_iso (dualIndex C i) (rightDualLabelIso C i))
 end PropertyF.Ground.Dimensions
 
 end
