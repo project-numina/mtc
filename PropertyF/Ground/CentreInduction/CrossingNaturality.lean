@@ -72,8 +72,9 @@ theorem crossingBlock_sum_natural_test
       (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
         (h ▷ ((simples C j ⊗ X) ⊗ (simples C j)ᘁ)) := by
   simp_rw [crossingBlock_pre_test (k := ℂ), crossingBlock_post_test (k := ℂ)]
-  exact (fusionBasis_contraction_natural C i j (h ▷ simples C j)
-    (mixedCrossingBilinear (k := ℂ) X T U (simples C i) (simples C j))).symm
+  simpa only [crossingInclusion, crossingProjection, simpleProjection] using
+    (simpleBasis_contraction_natural C i (h ▷ simples C j)
+      (mixedCrossingBilinear (k := ℂ) X T U (simples C i) (simples C j))).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction crossing is natural in the crossed object. -/

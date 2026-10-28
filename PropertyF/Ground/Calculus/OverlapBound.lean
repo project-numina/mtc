@@ -189,8 +189,8 @@ theorem addRight_braid_unitary {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
-    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
-    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
+    (he : IsUnitaryBraidPresentation e)
+    (hf : IsUnitaryBraidPresentation f)
     {u : braidAlgebra X n} (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ (e u)) :
     PropertyF.Blocks.IsUnitary ⟨_, q⟩ (f (addRightBraidAlgebraIter X n k u)) := by
   simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
@@ -202,8 +202,8 @@ theorem addLeft_braid_unitary {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
-    (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
-    (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
+    (he : IsUnitaryBraidPresentation e)
+    (hf : IsUnitaryBraidPresentation f)
     {u : braidAlgebra X n} (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ (e u)) :
     PropertyF.Blocks.IsUnitary ⟨_, q⟩ (f (addLeftBraidAlgebraIter X n k u)) := by
   simpa [addLeftBlocksIterStarMap, addLeftBlocksIter] using
@@ -215,7 +215,7 @@ theorem overlapProduct_unitary {X : C} {t : ℕ}
     {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
       PropertyF.Blocks.Algebra ⟨_, d n⟩)
-    (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
+    (he : ∀ n, IsUnitaryBraidPresentation (e n))
     {u : braidAlgebra X t} (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ) :
     ∀ k i, e (overlapIndex t k) (overlapProduct X t u k) i ∈
       Matrix.unitaryGroup (Fin (d (overlapIndex t k) i)) ℂ := by
@@ -292,7 +292,7 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
       PropertyF.Blocks.Algebra ⟨_, d n⟩)
     (hd : ∀ n i, 0 < d n i)
-    (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
+    (he : ∀ n, IsUnitaryBraidPresentation (e n))
     (u : braidAlgebra X t)
     (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ)
     (hrec : HasOverlapTracePower C p u) :

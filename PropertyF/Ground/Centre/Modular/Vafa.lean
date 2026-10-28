@@ -685,11 +685,12 @@ theorem fpDeterminant_tensor_scalar_natural
       fpDimension C X • fpDeterminant C Y (η.app Y) := fpDeterminant_tensor_natural C η X Y
   rw [h, fpDeterminant_trans, fpDeterminant_trans, fpDeterminant_tensor_scalar, hn, smul_add]
 
+variable (hbalance : HasSimpleBalance C η t)
+
+include hbalance in
 /-- Balancing identifies the mixed double braiding of two simples with a
 scalar multiple of the twist component. -/
-theorem monodromy_simple_eq_scalar_natural
-    (hbalance : HasSimpleBalance C η t)
-    (i j : Fin (rank C)) :
+theorem monodromy_simple_eq_scalar_natural (i j : Fin (rank C)) :
     monodromyIso (simples C i) (simples C j) =
       scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ ≪≫
         η.app (simples C i ⊗ simples C j) := by
@@ -697,10 +698,10 @@ theorem monodromy_simple_eq_scalar_natural
     (scalarIso (simples C i ⊗ simples C j) (t i * t j)).symm from Iso.ext rfl,
     Iso.symm_self_id_assoc]
 
+include hbalance in
 /-- Under the explicit balancing equation, the tensor determinant rule holds
 for every simple mixed monodromy. -/
 theorem fpDeterminant_tensor_simple_monodromy
-    (hbalance : HasSimpleBalance C η t)
     (X : C.Obj) (i j : Fin (rank C)) :
     HasTensorDeterminant C X (monodromyIso (simples C i) (simples C j)) :=
   (monodromy_simple_eq_scalar_natural C hbalance i j).symm ▸
@@ -720,10 +721,10 @@ theorem fpDeterminant_tensor_flip
   rw [h]
   exact fpDeterminant_conjugate C e.symm (Iso.refl X ⊗ᵢ a)
 
+include hbalance in
 /-- Under balancing, tensoring a simple mixed monodromy on either side
 satisfies the FP determinant rule. -/
 theorem fpDeterminant_simple_monodromy_tensor
-    (hbalance : HasSimpleBalance C η t)
     (X : C.Obj) (i j : Fin (rank C)) :
     fpDeterminant C ((simples C i ⊗ simples C j) ⊗ X)
       (monodromyIso (simples C i) (simples C j) ⊗ᵢ Iso.refl X) =

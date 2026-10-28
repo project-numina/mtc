@@ -143,14 +143,17 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
 
+local notation "Sₚ" => Modular.categoricalS C p
+local notation "dₚ" => Modular.simpleDimension C p
+
 /-- Positive FP dimensions and twist balancing upgrade the numerical S-test
 to actual transparency of a simple object. -/
 theorem transparent_of_S_test_and_balancing
     (hdim : Modular.HasFPSimpleDimensions C p)
     (hbalance : IsPivotalTwistBalanced C p)
     (k : Fin (rank C))
-    (hs : ∀ i, Modular.categoricalS C p i k =
-      Modular.simpleDimension C p i * Modular.simpleDimension C p k) :
+    (hs : ∀ i, Sₚ i k =
+      dₚ i * dₚ k) :
     Transparent (simples C k) := by
   have hsimple (i : Fin (rank C)) :
       Modular.doubleBraiding (simples C i) (simples C k) = 𝟙 _ := by
@@ -173,7 +176,7 @@ theorem categoricalS_det_ne_zero_of_trivial_transparency
     (hdim : Modular.HasFPSimpleDimensions C p)
     (hbalance : IsPivotalTwistBalanced C p)
     (htrivial : ∀ k, Transparent (simples C k) → k = unitIndex C) :
-    (Modular.categoricalS C p).det ≠ 0 :=
+    (Sₚ).det ≠ 0 :=
   categoricalS_det_ne_zero_of_trivial_S_centralizer C p hdim fun k hs ↦
     htrivial k (transparent_of_S_test_and_balancing C p hdim hbalance k hs)
 
