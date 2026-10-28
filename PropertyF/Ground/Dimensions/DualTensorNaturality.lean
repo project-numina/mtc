@@ -64,12 +64,12 @@ theorem tensorPairing_evaluation_natural : ((Y'ᘁ) ⊗ (X'ᘁ)) ◁ (f ⊗ₘ g
 set_option backward.isDefEq.respectTransparency false in
 theorem rightDualTensorIso_natural :
     ((f ⊗ₘ g)ᘁ) ≫ (rightDualTensorIso X Y).hom =
-      (rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ) := by
-  apply evaluation_ext (X := X ⊗ Y)
-  simp only [comp_whiskerRight_assoc]
-  rw [rightDualTensorIso_evaluation, rightAdjointMate_comp_evaluation,
-    ← rightDualTensorIso_evaluation X' Y', whisker_exchange_assoc,
-    tensorPairing_evaluation_natural]
+      (rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ) :=
+  evaluation_ext (X := X ⊗ Y) (by
+    simp only [comp_whiskerRight_assoc]
+    rw [rightDualTensorIso_evaluation, rightAdjointMate_comp_evaluation,
+      ← rightDualTensorIso_evaluation X' Y', whisker_exchange_assoc,
+      tensorPairing_evaluation_natural])
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse right-dual tensor comparison is natural. -/
@@ -106,13 +106,12 @@ theorem drinfeld_eval (X : C.Obj) :
 /-- The braided double-dual isomorphism is natural. -/
 @[reassoc]
 theorem doubleDualIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
-    f ≫ (doubleDualIso C Y).hom = (doubleDualIso C X).hom ≫ (fᘁ)ᘁ := by
-  apply evaluation_ext (X := Yᘁ)
-  simp only [comp_whiskerRight_assoc]
-  rw [drinfeld_eval C Y, braiding_naturality_left_assoc,
-    ← rightAdjointMate_comp_evaluation, ← braiding_naturality_right_assoc,
-    ← drinfeld_eval C X, whisker_exchange_assoc,
-    ← rightAdjointMate_comp_evaluation]
+    f ≫ (doubleDualIso C Y).hom = (doubleDualIso C X).hom ≫ (fᘁ)ᘁ :=
+  evaluation_ext (X := Yᘁ) (by
+    simp only [comp_whiskerRight_assoc]
+    rw [drinfeld_eval C Y, braiding_naturality_left_assoc,
+      ← rightAdjointMate_comp_evaluation, ← braiding_naturality_right_assoc,
+      ← drinfeld_eval C X, whisker_exchange_assoc, ← rightAdjointMate_comp_evaluation])
 
 /-- The braided fourth-dual isomorphism, objectwise. -/
 def fourthDualIso (X : C.Obj) :

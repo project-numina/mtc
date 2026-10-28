@@ -21,6 +21,7 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵ᶜ" => Center C.Obj
 
 /-- A pivotal structure has the Frobenius–Perron dimensions on simple objects. -/
 abbrev PivotalHasFPDimensions (p : PivotalStructure (C := C.Obj)) : Prop :=
@@ -32,8 +33,6 @@ theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStr
     pivotalDimension C p X = (fpDimension C X : ℂ) := by
   simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
     hsimple] using pivotalDimension_decomposition C p X
-
-local notation "𝒵ᶜ" => Center C.Obj
 
 /-- The pivotal dimension of the underlying induced unit is the global FP dimension. -/
 theorem pivotalDimension_underlying_unit {p : PivotalStructure (C := C.Obj)}
