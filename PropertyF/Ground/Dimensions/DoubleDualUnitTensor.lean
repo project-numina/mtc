@@ -86,7 +86,6 @@ theorem doubleDualTensorIso_unit_left :
       (doubleDualTensorIso (𝟙_ C) X).hom ≫ (((λ_ X).homᘁ)ᘁ) = (λ_ ((Xᘁ)ᘁ)).hom := by
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
-  let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual (Iᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
   let R := rightDualTensorIso I X
   let S := rightDualTensorIso (Xᘁ) (Iᘁ)
@@ -120,7 +119,6 @@ theorem doubleDualTensorIso_unit_right :
       (doubleDualTensorIso X (𝟙_ C)).hom ≫ (((ρ_ X).homᘁ)ᘁ) = (ρ_ ((Xᘁ)ᘁ)).hom := by
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
-  let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual (Iᘁ)
   let r : Iᘁ ≅ I := rightDualUnitIso
   let R := rightDualTensorIso X I
   let S := rightDualTensorIso (Iᘁ) (Xᘁ)

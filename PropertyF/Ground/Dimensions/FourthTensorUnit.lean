@@ -26,7 +26,6 @@ theorem rootTensorIso_unit_left :
       rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom := by
   let I := 𝟙_ C.Obj
   let : HasRightDual I := RightRigidCategory.rightDual I
-  let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual (Iᘁ)
   apply (cancel_mono (rightDualIsoMap (rightDualIsoMap (λ_ X))).hom).1
   change (rootTensorIso C I X).hom ≫ (((λ_ X).homᘁ)ᘁ) =
     (rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (I ⊗ X)).hom) ≫
@@ -48,8 +47,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rootTensorDefect_unit_left :
     (rootTensorDefect C (𝟙_ C.Obj) X).hom =
       rootDimension C (unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) := by
-  let : HasRightDual (𝟙_ C.Obj ⊗ X) := RightRigidCategory.rightDual _
-  let : HasRightDual ((𝟙_ C.Obj ⊗ X)ᘁ) := RightRigidCategory.rightDual _
   apply (cancel_mono (rootTensorIso C (𝟙_ C.Obj) X).hom).1
   change (((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom ≫
     (rootTensorIso C (𝟙_ C.Obj) X).inv) ≫ (rootTensorIso C (𝟙_ C.Obj) X).hom =
