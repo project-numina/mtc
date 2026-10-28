@@ -51,7 +51,8 @@ theorem balance_of_drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCatego
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
   rw [h, p.tensor]
   rw [← Category.assoc, tensorHom_comp_tensorHom]
-  simp [Category.assoc]
+  rw [Category.assoc, Iso.inv_hom_id, Category.comp_id,
+    Category.assoc, Iso.inv_hom_id, Category.comp_id]
 
 /-- The tensor-pairing cap identity implies the Drinfeld tensor equation. -/
 theorem drinfeld_tensor_of_pairing_cap {D : Type u} [Category.{v} D] [MonoidalCategory D]

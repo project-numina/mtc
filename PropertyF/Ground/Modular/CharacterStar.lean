@@ -35,17 +35,9 @@ theorem character_inner_balance (χ ψ : Character N) (i : ι) :
       simp only [ψ.mul_eq, Finset.mul_sum]
     _ = ∑ k, ∑ j, ((N.coeff (dual i) k j : ℂ) * starRingEnd ℂ (χ.value j)) * ψ.value k := by
       rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro k _
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [hdual i j k]
-      ring
+      simp only [hdual i, mul_comm, mul_assoc]
     _ = ∑ k, starRingEnd ℂ (χ.value (dual i) * χ.value k) * ψ.value k := by
-      apply Finset.sum_congr rfl
-      intro k _
-      rw [χ.mul_eq, map_sum, Finset.sum_mul]
-      simp only [map_mul, map_natCast]
+      simp only [χ.mul_eq, map_sum, Finset.sum_mul, map_mul, map_natCast]
     _ = starRingEnd ℂ (χ.value (dual i)) * w := by
       simp only [w, map_mul, Finset.mul_sum, mul_left_comm, mul_assoc]
 

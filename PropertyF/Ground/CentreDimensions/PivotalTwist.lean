@@ -23,11 +23,10 @@ theorem braid_self_slide (X A : C) (t : X ⟶ X) :
       (t ▷ (X ⊗ A)) ≫ (α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom := by
   have hb := braiding_naturality_left t X
   calc
-    _ = (α_ X X A).inv ≫ (((β_ X X).hom ≫ X ◁ t) ▷ A) ≫ (α_ X X A).hom := by
-      simp only [comp_whiskerRight]; monoidal
+    _ = (α_ X X A).inv ≫ (((β_ X X).hom ≫ X ◁ t) ▷ A) ≫ (α_ X X A).hom := by monoidal
     _ = (α_ X X A).inv ≫ ((t ▷ X ≫ (β_ X X).hom) ▷ A) ≫ (α_ X X A).hom := by
       rw [← hb]
-    _ = _ := by simp only [comp_whiskerRight]; monoidal
+    _ = _ := by monoidal
 
 omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Closing a braided strand against its dual gives the identity. -/
@@ -38,8 +37,8 @@ theorem braided_self_close (X : C) :
   slice_lhs 4 6 => rw [← hexagon_forward]
   simp only [Category.assoc, Iso.inv_hom_id_assoc]
   rw [braiding_naturality_right_assoc]
-  rw [rightUnitor_inv_braiding_assoc, ExactPairing.evaluation_coevaluation_assoc]
-  simp
+  rw [rightUnitor_inv_braiding_assoc, ExactPairing.evaluation_coevaluation_assoc,
+    Iso.inv_hom_id, Iso.inv_hom_id_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing self-braiding gives the pivotal twist determined by a compatible double-dual isomorphism. -/

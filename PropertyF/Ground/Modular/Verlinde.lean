@@ -78,10 +78,10 @@ theorem galois_unit_properties (hu : d u = 1)
     calc
       d y ^ 2 * σ D = ∑ x, (d y * σ (d x)) ^ 2 := by
         simp only [hglobal, map_sum, Finset.mul_sum, map_pow, mul_pow]
-      _ = ∑ x, S x y ^ 2 := by
-        simp only [hcol]
-      _ = ∑ x, S y x * S x y := by
-        simp only [hsym y, pow_two]
+      _ = ∑ x, S x y ^ 2 :=
+        (congrArg (fun f : ι → ℂ => ∑ x, f x ^ 2) (funext hcol)).symm
+      _ = ∑ x, S y x * S x y :=
+        Finset.sum_congr rfl fun x _ ↦ by rw [hsym y x, pow_two]
       _ = _ := hsq y y
   have hself : y = dual y := by
     by_contra hn

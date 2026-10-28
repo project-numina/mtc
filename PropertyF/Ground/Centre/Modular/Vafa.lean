@@ -374,9 +374,7 @@ theorem homAction_det_biprod {R : Type*} [Field R] {D : Type u} [Category.{v} D]
   apply Units.ext
   rw [← LinearEquiv.det_conj A E, h, LinearEquiv.coe_det]
   change LinearMap.det (L.toLinearMap.prodMap right.toLinearMap) = _
-  rw [LinearMap.det_prodMap]
-  simp only [Units.val_mul, LinearEquiv.coe_det]
-  rfl
+  rw [LinearMap.det_prodMap, Units.val_mul, LinearEquiv.coe_det, LinearEquiv.coe_det]
 
 /-- FP determinants are additive over direct sums of automorphisms. -/
 theorem fpDeterminant_biprod

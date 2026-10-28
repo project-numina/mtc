@@ -52,7 +52,7 @@ lemma braid_first_with_comparison (X A : C) {B : D} (g : B ≅ F.obj A) :
         F.map (((α_ X X A).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl A) ≪≫ α_ X X A).hom) := by
   have hn := braid_first (Iso.refl (F.obj X)) g
   simp only [tensorIso_hom, Iso.refl_hom, id_tensorHom] at hn
-  simp only [← Category.assoc, hn]
+  rw [← Category.assoc, hn]
   have h := congrArg (fun k => (F.obj X ◁ (F.obj X ◁ g.hom)) ≫ k)
     (braid_first_functor F X A)
   simpa only [Category.assoc] using h

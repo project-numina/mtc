@@ -140,17 +140,10 @@ theorem characters_bijective (columns : ι → Character N)
     (hlin : LinearIndependent ℂ (fun y => (columns y).value)) :
     Function.Bijective columns := by
   classical
-  constructor
-  · intro i j h
-    apply hlin.injective
-    exact congrArg Character.value h
-  · intro χ
-    let b := basisOfPiSpaceOfLinearIndependent hlin
-    have hb : ∀ y, b y = (columns y).value := by
-      intro y
-      exact congrFun (coe_basisOfPiSpaceOfLinearIndependent hlin) y
-    obtain ⟨y, hy⟩ := characters_exhausted N columns b hb χ
-    exact ⟨y, hy.symm⟩
+  refine ⟨fun _ _ h ↦ hlin.injective (congrArg Character.value h), fun χ ↦ ?_⟩
+  let b := basisOfPiSpaceOfLinearIndependent hlin
+  exact (characters_exhausted N columns b
+    (fun y ↦ congrFun (coe_basisOfPiSpaceOfLinearIndependent hlin) y) χ).imp fun _ h ↦ h.symm
 
 /-- The square of an S-matrix is a scalar multiple of duality. -/
 abbrev HasSSquare {R : Type*} [Semiring R] (S : Matrix ι ι R) (dual : ι → ι)

@@ -152,8 +152,7 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
 pseudo-unitary base, without assuming an initial pivotal structure. -/
 theorem positive_spherical_of_drinfeld_tensor (h : DrinfeldTensorLaw C)
     (hpu : PseudoUnitary C) :
-    ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) :=
+    ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
   Dimensions.positive_spherical_of_nonunit_fourth_dual C
     (fun i j _ _ ↦ fourthDualIso_tensor_of_drinfeld C h (simples C i) (simples C j)) hpu
 
@@ -177,8 +176,7 @@ theorem drinfeldTensorLaw (C : BraidedFusionCategory.{v,u}) : DrinfeldTensorLaw 
 structure with its actual FP dimensions, without any pivotal premise. -/
 theorem positive_spherical_of_pseudoUnitary (C : BraidedFusionCategory.{v,u})
     (hpu : PseudoUnitary C) :
-    ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) :=
+    ∃ p : Dimensions.PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
   positive_spherical_of_drinfeld_tensor C (drinfeldTensorLaw C) hpu
 
 end PropertyF.Ground.CentreInduction

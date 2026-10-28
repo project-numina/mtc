@@ -82,7 +82,7 @@ theorem categoricalS_det_ne_zero_of_kirby_vanishes_off_unit
   · intro k
     by_cases hk : k = unitIndex C
     · subst k
-      simp only [ite_true]
+      rw [ite_eq_left rfl]
       simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit, hdim]
       simp [globalFPDimension, Complex.ofReal_sum, pow_two]
     · rw [ite_eq_right hk]

@@ -26,7 +26,8 @@ braided double-dual component. -/
 def fourthDualRootScalar (C : BraidedFusionCategory.{v,u})
     (i : Fin (rank C)) : ℂ := by
   let : Simple (simples C i) := simples_simple C i
-  exact Classical.choose (isomorphisms_differ_by_scalar C
+  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  exact Classical.choose (isomorphisms_scalar
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
 theorem fourthDualRootScalar_spec
@@ -34,8 +35,10 @@ theorem fourthDualRootScalar_spec
     (fourthDualSimpleRoot C i).hom = fourthDualRootScalar C i •
       (doubleDualIso C (simples C i)).hom := by
   let : Simple (simples C i) := simples_simple C i
-  exact Classical.choose_spec (isomorphisms_differ_by_scalar C
+  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  have h := Classical.choose_spec (isomorphisms_scalar
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
+  exact ⟨h.1, h.2.1⟩
 
 /-- The chosen simple square roots extend to a natural isomorphism from the
 identity to the double-dual functor. It is not asserted to be monoidal. -/
