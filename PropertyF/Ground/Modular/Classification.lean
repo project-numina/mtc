@@ -170,11 +170,10 @@ theorem dual_involutive {R : Type*} [CommSemiring R]
     intro z _
     rw [hsym (dual y) z, hsym z y]
     ring
-  have h := hsq (dual y) y
-  rw [ite_eq_left rfl, hsym_sq, hsq] at h
   by_contra hn
-  rw [ite_eq_right (Ne.symm hn)] at h
-  exact hD h.symm
+  apply hD
+  simpa only [ite_eq_left rfl, ite_true, hsym_sq, hsq, ite_eq_right (Ne.symm hn)] using
+    (hsq (dual y) y).symm
 
 /-- The normalized S columns are linearly independent. The proof constructs an
 explicit inverse from the S-square identity and nonzero dimensions. -/
