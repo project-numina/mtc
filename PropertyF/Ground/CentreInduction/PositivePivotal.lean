@@ -111,19 +111,9 @@ theorem positiveDualIso_inv_forget (T : D) :
 theorem positiveDoubleDualIso_forget (T : D) :
     (positiveDoubleDualIso T).hom.f =
       (forgetDoubleDualIso ((Center.ofBraided D).obj T)).hom := by
-  let F := Center.ofBraided D
-  let Z := F.obj T
-  let e := positiveDualIso T
-  have hnat := forgetDualIso_natural e.inv
-  simp only [positiveDoubleDualIso, Iso.trans_hom, Iso.symm_hom,
-    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso]
-  change (e.invᘁ).f ≫ (positiveDualIso (Tᘁ)).hom.f =
-    (forgetDualIso (Zᘁ)).hom ≫ (forgetDualIso Z).invᘁ
-  rw [positiveDualIso_forget]
-  change (e.invᘁ).f ≫ (forgetDualIso (F.obj (Tᘁ))).hom = _
-  change (e.invᘁ).f ≫ (forgetDualIso (F.obj (Tᘁ))).hom =
-    (forgetDualIso (Zᘁ)).hom ≫ e.inv.fᘁ at hnat
-  rw [hnat, positiveDualIso_inv_forget]
+  simpa only [positiveDoubleDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap,
+    Center.comp_f, forgetDoubleDualIso, positiveDualIso_forget, positiveDualIso_inv_forget] using
+    forgetDualIso_natural (positiveDualIso T).inv
 
 theorem positiveDoubleDualIso_inv_forget (T : D) :
     (positiveDoubleDualIso T).inv.f =

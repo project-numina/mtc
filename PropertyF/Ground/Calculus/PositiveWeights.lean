@@ -41,11 +41,8 @@ theorem exists_galois_braid_trace_weights
     exists_unitary_braid_trace_blocks C p (Ground.unitScalarEquiv C) hfinite
   let w : Fin r → ℝ := fun j => ∑ i, (mult i j : ℝ) * qdim i
   refine ⟨r, size, b, w, hsize, hunit, ?_, ?_⟩
-  · intro j
-    exact_mod_cast (show ((∑ i, (mult i j : ℝ) * qdim i : ℝ) : ℂ) ≠ 0 from by
-      simpa only [htransport, ← Complex.ofReal_natCast, ← Complex.ofReal_mul,
-        ← Complex.ofReal_sum] using
-          transported_weight_ne_zero (fun i => mult i j) original σ hpos (hret j))
+  · exact fun j => transported_weight_ne_zero (fun i => mult i j) original qdim σ
+      hpos htransport (hret j)
   · intro z
     unfold pivotalDimension at hqdim
     rw [actualBraidTrace, htrace]

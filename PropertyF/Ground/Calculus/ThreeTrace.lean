@@ -158,9 +158,8 @@ theorem rightPartialTrace_simple_ground (C : BraidedFusionCategory.{v,u})
     rightPartialTrace p f =
       (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) :=
   let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
-  rightPartialTrace_simple_of_trace_compatibility (X := X) (Y := Y) p scalar f
+  rightPartialTrace_simple (X := X) (Y := Y) p scalar f
     (by simpa only [map_zero] using scalar.injective.ne (Modular.pivotalTrace_simple_ne_zero C p X))
-    (Dimensions.rightTrace_partialTrace p f)
 
 end PropertyF.Ground.Calculus
 
@@ -219,14 +218,6 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def selfMonodromy (X : C) : End (X ⊗ X) :=
   End.of ((β_ X X).hom ≫ (β_ X X).hom)
 
-omit [BraidedCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
-/-- Pivotal trace is unchanged by categorical conjugation. -/
-theorem rightTrace_iso_conj [RightRigidCategory C]
-    (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) (a : End X) :
-    p.rightTrace ((isoEndAlgEquiv e) a).asHom = p.rightTrace a.asHom := by
-  simpa [isoEndAlgEquiv, Iso.conj_apply_asHom, Category.assoc] using
-    p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
-
 omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The actual braid `a²b²` becomes the graphical overlap of two copies of
 double self-braiding after the standard tensor-power and associator isomorphisms. -/
@@ -246,10 +237,10 @@ normalized by the pivotal dimension of the shared simple strand. -/
 theorem three_braid_trace (D : BraidedFusionCategory.{v,u})
     (X : D.Obj) [Simple X] (p : PivotalStructure (C := D.Obj))
     (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) :
-    scalar (p.rightTrace (Aut.toEnd ((braidGenerator X 1 0) ^ 2 *
-      (braidGenerator X 1 1) ^ 2)).asHom) =
-    scalar (p.rightTrace (selfMonodromy X).asHom) ^ 2 /
-      scalar (p.rightTrace (𝟙 X)) := by
+    scalarTrace p scalar (Aut.toEnd ((braidGenerator X 1 0) ^ 2 *
+      (braidGenerator X 1 1) ^ 2)) =
+    scalarTrace p scalar (selfMonodromy X) ^ 2 / scalar (p.rightTrace (𝟙 X)) := by
+  unfold scalarTrace
   rw [← rightTrace_iso_conj p (threePowerIso X), three_braid_double_overlap,
     rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p scalar]
   ring
