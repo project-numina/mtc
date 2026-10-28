@@ -25,22 +25,23 @@ theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
     (A : Matrix ι ι ℂ) (hA : ∀ i j, star (A i j) = A i j)
     {v : ι → ℂ} (hv : v ≠ 0) {z w : ℂ}
     (h : A *ᵥ v = z • v) (ht : Aᵀ *ᵥ v = w • v) : star w = z := by
-  have hAt : Aᵀᴴ = A := by
-    ext i j
-    simp [Matrix.conjTranspose_apply, hA]
+  have hAt : Aᵀᴴ = A := Matrix.ext fun i j ↦ by simpa [Matrix.conjTranspose_apply] using hA i j
   have hs : (star v) ᵥ* A = (star w) • (star v) := by
-    have hh := congrArg star ht
-    rw [Matrix.star_mulVec, hAt] at hh
-    simpa using hh
-  have hn : star v ⬝ᵥ v ≠ 0 := by
-    intro hz
-    exact hv (dotProduct_star_self_eq_zero.mp hz)
+    simpa [Matrix.star_mulVec, hAt] using congrArg star ht
+  have hn : star v ⬝ᵥ v ≠ 0 := fun hz ↦ hv (dotProduct_star_self_eq_zero.mp hz)
   have heq : z * (star v ⬝ᵥ v) = (star w) * (star v ⬝ᵥ v) := by
     calc
       _ = star v ⬝ᵥ (A *ᵥ v) := by rw [h, dotProduct_smul]; rfl
       _ = (star v ᵥ* A) ⬝ᵥ v := Matrix.dotProduct_mulVec _ _ _
       _ = _ := by rw [hs, smul_dotProduct]; rfl
   exact (mul_right_cancel₀ hn heq).symm
+
+/-- A fusion character is an eigenvector of each fusion matrix. -/
+theorem fusion_character_eigenvector (C : BraidedFusionCategory.{v,u})
+    {χ : Fin (rank C) → ℂ} (hchar : IsFusionMultiplicative C χ) (i : Fin (rank C)) :
+    (fun j k ↦ (fusionCoeff C i j k : ℂ)) *ᵥ χ = χ i • χ := by
+  ext j
+  exact (hchar i j).symm
 
 /-- Every nonzero fusion character takes complex-conjugate values on dual
 simple objects, with no pivotal or spherical hypothesis. -/
@@ -52,16 +53,13 @@ theorem fusion_character_dual_eq_conj (C : BraidedFusionCategory.{v,u})
   let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
     fun j k => (fusionCoeff C i j k : ℂ)
   have hv : χ ≠ 0 := fun hz ↦ hχ (congrFun hz i₀)
-  have h : A *ᵥ χ = χ i • χ := by
-    ext j
-    change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
-    exact (hchar i j).symm
+  have h : A *ᵥ χ = χ i • χ := fusion_character_eigenvector C hchar i
   have ht : Aᵀ *ᵥ χ = χ (dualIndex C i) • χ := by
-    ext j
-    change (∑ k, (fusionCoeff C i k j : ℂ) * χ k) =
-      χ (dualIndex C i) * χ j
-    simp_rw [fusionCoeff_dual_transpose C i]
-    exact (hchar (dualIndex C i) j).symm
+    convert fusion_character_eigenvector C hchar (dualIndex C i) using 1
+    congr 1
+    ext j k
+    change (fusionCoeff C i k j : ℂ) = _
+    exact_mod_cast fusionCoeff_dual_transpose C i k j
   simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A]) hv h ht)
 
 /-- A nonzero fusion character invariant under duality has real values. -/

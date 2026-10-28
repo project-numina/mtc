@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.FiniteSimples
-public import Mathlib.CategoryTheory.Preadditive.Injective.Preserves
+public import Mathlib.CategoryTheory.Preadditive.Injective.Basic
 
 section
 open CategoryTheory CategoryTheory.Limits
@@ -11,10 +11,7 @@ variable (C : BraidedFusionCategory.{v,u})
 
 /-- Induction sends every base object to an injective centre object. -/
 theorem induction_injective (X : C.Obj) : Injective ((induction C).obj X) :=
-  letI : (induction C).PreservesInjectiveObjects :=
-    Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms (actualAdjunction C)
-  letI : Injective X := object_injective C X
-  inferInstance
+  (actualAdjunction C).map_injective X (object_injective C X)
 
 
 
@@ -31,15 +28,11 @@ namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [RigidCategory D]
 
 omit [Abelian D] in
-/-- Tensoring with any object preserves injectives in a rigid abelian category. -/
+/-- Tensoring with any object preserves injectives in a rigid category. -/
 theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U) := by
-  let L := tensorRight (ᘁU)
-  let R := tensorRight U
-  let adj : L ⊣ R := tensorRightAdjunction (ᘁU) U
-  let : L.IsRightAdjoint := ⟨⟨tensorRight (ᘁ(ᘁU)), ⟨tensorRightAdjunction (ᘁ(ᘁU)) (ᘁU)⟩⟩⟩
-  let : L.PreservesMonomorphisms := by infer_instance
-  let : R.PreservesInjectiveObjects := Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms adj
-  exact R.injective_obj_of_injective (inferInstance : Injective J)
+  let : (tensorRight (ᘁU)).IsRightAdjoint :=
+    ⟨⟨tensorRight (ᘁ(ᘁU)), ⟨tensorRightAdjunction (ᘁ(ᘁU)) (ᘁU)⟩⟩⟩
+  exact (tensorRightAdjunction (ᘁU) U).map_injective J inferInstance
 
 omit [Abelian D] in
 /-- A unit retract of a tensor product with an injective makes every object injective. -/

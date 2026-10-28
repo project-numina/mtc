@@ -26,24 +26,20 @@ theorem finrank_end_lt_of_split_epi {S W Q : D} (p : S ⟶ W) (q : W ⟶ Q)
     (hp : p ≠ 0) (hq : p ≫ q = 0) :
     Module.finrank k (Q ⟶ Q) < Module.finrank k (W ⟶ W) := by
   let s : Q ⟶ W := section_ q
-  have hs : s ≫ q = 𝟙 Q := IsSplitEpi.id q
   let L : (Q ⟶ Q) →ₗ[k] (W ⟶ W) :=
     (Linear.leftComp k W q).comp (Linear.rightComp k Q s)
   have hinj : Function.Injective L := by
     intro x y h
-    have hh := congrArg (fun f => s ≫ f ≫ q) h
-    simpa [L, s, Category.assoc, hs] using hh
+    simpa [L, s, Category.assoc] using congrArg (fun f => s ≫ f ≫ q) h
   have hproper : LinearMap.range L ≠ ⊤ := by
     intro hall
-    have hh : (𝟙 W) ∈ LinearMap.range L := by rw [hall]; trivial
-    obtain ⟨x, hx⟩ := hh
+    obtain ⟨x, hx⟩ := (LinearMap.range_eq_top.mp hall) (𝟙 W)
     have he := congrArg (fun f => p ≫ f) hx
     apply hp
     change p ≫ (q ≫ x ≫ s) = p ≫ 𝟙 W at he
     simpa only [← Category.assoc, hq, zero_comp, Category.comp_id] using he.symm
-  have hlt := Submodule.finrank_lt_finrank_of_lt (lt_top_iff_ne_top.mpr hproper)
-  rw [finrank_top, LinearMap.finrank_range_of_inj hinj] at hlt
-  exact hlt
+  simpa only [finrank_top, LinearMap.finrank_range_of_inj hinj] using
+    Submodule.finrank_lt_finrank_of_lt (lt_top_iff_ne_top.mpr hproper)
 
 /-- Removing a nonzero direct summand strictly decreases the dimension of the
 endomorphism space. -/

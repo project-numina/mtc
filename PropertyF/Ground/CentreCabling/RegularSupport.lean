@@ -223,24 +223,25 @@ theorem regular_vector_fusion_eigenvector
   classical
   simp only [regularVector]
   by_cases hk : k ∈ A
-  · simp only [hk, ite_true]
+  · rw [ite_eq_left hk]
     calc
       _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
         apply Finset.sum_congr rfl
         intro i _
         rw [Modular.fusionCoeff_dual_adjoint D a i k]
         by_cases hi : i ∈ A
-        · simp [hi]
-        · simp [hi, hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi]
+        · rw [ite_eq_left hi]
+        · rw [ite_eq_right hi, hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi,
+            Nat.cast_zero, zero_mul, zero_mul]
       _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
-        have hh := congrArg (fun z : ℝ => (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)
-        simpa [fpSimple_dual] using hh.symm
-  · simp only [hk, ite_false, mul_zero]
+        simpa [fpSimple_dual] using
+          (congrArg (fun z : ℝ ↦ (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)).symm
+  · rw [ite_eq_right hk, mul_zero]
     apply Finset.sum_eq_zero
     intro i _
     by_cases hi : i ∈ A
-    · simp [hi, hA.fusion.fusionCoeff_eq_zero ha hi hk]
-    · simp [hi]
+    · rw [ite_eq_left hi, hA.fusion.fusionCoeff_eq_zero ha hi hk, Nat.cast_zero, zero_mul]
+    · rw [ite_eq_right hi, mul_zero]
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support

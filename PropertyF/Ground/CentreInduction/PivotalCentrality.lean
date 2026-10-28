@@ -169,12 +169,9 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
     simp [monoidalComp]
   let : Simple S := simples_simple C i
   let e : S ⊗ (Sᘁ) ≅ V i := whiskerRightIso (ρ_ S).symm (Sᘁ)
-  have hcoe : η_ S (Sᘁ) = 0 :=
-    (e.isZero_iff.mpr ((IsZero.iff_id_eq_zero _).2 hid)).eq_of_tgt _ _
-  have ht := ExactPairing.evaluation_coevaluation S (Sᘁ)
-  have hh := congrArg (fun f => (λ_ S).inv ≫ f ≫ (ρ_ S).hom) ht
-  apply id_nonzero S
-  simpa [hcoe] using hh.symm
+  let : Simple (Sᘁ) := simple_rightDual C S
+  exact (exactPairing_ne_zero S (Sᘁ) (id_nonzero (Sᘁ))).1
+    ((e.isZero_iff.mpr ((IsZero.iff_id_eq_zero _).2 hid)).eq_of_tgt _ _)
 
 /-- Every transparent simple of the actual centre is the unit. -/
 theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
@@ -192,14 +189,9 @@ theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
   let : Simple Z.1 := Functor.simple_of_simple_obj F Z.1
   obtain ⟨i, ⟨s⟩⟩ := exists_simple_iso C Z.1
   let e' : Z ≅ F.obj (simples C i) := e ≪≫ F.mapIso s
-  have hc : Centre.Centralizes ((induction C).obj (𝟙_ C.Obj)) (F.obj (simples C i)) := by
-    apply Centre.centralizes_symm
-    exact Centre.centralizes_of_iso_left e'.symm (hcentral _)
-  have hi := positive_simple_centralizes_induced_unit hc
-  have es : simples C i ≅ 𝟙_ C.Obj := by
-    subst i
-    exact Classical.choice (unitIndex_iso C)
-  exact ⟨e' ≪≫ F.mapIso es ≪≫ (CategoryTheory.Functor.Monoidal.εIso F).symm⟩
+  obtain rfl := positive_simple_centralizes_induced_unit
+    (Centre.centralizes_symm (Centre.centralizes_of_iso_left e'.symm (hcentral _)))
+  exact ⟨e' ≪≫ F.mapIso (unitIndex_iso C).some ≪≫ (CategoryTheory.Functor.Monoidal.εIso F).symm⟩
 
 
 end PropertyF.Ground.CentreInduction
