@@ -101,11 +101,7 @@ theorem drinfeld_inv_dual_tensor :
   simp only [comp_rightAdjointMate, Category.assoc]
   rw [← Category.assoc (t.homᘁ), ← comp_rightAdjointMate, Iso.inv_hom_id,
     rightAdjointMate_id, Category.id_comp]
-  rw [← Category.assoc (rightDualTensorIso (Yᘁ) (Xᘁ)).inv, hm']
-  simp only [Category.assoc]
-  rw [← Category.assoc (rightDualTensorIso (Yᘁ) (Xᘁ)).inv,
-    ← rightDualTensorIso_inv_natural f g]
-  simp only [Category.assoc]
+  rw [reassoc_of% hm', ← reassoc_of% rightDualTensorIso_inv_natural f g]
   dsimp only [doubleDualTensorIso, rightDualIsoMap,
     Iso.trans_inv, Iso.symm_inv]
   simp only [comp_rightAdjointMate, Category.assoc, f, g, t]

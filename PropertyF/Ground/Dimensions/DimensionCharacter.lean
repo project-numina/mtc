@@ -97,12 +97,12 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
+  [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
 
 /-- Left pivotal trace as a linear map on an endomorphism space. -/
 def leftTraceLinear (p : PivotalStructure (C := C)) (X : C) :
-    (X ⟶ X) →ₗ[ℂ] End (𝟙_ C) where
+    (X ⟶ X) →ₗ[k] End (𝟙_ C) where
   toFun := p.leftTrace
   map_add' := p.leftTrace_add
   map_smul' := p.leftTrace_smul
@@ -110,7 +110,7 @@ def leftTraceLinear (p : PivotalStructure (C := C)) (X : C) :
 /-- If diagonal blocks are scalar, the left trace is their dimension-weighted sum. -/
 theorem leftTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
     {F : ι → C} [HasBiproduct F] (p : PivotalStructure (C := C))
-    (f : (⨁ F) ⟶ (⨁ F)) {c : ι → ℂ}
+    (f : (⨁ F) ⟶ (⨁ F)) {c : ι → k}
     (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
     p.leftTrace f = ∑ i, c i • p.leftTrace (𝟙 (F i)) :=
   cyclicTrace_biproduct_scalar_blocks (leftTraceLinear p)
