@@ -216,18 +216,15 @@ theorem dimension_eq_abs_of_scalar_monodromy
   simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
   have hdim2 : Ground.unitScalarEquiv C (p.rightTrace (𝟙 (X ⊗ X))) = (d : ℂ) ^ 2 := by
-    have h := Dimensions.pivotalDimension_tensor C p X X
-    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv,
-      hdim, pow_two] using h
+    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, hdim, pow_two] using
+      Dimensions.pivotalDimension_tensor C p X X
   have hnonzero : (1 : End (X ⊗ X)) ≠ 0 := by
     intro h
-    have ht := congrArg (fun z : End (X ⊗ X) =>
-      Ground.unitScalarEquiv C (p.rightTrace z.asHom)) h
-    have hz : p.rightTrace (0 : X ⊗ X ⟶ X ⊗ X) = 0 := by
-      simpa using p.rightTrace_smul (0 : ℂ) (𝟙 (X ⊗ X))
-    have : (d : ℂ) ^ 2 = 0 := by
-      simpa only [End.one_asHom, End.zero_asHom, hdim2, hz, map_zero] using ht
-    exact (pow_ne_zero 2 hd') this
+    apply pow_ne_zero 2 hd'
+    simpa only [End.one_asHom, End.zero_asHom, hdim2,
+      show p.rightTrace (0 : X ⊗ X ⟶ X ⊗ X) = 0 from (rightTraceLinear p _).map_zero,
+      map_zero] using congrArg (fun z : End (X ⊗ X) =>
+        Ground.unitScalarEquiv C (p.rightTrace z.asHom)) h
   obtain ⟨n, hn, hpow⟩ := selfMonodromy_finite_order hfinite
   apply fp_eq_abs_dim_of_finite_order hd hf
   refine ⟨n, hn, ?_⟩
