@@ -80,8 +80,10 @@ theorem drinfeld_tensor_inverse :
   rw [Iso.eq_inv_comp, Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
   exact (drinfeld_tensor X Y).symm
 
+omit [RightRigidCategory D] in
 /-- Formula for transporting the inverse Drinfeld map through an isomorphism. -/
-theorem drinfeld_inv_natural {A B : D} (t : A ≅ B) :
+theorem drinfeld_inv_natural {A B : D} [HasRightDual A] [HasRightDual (Aᘁ)]
+    [HasRightDual B] [HasRightDual (Bᘁ)] (t : A ≅ B) :
     (d A).inv = (((t.homᘁ)ᘁ) ≫ (d B).inv) ≫ t.inv := by
   rw [Iso.eq_comp_inv, Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
   exact drinfeldIso_natural t.hom
