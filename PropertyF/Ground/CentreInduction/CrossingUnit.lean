@@ -41,11 +41,10 @@ theorem closeFusionMap_tensor (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
       rw [closeFusionMap_evaluation]
       monoidal
     _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by monoidal
-    _ = 𝟙 _ ⊗≫ (closeFusionMap T K f ▷ (U ⊗ S)) ⊗≫
-      (closeFusionMap U S g ▷ S ≫ ε_ S (Sᘁ)) := by
-      rw [whisker_exchange, closeFusionMap_evaluation]
+    _ = _ := by
+      rw [whisker_exchange]
+      simp only [monoidalComp, comp_whiskerRight, Category.assoc, closeFusionMap_evaluation]
       monoidal
-    _ = _ := by monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossing blocks compose to the block of their composite fusion maps. -/
@@ -64,8 +63,7 @@ theorem crossingBlock_tensor
         (((T ⊗ (U ⊗ S)) ⊗ X) ◁ (q ▷ U))) ⊗≫
       (((T ⊗ (U ⊗ S)) ⊗ X) ◁ z) ⊗≫ 𝟙 _ := by
         dsimp only [crossingBlock]
-        rw [closeFusionMap_tensor]
-        rw [tensorHom_def, comp_whiskerRight]
+        rw [closeFusionMap_tensor, tensorHom_def, comp_whiskerRight]
         monoidal
     _ = _ := by
       rw [← whisker_exchange]
@@ -141,7 +139,7 @@ theorem crossingCandidate_unit (X : C.Obj) :
     crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv := by
   let V := inductionSummand C X
-  refine biproduct_tensor_hom_ext V (𝟙_ C.Obj) fun i => ?_
+  refine rightDistributor_ext_left (f := V) fun i => ?_
   rw [crossingCandidate_unit_summand]
   dsimp only [underlying, V]
   rw [← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]

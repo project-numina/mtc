@@ -4,7 +4,6 @@ public import PropertyF.Ground.Integrate.UnitScalar
 public import PropertyF.Ground.Final
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Fusion.Reciprocity
-public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Cabling.Strands
 
@@ -100,7 +99,6 @@ import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.DimensionCharacter
-import all PropertyF.Ground.Dimensions.DimensionField
 import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.DualTensorNaturality
 import all PropertyF.Ground.Dimensions.ENOMatrices

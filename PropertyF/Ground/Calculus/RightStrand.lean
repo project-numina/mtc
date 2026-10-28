@@ -261,20 +261,19 @@ theorem appendIso_succ (n : ℕ) : appendIso X (n+1) =
 set_option backward.isDefEq.respectTransparency false in
 /-- Appending preserves the first adjacent generator. -/
 private theorem addRightAut_first_generator (n : ℕ) : addRightAut X n (braidGenerator X n 0) =
-    braidGenerator X (n + 1) 0 := by
-  apply Aut.ext
-  apply Iso.ext
-  change (appendIso X (n + 2)).inv ≫ ((braidGenerator X n 0).asIso.hom ▷ X) ≫
-    (appendIso X (n + 2)).hom = (braidGenerator X (n + 1) 0).asIso.hom
-  simp only [← Fin.zero_eta, braidGenerator.eq_1, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
-    tensorHom_id]
-  change (appendIso X (n + 2)).inv ≫
-    (((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
-      (α_ X X (tensorPower X n)).hom) ▷ X) ≫ (appendIso X (n + 2)).hom =
-    (α_ X X (tensorPower X (n + 1))).inv ≫ (β_ X X).hom ▷ tensorPower X (n + 1) ≫
-      (α_ X X (tensorPower X (n + 1))).hom
-  rw [appendIso_succ X (n + 1), appendIso_succ X n]
-  exact append_first_two X (appendIso X n)
+    braidGenerator X (n + 1) 0 :=
+  Aut.ext (Iso.ext (by
+    change (appendIso X (n + 2)).inv ≫ ((braidGenerator X n 0).asIso.hom ▷ X) ≫
+      (appendIso X (n + 2)).hom = (braidGenerator X (n + 1) 0).asIso.hom
+    simp only [← Fin.zero_eta, braidGenerator.eq_1, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+      Iso.refl_hom, tensorHom_id]
+    change (appendIso X (n + 2)).inv ≫
+      (((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
+        (α_ X X (tensorPower X n)).hom) ▷ X) ≫ (appendIso X (n + 2)).hom =
+      (α_ X X (tensorPower X (n + 1))).inv ≫ (β_ X X).hom ▷ tensorPower X (n + 1) ≫
+        (α_ X X (tensorPower X (n + 1))).hom
+    rw [appendIso_succ X (n + 1), appendIso_succ X n]
+    exact append_first_two X (appendIso X n)))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Appending a strand preserves each adjacent braid generator. -/

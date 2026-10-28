@@ -43,8 +43,6 @@ theorem pivotalDimension_decomposition
     pivotalDimension C p X = ∑ i, (Module.finrank ℂ (simples C i ⟶ X) : ℂ) *
       pivotalDimension C p (simples C i) := by
   classical
-  let m (i : Fin (rank C)) := Module.finrank ℂ (simples C i ⟶ X)
-  let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
   obtain ⟨e⟩ := exists_canonical_decomposition C X
   rw [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
     rightDimension_biproduct]
