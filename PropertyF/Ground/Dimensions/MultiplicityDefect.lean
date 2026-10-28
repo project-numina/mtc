@@ -19,14 +19,13 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 
 /-- Scalar comparing the chosen simple fourth-dual square root to the
 braided double-dual component. -/
 def fourthDualRootScalar (C : BraidedFusionCategory.{v,u})
     (i : Fin (rank C)) : ℂ := by
-  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   exact Classical.choose (isomorphisms_scalar (k := ℂ)
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 
@@ -35,7 +34,6 @@ theorem fourthDualRootScalar_spec
     (i : Fin (rank C)) : fourthDualRootScalar C i ≠ 0 ∧
     (fourthDualSimpleRoot C i).hom = fourthDualRootScalar C i •
       (doubleDualIso C (simples C i)).hom :=
-  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   Classical.choose_spec (isomorphisms_scalar (k := ℂ)
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
 

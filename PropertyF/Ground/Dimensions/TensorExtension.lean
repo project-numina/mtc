@@ -129,7 +129,7 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-attribute [local instance] Abelian.hasFiniteBiproducts
+attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 
 set_option backward.isDefEq.respectTransparency false in
 theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
@@ -162,7 +162,6 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
     (htrace : unitScalar C (rightQuantumTrace (a.app (𝟙_ C.Obj))) = 1) :
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
   let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
-  let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
   rw [rightQuantumTrace_smul_hom hr, rightQuantumTrace_unitIso] at htrace
   simp only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] at htrace
