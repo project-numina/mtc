@@ -268,12 +268,7 @@ theorem target_of_modular_center
       (globalFPDimension C) b (lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C))
       hb hglobal σ hτ hfinite
     intro y hyF d hσ hS
-    apply rigidity_of_twisted_overlap Z p hdim σ y hyF d hσ hS
-    let D := ScalarTwist.category Z σ
-    let X : D.Obj := simples Z y
-    letI : Simple X := simples_simple Z y
-    intro u k
-    exact Calculus.overlap_trace_power D X (ScalarTwist.pivotal Z σ p) 1 u k
+    exact galois_rigidity_of_propertyF Z p hdim σ y hyF d hσ hS
 
 end PropertyF.Ground
 end
