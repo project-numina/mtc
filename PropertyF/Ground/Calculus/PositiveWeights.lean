@@ -22,7 +22,7 @@ theorem exists_galois_braid_trace_weights
     (hdim : ∀ i, Dimensions.groundUnitScalarEquiv C
       (p.rightTrace (𝟙 (Ground.simples C i))) = (qdim i : ℂ)) :
     ∃ (r : ℕ) (size : Fin r → ℕ)
-      (b : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (size i)) (Fin (size i)) ℂ)
+      (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
       (w : Fin r → ℝ),
       (∀ i, 0 < size i) ∧
       IsUnitaryPresentation (braidEndRepresentation X n) b ∧

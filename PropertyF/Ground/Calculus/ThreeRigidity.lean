@@ -85,7 +85,7 @@ theorem actual_braid_squares_equal_of_saturation
     (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (r : ℕ) (size : Fin r → ℕ)
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (size i)) (Fin (size i)) ℂ)
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
     (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
     (w : Fin r → ℝ) (hw : ∀ i, w i ≠ 0) (d f : ℝ) (hf : 0 < f)
     (htrace : ∀ z : braidAlgebra X 1, actualBraidTrace C X p 1 z =
@@ -158,7 +158,7 @@ adjacent copies of double self-braiding. -/
 theorem local_monodromy_of_block_squares_equal
     (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
     (r : ℕ) (size : Fin r → ℕ)
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (size i)) (Fin (size i)) ℂ)
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
     (h : tripleBlockLeft X b ^ 2 = tripleBlockRight X b ^ 2) :
     insertRightIdentity (X ⊗ X) X (selfMonodromy X) =
       overlapFresh X X X (selfMonodromy X) := by
@@ -259,7 +259,7 @@ theorem actual_three_strand_rigidity_of_trace_bound
     (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (r : ℕ) (size : Fin r → ℕ)
-    (b : braidAlgebra X 1 ≃ₐ[ℂ] ∀ i, Matrix (Fin (size i)) (Fin (size i)) ℂ)
+    (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
     (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
     (w : Fin r → ℝ) (hw : ∀ i, w i ≠ 0)
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)

@@ -24,7 +24,7 @@ theorem pivotalTrace_braid_unitary_bound
     (m : Fin (Ground.rank C) → ℕ)
     (e : tensorPower X (n + 2) ≅ ⨁ (fun q : Σ i, Fin (m i) => Ground.simples C q.1))
     (r : ℕ) (d : Fin r → ℕ) (hd : ∀ j, 0 < d j)
-    (b : braidAlgebra X n ≃ₐ[ℂ] ∀ j, Matrix (Fin (d j)) (Fin (d j)) ℂ)
+    (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (fp : Fin (Ground.rank C) → ℝ)
     (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ fp i)
     (a : braidAlgebra X n) (ha : ∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) :
@@ -70,7 +70,7 @@ theorem braid_trace_unitary_bound_ground
     (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
     (p : Dimensions.PivotalStructure (C := C.Obj)) (r : ℕ) (d : Fin r → ℕ)
     (hd : ∀ j, 0 < d j)
-    (b : braidAlgebra X n ≃ₐ[ℂ] ∀ j, Matrix (Fin (d j)) (Fin (d j)) ℂ)
+    (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (a : braidAlgebra X n) (ha : ∀ j, b a j ∈ Matrix.unitaryGroup (Fin (d j)) ℂ) :
     ‖Dimensions.groundUnitScalarEquiv C
       (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)‖ ≤
@@ -141,11 +141,11 @@ namespace PropertyF.Ground.Calculus
 /-- A star-algebra map between products of matrix algebras preserves
 blockwise unitarity. -/
 theorem starMap_preserves_block_unitary {r s : ℕ} {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (F : (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →⋆ₐ[ℂ]
-      (∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ))
-    (u : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (hu : ∀ i, u i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) :
-    ∀ j, F u j ∈ Matrix.unitaryGroup (Fin (q j)) ℂ := by
+    (F : (PropertyF.Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
+      (PropertyF.Blocks.Algebra ⟨_, q⟩))
+    (u : PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ u) :
+    PropertyF.Blocks.IsUnitary ⟨_, q⟩ (F u) := by
   have h : u * star u = 1 := by
     funext i
     exact Matrix.mem_unitaryGroup_iff.mp (hu i)
@@ -162,12 +162,12 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 presentations of the actual braid-image algebras. -/
 theorem addRight_braid_unitary (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
+    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
     (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
     (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
-    (u : braidAlgebra X n) (hu : ∀ i, e u i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) :
-    ∀ j, f (addRightBraidAlgebraIter X n k u) j ∈ Matrix.unitaryGroup (Fin (q j)) ℂ := by
+    (u : braidAlgebra X n) (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ (e u)) :
+    PropertyF.Blocks.IsUnitary ⟨_, q⟩ (f (addRightBraidAlgebraIter X n k u)) := by
   simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
     starMap_preserves_block_unitary (addRightBlocksIterStarMap X n k e f he hf) (e u) hu
 
@@ -175,12 +175,12 @@ theorem addRight_braid_unitary (X : C) (n k : ℕ) {r s : ℕ}
 presentations of the actual braid-image algebras. -/
 theorem addLeft_braid_unitary (X : C) (n k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
-    (e : braidAlgebra X n ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)
-    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] ∀ i, Matrix (Fin (q i)) (Fin (q i)) ℂ)
+    (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
+    (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
     (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
     (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
-    (u : braidAlgebra X n) (hu : ∀ i, e u i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) :
-    ∀ j, f (addLeftBraidAlgebraIter X n k u) j ∈ Matrix.unitaryGroup (Fin (q j)) ℂ := by
+    (u : braidAlgebra X n) (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ (e u)) :
+    PropertyF.Blocks.IsUnitary ⟨_, q⟩ (f (addLeftBraidAlgebraIter X n k u)) := by
   simpa [addLeftBlocksIterStarMap, addLeftBlocksIter] using
     starMap_preserves_block_unitary (addLeftBlocksIterStarMap X n k e f he hf) (e u) hu
 
@@ -189,7 +189,7 @@ presentations may be chosen independently at every strand count. -/
 theorem overlapProduct_unitary (X : C) (t : ℕ)
     (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
-      ∀ i, Matrix (Fin (d n i)) (Fin (d n i)) ℂ)
+      PropertyF.Blocks.Algebra ⟨_, d n⟩)
     (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
     (u : braidAlgebra X t) (hu : ∀ i, e t u i ∈ Matrix.unitaryGroup (Fin (d t i)) ℂ) :
     ∀ k i, e (overlapIndex t k) (overlapProduct X t u k) i ∈
@@ -276,7 +276,7 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (p : Dimensions.PivotalStructure (C := C.Obj)) (t : ℕ)
     (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]
-      ∀ i, Matrix (Fin (d n i)) (Fin (d n i)) ℂ)
+      PropertyF.Blocks.Algebra ⟨_, d n⟩)
     (hd : ∀ n i, 0 < d n i)
     (he : ∀ n, IsUnitaryPresentation (braidEndRepresentation X n) (e n))
     (u : braidAlgebra X t)

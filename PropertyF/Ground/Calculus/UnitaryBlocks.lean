@@ -9,6 +9,7 @@ public import Mathlib.RingTheory.SimpleModule.IsAlgClosed
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 public import Mathlib.RingTheory.Finiteness.Basic
 public import PropertyF.Definitions
+public import PropertyF.BlockTrace
 
 /-! A finite group representation preserves a positive definite Hermitian form.
 The unnormalized average avoids dividing by the group order. -/
@@ -149,7 +150,7 @@ theorem groupImageAlgebra_finite (ρ : G →* A) :
 matrix blocks. It is not assumed that the representation is faithful. -/
 theorem groupImageAlgebra_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ), (∀ i, NeZero (d i)) ∧
-      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) := by
+      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) := by
   let _ := groupImageAlgebra_semisimple ρ
   let _ := groupImageAlgebra_finite ρ
   exact IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
@@ -203,7 +204,7 @@ def groupInImage (ρ : G →* A) : G →* groupImageAlgebra ρ :=
 
 /-- A block presentation in which each represented group element is unitary. -/
 abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) : Prop :=
+    (e : groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=
   ∀ g i, e (groupInImage ρ g) i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ
 
 omit [Finite G] in
@@ -233,7 +234,7 @@ theorem groupInImage_span (ρ : G →* A) :
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
 theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ) (e : groupImageAlgebra ρ ≃ₐ[ℂ]
-        ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ),
+        PropertyF.Blocks.Algebra ⟨_, d⟩),
       (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation ρ e := by
   classical
   let _ : Fintype G := Fintype.ofFinite G
@@ -259,7 +260,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 realization of their actual endomorphism algebra. -/
 theorem braidAlgebra_unitary_blocks (X : C) (n : ℕ) (h : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
-        ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ),
+        PropertyF.Blocks.Algebra ⟨_, d⟩),
       (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation (braidEndRepresentation X n) e := by
   let _ : Finite (braidImage X n) := h
   exact groupImageAlgebra_unitary_blocks _
