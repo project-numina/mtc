@@ -60,10 +60,11 @@ theorem pivotalDimension_scalarTwist_simple
   unfold pivotalDimension
   have ht : (pivotalScalarTwist C p c hc hunit hmul).rightTrace
       (𝟙 (simples C i)) = c i • p.rightTrace (𝟙 (simples C i)) := by
-    apply End.homEquiv.injective
-    have hs : (simpleScalarNaturalIso C c hc).hom.app (simples C i) =
-        c i • 𝟙 (simples C i) := simpleScalarNaturalIso_app_simple C c hc i
-    simp [PivotalStructure.rightTrace, pivotalScalarTwist, hs, tensorHom_def]
+    rw [rightTrace_id, rightTrace_id]
+    apply rightQuantumTrace_smul_hom
+    change ((simpleScalarNaturalIso C c hc).app (simples C i)).hom ≫ _ = _
+    rw [simpleScalarNaturalIso_app_simple]
+    simp
   rw [ht]
   simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
 
