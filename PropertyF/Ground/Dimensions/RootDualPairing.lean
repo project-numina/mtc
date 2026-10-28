@@ -11,6 +11,22 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Coevaluation is transported by an isomorphism and its inverse right dual. -/
+theorem coevaluation_iso_map {C : Type u} [Category.{v} C] [MonoidalCategory C]
+    [RightRigidCategory C] {X Y : C} (a : X ≅ Y) :
+    η_ X (Xᘁ) ≫ (a.hom ⊗ₘ (a.invᘁ)) = η_ Y (Yᘁ) := by
+  simp only [tensorHom_def]
+  have h := coevaluation_comp_rightAdjointMate a.inv
+  calc
+    _ = η_ X (Xᘁ) ≫ X ◁ (a.invᘁ) ≫ a.hom ▷ (Yᘁ) := by
+      simpa only [Category.assoc] using
+        congrArg (fun z => η_ X (Xᘁ) ≫ z) (whisker_exchange a.hom (a.invᘁ)).symm
+    _ = η_ Y (Yᘁ) ≫ a.inv ▷ (Yᘁ) ≫ a.hom ▷ (Yᘁ) := by
+      simpa only [Category.assoc] using congrArg (fun z => z ≫ a.hom ▷ (Yᘁ)) h
+    _ = _ := by simp only [← comp_whiskerRight, Iso.inv_hom_id, id_whiskerRight, Category.comp_id]
+
+
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- On a simple and its right dual the root carries the ordinary duality cup
@@ -31,19 +47,9 @@ theorem root_components_coevaluation
   rw [ha]
   simp only [tensorHom_def, MonoidalLinear.whiskerLeft_smul, Linear.comp_smul]
   congr 1
-  have h := coevaluation_comp_rightAdjointMate a.inv
-  calc
-    _ = η_ X (Xᘁ) ≫ X ◁ (a.invᘁ) ≫ a.hom ▷ (((Xᘁ)ᘁ)ᘁ) := by
-      simpa only [doubleDualFunctor, Functor.id_obj, Category.assoc] using
-        congrArg (fun z => η_ X (Xᘁ) ≫ z) (whisker_exchange a.hom (a.invᘁ)).symm
-    _ = η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) ≫ a.inv ▷ (((Xᘁ)ᘁ)ᘁ) ≫
-        a.hom ▷ (((Xᘁ)ᘁ)ᘁ) := by
-      simpa only [doubleDualFunctor, Functor.id_obj, Category.assoc] using
-        congrArg (fun z => z ≫ a.hom ▷ (((Xᘁ)ᘁ)ᘁ)) h
-    _ = _ := by
-      have hi : (a.inv ▷ (((Xᘁ)ᘁ)ᘁ)) ≫ a.hom ▷ (((Xᘁ)ᘁ)ᘁ) = 𝟙 _ := by
-        rw [← comp_whiskerRight, Iso.inv_hom_id, id_whiskerRight]
-      simp only [hi, Category.comp_id]
+  simpa only [tensorHom_def, Category.assoc, doubleDualFunctor, Functor.id_obj] using
+    coevaluation_iso_map a
+
 end PropertyF.Ground.Dimensions
 
 end
