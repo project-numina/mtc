@@ -34,10 +34,9 @@ theorem norm_trace_le_card :
 /-- Saturation of the real trace estimate forces the identity matrix. -/
 theorem eq_one_of_re_trace_eq_card (ht : U.trace.re = Fintype.card ι) : U = 1 :=
   sub_eq_zero.mp <| Matrix.trace_conjTranspose_mul_self_eq_zero_iff.mp <| by
-    have hu : Uᴴ * U = 1 := Matrix.mem_unitaryGroup_iff'.mp hU
-    apply Complex.ext <;>
-      simp [Matrix.conjTranspose_sub, sub_mul, mul_sub, hu, Matrix.trace_sub,
-        Matrix.trace_conjTranspose, ht]
+    apply Complex.ext <;> simp [Matrix.conjTranspose_sub, sub_mul, mul_sub,
+      show Uᴴ * U = 1 from Matrix.mem_unitaryGroup_iff'.mp hU, Matrix.trace_sub,
+      Matrix.trace_conjTranspose, ht]
 
 /-- Equality in the complex trace bound forces a scalar matrix. This includes
 zero-dimensional blocks and does not assume an eigenvalue decomposition. -/
