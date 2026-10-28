@@ -77,13 +77,9 @@ theorem selfDual_character_galois_real (C : BraidedFusionCategory)
     {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
     (hchar : IsFusionMultiplicative C χ)
     (hdual : ∀ i, χ (dualIndex C i) = χ i) (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
-    star (σ (χ i)) = σ (χ i) := by
-  apply selfDual_character_real C (χ := fun j => σ (χ j)) (i₀ := i₀)
-  · exact (map_ne_zero σ).2 hχ
-  · intro j k
-    simpa using congrArg σ (hchar j k)
-  · intro j
-    rw [hdual]
+    star (σ (χ i)) = σ (χ i) :=
+  selfDual_character_real C (χ := fun j ↦ σ (χ j)) (i₀ := i₀) ((map_ne_zero σ).2 hχ)
+    (fun j k ↦ by simpa using congrArg σ (hchar j k)) (fun j ↦ by rw [hdual]) i
 
 /-- Every Galois conjugate of an actual simple FP dimension is real. -/
 theorem fp_simple_galois_real (C : BraidedFusionCategory.{v,u})

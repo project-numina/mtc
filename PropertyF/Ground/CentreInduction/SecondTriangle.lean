@@ -35,63 +35,34 @@ theorem evaluation_iso_unit {A : D} (e : A ≅ 𝟙_ D) :
   have hu := Dimensions.rightDualIso_evaluation p q
   change Dimensions.rightDualUnitIso.hom ▷ (𝟙_ D) ≫ (ρ_ (𝟙_ D)).hom =
     ε_ (𝟙_ D) ((𝟙_ D)ᘁ) at hu
-  have he := rightAdjointMate_comp_evaluation e.inv
-  let du : (𝟙_ D)ᘁ ⟶ 𝟙_ D := Dimensions.rightDualUnitIso.hom
-  change ((e.invᘁ ≫ du) ⊗ₘ e.hom) ≫ (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ)
-  change du ▷ (𝟙_ D) ≫ (ρ_ (𝟙_ D)).hom =
-    ε_ (𝟙_ D) ((𝟙_ D)ᘁ) at hu
-  calc
-    _ = 𝟙 _ ⊗≫ ((Aᘁ : D) ◁ e.hom) ⊗≫ ((e.invᘁ) ▷ (𝟙_ D)) ⊗≫
-      (du ▷ (𝟙_ D)) ⊗≫ (ρ_ (𝟙_ D)).hom := by
-        simp only [tensorHom_def', comp_whiskerRight]
-        monoidal
-    _ = 𝟙 _ ⊗≫ ((Aᘁ : D) ◁ e.hom) ⊗≫ ((e.invᘁ) ▷ (𝟙_ D)) ⊗≫
-      (du ▷ (𝟙_ D) ≫ (ρ_ (𝟙_ D)).hom) := by monoidal
-    _ = 𝟙 _ ⊗≫ ((Aᘁ : D) ◁ e.hom) ⊗≫
-      ((e.invᘁ) ▷ (𝟙_ D) ≫ ε_ (𝟙_ D) ((𝟙_ D)ᘁ)) := by rw [hu]; monoidal
-    _ = 𝟙 _ ⊗≫ ((Aᘁ : D) ◁ e.hom) ⊗≫
-      (((Aᘁ : D) ◁ e.inv) ≫ ε_ A (Aᘁ)) := by rw [he]
-    _ = 𝟙 _ ⊗≫ ((((Aᘁ : D) ◁ e.hom) ≫ ((Aᘁ : D) ◁ e.inv)) ≫ ε_ A (Aᘁ)) := by monoidal
-    _ = _ := by rw [← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]; monoidal
+  simp only [Iso.trans_hom, Dimensions.rightDualIsoMap, Iso.symm_hom,
+    tensorHom_def', comp_whiskerRight, Category.assoc]
+  rw [hu, rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
+    whiskerLeft_id, Category.id_comp]
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Closing the right unit isomorphism gives ordinary evaluation. -/
 theorem close_rightUnit_eval (T : D) {A : D} (e : A ≅ 𝟙_ D) :
-    closeFusionMap T A T ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
+    closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom) ≫
       (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom = ε_ T (Tᘁ) := by
-  let d : Aᘁ ⟶ 𝟙_ D := (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom
-  let z := closeFusionMap T A T ((T ◁ e.hom) ≫ (ρ_ T).hom)
-  have he : (d ⊗ₘ e.hom) ≫ (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) := evaluation_iso_unit e
-  have hz := closeFusionMap_evaluation ((T ◁ e.hom) ≫ (ρ_ T).hom)
-  change (z ▷ A) ≫ ε_ A (Aᘁ) =
-    𝟙 _ ⊗≫ ((Tᘁ : D) ◁ ((T ◁ e.hom) ≫ (ρ_ T).hom)) ⊗≫ ε_ T (Tᘁ) at hz
+  let d := (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom
+  let z := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
+  have h := closeFusionMap_evaluation ((T ◁ e.hom) ≫ (ρ_ T).hom)
+  rw [← evaluation_iso_unit e] at h
+  simp only [tensorHom_def', monoidalComp, whiskerLeft_comp, Category.assoc] at h
+  rw [whisker_exchange_assoc, ← comp_whiskerRight_assoc] at h
   change z ≫ d = ε_ T (Tᘁ)
-  have hleft : (𝟙 (Tᘁ ⊗ T) ⊗≫ (((Tᘁ : D) ⊗ T) ◁ e.inv) ⊗≫
-      (z ▷ A) ⊗≫ (d ⊗ₘ e.hom) ⊗≫ (ρ_ (𝟙_ D)).hom) = z ≫ d := by
-    calc
-      _ = 𝟙 _ ⊗≫ ((((Tᘁ : D) ⊗ T) ◁ e.inv) ≫ (z ▷ A)) ⊗≫
-        (d ⊗ₘ e.hom) ⊗≫ (ρ_ (𝟙_ D)).hom := by simp [monoidalComp, tensorHom_def', Category.assoc]
-      _ = 𝟙 _ ⊗≫ ((z ▷ (𝟙_ D)) ≫ ((Aᘁ : D) ◁ e.inv)) ⊗≫
-        (d ⊗ₘ e.hom) ⊗≫ (ρ_ (𝟙_ D)).hom := by rw [whisker_exchange]
-      _ = 𝟙 _ ⊗≫ (z ▷ (𝟙_ D)) ⊗≫
-        (((Aᘁ : D) ◁ (e.inv ≫ e.hom)) ≫ (d ▷ (𝟙_ D))) ⊗≫
-          (ρ_ (𝟙_ D)).hom := by
-        simp only [tensorHom_def', whiskerLeft_comp]
-        simp [monoidalComp, Category.assoc]
-      _ = _ := by rw [Iso.inv_hom_id, whiskerLeft_id, Category.id_comp]; dsimp [d]; monoidal
+  apply (cancel_epi ((((Tᘁ : D) ⊗ T) ◁ e.hom) ≫ (ρ_ (Tᘁ ⊗ T)).hom)).1
   calc
-    _ = 𝟙 _ ⊗≫ (((Tᘁ : D) ⊗ T) ◁ e.inv) ⊗≫
-      (z ▷ A) ⊗≫ (d ⊗ₘ e.hom) ⊗≫ (ρ_ (𝟙_ D)).hom := hleft.symm
-    _ = 𝟙 _ ⊗≫ (((Tᘁ : D) ⊗ T) ◁ e.inv) ⊗≫
-      (z ▷ A) ⊗≫ ((d ⊗ₘ e.hom) ≫ (ρ_ (𝟙_ D)).hom) := by simp [monoidalComp, tensorHom_def', Category.assoc]
-    _ = 𝟙 _ ⊗≫ (((Tᘁ : D) ⊗ T) ◁ e.inv) ⊗≫
-      ((z ▷ A) ≫ ε_ A (Aᘁ)) := by rw [he]; monoidal
-    _ = 𝟙 _ ⊗≫ (((Tᘁ : D) ⊗ T) ◁ e.inv) ⊗≫
-      (𝟙 _ ⊗≫ ((Tᘁ : D) ◁ ((T ◁ e.hom) ≫ (ρ_ T).hom)) ⊗≫ ε_ T (Tᘁ)) := by rw [hz]
-    _ = 𝟙 _ ⊗≫ ((Tᘁ : D) ◁ (T ◁ (e.inv ≫ e.hom))) ⊗≫ ε_ T (Tᘁ) := by
-      simp only [whiskerLeft_comp]; monoidal
-    _ = _ := by rw [Iso.inv_hom_id]; simp; monoidal
+    _ = ((z ≫ d) ▷ A) ≫ ((𝟙_ D) ◁ e.hom) ≫ (ρ_ (𝟙_ D)).hom := by
+      simp only [Category.assoc]
+      rw [← Category.assoc (ρ_ (Tᘁ ⊗ T)).hom z d, ← rightUnitor_naturality,
+        ← whisker_exchange_assoc]
+      simp only [Category.assoc, ← rightUnitor_naturality, comp_whiskerRight]
+    _ = _ := by
+      rw [h]
+      monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
@@ -101,11 +72,11 @@ theorem crossingUnitBlock_eval (X T : D) {A : D} (e : A ≅ 𝟙_ D) :
   let us : (A ⊗ X) ⊗ Aᘁ ≅ X := ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
   let te : T ⊗ A ≅ T := whiskerLeftIso T e ≪≫ ρ_ T
-  crossingBlock X T T A te.inv te.hom ≫ (T ◁ us.hom) =
+  crossingBlock X T A te.inv te.hom ≫ (T ◁ us.hom) =
     𝟙 _ ⊗≫ ((T ⊗ X) ◁ ε_ T (Tᘁ)) ⊗≫ 𝟙 _ := by
   dsimp only
   let d : Aᘁ ⟶ 𝟙_ D := (Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom
-  let q : Tᘁ ⊗ T ⟶ Aᘁ := closeFusionMap T A T ((T ◁ e.hom) ≫ (ρ_ T).hom)
+  let q : Tᘁ ⊗ T ⟶ Aᘁ := closeFusionMap T A ((T ◁ e.hom) ≫ (ρ_ T).hom)
   have hq : q ≫ d = ε_ T (Tᘁ) := close_rightUnit_eval T e
   simp only [crossingBlock, Iso.trans_hom, Iso.trans_inv, whiskerLeftIso_hom,
     whiskerLeftIso_inv, tensorIso_hom, Iso.refl_hom, tensorHom_def, whiskerLeft_id,
@@ -190,7 +161,7 @@ theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
   rw [crossing_counit_diagonal C X i] at h
   let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   have hb := crossingUnitBlock_eval X (simples C i) e
-  change crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
+  change crossingBlock X (simples C i) (simples C (unitIndex C))
       (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
         (simples C i ◁ (unitSummandIso C X).hom) = _ at hb
   rw [hb] at h

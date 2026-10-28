@@ -34,9 +34,8 @@ theorem algebraMap_unitScalar (f : End (𝟙_ C.Obj)) :
   Function.invFun_eq ((unit_algebraMap_bijective C).2 f)
 
 theorem unitScalar_eq_equiv (f : End (𝟙_ C.Obj)) :
-    unitScalar C f = unitScalarEquiv C f := by
-  apply (unit_algebraMap_bijective C).1
-  rw [algebraMap_unitScalar]
-  exact (unitScalarEquiv C).symm_apply_apply f |>.symm
+    unitScalar C f = unitScalarEquiv C f :=
+  (congrArg (unitScalar C) ((unitScalarEquiv C).symm_apply_apply f).symm).trans
+    (unitScalar_algebraMap C _)
 
 end PropertyF.Ground

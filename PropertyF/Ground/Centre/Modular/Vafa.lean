@@ -580,10 +580,10 @@ theorem fpDeterminant_tensor_natural (Y : C.Obj) : HasTensorDeterminantRule C η
     obtain ⟨e⟩ := he
     let : Simple S := hs
     let : PreservesBinaryBiproducts (𝟭 C.Obj) := preservesBinaryBiproducts_of_preservesBiproducts _
-    have hid : (𝟭 C.Obj).mapBiprod S K = Iso.refl (S ⊞ K) :=
-      Iso.ext (by apply biprod.hom_ext <;> simp)
     have hsum' : η.app (S ⊞ K) = biprod.mapIso (η.app S) (η.app K) := by
-      simpa [hid] using functor_natural_app_biprod (𝟭 C.Obj) η S K
+      simpa [show (𝟭 C.Obj).mapBiprod S K = Iso.refl (S ⊞ K) from
+        Iso.ext (by apply biprod.hom_ext <;> simp)] using
+          functor_natural_app_biprod (𝟭 C.Obj) η S K
     apply (tensorDeterminantRule_iff_of_iso C η X e).mpr
     change HasTensorDeterminant C X (η.app (S ⊞ K))
     rw [hsum']
@@ -896,7 +896,7 @@ monodromy to have finite order; no lantern relation is required. -/
 theorem mixed_monodromy_finite_of_pivotal_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p)
     (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) :=
-  CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist C
+  CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist
     (Dimensions.pivotalBraidedTwistNaturalIso C p)
     (pivotal_twist_finite_of_balancing C p hbalance) hbalance X Y
 
