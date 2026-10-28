@@ -223,8 +223,8 @@ set_option backward.defeqAttrib.useBackward true in
 of the base global FP dimension. -/
 theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
-  rw [globalFPDimension_eq_induction_sum C]
-  simp [← Integrate.center_forget_fpDimension C, induction, fpDimension_underlying,
-    fpDimension_simple, globalFPDimension, pow_two, Finset.mul_sum, mul_left_comm]
+  simpa [← Integrate.center_forget_fpDimension C, induction, fpDimension_underlying,
+    fpDimension_simple, globalFPDimension, pow_two, Finset.mul_sum, mul_left_comm] using
+      globalFPDimension_eq_induction_sum C
 
 end PropertyF.Ground.CentreInduction
