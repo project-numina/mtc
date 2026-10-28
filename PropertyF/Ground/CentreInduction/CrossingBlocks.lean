@@ -56,18 +56,19 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 -- The chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Turn a map `T ⊗ S ⟶ R` into its right-dual mate
 `R* ⊗ T ⟶ S*`. -/
-def closeFusionMap (T S : D) {R : D} (f : T ⊗ S ⟶ R) : Rᘁ ⊗ T ⟶ Sᘁ :=
-  (fᘁ ▷ T) ≫ ((rightDualTensorIso T S).hom ▷ T) ≫
-    (α_ (Sᘁ) (Tᘁ) T).hom ≫ (Sᘁ ◁ ε_ T (Tᘁ)) ≫ (ρ_ (Sᘁ)).hom
+def closeFusionMap (T S : D) [HasRightDual S] {R : D} [HasRightDual R]
+    (f : T ⊗ S ⟶ R) : Rᘁ ⊗ T ⟶ Sᘁ :=
+  (tensorRightHomEquiv (Rᘁ ⊗ T) S Sᘁ (𝟙_ D))
+    ((α_ Rᘁ T S).hom ≫ (Rᘁ ◁ f) ≫ ε_ R Rᘁ) ≫ (λ_ Sᘁ).hom
 
 /-- A crossing block with different input and output test strands. -/
-def mixedCrossing {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    (X T U : D) {R S : D} (g : R ⟶ U ⊗ S) (f : T ⊗ S ⟶ R) :
+def mixedCrossing {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    (X T U : D) {R S : D} [HasRightDual R] [HasRightDual S] (g : R ⟶ U ⊗ S) (f : T ⊗ S ⟶ R) :
     ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
   (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S f) ≫
     (α_ (U ⊗ S) X (Sᘁ)).hom ≫ (α_ U S (X ⊗ Sᘁ)).hom ≫
@@ -75,14 +76,15 @@ def mixedCrossing {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigid
 
 /-- The matrix entry associated to an inclusion `R ⟶ T ⊗ S` and a
 projection `T ⊗ S ⟶ R`. -/
-def crossingBlock (X T S : D) {R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+def crossingBlock (X T S : D) [HasRightDual S] {R : D} [HasRightDual R]
+    (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ T ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
   mixedCrossing X T T g f
 
 /-- A mixed crossing is natural in the middle induction factor. -/
 @[reassoc]
 theorem mixedCrossing_natural_middle {X Y : D} (h : X ⟶ Y) {T U R S : D}
-    (g : R ⟶ U ⊗ S) (f : T ⊗ S ⟶ R) :
+    [HasRightDual R] [HasRightDual S] (g : R ⟶ U ⊗ S) (f : T ⊗ S ⟶ R) :
     (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ mixedCrossing Y T U g f =
       mixedCrossing X T U g f ≫ (U ◁ ((S ◁ h) ▷ Sᘁ)) := by
   simp only [mixedCrossing, tensorHom_def, Category.assoc]

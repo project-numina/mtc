@@ -55,11 +55,12 @@ theorem rightDualIso_evaluation :
         @rightAdjointMate_comp_evaluation C _ _ X X hq hp (𝟙 X))
 
 /-- Evaluation is preserved by the canonical tensor comparison for right duals. -/
-theorem rightDualTensorIso_evaluation [RightRigidCategory C] (X Y : C) :
+theorem rightDualTensorIso_evaluation (X Y : C) [HasRightDual X] [HasRightDual Y]
+    [HasRightDual (X ⊗ Y)] :
     (rightDualTensorIso X Y).hom ▷ (X ⊗ Y) ≫ ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) =
       ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ) :=
   rightDualIso_evaluation
-    (@HasRightDual.exact C _ _ (X ⊗ Y) (RightRigidCategory.rightDual _))
+    (@HasRightDual.exact C _ _ (X ⊗ Y) inferInstance)
     (ExactPairing.tensor (X₁ := X) (X₂ := Y) (Y₁ := Xᘁ) (Y₂ := Yᘁ))
 
 variable {A B U V W : C}
