@@ -39,7 +39,8 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 /-- The double-dual comparison is natural in centre morphisms. -/
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (κ₂ Y).hom = (κ₂ X).hom ≫ ((f.fᘁ)ᘁ) := by
-  simpa [forgetDoubleDualIso, rightDualIsoMap, Category.assoc] using (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by
+  simpa [forgetDoubleDualIso, rightDualIsoMap, Category.assoc] using
+    (CommSq.vert_comp ⟨forgetDualIso_natural (fᘁ)⟩ ⟨by
       simpa only [comp_rightAdjointMate] using (congrArg (fun m => rightAdjointMate m)
         (CommSq.vert_inv (g := κ Y) (h := κ X) ⟨forgetDualIso_natural f⟩).w).symm⟩).w
 
@@ -57,7 +58,8 @@ instance transportedPivotalHom_isIso (Z : 𝒵) : IsIso (transportedPivotalHom p
 theorem transported_pivotal_natural (f : X ⟶ Y) :
     f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f :=
   (cancel_mono (κ₂ Y).hom).1 <| by
-    simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_natural] using p.naturality f.f
+    simpa [transportedPivotalHom, Category.assoc, forgetDoubleDualIso_natural] using
+      p.naturality f.f
 
 end PropertyF.Ground.CentreInduction
 

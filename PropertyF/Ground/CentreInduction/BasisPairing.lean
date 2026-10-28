@@ -43,8 +43,8 @@ theorem simpleBasis_contraction_natural {i : Fin (rank C)} (q : V ⟶ W)
 
 /-- A mixed crossing block, with the input and output test strands allowed
 to differ, is bilinear in its two fusion morphisms. -/
-def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (X T U R S : D)
+def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u}
+    [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (X T U R S : D)
     [HasRightDual R] [HasRightDual S] :
     (R ⟶ U ⊗ S) →ₗ[k] (T ⊗ S ⟶ R) →ₗ[k]
       (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
@@ -101,8 +101,8 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
     simp only [r, q, Category.assoc, ← whiskerLeft_comp_assoc,
       ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum]
     rw [crossing_completeness, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id]
-  simpa [J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
-    crossingInclusion, crossingProjection, mixedCrossingBilinear, mixedCrossing, crossingBlock, Category.assoc] using
+  simpa [J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection, crossingInclusion,
+    crossingProjection, mixedCrossingBilinear, crossingBlock, Category.assoc] using
     simpleBasis_contraction_refinement q r h
       (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (Sᶜ i) (Sᶜ j))
 
@@ -144,7 +144,8 @@ theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     (Rᘁ ◁ h) ≫ closeFusionMap U S f =
       closeFusionMap T S ((h ▷ S) ≫ f) :=
   Dimensions.evaluation_ext (X := S) <| by
-    simp [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp, monoidalComp]
+    simp [comp_whiskerRight, Category.assoc, closeFusionMap_evaluation, whiskerLeft_comp,
+      monoidalComp]
 
 variable (X : D)
 
@@ -181,7 +182,8 @@ theorem crossingBlock_sum_natural_test
     (∑ b, (((Sᶜ i ⊗ X) ⊗ (Sᶜ i)ᘁ) ◁ h) ≫ crossingSummand C X U i j b) =
     ∑ a, crossingSummand C X T i j a ≫ (h ▷ ((Sᶜ j ⊗ X) ⊗ (Sᶜ j)ᘁ)) := by
   simpa only [crossingSummand, crossingBlock_pre_test, crossingBlock_post_test,
-    mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk, crossingInclusion, crossingProjection, simpleProjection] using
+    mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk, crossingInclusion,
+    crossingProjection, simpleProjection] using
     (simpleBasis_contraction_natural (h ▷ Sᶜ j)
       (mixedCrossingBilinear (k := ℂ) X T U (Sᶜ i) (Sᶜ j))).symm
 
