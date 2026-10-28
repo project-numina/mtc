@@ -173,10 +173,9 @@ theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [Ha
   let R : Setoid A := Setoid.comap Subtype.val (isIsomorphicSetoid D)
   let Q := Quotient R
   let : Finite Q := Finite.of_surjective (Quotient.mk R) Quotient.mk_surjective
-  let : Fintype Q := Fintype.ofFinite Q
-  let e : Q ≃ Fin (Fintype.card Q) := Fintype.equivFin Q
-  let S : Fin (Fintype.card Q) → D := fun i => (Quotient.out (e.symm i)).1
-  refine ⟨Fintype.card Q, S, ?_, ?_, ?_⟩
+  obtain ⟨n, ⟨e⟩⟩ := Finite.exists_equiv_fin Q
+  let S : Fin n → D := fun i => (Quotient.out (e.symm i)).1
+  refine ⟨n, S, ?_, ?_, ?_⟩
   · intro i
     exact hs _ (Quotient.out (e.symm i)).2
   · intro i j hij

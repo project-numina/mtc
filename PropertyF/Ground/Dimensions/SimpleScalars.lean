@@ -145,7 +145,7 @@ theorem simple_scalar_biproduct_natural
       exact h (simples_injective C ⟨asIso
         (biproduct.ι (fun i => simples C (a i)) i ≫ f ≫
           biproduct.π (fun j => simples C (b j)) j)⟩)
-    simp [hz]
+    rw [hz, smul_zero, smul_zero]
 
 /-- Index type for the canonical simple summands of an object. -/
 abbrev simplePieces (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :=
@@ -214,8 +214,7 @@ theorem simpleScalarNatural_app_simple
   let X := simples C i
   let a : simplePieces C X := ⟨i, ⟨0, by
     change 0 < Module.finrank ℂ (simples C i ⟶ simples C i)
-    rw [finrank_simples_hom]
-    simp⟩⟩
+    simp [finrank_simples_hom]⟩⟩
   let e := simpleDecomposition C X
   let V := simplePiecesObject C X
   let s : X ⟶ X := biproduct.ι V a ≫ e.inv

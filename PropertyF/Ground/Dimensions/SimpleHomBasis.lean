@@ -50,8 +50,7 @@ theorem rightQuantumTrace_tensor_scalar
       scalar (rightQuantumTrace k) • rightQuantumTrace j := by
     apply End.homEquiv.injective
     simpa [rightTraceWith, rightQuantumTrace, tensorHom_def] using (congrArg End.asHom h.symm)
-  rw [ht, map_smul]
-  simp [mul_comm]
+  rw [ht, map_smul, smul_eq_mul, mul_comm]
 
 end PropertyF.Ground.Dimensions
 

@@ -20,8 +20,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ (underlyingCounit C).app X) =
-    (∑ a, crossingSummand C X T i (unitIndex C) a) ≫
-      (T ◁ (unitSummandIso C X).hom) := by
+    (∑ a, crossingSummand C X T i (unitIndex C) a) ≫ (T ◁ (unitSummandIso C X).hom) := by
   simpa only [underlyingCounit, unitSummandRetract, whiskerLeft_comp, Category.assoc] using
     congrArg (fun k => k ≫ (T ◁ (unitSummandIso C X).hom))
       (crossingCandidate_matrix C X T i (unitIndex C))
@@ -98,8 +97,7 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory 
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component followed by a map can be expressed through a crossing. -/
-theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N)
-    (t : M ⟶ N) (w : N ⟶ X) :
+theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N) (t : M ⟶ N) (w : N ⟶ X) :
     t ≫ ((ρ_ N).inv ≫ (N ◁ η_ S (Sᘁ)) ≫ (α_ N S (Sᘁ)).inv ≫ (b ▷ Sᘁ)) ≫
       ((S ◁ w) ▷ Sᘁ) =
     𝟙 _ ⊗≫ (M ◁ η_ S (Sᘁ)) ⊗≫ ((t ▷ S ≫ b ≫ (S ◁ w)) ▷ Sᘁ) ⊗≫ 𝟙 _ := by
@@ -249,8 +247,7 @@ theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Every matrix entry of the second triangle has the expected value. -/
-theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
-  let V := inductionSummand C X
+theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) : let V := inductionSummand C X
   biproduct.ι V i ≫ (unitCandidate C ((induction C).obj X) ≫
     (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by

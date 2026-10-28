@@ -152,8 +152,8 @@ theorem rightPartialTrace_tensor (p : PivotalStructure (C := C))
     rightPartialTrace p (End.of (a ⊗ₘ b)) = scalar (p.rightTrace b) • End.of a := by
   rw [show End.of (a ⊗ₘ b) = End.of (𝟙 X ⊗ₘ b) * insertRightIdentity Y (End.of a) from
       End.ext (by simp [insertRightIdentity, tensorHom_def]),
-    rightPartialTrace_right, rightPartialTrace_one_tensor p scalar X b]
-  simp
+    rightPartialTrace_right, rightPartialTrace_one_tensor p scalar X b,
+    smul_mul_assoc, one_mul]
 
 /-- Pivotal trace is multiplicative on tensor products of endomorphisms. -/
 theorem pivotalTrace_tensor (p : PivotalStructure (C := C))
