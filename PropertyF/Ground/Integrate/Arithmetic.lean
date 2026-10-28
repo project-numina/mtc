@@ -5,11 +5,13 @@ public import PropertyF.Ground.Fusion.SpectralIntegral
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Arithmetic
 
+/-! # Galois fixedness and integrality
+
+A positive ratio and the centre's rigidity witness rule out smaller Galois
+conjugates. A real algebraic integer fixed by every complex automorphism is an
+integer, yielding the arithmetic descent used in the final theorem. -/
+
 section
-/-! Numerical part of the paper's Galois fixedness argument, independent of
-any of the old input structures. The remaining hypotheses describe the real
-conjugate bounds and the numerical witness supplied by the centre and rigidity
-arguments. -/
 
 @[expose] public noncomputable section
 
@@ -28,7 +30,6 @@ theorem galois_dimension_contradiction {δ δσ δτ f d : ℝ}
   have hreal : d * δ = δσ := by exact_mod_cast ht
   rw [abs_of_pos (by nlinarith : 0 < d)] at hrigidity
   nlinarith
-
 
 end PropertyF
 

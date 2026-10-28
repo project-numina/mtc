@@ -4,7 +4,10 @@ public import PropertyF.Ground.Fusion.Multiplicity
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
-/-! The unit scalar map is invertible for every genuine complex fusion category. -/
+/-! # Scalars on the tensor unit
+
+Schur's lemma identifies the endomorphisms of the tensor unit with complex
+scalars. The inverse agrees with the scalar map in the target statement. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -29,10 +32,12 @@ algebra map; no fallback value is reachable. -/
 theorem unitScalar_algebraMap (z : ℂ) : unitScalar C (algebraMap ℂ (End (𝟙_ C.Obj)) z) = z :=
   (unit_algebraMap_bijective C).1 (Function.invFun_eq ⟨z, rfl⟩)
 
+/-- The canonical scalar map also inverts the algebra map on endomorphisms. -/
 theorem algebraMap_unitScalar (f : End (𝟙_ C.Obj)) :
     algebraMap ℂ (End (𝟙_ C.Obj)) (unitScalar C f) = f :=
   Function.invFun_eq ((unit_algebraMap_bijective C).2 f)
 
+/-- The target's scalar map agrees with the canonical algebra equivalence. -/
 theorem unitScalar_eq_equiv (f : End (𝟙_ C.Obj)) :
     unitScalar C f = unitScalarEquiv C f :=
   (congrArg (unitScalar C) ((unitScalarEquiv C).symm_apply_apply f).symm).trans

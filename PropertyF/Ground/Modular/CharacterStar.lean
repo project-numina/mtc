@@ -20,25 +20,26 @@ variable (hdual : ∀ i j k, N.coeff i j k = N.coeff (dual i) k j)
 
 omit [DecidableEq ι] in
 include hdual in
-/-- Fusion duality balances the pairing of two fusion characters. -/
-theorem character_inner_balance (χ ψ : Character N) (i : ι) :
-    ψ.value i * (∑ j, starRingEnd ℂ (χ.value j) * ψ.value j) =
-      starRingEnd ℂ (χ.value (dual i)) *
-        (∑ j, starRingEnd ℂ (χ.value j) * ψ.value j) := by
+/-- Fusion duality balances two multiplicative functions under a ring endomorphism. -/
+theorem fusion_inner_balance {K : Type*} [CommSemiring K] (φ : K →+* K)
+    (χ ψ : ι → K)
+    (hχ : ∀ i j, χ i * χ j = ∑ k, (N.coeff i j k : K) * χ k)
+    (hψ : ∀ i j, ψ i * ψ j = ∑ k, (N.coeff i j k : K) * ψ k) (i : ι) :
+    ψ i * (∑ j, φ (χ j) * ψ j) = φ (χ (dual i)) * (∑ j, φ (χ j) * ψ j) := by
   classical
-  let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j
-  change ψ.value i * w = starRingEnd ℂ (χ.value (dual i)) * w
+  let w : K := ∑ j, φ (χ j) * ψ j
+  change ψ i * w = φ (χ (dual i)) * w
   calc
-    _ = ∑ j, starRingEnd ℂ (χ.value j) * (ψ.value i * ψ.value j) := by
+    _ = ∑ j, φ (χ j) * (ψ i * ψ j) := by
       simp only [w, Finset.mul_sum, mul_left_comm]
-    _ = ∑ j, ∑ k, starRingEnd ℂ (χ.value j) * ((N.coeff i j k : ℂ) * ψ.value k) := by
-      simp only [ψ.mul_eq, Finset.mul_sum]
-    _ = ∑ k, ∑ j, ((N.coeff (dual i) k j : ℂ) * starRingEnd ℂ (χ.value j)) * ψ.value k := by
+    _ = ∑ j, ∑ k, φ (χ j) * ((N.coeff i j k : K) * ψ k) := by
+      simp only [hψ, Finset.mul_sum]
+    _ = ∑ k, ∑ j, ((N.coeff (dual i) k j : K) * φ (χ j)) * ψ k := by
       rw [Finset.sum_comm]
       simp only [hdual i, mul_comm, mul_assoc]
-    _ = ∑ k, starRingEnd ℂ (χ.value (dual i) * χ.value k) * ψ.value k := by
-      simp only [χ.mul_eq, map_sum, Finset.sum_mul, map_mul, map_natCast]
-    _ = starRingEnd ℂ (χ.value (dual i)) * w := by
+    _ = ∑ k, φ (χ (dual i) * χ k) * ψ k := by
+      simp only [hχ, map_sum, Finset.sum_mul, map_mul, map_natCast]
+    _ = φ (χ (dual i)) * w := by
       simp only [w, map_mul, Finset.mul_sum, mul_left_comm, mul_assoc]
 
 omit [DecidableEq ι] in
@@ -55,7 +56,7 @@ theorem character_dual_conj (χ : Character N) (i : ι) :
       ⟨N.unit, Finset.mem_univ _, by simp [χ.unit_eq]⟩)
   (starRingEnd ℂ).injective (by
     simpa using (mul_right_cancel₀ hw (by
-      simpa [w] using character_inner_balance N dual hdual χ χ i)).symm)
+      simpa [w] using fusion_inner_balance N dual hdual (starRingEnd ℂ) χ.value χ.value χ.mul_eq χ.mul_eq i)).symm)
 
 /-- Actual fusion coefficients satisfy the adjointness relation. -/
 theorem fusionCoeff_dual_adjoint (C : Ground.BraidedFusionCategory) (i j k : Fin (rank C)) :
