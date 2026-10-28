@@ -100,8 +100,7 @@ variable {D} in
 /-- FP dimension is invariant under taking a left dual. -/
 theorem fpDimension_leftDual (X : D.Obj) :
     fpDimension D (ᘁX) = fpDimension D X := by
-  simpa only [fpDimension, dual_multiplicity, fpSimple_dual,
-    show ∀ i, dualEquiv D i = dualIndex D i from fun _ ↦ rfl] using
+  simpa only [fpDimension, dual_multiplicity, fpSimple_dual, show ⇑(dualEquiv D) = dualIndex D from rfl] using
     Equiv.sum_comp (dualEquiv D) (fun i ↦ (simpleMultiplicity D i X : ℝ) * fpSimple D i)
 
 variable {D} in
