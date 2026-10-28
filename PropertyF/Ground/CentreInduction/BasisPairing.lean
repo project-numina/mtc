@@ -1,6 +1,5 @@
 module
 public import PropertyF.Ground.CentreInduction.CrossingBlocks
-public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import Mathlib.LinearAlgebra.Dual.Basis
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 
@@ -229,9 +228,7 @@ theorem crossingCandidate_natural_test {T U : C.Obj} (h : T ⟶ U) :
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
   let V := inductionSummand C X
-  apply (cancel_epi (rightDistributor V T).inv).1
-  refine biproduct.hom_ext' _ _ fun i => ?_
-  rw [biproduct_ι_comp_rightDistributor_inv_assoc, biproduct_ι_comp_rightDistributor_inv_assoc]
+  refine biproduct_tensor_hom_ext V T fun i => ?_
   dsimp [V, underlying] at *
   rw [← whisker_exchange_assoc]
   simp only [crossingCandidate_on_summand, crossingCandidate_on_summand_assoc,

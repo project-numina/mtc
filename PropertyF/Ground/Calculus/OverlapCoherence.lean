@@ -207,14 +207,6 @@ theorem overlapRight_local_of_iso (hiso : HasOverlapCoherence X t k) :
     (congrArg (fun f => (α_ _ _ _).hom ≫ f ≫ (overlapPowerIso X t k).inv)
       (freshOverlapIso_action k u)))
 
-set_option backward.isDefEq.respectTransparency false in
-/-- A single coherence equality between the left- and right-insertion
-isomorphisms gives the entire actual overlap-product identification. -/
-theorem overlapProduct_local_of_iso (hiso : HasOverlapCoherence X t k) :
-    IsLocalOverlapProduct k u := by
-  simp only [IsLocalOverlapProduct, overlapProduct, Subalgebra.coe_mul, map_mul, overlapEndProduct,
-    overlapLeft_local, overlapRight_local_of_iso k u hiso, previousOverlapLocal]
-
 end LocalOverlap
 
 variable (D : BraidedFusionCategory.{v,u}) {X : D.Obj} [Simple X]
