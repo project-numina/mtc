@@ -19,9 +19,9 @@ variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 local notation "S" => simples C
 local instance (i : Fin (rank C)) : Simple (S i) := simples_simple C i
 -- The induction crossing on the object X.
-local notation "b" => crossingCandidate C X
+local notation "b" => crossingCandidate X
 -- Its simple-indexed summands.
-local notation "V" => inductionSummand C X
+local notation "V" => inductionSummand X
 variable (T : C.Obj) (i j : Fin (rank C))
 
 set_option backward.isDefEq.respectTransparency false in
@@ -29,9 +29,9 @@ variable {C} in
 /-- Composing a crossing with the unit-summand counit selects one matrix column. -/
 theorem crossing_counit_matrix :
   (biproduct.ι V i ▷ T) ≫ b T ≫ (T ◁ (underlyingCounit C).app X) =
-    (∑ a, crossingSummand C X T i (unitIndex C) a) ≫ (T ◁ (unitSummandIso C X).hom) := by
+    (∑ a, crossingSummand X T i (unitIndex C) a) ≫ (T ◁ (unitSummandIso X).hom) := by
   simpa [underlyingCounit, unitSummandRetract] using
-    congrArg (· ≫ (T ◁ (unitSummandIso C X).hom)) (crossingCandidate_matrix X T i (unitIndex C))
+    congrArg (· ≫ (T ◁ (unitSummandIso X).hom)) (crossingCandidate_matrix X T i (unitIndex C))
 
 /-! The unit-column matrix of the induction crossing. -/
 
@@ -65,12 +65,12 @@ theorem crossing_counit_diagonal :
     (S i ◁ (underlyingCounit C).app X) =
       crossingBlock X (S i) (S (unitIndex C))
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
-          (S i ◁ (unitSummandIso C X).hom) := by
-  let : Unique (crossingIndex C (S i) i (unitIndex C)) := by
+          (S i ◁ (unitSummandIso X).hom) := by
+  let : Unique (crossingIndex (S i) i (unitIndex C)) := by
     simpa [crossingIndex, counit_column_finrank] using (inferInstance : Unique (Fin 1))
   simpa only [crossing_counit_matrix, Fintype.sum_unique, crossingSummand,
     Iso.symm_hom, Iso.symm_inv] using
-    congrArg (· ≫ (S i ◁ (unitSummandIso C X).hom))
+    congrArg (· ≫ (S i ◁ (unitSummandIso X).hom))
       (crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
         (crossingInclusion_projection default))
 
@@ -154,11 +154,11 @@ variable {C : BraidedFusionCategory.{v,u}} (X : C.Obj)
 -- The chosen simple representatives of the base fusion category.
 local notation "S" => simples C
 -- The induction crossing on the object X.
-local notation "b" => crossingCandidate C X
+local notation "b" => crossingCandidate X
 -- Unit components of the induced object.
-local notation "u" => unitComponent C (Functor.obj (induction C) X)
+local notation "u" => unitComponent (Functor.obj (induction C) X)
 -- Its simple-indexed summands.
-local notation "V" => inductionSummand C X
+local notation "V" => inductionSummand X
 variable (i j : Fin (rank C))
 
 set_option backward.isDefEq.respectTransparency false in
@@ -188,7 +188,7 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Every matrix entry of the second triangle has the expected value. -/
 theorem secondTriangle_entry :
-  biproduct.ι V i ≫ (unitCandidate C ((induction C).obj X) ≫
+  biproduct.ι V i ≫ (unitCandidate ((induction C).obj X) ≫
     (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
   dsimp [unitCandidate, underlyingFunctor, induction, underlying]

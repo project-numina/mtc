@@ -141,7 +141,7 @@ universe v u
 structure with its actual FP dimensions, without any pivotal premise. -/
 theorem positive_spherical_of_pseudoUnitary {C : BraidedFusionCategory.{v,u}}
     (hpu : PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions C p :=
+    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ PivotalHasFPDimensions p :=
   let h (i j : Fin (rank C)) := fourthDualIso_tensor (simples C i) (simples C j)
   positive_spherical_of_simple_fourth_and_reciprocity h (trace_reciprocity_of_fourth_dual h) hpu
 

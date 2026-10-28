@@ -96,7 +96,7 @@ theorem target : TargetStatement.{v,u} := by
   let hc := CentreInduction.pivotalComponentsCentral_proved p
   let pZ := CentreInduction.liftedPivotalStructure p hc
   let J := (CentreInduction.induction D).obj (𝟙_ D.Obj)
-  let := CentreInduction.center_fusion_of_compatible_pivotal D hp
+  let := CentreInduction.center_fusion_of_compatible_pivotal hp
     (CentreInduction.liftedPivotalStructure_compatible hc J)
   obtain ⟨hspherical, hfp⟩ := CentreInduction.center_positive_spherical_of_compatible_pivotal hp
     (CentreInduction.liftedPivotalStructure_compatible hc)

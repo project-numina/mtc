@@ -119,7 +119,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Under the unit-retract condition every centre object is a finite simple sum. -/
 theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
-    (Z : 𝒵) : FiniteSimpleSum (𝒵) Z :=
+    (Z : 𝒵) : FiniteSimpleSum Z :=
   letI (W : 𝒵) : IsArtinianObject W := center_artinian W
   letI : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective X)
   letI (W : 𝒵) : Injective W := all_injective_of_unit_retract r W

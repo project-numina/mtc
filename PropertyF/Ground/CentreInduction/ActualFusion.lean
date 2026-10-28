@@ -102,9 +102,9 @@ set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
 theorem unit_sum (j : Fin (rank C)) :
-  (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
-    (unitComponent C Z p.1 ▷ T) ≫ crossingSummand C Z.1 T p.1 j p.2) =
-      (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
+  (∑ p : Σ i : Fin (rank C), crossingIndex T i j,
+    (unitComponent Z p.1 ▷ T) ≫ crossingSummand Z.1 T p.1 j p.2) =
+      (Z.2.β T).hom ≫ (T ◁ unitComponent Z j) := by
   erw [← unitBlockLinear_id (k := ℂ) Z T (simples C j), ← crossing_completeness C T j, map_sum]
   simp only [unitComponent, crossingSummand, unit_block, unitBlockLinear, LinearMap.coe_mk, AddHom.coe_mk]
 
@@ -112,12 +112,12 @@ set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
 theorem unitCandidate_central :
-    (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
-      (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) :=
-  let V := inductionSummand C Z.1
+    (unitCandidate Z ▷ T) ≫ crossingCandidate Z.1 T =
+      (Z.2.β T).hom ≫ (T ◁ unitCandidate Z) :=
+  let V := inductionSummand Z.1
   leftDistributor_ext_right (f := V) fun j => by
     simp only [Category.assoc, ← whiskerLeft_comp,
-      show unitCandidate C Z ≫ biproduct.π V j = unitComponent C Z j from biproduct.lift_π _ _]
+      show unitCandidate Z ≫ biproduct.π V j = unitComponent Z j from biproduct.lift_π _ _]
     simpa only [V, unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
       comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum,
       Fintype.sum_sigma, crossingSummand] using unit_sum Z T j
@@ -126,10 +126,10 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/
 def actualAdjunction : Center.forget C.Obj ⊣ induction C where
   unit := {
-    app Z := ⟨unitCandidate C Z, unitCandidate_central Z⟩
+    app Z := ⟨unitCandidate Z, unitCandidate_central Z⟩
     naturality {X Y} f := by
       apply Center.ext
-      change f.f ≫ unitCandidate C Y = unitCandidate C X ≫ (underlyingFunctor C).map f.f
+      change f.f ≫ unitCandidate Y = unitCandidate X ≫ (underlyingFunctor C).map f.f
       refine biproduct.hom_ext _ _ fun i => ?_
       simpa only [underlyingFunctor, unitCandidate, unitComponent, Category.assoc, biproduct.lift_π,
         biproduct.lift_π_assoc, biproduct.map_π] using unitComponentAt_natural (S := simples C i) f }
@@ -137,8 +137,8 @@ def actualAdjunction : Center.forget C.Obj ⊣ induction C where
   left_triangle_components Z := unitCandidate_counit Z
   right_triangle_components X := by
     apply Center.ext
-    change unitCandidate C ((induction C).obj X) ≫
-      (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X)
+    change unitCandidate ((induction C).obj X) ≫
+      (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying X)
     refine biproduct.hom_ext' _ _ fun i => biproduct.hom_ext _ _ fun j => ?_
     simpa [underlying, Category.assoc] using secondTriangle_entry X i j
 
