@@ -66,33 +66,4 @@ end PropertyF.Ground.Modular
 
 namespace PropertyF.Ground.Modular
 
-/-- Construct the old modular-data interface from its numerical identities and
-classification of fusion characters by the normalized S columns. In particular,
-neither the Galois label action nor its compatibility with columns is assumed. -/
-def modularDataOfCharacters (rank : ℕ) (unit : Fin rank)
-    (dual : Fin rank → Fin rank) (dimension : Fin rank → ℂ)
-    (globalDimension : ℂ) (S : Matrix (Fin rank) (Fin rank) ℂ)
-    (dimension_ne_zero : ∀ X, dimension X ≠ 0)
-    (global_ne_zero : globalDimension ≠ 0)
-    (global_eq : globalDimension = ∑ X, dimension X ^ 2)
-    (S_symmetric : ∀ X Y, S X Y = S Y X)
-    (S_unit : ∀ X, S X unit = dimension X)
-    (unit_dimension : dimension unit = 1)
-    (S_square : ∀ X Y, ∑ Z, S X Z * S Z Y =
-      if X = dual Y then globalDimension else 0)
-    (N : FusionRules (Fin rank))
-    (columns : Fin rank → Character N)
-    (column_eq : ∀ X Y, (columns Y).value X = S X Y / dimension Y)
-    (columns_bijective : Function.Bijective columns) : PropertyF.ModularData := by
-  let e : Fin rank ≃ Character N := Equiv.ofBijective columns columns_bijective
-  exact {
-    rank, unit, dual, dimension, globalDimension, S,
-    dimension_ne_zero, global_ne_zero, global_eq, S_symmetric, S_unit,
-    unit_dimension, S_square
-    galoisLabel := Character.galoisLabel e
-    galois_character := by
-      intro τ X Y
-      rw [← column_eq, ← column_eq]
-      exact (Character.galoisLabel_character e τ Y X).symm }
-
 end PropertyF.Ground.Modular

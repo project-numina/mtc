@@ -31,8 +31,8 @@ theorem center_factor {P Q X : CategoryTheory.Center C.Obj} (p : P ⟶ X) (q : Q
   let t : P ⟶ Q := ⟨g, ?_⟩
   · exact ⟨t, rfl⟩
   · intro T
-    letI : IsSplitMono q.f := mono_splits C q.f
-    letI : IsSplitMono (T ◁ q.f) := IsSplitMono.mk'
+    let : IsSplitMono q.f := mono_splits C q.f
+    let : IsSplitMono (T ◁ q.f) := IsSplitMono.mk'
       { retraction := T ◁ retraction q.f
         id := by rw [← whiskerLeft_comp, IsSplitMono.id, whiskerLeft_id] }
     apply (cancel_mono (T ◁ q.f)).1
@@ -59,7 +59,7 @@ def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
       have : Mono P.arrow.f := by
         change Mono ((CategoryTheory.Center.forget C.Obj).map P.arrow)
         infer_instance
-      letI : IsSplitMono P.arrow.f := mono_splits C P.arrow.f
+      let : IsSplitMono P.arrow.f := mono_splits C P.arrow.f
       have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange C X P :=
         ⟨retraction P.arrow.f, rfl⟩
       obtain ⟨g, hg⟩ := h hm
@@ -81,7 +81,7 @@ def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
 
 /-- Every actual centre object is Artinian, without spherical hypotheses. -/
 theorem center_artinian (X : CategoryTheory.Center C.Obj) : IsArtinianObject X := by
-  letI : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
   exact ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
 
 
@@ -102,7 +102,7 @@ theorem simple_mono_induced_simple (X : CategoryTheory.Center C.Obj) [Simple X] 
   have hi' : 0 < Module.finrank ℂ (X.1 ⟶ simples C i) := by
     rw [finrank_to_simple_eq_from_simple C]
     exact hi
-  letI : FiniteDimensional ℂ (X.1 ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (X.1 ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp hi'
   let e := homLinearEquivOfAdjunction (CategoryTheory.Center.forget C.Obj) (induction C)
     (actualAdjunction C) X (simples C i)
@@ -138,7 +138,7 @@ theorem center_cokernel_measure_lt {S W : CategoryTheory.Center C.Obj}
   have : Epi q := by
     change Epi (cokernel.π p.f)
     infer_instance
-  letI : IsSplitEpi q := epi_splits C q
+  let : IsSplitEpi q := epi_splits C q
   let s : Q.1 ⟶ W.1 := section_ q
   have hs : s ≫ q = 𝟙 Q.1 := IsSplitEpi.id q
   let L : (Q.1 ⟶ Q.1) →ₗ[ℂ] (W.1 ⟶ W.1) :=
@@ -159,8 +159,8 @@ theorem center_cokernel_measure_lt {S W : CategoryTheory.Center C.Obj}
     apply hp
     apply CategoryTheory.Center.ext
     exact hz
-  letI : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
-  letI : FiniteDimensional ℂ (Q.1 ⟶ Q.1) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (Q.1 ⟶ Q.1) := IsFusionCategory.hom_finite _ _
   have hlt := Submodule.finrank_lt_finrank_of_lt (lt_top_iff_ne_top.mpr hproper)
   rw [finrank_top, LinearMap.finrank_range_of_inj hinj] at hlt
   exact hlt
@@ -178,16 +178,16 @@ theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
     by_cases hw : IsZero W
     · refine ⟨[], ?_⟩
       intro S hS ⟨t, ht⟩
-      letI : Simple S := hS
-      letI : Mono t := ht
+      let : Simple S := hS
+      let : Mono t := ht
       have ht0 : t = 0 := hw.eq_of_tgt _ _
       have hid : 𝟙 S = 0 := by
         apply (cancel_mono t).1
         simp [ht0]
       exact (id_nonzero S hid).elim
-    · letI : IsArtinianObject W := center_artinian C W
+    · let : IsArtinianObject W := center_artinian C W
       obtain ⟨P, hP⟩ := exists_simple_subobject hw
-      letI : Simple (P : CategoryTheory.Center C.Obj) := hP
+      let : Simple (P : CategoryTheory.Center C.Obj) := hP
       let p : (P : CategoryTheory.Center C.Obj) ⟶ W := P.arrow
       have hp : p ≠ 0 := by
         intro h0
@@ -201,8 +201,8 @@ theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
       obtain ⟨L, hL⟩ := ih Q hlt
       refine ⟨(P : CategoryTheory.Center C.Obj) :: L, ?_⟩
       intro S hS ⟨t, ht⟩
-      letI : Simple S := hS
-      letI : Mono t := ht
+      let : Simple S := hS
+      let : Mono t := ht
       have ht0 : t ≠ 0 := by
         intro h0
         have hid : 𝟙 S = 0 := by
@@ -220,9 +220,9 @@ theorem finite_simple_subobject_labels (W : CategoryTheory.Center C.Obj) :
           intro h0
           apply ht0
           simpa [h0] using hg.symm
-        letI : IsIso g := isIso_of_hom_simple hg0
+        let : IsIso g := isIso_of_hom_simple hg0
         exact ⟨P, by simp, ⟨asIso g⟩⟩
-      · letI : Mono (t ≫ q) := mono_of_nonzero_from_simple hz
+      · let : Mono (t ≫ q) := mono_of_nonzero_from_simple hz
         obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, inferInstance⟩
         exact ⟨T, by simp [hT], hST⟩
 
@@ -242,7 +242,7 @@ theorem finite_simple_labels :
   · intro T hT
     exact (Finset.mem_filter.mp hT).2
   · intro X hX
-    letI : Simple X := hX
+    let : Simple X := hX
     obtain ⟨i, t, ht⟩ := simple_mono_induced_simple C X
     obtain ⟨T, hT, ⟨e⟩⟩ := hL i X hX ⟨t, ht⟩
     refine ⟨T, Finset.mem_filter.mpr ⟨?_, Simple.of_iso e.symm⟩, ⟨e⟩⟩

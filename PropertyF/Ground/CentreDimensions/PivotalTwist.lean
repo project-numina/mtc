@@ -69,12 +69,5 @@ def pivotalBraidedTwistNaturalIso (C : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) : 𝟭 C.Obj ≅ 𝟭 C.Obj :=
   NatIso.ofComponents (pivotalBraidedTwist C p) (fun f => pivotalBraidedTwist_natural C p f)
 
-/-- The pivotal/Drinfeld twist fixes the tensor unit. -/
-theorem pivotalBraidedTwist_unit (C : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) :
-    pivotalBraidedTwist C p (𝟙_ C.Obj) = Iso.refl _ := by
-  apply Iso.ext
-  change (p.iso (𝟙_ C.Obj)).hom ≫ (Ground.doubleDualIso C (𝟙_ C.Obj)).inv = 𝟙 _
-  rw [p.unit, ← drinfeld_unit, Iso.hom_inv_id]
 
 end PropertyF.Ground.Dimensions

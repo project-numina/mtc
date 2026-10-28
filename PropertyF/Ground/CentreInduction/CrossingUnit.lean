@@ -72,7 +72,7 @@ theorem crossingBlock_unit_of_split (X S : C.Obj) [Simple S]
     (g : S ⟶ (𝟙_ C.Obj) ⊗ S) (f : (𝟙_ C.Obj) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock C X (𝟙_ C.Obj) S S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ (λ_ S).hom)
   obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ ((λ_ S).inv ≫ f)
   have hg : g = c • (λ_ S).inv := by
@@ -123,7 +123,7 @@ theorem crossingCandidate_unit (X : C.Obj) :
       dsimp [a]
       omega
     rw [Finset.sum_eq_single a]
-    · letI : Simple (simples C i) := simples_simple C i
+    · let : Simple (simples C i) := simples_simple C i
       rw [crossingBlock_unit_of_split C X (simples C i)
         (crossingInclusion C (𝟙_ C.Obj) i i a) (crossingProjection C (𝟙_ C.Obj) i i a)
         (crossingInclusion_projection C (𝟙_ C.Obj) i i a)]

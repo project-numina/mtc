@@ -29,7 +29,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_of_simple_split (X T R S : C.Obj) [Simple R]
     (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
     crossingBlock C X T R S g f = crossingBlock C X T R S e.hom e.inv := by
-  letI : FiniteDimensional ℂ (R ⟶ R) := IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (R ⟶ R) := IsFusionCategory.hom_finite _ _
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ e.inv)
   obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (e.hom ≫ f)
   have hg : g = c • e.hom := by
@@ -122,7 +122,7 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
       crossingBlock C X (simples C i) (simples C i) (simples C (unitIndex C))
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom := by
     rw [Finset.sum_eq_single a]
-    · letI : Simple (simples C i) := simples_simple C i
+    · let : Simple (simples C i) := simples_simple C i
       exact crossingBlock_of_simple_split C X (simples C i) (simples C i) (simples C (unitIndex C))
         (simpleTensorUnitIso C i).symm _ _ (crossingInclusion_projection C (simples C i) i (unitIndex C) a)
     · intro b _ hne

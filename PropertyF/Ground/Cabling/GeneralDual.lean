@@ -12,9 +12,4 @@ theorem generatedBy_rightDual (D : Ground.BraidedFusionCategory.{v,u}) (X : D.Ob
     GeneratedBy X (Xᘁ) :=
   Ground.generatedBy_rightDual D X
 
-/-- Generated full subcategories of genuine braided fusion categories are rigid. -/
-@[instance_reducible] def generatedCategoryRigid
-    (D : Ground.BraidedFusionCategory.{v,u}) (X : D.Obj) :
-    RigidCategory (generatedCategory X) :=
-  generatedCategoryRigidOfGeneratorDual X (generatedBy_rightDual D X)
 end PropertyF.Ground.Cabling

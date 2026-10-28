@@ -65,7 +65,7 @@ theorem crossingBlock_tensor (X T U S K R : C.Obj)
       (((T ⊗ (U ⊗ S)) ⊗ X) ◁ z) ⊗≫ 𝟙 _ := by
         dsimp only [crossingBlock]
         rw [closeFusionMap_tensor]
-        simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
+        simp only [tensorHom_def, comp_whiskerRight]
         monoidal
     _ = 𝟙 _ ⊗≫ (g₁ ▷ (X ⊗ (((Rᘁ : C.Obj) ⊗ T) ⊗ U))) ⊗≫
       (((((T ⊗ K) ⊗ X) ◁ (q ▷ U))) ≫

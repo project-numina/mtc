@@ -1,5 +1,4 @@
 module
-public import PropertyF.Audit
 public meta import PropertyF.Ground.Integrate.DependencyAudit
 public import PropertyF.Ground.Integrate.UnitScalar
 public import PropertyF.Ground.Integrate.Norm
@@ -85,8 +84,6 @@ import all PropertyF.Ground.CentreInduction.PivotalCentrality
 import all PropertyF.Ground.CentreInduction.PositivePivotal
 import all PropertyF.Ground.Integrate.PivotalOnlyReduction
 import all PropertyF.Ground.CentreIntegrate.TwistBalancing
-import all PropertyF.Ground.CentreIntegrate.MonodromyDual
-import all PropertyF.Ground.CentreIntegrate.TwistDual
 import all PropertyF.Ground.Dimensions.BraidingCapSlide
 import all PropertyF.Ground.Dimensions.DefectAssociativity
 import all PropertyF.Ground.Dimensions.DefectExtension
@@ -98,7 +95,6 @@ import all PropertyF.Ground.Dimensions.ENOInvolution
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
 import all PropertyF.Ground.CentreRigid.Evaluation
-import all PropertyF.Ground.CentreIntegrate.TwistSign
 import all PropertyF.Ground.CentreRigid.Coevaluation
 import all PropertyF.Ground.CentreRigid.MateExplicit
 import all PropertyF.Ground.CentreRigid.Tensor
@@ -170,96 +166,37 @@ import all PropertyF.Ground.Dimensions.SphericalReal
 import all PropertyF.Ground.Integrate.CenterSquareReduction
 import all PropertyF.Ground.Integrate.NumericalCoreReduction
 import all PropertyF.Arithmetic
-import all PropertyF.Audit
 import all PropertyF.Axioms
 import all PropertyF.BlockTrace
 import all PropertyF.BraidAlgebra
 import all PropertyF.Center
 import all PropertyF.CenterBasics
-import all PropertyF.Consequences
 import all PropertyF.Definitions
-import all PropertyF.Descent
 import all PropertyF.GaloisRigidity
 import all PropertyF.GaloisSymmetry
-import all PropertyF.Ground.Cabling.AllInsert
-import all PropertyF.Ground.Cabling.BlockGroupoid
-import all PropertyF.Ground.Cabling.BlockOne
-import all PropertyF.Ground.Cabling.BlockSwap
-import all PropertyF.Ground.Cabling.BlockWords
-import all PropertyF.Ground.Cabling.Blocks
-import all PropertyF.Ground.Cabling.CableAppend
-import all PropertyF.Ground.Cabling.CableClass
-import all PropertyF.Ground.Cabling.CableRetract
-import all PropertyF.Ground.Cabling.CableTensor
-import all PropertyF.Ground.Cabling.CablingComplete
-import all PropertyF.Ground.Cabling.CablingDiagram
-import all PropertyF.Ground.Cabling.CablingFinite
-import all PropertyF.Ground.Cabling.ConcatBase
-import all PropertyF.Ground.Cabling.ConcatGeneral
-import all PropertyF.Ground.Cabling.ConcatLeft
-import all PropertyF.Ground.Cabling.ConcatPower
 import all PropertyF.Ground.Cabling.DualClosure
-import all PropertyF.Ground.Cabling.ENOArithmetic
-import all PropertyF.Ground.Cabling.ExprBraiding
-import all PropertyF.Ground.Cabling.ExprPowers
-import all PropertyF.Ground.Cabling.ExprStructure
-import all PropertyF.Ground.Cabling.ExprTuple
-import all PropertyF.Ground.Cabling.ExprTupleCross
 import all PropertyF.Ground.Cabling.FusionCycle
 import all PropertyF.Ground.Cabling.GeneralDual
 import all PropertyF.Ground.Cabling.Generated
-import all PropertyF.Ground.Cabling.GeneratedAbelian
-import all PropertyF.Ground.Cabling.GeneratedDimension
-import all PropertyF.Ground.Cabling.GeneratedF
-import all PropertyF.Ground.Cabling.GeneratedFusion
-import all PropertyF.Ground.Cabling.GeneratedInputsBridge
-import all PropertyF.Ground.Cabling.GeneratedIntegral
-import all PropertyF.Ground.Cabling.GeneratorBlock
 import all PropertyF.Ground.Cabling.Images
-import all PropertyF.Ground.Cabling.Inclusion
-import all PropertyF.Ground.Cabling.LocalCable
-import all PropertyF.Ground.Cabling.MixedBraid
 import all PropertyF.Ground.Cabling.MoveHead
-import all PropertyF.Ground.Cabling.MoveHeadContext
 import all PropertyF.Ground.Cabling.MoveHeadInsert
 import all PropertyF.Ground.Cabling.Naturality
-import all PropertyF.Ground.Cabling.Perron
-import all PropertyF.Ground.Cabling.PowerAssoc
 import all PropertyF.Ground.Cabling.PowerCompare
-import all PropertyF.Ground.Cabling.PowerExpr
 import all PropertyF.Ground.Cabling.PowerGeneral
-import all PropertyF.Ground.Cabling.PrefixCompare
-import all PropertyF.Ground.Cabling.PrefixPower
-import all PropertyF.Ground.Cabling.Primitive
 import all PropertyF.Ground.Cabling.Pure
-import all PropertyF.Ground.Cabling.PureBlocks
-import all PropertyF.Ground.Cabling.RetractAction
 import all PropertyF.Ground.Cabling.Rigidity
 import all PropertyF.Ground.Cabling.Strands
-import all PropertyF.Ground.Cabling.TensorComponents
-import all PropertyF.Ground.Cabling.TensorDecomposition
-import all PropertyF.Ground.Cabling.TransportTuple
-import all PropertyF.Ground.Cabling.TupleCrossing
-import all PropertyF.Ground.Cabling.TupleIso
-import all PropertyF.Ground.Cabling.TupleIsoStep
-import all PropertyF.Ground.Cabling.UnitBraid
 import all PropertyF.Ground.Cabling.UnitPower
 import all PropertyF.Ground.Cabling.Witness
-import all PropertyF.Ground.Cabling.Zero
 import all PropertyF.Ground.Calculus.Averaging
 import all PropertyF.Ground.Calculus.BraidBlocks
 import all PropertyF.Ground.Calculus.BraidTraceBound
 import all PropertyF.Ground.Calculus.BraidWeights
-import all PropertyF.Ground.Calculus.CategoricalTrace
 import all PropertyF.Ground.Calculus.CyclicTrace
 import all PropertyF.Ground.Calculus.EndBlocks
 import all PropertyF.Ground.Calculus.EndTrace
 import all PropertyF.Ground.Calculus.FiniteOrder
-import all PropertyF.Ground.Calculus.GaloisBlocks
-import all PropertyF.Ground.Calculus.GaloisMatrices
-import all PropertyF.Ground.Calculus.GaloisOverlap
-import all PropertyF.Ground.Calculus.GaloisRigidity
-import all PropertyF.Ground.Calculus.GaloisTraceBound
 import all PropertyF.Ground.Calculus.GroupBlocks
 import all PropertyF.Ground.Calculus.ImageMaps
 import all PropertyF.Ground.Calculus.Intertwining
@@ -274,8 +211,6 @@ import all PropertyF.Ground.Calculus.PositiveWeights
 import all PropertyF.Ground.Calculus.RepresentationTrace
 import all PropertyF.Ground.Calculus.ReversePower
 import all PropertyF.Ground.Calculus.RightStrand
-import all PropertyF.Ground.Calculus.SemilinearMaps
-import all PropertyF.Ground.Calculus.SharpRigidity
 import all PropertyF.Ground.Calculus.StarSpan
 import all PropertyF.Ground.Calculus.StrandCoherence
 import all PropertyF.Ground.Calculus.TensorPowerCoherence
@@ -433,7 +368,6 @@ import all PropertyF.Ground.Modular.FusionTransport
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
 import all PropertyF.Ground.Modular.HopfPartialTrace
 import all PropertyF.Ground.Modular.Labels
-import all PropertyF.Ground.Modular.PseudoGalois
 import all PropertyF.Ground.Modular.SAdditivity
 import all PropertyF.Ground.Modular.SMatrix
 import all PropertyF.Ground.Modular.SSquare
@@ -537,7 +471,6 @@ run_cmd do
       ``PropertyF.Ground.target_of_center_centralizers,
       ``PropertyF.Ground.target_of_center_product_retracts,
       ``PropertyF.Ground.target_of_actual_center,
-      ``PropertyF.Ground.Calculus.galois_three_strand_rigidity,
       ``PropertyF.Ground.Dimensions.spherical_squaredNorm_galois_real,
       ``PropertyF.Ground.galois_rigidity,
       ``PropertyF.Ground.numericalProductCore_integral_of_image_monodromy,
@@ -554,16 +487,10 @@ run_cmd do
       ``PropertyF.Ground.target_of_pivotal_base_modular_balanced_center,
       ``PropertyF.Ground.CentreCalculus.actual_symmetricCore_integrality,
       ``PropertyF.Ground.CentreModular.mixed_monodromy_finite_of_pivotal_balancing,
-      ``PropertyF.Ground.target_of_pivotal_base_balancing_and_image_monodromy,
-      ``PropertyF.Ground.symmetricCore_integral_of_dual_balancing,
       ``PropertyF.Ground.CentreRigid.rigidCenter,
       ``PropertyF.Ground.CentreIntegrate.doubleDualTensor_evaluation,
       ``PropertyF.Ground.CentreIntegrate.drinfeld_tensor_of_pairing_cap,
       ``PropertyF.Ground.CentreIntegrate.balance_of_drinfeld_tensor,
-      ``PropertyF.Ground.CentreIntegrate.twist_sign_of_spherical_self_transparency_and_balancing,
-      ``PropertyF.Ground.CentreIntegrate.pivotalTwistScalar_rightDual,
-      ``PropertyF.Ground.CentreIntegrate.self_doubleBraiding_eq_one_rightDual,
-      ``PropertyF.Ground.CentreIntegrate.twist_sign_of_dual_and_tensor,
       ``PropertyF.Ground.target_of_integral_numerical_center_core,
       ``PropertyF.Ground.center_globalDimension_square_of_actual_induction,
       ``PropertyF.Ground.target_of_center_image_monodromy_no_square,

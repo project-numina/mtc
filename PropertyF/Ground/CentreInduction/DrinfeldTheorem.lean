@@ -101,14 +101,14 @@ theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     apply (cancel_mono (rightDualTensorIso (Yᘁ) (Xᘁ)).hom).1
     simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
     rw [hm]
-    simp [Category.assoc]
+    simp
   have ht := Dimensions.rightDualTensorIso_natural f g
   have ht' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ ((f ⊗ₘ g)ᘁ) =
       (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso (((Yᘁ)ᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)).inv := by
     apply (cancel_mono (rightDualTensorIso (((Yᘁ)ᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ)).hom).1
     simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
     rw [ht]
-    simp [Category.assoc]
+    simp
   simp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     Dimensions.rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
@@ -140,7 +140,7 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom := by
     apply (cancel_epi m.hom).1
-    simp only [Category.assoc, Iso.hom_inv_id_assoc]
+    simp only [Iso.hom_inv_id_assoc]
     exact h X Y
   have hv := drinfeld_inv_dual_tensor C h X Y
   have hn : Modular.doubleBraiding X Y ≫
@@ -153,13 +153,13 @@ theorem fourthDualIso_tensor_of_drinfeld (h : DrinfeldTensorLaw C) (X Y : C.Obj)
   rw [hu]
   simp only [Category.assoc]
   rw [hv]
-  simp only [← tensorHom_comp_tensorHom_assoc, Category.assoc]
+  simp only [← tensorHom_comp_tensorHom_assoc]
   have hn' : m.inv ≫ (((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
       Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)) =
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) := by
     rw [← hn]
     change m.inv ≫ (m.hom ≫ _) = _
-    simp [Category.assoc]
+    simp
   simp only [← Category.assoc]
   rw [Category.assoc m.inv, hn']
 

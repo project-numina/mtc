@@ -33,10 +33,10 @@ def diagonalEndMap (S K : D) : ((S ⟶ S) × (K ⟶ K)) →ₗ[ℂ] (S ⊞ K ⟶
 theorem diagonalEndMap_injective (S K : D) : Function.Injective (diagonalEndMap S K) := by
   intro a b h
   apply Prod.ext
-  · have h' := congrArg (fun f => biprod.inl ≫ f ≫ biprod.fst) h
-    simpa [diagonalEndMap, Category.assoc] using h'
-  · have h' := congrArg (fun f => biprod.inr ≫ f ≫ biprod.snd) h
-    simpa [diagonalEndMap, Category.assoc] using h'
+  · simpa [diagonalEndMap, Category.assoc] using
+      congrArg (fun f => biprod.inl ≫ f ≫ biprod.fst) h
+  · simpa [diagonalEndMap, Category.assoc] using
+      congrArg (fun f => biprod.inr ≫ f ≫ biprod.snd) h
 
 /-- Removing a nonzero direct summand strictly decreases the dimension of the
 endomorphism space. -/

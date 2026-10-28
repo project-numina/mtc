@@ -29,7 +29,7 @@ set_option backward.defeqAttrib.useBackward true in
 theorem evaluation_iso_unit (A : C.Obj) (e : A ≅ 𝟙_ C.Obj) :
     ((Dimensions.rightDualIsoMap e.symm ≪≫ Dimensions.rightDualUnitIso).hom ⊗ₘ e.hom) ≫
       (ρ_ (𝟙_ C.Obj)).hom = ε_ A (Aᘁ) := by
-  letI : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
+  let : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
   let p : ExactPairing (𝟙_ C.Obj) ((𝟙_ C.Obj)ᘁ) := HasRightDual.exact
   let q : ExactPairing (𝟙_ C.Obj) (𝟙_ C.Obj) := exactPairingUnit
   have hu := Dimensions.rightDualIso_evaluation p q

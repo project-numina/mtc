@@ -37,7 +37,7 @@ theorem forgetDoubleDualIso_tensor (X Y : CategoryTheory.Center C.Obj) :
     let e := (forgetDualIso C Y) ⊗ᵢ (forgetDualIso C X)
     change (rightDualTensorIso X.1 Y.1).homᘁ ≫ (forgetDualIso C (X ⊗ Y)).homᘁ =
       e.homᘁ ≫ (rightDualTensorIso X Y).hom.fᘁ at ht2
-    letI : IsIso (e.homᘁ) := by
+    let : IsIso (e.homᘁ) := by
       change IsIso (Dimensions.rightDualIsoMap e).hom
       infer_instance
     change (rightDualTensorIso X Y).hom.fᘁ ≫ (forgetDualIso C (X ⊗ Y)).invᘁ =
@@ -49,7 +49,7 @@ theorem forgetDoubleDualIso_tensor (X Y : CategoryTheory.Center C.Obj) :
     have hf : (forgetDualIso C (X ⊗ Y)).homᘁ ≫
         (forgetDualIso C (X ⊗ Y)).invᘁ = 𝟙 _ := by
       rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
-    simp only [Category.assoc, hf, Category.comp_id]
+    simp only [Category.assoc, hf]
     rw [← Category.assoc, he, Category.id_comp]
     simp
   simp only [Category.assoc]
@@ -63,7 +63,7 @@ theorem forgetDoubleDualIso_tensor (X Y : CategoryTheory.Center C.Obj) :
     apply (cancel_mono (rightDualTensorIso Y.1ᘁ X.1ᘁ).hom).1
     simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
     rw [hnat]
-    simp [Category.assoc]
+    simp
   rw [← Category.assoc ((rightDualTensorIso (Yᘁ).1 (Xᘁ).1).inv), hnat']
   simp only [tensorHom_comp_tensorHom_assoc, Category.assoc]
 
@@ -78,7 +78,7 @@ theorem transported_pivotal_tensor
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
   rw [forgetDoubleDualIso_tensor]
   simp only [tensorHom_comp_tensorHom_assoc, Category.assoc, Iso.inv_hom_id,
-    Category.comp_id, id_tensorHom_id, Category.id_comp]
+    Category.comp_id]
   exact (p.tensor X.1 Y.1).symm
 
 end PropertyF.Ground.CentreInduction
@@ -121,8 +121,8 @@ theorem forgetDoubleDualIso_unit :
       (forgetDoubleDualIso C (𝟙_ (CategoryTheory.Center C.Obj))).hom =
     (Dimensions.doubleDualUnitIso (C := C.Obj)).hom := by
   let U := 𝟙_ (CategoryTheory.Center C.Obj)
-  letI : HasRightDual U := RightRigidCategory.rightDual U
-  letI : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual _
+  let : HasRightDual U := RightRigidCategory.rightDual U
+  let : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual _
   let e := Dimensions.rightDualUnitIso (C := CategoryTheory.Center C.Obj)
   let b := Dimensions.rightDualUnitIso (C := C.Obj)
   have hu : (forgetDualIso C U).hom ≫ b.hom = e.hom.f := forgetDualIso_unit C
@@ -142,7 +142,7 @@ theorem forgetDoubleDualIso_unit :
   rw [← hu, comp_rightAdjointMate]
   simp only [Category.assoc]
   rw [← Category.assoc e.inv.f, hv]
-  simp only [← Category.assoc ((forgetDualIso C U).homᘁ), ← comp_rightAdjointMate,
+  simp only [← comp_rightAdjointMate,
     Iso.inv_hom_id, rightAdjointMate_id, Category.comp_id]
 
 /-- Transported pivotal components preserve the tensor unit after forgetting. -/

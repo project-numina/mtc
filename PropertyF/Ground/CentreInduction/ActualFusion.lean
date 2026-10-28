@@ -39,7 +39,7 @@ theorem fusion_coevaluation (T S R : C.Obj) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶
   calc
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ (q ▷ S)) ⊗≫
       ((g ▷ ((Sᘁ : C.Obj) ⊗ S)) ≫ ((T ⊗ S) ◁ ε_ S (Sᘁ))) ⊗≫ 𝟙 _ := by
-        simp only [tensorHom_def', comp_whiskerRight]
+        simp only [tensorHom_def']
         monoidal
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ (q ▷ S)) ⊗≫
       ((R ◁ ε_ S (Sᘁ)) ≫ (g ▷ (𝟙_ C.Obj))) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
@@ -95,7 +95,7 @@ theorem unit_block (Z : CategoryTheory.Center C.Obj) (T S R : C.Obj)
       ((Z.1 ◁ g) ▷ ((Rᘁ : C.Obj) ⊗ T)) ⊗≫
       ((((Z.1 ⊗ (T ⊗ S)) ◁ q)) ≫ (bTS ▷ (Sᘁ))) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫
-      (bTS ▷ Sᘁ) ⊗≫ 𝟙 _ := by simp only [tensorHom_def, whiskerLeft_comp]; monoidal
+      (bTS ▷ Sᘁ) ⊗≫ 𝟙 _ := by simp only [tensorHom_def]; monoidal
     _ = _ := by rw [hf]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -121,7 +121,7 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center C.Obj) (T S : C.Obj) :
         ((Z.2.β S).hom ▷ Sᘁ))) := by
   dsimp only [unitBlockLinear, LinearMap.coe_mk, AddHom.coe_mk]
   rw [Z.2.monoidal]
-  simp only [id_whiskerRight, whiskerLeft_id, Category.comp_id, Category.id_comp]
+  simp only [id_whiskerRight]
   let bT := (Z.2.β T).hom
   let bS := (Z.2.β S).hom
   change 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫

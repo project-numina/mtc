@@ -14,14 +14,6 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 namespace PropertyF.Ground.CentreInduction
 universe v u
 
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.defeqAttrib.useBackward true in
-/-- A centre half-braiding on the tensor unit is the canonical unitor map. -/
-theorem halfBraiding_unit (C : BraidedFusionCategory.{v,u})
-    (X : CategoryTheory.Center C.Obj) :
-    (X.2.β (𝟙_ C.Obj)).hom = (ρ_ X.1).hom ≫ (λ_ X.1).inv :=
-  CentreRigid.halfBraiding_unit X
-
 /-- Every underlying map satisfies the centre intertwining equation on the
 unit strand. -/
 theorem comm_unit (C : BraidedFusionCategory.{v,u})

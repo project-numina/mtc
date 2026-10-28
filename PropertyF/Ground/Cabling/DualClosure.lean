@@ -18,7 +18,7 @@ theorem rightAdjointMate_sum {A B : C} {ι : Type} [Fintype ι]
     whiskerLeft_sum, Preadditive.comp_sum, Preadditive.sum_comp]
 
 /-- The dual of a finite biproduct is a retract of the biproduct of duals. -/
-def dualBiproductRetract (n : ℕ) (f : Fin n → C) :
+def dualBiproductRetract {ι : Type} [Fintype ι] (f : ι → C) :
     Retract ((⨁ f)ᘁ) (⨁ fun i => (f i)ᘁ) where
   i := biproduct.lift fun i => (biproduct.ι f i)ᘁ
   r := biproduct.desc fun i => (biproduct.π f i)ᘁ
@@ -50,7 +50,7 @@ theorem generatedBy_dual_of_generator_dual (X : C) (h : GeneratedBy X (Xᘁ))
     i := r.rᘁ
     r := r.iᘁ
     retract := by rw [← comp_rightAdjointMate, r.retract, rightAdjointMate_id] }
-  let rb := dualBiproductRetract n (fun i => tensorPower X (k i))
+  let rb := dualBiproductRetract (fun i => tensorPower X (k i))
   have hg : GeneratedBy X (⨁ fun i => (tensorPower X (k i))ᘁ) :=
     generatedBy_biproduct X n _ (fun i => generatedBy_dualPower X h (k i))
   exact generatedBy_retract hg (rd.trans rb)

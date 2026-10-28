@@ -132,8 +132,7 @@ theorem forget_trace_of_pivotal_component
       (η_ Z (Zᘁ)).f ≫ ((u ≫ e'.hom) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
         ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) := by
     dsimp [Dimensions.PivotalStructure.rightTrace]
-    simp only [Category.id_comp, tensorHom_def, whiskerLeft_id, Category.comp_id,
-      CategoryTheory.Center.comp_f, CategoryTheory.Center.whiskerRight_f]
+    simp only [Category.id_comp, tensorHom_def, whiskerLeft_id, Category.comp_id]
     rw [← heval]
     simp [comp_whiskerRight, Category.assoc, u]
   rw [hn, htrans, ht]

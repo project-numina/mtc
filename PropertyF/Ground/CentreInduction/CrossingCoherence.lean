@@ -86,7 +86,7 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
       apply Finset.sum_congr rfl
       intro b _
       rw [crossingBlock_tensor]
-      simp only [whiskerLeft_comp, comp_whiskerRight]
+      simp only [whiskerLeft_comp]
       monoidal
 
 set_option backward.isDefEq.respectTransparency false in
