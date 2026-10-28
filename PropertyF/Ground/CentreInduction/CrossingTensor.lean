@@ -6,12 +6,11 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u})
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a composite fusion map is the composite of the two closed maps. -/
-theorem closeFusionMap_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] {T U S K R : D} (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
+theorem closeFusionMap_tensor {T U S K R : D} (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
   closeFusionMap (T ⊗ U) S R ((α_ T U S).hom ≫ (T ◁ g) ≫ f) =
     𝟙 _ ⊗≫ (closeFusionMap T K R f ▷ U) ⊗≫ closeFusionMap U S K g := by
   apply dual_map_ext
@@ -34,8 +33,7 @@ theorem closeFusionMap_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossing blocks compose to the block of their composite fusion maps. -/
-theorem crossingBlock_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    (X : D) {T U S K R : D}
+theorem crossingBlock_tensor (X : D) {T U S K R : D}
     (g₁ : R ⟶ T ⊗ K) (g₂ : K ⟶ U ⊗ S)
     (f₁ : T ⊗ K ⟶ R) (f₂ : U ⊗ S ⟶ K) :
   crossingBlock X (T ⊗ U) R S (g₁ ≫ (T ◁ g₂) ≫ (α_ T U S).inv)

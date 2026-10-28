@@ -17,11 +17,11 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- An underlying factorization through a centre monomorphism is central. -/
-theorem center_factor {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    {P Q X : CategoryTheory.Center D} (p : P ⟶ X) (q : Q ⟶ X)
+theorem center_factor {P Q X : CategoryTheory.Center D} (p : P ⟶ X) (q : Q ⟶ X)
     [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g := by
   let t : P ⟶ Q := ⟨g, ?_⟩
@@ -40,8 +40,7 @@ theorem center_factor {D : Type u} [Category.{v} D] [MonoidalCategory D]
       _ = _ := by rw [← hg, whiskerLeft_comp]; simp [Category.assoc]
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
-def centerUnderlyingRange {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [Preadditive D] [Linear ℂ D] (X : CategoryTheory.Center D) (P : Subobject X) :
+def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : CategoryTheory.Center D) (P : Subobject X) :
     Submodule ℂ (X.1 ⟶ X.1) := LinearMap.range (Linear.rightComp ℂ X.1 P.arrow.f)
 
 set_option backward.isDefEq.respectTransparency false in

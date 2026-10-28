@@ -11,12 +11,11 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+  [RigidCategory (CategoryTheory.Center D)]
 
 /-- Transported pivotal components respect the braiding between centre objects. -/
-private theorem transported_pivotal_braiding {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] [RigidCategory (CategoryTheory.Center D)]
-    (p : Dimensions.PivotalStructure (C := D)) (Z B : CategoryTheory.Center D) :
+private theorem transported_pivotal_braiding (p : Dimensions.PivotalStructure (C := D)) (Z B : CategoryTheory.Center D) :
     let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
       (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
     (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
@@ -44,9 +43,7 @@ private theorem transported_pivotal_braiding {D : Type u} [Category.{v} D] [Mono
   simpa [Category.assoc] using hn
 
 /-- Every transported base pivotal component is a morphism in the actual centre. -/
-theorem pivotalComponentsCentral_proved {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] [RigidCategory (CategoryTheory.Center D)]
-    (p : Dimensions.PivotalStructure (C := D)) :
+theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : Dimensions.PivotalStructure (C := D)) :
     PivotalComponentsCentral p := by
   intro Z T
   let F := CategoryTheory.Center.ofBraided D
