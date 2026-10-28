@@ -104,16 +104,11 @@ def biprodOptionIso {ι : Type} [Fintype ι] (S : D) (V : ι → D) :
              biprod.inl (fun i => biproduct.ι V i ≫ biprod.inr) o)
            hom_inv_id := ?_
            inv_hom_id := ?_ }
-  · apply biprod.hom_ext'
+  · refine biprod.hom_ext' _ _ ?_ (biproduct.hom_ext' _ _ fun i => ?_)
     · simp [W]
-    · apply biproduct.hom_ext'
-      intro i
-      simp
-  · apply biproduct.hom_ext'
-    intro o
-    cases o with
-    | none => simp [W]
-    | some i => simp [W, Category.assoc]
+    · simp
+  · refine biproduct.hom_ext' _ _ fun o => ?_
+    cases o <;> simp [W, Category.assoc]
 
 /-- An iterated finite binary sum of simples admits a presentation as a
 single finite biproduct of simple objects. -/
@@ -122,8 +117,8 @@ theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum D X) :
   induction hX with
   | zero hz =>
     let V : Fin 0 → D := Fin.elim0
-    have hzero : IsZero (⨁ V) := (IsZero.iff_id_eq_zero _).mpr (by
-      simpa using (biproduct.total (f := V)).symm)
+    have hzero : IsZero (⨁ V) := (IsZero.iff_id_eq_zero _).2 <|
+      biproduct.hom_ext' _ _ fun i => Fin.elim0 i
     exact ⟨0, V, fun i => Fin.elim0 i, ⟨hz.iso hzero⟩⟩
   | @cons X S K hs hk he ih =>
     obtain ⟨n, V, hv, ⟨e⟩⟩ := ih

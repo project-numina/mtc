@@ -127,8 +127,7 @@ theorem crossingCandidate_unit_summand (X : C.Obj) (i : Fin (rank C)) :
     let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
     rw [crossingBlock_unit_of_split X
       (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
-      (crossingInclusion_projection default)]
-    exact Category.assoc _ _ _
+      (crossingInclusion_projection default), Category.assoc]
   · intro j _ hne
     let : IsEmpty (crossingIndex C (𝟙_ C.Obj) i j) := by
       simpa only [crossingIndex, unit_crossing_finrank, Ne.symm hne, ↓reduceIte] using

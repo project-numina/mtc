@@ -139,12 +139,11 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
       intro S hS ⟨t, ht⟩
       let : Simple S := hS
       let : Mono t := ht
-      rcases simple_mono_cokernel p t q
-          (Centre.centerCokernel_condition p)
-          (Centre.centerCokernelIsColimit p) with hSP | hmono
-      · exact ⟨P, List.Mem.head _, hSP⟩
-      · obtain ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, hmono⟩
-        exact ⟨T, List.Mem.tail _ hT, hST⟩
+      exact (simple_mono_cokernel p t q
+        (Centre.centerCokernel_condition p) (Centre.centerCokernelIsColimit p)).elim
+        (fun hSP => ⟨P, List.Mem.head _, hSP⟩) (fun hmono =>
+          let ⟨T, hT, hST⟩ := hL S hS ⟨t ≫ q, hmono⟩
+          ⟨T, List.Mem.tail _ hT, hST⟩)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual centre has finitely many simple objects up to isomorphism. -/
