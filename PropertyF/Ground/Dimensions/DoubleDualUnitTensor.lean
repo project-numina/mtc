@@ -40,8 +40,7 @@ theorem rightDualTensorIso_unit_left :
       (r := HasRightDual.exact) r.inv (rightDualIso_inv_evaluation
         (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
         (inferInstance : ExactPairing I I)),
-    @ExactPairing.tensor_evaluation C _ _ I X I (Xᘁ)
-      (inferInstance : ExactPairing I I) HasRightDual.exact]
+    ExactPairing.tensor_evaluation]
   rw [show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
     (ρ_ I).hom from rfl]
   monoidal
@@ -65,8 +64,7 @@ theorem rightDualTensorIso_unit_right :
       (r := @HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I)) r.inv
       (rightDualIso_inv_evaluation (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
         (inferInstance : ExactPairing I I)),
-    @ExactPairing.tensor_evaluation C _ _ X I (Xᘁ) I
-      HasRightDual.exact (inferInstance : ExactPairing I I)]
+    ExactPairing.tensor_evaluation]
   rw [show @ExactPairing.evaluation C _ _ I I (inferInstance : ExactPairing I I) =
     (ρ_ I).hom from rfl]
   monoidal

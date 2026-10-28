@@ -36,8 +36,7 @@ theorem tensorPairing_coevaluation_evaluation [HasRightDual X] [HasRightDual (X�
     letI : ExactPairing W V := ExactPairing.tensor
     η_ W V ≫ (ε_ X (Xᘁ) ▷ V) ≫ (λ_ V).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) := by
   dsimp only
-  rw [@ExactPairing.tensor_coevaluation C _ _ (Xᘁ) X _ _
-    HasRightDual.exact HasRightDual.exact]
+  rw [ExactPairing.tensor_coevaluation]
   calc
     _ = η_ (Xᘁ) ((Xᘁ)ᘁ) ⊗≫
       (((Xᘁ) ◁ η_ X (Xᘁ) ≫ (α_ (Xᘁ) X (Xᘁ)).inv ≫ ε_ X (Xᘁ) ▷ (Xᘁ)) ▷ ((Xᘁ)ᘁ)) ⊗≫ 𝟙 _ := by
@@ -101,8 +100,7 @@ theorem tensorPairing_evaluation_coevaluation [HasRightDual X] [HasRightDual (X�
     letI : ExactPairing W V := ExactPairing.tensor
     (ρ_ V).inv ≫ V ◁ η_ X (Xᘁ) ≫ ε_ W V = ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
   dsimp only
-  rw [@ExactPairing.tensor_evaluation C _ _ X (Xᘁ) _ _
-    HasRightDual.exact HasRightDual.exact]
+  rw [ExactPairing.tensor_evaluation]
   calc
     _ = 𝟙 (((Xᘁ)ᘁ) ⊗ (Xᘁ)) ⊗≫
       (((Xᘁ)ᘁ) ◁ ((Xᘁ) ◁ η_ X (Xᘁ) ≫ (α_ (Xᘁ) X (Xᘁ)).inv ≫ ε_ X (Xᘁ) ▷ (Xᘁ))) ⊗≫

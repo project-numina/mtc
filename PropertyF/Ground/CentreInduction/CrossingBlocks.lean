@@ -142,11 +142,14 @@ set_option backward.isDefEq.respectTransparency false in
 This is the completeness relation used for changes of fusion bases. -/
 theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
     (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
-      crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) = 𝟙 (T ⊗ Sᶜ j) := by
-  simp only [crossingProjection, simpleProjection, crossingInclusion, simpleInclusion,
-    Category.assoc, ← Preadditive.comp_sum]
-  simp only [← Category.assoc (biproduct.π _ _), ← Preadditive.sum_comp, biproduct.total,
-    Category.id_comp, Iso.hom_inv_id]
+      crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) = 𝟙 (T ⊗ Sᶜ j) :=
+  let e := simpleDecomposition C (T ⊗ Sᶜ j)
+  by
+    simpa only [crossingProjection, simpleProjection, crossingInclusion, simpleInclusion,
+      Category.assoc, Preadditive.comp_sum, Preadditive.sum_comp, Category.id_comp,
+      Iso.hom_inv_id, Sigma.eta, e] using
+      congrArg (fun f => e.hom ≫ f ≫ e.inv)
+        (biproduct.total (f := simplePiecesObject C (T ⊗ Sᶜ j)))
 
 variable (X T : C.Obj)
 
