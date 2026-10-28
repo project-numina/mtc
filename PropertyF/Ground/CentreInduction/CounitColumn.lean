@@ -1,5 +1,6 @@
 module
-public import PropertyF.Ground.CentreInduction.CandidateAssembly
+public import PropertyF.Ground.CentreInduction.CrossingCoherence
+public import PropertyF.Ground.CentreInduction.AdjunctionAssembly
 
 /-! Matrix reductions for the induction adjunction. -/
 section

@@ -38,9 +38,11 @@ theorem doubleDualTensor_evaluation {C : Type u} [Category.{v} C] [MonoidalCateg
   simp only [comp_whiskerRight, Category.assoc, ht]
   rw [← whisker_exchange_assoc, hs]
 
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [RightRigidCategory D]
+
 /-- A compatible double-dual tensor equation implies pivotal twist balancing. -/
-theorem balance_of_drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] (p : PivotalStructure (C := D)) {X Y : D}
+theorem balance_of_drinfeld_tensor (p : PivotalStructure (C := D)) {X Y : D}
     (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
     (h : Modular.doubleBraiding X Y ≫ (d (X ⊗ Y)).hom =
       ((d X).hom ⊗ₘ (d Y).hom) ≫ (doubleDualTensorIso X Y).hom) :
@@ -55,8 +57,7 @@ theorem balance_of_drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCatego
     Category.assoc, Iso.inv_hom_id, Category.comp_id]
 
 /-- The tensor-pairing cap identity implies the Drinfeld tensor equation. -/
-theorem drinfeld_tensor_of_pairing_cap {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
+theorem drinfeld_tensor_of_pairing_cap {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
     (hd : (d (X ⊗ Y)).hom ▷ ((X ⊗ Y)ᘁ) ≫
         ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
       (β_ (X ⊗ Y) ((X ⊗ Y)ᘁ)).hom ≫ ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ))
@@ -97,8 +98,7 @@ theorem drinfeld_tensor_of_pairing_cap {D : Type u} [Category.{v} D] [MonoidalCa
   exact (cancel_mono (λ_ ((Wᘁ)ᘁ)).inv).1 hh
 
 /-- In the usual convention, twist balancing has monodromy first. -/
-theorem pivotal_balance_of_drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] (p : PivotalStructure (C := D)) {X Y : D}
+theorem pivotal_balance_of_drinfeld_tensor (p : PivotalStructure (C := D)) {X Y : D}
     (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
     (h : Modular.doubleBraiding X Y ≫ (d (X ⊗ Y)).hom =
       ((d X).hom ⊗ₘ (d Y).hom) ≫ (doubleDualTensorIso X Y).hom) :

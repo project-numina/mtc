@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.CentreInduction.CrossingTensor
+public import PropertyF.Ground.CentreInduction.CrossingUnit
 
 /-! Refining simple-basis contractions across finite decompositions. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

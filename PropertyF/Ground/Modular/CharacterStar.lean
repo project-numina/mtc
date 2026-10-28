@@ -80,11 +80,12 @@ def categoricalSCharacter (j : Fin (rank C)) : Character ⟨unitIndex C, fusionC
 abbrev HasRealSimpleDimensions : Prop :=
   ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j
 
+variable (hreal : HasRealSimpleDimensions C p)
+
+include hreal in
 /-- With real simple dimensions, dualizing a label conjugates the corresponding
 categorical S entry. No categorical dual-trace identity is needed. -/
-theorem categoricalS_dual_conj
-    (hreal : HasRealSimpleDimensions C p)
-    (i j : Fin (rank C)) :
+theorem categoricalS_dual_conj (i j : Fin (rank C)) :
     categoricalS C p (Ground.dualIndex C i) j = starRingEnd ℂ (categoricalS C p i j) := by
   let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
   let χ : Character rules := categoricalSCharacter C p j
@@ -94,10 +95,9 @@ theorem categoricalS_dual_conj
   rw [map_div₀, hreal j] at hh
   exact (div_left_inj' (simpleDimension_ne_zero C p j)).mp hh
 
+include hreal in
 /-- Real pivotal simple dimensions are invariant under dual labels. -/
-theorem simpleDimension_dual
-    (hreal : HasRealSimpleDimensions C p)
-    (i : Fin (rank C)) :
+theorem simpleDimension_dual (i : Fin (rank C)) :
     simpleDimension C p (Ground.dualIndex C i) = simpleDimension C p i := by
   simpa only [categoricalS_unit, hreal i] using
     categoricalS_dual_conj C p hreal i (unitIndex C)
