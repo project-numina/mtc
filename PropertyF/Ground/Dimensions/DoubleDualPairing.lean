@@ -196,11 +196,12 @@ theorem pivotal_spherical_iff_simple_dimensions_real
         star (pivotalDimension C p (simples C i)) := by
     rw [leftTrace_id, leftQuantumTrace_eq_rightDual, ← pivotal_dual, ← rightTrace_id]
     exact (pivotalDimension_iso p (rightDualLabelIso C i)).trans
-      (pivotalDimension_dual_eq_conj p i)
+      (fusion_character_dual_eq_conj (i₀ := unitIndex C)
+        (fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm)
+        ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero) (pivotalDimension_character C p) i)
   rw [isSpherical_iff_simple_dimensions]
-  refine forall_congr' fun i ↦ ?_
-  rw [← hdual i]
-  simp only [pivotalDimension, unitScalar_eq_equiv, (unitScalarEquiv C).injective.eq_iff]
+  exact forall_congr' fun i ↦ by rw [← hdual i]; simp only [pivotalDimension, unitScalar_eq_equiv,
+    (unitScalarEquiv C).injective.eq_iff]
 end PropertyF.Ground.Dimensions
 
 end

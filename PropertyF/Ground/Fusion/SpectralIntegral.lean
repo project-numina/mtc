@@ -18,18 +18,13 @@ namespace PropertyF.Ground
 
 variable (D : BraidedFusionCategory)
 
-/-- The fusion matrix of the tensor unit is the identity. -/
-theorem fusionMatrix_unit :
-    fusionMatrix D (unitIndex D) = 1 :=
-  Matrix.ext fun k j ↦ by
-    change (fusionCoeff D (unitIndex D) j k : ℂ) = _
-    simp [fusionCoeff_unit, Matrix.one_apply]
-
 /-- The spectral-radius FP dimension is normalized on the tensor unit. -/
 theorem fpSimple_unit :
     fpSimple D (unitIndex D) = 1 :=
   letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
-  by simp [fpSimple, fusionMatrix_unit, spectrum.spectralRadius_one]
+  by rw [fpSimple, show fusionMatrix D (unitIndex D) = 1 from Matrix.ext fun k j ↦ by
+    change (fusionCoeff D (unitIndex D) j k : ℂ) = _
+    simp [fusionCoeff_unit, Matrix.one_apply], spectrum.spectralRadius_one, ENNReal.toReal_one]
 
 /-- The global FP dimension is at least one, from the unit contribution. -/
 theorem one_le_globalFPDimension :
