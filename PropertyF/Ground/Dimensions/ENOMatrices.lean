@@ -13,25 +13,6 @@ Saturated complex bounds determine the phases of their eigenvectors.
 -/
 
 @[expose] public noncomputable section
-open scoped BigOperators
-namespace PropertyF.Ground.Dimensions
-
-/-- ENO's trace-matrix eigenvalues are bounded by the FP dimension whenever
-their entries are dominated by fusion multiplicities. -/
-theorem fusion_dominated_eigenvalue_bound (C : BraidedFusionCategory)
-    {i : Fin (rank C)} (T : Fin (rank C) → Fin (rank C) → ℂ)
-    (v : Fin (rank C) → ℂ) {z : ℂ} {i₀ : Fin (rank C)}
-    (hv : v i₀ ≠ 0) (hdom : ∀ j k, ‖T j k‖ ≤ fusionCoeff C i j k)
-    (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ fpSimple C i :=
-  weighted_eigenvalue_bound (fun j k => fusionCoeff C i j k) T
-    (fpSimple C) v hv (fpSimple_pos C)
-    (fun _ _ => Nat.cast_nonneg _) hdom (fun j => (fpSimple_mul C i j).symm) heig
-
-end PropertyF.Ground.Dimensions
-
-end
-
-@[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
@@ -145,9 +126,10 @@ theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
     (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j) :
     ‖rootDimension C i‖ ≤ fpSimple C i :=
-  fusion_dominated_eigenvalue_bound C (enoTraceMatrix C i) (rootDimension C)
-    (rootDimension_ne_zero C (unitIndex C))
-    (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv j k)) heig
+  weighted_eigenvalue_bound (fun j k ↦ fusionCoeff C i j k) (enoTraceMatrix C i)
+    (fpSimple C) (rootDimension C) (rootDimension_ne_zero C (unitIndex C)) (fpSimple_pos C)
+    (fun _ _ ↦ Nat.cast_nonneg _) (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv j k))
+    (fun j ↦ (fpSimple_mul C i j).symm) heig
 
 end PropertyF.Ground.Dimensions
 

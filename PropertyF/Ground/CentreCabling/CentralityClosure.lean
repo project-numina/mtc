@@ -56,11 +56,9 @@ theorem doubleBraiding_eq_one_of_constituents [Abelian D] [MonoidalPreadditive D
     doubleBraiding X Y = 𝟙 _ := by
   classical
   let V : (Σ i, Fin (m i)) → D := fun a ↦ S a.1
-  apply doubleBraiding_eq_one_of_retract (Retract.ofIso e)
-  apply doubleBraiding_eq_one_biproduct
-  intro a
-  exact h a.1 <| hP
-    ((Retract.mk (biproduct.ι V a) (biproduct.π V a) (by simp)).trans (Retract.ofIso e.symm)) hX
+  exact doubleBraiding_eq_one_of_retract (Retract.ofIso e) <|
+    doubleBraiding_eq_one_biproduct fun a ↦ h a.1 <| hP
+      ((Retract.mk (biproduct.ι V a) (biproduct.π V a) (biproduct.ι_π_self V a)).trans (Retract.ofIso e.symm)) hX
 
 end PropertyF.Ground.CentreCabling
 

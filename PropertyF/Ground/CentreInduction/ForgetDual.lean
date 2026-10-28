@@ -48,19 +48,19 @@ set_option backward.isDefEq.respectTransparency false in
   coevaluation' := (η_ Z (Zᘁ)).f
   evaluation' := (ε_ Z (Zᘁ)).f
   coevaluation_evaluation' := by
-    have h := congrArg Center.Hom.f (ExactPairing.coevaluation_evaluation Z (Zᘁ))
     simpa only [Center.comp_f, Center.whiskerLeft_f,
       Center.whiskerRight_f, Center.associator_inv_f,
       Center.associator_hom_f, Center.rightUnitor_hom_f,
       Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
-      Center.leftUnitor_inv_f] using h
+      Center.leftUnitor_inv_f] using
+        congrArg Center.Hom.f (ExactPairing.coevaluation_evaluation Z (Zᘁ))
   evaluation_coevaluation' := by
-    have h := congrArg Center.Hom.f (ExactPairing.evaluation_coevaluation Z (Zᘁ))
     simpa only [Center.comp_f, Center.whiskerLeft_f,
       Center.whiskerRight_f, Center.associator_inv_f,
       Center.associator_hom_f, Center.rightUnitor_hom_f,
       Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
-      Center.leftUnitor_inv_f] using h
+      Center.leftUnitor_inv_f] using
+        congrArg Center.Hom.f (ExactPairing.evaluation_coevaluation Z (Zᘁ))
 
 /-- Compare the underlying centre dual with the chosen base dual. -/
 def forgetDualIso (Z : 𝒵) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=

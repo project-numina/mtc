@@ -22,9 +22,10 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
+variable (X : C)
 set_option backward.isDefEq.respectTransparency false in
 /-- Right dual tensor comparison is compatible with the left unitor. -/
-theorem rightDualTensorIso_unit_left (X : C) :
+theorem rightDualTensorIso_unit_left :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     ((λ_ X).homᘁ) ≫ (rightDualTensorIso (𝟙_ C) X).hom =
       (ρ_ (Xᘁ)).inv ≫ ((Xᘁ) ◁ (rightDualUnitIso (C := C)).inv) := by
@@ -47,7 +48,7 @@ theorem rightDualTensorIso_unit_left (X : C) :
     (ρ_ I).hom from rfl]
   monoidal
 /-- Right dual tensor comparison is compatible with the right unitor. -/
-theorem rightDualTensorIso_unit_right (X : C) :
+theorem rightDualTensorIso_unit_right :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     ((ρ_ X).homᘁ) ≫ (rightDualTensorIso X (𝟙_ C)).hom =
       (λ_ (Xᘁ)).inv ≫ ((rightDualUnitIso (C := C)).inv ▷ (Xᘁ)) := by
@@ -84,9 +85,10 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
+variable (X : C)
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is left-unital. -/
-theorem doubleDualTensorIso_unit_left (X : C) :
+theorem doubleDualTensorIso_unit_left :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
     (doubleDualUnitIso (C := C)).hom ▷ ((Xᘁ)ᘁ) ≫
@@ -123,7 +125,7 @@ theorem doubleDualTensorIso_unit_left (X : C) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is right-unital. -/
-theorem doubleDualTensorIso_unit_right (X : C) :
+theorem doubleDualTensorIso_unit_right :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
     ((Xᘁ)ᘁ) ◁ (doubleDualUnitIso (C := C)).hom ≫

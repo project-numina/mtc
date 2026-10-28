@@ -129,9 +129,11 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
+variable (p : PivotalStructure (C := C))
+
 omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Closing the right tensor factor of an inserted endomorphism. -/
-theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X : C) {Y : C} (b : Y ⟶ Y) :
+theorem rightPartialTrace_tensor_right (X : C) {Y : C} (b : Y ⟶ Y) :
     rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) =
       End.of ((ρ_ X).inv ≫ X ◁ (p.rightTrace b).asHom ≫ (ρ_ X).hom) := by
   apply End.ext
@@ -141,7 +143,7 @@ theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X : C) {
   monoidal
 
 /-- The right partial trace of an inserted right-factor endomorphism is scalar. -/
-theorem rightPartialTrace_one_tensor (p : PivotalStructure (C := C))
+theorem rightPartialTrace_one_tensor
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X : C) {Y : C} (b : Y ⟶ Y) :
     rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) = scalar (p.rightTrace b) • 1 := by
   rw [rightPartialTrace_tensor_right p X b, eq_smul_one_of_algEquiv scalar (p.rightTrace b)]
@@ -149,7 +151,7 @@ theorem rightPartialTrace_one_tensor (p : PivotalStructure (C := C))
   simp
 
 /-- The partial trace of a tensor product is the left factor times the trace of the right. -/
-theorem rightPartialTrace_tensor (p : PivotalStructure (C := C))
+theorem rightPartialTrace_tensor
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
     rightPartialTrace p (End.of (a ⊗ₘ b)) = scalar (p.rightTrace b) • End.of a := by
   rw [show End.of (a ⊗ₘ b) = End.of (𝟙 X ⊗ₘ b) * insertRightIdentity Y (End.of a) from
@@ -158,7 +160,7 @@ theorem rightPartialTrace_tensor (p : PivotalStructure (C := C))
     smul_mul_assoc, one_mul]
 
 /-- Pivotal trace is multiplicative on tensor products of endomorphisms. -/
-theorem pivotalTrace_tensor (p : PivotalStructure (C := C))
+theorem pivotalTrace_tensor
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
     scalar (p.rightTrace (a ⊗ₘ b)) = scalar (p.rightTrace a) * scalar (p.rightTrace b) := by
   have h := rightTrace_partialTrace p (End.of (a ⊗ₘ b))
