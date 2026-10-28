@@ -49,10 +49,9 @@ theorem reverse_braidGenerator_succ (X : C) (n : ℕ) {i : Fin (n + 1)}
 theorem reverse_braidGenerator (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
     @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n i =
       (braidGenerator X n i)⁻¹ :=
-  fun n ↦ Nat.rec
-    (fun i ↦ Fin.cases (reverse_braidGenerator_zero X 0) (fun j ↦ Fin.elim0 j) i)
+  Nat.rec (Fin.cases (reverse_braidGenerator_zero X 0) (fun j ↦ Fin.elim0 j))
     (fun n ih i ↦ Fin.cases (reverse_braidGenerator_zero X (n + 1))
-      (fun j ↦ reverse_braidGenerator_succ X n (ih j)) i) n
+      (fun j ↦ reverse_braidGenerator_succ X n (ih j)) i)
 
 end PropertyF.Ground.Centre
 
@@ -106,10 +105,10 @@ theorem fstBraidMap_generator (X Y : C) (n : ℕ) (i : Fin (n+1)) :
   Modular.braidAutMap_generator (CategoryTheory.Prod.fst C C) (X,Y) n i
 
 theorem sndBraidMap_generator (X Y : C) (n : ℕ) (i : Fin (n+1)) :
-    sndBraidMap X Y n (braidGenerator (X,Y) n i) = (braidGenerator Y n i)⁻¹ := by
-  rw [← reverse_braidGenerator]
-  exact @Modular.braidAutMap_generator (C × C) _ _ (mixedBraiding (C := C)) C _ _
-    (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n i
+    sndBraidMap X Y n (braidGenerator (X,Y) n i) = (braidGenerator Y n i)⁻¹ :=
+  (@Modular.braidAutMap_generator (C × C) _ _ (mixedBraiding (C := C)) C _ _
+    (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n i).trans
+      (reverse_braidGenerator Y n i)
 
 /-- The two projected automorphisms jointly detect an automorphism of a tensor power. -/
 theorem projections_jointly_injective (X Y : C) (n : ℕ) :

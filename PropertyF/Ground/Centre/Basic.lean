@@ -205,8 +205,7 @@ theorem finiteDimensional_hom (K : Type*) [Field K] [Linear K C] [MonoidalLinear
     (X Y : CategoryTheory.Center C) [FiniteDimensional K (X.1 ⟶ Y.1)] :
     FiniteDimensional K (X ⟶ Y) :=
   FiniteDimensional.of_injective
-    (show (X ⟶ Y) →ₗ[K] (X.1 ⟶ Y.1) from
-      (CategoryTheory.Center.forget C).mapLinearMap K)
+    (show (X ⟶ Y) →ₗ[K] (X.1 ⟶ Y.1) from (CategoryTheory.Center.forget C).mapLinearMap K)
     (Functor.map_injective (CategoryTheory.Center.forget C))
 
 end PropertyF.Ground.Centre

@@ -49,8 +49,7 @@ omit [Preadditive C] [MonoidalPreadditive C] [HasBinaryBiproducts C] in
 theorem productRetract_tensor {Z W : CategoryTheory.Center C}
     (hZ : ProductRetract Z) (hW : ProductRetract W) : ProductRetract (Z ⊗ W) :=
   match hZ, hW with
-  | ⟨X, Y, ⟨r⟩⟩, ⟨X', Y', ⟨s⟩⟩ =>
-    ⟨X ⊗ X', Y ⊗ Y', ⟨(tensorRetract r s).trans
+  | ⟨X, Y, ⟨r⟩⟩, ⟨X', Y', ⟨s⟩⟩ => ⟨X ⊗ X', Y ⊗ Y', ⟨(tensorRetract r s).trans
       (Retract.ofIso (CategoryTheory.Functor.Monoidal.μIso productFunctor (X,Y) (X',Y')))⟩⟩
 
 omit [Preadditive C] [MonoidalPreadditive C] [HasBinaryBiproducts C] in

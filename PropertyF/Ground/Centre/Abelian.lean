@@ -221,16 +221,13 @@ theorem kernelHalfIso_ι {X Y : CategoryTheory.Center C} (f : X ⟶ Y) (U : C) :
   change (PreservesKernel.iso (tensorRight U) f.f).hom ≫
     (kernel.mapIso (f.f ▷ U) (U ◁ f.f) (X.2.β U) (Y.2.β U) (f.comm U)).hom ≫
     ((PreservesKernel.iso (tensorLeft U) f.f).inv ≫ (tensorLeft U).map (kernel.ι f.f)) = _
-  rw [PreservesKernel.iso_inv_ι, kernel.mapIso_hom]
-  simp only [kernel.map, PreservesKernel.iso_hom]
+  simp only [PreservesKernel.iso_inv_ι, kernel.mapIso_hom, kernel.map, PreservesKernel.iso_hom]
   change kernelComparison f.f (tensorRight U) ≫
       (kernel.lift (U ◁ f.f) (kernel.ι (f.f ▷ U) ≫ (X.2.β U).hom) _ ≫
         kernel.ι (U ◁ f.f)) = _
   rw [kernel.lift_ι, ← Category.assoc]
-  change (kernelComparison f.f (tensorRight U) ≫ kernel.ι ((tensorRight U).map f.f)) ≫
-      (X.2.β U).hom = _
-  rw [kernelComparison_comp_ι]
-  rfl
+  exact congrArg (fun g ↦ g ≫ (X.2.β U).hom)
+    (kernelComparison_comp_ι f.f (tensorRight U))
 
 /-- Naturality of the induced kernel half-braiding. -/
 theorem kernelHalfIso_naturality {X Y : CategoryTheory.Center C} (f : X ⟶ Y)
@@ -333,14 +330,14 @@ instance centerForgetPreservesMonomorphisms : (CategoryTheory.Center.forget C).P
     exact congrArg CategoryTheory.Center.Hom.f hzero
 
 /-- An object whose underlying object is simple is simple in the centre. -/
-theorem centerSimple_of_underlying (Z : CategoryTheory.Center C) [Simple Z.1] : Simple Z := by
-  have : Simple ((CategoryTheory.Center.forget C).obj Z) := by change Simple Z.1; infer_instance
-  exact (CategoryTheory.Center.forget C).simple_of_simple_obj Z
+theorem centerSimple_of_underlying (Z : CategoryTheory.Center C) [Simple Z.1] : Simple Z :=
+  have : Simple ((CategoryTheory.Center.forget C).obj Z) := ‹Simple Z.1›
+  (CategoryTheory.Center.forget C).simple_of_simple_obj Z
 
 /-- A simple underlying tensor unit remains simple in the centre. -/
-theorem centerUnitSimple [Simple (𝟙_ C)] : Simple (𝟙_ (CategoryTheory.Center C)) := by
-  have : Simple (𝟙_ (CategoryTheory.Center C)).1 := by change Simple (𝟙_ C); infer_instance
-  exact centerSimple_of_underlying _
+theorem centerUnitSimple [Simple (𝟙_ C)] : Simple (𝟙_ (CategoryTheory.Center C)) :=
+  have : Simple (𝟙_ (CategoryTheory.Center C)).1 := ‹Simple (𝟙_ C)›
+  centerSimple_of_underlying _
 
 end PropertyF.Ground.Centre
 
@@ -373,21 +370,17 @@ set_option backward.defeqAttrib.useBackward true in
 theorem cokernelHalfIso_π {X Y : CategoryTheory.Center C} (f : X ⟶ Y) (U : C) :
     cokernel.π f.f ▷ U ≫ (cokernelHalfIso f U).hom =
       (Y.2.β U).hom ≫ U ◁ cokernel.π f.f := by
-  simp only [cokernelHalfIso, Iso.trans_hom, Iso.symm_hom]
-  rw [← Category.assoc, ← Category.assoc]
+  simp only [cokernelHalfIso, Iso.trans_hom, Iso.symm_hom, ← Category.assoc]
   change (((tensorRight U).map (cokernel.π f.f) ≫ (PreservesCokernel.iso (tensorRight U) f.f).hom) ≫
       (cokernel.mapIso (f.f ▷ U) (U ◁ f.f) (X.2.β U) (Y.2.β U) (f.comm U)).hom) ≫
       (PreservesCokernel.iso (tensorLeft U) f.f).inv = _
-  rw [PreservesCokernel.π_iso_hom, cokernel.mapIso_hom]
-  simp only [cokernel.map, PreservesCokernel.iso_inv]
+  simp only [PreservesCokernel.π_iso_hom, cokernel.mapIso_hom, PreservesCokernel.iso_inv]
   change (cokernel.π (f.f ▷ U) ≫ cokernel.desc (f.f ▷ U)
     ((Y.2.β U).hom ≫ cokernel.π (U ◁ f.f)) _) ≫
       cokernelComparison f.f (tensorLeft U) = _
   rw [cokernel.π_desc, Category.assoc]
-  change (Y.2.β U).hom ≫ (cokernel.π ((tensorLeft U).map f.f) ≫
-    cokernelComparison f.f (tensorLeft U)) = _
-  rw [π_comp_cokernelComparison]
-  rfl
+  exact congrArg (fun g ↦ (Y.2.β U).hom ≫ g)
+    (π_comp_cokernelComparison f.f (tensorLeft U))
 
 /-- Naturality of the induced cokernel half-braiding. -/
 theorem cokernelHalfIso_naturality {X Y : CategoryTheory.Center C} (f : X ⟶ Y)
