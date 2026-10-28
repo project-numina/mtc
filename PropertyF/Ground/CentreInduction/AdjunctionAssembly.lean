@@ -20,6 +20,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 /-- A tensor factor isomorphic to the unit and its dual cancel around any object. -/
 def unitTensorIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
     {A : D} (e : A ≅ 𝟙_ D) (X : D) : (A ⊗ X) ⊗ Aᘁ ≅ X :=
+  letI : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
   ((e ⊗ᵢ Iso.refl X) ⊗ᵢ (rightDualIsoMap e.symm ≪≫ rightDualUnitIso)) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
 
@@ -84,11 +85,12 @@ set_option backward.defeqAttrib.useBackward true in
 by the induced identification of its right dual with the unit. -/
 theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
     {A : D} (e : A ≅ 𝟙_ D) :
+    letI : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
     η_ A Aᘁ ≫ (e.hom ▷ Aᘁ) ≫ (λ_ Aᘁ).hom ≫
       (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom = 𝟙 (𝟙_ D) := by
+  let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
   have hc : η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm ≪≫
       rightDualUnitIso).hom) = (ρ_ (𝟙_ D)).inv := by
-    let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
     dsimp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom]
     rw [tensorHom_def, whiskerLeft_comp, ← Category.assoc (e.hom ▷ Aᘁ),
       ← tensorHom_def, ← Category.assoc, coevaluation_iso_map]

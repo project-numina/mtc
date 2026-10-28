@@ -15,8 +15,9 @@ universe v u
 section RightRigid
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
+omit [RightRigidCategory C] in
 /-- Contravariant action of the chosen right dual on an isomorphism. -/
-def rightDualIsoMap {X Y : C} (e : X ≅ Y) : Yᘁ ≅ Xᘁ where
+def rightDualIsoMap {X Y : C} [HasRightDual X] [HasRightDual Y] (e : X ≅ Y) : Yᘁ ≅ Xᘁ where
   hom := e.homᘁ
   inv := e.invᘁ
   hom_inv_id := by rw [← comp_rightAdjointMate]; simp
@@ -38,6 +39,7 @@ def rightDualUnitIso : rightDualObject (𝟙_ C) ≅ 𝟙_ C :=
 
 /-- Unit comparison for the double-right-dual object assignment. -/
 def doubleDualUnitIso : 𝟙_ C ≅ rightDualObject (rightDualObject (𝟙_ C)) :=
+  letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
   rightDualUnitIso.symm ≪≫ rightDualIsoMap rightDualUnitIso
 
 /-- Trace using a single chosen double-dual isomorphism; no pivotal structure

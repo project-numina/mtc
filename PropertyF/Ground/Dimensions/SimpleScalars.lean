@@ -16,11 +16,11 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 section
 variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C]
-  [MonoidalCategory C] [RightRigidCategory C] [Preadditive C] [Linear k C]
+  [MonoidalCategory C] [Preadditive C] [Linear k C]
   [MonoidalPreadditive C] [MonoidalLinear k C]
 
 /-- Right-dual mates are linear in the morphism. -/
-theorem rightAdjointMate_smul {X Y : C} (c : k) (f : X ⟶ Y) :
+theorem rightAdjointMate_smul {X Y : C} [HasRightDual X] [HasRightDual Y] (c : k) (f : X ⟶ Y) :
     (c • f)ᘁ = c • (fᘁ) := by simp [rightAdjointMate]
 
 end

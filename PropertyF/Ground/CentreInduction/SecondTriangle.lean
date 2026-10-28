@@ -85,6 +85,7 @@ universe v u
 namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 variable {A : D}
+local instance : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component followed by a map can be expressed through a crossing. -/
