@@ -17,9 +17,10 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 open PropertyF.Ground
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Evaluating the tensor of the two Drinfeld maps closes the two crossed caps in sequence. -/
-theorem drinfeld_tensor_cap_factor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+theorem drinfeld_tensor_cap_factor (X Y : C.Obj) :
     let W := X ⊗ Y
     let V := (Yᘁ) ⊗ (Xᘁ)
     let q : ExactPairing V (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) := ExactPairing.tensor
@@ -59,15 +60,23 @@ open PropertyF.Ground
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : BraidedFusionCategory.{v,u})
+
+/-- The monodromy of two objects closed against their tensor-product dual. -/
+abbrev monodromyTensorCap (X Y : C.Obj) :
+    (X ⊗ Y) ⊗ ((Yᘁ) ⊗ (Xᘁ)) ⟶ 𝟙_ C.Obj :=
+  let p : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := ExactPairing.tensor
+  (Modular.doubleBraiding X Y ▷ ((Yᘁ) ⊗ (Xᘁ))) ≫
+    (β_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ))).hom ≫ @ExactPairing.evaluation C.Obj _ _ _ _ p
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Expand monodromy and tensor braiding into their six individual crossings. -/
-theorem monodromy_tensor_cap_expansion (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+theorem monodromy_tensor_cap_expansion (X Y : C.Obj) :
     let U := Xᘁ
     let V := Yᘁ
     let W := X ⊗ Y
     let P := V ⊗ U
-    let p : ExactPairing W P := ExactPairing.tensor
-    (Modular.doubleBraiding X Y ▷ P) ≫ (β_ W P).hom ≫ @ExactPairing.evaluation C.Obj _ _ W P p =
+    monodromyTensorCap C X Y =
     𝟙 (W ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫ (β_ Y X).hom ▷ P ⊗≫
       (X ◁ (β_ Y V).hom) ▷ U ⊗≫ ((β_ X V).hom ▷ Y) ▷ U ⊗≫
       V ◁ (X ◁ (β_ Y U).hom) ⊗≫ V ◁ ((β_ X U).hom ▷ Y) ⊗≫
@@ -84,13 +93,12 @@ theorem monodromy_tensor_cap_expansion (C : BraidedFusionCategory.{v,u}) (X Y : 
   monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- Reorder the six crossings using the Yang–Baxter identity twice. -/
-theorem monodromy_tensor_cap_braid_reordered (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+theorem monodromy_tensor_cap_braid_reordered (X Y : C.Obj) :
     let U := Xᘁ
     let V := Yᘁ
     let W := X ⊗ Y
     let P := V ⊗ U
-    let p : ExactPairing W P := ExactPairing.tensor
-    (Modular.doubleBraiding X Y ▷ P) ≫ (β_ W P).hom ≫ @ExactPairing.evaluation C.Obj _ _ W P p =
+    monodromyTensorCap C X Y =
     𝟙 (W ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫
       (Y ◁ (β_ X V).hom) ▷ U ⊗≫ ((β_ Y V).hom ▷ X) ▷ U ⊗≫
       V ◁ (Y ◁ (β_ X U).hom) ⊗≫ V ◁ ((β_ Y U).hom ▷ X) ⊗≫
@@ -145,13 +153,12 @@ end
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Contract the first braiding loop in the monodromy evaluation. -/
-theorem monodromy_tensor_cap_remove_loop (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+theorem monodromy_tensor_cap_remove_loop (X Y : C.Obj) :
     let U := Xᘁ
     let V := Yᘁ
     let W := X ⊗ Y
     let P := V ⊗ U
-    let p : ExactPairing W P := ExactPairing.tensor
-    (Modular.doubleBraiding X Y ▷ P) ≫ (β_ W P).hom ≫ @ExactPairing.evaluation C.Obj _ _ W P p =
+    monodromyTensorCap C X Y =
     𝟙 (W ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫
       (Y ◁ (β_ X V).hom) ▷ U ⊗≫ ((β_ Y V).hom ▷ X) ▷ U ⊗≫
       V ◁ (Y ◁ (β_ X U).hom) ⊗≫ V ◁ (Y ◁ ε_ X U) ⊗≫ ε_ Y V := by
@@ -178,13 +185,12 @@ theorem monodromy_tensor_cap_remove_loop (C : BraidedFusionCategory.{v,u}) (X Y 
       monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- The monodromy tensor evaluation closes the two crossed caps in sequence. -/
-theorem monodromy_tensor_cap_evaluated (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
+theorem monodromy_tensor_cap_evaluated (X Y : C.Obj) :
     let U := Xᘁ
     let V := Yᘁ
     let W := X ⊗ Y
     let P := V ⊗ U
-    let p : ExactPairing W P := ExactPairing.tensor
-    (Modular.doubleBraiding X Y ▷ P) ≫ (β_ W P).hom ≫ @ExactPairing.evaluation C.Obj _ _ W P p =
+    monodromyTensorCap C X Y =
     𝟙 (W ⊗ P) ⊗≫ (X ◁ (β_ Y V).hom) ▷ U ⊗≫
       (X ◁ ε_ Y V) ▷ U ⊗≫ (β_ X U).hom ⊗≫ ε_ X U := by
   let U := Xᘁ
@@ -216,13 +222,10 @@ theorem monodromy_tensor_cap_evaluated (C : BraidedFusionCategory.{v,u}) (X Y : 
       simp only [b, g, monoidalComp, comp_whiskerRight, whiskerLeft_comp]
       monoidal
 /-- The actual Drinfeld tensor pairing cap identity holds for all objects. -/
-theorem drinfeld_tensor_pairing_cap (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
-    let W := X ⊗ Y
+theorem drinfeld_tensor_pairing_cap (X Y : C.Obj) :
     let V := (Yᘁ) ⊗ (Xᘁ)
-    let p : ExactPairing W V := ExactPairing.tensor
     let q : ExactPairing V (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) := ExactPairing.tensor
-    (Modular.doubleBraiding X Y ▷ V) ≫ (β_ W V).hom ≫
-      @ExactPairing.evaluation C.Obj _ _ W V p =
+    monodromyTensorCap C X Y =
     ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ▷ V ≫
       @ExactPairing.evaluation C.Obj _ _ V _ q :=
   (monodromy_tensor_cap_evaluated C X Y).trans (drinfeld_tensor_cap_factor C X Y).symm

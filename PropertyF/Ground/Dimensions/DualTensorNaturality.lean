@@ -97,14 +97,14 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 /-- The braided double-dual isomorphism is characterized by its evaluation map. -/
-theorem drinfeld_eval (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem drinfeld_eval (X : C.Obj) :
     (doubleDualIso C X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
       (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) :=
   rightDualIso_evaluation (BraidedCategory.exactPairing_swap X (Xᘁ))
     (@HasRightDual.exact C.Obj _ _ (Xᘁ) (RightRigidCategory.rightDual (Xᘁ)))
 /-- The braided double-dual isomorphism is natural. -/
 @[reassoc]
-theorem doubleDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f : X ⟶ Y) :
+theorem doubleDualIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (doubleDualIso C Y).hom = (doubleDualIso C X).hom ≫ (fᘁ)ᘁ := by
   have h : (f ≫ (doubleDualIso C Y).hom) ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) =
       ((doubleDualIso C X).hom ≫ (fᘁ)ᘁ) ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
@@ -126,12 +126,12 @@ theorem doubleDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f
   exact evaluation_ext h
 
 /-- The braided fourth-dual isomorphism, objectwise. -/
-def fourthDualIso (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
+def fourthDualIso (X : C.Obj) :
     X ≅ ((((Xᘁ)ᘁ)ᘁ)ᘁ) :=
   doubleDualIso C X ≪≫ (rightDualIsoMap (doubleDualIso C (Xᘁ))).symm
 
 /-- The braided fourth-dual isomorphism is natural. Monoidality is a separate obligation. -/
-theorem fourthDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f : X ⟶ Y) :
+theorem fourthDualIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (fourthDualIso C Y).hom = (fourthDualIso C X).hom ≫ ((((fᘁ)ᘁ)ᘁ)ᘁ) := by
   have hd := congrArg (fun (a : (((Yᘁ)ᘁ)ᘁ) ⟶ (Xᘁ)) => rightAdjointMate a)
     (iso_inv_naturality_of_hom (doubleDualIso_natural C (fᘁ))).symm

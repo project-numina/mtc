@@ -50,8 +50,7 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
     simpleHomPairingEquiv C i V (simpleProjection C V i a) =
       (simpleInclusionBasis C V i).dualBasis a := by
   let : Simple (simples C i) := simples_simple C i
-  apply (simpleInclusionBasis C V i).ext
-  intro b
+  refine (simpleInclusionBasis C V i).ext fun b => ?_
   rw [Module.Basis.dualBasis_apply_self]
   simp [simpleHomPairingEquiv, simpleHomPairing,
     simpleInclusion, simpleProjection, Category.assoc, biproduct.ι_π]
@@ -220,15 +219,13 @@ theorem crossingCandidate_natural_test (X : C.Obj) {T U : C.Obj} (h : T ⟶ U) :
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V T).inv).1
-  apply biproduct.hom_ext'
-  intro i
+  refine biproduct.hom_ext' _ _ fun i => ?_
   simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
   dsimp [V, underlying] at *
   rw [← whisker_exchange_assoc]
   simp only [crossingCandidate_on_summand, crossingCandidate_on_summand_assoc,
     Preadditive.comp_sum, Preadditive.sum_comp]
-  apply Finset.sum_congr rfl
-  intro j _
+  refine Finset.sum_congr rfl fun j _ => ?_
   simpa only [Category.assoc, whisker_exchange, Preadditive.sum_comp, V] using
     congrArg (fun g => g ≫ (U ◁ biproduct.ι V j)) (crossingBlock_sum_natural_test C X T U h i j)
 
