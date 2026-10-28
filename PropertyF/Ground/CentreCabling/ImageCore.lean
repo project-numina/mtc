@@ -67,8 +67,9 @@ theorem productLabels_doubleCentralizer
       Centre.ProductRetract (simples (Integrate.bundledCenter C) x) := fun x hx ↦
   (mem_productLabels C x).mp <|
     doubleCentralizer_of_fusion_closed hp hdet hdim
-      (unit_mem_productLabels C) (fun _ hi ↦ dual_mem_productLabels C hi)
-      (fun _ hi _ hj _ hk ↦ constituent_mem_productLabels C hi hj hk) hcore hx
+      (unit_mem_productLabels C)
+      ⟨(fun _ hi ↦ dual_mem_productLabels C hi),
+        (fun _ hi _ hj _ hk ↦ constituent_mem_productLabels C hi hj hk)⟩ hcore hx
 
 
 /-- Actual centre labels centralizing both canonical images. -/

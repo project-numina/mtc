@@ -37,7 +37,6 @@ public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Dimensions.Trace
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Dimensions.SphericalCriterion
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Dimensions.Drinfeld
 public import PropertyF.Ground.Dimensions.SimpleScalars
@@ -45,13 +44,10 @@ public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.ComplexSaturation
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
-public import PropertyF.Ground.Dimensions.SimplePairing
 public import PropertyF.Ground.Dimensions.TensorExtension
 public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.ENOReciprocity
-public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.GroundNorm
-public import PropertyF.Ground.Dimensions.GlobalInequality
 public import PropertyF.Ground.Cabling.UnitPower
 public import PropertyF.Ground.Cabling.Naturality
 public import PropertyF.Ground.Calculus.ThreeTrace
@@ -68,7 +64,6 @@ public import PropertyF.Ground.Dimensions.DefectNaturality
 public import PropertyF.Ground.Dimensions.CoevaluationSliding
 public import PropertyF.Ground.Dimensions.FourthDualUnit
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
-public import PropertyF.Ground.Dimensions.RootDualPairing
 public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
 public import PropertyF.Ground.Dimensions.FourthTensorUnit
 public import PropertyF.Ground.CentreInduction.FiniteSum
@@ -112,7 +107,6 @@ public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 
 public import PropertyF.Ground.Dimensions.DefectExtension
 public import PropertyF.Ground.Dimensions.DualBraiding
-public import PropertyF.Ground.Dimensions.DoubleDualBraiding
 
 public import PropertyF.Ground.CentreCabling.TwistFinite
 

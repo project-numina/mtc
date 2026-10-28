@@ -19,36 +19,6 @@ universe v u
 variable {k : Type*} [Field k] {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D]
   [HasBinaryBiproducts D]
 
-/-- The block-diagonal map embeds pairs of endomorphisms into endomorphisms
-of a binary direct sum. -/
-def diagonalEndMap (S K : D) : ((S ⟶ S) × (K ⟶ K)) →ₗ[k] (S ⊞ K ⟶ S ⊞ K) where
-  toFun x := biprod.map x.1 x.2
-  map_add' x y := by
-    apply biprod.hom_ext' <;> apply biprod.hom_ext <;> simp
-  map_smul' r x := by
-    apply biprod.hom_ext' <;> apply biprod.hom_ext <;> simp
-
-/-- A block-diagonal endomorphism determines both diagonal blocks. -/
-theorem diagonalEndMap_injective {S K : D} : Function.Injective (diagonalEndMap (k := k) S K) :=
-  fun a b h ↦ Prod.ext
-    (by simpa [diagonalEndMap, Category.assoc] using
-      congrArg (fun f => biprod.inl ≫ f ≫ biprod.fst) h)
-    (by simpa [diagonalEndMap, Category.assoc] using
-      congrArg (fun f => biprod.inr ≫ f ≫ biprod.snd) h)
-
-/-- Removing a nonzero direct summand strictly decreases the dimension of the
-endomorphism space. -/
-theorem finrank_end_complement_lt (S K : D)
-    [FiniteDimensional k (S ⟶ S)] [FiniteDimensional k (K ⟶ K)]
-    [FiniteDimensional k (S ⊞ K ⟶ S ⊞ K)] (hS : ¬ IsZero S) :
-    Module.finrank k (K ⟶ K) < Module.finrank k (S ⊞ K ⟶ S ⊞ K) := by
-  have hpos : 0 < Module.finrank k (S ⟶ S) :=
-    Module.finrank_pos_iff_exists_ne_zero.mpr ⟨𝟙 S, (IsZero.iff_id_eq_zero S).not.mp hS⟩
-  have hle := LinearMap.finrank_le_finrank_of_injective (f := diagonalEndMap (k := k) S K)
-    (diagonalEndMap_injective (k := k) (S := S) (K := K))
-  rw [Module.finrank_prod] at hle
-  omega
-
 omit [HasBinaryBiproducts D] in
 /-- A split epimorphism with a nonzero annihilated map decreases endomorphism dimension. -/
 theorem finrank_end_lt_of_split_epi {S W Q : D} (p : S ⟶ W) (q : W ⟶ Q)
@@ -74,6 +44,14 @@ theorem finrank_end_lt_of_split_epi {S W Q : D} (p : S ⟶ W) (q : W ⟶ Q)
   have hlt := Submodule.finrank_lt_finrank_of_lt (lt_top_iff_ne_top.mpr hproper)
   rw [finrank_top, LinearMap.finrank_range_of_inj hinj] at hlt
   exact hlt
+
+/-- Removing a nonzero direct summand strictly decreases the dimension of the
+endomorphism space. -/
+theorem finrank_end_complement_lt (S K : D)
+    [FiniteDimensional k (S ⊞ K ⟶ S ⊞ K)] (hS : ¬ IsZero S) :
+    Module.finrank k (K ⟶ K) < Module.finrank k (S ⊞ K ⟶ S ⊞ K) :=
+  finrank_end_lt_of_split_epi (k := k) biprod.inl biprod.snd
+    ((IsZero.iff_isSplitMono_eq_zero (biprod.inl : S ⟶ S ⊞ K)).not.mp hS) (by simp)
 
 /-- Objects built from finitely many simple objects by binary direct sums,
 up to isomorphism. -/

@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Dimensions.GlobalInequality
+public import PropertyF.Ground.Dimensions.GroundNorm
 public import PropertyF.Ground.Modular.FusionTransport
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Fusion.Agreement
@@ -10,7 +10,6 @@ public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Integrate.TwistedRigidity
 public import PropertyF.Ground.Dimensions.PivotalTwist
-public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.CentreCabling.RegularSupport
