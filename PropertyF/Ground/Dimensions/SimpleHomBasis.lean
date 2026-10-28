@@ -121,12 +121,11 @@ theorem simplePieces_sum_projection (X : C.Obj) (k : Fin (rank C))
     (∑ x, c x • (biproduct.ι (simplePiecesObject C X) ⟨k, x⟩ ≫
       biproduct.π (simplePiecesObject C X) ⟨k, t⟩)) = c t • 𝟙 (simples C k) := by
   classical
-  rw [Finset.sum_eq_single t]
+  rw [Finset.sum_eq_single_of_mem t (Finset.mem_univ t) ?_]
   · simp
   · intro x _ hxt
     rw [biproduct.ι_π_ne (simplePiecesObject C X) (by simpa using hxt)]
-    simp
-  · simp
+    exact smul_zero _
 
 set_option backward.isDefEq.respectTransparency false in
 theorem simpleInclusion_independent
@@ -138,8 +137,8 @@ theorem simpleInclusion_independent
   intro g hg t
   have h := congrArg (fun f : simples C k ⟶ X =>
     f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) hg
-  simp only [Preadditive.sum_comp, Linear.smul_comp, zero_comp] at h
-  simp [simpleInclusion, Category.assoc] at h
+  simp only [Preadditive.sum_comp, Linear.smul_comp, zero_comp, simpleInclusion,
+    Category.assoc, Iso.inv_hom_id_assoc] at h
   rw [simplePieces_sum_projection C X k g t] at h
   exact smul_left_injective ℂ (id_nonzero (simples C k)) (by simpa using h)
 
@@ -171,9 +170,9 @@ theorem simpleInclusionBasis_projection
   let b := simpleInclusionBasis C X k
   have h := congrArg (fun f : simples C k ⟶ X =>
     f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) (b.sum_repr g)
-  simp only [Preadditive.sum_comp, Linear.smul_comp] at h
   dsimp only [b] at h
-  simp only [simpleInclusionBasis_apply, simpleInclusion, Category.assoc, Iso.inv_hom_id_assoc] at h
+  simp only [Preadditive.sum_comp, Linear.smul_comp, simpleInclusionBasis_apply, simpleInclusion,
+    Category.assoc, Iso.inv_hom_id_assoc] at h
   rw [simplePieces_sum_projection C X k (b.repr g) t] at h
   exact h
 

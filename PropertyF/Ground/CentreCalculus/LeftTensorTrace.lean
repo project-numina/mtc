@@ -15,6 +15,7 @@ partial-trace compatibility. Tensor-duality identities establish that
 compatibility in spherical categories.
 -/
 @[expose] public noncomputable section
+open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
@@ -22,7 +23,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 /-- Close the first factor using the pivotal left dual. -/
-def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) {X Y : C} :
+def leftPartialTrace (p : PivotalStructure (C := C)) {X Y : C} :
     End (X ⊗ Y) →ₗ[ℂ] End Y where
   toFun f := End.of ((λ_ Y).inv ≫
     ((η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ ((Xᘁ) ◁ (p.iso X).inv)) ▷ Y) ≫
@@ -36,19 +37,19 @@ def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) {X Y : C} :
     simp
 
 /-- Closing the left factor and then tracing agrees with the total trace at an endomorphism. -/
-abbrev IsLeftTraceCompatibleAt (p : Dimensions.PivotalStructure (C := C))
+abbrev IsLeftTraceCompatibleAt (p : PivotalStructure (C := C))
     {X Y : C} (f : End (X ⊗ Y)) : Prop :=
   p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom
 
 /-- Closing the left factor and then tracing agrees with the total trace. -/
-abbrev IsLeftTraceCompatible (p : Dimensions.PivotalStructure (C := C)) (X : C) : Prop :=
+abbrev IsLeftTraceCompatible (p : PivotalStructure (C := C)) (X : C) : Prop :=
   ∀ Y (f : End (X ⊗ Y)), IsLeftTraceCompatibleAt p f
 
 /-- Inserting a map on the untraced right factor. -/
 def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
   End.of (X ◁ a.asHom)
 
-theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
+theorem leftPartialTrace_right (p : PivotalStructure (C := C))
     {X Y : C} (a : End Y) (f : End (X ⊗ Y)) :
     leftPartialTrace p (f * insertLeftIdentity X a) =
       leftPartialTrace p f * a := by
@@ -59,7 +60,7 @@ theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
   rw [← whisker_exchange_assoc, ← leftUnitor_inv_naturality_assoc]
 
 /-- Closing the first factor commutes with a spectator factor on the right. -/
-theorem leftPartialTrace_whiskerRight (p : Dimensions.PivotalStructure (C := C))
+theorem leftPartialTrace_whiskerRight (p : PivotalStructure (C := C))
     {X Y : C} (Z : C) (f : End (X ⊗ Y)) :
     leftPartialTrace p (End.of
       ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
@@ -73,7 +74,7 @@ theorem leftPartialTrace_whiskerRight (p : Dimensions.PivotalStructure (C := C))
 once compatibility with total trace is known. -/
 theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C]
     {X Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
-    (p : Dimensions.PivotalStructure (C := C))
+    (p : PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
     (htrace : IsLeftTraceCompatibleAt p f) :
@@ -87,7 +88,7 @@ end PropertyF.Ground.CentreCalculus
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
-variable {C : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := C.Obj)}
+variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : Modular.HasFPSimpleDimensions C p) {X : C.Obj} [Simple X]
 
 /-- Once left partial trace composes with total trace, Schur's lemma computes
@@ -95,12 +96,12 @@ the closed crossing as the pivotal twist scalar. -/
 theorem leftPartialTrace_braiding_of_trace_compatibility
     (ht : IsLeftTraceCompatibleAt p (End.of (β_ X X).hom)) :
     leftPartialTrace p (End.of (β_ X X).hom) =
-      Dimensions.pivotalBraidedTwistScalar C p X • (1 : End X) := by
+      pivotalBraidedTwistScalar C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   have hd : unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
     simpa [unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X
   simpa only [← unitScalar_eq_equiv, Dimensions.pivotalTrace_selfBraiding,
-    Dimensions.pivotalDimension, mul_div_cancel_right₀ _ hd] using
+    pivotalDimension, mul_div_cancel_right₀ _ hd] using
     leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)
       (End.of (β_ X X).hom) (Modular.unitScalar_rightTrace_ne_zero C p X) ht
 
@@ -111,7 +112,7 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility
     (n : ℕ)
     (ht : IsLeftTraceCompatibleAt p (End.of (β_ X X).hom)) :
     leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) =
-      Dimensions.pivotalBraidedTwistScalar C p X • 1 := by
+      pivotalBraidedTwistScalar C p X • 1 := by
   have hg : (Aut.toEnd (braidGenerator X n 0)) = End.of
       ((α_ X X (tensorPower X n)).inv ≫ ((β_ X X).hom ▷ tensorPower X n) ≫
         (α_ X X (tensorPower X n)).hom) := by
@@ -136,7 +137,7 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
     {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
     unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 2))
       (Equiv.Perm.decomposeFin.symm (1, σ))).asHom) =
-    Dimensions.pivotalBraidedTwistScalar C p X *
+    pivotalBraidedTwistScalar C p X *
       unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 1)) σ).asHom) := by
   let f := (tensorPermutationAction X hX (n + 1)) σ
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
@@ -163,8 +164,8 @@ compatibility and the sign of the actual pivotal twist scalar. -/
 theorem integral_of_leftTrace_and_twist_sign
     (hX : SelfTransparent X)
     (htotal : IsLeftTraceCompatible p X)
-    (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
-      Dimensions.pivotalBraidedTwistScalar C p X = -1) :
+    (hsign : pivotalBraidedTwistScalar C p X = 1 ∨
+      pivotalBraidedTwistScalar C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m := by
   rcases hsign with h | h
   · apply integral_of_parity_adjacent_trace hdim hX false
@@ -215,7 +216,7 @@ theorem tensorDual_coevaluation (X Y : C) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Left pivotal trace evaluated with the tensor dual pairing. -/
-theorem leftTrace_tensor_pairing (p : Dimensions.PivotalStructure (C := C))
+theorem leftTrace_tensor_pairing (p : PivotalStructure (C := C))
     (X Y : C) (f : X ⊗ Y ⟶ X ⊗ Y) :
     (p.leftTrace f).asHom =
       η_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) ≫
@@ -245,12 +246,12 @@ set_option backward.isDefEq.respectTransparency false in
 left pivotal trace. -/
 theorem leftTrace_partialTrace [Preadditive C] [Linear ℂ C]
     [MonoidalPreadditive C] [MonoidalLinear ℂ C]
-    (p : Dimensions.PivotalStructure (C := C)) {X Y : C} (f : End (X ⊗ Y)) :
+    (p : PivotalStructure (C := C)) {X Y : C} (f : End (X ⊗ Y)) :
     p.leftTrace (leftPartialTrace p f).asHom = p.leftTrace f.asHom := by
   apply End.homEquiv.injective
   change (p.leftTrace (leftPartialTrace p f).asHom).asHom = (p.leftTrace f.asHom).asHom
   rw [leftTrace_tensor_pairing]
-  simp only [Dimensions.PivotalStructure.leftTrace, leftPartialTrace,
+  simp only [PivotalStructure.leftTrace, leftPartialTrace,
     LinearMap.coe_mk, AddHom.coe_mk]
   rw [ExactPairing.tensor_coevaluation, ExactPairing.tensor_evaluation]
   simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
@@ -268,23 +269,23 @@ theorem leftTrace_partialTrace [Preadditive C] [Linear ℂ C]
 pivotal trace after the remaining strand is closed. -/
 theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
     [MonoidalPreadditive C] [MonoidalLinear ℂ C]
-    (p : Dimensions.PivotalStructure (C := C)) (hp : p.IsSpherical)
+    (p : PivotalStructure (C := C)) (hp : p.IsSpherical)
     {X Y : C} (f : End (X ⊗ Y)) :
     IsLeftTraceCompatibleAt p f :=
   (hp Y _).symm.trans <| (leftTrace_partialTrace p f).trans (hp _ _)
 
 /-- A chosen spherical pivotal structure whose simple dimensions are FP dimensions. -/
 abbrev IsFPSpherical (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) : Prop :=
+    (p : PivotalStructure (C := C.Obj)) : Prop :=
   p.IsSpherical ∧ Modular.HasFPSimpleDimensions C p
 
 /-- A self-transparent simple with sign-valued twist has integral FP
 dimension in any FP-valued spherical fusion category. -/
 theorem integral_of_spherical_and_twist_sign
-    {C : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := C.Obj)}
+    {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
     (hfp : IsFPSpherical C p) {X : C.Obj} [Simple X] (hX : SelfTransparent X)
-    (hsign : Dimensions.pivotalBraidedTwistScalar C p X = 1 ∨
-      Dimensions.pivotalBraidedTwistScalar C p X = -1) :
+    (hsign : pivotalBraidedTwistScalar C p X = 1 ∨
+      pivotalBraidedTwistScalar C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_leftTrace_and_twist_sign hfp.2 hX
     (fun _ f ↦ spherical_rightTrace_leftPartialTrace p hfp.1 f) hsign

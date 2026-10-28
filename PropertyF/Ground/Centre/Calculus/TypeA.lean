@@ -169,15 +169,16 @@ theorem typeAPermutation_surjective (n : ℕ) : Function.Surjective (typeAPermut
 
 /-- The missing presentation theorem would follow from a finite normal-form
 bound of at most `(n+2)!` words. -/
-theorem pureWords_eq_typeANormal_of_card_bound (n : ℕ) [Fintype (typeAGroup n)]
-    (hcard : Fintype.card (typeAGroup n) ≤ Nat.factorial (n + 2)) :
+theorem pureWords_eq_typeANormal_of_card_bound (n : ℕ) [Finite (typeAGroup n)]
+    (hcard : Nat.card (typeAGroup n) ≤ Nat.factorial (n + 2)) :
     (strandPermutation n).ker = typeANormal n := by
+  let : Fintype (typeAGroup n) := Fintype.ofFinite _
   apply le_antisymm ?_ (typeARelations_permutation_trivial n)
   intro w hw
   have hs := typeAPermutation_surjective n
   have hi : Function.Injective (typeAPermutation n) :=
     ((Fintype.bijective_iff_surjective_and_card (typeAPermutation n)).2
-      ⟨hs, le_antisymm (by simpa [Fintype.card_perm] using hcard)
+      ⟨hs, le_antisymm (by simpa [Nat.card_eq_fintype_card, Fintype.card_perm] using hcard)
         (Fintype.card_le_of_surjective (typeAPermutation n) hs)⟩).1
   apply (QuotientGroup.eq_one_iff w).mp
   apply hi
@@ -240,8 +241,7 @@ theorem pureWords_eq_typeANormal (n : ℕ) :
     (strandPermutation n).ker = typeANormal n :=
   let ⟨hf, hc⟩ := typeA_finite_card n
   let : Finite (typeAGroup n) := hf
-  let : Fintype (typeAGroup n) := Fintype.ofFinite _
-  pureWords_eq_typeANormal_of_card_bound n (by simpa [Nat.card_eq_fintype_card] using hc)
+  pureWords_eq_typeANormal_of_card_bound n hc
 
 /-- Self-transparent categorical braid actions factor through permutations. -/
 def permutationAction (X : C)

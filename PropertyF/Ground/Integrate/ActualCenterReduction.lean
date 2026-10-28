@@ -93,11 +93,8 @@ squares of the real conjugates of the simple FP dimensions. -/
 theorem globalFPDimension_galois_sum_squares (C : BraidedFusionCategory.{v,u})
     (σ : ℂ ≃+* ℂ) : σ (globalFPDimension C : ℂ) =
       ((∑ i, (σ (fpSimple C i : ℂ)).re ^ 2 : ℝ) : ℂ) := by
-  simp only [globalFPDimension, Complex.ofReal_sum, Complex.ofReal_pow, map_sum, map_pow]
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [← fp_simple_galois_real C σ i]
-  norm_cast
+  simp only [globalFPDimension, Complex.ofReal_sum, Complex.ofReal_pow, map_sum, map_pow,
+    fp_simple_galois_real]
 
 /-- Global FP dimension has positive, FP-bounded real conjugates. -/
 theorem positive_bounded_conjugates_of_fp (C : BraidedFusionCategory.{v,u})

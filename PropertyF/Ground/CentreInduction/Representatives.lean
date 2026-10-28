@@ -1,6 +1,5 @@
 module
 public import PropertyF.Ground.CentreInduction.FiniteSum
-public import PropertyF.Ground.CentreInduction.Adjunction
 
 /-! Converting binary simple sums to indexed finite biproducts. -/
 

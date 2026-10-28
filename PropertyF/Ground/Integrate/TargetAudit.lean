@@ -99,7 +99,6 @@ import all PropertyF.Ground.Centre.Basic
 import all PropertyF.Ground.Centre.ProductImages
 import all PropertyF.Ground.Centre.SymmetricIntegrality
 import all PropertyF.Ground.CentreBundle.Fusion
-import all PropertyF.Ground.CentreInduction.Adjunction
 import all PropertyF.Ground.CentreInduction.Underlying
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.ComplexSaturation
