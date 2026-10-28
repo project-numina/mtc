@@ -19,3 +19,5 @@ public import Conjectures.Galois.SquaredNorm
 public import Conjectures.RankFiniteness.EffectiveDimension
 public import Conjectures.PropertyF.ModularPropertyF
 public import Conjectures.RankFiniteness.DimensionValues
+public import Conjectures.RankFiniteness.EffectiveCategoryCount
+public import Conjectures.RankFiniteness.RankFiniteness
