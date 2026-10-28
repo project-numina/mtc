@@ -90,19 +90,6 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
-/-- A weighted sum of inclusions projects onto its matching simple summand. -/
-theorem simplePieces_sum_projection (X : C.Obj) (k : Fin (rank C))
-    (c : Fin (Module.finrank ℂ (simples C k ⟶ X)) → ℂ)
-    (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
-    (∑ x, c x • (biproduct.ι (simplePiecesObject C X) ⟨k, x⟩ ≫
-      biproduct.π (simplePiecesObject C X) ⟨k, t⟩)) = c t • 𝟙 (simples C k) := by
-  classical
-  rw [Finset.sum_eq_single_of_mem t (Finset.mem_univ t) ?_]
-  · simp
-  · intro x _ hxt
-    rw [biproduct.ι_π_ne (simplePiecesObject C X) (by simpa using hxt)]
-    exact smul_zero _
-
 set_option backward.isDefEq.respectTransparency false in
 theorem simpleInclusion_independent
     (X : C.Obj) (k : Fin (rank C)) :
@@ -115,8 +102,7 @@ theorem simpleInclusion_independent
     f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) hg
   simp only [Preadditive.sum_comp, Linear.smul_comp, zero_comp, simpleInclusion,
     Category.assoc, Iso.inv_hom_id_assoc] at h
-  rw [simplePieces_sum_projection C X k g t] at h
-  exact smul_left_injective ℂ (id_nonzero (simples C k)) (by simpa using h)
+  exact smul_left_injective ℂ (id_nonzero (simples C k)) (by simpa [biproduct.ι_π] using h)
 
 /-- The canonical summand inclusions form a basis of each simple Hom space. -/
 def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
@@ -143,14 +129,11 @@ theorem simpleInclusionBasis_projection
     ((simpleInclusionBasis C X k).repr g t) • 𝟙 (simples C k) =
       g ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩ := by
   classical
-  let b := simpleInclusionBasis C X k
-  have h := congrArg (fun f : simples C k ⟶ X =>
-    f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) (b.sum_repr g)
-  dsimp only [b] at h
-  simp only [Preadditive.sum_comp, Linear.smul_comp, simpleInclusionBasis_apply, simpleInclusion,
-    Category.assoc, Iso.inv_hom_id_assoc] at h
-  rw [simplePieces_sum_projection C X k (b.repr g) t] at h
-  exact h
+  simpa [Preadditive.sum_comp, Linear.smul_comp, simpleInclusionBasis_apply, simpleInclusion,
+    Category.assoc, biproduct.ι_π] using
+    congrArg (fun f : simples C k ⟶ X ↦
+      f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩)
+      ((simpleInclusionBasis C X k).sum_repr g)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Ordinary trace on a simple Hom space is the sum of scalar diagonal
@@ -245,26 +228,22 @@ theorem simpleHomPairing_natural
   ext f
   simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
 
-end
-
-section
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
-  [Abelian D] [Linear ℂ D] [RigidCategory D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
-  [IsFusionCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The composition pairing is nondegenerate in the morphism-to-simple factor. -/
+/-- The composition pairing is nondegenerate when every nonzero map to the simple splits. -/
 theorem simpleHomPairing_injective
-    (S X : D) [Simple S] [FiniteDimensional ℂ (S ⟶ S)] : Function.Injective (simpleHomPairing (k := ℂ) S X) := by
+    (S X : D) [Simple S] [FiniteDimensional k (S ⟶ S)]
+    (hsplit : ∀ (g : X ⟶ S), g ≠ 0 → ∃ f : S ⟶ X, f ≫ g = 𝟙 S) :
+    Function.Injective (simpleHomPairing (k := k) S X) := by
   apply LinearMap.ker_eq_bot.mp
   rw [LinearMap.ker_eq_bot']
   intro g hg
   by_contra hne
-  obtain ⟨f, hf⟩ := Ground.split_to_simple g hne
-  have h := congrArg (fun F : Module.Dual ℂ (S ⟶ X) => F f) hg
-  change Ground.simpleEndScalar (k := ℂ) S (End.of (f ≫ g)) = 0 at h
+  obtain ⟨f, hf⟩ := hsplit g hne
+  have h := congrArg (fun F : Module.Dual k (S ⟶ X) => F f) hg
+  change Ground.simpleEndScalar (k := k) S (End.of (f ≫ g)) = 0 at h
   rw [hf] at h
-  change Ground.simpleEndScalar (k := ℂ) S 1 = 0 at h
+  change Ground.simpleEndScalar (k := k) S 1 = 0 at h
   simp at h
 
 end
@@ -279,7 +258,7 @@ def simpleHomPairingEquiv {D : Type u} [Category.{v} D] [MonoidalCategory D]
     (S X : D) [Simple S] : (X ⟶ S) ≃ₗ[ℂ] Module.Dual ℂ (S ⟶ X) := by
   letI : ∀ A B : D, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   let p := simpleHomPairing (k := ℂ) S X
-  have hi := simpleHomPairing_injective S X
+  have hi := simpleHomPairing_injective (k := ℂ) S X fun g hg ↦ Ground.split_to_simple g hg
   have hd : Module.finrank ℂ (X ⟶ S) = Module.finrank ℂ (Module.Dual ℂ (S ⟶ X)) :=
     (finrank_to_simple_eq_from_simple X S).trans
       (Subspace.dual_finrank_eq (K := ℂ) (V := S ⟶ X)).symm
