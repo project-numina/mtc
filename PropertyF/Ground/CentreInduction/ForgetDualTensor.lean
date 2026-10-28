@@ -145,8 +145,7 @@ theorem forgetDoubleDualIso_tensor :
     (μ₂ X Y).hom.f ≫ (κ₂ (X ⊗ Y)).hom =
       ((κ₂ X).hom ⊗ₘ (κ₂ Y).hom) ≫
         (μ₂ X.1 Y.1).hom := by
-  simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
-    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso, Category.assoc,
+  simp [doubleDualTensorIso, rightDualIsoMap, forgetDoubleDualIso, Category.assoc,
     reassoc_of% forgetDualIso_natural, reassoc_of% forgetDualIso_tensor_inv (Yᘁ) (Xᘁ),
     forgetDualIso_tensor_mate_inv X Y,
     ← reassoc_of% rightDualTensorIso_inv_natural (κ Y).inv (κ X).inv,
