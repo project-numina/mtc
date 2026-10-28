@@ -209,9 +209,9 @@ the other. -/
 theorem simpleHomPairing_natural
     {S X Y : D} [Simple S] [FiniteDimensional k (S ⟶ S)] (g : Y ⟶ S) (a : X ⟶ Y) :
     simpleHomPairing (k := k) S X (a ≫ g) =
-      Module.Dual.transpose (Linear.rightComp k S a) (simpleHomPairing (k := k) S Y g) := by
-  ext f
-  simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
+      Module.Dual.transpose (Linear.rightComp k S a) (simpleHomPairing (k := k) S Y g) :=
+  LinearMap.ext fun f ↦ by
+    simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
 
 
 set_option backward.isDefEq.respectTransparency false in

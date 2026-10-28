@@ -98,12 +98,12 @@ theorem character_norm_le_fpSimple
     apply Module.End.hasEigenvalue_of_hasEigenvector (x := χ)
     refine ⟨Module.End.mem_eigenspace_iff.mpr ?_, fun h ↦ hχ (congrFun h i₀)⟩
     exact heigen
-  have hle : (‖χ i‖₊ : ℝ≥0∞) ≤ spectralRadius ℂ A := by
-    rw [spectralRadius_eq_of_unital]
-    exact le_iSup_of_le (χ i) (le_iSup_of_le hz le_rfl)
-  have htop : spectralRadius ℂ A ≠ ⊤ :=
-    ne_of_lt (lt_of_le_of_lt (spectralRadius_le_nnnorm (𝕜 := ℂ) A) (by simp))
-  simpa [fpSimple, A, Matrix.spectralRadius_transpose] using (ENNReal.toReal_mono htop hle)
+  simpa [fpSimple, A, Matrix.spectralRadius_transpose] using
+    ENNReal.toReal_mono
+      (ne_of_lt (lt_of_le_of_lt (spectralRadius_le_nnnorm (𝕜 := ℂ) A) (by simp)))
+      (show (‖χ i‖₊ : ℝ≥0∞) ≤ spectralRadius ℂ A from by
+        rw [spectralRadius_eq_of_unital]
+        exact le_iSup_of_le (χ i) (le_iSup_of_le hz le_rfl))
 
 /-- Every complex field conjugate of a fusion character obeys the same FP
 bound, because field automorphisms preserve the integer fusion coefficients. -/
@@ -136,9 +136,9 @@ def euclideanAbs (x : EuclideanSpace ℝ ι) : EuclideanSpace ℝ ι :=
 variable [Fintype ι]
 
 theorem euclideanAbs_norm (x : EuclideanSpace ℝ ι) :
-    ‖euclideanAbs x‖ = ‖x‖ := by
-  apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
-  simp [EuclideanSpace.real_norm_sq_eq, euclideanAbs]
+    ‖euclideanAbs x‖ = ‖x‖ :=
+  (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp (by
+    simp [EuclideanSpace.real_norm_sq_eq, euclideanAbs])
 
 /-- Replacing coordinates by absolute values cannot decrease the quadratic
 form of a matrix with nonnegative entries. -/
@@ -146,10 +146,10 @@ theorem quadratic_le_abs
     {k : Type*} [CommRing k] [LinearOrder k] [IsStrictOrderedRing k]
     {A : Matrix ι ι k} (hA : ∀ i j, 0 ≤ A i j) (x : ι → k) :
     ∑ i, ∑ j, x i * A i j * x j ≤
-      ∑ i, ∑ j, |x i| * A i j * |x j| := by
-  refine Finset.sum_le_sum fun i _ ↦ Finset.sum_le_sum fun j _ ↦ ?_
-  simpa [abs_mul, mul_assoc, mul_comm, mul_left_comm] using
-    (mul_le_mul_of_nonneg_left (le_abs_self (x i * x j)) (hA i j))
+      ∑ i, ∑ j, |x i| * A i j * |x j| :=
+  Finset.sum_le_sum fun i _ ↦ Finset.sum_le_sum fun j _ ↦ by
+    simpa [abs_mul, mul_assoc, mul_comm, mul_left_comm] using
+      (mul_le_mul_of_nonneg_left (le_abs_self (x i * x j)) (hA i j))
 
 theorem matrix_quadratic_form [DecidableEq ι]
     (A : Matrix ι ι ℝ) (x : EuclideanSpace ℝ ι) :
@@ -242,9 +242,9 @@ def totalFusionMatrix (D : BraidedFusionCategory) :
 theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
     totalFusionMatrix D j k = totalFusionMatrix D k j := by
   classical
-  have h := Equiv.sum_comp (dualEquiv D) (fun i => (fusionCoeff D i j k : ℝ))
-  change (∑ i, (fusionCoeff D (dualIndex D i) j k : ℝ)) = _ at h
-  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry] using h
+  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry] using
+    (show (∑ i, (fusionCoeff D (dualIndex D i) j k : ℝ)) = _ from
+      Equiv.sum_comp (dualEquiv D) (fun i => (fusionCoeff D i j k : ℝ)))
 
 /-- The total fusion matrix is strictly positive in every entry. -/
 theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
@@ -474,12 +474,12 @@ theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
   obtain ⟨z, hz, hzmax⟩ := spectrum.exists_nnnorm_eq_spectralRadius B
   obtain ⟨v, hv⟩ := (Module.End.hasEigenvalue_iff_mem_spectrum.mpr
     (show z ∈ spectrum ℂ B.toLin' from by simpa using hz)).exists_hasEigenvector
-  have hbound := complex_eigenvalue_le_positive_eigenvalue hwe
-    (show A.map Complex.ofRealHom *ᵥ v = z • v from by
-      simpa [B, Matrix.toLin'_apply] using hv.apply_eq_smul)
-    (fun j k => Nat.cast_nonneg _) (fpCharacter_pos D) hv.2
   simpa only [fpSimple, ← Matrix.spectralRadius_transpose (fusionMatrix D i), ← hB,
-    ← hzmax, ENNReal.coe_toReal, coe_nnnorm] using hbound
+    ← hzmax, ENNReal.coe_toReal, coe_nnnorm] using
+      complex_eigenvalue_le_positive_eigenvalue hwe
+        (show A.map Complex.ofRealHom *ᵥ v = z • v from by
+          simpa [B, Matrix.toLin'_apply] using hv.apply_eq_smul)
+        (fun j k => Nat.cast_nonneg _) (fpCharacter_pos D) hv.2
 
 /-- The target spectral-radius FP dimension is the unique positive character. -/
 theorem fpSimple_eq_fpCharacter (i : Fin (rank D)) :
