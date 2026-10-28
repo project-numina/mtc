@@ -34,7 +34,6 @@ theorem rootTensorDefect_coevaluation (i : Fin (rank C)) :
   let : HasRightDual I := RightRigidCategory.rightDual I
   let X := simples C i
   let W := X ⊗ (Xᘁ)
-  let : HasRightDual W := RightRigidCategory.rightDual W
   let a := (fourthDualRootNaturalIso C).app X
   let b := (fourthDualRootNaturalIso C).app (Xᘁ)
   let t := rootTensorIso C X (Xᘁ)

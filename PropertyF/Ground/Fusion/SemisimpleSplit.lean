@@ -81,15 +81,11 @@ theorem object_injective (X : C) : Injective X :=
 /-- Every epimorphism splits. -/
 theorem epi_splits {X Y : C} (f : X ⟶ Y) [Epi f] : IsSplitEpi f :=
   letI : Projective Y := object_projective Y
-  IsSplitEpi.mk' {
-    section_ := Projective.factorThru (𝟙 Y) f
-    id := Projective.factorThru_comp (𝟙 Y) f }
+  IsSplitEpi.mk' ⟨Projective.factorThru (𝟙 Y) f, Projective.factorThru_comp (𝟙 Y) f⟩
 
 /-- Every monomorphism splits. -/
 theorem mono_splits {X Y : C} (f : X ⟶ Y) [Mono f] : IsSplitMono f :=
   letI : Injective X := object_injective X
-  IsSplitMono.mk' {
-    retraction := Injective.factorThru (𝟙 X) f
-    id := Injective.comp_factorThru (𝟙 X) f }
+  IsSplitMono.mk' ⟨Injective.factorThru (𝟙 X) f, Injective.comp_factorThru (𝟙 X) f⟩
 
 end PropertyF.Ground

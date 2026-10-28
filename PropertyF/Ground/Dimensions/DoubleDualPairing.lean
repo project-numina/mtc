@@ -56,7 +56,6 @@ theorem rightDualEvaluation_coevaluation :
   let : HasRightDual I := RightRigidCategory.rightDual I
   let W := (Xᘁ) ⊗ X
   let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
-  let : HasRightDual W := RightRigidCategory.rightDual W
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso (Xᘁ) X
   have hu : (ρ_ I).inv ≫ I ◁ r.inv = η_ I (Iᘁ) := coevaluation_rightDualIso_inv
@@ -112,7 +111,6 @@ theorem rightDualCoevaluation_evaluation :
   let : HasRightDual I := RightRigidCategory.rightDual I
   let W := X ⊗ (Xᘁ)
   let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
-  let : HasRightDual W := RightRigidCategory.rightDual W
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso X (Xᘁ)
   have hu : r.hom ▷ I ≫ (ρ_ I).hom = ε_ I (Iᘁ) := rightDualIso_evaluation
@@ -141,8 +139,6 @@ theorem doubleDual_evaluation :
   let : HasRightDual I := RightRigidCategory.rightDual I
   let W := (Xᘁ) ⊗ X
   let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
-  let : HasRightDual W := RightRigidCategory.rightDual W
-  let : HasRightDual V := RightRigidCategory.rightDual V
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso (Xᘁ) X
   let s : Vᘁ ≅ (((Xᘁ)ᘁ)ᘁ) ⊗ ((Xᘁ)ᘁ) := rightDualTensorIso (Xᘁ) ((Xᘁ)ᘁ)
@@ -161,8 +157,6 @@ theorem doubleDual_coevaluation :
   let : HasRightDual I := RightRigidCategory.rightDual I
   let W := X ⊗ (Xᘁ)
   let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
-  let : HasRightDual W := RightRigidCategory.rightDual W
-  let : HasRightDual V := RightRigidCategory.rightDual V
   let r : Iᘁ ≅ I := rightDualUnitIso
   let t : Wᘁ ≅ V := rightDualTensorIso X (Xᘁ)
   let s : Vᘁ ≅ ((Xᘁ)ᘁ) ⊗ (((Xᘁ)ᘁ)ᘁ) := rightDualTensorIso ((Xᘁ)ᘁ) (Xᘁ)
@@ -186,7 +180,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem pivotal_evaluation :
     ((p.iso (Xᘁ)).hom ⊗ₘ (p.iso X).hom) ≫ ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) = ε_ X (Xᘁ) := by
   let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
-  let : HasRightDual ((Xᘁ) ⊗ X) := RightRigidCategory.rightDual _
   have h := p.naturality (ε_ X (Xᘁ))
   rw [p.tensor, p.unit] at h
   rw [← doubleDual_evaluation X, ← Category.assoc, ← Category.assoc, ← h]
