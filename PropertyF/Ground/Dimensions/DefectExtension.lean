@@ -196,8 +196,7 @@ theorem rootTensorDefect_involution_extension
     (X Y : C.Obj) : IsInvolutiveHom (rootTensorDefect C X Y).hom :=
   tensor_decomposition_hom_ext (simpleDecomposition C X) (simpleDecomposition C Y) fun sx sy ↦ by
     rw [← Category.assoc, rootTensorDefect_natural C sx sy, Category.assoc,
-      rootTensorDefect_natural C sx sy, ← Category.assoc, hsimple,
-      Category.id_comp, Category.comp_id]
+      rootTensorDefect_natural C sx sy, ← Category.assoc, hsimple, Category.id_comp, Category.comp_id]
 variable {C} in
 /-- The fourth-dual tensor law on simple pairs implies ENO trace reciprocity. -/
 theorem trace_reciprocity_of_fourth_dual

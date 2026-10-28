@@ -270,10 +270,9 @@ def characterMatrix (D : BraidedFusionCategory) (i : Fin (rank D)) :
 
 theorem characterMatrix_commute (i j : Fin (rank D)) :
     Commute (characterMatrix D i) (characterMatrix D j) :=
-  Matrix.ext fun a b ↦ by
-    simp only [Matrix.mul_apply, characterMatrix]
-    exact_mod_cast (fusionCoeff_assoc j i a b).trans
-      (by simpa only [fusionCoeff_comm D j i] using (fusionCoeff_assoc i j a b).symm)
+  Matrix.ext fun a b ↦ by simp only [Matrix.mul_apply, characterMatrix]; exact_mod_cast
+    (fusionCoeff_assoc j i a b).trans (by simpa only [fusionCoeff_comm D j i] using
+      (fusionCoeff_assoc i j a b).symm)
 
 theorem totalFusionMatrix_eq_sum_characterMatrix :
     totalFusionMatrix D = ∑ i, characterMatrix D i :=
