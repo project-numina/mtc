@@ -108,7 +108,6 @@ theorem crossingComposite_summand :
   (biproduct.ι Vᶜ i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
     ∑ k, ∑ a : crossingIndex C T i k, ∑ j, ∑ b : crossingIndex C U k j,
       nestedCrossingBlock C X T U i k j a b ≫ ((T ⊗ U) ◁ biproduct.ι Vᶜ j) := by
-  dsimp only [nestedCrossingBlock]
   let V := inductionSummand C X
   let b (A : C.Obj) : (⨁ V) ⊗ A ⟶ A ⊗ (⨁ V) := βᶜ A
   calc
@@ -116,19 +115,10 @@ theorem crossingComposite_summand :
       (T ◁ b U) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
       dsimp only [crossingTensorComposite]
       monoidal
-    _ = ∑ k, ∑ a : crossingIndex C T i k,
-      𝟙 _ ⊗≫ (crossingBlock X T (Sᶜ k)
-          (crossingInclusion C T i k a) (crossingProjection C T i k a) ▷ U) ⊗≫
-        (T ◁ ((biproduct.ι V k ▷ U) ≫ b U)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
-      dsimp only [b]
-      rw [crossingCandidate_on_summand]
-      simp [monoidalComp, sum_whiskerRight, Preadditive.sum_comp, Preadditive.comp_sum,
-        crossingSummand, V]
     _ = _ := by
-      dsimp only [b, V, underlying]
-      simp_rw [crossingCandidate_on_summand]
-      simp [whiskerLeft_sum, monoidalComp, Preadditive.comp_sum, Preadditive.sum_comp,
-        crossingBlock_tensor, crossingSummand, V]
+      simp [b, V, nestedCrossingBlock, crossingCandidate_on_summand, whiskerLeft_sum,
+        monoidalComp, sum_whiskerRight, Preadditive.comp_sum, Preadditive.sum_comp,
+        ← whiskerLeft_comp_assoc, crossingBlock_tensor, crossingSummand, -whiskerLeft_comp]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The induction crossing obeys the half-braiding tensor law. -/

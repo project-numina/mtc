@@ -188,8 +188,7 @@ theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj)
     dsimp [underlying] at *
     simp only [← Category.assoc, ← comp_whiskerRight]
     simp only [underlyingFunctor, biproduct.ι_map, comp_whiskerRight, Category.assoc,
-      crossingCandidate_on_summand, Preadditive.comp_sum, Preadditive.sum_comp]
-    simp_rw [← whiskerLeft_comp]
-    simp only [biproduct.ι_map, whiskerLeft_comp, crossingBlock, mixedCrossing_natural_middle_assoc]
+      crossingCandidate_on_summand, Preadditive.comp_sum, Preadditive.sum_comp,
+      ← whiskerLeft_comp, crossingBlock, mixedCrossing_natural_middle_assoc]
 
 end PropertyF.Ground.CentreInduction
