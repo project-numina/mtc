@@ -29,13 +29,6 @@ def groundSimpleScalar (i : Fin (Ground.rank C)) :
     Ground.IsFusionCategory.hom_finite _ _
   exact simpleEndScalar _
 
-/-- Evaluating a simple endomorphism at its Schur scalar recovers the morphism. -/
-theorem groundSimpleScalar_smul_id (i : Fin (Ground.rank C)) (a : End (Ground.simples C i)) :
-    (groundSimpleScalar C i a) • 𝟙 (Ground.simples C i) = a.asHom := by
-  have h : (algebraMap ℂ (End (Ground.simples C i))) (groundSimpleScalar C i a) = a :=
-    (groundSimpleScalar C i).symm_apply_apply a
-  simpa [Algebra.algebraMap_eq_smul_one] using congrArg End.asHom h
-
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple
 biproduct component of the transported endomorphism. -/
@@ -73,7 +66,8 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
       (groundEndBlockEquiv C X m e a q.1 q.2 q.2) • 𝟙 (F q) := by
     rcases q with ⟨i, j⟩
     rw [groundEndBlockEquiv_diagonal]
-    simpa [z, F, Category.assoc] using (groundSimpleScalar_smul_id C i _).symm
+    simpa [z, F, Category.assoc] using congrArg End.asHom
+      (eq_smul_one_of_algEquiv (groundSimpleScalar C i) (End.of _))
   have h := cyclicTrace_biproduct_scalar_blocks
     (fun Y => scalar.toLinearMap.comp (rightTraceLinear p Y))
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) F z
@@ -183,8 +177,7 @@ theorem cyclic_block_trace {n : ℕ} {d : Fin n → ℕ}
   have hc (i : Fin n) : ∀ X Y : V i, Tblock i (X * Y) = Tblock i (Y * X) := by
     intro X Y
     change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
-    rw [Pi.single_mul, Pi.single_mul]
-    exact hT _ _
+    simpa only [Pi.single_mul] using hT (Pi.single i X) (Pi.single i Y)
   choose w hw using fun i : Fin n => cyclic_matrix_trace (Tblock i) (hc i)
   refine ⟨w, fun X => ?_⟩
   conv_lhs => rw [← LinearMap.sum_single_apply V X]
@@ -229,11 +222,9 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
     ∃ mult : Fin n → ℕ, ∀ x, (φ x).trace = ∑ i, (mult i : ℂ) * (x i).trace := by
   classical
   let T := (Matrix.traceLinearMap (Fin m) ℂ ℂ).comp φ.toLinearMap
-  have hT : ∀ x y, T (x * y) = T (y * x) := by
-    intro x y
+  obtain ⟨w, hw⟩ := cyclic_block_trace T (fun x y => by
     change (φ (x * y)).trace = (φ (y * x)).trace
-    simpa only [map_mul] using Matrix.trace_mul_comm (φ x) (φ y)
-  obtain ⟨w, hw⟩ := cyclic_block_trace T hT
+    simpa only [map_mul] using Matrix.trace_mul_comm (φ x) (φ y))
   have hnat : ∀ i, ∃ k : ℕ, w i = k := by
     intro i
     let j : Fin (d i) := ⟨0, hd i⟩
@@ -360,10 +351,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
   have hi : ∀ i, (groundEndBlockEquiv C _ m e (a : End (tensorPower X (n + 2))) i).trace =
       ∑ j, (mult i j : ℂ) * (b a j).trace := by
     intro i
-    have h := hmult i (b a)
-    change (groundEndBlockEquiv C _ m e ((b.symm (b a) : braidAlgebra X n) : End _) i).trace = _ at h
-    rw [b.symm_apply_apply] at h
-    exact h
+    simpa [F, braidToEndBlocks] using hmult i (b a)
   rw [pivotalTrace_groundEndBlocks C p scalar e]
   simp_rw [hi, Finset.mul_sum]
   rw [Finset.sum_comm]

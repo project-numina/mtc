@@ -73,10 +73,8 @@ closed factor times that endomorphism. -/
 theorem rightPartialTrace_insert {X Y : C} (a : End X) :
     rightPartialTrace p X Y (insertRightIdentity X Y a) =
       (scalar (p.rightTrace (𝟙 Y))) • a := by
-  have hscalar : p.rightTrace (𝟙 Y) = (scalar (p.rightTrace (𝟙 Y))) • (1 : End (𝟙_ C)) := by
-    apply scalar.injective
-    simp
-  rw [← mul_one (insertRightIdentity X Y a), rightPartialTrace_left, rightPartialTrace_one, hscalar]
+  rw [← mul_one (insertRightIdentity X Y a), rightPartialTrace_left, rightPartialTrace_one,
+    eq_smul_one_of_algEquiv scalar (p.rightTrace (𝟙 Y))]
   exact End.ext (by simp)
 
 /-- A simple endomorphism is determined by its pivotal trace. -/

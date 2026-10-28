@@ -70,9 +70,8 @@ theorem actual_three_braid_saturates
       (d : ℂ) * f) :
     actualBraidTrace C X p 1 (braidInImage X 1
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2 := by
-  have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
   rw [actual_three_braid_trace C X p, hdim, hS, mul_pow, pow_two (d : ℂ), mul_assoc,
-    mul_div_cancel_left₀ _ hd']
+    mul_div_cancel_left₀ _ (by exact_mod_cast hd)]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Actual three-strand block generators have equal squares once their
