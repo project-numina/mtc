@@ -19,8 +19,8 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- Pivotal trace of an element of an actual categorical braid algebra. -/
-def actualBraidTrace (X : C.Obj)
-    (p : PivotalStructure (C := C.Obj)) (n : ℕ) (a : braidAlgebra X n) : ℂ :=
+def actualBraidTrace {X : C.Obj}
+    (p : PivotalStructure (C := C.Obj)) {n : ℕ} (a : braidAlgebra X n) : ℂ :=
   Ground.unitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
 
@@ -28,13 +28,13 @@ def actualBraidTrace (X : C.Obj)
 abbrev IsTracePresentation {X : C.Obj}
     (p : PivotalStructure (C := C.Obj)) {n r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) (w : Fin r → ℝ) : Prop :=
-  ∀ z : braidAlgebra X n, actualBraidTrace C X p n z = (Blocks.mk r d).trace w (b z)
+  ∀ z : braidAlgebra X n, actualBraidTrace C p z = (Blocks.mk r d).trace w (b z)
 
 /-- A uniform bound for the trace of unitary elements in a block presentation. -/
 abbrev HasUnitaryTraceBound {X : C.Obj}
     (p : PivotalStructure (C := C.Obj)) {n r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) (R : ℝ) : Prop :=
-  ∀ a, Blocks.IsUnitary ⟨_, d⟩ (b a) → ‖actualBraidTrace C X p n a‖ ≤ R
+  ∀ a, Blocks.IsUnitary ⟨_, d⟩ (b a) → ‖actualBraidTrace C p a‖ ≤ R
 
 /-- In actual categorical braid blocks, the norm of the pivotal trace of a
 unitary is bounded by the simple-multiplicity mass. The explicit dimension
@@ -141,8 +141,8 @@ universe v u
 /-- The scaled trace of overlapping products is the corresponding trace power. -/
 abbrev HasOverlapTracePower (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t) : Prop :=
-  ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-    (pivotalDimension C p X) ^ k = actualBraidTrace C X p t u ^ (k + 1)
+  ∀ k, actualBraidTrace C p (overlapProduct X t u k) *
+    (pivotalDimension C p X) ^ k = actualBraidTrace C p u ^ (k + 1)
 
 end PropertyF.Ground.Calculus
 
@@ -234,11 +234,11 @@ theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf :
 dividing by the simple dimension. -/
 theorem overlap_trace_power_of_step {X : C.Obj}
     (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
-    (hstep : ∀ k, actualBraidTrace C X p (overlapIndex t (k + 1))
+    (hstep : ∀ k, actualBraidTrace C p
         (overlapProduct X t u (k + 1)) *
         pivotalDimension C p X =
-      actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *
-        actualBraidTrace C X p t u) :
+      actualBraidTrace C p (overlapProduct X t u k) *
+        actualBraidTrace C p u) :
     HasOverlapTracePower C p u := by
   intro k
   induction k with
@@ -247,7 +247,7 @@ theorem overlap_trace_power_of_step {X : C.Obj}
     rw [pow_succ, pow_succ]
     linear_combination (hstep k) *
       (pivotalDimension C p X) ^ k +
-      ih * actualBraidTrace C X p t u
+      ih * actualBraidTrace C p u
 
 /-- The sharp bound works in any family of unitary braid-block presentations;
 it does not depend on a particular choice made by finite-group averaging. -/
@@ -262,17 +262,17 @@ theorem sharp_trace_bound_for_presentations_of_overlap_identity
     (u : braidAlgebra X t)
     (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u))
     (hrec : HasOverlapTracePower C p u) :
-    ‖actualBraidTrace C X p t u‖ ≤
+    ‖actualBraidTrace C p u‖ ≤
       ‖pivotalDimension C p X‖ *
         Ground.fpDimension C X ^ (t + 1) := by
   simp only [HasOverlapTracePower, pivotalDimension, unitScalar_eq_equiv] at hrec ⊢
   apply norm_bound_of_overlapIndex (Modular.unitScalar_rightTrace_ne_zero C p X)
     (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension C (Simple.not_isZero X))) t
-    (fun k => actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)) ?_ hrec
+    (fun k => actualBraidTrace C p (overlapProduct X t u k)) ?_ hrec
   intro k
   have hbound := braid_trace_unitary_bound_ground C p
     (hd _) (e _) (overlapProduct X t u k) (overlapProduct_unitary e he hu k)
-  change ‖actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k)‖ ≤ _ at hbound
+  change ‖actualBraidTrace C p (overlapProduct X t u k)‖ ≤ _ at hbound
   exact hbound
 
 end PropertyF.Ground.Calculus

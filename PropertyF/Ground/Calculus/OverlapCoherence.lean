@@ -222,18 +222,18 @@ theorem overlap_trace_step_of_coherence (D : BraidedFusionCategory.{v,u})
     {X : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
     {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
     (hcoh : IsLocalOverlapProduct k u) :
-    actualBraidTrace D X p (overlapIndex t (k + 1)) (overlapProduct X t u (k + 1)) *
+    actualBraidTrace D p (overlapProduct X t u (k + 1)) *
         pivotalDimension D p X =
-      actualBraidTrace D X p (overlapIndex t k) (overlapProduct X t u k) *
-        actualBraidTrace D X p t u := by
+      actualBraidTrace D p (overlapProduct X t u k) *
+        actualBraidTrace D p u := by
   have hh := congrArg
     (fun z => Ground.unitScalarEquiv D (p.rightTrace z.asHom)) hcoh
   simp only [rightTrace_iso_conj] at hh
   rw [pivotalTrace_overlap D (X := X) p (Ground.unitScalarEquiv D)] at hh
   simp only [previousOverlapLocal, rightTrace_iso_conj] at hh
   have hδ := Modular.unitScalar_rightTrace_ne_zero D p X
-  change actualBraidTrace D X p _ _ = actualBraidTrace D X p _ _ *
-    (actualBraidTrace D X p t u / _) at hh
+  change actualBraidTrace D p _ = actualBraidTrace D p _ *
+    (actualBraidTrace D p u / _) at hh
   simp only [pivotalDimension, unitScalar_eq_equiv]
   rw [hh, mul_assoc, div_mul_cancel₀ _ hδ]
 
