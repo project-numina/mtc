@@ -33,8 +33,7 @@ theorem drinfeld_unit :
       (β_ U (Uᘁ)).hom ≫ ε_ U (Uᘁ) := by
     rw [comp_whiskerRight_assoc, rightAdjointMate_comp_evaluation]
     have hn := braiding_naturality_right U r.hom
-    simp only [U, braiding_tensorUnit_left, unitors_equal, Iso.hom_inv_id,
-      Category.comp_id] at hn
+    simp only [U, braiding_tensorUnit_left, unitors_equal, Iso.hom_inv_id, Category.comp_id] at hn
     simp only [← whisker_exchange_assoc, reassoc_of% hn, Category.assoc,
       ← comp_whiskerRight_assoc, Iso.hom_inv_id, id_whiskerRight,
       Category.id_comp, U, braiding_tensorUnit_left]
@@ -65,13 +64,11 @@ theorem drinfeld_unit_dual :
   let U : C := 𝟙_ C
   let r : Uᘁ ≅ U := rightDualUnitIso
   have hu : drinfeldIso U = r.symm ≪≫ rightDualIsoMap r := Iso.ext drinfeld_unit
-  apply Iso.ext
-  apply (cancel_mono (rightDualIsoMap (rightDualIsoMap r)).hom).1
+  refine Iso.ext ((cancel_mono (rightDualIsoMap (rightDualIsoMap r)).hom).1 ?_)
   change (drinfeldIso (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) =
     ((drinfeldIso U).invᘁ) ≫ ((r.homᘁ)ᘁ)
-  rw [← drinfeldIso_natural r.hom, hu]
-  simp only [Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, Iso.symm_inv, rightDualIsoMap,
-    Iso.hom_inv_id_assoc]
+  simp only [← drinfeldIso_natural r.hom, hu, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
+    Iso.symm_inv, rightDualIsoMap, Iso.hom_inv_id_assoc]
   rw [comp_rightAdjointMate, Category.assoc, ← comp_rightAdjointMate,
     show (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Uᘁ) from (rightDualIsoMap r).hom_inv_id,
     rightAdjointMate_id, Category.comp_id]
