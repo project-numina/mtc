@@ -41,13 +41,6 @@ def simpleTensorUnitIso : S j ⊗ S (unitIndex C) ≅ S j :=
   whiskerLeftIso (S j) e ≪≫ ρ_ (S j)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The counit crossing column has only diagonal simple summands. -/
-theorem counit_column_finrank :
-    Module.finrank ℂ (S i ⟶ S j ⊗ S (unitIndex C)) = if i = j then 1 else 0 :=
-  (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (simpleTensorUnitIso C j)).finrank_eq.trans
-    (finrank_simples_hom C i j)
-
-set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 /-- Off-diagonal counit crossing entries vanish. -/
 theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
@@ -55,7 +48,7 @@ theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
     (S j ◁ (underlyingCounit C).app X) = 0 :=
   by
     rw [crossing_counit_matrix]
-    simp [crossingIndex, counit_column_finrank, hne]
+    simp [crossingIndex, finrank_hom_simple_of_iso i j (simpleTensorUnitIso C j), hne]
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -67,12 +60,13 @@ theorem crossing_counit_diagonal :
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
           (S i ◁ (unitSummandIso X).hom) := by
   let : Unique (crossingIndex (S i) i (unitIndex C)) := by
-    simpa [crossingIndex, counit_column_finrank] using (inferInstance : Unique (Fin 1))
+    simpa [crossingIndex, finrank_hom_simple_of_iso i i (simpleTensorUnitIso C i)] using
+      (inferInstance : Unique (Fin 1))
   simpa only [crossing_counit_matrix, Fintype.sum_unique, crossingSummand,
-    Iso.symm_hom, Iso.symm_inv] using
+    crossingInclusion, crossingProjection, Iso.symm_hom, Iso.symm_inv] using
     congrArg (· ≫ (S i ◁ (unitSummandIso X).hom))
       (crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
-        (crossingInclusion_projection default))
+        (simpleInclusion_projection default))
 
 end PropertyF.Ground.CentreInduction
 

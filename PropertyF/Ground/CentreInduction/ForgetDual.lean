@@ -63,27 +63,27 @@ abbrev PivotalCompatibleAt (p : PivotalStructure (C := D))
   (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Compatible pivotal components have equal traces after forgetting. -/
-theorem forget_trace_of_pivotal_component
-    {p : PivotalStructure (C := D)} {pZ : PivotalStructure (C := 𝒵)} {Z : 𝒵}
-    (hcompat : PivotalCompatibleAt p pZ Z) (f : Z ⟶ Z) :
-    (pZ.rightTrace f).asHom.f = (p.rightTrace f.f).asHom := by
+/-- Compatible double-dual isomorphisms have equal traces after forgetting. -/
+theorem forget_rightTraceWith {Z : 𝒵} {j : Z.1 ≅ ((Z.1ᘁ)ᘁ)}
+    {jZ : Z ≅ ((Zᘁ)ᘁ)}
+    (hcompat : jZ.hom.f ≫ (forgetDoubleDualIso Z).hom = j.hom) (f : Z ⟶ Z) :
+    (rightTraceWith jZ f).asHom.f = (rightTraceWith j f.f).asHom := by
   let e := forgetDualIso Z
   let e' := forgetDualIso (Zᘁ)
-  let u : Z.1 ⟶ ((Zᘁ)ᘁ).1 := (pZ.iso Z).hom.f
-  have htrans : u ≫ e'.hom = (p.iso Z.1).hom ≫ (e.homᘁ) := by
+  let u : Z.1 ⟶ ((Zᘁ)ᘁ).1 := jZ.hom.f
+  have htrans : u ≫ e'.hom = j.hom ≫ (e.homᘁ) := by
     apply (Iso.eq_comp_inv (rightDualIsoMap e.symm)).2
-    simpa [PivotalCompatibleAt, forgetDoubleDualIso, rightDualIsoMap,
+    simpa [forgetDoubleDualIso, rightDualIsoMap,
       e, e', u, Category.assoc] using hcompat
   have heval : (e'.hom ▷ ((Zᘁ).1)) ≫ ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) = (ε_ (Zᘁ) ((Zᘁ)ᘁ)).f :=
     rightDualIso_evaluation (forgetPairing (Zᘁ)) HasRightDual.exact
-  have hn : (pZ.rightTrace f).asHom.f =
+  have hn : (rightTraceWith jZ f).asHom.f =
       (η_ Z (Zᘁ)).f ≫ ((f.f ≫ u ≫ e'.hom) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
         ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) := by
-    simp [PivotalStructure.rightTrace, rightTraceWith, tensorHom_def, ← heval,
+    simp [rightTraceWith, tensorHom_def, ← heval,
       comp_whiskerRight, Category.assoc, u]
-  rw [hn, htrans, ← Category.assoc f.f (p.iso Z.1).hom (e.homᘁ)]
-  erw [trace_change_rightDual (forgetPairing Z) HasRightDual.exact (f.f ≫ (p.iso Z.1).hom)]
+  rw [hn, htrans, ← Category.assoc f.f j.hom (e.homᘁ)]
+  erw [trace_change_rightDual (forgetPairing Z) HasRightDual.exact (f.f ≫ j.hom)]
   rfl
 
 end PropertyF.Ground.CentreInduction
