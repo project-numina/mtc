@@ -21,16 +21,6 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
-set_option backward.isDefEq.respectTransparency false in
-/-- Closing an identity strand gives the right quantum trace as a scalar. -/
-theorem partialTraceWith_one {Y : C} (k : Y ≅ (Yᘁ)ᘁ) (X : C) :
-    partialTraceWith k X 1 =
-      End.of ((ρ_ X).inv ≫ X ◁ (rightQuantumTrace k).asHom ≫ (ρ_ X).hom) := by
-  apply End.ext
-  simp only [partialTraceWith, rightQuantumTrace, End.one_asHom,
-    id_whiskerRight, Category.id_comp, whiskerLeft_comp, Category.assoc]
-  monoidal
-
 variable {R : Type*} [CommSemiring R] [Preadditive C] [Linear R C]
   [MonoidalPreadditive C] [MonoidalLinear R C]
 set_option backward.isDefEq.respectTransparency false in
@@ -42,7 +32,12 @@ theorem rightQuantumTrace_tensor_scalar
     scalar (rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y)) =
       scalar (rightQuantumTrace j) * scalar (rightQuantumTrace k) := by
   have hpt : partialTraceWith k X 1 = scalar (rightQuantumTrace k) • 1 := by
-    rw [partialTraceWith_one, eq_smul_one_of_algEquiv scalar (rightQuantumTrace k)]
+    rw [show partialTraceWith k X 1 =
+        End.of ((ρ_ X).inv ≫ X ◁ (rightQuantumTrace k).asHom ≫ (ρ_ X).hom) from by
+      simpa only [id_tensorHom_id, show End.of (𝟙 (X ⊗ Y)) = (1 : End (X ⊗ Y)) from rfl,
+        rightTraceWith_id] using
+        partialTraceWith_tensor_right k X (𝟙 Y),
+      eq_smul_one_of_algEquiv scalar (rightQuantumTrace k)]
     apply End.ext
     simp
   have ht : rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) =
