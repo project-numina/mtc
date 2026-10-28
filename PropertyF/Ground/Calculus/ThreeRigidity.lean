@@ -30,15 +30,10 @@ theorem braid_squares_equal_of_saturation (B : Blocks)
       (Matrix.unitaryGroup (Fin (B.size r)) ℂ).mul_mem
         ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (ha r) 2)
         ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (hb r) 2)
-  have hmass : B.mass w ≤ |d| * f ^ 2 := by
-    have hm : 0 ≤ B.mass w :=
-      Finset.sum_nonneg (fun r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _))
-    simpa [B.trace_signElement, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hm] using
-      hbound (B.signElement w) (B.signElement_unitary w)
   have hsaturate : ‖B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra)‖ = B.mass w := by
     apply le_antisymm (B.norm_trace_le w hunit)
     rw [htrace]
-    simpa [norm_pow, abs_of_pos hf] using hmass
+    simpa [norm_pow, abs_of_pos hf] using B.mass_le_of_unitary_trace_bound w hbound
   exact squares_eq_of_central_product a b hbraid
     (Units.ext (B.central_of_saturation w hw hunit hsaturate b))
 
@@ -199,6 +194,17 @@ theorem selfMonodromy_finite_order {C : Type u} [Category.{v} C]
   rw [← hs]
   exact h
 
+/-- An object with nonzero pivotal dimension has a nonzero identity endomorphism. -/
+theorem end_one_ne_zero_of_pivotalDimension_ne_zero {X : C.Obj}
+    (p : PivotalStructure (C := C.Obj)) (h : pivotalDimension C p X ≠ 0) :
+    (1 : End X) ≠ 0 := by
+  intro hzero
+  apply h
+  simp only [pivotalDimension, unitScalar_eq_equiv]
+  simpa only [End.one_asHom, End.zero_asHom,
+    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear p _).map_zero,
+    map_zero] using congrArg (fun z : End X => Ground.unitScalarEquiv C (p.rightTrace z.asHom)) hzero
+
 /-- A scalar double self-braiding of finite order has unit-modulus scalar,
 so the two real dimensions have equal absolute value. -/
 theorem dimension_eq_abs_of_scalar_monodromy {X : C.Obj}
@@ -207,18 +213,11 @@ theorem dimension_eq_abs_of_scalar_monodromy {X : C.Obj}
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hfinite : ObjectPropertyF X)
     (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| := by
-  simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
-  have hdim2 : Ground.unitScalarEquiv C (p.rightTrace (𝟙 (X ⊗ X))) = (d : ℂ) ^ 2 := by
-    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, hdim, pow_two] using
-      Dimensions.pivotalDimension_tensor C p X X
-  have hnonzero : (1 : End (X ⊗ X)) ≠ 0 := by
-    intro h
-    apply pow_ne_zero 2 hd'
-    simpa only [End.one_asHom, End.zero_asHom, hdim2,
-      show p.rightTrace (0 : X ⊗ X ⟶ X ⊗ X) = 0 from (rightTraceLinear p _).map_zero,
-      map_zero] using congrArg (fun z : End (X ⊗ X) =>
-        Ground.unitScalarEquiv C (p.rightTrace z.asHom)) h
+  have hnonzero : (1 : End (X ⊗ X)) ≠ 0 :=
+    end_one_ne_zero_of_pivotalDimension_ne_zero C p (by
+      rw [Dimensions.pivotalDimension_tensor, hdim]
+      exact mul_ne_zero hd' hd')
   obtain ⟨n, hn, hpow⟩ := selfMonodromy_finite_order hfinite
   apply fp_eq_abs_dim_of_finite_order hd hf
   refine ⟨n, hn, ?_⟩
