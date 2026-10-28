@@ -197,27 +197,20 @@ theorem finrank_hom_induction (Z : 𝒵) (X : C.Obj) :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 variable (C) in
-/-- The centre's global FP dimension is the weighted sum of its induced simples. -/
-theorem globalFPDimension_eq_induction_sum [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
-    globalFPDimension 𝒵ᶠ =
-      ∑ i, fpSimple C i * fpDimension 𝒵ᶠ ((induction C).obj (Sᶜ i)) := by
-  symm
-  simp_rw [fpDimension, finrank_hom_induction (C := C), Finset.mul_sum]
-  rw [Finset.sum_comm]
-  simp only [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
-    ← Finset.mul_sum, finrank_to_simple_eq_from_simple, globalFPDimension, pow_two]
-  change (∑ x, fpSimple 𝒵ᶠ x * fpDimension C (simples 𝒵ᶠ x).1) = _
-  simp [Integrate.center_forget_fpDimension C, fpDimension_simple]
-
-set_option backward.isDefEq.respectTransparency false in
-set_option backward.defeqAttrib.useBackward true in
-variable (C) in
 /-- If the actual centre has a fusion structure, its global FP dimension is the square
 of the base global FP dimension. -/
 theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
+  have h : globalFPDimension 𝒵ᶠ =
+      ∑ i, fpSimple C i * fpDimension 𝒵ᶠ ((induction C).obj (Sᶜ i)) := by
+    symm
+    simp_rw [fpDimension, finrank_hom_induction (C := C), Finset.mul_sum]
+    rw [Finset.sum_comm]
+    simp only [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
+      ← Finset.mul_sum, finrank_to_simple_eq_from_simple, globalFPDimension, pow_two]
+    change (∑ x, fpSimple 𝒵ᶠ x * fpDimension C (simples 𝒵ᶠ x).1) = _
+    simp [Integrate.center_forget_fpDimension C, fpDimension_simple]
   simpa [← Integrate.center_forget_fpDimension C, induction, fpDimension_underlying,
-    fpDimension_simple, globalFPDimension, pow_two, Finset.mul_sum, mul_left_comm] using
-      globalFPDimension_eq_induction_sum C
+    fpDimension_simple, globalFPDimension, pow_two, Finset.mul_sum, mul_left_comm] using h
 
 end PropertyF.Ground.CentreInduction

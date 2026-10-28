@@ -50,6 +50,10 @@ variable (p : PivotalStructure (C := D))
 def transportedPivotalHom (Z : 𝒵) :
     Z.1 ⟶ ((Zᘁ)ᘁ).1 := (p.iso Z.1).hom ≫ (κ₂ Z).inv
 
+/-- Transported pivotal components are isomorphisms in the base category. -/
+instance transportedPivotalHom_isIso (Z : 𝒵) : IsIso (transportedPivotalHom p Z) :=
+  inferInstanceAs (IsIso ((p.iso Z.1).hom ≫ (κ₂ Z).inv))
+
 /-- The transported pivotal components are natural on centre morphisms. -/
 theorem transported_pivotal_natural (f : X ⟶ Y) :
     f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f :=
