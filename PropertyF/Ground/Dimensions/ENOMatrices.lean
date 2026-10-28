@@ -108,10 +108,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rootTrace_cyclic {X Y : C.Obj}
     (f : X ⟶ Y) (g : Y ⟶ X) : rootTrace C (f ≫ g) = rootTrace C (g ≫ f) := by
   apply rightTraceWith_cyclic
-  have h := (fourthDualRootNaturalIso C).hom.naturality f
-  change f ≫ ((fourthDualRootNaturalIso C).app Y).hom =
-    ((fourthDualRootNaturalIso C).app X).hom ≫ ((fᘁ)ᘁ) at h
-  exact h
+  exact (fourthDualRootNaturalIso C).hom.naturality f
 
 /-- The root trace of a finite biproduct is the sum of its diagonal block traces. -/
 theorem rootTrace_biproduct

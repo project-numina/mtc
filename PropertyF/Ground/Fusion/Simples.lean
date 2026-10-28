@@ -94,9 +94,8 @@ theorem exists_simple_iso (X : C.Obj) [Simple X] :
   let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
   have he : e.hom ≠ 0 := by
     intro h
-    have hh := congrArg (fun t => t ≫ e.inv) h
     apply id_nonzero X
-    simpa using hh
+    simpa using (congrArg (fun t => t ≫ e.inv) h)
   have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra h
     push Not at h

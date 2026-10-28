@@ -44,8 +44,7 @@ theorem simple_projective (S : D.Obj) [Simple S] : Projective S where
     let : Epi f := hf
     have hne : (pullback.snd f g : pullback f g ⟶ S) ≠ 0 := by
       intro h
-      have hz := IsZero.of_epi_eq_zero (pullback.snd f g) h
-      exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp hz)
+      exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp (IsZero.of_epi_eq_zero (pullback.snd f g) h))
     obtain ⟨s, hs⟩ := split_to_simple D (pullback.snd f g) hne
     refine ⟨s ≫ pullback.fst f g, ?_⟩
     rw [Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]
@@ -57,8 +56,7 @@ theorem simple_injective (S : D.Obj) [Simple S] : Injective S where
     let : Mono f := hf
     have hne : (pushout.inr f g : S ⟶ pushout f g) ≠ 0 := by
       intro h
-      have hz := IsZero.of_mono_eq_zero (pushout.inr f g) h
-      exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp hz)
+      exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp (IsZero.of_mono_eq_zero (pushout.inr f g) h))
     obtain ⟨r, hr⟩ := split_from_simple (pushout.inr f g) hne
     refine ⟨pushout.inl f g ≫ r, ?_⟩
     rw [← Category.assoc, pushout.condition, Category.assoc, hr, Category.comp_id]

@@ -120,14 +120,13 @@ theorem involution_trace_formula {V : Type*} [AddCommGroup V] [Module ℂ V]
     simp only [P, LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply,
       map_smul, map_add, hinv, smul_add, smul_smul]
     module
-  have htrace := (LinearMap.IsIdempotentElem.isProj_range P hp).trace
   have hP : (2 : ℂ) • P = 1 + T := by
     ext x
     simp [P]
   have htp := congrArg (LinearMap.trace ℂ V) hP
   simp only [map_smul, map_add, smul_eq_mul] at htp
   refine ⟨Module.finrank ℂ (LinearMap.range P), (LinearMap.range P).finrank_le, ?_⟩
-  rw [htrace] at htp
+  rw [((LinearMap.IsIdempotentElem.isProj_range P hp).trace)] at htp
   have hid : LinearMap.trace ℂ V (1 : V →ₗ[ℂ] V) = (Module.finrank ℂ V : ℂ) :=
     LinearMap.trace_id ℂ V
   rw [hid] at htp
@@ -212,9 +211,8 @@ theorem involution_phase_inv_eq_one_of_trace {V : Type*} [AddCommGroup V] [Modul
     (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
     c⁻¹ • T = 1 := by
   have h := involution_phase_eq_one_of_trace T hT c hc htrace
-  have ht := congrArg (fun F => F * T) h
   have hs : T = c • (1 : V →ₗ[ℂ] V) := by
-    simpa [smul_mul_assoc, hT] using ht.symm
+    simpa [smul_mul_assoc, hT] using (congrArg (fun F => F * T) h).symm
   have hc0 : c ≠ 0 := norm_ne_zero_iff.mp (by rw [hc]; norm_num)
   rw [hs, smul_smul, inv_mul_cancel₀ hc0, one_smul]
 
@@ -336,10 +334,10 @@ theorem multiplicityDefect_involution_of_tensor_square (i j k : Fin (Ground.rank
         (fourthDualIso C (Ground.simples C i ⊗ Ground.simples C j)).hom) :
     (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1 := by
-  have hd := rootTensorDefect_involution_of_tensor_square C _ _ hsq
   ext f
   change multiplicityDefect C i j k (multiplicityDefect C i j k f) = f
-  rw [multiplicityDefect_apply, multiplicityDefect_apply, Category.assoc, hd, Category.comp_id]
+  rw [multiplicityDefect_apply, multiplicityDefect_apply, Category.assoc,
+    rootTensorDefect_involution_of_tensor_square C _ _ hsq, Category.comp_id]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The tensor-square identity follows from naturality of the double-dual

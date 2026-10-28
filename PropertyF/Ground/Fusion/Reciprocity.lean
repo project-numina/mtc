@@ -136,10 +136,8 @@ theorem fusionCoeff_reciprocity_labels (D : BraidedFusionCategory.{v,u})
 /-- The label of the tensor unit is fixed by duality. -/
 theorem dualIndex_unit (D : BraidedFusionCategory.{v,u}) :
     dualIndex D (unitIndex D) = unitIndex D := by
-  have h := fusionCoeff_reciprocity_labels D (unitIndex D) (unitIndex D) (unitIndex D)
-  simp only [fusionCoeff_unit, ite_true] at h
-  split_ifs at h with hh
-  exact hh.symm
+  simpa [fusionCoeff_unit, eq_comm] using
+    (fusionCoeff_reciprocity_labels D (unitIndex D) (unitIndex D) (unitIndex D))
 
 /-- Duality is involutive on simple labels. -/
 theorem dualIndex_involutive (D : BraidedFusionCategory.{v,u}) :

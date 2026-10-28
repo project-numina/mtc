@@ -56,8 +56,7 @@ theorem global_sum_squares_one_le {ι : Type*} [Fintype ι]
     (d : ι → ℝ) (h : ∃ i, d i = 1) : 1 ≤ ∑ i, (d i) ^ 2 := by
   classical
   obtain ⟨i, hi⟩ := h
-  have hs : (d i) ^ 2 ≤ ∑ j, (d j) ^ 2 :=
-    Finset.single_le_sum (fun j _ => sq_nonneg (d j)) (Finset.mem_univ i)
-  simpa [hi] using hs
+  simpa [hi] using
+    (Finset.single_le_sum (fun j _ => sq_nonneg (d j)) (Finset.mem_univ i))
 
 end PropertyF.Ground.Dimensions

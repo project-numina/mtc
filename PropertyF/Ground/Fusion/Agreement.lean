@@ -30,9 +30,8 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
   have hnonneg (j : ι) : 0 ≤ y j - c * x j := by
     have hj := hmin j (Finset.mem_univ j)
     dsimp [c] at hj ⊢
-    have hmul := mul_le_mul_of_nonneg_right hj (hx j).le
     have : y i / x i * x j ≤ y j := by
-      simpa [div_mul_cancel₀ _ (ne_of_gt (hx j))] using hmul
+      simpa [div_mul_cancel₀ _ (ne_of_gt (hx j))] using (mul_le_mul_of_nonneg_right hj (hx j).le)
     linarith
   have hzero : y i - c * x i = 0 := by
     simp [c, div_mul_cancel₀ _ (ne_of_gt (hx i))]
@@ -250,9 +249,7 @@ theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
       rw [fusionCoeff_comm D i k, fusionCoeff_reciprocity_labels,
         fusionCoeff_comm D j (dualIndex D i)]
     _ = _ := by
-      have h := Equiv.sum_comp (dualEquiv D) (fun i => (fusionCoeff D i j k : ℝ))
-      change (∑ i, (fusionCoeff D (dualIndex D i) j k : ℝ)) = _ at h
-      exact h
+      exact Equiv.sum_comp (dualEquiv D) (fun i => (fusionCoeff D i j k : ℝ))
 
 /-- The total fusion matrix is strictly positive in every entry. -/
 theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
@@ -447,8 +444,7 @@ theorem positive_character_unique
   obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique (totalFusionMatrix D)
     (totalFusionMatrix_pos D) f g hfpos _ hfe hge
   have hc1 : c = 1 := by
-    have h := congrFun hc (unitIndex D)
-    simpa [hfunit, hgunit] using h.symm
+    simpa [hfunit, hgunit] using (congrFun hc (unitIndex D)).symm
   rw [hc, hc1, one_smul]
 
 /-- The unique positive normalized character of the fusion rules. -/

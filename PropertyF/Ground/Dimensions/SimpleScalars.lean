@@ -320,8 +320,7 @@ theorem simpleScalarNatural_tensor_simples
   have hcoeff : Ground.fusionCoeff C i j a.1 ≠ 0 := by
     change Module.finrank ℂ (Ground.simples C a.1 ⟶ X) ≠ 0
     exact Nat.ne_of_gt (Nat.zero_lt_of_lt a.2.isLt)
-  have hscalar := hmul i j a.1 hcoeff
-  simpa [V, X, simplePiecesObject, hscalar, Category.assoc] using hn
+  simpa [V, X, simplePiecesObject, (hmul i j a.1 hcoeff), Category.assoc] using hn
 
 /-- Scalar values satisfying the fusion support rule extend to a tensor
 natural endomorphism of the identity. -/
@@ -369,9 +368,8 @@ theorem simpleScalarNatural_unit
     (simpleScalarNatural C c).app (𝟙_ C.Obj) = 𝟙 _ := by
   obtain ⟨e⟩ := Ground.unitIndex_iso C
   apply (cancel_epi e.hom).1
-  have h := (simpleScalarNatural C c).naturality e.hom
-  simp only [Functor.id_map, simpleScalarNatural_app_simple, hunit, one_smul] at h
-  simpa using h
+  simpa [simpleScalarNatural_app_simple, hunit] using
+    (simpleScalarNatural C c).naturality e.hom
 
 end PropertyF.Ground.Dimensions
 

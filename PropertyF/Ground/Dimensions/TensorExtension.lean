@@ -136,8 +136,6 @@ theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C
     @HasRightDual.exact C _ _ (𝟙_ C) (RightRigidCategory.rightDual (𝟙_ C))
   let hq : ExactPairing (𝟙_ C) (𝟙_ C) := exactPairingUnit
   let r := rightDualIso hp hq
-  have h := trace_change_rightDual hp hq r.inv
-  have hev := rightDualIso_inv_evaluation hp hq
   apply End.homEquiv.injective
   change @ExactPairing.coevaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp ≫
     ((r.inv ≫ @rightAdjointMate C _ _ (rightDualObject (𝟙_ C)) (𝟙_ C)
@@ -153,10 +151,10 @@ theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C
     change @ExactPairing.coevaluation C _ _ (𝟙_ C) (𝟙_ C) hq ≫
       ((rightDualIso hp hq).inv ▷ (𝟙_ C) ≫
         @ExactPairing.evaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp) = 𝟙 (𝟙_ C)
-    rw [hev]
+    rw [(rightDualIso_inv_evaluation hp hq)]
     change (ρ_ (𝟙_ C)).inv ≫ (ρ_ (𝟙_ C)).hom = 𝟙 (𝟙_ C)
     exact Iso.inv_hom_id _
-  exact h.trans hfinal
+  exact (trace_change_rightDual hp hq r.inv).trans hfinal
 
 end PropertyF.Ground.Dimensions
 

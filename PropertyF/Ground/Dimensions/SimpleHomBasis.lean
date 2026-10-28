@@ -30,7 +30,6 @@ theorem rightTraceWith_tensor_pairing {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅
   let s := rightDualIso q1 q2
   let u := f ≫ (j.hom ⊗ₘ k.hom)
   have ht := trace_change_rightDual p1 p2 (u ≫ s.inv)
-  have he := rightDualIso_inv_evaluation q1 q2
   have hr : @ExactPairing.coevaluation C _ _ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) p2 ≫
       ((u ≫ s.inv) ⊗ₘ 𝟙 ((Yᘁ) ⊗ (Xᘁ))) ≫
         @ExactPairing.evaluation C _ _ ((Yᘁ) ⊗ (Xᘁ)) (((Yᘁ) ⊗ (Xᘁ))ᘁ) q1 =
@@ -38,7 +37,7 @@ theorem rightTraceWith_tensor_pairing {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅
       (u ⊗ₘ 𝟙 ((Yᘁ) ⊗ (Xᘁ))) ≫
         @ExactPairing.evaluation C _ _ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) q2 := by
     simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc]
-    rw [he]
+    rw [(rightDualIso_inv_evaluation q1 q2)]
   have h := ht.trans hr
   simpa only [rightTraceWith, End.homEquiv_apply, doubleDualTensorIso, Iso.trans_hom,
     Iso.symm_hom, tensorIso_hom, rightDualIsoMap, Category.assoc, rightDualTensorIso,
@@ -297,8 +296,7 @@ theorem rootTrace_eq_simpleHom_trace_sum
       c ⟨k, t⟩ • 𝟙 (Ground.simples C k) := by
     intro t
     simpa [f, Category.assoc] using hc ⟨k, t⟩
-  have hs := simpleHom_postcomp_trace C X k g (fun t => c ⟨k,t⟩) hblock
-  rw [hs, Finset.sum_mul]
+  rw [(simpleHom_postcomp_trace C X k g (fun t => c ⟨k,t⟩) hblock), Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro t _
   change c ⟨k, t⟩ * (groundUnitScalarEquiv C (rootTrace C (𝟙 (Ground.simples C k)))) =

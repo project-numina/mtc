@@ -28,7 +28,6 @@ theorem rightTrace_tensor_pairing (p : PivotalStructure (C := C)) (X Y : C) (f :
   let s := rightDualIso q1 q2
   let u := f ≫ ((p.iso X).hom ⊗ₘ (p.iso Y).hom)
   have ht := trace_change_rightDual p1 p2 (u ≫ s.inv)
-  have he := rightDualIso_inv_evaluation q1 q2
   dsimp only [PivotalStructure.rightTrace]
   rw [p.tensor X Y]
   have hr : @ExactPairing.coevaluation C _ _ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) p2 ≫
@@ -38,7 +37,7 @@ theorem rightTrace_tensor_pairing (p : PivotalStructure (C := C)) (X Y : C) (f :
       (u ⊗ₘ 𝟙 ((Yᘁ) ⊗ (Xᘁ))) ≫
         @ExactPairing.evaluation C _ _ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) q2 := by
     simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc]
-    rw [he]
+    rw [(rightDualIso_inv_evaluation q1 q2)]
   have h := ht.trans hr
   simpa only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap,
     Category.assoc, rightDualTensorIso, r, s, u, p1, p2, q1, q2] using h
@@ -104,8 +103,7 @@ theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X Y : C)
 theorem rightPartialTrace_one_tensor (p : PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (X Y : C) (b : Y ⟶ Y) :
     rightPartialTrace p X Y (End.of (𝟙 X ⊗ₘ b)) = scalar (p.rightTrace b) • 1 := by
-  have h := rightPartialTrace_tensor_right p X Y b
-  rw [h]
+  rw [(rightPartialTrace_tensor_right p X Y b)]
   have hscalar : p.rightTrace b = scalar (p.rightTrace b) • (1 : End (𝟙_ C)) := by
     apply scalar.injective
     simp
