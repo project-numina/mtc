@@ -239,8 +239,7 @@ theorem overlap_trace_step_of_coherence (D : BraidedFusionCategory.{v,u})
   change actualBraidTrace D X p _ _ = actualBraidTrace D X p _ _ *
     (actualBraidTrace D X p t u / _) at hh
   simp only [pivotalDimension, unitScalar_eq_equiv]
-  rw [hh]
-  field_simp
+  rw [hh, mul_assoc, div_mul_cancel₀ _ hδ]
 
 /-- Canonical isomorphism coherence supplies the scaled trace identity for
 every iterated actual overlapping braid-algebra product. -/
