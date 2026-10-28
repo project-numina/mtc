@@ -137,7 +137,8 @@ theorem forgetDoubleDualIso_unit :
 theorem transported_pivotal_unit (p : PivotalStructure (C := D)) :
     (p.iso (𝟙_ D)).hom ≫
       (forgetDoubleDualIso (𝟙_ (𝒵))).inv =
-    (doubleDualUnitIso (C := 𝒵)).hom.f := by
-  rw [Iso.comp_inv_eq, forgetDoubleDualIso_unit, p.unit]
+    (doubleDualUnitIso (C := 𝒵)).hom.f :=
+  (Iso.comp_inv_eq (forgetDoubleDualIso (𝟙_ (𝒵)))).2 <|
+    p.unit.trans (forgetDoubleDualIso_unit (D := D)).symm
 
 end PropertyF.Ground.CentreInduction
