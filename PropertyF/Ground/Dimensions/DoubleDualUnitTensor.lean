@@ -23,14 +23,13 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
+local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
 set_option backward.isDefEq.respectTransparency false in
 /-- Right dual tensor comparison is compatible with the left unitor. -/
 theorem rightDualTensorIso_unit_left :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     ((λ_ X).homᘁ) ≫ (rightDualTensorIso (𝟙_ C) X).hom =
       (ρ_ (Xᘁ)).inv ≫ ((Xᘁ) ◁ (rightDualUnitIso (C := C)).inv) := by
   let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual I
   let r : Iᘁ ≅ I := rightDualUnitIso
   apply evaluation_ext (X := I ⊗ X)
   simp only [comp_whiskerRight_assoc]
@@ -46,11 +45,9 @@ theorem rightDualTensorIso_unit_left :
   monoidal
 /-- Right dual tensor comparison is compatible with the right unitor. -/
 theorem rightDualTensorIso_unit_right :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     ((ρ_ X).homᘁ) ≫ (rightDualTensorIso X (𝟙_ C)).hom =
       (λ_ (Xᘁ)).inv ≫ ((rightDualUnitIso (C := C)).inv ▷ (Xᘁ)) := by
   let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual I
   let r : Iᘁ ≅ I := rightDualUnitIso
   apply evaluation_ext (X := X ⊗ I)
   simp only [comp_whiskerRight_assoc]
@@ -77,15 +74,14 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
 variable (X : C)
+local instance : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
+local instance : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual _
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is left-unital. -/
 theorem doubleDualTensorIso_unit_left :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
-    letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
     (doubleDualUnitIso (C := C)).hom ▷ ((Xᘁ)ᘁ) ≫
       (doubleDualTensorIso (𝟙_ C) X).hom ≫ (((λ_ X).homᘁ)ᘁ) = (λ_ ((Xᘁ)ᘁ)).hom := by
   let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual I
   let r : Iᘁ ≅ I := rightDualUnitIso
   let R := rightDualTensorIso I X
   let S := rightDualTensorIso (Xᘁ) (Iᘁ)
@@ -111,12 +107,9 @@ theorem doubleDualTensorIso_unit_left :
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is right-unital. -/
 theorem doubleDualTensorIso_unit_right :
-    letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
-    letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
     ((Xᘁ)ᘁ) ◁ (doubleDualUnitIso (C := C)).hom ≫
       (doubleDualTensorIso X (𝟙_ C)).hom ≫ (((ρ_ X).homᘁ)ᘁ) = (ρ_ ((Xᘁ)ᘁ)).hom := by
   let I := 𝟙_ C
-  let : HasRightDual I := RightRigidCategory.rightDual I
   let r : Iᘁ ≅ I := rightDualUnitIso
   let R := rightDualTensorIso X I
   let S := rightDualTensorIso (Iᘁ) (Xᘁ)
