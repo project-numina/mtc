@@ -128,10 +128,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unitComponent_natural {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
     f.f ≫ unitComponent C Y i = unitComponent C X i ≫
       ((simples C i ◁ f.f) ▷ (simples C i)ᘁ) := by
-  dsimp [unitComponent, unitComponentAt]
-  rw [Category.assoc, rightUnitor_inv_naturality_assoc, ← whisker_exchange_assoc,
-    associator_inv_naturality_left_assoc]
-  simp only [Category.assoc, ← comp_whiskerRight, f.comm]
+  simp only [unitComponent, unitComponentAt, Category.assoc, rightUnitor_inv_naturality_assoc,
+    ← whisker_exchange_assoc, associator_inv_naturality_left_assoc, ← comp_whiskerRight, f.comm]
 
 
 end PropertyF.Ground.CentreInduction
