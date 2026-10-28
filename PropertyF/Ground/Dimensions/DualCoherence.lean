@@ -138,8 +138,7 @@ theorem unitDoubleDual_trace [RightRigidCategory C] :
   simp only [tensorHom_def, whiskerLeft_id, Category.comp_id]
   change @ExactPairing.coevaluation C _ _ I I hq ≫
     (r.inv ▷ I ≫ @ExactPairing.evaluation C _ _ I Iᘁ hp) = 𝟙 I
-  rw [rightDualIso_inv_evaluation hp hq]
-  exact Iso.inv_hom_id _
+  erw [rightDualIso_inv_evaluation hp hq, Iso.inv_hom_id]
 
 
 set_option backward.isDefEq.respectTransparency false in
