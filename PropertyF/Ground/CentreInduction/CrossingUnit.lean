@@ -11,12 +11,15 @@ namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
 -- Chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
-variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 variable {T U S K R : D} (X : D)
+
+section
+variable (S : D) [HasRightDual S]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the tensor-unit unitor gives the unitor of the dual object. -/
-theorem closeFusionMap_unit (S : D) :
+theorem closeFusionMap_unit :
     closeFusionMap (𝟙_ D) S (λ_ S).hom = (ρ_ (Sᘁ)).hom :=
   Dimensions.evaluation_ext (X := S) <| by
     rw [closeFusionMap_evaluation]
@@ -24,11 +27,15 @@ theorem closeFusionMap_unit (S : D) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical unit crossing block is the unitor comparison. -/
-theorem crossingBlock_unit (S : D) :
+theorem crossingBlock_unit :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
   simp only [crossingBlock, mixedCrossing, closeFusionMap_unit]
   monoidal
+end
+
+section
+variable [HasRightDual R] [HasRightDual K] [HasRightDual S]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a composite fusion map is the composite of the two closed maps. -/
@@ -72,13 +79,14 @@ theorem crossingBlock_tensor
       dsimp only [crossingBlock, mixedCrossing]
       simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
       monoidal
+end
 
 variable {k : Type*} [Field k] [IsAlgClosed k] [Preadditive D] [Linear k D]
   [MonoidalPreadditive D] [MonoidalLinear k D] [HasKernels D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A split crossing block is independent of the chosen splitting of a simple. -/
-theorem crossingBlock_of_simple_split [Simple R]
+theorem crossingBlock_of_simple_split [HasRightDual R] [HasRightDual S] [Simple R]
     [FiniteDimensional k (R ⟶ R)]
     (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
     crossingBlock X T S g f = crossingBlock X T S e.hom e.inv := by
@@ -97,7 +105,7 @@ theorem crossingBlock_of_simple_split [Simple R]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- For a simple object, any splitting gives the same unit crossing block. -/
-theorem crossingBlock_unit_of_split [Simple S] [FiniteDimensional k (S ⟶ S)]
+theorem crossingBlock_unit_of_split [HasRightDual S] [Simple S] [FiniteDimensional k (S ⟶ S)]
     (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock X (𝟙_ D) S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv :=

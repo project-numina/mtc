@@ -85,12 +85,13 @@ universe v u
 namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 variable {A : D}
-/-- Use the chosen rigid dual for the tensor unit in these comparisons. -/
-local instance instUnitHasRightDual : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
+/-- Use the right-rigid category's chosen dual for the tensor unit. -/
+local instance unitRightDual : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
 
+omit [RightRigidCategory D] in
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component followed by a map can be expressed through a crossing. -/
-theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N) (t : M ⟶ N) (w : N ⟶ X) :
+theorem unitComponent_reduce {M N X S : D} [HasRightDual S] (b : N ⊗ S ⟶ S ⊗ N) (t : M ⟶ N) (w : N ⟶ X) :
     t ≫ ((ρ_ N).inv ≫ (N ◁ η_ S (Sᘁ)) ≫ (α_ N S (Sᘁ)).inv ≫ (b ▷ Sᘁ)) ≫
       ((S ◁ w) ▷ Sᘁ) =
     𝟙 _ ⊗≫ (M ◁ η_ S (Sᘁ)) ⊗≫ ((t ▷ S ≫ b ≫ (S ◁ w)) ▷ Sᘁ) ⊗≫ 𝟙 _ := by
