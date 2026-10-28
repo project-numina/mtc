@@ -32,11 +32,11 @@ end
 
 section
 variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
-  {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+  {ι : Type*}
 
 /-- The Hom space into a finite biproduct is the product of the Hom spaces. -/
 def homBiproductLinearEquiv
-    (X : C) (V : ι → C) : (X ⟶ ⨁ V) ≃ₗ[k] (∀ i, X ⟶ V i) where
+    (X : C) (V : ι → C) [HasBiproduct V] : (X ⟶ ⨁ V) ≃ₗ[k] (∀ i, X ⟶ V i) where
   toFun f i := f ≫ biproduct.π V i
   invFun f := biproduct.lift f
   left_inv f := biproduct.hom_ext _ _ fun i ↦ by simp
@@ -46,7 +46,7 @@ def homBiproductLinearEquiv
 
 /-- The Hom space out of a finite biproduct is the product of the Hom spaces. -/
 def biproductHomLinearEquiv
-    (V : ι → C) (X : C) : (⨁ V ⟶ X) ≃ₗ[k] (∀ i, V i ⟶ X) where
+    (V : ι → C) [HasBiproduct V] (X : C) : (⨁ V ⟶ X) ≃ₗ[k] (∀ i, V i ⟶ X) where
   toFun f i := biproduct.ι V i ≫ f
   invFun f := biproduct.desc f
   left_inv f := biproduct.hom_ext' _ _ fun i ↦ by simp
@@ -58,15 +58,15 @@ end
 
 section
 variable {k : Type*} [Field k] {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
-  {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+  {ι : Type*} [Fintype ι]
 
 theorem finrank_hom_biproduct
-    (X : C) (V : ι → C) [∀ i, FiniteDimensional k (X ⟶ V i)] :
+    (X : C) (V : ι → C) [HasBiproduct V] [∀ i, FiniteDimensional k (X ⟶ V i)] :
     Module.finrank k (X ⟶ ⨁ V) = ∑ i, Module.finrank k (X ⟶ V i) :=
   by rw [(homBiproductLinearEquiv (k := k) X V).finrank_eq, Module.finrank_pi_fintype]
 
 theorem finrank_biproduct_hom
-    (V : ι → C) (X : C) [∀ i, FiniteDimensional k (V i ⟶ X)] :
+    (V : ι → C) [HasBiproduct V] (X : C) [∀ i, FiniteDimensional k (V i ⟶ X)] :
     Module.finrank k (⨁ V ⟶ X) = ∑ i, Module.finrank k (V i ⟶ X) :=
   by rw [(biproductHomLinearEquiv (k := k) V X).finrank_eq, Module.finrank_pi_fintype]
 
