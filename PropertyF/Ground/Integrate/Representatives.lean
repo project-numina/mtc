@@ -15,8 +15,7 @@ variable (C : BraidedFusionCategory.{v,u})
 
 /-- Any finite list of pairwise nonisomorphic simples that covers the chosen
 simples is a reindexing of the chosen list. -/
-theorem simple_presentation_equiv {n : ℕ} (S : Fin n → C.Obj)
-    (hSimple : ∀ i, Simple (S i))
+theorem simple_presentation_equiv {n : ℕ} (S : Fin n → C.Obj) (hSimple : ∀ i, Simple (S i))
     (hInjective : ∀ i j, Nonempty (S i ≅ S j) → i = j)
     (hCover : ∀ j, ∃ i, Nonempty (S i ≅ simples C j)) :
     ∃ e : Fin n ≃ Fin (rank C), ∀ i, Nonempty (S i ≅ simples C (e i)) := by

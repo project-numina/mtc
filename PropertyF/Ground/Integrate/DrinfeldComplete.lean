@@ -28,11 +28,10 @@ local notation "𝒵ᶠ" => Integrate.bundledCenter C
 its genuine fusion structure and FP-valued spherical structure are available. -/
 theorem center_globalDimension_square_of_actual_induction
     {p : Dimensions.PivotalStructure (C := 𝒵ᶠ.Obj)}
-    (hp : p.IsSpherical)
-    (hdim : Modular.HasFPSimpleDimensions 𝒵ᶠ p) :
+    (hfp : Modular.IsFPSpherical 𝒵ᶠ p) :
     globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
-  (Modular.categorical_global_eq_sum_squares 𝒵ᶠ p hp).trans <| by
-    simpa [globalFPDimension, hdim, Complex.ofReal_sum, Complex.ofReal_pow] using
+  (Modular.categorical_global_eq_sum_squares 𝒵ᶠ p hfp.1).trans <| by
+    simpa [globalFPDimension, hfp.2, Complex.ofReal_sum, Complex.ofReal_pow] using
       congrArg (fun x : ℝ ↦ (x : ℂ)) (CentreInduction.globalFPDimension_square_of_actual_induction C)
 
 end PropertyF.Ground
@@ -85,10 +84,7 @@ local notation "θ" => Dimensions.pivotalBraidedTwist C p
 
 /-- The twist of any pivotal braided fusion category is balanced. -/
 theorem pivotal_twist_balanced (X Y : C.Obj) :
-    Modular.doubleBraiding X Y ≫
-      ((θ X).hom ⊗ₘ
-        (θ Y).hom) =
-      (θ (X ⊗ Y)).hom :=
+    Modular.doubleBraiding X Y ≫ ((θ X).hom ⊗ₘ (θ Y).hom) = (θ (X ⊗ Y)).hom :=
   CentreIntegrate.pivotal_balance_of_drinfeld_tensor p (doubleDualIso C) (drinfeld_tensor C X Y)
 
 end PropertyF.Ground
