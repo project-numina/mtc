@@ -180,8 +180,7 @@ theorem pivotal_evaluation :
   let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual _
   have h := p.naturality (ε_ X (Xᘁ))
   rw [p.tensor, p.unit] at h
-  rw [← doubleDual_evaluation X, ← Category.assoc, ← Category.assoc, ← h]
-  simp
+  rw [← doubleDual_evaluation X, ← reassoc_of% h, Iso.hom_inv_id, Category.comp_id]
 set_option backward.isDefEq.respectTransparency false in
 /-- A pivotal component on a dual is the inverse dual of the original component. -/
 theorem pivotal_dual :

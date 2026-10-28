@@ -62,9 +62,9 @@ theorem simple_of_finrank_end_eq_one {X : E}
   classical
   let D : BraidedFusionCategory.{v,u} := { Obj := E }
   let : ∀ A B : E, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  have hid : (𝟙 X : X ⟶ X) ≠ 0 := by
-    obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp (by rw [hdim]; decide)
-    exact fun h ↦ hf (((IsZero.iff_id_eq_zero X).mpr h).eq_of_src f 0)
+  obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp (hdim ▸ Nat.zero_lt_one)
+  have hid : (𝟙 X : X ⟶ X) ≠ 0 := fun h ↦
+    hf (((IsZero.iff_id_eq_zero X).mpr h).eq_of_src f 0)
   obtain ⟨i, s, t, _, hts⟩ := exists_retract_of_biproduct_decomposition
     (simples D) (simples_decompose D X) hid
   let : Simple (simples D i) := simples_simple D i
