@@ -12,12 +12,17 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
+
+/-- Tensor an object between an object and its right dual. -/
+abbrev conjugate (R X : D) [HasRightDual R] : D := (R ⊗ X) ⊗ Rᘁ
+
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 -- The chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
 
 /-- The simple-indexed summand of the underlying induction object. -/
-abbrev inductionSummand (i : Fin (rank C)) : C.Obj := (Sᶜ i ⊗ X) ⊗ (Sᶜ i)ᘁ
+abbrev inductionSummand (i : Fin (rank C)) : C.Obj := conjugate (Sᶜ i) X
 
 /-- The finite direct sum underlying the induction object. No half-braiding is
 claimed here. -/
@@ -69,7 +74,7 @@ def closeFusionMap (T S : D) [HasRightDual S] {R : D} [HasRightDual R]
 /-- A crossing block with different input and output test strands. -/
 def mixedCrossing {D : Type u} [Category.{v} D] [MonoidalCategory D]
     (X T U : D) {R S : D} [HasRightDual R] [HasRightDual S] (g : R ⟶ U ⊗ S) (f : T ⊗ S ⟶ R) :
-    ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
+    conjugate R X ⊗ T ⟶ U ⊗ conjugate S X :=
   (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S f) ≫
     (α_ (U ⊗ S) X (Sᘁ)).hom ≫ (α_ U S (X ⊗ Sᘁ)).hom ≫
       (U ◁ (α_ S X (Sᘁ)).inv)
@@ -78,7 +83,7 @@ def mixedCrossing {D : Type u} [Category.{v} D] [MonoidalCategory D]
 projection `T ⊗ S ⟶ R`. -/
 def crossingBlock (X T S : D) [HasRightDual S] {R : D} [HasRightDual R]
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ T ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
+    conjugate R X ⊗ T ⟶ T ⊗ conjugate S X :=
   mixedCrossing X T T g f
 
 /-- A mixed crossing is natural in the middle induction factor. -/
