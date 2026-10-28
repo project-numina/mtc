@@ -147,10 +147,8 @@ def fourthDualIso (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 /-- The braided fourth-dual isomorphism is natural. Monoidality is a separate obligation. -/
 theorem fourthDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (fourthDualIso C Y).hom = (fourthDualIso C X).hom ≫ ((((fᘁ)ᘁ)ᘁ)ᘁ) := by
-  have hinv : (doubleDualIso C (Yᘁ)).inv ≫ (fᘁ) =
-      (((fᘁ)ᘁ)ᘁ) ≫ (doubleDualIso C (Xᘁ)).inv :=
+  have hd := congrArg (fun (a : (((Yᘁ)ᘁ)ᘁ) ⟶ (Xᘁ)) => rightAdjointMate a)
     (iso_inv_naturality_of_hom (doubleDualIso_natural C (fᘁ))).symm
-  have hd := congrArg (fun (a : (((Yᘁ)ᘁ)ᘁ) ⟶ (Xᘁ)) => rightAdjointMate a) hinv
   simp only [comp_rightAdjointMate] at hd
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
   rw [doubleDualIso_natural_assoc, hd]
@@ -158,9 +156,8 @@ theorem fourthDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural braided double-dual map commutes with applying double dual. -/
 theorem doubleDualIso_doubleDual (X : C.Obj) :
-    (doubleDualIso C ((Xᘁ)ᘁ)).hom = (((doubleDualIso C X).homᘁ)ᘁ) := by
-  apply (cancel_epi (doubleDualIso C X).hom).1
-  exact doubleDualIso_natural C (doubleDualIso C X).hom
+    (doubleDualIso C ((Xᘁ)ᘁ)).hom = (((doubleDualIso C X).homᘁ)ᘁ) :=
+  (cancel_epi (doubleDualIso C X).hom).1 (doubleDualIso_natural C (doubleDualIso C X).hom)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The braided fourth-dual map intertwines duals with its inverse. -/

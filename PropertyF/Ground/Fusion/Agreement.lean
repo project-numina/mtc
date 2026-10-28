@@ -320,9 +320,7 @@ theorem total_commutes_characterMatrix (i : Fin (rank D)) :
   change (∑ j, characterMatrix D j) * characterMatrix D i =
     characterMatrix D i * (∑ j, characterMatrix D j)
   rw [Finset.sum_mul, Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro j _
-  exact characterMatrix_commute D j i
+  exact Finset.sum_congr rfl fun j _ ↦ characterMatrix_commute D j i
 
 /-- The total matrix has a strictly positive common eigenvector for all
 fusion matrices. -/
