@@ -87,13 +87,21 @@ theorem simples_decompose (X : C.Obj) : ∃ m : Fin (rank C) → ℕ,
   (Classical.choose_spec (Classical.choose_spec
     (IsFusionCategory.finite_semisimple (C := C.Obj)))).2.2 X
 
-/-- Every object with nonzero identity has a chosen simple retract. -/
-theorem exists_simple_retract {X : C.Obj} (hX : 𝟙 X ≠ 0) :
-    ∃ (i : Fin (rank C)) (s : X ⟶ simples C i) (t : simples C i ⟶ X),
-      s ≠ 0 ∧ t ≫ s = 𝟙 (simples C i) := by
+/-- An object is a finite biproduct of copies of objects in a given family. -/
+abbrev HasBiproductDecomposition {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
+    [HasFiniteBiproducts D] {ι : Type} [Fintype ι] (T : ι → D) (X : D) : Prop :=
+  ∃ m : ι → ℕ, Nonempty (X ≅ ⨁ (fun p : Σ i, Fin (m i) ↦ T p.1))
+
+/-- A nonzero object decomposed over a finite family has a retract from that family. -/
+theorem exists_retract_of_biproduct_decomposition
+    {D : Type u} [Category.{v} D] [HasZeroMorphisms D] [HasFiniteBiproducts D]
+    {ι : Type} [Fintype ι] (T : ι → D) {X : D}
+    (hdecomp : HasBiproductDecomposition T X)
+    (hX : 𝟙 X ≠ 0) : ∃ (i : ι) (s : X ⟶ T i) (t : T i ⟶ X),
+      s ≠ 0 ∧ t ≫ s = 𝟙 (T i) := by
   classical
-  obtain ⟨m, ⟨e⟩⟩ := simples_decompose C X
-  let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
+  obtain ⟨m, ⟨e⟩⟩ := hdecomp
+  let V : (Σ i, Fin (m i)) → D := fun p ↦ T p.1
   obtain ⟨p, hp⟩ : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra! h
     exact mono_ne_zero_of_id_ne_zero e.hom hX
@@ -104,7 +112,8 @@ theorem exists_simple_retract {X : C.Obj} (hX : 𝟙 X ≠ 0) :
 /-- Every simple object is isomorphic to one of the chosen representatives. -/
 theorem exists_simple_iso (X : C.Obj) [Simple X] :
     ∃ i : Fin (rank C), Nonempty (X ≅ simples C i) :=
-  (exists_simple_retract C (id_nonzero X)).imp fun _i ⟨s, _, hs, _⟩ ↦
+  (exists_retract_of_biproduct_decomposition (simples C) (simples_decompose C X)
+    (id_nonzero X)).imp fun _i ⟨s, _, hs, _⟩ ↦
     letI : IsIso s := CategoryTheory.isIso_of_hom_simple hs
     ⟨asIso s⟩
 

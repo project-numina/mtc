@@ -208,7 +208,7 @@ theorem rootTensorDefect_involution_extension
       (rootTensorDefect C (simples C i) (simples C j)).hom =
         𝟙 (simples C i ⊗ simples C j)) (X Y : C.Obj) :
     (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) :=
-  tensor_simples_hom_ext C fun sx sy ↦ by
+  tensor_decomposition_hom_ext (simpleDecomposition C X) (simpleDecomposition C Y) fun sx sy ↦ by
     rw [← Category.assoc, rootTensorDefect_natural C sx sy, Category.assoc,
       rootTensorDefect_natural C sx sy, ← Category.assoc, hsimple,
       Category.id_comp, Category.comp_id]

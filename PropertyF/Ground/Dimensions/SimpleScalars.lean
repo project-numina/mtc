@@ -179,11 +179,12 @@ def simpleInclusion (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
     simples C k ⟶ X :=
   biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫ (simpleDecomposition C X).inv
 
-/-- Morphisms are determined by their restrictions to the chosen simple summands. -/
-theorem simpleInclusion_hom_ext {X Y : C.Obj} {f g : X ⟶ Y}
-    (h : ∀ i t, simpleInclusion C X i t ≫ f = simpleInclusion C X i t ≫ g) : f = g :=
-  (cancel_epi (simpleDecomposition C X).inv).1 (biproduct.hom_ext' _ _ fun a ↦ by
-    simpa [simpleInclusion, Category.assoc] using h a.1 a.2)
+/-- Morphisms are determined by their restrictions to the summands of a decomposition. -/
+theorem biproduct_decomposition_hom_ext {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
+    {ι : Type*} {V : ι → D} [HasBiproduct V] {X Y : D} (e : X ≅ ⨁ V) {f g : X ⟶ Y}
+    (h : ∀ i, (biproduct.ι V i ≫ e.inv) ≫ f = (biproduct.ι V i ≫ e.inv) ≫ g) : f = g :=
+  (cancel_epi e.inv).1 (biproduct.hom_ext' _ _ fun i ↦ by
+    simpa only [Category.assoc] using h i)
 
 /-- On each object, scalar multiplication on simple summands, transported
 through a chosen semisimple decomposition. -/
@@ -267,15 +268,18 @@ theorem tensorBiproduct_hom_ext
   refine (cancel_epi (leftDistributor (F i) G).inv).1 (biproduct.hom_ext' _ _ fun j ↦ ?_)
   simpa only [biproduct_ι_comp_leftDistributor_inv_assoc, tensorHom_def', Category.assoc] using h i j
 
-/-- Maps out of a tensor product are determined by their composites with
-tensors of maps from chosen simple objects. -/
-theorem tensor_simples_hom_ext {X Y Z : C.Obj} {f g : X ⊗ Y ⟶ Z}
-    (h : ∀ {i j} (sx : simples C i ⟶ X) (sy : simples C j ⟶ Y),
+/-- Tensor products of maps from decomposed summands jointly detect morphisms. -/
+theorem tensor_decomposition_hom_ext
+    {E : Type u} [Category.{v} E] [MonoidalCategory E] [Preadditive E]
+    [MonoidalPreadditive E] [HasFiniteBiproducts E]
+    {ι κ : Type} [Fintype ι] [Fintype κ] {F : ι → E} {G : κ → E} {X Y Z : E}
+    (eX : X ≅ ⨁ F) (eY : Y ≅ ⨁ G) {f g : X ⊗ Y ⟶ Z}
+    (h : ∀ {i j} (sx : F i ⟶ X) (sy : G j ⟶ Y),
       (sx ⊗ₘ sy) ≫ f = (sx ⊗ₘ sy) ≫ g) : f = g := by
-  apply (cancel_epi ((simpleDecomposition C X).symm ⊗ᵢ (simpleDecomposition C Y).symm).hom).1
+  apply (cancel_epi (eX.symm ⊗ᵢ eY.symm).hom).1
   refine tensorBiproduct_hom_ext fun i j ↦ ?_
-  simpa [simpleInclusion, tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
-    h (simpleInclusion C X i.1 i.2) (simpleInclusion C Y j.1 j.2)
+  simpa [tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
+    h (biproduct.ι F i ≫ eX.inv) (biproduct.ι G j ≫ eY.inv)
 
 
 end PropertyF.Ground.Dimensions

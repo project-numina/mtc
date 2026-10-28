@@ -99,7 +99,9 @@ theorem enoTraceMatrix_norm_le_fusionCoeff {i j k : Fin (rank C)}
     (h : (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) := by
-  obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C h
+  let : FiniteDimensional ℂ (simples C k ⟶ simples C i ⊗ simples C j) :=
+    IsFusionCategory.hom_finite _ _
+  obtain ⟨n, hn, hb⟩ := involution_trace_integer_bound h
   simp only [enoTraceMatrix, hn, Complex.norm_intCast, ← Int.cast_abs]
   exact_mod_cast hb
 
