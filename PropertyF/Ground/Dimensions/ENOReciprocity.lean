@@ -236,9 +236,11 @@ theorem rootPhasePivotal_dimension
   simpa only [pivotalDimension, rightTrace_id, rootPhasePivotal] using
     rootSignQuantumTrace_simple C hc i
 
+variable (hinv : MultiplicityDefectsInvolutive C) (heig : ENOTraceMatrixEigenvector C)
+include hinv heig
+
 /-- Saturated root dimensions normalize every involutive multiplicity defect. -/
 theorem normalized_defects_trivial
-    (hinv : MultiplicityDefectsInvolutive C) (heig : ENOTraceMatrixEigenvector C)
     (hsat : ∀ i, ‖rootDimension C i‖ = fpSimple C i) :
     ScaledMultiplicityDefectsTrivial C
       (fun i => (rootDimension C i / (fpSimple C i : ℂ))⁻¹) := by
@@ -271,8 +273,6 @@ theorem normalized_defects_trivial
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/
 theorem positive_spherical_of_matrix_identities
-    (hinv : MultiplicityDefectsInvolutive C)
-    (heig : ENOTraceMatrixEigenvector C)
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     HasFPSphericalStructure C := by
   classical

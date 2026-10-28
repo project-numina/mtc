@@ -23,10 +23,11 @@ variable {ι : Type*} [Fintype ι]
 abbrev IsCyclicTrace (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A) : Prop :=
   ∀ {X Y : C} (f : X ⟶ Y) (g : Y ⟶ X), trace X (f ≫ g) = trace Y (g ≫ f)
 
+variable (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A) (hcyclic : IsCyclicTrace trace)
+include hcyclic
+
 /-- A cyclic linear trace decomposes over maps whose composites sum to the identity. -/
 theorem cyclicTrace_decomposition
-    (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A)
-    (hcyclic : IsCyclicTrace trace)
     {X : C} {Y : ι → C} (i : ∀ j, Y j ⟶ X) (q : ∀ j, X ⟶ Y j)
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
     trace X f = ∑ j, trace (Y j) (i j ≫ f ≫ q j) := by
@@ -37,8 +38,6 @@ theorem cyclicTrace_decomposition
 
 /-- Scalar diagonal blocks give the corresponding weighted cyclic trace. -/
 theorem cyclicTrace_biproduct_scalar_blocks
-    (trace : ∀ X : C, (X ⟶ X) →ₗ[k] A)
-    (hcyclic : IsCyclicTrace trace)
     {F : ι → C} [HasBiproduct F] (f : (⨁ F) ⟶ (⨁ F)) {c : ι → k}
     (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
     trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) := by
