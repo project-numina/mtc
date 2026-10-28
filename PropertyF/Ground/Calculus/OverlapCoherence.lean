@@ -229,8 +229,12 @@ theorem overlap_trace_step_of_coherence (k : ℕ)
       actualBraidTrace D p (overlapProduct u k) * actualBraidTrace D p u := by
   have hh := congrArg
     (fun z => Ground.unitScalarEquiv D (p.rightTrace z.asHom)) hcoh
+  change Ground.unitScalarEquiv D (p.rightTrace
+    ((overlapPowerIso X t k).symm.conj (overlapProduct u (k + 1) : End _)).asHom) = _ at hh
   rw [rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p (Ground.unitScalarEquiv D)] at hh
   unfold previousOverlapLocal at hh
+  change _ = Ground.unitScalarEquiv D (p.rightTrace
+    ((appendIso X (overlapIndex t k + 1)).symm.conj (overlapProduct u k : End _)).asHom) * _ at hh
   rw [rightTrace_iso_conj] at hh
   change actualBraidTrace D p _ = actualBraidTrace D p _ *
     (actualBraidTrace D p u / _) at hh
