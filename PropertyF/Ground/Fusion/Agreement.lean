@@ -36,14 +36,11 @@ theorem positive_matrix_eigenspace_unique [Nonempty ι]
   have hzero : y i - c * x i = 0 :=
     sub_eq_zero.mpr (div_mul_cancel₀ _ (ne_of_gt (hx i))).symm
   have hsum : ∑ j, A i j * (y j - c * x j) = 0 := by
-    have ex := congrFun hxe i
-    have ey := congrFun hye i
-    simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at ex ey
-    calc
-      _ = (∑ j, A i j * y j) - c * (∑ j, A i j * x j) := by
-        simp only [mul_sub, Finset.sum_sub_distrib, Finset.mul_sum, mul_left_comm]
-      _ = d * (y i - c * x i) := by rw [ex, ey]; ring
-      _ = 0 := by rw [hzero, mul_zero]
+    have he : A *ᵥ (y - c • x) = d • (y - c • x) := by
+      rw [Matrix.mulVec_sub, Matrix.mulVec_smul, hye, hxe, smul_sub]
+      simp only [smul_smul, mul_comm]
+    simpa only [Matrix.mulVec, dotProduct, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hzero,
+      mul_zero] using congrFun he i
   have hall (j : ι) : y j - c * x j = 0 :=
     (mul_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg
       (fun j _ => mul_nonneg (hA i j).le (hnonneg j))).mp hsum j
@@ -499,11 +496,8 @@ theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
     simpa [B, Matrix.toLin'_apply] using hv.apply_eq_smul
   have hbound := complex_eigenvalue_le_positive_eigenvalue hwe hve
     (fun j k => Nat.cast_nonneg _) (fpCharacter_pos D) hv.2
-  have hrad : fpSimple D i = ‖z‖ := by
-    unfold fpSimple
-    rw [← Matrix.spectralRadius_transpose (fusionMatrix D i), ← hB, ← hzmax, ENNReal.coe_toReal, coe_nnnorm]
-  rw [hrad]
-  exact hbound
+  simpa only [fpSimple, ← Matrix.spectralRadius_transpose (fusionMatrix D i), ← hB,
+    ← hzmax, ENNReal.coe_toReal, coe_nnnorm] using hbound
 
 /-- The target spectral-radius FP dimension is the unique positive character. -/
 theorem fpSimple_eq_fpCharacter (i : Fin (rank D)) :
