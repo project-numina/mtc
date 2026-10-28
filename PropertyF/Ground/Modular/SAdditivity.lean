@@ -32,7 +32,6 @@ omit [Linear ℂ C] [MonoidalLinear ℂ C] in
 theorem SEntry_biproduct_left {ι : Type*} [Fintype ι] (V : ι → C) [HasBiproduct V]
     (p : PivotalStructure) (Y : C) :
     SEntry p (⨁ V) Y = ∑ i, SEntry p (V i) Y := by
-  classical
   change p.rightTrace (doubleBraiding (⨁ V) Y) = _
   rw [rightTrace_decomposition p (fun i => biproduct.ι V i ▷ Y)
     (fun i => biproduct.π V i ▷ Y)
