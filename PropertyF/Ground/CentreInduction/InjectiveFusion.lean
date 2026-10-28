@@ -7,10 +7,10 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [RigidCategory D]
+variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [LeftRigidCategory D]
 
 omit [Abelian D] in
-/-- Tensoring with any object preserves injectives in a rigid category. -/
+/-- Tensoring with any object preserves injectives in a left-rigid category. -/
 theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U) :=
   letI : (tensorRight (ᘁU)).IsRightAdjoint :=
     ⟨⟨tensorRight (ᘁ(ᘁU)), ⟨tensorRightAdjunction (ᘁ(ᘁU)) (ᘁU)⟩⟩⟩
