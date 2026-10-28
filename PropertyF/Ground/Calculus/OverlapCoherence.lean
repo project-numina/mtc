@@ -174,9 +174,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The fresh algebra element is left whiskering along its canonical
 left-insertion isomorphism. -/
 theorem freshOverlapIso_action :
-    (freshOverlapIso X t k).conj
-      (End.of (tensorPower X (overlapIndex t k + 1) ◁ (u : End _).asHom)) =
-    (overlapRight X t k u : End _) := by
+    (freshOverlapIso X t k).inv ≫
+      (tensorPower X (overlapIndex t k + 1) ◁ (u : End _).asHom) ≫
+      (freshOverlapIso X t k).hom = (overlapRight X t k u : End _).asHom := by
   have hcast : ∀ (a b : ℕ) (h : a = b)
       (F : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b) (u : braidAlgebra X t),
       (((Eq.mpr (congrArg (fun n => braidAlgebra X t →ₐ[ℂ] braidAlgebra X n) h) F) u :
@@ -186,10 +186,6 @@ theorem freshOverlapIso_action :
       (eqToIso (congrArg (fun n => braidTensorPower X n) h)).inv := by
     rintro a b rfl F u
     simp
-  apply End.ext
-  change (freshOverlapIso X t k).inv ≫
-      (tensorPower X (overlapIndex t k + 1) ◁ (u : End (tensorPower X (t + 2))).asHom) ≫
-      (freshOverlapIso X t k).hom = _
   dsimp only [overlapRight]
   rw [hcast _ _ (overlapIndex_formula t (k + 1)), addLeftBraidAlgebraIter_asHom]
   simp only [freshOverlapIso, Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv,

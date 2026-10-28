@@ -60,11 +60,9 @@ theorem inverse_crossing_snake :
           simp [braiding_tensor_left_inv, Category.assoc]
     _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
         X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ D) X).inv ≫ (λ_ X).hom := by
-          rw [← braiding_inv_naturality_right]
-          simp [Category.assoc]
+          simp only [Category.assoc, ← braiding_inv_naturality_right_assoc]
     _ = 𝟙 X := by
-      rw [ExactPairing.evaluation_coevaluation_assoc]
-      simp
+      simp [ExactPairing.evaluation_coevaluation_assoc]
 
 variable [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
 
@@ -112,14 +110,14 @@ include hp hX in
 theorem pivotalTwist_sign_of_selfTransparent :
     θ C p X = 1 ∨
       θ C p X = -1 := by
-  have ht : ((doubleDualIso C X).hom ≫ (p.iso X).inv) ≫
-      (Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X := by
-    simp [Dimensions.pivotalBraidedTwist, Category.assoc]
-  rw [inverse_twist_eq_scalar_of_selfTransparent (C := C) hp hX,
-    Dimensions.pivotalBraidedTwist_simple] at ht
   apply mul_self_eq_one_iff.mp
   apply smul_left_injective ℂ (id_nonzero X)
-  simpa only [Linear.smul_comp, Linear.comp_smul, Category.id_comp, smul_smul, one_smul] using ht
+  simpa only [inverse_twist_eq_scalar_of_selfTransparent (C := C) hp hX,
+    Dimensions.pivotalBraidedTwist_simple, Linear.smul_comp, Linear.comp_smul,
+    Category.id_comp, smul_smul, one_smul] using
+    (show ((doubleDualIso C X).hom ≫ (p.iso X).inv) ≫
+      (Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X from
+        (Dimensions.pivotalBraidedTwist C p X).inv_hom_id)
 
 end
 

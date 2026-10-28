@@ -104,7 +104,6 @@ theorem unitBlockLinear_id :
       (Z.2.β T).hom ≫ (T ◁ unitComponentAt Z S) := by
   dsimp only [unitBlockLinear, unitComponentAt, LinearMap.coe_mk, AddHom.coe_mk]
   rw [Z.2.monoidal]
-  simp only [id_whiskerRight]
   let bT := (Z.2.β T).hom
   let bS := (Z.2.β S).hom
   calc

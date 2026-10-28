@@ -92,18 +92,7 @@ theorem simple_mono_induced_simple (X : 𝒵) [Simple X] :
     (actualAdjunction C) X (simples C i)
   exact ⟨i, e.symm g, mono_of_nonzero_from_simple (e.symm.map_eq_zero_iff.not.mpr hg)⟩
 
-end PropertyF.Ground.CentreInduction
-
-end
-end
-
 /-! Finiteness of simple objects in the actual Drinfeld centre. -/
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-universe v u
-@[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u})
-local notation "𝒵" => Center C.Obj
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
@@ -189,3 +178,6 @@ theorem finite_simple_labels :
 
 
 end PropertyF.Ground.CentreInduction
+
+end
+end
