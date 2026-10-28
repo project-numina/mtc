@@ -15,15 +15,15 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Turn a map `T ⊗ S ⟶ R` into its right-dual mate
 `R* ⊗ T ⟶ S*`. -/
-def closeFusionMap (T S R : D) (f : T ⊗ S ⟶ R) : Rᘁ ⊗ T ⟶ Sᘁ :=
+def closeFusionMap (T S : D) {R : D} (f : T ⊗ S ⟶ R) : Rᘁ ⊗ T ⟶ Sᘁ :=
   (fᘁ ▷ T) ≫ ((rightDualTensorIso T S).hom ▷ T) ≫
     (α_ (Sᘁ) (Tᘁ) T).hom ≫ (Sᘁ ◁ ε_ T (Tᘁ)) ≫ (ρ_ (Sᘁ)).hom
 
 /-- The matrix entry associated to an inclusion `R ⟶ T ⊗ S` and a
 projection `T ⊗ S ⟶ R`. -/
-def crossingBlock (X T R S : D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+def crossingBlock (X T S : D) {R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ T ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
-  (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S R f) ≫
+  (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S f) ≫
     (α_ (T ⊗ S) X (Sᘁ)).hom ≫ (α_ T S (X ⊗ Sᘁ)).hom ≫
       (T ◁ (α_ S X (Sᘁ)).inv)
 
@@ -31,12 +31,11 @@ def crossingBlock (X T R S : D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
 @[reassoc]
 theorem crossingBlock_natural_middle {X Y : D} (h : X ⟶ Y) {T R S : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ crossingBlock Y T R S g f =
-      crossingBlock X T R S g f ≫ (T ◁ ((S ◁ h) ▷ Sᘁ)) := by
+    (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ crossingBlock Y T S g f =
+      crossingBlock X T S g f ≫ (T ◁ ((S ◁ h) ▷ Sᘁ)) := by
   dsimp [crossingBlock]
-  simp only [Category.assoc]
-  rw [associator_naturality_left_assoc]
   simp only [tensorHom_def, Category.assoc]
+  rw [associator_naturality_left_assoc]
   rw [← comp_whiskerRight_assoc, whisker_exchange, comp_whiskerRight_assoc,
     ← whisker_exchange_assoc, associator_naturality_middle_assoc,
     associator_naturality_right_assoc]
@@ -70,13 +69,13 @@ def crossingProjection (T : C.Obj)
 
 /-- One simple-summand contribution to the induction crossing matrix. -/
 abbrev crossingSummand (X T : C.Obj) (i j : Fin (rank C)) (a : crossingIndex C T i j) :=
-  crossingBlock X T (simples C i) (simples C j)
+  crossingBlock X T (simples C j)
     (crossingInclusion C T i j a) (crossingProjection C T i j a)
 
 /-- The crossing block obtained by composing two simple-summand decompositions. -/
 abbrev nestedCrossingBlock (X T U : C.Obj) (i k j : Fin (rank C))
     (a : crossingIndex C T i k) (b : crossingIndex C U k j) :=
-  crossingBlock X (T ⊗ U) (simples C i) (simples C j)
+  crossingBlock X (T ⊗ U) (simples C j)
     (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
       (α_ T U (simples C j)).inv)
     ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
@@ -111,7 +110,7 @@ def crossingCandidate (X T : C.Obj) :
   let V := inductionSummand C X
   refine (rightDistributor V T).hom ≫ biproduct.desc (fun i => ?_)
   exact ∑ j, ∑ a : crossingIndex C T i j,
-    crossingBlock X T (simples C i) (simples C j)
+    crossingBlock X T (simples C j)
       (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
         (T ◁ biproduct.ι V j)
 
@@ -138,36 +137,26 @@ theorem crossingCandidate_natural_middle
   classical
   let VX := inductionSummand C X
   let VY := inductionSummand C Y
-  have hi (i : Fin (rank C)) :
-      (biproduct.ι VX i ▷ T) ≫ ((underlyingFunctor C).map h ▷ T) =
-        (((simples C i ◁ h) ▷ (simples C i)ᘁ) ▷ T) ≫ (biproduct.ι VY i ▷ T) := by
-    rw [← comp_whiskerRight, ← comp_whiskerRight]
-    congr 1
-    simp [underlyingFunctor, VX, VY]
   apply (cancel_epi (rightDistributor VX T).inv).1
   apply biproduct.hom_ext'
   intro i
   simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
   dsimp [VX, VY, underlying] at *
-  simp only [← Category.assoc, hi i]
+  simp only [← Category.assoc]
+  rw [← comp_whiskerRight]
+  simp only [underlyingFunctor, biproduct.ι_map, comp_whiskerRight]
   simp only [Category.assoc, crossingCandidate_on_summand]
   simp only [Preadditive.comp_sum, Preadditive.sum_comp]
   apply Finset.sum_congr rfl
   intro j _
   apply Finset.sum_congr rfl
   intro a _
-  have hj : biproduct.ι VX j ≫ (underlyingFunctor C).map h =
-      ((simples C j ◁ h) ▷ (simples C j)ᘁ) ≫ biproduct.ι VY j := by
-    simp [underlyingFunctor, VX, VY]
-  have hj' : (T ◁ biproduct.ι VX j) ≫ (T ◁ (underlyingFunctor C).map h) =
-      (T ◁ ((simples C j ◁ h) ▷ (simples C j)ᘁ)) ≫ (T ◁ biproduct.ι VY j) := by
-    simpa only [whiskerLeft_comp] using congrArg (fun g => T ◁ g) hj
-  have hblock := crossingBlock_natural_middle h
-    (crossingInclusion C T i j a) (crossingProjection C T i j a)
-  have hterm := congrArg (fun g => g ≫ (T ◁ biproduct.ι VY j)) hblock
-  simp only [Category.assoc] at hterm ⊢
-  rw [hj']
-  exact hterm
+  simp only [Category.assoc]
+  rw [← whiskerLeft_comp]
+  simp only [biproduct.ι_map, whiskerLeft_comp]
+  simpa only [Category.assoc] using congrArg (fun g => g ≫ (T ◁ biproduct.ι VY j))
+    (crossingBlock_natural_middle h
+      (crossingInclusion C T i j a) (crossingProjection C T i j a))
 
 
 end PropertyF.Ground.CentreInduction

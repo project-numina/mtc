@@ -13,7 +13,7 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory 
 set_option backward.isDefEq.respectTransparency false in
 /-- The closed fusion map is characterized by its evaluation pairing. -/
 theorem closeFusionMap_evaluation {T S R : D} (f : T ⊗ S ⟶ R) :
-    (closeFusionMap T S R f ▷ S) ≫ ε_ S (Sᘁ) =
+    (closeFusionMap T S f ▷ S) ≫ ε_ S (Sᘁ) =
       𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
   have he := PropertyF.Ground.Dimensions.rightDualIso_evaluation
       (@HasRightDual.exact D _ _ (T ⊗ S) (RightRigidCategory.rightDual _))
@@ -38,7 +38,7 @@ theorem closeFusionMap_evaluation {T S R : D} (f : T ⊗ S ⟶ R) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the tensor-unit unitor gives the unitor of the dual object. -/
 theorem closeFusionMap_unit (S : D) :
-    closeFusionMap (𝟙_ D) S S (λ_ S).hom = (ρ_ (Sᘁ)).hom := by
+    closeFusionMap (𝟙_ D) S (λ_ S).hom = (ρ_ (Sᘁ)).hom := by
   apply Dimensions.evaluation_ext (X := S)
   rw [closeFusionMap_evaluation]
   monoidal
@@ -46,7 +46,7 @@ theorem closeFusionMap_unit (S : D) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical unit crossing block is the unitor comparison. -/
 theorem crossingBlock_unit (X S : D) :
-  crossingBlock X (𝟙_ D) S S (λ_ S).inv (λ_ S).hom =
+  crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
   dsimp only [crossingBlock]
   rw [closeFusionMap_unit S]
@@ -56,8 +56,8 @@ theorem crossingBlock_unit (X S : D) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing a composite fusion map is the composite of the two closed maps. -/
 theorem closeFusionMap_tensor {T U S K R : D} (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
-  closeFusionMap (T ⊗ U) S R ((α_ T U S).hom ≫ (T ◁ g) ≫ f) =
-    𝟙 _ ⊗≫ (closeFusionMap T K R f ▷ U) ⊗≫ closeFusionMap U S K g := by
+  closeFusionMap (T ⊗ U) S ((α_ T U S).hom ≫ (T ◁ g) ≫ f) =
+    𝟙 _ ⊗≫ (closeFusionMap T K f ▷ U) ⊗≫ closeFusionMap U S g := by
   apply Dimensions.evaluation_ext (X := S)
   rw [closeFusionMap_evaluation]
   calc
@@ -67,13 +67,13 @@ theorem closeFusionMap_tensor {T U S K R : D} (f : T ⊗ K ⟶ R) (g : U ⊗ S �
     _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫
       (𝟙 (((Rᘁ : D) ⊗ T) ⊗ K) ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ)) := by monoidal
     _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫
-      (closeFusionMap T K R f ▷ K ≫ ε_ K (Kᘁ)) := by rw [closeFusionMap_evaluation]
-    _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K R f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by monoidal
-    _ = 𝟙 _ ⊗≫ ((closeFusionMap T K R f ▷ (U ⊗ S)) ≫ ((Kᘁ : D) ◁ g)) ⊗≫ ε_ K (Kᘁ) := by rw [whisker_exchange]
-    _ = 𝟙 _ ⊗≫ (closeFusionMap T K R f ▷ (U ⊗ S)) ⊗≫
+      (closeFusionMap T K f ▷ K ≫ ε_ K (Kᘁ)) := by rw [closeFusionMap_evaluation]
+    _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by monoidal
+    _ = 𝟙 _ ⊗≫ ((closeFusionMap T K f ▷ (U ⊗ S)) ≫ ((Kᘁ : D) ◁ g)) ⊗≫ ε_ K (Kᘁ) := by rw [whisker_exchange]
+    _ = 𝟙 _ ⊗≫ (closeFusionMap T K f ▷ (U ⊗ S)) ⊗≫
       (𝟙 (((Kᘁ : D) ⊗ U) ⊗ S) ⊗≫ ((Kᘁ : D) ◁ g) ⊗≫ ε_ K (Kᘁ)) := by monoidal
-    _ = 𝟙 _ ⊗≫ (closeFusionMap T K R f ▷ (U ⊗ S)) ⊗≫
-      (closeFusionMap U S K g ▷ S ≫ ε_ S (Sᘁ)) := by rw [closeFusionMap_evaluation]
+    _ = 𝟙 _ ⊗≫ (closeFusionMap T K f ▷ (U ⊗ S)) ⊗≫
+      (closeFusionMap U S g ▷ S ≫ ε_ S (Sᘁ)) := by rw [closeFusionMap_evaluation]
     _ = _ := by monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -81,12 +81,12 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_tensor (X : D) {T U S K R : D}
     (g₁ : R ⟶ T ⊗ K) (g₂ : K ⟶ U ⊗ S)
     (f₁ : T ⊗ K ⟶ R) (f₂ : U ⊗ S ⟶ K) :
-  crossingBlock X (T ⊗ U) R S (g₁ ≫ (T ◁ g₂) ≫ (α_ T U S).inv)
+  crossingBlock X (T ⊗ U) S (g₁ ≫ (T ◁ g₂) ≫ (α_ T U S).inv)
       ((α_ T U S).hom ≫ (T ◁ f₂) ≫ f₁) =
-    𝟙 _ ⊗≫ (crossingBlock X T R K g₁ f₁ ▷ U) ⊗≫
-      (T ◁ crossingBlock X U K S g₂ f₂) ⊗≫ 𝟙 _ := by
-  let q := closeFusionMap T K R f₁
-  let z := closeFusionMap U S K f₂
+    𝟙 _ ⊗≫ (crossingBlock X T K g₁ f₁ ▷ U) ⊗≫
+      (T ◁ crossingBlock X U S g₂ f₂) ⊗≫ 𝟙 _ := by
+  let q := closeFusionMap T K f₁
+  let z := closeFusionMap U S f₂
   calc
     _ = 𝟙 _ ⊗≫ (g₁ ▷ (X ⊗ (((Rᘁ : D) ⊗ T) ⊗ U))) ⊗≫
       ((((T ◁ g₂) ▷ X) ▷ (((Rᘁ : D) ⊗ T) ⊗ U)) ≫
@@ -112,7 +112,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_of_simple_split (X : D) {T R S : D} [Simple R]
     [FiniteDimensional ℂ (R ⟶ R)]
     (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
-    crossingBlock X T R S g f = crossingBlock X T R S e.hom e.inv := by
+    crossingBlock X T S g f = crossingBlock X T S e.hom e.inv := by
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ e.inv)
   obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (e.hom ≫ f)
   have hg : g = c • e.hom := by
@@ -135,7 +135,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_unit_of_split (X : D) {S : D} [Simple S]
     [FiniteDimensional ℂ (S ⟶ S)]
     (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
-    crossingBlock X (𝟙_ D) S S g f =
+    crossingBlock X (𝟙_ D) S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv :=
   (crossingBlock_of_simple_split X (λ_ S).symm g f h).trans (crossingBlock_unit X S)
 

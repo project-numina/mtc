@@ -43,19 +43,12 @@ theorem generatedBy_rightDual_of_unit_power (D : BraidedFusionCategory.{v,u})
     GeneratedBy X (Xᘁ) := by
   let _ : Simple (𝟙_ D.Obj) := Ground.IsFusionCategory.unit_simple
   let _ : Simple (Xᘁ) := Ground.simple_rightDual D X
-  have hi : r.i ≠ 0 := by
-    intro h
-    apply id_nonzero (𝟙_ D.Obj)
-    simpa [h] using r.retract.symm
+  let : IsSplitMono r.i := r.instIsSplitMonoI
+  have hi : r.i ≠ 0 := Ground.mono_ne_zero_of_id_ne_zero r.i (id_nonzero (𝟙_ D.Obj))
   let f : Xᘁ ⊗ 𝟙_ D.Obj ⟶ tensorPower X n :=
-    (tensorLeftHomEquiv (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)).symm r.i
-  have hf : f ≠ 0 := by
-    intro h
-    apply hi
-    have he := congrArg (tensorLeftHomEquiv (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)) h
-    dsimp only [f] at he
-    rw [Equiv.apply_symm_apply] at he
-    simpa [tensorLeftHomEquiv] using he
+    (Ground.tensorLeftHomLinearEquiv (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)).symm r.i
+  have hf : f ≠ 0 := (Ground.tensorLeftHomLinearEquiv
+    (𝟙_ D.Obj) X (Xᘁ) (tensorPower X n)).symm.map_ne_zero_iff.mpr hi
   let g : Xᘁ ⟶ tensorPower X n := (ρ_ (Xᘁ)).inv ≫ f
   have hg : g ≠ 0 := by simpa [g] using hf
   obtain ⟨s, hs⟩ := Ground.split_from_simple g hg

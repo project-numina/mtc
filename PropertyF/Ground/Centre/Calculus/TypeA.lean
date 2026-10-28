@@ -97,12 +97,11 @@ theorem braidRelations_action_trivial (X : C) (n : ℕ) :
   · obtain ⟨i, j, hij, rfl⟩ := h
     simp only [map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
     cases n with
-    | zero => have hj := j.isLt; omega
+    | zero => omega
     | succ n =>
-      let k : Fin (n + 1) := ⟨i.val, by have hj := j.isLt; omega⟩
-      have hi : k.castSucc = i := Fin.ext rfl
-      have hj : k.succ = j := Fin.ext hij
-      simpa only [hi, hj] using adjacent_braid_relation X n k
+      let k : Fin (n + 1) := ⟨i.val, by omega⟩
+      simpa only [show k.castSucc = i from Fin.ext rfl, show k.succ = j from Fin.ext hij] using
+        adjacent_braid_relation X n k
   · obtain ⟨i, j, hij, rfl⟩ := h
     simp only [map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
     exact distant_braid_commute X n i j hij
@@ -138,16 +137,14 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
     exact Equiv.swap_mul_self _ _
   · rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩
     · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
-      have hm : i.succ = j.castSucc := Fin.ext hij
-      rw [← hm]
+      rw [← (show i.succ = j.castSucc from Fin.ext hij)]
       apply swap_braid <;> apply Fin.ne_of_val_ne <;>
         simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
     · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
-      have hdis : [i.castSucc, i.succ, j.castSucc, j.succ].Nodup := by
-        simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil,
-          not_or, and_true, Fin.ext_iff, Fin.val_castSucc, Fin.val_succ, not_false_eq_true]
-        repeat' constructor <;> omega
-      exact (Equiv.Perm.disjoint_swap_swap hdis).commute.eq
+      apply (Equiv.Perm.disjoint_swap_swap ?_).commute.eq
+      simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil,
+        not_or, and_true, Fin.ext_iff, Fin.val_castSucc, Fin.val_succ, not_false_eq_true]
+      repeat' constructor <;> omega
 
 end PropertyF.Ground.CentreCalculus
 

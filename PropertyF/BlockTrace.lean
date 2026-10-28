@@ -1,6 +1,8 @@
 module
 public import Mathlib.Analysis.Complex.Basic
+public import Mathlib.Analysis.Complex.Order
 public import Mathlib.LinearAlgebra.Matrix.Trace
+public import Mathlib.LinearAlgebra.Matrix.PosDef
 public import Mathlib.LinearAlgebra.UnitaryGroup
 public import Mathlib.Analysis.CStarAlgebra.Matrix
 public import Mathlib.Tactic
@@ -13,7 +15,7 @@ products of matrix algebras.
 -/
 
 @[expose] public section
-open scoped BigOperators ComplexConjugate
+open scoped BigOperators ComplexConjugate ComplexOrder Matrix
 namespace PropertyF
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -28,31 +30,12 @@ theorem norm_trace_le_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGrou
 /-- Saturation of the real trace estimate forces the identity matrix. -/
 theorem eq_one_of_re_trace_eq_card {U : Matrix ι ι ℂ} (hU : U ∈ Matrix.unitaryGroup ι ℂ)
     (ht : U.trace.re = Fintype.card ι) : U = 1 := by
-  have hcol (j : ι) : ∑ i, Complex.normSq (U i j) = 1 := by
-    simpa [Matrix.mul_apply, Matrix.star_apply, Complex.mul_re,
-      Complex.normSq_apply, pow_two] using
-      congrArg (fun A : Matrix ι ι ℂ => (A j j).re) (Matrix.mem_unitaryGroup_iff'.mp hU)
-  have hre : ∀ i, (U i i).re ≤ 1 := fun i =>
-    (Complex.re_le_norm _).trans (entry_norm_bound_of_unitary hU i i)
-  have hdiagRe : ∀ i, (U i i).re = 1 := fun i =>
-    (Finset.sum_eq_sum_iff_of_le (fun k _ => hre k)).mp
-      (by simpa [Matrix.trace, Matrix.diag] using ht) i (Finset.mem_univ i)
-  have hdiag : ∀ i, U i i = 1 := by
-    intro i
-    have h := (sq_le_one_iff₀ (norm_nonneg (U i i))).2 (entry_norm_bound_of_unitary hU i i)
-    rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply, hdiagRe] at h
-    have him : (U i i).im = 0 := by nlinarith [sq_nonneg (U i i).im]
-    apply Complex.ext <;> simp [hdiagRe, him]
-  ext i j
-  by_cases hij : i = j
-  · subst j; simp [hdiag]
-  · have hsum' : ∑ k ∈ Finset.univ.erase j, Complex.normSq (U k j) = 0 := by
-      have h := hcol j
-      rw [← Finset.add_sum_erase _ _ (Finset.mem_univ j), hdiag] at h
-      simpa using h
-    have hz := (Finset.sum_eq_zero_iff_of_nonneg
-      (fun k _ => Complex.normSq_nonneg (U k j))).mp hsum' i (by simp [hij])
-    simp [hij, Complex.normSq_eq_zero.mp hz]
+  apply sub_eq_zero.mp
+  apply Matrix.trace_conjTranspose_mul_self_eq_zero_iff.mp
+  have hu : Uᴴ * U = 1 := Matrix.mem_unitaryGroup_iff'.mp hU
+  apply Complex.ext <;>
+    simp [Matrix.conjTranspose_sub, sub_mul, mul_sub, hu, Matrix.trace_sub,
+      Matrix.trace_conjTranspose, ht]
 
 /-- Equality in the complex trace bound forces a scalar matrix. This includes
 zero-dimensional blocks and does not assume an eigenvalue decomposition. -/
@@ -131,11 +114,18 @@ lemma trace_signElement (B : Blocks) (w : Fin B.count → ℝ) :
   intro r _
   by_cases h : 0 ≤ w r <;> simp [h, abs_of_nonneg, abs_of_neg, lt_of_not_ge]
 
-/-- Equality in the weighted bound implies centrality when no weight vanishes.
-This is the equality argument in Lemma 3.2, proved using actual complex matrices. -/
-theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
-    (hw : ∀ r, w r ≠ 0) {g : B.Algebra} (hg : B.IsUnitary g)
-    (hsat : ‖B.trace w g‖ = B.mass w) : ∀ T : B.Algebra, g * T = T * g := by
+/-- A bound on all unitary traces bounds the total weighted block mass. -/
+lemma mass_le_of_unitary_trace_bound (B : Blocks) (w : Fin B.count → ℝ) {R : ℝ}
+    (hbound : ∀ u, B.IsUnitary u → ‖B.trace w u‖ ≤ R) : B.mass w ≤ R := by
+  have hm : 0 ≤ B.mass w :=
+    Finset.sum_nonneg (fun r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _))
+  simpa [B.trace_signElement, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hm] using
+    hbound (B.signElement w) (B.signElement_unitary w)
+
+/-- Saturation of the weighted bound saturates every block with nonzero weight. -/
+theorem block_trace_norm_eq_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
+    {g : B.Algebra} (hg : B.IsUnitary g) (hsat : ‖B.trace w g‖ = B.mass w)
+    (r : Fin B.count) (hw : w r ≠ 0) : ‖(g r).trace‖ = B.size r := by
   have hle : ∀ r, |w r| * ‖(g r).trace‖ ≤ |w r| * B.size r := fun r =>
     mul_le_mul_of_nonneg_left
       (by simpa using norm_trace_le_card (hg r)) (abs_nonneg _)
@@ -145,15 +135,19 @@ theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
       _ = ‖B.trace w g‖ := hsat.symm
       _ ≤ ∑ r, ‖(w r : ℂ) * (g r).trace‖ := norm_sum_le _ _
       _ = _ := by simp
-  have hblock : ∀ r, ‖(g r).trace‖ = B.size r := fun r =>
-    (mul_left_cancel₀ (abs_ne_zero.mpr (hw r)))
-      ((Finset.sum_eq_sum_iff_of_le (fun r _ => hle r)).mp heq r (Finset.mem_univ r))
-  intro T
-  funext r
-  obtain ⟨z, hz⟩ := scalar_of_norm_trace_eq_card (hg r)
-    (by simpa using hblock r)
-  change g r * T r = T r * g r
-  rw [hz, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
+  exact (mul_left_cancel₀ (abs_ne_zero.mpr hw))
+    ((Finset.sum_eq_sum_iff_of_le (fun r _ => hle r)).mp heq r (Finset.mem_univ r))
+
+/-- Equality in the weighted bound implies centrality when no weight vanishes.
+This is the equality argument in Lemma 3.2, proved using actual complex matrices. -/
+theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
+    (hw : ∀ r, w r ≠ 0) {g : B.Algebra} (hg : B.IsUnitary g)
+    (hsat : ‖B.trace w g‖ = B.mass w) : ∀ T : B.Algebra, g * T = T * g :=
+  fun T => funext fun r =>
+    let ⟨z, hz⟩ := scalar_of_norm_trace_eq_card (hg r)
+      (by simpa using B.block_trace_norm_eq_of_saturation w hg hsat r (hw r))
+    show g r * T r = T r * g r from by
+      rw [hz, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
 
 end Blocks
 end PropertyF

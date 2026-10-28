@@ -114,7 +114,7 @@ def mixedCrossingBilinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v
       (T ⊗ S ⟶ R) →ₗ[k] (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
   toFun g := {
     toFun := fun f =>
-      (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S R f) ≫
+      (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S f) ≫
         (α_ (U ⊗ S) X (Sᘁ)).hom ≫ (α_ U S (X ⊗ Sᘁ)).hom ≫
           (U ◁ (α_ S X (Sᘁ)).inv)
     map_add' := by

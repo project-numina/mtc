@@ -22,7 +22,7 @@ theorem target : TargetStatement.{v,u} := by
   have hbalance : CentreModular.IsPivotalTwistBalanced (Integrate.bundledCenter D) pZ :=
     fun X Y ↦ pivotal_twist_balanced (Integrate.bundledCenter D) pZ X Y
   have hs := Classical.choose_spec (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary D p hD))
+    (CentreInduction.center_structure_of_pivotal_pseudoUnitary p hD))
   obtain ⟨hspherical, _, _, _⟩ := hs
   have hdim := centerPivotal_hasFPDimensions D p hD
   have hdet := CentreModular.categoricalS_det_ne_zero_of_trivial_transparency
@@ -34,7 +34,7 @@ theorem target : TargetStatement.{v,u} := by
   have hInt : WeaklyIntegral (globalFPDimension D) := by
     apply weaklyIntegral_of_actual_center D hDF hspherical hdim hdet
       (center_globalDimension_square_of_actual_induction D pZ hspherical hdim)
-      (CentreCalculus.actual_symmetricCore_integrality hspherical hdim)
+      (CentreCalculus.actual_symmetricCore_integrality ⟨hspherical, hdim⟩)
     · intro y hy
       exact (CentreCabling.mem_productLabels D y).mpr
         (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)

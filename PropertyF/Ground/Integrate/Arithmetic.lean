@@ -111,11 +111,9 @@ theorem weaklyIntegral_of_galois_fixed {δ : ℝ} (hδr : IsIntegral ℤ δ)
   let x : K := ⟨(δ : ℂ), h.1⟩
   have hx : IsIntegral ℤ x :=
     (isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by simpa [x] using hδ)
-  have hxfix : ∀ σ : K ≃ₐ[ℚ] K, σ x = x := by
-    intro σ
+  obtain ⟨z, hz⟩ := integer_of_galois_fixed hx (fun σ ↦ by
     obtain ⟨τ, hτ⟩ := Dimensions.extend_complex_automorphism K.toSubfield σ.toRingEquiv
-    exact Subtype.ext ((hτ x).symm.trans (hfixed τ))
-  obtain ⟨z, hz⟩ := integer_of_galois_fixed hx hxfix
+    exact Subtype.ext ((hτ x).symm.trans (hfixed τ)))
   exact ⟨z, by simpa [x] using congrArg Complex.re (congrArg (fun y : K ↦ (y : ℂ)) hz)⟩
 
 end PropertyF.Ground

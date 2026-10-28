@@ -55,17 +55,18 @@ def isoEndAlgEquiv {X Y : C} (e : X ≅ Y) : End X ≃ₐ[ℂ] End Y where
     apply End.ext
     simp [Algebra.algebraMap_eq_smul_one]
 
+variable (D : BraidedFusionCategory.{v,u})
+
 /-- The chosen nonisomorphic simple representatives are Hom-orthogonal. -/
-theorem groundSimples_orthogonal (C : BraidedFusionCategory.{v,u}) :
-    HomOrthogonal (Ground.simples C) :=
-  let _ : ∀ i, Simple (Ground.simples C i) := Ground.simples_simple C
+theorem groundSimples_orthogonal : HomOrthogonal (Ground.simples D) :=
+  let _ : ∀ i, Simple (Ground.simples D i) := Ground.simples_simple D
   fun _i _j hij => subsingleton_of_forall_eq 0 fun f => Classical.byContradiction fun hf =>
     let _ : IsIso f := isIso_of_hom_simple hf
-    hij (Ground.simples_injective C ⟨asIso f⟩)
+    hij (Ground.simples_injective D ⟨asIso f⟩)
 
 /-- The family containing `m i` copies of each chosen simple object. -/
-abbrev simpleCopies (C : BraidedFusionCategory.{v,u}) (m : Fin (Ground.rank C) → ℕ)
-    (p : Σ i, Fin (m i)) : C.Obj := Ground.simples C p.1
+abbrev simpleCopies (m : Fin (Ground.rank D) → ℕ)
+    (p : Σ i, Fin (m i)) : D.Obj := Ground.simples D p.1
 
 /-- The occurrences of label `i` in a dependent sum are indexed by `Fin (m i)`. -/
 def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
@@ -80,21 +81,21 @@ def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
 
 /-- A chosen simple-object decomposition gives the corresponding complex
 matrix-block decomposition of its endomorphism algebra. -/
-def groundEndBlockEquiv (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
-    (m : Fin (Ground.rank C) → ℕ)
-    (e : X ≅ ⨁ (simpleCopies C m)) :
+def groundEndBlockEquiv (X : D.Obj)
+    (m : Fin (Ground.rank D) → ℕ)
+    (e : X ≅ ⨁ (simpleCopies D m)) :
     End X ≃ₐ[ℂ] ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ := by
   classical
-  let _ : HasFiniteBiproducts C.Obj := inferInstance
-  let _ : ∀ i, Simple (Ground.simples C i) := Ground.simples_simple C
-  let _ : ∀ i, FiniteDimensional ℂ (Ground.simples C i ⟶ Ground.simples C i) :=
+  let _ : HasFiniteBiproducts D.Obj := inferInstance
+  let _ : ∀ i, Simple (Ground.simples D i) := Ground.simples_simple D
+  let _ : ∀ i, FiniteDimensional ℂ (Ground.simples D i ⟶ Ground.simples D i) :=
     fun i => Ground.IsFusionCategory.hom_finite _ _
   let _ : DecidableEq (Σ i, Fin (m i)) := Classical.decEq _
-  let f : (Σ i, Fin (m i)) → Fin (Ground.rank C) := Sigma.fst
-  let decomp := orthogonalEndBlocks (Ground.simples C) f (groundSimples_orthogonal C)
-  let scalars : (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) (End (Ground.simples C i))) ≃ₐ[ℂ]
+  let f : (Σ i, Fin (m i)) → Fin (Ground.rank D) := Sigma.fst
+  let decomp := orthogonalEndBlocks (Ground.simples D) f (groundSimples_orthogonal D)
+  let scalars : (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) (End (Ground.simples D i))) ≃ₐ[ℂ]
       (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) ℂ) :=
-    AlgEquiv.piCongrRight fun i => (simpleEndScalar (Ground.simples C i)).mapMatrix
+    AlgEquiv.piCongrRight fun i => (simpleEndScalar (Ground.simples D i)).mapMatrix
   let reindex : (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) ℂ) ≃ₐ[ℂ]
       (∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ) :=
     AlgEquiv.piCongrRight fun i => Matrix.reindexAlgEquiv ℂ ℂ (simpleFiberEquiv m i)

@@ -182,28 +182,30 @@ def overlapFresh (A X Y : C) (u : End (X ⊗ Y)) : End ((A ⊗ X) ⊗ Y) :=
 def overlapEndProduct (A X Y : C) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     End ((A ⊗ X) ⊗ Y) := insertRightIdentity (A ⊗ X) Y v * overlapFresh A X Y u
 
+variable (D : BraidedFusionCategory.{v,u})
+
 /-- Tracing the new strands of the overlap gives the old operator times the
 normalized trace of the fresh operator. -/
-theorem rightPartialTrace_overlap (C : BraidedFusionCategory.{v,u})
-    {A X Y : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
-    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+theorem rightPartialTrace_overlap {A X Y : D.Obj} [Simple X]
+    (p : PivotalStructure (C := D.Obj))
+    (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
       (scalarTrace p scalar u / scalar (p.rightTrace (𝟙 X))) • v := by
   rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
-    rightPartialTrace_simple_ground C (X := X) (Y := Y) p scalar u]
+    rightPartialTrace_simple_ground D (X := X) (Y := Y) p scalar u]
   apply End.ext
   simp
 
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/
-theorem pivotalTrace_overlap (C : BraidedFusionCategory.{v,u})
-    {A X Y : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
-    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+theorem pivotalTrace_overlap {A X Y : D.Obj} [Simple X]
+    (p : PivotalStructure (C := D.Obj))
+    (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
   rw [← Dimensions.rightTrace_partialTrace p (overlapEndProduct A X Y v u),
-    rightPartialTrace_overlap C p scalar v u]
+    rightPartialTrace_overlap D p scalar v u]
   simp [scalarTrace, PivotalStructure.rightTrace_smul, mul_comm]
 
 end PropertyF.Ground.Calculus
