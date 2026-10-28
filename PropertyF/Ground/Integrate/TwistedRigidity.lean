@@ -60,14 +60,14 @@ instance : MonoidalLinear ℂ (Obj C σ) where
 /-- Transport a finite basis across a field automorphism. -/
 theorem finite_twist (M : Type*) [AddCommGroup M] [m : Module ℂ M]
     [FiniteDimensional ℂ M] (σ : ℂ ≃+* ℂ) :
-    @FiniteDimensional ℂ M _ _ (Module.compHom M σ.symm.toRingHom) := by
+    @FiniteDimensional ℂ M _ _ (Module.compHom M σ.symm.toRingHom) :=
   let b := Module.finBasis ℂ M
   let m' := Module.compHom M σ.symm.toRingHom
   let b' := @Module.Basis.mapCoeffs _ ℂ M _ _ m b ℂ _ m' σ (by
     intro a x
     conv_rhs => rw [← σ.symm_apply_apply a]
     rfl)
-  exact @Module.Basis.finiteDimensional_of_finite ℂ M _ _ m' _ _ b'
+  @Module.Basis.finiteDimensional_of_finite ℂ M _ _ m' _ _ b'
 
 instance twistedFusion : IsFusionCategory (Obj C σ) where
   hom_finite X Y := by
@@ -102,11 +102,15 @@ variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 def pivotal (p : Dimensions.PivotalStructure (C := C.Obj)) :
     Dimensions.PivotalStructure (C := (category C σ).Obj) := p
 
+variable (p : Dimensions.PivotalStructure (C := C.Obj))
+local notation "Cσ" => category C σ
+local notation "pσ" => pivotal C σ p
+
 /-- The twisted inverse unit-scalar map applies σ to the original scalar. -/
 theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
-    unitScalar (category C σ) f = σ (unitScalar C f) := by
-  apply (unit_algebraMap_bijective (category C σ)).1
-  rw [algebraMap_unitScalar (category C σ) f]
+    unitScalar Cσ f = σ (unitScalar C f) := by
+  apply (unit_algebraMap_bijective Cσ).1
+  rw [algebraMap_unitScalar Cσ f]
   change f = _
   conv_lhs => rw [← algebraMap_unitScalar C f]
   simp only [Algebra.algebraMap_eq_smul_one]
@@ -114,35 +118,30 @@ theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
   rw [σ.symm_apply_apply]
 
 /-- Pivotal dimensions transform by the specified field automorphism. -/
-theorem pivotalDimension_twist (p : Dimensions.PivotalStructure (C := C.Obj)) (X : C.Obj) :
-    Dimensions.pivotalDimension (category C σ) (pivotal C σ p) X =
+theorem pivotalDimension_twist (X : C.Obj) :
+    Dimensions.pivotalDimension Cσ pσ X =
     σ (Dimensions.pivotalDimension C p X) :=
   unitScalar_twist C σ _
 
 /-- Match chosen simple representatives and transport pivotal dimensions. -/
-theorem labels (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : Modular.HasFPSimpleDimensions C p) :
-    ∃ e : Fin (rank C) ≃ Fin (rank (category C σ)),
-      ∀ i, Dimensions.pivotalDimension (category C σ) (pivotal C σ p)
-          (simples (category C σ) (e i)) =
-        σ (fpSimple C i : ℂ) := by
-  obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C (category C σ) (CategoryTheory.Equivalence.refl)
+theorem labels (hdim : Modular.HasFPSimpleDimensions C p) :
+    ∃ e : Fin (rank C) ≃ Fin (rank Cσ),
+      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ (e i)) = σ (fpSimple C i : ℂ) := by
+  obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C Cσ (CategoryTheory.Equivalence.refl)
   refine ⟨e, fun i ↦ ?_⟩
   have hd : Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using hdim i
   rw [← hd, ← pivotalDimension_twist C σ p (simples C i)]
-  exact (Dimensions.pivotalDimension_iso (category C σ) (pivotal C σ p) (he i).some).symm
+  exact (Dimensions.pivotalDimension_iso Cσ pσ (he i).some).symm
 
 /-- Simple FP dimensions and their real conjugates give the twisted pivotal dimensions. -/
-theorem exists_galois_fp_dimensions (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : Modular.HasFPSimpleDimensions C p) :
-    ∃ original transformed : Fin (rank (category C σ)) → ℝ,
+theorem exists_galois_fp_dimensions (hdim : Modular.HasFPSimpleDimensions C p) :
+    ∃ original transformed : Fin (rank Cσ) → ℝ,
       (∀ i, 0 < original i) ∧ (∀ i, σ (original i : ℂ) = (transformed i : ℂ)) ∧
-      ∀ i, Dimensions.pivotalDimension (category C σ) (pivotal C σ p)
-        (simples (category C σ) i) = (transformed i : ℂ) := by
+      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ i) = (transformed i : ℂ) := by
   obtain ⟨e, he⟩ := labels C σ p hdim
-  let original : Fin (rank (category C σ)) → ℝ := fun i ↦ fpSimple C (e.symm i)
-  let transformed : Fin (rank (category C σ)) → ℝ := fun i ↦ (σ (original i : ℂ)).re
+  let original : Fin (rank Cσ) → ℝ := fun i ↦ fpSimple C (e.symm i)
+  let transformed : Fin (rank Cσ) → ℝ := fun i ↦ (σ (original i : ℂ)).re
   refine ⟨original, transformed, fun i ↦ fpSimple_pos C _,
     fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, ?_⟩
   intro i
@@ -166,14 +165,14 @@ variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 
 /-- FP dimension is unchanged on every object. -/
 theorem fpDimension_twist (X : C.Obj) :
-    fpDimension (category C σ) X = fpDimension C X := by
+    fpDimension (category C σ) X = fpDimension C X :=
   let E : C.Obj ≌ (category C σ).Obj := CategoryTheory.Equivalence.refl
   let F := E.functor
   letI : F.Additive := F.additive_of_preserves_binary_products
   letI : F.Monoidal := by
     change (𝟭 C.Obj).Monoidal
     infer_instance
-  exact fpDimension_functor C (category C σ) F X
+  fpDimension_functor C (category C σ) F X
 
 /-- A pivotal trace scalar is carried through σ. -/
 theorem rightTrace_twist (p : Dimensions.PivotalStructure (C := C.Obj))
@@ -216,29 +215,22 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
   letI : Simple X := simples_simple Z y
   obtain ⟨original, transformed, hpos, htrans, hqdim⟩ :=
     ScalarTwist.exists_galois_fp_dimensions Z σ p hdim
-  have hd : d ≠ 0 := by
-    intro hz
-    have h : (fpSimple Z y : ℂ) ≠ 0 := by exact_mod_cast (ne_of_gt (fpSimple_pos Z y))
-    exact (map_ne_zero σ).2 h (by simpa [hz] using hσ)
+  have hd : d ≠ 0 := fun hz ↦ (map_ne_zero σ).2
+    (show (fpSimple Z y : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (fpSimple_pos Z y)))
+    (by simpa [hz] using hσ)
   have hXdim : Dimensions.pivotalDimension D q X = (d : ℂ) := by
-    change Dimensions.pivotalDimension (ScalarTwist.category Z σ)
-      (ScalarTwist.pivotal Z σ p) (simples Z y) = _
     rw [ScalarTwist.pivotalDimension_twist, Dimensions.pivotalDimension, unitScalar_eq_equiv]
     change σ (Modular.simpleDimension Z p y) = _
     rw [hdim, hσ]
-  have hXfp : fpDimension D X = fpSimple Z y := by
-    rw [ScalarTwist.fpDimension_twist, fpDimension_simple]
+  have hXfp : fpDimension D X = fpSimple Z y :=
+    (ScalarTwist.fpDimension_twist Z σ _).trans (fpDimension_simple Z y)
   have hXS : Ground.unitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * fpSimple Z y := by
-    change Ground.unitScalarEquiv (ScalarTwist.category Z σ)
-      ((ScalarTwist.pivotal Z σ p).rightTrace (selfMonodromy (show (ScalarTwist.category Z σ).Obj from simples Z y)).asHom) = _
     rw [ScalarTwist.rightTrace_twist Z σ p]
-    change σ (Modular.categoricalS Z p y y) = _
     exact hS
   apply actual_rigidity_of_overlap_and_galois_dimensions D X q original transformed σ
     hpos htrans hqdim d (fpSimple Z y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
-  intro u k
-  exact Calculus.overlap_trace_power D q u k
+  exact Calculus.overlap_trace_power D q
 
 end PropertyF.Ground
 end

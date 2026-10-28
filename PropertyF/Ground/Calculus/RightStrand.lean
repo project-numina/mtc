@@ -178,12 +178,12 @@ def addLeftBraidAlgebraIter (X : C) (n : ℕ) :
 /-- Repeated insertion acts as expected on every actual braid. -/
 theorem addLeftBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
-      addLeftBraidAlgebraIter X n k (braidInImage X n g) =
-        braidInImage X (n + k) (addLeftStrands X n k g)
+      addLeftBraidAlgebraIter X n k (braidInImage g) =
+        braidInImage (addLeftStrands X n k g)
   | 0, g => rfl
   | k + 1, g => by
     change addLeftBraidAlgebra X (n + k)
-      (addLeftBraidAlgebraIter X n k (braidInImage X n g)) = _
+      (addLeftBraidAlgebraIter X n k (braidInImage g)) = _
     rw [addLeftBraidAlgebraIter_group k g]
     exact imageAlgebraMap_group _ _ _ _ _ _
 
@@ -211,7 +211,7 @@ theorem addLeftBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     (braidEndRepresentation X (n + k)) (addLeftStrands X n k) e f he hf
     (addLeftBlocksIter X n k e f)
   intro g
-  change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage X n g)))) = _
+  change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
   rw [e.symm_apply_apply, addLeftBraidAlgebraIter_group]
   rfl
 
@@ -383,12 +383,12 @@ def addRightBraidAlgebraIter (X : C) (n : ℕ) :
 /-- Repeated insertion acts as expected on every actual braid. -/
 theorem addRightBraidAlgebraIter_group {X : C} {n : ℕ} :
     ∀ (k : ℕ) (g : braidImage X n),
-      addRightBraidAlgebraIter X n k (braidInImage X n g) =
-        braidInImage X (n + k) (addRightStrands X n k g)
+      addRightBraidAlgebraIter X n k (braidInImage g) =
+        braidInImage (addRightStrands X n k g)
   | 0, g => rfl
   | k + 1, g => by
     change addRightBraidAlgebra X (n + k)
-      (addRightBraidAlgebraIter X n k (braidInImage X n g)) = _
+      (addRightBraidAlgebraIter X n k (braidInImage g)) = _
     rw [addRightBraidAlgebraIter_group k g]
     exact imageAlgebraMap_group _ _ _ _ _ _
 
@@ -416,7 +416,7 @@ theorem addRightBlocksIter_star {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     (braidEndRepresentation X (n + k)) (addRightStrands X n k) e f he hf
     (addRightBlocksIter X n k e f)
   intro g
-  change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage X n g)))) = _
+  change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
   rw [e.symm_apply_apply, addRightBraidAlgebraIter_group]
   rfl
 

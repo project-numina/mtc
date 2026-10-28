@@ -16,6 +16,8 @@ product centralizer, under the stated finite-monodromy hypotheses. We write
 -/
 
 @[expose] public noncomputable section
+open PropertyF.Ground.Modular (HasFPSimpleDimensions doubleBraiding)
+open PropertyF.Ground.Dimensions
 local notation "𝒵" => PropertyF.Ground.Integrate.bundledCenter
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCabling
@@ -60,9 +62,9 @@ theorem constituent_mem_productLabels
 /-- The centre's product-retract labels satisfy the numerical double-centralizer
 inclusion whenever the chosen core contains their numerical centralizer. -/
 theorem productLabels_doubleCentralizer
-    {p : Dimensions.PivotalStructure (C := (𝒵 C).Obj)}
+    {p : PivotalStructure (C := (𝒵 C).Obj)}
     (hp : p.IsSpherical) (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
-    (hdim : Modular.HasFPSimpleDimensions (𝒵 C) p)
+    (hdim : HasFPSimpleDimensions (𝒵 C) p)
     {core : Set (Fin (rank (𝒵 C)))}
     (hcore : sCentralizer (𝒵 C) p (↑(productLabels C) : Set _) ⊆ core) :
     ∀ x ∈ sCentralizer (𝒵 C) p core,
@@ -114,18 +116,18 @@ def imageLabels : Set (Fin (rank (𝒵 C))) :=
 theorem imageLabels_subset_productLabels : imageLabels C ⊆ (↑(productLabels C) : Set _) :=
   fun a ha ↦ (mem_productLabels C a).mpr (canonicalImageRetract_product C ha)
 
-variable {p : Dimensions.PivotalStructure (C := (𝒵 C).Obj)}
+variable {p : PivotalStructure (C := (𝒵 C).Obj)}
 
 /-- Image monodromy is finite for labels passing the numerical centralizer test. -/
 abbrev HasFiniteImageCentralizerMonodromy
-    (p : Dimensions.PivotalStructure (C := (𝒵 C).Obj)) : Prop :=
+    (p : PivotalStructure (C := (𝒵 C).Obj)) : Prop :=
   ∀ y ∈ sCentralizer (𝒵 C) p (imageLabels C),
-      ∀ a ∈ imageLabels C, IsOfFinOrder (End.of (Modular.doubleBraiding
+      ∀ a ∈ imageLabels C, IsOfFinOrder (End.of (doubleBraiding
         (simples (𝒵 C) a) (simples (𝒵 C) y)))
 
 variable (hp : p.IsSpherical)
   (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
-  (hdim : Modular.HasFPSimpleDimensions (𝒵 C) p)
+  (hdim : HasFPSimpleDimensions (𝒵 C) p)
 
 include hdim in
 /-- The S-test on both canonical images detects the actual core if the relevant
@@ -139,7 +141,7 @@ theorem numericalImageCentralizer_subset_symmetricCore
   have hc (X : CategoryTheory.Center C.Obj) (hX : CanonicalImageRetract C X) :
       Centre.Centralizes (simples Z y) X := by
     apply Centre.centralizes_symm
-    change Modular.doubleBraiding X (simples Z y) = 𝟙 _
+    change doubleBraiding X (simples Z y) = 𝟙 _
     apply doubleBraiding_eq_one_of_simple_constituents Z (CanonicalImageRetract C)
       (fun r hr => canonicalImageRetract_of_retract C r hr) hX
     intro a ha
@@ -173,7 +175,7 @@ spherical structure. -/
 theorem actual_symmetricCore_integrality {C : BraidedFusionCategory.{v,u}}
     [RigidCategory (CategoryTheory.Center C.Obj)]
     [IsFusionCategory (CategoryTheory.Center C.Obj)]
-    {p : Dimensions.PivotalStructure (C := (𝒵 C).Obj)}
+    {p : PivotalStructure (C := (𝒵 C).Obj)}
     (hfp : IsFPSpherical (𝒵 C) p) :
     ∀ y ∈ CentreCabling.symmetricCore C,
       ∃ z : ℤ, Modular.simpleDimension (𝒵 C) p y = z :=

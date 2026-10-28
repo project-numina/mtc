@@ -103,18 +103,16 @@ universe v u
 /-- A real algebraic integer fixed by every complex automorphism is an integer. -/
 theorem weaklyIntegral_of_galois_fixed {δ : ℝ} (hδr : IsIntegral ℤ δ)
     (hfixed : ∀ τ : ℂ ≃+* ℂ, τ (δ : ℂ) = (δ : ℂ)) : WeaklyIntegral δ := by
-  have hδ : IsIntegral ℤ (δ : ℂ) :=
-    (isIntegral_algebraMap_iff (R := ℤ) (A := ℝ) (B := ℂ)).mpr hδr
+  have hδ := (isIntegral_algebraMap_iff (R := ℤ) (A := ℝ) (B := ℂ)).mpr hδr
   let K := Dimensions.dimensionNormalField (δ : ℂ)
   have h := Dimensions.finite_galois_normal_field (δ : ℂ) (hδ.tower_top (A := ℚ))
   let : FiniteDimensional ℚ K := h.2.1
   let : IsGalois ℚ K := h.2.2
   let x : K := ⟨(δ : ℂ), h.1⟩
-  have hx : IsIntegral ℤ x :=
-    (isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by simpa [x] using hδ)
-  obtain ⟨z, hz⟩ := integer_of_galois_fixed hx (fun σ ↦ by
-    obtain ⟨τ, hτ⟩ := Dimensions.extend_complex_automorphism K.toSubfield σ.toRingEquiv
-    exact Subtype.ext ((hτ x).symm.trans (hfixed τ)))
+  obtain ⟨z, hz⟩ := integer_of_galois_fixed (x := x)
+    ((isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by simpa [x] using hδ)) fun σ ↦ by
+      obtain ⟨τ, hτ⟩ := Dimensions.extend_complex_automorphism K.toSubfield σ.toRingEquiv
+      exact Subtype.ext ((hτ x).symm.trans (hfixed τ))
   exact ⟨z, by simpa [x] using congrArg Complex.re (congrArg (fun y : K ↦ (y : ℂ)) hz)⟩
 
 end PropertyF.Ground

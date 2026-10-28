@@ -64,28 +64,39 @@ theorem exists_galoisLabel_of_verlinde
     (characters_bijective N columns (normalized_columns_linearIndependent hd hD hsym hsq))
   exact ⟨Character.galoisLabel e, fun σ i j ↦ (Character.galoisLabel_character e σ j i).symm⟩
 
-omit hd hD in
+end
+
+section
+variable {ι K : Type*} [Fintype ι] [DecidableEq ι] [CommSemiring K]
+variable {S : Matrix ι ι K} {dual : ι → ι} {d : ι → K} {D : K}
+
 /-- A Galois image of the dimension column determines a diagonal entry of S squared. -/
 theorem galois_unit_column_square
     (hglobal : D = ∑ x, d x ^ 2) (hsym : ∀ x y, S x y = S y x)
-    (hsq : HasSSquare S dual D) (σ : ℂ ≃+* ℂ) (y : ι)
+    (hsq : HasSSquare S dual D) (σ : K ≃+* K) (y : ι)
     (hcol : ∀ x, S x y = d y * σ (d x)) :
     d y ^ 2 * σ D = if y = dual y then D else 0 := by
   calc
     d y ^ 2 * σ D = ∑ x, (d y * σ (d x)) ^ 2 := by
       simp only [hglobal, map_sum, Finset.mul_sum, map_pow, mul_pow]
-    _ = ∑ x, S x y ^ 2 :=
-      (congrArg (fun f : ι → ℂ => ∑ x, f x ^ 2) (funext hcol)).symm
-    _ = ∑ x, S y x * S x y :=
-      Finset.sum_congr rfl fun x _ ↦ by rw [hsym y x, pow_two]
+    _ = ∑ x, S y x * S x y := by
+      simp only [hsym y, hcol, pow_two]
     _ = _ := hsq y y
+
+end
+
+section
+variable {ι K : Type*} [Fintype ι] [DecidableEq ι] [Field K] {u : ι}
+variable {S : Matrix ι ι K} {dual : ι → ι} {d : ι → K} {D : K}
+variable (hd : ∀ y, d y ≠ 0) (hD : D ≠ 0)
+include hd hD
 
 /-- Proposition 2.1 from the numerical S identities and the character equation,
 with no modular-data hypothesis bundle. -/
 theorem galois_unit_properties (hu : d u = 1)
     (hglobal : D = ∑ x, d x ^ 2) (hsym : ∀ x y, S x y = S y x)
     (hunit : ∀ x, S x u = d x) (hsq : HasSSquare S dual D)
-    (σ : ℂ ≃+* ℂ) (y : ι) (hchar : ∀ x, σ (S x u / d u) = S x y / d y) :
+    (σ : K ≃+* K) (y : ι) (hchar : ∀ x, σ (S x u / d u) = S x y / d y) :
     (∀ x, S x y = d y * σ (d x)) ∧ y = dual y ∧ σ D = D / d y ^ 2 := by
   have hcol (x : ι) : S x y = d y * σ (d x) :=
     ((div_eq_iff (hd y)).mp (by simpa only [hunit, hu, div_one] using (hchar x).symm)).trans
