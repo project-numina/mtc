@@ -11,6 +11,10 @@ namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
 local notation "Sᶜ" => simples C
 local notation "𝒵" => Center C.Obj
+
+/-- Hom spaces in the base fusion category are finite-dimensional. -/
+local instance homFinite (A B : C.Obj) : FiniteDimensional ℂ (A ⟶ B) :=
+  IsFusionCategory.hom_finite _ _
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -58,7 +62,6 @@ variable (X : Center C.Obj)
 
 /-- Every actual centre object is Artinian, without spherical hypotheses. -/
 theorem center_artinian : IsArtinianObject X :=
-  let : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
   ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
 
 set_option backward.isDefEq.respectTransparency false in
@@ -68,7 +71,6 @@ theorem simple_mono_induced_simple [Simple X] :
   obtain ⟨i, hi⟩ := exists_positive_multiplicity C
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
   let : Simple (Sᶜ i) := simples_simple C i
-  let : FiniteDimensional ℂ (X.1 ⟶ Sᶜ i) := IsFusionCategory.hom_finite _ _
   obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp
     (show 0 < Module.finrank ℂ (X.1 ⟶ Sᶜ i) from by
       simpa only [finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
@@ -84,7 +86,6 @@ theorem center_cokernel_measure_lt {S W : 𝒵} (p : S ⟶ W) (hp : p ≠ 0) :
     let Q := Centre.centerCokernel p
     Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) :=
   letI : IsSplitEpi (cokernel.π p.f) := epi_splits (cokernel.π p.f)
-  letI : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
   finrank_end_lt_of_split_epi p.f (cokernel.π p.f) (fun h => hp (Center.ext p 0 h))
     (congrArg Center.Hom.f (Centre.centerCokernel_condition p))
 

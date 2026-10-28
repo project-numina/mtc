@@ -90,12 +90,11 @@ theorem character_norm_le_fpSimple
   let A := (fusionMatrix C i)ᵀ
   have hz : χ i ∈ spectrum ℂ A := by
     rw [← Matrix.spectrum_toLin']
-    apply Module.End.HasEigenvalue.mem_spectrum
-    apply Module.End.hasEigenvalue_of_hasEigenvector (x := χ)
-    refine ⟨Module.End.mem_eigenspace_iff.mpr ?_, fun h ↦ hχ (congrFun h i₀)⟩
-    ext j
-    change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
-    exact (hchar i j).symm
+    exact (Module.End.hasEigenvalue_of_hasEigenvector
+      ⟨Module.End.mem_eigenspace_iff.mpr (by
+        ext j
+        change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
+        exact (hchar i j).symm), fun h ↦ hχ (congrFun h i₀)⟩).mem_spectrum
   simpa [fpSimple, A, Matrix.spectralRadius_transpose] using
     ENNReal.toReal_mono
       (ne_of_lt (lt_of_le_of_lt (spectralRadius_le_nnnorm (𝕜 := ℂ) A) (by simp)))
@@ -461,8 +460,7 @@ theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
   let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   let A := characterMatrix D i
   let B := A.map Complex.ofRealHom
-  have hB : B = (fusionMatrix D i)ᵀ := by
-    ext j k
+  have hB : B = (fusionMatrix D i)ᵀ := Matrix.ext fun j k ↦ by
     change (((fusionCoeff D i j k : ℝ) : ℂ)) = _
     simp [fusionMatrix, fusionCoeff]
   obtain ⟨z, hz, hzmax⟩ := spectrum.exists_nnnorm_eq_spectralRadius B

@@ -124,11 +124,6 @@ end
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 
-/-- Dividing a complex number by its positive norm gives a unit-norm phase. -/
-theorem norm_div_ofReal_eq_one {z : ℂ} {r : ℝ} (hr : 0 < r) (h : ‖z‖ = r) :
-    ‖z / (r : ℂ)‖ = 1 := by
-  rw [norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr, h, div_self (ne_of_gt hr)]
-
 /-- If a complex weighted sum reaches its nonnegative termwise norm bound,
 all its positive-weight terms equal their respective bounds. -/
 theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
@@ -163,7 +158,8 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
       ((d i / (f i : ℂ)) * (d j / (f j : ℂ))) = (N i j k : ℂ) := by
   classical
   let q : ι → ℂ := fun i => d i / (f i : ℂ)
-  have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ norm_div_ofReal_eq_one (hf i) (hd i)
+  have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ by
+    simp [q, Complex.norm_real, abs_of_pos (hf i), hd i, ne_of_gt (hf i)]
   have hqn : ∀ i, q i ≠ 0 := fun i ↦ norm_ne_zero_iff.mp (by rw [hq]; exact one_ne_zero)
   have hrepr (i) : q i * (f i : ℂ) = d i :=
     div_mul_cancel₀ _ (Complex.ofReal_ne_zero.mpr (ne_of_gt (hf i)))
@@ -172,16 +168,10 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
   have heq : ∑ l, x l * (f l : ℂ) = ((∑ l, N i j l * f l : ℝ) : ℂ) := by
     calc
       _ = (∑ l, T i j l * d l) / (q i * q j) := by
-        rw [Finset.sum_div]
-        refine Finset.sum_congr rfl fun l _ ↦ ?_
-        rw [← hrepr l]
-        dsimp [x]
-        ring
-      _ = (d i * d j) / (q i * q j) := by rw [heig]
-      _ = ((f i * f j : ℝ) : ℂ) := by
-        rw [← hrepr i, ← hrepr j, Complex.ofReal_mul]
+        simp only [x, div_mul_eq_mul_div, mul_assoc, hrepr, Finset.sum_div]
+      _ = _ := by
+        rw [heig, ← hrepr i, ← hrepr j, ← hmul, Complex.ofReal_mul]
         field_simp [hqn i, hqn j]
-      _ = _ := by rw [hmul]
   exact complex_weighted_saturation hf (fun l ↦ by
     simpa [x, norm_div, norm_mul, hq] using hdom i j l) heq k
 
