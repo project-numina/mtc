@@ -221,7 +221,7 @@ theorem finite_simple_representatives :
       (∀ i, Simple (S i)) ∧
       (∀ i j, Nonempty (S i ≅ S j) → i = j) ∧
       (∀ X : 𝒵, Simple X → ∃ i, Nonempty (X ≅ S i)) :=
-  (finite_simple_labels C).elim fun labels h ↦
-    simple_representatives_of_finite_cover labels h.1 h.2
+  (finite_simple_labels C).elim fun _ h ↦
+    simple_representatives_of_finite_cover h.1 h.2
 
 end PropertyF.Ground.CentreInduction

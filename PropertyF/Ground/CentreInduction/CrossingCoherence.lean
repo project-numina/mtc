@@ -110,7 +110,7 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
 /-- The actual matrix crossing is invertible by rigidity. -/
 theorem crossingCandidate_isIso (X T : C.Obj) :
     IsIso (crossingCandidate C X T) :=
-  weak_isIso (underlying C X) (crossingCandidate C X)
+  weak_isIso (crossingCandidate C X)
     (fun f => crossingCandidate_natural_test C X f)
     (fun T U => crossingCandidate_tensor C X T U)
     (crossingCandidate_unit C X) T (ᘁT)

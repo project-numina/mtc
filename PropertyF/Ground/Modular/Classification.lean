@@ -109,9 +109,10 @@ theorem character_eigenvector (χ : Character N) (i : ι) :
     fusionOperator N i χ.value = χ.value i • χ.value :=
   funext fun j ↦ (χ.mul_eq i j).symm
 
+variable (columns : ι → Character N)
+
 /-- A basis consisting of characters classifies every character. -/
-theorem characters_exhausted (columns : ι → Character N)
-    (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = (columns y).value)
+theorem characters_exhausted (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = (columns y).value)
     (χ : Character N) : ∃ y, χ = columns y := by
   classical
   obtain ⟨y, hy⟩ : ∃ y, b.equivFun χ.value y ≠ 0 := by
@@ -136,8 +137,7 @@ theorem characters_exhausted (columns : ι → Character N)
 
 /-- A linearly independent family of as many characters as labels is a
 complete, duplicate-free classification. -/
-theorem characters_bijective (columns : ι → Character N)
-    (hlin : LinearIndependent ℂ (fun y => (columns y).value)) :
+theorem characters_bijective (hlin : LinearIndependent ℂ (fun y => (columns y).value)) :
     Function.Bijective columns := by
   classical
   refine ⟨fun _ _ h ↦ hlin.injective (congrArg Character.value h), fun χ ↦ ?_⟩

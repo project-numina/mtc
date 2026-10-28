@@ -95,18 +95,20 @@ def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
   letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   Ground.simpleEndScalar X (End.of (pivotalBraidedTwist C p X).hom)
 
+local notation "θₚ" => pivotalBraidedTwistScalar C p
+
 /-- On a simple object the twist acts by its scalar. -/
 theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
-    (pivotalBraidedTwist C p X).hom = pivotalBraidedTwistScalar C p X • 𝟙 X :=
+    (pivotalBraidedTwist C p X).hom = θₚ X • 𝟙 X :=
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   show (End.of (pivotalBraidedTwist C p X).hom).asHom =
-      (pivotalBraidedTwistScalar C p X • (1 : End X)).asHom from
+      (θₚ X • (1 : End X)).asHom from
     congrArg End.asHom
       ((Ground.simpleEndScalar X).injective (by simp [pivotalBraidedTwistScalar]))
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
-    pivotalBraidedTwistScalar C p X ≠ 0 := fun hz ↦
+    θₚ X ≠ 0 := fun hz ↦
   id_nonzero X (by
     simpa [pivotalBraidedTwist_simple, hz] using
       (pivotalBraidedTwist C p X).hom_inv_id.symm)
@@ -114,7 +116,7 @@ theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
 /-- The trace of a simple self-braiding is twist scalar times dimension. -/
 theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
     Ground.unitScalar C (p.rightTrace (β_ X X).hom) =
-      pivotalBraidedTwistScalar C p X * pivotalDimension C p X := by
+      θₚ X * pivotalDimension C p X := by
   have h := rightTrace_partialTrace p X X (End.of (β_ X X).hom)
   rw [rightPartialTrace_braiding p (Ground.doubleDualIso C X) (drinfeld_eval C X)] at h
   change p.rightTrace (pivotalBraidedTwist C p X).hom = p.rightTrace (β_ X X).hom at h
