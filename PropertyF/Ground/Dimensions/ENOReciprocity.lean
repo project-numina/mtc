@@ -1,4 +1,5 @@
 module
+public import PropertyF.Ground.Fusion.SemisimpleSplit
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
@@ -63,6 +64,22 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+/-- Scalar multiples with the same double-dual square differ by a sign. -/
+theorem scalar_sq_eq_one_of_same_square {D : Type u} [Category.{v} D]
+    [MonoidalCategory D] [RightRigidCategory D] [Preadditive D] [Linear ℂ D]
+    [MonoidalPreadditive D] [MonoidalLinear ℂ D] {X : D} [Simple X]
+    (a b : X ≅ (Xᘁ)ᘁ) (z : ℂ) (hz : b.hom = z • a.hom)
+    (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 := by
+  have hn : (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom ≠ 0 :=
+    mono_ne_zero_of_id_ne_zero _ (id_nonzero X)
+  apply smul_left_injective ℂ hn
+  change (z * z) • (a.hom ≫ ((a.homᘁ)ᘁ)) = (1 : ℂ) • (a.hom ≫ ((a.homᘁ)ᘁ))
+  calc
+    _ = b.hom ≫ ((b.homᘁ)ᘁ) := by
+      rw [hz]
+      simp only [rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul]
+    _ = _ := by simpa using hsq
+
 variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse dual of a natural fourth-dual square root is also a root at
@@ -99,20 +116,7 @@ theorem rootDual_differs_by_sign (X : C.Obj)
   have hk : k.hom ≫ ((k.homᘁ)ᘁ) = (fourthDualIso C (Xᘁ)).hom := by
     exact (congrArg (fun n => (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C))
   have hl : l.hom ≫ ((l.homᘁ)ᘁ) = (fourthDualIso C (Xᘁ)).hom := inverseDualRoot_square C X
-  have hscale : k.hom ≫ ((k.homᘁ)ᘁ) = (ε * ε) • (l.hom ≫ ((l.homᘁ)ᘁ)) := by
-    rw [he]
-    simp only [rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul]
-  have hm : (ε * ε) • (fourthDualIso C (Xᘁ)).hom = (1 : ℂ) • (fourthDualIso C (Xᘁ)).hom := by
-    calc
-      _ = (ε * ε) • (l.hom ≫ ((l.homᘁ)ᘁ)) := by rw [hl]
-      _ = k.hom ≫ ((k.homᘁ)ᘁ) := hscale.symm
-      _ = _ := by simpa using hk
-  have hn : (fourthDualIso C (Xᘁ)).hom ≠ 0 := by
-    intro h
-    have hh := congrArg (fun f => f ≫ (fourthDualIso C (Xᘁ)).inv) h
-    simp at hh
-    exact id_nonzero (Xᘁ) hh
-  exact smul_left_injective ℂ hn hm
+  exact scalar_sq_eq_one_of_same_square l k ε he (hk.trans hl.symm)
 
 end PropertyF.Ground.Dimensions
 

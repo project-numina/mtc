@@ -30,9 +30,7 @@ theorem rightDualTensorIso_unit_left (X : C) :
   let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
-  let r : Iᘁ ≅ I := by
-    change rightDualObject (𝟙_ C) ≅ 𝟙_ C
-    exact rightDualUnitIso
+  let r : Iᘁ ≅ I := rightDualUnitIso
   let J := (Xᘁ) ⊗ (Iᘁ)
   let l : (Xᘁ) ⟶ J := ((λ_ X).homᘁ) ≫ (rightDualTensorIso I X).hom
   let s : (Xᘁ) ⟶ J := (ρ_ (Xᘁ)).inv ≫ (Xᘁ) ◁ r.inv
@@ -59,9 +57,8 @@ theorem rightDualTensorIso_unit_left (X : C) :
       _ = _ := by
         change 𝟙 _ ⊗≫ (Xᘁ : C) ◁ ((ρ_ I).hom ▷ X) ⊗≫ ε_ X (Xᘁ) = _
         monoidal
-  have h : l ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J = s ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J := hl.trans hs.symm
   let : HasRightDual (I ⊗ X) := { rightDual := J, exact := ExactPairing.tensor }
-  exact evaluation_ext h
+  exact evaluation_ext (hl.trans hs.symm)
 /-- Right dual tensor comparison is compatible with the right unitor. -/
 theorem rightDualTensorIso_unit_right (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
@@ -70,9 +67,7 @@ theorem rightDualTensorIso_unit_right (X : C) :
   let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
-  let r : Iᘁ ≅ I := by
-    change rightDualObject (𝟙_ C) ≅ 𝟙_ C
-    exact rightDualUnitIso
+  let r : Iᘁ ≅ I := rightDualUnitIso
   let J := (Iᘁ) ⊗ (Xᘁ)
   let l : (Xᘁ) ⟶ J := ((ρ_ X).homᘁ) ≫ (rightDualTensorIso X I).hom
   let s : (Xᘁ) ⟶ J := (λ_ (Xᘁ)).inv ≫ r.inv ▷ (Xᘁ)
@@ -104,9 +99,8 @@ theorem rightDualTensorIso_unit_right (X : C) :
       _ = _ := by
         change 𝟙 _ ⊗≫ (ε_ X (Xᘁ) ▷ I) ⊗≫ (ρ_ I).hom = _
         monoidal
-  have h : l ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J = s ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J := hl.trans hs.symm
   let : HasRightDual (X ⊗ I) := { rightDual := J, exact := ExactPairing.tensor }
-  exact evaluation_ext h
+  exact evaluation_ext (hl.trans hs.symm)
 
 end PropertyF.Ground.Dimensions
 
@@ -128,21 +122,19 @@ theorem doubleDualTensorIso_unit_left (X : C) :
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
   let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual (Iᘁ)
-  let r : Iᘁ ≅ I := by
-    change rightDualObject (𝟙_ C) ≅ 𝟙_ C
-    exact rightDualUnitIso
+  let r : Iᘁ ≅ I := rightDualUnitIso
   let R := rightDualTensorIso I X
   let S := rightDualTensorIso (Xᘁ) (Iᘁ)
   let S₀ := rightDualTensorIso (Xᘁ) I
-  have hR : ((λ_ X).homᘁ) ≫ R.hom = (ρ_ (Xᘁ)).inv ≫ (Xᘁ) ◁ r.inv := by
-    exact rightDualTensorIso_unit_left X
+  have hR : ((λ_ X).homᘁ) ≫ R.hom = (ρ_ (Xᘁ)).inv ≫ (Xᘁ) ◁ r.inv :=
+    rightDualTensorIso_unit_left X
   have hR' := congrArg (fun f => rightAdjointMate f) hR
   simp only [comp_rightAdjointMate] at hR'
   have hs : S.inv ≫ ((Xᘁ) ◁ r.inv)ᘁ = ((r.invᘁ) ▷ ((Xᘁ)ᘁ)) ≫ S₀.inv := by
     simpa only [rightAdjointMate_id, id_tensorHom, tensorHom_id] using
       (rightDualTensorIso_inv_natural (𝟙 (Xᘁ)) r.inv).symm
-  have hS : ((ρ_ (Xᘁ)).homᘁ) ≫ S₀.hom = (λ_ ((Xᘁ)ᘁ)).inv ≫ r.inv ▷ ((Xᘁ)ᘁ) := by
-    exact rightDualTensorIso_unit_right (Xᘁ)
+  have hS : ((ρ_ (Xᘁ)).homᘁ) ≫ S₀.hom = (λ_ ((Xᘁ)ᘁ)).inv ≫ r.inv ▷ ((Xᘁ)ᘁ) :=
+    rightDualTensorIso_unit_right (Xᘁ)
   have hS' : r.inv ▷ ((Xᘁ)ᘁ) ≫ S₀.inv ≫ ((ρ_ (Xᘁ)).invᘁ) = (λ_ ((Xᘁ)ᘁ)).hom := by
     apply (cancel_epi (λ_ ((Xᘁ)ᘁ)).inv).1
     simp only [Iso.inv_hom_id]
@@ -154,8 +146,7 @@ theorem doubleDualTensorIso_unit_left (X : C) :
   simp only [comp_whiskerRight, Category.assoc]
   rw [hR']
   slice_lhs 3 4 => rw [hs]
-  have hc : (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Iᘁ) := by
-    exact ((rightDualIsoMap r).hom_inv_id)
+  have hc : (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Iᘁ) := (rightDualIsoMap r).hom_inv_id
   simp only [Category.assoc]
   slice_lhs 2 3 => rw [← comp_whiskerRight, hc, id_whiskerRight]
   simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS'
@@ -170,21 +161,19 @@ theorem doubleDualTensorIso_unit_right (X : C) :
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
   let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual (Iᘁ)
-  let r : Iᘁ ≅ I := by
-    change rightDualObject (𝟙_ C) ≅ 𝟙_ C
-    exact rightDualUnitIso
+  let r : Iᘁ ≅ I := rightDualUnitIso
   let R := rightDualTensorIso X I
   let S := rightDualTensorIso (Iᘁ) (Xᘁ)
   let S₀ := rightDualTensorIso I (Xᘁ)
-  have hR : ((ρ_ X).homᘁ) ≫ R.hom = (λ_ (Xᘁ)).inv ≫ r.inv ▷ (Xᘁ) := by
-    exact rightDualTensorIso_unit_right X
+  have hR : ((ρ_ X).homᘁ) ≫ R.hom = (λ_ (Xᘁ)).inv ≫ r.inv ▷ (Xᘁ) :=
+    rightDualTensorIso_unit_right X
   have hR' := congrArg (fun f => rightAdjointMate f) hR
   simp only [comp_rightAdjointMate] at hR'
   have hs : S.inv ≫ (r.inv ▷ (Xᘁ))ᘁ = (((Xᘁ)ᘁ) ◁ (r.invᘁ)) ≫ S₀.inv := by
     simpa only [rightAdjointMate_id, id_tensorHom, tensorHom_id] using
       (rightDualTensorIso_inv_natural r.inv (𝟙 (Xᘁ))).symm
-  have hS : ((λ_ (Xᘁ)).homᘁ) ≫ S₀.hom = (ρ_ ((Xᘁ)ᘁ)).inv ≫ ((Xᘁ)ᘁ) ◁ r.inv := by
-    exact rightDualTensorIso_unit_left (Xᘁ)
+  have hS : ((λ_ (Xᘁ)).homᘁ) ≫ S₀.hom = (ρ_ ((Xᘁ)ᘁ)).inv ≫ ((Xᘁ)ᘁ) ◁ r.inv :=
+    rightDualTensorIso_unit_left (Xᘁ)
   have hS' : ((Xᘁ)ᘁ) ◁ r.inv ≫ S₀.inv ≫ ((λ_ (Xᘁ)).invᘁ) = (ρ_ ((Xᘁ)ᘁ)).hom := by
     apply (cancel_epi (ρ_ ((Xᘁ)ᘁ)).inv).1
     simp only [Iso.inv_hom_id]
@@ -196,8 +185,7 @@ theorem doubleDualTensorIso_unit_right (X : C) :
   simp only [whiskerLeft_comp, Category.assoc]
   rw [hR']
   slice_lhs 3 4 => rw [hs]
-  have hc : (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Iᘁ) := by
-    exact ((rightDualIsoMap r).hom_inv_id)
+  have hc : (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Iᘁ) := (rightDualIsoMap r).hom_inv_id
   simp only [Category.assoc]
   slice_lhs 2 3 => rw [← whiskerLeft_comp, hc, whiskerLeft_id]
   simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS'

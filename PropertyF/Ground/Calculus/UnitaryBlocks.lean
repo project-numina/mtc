@@ -77,9 +77,9 @@ theorem exists_unitarizing_basis (ρ : G →* (Matrix ι ι ℂ)ˣ) :
     ((↑P : Matrix ι ι ℂ) * (↑(ρ g) : Matrix ι ι ℂ) * (↑(P⁻¹) : Matrix ι ι ℂ)) = 1
   simp only [star_mul, hself, ← Matrix.star_eq_conjTranspose] at hinv ⊢
   have hselfu : star P = P := Units.ext hself
-  have hselfinv : star (↑(P⁻¹) : Matrix ι ι ℂ) = ↑(P⁻¹) := by
-    have h : star (P⁻¹) = P⁻¹ := by simp [hselfu]
-    exact congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ)) h
+  have hselfinv : star (↑(P⁻¹) : Matrix ι ι ℂ) = ↑(P⁻¹) :=
+    congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ))
+      (show star (P⁻¹) = P⁻¹ from by simp [hselfu])
   rw [hselfinv]
   calc
     _ = (↑(P⁻¹) : Matrix ι ι ℂ) * (star (↑(ρ g) : Matrix ι ι ℂ) * A * ↑(ρ g)) * ↑(P⁻¹) := by
@@ -194,9 +194,7 @@ def groupInImage (ρ : G →* A) : G →* groupImageAlgebra ρ :=
 
 omit [Finite G] in
 @[simp] theorem groupInImage_val (ρ : G →* A) (g : G) :
-    (groupInImage ρ g : A) = ρ g := by
-  change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
-  exact MonoidAlgebra.lift_of ρ g
+    (groupInImage ρ g : A) = ρ g := MonoidAlgebra.lift_of ρ g
 
 /-- The canonical map from the categorical braid image into its span algebra. -/
 abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCategory C]

@@ -340,8 +340,7 @@ def addRightStrand (X : C) (n : ℕ) : braidImage X n →* braidImage X (n + 1) 
     apply (Subgroup.closure_le _).mpr
     rintro _ ⟨i, rfl⟩
     change addRightAut X n (braidGenerator X n i) ∈ braidImage X (n + 1)
-    rw [addRightAut_generator]
-    exact Subgroup.subset_closure (Set.mem_range_self _)
+    exact Subgroup.subset_closure ⟨i.castSucc, (addRightAut_generator X n i).symm⟩
   exact (f.comp (braidImage X n).subtype).codRestrict _ (fun a => hf a a.property)
 
 variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
