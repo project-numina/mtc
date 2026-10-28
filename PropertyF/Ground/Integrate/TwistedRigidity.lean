@@ -134,6 +134,24 @@ theorem labels (p : Dimensions.PivotalStructure (C := C.Obj))
   rw [← hd, ← pivotalDimension_twist C σ p (simples C i)]
   exact (Dimensions.pivotalDimension_iso (category C σ) (pivotal C σ p) (he i).some).symm
 
+
+/-- Simple FP dimensions and their real conjugates give the twisted pivotal dimensions. -/
+theorem exists_galois_fp_dimensions (p : Dimensions.PivotalStructure (C := C.Obj))
+    (hdim : Modular.HasFPSimpleDimensions C p) :
+    ∃ original transformed : Fin (rank (category C σ)) → ℝ,
+      (∀ i, 0 < original i) ∧ (∀ i, σ (original i : ℂ) = (transformed i : ℂ)) ∧
+      ∀ i, Dimensions.pivotalDimension (category C σ) (pivotal C σ p)
+        (simples (category C σ) i) = (transformed i : ℂ) := by
+  obtain ⟨e, he⟩ := labels C σ p hdim
+  let original : Fin (rank (category C σ)) → ℝ := fun i ↦ fpSimple C (e.symm i)
+  let transformed : Fin (rank (category C σ)) → ℝ := fun i ↦ (σ (original i : ℂ)).re
+  refine ⟨original, transformed, fun i ↦ fpSimple_pos C _,
+    fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, ?_⟩
+  intro i
+  have hi := he (e.symm i)
+  rw [e.apply_symm_apply] at hi
+  simpa only [transformed, original, fp_simple_galois_real] using hi
+
 end PropertyF.Ground.ScalarTwist
 end
 end
@@ -199,19 +217,8 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
   let q := ScalarTwist.pivotal Z σ p
   let X : D.Obj := simples Z y
   letI : Simple X := simples_simple Z y
-  obtain ⟨e, he⟩ := ScalarTwist.labels Z σ p hdim
-  let original : Fin (rank D) → ℝ := fun i => fpSimple Z (e.symm i)
-  let transformed : Fin (rank D) → ℝ := fun i => (σ (original i : ℂ)).re
-  have hreal := fp_simple_galois_real Z σ
-  have hpos : ∀ i, 0 < original i := fun i => fpSimple_pos Z _
-  have htrans : ∀ i, σ (original i : ℂ) = (transformed i : ℂ) :=
-    fun i ↦ (hreal (e.symm i)).symm
-  have hqdim : ∀ i, Dimensions.pivotalDimension D q (simples D i) =
-      (transformed i : ℂ) := by
-    intro i
-    have hi := he (e.symm i)
-    rw [e.apply_symm_apply] at hi
-    simpa only [transformed, original, hreal] using hi
+  obtain ⟨original, transformed, hpos, htrans, hqdim⟩ :=
+    ScalarTwist.exists_galois_fp_dimensions Z σ p hdim
   have hd : d ≠ 0 := by
     intro hz
     have h : (fpSimple Z y : ℂ) ≠ 0 := by exact_mod_cast (ne_of_gt (fpSimple_pos Z y))

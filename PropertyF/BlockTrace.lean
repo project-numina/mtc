@@ -114,6 +114,14 @@ lemma trace_signElement (B : Blocks) (w : Fin B.count → ℝ) :
   intro r _
   by_cases h : 0 ≤ w r <;> simp [h, abs_of_nonneg, abs_of_neg, lt_of_not_ge]
 
+/-- A bound on all unitary traces bounds the total weighted block mass. -/
+lemma mass_le_of_unitary_trace_bound (B : Blocks) (w : Fin B.count → ℝ) {R : ℝ}
+    (hbound : ∀ u, B.IsUnitary u → ‖B.trace w u‖ ≤ R) : B.mass w ≤ R := by
+  have hm : 0 ≤ B.mass w :=
+    Finset.sum_nonneg (fun r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _))
+  simpa [B.trace_signElement, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hm] using
+    hbound (B.signElement w) (B.signElement_unitary w)
+
 /-- Saturation of the weighted bound saturates every block with nonzero weight. -/
 theorem block_trace_norm_eq_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
     {g : B.Algebra} (hg : B.IsUnitary g) (hsat : ‖B.trace w g‖ = B.mass w)

@@ -196,7 +196,7 @@ abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCatego
 /-- A block presentation in which each represented group element is unitary. -/
 abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
     (e : groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) : Prop :=
-  ∀ g i, e (groupInImage ρ g) i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ
+  ∀ g, Blocks.IsUnitary ⟨_, d⟩ (e (groupInImage ρ g))
 
 omit [Finite G] in
 /-- The group elements span their image algebra. -/

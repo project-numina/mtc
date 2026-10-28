@@ -20,8 +20,8 @@ theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}}
     {p : Dimensions.PivotalStructure (C := C.Obj)}
     (hsimple : PivotalHasFPDimensions C p)
     (X : C.Obj) : Dimensions.pivotalDimension C p X = (fpDimension C X : ℂ) := by
-  rw [Dimensions.pivotalDimension_decomposition]
-  simp only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast, hsimple]
+  simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
+    hsimple] using Dimensions.pivotalDimension_decomposition C p X
 
 /-- The induction of the tensor unit has base pivotal dimension FPdim(C). -/
 theorem induced_unit_dimension {C : BraidedFusionCategory.{v,u}}
