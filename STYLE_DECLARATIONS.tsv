@@ -2916,7 +2916,6 @@ PropertyF.Ground.CentreInduction.ForgetDualTensor	PropertyF.Ground.CentreInducti
 PropertyF.Ground.Modular.BraidIso	PropertyF.Ground.Modular.tensorPowerIso.match_1	definition	1	25	4	0	0	0	0	413685589
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.simplePiecesObject	definition	1	13	3	0	0	0	0	1884015159
 PropertyF.Ground.Dimensions.DefectNaturality	PropertyF.Ground.Dimensions.enoFrobeniusEquiv.eq_1	theorem	0	265	4	0	0	0	0	1409478560
-PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.euclideanAbs_norm	theorem	1	54	1	1	0	1	0	1847999286
 PropertyF.Ground.Dimensions.RootDualLabel	PropertyF.Ground.Dimensions.enoFrobeniusEquiv._proof_2	theorem	1	24	0	0	0	0	0	3129590095
 PropertyF.Ground.Calculus.OverlapCoherence	_private.PropertyF.Ground.Calculus.OverlapCoherence.0.PropertyF.Ground.Calculus.insertLeftPowerIso.match_1.splitter	definition	0	25	4	0	0	0	0	413685589
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addRightBraidAlgebraIter_group._f	definition	1	899	3	3	0	7	2	3778752121
