@@ -133,17 +133,13 @@ theorem unitDoubleDual_trace [RightRigidCategory C] :
       @ExactPairing.evaluation C _ _ (rightDualObject (𝟙_ C))
         (rightDualObject (rightDualObject (𝟙_ C)))
         (@HasRightDual.exact C _ _ _ (RightRigidCategory.rightDual _)) = 𝟙 (𝟙_ C)
-  have hfinal : @ExactPairing.coevaluation C _ _ (𝟙_ C) (𝟙_ C) hq ≫
-      (r.inv ⊗ₘ 𝟙 (𝟙_ C)) ≫
-      @ExactPairing.evaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp = 𝟙 (𝟙_ C) := by
-    simp only [tensorHom_def, whiskerLeft_id, Category.comp_id]
-    change @ExactPairing.coevaluation C _ _ (𝟙_ C) (𝟙_ C) hq ≫
-      ((rightDualIso hp hq).inv ▷ (𝟙_ C) ≫
-        @ExactPairing.evaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp) = 𝟙 (𝟙_ C)
-    rw [(rightDualIso_inv_evaluation hp hq)]
-    change (ρ_ (𝟙_ C)).inv ≫ (ρ_ (𝟙_ C)).hom = 𝟙 (𝟙_ C)
-    exact Iso.inv_hom_id _
-  exact (trace_change_rightDual hp hq r.inv).trans hfinal
+  apply (trace_change_rightDual hp hq r.inv).trans
+  simp only [tensorHom_def, whiskerLeft_id, Category.comp_id]
+  change @ExactPairing.coevaluation C _ _ (𝟙_ C) (𝟙_ C) hq ≫
+    ((rightDualIso hp hq).inv ▷ (𝟙_ C) ≫
+      @ExactPairing.evaluation C _ _ (𝟙_ C) (rightDualObject (𝟙_ C)) hp) = 𝟙 (𝟙_ C)
+  rw [rightDualIso_inv_evaluation hp hq]
+  exact Iso.inv_hom_id _
 
 
 set_option backward.isDefEq.respectTransparency false in
