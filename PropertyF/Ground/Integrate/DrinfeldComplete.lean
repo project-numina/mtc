@@ -34,9 +34,7 @@ theorem center_globalDimension_square_of_actual_induction
     globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
   CentreModular.center_globalDimension_of_adjunction C
     (CentreInduction.induction C) (CentreInduction.actualAdjunction C)
-    (fun _ ↦ ⟨Iso.refl _⟩) p hp fun i ↦ by
-      simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-        Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hdim i
+    (fun _ ↦ ⟨Iso.refl _⟩) p hp hdim
 
 
 
@@ -82,12 +80,10 @@ theorem centerPivotal_hasFPDimensions (C : BraidedFusionCategory.{v,u})
       (centerPivotalOfPivotalPseudoUnitary C p hpu) := by
   letI := CentreRigid.rigidCenter (C := C.Obj)
   letI := centerFusionOfPivotalPseudoUnitary C p hpu
-  have hs := Classical.choose_spec (Classical.choose_spec
-    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))
-  obtain ⟨_, hd, _, _⟩ := hs
-  change ∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C)
-    (centerPivotalOfPivotalPseudoUnitary C p hpu)
-    (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ) at hd
+  have hd := (Classical.choose_spec (Classical.choose_spec
+    (CentreInduction.center_structure_of_pivotal_pseudoUnitary C p hpu))).2.1
+  change CentreInduction.PivotalHasFPDimensions (Integrate.bundledCenter C)
+    (centerPivotalOfPivotalPseudoUnitary C p hpu) at hd
   intro i
   simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
     Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hd i
@@ -149,8 +145,8 @@ theorem drinfeld_tensor (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
     Modular.doubleBraiding X Y ≫ (doubleDualIso C (X ⊗ Y)).hom =
       ((doubleDualIso C X).hom ⊗ₘ (doubleDualIso C Y).hom) ≫
         (Dimensions.doubleDualTensorIso X Y).hom :=
-  CentreIntegrate.drinfeld_tensor_of_pairing_cap C X Y
-    (Dimensions.drinfeld_tensor_pairing_cap C X Y)
+  CentreIntegrate.drinfeld_tensor_of_pairing_cap (doubleDualIso C)
+    (Dimensions.drinfeld_eval C (X ⊗ Y)) (Dimensions.drinfeld_tensor_pairing_cap C X Y)
 
 /-- The twist of any pivotal braided fusion category is balanced. -/
 theorem pivotal_twist_balanced (C : BraidedFusionCategory.{v,u})
@@ -159,7 +155,7 @@ theorem pivotal_twist_balanced (C : BraidedFusionCategory.{v,u})
       ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
         (Dimensions.pivotalBraidedTwist C p Y).hom) =
       (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom :=
-  CentreIntegrate.pivotal_balance_of_drinfeld_tensor C p X Y (drinfeld_tensor C X Y)
+  CentreIntegrate.pivotal_balance_of_drinfeld_tensor p (doubleDualIso C) (drinfeld_tensor C X Y)
 
 
 

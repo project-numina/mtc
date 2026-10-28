@@ -205,13 +205,11 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
   have hpos : ∀ i, 0 < original i := fun i => fpSimple_pos Z _
   have htrans : ∀ i, σ (original i : ℂ) = (transformed i : ℂ) :=
     fun i ↦ (hreal (e.symm i)).symm
-  have hqdim : ∀ i, Dimensions.groundUnitScalarEquiv D (q.rightTrace (𝟙 (simples D i))) =
+  have hqdim : ∀ i, Dimensions.pivotalDimension D q (simples D i) =
       (transformed i : ℂ) := by
     intro i
     have hi := he (e.symm i)
     rw [e.apply_symm_apply] at hi
-    rw [Dimensions.groundUnitScalarEquiv_apply]
-    change Dimensions.pivotalDimension D q (simples D i) = _
     rw [hi]
     simp only [transformed, original, hreal]
     congr 1
@@ -221,11 +219,10 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
     intro hz
     have h : (fpSimple Z y : ℂ) ≠ 0 := by exact_mod_cast (ne_of_gt (fpSimple_pos Z y))
     exact (map_ne_zero σ).2 h (by simpa [hz] using hσ)
-  have hXdim : Dimensions.groundUnitScalarEquiv D (q.rightTrace (𝟙 X)) = (d : ℂ) := by
-    change Dimensions.groundUnitScalarEquiv (ScalarTwist.category Z σ)
-      ((ScalarTwist.pivotal Z σ p).rightTrace (𝟙 (show (ScalarTwist.category Z σ).Obj from simples Z y))) = _
-    rw [ScalarTwist.rightTrace_twist Z σ p]
-    rw [Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv]
+  have hXdim : Dimensions.pivotalDimension D q X = (d : ℂ) := by
+    change Dimensions.pivotalDimension (ScalarTwist.category Z σ)
+      (ScalarTwist.pivotal Z σ p) (simples Z y) = _
+    rw [ScalarTwist.pivotalDimension_twist, Dimensions.pivotalDimension, unitScalar_eq_equiv]
     change σ (Modular.simpleDimension Z p y) = _
     rw [hdim, hσ]
   have hXfp : fpDimension D X = fpSimple Z y := by
@@ -239,11 +236,7 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
     change σ (Modular.categoricalS Z p y y) = _
     exact hS
   apply actual_rigidity_of_overlap_and_galois_dimensions D X q original transformed σ
-    hpos htrans
-    (by simpa only [Dimensions.pivotalDimension, ← Dimensions.groundUnitScalarEquiv_apply] using hqdim)
-    d (fpSimple Z y) hd (fpSimple_pos Z y)
-    (by simpa only [Dimensions.pivotalDimension, ← Dimensions.groundUnitScalarEquiv_apply] using hXdim)
-    hXfp hXS hF
+    hpos htrans hqdim d (fpSimple Z y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
   intro u k
   exact Calculus.overlap_trace_power D q u k
 

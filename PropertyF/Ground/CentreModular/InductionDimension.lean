@@ -26,8 +26,7 @@ theorem center_globalDimension_of_adjunction
       CentreInduction.underlying C (simples C i)))
     (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
     (hp : p.IsSpherical)
-    (hdim : ∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) p
-      (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ)) :
+    (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p) :
     globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
   have hpu : PseudoUnitary (Integrate.bundledCenter C) := by
     unfold PseudoUnitary globalFPDimension
@@ -37,7 +36,10 @@ theorem center_globalDimension_of_adjunction
     intro i _
     change Dimensions.pivotalDimension (Integrate.bundledCenter C) p
       (simples (Integrate.bundledCenter C) i) ^ 2 = _
-    rw [hdim]
+    rw [show Dimensions.pivotalDimension (Integrate.bundledCenter C) p
+        (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ) by
+      simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
+        Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hdim i]
   change globalDimension (Integrate.bundledCenter C) =
     (globalFPDimension (Integrate.bundledCenter C) : ℂ) at hpu
   rw [hpu, CentreInduction.globalFPDimension_square_of_adjunction C I adj hI, Complex.ofReal_pow]

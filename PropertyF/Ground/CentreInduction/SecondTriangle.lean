@@ -153,13 +153,13 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component reduces to the corresponding counit-crossing matrix entry. -/
 theorem unit_matrix_reduce (X : C.Obj) (i j : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) =
   𝟙 _ ⊗≫ ((V i) ◁ η_ (simples C j) ((simples C j)ᘁ)) ⊗≫
     (((biproduct.ι V i ▷ (simples C j)) ≫ crossingCandidate C X (simples C j) ≫
       ((simples C j) ◁ (underlyingCounit C).app X)) ▷ (simples C j)ᘁ) ⊗≫ 𝟙 _ := by
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   let b : (⨁ V) ⊗ simples C j ⟶ simples C j ⊗ (⨁ V) := crossingCandidate C X (simples C j)
   let w : (⨁ V) ⟶ X := (underlyingCounit C).app X
   change biproduct.ι V i ≫ ((ρ_ (⨁ V)).inv ≫ ((⨁ V) ◁ η_ (simples C j) ((simples C j)ᘁ)) ≫
@@ -172,7 +172,7 @@ theorem unit_matrix_reduce (X : C.Obj) (i j : Fin (rank C)) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The off-diagonal components of the second triangle vanish. -/
 theorem unit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) = 0 := by
   have h := unit_matrix_reduce C X i j
@@ -183,7 +183,7 @@ theorem unit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/
 theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) i ≫
     ((simples C i ◁ (underlyingCounit C).app X) ▷ (simples C i)ᘁ) = 𝟙 (V i) := by
   have h := unit_matrix_reduce C X i i
@@ -207,10 +207,10 @@ set_option backward.defeqAttrib.useBackward true in
 /-- Projecting a mapped induction unit selects its corresponding component. -/
 theorem unitCandidate_map_projection_general (Z : CategoryTheory.Center C.Obj) {X : C.Obj}
     (f : Z.1 ⟶ X) (j : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (unitCandidate C Z ≫ (underlyingFunctor C).map f) ≫ biproduct.π V j =
     unitComponent C Z j ≫ ((simples C j ◁ f) ▷ (simples C j)ᘁ) := by
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   let W : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
   let g : ∀ k, W k ⟶ V k := fun k => (simples C k ◁ f) ▷ (simples C k)ᘁ
   change (biproduct.lift (unitComponent C Z) ≫ biproduct.map g) ≫ biproduct.π V j =
@@ -224,24 +224,20 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Every matrix entry of the second triangle has the expected value. -/
 theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   biproduct.ι V i ≫
     (unitCandidate C ((induction C).obj X) ≫
       (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   have hp := unitCandidate_map_projection_general C ((induction C).obj X) ((underlyingCounit C).app X) j
   have hh := congrArg (fun f => biproduct.ι V i ≫ f) hp
   simp only [Category.assoc] at hh
   change _ = _ at hh
-  have hu : biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
-      ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) =
-      biproduct.ι V i ≫ biproduct.π V j := by
-    by_cases h : i = j
-    · subst j
-      simpa using unit_diag C X i
-    · simpa [biproduct.ι_π_ne V h] using unit_offdiag C X i j h
-  simpa [Category.assoc] using hh.trans hu
+  by_cases h : i = j
+  · subst j
+    simpa [Category.assoc] using hh.trans (unit_diag C X i)
+  · simpa [V, Category.assoc, biproduct.ι_π_ne _ h] using hh.trans (unit_offdiag C X i j h)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit and counit satisfy the second triangle. -/
