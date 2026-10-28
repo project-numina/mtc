@@ -202,8 +202,8 @@ theorem pivotalTrace_overlap (C : BraidedFusionCategory.{v,u})
     scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
-  rw [← Dimensions.rightTrace_partialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u)]
-  rw [rightPartialTrace_overlap C p scalar v u]
+  rw [← Dimensions.rightTrace_partialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u),
+    rightPartialTrace_overlap C p scalar v u]
   simp [scalarTrace, PivotalStructure.rightTrace_smul, mul_comm]
 
 end PropertyF.Ground.Calculus
@@ -226,8 +226,8 @@ omit [BraidedCategory C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 theorem rightTrace_iso_conj [RightRigidCategory C]
     (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) (a : End X) :
     p.rightTrace ((isoEndAlgEquiv e) a).asHom = p.rightTrace a.asHom := by
-  have h := p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
-  simpa [isoEndAlgEquiv, Iso.conj_apply_asHom, Category.assoc] using h
+  simpa [isoEndAlgEquiv, Iso.conj_apply_asHom, Category.assoc] using
+    p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
 
 omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The actual braid `a²b²` becomes the graphical overlap of two copies of

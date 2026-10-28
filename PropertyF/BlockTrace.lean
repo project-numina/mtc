@@ -81,9 +81,8 @@ theorem scalar_of_norm_trace_eq_card [DecidableEq ι] {U : Matrix ι ι ℂ} (hU
     exact_mod_cast (Fintype.card_ne_zero (α := ι))
   let z : ℂ := U.trace / (Fintype.card ι : ℂ)
   have hz : ‖z‖ = 1 := by simp [z, ht, hn]
-  have hzsq : Complex.normSq z = 1 := by rw [Complex.normSq_eq_norm_sq, hz]; norm_num
-  have hzmul : conj z * z = 1 := by
-    rw [Complex.conj_mul', hz]; norm_num
+  have hzsq : Complex.normSq z = 1 := by simp [Complex.normSq_eq_norm_sq, hz]
+  have hzmul : conj z * z = 1 := by simp [Complex.conj_mul', hz]
   have hV : ColumnUnitary (conj z • U) := by
     intro j
     simp only [Matrix.smul_apply, smul_eq_mul, Complex.normSq_mul, Complex.normSq_conj]

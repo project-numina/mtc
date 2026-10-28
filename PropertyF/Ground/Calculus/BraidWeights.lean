@@ -77,13 +77,13 @@ theorem pivotalTrace_groundEndBlocks (C : BraidedFusionCategory.{v,u})
     rcases q with ⟨i, j⟩
     rw [groundEndBlockEquiv_diagonal]
     simpa [z, F, Category.assoc] using (groundSimpleScalar_smul_id C i _).symm
-  have h := cyclicTrace_biproduct_scalar_blocks (rightTraceLinear p)
-    (fun f g => p.rightTrace_cyclic f g) F z
+  have h := cyclicTrace_biproduct_scalar_blocks
+    (fun Y => scalar.toLinearMap.comp (rightTraceLinear p Y))
+    (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) F z
     (fun q => groundEndBlockEquiv C X m e a q.1 q.2 q.2) hc
-  have h' := congrArg scalar h
-  simp only [map_sum, map_smul, smul_eq_mul, rightTraceLinear, LinearMap.coe_mk,
-    AddHom.coe_mk] at h'
-  rw [← hz, h', Fintype.sum_sigma]
+  change scalar (p.rightTrace z) = ∑ q, groundEndBlockEquiv C X m e a q.1 q.2 q.2 *
+    scalar (p.rightTrace (𝟙 (F q))) at h
+  rw [← hz, h, Fintype.sum_sigma]
   simp [F, Matrix.trace, Finset.mul_sum, mul_comm]
 
 end PropertyF.Ground.Calculus

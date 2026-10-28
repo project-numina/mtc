@@ -31,11 +31,10 @@ theorem braid_squares_equal_of_saturation (B : PropertyF.Blocks)
         ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (ha r) 2)
         ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (hb r) 2)
   have hmass : B.mass w ≤ |d| * f ^ 2 := by
-    have h := hbound (B.signElement w) (B.signElement_unitary w)
-    rw [B.trace_signElement] at h
     have hm : 0 ≤ B.mass w :=
       Finset.sum_nonneg (fun r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _))
-    simpa [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hm] using h
+    simpa [B.trace_signElement, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hm] using
+      hbound (B.signElement w) (B.signElement_unitary w)
   have hsaturate : ‖B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra)‖ = B.mass w := by
     apply le_antisymm (B.norm_trace_le w hunit)
     rw [htrace]
@@ -102,30 +101,19 @@ theorem actual_braid_squares_equal_of_saturation
     b.toMonoidHom.comp (braidInImage X 1)
   let a : B.Algebraˣ := ρ.toHomUnits (threeGeneratorLeft X)
   let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
-  have ha : B.IsUnitary (a : B.Algebra) := he _
-  have hc : B.IsUnitary (c : B.Algebra) := he _
-  have hbraid : a * c * a = c * a * c := by
-    apply Units.ext
-    exact three_braid_relation_map ρ
   have hbnd : ∀ z : B.Algebra, B.IsUnitary z → ‖B.trace w z‖ ≤ |d| * f ^ 2 := by
     intro z hz
     change ∀ i, z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ at hz
-    have h := hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
-    simpa [htrace, B] using h
+    simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
   have hv : B.trace w ((a ^ 2 * c ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2 := by
-    have h := htrace (braidInImage X 1
-      (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2))
-    rw [hvalue] at h
     change B.trace w (b (braidInImage X 1 (threeGeneratorLeft X)) ^ 2 *
       b (braidInImage X 1 (threeGeneratorRight X)) ^ 2) = _
-    rw [← map_pow b, ← map_pow b, ← map_mul b]
-    rw [map_mul, map_pow, map_pow] at h
-    exact h.symm
-  have h := braid_squares_equal_of_saturation B w a c d f hf hw ha hc hbraid hbnd hv
-  have hh := congrArg (fun z : B.Algebraˣ => (z : B.Algebra)) h
-  change b (braidInImage X 1 (threeGeneratorLeft X)) ^ 2 =
-    b (braidInImage X 1 (threeGeneratorRight X)) ^ 2 at hh
-  exact hh
+    rw [← map_pow b, ← map_pow b, ← map_mul b,
+      ← map_pow (braidInImage X 1), ← map_pow (braidInImage X 1),
+      ← map_mul (braidInImage X 1), ← htrace, hvalue]
+  exact congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
+    (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
+      (Units.ext (three_braid_relation_map ρ)) hbnd hv)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Equal actual three-strand squares make the two adjacent copies of double
