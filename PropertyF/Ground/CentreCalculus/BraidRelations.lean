@@ -49,18 +49,14 @@ theorem braidGenerator_zero_involutive (n : ℕ) :
 include hX in
 set_option backward.isDefEq.respectTransparency false in
 /-- Self-transparency makes each adjacent braid generator an involution. -/
-theorem braidGenerator_involutive :
-    ∀ (n : ℕ) (i : Fin (n + 1)), b X n i * b X n i = 1 := by
-  intro n
+theorem braidGenerator_involutive (n : ℕ) (i : Fin (n + 1)) :
+    b X n i * b X n i = 1 := by
   induction n with
-  | zero =>
-    intro i
-    simpa [Fin.eq_zero i] using braidGenerator_zero_involutive hX 0
+  | zero => simpa [Fin.eq_zero i] using braidGenerator_zero_involutive hX 0
   | succ n ih =>
-    intro i
     refine Fin.cases (braidGenerator_zero_involutive hX (n + 1)) (fun j => ?_) i
-    have h := congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2))) (ih j)
-    simpa only [map_mul, map_one, braidGenerator_succ] using h
+    simpa only [map_mul, map_one, braidGenerator_succ] using
+      congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2))) (ih j)
 
 end PropertyF.Ground.CentreCalculus
 
@@ -72,18 +68,14 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- Every neighboring pair of actual tensor-power braid generators satisfies
 Yang–Baxter. -/
-theorem adjacent_braid_relation : ∀ (n : ℕ) (i : Fin (n + 1)),
+theorem adjacent_braid_relation (n : ℕ) (i : Fin (n + 1)) :
     b X (n + 1) i.castSucc * b X (n + 1) i.succ *
       b X (n + 1) i.castSucc =
     b X (n + 1) i.succ * b X (n + 1) i.castSucc *
       b X (n + 1) i.succ := by
-  intro n
   induction n with
-  | zero =>
-    intro i
-    simpa [Fin.eq_zero i] using Calculus.three_braid_relation X
+  | zero => simpa [Fin.eq_zero i] using Calculus.three_braid_relation X
   | succ n ih =>
-    intro i
     refine Fin.cases ?_ (fun j => ?_) i
     · convert congrArg (Calculus.addRightAut X (n + 1)) (ih 0) using 1 <;>
         simp only [map_mul, Calculus.addRightAut_generator] <;> congr 2
@@ -109,17 +101,11 @@ theorem first_distant_commute (n : ℕ) (j : Fin (n + 1)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Crossings supported on disjoint pairs of strands commute. -/
-theorem distant_braid_commute : ∀ (n : ℕ) (i j : Fin (n + 1)),
-    i.val + 1 < j.val →
-    b X n i * b X n j =
-      b X n j * b X n i := by
-  intro n
+theorem distant_braid_commute (n : ℕ) (i j : Fin (n + 1)) (hij : i.val + 1 < j.val) :
+    b X n i * b X n j = b X n j * b X n i := by
   induction n with
-  | zero =>
-    intro i j hij
-    omega
+  | zero => omega
   | succ n ih =>
-    intro i j hij
     by_cases hi : i = 0
     · subst i
       cases n with
