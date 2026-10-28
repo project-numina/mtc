@@ -17,43 +17,6 @@ public import PropertyF.Ground.CentreCabling.RegularSupport
 public import PropertyF.Ground.Integrate.CenterBundle
 
 section
-/-! Bundle-free reduction of the target to FP invariance under conjugacy and the
-paper's Galois-fixedness argument for pseudo-unitary categories. -/
-
-@[expose] public noncomputable section
-namespace PropertyF.Ground
-universe v u
-
-/-- The unit simple proves positivity, leaving only the bounded-conjugate and
-centre/rigidity witness obligations. -/
-theorem target_of_bounded_conjugates_and_witness
-    (hConjugates : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ, ∃ a : ℝ,
-        0 < a ∧ a ≤ globalFPDimension C ∧
-          σ (globalFPDimension C : ℂ) = (a : ℂ))
-    (hWitness : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj → ∀ (σ : ℂ ≃+* ℂ) (a b : ℝ),
-        0 < a → a < globalFPDimension C →
-        σ (globalFPDimension C : ℂ) = (a : ℂ) →
-        σ.symm (globalFPDimension C : ℂ) = (b : ℂ) →
-        ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧
-          f * b = globalFPDimension C ∧ 1 ≤ f ∧ f = |d|) :
-    TargetStatement.{v,u} :=
-by
-  intro C hPU hF
-  obtain ⟨D, σ, ⟨E⟩, hD⟩ := hPU
-  have hDF := Modular.conjugate_propertyF E hF
-  have hfixed := galois_fixed_of_smaller_conjugate_witness (globalFPDimension D)
-    (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D))
-    (hConjugates D hD hDF) (hWitness D hD hDF)
-  have hInt := weaklyIntegral_of_globalFPDimension_fixed D hfixed
-  rwa [Modular.conjugate_globalFPDimension E]
-
-end PropertyF.Ground
-end
-end
-
-section
 /-! Extract the numerical ingredients of the paper's witness from an actual
 spherical category with positive FP dimensions and invertible S matrix. -/
 
@@ -90,15 +53,9 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
   refine ⟨y, (σ (fpSimple Z y : ℂ)).re, one_le_fpSimple Z y,
     (fp_simple_galois_real Z σ y).symm, ?_, ?_, ?_⟩
   · intro x
-    have h := hprop.1 x
-    rw [hdim] at h
-    exact h
-  · have h := hprop.2.2
-    rw [hglobal, hdim] at h
-    exact h
-  · have h := hprop.1 y
-    rw [hdim] at h
-    exact h
+    simpa only [hdim] using hprop.1 x
+  · simpa only [hglobal, hdim] using hprop.2.2
+  · simpa only [hdim] using hprop.1 y
 
 /-- Once the Galois-unit column is known to have finite braid image and the
 actual three-strand rigidity theorem applies, the required numerical witness
@@ -205,45 +162,6 @@ The overlap, modularity and product-retract reductions assemble the categorical
 inputs required by the final integrality argument. -/
 
 section
-/-! Discharge overlap coherence and reduce the target to its modular centre. -/
-
-@[expose] public noncomputable section
-open CategoryTheory
-namespace PropertyF.Ground
-universe v u
-
-set_option backward.isDefEq.respectTransparency false in
-/-- The target follows from an actual positive spherical modular centre with
-the global dimension and selected finite-braid-image properties. All of
-these centre facts remain explicit premises. -/
-theorem target_of_modular_center
-    (hCenter : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ,
-      ∃ (Z : BraidedFusionCategory.{v,max u v}) (p : Dimensions.PivotalStructure (C := Z.Obj)),
-        p.IsSpherical ∧
-        (Modular.HasFPSimpleDimensions Z p) ∧
-        (Modular.categoricalS Z p).det ≠ 0 ∧
-        globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-        (∀ y, (∀ x, Modular.categoricalS Z p x y =
-          (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
-          ObjectPropertyF (simples Z y))) : TargetStatement.{v,u} := by
-  apply target_of_bounded_conjugates_and_witness
-  · intro C _ _ σ
-    exact positive_bounded_conjugates_of_fp C σ
-  · intro C hPU hF σ a b _ _ _ hτ
-    obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp C σ.symm
-    have hb : 0 < b := (Complex.ofReal_injective (hb'eq.symm.trans hτ)) ▸ hb'
-    obtain ⟨Z, p, hp, hdim, hdet, hglobal, hfinite⟩ := hCenter C hPU hF σ
-    apply center_witness_of_categorical_modular_data Z hp hdim hdet
-      (lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C))
-      hb hglobal σ hτ hfinite
-
-
-end PropertyF.Ground
-end
-end
-
-section
 /-! State the remaining inputs on Mathlib’s actual Drinfeld centre. -/
 
 @[expose] public noncomputable section
@@ -272,21 +190,31 @@ theorem target_of_actual_center
             (HasIntegralSimpleDimensionsOn Z p core) ∧
             (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
             (∀ y ∈ generated, Centre.ProductRetract (simples Z y))) : TargetStatement.{v,u} := by
-  apply target_of_modular_center
-  intro C hPU hF σ
-  obtain ⟨hR, hFusion, p, core, generated, hp, hdim, hdet, hglobal, hIntegral, hDouble, hProduct⟩ :=
-    hCenter C hPU hF
-  letI := hR
-  letI := hFusion
-  let Z := Integrate.bundledCenter C
-  refine ⟨Z, p, hp, hdim, hdet, hglobal, ?_⟩
-  intro y hColumn
-  apply propertyF_of_galois_column Z p σ.symm core generated hIntegral hDouble ?_ y
-  · intro x
-    rw [hdim y]
-    exact hColumn x
-  · intro i hi
-    exact Centre.productRetract_propertyF (hProduct i hi) hF
+  intro C hPU hF
+  obtain ⟨D, σ, ⟨E⟩, hD⟩ := hPU
+  have hDF := Modular.conjugate_propertyF E hF
+  have hfixed := galois_fixed_of_smaller_conjugate_witness (globalFPDimension D)
+    (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D))
+    (positive_bounded_conjugates_of_fp D) (by
+      intro τ a b _ _ _ hτ
+      obtain ⟨b', hb', _, hb'eq⟩ := positive_bounded_conjugates_of_fp D τ.symm
+      have hb : 0 < b := (Complex.ofReal_injective (hb'eq.symm.trans hτ)) ▸ hb'
+      obtain ⟨hR, hFusion, p, core, generated, hp, hdim, hdet, hglobal,
+        hIntegral, hDouble, hProduct⟩ := hCenter D hD hDF
+      letI := hR
+      letI := hFusion
+      let Z := Integrate.bundledCenter D
+      apply center_witness_of_categorical_modular_data Z hp hdim hdet
+        (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D)) hb hglobal τ hτ
+      intro y hColumn
+      apply propertyF_of_galois_column Z p τ.symm core generated hIntegral hDouble ?_ y
+      · intro x
+        rw [hdim y]
+        exact hColumn x
+      · intro i hi
+        exact Centre.productRetract_propertyF (hProduct i hi) hDF)
+  have hInt := weaklyIntegral_of_globalFPDimension_fixed D hfixed
+  rwa [Modular.conjugate_globalFPDimension E]
 
 end PropertyF.Ground
 end

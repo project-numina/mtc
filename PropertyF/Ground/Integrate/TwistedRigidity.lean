@@ -129,8 +129,8 @@ theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
 /-- Pivotal dimensions transform by the specified field automorphism. -/
 theorem pivotalDimension_twist (p : Dimensions.PivotalStructure (C := C.Obj)) (X : C.Obj) :
     Dimensions.pivotalDimension (category C σ) (pivotal C σ p) X =
-    σ (Dimensions.pivotalDimension C p X) := by
-  exact unitScalar_twist C σ _
+    σ (Dimensions.pivotalDimension C p X) :=
+  unitScalar_twist C σ _
 
 /-- Match chosen simple representatives and transport both dimensions. -/
 theorem labels (p : Dimensions.PivotalStructure (C := C.Obj)) :
@@ -213,24 +213,20 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
   let transformed : Fin (rank D) → ℝ := fun i => (σ (original i : ℂ)).re
   have hreal := fp_simple_galois_real Z σ
   have hpos : ∀ i, 0 < original i := fun i => fpSimple_pos Z _
-  have htrans : ∀ i, σ (original i : ℂ) = (transformed i : ℂ) := by
-    intro i
-    exact (hreal (e.symm i)).symm
+  have htrans : ∀ i, σ (original i : ℂ) = (transformed i : ℂ) :=
+    fun i ↦ (hreal (e.symm i)).symm
   have hqdim : ∀ i, Dimensions.groundUnitScalarEquiv D (q.rightTrace (𝟙 (simples D i))) =
       (transformed i : ℂ) := by
     intro i
+    have hi := (he (e.symm i)).2
+    rw [e.apply_symm_apply] at hi
     rw [Dimensions.groundUnitScalarEquiv_apply]
     change Dimensions.pivotalDimension D q (simples D i) = _
-    have h := (he (e.symm i)).2
-    rw [e.apply_symm_apply] at h
-    rw [h]
-    unfold transformed original
-    rw [hreal]
+    rw [hi]
+    simp only [transformed, original, hreal]
     congr 1
-    unfold Modular.HasFPSimpleDimensions at hdim
-    unfold Dimensions.pivotalDimension Modular.simpleDimension at *
-    rw [unitScalar_eq_equiv]
-    exact hdim _
+    simpa only [Dimensions.pivotalDimension, unitScalar_eq_equiv,
+      Modular.simpleDimension] using hdim (e.symm i)
   have hd : d ≠ 0 := by
     intro hz
     have hn : σ (fpSimple Z y : ℂ) ≠ 0 := (map_ne_zero σ).2 (by exact_mod_cast (ne_of_gt (fpSimple_pos Z y)))

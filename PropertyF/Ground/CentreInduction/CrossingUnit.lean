@@ -97,16 +97,15 @@ theorem crossingBlock_unit_of_split {D : Type u} [Category.{v} D] [MonoidalCateg
     [FiniteDimensional ℂ (S ⟶ S)]
     (g : S ⟶ (𝟙_ D) ⊗ S) (f : (𝟙_ D) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
     crossingBlock X (𝟙_ D) S S g f =
-      (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  rw [crossingBlock_of_simple_split X (𝟙_ D) (λ_ S).symm g f h]
-  exact crossingBlock_unit X S
+      (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv :=
+  (crossingBlock_of_simple_split X (𝟙_ D) (λ_ S).symm g f h).trans (crossingBlock_unit X S)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-strand decomposition has one diagonal simple summand. -/
 theorem unit_crossing_finrank (i j : Fin (rank C)) :
-    Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C j) = if i = j then 1 else 0 := by
-  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (λ_ (simples C j))).finrank_eq]
-  exact finrank_simples_hom C i j
+    Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C j) = if i = j then 1 else 0 :=
+  (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (λ_ (simples C j))).finrank_eq.trans
+    (finrank_simples_hom C i j)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The explicit induction crossing is normalized on the tensor unit. -/
@@ -126,30 +125,28 @@ theorem crossingCandidate_unit (X : C.Obj) :
   · have hdim : Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i) = 1 := by
       rw [unit_crossing_finrank]; simp
     let a : Fin (Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i)) := ⟨0, by rw [hdim]; decide⟩
-    have ha (b : Fin (Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i))) : b = a := by
-      apply Fin.ext
-      have hb := b.isLt
-      dsimp [a]
-      omega
-    rw [Finset.sum_eq_single a]
-    · let : Simple (simples C i) := simples_simple C i
-      let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-      rw [crossingBlock_unit_of_split X
-        (crossingInclusion C (𝟙_ C.Obj) i i a) (crossingProjection C (𝟙_ C.Obj) i i a)
-        (crossingInclusion_projection C (𝟙_ C.Obj) i i a)]
-      change ((ρ_ (V i)).hom ≫ (λ_ (V i)).inv) ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) =
-        (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ (ρ_ (⨁ V)).hom ≫ (λ_ (⨁ V)).inv
-      simp only [Category.assoc, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]
-    · intro b _ hne
-      exact (hne (ha b)).elim
-    · simp
+    let : Subsingleton (Fin (Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i))) := by
+      rw [hdim]
+      infer_instance
+    let : Unique (Fin (Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i))) :=
+      ⟨⟨a⟩, fun b => Subsingleton.elim b a⟩
+    rw [Fintype.sum_unique, show (default : Fin (Module.finrank ℂ
+      (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i))) = a from Subsingleton.elim _ _]
+    let : Simple (simples C i) := simples_simple C i
+    let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+    rw [crossingBlock_unit_of_split X
+      (crossingInclusion C (𝟙_ C.Obj) i i a) (crossingProjection C (𝟙_ C.Obj) i i a)
+      (crossingInclusion_projection C (𝟙_ C.Obj) i i a)]
+    change ((ρ_ (V i)).hom ≫ (λ_ (V i)).inv) ≫ ((𝟙_ C.Obj) ◁ biproduct.ι V i) =
+      (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ (ρ_ (⨁ V)).hom ≫ (λ_ (⨁ V)).inv
+    simp only [Category.assoc, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]
   · intro j _ hne
     have hdim : Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C j) = 0 := by
       rw [unit_crossing_finrank]; simp [Ne.symm hne]
-    apply Finset.sum_eq_zero
-    intro a _
-    have ht := a.isLt
-    omega
+    let : IsEmpty (Fin (Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C j))) := by
+      rw [hdim]
+      infer_instance
+    exact Finset.sum_eq_zero fun a _ => isEmptyElim a
   · simp
 
 end PropertyF.Ground.CentreInduction
