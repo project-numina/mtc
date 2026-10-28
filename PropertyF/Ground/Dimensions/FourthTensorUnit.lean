@@ -36,10 +36,10 @@ theorem iso_comp_inv_eq_smul_iff_of_sq_one {D : Type u} [Category.{v} D]
       Category.id_comp]
     rw [ht, smul_smul, hz, one_smul]
 
-variable (C : BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor map with a unit factor has the root's unit sign. -/
-theorem rootTensorIso_unit_left (X : C.Obj) :
+theorem rootTensorIso_unit_left :
     (rootTensorIso C (𝟙_ C.Obj) X).hom =
       rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom := by
   let I := 𝟙_ C.Obj
@@ -62,14 +62,14 @@ theorem rootTensorIso_unit_left (X : C.Obj) :
   rw [doubleDualTensorIso_unit_left, leftUnitor_naturality]
 
 /-- The ENO tensor defect with a left unit factor is its unit sign. -/
-theorem rootTensorDefect_unit_left (X : C.Obj) :
+theorem rootTensorDefect_unit_left :
     (rootTensorDefect C (𝟙_ C.Obj) X).hom =
       rootDimension C (unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) :=
   (iso_comp_inv_eq_smul_iff_of_sq_one _ _ _ (rootDimension_unit_sq C)).2
     (rootTensorIso_unit_left C X)
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor map with a unit factor has the root's unit sign. -/
-theorem rootTensorIso_unit_right (X : C.Obj) :
+theorem rootTensorIso_unit_right :
     (rootTensorIso C X (𝟙_ C.Obj)).hom =
       rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (X ⊗ 𝟙_ C.Obj)).hom := by
   let I := 𝟙_ C.Obj
@@ -92,13 +92,13 @@ theorem rootTensorIso_unit_right (X : C.Obj) :
   rw [doubleDualTensorIso_unit_right, rightUnitor_naturality]
 
 /-- The ENO tensor defect with a right unit factor is its unit sign. -/
-theorem rootTensorDefect_unit_right (X : C.Obj) :
+theorem rootTensorDefect_unit_right :
     (rootTensorDefect C X (𝟙_ C.Obj)).hom =
       rootDimension C (unitIndex C) • 𝟙 (X ⊗ 𝟙_ C.Obj) :=
   (iso_comp_inv_eq_smul_iff_of_sq_one _ _ _ (rootDimension_unit_sq C)).2
     (rootTensorIso_unit_right C X)
 /-- The left-unit defect formula holds for the chosen simple representative. -/
-theorem rootTensorDefect_unitLabel_left (X : C.Obj) :
+theorem rootTensorDefect_unitLabel_left :
     (rootTensorDefect C (simples C (unitIndex C)) X).hom =
       rootDimension C (unitIndex C) • 𝟙 (simples C (unitIndex C) ⊗ X) :=
   (unitIndex_iso C).elim fun e ↦ (cancel_mono (e.hom ▷ X)).1 (by
@@ -106,7 +106,7 @@ theorem rootTensorDefect_unitLabel_left (X : C.Obj) :
       (rootTensorDefect_natural C e.hom (𝟙 X)).symm)
 
 /-- The right-unit defect formula holds for the chosen simple representative. -/
-theorem rootTensorDefect_unitLabel_right (X : C.Obj) :
+theorem rootTensorDefect_unitLabel_right :
     (rootTensorDefect C X (simples C (unitIndex C))).hom =
       rootDimension C (unitIndex C) • 𝟙 (X ⊗ simples C (unitIndex C)) :=
   (unitIndex_iso C).elim fun e ↦ (cancel_mono (X ◁ e.hom)).1 (by

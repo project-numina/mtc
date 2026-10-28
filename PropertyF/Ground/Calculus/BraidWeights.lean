@@ -89,12 +89,12 @@ abbrev HasMultiplicityDecomposition {ι κ : Type*} [Fintype κ]
 
 /-- The block trace mass is the constituent multiplicity mass whenever the
 actual representation dimensions decompose into braid-block dimensions. -/
-theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
-    (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → ℝ)
+theorem multiplicity_mass_eq {A : Type*} [AddCommMonoid A] {ι κ : Type*} [Fintype ι] [Fintype κ]
+    (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → A)
     (hdim : HasMultiplicityDecomposition m d mult) :
-    (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) = ∑ i, (m i : ℝ) * fp i := by
-  simpa [hdim, Finset.sum_mul, Finset.mul_sum, mul_comm, mul_left_comm] using
-    (Finset.sum_comm (s := .univ) (t := .univ) (f := fun i j => (mult i j : ℝ) * fp i * d j)).symm
+    (∑ j, d j • ∑ i, mult i j • fp i) = ∑ i, m i • fp i := by
+  simpa [hdim, ← Finset.sum_nsmul_assoc, Finset.smul_sum, ← mul_smul, Nat.mul_comm] using
+    (Finset.sum_comm (s := .univ) (t := .univ) (f := fun i j => d j • (mult i j • fp i))).symm
 
 /-- The paper's Galois-transported multiplicity weights cannot vanish when
 all original constituent dimensions are positive and the block is retained. -/

@@ -90,9 +90,9 @@ theorem drinfeld_inv_dual_tensor :
   have hm' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫
       ((Modular.doubleBraiding (Yᘁ) (Xᘁ))ᘁ) =
       Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫
-        (rightDualTensorIso (Yᘁ) (Xᘁ)).inv := by
-    rw [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
-    exact rightDualTensorIso_monodromy
+        (rightDualTensorIso (Yᘁ) (Xᘁ)).inv :=
+    (CommSq.vert_inv (g := rightDualTensorIso (Yᘁ) (Xᘁ))
+      (h := rightDualTensorIso (Yᘁ) (Xᘁ)) ⟨rightDualTensorIso_monodromy⟩).w.symm
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫

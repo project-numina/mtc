@@ -13,13 +13,12 @@ open scoped BigOperators
 namespace PropertyF.Ground
 
 variable {ι : Type*} [Fintype ι] {b : ι → ι → ℝ}
+variable (hb : ∀ i j, 0 ≤ b i j) (hbalance : ∀ i, (∑ j, b i j) = ∑ j, b j i)
+include hb hbalance
 
 /-- In a finite balanced flow, a set with no outgoing edges also has no
 incoming edges. -/
-theorem balanced_flow_no_entry
-    (hb : ∀ i j, 0 ≤ b i j)
-    (hbalance : ∀ i, (∑ j, b i j) = ∑ j, b j i)
-    {s : Finset ι} (hclosed : ∀ i ∈ s, ∀ j ∉ s, b i j = 0)
+theorem balanced_flow_no_entry {s : Finset ι} (hclosed : ∀ i ∈ s, ∀ j ∉ s, b i j = 0)
     {i j : ι} (hi : i ∉ s) (hj : j ∈ s) : b i j = 0 := by
   classical
   have hout : ∑ x ∈ s, ∑ y, b x y = ∑ x ∈ s, ∑ y ∈ s, b x y := by
@@ -46,10 +45,7 @@ theorem balanced_flow_no_entry
 
 /-- Every vertex with an outgoing edge in a finite balanced nonnegative flow
 lies on a directed cycle. -/
-theorem balanced_flow_cycle
-    (hb : ∀ i j, 0 ≤ b i j)
-    (hbalance : ∀ i, (∑ j, b i j) = ∑ j, b j i)
-    {o : ι} (hout : ∃ j, 0 < b o j) :
+theorem balanced_flow_cycle {o : ι} (hout : ∃ j, 0 < b o j) :
     ∃ j, 0 < b o j ∧ Relation.ReflTransGen (fun i j => 0 < b i j) j o := by
   classical
   let r : ι → ι → Prop := fun i j => 0 < b i j
