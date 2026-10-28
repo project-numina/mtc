@@ -161,8 +161,8 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
     (htrace : unitScalar C (rightQuantumTrace (a.app (𝟙_ C.Obj))) = 1) :
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
-  rw [rightQuantumTrace_smul_hom hr, rightQuantumTrace_unitIso] at htrace
-  simp only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] at htrace
+  simp only [rightQuantumTrace_smul_hom hr, rightQuantumTrace_unitIso,
+    Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] at htrace
   simpa [htrace] using hr
 
 set_option backward.isDefEq.respectTransparency false in

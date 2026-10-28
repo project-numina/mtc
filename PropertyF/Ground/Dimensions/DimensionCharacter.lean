@@ -44,9 +44,8 @@ theorem pivotalDimension_decomposition :
       pivotalDimension C p (simples C i) := by
   classical
   obtain ⟨e⟩ := exists_canonical_decomposition C X
-  rw [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
-    rightDimension_biproduct]
-  simp [Fintype.sum_sigma, pivotalDimension, Ground.unitScalar_eq_equiv]
+  simp [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
+    rightDimension_biproduct, Fintype.sum_sigma]
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
 theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}

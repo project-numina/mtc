@@ -108,10 +108,10 @@ theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → E := fun p ↦ T p.1
   let : ∀ p, Simple (V p) := fun p ↦ hsimple p.1
-  rw [(CategoryTheory.Linear.homCongr ℂ e (Iso.refl S)).finrank_eq,
+  simp only [(CategoryTheory.Linear.homCongr ℂ e (Iso.refl S)).finrank_eq,
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl S) e).finrank_eq,
-    finrank_biproduct_hom, finrank_hom_biproduct]
-  simp only [CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
+    finrank_biproduct_hom, finrank_hom_biproduct,
+    CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
 
 /-- A nonzero object decomposed over a finite family has a nonzero multiplicity. -/
 theorem exists_positive_multiplicity {k : Type*} [Field k]
