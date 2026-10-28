@@ -31,10 +31,8 @@ theorem rightDualTensorIso_associativity (X Y Z : C)
   let A := (X ⊗ Y) ⊗ Z
   let B := (Zᘁ) ⊗ ((Yᘁ) ⊗ (Xᘁ))
   let qXY : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := ExactPairing.tensor
-  let : ExactPairing (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) := qXY
   let qA : ExactPairing A B := @ExactPairing.tensor C _ _ (X ⊗ Y) Z ((Yᘁ) ⊗ (Xᘁ)) (Zᘁ)
     qXY HasRightDual.exact
-  let : ExactPairing A B := qA
   let D := X ⊗ (Y ⊗ Z)
   let E := ((Zᘁ) ⊗ (Yᘁ)) ⊗ (Xᘁ)
   let qYZ : ExactPairing (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) := ExactPairing.tensor
