@@ -105,12 +105,12 @@ theorem rightTrace_alternatingProjector :
   rw [Centre.alternatingProjector, Centre.algebraAverage_eq_sum]
   change p.rightTrace ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
     ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
-  simp only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul]
-  congr 1
-  simpa only [Dimensions.rightTraceLinear, LinearMap.coe_mk, AddHom.coe_mk,
-    p.rightTrace_smul] using
-    map_sum (Dimensions.rightTraceLinear p X)
-      (fun σ : Perm (Fin n) ↦ (sgn ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
+  simpa only [End.smul_asHom, End.sum_asHom, p.rightTrace_smul,
+    Dimensions.rightTraceLinear, LinearMap.coe_mk, AddHom.coe_mk] using
+    congrArg (fun x : End (𝟙_ C.Obj) ↦
+      (⅟(Fintype.card (Perm (Fin n)) : ℂ)) • x) <|
+        map_sum (Dimensions.rightTraceLinear p X)
+          (fun σ : Perm (Fin n) ↦ (sgn ℂ n σ : ℂ) • (ρ σ).asHom) Finset.univ
 
 /-- Multiplying the alternating-projector trace by the group order gives
  the signed sum of the actual categorical permutation traces. -/

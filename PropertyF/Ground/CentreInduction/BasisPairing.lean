@@ -21,10 +21,11 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 objects: precomposition corresponds to dualizing postcomposition. -/
 theorem simpleHomPairingEquiv_natural (i : Fin (rank C)) (q : V ⟶ W)
     (f : W ⟶ simples C i) : simpleHomPairingEquiv C i V (q ≫ f) =
-    Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv C i W f) := by
-  ext g
-  simp [simpleHomPairingEquiv, simpleHomPairing,
-    Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
+    Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q) (simpleHomPairingEquiv C i W f) :=
+  letI : Simple (simples C i) := simples_simple C i
+  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  LinearMap.ext fun g => congrArg (fun k => Ground.simpleEndScalar (simples C i) (End.of k))
+    (Category.assoc g q f).symm
 
 /-- A bilinear contraction with dual bases is natural under any linear map.
 This is the matrix identity needed to change fusion bases across a morphism. -/
@@ -184,8 +185,7 @@ theorem crossingBlock_post_test (X : D) (h : T ⟶ U)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     crossingBlock X T S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
       mixedCrossingBilinear (k := k) X T U R S (g ≫ (h ▷ S)) f := by
-  simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk,
-    comp_whiskerRight, Category.assoc]
+  dsimp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in

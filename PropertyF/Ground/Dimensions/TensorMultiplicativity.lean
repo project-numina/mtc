@@ -92,11 +92,12 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
+omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Closing the right tensor factor and then the left gives the total pivotal trace. -/
 theorem rightTrace_partialTrace (p : PivotalStructure (C := C)) {X Y : C} (f : End (X ⊗ Y)) :
   p.rightTrace (rightPartialTrace p f).asHom = p.rightTrace f.asHom := by
   simpa only [rightTraceWith, PivotalStructure.rightTrace, partialTraceWith,
-    rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk, Iso.trans_hom, tensorIso_hom,
+    rightPartialTrace, Iso.trans_hom, tensorIso_hom,
     ← p.tensor X Y, Category.assoc] using rightTraceWith_partialTraceWith (p.iso X) (p.iso Y) f
 
 end PropertyF.Ground.Dimensions
@@ -128,12 +129,13 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
+omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- Closing the right tensor factor of an inserted endomorphism. -/
 theorem rightPartialTrace_tensor_right (p : PivotalStructure (C := C)) (X : C) {Y : C} (b : Y ⟶ Y) :
     rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) =
       End.of ((ρ_ X).inv ≫ X ◁ (p.rightTrace b).asHom ≫ (ρ_ X).hom) := by
   apply End.ext
-  simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+  simp only [rightPartialTrace,
     PivotalStructure.rightTrace, tensorHom_def, id_whiskerRight, Category.id_comp,
     whiskerLeft_comp, comp_whiskerRight, Category.assoc]
   monoidal
