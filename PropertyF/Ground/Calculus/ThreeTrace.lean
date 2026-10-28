@@ -55,7 +55,6 @@ theorem threeGeneratorLeft_transport :
   change (threePowerIso X).inv ≫ (braidGenerator X 1 _).asIso.hom ≫ (threePowerIso X).hom = _
   dsimp only [threePowerIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
     Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  simp only [id_tensorHom, tensorHom_id, Category.assoc]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -65,7 +64,6 @@ theorem threeGeneratorRight_transport :
   change (threePowerIso X).inv ≫ (braidGenerator X 1 _).asIso.hom ≫ (threePowerIso X).hom = _
   dsimp only [threePowerIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
     Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  simp only [id_tensorHom, tensorHom_id]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -260,7 +258,6 @@ theorem twoGenerator_transport (X : C) :
   change (twoPowerIso X).inv ≫ (braidGenerator X 0 0).asIso.hom ≫ (twoPowerIso X).hom = _
   dsimp only [twoPowerIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
     Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-  simp only [id_tensorHom, tensorHom_id, Category.assoc]
   monoidal
 
 end PropertyF.Ground.Calculus
