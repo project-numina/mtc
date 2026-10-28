@@ -19,10 +19,10 @@ local notation "Sᶜ" => simples C
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- A tensor factor isomorphic to the unit and its dual cancel around any object. -/
-def unitTensorIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    {A : D} (e : A ≅ 𝟙_ D) (X : D) : (A ⊗ X) ⊗ Aᘁ ≅ X :=
-  letI : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
-  ((e ⊗ᵢ Iso.refl X) ⊗ᵢ (rightDualIsoMap e.symm ≪≫ rightDualUnitIso)) ≪≫
+def unitTensorIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (X : D) : (A ⊗ X) ⊗ Aᘁ ≅ X :=
+  letI : HasRightDual (𝟙_ D) := hasRightDualUnit
+  ((e ⊗ᵢ Iso.refl X) ⊗ᵢ rightDualIsoMap e.symm) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
 
 /-- The unit-labelled summand is isomorphic to the middle object. -/
@@ -51,12 +51,12 @@ theorem tensor_middle_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
 set_option backward.isDefEq.respectTransparency false in
 /-- Cancelling tensor-unit factors is natural in the middle object. -/
 theorem unitTensorIso_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] {A X Y : D} (e : A ≅ 𝟙_ D) (f : X ⟶ Y) :
+    {A X Y : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (f : X ⟶ Y) :
     ((A ◁ f) ▷ Aᘁ) ≫ (unitTensorIso e Y).hom = (unitTensorIso e X).hom ≫ f := by
-  dsimp [unitTensorIso]
+  dsimp [unitTensorIso, hasRightDualUnit]
   rw [Category.assoc, ← id_tensorHom, ← tensorHom_id, tensor_middle_natural_assoc]
-  simp only [id_tensorHom, tensorHom_id, rightUnitor_naturality, Category.assoc,
-    rightUnitor_naturality_assoc, leftUnitor_naturality]
+  simp only [id_tensorHom, tensorHom_id]
+  monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-summand projection is natural. This is the candidate underlying
@@ -84,18 +84,14 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- An object isomorphic to the tensor unit has its coevaluation normalized
 by the induced identification of its right dual with the unit. -/
-theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    {A : D} (e : A ≅ 𝟙_ D) :
-    letI : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
+theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) :
+    letI : HasRightDual (𝟙_ D) := hasRightDualUnit
     η_ A Aᘁ ≫ (e.hom ▷ Aᘁ) ≫ (λ_ Aᘁ).hom ≫
-      (rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom = 𝟙 (𝟙_ D) := by
-  let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual _
-  have hc : η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm ≪≫
-      rightDualUnitIso).hom) = (ρ_ (𝟙_ D)).inv := by
-    dsimp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom]
-    rw [tensorHom_def, whiskerLeft_comp, ← Category.assoc (e.hom ▷ Aᘁ),
-      ← tensorHom_def, ← Category.assoc, coevaluation_iso_map]
-    exact coevaluation_rightDualIso HasRightDual.exact exactPairingUnit
+      (rightDualIsoMap e.symm).hom = 𝟙 (𝟙_ D) := by
+  let : HasRightDual (𝟙_ D) := hasRightDualUnit
+  have hc : η_ A Aᘁ ≫ (e.hom ⊗ₘ (rightDualIsoMap e.symm).hom) = (ρ_ (𝟙_ D)).inv :=
+    coevaluation_iso_map e
   rw [← leftUnitor_naturality, ← tensorHom_def_assoc, ← Category.assoc, hc]
   monoidal_coherence
 
@@ -155,7 +151,7 @@ set_option backward.defeqAttrib.useBackward true in
 /-- The unit component associated to an object isomorphic to the tensor unit
 is inverse to the canonical identification of its tensor factors. -/
 theorem unitComponentAt_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] (Z : Center D) {A : D} (e : A ≅ 𝟙_ D) :
+    (Z : Center D) {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) :
     unitComponentAt Z A ≫ (unitTensorIso e Z.1).hom = 𝟙 Z.1 := by
   dsimp only [unitComponentAt, unitTensorIso]
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_def,
@@ -167,7 +163,7 @@ theorem unitComponentAt_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory
   rw [triangle_assoc_comp_right_assoc, ← whisker_exchange_assoc]
   simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp,
     ← whiskerLeft_comp_assoc, Category.assoc]
-  erw [coevaluation_iso_unit e, whiskerLeft_id]
+  erw [reassoc_of% coevaluation_iso_unit e, whiskerLeft_id]
   simp
 
 set_option backward.isDefEq.respectTransparency false in
