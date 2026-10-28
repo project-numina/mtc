@@ -38,6 +38,12 @@ omit [RightRigidCategory D] in
 @[instance_reducible] def forgetPairing (Z : 𝒵) : ExactPairing Z.1 ((Zᘁ).1) :=
   forgetPairingOf HasRightDual.exact
 
+omit [RightRigidCategory D] in
+/-- Forgetting a centre object also forgets its chosen right dual. -/
+@[instance_reducible] def forgetRightDual (Z : 𝒵) : HasRightDual Z.1 where
+  rightDual := (Zᘁ).1
+  exact := forgetPairing Z
+
 omit [RightRigidCategory D] [RightRigidCategory (Center D)] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Forgetting commutes with comparing two pairings when their coevaluations agree. -/
