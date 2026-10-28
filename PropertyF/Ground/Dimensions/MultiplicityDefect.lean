@@ -80,14 +80,13 @@ def fourthDualRootNaturalSquare (C : BraidedFusionCategory.{v,u}) :
 /-- The natural double-dual root squares to the natural braided fourth-dual
 isomorphism on every object. Monoidal compatibility remains a separate issue. -/
 theorem fourthDualRootNaturalSquare_eq :
-    fourthDualRootNaturalSquare C = fourthDualNaturalIso C.Obj := by
-  apply Iso.ext
-  refine natTrans_eq_of_simple_components C fun i ↦ ?_
-  change ((fourthDualRootNaturalIso C).app (simples C i)).hom ≫
-    ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
-      (fourthDualIso (simples C i)).hom
-  rw [fourthDualRootNaturalIso_app_simple]
-  exact congrArg Iso.hom (fourthDualSimpleRoot_sq C i)
+    fourthDualRootNaturalSquare C = fourthDualNaturalIso C.Obj :=
+  Iso.ext <| natTrans_eq_of_simple_components C fun i ↦ by
+    change ((fourthDualRootNaturalIso C).app (simples C i)).hom ≫
+      ((((fourthDualRootNaturalIso C).app (simples C i)).homᘁ)ᘁ) =
+        (fourthDualIso (simples C i)).hom
+    rw [fourthDualRootNaturalIso_app_simple]
+    exact congrArg Iso.hom (fourthDualSimpleRoot_sq C i)
 
 end PropertyF.Ground.Dimensions
 

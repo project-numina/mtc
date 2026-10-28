@@ -56,9 +56,8 @@ theorem scalar_sq_eq_one_of_same_square {X : D} [HasRightDual X] [HasRightDual (
     [HasRightDual ((Xᘁ)ᘁ)] [HasRightDual (((Xᘁ)ᘁ)ᘁ)] [Simple X]
     (a b : X ≅ (Xᘁ)ᘁ) (z : k) (hz : b.hom = z • a.hom)
     (hsq : b.hom ≫ ((b.homᘁ)ᘁ) = a.hom ≫ ((a.homᘁ)ᘁ)) : z * z = 1 := by
-  have hn : (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom ≠ 0 :=
-    mono_ne_zero_of_id_ne_zero _ (id_nonzero X)
-  apply smul_left_injective k hn
+  apply smul_left_injective k (mono_ne_zero_of_id_ne_zero
+    (a ≪≫ rightDualIsoMap (rightDualIsoMap a)).hom (id_nonzero X))
   simpa only [Iso.trans_hom, rightDualIsoMap, hz, rightAdjointMate_smul,
     Linear.smul_comp, Linear.comp_smul, smul_smul, one_smul] using hsq
 
@@ -89,10 +88,9 @@ theorem rootDual_differs_by_sign (X : C.Obj)
   let l : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm
   let k : (Xᘁ) ≅ (((Xᘁ)ᘁ)ᘁ) := (fourthDualRootNaturalIso C).app (Xᘁ)
   obtain ⟨ε, _, he, _⟩ := isomorphisms_scalar (k := ℂ) l k
-  refine ⟨ε, ?_, he⟩
-  exact scalar_sq_eq_one_of_same_square l k ε he
-    ((congrArg (fun n => (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C)).trans
-      (inverseDualRoot_square C X).symm)
+  exact ⟨ε, scalar_sq_eq_one_of_same_square l k ε he
+    ((congrArg (fun n ↦ (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C)).trans
+      (inverseDualRoot_square C X).symm), he⟩
 
 end PropertyF.Ground.Dimensions
 
