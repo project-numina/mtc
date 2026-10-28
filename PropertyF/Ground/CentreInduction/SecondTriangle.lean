@@ -98,8 +98,7 @@ theorem close_rightUnit_eval (e : A ≅ 𝟙_ D) :
   change z ≫ d = ε_ T (Tᘁ)
   apply (cancel_epi ((((Tᘁ : D) ⊗ T) ◁ e.hom) ≫ (ρ_ (Tᘁ ⊗ T)).hom)).1
   convert h using 1
-  · rw [Category.assoc, ← rightUnitor_naturality, ← whisker_exchange_assoc,
-      comp_whiskerRight]
+  · rw [Category.assoc, ← rightUnitor_naturality, ← whisker_exchange_assoc, comp_whiskerRight]
   · monoidal
 
 set_option backward.isDefEq.respectTransparency false in
