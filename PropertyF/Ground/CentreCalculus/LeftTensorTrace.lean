@@ -32,7 +32,7 @@ theorem leftPartialTrace_braiding_of_trace_compatibility
       rw [Dimensions.pivotalDimension_iso C p e]
       exact Dimensions.pivotalDimension_simple_ne_zero C p i
     simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv] using h
-  have hh := leftPartialTrace_simple_of_trace_compatibility X X p (unitScalarEquiv C)
+  have hh := leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)
     (End.of (β_ X X).hom) hd ht
   rw [← unitScalar_eq_equiv, Dimensions.pivotalTrace_selfBraiding] at hh
   have hdim : unitScalarEquiv C (p.rightTrace (𝟙 X)) = Dimensions.pivotalDimension C p X := by
@@ -59,7 +59,7 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility
   change leftPartialTrace p X (X ⊗ tensorPower X n) (Aut.toEnd (braidGenerator X n 0)) = _
   dsimp only [tensorPower] at hg ⊢
   rw [hg]
-  have hw := leftPartialTrace_whiskerRight p X X (tensorPower X n) (End.of (β_ X X).hom)
+  have hw := leftPartialTrace_whiskerRight p (tensorPower X n) (End.of (β_ X X).hom)
   change leftPartialTrace p X (X ⊗ tensorPower X n) (End.of
       ((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
         (α_ X X (tensorPower X n)).hom)) = _ at hw
@@ -86,7 +86,7 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
   have hact : tensorPermutationAction X hX (n + 2)
       (Equiv.Perm.decomposeFin.symm (1, σ)) =
-      b * insertLeftIdentity X (tensorPower X (n + 1)) f := by
+      b * insertLeftIdentity X f := by
     rw [decomposeFin_eq_swap_fixHead, map_mul, hswap, tensorPermutationAction_fixHead]
     change b * _ = b * _
     congr 1
@@ -109,16 +109,16 @@ theorem integral_of_leftTrace_and_twist_sign
       Dimensions.pivotalBraidedTwistScalar C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m := by
   rcases hsign with h | h
-  · apply integral_of_parity_adjacent_trace C p hdim X hX false
+  · apply integral_of_parity_adjacent_trace C p hdim hX false
     intro n σ
     simpa [parityPermutationAction, h] using
       tensorPermutationTrace_adjacent_of_leftTrace C p X hX htotal n σ
-  · apply integral_of_parity_adjacent_trace C p hdim X hX true
+  · apply integral_of_parity_adjacent_trace C p hdim hX true
     intro n σ
     have hsign' : (Centre.permutationSign ℂ (n + 2)
         (Equiv.Perm.decomposeFin.symm (1, σ)) : ℂ) =
         -(Centre.permutationSign ℂ (n + 1) σ : ℂ) := by
-      simpa using sign_decomposeFin (n + 1) 1 σ
+      simpa using sign_decomposeFin 1 σ
     simp only [parityPermutationAction, ↓reduceIte, Centre.twistAction,
       MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
       unitScalar_eq_equiv, map_smul, smul_eq_mul, hsign']
@@ -186,10 +186,10 @@ theorem leftTrace_tensor_pairing (p : Dimensions.PivotalStructure (C := C))
     Iso.ext (p.tensor X Y)
   rw [tensorDual_coevaluation, hp]
   simp only [Iso.trans_inv, tensorIso_inv, tensorHom_def, id_whiskerRight,
-    Category.comp_id, whiskerLeft_comp, Category.assoc]
+    whiskerLeft_comp, Category.assoc]
   dsimp only [A, D, E, r] at *
   simp only [Category.id_comp, ← whiskerLeft_comp_assoc, Iso.hom_inv_id_assoc,
-    whiskerLeft_id, Category.id_comp]
+    Category.id_comp]
   rw [← whisker_exchange_assoc, ← hev]
 
 set_option backward.isDefEq.respectTransparency false in

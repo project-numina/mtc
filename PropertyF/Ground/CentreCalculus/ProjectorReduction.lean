@@ -3,7 +3,7 @@ public import PropertyF.Ground.Centre.SymmetricIntegrality
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Modular.SMatrix
-public import PropertyF.Ground.Centre.AlternatingImage
+public import PropertyF.Ground.Centre.Averaging
 public import PropertyF.Definitions
 
 /-!

@@ -1,6 +1,6 @@
 module
-public import PropertyF.Ground.Dimensions.IteratedTrace
-public import PropertyF.Ground.Dimensions.PivotalDual
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 
 /-! Left partial trace for the strand-deletion identity. -/
 @[expose] public noncomputable section
@@ -25,12 +25,12 @@ def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) (X Y : C) :
     simp
 
 /-- Inserting a map on the untraced right factor. -/
-def insertLeftIdentity (X Y : C) (a : End Y) : End (X ⊗ Y) :=
+def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
   End.of (X ◁ a.asHom)
 
 theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
-    (X Y : C) (a : End Y) (f : End (X ⊗ Y)) :
-    leftPartialTrace p X Y (f * insertLeftIdentity X Y a) =
+    {X Y : C} (a : End Y) (f : End (X ⊗ Y)) :
+    leftPartialTrace p X Y (f * insertLeftIdentity X a) =
       leftPartialTrace p X Y f * a := by
   apply End.ext
   simp only [leftPartialTrace, insertLeftIdentity, LinearMap.coe_mk, AddHom.coe_mk,
@@ -40,7 +40,7 @@ theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
 
 /-- Closing the first factor commutes with a spectator factor on the right. -/
 theorem leftPartialTrace_whiskerRight (p : Dimensions.PivotalStructure (C := C))
-    (X Y Z : C) (f : End (X ⊗ Y)) :
+    {X Y : C} (Z : C) (f : End (X ⊗ Y)) :
     leftPartialTrace p X (Y ⊗ Z) (End.of
       ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
       End.of ((leftPartialTrace p X Y f).asHom ▷ Z) := by
@@ -52,7 +52,7 @@ theorem leftPartialTrace_whiskerRight (p : Dimensions.PivotalStructure (C := C))
 /-- Schur's lemma identifies the partial trace on a simple surviving strand
 once compatibility with total trace is known. -/
 theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C]
-    (X Y : C) [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
+    {X Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
     (p : Dimensions.PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)

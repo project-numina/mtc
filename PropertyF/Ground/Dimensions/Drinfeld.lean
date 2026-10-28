@@ -1,12 +1,14 @@
 module
 public import PropertyF.Ground.Target
-public import PropertyF.Ground.Dimensions.DualCoherence
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 open PropertyF.Ground
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- The braided double-dual isomorphism is characterized by its evaluation map. -/
 theorem drinfeld_eval (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     (doubleDualIso C X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
@@ -35,9 +37,7 @@ theorem doubleDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f
         rw [whisker_exchange_assoc]
       _ = ((doubleDualIso C X).hom ≫ (fᘁ)ᘁ) ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
         rw [← rightAdjointMate_comp_evaluation, comp_whiskerRight_assoc]
-  have he := congrArg (tensorRightHomEquiv X (Yᘁ) ((Yᘁ)ᘁ) (𝟙_ C.Obj)) h
-  simp only [tensorRightHomEquiv_whiskerRight_comp_evaluation] at he
-  exact (cancel_mono (λ_ ((Yᘁ)ᘁ)).inv).1 he
+  exact evaluation_ext h
 
 /-- The braided fourth-dual isomorphism, objectwise. -/
 def fourthDualIso (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
@@ -60,14 +60,14 @@ theorem fourthDualIso_natural (C : BraidedFusionCategory.{v,u}) {X Y : C.Obj} (f
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural braided double-dual map commutes with applying double dual. -/
-theorem doubleDualIso_doubleDual (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem doubleDualIso_doubleDual (X : C.Obj) :
     (doubleDualIso C ((Xᘁ)ᘁ)).hom = (((doubleDualIso C X).homᘁ)ᘁ) := by
   apply (cancel_epi (doubleDualIso C X).hom).1
   exact doubleDualIso_natural C (doubleDualIso C X).hom
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The braided fourth-dual map intertwines duals with its inverse. -/
-theorem fourthDualIso_rightDual (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem fourthDualIso_rightDual (X : C.Obj) :
     fourthDualIso C (Xᘁ) = (rightDualIsoMap (fourthDualIso C X)).symm := by
   have hi : (doubleDualIso C ((Xᘁ)ᘁ)).inv = (((doubleDualIso C X).invᘁ)ᘁ) := by
     have hh : doubleDualIso C ((Xᘁ)ᘁ) = rightDualIsoMap (rightDualIsoMap (doubleDualIso C X)) := by

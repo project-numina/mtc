@@ -4,7 +4,7 @@ public import Mathlib.CategoryTheory.Monoidal.Rigid.OfEquivalence
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
 public import Mathlib.CategoryTheory.Preadditive.Biproducts
 public import PropertyF.Ground.Fusion.Reciprocity
-public import PropertyF.Ground.Fusion.Splitting
+public import PropertyF.Ground.Fusion.Simples
 
 /-! Rigidity of the generated subcategory from closure under right duals. -/
 

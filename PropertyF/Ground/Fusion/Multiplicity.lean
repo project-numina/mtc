@@ -54,13 +54,13 @@ def biproductHomLinearEquiv {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
 
 theorem finrank_hom_biproduct {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
     (X : C) (V : ι → C) [∀ i, FiniteDimensional ℂ (X ⟶ V i)] :
-    Module.finrank ℂ (X ⟶ ⨁ V) = ∑ i, Module.finrank ℂ (X ⟶ V i) := by
-  rw [(homBiproductLinearEquiv X V).finrank_eq, Module.finrank_pi_fintype]
+    Module.finrank ℂ (X ⟶ ⨁ V) = ∑ i, Module.finrank ℂ (X ⟶ V i) :=
+  by rw [(homBiproductLinearEquiv X V).finrank_eq, Module.finrank_pi_fintype]
 
 theorem finrank_biproduct_hom {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
     (V : ι → C) (X : C) [∀ i, FiniteDimensional ℂ (V i ⟶ X)] :
-    Module.finrank ℂ (⨁ V ⟶ X) = ∑ i, Module.finrank ℂ (V i ⟶ X) := by
-  rw [(biproductHomLinearEquiv V X).finrank_eq, Module.finrank_pi_fintype]
+    Module.finrank ℂ (⨁ V ⟶ X) = ∑ i, Module.finrank ℂ (V i ⟶ X) :=
+  by rw [(biproductHomLinearEquiv V X).finrank_eq, Module.finrank_pi_fintype]
 
 /-- A chosen simple's Hom dimension counts its copies in a decomposition. -/
 theorem finrank_simple_of_decomposition (D : BraidedFusionCategory.{v,u})
@@ -155,8 +155,8 @@ theorem fusionCoeff_unit (D : BraidedFusionCategory.{v,u}) (j k : Fin (rank D)) 
   exact finrank_simples_hom D k j
 
 theorem fusionCoeff_comm (D : BraidedFusionCategory.{v,u}) (i j k : Fin (rank D)) :
-    fusionCoeff D i j k = fusionCoeff D j i k := by
-  exact (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (β_ (simples D i) (simples D j))).finrank_eq
+    fusionCoeff D i j k = fusionCoeff D j i k :=
+  (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (β_ (simples D i) (simples D j))).finrank_eq
 
 /-- Associativity of fusion coefficients, derived from associativity of
 tensor products and finite semisimplicity. -/
