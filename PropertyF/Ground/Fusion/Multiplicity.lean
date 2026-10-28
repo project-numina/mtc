@@ -169,14 +169,14 @@ variable {D} in
 tensor products and finite semisimplicity. -/
 theorem fusionCoeff_assoc (i j k l : Fin (rank D)) :
     ∑ r, N j k r * N i r l = ∑ r, N i j r * N r k l := by
-  have h := (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples D l))
-    ((α_ (simples D i) (simples D j) (simples D k)).symm ≪≫
-      β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq
-  change simpleMultiplicity D l (simples D i ⊗ (simples D j ⊗ simples D k)) =
-    simpleMultiplicity D l (simples D k ⊗ (simples D i ⊗ simples D j)) at h
+  have h : simpleMultiplicity D l (simples D i ⊗ (simples D j ⊗ simples D k)) =
+      simpleMultiplicity D l (simples D k ⊗ (simples D i ⊗ simples D j)) :=
+    (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples D l))
+      ((α_ (simples D i) (simples D j) (simples D k)).symm ≪≫
+        β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq
   rw [tensor_multiplicity (simples D i) (simples D j ⊗ simples D k) l,
     tensor_multiplicity (simples D k) (simples D i ⊗ simples D j) l] at h
-  change ∑ r, N j k r * N i r l = ∑ r, N i j r * N k r l at h
-  simpa only [← fusionCoeff_comm D k] using h
+  simpa only [← fusionCoeff_comm D k] using
+    (show ∑ r, N j k r * N i r l = ∑ r, N i j r * N k r l from h)
 
 end PropertyF.Ground
