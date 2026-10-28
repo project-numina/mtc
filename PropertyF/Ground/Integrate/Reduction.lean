@@ -1,6 +1,5 @@
 module
 public import PropertyF.Ground.Integrate.Arithmetic
-public import PropertyF.Ground.Integrate.Fixedness
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.GlobalInequality
