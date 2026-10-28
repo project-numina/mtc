@@ -222,9 +222,7 @@ theorem unit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) = 0 := by
-  dsimp only
-  rw [unit_matrix_reduce, crossing_counit_offdiag C X hne]
-  simp [monoidalComp]
+  simpa [monoidalComp, crossing_counit_offdiag C X hne] using unit_matrix_reduce C X i j
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/
@@ -232,16 +230,14 @@ theorem unit_diag (i : Fin (rank C)) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) i ≫
     ((simples C i ◁ (underlyingCounit C).app X) ▷ (simples C i)ᘁ) = 𝟙 (V i) := by
-  have h := unit_matrix_reduce C X i i
-  dsimp only at h
-  rw [crossing_counit_diagonal C X i] at h
+  dsimp only
+  rw [unit_matrix_reduce, crossing_counit_diagonal C X i]
   let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   rw [show crossingBlock X (simples C i) (simples C (unitIndex C))
       (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
         (simples C i ◁ (unitSummandIso C X).hom) = _ from
-      crossingUnitBlock_eval X (simples C i) e] at h
-  dsimp only [Functor.id_obj] at h ⊢
-  apply h.trans
+      crossingUnitBlock_eval X (simples C i) e]
+  dsimp only [Functor.id_obj]
   calc
     _ = 𝟙 _ ⊗≫ ((simples C i ⊗ X) ◁ (((simples C i)ᘁ ◁ η_ (simples C i) ((simples C i)ᘁ)) ⊗≫
       (ε_ (simples C i) ((simples C i)ᘁ) ▷ (simples C i)ᘁ))) ⊗≫ 𝟙 _ := by monoidal
@@ -259,8 +255,7 @@ theorem secondTriangle_entry (i j : Fin (rank C)) : let V := inductionSummand C 
   by_cases h : i = j
   · subst j
     simpa [Category.assoc, induction, underlyingFunctor, underlying] using unit_diag C X i
-  · rw [biproduct.ι_π_ne _ h]
-    exact unit_offdiag C X h
+  · simpa only [biproduct.ι_π_ne _ h, induction, underlying, underlyingFunctor] using unit_offdiag C X h
 
 
 end PropertyF.Ground.CentreInduction
