@@ -83,11 +83,9 @@ set_option backward.isDefEq.respectTransparency false in
 theorem center_cokernel_measure_lt {S W : 𝒵} (p : S ⟶ W) (hp : p ≠ 0) :
     let Q := Centre.centerCokernel p
     Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) :=
-  let Q := Centre.centerCokernel p
-  let q : W.1 ⟶ Q.1 := (Centre.centerCokernelπ p).f
-  letI : IsSplitEpi q := epi_splits (cokernel.π p.f)
+  letI : IsSplitEpi (cokernel.π p.f) := epi_splits (cokernel.π p.f)
   letI : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
-  finrank_end_lt_of_split_epi p.f q (fun h => hp (Center.ext p 0 h))
+  finrank_end_lt_of_split_epi p.f (cokernel.π p.f) (fun h => hp (Center.ext p 0 h))
     (congrArg Center.Hom.f (Centre.centerCokernel_condition p))
 
 /-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
