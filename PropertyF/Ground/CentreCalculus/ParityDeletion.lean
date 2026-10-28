@@ -59,7 +59,7 @@ include hdim in
 positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hmoved : HasMovedTrace (tr C p (parityPermAction C hX odd))) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_trace_deletion hdim (parityPermAction C hX odd)
     ⟨(fun _ σ ↦ parityPermTrace_fixHead hdim hX odd σ), hmoved⟩
 
@@ -124,7 +124,7 @@ include hdim in
 one of the two actual parity choices. -/
 theorem integral_of_parity_adjacent_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hadj : HasAdjacentTrace (tr C p (parityPermAction C hX odd))) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_parity_moved_trace hdim hX odd
     (movedTrace_of_adjacent (parityPermAction C hX odd) hadj)
 

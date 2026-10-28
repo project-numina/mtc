@@ -130,8 +130,7 @@ theorem doubleCentralizer_of_fourier_support
     sCentralizer D p core ⊆ generated := fun x hx ↦ hgenerated <|
   (dualIndex_involutive D x) ▸
     nonzero_dual_coefficient_of_sCentralizer hfp.1 hdet (realSimpleDimensions_of_fp hfp.2)
-      hunit hsupport (x := dualIndex D x)
-      (fun y hy ↦ sCentralizes_dual hfp.2 (sCentralizes_symm (hx y hy)))
+      hunit hsupport (fun y hy ↦ sCentralizes_dual hfp.2 (sCentralizes_symm (hx y hy)))
 
 end PropertyF.Ground.CentreCabling
 

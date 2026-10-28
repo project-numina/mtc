@@ -175,7 +175,7 @@ theorem integral_of_leftTrace_and_twist_sign
     (htotal : IsLeftTraceCompatible p X)
     (hsign : θ C p X = 1 ∨
       θ C p X = -1) :
-    ∃ m : ℕ, fpDimension C X = m := by
+    IsFPIntegral C X := by
   rcases hsign with h | h
   · apply integral_of_parity_adjacent_trace hdim hX false
     intro n σ
@@ -279,7 +279,7 @@ theorem integral_of_spherical_and_twist_sign
     (hfp : IsFPSpherical C p) {X : C.Obj} [Simple X] (hX : SelfTransparent X)
     (hsign : θ C p X = 1 ∨
       θ C p X = -1) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_leftTrace_and_twist_sign hfp.2 hX
     (fun _ f ↦ spherical_rightTrace_leftPartialTrace p hfp.1 f) hsign
 

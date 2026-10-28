@@ -210,9 +210,8 @@ variable {n i j : ℕ}
 
 theorem typeAGenerator_square (hi : i < n + 1) :
     typeAGenerator n i * typeAGenerator n i = 1 := by
-  simpa [typeAGenerator, hi, pow_two] using
-    (QuotientGroup.eq_one_iff (N := typeANormal n) (FreeGroup.of (⟨i, hi⟩ : Fin (n + 1)) ^ 2)).mpr
-      (Subgroup.subset_normalClosure (Or.inl ⟨⟨i, hi⟩, rfl⟩))
+  simpa [typeAGenerator, hi, pow_two] using (QuotientGroup.eq_one_iff
+    (N := typeANormal n) _).mpr (Subgroup.subset_normalClosure (Or.inl ⟨⟨i, hi⟩, rfl⟩))
 
 theorem typeAGenerator_adjacent (hi : i + 1 < n + 1) :
     typeAGenerator n i * typeAGenerator n (i + 1) * typeAGenerator n i =

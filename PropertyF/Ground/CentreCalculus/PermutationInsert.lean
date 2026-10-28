@@ -118,7 +118,7 @@ theorem integral_of_trace_deletion {C : BraidedFusionCategory.{v,u}}
     (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
     (h : IsTraceDeletion (tr C p ρ) (fpDimension C X : ℂ)) :
-    ∃ m : ℕ, fpDimension C X = m := by
+    IsFPIntegral C X := by
   let F := tr C p ρ
   have hz : F 0 1 = 1 := by
     change unitScalar C (p.rightTrace (((ρ 0) 1).asHom)) = 1

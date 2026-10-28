@@ -27,12 +27,8 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
   obtain ⟨i, _, hmin⟩ := Finset.exists_min_image Finset.univ (fun j => y j / x j)
     Finset.univ_nonempty
   let c := y i / x i
-  have hnonneg (j : ι) : 0 ≤ y j - c * x j := by
-    have hj := hmin j (Finset.mem_univ j)
-    dsimp [c] at hj ⊢
-    have : y i / x i * x j ≤ y j := by
-      simpa [div_mul_cancel₀ _ (ne_of_gt (hx j))] using (mul_le_mul_of_nonneg_right hj (hx j).le)
-    linarith
+  have hnonneg (j : ι) : 0 ≤ y j - c * x j :=
+    sub_nonneg.mpr ((le_div_iff₀ (hx j)).mp (hmin j (Finset.mem_univ j)))
   have hzero : y i - c * x i = 0 := by
     simp [c, div_mul_cancel₀ _ (ne_of_gt (hx i))]
   have hsum : ∑ j, A i j * (y j - c * x j) = 0 := by
@@ -41,18 +37,13 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
     simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at ex ey
     calc
       _ = (∑ j, A i j * y j) - c * (∑ j, A i j * x j) := by
-        simp only [mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]
-        apply congrArg₂ (· - ·) rfl
-        apply Finset.sum_congr rfl
-        intro j _
-        ring
+        simp only [mul_sub, Finset.sum_sub_distrib, Finset.mul_sum, mul_left_comm]
       _ = d * (y i - c * x i) := by rw [ex, ey]; ring
       _ = 0 := by rw [hzero, mul_zero]
-  have hall : ∀ j, y j - c * x j = 0 := by
-    intro j
-    have hj := (Finset.sum_eq_zero_iff_of_nonneg
-      (fun j _ => mul_nonneg (hA i j).le (hnonneg j))).mp hsum j (Finset.mem_univ j)
-    exact (mul_eq_zero.mp hj).resolve_left (ne_of_gt (hA i j))
+  have hall (j : ι) : y j - c * x j = 0 :=
+    (mul_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg
+      (fun j _ => mul_nonneg (hA i j).le (hnonneg j))).mp hsum j
+        (Finset.mem_univ j))).resolve_left (ne_of_gt (hA i j))
   refine ⟨c, ?_⟩
   funext j
   simp only [Pi.smul_apply, smul_eq_mul]
@@ -459,6 +450,49 @@ end PropertyF.Ground
 
 end
 
+/-! Weighted matrix bounds and spectral estimates. -/
+
+@[expose] public noncomputable section
+open scoped BigOperators
+namespace PropertyF.Ground.Dimensions
+
+/-- A matrix dominated entrywise by a nonnegative matrix cannot have an
+eigenvalue larger than the latter's positive eigenvalue. -/
+theorem weighted_eigenvalue_bound {ι : Type*} [Fintype ι] (N : ι → ι → ℝ)
+    (T : ι → ι → ℂ) (f : ι → ℝ) {F : ℝ} (v : ι → ℂ) {z : ℂ}
+    {i₀ : ι} (hv : v i₀ ≠ 0) (hf : ∀ i, 0 < f i)
+    (hN : ∀ i j, 0 ≤ N i j) (hdom : ∀ i j, ‖T i j‖ ≤ N i j)
+    (hfp : ∀ i, ∑ j, N i j * f j = F * f i)
+    (heig : ∀ i, ∑ j, T i j * v j = z * v i) :
+    ‖z‖ ≤ F := by
+  classical
+  obtain ⟨i, _, hmax⟩ := Finset.exists_max_image Finset.univ
+    (fun j => ‖v j‖ / f j) ⟨i₀, Finset.mem_univ _⟩
+  let r := ‖v i‖ / f i
+  have hvi : 0 < ‖v i‖ := (div_pos_iff_of_pos_right (hf i)).1 <|
+    lt_of_lt_of_le (div_pos (norm_pos_iff.mpr hv) (hf i₀)) (hmax i₀ (Finset.mem_univ _))
+  have hvbound (j : ι) : ‖v j‖ ≤ r * f j := by
+    apply (div_le_iff₀ (hf j)).1
+    exact hmax j (Finset.mem_univ _)
+  have hbound : ‖z‖ * ‖v i‖ ≤ F * ‖v i‖ := by
+    calc
+      _ = ‖∑ j, T i j * v j‖ := by rw [heig i, norm_mul]
+      _ ≤ ∑ j, ‖T i j * v j‖ := by simpa using norm_sum_le Finset.univ (fun j => T i j * v j)
+      _ ≤ ∑ j, N i j * (r * f j) := Finset.sum_le_sum fun j _ ↦ by
+        rw [norm_mul]
+        exact mul_le_mul (hdom i j) (hvbound j) (norm_nonneg _) (hN i j)
+      _ = r * (∑ j, N i j * f j) := by
+        simp only [Finset.mul_sum, mul_left_comm]
+      _ = F * ‖v i‖ := by
+        rw [hfp i]
+        dsimp [r]
+        field_simp [ne_of_gt (hf i)]
+  exact le_of_mul_le_mul_right hbound hvi
+
+end PropertyF.Ground.Dimensions
+
+end
+
 /-! Spectral bounds from a positive eigenvector. -/
 
 @[expose] public noncomputable section
@@ -473,43 +507,15 @@ theorem complex_eigenvalue_le_positive_eigenvalue {ι : Type*} [Fintype ι] [Non
     (hw : ∀ i, 0 < w i) (d : ℝ) (hwe : A *ᵥ w = d • w)
     (z : ℂ) (v : ι → ℂ) (hv : v ≠ 0)
     (hve : A.map Complex.ofRealHom *ᵥ v = z • v) : ‖z‖ ≤ d := by
-  classical
-  obtain ⟨i, _, hmax⟩ := Finset.exists_max_image Finset.univ (fun j => ‖v j‖ / w j)
-    Finset.univ_nonempty
-  have hiv : v i ≠ 0 := by
-    intro hi
-    apply hv
-    funext j
-    have h := hmax j (Finset.mem_univ j)
-    simp [hi] at h
-    have hn := (div_le_iff₀ (hw j)).mp h
-    apply norm_eq_zero.mp
-    exact le_antisymm (by simpa using hn) (norm_nonneg _)
-  have hbound (j : ι) : ‖v j‖ ≤ (‖v i‖ / w i) * w j := by
-    have h := hmax j (Finset.mem_univ j)
-    exact (div_le_iff₀ (hw j)).mp h
-  have hrow := congrFun hwe i
-  have hrowc := congrFun hve i
-  simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hrow hrowc
-  change (∑ j, (A i j : ℂ) * v j) = z * v i at hrowc
-  have hineq : ‖z‖ * ‖v i‖ ≤ d * ‖v i‖ := by
-    calc
-      _ = ‖∑ j, (A i j : ℂ) * v j‖ := by rw [hrowc, norm_mul]
-      _ ≤ ∑ j, ‖(A i j : ℂ) * v j‖ := norm_sum_le _ _
-      _ = ∑ j, A i j * ‖v j‖ := by
-        apply Finset.sum_congr rfl
-        intro j _
-        rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hA i j)]
-      _ ≤ ∑ j, A i j * ((‖v i‖ / w i) * w j) := by
-        exact Finset.sum_le_sum fun j _ => mul_le_mul_of_nonneg_left (hbound j) (hA i j)
-      _ = (‖v i‖ / w i) * (∑ j, A i j * w j) := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro j _
-        ring
-      _ = (‖v i‖ / w i) * (d * w i) := by rw [hrow]
-      _ = d * ‖v i‖ := by field_simp [ne_of_gt (hw i)]
-  exact le_of_mul_le_mul_right hineq (norm_pos_iff.mpr hiv)
+  obtain ⟨i₀, hi₀⟩ := Function.ne_iff.mp hv
+  apply Dimensions.weighted_eigenvalue_bound (fun i j => A i j)
+    (fun i j => (A i j : ℂ)) w v hi₀ hw hA
+  · intro i j
+    simp [Complex.norm_real, abs_of_nonneg (hA i j)]
+  · intro i
+    simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hwe i
+  · intro i
+    simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hve i
 
 end PropertyF.Ground
 

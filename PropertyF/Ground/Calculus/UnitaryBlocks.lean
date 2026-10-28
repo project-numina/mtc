@@ -99,6 +99,10 @@ def groupAlgebraMap : MonoidAlgebra ℂ G →ₐ[ℂ] A :=
 /-- The complex algebra spanned by the group image. -/
 def groupImageAlgebra : Subalgebra ℂ A := (groupAlgebraMap ρ).range
 
+/-- A matrix-block presentation of a group-image algebra. -/
+abbrev GroupBlockPresentation {r : ℕ} (d : Fin r → ℕ) :=
+  groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩
+
 /-- The image algebra has precisely the underlying linear span of the group image. -/
 theorem groupImageAlgebra_toSubmodule :
     (groupImageAlgebra ρ).toSubmodule = Submodule.span ℂ (Set.range ρ) := by
@@ -133,7 +137,7 @@ theorem groupImageAlgebra_finite :
 matrix blocks. It is not assumed that the representation is faithful. -/
 theorem groupImageAlgebra_blocks :
     ∃ (n : ℕ) (d : Fin n → ℕ), (∀ i, NeZero (d i)) ∧
-      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
+      Nonempty (GroupBlockPresentation ρ d) :=
   let _ := groupImageAlgebra_semisimple ρ
   let _ := groupImageAlgebra_finite ρ
   IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
@@ -205,7 +209,7 @@ abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCatego
 
 /-- A block presentation in which each represented group element is unitary. -/
 abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
-    (e : groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) : Prop :=
+    (e : GroupBlockPresentation ρ d) : Prop :=
   ∀ g, Blocks.IsUnitary ⟨_, d⟩ (e (groupInImage ρ g))
 
 /-- The group elements span their image algebra. -/
@@ -223,8 +227,7 @@ variable [Finite G]
 /-- A Wedderburn equivalence can be chosen so that every group element is
 unitary in each matrix block. This choice is simultaneous for the whole group. -/
 theorem groupImageAlgebra_unitary_blocks (ρ : G →* A) :
-    ∃ (n : ℕ) (d : Fin n → ℕ) (e : groupImageAlgebra ρ ≃ₐ[ℂ]
-        Blocks.Algebra ⟨_, d⟩),
+    ∃ (n : ℕ) (d : Fin n → ℕ) (e : GroupBlockPresentation ρ d),
       (∀ i, NeZero (d i)) ∧ IsUnitaryPresentation ρ e := by
   classical
   let _ : Fintype G := Fintype.ofFinite G
