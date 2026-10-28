@@ -58,16 +58,16 @@ instance : MonoidalLinear ℂ (Obj C σ) where
     exact MonoidalLinear.smul_whiskerRight _ _ _
 
 /-- Transport a finite basis across a field automorphism. -/
-theorem finite_twist (M : Type*) [AddCommGroup M] [m : Module ℂ M]
-    [FiniteDimensional ℂ M] (σ : ℂ ≃+* ℂ) :
-    @FiniteDimensional ℂ M _ _ (Module.compHom M σ.symm.toRingHom) :=
-  let b := Module.finBasis ℂ M
+theorem finite_twist {K : Type*} [Field K] (M : Type*) [AddCommGroup M] [m : Module K M]
+    [FiniteDimensional K M] (σ : K ≃+* K) :
+    @FiniteDimensional K M _ _ (Module.compHom M σ.symm.toRingHom) :=
+  let b := Module.finBasis K M
   let m' := Module.compHom M σ.symm.toRingHom
-  let b' := @Module.Basis.mapCoeffs _ ℂ M _ _ m b ℂ _ m' σ (by
+  let b' := @Module.Basis.mapCoeffs _ K M _ _ m b K _ m' σ (by
     intro a x
     conv_rhs => rw [← σ.symm_apply_apply a]
     rfl)
-  @Module.Basis.finiteDimensional_of_finite ℂ M _ _ m' _ _ b'
+  @Module.Basis.finiteDimensional_of_finite K M _ _ m' _ _ b'
 
 instance twistedFusion : IsFusionCategory (Obj C σ) where
   hom_finite X Y := by

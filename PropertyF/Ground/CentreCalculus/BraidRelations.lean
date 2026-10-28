@@ -28,9 +28,12 @@ theorem braidGenerator_succ (X : C) {n : ℕ} (k : Fin (n + 1)) :
   rcases k with ⟨k, hk⟩
   simp [Functor.mapAut, braidGenerator, tensorIso_hom, tensorLeft, id_tensorHom]
 
+variable {X : C} (hX : SelfTransparent X)
+
+include hX in
 set_option backward.isDefEq.respectTransparency false in
 /-- The first braid generator is involutive on a self-transparent object. -/
-theorem braidGenerator_zero_involutive {X : C} (hX : SelfTransparent X) (n : ℕ) :
+theorem braidGenerator_zero_involutive (n : ℕ) :
     braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ *
       braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ = 1 := by
   apply Aut.ext
@@ -42,9 +45,10 @@ theorem braidGenerator_zero_involutive {X : C} (hX : SelfTransparent X) (n : ℕ
     rw [← Category.assoc ((β_ X X).hom ▷ _) ((β_ X X).hom ▷ _),
       ← comp_whiskerRight, hX, id_whiskerRight, Category.id_comp, Iso.inv_hom_id]
 
+include hX in
 set_option backward.isDefEq.respectTransparency false in
 /-- Self-transparency makes each adjacent braid generator an involution. -/
-theorem braidGenerator_involutive {X : C} (hX : SelfTransparent X) :
+theorem braidGenerator_involutive :
     ∀ (n : ℕ) (i : Fin (n + 1)), braidGenerator X n i * braidGenerator X n i = 1 := by
   intro n
   induction n with
@@ -63,10 +67,11 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+  (X : C)
 
 /-- Every neighboring pair of actual tensor-power braid generators satisfies
 Yang–Baxter. -/
-theorem adjacent_braid_relation (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
+theorem adjacent_braid_relation : ∀ (n : ℕ) (i : Fin (n + 1)),
     braidGenerator X (n + 1) i.castSucc * braidGenerator X (n + 1) i.succ *
       braidGenerator X (n + 1) i.castSucc =
     braidGenerator X (n + 1) i.succ * braidGenerator X (n + 1) i.castSucc *
@@ -87,7 +92,7 @@ theorem adjacent_braid_relation (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A crossing on the first two strands commutes with any crossing after them. -/
-theorem first_distant_commute (X : C) (n : ℕ) (j : Fin (n + 1)) :
+theorem first_distant_commute (n : ℕ) (j : Fin (n + 1)) :
     braidGenerator X (n + 2) 0 * braidGenerator X (n + 2) j.succ.succ =
       braidGenerator X (n + 2) j.succ.succ * braidGenerator X (n + 2) 0 := by
   apply Aut.ext
@@ -104,7 +109,7 @@ theorem first_distant_commute (X : C) (n : ℕ) (j : Fin (n + 1)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Crossings supported on disjoint pairs of strands commute. -/
-theorem distant_braid_commute (X : C) : ∀ (n : ℕ) (i j : Fin (n + 1)),
+theorem distant_braid_commute : ∀ (n : ℕ) (i j : Fin (n + 1)),
     i.val + 1 < j.val →
     braidGenerator X n i * braidGenerator X n j =
       braidGenerator X n j * braidGenerator X n i := by

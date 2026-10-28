@@ -56,8 +56,9 @@ abbrev IsLeftTraceCompatible (X : C) : Prop :=
 def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
   End.of (X ◁ a.asHom)
 
-theorem leftPartialTrace_right
-    {X Y : C} (a : End Y) (f : End (X ⊗ Y)) :
+variable {X Y : C}
+
+theorem leftPartialTrace_right (a : End Y) (f : End (X ⊗ Y)) :
     leftPartialTrace p (f * insertLeftIdentity X a) =
       leftPartialTrace p f * a := by
   apply End.ext
@@ -67,7 +68,7 @@ theorem leftPartialTrace_right
     ← leftUnitor_inv_naturality_assoc]
 
 /-- Closing the first factor commutes with a spectator factor on the right. -/
-theorem leftPartialTrace_whiskerRight {X Y : C} (Z : C) (f : End (X ⊗ Y)) :
+theorem leftPartialTrace_whiskerRight (Z : C) (f : End (X ⊗ Y)) :
     leftPartialTrace p (End.of
       ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
       End.of ((leftPartialTrace p f).asHom ▷ Z) := by
@@ -78,7 +79,7 @@ theorem leftPartialTrace_whiskerRight {X Y : C} (Z : C) (f : End (X ⊗ Y)) :
 /-- Schur's lemma identifies the partial trace on a simple surviving strand
 once compatibility with total trace is known. -/
 theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C]
-    {X Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
+    [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
     (htrace : IsLeftTraceCompatibleAt p f) :
@@ -159,9 +160,8 @@ theorem negativeParity_adjacentTrace (hneg : θ C p X = -1) :
   have hsign : (permutationSign ℂ (n + 2) (decomposeFin.symm (1, σ)) : ℂ) =
       -(permutationSign ℂ (n + 1) σ : ℂ) := by
     simpa using sign_decomposeFin (R := ℂ) 1 σ
-  rw [parityPermScalarTrace_true, parityPermScalarTrace_true, hsign,
-    tensorPermTrace_adjacent_of_leftTrace (C := C) hX htotal σ, hneg]
-  ring
+  simp only [parityPermScalarTrace_true, hsign,
+    tensorPermTrace_adjacent_of_leftTrace (C := C) hX htotal σ, hneg, neg_mul, mul_neg, one_mul, neg_neg]
 
 include hdim hX htotal in
 /-- The symmetric integrality argument now needs only left iterated-trace
@@ -184,10 +184,13 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 variable (p : PivotalStructure (C := C))
 
+section
+variable (X Y : C)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Coevaluation of the chosen dual of a tensor product, expressed in the
 canonical tensor-dual pairing. -/
-theorem tensorDual_coevaluation (X Y : C) :
+theorem tensorDual_coevaluation :
     η_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
       η_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) ≫
         ((rightDualTensorIso X Y).inv ⊗ₘ (Dimensions.doubleDualTensorIso X Y).hom) := by
@@ -207,8 +210,7 @@ theorem tensorDual_coevaluation (X Y : C) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Left pivotal trace evaluated with the tensor dual pairing. -/
-theorem leftTrace_tensor_pairing
-    (X Y : C) (f : X ⊗ Y ⟶ X ⊗ Y) :
+theorem leftTrace_tensor_pairing (f : X ⊗ Y ⟶ X ⊗ Y) :
     (p.leftTrace f).asHom =
       η_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) ≫
         ((Yᘁ) ⊗ (Xᘁ)) ◁ (((p.iso X).inv ⊗ₘ (p.iso Y).inv) ≫ f) ≫
@@ -231,6 +233,8 @@ theorem leftTrace_tensor_pairing
   simp only [Category.id_comp, ← whiskerLeft_comp_assoc, Iso.hom_inv_id_assoc,
     Category.id_comp]
   rw [← whisker_exchange_assoc, ← hev]
+
+end
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the first tensor factor and then the remainder computes the

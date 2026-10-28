@@ -3,32 +3,30 @@ public import PropertyF.Ground.Fusion.Simples
 
 /-! # Simple-object representatives
 
-A finite complete list of pairwise nonisomorphic simple objects is equivalent
-to the chosen list of representatives. -/
+Two mutually covering families of pairwise nonisomorphic objects have
+equivalent index types. -/
 
 @[expose] public noncomputable section
 open CategoryTheory
 open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
-variable (C : BraidedFusionCategory.{v,u})
+variable {C : Type u} [Category.{v} C] {ι κ : Type*}
 
-/-- Any finite list of pairwise nonisomorphic simples that covers the chosen
-simples is a reindexing of the chosen list. -/
-theorem simple_presentation_equiv {n : ℕ} (S : Fin n → C.Obj) (hSimple : ∀ i, Simple (S i))
-    (hInjective : ∀ i j, Nonempty (S i ≅ S j) → i = j)
-    (hCover : ∀ j, ∃ i, Nonempty (S i ≅ simples C j)) :
-    ∃ e : Fin n ≃ Fin (rank C), ∀ i, Nonempty (S i ≅ simples C (e i)) := by
+/-- Two complete, pairwise nonisomorphic families of objects have equivalent indices. -/
+theorem representatives_equiv (S : ι → C) (T : κ → C)
+    (hS : ∀ i j, Nonempty (S i ≅ S j) → i = j)
+    (hT : ∀ i j, Nonempty (T i ≅ T j) → i = j)
+    (hST : ∀ i, ∃ j, Nonempty (S i ≅ T j)) (hTS : ∀ j, ∃ i, Nonempty (S i ≅ T j)) :
+    ∃ e : ι ≃ κ, ∀ i, Nonempty (S i ≅ T (e i)) := by
   classical
-  choose f hf using fun (i : Fin n) ↦ by
-    letI := hSimple i
-    exact exists_simple_iso C (S i)
+  choose f hf using hST
   refine ⟨Equiv.ofBijective f ⟨?_, ?_⟩, hf⟩
   · intro i j hij
-    exact hInjective i j <| (hf i).elim fun ei ↦
-      (hf j).map fun ej ↦ ei ≪≫ eqToIso (congrArg (simples C) hij) ≪≫ ej.symm
+    exact hS i j <| (hf i).elim fun ei ↦
+      (hf j).map fun ej ↦ ei ≪≫ eqToIso (congrArg T hij) ≪≫ ej.symm
   · intro j
-    obtain ⟨i, e⟩ := hCover j
-    exact ⟨i, simples_injective C ((hf i).elim fun ei ↦ e.map fun e ↦ ei.symm ≪≫ e)⟩
+    obtain ⟨i, e⟩ := hTS j
+    exact ⟨i, hT _ _ ((hf i).elim fun ei ↦ e.map fun e ↦ ei.symm ≪≫ e)⟩
 
 end PropertyF.Ground
