@@ -88,15 +88,8 @@ theorem vafaUnitClass_eq_zero_iff (z : ℂˣ) : vafaUnitClass z = 0 ↔ IsOfFinO
   change ((1 ⊗ₜ[ℤ] Additive.ofMul z : ℚ ⊗[ℤ] Additive ℂˣ) = 0) ↔
     ∃ s : nonZeroDivisors ℤ, (s : ℤ) • Additive.ofMul z = 0 at hh
   rw [hh, isOfFinOrder_iff_zpow_eq_one]
-  constructor
-  · rintro ⟨s, hs⟩
-    refine ⟨s, ?_, ?_⟩
-    · exact nonZeroDivisors.ne_zero s.property
-    · exact hs
-  · rintro ⟨n, hn, hz⟩
-    refine ⟨⟨n, ?_⟩, ?_⟩
-    · exact mem_nonZeroDivisors_iff_ne_zero.mpr hn
-    · exact hz
+  simp only [Subtype.exists, mem_nonZeroDivisors_iff_ne_zero, exists_prop]
+  rfl
 
 /-- Multiplication of units becomes addition in the Vafa vector space. -/
 theorem vafaUnitClass_mul (z w : ℂˣ) :

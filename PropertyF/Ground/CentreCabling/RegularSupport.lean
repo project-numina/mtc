@@ -26,6 +26,11 @@ abbrev sCentralizes (i j : Fin (rank D)) : Prop :=
 abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
   {j | ∀ i ∈ A, sCentralizes D p i j}
 
+/-- Numerical S-centrality is symmetric. -/
+theorem sCentralizes_symm {i j : Fin (rank D)} (h : sCentralizes D p i j) :
+    sCentralizes D p j i := by
+  simpa [sCentralizes, Modular.categoricalS_symmetric D p j i, mul_comm] using h
+
 /-- FP-valued simple dimensions are fixed by complex conjugation. -/
 theorem realSimpleDimensions_of_fp {D : Ground.BraidedFusionCategory.{v,u}}
     {p : Dimensions.PivotalStructure (C := D.Obj)} (hdim : Modular.HasFPSimpleDimensions D p) :
@@ -70,19 +75,8 @@ theorem categoricalS_fourier_inversion
     _ = ∑ i, (if x = dualIndex D i then globalDimension D else 0) * f i := by
       simp_rw [Modular.categoricalS_square D p hp hdet hreal]
     _ = globalDimension D * f (dualIndex D x) := by
-      rw [Finset.sum_eq_single (dualIndex D x)]
-      · rw [dualIndex_involutive D x]
-        simp
-      · intro b _ hb
-        have hx : x ≠ dualIndex D b := by
-          intro h
-          apply hb
-          have hh := congrArg (dualIndex D) h
-          rw [dualIndex_involutive D b] at hh
-          exact hh.symm
-        simp [hx]
-      · intro h
-        exact (h (Finset.mem_univ _)).elim
+      simp only [(dualIndex_involutive D).eq_iff.symm, ite_mul, zero_mul,
+        Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]
 
 include hp hdet hreal in
 /-- If the S-transform of a vector is supported on a set of labels and its
@@ -134,13 +128,8 @@ theorem doubleCentralizer_of_fourier_support
     sCentralizer D p core ⊆ generated := by
   intro x hx
   have hreal := realSimpleDimensions_of_fp hdim
-  have hdual (y) (hy : y ∈ core) :
-      Modular.categoricalS D p (dualIndex D x) y =
-        Modular.simpleDimension D p (dualIndex D x) * Modular.simpleDimension D p y := by
-    apply sCentralizer_closed_under_dual D p hdim x y
-    unfold sCentralizes
-    rw [Modular.categoricalS_symmetric]
-    simpa [sCentralizes, mul_comm] using hx y hy
+  have hdual (y) (hy : y ∈ core) :=
+    sCentralizer_closed_under_dual D p hdim x y (sCentralizes_symm D p (hx y hy))
   have h := nonzero_dual_coefficient_of_sCentralizer D p hp hdet hreal f core
     hunit hsupport (dualIndex D x) hdual
   rw [dualIndex_involutive D x] at h

@@ -149,13 +149,10 @@ def braidImageFunctorMap (X : C) (n : ℕ) : braidImage X n →* braidImage (F.o
 theorem braidImageFunctorMap_surjective (X : C) (n : ℕ) :
     Function.Surjective (braidImageFunctorMap F X n) := by
   intro y
-  have hy : (y : Aut (tensorPower (F.obj X) (n + 2))) ∈
-      (braidImage X n).map (braidAutMap F X n) := by
-    rw [braidImage_map_eq]
-    exact y.property
-  obtain ⟨a, ha, hy⟩ := Subgroup.mem_map.mp hy
-  refine ⟨⟨a, ha⟩, ?_⟩
-  exact Subtype.ext hy
+  obtain ⟨a, ha, hy⟩ := Subgroup.mem_map.mp (show
+    (y : Aut (tensorPower (F.obj X) (n + 2))) ∈ (braidImage X n).map (braidAutMap F X n) from
+      (braidImage_map_eq F X n).symm ▸ y.property)
+  exact ⟨⟨a, ha⟩, Subtype.ext hy⟩
 
 /-- A braided functor preserves finiteness of each object's braid images. -/
 theorem objectPropertyF_functor (X : C) (hX : ObjectPropertyF X) :
@@ -176,9 +173,8 @@ def braidImageFunctorIso (X : C) (n : ℕ) [F.Faithful] :
 
 /-- Essential surjectivity handles arbitrary target objects. -/
 theorem braidImages_of_essentiallySurjective [F.Faithful] [F.EssSurj]
-    (Y : D) (n : ℕ) : ∃ X : C, Nonempty (braidImage Y n ≃* braidImage X n) := by
-  let X := F.objPreimage Y
-  exact ⟨X, ⟨(braidImageIso (F.objObjPreimageIso Y) n).symm.trans
-    (braidImageFunctorIso F X n).symm⟩⟩
+    (Y : D) (n : ℕ) : ∃ X : C, Nonempty (braidImage Y n ≃* braidImage X n) :=
+  ⟨F.objPreimage Y, ⟨(braidImageIso (F.objObjPreimageIso Y) n).symm.trans
+    (braidImageFunctorIso F (F.objPreimage Y) n).symm⟩⟩
 
 end PropertyF.Ground.Modular

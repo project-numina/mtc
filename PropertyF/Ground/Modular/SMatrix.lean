@@ -59,8 +59,7 @@ theorem SEntry_iso_right (p : PivotalStructure (C := C)) (X : C) {Y Z : C} (e : 
   have hn : doubleBraiding X Y ≫ t.hom = t.hom ≫ doubleBraiding X Z :=
     doubleBraiding_natural_right X e
   have h := p.rightTrace_cyclic (doubleBraiding X Y ≫ t.hom) t.inv
-  simp only [Category.assoc, Iso.hom_inv_id, Category.comp_id] at h
-  rw [hn, Iso.inv_hom_id_assoc] at h
+  rw [Category.assoc, Iso.hom_inv_id, Category.comp_id, hn, Iso.inv_hom_id_assoc] at h
   exact h
 
 omit [RightRigidCategory C] in

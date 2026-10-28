@@ -99,16 +99,6 @@ def sndBraidMap (X Y : C) (n : ℕ) :
   @Modular.braidAutMap (C × C) _ _ (mixedBraiding (C := C)) C _ _
     (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n
 
-theorem fstBraidMap_generator (X Y : C) {n : ℕ} (i : Fin (n+1)) :
-    fstBraidMap X Y n (braidGenerator (X,Y) n i) = braidGenerator X n i :=
-  Modular.braidAutMap_generator (CategoryTheory.Prod.fst C C) (X,Y) n i
-
-theorem sndBraidMap_generator (X Y : C) {n : ℕ} (i : Fin (n+1)) :
-    sndBraidMap X Y n (braidGenerator (X,Y) n i) = (braidGenerator Y n i)⁻¹ :=
-  (@Modular.braidAutMap_generator (C × C) _ _ (mixedBraiding (C := C)) C _ _
-    (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n i).trans
-      (reverse_braidGenerator Y i)
-
 /-- The two projected automorphisms jointly detect an automorphism of a tensor power. -/
 theorem projections_jointly_injective (X Y : C) (n : ℕ) :
     Function.Injective (fun a : Aut (tensorPower (X,Y) (n+2)) =>
@@ -129,7 +119,8 @@ theorem fstBraidMap_mem (X Y : C) (n : ℕ) :
   apply (Subgroup.closure_le _).mpr
   rintro _ ⟨i, rfl⟩
   change fstBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage X n
-  rw [fstBraidMap_generator]
+  unfold fstBraidMap
+  rw [Modular.braidAutMap_generator]
   exact Subgroup.subset_closure ⟨i, rfl⟩
 
 /-- The projected second component lies in the original, unreversed image. -/
@@ -138,7 +129,10 @@ theorem sndBraidMap_mem (X Y : C) (n : ℕ) :
   apply (Subgroup.closure_le _).mpr
   rintro _ ⟨i, rfl⟩
   change sndBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage Y n
-  rw [sndBraidMap_generator]
+  unfold sndBraidMap
+  rw [@Modular.braidAutMap_generator (C × C) _ _ (mixedBraiding (C := C)) C _ _
+    (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) n i,
+    reverse_braidGenerator]
   exact Subgroup.inv_mem _ (Subgroup.subset_closure ⟨i, rfl⟩)
 
 /-- The actual product braid image maps into the product of the two factor images. -/

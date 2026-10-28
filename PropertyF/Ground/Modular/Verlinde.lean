@@ -103,9 +103,10 @@ theorem categoricalS_galois_action (C : Ground.BraidedFusionCategory)
     (hVerlinde : HasVerlindeFormula ⟨unitIndex C, fusionCoeff C⟩
       (categoricalS C p) (simpleDimension C p)) :
     ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)),
-      IsGaloisColumnAction (categoricalS C p) (simpleDimension C p) act := by
-  let N : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  exact exists_galoisLabel_of_verlinde (N := N) (simpleDimension_ne_zero C p) hD (categoricalS_symmetric C p) (categoricalS_unit C p) hsq hVerlinde
+      IsGaloisColumnAction (categoricalS C p) (simpleDimension C p) act :=
+  exists_galoisLabel_of_verlinde (N := ⟨unitIndex C, fusionCoeff C⟩)
+    (simpleDimension_ne_zero C p) hD (categoricalS_symmetric C p) (categoricalS_unit C p)
+    hsq hVerlinde
 
 
 
