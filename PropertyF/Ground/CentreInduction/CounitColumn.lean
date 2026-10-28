@@ -61,7 +61,7 @@ theorem crossing_counit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j)
   classical
   have hdim : Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C (unitIndex C)) = 0 := by
     rw [counit_column_finrank]; simp [hne]
-  have hz : (∑ a : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C (unitIndex C))),
+  have hz : (∑ a : crossingIndex C (simples C j) i (unitIndex C),
       crossingBlock X (simples C j) (simples C i) (simples C (unitIndex C))
         (crossingInclusion C (simples C j) i (unitIndex C) a)
         (crossingProjection C (simples C j) i (unitIndex C) a)) = 0 := by
@@ -85,13 +85,13 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
   classical
   have hdim : Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C)) = 1 := by
     rw [counit_column_finrank]; simp
-  let a : Fin (Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C))) := ⟨0, by rw [hdim]; decide⟩
-  have ha (b : Fin (Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C)))) : b = a := by
+  let a : crossingIndex C (simples C i) i (unitIndex C) := ⟨0, by rw [hdim]; decide⟩
+  have ha (b : crossingIndex C (simples C i) i (unitIndex C)) : b = a := by
     apply Fin.ext
     have hb := b.isLt
     dsimp [a]
     omega
-  have hsum : (∑ b : Fin (Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C))),
+  have hsum : (∑ b : crossingIndex C (simples C i) i (unitIndex C),
       crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
         (crossingInclusion C (simples C i) i (unitIndex C) b)
         (crossingProjection C (simples C i) i (unitIndex C) b)) =

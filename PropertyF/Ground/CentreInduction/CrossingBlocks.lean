@@ -45,17 +45,21 @@ theorem crossingBlock_natural_middle {X Y : D} (h : X ⟶ Y) {T R S : D}
   rw [← whiskerLeft_comp, associator_inv_naturality_middle,
     whiskerLeft_comp]
 
+/-- The multiplicity index for a simple summand of `T ⊗ Sⱼ`. -/
+abbrev crossingIndex (T : C.Obj) (i j : Fin (rank C)) : Type :=
+  Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))
+
 /-- The inclusion attached to the canonical decomposition of `T ⊗ Sⱼ`. -/
 def crossingInclusion (T : C.Obj)
     (i j : Fin (rank C))
-    (a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))) :
+    (a : crossingIndex C T i j) :
     simples C i ⟶ T ⊗ simples C j :=
   Dimensions.simpleInclusion C (T ⊗ simples C j) i a
 
 /-- The corresponding projection from the same decomposition. -/
 def crossingProjection (T : C.Obj)
     (i j : Fin (rank C))
-    (a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))) :
+    (a : crossingIndex C T i j) :
     T ⊗ simples C j ⟶ simples C i :=
   (Dimensions.simpleDecomposition C (T ⊗ simples C j)).hom ≫
     biproduct.π (Dimensions.simplePiecesObject C (T ⊗ simples C j)) ⟨i, a⟩
@@ -63,14 +67,14 @@ def crossingProjection (T : C.Obj)
 /-- Inclusion and projection of the same summand compose to the identity. -/
 theorem crossingInclusion_projection (T : C.Obj)
     (i j : Fin (rank C))
-    (a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))) :
+    (a : crossingIndex C T i j) :
     crossingInclusion C T i j a ≫ crossingProjection C T i j a = 𝟙 (simples C i) := by
   simp [crossingInclusion, crossingProjection, Dimensions.simpleInclusion, Category.assoc]
 
 /-- Distinct summand inclusions and projections have zero composite. -/
 theorem crossingInclusion_projection_ne (T : C.Obj)
     (j : Fin (rank C))
-    (p q : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)))
+    (p q : Σ i : Fin (rank C), crossingIndex C T i j)
     (hne : p ≠ q) :
     crossingInclusion C T p.1 j p.2 ≫ crossingProjection C T q.1 j q.2 = 0 := by
   simp [crossingInclusion, crossingProjection, Dimensions.simpleInclusion, Category.assoc,
@@ -82,7 +86,7 @@ This is the completeness relation used for changes of fusion bases. -/
 theorem crossing_completeness (T : C.Obj)
     (j : Fin (rank C)) :
     (∑ p : Σ i : Fin (rank C),
-        Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+        crossingIndex C T i j,
       crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) =
         𝟙 (T ⊗ simples C j) := by
   classical
@@ -98,7 +102,7 @@ def crossingCandidate (X T : C.Obj) :
   classical
   let V := inductionSummand C X
   refine (rightDistributor V T).hom ≫ biproduct.desc (fun i => ?_)
-  exact ∑ j, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+  exact ∑ j, ∑ a : crossingIndex C T i j,
     crossingBlock X T (simples C i) (simples C j)
       (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
         (T ◁ biproduct.ι V j)
@@ -111,7 +115,7 @@ theorem crossingCandidate_on_summand
     (X T : C.Obj) (i : Fin (rank C)) :
     let V := inductionSummand C X
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
-      ∑ j, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+      ∑ j, ∑ a : crossingIndex C T i j,
         crossingBlock X T (simples C i) (simples C j)
           (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
             (T ◁ biproduct.ι V j) := by

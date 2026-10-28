@@ -17,7 +17,7 @@ set_option backward.isDefEq.respectTransparency false in
 basis functional of the matching inclusion. -/
 theorem pairing_crossingProjection
     (T : C.Obj) (i j : Fin (rank C))
-    (a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))) :
+    (a : crossingIndex C T i j) :
     Dimensions.simpleHomPairingEquiv C i (T ⊗ simples C j) (crossingProjection C T i j a) =
       (Dimensions.simpleInclusionBasis C (T ⊗ simples C j) i).dualBasis a := by
   classical
@@ -34,7 +34,7 @@ theorem pairing_crossingProjection
     apply End.ext
     rfl
   · have hz := crossingInclusion_projection_ne C T j
-      (⟨i, b⟩ : Σ k, Fin (Module.finrank ℂ (simples C k ⟶ T ⊗ simples C j)))
+      (⟨i, b⟩ : Σ k, crossingIndex C T k j)
       ⟨i, a⟩ (by simpa using hab)
     change Dimensions.simpleInclusion C (T ⊗ simples C j) i b ≫
       crossingProjection C T i j a = 0 at hz

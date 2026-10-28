@@ -151,13 +151,13 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
 theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
-  (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+  (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
     (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C p.1) (simples C j)
       (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)) =
     (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
   classical
   calc
-    _ = ∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+    _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
       unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
         crossingInclusion C T p.1 j p.2) := by
       apply Finset.sum_congr rfl
@@ -165,7 +165,7 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
       exact unit_block Z
         (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
     _ = unitBlockLinear (k := ℂ) Z T (simples C j)
-      (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+      (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
         crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) := by rw [map_sum]
     _ = _ := by rw [crossing_completeness, unitBlockLinear_id]; rfl
 
@@ -199,7 +199,7 @@ theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
       (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
     rw [← whiskerLeft_comp, hcomp]
   have hl : (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T ≫ (T ◁ biproduct.π V j) =
-      ∑ i, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+      ∑ i, ∑ a : crossingIndex C T i j,
         (unitComponent C Z i ▷ T) ≫ crossingBlock Z.1 T (simples C i) (simples C j)
           (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
     rw [unitCandidate_sum]

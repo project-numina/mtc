@@ -33,8 +33,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
-    ∑ k, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
-      ∑ j, ∑ b : Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)),
+    ∑ k, ∑ a : crossingIndex C T i k,
+      ∑ j, ∑ b : crossingIndex C U k j,
         crossingBlock X (T ⊗ U) (simples C i) (simples C j)
           (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
             (α_ T U (simples C j)).inv)
@@ -52,7 +52,7 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
         ((α_ (⨁ V) T U).inv ≫ (bT ▷ U) ≫ (α_ T (⨁ V) U).hom ≫
           (T ◁ bU) ≫ (α_ T U (⨁ V)).inv) = _
       monoidal
-    _ = ∑ k, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
+    _ = ∑ k, ∑ a : crossingIndex C T i k,
       𝟙 _ ⊗≫ (crossingBlock X T (simples C i) (simples C k)
           (crossingInclusion C T i k a) (crossingProjection C T i k a) ▷ U) ⊗≫
         (T ◁ ((biproduct.ι V k ▷ U) ≫ bU)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
@@ -101,8 +101,8 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
   intro k _
   conv_lhs =>
     enter [2, j]
-    rw [Finset.sum_comm (s := (Finset.univ : Finset (Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)))))
-      (t := (Finset.univ : Finset (Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)))))]
+    rw [Finset.sum_comm (s := (Finset.univ : Finset (crossingIndex C U k j)))
+      (t := (Finset.univ : Finset (crossingIndex C T i k)))]
   rw [Finset.sum_comm]
 
 
