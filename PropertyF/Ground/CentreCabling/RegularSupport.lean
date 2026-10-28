@@ -202,7 +202,7 @@ theorem regularVector_ne_zero_iff {i : Fin (rank D)} :
   simp [regularVector, ne_of_gt (fpSimple_pos D i)]
 
 /-- Fusion by a label in a fusion-closed set leaves the regular vector supported there. -/
-theorem regularVector_mul_eq_zero_of_not_mem (hA : IsFusionClosed D A) :
+theorem regularVector_mul_eq_zero (hA : IsFusionClosed D A) :
     ∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i = 0 := by
   classical
   apply Finset.sum_eq_zero
@@ -212,7 +212,7 @@ theorem regularVector_mul_eq_zero_of_not_mem (hA : IsFusionClosed D A) :
   · rw [show regularVector D A i = 0 from ite_eq_right hi, mul_zero]
 
 /-- On its support, the regular vector has the FP eigenvalue. -/
-theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) {k : A} :
+theorem regularVector_mul (hA : IsDualFusionClosed D A) {k : A} :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
   classical
@@ -232,10 +232,9 @@ is an eigenvector for multiplication by each label in that set. -/
 theorem regular_vector_fusion_eigenvector (hA : IsDualFusionClosed D A)
     (k : Fin (rank D)) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
-      (fpSimple D a : ℂ) * regularVector D A k := by
-  by_cases hk : k ∈ A <;> simp only [regularVector, hk, ↓reduceIte, mul_zero]
-  · exact regularVector_mul_of_mem hA (a := a) (k := ⟨k, hk⟩)
-  · exact regularVector_mul_eq_zero_of_not_mem hA.fusion (a := a) (k := ⟨k, hk⟩)
+      (fpSimple D a : ℂ) * regularVector D A k :=
+  if hk : k ∈ A then by simpa [regularVector, hk] using regularVector_mul hA (k := ⟨k, hk⟩)
+  else by simpa [regularVector, hk] using regularVector_mul_eq_zero hA.fusion (k := ⟨k, hk⟩)
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support (hdim : HasFPSimpleDimensions D p)
