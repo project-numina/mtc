@@ -162,9 +162,9 @@ simple summand. -/
 theorem crossingCandidate_on_summand (X T : C.Obj) (i : Fin (rank C)) :
     let V := inductionSummand C X
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
-      ∑ j, ∑ a : crossingIndex C T i j, crossingSummand C X T i j a ≫ (T ◁ biproduct.ι V j) := by
-  simp only [crossingCandidate, biproduct_ι_comp_rightDistributor_hom_assoc,
-    biproduct.ι_desc]
+      ∑ j, ∑ a : crossingIndex C T i j, crossingSummand C X T i j a ≫ (T ◁ biproduct.ι V j) :=
+  (biproduct_ι_comp_rightDistributor_hom_assoc (inductionSummand C X) T i _).trans
+    (biproduct.ι_desc _ i)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing is natural in the induction argument. -/

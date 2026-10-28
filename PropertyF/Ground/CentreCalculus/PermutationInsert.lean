@@ -112,7 +112,7 @@ abbrev scalarPermTrace {D : Type u} [Category.{v} D] [MonoidalCategory D] [Right
 abbrev permScalarTrace (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) {X : C.Obj}
     (ρ : ∀ n : ℕ, Perm (Fin n) →* End (tensorPower X n)) :=
-  scalarPermTrace p (unitScalarEquiv C) ρ
+  scalarPermTrace p (unitScalarEquiv C).toLinearMap ρ
 
 local notation "tr" => permScalarTrace
 

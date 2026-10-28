@@ -16,7 +16,7 @@ and `g n i` denotes the corresponding type-A quotient generator. A normal-form c
 the symmetric group, so self-transparent braid actions factor through it.
 -/
 @[expose] public noncomputable section
-open Equiv (Perm)
+open Equiv (Perm swap_comm swap_mul_swap_mul_swap)
 open QuotientGroup (eq_iff_div_mem)
 open Subgroup (subset_normalClosure)
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -130,9 +130,8 @@ theorem swap_braid {α : Type*} [DecidableEq α] {a b c : α}
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
     Equiv.swap a b * Equiv.swap b c * Equiv.swap a b =
       Equiv.swap b c * Equiv.swap a b * Equiv.swap b c := by
-  simpa only [Equiv.swap_comm] using
-    (Equiv.swap_mul_swap_mul_swap hbc.symm hac.symm).trans
-      ((Equiv.swap_comm a c).trans (Equiv.swap_mul_swap_mul_swap hab hac).symm)
+  simpa only [swap_comm] using (swap_mul_swap_mul_swap hbc.symm hac.symm).trans
+    ((swap_comm a c).trans (swap_mul_swap_mul_swap hab hac).symm)
 
 variable {n : ℕ} {i j : Fin (n + 1)}
 

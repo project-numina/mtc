@@ -149,13 +149,18 @@ theorem tensorPermTrace_adjacent {n : ℕ} (σ : Perm (Fin (n + 1))) :
   dsimp only [b]
   rw [leftPartialTrace_firstGenerator_of_trace_compatibility (C := C) n
     (htotal X (End.of (β_ X X).hom))]
-  simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul, map_smul, smul_eq_mul, f]
+  simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul, map_smul, smul_eq_mul, f,
+    AlgEquiv.toLinearMap_apply]
 
 include htotal in
 /-- A negative twist is corrected by the sign-twisted permutation action. -/
 theorem negativeParity_adjacentTrace (hneg : θ C p X = -1) :
     HasAdjacentTrace (tr C p (parityPermAction C.Obj hX true)) := fun n σ ↦ by
-  simp [parityPermTrace_true, sign_decomposeFin, tensorPermTrace_adjacent hX htotal, hneg]
+  have ht := tensorPermTrace_adjacent hX htotal σ
+  dsimp only [permScalarTrace] at ht ⊢
+  simp only [scalarPermTrace_parity, sign_decomposeFin,
+    show (1 : Fin (n + 2)) ≠ 0 from one_ne_zero, ite_false, ht, hneg,
+    neg_mul, mul_neg, one_mul, neg_neg]
 
 include hdim hX htotal in
 /-- The symmetric integrality argument now needs only left iterated-trace

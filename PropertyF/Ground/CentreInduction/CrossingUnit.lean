@@ -43,7 +43,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_unit (S : D) :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  simp only [crossingBlock, closeFusionMap_unit, tensorHom_def]
+  dsimp only [crossingBlock]
+  rw [closeFusionMap_unit]
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
@@ -57,7 +58,6 @@ theorem closeFusionMap_tensor (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
     _ = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ T ◁ g) ⊗≫
       (closeFusionMap T K f ▷ K ≫ ε_ K (Kᘁ)) := by
       rw [closeFusionMap_evaluation]
-      simp only [whiskerLeft_comp]
       monoidal
     _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by monoidal
     _ = 𝟙 _ ⊗≫ (closeFusionMap T K f ▷ (U ⊗ S)) ⊗≫

@@ -169,27 +169,42 @@ theorem fourier_eq_zero_of_fusion_eigenvector (hdim : HasFPSimpleDimensions D p)
   simpa only [sFourier, T, χ, div_mul_eq_mul_div, ← Finset.sum_div,
     Modular.categoricalS_symmetric D p y] using (mul_eq_mul_right_iff.mp ht).resolve_left hχ
 
-/-- A set of simple labels is closed under fusion constituents. -/
-abbrev IsFusionClosed (D : Ground.BraidedFusionCategory.{v,u}) (A : Finset (Fin (rank D))) : Prop :=
-  ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < fusionCoeff D a b k → k ∈ A
+/-- A finite set is closed under the positive coefficients of a multiplication table. -/
+abbrev IsFusionClosed {ι : Type*} (N : ι → ι → ι → ℕ) (A : Finset ι) : Prop :=
+  ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < N a b k → k ∈ A
 
 /-- A set of simple labels closed under duals and fusion constituents. -/
 structure IsDualFusionClosed (D : Ground.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) : Prop where
   dual : ∀ a ∈ A, dualIndex D a ∈ A
-  fusion : IsFusionClosed D A
+  fusion : IsFusionClosed (fusionCoeff D) A
 
 /-- A set of labels containing the unit and closed under duals and fusion. -/
 structure IsFusionSubring (D : Ground.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) : Prop extends IsDualFusionClosed D A where
   unit : unitIndex D ∈ A
 
-variable {A : Finset (Fin (rank D))} {a b : A} {k : {k : Fin (rank D) // k ∉ A}}
+section
+variable {ι : Type*} {N : ι → ι → ι → ℕ} {A : Finset ι}
+  {a b : A} {k : {k : ι // k ∉ A}}
 
-/-- Fusion coefficients vanish outside a fusion-closed set. -/
-theorem IsFusionClosed.fusionCoeff_eq_zero (hA : IsFusionClosed D A) :
-    fusionCoeff D a b k = 0 :=
+/-- Coefficients vanish outside a set closed under their positive entries. -/
+theorem IsFusionClosed.fusionCoeff_eq_zero (hA : IsFusionClosed N A) : N a b k = 0 :=
   Nat.eq_zero_of_not_pos (fun h ↦ k.property (hA a a.property b b.property k h))
+
+variable {R : Type*} [Fintype ι] [DecidableEq ι] [Semiring R]
+
+/-- Multiplication by a supported label cannot contribute outside a closed support. -/
+theorem fusionClosed_sum_eq_zero (w : ι → R) (hA : IsFusionClosed N A) :
+    ∑ i, (N a i k : R) * (if i ∈ A then w i else 0) = 0 := by
+  apply Finset.sum_eq_zero
+  intro i _
+  by_cases hi : i ∈ A
+  · simp [hi, hA.fusionCoeff_eq_zero (a := a) (b := ⟨i, hi⟩) (k := k)]
+  · simp [hi]
+end
+
+variable {A : Finset (Fin (rank D))} {a b : A} {k : {k : Fin (rank D) // k ∉ A}}
 
 /-- The FP-weighted regular vector supported on a set of simple labels. -/
 abbrev regularVector (D : Ground.BraidedFusionCategory.{v,u})
@@ -201,18 +216,8 @@ theorem regularVector_ne_zero_iff {i : Fin (rank D)} :
     regularVector D A i ≠ 0 ↔ i ∈ A := by
   simp [regularVector, ne_of_gt (fpSimple_pos D i)]
 
-/-- Fusion by a label in a fusion-closed set leaves the regular vector supported there. -/
-theorem regularVector_mul_eq_zero_of_not_mem (hA : IsFusionClosed D A) :
-    ∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i = 0 := by
-  classical
-  apply Finset.sum_eq_zero
-  intro i _
-  by_cases hi : i ∈ A
-  · simp [regularVector, hi, hA.fusionCoeff_eq_zero (a := a) (b := ⟨i, hi⟩) (k := k)]
-  · rw [show regularVector D A i = 0 from ite_eq_right hi, mul_zero]
-
 /-- On its support, the regular vector has the FP eigenvalue. -/
-theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) {k : A} :
+theorem regularVector_mul (hA : IsDualFusionClosed D A) {k : A} :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
       (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
   classical
@@ -232,10 +237,10 @@ is an eigenvector for multiplication by each label in that set. -/
 theorem regular_vector_fusion_eigenvector (hA : IsDualFusionClosed D A)
     (k : Fin (rank D)) :
     (∑ i, (fusionCoeff D a i k : ℂ) * regularVector D A i) =
-      (fpSimple D a : ℂ) * regularVector D A k := by
-  by_cases hk : k ∈ A <;> simp only [regularVector, hk, ↓reduceIte, mul_zero]
-  · exact regularVector_mul_of_mem hA (a := a) (k := ⟨k, hk⟩)
-  · exact regularVector_mul_eq_zero_of_not_mem hA.fusion (a := a) (k := ⟨k, hk⟩)
+      (fpSimple D a : ℂ) * regularVector D A k :=
+  if hk : k ∈ A then by simpa [regularVector, hk] using regularVector_mul hA (k := ⟨k, hk⟩)
+  else by simpa [regularVector, hk] using
+    fusionClosed_sum_eq_zero (fun i ↦ (fpSimple D i : ℂ)) hA.fusion (a := a) (k := ⟨k, hk⟩)
 
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support (hdim : HasFPSimpleDimensions D p)

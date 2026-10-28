@@ -83,35 +83,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rightDualTensorIso_braiding (X Y : C) :
     ((β_ X Y).homᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso Y X).hom ≫ (β_ (Xᘁ) (Yᘁ)).hom := by
-  let U := Xᘁ
-  let V := Yᘁ
-  let W := X ⊗ Y
-  let W' := Y ⊗ X
-  let : HasRightDual W := RightRigidCategory.rightDual W
-  let : HasRightDual W' := RightRigidCategory.rightDual W'
-  let p : ExactPairing W (V ⊗ U) := ExactPairing.tensor
-  let q : ExactPairing W' (U ⊗ V) := ExactPairing.tensor
-  let t : Wᘁ ≅ V ⊗ U := rightDualTensorIso X Y
-  let s : W'ᘁ ≅ U ⊗ V := rightDualTensorIso Y X
-  let l : W'ᘁ ⟶ V ⊗ U := ((β_ X Y).homᘁ) ≫ t.hom
-  let r : W'ᘁ ⟶ V ⊗ U := s.hom ≫ (β_ U V).hom
-  have hp := rightDualTensorIso_evaluation X Y
-  change t.hom ▷ W ≫ @ExactPairing.evaluation C _ _ _ _ p = ε_ W (Wᘁ) at hp
-  have hq := rightDualTensorIso_evaluation Y X
-  change s.hom ▷ W' ≫ @ExactPairing.evaluation C _ _ _ _ q = ε_ W' (W'ᘁ) at hq
-  have hc := dual_braiding_tensor_evaluations X Y
-  change (β_ U V).hom ▷ W ≫ @ExactPairing.evaluation C _ _ _ _ p =
-    (U ⊗ V) ◁ (β_ X Y).hom ≫ @ExactPairing.evaluation C _ _ _ _ q at hc
-  have hl : l ▷ W ≫ @ExactPairing.evaluation C _ _ _ _ p =
-      (W'ᘁ) ◁ (β_ X Y).hom ≫ ε_ W' (W'ᘁ) := by
-    dsimp [l]
-    rw [comp_whiskerRight_assoc, hp, rightAdjointMate_comp_evaluation]
-  have hr : r ▷ W ≫ @ExactPairing.evaluation C _ _ _ _ p =
-      (W'ᘁ) ◁ (β_ X Y).hom ≫ ε_ W' (W'ᘁ) := by
-    dsimp [r]
-    rw [comp_whiskerRight_assoc, hc, ← Category.assoc, ← whisker_exchange, Category.assoc, hq]
-  let : ExactPairing W (V ⊗ U) := p
-  exact evaluation_ext (hl.trans hr.symm)
+  apply evaluation_ext (X := X ⊗ Y)
+  simp only [comp_whiskerRight_assoc, rightDualTensorIso_evaluation,
+    rightAdjointMate_comp_evaluation]
+  rw [dual_braiding_tensor_evaluations, ← whisker_exchange_assoc,
+    rightDualTensorIso_evaluation]
 end PropertyF.Ground.Dimensions
 
 end

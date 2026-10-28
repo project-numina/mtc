@@ -141,7 +141,7 @@ theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
       (rightDualIsoMap (p.iso Y)).symm.hom ≫ ((fᘁ)ᘁ)ᘁ := by
   simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using
     congrArg (fun (a : (Xᘁ)ᘁ ⟶ Y) => rightAdjointMate a)
-      (iso_inv_naturality_of_hom (p.naturality f)).symm
+      ((CommSq.vert_inv (CommSq.mk (p.naturality f))).w).symm
 
 /-- The left pivotal trace is cyclic without requiring sphericality. -/
 theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
