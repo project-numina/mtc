@@ -42,11 +42,11 @@ theorem finrank_end_complement_lt (K : D)
 
 /-- Objects built from finitely many simple objects by binary direct sums,
 up to isomorphism. -/
-inductive FiniteSimpleSum (D : Type u) [Category.{v} D] [Preadditive D]
+inductive FiniteSimpleSum {D : Type u} [Category.{v} D] [Preadditive D]
     [HasBinaryBiproducts D] : D → Prop
-  | zero {X} : IsZero X → FiniteSimpleSum D X
-  | cons {X S K} : Simple S → FiniteSimpleSum D K → Nonempty (X ≅ S ⊞ K) →
-      FiniteSimpleSum D X
+  | zero {X} : IsZero X → FiniteSimpleSum X
+  | cons {X S K} : Simple S → FiniteSimpleSum K → Nonempty (X ≅ S ⊞ K) →
+      FiniteSimpleSum X
 
 attribute [local instance] Abelian.hasFiniteBiproducts
 
@@ -54,7 +54,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [Linear k E]
     [(A : E) → FiniteDimensional k (A ⟶ A)] [(Z : E) → Injective Z]
     (hasSimple : ∀ {Z : E}, ¬ IsZero Z → ∃ (S : E) (f : S ⟶ Z), Simple S ∧ Mono f)
-    (Z : E) : FiniteSimpleSum E Z := by
+    (Z : E) : FiniteSimpleSum Z := by
   induction Z using (measure fun W : E => finrank k (W ⟶ W)).wf.induction with
   | h Z ih =>
     by_cases hz : IsZero Z
@@ -103,7 +103,7 @@ def biprodOptionIso {ι : Type} [Fintype ι] (S : D) (V : ι → D) :
 
 /-- An iterated finite binary sum of simples admits a presentation as a
 single finite biproduct of simple objects. -/
-theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum D X) :
+theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum X) :
     ∃ (n : ℕ) (V : Fin n → D), (∀ i, Simple (V i)) ∧ Nonempty (X ≅ ⨁ V) := by
   induction hX with
   | zero hz =>
