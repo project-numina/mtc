@@ -11,7 +11,10 @@ public import PropertyF.Ground.Integrate.UnitScalar
 
 /-! # Intrinsic squared norms
 
-Squared norms are independent of duality choices and determine global dimension bounds.
+The product of the left and right quantum traces of a simple object is
+independent of the chosen double-dual isomorphism. This identifies the target's
+intrinsic squared norm with pivotal dimension products and yields the
+sum-of-squares and saturation statements used in the global dimension argument.
 -/
 
 @[expose] public noncomputable section

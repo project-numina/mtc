@@ -10,7 +10,10 @@ public import Mathlib.CategoryTheory.Iso
 
 /-! # Tensor defects and multiplicities
 
-Natural fourth-dual roots induce operators on multiplicity spaces and satisfy involution identities.
+Chosen simple fourth-dual roots extend to a natural double-dual isomorphism.
+Its tensor defect induces operators on multiplicity spaces. The module proves
+involutivity criteria for those operators and the trace bounds for involutions
+used in the ENO matrix argument.
 -/
 
 @[expose] public noncomputable section

@@ -3,7 +3,15 @@ public import PropertyF.Ground.Fusion.Simples
 public import Mathlib.LinearAlgebra.Dimension.Constructions
 public import Mathlib.CategoryTheory.Monoidal.Preadditive
 
-/-! Hom-space multiplicities of finite direct sums. -/
+/-! # Simple multiplicities and fusion coefficients
+
+`simpleMultiplicity` counts copies of a chosen simple in an object, and
+`fusionCoeff` records multiplicities in tensor products. Canonical biproduct
+decompositions yield `tensor_multiplicity` and the unit, commutativity, and
+associativity identities for fusion coefficients.
+
+For fusion rings, see Etingof–Gelaki–Nikshych–Ostrik, *Tensor Categories*, §3.3.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

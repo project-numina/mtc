@@ -7,6 +7,9 @@ public import Mathlib.Analysis.Complex.Polynomial.Basic
 /-! # Traces of biproducts
 
 Pivotal traces decompose over finite biproducts and their scalar blocks.
+The general cyclic-trace results apply to a morphism with `HasScalarDiagonal`;
+for simple summands, the diagonal blocks are scalars by Schur's lemma.
+The resulting formulas include the biproduct formula for right dimensions.
 -/
 
 @[expose] public noncomputable section
