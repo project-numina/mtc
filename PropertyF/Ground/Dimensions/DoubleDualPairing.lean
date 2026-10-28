@@ -27,10 +27,8 @@ theorem tensorPairing_coevaluation_evaluation (X : C) :
   change @ExactPairing.coevaluation C _ _ W V q ≫ (ε_ X (Xᘁ) ▷ V) ≫ (λ_ V).hom = _
   have hq : @ExactPairing.coevaluation C _ _ W V q =
       (η_ (Xᘁ) ((Xᘁ)ᘁ) ⊗≫ ((Xᘁ) ◁ η_ X (Xᘁ)) ▷ ((Xᘁ)ᘁ) ⊗≫ 𝟙 (W ⊗ V)) := by
-    change (@ExactPairing.tensor C _ _ (Xᘁ) X ((Xᘁ)ᘁ) (Xᘁ)
-      HasRightDual.exact HasRightDual.exact).coevaluation' = _
-    unfold ExactPairing.tensor
-    dsimp
+    exact @ExactPairing.tensor_coevaluation C _ _ (Xᘁ) X _ _
+      HasRightDual.exact HasRightDual.exact
   rw [hq]
   calc
     _ = η_ (Xᘁ) ((Xᘁ)ᘁ) ⊗≫
@@ -101,10 +99,8 @@ theorem tensorPairing_evaluation_coevaluation (X : C) :
   change (ρ_ V).inv ≫ V ◁ η_ X (Xᘁ) ≫ @ExactPairing.evaluation C _ _ W V q = _
   have hq : @ExactPairing.evaluation C _ _ W V q =
       (𝟙 (V ⊗ W) ⊗≫ ((Xᘁ)ᘁ) ◁ (ε_ X (Xᘁ) ▷ (Xᘁ)) ⊗≫ ε_ (Xᘁ) ((Xᘁ)ᘁ)) := by
-    change (@ExactPairing.tensor C _ _ X (Xᘁ) (Xᘁ) ((Xᘁ)ᘁ)
-      HasRightDual.exact HasRightDual.exact).evaluation' = _
-    unfold ExactPairing.tensor
-    dsimp
+    exact @ExactPairing.tensor_evaluation C _ _ X (Xᘁ) _ _
+      HasRightDual.exact HasRightDual.exact
   rw [hq]
   calc
     _ = 𝟙 V ⊗≫ (((Xᘁ)ᘁ) ◁ ((Xᘁ) ◁ η_ X (Xᘁ) ≫ (α_ (Xᘁ) X (Xᘁ)).inv ≫ ε_ X (Xᘁ) ▷ (Xᘁ))) ⊗≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by

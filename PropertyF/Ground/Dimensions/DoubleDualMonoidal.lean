@@ -53,10 +53,8 @@ theorem rightDualTensorIso_associativity {C : Type u} [Category.{v} C]
         monoidal
       have hq2 : ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) =
         (𝟙 _ ⊗≫ (Zᘁ : C) ◁ (ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ) ▷ Z) ⊗≫ ε_ Z (Zᘁ)) := by
-        change (@ExactPairing.tensor C _ _ (X ⊗ Y) Z ((X ⊗ Y)ᘁ) (Zᘁ)
-          HasRightDual.exact HasRightDual.exact).evaluation' = _
-        unfold ExactPairing.tensor
-        dsimp
+        exact @ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _
+          HasRightDual.exact HasRightDual.exact
       rw [hq, hq2]
       calc
         _ = 𝟙 _ ⊗≫ (Zᘁ : C) ◁ (((rightDualTensorIso X Y).hom ▷ (X ⊗ Y) ≫
@@ -82,14 +80,10 @@ theorem rightDualTensorIso_associativity {C : Type u} [Category.{v} C]
         (@ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Zᘁ) ⊗ (Yᘁ)) HasRightDual.exact qYZ).evaluation'
       have hxy : @ExactPairing.evaluation C _ _ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) qXY =
           (𝟙 _ ⊗≫ (Yᘁ : C) ◁ (ε_ X (Xᘁ) ▷ Y) ⊗≫ ε_ Y (Yᘁ)) := by
-        change (@ExactPairing.tensor C _ _ X Y (Xᘁ) (Yᘁ) HasRightDual.exact HasRightDual.exact).evaluation' = _
-        unfold ExactPairing.tensor
-        dsimp
+        exact @ExactPairing.tensor_evaluation C _ _ X Y _ _ HasRightDual.exact HasRightDual.exact
       have hyz : @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ =
           (𝟙 _ ⊗≫ (Zᘁ : C) ◁ (ε_ Y (Yᘁ) ▷ Z) ⊗≫ ε_ Z (Zᘁ)) := by
-        change (@ExactPairing.tensor C _ _ Y Z (Yᘁ) (Zᘁ) HasRightDual.exact HasRightDual.exact).evaluation' = _
-        unfold ExactPairing.tensor
-        dsimp
+        exact @ExactPairing.tensor_evaluation C _ _ Y Z _ _ HasRightDual.exact HasRightDual.exact
       unfold ExactPairing.tensor
       dsimp [A, B, D, E]
       rw [hxy, hyz]
