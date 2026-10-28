@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
+public import PropertyF.Ground.CentreInduction.BasisPairing
 
 /-! Tensor-unit normalization for the explicit induction crossing. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing CategoryTheory.Limits

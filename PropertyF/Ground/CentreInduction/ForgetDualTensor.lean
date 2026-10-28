@@ -21,10 +21,7 @@ theorem forget_rightAdjointMate (f : X ⟶ Y) :
     (fᘁ).f = @rightAdjointMate D _ _ X.1 Y.1
       (show HasRightDual X.1 from { rightDual := (Xᘁ).1, exact := forgetPairing X })
       (show HasRightDual Y.1 from { rightDual := (Yᘁ).1, exact := forgetPairing Y }) f.f := by
-  simp only [rightAdjointMate, Center.comp_f,
-    Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
-    Center.whiskerLeft_f, Center.whiskerRight_f,
-    Center.associator_inv_f]
+  simp [rightAdjointMate]
   rfl
 
 /-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
@@ -36,14 +33,13 @@ theorem forgetDualIso_natural (f : X ⟶ Y) :
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso Y).hom =
       (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
-  dsimp only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap, Iso.symm_hom]
-  rw [← Category.assoc, forgetDualIso_natural (fᘁ)]
-  simp only [Category.assoc]
-  congr 1
-  have h := congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
-  simp only [comp_rightAdjointMate] at h
-  exact (CommSq.vert_inv (g := rightDualIsoMap (forgetDualIso X))
-    (h := rightDualIsoMap (forgetDualIso Y)) ⟨h.symm⟩).w
+  have hi := (CommSq.vert_inv (g := rightDualIsoMap (forgetDualIso X))
+    (h := rightDualIsoMap (forgetDualIso Y)) ⟨by
+      simpa only [comp_rightAdjointMate, rightDualIsoMap] using
+        (congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)).symm⟩).w
+  simp only [rightDualIsoMap] at hi
+  simp only [forgetDoubleDualIso, Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
+    Category.assoc, reassoc_of% forgetDualIso_natural, hi]
 
 variable (p : PivotalStructure (C := D))
 
