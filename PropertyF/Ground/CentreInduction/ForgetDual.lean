@@ -116,12 +116,12 @@ theorem forget_trace_of_pivotal_component
   have hn : (pZ.rightTrace (𝟙 Z)).asHom.f =
       (η_ Z (Zᘁ)).f ≫ ((u ≫ e'.hom) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
         ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) := by
-    dsimp [PivotalStructure.rightTrace]
+    dsimp [PivotalStructure.rightTrace, rightTraceWith]
     simp only [Category.id_comp, tensorHom_def, whiskerLeft_id, Category.comp_id]
     rw [← heval]
     simp [comp_whiskerRight, Category.assoc, u]
   rw [hn, htrans, ht]
-  simp [PivotalStructure.rightTrace]
+  simp [PivotalStructure.rightTrace, rightTraceWith]
 
 section
 variable (C : BraidedFusionCategory.{v,u})
