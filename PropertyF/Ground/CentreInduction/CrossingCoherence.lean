@@ -52,16 +52,12 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
         ((α_ (⨁ V) T U).inv ≫ (bT ▷ U) ≫ (α_ T (⨁ V) U).hom ≫
           (T ◁ bU) ≫ (α_ T U (⨁ V)).inv) = _
       monoidal
-    _ = 𝟙 _ ⊗≫ ((∑ k, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
-        crossingBlock X T (simples C i) (simples C k)
-          (crossingInclusion C T i k a) (crossingProjection C T i k a) ≫
-            (T ◁ biproduct.ι V k)) ▷ U) ⊗≫ (T ◁ bU) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
-      dsimp only [bT]
-      rw [crossingCandidate_on_summand]
     _ = ∑ k, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
       𝟙 _ ⊗≫ (crossingBlock X T (simples C i) (simples C k)
           (crossingInclusion C T i k a) (crossingProjection C T i k a) ▷ U) ⊗≫
         (T ◁ ((biproduct.ι V k ▷ U) ≫ bU)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
+      dsimp only [bT]
+      rw [crossingCandidate_on_summand]
       simp only [monoidalComp, sum_whiskerRight, Preadditive.sum_comp, Preadditive.comp_sum]
       apply Finset.sum_congr rfl
       intro k _
@@ -74,12 +70,8 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
       intro k _
       apply Finset.sum_congr rfl
       intro a _
-      have hU : (biproduct.ι V k ▷ U) ≫ bU =
-        ∑ j, ∑ b : Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)),
-          crossingBlock X U (simples C k) (simples C j)
-            (crossingInclusion C U k j b) (crossingProjection C U k j b) ≫
-              (U ◁ biproduct.ι V j) := crossingCandidate_on_summand C X U k
-      rw [hU]
+      dsimp only [bU]
+      rw [crossingCandidate_on_summand]
       simp only [whiskerLeft_sum, monoidalComp, Preadditive.comp_sum, Preadditive.sum_comp]
       apply Finset.sum_congr rfl
       intro j _

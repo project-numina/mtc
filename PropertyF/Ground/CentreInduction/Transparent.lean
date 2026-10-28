@@ -42,22 +42,16 @@ theorem positive_simple_centralizes_induced_unit (i : Fin (rank C))
     ((S ◁ (underlyingCounit C).app X) ▷ (Sᘁ)) = _ at h
   rw [hzero] at h
   have hid : 𝟙 (V i) = 0 := by
-    have hd := unit_diag C X i
-    rw [← hd, h]
+    rw [← unit_diag C X i, h]
     simp [monoidalComp]
   let : Simple S := simples_simple C i
   let e : S ⊗ (Sᘁ) ≅ V i := whiskerRightIso (ρ_ S).symm (Sᘁ)
-  have hz' : 𝟙 (S ⊗ Sᘁ) = 0 := by
-    have ht := congrArg (fun f => e.hom ≫ f ≫ e.inv) hid
-    simpa using ht
-  have hcoe : η_ S (Sᘁ) = 0 := by
-    rw [← Category.comp_id (η_ S (Sᘁ)), hz', comp_zero]
+  have hcoe : η_ S (Sᘁ) = 0 :=
+    (e.isZero_iff.mpr ((IsZero.iff_id_eq_zero _).2 hid)).eq_of_tgt _ _
   have ht := ExactPairing.evaluation_coevaluation S (Sᘁ)
-  rw [hcoe] at ht
-  simp only [MonoidalPreadditive.zero_whiskerRight, zero_comp] at ht
   have hh := congrArg (fun f => (λ_ S).inv ≫ f ≫ (ρ_ S).hom) ht
   apply id_nonzero S
-  simpa using hh.symm
+  simpa [hcoe] using hh.symm
 
 /-- Every transparent simple of the actual centre is the unit. -/
 theorem center_transparent_simple_iso_unit (Z : CategoryTheory.Center C.Obj) [Simple Z]

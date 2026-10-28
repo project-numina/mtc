@@ -53,10 +53,9 @@ theorem transported_pivotal_natural
     {X Y : 𝒵} (f : X ⟶ Y) :
     f.f ≫ (p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv =
       (p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv ≫ ((fᘁ)ᘁ).f := by
-  have h := forgetDoubleDualIso_natural f
   apply (cancel_mono (forgetDoubleDualIso Y).hom).1
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [h]
+  rw [forgetDoubleDualIso_natural f]
   simp only [Iso.inv_hom_id_assoc]
   exact p.naturality f.f
 
