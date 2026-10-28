@@ -197,16 +197,6 @@ theorem freshOverlapIso_action :
   rw [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp]
   rfl
 
-set_option backward.isDefEq.respectTransparency false in
-/-- Agreement of the two canonical tensor-power isomorphisms identifies the
-fresh actual braid factor with the local overlap factor. -/
-theorem overlapRight_local_of_iso (hiso : HasOverlapCoherence X t k) :
-    (overlapPowerIso X t k).symm.conj (overlapRight X t k u : End _) =
-    overlapFresh (tensorPower X (overlapIndex t k + 1)) (u : End (tensorPower X (t + 2))) :=
-  End.ext (by simpa [hiso, overlapFresh, Iso.conj_apply_asHom, Category.assoc] using
-    (congrArg (fun f => (α_ _ _ _).hom ≫ f ≫ (overlapPowerIso X t k).inv)
-      (freshOverlapIso_action k u)))
-
 end LocalOverlap
 
 variable (D : BraidedFusionCategory.{v,u}) {X : D.Obj} [Simple X]

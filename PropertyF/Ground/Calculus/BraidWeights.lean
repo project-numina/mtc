@@ -198,12 +198,9 @@ theorem idempotent_matrix_trace_nat : ∃ n : ℕ, A.trace = n :=
 
 /-- A complex idempotent matrix with zero trace is zero. -/
 theorem idempotent_matrix_eq_zero_of_trace_eq_zero (ht : A.trace = 0) : A = 0 :=
-  Matrix.toLinAlgEquiv'.injective (by
-    simpa only [map_zero] using LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero
-      ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv')
-      (by
-        change (LinearMap.trace ℂ (Fin m → ℂ)) A.toLin' = 0
-        simpa only [Matrix.trace_toLin'_eq] using ht))
+  Matrix.toLinAlgEquiv'.injective <| by
+    simpa using LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero
+      ((show IsIdempotentElem A from hA).map Matrix.toLinAlgEquiv') ((Matrix.trace_toLin'_eq A).trans ht)
 
 end IdempotentTrace
 
