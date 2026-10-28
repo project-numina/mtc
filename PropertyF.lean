@@ -23,8 +23,7 @@ public import PropertyF.Ground.CentreModular.VafaTorsion
 public import PropertyF.Ground.CentreModular.VafaRegular
 public import PropertyF.Ground.CentreModular.InductionDimension
 public import PropertyF.Ground.CentreBundle.Fusion
-public import PropertyF.Ground.CentreRigid.Lift
-public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.Centre.Rigid
 public import PropertyF.Ground.Integrate.DirectModular
 public import PropertyF.Ground.Target
 public import PropertyF.Ground.Integrate.UnitScalar
@@ -53,9 +52,6 @@ public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.Norm
 public import PropertyF.Ground.Calculus.StarSpan
-public import PropertyF.Ground.Centre.Biproduct
-public import PropertyF.Ground.Centre.Kernel
-public import PropertyF.Ground.Centre.Cokernel
 public import PropertyF.Ground.Centre.Abelian
 public import PropertyF.Ground.Centre.ReverseBraiding
 public import PropertyF.Ground.Centre.Product
@@ -66,7 +62,6 @@ public import PropertyF.Ground.Centre.FiniteClosure
 public import PropertyF.Ground.Centre.GeneratedClosure
 public import PropertyF.Ground.Centre.SymmetricIntegrality
 public import PropertyF.Ground.Centre.Averaging
-public import PropertyF.Ground.Centre.AlternatingImage
 public import PropertyF.Ground.Modular.Classification
 public import PropertyF.Ground.Modular.BraidIso
 public import PropertyF.Ground.Modular.BraidFunctor
@@ -254,7 +249,6 @@ public import PropertyF.Ground.CentreInduction.Dominance
 public import PropertyF.Ground.CentreInduction.Artinian
 public import PropertyF.Ground.CentreInduction.FiniteSum
 public import PropertyF.Ground.CentreInduction.FiniteLabels
-public import PropertyF.Ground.CentreRigid.MateEquations
 public import PropertyF.Ground.CentreInduction.Fusion
 public import PropertyF.Ground.CentreInduction.UnitTest
 public import PropertyF.Ground.CentreInduction.RankOne
@@ -339,10 +333,6 @@ public import PropertyF.Ground.Integrate.DrinfeldComplete
 public import PropertyF.Ground.CentreIntegrate.TwistSign
 public import PropertyF.Ground.CentreIntegrate.TwistDual
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
-public import PropertyF.Ground.CentreRigid.MateExplicit
-public import PropertyF.Ground.CentreRigid.Coevaluation
-public import PropertyF.Ground.CentreRigid.Tensor
-public import PropertyF.Ground.CentreRigid.Evaluation
 
 
 

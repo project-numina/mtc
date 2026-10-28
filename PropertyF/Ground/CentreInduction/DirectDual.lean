@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.WeakHalfBraiding
-public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.Centre.Rigid
 
 /-! A direct candidate for the half-braiding on centre duals. -/
 @[expose] public noncomputable section

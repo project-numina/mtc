@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.CentreInduction.UnitCandidate
 public import PropertyF.Ground.CentreInduction.UnitCoevaluation
 public import PropertyF.Ground.CentreInduction.UnitTest
-public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.Centre.Rigid
 
 /-! The first underlying triangle for the proposed centre adjunction. -/
 

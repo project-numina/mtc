@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.CentreInduction.Averaging
 public import PropertyF.Ground.CentreInduction.SimpleDetection
 public import PropertyF.Ground.Fusion.SemisimpleSplit
-public import PropertyF.Ground.Centre.Cokernel
+public import PropertyF.Ground.Centre.Abelian
 
 /-! The Maschke consequence of the remaining loop-sliding identity. -/
 

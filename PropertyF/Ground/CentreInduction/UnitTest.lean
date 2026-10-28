@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.Splitting
-public import PropertyF.Ground.CentreRigid.Unit
+public import PropertyF.Ground.Centre.Rigid
 
 /-! The unit-strand case of the centre intertwining equation. -/
 

@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Centre.ProductImages
-public import PropertyF.Ground.Centre.Biproduct
+public import PropertyF.Ground.Centre.Abelian
 
 /-! Closure properties of retracts of the canonical product functor's images. -/
 @[expose] public noncomputable section

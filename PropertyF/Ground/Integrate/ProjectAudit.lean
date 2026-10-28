@@ -107,11 +107,8 @@ import all PropertyF.Ground.CentreInduction.DualTensorComparison
 import all PropertyF.Ground.CentreInduction.ForgetDoubleDualTensor
 import all PropertyF.Ground.CentreInduction.ForgetDualNaturality
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
-import all PropertyF.Ground.CentreRigid.Evaluation
+import all PropertyF.Ground.Centre.Rigid
 import all PropertyF.Ground.CentreIntegrate.TwistSign
-import all PropertyF.Ground.CentreRigid.Coevaluation
-import all PropertyF.Ground.CentreRigid.MateExplicit
-import all PropertyF.Ground.CentreRigid.Tensor
 import all PropertyF.Ground.CentreInduction.PivotalTransfer
 import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.CoreCentrality
@@ -172,7 +169,6 @@ import all PropertyF.Ground.CentreInduction.UnitTest
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
 import all PropertyF.Ground.CentreModular.KirbyCriterion
 import all PropertyF.Ground.CentreModular.RegularSupport
-import all PropertyF.Ground.CentreRigid.MateEquations
 import all PropertyF.Ground.Dimensions.CoevaluationReciprocity
 import all PropertyF.Ground.Dimensions.CoevaluationSliding
 import all PropertyF.Ground.Dimensions.DefectCoevaluation
@@ -321,14 +317,10 @@ import all PropertyF.Ground.Calculus.Unitarization
 import all PropertyF.Ground.Calculus.UnitaryBlocks
 import all PropertyF.Ground.Calculus.WeightFacts
 import all PropertyF.Ground.Centre.Abelian
-import all PropertyF.Ground.Centre.AlternatingImage
 import all PropertyF.Ground.Centre.Averaging
-import all PropertyF.Ground.Centre.Biproduct
-import all PropertyF.Ground.Centre.Cokernel
 import all PropertyF.Ground.Centre.FiniteClosure
 import all PropertyF.Ground.Centre.GeneratedClosure
 import all PropertyF.Ground.Centre.ImageDuals
-import all PropertyF.Ground.Centre.Kernel
 import all PropertyF.Ground.Centre.Basic
 import all PropertyF.Ground.Centre.Product
 import all PropertyF.Ground.Centre.ProductClosure
@@ -342,8 +334,6 @@ import all PropertyF.Ground.CentreInduction.Adjunction
 import all PropertyF.Ground.CentreInduction.GlobalSquare
 import all PropertyF.Ground.CentreInduction.Underlying
 import all PropertyF.Ground.CentreModular.InductionDimension
-import all PropertyF.Ground.CentreRigid.Lift
-import all PropertyF.Ground.CentreRigid.Unit
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Dimensions.CharacterBound
 import all PropertyF.Ground.Dimensions.CharacterDual
