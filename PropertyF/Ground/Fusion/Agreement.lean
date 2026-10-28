@@ -74,16 +74,12 @@ theorem character_norm_le_fpSimple (C : BraidedFusionCategory)
     ext j
     change (∑ k, (fusionCoeff C i j k : ℂ) * χ k) = χ i * χ j
     exact (hchar i j).symm
-  have hzero : (Matrix.scalar (Fin (rank C)) (χ i) - A) *ᵥ χ = 0 := by
-    rw [Matrix.sub_mulVec, heigen, Matrix.scalar_apply, Matrix.diagonal_const_mulVec, sub_self]
-  have hdet : (Matrix.scalar (Fin (rank C)) (χ i) - A).det = 0 :=
-    Matrix.det_eq_zero_of_mulVec_eq_zero_of_mem_nonZeroDivisors hzero
-      (mem_nonZeroDivisors_of_ne_zero hχ)
   have hz : χ i ∈ spectrum ℂ A := by
-    apply Matrix.mem_spectrum_iff_isRoot_charpoly.mpr
-    change Polynomial.eval (χ i) A.charpoly = 0
-    rw [Matrix.eval_charpoly]
-    exact hdet
+    rw [← Matrix.spectrum_toLin']
+    apply Module.End.HasEigenvalue.mem_spectrum
+    apply Module.End.hasEigenvalue_of_hasEigenvector (x := χ)
+    refine ⟨Module.End.mem_eigenspace_iff.mpr ?_, fun h ↦ hχ (congrFun h i₀)⟩
+    exact heigen
   have hle : (‖χ i‖₊ : ℝ≥0∞) ≤ spectralRadius ℂ A := by
     rw [spectralRadius_eq_of_unital]
     exact le_iSup_of_le (χ i) (le_iSup_of_le hz le_rfl)
@@ -294,16 +290,8 @@ theorem characterMatrix_commute (i j : Fin (rank D)) :
   apply Matrix.ext
   intro a b
   simp only [Matrix.mul_apply, characterMatrix]
-  have hn : (∑ k, fusionCoeff D i a k * fusionCoeff D j k b) =
-      ∑ k, fusionCoeff D j a k * fusionCoeff D i k b := by
-    calc
-      _ = ∑ k, fusionCoeff D j i k * fusionCoeff D k a b :=
-        fusionCoeff_assoc D j i a b
-      _ = ∑ k, fusionCoeff D i j k * fusionCoeff D k a b :=
-        Finset.sum_congr rfl fun k _ ↦
-          congrArg (fun n => n * fusionCoeff D k a b) (fusionCoeff_comm D j i k)
-      _ = _ := (fusionCoeff_assoc D i j a b).symm
-  exact_mod_cast hn
+  exact_mod_cast (fusionCoeff_assoc D j i a b).trans
+    (by simpa only [fusionCoeff_comm D j i] using (fusionCoeff_assoc D i j a b).symm)
 
 theorem totalFusionMatrix_eq_sum_characterMatrix :
     totalFusionMatrix D = ∑ i, characterMatrix D i := by
@@ -392,18 +380,13 @@ theorem positive_character_unique
   let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   have hfe := character_total_eigenvector D hf
   have hge := character_total_eigenvector D hg
-  have hsym : (totalFusionMatrix D)ᵀ = totalFusionMatrix D := by
-    apply Matrix.ext
-    intro i j
-    exact totalFusionMatrix_symmetric D j i
+  have hsym : (totalFusionMatrix D)ᵀ = totalFusionMatrix D :=
+    Matrix.ext fun i j ↦ totalFusionMatrix_symmetric D j i
   have hdot : f ⬝ᵥ totalFusionMatrix D *ᵥ g = g ⬝ᵥ totalFusionMatrix D *ᵥ f := by
     simpa [hsym] using Matrix.dotProduct_transpose_mulVec (totalFusionMatrix D) f g
   rw [hfe, hge, dotProduct_smul, dotProduct_smul, dotProduct_comm g f] at hdot
-  have hdotpos : 0 < f ⬝ᵥ g := by
-    apply Finset.sum_pos
-    · intro i _
-      exact mul_pos (hfpos i) (hgpos i)
-    · exact Finset.univ_nonempty
+  have hdotpos : 0 < f ⬝ᵥ g :=
+    Finset.sum_pos (fun i _ ↦ mul_pos (hfpos i) (hgpos i)) Finset.univ_nonempty
   have heq : (∑ i, f i) = ∑ i, g i := mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm
   rw [← heq] at hge
   obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique

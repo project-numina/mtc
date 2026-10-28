@@ -206,9 +206,7 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- If the actual centre has a fusion structure, its global FP dimension is the square
 of the base global FP dimension. -/
-theorem globalFPDimension_square_of_actual_induction
-    [RigidCategory (Center C.Obj)]
-    [IsFusionCategory (Center C.Obj)] :
+theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
   let I (i : Fin (rank C)) := (induction C).obj (simples C i)
   have hadj (i : Fin (rank C)) (j : Fin (rank 𝒵ᶠ)) :

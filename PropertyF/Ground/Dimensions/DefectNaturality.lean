@@ -29,11 +29,7 @@ theorem rootTensorIso_natural
   have hg : g ≫ ((fourthDualRootNaturalIso C).app Y').hom =
       ((fourthDualRootNaturalIso C).app Y).hom ≫ ((gᘁ)ᘁ) :=
     (fourthDualRootNaturalIso C).hom.naturality g
-  change (f ⊗ₘ g) ≫
-      ((((fourthDualRootNaturalIso C).app X').hom ⊗ₘ ((fourthDualRootNaturalIso C).app Y').hom) ≫
-        (doubleDualTensorIso X' Y').hom) =
-    ((((fourthDualRootNaturalIso C).app X).hom ⊗ₘ ((fourthDualRootNaturalIso C).app Y).hom) ≫
-        (doubleDualTensorIso X Y).hom) ≫ (((f ⊗ₘ g)ᘁ)ᘁ)
+  simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom]
   rw [Category.assoc, ← doubleDualTensorIso_natural, ← Category.assoc,
     ← Category.assoc, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom, hf, hg]
 

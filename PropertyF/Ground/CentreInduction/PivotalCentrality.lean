@@ -30,7 +30,7 @@ private theorem transported_pivotal_braiding (p : PivotalStructure (C := D)) (Z 
     (transported_pivotal_tensor p X Y).symm
   let b := (β_ Z B).hom
   have hn : b.f ≫ u (B ⊗ Z) = u (Z ⊗ B) ≫ ((bᘁ)ᘁ).f :=
-    by simpa [u, Category.assoc] using transported_pivotal_natural p b
+    transported_pivotal_natural p b
   rw [hu, hu] at hn
   have hb := congrArg Center.Hom.f (doubleDualTensorIso_braiding Z B)
   simp only [Center.comp_f] at hb
@@ -52,8 +52,7 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] (p : PivotalStructur
   let B := F.obj T
   let u := transportedPivotalHom p
   have hc := transported_pivotal_braiding p Z B
-  change (β_ Z B).hom.f ≫ (u B ⊗ₘ u Z) =
-    (u Z ⊗ₘ u B) ≫ (β_ ((Zᘁ)ᘁ) ((Bᘁ)ᘁ)).hom.f at hc
+  dsimp only at hc
   let j := (positivePivotalComponent p T).hom
   have hj : j.f = u B := positivePivotalComponent_forget p T
   let : IsIso (u B) := by
