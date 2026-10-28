@@ -147,10 +147,9 @@ variable {C} in
 /-- The ENO signs agree on the chosen dual label. -/
 theorem rootDualSign_dual (i : Fin (rank C)) :
     rootDualSign C (dualIndex C i) = rootDualSign C i := by
-  let X := simples C i
-  let : Simple X := simples_simple C i
-  have he : squaredNorm C (simples C (dualIndex C i)) = squaredNorm C X :=
-    (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans (target_squaredNorm_rightDual X)
+  let : Simple (simples C i) := simples_simple C i
+  have he := (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans
+    (target_squaredNorm_rightDual (simples C i))
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
   rw [Ground.dualIndex_involutive] at he
   apply mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero i)

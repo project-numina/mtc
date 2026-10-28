@@ -103,11 +103,9 @@ variable {k : Type*} [Field k] [NeZero (2 : k)]
 theorem involution_half_projection (hT : IsInvolutiveElem T) :
     IsIdempotentElem ((2 : k)⁻¹ • (1 + T)) := by
   have hinv (x : V) : T (T x) = x := congrArg (fun f : V →ₗ[k] V ↦ f x) hT
-  let P : V →ₗ[k] V := (2 : k)⁻¹ • (1 + T)
-  change P * P = P
+  change ((2 : k)⁻¹ • (1 + T)) * ((2 : k)⁻¹ • (1 + T)) = _
   ext x
-  change P (P x) = P x
-  simp only [P, LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply,
+  simp only [Module.End.mul_apply, LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply,
     map_smul, map_add, hinv, smul_add, smul_smul]
   match_scalars <;> field_simp <;> ring
 
