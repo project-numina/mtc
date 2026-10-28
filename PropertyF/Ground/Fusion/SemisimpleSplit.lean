@@ -32,10 +32,9 @@ theorem split_to_simple {S X : C} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
 
 /-- Every simple object is injective, by the dual pushout argument. -/
 theorem simple_injective (S : C) [Simple S] : Injective S where
-  factors := fun {X Y} g f [hf : Mono f] ↦
-    (split_from_simple (pushout.inr f g) (mono_ne_zero_of_id_ne_zero _ (id_nonzero S))).elim
-      fun r hr ↦ ⟨pushout.inl f g ≫ r, by
-        rw [← Category.assoc, pushout.condition, Category.assoc, hr, Category.comp_id]⟩
+  factors := fun {X Y} g f [hf : Mono f] ↦ (split_from_simple (pushout.inr f g)
+    (mono_ne_zero_of_id_ne_zero _ (id_nonzero S))).elim fun r hr ↦
+      ⟨pushout.inl f g ≫ r, by simpa [hr] using congrArg (· ≫ r) (pushout.condition (f := f))⟩
 
 /-- Every object is injective. -/
 theorem object_injective (X : C) : Injective X :=

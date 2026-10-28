@@ -34,8 +34,7 @@ theorem isomorphisms_scalar [IsAlgClosed k] [HasKernels C] {X Y : C} [Simple X]
     [FiniteDimensional k (X ⟶ X)] (j l : X ≅ Y) :
     ∃ c : k, c ≠ 0 ∧ l.hom = c • j.hom :=
   (endomorphism_simple_eq_smul_id k (l.hom ≫ j.inv)).elim fun c hc ↦
-    let hhom : l.hom = c • j.hom := (cancel_mono j.inv).1 (by
-      simpa only [Linear.smul_comp, Iso.hom_inv_id] using hc.symm)
+    let hhom : l.hom = c • j.hom := (cancel_mono j.inv).1 (by simpa using hc.symm)
     ⟨c, fun h ↦ mono_ne_zero_of_id_ne_zero l.hom (id_nonzero X) (by simpa [h] using hhom), hhom⟩
 end SimpleIsomorphisms
 
@@ -133,8 +132,7 @@ theorem sum_sq_eq_sum_sq_iff {k : Type*} [CommRing k] [LinearOrder k] [IsStrictO
     (∑ i, (d i) ^ 2) = ∑ i, (f i) ^ 2 ↔ ∀ i, |d i| = f i :=
   (Finset.sum_eq_sum_iff_of_le (fun i _ ↦
     sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2)).trans <| by
-      simpa only [Finset.mem_univ, true_implies, sq_abs] using
-        (forall_congr' fun i ↦ sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i)))
+      simpa using (forall_congr' fun i ↦ sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i)))
 
 variable {C} in
 /-- A pseudo-unitary global dimension saturates every FP bound when the

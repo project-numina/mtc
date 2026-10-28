@@ -110,10 +110,8 @@ theorem exists_retract_of_biproduct_decomposition
 /-- Every simple object is isomorphic to one of the chosen representatives. -/
 theorem exists_simple_iso (X : C.Obj) [Simple X] :
     ∃ i : Fin (rank C), Nonempty (X ≅ simples C i) :=
-  (exists_retract_of_biproduct_decomposition (simples_decompose C X)
-    (id_nonzero X)).imp fun _i ⟨s, _, hs, _⟩ ↦
-    letI : IsIso s := CategoryTheory.isIso_of_hom_simple hs
-    ⟨asIso s⟩
+  (exists_retract_of_biproduct_decomposition (simples_decompose C X) (id_nonzero X)).imp
+    fun _ ⟨s, _, hs, _⟩ ↦ ⟨letI := CategoryTheory.isIso_of_hom_simple hs; asIso s⟩
 
 /-- The tensor unit occurs among the representatives. -/
 theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ C.Obj) :=

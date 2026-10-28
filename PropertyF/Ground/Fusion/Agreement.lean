@@ -233,9 +233,8 @@ def totalFusionMatrix (D : BraidedFusionCategory) :
 /-- Duality and Frobenius reciprocity make the total fusion matrix symmetric. -/
 theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
     totalFusionMatrix D j k = totalFusionMatrix D k j := by
-  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry] using
-    (show (∑ i, (fusionCoeff D (dualIndex D i) j k : ℝ)) = _ from
-      Equiv.sum_comp (dualEquiv D) (fun i ↦ (fusionCoeff D i j k : ℝ)))
+  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry, dualEquiv_apply] using
+    Equiv.sum_comp (dualEquiv D) (fun i ↦ (fusionCoeff D i j k : ℝ))
 
 /-- The total fusion matrix is strictly positive in every entry. -/
 theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
@@ -369,8 +368,8 @@ namespace PropertyF.Ground.Dimensions
 /-- A matrix dominated entrywise by a nonnegative matrix cannot have an
 eigenvalue larger than the latter's positive eigenvalue. -/
 theorem weighted_eigenvalue_bound {K : Type*} [NormedRing K] [NormMulClass K]
-    {ι : Type*} [Fintype ι] (N : ι → ι → ℝ)
-    (T : ι → ι → K) (f : ι → ℝ) {F : ℝ} (v : ι → K) {z : K}
+    {ι : Type*} [Fintype ι] {N : ι → ι → ℝ}
+    {T : ι → ι → K} {f : ι → ℝ} {F : ℝ} {v : ι → K} {z : K}
     {i₀ : ι} (hv : v i₀ ≠ 0) (hf : ∀ i, 0 < f i)
     (hN : ∀ i j, 0 ≤ N i j) (hdom : ∀ i j, ‖T i j‖ ≤ N i j)
     (hfp : ∀ i, ∑ j, N i j * f j = F * f i)
@@ -412,7 +411,7 @@ theorem complex_eigenvalue_le_positive_eigenvalue {ι : Type*} [Fintype ι]
     (hwe : A *ᵥ w = d • w) (hve : A.map Complex.ofRealHom *ᵥ v = z • v)
     (hA : ∀ i j, 0 ≤ A i j) (hw : ∀ i, 0 < w i) (hv : v ≠ 0) : ‖z‖ ≤ d :=
   (Function.ne_iff.mp hv).elim fun _ hi ↦
-    Dimensions.weighted_eigenvalue_bound (fun i j ↦ A i j) (fun i j ↦ (A i j : ℂ)) w v hi hw hA
+    Dimensions.weighted_eigenvalue_bound (T := fun i j ↦ (A i j : ℂ)) hi hw hA
       (fun i j ↦ by simp [Complex.norm_real, abs_of_nonneg (hA i j)])
       (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hwe i)
       (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hve i)
