@@ -111,16 +111,13 @@ theorem crossingCandidate_unit_summand :
   simp only [crossingCandidate_on_summand, crossingSummand]
   rw [Finset.sum_eq_single_of_mem i (Finset.mem_univ i)]
   · let : Unique (crossingIndex C (𝟙_ C.Obj) i i) := by
-      simpa only [crossingIndex, unit_crossing_finrank, ↓reduceIte] using
-        (inferInstance : Unique (Fin 1))
-    rw [Fintype.sum_unique, crossingBlock_of_simple_split (k := ℂ) X (λ_ (Sᶜ i)).symm
+      simpa [crossingIndex, unit_crossing_finrank] using (inferInstance : Unique (Fin 1))
+    erw [Fintype.sum_unique, crossingBlock_of_simple_split (k := ℂ) X (λ_ (Sᶜ i)).symm
       (crossingInclusion C (𝟙_ C.Obj) i i default) (crossingProjection C (𝟙_ C.Obj) i i default)
-      (crossingInclusion_projection default)]
-    erw [crossingBlock_unit, Category.assoc]
+      (crossingInclusion_projection default), crossingBlock_unit, Category.assoc]
   · intro j _ hne
     let : IsEmpty (crossingIndex C (𝟙_ C.Obj) i j) := by
-      simpa only [crossingIndex, unit_crossing_finrank, Ne.symm hne, ↓reduceIte] using
-        (inferInstance : IsEmpty (Fin 0))
+      simp [crossingIndex, unit_crossing_finrank, hne.symm]
     exact Fintype.sum_empty _
 
 set_option backward.isDefEq.respectTransparency false in

@@ -24,7 +24,6 @@ actual isomorphism between each transported representative and its new label. -/
 theorem simpleLabels_equiv (C D : Ground.BraidedFusionCategory.{v,u})
     (E : C.Obj ≌ D.Obj) : ∃ e : Fin (rank C) ≃ Fin (rank D),
     ∀ i, Nonempty (E.functor.obj (simples C i) ≅ simples D (e i)) := by
-  classical
   let F := E.functor
   let S : Fin (rank C) → D.Obj := fun i => F.obj (simples C i)
   apply representatives_equiv S (simples D)
