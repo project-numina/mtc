@@ -26,12 +26,11 @@ private theorem forgetDualIso_tensor_inv :
 private theorem forgetDualIso_tensor_mate_inv :
     (rightDualTensorIso X Y).hom.fᘁ ≫ (forgetDualIso (X ⊗ Y)).invᘁ =
       (((forgetDualIso Y).inv ⊗ₘ (forgetDualIso X).inv)ᘁ) ≫
-        (rightDualTensorIso X.1 Y.1).homᘁ := by
-  let e := (forgetDualIso Y) ⊗ᵢ (forgetDualIso X)
-  have h := congrArg (fun m => rightAdjointMate m) (forgetDualIso_tensor X Y)
-  simp only [comp_rightAdjointMate] at h
-  exact (CommSq.vert_inv (g := rightDualIsoMap e)
-    (h := rightDualIsoMap (forgetDualIso (X ⊗ Y))) ⟨h⟩).w
+        (rightDualTensorIso X.1 Y.1).homᘁ :=
+  (CommSq.vert_inv (g := rightDualIsoMap ((forgetDualIso Y) ⊗ᵢ (forgetDualIso X)))
+    (h := rightDualIsoMap (forgetDualIso (X ⊗ Y))) ⟨by
+      simpa only [comp_rightAdjointMate, rightDualIsoMap, tensorIso_hom] using
+        congrArg (fun m => rightAdjointMate m) (forgetDualIso_tensor X Y)⟩).w
 
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
 theorem forgetDoubleDualIso_tensor :
