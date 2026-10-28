@@ -30,22 +30,14 @@ theorem fpDimension_underlying (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
   simp [underlying, fpDimension_biproduct, fpDimension_tensor, fpDimension_rightDual,
     fpDimension_simple, globalFPDimension, Finset.mul_sum, pow_two, mul_left_comm, mul_comm]
 
-end PropertyF.Ground.CentreInduction
-
-namespace PropertyF.Ground.CentreInduction
-attribute [local instance] CategoryTheory.Abelian.hasFiniteBiproducts
-
 /-- The induction sum is functorial in its middle factor. Its centre lift is
 constructed from the induction half-braiding. -/
 def underlyingFunctor (C : BraidedFusionCategory.{v,u}) : C.Obj ⥤ C.Obj where
   obj := underlying C
   map {X Y} f := CategoryTheory.Limits.biproduct.map
     (fun i : Fin (rank C) => (simples C i ◁ f) ▷ (simples C i)ᘁ)
-  map_id X := by
-    refine biproduct.hom_ext' _ _ fun i => ?_
-    simp [underlying]
-  map_comp f g := by
-    refine biproduct.hom_ext' _ _ fun i => ?_
+  map_id X := biproduct.hom_ext' _ _ fun i => by simp [underlying]
+  map_comp f g := biproduct.hom_ext' _ _ fun i => by
     simp [underlying, Category.assoc, whiskerLeft_comp, comp_whiskerRight]
 
 end PropertyF.Ground.CentreInduction
@@ -144,22 +136,24 @@ theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
   simp_rw [← Category.assoc (biproduct.π _ _)]
   rw [← Preadditive.sum_comp, biproduct.total, Category.id_comp, Iso.hom_inv_id]
 
+variable (X T : C.Obj)
+
 /-- The finite matrix formula for the induction half-braiding. Its invertibility
 and coherence are established in the subsequent induction modules. -/
-def crossingCandidate (X T : C.Obj) :
-    underlying C X ⊗ T ⟶ T ⊗ underlying C X := by
+def crossingCandidate :
+    underlying C X ⊗ T ⟶ T ⊗ underlying C X :=
   let V := inductionSummand C X
-  refine (rightDistributor V T).hom ≫ biproduct.desc (fun i => ?_)
-  exact ∑ j, ∑ a : crossingIndex C T i j,
-    crossingBlock X T (simples C j)
-      (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
-        (T ◁ biproduct.ι V j)
+  (rightDistributor V T).hom ≫ biproduct.desc (fun i =>
+    ∑ j, ∑ a : crossingIndex C T i j,
+      crossingBlock X T (simples C j)
+        (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
+          (T ◁ biproduct.ι V j))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing has the stated matrix entries on each induced
 simple summand. -/
 @[reassoc]
-theorem crossingCandidate_on_summand (X T : C.Obj) (i : Fin (rank C)) :
+theorem crossingCandidate_on_summand (i : Fin (rank C)) :
     let V := inductionSummand C X
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
       ∑ j, ∑ a : crossingIndex C T i j, crossingSummand C X T i j a ≫ (T ◁ biproduct.ι V j) :=
@@ -182,8 +176,6 @@ theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj)
     crossingCandidate_on_summand, Preadditive.comp_sum, Preadditive.sum_comp]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun a _ => ?_
   rw [← whiskerLeft_comp]
-  simp only [biproduct.ι_map, whiskerLeft_comp]
-  simpa only [Category.assoc] using crossingBlock_natural_middle_assoc h
-    (crossingInclusion C T i j a) (crossingProjection C T i j a) (T ◁ biproduct.ι VY j)
+  simp only [biproduct.ι_map, whiskerLeft_comp, crossingBlock_natural_middle_assoc]
 
 end PropertyF.Ground.CentreInduction

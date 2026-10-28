@@ -146,7 +146,7 @@ variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.
 theorem pivotalTrace_simple_ne_zero (X : C.Obj) [Simple X] :
     p.rightTrace (𝟙 X) ≠ 0 := by
   simpa only [Dimensions.rightTrace_id] using
-    Dimensions.rightQuantumTrace_simple_ne_zero C (p.iso X)
+    Dimensions.rightQuantumTrace_simple_ne_zero (p.iso X)
 
 /-- The scalar pivotal trace of a simple object is nonzero. -/
 theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :

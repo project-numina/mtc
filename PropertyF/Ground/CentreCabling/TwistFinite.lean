@@ -24,15 +24,15 @@ it and each of those components has finite order. -/
 theorem natural_end_finite_order_of_components {ι : Type*} [Finite ι] (X : ι → D)
     (hext : ∀ {α β : 𝟭 D ⟶ 𝟭 D}, (∀ i, α.app (X i) = β.app (X i)) → α = β)
     (α : 𝟭 D ⟶ 𝟭 D) (h : ∀ i, IsOfFinOrder (End.of (α.app (X i)))) :
-    ∃ n : ℕ, n ≠ 0 ∧ ∀ Y, (End.of (α.app Y)) ^ n = 1 := by
+    ∃ n : ℕ, n ≠ 0 ∧ ∀ Y, (End.of (α.app Y)) ^ n = 1 :=
   let a : End (𝟭 D) := End.of α
   let φ : End (𝟭 D) →* (∀ i, End (X i)) :=
     MonoidHom.pi fun i ↦ ((CategoryTheory.evaluation D D).obj (X i)).mapEnd (𝟭 D)
-  have hφ : Function.Injective φ := fun _ _ hbc ↦
+  let hφ : Function.Injective φ := fun _ _ hbc ↦
     End.ext <| hext fun i ↦ congrArg End.asHom (congrFun hbc i)
-  obtain ⟨n, hn, ha⟩ :=
+  let ⟨n, hn, ha⟩ :=
     (hφ.isOfFinOrder_iff.mp (show IsOfFinOrder (φ a) from IsOfFinOrder.pi h)).exists_pow_eq_one
-  exact ⟨n, hn.ne', fun Y ↦
+  ⟨n, hn.ne', fun Y ↦
     let ψ := ((CategoryTheory.evaluation D D).obj Y).mapEnd (𝟭 D)
     ((map_pow ψ a n).symm.trans (congrArg ψ ha)).trans (map_one ψ)⟩
 

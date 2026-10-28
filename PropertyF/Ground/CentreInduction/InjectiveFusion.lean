@@ -31,55 +31,49 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Under the unit-retract condition every centre object is a finite simple sum. -/
 theorem center_finite_simple_sum_of_unit_retract {X : C.Obj} {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
-    (Z : 𝒵) : FiniteSimpleSum (𝒵) Z := by
-  let (W : 𝒵) : IsArtinianObject W := center_artinian C W
-  let : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective C X)
-  let (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
-  let (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) :=
-    let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
+    (Z : 𝒵) : FiniteSimpleSum (𝒵) Z :=
+  letI (W : 𝒵) : IsArtinianObject W := center_artinian C W
+  letI : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective X)
+  letI (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
+  letI (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) :=
+    letI : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
     Centre.finiteDimensional_hom ℂ A B
-  refine finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW => ?_) Z
-  obtain ⟨P, hP⟩ := exists_simple_subobject hW
-  exact ⟨P, P.arrow, hP, inferInstance⟩
+  finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW =>
+    ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract {X : C.Obj} {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
-    IsFusionCategory (𝒵) := by
-  obtain ⟨labels, hsimple, hcover⟩ := finite_simple_labels C
-  obtain ⟨n, S, hS, hinj, hcover⟩ := simple_representatives_of_finite_cover hsimple hcover
-  refine CentreBundle.fusionOfFiniteSemisimple C ⟨n, S, hS, hinj, ?_⟩
-  intro Z
-  obtain ⟨k, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract C r Z)
-  obtain ⟨m, ⟨a⟩⟩ := regroup_biproduct (fun j => hcover (V j) (hV j))
-  exact ⟨m, ⟨e ≪≫ a⟩⟩
+    IsFusionCategory (𝒵) :=
+  let ⟨_, hsimple, hcover⟩ := finite_simple_labels C
+  let ⟨n, S, hS, hinj, hcover⟩ := simple_representatives_of_finite_cover hsimple hcover
+  CentreBundle.fusionOfFiniteSemisimple C ⟨n, S, hS, hinj, fun Z =>
+    let ⟨_, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract C r Z)
+    let ⟨m, ⟨a⟩⟩ := regroup_biproduct (fun j => hcover (V j) (hV j))
+    ⟨m, ⟨e ≪≫ a⟩⟩⟩
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A cap with nonzero unit composite gives a unit retract. -/
 def unitRetractOfNonzeroCap {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [RightRigidCategory D] [Preadditive D] [HasKernels D] [Simple (𝟙_ D)]
     {J : D} (cap : J ⊗ Jᘁ ⟶ 𝟙_ D) (hne : η_ J (Jᘁ) ≫ cap ≠ 0) :
-    Retract (𝟙_ D) (J ⊗ Jᘁ) := by
+    Retract (𝟙_ D) (J ⊗ Jᘁ) :=
   letI : IsIso (η_ J (Jᘁ) ≫ cap) := isIso_of_hom_simple hne
-  refine { i := η_ J (Jᘁ), r := cap ≫ inv (η_ J (Jᘁ) ≫ cap), retract := ?_ }
-  simp only [← Category.assoc, IsIso.hom_inv_id]
+  { i := η_ J (Jᘁ), r := cap ≫ inv (η_ J (Jᘁ) ≫ cap)
+    retract := (Category.assoc _ _ _).symm.trans (IsIso.hom_inv_id _) }
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre pivotal structure with nonzero trace on an induced object implies fusion. -/
 theorem center_fusion_of_nonzero_induced_trace (X : C.Obj)
     (p : Dimensions.PivotalStructure (C := 𝒵))
     (hne : p.rightTrace (𝟙 ((induction C).obj X)) ≠ 0) :
-    IsFusionCategory (𝒵) := by
+    IsFusionCategory (𝒵) :=
   let J := (induction C).obj X
   let cap : J ⊗ Jᘁ ⟶ 𝟙_ (𝒵) :=
     ((p.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
-  let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
-  let : Simple (𝟙_ (𝒵)) := Centre.centerUnitSimple
-  apply center_fusion_of_unit_retract C
-  apply unitRetractOfNonzeroCap cap
-  intro h
-  apply hne
-  apply End.ext
-  simpa [Dimensions.PivotalStructure.rightTrace, cap, J, Category.assoc] using h
+  letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
+  letI : Simple (𝟙_ (𝒵)) := Centre.centerUnitSimple
+  center_fusion_of_unit_retract C <| unitRetractOfNonzeroCap cap <| fun h =>
+    hne (End.ext (by simpa [Dimensions.PivotalStructure.rightTrace, cap, J, Category.assoc] using h))
 
 end PropertyF.Ground.CentreInduction

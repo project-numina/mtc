@@ -128,7 +128,8 @@ theorem trace_reciprocity_of_frobenius_defect
   let g := P.symm v
   have hv : P g = v := P.apply_symm_apply v
   rw [← hv]
-  have hn := simpleHomPairing_natural C g
+  let : FiniteDimensional ℂ (simples C j ⟶ simples C j) := IsFusionCategory.hom_finite _ _
+  have hn := simpleHomPairing_natural g
     (rootTensorDefect C (simples C i) (simples C k)).hom
   have hm : (multiplicityDefect C i k j).toLinearMap =
       Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom := by
@@ -159,7 +160,7 @@ theorem rootDualSign_dual (i : Fin (rank C)) :
   let Y := simples C (dualIndex C i)
   let : Simple X := simples_simple C i
   let : Simple Y := simples_simple C _
-  let : Simple (Xᘁ) := simple_rightDual C X
+  let : Simple (Xᘁ) := simple_rightDual X
   have he : squaredNorm C Y = squaredNorm C X :=
     (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans (target_squaredNorm_rightDual C X)
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he

@@ -2,6 +2,7 @@ module	name	kind	cone	type_nodes	explicit	implicit	strict	instance	hypotheses	ty
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.isForbidden	definition	0	3	1	0	0	0	0	4232667543
 PropertyF.Ground.Fusion.UnitPower	_private.PropertyF.Ground.Fusion.UnitPower.0.PropertyF.Ground.balanced_flow_cycle._simp_1_1	theorem	1	20	0	3	0	0	0	2584545170
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.FusionRules	inductive	1	2	1	0	0	0	0	1219222929
+PropertyF.Ground.CentreCabling.TraceSaturation	_private.PropertyF.Ground.CentreCabling.TraceSaturation.0.PropertyF.Ground.CentreCabling.finiteOrder_matrix_trace_saturation._simp_1_3	theorem	0	58	2	1	0	1	0	3765757006
 PropertyF.Ground.Cabling.Generated	PropertyF.generatedBy_tensorPower_of_generated._f	definition	1	64	3	3	0	4	2	3938632927
 PropertyF.Ground.Centre.Product	PropertyF.Ground.Centre.productBraided	definition	1	69	0	1	0	3	0	3814579841
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addRightBlocksIterStarMap._proof_1	theorem	1	557	8	5	0	7	4	3157569599
@@ -11,7 +12,7 @@ PropertyF.Ground.Centre.Calculus.TypeA	PropertyF.Ground.CentreCalculus.permActio
 PropertyF.Ground.Fusion.Simples	PropertyF.Ground.exists_simple_retract	theorem	1	150	2	1	0	0	1	1689394438
 PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.overlapPowerIso.eq_1	theorem	0	127	3	1	0	2	0	173429456
 PropertyF.Ground.Dimensions.DoubleDualUnitTensor	_private.PropertyF.Ground.Dimensions.DoubleDualUnitTensor.0.PropertyF.Ground.Dimensions.doubleDualTensorIso_unit_left._simp_1_1	theorem	1	113	0	6	0	5	0	3030107409
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_right	theorem	1	213	3	3	0	7	2	3333232063
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_right	theorem	1	113	3	3	0	3	0	2301687749
 PropertyF.Ground.Dimensions.RootDualLabel	PropertyF.Ground.Dimensions.trace_reciprocity_of_frobenius_defect	theorem	1	292	2	0	0	0	1	1545856365
 PropertyF.Ground.CentreCabling.ImageCore	PropertyF.Ground.CentreCabling.dual_mem_productLabels	theorem	1	169	1	1	0	2	1	1327642784
 PropertyF.Ground.Calculus.ThreeRigidity	PropertyF.Ground.Calculus.actual_braid_squares_equal_of_saturation	theorem	1	685	9	6	0	0	6	2885798850
@@ -23,8 +24,8 @@ PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.homAddEquivSubmodule._proo
 PropertyF.Ground.CentreInduction.CrossingCoherence	PropertyF.Ground.CentreInduction.induction._proof_1	theorem	1	91	2	0	0	0	0	3941731836
 PropertyF.Ground.Cabling.Strands	_private.PropertyF.Ground.Cabling.Strands.0.PropertyF.tensorLeft_faithful_of_unit_retract._simp_1_1	theorem	1	132	3	6	0	2	0	32622451
 PropertyF.Ground.Cabling.Naturality	_private.PropertyF.Ground.Cabling.Naturality.0.PropertyF.tensorPowerMap_retract._proof_1	theorem	1	85	2	3	0	2	0	3745887094
+PropertyF.Ground.CentreCabling.RegularSupport	_private.PropertyF.Ground.CentreCabling.RegularSupport.0.PropertyF.Ground.CentreCabling.regularVector_fourier_support.match_1_1	definition	1	168	4	3	0	0	2	2219339885
 PropertyF.Ground.Dimensions.ENOReciprocity	PropertyF.Ground.Dimensions.rootDualSign	definition	1	9	2	0	0	0	0	223557641
-PropertyF.Ground.Calculus.RightStrand	_private.PropertyF.Ground.Calculus.RightStrand.0.PropertyF.Ground.Calculus.crossing_natural._simp_1_2	theorem	1	140	4	4	0	2	0	3489786548
 PropertyF.Ground.CentreInduction.CrossingBlocks	PropertyF.Ground.CentreInduction.crossingCandidate._proof_1	theorem	1	53	3	0	0	0	0	4034936695
 PropertyF.Ground.CentreInduction.PositivePivotal	PropertyF.Ground.CentreInduction.liftedPivotalStructure_compatible	theorem	1	74	2	2	0	4	1	3283114335
 PropertyF.Ground.Cabling.Generated	PropertyF.tensorPowerTensorIso._proof_2	theorem	0	77	3	1	0	2	0	1230613137
@@ -131,7 +132,6 @@ PropertyF.Definitions	PropertyF.tensorPower.match_1	definition	1	25	4	0	0	0	0	41
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addLeftBraidAlgebraIter._f	definition	1	278	4	1	0	7	2	3488023462
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.simpleScalarNaturalIso.congr_simp	theorem	0	94	5	0	0	0	2	3172028942
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.fourthDualSimpleRoot	definition	1	45	2	0	0	0	0	2862369671
-PropertyF.Arithmetic	_private.PropertyF.Arithmetic.0.PropertyF.integer_of_galois_fixed.match_1_3	definition	1	198	3	2	0	2	2	2872539795
 PropertyF.Ground.CentreCabling.ImageCore	PropertyF.Ground.CentreCabling.canonicalImageRetract_product	theorem	1	38	1	2	0	3	1	440757050
 PropertyF.BlockTrace	PropertyF.Blocks.trace.eq_1	theorem	0	66	3	0	0	0	0	974427751
 PropertyF.Ground.Dimensions.DualCoherence	PropertyF.Ground.Dimensions.rightDualIso_inv_evaluation	theorem	1	104	2	4	0	2	0	1335342389
@@ -140,11 +140,10 @@ PropertyF.Ground.Fusion.Agreement	_private.PropertyF.Ground.Fusion.Agreement.0.P
 PropertyF.Ground.CentreInduction.PositivePivotal	_private.PropertyF.Ground.CentreInduction.PositivePivotal.0.PropertyF.Ground.CentreInduction.«term𝒵ᶠ_1»	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.CentreInduction.ActualFusion	PropertyF.Ground.CentreInduction.actualAdjunction	definition	1	30	1	0	0	0	0	3096630414
 PropertyF.Ground.Calculus.TensorPowerCoherence	_private.PropertyF.Ground.Calculus.TensorPowerCoherence.0.PropertyF.Ground.Calculus.reverseConcatIso.match_1.splitter	definition	0	33	5	0	0	0	0	3515700703
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace._proof_2	theorem	1	393	3	3	0	7	2	3796364538
 PropertyF.Ground.CentreInduction.DrinfeldTheorem	PropertyF.Ground.CentreInduction.drinfeld_inv_natural	theorem	1	114	2	2	0	0	0	2460508584
 PropertyF.Ground.Dimensions.TensorExtension	PropertyF.Ground.Dimensions.rootSignTensorIso	definition	1	79	5	0	0	0	1	2073534127
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instMonoidalCategoryObj._aux_1	definition	1	24	2	0	0	0	0	7015458
-PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Dimensions.rightPartialTrace_one_tensor	theorem	1	304	4	2	0	7	2	2247679235
+PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Dimensions.rightPartialTrace_one_tensor	theorem	1	241	4	2	0	7	2	1128942731
 PropertyF.Definitions	PropertyF.tensorPower._unsafe_rec	definition	0	16	2	1	0	2	0	1496326090
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerForgetPreservesMonomorphisms	theorem	1	52	0	1	0	5	1	3296652728
 PropertyF.Ground.CentreInduction.Representatives	PropertyF.Ground.CentreInduction.FiniteSimpleSum.casesOn	definition	0	124	3	3	0	3	4	2347303819
@@ -186,22 +185,20 @@ PropertyF.Ground.Calculus.EndBlocks	PropertyF.Ground.Calculus.isoEndAlgEquiv	def
 PropertyF.Ground.CentreCabling.RegularSupport	PropertyF.Ground.CentreCabling.IsFusionSubring.casesOn	definition	0	54	2	3	0	0	1	473849945
 PropertyF.Ground.CentreCabling.ImageCore	_private.PropertyF.Ground.CentreCabling.ImageCore.0.PropertyF.Ground.CentreCabling.dual_mem_productLabels.match_1_1	definition	1	374	1	1	0	2	1	4000954460
 PropertyF.Ground.CentreModular.TransparencyCriterion	_private.PropertyF.Ground.CentreModular.TransparencyCriterion.0.PropertyF.Ground.CentreModular.termSₚ_1	definition	0	1	0	0	0	0	0	1560175301
-PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.fusion_complex_eigenvalue_saturation._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392
 PropertyF.Ground.Target	PropertyF.Ground.IsFusionCategory.casesOn	definition	0	298	2	2	0	8	3	843368946
 PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculus.scalarPermTrace	definition	1	98	5	3	0	3	0	1421111993
 PropertyF.Ground.CentreDimensions.PivotalTwist	PropertyF.Ground.Dimensions.pivotalTrace_selfBraiding	theorem	1	114	3	0	0	1	1	2424135229
 PropertyF.Ground.Dimensions.RootDualLabel	PropertyF.Ground.Dimensions.trace_reciprocity_of_intertwining	theorem	1	674	2	0	0	0	1	1963379917
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.homSubmodule._proof_1	theorem	1	258	5	2	0	7	3	736175286
-PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.fusion_complex_eigenvalue_saturation._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633
 PropertyF.Ground.Centre.Modular.Vafa	_private.PropertyF.Ground.Centre.Modular.Vafa.0.PropertyF.Ground.CentreModular.monodromyNaturalIso._simp_1	theorem	1	76	2	3	0	2	0	346263114
 PropertyF.Ground.Final	_private.PropertyF.Ground.Final.0.PropertyF.Ground._aux_PropertyF_Ground_Final___unexpand_PropertyF_Ground_Integrate_bundledCenter_1	definition	0	1	0	0	0	0	0	4242366553
+PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.weighted_eigenvalue_saturation._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871
 PropertyF.Ground.CentreInduction.ActualFusion	PropertyF.Ground.CentreInduction.homLinearEquivOfAdjunction._proof_2	theorem	1	221	7	2	0	5	1	2099076925
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.scaleIso.eq_1	theorem	0	238	3	3	0	3	1	2497256074
 PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.overlapFresh	definition	1	52	2	3	0	2	0	4239047981
 PropertyF.Ground.Integrate.TwistedRigidity	_private.PropertyF.Ground.Integrate.TwistedRigidity.0.PropertyF.Ground.ScalarTwist.termPσ	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.CentreCabling.RegularSupport	_private.PropertyF.Ground.CentreCabling.RegularSupport.0.termS	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.tensorRightHomLinearEquiv._proof_1	theorem	1	167	6	1	0	5	1	3433621886
-PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.fusion_complex_eigenvalue_saturation._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addLeftBraidAlgebraIter_group._f	definition	1	899	3	3	0	7	2	2907031164
 PropertyF.Ground.Modular.SSquare	PropertyF.Ground.Modular.square_eq_of_support	theorem	1	199	6	4	0	4	6	3292338338
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.braidAlgebra_unitary_blocks	theorem	1	165	1	3	0	5	1	150583423
@@ -222,11 +219,11 @@ PropertyF.Ground.Dimensions.SimpleHomBasis	PropertyF.Ground.Dimensions.simpleHom
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.characterMatrix	definition	1	16	2	0	0	0	0	1711912275
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instAbelianObj._proof_6	theorem	1	44	2	0	0	0	0	160931201
 PropertyF.Ground.Dimensions.BiproductTrace	PropertyF.Ground.Dimensions.rightTraceLinear	definition	1	135	2	1	0	7	2	1920433514
+PropertyF.Ground.Dimensions.DualCoherence	PropertyF.Ground.Dimensions.tensorPairing_evaluation_whiskerLeft	theorem	1	185	2	6	0	5	1	686722423
 PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.tensorLeftHomLinearEquiv._proof_3	theorem	1	75	4	1	0	3	0	251684489
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerForgetPreservesEpimorphisms	theorem	1	52	0	1	0	5	1	1009637617
 PropertyF.Ground.Fusion.ObjectDimension	PropertyF.Ground.fpDimension_rightDual	theorem	1	40	2	0	0	0	0	1527621824
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.ForbiddenFixture.mk.sizeOf_spec	theorem	0	37	1	0	0	0	0	1645869075
-PropertyF.Ground.CentreCabling.RegularSupport	_private.PropertyF.Ground.CentreCabling.RegularSupport.0.PropertyF.Ground.CentreCabling.regularVector_fourier_support._simp_1_2	theorem	1	20	0	2	0	0	0	563549242
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.unitConjugation._proof_4	theorem	1	67	3	1	0	1	0	3326034356
 PropertyF.Ground.Dimensions.DualTensorNaturality	PropertyF.Ground.Dimensions.fourthDualIso	definition	1	45	2	0	0	0	0	2540628963
 PropertyF.Ground.Modular.BraidIso	PropertyF.Ground.Modular.tensorPowerIso._sunfold	definition	0	38	2	3	0	2	0	712733653
@@ -347,10 +344,10 @@ PropertyF.Ground.CentreInduction.DrinfeldTheorem	PropertyF.Ground.CentreInductio
 PropertyF.Ground.Calculus.ThreeRigidity	_private.PropertyF.Ground.Calculus.ThreeRigidity.0.PropertyF.Ground.Calculus.end_one_ne_zero_of_pivotalDimension_ne_zero._simp_1_1	theorem	0	46	1	1	0	1	0	691130679
 PropertyF.Ground.CentreCabling.ImageCore	PropertyF.Ground.CentreCabling.HasFiniteImageCentralizerMonodromy	definition	1	128	2	0	0	2	1	1323784786
 PropertyF.Ground.CentreInduction.SecondTriangle	PropertyF.Ground.CentreInduction.crossing_counit_offdiag	theorem	1	195	3	2	0	0	1	2081389483
-PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.averagedGram_posDef	theorem	1	83	1	2	0	4	0	728910333
+PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.averagedGram_posDef	theorem	1	107	1	2	0	4	0	1534214336
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.Issue.noConfusion	definition	0	18	1	3	0	0	1	1621116606
 PropertyF.Ground.Cabling.Generated	_private.PropertyF.Ground.Cabling.Generated.0.PropertyF.biproductRetract	definition	1	76	1	4	0	3	0	1089609643
-PropertyF.Ground.Calculus.PositiveWeights	PropertyF.Ground.Calculus.actual_rigidity_of_overlap_and_galois_dimensions	theorem	1	348	18	0	0	1	11	1803719716
+PropertyF.Ground.Calculus.PositiveWeights	PropertyF.Ground.Calculus.actual_rigidity_of_overlap_and_galois_dimensions	theorem	1	348	18	0	0	1	11	3714064978
 PropertyF.Definitions	PropertyF.tensorPower._sunfold	definition	0	16	2	1	0	2	0	1496326090
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.simpleScalarNatural._proof_2	theorem	1	85	3	2	0	0	0	2645088496
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.multiplicityDefect_involution_of_tensor_square	theorem	1	245	3	2	0	0	1	3648415044
@@ -358,7 +355,7 @@ PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.overlapFresh.eq_1
 PropertyF.Ground.Calculus.ThreeRigidity	PropertyF.Ground.Calculus.braidEndRepresentation.eq_1	theorem	0	225	2	1	0	4	0	1093883355
 PropertyF.Definitions	PropertyF.braidGenerator._f	definition	1	73	4	1	0	3	0	1402593043
 PropertyF.Ground.Cabling.Generated	PropertyF.generatedBy_of_iso	theorem	1	45	2	4	0	3	1	1579189900
-PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_7	theorem	0	81	2	2	0	1	1	1459115028
+PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133
 PropertyF.Ground.Integrate.CharacterReality	PropertyF.Ground.fusion_character_dual_eq_conj	theorem	1	225	4	6	0	2	3	1108406211
 PropertyF.Ground.Centre.Calculus.TypeA	_private.PropertyF.Ground.Centre.Calculus.TypeA.0.PropertyF.Ground.CentreCalculus.typeAGenerator_isTypeAFamily._proof_1_1	theorem	1	39	4	0	0	0	2	2676862783
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.Issue.missingDeclaration.sizeOf_spec	theorem	0	38	1	0	0	0	0	3995357985
@@ -390,7 +387,7 @@ PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.doubl
 PropertyF.Ground.Centre.Rigid	PropertyF.Ground.CentreRigid.rigidOfMateCoherence._proof_1	theorem	1	267	2	1	0	3	1	1414430882
 PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.dualIndex_unit	theorem	1	16	1	0	0	0	0	3855942825
 PropertyF.Ground.CentreInduction.CrossingCoherence	PropertyF.Ground.CentreInduction.crossingCandidate_isIso	theorem	1	40	3	0	0	0	0	657130198
-PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.previousOverlapLocal.eq_1	theorem	0	325	2	3	0	7	2	4183607755
+PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.previousOverlapLocal.eq_1	theorem	0	321	2	3	0	7	2	1499770045
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.ForbiddenFixture.noConfusion	definition	0	18	1	3	0	0	1	4272865504
 PropertyF.Ground.CentreInduction.AdjunctionAssembly	PropertyF.Ground.CentreInduction.unitComponent	definition	1	83	3	0	0	0	0	3470755671
 PropertyF.Ground.Cabling.Generated	_private.PropertyF.Ground.Cabling.Generated.0.PropertyF.flattenDependentFin._proof_1	theorem	1	121	3	1	0	2	0	213478163
@@ -403,7 +400,7 @@ PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.positive_matrix_eigenvector_p
 PropertyF.Ground.CentreModular.TransparencyCriterion	_private.PropertyF.Ground.CentreModular.TransparencyCriterion.0.PropertyF.Ground.CentreModular.fusion_S_square_of_kirby._simp_1_1	theorem	1	64	3	2	0	1	0	765139717
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.Centralizes	definition	1	23	2	1	0	2	0	2588200513
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.rootTensorIso.eq_1	theorem	0	115	3	0	0	0	0	1755899278
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_left	theorem	1	213	3	3	0	7	2	85409101
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_left	theorem	1	113	3	3	0	3	0	234903801
 PropertyF.Ground.Modular.BraidFunctor	_private.PropertyF.Ground.Modular.BraidFunctor.0.PropertyF.Ground.Modular.tensorPowerComparison.match_1.eq_1	theorem	0	35	3	0	0	0	0	4102682706
 PropertyF.Ground.Cabling.Naturality	PropertyF.tensorPowerMap.eq_def	theorem	0	118	2	3	0	2	0	2683400700
 PropertyF.Ground.CentreCalculus.LeftTensorTrace	_private.PropertyF.Ground.CentreCalculus.LeftTensorTrace.0.termTr	definition	0	1	0	0	0	0	0	1560175301
@@ -411,7 +408,6 @@ PropertyF.Definitions	PropertyF.GeneratedBy._proof_1	theorem	1	50	3	1	0	3	0	2536
 PropertyF.Ground.CentreInduction.AdjunctionAssembly	_private.PropertyF.Ground.CentreInduction.AdjunctionAssembly.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_AdjunctionAssembly___unexpand_CategoryTheory_Center_1	definition	0	1	0	0	0	0	0	4242366553
 PropertyF.Ground.Fusion.SpectralIntegral	PropertyF.Ground.fusionMatrix.eq_1	theorem	0	97	4	0	0	0	0	1790440161
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.centerPreadditive	definition	1	35	0	1	0	4	1	3057134214
-PropertyF.Ground.Calculus.TensorPowerCoherence	PropertyF.Ground.Calculus.appendIso_eqToHom_natural	theorem	1	147	2	3	0	2	1	554590053
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.rootTensorDefect	definition	1	30	3	0	0	0	0	487917894
 PropertyF.Ground.CentreCalculus.LeftTensorTrace	PropertyF.Ground.CentreCalculus.integral_of_leftTrace_and_twist_sign	theorem	1	127	4	3	0	1	5	3927515681
 PropertyF.Ground.Dimensions.DefectExtension	PropertyF.Ground.Dimensions.rootTensorDefect_slide_of_involution	theorem	1	97	3	1	0	0	1	3749817000
@@ -427,6 +423,7 @@ PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.Issu
 PropertyF.Ground.Dimensions.SimpleHomBasis	PropertyF.Ground.Dimensions.simpleInclusionBasis	definition	1	72	3	0	0	0	0	2503467490
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.braidEndRepresentation._proof_1	theorem	1	69	2	1	0	2	0	4077242059
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	PropertyF.Ground.CentreCalculus.commute_moveWord	theorem	1	115	5	3	0	1	3	97113460
+PropertyF.Ground.CentreCabling.RegularSupport	_private.PropertyF.Ground.CentreCabling.RegularSupport.0.PropertyF.Ground.CentreCabling.regularVector_fourier_support._simp_1_5	theorem	1	17	0	2	0	0	0	1877817566
 PropertyF.Ground.Centre.ProductImages	PropertyF.Ground.Centre.sndBraided	definition	1	58	0	1	0	3	0	3378747623
 PropertyF.Ground.Dimensions.DoubleDualPairing	PropertyF.Ground.Dimensions.pivotal_spherical_iff_simple_dimensions_real	theorem	1	90	2	0	0	0	0	3152987264
 PropertyF.Ground.Target	PropertyF.Ground.GaloisConjugate.braided	definition	1	56	1	3	0	0	0	723908687
@@ -470,7 +467,7 @@ PropertyF.Ground.CentreIntegrate.TwistBalancing	PropertyF.Ground.CentreIntegrate
 PropertyF.Ground.Modular.CharacterStar	PropertyF.Ground.Modular.HasRealSimpleDimensions	definition	1	23	2	0	0	0	0	1045418101
 PropertyF.Ground.Fusion.Simples	PropertyF.Ground.exactPairing_ne_zero	theorem	1	144	3	1	0	5	2	3257976941
 PropertyF.Ground.CentreCabling.ImageCore	PropertyF.Ground.CentreCabling.imageLabels	definition	1	114	1	0	0	2	1	2248516763
-PropertyF.Ground.Fusion.Multiplicity	PropertyF.Ground.fusionCoeff.eq_1	theorem	0	93	4	0	0	0	0	3864095147
+PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.fusionCoeff.eq_1	theorem	0	93	4	0	0	0	0	3864095147
 PropertyF.Ground.Integrate.ActualCenterReduction	PropertyF.Ground.IsGaloisUnitColumn	definition	1	40	4	0	0	0	0	2521128574
 PropertyF.Ground.Integrate.DependencyAudit	_private.PropertyF.Ground.Integrate.DependencyAudit.0.PropertyF.Ground.DependencyAudit.findForbidden.match_4	definition	0	20	4	0	0	0	0	2745498370
 PropertyF.Ground.Centre.Modular.Vafa	_private.PropertyF.Ground.Centre.Modular.Vafa.0.PropertyF.Ground.CentreModular.tensor_biprod_mapIso._simp_1_2	theorem	1	93	3	4	0	2	0	391109155
@@ -485,7 +482,7 @@ PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.fpDeterminan
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	PropertyF.Ground.CentreCalculus.exists_moveWord_coset	theorem	1	67	2	4	0	1	2	1872982677
 PropertyF.Ground.Calculus.RightStrand	_private.PropertyF.Ground.Calculus.RightStrand.0.PropertyF.tensorPower.match_1.splitter	definition	0	25	4	0	0	0	0	413685589
 PropertyF.Ground.Dimensions.TensorExtension	PropertyF.Ground.Dimensions.rootSignTwist_unit_of_simple_dimension	theorem	1	64	3	1	0	0	2	3191146772
-PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_4	theorem	0	49	0	1	0	3	1	1623334871
+PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.zeroTensorRight	theorem	1	57	1	1	0	5	2	4140534147
 PropertyF.Ground.Cabling.Naturality	PropertyF.braidWordAction._proof_2	theorem	1	69	2	1	0	2	0	4077242059
 PropertyF.Ground.CentreInduction.ForgetDualTensor	PropertyF.Ground.CentreInduction.rightDualIso_tensor	theorem	1	137	4	7	0	2	0	2870653201
@@ -539,6 +536,7 @@ PropertyF.Ground.Dimensions.Trace	PropertyF.Ground.Dimensions.PivotalStructure.r
 PropertyF.Ground.CentreInduction.PositivePivotal	PropertyF.Ground.CentreInduction.positiveDoubleDualIso_inv_forget	theorem	1	169	1	1	0	5	0	1012898493
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	PropertyF.Ground.CentreCalculus.HasMoveWordCoset.mul_generator	theorem	1	75	3	5	0	1	3	2055523551
 PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.insertRightPowerIso.eq_2	theorem	0	168	3	1	0	2	0	110197277
+PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.first_pair_natural_assoc	theorem	1	181	4	4	0	2	0	3214222911
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.fpDeterminant_tensor_of_simple	theorem	1	44	4	0	0	1	1	1801280607
 PropertyF.Ground.Cabling.Generated	PropertyF.flattenDependent._proof_8	theorem	1	55	3	1	0	2	0	1745348411
 PropertyF.Ground.Cabling.Generated	PropertyF.flattenBiproduct._proof_2	theorem	1	64	3	1	0	2	0	505668146
@@ -624,6 +622,7 @@ PropertyF.Ground.Dimensions.DimensionCharacter	PropertyF.Ground.Dimensions.pivot
 PropertyF.Ground.Modular.FusionTransport	PropertyF.Ground.Modular.conjugate_labels	theorem	1	71	1	3	0	0	0	1840041910
 PropertyF.Ground.CentreCalculus.ParityDeletion	_private.PropertyF.Ground.CentreCalculus.ParityDeletion.0._aux_PropertyF_Ground_CentreCalculus_ParityDeletion___macroRules__private_PropertyF_Ground_CentreCalculus_ParityDeletion_0_termTr_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.cokernelHalfIso._proof_5	theorem	1	98	2	3	0	3	0	19597759
+PropertyF.Ground.CentreInduction.InjectiveFusion	_private.PropertyF.Ground.CentreInduction.InjectiveFusion.0.PropertyF.Ground.CentreInduction.center_fusion_of_unit_retract.match_1_5	definition	1	330	4	0	0	0	2	1981105254
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instCategoryObj._proof_8	theorem	1	69	2	0	0	0	0	2529705224
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.ForbiddenFixture.mk._flat_ctor	definition	0	3	1	0	0	0	0	2942684551
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.kernelHalfIso_ι	theorem	1	204	1	4	0	5	1	4123354592
@@ -648,7 +647,7 @@ PropertyF.Ground.CentreModular.TransparencyCriterion	PropertyF.Ground.CentreModu
 PropertyF.Ground.CentreInduction.DrinfeldTheorem	PropertyF.Ground.CentreInduction.drinfeld_inv_dual_tensor	theorem	1	205	3	0	0	0	0	1129379718
 PropertyF.Ground.Dimensions.ENOMatrices	PropertyF.Ground.Dimensions.RootNormIdentity	definition	1	3	1	0	0	0	0	4294793869
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerAbelian	definition	1	45	0	1	0	5	1	2416983486
-PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.freshOverlapIso_action	theorem	1	461	2	3	0	7	2	1580454650
+PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.freshOverlapIso_action	theorem	1	457	2	3	0	7	2	1382192311
 PropertyF.Ground.Centre.Abelian	_private.PropertyF.Ground.Centre.Abelian.0.PropertyF.Ground.Centre.cokernelHalfIso_monoidal._simp_1_1	theorem	1	80	3	5	0	1	0	98966876
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.Issue.missingDeclaration.inj	theorem	0	18	1	2	0	0	1	3028674956
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerNormalEpi._proof_4	theorem	1	160	2	3	0	5	2	2971123543
@@ -669,11 +668,11 @@ PropertyF.Ground.Modular.Classification	_private.PropertyF.Ground.Modular.Classi
 PropertyF.Ground.Cabling.Generated	PropertyF.sumPowersTensorIso._proof_2	theorem	1	79	5	1	0	3	0	3477152154
 PropertyF.Ground.Cabling.Generated	PropertyF.flattenBiproduct._proof_7	theorem	1	26	1	1	0	2	0	3043402627
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.PivotalStructure	inductive	1	18	0	1	0	3	0	489789386
+PropertyF.Ground.CentreInduction.InjectiveFusion	_private.PropertyF.Ground.CentreInduction.InjectiveFusion.0.PropertyF.Ground.CentreInduction.center_fusion_of_unit_retract.match_1_3	definition	1	540	5	0	0	0	2	3844783581
 PropertyF.Ground.Modular.SSquare	_private.PropertyF.Ground.Modular.SSquare.0.PropertyF.Ground.Modular.character_columns_orthogonal._simp_1_1	theorem	1	72	3	2	0	1	0	1762064320
 PropertyF.Ground.Centre.Calculus.TypeA	_private.PropertyF.Ground.Centre.Calculus.TypeA.0.PropertyF.Ground.CentreCalculus.adjacentSwaps_braid._proof_1_2	theorem	1	55	2	3	0	0	2	718790381
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.homAddEquivSubmodule._proof_5	theorem	1	264	5	1	0	7	2	3838888554
 PropertyF.Ground.CentreInduction.ForgetDualUnit	_private.PropertyF.Ground.CentreInduction.ForgetDualUnit.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_ForgetDualUnit___macroRules__private_PropertyF_Ground_CentreInduction_ForgetDualUnit_0_PropertyF_Ground_CentreInduction_term𝒵_1	definition	0	1	0	0	0	0	0	407006920
-PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.crossing_natural_assoc	theorem	1	179	3	4	0	3	0	2434395931
 PropertyF.Ground.Fusion.SpectralIntegral	PropertyF.Ground.fpSimple_isIntegral	theorem	1	26	2	0	0	0	0	3724120590
 PropertyF.Ground.Cabling.Generated	_private.PropertyF.Ground.Cabling.Generated.0.PropertyF.flattenDependentFin._proof_2	theorem	1	121	4	1	0	0	0	3793811776
 PropertyF.Ground.CentreInduction.SecondTriangle	PropertyF.Ground.CentreInduction.crossing_counit_matrix	theorem	1	288	4	0	0	0	0	3242741560
@@ -714,11 +713,10 @@ PropertyF.Ground.Target	PropertyF.Ground.squaredNorm	definition	1	7	2	0	0	0	0	41
 PropertyF.Ground.Dimensions.TensorExtension	PropertyF.Ground.Dimensions.rootSignTwist.congr_simp	theorem	0	108	5	0	0	0	2	3987176346
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.homBiprodLinearEquiv._proof_6	theorem	1	35	2	1	0	3	1	3794259000
 PropertyF.Definitions	PropertyF.braidGenerator._sunfold	definition	0	61	3	1	0	3	0	1538954304
-PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.braidImage_isOfFinOrder	theorem	1	149	3	2	0	3	1	3261764754
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addRightBraidAlgebraIter	definition	1	225	3	1	0	7	2	1300293843
 PropertyF.Ground.Modular.BraidFunctor	PropertyF.Ground.Modular.tensorPowerComparison._unsafe_rec	definition	0	85	3	2	0	7	0	2771056096
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.PivotalStructure.mk.sizeOf_spec	theorem	0	325	4	1	0	4	3	147983630
-PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Dimensions.rightPartialTrace_tensor_right	theorem	1	249	3	2	0	7	2	110700490
+PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Dimensions.rightPartialTrace_tensor_right	theorem	1	148	3	2	0	3	0	1726642182
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.fourthDualRootScalar_spec	theorem	1	169	2	0	0	0	0	3644816025
 PropertyF.Ground.CentreInduction.WeakHalfBraiding	_private.PropertyF.Ground.CentreInduction.WeakHalfBraiding.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_WeakHalfBraiding___unexpand_PropertyF_Ground_CentreInduction_crossingCandidate_1	definition	0	1	0	0	0	0	0	4242366553
 PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculus.signedTraceSum	definition	1	16	2	1	0	1	0	4232716903
@@ -808,13 +806,13 @@ PropertyF.Ground.Modular.BraidIso	PropertyF.Ground.Modular.firstBraiding	definit
 PropertyF.Ground.Centre.Calculus.TypeA	_private.PropertyF.Ground.Centre.Calculus.TypeA.0.PropertyF.Ground.CentreCalculus._aux_PropertyF_Ground_Centre_Calculus_TypeA___unexpand_PropertyF_Ground_CentreCalculus_typeAGenerator_1	definition	0	1	0	0	0	0	0	4242366553
 PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.exists_galoisLabel_of_verlinde	theorem	1	158	6	6	0	2	6	2586169802
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addLeftStrands._proof_2	theorem	0	79	3	1	0	2	0	180551976
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_insert	theorem	1	279	3	3	0	7	2	3313211610
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_insert	theorem	1	210	3	3	0	7	2	2473223906
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.fusionOperator	definition	1	51	2	1	0	1	0	2997793299
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.IsFusionMultiplicative	definition	1	16	2	1	0	1	0	302687295
 PropertyF.Ground.Final	_private.PropertyF.Ground.Final.0.PropertyF.Ground.«term𝒵ᶠ»	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.twistedLinear	definition	1	35	2	0	0	0	0	1821272264
 PropertyF.Ground.CentreCabling.ImageCore	PropertyF.Ground.CentreCabling.numericalImageCentralizer_subset_symmetricCore	theorem	1	193	4	2	0	2	4	3068154019
-PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.overlapRight_local_of_iso	theorem	1	508	3	3	0	7	3	2219089145
+PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.overlapRight_local_of_iso	theorem	1	504	3	3	0	7	3	1864820083
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addRightBraidAlgebraIter._sunfold	definition	0	225	3	1	0	7	2	1300293843
 PropertyF.Ground.CentreCalculus.ProjectorReduction	PropertyF.Ground.CentreCalculus.permutationCardInvertibleInstance	definition	1	34	1	0	0	0	0	3080810593
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.multiplicityDefect_trace_integer_bound	theorem	1	361	2	3	0	0	1	798374661
@@ -873,6 +871,7 @@ PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.Issu
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.PivotalStructure.iso	definition	1	47	2	1	0	3	0	3131051140
 PropertyF.Ground.Modular.FusionTransport	PropertyF.Ground.Modular.ground_conjugate_images	theorem	1	180	3	3	0	0	0	2545641398
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.natural_square_defect_involution	theorem	1	191	4	2	0	1	1	969415874
+PropertyF.Ground.Calculus.RightStrand	_private.PropertyF.Ground.Calculus.RightStrand.0.PropertyF.Ground.Calculus.first_pair_natural._simp_1_2	theorem	1	140	4	4	0	2	0	3489786548
 PropertyF.Ground.CentreInduction.CrossingBlocks	PropertyF.Ground.CentreInduction.underlyingFunctor._proof_2	theorem	1	121	2	0	0	0	0	3771601741
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	_private.PropertyF.Ground.Centre.Calculus.TypeANormalWords.0.PropertyF.Ground.CentreCalculus.moveWord.match_1.splitter	definition	0	25	4	0	0	0	0	413685589
 PropertyF.Ground.Centre.Modular.Vafa	_private.PropertyF.Ground.Centre.Modular.Vafa.0.PropertyF.Ground.CentreModular.rationalUnitClass_eq_zero_iff._simp_1_2	theorem	1	44	0	3	0	0	0	1443266571
@@ -893,6 +892,7 @@ PropertyF.Ground.Integrate.UnitScalar	PropertyF.Ground.unitScalarEquiv._proof_3	
 PropertyF.Ground.Dimensions.DoubleDualPairing	_private.PropertyF.Ground.Dimensions.DoubleDualPairing.0.PropertyF.Ground.Dimensions.rightDualCoevaluation_evaluation._simp_1_1	theorem	1	80	3	5	0	1	0	98966876
 PropertyF.BlockTrace	PropertyF.Blocks.mk.inj	theorem	0	39	1	4	0	0	1	3416460698
 PropertyF.Ground.CentreInduction.CrossingBlocks	PropertyF.Ground.CentreInduction.crossing_completeness	theorem	1	142	3	0	0	0	0	1890899196
+PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.weighted_eigenvalue_saturation._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.fpDeterminant_tensor_flip	theorem	1	67	3	1	0	0	0	1512977522
 PropertyF.Ground.Fusion.Multiplicity	PropertyF.Ground.biproductHomLinearEquiv._proof_3	theorem	1	194	3	2	0	4	1	4172951306
 PropertyF.Ground.Dimensions.RootDualLabel	PropertyF.Ground.Dimensions.enoFrobeniusEquiv	definition	1	115	4	0	0	0	0	3487209532
@@ -902,12 +902,12 @@ PropertyF.Ground.CentreInduction.ForgetDual	_private.PropertyF.Ground.CentreIndu
 PropertyF.Ground.CentreCalculus.BraidRelations	_private.PropertyF.Ground.CentreCalculus.BraidRelations.0.PropertyF.Ground.CentreCalculus.distant_braid_commute._proof_1_3	theorem	1	91	4	0	0	0	2	3237113754
 PropertyF.Ground.Fusion.ObjectDimension	PropertyF.Ground.fpDimension_unit	theorem	1	34	1	0	0	0	0	552624804
 PropertyF.Ground.Modular.SMatrix	PropertyF.Ground.Modular.unitScalar_rightTrace_ne_zero	theorem	1	146	3	0	0	1	1	3704321470
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace	definition	1	118	1	3	0	7	2	1124192743
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace	definition	1	53	2	3	0	3	0	3687757544
 PropertyF.Ground.CentreCabling.TraceSaturation	PropertyF.Ground.CentreCabling.finiteOrder_matrix_unitarizable	theorem	1	138	1	2	0	2	1	2277662408
 PropertyF.Ground.Modular.SSquare	PropertyF.Ground.Modular.character_columns_orthogonal	theorem	1	188	9	5	0	2	6	2406522740
 PropertyF.Ground.CentreCalculus.TwistSign	_private.PropertyF.Ground.CentreCalculus.TwistSign.0._aux_PropertyF_Ground_CentreCalculus_TwistSign___macroRules__private_PropertyF_Ground_CentreCalculus_TwistSign_0_termθ_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.HasSimpleScalars	definition	1	42	3	0	0	0	0	4076362151
-PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.exists_unitarizing_basis	theorem	1	203	1	2	0	4	0	2590617068
+PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.exists_unitarizing_basis	theorem	1	213	1	2	0	4	0	2715234947
 PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.IsLocalOverlapProduct	definition	1	133	2	3	0	7	2	2415230787
 PropertyF.Ground.Modular.CharacterStar	PropertyF.Ground.Modular.categoricalSCharacter._proof_1	theorem	1	61	3	0	0	0	0	1188744879
 PropertyF.Ground.Dimensions.ENOReciprocity	PropertyF.Ground.Dimensions.inverseDualRoot_square	theorem	1	146	2	0	0	0	0	174469256
@@ -981,7 +981,7 @@ PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.homAction_na
 PropertyF.Ground.CentreCabling.TwistFinite	PropertyF.Ground.CentreCabling.mixed_monodromy_finite_of_balanced_finite_twist	theorem	1	145	5	1	0	0	2	4197192910
 PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculus.signedTraceSum_falling	theorem	1	125	3	3	0	1	2	1002541901
 PropertyF.Ground.Cabling.Naturality	PropertyF.braidWordAction_ker_le_of_retract	theorem	1	236	2	3	0	3	0	3128564359
-PropertyF.Ground.Calculus.ThreeRigidity	PropertyF.Ground.Calculus.pair_operator_scalar_of_overlaps_equal	theorem	1	273	7	3	0	1	5	2056704395
+PropertyF.Ground.Calculus.ThreeRigidity	PropertyF.Ground.Calculus.pair_operator_scalar_of_overlaps_equal	theorem	1	273	7	3	0	1	5	3579318564
 PropertyF.Ground.CentreDimensions.PivotalTwist	PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar	definition	1	45	3	0	0	1	1	1120099381
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.vafaUnitSpace	definition	1	1	0	0	0	0	0	3931117990
 PropertyF.Ground.Modular.BraidFunctor	PropertyF.Ground.Modular.braid_first_with_comparison	theorem	1	266	4	3	0	7	0	3846715886
@@ -1054,7 +1054,7 @@ PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.vafaUnitSpac
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.fpCharacter_le_fpSimple	theorem	1	22	2	0	0	0	0	3021786019
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.HasSSquare	definition	1	28	3	2	0	3	0	2982492259
 PropertyF.Ground.CentreCabling.TwistFinite	PropertyF.Ground.CentreCabling.IsBalancedTwist	definition	1	38	1	1	0	3	0	2352063965
-PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.partialMonodromy	definition	1	75	3	1	0	8	2	1737841222
+PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.partialMonodromy	definition	1	42	3	1	0	4	0	1518559517
 PropertyF.Ground.CentreCabling.TwistFinite	PropertyF.Ground.CentreCabling.natural_end_finite_order_of_components	theorem	1	225	4	2	0	2	3	184364758
 PropertyF.Ground.Target	PropertyF.Ground.BraidedFusionCategory.mk.sizeOf_spec	theorem	0	221	1	0	0	9	3	3168592651
 PropertyF.Ground.Dimensions.DoubleDualMonoidal	PropertyF.Ground.Dimensions.doubleDualTensorIso_braiding	theorem	1	150	2	1	0	4	0	962183206
@@ -1067,7 +1067,6 @@ PropertyF.Ground.Centre.Calculus.TypeA	PropertyF.Ground.CentreCalculus.pureWords
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.fusionMatrix_dual	theorem	1	32	2	0	0	0	0	3543982302
 PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.fusion_character_product	theorem	1	180	6	5	0	2	3	2956290544
 PropertyF.Ground.Cabling.Naturality	_private.PropertyF.Ground.Cabling.Naturality.0.PropertyF.tensorPowerMap.match_1.eq_2	theorem	0	37	4	0	0	0	0	1078223989
-PropertyF.Ground.Dimensions.ENOMatrices	PropertyF.Ground.Dimensions.fusion_complex_eigenvalue_saturation	theorem	1	164	7	2	0	0	3	2874601583
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	_private.PropertyF.Ground.Centre.Calculus.TypeANormalWords.0.PropertyF.Ground.CentreCalculus.moveWord_coset_step._simp_1_9	theorem	1	35	3	1	0	1	0	3188916250
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.kernelHalfIso_ι_assoc	theorem	0	242	2	5	0	5	1	4290264715
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.rootTensorIso	definition	1	52	3	0	0	0	0	109741007
@@ -1111,8 +1110,8 @@ PropertyF.Ground.Cabling.Generated	PropertyF.flattenBiproduct._proof_6	theorem	1
 PropertyF.Ground.Target	PropertyF.Ground.BraidedFusionCategory.abelian	definition	1	10	1	0	0	0	0	434918629
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.groupImageAlgebra_finite	theorem	1	149	1	2	0	4	1	2895312837
 PropertyF.Ground.CentreInduction.PositivePivotal	_private.PropertyF.Ground.CentreInduction.PositivePivotal.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_PositivePivotal___unexpand_CategoryTheory_Center_2	definition	0	1	0	0	0	0	0	4242366553
-PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_6	theorem	0	94	2	2	0	2	2	2195956633
-PropertyF.Ground.CentreInduction.AdjunctionAssembly	_private.PropertyF.Ground.CentreInduction.AdjunctionAssembly.0.PropertyF.Ground.CentreInduction.unitComponent_natural._simp_1_2	theorem	1	80	3	5	0	1	0	98966876
+PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028
+PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.weighted_eigenvalue_saturation._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392
 PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.threePowerIso	definition	1	44	1	1	0	2	0	1279705953
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerKernel	definition	1	62	1	3	0	5	1	1831553982
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instCategoryObj._aux_3	definition	0	20	2	0	0	0	0	2626138851
@@ -1137,13 +1136,12 @@ PropertyF.Ground.Dimensions.DefectNaturality	PropertyF.Ground.Dimensions.RootTen
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.rightTraceWith_id	theorem	1	89	1	2	0	3	0	1683328933
 PropertyF.Ground.CentreCalculus.ProjectorReduction	_private.PropertyF.Ground.CentreCalculus.ProjectorReduction.0.PropertyF.Ground.CentreCalculus.integral_of_exterior_dimensions.match_1_1	definition	1	171	4	2	0	0	2	868144932
 PropertyF.Ground.Dimensions.DefectNaturality	PropertyF.Ground.Dimensions.trace_reciprocity_of_coevaluation	theorem	1	23	2	0	0	0	1	2912173879
-PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.three_braid_trace	theorem	1	394	4	0	0	1	1	927290043
+PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.three_braid_trace	theorem	1	394	4	0	0	1	1	535277351
 PropertyF.Ground.Calculus.OverlapBound	PropertyF.Ground.Calculus.HasOverlapTraceStep	definition	1	121	3	2	0	0	0	2416173068
 PropertyF.Ground.Calculus.BraidWeights	CategoryTheory.HomOrthogonal.matrixDecomposition.eq_1	theorem	0	491	1	7	0	5	4	3546734930
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerHasCokernels	theorem	1	59	0	1	0	5	1	4244428899
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.centerPreadditive._proof_1	theorem	1	309	6	1	0	4	1	2619574257
 PropertyF.Ground.CentreInduction.PositivePivotal	_private.PropertyF.Ground.CentreInduction.PositivePivotal.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_PositivePivotal___macroRules__private_PropertyF_Ground_CentreInduction_PositivePivotal_0_PropertyF_Ground_CentreInduction_term𝒵_1	definition	0	1	0	0	0	0	0	407006920
-PropertyF.Ground.Calculus.RightStrand	_private.PropertyF.Ground.Calculus.RightStrand.0.PropertyF.Ground.Calculus.crossing_natural._simp_1_1	theorem	1	132	3	6	0	2	0	32622451
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.monodromy_simple_eq_scalar_natural	theorem	1	163	4	2	0	0	1	218007432
 PropertyF.Ground.Target	PropertyF.Ground.BraidedFusionCategory.braided	definition	1	13	1	0	0	0	0	36017373
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	PropertyF.Ground.CentreCalculus.finite_card_of_typeA	theorem	1	89	4	1	0	1	2	3997697033
@@ -1162,7 +1160,6 @@ PropertyF.Ground.Cabling.Naturality	PropertyF.tensorPowerMap_id._f	definition	1	
 PropertyF.Ground.Modular.CharacterStar	PropertyF.Ground.Modular.simpleDimension_dual	theorem	1	47	4	0	0	0	1	937979523
 PropertyF.Ground.CentreInduction.WeakHalfBraiding	PropertyF.Ground.CentreInduction.weak_right	theorem	1	290	6	2	0	3	3	3164675027
 PropertyF.Ground.Fusion.Agreement	_private.PropertyF.Ground.Fusion.Agreement.0.PropertyF.Ground.Dimensions.weighted_eigenvalue_bound._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871
-PropertyF.Ground.Dimensions.DimensionField	PropertyF.Ground.Dimensions.dimensionNormalField._proof_1	theorem	1	80	1	0	0	0	0	3695111914
 PropertyF.Ground.Calculus.TensorPowerCoherence	_private.PropertyF.Ground.Calculus.TensorPowerCoherence.0.PropertyF.Ground.Calculus.addLeftStrands.match_1.eq_2	theorem	0	37	4	0	0	0	0	1656715653
 PropertyF.Ground.CentreInduction.AdjunctionAssembly	CategoryTheory.Retract.mk.congr_simp	theorem	0	176	7	3	0	1	3	1276518916
 PropertyF.Ground.Modular.SMatrix	PropertyF.Ground.Modular.doubleBraiding_unit	theorem	1	60	1	1	0	3	0	1325333309
@@ -1196,7 +1193,6 @@ PropertyF.Ground.CentreInduction.ForgetDualTensor	_private.PropertyF.Ground.Cent
 PropertyF.Ground.Calculus.TensorPowerCoherence	PropertyF.Ground.Calculus.reverseConcat_zero_right	theorem	1	117	2	1	0	2	0	1759296117
 PropertyF.Ground.Modular.BraidFunctor	PropertyF.Ground.Modular.braidImageFunctorMap_surjective	theorem	1	349	3	2	0	7	0	2335673920
 PropertyF.Ground.CentreInduction.SecondTriangle	PropertyF.Ground.CentreInduction.close_rightUnit_eval	theorem	1	172	2	2	0	3	0	2773884421
-PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.fusion_complex_eigenvalue_saturation._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871
 PropertyF.Ground.CentreInduction.PositivePivotal	_private.PropertyF.Ground.CentreInduction.PositivePivotal.0.PropertyF.Ground.CentreInduction.«_aux_PropertyF_Ground_CentreInduction_PositivePivotal___macroRules__private_PropertyF_Ground_CentreInduction_PositivePivotal_0_PropertyF_Ground_CentreInduction_term𝒵ᶠ_1»	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Centre.ProductClosure	PropertyF.Ground.Centre.negative.eq_1	theorem	0	50	1	0	0	3	0	53942908
 PropertyF.Ground.Dimensions.DimensionCharacter	PropertyF.Ground.Dimensions.pivotalDimension	definition	1	26	3	0	0	0	0	964581319
@@ -1220,7 +1216,7 @@ PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.Forb
 PropertyF.Ground.Dimensions.ENOReciprocity	PropertyF.Ground.Dimensions.rootDual_differs_by_sign	theorem	1	239	2	0	0	1	1	3479943594
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	PropertyF.Ground.CentreCalculus.moveWord.eq_1	theorem	0	44	1	1	0	1	0	3726110675
 PropertyF.Ground.CentreInduction.Representatives	PropertyF.Ground.CentreInduction.biprodOptionIso	definition	1	120	2	2	0	5	2	47154335
-PropertyF.Ground.CentreDimensions.PivotalTwist	PropertyF.Ground.Dimensions.rightPartialTrace_braiding	theorem	1	253	3	2	0	8	3	1516911043
+PropertyF.Ground.CentreDimensions.PivotalTwist	PropertyF.Ground.Dimensions.rightPartialTrace_braiding	theorem	1	152	3	2	0	4	1	3447736341
 PropertyF.Ground.Calculus.TensorPowerCoherence	PropertyF.Ground.Calculus.insertRightPowerIso_eq_reverseConcat._proof_2	theorem	1	32	2	0	0	0	0	2635932486
 PropertyF.Ground.Dimensions.DoubleDualMonoidal	PropertyF.Ground.Dimensions.doubleDualCoreMonoidal._proof_4	theorem	1	129	2	0	0	3	0	3448633954
 PropertyF.Ground.Dimensions.ENOMatrices	PropertyF.Ground.Dimensions.rootDimension_norm_le_fp_of_trace_matrix	theorem	1	215	3	1	0	0	2	4120808224
@@ -1231,7 +1227,7 @@ PropertyF.Ground.Centre.Abelian	_private.PropertyF.Ground.Centre.Abelian.0.Prope
 PropertyF.Ground.CentreInduction.WeakHalfBraiding	PropertyF.Ground.CentreInduction.weak_left	theorem	1	290	6	2	0	3	3	1897396839
 PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.three_braid_image_relation	theorem	1	138	1	1	0	3	0	194026500
 PropertyF.Ground.Calculus.EndBlocks	PropertyF.Ground.Calculus.isoEndAlgEquiv._proof_3	theorem	1	104	3	3	0	1	0	1425396826
-PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_3	theorem	0	49	0	1	0	3	1	4033513777
+PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871
 PropertyF.Ground.Dimensions.Trace	PropertyF.Ground.Dimensions.dual_pivotal_naturality	theorem	1	158	2	3	0	3	0	3793716389
 PropertyF.Ground.CentreInduction.ForgetDualUnit	_private.PropertyF.Ground.CentreInduction.ForgetDualUnit.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_ForgetDualUnit___unexpand_CategoryTheory_Center_1	definition	0	1	0	0	0	0	0	4242366553
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instCategoryObj	definition	1	20	2	0	0	0	0	169218721
@@ -1257,11 +1253,10 @@ PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.tensorRightHomLinearEquiv._
 PropertyF.Ground.Integrate.CharacterReality	PropertyF.Ground.representatives_equiv	theorem	1	113	6	3	0	1	4	827876718
 PropertyF.Ground.Dimensions.SimpleHomBasis	PropertyF.Ground.Dimensions.simpleHomPairing.eq_1	theorem	0	364	3	0	0	1	1	1722324469
 PropertyF.Ground.Centre.Averaging	PropertyF.Ground.Centre.alternatingProjector_splits	theorem	1	211	1	3	0	5	1	3532604143
-PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.overlapLeft_local	theorem	1	514	3	2	0	7	2	2105234889
+PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.overlapLeft_local	theorem	1	506	3	2	0	7	2	1546404226
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instBraidedCategoryObj._aux_1	definition	1	28	2	0	0	0	0	879085932
 PropertyF.Ground.Cabling.Naturality	_private.PropertyF.Ground.Cabling.Naturality.0.PropertyF.tensorPowerMap_id.match_1_1	definition	1	25	4	0	0	0	2	1180777846
 PropertyF.Ground.Calculus.TensorPowerCoherence	_private.PropertyF.Ground.Calculus.TensorPowerCoherence.0.PropertyF.Ground.Calculus.insertRightPowerIso_eq_reverseConcat._proof_1_2	theorem	1	43	3	0	0	0	1	678556033
-PropertyF.Ground.Fusion.ObjectDimension	_private.PropertyF.Ground.Fusion.ObjectDimension.0.PropertyF.Ground.fpDimension_tensor._simp_1_1	theorem	1	63	3	0	0	0	0	2253561788
 PropertyF.Ground.Dimensions.Trace	PropertyF.Ground.Dimensions.PivotalStructure.rightTrace_smul	theorem	1	207	3	2	0	7	2	3766659284
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.homSubgroup._proof_3	theorem	1	316	3	2	0	4	2	3428365791
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addRightStrand._proof_1	theorem	1	190	4	1	0	3	1	1676835436
@@ -1326,7 +1321,6 @@ PropertyF.Ground.Calculus.UnitaryBlocks	_private.PropertyF.Ground.Calculus.Unita
 PropertyF.Ground.CentreCalculus.LeftTensorTrace	PropertyF.Ground.CentreCalculus.leftPartialTrace._proof_2	theorem	1	388	3	3	0	7	2	2682518543
 PropertyF.Ground.Dimensions.SimpleHomBasis	PropertyF.Ground.Dimensions.simpleHomPairing._proof_1	theorem	1	29	0	0	0	0	0	1344514246
 PropertyF.Ground.CentreCalculus.ParityDeletion	PropertyF.Ground.CentreCalculus.decomposeFin_succ_conj	theorem	1	220	2	1	0	0	0	861780887
-PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.partialMonodromy.congr_simp	theorem	0	119	7	1	0	8	4	3205157720
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.homBiprodLinearEquiv	definition	1	145	3	2	0	5	1	466873724
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.inr_sumHalfIso_assoc	theorem	0	217	2	4	0	5	2	2934914755
 PropertyF.BlockTrace	PropertyF.Blocks.Algebra	definition	1	3	1	0	0	0	0	11480000
@@ -1345,11 +1339,9 @@ PropertyF.Ground.Modular.SAdditivity	_private.PropertyF.Ground.Modular.SAdditivi
 PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.tripleBlockLeft._proof_1	theorem	1	71	0	2	0	2	0	1747380432
 PropertyF.Ground.Integrate.CharacterReality	PropertyF.Ground.selfDual_character_galois_real	theorem	1	288	6	6	0	2	4	546778991
 PropertyF.Ground.Cabling.Naturality	PropertyF.braidWordAction._proof_1	theorem	1	206	3	1	0	3	0	864388550
-PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.crossing_natural	theorem	1	153	2	3	0	3	0	350019790
 PropertyF.Ground.Fusion.ObjectDimension	PropertyF.Ground.fpDimension_leftDual	theorem	1	40	2	0	0	0	0	1760280078
 PropertyF.BlockTrace	PropertyF.Blocks.block_trace_norm_eq_of_saturation	theorem	1	80	6	1	0	0	3	4084817544
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerBiprodInr	definition	1	66	2	1	0	5	2	2582094861
-PropertyF.Ground.CentreInduction.AdjunctionAssembly	_private.PropertyF.Ground.CentreInduction.AdjunctionAssembly.0.PropertyF.Ground.CentreInduction.unitComponent_natural._simp_1_3	theorem	1	97	3	4	0	2	0	1234100802
 PropertyF.Ground.Cabling.Generated	PropertyF.tensorBiproduct._proof_6	theorem	1	84	4	1	0	3	0	835062470
 PropertyF.Ground.CentreInduction.CrossingBlocks	PropertyF.Ground.CentreInduction.crossingInclusion	definition	1	54	5	0	0	0	0	1436447432
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addRightStrands._unsafe_rec	definition	0	195	3	1	0	3	0	1253721965
@@ -1395,6 +1387,7 @@ PropertyF.Ground.Calculus.BraidWeights	PropertyF.Ground.Calculus.groundSimpleSca
 PropertyF.Ground.CentreCabling.RegularSupport	PropertyF.Ground.CentreCabling.IsFusionSubring.mk._flat_ctor	definition	0	63	3	2	0	0	3	2530801268
 PropertyF.Ground.Fusion.UnitPower	PropertyF.Ground.fusionCoeff_retract	theorem	1	66	2	3	0	0	1	119854928
 PropertyF.Ground.CentreInduction.DrinfeldTheorem	PropertyF.Ground.drinfeld_tensor	theorem	1	134	3	0	0	0	0	1397006506
+PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.first_pair_natural	theorem	1	155	3	3	0	2	0	3775855782
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.Issue.forbidden.injEq	theorem	0	20	2	0	0	0	0	1115586567
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	_private.PropertyF.Ground.Centre.Calculus.TypeANormalWords.0.PropertyF.Ground.CentreCalculus.finite_card_le_of_coset_cover.match_1_1	definition	1	306	6	2	0	1	2	2024607435
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.PivotalStructure.IsSpherical	definition	1	25	1	1	0	3	0	2004573551
@@ -1426,10 +1419,11 @@ PropertyF.Ground.Dimensions.MonodromyTensorCap	PropertyF.Ground.Dimensions.monod
 PropertyF.Ground.Calculus.EndBlocks	PropertyF.Ground.Calculus.groundEndBlockEquiv._proof_1	theorem	1	42	1	1	0	0	0	3183851700
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.labels	theorem	1	128	3	1	0	0	1	1799535509
 PropertyF.Ground.Final	_private.PropertyF.Ground.Final.0.PropertyF.Ground.«_aux_PropertyF_Ground_Final___macroRules__private_PropertyF_Ground_Final_0_PropertyF_Ground_term𝒵ᶠ_1»	definition	0	1	0	0	0	0	0	407006920
+PropertyF.Ground.CentreInduction.InjectiveFusion	_private.PropertyF.Ground.CentreInduction.InjectiveFusion.0.PropertyF.Ground.CentreInduction.center_fusion_of_unit_retract.match_1_1	definition	1	573	8	0	0	0	2	3338521661
 PropertyF.Ground.Modular.BraidIso	PropertyF.braidImage.eq_1	theorem	1	91	2	1	0	3	0	3254438430
 PropertyF.Ground.CentreInduction.InjectiveFusion	_private.PropertyF.Ground.CentreInduction.InjectiveFusion.0.PropertyF.Ground.CentreInduction.term𝒵	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.CentreCalculus.ParityDeletion	_private.PropertyF.Ground.CentreCalculus.ParityDeletion.0.termTr	definition	0	1	0	0	0	0	0	1560175301
-PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.rightPartialTrace_overlap	theorem	1	367	5	3	0	1	1	2423713501
+PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.rightPartialTrace_overlap	theorem	1	287	5	3	0	1	1	116164392
 PropertyF.Ground.Calculus.OverlapBound	PropertyF.Ground.Calculus.fpDimension_tensorPower	theorem	1	48	3	0	0	0	0	2885691956
 PropertyF.Ground.Centre.Rigid	PropertyF.Ground.CentreRigid.liftedPairing._proof_2	theorem	1	455	4	1	0	3	3	156204988
 PropertyF.Ground.Modular.BraidIso	_private.PropertyF.Ground.Modular.BraidIso.0.PropertyF.braidGenerator.match_1.eq_2	theorem	0	113	7	0	0	0	1	3752870410
@@ -1512,7 +1506,6 @@ PropertyF.Ground.Calculus.EndBlocks	PropertyF.Ground.Calculus.groundSimples_orth
 PropertyF.Ground.Cabling.Generated	PropertyF.generatedBy_retract	theorem	1	45	2	4	0	3	1	2397490937
 PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.tripleBlockLeft._proof_2	theorem	1	90	0	2	0	4	0	1431662055
 PropertyF.Ground.CentreInduction.CrossingCoherence	_private.PropertyF.Ground.CentreInduction.CrossingCoherence.0.PropertyF.Ground.CentreInduction.crossingCandidate_matrix._simp_1_1	theorem	1	93	3	4	0	2	0	391109155
-PropertyF.Ground.CentreCabling.RegularSupport	_private.PropertyF.Ground.CentreCabling.RegularSupport.0.PropertyF.Ground.CentreCabling.regularVector_fourier_support._simp_1_1	theorem	1	40	0	3	0	0	0	3135544924
 PropertyF.Ground.Centre.Abelian	_private.PropertyF.Ground.Centre.Abelian.0.PropertyF.Ground.Centre.inr_sumHalfIso._simp_1_2	theorem	1	80	3	5	0	1	0	98966876
 PropertyF.Ground.Dimensions.DimensionCharacter	PropertyF.Ground.Dimensions.pivotalDimension_unitIndex	theorem	1	46	2	0	0	0	0	2301461779
 PropertyF.Ground.CentreInduction.ActualFusion	PropertyF.Ground.CentreInduction.unit_block	theorem	1	363	3	4	0	3	0	3546475979
@@ -1585,6 +1578,7 @@ PropertyF.Ground.CentreCalculus.PermutationInsert	_private.PropertyF.Ground.Cent
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.Character.galoisPerm._proof_3	theorem	1	52	2	2	0	1	0	2856290792
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.complex_eigenvalue_le_positive_eigenvalue	theorem	1	199	5	6	0	1	5	638894056
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.PivotalStructure.recOn	definition	0	265	2	2	0	3	0	2838814918
+PropertyF.Ground.CentreInduction.FiniteSimples	_private.PropertyF.Ground.CentreInduction.FiniteSimples.0.PropertyF.Ground.CentreInduction.center_cokernel_measure_lt._proof_1_1	theorem	1	97	2	2	0	0	0	2663270529
 PropertyF.Ground.CentreCalculus.ParityDeletion	PropertyF.Ground.CentreCalculus.scalarPermTrace_parity	theorem	1	295	4	3	0	8	3	1759857085
 PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.insertRightPowerIso	definition	1	67	3	1	0	2	0	2888689578
 PropertyF.Ground.Calculus.TensorPowerCoherence	_private.PropertyF.Ground.Calculus.TensorPowerCoherence.0.PropertyF.Ground.Calculus.insertLeftPowerIso_eq_reverseConcat._proof_1	theorem	1	36	3	0	0	0	1	1587054618
@@ -1594,7 +1588,7 @@ PropertyF.Ground.Target	PropertyF.Ground.GaloisConjugate	inductive	1	15	3	0	0	0	
 PropertyF.Ground.Modular.SAdditivity	_private.PropertyF.Ground.Modular.SAdditivity.0.PropertyF.Ground.Modular._aux_PropertyF_Ground_Modular_SAdditivity___macroRules__private_PropertyF_Ground_Modular_SAdditivity_0_PropertyF_Ground_Modular_termDₚ_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.tensorDeterminantRule_iff_of_iso	theorem	1	54	4	2	0	0	0	413508948
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.scaleIso._proof_1	theorem	1	208	3	3	0	3	1	1945370914
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.scalarTrace	definition	1	91	3	2	0	5	0	4267218100
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.scalarTrace	definition	1	91	3	2	0	5	0	2811530108
 PropertyF.Ground.Integrate.ActualCenterReduction	PropertyF.Ground.weaklyIntegral_of_actual_center	theorem	1	316	8	3	0	2	8	101478171
 PropertyF.Ground.CentreCalculus.BraidRelations	_private.PropertyF.Ground.CentreCalculus.BraidRelations.0.PropertyF.Ground.CentreCalculus.first_distant_commute._proof_1_1	theorem	1	41	2	0	0	0	1	1806177821
 PropertyF.Ground.CentreCabling.TraceSaturation	PropertyF.Ground.CentreCabling.finiteOrder_matrix_trace_saturation	theorem	1	93	1	2	0	2	1	374283381
@@ -1621,7 +1615,7 @@ PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.Issu
 PropertyF.Ground.Modular.SAdditivity	PropertyF.Ground.Modular.SEntry_biproduct_left	theorem	1	154	3	2	0	10	3	604143007
 PropertyF.Ground.CentreCabling.ImageCore	_private.PropertyF.Ground.CentreCabling.ImageCore.0.PropertyF.Ground.CentreCabling.canonicalImageRetract_product.match_1_1	definition	1	162	3	2	0	3	2	3112064541
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.fpCharacter_pos	theorem	1	28	2	0	0	0	0	2476298462
-PropertyF.Ground.Calculus.ThreeRigidity	PropertyF.Ground.Calculus.actual_three_strand_rigidity_of_trace_bound	theorem	1	292	12	6	0	1	10	3308279917
+PropertyF.Ground.Calculus.ThreeRigidity	PropertyF.Ground.Calculus.actual_three_strand_rigidity_of_trace_bound	theorem	1	292	12	6	0	1	10	1531083425
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.fpDeterminant_monodromy_decomposition	theorem	1	286	3	0	0	0	0	3544803029
 PropertyF.Ground.Modular.BraidIso	_private.PropertyF.Ground.Modular.BraidIso.0.PropertyF.Ground.Modular.tensorPowerIso.match_1.eq_1	theorem	0	35	3	0	0	0	0	646123120
 PropertyF.Ground.CentreInduction.BasisPairing	_private.PropertyF.Ground.CentreInduction.BasisPairing.0.PropertyF.Ground.CentreInduction.simpleBasis_contraction_natural._simp_1_1	theorem	1	387	4	0	0	0	0	2552503066
@@ -1631,7 +1625,7 @@ PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.fpCharacter	definition	1	9	2	
 PropertyF.Ground.Centre.Calculus.TypeA	PropertyF.Ground.CentreCalculus.strandPermutation_surjective	theorem	1	85	1	0	0	0	0	2145181320
 PropertyF.Ground.Dimensions.DoubleDualMonoidal	PropertyF.Ground.Dimensions.doubleDualCoreMonoidal._proof_5	theorem	1	129	2	0	0	3	0	1186053037
 PropertyF.Ground.CentreCalculus.PermutationInsert	_private.PropertyF.Ground.CentreCalculus.PermutationInsert.0.termSgn	definition	0	1	0	0	0	0	0	1560175301
-PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Calculus.rightPartialTrace_simple	theorem	1	448	4	3	0	10	6	4069108606
+PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Calculus.rightPartialTrace_simple	theorem	1	385	4	3	0	10	6	3718267891
 PropertyF.Ground.CentreInduction.BasisPairing	PropertyF.Ground.Dimensions.simpleHomPairingEquiv.eq_1	theorem	0	192	3	0	0	0	0	3166231090
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.hiddenProof	theorem	0	1	0	0	0	0	0	3270818714
 PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.tensorLeftHomLinearEquiv._proof_1	theorem	1	167	6	1	0	5	1	1690838772
@@ -1650,7 +1644,6 @@ PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.Character.mul_e
 PropertyF.Ground.Dimensions.GroundNorm	PropertyF.Ground.squaredNorm.eq_1	theorem	0	54	2	0	0	0	0	4011146629
 PropertyF.Ground.Centre.Modular.Vafa	_private.PropertyF.Ground.Centre.Modular.Vafa.0.PropertyF.Ground.CentreModular._aux_PropertyF_Ground_Centre_Modular_Vafa___macroRules__private_PropertyF_Ground_Centre_Modular_Vafa_0_PropertyF_Ground_CentreModular_termM_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instMonoidalCategoryObj._proof_10	theorem	1	112	2	0	0	0	0	1341299032
-PropertyF.Ground.Dimensions.DimensionField	PropertyF.Ground.Dimensions.finite_galois_normal_field	theorem	1	181	2	0	0	0	1	4053668963
 PropertyF.Ground.CentreModular.TransparencyCriterion	_private.PropertyF.Ground.CentreModular.TransparencyCriterion.0.PropertyF.Ground.CentreModular._aux_PropertyF_Ground_CentreModular_TransparencyCriterion___macroRules__private_PropertyF_Ground_CentreModular_TransparencyCriterion_0_PropertyF_Ground_CentreModular_termSₚ_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.regular_fusion_derivation_vanishes	theorem	1	109	5	2	0	2	1	1524754046
 PropertyF.Ground.Final	_private.PropertyF.Ground.Final.0.PropertyF.Ground.«_aux_PropertyF_Ground_Final___macroRules__private_PropertyF_Ground_Final_0_PropertyF_Ground_term𝒵ᶠ_1_1»	definition	0	1	0	0	0	0	0	407006920
@@ -1661,12 +1654,12 @@ PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.character_eigen
 PropertyF.Ground.CentreInduction.CrossingCoherence	PropertyF.Ground.CentreInduction.induction	definition	1	22	1	0	0	0	0	2709931437
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.fpDeterminant_tensor_simple_monodromy	theorem	1	91	5	2	0	0	1	3113327058
 PropertyF.Ground.CentreModular.TransparencyCriterion	_private.PropertyF.Ground.CentreModular.TransparencyCriterion.0.PropertyF.Ground.CentreModular.categoricalS_det_ne_zero_of_unit_character_unique._simp_1_1	theorem	1	55	3	1	0	1	0	4171977914
-PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.averagedGram_invariant	theorem	1	189	2	2	0	4	0	2544834112
+PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.averagedGram_invariant	theorem	1	145	2	2	0	4	0	3041364067
 PropertyF.Ground.Centre.Calculus.TypeA	PropertyF.Ground.CentreCalculus.adjacentSwap	definition	1	28	1	1	0	0	0	2941129328
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.doubleDualFunctor._proof_1	theorem	1	69	2	0	0	3	0	528108376
 PropertyF.Ground.CentreCalculus.PermutationInsert	_private.PropertyF.Ground.CentreCalculus.PermutationInsert.0.PropertyF.Ground.CentreCalculus.tensorPermAction.match_1.eq_1	theorem	0	45	4	0	0	0	0	2896411070
-PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_8	theorem	0	77	1	1	0	2	1	3730275133
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.imageAlgebraMap_group	theorem	1	555	6	4	0	6	1	3922406717
+PropertyF.Ground.CentreCabling.TraceSaturation	_private.PropertyF.Ground.CentreCabling.TraceSaturation.0.PropertyF.Ground.CentreCabling.finiteOrder_matrix_trace_saturation.match_1_1	definition	1	339	3	2	0	2	2	1278844563
 PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.threeGeneratorRight	definition	1	93	1	1	0	3	0	559230756
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.BraidBlockPresentation	definition	1	42	3	2	0	5	0	2123018894
 PropertyF.Ground.Dimensions.DimensionCharacter	PropertyF.Ground.Dimensions.galois_pivotalDimension_norm_le_fpSimple	theorem	1	83	4	0	0	0	0	2527462596
@@ -1695,7 +1688,8 @@ PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerKernelι	definitio
 PropertyF.Ground.CentreInduction.AdjunctionAssembly	PropertyF.Ground.CentreInduction.unitComponentAt	definition	1	72	2	1	0	3	0	270885614
 PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculus.HasMovedTrace._proof_1	theorem	1	30	1	0	0	0	0	1374387624
 PropertyF.Ground.CentreCalculus.LeftTensorTrace	PropertyF.Ground.CentreCalculus.leftPartialTrace	definition	1	118	1	3	0	7	2	541028988
-PropertyF.Ground.CentreInduction.AdjunctionAssembly	_private.PropertyF.Ground.CentreInduction.AdjunctionAssembly.0.PropertyF.Ground.CentreInduction.unitComponent_natural._simp_1_1	theorem	1	132	3	6	0	2	0	32622451
+PropertyF.Ground.CentreCabling.RegularSupport	_private.PropertyF.Ground.CentreCabling.RegularSupport.0.PropertyF.Ground.CentreCabling.regularVector_fourier_support._simp_1_4	theorem	1	20	0	2	0	0	0	563549242
+PropertyF.Ground.CentreInduction.AdjunctionAssembly	_private.PropertyF.Ground.CentreInduction.AdjunctionAssembly.0.PropertyF.Ground.CentreInduction.unitComponent_natural._simp_1_1	theorem	1	97	3	4	0	2	0	1234100802
 PropertyF.Ground.Cabling.Naturality	PropertyF.tensorPowerMap.eq_2	theorem	0	79	2	3	0	2	0	1427508277
 PropertyF.Ground.Dimensions.Trace	PropertyF.Ground.Dimensions.rightDualIsoMap.eq_1	theorem	1	111	1	3	0	3	0	4011204237
 PropertyF.Ground.Centre.Averaging	PropertyF.Ground.Centre.alternatingProjector_idempotent	theorem	1	140	1	3	0	4	0	2488770551
@@ -1707,7 +1701,6 @@ PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerKernelLift	definit
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.multiplicityDefect.eq_1	theorem	0	131	4	0	0	0	0	4081719473
 PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculus.IsTraceDeletion.fixed	theorem	1	129	3	3	0	1	1	463591224
 PropertyF.Ground.Dimensions.TensorExtension	PropertyF.Ground.Dimensions.rootSignDefect.congr_simp	theorem	0	103	7	0	0	0	2	2557996479
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace._proof_1	theorem	1	317	3	3	0	5	1	1253248688
 PropertyF.Ground.Centre.ProductClosure	PropertyF.Ground.Centre.productRetract_tensor	theorem	1	70	2	3	0	3	2	2011548076
 PropertyF.Ground.CentreCabling.RegularSupport	_private.PropertyF.Ground.CentreCabling.RegularSupport.0.PropertyF.Ground.CentreCabling.fourier_eq_zero_of_fusion_eigenvector._simp_1_1	theorem	1	72	3	2	0	1	0	1762064320
 PropertyF.Definitions	PropertyF.braidGenerator._proof_1	theorem	1	39	3	0	0	0	1	444333699
@@ -1738,6 +1731,7 @@ PropertyF.Ground.Dimensions.TensorExtension	PropertyF.Ground.Dimensions.naturalD
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.Character.noConfusionType	definition	0	22	3	4	0	2	0	2013831718
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.sumHalfIso	definition	1	93	3	1	0	5	2	2438107732
 PropertyF.Ground.Centre.Abelian	_private.PropertyF.Ground.Centre.Abelian.0.PropertyF.Ground.Centre.inr_mapBiprod_inv	theorem	1	236	3	1	0	5	2	209655222
+PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.weighted_eigenvalue_saturation._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777
 PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculus.IsTraceDeletion.rec	recursor	0	151	2	4	0	1	1	905409136
 PropertyF.Ground.CentreCabling.RegularSupport	PropertyF.Ground.CentreCabling.IsFusionClosed.fusionCoeff_eq_zero	theorem	1	105	1	6	0	0	1	3503972393
 PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.overlapEndProduct	definition	1	67	2	4	0	2	0	839127775
@@ -1768,7 +1762,7 @@ PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculu
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.simpleScalarNatural	definition	1	39	2	0	0	0	0	1384441726
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.homAction_det_biprod	theorem	1	410	2	5	0	7	3	537468702
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerKernel_condition	theorem	1	135	1	3	0	5	1	2084280122
-PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.rightPartialTrace_natural	theorem	1	285	4	4	0	7	2	434353946
+PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.rightPartialTrace_natural	theorem	1	152	4	4	0	3	0	963189417
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.simpleScalarComponent.eq_1	theorem	0	246	3	0	0	0	0	4020711072
 PropertyF.Ground.CentreInduction.Representatives	PropertyF.Ground.CentreInduction.FiniteSimpleSum.recOn	definition	0	128	3	3	0	3	4	1837122294
 PropertyF.Ground.Centre.Calculus.TypeA	PropertyF.Ground.CentreCalculus.permActionOfPureTrivial._proof_2	theorem	1	58	1	0	0	0	0	3357173020
@@ -1835,7 +1829,7 @@ PropertyF.Ground.CentreInduction.BasisPairing	PropertyF.Ground.CentreInduction.s
 PropertyF.Ground.Integrate.TwistedRigidity	_private.PropertyF.Ground.Integrate.TwistedRigidity.0.PropertyF.Ground.«term𝒇»	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	PropertyF.Ground.CentreCalculus.IsTypeAFamily.shift	theorem	1	151	2	5	0	1	2	4062934048
 PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.addLeftBraidAlgebraIter.eq_1	theorem	0	252	2	1	0	7	2	104630358
-PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.partialTrace_doubleBraiding_simple	theorem	1	195	4	0	0	0	0	2784140927
+PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.partialTrace_doubleBraiding_simple	theorem	1	187	4	0	0	0	0	536277297
 PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.pivotalTrace_overlap	theorem	1	278	5	3	0	1	1	2049613605
 PropertyF.Ground.Dimensions.SimpleHomBasis	PropertyF.Ground.Dimensions.simpleInclusionBasis_apply	theorem	1	150	4	0	0	0	0	2419736867
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.cokernelHalfIso._proof_7	theorem	1	125	2	3	0	4	0	3233630819
@@ -1849,6 +1843,7 @@ PropertyF.Ground.CentreCabling.RegularSupport	PropertyF.Ground.CentreCabling.IsD
 PropertyF.Ground.Modular.BraidFunctor	PropertyF.Ground.Modular.braidImage_map_eq	theorem	1	154	3	2	0	7	0	2137456864
 PropertyF.Ground.Calculus.BraidWeights	PropertyF.Ground.Calculus.HasMultiplicityDecomposition	definition	1	18	3	2	0	1	0	1283456645
 PropertyF.Ground.Fusion.Agreement	_private.PropertyF.Ground.Fusion.Agreement.0.PropertyF.Ground.totalFusionMatrix_symmetric._simp_1_2	theorem	1	33	4	0	0	0	0	1451933019
+PropertyF.Ground.Fusion.Agreement	_private.PropertyF.Ground.Fusion.Agreement.0.PropertyF.Ground.positive_symmetric_matrix_has_positive_eigenvector.match_1_1	definition	1	253	4	2	0	1	2	3633272819
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.functorEndAlgHom._proof_3	theorem	1	241	3	2	0	7	1	332465990
 PropertyF.Ground.CentreInduction.FiniteSimples	_private.PropertyF.Ground.CentreInduction.FiniteSimples.0.PropertyF.Ground.CentreInduction.finite_simple_subobject_labels.match_1_1	definition	1	150	6	0	0	0	2	553437780
 PropertyF.Ground.CentreInduction.WeakHalfBraiding	PropertyF.Ground.CentreInduction.crossingTensorComposite	definition	1	46	4	0	0	0	0	1057003895
@@ -1863,12 +1858,12 @@ PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.fusionCoeff_reciprocity	the
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.fpDeterminant_conjugate_trans	theorem	1	212	4	2	0	0	0	798794298
 PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Dimensions.partialTraceWith.eq_1	theorem	0	242	3	2	0	3	0	2043139856
 PropertyF.Ground.Calculus.BraidWeights	PropertyF.Ground.Calculus.simpleFiberEquiv.eq_1	theorem	0	135	2	1	0	0	0	2419011479
-PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_5	theorem	0	70	2	3	0	3	3	1092673916
+PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633
 PropertyF.Ground.CentreInduction.ForgetDualTensor	PropertyF.Ground.CentreInduction.forgetDoubleDualIso_natural	theorem	1	212	1	3	0	4	0	1348219547
 PropertyF.Ground.Dimensions.DimensionCharacter	PropertyF.Ground.Dimensions.leftTraceLinear	definition	1	140	2	1	0	7	2	1709207605
 PropertyF.Ground.CentreInduction.FiniteSimples	_private.PropertyF.Ground.CentreInduction.FiniteSimples.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_FiniteSimples___macroRules__private_PropertyF_Ground_CentreInduction_FiniteSimples_0_PropertyF_Ground_CentreInduction_term𝒵_1_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addRightBraidAlgebraIter._unsafe_rec	definition	0	225	3	1	0	7	2	1300293843
-PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_2	theorem	0	49	0	1	0	3	1	3288593392
+PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777
 PropertyF.Ground.CentreCalculus.LeftTensorTrace	PropertyF.Ground.CentreCalculus.leftPartialTrace.congr_simp	theorem	0	153	3	3	0	7	3	4024676116
 PropertyF.Ground.Integrate.TwistedRigidity	_private.PropertyF.Ground.Integrate.TwistedRigidity.0.PropertyF.Ground.ScalarTwist._aux_PropertyF_Ground_Integrate_TwistedRigidity___unexpand_PropertyF_Ground_ScalarTwist_pivotal_2	definition	0	1	0	0	0	0	0	4242366553
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.centerZero._proof_1	theorem	1	61	2	1	0	5	2	1146105883
@@ -1924,6 +1919,7 @@ PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.Character.mk.co
 PropertyF.Ground.Dimensions.MonodromyTensorCap	PropertyF.Ground.Dimensions.monodromyTensorCap	definition	1	66	3	0	0	0	0	3387238943
 PropertyF.Ground.CentreCabling.ImageCore	PropertyF.Ground.CentreCabling.productLabels	definition	1	114	1	0	0	2	1	3455385124
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.euclideanAbs	definition	1	10	1	1	0	0	0	3387975171
+PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.Character.map	definition	1	32	2	2	0	1	0	192702879
 PropertyF.Ground.Centre.Product	PropertyF.Ground.Centre.Centralizes.eq_1	theorem	0	106	2	1	0	2	0	1701824945
 PropertyF.Ground.Dimensions.MonodromyTensorCap	PropertyF.Ground.Dimensions.monodromy_tensor_cap_expansion	theorem	1	489	3	0	0	0	0	239057488
@@ -1943,17 +1939,18 @@ PropertyF.Ground.Centre.Abelian	_private.PropertyF.Ground.Centre.Abelian.0.Prope
 PropertyF.Ground.Cabling.Generated	PropertyF.tensorBiproduct._proof_1	theorem	1	35	2	1	0	2	0	2501536389
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.fourthDualRootNaturalSquare_eq	theorem	1	56	1	0	0	0	0	494427450
 PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.insertLeftPowerIso._sunfold	definition	0	67	3	1	0	2	0	1781598485
-PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Calculus.scalarTrace.eq_1	theorem	1	166	3	2	0	5	0	3126713809
+PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Calculus.scalarTrace.eq_1	theorem	1	166	3	2	0	5	0	3808535108
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.PivotalStructure.mk.noConfusion	definition	0	491	2	13	0	0	7	2508939068
 PropertyF.Ground.CentreCalculus.ParityDeletion	_private.PropertyF.Ground.CentreCalculus.ParityDeletion.0.PropertyF.Ground.CentreCalculus.permutationTrace_conj._simp_1_2	theorem	1	72	3	3	0	4	1	3854566779
 PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.simpleScalarNaturalIso	definition	1	52	3	0	0	0	1	1439373484
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.kernelHalfIso	definition	1	124	2	3	0	5	1	2047657023
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.FusionRules.ctorIdx	definition	0	7	1	1	0	0	0	2134691120
-PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.averagedGram	definition	1	67	1	2	0	4	0	1963397866
+PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.averagedGram	definition	1	56	1	2	0	4	0	834411169
 PropertyF.Ground.Dimensions.DimensionCharacter	PropertyF.Ground.Dimensions.isSpherical_iff_simple_dimensions	theorem	1	96	2	0	0	0	0	1867461101
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.euclideanAbs.eq_1	theorem	1	64	1	1	0	0	0	2034242918
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.fpDeterminant_simple_monodromy_eq_zero	theorem	1	198	4	2	0	0	1	2538102115
-PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.averagedGram.eq_1	theorem	0	204	1	2	0	4	0	3417631624
+PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.weighted_eigenvalue_saturation._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916
+PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.averagedGram.eq_1	theorem	0	155	1	2	0	4	0	85148076
 PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.involution_eq_one_of_trace_eq_finrank	theorem	1	249	2	2	0	3	3	3561523677
 PropertyF.Ground.Integrate.TwistedRigidity	_private.PropertyF.Ground.Integrate.TwistedRigidity.0.PropertyF.Ground.«_aux_PropertyF_Ground_Integrate_TwistedRigidity___macroRules__private_PropertyF_Ground_Integrate_TwistedRigidity_0_PropertyF_Ground_term𝒇_1»	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.unitConjugation	definition	1	33	1	1	0	2	0	1487388223
@@ -1964,11 +1961,10 @@ PropertyF.Ground.CentreInduction.CrossingBlocks	PropertyF.Ground.CentreInduction
 PropertyF.Ground.Fusion.Simples	PropertyF.Ground.finrank_simples_hom	theorem	1	97	3	0	0	0	0	1122437075
 PropertyF.Ground.Calculus.OverlapBound	PropertyF.Ground.Calculus.overlapIndex._unsafe_rec	definition	0	3	2	0	0	0	0	9906956
 PropertyF.Ground.CentreCalculus.LeftTensorTrace	PropertyF.Ground.CentreCalculus.integral_of_spherical_and_twist_sign	theorem	1	96	3	3	0	1	4	1611750225
-PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.fusion_complex_eigenvalue_saturation._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.derivation_vanishes_of_regular_eigenvector	theorem	1	188	7	3	0	4	3	1082621285
 PropertyF.Ground.Dimensions.Pivotal	PropertyF.Ground.Dimensions.PivotalStructure.leftTrace	definition	1	54	2	2	0	3	0	3523963707
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerKernelι._proof_1	theorem	1	200	2	3	0	5	1	2993811973
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_one	theorem	1	237	3	1	0	7	2	3955961987
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_one	theorem	1	137	3	1	0	3	0	1981778792
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.groupImageAlgebra_blocks	theorem	1	104	1	2	0	4	1	2840475335
 PropertyF.Ground.CentreInduction.PivotalCentrality	_private.PropertyF.Ground.CentreInduction.PivotalCentrality.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_PivotalCentrality___unexpand_CategoryTheory_Center_1	definition	0	1	0	0	0	0	0	4242366553
 PropertyF.Ground.Centre.Product	PropertyF.Ground.Centre.positiveExactPairing._proof_2	theorem	1	307	2	1	0	4	0	1123902308
@@ -1977,7 +1973,7 @@ PropertyF.Ground.Dimensions.MonodromyTensorCap	PropertyF.Ground.Dimensions.monod
 PropertyF.Ground.Cabling.Strands	_private.PropertyF.Ground.Cabling.Strands.0.PropertyF.braidGenerator.match_1.splitter	definition	0	88	6	0	0	0	0	2411615437
 PropertyF.Ground.CentreInduction.Representatives	PropertyF.Ground.CentreInduction.regroup_biproduct	theorem	1	137	1	5	0	3	2	70583140
 PropertyF.Ground.Dimensions.DualCoherence	PropertyF.Ground.Dimensions.rightTrace_unit	theorem	1	68	1	1	0	3	0	787227417
-PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Dimensions.rightPartialTrace_tensor	theorem	1	300	4	3	0	7	2	1720796024
+PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Dimensions.rightPartialTrace_tensor	theorem	1	237	4	3	0	7	2	2842026617
 PropertyF.Ground.CentreInduction.FiniteSimples	PropertyF.Ground.CentreInduction.finite_simple_subobject_labels	theorem	1	140	2	0	0	0	0	4268001710
 PropertyF.Ground.CentreInduction.BasisPairing	_private.PropertyF.Ground.CentreInduction.BasisPairing.0.PropertyF.Ground.CentreInduction.crossingBlock_refinement._simp_1_1	theorem	1	122	4	5	0	2	0	1613753305
 PropertyF.Ground.Dimensions.SimpleHomBasis	PropertyF.Ground.Dimensions.simpleHomPairing._proof_7	theorem	1	61	2	0	0	0	0	1461051625
@@ -1988,7 +1984,7 @@ PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addLeftBlocksIte
 PropertyF.Ground.Calculus.TensorPowerCoherence	PropertyF.Ground.Calculus.reverseConcat_eqToHom_left	theorem	1	144	3	3	0	2	1	121360654
 PropertyF.Ground.Cabling.Naturality	PropertyF.braidGenerator_map_natural	theorem	1	133	3	3	0	3	0	4139729697
 PropertyF.Ground.Centre.Averaging	PropertyF.Ground.Centre.twistAction	definition	1	115	2	3	0	4	0	182493365
-PropertyF.Ground.Calculus.ThreeRigidity	PropertyF.Ground.Calculus.actual_three_braid_trace	theorem	1	525	3	0	0	1	1	12105636
+PropertyF.Ground.Calculus.ThreeRigidity	PropertyF.Ground.Calculus.actual_three_braid_trace	theorem	1	525	3	0	0	1	1	3954139507
 PropertyF.Ground.CentreCabling.TraceSaturation	PropertyF.Ground.CentreCabling.finiteOrder_matrices_eq_one_of_weighted_trace	theorem	1	151	6	2	0	3	3	3498362744
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.Character.galoisLabel.eq_1	theorem	0	150	1	2	0	1	0	3488932268
 PropertyF.Ground.CentreInduction.Representatives	PropertyF.Ground.CentreInduction.biprodOptionIso._proof_7	theorem	1	407	2	2	0	5	2	3545040748
@@ -1997,7 +1993,7 @@ PropertyF.Ground.Integrate.ActualCenterReduction	_private.PropertyF.Ground.Integ
 PropertyF.Ground.CentreInduction.DrinfeldTheorem	_private.PropertyF.Ground.CentreInduction.DrinfeldTheorem.0.PropertyF.Ground.CentreInduction.fourthDualIso_tensor._simp_1_1	theorem	1	161	5	9	0	1	0	956037742
 PropertyF.Ground.CentreIntegrate.TwistBalancing	PropertyF.Ground.CentreIntegrate.drinfeld_tensor_of_pairing_cap	theorem	1	92	3	3	0	4	2	3283455169
 PropertyF.Ground.CentreModular.TransparencyCriterion	_private.PropertyF.Ground.CentreModular.TransparencyCriterion.0.PropertyF.Ground.CentreModular.fusion_S_det_ne_zero_of_kirby._simp_1_1	theorem	1	55	3	1	0	1	0	4171977914
-PropertyF.Arithmetic	_private.PropertyF.Arithmetic.0.PropertyF.integer_of_galois_fixed.match_1_1	definition	1	84	4	0	0	0	2	2929527583
+PropertyF.Arithmetic	_private.PropertyF.Arithmetic.0.PropertyF.integer_of_galois_fixed.match_1_1	definition	1	198	3	2	0	2	2	2872539795
 PropertyF.Ground.Modular.BraidIso	PropertyF.Ground.Modular.braidImageIso._proof_2	theorem	1	113	2	3	0	2	0	4213526951
 PropertyF.Ground.CentreCalculus.BraidRelations	PropertyF.Ground.CentreCalculus.braidGenerator_succ	theorem	1	163	2	2	0	3	0	1246985505
 PropertyF.Ground.Dimensions.FourthTensorUnit	PropertyF.Ground.Dimensions.rootTensorDefect_unit_right	theorem	1	142	2	0	0	0	0	2771627350
@@ -2013,7 +2009,7 @@ PropertyF.BlockTrace	PropertyF.Blocks._sizeOf_1	definition	0	3	1	0	0	0	0	1137210
 PropertyF.Ground.Fusion.Multiplicity	PropertyF.Ground.homBiproductLinearEquiv	definition	1	162	2	2	0	5	1	94350932
 PropertyF.Ground.CentreModular.TransparencyCriterion	_private.PropertyF.Ground.CentreModular.TransparencyCriterion.0.PropertyF.Ground.CentreModular._aux_PropertyF_Ground_CentreModular_TransparencyCriterion___unexpand_PropertyF_Ground_Modular_simpleDimension_2	definition	0	1	0	0	0	0	0	4242366553
 PropertyF.Ground.CentreInduction.ForgetDualTensor	PropertyF.Ground.CentreInduction.transported_pivotal_natural	theorem	1	176	2	3	0	4	0	2670993596
-PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.partialTrace_doubleBraiding_factor	theorem	1	303	4	1	0	8	2	3504799116
+PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.partialTrace_doubleBraiding_factor	theorem	1	205	4	1	0	4	0	1044883508
 PropertyF.Ground.CentreInduction.ActualFusion	_private.PropertyF.Ground.CentreInduction.ActualFusion.0.PropertyF.Ground.CentreInduction._aux_PropertyF_Ground_CentreInduction_ActualFusion___macroRules__private_PropertyF_Ground_CentreInduction_ActualFusion_0_PropertyF_Ground_CentreInduction_term𝒵_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.Dimensions.ENOReciprocity	PropertyF.Ground.Dimensions.rootPhasePivotal	definition	1	59	5	0	0	0	3	1735904788
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instMonoidalCategoryObj._proof_4	theorem	1	73	2	0	0	0	0	3495641572
@@ -2169,10 +2165,10 @@ PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.insertRight
 PropertyF.Ground.Modular.SAdditivity	_private.PropertyF.Ground.Modular.SAdditivity.0.PropertyF.Ground.Modular.categoricalS_verlinde_of_hopf_product._simp_1_2	theorem	1	72	3	2	0	1	0	1762064320
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.braidEndRepresentation	definition	1	170	2	1	0	4	0	1207195441
 PropertyF.Ground.Calculus.BraidWeights	PropertyF.Ground.Calculus.cyclic_matrix_trace	theorem	1	198	2	1	0	2	1	2214285435
+PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.weighted_eigenvalue_saturation._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133
 PropertyF.Ground.Target	PropertyF.Ground.BraidedFusionCategory.mk	constructor	1	79	1	0	0	9	3	3219973267
 PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculus.integral_of_trace_deletion	theorem	1	116	3	3	0	0	2	3328477505
 PropertyF.Ground.Modular.SSquare	_private.PropertyF.Ground.Modular.SSquare.0.PropertyF.Ground.Modular.termSₚ_1	definition	0	1	0	0	0	0	0	1560175301
-PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.fusion_complex_eigenvalue_saturation._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.sumHalfIso._proof_3	theorem	1	67	1	1	0	4	1	2759560473
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.unitary_representation_star_inv	theorem	1	166	3	2	0	3	1	1517058657
 PropertyF.Ground.Calculus.PositiveWeights	PropertyF.Ground.Calculus.exists_galois_braid_trace_weights	theorem	1	298	9	2	0	0	4	2169939940
@@ -2207,7 +2203,6 @@ PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instAbel
 PropertyF.Ground.Fusion.Multiplicity	PropertyF.Ground.biproductHomLinearEquiv._proof_4	theorem	1	167	3	2	0	4	1	2272152073
 PropertyF.Ground.Modular.SAdditivity	PropertyF.Ground.Modular.HasHopfProduct	definition	1	23	2	0	0	0	0	471738350
 PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculus.fixHead._proof_1	theorem	1	121	1	0	0	0	0	1115941351
-PropertyF.Ground.Integrate.ActualCenterReduction	_private.PropertyF.Ground.Integrate.ActualCenterReduction.0.PropertyF.Ground.integral_eq_int_of_complex_galois_fixed.match_1_3	definition	1	500	3	2	0	2	2	2531839362
 PropertyF.Ground.CentreInduction.PositivePivotal	_private.PropertyF.Ground.CentreInduction.PositivePivotal.0.PropertyF.Ground.CentreInduction.term𝒵_2	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.CentreCalculus.ParityDeletion	PropertyF.Ground.CentreCalculus.parityPermAction	definition	1	99	4	1	0	5	1	2650907965
 PropertyF.Ground.Dimensions.ENOMatrices	PropertyF.Ground.Dimensions.rootTrace_cyclic	theorem	1	79	3	2	0	0	0	1137442684
@@ -2239,7 +2234,7 @@ PropertyF.Ground.Calculus.TensorPowerCoherence	PropertyF.Ground.Calculus.reverse
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.centerLinear._proof_1	theorem	1	467	7	1	0	7	2	3001420064
 PropertyF.Ground.Calculus.BraidWeights	PropertyF.Ground.Calculus.idempotent_matrix_trace_nat	theorem	1	62	1	2	0	0	1	960814740
 PropertyF.Ground.Fusion.ObjectDimension	PropertyF.Ground.fpDimension_functor	theorem	1	102	4	0	0	3	2	2507953341
-PropertyF.Ground.CentreCabling.TraceSaturation	_private.PropertyF.Ground.CentreCabling.TraceSaturation.0.PropertyF.Ground.CentreCabling.finiteOrder_matrix_unitarizable.match_1_1	definition	1	613	4	1	0	2	2	3060892586
+PropertyF.Ground.CentreCabling.TraceSaturation	_private.PropertyF.Ground.CentreCabling.TraceSaturation.0.PropertyF.Ground.CentreCabling.finiteOrder_matrix_unitarizable.match_1_1	definition	1	775	4	1	0	2	2	275678942
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.euclideanAbs._proof_1	theorem	1	21	0	0	0	0	0	2547959801
 PropertyF.Ground.CentreInduction.BasisPairing	_private.PropertyF.Ground.CentreInduction.BasisPairing.0.PropertyF.Ground.CentreInduction.simpleBasis_contraction_refinement._simp_1_2	theorem	1	80	3	5	0	1	0	98966876
 PropertyF.Ground.Cabling.Naturality	PropertyF.braidImageRetractMap	definition	1	200	2	3	0	3	0	385191466
@@ -2248,7 +2243,7 @@ PropertyF.Ground.Dimensions.SimpleScalars	PropertyF.Ground.Dimensions.simpleIncl
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.homBiprodLinearEquiv._proof_4	theorem	1	196	4	1	0	3	1	3298457248
 PropertyF.Ground.CentreCabling.ImageCore	_private.PropertyF.Ground.CentreCabling.ImageCore.0.term𝒵	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.Calculus.EndBlocks	PropertyF.Ground.Calculus.rightTrace_iso_conj	theorem	1	121	3	3	0	3	0	1253721314
-PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.partialTrace_doubleBraiding_scalar	theorem	1	331	3	4	0	8	3	1456893895
+PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.partialTrace_doubleBraiding_scalar	theorem	1	271	3	4	0	8	3	3410769917
 PropertyF.Ground.Fusion.Multiplicity	PropertyF.Ground.homBiproductLinearEquiv._proof_5	theorem	1	41	1	2	0	4	1	2011197047
 PropertyF.Ground.Centre.Abelian	_private.PropertyF.Ground.Centre.Abelian.0.PropertyF.Ground.Centre.sumHalfIso_snd._simp_1_3	theorem	1	93	3	4	0	2	0	391109155
 PropertyF.Ground.Integrate.ActualCenterReduction	_private.PropertyF.Ground.Integrate.ActualCenterReduction.0.PropertyF.Ground.positive_bounded_conjugates_of_fp._simp_1_2	theorem	1	19	1	0	0	0	0	2420649640
@@ -2282,12 +2277,10 @@ PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.instIsLeftAdjointTensorR
 PropertyF.Ground.Centre.Rigid	PropertyF.Ground.Integrate.halfBraidingIso.eq_1	theorem	0	87	1	1	0	2	0	1450411428
 PropertyF.Ground.CentreInduction.ForgetDualTensor	_private.PropertyF.Ground.CentreInduction.ForgetDualTensor.0.PropertyF.Ground.CentreInduction.rightDualIso_tensor_evaluation	theorem	1	162	4	7	0	2	0	3927694555
 PropertyF.Ground.CentreCalculus.TwistSign	PropertyF.Ground.CentreCalculus.braidedDoubleDualIso	definition	1	46	1	1	0	4	0	3300787054
-PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.overlap_trace_power_of_isos	theorem	1	156	4	2	0	1	2	2881902014
 PropertyF.BlockTrace	_private.PropertyF.BlockTrace.0.PropertyF.Blocks.trace_signElement._simp_1_4	theorem	1	47	1	3	0	1	1	1010385269
 PropertyF.Ground.Fusion.Multiplicity	PropertyF.Ground.fusionCoeff	definition	1	17	4	0	0	0	0	2635504139
 PropertyF.Ground.Calculus.OverlapBound	PropertyF.Ground.Calculus.overlapProduct	definition	1	196	2	3	0	7	2	2372057902
 PropertyF.Ground.Calculus.TensorPowerCoherence	PropertyF.Ground.Calculus.reverseConcatIso._unsafe_rec	definition	0	53	3	1	0	2	0	1341934408
-PropertyF.Ground.CentreCabling.TraceSaturation	_private.PropertyF.Ground.CentreCabling.TraceSaturation.0.PropertyF.Ground.CentreCabling.finiteOrder_matrix_trace_saturation._simp_1_1	theorem	0	58	2	1	0	1	0	3765757006
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instMonoidalCategoryObj._proof_5	theorem	1	172	2	0	0	0	0	1542883645
 PropertyF.Ground.CentreCalculus.PermutationInsert	_private.PropertyF.Ground.CentreCalculus.PermutationInsert.0.PropertyF.Ground.CentreCalculus._aux_PropertyF_Ground_CentreCalculus_PermutationInsert___macroRules__private_PropertyF_Ground_CentreCalculus_PermutationInsert_0_PropertyF_Ground_CentreCalculus_termTr_1	definition	0	1	0	0	0	0	0	407006920
 PropertyF.Ground.CentreDimensions.PivotalTwist	PropertyF.Ground.Dimensions.pivotalBraidedTwist	definition	1	33	3	0	0	0	0	990784079
@@ -2354,7 +2347,7 @@ PropertyF.Ground.CentreCalculus.PermutationInsert	PropertyF.Ground.CentreCalculu
 PropertyF.Ground.Calculus.EndBlocks	PropertyF.Ground.Calculus.orthogonalEndBlocks._proof_5	theorem	1	426	5	3	0	5	2	3465111932
 PropertyF.Ground.Integrate.TwistedRigidity	_private.PropertyF.Ground.Integrate.TwistedRigidity.0.PropertyF.Ground.ScalarTwist.labels.match_1_1	definition	1	277	5	0	0	0	2	2615478897
 PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.threeGeneratorLeft_transport	theorem	1	219	1	1	0	3	0	2649011892
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_whiskerLeft	theorem	1	282	2	4	0	7	2	2334518630
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_whiskerLeft	theorem	1	141	2	4	0	3	0	3341232541
 PropertyF.Ground.Dimensions.FourthDualUnit	PropertyF.Ground.Dimensions.root_components_coevaluation	theorem	1	241	2	0	0	0	0	175591505
 PropertyF.Ground.CentreInduction.CrossingCoherence	PropertyF.Ground.CentreInduction.crossingCandidate_matrix	theorem	1	257	5	0	0	0	0	2083713642
 PropertyF.Ground.Calculus.OverlapCoherence	PropertyF.Ground.Calculus.addLeftBraidAlgebraIter.eq_2	theorem	0	361	3	1	0	7	2	2351148240
@@ -2384,7 +2377,6 @@ PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.groupInImage_v
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.normalized_columns_injective	theorem	1	102	2	4	0	3	2	1193057358
 PropertyF.Ground.Centre.Calculus.TypeA	_private.PropertyF.Ground.Centre.Calculus.TypeA.0.PropertyF.Ground.CentreCalculus.adjacentSwaps_commute._proof_1_2	theorem	1	76	2	3	0	0	2	4248985651
 PropertyF.Ground.Fusion.Multiplicity	PropertyF.Ground.finrank_hom_biproduct	theorem	1	178	2	2	0	6	2	271162284
-PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.fusion_complex_eigenvalue_saturation._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133
 PropertyF.Ground.Fusion.Reciprocity	PropertyF.Ground.dualEquiv	definition	1	9	1	0	0	0	0	3901664530
 PropertyF.Ground.Fusion.SemisimpleSplit	PropertyF.Ground.object_projective	theorem	1	14	2	0	0	0	0	3557882644
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.monodromyIso	definition	1	37	2	1	0	3	0	3060049779
@@ -2397,6 +2389,7 @@ PropertyF.Ground.Cabling.Generated	PropertyF.flattenBiproduct._proof_8	theorem	1
 PropertyF.Ground.CentreCalculus.LeftTensorTrace	PropertyF.Ground.CentreCalculus.leftPartialTrace_firstGenerator_of_trace_compatibility	theorem	1	388	2	3	0	1	2	4143170871
 PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.IsUnitaryBraidPresentation	definition	1	58	1	5	0	5	0	1300249644
 PropertyF.Ground.Integrate.ActualCenterReduction	_private.PropertyF.Ground.Integrate.ActualCenterReduction.0.PropertyF.Ground.«term𝒵ᶠ»	definition	0	1	0	0	0	0	0	1560175301
+PropertyF.Ground.Dimensions.DualCoherence	PropertyF.Ground.Dimensions.tensorPairing_evaluation_whiskerRight	theorem	1	181	2	6	0	5	1	1251459256
 PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.Dimensions.weighted_eigenvalue_bound	theorem	1	150	10	4	0	1	6	3864790615
 PropertyF.BlockTrace	PropertyF.Blocks.mk._flat_ctor	definition	0	8	2	0	0	0	0	3489145781
 PropertyF.Ground.CentreInduction.PositivePivotal	_private.PropertyF.Ground.CentreInduction.PositivePivotal.0.PropertyF.Ground.CentreInduction.«term𝒵ᶠ»	definition	0	1	0	0	0	0	0	1560175301
@@ -2425,7 +2418,6 @@ PropertyF.Ground.CentreCalculus.ParityDeletion	_private.PropertyF.Ground.CentreC
 PropertyF.Ground.CentreInduction.CrossingBlocks	PropertyF.Ground.CentreInduction.simpleProjection._proof_1	theorem	1	32	2	0	0	0	0	4195644625
 PropertyF.Ground.Modular.FusionTransport	PropertyF.Ground.Modular.conjugate_fpSimple	theorem	1	124	3	4	0	0	1	2706453015
 PropertyF.Ground.Calculus.OverlapCoherence	_private.PropertyF.Ground.Calculus.OverlapCoherence.0.PropertyF.Ground.Calculus.addLeftStrands.match_1.splitter	definition	0	25	4	0	0	0	0	413685589
-PropertyF.Ground.CentreInduction.BasisPairing	_private.PropertyF.Ground.CentreInduction.BasisPairing.0.PropertyF.Ground.CentreInduction.closeFusionMap_pre_test._simp_1_1	theorem	1	122	4	5	0	2	0	1613753305
 PropertyF.Ground.Centre.ProductClosure	_private.PropertyF.Ground.Centre.ProductClosure.0.PropertyF.Ground.Centre.productRetract_propertyF.match_1_1	definition	1	199	3	2	0	3	2	2486264420
 PropertyF.Ground.Dimensions.SimpleHomBasis	PropertyF.Ground.Dimensions.rootTrace_eq_simpleHom_trace_sum	theorem	1	238	2	1	0	0	0	2320752755
 PropertyF.Ground.Dimensions.TensorExtension	PropertyF.Ground.Dimensions.rootPhaseTensorIso_inv	theorem	1	211	4	1	0	0	1	2808607025
@@ -2443,7 +2435,7 @@ PropertyF.Ground.Calculus.UnitaryBlocks	PropertyF.Ground.Calculus.groupImageAlge
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerBiprodInl	definition	1	66	2	1	0	5	2	1179024958
 PropertyF.Ground.Calculus.EndBlocks	PropertyF.Ground.Calculus.orthogonalEndBlocks._proof_1	theorem	1	470	5	3	0	5	2	1035877110
 PropertyF.Ground.Target	PropertyF.Ground.rank._proof_2	theorem	1	108	1	0	0	0	0	3525530201
-PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Dimensions.rightTrace_partialTrace	theorem	1	197	2	3	0	7	2	2140833226
+PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Dimensions.rightTrace_partialTrace	theorem	1	95	2	3	0	3	0	3291878482
 PropertyF.Ground.Integrate.TwistedRigidity	_private.PropertyF.Ground.Integrate.TwistedRigidity.0.PropertyF.Ground.ScalarTwist.termPσ_1	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.Integrate.ActualCenterReduction	PropertyF.Ground.positive_galois_sum_squares	theorem	1	287	4	4	0	3	3	1268561493
 PropertyF.Ground.CentreInduction.FiniteSimples	_private.PropertyF.Ground.CentreInduction.FiniteSimples.0.PropertyF.Ground.CentreInduction.term𝒵	definition	0	1	0	0	0	0	0	1560175301
@@ -2477,8 +2469,9 @@ PropertyF.Ground.Modular.BraidFunctor	PropertyF.Ground.Modular.braidAutMap_gener
 PropertyF.Ground.CentreInduction.DrinfeldTheorem	_private.PropertyF.Ground.CentreInduction.DrinfeldTheorem.0.PropertyF.Ground.CentreInduction.fourthDualIso_tensor._simp_1_2	theorem	1	80	3	5	0	1	0	98966876
 PropertyF.Ground.Dimensions.GroundNorm	_private.PropertyF.Ground.Dimensions.GroundNorm.0.PropertyF.Ground.Dimensions.iso_inv_eq_inv_smul._simp_1_1	theorem	1	192	6	5	0	1	0	3670663511
 PropertyF.Ground.Cabling.Generated	PropertyF.tensorBiproduct._proof_5	theorem	1	60	5	1	0	3	0	2272551010
+PropertyF.Ground.Dimensions.ENOMatrices	_private.PropertyF.Ground.Dimensions.ENOMatrices.0.PropertyF.Ground.Dimensions.weighted_eigenvalue_saturation._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028
 PropertyF.Ground.CentreCalculus.PermutationInsert	_private.PropertyF.Ground.CentreCalculus.PermutationInsert.0.PropertyF.Ground.CentreCalculus.tensorPermAction.match_1.eq_3	theorem	0	48	5	0	0	0	0	820638799
-PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.rightPartialTrace_simple_ground	theorem	1	336	4	2	0	1	1	3798885434
+PropertyF.Ground.Calculus.ThreeTrace	PropertyF.Ground.Calculus.rightPartialTrace_simple_ground	theorem	1	267	4	2	0	1	1	1901637656
 PropertyF.Ground.Dimensions.BiproductTrace	PropertyF.Ground.Dimensions.rightTrace_biproduct	theorem	1	204	3	2	0	9	3	2510371933
 PropertyF.Ground.Calculus.BraidWeights	Matrix.reindex.eq_1	theorem	0	175	2	5	0	0	0	2482084194
 PropertyF.Ground.Modular.Classification	PropertyF.Ground.Modular.Character.mk.inj	theorem	0	86	1	9	0	0	5	2392211540
@@ -2501,8 +2494,8 @@ PropertyF.Ground.Integrate.DependencyAudit	_private.PropertyF.Ground.Integrate.D
 PropertyF.Ground.CentreInduction.FiniteSimples	PropertyF.Ground.CentreInduction.centerUnderlyingRangeEmbedding._proof_1	theorem	1	160	4	0	0	0	0	1366593773
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.centerZero._proof_2	theorem	1	61	2	1	0	5	2	1175778657
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.monodromyNaturalIso._proof_2	theorem	1	100	2	3	0	3	0	1222960019
+PropertyF.Ground.Dimensions.ENOMatrices	PropertyF.Ground.Dimensions.weighted_eigenvalue_saturation	theorem	1	185	8	5	0	1	5	989674423
 PropertyF.Ground.Calculus.RightStrand	_private.PropertyF.Ground.Calculus.RightStrand.0.PropertyF.tensorPower.match_1.eq_2	theorem	0	37	4	0	0	0	0	3752610377
-PropertyF.Ground.Dimensions.TensorMultiplicativity	PropertyF.Ground.Calculus.rightPartialTrace.congr_simp	theorem	0	153	3	3	0	7	3	3232404233
 PropertyF.Ground.Calculus.TensorPowerCoherence	_private.PropertyF.Ground.Calculus.TensorPowerCoherence.0.PropertyF.Ground.Calculus.reverseConcatIso.match_1.eq_2	theorem	0	46	5	0	0	0	0	1841101285
 PropertyF.Ground.Centre.Calculus.TypeA	PropertyF.Ground.CentreCalculus.braidRelations	definition	1	7	1	0	0	0	0	4213490397
 PropertyF.BlockTrace	PropertyF.Blocks.mk.noConfusion	definition	0	44	2	5	0	0	1	1353802116
@@ -2588,7 +2581,6 @@ PropertyF.Ground.Dimensions.GroundNorm	_private.PropertyF.Ground.Dimensions.Grou
 PropertyF.Ground.Cabling.Naturality	_private.PropertyF.Ground.Cabling.Naturality.0.PropertyF.tensorPower.match_1.eq_1	theorem	0	35	3	0	0	0	0	2437559465
 PropertyF.Ground.Modular.SMatrix	PropertyF.Ground.Modular.doubleBraiding.eq_1	theorem	1	82	2	1	0	3	0	4266300964
 PropertyF.Ground.CentreInduction.SecondTriangle	PropertyF.Ground.CentreInduction.unitComponentAt.eq_1	theorem	0	179	2	1	0	3	0	2932642721
-PropertyF.Ground.Dimensions.DimensionField	PropertyF.Ground.Dimensions.dimensionNormalField	definition	1	19	1	0	0	0	0	2186242509
 PropertyF.Ground.CentreInduction.SecondTriangle	PropertyF.Ground.CentreInduction.unit_matrix_reduce	theorem	1	419	4	0	0	0	0	3468012529
 PropertyF.Ground.Centre.Abelian	_private.PropertyF.Ground.Centre.Abelian.0.PropertyF.Ground.Centre.sumHalfIso_snd._simp_1_2	theorem	1	97	3	4	0	2	0	1234100802
 PropertyF.Ground.Calculus.OverlapBound	PropertyF.Ground.Calculus.overlapRight._proof_1	theorem	1	286	3	1	0	5	0	2924156799
@@ -2614,6 +2606,7 @@ PropertyF.Ground.Dimensions.MultiplicityDefect	PropertyF.Ground.Dimensions.fourt
 PropertyF.Ground.Dimensions.DualCoherence	PropertyF.Ground.Dimensions.coevaluation_rightDualIso	theorem	1	103	2	4	0	2	0	231064007
 PropertyF.Ground.Cabling.Generated	PropertyF.sumPowersTensorIso._proof_3	theorem	1	122	5	1	0	3	0	633608762
 PropertyF.Ground.Integrate.UnitScalar	PropertyF.Ground.unitScalarEquiv._proof_2	theorem	1	32	1	0	0	0	0	742196092
+PropertyF.Ground.Calculus.RightStrand	_private.PropertyF.Ground.Calculus.RightStrand.0.PropertyF.Ground.Calculus.first_pair_natural._simp_1_1	theorem	1	132	3	6	0	2	0	32622451
 PropertyF.Ground.Integrate.DependencyAudit	PropertyF.Ground.DependencyAudit.Issue.uninspectedModule	constructor	0	3	1	0	0	0	0	3734879137
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.sumHalfIso_monoidal	theorem	1	205	4	1	0	5	2	3040325395
 PropertyF.Ground.Calculus.BraidWeights	Matrix.reindexAddEquiv.eq_1	theorem	0	89	3	4	0	1	0	2016562221
@@ -2644,7 +2637,7 @@ PropertyF.Ground.Centre.Calculus.TypeANormalWords	PropertyF.Ground.CentreCalculu
 PropertyF.Ground.CentreCalculus.BraidRelations	PropertyF.Ground.CentreCalculus.SelfTransparent	definition	1	20	1	1	0	3	0	3284706507
 PropertyF.Ground.Fusion.Simples	PropertyF.Ground.mono_ne_zero_of_id_ne_zero	theorem	1	90	2	3	0	3	2	2982596587
 PropertyF.Ground.Centre.Abelian	_private.PropertyF.Ground.Centre.Abelian.0.PropertyF.Ground.Centre.inl_sumHalfIso._simp_1_2	theorem	1	80	3	5	0	1	0	98966876
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace.eq_1	theorem	0	378	1	3	0	7	2	1986271643
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace.eq_1	theorem	0	236	2	3	0	3	0	3107946535
 PropertyF.Ground.CentreInduction.ForgetDualTensor	PropertyF.Ground.CentreInduction.forget_rightDualTensorIso	theorem	1	174	2	1	0	3	0	1914781596
 PropertyF.Ground.CentreInduction.PositivePivotal	_private.PropertyF.Ground.CentreInduction.PositivePivotal.0.PropertyF.Ground.CentreInduction.term𝒵_1	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.Centre.ProductClosure	PropertyF.Ground.Centre.productRetract_finiteBiproduct	theorem	1	128	1	3	0	9	5	928739185
@@ -2655,7 +2648,7 @@ PropertyF.Ground.CentreCalculus.PermutationInsert	_private.PropertyF.Ground.Cent
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.functorEndAlgHom._proof_4	theorem	1	126	2	2	0	2	0	2134976778
 PropertyF.Ground.CentreInduction.Representatives	PropertyF.Ground.CentreInduction.finrank_end_complement_lt	theorem	1	188	3	2	0	6	3	3499070959
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.pivotalDimension_twist	theorem	1	76	4	0	0	0	0	1893743165
-PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.rightPartialTrace_nested_simple	theorem	1	474	3	5	0	10	6	134516671
+PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.rightPartialTrace_nested_simple	theorem	1	362	3	5	0	10	6	1114655423
 PropertyF.Ground.CentreInduction.BasisPairing	PropertyF.Ground.CentreInduction.simpleHomPairingEquiv_natural	theorem	1	645	4	2	0	0	0	1685523788
 PropertyF.Ground.CentreInduction.CrossingBlocks	PropertyF.Ground.CentreInduction.fpDimension_underlying	theorem	1	32	2	0	0	0	0	3367327584
 PropertyF.Ground.Dimensions.GroundNorm	PropertyF.Ground.Dimensions.norm_saturation_of_pseudoUnitary	theorem	1	92	5	1	0	0	3	1079652556
@@ -2667,7 +2660,7 @@ PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.IsFusionDeri
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.base_finite_simple_sum	theorem	1	26	2	0	0	0	0	4250672450
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.negativeMonoidal	definition	1	43	0	1	0	3	0	4081099319
 PropertyF.Ground.Dimensions.GroundNorm	_private.PropertyF.Ground.Dimensions.GroundNorm.0.PropertyF.Ground.Dimensions.squaredNorm_independent._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028
-PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.simple_end_eq_trace_smul	theorem	1	360	4	2	0	10	6	2843445505
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.simple_end_eq_trace_smul	theorem	1	360	4	2	0	10	6	993089579
 PropertyF.Ground.Centre.Calculus.TypeA	PropertyF.Ground.CentreCalculus.braidRelations_action_trivial	theorem	1	195	2	1	0	3	0	3121949893
 PropertyF.Ground.Modular.Verlinde	PropertyF.Ground.Modular.hopf_product_of_partialTrace_composition	theorem	1	31	3	0	0	0	1	495839899
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerCokernelIsColimit	definition	1	159	1	3	0	5	1	3745760630
@@ -2691,7 +2684,6 @@ PropertyF.Ground.Centre.Rigid	PropertyF.Ground.CentreRigid.rigidCenter._proof_1	
 PropertyF.Ground.Fusion.UnitPower	PropertyF.Ground.balanced_flow_no_entry	theorem	1	119	5	5	0	1	5	3402590335
 PropertyF.Ground.Dimensions.DoubleDualMonoidal	PropertyF.Ground.Dimensions.rightDualTensorIso_associativity	theorem	1	198	3	1	0	3	0	4138630620
 PropertyF.Ground.Dimensions.ENOReciprocity	PropertyF.Ground.Dimensions.rootPhasePivotal._proof_1	theorem	1	150	4	2	0	0	1	1962697862
-PropertyF.Ground.CentreInduction.InjectiveFusion	PropertyF.Ground.CentreInduction.unitRetractOfNonzeroCap._simp_1	theorem	1	80	3	5	0	1	0	98966876
 PropertyF.Ground.Calculus.OverlapBound	PropertyF.Ground.Calculus.overlapProduct_unitary	theorem	1	505	4	6	0	7	4	423198615
 PropertyF.Ground.Fusion.SemisimpleSplit	PropertyF.Ground.simple_injective	theorem	1	33	2	0	0	1	1	2684934282
 PropertyF.Ground.Target	PropertyF.Ground.GaloisConjugate.mk.sizeOf_spec	theorem	0	389	2	3	0	2	1	521820263
@@ -2716,6 +2708,7 @@ PropertyF.Ground.CentreCalculus.LeftTensorTrace	_private.PropertyF.Ground.Centre
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.appendIso._f	definition	1	71	3	1	0	2	0	3561327275
 PropertyF.Ground.Centre.Calculus.TypeANormalWords	PropertyF.Ground.CentreCalculus.moveWord.eq_2	theorem	0	45	2	1	0	1	0	1112203310
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instAbelianObj._proof_7	theorem	1	24	2	0	0	0	0	190448288
+PropertyF.Ground.Calculus.PartialTrace	PropertyF.Ground.Calculus.rightPartialTrace_smul	theorem	1	155	3	3	0	7	2	2373516216
 PropertyF.Ground.CentreCabling.RegularSupport	PropertyF.Ground.CentreCabling.IsDualFusionClosed.fusion	theorem	1	24	1	2	0	0	1	2096487295
 PropertyF.Ground.Centre.Modular.Vafa	PropertyF.Ground.CentreModular.scalarIso._proof_1	theorem	1	158	2	2	0	4	0	1658798976
 PropertyF.Ground.Modular.SSquare	PropertyF.Ground.Modular.categoricalS_square	theorem	1	99	5	0	0	0	3	3969937085
@@ -2763,7 +2756,7 @@ PropertyF.Ground.Fusion.Agreement	PropertyF.Ground.euclideanAbs_norm	theorem	1	5
 PropertyF.Ground.Calculus.OverlapCoherence	_private.PropertyF.Ground.Calculus.OverlapCoherence.0.PropertyF.Ground.Calculus.insertLeftPowerIso.match_1.splitter	definition	0	25	4	0	0	0	0	413685589
 PropertyF.Ground.Calculus.RightStrand	PropertyF.Ground.Calculus.addRightBraidAlgebraIter_group._f	definition	1	899	3	3	0	7	2	3778752121
 PropertyF.Ground.Integrate.CenterBundle	PropertyF.Ground.Integrate.bundledCenter._proof_1	theorem	1	40	1	0	0	0	0	795111160
-PropertyF.Ground.CentreCabling.RegularSupport	_private.PropertyF.Ground.CentreCabling.RegularSupport.0.PropertyF.Ground.CentreCabling.regularVector_fourier_support._simp_1_3	theorem	1	17	0	2	0	0	0	1877817566
+PropertyF.Ground.CentreCabling.RegularSupport	_private.PropertyF.Ground.CentreCabling.RegularSupport.0.PropertyF.Ground.CentreCabling.regularVector_fourier_support._simp_1_3	theorem	1	40	0	3	0	0	0	3135544924
 PropertyF.Ground.Calculus.EndBlocks	PropertyF.Ground.Calculus.simpleFiberEquiv._proof_4	theorem	1	58	3	1	0	0	0	1958675969
 PropertyF.Ground.Dimensions.DimensionCharacter	PropertyF.Ground.Dimensions.leftTrace_biproduct_scalar_blocks	theorem	1	341	3	4	0	9	4	959697715
 PropertyF.Ground.CentreCabling.ImageCore	PropertyF.Ground.CentreCabling.constituent_mem_productLabels	theorem	1	263	2	2	0	2	1	2311838633
@@ -2786,6 +2779,7 @@ PropertyF.Ground.Modular.SMatrix	PropertyF.Ground.Modular.simpleDimension	defini
 PropertyF.Ground.Calculus.BraidWeights	Matrix.reindexAlgEquiv.eq_1	theorem	0	214	3	2	0	7	0	3436827413
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.sumHalfIso._proof_2	theorem	1	81	3	1	0	5	2	1503695115
 PropertyF.Ground.Centre.Modular.Vafa	_private.PropertyF.Ground.Centre.Modular.Vafa.0.PropertyF.Ground.CentreModular.termM	definition	0	1	0	0	0	0	0	1560175301
+PropertyF.Ground.CentreInduction.InjectiveFusion	_private.PropertyF.Ground.CentreInduction.InjectiveFusion.0.PropertyF.Ground.CentreInduction.center_fusion_of_unit_retract.match_1_7	definition	1	429	4	0	0	0	2	3124306753
 PropertyF.Ground.Modular.Verlinde	_private.PropertyF.Ground.Modular.Verlinde.0.PropertyF.Ground.Modular.fusion_character_product._simp_1_2	theorem	1	72	3	2	0	1	0	1762064320
 PropertyF.Ground.Calculus.OverlapBound	PropertyF.Ground.Calculus.IsTracePresentation	definition	1	65	4	4	0	0	0	1719783206
 PropertyF.Definitions	PropertyF.braidGenerator	definition	1	61	3	1	0	3	0	1538954304
@@ -2802,6 +2796,7 @@ PropertyF.Ground.CentreInduction.ForgetDual	PropertyF.Ground.CentreInduction.for
 PropertyF.Ground.CentreInduction.ForgetDual	PropertyF.Ground.CentreInduction.pivotalDimension_eq_fp	theorem	1	45	2	2	0	0	1	2142376073
 PropertyF.Ground.Integrate.TwistedRigidity	PropertyF.Ground.ScalarTwist.instAbelianObj._aux_1	definition	1	46	2	0	0	0	0	3997143320
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.centerZero	definition	1	33	0	1	0	5	2	1270212254
+PropertyF.Ground.Fusion.Simples	_private.PropertyF.Ground.Fusion.Simples.0.PropertyF.Ground.exists_simple_iso.match_1_1	definition	1	412	6	0	0	0	2	100247547
 PropertyF.Ground.CentreInduction.CrossingBlocks	PropertyF.Ground.CentreInduction.underlyingFunctor	definition	1	12	1	0	0	0	0	188095047
 PropertyF.Ground.Fusion.SemisimpleSplit	PropertyF.Ground.split_to_simple	theorem	1	123	3	2	0	1	2	840834713
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerAbelian._proof_2	theorem	1	59	0	1	0	5	1	1233190596
@@ -2857,7 +2852,6 @@ PropertyF.Ground.Modular.SSquare	PropertyF.Ground.Modular.square_support_constan
 PropertyF.Ground.CentreInduction.PivotalCentrality	_private.PropertyF.Ground.CentreInduction.PivotalCentrality.0.PropertyF.Ground.CentreInduction.«term𝒵ᶠ»	definition	0	1	0	0	0	0	0	1560175301
 PropertyF.Ground.CentreInduction.ActualFusion	PropertyF.Ground.CentreInduction.homLinearEquivOfAdjunction	definition	1	203	5	3	0	9	2	3565128899
 PropertyF.Ground.Centre.Basic	PropertyF.Ground.Centre.isZero_of_forget	theorem	1	57	1	2	0	4	2	988788646
-PropertyF.Ground.CentreInduction.PivotalCentrality	_private.PropertyF.Ground.CentreInduction.PivotalCentrality.0.PropertyF.Ground.CentreInduction.positive_simple_centralizes_induced_unit._simp_1_1	theorem	1	80	3	5	0	1	0	98966876
 PropertyF.Ground.Centre.Abelian	PropertyF.Ground.Centre.centerBiprodSnd	definition	1	66	2	1	0	5	2	3412737774
 PropertyF.Ground.Integrate.DependencyAudit	_private.PropertyF.Ground.Integrate.DependencyAudit.0.PropertyF.Ground.DependencyAudit.instReprIssue.repr.match_1	definition	0	32	6	0	0	0	0	2639417891
 PropertyF.Ground.CentreInduction.ForgetDualTensor	PropertyF.Ground.CentreInduction.forget_rightAdjointMate	theorem	1	165	1	3	0	3	0	1616031211

@@ -85,23 +85,15 @@ theorem fpDimension_tensor (X Y : D.Obj) :
   classical
   unfold fpDimension
   simp_rw [tensor_multiplicity_expanded, Nat.cast_sum, Nat.cast_mul]
-  calc
-    _ = ∑ i, ∑ j, (Module.finrank ℂ (simples D i ⟶ X) : ℝ) *
-        (Module.finrank ℂ (simples D j ⟶ Y) : ℝ) *
-        (∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k) := by
-      simp only [Finset.sum_mul, Finset.mul_sum, mul_assoc]
-      rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [Finset.sum_comm]
-    _ = ∑ i, ∑ j, (Module.finrank ℂ (simples D i ⟶ X) : ℝ) *
-        (Module.finrank ℂ (simples D j ⟶ Y) : ℝ) *
-        (fpSimple D i * fpSimple D j) := by
-      simp_rw [← fpSimple_mul]
-    _ = _ := by
-      simp only [Finset.sum_mul, Finset.mul_sum]
-      conv_rhs => rw [Finset.sum_comm]
-      simp only [mul_assoc, mul_left_comm, mul_comm]
+  simp only [Finset.sum_mul, Finset.mul_sum, mul_assoc]
+  conv_lhs =>
+    rw [Finset.sum_comm]
+    arg 2; ext i
+    rw [Finset.sum_comm]
+  conv_rhs => rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [← Finset.mul_sum, ← Finset.mul_sum, ← fpSimple_mul]
+  ring
 
 /-- Multiplicity of a simple in a dual object equals the multiplicity of its
 dual in the original object. -/
@@ -109,20 +101,13 @@ theorem dual_multiplicity (X : D.Obj) (i : Fin (rank D)) :
     Module.finrank ℂ (simples D i ⟶ ᘁX) =
       Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) := by
   obtain ⟨e⟩ := dualIndex_iso D i
-  calc
-    _ = Module.finrank ℂ (simples D i ⟶ (ᘁX) ⊗ 𝟙_ D.Obj) :=
-      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁX : D.Obj)).symm).finrank_eq
-    _ = Module.finrank ℂ (X ⊗ simples D i ⟶ 𝟙_ D.Obj) :=
-      (tensorLeftHomLinearEquiv (simples D i) (ᘁX) X (𝟙_ D.Obj)).finrank_eq.symm
-    _ = Module.finrank ℂ (simples D i ⊗ X ⟶ 𝟙_ D.Obj) :=
-      (CategoryTheory.Linear.homCongr ℂ (β_ X (simples D i)) (Iso.refl _)).finrank_eq
-    _ = Module.finrank ℂ (X ⟶ (ᘁ(simples D i)) ⊗ 𝟙_ D.Obj) :=
-      (tensorLeftHomLinearEquiv X (ᘁ(simples D i)) (simples D i) (𝟙_ D.Obj)).finrank_eq
-    _ = Module.finrank ℂ (X ⟶ ᘁ(simples D i)) :=
-      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁ(simples D i) : D.Obj))).finrank_eq
-    _ = Module.finrank ℂ (X ⟶ simples D (dualIndex D i)) :=
-      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
-    _ = _ := finrank_to_simple_eq_from_simple D X _
+  exact (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁX : D.Obj)).symm).trans
+    (tensorLeftHomLinearEquiv (simples D i) (ᘁX) X (𝟙_ D.Obj)).symm |>.trans
+    (CategoryTheory.Linear.homCongr ℂ (β_ X (simples D i)) (Iso.refl _)) |>.trans
+    (tensorLeftHomLinearEquiv X (ᘁ(simples D i)) (simples D i) (𝟙_ D.Obj)) |>.trans
+    (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁ(simples D i) : D.Obj))) |>.trans
+    (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e) |>.finrank_eq |>.trans
+    (finrank_to_simple_eq_from_simple D X _)
 
 /-- FP dimension is invariant under taking a left dual. -/
 theorem fpDimension_leftDual (X : D.Obj) :
@@ -183,25 +168,20 @@ theorem fpDimension_functor (C : BraidedFusionCategory.{v,u})
     fpDimension D (F.obj X) = fpDimension C X := by
   classical
   let f : Fin (rank C) → ℝ := fun i => fpDimension D (F.obj (simples C i))
-  have hpos : ∀ i, 0 < f i := by
-    intro i
-    apply lt_of_lt_of_le zero_lt_one
-    apply one_le_fpDimension
-    intro hz
-    let : Simple (simples C i) := simples_simple C i
-    exact id_nonzero _ (F.map_eq_zero_iff.mp (by simpa using (IsZero.iff_id_eq_zero _).mp hz))
+  have hpos (i) : 0 < f i :=
+    letI : Simple (simples C i) := simples_simple C i
+    lt_of_lt_of_le zero_lt_one (one_le_fpDimension D fun hz ↦
+      id_nonzero _ (F.map_eq_zero_iff.mp (by simpa using (IsZero.iff_id_eq_zero _).mp hz)))
   have hunit : f (unitIndex C) = 1 :=
     (unitIndex_iso C).elim fun e ↦
       (fpDimension_iso D (F.mapIso e ≪≫ (εIso F).symm)).trans (fpDimension_unit D)
-  have hmul : ∀ i j, f i * f j = ∑ k, (fusionCoeff C i j k : ℝ) * f k := by
-    intro i j
-    calc
-      _ = fpDimension D (F.obj (simples C i) ⊗ F.obj (simples C j)) :=
-        (fpDimension_tensor D _ _).symm
-      _ = fpDimension D (F.obj (simples C i ⊗ simples C j)) :=
-        fpDimension_iso D (μIso F _ _)
-      _ = _ := fpDimension_functor_decomposition C D F _
-  have heq : f = fpSimple C := positive_character_unique C hpos (fpSimple_pos C) hunit (fpSimple_unit C) hmul (fpSimple_mul C)
+  have hmul (i j) : f i * f j = ∑ k, (fusionCoeff C i j k : ℝ) * f k :=
+    (fpDimension_tensor D _ _).symm.trans ((fpDimension_iso D (μIso F _ _)).trans
+      (fpDimension_functor_decomposition C D F _))
+  have heq : f = fpSimple C := positive_symmetric_eigenvector_unique (totalFusionMatrix_pos C)
+    (Matrix.ext fun i j ↦ totalFusionMatrix_symmetric C j i) hpos (fpSimple_pos C)
+    hunit (fpSimple_unit C) (character_total_eigenvector C hmul)
+    (character_total_eigenvector C (fpSimple_mul C))
   simpa only [fpDimension, ← heq, f] using fpDimension_functor_decomposition C D F X
 
 end PropertyF.Ground

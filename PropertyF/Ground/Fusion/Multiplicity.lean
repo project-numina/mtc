@@ -88,15 +88,9 @@ theorem finrank_simple_of_decomposition
     Module.finrank ℂ (simples D i ⟶ X) = m i := by
   classical
   let : ∀ Y Z : D.Obj, FiniteDimensional ℂ (Y ⟶ Z) := IsFusionCategory.hom_finite
-  calc
-    Module.finrank ℂ (simples D i ⟶ X) =
-        Module.finrank ℂ (simples D i ⟶ ⨁ (fun p : Σ j, Fin (m j) => simples D p.1)) :=
-      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
-    _ = ∑ p : Σ j, Fin (m j), Module.finrank ℂ (simples D i ⟶ simples D p.1) :=
-      finrank_hom_biproduct _ _
-    _ = m i := by
-      rw [Fintype.sum_sigma]
-      simp [finrank_simples_hom]
+  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq,
+    finrank_hom_biproduct, Fintype.sum_sigma]
+  simp [finrank_simples_hom]
 
 /-- Every object decomposes with the canonical Hom-space multiplicities. -/
 theorem exists_canonical_decomposition (X : D.Obj) :
@@ -111,17 +105,11 @@ theorem finrank_to_simple_eq_from_simple
     (X : D.Obj) (i : Fin (rank D)) :
     Module.finrank ℂ (X ⟶ simples D i) = Module.finrank ℂ (simples D i ⟶ X) := by
   classical
-  let m : Fin (rank D) → ℕ := fun j => Module.finrank ℂ (simples D j ⟶ X)
   obtain ⟨e⟩ := exists_canonical_decomposition D X
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  calc
-    _ = Module.finrank ℂ (⨁ (fun p : Σ j, Fin (m j) => simples D p.1) ⟶ simples D i) :=
-      (CategoryTheory.Linear.homCongr ℂ e (Iso.refl _)).finrank_eq
-    _ = ∑ p : Σ j, Fin (m j), Module.finrank ℂ (simples D p.1 ⟶ simples D i) :=
-      finrank_biproduct_hom _ _
-    _ = _ := by
-      rw [Fintype.sum_sigma]
-      simp [finrank_simples_hom, m]
+  rw [(CategoryTheory.Linear.homCongr ℂ e (Iso.refl _)).finrank_eq,
+    finrank_biproduct_hom, Fintype.sum_sigma]
+  simp [finrank_simples_hom]
 
 /-- Tensoring an object on the left acts on simple multiplicities by its
 integer fusion matrix. -/
@@ -137,17 +125,11 @@ theorem tensor_multiplicity (X Y : D.Obj)
   let e' : X ⊗ Y ≅ ⨁ (fun p => X ⊗ V p) :=
     (Iso.refl X ⊗ᵢ e) ≪≫ CategoryTheory.leftDistributor X V
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  calc
-    Module.finrank ℂ (simples D k ⟶ X ⊗ Y) =
-        Module.finrank ℂ (simples D k ⟶ ⨁ (fun p => X ⊗ V p)) :=
-      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e').finrank_eq
-    _ = ∑ p : Σ j, Fin (m j), Module.finrank ℂ (simples D k ⟶ X ⊗ V p) :=
-      finrank_hom_biproduct _ _
-    _ = _ := by
-      rw [Fintype.sum_sigma]
-      refine Finset.sum_congr rfl fun j _ ↦ ?_
-      change (∑ _ : Fin (m j), Module.finrank ℂ (simples D k ⟶ X ⊗ simples D j)) = _
-      simp [m]
+  rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e').finrank_eq,
+    finrank_hom_biproduct, Fintype.sum_sigma]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  change (∑ _ : Fin (m j), Module.finrank ℂ (simples D k ⟶ X ⊗ simples D j)) = _
+  simp [m]
 
 /-- Fusion coefficients are the actual Hom-space dimensions. -/
 def fusionCoeff (i j k : Fin (rank D)) : ℕ :=
@@ -179,20 +161,13 @@ theorem fusionCoeff_assoc
     ∑ r, fusionCoeff D j k r * fusionCoeff D i r l =
       ∑ r, fusionCoeff D i j r * fusionCoeff D r k l := by
   classical
-  calc
-    _ = Module.finrank ℂ (simples D l ⟶ simples D i ⊗ (simples D j ⊗ simples D k)) := by
-      simpa [fusionCoeff] using (tensor_multiplicity D (simples D i)
-        (simples D j ⊗ simples D k) l).symm
-    _ = Module.finrank ℂ (simples D l ⟶ simples D k ⊗ (simples D i ⊗ simples D j)) :=
-      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
-        ((α_ (simples D i) (simples D j) (simples D k)).symm ≪≫
-          β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq
-    _ = ∑ r, fusionCoeff D i j r * fusionCoeff D k r l := by
-      simpa [fusionCoeff] using tensor_multiplicity D (simples D k)
-        (simples D i ⊗ simples D j) l
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro r _
-      rw [fusionCoeff_comm D k r l]
+  have h := (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples D l))
+    ((α_ (simples D i) (simples D j) (simples D k)).symm ≪≫
+      β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq
+  rw [tensor_multiplicity D (simples D i) (simples D j ⊗ simples D k) l,
+    tensor_multiplicity D (simples D k) (simples D i ⊗ simples D j) l] at h
+  change (∑ r, fusionCoeff D j k r * fusionCoeff D i r l) =
+    ∑ r, fusionCoeff D i j r * fusionCoeff D k r l at h
+  simpa only [fusionCoeff_comm D k] using h
 
 end PropertyF.Ground

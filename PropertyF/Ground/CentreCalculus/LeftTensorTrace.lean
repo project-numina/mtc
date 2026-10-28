@@ -103,10 +103,9 @@ theorem leftPartialTrace_braiding_of_trace_compatibility
     leftPartialTrace p (End.of (β_ X X).hom) =
       θ C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  have hd : unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
-    simpa [unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X
   simpa only [← unitScalar_eq_equiv, Dimensions.pivotalTrace_selfBraiding,
-    pivotalDimension, mul_div_cancel_right₀ _ hd] using
+    pivotalDimension, mul_div_cancel_right₀ _ (show unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 from by
+      simpa [unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X)] using
     leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)
       (End.of (β_ X X).hom) (Modular.unitScalar_rightTrace_ne_zero C p X) ht
 
@@ -118,15 +117,12 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility (n : ℕ)
     leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = θ C p X • 1 := by
   have hg : (Aut.toEnd (braidGenerator X n 0)) = End.of
       ((α_ X X (tensorPower X n)).inv ≫ ((β_ X X).hom ▷ tensorPower X n) ≫
-        (α_ X X (tensorPower X n)).hom) := by
-    apply End.ext
+        (α_ X X (tensorPower X n)).hom) := End.ext <| by
     change (braidGenerator X n 0).asIso.hom = _
     simpa only [Modular.firstBraiding, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
       Iso.refl_hom, tensorHom_id] using Modular.braidGenerator_zero X n
-  change leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = _
   dsimp only [tensorPower] at hg ⊢
-  rw [hg]
-  rw [leftPartialTrace_whiskerRight p (tensorPower X n) (End.of (β_ X X).hom),
+  rw [hg, leftPartialTrace_whiskerRight p (tensorPower X n) (End.of (β_ X X).hom),
     leftPartialTrace_braiding_of_trace_compatibility (C := C) ht]
   apply End.ext
   simp
@@ -170,16 +166,16 @@ include hdim hX htotal in
 /-- The symmetric integrality argument now needs only left iterated-trace
 compatibility and the sign of the actual pivotal twist scalar. -/
 theorem integral_of_leftTrace_and_twist_sign (hsign : θ C p X = 1 ∨ θ C p X = -1) :
-    IsFPIntegral C X := by
-  have hfirst (n : ℕ) : leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = θ C p X • 1 :=
+    IsFPIntegral C X :=
+  let hfirst (n : ℕ) : leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = θ C p X • 1 :=
     leftPartialTrace_firstGenerator_of_trace_compatibility (C := C) n
       (htotal X (End.of (β_ X X).hom))
-  rcases hsign with h | h
-  · exact integral_of_parity_adjacent_trace hdim hX false fun n σ ↦ by
+  hsign.elim
+    (fun h ↦ integral_of_parity_adjacent_trace hdim hX false fun n σ ↦ by
       simpa [permScalarTrace, scalarPermTrace, parityPermAction, h] using
-        tensorPermTrace_adjacent p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst σ
-  · exact integral_of_parity_adjacent_trace hdim hX true
-      (negativeParity_adjacentTrace p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst h)
+        tensorPermTrace_adjacent p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst σ)
+    (fun h ↦ integral_of_parity_adjacent_trace hdim hX true
+      (negativeParity_adjacentTrace p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst h))
 
 end PropertyF.Ground.CentreCalculus
 
@@ -258,9 +254,9 @@ theorem leftTrace_partialTrace [Preadditive C] [Linear ℂ C]
   monoidal
   simp
   simp only [← whiskerLeft_comp_assoc]
-  rw [leftUnitor_inv_naturality_assoc]
-  rw [whisker_exchange_assoc (η_ (Xᘁ) ((Xᘁ)ᘁ)) (p.iso Y).inv]
-  rw [associator_naturality_right_assoc]
+  rw [leftUnitor_inv_naturality_assoc,
+    whisker_exchange_assoc (η_ (Xᘁ) ((Xᘁ)ᘁ)) (p.iso Y).inv,
+    associator_naturality_right_assoc]
   simp only [whiskerLeft_comp, Category.assoc]
   simp only [← whiskerLeft_comp_assoc]
   rw [whisker_exchange_assoc (p.iso X).inv (p.iso Y).inv]
