@@ -92,13 +92,15 @@ def vafaUnitClass (z : ℂˣ) : vafaUnitSpace := rationalUnitClass (K := ℝ) z
 /-- A rationalized group element vanishes exactly when it has finite order. -/
 theorem rationalUnitClass_eq_zero_iff {K G : Type*} [CommRing K] [Algebra ℚ K]
     [Module.FaithfullyFlat ℚ K] [CommGroup G] (z : G) :
-    rationalUnitClass (K := K) z = 0 ↔ IsOfFinOrder z := by
-  rw [rationalUnitClass, Module.FaithfullyFlat.one_tmul_eq_zero_iff, isOfFinOrder_iff_zpow_eq_one]
-  refine (IsLocalizedModule.eq_zero_iff (nonZeroDivisors ℤ)
-    (TensorProduct.mk ℤ ℚ (Additive G) 1) (m := Additive.ofMul z)).trans ?_
-  change (∃ s : nonZeroDivisors ℤ, (s : ℤ) • Additive.ofMul z = 0) ↔ _
-  simp only [Subtype.exists, mem_nonZeroDivisors_iff_ne_zero, exists_prop]
-  rfl
+    rationalUnitClass (K := K) z = 0 ↔ IsOfFinOrder z :=
+  (Module.FaithfullyFlat.one_tmul_eq_zero_iff ℚ (ℚ ⊗[ℤ] Additive G) (A := K)
+    ((1 : ℚ) ⊗ₜ[ℤ] Additive.ofMul z)).trans <|
+  (IsLocalizedModule.eq_zero_iff (nonZeroDivisors ℤ)
+    (TensorProduct.mk ℤ ℚ (Additive G) 1) (m := Additive.ofMul z)).trans <| by
+    change (∃ s : nonZeroDivisors ℤ, (s : ℤ) • Additive.ofMul z = 0) ↔ IsOfFinOrder z
+    rw [isOfFinOrder_iff_zpow_eq_one]
+    simp only [Subtype.exists, mem_nonZeroDivisors_iff_ne_zero, exists_prop]
+    rfl
 
 /-- Multiplication becomes addition after rationalization. -/
 theorem rationalUnitClass_mul {K G : Type*} [CommSemiring K] [Algebra ℚ K] [CommGroup G]

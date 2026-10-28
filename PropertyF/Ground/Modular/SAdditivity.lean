@@ -31,16 +31,14 @@ omit [Linear ℂ C] [MonoidalLinear ℂ C] in
 /-- The S entry is additive over finite biproducts in its first argument. -/
 theorem SEntry_biproduct_left {ι : Type*} [Fintype ι] (V : ι → C) [HasBiproduct V]
     (p : PivotalStructure) (Y : C) :
-    SEntry p (⨁ V) Y = ∑ i, SEntry p (V i) Y := by
-  change p.rightTrace (doubleBraiding (⨁ V) Y) = _
-  rw [rightTrace_decomposition p (fun i => biproduct.ι V i ▷ Y)
-    (fun i => biproduct.π V i ▷ Y)
-    (by simp only [← comp_whiskerRight, ← sum_whiskerRight, biproduct.total, id_whiskerRight]) _]
-  refine Finset.sum_congr rfl fun i _ ↦ ?_
-  unfold SEntry
-  rw [← Category.assoc, ← doubleBraiding_natural_left (biproduct.ι V i) Y,
-    Category.assoc, ← comp_whiskerRight, biproduct.ι_π_self, id_whiskerRight,
-    Category.comp_id]
+    SEntry p (⨁ V) Y = ∑ i, SEntry p (V i) Y :=
+  (rightTrace_decomposition p (fun i ↦ biproduct.ι V i ▷ Y) (fun i ↦ biproduct.π V i ▷ Y)
+    (by simp only [← comp_whiskerRight, ← sum_whiskerRight, biproduct.total, id_whiskerRight])
+    (doubleBraiding (⨁ V) Y)).trans <|
+  Finset.sum_congr rfl fun i _ ↦ by
+    unfold SEntry
+    rw [← Category.assoc, ← doubleBraiding_natural_left (biproduct.ι V i) Y,
+      Category.assoc, ← comp_whiskerRight, biproduct.ι_π_self, id_whiskerRight, Category.comp_id]
 
 
 omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
