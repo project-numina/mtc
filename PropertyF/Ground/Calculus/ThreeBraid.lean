@@ -100,7 +100,6 @@ theorem three_braid_image_relation (X : C) :
 theorem three_braid_relation_map {H : Type*} [Monoid H] (X : C)
     (ρ : braidImage X 1 →* H) :
     ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) =
-    ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) := by
-  simpa only [map_mul] using congrArg ρ (three_braid_image_relation X)
+    ρ (threeGeneratorRight X) * ρ (threeGeneratorLeft X) * ρ (threeGeneratorRight X) := by simpa only [map_mul] using congrArg ρ (three_braid_image_relation X)
 
 end PropertyF.Ground.Calculus

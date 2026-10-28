@@ -3,7 +3,6 @@ public import PropertyF.BlockTrace
 public import PropertyF.BraidAlgebra
 public import PropertyF.Ground.Calculus.OverlapBound
 public import PropertyF.Ground.Calculus.ThreeTrace
-public import PropertyF.Ground.Calculus.OverlapTrace
 
 /-! The matrix saturation step of three-strand rigidity, without a model bundle. -/
 

@@ -313,7 +313,7 @@ theorem append_first_two (X A B : C) (e : A ⊗ X ≅ B) :
 
 omit [BraidedCategory C] in
 theorem appendIso_succ (X : C) (n : ℕ) : appendIso X (n+1) =
-  (α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X n) := by rfl
+  (α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X n) := rfl
 
 set_option backward.isDefEq.respectTransparency false in
 theorem addRightAut_generator (X : C) (n : ℕ) (i : Fin (n+1)) :

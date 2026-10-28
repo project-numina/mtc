@@ -1,11 +1,9 @@
 module
 public import PropertyF.Ground.Calculus.BraidWeights
-public import PropertyF.Ground.Calculus.WeightFacts
 public import PropertyF.UnitaryTrace
 public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Dimensions.DimensionCharacter
-public import PropertyF.Ground.Calculus.ThreeEmbedding
-public import PropertyF.Ground.Calculus.PartialTraceGround
+public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.PowerBound
 
 /-! The ordinary weighted trace bound for actual braid algebras. -/

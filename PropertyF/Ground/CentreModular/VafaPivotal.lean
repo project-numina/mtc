@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreModular.VafaCompletion
-public import PropertyF.Ground.CentreCabling.VafaTwist
+public import PropertyF.Ground.CentreCabling.TwistFinite
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory

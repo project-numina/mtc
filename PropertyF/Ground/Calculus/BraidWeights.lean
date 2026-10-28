@@ -1,13 +1,145 @@
 module
-public import Mathlib.LinearAlgebra.Matrix.Trace
-public import Mathlib.Data.Matrix.Basis
+public import PropertyF.Ground.Calculus.EndBlocks
+public import PropertyF.Ground.Dimensions.BiproductTrace
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.Tactic
+public import Mathlib.LinearAlgebra.Matrix.Trace
+public import Mathlib.Data.Matrix.Basis
 public import Mathlib.LinearAlgebra.Pi
 public import Mathlib.LinearAlgebra.Trace
-public import PropertyF.Ground.Calculus.EndTrace
 public import PropertyF.Ground.Calculus.UnitaryBlocks
-public import PropertyF.Ground.Calculus.WeightFacts
+
+/-! The pivotal trace in the simple-constituent matrix decomposition. -/
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open scoped BigOperators
+namespace PropertyF.Ground.Calculus
+universe v u
+attribute [local instance] Abelian.hasFiniteBiproducts
+
+/-- Scalar identification for a chosen simple object. -/
+def groundSimpleScalar (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
+    End (Ground.simples C i) ≃ₐ[ℂ] ℂ := by
+  let _ : Simple (Ground.simples C i) := Ground.simples_simple C i
+  let _ : FiniteDimensional ℂ (Ground.simples C i ⟶ Ground.simples C i) :=
+    Ground.IsFusionCategory.hom_finite _ _
+  exact simpleEndScalar _
+
+/-- Evaluating a simple endomorphism at its Schur scalar recovers the morphism. -/
+theorem groundSimpleScalar_smul_id (C : Ground.BraidedFusionCategory.{v,u})
+    (i : Fin (Ground.rank C)) (a : End (Ground.simples C i)) :
+    (groundSimpleScalar C i a) • 𝟙 (Ground.simples C i) = a.asHom := by
+  have h := (groundSimpleScalar C i).symm_apply_apply a
+  change (algebraMap ℂ (End (Ground.simples C i))) (groundSimpleScalar C i a) = a at h
+  have h' := congrArg End.asHom h
+  simpa [Algebra.algebraMap_eq_smul_one] using h'
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A diagonal matrix coefficient is the scalar of the corresponding simple
+biproduct component of the transported endomorphism. -/
+theorem groundEndBlockEquiv_diagonal (C : Ground.BraidedFusionCategory.{v,u})
+    (X : C.Obj) (m : Fin (Ground.rank C) → ℕ)
+    (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
+    (a : End X) (i : Fin (Ground.rank C)) (j : Fin (m i)) :
+    groundEndBlockEquiv C X m e a i j j =
+      groundSimpleScalar C i (End.of
+        (biproduct.ι (fun p : Σ i, Fin (m i) => Ground.simples C p.1) ⟨i, j⟩ ≫
+          e.inv ≫ a.asHom ≫ e.hom ≫
+          biproduct.π (fun p : Σ i, Fin (m i) => Ground.simples C p.1) ⟨i, j⟩)) := by
+  classical
+  simp [groundEndBlockEquiv, orthogonalEndBlocks, isoEndAlgEquiv,
+    simpleFiberEquiv, groundSimpleScalar, HomOrthogonal.matrixDecompositionAddEquiv, HomOrthogonal.matrixDecomposition,
+    Matrix.reindexAlgEquiv, Matrix.reindexRingEquiv, Matrix.reindexAddEquiv,
+    Matrix.reindex, Category.assoc, biproduct.components]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The actual pivotal trace on a fusion-category endomorphism is the sum of
+simple categorical dimensions times the ordinary traces of its constituent
+multiplicity blocks. -/
+theorem pivotalTrace_groundEndBlocks (C : Ground.BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := C.Obj))
+    (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (X : C.Obj) (m : Fin (Ground.rank C) → ℕ)
+    (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1)) (a : End X) :
+    scalar (p.rightTrace a.asHom) = ∑ i,
+      scalar (p.rightTrace (𝟙 (Ground.simples C i))) *
+        (groundEndBlockEquiv C X m e a i).trace := by
+  classical
+  let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
+  let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
+  have hz : p.rightTrace z = p.rightTrace a.asHom := by
+    have h := p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
+    simpa [z, Category.assoc] using h
+  calc
+    scalar (p.rightTrace a.asHom) = scalar (p.rightTrace z) := by rw [hz]
+    _ = ∑ q, scalar (p.rightTrace (biproduct.ι F q ≫ z ≫ biproduct.π F q)) := by
+      rw [Dimensions.rightTrace_biproduct F p z, map_sum]
+    _ = ∑ q : Σ i, Fin (m i),
+        (groundEndBlockEquiv C X m e a q.1 q.2 q.2) *
+          scalar (p.rightTrace (𝟙 (Ground.simples C q.1))) := by
+      apply Finset.sum_congr rfl
+      rintro ⟨i, j⟩ _
+      rw [groundEndBlockEquiv_diagonal]
+      simp only [z, Category.assoc]
+      let b : End (Ground.simples C i) := End.of
+        (biproduct.ι F ⟨i,j⟩ ≫ e.inv ≫ a.asHom ≫ e.hom ≫ biproduct.π F ⟨i,j⟩)
+      change scalar (p.rightTrace b.asHom) = groundSimpleScalar C i b * _
+      rw [← groundSimpleScalar_smul_id C i b, p.rightTrace_smul, map_smul]
+      simp
+    _ = ∑ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) *
+        (groundEndBlockEquiv C X m e a i).trace := by
+      rw [Fintype.sum_sigma]
+      simp [Matrix.trace, Finset.mul_sum, mul_comm]
+
+end PropertyF.Ground.Calculus
+
+/-! Consequences of the categorical multiplicity weights. -/
+
+@[expose] public noncomputable section
+open scoped BigOperators
+namespace PropertyF.Ground.Calculus
+
+/-- The block trace mass is the constituent multiplicity mass whenever the
+actual representation dimensions decompose into braid-block dimensions. -/
+theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
+    (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → ℝ)
+    (hdim : ∀ i, m i = ∑ j, mult i j * d j) :
+    (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) =
+      ∑ i, (m i : ℝ) * fp i := by
+  calc
+    _ = ∑ j, ∑ i, ((mult i j : ℝ) * fp i) * (d j : ℝ) := by
+      simp only [Finset.sum_mul]
+    _ = ∑ i, ∑ j, ((mult i j : ℝ) * (d j : ℝ)) * fp i := by
+      rw [Finset.sum_comm]
+      apply Finset.sum_congr rfl
+      intro i _
+      apply Finset.sum_congr rfl
+      intro j _
+      ring
+    _ = ∑ i, (m i : ℝ) * fp i := by
+      apply Finset.sum_congr rfl
+      intro i _
+      rw [← Finset.sum_mul, hdim i]
+      simp
+
+/-- The paper's Galois-transported multiplicity weights cannot vanish when
+all original constituent dimensions are positive and the block is retained. -/
+theorem transported_weight_ne_zero {ι : Type*} [Fintype ι]
+    (mult : ι → ℕ) (dim : ι → ℝ) (σ : ℂ ≃+* ℂ)
+    (hpos : ∀ i, 0 < dim i) (hret : ∃ i, 0 < mult i) :
+    (∑ i, (mult i : ℂ) * σ (dim i : ℂ)) ≠ 0 := by
+  have hsum : 0 < ∑ i, (mult i : ℝ) * dim i := by
+    obtain ⟨i, hi⟩ := hret
+    exact Finset.sum_pos' (fun i _ => mul_nonneg (Nat.cast_nonneg _) (hpos i).le)
+      ⟨i, Finset.mem_univ _, mul_pos (by exact_mod_cast hi) (hpos i)⟩
+  intro hz
+  have hzero : (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0 := by
+    apply σ.injective
+    simp [map_sum, map_mul, hz]
+  have hr : (∑ i, (mult i : ℝ) * dim i) = 0 := by exact_mod_cast hzero
+  linarith
+
+end PropertyF.Ground.Calculus
 
 /-! Cyclic linear functionals on complex matrix algebras. -/
 

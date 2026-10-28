@@ -4,7 +4,7 @@ public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.CentreCabling.TwistDual
 public import PropertyF.Ground.Fusion.Reciprocity
-public import PropertyF.Ground.CentreCabling.CoreCentrality
+public import PropertyF.Ground.CentreCabling.ImageCore
 public import PropertyF.Ground.Fusion.GeneratedRigidity
 public import PropertyF.Ground.Dimensions.PivotalDual
 public import PropertyF.Ground.Dimensions.SphericalReal

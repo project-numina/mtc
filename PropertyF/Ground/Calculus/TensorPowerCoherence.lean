@@ -9,13 +9,14 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 @[expose] public noncomputable section
 namespace PropertyF
 universe v u
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
-  [Abelian C] [MonoidalPreadditive C]
+variable {C : Type u} [Category.{v} C]
 
 theorem castIso_hom_comp {A B D : C} (h : B = D) (e : A ≅ D) :
     (cast (congrArg (fun Z : C => A ≅ Z) h.symm) e).hom ≫ eqToHom h = e.hom := by
   cases h
   simp
+
+variable [MonoidalCategory C] [BraidedCategory C] [Abelian C] [MonoidalPreadditive C]
 
 /-- Expand the standard tensor-power comparison one factor on the left. -/
 theorem powerTensor_succ_general (X : C) (n m : ℕ) :
