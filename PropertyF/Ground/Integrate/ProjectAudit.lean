@@ -57,7 +57,6 @@ import all PropertyF.Ground.CentreCabling.CentralityClosure
 import all PropertyF.Ground.CentreCabling.ImageCore
 import all PropertyF.Ground.CentreCabling.ProductCore
 import all PropertyF.Ground.CentreCabling.RegularSupport
-import all PropertyF.Ground.CentreCabling.TargetReduction
 import all PropertyF.Ground.CentreCabling.TraceSaturation
 import all PropertyF.Ground.CentreCalculus.ProjectorReduction
 import all PropertyF.Ground.CentreDimensions.PivotalTwist
@@ -243,8 +242,6 @@ run_cmd do
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
       ``PropertyF.Ground.galois_rigidity_of_propertyF,
       ``PropertyF.Ground.target_of_modular_center,
-      ``PropertyF.Ground.target_of_center_centralizers,
-      ``PropertyF.Ground.target_of_center_product_retracts,
       ``PropertyF.Ground.target_of_actual_center,
       ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
@@ -254,9 +251,7 @@ run_cmd do
       ``PropertyF.Ground.CentreIntegrate.pivotal_balance_of_drinfeld_tensor,
       ``PropertyF.Ground.target_of_pivotal_base_and_center_balancing,
       ``PropertyF.Ground.CentreInduction.center_transparent_simple_iso_unit,
-      ``PropertyF.Ground.target_of_pivotal_balanced_center_trivial_transparency,
       ``PropertyF.Ground.CentreModular.categoricalS_det_ne_zero_of_trivial_transparency,
-      ``PropertyF.Ground.target_of_pivotal_base_modular_balanced_center,
       ``PropertyF.Ground.CentreCalculus.actual_symmetricCore_integrality,
       ``PropertyF.Ground.CentreModular.mixed_monodromy_finite_of_pivotal_balancing,
       ``PropertyF.Ground.CentreRigid.rigidCenter,
@@ -264,7 +259,6 @@ run_cmd do
       ``PropertyF.Ground.CentreIntegrate.drinfeld_tensor_of_pairing_cap,
       ``PropertyF.Ground.CentreIntegrate.balance_of_drinfeld_tensor,
       ``PropertyF.Ground.center_globalDimension_square_of_actual_induction,
-      ``PropertyF.Ground.target_of_center_image_monodromy_no_square,
       ``PropertyF.Ground.Calculus.actual_rigidity_of_overlap_and_galois_dimensions,
       ``PropertyF.Ground.Dimensions.fourthDualRootNaturalSquare_eq,
       ``PropertyF.Ground.selfDual_character_galois_real,

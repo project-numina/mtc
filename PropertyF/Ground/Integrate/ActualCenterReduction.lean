@@ -244,93 +244,6 @@ end
 end
 
 section
-/-! Expose the remaining centre inputs in the final reduction. -/
-
-@[expose] public noncomputable section
-namespace PropertyF.Ground
-universe v u
-
-/-- The target follows from the actual centre and the three categorical
-centralizer facts in the paper. These facts are explicit interim premises;
-no old hypothesis structure appears in the dependency cone. -/
-theorem target_of_center_centralizers
-    (hCenter : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj →
-      ∃ (Z : BraidedFusionCategory.{v,max u v}) (p : Dimensions.PivotalStructure (C := Z.Obj))
-        (core generated : Set (Fin (rank Z))),
-        p.IsSpherical ∧
-        (Modular.HasFPSimpleDimensions Z p) ∧
-        (Modular.categoricalS Z p).det ≠ 0 ∧
-        globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-        (HasIntegralSimpleDimensionsOn Z p core) ∧
-        (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
-        (∀ y ∈ generated, ObjectPropertyF (simples Z y))) : TargetStatement.{v,u} := by
-  apply target_of_modular_center
-  intro C hPU hF σ
-  obtain ⟨Z, p, core, generated, hp, hdim, hdet, hglobal, hIntegral, hDouble, hFinite⟩ :=
-    hCenter C hPU hF
-  refine ⟨Z, p, hp, hdim, hdet, hglobal, ?_⟩
-  intro y hColumn
-  apply propertyF_of_galois_column Z p σ.symm core generated hIntegral hDouble hFinite y
-  intro x
-  rw [hdim y]
-  exact hColumn x
-
-end PropertyF.Ground
-end
-end
-
-section
-/-! Transfer finite braid images from actual centre product retracts. -/
-
-@[expose] public noncomputable section
-set_option linter.style.haveILetI false
-open CategoryTheory
-namespace PropertyF.Ground
-universe v u v' u'
-
-/-- A faithful braided functor reflects the finite image of a product retract. -/
-theorem propertyF_of_center_productRetract (C : BraidedFusionCategory.{v,u})
-    (Z : BraidedFusionCategory.{v',u'}) (F : Z.Obj ⥤ CategoryTheory.Center C.Obj)
-    [F.Braided] [F.Faithful] (hF : HasPropertyF C.Obj)
-    (X : Z.Obj) (hX : Centre.ProductRetract (F.obj X)) : ObjectPropertyF X := fun n ↦
-  letI : Finite (braidImage (F.obj X) n) := Centre.productRetract_propertyF hX hF n
-  Finite.of_injective (Modular.braidImageFunctorIso F X n)
-    (Modular.braidImageFunctorIso F X n).injective
-
-/-- Replace the generated-label finite-image premise by actual product
-retracts in Mathlib’s centre. The centre and centralizer facts remain explicit
-unproved premises of this reduction. -/
-theorem target_of_center_product_retracts
-    (hCenter : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
-      HasPropertyF C.Obj →
-      ∃ (Z : BraidedFusionCategory.{v,max u v}) (p : Dimensions.PivotalStructure (C := Z.Obj))
-        (F : Z.Obj ⥤ CategoryTheory.Center C.Obj),
-        Nonempty F.Braided ∧ F.Faithful ∧
-      ∃ (core generated : Set (Fin (rank Z))),
-        p.IsSpherical ∧
-        (Modular.HasFPSimpleDimensions Z p) ∧
-        (Modular.categoricalS Z p).det ≠ 0 ∧
-        globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-        (HasIntegralSimpleDimensionsOn Z p core) ∧
-        (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
-        (∀ y ∈ generated, Centre.ProductRetract (F.obj (simples Z y)))) :
-    TargetStatement.{v,u} := by
-  apply target_of_center_centralizers
-  intro C hPU hF
-  obtain ⟨Z, p, F, hB, hfaithful, core, generated, hp, hdim, hdet, hglobal,
-    hIntegral, hDouble, hProduct⟩ := hCenter C hPU hF
-  letI : F.Braided := hB.some
-  letI : F.Faithful := hfaithful
-  refine ⟨Z, p, core, generated, hp, hdim, hdet, hglobal, hIntegral, hDouble, ?_⟩
-  intro y hy
-  exact propertyF_of_center_productRetract C Z F hF (simples Z y) (hProduct y hy)
-
-end PropertyF.Ground
-end
-end
-
-section
 /-! State the remaining inputs on Mathlib’s actual Drinfeld centre. -/
 
 @[expose] public noncomputable section
@@ -359,16 +272,21 @@ theorem target_of_actual_center
             (HasIntegralSimpleDimensionsOn Z p core) ∧
             (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
             (∀ y ∈ generated, Centre.ProductRetract (simples Z y))) : TargetStatement.{v,u} := by
-  apply target_of_center_product_retracts
-  intro C hPU hF
+  apply target_of_modular_center
+  intro C hPU hF σ
   obtain ⟨hR, hFusion, p, core, generated, hp, hdim, hdet, hglobal, hIntegral, hDouble, hProduct⟩ :=
     hCenter C hPU hF
   letI := hR
   letI := hFusion
-  have hB : (𝟭 (CategoryTheory.Center C.Obj)).Braided := inferInstance
-  have hfaithful : (𝟭 (CategoryTheory.Center C.Obj)).Faithful := inferInstance
-  exact ⟨Integrate.bundledCenter C, p, 𝟭 (CategoryTheory.Center C.Obj), ⟨hB⟩, hfaithful,
-    core, generated, hp, hdim, hdet, hglobal, hIntegral, hDouble, hProduct⟩
+  let Z := Integrate.bundledCenter C
+  refine ⟨Z, p, hp, hdim, hdet, hglobal, ?_⟩
+  intro y hColumn
+  apply propertyF_of_galois_column Z p σ.symm core generated hIntegral hDouble ?_ y
+  · intro x
+    rw [hdim y]
+    exact hColumn x
+  · intro i hi
+    exact Centre.productRetract_propertyF (hProduct i hi) hF
 
 end PropertyF.Ground
 end
