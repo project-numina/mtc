@@ -128,18 +128,18 @@ all its positive-weight terms equal their respective bounds. -/
 theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
     {N f : ι → ℝ} {x : ι → ℂ} (hf : ∀ k, 0 < f k) (hdom : ∀ k, ‖x k‖ ≤ N k)
     (heq : ∑ k, x k * (f k : ℂ) = ((∑ k, N k * f k : ℝ) : ℂ)) :
-    ∀ k, x k = (N k : ℂ) := by
+    ∀ k, x k = (N k : ℂ) :=
   have hsum : ∑ k, (N k - (x k).re) * f k = 0 := by
     simpa [Complex.mul_re, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] using
       (congrArg Complex.re heq).symm
-  intro k
-  have hre : (x k).re = N k := (sub_eq_zero.mp <| (mul_eq_zero.mp
-    ((Finset.sum_eq_zero_iff_of_nonneg (fun j _ ↦
-      mul_nonneg (sub_nonneg.mpr ((Complex.re_le_norm _).trans (hdom j))) (hf j).le)).1
-        hsum k (Finset.mem_univ k))).resolve_right (ne_of_gt (hf k))).symm
-  exact Complex.ext hre (Complex.abs_re_eq_norm.mp (by
-    simpa only [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))] using
-      le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)))
+  fun k ↦
+    have hre : (x k).re = N k := (sub_eq_zero.mp <| (mul_eq_zero.mp
+      ((Finset.sum_eq_zero_iff_of_nonneg (fun j _ ↦
+        mul_nonneg (sub_nonneg.mpr ((Complex.re_le_norm _).trans (hdom j))) (hf j).le)).1
+          hsum k (Finset.mem_univ k))).resolve_right (ne_of_gt (hf k))).symm
+    Complex.ext hre (Complex.abs_re_eq_norm.mp (by
+      simpa only [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))] using
+        le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)))
 
 /-- Saturation of a weighted complex eigenvector forces each entry to have
   the phase of the product of its eigenvector values. -/
