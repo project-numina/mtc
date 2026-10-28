@@ -51,8 +51,8 @@ theorem rootTensorDefect_coevaluation
     change η_ X (Xᘁ) ≫ ((a.hom ⊗ₘ b.hom) ≫ (doubleDualTensorIso X (Xᘁ)).hom) = _
     rw [← Category.assoc, hc, Linear.smul_comp]
     congr 1
-    apply (cancel_mono (doubleDualTensorIso X (Xᘁ)).inv).1
-    simpa only [Category.assoc, Iso.hom_inv_id, Category.comp_id] using (doubleDual_coevaluation X).symm
+    exact (Iso.eq_comp_inv (doubleDualTensorIso X (Xᘁ))).mp (by
+      simpa only [Category.assoc] using (doubleDual_coevaluation X).symm)
   apply (cancel_mono t.hom).1
   change (η_ X (Xᘁ) ≫ (((fourthDualRootNaturalIso C).app W).hom ≫ t.inv)) ≫ t.hom = _
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp]
