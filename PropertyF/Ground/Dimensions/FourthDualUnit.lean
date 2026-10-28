@@ -103,10 +103,9 @@ theorem fourthDualIso_unit :
 /-- The root dimension of the unit label is the root trace of the tensor unit. -/
 theorem rootDimension_unit :
     rootDimension C (unitIndex C) =
-      unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj))) := by
-  obtain ⟨e⟩ := unitIndex_iso C
-  unfold rootDimension
-  rw [rootTrace_id_iso C e, rootTrace_id C]
+      unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj))) :=
+  (unitIndex_iso C).elim fun e ↦
+    congrArg (unitScalar C) ((rootTrace_id_iso C e).trans (rootTrace_id C _))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual natural fourth-dual root is its unit dimension times the
@@ -124,7 +123,7 @@ theorem fourthDualRoot_unit_component :
   obtain ⟨r, _, hr, _⟩ := isomorphisms_scalar u a
   have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)
   have htrace : unitScalar C (rightQuantumTrace a) = r := by
-    rw [rightQuantumTrace_smul_hom a u r hr, hu, rightQuantumTrace_unitIso]
+    rw [rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
     simp only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one]
   simpa [a, (rootDimension_unit C).trans htrace, hu] using hr
 

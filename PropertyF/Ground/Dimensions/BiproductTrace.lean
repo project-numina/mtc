@@ -72,9 +72,9 @@ theorem cyclicTrace_biproduct_simple [HasKernels C] {ι : Type*} [Fintype ι]
     (hfinite : ∀ i, FiniteDimensional ℂ (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
     ∃ c : ι → ℂ,
       (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
-      trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) := by
-  obtain ⟨c, hc⟩ := simple_biproduct_diagonal F hs hfinite f
-  exact ⟨c, hc, cyclicTrace_biproduct_scalar_blocks trace hcyclic F f c hc⟩
+      trace (⨁ F) f = ∑ i, c i • trace (F i) (𝟙 (F i)) :=
+  (simple_biproduct_diagonal F hs hfinite f).imp fun c hc ↦
+    ⟨hc, cyclicTrace_biproduct_scalar_blocks trace hcyclic F f c hc⟩
 
 end CyclicTrace
 

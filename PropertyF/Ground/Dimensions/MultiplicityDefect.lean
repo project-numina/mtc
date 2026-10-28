@@ -33,12 +33,12 @@ def fourthDualRootScalar (C : BraidedFusionCategory.{v,u})
 theorem fourthDualRootScalar_spec
     (i : Fin (rank C)) : fourthDualRootScalar C i ≠ 0 ∧
     (fourthDualSimpleRoot C i).hom = fourthDualRootScalar C i •
-      (doubleDualIso C (simples C i)).hom := by
-  let : Simple (simples C i) := simples_simple C i
-  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  have h := Classical.choose_spec (isomorphisms_scalar
+      (doubleDualIso C (simples C i)).hom :=
+  letI : Simple (simples C i) := simples_simple C i
+  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  let h := Classical.choose_spec (isomorphisms_scalar
     (doubleDualIso C (simples C i)) (fourthDualSimpleRoot C i))
-  exact ⟨h.1, h.2.1⟩
+  ⟨h.1, h.2.1⟩
 
 /-- The chosen simple square roots extend to a natural isomorphism from the
 identity to the double-dual functor. It is not asserted to be monoidal. -/
@@ -296,19 +296,18 @@ theorem multiplicityDefect_trace_integer_bound {i j k : Fin (rank C)}
     (hinv : (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ∃ n : ℤ, LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap = (n : ℂ) ∧
-      |n| ≤ (fusionCoeff C i j k : ℤ) := by
-  let : FiniteDimensional ℂ
-      (simples C k ⟶ simples C i ⊗ simples C j) :=
+      |n| ≤ (fusionCoeff C i j k : ℤ) :=
+  letI : FiniteDimensional ℂ (simples C k ⟶ simples C i ⊗ simples C j) :=
     IsFusionCategory.hom_finite _ _
-  exact involution_trace_integer_bound hinv
+  involution_trace_integer_bound hinv
 
 /-- If the tensor of the simple root components has the expected fourth-dual
 square, the resulting tensor defect is an involution. -/
 theorem rootTensorDefect_involution_of_tensor_square {X Y : C.Obj}
     (hsq : (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
       (fourthDualIso C (X ⊗ Y)).hom) :
-    (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
-  exact natural_square_defect_involution (doubleDualFunctor C.Obj)
+    (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) :=
+  natural_square_defect_involution (doubleDualFunctor C.Obj)
     (fourthDualRootNaturalIso C) (rootTensorIso C X Y)
     ((congrArg (fun n => (n.app (X ⊗ Y)).hom) (fourthDualRootNaturalSquare_eq C)).trans hsq.symm)
 

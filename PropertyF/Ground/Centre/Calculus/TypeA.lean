@@ -93,18 +93,15 @@ theorem braidRelations_action_trivial (X : C) (n : ℕ) :
   apply Subgroup.normalClosure_le_normal
   intro w hw
   apply MonoidHom.mem_ker.mpr
-  rcases hw with h | h
-  · obtain ⟨i, j, hij, rfl⟩ := h
+  rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
     simp only [map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
-    cases n with
+  · cases n with
     | zero => omega
     | succ n =>
       let k : Fin (n + 1) := ⟨i.val, by omega⟩
       simpa only [show k.castSucc = i from Fin.ext rfl, show k.succ = j from Fin.ext hij] using
         adjacent_braid_relation X n k
-  · obtain ⟨i, j, hij, rfl⟩ := h
-    simp only [map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
-    exact distant_braid_commute X n i j hij
+  · exact distant_braid_commute X n i j hij
 
 /-- All standard symmetric-group relation words act trivially for a
 self-transparent object. -/
@@ -135,13 +132,12 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
   · obtain ⟨i, rfl⟩ := hw
     simp only [strandPermutation, pow_two]
     exact Equiv.swap_mul_self _ _
-  · rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩
-    · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
-      rw [← (show i.succ = j.castSucc from Fin.ext hij)]
+  · rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩ <;>
+      simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
+    · rw [← (show i.succ = j.castSucc from Fin.ext hij)]
       apply swap_braid <;> apply Fin.ne_of_val_ne <;>
         simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
-    · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
-      apply (Equiv.Perm.disjoint_swap_swap ?_).commute.eq
+    · apply (Equiv.Perm.disjoint_swap_swap ?_).commute.eq
       simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil,
         not_or, and_true, Fin.ext_iff, Fin.val_castSucc, Fin.val_succ, not_false_eq_true]
       repeat' constructor <;> omega

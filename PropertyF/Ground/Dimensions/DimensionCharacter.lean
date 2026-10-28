@@ -68,10 +68,9 @@ theorem pivotalDimension_tensor
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character
     (p : PivotalStructure (C := C.Obj)) :
-    IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) := by
-  intro i j
-  rw [← pivotalDimension_tensor, pivotalDimension_decomposition]
-  rfl
+    IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) :=
+  fun i j ↦ (pivotalDimension_tensor C p (simples C i) (simples C j)).symm.trans
+    (pivotalDimension_decomposition C p _)
 
 /-- Pivotal dimension is invariant under object isomorphism. -/
 theorem pivotalDimension_iso

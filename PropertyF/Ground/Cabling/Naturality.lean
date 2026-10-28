@@ -25,8 +25,10 @@ abbrev BraidWords (n : ℕ) := FreeGroup (Fin (n + 1))
 def strandPermutation (n : ℕ) : BraidWords n →* Equiv.Perm (Fin (n + 2)) :=
   FreeGroup.lift (fun i => Equiv.swap i.castSucc i.succ)
 
+variable (X : C) (n : ℕ)
+
 /-- Evaluate a word in the actual categorical braid generators. -/
-def braidWordAction (X : C) (n : ℕ) : BraidWords n →* braidImage X n :=
+def braidWordAction : BraidWords n →* braidImage X n :=
   (FreeGroup.lift (braidGenerator X n)).codRestrict (braidImage X n) (by
     intro w
     change (FreeGroup.lift (braidGenerator X n)) w ∈ Subgroup.closure (Set.range (braidGenerator X n))
@@ -34,7 +36,7 @@ def braidWordAction (X : C) (n : ℕ) : BraidWords n →* braidImage X n :=
     exact ⟨w, rfl⟩)
 
 /-- Every element of the categorical braid image is represented by a word. -/
-theorem braidWordAction_surjective (X : C) (n : ℕ) :
+theorem braidWordAction_surjective :
     Function.Surjective (braidWordAction X n) := fun ⟨a, ha⟩ =>
   let ⟨w, hw⟩ : a ∈ (FreeGroup.lift (braidGenerator X n)).range := by
     simpa only [FreeGroup.range_lift_eq_closure, braidImage] using ha
@@ -85,15 +87,12 @@ theorem braidGenerator_map_natural {X Y : C} (f : X ⟶ Y) (n : ℕ)
   induction n with
   | zero => exact (Fin.eq_zero i).symm ▸ braid_first_map f (tensorPowerMap f 0)
   | succ n ih =>
-    rcases i with ⟨i, hi⟩
-    cases i with
-    | zero => exact braid_first_map f (tensorPowerMap f (n + 1))
-    | succ i =>
-      change (𝟙 X ⊗ₘ (braidGenerator X n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso.hom) ≫
-          (f ⊗ₘ tensorPowerMap f (n + 2)) =
-        (f ⊗ₘ tensorPowerMap f (n + 2)) ≫
-          (𝟙 Y ⊗ₘ (braidGenerator Y n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso.hom)
-      simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id, ih]
+    refine Fin.cases (braid_first_map f (tensorPowerMap f (n + 1))) (fun j => ?_) i
+    change (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom) ≫
+        (f ⊗ₘ tensorPowerMap f (n + 2)) =
+      (f ⊗ₘ tensorPowerMap f (n + 2)) ≫
+        (𝟙 Y ⊗ₘ (braidGenerator Y n j).asIso.hom)
+    simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id, ih]
 
 /-- Braiding words are natural in any morphism, not only in isomorphisms. -/
 theorem braidWord_map_natural {X Y : C} (f : X ⟶ Y) (n : ℕ) (w : BraidWords n) :

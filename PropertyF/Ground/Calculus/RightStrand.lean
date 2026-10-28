@@ -70,7 +70,7 @@ theorem presented_group_span (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ}
 /-- A unitary block representation sends group inversion to conjugate transpose. -/
 theorem unitary_block_star_inv {n : ℕ} {d : Fin n → ℕ}
     (ρ : G →* Blocks.Algebra ⟨_, d⟩)
-    (hu : ∀ g i, ρ g i ∈ Matrix.unitaryGroup (Fin (d i)) ℂ) (g : G) :
+    (hu : ∀ g, Blocks.IsUnitary ⟨_, d⟩ (ρ g)) (g : G) :
     star (ρ g) = ρ g⁻¹ :=
   funext fun i => star_eq_coe_inv_of_unitary (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g) (hu g i)
 
@@ -243,34 +243,40 @@ namespace PropertyF.Ground.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
+section
+variable (X : C)
+
 /-- Append one tensor factor to a right-associated tensor power. -/
-def appendIso (X : C) : ∀ n : ℕ, tensorPower X n ⊗ X ≅ tensorPower X (n + 1)
+def appendIso : ∀ n : ℕ, tensorPower X n ⊗ X ≅ tensorPower X (n + 1)
   | 0 => (λ_ X) ≪≫ (ρ_ X).symm
   | n + 1 => by
     simpa only [tensorPower] using
-      ((α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X n))
+      ((α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso n))
 
 /-- Append an identity strand to an automorphism of a tensor power. -/
-def addRightAut (X : C) (n : ℕ) : Aut (tensorPower X (n+2)) →* Aut (tensorPower X ((n+1)+2)) :=
+def addRightAut (n : ℕ) : Aut (tensorPower X (n+2)) →* Aut (tensorPower X ((n+1)+2)) :=
   (appendIso X (n+2)).conjAut.toMonoidHom.comp ((tensorRight X).mapAut (tensorPower X (n+2)))
 
 omit [BraidedCategory C] in
-theorem append_step (X A B : C) (e : A ⊗ X ≅ B) (f : A ⟶ A) :
+/-- Appending commutes with whiskering an endomorphism on the left. -/
+theorem append_step (A B : C) (e : A ⊗ X ≅ B) (f : A ⟶ A) :
   ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)).inv ≫ ((X ◁ f) ▷ X) ≫
     ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)).hom = X ◁ (e.inv ≫ (f ▷ X) ≫ e.hom) := by
   dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
   simp only [id_tensorHom, whiskerLeft_comp, Category.assoc]
   monoidal
 
+/-- The first crossing is natural in its tensor-power tail. -/
 @[reassoc]
-theorem crossing_natural (X A B : C) (g : A ⟶ B) :
+theorem crossing_natural (A B : C) (g : A ⟶ B) :
     ((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ≫ X ◁ X ◁ g =
       X ◁ X ◁ g ≫ ((α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom) := by
   simp only [Category.assoc]
   rw [← associator_naturality_right X X g]
   rw [← whisker_exchange_assoc, ← associator_inv_naturality_right_assoc]
 
-theorem append_first_two (X A B : C) (e : A ⊗ X ≅ B) :
+/-- Appending a strand commutes with the first crossing. -/
+theorem append_first_two (A B : C) (e : A ⊗ X ≅ B) :
   let E := (α_ X (X ⊗ A) X) ≪≫
     (Iso.refl X ⊗ᵢ ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)))
   E.inv ≫ (((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ▷ X) ≫ E.hom =
@@ -290,11 +296,13 @@ theorem append_first_two (X A B : C) (e : A ⊗ X ≅ B) :
       simp [← whiskerLeft_comp]
 
 omit [BraidedCategory C] in
-theorem appendIso_succ (X : C) (n : ℕ) : appendIso X (n+1) =
+/-- The recursive form of the append isomorphism. -/
+theorem appendIso_succ (n : ℕ) : appendIso X (n+1) =
   (α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X n) := rfl
 
 set_option backward.isDefEq.respectTransparency false in
-theorem addRightAut_generator (X : C) (n : ℕ) (i : Fin (n+1)) :
+/-- Appending a strand preserves each adjacent braid generator. -/
+theorem addRightAut_generator (n : ℕ) (i : Fin (n+1)) :
     addRightAut X n (braidGenerator X n i) = braidGenerator X (n+1) i.castSucc := by
   have first (n : ℕ) : addRightAut X n (braidGenerator X n 0) =
       braidGenerator X (n + 1) 0 := by
@@ -314,26 +322,25 @@ theorem addRightAut_generator (X : C) (n : ℕ) (i : Fin (n+1)) :
   induction n with
   | zero => exact (Fin.eq_zero i).symm ▸ first 0
   | succ n ih =>
-    rcases i with ⟨i, hi⟩
-    cases i with
-    | zero => exact first (n + 1)
-    | succ i =>
-      apply Aut.ext
-      apply Iso.ext
-      let j : Fin (n+1) := ⟨i, by omega⟩
-      have h := congrArg (fun a : Aut (tensorPower X (n+3)) => a.asIso.hom) (ih j)
-      change (appendIso X (n+2)).inv ≫ ((braidGenerator X n j).asIso.hom ▷ X) ≫
-        (appendIso X (n+2)).hom = (braidGenerator X (n+1) j.castSucc).asIso.hom at h
-      change (appendIso X (n+3)).inv ≫ ((braidGenerator X (n+1) ⟨i+1, hi⟩).asIso.hom ▷ X) ≫
-        (appendIso X (n+3)).hom = (braidGenerator X (n+2) ⟨i+1, by omega⟩).asIso.hom
-      simp only [braidGenerator, tensorIso_hom, Iso.refl_hom, id_tensorHom]
-      change (appendIso X (n+3)).inv ≫ ((X ◁ (braidGenerator X n j).asIso.hom) ▷ X) ≫
-        (appendIso X (n+3)).hom = X ◁ (braidGenerator X (n+1) j.castSucc).asIso.hom
-      rw [appendIso_succ X (n+2), append_step, h]
+    refine Fin.cases (first (n + 1)) (fun j => ?_) i
+    rcases j with ⟨j, hj⟩
+    apply Aut.ext
+    apply Iso.ext
+    have h := congrArg (fun a : Aut (tensorPower X (n+3)) => a.asIso.hom) (ih ⟨j, hj⟩)
+    change (appendIso X (n+2)).inv ≫ ((braidGenerator X n ⟨j, hj⟩).asIso.hom ▷ X) ≫
+      (appendIso X (n+2)).hom = (braidGenerator X (n+1) (⟨j, hj⟩ : Fin (n+1)).castSucc).asIso.hom at h
+    change (appendIso X (n+3)).inv ≫
+      ((braidGenerator X (n+1) (⟨j, hj⟩ : Fin (n+1)).succ).asIso.hom ▷ X) ≫
+      (appendIso X (n+3)).hom =
+        (braidGenerator X (n+2) (⟨j, hj⟩ : Fin (n+1)).succ.castSucc).asIso.hom
+    simp only [Fin.succ_mk, Fin.castSucc_mk, braidGenerator, tensorIso_hom, Iso.refl_hom, id_tensorHom]
+    change (appendIso X (n+3)).inv ≫ ((X ◁ (braidGenerator X n ⟨j, hj⟩).asIso.hom) ▷ X) ≫
+      (appendIso X (n+3)).hom = X ◁ (braidGenerator X (n+1) (⟨j, hj⟩ : Fin (n+1)).castSucc).asIso.hom
+    rw [appendIso_succ X (n+2), append_step, h]
 
 /-- Appending one identity strand on the right maps the actual braid image to
 the larger actual braid image. -/
-def addRightStrand (X : C) (n : ℕ) : braidImage X n →* braidImage X (n + 1) := by
+def addRightStrand (n : ℕ) : braidImage X n →* braidImage X (n + 1) := by
   let f := addRightAut X n
   have hf : ∀ a ∈ braidImage X n, f a ∈ braidImage X (n + 1) := by
     change braidImage X n ≤ (braidImage X (n + 1)).comap f
@@ -342,6 +349,8 @@ def addRightStrand (X : C) (n : ℕ) : braidImage X n →* braidImage X (n + 1) 
     change addRightAut X n (braidGenerator X n i) ∈ braidImage X (n + 1)
     exact Subgroup.subset_closure ⟨i.castSucc, (addRightAut_generator X n i).symm⟩
   exact (f.comp (braidImage X n).subtype).codRestrict _ (fun a => hf a a.property)
+
+end
 
 variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
@@ -355,9 +364,8 @@ def appendRightEndAlgHom (X : C) (n : ℕ) :
 the appended braid representation. -/
 theorem appendRightEndAlgHom_group (X : C) (n : ℕ) (g : braidImage X n) :
     appendRightEndAlgHom X n (braidEndRepresentation X n g) =
-      braidEndRepresentation X (n + 1) (addRightStrand X n g) := by
-  apply End.ext
-  rfl
+      braidEndRepresentation X (n + 1) (addRightStrand X n g) :=
+  End.ext rfl
 
 /-- Appending one right identity strand gives a map of actual braid algebras. -/
 def addRightBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + 1) :=

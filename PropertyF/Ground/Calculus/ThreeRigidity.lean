@@ -25,20 +25,14 @@ theorem braid_squares_equal_of_saturation (B : Blocks)
     (htrace : B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2) :
     a ^ 2 = b ^ 2 := by
   have hunit : B.IsUnitary ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) := by
-    intro r
-    simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Pi.mul_apply, Pi.pow_apply] using
-      (Matrix.unitaryGroup (Fin (B.size r)) ℂ).mul_mem
-        ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (ha r) 2)
-        ((Matrix.unitaryGroup (Fin (B.size r)) ℂ).pow_mem (hb r) 2)
-  have hmass : B.mass w ≤ |d| * f ^ 2 := by
-    have hm : 0 ≤ B.mass w :=
-      Finset.sum_nonneg (fun r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _))
-    simpa [B.trace_signElement, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hm] using
-      hbound (B.signElement w) (B.signElement_unitary w)
+    apply Pi.mem_unitary_iff.mp
+    simpa only [Units.val_mul, Units.val_pow_eq_pow_val] using
+      (unitary B.Algebra).mul_mem ((unitary B.Algebra).pow_mem (Pi.mem_unitary_iff.mpr ha) 2)
+        ((unitary B.Algebra).pow_mem (Pi.mem_unitary_iff.mpr hb) 2)
   have hsaturate : ‖B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra)‖ = B.mass w := by
     apply le_antisymm (B.norm_trace_le w hunit)
     rw [htrace]
-    simpa [norm_pow, abs_of_pos hf] using hmass
+    simpa [norm_pow, abs_of_pos hf] using B.mass_le_of_unitary_trace_bound w hbound
   exact squares_eq_of_central_product a b hbraid
     (Units.ext (B.central_of_saturation w hw hunit hsaturate b))
 
@@ -84,8 +78,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Actual three-strand block generators have equal squares once their
 categorical weighted trace has the sharp bound and saturates it at `a²b²`.
 The remaining hypotheses are explicitly the trace weights and sharp bound. -/
-theorem actual_braid_squares_equal_of_saturation
-    {X : C.Obj}
+theorem actual_braid_squares_equal_of_saturation {X : C.Obj}
     (p : PivotalStructure (C := C.Obj))
     {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
@@ -104,7 +97,6 @@ theorem actual_braid_squares_equal_of_saturation
   let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
   have hbnd : ∀ z : B.Algebra, B.IsUnitary z → ‖B.trace w z‖ ≤ |d| * f ^ 2 := by
     intro z hz
-    change ∀ i, z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ at hz
     simpa [htrace, B] using hbound (b.symm z) (by simpa only [b.apply_symm_apply] using hz)
   have hv : B.trace w ((a ^ 2 * c ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2 := by
     change B.trace w (b (braidInImage X 1 (threeGeneratorLeft X)) ^ 2 *
@@ -130,10 +122,9 @@ theorem local_monodromy_of_three_squares_equal
   rw [threeGeneratorLeft_end_transport X, threeGeneratorRight_end_transport X] at hh
   apply (isoEndAlgEquiv (α_ X X X)).injective
   apply End.ext
-  have hhom := congrArg End.asHom hh
   simpa [insertRightIdentity, overlapFresh, selfMonodromy, isoEndAlgEquiv,
     Iso.conj_apply_asHom, pow_two, End.mul_asHom, comp_whiskerRight,
-    whiskerLeft_comp, Category.assoc] using hhom
+    whiskerLeft_comp, Category.assoc] using congrArg End.asHom hh
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Equality of the actual block squares implies equality of the categorical
@@ -150,14 +141,13 @@ theorem local_monodromy_of_block_squares_equal
       braidInImage X 1 (threeGeneratorRight X ^ 2) := by
     apply b.injective
     simpa [tripleBlockLeft, tripleBlockRight, map_pow] using h
-  have hm := congrArg (fun z : braidAlgebra X 1 => (z : End (tensorPower X 3))) hs
   simpa [braidInImage_val, braidEndRepresentation, threeGeneratorLeft,
-    threeGeneratorRight, imageGenerator] using hm
+    threeGeneratorRight, imageGenerator] using
+      congrArg (fun z : braidAlgebra X 1 => (z : End (tensorPower X 3))) hs
 
 /-- If the same pair operator occurs on either adjacent pair, partial trace
 forces that operator to be scalar. -/
-theorem pair_operator_scalar_of_overlaps_equal
-    {X : C.Obj} [Simple X]
+theorem pair_operator_scalar_of_overlaps_equal {X : C.Obj} [Simple X]
     (p : PivotalStructure (C := C.Obj)) (u : End (X ⊗ X))
     {d f : ℝ} (hd : d ≠ 0)
     (hdim : pivotalDimension C p X = (d : ℂ))
@@ -194,34 +184,34 @@ theorem selfMonodromy_finite_order {C : Type u} [Category.{v} C]
       End.of ((β_ X X).hom) := End.ext (twoGenerator_transport X)
   have h := congrArg (fun z => (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd z)) hpow
   simp only [map_pow, map_one, hgen] at h
-  refine ⟨n, hn, ?_⟩
-  have hs : (End.of ((β_ X X).hom) : End (X ⊗ X)) ^ 2 = selfMonodromy X := by
-    apply End.ext
-    simp [selfMonodromy, pow_two, End.mul_asHom]
-  rw [← hs]
-  exact h
+  have hs : (End.of ((β_ X X).hom) : End (X ⊗ X)) ^ 2 = selfMonodromy X :=
+    End.ext (by simp [selfMonodromy, pow_two, End.mul_asHom])
+  exact ⟨n, hn, hs ▸ h⟩
+
+/-- An object with nonzero pivotal dimension has a nonzero identity endomorphism. -/
+theorem end_one_ne_zero_of_pivotalDimension_ne_zero {X : C.Obj}
+    (p : PivotalStructure (C := C.Obj)) (h : pivotalDimension C p X ≠ 0) :
+    (1 : End X) ≠ 0 := by
+  intro hzero
+  apply h
+  simp only [pivotalDimension, unitScalar_eq_equiv]
+  simpa only [End.one_asHom, End.zero_asHom,
+    show p.rightTrace (0 : X ⟶ X) = 0 from (rightTraceLinear p _).map_zero,
+    map_zero] using congrArg (fun z : End X => Ground.unitScalarEquiv C (p.rightTrace z.asHom)) hzero
 
 /-- A scalar double self-braiding of finite order has unit-modulus scalar,
 so the two real dimensions have equal absolute value. -/
-theorem dimension_eq_abs_of_scalar_monodromy
-    {X : C.Obj}
+theorem dimension_eq_abs_of_scalar_monodromy {X : C.Obj}
     (p : PivotalStructure (C := C.Obj))
     {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hfinite : ObjectPropertyF X)
     (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| := by
-  simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
-  have hdim2 : Ground.unitScalarEquiv C (p.rightTrace (𝟙 (X ⊗ X))) = (d : ℂ) ^ 2 := by
-    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, hdim, pow_two] using
-      Dimensions.pivotalDimension_tensor C p X X
-  have hnonzero : (1 : End (X ⊗ X)) ≠ 0 := by
-    intro h
-    apply pow_ne_zero 2 hd'
-    simpa only [End.one_asHom, End.zero_asHom, hdim2,
-      show p.rightTrace (0 : X ⊗ X ⟶ X ⊗ X) = 0 from (rightTraceLinear p _).map_zero,
-      map_zero] using congrArg (fun z : End (X ⊗ X) =>
-        Ground.unitScalarEquiv C (p.rightTrace z.asHom)) h
+  have hnonzero : (1 : End (X ⊗ X)) ≠ 0 :=
+    end_one_ne_zero_of_pivotalDimension_ne_zero C p (by
+      rw [Dimensions.pivotalDimension_tensor, hdim]
+      exact mul_ne_zero hd' hd')
   obtain ⟨n, hn, hpow⟩ := selfMonodromy_finite_order hfinite
   apply fp_eq_abs_dim_of_finite_order hd hf
   refine ⟨n, hn, ?_⟩
@@ -231,8 +221,7 @@ theorem dimension_eq_abs_of_scalar_monodromy
 
 /-- Three-strand rigidity for a genuine braided pivotal fusion category,
 reduced to explicit real, nonzero trace weights and the sharp unitary bound. -/
-theorem actual_three_strand_rigidity_of_trace_bound
-    {X : C.Obj} [Simple X]
+theorem actual_three_strand_rigidity_of_trace_bound {X : C.Obj} [Simple X]
     (p : PivotalStructure (C := C.Obj))
     {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)

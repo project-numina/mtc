@@ -138,15 +138,15 @@ abbrev ENOTraceMatrixReciprocity (C : BraidedFusionCategory.{v,u}) : Prop :=
     rootDualSign C i * enoTraceMatrix C i k j
 
 theorem rootDualSign_sq (i : Fin (rank C)) :
-    rootDualSign C i * rootDualSign C i = 1 := by
-  let : Simple (simples C i) := simples_simple C i
-  exact (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).1
+    rootDualSign C i * rootDualSign C i = 1 :=
+  letI : Simple (simples C i) := simples_simple C i
+  (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).1
 
 theorem rootDualSign_component (i : Fin (rank C)) :
     ((fourthDualRootNaturalIso C).app ((simples C i)ᘁ)).hom =
-      rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (simples C i))).symm.hom := by
-  let : Simple (simples C i) := simples_simple C i
-  exact (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).2
+      rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (simples C i))).symm.hom :=
+  letI : Simple (simples C i) := simples_simple C i
+  (Classical.choose_spec (rootDual_differs_by_sign C (simples C i))).2
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Intrinsic simple norms are signed products of the root dimensions of a
@@ -171,10 +171,8 @@ theorem squaredNorm_eq_rootDualSign_mul
     change unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app X)) = _
     rw [← rootTrace_id C]
     rfl
-  have ht : rightQuantumTrace k = rootDualSign C i • rightQuantumTrace l := by
-    apply End.homEquiv.injective
-    have he : k.hom = rootDualSign C i • l.hom := rootDualSign_component C i
-    simp [rightQuantumTrace, he, tensorHom_def]
+  have ht : rightQuantumTrace k = rootDualSign C i • rightQuantumTrace l :=
+    rightQuantumTrace_smul_hom (rootDualSign_component C i)
   rw [target_squaredNorm_choice_independent C j, leftQuantumTrace_eq_rightDual j]
   change unitScalar C (rightQuantumTrace j) * unitScalar C (rightQuantumTrace l) =
     rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i)

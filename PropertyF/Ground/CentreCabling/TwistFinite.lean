@@ -13,7 +13,7 @@ universe v u
 /-- A natural endomorphism has finite order if finitely many components detect
 it and each of those components has finite order. -/
 theorem natural_end_finite_order_of_components {D : Type u} [Category.{v} D]
-    {ι : Type*} [Fintype ι] (X : ι → D)
+    {ι : Type*} [Finite ι] (X : ι → D)
     (hext : ∀ {α β : 𝟭 D ⟶ 𝟭 D}, (∀ i, α.app (X i) = β.app (X i)) → α = β)
     (α : 𝟭 D ⟶ 𝟭 D) (h : ∀ i, IsOfFinOrder (End.of (α.app (X i)))) :
     ∃ n : ℕ, n ≠ 0 ∧ ∀ Y, (End.of (α.app Y)) ^ n = 1 := by

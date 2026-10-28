@@ -39,8 +39,7 @@ theorem groundSimpleScalar_smul_id (i : Fin (Ground.rank C)) (a : End (Ground.si
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple
 biproduct component of the transported endomorphism. -/
-theorem groundEndBlockEquiv_diagonal
-    {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
+theorem groundEndBlockEquiv_diagonal {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
     (e : X ≅ ⨁ (simpleCopies C m))
     (a : End X) (i : Fin (Ground.rank C)) (j : Fin (m i)) :
     groundEndBlockEquiv C X m e a i j j =
@@ -58,8 +57,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The actual pivotal trace on a fusion-category endomorphism is the sum of
 simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
-theorem pivotalTrace_groundEndBlocks
-    (p : PivotalStructure (C := C.Obj))
+theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
     (e : X ≅ ⨁ (simpleCopies C m)) (a : End X) :
     scalar (p.rightTrace a.asHom) = ∑ i,
@@ -202,6 +200,18 @@ theorem idempotent_matrix_trace_nat {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ}
   ⟨Module.finrank ℂ (LinearMap.range p), by
     simpa only [p, Matrix.trace_toLin'_eq] using ((LinearMap.isProj_range_iff_isIdempotentElem p).2 hp).trace⟩
 
+/-- A weighted block trace of an element supported in one block. -/
+theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
+    (i : Fin n) (A : Matrix (Fin (d i)) (Fin (d i)) ℂ) :
+    (∑ j, w j * (Pi.single (M := fun k => Matrix (Fin (d k)) (Fin (d k)) ℂ) i A j).trace) =
+      w i * A.trace := by
+  classical
+  rw [Finset.sum_eq_single i]
+  · simp
+  · intro j _ h
+    simp [Pi.single_eq_of_ne h]
+  · simp
+
 /-- For any representation of a finite product of nonzero complex matrix
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the
 standard block traces. The integers are ranks of images of matrix units. -/
@@ -220,19 +230,14 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
     intro i
     let j : Fin (d i) := ⟨0, hd i⟩
     let e : Blocks.Algebra ⟨_, d⟩ := Pi.single i (Matrix.single j j 1)
-    have he : e * e = e := by
-      simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
-    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by rw [← map_mul, he])
+    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by
+      rw [← map_mul]
+      simp [e, ← Pi.single_mul, Matrix.single_mul_single_same])
     refine ⟨k, ?_⟩
     have ht := hw e
-    have ht' : (φ e).trace = w i := by
-      change (φ e).trace = ∑ k, w k * (e k).trace at ht
-      rw [Finset.sum_eq_single i] at ht
-      · simpa [e] using ht
-      · intro j _ hji
-        simp [e, Pi.single_eq_of_ne hji]
-      · simp
-    exact ht'.symm.trans hk
+    change (φ e).trace = ∑ k, w k * (e k).trace at ht
+    exact (show w i = (φ e).trace from by
+      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one] using ht.symm).trans hk
   choose mult hm using hnat
   refine ⟨mult, fun x => ?_⟩
   have hx := hw x
@@ -268,23 +273,17 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
   push Not at hn
   let k : Fin (d j) := ⟨0, hd j⟩
   let e : Blocks.Algebra ⟨_, d⟩ := Pi.single j (Matrix.single k k 1)
-  have he : e * e = e := by
-    simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
   have hzero : φ e = 0 := by
     funext i
     have hidem : φ e i * φ e i = φ e i := by
-      simpa [he] using (congrFun (map_mul φ e e) i).symm
+      simpa [e, ← Pi.single_mul, Matrix.single_mul_single_same] using
+        (congrFun (map_mul φ e e) i).symm
     have ht : (φ e i).trace = 0 := by
-      rw [hmult]
-      rw [Finset.sum_eq_single j]
-      · simp [Nat.eq_zero_of_le_zero (hn i)]
-      · intro r _ h
-        simp [e, Pi.single_eq_of_ne h]
-      · simp
+      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
+        Nat.eq_zero_of_le_zero (hn i), Nat.cast_zero] using hmult i e
     exact idempotent_matrix_eq_zero_of_trace_eq_zero hidem ht
-  have hezero : e = 0 := hinj (by simpa using hzero)
-  have hentry := congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k) hezero
-  simp [e] at hentry
+  simpa [e] using congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k)
+    (hinj (show φ e = φ 0 from by simpa using hzero))
 
 end PropertyF.Ground.Calculus
 
@@ -332,8 +331,7 @@ abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
 /-- The actual categorical trace on the braid algebra has the paper's
 multiplicity-weight formula. Every retained braid block occurs in a simple
 constituent's multiplicity space. -/
-theorem pivotalTrace_braid_multiplicities
-    {X : C.Obj} {n : ℕ}
+theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
