@@ -111,9 +111,10 @@ theorem unitComponent_reduce {M N X S : D} (b : N ⊗ S ⟶ S ⊗ N)
   calc
     _ = 𝟙 _ ⊗≫ ((t ▷ (𝟙_ D)) ≫ (N ◁ η_ S (Sᘁ))) ⊗≫
       (b ▷ Sᘁ) ⊗≫ ((S ◁ w) ▷ Sᘁ) ⊗≫ 𝟙 _ := by monoidal
-    _ = 𝟙 _ ⊗≫ ((M ◁ η_ S (Sᘁ)) ≫ (t ▷ (S ⊗ Sᘁ))) ⊗≫
-      (b ▷ Sᘁ) ⊗≫ ((S ◁ w) ▷ Sᘁ) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
-    _ = _ := by simp only [comp_whiskerRight]; monoidal
+    _ = _ := by
+      rw [← whisker_exchange]
+      simp only [comp_whiskerRight]
+      monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
@@ -122,12 +123,10 @@ theorem evaluation_iso_unit {A : D} (e : A ≅ 𝟙_ D) :
     ((rightDualIsoMap e.symm ≪≫ rightDualUnitIso).hom ⊗ₘ e.hom) ≫
       (ρ_ (𝟙_ D)).hom = ε_ A (Aᘁ) := by
   let : HasRightDual (𝟙_ D) := RightRigidCategory.rightDual (𝟙_ D)
-  let p : ExactPairing (𝟙_ D) ((𝟙_ D)ᘁ) := HasRightDual.exact
-  let q : ExactPairing (𝟙_ D) (𝟙_ D) := exactPairingUnit
   simp only [Iso.trans_hom, rightDualIsoMap, Iso.symm_hom,
     tensorHom_def', comp_whiskerRight, Category.assoc]
   rw [show rightDualUnitIso.hom ▷ (𝟙_ D) ≫ (ρ_ (𝟙_ D)).hom =
-    ε_ (𝟙_ D) ((𝟙_ D)ᘁ) from rightDualIso_evaluation p q,
+    ε_ (𝟙_ D) ((𝟙_ D)ᘁ) from rightDualIso_evaluation HasRightDual.exact exactPairingUnit,
     rightAdjointMate_comp_evaluation, ← whiskerLeft_comp_assoc, Iso.hom_inv_id,
     whiskerLeft_id, Category.id_comp]
 

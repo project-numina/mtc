@@ -16,10 +16,8 @@ section
 /-!
 # Galois action from Verlinde's equations
 
-The classification and complex-automorphism action require no old modular-data
-bundle. The remaining hypotheses of the categorical theorem are stated as the
-specific S-square, global nonvanishing and Verlinde equations that must be
-proved from a nondegenerate spherical fusion category.
+The classification and complex-automorphism action follow from the S-square,
+global nonvanishing, and Verlinde equations.
 -/
 open scoped BigOperators
 open PropertyF.Ground.Dimensions
@@ -107,9 +105,6 @@ theorem galois_unit_properties (hu : d u = 1) (hglobal : D = ∑ x, d x ^ 2)
 
 end
 
-
-
-
 end PropertyF.Ground.Modular
 end
 
@@ -118,8 +113,8 @@ section
 # Partial traces of double braidings
 
 Iterated pivotal trace and Schur's lemma give the normalized S entry as the
-scalar partial trace on a simple surviving strand. The Hopf-link product reduces
-to the displayed composition law for these partial traces, which remains open.
+scalar partial trace on a simple surviving strand. The Hopf-link product follows
+from the composition law for these partial traces.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory
 open PropertyF.Ground.Dimensions PropertyF.Ground.Calculus
@@ -140,9 +135,7 @@ theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,
       (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 :=
   letI : Simple (simples D k) := simples_simple D k
   letI : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
-  rightPartialTrace_simple (X := simples D k) (Y := X) p
-    (Ground.unitScalarEquiv D) (End.of (doubleBraiding (simples D k) X))
-    (simpleDimension_ne_zero D p k)
+  rightPartialTrace_simple p (Ground.unitScalarEquiv D) _ (simpleDimension_ne_zero D p k)
 
 /-- Partial traces of double braiding multiply on a simple strand. -/
 abbrev HasMultiplicativePartialTrace (D : Ground.BraidedFusionCategory.{v,u})
@@ -274,7 +267,7 @@ theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) {Z Y 
 end MonodromyTrace
 
 /-- Double-braiding partial traces multiply on a simple surviving strand. -/
-theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,u})
+theorem partialTrace_doubleBraiding_tensor (D : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) : HasMultiplicativePartialTrace D p := by
   intro i j k
   let : Simple (simples D k) := simples_simple D k
