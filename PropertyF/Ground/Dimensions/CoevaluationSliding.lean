@@ -33,7 +33,7 @@ theorem enoTraceMatrix_reciprocity_of_coevaluation_defect
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
     ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
       rootDualSign C i * enoTraceMatrix C i k j := by
-  apply enoTraceMatrix_reciprocity_of_rightDual_frobenius_defect C
+  apply enoTraceMatrix_reciprocity_of_dual_frobenius_defect C
   intro i j k g
   let X := simples C i
   let K := simples C k

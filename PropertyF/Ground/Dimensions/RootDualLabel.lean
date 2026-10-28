@@ -16,22 +16,18 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 /-- It suffices to prove the fourth-dual tensor law on simple pairs; the
 construction uses no assumption about that law on arbitrary objects. -/
-theorem eno_pseudoUnitary_yields_positive_spherical_of_simple_fourth_and_reciprocity
+theorem positive_spherical_of_simple_fourth_and_reciprocity
     (hfourth : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j))
     (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
       rootDualSign C i * enoTraceMatrix C i k j)
     (hpu : Ground.PseudoUnitary C) :
-    ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
-      pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
+    HasFPSphericalStructure C := by
   have hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1 := by
     intro i j k
     apply multiplicityDefect_involution_of_tensor_square C k
-    apply rootTensor_square_of_fourthDual_tensor C
-    · exact (doubleDualTensorIso_natural ((fourthDualRootNaturalIso C).app (simples C i)).hom
-        ((fourthDualRootNaturalIso C).app (simples C j)).hom).symm
-    · exact hfourth i j
+    exact (rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm
   have heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j := by
     intro i j
@@ -39,10 +35,8 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_simple_fourth_and_recipro
   have hnorm : ∀ i, squaredNorm C (simples C i) =
       ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
     intro i
-    exact squaredNorm_eq_rootDimension_norm_sq_of_trace_reciprocity C hinv htranspose i
-  apply eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities C hinv heig _ hnorm hpu
-  intro X X' Y Y' f g
-  exact doubleDualTensorIso_natural f g
+    exact squaredNorm_eq_root_norm_sq_of_reciprocity C hinv htranspose i
+  exact positive_spherical_of_matrix_identities C hinv heig hnorm hpu
 
 
 end PropertyF.Ground.Dimensions

@@ -24,6 +24,11 @@ def pivotalDimension (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) (X : C.Obj) : ℂ :=
   Ground.unitScalar C (p.rightTrace (𝟙 X))
 
+/-- A spherical structure whose simple dimensions are the FP dimensions. -/
+abbrev HasFPSphericalStructure (C : BraidedFusionCategory.{v,u}) : Prop :=
+  ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ ∀ i,
+    pivotalDimension C p (simples C i) = (fpSimple C i : ℂ)
+
 /-- Pivotal dimension is a sum of simple dimensions with the actual Hom-space
 multiplicities, for any pivotal structure. -/
 theorem pivotalDimension_decomposition
