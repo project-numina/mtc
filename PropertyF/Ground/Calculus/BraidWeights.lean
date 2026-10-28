@@ -71,7 +71,8 @@ theorem pivotalTrace_groundEndBlocks :
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
     (c := fun q => groundEndBlockEquiv C e a q.1 q.2 q.2)
     (fun ⟨i, j⟩ => by simpa [F, z, Category.assoc] using groundEndBlockEquiv_diagonal C e a i j)
-  simpa [rightTraceWithLinear, rightTraceWith_pivotal, hz, F, Matrix.trace, Finset.mul_sum, mul_comm,
+  rw [← hz]
+  simpa [rightTraceWithLinear, PivotalStructure.rightTrace, F, Matrix.trace, Finset.mul_sum, mul_comm,
     Fintype.sum_sigma] using h
 
 end PropertyF.Ground.Calculus
