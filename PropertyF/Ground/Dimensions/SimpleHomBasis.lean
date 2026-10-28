@@ -107,7 +107,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem simpleInclusion_independent
     (X : C.Obj) (k : Fin (rank C)) :
     LinearIndependent ℂ (simpleInclusion C X k) := by
-  classical
   refine Fintype.linearIndependent_iff.mpr fun g hg t ↦
     smul_left_injective ℂ (id_nonzero (simples C k)) ?_
   simpa [simpleInclusion, Category.assoc, Preadditive.sum_comp, Linear.smul_comp,
@@ -137,7 +136,6 @@ theorem simpleInclusionBasis_projection
     (t : Fin (simpleMultiplicity C k X)) :
     ((simpleInclusionBasis C X k).repr g t) • 𝟙 (simples C k) =
       g ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩ := by
-  classical
   simpa [Preadditive.sum_comp, Linear.smul_comp, simpleInclusionBasis_apply, simpleInclusion,
     Category.assoc, biproduct.ι_π] using
     congrArg (fun f : simples C k ⟶ X ↦
@@ -155,7 +153,6 @@ theorem simpleHom_postcomp_trace
       (simpleDecomposition C X).inv ≫ g ≫ (simpleDecomposition C X).hom ≫
         biproduct.π (simplePiecesObject C X) ⟨k, t⟩ = c t • 𝟙 (simples C k)) :
     LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) = ∑ t, c t := by
-  classical
   rw [LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)]
   unfold Matrix.trace
   refine Finset.sum_congr rfl fun t _ ↦ ?_
@@ -173,19 +170,17 @@ theorem rootTrace_eq_simpleHom_trace_sum
     {X : C.Obj} (g : X ⟶ X) :
     unitScalar C (rootTrace C g) =
       ∑ k, LinearMap.trace ℂ _ (Linear.rightComp ℂ (simples C k) g) * rootDimension C k := by
-  classical
   let V := simplePiecesObject C X
   let e := simpleDecomposition C X
   let f : (⨁ V) ⟶ (⨁ V) := e.inv ≫ g ≫ e.hom
   have heq : rootTrace C g = rootTrace C f := by
     simpa [f, Category.assoc] using (rootTrace_cyclic C e.hom (e.inv ≫ g))
   obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple V (fun a => simples_simple C a.1) f
-  rw [heq, ht]
-  simp only [Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
+  simp only [heq, ht, Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
-  rw [simpleHom_postcomp_trace g (fun t ↦ c ⟨k, t⟩)
-    (fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩), Finset.sum_mul]
-  simp only [rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
+  simp only [simpleHom_postcomp_trace g (fun t ↦ c ⟨k, t⟩)
+    (fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩), Finset.sum_mul,
+    rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in

@@ -83,7 +83,6 @@ theorem finrank_simple_of_decomposition
     {X : D.Obj} (m : Fin (rank D) → ℕ)
     (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => simples D p.1)) (i : Fin (rank D)) :
     simpleMultiplicity D i X = m i := by
-  classical
   dsimp only [simpleMultiplicity]
   rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq,
     finrank_hom_biproduct, Fintype.sum_sigma]
@@ -120,7 +119,6 @@ theorem exists_positive_multiplicity {k : Type*} [Field k]
     (hdecomp : HasBiproductDecomposition T X)
     (hfinite : ∀ i, FiniteDimensional k (T i ⟶ X)) (hX : ¬ IsZero X) :
     ∃ i, 0 < Module.finrank k (T i ⟶ X) := by
-  classical
   obtain ⟨i, s, t, hs, ht⟩ := exists_retract_of_biproduct_decomposition hdecomp (by
     simpa [IsZero.iff_id_eq_zero] using hX)
   let : FiniteDimensional k (T i ⟶ X) := hfinite i
@@ -134,7 +132,6 @@ theorem tensor_multiplicity (X Y : D.Obj) (k : Fin (rank D)) :
     simpleMultiplicity D k (X ⊗ Y) =
       ∑ j, simpleMultiplicity D j Y *
         simpleMultiplicity D k (X ⊗ simples D j) := by
-  classical
   obtain ⟨e⟩ := exists_canonical_decomposition D Y
   dsimp only [simpleMultiplicity]
   rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
@@ -174,7 +171,6 @@ variable {D} in
 tensor products and finite semisimplicity. -/
 theorem fusionCoeff_assoc (i j k l : Fin (rank D)) :
     ∑ r, N j k r * N i r l = ∑ r, N i j r * N r k l := by
-  classical
   have h := (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples D l))
     ((α_ (simples D i) (simples D j) (simples D k)).symm ≪≫
       β_ (simples D i ⊗ simples D j) (simples D k))).finrank_eq

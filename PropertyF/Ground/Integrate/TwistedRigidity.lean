@@ -224,7 +224,7 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
     change σ (Modular.simpleDimension Z p y) = _
     rw [hdim, hσ]
   have hXfp : fpDimension D X = 𝒇 y :=
-    (ScalarTwist.fpDimension_twist Z σ _).trans (fpDimension_simple Z y)
+    (ScalarTwist.fpDimension_twist Z σ _).trans (fpDimension_simple y)
   have hXS : Ground.unitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * 𝒇 y := (ScalarTwist.rightTrace_twist Z σ p _).trans hS
   actual_rigidity_of_overlap_and_galois_dimensions D q original transformed σ

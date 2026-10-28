@@ -124,6 +124,6 @@ theorem selfTransparent_simpleDimension_integer (hfp : IsFPSpherical C p) {i : F
     ∃ z : ℤ, Modular.simpleDimension C p i = z :=
   let : Simple (simples C i) := simples_simple C i
   let ⟨m, hm⟩ := selfTransparent_simple_integral hfp hX
-  ⟨m, by simp [hfp.2 i, ← fpDimension_simple C i, hm]⟩
+  ⟨m, by simp [hfp.2 i, ← fpDimension_simple i, hm]⟩
 
 end PropertyF.Ground.CentreCalculus

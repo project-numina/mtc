@@ -35,7 +35,6 @@ attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.unit_sim
 /-- A nonzero morphism from a simple object into a semisimple object splits. -/
 theorem split_from_simple {S X : C} [Simple S] (f : S ⟶ X) (hf : f ≠ 0) :
     ∃ r : X ⟶ S, f ≫ r = 𝟙 S := by
-  classical
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → C := fun p => T p.1
@@ -99,7 +98,6 @@ theorem exists_retract_of_biproduct_decomposition
     (hdecomp : HasBiproductDecomposition T X)
     (hX : 𝟙 X ≠ 0) : ∃ (i : ι) (s : X ⟶ T i) (t : T i ⟶ X),
       s ≠ 0 ∧ t ≫ s = 𝟙 (T i) := by
-  classical
   obtain ⟨m, ⟨e⟩⟩ := hdecomp
   let V : (Σ i, Fin (m i)) → D := fun p ↦ T p.1
   obtain ⟨p, hp⟩ : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
@@ -124,7 +122,6 @@ theorem exists_unit_iso : ∃ i : Fin (rank C), Nonempty (simples C i ≅ 𝟙_ 
 /-- Hom spaces between the chosen simples have the expected multiplicities. -/
 theorem finrank_simples_hom (i j : Fin (rank C)) :
     Module.finrank ℂ (simples C i ⟶ simples C j) = if i = j then 1 else 0 := by
-  classical
   simp only [CategoryTheory.finrank_hom_simple_simple ℂ,
     show Nonempty (simples C i ≅ simples C j) ↔ i = j from
       ⟨simples_injective C, fun h ↦ by subst j; exact ⟨Iso.refl _⟩⟩]
