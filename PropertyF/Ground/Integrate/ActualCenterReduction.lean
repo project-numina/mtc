@@ -309,12 +309,10 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))
     (positive_bounded_conjugates_of_fp C)
   intro τ a b _ _ hb _ hτ
-  change τ.symm (globalFPDimension C : ℂ) = (b : ℂ) at hτ
-  apply center_witness_of_categorical_modular_data 𝒵ᶠ hfp hdet
-    (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)) hb hglobal τ hτ
-  intro y hColumn
-  exact propertyF_of_galois_column hIntegral hDouble
-    (fun i hi ↦ Centre.productRetract_propertyF (hProduct i hi) hF) hColumn
+  exact center_witness_of_categorical_modular_data 𝒵ᶠ hfp hdet
+    (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)) hb hglobal τ hτ fun y hColumn ↦
+      propertyF_of_galois_column hIntegral hDouble
+        (fun i hi ↦ Centre.productRetract_propertyF (hProduct i hi) hF) hColumn
 
 end PropertyF.Ground
 end

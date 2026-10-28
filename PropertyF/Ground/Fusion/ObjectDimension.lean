@@ -18,9 +18,8 @@ def fpDimension (D : BraidedFusionCategory) (X : D.Obj) : ℝ :=
   ∑ i, (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i
 
 theorem fpDimension_simple (j : Fin (rank D)) :
-    fpDimension D (simples D j) = fpSimple D j := by
-  classical
-  simp [fpDimension, finrank_simples_hom]
+    fpDimension D (simples D j) = fpSimple D j :=
+  by simp [fpDimension, finrank_simples_hom]
 
 theorem fpDimension_iso {X Y : D.Obj} (e : X ≅ Y) :
     fpDimension D X = fpDimension D Y :=
@@ -37,14 +36,11 @@ theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 :=
 
 /-- Every nonzero object has FP dimension at least one. -/
 theorem one_le_fpDimension {X : D.Obj}
-    (hX : ¬ IsZero X) : 1 ≤ fpDimension D X := by
-  classical
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity D hX
-  unfold fpDimension
-  exact (one_le_mul_of_one_le_of_one_le (by exact_mod_cast hi) (one_le_fpSimple D i)).trans
-    (Finset.single_le_sum
-    (f := fun j => (Module.finrank ℂ (simples D j ⟶ X) : ℝ) * fpSimple D j)
-    (fun j _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D j).le) (Finset.mem_univ i))
+    (hX : ¬ IsZero X) : 1 ≤ fpDimension D X :=
+  (exists_positive_multiplicity D hX).elim fun i hi ↦
+    (one_le_mul_of_one_le_of_one_le (Nat.one_le_cast.mpr hi) (one_le_fpSimple D i)).trans
+      (Finset.single_le_sum
+        (fun j _ ↦ mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D j).le) (Finset.mem_univ i))
 
 /-- Hom multiplicities of a tensor product are the convolution of the
 multiplicities of its factors with the fusion coefficients. -/
@@ -102,7 +98,7 @@ theorem fpDimension_leftDual (X : D.Obj) :
   classical
   unfold fpDimension
   have h := Equiv.sum_comp (dualEquiv D)
-    (fun i => (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i)
+    (fun i ↦ (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i)
   change (∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
     fpSimple D (dualIndex D i)) = _ at h
   simpa only [dual_multiplicity, fpSimple_dual] using h

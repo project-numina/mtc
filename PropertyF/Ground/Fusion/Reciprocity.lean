@@ -126,9 +126,9 @@ theorem fusionCoeff_reciprocity_labels
 /-- Frobenius reciprocity and braiding exchange a tensor factor with its dual. -/
 theorem fusionCoeff_dual_symmetry
     (i j k : Fin (rank D)) :
-    fusionCoeff D i k j = fusionCoeff D (dualIndex D i) j k := by
-  rw [fusionCoeff_comm D i k, fusionCoeff_reciprocity_labels D k i j,
-    fusionCoeff_comm D j (dualIndex D i)]
+    fusionCoeff D i k j = fusionCoeff D (dualIndex D i) j k :=
+  (fusionCoeff_comm D i k j).trans
+    ((fusionCoeff_reciprocity_labels D k i j).trans (fusionCoeff_comm D j (dualIndex D i) k))
 
 /-- A simple object and its dual contain the tensor unit with multiplicity one. -/
 theorem fusionCoeff_dual_unit (i : Fin (rank D)) :
