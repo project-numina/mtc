@@ -131,17 +131,14 @@ theorem crossingCandidate_tensor :
       Finset.sum_comm (s := (Finset.univ : Finset (Fin (rank C))))
         (t := (Finset.univ : Finset (crossingIndex C T i _)))]
 
-/-- The actual matrix crossing is invertible by rigidity. -/
-theorem crossingCandidate_isIso :
-    IsIso (βᶜ T) :=
-  weak_isIso βᶜ (crossingCandidate_natural_test C X)
-    (crossingCandidate_tensor C X) (crossingCandidate_unit C X) T (ᘁT)
-
 /-- The explicit matrix crossings form an actual half-braiding on the
 induction sum, with no additional coherence assumptions. -/
 def halfBraidingOfCrossingCandidate :
     HalfBraiding (underlying C X) where
-  β T := by letI := crossingCandidate_isIso C X T; exact asIso (βᶜ T)
+  β T := by
+    letI := weak_isIso βᶜ (crossingCandidate_natural_test C X)
+      (crossingCandidate_tensor C X) (crossingCandidate_unit C X) T (ᘁT)
+    exact asIso (βᶜ T)
   monoidal T U := crossingCandidate_tensor C X T U
   naturality f := crossingCandidate_natural_test C X f
 

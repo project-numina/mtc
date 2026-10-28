@@ -83,15 +83,6 @@ theorem simple_mono_induced_simple [Simple X] :
 
 /-! Finiteness of simple objects in the actual Drinfeld centre. -/
 
-set_option backward.isDefEq.respectTransparency false in
-/-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
-theorem center_cokernel_measure_lt {S W : 𝒵} (p : S ⟶ W) (hp : p ≠ 0) :
-    let Q := Centre.centerCokernel p
-    Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) :=
-  letI : IsSplitEpi (cokernel.π p.f) := epi_splits (cokernel.π p.f)
-  finrank_end_lt_of_split_epi p.f (cokernel.π p.f) (fun h => hp (Center.ext p 0 h))
-    (congrArg Center.Hom.f (Centre.centerCokernel_condition p))
-
 omit [MonoidalCategory D] in
 /-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
 private theorem simple_mono_cokernel [Abelian D] {P W Q S : D}
@@ -123,7 +114,9 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
       have hp : p ≠ 0 := mono_ne_zero_of_id_ne_zero p (id_nonzero _)
       let Q := Centre.centerCokernel p
       let q : W ⟶ Q := Centre.centerCokernelπ p
-      obtain ⟨L, hL⟩ := ih Q (center_cokernel_measure_lt C p hp)
+      let : IsSplitEpi (cokernel.π p.f) := epi_splits (cokernel.π p.f)
+      obtain ⟨L, hL⟩ := ih Q (finrank_end_lt_of_split_epi p.f (cokernel.π p.f)
+        (fun h => hp (Center.ext p 0 h)) (cokernel.condition p.f))
       refine ⟨P :: L, fun S hS ⟨t, ht⟩ => ?_⟩
       let : Simple S := hS
       let : Mono t := ht
