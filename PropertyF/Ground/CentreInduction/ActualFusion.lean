@@ -95,12 +95,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unitBlockLinear_id [HasRightDual S] :
     unitBlockLinear (k := k) Z T S (𝟙 (T ⊗ S)) =
       (Z.2.β T).hom ≫ (T ◁ unitComponentAt Z S) := by
-  dsimp only [unitBlockLinear, unitComponentAt, LinearMap.coe_mk, AddHom.coe_mk]
-  rw [Z.2.monoidal]
-  calc
-    _ = 𝟙 _ ⊗≫ (((Z.1 ⊗ T) ◁ η_ S (Sᘁ)) ≫ ((Z.2.β T).hom ▷ (S ⊗ Sᘁ))) ⊗≫
-      (T ◁ ((Z.2.β S).hom ▷ Sᘁ)) ⊗≫ 𝟙 _ := by monoidal
-    _ = _ := by rw [whisker_exchange]; monoidal
+  simp only [unitBlockLinear, unitComponentAt, LinearMap.coe_mk, AddHom.coe_mk, Z.2.monoidal]
+  convert congrArg (fun (t : (Z.1 ⊗ T) ⊗ 𝟙_ D ⟶ (T ⊗ Z.1) ⊗ (S ⊗ Sᘁ)) =>
+    𝟙 (Z.1 ⊗ T) ⊗≫ t ⊗≫ (T ◁ ((Z.2.β S).hom ▷ Sᘁ)) ⊗≫
+      𝟙 (T ⊗ ((S ⊗ Z.1) ⊗ Sᘁ)))
+    (whisker_exchange (Z.2.β T).hom (η_ S (Sᘁ))) using 1 <;> monoidal
 
 variable (Z : Center C.Obj) (T : C.Obj)
 
