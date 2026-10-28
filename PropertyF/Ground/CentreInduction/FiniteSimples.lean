@@ -28,17 +28,12 @@ theorem center_factor {P Q X : CategoryTheory.Center D} (p : P ⟶ X) (q : Q ⟶
   let t : P ⟶ Q := ⟨g, ?_⟩
   · exact ⟨t, rfl⟩
   · intro T
-    let : IsSplitMono (T ◁ q.f) := IsSplitMono.mk'
-      { retraction := T ◁ retraction q.f
-        id := by rw [← whiskerLeft_comp, IsSplitMono.id, whiskerLeft_id] }
+    let : IsSplitMono (T ◁ q.f) :=
+      IsSplitMono.mk' ((inferInstance : IsSplitMono q.f).exists_splitMono.some.map (tensorLeft T))
     apply (cancel_mono (T ◁ q.f)).1
-    have hq := congrArg (fun k => (g ▷ T) ≫ k) (q.comm T).symm
-    have hg' := congrArg (fun k => (k ▷ T) ≫ (X.2.β T).hom) hg
-    calc
-      _ = (g ▷ T) ≫ (q.f ▷ T) ≫ ((X.2.β T).hom) := by simp [Category.assoc]
-      _ = (p.f ▷ T) ≫ ((X.2.β T).hom) := by simpa [comp_whiskerRight, Category.assoc] using hg'
-      _ = ((P.2.β T).hom) ≫ (T ◁ p.f) := p.comm T
-      _ = _ := by rw [← hg, whiskerLeft_comp]; simp [Category.assoc]
+    simp only [Category.assoc, ← whiskerLeft_comp, hg]
+    rw [← q.comm T, ← comp_whiskerRight_assoc, hg]
+    exact p.comm T
 
 /-- Underlying endomorphisms that factor through a centre subobject. -/
 def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : CategoryTheory.Center D) (P : Subobject X) :
@@ -214,10 +209,7 @@ theorem finite_simple_labels :
 
 /-- A finite family of pairwise nonisomorphic centre simples represents every simple. -/
 theorem finite_simple_representatives :
-    ∃ (n : ℕ) (S : Fin n → 𝒵),
-      (∀ i, Simple (S i)) ∧
-      (∀ i j, Nonempty (S i ≅ S j) → i = j) ∧
-      (∀ X : 𝒵, Simple X → ∃ i, Nonempty (X ≅ S i)) :=
+    ∃ (n : ℕ) (S : Fin n → 𝒵), IsSimpleRepresentativeFamily S :=
   (finite_simple_labels C).elim fun _ h ↦
     simple_representatives_of_finite_cover h.1 h.2
 
