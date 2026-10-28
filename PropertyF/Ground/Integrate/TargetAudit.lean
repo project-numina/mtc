@@ -54,7 +54,6 @@ import all PropertyF.Ground.CentreDimensions.PivotalTwist
 import all PropertyF.Ground.CentreInduction.ActualFusion
 import all PropertyF.Ground.CentreInduction.AdjunctionAssembly
 import all PropertyF.Ground.CentreInduction.BasisPairing
-import all PropertyF.Ground.CentreInduction.BasisRefinement
 import all PropertyF.Ground.CentreInduction.CounitColumn
 import all PropertyF.Ground.CentreInduction.CrossingBlocks
 import all PropertyF.Ground.CentreInduction.CrossingCoherence
