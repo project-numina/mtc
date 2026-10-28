@@ -32,14 +32,8 @@ theorem rightQuantumTrace_tensor_scalar
     scalar (rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y)) =
       scalar (rightQuantumTrace j) * scalar (rightQuantumTrace k) := by
   have hpt : partialTraceWith k X 1 = scalar (rightQuantumTrace k) • 1 := by
-    rw [show partialTraceWith k X 1 =
-        End.of ((ρ_ X).inv ≫ X ◁ (rightQuantumTrace k).asHom ≫ (ρ_ X).hom) from by
-      simpa only [id_tensorHom_id, show End.of (𝟙 (X ⊗ Y)) = (1 : End (X ⊗ Y)) from rfl,
-        rightTraceWith_id] using
-        partialTraceWith_tensor_right k X (𝟙 Y),
-      eq_smul_one_of_algEquiv scalar (rightQuantumTrace k)]
-    apply End.ext
-    simp
+    simpa only [id_tensorHom_id, show End.of (𝟙 (X ⊗ Y)) = (1 : End (X ⊗ Y)) from rfl,
+      rightTraceWith_id] using partialTraceWith_tensor_right_scalar scalar k X (𝟙 Y)
   have ht : rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) =
       scalar (rightQuantumTrace k) • rightQuantumTrace j := by
     apply End.homEquiv.injective
