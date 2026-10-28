@@ -35,13 +35,13 @@ variable {k : Type*} [Field k] {C : Type u} [Category.{v} C] [MonoidalCategory C
   [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
 
 /-- Frobenius reciprocity for Hom dimensions. -/
-theorem finrank_frobenius_reciprocity [RigidCategory C] (X Y Z : C) :
+theorem finrank_frobenius_reciprocity (X Y Z : C) [HasLeftDual Y] :
     Module.finrank k (Z ⟶ X ⊗ Y) = Module.finrank k (Z ⊗ (ᘁY) ⟶ X) :=
   (tensorRightHomLinearEquiv (k := k) Z (ᘁY) Y X).finrank_eq.symm
 
 /-- An object and its left dual have endomorphism spaces of the same
 dimension, obtained using both rigidity adjunctions. -/
-theorem finrank_end_leftDual [RigidCategory C] (X : C) :
+theorem finrank_end_leftDual (X : C) [HasLeftDual X] :
     Module.finrank k ((ᘁX) ⟶ (ᘁX)) = Module.finrank k (X ⟶ X) :=
   (CategoryTheory.Linear.homCongr k (λ_ (ᘁX)).symm (Iso.refl _)).trans
     (tensorRightHomLinearEquiv (k := k) (𝟙_ C) (ᘁX) X (ᘁX)) |>.trans
