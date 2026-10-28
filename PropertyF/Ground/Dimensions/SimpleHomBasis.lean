@@ -121,6 +121,20 @@ def simpleInclusion (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
     simples C k ⟶ X :=
   biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫ (simpleDecomposition C X).inv
 
+/-- A weighted sum of inclusions projects onto its matching simple summand. -/
+theorem simplePieces_sum_projection (X : C.Obj) (k : Fin (rank C))
+    (c : Fin (Module.finrank ℂ (simples C k ⟶ X)) → ℂ)
+    (t : Fin (Module.finrank ℂ (simples C k ⟶ X))) :
+    (∑ x, c x • (biproduct.ι (simplePiecesObject C X) ⟨k, x⟩ ≫
+      biproduct.π (simplePiecesObject C X) ⟨k, t⟩)) = c t • 𝟙 (simples C k) := by
+  classical
+  rw [Finset.sum_eq_single t]
+  · simp
+  · intro x _ hxt
+    rw [biproduct.ι_π_ne (simplePiecesObject C X) (by simpa using hxt)]
+    simp
+  · simp
+
 set_option backward.isDefEq.respectTransparency false in
 theorem simpleInclusion_independent
     (X : C.Obj) (k : Fin (rank C)) :
@@ -132,20 +146,9 @@ theorem simpleInclusion_independent
   have h := congrArg (fun f : simples C k ⟶ X =>
     f ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩) hg
   simp only [Preadditive.sum_comp, Linear.smul_comp, zero_comp] at h
-  have hh : g t • 𝟙 (simples C k) = 0 := by
-    simp [simpleInclusion, Category.assoc] at h
-    have he : (∑ x, g x • (biproduct.ι (simplePiecesObject C X) ⟨k, x⟩ ≫
-        biproduct.π (simplePiecesObject C X) ⟨k, t⟩)) = g t • 𝟙 (simples C k) := by
-      rw [Finset.sum_eq_single t]
-      · simp
-      · intro x _ hxt
-        rw [biproduct.ι_π_ne (simplePiecesObject C X) (by simpa using hxt)]
-        simp
-      · simp
-    rw [he] at h
-    exact h
-  have := (smul_left_injective ℂ (id_nonzero (simples C k))) (by simpa using hh : g t • 𝟙 _ = (0 : ℂ) • 𝟙 _)
-  exact this
+  simp [simpleInclusion, Category.assoc] at h
+  rw [simplePieces_sum_projection C X k g t] at h
+  exact smul_left_injective ℂ (id_nonzero (simples C k)) (by simpa using h)
 
 /-- The canonical summand inclusions form a basis of each simple Hom space. -/
 def simpleInclusionBasis (C : BraidedFusionCategory.{v,u})
@@ -178,15 +181,7 @@ theorem simpleInclusionBasis_projection
   simp only [Preadditive.sum_comp, Linear.smul_comp] at h
   dsimp only [b] at h
   simp only [simpleInclusionBasis_apply, simpleInclusion, Category.assoc, Iso.inv_hom_id_assoc] at h
-  have he : (∑ x, ((b.repr g) x) • (biproduct.ι (simplePiecesObject C X) ⟨k, x⟩ ≫
-      biproduct.π (simplePiecesObject C X) ⟨k, t⟩)) = (b.repr g t) • 𝟙 (simples C k) := by
-    rw [Finset.sum_eq_single t]
-    · simp
-    · intro x _ hxt
-      rw [biproduct.ι_π_ne (simplePiecesObject C X) (by simpa using hxt)]
-      simp
-    · simp
-  rw [he] at h
+  rw [simplePieces_sum_projection C X k (b.repr g) t] at h
   exact h
 
 set_option backward.isDefEq.respectTransparency false in

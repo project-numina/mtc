@@ -142,24 +142,10 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Pseudo-unitarity saturates every pivotal simple-dimension FP bound. -/
 theorem pseudoUnitary_saturation_of_pivotal
     (p : PivotalStructure (C := C.Obj)) (hpu : PseudoUnitary C) :
-    ∀ i, ‖pivotalDimension C p (simples C i)‖ = fpSimple C i := by
-  let d : Fin (rank C) → ℝ := fun i => ‖pivotalDimension C p (simples C i)‖
-  have hb : ∀ i, |d i| ≤ fpSimple C i := by
-    intro i
-    rw [abs_of_nonneg (norm_nonneg _)]
-    exact galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i
-  have hg : globalDimension C = ((∑ i, d i ^ 2 : ℝ) : ℂ) := by
-    unfold globalDimension
-    rw [Complex.ofReal_sum]
-    apply Finset.sum_congr rfl
-    intro i _
-    exact galois_squaredNorm_eq_pivotalDimension_norm_sq C p (RingEquiv.refl ℂ) i
-  have heq : ∑ i, d i ^ 2 = globalFPDimension C := by
-    apply Complex.ofReal_injective
-    rw [← hg]
-    exact hpu
-  intro i
-  simpa [d, abs_of_nonneg (norm_nonneg _)] using ((global_sum_squares_eq_iff C d hb).mp heq) i
+    ∀ i, ‖pivotalDimension C p (simples C i)‖ = fpSimple C i :=
+  norm_saturation_of_pseudoUnitary C (fun i => pivotalDimension C p (simples C i))
+    (fun i => galois_pivotalDimension_norm_le_fpSimple C p (RingEquiv.refl ℂ) i)
+    (fun i => galois_squaredNorm_eq_pivotalDimension_norm_sq C p (RingEquiv.refl ℂ) i) hpu
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Twisting any pivotal structure by its saturated phases constructs the canonical positive spherical structure. -/
