@@ -108,8 +108,7 @@ variable (C : BraidedFusionCategory.{v,u})
 local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
 /-- The ENO reciprocity equivalence is the composition pairing followed by
 the actual Frobenius reciprocity map. -/
-theorem enoReciprocityEquiv_pairing
-    {i j k : Fin (rank C)}
+theorem enoReciprocityEquiv_pairing {i j k : Fin (rank C)}
     (g : simples C i ⊗ simples C j ⟶ simples C k) :
     enoReciprocityEquiv C i j k (simpleHomPairingEquiv (simples C k) (simples C i ⊗ simples C j) g) =
       enoFrobeniusEquiv C i j k g := by simp [enoReciprocityEquiv]
