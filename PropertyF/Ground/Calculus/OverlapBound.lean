@@ -238,10 +238,10 @@ theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf :
     (hrec : ∀ k, a k * δ ^ k = z ^ (k + 1)) : ‖z‖ ≤ ‖δ‖ * f ^ (t + 1) := by
   apply norm_bound_of_overlap (m := t + 2) hδ hf a ?_ hrec
   intro k
-  have hexp : overlapIndex t k + 2 = (k + 1) * ((t + 2) - 1) + 1 := by
-    rw [overlapIndex_formula, show (t + 2) - 1 = t + 1 by omega]
-    ring
-  simpa only [hexp] using hbound k
+  convert hbound k using 1
+  congr 1
+  simp [overlapIndex_formula]
+  ring
 
 variable (p : PivotalStructure (C := C.Obj)) {X : C.Obj} {t : ℕ} (u : braidAlgebra X t)
 
