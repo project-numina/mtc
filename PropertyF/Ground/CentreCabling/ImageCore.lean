@@ -41,8 +41,9 @@ theorem unit_mem_productLabels : unitIndex (𝒵 C) ∈ productLabels C :=
   (mem_productLabels C _).2 <|
     Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
 
-theorem dual_mem_productLabels {i : Fin (rank (𝒵 C))}
-    (hi : i ∈ productLabels C) : dualIndex (𝒵 C) i ∈ productLabels C :=
+variable {i j k : Fin (rank (𝒵 C))}
+
+theorem dual_mem_productLabels (hi : i ∈ productLabels C) : dualIndex (𝒵 C) i ∈ productLabels C :=
   let Z := 𝒵 C
   let X : CategoryTheory.Center C.Obj := simples Z i
   let e : (ᘁX) ≅ (Xᘁ) := leftDualIso HasLeftDual.exact
@@ -51,9 +52,7 @@ theorem dual_mem_productLabels {i : Fin (rank (𝒵 C))}
   (mem_productLabels C _).2 <| Centre.productRetract_of_retract (Retract.ofIso (e'.symm ≪≫ e))
     (Centre.productRetract_rightDual C ((mem_productLabels C i).1 hi))
 
-theorem constituent_mem_productLabels
-    {i j k : Fin (rank (𝒵 C))}
-    (hi : i ∈ productLabels C) (hj : j ∈ productLabels C)
+theorem constituent_mem_productLabels (hi : i ∈ productLabels C) (hj : j ∈ productLabels C)
     (hk : 0 < fusionCoeff (𝒵 C) i j k) : k ∈ productLabels C :=
   let ⟨r⟩ := Ground.fusionCoeff_retract (𝒵 C) hk
   (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|

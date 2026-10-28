@@ -19,7 +19,6 @@ twist scalar and `tr C p ρ n σ` for a scalar permutation trace.
 local notation "θ" => PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar
 local notation "tr" => PropertyF.Ground.CentreCalculus.permScalarTrace
 open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical)
-open PropertyF.Ground.Centre (permutationSign)
 open Equiv.Perm (decomposeFin)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -155,8 +154,7 @@ theorem tensorPermTrace_adjacent {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
 include htotal in
 /-- A negative twist is corrected by the sign-twisted permutation action. -/
 theorem negativeParity_adjacentTrace (hneg : θ C p X = -1) :
-    HasAdjacentTrace (tr C p (parityPermAction C hX true)) := by
-  intro n σ
+    HasAdjacentTrace (tr C p (parityPermAction C hX true)) := fun n σ ↦ by
   simp [parityPermScalarTrace_true, sign_decomposeFin, tensorPermTrace_adjacent hX htotal, hneg]
 
 include hdim hX htotal in
