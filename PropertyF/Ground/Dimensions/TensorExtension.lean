@@ -50,9 +50,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rootSignTwist_app_simple (i : Fin (rank C)) :
     ((rootSignTwist C c hc).app (simples C i)).hom =
       c i • ((fourthDualRootNaturalIso C).app (simples C i)).hom := by
-  change ((simpleScalarNaturalIso C c hc).app (simples C i)).hom ≫
-    ((fourthDualRootNaturalIso C).app (simples C i)).hom = _
-  rw [simpleScalarNaturalIso_app_simple]
+  simp only [rootSignTwist, NatIso.trans_app, Iso.trans_hom,
+    simpleScalarNaturalIso_app_simple]
   simp
 
 set_option backward.isDefEq.respectTransparency false in
