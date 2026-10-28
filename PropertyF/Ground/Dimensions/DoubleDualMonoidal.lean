@@ -44,22 +44,16 @@ theorem rightDualTensorIso_associativity (X Y Z : C) :
       @ExactPairing.tensor_evaluation C _ _ X Y _ _ HasRightDual.exact HasRightDual.exact,
       @ExactPairing.tensor_evaluation C _ _ Y Z _ _ HasRightDual.exact HasRightDual.exact]
     monoidal
-  let F := ((Y ⊗ Z)ᘁ) ⊗ (Xᘁ)
-  let qD₀ : ExactPairing D F := @ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Y ⊗ Z)ᘁ)
-    HasRightDual.exact HasRightDual.exact
-  have hT : ((rightDualTensorIso Y Z).hom ▷ (Xᘁ)) ▷ D ≫
-      @ExactPairing.evaluation C _ _ D E qD = @ExactPairing.evaluation C _ _ D F qD₀ :=
-    tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := HasRightDual.exact)
-      (r := qYZ) (rightDualTensorIso Y Z).hom (rightDualTensorIso_evaluation Y Z)
-  have he' : ((Zᘁ) ◁ (rightDualTensorIso X Y).hom) ▷ A ≫ ε_ A B =
-      ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) :=
-    tensorPairing_evaluation_whiskerLeft (p := HasRightDual.exact) (q := qXY)
-      (r := HasRightDual.exact) (rightDualTensorIso X Y).hom (rightDualTensorIso_evaluation X Y)
   apply evaluation_ext (X := A)
   simp only [comp_whiskerRight_assoc]
-  rw [he', rightDualTensorIso_evaluation (X ⊗ Y) Z]
+  rw [tensorPairing_evaluation_whiskerLeft (p := HasRightDual.exact) (q := qXY)
+    (r := HasRightDual.exact) (rightDualTensorIso X Y).hom (rightDualTensorIso_evaluation X Y),
+    rightDualTensorIso_evaluation (X ⊗ Y) Z]
   symm
-  rw [ha, ← whisker_exchange_assoc, hT, ← whisker_exchange_assoc, rightDualTensorIso_evaluation X (Y ⊗ Z),
+  rw [ha, ← whisker_exchange_assoc,
+    tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := HasRightDual.exact)
+      (r := qYZ) (rightDualTensorIso Y Z).hom (rightDualTensorIso_evaluation Y Z),
+    ← whisker_exchange_assoc, rightDualTensorIso_evaluation X (Y ⊗ Z),
     ← whisker_exchange_assoc, rightAdjointMate_comp_evaluation]
   rw [← Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]
 
@@ -178,7 +172,8 @@ theorem doubleDualTensorIso_braiding {C : Type u} [Category.{v} C] [MonoidalCate
       (β_ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫ (doubleDualTensorIso Y X).hom := by
   have hd := congrArg (fun f => rightAdjointMate f) (rightDualTensorIso_braiding X Y)
   simp only [comp_rightAdjointMate] at hd
-  have hm := ((CommSq.vert_inv (CommSq.mk (rightDualTensorIso_braiding (Xᘁ) (Yᘁ)))).w).symm
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
-  rw [hd, ← Category.assoc, hm, Category.assoc]
+  rw [hd, ← Category.assoc,
+    ((CommSq.vert_inv (CommSq.mk (rightDualTensorIso_braiding (Xᘁ) (Yᘁ)))).w).symm,
+    Category.assoc]
 end PropertyF.Ground.Dimensions

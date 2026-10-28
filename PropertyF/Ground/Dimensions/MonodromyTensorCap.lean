@@ -126,8 +126,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem braiding_cap_loop (X Y Z : C) (f : Y ⊗ Z ⟶ 𝟙_ C) :
     (β_ X Y).hom ▷ Z ⊗≫ Y ◁ (β_ X Z).hom ⊗≫ f ▷ X ⊗≫ (λ_ X).hom =
       𝟙 ((X ⊗ Y) ⊗ Z) ⊗≫ X ◁ f ⊗≫ (ρ_ X).hom := by
-  have hn := braiding_naturality_right X f
-  have h := congrArg (fun g => g ≫ (λ_ X).hom) hn
+  have h := congrArg (fun g ↦ g ≫ (λ_ X).hom) (braiding_naturality_right X f)
   simp only [Category.assoc, braiding_leftUnitor] at h
   calc
     _ = (α_ X Y Z).hom ≫ (β_ X (Y ⊗ Z)).hom ≫ f ▷ X ≫ (λ_ X).hom := by
