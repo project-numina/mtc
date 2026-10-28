@@ -117,8 +117,7 @@ theorem rightDualIso_inv_evaluation :
 canonically isomorphic one and the morphism is transported by the dual map. -/
 theorem trace_change_rightDual {X Y Z : C} [HasRightDual Y] [HasRightDual Z]
     (p : ExactPairing X Y) (q : ExactPairing X Z) (u : X ⟶ Zᘁ) :
-    @ExactPairing.coevaluation C _ _ X Y p ≫
-      ((u ≫ ((rightDualIso p q).hom)ᘁ) ⊗ₘ 𝟙 Y) ≫ ε_ Y (Yᘁ) =
+    @ExactPairing.coevaluation C _ _ X Y p ≫ ((u ≫ ((rightDualIso p q).hom)ᘁ) ⊗ₘ 𝟙 Y) ≫ ε_ Y (Yᘁ) =
     @ExactPairing.coevaluation C _ _ X Z q ≫ (u ⊗ₘ 𝟙 Z) ≫ ε_ Z (Zᘁ) := by
   simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, comp_whiskerRight, Category.assoc,
     rightAdjointMate_comp_evaluation, ← whisker_exchange_assoc, coevaluation_rightDualIso_assoc]

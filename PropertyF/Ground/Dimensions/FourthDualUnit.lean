@@ -77,8 +77,7 @@ theorem fourthDualIso_unit :
     fourthDualIso (𝟙_ C) =
       doubleDualUnitIso (C := C) ≪≫
         rightDualIsoMap (rightDualIsoMap (doubleDualUnitIso (C := C))) := by
-  unfold fourthDualIso
-  rw [show drinfeldIso ((𝟙_ C)ᘁ) =
+  rw [fourthDualIso, show drinfeldIso ((𝟙_ C)ᘁ) =
       (rightDualIsoMap (drinfeldIso (𝟙_ C))).symm from drinfeld_unit_dual,
     show drinfeldIso (𝟙_ C) = doubleDualUnitIso from Iso.ext (drinfeld_unit (C := C))]
   exact Iso.ext rfl
@@ -111,17 +110,17 @@ theorem fourthDualRoot_unit_component :
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root dimension of the unit is a sign. -/
 theorem rootDimension_unit_sq :
-    rootDimension C (unitIndex C) * rootDimension C (unitIndex C) = 1 := by
+    rootDimension C (unitIndex C) * rootDimension C (unitIndex C) = 1 :=
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
-  apply scalar_sq_eq_one_of_same_square (doubleDualUnitIso (C := C.Obj))
+  scalar_sq_eq_one_of_same_square (doubleDualUnitIso (C := C.Obj))
     ((fourthDualRootNaturalIso C).app U) (rootDimension C (unitIndex C))
-    (fourthDualRoot_unit_component C)
-  refine (show ((fourthDualRootNaturalIso C).app U).hom ≫
+    (fourthDualRoot_unit_component C) <|
+    (show ((fourthDualRootNaturalIso C).app U).hom ≫
       ((((fourthDualRootNaturalIso C).app U).homᘁ)ᘁ) = (fourthDualIso U).hom from
-    congrArg (fun n ↦ (n.app U).hom) (fourthDualRootNaturalSquare_eq C)).trans ?_
-  simpa only [Iso.trans_hom, rightDualIsoMap] using
-    congrArg Iso.hom (fourthDualIso_unit (C := C.Obj))
+      congrArg (fun n ↦ (n.app U).hom) (fourthDualRootNaturalSquare_eq C)).trans (by
+        simpa only [Iso.trans_hom, rightDualIsoMap] using
+          congrArg Iso.hom (fourthDualIso_unit (C := C.Obj)))
 
 end PropertyF.Ground.Dimensions
 
