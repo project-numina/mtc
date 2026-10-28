@@ -66,7 +66,7 @@ section LocalMonodromy
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C]
 
-omit [Linear ℂ C] in
+omit [Preadditive C] [Linear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- Equal actual three-strand squares make the two adjacent copies of double
 self-braiding equal in the conventional tensor-product parenthesization. -/

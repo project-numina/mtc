@@ -208,7 +208,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def selfMonodromy (X : C) : End (X ⊗ X) :=
   End.of ((β_ X X).hom ≫ (β_ X X).hom)
 
-omit [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The actual braid `a²b²` becomes the graphical overlap of two copies of
 double self-braiding after the standard tensor-power and associator isomorphisms. -/
 theorem three_braid_double_overlap (X : C) :
