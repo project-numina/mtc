@@ -30,14 +30,12 @@ theorem drinfeld_unit :
   have h : (r.inv ≫ (r.homᘁ)) ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) =
       (β_ U (Uᘁ)).hom ≫ ε_ U (Uᘁ) := by
     rw [comp_whiskerRight_assoc, rightAdjointMate_comp_evaluation]
-    have hb : (β_ U U).hom = 𝟙 (U ⊗ U) := by
-      change (β_ (𝟙_ C) (𝟙_ C)).hom = 𝟙 _
-      rw [braiding_tensorUnit_left, unitors_equal, Iso.hom_inv_id]
     have hn := braiding_naturality_right U r.hom
-    rw [hb, Category.comp_id] at hn
-    have hc : U ◁ r.hom ≫ r.inv ▷ U = (β_ U (Uᘁ)).hom := by
-      rw [hn, Category.assoc, ← comp_whiskerRight, Iso.hom_inv_id, id_whiskerRight, Category.comp_id]
-    rw [← whisker_exchange_assoc, ← Category.assoc, hc]
+    simp only [U, braiding_tensorUnit_left, unitors_equal, Iso.hom_inv_id,
+      Category.comp_id] at hn
+    rw [← whisker_exchange_assoc, ← Category.assoc, hn]
+    simp only [Category.assoc, ← comp_whiskerRight_assoc, Iso.hom_inv_id,
+      id_whiskerRight, Category.id_comp, U, braiding_tensorUnit_left]
   change (doubleDualUnitIso (C := C)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
   exact evaluation_ext ((drinfeld_eval U).trans h.symm)
 end PropertyF.Ground.Dimensions
@@ -65,21 +63,16 @@ theorem drinfeld_unit_dual :
   let r : Uᘁ ≅ U := rightDualUnitIso
   have hu : (drinfeldIso U).hom = (r.inv ≫ (r.homᘁ)) :=
     drinfeld_unit
-  have hb : (drinfeldIso (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) = (r.homᘁ) := by
-    rw [← (drinfeldIso_natural r.hom), hu]
-    simp only [Iso.hom_inv_id_assoc]
   apply Iso.ext
-  simp only [rightDualIsoMap, Iso.symm_hom]
-  let ee := rightDualIsoMap (rightDualIsoMap r)
   change (drinfeldIso (Uᘁ)).hom = ((drinfeldIso U).invᘁ)
-  apply (cancel_mono ee.hom).1
+  apply (cancel_mono (rightDualIsoMap (rightDualIsoMap r)).hom).1
   change (drinfeldIso (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) =
     ((drinfeldIso U).invᘁ) ≫ ((r.homᘁ)ᘁ)
-  rw [hb]
-  have hui : (drinfeldIso U).inv = (r.invᘁ) ≫ r.hom := by
-    simpa only [Iso.trans_inv, Iso.symm_inv, rightDualIsoMap] using
-      congrArg Iso.inv (Iso.ext hu : drinfeldIso U = r.symm ≪≫ rightDualIsoMap r)
-  rw [hui, comp_rightAdjointMate, Category.assoc, ← comp_rightAdjointMate,
+  rw [← drinfeldIso_natural r.hom, hu, Iso.hom_inv_id_assoc]
+  rw [show (drinfeldIso U).inv = (r.invᘁ) ≫ r.hom from by
+      simpa only [Iso.trans_inv, Iso.symm_inv, rightDualIsoMap] using
+        congrArg Iso.inv (Iso.ext hu : drinfeldIso U = r.symm ≪≫ rightDualIsoMap r),
+    comp_rightAdjointMate, Category.assoc, ← comp_rightAdjointMate,
     show (r.homᘁ) ≫ (r.invᘁ) = 𝟙 (Uᘁ) from (rightDualIsoMap r).hom_inv_id,
     rightAdjointMate_id, Category.comp_id]
 /-- The fourth-dual map has the canonical iterated unit component. -/

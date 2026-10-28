@@ -15,7 +15,7 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (Center D)]
+  [RightRigidCategory (Center D)]
 local notation "𝒵" => Center D
 variable (p : PivotalStructure (C := D))
 
@@ -36,7 +36,7 @@ private theorem transported_pivotal_braiding (Z B : 𝒵) :
   apply (cancel_mono ((Center.forget D).map (doubleDualTensorIso B Z).hom)).1
   simpa [Category.assoc] using hn
 
-omit [RightRigidCategory D] [RigidCategory (Center D)] in
+omit [RightRigidCategory D] [RightRigidCategory (Center D)] in
 /-- A braiding equation against a positive centre object, transported along an
 isomorphism, detects centrality of a map in the base category. -/
 theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
