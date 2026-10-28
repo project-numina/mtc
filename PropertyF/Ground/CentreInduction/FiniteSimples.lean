@@ -11,7 +11,7 @@ an induced object then gives finite semisimple decompositions and a fusion struc
 -/
 
 section
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
@@ -19,9 +19,7 @@ variable (C : BraidedFusionCategory.{v,u})
 local notation "Sᶜ" => simples C
 local notation "𝒵" => Center C.Obj
 
-/-- Hom spaces in the base fusion category are finite-dimensional. -/
-local instance homFinite (A B : C.Obj) : FiniteDimensional ℂ (A ⟶ B) :=
-  IsFusionCategory.hom_finite _ _
+attribute [local instance] IsFusionCategory.hom_finite
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -80,8 +78,8 @@ theorem simple_mono_induced_simple [Simple X] :
     (fun _ ↦ IsFusionCategory.hom_finite _ _)
     (fun h => Simple.not_isZero X (Centre.isZero_of_forget h))
   let : Simple (Sᶜ i) := simples_simple C i
-  obtain ⟨g, hg⟩ := Module.finrank_pos_iff_exists_ne_zero.mp
-    (show 0 < Module.finrank ℂ (X.1 ⟶ Sᶜ i) from by
+  obtain ⟨g, hg⟩ := finrank_pos_iff_exists_ne_zero.mp
+    (show 0 < finrank ℂ (X.1 ⟶ Sᶜ i) from by
       simpa only [finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
   let e := homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj) (induction C)
     (actualAdjunction C) X (Sᶜ i)
@@ -107,7 +105,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem finite_simple_subobject_labels (W : 𝒵) :
     ∃ L : List (𝒵), ∀ S : 𝒵, Simple S →
       (∃ t : S ⟶ W, Mono t) → ∃ T ∈ L, Nonempty (S ≅ T) := by
-  induction W using (measure fun Z : 𝒵 ↦ Module.finrank ℂ (Z.1 ⟶ Z.1)).wf.induction with
+  induction W using (measure fun Z : 𝒵 ↦ finrank ℂ (Z.1 ⟶ Z.1)).wf.induction with
   | h W ih =>
     by_cases hw : IsZero W
     · refine ⟨[], fun S hS ⟨t, ht⟩ => ?_⟩
@@ -160,6 +158,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Proper
 universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
+attribute [local instance] IsFusionCategory.hom_finite
 variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [LeftRigidCategory D]
 
 omit [Abelian D] [LeftRigidCategory D] in
@@ -192,9 +191,7 @@ theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
   letI (W : 𝒵) : IsArtinianObject W := center_artinian C W
   letI : Injective ((induction C).obj X) := (actualAdjunction C).map_injective X (object_injective X)
   letI (W : 𝒵) : Injective W := all_injective_of_unit_retract r W
-  letI (A : 𝒵) : FiniteDimensional ℂ (A ⟶ A) :=
-    letI : FiniteDimensional ℂ (A.1 ⟶ A.1) := IsFusionCategory.hom_finite _ _
-    Centre.finiteDimensional_hom ℂ A A
+  letI (A : 𝒵) : FiniteDimensional ℂ (A ⟶ A) := Centre.finiteDimensional_hom ℂ A A
   finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW =>
     ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
 
