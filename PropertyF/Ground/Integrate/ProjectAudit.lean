@@ -41,7 +41,6 @@ import all PropertyF.Ground.CentreInduction.PositivePivotal
 import all PropertyF.Ground.CentreIntegrate.TwistBalancing
 import all PropertyF.Ground.Dimensions.DefectExtension
 import all PropertyF.Ground.Dimensions.DualBraiding
-import all PropertyF.Ground.CentreInduction.ForgetDualUnit
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
 import all PropertyF.Ground.Centre.Rigid
 import all PropertyF.Ground.CentreCabling.CentralityClosure
@@ -58,10 +57,8 @@ import all PropertyF.Ground.CentreInduction.CrossingCoherence
 import all PropertyF.Ground.CentreInduction.CrossingUnit
 import all PropertyF.Ground.CentreInduction.FiniteSimples
 import all PropertyF.Ground.CentreInduction.ForgetDual
-import all PropertyF.Ground.CentreInduction.InjectiveFusion
 import all PropertyF.Ground.CentreInduction.Representatives
 import all PropertyF.Ground.CentreInduction.SecondTriangle
-import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
 import all PropertyF.Ground.Dimensions.DefectNaturality
 import all PropertyF.Ground.Dimensions.DoubleDualMonoidal
 import all PropertyF.Ground.Dimensions.DoubleDualPairing
