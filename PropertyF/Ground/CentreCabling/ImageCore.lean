@@ -85,7 +85,7 @@ theorem productLabels_doubleCentralizer_of_image_monodromy
     (hfinite : HasFiniteImageCentralizerMonodromy C p) :
     ∀ x ∈ sCentralizer (Integrate.bundledCenter C) p (symmetricCore C),
       Centre.ProductRetract (simples (Integrate.bundledCenter C) x) :=
-  productLabels_doubleCentralizer C hp hdet hdim fun y hy ↦
+  productLabels_doubleCentralizer C hp hdet hdim fun _ hy ↦
     numericalImageCentralizer_subset_symmetricCore C hdim hfinite fun a ha ↦
       hy a (imageLabels_subset_productLabels C ha)
 

@@ -95,9 +95,9 @@ abbrev permutationScalarTrace (C : BraidedFusionCategory.{v,u})
 
 /-- Integrality follows from one-strand trace deletion for any compatible
 (possibly sign-twisted) family of actual actions. -/
-theorem integral_of_trace_deletion (C : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : Modular.HasFPSimpleDimensions C p) (X : C.Obj)
+theorem integral_of_trace_deletion {C : BraidedFusionCategory.{v,u}}
+    {p : Dimensions.PivotalStructure (C := C.Obj)}
+    (hdim : Modular.HasFPSimpleDimensions C p) {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
     (hfixed : ∀ n σ,
       permutationScalarTrace C p ρ (n + 1) (Equiv.Perm.decomposeFin.symm (0, σ)) =
@@ -113,7 +113,7 @@ theorem integral_of_trace_deletion (C : BraidedFusionCategory.{v,u})
     change unitScalar C (p.rightTrace (𝟙 (𝟙_ C.Obj))) = 1
     rw [Dimensions.rightTrace_unit, unitScalar_eq_equiv, map_one]
   have hf := signedTraceSum_falling hz hfixed hmoved
-  apply integral_of_signed_permutation_traces C p hdim X
+  apply integral_of_signed_permutation_traces hdim
   intro n
   exact ⟨ρ n, hf n⟩
 
@@ -201,14 +201,12 @@ end
 set_option backward.isDefEq.respectTransparency false in
 /-- A fixed inserted strand contributes its positive categorical dimension to
  the actual permutation trace. -/
-theorem tensorPermutationTrace_fixHead (D : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := D.Obj))
+theorem tensorPermutationTrace_fixHead {D : BraidedFusionCategory.{v,u}}
+    {p : Dimensions.PivotalStructure (C := D.Obj)}
     (hdim : Modular.HasFPSimpleDimensions D p)
-    (X : D.Obj) (hX : SelfTransparent X) :
-    ∀ n (σ : Equiv.Perm (Fin n)),
+    {X : D.Obj} (hX : SelfTransparent X) {n : ℕ} (σ : Equiv.Perm (Fin n)) :
       permutationScalarTrace D p (tensorPermutationAction X hX) (n + 1) (fixHead n σ) =
       (fpDimension D X : ℂ) * permutationScalarTrace D p (tensorPermutationAction X hX) n σ := by
-  intro n σ
   simp only [permutationScalarTrace]
   rw [tensorPermutationAction_fixHead]
   have ht := Dimensions.pivotalTrace_tensor p (unitScalarEquiv D)
@@ -217,6 +215,6 @@ theorem tensorPermutationTrace_fixHead (D : BraidedFusionCategory.{v,u})
   change unitScalar D (p.rightTrace (X ◁ ((tensorPermutationAction X hX n) σ).asHom)) = _
   rw [ht]
   change Dimensions.pivotalDimension D p X * _ = _
-  rw [pivotalDimension_eq_fpDimension D p hdim]
+  rw [pivotalDimension_eq_fpDimension hdim]
 
 end PropertyF.Ground.CentreCalculus
