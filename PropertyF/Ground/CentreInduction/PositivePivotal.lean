@@ -6,6 +6,8 @@ public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Modular.SMatrix
 
+open PropertyF.Ground.Dimensions
+
 section
 /-! Lift a pivotal structure once its transported components are central. -/
 @[expose] public noncomputable section
@@ -20,16 +22,16 @@ local notation "𝒵" => CategoryTheory.Center D
 
 /-- The sole remaining obstruction to lifting the pivotal structure is the
 half-braiding intertwining equation for the transported components. -/
-def PivotalComponentsCentral (p : Dimensions.PivotalStructure (C := D)) : Prop :=
+def PivotalComponentsCentral (p : PivotalStructure (C := D)) : Prop :=
   ∀ (Z : 𝒵) (T : D),
     let u := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
     (u ▷ T) ≫ (((Zᘁ)ᘁ).2.β T).hom = (Z.2.β T).hom ≫ (T ◁ u)
 
 /-- Central transported components assemble into a pivotal structure on the
 actual centre; naturality, tensor and unit coherence are proved. -/
-def liftedPivotalStructure (p : Dimensions.PivotalStructure (C := D))
+def liftedPivotalStructure (p : PivotalStructure (C := D))
     (hc : PivotalComponentsCentral p) :
-    Dimensions.PivotalStructure (C := 𝒵) where
+    PivotalStructure (C := 𝒵) where
   iso Z := by
     let u := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
     let f : Z ⟶ ((Zᘁ)ᘁ) := ⟨u, hc Z⟩
@@ -51,7 +53,7 @@ def liftedPivotalStructure (p : Dimensions.PivotalStructure (C := D))
     all_goals rfl
 
 /-- The lifted component agrees with the original pivotal component. -/
-theorem liftedPivotalStructure_compatible {p : Dimensions.PivotalStructure (C := D)}
+theorem liftedPivotalStructure_compatible {p : PivotalStructure (C := D)}
     (hc : PivotalComponentsCentral p) (Z : 𝒵) :
     PivotalCompatibleAt p (liftedPivotalStructure p hc) Z := by
   simp [PivotalCompatibleAt, liftedPivotalStructure, Category.assoc]
@@ -98,7 +100,7 @@ theorem positiveDualIso_forget (T : D) :
 def positiveDoubleDualIso (T : D) :
     (((CategoryTheory.Center.ofBraided D).obj T)ᘁ)ᘁ ≅
       (CategoryTheory.Center.ofBraided D).obj ((Tᘁ)ᘁ) :=
-  Dimensions.rightDualIsoMap (positiveDualIso T).symm ≪≫ positiveDualIso (Tᘁ)
+  rightDualIsoMap (positiveDualIso T).symm ≪≫ positiveDualIso (Tᘁ)
 
 theorem positiveDualIso_inv_forget (T : D) :
     (positiveDualIso T).inv.f =
@@ -114,7 +116,7 @@ theorem positiveDoubleDualIso_forget (T : D) :
   let e := positiveDualIso T
   have hnat := forgetDualIso_natural e.inv
   simp only [positiveDoubleDualIso, Iso.trans_hom, Iso.symm_hom,
-    Dimensions.rightDualIsoMap, CategoryTheory.Center.comp_f, forgetDoubleDualIso]
+    rightDualIsoMap, CategoryTheory.Center.comp_f, forgetDoubleDualIso]
   change (e.invᘁ).f ≫ (positiveDualIso (Tᘁ)).hom.f =
     (forgetDualIso (Zᘁ)).hom ≫ (forgetDualIso Z).invᘁ
   rw [positiveDualIso_forget]
@@ -130,12 +132,12 @@ theorem positiveDoubleDualIso_inv_forget (T : D) :
   exact (Iso.inv_eq_inv _ _).2 (positiveDoubleDualIso_forget T)
 
 /-- The pivotal component transported to the positive centre lift. -/
-def positivePivotalComponent (p : Dimensions.PivotalStructure (C := D)) (T : D) :
+def positivePivotalComponent (p : PivotalStructure (C := D)) (T : D) :
     (CategoryTheory.Center.ofBraided D).obj T ≅
       (((CategoryTheory.Center.ofBraided D).obj T)ᘁ)ᘁ :=
   (CategoryTheory.Center.ofBraided D).mapIso (p.iso T) ≪≫ (positiveDoubleDualIso T).symm
 
-theorem positivePivotalComponent_forget (p : Dimensions.PivotalStructure (C := D)) (T : D) :
+theorem positivePivotalComponent_forget (p : PivotalStructure (C := D)) (T : D) :
     (positivePivotalComponent p T).hom.f = (p.iso T).hom ≫
       (forgetDoubleDualIso ((CategoryTheory.Center.ofBraided D).obj T)).inv := by
   simp [positivePivotalComponent, positiveDoubleDualIso_inv_forget]
@@ -166,13 +168,10 @@ theorem center_unitScalar_forget (a : End (𝟙_ (𝒵))) :
 
 /-- Compatible pivotal components have identical scalar dimensions after forgetting. -/
 theorem center_pivotalDimension_forget
-    {p : Dimensions.PivotalStructure (C := C.Obj)}
-    {pZ : Dimensions.PivotalStructure (C := 𝒵)}
-    {Z : 𝒵}
+    {p : PivotalStructure (C := C.Obj)} {pZ : PivotalStructure (C := 𝒵)} {Z : 𝒵}
     (hcompat : PivotalCompatibleAt p pZ Z) :
-    Dimensions.pivotalDimension 𝒵ᶠ pZ Z =
-      Dimensions.pivotalDimension C p Z.1 := by
-  simp only [Dimensions.pivotalDimension, center_unitScalar_forget,
+    pivotalDimension 𝒵ᶠ pZ Z = pivotalDimension C p Z.1 := by
+  simp only [pivotalDimension, center_unitScalar_forget,
     forget_trace_of_pivotal_component hcompat]
 
 end PropertyF.Ground.CentreInduction
@@ -189,19 +188,19 @@ local notation "𝒵ᶠ" => Integrate.bundledCenter C
 /-- A compatible lift of a positive pivotal structure is spherical and has
 FP dimensions on the centre. -/
 theorem center_positive_spherical_of_compatible_pivotal
-    {p : Dimensions.PivotalStructure (C := C.Obj)}
+    {p : PivotalStructure (C := C.Obj)}
     (hsimple : PivotalHasFPDimensions C p)
-    {pZ : Dimensions.PivotalStructure (C := 𝒵)}
+    {pZ : PivotalStructure (C := 𝒵)}
     (hcompat : ∀ Z : 𝒵, PivotalCompatibleAt p pZ Z) :
     pZ.IsSpherical ∧ PivotalHasFPDimensions 𝒵ᶠ pZ := by
   let D := 𝒵ᶠ
-  have hd (i : Fin (rank D)) : Dimensions.pivotalDimension D pZ (simples D i) =
+  have hd (i : Fin (rank D)) : pivotalDimension D pZ (simples D i) =
       (fpSimple D i : ℂ) := by
     rw [center_pivotalDimension_forget C (hcompat _),
       pivotalDimension_eq_fp hsimple]
     change (fpDimension C ((CategoryTheory.Center.forget C.Obj).obj (simples D i)) : ℂ) = _
     rw [Integrate.center_forget_fpDimension C, fpDimension_simple]
-  refine ⟨(Dimensions.pivotal_spherical_iff_simple_dimensions_real D pZ).2 ?_, hd⟩
+  refine ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 ?_, hd⟩
   intro i
   simp [hd]
 
