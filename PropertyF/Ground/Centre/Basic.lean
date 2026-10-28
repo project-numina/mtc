@@ -76,7 +76,7 @@ theorem centralizes_of_iso_left {A B T : CategoryTheory.Center C} (i : A ≅ B)
         (i.hom ▷ T) ≫ ((β_ B T).hom ≫ (β_ T B).hom) := by
       simp only [Category.assoc, BraidedCategory.braiding_naturality_left_assoc]
       rw [← BraidedCategory.braiding_naturality_right T i.hom]
-    _ = 𝟙 _ ≫ (i.hom ▷ T) := by rw [h]; simp
+    _ = 𝟙 _ ≫ (i.hom ▷ T) := by rw [h, Category.comp_id, Category.id_comp]
 
 omit [BraidedCategory C] in
 /-- Centralization is symmetric. -/

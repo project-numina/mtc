@@ -317,6 +317,7 @@ theorem evaluation_sliding (Z : Center C) (U : C) :
   let cInv : U ⊗ X ⟶ X ⊗ U := (Z.2.β U).inv
   let d : D ⊗ U ⟶ U ⊗ D := ((Integrate.dualCrossingIso Z).app U).hom
   have hslide := CentreRigid.coevaluation_sliding Z U
+  have hc : cInv ≫ c = 𝟙 (U ⊗ X) := by simp [cInv, c, X]
   apply (cancel_epi (α_ D X U).inv).1
   apply (tensorLeftHomEquiv (X ⊗ U) X D (U ⊗ (𝟙_ C))).injective
   apply (cancel_epi cInv).1
@@ -328,10 +329,9 @@ theorem evaluation_sliding (Z : Center C) (U : C) :
         _ = 𝟙 (U ⊗ X) ⊗≫ cInv ⊗≫
           ((η_ X D ▷ X ⊗≫ X ◁ ε_ X D) ▷ U) ⊗≫ c ⊗≫ 𝟙 (U ⊗ X) := by monoidal
         _ = 𝟙 (U ⊗ X) ⊗≫ (cInv ≫ c) ⊗≫ 𝟙 (U ⊗ X) := by rw [evaluation_coevaluation'']; monoidal
-        _ = _ := by dsimp [cInv, c]; simp [monoidalComp]
+        _ = _ := by rw [hc]; monoidal
     _ = _ := by
       symm
-      have hc : cInv ≫ c = 𝟙 (U ⊗ X) := by simp [cInv, c, X]
       change 𝟙 U ⊗≫ (η_ X D ▷ U) ⊗≫ (X ◁ d) ⊗≫ (c ▷ D) ⊗≫ 𝟙 (U ⊗ (X ⊗ D)) =
         𝟙 U ⊗≫ (U ◁ η_ X D) ⊗≫ 𝟙 (U ⊗ (X ⊗ D)) at hslide
       calc

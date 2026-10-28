@@ -40,8 +40,7 @@ theorem reverse_braidGenerator_succ (X : C) (n : ℕ) {i : Fin (n + 1)}
     (braidGenerator X (n + 1) ⟨i + 1, Nat.succ_lt_succ hi⟩)⁻¹
   apply CategoryTheory.Aut.ext
   apply Iso.ext
-  simp only [braidGenerator, h]
-  simp only [Aut.inv_asIso, Iso.symm_hom, tensorIso_hom, Iso.refl_hom]
+  simp only [braidGenerator, h, Aut.inv_asIso, Iso.symm_hom, tensorIso_hom, Iso.refl_hom]
   change 𝟙 X ⊗ₘ (braidGenerator X n ⟨i, hi⟩).asIso.inv =
     (Iso.refl X ⊗ᵢ (braidGenerator X n ⟨i, hi⟩).asIso).inv
   rw [tensorIso_inv, Iso.refl_inv]

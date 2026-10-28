@@ -46,7 +46,7 @@ theorem inl_sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
     biprod.inl ▷ U ≫ (sumHalfIso X Y U).hom = (X.2.β U).hom ≫ U ◁ biprod.inl := by
   have h : biprod.inl ▷ U ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).hom = biprod.inl := by
     apply (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
-    simp only [Functor.mapBiprod_inv, biprod.inl_desc]
+    rw [Functor.mapBiprod_inv, biprod.inl_desc]
     rfl
   dsimp only [sumHalfIso, Iso.trans_hom, Iso.symm_hom]
   rw [← Category.assoc, ← Category.assoc, h]
@@ -59,7 +59,7 @@ theorem inr_sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
     biprod.inr ▷ U ≫ (sumHalfIso X Y U).hom = (Y.2.β U).hom ≫ U ◁ biprod.inr := by
   have h : biprod.inr ▷ U ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).hom = biprod.inr := by
     apply (Iso.eq_comp_inv (Functor.mapBiprod (tensorRight U) X.1 Y.1)).mp
-    simp only [Functor.mapBiprod_inv, biprod.inr_desc]
+    rw [Functor.mapBiprod_inv, biprod.inr_desc]
     rfl
   dsimp only [sumHalfIso, Iso.trans_hom, Iso.symm_hom]
   rw [← Category.assoc, ← Category.assoc, h]
@@ -221,7 +221,7 @@ theorem kernelHalfIso_ι {X Y : CategoryTheory.Center C} (f : X ⟶ Y) (U : C) :
   change (PreservesKernel.iso (tensorRight U) f.f).hom ≫
     (kernel.mapIso (f.f ▷ U) (U ◁ f.f) (X.2.β U) (Y.2.β U) (f.comm U)).hom ≫
     ((PreservesKernel.iso (tensorLeft U) f.f).inv ≫ (tensorLeft U).map (kernel.ι f.f)) = _
-  simp only [PreservesKernel.iso_inv_ι, kernel.mapIso_hom, kernel.map, PreservesKernel.iso_hom]
+  rw [PreservesKernel.iso_inv_ι, kernel.mapIso_hom, PreservesKernel.iso_hom]
   change kernelComparison f.f (tensorRight U) ≫
       (kernel.lift (U ◁ f.f) (kernel.ι (f.f ▷ U) ≫ (X.2.β U).hom) _ ≫
         kernel.ι (U ◁ f.f)) = _
@@ -374,7 +374,7 @@ theorem cokernelHalfIso_π {X Y : CategoryTheory.Center C} (f : X ⟶ Y) (U : C)
   change (((tensorRight U).map (cokernel.π f.f) ≫ (PreservesCokernel.iso (tensorRight U) f.f).hom) ≫
       (cokernel.mapIso (f.f ▷ U) (U ◁ f.f) (X.2.β U) (Y.2.β U) (f.comm U)).hom) ≫
       (PreservesCokernel.iso (tensorLeft U) f.f).inv = _
-  simp only [PreservesCokernel.π_iso_hom, cokernel.mapIso_hom, PreservesCokernel.iso_inv]
+  rw [PreservesCokernel.π_iso_hom, cokernel.mapIso_hom, PreservesCokernel.iso_inv]
   change (cokernel.π (f.f ▷ U) ≫ cokernel.desc (f.f ▷ U)
     ((Y.2.β U).hom ≫ cokernel.π (U ◁ f.f)) _) ≫
       cokernelComparison f.f (tensorLeft U) = _
