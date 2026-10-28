@@ -107,17 +107,17 @@ theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :
 
 section
 variable {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
+variable (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ)
+include hnat
 
 /-- Compatible double-dual components have the same right quantum trace under
 an object isomorphism. -/
-theorem rightQuantumTrace_iso
-    (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
+theorem rightQuantumTrace_iso :
     rightQuantumTrace j = rightQuantumTrace k := by
   simpa [rightTraceWith, rightQuantumTrace] using (rightTraceWith_cyclic e.hom e.inv hnat)
 
 /-- Compatibility of double-dual components is preserved by inverse duality. -/
-theorem dual_components_natural
-    (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
+theorem dual_components_natural :
     (e.invᘁ) ≫ (rightDualIsoMap k).symm.hom =
       (rightDualIsoMap j).symm.hom ≫ ((e.invᘁ)ᘁ)ᘁ := by
   let ee := rightDualIsoMap (rightDualIsoMap e)
@@ -126,8 +126,7 @@ theorem dual_components_natural
 
 /-- Both quantum traces are preserved when double-dual components are
 transported across an object isomorphism. -/
-theorem quantumTraces_iso
-    (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ) :
+theorem quantumTraces_iso :
     rightQuantumTrace j = rightQuantumTrace k ∧ leftQuantumTrace j = leftQuantumTrace k :=
   ⟨rightQuantumTrace_iso e hnat, by
     simpa only [leftQuantumTrace_eq_rightDual] using

@@ -24,7 +24,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingBlock_unit (S : D) :
   crossingBlock X (𝟙_ D) S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  dsimp only [crossingBlock]
+  dsimp only [crossingBlock, mixedCrossing]
   rw [closeFusionMap_unit]
   monoidal
 
@@ -62,12 +62,12 @@ theorem crossingBlock_tensor
       ((((T ◁ g₂) ▷ X) ▷ (((Rᘁ : D) ⊗ T) ⊗ U)) ≫
         (((T ⊗ (U ⊗ S)) ⊗ X) ◁ (q ▷ U))) ⊗≫
       (((T ⊗ (U ⊗ S)) ⊗ X) ◁ z) ⊗≫ 𝟙 _ := by
-        dsimp only [crossingBlock]
+        dsimp only [crossingBlock, mixedCrossing]
         rw [closeFusionMap_tensor, tensorHom_def, comp_whiskerRight]
         monoidal
     _ = _ := by
       rw [← whisker_exchange]
-      dsimp only [crossingBlock]
+      dsimp only [crossingBlock, mixedCrossing]
       simp only [tensorHom_def, comp_whiskerRight, whiskerLeft_comp]
       monoidal
 
