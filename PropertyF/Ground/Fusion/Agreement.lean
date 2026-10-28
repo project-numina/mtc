@@ -238,15 +238,9 @@ def totalFusionMatrix (D : BraidedFusionCategory) :
 theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
     totalFusionMatrix D j k = totalFusionMatrix D k j := by
   classical
-  unfold totalFusionMatrix
-  calc
-    _ = ∑ i, (fusionCoeff D (dualIndex D i) j k : ℝ) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [fusionCoeff_comm D i k, fusionCoeff_reciprocity_labels,
-        fusionCoeff_comm D j (dualIndex D i)]
-    _ = _ := by
-      exact Equiv.sum_comp (dualEquiv D) (fun i => (fusionCoeff D i j k : ℝ))
+  have h := Equiv.sum_comp (dualEquiv D) (fun i => (fusionCoeff D i j k : ℝ))
+  change (∑ i, (fusionCoeff D (dualIndex D i) j k : ℝ)) = _ at h
+  simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry] using h
 
 /-- The total fusion matrix is strictly positive in every entry. -/
 theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
@@ -259,11 +253,9 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
   let : (tensorLeft (simples D j)).Faithful :=
     PropertyF.tensorLeft_faithful_of_unit_retract s r hsr
   let Y : D.Obj := simples D j ⊗ (ᘁ(simples D k))
-  have hid : (𝟙 Y : Y ⟶ Y) ≠ 0 := by
-    intro h
-    have hh : (tensorLeft (simples D j)).map (𝟙 (ᘁ(simples D k))) =
-        (tensorLeft (simples D j)).map 0 := by simpa [Y] using h
-    exact id_nonzero (ᘁ(simples D k)) ((tensorLeft (simples D j)).map_injective hh)
+  have hid : (𝟙 Y : Y ⟶ Y) ≠ 0 := fun h ↦
+    id_nonzero (ᘁ(simples D k))
+      ((tensorLeft (simples D j)).map_eq_zero_iff.mp (by simpa [Y] using h))
   obtain ⟨i, f, _, hf, _⟩ := exists_simple_retract D hid
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   have hm : 0 < Module.finrank ℂ (simples D i ⟶ Y) := by
@@ -339,9 +331,8 @@ theorem exists_positive_common_eigenvector :
       ∀ i, ∃ d : ℝ, characterMatrix D i *ᵥ v = d • v := by
   classical
   let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
-  have hs : (totalFusionMatrix D).IsHermitian := by
-    rw [Matrix.isHermitian_iff_isSymm]
-    exact Matrix.IsSymm.ext (fun j k => totalFusionMatrix_symmetric D k j)
+  have hs : (totalFusionMatrix D).IsHermitian := Matrix.isHermitian_iff_isSymm.mpr
+    (Matrix.IsSymm.ext fun j k => totalFusionMatrix_symmetric D k j)
   obtain ⟨a, v, hvpos, hve⟩ := positive_symmetric_matrix_has_positive_eigenvector
     hs (totalFusionMatrix_pos D)
   refine ⟨v, hvpos, ?_⟩
@@ -349,11 +340,8 @@ theorem exists_positive_common_eigenvector :
   have hcomm := total_commutes_characterMatrix D i
   have hve' : totalFusionMatrix D *ᵥ (characterMatrix D i *ᵥ v) =
       a • (characterMatrix D i *ᵥ v) := by
-    rw [Matrix.mulVec_mulVec, hcomm.eq, ← Matrix.mulVec_mulVec, hve]
-    rw [Matrix.mulVec_smul]
-  obtain ⟨d, hd⟩ := positive_matrix_eigenspace_unique
-    (totalFusionMatrix_pos D) hvpos hve hve'
-  exact ⟨d, hd⟩
+    rw [Matrix.mulVec_mulVec, hcomm.eq, ← Matrix.mulVec_mulVec, hve, Matrix.mulVec_smul]
+  exact positive_matrix_eigenspace_unique (totalFusionMatrix_pos D) hvpos hve hve'
 
 /-- A positive normalized character exists for the actual fusion rules. -/
 theorem exists_positive_character :
@@ -420,9 +408,7 @@ theorem positive_character_unique
     · intro i _
       exact mul_pos (hfpos i) (hgpos i)
     · exact Finset.univ_nonempty
-  have heq : (∑ i, f i) = ∑ i, g i := by
-    have := mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm
-    exact this
+  have heq : (∑ i, f i) = ∑ i, g i := mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm
   rw [← heq] at hge
   obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique
     (totalFusionMatrix_pos D) hfpos hfe hge
@@ -592,19 +578,12 @@ theorem fusionMatrix_dual (i : Fin (rank D)) :
     fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ := by
   ext j k
   change (fusionCoeff D (dualIndex D i) k j : ℂ) = (fusionCoeff D i j k : ℂ)
-  rw [fusionCoeff_comm D (dualIndex D i) k, fusionCoeff_reciprocity_labels,
-    dualIndex_involutive, fusionCoeff_comm D j i]
+  rw [← fusionCoeff_dual_symmetry D i k j]
 
 /-- Dual simple objects have the same FP dimension. -/
 theorem fpSimple_dual (i : Fin (rank D)) :
     fpSimple D (dualIndex D i) = fpSimple D i :=
   by simp [fpSimple, fusionMatrix_dual, Matrix.spectralRadius_transpose]
-
-theorem fusionCoeff_dual_unit (i : Fin (rank D)) :
-    fusionCoeff D i (dualIndex D i) (unitIndex D) = 1 := by
-  rw [fusionCoeff_comm D i (dualIndex D i), fusionCoeff_reciprocity_labels,
-    fusionCoeff_unit]
-  simp
 
 /-- Every simple has FP dimension at least one. -/
 theorem one_le_fpSimple (i : Fin (rank D)) :
