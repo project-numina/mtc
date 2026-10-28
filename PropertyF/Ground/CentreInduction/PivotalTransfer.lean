@@ -33,12 +33,12 @@ theorem center_pivotalDimension_forget
     (p : Dimensions.PivotalStructure (C := C.Obj))
     (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
     (Z : CategoryTheory.Center C.Obj)
-    (hcompat : (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso C.Obj Z).hom = (p.iso Z.1).hom) :
+    (hcompat : (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ Z =
       Dimensions.pivotalDimension C p Z.1 := by
   unfold Dimensions.pivotalDimension
   rw [center_unitScalar_forget]
-  rw [forget_trace_of_pivotal_component C.Obj p pZ Z hcompat]
+  rw [forget_trace_of_pivotal_component p pZ Z hcompat]
 
 /-- A compatible lift of a positive pivotal structure has the actual centre's
 FP dimensions, is spherical, and proves the centre's pseudo-unitarity. -/
@@ -47,7 +47,7 @@ theorem center_positive_spherical_of_compatible_pivotal
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
     (hcompat : ∀ Z : CategoryTheory.Center C.Obj,
-      (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso C.Obj Z).hom = (p.iso Z.1).hom) :
+      (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     pZ.IsSpherical ∧
       (∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
         (simples (Integrate.bundledCenter C) i) =
@@ -85,7 +85,7 @@ theorem center_structure_of_compatible_pivotal
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (pZ : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
     (hcompat : ∀ Z : CategoryTheory.Center C.Obj,
-      (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso C.Obj Z).hom = (p.iso Z.1).hom) :
+      (pZ.iso Z).hom.f ≫ (forgetDoubleDualIso Z).hom = (p.iso Z.1).hom) :
     ∃ hFusion : IsFusionCategory (CategoryTheory.Center C.Obj),
       letI := hFusion
       pZ.IsSpherical ∧
@@ -97,7 +97,7 @@ theorem center_structure_of_compatible_pivotal
   let J := (induction C).obj (𝟙_ C.Obj)
   let : IsFusionCategory (CategoryTheory.Center C.Obj) :=
     center_fusion_of_compatible_pivotal C p hsimple pZ
-      (forget_trace_of_pivotal_component C.Obj p pZ J (hcompat J))
+      (forget_trace_of_pivotal_component p pZ J (hcompat J))
   refine ⟨inferInstance, ?_⟩
   obtain ⟨hs, hd, hpu⟩ := center_positive_spherical_of_compatible_pivotal C p hsimple pZ hcompat
   refine ⟨hs, hd, hpu, ?_⟩

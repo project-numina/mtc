@@ -8,15 +8,15 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (D : Type u) [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (CategoryTheory.Center D)]
 
 omit [RightRigidCategory D] in
 /-- Forgetting a centre mate computes the mate for the forgotten dual pairings. -/
 theorem forget_rightAdjointMate {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
     (fᘁ).f = @rightAdjointMate D _ _ X.1 Y.1
-      (show HasRightDual X.1 from { rightDual := (Xᘁ).1, exact := forgetPairing D X })
-      (show HasRightDual Y.1 from { rightDual := (Yᘁ).1, exact := forgetPairing D Y }) f.f := by
+      (show HasRightDual X.1 from { rightDual := (Xᘁ).1, exact := forgetPairing X })
+      (show HasRightDual Y.1 from { rightDual := (Yᘁ).1, exact := forgetPairing Y }) f.f := by
   simp only [rightAdjointMate, CategoryTheory.Center.comp_f,
     CategoryTheory.Center.rightUnitor_inv_f, CategoryTheory.Center.leftUnitor_hom_f,
     CategoryTheory.Center.whiskerLeft_f, CategoryTheory.Center.whiskerRight_f,
@@ -25,31 +25,31 @@ theorem forget_rightAdjointMate {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
 
 /-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
 theorem forgetDualIso_natural {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
-    (fᘁ).f ≫ (forgetDualIso D X).hom = (forgetDualIso D Y).hom ≫ (f.fᘁ) := by
+    (fᘁ).f ≫ (forgetDualIso X).hom = (forgetDualIso Y).hom ≫ (f.fᘁ) := by
   simp [forget_rightAdjointMate, forgetDualIso, rightDualIso, ← comp_rightAdjointMate]
 
 /-- The double-dual comparison is natural in centre morphisms. -/
 theorem forgetDoubleDualIso_natural {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
-    ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso D Y).hom =
-      (forgetDoubleDualIso D X).hom ≫ ((f.fᘁ)ᘁ) := by
-  have h := forgetDualIso_natural D f
+    ((fᘁ)ᘁ).f ≫ (forgetDoubleDualIso Y).hom =
+      (forgetDoubleDualIso X).hom ≫ ((f.fᘁ)ᘁ) := by
+  have h := forgetDualIso_natural f
   have hmate := congrArg (fun m => rightAdjointMate m) h
   simp only [comp_rightAdjointMate] at hmate
-  have hdual := forgetDualIso_natural D (fᘁ)
+  have hdual := forgetDualIso_natural (fᘁ)
   simp only [forgetDoubleDualIso, Iso.trans_hom, Dimensions.rightDualIsoMap,
     Iso.symm_hom, Category.assoc]
   rw [← Category.assoc, hdual]
   simp only [Category.assoc]
-  have hk : (fᘁ).fᘁ ≫ (forgetDualIso D Y).invᘁ =
-      (forgetDualIso D X).invᘁ ≫ ((f.fᘁ)ᘁ) := by
-    let : IsIso ((forgetDualIso D X).homᘁ) := by
-      change IsIso (Dimensions.rightDualIsoMap (forgetDualIso D X)).hom
+  have hk : (fᘁ).fᘁ ≫ (forgetDualIso Y).invᘁ =
+      (forgetDualIso X).invᘁ ≫ ((f.fᘁ)ᘁ) := by
+    let : IsIso ((forgetDualIso X).homᘁ) := by
+      change IsIso (Dimensions.rightDualIsoMap (forgetDualIso X)).hom
       infer_instance
-    apply (cancel_epi ((forgetDualIso D X).homᘁ)).1
+    apply (cancel_epi ((forgetDualIso X).homᘁ)).1
     rw [← Category.assoc, hmate]
-    have hx : (forgetDualIso D X).homᘁ ≫ (forgetDualIso D X).invᘁ = 𝟙 _ := by
+    have hx : (forgetDualIso X).homᘁ ≫ (forgetDualIso X).invᘁ = 𝟙 _ := by
       rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
-    have hy : (forgetDualIso D Y).homᘁ ≫ (forgetDualIso D Y).invᘁ = 𝟙 _ := by
+    have hy : (forgetDualIso Y).homᘁ ≫ (forgetDualIso Y).invᘁ = 𝟙 _ := by
       rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
     simp only [Category.assoc, hy, Category.comp_id]
     rw [← Category.assoc, hx, Category.id_comp]
@@ -59,10 +59,10 @@ theorem forgetDoubleDualIso_natural {X Y : CategoryTheory.Center D} (f : X ⟶ Y
 theorem transported_pivotal_natural
     (p : Dimensions.PivotalStructure (C := D))
     {X Y : CategoryTheory.Center D} (f : X ⟶ Y) :
-    f.f ≫ (p.iso Y.1).hom ≫ (forgetDoubleDualIso D Y).inv =
-      (p.iso X.1).hom ≫ (forgetDoubleDualIso D X).inv ≫ ((fᘁ)ᘁ).f := by
-  have h := forgetDoubleDualIso_natural D f
-  apply (cancel_mono (forgetDoubleDualIso D Y).hom).1
+    f.f ≫ (p.iso Y.1).hom ≫ (forgetDoubleDualIso Y).inv =
+      (p.iso X.1).hom ≫ (forgetDoubleDualIso X).inv ≫ ((fᘁ)ᘁ).f := by
+  have h := forgetDoubleDualIso_natural f
+  apply (cancel_mono (forgetDoubleDualIso Y).hom).1
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
   rw [h]
   simp only [Iso.inv_hom_id_assoc]
@@ -147,7 +147,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (D : Type u) [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (CategoryTheory.Center D)]
 
 theorem rightDualIso_trans {E : Type u} [Category.{v} E] [MonoidalCategory E]
@@ -159,14 +159,14 @@ omit [RightRigidCategory D] in
 /-- The forgotten tensor dual agrees with the tensor pairing of forgotten duals. -/
 theorem forget_rightDualTensorIso (X Y : CategoryTheory.Center D) :
     (rightDualTensorIso X Y).hom.f =
-      (rightDualIso (forgetPairing D (X ⊗ Y))
+      (rightDualIso (forgetPairing (X ⊗ Y))
         (show ExactPairing (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1) from
           @ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1
-            (forgetPairing D X) (forgetPairing D Y))).hom := by
+            (forgetPairing X) (forgetPairing Y))).hom := by
   have hc : (η_ (X ⊗ Y) (Yᘁ ⊗ Xᘁ)).f =
       @ExactPairing.coevaluation D _ _ (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1)
         (@ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1
-          (forgetPairing D X) (forgetPairing D Y)) := by
+          (forgetPairing X) (forgetPairing Y)) := by
     let cx : 𝟙_ D ⟶ X.1 ⊗ (Xᘁ).1 := (η_ X (Xᘁ)).f
     let cy : 𝟙_ D ⟶ Y.1 ⊗ (Yᘁ).1 := (η_ Y (Yᘁ)).f
     have hh : (η_ X (Xᘁ) ⊗≫ (X ◁ η_ Y (Yᘁ)) ▷ (Xᘁ) ⊗≫
@@ -183,20 +183,20 @@ theorem forget_rightDualTensorIso (X Y : CategoryTheory.Center D) :
 
 /-- Forgetting centre duals preserves their tensor comparison. -/
 theorem forgetDualIso_tensor (X Y : CategoryTheory.Center D) :
-    (forgetDualIso D (X ⊗ Y)).hom ≫ (rightDualTensorIso X.1 Y.1).hom =
+    (forgetDualIso (X ⊗ Y)).hom ≫ (rightDualTensorIso X.1 Y.1).hom =
       (rightDualTensorIso X Y).hom.f ≫
-        ((forgetDualIso D Y).hom ⊗ₘ (forgetDualIso D X).hom) := by
-  let p := forgetPairing D (X ⊗ Y)
+        ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) := by
+  let p := forgetPairing (X ⊗ Y)
   let q := (HasRightDual.exact : ExactPairing (X.1 ⊗ Y.1) ((X.1 ⊗ Y.1)ᘁ))
   let s := @ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1
-      (forgetPairing D X) (forgetPairing D Y)
+      (forgetPairing X) (forgetPairing Y)
   let r := @ExactPairing.tensor D _ _ X.1 Y.1 (X.1ᘁ) (Y.1ᘁ)
       HasRightDual.exact HasRightDual.exact
   have h1 := rightDualIso_trans p q r
   have h2 := rightDualIso_trans p s r
-  have h3 := rightDualIso_tensor (forgetPairing D X) HasRightDual.exact
-    (forgetPairing D Y) HasRightDual.exact
-  change (rightDualIso s r).hom = (forgetDualIso D Y).hom ⊗ₘ (forgetDualIso D X).hom at h3
+  have h3 := rightDualIso_tensor (forgetPairing X) HasRightDual.exact
+    (forgetPairing Y) HasRightDual.exact
+  change (rightDualIso s r).hom = (forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom at h3
   rw [forget_rightDualTensorIso]
   change (rightDualIso p q).hom ≫ (rightDualIso q r).hom =
     (rightDualIso p s).hom ≫ _
