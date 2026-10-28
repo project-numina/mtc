@@ -45,12 +45,11 @@ theorem rightQuantumTrace_tensor_scalar
     rw [partialTraceWith_one, eq_smul_one_of_algEquiv scalar (rightQuantumTrace k)]
     apply End.ext
     simp
-  have h := rightTraceWith_partialTraceWith j k (1 : End (X ⊗ Y))
-  rw [hpt] at h
   have ht : rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) =
       scalar (rightQuantumTrace k) • rightQuantumTrace j := by
     apply End.homEquiv.injective
-    simpa [rightTraceWith, rightQuantumTrace, tensorHom_def] using (congrArg End.asHom h.symm)
+    simpa [hpt, rightTraceWith, rightQuantumTrace, tensorHom_def] using
+      congrArg End.asHom (rightTraceWith_partialTraceWith j k (1 : End (X ⊗ Y))).symm
   rw [ht, map_smul, smul_eq_mul, mul_comm]
 
 end PropertyF.Ground.Dimensions
@@ -189,12 +188,11 @@ theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}
   have hop (k : Fin (rank C)) :
       Linear.rightComp ℂ (simples C k) d.inv = (multiplicityDefect C i j k).toLinearMap := by
     ext f
-    have hs : (multiplicityDefect C i j k).symm f = multiplicityDefect C i j k f :=
-      (LinearEquiv.symm_apply_eq _).2 (congrArg (fun L => L f) (hinv k)).symm
-    simpa [multiplicityDefect, Linear.homCongr_apply, Linear.homCongr_symm_apply, d] using hs
-  have ht := rootTrace_eq_simpleHom_trace_sum C d.inv
-  rw [rootTrace_inverseDefect] at ht
-  simpa only [enoTraceMatrix, hop] using ht.symm
+    simpa [multiplicityDefect, Linear.homCongr_apply, Linear.homCongr_symm_apply, d] using
+      ((LinearEquiv.symm_apply_eq _).2 (congrArg (fun L ↦ L f) (hinv k)).symm :
+        (multiplicityDefect C i j k).symm f = multiplicityDefect C i j k f)
+  simpa only [enoTraceMatrix, hop, d, rootTrace_inverseDefect] using
+    (rootTrace_eq_simpleHom_trace_sum C d.inv).symm
 
 end PropertyF.Ground.Dimensions
 

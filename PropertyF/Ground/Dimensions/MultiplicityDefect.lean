@@ -150,8 +150,8 @@ theorem involution_eq_one_of_trace_eq_finrank [CharZero k] (hT : T * T = 1)
   have hq : IsIdempotentElem Q := by
     simpa [Q, sub_eq_add_neg] using involution_half_projection (T := -T) (by simpa using hT)
   have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff hq).mp (by simp [Q, htrace])
-  have hQ : (2 : k) • Q = 1 - T := by simp [Q, smul_smul, NeZero.ne (2 : k)]
-  exact (sub_eq_zero.mp (by simpa [hzero] using hQ.symm)).symm
+  exact (sub_eq_zero.mp (by
+    simpa [hzero] using (show (2 : k) • Q = 1 - T by simp [Q, smul_smul]).symm)).symm
 
 
 end
@@ -175,17 +175,16 @@ theorem involution_phase_eq_one_of_trace :
   · let : Subsingleton V := Module.finrank_zero_iff.mp hz
     ext x
     exact Subsingleton.elim _ _
-  have hdim : (Module.finrank ℂ V : ℂ) ≠ 0 := by exact_mod_cast hz
-  have ht : LinearMap.trace ℂ V T ≠ 0 := left_ne_zero_of_mul (htrace ▸ hdim)
+  have ht : LinearMap.trace ℂ V T ≠ 0 := left_ne_zero_of_mul
+    (htrace ▸ (by exact_mod_cast hz : (Module.finrank ℂ V : ℂ) ≠ 0))
   have htr : (starRingEnd ℂ) (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T :=
     star_involution_trace hT
   have hconj := congrArg (starRingEnd ℂ) htrace
   simp only [map_mul, map_natCast, htr] at hconj
   have hcconj : (starRingEnd ℂ) c = c := mul_left_cancel₀ ht (hconj.trans htrace.symm)
   have hc2 : c * c = 1 := by simpa [hcconj, hc] using Complex.mul_conj' c
-  have hu : (c • T) * (c • T) = 1 := by
-    rw [smul_mul_assoc, mul_smul_comm, smul_smul, hT, hc2, one_smul]
-  apply involution_eq_one_of_trace_eq_finrank hu
+  apply involution_eq_one_of_trace_eq_finrank (by
+    rw [smul_mul_assoc, mul_smul_comm, smul_smul, hT, hc2, one_smul])
   rw [map_smul, smul_eq_mul, mul_comm, htrace]
 
 /-- The inverse phase also turns a maximal-trace involution into identity. -/
@@ -218,11 +217,10 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
   let d := (a.app X) ≪≫ b.symm
   change d.hom ≫ d.hom = 𝟙 X
   have hd : d.hom ≫ b.hom = (a.app X).hom := by simp [d, Category.assoc]
-  have hn := a.hom.naturality d.hom
-  change d.hom ≫ (a.app X).hom = (a.app X).hom ≫ F.map d.hom at hn
   have hc : b.hom ≫ F.map d.hom = d.hom ≫ b.hom := by
     apply (cancel_epi d.hom).1
-    rw [← Category.assoc, hd, ← hn]
+    rw [← Category.assoc, hd]
+    exact (a.hom.naturality d.hom).symm
   apply (cancel_mono (b.hom ≫ F.map b.hom)).1
   simp only [Category.assoc]
   slice_lhs 2 3 => rw [← hc]
