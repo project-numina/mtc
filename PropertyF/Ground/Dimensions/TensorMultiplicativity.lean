@@ -53,6 +53,16 @@ def partialTraceWith {Y : C} (k : Y ≅ (Yᘁ)ᘁ) (X : C) (f : End (X ⊗ Y)) :
     (X ◁ (k.hom ▷ (Yᘁ))) ≫ (X ◁ ε_ (Yᘁ) ((Yᘁ)ᘁ)) ≫ (ρ_ X).hom)
 
 set_option backward.isDefEq.respectTransparency false in
+/-- Closing an inserted right-factor endomorphism gives its right trace. -/
+theorem partialTraceWith_tensor_right {Y : C} (k : Y ≅ (Yᘁ)ᘁ) (X : C) (b : Y ⟶ Y) :
+    partialTraceWith k X (End.of (𝟙 X ⊗ₘ b)) =
+      End.of ((ρ_ X).inv ≫ X ◁ (rightTraceWith k b).asHom ≫ (ρ_ X).hom) := by
+  apply End.ext
+  simp only [partialTraceWith, rightTraceWith, tensorHom_def, id_whiskerRight,
+    Category.id_comp, whiskerLeft_comp, comp_whiskerRight, Category.assoc]
+  monoidal
+
+set_option backward.isDefEq.respectTransparency false in
 /-- Closing the right factor first works without a pivotal structure. -/
 theorem rightTraceWith_partialTraceWith {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ)
     (f : End (X ⊗ Y)) :
@@ -129,23 +139,15 @@ variable {k : Type*} [CommSemiring k]
 
 variable (p : PivotalStructure (C := C))
 
-omit [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C] in
-/-- Closing the right tensor factor of an inserted endomorphism. -/
-theorem rightPartialTrace_tensor_right (X : C) {Y : C} (b : Y ⟶ Y) :
-    rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) =
-      End.of ((ρ_ X).inv ≫ X ◁ (p.rightTrace b).asHom ≫ (ρ_ X).hom) := by
-  apply End.ext
-  simp only [rightPartialTrace,
-    PivotalStructure.rightTrace, rightTraceWith, tensorHom_def, id_whiskerRight, Category.id_comp,
-    whiskerLeft_comp, comp_whiskerRight, Category.assoc]
-  monoidal
-
 variable (scalar : End (𝟙_ C) ≃ₐ[k] k)
 
 /-- The right partial trace of an inserted right-factor endomorphism is scalar. -/
 theorem rightPartialTrace_one_tensor (X : C) {Y : C} (b : Y ⟶ Y) :
     rightPartialTrace p (End.of (𝟙 X ⊗ₘ b)) = scalar (p.rightTrace b) • 1 := by
-  rw [rightPartialTrace_tensor_right p X b, eq_smul_one_of_algEquiv scalar (p.rightTrace b)]
+  change partialTraceWith (p.iso Y) X (End.of (𝟙 X ⊗ₘ b)) = _
+  rw [partialTraceWith_tensor_right]
+  change End.of ((ρ_ X).inv ≫ X ◁ (p.rightTrace b).asHom ≫ (ρ_ X).hom) = _
+  rw [eq_smul_one_of_algEquiv scalar (p.rightTrace b)]
   apply End.ext
   simp
 

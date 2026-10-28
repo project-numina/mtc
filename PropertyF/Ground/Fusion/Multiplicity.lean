@@ -116,8 +116,8 @@ theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
 theorem exists_positive_multiplicity {X : D.Obj}
     (hX : ¬ IsZero X) : ∃ i, 0 < Module.finrank ℂ (simples D i ⟶ X) := by
   classical
-  have hid : (𝟙 X : X ⟶ X) ≠ 0 := by simpa [IsZero.iff_id_eq_zero] using hX
-  obtain ⟨i, _, t, _, ht⟩ := exists_simple_retract D hid
+  obtain ⟨i, _, t, _, ht⟩ := exists_simple_retract D (by
+    simpa [IsZero.iff_id_eq_zero] using hX)
   let : FiniteDimensional ℂ (simples D i ⟶ X) := IsFusionCategory.hom_finite _ _
   let : Simple (simples D i) := simples_simple D i
   exact ⟨i, Module.finrank_pos_iff_exists_ne_zero.mpr
