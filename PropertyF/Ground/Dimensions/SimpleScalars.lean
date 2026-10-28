@@ -276,8 +276,7 @@ theorem tensor_simples_hom_ext {X Y Z : C.Obj} {f g : X ⊗ Y ⟶ Z}
   let V := simplePiecesObject C X
   let W := simplePiecesObject C Y
   apply (cancel_epi (ex.symm ⊗ᵢ ey.symm).hom).1
-  apply tensorBiproduct_hom_ext
-  intro i j
+  refine tensorBiproduct_hom_ext fun i j ↦ ?_
   simpa [ex, ey, V, W, tensorIso_hom, tensorHom_comp_tensorHom, Category.assoc] using
     h (biproduct.ι V i ≫ ex.inv) (biproduct.ι W j ≫ ey.inv)
 

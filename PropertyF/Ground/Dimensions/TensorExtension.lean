@@ -52,8 +52,8 @@ theorem rootSignTwist_app_simple (i : Fin (rank C)) :
       c i • ((fourthDualRootNaturalIso C).app (simples C i)).hom := by
   change ((simpleScalarNaturalIso C c hc).app (simples C i)).hom ≫
     ((fourthDualRootNaturalIso C).app (simples C i)).hom = _
-  rw [simpleScalarNaturalIso_app_simple]
-  simp
+  simpa using congrArg (fun f ↦ f ≫ ((fourthDualRootNaturalIso C).app (simples C i)).hom)
+    (simpleScalarNaturalIso_app_simple C hc i)
 
 set_option backward.isDefEq.respectTransparency false in
 theorem rootSignTensorIso_hom (i j : Fin (rank C)) :
@@ -77,8 +77,7 @@ theorem rootPhaseDefect_apply {i j k : Fin (rank C)}
   have hn := (simpleScalarNaturalIso C c hc).hom.naturality f
   change f ≫ ((simpleScalarNaturalIso C c hc).app (simples C i ⊗ simples C j)).hom =
     ((simpleScalarNaturalIso C c hc).app (simples C k)).hom ≫ f at hn
-  rw [simpleScalarNaturalIso_app_simple] at hn
-  simp only [Linear.smul_comp] at hn
+  rw [simpleScalarNaturalIso_app_simple, Linear.smul_comp] at hn
   simp only [rootSignDefect, Iso.trans_hom, Iso.symm_hom, rootSignTwist, NatIso.trans_app,
     Category.assoc, rootPhaseTensorIso_inv, Linear.comp_smul]
   rw [← Category.assoc, hn]
@@ -91,9 +90,8 @@ theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
       rootSignTensorIso C c hc (simples C i) (simples C j) := by
   classical
   let X := simples C i ⊗ simples C j
-  have hid : (rootSignDefect C c hc (simples C i) (simples C j)).hom = 𝟙 X := by
-    apply simpleInclusion_hom_ext C
-    intro k t
+  have hid : (rootSignDefect C c hc (simples C i) (simples C j)).hom = 𝟙 X :=
+    simpleInclusion_hom_ext C fun k t ↦ by
     let f := simpleInclusion C X k t
     simpa [f, X, rootPhaseDefect_apply, multiplicityDefect_apply] using
       congrArg (fun L ↦ L f) (hdef k)
@@ -135,8 +133,7 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
         (doubleDualTensorIso (simples C i) (simples C j)).hom))
     (X Y : C.Obj) : (a.app (X ⊗ Y)).hom =
       ((a.app X).hom ⊗ₘ (a.app Y).hom) ≫ (doubleDualTensorIso X Y).hom := by
-  apply tensor_simples_hom_ext C
-  intro i j sx sy
+  refine tensor_simples_hom_ext C fun sx sy ↦ ?_
   have hn {A B : C.Obj} (f : A ⟶ B) :
       f ≫ (a.app B).hom = (a.app A).hom ≫ ((fᘁ)ᘁ) := a.hom.naturality f
   rw [hn (sx ⊗ₘ sy), hpair, Category.assoc, ← doubleDualTensorIso_natural,

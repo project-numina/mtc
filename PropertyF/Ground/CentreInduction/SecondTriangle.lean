@@ -51,8 +51,7 @@ theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
     (S j ◁ (underlyingCounit C).app X) = 0 :=
   letI : IsEmpty (crossingIndex C (S j) i (unitIndex C)) := by
     simpa only [crossingIndex, counit_column_finrank, hne, ↓reduceIte] using (inferInstance : IsEmpty (Fin 0))
-  (crossing_counit_matrix C X (S j) i).trans <|
-    (congrArg (· ≫ (S j ◁ (unitSummandIso C X).hom)) (Fintype.sum_empty _)).trans zero_comp
+  by simp only [crossing_counit_matrix, Fintype.sum_empty, zero_comp]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
@@ -66,11 +65,10 @@ theorem crossing_counit_diagonal :
   let : Unique (crossingIndex C (S i) i (unitIndex C)) := by
     simpa only [crossingIndex, counit_column_finrank, ↓reduceIte] using
       (inferInstance : Unique (Fin 1))
-  dsimp only
-  rw [crossing_counit_matrix C X (S i) i, Fintype.sum_unique]
   let : Simple (S i) := simples_simple C i
   let : FiniteDimensional ℂ (S i ⟶ S i) := IsFusionCategory.hom_finite _ _
-  simpa only [crossingSummand, Iso.symm_hom, Iso.symm_inv] using
+  simpa only [crossing_counit_matrix, Fintype.sum_unique, crossingSummand,
+    Iso.symm_hom, Iso.symm_inv] using
     congrArg (· ≫ (S i ◁ (unitSummandIso C X).hom))
       (crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
         (crossingInclusion_projection default))
@@ -184,8 +182,7 @@ theorem unit_matrix_reduce :
       ((S j) ◁ (underlyingCounit C).app X)) ▷ (S j)ᘁ) ⊗≫ 𝟙 _ := by
   simpa [unitComponent, unitComponentAt, induction, halfBraidingOfCrossingCandidate,
     underlying, underlyingFunctor, inductionSummand, monoidalComp, Category.assoc] using
-    unitComponent_reduce (b (S j)) (biproduct.ι (inductionSummand C X) i)
-      ((underlyingCounit C).app X)
+    unitComponent_reduce (b (S j)) (biproduct.ι _ i) ((underlyingCounit C).app X)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/

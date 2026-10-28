@@ -23,13 +23,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rootTensorIso_natural (f : X ⟶ X') (g : Y ⟶ Y') :
     (f ⊗ₘ g) ≫ (rootTensorIso C X' Y').hom =
       (rootTensorIso C X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) := by
-  have hn {A B : C.Obj} (h : A ⟶ B) :
-      h ≫ ((fourthDualRootNaturalIso C).app B).hom =
-        ((fourthDualRootNaturalIso C).app A).hom ≫ ((hᘁ)ᘁ) :=
-    (fourthDualRootNaturalIso C).hom.naturality h
   simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom]
   rw [Category.assoc, ← doubleDualTensorIso_natural, ← Category.assoc,
-    ← Category.assoc, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom, hn f, hn g]
+    ← Category.assoc, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom]
+  erw [(fourthDualRootNaturalIso C).hom.naturality f, (fourthDualRootNaturalIso C).hom.naturality g]
+  rfl
 
 /-- The multiplicativity defect is natural in both variables. -/
 theorem rootTensorDefect_natural (f : X ⟶ X') (g : Y ⟶ Y') :
@@ -65,8 +63,7 @@ theorem trace_reciprocity_of_coeval_defect
         rootDualSign C i • (tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
     ENOTraceMatrixReciprocity C := by
-  apply trace_reciprocity_of_frobenius_defect C
-  intro i j k g
+  refine trace_reciprocity_of_frobenius_defect C fun i j k g ↦ ?_
   let X := simples C i
   let K := simples C k
   let J := simples C j
@@ -112,8 +109,7 @@ coevaluation of the swapped dual pairing. -/
 theorem trace_reciprocity_of_coevaluation
     (hslide : ∀ i k, RootTensorDefectSlide C i (simples C k)) :
     ENOTraceMatrixReciprocity C := by
-  apply trace_reciprocity_of_coeval_defect C
-  intro i k
+  refine trace_reciprocity_of_coeval_defect C fun i k ↦ ?_
   let X := simples C i
   let K := simples C k
   let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)

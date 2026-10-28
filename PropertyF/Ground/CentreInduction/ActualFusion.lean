@@ -188,12 +188,12 @@ variable (C : BraidedFusionCategory.{v,u})
 local notation "Sᶜ" => simples C
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 local notation "𝒵" => Center C.Obj
+local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
 
 /-- FP dimension is the weighted sum of Hom dimensions to simple objects. -/
 theorem fpDimension_eq_sum_to_simple (X : C.Obj) :
     fpDimension C X = ∑ i, (Module.finrank ℂ (X ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
   Finset.sum_congr rfl fun i _ =>
-    letI : Simple (Sᶜ i) := simples_simple C i
     congrArg (fun n : ℕ => (n : ℝ) * fpSimple C i)
       (finrank_to_simple_eq_from_simple X (Sᶜ i)).symm
 
