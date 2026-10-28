@@ -48,7 +48,7 @@ theorem finrank_end_leftDual [RigidCategory C] (X : C) :
 
 /-- In a finite semisimple category an object with a one-dimensional
 endomorphism space is simple. -/
-theorem simple_of_finrank_end_eq_one (D : BraidedFusionCategory.{v,u}) (X : D.Obj)
+theorem simple_of_finrank_end_eq_one (D : BraidedFusionCategory.{v,u}) {X : D.Obj}
     (hdim : Module.finrank ℂ (X ⟶ X) = 1) : Simple X := by
   classical
   let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
@@ -165,7 +165,7 @@ namespace PropertyF.Ground.Dimensions
 
 /-- A simple object has nonzero right quantum trace for any double-dual isomorphism. -/
 theorem rightQuantumTrace_simple_ne_zero (C : Ground.BraidedFusionCategory.{v,u})
-    (X : C.Obj) [Simple X] (j : X ≅ (Xᘁ)ᘁ) :
+    {X : C.Obj} [Simple X] (j : X ≅ (Xᘁ)ᘁ) :
     rightQuantumTrace j ≠ 0 := by
   let _ : Simple (𝟙_ C.Obj) := Ground.IsFusionCategory.unit_simple
   let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _

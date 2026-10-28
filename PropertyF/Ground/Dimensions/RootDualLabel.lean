@@ -27,7 +27,7 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_simple_fourth_and_recipro
   have hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1 := by
     intro i j k
-    apply multiplicityDefect_involution_of_tensor_square C i j k
+    apply multiplicityDefect_involution_of_tensor_square C k
     apply rootTensor_square_of_fourthDual_tensor C
     · exact (doubleDualTensorIso_natural ((fourthDualRootNaturalIso C).app (simples C i)).hom
         ((fourthDualRootNaturalIso C).app (simples C j)).hom).symm
@@ -35,7 +35,7 @@ theorem eno_pseudoUnitary_yields_positive_spherical_of_simple_fourth_and_recipro
   have heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j := by
     intro i j
-    exact enoTraceMatrix_eigenvector_of_involutions C i j (hinv i j)
+    exact enoTraceMatrix_eigenvector_of_involutions C (hinv i j)
   have hnorm : ∀ i, squaredNorm C (simples C i) =
       ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
     intro i
@@ -134,7 +134,7 @@ def enoFrobeniusEquiv (C : BraidedFusionCategory.{v,u})
 /-- The ENO reciprocity equivalence is the composition pairing followed by
 the actual Frobenius reciprocity map. -/
 theorem enoReciprocityEquiv_pairing
-    (i j k : Fin (rank C))
+    {i j k : Fin (rank C)}
     (g : simples C i ⊗ simples C j ⟶ simples C k) :
     enoReciprocityEquiv C i j k (simpleHomPairingEquiv C k (simples C i ⊗ simples C j) g) =
       enoFrobeniusEquiv C i j k g := by simp [enoReciprocityEquiv, enoFrobeniusEquiv]
@@ -160,7 +160,7 @@ theorem enoTraceMatrix_reciprocity_of_frobenius_defect
   have hm : (multiplicityDefect C i k j).toLinearMap =
       Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom := by
     ext f
-    exact multiplicityDefect_apply C i k j f
+    exact multiplicityDefect_apply C f
   rw [hm]
   change P ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
     Module.Dual.transpose (Linear.rightComp ℂ (simples C j)

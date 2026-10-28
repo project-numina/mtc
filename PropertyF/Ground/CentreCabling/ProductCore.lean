@@ -51,7 +51,7 @@ theorem constituent_mem_productLabels
     (hi : i ∈ productLabels C) (hj : j ∈ productLabels C)
     (hk : 0 < fusionCoeff (Integrate.bundledCenter C) i j k) : k ∈ productLabels C := by
   rw [mem_productLabels] at hi hj ⊢
-  obtain ⟨r⟩ := Ground.fusionCoeff_retract (Integrate.bundledCenter C) i j k hk
+  obtain ⟨r⟩ := Ground.fusionCoeff_retract (Integrate.bundledCenter C) hk
   exact Centre.productRetract_of_retract r (Centre.productRetract_tensor hi hj)
 
 /-- The centre's product-retract labels satisfy the numerical double-centralizer

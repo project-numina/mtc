@@ -520,7 +520,7 @@ theorem base_finite_simple_sum (X : C.Obj) :
   | h X ih =>
     by_cases hz : IsZero X
     · exact .zero hz
-    · obtain ⟨i, hi⟩ := exists_positive_multiplicity C X hz
+    · obtain ⟨i, hi⟩ := exists_positive_multiplicity C hz
       let S := simples C i
       let : Simple S := simples_simple C i
       let : FiniteDimensional ℂ (S ⟶ X) := IsFusionCategory.hom_finite _ _

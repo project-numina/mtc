@@ -171,7 +171,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The signed three-object cup slide follows from involutivity of its outer tensor defect. -/
 theorem rootTensorDefect_slide_of_involution
-    (i : Fin (rank C)) (K : C.Obj)
+    {i : Fin (rank C)} (K : C.Obj)
     (hinv : let X := simples C i
       (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom =
         𝟙 ((Xᘁ) ⊗ (X ⊗ K))) :
@@ -229,7 +229,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- A signed scalar tensor defect forces the fourth-dual tensor law. -/
 theorem fourthDualIso_tensor_of_signed_defect
-    (X Y : C.Obj) (z : ℂ) (hz : z * z = 1)
+    {X Y : C.Obj} (z : ℂ) (hz : z * z = 1)
     (hd : (rootTensorDefect C X Y).hom = z • 𝟙 (X ⊗ Y)) :
     (fourthDualIso C (X ⊗ Y)).hom =
       ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
@@ -260,7 +260,7 @@ theorem fourthDualIso_tensor_unitLabel_left (X : C.Obj) :
       ((fourthDualIso C (simples C (unitIndex C))).hom ⊗ₘ (fourthDualIso C X).hom) ≫
         (doubleDualTensorIso (((simples C (unitIndex C))ᘁ)ᘁ) ((Xᘁ)ᘁ)).hom ≫
           (((doubleDualTensorIso (simples C (unitIndex C)) X).homᘁ)ᘁ) :=
-  fourthDualIso_tensor_of_signed_defect C _ _ (rootDimension C (unitIndex C))
+  fourthDualIso_tensor_of_signed_defect C (rootDimension C (unitIndex C))
     (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_left C X)
 
 /-- The fourth-dual tensor law holds when the right factor is the chosen unit
@@ -270,7 +270,7 @@ theorem fourthDualIso_tensor_unitLabel_right (X : C.Obj) :
       ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C (simples C (unitIndex C))).hom) ≫
         (doubleDualTensorIso ((Xᘁ)ᘁ) (((simples C (unitIndex C))ᘁ)ᘁ)).hom ≫
           (((doubleDualTensorIso X (simples C (unitIndex C))).homᘁ)ᘁ) :=
-  fourthDualIso_tensor_of_signed_defect C _ _ (rootDimension C (unitIndex C))
+  fourthDualIso_tensor_of_signed_defect C (rootDimension C (unitIndex C))
     (rootDimension_unit_sq C) (rootTensorDefect_unitLabel_right C X)
 end PropertyF.Ground.Dimensions
 
@@ -318,7 +318,7 @@ theorem enoTraceMatrix_reciprocity_of_simple_fourthDual_tensor
     rw [rootTensor_square_eq_fourthDual_tensor, ← hfourth]
   apply enoTraceMatrix_reciprocity_of_coevaluation_sliding C
   intro i k
-  exact rootTensorDefect_slide_of_involution C i (simples C k) (hinv _ _)
+  exact rootTensorDefect_slide_of_involution C (simples C k) (hinv _ _)
 
 /-- The fourth-dual law on non-unit simple pairs suffices for the canonical pseudo-unitary spherical structure. -/
 theorem eno_pseudoUnitary_yields_positive_spherical_of_nonunit_fourthDual_tensor

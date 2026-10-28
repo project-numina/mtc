@@ -107,7 +107,7 @@ theorem fusionFlow_balance (D : BraidedFusionCategory.{v,u}) (i j : Fin (rank D)
 
 /-- A positive fusion coefficient gives an actual retract. -/
 theorem fusionCoeff_retract (D : BraidedFusionCategory.{v,u})
-    (i j k : Fin (rank D)) (h : 0 < fusionCoeff D i j k) :
+    {i j k : Fin (rank D)} (h : 0 < fusionCoeff D i j k) :
     Nonempty (Retract (simples D k) (simples D i ⊗ simples D j)) := by
   let : FiniteDimensional ℂ (simples D k ⟶ simples D i ⊗ simples D j) :=
     IsFusionCategory.hom_finite _ _
@@ -118,7 +118,7 @@ theorem fusionCoeff_retract (D : BraidedFusionCategory.{v,u})
 
 /-- Along a fusion path beginning at i, the endpoint is a retract of a
 positive tensor power of the simple i. -/
-theorem fusionPath_retract (D : BraidedFusionCategory.{v,u}) (i k : Fin (rank D))
+theorem fusionPath_retract (D : BraidedFusionCategory.{v,u}) {i k : Fin (rank D)}
     (h : Relation.ReflTransGen (fun j k => 0 < fusionFlow D i j k) i k) :
     ∃ n, Nonempty (Retract (simples D k) (tensorPower (simples D i) (n + 1))) := by
   induction h with
@@ -133,7 +133,7 @@ theorem fusionPath_retract (D : BraidedFusionCategory.{v,u}) (i k : Fin (rank D)
         exact (mul_pos_iff_of_pos_left (fpSimple_pos D j)).mp
           ((mul_pos_iff_of_pos_right (fpSimple_pos D k)).mp hh)
       exact_mod_cast hp
-    obtain ⟨s⟩ := fusionCoeff_retract D i j k hn
+    obtain ⟨s⟩ := fusionCoeff_retract D hn
     let t : Retract (simples D i ⊗ simples D j)
         (simples D i ⊗ tensorPower (simples D i) (n + 1)) :=
       { i := 𝟙 _ ⊗ₘ r.i
@@ -158,7 +158,7 @@ theorem unit_retract_tensorPower (D : BraidedFusionCategory.{v,u})
     by_contra h
     simp [h] at hj
   subst j
-  obtain ⟨n, ⟨r⟩⟩ := fusionPath_retract D i (unitIndex D) hp
+  obtain ⟨n, ⟨r⟩⟩ := fusionPath_retract D hp
   obtain ⟨u⟩ := unitIndex_iso D
   exact ⟨n, ⟨(Retract.ofIso u.symm).trans (r.trans (Retract.ofIso (Modular.tensorPowerIso e.symm _)))⟩⟩
 

@@ -38,7 +38,7 @@ theorem fpDimension_unit : fpDimension D (𝟙_ D.Obj) = 1 := by
   rw [← fpDimension_iso D e, fpDimension_simple, fpSimple_unit]
 
 /-- A nonzero object has a nonzero simple multiplicity. -/
-theorem exists_positive_multiplicity (X : D.Obj)
+theorem exists_positive_multiplicity {X : D.Obj}
     (hX : ¬ IsZero X) : ∃ i, 0 < Module.finrank ℂ (simples D i ⟶ X) := by
   classical
   have hid : (𝟙 X : X ⟶ X) ≠ 0 := by simpa [IsZero.iff_id_eq_zero] using hX
@@ -62,10 +62,10 @@ theorem exists_positive_multiplicity (X : D.Obj)
   exact Module.finrank_pos_iff_exists_ne_zero.mpr ⟨_, hp⟩
 
 /-- Every nonzero object has FP dimension at least one. -/
-theorem one_le_fpDimension (X : D.Obj)
+theorem one_le_fpDimension {X : D.Obj}
     (hX : ¬ IsZero X) : 1 ≤ fpDimension D X := by
   classical
-  obtain ⟨i, hi⟩ := exists_positive_multiplicity D X hX
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity D hX
   have hcoeff : (1 : ℝ) ≤ Module.finrank ℂ (simples D i ⟶ X) := by exact_mod_cast hi
   have hterm : (1 : ℝ) ≤
       (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i := by

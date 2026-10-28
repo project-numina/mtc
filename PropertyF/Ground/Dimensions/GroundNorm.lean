@@ -87,7 +87,7 @@ theorem groundUnitScalarEquiv_apply
 intrinsic squared norm in the target is independent of the chosen double-dual
 isomorphism. -/
 theorem target_squaredNorm_choice_independent
-    (X : C.Obj) [Simple X] (j : X ≅ ((Xᘁ)ᘁ)) :
+    {X : C.Obj} [Simple X] (j : X ≅ ((Xᘁ)ᘁ)) :
     squaredNorm C X =
       Ground.unitScalar C (rightQuantumTrace j) * Ground.unitScalar C (leftQuantumTrace j) := by
   let : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
@@ -102,7 +102,7 @@ theorem target_squaredNorm_eq_dimension_sq
     (X : C.Obj) [Simple X] :
     squaredNorm C X =
       (Ground.unitScalar C (rightQuantumTrace (p.iso X))) ^ 2 := by
-  rw [target_squaredNorm_choice_independent C X (p.iso X),
+  rw [target_squaredNorm_choice_independent C (p.iso X),
     ← spherical_quantumTraces_eq p hp X, pow_two]
 
 /-- The target's intrinsic global dimension is the sum of squared spherical
@@ -127,8 +127,8 @@ theorem target_squaredNorm_iso
   have hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ := by
     simp [k, rightDualIsoMap]
   have h := quantumTraces_iso j k e hnat
-  rw [target_squaredNorm_choice_independent C X j,
-      target_squaredNorm_choice_independent C Y k, h.1, h.2]
+  rw [target_squaredNorm_choice_independent C j,
+      target_squaredNorm_choice_independent C k, h.1, h.2]
 
 end PropertyF.Ground.Dimensions
 
