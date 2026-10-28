@@ -39,16 +39,10 @@ theorem averagedGram_posDef (ρ : G →* (Matrix ι ι ℂ)ˣ) :
 theorem averagedGram_invariant (ρ : G →* (Matrix ι ι ℂ)ˣ) (h : G) :
     (↑(ρ h) : Matrix ι ι ℂ)ᴴ * averagedGram ρ * (↑(ρ h) : Matrix ι ι ℂ) = averagedGram ρ := by
   classical
-  simp only [averagedGram, Matrix.mul_sum, Matrix.sum_mul]
-  calc
-    _ = ∑ g : G, (↑(ρ (g * h)) : Matrix ι ι ℂ)ᴴ * (↑(ρ (g * h)) : Matrix ι ι ℂ) := by
-      apply Finset.sum_congr rfl
-      intro g _
-      simp only [map_mul, Units.val_mul, Matrix.conjTranspose_mul]
-      simp only [Matrix.mul_assoc]
-    _ = ∑ g : G, (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ) := by
-      exact Equiv.sum_comp (Equiv.mulRight h)
-        (fun g => (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ))
+  simpa only [averagedGram, Matrix.mul_sum, Matrix.sum_mul, Equiv.coe_mulRight, map_mul,
+    Units.val_mul, Matrix.conjTranspose_mul, Matrix.mul_assoc] using
+    (Equiv.sum_comp (Equiv.mulRight h)
+      (fun g => (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ)))
 
 end PropertyF.Ground.Calculus
 
@@ -120,16 +114,14 @@ omit [Finite G] in
 theorem groupImageAlgebra_toSubmodule (ρ : G →* A) :
     (groupImageAlgebra ρ).toSubmodule = Submodule.span ℂ (Set.range ρ) := by
   classical
-  apply le_antisymm
-  · rintro x ⟨a, rfl⟩
-    change MonoidAlgebra.lift ℂ A G ρ a ∈ Submodule.span ℂ (Set.range ρ)
-    rw [MonoidAlgebra.lift_apply]
-    apply Submodule.sum_mem
-    intro g hg
-    exact Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self g))
-  · apply Submodule.span_le.mpr
-    rintro x ⟨g, rfl⟩
-    exact ⟨MonoidAlgebra.of ℂ G g, MonoidAlgebra.lift_of ρ g⟩
+  have h : (groupAlgebraMap ρ).toLinearMap =
+      (Finsupp.linearCombination ℂ ρ).comp (MonoidAlgebra.coeffLinearEquiv ℂ).toLinearMap := by
+    apply LinearMap.ext
+    intro f
+    change MonoidAlgebra.lift ℂ A G ρ f = Finsupp.linearCombination ℂ ρ f.coeff
+    rw [MonoidAlgebra.lift_apply, Finsupp.linearCombination_apply]
+  change (groupAlgebraMap ρ).toLinearMap.range = _
+  rw [h, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Finsupp.range_linearCombination]
 
 /-- A finite group's image algebra is semisimple, by Maschke and passage to a quotient. -/
 theorem groupImageAlgebra_semisimple (ρ : G →* A) :
@@ -150,10 +142,10 @@ theorem groupImageAlgebra_finite (ρ : G →* A) :
 matrix blocks. It is not assumed that the representation is faithful. -/
 theorem groupImageAlgebra_blocks (ρ : G →* A) :
     ∃ (n : ℕ) (d : Fin n → ℕ), (∀ i, NeZero (d i)) ∧
-      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) := by
+      Nonempty (groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) :=
   let _ := groupImageAlgebra_semisimple ρ
   let _ := groupImageAlgebra_finite ρ
-  exact IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
+  IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
 
 end PropertyF.Ground.Calculus
 
@@ -208,6 +200,16 @@ omit [Finite G] in
   change MonoidAlgebra.lift ℂ A G ρ (MonoidAlgebra.of ℂ G g) = ρ g
   exact MonoidAlgebra.lift_of ρ g
 
+/-- The canonical map from the categorical braid image into its span algebra. -/
+abbrev braidInImage {C : Type*} [Category C] [MonoidalCategory C] [BraidedCategory C]
+    [Preadditive C] [Linear ℂ C] (X : C) (n : ℕ) : braidImage X n →* braidAlgebra X n :=
+  groupInImage (braidEndRepresentation X n)
+
+@[simp] theorem braidInImage_val {C : Type*} [Category C] [MonoidalCategory C]
+    [BraidedCategory C] [Preadditive C] [Linear ℂ C] (X : C) (n : ℕ) (g : braidImage X n) :
+    (braidInImage X n g : End (tensorPower X (n + 2))) = braidEndRepresentation X n g :=
+  groupInImage_val _ _
+
 /-- A block presentation in which each represented group element is unitary. -/
 abbrev IsUnitaryPresentation {r : ℕ} {d : Fin r → ℕ} (ρ : G →* A)
     (e : groupImageAlgebra ρ ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩) : Prop :=
@@ -220,15 +222,9 @@ theorem groupInImage_span (ρ : G →* A) :
   classical
   apply Submodule.map_injective_of_injective (groupImageAlgebra ρ).toSubmodule.subtype_injective
   rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype]
-  calc
-    _ = Submodule.span ℂ (Set.range ρ) := by
-      congr 1
-      rw [← Set.range_comp']
-      change Set.range (fun g => (groupInImage ρ g : A)) = Set.range ρ
-      congr 1
-      funext g
-      exact groupInImage_val ρ g
-    _ = (groupImageAlgebra ρ).toSubmodule := (groupImageAlgebra_toSubmodule ρ).symm
+  rw [← Set.range_comp']
+  change Submodule.span ℂ (Set.range (fun g => (groupInImage ρ g : A))) = _
+  simpa only [groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
 
 /-- A Wedderburn equivalence can be chosen so that every group element is
 unitary in each matrix block. This choice is simultaneous for the whole group. -/

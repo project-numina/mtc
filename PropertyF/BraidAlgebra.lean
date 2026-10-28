@@ -17,20 +17,14 @@ theorem squares_eq_of_central_product {G : Type*} [Group G] (a b : G)
     (hbraid : a * b * a = b * a * b)
     (hb : Commute (a ^ 2 * b ^ 2) b) : a ^ 2 = b ^ 2 := by
   have hAb : Commute (a ^ 2) b := by
-    apply mul_right_cancel (b := b ^ 2)
-    calc
-      a ^ 2 * b * b ^ 2 = (a ^ 2 * b ^ 2) * b := by group
-      _ = b * (a ^ 2 * b ^ 2) := hb.eq
-      _ = b * a ^ 2 * b ^ 2 := by group
+    have h := hb.symm.mul_right ((Commute.refl b).pow_right 2).inv_right
+    simpa using h.symm
   have hconj : (a * b) * a * (a * b)⁻¹ = b := by
-    calc
-      _ = (a * b * a) * (b⁻¹ * a⁻¹) := by group
-      _ = (b * a * b) * (b⁻¹ * a⁻¹) := by rw [hbraid]
-      _ = b := by group
+    rw [mul_inv_rev, hbraid]
+    group
   have hAc : Commute (a ^ 2) (a * b) := (Commute.refl a).pow_left 2 |>.mul_right hAb
   calc
-    a ^ 2 = (a * b) * a ^ 2 * (a * b)⁻¹ := by
-      rw [← hAc.eq]; group
+    a ^ 2 = (a * b) * a ^ 2 * (a * b)⁻¹ := hAc.symm.mul_inv_cancel.symm
     _ = ((a * b) * a * (a * b)⁻¹) ^ 2 := by simp only [pow_two]; group
     _ = b ^ 2 := by rw [hconj]
 
