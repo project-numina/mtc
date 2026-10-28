@@ -228,12 +228,4 @@ theorem three_braid_trace (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple 
 def twoPowerIso (X : C) : tensorPower X 2 ≅ X ⊗ X :=
   Iso.refl X ⊗ᵢ (ρ_ X)
 
-omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
-set_option backward.isDefEq.respectTransparency false in
-/-- The two-strand generator is the categorical self-braiding. -/
-theorem twoGenerator_transport (X : C) :
-    ((twoPowerIso X).conjAut (braidGenerator X 0 0)).asIso.hom = (β_ X X).hom := by
-  change (twoPowerIso X).inv ≫ (braidGenerator X 0 0).asIso.hom ≫ (twoPowerIso X).hom = _
-  simp [twoPowerIso, braidGenerator, tensorPower]
-
 end PropertyF.Ground.Calculus

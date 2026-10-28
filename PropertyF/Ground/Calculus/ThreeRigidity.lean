@@ -107,11 +107,10 @@ theorem selfMonodromy_isOfFinOrder {X : C} (hfinite : ObjectPropertyF X) :
     (Aut.toEnd.comp (braidImage X 0).subtype)).isOfFinOrder
       (isOfFinOrder_of_finite (imageGenerator X 0 0))
   change IsOfFinOrder ((twoPowerIso X).conj (Aut.toEnd (braidGenerator X 0 0))) at h
-  rw [show (twoPowerIso X).conj (Aut.toEnd (braidGenerator X 0 0)) =
-    End.of ((β_ X X).hom) from End.ext (twoGenerator_transport X)] at h
-  have hs : (End.of ((β_ X X).hom) : End (X ⊗ X)) ^ 2 = selfMonodromy X :=
-    End.ext (by simp [selfMonodromy, pow_two, End.mul_asHom])
-  simpa only [hs] using h.pow (n := 2)
+  convert h.pow (n := 2) using 1
+  apply End.ext
+  simp [twoPowerIso, braidGenerator, tensorPower, selfMonodromy, Iso.conj_apply_asHom,
+    pow_two, End.mul_asHom]
 
 end LocalMonodromy
 

@@ -42,11 +42,10 @@ theorem fusion_coevaluation (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
       (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by
       rw [← whisker_exchange]
       monoidal
-    _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫
-      (R ◁ (𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ))) ⊗≫
-      (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by rw [closeFusionMap_evaluation f]
     _ = 𝟙 _ ⊗≫ ((η_ R (Rᘁ) ▷ (T ⊗ S)) ≫ (((R ⊗ Rᘁ) : D) ◁ f)) ⊗≫
-      (R ◁ ε_ R (Rᘁ)) ⊗≫ g := by monoidal
+      (R ◁ ε_ R (Rᘁ)) ⊗≫ g := by
+      rw [closeFusionMap_evaluation f]
+      monoidal
     _ = f ⊗≫ ((η_ R (Rᘁ) ▷ R) ⊗≫ (R ◁ ε_ R (Rᘁ))) ⊗≫ g := by
       rw [← whisker_exchange]
       monoidal
@@ -213,11 +212,6 @@ theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFus
       Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) :=
     (homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj)
       (induction C) (actualAdjunction C) (simples 𝒵ᶠ j) (simples C i)).finrank_eq
-  have hdim (i : Fin (rank C)) :
-      fpDimension 𝒵ᶠ (I i) = globalFPDimension C * fpSimple C i := by
-    rw [← Integrate.center_forget_fpDimension C]
-    change fpDimension C (underlying C (simples C i)) = _
-    rw [fpDimension_underlying, fpDimension_simple]
   have hbase (j : Fin (rank 𝒵ᶠ)) :
       ∑ i, (Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) : ℝ) * fpSimple C i =
         fpSimple 𝒵ᶠ j := by
@@ -230,15 +224,16 @@ theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFus
   have hsum : (∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i)) = globalFPDimension 𝒵ᶠ := by
     simp_rw [fpDimension, hadj, Finset.mul_sum]
     rw [Finset.sum_comm]
-    simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc]
-    simp_rw [← Finset.mul_sum, hbase]
+    simp_rw [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
+      ← Finset.mul_sum, hbase]
     simp [globalFPDimension, pow_two]
   calc
     globalFPDimension 𝒵ᶠ = ∑ i, fpSimple C i * fpDimension 𝒵ᶠ (I i) := hsum.symm
     _ = (globalFPDimension C) ^ 2 := by
-      simp_rw [hdim, mul_left_comm (fpSimple C _) (globalFPDimension C)]
-      rw [← Finset.mul_sum]
-      simp [globalFPDimension, pow_two]
+      simp_rw [← Integrate.center_forget_fpDimension C]
+      change (∑ i, fpSimple C i * fpDimension C (underlying C (simples C i))) = _
+      simp [fpDimension_underlying, fpDimension_simple, globalFPDimension, pow_two,
+        Finset.mul_sum, mul_left_comm]
 
 
 end PropertyF.Ground.CentreInduction

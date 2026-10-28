@@ -41,26 +41,46 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory 
   [RigidCategory (Center D)]
 local notation "𝒵" => Center D
 
-omit [RightRigidCategory D] in
+omit [RightRigidCategory D] [RigidCategory (Center D)] in
 set_option backward.isDefEq.respectTransparency false in
+/-- Forgetting a centre pairing gives a pairing in the base category. -/
+@[instance_reducible] def forgetPairingOf {Z W : Center D} (p : ExactPairing Z W) :
+    ExactPairing Z.1 W.1 :=
+  letI := p
+  { coevaluation' := (η_ Z W).f
+    evaluation' := (ε_ Z W).f
+    coevaluation_evaluation' := by
+      simpa only [Center.comp_f, Center.whiskerLeft_f,
+        Center.whiskerRight_f, Center.associator_inv_f,
+        Center.associator_hom_f, Center.rightUnitor_hom_f,
+        Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
+        Center.leftUnitor_inv_f] using
+          congrArg Center.Hom.f (ExactPairing.coevaluation_evaluation Z W)
+    evaluation_coevaluation' := by
+      simpa only [Center.comp_f, Center.whiskerLeft_f,
+        Center.whiskerRight_f, Center.associator_inv_f,
+        Center.associator_hom_f, Center.rightUnitor_hom_f,
+        Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
+        Center.leftUnitor_inv_f] using
+          congrArg Center.Hom.f (ExactPairing.evaluation_coevaluation Z W) }
+
+omit [RightRigidCategory D] in
 /-- Forgetting a centre dual pair gives a dual pair in the base category. -/
-@[instance_reducible] def forgetPairing (Z : 𝒵) : ExactPairing Z.1 ((Zᘁ).1) where
-  coevaluation' := (η_ Z (Zᘁ)).f
-  evaluation' := (ε_ Z (Zᘁ)).f
-  coevaluation_evaluation' := by
-    simpa only [Center.comp_f, Center.whiskerLeft_f,
-      Center.whiskerRight_f, Center.associator_inv_f,
-      Center.associator_hom_f, Center.rightUnitor_hom_f,
-      Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
-      Center.leftUnitor_inv_f] using
-        congrArg Center.Hom.f (ExactPairing.coevaluation_evaluation Z (Zᘁ))
-  evaluation_coevaluation' := by
-    simpa only [Center.comp_f, Center.whiskerLeft_f,
-      Center.whiskerRight_f, Center.associator_inv_f,
-      Center.associator_hom_f, Center.rightUnitor_hom_f,
-      Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
-      Center.leftUnitor_inv_f] using
-        congrArg Center.Hom.f (ExactPairing.evaluation_coevaluation Z (Zᘁ))
+@[instance_reducible] def forgetPairing (Z : 𝒵) : ExactPairing Z.1 ((Zᘁ).1) :=
+  forgetPairingOf HasRightDual.exact
+
+omit [RightRigidCategory D] [RigidCategory (Center D)] in
+set_option backward.isDefEq.respectTransparency false in
+/-- Forgetting commutes with comparing two pairings when their coevaluations agree. -/
+theorem forget_rightDualIso {Z A B : Center D} (p : ExactPairing Z A) (q : ExactPairing Z B)
+    (r : ExactPairing Z.1 B.1)
+    (hc : (@ExactPairing.coevaluation (Center D) _ _ Z B q).f =
+      @ExactPairing.coevaluation D _ _ Z.1 B.1 r) :
+    (rightDualIso p q).hom.f = (rightDualIso (forgetPairingOf p) r).hom := by
+  unfold rightDualIso rightAdjointMate
+  simp only [Center.comp_f, Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
+    Center.whiskerLeft_f, Center.whiskerRight_f, Center.associator_inv_f, Center.id_f, hc]
+  rfl
 
 /-- Compare the underlying centre dual with the chosen base dual. -/
 def forgetDualIso (Z : 𝒵) : ((Zᘁ).1) ≅ (Z.1ᘁ) :=

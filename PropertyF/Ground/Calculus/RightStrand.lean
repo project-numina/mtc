@@ -27,27 +27,34 @@ theorem unitary_representation_star_inv (ρ : G →* A) {g : G}
 
 end UnitaryRepresentation
 
-variable {R A B : Type*} [CommSemiring R] [StarRing R] [Semiring A] [Semiring B]
-  [Algebra R A] [Algebra R B] [StarRing A] [StarRing B] [StarModule R A] [StarModule R B]
+section Span
 
-/-- An algebra map that preserves the adjoint of each generator preserves
+variable {R A B : Type*} [Semiring R] [Star R] [AddCommMonoid A] [AddCommMonoid B]
+  [Module R A] [Module R B] [StarAddMonoid A] [StarAddMonoid B]
+  [StarModule R A] [StarModule R B]
+
+/-- A linear map that preserves the adjoint of each generator preserves
 it on their entire linear span. In particular this applies to identity-strand
 embeddings once the braids are represented by unitary matrices. -/
-theorem map_star_of_mem_span (φ : A →ₐ[R] B) (S : Set A)
+theorem map_star_of_mem_span (φ : A →ₗ[R] B) (S : Set A)
     (hS : ∀ x ∈ S, φ (star x) = star (φ x))
     {x : A} (hx : x ∈ Submodule.span R S) : φ (star x) = star (φ x) :=
   Submodule.span_induction hS (by simp)
     (fun _ _ _ _ hx hy => by simp [hx, hy])
     (fun _ _ _ hx => by simp [star_smul, hx]) hx
 
-variable {G : Type*} [Group G]
+end Span
 
-/-- An algebra map intertwining unitary representations is a star map when
+variable {R A B : Type*} [Semiring R] [Star R] [Semiring A] [Semiring B]
+  [Module R A] [Module R B] [StarRing A] [StarRing B] [StarModule R A] [StarModule R B]
+  {G : Type*} [Group G]
+
+/-- A linear map intertwining unitary representations is a star map when
 the source representation spans the source algebra. -/
 theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
     (hspan : Submodule.span R (Set.range ρ) = ⊤)
     (hρ : ∀ g, ρ g ∈ unitary A) (hσ : ∀ g, σ g ∈ unitary B)
-    (φ : A →ₐ[R] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
+    (φ : A →ₗ[R] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
     φ (star x) = star (φ x) :=
   map_star_of_mem_span φ (Set.range ρ) (fun _ h => h.elim fun g hg => hg ▸ by
     rw [unitary_representation_star_inv ρ (hρ g), hφ, hφ,
@@ -185,7 +192,7 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
         (addLeftStrands X n k))
       (presented_group_span (braidEndRepresentation X n) e)
       he (fun g => hf (addLeftStrands X n k g))
-      (f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom))
+      (f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom)).toLinearMap
     intro g
     change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
     rw [e.symm_apply_apply, addLeftBraidAlgebraIter_group]
@@ -367,7 +374,7 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
         (addRightStrands X n k))
       (presented_group_span (braidEndRepresentation X n) e)
       he (fun g => hf (addRightStrands X n k g))
-      (f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom))
+      (f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)).toLinearMap
     intro g
     change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
     rw [e.symm_apply_apply, addRightBraidAlgebraIter_group]

@@ -220,9 +220,7 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
   have hXfp : fpDimension D X = 𝒇 y :=
     (ScalarTwist.fpDimension_twist Z σ _).trans (fpDimension_simple Z y)
   have hXS : Ground.unitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
-      (d : ℂ) * 𝒇 y := by
-    rw [ScalarTwist.rightTrace_twist Z σ p]
-    exact hS
+      (d : ℂ) * 𝒇 y := (ScalarTwist.rightTrace_twist Z σ p _).trans hS
   actual_rigidity_of_overlap_and_galois_dimensions D q original transformed σ
     hpos htrans hqdim X d (𝒇 y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
     (Calculus.overlap_trace_power D q)

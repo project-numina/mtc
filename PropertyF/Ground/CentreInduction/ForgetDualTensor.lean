@@ -156,12 +156,7 @@ theorem forget_rightDualTensorIso :
         𝟙 ((X ⊗ Y) ⊗ ((Yᘁ) ⊗ (Xᘁ)))).f =
       (cx ⊗≫ (X.1 ◁ cy) ▷ (Xᘁ).1 ⊗≫ 𝟙 ((X.1 ⊗ Y.1) ⊗ ((Yᘁ).1 ⊗ (Xᘁ).1)))
     simp [monoidalComp, cx, cy]
-  unfold rightDualTensorIso rightDualIso rightAdjointMate
-  simp only [Center.comp_f, Center.rightUnitor_inv_f,
-    Center.leftUnitor_hom_f, Center.whiskerLeft_f,
-    Center.whiskerRight_f, Center.associator_inv_f,
-    Center.id_f, hc]
-  rfl
+  exact forget_rightDualIso HasRightDual.exact ExactPairing.tensor (tensorForgetPairing X Y) hc
 
 /-- Forgetting centre duals preserves their tensor comparison. -/
 theorem forgetDualIso_tensor :

@@ -20,6 +20,7 @@ open PropertyF.Ground.Dimensions
 open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreCalculus
+universe v u
 open CategoryTheory CategoryTheory.MonoidalCategory
 
 /-- A moved-point extension is conjugate to the first adjacent extension. -/
@@ -35,9 +36,11 @@ theorem decomposeFin_succ_conj {n : ℕ} (j : Fin (n + 1)) (σ : Perm (Fin (n + 
   rw [decomposeFin_eq_swap_fixHead, decomposeFin_eq_swap_fixHead, hswap]
   simp [T, mul_assoc]
 
+section
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+
 /-- Traces of permutation representations are invariant under conjugation. -/
-theorem permutationTrace_conj {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [RightRigidCategory C] (p : PivotalStructure (C := C)) {X : C}
+theorem permutationTrace_conj (p : PivotalStructure (C := D)) {X : D}
     {G : Type*} [Group G] (ρ : G →* End X) (g h : G) :
     p.rightTrace (ρ (g * h * g⁻¹)).asHom = p.rightTrace (ρ h).asHom := by
   simpa only [← End.mul_asHom, ← map_mul, mul_assoc, inv_mul_cancel_left] using
@@ -46,8 +49,7 @@ theorem permutationTrace_conj {C : Type u} [Category.{v} C] [MonoidalCategory C]
 /-- It is enough to establish the moved-strand deletion identity for the
 first adjacent swap: all other positions follow by conjugating the remaining
 strands. -/
-theorem movedTrace_of_adjacent {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] {p : PivotalStructure (C := D)} {X : D} {R : Type*}
+theorem movedTrace_of_adjacent {p : PivotalStructure (C := D)} {X : D} {R : Type*}
     (scalar : End (𝟙_ D) → R) (ρ : ∀ n : ℕ, Perm (Fin n) →* End (tensorPower X n))
     (hadj : HasAdjacentTrace (scalarPermTrace p scalar ρ)) :
     HasMovedTrace (scalarPermTrace p scalar ρ) := by
@@ -63,6 +65,8 @@ theorem movedTrace_of_adjacent {D : Type u} [Category.{v} D] [MonoidalCategory D
     simpa only [inv_inv] using
       congrArg scalar (permutationTrace_conj p (ρ (n + 1)) τ⁻¹ σ)
 
+end
+
 end PropertyF.Ground.CentreCalculus
 
 namespace PropertyF.Ground.CentreCalculus
@@ -75,22 +79,20 @@ def parityPermAction (D : Type u) [Category.{v} D] [MonoidalCategory D] [Braided
   if odd then Centre.twistAction (sgn ℂ n) (tensorPermAction X hX n)
   else tensorPermAction X hX n
 
-/-- A sign twist multiplies any linear evaluation of the pivotal trace by the sign. -/
-theorem scalarPermTrace_parity {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [BraidedCategory D] [RightRigidCategory D] [Preadditive D] [Linear ℂ D]
-    [MonoidalPreadditive D] [MonoidalLinear ℂ D]
-    (p : PivotalStructure (C := D)) (scalar : End (𝟙_ D) →ₗ[ℂ] ℂ)
-    {X : D} (hX : SelfTransparent X) {n : ℕ} (σ : Perm (Fin n)) :
-    scalarPermTrace p scalar (parityPermAction D hX true) n σ =
-      (sgn ℂ n σ : ℂ) * scalarPermTrace p scalar (tensorPermAction X hX) n σ := by
-  simp [scalarPermTrace, parityPermAction, Centre.twistAction, p.rightTrace_smul, smul_eq_mul]
-
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : HasFPSimpleDimensions C p) {X : C.Obj} (hX : SelfTransparent X) {n : ℕ}
 
 section
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
   [RightRigidCategory D] [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+
+/-- A sign twist multiplies any linear evaluation of the pivotal trace by the sign. -/
+theorem scalarPermTrace_parity (p : PivotalStructure (C := D)) (scalar : End (𝟙_ D) →ₗ[ℂ] ℂ)
+    {X : D} (hX : SelfTransparent X) {n : ℕ} (σ : Perm (Fin n)) :
+    scalarPermTrace p scalar (parityPermAction D hX true) n σ =
+      (sgn ℂ n σ : ℂ) * scalarPermTrace p scalar (tensorPermAction X hX) n σ := by
+  simp [scalarPermTrace, parityPermAction, Centre.twistAction, p.rightTrace_smul, smul_eq_mul]
+
 variable (p : PivotalStructure (C := D)) (scalar : End (𝟙_ D) ≃ₐ[ℂ] ℂ)
   {X : D} (hX : SelfTransparent X) (odd : Bool) {n : ℕ}
 

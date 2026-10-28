@@ -74,17 +74,9 @@ def positiveDualIso : (Z⁺ T)ᘁ ≅ Z⁺ (Tᘁ) :=
 
 /-- Forgetting the positive dual comparison gives the base dual comparison. -/
 theorem positiveDualIso_forget :
-    (positiveDualIso T).hom.f = (forgetDualIso (Z⁺ T)).hom := by
-  have hc : (@ExactPairing.coevaluation (Center D) _ _
-      (Z⁺ T) (Z⁺ (Tᘁ))
-      (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) :=
-    (Category.id_comp _).trans (Category.comp_id _)
-  unfold positiveDualIso forgetDualIso rightDualIso rightAdjointMate
-  simp only [Center.comp_f, Center.rightUnitor_inv_f,
-    Center.leftUnitor_hom_f, Center.whiskerLeft_f,
-    Center.whiskerRight_f, Center.associator_inv_f,
-    Center.id_f, hc]
-  rfl
+    (positiveDualIso T).hom.f = (forgetDualIso (Z⁺ T)).hom :=
+  forget_rightDualIso HasRightDual.exact (Centre.positiveExactPairing T (Tᘁ))
+    HasRightDual.exact ((Category.id_comp _).trans (Category.comp_id _))
 
 /-- The comparison between the double duals of an object and its positive lift. -/
 def positiveDoubleDualIso : ((Z⁺ T)ᘁ)ᘁ ≅ Z⁺ ((Tᘁ)ᘁ) :=
