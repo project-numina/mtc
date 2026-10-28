@@ -40,24 +40,9 @@ theorem rightDualTensorIso_associativity (X Y Z : C) :
     have heXY := rightDualTensorIso_evaluation X Y
     have heA := rightDualTensorIso_evaluation (X ⊗ Y) Z
     have he' : ((Zᘁ) ◁ (rightDualTensorIso X Y).hom) ▷ A ≫ ε_ A B =
-        ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) := by
-      change ((Zᘁ) ◁ (rightDualTensorIso X Y).hom) ▷ A ≫
-        @ExactPairing.evaluation C _ _ A B qA = _
-      have hq : @ExactPairing.evaluation C _ _ A B qA =
-        (𝟙 _ ⊗≫ (Zᘁ : C) ◁ (@ExactPairing.evaluation C _ _ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) qXY ▷ Z) ⊗≫ ε_ Z (Zᘁ)) := by
-        convert @ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _ qXY HasRightDual.exact using 1
-        monoidal
-      have hq2 : ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) =
-        (𝟙 _ ⊗≫ (Zᘁ : C) ◁ (ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ) ▷ Z) ⊗≫ ε_ Z (Zᘁ)) :=
-        @ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _
-          HasRightDual.exact HasRightDual.exact
-      rw [hq, hq2]
-      calc
-        _ = 𝟙 _ ⊗≫ (Zᘁ : C) ◁ (((rightDualTensorIso X Y).hom ▷ (X ⊗ Y) ≫
-          ε_ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ))) ▷ Z) ⊗≫ ε_ Z (Zᘁ) := by
-            simp only [comp_whiskerRight, whiskerLeft_comp]
-            monoidal
-        _ = _ := by rw [heXY]
+        ε_ A ((Zᘁ) ⊗ ((X ⊗ Y)ᘁ)) :=
+      tensorPairing_evaluation_whiskerLeft (p := HasRightDual.exact) (q := qXY)
+        (r := HasRightDual.exact) (rightDualTensorIso X Y).hom heXY
     change ((rightDualTensorIso (X ⊗ Y) Z).hom ≫
       (Zᘁ) ◁ (rightDualTensorIso X Y).hom) ▷ A ≫ ε_ A B = _
     rw [comp_whiskerRight_assoc, he', heA]
@@ -70,19 +55,10 @@ theorem rightDualTensorIso_associativity (X Y Z : C) :
     have ha : (α_ (Zᘁ) (Yᘁ) (Xᘁ)).hom ▷ A ≫
         @ExactPairing.evaluation C _ _ A B qA =
       E ◁ (α_ X Y Z).hom ≫ @ExactPairing.evaluation C _ _ D E qD := by
-      change (α_ (Zᘁ) (Yᘁ) (Xᘁ)).hom ▷ A ≫
-        (@ExactPairing.tensor C _ _ (X ⊗ Y) Z ((Yᘁ) ⊗ (Xᘁ)) (Zᘁ) qXY HasRightDual.exact).evaluation' =
-      E ◁ (α_ X Y Z).hom ≫
-        (@ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Zᘁ) ⊗ (Yᘁ)) HasRightDual.exact qYZ).evaluation'
-      have hxy : @ExactPairing.evaluation C _ _ (X ⊗ Y) ((Yᘁ) ⊗ (Xᘁ)) qXY =
-          (𝟙 _ ⊗≫ (Yᘁ : C) ◁ (ε_ X (Xᘁ) ▷ Y) ⊗≫ ε_ Y (Yᘁ)) :=
-        @ExactPairing.tensor_evaluation C _ _ X Y _ _ HasRightDual.exact HasRightDual.exact
-      have hyz : @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ =
-          (𝟙 _ ⊗≫ (Zᘁ : C) ◁ (ε_ Y (Yᘁ) ▷ Z) ⊗≫ ε_ Z (Zᘁ)) :=
-        @ExactPairing.tensor_evaluation C _ _ Y Z _ _ HasRightDual.exact HasRightDual.exact
-      unfold ExactPairing.tensor
-      dsimp [A, B, D, E]
-      rw [hxy, hyz]
+      rw [@ExactPairing.tensor_evaluation C _ _ (X ⊗ Y) Z _ _ qXY HasRightDual.exact,
+        @ExactPairing.tensor_evaluation C _ _ X (Y ⊗ Z) _ _ HasRightDual.exact qYZ,
+        @ExactPairing.tensor_evaluation C _ _ X Y _ _ HasRightDual.exact HasRightDual.exact,
+        @ExactPairing.tensor_evaluation C _ _ Y Z _ _ HasRightDual.exact HasRightDual.exact]
       monoidal
     let F := ((Y ⊗ Z)ᘁ) ⊗ (Xᘁ)
     let qD₀ : ExactPairing D F := @ExactPairing.tensor C _ _ X (Y ⊗ Z) (Xᘁ) ((Y ⊗ Z)ᘁ)
@@ -91,31 +67,10 @@ theorem rightDualTensorIso_associativity (X Y Z : C) :
     change (rightDualTensorIso Y Z).hom ▷ (Y ⊗ Z) ≫
       @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ =
       ε_ (Y ⊗ Z) ((Y ⊗ Z)ᘁ) at heYZ
-    have hqD : @ExactPairing.evaluation C _ _ D E qD =
-        (𝟙 _ ⊗≫ ((Zᘁ : C) ⊗ (Yᘁ : C)) ◁ (ε_ X (Xᘁ) ▷ (Y ⊗ Z)) ⊗≫
-          @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ) := by
-      convert @ExactPairing.tensor_evaluation C _ _ X (Y ⊗ Z) _ _ HasRightDual.exact qYZ using 1
-      monoidal
-    have hqD₀ : @ExactPairing.evaluation C _ _ D F qD₀ =
-        (𝟙 _ ⊗≫ ((Y ⊗ Z)ᘁ : C) ◁ (ε_ X (Xᘁ) ▷ (Y ⊗ Z)) ⊗≫ ε_ (Y ⊗ Z) ((Y ⊗ Z)ᘁ)) := by
-      convert @ExactPairing.tensor_evaluation C _ _ X (Y ⊗ Z) _ _
-        HasRightDual.exact HasRightDual.exact using 1
-      monoidal
     have hT : ((rightDualTensorIso Y Z).hom ▷ (Xᘁ)) ▷ D ≫
-        @ExactPairing.evaluation C _ _ D E qD = @ExactPairing.evaluation C _ _ D F qD₀ := by
-      rw [hqD, hqD₀]
-      calc
-        _ = 𝟙 _ ⊗≫ (((rightDualTensorIso Y Z).hom ▷ (((Xᘁ) ⊗ X) ⊗ (Y ⊗ Z))) ≫
-          (((Zᘁ : C) ⊗ (Yᘁ : C)) ◁ (ε_ X (Xᘁ) ▷ (Y ⊗ Z)))) ⊗≫
-            @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ := by monoidal
-        _ = 𝟙 _ ⊗≫ ((((Y ⊗ Z)ᘁ : C) ◁ (ε_ X (Xᘁ) ▷ (Y ⊗ Z))) ≫
-          (rightDualTensorIso Y Z).hom ▷ ((𝟙_ C) ⊗ (Y ⊗ Z))) ⊗≫
-            @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ := by
-              rw [← whisker_exchange]
-        _ = 𝟙 _ ⊗≫ (((Y ⊗ Z)ᘁ : C) ◁ (ε_ X (Xᘁ) ▷ (Y ⊗ Z))) ⊗≫
-          ((rightDualTensorIso Y Z).hom ▷ (Y ⊗ Z) ≫
-            @ExactPairing.evaluation C _ _ (Y ⊗ Z) ((Zᘁ) ⊗ (Yᘁ)) qYZ) := by monoidal
-        _ = _ := by rw [heYZ]
+        @ExactPairing.evaluation C _ _ D E qD = @ExactPairing.evaluation C _ _ D F qD₀ :=
+      tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := HasRightDual.exact)
+        (r := qYZ) (rightDualTensorIso Y Z).hom heYZ
     have heD := rightDualTensorIso_evaluation X (Y ⊗ Z)
     change (rightDualTensorIso X (Y ⊗ Z)).hom ▷ D ≫
       @ExactPairing.evaluation C _ _ D F qD₀ = ε_ D (Dᘁ) at heD

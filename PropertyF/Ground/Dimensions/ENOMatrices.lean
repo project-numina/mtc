@@ -185,37 +185,29 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
     exact le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)
   apply Complex.ext <;> simp [hre, him]
 
-/-- Saturation of a complex fusion-matrix eigenvector forces every term to
-have the common phase of the product of the two eigenvector values. -/
-theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
-    {T : Fin (rank C) → Fin (rank C) →
-      Fin (rank C) → ℂ}
-    {d : Fin (rank C) → ℂ}
-    (hd : ∀ i, ‖d i‖ = fpSimple C i)
-    (hdom : ∀ i j k, ‖T i j k‖ ≤ (fusionCoeff C i j k : ℝ))
+/-- Saturation of a weighted complex eigenvector forces each entry to have
+  the phase of the product of its eigenvector values. -/
+theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
+    {N : ι → ι → ι → ℝ} {T : ι → ι → ι → ℂ} {f : ι → ℝ} {d : ι → ℂ}
+    (hf : ∀ i, 0 < f i) (hmul : ∀ i j, f i * f j = ∑ k, N i j k * f k)
+    (hd : ∀ i, ‖d i‖ = f i) (hdom : ∀ i j k, ‖T i j k‖ ≤ N i j k)
     (heig : ∀ i j, ∑ k, T i j k * d k = d i * d j) :
-    ∀ i j k,
-      T i j k * (d k / (fpSimple C k : ℂ)) /
-        ((d i / (fpSimple C i : ℂ)) *
-          (d j / (fpSimple C j : ℂ))) =
-        (fusionCoeff C i j k : ℂ) := by
+    ∀ i j k, T i j k * (d k / (f k : ℂ)) /
+      ((d i / (f i : ℂ)) * (d j / (f j : ℂ))) = (N i j k : ℂ) := by
   classical
-  let f := fpSimple C
-  let q : Fin (rank C) → ℂ := fun i => d i / (f i : ℂ)
-  have hf : ∀ i, 0 < f i := fpSimple_pos C
+  let q : ι → ℂ := fun i => d i / (f i : ℂ)
   have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ norm_div_ofReal_eq_one (hf i) (hd i)
   have hqn : ∀ i, q i ≠ 0 := fun i => norm_pos_iff.mp (by rw [hq]; norm_num)
   have hrepr (i) : q i * (f i : ℂ) = d i :=
     div_mul_cancel₀ _ (by exact_mod_cast (ne_of_gt (hf i)))
   intro i j k
-  let x : Fin (rank C) → ℂ := fun l => T i j l * q l / (q i * q j)
-  have hx : ∀ l, ‖x l‖ ≤ (fusionCoeff C i j l : ℝ) := by
+  let x : ι → ℂ := fun l => T i j l * q l / (q i * q j)
+  have hx : ∀ l, ‖x l‖ ≤ N i j l := by
     intro l
     dsimp [x]
     rw [norm_div, norm_mul, norm_mul, hq l, hq i, hq j]
     simpa using hdom i j l
-  have heq : ∑ l, x l * (f l : ℂ) =
-      ((∑ l, (fusionCoeff C i j l : ℝ) * f l : ℝ) : ℂ) := by
+  have heq : ∑ l, x l * (f l : ℂ) = ((∑ l, N i j l * f l : ℝ) : ℂ) := by
     calc
       _ = (∑ l, T i j l * d l) / (q i * q j) := by
         rw [Finset.sum_div]
@@ -227,7 +219,7 @@ theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
       _ = ((f i * f j : ℝ) : ℂ) := by
         rw [← hrepr i, ← hrepr j, Complex.ofReal_mul]
         field_simp [hqn i, hqn j]
-      _ = _ := by rw [fpSimple_mul]
+      _ = _ := by rw [hmul]
   exact complex_weighted_saturation hf hx heq k
 
 end PropertyF.Ground.Dimensions
