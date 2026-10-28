@@ -39,16 +39,10 @@ theorem averagedGram_posDef (ρ : G →* (Matrix ι ι ℂ)ˣ) :
 theorem averagedGram_invariant (ρ : G →* (Matrix ι ι ℂ)ˣ) (h : G) :
     (↑(ρ h) : Matrix ι ι ℂ)ᴴ * averagedGram ρ * (↑(ρ h) : Matrix ι ι ℂ) = averagedGram ρ := by
   classical
-  simp only [averagedGram, Matrix.mul_sum, Matrix.sum_mul]
-  calc
-    _ = ∑ g : G, (↑(ρ (g * h)) : Matrix ι ι ℂ)ᴴ * (↑(ρ (g * h)) : Matrix ι ι ℂ) := by
-      apply Finset.sum_congr rfl
-      intro g _
-      simp only [map_mul, Units.val_mul, Matrix.conjTranspose_mul]
-      simp only [Matrix.mul_assoc]
-    _ = ∑ g : G, (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ) := by
-      exact Equiv.sum_comp (Equiv.mulRight h)
-        (fun g => (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ))
+  simpa only [averagedGram, Matrix.mul_sum, Matrix.sum_mul, Equiv.coe_mulRight, map_mul,
+    Units.val_mul, Matrix.conjTranspose_mul, Matrix.mul_assoc] using
+    (Equiv.sum_comp (Equiv.mulRight h)
+      (fun g => (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ)))
 
 end PropertyF.Ground.Calculus
 

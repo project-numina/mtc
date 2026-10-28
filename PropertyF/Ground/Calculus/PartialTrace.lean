@@ -40,8 +40,7 @@ theorem rightPartialTrace_left (p : PivotalStructure (C := C))
       a * rightPartialTrace p X Y f := by
   apply End.ext
   simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
-    End.mul_asHom, comp_whiskerRight, Category.assoc]
-  rw [associator_naturality_left_assoc, ← whisker_exchange_assoc,
+    End.mul_asHom, comp_whiskerRight, Category.assoc, associator_naturality_left_assoc,
     ← whisker_exchange_assoc, rightUnitor_naturality]
 
 
@@ -52,9 +51,8 @@ theorem rightPartialTrace_right (p : PivotalStructure (C := C))
       rightPartialTrace p X Y f * a := by
   apply End.ext
   simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
-    End.mul_asHom, comp_whiskerRight, Category.assoc]
-  rw [← associator_inv_naturality_left_assoc, whisker_exchange_assoc,
-    ← rightUnitor_inv_naturality_assoc]
+    End.mul_asHom, comp_whiskerRight, Category.assoc, ← associator_inv_naturality_left_assoc,
+    whisker_exchange_assoc, ← rightUnitor_inv_naturality_assoc]
 
 /-- Tracing an identity strand gives the categorical dimension of the closed
 factor, acting on the untraced object. -/
@@ -64,9 +62,8 @@ theorem rightPartialTrace_one (p : PivotalStructure (C := C))
   apply End.ext
   simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
     End.one_asHom, id_whiskerRight, Category.comp_id, Iso.inv_hom_id_assoc,
-    PivotalStructure.rightTrace, Category.id_comp,
-    tensorHom_def, whiskerLeft_id, Category.comp_id]
-  simp only [whiskerLeft_comp, Category.assoc]
+    PivotalStructure.rightTrace, Category.id_comp, tensorHom_def, whiskerLeft_id,
+    whiskerLeft_comp, Category.assoc]
 
 /-- The partial trace of an inserted endomorphism is the dimension of the
 closed factor times that endomorphism. -/
@@ -77,12 +74,8 @@ theorem rightPartialTrace_insert (p : PivotalStructure (C := C))
   have hscalar : p.rightTrace (𝟙 Y) = (scalar (p.rightTrace (𝟙 Y))) • (1 : End (𝟙_ C)) := by
     apply scalar.injective
     simp
-  have hone : rightPartialTrace p X Y 1 = (scalar (p.rightTrace (𝟙 Y))) • (1 : End X) := by
-    rw [rightPartialTrace_one, hscalar]
-    apply End.ext
-    simp
-  have hins : insertRightIdentity X Y a = insertRightIdentity X Y a * 1 := by simp
-  rw [hins, rightPartialTrace_left, hone]
+  rw [← mul_one (insertRightIdentity X Y a), rightPartialTrace_left, rightPartialTrace_one, hscalar]
+  apply End.ext
   simp
 
 /-- A simple endomorphism is determined by its pivotal trace. -/
@@ -93,11 +86,10 @@ theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) :
     a = (scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
   obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ a.asHom
-  have hscalar : scalar (p.rightTrace a.asHom) = c * scalar (p.rightTrace (𝟙 Y)) := by
+  have hcval : c = scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y)) := by
+    apply (eq_div_iff hd).2
     rw [← hc, p.rightTrace_smul]
     simp
-  have hcval : c = scalar (p.rightTrace a.asHom) / scalar (p.rightTrace (𝟙 Y)) :=
-    (eq_div_iff hd).2 hscalar.symm
   apply End.ext
   simpa [← hcval] using hc.symm
 
