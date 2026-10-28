@@ -219,10 +219,9 @@ theorem overlapRight_local_of_iso (hiso : HasOverlapCoherence X t k) :
     (isoEndAlgEquiv (overlapPowerIso X t k).symm)
       (overlapRight X t k u : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
     overlapFresh (tensorPower X (overlapIndex t k + 1))
-      (u : End (tensorPower X (t + 2))) := by
-  rw [← freshOverlapIso_action, hiso]
-  apply End.ext
-  simp [overlapFresh, isoEndAlgEquiv, Iso.conj_apply_asHom]
+      (u : End (tensorPower X (t + 2))) :=
+  End.ext (by simp [← freshOverlapIso_action k u, hiso, overlapFresh, isoEndAlgEquiv,
+    Iso.conj_apply_asHom])
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A single coherence equality between the left- and right-insertion
