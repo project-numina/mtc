@@ -2,6 +2,8 @@ module
 public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 
+open PropertyF.Ground.Dimensions
+
 /-! The underlying object of the induction construction for the Drinfeld centre. -/
 
 @[expose] public noncomputable section
@@ -93,7 +95,7 @@ theorem crossingBlock_natural_middle {X Y : D} (h : X ⟶ Y) {T R S : D}
 /-- The projection from the chosen simple decomposition of an object. -/
 def simpleProjection (V : C.Obj) (i : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ V))) : V ⟶ simples C i :=
-  (Dimensions.simpleDecomposition C V).hom ≫ biproduct.π (Dimensions.simplePiecesObject C V) ⟨i,a⟩
+  (simpleDecomposition C V).hom ≫ biproduct.π (simplePiecesObject C V) ⟨i,a⟩
 
 /-- The multiplicity index for a simple summand of `T ⊗ Sⱼ`. -/
 abbrev crossingIndex (T : C.Obj) (i j : Fin (rank C)) : Type :=
@@ -104,7 +106,7 @@ def crossingInclusion (T : C.Obj)
     (i j : Fin (rank C))
     (a : crossingIndex C T i j) :
     simples C i ⟶ T ⊗ simples C j :=
-  Dimensions.simpleInclusion C (T ⊗ simples C j) i a
+  simpleInclusion C (T ⊗ simples C j) i a
 
 /-- The corresponding projection from the same decomposition. -/
 def crossingProjection (T : C.Obj)
@@ -131,18 +133,15 @@ abbrev nestedCrossingBlock (X T U : C.Obj) (i k j : Fin (rank C))
 theorem crossingInclusion_projection {C : BraidedFusionCategory.{v,u}} {T : C.Obj} {i j : Fin (rank C)}
     (a : crossingIndex C T i j) :
     crossingInclusion C T i j a ≫ crossingProjection C T i j a = 𝟙 (simples C i) := by
-  simp [crossingInclusion, crossingProjection, simpleProjection, Dimensions.simpleInclusion, Category.assoc]
+  simp [crossingInclusion, crossingProjection, simpleProjection, simpleInclusion, Category.assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The projection/inclusion pairs resolve the identity on `T ⊗ Sⱼ`.
 This is the completeness relation used for changes of fusion bases. -/
-theorem crossing_completeness (T : C.Obj)
-    (j : Fin (rank C)) :
-    (∑ p : Σ i : Fin (rank C),
-        crossingIndex C T i j,
-      crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) =
-        𝟙 (T ⊗ simples C j) := by
-  simp only [crossingProjection, simpleProjection, crossingInclusion, Dimensions.simpleInclusion,
+theorem crossing_completeness (T : C.Obj) (j : Fin (rank C)) :
+    (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
+      crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) = 𝟙 (T ⊗ simples C j) := by
+  simp only [crossingProjection, simpleProjection, crossingInclusion, simpleInclusion,
     Category.assoc, ← Preadditive.comp_sum]
   simp_rw [← Category.assoc (biproduct.π _ _)]
   rw [← Preadditive.sum_comp, biproduct.total, Category.id_comp, Iso.hom_inv_id]
@@ -162,8 +161,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing has the stated matrix entries on each induced
 simple summand. -/
 @[reassoc]
-theorem crossingCandidate_on_summand
-    (X T : C.Obj) (i : Fin (rank C)) :
+theorem crossingCandidate_on_summand (X T : C.Obj) (i : Fin (rank C)) :
     let V := inductionSummand C X
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
       ∑ j, ∑ a : crossingIndex C T i j,

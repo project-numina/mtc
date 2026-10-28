@@ -94,15 +94,15 @@ def halfBraidingOfCrossingCandidate (X : C.Obj) :
   naturality f := crossingCandidate_natural_test C X f
 
 /-- The actual induction functor to Mathlib's Drinfeld centre. -/
-def induction : C.Obj ⥤ CategoryTheory.Center C.Obj where
+def induction : C.Obj ⥤ Center C.Obj where
   obj X := ⟨underlying C X, halfBraidingOfCrossingCandidate C X⟩
   map f := ⟨(underlyingFunctor C).map f, crossingCandidate_natural_middle C f⟩
   map_id X := by
-    apply CategoryTheory.Center.ext
+    apply Center.ext
     change (underlyingFunctor C).map (𝟙 X) = 𝟙 ((underlyingFunctor C).obj X)
     exact (underlyingFunctor C).map_id X
   map_comp f g := by
-    apply CategoryTheory.Center.ext
+    apply Center.ext
     change (underlyingFunctor C).map (f ≫ g) =
       (underlyingFunctor C).map f ≫ (underlyingFunctor C).map g
     exact (underlyingFunctor C).map_comp f g
