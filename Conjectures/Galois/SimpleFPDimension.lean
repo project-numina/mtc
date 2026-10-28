@@ -25,8 +25,10 @@ universe v u
 
 /-- A proposed positive answer to Ostrik's braided d-number question. -/
 theorem simpleFPDimension_dNumber (C : BraidedFusionCategory.{v,u})
-    (i : Fin (rank C)) (σ : ℂ ≃+* ℂ) :
-    IsIntegral ℤ (σ (fpSimple C i : ℂ) / (fpSimple C i : ℂ)) := by
+    (i : Fin (rank C)) :
+    fpSimple C i ≠ 0 ∧ IsIntegral ℤ (fpSimple C i) ∧
+      ∀ σ : ℂ ≃+* ℂ,
+        IsIntegral ℤ (σ (fpSimple C i : ℂ) / (fpSimple C i : ℂ)) := by
   sorry
 
 /-- Dimension one meets the divisibility condition. -/

@@ -16,8 +16,8 @@ paper, while the nonbraided analogue can fail.
 
 The source uses the standard squared norm, which must still be shown to agree
 with the frozen `squaredNorm` constructed using `unitScalar` and a double-dual
-isomorphism. Standard squared norms are nonzero; Lean's totalized division
-means that positivity and nonzero facts must also be established separately.
+isomorphism. Nonzero and algebraic-integrality conditions are stated explicitly to avoid
+the zero case of Lean's totalized division.
 -/
 
 @[expose] public noncomputable section
@@ -27,8 +27,10 @@ universe v u
 
 /-- Every Galois conjugate of a simple squared norm is divisible by it. -/
 theorem squaredNorm_dNumber (C : BraidedFusionCategory.{v,u})
-    (i : Fin (rank C)) (σ : ℂ ≃+* ℂ) :
-    IsIntegral ℤ (σ (squaredNorm C (simples C i)) / squaredNorm C (simples C i)) := by
+    (i : Fin (rank C)) :
+    squaredNorm C (simples C i) ≠ 0 ∧ IsIntegral ℤ (squaredNorm C (simples C i)) ∧
+      ∀ σ : ℂ ≃+* ℂ,
+        IsIntegral ℤ (σ (squaredNorm C (simples C i)) / squaredNorm C (simples C i)) := by
   sorry
 
 end MTC.Conjectures.Galois

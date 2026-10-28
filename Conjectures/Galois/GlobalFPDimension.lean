@@ -22,8 +22,9 @@ universe v u
 
 /-- Galois conjugates are divisible by the global dimension. -/
 theorem globalFPDimension_dNumber (C : BraidedFusionCategory.{v,u})
-    (σ : ℂ ≃+* ℂ) :
-    IsIntegral ℤ (σ (globalFPDimension C : ℂ) / (globalFPDimension C : ℂ)) := by
+    : globalFPDimension C ≠ 0 ∧ IsIntegral ℤ (globalFPDimension C) ∧
+      ∀ σ : ℂ ≃+* ℂ,
+        IsIntegral ℤ (σ (globalFPDimension C : ℂ) / (globalFPDimension C : ℂ)) := by
   sorry
 
 /-- The unit satisfies the numerical condition for every automorphism. -/
