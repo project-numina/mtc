@@ -47,8 +47,9 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
   exact ⟨c, funext fun j ↦ sub_eq_zero.mp (hall j)⟩
 
 /-- A function on simple labels is multiplicative for the fusion rules. -/
-abbrev IsFusionMultiplicative (C : BraidedFusionCategory) (χ : Fin (rank C) → ℂ) : Prop :=
-  ∀ i j, χ i * χ j = ∑ k, (fusionCoeff C i j k : ℂ) * χ k
+abbrev IsFusionMultiplicative {R : Type*} [Semiring R]
+    (C : BraidedFusionCategory) (χ : Fin (rank C) → R) : Prop :=
+  ∀ i j, χ i * χ j = ∑ k, (fusionCoeff C i j k : R) * χ k
 
 end PropertyF.Ground
 
@@ -59,9 +60,11 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators Matrix Matrix.Norms.Operator ENNReal
 namespace PropertyF.Ground.Dimensions
 
+variable (C : BraidedFusionCategory)
+
 /-- Each value of any nonzero fusion-ring character is bounded in absolute value
 by the spectral-radius FP dimension. No positivity of the character is needed. -/
-theorem character_norm_le_fpSimple (C : BraidedFusionCategory)
+theorem character_norm_le_fpSimple
     {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
     (hchar : IsFusionMultiplicative C χ) (i : Fin (rank C)) :
     ‖χ i‖ ≤ fpSimple C i := by
@@ -86,7 +89,7 @@ theorem character_norm_le_fpSimple (C : BraidedFusionCategory)
 
 /-- Every complex field conjugate of a fusion character obeys the same FP
 bound, because field automorphisms preserve the integer fusion coefficients. -/
-theorem galois_character_norm_le_fpSimple (C : BraidedFusionCategory)
+theorem galois_character_norm_le_fpSimple
     {χ : Fin (rank C) → ℂ} {i₀ : Fin (rank C)} (hχ : χ i₀ ≠ 0)
     (hchar : IsFusionMultiplicative C χ)
     (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
@@ -108,18 +111,22 @@ open WithLp
 
 namespace PropertyF.Ground
 
+variable {ι : Type*}
+
 /-- The coordinatewise absolute value of a real Euclidean vector. -/
-def euclideanAbs {ι : Type*} (x : EuclideanSpace ℝ ι) : EuclideanSpace ℝ ι :=
+def euclideanAbs (x : EuclideanSpace ℝ ι) : EuclideanSpace ℝ ι :=
   toLp 2 (fun i => |x i|)
 
-theorem euclideanAbs_norm {ι : Type*} [Fintype ι] (x : EuclideanSpace ℝ ι) :
+variable [Fintype ι]
+
+theorem euclideanAbs_norm (x : EuclideanSpace ℝ ι) :
     ‖euclideanAbs x‖ = ‖x‖ := by
   apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
   simp [EuclideanSpace.real_norm_sq_eq, euclideanAbs]
 
 /-- Replacing coordinates by absolute values cannot decrease the quadratic
 form of a matrix with nonnegative entries. -/
-theorem quadratic_le_abs {ι : Type*} [Fintype ι]
+theorem quadratic_le_abs
     {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 ≤ A i j) (x : ι → ℝ) :
     ∑ i, ∑ j, x i * A i j * x j ≤
       ∑ i, ∑ j, |x i| * A i j * |x j| := by
@@ -127,7 +134,7 @@ theorem quadratic_le_abs {ι : Type*} [Fintype ι]
   simpa [abs_mul, mul_assoc, mul_comm, mul_left_comm] using
     (mul_le_mul_of_nonneg_left (le_abs_self (x i * x j)) (hA i j))
 
-theorem matrix_quadratic_form {ι : Type*} [Fintype ι] [DecidableEq ι]
+theorem matrix_quadratic_form [DecidableEq ι]
     (A : Matrix ι ι ℝ) (x : EuclideanSpace ℝ ι) :
     (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf x =
       ∑ i, ∑ j, x i * A i j * x j := by
@@ -137,7 +144,7 @@ theorem matrix_quadratic_form {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- A nonnegative eigenvector of a positive matrix is positive in every coordinate
 if it has a positive coordinate. -/
-theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
+theorem positive_matrix_eigenvector_pos
     {A : Matrix ι ι ℝ} (hpos : ∀ i j, 0 < A i j) {v : ι → ℝ}
     (hnonneg : ∀ i, 0 ≤ v i) (hpositive : ∃ i, 0 < v i)
     {d : ℝ} (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
@@ -152,10 +159,11 @@ theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
   have hv : 0 < d * v i := hi ▸ hsum
   exact lt_of_le_of_ne (hnonneg i) (Ne.symm (right_ne_zero_of_mul (ne_of_gt hv)))
 
+variable [DecidableEq ι] [Nonempty ι]
+
 /-- A nonnegative symmetric real matrix has a nonnegative eigenvector with a
 positive coordinate. -/
-theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {ι : Type*} [Fintype ι]
-    [DecidableEq ι] [Nonempty ι] {A : Matrix ι ι ℝ}
+theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {A : Matrix ι ι ℝ}
     (hsym : A.IsHermitian) (hA : ∀ i j, 0 ≤ A i j) :
     ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 ≤ v i) ∧ (∃ i, 0 < v i) ∧ A *ᵥ v = d • v := by
   classical
@@ -197,8 +205,7 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {ι : Type*} [Fintype ι]
   simpa [T, d, Matrix.toLpLin_apply] using (congrArg ofLp heigen)
 
 /-- A strictly positive symmetric real matrix has a strictly positive eigenvector. -/
-theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype ι]
-    [DecidableEq ι] [Nonempty ι] {A : Matrix ι ι ℝ}
+theorem positive_symmetric_matrix_has_positive_eigenvector {A : Matrix ι ι ℝ}
     (hsym : A.IsHermitian) (hpos : ∀ i j, 0 < A i j) :
     ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 < v i) ∧ A *ᵥ v = d • v := by
   obtain ⟨d, v, hv, hvpos, heigen⟩ :=
@@ -329,7 +336,7 @@ theorem exists_positive_common_eigenvector :
 theorem exists_positive_character :
     ∃ f : Fin (rank D) → ℝ,
       (∀ i, 0 < f i) ∧ f (unitIndex D) = 1 ∧
-      ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k := by
+      IsFusionMultiplicative D f := by
   classical
   obtain ⟨v, hvpos, hve⟩ := exists_positive_common_eigenvector D
   let f : Fin (rank D) → ℝ := fun i => v i / v (unitIndex D)
@@ -357,7 +364,7 @@ theorem exists_positive_character :
 
 theorem character_total_eigenvector
     {f : Fin (rank D) → ℝ}
-    (hf : ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k) :
+    (hf : IsFusionMultiplicative D f) :
     totalFusionMatrix D *ᵥ f = (∑ i, f i) • f := by
   classical
   rw [totalFusionMatrix_eq_sum_characterMatrix, Matrix.sum_mulVec]
@@ -371,8 +378,7 @@ theorem character_total_eigenvector
 theorem positive_character_unique
     {f g : Fin (rank D) → ℝ} (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
     (hfunit : f (unitIndex D) = 1) (hgunit : g (unitIndex D) = 1)
-    (hf : ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k)
-    (hg : ∀ i j, g i * g j = ∑ k, (fusionCoeff D i j k : ℝ) * g k) : f = g := by
+    (hf : IsFusionMultiplicative D f) (hg : IsFusionMultiplicative D g) : f = g := by
   classical
   let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
   have hfe := character_total_eigenvector D hf
