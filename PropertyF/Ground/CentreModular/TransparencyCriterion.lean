@@ -146,12 +146,12 @@ variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C :
 local notation "Sₚ" => Modular.categoricalS C p
 local notation "dₚ" => Modular.simpleDimension C p
 
+variable (hdim : Modular.HasFPSimpleDimensions C p) (hbalance : IsPivotalTwistBalanced C p)
+
+include hdim hbalance in
 /-- Positive FP dimensions and twist balancing upgrade the numerical S-test
 to actual transparency of a simple object. -/
-theorem transparent_of_S_test_and_balancing
-    (hdim : Modular.HasFPSimpleDimensions C p)
-    (hbalance : IsPivotalTwistBalanced C p)
-    (k : Fin (rank C))
+theorem transparent_of_S_test_and_balancing (k : Fin (rank C))
     (hs : ∀ i, Sₚ i k =
       dₚ i * dₚ k) :
     Transparent (simples C k) := by
@@ -170,11 +170,10 @@ theorem transparent_of_S_test_and_balancing
   simpa [Modular.doubleBraiding, Category.assoc] using
     congrArg (fun f => (β_ X (simples C k)).inv ≫ f ≫ (β_ X (simples C k)).hom) hx
 
+include hdim hbalance in
 /-- In a positive pivotal category with balanced twist, S is invertible if the
 unit is the only transparent simple object. -/
 theorem categoricalS_det_ne_zero_of_trivial_transparency
-    (hdim : Modular.HasFPSimpleDimensions C p)
-    (hbalance : IsPivotalTwistBalanced C p)
     (htrivial : ∀ k, Transparent (simples C k) → k = unitIndex C) :
     (Sₚ).det ≠ 0 :=
   categoricalS_det_ne_zero_of_trivial_S_centralizer C p hdim fun k hs ↦
