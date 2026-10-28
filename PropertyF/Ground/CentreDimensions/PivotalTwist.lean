@@ -39,34 +39,40 @@ theorem braided_self_close (X : C) :
   rw [rightUnitor_inv_braiding_assoc, ExactPairing.evaluation_coevaluation_assoc,
     Iso.inv_hom_id, Iso.inv_hom_id_assoc]
 
+omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
+/-- A double-dual map satisfies the Drinfeld evaluation identity. -/
+abbrev HasDrinfeldEvaluation {X : C} (d : X ≅ (Xᘁ)ᘁ) : Prop :=
+  d.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) = (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing self-braiding gives the pivotal twist determined by a compatible double-dual isomorphism. -/
 theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C}
     (d : X ≅ (Xᘁ)ᘁ)
-    (hd : d.hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) = (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ)) :
+    (hd : HasDrinfeldEvaluation d) :
     Calculus.rightPartialTrace p X X (End.of (β_ X X).hom) =
-      End.of ((p.iso X).hom ≫ d.inv) := by
-  apply End.ext
-  simp only [Calculus.rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
-  let t : X ⟶ X := (p.iso X).hom ≫ d.inv
-  have hclose : (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
-      t ▷ (Xᘁ) ≫ (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) := by
-    dsimp [t]
-    simp only [comp_whiskerRight_assoc]
-    rw [← hd, ← Category.assoc, ← comp_whiskerRight]
-    simp
-  have hg : (ρ_ X).inv ≫ X ◁ η_ X (Xᘁ) ≫ (α_ X X (Xᘁ)).inv ≫
-      (β_ X X).hom ▷ (Xᘁ) ≫ (α_ X X (Xᘁ)).hom ≫
-      X ◁ ((p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ)) ≫ (ρ_ X).hom = t := by
-    rw [hclose]
-    simp only [whiskerLeft_comp]
-    simp only [Category.assoc]
-    slice_lhs 3 6 => rw [braid_self_slide]
-    simp only [Category.assoc]
-    rw [whisker_exchange_assoc]
-    rw [← rightUnitor_inv_naturality_assoc]
-    rw [braided_self_close, Category.comp_id]
-  simpa only [whiskerLeft_comp, Category.assoc, t] using hg
+      End.of ((p.iso X).hom ≫ d.inv) :=
+  End.ext (by
+    dsimp only [HasDrinfeldEvaluation] at hd
+    simp only [Calculus.rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
+    let t : X ⟶ X := (p.iso X).hom ≫ d.inv
+    have hclose : (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
+        t ▷ (Xᘁ) ≫ (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) := by
+      dsimp [t]
+      simp only [comp_whiskerRight_assoc]
+      rw [← hd, ← Category.assoc, ← comp_whiskerRight]
+      simp
+    have hg : (ρ_ X).inv ≫ X ◁ η_ X (Xᘁ) ≫ (α_ X X (Xᘁ)).inv ≫
+        (β_ X X).hom ▷ (Xᘁ) ≫ (α_ X X (Xᘁ)).hom ≫
+        X ◁ ((p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ)) ≫ (ρ_ X).hom = t := by
+      rw [hclose]
+      simp only [whiskerLeft_comp]
+      simp only [Category.assoc]
+      slice_lhs 3 6 => rw [braid_self_slide]
+      simp only [Category.assoc]
+      rw [whisker_exchange_assoc]
+      rw [← rightUnitor_inv_naturality_assoc]
+      rw [braided_self_close, Category.comp_id]
+    simpa only [whiskerLeft_comp, Category.assoc, t] using hg)
 end PropertyF.Ground.Dimensions
 end
 

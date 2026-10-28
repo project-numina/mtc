@@ -29,10 +29,10 @@ variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [RigidCa
 
 omit [Abelian D] in
 /-- Tensoring with any object preserves injectives in a rigid category. -/
-theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U) := by
-  let : (tensorRight (ᘁU)).IsRightAdjoint :=
+theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U) :=
+  letI : (tensorRight (ᘁU)).IsRightAdjoint :=
     ⟨⟨tensorRight (ᘁ(ᘁU)), ⟨tensorRightAdjunction (ᘁ(ᘁU)) (ᘁU)⟩⟩⟩
-  exact (tensorRightAdjunction (ᘁU) U).map_injective J inferInstance
+  (tensorRightAdjunction (ᘁU) U).map_injective J inferInstance
 
 omit [Abelian D] in
 /-- A unit retract of a tensor product with an injective makes every object injective. -/

@@ -162,11 +162,9 @@ theorem crossingCandidate_unit (X : C.Obj) :
   rw [crossingCandidate_on_summand]
   dsimp only [crossingSummand]
   rw [Finset.sum_eq_single i]
-  · have hdim : Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i) = 1 := by
-      rw [unit_crossing_finrank]; simp
-    let a : crossingIndex C (𝟙_ C.Obj) i i := ⟨0, by rw [hdim]; decide⟩
+  · let a : crossingIndex C (𝟙_ C.Obj) i i := ⟨0, by simp [unit_crossing_finrank]⟩
     let : Subsingleton (crossingIndex C (𝟙_ C.Obj) i i) := by
-      simp only [crossingIndex, hdim]
+      simp only [crossingIndex, unit_crossing_finrank, ↓reduceIte]
       infer_instance
     let : Unique (crossingIndex C (𝟙_ C.Obj) i i) :=
       ⟨⟨a⟩, fun b => Subsingleton.elim b a⟩
@@ -180,10 +178,8 @@ theorem crossingCandidate_unit (X : C.Obj) :
       (biproduct.ι V i ▷ (𝟙_ C.Obj)) ≫ (ρ_ (⨁ V)).hom ≫ (λ_ (⨁ V)).inv
     simp only [Category.assoc, ← leftUnitor_inv_naturality, rightUnitor_naturality_assoc]
   · intro j _ hne
-    have hdim : Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C j) = 0 := by
-      rw [unit_crossing_finrank]; simp [Ne.symm hne]
     let : IsEmpty (crossingIndex C (𝟙_ C.Obj) i j) := by
-      simp only [crossingIndex, hdim]
+      simp only [crossingIndex, unit_crossing_finrank, Ne.symm hne, ↓reduceIte]
       infer_instance
     exact Finset.sum_eq_zero fun a _ => isEmptyElim a
   · simp

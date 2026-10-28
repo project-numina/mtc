@@ -26,14 +26,12 @@ variable (hdual : ∀ i j k, N.coeff i j k = N.coeff (dual i) k j)
 include hdual in
 /-- Different fusion characters are orthogonal for the standard Hermitian pairing. -/
 theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
-    ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 := by
+    ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 :=
   let w : ℂ := ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j
-  obtain ⟨i, hi⟩ := Function.ne_iff.mp (show χ.value ≠ ψ.value from
-    fun h ↦ hne (Character.ext h))
-  by_contra hw
-  exact hi (mul_right_cancel₀ hw (by
-    simpa [w, character_dual_conj N dual hdual χ i] using
-      character_inner_balance N dual hdual χ ψ i)).symm
+  (Function.ne_iff.mp (show χ.value ≠ ψ.value from fun h ↦ hne (Character.ext h))).elim fun i hi ↦
+    Classical.byContradiction fun hw ↦ hi (mul_right_cancel₀ hw (by
+      simpa [w, character_dual_conj N dual hdual χ i] using
+        character_inner_balance N dual hdual χ ψ i)).symm
 
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
@@ -43,7 +41,7 @@ local notation "dₚ" => simpleDimension C p
 /-- A nondegenerate S matrix has distinct normalized columns. -/
 theorem categoricalS_character_injective
     (hdet : (Sₚ).det ≠ 0) :
-    Function.Injective (fun j i => Sₚ i j / dₚ j) := by
+    Function.Injective (normalizedSColumn C p) := by
   intro a b h
   apply (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply
     (dₚ b) (dₚ a) a b (simpleDimension_ne_zero C p b)
@@ -161,14 +159,13 @@ include hp in
 /-- Invertibility and S-square force the global dimension to be nonzero. -/
 theorem globalDimension_ne_zero_of_invertibleS (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
-    globalDimension C ≠ 0 := by
-  classical
-  let _ : Nonempty (Fin (rank C)) := ⟨unitIndex C⟩
-  intro hz
-  have hs : Sₚ * Sₚ = 0 := by
-    ext x y
-    simp [Matrix.mul_apply, categoricalS_square C p hp hdet hreal, hz]
-  exact mul_ne_zero hdet hdet (by
+    globalDimension C ≠ 0 := fun hz ↦
+  let : Nonempty (Fin (rank C)) := ⟨unitIndex C⟩
+  mul_ne_zero hdet hdet (by
+    classical
+    have hs : Sₚ * Sₚ = 0 := by
+      ext x y
+      simp [Matrix.mul_apply, categoricalS_square C p hp hdet hreal, hz]
     simpa only [Matrix.det_mul, Matrix.det_zero] using congrArg Matrix.det hs)
 
 include hp in

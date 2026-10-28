@@ -21,9 +21,8 @@ theorem center_unitScalar_forget (a : End (𝟙_ (𝒵))) :
     unitScalar 𝒵ᶠ a = unitScalar C (End.of a.asHom.f) := by
   apply (unit_algebraMap_bijective C).1
   rw [algebraMap_unitScalar]
-  apply End.ext
-  change ((unitScalar 𝒵ᶠ a) • 𝟙 (𝟙_ (𝒵))).f = a.asHom.f
-  exact congrArg (fun x : End (𝟙_ (𝒵)) => x.asHom.f) (algebraMap_unitScalar 𝒵ᶠ a)
+  exact End.ext (congrArg (fun x : End (𝟙_ (𝒵)) => x.asHom.f)
+    (algebraMap_unitScalar 𝒵ᶠ a))
 
 /-- Compatible pivotal components have identical scalar dimensions after forgetting. -/
 theorem center_pivotalDimension_forget

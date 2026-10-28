@@ -25,12 +25,8 @@ its induction half-braiding. -/
 theorem fpDimension_underlying (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     fpDimension C (underlying C X) = globalFPDimension C * fpDimension C X := by
   classical
-  rw [underlying, fpDimension_biproduct]
-  simp_rw [fpDimension_tensor, fpDimension_rightDual, fpDimension_simple]
-  rw [globalFPDimension, Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro i _
-  ring
+  simp [underlying, fpDimension_biproduct, fpDimension_tensor, fpDimension_rightDual,
+    fpDimension_simple, globalFPDimension, Finset.mul_sum, pow_two, mul_left_comm, mul_comm]
 
 end PropertyF.Ground.CentreInduction
 

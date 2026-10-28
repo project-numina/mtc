@@ -27,14 +27,21 @@ namespace PropertyF.Ground.CentreModular
 universe u v w
 variable (C : BraidedFusionCategory.{v,u})
 
+/-- A derivation of fusion coefficients relative to a dimension character. -/
+abbrev IsFusionDerivation {ι K M : Type*} [Fintype ι] [Semiring K] [AddCommMonoid M] [Module K M]
+    (N : ι → ι → ι → K) (d : ι → K) (b : ι → M) : Prop :=
+  ∀ i j, (∑ k, N i j k • b k) = d j • b i + d i • b j
+
+section
+variable {ι K M : Type*} [Fintype ι] [Field K] [AddCommGroup M] [Module K M]
+
 /-- A derivation vanishes when a regular eigenvector has nonzero squared norm. -/
-theorem derivation_vanishes_of_regular_eigenvector {ι K M : Type*} [Fintype ι] [Field K]
-    [AddCommGroup M] [Module K M] (N : ι → ι → ι → K) (d : ι → K)
-    (hreg : ∀ i k, (∑ j, d j * N i j k) = d i * d k)
-    (hD : (∑ j, d j ^ 2) ≠ 0) (b : ι → M)
-    (hderiv : ∀ i j, (∑ k, N i j k • b k) = d j • b i + d i • b j) :
+theorem derivation_vanishes_of_regular_eigenvector (N : ι → ι → ι → K) (d : ι → K)
+    (hreg : ∀ i k, (∑ j, d j * N i j k) = d i * d k) (hD : (∑ j, d j ^ 2) ≠ 0)
+    (b : ι → M) (hderiv : IsFusionDerivation N d b) :
     ∀ i, b i = 0 := by
   classical
+  dsimp only [IsFusionDerivation] at hderiv
   intro i
   let R : M := ∑ j, d j • b j
   let D : K := ∑ j, d j ^ 2
@@ -50,13 +57,14 @@ theorem derivation_vanishes_of_regular_eigenvector {ι K M : Type*} [Fintype ι]
   simpa only [hderiv, smul_add, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul,
     D, R, pow_two, Finset.smul_sum, mul_comm] using hsum
 
+end
+
 /-- The FP regular-element cancellation at the heart of the determinant argument. -/
 theorem regular_fusion_derivation_vanishes
     (M : Type w) [AddCommGroup M] [Module ℝ M]
     (B : Fin (rank C) → Fin (rank C) → M)
-    (hhex : ∀ i j z,
-      (∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
-        fpSimple C j • B i z + fpSimple C i • B j z) :
+    (hhex : ∀ z, IsFusionDerivation (fun i j k ↦ (fusionCoeff C i j k : ℝ))
+      (fpSimple C) (fun i ↦ B i z)) :
     ∀ i z, B i z = 0 := by
   have hreg (i k : Fin (rank C)) :
       (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
@@ -66,7 +74,7 @@ theorem regular_fusion_derivation_vanishes
   exact derivation_vanishes_of_regular_eigenvector
     (fun i j k => (fusionCoeff C i j k : ℝ)) (fpSimple C) hreg
     (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))) (fun i => B i z)
-    (fun i j => hhex i j z) i
+    (hhex z) i
 
 end PropertyF.Ground.CentreModular
 end
@@ -78,29 +86,36 @@ namespace PropertyF.Ground.CentreModular
 /-- A real vector space recording complex units up to torsion. -/
 abbrev vafaUnitSpace : Type := ℝ ⊗[ℚ] (ℚ ⊗[ℤ] Additive ℂˣ)
 
-/-- The image of a complex unit in the torsion-detecting vector space. -/
-def vafaUnitClass (z : ℂˣ) : vafaUnitSpace := 1 ⊗ₜ[ℚ] (1 ⊗ₜ[ℤ] Additive.ofMul z)
+/-- The class of a commutative-group element after rationalization and scalar extension. -/
+def rationalUnitClass {K G : Type*} [CommSemiring K] [Algebra ℚ K] [CommGroup G] (z : G) :
+    K ⊗[ℚ] (ℚ ⊗[ℤ] Additive G) := 1 ⊗ₜ[ℚ] (1 ⊗ₜ[ℤ] Additive.ofMul z)
 
-/-- The unit class vanishes exactly for a root of unity. -/
-theorem vafaUnitClass_eq_zero_iff (z : ℂˣ) : vafaUnitClass z = 0 ↔ IsOfFinOrder z := by
-  rw [vafaUnitClass, Module.FaithfullyFlat.one_tmul_eq_zero_iff]
+/-- The image of a complex unit in the torsion-detecting vector space. -/
+def vafaUnitClass (z : ℂˣ) : vafaUnitSpace := rationalUnitClass (K := ℝ) z
+
+/-- A rationalized group element vanishes exactly when it has finite order. -/
+theorem rationalUnitClass_eq_zero_iff {K G : Type*} [CommRing K] [Algebra ℚ K]
+    [Module.FaithfullyFlat ℚ K] [CommGroup G] (z : G) :
+    rationalUnitClass (K := K) z = 0 ↔ IsOfFinOrder z := by
+  rw [rationalUnitClass, Module.FaithfullyFlat.one_tmul_eq_zero_iff]
   have hh := IsLocalizedModule.eq_zero_iff (nonZeroDivisors ℤ)
-    (TensorProduct.mk ℤ ℚ (Additive ℂˣ) 1) (m := Additive.ofMul z)
-  change ((1 ⊗ₜ[ℤ] Additive.ofMul z : ℚ ⊗[ℤ] Additive ℂˣ) = 0) ↔
+    (TensorProduct.mk ℤ ℚ (Additive G) 1) (m := Additive.ofMul z)
+  change ((1 ⊗ₜ[ℤ] Additive.ofMul z : ℚ ⊗[ℤ] Additive G) = 0) ↔
     ∃ s : nonZeroDivisors ℤ, (s : ℤ) • Additive.ofMul z = 0 at hh
   rw [hh, isOfFinOrder_iff_zpow_eq_one]
   simp only [Subtype.exists, mem_nonZeroDivisors_iff_ne_zero, exists_prop]
   rfl
 
-/-- Multiplication of units becomes addition in the Vafa vector space. -/
-theorem vafaUnitClass_mul (z w : ℂˣ) :
-    vafaUnitClass (z * w) = vafaUnitClass z + vafaUnitClass w := by
-  simp [vafaUnitClass, TensorProduct.tmul_add]
+/-- Multiplication becomes addition after rationalization. -/
+theorem rationalUnitClass_mul {K G : Type*} [CommSemiring K] [Algebra ℚ K] [CommGroup G]
+    (z w : G) : rationalUnitClass (K := K) (z * w) =
+      rationalUnitClass (K := K) z + rationalUnitClass (K := K) w := by
+  simp [rationalUnitClass, TensorProduct.tmul_add]
 
-/-- Natural powers become scalar multiples in the Vafa vector space. -/
-theorem vafaUnitClass_pow (z : ℂˣ) (n : ℕ) :
-    vafaUnitClass (z ^ n) = n • vafaUnitClass z := by
-  simp [vafaUnitClass]
+/-- Natural powers become scalar multiples after rationalization. -/
+theorem rationalUnitClass_pow {K G : Type*} [CommSemiring K] [Algebra ℚ K] [CommGroup G]
+    (z : G) (n : ℕ) : rationalUnitClass (K := K) (z ^ n) = n • rationalUnitClass (K := K) z := by
+  simp [rationalUnitClass]
 
 end PropertyF.Ground.CentreModular
 end
@@ -135,7 +150,7 @@ def fpDeterminant {X : C.Obj} (a : X ≅ X) :
 theorem fpDeterminant_trans {X : C.Obj}
     (a b : X ≅ X) : fpDeterminant C (a ≪≫ b) =
       fpDeterminant C a + fpDeterminant C b := by
-  simp [fpDeterminant, homAction_trans, LinearEquiv.det_trans, vafaUnitClass_mul,
+  simp [fpDeterminant, homAction_trans, LinearEquiv.det_trans, vafaUnitClass, rationalUnitClass_mul,
     smul_add, Finset.sum_add_distrib, add_comm]
 
 /-- The actual scalar automorphism of an object. -/
@@ -149,20 +164,20 @@ def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
 /-- On a scalar map, each Hom-space determinant is the corresponding power. -/
 theorem homAction_det_scalar {R : Type*} [Field R] {D : Type u} [Category.{v} D]
     [Preadditive D] [Linear R D] {S X : D} (z : Rˣ) :
-    (homAction (R := R) S X (scalarIso X z)).det = z ^ Module.finrank R (S ⟶ X) := by
-  apply Units.ext
-  rw [LinearEquiv.coe_det]
-  change LinearMap.det _ = (z : R) ^ _
-  have h : (homAction (R := R) S X (scalarIso X z)).toLinearMap = (z : R) • LinearMap.id := by
-    ext f
-    simp [homAction, scalarIso, CategoryTheory.Linear.homCongr_apply]
-  rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one]
+    (homAction (R := R) S X (scalarIso X z)).det = z ^ Module.finrank R (S ⟶ X) :=
+  Units.ext (by
+    rw [LinearEquiv.coe_det]
+    change LinearMap.det _ = (z : R) ^ _
+    have h : (homAction (R := R) S X (scalarIso X z)).toLinearMap = (z : R) • LinearMap.id := by
+      ext f
+      simp [homAction, scalarIso, CategoryTheory.Linear.homCongr_apply]
+    rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one])
 
 /-- A scalar automorphism has FP determinant equal to its unit class weighted
 by the actual FP dimension of the object. -/
 theorem fpDeterminant_scalar (X : C.Obj) (z : ℂˣ) :
     fpDeterminant C (scalarIso X z) = fpDimension C X • vafaUnitClass z := by
-  simp only [fpDeterminant, fpDimension, homAction_det_scalar, vafaUnitClass_pow,
+  simp only [fpDeterminant, fpDimension, homAction_det_scalar, vafaUnitClass, rationalUnitClass_pow,
     ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, Finset.sum_smul, mul_comm]
 
 end PropertyF.Ground.CentreModular
@@ -229,15 +244,18 @@ namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
+/-- The FP-weighted twist classes satisfy the fusion balance relation. -/
+abbrev HasFPWeightedTwistBalance (t : Fin (rank C) → ℂˣ) : Prop :=
+  ∀ i j, (∑ k, (fusionCoeff C i j k : ℝ) • (fpSimple C k • vafaUnitClass (t k))) =
+    (fpSimple C i * fpSimple C j) • (vafaUnitClass (t i) + vafaUnitClass (t j))
+
 /-- The FP-weighted twist-balance relation forces all twist scalars to have
 finite order. This is a numerical consequence; the categorical balance
 relation is not assumed proved here. -/
-theorem finite_order_of_fp_twist_balance
-    (t : Fin (rank C) → ℂˣ)
-    (hbalance : ∀ i j,
-      (∑ k, (fusionCoeff C i j k : ℝ) • (fpSimple C k • vafaUnitClass (t k))) =
-        (fpSimple C i * fpSimple C j) • (vafaUnitClass (t i) + vafaUnitClass (t j))) :
+theorem finite_order_of_fp_twist_balance (t : Fin (rank C) → ℂˣ)
+    (hbalance : HasFPWeightedTwistBalance C t) :
     ∀ i, IsOfFinOrder (t i) := by
+  dsimp only [HasFPWeightedTwistBalance] at hbalance
   let B : Fin (rank C) → Fin (rank C) → vafaUnitSpace :=
     fun i _ => fpSimple C i • vafaUnitClass (t i)
   have hhex : ∀ i j z, (∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
@@ -248,9 +266,9 @@ theorem finite_order_of_fp_twist_balance
     simp only [smul_add, smul_smul]
     rw [mul_comm (fpSimple C j) (fpSimple C i)]
   intro i
-  apply (vafaUnitClass_eq_zero_iff _).mp
+  apply (rationalUnitClass_eq_zero_iff (K := ℝ) _).mp
   apply (smul_eq_zero.mp ?_).resolve_left (ne_of_gt (fpSimple_pos C i))
-  exact regular_fusion_derivation_vanishes C vafaUnitSpace B hhex i (unitIndex C)
+  exact regular_fusion_derivation_vanishes C vafaUnitSpace B (fun z i j ↦ hhex i j z) i (unitIndex C)
 
 end PropertyF.Ground.CentreModular
 end
@@ -296,8 +314,8 @@ theorem fpDeterminant_natural
     rw [homAction_natural_scalar η (t i : ℂ) (ht i), LinearMap.det_smul,
       LinearMap.det_id, mul_one]
   change fpSimple C i • vafaUnitClass (homAction (R := ℂ) (simples C i) X (η.app X)).det = _
-  rw [hd, vafaUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
-  simp only [smul_smul, mul_comm]
+  rw [hd, vafaUnitClass, rationalUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
+  simp only [vafaUnitClass, smul_smul, mul_comm]
 
 /-- A natural automorphism whose actual FP determinant satisfies the
 multiplicative balance on simple tensor products has finite-order simple
@@ -362,7 +380,8 @@ theorem natural_scalars_finite_of_monodromy_determinant
   natural_scalars_finite_of_fpDeterminant_balance C ht fun i j ↦ by
     dsimp only [monodromyDet] at hmon
     rw [hbalance, fpDeterminant_trans, hmon, add_zero,
-      fpDeterminant_scalar C (simples C i ⊗ simples C j), vafaUnitClass_mul]
+      fpDeterminant_scalar C (simples C i ⊗ simples C j), vafaUnitClass, rationalUnitClass_mul]
+    simp only [vafaUnitClass]
 
 end PropertyF.Ground.CentreModular
 end
@@ -394,7 +413,7 @@ theorem homAction_det_biprod {R : Type*} [Field R] {D : Type u} [Category.{v} D]
     [FiniteDimensional R (S ⟶ X)] [FiniteDimensional R (S ⟶ Y)]
     (a : X ≅ X) (b : Y ≅ Y) :
     (homAction (R := R) S (X ⊞ Y) (biprod.mapIso a b)).det =
-      (homAction (R := R) S X a).det * (homAction (R := R) S Y b).det := by
+      (homAction (R := R) S X a).det * (homAction (R := R) S Y b).det :=
   let E := homBiprodLinearEquiv (R := R) S X Y
   let A := homAction (R := R) S (X ⊞ Y) (biprod.mapIso a b)
   let L := homAction (R := R) S X a
@@ -402,10 +421,10 @@ theorem homAction_det_biprod {R : Type*} [Field R] {D : Type u} [Category.{v} D]
   have h : (E.symm.trans A).trans E = L.prodCongr right := by
     ext f <;> simp [E, A, L, right, homBiprodLinearEquiv, homAction,
       CategoryTheory.Linear.homCongr_apply, Category.assoc]
-  apply Units.ext
-  rw [← LinearEquiv.det_conj A E, h, LinearEquiv.coe_det]
-  change LinearMap.det (L.toLinearMap.prodMap right.toLinearMap) = _
-  rw [LinearMap.det_prodMap, Units.val_mul, LinearEquiv.coe_det, LinearEquiv.coe_det]
+  Units.ext (by
+    rw [← LinearEquiv.det_conj A E, h, LinearEquiv.coe_det]
+    change LinearMap.det (L.toLinearMap.prodMap right.toLinearMap) = _
+    rw [LinearMap.det_prodMap, Units.val_mul, LinearEquiv.coe_det, LinearEquiv.coe_det])
 
 /-- FP determinants are additive over direct sums of automorphisms. -/
 theorem fpDeterminant_biprod
@@ -414,7 +433,7 @@ theorem fpDeterminant_biprod
       fpDeterminant C a + fpDeterminant C b := by
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   unfold fpDeterminant
-  simp_rw [homAction_det_biprod, vafaUnitClass_mul, smul_add]
+  simp_rw [homAction_det_biprod, vafaUnitClass, rationalUnitClass_mul, smul_add]
   rw [Finset.sum_add_distrib]
 
 end PropertyF.Ground.CentreModular
@@ -438,26 +457,25 @@ theorem tensor_biprod_mapIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [PreservesBinaryBiproducts (tensorLeft X)] (a : Y ≅ Y) (b : Z ≅ Z) :
     Iso.refl X ⊗ᵢ biprod.mapIso a b = (Functor.mapBiprod (tensorLeft X) Y Z) ≪≫
       biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b) ≪≫
-        (Functor.mapBiprod (tensorLeft X) Y Z).symm := by
+        (Functor.mapBiprod (tensorLeft X) Y Z).symm :=
   let e := Functor.mapBiprod (tensorLeft X) Y Z
   let A := biprod.mapIso (Iso.refl X ⊗ᵢ a) (Iso.refl X ⊗ᵢ b)
-  change Iso.refl X ⊗ᵢ biprod.mapIso a b = e ≪≫ A ≪≫ e.symm
-  apply Iso.ext
-  apply (cancel_epi e.inv).1
-  have hleft : biprod.inl ≫ e.inv = X ◁ biprod.inl := by
-    rw [Functor.mapBiprod_inv, biprod.inl_desc]
-    rfl
-  have hright : biprod.inr ≫ e.inv = X ◁ biprod.inr := by
-    rw [Functor.mapBiprod_inv, biprod.inr_desc]
-    rfl
-  apply biprod.hom_ext' <;>
-    simp only [Iso.trans_hom, Iso.symm_hom, Iso.inv_hom_id_assoc] <;>
-    simp only [← Category.assoc, hleft, hright, tensorIso_hom, Iso.refl_hom, id_tensorHom,
-      ← whiskerLeft_comp] <;>
-    simp only [A, biprod.mapIso_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom] <;>
-    simp only [biprod.inl_map, biprod.inr_map, whiskerLeft_comp, Category.assoc]
-  · exact (congrArg (fun f => (X ◁ a.hom) ≫ f) hleft).symm
-  · exact (congrArg (fun f => (X ◁ b.hom) ≫ f) hright).symm
+  show Iso.refl X ⊗ᵢ biprod.mapIso a b = e ≪≫ A ≪≫ e.symm from
+    Iso.ext ((cancel_epi e.inv).1 (by
+      have hleft : biprod.inl ≫ e.inv = X ◁ biprod.inl := by
+        rw [Functor.mapBiprod_inv, biprod.inl_desc]
+        rfl
+      have hright : biprod.inr ≫ e.inv = X ◁ biprod.inr := by
+        rw [Functor.mapBiprod_inv, biprod.inr_desc]
+        rfl
+      apply biprod.hom_ext' <;>
+        simp only [Iso.trans_hom, Iso.symm_hom, Iso.inv_hom_id_assoc] <;>
+        simp only [← Category.assoc, hleft, hright, tensorIso_hom, Iso.refl_hom, id_tensorHom,
+          ← whiskerLeft_comp] <;>
+        simp only [A, biprod.mapIso_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom] <;>
+        simp only [biprod.inl_map, biprod.inr_map, whiskerLeft_comp, Category.assoc]
+      · exact (congrArg (fun f => (X ◁ a.hom) ≫ f) hleft).symm
+      · exact (congrArg (fun f => (X ◁ b.hom) ≫ f) hright).symm))
 
 /-- The tensor determinant identity is closed under binary direct sums. -/
 theorem fpDeterminant_tensor_biprod
@@ -525,18 +543,19 @@ theorem functor_natural_app_biprod {D : Type u} {E : Type*}
     [HasBinaryBiproducts D] [HasBinaryBiproducts E]
     (F : D ⥤ E) [F.Additive] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
     η.app (X ⊞ Y) = F.mapBiprod X Y ≪≫
-      biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm := by
-  apply Iso.ext
-  apply (cancel_mono (F.mapBiprod X Y).hom).1
-  change (η.app (X ⊞ Y)).hom ≫ (F.mapBiprod X Y).hom =
-    ((F.mapBiprod X Y).hom ≫ (biprod.mapIso (η.app X) (η.app Y)).hom ≫
-      (F.mapBiprod X Y).inv) ≫ (F.mapBiprod X Y).hom
-  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  apply biprod.hom_ext
-  · simpa only [Functor.mapBiprod_hom, Category.assoc, biprod.lift_fst, biprod.lift_fst_assoc,
-      biprod.mapIso_hom, biprod.map_fst, Iso.app_hom] using (η.hom.naturality (biprod.fst : X ⊞ Y ⟶ X)).symm
-  · simpa only [Functor.mapBiprod_hom, Category.assoc, biprod.lift_snd, biprod.lift_snd_assoc,
-      biprod.mapIso_hom, biprod.map_snd, Iso.app_hom] using (η.hom.naturality (biprod.snd : X ⊞ Y ⟶ Y)).symm
+      biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm :=
+  Iso.ext ((cancel_mono (F.mapBiprod X Y).hom).1 (by
+    change (η.app (X ⊞ Y)).hom ≫ (F.mapBiprod X Y).hom =
+      ((F.mapBiprod X Y).hom ≫ (biprod.mapIso (η.app X) (η.app Y)).hom ≫
+        (F.mapBiprod X Y).inv) ≫ (F.mapBiprod X Y).hom
+    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+    apply biprod.hom_ext
+    · simpa only [Functor.mapBiprod_hom, Category.assoc, biprod.lift_fst, biprod.lift_fst_assoc,
+        biprod.mapIso_hom, biprod.map_fst, Iso.app_hom] using
+        (η.hom.naturality (biprod.fst : X ⊞ Y ⟶ X)).symm
+    · simpa only [Functor.mapBiprod_hom, Category.assoc, biprod.lift_snd, biprod.lift_snd_assoc,
+        biprod.mapIso_hom, biprod.map_snd, Iso.app_hom] using
+        (η.hom.naturality (biprod.snd : X ⊞ Y ⟶ Y)).symm))
 
 /-- Tensoring a conjugated automorphism conjugates its tensor extension. -/
 theorem tensor_conjugate_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -668,21 +687,20 @@ theorem fpDeterminant_functor_natural_decomposition
     (F : C.Obj ⥤ C.Obj) [F.Additive] (η : F ≅ F) (X : C.Obj) :
     fpDeterminant C (η.app X) = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) •
-        fpDeterminant C (η.app (simples C i)) := by
-  apply additive_object_function_decomposition C vafaUnitSpace
-    (fun X => fpDeterminant C (η.app X))
-  · intro X Y e
-    rw [functor_natural_app_conjugate F η e]
-    exact fpDeterminant_conjugate C (F.mapIso e).symm (η.app Y)
-  · intro X hX
-    rw [show η.app X = Iso.refl (F.obj X) from Iso.ext ((F.map_isZero hX).eq_of_src _ _),
-      fpDeterminant_refl]
-  · intro X Y
-    let : PreservesBinaryBiproducts F := preservesBinaryBiproducts_of_preservesBiproducts F
-    rw [functor_natural_app_biprod F η X Y]
-    simpa only [Iso.symm_symm_eq, fpDeterminant_biprod] using
-      fpDeterminant_conjugate C (F.mapBiprod X Y).symm
-        (biprod.mapIso (η.app X) (η.app Y))
+        fpDeterminant C (η.app (simples C i)) :=
+  additive_object_function_decomposition C vafaUnitSpace (fun X ↦ fpDeterminant C (η.app X))
+    (fun {X Y} e ↦ by
+      rw [functor_natural_app_conjugate F η e]
+      exact fpDeterminant_conjugate C (F.mapIso e).symm (η.app Y))
+    (fun X hX ↦ by
+      rw [show η.app X = Iso.refl (F.obj X) from Iso.ext ((F.map_isZero hX).eq_of_src _ _),
+        fpDeterminant_refl])
+    (fun X Y ↦ by
+      let : PreservesBinaryBiproducts F := preservesBinaryBiproducts_of_preservesBiproducts F
+      rw [functor_natural_app_biprod F η X Y]
+      simpa only [Iso.symm_symm_eq, fpDeterminant_biprod] using
+        fpDeterminant_conjugate C (F.mapBiprod X Y).symm
+          (biprod.mapIso (η.app X) (η.app Y))) X
 
 end PropertyF.Ground.CentreModular
 end
@@ -820,7 +838,7 @@ theorem fpDeterminant_simple_monodromy_eq_zero
   let B : Fin (rank C) → Fin (rank C) → vafaUnitSpace := fun i z =>
     monodromyDet C (simples C z) (simples C i)
   refine regular_fusion_derivation_vanishes C vafaUnitSpace B ?_ i z
-  intro i j z
+  intro z i j
   have h := fpDeterminant_monodromy_hexagon C hbalance z i j
   rw [fpDeterminant_monodromy_decomposition] at h
   change (∑ k, (fusionCoeff C i j k : ℝ) • B k z) = _ at h
@@ -864,29 +882,26 @@ theorem pivotal_twist_has_simple_scalars (p : Dimensions.PivotalStructure (C := 
 theorem pivotal_twist_simple_balance (p : Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p) :
     HasSimpleBalance C (Dimensions.pivotalBraidedTwistNaturalIso C p)
-      (CentreCabling.pivotalTwistUnit C p) := by
-  intro i j
-  apply Iso.ext
-  have h := hbalance (simples C i) (simples C j)
-  change Modular.doubleBraiding _ _ ≫
-    (((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i)).hom ⊗ₘ
-      ((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C j)).hom) =
-      ((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i ⊗ simples C j)).hom at h
-  rw [pivotal_twist_has_simple_scalars C p i, pivotal_twist_has_simple_scalars C p j] at h
-  simp only [tensorHom_def, MonoidalLinear.whiskerLeft_smul, MonoidalLinear.smul_whiskerRight,
-    Linear.smul_comp, Linear.comp_smul, smul_smul] at h
-  simpa [scalarIso, monodromyIso, Modular.doubleBraiding, Category.assoc,
-    Linear.smul_comp, mul_comm] using h.symm
+      (CentreCabling.pivotalTwistUnit C p) := fun i j ↦ Iso.ext (by
+    have h := hbalance (simples C i) (simples C j)
+    change Modular.doubleBraiding _ _ ≫
+      (((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i)).hom ⊗ₘ
+        ((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C j)).hom) =
+        ((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i ⊗ simples C j)).hom at h
+    rw [pivotal_twist_has_simple_scalars C p i, pivotal_twist_has_simple_scalars C p j] at h
+    simp only [tensorHom_def, MonoidalLinear.whiskerLeft_smul, MonoidalLinear.smul_whiskerRight,
+      Linear.smul_comp, Linear.comp_smul, smul_smul] at h
+    simpa [scalarIso, monodromyIso, Modular.doubleBraiding, Category.assoc,
+      Linear.smul_comp, mul_comm] using h.symm)
 
 /-- Pivotal twist scalars have finite order whenever its actual balancing law
 holds; no lantern relation or modularity hypothesis is used. -/
 theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p) :
-    ∀ i, IsOfFinOrder (End.of ((Dimensions.pivotalBraidedTwist C p (simples C i)).hom)) := by
-  intro i
-  let : Simple (simples C i) := simples_simple C i
-  let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  simpa [CentreCabling.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using
+    ∀ i, IsOfFinOrder (End.of ((Dimensions.pivotalBraidedTwist C p (simples C i)).hom)) := fun i ↦
+  letI : Simple (simples C i) := simples_simple C i
+  letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  by simpa [CentreCabling.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using
     (Ground.simpleEndScalar (simples C i)).symm.toMonoidHom.isOfFinOrder
       (Units.isOfFinOrder_val.mpr (natural_scalars_finite_of_simple_balancing C
         (pivotal_twist_has_simple_scalars C p) (pivotal_twist_simple_balance C p hbalance) i))

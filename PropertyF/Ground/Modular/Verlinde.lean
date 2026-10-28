@@ -206,14 +206,14 @@ variable (p : PivotalStructure (C := C))
 theorem rightPartialTrace_natural {A B : C} (Y : C)
     (f : A ⟶ B) (g : B ⟶ A) (t : End (B ⊗ Y)) :
     rightPartialTrace p A Y (End.of ((f ▷ Y) ≫ t.asHom ≫ (g ▷ Y))) =
-      End.of (f ≫ (rightPartialTrace p B Y t).asHom ≫ g) := by
-  apply End.ext
-  simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
-    comp_whiskerRight, Category.assoc]
-  rw [← associator_inv_naturality_left_assoc, whisker_exchange_assoc,
-    ← rightUnitor_inv_naturality_assoc]
-  rw [associator_naturality_left_assoc, ← whisker_exchange_assoc,
-    ← whisker_exchange_assoc, rightUnitor_naturality]
+      End.of (f ≫ (rightPartialTrace p B Y t).asHom ≫ g) :=
+  End.ext (by
+    simp only [rightPartialTrace, LinearMap.coe_mk, AddHom.coe_mk,
+      comp_whiskerRight, Category.assoc]
+    rw [← associator_inv_naturality_left_assoc, whisker_exchange_assoc,
+      ← rightUnitor_inv_naturality_assoc]
+    rw [associator_naturality_left_assoc, ← whisker_exchange_assoc,
+      ← whisker_exchange_assoc, rightUnitor_naturality])
 
 variable [CategoryTheory.Limits.HasKernels C]
 /-- When the surviving object is simple with nonzero dimension, successive
