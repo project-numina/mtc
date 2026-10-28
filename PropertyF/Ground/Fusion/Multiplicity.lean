@@ -139,8 +139,7 @@ theorem tensor_multiplicity (D : BraidedFusionCategory.{v,u}) (X Y : D.Obj)
       finrank_hom_biproduct _ _
     _ = _ := by
       rw [Fintype.sum_sigma]
-      apply Finset.sum_congr rfl
-      intro j _
+      refine Finset.sum_congr rfl fun j _ ↦ ?_
       change (∑ _ : Fin (m j), Module.finrank ℂ (simples D k ⟶ X ⊗ simples D j)) = _
       simp [m]
 
