@@ -30,8 +30,10 @@ lemma braid_first {X Y A B : C} (f : X ≅ Y) (g : A ≅ B) :
   rw [← associator_naturality, associator_inv_naturality_assoc]
   simp only [← Category.assoc, tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id,
     braiding_naturality]
+variable {X Y : C} (f : X ≅ Y)
+
 /-- Every adjacent braid generator is natural in an object isomorphism. -/
-theorem braidGenerator_natural {X Y : C} (f : X ≅ Y) (n : ℕ)
+theorem braidGenerator_natural (n : ℕ)
     (i : Fin (n + 1)) :
     (braidGenerator X n i).asIso.hom ≫ (tensorPowerIso f (n + 2)).hom =
       (tensorPowerIso f (n + 2)).hom ≫ (braidGenerator Y n i).asIso.hom := by
@@ -51,7 +53,7 @@ theorem braidGenerator_natural {X Y : C} (f : X ≅ Y) (n : ℕ)
       simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id, ih]
 
 /-- Conjugation by the tensor-power isomorphism takes generators to generators. -/
-theorem conjugate_braidGenerator {X Y : C} (f : X ≅ Y) (n : ℕ)
+theorem conjugate_braidGenerator (n : ℕ)
     (i : Fin (n + 1)) :
     (tensorPowerIso f (n + 2)).conjAut (braidGenerator X n i) = braidGenerator Y n i := by
   apply Aut.ext
@@ -59,8 +61,9 @@ theorem conjugate_braidGenerator {X Y : C} (f : X ≅ Y) (n : ℕ)
   simp only [Iso.conjAut_apply, Iso.trans_hom, Iso.symm_hom]
   rw [braidGenerator_natural, Iso.inv_hom_id_assoc]
 
+include f in
 /-- Isomorphic objects have isomorphic braid-image groups. -/
-def braidImageIso {X Y : C} (f : X ≅ Y) (n : ℕ) : braidImage X n ≃* braidImage Y n := by
+def braidImageIso (n : ℕ) : braidImage X n ≃* braidImage Y n := by
   let e := (tensorPowerIso f (n + 2)).conjAut
   have hm : (braidImage X n).map e.toMonoidHom = braidImage Y n := by
     rw [braidImage, MonoidHom.map_closure, ← Set.range_comp]
