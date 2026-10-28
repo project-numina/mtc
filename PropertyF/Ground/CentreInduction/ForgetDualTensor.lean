@@ -11,8 +11,8 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (CategoryTheory.Center D)]
-local notation "𝒵" => CategoryTheory.Center D
+  [RigidCategory (Center D)]
+local notation "𝒵" => Center D
 
 omit [RightRigidCategory D] in
 /-- Forgetting a centre mate computes the mate for the forgotten dual pairings. -/
@@ -20,10 +20,10 @@ theorem forget_rightAdjointMate {X Y : 𝒵} (f : X ⟶ Y) :
     (fᘁ).f = @rightAdjointMate D _ _ X.1 Y.1
       (show HasRightDual X.1 from { rightDual := (Xᘁ).1, exact := forgetPairing X })
       (show HasRightDual Y.1 from { rightDual := (Yᘁ).1, exact := forgetPairing Y }) f.f := by
-  simp only [rightAdjointMate, CategoryTheory.Center.comp_f,
-    CategoryTheory.Center.rightUnitor_inv_f, CategoryTheory.Center.leftUnitor_hom_f,
-    CategoryTheory.Center.whiskerLeft_f, CategoryTheory.Center.whiskerRight_f,
-    CategoryTheory.Center.associator_inv_f]
+  simp only [rightAdjointMate, Center.comp_f,
+    Center.rightUnitor_inv_f, Center.leftUnitor_hom_f,
+    Center.whiskerLeft_f, Center.whiskerRight_f,
+    Center.associator_inv_f]
   rfl
 
 /-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
@@ -134,7 +134,8 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-  [RigidCategory (CategoryTheory.Center D)]
+  [RigidCategory (Center D)]
+local notation "𝒵" => Center D
 
 theorem rightDualIso_trans {E : Type u} [Category.{v} E] [MonoidalCategory E]
     {X A B E : E} (p : ExactPairing X A) (q : ExactPairing X B) (r : ExactPairing X E) :
@@ -143,7 +144,7 @@ theorem rightDualIso_trans {E : Type u} [Category.{v} E] [MonoidalCategory E]
 
 omit [RightRigidCategory D] in
 /-- The forgotten tensor dual agrees with the tensor pairing of forgotten duals. -/
-theorem forget_rightDualTensorIso (X Y : CategoryTheory.Center D) :
+theorem forget_rightDualTensorIso (X Y : 𝒵) :
     (rightDualTensorIso X Y).hom.f =
       (rightDualIso (forgetPairing (X ⊗ Y))
         (show ExactPairing (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1) from
@@ -160,14 +161,14 @@ theorem forget_rightDualTensorIso (X Y : CategoryTheory.Center D) :
       (cx ⊗≫ (X.1 ◁ cy) ▷ (Xᘁ).1 ⊗≫ 𝟙 ((X.1 ⊗ Y.1) ⊗ ((Yᘁ).1 ⊗ (Xᘁ).1)))
     simp [monoidalComp, cx, cy]
   unfold rightDualTensorIso rightDualIso rightAdjointMate
-  simp only [CategoryTheory.Center.comp_f, CategoryTheory.Center.rightUnitor_inv_f,
-    CategoryTheory.Center.leftUnitor_hom_f, CategoryTheory.Center.whiskerLeft_f,
-    CategoryTheory.Center.whiskerRight_f, CategoryTheory.Center.associator_inv_f,
-    CategoryTheory.Center.id_f, hc]
+  simp only [Center.comp_f, Center.rightUnitor_inv_f,
+    Center.leftUnitor_hom_f, Center.whiskerLeft_f,
+    Center.whiskerRight_f, Center.associator_inv_f,
+    Center.id_f, hc]
   rfl
 
 /-- Forgetting centre duals preserves their tensor comparison. -/
-theorem forgetDualIso_tensor (X Y : CategoryTheory.Center D) :
+theorem forgetDualIso_tensor (X Y : 𝒵) :
     (forgetDualIso (X ⊗ Y)).hom ≫ (rightDualTensorIso X.1 Y.1).hom =
       (rightDualTensorIso X Y).hom.f ≫
         ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) := by

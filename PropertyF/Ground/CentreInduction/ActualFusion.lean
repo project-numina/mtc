@@ -15,7 +15,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
-local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵" => Center C.Obj
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -55,7 +55,7 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component followed by a crossing block reduces to a fusion endomorphism. -/
-theorem unit_block (Z : CategoryTheory.Center D) {T S R : D}
+theorem unit_block (Z : Center D) {T S R : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (( (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫
       ((Z.2.β R).hom ▷ (Rᘁ))) ▷ T) ≫ crossingBlock Z.1 T S g f =
@@ -91,7 +91,7 @@ variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-block diagram depends linearly on its fusion endomorphism. -/
-def unitBlockLinear (Z : CategoryTheory.Center D) (T S : D) :
+def unitBlockLinear (Z : Center D) (T S : D) :
     (T ⊗ S ⟶ T ⊗ S) →ₗ[k] (Z.1 ⊗ T ⟶ T ⊗ ((S ⊗ Z.1) ⊗ Sᘁ)) where
   toFun h := 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ h ▷ Sᘁ ⊗≫
     𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _
@@ -106,7 +106,7 @@ def unitBlockLinear (Z : CategoryTheory.Center D) (T S : D) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The identity fusion endomorphism yields the centre intertwining diagram. -/
-theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
+theorem unitBlockLinear_id (Z : Center D) (T S : D) :
     unitBlockLinear (k := k) Z T S (𝟙 (T ⊗ S)) = (Z.2.β T).hom ≫ (T ◁
       ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫ (α_ Z.1 S (Sᘁ)).inv ≫
         ((Z.2.β S).hom ▷ Sᘁ))) := by
@@ -158,11 +158,11 @@ theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/
-def actualAdjunction : CategoryTheory.Center.forget C.Obj ⊣ induction C where
+def actualAdjunction : Center.forget C.Obj ⊣ induction C where
   unit := {
     app Z := ⟨unitCandidate C Z, unitCandidate_central C Z⟩
     naturality {X Y} f := by
-      apply CategoryTheory.Center.ext
+      apply Center.ext
       change f.f ≫ unitCandidate C Y = unitCandidate C X ≫ (underlyingFunctor C).map f.f
       apply biproduct.hom_ext
       intro i
@@ -171,7 +171,7 @@ def actualAdjunction : CategoryTheory.Center.forget C.Obj ⊣ induction C where
   counit := underlyingCounit C
   left_triangle_components Z := unitCandidate_counit C Z
   right_triangle_components X := by
-    apply CategoryTheory.Center.ext
+    apply Center.ext
     change unitCandidate C ((induction C).obj X) ≫
       (underlyingFunctor C).map ((underlyingCounit C).app X) = 𝟙 (underlying C X)
     refine biproduct.hom_ext' _ _ fun i => biproduct.hom_ext _ _ fun j => ?_
@@ -217,21 +217,21 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
-local notation "𝒵" => CategoryTheory.Center C.Obj
+local notation "𝒵" => Center C.Obj
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- If the actual centre has a fusion structure, its global FP dimension is the square
 of the base global FP dimension. -/
 theorem globalFPDimension_square_of_actual_induction
-    [RigidCategory (CategoryTheory.Center C.Obj)]
-    [IsFusionCategory (CategoryTheory.Center C.Obj)] :
+    [RigidCategory (Center C.Obj)]
+    [IsFusionCategory (Center C.Obj)] :
     globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
   let I (i : Fin (rank C)) := (induction C).obj (simples C i)
   have hadj (i : Fin (rank C)) (j : Fin (rank 𝒵ᶠ)) :
       Module.finrank ℂ ((simples 𝒵ᶠ j : 𝒵) ⟶ I i) =
       Module.finrank ℂ ((simples 𝒵ᶠ j).1 ⟶ simples C i) :=
-    (homLinearEquivOfAdjunction (k := ℂ) (CategoryTheory.Center.forget C.Obj)
+    (homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj)
       (induction C) (actualAdjunction C) (simples 𝒵ᶠ j) (simples C i)).finrank_eq
   have hdim (i : Fin (rank C)) :
       fpDimension 𝒵ᶠ (I i) = globalFPDimension C * fpSimple C i := by
