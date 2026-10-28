@@ -61,8 +61,7 @@ theorem square_off_dual_of_orthogonal {J K : Type*} [Fintype J] [CommRing K] [St
     (horth : ∀ {a b}, a ≠ b → ∑ z, star (S z a) * S z b = 0)
     (x y : J) (hxy : x ≠ δ y) : ∑ z, S x z * S z y = 0 := by
   have hstar (z : J) : star (S z (δ x)) = S x z := by
-    rw [hsym z, hconj]
-    simp
+    simp only [hsym z, hconj, star_star]
   simpa only [hstar] using horth (fun (h : δ x = y) ↦ hxy (by
     simpa only [hdual x] using congrArg δ h))
 
