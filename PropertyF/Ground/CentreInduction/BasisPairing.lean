@@ -174,6 +174,8 @@ theorem crossingBlock_pre_test (h : T ⟶ U)
 end
 
 variable (X : C.Obj)
+-- The induction crossing on the fixed middle object.
+local notation "βᶜ" => crossingCandidate C X
 
 /-- Summing the crossing blocks removes the dependence on the chosen fusion
 basis, so a map of test objects can pass through each matrix entry. -/
@@ -189,8 +191,7 @@ theorem crossingBlock_sum_natural_test
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction crossing is natural in the crossed object. -/
 theorem crossingCandidate_natural_test {T U : C.Obj} (h : T ⟶ U) :
-    (underlying C X ◁ h) ≫ crossingCandidate C X U =
-      crossingCandidate C X T ≫ (h ▷ underlying C X) :=
+    (underlying C X ◁ h) ≫ βᶜ U = βᶜ T ≫ (h ▷ underlying C X) :=
   rightDistributor_ext_left (f := inductionSummand C X) fun i => by
     dsimp [underlying] at *
     rw [← whisker_exchange_assoc]
