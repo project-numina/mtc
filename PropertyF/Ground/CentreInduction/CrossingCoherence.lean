@@ -103,15 +103,14 @@ theorem crossingComposite_summand :
   (biproduct.ι Vᶜ i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
     ∑ k, ∑ a : crossingIndex C T i k, ∑ j, ∑ b : crossingIndex C U k j,
       nestedCrossingBlock C X T U i k j a b ≫ ((T ⊗ U) ◁ biproduct.ι Vᶜ j) := by
-  let V := inductionSummand C X
-  let b (A : C.Obj) : (⨁ V) ⊗ A ⟶ A ⊗ (⨁ V) := βᶜ A
+  let b (A : C.Obj) : (⨁ Vᶜ) ⊗ A ⟶ A ⊗ (⨁ Vᶜ) := βᶜ A
   calc
-    _ = 𝟙 _ ⊗≫ (((biproduct.ι V i ▷ T) ≫ b T) ▷ U) ⊗≫
-      (T ◁ b U) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
+    _ = 𝟙 _ ⊗≫ (((biproduct.ι Vᶜ i ▷ T) ≫ b T) ▷ U) ⊗≫
+      (T ◁ b U) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ Vᶜ)) := by
       dsimp only [crossingTensorComposite]
       monoidal
     _ = _ := by
-      simp [b, V, nestedCrossingBlock, crossingCandidate_on_summand, whiskerLeft_sum,
+      simp [b, nestedCrossingBlock, crossingCandidate_on_summand, whiskerLeft_sum,
         monoidalComp, sum_whiskerRight, Preadditive.comp_sum, Preadditive.sum_comp,
         ← whiskerLeft_comp_assoc, crossingBlock_tensor, crossingSummand, -whiskerLeft_comp]
 

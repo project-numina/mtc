@@ -207,9 +207,9 @@ theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFus
     simp_rw [fpDimension, finrank_hom_induction (C := C), Finset.mul_sum]
     rw [Finset.sum_comm]
     simp only [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
-      ← Finset.mul_sum, finrank_to_simple_eq_from_simple, globalFPDimension, pow_two]
-    change (∑ x, fpSimple 𝒵ᶠ x * fpDimension C (simples 𝒵ᶠ x).1) = _
-    simp [Integrate.center_forget_fpDimension C, fpDimension_simple]
+      ← Finset.mul_sum, finrank_to_simple_eq_from_simple, show ∀ Z : C.Obj, (∑ i,
+        ↑(finrank ℂ (Sᶜ i ⟶ Z)) * fpSimple C i) = fpDimension C Z from fun _ ↦ rfl,
+      Integrate.center_forget_fpDimension C, fpDimension_simple, globalFPDimension, pow_two]
   simpa [← Integrate.center_forget_fpDimension C, induction, fpDimension_underlying,
     fpDimension_simple, globalFPDimension, pow_two, Finset.mul_sum, mul_left_comm] using h
 

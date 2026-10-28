@@ -178,9 +178,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unit_diag :
   biproduct.ι V i ≫ u i ≫
     ((S i ◁ (underlyingCounit C).app X) ▷ (S i)ᘁ) = 𝟙 (V i) := by
-  simp only [unit_matrix_reduce, crossing_counit_diagonal X i]
-  erw [crossingUnitBlock_eval X (S i) (Classical.choice (unitIndex_iso C))]
-  dsimp only [Functor.id_obj]
+  simp only [unit_matrix_reduce, crossing_counit_diagonal X i, simpleTensorUnitIso, unitSummandIso,
+    crossingUnitBlock_eval X (S i) (Classical.choice (unitIndex_iso C)), Functor.id_obj]
   convert congrArg (fun (t : (S i)ᘁ ⊗ 𝟙_ C.Obj ⟶ 𝟙_ C.Obj ⊗ (S i)ᘁ) =>
     𝟙 (V i) ⊗≫ ((S i ⊗ X) ◁ t) ⊗≫ 𝟙 (V i))
     (coevaluation_evaluation'' (S i) ((S i)ᘁ)) using 1 <;> monoidal
