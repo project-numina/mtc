@@ -13,9 +13,11 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
+attribute [local instance] IsFusionCategory.hom_finite
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 -- The chosen simple representatives of the base fusion category.
 local notation "S" => simples C
+local instance (i : Fin (rank C)) : Simple (S i) := simples_simple C i
 -- The induction crossing on the object X.
 local notation "b" => crossingCandidate C X
 -- Its simple-indexed summands.
@@ -64,8 +66,6 @@ theorem crossing_counit_diagonal :
   let : Unique (crossingIndex C (S i) i (unitIndex C)) := by
     simpa only [crossingIndex, counit_column_finrank, ↓reduceIte] using
       (inferInstance : Unique (Fin 1))
-  let : Simple (S i) := simples_simple C i
-  let : FiniteDimensional ℂ (S i ⟶ S i) := IsFusionCategory.hom_finite _ _
   simpa only [crossing_counit_matrix, Fintype.sum_unique, crossingSummand,
     Iso.symm_hom, Iso.symm_inv] using
     congrArg (· ≫ (S i ◁ (unitSummandIso C X).hom))
