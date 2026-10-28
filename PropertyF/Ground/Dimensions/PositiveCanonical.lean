@@ -2,6 +2,11 @@ module
 public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Fusion.Agreement
 
+/-! # Positive pivotal dimensions
+
+Positive spherical dimensions agree with Frobenius–Perron dimensions and imply pseudo-unitarity.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
@@ -46,14 +51,13 @@ theorem positive_spherical_isPseudoUnitary (C : Ground.BraidedFusionCategory)
     (d : Fin (Ground.rank C) → ℝ)
     (hreal : ∀ i, pivotalDimension C p (Ground.simples C i) = (d i : ℂ))
     (hpos : ∀ i, 0 < d i) : Ground.PseudoUnitary C := by
-  have hfp := positive_pivotalDimension_eq_fpSimple C p d hreal hpos
   unfold Ground.PseudoUnitary Ground.globalFPDimension
   rw [target_globalDimension_eq_sum_squares C p hp]
   simp only [← rightTrace_id, Complex.ofReal_sum, Complex.ofReal_pow]
   apply Finset.sum_congr rfl
   intro i _
   change pivotalDimension C p (Ground.simples C i) ^ 2 = ((Ground.fpSimple C i : ℝ) : ℂ) ^ 2
-  rw [hreal, hfp]
+  rw [hreal, positive_pivotalDimension_eq_fpSimple C p d hreal hpos]
 
 end PropertyF.Ground.Dimensions
 

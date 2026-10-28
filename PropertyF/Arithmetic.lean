@@ -4,6 +4,12 @@ public import Mathlib.RingTheory.IntegralClosure.IntegrallyClosed
 public import Mathlib.NumberTheory.NumberField.Basic
 public import Mathlib.Tactic
 
+/-!
+# Galois descent to integers
+
+An integral element fixed by a finite Galois group is an integer.
+-/
+
 @[expose] public section
 namespace PropertyF
 

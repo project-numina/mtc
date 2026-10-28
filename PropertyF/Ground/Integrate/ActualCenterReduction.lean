@@ -1,17 +1,196 @@
 module
+public import PropertyF.Ground.Integrate.Arithmetic
 public import PropertyF.Ground.Integrate.CharacterReality
 public import PropertyF.Ground.Dimensions.DimensionCharacter
 public import PropertyF.Ground.Dimensions.GlobalInequality
+public import PropertyF.Ground.Modular.FusionTransport
+public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 public import PropertyF.Ground.Fusion.Agreement
+public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Modular.SMatrix
-public import PropertyF.Ground.Integrate.Reduction
-public import PropertyF.Ground.Integrate.ModularWitness
 public import PropertyF.Ground.Integrate.TwistedRigidity
 public import PropertyF.Ground.Dimensions.PivotalTwist
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Calculus.TensorPowerCoherence
 public import PropertyF.Ground.Centre.ProductClosure
 public import PropertyF.Ground.Integrate.CenterBundle
+
+section
+/-! Bundle-free reduction of the target to FP invariance under conjugacy and the
+paper's Galois-fixedness argument for pseudo-unitary categories. -/
+
+@[expose] public noncomputable section
+namespace PropertyF.Ground
+universe v u
+
+/-- The two remaining categorical obligations suffice to prove the frozen target.
+This is a reduction with explicitly displayed premises, not the target theorem. -/
+theorem target_of_galois_invariance_and_pseudo_fixedness
+    (hInvariant : ∀ {C D : BraidedFusionCategory.{v,u}} {σ : ℂ ≃+* ℂ},
+      GaloisConjugate C D σ → globalFPDimension C = globalFPDimension D)
+    (hFixed : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ,
+      σ (globalFPDimension C : ℂ) = (globalFPDimension C : ℂ)) :
+    TargetStatement.{v,u} := by
+  intro C hPU hF
+  obtain ⟨D, σ, ⟨E⟩, hD⟩ := hPU
+  have hDF : HasPropertyF D.Obj := Modular.conjugate_propertyF C D E hF
+  have hDInt := weaklyIntegral_of_globalFPDimension_fixed D (hFixed D hD hDF)
+  rwa [hInvariant E]
+
+/-- Global FP invariance and property-F transport are constructed. The sole
+remaining premise is the pseudo-unitary fixedness argument from the paper. -/
+theorem target_of_pseudo_fixedness
+    (hFixed : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ,
+      σ (globalFPDimension C : ℂ) = (globalFPDimension C : ℂ)) :
+    TargetStatement.{v,u} :=
+  target_of_galois_invariance_and_pseudo_fixedness
+    (fun {C D} {_} E => Modular.conjugate_globalFPDimension C D E) hFixed
+
+/-- Reduction to the three remaining numerical consequences of the categorical
+centre argument. These are explicit premises and are not part of the target. -/
+theorem target_of_numerical_witnesses
+    (hPositive : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → 0 < globalFPDimension C)
+    (hConjugates : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ, ∃ a : ℝ,
+        0 < a ∧ a ≤ globalFPDimension C ∧
+          σ (globalFPDimension C : ℂ) = (a : ℂ))
+    (hWitness : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ (σ : ℂ ≃+* ℂ) (a b : ℝ),
+        0 < a → a < globalFPDimension C →
+        σ (globalFPDimension C : ℂ) = (a : ℂ) →
+        σ.symm (globalFPDimension C : ℂ) = (b : ℂ) →
+        ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧
+          f * b = globalFPDimension C ∧ 1 ≤ f ∧ f = |d|) :
+    TargetStatement.{v,u} := by
+  apply target_of_pseudo_fixedness
+  intro C hPU hF
+  exact galois_fixed_of_smaller_conjugate_witness (globalFPDimension C)
+    (hPositive C hPU hF) (hConjugates C hPU hF) (hWitness C hPU hF)
+
+/-- The unit simple proves positivity, leaving only the bounded-conjugate and
+centre/rigidity witness obligations. -/
+theorem target_of_bounded_conjugates_and_witness
+    (hConjugates : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ σ : ℂ ≃+* ℂ, ∃ a : ℝ,
+        0 < a ∧ a ≤ globalFPDimension C ∧
+          σ (globalFPDimension C : ℂ) = (a : ℂ))
+    (hWitness : ∀ (C : BraidedFusionCategory.{v,u}), PseudoUnitary C →
+      HasPropertyF C.Obj → ∀ (σ : ℂ ≃+* ℂ) (a b : ℝ),
+        0 < a → a < globalFPDimension C →
+        σ (globalFPDimension C : ℂ) = (a : ℂ) →
+        σ.symm (globalFPDimension C : ℂ) = (b : ℂ) →
+        ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧
+          f * b = globalFPDimension C ∧ 1 ≤ f ∧ f = |d|) :
+    TargetStatement.{v,u} :=
+  target_of_numerical_witnesses (fun C _ _ => lt_of_lt_of_le (by norm_num) (one_le_globalFPDimension C)) hConjugates hWitness
+
+end PropertyF.Ground
+end
+end
+
+section
+/-! Extract the numerical ingredients of the paper's witness from an actual
+spherical category with positive FP dimensions and invertible S matrix. -/
+
+@[expose] public noncomputable section
+open CategoryTheory
+open scoped BigOperators
+namespace PropertyF.Ground
+universe v u
+
+/-- The actual Galois-unit label supplies the modular dimension identity, its
+self-column, a dimension at least one, and a real conjugate. This is independent
+of the centre-specific realization and finite-braid rigidity. -/
+theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := Z.Obj)) (hp : p.IsSpherical)
+    (hdim : ∀ i, Modular.simpleDimension Z p i = (fpSimple Z i : ℂ))
+    (hdet : (Modular.categoricalS Z p).det ≠ 0)
+    (δ : ℝ) (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
+    (σ : ℂ ≃+* ℂ) :
+    ∃ (y : Fin (rank Z)) (f d : ℝ), 1 ≤ f ∧ f = fpSimple Z y ∧
+      σ (f : ℂ) = (d : ℂ) ∧ y = dualIndex Z y ∧
+      (∀ x, Modular.categoricalS Z p x y =
+        (f : ℂ) * σ.symm (Modular.simpleDimension Z p x)) ∧
+      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2 ∧
+      Modular.categoricalS Z p y y = (f : ℂ) * σ.symm (f : ℂ) := by
+  have hreal : ∀ j, starRingEnd ℂ (Modular.simpleDimension Z p j) =
+      Modular.simpleDimension Z p j := by
+    intro j
+    rw [hdim]
+    simp
+  obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hp hdet hreal
+  let y := act σ.symm (unitIndex Z)
+  have hprop := Modular.galois_unit_properties (unitIndex Z) (Modular.categoricalS Z p)
+    (dualIndex Z) (Modular.simpleDimension Z p) (globalDimension Z)
+    (Modular.simpleDimension_ne_zero Z p)
+    (Modular.globalDimension_ne_zero_of_invertibleS Z p hp hdet hreal)
+    (Modular.simpleDimension_unit Z p) (Modular.categorical_global_eq_sum_squares Z p hp)
+    (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
+    (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
+    (fun x => hact σ.symm x (unitIndex Z))
+  let f := fpSimple Z y
+  let χ : Fin (rank Z) → ℂ := fun i => (fpSimple Z i : ℂ)
+  have hχ : χ (unitIndex Z) ≠ 0 := by simp [χ, fpSimple_unit]
+  have hchar : ∀ i j, χ i * χ j = ∑ k, (fusionCoeff Z i j k : ℂ) * χ k := by
+    intro i j
+    dsimp [χ]
+    exact_mod_cast fpSimple_mul Z i j
+  have hdual : ∀ i, χ (dualIndex Z i) = χ i := by
+    intro i
+    simp [χ, fpSimple_dual]
+  have hreal' : (((σ (f : ℂ)).re : ℝ) : ℂ) = σ (f : ℂ) := by
+    apply Complex.conj_eq_iff_re.mp
+    simpa only [← Complex.star_def] using selfDual_character_galois_real Z χ (unitIndex Z)
+      hχ hchar hdual σ y
+  refine ⟨y, f, (σ (f : ℂ)).re, one_le_fpSimple Z y, rfl, hreal'.symm,
+    hprop.2.1, ?_, ?_, ?_⟩
+  · intro x
+    have h := hprop.1 x
+    rw [hdim] at h
+    exact h
+  · have h := hprop.2.2
+    rw [hglobal, hdim] at h
+    exact h
+  · have h := hprop.1 y
+    rw [hdim] at h
+    exact h
+
+/-- Once the Galois-unit column is known to have finite braid image and the
+actual three-strand rigidity theorem applies, the required numerical witness
+follows from categorical modular data. -/
+theorem center_witness_of_categorical_modular_data (Z : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := Z.Obj)) (hp : p.IsSpherical)
+    (hdim : ∀ i, Modular.simpleDimension Z p i = (fpSimple Z i : ℂ))
+    (hdet : (Modular.categoricalS Z p).det ≠ 0)
+    (δ b : ℝ) (hδ : 0 < δ) (hb : 0 < b)
+    (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
+    (σ : ℂ ≃+* ℂ) (hτ : σ.symm (δ : ℂ) = (b : ℂ))
+    (hF : ∀ y, (∀ x, Modular.categoricalS Z p x y =
+      (fpSimple Z y : ℂ) * σ.symm (Modular.simpleDimension Z p x)) →
+      ObjectPropertyF (simples Z y))
+    (hRigid : ∀ y, ObjectPropertyF (simples Z y) → ∀ d : ℝ,
+      σ (fpSimple Z y : ℂ) = (d : ℂ) →
+      σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y →
+      fpSimple Z y = |d|) :
+    ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
+  obtain ⟨y, f, d, hf, hfy, hσf, _, hcolumn, hG, hS⟩ :=
+    exists_modular_witness Z p hp hdim hdet δ hglobal σ
+  have hyF : ObjectPropertyF (simples Z y) := by
+    apply hF y
+    simpa only [hfy] using hcolumn
+  refine ⟨f, d, center_witness_of_modular_and_rigidity σ hδ hb hf hτ hσf hG hS ?_⟩
+  intro htrace
+  have htrace' : σ (Modular.categoricalS Z p y y) = (d : ℂ) * fpSimple Z y := by
+    simpa only [hfy] using htrace
+  have hσf' : σ (fpSimple Z y : ℂ) = (d : ℂ) := by simpa only [hfy] using hσf
+  simpa only [hfy] using hRigid y hyF d hσf' htrace'
+
+end PropertyF.Ground
+end
+end
 
 section
 /-! The FP fusion character is self-dual, so all its conjugates are real

@@ -1,6 +1,12 @@
 module
 public import PropertyF.UnitaryTrace
 
+/-!
+# Weighted traces on matrix blocks
+
+Unitary trace bounds and the centrality consequence of saturation.
+-/
+
 @[expose] public noncomputable section
 open scoped BigOperators
 namespace PropertyF

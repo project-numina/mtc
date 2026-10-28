@@ -7,6 +7,11 @@ public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 public import PropertyF.Ground.Dimensions.ComplexSaturation
 
+/-! # Pivotal structures and pseudo-unitarity
+
+Duality and reality properties of pivotal dimensions lead to a positive spherical structure.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -40,8 +45,7 @@ theorem pivotal_dual {C : Type u} [Category.{v} C]
   change (p.iso (Xᘁ)).hom = ((p.iso X).inv)ᘁ
   have h := pivotal_evaluation p X
   simp only [tensorHom_def, Category.assoc] at h
-  have hm := rightAdjointMate_comp_evaluation (p.iso X).hom
-  rw [← hm] at h
+  rw [← (rightAdjointMate_comp_evaluation (p.iso X).hom)] at h
   rw [← comp_whiskerRight_assoc] at h
   have hk : (p.iso (Xᘁ)).hom ≫ ((p.iso X).hom)ᘁ = 𝟙 (Xᘁ) := by
     apply evaluation_ext (X := X)
@@ -149,9 +153,8 @@ theorem pseudoUnitary_saturation_of_pivotal
     apply Complex.ofReal_injective
     rw [← hg]
     exact hpu
-  have hs := (global_sum_squares_eq_iff C d hb).mp heq
   intro i
-  simpa [d, abs_of_nonneg (norm_nonneg _)] using hs i
+  simpa [d, abs_of_nonneg (norm_nonneg _)] using ((global_sum_squares_eq_iff C d hb).mp heq) i
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Twisting any pivotal structure by its saturated phases constructs the canonical positive spherical structure. -/

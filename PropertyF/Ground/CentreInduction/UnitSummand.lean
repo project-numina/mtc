@@ -30,8 +30,8 @@ def unitSummandRetract (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 /-- A fixed map on either outer tensor factor commutes with a map on the
 middle factor. -/
 @[reassoc]
-theorem tensor_middle_natural (C : BraidedFusionCategory.{v,u})
-    {A B U V X Y : C.Obj} (a : A ⟶ B) (d : U ⟶ V) (f : X ⟶ Y) :
+theorem tensor_middle_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    {A B U V X Y : D} (a : A ⟶ B) (d : U ⟶ V) (f : X ⟶ Y) :
     (((𝟙 A ⊗ₘ f) ⊗ₘ 𝟙 U)) ≫ ((a ⊗ₘ 𝟙 Y) ⊗ₘ d) =
       ((a ⊗ₘ 𝟙 X) ⊗ₘ d) ≫ (((𝟙 B ⊗ₘ f) ⊗ₘ 𝟙 V)) := by
   simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
@@ -50,7 +50,7 @@ theorem unitSummandIso_natural (C : BraidedFusionCategory.{v,u})
       (((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫ ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ X).hom ≫ f
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, Category.assoc]
   rw [← id_tensorHom, ← tensorHom_id]
-  rw [tensor_middle_natural_assoc C]
+  rw [tensor_middle_natural_assoc]
   simp only [id_tensorHom,
     tensorHom_id, rightUnitor_naturality]
   rw [rightUnitor_naturality_assoc, leftUnitor_naturality]

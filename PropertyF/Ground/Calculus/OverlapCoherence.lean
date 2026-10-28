@@ -30,9 +30,8 @@ convention that index `n` has `n+2` strands. -/
 def insertLeftPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X k ⊗ tensorPower X (n + 2) ≅
     tensorPower X ((n + k) + 2)
   | 0 => λ_ (tensorPower X (n + 2))
-  | k + 1 => by
-      exact (α_ X (tensorPower X k) (tensorPower X (n + 2))) ≪≫
-          (Iso.refl X ⊗ᵢ insertLeftPowerIso X n k)
+  | k + 1 => (α_ X (tensorPower X k) (tensorPower X (n + 2))) ≪≫
+      (Iso.refl X ⊗ᵢ insertLeftPowerIso X n k)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion is one identity tensor factor, transported along

@@ -74,7 +74,7 @@ theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V 
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A finite splitting can be used to refine a simple-basis contraction. -/
-theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] (V : J → C.Obj) (W : C.Obj)
+theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.Obj} {W : C.Obj}
     (i : Fin (rank C)) (q : ∀ j, V j ⟶ W) (r : ∀ j, W ⟶ V j)
     (h : (∑ j, r j ≫ q j) = 𝟙 W)
     {E : Type*} [AddCommGroup E] [Module ℂ E]
@@ -125,7 +125,7 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
           simp only [r, q, whiskerLeft_sum, Preadditive.comp_sum,
             Preadditive.sum_comp, whiskerLeft_comp, Category.assoc]
       _ = _ := by rw [crossing_completeness]; simp [W]
-  have hc := simpleBasis_contraction_refinement C V W i q r h
+  have hc := simpleBasis_contraction_refinement C i q r h
     (mixedCrossingBilinear C X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
   simpa [V, W, J, q, r, simpleProjection, crossingInclusion, crossingProjection,
     mixedCrossingBilinear, crossingBlock, Category.assoc] using hc

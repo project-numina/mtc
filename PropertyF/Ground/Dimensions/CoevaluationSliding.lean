@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.DefectNaturality
 
+/-! # Coevaluation sliding and reciprocity
+
+Sliding tensor defects through coevaluations yields reciprocity for trace matrices.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions

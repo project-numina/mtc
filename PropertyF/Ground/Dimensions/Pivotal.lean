@@ -1,6 +1,11 @@
 module
 public import PropertyF.Definitions
 
+/-! # Pivotal structures
+
+Dual isomorphisms and their tensor comparisons define pivotal structures and their traces.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
@@ -37,6 +42,7 @@ def doubleDualUnitIso : 𝟙_ C ≅ rightDualObject (rightDualObject (𝟙_ C)) 
 /-- A pivotal structure is a monoidal natural isomorphism from the identity
 to the double-right-dual, expressed using the canonical duality comparisons. -/
 structure PivotalStructure where
+  /-- The natural isomorphism from each object to its double dual. -/
   iso : ∀ X : C, X ≅ (Xᘁ)ᘁ
   naturality : ∀ {X Y : C} (f : X ⟶ Y), f ≫ (iso Y).hom =
     (iso X).hom ≫ (fᘁ)ᘁ

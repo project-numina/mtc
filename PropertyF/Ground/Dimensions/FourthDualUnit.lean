@@ -1,6 +1,11 @@
 module
 public import PropertyF.Ground.Dimensions.CoevaluationSliding
 
+/-! # Fourth duals of the tensor unit
+
+The Drinfeld and fourth-dual maps satisfy the unit identities used for root dimensions.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions
@@ -29,8 +34,7 @@ theorem drinfeld_unit :
       rw [hn, Category.assoc, ← comp_whiskerRight, Iso.hom_inv_id, id_whiskerRight, Category.comp_id]
     rw [← whisker_exchange_assoc, ← Category.assoc, hc]
   change (doubleDualUnitIso (C := C.Obj)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
-  have he := (drinfeld_eval C U).trans h.symm
-  exact evaluation_ext he
+  exact evaluation_ext ((drinfeld_eval C U).trans h.symm)
 end PropertyF.Ground.Dimensions
 
 end
@@ -55,9 +59,8 @@ theorem drinfeld_unit_dual :
     exact rightDualUnitIso
   have hu : (Ground.doubleDualIso C U).hom = (r.inv ≫ (r.homᘁ)) := by
     exact drinfeld_unit C
-  have hn := doubleDualIso_natural C r.hom
   have hb : (Ground.doubleDualIso C (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) = (r.homᘁ) := by
-    rw [← hn, hu]
+    rw [← (doubleDualIso_natural C r.hom), hu]
     simp only [Iso.hom_inv_id_assoc]
   apply Iso.ext
   simp only [rightDualIsoMap, Iso.symm_hom]
@@ -109,8 +112,7 @@ theorem rootDimension_unit_sq :
   let u := Ground.doubleDualIso C U
   obtain ⟨r, _, hr, _⟩ := doubleDualIso_scalar u a
   have hsq : a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso C U).hom := by
-    have h := congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C)
-    exact h
+    exact (congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C))
   have hfourth : (fourthDualIso C U).hom = u.hom ≫ ((u.homᘁ)ᘁ) := by
     have h := congrArg Iso.hom (fourthDualIso_unit C)
     have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit C)

@@ -2,9 +2,11 @@ module
 public import PropertyF.Definitions
 public import Mathlib.CategoryTheory.Endomorphism
 
-/-! Adding one strand on the left carries each braid generator to the next
-one. The only additional input needed for injectivity is injectivity of the
-actual tensor-left map on automorphisms. -/
+/-!
+# Adding strands to braid images
+
+Adding an identity strand and faithfulness of tensoring from a unit retract.
+-/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

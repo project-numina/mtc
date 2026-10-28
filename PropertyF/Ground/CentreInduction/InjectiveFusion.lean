@@ -123,7 +123,7 @@ theorem center_fusion_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.O
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A cap with nonzero unit composite gives a unit retract. -/
-def unit_retract_of_nonzero_cap (J : CategoryTheory.Center C.Obj)
+def unitRetractOfNonzeroCap (J : CategoryTheory.Center C.Obj)
     (cap : J ⊗ Jᘁ ⟶ 𝟙_ (CategoryTheory.Center C.Obj))
     (hne : η_ J (Jᘁ) ≫ cap ≠ 0) :
     Retract (𝟙_ (CategoryTheory.Center C.Obj)) (J ⊗ Jᘁ) := by
@@ -139,7 +139,7 @@ theorem center_fusion_of_nonzero_induced_cap (X : C.Obj)
     (hne : η_ ((induction C).obj X) (((induction C).obj X)ᘁ) ≫ cap ≠ 0) :
     IsFusionCategory (CategoryTheory.Center C.Obj) :=
   center_fusion_of_unit_retract C X (((induction C).obj X)ᘁ)
-    (unit_retract_of_nonzero_cap C ((induction C).obj X) cap hne)
+    (unitRetractOfNonzeroCap C ((induction C).obj X) cap hne)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre pivotal structure with nonzero trace on an induced object implies fusion. -/

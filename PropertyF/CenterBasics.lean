@@ -2,6 +2,12 @@ module
 public import Mathlib.CategoryTheory.Monoidal.Center
 public import Mathlib.Tactic
 
+/-!
+# Centralizers in the monoidal centre
+
+Positive and negative half-braidings and transparency.
+-/
+
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF

@@ -17,7 +17,7 @@ theorem fpDimension_biproduct (D : BraidedFusionCategory.{v,u})
     {ι : Type} [Fintype ι] (V : ι → D.Obj) :
     fpDimension D (⨁ V) = ∑ i, fpDimension D (V i) := by
   classical
-  letI : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   unfold fpDimension
   simp_rw [finrank_hom_biproduct, Nat.cast_sum, Finset.sum_mul]
   exact Finset.sum_comm
@@ -50,7 +50,7 @@ theorem fpDimension_functor (C D : BraidedFusionCategory.{v,u})
     have hid : (𝟙 (simples C i) : simples C i ⟶ simples C i) = 0 := by
       apply F.map_injective
       simpa using ((IsZero.iff_id_eq_zero _).mp hz)
-    letI : Simple (simples C i) := simples_simple C i
+    let : Simple (simples C i) := simples_simple C i
     exact id_nonzero _ hid
   have hunit : f (unitIndex C) = 1 := by
     obtain ⟨e⟩ := unitIndex_iso C

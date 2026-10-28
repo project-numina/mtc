@@ -44,15 +44,15 @@ def signedTraceSum (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (n : ℕ) : ℂ
   ∑ σ, (Centre.permutationSign ℂ n σ : ℂ) * F n σ
 
 /-- The sign changes precisely when the newly inserted point is moved. -/
-theorem sign_decomposeFin (n : ℕ) (p : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
+theorem sign_decomposeFin {n : ℕ} (p : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) :
     (Centre.permutationSign ℂ (n + 1) (Equiv.Perm.decomposeFin.symm (p, σ)) : ℂ) =
       (if p = 0 then 1 else -1) * (Centre.permutationSign ℂ n σ : ℂ) := by
   by_cases hp : p = 0 <;>
     simp [Centre.permutationSign, Equiv.Perm.decomposeFin.symm_sign, hp]
 
 /-- A deletion identity for the trace gives the signed-sum recurrence. -/
-theorem signedTraceSum_succ (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ)
-    (d c : ℂ) (n : ℕ)
+theorem signedTraceSum_succ {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ}
+    {d c : ℂ} {n : ℕ}
     (hfixed : ∀ σ, F (n + 1) (Equiv.Perm.decomposeFin.symm (0, σ)) = d * F n σ)
     (hmoved : ∀ (p : Fin (n + 1)), p ≠ 0 → ∀ σ,
       F (n + 1) (Equiv.Perm.decomposeFin.symm (p, σ)) = c * F n σ) :
@@ -69,7 +69,7 @@ theorem signedTraceSum_succ (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ)
 
 /-- The deletion identities imply the falling-factorial signed trace sum.
 This isolates the categorical trace calculation from the permutation sum. -/
-theorem signedTraceSum_falling (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (d : ℂ)
+theorem signedTraceSum_falling {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ} {d : ℂ}
     (hzero : F 0 1 = 1)
     (hfixed : ∀ n σ, F (n + 1) (Equiv.Perm.decomposeFin.symm (0, σ)) = d * F n σ)
     (hmoved : ∀ n (p : Fin (n + 1)), p ≠ 0 → ∀ σ,
@@ -81,7 +81,7 @@ theorem signedTraceSum_falling (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (d 
     let : Unique (Equiv.Perm (Fin 0)) := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩
     simp [signedTraceSum, hzero, Centre.permutationSign]
   | succ n ih =>
-    rw [signedTraceSum_succ F d 1 n (hfixed n) (by simpa using hmoved n), ih,
+    rw [signedTraceSum_succ (c := 1) (hfixed n) (by simpa using hmoved n), ih,
       Finset.prod_range_succ]
     ring
 
@@ -106,7 +106,7 @@ theorem integral_of_trace_deletion (C : BraidedFusionCategory.{v,u})
     rw [map_one]
     change unitScalar C (p.rightTrace (𝟙 (𝟙_ C.Obj))) = 1
     rw [Dimensions.rightTrace_unit, unitScalar_eq_equiv, map_one]
-  have hf := signedTraceSum_falling F (fpDimension C X : ℂ) hz hfixed hmoved
+  have hf := signedTraceSum_falling hz hfixed hmoved
   apply integral_of_signed_permutation_traces C p hdim X
   intro n
   exact ⟨ρ n, hf n⟩
@@ -129,7 +129,7 @@ def fixHead (n : ℕ) : Equiv.Perm (Fin n) →* Equiv.Perm (Fin (n + 1)) where
     refine Fin.cases ?_ (fun j => ?_) x <;>
       simp [Equiv.Perm.mul_apply]
 
-theorem fixHead_swap (n : ℕ) (i : Fin n) :
+theorem fixHead_swap {n : ℕ} (i : Fin n) :
     fixHead (n + 1) (Equiv.swap i.castSucc i.succ) =
       Equiv.swap i.succ.castSucc i.succ.succ := by
   ext x
@@ -164,7 +164,7 @@ theorem permutationAction_fixHead {X : C}
         (tensorLeft X).mapAut (tensorPower X (n + 2))
           (permutationAction X hX n (strandPermutation n (FreeGroup.of i)))
       simp only [strandPermutation, FreeGroup.lift_apply_of, fixHead_swap, permutationAction_swap]
-      exact (braidGenerator_succ X n i).symm
+      exact (braidGenerator_succ X i).symm
     exact DFunLike.congr_fun hh w
   exact DFunLike.congr_fun heq σ
 

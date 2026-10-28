@@ -47,7 +47,7 @@ theorem generatedBy_rightDual (X : D.Obj) :
             r := e.hom ≫ biproduct.π V p
             retract := by simp [Category.assoc] }
   have hd (p : Σ i, Fin (m i)) : GeneratedBy X ((V p)ᘁ) := by
-    letI : Simple (V p) := simples_simple D p.1
+    let : Simple (V p) := simples_simple D p.1
     exact generatedBy_trans (hv p) (simple_generatedBy_rightDual D (V p))
   have hb : GeneratedBy X (⨁ fun p => (V p)ᘁ) := generatedBy_finiteBiproduct X _ hd
   have hd' : GeneratedBy X ((⨁ V)ᘁ) := generatedBy_retract hb (dualFiniteBiproductRetract D V)
