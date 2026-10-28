@@ -36,60 +36,65 @@ theorem closeFusionMap_evaluation {D : Type u} [Category.{v} D] [MonoidalCategor
     _ = _ := by rw [rightAdjointMate_comp_evaluation]; monoidal
 
 set_option backward.isDefEq.respectTransparency false in
+/-- A map to a right dual is determined by its evaluation. -/
+theorem dual_map_ext {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] {V : D} (S : D) (f g : V ⟶ Sᘁ)
+    (h : f ▷ S ≫ ε_ S (Sᘁ) = g ▷ S ≫ ε_ S (Sᘁ)) : f = g := by
+  apply (cancel_mono (λ_ (Sᘁ)).inv).1
+  simpa only [tensorRightHomEquiv_whiskerRight_comp_evaluation] using
+    congrArg (tensorRightHomEquiv V S (Sᘁ) (𝟙_ D)) h
+
+set_option backward.isDefEq.respectTransparency false in
 /-- Closing the tensor-unit unitor gives the unitor of the dual object. -/
-theorem closeFusionMap_unit (S : C.Obj) :
-    closeFusionMap (𝟙_ C.Obj) S S (λ_ S).hom = (ρ_ (Sᘁ)).hom := by
-  let f := closeFusionMap (𝟙_ C.Obj) S S (λ_ S).hom
-  let g := (ρ_ (Sᘁ)).hom
-  have h : (f ▷ S) ≫ ε_ S (Sᘁ) = (g ▷ S) ≫ ε_ S (Sᘁ) := by
-    rw [show f = closeFusionMap (𝟙_ C.Obj) S S (λ_ S).hom from rfl, closeFusionMap_evaluation]
-    dsimp [g]
-    monoidal
-  have he := congrArg (tensorRightHomEquiv ((Sᘁ) ⊗ (𝟙_ C.Obj)) S (Sᘁ) (𝟙_ C.Obj)) h
-  have hf := @tensorRightHomEquiv_whiskerRight_comp_evaluation C.Obj _ _ S
-    ((Sᘁ) ⊗ (𝟙_ C.Obj)) (RightRigidCategory.rightDual S) f
-  have hg := @tensorRightHomEquiv_whiskerRight_comp_evaluation C.Obj _ _ S
-    ((Sᘁ) ⊗ (𝟙_ C.Obj)) (RightRigidCategory.rightDual S) g
-  change (tensorRightHomEquiv ((Sᘁ) ⊗ (𝟙_ C.Obj)) S (Sᘁ) (𝟙_ C.Obj))
-    (f ▷ S ≫ ε_ S (Sᘁ)) = f ≫ (λ_ (Sᘁ)).inv at hf
-  change (tensorRightHomEquiv ((Sᘁ) ⊗ (𝟙_ C.Obj)) S (Sᘁ) (𝟙_ C.Obj))
-    (g ▷ S ≫ ε_ S (Sᘁ)) = g ≫ (λ_ (Sᘁ)).inv at hg
-  rw [hf, hg] at he
-  exact (cancel_mono (λ_ (Sᘁ)).inv).1 he
+theorem closeFusionMap_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] (S : D) :
+    closeFusionMap (𝟙_ D) S S (λ_ S).hom = (ρ_ (Sᘁ)).hom := by
+  apply dual_map_ext S
+  rw [closeFusionMap_evaluation]
+  monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical unit crossing block is the unitor comparison. -/
-theorem crossingBlock_unit (X S : C.Obj) :
-  crossingBlock C X (𝟙_ C.Obj) S S (λ_ S).inv (λ_ S).hom =
+theorem crossingBlock_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [RightRigidCategory D] (X S : D) :
+  crossingBlock X (𝟙_ D) S S (λ_ S).inv (λ_ S).hom =
     (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
   dsimp only [crossingBlock]
-  rw [closeFusionMap_unit C S]
+  rw [closeFusionMap_unit S]
   simp only [tensorHom_def]
   monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A split crossing block is independent of the chosen splitting of a simple. -/
+theorem crossingBlock_of_simple_split (X T : C.Obj) {R S : C.Obj} [Simple R]
+    (e : R ≅ T ⊗ S) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) (h : g ≫ f = 𝟙 R) :
+    crossingBlock X T R S g f = crossingBlock X T R S e.hom e.inv := by
+  let : FiniteDimensional ℂ (R ⟶ R) := IsFusionCategory.hom_finite _ _
+  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ e.inv)
+  obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (e.hom ≫ f)
+  have hg : g = c • e.hom := by
+    simpa [Category.assoc] using (congrArg (fun k => k ≫ e.hom) hc).symm
+  have hf : f = d • e.inv := by
+    simpa [Category.assoc] using (congrArg (fun k => e.inv ≫ k) hd).symm
+  have hcd : c * d = 1 := by
+    apply (smul_left_injective ℂ (id_nonzero R))
+    have hh := h
+    rw [hg, hf] at hh
+    simpa [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using hh
+  change mixedCrossingBilinear X T T R S g f = _
+  rw [hg, hf]
+  simp only [map_smul, LinearMap.smul_apply, smul_smul]
+  rw [mul_comm d c, hcd, one_smul]
+  rfl
 
 set_option backward.isDefEq.respectTransparency false in
 /-- For a simple object, any splitting gives the same unit crossing block. -/
 theorem crossingBlock_unit_of_split (X : C.Obj) {S : C.Obj} [Simple S]
     (g : S ⟶ (𝟙_ C.Obj) ⊗ S) (f : (𝟙_ C.Obj) ⊗ S ⟶ S) (h : g ≫ f = 𝟙 S) :
-    crossingBlock C X (𝟙_ C.Obj) S S g f =
+    crossingBlock X (𝟙_ C.Obj) S S g f =
       (ρ_ ((S ⊗ X) ⊗ Sᘁ)).hom ≫ (λ_ ((S ⊗ X) ⊗ Sᘁ)).inv := by
-  let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
-  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ (g ≫ (λ_ S).hom)
-  obtain ⟨d, hd⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ ((λ_ S).inv ≫ f)
-  have hg : g = c • (λ_ S).inv := by
-    simpa [Category.assoc] using (congrArg (fun k => k ≫ (λ_ S).inv) hc).symm
-  have hf : f = d • (λ_ S).hom := by
-    simpa [Category.assoc] using (congrArg (fun k => (λ_ S).hom ≫ k) hd).symm
-  have hcd : c * d = 1 := by
-    apply (smul_left_injective ℂ (id_nonzero S))
-    have hh := h
-    rw [hg, hf] at hh
-    simpa [Linear.smul_comp, Linear.comp_smul, smul_smul, Category.assoc, mul_comm] using hh
-  change mixedCrossingBilinear C X (𝟙_ C.Obj) (𝟙_ C.Obj) S S g f = _
-  rw [hg, hf]
-  simp only [map_smul, LinearMap.smul_apply, smul_smul]
-  rw [mul_comm d c, hcd, one_smul]
-  exact crossingBlock_unit C X S
+  rw [crossingBlock_of_simple_split C X (𝟙_ C.Obj) (λ_ S).symm g f h]
+  exact crossingBlock_unit X S
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-strand decomposition has one diagonal simple summand. -/

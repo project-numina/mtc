@@ -179,13 +179,13 @@ theorem transparent_of_S_test_and_balancing
     Transparent (simples C k) := by
   have hsimple (i : Fin (rank C)) :
       Modular.doubleBraiding (simples C i) (simples C k) = 𝟙 _ := by
-    apply CentreCabling.doubleBraiding_eq_one_of_sTest_of_finite_order C p hdim i k
+    apply CentreCabling.doubleBraiding_eq_one_of_sTest_of_finite_order C p hdim
     · exact mixed_monodromy_finite_of_pivotal_balancing C p hbalance _ _
     · exact hs i
   intro X
   have hx : Modular.doubleBraiding X (simples C k) = 𝟙 _ := by
     apply CentreCabling.doubleBraiding_eq_one_of_simple_constituents C (fun _ => True)
-      (fun _ _ => trivial) X (simples C k) trivial
+      (fun _ _ => trivial) trivial
     intro i _
     exact hsimple i
   have hc := congrArg (fun f => (β_ X (simples C k)).inv ≫ f ≫ (β_ X (simples C k)).hom) hx

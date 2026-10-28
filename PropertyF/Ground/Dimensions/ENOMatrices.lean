@@ -57,13 +57,13 @@ theorem weighted_eigenvalue_bound {ι : Type*} [Fintype ι] (N : ι → ι → �
 
 /-- ENO's trace-matrix eigenvalues are bounded by the FP dimension whenever
 their entries are dominated by fusion multiplicities. -/
-theorem fusion_dominated_eigenvalue_bound (C : Ground.BraidedFusionCategory)
-    (i : Fin (Ground.rank C)) (T : Fin (Ground.rank C) → Fin (Ground.rank C) → ℂ)
-    (v : Fin (Ground.rank C) → ℂ) (z : ℂ) (i₀ : Fin (Ground.rank C))
+theorem fusion_dominated_eigenvalue_bound (C : BraidedFusionCategory)
+    (i : Fin (rank C)) (T : Fin (rank C) → Fin (rank C) → ℂ)
+    (v : Fin (rank C) → ℂ) (z : ℂ) (i₀ : Fin (rank C))
     (hv : v i₀ ≠ 0) (hdom : ∀ j k, ‖T j k‖ ≤ Ground.fusionCoeff C i j k)
-    (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ Ground.fpSimple C i := by
+    (heig : ∀ j, ∑ k, T j k * v k = z * v j) : ‖z‖ ≤ fpSimple C i := by
   apply weighted_eigenvalue_bound (fun j k => Ground.fusionCoeff C i j k) T
-    (Ground.fpSimple C) (Ground.fpSimple C i) v z i₀ hv (Ground.fpSimple_pos C)
+    (fpSimple C) (fpSimple C i) v z i₀ hv (Ground.fpSimple_pos C)
   · intro j k
     exact Nat.cast_nonneg _
   · exact hdom
@@ -81,17 +81,17 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Trace with the actual natural square root of the fourth dual, without
 assuming that root is monoidal. -/
-def rootTrace (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} (f : X ⟶ X) :
+def rootTrace (C : BraidedFusionCategory.{v,u}) {X : C.Obj} (f : X ⟶ X) :
     End (𝟙_ C.Obj) := rightTraceWith ((fourthDualRootNaturalIso C).app X) f
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The root trace is linear in its endomorphism. -/
-def rootTraceLinear (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+def rootTraceLinear (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     (X ⟶ X) →ₗ[ℂ] End (𝟙_ C.Obj) where
   toFun := rootTrace C
   map_add' := by
@@ -165,43 +165,43 @@ open scoped BigOperators Matrix
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- The dimension of a simple object with respect to the natural double-dual
 square root. -/
-def rootDimension (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) : ℂ :=
-  Ground.unitScalar C (rootTrace C (𝟙 (Ground.simples C i)))
+def rootDimension (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) : ℂ :=
+  Ground.unitScalar C (rootTrace C (𝟙 (simples C i)))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- All natural-root simple dimensions are nonzero. -/
-theorem rootDimension_ne_zero (i : Fin (Ground.rank C)) :
+theorem rootDimension_ne_zero (i : Fin (rank C)) :
     rootDimension C i ≠ 0 := by
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
-  have h := rightQuantumTrace_simple_ne_zero C (Ground.simples C i)
-    ((fourthDualRootNaturalIso C).app (Ground.simples C i))
+  let : Simple (simples C i) := Ground.simples_simple C i
+  have h := rightQuantumTrace_simple_ne_zero C (simples C i)
+    ((fourthDualRootNaturalIso C).app (simples C i))
   intro hz
   apply h
   apply (groundUnitScalarEquiv C).injective
   have hz' : Ground.unitScalar C (rightQuantumTrace
-      ((fourthDualRootNaturalIso C).app (Ground.simples C i))) = 0 := by
+      ((fourthDualRootNaturalIso C).app (simples C i))) = 0 := by
     simpa [rootDimension, rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def] using hz
   simpa only [map_zero, groundUnitScalarEquiv_apply] using hz'
 
 /-- The matrix of traces of the actual natural-root multiplicity defects. -/
-def enoTraceMatrix (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
-    Fin (Ground.rank C) → Fin (Ground.rank C) → ℂ := fun j k =>
+def enoTraceMatrix (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
+    Fin (rank C) → Fin (rank C) → ℂ := fun j k =>
   LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap
 
 /-- Once the categorical multiplicity defects are involutive and their trace
 matrix has the natural-root dimension vector as an eigenvector, ENO's FP
 bound follows. Both remaining identities are explicit hypotheses. -/
-theorem rootDimension_norm_le_fp_of_trace_matrix (i : Fin (Ground.rank C))
+theorem rootDimension_norm_le_fp_of_trace_matrix (i : Fin (rank C))
     (hinv : ∀ j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j) :
-    ‖rootDimension C i‖ ≤ Ground.fpSimple C i := by
+    ‖rootDimension C i‖ ≤ fpSimple C i := by
   apply fusion_dominated_eigenvalue_bound C i (enoTraceMatrix C i) (rootDimension C)
-    (rootDimension C i) (Ground.unitIndex C) (rootDimension_ne_zero C _)
+    (rootDimension C i) (unitIndex C) (rootDimension_ne_zero C _)
   · intro j k
     obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C i j k (hinv j k)
     change ‖LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap‖ ≤ _

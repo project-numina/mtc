@@ -29,8 +29,7 @@ theorem center_globalDimension_square_of_actual_induction
     [IsFusionCategory (CategoryTheory.Center C.Obj)]
     (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
     (hp : p.IsSpherical)
-    (hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) p i =
-      (fpSimple (Integrate.bundledCenter C) i : ℂ)) :
+    (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p) :
     globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
   apply CentreModular.center_globalDimension_of_adjunction C
     (CentreInduction.induction C) (CentreInduction.actualAdjunction C)
@@ -52,14 +51,11 @@ theorem target_of_center_image_monodromy_no_square
           let Z := Integrate.bundledCenter C
           ∃ (p : Dimensions.PivotalStructure (C := Z.Obj)),
             p.IsSpherical ∧
-            (∀ i, Modular.simpleDimension Z p i = (fpSimple Z i : ℂ)) ∧
+            (Modular.HasFPSimpleDimensions Z p) ∧
             (Modular.categoricalS Z p).det ≠ 0 ∧
             (∀ y ∈ CentreCabling.symmetricCore C,
               ∃ z : ℤ, Modular.simpleDimension Z p y = z) ∧
-            (∀ y, (∀ a ∈ CentreCabling.imageLabels C,
-              Modular.categoricalS Z p a y = Modular.simpleDimension Z p a * Modular.simpleDimension Z p y) →
-              ∀ a ∈ CentreCabling.imageLabels C,
-                IsOfFinOrder (End.of (Modular.doubleBraiding (simples Z a) (simples Z y))))) :
+            (CentreCabling.HasFiniteImageCentralizerMonodromy C p)) :
     TargetStatement.{v,u} := by
   apply target_of_center_image_monodromy
   intro C hPU hF
@@ -133,10 +129,7 @@ theorem target_of_pivotal_base_modular_balanced_center
         let pZ := centerPivotalOfPivotalPseudoUnitary C p hpu
         let D := Integrate.bundledCenter C
         (Modular.categoricalS D pZ).det ≠ 0 ∧
-        (∀ X Y : D.Obj, Modular.doubleBraiding X Y ≫
-          ((Dimensions.pivotalBraidedTwist D pZ X).hom ⊗ₘ
-            (Dimensions.pivotalBraidedTwist D pZ Y).hom) =
-          (Dimensions.pivotalBraidedTwist D pZ (X ⊗ Y)).hom)) : TargetStatement.{v,u} := by
+        (CentreModular.IsPivotalTwistBalanced D pZ)) : TargetStatement.{v,u} := by
   apply target_of_center_image_monodromy_no_square
   intro C hpu hF
   obtain ⟨p, hdet, hbalance⟩ := hCenter C hpu hF
@@ -148,8 +141,7 @@ theorem target_of_pivotal_base_modular_balanced_center
   obtain ⟨hspherical, hd, _, _⟩ := hs
   change ∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
     (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ) at hd
-  have hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) pZ i =
-      (fpSimple (Integrate.bundledCenter C) i : ℂ) := by
+  have hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) pZ := by
     intro i
     simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
       Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hd i
@@ -183,10 +175,7 @@ theorem target_of_pivotal_balanced_center_trivial_transparency
         letI := centerFusionOfPivotalPseudoUnitary C p hpu
         let pZ := centerPivotalOfPivotalPseudoUnitary C p hpu
         let D := Integrate.bundledCenter C
-        (∀ X Y : D.Obj, Modular.doubleBraiding X Y ≫
-          ((Dimensions.pivotalBraidedTwist D pZ X).hom ⊗ₘ
-            (Dimensions.pivotalBraidedTwist D pZ Y).hom) =
-          (Dimensions.pivotalBraidedTwist D pZ (X ⊗ Y)).hom) ∧
+        (CentreModular.IsPivotalTwistBalanced D pZ) ∧
         (∀ k, Transparent (simples D k) → k = unitIndex D)) : TargetStatement.{v,u} := by
   apply target_of_pivotal_base_modular_balanced_center
   intro C hpu hF
@@ -199,8 +188,7 @@ theorem target_of_pivotal_balanced_center_trivial_transparency
   obtain ⟨_, hd, _, _⟩ := hs
   change ∀ i, Dimensions.pivotalDimension (Integrate.bundledCenter C) pZ
     (simples (Integrate.bundledCenter C) i) = (fpSimple (Integrate.bundledCenter C) i : ℂ) at hd
-  have hdim : ∀ i, Modular.simpleDimension (Integrate.bundledCenter C) pZ i =
-      (fpSimple (Integrate.bundledCenter C) i : ℂ) := by
+  have hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) pZ := by
     intro i
     simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
       Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hd i
@@ -248,10 +236,7 @@ theorem target_of_pivotal_base_and_center_balancing
         letI := centerFusionOfPivotalPseudoUnitary C p hpu
         let pZ := centerPivotalOfPivotalPseudoUnitary C p hpu
         let D := Integrate.bundledCenter C
-        ∀ X Y : D.Obj, Modular.doubleBraiding X Y ≫
-          ((Dimensions.pivotalBraidedTwist D pZ X).hom ⊗ₘ
-            (Dimensions.pivotalBraidedTwist D pZ Y).hom) =
-          (Dimensions.pivotalBraidedTwist D pZ (X ⊗ Y)).hom) : TargetStatement.{v,u} := by
+        CentreModular.IsPivotalTwistBalanced D pZ) : TargetStatement.{v,u} := by
   apply target_of_pivotal_balanced_center_trivial_transparency
   intro C hpu hF
   obtain ⟨p, hbalance⟩ := hCenter C hpu hF

@@ -20,13 +20,13 @@ theorem pivotalComponentsCentral_proved (p : Dimensions.PivotalStructure (C := C
   let F := CategoryTheory.Center.ofBraided C.Obj
   let B := F.obj T
   let u (W : CategoryTheory.Center C.Obj) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
-    (p.iso W.1).hom ≫ (forgetDoubleDualIso C W).inv
+    (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
   have hu (X Y : CategoryTheory.Center C.Obj) :
       u (X ⊗ Y) = (u X ⊗ₘ u Y) ≫ (Dimensions.doubleDualTensorIso X Y).hom.f := by
-    convert (transported_pivotal_tensor C p X Y).symm using 1 <;> rfl
+    convert (transported_pivotal_tensor p X Y).symm using 1 <;> rfl
   let b := (β_ Z B).hom
   have hn : b.f ≫ u (B ⊗ Z) = u (Z ⊗ B) ≫ ((bᘁ)ᘁ).f :=
-    by simpa [u, Category.assoc] using transported_pivotal_natural C p b
+    by simpa [u, Category.assoc] using transported_pivotal_natural p b
   rw [hu, hu] at hn
   have hb := congrArg CategoryTheory.Center.Hom.f (Dimensions.doubleDualTensorIso_braiding Z B)
   simp only [CategoryTheory.Center.comp_f] at hb
@@ -43,7 +43,7 @@ theorem pivotalComponentsCentral_proved (p : Dimensions.PivotalStructure (C := C
     simpa [Category.assoc] using hn
   let j := (positivePivotalComponent C p T).hom
   have hj : j.f = u B := by
-    change _ = (p.iso T).hom ≫ (forgetDoubleDualIso C B).inv
+    change _ = (p.iso T).hom ≫ (forgetDoubleDualIso B).inv
     exact positivePivotalComponent_forget C p T
   let : IsIso (u B) := by
     rw [← hj]

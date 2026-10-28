@@ -143,7 +143,7 @@ blockwise unitarity. -/
 theorem starMap_preserves_block_unitary {r s : ℕ} {d : Fin r → ℕ} {q : Fin s → ℕ}
     (F : (PropertyF.Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
       (PropertyF.Blocks.Algebra ⟨_, q⟩))
-    (u : PropertyF.Blocks.Algebra ⟨_, d⟩)
+    {u : PropertyF.Blocks.Algebra ⟨_, d⟩}
     (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ u) :
     PropertyF.Blocks.IsUnitary ⟨_, q⟩ (F u) := by
   have h : u * star u = 1 := by
@@ -160,29 +160,29 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
 /-- Adding right identity strands preserves unitarity in any compatible
 presentations of the actual braid-image algebras. -/
-theorem addRight_braid_unitary (X : C) (n k : ℕ) {r s : ℕ}
+theorem addRight_braid_unitary {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
     (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
     (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
-    (u : braidAlgebra X n) (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ (e u)) :
+    {u : braidAlgebra X n} (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ (e u)) :
     PropertyF.Blocks.IsUnitary ⟨_, q⟩ (f (addRightBraidAlgebraIter X n k u)) := by
   simpa [addRightBlocksIterStarMap, addRightBlocksIter] using
-    starMap_preserves_block_unitary (addRightBlocksIterStarMap X n k e f he hf) (e u) hu
+    starMap_preserves_block_unitary (addRightBlocksIterStarMap X n k e f he hf) hu
 
 /-- Adding left identity strands preserves unitarity in any compatible
 presentations of the actual braid-image algebras. -/
-theorem addLeft_braid_unitary (X : C) (n k : ℕ) {r s : ℕ}
+theorem addLeft_braid_unitary {X : C} {n : ℕ} (k : ℕ) {r s : ℕ}
     {d : Fin r → ℕ} {q : Fin s → ℕ}
     (e : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
     (f : braidAlgebra X (n + k) ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, q⟩)
     (he : IsUnitaryPresentation (braidEndRepresentation X n) e)
     (hf : IsUnitaryPresentation (braidEndRepresentation X (n + k)) f)
-    (u : braidAlgebra X n) (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ (e u)) :
+    {u : braidAlgebra X n} (hu : PropertyF.Blocks.IsUnitary ⟨_, d⟩ (e u)) :
     PropertyF.Blocks.IsUnitary ⟨_, q⟩ (f (addLeftBraidAlgebraIter X n k u)) := by
   simpa [addLeftBlocksIterStarMap, addLeftBlocksIter] using
-    starMap_preserves_block_unitary (addLeftBlocksIterStarMap X n k e f he hf) (e u) hu
+    starMap_preserves_block_unitary (addLeftBlocksIterStarMap X n k e f he hf) hu
 
 /-- Successive actual overlapping products remain blockwise unitary. The
 presentations may be chosen independently at every strand count. -/
@@ -201,10 +201,10 @@ theorem overlapProduct_unitary (X : C) (t : ℕ)
     intro i
     rw [overlapProduct, map_mul, Pi.mul_apply]
     apply Submonoid.mul_mem
-    · exact addRight_braid_unitary X (overlapIndex t k) (t + 1)
-        (e _) (e _) (he _) (he _) _ ih i
-    · have hr := addLeft_braid_unitary X t ((k + 1) * (t + 1))
-        (e t) (e _) (he t) (he _) u hu
+    · exact addRight_braid_unitary (t + 1)
+        (e _) (e _) (he _) (he _) ih i
+    · have hr := addLeft_braid_unitary ((k + 1) * (t + 1))
+        (e t) (e _) (he t) (he _) hu
       have hcast : ∀ (a b : ℕ) (h : a = b)
           (f : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b),
           (∀ j, e b (f u) j ∈ Matrix.unitaryGroup (Fin (d b j)) ℂ) →
@@ -213,10 +213,7 @@ theorem overlapProduct_unitary (X : C) (t : ℕ)
         intro a b h f hunit
         cases h
         exact hunit
-      have hs : ∀ j, e (overlapIndex t (k + 1)) (overlapRight X t k u) j ∈
-          Matrix.unitaryGroup (Fin (d (overlapIndex t (k + 1)) j)) ℂ := by
-        exact hcast _ _ (overlapIndex_formula t (k + 1)) _ hr
-      exact hs i
+      exact hcast _ _ (overlapIndex_formula t (k + 1)) _ hr i
 
 end PropertyF.Ground.Calculus
 

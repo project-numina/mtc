@@ -68,10 +68,9 @@ theorem center_witness_of_modular_and_rigidity (σ : ℂ ≃+* ℂ) {δ b f d : 
     (hG : σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2)
     (hS : S = (f : ℂ) * σ.symm (f : ℂ))
     (hRigid : σ S = (d : ℂ) * f → f = |d|) :
-    σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| := by
-  refine ⟨hσf, ?_, hf, ?_⟩
-  · exact positive_ratio_of_galois_square σ.symm hδ hb (lt_of_lt_of_le zero_lt_one hf) hτ hG
-  · exact hRigid (galois_unit_self_entry σ hS hσf)
+    σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
+  ⟨hσf, positive_ratio_of_galois_square σ.symm hδ hb (lt_of_lt_of_le zero_lt_one hf) hτ hG,
+    hf, hRigid (galois_unit_self_entry σ hS hσf)⟩
 
 /-- If real conjugates are bounded above by δ and the centre/rigidity witness
 exists for each strictly smaller conjugate, every conjugate equals δ. -/

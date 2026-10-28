@@ -20,8 +20,8 @@ def closeFusionMap {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigi
 
 /-- The matrix entry associated to an inclusion `R ⟶ T ⊗ S` and a
 projection `T ⊗ S ⟶ R`. -/
-def crossingBlock (C : BraidedFusionCategory.{v,u}) (X T R S : C.Obj)
-    (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+def crossingBlock {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    (X T R S : D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     ((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ T ⊗ ((S ⊗ X) ⊗ Sᘁ) :=
   (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S R f) ≫
     (α_ (T ⊗ S) X (Sᘁ)).hom ≫ (α_ T S (X ⊗ Sᘁ)).hom ≫
@@ -29,11 +29,11 @@ def crossingBlock (C : BraidedFusionCategory.{v,u}) (X T R S : C.Obj)
 
 /-- A crossing matrix entry is natural in the middle induction factor. -/
 @[reassoc]
-theorem crossingBlock_natural_middle (C : BraidedFusionCategory.{v,u})
-    {X Y : C.Obj} (h : X ⟶ Y) {T R S : C.Obj}
+theorem crossingBlock_natural_middle {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    {X Y : D} (h : X ⟶ Y) {T R S : D}
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
-    (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ crossingBlock C Y T R S g f =
-      crossingBlock C X T R S g f ≫ (T ◁ ((S ◁ h) ▷ Sᘁ)) := by
+    (((R ◁ h) ▷ Rᘁ) ▷ T) ≫ crossingBlock Y T R S g f =
+      crossingBlock X T R S g f ≫ (T ◁ ((S ◁ h) ▷ Sᘁ)) := by
   dsimp [crossingBlock]
   simp only [Category.assoc]
   rw [associator_naturality_left_assoc]
@@ -112,7 +112,7 @@ def crossingCandidate (C : BraidedFusionCategory.{v,u}) (X T : C.Obj) :
   let V : Fin (rank C) → C.Obj := fun i => (simples C i ⊗ X) ⊗ (simples C i)ᘁ
   refine (rightDistributor V T).hom ≫ biproduct.desc (fun i => ?_)
   exact ∑ j, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
-    crossingBlock C X T (simples C i) (simples C j)
+    crossingBlock X T (simples C i) (simples C j)
       (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
         (T ◁ biproduct.ι V j)
 
@@ -125,7 +125,7 @@ theorem crossingCandidate_on_summand (C : BraidedFusionCategory.{v,u})
     let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
     (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T =
       ∑ j, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
-        crossingBlock C X T (simples C i) (simples C j)
+        crossingBlock X T (simples C i) (simples C j)
           (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
             (T ◁ biproduct.ι V j) := by
   classical
@@ -165,7 +165,7 @@ theorem crossingCandidate_natural_middle (C : BraidedFusionCategory.{v,u})
   have hj' : (T ◁ biproduct.ι VX j) ≫ (T ◁ (underlyingFunctor C).map h) =
       (T ◁ ((simples C j ◁ h) ▷ (simples C j)ᘁ)) ≫ (T ◁ biproduct.ι VY j) := by
     simpa only [whiskerLeft_comp] using congrArg (fun g => T ◁ g) hj
-  have hblock := crossingBlock_natural_middle C h
+  have hblock := crossingBlock_natural_middle h
     (crossingInclusion C T i j a) (crossingProjection C T i j a)
   have hterm := congrArg (fun g => g ≫ (T ◁ biproduct.ι VY j)) hblock
   simp only [Category.assoc] at hterm ⊢

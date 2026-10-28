@@ -131,11 +131,10 @@ theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,
       (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 := by
   let _ : Simple (simples D k) := simples_simple D k
   let _ : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
-  have htrace := rightTrace_partialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X))
-  have h := rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
+  exact rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
     (Ground.unitScalarEquiv D) (End.of (doubleBraiding (simples D k) X))
-    (simpleDimension_ne_zero D p k) htrace
-  exact h
+    (simpleDimension_ne_zero D p k)
+    (rightTrace_partialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)))
 
 /-- The product formula follows from the precise residual partial-trace
 composition law for double braidings. -/

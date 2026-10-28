@@ -69,10 +69,10 @@ namespace PropertyF.Ground.Dimensions
 
 universe v u
 
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u})
 /-- The target's scalar extraction is an algebra equivalence, as a
 consequence of the fusion-category axioms. -/
-def groundUnitScalarEquiv (C : Ground.BraidedFusionCategory.{v,u}) :
+def groundUnitScalarEquiv (C : BraidedFusionCategory.{v,u}) :
     End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ :=
   (AlgEquiv.ofBijective (Algebra.ofId ℂ (End (𝟙_ C.Obj)))
     (Ground.unit_algebraMap_bijective C)).symm
@@ -88,10 +88,10 @@ intrinsic squared norm in the target is independent of the chosen double-dual
 isomorphism. -/
 theorem target_squaredNorm_choice_independent
     (X : C.Obj) [Simple X] (j : X ≅ ((Xᘁ)ᘁ)) :
-    Ground.squaredNorm C X =
+    squaredNorm C X =
       Ground.unitScalar C (rightQuantumTrace j) * Ground.unitScalar C (leftQuantumTrace j) := by
   let : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
-  unfold Ground.squaredNorm
+  unfold squaredNorm
   simp only [← groundUnitScalarEquiv_apply]
   exact squaredNorm_independent (groundUnitScalarEquiv C) (Ground.doubleDualIso C X) j
 
@@ -100,7 +100,7 @@ categorical dimension squared. -/
 theorem target_squaredNorm_eq_dimension_sq
     (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
     (X : C.Obj) [Simple X] :
-    Ground.squaredNorm C X =
+    squaredNorm C X =
       (Ground.unitScalar C (rightQuantumTrace (p.iso X))) ^ 2 := by
   rw [target_squaredNorm_choice_independent C X (p.iso X),
     ← spherical_quantumTraces_eq p hp X, pow_two]
@@ -109,19 +109,19 @@ theorem target_squaredNorm_eq_dimension_sq
 simple dimensions, for any spherical structure. -/
 theorem target_globalDimension_eq_sum_squares
     (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) :
-    Ground.globalDimension C = ∑ i : Fin (Ground.rank C),
-      (Ground.unitScalar C (rightQuantumTrace (p.iso (Ground.simples C i)))) ^ 2 := by
+    Ground.globalDimension C = ∑ i : Fin (rank C),
+      (Ground.unitScalar C (rightQuantumTrace (p.iso (simples C i)))) ^ 2 := by
   unfold Ground.globalDimension
   apply Finset.sum_congr rfl
   intro i _
-  let : Simple (Ground.simples C i) := Ground.simples_simple C i
-  exact target_squaredNorm_eq_dimension_sq C p hp (Ground.simples C i)
+  let : Simple (simples C i) := Ground.simples_simple C i
+  exact target_squaredNorm_eq_dimension_sq C p hp (simples C i)
 
 /-- Intrinsic squared norms are invariant under simple-object isomorphism,
 without assuming a pivotal or spherical structure. -/
 theorem target_squaredNorm_iso
     {X Y : C.Obj} [Simple X] [Simple Y] (e : X ≅ Y) :
-    Ground.squaredNorm C X = Ground.squaredNorm C Y := by
+    squaredNorm C X = squaredNorm C Y := by
   let j := Ground.doubleDualIso C X
   let k : Y ≅ (Yᘁ)ᘁ := e.symm ≪≫ j ≪≫ rightDualIsoMap (rightDualIsoMap e)
   have hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ := by
