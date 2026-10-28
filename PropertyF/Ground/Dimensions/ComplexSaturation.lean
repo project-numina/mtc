@@ -15,6 +15,11 @@ Equality in weighted complex bounds determines the phases of eigenvectors.
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 
+/-- Dividing a complex number by its positive norm gives a unit-norm phase. -/
+theorem norm_div_ofReal_eq_one {z : ℂ} {r : ℝ} (hr : 0 < r) (h : ‖z‖ = r) :
+    ‖z / (r : ℂ)‖ = 1 := by
+  rw [norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr, h, div_self (ne_of_gt hr)]
+
 /-- If a complex weighted sum reaches its nonnegative termwise norm bound,
 all its positive-weight terms equal their respective bounds. -/
 theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
@@ -58,11 +63,7 @@ theorem fusion_complex_eigenvalue_saturation (C : BraidedFusionCategory)
   let f := fpSimple C
   let q : Fin (rank C) → ℂ := fun i => d i / (f i : ℂ)
   have hf : ∀ i, 0 < f i := fpSimple_pos C
-  have hq : ∀ i, ‖q i‖ = 1 := by
-    intro i
-    dsimp [q]
-    rw [norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (hf i), hd i]
-    exact div_self (ne_of_gt (hf i))
+  have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ norm_div_ofReal_eq_one (hf i) (hd i)
   have hqn : ∀ i, q i ≠ 0 := fun i => norm_pos_iff.mp (by rw [hq]; norm_num)
   have hrepr : ∀ i, q i * (f i : ℂ) = d i := by
     intro i

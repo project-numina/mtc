@@ -18,10 +18,7 @@ theorem epi_ne_zero_of_id_ne_zero {X Y : C} (f : X ⟶ Y) [Epi f]
     (h : 𝟙 Y ≠ 0) : f ≠ 0 :=
   fun hf ↦ h ((IsZero.iff_id_eq_zero Y).mp (IsZero.of_epi_eq_zero f hf))
 
-/-- A monomorphism from an object with nonzero identity is nonzero. -/
-theorem mono_ne_zero_of_id_ne_zero {X Y : C} (f : X ⟶ Y) [Mono f]
-    (h : 𝟙 X ≠ 0) : f ≠ 0 :=
-  fun hf ↦ h ((IsZero.iff_id_eq_zero X).mp (IsZero.of_mono_eq_zero f hf))
+
 end
 
 variable (D : BraidedFusionCategory.{v,u})
@@ -32,11 +29,7 @@ theorem split_to_simple {S X : D.Obj} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
   classical
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
   let V : (Σ i, Fin (m i)) → D.Obj := fun p => simples D p.1
-  have hg : e.inv ≫ f ≠ 0 := by
-    intro h
-    apply hf
-    have := congrArg (fun t => e.hom ≫ t) h
-    simpa using this
+  have hg : e.inv ≫ f ≠ 0 := fun h ↦ hf ((cancel_epi e.inv).1 (by simpa using h))
   have hc : ∃ p, biproduct.ι V p ≫ e.inv ≫ f ≠ 0 := by
     by_contra h
     push Not at h

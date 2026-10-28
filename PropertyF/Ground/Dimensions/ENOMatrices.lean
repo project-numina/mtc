@@ -177,6 +177,16 @@ abbrev ENOTraceMatrixEigenvector (C : BraidedFusionCategory.{v,u}) : Prop :=
 abbrev RootNormIdentity (C : BraidedFusionCategory.{v,u}) : Prop :=
   ∀ i, squaredNorm C (simples C i) = ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ)
 
+/-- The trace of an involutive multiplicity defect is bounded by its multiplicity. -/
+theorem enoTraceMatrix_norm_le_fusionCoeff {i j k : Fin (rank C)}
+    (h : (multiplicityDefect C i j k).toLinearMap *
+      (multiplicityDefect C i j k).toLinearMap = 1) :
+    ‖enoTraceMatrix C i j k‖ ≤ (fusionCoeff C i j k : ℝ) := by
+  obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C h
+  change ‖LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap‖ ≤ _
+  rw [hn, Complex.norm_intCast, ← Int.cast_abs]
+  exact_mod_cast hb
+
 /-- Once the categorical multiplicity defects are involutive and their trace
 matrix has the natural-root dimension vector as an eigenvector, ENO's FP
 bound follows. Both remaining identities are explicit hypotheses. -/
@@ -188,11 +198,7 @@ theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
     ‖rootDimension C i‖ ≤ fpSimple C i := by
   apply fusion_dominated_eigenvalue_bound C (enoTraceMatrix C i) (rootDimension C)
     (rootDimension C i) (unitIndex C) (rootDimension_ne_zero C _)
-  · intro j k
-    obtain ⟨n, hn, hb⟩ := multiplicityDefect_trace_integer_bound C (hinv j k)
-    change ‖LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap‖ ≤ _
-    rw [hn, Complex.norm_intCast, ← Int.cast_abs]
-    exact_mod_cast hb
+  · exact fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff C (hinv j k)
   · exact heig
 
 end PropertyF.Ground.Dimensions
