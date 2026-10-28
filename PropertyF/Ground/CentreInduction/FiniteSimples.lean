@@ -17,6 +17,7 @@ universe v u
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -45,7 +46,7 @@ def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : CategoryTheory.Cen
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Underlying endomorphism ranges detect the order of centre subobjects. -/
-def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
+def centerUnderlyingRangeEmbedding (X : 𝒵) :
     Subobject X ↪o Submodule ℂ (X.1 ⟶ X.1) :=
   OrderEmbedding.ofMapLEIff (centerUnderlyingRange X) (by
     intro P Q
@@ -79,14 +80,14 @@ def centerUnderlyingRangeEmbedding (X : CategoryTheory.Center C.Obj) :
       rw [Category.assoc, hfactor])
 
 /-- Every actual centre object is Artinian, without spherical hypotheses. -/
-theorem center_artinian (X : CategoryTheory.Center C.Obj) : IsArtinianObject X :=
+theorem center_artinian (X : 𝒵) : IsArtinianObject X :=
   let : FiniteDimensional ℂ (X.1 ⟶ X.1) := IsFusionCategory.hom_finite _ _
   ⟨(centerUnderlyingRangeEmbedding C X).wellFoundedLT⟩
 
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Every simple centre object embeds in an induced base simple. -/
-theorem simple_mono_induced_simple (X : CategoryTheory.Center C.Obj) [Simple X] :
+theorem simple_mono_induced_simple (X : 𝒵) [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (simples C i), Mono f := by
   have hx : ¬ IsZero X.1 := by
     change ¬ IsZero ((CategoryTheory.Center.forget C.Obj).obj X)

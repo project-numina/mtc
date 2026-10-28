@@ -15,7 +15,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Composing a crossing with the unit-summand counit selects one matrix column. -/
 theorem crossing_counit_matrix (X T : C.Obj) (i : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ (underlyingCounit C).app X) =
     (∑ a, crossingBlock X T (simples C i) (simples C (unitIndex C))
       (crossingInclusion C T i (unitIndex C) a) (crossingProjection C T i (unitIndex C) a)) ≫
@@ -55,13 +55,13 @@ theorem counit_column_finrank (i j : Fin (rank C)) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Off-diagonal counit crossing entries vanish. -/
 theorem crossing_counit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (biproduct.ι V i ▷ simples C j) ≫ crossingCandidate C X (simples C j) ≫
     (simples C j ◁ (underlyingCounit C).app X) = 0 := by
   classical
   have hdim : Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C (unitIndex C)) = 0 := by
     rw [counit_column_finrank]; simp [hne]
-  have hz : (∑ a : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C (unitIndex C))),
+  have hz : (∑ a : crossingIndex C (simples C j) i (unitIndex C),
       crossingBlock X (simples C j) (simples C i) (simples C (unitIndex C))
         (crossingInclusion C (simples C j) i (unitIndex C) a)
         (crossingProjection C (simples C j) i (unitIndex C) a)) = 0 := by
@@ -76,7 +76,7 @@ theorem crossing_counit_offdiag (X : C.Obj) (i j : Fin (rank C)) (hne : i ≠ j)
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
 theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (biproduct.ι V i ▷ simples C i) ≫ crossingCandidate C X (simples C i) ≫
     (simples C i ◁ (underlyingCounit C).app X) =
       crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
@@ -85,13 +85,13 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
   classical
   have hdim : Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C)) = 1 := by
     rw [counit_column_finrank]; simp
-  let a : Fin (Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C))) := ⟨0, by rw [hdim]; decide⟩
-  have ha (b : Fin (Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C)))) : b = a := by
+  let a : crossingIndex C (simples C i) i (unitIndex C) := ⟨0, by rw [hdim]; decide⟩
+  have ha (b : crossingIndex C (simples C i) i (unitIndex C)) : b = a := by
     apply Fin.ext
     have hb := b.isLt
     dsimp [a]
     omega
-  have hsum : (∑ b : Fin (Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C))),
+  have hsum : (∑ b : crossingIndex C (simples C i) i (unitIndex C),
       crossingBlock X (simples C i) (simples C i) (simples C (unitIndex C))
         (crossingInclusion C (simples C i) i (unitIndex C) b)
         (crossingProjection C (simples C i) i (unitIndex C) b)) =

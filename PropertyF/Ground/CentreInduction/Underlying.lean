@@ -10,10 +10,14 @@ namespace PropertyF.Ground.CentreInduction
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 
+/-- The simple-indexed summand of the underlying induction object. -/
+abbrev inductionSummand (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
+    (i : Fin (rank C)) : C.Obj := (simples C i ⊗ X) ⊗ (simples C i)ᘁ
+
 /-- The finite direct sum underlying the induction object. No half-braiding is
 claimed here. -/
 def underlying (C : BraidedFusionCategory.{v,u}) (X : C.Obj) : C.Obj :=
-  ⨁ (fun i : Fin (rank C) => (simples C i ⊗ X) ⊗ (simples C i)ᘁ)
+  ⨁ (inductionSummand C X)
 
 /-- The underlying induction object has FP dimension `FPdim(C) * FPdim(X)`.
 This calculation does not require the centre to be fusion or the existence of

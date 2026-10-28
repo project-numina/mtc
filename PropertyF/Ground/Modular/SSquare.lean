@@ -130,18 +130,14 @@ theorem categoricalS_square (hp : p.IsSpherical)
   intro x y
   by_cases hxy : x = Ground.dualIndex C y
   · rw [ite_eq_left hxy]
-    have hy : y = Ground.dualIndex C x := by
-      rw [hxy, Ground.dualIndex_involutive]
-    rw [hy]
-    have hs := square_support_constant Sₚ (Ground.dualIndex_involutive C)
+    rw [show y = Ground.dualIndex C x by rw [hxy, Ground.dualIndex_involutive]]
+    refine (square_support_constant Sₚ (Ground.dualIndex_involutive C)
       (Ground.dualIndex_unit C)
       (fun i => by simpa only [categoricalS_unit] using simpleDimension_dual C p hreal i)
       (fun i => by simpa only [categoricalS_unit] using simpleDimension_ne_zero C p i)
-      (fun i j hij => categoricalS_square_off_dual C p hdet hreal i j hij) x
-    have hu : (∑ z, Sₚ (unitIndex C) z * Sₚ z (unitIndex C)) = globalDimension C := by
-      simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
-      simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
-    exact hs.trans hu
+      (fun i j hij => categoricalS_square_off_dual C p hdet hreal i j hij) x).trans ?_
+    simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
+    simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
   · rw [ite_eq_right hxy]
     exact categoricalS_square_off_dual C p hdet hreal x y hxy
 

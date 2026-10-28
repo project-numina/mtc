@@ -160,7 +160,7 @@ theorem crossingCandidate_unit (X : C.Obj) :
     crossingCandidate C X (𝟙_ C.Obj) =
       (ρ_ (underlying C X)).hom ≫ (λ_ (underlying C X)).inv := by
   classical
-  let V : Fin (rank C) → C.Obj := fun i => (simples C i ⊗ X) ⊗ (simples C i)ᘁ
+  let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (𝟙_ C.Obj)).inv).1
   apply biproduct.hom_ext'
   intro i
@@ -171,14 +171,13 @@ theorem crossingCandidate_unit (X : C.Obj) :
   rw [Finset.sum_eq_single i]
   · have hdim : Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i) = 1 := by
       rw [unit_crossing_finrank]; simp
-    let a : Fin (Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i)) := ⟨0, by rw [hdim]; decide⟩
-    let : Subsingleton (Fin (Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i))) := by
-      rw [hdim]
+    let a : crossingIndex C (𝟙_ C.Obj) i i := ⟨0, by rw [hdim]; decide⟩
+    let : Subsingleton (crossingIndex C (𝟙_ C.Obj) i i) := by
+      simp only [crossingIndex, hdim]
       infer_instance
-    let : Unique (Fin (Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i))) :=
+    let : Unique (crossingIndex C (𝟙_ C.Obj) i i) :=
       ⟨⟨a⟩, fun b => Subsingleton.elim b a⟩
-    rw [Fintype.sum_unique, show (default : Fin (Module.finrank ℂ
-      (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C i))) = a from Subsingleton.elim _ _]
+    rw [Fintype.sum_unique, show (default : crossingIndex C (𝟙_ C.Obj) i i) = a from Subsingleton.elim _ _]
     let : Simple (simples C i) := simples_simple C i
     let : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
     rw [crossingBlock_unit_of_split X
@@ -190,8 +189,8 @@ theorem crossingCandidate_unit (X : C.Obj) :
   · intro j _ hne
     have hdim : Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C j) = 0 := by
       rw [unit_crossing_finrank]; simp [Ne.symm hne]
-    let : IsEmpty (Fin (Module.finrank ℂ (simples C i ⟶ (𝟙_ C.Obj) ⊗ simples C j))) := by
-      rw [hdim]
+    let : IsEmpty (crossingIndex C (𝟙_ C.Obj) i j) := by
+      simp only [crossingIndex, hdim]
       infer_instance
     exact Finset.sum_eq_zero fun a _ => isEmptyElim a
   · simp

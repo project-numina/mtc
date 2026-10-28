@@ -91,11 +91,8 @@ theorem actual_braid_squares_equal_of_saturation
     (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
     (he : IsUnitaryPresentation (braidEndRepresentation X 1) b)
     {w : Fin r → ℝ} (hw : ∀ i, w i ≠ 0) {d f : ℝ} (hf : 0 < f)
-    (htrace : ∀ z : braidAlgebra X 1, actualBraidTrace C X p 1 z =
-      (PropertyF.Blocks.mk r size).trace w (b z))
-    (hbound : ∀ z : braidAlgebra X 1,
-      (∀ i, b z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ) →
-      ‖actualBraidTrace C X p 1 z‖ ≤ |d| * f ^ 2)
+    (htrace : IsTracePresentation C p b w)
+    (hbound : HasUnitaryTraceBound C p b (|d| * f ^ 2))
     (hvalue : actualBraidTrace C X p 1
       (braidInImage X 1
         (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2) :
@@ -264,11 +261,8 @@ theorem actual_three_strand_rigidity_of_trace_bound
     (hS : scalarTrace p (groundUnitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
-    (htrace : ∀ z : braidAlgebra X 1, actualBraidTrace C X p 1 z =
-      (PropertyF.Blocks.mk r size).trace w (b z))
-    (hbound : ∀ z : braidAlgebra X 1,
-      (∀ i, b z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ) →
-      ‖actualBraidTrace C X p 1 z‖ ≤ |d| * f ^ 2) : f = |d| :=
+    (htrace : IsTracePresentation C p b w)
+    (hbound : HasUnitaryTraceBound C p b (|d| * f ^ 2)) : f = |d| :=
   dimension_eq_abs_of_scalar_monodromy C p hd hf hdim hfinite
     (pair_operator_scalar_of_overlaps_equal C p (selfMonodromy X) hd hdim hS
       (local_monodromy_of_block_squares_equal b
