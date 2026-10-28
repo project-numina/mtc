@@ -117,9 +117,8 @@ end
 
 /-- Galois conjugacy gives the label bijection and preserves each FP dimension. -/
 theorem conjugate_labels :
-    ∃ e : Fin (rank C) ≃ Fin (rank D), ∀ i, fpSimple C i = fpSimple D (e i) := by
-  obtain ⟨e, he⟩ := simpleLabels_equiv C D h.equivalence
-  exact ⟨e, conjugate_fpSimple h he⟩
+    ∃ e : Fin (rank C) ≃ Fin (rank D), ∀ i, fpSimple C i = fpSimple D (e i) :=
+  (simpleLabels_equiv C D h.equivalence).imp fun _ he ↦ conjugate_fpSimple h he
 
 /-- The target's global FP dimension is invariant under Galois conjugacy. -/
 theorem conjugate_globalFPDimension :
@@ -130,18 +129,17 @@ theorem conjugate_globalFPDimension :
 
 /-- Ground version of braid-image invariance for a conjugate category. -/
 theorem ground_conjugate_images (Y : D.Obj) (n : ℕ) :
-    ∃ X : C.Obj, Nonempty (braidImage Y n ≃* braidImage X n) := by
-  let _ := h.monoidal
-  let _ := h.braided
-  exact braidImages_of_essentiallySurjective h.equivalence.functor Y n
+    ∃ X : C.Obj, Nonempty (braidImage Y n ≃* braidImage X n) :=
+  letI := h.monoidal
+  letI := h.braided
+  braidImages_of_essentiallySurjective h.equivalence.functor Y n
 
 /-- Property F is invariant in the forward direction under Galois conjugacy. -/
 theorem conjugate_propertyF
-    (hF : HasPropertyF C.Obj) : HasPropertyF D.Obj := by
-  intro Y n
-  obtain ⟨X, ⟨e⟩⟩ := ground_conjugate_images h Y n
-  let _ : Finite (braidImage X n) := hF X n
-  exact Finite.of_equiv (braidImage X n) e.symm.toEquiv
+    (hF : HasPropertyF C.Obj) : HasPropertyF D.Obj := fun Y n ↦
+  (ground_conjugate_images h Y n).elim fun X ⟨e⟩ ↦
+    letI : Finite (braidImage X n) := hF X n
+    Finite.of_equiv (braidImage X n) e.symm.toEquiv
 
 end PropertyF.Ground.Modular
 end

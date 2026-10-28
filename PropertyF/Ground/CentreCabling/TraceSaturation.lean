@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Calculus.UnitaryBlocks
-public import PropertyF.UnitaryTrace
+public import PropertyF.BlockTrace
 public import Mathlib.GroupTheory.OrderOfElement
 public import PropertyF.Ground.Modular.SMatrix
 public import PropertyF.Ground.Dimensions.DimensionCharacter
@@ -79,13 +79,12 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   let m (i : Fin (rank D)) := Module.finrank ℂ (simples D i ⟶ X)
   obtain ⟨e⟩ := exists_canonical_decomposition D X
   let B := Calculus.groundEndBlockEquiv D X m e
-  have hf (i : Fin (rank D)) : IsOfFinOrder (B a i) :=
-    (Pi.evalMonoidHom _ i).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha)
-  have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation (hf i)
+  have hb (i : Fin (rank D)) := finiteOrder_matrix_trace_saturation
+    ((Pi.evalMonoidHom _ i).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha))
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
-    have h1 := Calculus.pivotalTrace_groundEndBlocks D p (Dimensions.groundUnitScalarEquiv D) X m e a
-    have h2 := Calculus.pivotalTrace_groundEndBlocks D p (Dimensions.groundUnitScalarEquiv D) X m e 1
+    have h1 := Calculus.pivotalTrace_groundEndBlocks D p (Dimensions.groundUnitScalarEquiv D) e a
+    have h2 := Calculus.pivotalTrace_groundEndBlocks D p (Dimensions.groundUnitScalarEquiv D) e 1
     simp only [End.one_asHom] at h2
     have hh := congrArg Complex.re (h1.symm.trans ((congrArg (Dimensions.groundUnitScalarEquiv D) ht).trans h2))
     change (∀ i, Modular.simpleDimension D p i = (fpSimple D i : ℂ)) at hdim
@@ -95,10 +94,8 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   have heq (i : Fin (rank D)) : (B a i).trace.re = (m i : ℝ) :=
     eq_of_pos_weighted_sum_eq (fpSimple_pos D) (fun j ↦ by simpa using (hb j).1) hsum i
   apply B.injective
-  apply funext
-  intro i
-  have h := (hb i).2 (by simpa using heq i)
-  simpa using h
+  funext i
+  simpa using (hb i).2 (by simpa using heq i)
 
 /-- For a finite-order double braiding, the positive spherical S-test is
 equivalent to categorical centrality. -/
