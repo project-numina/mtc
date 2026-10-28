@@ -178,7 +178,10 @@ theorem fpDimension_functor (C : BraidedFusionCategory.{v,u})
   have hmul (i j) : f i * f j = ∑ k, (fusionCoeff C i j k : ℝ) * f k :=
     (fpDimension_tensor D _ _).symm.trans ((fpDimension_iso D (μIso F _ _)).trans
       (fpDimension_functor_decomposition C D F _))
-  have heq : f = fpSimple C := positive_character_unique C hpos (fpSimple_pos C) hunit (fpSimple_unit C) hmul (fpSimple_mul C)
+  have heq : f = fpSimple C := positive_symmetric_eigenvector_unique (totalFusionMatrix_pos C)
+    (Matrix.ext fun i j ↦ totalFusionMatrix_symmetric C j i) hpos (fpSimple_pos C)
+    hunit (fpSimple_unit C) (character_total_eigenvector C hmul)
+    (character_total_eigenvector C (fpSimple_mul C))
   simpa only [fpDimension, ← heq, f] using fpDimension_functor_decomposition C D F X
 
 end PropertyF.Ground

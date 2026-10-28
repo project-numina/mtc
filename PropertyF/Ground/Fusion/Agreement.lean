@@ -46,6 +46,27 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
         (Finset.mem_univ j))).resolve_left (ne_of_gt (hA i j))
   exact ⟨c, funext fun j ↦ sub_eq_zero.mp (hall j)⟩
 
+/-- Positive eigenvectors of a positive symmetric matrix agree when normalized
+at the same coordinate, even when their eigenvalues are initially different. -/
+theorem positive_symmetric_eigenvector_unique {ι : Type*} [Fintype ι]
+    {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 < A i j) (hsym : Aᵀ = A)
+    {f g : ι → ℝ} (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
+    {i₀ : ι} (hfunit : f i₀ = 1) (hgunit : g i₀ = 1)
+    {a b : ℝ} (hfe : A *ᵥ f = a • f) (hge : A *ᵥ g = b • g) : f = g := by
+  classical
+  let : Nonempty ι := ⟨i₀⟩
+  have hdot : f ⬝ᵥ A *ᵥ g = g ⬝ᵥ A *ᵥ f := by
+    simpa [hsym] using Matrix.dotProduct_transpose_mulVec A f g
+  rw [hfe, hge, dotProduct_smul, dotProduct_smul, dotProduct_comm g f] at hdot
+  have hdotpos : 0 < f ⬝ᵥ g :=
+    Finset.sum_pos (fun i _ ↦ mul_pos (hfpos i) (hgpos i)) Finset.univ_nonempty
+  have heq : a = b := mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm
+  rw [← heq] at hge
+  obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique hA hfpos hfe hge
+  have hc1 : c = 1 := by
+    simpa [hfunit, hgunit] using (congrFun hc i₀).symm
+  rw [hc, hc1, one_smul]
+
 /-- A function on simple labels is multiplicative for the fusion rules. -/
 abbrev IsFusionMultiplicative {R : Type*} [Semiring R]
     (C : BraidedFusionCategory) (χ : Fin (rank C) → R) : Prop :=
@@ -373,30 +394,6 @@ theorem character_total_eigenvector
   refine Finset.sum_congr rfl fun i _ ↦ ?_
   change (∑ k, (fusionCoeff D i j k : ℝ) * f k) = f i * f j
   exact (hf i j).symm
-
-/-- The positive normalized fusion character is unique. -/
-theorem positive_character_unique
-    {f g : Fin (rank D) → ℝ} (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
-    (hfunit : f (unitIndex D) = 1) (hgunit : g (unitIndex D) = 1)
-    (hf : IsFusionMultiplicative D f) (hg : IsFusionMultiplicative D g) : f = g := by
-  classical
-  let : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
-  have hfe := character_total_eigenvector D hf
-  have hge := character_total_eigenvector D hg
-  have hsym : (totalFusionMatrix D)ᵀ = totalFusionMatrix D :=
-    Matrix.ext fun i j ↦ totalFusionMatrix_symmetric D j i
-  have hdot : f ⬝ᵥ totalFusionMatrix D *ᵥ g = g ⬝ᵥ totalFusionMatrix D *ᵥ f := by
-    simpa [hsym] using Matrix.dotProduct_transpose_mulVec (totalFusionMatrix D) f g
-  rw [hfe, hge, dotProduct_smul, dotProduct_smul, dotProduct_comm g f] at hdot
-  have hdotpos : 0 < f ⬝ᵥ g :=
-    Finset.sum_pos (fun i _ ↦ mul_pos (hfpos i) (hgpos i)) Finset.univ_nonempty
-  have heq : (∑ i, f i) = ∑ i, g i := mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm
-  rw [← heq] at hge
-  obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique
-    (totalFusionMatrix_pos D) hfpos hfe hge
-  have hc1 : c = 1 := by
-    simpa [hfunit, hgunit] using (congrFun hc (unitIndex D)).symm
-  rw [hc, hc1, one_smul]
 
 /-- The unique positive normalized character of the fusion rules. -/
 def fpCharacter (D : BraidedFusionCategory) : Fin (rank D) → ℝ :=

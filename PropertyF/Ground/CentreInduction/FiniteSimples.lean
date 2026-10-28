@@ -46,7 +46,7 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
     intro P Q
     constructor
     · intro h
-      letI : Mono P.arrow.f := inferInstanceAs (Mono ((Center.forget C.Obj).map P.arrow))
+      let : Mono P.arrow.f := inferInstanceAs (Mono ((Center.forget C.Obj).map P.arrow))
       let : IsSplitMono P.arrow.f := mono_splits P.arrow.f
       have hm : retraction P.arrow.f ≫ P.arrow.f ∈ centerUnderlyingRange X P :=
         ⟨retraction P.arrow.f, rfl⟩
@@ -54,7 +54,7 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
       change g ≫ Q.arrow.f = retraction P.arrow.f ≫ P.arrow.f at hg
       have hg' : (P.arrow.f ≫ g) ≫ Q.arrow.f = P.arrow.f := by
         rw [Category.assoc, hg, ← Category.assoc, IsSplitMono.id, Category.id_comp]
-      letI : Mono Q.arrow.f := inferInstanceAs (Mono ((Center.forget C.Obj).map Q.arrow))
+      let : Mono Q.arrow.f := inferInstanceAs (Mono ((Center.forget C.Obj).map Q.arrow))
       let : IsSplitMono Q.arrow.f := mono_splits Q.arrow.f
       obtain ⟨t, ht⟩ := center_factor P.arrow Q.arrow (P.arrow.f ≫ g) hg'
       exact Subobject.le_of_comm t (Center.ext _ _ ((congrArg (· ≫ Q.arrow.f) ht).trans hg'))
@@ -131,15 +131,14 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
       let : Mono t := ht
       exact (Simple.not_isZero S (IsZero.of_mono t hw)).elim
     · let : IsArtinianObject W := center_artinian C W
-      obtain ⟨P, hP⟩ := exists_simple_subobject hw
-      let : Simple (P : 𝒵) := hP
-      let p : (P : 𝒵) ⟶ W := P.arrow
+      let P := simpleSubobject hw
+      let p : P ⟶ W := simpleSubobjectArrow hw
       have hp : p ≠ 0 := fun h0 =>
         id_nonzero _ ((cancel_mono p).1 (by simp [h0]))
       let Q := Centre.centerCokernel p
       let q : W ⟶ Q := Centre.centerCokernelπ p
       obtain ⟨L, hL⟩ := ih Q (center_cokernel_measure_lt C p hp)
-      refine ⟨(P : 𝒵) :: L, ?_⟩
+      refine ⟨P :: L, ?_⟩
       intro S hS ⟨t, ht⟩
       let : Simple S := hS
       let : Mono t := ht
