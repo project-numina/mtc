@@ -22,13 +22,10 @@ theorem exactPairing_ne_zero {C : Type u} [Category.{v} C] [MonoidalCategory C]
     [Preadditive C] [MonoidalPreadditive C] (X Y : C) [ExactPairing X Y]
     (hY : 𝟙 Y ≠ 0) : ExactPairing.coevaluation X Y ≠ 0 ∧
       ExactPairing.evaluation X Y ≠ 0 := by
-  have hzero : Y ◁ ExactPairing.coevaluation X Y ≫ (α_ Y X Y).inv ≫
-      ExactPairing.evaluation X Y ▷ Y ≠ 0 := by
-    intro h
-    apply hY
+  constructor <;> intro h <;> apply hY <;>
     simpa [h, Category.assoc] using
-      congrArg (fun t ↦ (ρ_ Y).inv ≫ t ≫ (λ_ Y).hom) (ExactPairing.coevaluation_evaluation X Y).symm
-  constructor <;> intro h <;> apply hzero <;> simp [h]
+      congrArg (fun t ↦ (ρ_ Y).inv ≫ t ≫ (λ_ Y).hom)
+        (ExactPairing.coevaluation_evaluation X Y).symm
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [BraidedCategory C] [Abelian C] [Linear ℂ C] [RigidCategory C]

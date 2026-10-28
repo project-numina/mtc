@@ -241,7 +241,7 @@ theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
   classical
   simpa only [totalFusionMatrix, ← fusionCoeff_dual_symmetry] using
     (show (∑ i, (fusionCoeff D (dualIndex D i) j k : ℝ)) = _ from
-      Equiv.sum_comp (dualEquiv D) (fun i => (fusionCoeff D i j k : ℝ)))
+      Equiv.sum_comp (dualEquiv D) (fun i ↦ (fusionCoeff D i j k : ℝ)))
 
 /-- The total fusion matrix is strictly positive in every entry. -/
 theorem totalFusionMatrix_pos (j k : Fin (rank D)) :

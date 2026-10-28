@@ -74,14 +74,13 @@ theorem object_projective (X : C) : Projective X := by
   exact Projective.of_iso e.symm hV
 
 /-- Every object is injective. -/
-theorem object_injective (X : C) : Injective X := by
-  obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
-  obtain ⟨m, ⟨e⟩⟩ := hdecomp X
-  let V : (Σ i, Fin (m i)) → C := fun p => T p.1
-  let : ∀ p, Injective (V p) := fun p => by
-    let : Simple (V p) := hsimple p.1
-    exact simple_injective (V p)
-  exact Injective.of_iso e.symm inferInstance
+theorem object_injective (X : C) : Injective X :=
+  (IsFusionCategory.finite_semisimple (C := C)).elim fun _ ⟨T, hs, _, hd⟩ ↦
+    (hd X).elim fun m ⟨e⟩ ↦
+      letI : ∀ p : Σ i, Fin (m i), Injective (T p.1) := fun p ↦
+        letI : Simple (T p.1) := hs p.1
+        simple_injective (T p.1)
+      Injective.of_iso e.symm inferInstance
 
 /-- Every epimorphism splits. -/
 theorem epi_splits {X Y : C} (f : X ⟶ Y) [Epi f] : IsSplitEpi f :=
