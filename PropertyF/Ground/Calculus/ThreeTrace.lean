@@ -193,8 +193,7 @@ theorem rightPartialTrace_overlap {A X Y : D.Obj} [Simple X]
       (scalarTrace p scalar u / scalar (p.rightTrace (𝟙 X))) • v := by
   rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
     rightPartialTrace_simple_ground D (X := X) (Y := Y) p scalar u]
-  apply End.ext
-  simp
+  exact End.ext (by simp)
 
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/

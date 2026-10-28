@@ -314,22 +314,21 @@ theorem addRightAut_generator (X : C) (n : ℕ) (i : Fin (n+1)) :
   induction n with
   | zero => exact (Fin.eq_zero i).symm ▸ first 0
   | succ n ih =>
-    rcases i with ⟨i, hi⟩
-    cases i with
-    | zero => exact first (n + 1)
-    | succ i =>
-      apply Aut.ext
-      apply Iso.ext
-      let j : Fin (n+1) := ⟨i, by omega⟩
-      have h := congrArg (fun a : Aut (tensorPower X (n+3)) => a.asIso.hom) (ih j)
-      change (appendIso X (n+2)).inv ≫ ((braidGenerator X n j).asIso.hom ▷ X) ≫
-        (appendIso X (n+2)).hom = (braidGenerator X (n+1) j.castSucc).asIso.hom at h
-      change (appendIso X (n+3)).inv ≫ ((braidGenerator X (n+1) ⟨i+1, hi⟩).asIso.hom ▷ X) ≫
-        (appendIso X (n+3)).hom = (braidGenerator X (n+2) ⟨i+1, by omega⟩).asIso.hom
-      simp only [braidGenerator, tensorIso_hom, Iso.refl_hom, id_tensorHom]
-      change (appendIso X (n+3)).inv ≫ ((X ◁ (braidGenerator X n j).asIso.hom) ▷ X) ≫
-        (appendIso X (n+3)).hom = X ◁ (braidGenerator X (n+1) j.castSucc).asIso.hom
-      rw [appendIso_succ X (n+2), append_step, h]
+    refine Fin.cases (first (n + 1)) (fun j => ?_) i
+    rcases j with ⟨j, hj⟩
+    apply Aut.ext
+    apply Iso.ext
+    have h := congrArg (fun a : Aut (tensorPower X (n+3)) => a.asIso.hom) (ih ⟨j, hj⟩)
+    change (appendIso X (n+2)).inv ≫ ((braidGenerator X n ⟨j, hj⟩).asIso.hom ▷ X) ≫
+      (appendIso X (n+2)).hom = (braidGenerator X (n+1) (⟨j, hj⟩ : Fin (n+1)).castSucc).asIso.hom at h
+    change (appendIso X (n+3)).inv ≫
+      ((braidGenerator X (n+1) (⟨j, hj⟩ : Fin (n+1)).succ).asIso.hom ▷ X) ≫
+      (appendIso X (n+3)).hom =
+        (braidGenerator X (n+2) (⟨j, hj⟩ : Fin (n+1)).succ.castSucc).asIso.hom
+    simp only [Fin.succ_mk, Fin.castSucc_mk, braidGenerator, tensorIso_hom, Iso.refl_hom, id_tensorHom]
+    change (appendIso X (n+3)).inv ≫ ((X ◁ (braidGenerator X n ⟨j, hj⟩).asIso.hom) ▷ X) ≫
+      (appendIso X (n+3)).hom = X ◁ (braidGenerator X (n+1) (⟨j, hj⟩ : Fin (n+1)).castSucc).asIso.hom
+    rw [appendIso_succ X (n+2), append_step, h]
 
 /-- Appending one identity strand on the right maps the actual braid image to
 the larger actual braid image. -/
@@ -355,9 +354,8 @@ def appendRightEndAlgHom (X : C) (n : ℕ) :
 the appended braid representation. -/
 theorem appendRightEndAlgHom_group (X : C) (n : ℕ) (g : braidImage X n) :
     appendRightEndAlgHom X n (braidEndRepresentation X n g) =
-      braidEndRepresentation X (n + 1) (addRightStrand X n g) := by
-  apply End.ext
-  rfl
+      braidEndRepresentation X (n + 1) (addRightStrand X n g) :=
+  End.ext rfl
 
 /-- Appending one right identity strand gives a map of actual braid algebras. -/
 def addRightBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + 1) :=
