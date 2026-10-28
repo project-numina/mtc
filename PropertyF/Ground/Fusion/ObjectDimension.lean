@@ -15,7 +15,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The positive character evaluated on the simple multiplicities of an object. -/
 def fpDimension (D : BraidedFusionCategory) (X : D.Obj) : ℝ :=
-  ∑ i, (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i
+  ∑ i, (simpleMultiplicity D i X : ℝ) * fpSimple D i
 
 theorem fpDimension_simple (j : Fin (rank D)) :
     fpDimension D (simples D j) = fpSimple D j :=
@@ -46,15 +46,17 @@ theorem one_le_fpDimension {X : D.Obj}
 multiplicities of its factors with the fusion coefficients. -/
 theorem tensor_multiplicity_expanded (X Y : D.Obj)
     (k : Fin (rank D)) :
-    Module.finrank ℂ (simples D k ⟶ X ⊗ Y) =
-      ∑ i, ∑ j, Module.finrank ℂ (simples D i ⟶ X) *
-        Module.finrank ℂ (simples D j ⟶ Y) * fusionCoeff D i j k := by
+    simpleMultiplicity D k (X ⊗ Y) =
+      ∑ i, ∑ j, simpleMultiplicity D i X *
+        simpleMultiplicity D j Y * fusionCoeff D i j k := by
   classical
-  have he (j : Fin (rank D)) : Module.finrank ℂ (simples D k ⟶ X ⊗ simples D j) =
-      ∑ i, Module.finrank ℂ (simples D i ⟶ X) * fusionCoeff D i j k := by
-    rw [(CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (β_ X (simples D j))).finrank_eq,
+  have he (j : Fin (rank D)) : simpleMultiplicity D k (X ⊗ simples D j) =
+      ∑ i, simpleMultiplicity D i X * fusionCoeff D i j k := by
+    rw [show simpleMultiplicity D k (X ⊗ simples D j) =
+        simpleMultiplicity D k (simples D j ⊗ X) from
+          (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (β_ X (simples D j))).finrank_eq,
       tensor_multiplicity]
-    change (∑ i, Module.finrank ℂ (simples D i ⟶ X) * fusionCoeff D j i k) = _
+    change (∑ i, simpleMultiplicity D i X * fusionCoeff D j i k) = _
     simp_rw [fusionCoeff_comm D j]
   rw [tensor_multiplicity]
   simp_rw [he, Finset.mul_sum]
@@ -80,8 +82,7 @@ theorem fpDimension_tensor (X Y : D.Obj) :
 /-- Multiplicity of a simple in a dual object equals the multiplicity of its
 dual in the original object. -/
 theorem dual_multiplicity (X : D.Obj) (i : Fin (rank D)) :
-    Module.finrank ℂ (simples D i ⟶ ᘁX) =
-      Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) := by
+    simpleMultiplicity D i (ᘁX) = simpleMultiplicity D (dualIndex D i) X := by
   obtain ⟨e⟩ := dualIndex_iso D i
   let : Simple (simples D (dualIndex D i)) := simples_simple D _
   exact (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁX : D.Obj)).symm).trans
@@ -98,10 +99,10 @@ theorem fpDimension_leftDual (X : D.Obj) :
   classical
   unfold fpDimension
   simpa only [dual_multiplicity, fpSimple_dual] using
-    (show (∑ i, (Module.finrank ℂ (simples D (dualIndex D i) ⟶ X) : ℝ) *
+    (show (∑ i, (simpleMultiplicity D (dualIndex D i) X : ℝ) *
       fpSimple D (dualIndex D i)) = _ from
         Equiv.sum_comp (dualEquiv D)
-          (fun i ↦ (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i))
+          (fun i ↦ (simpleMultiplicity D i X : ℝ) * fpSimple D i))
 
 /-- FP dimension is invariant under taking a right dual. -/
 theorem fpDimension_rightDual (X : D.Obj) :
@@ -135,9 +136,9 @@ theorem fpDimension_functor_decomposition (C : BraidedFusionCategory.{v,u})
     (D : BraidedFusionCategory.{v',u'})
     (F : C.Obj ⥤ D.Obj) [F.Additive] (X : C.Obj) :
     fpDimension D (F.obj X) = ∑ i,
-      (Module.finrank ℂ (simples C i ⟶ X) : ℝ) * fpDimension D (F.obj (simples C i)) := by
+      (simpleMultiplicity C i X : ℝ) * fpDimension D (F.obj (simples C i)) := by
   classical
-  let m : Fin (rank C) → ℕ := fun i => Module.finrank ℂ (simples C i ⟶ X)
+  let m : Fin (rank C) → ℕ := fun i => simpleMultiplicity C i X
   let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
   obtain ⟨e⟩ := exists_canonical_decomposition C X
   rw [fpDimension_iso D (F.mapIso e ≪≫ F.mapBiproduct V), fpDimension_biproduct,

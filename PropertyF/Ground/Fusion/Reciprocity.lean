@@ -109,7 +109,7 @@ theorem dualIndex_iso (j : Fin (rank D)) :
 theorem fusionCoeff_reciprocity
     (i j k : Fin (rank D)) :
     fusionCoeff D i j k =
-      Module.finrank ℂ (simples D i ⟶ simples D k ⊗ (ᘁ(simples D j))) :=
+      simpleMultiplicity D i (simples D k ⊗ (ᘁ(simples D j))) :=
   letI : Simple (simples D i) := simples_simple D i
   (finrank_frobenius_reciprocity (k := ℂ) (simples D i) (simples D j) (simples D k)).trans
     (finrank_to_simple_eq_from_simple _ (simples D i))

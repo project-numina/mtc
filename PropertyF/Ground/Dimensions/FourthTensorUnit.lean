@@ -18,22 +18,6 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
-/-- For an involutive scalar, an isomorphism is its scalar multiple precisely when
-the quotient of the two isomorphisms is scalar. -/
-theorem iso_comp_inv_eq_smul_iff_of_sq_one {k : Type*} [CommSemiring k]
-    {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D]
-    {X Y : D} (a t : X ≅ Y) (z : k) (hz : z * z = 1) :
-    a.hom ≫ t.inv = z • 𝟙 X ↔ t.hom = z • a.hom := by
-  constructor
-  · intro h
-    simpa [Category.assoc, Linear.smul_comp, smul_smul, hz] using
-      (congrArg (fun f ↦ z • (f ≫ t.hom)) h).symm
-  · intro ht
-    apply (cancel_mono t.hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp,
-      Category.id_comp]
-    rw [ht, smul_smul, hz, one_smul]
-
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor map with a unit factor has the root's unit sign. -/
@@ -59,11 +43,20 @@ theorem rootTensorIso_unit_left :
     Linear.comp_smul, Linear.smul_comp, Category.assoc]
   rw [doubleDualTensorIso_unit_left, leftUnitor_naturality]
 
+set_option backward.isDefEq.respectTransparency false in
 /-- The ENO tensor defect with a left unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_left :
     (rootTensorDefect C (𝟙_ C.Obj) X).hom =
-      rootDimension C (unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) :=
-  (iso_comp_inv_eq_smul_iff_of_sq_one _ _ _ (rootDimension_unit_sq C)).2
-    (rootTensorIso_unit_left C X)
+      rootDimension C (unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) := by
+  let : HasRightDual (𝟙_ C.Obj ⊗ X) := RightRigidCategory.rightDual _
+  let : HasRightDual ((𝟙_ C.Obj ⊗ X)ᘁ) := RightRigidCategory.rightDual _
+  apply (cancel_mono (rootTensorIso C (𝟙_ C.Obj) X).hom).1
+  change (((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom ≫
+    (rootTensorIso C (𝟙_ C.Obj) X).inv) ≫ (rootTensorIso C (𝟙_ C.Obj) X).hom =
+      (rootDimension C (unitIndex C) • 𝟙 _) ≫ (rootTensorIso C (𝟙_ C.Obj) X).hom
+  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp]
+  rw [rootTensorIso_unit_left]
+  simp only [Linear.comp_smul, smul_smul, rootDimension_unit_sq, one_smul]
+  exact (Category.id_comp _).symm
 
 end PropertyF.Ground.Dimensions
