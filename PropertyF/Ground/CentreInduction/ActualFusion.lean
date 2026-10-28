@@ -137,11 +137,8 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
       (α_ Z.1 S (Sᘁ)).inv ≫ (bS ▷ Sᘁ)))
   clear_value bT bS
   calc
-    _ = 𝟙 _ ⊗≫ (Z.1 ◁ T ◁ η_ S (Sᘁ)) ⊗≫
-      ((bT ▷ (S ⊗ Sᘁ)) ≫ ((T ⊗ Z.1) ◁ 𝟙 (S ⊗ Sᘁ))) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ T ◁ η_ S (Sᘁ)) ⊗≫ (bT ▷ (S ⊗ Sᘁ)) ⊗≫
-      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp
+      (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
     _ = 𝟙 _ ⊗≫ (((Z.1 ⊗ T) ◁ η_ S (Sᘁ)) ≫ (bT ▷ (S ⊗ Sᘁ))) ⊗≫
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by monoidal
     _ = 𝟙 _ ⊗≫ ((bT ▷ (𝟙_ D)) ≫ ((T ⊗ Z.1) ◁ η_ S (Sᘁ))) ⊗≫

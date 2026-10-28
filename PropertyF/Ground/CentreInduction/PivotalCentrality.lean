@@ -129,7 +129,7 @@ end PropertyF.Ground.CentreInduction
 namespace PropertyF.Ground.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
-variable (C : BraidedFusionCategory.{v,u})
+variable {C : BraidedFusionCategory.{v,u}}
 local notation "𝒵" => CategoryTheory.Center C.Obj
 local notation "𝒵ᶠ" => Integrate.bundledCenter C
 open CategoryTheory.Limits
@@ -195,7 +195,7 @@ theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
   have hc : Centre.Centralizes ((induction C).obj (𝟙_ C.Obj)) (F.obj (simples C i)) := by
     apply Centre.centralizes_symm
     exact Centre.centralizes_of_iso_left e'.symm (hcentral _)
-  have hi := positive_simple_centralizes_induced_unit C hc
+  have hi := positive_simple_centralizes_induced_unit hc
   have es : simples C i ≅ 𝟙_ C.Obj := by
     subst i
     exact Classical.choice (unitIndex_iso C)

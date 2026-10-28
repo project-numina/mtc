@@ -115,7 +115,7 @@ theorem center_transparent_label_eq_unit
     k = unitIndex (Integrate.bundledCenter C) :=
   let D := Integrate.bundledCenter C
   let : Simple (simples D k) := simples_simple D k
-  simples_injective D ⟨(CentreInduction.center_transparent_simple_iso_unit C
+  simples_injective D ⟨(CentreInduction.center_transparent_simple_iso_unit (C := C)
     (Z := simples D k) hk).some ≪≫ (unitIndex_iso D).some.symm⟩
 
 
