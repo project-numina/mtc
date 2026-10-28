@@ -24,9 +24,7 @@ theorem drinfeld_unit :
   let U : C.Obj := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
-  let r : Uᘁ ≅ U := by
-    change rightDualObject (𝟙_ C.Obj) ≅ 𝟙_ C.Obj
-    exact rightDualUnitIso
+  let r : Uᘁ ≅ U := rightDualUnitIso
   have h : (r.inv ≫ (r.homᘁ)) ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) =
       (β_ U (Uᘁ)).hom ≫ ε_ U (Uᘁ) := by
     rw [comp_whiskerRight_assoc, rightAdjointMate_comp_evaluation]
@@ -59,9 +57,7 @@ theorem drinfeld_unit_dual :
   let : HasRightDual U := RightRigidCategory.rightDual U
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let : HasRightDual ((Uᘁ)ᘁ) := RightRigidCategory.rightDual ((Uᘁ)ᘁ)
-  let r : Uᘁ ≅ U := by
-    change rightDualObject (𝟙_ C.Obj) ≅ 𝟙_ C.Obj
-    exact rightDualUnitIso
+  let r : Uᘁ ≅ U := rightDualUnitIso
   have hu : (doubleDualIso C U).hom = (r.inv ≫ (r.homᘁ)) := by
     exact drinfeld_unit C
   have hb : (doubleDualIso C (Uᘁ)).hom ≫ ((r.homᘁ)ᘁ) = (r.homᘁ) := by
@@ -152,19 +148,7 @@ theorem rootDimension_unit_sq :
     have h := congrArg Iso.hom (fourthDualIso_unit C)
     rw [hu]
     simpa only [Iso.trans_hom, rightDualIsoMap] using h
-  have hs : (r * r) • (fourthDualIso C U).hom = (1 : ℂ) • (fourthDualIso C U).hom := by
-    calc
-      _ = (r * r) • (u.hom ≫ ((u.homᘁ)ᘁ)) := by rw [hfourth]
-      _ = a.hom ≫ ((a.homᘁ)ᘁ) := by
-        rw [hr]
-        simp only [rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul]
-      _ = _ := by simpa using hsq
-  have hn : (fourthDualIso C U).hom ≠ 0 := by
-    intro h
-    have hh := congrArg (fun f => f ≫ (fourthDualIso C U).inv) h
-    simp at hh
-    exact id_nonzero U hh
-  exact smul_left_injective ℂ hn hs
+  exact scalar_sq_eq_one_of_same_square u a r hr (hsq.trans hfourth)
 
 end PropertyF.Ground.Dimensions
 
