@@ -30,20 +30,16 @@ local notation "𝒮" => Modular.categoricalS Z p
 local notation "𝒅" => Modular.simpleDimension Z p
 local notation "𝒇" => fpSimple Z
 
-/-- The actual Galois-unit label supplies the modular dimension identity, its
-self-column, a dimension at least one, and a real conjugate. This is independent
-of the centre-specific realization and finite-braid rigidity. -/
+/-- The Galois-unit label has dimension at least one, the Galois-unit column,
+and the modular global-dimension identity. -/
 theorem exists_modular_witness (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions Z p)
     (hdet : (𝒮).det ≠ 0)
     {δ : ℝ} (hglobal : globalDimension Z = (δ : ℂ) ^ 2)
     (σ : ℂ ≃+* ℂ) :
-    ∃ (y : Fin (rank Z)) (d : ℝ), 1 ≤ 𝒇 y ∧
-      σ (𝒇 y : ℂ) = (d : ℂ) ∧
-      (∀ x, 𝒮 x y =
-        (𝒇 y : ℂ) * σ.symm (𝒅 x)) ∧
-      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (𝒇 y : ℂ) ^ 2 ∧
-      𝒮 y y = (𝒇 y : ℂ) * σ.symm (𝒇 y : ℂ) := by
+    ∃ y : Fin (rank Z), 1 ≤ 𝒇 y ∧
+      (∀ x, 𝒮 x y = (𝒇 y : ℂ) * σ.symm (𝒅 x)) ∧
+      σ.symm ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (𝒇 y : ℂ) ^ 2 := by
   have hreal := CentreCabling.realSimpleDimensions_of_fp hdim
   obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hp hdet hreal
   let y := act σ.symm (unitIndex Z)
@@ -53,11 +49,9 @@ theorem exists_modular_witness (hp : p.IsSpherical)
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
     (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
     (fun x => hact σ.symm x (unitIndex Z))
-  refine ⟨y, (σ (𝒇 y : ℂ)).re, one_le_fpSimple Z y,
-    (fp_simple_galois_real Z σ y).symm, ?_, ?_, ?_⟩
+  refine ⟨y, one_le_fpSimple Z y, ?_, ?_⟩
   · simpa only [hdim] using hprop.1
   · simpa only [hglobal, hdim] using hprop.2.2
-  · simpa only [hdim] using hprop.1 y
 
 /-- Once the Galois-unit column is known to have finite braid image and the
 actual three-strand rigidity theorem applies, the required numerical witness
@@ -72,7 +66,11 @@ theorem center_witness_of_categorical_modular_data (hp : p.IsSpherical)
       (𝒇 y : ℂ) * σ.symm (𝒅 x)) →
       ObjectPropertyF (simples Z y)) :
     ∃ f d : ℝ, σ (f : ℂ) = (d : ℂ) ∧ f * b = δ ∧ 1 ≤ f ∧ f = |d| :=
-  let ⟨y, d, hf, hσf, hcolumn, hG, hS⟩ := exists_modular_witness Z hp hdim hdet hglobal σ
+  let ⟨y, hf, hcolumn, hG⟩ := exists_modular_witness Z hp hdim hdet hglobal σ
+  let d := (σ (𝒇 y : ℂ)).re
+  have hσf : σ (𝒇 y : ℂ) = (d : ℂ) := (fp_simple_galois_real Z σ y).symm
+  have hS : 𝒮 y y = (𝒇 y : ℂ) * σ.symm (𝒇 y : ℂ) := by
+    simpa only [hdim] using hcolumn y
   ⟨_, d, center_witness_of_modular_and_rigidity (σ := σ) hδ hb hf hτ hσf hG hS
     (galois_rigidity_of_propertyF Z p hdim σ y (hF y hcolumn) d hσf)⟩
 
