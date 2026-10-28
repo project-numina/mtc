@@ -198,9 +198,8 @@ theorem target_squaredNorm_rightDual
   let : Simple (Xᘁ) := simple_rightDual C X
   let j := doubleDualIso C X
   rw [target_squaredNorm_choice_independent C (rightDualIsoMap j).symm,
-    target_squaredNorm_choice_independent C j]
-  rw [← leftQuantumTrace_eq_rightDual j, leftQuantumTrace_dual_component]
-  exact mul_comm _ _
+    target_squaredNorm_choice_independent C j, ← leftQuantumTrace_eq_rightDual j,
+    leftQuantumTrace_dual_component, mul_comm]
 
 end PropertyF.Ground.Dimensions
 

@@ -65,9 +65,8 @@ object. This is the split-unit input for identity-strand embeddings. -/
 theorem unit_retract_leftDual_tensor (X : C) [Simple X] :
     ∃ (s : 𝟙_ C ⟶ (ᘁX) ⊗ X) (r : (ᘁX) ⊗ X ⟶ 𝟙_ C), s ≫ r = 𝟙 (𝟙_ C) := by
   let : Simple (𝟙_ C) := IsFusionCategory.unit_simple (C := C)
-  have hcoe : ExactPairing.coevaluation (ᘁX) X ≠ 0 :=
+  obtain ⟨r, hr⟩ := split_from_simple (ExactPairing.coevaluation (ᘁX) X)
     (exactPairing_ne_zero (ᘁX) X (id_nonzero X)).1
-  obtain ⟨r, hr⟩ := split_from_simple (ExactPairing.coevaluation (ᘁX) X) hcoe
   exact ⟨_, r, hr⟩
 
 end PropertyF.Ground

@@ -161,10 +161,7 @@ theorem pivotalTrace_tensor (p : PivotalStructure (C := C))
     scalar (p.rightTrace (a ⊗ₘ b)) = scalar (p.rightTrace a) * scalar (p.rightTrace b) := by
   have h := rightTrace_partialTrace p (End.of (a ⊗ₘ b))
   rw [rightPartialTrace_tensor p scalar a b] at h
-  have hs : p.rightTrace (a ⊗ₘ b) = scalar (p.rightTrace b) • p.rightTrace a := by
-    simpa [PivotalStructure.rightTrace_smul] using h.symm
-  rw [hs, map_smul]
-  simp [mul_comm]
+  simpa [PivotalStructure.rightTrace_smul, smul_eq_mul, mul_comm] using congrArg scalar h.symm
 
 end PropertyF.Ground.Dimensions
 
