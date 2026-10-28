@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Calculus.RightStrand
 public import PropertyF.Ground.Calculus.ThreeBraid
-public import PropertyF.Ground.Dimensions.IteratedTrace
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Modular.SMatrix
 
 /-! Two- and three-strand categorical braid embeddings. -/

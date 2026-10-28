@@ -5,9 +5,11 @@ public import PropertyF.Ground.Dimensions.RootDualLabel
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The tensor of natural-root components is natural. -/
-theorem rootTensorIso_natural (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTensorIso_natural
     {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y') :
     (f ⊗ₘ g) ≫ (rootTensorIso C X' Y').hom =
       (rootTensorIso C X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) := by
@@ -26,7 +28,7 @@ theorem rootTensorIso_natural (C : Ground.BraidedFusionCategory.{v,u})
     ← Category.assoc, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom, hf, hg]
 
 /-- The multiplicativity defect is natural in both variables. -/
-theorem rootTensorDefect_natural (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTensorDefect_natural
     {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y') :
     (f ⊗ₘ g) ≫ (rootTensorDefect C X' Y').hom =
       (rootTensorDefect C X Y).hom ≫ (f ⊗ₘ g) := by
@@ -52,7 +54,6 @@ theorem rootTensorDefect_natural (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- The dual-label choice can be removed from the Frobenius defect equation. -/
 theorem enoTraceMatrix_reciprocity_of_rightDual_frobenius_defect
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hraw : ∀ i j k (g : Ground.simples C i ⊗ Ground.simples C k ⟶ Ground.simples C j),
       letI : ExactPairing ((Ground.simples C i)ᘁ) (Ground.simples C i) :=
         BraidedCategory.exactPairing_swap _ _

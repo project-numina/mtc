@@ -218,8 +218,7 @@ theorem globalDimension_ne_zero_of_invertibleS (hp : p.IsSpherical)
     simp only [Matrix.mul_apply, Matrix.zero_apply, categoricalS_square C p hp hdet hreal, hz]
     split_ifs <;> rfl
   have hh := congrArg Matrix.det hs
-  rw [Matrix.det_mul] at hh
-  simp only [Matrix.det_zero] at hh
+  rw [Matrix.det_mul, Matrix.det_zero] at hh
   exact mul_ne_zero hdet hdet hh
 
 /-- The S-column Galois action for any nondegenerate spherical category with

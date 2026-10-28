@@ -409,7 +409,8 @@ variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Hom into a binary biproduct is the product of the two Hom spaces. -/
-def homBiprodLinearEquiv (S X Y : C.Obj) :
+def homBiprodLinearEquiv {D : Type u} [Category.{v} D] [Preadditive D]
+    [Linear ℂ D] [HasBinaryBiproducts D] (S X Y : D) :
     (S ⟶ X ⊞ Y) ≃ₗ[ℂ] ((S ⟶ X) × (S ⟶ Y)) where
   toFun f := (f ≫ biprod.fst, f ≫ biprod.snd)
   invFun f := f.1 ≫ biprod.inl + f.2 ≫ biprod.inr
@@ -425,7 +426,7 @@ theorem simpleHomAction_det_biprod
       (simpleHomAction C X i a).det * (simpleHomAction C Y i b).det := by
   let : FiniteDimensional ℂ (simples C i ⟶ X) := IsFusionCategory.hom_finite _ _
   let : FiniteDimensional ℂ (simples C i ⟶ Y) := IsFusionCategory.hom_finite _ _
-  let E := homBiprodLinearEquiv C (simples C i) X Y
+  let E := homBiprodLinearEquiv (simples C i) X Y
   let A := simpleHomAction C (X ⊞ Y) i (biprod.mapIso a b)
   let L := simpleHomAction C X i a
   let R := simpleHomAction C Y i b
@@ -696,7 +697,7 @@ theorem additive_object_function_decomposition (M : Type w) [AddCommGroup M] [Mo
         _ = Module.finrank ℂ (simples C i ⟶ S ⊞ K) :=
           (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e).finrank_eq
         _ = Module.finrank ℂ ((simples C i ⟶ S) × (simples C i ⟶ K)) :=
-          (homBiprodLinearEquiv C (simples C i) S K).finrank_eq
+          (homBiprodLinearEquiv (simples C i) S K).finrank_eq
         _ = _ := Module.finrank_prod
     rw [hdim, Nat.cast_add, add_smul]
 
@@ -879,9 +880,8 @@ theorem monodromy_hexagon_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
         (((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)).symm ≪≫
         (monodromyIso Z X ⊗ᵢ Iso.refl Y) := by
   apply Iso.ext
-  simp only [monodromyIso, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
-    tensorHom_id, id_tensorHom, Category.assoc]
-  simp [Category.assoc, ← comp_whiskerRight]
+  simp [monodromyIso, tensorIso_hom, tensorHom_id, id_tensorHom, Category.assoc,
+    ← comp_whiskerRight]
 
 /-- The actual FP determinant of the monodromy hexagon is the weighted sum
 of the two simple monodromy determinants, under simple twist balancing. -/
