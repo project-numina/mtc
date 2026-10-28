@@ -20,6 +20,10 @@ class SorryScopeTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.check('theorem goal : True := by\n  sorry\nexample : False := by\n  sorry\n')
 
+    def test_admit_in_example_is_rejected(self):
+        with self.assertRaises(ValueError):
+            self.check('theorem goal : True := by sorry\nexample : False := by admit\n')
+
     def test_sorry_in_type_is_rejected(self):
         with self.assertRaises(ValueError):
             self.check('theorem goal : (by sorry) := by trivial\n')
