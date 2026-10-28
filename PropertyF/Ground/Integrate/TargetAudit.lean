@@ -23,8 +23,6 @@ import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
 import all PropertyF.Ground.Integrate.DrinfeldComplete
 import all PropertyF.Ground.CentreCabling.TwistDual
-import all PropertyF.Ground.CentreInduction.DualMonodromy
-import all PropertyF.Ground.CentreInduction.FiniteMonodromyModular
 import all PropertyF.Ground.Dimensions.DrinfeldTensorCap
 import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.Integrate.PivotalBalancedReduction
@@ -54,7 +52,6 @@ import all PropertyF.Ground.Dimensions.DefectSwappedCoevaluation
 import all PropertyF.Ground.Dimensions.DoubleDualBraiding
 import all PropertyF.Ground.Dimensions.DualBraiding
 import all PropertyF.Ground.CentreInduction.ForgetDualUnit
-import all PropertyF.Ground.CentreInduction.PivotalLift
 import all PropertyF.Ground.CentreInduction.ForgetDualTensor
 import all PropertyF.Ground.CentreRigid.Evaluation
 import all PropertyF.Ground.CentreRigid.Coevaluation
@@ -71,7 +68,6 @@ import all PropertyF.Ground.CentreCalculus.ProjectorReduction
 import all PropertyF.Ground.CentreDimensions.PivotalTwist
 import all PropertyF.Ground.CentreInduction.ActualFusion
 import all PropertyF.Ground.CentreInduction.AdjunctionAssembly
-import all PropertyF.Ground.CentreInduction.Averaging
 import all PropertyF.Ground.CentreInduction.BasisPairing
 import all PropertyF.Ground.CentreInduction.BasisRefinement
 import all PropertyF.Ground.CentreInduction.CandidateAssembly
@@ -84,19 +80,10 @@ import all PropertyF.Ground.CentreInduction.CrossingUnit
 import all PropertyF.Ground.CentreInduction.FiniteSimples
 import all PropertyF.Ground.CentreInduction.FiniteSum
 import all PropertyF.Ground.CentreInduction.ForgetDual
-import all PropertyF.Ground.CentreInduction.InducedTrace
 import all PropertyF.Ground.CentreInduction.InjectiveFusion
-import all PropertyF.Ground.CentreInduction.Injectives
-import all PropertyF.Ground.CentreInduction.PartialTrace
-import all PropertyF.Ground.CentreInduction.RankOne
 import all PropertyF.Ground.CentreInduction.Representatives
 import all PropertyF.Ground.CentreInduction.SecondTriangle
-import all PropertyF.Ground.CentreInduction.SimpleDetection
-import all PropertyF.Ground.CentreInduction.Splitting
-import all PropertyF.Ground.CentreInduction.TensorDetection
-import all PropertyF.Ground.CentreInduction.UnitCentrality
 import all PropertyF.Ground.CentreInduction.UnitSummand
-import all PropertyF.Ground.CentreInduction.UnitTest
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
 import all PropertyF.Ground.CentreRigid.MateEquations
 import all PropertyF.Ground.Dimensions.CoevaluationReciprocity

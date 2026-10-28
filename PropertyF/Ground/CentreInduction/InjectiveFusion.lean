@@ -1,5 +1,27 @@
 module
-public import PropertyF.Ground.CentreInduction.Injectives
+public import PropertyF.Ground.CentreInduction.FiniteSimples
+public import Mathlib.CategoryTheory.Preadditive.Injective.Preserves
+
+section
+open CategoryTheory CategoryTheory.Limits
+universe v u
+@[expose] public noncomputable section
+namespace PropertyF.Ground.CentreInduction
+variable (C : BraidedFusionCategory.{v,u})
+
+/-- Induction sends every base object to an injective centre object. -/
+theorem induction_injective (X : C.Obj) : Injective ((induction C).obj X) := by
+  let : (induction C).PreservesInjectiveObjects :=
+    Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms (actualAdjunction C)
+  let : Injective X := object_injective C X
+  infer_instance
+
+
+
+end PropertyF.Ground.CentreInduction
+
+end
+end
 
 /-! An injective-retract route to centre semisimplicity and fusion. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -8,24 +30,27 @@ universe v u
 namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [RigidCategory D]
 
+omit [Abelian D] in
 /-- Tensoring with any object preserves injectives in a rigid abelian category. -/
 theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U) := by
   let L := tensorRight (ᘁU)
   let R := tensorRight U
   let adj : L ⊣ R := tensorRightAdjunction (ᘁU) U
-  letI : L.IsRightAdjoint := ⟨⟨tensorRight (ᘁ(ᘁU)), ⟨tensorRightAdjunction (ᘁ(ᘁU)) (ᘁU)⟩⟩⟩
-  letI : L.PreservesMonomorphisms := by infer_instance
-  letI : R.PreservesInjectiveObjects := Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms adj
+  let : L.IsRightAdjoint := ⟨⟨tensorRight (ᘁ(ᘁU)), ⟨tensorRightAdjunction (ᘁ(ᘁU)) (ᘁU)⟩⟩⟩
+  let : L.PreservesMonomorphisms := by infer_instance
+  let : R.PreservesInjectiveObjects := Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms adj
   exact R.injective_obj_of_injective (inferInstance : Injective J)
 
+omit [Abelian D] in
 /-- A unit retract of a tensor product with an injective makes every object injective. -/
 theorem all_injective_of_unit_retract (J U : D) [Injective J]
     (r : Retract (𝟙_ D) (J ⊗ U)) (X : D) : Injective X := by
-  letI : Injective (J ⊗ U) := tensor_preserves_injective J U
-  letI : Injective (𝟙_ D) := r.injective
-  letI : Injective ((𝟙_ D) ⊗ X) := tensor_preserves_injective (𝟙_ D) X
+  let : Injective (J ⊗ U) := tensor_preserves_injective J U
+  let : Injective (𝟙_ D) := r.injective
+  let : Injective ((𝟙_ D) ⊗ X) := tensor_preserves_injective (𝟙_ D) X
   exact Injective.of_iso (λ_ X) inferInstance
 
+omit [Abelian D] [MonoidalCategory D] [RigidCategory D] in
 /-- Every monomorphism out of an injective object splits. -/
 theorem mono_splits_of_all_injective {X Y : D} (f : X ⟶ Y) [Mono f]
     [Injective X] : IsSplitMono f := by
@@ -38,14 +63,14 @@ variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center
 theorem center_all_injective_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.Obj)
     (r : Retract (𝟙_ (CategoryTheory.Center C.Obj)) ((induction C).obj X ⊗ U))
     (Z : CategoryTheory.Center C.Obj) : Injective Z := by
-  letI : Injective ((induction C).obj X) := induction_injective C X
+  let : Injective ((induction C).obj X) := induction_injective C X
   exact all_injective_of_unit_retract ((induction C).obj X) U r Z
 
 /-- A unit retract of an induced object splits every centre monomorphism. -/
 theorem center_mono_splits_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.Obj)
     (r : Retract (𝟙_ (CategoryTheory.Center C.Obj)) ((induction C).obj X ⊗ U))
     {Z W : CategoryTheory.Center C.Obj} (f : Z ⟶ W) [Mono f] : IsSplitMono f := by
-  letI : Injective Z := center_all_injective_of_unit_retract C X U r Z
+  let : Injective Z := center_all_injective_of_unit_retract C X U r Z
   exact mono_splits_of_all_injective f
 
 set_option backward.isDefEq.respectTransparency false in
@@ -58,19 +83,19 @@ theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) (U : CategoryTheory
   | h Z ih =>
     by_cases hz : IsZero Z
     · exact .zero hz
-    · letI : IsArtinianObject Z := center_artinian C Z
+    · let : IsArtinianObject Z := center_artinian C Z
       obtain ⟨P, hP⟩ := exists_simple_subobject hz
-      letI : Simple (P : CategoryTheory.Center C.Obj) := hP
-      letI : IsSplitMono P.arrow := center_mono_splits_of_unit_retract C X U r P.arrow
+      let : Simple (P : CategoryTheory.Center C.Obj) := hP
+      let : IsSplitMono P.arrow := center_mono_splits_of_unit_retract C X U r P.arrow
       let E := ShortComplex.cokernelSequence P.arrow
       let split : E.Splitting := ShortComplex.Splitting.ofExactOfRetraction E
         (ShortComplex.cokernelSequence_exact P.arrow) (retraction P.arrow)
         (IsSplitMono.id P.arrow) inferInstance
       let K := cokernel P.arrow
       let e : Z ≅ (P : CategoryTheory.Center C.Obj) ⊞ K := split.isoBinaryBiproduct
-      letI : ∀ A B : CategoryTheory.Center C.Obj, FiniteDimensional ℂ (A ⟶ B) := by
+      let : ∀ A B : CategoryTheory.Center C.Obj, FiniteDimensional ℂ (A ⟶ B) := by
         intro A B
-        letI : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
+        let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
         exact PropertyF.Ground.Centre.finiteDimensional_hom ℂ A B
       have hs : ¬ IsZero (P : CategoryTheory.Center C.Obj) := by
         intro h

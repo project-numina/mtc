@@ -26,14 +26,14 @@ def biprodOptionIso {ι : Type} [Fintype ι] (S : D) (V : ι → D) :
     | none => exact biprod.inl
     | some i => exact biproduct.ι V i ≫ biprod.inr
   · apply biprod.hom_ext'
-    · simp [Category.assoc]
+    · simp
     · apply biproduct.hom_ext'
       intro i
-      simp [Category.assoc]
+      simp
   · apply biproduct.hom_ext'
     intro o
     cases o with
-    | none => simp [W, Category.assoc]
+    | none => simp [W]
     | some i => simp [W, Category.assoc]
 
 /-- An iterated finite binary sum of simples admits a presentation as a
@@ -87,8 +87,8 @@ theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [Ha
   let A := { T : D // T ∈ labels }
   let R : Setoid A := Setoid.comap Subtype.val (isIsomorphicSetoid D)
   let Q := Quotient R
-  letI : Finite Q := Finite.of_surjective (Quotient.mk R) Quotient.mk_surjective
-  letI : Fintype Q := Fintype.ofFinite Q
+  let : Finite Q := Finite.of_surjective (Quotient.mk R) Quotient.mk_surjective
+  let : Fintype Q := Fintype.ofFinite Q
   let e : Q ≃ Fin (Fintype.card Q) := Fintype.equivFin Q
   let S : Fin (Fintype.card Q) → D := fun i => (Quotient.out (e.symm i)).1
   refine ⟨Fintype.card Q, S, ?_, ?_, ?_⟩

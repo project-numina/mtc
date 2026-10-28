@@ -2,7 +2,13 @@ module
 public import PropertyF.Ground.CentreInduction.UnitSummand
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Centre.Basic
-public import PropertyF.Ground.CentreInduction.UnitTest
+public import PropertyF.Ground.Calculus.PartialTrace
+public import PropertyF.Ground.Centre.Basic
+public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Dimensions.SimpleScalars
+public import PropertyF.Ground.Fusion.SemisimpleSplit
+public import PropertyF.Ground.Centre.Cokernel
+public import PropertyF.Ground.CentreRigid.Unit
 public import PropertyF.Ground.CentreRigid.Unit
 public import PropertyF.Ground.CentreInduction.Representatives
 public import PropertyF.Ground.CentreBundle.Fusion
@@ -22,7 +28,7 @@ theorem coevaluation_iso_unit (C : BraidedFusionCategory.{v,u})
     (A : C.Obj) (e : A ≅ 𝟙_ C.Obj) :
     η_ A Aᘁ ≫ (e.hom ⊗ₘ (Dimensions.rightDualIsoMap e.symm ≪≫
       Dimensions.rightDualUnitIso).hom) = (ρ_ (𝟙_ C.Obj)).inv := by
-  letI : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
+  let : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
   let p : ExactPairing (𝟙_ C.Obj) ((𝟙_ C.Obj)ᘁ) := HasRightDual.exact
   let q : ExactPairing (𝟙_ C.Obj) (𝟙_ C.Obj) := exactPairingUnit
   have hu := Dimensions.coevaluation_rightDualIso p q
@@ -106,7 +112,7 @@ theorem unitCandidate_counit_component (C : BraidedFusionCategory.{v,u})
     (Z : CategoryTheory.Center C.Obj) :
     unitCandidate C Z ≫ (underlyingCounit C).app Z.1 =
       unitComponent C Z (unitIndex C) ≫ (unitSummandIso C Z.1).hom := by
-  simp [unitCandidate, underlyingCounit, unitSummandRetract, underlying, Category.assoc]
+  simp [unitCandidate, underlyingCounit, unitSummandRetract, underlying]
 
 end PropertyF.Ground.CentreInduction
 

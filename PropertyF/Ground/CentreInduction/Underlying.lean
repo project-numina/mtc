@@ -98,17 +98,17 @@ instance underlyingFunctor_faithful (C : BraidedFusionCategory.{v,u}) :
     intro X Y f g h
     let i := unitIndex C
     let S := simples C i
-    letI : Simple S := simples_simple C i
-    letI : Simple (Sᘁ) := by
-      letI : Simple (ᘁS) := simple_leftDual C S
+    let : Simple S := simples_simple C i
+    let : Simple (Sᘁ) := by
+      let : Simple (ᘁS) := simple_leftDual C S
       exact Simple.of_iso (leftDualIso HasLeftDual.exact
         (BraidedCategory.exactPairing_swap S (Sᘁ))).symm
     obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor S
-    letI : (tensorLeft S).Faithful := PropertyF.tensorLeft_faithful_of_unit_retract _ _ s r hsr
+    let : (tensorLeft S).Faithful := PropertyF.tensorLeft_faithful_of_unit_retract _ _ s r hsr
     obtain ⟨s', r', hsr'⟩ := unit_retract_leftDual_tensor (Sᘁ)
-    letI : (tensorLeft (Sᘁ)).Faithful :=
+    let : (tensorLeft (Sᘁ)).Faithful :=
       PropertyF.tensorLeft_faithful_of_unit_retract _ _ s' r' hsr'
-    letI : (tensorRight (Sᘁ)).Faithful :=
+    let : (tensorRight (Sᘁ)).Faithful :=
       Functor.Faithful.of_iso (BraidedCategory.tensorLeftIsoTensorRight (Sᘁ))
     apply (tensorLeft S).map_injective
     apply (tensorRight (Sᘁ)).map_injective
