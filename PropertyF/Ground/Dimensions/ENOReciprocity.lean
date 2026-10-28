@@ -31,12 +31,12 @@ structure on a genuine braided fusion category. -/
 theorem pivotalDimension_dual_eq_conj
     (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) :
     pivotalDimension C p (simples C (dualIndex C i)) =
-      star (pivotalDimension C p (simples C i)) := by
-  apply fusion_character_dual_eq_conj (N := fusionCoeff C) (d := dualIndex C)
+      star (pivotalDimension C p (simples C i)) :=
+  fusion_character_dual_eq_conj (N := fusionCoeff C) (d := dualIndex C)
     (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
-  · exact fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm
-  · simpa only [pivotalDimension_unitIndex] using (one_ne_zero : (1 : ℂ) ≠ 0)
-  · exact pivotalDimension_character C p
+    (fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm)
+    (by simpa only [pivotalDimension_unitIndex] using (one_ne_zero : (1 : ℂ) ≠ 0))
+    (pivotalDimension_character C p) i
 
 
 end PropertyF.Ground.Dimensions
@@ -255,7 +255,8 @@ theorem normalized_defects_trivial
   have hphase (i j k) : enoTraceMatrix C i j k * (q k / (q i * q j)) =
       (fusionCoeff C i j k : ℂ) := by
     simpa [q, div_eq_mul_inv, mul_assoc] using
-      (fusion_complex_eigenvalue_saturation C hsat hdom heig i j k)
+      (weighted_eigenvalue_saturation (N := fun i j k ↦ (fusionCoeff C i j k : ℝ))
+        (fpSimple_pos C) (fpSimple_mul C) hsat hdom heig i j k)
   change ScaledMultiplicityDefectsTrivial C c
   intro i j k
   let r := q k / (q i * q j)

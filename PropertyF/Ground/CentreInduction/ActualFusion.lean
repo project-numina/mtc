@@ -30,13 +30,13 @@ theorem fusion_coevaluation (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     monoidal
   rw [hr]
   apply (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)).symm.injective
-  simp only [Equiv.symm_apply_apply]
+  rw [Equiv.symm_apply_apply]
   dsimp only [tensorRightHomEquiv, Equiv.symm, Equiv.coe_fn_mk]
   set q := closeFusionMap T S f
   calc
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ (q ▷ S)) ⊗≫
       ((g ▷ ((Sᘁ : D) ⊗ S)) ≫ ((T ⊗ S) ◁ ε_ S (Sᘁ))) ⊗≫ 𝟙 _ := by
-        simp only [tensorHom_def']
+        rw [tensorHom_def']
         monoidal
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ ((q ▷ S) ≫ ε_ S (Sᘁ))) ⊗≫
       (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by
@@ -66,7 +66,7 @@ theorem unit_block (Z : Center D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((bR ≫ (g ▷ Z.1)) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
       ((T ⊗ S) ◁ (Z.1 ◁ q)) ⊗≫ 𝟙 _ := by
-        simp only [tensorHom_def, comp_whiskerRight]
+        rw [tensorHom_def, comp_whiskerRight]
         monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
@@ -75,7 +75,7 @@ theorem unit_block (Z : Center D) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
         monoidal
     _ = _ := by
       rw [← whisker_exchange, ← fusion_coevaluation g f]
-      simp only [tensorHom_def]
+      rw [tensorHom_def]
       monoidal
 
 variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]

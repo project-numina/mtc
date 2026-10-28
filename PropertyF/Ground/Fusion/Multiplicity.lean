@@ -17,10 +17,9 @@ variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
 /-- Schur's lemma identifies the scalar algebra with the endomorphism algebra
 of a finite-dimensional simple object. -/
 theorem simple_algebraMap_bijective [HasKernels C] (X : C) [Simple X]
-    [FiniteDimensional ℂ (X ⟶ X)] : Function.Bijective (algebraMap ℂ (End X)) := by
-  refine ⟨RingHom.injective _, fun a ↦ ?_⟩
-  obtain ⟨z, hz⟩ := endomorphism_simple_eq_smul_id ℂ a.asHom
-  exact ⟨z, End.ext (by simpa [Algebra.algebraMap_eq_smul_one] using hz)⟩
+    [FiniteDimensional ℂ (X ⟶ X)] : Function.Bijective (algebraMap ℂ (End X)) :=
+  ⟨RingHom.injective _, fun a ↦ (endomorphism_simple_eq_smul_id ℂ a.asHom).imp
+    fun _ hz ↦ End.ext (by simpa [Algebra.algebraMap_eq_smul_one] using hz)⟩
 
 /-- The endomorphism algebra of a finite-dimensional simple object is the scalar field. -/
 def simpleEndScalar [HasKernels C] (X : C) [Simple X]

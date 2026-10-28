@@ -67,30 +67,23 @@ include hp hdet hreal in
 /-- The S-transform of a vector, inverted using the categorical S-square identity. -/
 theorem sFourier_inversion
     (f : Fin (rank D) → ℂ) (x : Fin (rank D)) :
-    sFourier D p (sFourier D p f) x = globalDimension D * f (dualIndex D x) := by
-  classical
-  dsimp only [sFourier]
-  calc
-    _ = ∑ i, (∑ y, S D p x y * S D p y i) * f i := by
-      simp only [Finset.mul_sum, Finset.sum_mul, mul_assoc]
-      rw [Finset.sum_comm]
-    _ = ∑ i, (if x = dualIndex D i then globalDimension D else 0) * f i := by
-      simp_rw [Modular.categoricalS_square D p hp hdet hreal]
-    _ = globalDimension D * f (dualIndex D x) := by
-      simp only [(dualIndex_involutive D).eq_iff.symm, ite_mul, zero_mul,
-        Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]
+    sFourier D p (sFourier D p f) x = globalDimension D * f (dualIndex D x) :=
+  (congrFun (Matrix.mulVec_mulVec f (S D p) (S D p)) x).trans <| by
+    classical
+    simp only [Matrix.mulVec, dotProduct, Matrix.mul_apply,
+      Modular.categoricalS_square D p hp hdet hreal, (dualIndex_involutive D).eq_iff.symm,
+      ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]
 
+open scoped Classical in
 /-- A weighted sum may be factored using an equality on the weight's support. -/
 theorem sum_mul_eq_mul_sum_of_supported {ι R : Type*} [Fintype ι] [Semiring R]
     (s : Set ι) (f g w : ι → R) (c : R)
     (hw : ∀ i ∉ s, w i = 0) (hfg : ∀ i ∈ s, f i = c * g i) :
-    (∑ i, f i * w i) = c * ∑ i, g i * w i := by
-  classical
-  rw [Finset.mul_sum]
-  refine Finset.sum_congr rfl fun i _ ↦ ?_
-  by_cases hi : i ∈ s
-  · rw [hfg i hi, mul_assoc]
-  · simp [hw i hi]
+    (∑ i, f i * w i) = c * ∑ i, g i * w i :=
+  (Finset.sum_congr rfl fun i _ ↦ by
+    by_cases hi : i ∈ s
+    · rw [hfg i hi, mul_assoc]
+    · simp [hw i hi]).trans (Finset.mul_sum _ _ _).symm
 
 variable {f : Fin (rank D) → ℂ} {core : Set (Fin (rank D))}
 
@@ -243,12 +236,11 @@ theorem regular_vector_fusion_eigenvector (hA : IsDualFusionClosed D A)
 /-- The regular vector's S-transform is supported on a set containing its centralizer. -/
 theorem regularVector_fourier_support (hdim : HasFPSimpleDimensions D p)
     {core : Set _} (hA : IsDualFusionClosed D A) (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
-    FourierSupportedOn D p (regularVector D A) core := by
-  intro y hy
-  obtain ⟨a, ha, hne⟩ : ∃ a ∈ A, ¬sCentralizes D p a y := by
+    FourierSupportedOn D p (regularVector D A) core := fun y hy ↦
+  let ⟨a, ha, hne⟩ : ∃ a ∈ A, ¬sCentralizes D p a y := by
     simpa only [sCentralizer, Set.mem_ofPred_eq, Finset.mem_coe, not_forall, exists_prop] using
       (show y ∉ sCentralizer D p (↑A : Set _) from fun h ↦ hy (hcore h))
-  exact fourier_eq_zero_of_fusion_eigenvector hdim
+  fourier_eq_zero_of_fusion_eigenvector hdim
     (regular_vector_fusion_eigenvector hA (a := ⟨a, ha⟩)) hne
 
 /-- Numerical double-centralizer theorem for a fusion-closed set of simple
