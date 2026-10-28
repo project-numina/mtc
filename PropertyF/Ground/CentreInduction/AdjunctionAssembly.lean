@@ -26,18 +26,20 @@ def unitTensorIso {A : D} [HasRightDual A] (e : A ≅ 𝟙_ D) (X : D) :
   ((e ⊗ᵢ Iso.refl X) ⊗ᵢ rightDualIsoMap e.symm) ≪≫
     ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ D)) ≪≫ ρ_ X
 
+variable {C} in
 /-- The unit-labelled summand is isomorphic to the middle object. -/
 def unitSummandIso :
     (Sᶜ (unitIndex C) ⊗ X) ⊗ (Sᶜ (unitIndex C))ᘁ ≅ X :=
   unitTensorIso (Classical.choice (unitIndex_iso C)) X
 
 set_option backward.isDefEq.respectTransparency false in
+variable {C} in
 /-- Every object is a retract of its underlying induction sum through the
 unit-labelled component. -/
 def unitSummandRetract :
-    Retract X (underlying C X) where
-  i := (unitSummandIso C X).inv ≫ biproduct.ι (inductionSummand C X) (unitIndex C)
-  r := biproduct.π (inductionSummand C X) (unitIndex C) ≫ (unitSummandIso C X).hom
+    Retract X (underlying X) where
+  i := (unitSummandIso X).inv ≫ biproduct.ι (inductionSummand X) (unitIndex C)
+  r := biproduct.π (inductionSummand X) (unitIndex C) ≫ (unitSummandIso X).hom
   retract := by simp [underlying]
 
 variable {A B U V M N : D}
@@ -63,10 +65,10 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The unit-summand projection is natural. This is the candidate underlying
 counit for the centre-forgetful right adjunction. -/
 def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
-  app X := (unitSummandRetract C X).r
+  app X := (unitSummandRetract X).r
   naturality {X Y} f := by
     simpa [underlyingFunctor, unitSummandRetract, unitSummandIso] using congrArg (fun g =>
-      biproduct.π (inductionSummand C X)
+      biproduct.π (inductionSummand X)
         (unitIndex C) ≫ g) (unitTensorIso_natural (Classical.choice (unitIndex_iso C)) f)
 
 end PropertyF.Ground.CentreInduction
@@ -115,16 +117,18 @@ def unitComponentAt {D : Type u} [Category.{v} D] [MonoidalCategory D]
     (Z : Center D) (S : D) [HasRightDual S] : Z.1 ⟶ (S ⊗ Z.1) ⊗ Sᘁ :=
   (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫ (α_ Z.1 S (Sᘁ)).inv ≫ ((Z.2.β S).hom ▷ Sᘁ)
 
+variable {C} in
 /-- The unit component indexed by a simple object. -/
 def unitComponent (Z : 𝒵) (i : Fin (rank C)) :
     Z.1 ⟶ (Sᶜ i ⊗ Z.1) ⊗ (Sᶜ i)ᘁ :=
   unitComponentAt Z (Sᶜ i)
 
+variable {C} in
 /-- The underlying map of the proposed adjunction unit. Centrality depends
 on constructing the induction half-braiding and is not asserted. -/
 def unitCandidate (Z : 𝒵) :
-    Z.1 ⟶ underlying C Z.1 :=
-  biproduct.lift (unitComponent C Z)
+    Z.1 ⟶ underlying Z.1 :=
+  biproduct.lift (unitComponent Z)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component is natural for centre maps. -/
@@ -172,9 +176,9 @@ set_option backward.defeqAttrib.useBackward true in
 the first triangle identity. -/
 theorem unitCandidate_counit {C : BraidedFusionCategory.{v,u}}
     (Z : Center C.Obj) :
-    unitCandidate C Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 :=
-  (CategoryTheory.Limits.biproduct.lift_π_assoc (unitComponent C Z) (unitIndex C)
-    (unitSummandIso C Z.1).hom).trans
+    unitCandidate Z ≫ (underlyingCounit C).app Z.1 = 𝟙 Z.1 :=
+  (CategoryTheory.Limits.biproduct.lift_π_assoc (unitComponent Z) (unitIndex C)
+    (unitSummandIso Z.1).hom).trans
       (unitComponentAt_iso_unit Z (Classical.choice (unitIndex_iso C)))
 
 end PropertyF.Ground.CentreInduction
