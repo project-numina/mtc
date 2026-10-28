@@ -52,9 +52,11 @@ theorem counit_column_finrank (i j : Fin (rank C)) :
   (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (simpleTensorUnitIso C j)).finrank_eq.trans
     (finrank_simples_hom C i j)
 
+variable (X : C.Obj)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Off-diagonal counit crossing entries vanish. -/
-theorem crossing_counit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j) :
+theorem crossing_counit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ simples C j) ≫ crossingCandidate C X (simples C j) ≫
     (simples C j ◁ (underlyingCounit C).app X) = 0 := by
@@ -64,7 +66,7 @@ theorem crossing_counit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal entry is the canonical unit isomorphism block. -/
-theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
+theorem crossing_counit_diagonal (i : Fin (rank C)) :
   let V := inductionSummand C X
   (biproduct.ι V i ▷ simples C i) ≫ crossingCandidate C X (simples C i) ≫
     (simples C i ◁ (underlyingCounit C).app X) =
@@ -198,11 +200,11 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u})
+variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component reduces to the corresponding counit-crossing matrix entry. -/
-theorem unit_matrix_reduce (X : C.Obj) (i j : Fin (rank C)) :
+theorem unit_matrix_reduce (i j : Fin (rank C)) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) =
@@ -216,7 +218,7 @@ theorem unit_matrix_reduce (X : C.Obj) (i j : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The off-diagonal components of the second triangle vanish. -/
-theorem unit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j) :
+theorem unit_offdiag {i j : Fin (rank C)} (hne : i ≠ j) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) j ≫
     ((simples C j ◁ (underlyingCounit C).app X) ▷ (simples C j)ᘁ) = 0 := by
@@ -226,7 +228,7 @@ theorem unit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The diagonal components of the second triangle are identities. -/
-theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
+theorem unit_diag (i : Fin (rank C)) :
   let V := inductionSummand C X
   biproduct.ι V i ≫ unitComponent C ((induction C).obj X) i ≫
     ((simples C i ◁ (underlyingCounit C).app X) ▷ (simples C i)ᘁ) = 𝟙 (V i) := by
@@ -248,7 +250,7 @@ theorem unit_diag (X : C.Obj) (i : Fin (rank C)) :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Every matrix entry of the second triangle has the expected value. -/
-theorem secondTriangle_entry (X : C.Obj) (i j : Fin (rank C)) : let V := inductionSummand C X
+theorem secondTriangle_entry (i j : Fin (rank C)) : let V := inductionSummand C X
   biproduct.ι V i ≫ (unitCandidate C ((induction C).obj X) ≫
     (underlyingFunctor C).map ((underlyingCounit C).app X)) ≫ biproduct.π V j =
       biproduct.ι V i ≫ biproduct.π V j := by
