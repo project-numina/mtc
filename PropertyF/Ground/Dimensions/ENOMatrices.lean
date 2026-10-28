@@ -90,6 +90,13 @@ def rootTrace (C : BraidedFusionCategory.{v,u}) {X : C.Obj} (f : X ⟶ X) :
     End (𝟙_ C.Obj) := rightTraceWith ((fourthDualRootNaturalIso C).app X) f
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The root trace of the identity is the quantum trace of the root component. -/
+theorem rootTrace_id (X : C.Obj) :
+    rootTrace C (𝟙 X) = rightQuantumTrace ((fourthDualRootNaturalIso C).app X) := by
+  apply End.homEquiv.injective
+  simp [rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def]
+
+set_option backward.isDefEq.respectTransparency false in
 /-- The root trace is linear in its endomorphism. -/
 def rootTraceLinear (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
     (X ⟶ X) →ₗ[ℂ] End (𝟙_ C.Obj) where

@@ -9,6 +9,21 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
+
+section
+variable {C : Type u} [Category.{v} C] [HasZeroMorphisms C]
+
+/-- An epimorphism to an object with nonzero identity is nonzero. -/
+theorem epi_ne_zero_of_id_ne_zero {X Y : C} (f : X ⟶ Y) [Epi f]
+    (h : 𝟙 Y ≠ 0) : f ≠ 0 :=
+  fun hf ↦ h ((IsZero.iff_id_eq_zero Y).mp (IsZero.of_epi_eq_zero f hf))
+
+/-- A monomorphism from an object with nonzero identity is nonzero. -/
+theorem mono_ne_zero_of_id_ne_zero {X Y : C} (f : X ⟶ Y) [Mono f]
+    (h : 𝟙 X ≠ 0) : f ≠ 0 :=
+  fun hf ↦ h ((IsZero.iff_id_eq_zero X).mp (IsZero.of_mono_eq_zero f hf))
+end
+
 variable (D : BraidedFusionCategory.{v,u})
 
 /-- A nonzero morphism into a simple object splits. -/
@@ -42,10 +57,8 @@ theorem simple_projective (S : D.Obj) [Simple S] : Projective S where
   factors := by
     intro X Y g f hf
     let : Epi f := hf
-    have hne : (pullback.snd f g : pullback f g ⟶ S) ≠ 0 := by
-      intro h
-      exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp (IsZero.of_epi_eq_zero (pullback.snd f g) h))
-    obtain ⟨s, hs⟩ := split_to_simple D (pullback.snd f g) hne
+    obtain ⟨s, hs⟩ := split_to_simple D (pullback.snd f g)
+      (epi_ne_zero_of_id_ne_zero _ (id_nonzero S))
     refine ⟨s ≫ pullback.fst f g, ?_⟩
     rw [Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]
 
@@ -54,10 +67,8 @@ theorem simple_injective (S : D.Obj) [Simple S] : Injective S where
   factors := by
     intro X Y g f hf
     let : Mono f := hf
-    have hne : (pushout.inr f g : S ⟶ pushout f g) ≠ 0 := by
-      intro h
-      exact id_nonzero S ((IsZero.iff_id_eq_zero S).mp (IsZero.of_mono_eq_zero (pushout.inr f g) h))
-    obtain ⟨r, hr⟩ := split_from_simple (pushout.inr f g) hne
+    obtain ⟨r, hr⟩ := split_from_simple (pushout.inr f g)
+      (mono_ne_zero_of_id_ne_zero _ (id_nonzero S))
     refine ⟨pushout.inl f g ≫ r, ?_⟩
     rw [← Category.assoc, pushout.condition, Category.assoc, hr, Category.comp_id]
 

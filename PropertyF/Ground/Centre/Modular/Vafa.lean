@@ -139,7 +139,7 @@ def fpDeterminant (X : C.Obj) (a : X ≅ X) :
   ∑ i, fpSimple C i • vafaUnitClass (homAction (R := ℂ) (simples C i) X a).det
 
 /-- FP determinants turn composition into addition. -/
-theorem fpDeterminant_trans (X : C.Obj)
+theorem fpDeterminant_trans {X : C.Obj}
     (a b : X ≅ X) : fpDeterminant C X (a ≪≫ b) =
       fpDeterminant C X a + fpDeterminant C X b := by
   unfold fpDeterminant
@@ -260,10 +260,10 @@ set_option backward.defeqAttrib.useBackward true
 namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
-variable (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ)
+variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
 
 /-- The values of a natural automorphism on the chosen simple objects are scalar. -/
-abbrev HasSimpleScalars : Prop :=
+abbrev HasSimpleScalars (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ) : Prop :=
   ∀ i, (η.app (simples C i)).hom = (t i : ℂ) • 𝟙 (simples C i)
 
 /-- A natural automorphism acts on a Hom space by its scalar on the source. -/
@@ -307,7 +307,7 @@ theorem natural_scalars_finite_of_fpDeterminant_balance
     ∀ i, IsOfFinOrder (t i) := by
   apply finite_order_of_fp_twist_balance C t
   intro i j
-  simpa only [fpDeterminant_natural C η t ht, fpDimension_tensor, fpDimension_simple, fusionCoeff] using hdet i j
+  simpa only [fpDeterminant_natural C ht, fpDimension_tensor, fpDimension_simple, fusionCoeff] using hdet i j
 
 /-- The actual double braiding as an automorphism. -/
 def monodromyIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
@@ -315,7 +315,7 @@ def monodromyIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCate
   (β_ X Y) ≪≫ (β_ Y X)
 
 /-- The natural automorphism satisfies the balancing equation on simple pairs. -/
-abbrev HasSimpleBalance : Prop :=
+abbrev HasSimpleBalance (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ) : Prop :=
   ∀ i j, η.app (simples C i ⊗ simples C j) =
     scalarIso (simples C i ⊗ simples C j) (t i * t j) ≪≫
       monodromyIso (simples C i) (simples C j)
@@ -329,7 +329,7 @@ theorem natural_scalars_finite_of_monodromy_determinant
     (hmon : ∀ i j, fpDeterminant C (simples C i ⊗ simples C j)
       (monodromyIso (simples C i) (simples C j)) = 0) :
     ∀ i, IsOfFinOrder (t i) := by
-  apply natural_scalars_finite_of_fpDeterminant_balance C η t ht
+  apply natural_scalars_finite_of_fpDeterminant_balance C ht
   intro i j
   rw [hbalance, fpDeterminant_trans, hmon, add_zero, fpDeterminant_scalar,
     vafaUnitClass_mul]
@@ -381,7 +381,7 @@ theorem homAction_det_biprod {R : Type*} [Field R] {D : Type u} [Category.{v} D]
 
 /-- FP determinants are additive over direct sums of automorphisms. -/
 theorem fpDeterminant_biprod
-    (X Y : C.Obj) (a : X ≅ X) (b : Y ≅ Y) :
+    {X Y : C.Obj} (a : X ≅ X) (b : Y ≅ Y) :
     fpDeterminant C (X ⊞ Y) (biprod.mapIso a b) =
       fpDeterminant C X a + fpDeterminant C Y b := by
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
@@ -405,7 +405,7 @@ local instance (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 
 /-- The tensor determinant identity is closed under binary direct sums. -/
 theorem fpDeterminant_tensor_biprod
-    (X Y Z : C.Obj) (a : Y ≅ Y) (b : Z ≅ Z)
+    (X : C.Obj) {Y Z : C.Obj} (a : Y ≅ Y) (b : Z ≅ Z)
     (ha : fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ a) = fpDimension C X • fpDeterminant C Y a)
     (hb : fpDeterminant C (X ⊗ Z) (Iso.refl X ⊗ᵢ b) = fpDimension C X • fpDeterminant C Z b) :
     fpDeterminant C (X ⊗ (Y ⊞ Z)) (Iso.refl X ⊗ᵢ biprod.mapIso a b) =
@@ -490,7 +490,7 @@ theorem base_finite_simple_sum (X : C.Obj) :
 /-- Identity automorphisms have zero FP determinant. -/
 theorem fpDeterminant_refl (X : C.Obj) :
     fpDeterminant C X (Iso.refl X) = 0 := by
-  simpa using (fpDeterminant_trans C X (Iso.refl X) (Iso.refl X))
+  simpa using (fpDeterminant_trans C (Iso.refl X) (Iso.refl X))
 
 /-- The tensor determinant rule holds on any simple object. -/
 theorem fpDeterminant_tensor_of_simple
@@ -556,7 +556,7 @@ theorem fpDeterminant_tensor_natural
         fpDimension C X • fpDeterminant C S (η.app S) := by
       let : Simple S := hs
       exact fpDeterminant_tensor_of_simple C X S (η.app S)
-    have hsum := fpDeterminant_tensor_biprod C X S K (η.app S) (η.app K) hS ih
+    have hsum := fpDeterminant_tensor_biprod C X (η.app S) (η.app K) hS ih
     rw [← natural_app_biprod] at hsum
     have hη := natural_app_conjugate η e
     rw [hη, tensor_conjugate_iso]
@@ -720,7 +720,7 @@ set_option backward.defeqAttrib.useBackward true
 namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
-variable (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ)
+variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
 
 /-- The FP tensor determinant rule holds for scalar multiples of a component
 of an arbitrary natural automorphism. -/
@@ -760,13 +760,13 @@ theorem fpDeterminant_tensor_simple_monodromy
       (Iso.refl X ⊗ᵢ monodromyIso (simples C i) (simples C j)) =
       fpDimension C X • fpDeterminant C (simples C i ⊗ simples C j)
         (monodromyIso (simples C i) (simples C j)) := by
-  rw [monodromy_simple_eq_scalar_natural C η t hbalance]
+  rw [monodromy_simple_eq_scalar_natural C hbalance]
   exact fpDeterminant_tensor_scalar_natural C η X _ _
 
 /-- Braiding transports tensoring an automorphism on the right to tensoring it
 on the left, preserving its categorical FP determinant. -/
 theorem fpDeterminant_tensor_flip
-    (X Y : C.Obj) (a : Y ≅ Y) :
+    (X : C.Obj) {Y : C.Obj} (a : Y ≅ Y) :
     fpDeterminant C (Y ⊗ X) (a ⊗ᵢ Iso.refl X) =
       fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ a) := by
   let e := β_ Y X
@@ -787,7 +787,7 @@ theorem fpDeterminant_simple_monodromy_tensor
       fpDimension C X • fpDeterminant C (simples C i ⊗ simples C j)
         (monodromyIso (simples C i) (simples C j)) := by
   rw [fpDeterminant_tensor_flip]
-  exact fpDeterminant_tensor_simple_monodromy C η t hbalance X i j
+  exact fpDeterminant_tensor_simple_monodromy C hbalance X i j
 
 end PropertyF.Ground.CentreModular
 end
@@ -815,7 +815,7 @@ theorem monodromy_hexagon_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
 /-- The actual FP determinant of the monodromy hexagon is the weighted sum
 of the two simple monodromy determinants, under simple twist balancing. -/
 theorem fpDeterminant_monodromy_hexagon
-    (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ)
+    {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
     (hbalance : HasSimpleBalance C η t)
     (z i j : Fin (rank C)) :
     fpDeterminant C (simples C z ⊗ (simples C i ⊗ simples C j))
@@ -842,8 +842,8 @@ theorem fpDeterminant_monodromy_hexagon
     apply Iso.ext
     simp
   rw [heq, fpDeterminant_trans, hq] at hconj
-  have h1 := fpDeterminant_tensor_simple_monodromy C η t hbalance X z j
-  have h2 := fpDeterminant_simple_monodromy_tensor C η t hbalance Y z i
+  have h1 := fpDeterminant_tensor_simple_monodromy C hbalance X z j
+  have h2 := fpDeterminant_simple_monodromy_tensor C hbalance Y z i
   change fpDeterminant C (X ⊗ (Z ⊗ Y)) q = _ at h1
   change fpDeterminant C ((Z ⊗ X) ⊗ Y) r = _ at h2
   rw [h1, h2, fpDimension_simple, fpDimension_simple] at hconj
@@ -860,7 +860,7 @@ set_option backward.defeqAttrib.useBackward true
 namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
-variable (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ)
+variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
 
 /-- For a fixed first strand, double braiding is a natural automorphism of
 the actual tensor-left functor. -/
@@ -896,7 +896,7 @@ theorem fpDeterminant_simple_monodromy_eq_zero
   have hhex : ∀ i j z, (∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
       fpSimple C j • B i z + fpSimple C i • B j z := by
     intro i j z
-    have h := fpDeterminant_monodromy_hexagon C η t hbalance z i j
+    have h := fpDeterminant_monodromy_hexagon C hbalance z i j
     rw [fpDeterminant_monodromy_decomposition] at h
     change (∑ k, (fusionCoeff C i j k : ℝ) • B k z) = _ at h
     simpa [B, add_comm] using h
@@ -908,9 +908,9 @@ theorem natural_scalars_finite_of_simple_balancing
     (ht : HasSimpleScalars C η t)
     (hbalance : HasSimpleBalance C η t) :
     ∀ i, IsOfFinOrder (t i) := by
-  apply natural_scalars_finite_of_monodromy_determinant C η t ht hbalance
+  apply natural_scalars_finite_of_monodromy_determinant C ht hbalance
   intro i j
-  exact fpDeterminant_simple_monodromy_eq_zero C η t hbalance i j
+  exact fpDeterminant_simple_monodromy_eq_zero C hbalance i j
 
 end PropertyF.Ground.CentreModular
 end
@@ -953,7 +953,7 @@ theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C :=
       Linear.smul_comp, Linear.comp_smul, smul_smul] at h
     simpa [scalarIso, monodromyIso, Modular.doubleBraiding, Category.assoc,
       Linear.smul_comp, mul_comm] using h.symm
-  have hf := natural_scalars_finite_of_simple_balancing C η t ht hb
+  have hf := natural_scalars_finite_of_simple_balancing C ht hb
   intro i
   have hf' : IsOfFinOrder ((t i : ℂˣ) : ℂ) := Units.isOfFinOrder_val.mpr (hf i)
   let : Simple (simples C i) := simples_simple C i

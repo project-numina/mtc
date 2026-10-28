@@ -65,10 +65,7 @@ theorem categoricalS_columns_orthogonal
     {a b : Fin (rank C)} (hab : a ≠ b) :
     ∑ x, starRingEnd ℂ (categoricalS C p x a) * categoricalS C p x b = 0 := by
   let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  let cols (j : Fin (rank C)) : Character rules := {
-    value := fun x => categoricalS C p x j / simpleDimension C p j
-    unit_eq := by rw [categoricalS_symmetric C p, categoricalS_unit]; exact div_self (simpleDimension_ne_zero C p j)
-    mul_eq := fun i k => categoricalS_verlinde C p i k j }
+  let cols (j : Fin (rank C)) : Character rules := categoricalSCharacter C p j
   have hne : cols a ≠ cols b := by
     intro h
     apply hab

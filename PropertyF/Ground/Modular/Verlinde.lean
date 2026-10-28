@@ -38,8 +38,8 @@ abbrev IsGaloisColumnAction {ι : Type*} (S : Matrix ι ι ℂ) (d : ι → ℂ)
   ∀ (σ : ℂ ≃+* ℂ) i j, σ (S i j / d j) = S i (act σ j) / d (act σ j)
 
 section
-variable {ι : Type*} [Fintype ι] [DecidableEq ι] (N : FusionRules ι) (u : ι)
-variable (S : Matrix ι ι ℂ) (dual : ι → ι) (d : ι → ℂ) (D : ℂ)
+variable {ι : Type*} [Fintype ι] [DecidableEq ι] {N : FusionRules ι} {u : ι}
+variable {S : Matrix ι ι ℂ} {dual : ι → ι} {d : ι → ℂ} {D : ℂ}
 variable (hd : ∀ y, d y ≠ 0) (hD : D ≠ 0)
 include hd hD
 
@@ -55,7 +55,7 @@ theorem exists_galoisLabel_of_verlinde
     unit_eq := by rw [hsym, hunit]; exact div_self (hd j)
     mul_eq := fun i k => hVerlinde i k j }
   have hlin : LinearIndependent ℂ (fun j => (columns j).value) :=
-    normalized_columns_linearIndependent S dual d D hd hD hsym hsq
+    normalized_columns_linearIndependent hd hD hsym hsq
   let e : ι ≃ Character N := Equiv.ofBijective columns (characters_bijective N columns hlin)
   refine ⟨Character.galoisLabel e, ?_⟩
   intro σ i j
@@ -77,18 +77,11 @@ theorem galois_unit_properties (hu : d u = 1)
   have hsquare : d y ^ 2 * σ D = if y = dual y then D else 0 := by
     calc
       d y ^ 2 * σ D = ∑ x, (d y * σ (d x)) ^ 2 := by
-        rw [hglobal, map_sum, Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro x _
-        rw [map_pow, mul_pow]
+        simp only [hglobal, map_sum, Finset.mul_sum, map_pow, mul_pow]
       _ = ∑ x, S x y ^ 2 := by
-        apply Finset.sum_congr rfl
-        intro x _
-        rw [hcol]
+        simp only [hcol]
       _ = ∑ x, S y x * S x y := by
-        apply Finset.sum_congr rfl
-        intro x _
-        rw [hsym y x, pow_two]
+        simp only [hsym y, pow_two]
       _ = _ := hsq y y
   have hself : y = dual y := by
     by_contra hn
@@ -112,8 +105,7 @@ theorem categoricalS_galois_action (C : Ground.BraidedFusionCategory)
     ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank C)),
       IsGaloisColumnAction (categoricalS C p) (simpleDimension C p) act := by
   let N : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  exact exists_galoisLabel_of_verlinde N (categoricalS C p) dual (simpleDimension C p)
-    (globalDimension C) (simpleDimension_ne_zero C p) hD (categoricalS_symmetric C p) (categoricalS_unit C p) hsq hVerlinde
+  exact exists_galoisLabel_of_verlinde (N := N) (simpleDimension_ne_zero C p) hD (categoricalS_symmetric C p) (categoricalS_unit C p) hsq hVerlinde
 
 
 

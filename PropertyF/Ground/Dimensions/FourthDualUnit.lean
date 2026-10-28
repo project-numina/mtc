@@ -98,6 +98,14 @@ theorem fourthDualIso_unit :
   rw [hu]
   apply Iso.ext
   rfl
+/-- The root dimension of the unit label is the root trace of the tensor unit. -/
+theorem rootDimension_unit :
+    rootDimension C (unitIndex C) =
+      Ground.unitScalar C (rightQuantumTrace ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj))) := by
+  obtain ⟨e⟩ := Ground.unitIndex_iso C
+  unfold rootDimension
+  rw [rootTrace_id_iso C e, rootTrace_id C]
+
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root dimension of the unit is a sign. -/
 theorem rootDimension_unit_sq :
@@ -141,19 +149,8 @@ theorem rootDimension_unit_sq :
       rw [hu, rightQuantumTrace_unitIso]
     rw [hunit]
     simp only [← groundUnitScalarEquiv_apply, map_smul, map_one, smul_eq_mul, mul_one]
-  have hdim : rootDimension C (unitIndex C) = r := by
-    obtain ⟨e⟩ := Ground.unitIndex_iso C
-    have hn := (fourthDualRootNaturalIso C).hom.naturality e.hom
-    have ht := rightQuantumTrace_iso
-      ((fourthDualRootNaturalIso C).app (simples C (unitIndex C))) a e
-      (by simpa [doubleDualFunctor, a] using hn)
-    change Ground.unitScalar C (rootTrace C (𝟙 (simples C (unitIndex C)))) = r
-    have hq : rootTrace C (𝟙 (simples C (unitIndex C))) =
-        rightQuantumTrace ((fourthDualRootNaturalIso C).app (simples C (unitIndex C))) := by
-      apply End.homEquiv.injective
-      simp [rootTrace, rightTraceWith, rightQuantumTrace, tensorHom_def]
-    rw [hq, ht, htrace]
-  simpa [hdim] using hr2
+  rw [rootDimension_unit C, htrace]
+  exact hr2
 
 end PropertyF.Ground.Dimensions
 

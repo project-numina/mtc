@@ -84,10 +84,7 @@ theorem exists_canonical_decomposition (D : BraidedFusionCategory.{v,u}) (X : D.
     Nonempty (X ≅ ⨁ (fun p : Σ i : Fin (rank D),
       Fin (Module.finrank ℂ (simples D i ⟶ X)) => simples D p.1)) := by
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose D X
-  have hm : (fun i => Module.finrank ℂ (simples D i ⟶ X)) = m := by
-    funext i
-    exact finrank_simple_of_decomposition D X m e i
-  cases hm.symm
+  cases (funext (finrank_simple_of_decomposition D X m e)).symm
   exact ⟨e⟩
 
 /-- Hom dimensions to and from a simple coincide in a semisimple category. -/

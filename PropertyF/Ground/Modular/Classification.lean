@@ -165,7 +165,7 @@ abbrev HasSSquare (S : Matrix ι ι ℂ) (dual : ι → ι) (D : ℂ) : Prop :=
 
 /-- Symmetry and the S-square relation force the duality map to be an
 involution, independently of categorical duality. -/
-theorem dual_involutive (S : Matrix ι ι ℂ) (dual : ι → ι) (D : ℂ)
+theorem dual_involutive {S : Matrix ι ι ℂ} {dual : ι → ι} {D : ℂ}
     (hD : D ≠ 0) (hsym : ∀ x y, S x y = S y x)
     (hsq : HasSSquare S dual D) :
     Function.Involutive dual := by
@@ -185,8 +185,8 @@ theorem dual_involutive (S : Matrix ι ι ℂ) (dual : ι → ι) (D : ℂ)
 
 /-- The normalized S columns are linearly independent. The proof constructs an
 explicit inverse from the S-square identity and nonzero dimensions. -/
-theorem normalized_columns_linearIndependent (S : Matrix ι ι ℂ)
-    (dual : ι → ι) (dimension : ι → ℂ) (D : ℂ)
+theorem normalized_columns_linearIndependent {S : Matrix ι ι ℂ}
+    {dual : ι → ι} {dimension : ι → ℂ} {D : ℂ}
     (hd : ∀ y, dimension y ≠ 0) (hD : D ≠ 0)
     (hsym : ∀ x y, S x y = S y x)
     (hsq : HasSSquare S dual D) :
@@ -194,7 +194,7 @@ theorem normalized_columns_linearIndependent (S : Matrix ι ι ℂ)
   classical
   let A : Matrix ι ι ℂ := fun x y => S x y / dimension y
   let B : Matrix ι ι ℂ := fun x y => dimension x * S x (dual y) / D
-  have hddual := dual_involutive S dual D hD hsym hsq
+  have hddual := dual_involutive hD hsym hsq
   have hab : A * B = 1 := by
     ext x y
     rw [Matrix.mul_apply, Matrix.one_apply]

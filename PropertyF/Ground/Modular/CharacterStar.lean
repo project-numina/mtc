@@ -80,6 +80,14 @@ theorem fusionCoeff_dual_adjoint (C : Ground.BraidedFusionCategory) (i j k : Fin
 
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
+/-- Each normalized S-matrix column defines a fusion character. -/
+def categoricalSCharacter (j : Fin (rank C)) : Character ⟨unitIndex C, fusionCoeff C⟩ where
+  value i := categoricalS C p i j / simpleDimension C p j
+  unit_eq := by
+    rw [categoricalS_symmetric C p, categoricalS_unit]
+    exact div_self (simpleDimension_ne_zero C p j)
+  mul_eq i k := categoricalS_verlinde C p i k j
+
 /-- The simple pivotal dimensions are fixed by complex conjugation. -/
 abbrev HasRealSimpleDimensions : Prop :=
   ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j
@@ -91,10 +99,7 @@ theorem categoricalS_dual_conj
     (i j : Fin (rank C)) :
     categoricalS C p (Ground.dualIndex C i) j = starRingEnd ℂ (categoricalS C p i j) := by
   let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  let χ : Character rules := {
-    value := fun x => categoricalS C p x j / simpleDimension C p j
-    unit_eq := by rw [categoricalS_symmetric C p, categoricalS_unit]; exact div_self (simpleDimension_ne_zero C p j)
-    mul_eq := fun x y => categoricalS_verlinde C p x y j }
+  let χ : Character rules := categoricalSCharacter C p j
   have hh := character_dual_conj rules (Ground.dualIndex C) (fusionCoeff_dual_adjoint C) χ i
   change categoricalS C p (Ground.dualIndex C i) j / simpleDimension C p j =
     starRingEnd ℂ (categoricalS C p i j / simpleDimension C p j) at hh
