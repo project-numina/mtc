@@ -78,8 +78,7 @@ theorem rightDualTensorIso_braiding [HasRightDual X] [HasRightDual Y]
       (rightDualTensorIso Y X).hom ≫ (β_ (Xᘁ) (Yᘁ)).hom :=
   evaluation_ext (X := X ⊗ Y) (by
     simp only [comp_whiskerRight_assoc, rightDualTensorIso_evaluation,
-      rightAdjointMate_comp_evaluation, dual_braiding_tensor_evaluations,
-      ← whisker_exchange_assoc])
+      rightAdjointMate_comp_evaluation, dual_braiding_tensor_evaluations, ← whisker_exchange_assoc])
 end PropertyF.Ground.Dimensions
 
 end

@@ -155,8 +155,7 @@ theorem unitIndex_iso :
 theorem fusionCoeff_unit (j k : Fin (rank D)) :
     fusionCoeff D (unitIndex D) j k = if k = j then 1 else 0 :=
   (unitIndex_iso D).elim fun e ↦
-    ((CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
-      ((e ⊗ᵢ Iso.refl (simples D j)) ≪≫ λ_ (simples D j))).finrank_eq).trans
+    ((Linear.homCongr ℂ (Iso.refl _) ((e ⊗ᵢ Iso.refl _) ≪≫ λ_ _)).finrank_eq).trans
       (finrank_simples_hom D k j)
 
 theorem fusionCoeff_comm (i j k : Fin (rank D)) :

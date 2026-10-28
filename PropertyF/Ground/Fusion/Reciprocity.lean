@@ -43,10 +43,9 @@ theorem finrank_frobenius_reciprocity (X Y Z : C) [HasLeftDual Y] :
 dimension, obtained using both rigidity adjunctions. -/
 theorem finrank_end_leftDual (X : C) [HasLeftDual X] :
     Module.finrank k ((ᘁX) ⟶ (ᘁX)) = Module.finrank k (X ⟶ X) :=
-  (CategoryTheory.Linear.homCongr k (λ_ (ᘁX)).symm (Iso.refl _)).trans
-    (tensorRightHomLinearEquiv (k := k) (𝟙_ C) (ᘁX) X (ᘁX)) |>.trans
-    (tensorLeftHomLinearEquiv (k := k) (𝟙_ C) (ᘁX) X X).symm |>.trans
-    (CategoryTheory.Linear.homCongr k (ρ_ X) (Iso.refl _)) |>.finrank_eq
+  (Linear.homCongr k (λ_ (ᘁX)).symm (Iso.refl _)).trans (tensorRightHomLinearEquiv _ _ _ _) |>.trans
+    (tensorLeftHomLinearEquiv _ _ _ _).symm |>.trans
+      (Linear.homCongr k (ρ_ X) (Iso.refl _)) |>.finrank_eq
 
 end
 
@@ -112,8 +111,7 @@ theorem fusionCoeff_reciprocity_labels (i j k : Fin (rank D)) :
     fusionCoeff D i j k = fusionCoeff D k (dualIndex D j) i :=
   (dualIndex_iso j).elim fun e ↦
     (fusionCoeff_reciprocity i j k).trans
-      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
-        (Iso.refl (simples D k) ⊗ᵢ e)).finrank_eq
+      (Linear.homCongr ℂ (Iso.refl _) (Iso.refl _ ⊗ᵢ e)).finrank_eq
 
 /-- Frobenius reciprocity and braiding exchange a tensor factor with its dual. -/
 theorem fusionCoeff_dual_symmetry (i j k : Fin (rank D)) :
@@ -144,6 +142,10 @@ theorem dualIndex_involutive :
 /-- Duality permutes the simple labels. -/
 def dualEquiv : Equiv.Perm (Fin (rank D)) :=
   ⟨dualIndex D, dualIndex D, dualIndex_involutive D, dualIndex_involutive D⟩
+
+/-- The duality permutation acts by taking the dual label. -/
+@[simp]
+theorem dualEquiv_apply (i : Fin (rank D)) : dualEquiv D i = dualIndex D i := rfl
 
 end PropertyF.Ground
 

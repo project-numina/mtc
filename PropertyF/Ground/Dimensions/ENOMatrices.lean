@@ -111,8 +111,7 @@ theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
     (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
       rootDimension C i * rootDimension C j) :
     ‖rootDimension C i‖ ≤ fpSimple C i :=
-  weighted_eigenvalue_bound (fun j k ↦ fusionCoeff C i j k) (enoTraceMatrix C i)
-    (fpSimple C) (rootDimension C) (rootDimension_ne_zero (unitIndex C)) (fpSimple_pos C)
+  weighted_eigenvalue_bound (rootDimension_ne_zero (unitIndex C)) (fpSimple_pos C)
     (fun _ _ ↦ Nat.cast_nonneg _) (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff (hinv j k))
     (fun j ↦ (fpSimple_mul C i j).symm) heig
 

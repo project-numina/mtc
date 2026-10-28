@@ -179,8 +179,7 @@ theorem pivotal_dual :
     p.iso (Xᘁ) = (rightDualIsoMap (p.iso X)).symm :=
   Iso.ext <| show (p.iso (Xᘁ)).hom = ((p.iso X).inv)ᘁ from
     evaluation_ext (X := (Xᘁ)ᘁ) <| (cancel_epi ((Xᘁ) ◁ (p.iso X).hom)).1 <| by
-      simpa only [tensorHom_def', Category.assoc] using
-        (pivotal_evaluation p X).trans (evaluation_iso_map (p.iso X)).symm
+      simpa [tensorHom_def'] using (pivotal_evaluation p X).trans (evaluation_iso_map _).symm
 end PropertyF.Ground.Dimensions
 
 end
