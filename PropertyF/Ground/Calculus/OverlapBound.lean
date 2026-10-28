@@ -169,13 +169,44 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
+section OverlapUnitary
+
+variable {X : C} {t : ℕ} {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
+  (e : ∀ n, BraidBlockPresentation X n (d n))
+  (he : ∀ n, IsUnitaryBraidPresentation (e n))
+include he
+
+/-- Extending an existing overlap by identity strands preserves unitarity. -/
+private theorem overlapLeft_unitary (k : ℕ) {v : braidAlgebra X (overlapIndex t k)}
+    (hv : Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩ (e _ v)) :
+    Blocks.IsUnitary ⟨_, d (overlapIndex t (k + 1))⟩ (e _ (overlapLeft X t k v)) := by
+  change Blocks.IsUnitary ⟨_, d (overlapIndex t k + (t + 1))⟩
+    (e _ (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v))
+  simpa [addRightBlocksIterStarMap] using
+    starMap_preserves_block_unitary
+      (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) hv
+
+/-- Inserting a fresh overlapping factor preserves unitarity. -/
+private theorem overlapRight_unitary (k : ℕ) {u : braidAlgebra X t}
+    (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u)) :
+    Blocks.IsUnitary ⟨_, d (overlapIndex t (k + 1))⟩ (e _ (overlapRight X t k u)) := by
+  have hcast : ∀ (a b : ℕ) (h : a = b)
+      (f : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b),
+      Blocks.IsUnitary ⟨_, d b⟩ (e b (f u)) →
+      Blocks.IsUnitary ⟨_, d a⟩
+        (e a ((Eq.mpr (congrArg (fun n => braidAlgebra X t →ₐ[ℂ] braidAlgebra X n) h) f) u)) := by
+    intro a b h f hunit
+    cases h
+    exact hunit
+  exact hcast _ _ (overlapIndex_formula t (k + 1)) _ (by
+    simpa [addLeftBlocksIterStarMap] using
+      starMap_preserves_block_unitary
+        (addLeftBlocksIterStarMap X t ((k + 1) * (t + 1)) (e t) (e _) (he t) (he _)) hu)
+
 /-- Successive actual overlapping products remain blockwise unitary. The
 presentations may be chosen independently at every strand count. -/
-theorem overlapProduct_unitary {X : C} {t : ℕ}
-    {r : ℕ → ℕ} {d : ∀ n, Fin (r n) → ℕ}
-    (e : ∀ n, BraidBlockPresentation X n (d n))
-    (he : ∀ n, IsUnitaryBraidPresentation (e n))
-    {u : braidAlgebra X t} (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u)) :
+theorem overlapProduct_unitary {u : braidAlgebra X t}
+    (hu : Blocks.IsUnitary ⟨_, d t⟩ (e t u)) :
     ∀ k, Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩
       (e (overlapIndex t k) (overlapProduct u k)) := by
   intro k
@@ -184,25 +215,10 @@ theorem overlapProduct_unitary {X : C} {t : ℕ}
   | succ k ih =>
     intro i
     rw [overlapProduct, map_mul, Pi.mul_apply]
-    apply Submonoid.mul_mem
-    · change e (overlapIndex t k + (t + 1))
-        (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) (overlapProduct u k)) i ∈
-          Matrix.unitaryGroup (Fin (d (overlapIndex t k + (t + 1)) i)) ℂ
-      simpa [addRightBlocksIterStarMap] using
-        (starMap_preserves_block_unitary
-          (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) ih) i
-    · have hcast : ∀ (a b : ℕ) (h : a = b)
-          (f : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b),
-          Blocks.IsUnitary ⟨_, d b⟩ (e b (f u)) →
-          Blocks.IsUnitary ⟨_, d a⟩
-            (e a ((Eq.mpr (congrArg (fun n => braidAlgebra X t →ₐ[ℂ] braidAlgebra X n) h) f) u)) := by
-        intro a b h f hunit
-        cases h
-        exact hunit
-      exact hcast _ _ (overlapIndex_formula t (k + 1)) _ (by
-        simpa [addLeftBlocksIterStarMap] using
-          starMap_preserves_block_unitary
-            (addLeftBlocksIterStarMap X t ((k + 1) * (t + 1)) (e t) (e _) (he t) (he _)) hu) i
+    exact Submonoid.mul_mem _ (overlapLeft_unitary e he k ih i)
+      (overlapRight_unitary e he k hu i)
+
+end OverlapUnitary
 
 end PropertyF.Ground.Calculus
 

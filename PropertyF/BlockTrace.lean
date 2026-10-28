@@ -104,6 +104,7 @@ lemma norm_trace_le {u : B.Algebra}
 def signElement : B.Algebra :=
   fun r => (if 0 ≤ w r then (1 : ℂ) else -1) • 1
 
+/-- The sign element is unitary in every block. -/
 lemma signElement_unitary :
     B.IsUnitary (B.signElement w) := fun r => by
   by_cases h : 0 ≤ w r <;> simp [signElement, h, Matrix.mem_unitaryGroup_iff]
@@ -113,9 +114,8 @@ lemma trace_signElement :
     B.trace w (B.signElement w) = (B.mass w : ℂ) := by
   simp only [trace, mass, signElement, Matrix.trace_smul, Matrix.trace_one,
     Fintype.card_fin, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast]
-  apply Finset.sum_congr rfl
-  intro r _
-  by_cases h : 0 ≤ w r <;> simp [h, abs_of_nonneg, abs_of_neg, lt_of_not_ge]
+  exact Finset.sum_congr rfl fun r _ => by
+    by_cases h : 0 ≤ w r <;> simp [h, abs_of_nonneg, abs_of_neg, lt_of_not_ge]
 
 /-- A bound on all unitary traces bounds the total weighted block mass. -/
 lemma mass_le_of_unitary_trace_bound {R : ℝ}
