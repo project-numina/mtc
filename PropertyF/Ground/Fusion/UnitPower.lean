@@ -61,9 +61,7 @@ theorem balanced_flow_cycle {ι : Type*} [Fintype ι] {b : ι → ι → ℝ}
     exact le_antisymm (not_lt.mp hnot) (hb i j)
   obtain ⟨j, hj⟩ := hout
   have ho : o ∉ s := by simp [s, Relation.ReflTransGen.refl]
-  have hjs : j ∉ s := by
-    intro hjs
-    exact (ne_of_gt hj) (balanced_flow_no_entry hb hbalance hc ho hjs)
+  have hjs : j ∉ s := fun hjs ↦ (ne_of_gt hj) (balanced_flow_no_entry hb hbalance hc ho hjs)
   refine ⟨j, hj, ?_⟩
   simpa [s] using hjs
 
@@ -97,12 +95,7 @@ theorem fusionFlow_balance (D : BraidedFusionCategory.{v,u}) (i j : Fin (rank D)
     _ = fpSimple D j * (fpSimple D (dualIndex D i) * fpSimple D j) := by rw [fpSimple_dual]
     _ = fpSimple D j * (∑ k, (fusionCoeff D (dualIndex D i) j k : ℝ) * fpSimple D k) := by rw [fpSimple_mul]
     _ = _ := by
-      simp only [fusionFlow, Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro k _
-      rw [fusionCoeff_comm D i k, fusionCoeff_reciprocity_labels D k i j,
-        fusionCoeff_comm D j (dualIndex D i)]
-      ring
+      simp only [fusionFlow, Finset.mul_sum, ← fusionCoeff_dual_symmetry D i j, mul_comm]
 
 /-- A positive fusion coefficient gives an actual retract. -/
 theorem fusionCoeff_retract (D : BraidedFusionCategory.{v,u})
