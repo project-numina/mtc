@@ -20,10 +20,9 @@ abbrev PivotalHasFPDimensions (p : PivotalStructure (C := C.Obj)) : Prop :=
   ∀ i, pivotalDimension C p (simples C i) = (fpSimple C i : ℂ)
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
-theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}}
-    {p : PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p)
-    (X : C.Obj) : pivotalDimension C p X = (fpDimension C X : ℂ) := by
+theorem pivotalDimension_eq_fp {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
+    (hsimple : PivotalHasFPDimensions C p) (X : C.Obj) :
+    pivotalDimension C p X = (fpDimension C X : ℂ) := by
   simpa only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast,
     hsimple] using pivotalDimension_decomposition C p X
 

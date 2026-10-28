@@ -107,8 +107,7 @@ local notation "𝒵" => Center C.Obj
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
-theorem center_cokernel_measure_lt {S W : 𝒵}
-    (p : S ⟶ W) (hp : p ≠ 0) :
+theorem center_cokernel_measure_lt {S W : 𝒵} (p : S ⟶ W) (hp : p ≠ 0) :
     let Q := Centre.centerCokernel p
     Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) := by
   let Q := Centre.centerCokernel p
@@ -139,9 +138,8 @@ private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D] {
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre object has only finitely many isomorphism classes of simple subobjects. -/
 theorem finite_simple_subobject_labels (W : 𝒵) :
-    ∃ L : List (𝒵),
-      ∀ S : 𝒵, Simple S →
-        (∃ t : S ⟶ W, Mono t) → ∃ T ∈ L, Nonempty (S ≅ T) := by
+    ∃ L : List (𝒵), ∀ S : 𝒵, Simple S →
+      (∃ t : S ⟶ W, Mono t) → ∃ T ∈ L, Nonempty (S ≅ T) := by
   let m : 𝒵 → ℕ := fun Z => Module.finrank ℂ (Z.1 ⟶ Z.1)
   induction W using (measure m).wf.induction with
   | h W ih =>
@@ -175,8 +173,7 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual centre has finitely many simple objects up to isomorphism. -/
 theorem finite_simple_labels :
-    ∃ labels : Finset (𝒵),
-      (∀ T ∈ labels, Simple T) ∧
+    ∃ labels : Finset (𝒵), (∀ T ∈ labels, Simple T) ∧
       ∀ X : 𝒵, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T) := by
   classical
   let L (i : Fin (rank C)) := Classical.choose (finite_simple_subobject_labels C

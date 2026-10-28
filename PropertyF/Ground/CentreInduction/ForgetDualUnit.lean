@@ -92,16 +92,14 @@ theorem forget_rightDualUnitIso :
 
 /-- Forgetting preserves the unit comparison for right duals. -/
 theorem forgetDualIso_unit :
-    (forgetDualIso (𝟙_ (𝒵))).hom ≫
-      (rightDualUnitIso (C := D)).hom =
+    (forgetDualIso (𝟙_ (𝒵))).hom ≫ (rightDualUnitIso (C := D)).hom =
     (rightDualUnitIso (C := 𝒵)).hom.f :=
   (rightDualIso_trans (forgetPairing (𝟙_ (𝒵))) HasRightDual.exact
     (inferInstance : ExactPairing (𝟙_ D) (𝟙_ D))).trans (forget_rightDualUnitIso (D := D)).symm
 
 /-- Forgetting preserves the unit comparison for double right duals. -/
 theorem forgetDoubleDualIso_unit :
-    (doubleDualUnitIso (C := 𝒵)).hom.f ≫
-      (forgetDoubleDualIso (𝟙_ (𝒵))).hom =
+    (doubleDualUnitIso (C := 𝒵)).hom.f ≫ (forgetDoubleDualIso (𝟙_ (𝒵))).hom =
     (doubleDualUnitIso (C := D)).hom := by
   let U := 𝟙_ (𝒵)
   let : HasRightDual U := RightRigidCategory.rightDual U
