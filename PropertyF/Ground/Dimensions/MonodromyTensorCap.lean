@@ -30,7 +30,6 @@ theorem drinfeld_tensor_cap_factor :
   let V := Yᘁ
   let a := (doubleDualIso C X).hom
   let b := (doubleDualIso C Y).hom
-  let W := X ⊗ Y
   let P := V ⊗ U
   let q : ExactPairing P ((Uᘁ) ⊗ (Vᘁ)) := ExactPairing.tensor
   change (a ⊗ₘ b) ▷ P ≫ @ExactPairing.evaluation C.Obj _ _ P _ q = _
@@ -80,7 +79,6 @@ theorem monodromy_tensor_cap_expansion :
       V ◁ (X ◁ (β_ Y U).hom) ⊗≫ V ◁ ((β_ X U).hom ▷ Y) ⊗≫
       V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V := by
   let W := X ⊗ Y
-  let p : ExactPairing W P := ExactPairing.tensor
   change (((β_ X Y).hom ≫ (β_ Y X).hom) ▷ P) ≫ (β_ W P).hom ≫
       (𝟙 (P ⊗ W) ⊗≫ V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V) = _
   dsimp only [W]
