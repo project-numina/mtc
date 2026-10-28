@@ -200,7 +200,7 @@ theorem finrank_hom_induction (Z : 𝒵) (X : C.Obj) :
     (induction C) (actualAdjunction C) Z X).finrank_eq
 
 /-- The FP dimension of a centre object is the weighted Hom sum of its underlying object. -/
-theorem center_fpDimension_eq_sum_to_simple [RigidCategory 𝒵] [IsFusionCategory 𝒵] (Z : 𝒵) :
+theorem fpDimension_forget_sum [RigidCategory 𝒵] [IsFusionCategory 𝒵] (Z : 𝒵) :
     fpDimension 𝒵ᶠ Z = ∑ i, (finrank ℂ (Z.1 ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
   (Integrate.center_forget_fpDimension C Z).symm.trans (fpDimension_eq_sum_to_simple C Z.1)
 
@@ -214,7 +214,7 @@ theorem globalFPDimension_eq_induction_sum [RigidCategory 𝒵] [IsFusionCategor
   simp_rw [fpDimension, finrank_hom_induction C, Finset.mul_sum]
   rw [Finset.sum_comm]
   simp [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
-    ← Finset.mul_sum, ← center_fpDimension_eq_sum_to_simple C, fpDimension_simple,
+    ← Finset.mul_sum, ← fpDimension_forget_sum C, fpDimension_simple,
     globalFPDimension, pow_two]
 
 set_option backward.isDefEq.respectTransparency false in
