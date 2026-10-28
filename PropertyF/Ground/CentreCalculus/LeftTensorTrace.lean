@@ -71,10 +71,10 @@ theorem leftPartialTrace_right (a : End Y) (f : End (X ⊗ Y)) :
 theorem leftPartialTrace_whiskerRight (Z : C) (f : End (X ⊗ Y)) :
     leftPartialTrace p (End.of
       ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
-      End.of ((leftPartialTrace p f).asHom ▷ Z) := by
-  apply End.ext
-  simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
-  monoidal
+      End.of ((leftPartialTrace p f).asHom ▷ Z) :=
+  End.ext <| by
+    dsimp [leftPartialTrace]
+    monoidal
 
 /-- Schur's lemma identifies the partial trace on a simple surviving strand
 once compatibility with total trace is known. -/

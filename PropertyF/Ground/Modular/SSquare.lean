@@ -28,7 +28,8 @@ include hdual in
 theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
     ∑ j, starRingEnd ℂ (χ.value j) * ψ.value j = 0 :=
   Classical.byContradiction fun hw ↦ hne (Character.ext (funext fun i ↦ (mul_right_cancel₀ hw (by
-    simpa [character_dual_conj N dual hdual χ i] using
+    simpa [Ground.fusion_character_dual_eq_conj (i₀ := N.unit)
+      (fun a b c ↦ (hdual a c b).symm) (by simp [χ.unit_eq]) χ.mul_eq i] using
       fusion_inner_balance _ _ hdual (starRingEnd ℂ) χ.value ψ.value χ.mul_eq ψ.mul_eq i)).symm))
 
 include hdual in

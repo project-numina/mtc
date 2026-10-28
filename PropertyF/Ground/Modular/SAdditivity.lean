@@ -30,7 +30,7 @@ theorem doubleBraiding_natural_left {X Z : C} (f : X ⟶ Z) (Y : C) :
 
 /-- The S entry is additive over finite biproducts in its first argument. -/
 theorem SEntry_biproduct_left {ι : Type*} [Fintype ι] (V : ι → C) [HasBiproduct V]
-    (p : PivotalStructure (C := C)) (Y : C) :
+    (p : PivotalStructure) (Y : C) :
     SEntry p (⨁ V) Y = ∑ i, SEntry p (V i) Y := by
   classical
   change p.rightTrace (doubleBraiding (⨁ V) Y) = _

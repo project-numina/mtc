@@ -679,9 +679,8 @@ theorem fpDeterminant_functor_natural_decomposition
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) •
         fpDeterminant C (η.app (simples C i)) :=
   additive_object_function_decomposition C (fun X ↦ fpDeterminant C (η.app X))
-    (fun {X Y} e ↦ by
-      rw [functor_natural_app_conjugate F η e]
-      exact fpDeterminant_conjugate C (F.mapIso e).symm (η.app Y))
+    (fun {X Y} e ↦ (congrArg (fpDeterminant C) (functor_natural_app_conjugate F η e)).trans
+      (fpDeterminant_conjugate C (F.mapIso e).symm (η.app Y)))
     (fun X hX ↦ by
       rw [show η.app X = Iso.refl (F.obj X) from Iso.ext ((F.map_isZero hX).eq_of_src _ _),
         fpDeterminant_refl])
@@ -805,13 +804,17 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
 
+section
+variable (Z W : C.Obj)
+
 /-- FP determinant of a mixed monodromy expands over simple summands of
 the second strand. -/
-theorem fpDeterminant_monodromy_decomposition
-    (Z W : C.Obj) :
+theorem fpDeterminant_monodromy_decomposition :
     monodromyDet C Z W = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ W) : ℝ) • monodromyDet C Z (simples C i) :=
   fpDeterminant_functor_natural_decomposition C (tensorLeft Z) (monodromyNaturalIso Z) W
+
+end
 
 variable (ht : HasSimpleScalars C η t) (hbalance : HasSimpleBalance C η t)
 

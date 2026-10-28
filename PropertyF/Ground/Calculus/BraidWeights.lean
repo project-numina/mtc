@@ -92,8 +92,7 @@ actual representation dimensions decompose into braid-block dimensions. -/
 theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
     (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → ℝ)
     (hdim : HasMultiplicityDecomposition m d mult) :
-    (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) =
-      ∑ i, (m i : ℝ) * fp i := by
+    (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) = ∑ i, (m i : ℝ) * fp i := by
   simp only [hdim, Nat.cast_sum, Nat.cast_mul, Finset.sum_mul]
   rw [Finset.sum_comm]
   simp only [mul_comm, mul_left_comm]
@@ -254,8 +253,7 @@ multiplicities, and every source block occurs in at least one target block. -/
 theorem faithful_block_representation_multiplicities {B' : Blocks}
     (φ : B.Algebra →ₐ[ℂ] B'.Algebra) (hinj : Function.Injective φ) :
     ∃ mult : Fin B'.count → Fin B.count → ℕ,
-      (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧
-      (∀ j, ∃ i, 0 < mult i j) := by
+      (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧ (∀ j, ∃ i, 0 < mult i j) := by
   classical
   choose mult hmult using fun i : Fin B'.count =>
     representation_trace_multiplicities hd ((Pi.evalAlgHom ℂ _ i).comp φ)
