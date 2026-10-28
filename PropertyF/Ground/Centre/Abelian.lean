@@ -31,6 +31,16 @@ def sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
     biprod.mapIso (X.2.β U) (Y.2.β U) ≪≫
       (Functor.mapBiprod (tensorLeft U) X.1 Y.1).symm
 
+private theorem inl_mapBiprod_inv (X Y : CategoryTheory.Center C) (U : C) :
+    biprod.inl ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).inv = biprod.inl ▷ U := by
+  rw [Functor.mapBiprod_inv, biprod.inl_desc]
+  rfl
+
+private theorem inr_mapBiprod_inv (X Y : CategoryTheory.Center C) (U : C) :
+    biprod.inr ≫ (Functor.mapBiprod (tensorRight U) X.1 Y.1).inv = biprod.inr ▷ U := by
+  rw [Functor.mapBiprod_inv, biprod.inr_desc]
+  rfl
+
 @[reassoc]
 theorem inl_sumHalfIso (X Y : CategoryTheory.Center C) (U : C) :
     biprod.inl ▷ U ≫ (sumHalfIso X Y U).hom = (X.2.β U).hom ≫ U ◁ biprod.inl := by
@@ -79,21 +89,13 @@ theorem sumHalfIso_monoidal (X Y : CategoryTheory.Center C) (U V : C) :
         (U ◁ (sumHalfIso X Y V).hom) ≫ (α_ _ _ _).inv := by
   apply (cancel_epi (Functor.mapBiprod (tensorRight (U ⊗ V)) X.1 Y.1).inv).mp
   apply biprod.hom_ext'
-  · have hι : biprod.inl ≫ (Functor.mapBiprod (tensorRight (U ⊗ V)) X.1 Y.1).inv =
-        biprod.inl ▷ (U ⊗ V) := by
-      rw [Functor.mapBiprod_inv, biprod.inl_desc]
-      rfl
-    simp only [← Category.assoc, hι]
+  · simp only [← Category.assoc, inl_mapBiprod_inv]
     simp only [Category.assoc, associator_inv_naturality_left_assoc,
       ← comp_whiskerRight_assoc, inl_sumHalfIso, HalfBraiding.monoidal]
     simp only [comp_whiskerRight, Category.assoc, associator_naturality_middle_assoc,
       ← whiskerLeft_comp_assoc, inl_sumHalfIso]
     simp only [whiskerLeft_comp, Category.assoc, associator_inv_naturality_right]
-  · have hι : biprod.inr ≫ (Functor.mapBiprod (tensorRight (U ⊗ V)) X.1 Y.1).inv =
-        biprod.inr ▷ (U ⊗ V) := by
-      rw [Functor.mapBiprod_inv, biprod.inr_desc]
-      rfl
-    simp only [← Category.assoc, hι]
+  · simp only [← Category.assoc, inr_mapBiprod_inv]
     simp only [Category.assoc, associator_inv_naturality_left_assoc,
       ← comp_whiskerRight_assoc, inr_sumHalfIso, HalfBraiding.monoidal]
     simp only [comp_whiskerRight, Category.assoc, associator_naturality_middle_assoc,
@@ -140,6 +142,7 @@ theorem sumHalfIso_snd (X Y : CategoryTheory.Center C) (U : C) :
 def centerBiprodFst (X Y : CategoryTheory.Center C) : centerBiprod X Y ⟶ X :=
   ⟨biprod.fst, fun U => sumHalfIso_fst X Y U⟩
 
+/-- The second biproduct projection as a centre morphism. -/
 def centerBiprodSnd (X Y : CategoryTheory.Center C) : centerBiprod X Y ⟶ Y :=
   ⟨biprod.snd, fun U => sumHalfIso_snd X Y U⟩
 
@@ -216,10 +219,9 @@ theorem kernelHalfIso_ι {X Y : CategoryTheory.Center C} (f : X ⟶ Y) (U : C) :
       (kernel.ι f.f ▷ U) ≫ (X.2.β U).hom := by
   simp only [kernelHalfIso, Iso.trans_hom, Iso.symm_hom, Category.assoc]
   change (PreservesKernel.iso (tensorRight U) f.f).hom ≫
-      (kernel.mapIso (f.f ▷ U) (U ◁ f.f) (X.2.β U) (Y.2.β U) (f.comm U)).hom ≫
-      ((PreservesKernel.iso (tensorLeft U) f.f).inv ≫ (tensorLeft U).map (kernel.ι f.f)) = _
-  rw [PreservesKernel.iso_inv_ι (tensorLeft U) f.f]
-  rw [kernel.mapIso_hom]
+    (kernel.mapIso (f.f ▷ U) (U ◁ f.f) (X.2.β U) (Y.2.β U) (f.comm U)).hom ≫
+    ((PreservesKernel.iso (tensorLeft U) f.f).inv ≫ (tensorLeft U).map (kernel.ι f.f)) = _
+  rw [PreservesKernel.iso_inv_ι, kernel.mapIso_hom]
   simp only [kernel.map, PreservesKernel.iso_hom]
   change kernelComparison f.f (tensorRight U) ≫
       (kernel.lift (U ◁ f.f) (kernel.ι (f.f ▷ U) ≫ (X.2.β U).hom) _ ≫
@@ -273,10 +275,8 @@ def centerKernelι {X Y : CategoryTheory.Center C} (f : X ⟶ Y) : centerKernel 
 
 /-- The kernel inclusion followed by the original map is zero. -/
 theorem centerKernel_condition {X Y : CategoryTheory.Center C} (f : X ⟶ Y) :
-    centerKernelι f ≫ f = 0 := by
-  apply CategoryTheory.Center.ext
-  change kernel.ι f.f ≫ f.f = 0
-  exact kernel.condition f.f
+    centerKernelι f ≫ f = 0 :=
+  CategoryTheory.Center.ext _ _ (kernel.condition f.f)
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency.types false in
@@ -431,10 +431,8 @@ def centerCokernelπ {X Y : CategoryTheory.Center C} (f : X ⟶ Y) : Y ⟶ cente
 
 /-- The original map followed by the cokernel projection is zero. -/
 theorem centerCokernel_condition {X Y : CategoryTheory.Center C} (f : X ⟶ Y) :
-    f ≫ centerCokernelπ f = 0 := by
-  apply CategoryTheory.Center.ext
-  change f.f ≫ cokernel.π f.f = 0
-  exact cokernel.condition f.f
+    f ≫ centerCokernelπ f = 0 :=
+  CategoryTheory.Center.ext _ _ (cokernel.condition f.f)
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency.types false in

@@ -24,13 +24,18 @@ def leftPartialTrace (p : Dimensions.PivotalStructure (C := C)) (X Y : C) :
     apply End.ext
     simp
 
+/-- Closing the left factor and then tracing agrees with the total trace. -/
+abbrev IsLeftTraceCompatible (p : Dimensions.PivotalStructure (C := C)) (X : C) : Prop :=
+  ∀ Y (f : End (X ⊗ Y)),
+    p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom
+
 /-- Inserting a map on the untraced right factor. -/
-def insertLeftIdentity (X Y : C) (a : End Y) : End (X ⊗ Y) :=
+def insertLeftIdentity (X : C) {Y : C} (a : End Y) : End (X ⊗ Y) :=
   End.of (X ◁ a.asHom)
 
 theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
-    (X Y : C) (a : End Y) (f : End (X ⊗ Y)) :
-    leftPartialTrace p X Y (f * insertLeftIdentity X Y a) =
+    {X Y : C} (a : End Y) (f : End (X ⊗ Y)) :
+    leftPartialTrace p X Y (f * insertLeftIdentity X a) =
       leftPartialTrace p X Y f * a := by
   apply End.ext
   simp only [leftPartialTrace, insertLeftIdentity, LinearMap.coe_mk, AddHom.coe_mk,
@@ -40,7 +45,7 @@ theorem leftPartialTrace_right (p : Dimensions.PivotalStructure (C := C))
 
 /-- Closing the first factor commutes with a spectator factor on the right. -/
 theorem leftPartialTrace_whiskerRight (p : Dimensions.PivotalStructure (C := C))
-    (X Y Z : C) (f : End (X ⊗ Y)) :
+    {X Y : C} (Z : C) (f : End (X ⊗ Y)) :
     leftPartialTrace p X (Y ⊗ Z) (End.of
       ((α_ X Y Z).inv ≫ (f.asHom ▷ Z) ≫ (α_ X Y Z).hom)) =
       End.of ((leftPartialTrace p X Y f).asHom ▷ Z) := by
@@ -52,23 +57,14 @@ theorem leftPartialTrace_whiskerRight (p : Dimensions.PivotalStructure (C := C))
 /-- Schur's lemma identifies the partial trace on a simple surviving strand
 once compatibility with total trace is known. -/
 theorem leftPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C]
-    (X Y : C) [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
+    {X Y : C} [Simple Y] [FiniteDimensional ℂ (Y ⟶ Y)]
     (p : Dimensions.PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0)
     (htrace : p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom) :
     leftPartialTrace p X Y f =
-      (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) := by
-  obtain ⟨c, hc⟩ := CategoryTheory.endomorphism_simple_eq_smul_id ℂ
-    (leftPartialTrace p X Y f).asHom
-  have hscalar : scalar (p.rightTrace (leftPartialTrace p X Y f).asHom) =
-      c * scalar (p.rightTrace (𝟙 Y)) := by
-    rw [← hc, p.rightTrace_smul]
-    simp
-  have hcval : c = scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y)) := by
-    apply (eq_div_iff hd).2
-    exact hscalar.symm.trans (congrArg scalar htrace)
-  apply End.ext
-  simpa [← hcval] using hc.symm
+      (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) :=
+  (Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p X Y f) hd).trans <|
+    congrArg (fun t ↦ (scalar t / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y)) htrace
 
 end PropertyF.Ground.CentreCalculus

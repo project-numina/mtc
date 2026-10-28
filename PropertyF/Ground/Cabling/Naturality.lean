@@ -1,7 +1,50 @@
 module
-public import PropertyF.Ground.Cabling.Pure
+public import PropertyF.Definitions
+public import Mathlib.GroupTheory.FreeGroup.Basic
+public import Mathlib.GroupTheory.Index
+public import Mathlib.GroupTheory.Perm.Basic
 public import Mathlib.CategoryTheory.Conj
 public import Mathlib.Algebra.Group.Subgroup.Map
+
+/-!
+# Braid words and naturality
+
+The categorical action of braid words is natural in the underlying object.
+-/
+
+@[expose] public noncomputable section
+open CategoryTheory
+namespace PropertyF
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+
+/-- Words in the adjacent generators on `n+2` strands. -/
+abbrev BraidWords (n : ℕ) := FreeGroup (Fin (n + 1))
+
+/-- The permutation induced by a word of crossings. -/
+def strandPermutation (n : ℕ) : BraidWords n →* Equiv.Perm (Fin (n + 2)) :=
+  FreeGroup.lift (fun i => Equiv.swap i.castSucc i.succ)
+
+/-- Evaluate a word in the actual categorical braid generators. -/
+def braidWordAction (X : C) (n : ℕ) : BraidWords n →* braidImage X n :=
+  (FreeGroup.lift (braidGenerator X n)).codRestrict (braidImage X n) (by
+    intro w
+    change (FreeGroup.lift (braidGenerator X n)) w ∈ Subgroup.closure (Set.range (braidGenerator X n))
+    rw [← FreeGroup.range_lift_eq_closure]
+    exact ⟨w, rfl⟩)
+
+/-- Every element of the categorical braid image is represented by a word. -/
+theorem braidWordAction_surjective (X : C) (n : ℕ) :
+    Function.Surjective (braidWordAction X n) := by
+  intro a
+  have ha : a.val ∈ (FreeGroup.lift (braidGenerator X n)).range := by
+    rw [FreeGroup.range_lift_eq_closure]
+    exact a.property
+  obtain ⟨w, hw⟩ := ha
+  exact ⟨w, Subtype.ext hw⟩
+
+end PropertyF
+
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 @[expose] public noncomputable section
 namespace PropertyF

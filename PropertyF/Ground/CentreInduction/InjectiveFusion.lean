@@ -58,49 +58,50 @@ theorem mono_splits_of_all_injective {X Y : D} (f : X ⟶ Y) [Mono f]
   exact IsSplitMono.mk' { retraction := r, id := hr }
 
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
+local notation "𝒵" => CategoryTheory.Center C.Obj
 
 /-- A unit retract of an induced object makes every centre object injective. -/
-theorem center_all_injective_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.Obj)
-    (r : Retract (𝟙_ (CategoryTheory.Center C.Obj)) ((induction C).obj X ⊗ U))
-    (Z : CategoryTheory.Center C.Obj) : Injective Z := by
+theorem center_all_injective_of_unit_retract (X : C.Obj) (U : 𝒵)
+    (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
+    (Z : 𝒵) : Injective Z := by
   let : Injective ((induction C).obj X) := induction_injective C X
   exact all_injective_of_unit_retract ((induction C).obj X) U r Z
 
 /-- A unit retract of an induced object splits every centre monomorphism. -/
-theorem center_mono_splits_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.Obj)
-    (r : Retract (𝟙_ (CategoryTheory.Center C.Obj)) ((induction C).obj X ⊗ U))
-    {Z W : CategoryTheory.Center C.Obj} (f : Z ⟶ W) [Mono f] : IsSplitMono f := by
+theorem center_mono_splits_of_unit_retract (X : C.Obj) (U : 𝒵)
+    (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
+    {Z W : 𝒵} (f : Z ⟶ W) [Mono f] : IsSplitMono f := by
   let : Injective Z := center_all_injective_of_unit_retract C X U r Z
   exact mono_splits_of_all_injective f
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Under the unit-retract condition every centre object is a finite simple sum. -/
-theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.Obj)
-    (r : Retract (𝟙_ (CategoryTheory.Center C.Obj)) ((induction C).obj X ⊗ U))
-    (Z : CategoryTheory.Center C.Obj) : FiniteSimpleSum (CategoryTheory.Center C.Obj) Z := by
-  let m : CategoryTheory.Center C.Obj → ℕ := fun W => Module.finrank ℂ (W ⟶ W)
+theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) (U : 𝒵)
+    (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
+    (Z : 𝒵) : FiniteSimpleSum (𝒵) Z := by
+  let m : 𝒵 → ℕ := fun W => Module.finrank ℂ (W ⟶ W)
   induction Z using (measure m).wf.induction with
   | h Z ih =>
     by_cases hz : IsZero Z
     · exact .zero hz
     · let : IsArtinianObject Z := center_artinian C Z
       obtain ⟨P, hP⟩ := exists_simple_subobject hz
-      let : Simple (P : CategoryTheory.Center C.Obj) := hP
+      let : Simple (P : 𝒵) := hP
       let : IsSplitMono P.arrow := center_mono_splits_of_unit_retract C X U r P.arrow
       let E := ShortComplex.cokernelSequence P.arrow
       let split : E.Splitting := ShortComplex.Splitting.ofExactOfRetraction E
         (ShortComplex.cokernelSequence_exact P.arrow) (retraction P.arrow)
         (IsSplitMono.id P.arrow) inferInstance
       let K := cokernel P.arrow
-      let e : Z ≅ (P : CategoryTheory.Center C.Obj) ⊞ K := split.isoBinaryBiproduct
-      let : ∀ A B : CategoryTheory.Center C.Obj, FiniteDimensional ℂ (A ⟶ B) := by
+      let e : Z ≅ (P : 𝒵) ⊞ K := split.isoBinaryBiproduct
+      let : ∀ A B : 𝒵, FiniteDimensional ℂ (A ⟶ B) := by
         intro A B
         let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
         exact PropertyF.Ground.Centre.finiteDimensional_hom ℂ A B
-      have hs : ¬ IsZero (P : CategoryTheory.Center C.Obj) := by
+      have hs : ¬ IsZero (P : 𝒵) := by
         intro h
         exact id_nonzero _ ((IsZero.iff_id_eq_zero _).mp h)
-      have he : Module.finrank ℂ (Z ⟶ Z) = Module.finrank ℂ ((P : CategoryTheory.Center C.Obj) ⊞ K ⟶ (P : CategoryTheory.Center C.Obj) ⊞ K) :=
+      have he : Module.finrank ℂ (Z ⟶ Z) = Module.finrank ℂ ((P : 𝒵) ⊞ K ⟶ (P : 𝒵) ⊞ K) :=
         (CategoryTheory.Linear.homCongr ℂ e e).finrank_eq
       have hk : m K < m Z := by
         change Module.finrank ℂ (K ⟶ K) < Module.finrank ℂ (Z ⟶ Z)
@@ -109,9 +110,9 @@ theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) (U : CategoryTheory
       exact .cons hP (ih K hk) ⟨e⟩
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
-theorem center_fusion_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.Obj)
-    (r : Retract (𝟙_ (CategoryTheory.Center C.Obj)) ((induction C).obj X ⊗ U)) :
-    IsFusionCategory (CategoryTheory.Center C.Obj) := by
+theorem center_fusion_of_unit_retract (X : C.Obj) (U : 𝒵)
+    (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
+    IsFusionCategory (𝒵) := by
   obtain ⟨n, S, hS, hinj, hcover⟩ := finite_simple_representatives C
   apply PropertyF.Ground.CentreBundle.fusionOfFiniteSemisimple C
   refine ⟨n, S, hS, hinj, ?_⟩
@@ -123,32 +124,32 @@ theorem center_fusion_of_unit_retract (X : C.Obj) (U : CategoryTheory.Center C.O
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A cap with nonzero unit composite gives a unit retract. -/
-def unit_retract_of_nonzero_cap (J : CategoryTheory.Center C.Obj)
-    (cap : J ⊗ Jᘁ ⟶ 𝟙_ (CategoryTheory.Center C.Obj))
+def unitRetractOfNonzeroCap (J : 𝒵)
+    (cap : J ⊗ Jᘁ ⟶ 𝟙_ (𝒵))
     (hne : η_ J (Jᘁ) ≫ cap ≠ 0) :
-    Retract (𝟙_ (CategoryTheory.Center C.Obj)) (J ⊗ Jᘁ) := by
+    Retract (𝟙_ (𝒵)) (J ⊗ Jᘁ) := by
   letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
-  letI : Simple (𝟙_ (CategoryTheory.Center C.Obj)) := PropertyF.Ground.Centre.centerUnitSimple
+  letI : Simple (𝟙_ (𝒵)) := PropertyF.Ground.Centre.centerUnitSimple
   letI : IsIso (η_ J (Jᘁ) ≫ cap) := isIso_of_hom_simple hne
   refine { i := η_ J (Jᘁ), r := cap ≫ inv (η_ J (Jᘁ) ≫ cap), retract := ?_ }
   simp only [← Category.assoc, IsIso.hom_inv_id]
 
 /-- A nonzero cap on an induced object implies centre fusion. -/
 theorem center_fusion_of_nonzero_induced_cap (X : C.Obj)
-    (cap : (induction C).obj X ⊗ ((induction C).obj X)ᘁ ⟶ 𝟙_ (CategoryTheory.Center C.Obj))
+    (cap : (induction C).obj X ⊗ ((induction C).obj X)ᘁ ⟶ 𝟙_ (𝒵))
     (hne : η_ ((induction C).obj X) (((induction C).obj X)ᘁ) ≫ cap ≠ 0) :
-    IsFusionCategory (CategoryTheory.Center C.Obj) :=
+    IsFusionCategory (𝒵) :=
   center_fusion_of_unit_retract C X (((induction C).obj X)ᘁ)
-    (unit_retract_of_nonzero_cap C ((induction C).obj X) cap hne)
+    (unitRetractOfNonzeroCap C ((induction C).obj X) cap hne)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre pivotal structure with nonzero trace on an induced object implies fusion. -/
 theorem center_fusion_of_nonzero_induced_trace (X : C.Obj)
-    (p : Dimensions.PivotalStructure (C := CategoryTheory.Center C.Obj))
+    (p : Dimensions.PivotalStructure (C := 𝒵))
     (hne : p.rightTrace (𝟙 ((induction C).obj X)) ≠ 0) :
-    IsFusionCategory (CategoryTheory.Center C.Obj) := by
+    IsFusionCategory (𝒵) := by
   let J := (induction C).obj X
-  let cap : J ⊗ Jᘁ ⟶ 𝟙_ (CategoryTheory.Center C.Obj) :=
+  let cap : J ⊗ Jᘁ ⟶ 𝟙_ (𝒵) :=
     ((p.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
   have hcap : η_ J (Jᘁ) ≫ cap ≠ 0 := by
     intro h

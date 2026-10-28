@@ -22,21 +22,18 @@ theorem target_of_center_image_monodromy
           let Z := Integrate.bundledCenter C
           ∃ (p : Dimensions.PivotalStructure (C := Z.Obj)),
             p.IsSpherical ∧
-            (∀ i, Modular.simpleDimension Z p i = (fpSimple Z i : ℂ)) ∧
+            (Modular.HasFPSimpleDimensions Z p) ∧
             (Modular.categoricalS Z p).det ≠ 0 ∧
             globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
             (∀ y ∈ CentreCabling.symmetricCore C,
               ∃ z : ℤ, Modular.simpleDimension Z p y = z) ∧
-            (∀ y, (∀ a ∈ CentreCabling.imageLabels C,
-              Modular.categoricalS Z p a y = Modular.simpleDimension Z p a * Modular.simpleDimension Z p y) →
-              ∀ a ∈ CentreCabling.imageLabels C,
-                IsOfFinOrder (End.of (Modular.doubleBraiding (simples Z a) (simples Z y))))) :
+            (CentreCabling.HasFiniteImageCentralizerMonodromy C p)) :
     TargetStatement.{v,u} := by
   apply target_of_actual_center
   intro C hPU hF
   obtain ⟨hR, hFusion, p, hp, hdim, hdet, hglobal, hintegral, hfinite⟩ := hCenter C hPU hF
-  letI := hR
-  letI := hFusion
+  let := hR
+  let := hFusion
   refine ⟨hR, hFusion, p, CentreCabling.symmetricCore C,
     (↑(CentreCabling.productLabels C) : Set _), hp, hdim, hdet, hglobal, hintegral, ?_, ?_⟩
   · intro y hy

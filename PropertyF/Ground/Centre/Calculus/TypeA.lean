@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.CentreCalculus.BraidRelations
 public import PropertyF.Ground.Centre.Basic
-public import PropertyF.Ground.Cabling.Pure
+public import PropertyF.Ground.Cabling.Naturality
 public import Mathlib.GroupTheory.PresentedGroup
 public import Mathlib.GroupTheory.Perm.Sign
 public import Mathlib.GroupTheory.QuotientGroup.Defs
@@ -32,10 +32,9 @@ theorem commonCentralizer_self (Y : CategoryTheory.Center C)
 
 
 /-- Adjacent transpositions generate the full symmetric group. -/
-theorem strandPermutation_surjective (n : ℕ) : Function.Surjective (strandPermutation n) := by
-  apply FreeGroup.lift_surjective_iff_closure_range_eq_top.mpr
-  apply Subgroup.closure_eq_top_of_mclosure_eq_top
-  exact Equiv.Perm.mclosure_swap_castSucc_succ (n + 1)
+theorem strandPermutation_surjective (n : ℕ) : Function.Surjective (strandPermutation n) :=
+  FreeGroup.lift_surjective_iff_closure_range_eq_top.mpr <|
+    Subgroup.closure_eq_top_of_mclosure_eq_top <| Equiv.Perm.mclosure_swap_castSucc_succ (n + 1)
 
 /-- Pure-word triviality is the precise remaining condition for the actual
 braid action to factor through the symmetric group. -/
@@ -76,15 +75,15 @@ def squareRelations (n : ℕ) : Set (BraidWords n) :=
 /-- Every square relation and all its conjugates act trivially on tensor
 powers of a self-centralizing object. The full pure-word kernel also involves
 the braid and distant-commutativity relations. -/
-theorem squareRelations_action_trivial (X : C)
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) :
+theorem squareRelations_action_trivial {X : C}
+    (hX : SelfTransparent X) (n : ℕ) :
     Subgroup.normalClosure (squareRelations n) ≤
       (FreeGroup.lift (braidGenerator X n)).ker := by
   apply Subgroup.normalClosure_le_normal
   rintro _ ⟨i, rfl⟩
   apply MonoidHom.mem_ker.mpr
   simp only [pow_two, map_mul, FreeGroup.lift_apply_of]
-  exact braidGenerator_involutive X hX n i
+  exact braidGenerator_involutive hX n i
 
 /-- Adjacent Yang–Baxter and distant commutation words in the free group. -/
 def braidRelations (n : ℕ) : Set (BraidWords n) :=
@@ -117,12 +116,12 @@ theorem braidRelations_action_trivial (X : C) (n : ℕ) :
 
 /-- All standard symmetric-group relation words act trivially for a
 self-transparent object. -/
-theorem typeARelations_action_trivial (X : C)
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) :
+theorem typeARelations_action_trivial {X : C}
+    (hX : SelfTransparent X) (n : ℕ) :
     Subgroup.normalClosure (squareRelations n ∪ braidRelations n) ≤
       (FreeGroup.lift (braidGenerator X n)).ker := by
-  rw [Subgroup.normalClosure_union]
-  exact sup_le (squareRelations_action_trivial X hX n) (braidRelations_action_trivial X n)
+  simpa only [Subgroup.normalClosure_union] using
+    sup_le (squareRelations_action_trivial hX n) (braidRelations_action_trivial X n)
 
 /-- Every defining type-A relation also has trivial strand permutation. -/
 theorem typeARelations_permutation_trivial (n : ℕ) :
@@ -133,7 +132,7 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
   apply MonoidHom.mem_ker.mpr
   rcases hw with hw | hw
   · obtain ⟨i, rfl⟩ := hw
-    simp only [strandPermutation, map_pow, FreeGroup.lift_apply_of, pow_two]
+    simp only [strandPermutation, pow_two]
     exact Equiv.swap_mul_self _ _
   · rcases hw with ⟨i, j, hij, rfl⟩ | ⟨i, j, hij, rfl⟩
     · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
@@ -149,7 +148,7 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
       simpa only [Equiv.swap_comm] using h₂.trans h₁.symm
     · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
       have hdis : [i.castSucc, i.succ, j.castSucc, j.succ].Nodup := by
-        simp only [List.nodup_cons, List.mem_cons, List.mem_singleton, List.not_mem_nil, List.nodup_nil,
+        simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil,
           not_or, and_true, Fin.ext_iff, Fin.val_castSucc, Fin.val_succ]
         simp only [not_false_eq_true, and_true]
         repeat' constructor <;> omega
@@ -176,10 +175,9 @@ abbrev typeAGroup (n : ℕ) := BraidWords n ⧸ typeANormal n
 def typeAPermutation (n : ℕ) : typeAGroup n →* Equiv.Perm (Fin (n + 2)) :=
   QuotientGroup.lift _ (strandPermutation n) (typeARelations_permutation_trivial n)
 
-theorem typeAPermutation_surjective (n : ℕ) : Function.Surjective (typeAPermutation n) := by
-  intro σ
-  obtain ⟨w, hw⟩ := strandPermutation_surjective n σ
-  exact ⟨QuotientGroup.mk' (typeANormal n) w, hw⟩
+theorem typeAPermutation_surjective (n : ℕ) : Function.Surjective (typeAPermutation n) :=
+  Function.Surjective.of_comp (g := QuotientGroup.mk' (typeANormal n))
+    (strandPermutation_surjective n)
 
 /-- The missing presentation theorem would follow from a finite normal-form
 bound of at most `(n+2)!` words. -/
@@ -213,46 +211,38 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def typeAGenerator (n i : ℕ) : typeAGroup n :=
   if h : i < n + 1 then QuotientGroup.mk' (typeANormal n) (FreeGroup.of ⟨i, h⟩) else 1
 
-theorem typeAGenerator_square (n i : ℕ) (hi : i < n + 1) :
+theorem typeAGenerator_square {n i : ℕ} (hi : i < n + 1) :
     typeAGenerator n i * typeAGenerator n i = 1 := by
-  have hw : FreeGroup.of (⟨i, hi⟩ : Fin (n + 1)) ^ 2 ∈ typeANormal n := by
-    apply Subgroup.subset_normalClosure
-    left
-    exact ⟨⟨i, hi⟩, rfl⟩
+  have hw : FreeGroup.of (⟨i, hi⟩ : Fin (n + 1)) ^ 2 ∈ typeANormal n :=
+    Subgroup.subset_normalClosure (Or.inl ⟨⟨i, hi⟩, rfl⟩)
   have hh := (QuotientGroup.eq_one_iff _).mpr hw
   simpa [typeAGenerator, hi, pow_two] using hh
 
-theorem typeAGenerator_adjacent (n i : ℕ) (hi : i + 1 < n + 1) :
+theorem typeAGenerator_adjacent {n i : ℕ} (hi : i + 1 < n + 1) :
     typeAGenerator n i * typeAGenerator n (i + 1) * typeAGenerator n i =
       typeAGenerator n (i + 1) * typeAGenerator n i * typeAGenerator n (i + 1) := by
   let a : Fin (n + 1) := ⟨i, by omega⟩
   let b : Fin (n + 1) := ⟨i + 1, hi⟩
   let w : BraidWords n := (FreeGroup.of a * FreeGroup.of b * FreeGroup.of a) *
     (FreeGroup.of b * FreeGroup.of a * FreeGroup.of b)⁻¹
-  have hw : w ∈ typeANormal n := by
-    apply Subgroup.subset_normalClosure
-    right
-    left
-    exact ⟨a, b, rfl, rfl⟩
+  have hw : w ∈ typeANormal n :=
+    Subgroup.subset_normalClosure (Or.inr (Or.inl ⟨a, b, rfl, rfl⟩))
   have hh := (QuotientGroup.eq_one_iff _).mpr hw
   change (QuotientGroup.mk' (typeANormal n)) w = 1 at hh
-  simpa only [w, map_mul, map_inv, mul_inv_eq_one, typeAGenerator, dif_pos hi,
-    dif_pos (show i < n + 1 by omega), a, b] using hh
+  simpa only [w, map_mul, map_inv, mul_inv_eq_one, typeAGenerator, dite_eq_left hi,
+    dite_eq_left (show i < n + 1 by omega), a, b] using hh
 
-theorem typeAGenerator_distant (n i j : ℕ) (hij : i + 1 < j) (hj : j < n + 1) :
+theorem typeAGenerator_distant {n i j : ℕ} (hij : i + 1 < j) (hj : j < n + 1) :
     typeAGenerator n i * typeAGenerator n j = typeAGenerator n j * typeAGenerator n i := by
   let a : Fin (n + 1) := ⟨i, by omega⟩
   let b : Fin (n + 1) := ⟨j, hj⟩
   let w : BraidWords n := (FreeGroup.of a * FreeGroup.of b) * (FreeGroup.of b * FreeGroup.of a)⁻¹
-  have hw : w ∈ typeANormal n := by
-    apply Subgroup.subset_normalClosure
-    right
-    right
-    exact ⟨a, b, hij, rfl⟩
+  have hw : w ∈ typeANormal n :=
+    Subgroup.subset_normalClosure (Or.inr (Or.inr ⟨a, b, hij, rfl⟩))
   have hh := (QuotientGroup.eq_one_iff _).mpr hw
   change (QuotientGroup.mk' (typeANormal n)) w = 1 at hh
-  simpa only [w, map_mul, map_inv, mul_inv_eq_one, typeAGenerator, dif_pos hj,
-    dif_pos (show i < n + 1 by omega), a, b] using hh
+  simpa only [w, map_mul, map_inv, mul_inv_eq_one, typeAGenerator, dite_eq_left hj,
+    dite_eq_left (show i < n + 1 by omega), a, b] using hh
 
 /-- The quotient is generated by its adjacent generators. -/
 theorem typeAGenerator_generates (n : ℕ) :
@@ -262,7 +252,7 @@ theorem typeAGenerator_generates (n : ℕ) :
       QuotientGroup.mk' (typeANormal n) := by
     apply FreeGroup.ext_hom
     intro i
-    simp only [FreeGroup.lift_apply_of, typeAGenerator, dif_pos i.isLt]
+    simp only [FreeGroup.lift_apply_of, typeAGenerator, dite_eq_left i.isLt]
   rw [h]
   exact QuotientGroup.mk'_surjective (typeANormal n)
 
@@ -272,29 +262,29 @@ theorem typeA_finite_card (n : ℕ) : Finite (typeAGroup n) ∧
     Nat.card (typeAGroup n) ≤ Nat.factorial (n + 2) := by
   simpa only [Nat.add_assoc] using
     finite_card_of_typeA (n + 1) (typeAGenerator n)
-      (typeAGenerator_square n) (typeAGenerator_adjacent n)
-      (typeAGenerator_distant n) (typeAGenerator_generates n)
+      (fun _ hi ↦ typeAGenerator_square hi) (fun _ hi ↦ typeAGenerator_adjacent hi)
+      (fun _ _ hij hj ↦ typeAGenerator_distant hij hj) (typeAGenerator_generates n)
 
 /-- The kernel of the strand permutation is exactly the normal subgroup
 generated by the type-A relations. -/
 theorem pureWords_eq_typeANormal (n : ℕ) :
     (strandPermutation n).ker = typeANormal n := by
   obtain ⟨hf, hc⟩ := typeA_finite_card n
-  letI : Finite (typeAGroup n) := hf
-  letI : Fintype (typeAGroup n) := Fintype.ofFinite _
+  let : Finite (typeAGroup n) := hf
+  let : Fintype (typeAGroup n) := Fintype.ofFinite _
   exact pureWords_eq_typeANormal_of_card_bound n (by simpa [Nat.card_eq_fintype_card] using hc)
 
 /-- Self-transparent categorical braid actions factor through permutations. -/
 def permutationAction (X : C)
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) :
+    (hX : SelfTransparent X) (n : ℕ) :
     Equiv.Perm (Fin (n + 2)) →* Aut (tensorPower X (n + 2)) :=
   permutationActionOfPureTrivial X n (by
     rw [pureWords_eq_typeANormal n]
-    exact typeARelations_action_trivial X hX n)
+    exact typeARelations_action_trivial hX n)
 
 /-- The descended action sends adjacent swaps to the actual braid generators. -/
-theorem permutationAction_swap (X : C)
-    (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) (n : ℕ) (i : Fin (n + 1)) :
+theorem permutationAction_swap {X : C}
+    (hX : SelfTransparent X) {n : ℕ} (i : Fin (n + 1)) :
     permutationAction X hX n (Equiv.swap i.castSucc i.succ) = braidGenerator X n i :=
   permutationActionOfPureTrivial_swap X n _ i
 

@@ -16,45 +16,49 @@ namespace PropertyF.Ground.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
+/-- Reversing the braiding inverts the first adjacent generator. -/
+theorem reverse_braidGenerator_zero (X : C) (n : ℕ) :
+    @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n 0 =
+      (braidGenerator X n 0)⁻¹ := by
+  cases n <;> apply CategoryTheory.Aut.ext <;> apply Iso.ext <;>
+    change ((α_ X X (tensorPower X _)).symm ≪≫
+      ((β_ X X).symm ⊗ᵢ Iso.refl (tensorPower X _)) ≪≫ α_ X X (tensorPower X _)).hom =
+      ((α_ X X (tensorPower X _)).symm ≪≫
+        ((β_ X X) ⊗ᵢ Iso.refl (tensorPower X _)) ≪≫ α_ X X (tensorPower X _)).inv
+  all_goals simp only [Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, Iso.symm_inv,
+    tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv, Category.assoc]
+
+/-- A reversed braid generator is inverted when the index is shifted. -/
+theorem reverse_braidGenerator_succ (X : C) (n : ℕ) (i : Fin (n + 1))
+    (h : @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n i =
+      (braidGenerator X n i)⁻¹) :
+    @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X (n + 1) i.succ =
+      (braidGenerator X (n + 1) i.succ)⁻¹ := by
+  obtain ⟨i, hi⟩ := i
+  change @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X (n + 1)
+      ⟨i + 1, Nat.succ_lt_succ hi⟩ =
+    (braidGenerator X (n + 1) ⟨i + 1, Nat.succ_lt_succ hi⟩)⁻¹
+  apply CategoryTheory.Aut.ext
+  apply Iso.ext
+  simp only [braidGenerator, h]
+  simp only [Aut.inv_asIso, Iso.symm_hom, tensorIso_hom, Iso.refl_hom]
+  change 𝟙 X ⊗ₘ (braidGenerator X n ⟨i, hi⟩).asIso.inv =
+    (Iso.refl X ⊗ᵢ (braidGenerator X n ⟨i, hi⟩).asIso).inv
+  rw [tensorIso_inv, Iso.refl_inv]
+
 theorem reverse_braidGenerator (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
     @braidGenerator C _ _ (CategoryTheory.reverseBraiding C) X n i =
       (braidGenerator X n i)⁻¹ := by
   intro n
   induction n with
   | zero =>
-    intro ⟨i, hi⟩
-    have : i = 0 := by omega
-    subst i
-    apply CategoryTheory.Aut.ext
-    apply Iso.ext
-    change ((α_ X X (tensorPower X 0)).symm ≪≫
-        ((β_ X X).symm ⊗ᵢ Iso.refl (tensorPower X 0)) ≪≫ α_ X X (tensorPower X 0)).hom =
-      ((α_ X X (tensorPower X 0)).symm ≪≫
-        ((β_ X X) ⊗ᵢ Iso.refl (tensorPower X 0)) ≪≫ α_ X X (tensorPower X 0)).inv
-    simp only [Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, Iso.symm_inv,
-      tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv, Category.assoc]
+    intro i
+    fin_cases i
+    exact reverse_braidGenerator_zero X 0
   | succ n ih =>
-    intro ⟨i, hi⟩
-    cases i with
-    | zero =>
-      apply CategoryTheory.Aut.ext
-      apply Iso.ext
-      change ((α_ X X (tensorPower X (n + 1))).symm ≪≫
-          ((β_ X X).symm ⊗ᵢ Iso.refl (tensorPower X (n + 1))) ≪≫
-            α_ X X (tensorPower X (n + 1))).hom =
-        ((α_ X X (tensorPower X (n + 1))).symm ≪≫
-          ((β_ X X) ⊗ᵢ Iso.refl (tensorPower X (n + 1))) ≪≫
-            α_ X X (tensorPower X (n + 1))).inv
-      simp only [Iso.trans_hom, Iso.trans_inv, Iso.symm_hom, Iso.symm_inv,
-        tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv, Category.assoc]
-    | succ i =>
-      apply CategoryTheory.Aut.ext
-      apply Iso.ext
-      simp only [braidGenerator, ih]
-      simp only [Aut.inv_asIso, Iso.symm_hom, tensorIso_hom, Iso.refl_hom]
-      change 𝟙 X ⊗ₘ (braidGenerator X n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso.inv =
-        (Iso.refl X ⊗ᵢ (braidGenerator X n ⟨i, Nat.lt_of_succ_lt_succ hi⟩).asIso).inv
-      rw [tensorIso_inv, Iso.refl_inv]
+    intro i
+    exact Fin.cases (reverse_braidGenerator_zero X (n + 1))
+      (fun j ↦ reverse_braidGenerator_succ X n j (ih j)) i
 
 end PropertyF.Ground.Centre
 
@@ -64,7 +68,8 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [bc : BraidedCategory C]
-local instance : BraidedCategory (C × C) := mixedBraiding
+/-- The product category uses the ordinary braiding on the first factor and its reverse on the second. -/
+local instance mixedBraidingCategory : BraidedCategory (C × C) := mixedBraiding
 
 instance fstMonoidal : (CategoryTheory.Prod.fst C C).Monoidal :=
   Functor.CoreMonoidal.toMonoidal { εIso := Iso.refl _, μIso := fun _ _ => Iso.refl _ }
@@ -117,24 +122,14 @@ theorem projections_jointly_injective (X Y : C) (n : ℕ) :
     Function.Injective (fun a : Aut (tensorPower (X,Y) (n+2)) =>
       (fstBraidMap X Y n a, sndBraidMap X Y n a)) := by
   intro a b h
-  have hf := congrArg Prod.fst h
-  have hs := congrArg Prod.snd h
   let p := Modular.tensorPowerComparison (CategoryTheory.Prod.fst C C) (X,Y) (n+2)
   let q := @Modular.tensorPowerComparison (C × C) _ _ (mixedBraiding (C := C)) C _ _
     (CategoryTheory.reverseBraiding C) (CategoryTheory.Prod.snd C C) sndBraided (X,Y) (n+2)
-  have hf' : (Functor.mapAut (tensorPower (X,Y) (n+2)) (CategoryTheory.Prod.fst C C)) a =
-      (Functor.mapAut (tensorPower (X,Y) (n+2)) (CategoryTheory.Prod.fst C C)) b := by
-    apply p.symm.conjAut.injective
-    exact hf
-  have hs' : (Functor.mapAut (tensorPower (X,Y) (n+2)) (CategoryTheory.Prod.snd C C)) a =
-      (Functor.mapAut (tensorPower (X,Y) (n+2)) (CategoryTheory.Prod.snd C C)) b := by
-    apply q.symm.conjAut.injective
-    exact hs
   apply Aut.ext
   apply Iso.ext
   apply Prod.ext
-  · exact congrArg (fun z => z.asIso.hom) hf'
-  · exact congrArg (fun z => z.asIso.hom) hs'
+  · exact congrArg (fun z => z.asIso.hom) (p.symm.conjAut.injective (congrArg Prod.fst h))
+  · exact congrArg (fun z => z.asIso.hom) (q.symm.conjAut.injective (congrArg Prod.snd h))
 
 /-- The projected first component of a product braid lies in the first image. -/
 theorem fstBraidMap_mem (X Y : C) (n : ℕ) :

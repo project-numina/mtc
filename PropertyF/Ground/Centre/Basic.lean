@@ -55,16 +55,6 @@ instance positiveFull : (CategoryTheory.Center.ofBraided C).Full where
     intro X Y f
     exact ⟨f.f, CategoryTheory.Center.ext _ _ rfl⟩
 
-instance negativeFaithful : (negative C).Faithful where
-  map_injective := by
-    intro X Y f g h
-    exact congrArg CategoryTheory.Center.Hom.f h
-
-instance negativeFull : (negative C).Full where
-  map_surjective := by
-    intro X Y f
-    exact ⟨f.f, CategoryTheory.Center.ext _ _ rfl⟩
-
 /-- The two canonical images centralize one another in the actual centre. -/
 theorem positive_negative_centralize (X Y : C) :
     (β_ ((CategoryTheory.Center.ofBraided C).obj X) ((negative C).obj Y)).hom ≫
@@ -96,32 +86,11 @@ theorem centralizes_symm {A B : CategoryTheory.Center C} (h : Centralizes A B) :
   apply (cancel_epi (β_ A B).hom).mp
   simp only [← Category.assoc, h, Category.id_comp, Category.comp_id]
 
-/-- The paper's half-braiding test is exactly centralization of the positive image. -/
-theorem centralizes_positive_image_iff (Y : CategoryTheory.Center C) :
-    (∀ X : C, Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X)) ↔
-      CentralizesPositive Y :=
-  ⟨fun h X ↦ congrArg CategoryTheory.Center.Hom.f (h X),
-    fun h X ↦ CategoryTheory.Center.ext _ _ (h X)⟩
-
 /-- The corresponding test for the negative image. -/
 theorem centralizes_negative_image_iff (Y : CategoryTheory.Center C) :
     (∀ X : C, Centralizes Y ((negative C).obj X)) ↔ CentralizesNegative Y :=
   ⟨fun h X ↦ congrArg CategoryTheory.Center.Hom.f (h X),
     fun h X ↦ CategoryTheory.Center.ext _ _ (h X)⟩
-
-/-- An object centralizing the positive image is canonically isomorphic to an
-object in the negative image, with the identity underlying morphism. -/
-def negativeIsoOfCentralizesPositive (Y : CategoryTheory.Center C)
-    (h : ∀ X : C, Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X)) :
-    Y ≅ (negative C).obj Y.1 := by
-  have hβ := (centralizesPositive_iff Y).mp ((centralizes_positive_image_iff Y).mp h)
-  let f : Y ⟶ (negative C).obj Y.1 :=
-    ⟨𝟙 _, fun X => by
-      change (𝟙 Y.1 ▷ X) ≫ (β_ X Y.1).inv = (Y.2.β X).hom ≫ (X ◁ 𝟙 Y.1)
-      simpa only [id_whiskerRight, whiskerLeft_id, Category.id_comp, Category.comp_id, Iso.symm_hom] using
-        (congrArg Iso.hom (hβ X)).symm⟩
-  letI : IsIso f.f := inferInstanceAs (IsIso (𝟙 Y.1))
-  exact CategoryTheory.Center.isoMk f
 
 /-- An object centralizing the negative image belongs to the positive image. -/
 def positiveIsoOfCentralizesNegative (Y : CategoryTheory.Center C)
@@ -241,25 +210,6 @@ theorem finiteDimensional_hom (K : Type*) [Field K] [Linear K C] [MonoidalLinear
       (CategoryTheory.Center.forget C).mapLinearMap K)
     (Functor.map_injective (CategoryTheory.Center.forget C))
 
-section Unit
-variable [BraidedCategory C]
-open CategoryTheory.Functor.Monoidal
-
-instance positiveLinear (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C] :
-    (CategoryTheory.Center.ofBraided C).Linear K where
-  map_smul := by
-    intros
-    apply CategoryTheory.Center.ext
-    rfl
-
-instance negativeLinear (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C] :
-    (negative C).Linear K where
-  map_smul := by
-    intros
-    apply CategoryTheory.Center.ext
-    rfl
-
-end Unit
 end PropertyF.Ground.Centre
 
 
@@ -287,10 +237,8 @@ def centerZero : CategoryTheory.Center C :=
 
 omit [HasZeroObject C] in
 /-- The forgetful functor detects zero objects. -/
-theorem isZero_of_forget (Z : CategoryTheory.Center C) (h : IsZero Z.1) : IsZero Z := by
-  apply (IsZero.iff_id_eq_zero _).mpr
-  apply CategoryTheory.Center.ext
-  exact h.eq_of_src _ _
+theorem isZero_of_forget (Z : CategoryTheory.Center C) (h : IsZero Z.1) : IsZero Z :=
+  (IsZero.iff_id_eq_zero _).mpr (CategoryTheory.Center.ext _ _ (h.eq_of_src _ _))
 
 /-- The constructed centre object over zero is a zero object. -/
 theorem centerZero_isZero : IsZero (centerZero (C := C)) :=

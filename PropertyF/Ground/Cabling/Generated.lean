@@ -17,7 +17,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
-  [BraidedCategory C] [Abelian C]
+  [Abelian C]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Tensoring two powers gives the corresponding combined power. -/
@@ -53,17 +53,6 @@ theorem generatedBy_of_iso {X Y Z : C} (hY : GeneratedBy X Y) (e : Z ≅ Y) :
 theorem generatedBy_self (X : C) : GeneratedBy X X :=
   generatedBy_of_iso (generatedBy_tensorPower X 1) (ρ_ X).symm
 
-/-- The full subcategory of generated objects, with its inherited category. -/
-abbrev generatedCategory (X : C) := (show ObjectProperty C from GeneratedBy X).FullSubcategory
-
-/-- The canonical full and faithful inclusion. -/
-abbrev generatedInclusion (X : C) : generatedCategory X ⥤ C :=
-  (show ObjectProperty C from GeneratedBy X).ι
-
-/-- The full subcategory on the generated objects contains the unit. -/
-instance generatedBy_containsUnit (X : C) : ObjectProperty.ContainsUnit (GeneratedBy X) where
-  prop_unit := generatedBy_unit X
-
 /-- Flatten an iterated finite biproduct. -/
 def flattenBiproduct (a b : ℕ) (f : Fin a → Fin b → C) :
     (⨁ fun i => ⨁ fun j => f i j) ≅ ⨁ fun p : Fin a × Fin b => f p.1 p.2 :=
@@ -83,7 +72,7 @@ def flattenDependent (a : ℕ) (b : Fin a → ℕ) (f : (i : Fin a) → Fin (b i
     piPiIso (fun i => Fin (b i)) f ≪≫ (biproduct.isoProduct _).symm
 
 /-- Finite biproducts of generated objects are generated. -/
-theorem generatedBy_biproduct (X : C) (a : ℕ) (f : Fin a → C)
+theorem generatedBy_biproduct {X : C} {a : ℕ} (f : Fin a → C)
     (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
   classical
   have hex : ∀ i, ∃ (n : ℕ) (k : Fin n → ℕ), Nonempty (Retract (f i) (⨁ fun j => tensorPower X (k j))) := by
@@ -110,10 +99,6 @@ theorem generatedBy_biproduct (X : C) (a : ℕ) (f : Fin a → C)
         rw [e.symm_apply_apply]))
   exact ⟨_, k', ⟨R.trans (Retract.ofIso e')⟩⟩
 
-/-- Generated objects are closed under isomorphism. -/
-instance generatedBy_isoClosed (X : C) : ObjectProperty.IsClosedUnderIsomorphisms (GeneratedBy X) where
-  of_iso e h := generatedBy_of_iso h e.symm
-
 /-- Generated objects are closed under biproducts indexed by any finite type. -/
 theorem generatedBy_finiteBiproduct (X : C) {J : Type} [Finite J] (f : J → C)
     (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
@@ -121,44 +106,9 @@ theorem generatedBy_finiteBiproduct (X : C) {J : Type} [Finite J] (f : J → C)
   let _ : Fintype J := Fintype.ofFinite J
   let e := Fintype.equivFin J
   let g : Fin (Fintype.card J) → C := fun i => f (e.symm i)
-  have hg := generatedBy_biproduct X _ g (fun i => hf (e.symm i))
+  have hg := generatedBy_biproduct g (fun i => hf (e.symm i))
   apply generatedBy_of_iso hg
   exact biproduct.whiskerEquiv e (fun j => eqToIso (by simp [g]))
-
-/-- The generated closure contains the zero object. -/
-instance generatedBy_containsZero (X : C) : ObjectProperty.ContainsZero (GeneratedBy X) where
-  exists_zero := by
-    obtain ⟨Z, hZ⟩ := HasZeroObject.zero (C := C)
-    exact ⟨Z, hZ, generatedBy_retract (generatedBy_unit X) (hZ.retract _)⟩
-
-/-- Generated objects are closed under finite products in the ambient category. -/
-instance generatedBy_finiteProducts (X : C) : ObjectProperty.IsClosedUnderFiniteProducts (GeneratedBy X) where
-  isClosedUnderLimitsOfShape J _ := by
-    apply ObjectProperty.IsClosedUnderLimitsOfShape.mk'
-    rintro _ ⟨F, hF⟩
-    apply generatedBy_of_iso (generatedBy_finiteBiproduct X (fun j : J => F.obj ⟨j⟩) (fun j => hF ⟨j⟩))
-    exact (Pi.isoLimit F).symm ≪≫ (biproduct.isoProduct _).symm
-
-/-- A full retract-closed finite-sum subcategory of a semisimple abelian
-category is abelian: the splitting assumptions express precisely the remaining
-semisimplicity input. -/
-@[instance_reducible] def generatedCategoryAbelianOfSplit (X : C)
-    (hmono : ∀ {A B : C} (f : A ⟶ B), Mono f → IsSplitMono f)
-    (hepi : ∀ {A B : C} (f : A ⟶ B), Epi f → IsSplitEpi f) :
-    Abelian (generatedCategory X) := by
-  let _ : ObjectProperty.IsClosedUnderSubobjects (GeneratedBy X) := {
-    prop_of_mono := by
-      intro A B f hf hB
-      let _ : IsSplitMono f := hmono f hf
-      exact generatedBy_retract hB { i := f, r := retraction f }
-  }
-  let _ : ObjectProperty.IsClosedUnderQuotients (GeneratedBy X) := {
-    prop_of_epi := by
-      intro A B f hf hA
-      let _ : IsSplitEpi f := hepi f hf
-      exact generatedBy_retract hA { i := section_ f, r := f }
-  }
-  infer_instance
 
 variable [MonoidalPreadditive C]
 /-- Distribute tensor product over two finite biproducts. -/
@@ -177,7 +127,7 @@ def sumPowersTensorIso (X : C) (a b : ℕ) (k : Fin a → ℕ) (l : Fin b → �
       simpa using (tensorPowerTensorIso X (k p.1) (l p.2)).symm)
 
 /-- The generated objects are closed under tensor product. -/
-theorem generatedBy_tensor (X Y Z : C) (hY : GeneratedBy X Y) (hZ : GeneratedBy X Z) :
+theorem generatedBy_tensor {X Y Z : C} (hY : GeneratedBy X Y) (hZ : GeneratedBy X Z) :
     GeneratedBy X (Y ⊗ Z) := by
   obtain ⟨a, k, ⟨rY⟩⟩ := hY
   obtain ⟨b, l, ⟨rZ⟩⟩ := hZ
@@ -192,7 +142,7 @@ theorem generatedBy_tensor (X Y Z : C) (hY : GeneratedBy X Y) (hZ : GeneratedBy 
 theorem generatedBy_tensorPower_of_generated {X Y : C} (hY : GeneratedBy X Y) :
     ∀ n, GeneratedBy X (tensorPower Y n)
   | 0 => generatedBy_unit X
-  | n + 1 => generatedBy_tensor X Y (tensorPower Y n) hY
+  | n + 1 => generatedBy_tensor hY
       (generatedBy_tensorPower_of_generated hY n)
 
 /-- Generation is transitive: if Y is generated by X, every object generated
@@ -201,15 +151,7 @@ theorem generatedBy_trans {X Y Z : C} (hY : GeneratedBy X Y) (hZ : GeneratedBy Y
     GeneratedBy X Z := by
   obtain ⟨a, k, ⟨r⟩⟩ := hZ
   exact generatedBy_retract
-    (generatedBy_biproduct X a (fun i => tensorPower Y (k i))
+    (generatedBy_biproduct (fun i => tensorPower Y (k i))
       (fun i => generatedBy_tensorPower_of_generated hY (k i))) r
-
-/-- The generated full subcategory inherits a braided monoidal structure. -/
-instance generatedBy_isMonoidal (X : C) :
-    ObjectProperty.IsMonoidal (GeneratedBy X) where
-  prop_tensor _ _ hY hZ := generatedBy_tensor X _ _ hY hZ
-
-/-- The generated inclusion inherits Mathlib's braided functor structure. -/
-@[instance_reducible] def generatedInclusionBraided (X : C) : (generatedInclusion X).Braided := inferInstance
 
 end PropertyF

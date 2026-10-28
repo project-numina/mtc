@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Integrate.CenterDualMate
+public import PropertyF.Ground.Integrate.CenterBundle
 
 /-! # Rigidity of the Drinfeld centre. -/
 
@@ -10,14 +10,6 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
-
-omit [RigidCategory C] in
-/-- At the tensor unit, every underlying morphism intertwines normalized
-crossings; this is the unit case of the evaluation and coevaluation equations. -/
-theorem normalized_unit_intertwines {X Y : C} (f : X ⟶ Y) :
-    (f ▷ (𝟙_ C)) ≫ (ρ_ Y).hom ≫ (λ_ Y).inv =
-      (ρ_ X).hom ≫ (λ_ X).inv ≫ ((𝟙_ C) ◁ f) := by
-  monoidal
 
 set_option backward.isDefEq.respectTransparency false in
 omit [RigidCategory C] in
@@ -30,19 +22,9 @@ theorem halfBraiding_unit (Z : CategoryTheory.Center C) :
     CategoryTheory.Center.leftUnitor_inv_f] at h
   exact h
 
-omit [RigidCategory C] in
-/-- Any underlying map between centre objects intertwines their
-half-braidings at the tensor unit. -/
-theorem centrality_at_unit (X Y : CategoryTheory.Center C) (f : X.1 ⟶ Y.1) :
-    (f ▷ (𝟙_ C)) ≫ (Y.2.β (𝟙_ C)).hom =
-      (X.2.β (𝟙_ C)).hom ≫ ((𝟙_ C) ◁ f) := by
-  rw [halfBraiding_unit, halfBraiding_unit]
-  simpa only [Category.assoc] using normalized_unit_intertwines f
-
 end PropertyF.Ground.CentreRigid
 
-/-! Lifting the underlying duality to the actual centre. The stated crossing
-coherence and intertwining equations are still open. -/
+/-! Lifting the underlying duality to the actual centre. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -50,13 +32,17 @@ namespace PropertyF.Ground.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
+/-- The normalized dual crossing respects tensor products. -/
+abbrev IsDualCrossingMonoidal (Z : CategoryTheory.Center C) : Prop :=
+  ∀ U V : C, ((Integrate.dualCrossingIso Z).app (U ⊗ V)).hom =
+    (α_ _ _ _).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ V) ≫
+      (α_ _ _ _).hom ≫ (U ◁ ((Integrate.dualCrossingIso Z).app V).hom) ≫
+        (α_ _ _ _).inv
+
 /-- If the normalized mate satisfies the half-braiding law, it defines an
 object of the actual centre on the underlying right dual. -/
 def dualObject (Z : CategoryTheory.Center C)
-    (hTensor : ∀ U V : C, ((Integrate.dualCrossingIso Z).app (U ⊗ V)).hom =
-      (α_ _ _ _).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ V) ≫
-        (α_ _ _ _).hom ≫ (U ◁ ((Integrate.dualCrossingIso Z).app V).hom) ≫
-          (α_ _ _ _).inv) : CategoryTheory.Center C :=
+    (hTensor : IsDualCrossingMonoidal Z) : CategoryTheory.Center C :=
   ⟨Z.1ᘁ, {
     β := fun U => (Integrate.dualCrossingIso Z).app U
     monoidal := hTensor
@@ -66,10 +52,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Once the underlying duality maps intertwine the lifted half-braidings,
 their triangle identities lift through the faithful forgetful functor. -/
 @[instance_reducible] def liftedPairing (Z : CategoryTheory.Center C)
-    (hTensor : ∀ U V : C, ((Integrate.dualCrossingIso Z).app (U ⊗ V)).hom =
-      (α_ _ _ _).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ V) ≫
-        (α_ _ _ _).hom ≫ (U ◁ ((Integrate.dualCrossingIso Z).app V).hom) ≫
-          (α_ _ _ _).inv)
+    (hTensor : IsDualCrossingMonoidal Z)
     (hCo : ∀ U, ((η_ Z.1 Z.1ᘁ) ▷ U) ≫
       ((Z ⊗ dualObject Z hTensor).2.β U).hom =
       ((𝟙_ (CategoryTheory.Center C)).2.β U).hom ≫ (U ◁ η_ Z.1 Z.1ᘁ))
@@ -99,10 +82,7 @@ every object, the actual centre is rigid. These coherence equations remain
 explicit hypotheses. -/
 @[instance_reducible] def rigidOfMateCoherence
     (h : ∀ Z : CategoryTheory.Center C,
-      ∃ (hTensor : ∀ U V : C, ((Integrate.dualCrossingIso Z).app (U ⊗ V)).hom =
-        (α_ _ _ _).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ V) ≫
-          (α_ _ _ _).hom ≫ (U ◁ ((Integrate.dualCrossingIso Z).app V).hom) ≫
-            (α_ _ _ _).inv),
+      ∃ (hTensor : IsDualCrossingMonoidal Z),
         (∀ U, ((η_ Z.1 Z.1ᘁ) ▷ U) ≫
           ((Z ⊗ dualObject Z hTensor).2.β U).hom =
           ((𝟙_ (CategoryTheory.Center C)).2.β U).hom ≫ (U ◁ η_ Z.1 Z.1ᘁ)) ∧
@@ -165,7 +145,7 @@ theorem dualMateUnit_crossed_coevaluation (Z : Center C) :
   η_ (ᘁZ.1) Z.1 ≫ ((Integrate.dualMateUnit Z).inv ▷ Z.1) := by
   have h := CentreRigid.dualMate_unit_explicit Z (𝟙_ C)
   have hn := Z.2.naturality (ρ_ Z.1ᘁ).hom
-  dsimp [Integrate.dualMateUnit] 
+  dsimp [Integrate.dualMateUnit]
   simp only [Category.assoc, comp_whiskerRight]
   calc
     _ = ((λ_ (𝟙_ C)).inv ≫ (η_ Z.1 Z.1ᘁ ▷ (𝟙_ C)) ≫
@@ -237,10 +217,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- If the normalized crossing is monoidal, the chosen coevaluation is a
 morphism in the actual centre, without further hypotheses. -/
 theorem coevaluation_central (Z : Center C)
-    (hTensor : ∀ U V : C, ((Integrate.dualCrossingIso Z).app (U ⊗ V)).hom =
-      (α_ _ _ _).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ V) ≫
-        (α_ _ _ _).hom ≫ (U ◁ ((Integrate.dualCrossingIso Z).app V).hom) ≫
-          (α_ _ _ _).inv) (U : C) :
+    (hTensor : IsDualCrossingMonoidal Z) (U : C) :
     ((η_ Z.1 Z.1ᘁ) ▷ U) ≫ ((Z ⊗ dualObject Z hTensor).2.β U).hom =
       ((𝟙_ (Center C)).2.β U).hom ≫ (U ◁ η_ Z.1 Z.1ᘁ) := by
   have h := coevaluation_sliding Z U
@@ -380,10 +357,7 @@ theorem evaluation_sliding (Z : Center C) (U : C) :
 set_option backward.isDefEq.respectTransparency false in
 /-- The chosen base evaluation is a morphism of actual centre objects. -/
 theorem evaluation_central (Z : Center C)
-    (hTensor : ∀ U V : C, ((Integrate.dualCrossingIso Z).app (U ⊗ V)).hom =
-      (α_ _ _ _).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ V) ≫
-        (α_ _ _ _).hom ≫ (U ◁ ((Integrate.dualCrossingIso Z).app V).hom) ≫
-          (α_ _ _ _).inv) (U : C) :
+    (hTensor : IsDualCrossingMonoidal Z) (U : C) :
     ((ε_ Z.1 Z.1ᘁ) ▷ U) ≫ ((𝟙_ (Center C)).2.β U).hom =
       ((dualObject Z hTensor ⊗ Z).2.β U).hom ≫ (U ◁ ε_ Z.1 Z.1ᘁ) := by
   have h := evaluation_sliding Z U

@@ -21,11 +21,8 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D] 
 theorem rightDualTensorIso_monodromy {X Y : D} :
     (Modular.doubleBraiding X Y)ᘁ ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X Y).hom ≫ Modular.doubleBraiding (Yᘁ) (Xᘁ) := by
-  unfold Modular.doubleBraiding
-  simp only [comp_rightAdjointMate, Category.assoc]
-  rw [Dimensions.rightDualTensorIso_braiding X Y]
-  rw [← Category.assoc ((β_ Y X).homᘁ), Dimensions.rightDualTensorIso_braiding Y X]
-  simp [Category.assoc]
+  simp [Modular.doubleBraiding, comp_rightAdjointMate, Category.assoc,
+    Dimensions.rightDualTensorIso_braiding]
 
 end PropertyF.Ground.CentreInduction
 

@@ -10,11 +10,12 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A projection from a chosen fusion decomposition corresponds to the dual
 basis functional of the matching inclusion. -/
-theorem pairing_crossingProjection (C : BraidedFusionCategory.{v,u})
+theorem pairing_crossingProjection
     (T : C.Obj) (i j : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j))) :
     Dimensions.simpleHomPairingEquiv C i (T ⊗ simples C j) (crossingProjection C T i j a) =
@@ -43,7 +44,7 @@ theorem pairing_crossingProjection (C : BraidedFusionCategory.{v,u})
 
 /-- The perfect pairing is natural for maps between different underlying
 objects: precomposition corresponds to dualizing postcomposition. -/
-theorem simpleHomPairingEquiv_natural (C : BraidedFusionCategory.{v,u})
+theorem simpleHomPairingEquiv_natural
     (i : Fin (rank C)) {V W : C.Obj} (q : V ⟶ W) (f : W ⟶ simples C i) :
     Dimensions.simpleHomPairingEquiv C i V (q ≫ f) =
       Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q)
@@ -88,8 +89,8 @@ theorem dualBasis_contraction_natural {I J : Type} [Fintype I] [Fintype J] [Deci
 
 /-- The fusion-basis contraction is independent of which side of a map
 `T ⊗ Sⱼ ⟶ U ⊗ Sⱼ` is used to insert the decomposition. -/
-theorem fusionBasis_contraction_natural (C : BraidedFusionCategory.{v,u})
-    (T U : C.Obj) (i j : Fin (rank C))
+theorem fusionBasis_contraction_natural
+    {T U : C.Obj} (i j : Fin (rank C))
     (q : T ⊗ simples C j ⟶ U ⊗ simples C j)
     {E : Type*} [AddCommGroup E] [Module ℂ E]
     (F : (simples C i ⟶ U ⊗ simples C j) →ₗ[ℂ]
@@ -123,12 +124,12 @@ theorem fusionBasis_contraction_natural (C : BraidedFusionCategory.{v,u})
 
 /-- A mixed crossing block, with the input and output test strands allowed
 to differ, is bilinear in its two fusion morphisms. -/
-def mixedCrossingBilinear (C : BraidedFusionCategory.{v,u})
-    (X T U R S : C.Obj) : (R ⟶ U ⊗ S) →ₗ[ℂ]
+def mixedCrossingBilinear {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D] (X T U R S : D) : (R ⟶ U ⊗ S) →ₗ[ℂ]
       (T ⊗ S ⟶ R) →ₗ[ℂ] (((R ⊗ X) ⊗ Rᘁ) ⊗ T ⟶ U ⊗ ((S ⊗ X) ⊗ Sᘁ)) where
   toFun g := {
     toFun := fun f =>
-      (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap C T S R f) ≫
+      (α_ (R ⊗ X) (Rᘁ) T).hom ≫ ((g ▷ X) ⊗ₘ closeFusionMap T S R f) ≫
         (α_ (U ⊗ S) X (Sᘁ)).hom ≫ (α_ U S (X ⊗ Sᘁ)).hom ≫
           (U ◁ (α_ S X (Sᘁ)).inv)
     map_add' := by

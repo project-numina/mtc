@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Fusion.Reciprocity
+public import PropertyF.Ground.Fusion.Agreement
 public import Mathlib.LinearAlgebra.Matrix.DotProduct
 public import Mathlib.LinearAlgebra.Matrix.ConjTranspose
 public import Mathlib.Analysis.RCLike.Basic
@@ -10,6 +10,7 @@ public import Mathlib.Analysis.RCLike.Basic
 open CategoryTheory
 open scoped BigOperators Matrix ComplexOrder
 namespace PropertyF.Ground
+universe v u
 
 /-- An eigenvalue shared by a real matrix and its transpose on the same
 nonzero complex eigenvector is real. -/
@@ -80,5 +81,20 @@ theorem selfDual_character_galois_real (C : BraidedFusionCategory)
     simpa using congrArg σ (hchar j k)
   · intro j
     rw [hdual]
+
+/-- Every Galois conjugate of an actual simple FP dimension is real. -/
+theorem fp_simple_galois_real (C : BraidedFusionCategory.{v,u})
+    (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
+    (((σ (fpSimple C i : ℂ)).re : ℝ) : ℂ) = σ (fpSimple C i : ℂ) := by
+  let χ : Fin (rank C) → ℂ := fun i => (fpSimple C i : ℂ)
+  have hχ : χ (unitIndex C) ≠ 0 := by simp [χ, fpSimple_unit]
+  have hchar : ∀ i j, χ i * χ j = ∑ k, (fusionCoeff C i j k : ℂ) * χ k := by
+    intro i j
+    dsimp [χ]
+    exact_mod_cast fpSimple_mul C i j
+  have hdual : ∀ i, χ (dualIndex C i) = χ i := by intro i; simp [χ, fpSimple_dual]
+  apply Complex.conj_eq_iff_re.mp
+  simpa only [← Complex.star_def] using selfDual_character_galois_real C χ (unitIndex C)
+    hχ hchar hdual σ i
 
 end PropertyF.Ground

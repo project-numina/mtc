@@ -26,20 +26,20 @@ theorem doubleBraiding_natural {D : Type u} [Category.{v} D] [MonoidalCategory D
 /-- Centrality descends along a split inclusion. -/
 theorem doubleBraiding_eq_one_of_retract
     {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
-    {X Z : D} (r : Retract X Z) (Y : D)
+    {X Z : D} (r : Retract X Z) {Y : D}
     (h : Modular.doubleBraiding Z Y = 𝟙 _) : Modular.doubleBraiding X Y = 𝟙 _ := by
   have hh := Modular.doubleBraiding_natural_left r.i Y
   rw [h, Category.comp_id] at hh
   have hh' := congrArg (fun t => t ≫ (r.r ▷ Y)) hh
   simpa only [Category.assoc, ← comp_whiskerRight, r.retract, id_whiskerRight,
-    Category.comp_id] using hh' 
+    Category.comp_id] using hh'
 
 /-- If all the components of a finite biproduct centralize an object, their
 biproduct centralizes it. -/
 theorem doubleBraiding_eq_one_biproduct
     {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D]
     [MonoidalPreadditive D] [BraidedCategory D]
-    {J : Type} [Fintype J] (V : J → D) (Y : D)
+    {J : Type} [Fintype J] {V : J → D} {Y : D}
     (h : ∀ i, Modular.doubleBraiding (V i) Y = 𝟙 _) :
     Modular.doubleBraiding (⨁ V) Y = 𝟙 _ := by
   classical
@@ -54,7 +54,7 @@ theorem doubleBraiding_eq_one_biproduct
 theorem doubleBraiding_eq_one_of_simple_constituents
     (D : Ground.BraidedFusionCategory.{v,u}) (P : D.Obj → Prop)
     (hP : ∀ {X Z : D.Obj}, Retract X Z → P Z → P X)
-    (X Y : D.Obj) (hX : P X)
+    {X Y : D.Obj} (hX : P X)
     (h : ∀ i, P (simples D i) → Modular.doubleBraiding (simples D i) Y = 𝟙 _) :
     Modular.doubleBraiding X Y = 𝟙 _ := by
   classical
@@ -63,8 +63,8 @@ theorem doubleBraiding_eq_one_of_simple_constituents
   have hv (a : Σ i, Fin (m i)) : P (V a) := by
     apply hP ((Retract.mk (biproduct.ι V a) (biproduct.π V a) (by simp)).trans (Retract.ofIso e.symm)) hX
   have hb : Modular.doubleBraiding (⨁ V) Y = 𝟙 _ :=
-    doubleBraiding_eq_one_biproduct V Y (fun a => h a.1 (hv a))
-  exact doubleBraiding_eq_one_of_retract (Retract.ofIso e) Y hb
+    doubleBraiding_eq_one_biproduct (fun a => h a.1 (hv a))
+  exact doubleBraiding_eq_one_of_retract (Retract.ofIso e) hb
 
 end PropertyF.Ground.CentreCabling
 

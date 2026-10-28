@@ -1,7 +1,6 @@
 module
 public import PropertyF.Ground.Modular.CharacterStar
 public import PropertyF.Ground.Fusion.Agreement
-public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Fusion.Reciprocity
 
@@ -19,12 +18,20 @@ universe v u
 variable (D : Ground.BraidedFusionCategory.{v,u})
   (p : Dimensions.PivotalStructure (C := D.Obj))
 
+/-- Two simple labels satisfy the numerical S-matrix centrality test. -/
+abbrev sCentralizes (i j : Fin (rank D)) : Prop :=
+  Modular.categoricalS D p i j = Modular.simpleDimension D p i * Modular.simpleDimension D p j
+
+/-- The labels satisfying the numerical S-centrality test against a set. -/
+abbrev sCentralizer (A : Set (Fin (rank D))) : Set (Fin (rank D)) :=
+  {j | ∀ i ∈ A, sCentralizes D p i j}
+
 /-- The numerical S-centralizer is closed under dual labels when dimensions
 are the positive FP dimensions. -/
 theorem sCentralizer_closed_under_dual
-    (hdim : ∀ a, Modular.simpleDimension D p a = (fpSimple D a : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     (i y : Fin (rank D))
-    (hi : Modular.categoricalS D p i y = Modular.simpleDimension D p i * Modular.simpleDimension D p y) :
+    (hi : sCentralizes D p i y) :
     Modular.categoricalS D p (dualIndex D i) y =
       Modular.simpleDimension D p (dualIndex D i) * Modular.simpleDimension D p y := by
   have hreal (a) : starRingEnd ℂ (Modular.simpleDimension D p a) = Modular.simpleDimension D p a := by
@@ -83,8 +90,7 @@ theorem nonzero_dual_coefficient_of_sCentralizer
     (hunit : f (unitIndex D) ≠ 0)
     (hsupport : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0)
     (x : Fin (rank D))
-    (hx : ∀ y ∈ core, Modular.categoricalS D p x y =
-      Modular.simpleDimension D p x * Modular.simpleDimension D p y) :
+    (hx : ∀ y ∈ core, sCentralizes D p x y) :
     f (dualIndex D x) ≠ 0 := by
   classical
   let T (y : Fin (rank D)) := ∑ i, Modular.categoricalS D p y i * f i
@@ -118,13 +124,12 @@ regular-vector identity. -/
 theorem doubleCentralizer_of_fourier_support
     (hp : p.IsSpherical)
     (hdet : (Modular.categoricalS D p).det ≠ 0)
-    (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     (f : Fin (rank D) → ℂ) (core generated : Set (Fin (rank D)))
     (hunit : f (unitIndex D) ≠ 0)
     (hgenerated : ∀ y, f y ≠ 0 → y ∈ generated)
     (hsupport : ∀ y, y ∉ core → ∑ i, Modular.categoricalS D p y i * f i = 0) :
-    ∀ x, (∀ y ∈ core, Modular.categoricalS D p y x =
-      Modular.simpleDimension D p y * Modular.simpleDimension D p x) → x ∈ generated := by
+    sCentralizer D p core ⊆ generated := by
   intro x hx
   have hreal (j) : starRingEnd ℂ (Modular.simpleDimension D p j) = Modular.simpleDimension D p j := by
     rw [hdim]
@@ -133,8 +138,9 @@ theorem doubleCentralizer_of_fourier_support
       Modular.categoricalS D p (dualIndex D x) y =
         Modular.simpleDimension D p (dualIndex D x) * Modular.simpleDimension D p y := by
     apply sCentralizer_closed_under_dual D p hdim x y
+    unfold sCentralizes
     rw [Modular.categoricalS_symmetric]
-    simpa [mul_comm] using hx y hy
+    simpa [sCentralizes, mul_comm] using hx y hy
   have h := nonzero_dual_coefficient_of_sCentralizer D p hp hdet hreal f core
     hunit hsupport (dualIndex D x) hdual
   rw [dualIndex_involutive D x] at h
@@ -151,7 +157,7 @@ variable (D : Ground.BraidedFusionCategory.{v,u})
 /-- The S-transform of a common FP eigenvector vanishes at every label whose
 normalized S character differs from the FP character on a chosen label. -/
 theorem fourier_eq_zero_of_fusion_eigenvector
-    (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     (f : Fin (rank D) → ℂ) (a y : Fin (rank D))
     (heigen : ∀ k, ∑ i, (fusionCoeff D a i k : ℂ) * f i = (fpSimple D a : ℂ) * f k)
     (hne : Modular.categoricalS D p a y ≠
@@ -205,7 +211,7 @@ theorem regular_vector_fusion_eigenvector
       (fpSimple D a : ℂ) * (if k ∈ A then (fpSimple D k : ℂ) else 0) := by
   classical
   by_cases hk : k ∈ A
-  · simp only [hk, if_true]
+  · simp only [hk, ite_true]
     calc
       _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
         apply Finset.sum_congr rfl
@@ -221,7 +227,7 @@ theorem regular_vector_fusion_eigenvector
       _ = (fpSimple D a : ℂ) * (fpSimple D k : ℂ) := by
         have hh := congrArg (fun z : ℝ => (z : ℂ)) (fpSimple_mul D (dualIndex D a) k)
         simpa [fpSimple_dual] using hh.symm
-  · simp only [hk, if_false, mul_zero]
+  · simp only [hk, ite_false, mul_zero]
     apply Finset.sum_eq_zero
     intro i _
     by_cases hi : i ∈ A
@@ -237,19 +243,17 @@ labels. The supplied core must contain its numerical S-centralizer. -/
 theorem doubleCentralizer_of_fusion_closed
     (hp : p.IsSpherical)
     (hdet : (Modular.categoricalS D p).det ≠ 0)
-    (hdim : ∀ j, Modular.simpleDimension D p j = (fpSimple D j : ℂ))
+    (hdim : Modular.HasFPSimpleDimensions D p)
     (A : Finset (Fin (rank D))) (core : Set (Fin (rank D)))
     (hunit : unitIndex D ∈ A)
     (hdual : ∀ a ∈ A, dualIndex D a ∈ A)
     (hclosed : ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < fusionCoeff D a b k → k ∈ A)
-    (hcore : ∀ y, (∀ a ∈ A, Modular.categoricalS D p a y =
-      Modular.simpleDimension D p a * Modular.simpleDimension D p y) → y ∈ core) :
-    ∀ x, (∀ y ∈ core, Modular.categoricalS D p y x =
-      Modular.simpleDimension D p y * Modular.simpleDimension D p x) → x ∈ A := by
+    (hcore : sCentralizer D p (↑A : Set _) ⊆ core) :
+    sCentralizer D p core ⊆ (↑A : Set _) := by
   classical
   let f (i : Fin (rank D)) : ℂ := if i ∈ A then (fpSimple D i : ℂ) else 0
   have hu : f (unitIndex D) ≠ 0 := by
-    simp only [f, hunit, if_true, ne_eq, Complex.ofReal_eq_zero]
+    simp only [f, hunit, ite_true, ne_eq, Complex.ofReal_eq_zero]
     exact ne_of_gt (fpSimple_pos D (unitIndex D))
   have hgen : ∀ i, f i ≠ 0 → i ∈ (↑A : Set (Fin (rank D))) := by
     intro i hi
