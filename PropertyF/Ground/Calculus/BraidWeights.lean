@@ -61,19 +61,18 @@ simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
 theorem pivotalTrace_groundEndBlocks :
     scalar (p.rightTrace a.asHom) =
-      ∑ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) * (groundEndBlockEquiv C e a i).trace :=
+      ∑ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) * (groundEndBlockEquiv C e a i).trace := by
   let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
-  let hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj e p a
-  let h := cyclicTrace_biproduct_scalar_blocks
+  have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj e p a
+  have h := cyclicTrace_biproduct_scalar_blocks
     (fun Y => scalar.toLinearMap.comp (rightTraceWithLinear (p.iso Y)))
     (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
     (c := fun q => groundEndBlockEquiv C e a q.1 q.2 q.2)
     (fun ⟨i, j⟩ => by simpa [F, z, Category.assoc] using groundEndBlockEquiv_diagonal C e a i j)
-  by
-    rw [← hz]
-    simpa [rightTraceWithLinear, PivotalStructure.rightTrace, F, Matrix.trace, Finset.mul_sum, mul_comm,
-      Fintype.sum_sigma] using h
+  rw [← hz]
+  simpa [rightTraceWithLinear, PivotalStructure.rightTrace, F, Matrix.trace, Finset.mul_sum, mul_comm,
+    Fintype.sum_sigma] using h
 
 end PropertyF.Ground.Calculus
 
