@@ -9,17 +9,20 @@ universe v u
 namespace PropertyF.Ground.CentreInduction
 variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [LeftRigidCategory D]
 
-omit [Abelian D] in
-/-- Tensoring with any object preserves injectives in a left-rigid category. -/
-theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U) :=
+omit [Abelian D] [LeftRigidCategory D] in
+/-- Tensoring with an object whose first two left duals exist preserves injectives. -/
+theorem tensor_preserves_injective (J U : D)
+    [HasLeftDual U] [HasLeftDual (ᘁU)] [Injective J] : Injective (J ⊗ U) :=
   letI : (tensorRight (ᘁU)).IsRightAdjoint :=
     ⟨⟨tensorRight (ᘁ(ᘁU)), ⟨tensorRightAdjunction (ᘁ(ᘁU)) (ᘁU)⟩⟩⟩
   (tensorRightAdjunction (ᘁU) U).map_injective J inferInstance
 
-omit [Abelian D] in
-/-- A unit retract of a tensor product with an injective makes every object injective. -/
+omit [Abelian D] [LeftRigidCategory D] in
+/-- A unit retract of a tensor product with an injective makes an object with
+two left duals injective. -/
 theorem all_injective_of_unit_retract {J U : D} [Injective J]
-    (r : Retract (𝟙_ D) (J ⊗ U)) (X : D) : Injective X :=
+    [HasLeftDual U] [HasLeftDual (ᘁU)] (r : Retract (𝟙_ D) (J ⊗ U)) (X : D)
+    [HasLeftDual X] [HasLeftDual (ᘁX)] : Injective X :=
   letI : Injective (J ⊗ U) := tensor_preserves_injective J U
   letI : Injective (𝟙_ D) := r.injective
   Injective.of_iso (λ_ X) (tensor_preserves_injective (𝟙_ D) X)
@@ -56,8 +59,8 @@ theorem center_fusion_of_unit_retract {U : 𝒵}
 set_option backward.isDefEq.respectTransparency false in
 /-- A cap with nonzero unit composite gives a unit retract. -/
 def unitRetractOfNonzeroCap {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [RightRigidCategory D] [Preadditive D] [HasKernels D] [Simple (𝟙_ D)]
-    {J : D} (cap : J ⊗ Jᘁ ⟶ 𝟙_ D) (hne : η_ J (Jᘁ) ≫ cap ≠ 0) :
+    [Preadditive D] [HasKernels D] [Simple (𝟙_ D)]
+    {J : D} [HasRightDual J] (cap : J ⊗ Jᘁ ⟶ 𝟙_ D) (hne : η_ J (Jᘁ) ≫ cap ≠ 0) :
     Retract (𝟙_ D) (J ⊗ Jᘁ) :=
   letI : IsIso (η_ J (Jᘁ) ≫ cap) := isIso_of_hom_simple hne
   { i := η_ J (Jᘁ), r := cap ≫ inv (η_ J (Jᘁ) ≫ cap)
