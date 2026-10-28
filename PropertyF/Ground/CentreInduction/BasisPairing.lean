@@ -225,14 +225,14 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingCandidate_natural_test {T U : C.Obj} (h : T ⟶ U) :
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
-  let V := inductionSummand C X
-  refine rightDistributor_ext_left (f := V) fun i => ?_
-  dsimp [V, underlying] at *
+  refine rightDistributor_ext_left (f := inductionSummand C X) fun i => ?_
+  dsimp [underlying] at *
   rw [← whisker_exchange_assoc]
   simp only [crossingCandidate_on_summand, crossingCandidate_on_summand_assoc,
     Preadditive.comp_sum, Preadditive.sum_comp]
   refine Finset.sum_congr rfl fun j _ => ?_
-  simpa only [Category.assoc, whisker_exchange, Preadditive.sum_comp, V] using
-    congrArg (fun g => g ≫ (U ◁ biproduct.ι V j)) (crossingBlock_sum_natural_test C X T U h i j)
+  simpa only [Category.assoc, whisker_exchange, Preadditive.sum_comp] using
+    congrArg (fun g => g ≫ (U ◁ biproduct.ι (inductionSummand C X) j))
+      (crossingBlock_sum_natural_test C X T U h i j)
 
 end PropertyF.Ground.CentreInduction
