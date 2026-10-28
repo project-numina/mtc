@@ -1,2 +1,5 @@
 module
 public import Conjectures.Seed
+public import Conjectures.PropertyF.NaiduRowell
+public import Conjectures.PropertyF.PropertyFImpliesWeaklyIntegral
+public import Conjectures.PropertyF.WeaklyIntegralImpliesPropertyF
