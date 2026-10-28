@@ -86,9 +86,8 @@ theorem fusion_character_dual_eq_conj (i : ι) : χ (d i) = star (χ i) := by
   simpa using congrArg star (conjugate_of_transpose_eigenvector (fun j k ↦ (N i j k : K))
     (fun j k ↦ star_natCast _) (fun hz ↦ hχ (congrFun hz i₀))
     (fusion_character_eigenvector hchar i) (by
-      have hA : (fun j k ↦ (N (d i) j k : K)) = (fun j k ↦ (N i j k : K))ᵀ :=
-        Matrix.ext fun j k ↦ congrArg (fun n : ℕ ↦ (n : K)) (hN i j k)
-      simpa only [hA] using fusion_character_eigenvector hchar (d i)))
+      change (fun j k ↦ (N i k j : K)) *ᵥ χ = χ (d i) • χ
+      simpa only [hN] using fusion_character_eigenvector hchar (d i)))
 
 variable (hdual : ∀ i, χ (d i) = χ i)
 include hdual
