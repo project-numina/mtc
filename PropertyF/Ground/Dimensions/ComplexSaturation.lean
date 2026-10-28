@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.ENOMatrices
 /-! # Saturation of complex eigenvalue bounds
 
 Equality in weighted complex bounds determines the phases of eigenvectors.
+
+## Main results
+
+* `complex_weighted_saturation`: extracts equality term by term from a saturated weighted sum.
+* `fusion_complex_eigenvalue_saturation`: determines the phases in the fusion eigenvalue bound.
 -/
 
 @[expose] public noncomputable section

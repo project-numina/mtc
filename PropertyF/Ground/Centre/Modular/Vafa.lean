@@ -121,9 +121,8 @@ def homAction {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D] [Preadd
 /-- The action on a Hom space respects composition of automorphisms. -/
 theorem homAction_trans {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
     [Preadditive D] [Linear R D] {S X : D} (a b : X ≅ X) :
-    homAction (R := R) S X (a ≪≫ b) = (homAction (R := R) S X a).trans (homAction (R := R) S X b) := by
-  ext f
-  simp [homAction, CategoryTheory.Linear.homCongr_apply, Category.assoc]
+    homAction (R := R) S X (a ≪≫ b) = (homAction (R := R) S X a).trans (homAction (R := R) S X b) :=
+  LinearEquiv.ext fun f ↦ by simp [homAction, CategoryTheory.Linear.homCongr_apply, Category.assoc]
 
 /-- The actual FP-weighted categorical determinant of an automorphism,
 valued in a real vector space that detects torsion. -/
@@ -444,7 +443,7 @@ theorem base_finite_simple_sum (X : C.Obj) :
     CentreInduction.FiniteSimpleSum C.Obj X := by
   let (A B : C.Obj) : FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite _ _
   let (W : C.Obj) : Injective W := object_injective C W
-  apply CentreInduction.finiteSimpleSum_of_injective ?_ X
+  apply CentreInduction.finiteSimpleSum_of_injective (k := ℂ) ?_ X
   intro W hW
   obtain ⟨i, hi⟩ := exists_positive_multiplicity C hW
   let : Simple (simples C i) := simples_simple C i

@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.Drinfeld
 /-! # Braiding and dual tensor products
 
 Evaluation cap slides show that the right-dual tensor comparison transports the braiding.
+
+## Main results
+
+* `braiding_cap_slide`: slides a braiding past an evaluation cap.
+* `rightDualTensorIso_braiding`: establishes the braiding law for the right-dual tensor comparison.
 -/
 
 @[expose] public noncomputable section

@@ -102,9 +102,9 @@ theorem unit_block {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigi
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit-block diagram depends linearly on its fusion endomorphism. -/
-def unitBlockLinear {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D] (Z : CategoryTheory.Center D) (T S : D) :
-    (T ⊗ S ⟶ T ⊗ S) →ₗ[ℂ] (Z.1 ⊗ T ⟶ T ⊗ ((S ⊗ Z.1) ⊗ Sᘁ)) where
+def unitBlockLinear {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (Z : CategoryTheory.Center D) (T S : D) :
+    (T ⊗ S ⟶ T ⊗ S) →ₗ[k] (Z.1 ⊗ T ⟶ T ⊗ ((S ⊗ Z.1) ⊗ Sᘁ)) where
   toFun h := 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ h ▷ Sᘁ ⊗≫
     𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _
   map_add' := by
@@ -118,9 +118,9 @@ def unitBlockLinear {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRig
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The identity fusion endomorphism yields the centre intertwining diagram. -/
-theorem unitBlockLinear_id {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
-    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D] (Z : CategoryTheory.Center D) (T S : D) :
-    unitBlockLinear Z T S (𝟙 (T ⊗ S)) = (Z.2.β T).hom ≫ (T ◁
+theorem unitBlockLinear_id {k : Type*} [CommSemiring k] {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    [Preadditive D] [Linear k D] [MonoidalPreadditive D] [MonoidalLinear k D] (Z : CategoryTheory.Center D) (T S : D) :
+    unitBlockLinear (k := k) Z T S (𝟙 (T ⊗ S)) = (Z.2.β T).hom ≫ (T ◁
       ((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫ (α_ Z.1 S (Sᘁ)).inv ≫
         ((Z.2.β S).hom ▷ Sᘁ))) := by
   dsimp only [unitBlockLinear, LinearMap.coe_mk, AddHom.coe_mk]
@@ -157,13 +157,13 @@ theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)
   classical
   calc
     _ = ∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
-      unitBlockLinear Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
+      unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
         crossingInclusion C T p.1 j p.2) := by
       apply Finset.sum_congr rfl
       intro p _
       exact unit_block Z
         (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
-    _ = unitBlockLinear Z T (simples C j)
+    _ = unitBlockLinear (k := ℂ) Z T (simples C j)
       (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
         crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) := by rw [map_sum]
     _ = _ := by rw [crossing_completeness, unitBlockLinear_id]; rfl
@@ -175,13 +175,11 @@ theorem unitCandidate_sum (Z : CategoryTheory.Center C.Obj) :
   unitCandidate C Z = ∑ i, unitComponent C Z i ≫ biproduct.ι V i := by
   classical
   let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
-  have h := congrArg (fun f => unitCandidate C Z ≫ f) (biproduct.total (f := V))
   have hp (i) : unitCandidate C Z ≫ biproduct.π V i = unitComponent C Z i :=
     biproduct.lift_π _ _
-  simp only [Preadditive.comp_sum, ← Category.assoc, hp] at h
   have hid : unitCandidate C Z ≫ 𝟙 (⨁ V) = unitCandidate C Z := Category.comp_id _
-  rw [hid] at h
-  exact h.symm
+  simpa only [hid, Preadditive.comp_sum, ← Category.assoc, hp] using
+    (congrArg (fun f => unitCandidate C Z ≫ f) (biproduct.total (f := V))).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/

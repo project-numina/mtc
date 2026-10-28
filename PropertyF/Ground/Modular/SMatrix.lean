@@ -94,10 +94,10 @@ theorem categoricalS_symmetric (i j : Fin (rank C)) :
 
 /-- The unit column consists of categorical dimensions. -/
 theorem categoricalS_unit (i : Fin (rank C)) :
-    categoricalS C p i (unitIndex C) = simpleDimension C p i := by
-  obtain ⟨e⟩ := unitIndex_iso C
-  simpa [categoricalS, simpleDimension, SEntry_unit] using
-    congrArg (Ground.unitScalarEquiv C) (SEntry_iso_right p (simples C i) e)
+    categoricalS C p i (unitIndex C) = simpleDimension C p i :=
+  (unitIndex_iso C).elim fun e ↦
+    congrArg (Ground.unitScalarEquiv C)
+      ((SEntry_iso_right p (simples C i) e).trans (SEntry_unit p (simples C i)))
 
 /-- In the spherical case, global dimension is the sum of squared simple dimensions. -/
 theorem categorical_global_eq_sum_squares (hp : p.IsSpherical) :
@@ -141,9 +141,9 @@ theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :
 
 /-- Every simple categorical dimension is nonzero, without pseudo-unitarity. -/
 theorem simpleDimension_ne_zero (i : Fin (rank C)) :
-    simpleDimension C p i ≠ 0 := by
-  let _ : Simple (simples C i) := simples_simple C i
-  simpa only [simpleDimension, ← Ground.unitScalar_eq_equiv, ← groundUnitScalarEquiv_apply] using
+    simpleDimension C p i ≠ 0 :=
+  letI : Simple (simples C i) := simples_simple C i
+  by simpa only [simpleDimension, ← Ground.unitScalar_eq_equiv, ← groundUnitScalarEquiv_apply] using
     unitScalar_rightTrace_ne_zero C p (simples C i)
 
 end PropertyF.Ground.Modular

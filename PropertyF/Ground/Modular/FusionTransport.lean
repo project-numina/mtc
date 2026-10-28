@@ -136,11 +136,10 @@ theorem ground_conjugate_images (Y : D.Obj) (n : ℕ) :
 
 /-- Property F is invariant in the forward direction under Galois conjugacy. -/
 theorem conjugate_propertyF
-    (hF : HasPropertyF C.Obj) : HasPropertyF D.Obj := by
-  intro Y n
-  obtain ⟨X, ⟨e⟩⟩ := ground_conjugate_images h Y n
-  let _ : Finite (braidImage X n) := hF X n
-  exact Finite.of_equiv (braidImage X n) e.symm.toEquiv
+    (hF : HasPropertyF C.Obj) : HasPropertyF D.Obj := fun Y n ↦
+  (ground_conjugate_images h Y n).elim fun X ⟨e⟩ ↦
+    letI : Finite (braidImage X n) := hF X n
+    Finite.of_equiv (braidImage X n) e.symm.toEquiv
 
 end PropertyF.Ground.Modular
 end

@@ -126,7 +126,7 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
             Preadditive.sum_comp, whiskerLeft_comp, Category.assoc]
       _ = _ := by rw [crossing_completeness]; simp [W]
   have hc := simpleBasis_contraction_refinement C i q r h
-    (mixedCrossingBilinear X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
+    (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
   simpa [V, W, J, q, r, simpleProjection, crossingInclusion, crossingProjection,
     mixedCrossingBilinear, crossingBlock, Category.assoc] using hc
 

@@ -16,12 +16,12 @@ public import Mathlib.CategoryTheory.Abelian.Exact
 open CategoryTheory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
-variable {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
+variable {k : Type*} [Field k] {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D]
   [HasBinaryBiproducts D]
 
 /-- The block-diagonal map embeds pairs of endomorphisms into endomorphisms
 of a binary direct sum. -/
-def diagonalEndMap (S K : D) : ((S ⟶ S) × (K ⟶ K)) →ₗ[ℂ] (S ⊞ K ⟶ S ⊞ K) where
+def diagonalEndMap (S K : D) : ((S ⟶ S) × (K ⟶ K)) →ₗ[k] (S ⊞ K ⟶ S ⊞ K) where
   toFun x := biprod.map x.1 x.2
   map_add' x y := by
     apply biprod.hom_ext' <;> apply biprod.hom_ext <;> simp
@@ -29,7 +29,7 @@ def diagonalEndMap (S K : D) : ((S ⟶ S) × (K ⟶ K)) →ₗ[ℂ] (S ⊞ K ⟶
     apply biprod.hom_ext' <;> apply biprod.hom_ext <;> simp
 
 /-- A block-diagonal endomorphism determines both diagonal blocks. -/
-theorem diagonalEndMap_injective {S K : D} : Function.Injective (diagonalEndMap S K) := by
+theorem diagonalEndMap_injective {S K : D} : Function.Injective (diagonalEndMap (k := k) S K) := by
   intro a b h
   apply Prod.ext
   · simpa [diagonalEndMap, Category.assoc] using
@@ -40,13 +40,13 @@ theorem diagonalEndMap_injective {S K : D} : Function.Injective (diagonalEndMap 
 /-- Removing a nonzero direct summand strictly decreases the dimension of the
 endomorphism space. -/
 theorem finrank_end_complement_lt (S K : D)
-    [FiniteDimensional ℂ (S ⟶ S)] [FiniteDimensional ℂ (K ⟶ K)]
-    [FiniteDimensional ℂ (S ⊞ K ⟶ S ⊞ K)] (hS : ¬ IsZero S) :
-    Module.finrank ℂ (K ⟶ K) < Module.finrank ℂ (S ⊞ K ⟶ S ⊞ K) := by
-  have hpos : 0 < Module.finrank ℂ (S ⟶ S) :=
+    [FiniteDimensional k (S ⟶ S)] [FiniteDimensional k (K ⟶ K)]
+    [FiniteDimensional k (S ⊞ K ⟶ S ⊞ K)] (hS : ¬ IsZero S) :
+    Module.finrank k (K ⟶ K) < Module.finrank k (S ⊞ K ⟶ S ⊞ K) := by
+  have hpos : 0 < Module.finrank k (S ⟶ S) :=
     Module.finrank_pos_iff_exists_ne_zero.mpr ⟨𝟙 S, (IsZero.iff_id_eq_zero S).not.mp hS⟩
-  have hle := LinearMap.finrank_le_finrank_of_injective (f := diagonalEndMap S K)
-    (diagonalEndMap_injective (S := S) (K := K))
+  have hle := LinearMap.finrank_le_finrank_of_injective (f := diagonalEndMap (k := k) S K)
+    (diagonalEndMap_injective (k := k) (S := S) (K := K))
   rw [Module.finrank_prod] at hle
   omega
 
@@ -62,11 +62,11 @@ inductive FiniteSimpleSum (D : Type u) [Category.{v} D] [Preadditive D]
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Finite-dimensional injective objects with simple subobjects split into finite simple sums. -/
-theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [Linear ℂ E]
-    [(A B : E) → FiniteDimensional ℂ (A ⟶ B)] [(Z : E) → Injective Z]
+theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [Linear k E]
+    [(A B : E) → FiniteDimensional k (A ⟶ B)] [(Z : E) → Injective Z]
     (hasSimple : ∀ {Z : E}, ¬ IsZero Z → ∃ (S : E) (f : S ⟶ Z), Simple S ∧ Mono f)
     (Z : E) : FiniteSimpleSum E Z := by
-  let m : E → ℕ := fun W => Module.finrank ℂ (W ⟶ W)
+  let m : E → ℕ := fun W => Module.finrank k (W ⟶ W)
   induction Z using (measure m).wf.induction with
   | h Z ih =>
     by_cases hz : IsZero Z
@@ -81,10 +81,10 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
       let K := cokernel f
       let e : Z ≅ S ⊞ K := split.isoBinaryBiproduct
       have hs : ¬ IsZero S := Simple.not_isZero _
-      have he : Module.finrank ℂ (Z ⟶ Z) = Module.finrank ℂ (S ⊞ K ⟶ S ⊞ K) :=
-        (CategoryTheory.Linear.homCongr ℂ e e).finrank_eq
+      have he : Module.finrank k (Z ⟶ Z) = Module.finrank k (S ⊞ K ⟶ S ⊞ K) :=
+        (CategoryTheory.Linear.homCongr k e e).finrank_eq
       have hk : m K < m Z := by
-        change Module.finrank ℂ (K ⟶ K) < Module.finrank ℂ (Z ⟶ Z)
+        change Module.finrank k (K ⟶ K) < Module.finrank k (Z ⟶ Z)
         rw [he]
         exact finrank_end_complement_lt _ K hs
       exact .cons hS (ih K hk) ⟨e⟩

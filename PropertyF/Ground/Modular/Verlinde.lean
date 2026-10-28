@@ -131,10 +131,10 @@ universe v u
 theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (k : Fin (rank D)) (X : D.Obj) :
     rightPartialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)) =
-      (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 := by
-  let _ : Simple (simples D k) := simples_simple D k
-  let _ : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
-  exact rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
+      (Ground.unitScalarEquiv D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 :=
+  letI : Simple (simples D k) := simples_simple D k
+  letI : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
+  rightPartialTrace_simple_of_trace_compatibility (X := simples D k) (Y := X) p
     (Ground.unitScalarEquiv D) (End.of (doubleBraiding (simples D k) X))
     (simpleDimension_ne_zero D p k)
     (rightTrace_partialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)))

@@ -292,6 +292,11 @@ def multiplicityDefect (C : BraidedFusionCategory.{v,u})
       (simples C k ⟶ simples C i ⊗ simples C j) :=
   Linear.homCongr ℂ (Iso.refl _) (rootTensorDefect C (simples C i) (simples C j))
 
+/-- Each tensor-defect operator on a simple multiplicity space is an involution. -/
+abbrev MultiplicityDefectsInvolutive (C : BraidedFusionCategory.{v,u}) : Prop :=
+  ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
+    (multiplicityDefect C i j k).toLinearMap = 1
+
 /-- The multiplicity operator is composition with the tensor defect. -/
 theorem multiplicityDefect_apply
     {i j k : Fin (rank C)}

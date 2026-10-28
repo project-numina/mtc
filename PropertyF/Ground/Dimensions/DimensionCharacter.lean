@@ -8,6 +8,11 @@ public import PropertyF.Ground.Dimensions.GroundNorm
 /-! # Pivotal dimension characters
 
 Pivotal dimension is additive on decompositions and multiplicative on tensor products.
+
+## Main results
+
+* `pivotalDimension`: defines the scalar pivotal trace of an object.
+* `pivotalDimension_character`: shows that dimensions satisfy the fusion multiplication rules.
 -/
 
 @[expose] public noncomputable section
@@ -65,8 +70,7 @@ theorem pivotalDimension_tensor
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character
     (p : PivotalStructure (C := C.Obj)) :
-    ∀ i j, pivotalDimension C p (simples C i) * pivotalDimension C p (simples C j) =
-      ∑ k, (Ground.fusionCoeff C i j k : ℂ) * pivotalDimension C p (simples C k) := by
+    Ground.IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) := by
   intro i j
   rw [← pivotalDimension_tensor, pivotalDimension_decomposition]
   rfl
@@ -74,9 +78,8 @@ theorem pivotalDimension_character
 /-- Pivotal dimension is invariant under object isomorphism. -/
 theorem pivotalDimension_iso
     (p : PivotalStructure (C := C.Obj)) {X Y : C.Obj} (e : X ≅ Y) :
-    pivotalDimension C p X = pivotalDimension C p Y := by
-  unfold pivotalDimension
-  rw [p.rightTrace_id_iso e]
+    pivotalDimension C p X = pivotalDimension C p Y :=
+  congrArg (Ground.unitScalar C) (p.rightTrace_id_iso e)
 
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
 its Frobenius–Perron dimension. -/

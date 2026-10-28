@@ -50,11 +50,7 @@ theorem all_injective_of_unit_retract {J U : D} [Injective J]
   letI : Injective ((𝟙_ D) ⊗ X) := tensor_preserves_injective (𝟙_ D) X
   Injective.of_iso (λ_ X) inferInstance
 
-omit [Abelian D] [MonoidalCategory D] [RigidCategory D] in
-/-- Every monomorphism out of an injective object splits. -/
-theorem mono_splits_of_all_injective {X Y : D} (f : X ⟶ Y) [Mono f]
-    [Injective X] : IsSplitMono f :=
-  (Injective.factors (𝟙 X) f).elim fun r hr ↦ IsSplitMono.mk' { retraction := r, id := hr }
+
 
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 local notation "𝒵" => CategoryTheory.Center C.Obj
@@ -66,13 +62,6 @@ theorem center_all_injective_of_unit_retract (X : C.Obj) {U : 𝒵}
   letI : Injective ((induction C).obj X) := induction_injective C X
   all_injective_of_unit_retract r Z
 
-/-- A unit retract of an induced object splits every centre monomorphism. -/
-theorem center_mono_splits_of_unit_retract (X : C.Obj) {U : 𝒵}
-    (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
-    {Z W : 𝒵} (f : Z ⟶ W) [Mono f] : IsSplitMono f :=
-  letI : Injective Z := center_all_injective_of_unit_retract C X r Z
-  mono_splits_of_all_injective f
-
 set_option backward.isDefEq.respectTransparency false in
 /-- Under the unit-retract condition every centre object is a finite simple sum. -/
 theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) {U : 𝒵}
@@ -83,10 +72,11 @@ theorem center_finite_simple_sum_of_unit_retract (X : C.Obj) {U : 𝒵}
   let (A B : 𝒵) : FiniteDimensional ℂ (A ⟶ B) := by
     let : FiniteDimensional ℂ (A.1 ⟶ B.1) := IsFusionCategory.hom_finite _ _
     exact PropertyF.Ground.Centre.finiteDimensional_hom ℂ A B
-  apply finiteSimpleSum_of_injective ?_ Z
+  apply finiteSimpleSum_of_injective (k := ℂ) ?_ Z
   intro W hW
   obtain ⟨P, hP⟩ := exists_simple_subobject hW
   exact ⟨P, P.arrow, hP, inferInstance⟩
+
 
 /-- Centre rigidity and the explicit unit retract imply centre fusion. -/
 theorem center_fusion_of_unit_retract (X : C.Obj) {U : 𝒵}

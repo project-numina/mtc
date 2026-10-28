@@ -123,6 +123,15 @@ theorem typeARelations_action_trivial {X : C}
   simpa only [Subgroup.normalClosure_union] using
     sup_le (squareRelations_action_trivial hX n) (braidRelations_action_trivial X n)
 
+/-- Swaps of two adjacent pairs satisfy the braid relation. -/
+theorem swap_braid {α : Type*} [DecidableEq α] {a b c : α}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    Equiv.swap a b * Equiv.swap b c * Equiv.swap a b =
+      Equiv.swap b c * Equiv.swap a b * Equiv.swap b c := by
+  simpa only [Equiv.swap_comm] using
+    (Equiv.swap_mul_swap_mul_swap hbc.symm hac.symm).trans
+      ((Equiv.swap_comm a c).trans (Equiv.swap_mul_swap_mul_swap hab hac).symm)
+
 /-- Every defining type-A relation also has trivial strand permutation. -/
 theorem typeARelations_permutation_trivial (n : ℕ) :
     Subgroup.normalClosure (squareRelations n ∪ braidRelations n) ≤
@@ -138,14 +147,10 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
     · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
       have hm : i.succ = j.castSucc := Fin.ext hij
       rw [← hm]
-      have hxy : i.castSucc ≠ i.succ := by intro h; have := congrArg Fin.val h; simp at this
-      have hxz : i.castSucc ≠ j.succ := by intro h; have := congrArg Fin.val h; simp at this; omega
-      have hzy : j.succ ≠ i.succ := by intro h; have := congrArg Fin.val h; simp at this; omega
-      have hzX : j.succ ≠ i.castSucc := hxz.symm
-      have h₁ := Equiv.swap_mul_swap_mul_swap hxy hxz
-      have h₂ := Equiv.swap_mul_swap_mul_swap hzy hzX
-      rw [Equiv.swap_comm i.castSucc j.succ] at h₂
-      simpa only [Equiv.swap_comm] using h₂.trans h₁.symm
+      apply swap_braid
+      · simp [Fin.ext_iff]
+      · intro h; have hh := congrArg Fin.val h; simp at hh; omega
+      · intro h; have hh := congrArg Fin.val h; simp at hh; omega
     · simp only [strandPermutation, map_mul, map_inv, FreeGroup.lift_apply_of, mul_inv_eq_one]
       have hdis : [i.castSucc, i.succ, j.castSucc, j.succ].Nodup := by
         simp only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil,

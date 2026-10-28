@@ -170,6 +170,11 @@ section
 namespace PropertyF.Ground
 universe v u
 
+/-- The simple dimensions indexed by a set are integers. -/
+abbrev HasIntegralSimpleDimensionsOn (Z : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := Z.Obj)) (core : Set (Fin (rank Z))) : Prop :=
+  ∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z
+
 /-- If the common centralizer has integral dimensions, its double centralizer
 contains a simple with the Galois-unit column. Any such simple has property F
 when property F holds throughout the generated subcategory. The two label
@@ -178,7 +183,7 @@ explicit interim premises, not assumptions in the target. -/
 theorem propertyF_of_galois_column
     (Z : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj))
     (τ : ℂ ≃+* ℂ) (core generated : Set (Fin (rank Z)))
-    (hIntegral : ∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z)
+    (hIntegral : HasIntegralSimpleDimensionsOn Z p core)
     (hDouble : CentreCabling.sCentralizer Z p core ⊆ generated)
     (hFinite : ∀ y ∈ generated, ObjectPropertyF (simples Z y))
     (y : Fin (rank Z))
@@ -257,7 +262,7 @@ theorem target_of_center_centralizers
         (Modular.HasFPSimpleDimensions Z p) ∧
         (Modular.categoricalS Z p).det ≠ 0 ∧
         globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-        (∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z) ∧
+        (HasIntegralSimpleDimensionsOn Z p core) ∧
         (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
         (∀ y ∈ generated, ObjectPropertyF (simples Z y))) : TargetStatement.{v,u} := by
   apply target_of_modular_center
@@ -307,7 +312,7 @@ theorem target_of_center_product_retracts
         (Modular.HasFPSimpleDimensions Z p) ∧
         (Modular.categoricalS Z p).det ≠ 0 ∧
         globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-        (∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z) ∧
+        (HasIntegralSimpleDimensionsOn Z p core) ∧
         (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
         (∀ y ∈ generated, Centre.ProductRetract (F.obj (simples Z y)))) :
     TargetStatement.{v,u} := by
@@ -351,7 +356,7 @@ theorem target_of_actual_center
             (Modular.HasFPSimpleDimensions Z p) ∧
             (Modular.categoricalS Z p).det ≠ 0 ∧
             globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-            (∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z) ∧
+            (HasIntegralSimpleDimensionsOn Z p core) ∧
             (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
             (∀ y ∈ generated, Centre.ProductRetract (simples Z y))) : TargetStatement.{v,u} := by
   apply target_of_center_product_retracts
