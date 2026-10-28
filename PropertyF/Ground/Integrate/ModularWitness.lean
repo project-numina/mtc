@@ -33,9 +33,16 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     intro j
     rw [hdim]
     simp
-  obtain ⟨act, _, hcolumn, hself, hglobalAct⟩ :=
-    Modular.categoricalS_galois_symmetry Z p hp hdet hreal
+  obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hp hdet hreal
   let y := act σ.symm (unitIndex Z)
+  have hprop := Modular.galois_unit_properties (unitIndex Z) (Modular.categoricalS Z p)
+    (dualIndex Z) (Modular.simpleDimension Z p) (globalDimension Z)
+    (Modular.simpleDimension_ne_zero Z p)
+    (Modular.globalDimension_ne_zero_of_invertibleS Z p hp hdet hreal)
+    (Modular.simpleDimension_unit Z p) (Modular.categorical_global_eq_sum_squares Z p hp)
+    (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
+    (Modular.categoricalS_square Z p hp hdet hreal) σ.symm y
+    (fun x => hact σ.symm x (unitIndex Z))
   let f := fpSimple Z y
   let χ : Fin (rank Z) → ℂ := fun i => (fpSimple Z i : ℂ)
   have hχ : χ (unitIndex Z) ≠ 0 := by simp [χ, fpSimple_unit]
@@ -51,15 +58,15 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
     simpa only [← Complex.star_def] using selfDual_character_galois_real Z χ (unitIndex Z)
       hχ hchar hdual σ y
   refine ⟨y, f, (σ (f : ℂ)).re, one_le_fpSimple Z y, rfl, hreal'.symm,
-    hself σ.symm, ?_, ?_, ?_⟩
+    hprop.2.1, ?_, ?_, ?_⟩
   · intro x
-    have h := hcolumn σ.symm x
+    have h := hprop.1 x
     rw [hdim] at h
     exact h
-  · have h := hglobalAct σ.symm
+  · have h := hprop.2.2
     rw [hglobal, hdim] at h
     exact h
-  · have h := hcolumn σ.symm y
+  · have h := hprop.1 y
     rw [hdim] at h
     exact h
 
