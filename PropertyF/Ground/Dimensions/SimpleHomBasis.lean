@@ -34,12 +34,12 @@ theorem rightQuantumTrace_tensor_scalar
   have hpt : partialTraceWith k X 1 = scalar (rightQuantumTrace k) • 1 := by
     simpa only [id_tensorHom_id, show End.of (𝟙 (X ⊗ Y)) = (1 : End (X ⊗ Y)) from rfl,
       rightTraceWith_id] using partialTraceWith_tensor_right_scalar scalar k X (𝟙 Y)
-  have ht : rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) =
-      scalar (rightQuantumTrace k) • rightQuantumTrace j := by
-    apply End.homEquiv.injective
-    simpa [hpt, rightTraceWith, rightQuantumTrace, tensorHom_def] using
-      congrArg End.asHom (rightTraceWith_partialTraceWith j k (1 : End (X ⊗ Y))).symm
-  rw [ht, map_smul, smul_eq_mul, mul_comm]
+  simpa only [map_smul, smul_eq_mul, mul_comm] using congrArg scalar
+    (show rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y) =
+        scalar (rightQuantumTrace k) • rightQuantumTrace j from by
+      apply End.homEquiv.injective
+      simpa [hpt, rightTraceWith, rightQuantumTrace, tensorHom_def] using
+        congrArg End.asHom (rightTraceWith_partialTraceWith j k (1 : End (X ⊗ Y))).symm)
 
 end PropertyF.Ground.Dimensions
 
@@ -209,9 +209,9 @@ the other. -/
 theorem simpleHomPairing_natural
     {S X Y : D} [Simple S] [FiniteDimensional k (S ⟶ S)] (g : Y ⟶ S) (a : X ⟶ Y) :
     simpleHomPairing (k := k) S X (a ≫ g) =
-      Module.Dual.transpose (Linear.rightComp k S a) (simpleHomPairing (k := k) S Y g) := by
-  ext f
-  simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
+      Module.Dual.transpose (Linear.rightComp k S a) (simpleHomPairing (k := k) S Y g) :=
+  LinearMap.ext fun f ↦ by
+    simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
 
 
 set_option backward.isDefEq.respectTransparency false in
