@@ -51,8 +51,8 @@ theorem exists_fourthDual_square_root
   refine ⟨scaleIso e z hz0, ?_⟩
   apply Iso.ext
   change (z • e.hom) ≫ (((z • e.hom)ᘁ)ᘁ) = g.hom
-  rw [rightAdjointMate_smul, rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul, smul_smul]
-  rw [← pow_two, hz]
+  rw [rightAdjointMate_smul, rightAdjointMate_smul, Linear.smul_comp, Linear.comp_smul,
+    smul_smul, ← pow_two, hz]
   change c • e2.hom = g.hom
   exact hc.symm
 

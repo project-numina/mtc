@@ -96,8 +96,7 @@ theorem fourthDualIso_unit :
   have hdual := drinfeld_unit_dual C
   change doubleDualIso C ((𝟙_ C.Obj)ᘁ) =
     (rightDualIsoMap (doubleDualIso C (𝟙_ C.Obj))).symm at hdual
-  rw [hdual]
-  rw [hu]
+  rw [hdual, hu]
   apply Iso.ext
   rfl
 /-- The root dimension of the unit label is the root trace of the tensor unit. -/

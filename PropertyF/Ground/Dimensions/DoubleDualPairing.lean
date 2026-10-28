@@ -156,8 +156,7 @@ theorem rightDualCoevaluation_evaluation (X : C) :
       monoidal
     _ = (ρ_ V).inv ≫ t.inv ▷ I ≫ (Wᘁ ◁ η_ X (Xᘁ) ≫ ε_ W (Wᘁ)) := hm'
     _ = (ρ_ V).inv ≫ V ◁ η_ X (Xᘁ) ≫ @ExactPairing.evaluation C _ _ W V q := by
-      rw [← ht]
-      rw [whisker_exchange_assoc]
+      rw [← ht, whisker_exchange_assoc]
     _ = _ := hc
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves evaluation. -/

@@ -350,8 +350,7 @@ theorem rootTensor_square_eq_fourthDual_tensor
       ((fourthDualRootNaturalIso C).app Y).hom) ≫ f ≫
       (((doubleDualTensorIso X Y).homᘁ)ᘁ)) hn.symm
   simp only [Functor.id_obj, doubleDualFunctor, Category.assoc] at hn2
-  rw [hn2]
-  rw [tensorHom_comp_tensorHom_assoc]
+  rw [hn2, tensorHom_comp_tensorHom_assoc]
 
 /-- The fourth-dual isomorphism is compatible with tensoring two objects. -/
 abbrev fourthDualTensorLaw (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) : Prop :=
