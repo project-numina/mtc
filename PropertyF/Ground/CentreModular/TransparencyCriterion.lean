@@ -11,8 +11,8 @@ public import PropertyF.Ground.Modular.SSquare
 @[expose] public noncomputable section
 
 section
-/-! A single Kirby-colour loop identity implies the full S-square identity
-and nondegeneracy. The loop identity for the actual centre remains open. -/
+/-! A Kirby-colour loop identity implies the S-square identity and nondegeneracy.
+Trivial transparency provides the needed vanishing in a positive pivotal category. -/
 
 open scoped BigOperators
 namespace PropertyF.Ground.CentreModular

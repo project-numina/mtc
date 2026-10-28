@@ -55,10 +55,10 @@ theorem character_dual_conj (χ : Character N) (i : ι) :
       simpa [w] using fusion_inner_balance N dual hdual (starRingEnd ℂ) χ.value χ.value χ.mul_eq χ.mul_eq i)).symm)
 
 /-- Actual fusion coefficients satisfy the adjointness relation. -/
-theorem fusionCoeff_dual_adjoint (C : Ground.BraidedFusionCategory) (i j k : Fin (rank C)) :
-    fusionCoeff C i j k = fusionCoeff C (Ground.dualIndex C i) k j :=
+theorem fusionCoeff_dual_adjoint (C : BraidedFusionCategory) (i j k : Fin (rank C)) :
+    fusionCoeff C i j k = fusionCoeff C (dualIndex C i) k j :=
   (fusionCoeff_comm C i j k).trans <|
-    (fusionCoeff_reciprocity_labels C j i k).trans (fusionCoeff_comm C k (Ground.dualIndex C i) j)
+    (fusionCoeff_reciprocity_labels C j i k).trans (fusionCoeff_comm C k (dualIndex C i) j)
 
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 

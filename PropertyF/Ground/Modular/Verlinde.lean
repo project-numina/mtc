@@ -16,10 +16,8 @@ section
 /-!
 # Galois action from Verlinde's equations
 
-The classification and complex-automorphism action require no old modular-data
-bundle. The remaining hypotheses of the categorical theorem are stated as the
-specific S-square, global nonvanishing and Verlinde equations that must be
-proved from a nondegenerate spherical fusion category.
+The classification and complex-automorphism action follow from the S-square,
+global nonvanishing, and Verlinde equations.
 -/
 open scoped BigOperators
 open PropertyF.Ground.Dimensions
@@ -269,7 +267,7 @@ theorem partialTrace_doubleBraiding_scalar (p : PivotalStructure (C := C)) {Z Y 
 end MonodromyTrace
 
 /-- Double-braiding partial traces multiply on a simple surviving strand. -/
-theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,u})
+theorem partialTrace_doubleBraiding_tensor (D : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) : HasMultiplicativePartialTrace D p := by
   intro i j k
   let : Simple (simples D k) := simples_simple D k

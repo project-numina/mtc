@@ -115,14 +115,15 @@ variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵" => Center C.Obj
 attribute [local instance] Abelian.hasFiniteBiproducts
 
-/-- The component indexed by a simple object inserts its coevaluation and
-moves the simple strand past the centre object's half-braiding. -/
-def unitComponent
-    (Z : 𝒵) (i : Fin (rank C)) :
+/-- Insert a coevaluation and move its object past the centre half-braiding. -/
+def unitComponentAt {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
+    (Z : Center D) (S : D) : Z.1 ⟶ (S ⊗ Z.1) ⊗ Sᘁ :=
+  (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ S (Sᘁ)) ≫ (α_ Z.1 S (Sᘁ)).inv ≫ ((Z.2.β S).hom ▷ Sᘁ)
+
+/-- The unit component indexed by a simple object. -/
+def unitComponent (Z : 𝒵) (i : Fin (rank C)) :
     Z.1 ⟶ (simples C i ⊗ Z.1) ⊗ (simples C i)ᘁ :=
-  (ρ_ Z.1).inv ≫ (Z.1 ◁ η_ (simples C i) ((simples C i)ᘁ)) ≫
-    (α_ Z.1 (simples C i) ((simples C i)ᘁ)).inv ≫
-    ((Z.2.β (simples C i)).hom ▷ (simples C i)ᘁ)
+  unitComponentAt Z (simples C i)
 
 /-- The underlying map of the proposed adjunction unit. Centrality depends
 on constructing the induction half-braiding and is not asserted. -/
@@ -136,7 +137,7 @@ theorem unitComponent_natural
     {X Y : 𝒵} (f : X ⟶ Y) (i : Fin (rank C)) :
     f.f ≫ unitComponent C Y i = unitComponent C X i ≫
       ((simples C i ◁ f.f) ▷ (simples C i)ᘁ) := by
-  dsimp [unitComponent]
+  dsimp [unitComponent, unitComponentAt]
   simp only [Category.assoc]
   rw [rightUnitor_inv_naturality_assoc, ← whisker_exchange_assoc,
     associator_inv_naturality_left_assoc]
@@ -169,7 +170,7 @@ theorem unitCandidate_counit (C : BraidedFusionCategory.{v,u})
   let A := simples C (unitIndex C)
   let e : A ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   let d : Aᘁ ≅ 𝟙_ C.Obj := rightDualIsoMap e.symm ≪≫ rightDualUnitIso
-  dsimp only [unitComponent, unitSummandIso]
+  dsimp only [unitComponent, unitComponentAt, unitSummandIso]
   simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_def,
     whiskerLeft_id, Category.comp_id, Category.assoc]
   rw [← comp_whiskerRight_assoc, ← Z.2.naturality e.hom]
