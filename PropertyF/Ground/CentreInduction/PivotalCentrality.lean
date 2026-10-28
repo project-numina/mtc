@@ -104,16 +104,10 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
     rw [← IsIso.Iso.inv_hom]
     apply IsIso.eq_inv_of_inv_hom_id
     exact congrArg Center.Hom.f hcentral
-  have hzero : (biproduct.ι V i ▷ S) ≫ crossingCandidate C X S ≫
-      (S ◁ (underlyingCounit C).app X) = 0 := by
-    rw [hb]
-    change (biproduct.ι V i ▷ S) ≫ (β_ S (⨁ V)).inv ≫
-      (S ◁ (underlyingCounit C).app X) = 0
-    rw [braiding_inv_naturality_left_assoc]
-    simp only [← whiskerLeft_comp, hz, MonoidalPreadditive.whiskerLeft_zero,
-      comp_zero]
   have hid : 𝟙 (V i) = 0 := by
-    rw [← unit_diag C X i, unit_matrix_reduce, hzero]
+    rw [← unit_diag C X i, unit_matrix_reduce, hb]
+    dsimp only [underlying]
+    rw [braiding_inv_naturality_left_assoc, ← whiskerLeft_comp, hz]
     simp [monoidalComp]
   let : Simple S := simples_simple C i
   let e : S ⊗ (Sᘁ) ≅ V i := whiskerRightIso (ρ_ S).symm (Sᘁ)
