@@ -53,8 +53,7 @@ theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional k (X ⟶ X
   have hl : leftQuantumTrace l = c⁻¹ • leftQuantumTrace j := by
     apply End.homEquiv.injective
     simp [leftQuantumTrace, iso_inv_eq_inv_smul hc hhom, tensorHom_def]
-  rw [rightQuantumTrace_smul_hom hhom, hl, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
-  field_simp
+  simp [rightQuantumTrace_smul_hom hhom, hl, hc, mul_comm, mul_left_comm]
 
 end PropertyF.Ground.Dimensions
 

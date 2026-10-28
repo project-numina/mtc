@@ -83,8 +83,7 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 /-- Closing the right tensor factor and then the left gives the total pivotal trace. -/
 theorem rightTrace_partialTrace (p : PivotalStructure (C := C)) {X Y : C} (f : End (X ⊗ Y)) :
   p.rightTrace (rightPartialTrace p f).asHom = p.rightTrace f.asHom := by
-  simpa only [rightTraceWith, PivotalStructure.rightTrace, partialTraceWith,
-    rightPartialTrace, Iso.trans_hom, tensorIso_hom,
+  simpa [rightTraceWith, PivotalStructure.rightTrace, partialTraceWith, rightPartialTrace,
     ← p.tensor X Y, Category.assoc] using rightTraceWith_partialTraceWith (p.iso X) (p.iso Y) f
 
 end PropertyF.Ground.Dimensions
@@ -152,8 +151,7 @@ theorem rightPartialTrace_tensor {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
 /-- Pivotal trace is multiplicative on tensor products of endomorphisms. -/
 theorem pivotalTrace_tensor {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
     scalar (p.rightTrace (a ⊗ₘ b)) = scalar (p.rightTrace a) * scalar (p.rightTrace b) := by
-  simpa only [rightPartialTrace_tensor p scalar a b, End.smul_asHom,
-    PivotalStructure.rightTrace_smul, map_smul, smul_eq_mul, mul_comm] using
+  simpa [rightPartialTrace_tensor p scalar a b, PivotalStructure.rightTrace_smul, mul_comm] using
     congrArg scalar (rightTrace_partialTrace p (End.of (a ⊗ₘ b))).symm
 
 end PropertyF.Ground.Dimensions
