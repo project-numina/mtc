@@ -138,10 +138,10 @@ variable {n : ℕ} {i j : Fin (n + 1)}
 /-- Adjacent transpositions satisfy the braid relation. -/
 theorem adjacentSwaps_braid (hij : i.val + 1 = j.val) :
     s i * s j * s i = s j * s i * s j := by
-  dsimp only [adjacentSwap]
-  rw [← (show i.succ = j.castSucc from Fin.ext hij)]
-  apply swap_braid <;> apply Fin.ne_of_val_ne <;>
-    simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
+  simpa only [adjacentSwap, ← (show i.succ = j.castSucc from Fin.ext hij)] using
+    swap_braid (a := i.castSucc) (b := i.succ) (c := j.succ)
+      (Fin.ne_of_val_ne (by simp)) (Fin.ne_of_val_ne (by simp; omega))
+      (Fin.ne_of_val_ne (by simp; omega))
 
 /-- Distant adjacent transpositions commute. -/
 theorem adjacentSwaps_commute (hij : i.val + 1 < j.val) :
