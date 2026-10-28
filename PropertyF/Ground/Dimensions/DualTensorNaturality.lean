@@ -75,7 +75,7 @@ theorem rightDualTensorIso_inv_natural {X X' Y Y' : C}
     (f : X ⟶ X') (g : Y ⟶ Y') :
     (gᘁ ⊗ₘ fᘁ) ≫ (rightDualTensorIso X Y).inv =
       (rightDualTensorIso X' Y').inv ≫ ((f ⊗ₘ g)ᘁ) :=
-  iso_inv_naturality_of_hom (rightDualTensorIso_natural f g)
+  (CommSq.vert_inv (CommSq.mk (rightDualTensorIso_natural f g))).w
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is natural in both factors. -/
@@ -106,24 +106,12 @@ theorem drinfeld_eval (X : C.Obj) :
 @[reassoc]
 theorem doubleDualIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (doubleDualIso C Y).hom = (doubleDualIso C X).hom ≫ (fᘁ)ᘁ := by
-  have h : (f ≫ (doubleDualIso C Y).hom) ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) =
-      ((doubleDualIso C X).hom ≫ (fᘁ)ᘁ) ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
-    calc
-      _ = f ▷ (Yᘁ) ≫ (β_ Y (Yᘁ)).hom ≫ ε_ Y (Yᘁ) := by
-        rw [comp_whiskerRight_assoc, drinfeld_eval]
-      _ = (β_ X (Yᘁ)).hom ≫ (Yᘁ) ◁ f ≫ ε_ Y (Yᘁ) := by
-        rw [braiding_naturality_left_assoc]
-      _ = (β_ X (Yᘁ)).hom ≫ (fᘁ) ▷ X ≫ ε_ X (Xᘁ) := by
-        rw [rightAdjointMate_comp_evaluation]
-      _ = X ◁ (fᘁ) ≫ (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) := by
-        rw [braiding_naturality_right_assoc]
-      _ = X ◁ (fᘁ) ≫ (doubleDualIso C X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
-        rw [drinfeld_eval]
-      _ = (doubleDualIso C X).hom ▷ (Yᘁ) ≫ ((Xᘁ)ᘁ) ◁ (fᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
-        rw [whisker_exchange_assoc]
-      _ = ((doubleDualIso C X).hom ≫ (fᘁ)ᘁ) ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ) := by
-        rw [← rightAdjointMate_comp_evaluation, comp_whiskerRight_assoc]
-  exact evaluation_ext h
+  apply evaluation_ext (X := Yᘁ)
+  simp only [comp_whiskerRight_assoc]
+  rw [drinfeld_eval C Y, braiding_naturality_left_assoc,
+    ← rightAdjointMate_comp_evaluation, ← braiding_naturality_right_assoc,
+    ← drinfeld_eval C X, whisker_exchange_assoc,
+    ← rightAdjointMate_comp_evaluation]
 
 /-- The braided fourth-dual isomorphism, objectwise. -/
 def fourthDualIso (X : C.Obj) :
@@ -134,7 +122,7 @@ def fourthDualIso (X : C.Obj) :
 theorem fourthDualIso_natural {X Y : C.Obj} (f : X ⟶ Y) :
     f ≫ (fourthDualIso C Y).hom = (fourthDualIso C X).hom ≫ ((((fᘁ)ᘁ)ᘁ)ᘁ) := by
   have hd := congrArg (fun (a : (((Yᘁ)ᘁ)ᘁ) ⟶ (Xᘁ)) => rightAdjointMate a)
-    (iso_inv_naturality_of_hom (doubleDualIso_natural C (fᘁ))).symm
+    ((CommSq.vert_inv (CommSq.mk (doubleDualIso_natural C (fᘁ)))).w).symm
   rw [comp_rightAdjointMate, comp_rightAdjointMate] at hd
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc]
   rw [doubleDualIso_natural_assoc, hd]

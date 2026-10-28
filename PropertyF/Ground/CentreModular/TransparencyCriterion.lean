@@ -146,7 +146,8 @@ theorem transparent_of_S_test_and_balancing (k : Fin (rank C))
     Transparent (simples C k) := by
   intro X
   have hx : Modular.doubleBraiding X (simples C k) = 𝟙 _ := by
-    apply CentreCabling.doubleBraiding_eq_one_of_simple_constituents C (fun _ => True)
+    obtain ⟨m, ⟨e⟩⟩ := simples_decompose C X
+    apply CentreCabling.doubleBraiding_eq_one_of_constituents (simples C) e (fun _ => True)
       (fun _ _ => trivial) trivial
     intro i _
     exact CentreCabling.doubleBraiding_eq_one_of_sTest_of_finite_order hdim

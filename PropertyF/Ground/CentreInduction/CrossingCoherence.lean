@@ -61,8 +61,7 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
     crossingCandidate C X (T ⊗ U) = crossingTensorComposite C X T U := by
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (T ⊗ U)).inv).1
-  apply biproduct.hom_ext'
-  intro i
+  refine biproduct.hom_ext' _ _ fun i => ?_
   simp only [biproduct_ι_comp_rightDistributor_inv_assoc]
   rw [crossingCandidate_on_summand, crossingComposite_summand]
   simp only [← Preadditive.sum_comp]
@@ -70,8 +69,7 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
   simp only [Fintype.sum_sigma, Preadditive.sum_comp]
   dsimp only [underlying, V] at *
   rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro k _
+  refine Finset.sum_congr rfl fun k _ => ?_
   conv_lhs =>
     enter [2, j]
     rw [Finset.sum_comm (s := (Finset.univ : Finset (crossingIndex C U k j)))

@@ -28,72 +28,58 @@ theorem rightDualTensorIso_unit_left (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     ((λ_ X).homᘁ) ≫ (rightDualTensorIso (𝟙_ C) X).hom =
       (ρ_ (Xᘁ)).inv ≫ ((Xᘁ) ◁ (rightDualUnitIso (C := C)).inv) := by
-  let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
   let r : Iᘁ ≅ I := rightDualUnitIso
-  let J := (Xᘁ) ⊗ (Iᘁ)
-  let l : (Xᘁ) ⟶ J := ((λ_ X).homᘁ) ≫ (rightDualTensorIso I X).hom
-  let s : (Xᘁ) ⟶ J := (ρ_ (Xᘁ)).inv ≫ (Xᘁ) ◁ r.inv
-  have hl : l ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J = (Xᘁ) ◁ (λ_ X).hom ≫ ε_ X (Xᘁ) := by
-    have he := rightDualTensorIso_evaluation I X
-    dsimp only [l]
-    rw [comp_whiskerRight_assoc, he, rightAdjointMate_comp_evaluation]
-  have hs : s ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J = (Xᘁ) ◁ (λ_ X).hom ≫ ε_ X (Xᘁ) := by
-    have he := rightDualIso_inv_evaluation
-      (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
-      (inferInstance : ExactPairing I I)
-    change r.inv ▷ I ≫ ε_ I (Iᘁ) = ε_ I I at he
-    change ((ρ_ (Xᘁ)).inv ≫ (Xᘁ) ◁ r.inv) ▷ (I ⊗ X) ≫
-      (𝟙 _ ⊗≫ (Xᘁ) ◁ (ε_ I (Iᘁ) ▷ X) ⊗≫ ε_ X (Xᘁ)) = _
-    calc
-      _ = 𝟙 _ ⊗≫ (Xᘁ : C) ◁ ((r.inv ▷ I ≫ ε_ I (Iᘁ)) ▷ X) ⊗≫ ε_ X (Xᘁ) := by
-        simp only [comp_whiskerRight, whiskerLeft_comp]
-        monoidal
-      _ = 𝟙 _ ⊗≫ (Xᘁ : C) ◁ (ε_ I I ▷ X) ⊗≫ ε_ X (Xᘁ) := by rw [he]
-      _ = _ := by
-        change 𝟙 _ ⊗≫ (Xᘁ : C) ◁ ((ρ_ I).hom ▷ X) ⊗≫ ε_ X (Xᘁ) = _
-        monoidal
-  let : HasRightDual (I ⊗ X) := { rightDual := J, exact := ExactPairing.tensor }
-  exact evaluation_ext (hl.trans hs.symm)
+  have he := rightDualIso_inv_evaluation
+    (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
+    (inferInstance : ExactPairing I I)
+  change r.inv ▷ I ≫ ε_ I (Iᘁ) = ε_ I I at he
+  apply evaluation_ext (X := I ⊗ X)
+  simp only [comp_whiskerRight_assoc]
+  rw [rightDualTensorIso_evaluation I X, rightAdjointMate_comp_evaluation,
+    ← comp_whiskerRight_assoc]
+  change _ = ((ρ_ (Xᘁ)).inv ≫ (Xᘁ) ◁ r.inv) ▷ (I ⊗ X) ≫
+    (𝟙 _ ⊗≫ (Xᘁ) ◁ (ε_ I (Iᘁ) ▷ X) ⊗≫ ε_ X (Xᘁ))
+  calc
+    _ = 𝟙 _ ⊗≫ (Xᘁ : C) ◁ ((r.inv ▷ I ≫ ε_ I (Iᘁ)) ▷ X) ⊗≫ ε_ X (Xᘁ) := by
+      rw [he]
+      change (Xᘁ) ◁ (λ_ X).hom ≫ ε_ X (Xᘁ) =
+        𝟙 _ ⊗≫ (Xᘁ : C) ◁ ((ρ_ I).hom ▷ X) ⊗≫ ε_ X (Xᘁ)
+      monoidal
+    _ = _ := by
+      simp only [comp_whiskerRight, whiskerLeft_comp]
+      monoidal
 /-- Right dual tensor comparison is compatible with the right unitor. -/
 theorem rightDualTensorIso_unit_right (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     ((ρ_ X).homᘁ) ≫ (rightDualTensorIso X (𝟙_ C)).hom =
       (λ_ (Xᘁ)).inv ≫ ((rightDualUnitIso (C := C)).inv ▷ (Xᘁ)) := by
-  let : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
   let I := 𝟙_ C
   let : HasRightDual I := RightRigidCategory.rightDual I
   let r : Iᘁ ≅ I := rightDualUnitIso
-  let J := (Iᘁ) ⊗ (Xᘁ)
-  let l : (Xᘁ) ⟶ J := ((ρ_ X).homᘁ) ≫ (rightDualTensorIso X I).hom
-  let s : (Xᘁ) ⟶ J := (λ_ (Xᘁ)).inv ≫ r.inv ▷ (Xᘁ)
-  have hl : l ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J = (Xᘁ) ◁ (ρ_ X).hom ≫ ε_ X (Xᘁ) := by
-    have he := rightDualTensorIso_evaluation X I
-    dsimp only [l]
-    rw [comp_whiskerRight_assoc, he, rightAdjointMate_comp_evaluation]
-  have hs : s ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J = (Xᘁ) ◁ (ρ_ X).hom ≫ ε_ X (Xᘁ) := by
-    have he := rightDualIso_inv_evaluation
-      (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
-      (inferInstance : ExactPairing I I)
-    change r.inv ▷ I ≫ ε_ I (Iᘁ) = ε_ I I at he
-    change ((λ_ (Xᘁ)).inv ≫ r.inv ▷ (Xᘁ)) ▷ (X ⊗ I) ≫
-      (𝟙 _ ⊗≫ (Iᘁ) ◁ (ε_ X (Xᘁ) ▷ I) ⊗≫ ε_ I (Iᘁ)) = _
-    calc
-      _ = 𝟙 _ ⊗≫ ((r.inv ▷ ((Xᘁ ⊗ X) ⊗ I)) ≫
-        (Iᘁ : C) ◁ (ε_ X (Xᘁ) ▷ I)) ⊗≫ ε_ I (Iᘁ) := by
-          simp only [comp_whiskerRight]
-          monoidal
-      _ = 𝟙 _ ⊗≫ ((I : C) ◁ (ε_ X (Xᘁ) ▷ I) ≫
-        r.inv ▷ ((𝟙_ C) ⊗ I)) ⊗≫ ε_ I (Iᘁ) := by
-          rw [← whisker_exchange]
-      _ = 𝟙 _ ⊗≫ (ε_ X (Xᘁ) ▷ I) ⊗≫ (r.inv ▷ I ≫ ε_ I (Iᘁ)) := by monoidal
-      _ = 𝟙 _ ⊗≫ (ε_ X (Xᘁ) ▷ I) ⊗≫ ε_ I I := by rw [he]
-      _ = _ := by
-        change 𝟙 _ ⊗≫ (ε_ X (Xᘁ) ▷ I) ⊗≫ (ρ_ I).hom = _
+  have he := rightDualIso_inv_evaluation
+    (@HasRightDual.exact C _ _ I (RightRigidCategory.rightDual I))
+    (inferInstance : ExactPairing I I)
+  change r.inv ▷ I ≫ ε_ I (Iᘁ) = ε_ I I at he
+  apply evaluation_ext (X := X ⊗ I)
+  simp only [comp_whiskerRight_assoc]
+  rw [rightDualTensorIso_evaluation X I, rightAdjointMate_comp_evaluation]
+  change _ = ((λ_ (Xᘁ)).inv ≫ r.inv ▷ (Xᘁ)) ▷ (X ⊗ I) ≫
+    (𝟙 _ ⊗≫ (Iᘁ) ◁ (ε_ X (Xᘁ) ▷ I) ⊗≫ ε_ I (Iᘁ))
+  symm
+  calc
+    _ = 𝟙 _ ⊗≫ ((r.inv ▷ ((Xᘁ ⊗ X) ⊗ I)) ≫
+      (Iᘁ : C) ◁ (ε_ X (Xᘁ) ▷ I)) ⊗≫ ε_ I (Iᘁ) := by
+        simp only [comp_whiskerRight]
         monoidal
-  let : HasRightDual (X ⊗ I) := { rightDual := J, exact := ExactPairing.tensor }
-  exact evaluation_ext (hl.trans hs.symm)
+    _ = 𝟙 _ ⊗≫ ((I : C) ◁ (ε_ X (Xᘁ) ▷ I) ≫
+      r.inv ▷ ((𝟙_ C) ⊗ I)) ⊗≫ ε_ I (Iᘁ) := by rw [← whisker_exchange]
+    _ = 𝟙 _ ⊗≫ (ε_ X (Xᘁ) ▷ I) ⊗≫ (r.inv ▷ I ≫ ε_ I (Iᘁ)) := by monoidal
+    _ = _ := by
+      rw [he]
+      change 𝟙 _ ⊗≫ (ε_ X (Xᘁ) ▷ I) ⊗≫ (ρ_ I).hom = _
+      monoidal
 
 end PropertyF.Ground.Dimensions
 
@@ -119,9 +105,7 @@ theorem doubleDualTensorIso_unit_left (X : C) :
   let R := rightDualTensorIso I X
   let S := rightDualTensorIso (Xᘁ) (Iᘁ)
   let S₀ := rightDualTensorIso (Xᘁ) I
-  have hR : ((λ_ X).homᘁ) ≫ R.hom = (ρ_ (Xᘁ)).inv ≫ (Xᘁ) ◁ r.inv :=
-    rightDualTensorIso_unit_left X
-  have hR' := congrArg (fun f => rightAdjointMate f) hR
+  have hR' := congrArg (fun f => rightAdjointMate f) (rightDualTensorIso_unit_left X)
   simp only [comp_rightAdjointMate] at hR'
   have hs : S.inv ≫ ((Xᘁ) ◁ r.inv)ᘁ = ((r.invᘁ) ▷ ((Xᘁ)ᘁ)) ≫ S₀.inv := by
     simpa only [rightAdjointMate_id, id_tensorHom, tensorHom_id] using
@@ -158,9 +142,7 @@ theorem doubleDualTensorIso_unit_right (X : C) :
   let R := rightDualTensorIso X I
   let S := rightDualTensorIso (Iᘁ) (Xᘁ)
   let S₀ := rightDualTensorIso I (Xᘁ)
-  have hR : ((ρ_ X).homᘁ) ≫ R.hom = (λ_ (Xᘁ)).inv ≫ r.inv ▷ (Xᘁ) :=
-    rightDualTensorIso_unit_right X
-  have hR' := congrArg (fun f => rightAdjointMate f) hR
+  have hR' := congrArg (fun f => rightAdjointMate f) (rightDualTensorIso_unit_right X)
   simp only [comp_rightAdjointMate] at hR'
   have hs : S.inv ≫ (r.inv ▷ (Xᘁ))ᘁ = (((Xᘁ)ᘁ) ◁ (r.invᘁ)) ≫ S₀.inv := by
     simpa only [rightAdjointMate_id, id_tensorHom, tensorHom_id] using

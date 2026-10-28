@@ -44,10 +44,7 @@ theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι
     (mul_eq_zero.mp ((Finset.sum_eq_zero_iff_of_nonneg
       (fun j _ => mul_nonneg (hA i j).le (hnonneg j))).mp hsum j
         (Finset.mem_univ j))).resolve_left (ne_of_gt (hA i j))
-  refine ⟨c, ?_⟩
-  funext j
-  change y j = c * x j
-  linarith [hall j]
+  exact ⟨c, funext fun j ↦ sub_eq_zero.mp (hall j)⟩
 
 /-- A function on simple labels is multiplicative for the fusion rules. -/
 abbrev IsFusionMultiplicative (C : BraidedFusionCategory) (χ : Fin (rank C) → ℂ) : Prop :=

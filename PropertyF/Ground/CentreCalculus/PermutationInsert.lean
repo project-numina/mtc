@@ -112,7 +112,7 @@ abbrev scalarPermTrace {D : Type u} [Category.{v} D] [MonoidalCategory D] [Right
 abbrev permScalarTrace (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) {X : C.Obj}
     (ρ : ∀ n : ℕ, Perm (Fin n) →* End (tensorPower X n)) :=
-  scalarPermTrace p (unitScalar C) ρ
+  scalarPermTrace p (unitScalarEquiv C).toLinearMap ρ
 
 local notation "tr" => permScalarTrace
 
@@ -124,13 +124,13 @@ theorem integral_of_trace_deletion {C : BraidedFusionCategory} {p : PivotalStruc
     (h : IsTraceDeletion (tr C p ρ) (fpDimension C X : ℂ)) : IsFPIntegral C X := by
   let F := tr C p ρ
   have hz : F 0 1 = 1 := by
-    change unitScalar C (p.rightTrace (((ρ 0) 1).asHom)) = 1
+    change unitScalarEquiv C (p.rightTrace (((ρ 0) 1).asHom)) = 1
     rw [map_one]
-    change unitScalar C (p.rightTrace (𝟙 (𝟙_ C.Obj))) = 1
-    rw [Dimensions.rightTrace_unit, unitScalar_eq_equiv, map_one]
-  apply integral_of_signed_permutation_traces hdim
-  intro n
-  exact ⟨ρ n, signedTraceSum_falling hz h n⟩
+    change unitScalarEquiv C (p.rightTrace (𝟙 (𝟙_ C.Obj))) = 1
+    rw [Dimensions.rightTrace_unit, map_one]
+  refine integral_of_signed_permutation_traces hdim fun n ↦ ⟨ρ n, ?_⟩
+  simpa [F, permScalarTrace, scalarPermTrace, signedTraceSum, ← unitScalar_eq_equiv] using
+    signedTraceSum_falling hz h n
 
 end PropertyF.Ground.CentreCalculus
 
@@ -225,19 +225,23 @@ theorem tensorPermAction_adjacent (σ : Perm (Fin (n + 1))) :
 
 end
 
+section
+variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
+  [RightRigidCategory D] [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
+variable (p : PivotalStructure (C := D)) (scalar : End (𝟙_ D) ≃ₐ[ℂ] ℂ)
+  {X : D} (hX : SelfTransparent X) {n : ℕ}
+
 set_option backward.isDefEq.respectTransparency false in
-/-- A fixed inserted strand contributes its positive categorical dimension to
- the actual permutation trace. -/
-theorem tensorPermTrace_fixHead {D : BraidedFusionCategory} {p : PivotalStructure (C := D.Obj)}
-    (hdim : HasFPSimpleDimensions D p) {X : D.Obj} (hX : SelfTransparent X)
-    {n : ℕ} (σ : Perm (Fin n)) : tr D p (tensorPermAction X hX) (n + 1) (fixHead n σ) =
-      (fpDimension D X : ℂ) * tr D p (tensorPermAction X hX) n σ := by
-  simp only [permScalarTrace, scalarPermTrace]
+/-- A fixed inserted strand contributes its pivotal dimension to the scalar trace. -/
+theorem tensorPermTrace_fixHead (σ : Perm (Fin n)) :
+    scalarPermTrace p scalar (tensorPermAction X hX) (n + 1) (fixHead n σ) =
+      scalar (p.rightTrace (𝟙 X)) * scalarPermTrace p scalar (tensorPermAction X hX) n σ := by
+  simp only [scalarPermTrace]
   rw [tensorPermAction_fixHead]
-  change unitScalar D (p.rightTrace (X ◁ ((tensorPermAction X hX n) σ).asHom)) = _
-  simpa only [id_tensorHom, ← unitScalar_eq_equiv,
-    ← pivotalDimension_eq_fpDimension hdim, pivotalDimension] using
-    Dimensions.pivotalTrace_tensor p (unitScalarEquiv D)
-      (𝟙 X) ((tensorPermAction X hX n) σ).asHom
+  change scalar (p.rightTrace (X ◁ ((tensorPermAction X hX n) σ).asHom)) = _
+  simpa only [id_tensorHom] using Dimensions.pivotalTrace_tensor p scalar
+    (𝟙 X) ((tensorPermAction X hX n) σ).asHom
+
+end
 
 end PropertyF.Ground.CentreCalculus

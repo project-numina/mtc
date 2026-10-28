@@ -113,9 +113,11 @@ theorem unitBlockLinear_id (Z : Center D) (T S : D) :
       (T ◁ (bS ▷ Sᘁ)) ⊗≫ 𝟙 _ := by simp only [comp_whiskerRight]; monoidal
     _ = _ := by rw [whisker_exchange]; monoidal
 
+variable (Z : Center C.Obj) (T : C.Obj)
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
-theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
+theorem unit_sum (j : Fin (rank C)) :
   (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
     (unitComponent C Z p.1 ▷ T) ≫ crossingSummand C Z.1 T p.1 j p.2) =
       (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
@@ -126,13 +128,12 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
-theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
+theorem unitCandidate_central :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
       (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
   let V := inductionSummand C Z.1
   apply (cancel_mono (leftDistributor T V).hom).1
-  apply biproduct.hom_ext
-  intro j
+  refine biproduct.hom_ext _ _ fun j => ?_
   simp only [Category.assoc, leftDistributor_hom_comp_biproduct_π]
   rw [← whiskerLeft_comp, show unitCandidate C Z ≫ biproduct.π V j =
     unitComponent C Z j from biproduct.lift_π _ _]
@@ -148,8 +149,7 @@ def actualAdjunction : Center.forget C.Obj ⊣ induction C where
     naturality {X Y} f := by
       apply Center.ext
       change f.f ≫ unitCandidate C Y = unitCandidate C X ≫ (underlyingFunctor C).map f.f
-      apply biproduct.hom_ext
-      intro i
+      refine biproduct.hom_ext _ _ fun i => ?_
       simp only [underlyingFunctor, unitCandidate, Category.assoc, biproduct.lift_π, biproduct.lift_π_assoc, biproduct.map_π]
       simpa only [Category.assoc] using unitComponent_natural C f i }
   counit := underlyingCounit C
