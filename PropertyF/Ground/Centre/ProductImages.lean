@@ -115,9 +115,9 @@ theorem projections_jointly_injective (X Y : C) (n : ℕ) :
 
 /-- The projected first component of a product braid lies in the first image. -/
 theorem fstBraidMap_mem (X Y : C) (n : ℕ) :
-    braidImage (X,Y) n ≤ (braidImage X n).comap (fstBraidMap X Y n) := by
-  apply (Subgroup.closure_le _).mpr
-  rintro _ ⟨i, rfl⟩
+    braidImage (X,Y) n ≤ (braidImage X n).comap (fstBraidMap X Y n) :=
+  (Subgroup.closure_le _).mpr fun _ h ↦ by
+  rcases h with ⟨i, rfl⟩
   change fstBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage X n
   unfold fstBraidMap
   rw [Modular.braidAutMap_generator]
@@ -125,9 +125,9 @@ theorem fstBraidMap_mem (X Y : C) (n : ℕ) :
 
 /-- The projected second component lies in the original, unreversed image. -/
 theorem sndBraidMap_mem (X Y : C) (n : ℕ) :
-    braidImage (X,Y) n ≤ (braidImage Y n).comap (sndBraidMap X Y n) := by
-  apply (Subgroup.closure_le _).mpr
-  rintro _ ⟨i, rfl⟩
+    braidImage (X,Y) n ≤ (braidImage Y n).comap (sndBraidMap X Y n) :=
+  (Subgroup.closure_le _).mpr fun _ h ↦ by
+  rcases h with ⟨i, rfl⟩
   change sndBraidMap X Y n (braidGenerator (X,Y) n i) ∈ braidImage Y n
   unfold sndBraidMap
   rw [@Modular.braidAutMap_generator (C × C) _ _ (mixedBraiding (C := C)) C _ _
@@ -145,12 +145,10 @@ def productBraidMap (X Y : C) (n : ℕ) :
 
 /-- The product braid image is a subgroup of the product of its two factor images. -/
 theorem productBraidMap_injective (X Y : C) (n : ℕ) :
-    Function.Injective (productBraidMap X Y n) := by
-  intro a b hab
-  apply Subtype.ext
-  apply projections_jointly_injective X Y n
-  exact Prod.ext (congrArg (fun x : braidImage X n × braidImage Y n => x.1.val) hab)
-    (congrArg (fun x : braidImage X n × braidImage Y n => x.2.val) hab)
+    Function.Injective (productBraidMap X Y n) :=
+  fun _ _ h ↦ Subtype.ext <| projections_jointly_injective X Y n <|
+    Prod.ext (congrArg (fun x : braidImage X n × braidImage Y n => x.1.val) h)
+      (congrArg (fun x : braidImage X n × braidImage Y n => x.2.val) h)
 
 /-- Finite factor images imply a finite mixed-product braid image. -/
 theorem product_braidImage_finite (X Y : C) (n : ℕ)
