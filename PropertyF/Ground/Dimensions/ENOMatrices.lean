@@ -71,13 +71,12 @@ def rootDimension (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) : ℂ :=
 set_option backward.isDefEq.respectTransparency false in
 /-- All natural-root simple dimensions are nonzero. -/
 theorem rootDimension_ne_zero (i : Fin (rank C)) :
-    rootDimension C i ≠ 0 := by
-  let : Simple (simples C i) := simples_simple C i
-  change unitScalar C (rootTrace C (𝟙 (simples C i))) ≠ 0
-  rw [rootTrace_id, Ground.unitScalar_eq_equiv]
-  exact (Ground.unitScalarEquiv C).toRingEquiv.map_ne_zero_iff.mpr
-    (rightQuantumTrace_simple_ne_zero (X := simples C i)
-      ((fourthDualRootNaturalIso C).app (simples C i)))
+    rootDimension C i ≠ 0 :=
+  letI : Simple (simples C i) := simples_simple C i
+  by simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, AlgEquiv.coe_toRingEquiv] using
+    (Ground.unitScalarEquiv C).toRingEquiv.map_ne_zero_iff.mpr
+      (rightQuantumTrace_simple_ne_zero (X := simples C i)
+        ((fourthDualRootNaturalIso C).app (simples C i)))
 
 /-- The matrix of traces of the actual natural-root multiplicity defects. -/
 def enoTraceMatrix (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
@@ -165,9 +164,9 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
   classical
   let q : ι → ℂ := fun i => d i / (f i : ℂ)
   have hq : ∀ i, ‖q i‖ = 1 := fun i ↦ norm_div_ofReal_eq_one (hf i) (hd i)
-  have hqn : ∀ i, q i ≠ 0 := fun i => norm_pos_iff.mp (by rw [hq]; norm_num)
+  have hqn : ∀ i, q i ≠ 0 := fun i ↦ norm_ne_zero_iff.mp (by rw [hq]; exact one_ne_zero)
   have hrepr (i) : q i * (f i : ℂ) = d i :=
-    div_mul_cancel₀ _ (by exact_mod_cast (ne_of_gt (hf i)))
+    div_mul_cancel₀ _ (Complex.ofReal_ne_zero.mpr (ne_of_gt (hf i)))
   intro i j k
   let x : ι → ℂ := fun l => T i j l * q l / (q i * q j)
   have hx : ∀ l, ‖x l‖ ≤ N i j l := by
