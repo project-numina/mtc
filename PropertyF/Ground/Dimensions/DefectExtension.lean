@@ -154,8 +154,7 @@ variable {C} in
 theorem rootTensorDefect_slide_of_involution
     {i : Fin (rank C)} (K : C.Obj)
     (hinv : let X := simples C i
-      (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom =
-        𝟙 ((Xᘁ) ⊗ (X ⊗ K))) :
+      IsInvolutiveHom (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom) :
     RootTensorDefectSlide C i K := by
   let X := simples C i
   let A := Xᘁ
@@ -204,10 +203,8 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 set_option backward.isDefEq.respectTransparency false in
 /-- Involutivity on simple pairs extends to all object pairs by semisimple decomposition. -/
 theorem rootTensorDefect_involution_extension
-    (hsimple : ∀ i j, (rootTensorDefect C (simples C i) (simples C j)).hom ≫
-      (rootTensorDefect C (simples C i) (simples C j)).hom =
-        𝟙 (simples C i ⊗ simples C j)) (X Y : C.Obj) :
-    (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) :=
+    (hsimple : ∀ i j, IsInvolutiveHom (rootTensorDefect C (simples C i) (simples C j)).hom)
+    (X Y : C.Obj) : IsInvolutiveHom (rootTensorDefect C X Y).hom :=
   tensor_decomposition_hom_ext (simpleDecomposition C X) (simpleDecomposition C Y) fun sx sy ↦ by
     rw [← Category.assoc, rootTensorDefect_natural C sx sy, Category.assoc,
       rootTensorDefect_natural C sx sy, ← Category.assoc, hsimple,

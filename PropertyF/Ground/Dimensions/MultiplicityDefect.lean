@@ -96,12 +96,15 @@ end
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Dimensions
 
+/-- An element is involutive when its square is one. -/
+abbrev IsInvolutiveElem {M : Type*} [Monoid M] (a : M) : Prop := a * a = 1
+
 section
 variable {k : Type*} [Field k] [NeZero (2 : k)]
   {V : Type*} [AddCommGroup V] [Module k V] {T : V →ₗ[k] V}
 
 /-- The positive spectral projection of an involution is idempotent. -/
-theorem involution_half_projection (hT : T * T = 1) :
+theorem involution_half_projection (hT : IsInvolutiveElem T) :
     IsIdempotentElem ((2 : k)⁻¹ • (1 + T)) := by
   have hinv (x : V) : T (T x) = x := congrArg (fun f : V →ₗ[k] V ↦ f x) hT
   let P : V →ₗ[k] V := (2 : k)⁻¹ • (1 + T)
@@ -117,7 +120,7 @@ variable [FiniteDimensional k V]
 /-- The trace of an involution is the difference of its positive and
 negative eigenspace dimensions. This is the finite-dimensional ingredient in
 ENO's trace matrices. -/
-theorem involution_trace_formula (hT : T * T = 1) :
+theorem involution_trace_formula (hT : IsInvolutiveElem T) :
     ∃ m : ℕ, m ≤ Module.finrank k V ∧
       LinearMap.trace k V T = 2 * (m : k) - (Module.finrank k V : k) := by
   let P : V →ₗ[k] V := (2 : k)⁻¹ • (1 + T)
@@ -131,7 +134,7 @@ theorem involution_trace_formula (hT : T * T = 1) :
 
 /-- The trace of an involution is an integer whose absolute value is at most
 the dimension of its underlying vector space. -/
-theorem involution_trace_integer_bound (hT : T * T = 1) :
+theorem involution_trace_integer_bound (hT : IsInvolutiveElem T) :
     ∃ n : ℤ, LinearMap.trace k V T = (n : k) ∧
       |n| ≤ (Module.finrank k V : ℤ) :=
   (involution_trace_formula hT).elim fun m ⟨hm, htrace⟩ ↦
@@ -141,11 +144,11 @@ theorem involution_trace_integer_bound (hT : T * T = 1) :
 
 omit [NeZero (2 : k)] in
 /-- An involution whose trace reaches the dimension is the identity. -/
-theorem involution_eq_one_of_trace_eq_finrank [CharZero k] (hT : T * T = 1)
+theorem involution_eq_one_of_trace_eq_finrank [CharZero k] (hT : IsInvolutiveElem T)
     (htrace : LinearMap.trace k V T = (Module.finrank k V : k)) : T = 1 := by
   let Q : V →ₗ[k] V := (2 : k)⁻¹ • (1 - T)
   have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff (show IsIdempotentElem Q from by
-    simpa [Q, sub_eq_add_neg] using involution_half_projection (T := -T) (by simpa using hT))).mp
+    simpa [Q, sub_eq_add_neg] using involution_half_projection (T := -T) (by simpa [IsInvolutiveElem] using hT))).mp
       (by simp [Q, htrace])
   exact (sub_eq_zero.mp (by
     simpa [hzero] using (show (2 : k) • Q = 1 - T by simp [Q, smul_smul]).symm)).symm
@@ -157,11 +160,11 @@ variable {V : Type*} [AddCommGroup V] [Module ℂ V] {T : V →ₗ[ℂ] V}
 variable [FiniteDimensional ℂ V]
 
 /-- The trace of a complex involution is real. -/
-theorem star_involution_trace (hT : T * T = 1) :
+theorem star_involution_trace (hT : IsInvolutiveElem T) :
     star (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T :=
   (involution_trace_integer_bound hT).elim fun _ ⟨hn, _⟩ ↦ by simp [hn]
 
-variable (hT : T * T = 1) {c : ℂ} (hc : ‖c‖ = 1)
+variable (hT : IsInvolutiveElem T) {c : ℂ} (hc : ‖c‖ = 1)
   (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ))
 include hT hc htrace
 
@@ -180,6 +183,7 @@ theorem involution_phase_eq_one_of_trace :
   have hcconj : (starRingEnd ℂ) c = c := mul_left_cancel₀ ht (hconj.trans htrace.symm)
   have hc2 : c * c = 1 := by simpa [hcconj, hc] using Complex.mul_conj' c
   apply involution_eq_one_of_trace_eq_finrank (by
+    change (c • T) * (c • T) = 1
     rw [smul_mul_assoc, mul_smul_comm, smul_smul, hT, hc2, one_smul])
   rw [map_smul, smul_eq_mul, mul_comm, htrace]
 
@@ -201,6 +205,10 @@ open CategoryTheory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+/-- An endomorphism is involutive when its square is the identity. -/
+abbrev IsInvolutiveHom {C : Type u} [Category.{v} C] {X : C} (f : X ⟶ X) : Prop :=
+  f ≫ f = 𝟙 X
+
 /-- If two isomorphisms into a functor have the same functorial square, and
 one is a component of a natural isomorphism from the identity, their ratio is
 an involution. -/
@@ -208,7 +216,7 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
     (F : C ⥤ C) (a : 𝟭 C ≅ F) {X : C} (b : X ≅ F.obj X)
     (hsq : ((a.app X).hom ≫ F.map (a.app X).hom) = b.hom ≫ F.map b.hom) :
     let d := (a.app X) ≪≫ b.symm
-    d.hom ≫ d.hom = 𝟙 X := by
+    IsInvolutiveHom d.hom := by
   let d := (a.app X) ≪≫ b.symm
   change d.hom ≫ d.hom = 𝟙 X
   have hd : d.hom ≫ b.hom = (a.app X).hom := by simp [d, Category.assoc]
@@ -244,6 +252,10 @@ def rootTensorIso (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
   ((fourthDualRootNaturalIso C).app X ⊗ᵢ (fourthDualRootNaturalIso C).app Y) ≪≫
     doubleDualTensorIso X Y
 
+/-- The functorial square of the root tensor comparison. -/
+abbrev rootTensorSquare (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :=
+  (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ)
+
 /-- The defect of tensor compatibility of the chosen natural square root. -/
 def rootTensorDefect (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) :
     X ⊗ Y ≅ X ⊗ Y :=
@@ -260,8 +272,7 @@ def multiplicityDefect (C : BraidedFusionCategory.{v,u})
 
 /-- Each tensor-defect operator on a simple multiplicity space is an involution. -/
 abbrev MultiplicityDefectsInvolutive (C : BraidedFusionCategory.{v,u}) : Prop :=
-  ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
-    (multiplicityDefect C i j k).toLinearMap = 1
+  ∀ i j k, IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap
 
 /-- Scalar twisting makes each multiplicity-defect operator the identity. -/
 abbrev ScaledMultiplicityDefectsTrivial (C : BraidedFusionCategory.{v,u})
@@ -278,9 +289,8 @@ theorem multiplicityDefect_apply {i j k : Fin (rank C)}
 /-- If the tensor of the simple root components has the expected fourth-dual
 square, the resulting tensor defect is an involution. -/
 theorem rootTensorDefect_involution_of_tensor_square {X Y : C.Obj}
-    (hsq : (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
-      (fourthDualIso (X ⊗ Y)).hom) :
-    (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) :=
+    (hsq : rootTensorSquare C X Y = (fourthDualIso (X ⊗ Y)).hom) :
+    IsInvolutiveHom (rootTensorDefect C X Y).hom :=
   natural_square_defect_involution (doubleDualFunctor C.Obj)
     (fourthDualRootNaturalIso C) (rootTensorIso C X Y)
     ((congrArg (fun n => (n.app (X ⊗ Y)).hom) (fourthDualRootNaturalSquare_eq C)).trans hsq.symm)
@@ -288,11 +298,9 @@ theorem rootTensorDefect_involution_of_tensor_square {X Y : C.Obj}
 /-- The tensor-square comparison implies involutivity of every corresponding
 actual multiplicity-space operator. -/
 theorem multiplicityDefect_involution_of_tensor_square {i j : Fin (rank C)} (k : Fin (rank C))
-    (hsq : (rootTensorIso C (simples C i) (simples C j)).hom ≫
-      (((rootTensorIso C (simples C i) (simples C j)).homᘁ)ᘁ) =
-        (fourthDualIso (simples C i ⊗ simples C j)).hom) :
-    (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1 :=
+    (hsq : rootTensorSquare C (simples C i) (simples C j) =
+      (fourthDualIso (simples C i ⊗ simples C j)).hom) :
+    IsInvolutiveElem (multiplicityDefect C i j k).toLinearMap :=
   LinearMap.ext fun f ↦ by
     simp [multiplicityDefect_apply, Category.assoc,
       rootTensorDefect_involution_of_tensor_square C hsq]
@@ -301,15 +309,14 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Squaring the root tensor map gives the tensor of the fourth-dual maps,
 with the canonical iterated double-dual tensor comparison. -/
 theorem rootTensor_square_eq_fourthDual_tensor (X Y : C.Obj) :
-    (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
-      ((fourthDualIso X).hom ⊗ₘ (fourthDualIso Y).hom) ≫
+    rootTensorSquare C X Y = ((fourthDualIso X).hom ⊗ₘ (fourthDualIso Y).hom) ≫
         (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
           (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
   have hroot (Z : C.Obj) : ((fourthDualRootNaturalIso C).app Z).hom ≫
       ((((fourthDualRootNaturalIso C).app Z).homᘁ)ᘁ) = (fourthDualIso Z).hom :=
     congrArg (fun n ↦ (n.app Z).hom) (fourthDualRootNaturalSquare_eq C)
   rw [← hroot X, ← hroot Y]
-  simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
+  simp only [rootTensorSquare, rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
     Category.assoc]
   slice_lhs 2 3 => rw [← doubleDualTensorIso_natural]
   simp only [doubleDualFunctor, Category.assoc]
