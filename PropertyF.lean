@@ -36,7 +36,6 @@ public import PropertyF.Ground.Fusion.SubcategoryDimension
 public import PropertyF.Ground.Fusion.GeneratedRigidity
 public import PropertyF.Ground.Fusion.GeneratedStructure
 public import PropertyF.Ground.Fusion.WeakIntegrality
-public import PropertyF.Transfer
 public import PropertyF.Ground.Calculus.Overlap
 public import PropertyF.Ground.Calculus.OverlapTrace
 public import PropertyF.Ground.Calculus.ImageMaps
@@ -44,7 +43,6 @@ public import PropertyF.Ground.Calculus.BraidTraceBound
 public import PropertyF.Ground.Calculus.PartialTraceGround
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Cabling.Pure
-public import PropertyF.Ground.Cabling.Images
 public import PropertyF.Ground.Cabling.Generated
 public import PropertyF.Ground.Dimensions.DimensionField
 public import PropertyF.Ground.Dimensions.Norm
@@ -133,8 +131,6 @@ public import PropertyF.Ground.Dimensions.GlobalInequality
 public import PropertyF.Ground.Cabling.Rigidity
 public import PropertyF.Ground.Cabling.DualClosure
 public import PropertyF.Ground.Cabling.UnitPower
-public import PropertyF.Ground.Cabling.FusionCycle
-public import PropertyF.Ground.Cabling.GeneralDual
 public import PropertyF.Ground.Cabling.Naturality
 public import PropertyF.Ground.Cabling.PowerGeneral
 public import PropertyF.Ground.Calculus.ThreeTrace

@@ -210,10 +210,7 @@ import all PropertyF.Definitions
 import all PropertyF.GaloisRigidity
 import all PropertyF.GaloisSymmetry
 import all PropertyF.Ground.Cabling.DualClosure
-import all PropertyF.Ground.Cabling.FusionCycle
-import all PropertyF.Ground.Cabling.GeneralDual
 import all PropertyF.Ground.Cabling.Generated
-import all PropertyF.Ground.Cabling.Images
 import all PropertyF.Ground.Cabling.Naturality
 import all PropertyF.Ground.Cabling.PowerGeneral
 import all PropertyF.Ground.Cabling.Pure
@@ -410,7 +407,6 @@ import all PropertyF.Ground.Target
 import all PropertyF.Main
 import all PropertyF.PowerBound
 import all PropertyF.TraceBound
-import all PropertyF.Transfer
 import all PropertyF.UnitaryTrace
 
 /-! Scan all currently integrated project declarations, including the ground
