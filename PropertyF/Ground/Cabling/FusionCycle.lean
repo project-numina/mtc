@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Fusion.GeneratedRigidity
-public import PropertyF.Ground.Fusion.BalancedFlow
+public import PropertyF.Ground.Fusion.UnitPower
 public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Cabling.UnitPower
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

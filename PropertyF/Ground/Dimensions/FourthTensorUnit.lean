@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.DoubleDualUnitTensor
-public import PropertyF.Ground.Dimensions.RootUnitComponent
+public import PropertyF.Ground.Dimensions.RootDualPairing
 public import PropertyF.Ground.Dimensions.DefectNaturality
 
 @[expose] public noncomputable section

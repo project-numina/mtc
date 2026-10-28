@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Fusion.Splitting
+public import PropertyF.Ground.Fusion.Simples
 public import PropertyF.Ground.Cabling.Strands
 
 /-! Wire the split-unit and identity-strand constructions across workstreams. -/

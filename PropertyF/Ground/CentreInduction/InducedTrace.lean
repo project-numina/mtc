@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.InjectiveFusion
-public import PropertyF.Ground.Dimensions.PivotalUniqueness
+public import PropertyF.Ground.Dimensions.PositiveCanonical
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 universe v u

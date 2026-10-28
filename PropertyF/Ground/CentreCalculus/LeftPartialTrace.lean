@@ -1,6 +1,6 @@
 module
-public import PropertyF.Ground.Dimensions.IteratedTrace
-public import PropertyF.Ground.Dimensions.PivotalDual
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 
 /-! Left partial trace for the strand-deletion identity. -/
 @[expose] public noncomputable section

@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.ForgetDual
-public import PropertyF.Ground.Dimensions.SphericalReal
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
 public import PropertyF.Ground.Dimensions.PositiveCanonical
 
 /-! Transfer a compatible pivotal structure to positive spherical centre data. -/

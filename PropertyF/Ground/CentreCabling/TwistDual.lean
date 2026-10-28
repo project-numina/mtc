@@ -2,28 +2,14 @@ module
 public import PropertyF.Ground.CentreDimensions.PivotalTwist
 public import PropertyF.Ground.CentreInduction.DualBraiding
 public import PropertyF.Ground.Dimensions.DualBraiding
-public import PropertyF.Ground.Dimensions.SphericalReal
+public import PropertyF.Ground.Dimensions.PivotalPseudoUnitary
+public import PropertyF.Ground.Fusion.Reciprocity
 
 /-! Compatibility of pivotal twists with duals in spherical categories. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.CentreCabling
 universe v u
-
-set_option backward.isDefEq.respectTransparency false in
-/-- The left pivotal trace of a morphism equals the right trace of its dual. -/
-theorem pivotal_leftTrace_eq_rightTrace_dual {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RigidCategory C] (p : Dimensions.PivotalStructure (C := C))
-    {X : C} (f : X ⟶ X) : p.leftTrace f = p.rightTrace (fᘁ) := by
-  rw [Dimensions.leftTrace_eq_rightTraceWith_dual, ← Dimensions.pivotal_dual p X]
-  rfl
-
-set_option backward.isDefEq.respectTransparency false in
-/-- In a spherical category, dualizing preserves pivotal traces. -/
-theorem spherical_rightTrace_dual {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RigidCategory C] (p : Dimensions.PivotalStructure (C := C))
-    (hp : p.IsSpherical) {X : C} (f : X ⟶ X) : p.rightTrace (fᘁ) = p.rightTrace f := by
-  rw [← pivotal_leftTrace_eq_rightTrace_dual, hp]
 
 /-- Self-braiding traces of an object and its right dual agree in a spherical
 braided category. -/
@@ -38,7 +24,10 @@ theorem spherical_selfBraiding_trace_dual
   have heq : ((β_ X X).homᘁ) = e.hom ≫ (β_ (Xᘁ) (Xᘁ)).hom ≫ e.inv := by
     rw [← Category.assoc, ← hb, Category.assoc, Iso.hom_inv_id, Category.comp_id]
   calc
-    _ = p.rightTrace ((β_ X X).homᘁ) := (spherical_rightTrace_dual p hp _).symm
+    _ = p.rightTrace ((β_ X X).homᘁ) := by
+      rw [← hp (X ⊗ X) ((β_ X X).hom), Dimensions.leftTrace_eq_rightTraceWith_dual,
+        ← Dimensions.pivotal_dual p (X ⊗ X)]
+      rfl
     _ = p.rightTrace (e.hom ≫ (β_ (Xᘁ) (Xᘁ)).hom ≫ e.inv) := by rw [heq]
     _ = _ := by simpa [Category.assoc] using hc
 

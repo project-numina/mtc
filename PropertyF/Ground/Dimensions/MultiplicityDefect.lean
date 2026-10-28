@@ -1,7 +1,264 @@
 module
-public import PropertyF.Ground.Dimensions.NaturalRoots
-public import PropertyF.Ground.Dimensions.InvolutionTrace
-public import PropertyF.Ground.Dimensions.NaturalSquareDefect
+public import PropertyF.Ground.Dimensions.SimpleScalars
+public import Mathlib.CategoryTheory.Whiskering
+public import Mathlib.LinearAlgebra.Trace
+public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+public import Mathlib.Data.Complex.Basic
+public import Mathlib.Tactic
+public import Mathlib.CategoryTheory.Iso
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+namespace PropertyF.Ground.Dimensions
+universe v u
+attribute [local instance] Abelian.hasFiniteBiproducts
+
+/-- Scalar comparing the chosen simple fourth-dual square root to the
+braided double-dual component. -/
+def fourthDualRootScalar (C : Ground.BraidedFusionCategory.{v,u})
+    (i : Fin (Ground.rank C)) : ℂ := by
+  let : Simple (Ground.simples C i) := Ground.simples_simple C i
+  exact Classical.choose (isomorphisms_differ_by_scalar C
+    (Ground.doubleDualIso C (Ground.simples C i)) (fourthDualSimpleRoot C i))
+
+theorem fourthDualRootScalar_spec (C : Ground.BraidedFusionCategory.{v,u})
+    (i : Fin (Ground.rank C)) : fourthDualRootScalar C i ≠ 0 ∧
+    (fourthDualSimpleRoot C i).hom = fourthDualRootScalar C i •
+      (Ground.doubleDualIso C (Ground.simples C i)).hom := by
+  let : Simple (Ground.simples C i) := Ground.simples_simple C i
+  exact Classical.choose_spec (isomorphisms_differ_by_scalar C
+    (Ground.doubleDualIso C (Ground.simples C i)) (fourthDualSimpleRoot C i))
+
+/-- The chosen simple square roots extend to a natural isomorphism from the
+identity to the double-dual functor. It is not asserted to be monoidal. -/
+def fourthDualRootNaturalIso (C : Ground.BraidedFusionCategory.{v,u}) :
+    𝟭 C.Obj ≅ doubleDualFunctor C.Obj :=
+  simpleScalarNaturalIso C (fourthDualRootScalar C) (fun i => (fourthDualRootScalar_spec C i).1) ≪≫
+    drinfeldNaturalIso C
+
+/-- The natural extension has exactly the chosen simple components. -/
+theorem fourthDualRootNaturalIso_app_simple (C : Ground.BraidedFusionCategory.{v,u})
+    (i : Fin (Ground.rank C)) :
+    (fourthDualRootNaturalIso C).app (Ground.simples C i) = fourthDualSimpleRoot C i := by
+  apply Iso.ext
+  simp only [fourthDualRootNaturalIso, NatIso.trans_app, Iso.trans_hom,
+    simpleScalarNaturalIso_app_simple]
+  change (fourthDualRootScalar C i • 𝟙 (Ground.simples C i)) ≫
+    (Ground.doubleDualIso C (Ground.simples C i)).hom = _
+  simpa using (fourthDualRootScalar_spec C i).2.symm
+
+/-- Natural transformations from the identity are determined by their
+components on the simple representatives. -/
+theorem natTrans_eq_of_simple_components (C : Ground.BraidedFusionCategory.{v,u})
+    (F : C.Obj ⥤ C.Obj) (α β : 𝟭 C.Obj ⟶ F)
+    (h : ∀ i, α.app (Ground.simples C i) = β.app (Ground.simples C i)) : α = β := by
+  apply NatTrans.ext
+  funext X
+  classical
+  obtain ⟨m, ⟨e⟩⟩ := Ground.simples_decompose C X
+  let V : (Σ i, Fin (m i)) → C.Obj := fun a => Ground.simples C a.1
+  have hs : α.app (⨁ V) = β.app (⨁ V) := by
+    apply biproduct.hom_ext'
+    intro a
+    have hα := α.naturality (biproduct.ι V a)
+    have hβ := β.naturality (biproduct.ι V a)
+    simp only [Functor.id_map] at hα hβ
+    rw [hα, hβ, h a.1]
+  apply (cancel_mono (F.map e.hom)).1
+  have hα := α.naturality e.hom
+  have hβ := β.naturality e.hom
+  simp only [Functor.id_map] at hα hβ
+  rw [← hα, ← hβ, hs]
+
+/-- The natural double-dual root, squared using the double-dual functor. -/
+def fourthDualRootNaturalSquare (C : Ground.BraidedFusionCategory.{v,u}) :
+    𝟭 C.Obj ≅ doubleDualFunctor C.Obj ⋙ doubleDualFunctor C.Obj :=
+  fourthDualRootNaturalIso C ≪≫
+    Functor.isoWhiskerRight (fourthDualRootNaturalIso C) (doubleDualFunctor C.Obj)
+
+/-- The natural double-dual root squares to the natural braided fourth-dual
+isomorphism on every object. Monoidal compatibility remains a separate issue. -/
+theorem fourthDualRootNaturalSquare_eq (C : Ground.BraidedFusionCategory.{v,u}) :
+    fourthDualRootNaturalSquare C = fourthDualNaturalIso C := by
+  apply Iso.ext
+  apply natTrans_eq_of_simple_components C
+  intro i
+  change ((fourthDualRootNaturalIso C).app (Ground.simples C i)).hom ≫
+    ((((fourthDualRootNaturalIso C).app (Ground.simples C i)).homᘁ)ᘁ) =
+      (fourthDualIso C (Ground.simples C i)).hom
+  rw [fourthDualRootNaturalIso_app_simple]
+  exact congrArg Iso.hom (fourthDualSimpleRoot_sq C i)
+
+end PropertyF.Ground.Dimensions
+
+end
+
+@[expose] public noncomputable section
+namespace PropertyF.Ground.Dimensions
+
+/-- The trace of a complex involution is the difference of its positive and
+negative eigenspace dimensions. This is the finite-dimensional ingredient in
+ENO's trace matrices. -/
+theorem involution_trace_formula {V : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) :
+    ∃ m : ℕ, m ≤ Module.finrank ℂ V ∧
+      LinearMap.trace ℂ V T = 2 * (m : ℂ) - (Module.finrank ℂ V : ℂ) := by
+  let P : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 + T)
+  have hinv (x : V) : T (T x) = x := by
+    have h := congrArg (fun f : V →ₗ[ℂ] V => f x) hT
+    simpa using h
+  have hp : IsIdempotentElem P := by
+    change P * P = P
+    ext x
+    change P (P x) = P x
+    simp only [P, LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply,
+      map_smul, map_add, hinv, smul_add, smul_smul]
+    module
+  have htrace := (LinearMap.IsIdempotentElem.isProj_range P hp).trace
+  have hP : (2 : ℂ) • P = 1 + T := by
+    ext x
+    simp [P]
+  have htp := congrArg (LinearMap.trace ℂ V) hP
+  simp only [map_smul, map_add, LinearMap.trace_id, smul_eq_mul] at htp
+  refine ⟨Module.finrank ℂ (LinearMap.range P), (LinearMap.range P).finrank_le, ?_⟩
+  rw [htrace] at htp
+  have hid : LinearMap.trace ℂ V (1 : V →ₗ[ℂ] V) = (Module.finrank ℂ V : ℂ) :=
+    LinearMap.trace_id ℂ V
+  rw [hid] at htp
+  linear_combination -htp
+
+/-- The trace of an involution is an integer whose absolute value is at most
+the dimension of its underlying vector space. -/
+theorem involution_trace_integer_bound {V : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) :
+    ∃ n : ℤ, LinearMap.trace ℂ V T = (n : ℂ) ∧
+      |n| ≤ (Module.finrank ℂ V : ℤ) := by
+  obtain ⟨m, hm, htrace⟩ := involution_trace_formula T hT
+  refine ⟨2 * (m : ℤ) - (Module.finrank ℂ V : ℤ), ?_, ?_⟩
+  · simpa using htrace
+  · have hm' : (m : ℤ) ≤ (Module.finrank ℂ V : ℤ) := by exact_mod_cast hm
+    have hm0 : (0 : ℤ) ≤ (m : ℤ) := by positivity
+    rw [abs_le]
+    constructor <;> omega
+
+/-- An involution whose trace reaches the dimension is the identity. -/
+theorem involution_eq_one_of_trace_eq_finrank {V : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1)
+    (htrace : LinearMap.trace ℂ V T = (Module.finrank ℂ V : ℂ)) : T = 1 := by
+  let Q : V →ₗ[ℂ] V := (2 : ℂ)⁻¹ • (1 - T)
+  have hinv (x : V) : T (T x) = x := by
+    have h := congrArg (fun f : V →ₗ[ℂ] V => f x) hT
+    simpa using h
+  have hq : IsIdempotentElem Q := by
+    change Q * Q = Q
+    ext x
+    change Q (Q x) = Q x
+    simp only [Q, LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply,
+      map_smul, map_sub, hinv, smul_sub, smul_smul]
+    module
+  have hqt : LinearMap.trace ℂ V Q = 0 := by
+    have hid : LinearMap.trace ℂ V (1 : V →ₗ[ℂ] V) = (Module.finrank ℂ V : ℂ) :=
+      LinearMap.trace_id ℂ V
+    simp [Q, hid, htrace]
+  have hzero : Q = 0 := (LinearMap.IsIdempotentElem.trace_eq_zero_iff hq).mp hqt
+  have hQ : (2 : ℂ) • Q = 1 - T := by
+    ext x
+    simp [Q]
+  rw [hzero, smul_zero] at hQ
+  exact (sub_eq_zero.mp hQ.symm).symm
+
+/-- A phase-scaled involution with maximal trace is the identity. -/
+theorem involution_phase_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) (c : ℂ)
+    (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
+    c • T = 1 := by
+  by_cases hz : Module.finrank ℂ V = 0
+  · letI : Subsingleton V := Module.finrank_zero_iff.mp hz
+    ext x
+    exact Subsingleton.elim _ _
+  have hdim : (Module.finrank ℂ V : ℂ) ≠ 0 := by exact_mod_cast hz
+  have ht : LinearMap.trace ℂ V T ≠ 0 := by
+    intro h
+    rw [h, zero_mul] at htrace
+    exact hdim htrace.symm
+  obtain ⟨n, hn, _⟩ := involution_trace_integer_bound T hT
+  have htr : (starRingEnd ℂ) (LinearMap.trace ℂ V T) = LinearMap.trace ℂ V T := by rw [hn]; simp
+  have hconj := congrArg (starRingEnd ℂ) htrace
+  simp only [map_mul, map_natCast, htr] at hconj
+  have hcconj : (starRingEnd ℂ) c = c := mul_left_cancel₀ ht (hconj.trans htrace.symm)
+  have hc2 : c * c = 1 := by
+    have h := Complex.mul_conj' c
+    rw [hcconj, hc] at h
+    norm_num at h
+    exact h
+  have hinv (x : V) : T (T x) = x := by
+    have h := congrArg (fun f : V →ₗ[ℂ] V => f x) hT
+    simpa using h
+  have hu : (c • T) * (c • T) = 1 := by
+    ext x
+    change c • T (c • T x) = x
+    simp [map_smul, smul_smul, hc2, hinv]
+  apply involution_eq_one_of_trace_eq_finrank (c • T) hu
+  simp only [map_smul, smul_eq_mul]
+  rw [mul_comm, htrace]
+
+/-- The inverse phase also turns a maximal-trace involution into identity. -/
+theorem involution_phase_inv_eq_one_of_trace {V : Type*} [AddCommGroup V] [Module ℂ V]
+    [FiniteDimensional ℂ V] (T : V →ₗ[ℂ] V) (hT : T * T = 1) (c : ℂ)
+    (hc : ‖c‖ = 1) (htrace : LinearMap.trace ℂ V T * c = (Module.finrank ℂ V : ℂ)) :
+    c⁻¹ • T = 1 := by
+  have h := involution_phase_eq_one_of_trace T hT c hc htrace
+  have ht := congrArg (fun F => F * T) h
+  have hs : T = c • (1 : V →ₗ[ℂ] V) := by
+    simpa [smul_mul_assoc, hT] using ht.symm
+  have hc0 : c ≠ 0 := norm_ne_zero_iff.mp (by rw [hc]; norm_num)
+  rw [hs, smul_smul, inv_mul_cancel₀ hc0, one_smul]
+
+
+end PropertyF.Ground.Dimensions
+
+end
+
+@[expose] public noncomputable section
+open CategoryTheory
+namespace PropertyF.Ground.Dimensions
+universe v u
+
+/-- If two isomorphisms into a functor have the same functorial square, and
+one is a component of a natural isomorphism from the identity, their ratio is
+an involution. -/
+theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
+    (F : C ⥤ C) (a : 𝟭 C ≅ F) (X : C) (b : X ≅ F.obj X)
+    (hsq : ((a.app X).hom ≫ F.map (a.app X).hom) = b.hom ≫ F.map b.hom) :
+    let d := (a.app X) ≪≫ b.symm
+    d.hom ≫ d.hom = 𝟙 X := by
+  let d := (a.app X) ≪≫ b.symm
+  change d.hom ≫ d.hom = 𝟙 X
+  have hd : d.hom ≫ b.hom = (a.app X).hom := by simp [d, Category.assoc]
+  have hn := a.hom.naturality d.hom
+  simp only [Functor.id_map] at hn
+  change d.hom ≫ (a.app X).hom = (a.app X).hom ≫ F.map d.hom at hn
+  have hc : b.hom ≫ F.map d.hom = d.hom ≫ b.hom := by
+    calc
+      _ = d.inv ≫ (a.app X).hom ≫ F.map d.hom := by
+        rw [← hd]
+        simp [Category.assoc]
+      _ = d.inv ≫ d.hom ≫ (a.app X).hom := by
+        rw [← hn]
+      _ = d.hom ≫ b.hom := by simp [hd, Category.assoc]
+  apply (cancel_mono (b.hom ≫ F.map b.hom)).1
+  calc
+    (d.hom ≫ d.hom) ≫ (b.hom ≫ F.map b.hom) =
+        d.hom ≫ (d.hom ≫ b.hom) ≫ F.map b.hom := by simp [Category.assoc]
+    _ = d.hom ≫ (b.hom ≫ F.map d.hom) ≫ F.map b.hom := by rw [hc]
+    _ = (d.hom ≫ b.hom) ≫ F.map (d.hom ≫ b.hom) := by
+      simp only [Functor.map_comp, Category.assoc]
+    _ = b.hom ≫ F.map b.hom := by rw [hd, hsq]
+    _ = 𝟙 X ≫ (b.hom ≫ F.map b.hom) := by simp
+
+end PropertyF.Ground.Dimensions
+
+end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -116,3 +373,5 @@ theorem rootTensor_square_of_fourthDual_tensor
   rw [tensorHom_comp_tensorHom_assoc]
 
 end PropertyF.Ground.Dimensions
+
+end

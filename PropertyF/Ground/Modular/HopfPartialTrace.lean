@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Modular.SAdditivity
-public import PropertyF.Ground.Dimensions.IteratedTrace
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 
 /-!
 # Partial traces of double braidings

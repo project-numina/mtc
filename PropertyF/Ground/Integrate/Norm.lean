@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Integrate.UnitScalar
-public import PropertyF.Ground.Dimensions.Norm
+public import PropertyF.Ground.Dimensions.GroundNorm
 
 /-! Connect the ground target's intrinsic norm to an arbitrary choice of
 simple double-dual isomorphism and unit-scalar equivalence. -/

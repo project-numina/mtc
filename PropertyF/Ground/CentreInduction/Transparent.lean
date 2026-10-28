@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.CentreInduction.PivotalCentrality
 public import PropertyF.Ground.CentreInduction.SecondTriangle
-public import PropertyF.Ground.Centre.Embeddings
+public import PropertyF.Ground.Centre.Basic
 
 /-! The actual centre has no nontrivial transparent simple objects. -/
 @[expose] public noncomputable section

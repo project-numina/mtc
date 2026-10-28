@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.Dimensions.BiproductTrace
 public import PropertyF.Ground.Dimensions.DualCoherence
 public import PropertyF.Ground.Dimensions.TensorMultiplicativity
-public import PropertyF.Ground.Dimensions.CharacterBound
+public import PropertyF.Ground.Fusion.Agreement
 public import PropertyF.Ground.Dimensions.GroundNorm
 
 @[expose] public noncomputable section

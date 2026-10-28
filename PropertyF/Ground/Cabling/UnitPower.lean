@@ -1,7 +1,7 @@
 module
 public import PropertyF.Ground.Cabling.DualClosure
 public import PropertyF.Ground.Fusion.Reciprocity
-public import PropertyF.Ground.Fusion.Splitting
+public import PropertyF.Ground.Fusion.Simples
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 @[expose] public noncomputable section
 namespace PropertyF.Ground.Cabling

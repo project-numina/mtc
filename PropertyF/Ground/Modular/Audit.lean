@@ -7,7 +7,7 @@ import all PropertyF.BlockTrace
 import all PropertyF.CenterBasics
 import all PropertyF.UnitaryTrace
 import all PropertyF.Ground.Target
-import all PropertyF.Ground.Fusion.Splitting
+import all PropertyF.Ground.Fusion.Simples
 import all PropertyF.Ground.Fusion.Simples
 import all PropertyF.Ground.Fusion.Multiplicity
 import all PropertyF.Ground.Fusion.Reciprocity
@@ -18,14 +18,14 @@ import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
 import all PropertyF.Ground.Fusion.SpectralIntegral
 import all PropertyF.Ground.Integrate.UnitScalar
 import all PropertyF.Ground.Integrate.Representatives
-import all PropertyF.Ground.Dimensions.Norm
+import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Dimensions.Pivotal
 import all PropertyF.Ground.Dimensions.Trace
 import all PropertyF.Ground.Dimensions.DualCoherence
 import all PropertyF.Ground.Dimensions.BiproductTrace
 import all PropertyF.Ground.Calculus.PartialTrace
-import all PropertyF.Ground.Dimensions.TensorTrace
-import all PropertyF.Ground.Dimensions.IteratedTrace
+import all PropertyF.Ground.Dimensions.TensorMultiplicativity
+import all PropertyF.Ground.Dimensions.TensorMultiplicativity
 import all PropertyF.Ground.Dimensions.GroundNorm
 import all PropertyF.Ground.Modular.BraidIso
 import all PropertyF.Ground.Modular.BraidFunctor
