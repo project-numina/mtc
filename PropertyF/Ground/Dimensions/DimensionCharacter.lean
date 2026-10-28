@@ -108,7 +108,7 @@ def leftTraceLinear (p : PivotalStructure (C := C)) (X : C) :
 theorem leftTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
     {F : ι → C} [HasBiproduct F] (p : PivotalStructure (C := C))
     (f : (⨁ F) ⟶ (⨁ F)) {c : ι → k}
-    (hc : ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) :
+    (hc : HasScalarDiagonal F f c) :
     p.leftTrace f = ∑ i, c i • p.leftTrace (𝟙 (F i)) :=
   cyclicTrace_biproduct_scalar_blocks (leftTraceLinear p)
     (fun f g => leftTrace_cyclic p f g) f hc

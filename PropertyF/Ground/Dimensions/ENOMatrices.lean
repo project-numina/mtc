@@ -46,8 +46,7 @@ simple dimensions weighted by the scalar diagonal blocks. -/
 theorem rootTrace_biproduct_simple
     {ι : Type*} [Fintype ι] (F : ι → C.Obj) [HasBiproduct F]
     (hs : ∀ i, Simple (F i)) (f : (⨁ F) ⟶ (⨁ F)) :
-    ∃ c : ι → ℂ,
-      (∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i)) ∧
+    ∃ c : ι → ℂ, HasScalarDiagonal F f c ∧
       rootTrace C f = ∑ i, c i • rootTrace C (𝟙 (F i)) :=
   cyclicTrace_biproduct_simple (fun X ↦ rightTraceWithLinear ((fourthDualRootNaturalIso C).app X)) (fun f g => rootTrace_cyclic C f g)
     hs (fun _ => IsFusionCategory.hom_finite _ _) f
