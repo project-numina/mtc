@@ -34,34 +34,16 @@ theorem SEntry_biproduct_left {ι : Type*} [Fintype ι] (V : ι → C) [HasBipro
     (p : PivotalStructure (C := C)) (Y : C) :
     SEntry p (⨁ V) Y = ∑ i, SEntry p (V i) Y := by
   classical
-  let f := doubleBraiding (⨁ V) Y
-  have ht : (∑ i, (biproduct.π V i ▷ Y) ≫ (biproduct.ι V i ▷ Y)) = 𝟙 ((⨁ V) ⊗ Y) := by
-    simp only [← comp_whiskerRight, ← sum_whiskerRight, biproduct.total, id_whiskerRight]
-  calc
-    SEntry p (⨁ V) Y = p.rightTrace ((∑ i, (biproduct.π V i ▷ Y) ≫ (biproduct.ι V i ▷ Y)) ≫ f) := by
-      rw [ht, Category.id_comp]
-      rfl
-    _ = ∑ i, p.rightTrace ((biproduct.π V i ▷ Y) ≫ (biproduct.ι V i ▷ Y) ≫ f) := by
-      rw [Preadditive.sum_comp]
-      change (rightTraceLinear p ((⨁ V) ⊗ Y)) (∑ i,
-        ((biproduct.π V i ▷ Y) ≫ (biproduct.ι V i ▷ Y)) ≫ f) = _
-      rw [map_sum]
-      apply Finset.sum_congr rfl
-      intro i _
-      simp only [Category.assoc, rightTraceLinear, LinearMap.coe_mk, AddHom.coe_mk]
-    _ = ∑ i, p.rightTrace ((biproduct.ι V i ▷ Y) ≫ f ≫ (biproduct.π V i ▷ Y)) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      simpa only [Category.assoc] using p.rightTrace_cyclic
-        (biproduct.π V i ▷ Y) ((biproduct.ι V i ▷ Y) ≫ f)
-    _ = ∑ i, SEntry p (V i) Y := by
-      apply Finset.sum_congr rfl
-      intro i _
-      unfold SEntry
-      dsimp [f]
-      rw [← Category.assoc, ← doubleBraiding_natural_left (biproduct.ι V i) Y,
-        Category.assoc, ← comp_whiskerRight, biproduct.ι_π_self, id_whiskerRight,
-        Category.comp_id]
+  change p.rightTrace (doubleBraiding (⨁ V) Y) = _
+  rw [rightTrace_decomposition p _ (fun i => V i ⊗ Y)
+    (fun i => biproduct.ι V i ▷ Y) (fun i => biproduct.π V i ▷ Y)
+    (by simp only [← comp_whiskerRight, ← sum_whiskerRight, biproduct.total, id_whiskerRight])]
+  apply Finset.sum_congr rfl
+  intro i _
+  unfold SEntry
+  rw [← Category.assoc, ← doubleBraiding_natural_left (biproduct.ι V i) Y,
+    Category.assoc, ← comp_whiskerRight, biproduct.ι_π_self, id_whiskerRight,
+    Category.comp_id]
 
 
 omit [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in

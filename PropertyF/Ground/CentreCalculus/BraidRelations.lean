@@ -1,7 +1,7 @@
 module
 public import PropertyF.Definitions
 public import Mathlib.Tactic
-public import PropertyF.Ground.Calculus.ThreeBraid
+public import PropertyF.Ground.Calculus.ThreeTrace
 public import PropertyF.Ground.Calculus.RightStrand
 
 /-!
@@ -27,7 +27,7 @@ theorem braidGenerator_succ (X : C) (n : ℕ) (k : Fin (n + 1)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Self-transparency makes each adjacent braid generator an involution. -/
-theorem braidGenerator_involutive (X : C)
+theorem braidGenerator_involutive {X : C}
     (hX : (β_ X X).hom ≫ (β_ X X).hom = 𝟙 (X ⊗ X)) :
     ∀ (n : ℕ) (i : Fin (n + 1)), braidGenerator X n i * braidGenerator X n i = 1 := by
   have hzero (n : ℕ) : braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ * braidGenerator X n ⟨0, Nat.zero_lt_succ n⟩ = 1 := by
@@ -132,7 +132,7 @@ theorem distant_braid_commute (X : C) : ∀ (n : ℕ) (i j : Fin (n + 1)),
         omega
       | succ n =>
         refine Fin.cases ?_ (fun j' => ?_) j
-        · intro h; simp only [Fin.val_succ, Fin.val_zero] at h; omega
+        · intro h; simp only [Fin.val_zero] at h; omega
         · refine Fin.cases ?_ (fun j'' => ?_) j'
           · intro h; simp only [Fin.val_succ, Fin.val_zero] at h; omega
           · intro h

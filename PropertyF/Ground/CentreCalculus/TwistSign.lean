@@ -111,7 +111,7 @@ theorem selfTransparent_simpleDimension_integer (C : BraidedFusionCategory.{v,u}
     (hX : (β_ (simples C i) (simples C i)).hom ≫
       (β_ (simples C i) (simples C i)).hom = 𝟙 _) :
     ∃ z : ℤ, Modular.simpleDimension C p i = z := by
-  letI : Simple (simples C i) := simples_simple C i
+  let : Simple (simples C i) := simples_simple C i
   obtain ⟨m, hm⟩ := selfTransparent_simple_integral C p hp hdim (simples C i) hX
   rw [fpDimension_simple] at hm
   refine ⟨m, ?_⟩

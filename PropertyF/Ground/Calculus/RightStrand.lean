@@ -1,7 +1,6 @@
 module
-public import PropertyF.Ground.Calculus.Unitarization
-public import Mathlib.LinearAlgebra.Span.Defs
 public import PropertyF.Ground.Calculus.UnitaryBlocks
+public import Mathlib.LinearAlgebra.Span.Defs
 public import Mathlib.CategoryTheory.Linear.LinearFunctor
 public import PropertyF.Ground.Cabling.Strands
 public import PropertyF.Ground.Calculus.EndBlocks

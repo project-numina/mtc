@@ -331,10 +331,8 @@ theorem simpleHomAction_natural_scalar
     (X : C.Obj) (i : Fin (rank C)) :
     (simpleHomAction C X i (η.app X)).toLinearMap = (t i : ℂ) • LinearMap.id := by
   ext f
-  have hn := η.hom.naturality f
-  change f ≫ (η.app X).hom = (η.app (simples C i)).hom ≫ f at hn
-  rw [ht i] at hn
-  simpa [simpleHomAction, CategoryTheory.Linear.homCongr_apply] using hn
+  simpa [simpleHomAction, CategoryTheory.Linear.homCongr_apply,
+    show η.hom.app (simples C i) = (t i : ℂ) • 𝟙 (simples C i) from ht i] using η.hom.naturality f
 
 /-- The actual FP determinant of a natural automorphism is the sum of its
 simple scalar classes, weighted by FP dimensions and Hom multiplicities. -/
