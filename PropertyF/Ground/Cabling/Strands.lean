@@ -29,17 +29,6 @@ def addLeftStrand (X : C) (n : ℕ) : braidImage X n →* braidImage X (n + 1) :
     exact Subgroup.subset_closure (Set.mem_range_self _)
   exact (f.comp (braidImage X n).subtype).codRestrict _ (fun a => hf a a.property)
 
-/-- A faithful left-tensor functor gives an injective identity-strand map. -/
-theorem addLeftStrand_injective (X : C) (n : ℕ) [Functor.Faithful (tensorLeft X)] :
-    Function.Injective (addLeftStrand X n) := by
-  intro a b h
-  apply Subtype.ext
-  apply Aut.ext
-  apply Iso.ext
-  apply (tensorLeft X).map_injective
-  have h' := congrArg (fun x : braidImage X (n + 1) => x.val.asIso.hom) h
-  exact h'
-
 omit [BraidedCategory C] in
 /-- If the unit is a retract of a tensor product with `X` on the right,
 then tensoring on the left by `X` is faithful. -/
@@ -57,26 +46,5 @@ theorem tensorLeft_faithful_of_unit_retract (X Y : C)
       h, id_whiskerRight, Category.id_comp, id_whiskerLeft, Iso.inv_hom_id_assoc,
       Iso.inv_hom_id, Category.comp_id]
   rw [← recover f, hYX, recover g]
-
-/-- Repeated identity strands embed every earlier braid image. -/
-def strandEmbedding (X : C) [Functor.Faithful (tensorLeft X)] (n : ℕ) :
-    ∀ k : ℕ, braidImage X n ↪ braidImage X (n + k)
-  | 0 => Function.Embedding.refl _
-  | k + 1 => (strandEmbedding X n k).trans
-      ⟨addLeftStrand X (n + k), addLeftStrand_injective X (n + k)⟩
-
-/-- The embedding in the strand-inclusion field, assuming faithful tensoring. -/
-theorem strand_inclusion_of_faithful_tensor (X : C)
-    [Functor.Faithful (tensorLeft X)] (n m : ℕ) (h : n ≤ m) :
-    Nonempty (braidImage X n ↪ braidImage X m) := by
-  obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h
-  exact ⟨strandEmbedding X n k⟩
-
-/-- Strand inclusion from a split copy of the unit in `Y ⊗ X`. -/
-theorem strand_inclusion_of_unit_retract (X Y : C)
-    (i : 𝟙_ C ⟶ Y ⊗ X) (r : Y ⊗ X ⟶ 𝟙_ C) (h : i ≫ r = 𝟙 _)
-    (n m : ℕ) (hnm : n ≤ m) : Nonempty (braidImage X n ↪ braidImage X m) := by
-  let _ : Functor.Faithful (tensorLeft X) := tensorLeft_faithful_of_unit_retract X Y i r h
-  exact strand_inclusion_of_faithful_tensor X n m hnm
 
 end PropertyF
