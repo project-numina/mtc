@@ -188,19 +188,15 @@ theorem pair_operator_scalar_of_overlaps_equal
   simp only [scalarTrace, hdim, htrace] at h
   have h' : (d : ℂ) • u = (f : ℂ) • (1 : End (X ⊗ X)) := by
     have hdiv : (d : ℂ) * f / d = (f : ℂ) := by field_simp
-    rw [hdiv] at h
     have hs : End.of (X ◁ ((f : ℂ) • (1 : End X)).asHom) =
         (f : ℂ) • (1 : End (X ⊗ X)) := by
       apply End.ext
       change X ◁ ((f : ℂ) • (𝟙 X)) = (f : ℂ) • (𝟙 (X ⊗ X))
       rw [MonoidalLinear.whiskerLeft_smul, whiskerLeft_id]
-    rw [hs] at h
-    exact h
+    simpa only [hdiv, hs] using h
   apply (smul_right_injective _ hd')
-  change (d : ℂ) • u = (d : ℂ) • ((f / d : ℂ) • (1 : End (X ⊗ X)))
-  rw [h', smul_smul]
   have hdiv : (d : ℂ) * (f / d) = (f : ℂ) := by field_simp
-  rw [hdiv]
+  simpa only [smul_smul, hdiv] using h'
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Finite categorical braid image gives finite order of the double
@@ -272,11 +268,11 @@ theorem actual_three_strand_rigidity_of_trace_bound
       (PropertyF.Blocks.mk r size).trace w (b z))
     (hbound : ∀ z : braidAlgebra X 1,
       (∀ i, b z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ) →
-      ‖actualBraidTrace C X p 1 z‖ ≤ |d| * f ^ 2) : f = |d| := by
-  have hvalue := actual_three_braid_saturates C p hd hdim hS
-  have hsq := actual_braid_squares_equal_of_saturation C p b he hw hf htrace hbound hvalue
-  have hlocal := local_monodromy_of_block_squares_equal b hsq
-  have hscalar := pair_operator_scalar_of_overlaps_equal C p (selfMonodromy X) hd hdim hS hlocal
-  exact dimension_eq_abs_of_scalar_monodromy C p hd hf hdim hfinite hscalar
+      ‖actualBraidTrace C X p 1 z‖ ≤ |d| * f ^ 2) : f = |d| :=
+  dimension_eq_abs_of_scalar_monodromy C p hd hf hdim hfinite
+    (pair_operator_scalar_of_overlaps_equal C p (selfMonodromy X) hd hdim hS
+      (local_monodromy_of_block_squares_equal b
+        (actual_braid_squares_equal_of_saturation C p b he hw hf htrace hbound
+          (actual_three_braid_saturates C p hd hdim hS))))
 
 end PropertyF.Ground.Calculus

@@ -300,38 +300,27 @@ theorem appendIso_succ (X : C) (n : ℕ) : appendIso X (n+1) =
 set_option backward.isDefEq.respectTransparency false in
 theorem addRightAut_generator (X : C) (n : ℕ) (i : Fin (n+1)) :
     addRightAut X n (braidGenerator X n i) = braidGenerator X (n+1) i.castSucc := by
-  induction n with
-  | zero =>
-    have : i = 0 := Fin.eq_zero i
-    subst i
+  have first (n : ℕ) : addRightAut X n (braidGenerator X n 0) =
+      braidGenerator X (n + 1) 0 := by
     apply Aut.ext
     apply Iso.ext
-    change (appendIso X 2).inv ≫ ((braidGenerator X 0 0).asIso.hom ▷ X) ≫
-      (appendIso X 2).hom = (braidGenerator X 1 0).asIso.hom
-    dsimp only [appendIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
-      Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-    dsimp only [id, tensorPower, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
-      Iso.symm_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv]
-    simp only [id_tensorHom, tensorHom_id]
-    monoidal
+    change (appendIso X (n + 2)).inv ≫ ((braidGenerator X n 0).asIso.hom ▷ X) ≫
+      (appendIso X (n + 2)).hom = (braidGenerator X (n + 1) 0).asIso.hom
+    simp only [← Fin.zero_eta, braidGenerator.eq_1, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
+      tensorHom_id]
+    change (appendIso X (n + 2)).inv ≫
+      (((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
+        (α_ X X (tensorPower X n)).hom) ▷ X) ≫ (appendIso X (n + 2)).hom =
+      (α_ X X (tensorPower X (n + 1))).inv ≫ (β_ X X).hom ▷ tensorPower X (n + 1) ≫
+        (α_ X X (tensorPower X (n + 1))).hom
+    rw [appendIso_succ X (n + 1), appendIso_succ X n]
+    exact append_first_two X _ _ (appendIso X n)
+  induction n with
+  | zero => exact (Fin.eq_zero i).symm ▸ first 0
   | succ n ih =>
     rcases i with ⟨i, hi⟩
     cases i with
-    | zero =>
-      apply Aut.ext
-      apply Iso.ext
-      change (appendIso X (n+3)).inv ≫ ((braidGenerator X (n+1) ⟨0, hi⟩).asIso.hom ▷ X) ≫
-        (appendIso X (n+3)).hom = (braidGenerator X (n+2) ⟨0, by omega⟩).asIso.hom
-      simp only [braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
-        tensorHom_id]
-      change (appendIso X (n+3)).inv ≫
-        (((α_ X X (tensorPower X (n+1))).inv ≫
-          (β_ X X).hom ▷ tensorPower X (n+1) ≫
-          (α_ X X (tensorPower X (n+1))).hom) ▷ X) ≫ (appendIso X (n+3)).hom =
-        (α_ X X (tensorPower X (n+2))).inv ≫ (β_ X X).hom ▷ tensorPower X (n+2) ≫
-          (α_ X X (tensorPower X (n+2))).hom
-      rw [appendIso_succ X (n+2), appendIso_succ X (n+1)]
-      exact append_first_two X _ _ (appendIso X (n+1))
+    | zero => exact first (n + 1)
     | succ i =>
       apply Aut.ext
       apply Iso.ext
