@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.Modular.CharacterStar
 public import PropertyF.Ground.Dimensions.CharacterBound
 public import PropertyF.Ground.Fusion.Agreement
-public import PropertyF.Ground.Modular.Construction
+public import PropertyF.Ground.Modular.SSquare
 public import PropertyF.Ground.Fusion.Reciprocity
 
 /-!

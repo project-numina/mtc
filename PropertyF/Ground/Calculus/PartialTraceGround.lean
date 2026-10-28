@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.IteratedTrace
-public import PropertyF.Ground.Modular.DimensionNonzero
+public import PropertyF.Ground.Modular.SMatrix
 
 /-! Simple-strand partial trace from the constructed iterated trace law. -/
 

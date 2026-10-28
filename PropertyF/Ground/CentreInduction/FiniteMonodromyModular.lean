@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.CentreInduction.Transparent
 public import PropertyF.Ground.CentreCabling.TraceSaturation
 public import PropertyF.Ground.CentreCabling.CentralityClosure
-public import PropertyF.Ground.CentreModular.KirbyCriterion
+public import PropertyF.Ground.CentreModular.TransparencyCriterion
 
 /-! Nondegeneracy from finite mixed monodromy and the trivial transparent centre. -/
 @[expose] public noncomputable section
