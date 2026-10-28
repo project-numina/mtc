@@ -129,21 +129,6 @@ theorem productTensorClosure_retract {Z : CategoryTheory.Center C}
   | biprod _ _ hZ hW => exact productRetract_biprod hZ hW
   | retract r _ hW => exact productRetract_of_retract r hW
 
-/-- Property F passes to the explicitly generated tensor-retract closure. -/
-theorem productTensorClosure_propertyF {Z : CategoryTheory.Center C}
-    (hZ : ProductTensorClosure Z) (hC : HasPropertyF C) : ObjectPropertyF Z :=
-  productRetract_propertyF (productTensorClosure_retract hZ) hC
-
-/-- Each object in the explicit tensor closure has the product-image quotient
-presentation used in the paper. -/
-theorem productTensorClosure_image_quotient {Z : CategoryTheory.Center C}
-    (hZ : ProductTensorClosure Z) (n : ℕ) :
-    ∃ X Y : C, ∃ H : Subgroup (braidImage X n × braidImage Y n),
-      ∃ q : H →* braidImage Z n, Function.Surjective q := by
-  obtain ⟨X, Y, ⟨r⟩⟩ := productTensorClosure_retract hZ
-  obtain ⟨H, q, hq⟩ := productFunctor_retract_image_quotient X Y Z r n
-  exact ⟨X, Y, H, q, hq⟩
-
 end PropertyF.Ground.Centre
 
 /-! Finite sums of retracts of product images. -/

@@ -358,16 +358,12 @@ instance centerForgetPreservesMonomorphisms : (CategoryTheory.Center.forget C).P
 
 /-- An object whose underlying object is simple is simple in the centre. -/
 theorem centerSimple_of_underlying (Z : CategoryTheory.Center C) [Simple Z.1] : Simple Z := by
-  have : Simple ((CategoryTheory.Center.forget C).obj Z) := by
-    change Simple Z.1
-    infer_instance
+  have : Simple ((CategoryTheory.Center.forget C).obj Z) := by change Simple Z.1; infer_instance
   exact (CategoryTheory.Center.forget C).simple_of_simple_obj Z
 
 /-- A simple underlying tensor unit remains simple in the centre. -/
 theorem centerUnitSimple [Simple (𝟙_ C)] : Simple (𝟙_ (CategoryTheory.Center C)) := by
-  have : Simple (𝟙_ (CategoryTheory.Center C)).1 := by
-    change Simple (𝟙_ C)
-    infer_instance
+  have : Simple (𝟙_ (CategoryTheory.Center C)).1 := by change Simple (𝟙_ C); infer_instance
   exact centerSimple_of_underlying _
 
 end PropertyF.Ground.Centre

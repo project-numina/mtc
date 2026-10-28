@@ -71,8 +71,8 @@ theorem alternatingProjector_eq_sum (n : ℕ)
     (ρ : Equiv.Perm (Fin n) →* A) :
     alternatingProjector (k := k) n ρ =
       ⅟(Fintype.card (Equiv.Perm (Fin n)) : k) •
-        ∑ σ : Equiv.Perm (Fin n), ((permutationSign k n σ : k) • ρ σ) := by
-  exact algebraAverage_eq_sum _
+        ∑ σ : Equiv.Perm (Fin n), ((permutationSign k n σ : k) • ρ σ) :=
+  algebraAverage_eq_sum _
 
 end PropertyF.Ground.Centre
 

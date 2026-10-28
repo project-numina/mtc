@@ -101,23 +101,15 @@ theorem centralizes_symm {A B : CategoryTheory.Center C} (h : Centralizes A B) :
 /-- The paper's half-braiding test is exactly centralization of the positive image. -/
 theorem centralizes_positive_image_iff (Y : CategoryTheory.Center C) :
     (∀ X : C, Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X)) ↔
-      CentralizesPositive Y := by
-  constructor
-  · intro h X
-    exact congrArg CategoryTheory.Center.Hom.f (h X)
-  · intro h X
-    apply CategoryTheory.Center.ext
-    exact h X
+      CentralizesPositive Y :=
+  ⟨fun h X ↦ congrArg CategoryTheory.Center.Hom.f (h X),
+    fun h X ↦ CategoryTheory.Center.ext _ _ (h X)⟩
 
 /-- The corresponding test for the negative image. -/
 theorem centralizes_negative_image_iff (Y : CategoryTheory.Center C) :
-    (∀ X : C, Centralizes Y ((negative C).obj X)) ↔ CentralizesNegative Y := by
-  constructor
-  · intro h X
-    exact congrArg CategoryTheory.Center.Hom.f (h X)
-  · intro h X
-    apply CategoryTheory.Center.ext
-    exact h X
+    (∀ X : C, Centralizes Y ((negative C).obj X)) ↔ CentralizesNegative Y :=
+  ⟨fun h X ↦ congrArg CategoryTheory.Center.Hom.f (h X),
+    fun h X ↦ CategoryTheory.Center.ext _ _ (h X)⟩
 
 /-- An object centralizing the positive image is canonically isomorphic to an
 object in the negative image, with the identity underlying morphism. -/
