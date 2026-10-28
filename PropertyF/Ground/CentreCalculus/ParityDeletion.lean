@@ -60,8 +60,7 @@ theorem movedTrace_of_adjacent {p : PivotalStructure (C := D)} {X : D} {R : Type
   | succ n =>
     obtain ⟨j, rfl⟩ := Fin.exists_succ_eq_of_ne_zero hq
     let τ : Perm (Fin (n + 1)) := Equiv.swap 0 j
-    let T := fixHead (n + 1) τ
-    rw [decomposeFin_succ_conj j σ, permutationTrace_conj p (ρ (n + 2)) T _, hadj]
+    rw [decomposeFin_succ_conj j σ, permutationTrace_conj p (ρ (n + 2)) (fixHead (n + 1) τ) _, hadj]
     simpa only [inv_inv] using
       congrArg scalar (permutationTrace_conj p (ρ (n + 1)) τ⁻¹ σ)
 

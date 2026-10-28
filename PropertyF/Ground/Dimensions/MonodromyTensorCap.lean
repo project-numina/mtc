@@ -189,13 +189,6 @@ theorem monodromy_tensor_cap_evaluated [HasRightDual X] [HasRightDual Y] :
     _ = _ := by
       simp only [b, g, monoidalComp, comp_whiskerRight, whiskerLeft_comp]
       monoidal
-omit [RightRigidCategory C] in
-/-- The actual Drinfeld tensor pairing cap identity holds for chosen duals. -/
-theorem drinfeld_tensor_pairing_cap [HasRightDual X] [HasRightDual (Xᘁ)]
-    [HasRightDual Y] [HasRightDual (Yᘁ)] : monodromyTensorCap X Y =
-      ((drinfeldIso X).hom ⊗ₘ (drinfeldIso Y).hom) ▷ ((Yᘁ) ⊗ (Xᘁ)) ≫
-        ε_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) :=
-  (monodromy_tensor_cap_evaluated X Y).trans (drinfeld_tensor_cap_factor X Y).symm
 end PropertyF.Ground.Dimensions
 
 end
