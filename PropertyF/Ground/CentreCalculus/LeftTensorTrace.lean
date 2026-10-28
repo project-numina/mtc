@@ -212,10 +212,9 @@ theorem leftTrace_tensor_pairing (f : X ⊗ Y ⟶ X ⊗ Y) :
   let D := Aᘁ
   let E := (Yᘁ) ⊗ (Xᘁ)
   let r : D ≅ E := rightDualTensorIso X Y
-  let q : ExactPairing A E := ExactPairing.tensor
-  have hev : r.inv ▷ A ≫ ε_ A D = @ExactPairing.evaluation C _ _ A E q :=
+  have hev : r.inv ▷ A ≫ ε_ A D = ε_ A E :=
     Dimensions.rightDualIso_inv_evaluation
-      (@HasRightDual.exact C _ _ A (RightRigidCategory.rightDual A)) q
+      (@HasRightDual.exact C _ _ A (RightRigidCategory.rightDual A)) ExactPairing.tensor
   change η_ D (Dᘁ) ≫ (𝟙 D ⊗ₘ ((p.iso A).inv ≫ f)) ≫ ε_ A D = _
   rw [tensorDual_coevaluation,
     show p.iso (X ⊗ Y) = (p.iso X ⊗ᵢ p.iso Y) ≪≫ Dimensions.doubleDualTensorIso X Y from
