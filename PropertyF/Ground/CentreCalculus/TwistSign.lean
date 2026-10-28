@@ -33,12 +33,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The coevaluation characterizing the braided double-dual map. -/
 theorem drinfeld_coevaluation :
     η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (braidedDoubleDualIso X).inv =
-      η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv := by
-  have hc : (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
-      (Xᘁ) ◁ (braidedDoubleDualIso X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) :=
-    Dimensions.coevaluation_rightDualIso (BraidedCategory.exactPairing_swap X (Xᘁ))
-      (HasRightDual.exact : ExactPairing (Xᘁ) ((Xᘁ)ᘁ))
-  rw [← hc, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
+      η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv :=
+  Dimensions.coevaluation_rightDualIso_inv (BraidedCategory.exactPairing_swap X (Xᘁ))
+    (HasRightDual.exact : ExactPairing (Xᘁ) ((Xᘁ)ᘁ))
 
 /-- Pivotal coevaluation factors through the braided double-dual comparison. -/
 theorem pivotal_coevaluation_factor :
