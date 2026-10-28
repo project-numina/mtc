@@ -104,9 +104,9 @@ def positiveDoubleDualIso (T : D) :
 
 theorem positiveDualIso_inv_forget (T : D) :
     (positiveDualIso T).inv.f =
-      (forgetDualIso ((Center.ofBraided D).obj T)).inv := by
-  change ((Center.forget D).mapIso (positiveDualIso T)).inv = _
-  exact (Iso.inv_eq_inv _ _).2 (positiveDualIso_forget T)
+      (forgetDualIso ((Center.ofBraided D).obj T)).inv :=
+  (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDualIso T))
+    (forgetDualIso ((Center.ofBraided D).obj T))).2 (positiveDualIso_forget T)
 
 theorem positiveDoubleDualIso_forget (T : D) :
     (positiveDoubleDualIso T).hom.f =
@@ -127,9 +127,9 @@ theorem positiveDoubleDualIso_forget (T : D) :
 
 theorem positiveDoubleDualIso_inv_forget (T : D) :
     (positiveDoubleDualIso T).inv.f =
-      (forgetDoubleDualIso ((Center.ofBraided D).obj T)).inv := by
-  change ((Center.forget D).mapIso (positiveDoubleDualIso T)).inv = _
-  exact (Iso.inv_eq_inv _ _).2 (positiveDoubleDualIso_forget T)
+      (forgetDoubleDualIso ((Center.ofBraided D).obj T)).inv :=
+  (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDoubleDualIso T))
+    (forgetDoubleDualIso ((Center.ofBraided D).obj T))).2 (positiveDoubleDualIso_forget T)
 
 /-- The pivotal component transported to the positive centre lift. -/
 def positivePivotalComponent (p : PivotalStructure (C := D)) (T : D) :
@@ -139,8 +139,8 @@ def positivePivotalComponent (p : PivotalStructure (C := D)) (T : D) :
 
 theorem positivePivotalComponent_forget (p : PivotalStructure (C := D)) (T : D) :
     (positivePivotalComponent p T).hom.f = (p.iso T).hom ≫
-      (forgetDoubleDualIso ((Center.ofBraided D).obj T)).inv := by
-  simp [positivePivotalComponent, positiveDoubleDualIso_inv_forget]
+      (forgetDoubleDualIso ((Center.ofBraided D).obj T)).inv :=
+  congrArg ((p.iso T).hom ≫ ·) (positiveDoubleDualIso_inv_forget T)
 
 end PropertyF.Ground.CentreInduction
 
@@ -170,9 +170,9 @@ theorem center_unitScalar_forget (a : End (𝟙_ (𝒵))) :
 theorem center_pivotalDimension_forget
     {p : PivotalStructure (C := C.Obj)} {pZ : PivotalStructure (C := 𝒵)} {Z : 𝒵}
     (hcompat : PivotalCompatibleAt p pZ Z) :
-    pivotalDimension 𝒵ᶠ pZ Z = pivotalDimension C p Z.1 := by
-  simp only [pivotalDimension, center_unitScalar_forget,
-    forget_trace_of_pivotal_component hcompat]
+    pivotalDimension 𝒵ᶠ pZ Z = pivotalDimension C p Z.1 :=
+  (center_unitScalar_forget C (pZ.rightTrace (𝟙 Z))).trans
+    (congrArg (fun f => unitScalar C (End.of f)) (forget_trace_of_pivotal_component hcompat))
 
 end PropertyF.Ground.CentreInduction
 

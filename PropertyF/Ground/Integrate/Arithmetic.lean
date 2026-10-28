@@ -28,8 +28,7 @@ theorem galois_dimension_contradiction {δ δσ δτ f d : ℝ}
     exact_mod_cast (show (d : ℂ) * δ = (δσ : ℂ) from by
       simpa only [map_mul, hδτ, hσδ, hσf] using congrArg σ
         (show (f : ℂ) * (δτ : ℂ) = (δ : ℂ) by exact_mod_cast hratio))
-  rw [abs_of_pos (by nlinarith : 0 < d)] at hrigidity
-  nlinarith
+  nlinarith [abs_of_pos (show 0 < d by nlinarith)]
 
 end PropertyF
 
