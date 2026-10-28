@@ -6,9 +6,11 @@ public import PropertyF.Ground.CentreCalculus.LeftTensorTrace
 
 The inverse-braiding trace identifies the inverse pivotal twist. On a
 self-transparent simple object the twist is a sign, giving integral dimension.
+We write `θ C p X` for the pivotal twist scalar.
 -/
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (HasFPSimpleDimensions)
+local notation "θ" => PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar
+open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical)
 open PropertyF.Ground.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.CentreCalculus
@@ -27,6 +29,14 @@ theorem drinfeld_coevaluation (X : C.Obj) :
   change (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
     (Xᘁ) ◁ (doubleDualIso C X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) at hc
   rw [← hc, Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.comp_id]
+
+/-- Pivotal coevaluation factors through the braided double-dual comparison. -/
+theorem pivotal_coevaluation_factor (X : C.Obj) :
+    η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv =
+      (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫
+        (Xᘁ) ◁ ((doubleDualIso C X).hom ≫ (p.iso X).inv) := by
+  rw [← drinfeld_coevaluation (C := C) X, Category.assoc, ← whiskerLeft_comp,
+    Iso.inv_hom_id_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse braiding cancels along the duality snake. -/
@@ -57,12 +67,7 @@ theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
   apply End.ext
   simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
   let t : X ⟶ X := (doubleDualIso C X).hom ≫ (p.iso X).inv
-  have hcup : η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv =
-      (η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv) ≫ (Xᘁ) ◁ t := by
-    dsimp [t]
-    rw [← drinfeld_coevaluation (C := C) X, Category.assoc, ← whiskerLeft_comp,
-      Iso.inv_hom_id_assoc]
-  rw [hcup]
+  rw [pivotal_coevaluation_factor (C := C) (p := p) X]
   simp only [comp_whiskerRight, Category.assoc]
   -- The inverse crossings cancel after applying the inverse hexagon.
   have hmove : (Xᘁ ◁ t) ▷ X ≫ (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) =
@@ -81,7 +86,7 @@ include hp in
 theorem inverse_twist_eq_scalar_of_selfTransparent {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
     (doubleDualIso C X).hom ≫ (p.iso X).inv =
-      pivotalBraidedTwistScalar C p X • 𝟙 X := by
+      θ C p X • 𝟙 X := by
   have h := leftPartialTrace_inverse_braiding (C := C) (p := p) X
   rw [← ((β_ X X).inv_ext' hX), leftPartialTrace_braiding_of_trace_compatibility (C := C)
     (spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom))] at h
@@ -91,8 +96,8 @@ include hp in
 /-- In a spherical category, the twist of a self-transparent simple is a sign. -/
 theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
-    pivotalBraidedTwistScalar C p X = 1 ∨
-      pivotalBraidedTwistScalar C p X = -1 := by
+    θ C p X = 1 ∨
+      θ C p X = -1 := by
   have ht : ((doubleDualIso C X).hom ≫ (p.iso X).inv) ≫
       (Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X := by
     simp [Dimensions.pivotalBraidedTwist, Category.assoc]

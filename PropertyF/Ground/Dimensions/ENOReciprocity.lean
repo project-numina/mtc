@@ -7,7 +7,7 @@ public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.ENOMatrices
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 public import PropertyF.Ground.Dimensions.TensorExtension
-public import PropertyF.Ground.Dimensions.ComplexSaturation
+
 
 /-! # Reciprocity and spherical dimensions
 
@@ -212,7 +212,7 @@ theorem eno_root_norm_saturation_of_pseudoUnitary
     (heig : ENOTraceMatrixEigenvector C)
     (hnorm : RootNormIdentity C) (hpu : PseudoUnitary C) :
     ∀ i, ‖rootDimension C i‖ = fpSimple C i :=
-  norm_saturation_of_pseudoUnitary C (rootDimension C)
+  norm_saturation_of_pseudoUnitary C
     (fun i => rootDimension_norm_le_fp_of_trace_matrix C (hinv i) (heig i)) hnorm hpu
 
 end PropertyF.Ground.Dimensions

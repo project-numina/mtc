@@ -6,7 +6,7 @@ public import PropertyF.Ground.Dimensions.MultiplicityDefect
 public import PropertyF.Ground.Dimensions.DefectNaturality
 public import PropertyF.Ground.Dimensions.RootDualLabel
 public import PropertyF.Ground.Dimensions.FourthTensorUnit
-public import PropertyF.Ground.Dimensions.CoevaluationSliding
+
 public import PropertyF.Ground.Dimensions.TensorExtension
 
 /-! # Extending tensor-defect identities

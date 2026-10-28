@@ -22,12 +22,12 @@ transport of the positive dimension ratio. Lemma 3.2 supplies `hrigidity`.
 No assertion about all conjugates is assumed here. -/
 theorem galois_dimension_contradiction {δ δσ δτ f d : ℝ}
     {σ : ℂ ≃+* ℂ} (hδ : 0 < δ) (hδσ : 0 < δσ) (hlt : δσ < δ)
-    (hδτ : σ (δτ : ℂ) = (δ : ℂ)) (hσδ : σ (δ : ℂ) = (δσ : ℂ))
-    (hσf : σ (f : ℂ) = (d : ℂ)) (hratio : f * δτ = δ)
-    (hf : 1 ≤ f) (hrigidity : f = |d|) : False := by
-  have ht := congrArg σ (show (f : ℂ) * (δτ : ℂ) = (δ : ℂ) by exact_mod_cast hratio)
-  rw [map_mul, hδτ, hσδ, hσf] at ht
-  have hreal : d * δ = δσ := by exact_mod_cast ht
+    (hδτ : σ (δτ : ℂ) = (δ : ℂ)) (hσδ : σ (δ : ℂ) = (δσ : ℂ)) (hσf : σ (f : ℂ) = (d : ℂ))
+    (hratio : f * δτ = δ) (hf : 1 ≤ f) (hrigidity : f = |d|) : False := by
+  have hreal : d * δ = δσ := by
+    exact_mod_cast (show (d : ℂ) * δ = (δσ : ℂ) from by
+      simpa only [map_mul, hδτ, hσδ, hσf] using congrArg σ
+        (show (f : ℂ) * (δτ : ℂ) = (δ : ℂ) by exact_mod_cast hratio))
   rw [abs_of_pos (by nlinarith : 0 < d)] at hrigidity
   nlinarith
 
@@ -38,13 +38,11 @@ namespace PropertyF.Ground
 /-- The squared Galois dimension identity gives the positive ratio used by
 the paper. No Galois automorphism is assumed to preserve square roots. -/
 theorem positive_ratio_of_galois_square {τ : ℂ ≃+* ℂ} {δ b f : ℝ}
-    (hδ : 0 < δ) (hb : 0 < b) (hf : 0 < f)
-    (hτ : τ (δ : ℂ) = (b : ℂ))
-    (hG : τ ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2) :
-    f * b = δ := by
-  rw [map_pow, hτ] at hG
-  have hR : b ^ 2 = δ ^ 2 / f ^ 2 := by exact_mod_cast hG
-  have hR' := (eq_div_iff (pow_ne_zero 2 (ne_of_gt hf))).mp hR
+    (hδ : 0 < δ) (hb : 0 < b) (hf : 0 < f) (hτ : τ (δ : ℂ) = (b : ℂ))
+    (hG : τ ((δ : ℂ) ^ 2) = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2) : f * b = δ := by
+  have hR : b ^ 2 * f ^ 2 = δ ^ 2 := (eq_div_iff (pow_ne_zero 2 (ne_of_gt hf))).mp <| by
+    exact_mod_cast (show (b : ℂ) ^ 2 = (δ : ℂ) ^ 2 / (f : ℂ) ^ 2 from by
+      simpa only [map_pow, hτ] using hG)
   nlinarith [sq_nonneg (f * b - δ), mul_pos hf hb]
 
 /-- The numerical witness supplied by a Galois-unit column. -/
@@ -64,14 +62,11 @@ theorem galois_fixed_of_smaller_conjugate_witness (δ : ℝ) (hδ : 0 < δ)
   intro σ
   obtain ⟨a, ha, hale, haeq⟩ := hConjugates σ
   obtain ⟨b, _, _, hbeq⟩ := hConjugates σ.symm
-  by_cases heq : a = δ
+  rcases lt_or_eq_of_le hale with halt | heq
+  · obtain ⟨f, d, hσf, hratio, hf, hrigidity⟩ := hWitness σ a b ha halt haeq hbeq
+    exact (galois_dimension_contradiction (σ := σ) hδ ha halt
+      (by rw [← hbeq, σ.apply_symm_apply]) haeq hσf hratio hf hrigidity).elim
   · simpa [heq] using haeq
-  · have halt : a < δ := lt_of_le_of_ne hale heq
-    have hback : σ (b : ℂ) = (δ : ℂ) := by
-      rw [← hbeq]
-      exact σ.apply_symm_apply _
-    obtain ⟨f, d, hσf, hratio, hf, hrigidity⟩ := hWitness σ a b ha halt haeq hbeq
-    exact (galois_dimension_contradiction (σ := σ) hδ ha halt hback haeq hσf hratio hf hrigidity).elim
 
 end PropertyF.Ground
 end
@@ -89,10 +84,10 @@ theorem weaklyIntegral_of_galois_fixed {δ : ℝ} (hδr : IsIntegral ℤ δ)
     (hfixed : ∀ τ : ℂ ≃+* ℂ, τ (δ : ℂ) = (δ : ℂ)) : WeaklyIntegral δ := by
   have hδ := (isIntegral_algebraMap_iff (R := ℤ) (A := ℝ) (B := ℂ)).mpr hδr
   let K := Dimensions.dimensionNormalField (δ : ℂ)
-  have h := Dimensions.finite_galois_normal_field (δ : ℂ) (hδ.tower_top (A := ℚ))
-  let : FiniteDimensional ℚ K := h.2.1
-  let : IsGalois ℚ K := h.2.2
-  let x : K := ⟨(δ : ℂ), h.1⟩
+  obtain ⟨hK, hfin, hgal⟩ := Dimensions.finite_galois_normal_field (δ : ℂ) (hδ.tower_top (A := ℚ))
+  let : FiniteDimensional ℚ K := hfin
+  let : IsGalois ℚ K := hgal
+  let x : K := ⟨(δ : ℂ), hK⟩
   obtain ⟨z, hz⟩ := integer_of_galois_fixed (x := x)
     ((isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by simpa [x] using hδ)) fun σ ↦ by
       obtain ⟨τ, hτ⟩ := Dimensions.extend_complex_automorphism K.toSubfield σ.toRingEquiv

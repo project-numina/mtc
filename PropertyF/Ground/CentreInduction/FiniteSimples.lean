@@ -128,13 +128,12 @@ private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D]
     (hc : IsColimit (CokernelCofork.ofπ q hpq)) :
     Nonempty (S ≅ P) ∨ Mono (t ≫ q) := by
   by_cases hz : t ≫ q = 0
-  · have hk := Abelian.monoIsKernelOfCokernel (CokernelCofork.ofπ q hpq) hc
-    obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift' hk t hz
+  · obtain ⟨g, hg⟩ := KernelFork.IsLimit.lift'
+      (Abelian.monoIsKernelOfCokernel (CokernelCofork.ofπ q hpq) hc) t hz
     change S ⟶ P at g
     change g ≫ p = t at hg
-    have hg0 : g ≠ 0 := fun h =>
-      id_nonzero S ((cancel_mono t).1 (by simpa [h] using hg.symm))
-    let : IsIso g := isIso_of_hom_simple hg0
+    let : IsIso g := isIso_of_hom_simple (fun h =>
+      id_nonzero S ((cancel_mono t).1 (by simpa [h] using hg.symm)))
     exact Or.inl ⟨asIso g⟩
   · exact Or.inr (mono_of_nonzero_from_simple hz)
 
@@ -144,7 +143,6 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
     ∃ L : List (𝒵),
       ∀ S : 𝒵, Simple S →
         (∃ t : S ⟶ W, Mono t) → ∃ T ∈ L, Nonempty (S ≅ T) := by
-  classical
   let m : 𝒵 → ℕ := fun Z => Module.finrank ℂ (Z.1 ⟶ Z.1)
   induction W using (measure m).wf.induction with
   | h W ih =>
@@ -162,8 +160,7 @@ theorem finite_simple_subobject_labels (W : 𝒵) :
         id_nonzero _ ((cancel_mono p).1 (by simp [h0]))
       let Q := PropertyF.Ground.Centre.centerCokernel p
       let q : W ⟶ Q := PropertyF.Ground.Centre.centerCokernelπ p
-      have hlt : m Q < m W := center_cokernel_measure_lt C p hp
-      obtain ⟨L, hL⟩ := ih Q hlt
+      obtain ⟨L, hL⟩ := ih Q (center_cokernel_measure_lt C p hp)
       refine ⟨(P : 𝒵) :: L, ?_⟩
       intro S hS ⟨t, ht⟩
       let : Simple S := hS

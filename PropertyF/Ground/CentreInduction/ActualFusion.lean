@@ -31,12 +31,9 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
   apply (tensorRightHomEquiv T S (Sᘁ) (T ⊗ S)).symm.injective
   simp only [Equiv.symm_apply_apply]
   let q := closeFusionMap T S f
-  have hq := closeFusionMap_evaluation f
-  change q ▷ S ≫ ε_ S (Sᘁ) = 𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ) at hq
   change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫
     𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
       ((T ⊗ S) ◁ ε_ S (Sᘁ)) ≫ (ρ_ (T ⊗ S)).hom = f ≫ g
-  clear_value q
   calc
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫ (R ◁ (q ▷ S)) ⊗≫
       ((g ▷ ((Sᘁ : D) ⊗ S)) ≫ ((T ⊗ S) ◁ ε_ S (Sᘁ))) ⊗≫ 𝟙 _ := by
@@ -48,7 +45,7 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
       (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by simp only [whiskerLeft_comp]; monoidal
     _ = 𝟙 _ ⊗≫ (η_ R (Rᘁ) ▷ (T ⊗ S)) ⊗≫
       (R ◁ (𝟙 _ ⊗≫ ((Rᘁ : D) ◁ f) ⊗≫ ε_ R (Rᘁ))) ⊗≫
-      (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by rw [hq]
+      (g ▷ (𝟙_ D)) ⊗≫ 𝟙 _ := by rw [closeFusionMap_evaluation f]
     _ = 𝟙 _ ⊗≫ ((η_ R (Rᘁ) ▷ (T ⊗ S)) ≫ (((R ⊗ Rᘁ) : D) ◁ f)) ⊗≫
       (R ◁ ε_ R (Rᘁ)) ⊗≫ g := by monoidal
     _ = 𝟙 _ ⊗≫ (((𝟙_ D) ◁ f) ≫ (η_ R (Rᘁ) ▷ R)) ⊗≫
@@ -67,10 +64,6 @@ theorem unit_block (Z : CategoryTheory.Center D) {T S R : D}
   let q := closeFusionMap T S f
   let bR := (Z.2.β R).hom
   let bTS := (Z.2.β (T ⊗ S)).hom
-  have hn : bR ≫ (g ▷ Z.1) = (Z.1 ◁ g) ≫ bTS := (Z.2.naturality g).symm
-  have hf : (𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ)) =
-      𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ Sᘁ) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) :=
-    fusion_coevaluation g f
   dsimp only [crossingBlock]
   calc
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
@@ -80,7 +73,7 @@ theorem unit_block (Z : CategoryTheory.Center D) {T S R : D}
         monoidal
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       (((Z.1 ◁ g) ≫ bTS) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
-      ((T ⊗ S) ◁ (Z.1 ◁ q)) ⊗≫ 𝟙 _ := by rw [hn]
+      ((T ⊗ S) ◁ (Z.1 ◁ q)) ⊗≫ 𝟙 _ := by rw [← Z.2.naturality g]
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (η_ R (Rᘁ) ▷ T)) ⊗≫
       ((Z.1 ◁ g) ▷ ((Rᘁ : D) ⊗ T)) ⊗≫
       ((bTS ▷ ((Rᘁ : D) ⊗ T)) ≫ (((T ⊗ S) ⊗ Z.1) ◁ q)) ⊗≫ 𝟙 _ := by
@@ -91,7 +84,7 @@ theorem unit_block (Z : CategoryTheory.Center D) {T S R : D}
       ((((Z.1 ⊗ (T ⊗ S)) ◁ q)) ≫ (bTS ▷ (Sᘁ))) ⊗≫ 𝟙 _ := by rw [whisker_exchange]
     _ = 𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫
       (bTS ▷ Sᘁ) ⊗≫ 𝟙 _ := by simp only [tensorHom_def]; monoidal
-    _ = _ := by rw [hf]
+    _ = _ := by rw [fusion_coevaluation g f]
 
 variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
   [MonoidalPreadditive D] [MonoidalLinear k D]
@@ -138,7 +131,6 @@ theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
     (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C j)
       (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)) =
     (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
-  classical
   calc
     _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
       unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
@@ -152,7 +144,6 @@ set_option backward.isDefEq.respectTransparency false in
 theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
       (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
-  classical
   let V := inductionSummand C Z.1
   apply (cancel_mono (leftDistributor T V).hom).1
   apply biproduct.hom_ext
@@ -233,7 +224,6 @@ theorem globalFPDimension_square_of_actual_induction
     [RigidCategory (CategoryTheory.Center C.Obj)]
     [IsFusionCategory (CategoryTheory.Center C.Obj)] :
     globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by
-  classical
   let I (i : Fin (rank C)) := (induction C).obj (simples C i)
   have hadj (i : Fin (rank C)) (j : Fin (rank 𝒵ᶠ)) :
       Module.finrank ℂ ((simples 𝒵ᶠ j : 𝒵) ⟶ I i) =

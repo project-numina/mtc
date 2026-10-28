@@ -81,10 +81,8 @@ omit hχ hchar hdual
 /-- Every Galois conjugate of an actual simple FP dimension is real. -/
 theorem fp_simple_galois_real (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
     (((σ (fpSimple C i : ℂ)).re : ℝ) : ℂ) = σ (fpSimple C i : ℂ) :=
-  Complex.conj_eq_iff_re.mp <| by
-    simpa only [← Complex.star_def] using
-      selfDual_character_galois_real C (χ := fun i ↦ (fpSimple C i : ℂ))
-        (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C)
-        (by intro i; simp [fpSimple_dual]) σ i
+  Complex.conj_eq_iff_re.mp <| by simpa only [← Complex.star_def] using (
+    selfDual_character_galois_real C (χ := fun i ↦ (fpSimple C i : ℂ)) (i₀ := unitIndex C)
+      (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) (by simp [fpSimple_dual]) σ i)
 
 end PropertyF.Ground

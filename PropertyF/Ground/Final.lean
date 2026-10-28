@@ -36,8 +36,8 @@ theorem target : TargetStatement.{v,u} := by
     fun _ _ _ _ ↦ CentreModular.mixed_monodromy_finite_of_pivotal_balancing
       (Integrate.bundledCenter D) pZ hbalance _ _
   have hInt : WeaklyIntegral (globalFPDimension D) := by
-    apply weaklyIntegral_of_actual_center D hDF hspherical hdim hdet
-      (center_globalDimension_square_of_actual_induction D hspherical hdim)
+    apply weaklyIntegral_of_actual_center D hDF ⟨hspherical, hdim⟩ hdet
+      (center_globalDimension_square_of_actual_induction D ⟨hspherical, hdim⟩)
       (CentreCalculus.actual_symmetricCore_integrality ⟨hspherical, hdim⟩)
     · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mpr
         (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)

@@ -12,10 +12,12 @@ public import PropertyF.Ground.Dimensions.DualCoherence
 
 Two-strand and adjacent-crossing traces reduce to pivotal twists and left
 partial-trace compatibility. Tensor-duality identities establish that
-compatibility in spherical categories.
+compatibility in spherical categories. We write `θ C p X` for the pivotal
+twist scalar.
 -/
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (HasFPSimpleDimensions)
+local notation "θ" => PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar
+open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical)
 open PropertyF.Ground.Centre (permutationSign)
 open Equiv.Perm (decomposeFin)
 open PropertyF.Ground.Dimensions
@@ -99,7 +101,7 @@ the closed crossing as the pivotal twist scalar. -/
 theorem leftPartialTrace_braiding_of_trace_compatibility
     (ht : IsLeftTraceCompatibleAt p (End.of (β_ X X).hom)) :
     leftPartialTrace p (End.of (β_ X X).hom) =
-      pivotalBraidedTwistScalar C p X • (1 : End X) := by
+      θ C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   have hd : unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
     simpa [unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X
@@ -115,7 +117,7 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility
     (n : ℕ)
     (ht : IsLeftTraceCompatibleAt p (End.of (β_ X X).hom)) :
     leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) =
-      pivotalBraidedTwistScalar C p X • 1 := by
+      θ C p X • 1 := by
   have hg : (Aut.toEnd (braidGenerator X n 0)) = End.of
       ((α_ X X (tensorPower X n)).inv ≫ ((β_ X X).hom ▷ tensorPower X n) ≫
         (α_ X X (tensorPower X n)).hom) := by
@@ -140,7 +142,7 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
     {n : ℕ} (σ : Equiv.Perm (Fin (n + 1))) :
     unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 2))
       (decomposeFin.symm (1, σ))).asHom) =
-    pivotalBraidedTwistScalar C p X *
+    θ C p X *
       unitScalar C (p.rightTrace ((tensorPermutationAction X hX (n + 1)) σ).asHom) := by
   let f := (tensorPermutationAction X hX (n + 1)) σ
   let b : End (X ⊗ tensorPower X (n + 1)) := Aut.toEnd (braidGenerator X n 0)
@@ -161,32 +163,37 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
   simp only [smul_mul_assoc, one_mul, End.smul_asHom, p.rightTrace_smul,
     unitScalar_eq_equiv, map_smul, smul_eq_mul, f]
 
+/-- A negative twist is corrected by the sign-twisted permutation action. -/
+theorem negativeParity_adjacentTrace (hX : SelfTransparent X)
+    (htotal : IsLeftTraceCompatible p X) (hneg : θ C p X = -1) :
+    HasAdjacentTrace (permutationScalarTrace C p (parityPermutationAction C hX true)) := by
+  intro n σ
+  have hsign : (permutationSign ℂ (n + 2) (decomposeFin.symm (1, σ)) : ℂ) =
+      -(permutationSign ℂ (n + 1) σ : ℂ) := by
+    simpa using sign_decomposeFin 1 σ
+  simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
+    MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
+    unitScalar_eq_equiv, map_smul, smul_eq_mul, hsign]
+  rw [← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
+    tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ, hneg]
+  ring
+
 include hdim in
 /-- The symmetric integrality argument now needs only left iterated-trace
 compatibility and the sign of the actual pivotal twist scalar. -/
 theorem integral_of_leftTrace_and_twist_sign
     (hX : SelfTransparent X)
     (htotal : IsLeftTraceCompatible p X)
-    (hsign : pivotalBraidedTwistScalar C p X = 1 ∨
-      pivotalBraidedTwistScalar C p X = -1) :
+    (hsign : θ C p X = 1 ∨
+      θ C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m := by
   rcases hsign with h | h
   · apply integral_of_parity_adjacent_trace hdim hX false
     intro n σ
     simpa [permutationScalarTrace, parityPermutationAction, h] using
       tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ
-  · apply integral_of_parity_adjacent_trace hdim hX true
-    intro n σ
-    have hsign' : (permutationSign ℂ (n + 2)
-        (decomposeFin.symm (1, σ)) : ℂ) =
-        -(permutationSign ℂ (n + 1) σ : ℂ) := by
-      simpa using sign_decomposeFin 1 σ
-    simp only [permutationScalarTrace, parityPermutationAction, ↓reduceIte, Centre.twistAction,
-      MonoidHom.coe_mk, OneHom.coe_mk, End.smul_asHom, p.rightTrace_smul,
-      unitScalar_eq_equiv, map_smul, smul_eq_mul, hsign']
-    rw [← unitScalar_eq_equiv, ← unitScalar_eq_equiv,
-      tensorPermutationTrace_adjacent_of_leftTrace (C := C) hX htotal σ, h]
-    ring
+  · exact integral_of_parity_adjacent_trace hdim hX true
+      (negativeParity_adjacentTrace hX htotal h)
 
 end PropertyF.Ground.CentreCalculus
 
@@ -276,18 +283,13 @@ theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
     IsLeftTraceCompatibleAt p f :=
   (hp Y _).symm.trans <| (leftTrace_partialTrace p f).trans (hp _ _)
 
-/-- A chosen spherical pivotal structure whose simple dimensions are FP dimensions. -/
-abbrev IsFPSpherical (C : BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := C.Obj)) : Prop :=
-  p.IsSpherical ∧ HasFPSimpleDimensions C p
-
 /-- A self-transparent simple with sign-valued twist has integral FP
 dimension in any FP-valued spherical fusion category. -/
 theorem integral_of_spherical_and_twist_sign
     {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
     (hfp : IsFPSpherical C p) {X : C.Obj} [Simple X] (hX : SelfTransparent X)
-    (hsign : pivotalBraidedTwistScalar C p X = 1 ∨
-      pivotalBraidedTwistScalar C p X = -1) :
+    (hsign : θ C p X = 1 ∨
+      θ C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_leftTrace_and_twist_sign hfp.2 hX
     (fun _ f ↦ spherical_rightTrace_leftPartialTrace p hfp.1 f) hsign

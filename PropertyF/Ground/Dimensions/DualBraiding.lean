@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Dimensions.Drinfeld
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
 
 /-! # Braiding and dual tensor products
 

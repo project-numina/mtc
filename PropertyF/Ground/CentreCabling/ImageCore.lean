@@ -16,7 +16,7 @@ product centralizer, under the stated finite-monodromy hypotheses. We write
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (HasFPSimpleDimensions doubleBraiding)
+open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical doubleBraiding sCentralizer)
 open PropertyF.Ground.Dimensions
 local notation "𝒵" => PropertyF.Ground.Integrate.bundledCenter
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -59,21 +59,24 @@ theorem constituent_mem_productLabels
   (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|
     Centre.productRetract_tensor ((mem_productLabels C i).1 hi) ((mem_productLabels C j).1 hj)
 
+/-- The product-retract labels form a fusion subring. -/
+theorem productLabels_isFusionSubring : IsFusionSubring (𝒵 C) (productLabels C) :=
+  ⟨⟨(fun _ hi ↦ dual_mem_productLabels C hi),
+    (fun _ hi _ hj _ hk ↦ constituent_mem_productLabels C hi hj hk)⟩,
+    unit_mem_productLabels C⟩
+
 /-- The centre's product-retract labels satisfy the numerical double-centralizer
 inclusion whenever the chosen core contains their numerical centralizer. -/
 theorem productLabels_doubleCentralizer
     {p : PivotalStructure (C := (𝒵 C).Obj)}
-    (hp : p.IsSpherical) (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
-    (hdim : HasFPSimpleDimensions (𝒵 C) p)
+    (hfp : IsFPSpherical (𝒵 C) p)
+    (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
     {core : Set (Fin (rank (𝒵 C)))}
     (hcore : sCentralizer (𝒵 C) p (↑(productLabels C) : Set _) ⊆ core) :
     ∀ x ∈ sCentralizer (𝒵 C) p core,
       Centre.ProductRetract (simples (𝒵 C) x) := fun x hx ↦
   (mem_productLabels C x).mp <|
-    doubleCentralizer_of_fusion_closed hp hdet hdim
-      (unit_mem_productLabels C)
-      ⟨(fun _ hi ↦ dual_mem_productLabels C hi),
-        (fun _ hi _ hj _ hk ↦ constituent_mem_productLabels C hi hj hk)⟩ hcore hx
+    doubleCentralizer_of_fusion_closed hfp hdet (productLabels_isFusionSubring C) hcore hx
 
 
 /-- Actual centre labels centralizing both canonical images. -/
@@ -129,29 +132,29 @@ variable (hp : p.IsSpherical)
   (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
   (hdim : HasFPSimpleDimensions (𝒵 C) p)
 
-include hdim in
+variable (hfinite : HasFiniteImageCentralizerMonodromy C p)
+  {y : Fin (rank (𝒵 C))} (hy : y ∈ sCentralizer (𝒵 C) p (imageLabels C))
+
+include hdim hfinite hy in
+/-- The numerical image centralizer centralizes every canonical-image retract. -/
+theorem centralizes_canonicalImageRetract {X : CategoryTheory.Center C.Obj}
+    (hX : CanonicalImageRetract C X) : Centre.Centralizes (simples (𝒵 C) y) X := by
+  apply Centre.centralizes_symm
+  change doubleBraiding X (simples (𝒵 C) y) = 𝟙 _
+  apply doubleBraiding_eq_one_of_simple_constituents (𝒵 C) (CanonicalImageRetract C)
+    (fun r hr ↦ canonicalImageRetract_of_retract C r hr) hX
+  intro a ha
+  exact doubleBraiding_eq_one_of_sTest_of_finite_order hdim (hfinite y hy a ha) (hy a ha)
+
+include hdim hfinite hy in
 /-- The S-test on both canonical images detects the actual core if the relevant
 mixed monodromies have finite order. Only simple image constituents, and only
 labels passing this S-test, are needed for the finite-order hypothesis. -/
-theorem numericalImageCentralizer_subset_symmetricCore
-    (hfinite : HasFiniteImageCentralizerMonodromy C p)
-    {y : Fin (rank (𝒵 C))}
-    (hy : y ∈ sCentralizer (𝒵 C) p (imageLabels C)) : y ∈ symmetricCore C := by
-  let Z := 𝒵 C
-  have hc (X : CategoryTheory.Center C.Obj) (hX : CanonicalImageRetract C X) :
-      Centre.Centralizes (simples Z y) X := by
-    apply Centre.centralizes_symm
-    change doubleBraiding X (simples Z y) = 𝟙 _
-    apply doubleBraiding_eq_one_of_simple_constituents Z (CanonicalImageRetract C)
-      (fun r hr => canonicalImageRetract_of_retract C r hr) hX
-    intro a ha
-    exact doubleBraiding_eq_one_of_sTest_of_finite_order hdim
-      (hfinite y hy a ha) (hy a ha)
-  constructor
-  · intro X
-    exact hc _ (Or.inl ⟨X, ⟨Retract.refl _⟩⟩)
-  · intro X
-    exact hc _ (Or.inr ⟨X, ⟨Retract.refl _⟩⟩)
+theorem numericalImageCentralizer_subset_symmetricCore : y ∈ symmetricCore C :=
+  ⟨fun X ↦ centralizes_canonicalImageRetract C hdim hfinite hy
+      (Or.inl ⟨X, ⟨Retract.refl _⟩⟩),
+   fun X ↦ centralizes_canonicalImageRetract C hdim hfinite hy
+      (Or.inr ⟨X, ⟨Retract.refl _⟩⟩)⟩
 
 include hp hdet hdim in
 /-- The precise actual-core double-centralizer conclusion under the reduced
@@ -160,7 +163,7 @@ theorem productLabels_doubleCentralizer_of_image_monodromy
     (hfinite : HasFiniteImageCentralizerMonodromy C p) :
     ∀ x ∈ sCentralizer (𝒵 C) p (symmetricCore C),
       Centre.ProductRetract (simples (𝒵 C) x) :=
-  productLabels_doubleCentralizer C hp hdet hdim fun _ hy ↦
+  productLabels_doubleCentralizer C ⟨hp, hdim⟩ hdet fun _ hy ↦
     numericalImageCentralizer_subset_symmetricCore C hdim hfinite fun a ha ↦
       hy a (imageLabels_subset_productLabels C ha)
 

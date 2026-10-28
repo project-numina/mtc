@@ -33,7 +33,6 @@ theorem dualBasis_contraction_natural {k : Type*} [CommSemiring k] {I J : Type} 
     (L : A →ₗ[k] B) (F : B →ₗ[k] Module.Dual k A →ₗ[k] E) :
     (∑ i, F (L (a i)) (a.dualBasis i)) =
       ∑ j, F (b j) (Module.Dual.transpose L (b.dualBasis j)) := by
-  classical
   let c : I → J → k := fun i j => b.repr (L (a i)) j
   have hL (i : I) : L (a i) = ∑ j, c i j • b j := (b.sum_repr _).symm
   have hD (j : J) : Module.Dual.transpose L (b.dualBasis j) =
@@ -49,7 +48,6 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
     (a : Fin (Module.finrank ℂ (simples C i ⟶ V))) :
     Dimensions.simpleHomPairingEquiv C i V (simpleProjection C V i a) =
       (Dimensions.simpleInclusionBasis C V i).dualBasis a := by
-  classical
   let : Simple (simples C i) := simples_simple C i
   apply (Dimensions.simpleInclusionBasis C V i).ext
   intro b
@@ -64,7 +62,6 @@ theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V 
     (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
     (∑ a, F (Dimensions.simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (Dimensions.simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
-  classical
   let A := Dimensions.simpleInclusionBasis C V i
   let B := Dimensions.simpleInclusionBasis C W i
   let P := Dimensions.simpleHomPairingEquiv C i V
@@ -117,7 +114,6 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
     (∑ j, ∑ a, F (Dimensions.simpleInclusion C (V j) i a ≫ q j)
         (r j ≫ simpleProjection C (V j) i a)) =
       ∑ b, F (Dimensions.simpleInclusion C W i b) (simpleProjection C W i b) := by
-  classical
   have step (j : J) : (∑ a, F (Dimensions.simpleInclusion C (V j) i a ≫ q j)
         (r j ≫ simpleProjection C (V j) i a)) =
       ∑ b, F (Dimensions.simpleInclusion C W i b) (r j ≫ q j ≫ simpleProjection C W i b) := by
@@ -135,7 +131,6 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
       ∑ a : crossingIndex C T i p.1,
         nestedCrossingBlock C X T U i p.1 j a p.2) =
       ∑ b, crossingSummand C X (T ⊗ U) i j b := by
-  classical
   let J := Dimensions.simplePieces C (U ⊗ simples C j)
   let W := (T ⊗ U) ⊗ simples C j
   let V : J → C.Obj := fun p => T ⊗ simples C p.1
@@ -146,10 +141,10 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
       ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum]
     rw [crossing_completeness]
     simp [W]
-  have hc := simpleBasis_contraction_refinement C i q r h
-    (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
   simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
-    crossingInclusion, crossingProjection, mixedCrossingBilinear, crossingBlock, Category.assoc] using hc
+    crossingInclusion, crossingProjection, mixedCrossingBilinear, crossingBlock, Category.assoc] using
+    simpleBasis_contraction_refinement C i q r h
+      (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
 
 end PropertyF.Ground.CentreInduction
 
@@ -231,7 +226,6 @@ theorem crossingCandidate_natural_test
     (X : C.Obj) {T U : C.Obj} (h : T ⟶ U) :
     (underlying C X ◁ h) ≫ crossingCandidate C X U =
       crossingCandidate C X T ≫ (h ▷ underlying C X) := by
-  classical
   let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V T).inv).1
   apply biproduct.hom_ext'

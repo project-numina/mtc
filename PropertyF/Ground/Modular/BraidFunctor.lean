@@ -127,8 +127,7 @@ def braidImageFunctorMap (X : C) (n : ℕ) : braidImage X n →* braidImage (F.o
 theorem braidImageFunctorMap_surjective (X : C) (n : ℕ) :
     Function.Surjective (braidImageFunctorMap F X n) := fun y ↦
   (Subgroup.mem_map.mp (show (y : Aut _) ∈ (braidImage X n).map (braidAutMap F X n) from
-    (braidImage_map_eq F X n).symm ▸ y.property)).elim fun a ⟨ha, hy⟩ ↦
-      ⟨⟨a, ha⟩, Subtype.ext hy⟩
+    (braidImage_map_eq F X n).symm ▸ y.property)).elim fun a ⟨ha, hy⟩ ↦ ⟨⟨a, ha⟩, Subtype.ext hy⟩
 
 /-- A braided functor preserves finiteness of each object's braid images. -/
 theorem objectPropertyF_functor (X : C) (hX : ObjectPropertyF X) :
