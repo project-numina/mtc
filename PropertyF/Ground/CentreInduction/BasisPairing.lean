@@ -13,10 +13,12 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
+-- Chosen simple representatives of the base category.
+local notation "Sᶜ" => simples C
 variable {V W : C.Obj} {E : Type*} [AddCommGroup E] [Module ℂ E]
 attribute [local instance] Abelian.hasFiniteBiproducts
-local instance (i : Fin (rank C)) : Simple (simples C i) := simples_simple C i
-local instance (i : Fin (rank C)) : FiniteDimensional ℂ (simples C i ⟶ simples C i) :=
+local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
+local instance (i : Fin (rank C)) : FiniteDimensional ℂ (Sᶜ i ⟶ Sᶜ i) :=
   IsFusionCategory.hom_finite _ _
 
 /-- A bilinear contraction with dual bases is natural under any linear map.
@@ -39,8 +41,8 @@ theorem dualBasis_contraction_natural {k : Type*} [CommSemiring k] {I J : Type} 
 set_option backward.isDefEq.respectTransparency false in
 /-- Simple projections form the dual basis to simple inclusions. -/
 theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
-    (a : Fin (Module.finrank ℂ (simples C i ⟶ V))) :
-    simpleHomPairingEquiv (simples C i) V (simpleProjection C V i a) =
+    (a : Fin (Module.finrank ℂ (Sᶜ i ⟶ V))) :
+    simpleHomPairingEquiv (Sᶜ i) V (simpleProjection C V i a) =
       (simpleInclusionBasis C V i).dualBasis a := by
   refine (simpleInclusionBasis C V i).ext fun b => ?_
   rw [Module.Basis.dualBasis_apply_self]
@@ -50,22 +52,22 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
 theorem simpleBasis_contraction_natural (i : Fin (rank C)) (q : V ⟶ W)
-    (F : (simples C i ⟶ W) →ₗ[ℂ] (V ⟶ simples C i) →ₗ[ℂ] E) :
+    (F : (Sᶜ i ⟶ W) →ₗ[ℂ] (V ⟶ Sᶜ i) →ₗ[ℂ] E) :
     (∑ a, F (simpleInclusion C V i a ≫ q) (simpleProjection C V i a)) =
       ∑ b, F (simpleInclusion C W i b) (q ≫ simpleProjection C W i b) := by
-  have hn (f : W ⟶ simples C i) : simpleHomPairingEquiv (simples C i) V (q ≫ f) =
-      Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q)
-        (simpleHomPairingEquiv (simples C i) W f) := simpleHomPairing_natural f q
+  have hn (f : W ⟶ Sᶜ i) : simpleHomPairingEquiv (Sᶜ i) V (q ≫ f) =
+      Module.Dual.transpose (Linear.rightComp ℂ (Sᶜ i) q)
+        (simpleHomPairingEquiv (Sᶜ i) W f) := simpleHomPairing_natural f q
   let A := simpleInclusionBasis C V i
   let B := simpleInclusionBasis C W i
-  let P := simpleHomPairingEquiv (simples C i) V
-  let F' : (simples C i ⟶ W) →ₗ[ℂ]
-      Module.Dual ℂ (simples C i ⟶ V) →ₗ[ℂ] E :=
+  let P := simpleHomPairingEquiv (Sᶜ i) V
+  let F' : (Sᶜ i ⟶ W) →ₗ[ℂ]
+      Module.Dual ℂ (Sᶜ i ⟶ V) →ₗ[ℂ] E :=
     (LinearMap.lcomp ℂ E P.symm.toLinearMap).comp F
   simpa only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply,
     LinearEquiv.coe_coe, A, B, P, simpleInclusionBasis_apply,
     ← pairing_simpleProjection, ← hn, LinearEquiv.symm_apply_apply] using
-    dualBasis_contraction_natural A B (Linear.rightComp ℂ (simples C i) q) F'
+    dualBasis_contraction_natural A B (Linear.rightComp ℂ (Sᶜ i) q) F'
 
 /-- A mixed crossing block, with the input and output test strands allowed
 to differ, is bilinear in its two fusion morphisms. -/
@@ -100,15 +102,15 @@ set_option backward.isDefEq.respectTransparency false in
 theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.Obj} {W : C.Obj}
     (i : Fin (rank C)) (q : ∀ j, V j ⟶ W) (r : ∀ j, W ⟶ V j)
     (h : (∑ j, r j ≫ q j) = 𝟙 W)
-    (F : (simples C i ⟶ W) →ₗ[ℂ] (W ⟶ simples C i) →ₗ[ℂ] E) :
+    (F : (Sᶜ i ⟶ W) →ₗ[ℂ] (W ⟶ Sᶜ i) →ₗ[ℂ] E) :
     (∑ j, ∑ a, F (simpleInclusion C (V j) i a ≫ q j)
         (r j ≫ simpleProjection C (V j) i a)) =
       ∑ b, F (simpleInclusion C W i b) (simpleProjection C W i b) := by
   have step (j : J) : (∑ a, F (simpleInclusion C (V j) i a ≫ q j)
         (r j ≫ simpleProjection C (V j) i a)) =
       ∑ b, F (simpleInclusion C W i b) (r j ≫ q j ≫ simpleProjection C W i b) := by
-    let F' : (simples C i ⟶ W) →ₗ[ℂ] (V j ⟶ simples C i) →ₗ[ℂ] E :=
-      (LinearMap.lcomp ℂ E (Linear.leftComp ℂ (simples C i) (r j))).comp F
+    let F' : (Sᶜ i ⟶ W) →ₗ[ℂ] (V j ⟶ Sᶜ i) →ₗ[ℂ] E :=
+      (LinearMap.lcomp ℂ E (Linear.leftComp ℂ (Sᶜ i) (r j))).comp F
     simpa [F', Category.assoc] using simpleBasis_contraction_natural C i (q j) F'
   simp_rw [step]
   rw [Finset.sum_comm]
@@ -117,13 +119,13 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
 set_option backward.isDefEq.respectTransparency false in
 /-- Nested fusion decompositions give the direct crossing-block contraction. -/
 theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
-    (∑ p : simplePieces C (U ⊗ simples C j), ∑ a : crossingIndex C T i p.1,
+    (∑ p : simplePieces C (U ⊗ Sᶜ j), ∑ a : crossingIndex C T i p.1,
       nestedCrossingBlock C X T U i p.1 j a p.2) = ∑ b, crossingSummand C X (T ⊗ U) i j b := by
-  let J := simplePieces C (U ⊗ simples C j)
-  let W := (T ⊗ U) ⊗ simples C j
-  let V : J → C.Obj := fun p => T ⊗ simples C p.1
-  let q (p : J) : V p ⟶ W := (T ◁ crossingInclusion C U p.1 j p.2) ≫ (α_ T U (simples C j)).inv
-  let r (p : J) : W ⟶ V p := (α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U p.1 j p.2)
+  let J := simplePieces C (U ⊗ Sᶜ j)
+  let W := (T ⊗ U) ⊗ Sᶜ j
+  let V : J → C.Obj := fun p => T ⊗ Sᶜ p.1
+  let q (p : J) : V p ⟶ W := (T ◁ crossingInclusion C U p.1 j p.2) ≫ (α_ T U (Sᶜ j)).inv
+  let r (p : J) : W ⟶ V p := (α_ T U (Sᶜ j)).hom ≫ (T ◁ crossingProjection C U p.1 j p.2)
   have h : (∑ p, r p ≫ q p) = 𝟙 W := by
     simp only [r, q, Category.assoc, ← whiskerLeft_comp_assoc,
       ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum]
@@ -131,7 +133,7 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
   simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,
     crossingInclusion, crossingProjection, mixedCrossingBilinear, mixedCrossing, crossingBlock, Category.assoc] using
     simpleBasis_contraction_refinement C i q r h
-      (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
+      (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (Sᶜ i) (Sᶜ j))
 
 end PropertyF.Ground.CentreInduction
 
@@ -145,6 +147,8 @@ open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
+-- Chosen simple representatives of the base category.
+local notation "Sᶜ" => simples C
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
@@ -209,12 +213,12 @@ variable (X : C.Obj)
 basis, so a map of test objects can pass through each matrix entry. -/
 theorem crossingBlock_sum_natural_test
     (T U : C.Obj) (h : T ⟶ U) (i j : Fin (rank C)) :
-    (∑ b, (((simples C i ⊗ X) ⊗ (simples C i)ᘁ) ◁ h) ≫ crossingSummand C X U i j b) =
-    ∑ a, crossingSummand C X T i j a ≫ (h ▷ ((simples C j ⊗ X) ⊗ (simples C j)ᘁ)) := by
+    (∑ b, (((Sᶜ i ⊗ X) ⊗ (Sᶜ i)ᘁ) ◁ h) ≫ crossingSummand C X U i j b) =
+    ∑ a, crossingSummand C X T i j a ≫ (h ▷ ((Sᶜ j ⊗ X) ⊗ (Sᶜ j)ᘁ)) := by
   simpa only [crossingSummand, crossingBlock_pre_test, crossingBlock_post_test,
     mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk, crossingInclusion, crossingProjection, simpleProjection] using
-    (simpleBasis_contraction_natural C i (h ▷ simples C j)
-      (mixedCrossingBilinear (k := ℂ) X T U (simples C i) (simples C j))).symm
+    (simpleBasis_contraction_natural C i (h ▷ Sᶜ j)
+      (mixedCrossingBilinear (k := ℂ) X T U (Sᶜ i) (Sᶜ j))).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction crossing is natural in the crossed object. -/
