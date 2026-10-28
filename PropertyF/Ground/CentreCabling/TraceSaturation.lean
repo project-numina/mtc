@@ -112,6 +112,6 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
       change Modular.categoricalS D p i j = _
       rw [hs]
       simpa [Modular.simpleDimension, pivotalDimension, Ground.unitScalar_eq_equiv] using
-        (pivotalDimension_tensor D p (simples D i) (simples D j)).symm
+        (pivotalDimension_tensor p (simples D i) (simples D j)).symm
 
 end PropertyF.Ground.CentreCabling

@@ -68,6 +68,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] IsFusionCategory.hom_finite
+variable {C} in
 /-- For every simple object of a genuine braided fusion category, the
 intrinsic squared norm in the target is independent of the chosen double-dual
 isomorphism. -/
@@ -82,16 +83,16 @@ section
 variable (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
 include hp
 
-variable {p} in
+variable {C p} in
 /-- With any spherical structure the target norm of a simple object is its
 categorical dimension squared. -/
 theorem target_squaredNorm_eq_dimension_sq (X : C.Obj) [Simple X] :
     squaredNorm C X =
       (unitScalar C (rightQuantumTrace (p.iso X))) ^ 2 := by
-  rw [target_squaredNorm_choice_independent C (p.iso X),
+  rw [target_squaredNorm_choice_independent (p.iso X),
     ← spherical_quantumTraces_eq hp X, pow_two]
 
-variable {p} in
+variable {C p} in
 /-- The target's intrinsic global dimension is the sum of squared spherical
 simple dimensions, for any spherical structure. -/
 theorem target_globalDimension_eq_sum_squares :
@@ -99,7 +100,7 @@ theorem target_globalDimension_eq_sum_squares :
       (unitScalar C (rightQuantumTrace (p.iso (simples C i)))) ^ 2 :=
   Finset.sum_congr rfl fun i _ ↦
     let : Simple (simples C i) := simples_simple C i
-    target_squaredNorm_eq_dimension_sq C hp (simples C i)
+    target_squaredNorm_eq_dimension_sq hp (simples C i)
 
 end
 
@@ -165,14 +166,15 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
+variable {C} in
 /-- The intrinsic squared norm is invariant under right duality, without any
 pivotal or spherical structure. -/
 theorem target_squaredNorm_rightDual
     (X : C.Obj) [Simple X] : squaredNorm C (Xᘁ) = squaredNorm C X := by
   let : Simple (Xᘁ) := simple_rightDual X
   let j := doubleDualIso C X
-  rw [target_squaredNorm_choice_independent C (rightDualIsoMap j).symm,
-    target_squaredNorm_choice_independent C j, ← leftQuantumTrace_eq_rightDual j,
+  rw [target_squaredNorm_choice_independent (rightDualIsoMap j).symm,
+    target_squaredNorm_choice_independent j, ← leftQuantumTrace_eq_rightDual j,
     leftQuantumTrace_eq_rightDual ((rightDualIsoMap j).symm),
     ← rightQuantumTrace_iso j rfl, mul_comm]
 
