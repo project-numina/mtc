@@ -516,7 +516,7 @@ theorem fpDeterminant_tensor_of_simple
     (X S : C.Obj) [Simple S] (a : S ≅ S) :
     HasTensorDeterminant C X a :=
   let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
-  (Dimensions.isomorphisms_scalar (k := ℂ) (Iso.refl S) a).elim fun z ⟨hne, hz, _⟩ ↦
+  (Dimensions.isomorphisms_scalar (k := ℂ) (Iso.refl S) a).elim fun z ⟨hne, hz⟩ ↦
     (show a = scalarIso S (Units.mk0 z hne) from Iso.ext hz).symm ▸ fpDeterminant_tensor_scalar C X S _
 
 /-- Components of a natural automorphism of a functor are conjugate along
