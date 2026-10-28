@@ -16,7 +16,7 @@ universe v u
 /-- Real Galois conjugates of positive simple dimensions yield nonzero real
 weights in every retained actual braid block, even if their signs differ. -/
 theorem exists_galois_braid_trace_weights
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (C : BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
     (hfinite : Finite (braidImage X n)) (p : PivotalStructure (C := C.Obj))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)
@@ -50,7 +50,7 @@ theorem exists_galois_braid_trace_weights
 one intrinsic overlap trace identity. All matrix blocks and weights are
 constructed from the actual finite braid images. -/
 theorem actual_rigidity_of_overlap_and_galois_dimensions
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
+    (C : BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
     (p : PivotalStructure (C := C.Obj))
     (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
     (hpos : ∀ i, 0 < original i)
@@ -59,7 +59,7 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hfp : Ground.fpDimension C X = f)
-    (hS : groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
+    (hS : scalarTrace p (groundUnitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
     (hrec : ∀ (u : braidAlgebra X 1) k,

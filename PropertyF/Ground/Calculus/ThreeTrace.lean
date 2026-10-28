@@ -155,7 +155,7 @@ universe v u
 
 /-- In a genuine braided fusion category, the partial trace onto a simple
 surviving object is the total trace divided by its nonzero pivotal dimension. -/
-theorem rightPartialTrace_simple_ground (C : Ground.BraidedFusionCategory.{v,u})
+theorem rightPartialTrace_simple_ground (C : BraidedFusionCategory.{v,u})
     {X Y : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y)) :
     rightPartialTrace p X Y f =
@@ -186,7 +186,7 @@ def overlapEndProduct (A X Y : C) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
 
 /-- Tracing the new strands of the overlap gives the old operator times the
 normalized trace of the fresh operator. -/
-theorem rightPartialTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
+theorem rightPartialTrace_overlap (C : BraidedFusionCategory.{v,u})
     {A X Y : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
@@ -198,7 +198,7 @@ theorem rightPartialTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/
-theorem pivotalTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotalTrace_overlap (C : BraidedFusionCategory.{v,u})
     {A X Y : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
@@ -247,7 +247,7 @@ theorem three_braid_double_overlap (X : C) :
 
 /-- The three-strand trace is the square of the double-braiding trace,
 normalized by the pivotal dimension of the shared simple strand. -/
-theorem three_braid_trace (D : Ground.BraidedFusionCategory.{v,u})
+theorem three_braid_trace (D : BraidedFusionCategory.{v,u})
     (X : D.Obj) [Simple X] (p : PivotalStructure (C := D.Obj))
     (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) :
     scalar (p.rightTrace (Aut.toEnd ((braidGenerator X 1 0) ^ 2 *

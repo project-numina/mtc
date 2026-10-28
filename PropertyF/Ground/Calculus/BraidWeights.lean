@@ -21,7 +21,7 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Scalar identification for a chosen simple object. -/
-def groundSimpleScalar (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
+def groundSimpleScalar (C : BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
     End (Ground.simples C i) ≃ₐ[ℂ] ℂ := by
   let _ : Simple (Ground.simples C i) := Ground.simples_simple C i
   let _ : FiniteDimensional ℂ (Ground.simples C i ⟶ Ground.simples C i) :=
@@ -29,7 +29,7 @@ def groundSimpleScalar (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground
   exact simpleEndScalar _
 
 /-- Evaluating a simple endomorphism at its Schur scalar recovers the morphism. -/
-theorem groundSimpleScalar_smul_id (C : Ground.BraidedFusionCategory.{v,u})
+theorem groundSimpleScalar_smul_id (C : BraidedFusionCategory.{v,u})
     (i : Fin (Ground.rank C)) (a : End (Ground.simples C i)) :
     (groundSimpleScalar C i a) • 𝟙 (Ground.simples C i) = a.asHom := by
   have h := (groundSimpleScalar C i).symm_apply_apply a
@@ -40,7 +40,7 @@ theorem groundSimpleScalar_smul_id (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal matrix coefficient is the scalar of the corresponding simple
 biproduct component of the transported endomorphism. -/
-theorem groundEndBlockEquiv_diagonal (C : Ground.BraidedFusionCategory.{v,u})
+theorem groundEndBlockEquiv_diagonal (C : BraidedFusionCategory.{v,u})
     (X : C.Obj) (m : Fin (Ground.rank C) → ℕ)
     (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
     (a : End X) (i : Fin (Ground.rank C)) (j : Fin (m i)) :
@@ -59,7 +59,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The actual pivotal trace on a fusion-category endomorphism is the sum of
 simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
-theorem pivotalTrace_groundEndBlocks (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotalTrace_groundEndBlocks (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (X : C.Obj) (m : Fin (Ground.rank C) → ℕ)
     (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1)) (a : End X) :
@@ -327,7 +327,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The faithful inclusion of the braid algebra in the full endomorphism
 algebra, expressed in their respective matrix-block presentations. -/
-def braidToEndBlocks (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+def braidToEndBlocks (C : BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
     (m : Fin (Ground.rank C) → ℕ)
     (e : tensorPower X (n + 2) ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
     (r : ℕ) (d : Fin r → ℕ)
@@ -338,7 +338,7 @@ def braidToEndBlocks (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : �
     ((braidAlgebra X n).val.comp b.symm.toAlgHom)
 
 /-- The categorical inclusion is faithful, so no finite braid-image block is lost. -/
-theorem braidToEndBlocks_injective (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
+theorem braidToEndBlocks_injective (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
     (n : ℕ) (m : Fin (Ground.rank C) → ℕ)
     (e : tensorPower X (n + 2) ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1))
     (r : ℕ) (d : Fin r → ℕ)
@@ -354,7 +354,7 @@ theorem braidToEndBlocks_injective (C : Ground.BraidedFusionCategory.{v,u}) (X :
 multiplicity-weight formula. Every retained braid block occurs in a simple
 constituent's multiplicity space. -/
 theorem pivotalTrace_braid_multiplicities
-    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
+    (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (fun q : Σ i, Fin (m i) => Ground.simples C q.1))
@@ -397,7 +397,7 @@ theorem pivotalTrace_braid_multiplicities
 /-- Finite categorical braid images admit unitary blocks and natural-number
 multiplicities with the actual pivotal trace formula and retention. -/
 theorem exists_unitary_braid_trace_blocks
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
+    (C : BraidedFusionCategory.{v,u}) (X : C.Obj) (n : ℕ)
     (hfinite : Finite (braidImage X n))
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) :
     ∃ (r : ℕ) (d : Fin r → ℕ)

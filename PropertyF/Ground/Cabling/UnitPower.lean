@@ -38,7 +38,7 @@ universe v u
 set_option backward.isDefEq.respectTransparency false in
 /-- A positive tensor power containing the unit makes the simple generator's
 right dual a retract of a lower tensor power. -/
-theorem generatedBy_rightDual_of_unit_power (D : Ground.BraidedFusionCategory.{v,u})
+theorem generatedBy_rightDual_of_unit_power (D : BraidedFusionCategory.{v,u})
     {X : D.Obj} [Simple X] {n : ℕ} (r : Retract (𝟙_ D.Obj) (tensorPower X (n + 1))) :
     GeneratedBy X (Xᘁ) := by
   let _ : Simple (𝟙_ D.Obj) := Ground.IsFusionCategory.unit_simple

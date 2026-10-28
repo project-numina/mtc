@@ -14,6 +14,10 @@ universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
+/-- The scalar-valued pivotal trace of an endomorphism. -/
+def scalarTrace (p : PivotalStructure (C := C)) (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ)
+    {X : C} (f : End X) : ℂ := scalar (p.rightTrace f.asHom)
+
 /-- Close the right tensor factor using evaluation, coevaluation, and the
 pivotal isomorphism. -/
 def rightPartialTrace (p : PivotalStructure (C := C)) (X Y : C) :

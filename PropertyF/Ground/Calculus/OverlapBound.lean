@@ -18,7 +18,7 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Pivotal trace of an element of an actual categorical braid algebra. -/
-def actualBraidTrace (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
+def actualBraidTrace (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
     (p : PivotalStructure (C := C.Obj)) (n : ℕ) (a : braidAlgebra X n) : ℂ :=
   groundUnitScalarEquiv C
     (p.rightTrace (a : End (tensorPower X (n + 2))).asHom)
@@ -27,7 +27,7 @@ def actualBraidTrace (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
 unitary is bounded by the simple-multiplicity mass. The explicit dimension
 bound is supplied by the fusion/Perron and dimensions workstreams. -/
 theorem pivotalTrace_braid_unitary_bound
-    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
+    (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
     {m : Fin (Ground.rank C) → ℕ}
     (e : tensorPower X (n + 2) ≅ ⨁ (fun q : Σ i, Fin (m i) => Ground.simples C q.1))
@@ -64,7 +64,7 @@ theorem pivotalTrace_braid_unitary_bound
     _ = ∑ i, (m i : ℝ) * fp i := multiplicity_mass_eq m d mult fp hdim
 
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
-theorem fpDimension_tensorPower (C : Ground.BraidedFusionCategory.{v,u})
+theorem fpDimension_tensorPower (C : BraidedFusionCategory.{v,u})
     (X : C.Obj) (n : ℕ) : Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n := by
   induction n with
   | zero => simp [tensorPower, Ground.fpDimension_unit]
@@ -73,7 +73,7 @@ theorem fpDimension_tensorPower (C : Ground.BraidedFusionCategory.{v,u})
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
 theorem braid_trace_unitary_bound_ground
-    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
+    (C : BraidedFusionCategory.{v,u}) {X : C.Obj} {n : ℕ}
     (p : PivotalStructure (C := C.Obj)) {r : ℕ} {d : Fin r → ℕ}
     (hd : ∀ j, 0 < d j)
     (b : braidAlgebra X n ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, d⟩)
@@ -243,7 +243,7 @@ theorem norm_bound_of_overlapIndex {δ z : ℂ} {f : ℝ} (hδ : δ ≠ 0) (hf :
 /-- Iterating a single overlap step gives the scaled power identity, without
 dividing by the simple dimension. -/
 theorem overlap_trace_power_of_step
-    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj}
+    (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
     (p : PivotalStructure (C := C.Obj)) {t : ℕ} (u : braidAlgebra X t)
     (hstep : ∀ k, actualBraidTrace C X p (overlapIndex t (k + 1))
         (overlapProduct X t u (k + 1)) *
@@ -265,7 +265,7 @@ theorem overlap_trace_power_of_step
 /-- The sharp bound works in any family of unitary braid-block presentations;
 it does not depend on a particular choice made by finite-group averaging. -/
 theorem sharp_trace_bound_for_presentations_of_overlap_identity
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
+    (C : BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
     (p : PivotalStructure (C := C.Obj)) (t : ℕ)
     (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℕ)
     (e : ∀ n, braidAlgebra X n ≃ₐ[ℂ]

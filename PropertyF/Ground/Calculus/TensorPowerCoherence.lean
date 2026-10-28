@@ -268,7 +268,7 @@ theorem freshOverlapIso_eq_overlapPowerIso (X : C) (t k : ℕ) :
 
 /-- The intrinsic overlap trace identity holds for every actual braid-algebra
 element on a simple strand. -/
-theorem overlap_trace_power (C : Ground.BraidedFusionCategory.{v,u})
+theorem overlap_trace_power (C : BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {t : ℕ} (u : braidAlgebra X t) :
     ∀ k, actualBraidTrace C X p (overlapIndex t k) (overlapProduct X t u k) *

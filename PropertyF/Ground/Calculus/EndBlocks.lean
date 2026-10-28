@@ -68,7 +68,7 @@ def simpleEndScalar [HasKernels C] (X : C) [Simple X]
     simpa [Algebra.algebraMap_eq_smul_one] using hz
 
 /-- The chosen nonisomorphic simple representatives are Hom-orthogonal. -/
-theorem groundSimples_orthogonal (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem groundSimples_orthogonal (C : BraidedFusionCategory.{v,u}) :
     HomOrthogonal (Ground.simples C) := by
   intro i j hij
   let _ : Simple (Ground.simples C i) := Ground.simples_simple C i
@@ -92,7 +92,7 @@ def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
 
 /-- A chosen simple-object decomposition gives the corresponding complex
 matrix-block decomposition of its endomorphism algebra. -/
-def groundEndBlockEquiv (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
+def groundEndBlockEquiv (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
     (m : Fin (Ground.rank C) → ℕ)
     (e : X ≅ ⨁ (fun p : Σ i, Fin (m i) => Ground.simples C p.1)) :
     End X ≃ₐ[ℂ] ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ := by

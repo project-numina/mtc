@@ -231,7 +231,7 @@ theorem overlapProduct_local_of_iso {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebr
 set_option backward.isDefEq.respectTransparency false in
 /-- Identifying the actual product with the local graphical overlap implies
 the precise one-step trace recurrence. -/
-theorem overlap_trace_step_of_coherence (D : Ground.BraidedFusionCategory.{v,u})
+theorem overlap_trace_step_of_coherence (D : BraidedFusionCategory.{v,u})
     {X : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
     {t : ℕ} (k : ℕ) (u : braidAlgebra X t)
     (hcoh : (isoEndAlgEquiv (overlapPowerIso X t k).symm)
@@ -256,7 +256,7 @@ theorem overlap_trace_step_of_coherence (D : Ground.BraidedFusionCategory.{v,u})
 
 /-- Canonical isomorphism coherence supplies the scaled trace identity for
 every iterated actual overlapping braid-algebra product. -/
-theorem overlap_trace_power_of_isos (C : Ground.BraidedFusionCategory.{v,u})
+theorem overlap_trace_power_of_isos (C : BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {t : ℕ} (u : braidAlgebra X t)
     (hiso : ∀ k, freshOverlapIso X t k =
