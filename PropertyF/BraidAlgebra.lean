@@ -15,14 +15,14 @@ namespace PropertyF
 `b`, so the statement applies to the generated subgroup as well as to an algebra. -/
 theorem squares_eq_of_central_product {G : Type*} [Group G] (a b : G)
     (hbraid : a * b * a = b * a * b)
-    (hb : Commute (a ^ 2 * b ^ 2) b) : a ^ 2 = b ^ 2 := by
-  have hAb : Commute (a ^ 2) b := by
+    (hb : Commute (a ^ 2 * b ^ 2) b) : a ^ 2 = b ^ 2 :=
+  let hAb : Commute (a ^ 2) b := by
     have h := hb.symm.mul_right ((Commute.refl b).pow_right 2).inv_right
     simpa using h.symm
-  have hconj : (a * b) * a * (a * b)⁻¹ = b := by
+  let hconj : (a * b) * a * (a * b)⁻¹ = b := by
     rw [mul_inv_rev, hbraid]
     group
-  have hAc : Commute (a ^ 2) (a * b) := (Commute.refl a).pow_left 2 |>.mul_right hAb
+  let hAc : Commute (a ^ 2) (a * b) := (Commute.refl a).pow_left 2 |>.mul_right hAb
   calc
     a ^ 2 = (a * b) * a ^ 2 * (a * b)⁻¹ := hAc.symm.mul_inv_cancel.symm
     _ = ((a * b) * a * (a * b)⁻¹) ^ 2 := conj_pow.symm
