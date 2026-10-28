@@ -48,9 +48,7 @@ theorem braidGenerator_involutive {X : C}
   induction n with
   | zero =>
     intro i
-    have hi : i = 0 := Fin.eq_zero i
-    subst i
-    exact hzero 0
+    simpa [Fin.eq_zero i] using hzero 0
   | succ n ih =>
     intro i
     refine Fin.cases (hzero (n + 1)) (fun j => ?_) i
@@ -75,9 +73,7 @@ theorem adjacent_braid_relation (X : C) : ∀ (n : ℕ) (i : Fin (n + 1)),
   induction n with
   | zero =>
     intro i
-    have hi : i = 0 := Fin.eq_zero i
-    subst i
-    exact Calculus.three_braid_relation X
+    simpa [Fin.eq_zero i] using Calculus.three_braid_relation X
   | succ n ih =>
     intro i
     refine Fin.cases ?_ (fun j => ?_) i

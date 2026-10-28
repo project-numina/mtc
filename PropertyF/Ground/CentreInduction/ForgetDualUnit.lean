@@ -31,21 +31,11 @@ private theorem forgetDualIso_tensor_mate_inv (X Y : 𝒵) :
   let e := (forgetDualIso Y) ⊗ᵢ (forgetDualIso X)
   change (rightDualTensorIso X.1 Y.1).homᘁ ≫ (forgetDualIso (X ⊗ Y)).homᘁ =
     e.homᘁ ≫ (rightDualTensorIso X Y).hom.fᘁ at ht
-  let : IsIso (e.homᘁ) := by
-    change IsIso (Dimensions.rightDualIsoMap e).hom
-    infer_instance
-  change (rightDualTensorIso X Y).hom.fᘁ ≫ (forgetDualIso (X ⊗ Y)).invᘁ =
-    e.invᘁ ≫ (rightDualTensorIso X.1 Y.1).homᘁ
-  apply (cancel_epi (e.homᘁ)).1
-  rw [← Category.assoc, ← ht]
-  have he : e.homᘁ ≫ e.invᘁ = 𝟙 _ := by
-    rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
-  have hf : (forgetDualIso (X ⊗ Y)).homᘁ ≫
-      (forgetDualIso (X ⊗ Y)).invᘁ = 𝟙 _ := by
-    rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id]
-  simp only [Category.assoc, hf]
-  rw [← Category.assoc, he, Category.id_comp]
-  simp
+  change (rightDualTensorIso X Y).hom.fᘁ ≫
+      (Dimensions.rightDualIsoMap (forgetDualIso (X ⊗ Y))).inv =
+    (Dimensions.rightDualIsoMap e).inv ≫ (rightDualTensorIso X.1 Y.1).homᘁ
+  rw [Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
+  exact ht.symm
 
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
 theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
