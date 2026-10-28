@@ -69,9 +69,9 @@ theorem rightDualTensorIso_natural [HasRightDual X] [HasRightDual X']
     ((f ⊗ₘ g)ᘁ) ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X' Y').hom ≫ (gᘁ ⊗ₘ fᘁ) :=
   evaluation_ext (X := X ⊗ Y) (by
-    simp only [comp_whiskerRight_assoc, rightDualTensorIso_evaluation,
-      rightAdjointMate_comp_evaluation]
-    rw [← rightDualTensorIso_evaluation X' Y', whisker_exchange_assoc,
+    rw [comp_whiskerRight_assoc, comp_whiskerRight_assoc,
+      rightDualTensorIso_evaluation, rightAdjointMate_comp_evaluation,
+      ← rightDualTensorIso_evaluation X' Y', whisker_exchange_assoc,
       tensorPairing_evaluation_natural])
 
 omit [RightRigidCategory C] in
@@ -122,8 +122,8 @@ theorem drinfeldIso_natural {X Y : C} [HasRightDual X] [HasRightDual (Xᘁ)]
     [HasRightDual Y] [HasRightDual (Yᘁ)] (f : X ⟶ Y) :
     f ≫ (drinfeldIso Y).hom = (drinfeldIso X).hom ≫ (fᘁ)ᘁ :=
   evaluation_ext (X := Yᘁ) (by
-    simp only [comp_whiskerRight_assoc]
-    rw [drinfeld_eval Y, braiding_naturality_left_assoc,
+    rw [comp_whiskerRight_assoc, comp_whiskerRight_assoc,
+      drinfeld_eval Y, braiding_naturality_left_assoc,
       ← rightAdjointMate_comp_evaluation, ← braiding_naturality_right_assoc,
       ← drinfeld_eval X, whisker_exchange_assoc, ← rightAdjointMate_comp_evaluation])
 
