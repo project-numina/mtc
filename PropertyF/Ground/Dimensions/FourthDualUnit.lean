@@ -139,15 +139,12 @@ theorem rootDimension_unit_sq :
   let : HasRightDual (Uᘁ) := RightRigidCategory.rightDual (Uᘁ)
   let : HasRightDual ((Uᘁ)ᘁ) := RightRigidCategory.rightDual ((Uᘁ)ᘁ)
   let : Simple U := IsFusionCategory.unit_simple
-  let a := (fourthDualRootNaturalIso C).app U
-  let u := doubleDualIso C U
-  let r := rootDimension C (unitIndex C)
-  have hu : u = doubleDualUnitIso (C := C.Obj) := Iso.ext (drinfeld_unit (C := C.Obj))
-  apply scalar_sq_eq_one_of_same_square u a r (by
-    simpa [a, r, hu] using fourthDualRoot_unit_component C)
-  refine (show a.hom ≫ ((a.homᘁ)ᘁ) = (fourthDualIso U).hom from
-    congrArg (fun n => (n.app U).hom) (fourthDualRootNaturalSquare_eq C)).trans ?_
-  rw [hu]
+  apply scalar_sq_eq_one_of_same_square (doubleDualUnitIso (C := C.Obj))
+    ((fourthDualRootNaturalIso C).app U) (rootDimension C (unitIndex C))
+    (fourthDualRoot_unit_component C)
+  refine (show ((fourthDualRootNaturalIso C).app U).hom ≫
+      ((((fourthDualRootNaturalIso C).app U).homᘁ)ᘁ) = (fourthDualIso U).hom from
+    congrArg (fun n ↦ (n.app U).hom) (fourthDualRootNaturalSquare_eq C)).trans ?_
   simpa only [Iso.trans_hom, rightDualIsoMap] using
     congrArg Iso.hom (fourthDualIso_unit (C := C.Obj))
 
