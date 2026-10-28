@@ -140,12 +140,12 @@ abbrev HasOverlapCoherence (X : C) (t k : ℕ) : Prop :=
 /-- The previous overlap operator expressed with its last strand explicit. -/
 def previousOverlapLocal {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t) :
     End (tensorPower X (overlapIndex t k + 1) ⊗ X) :=
-  (isoEndAlgEquiv (appendIso X (overlapIndex t k + 1)).symm)
+  (appendIso X (overlapIndex t k + 1)).symm.conj
     (overlapProduct u k : End (tensorPower X (overlapIndex t k + 2)))
 
 /-- The actual overlapping product agrees with the local endomorphism product. -/
 abbrev IsLocalOverlapProduct {X : C} {t : ℕ} (k : ℕ) (u : braidAlgebra X t) : Prop :=
-  (isoEndAlgEquiv (overlapPowerIso X t k).symm)
+  (overlapPowerIso X t k).symm.conj
       (overlapProduct u (k + 1) : End (tensorPower X (overlapIndex t (k + 1) + 2))) =
     overlapEndProduct (previousOverlapLocal k u) (u : End (tensorPower X (t + 2)))
 
@@ -153,9 +153,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Under the overlap isomorphism the previous braid is exactly the local
 endomorphism with identity on the new tail. -/
 theorem overlapLeft_local {X : C} (t k : ℕ) (v : braidAlgebra X (overlapIndex t k)) :
-    (isoEndAlgEquiv (overlapPowerIso X t k).symm) (overlapLeft X t k v : End _) =
+    (overlapPowerIso X t k).symm.conj (overlapLeft X t k v : End _) =
     insertRightIdentity (tensorPower X (t + 1))
-      ((isoEndAlgEquiv (appendIso X (overlapIndex t k + 1)).symm) (v : End _)) := by
+      ((appendIso X (overlapIndex t k + 1)).symm.conj (v : End _)) := by
   apply End.ext
   change (overlapPowerIso X t k).hom ≫
     ((addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v :
@@ -163,7 +163,7 @@ theorem overlapLeft_local {X : C} (t k : ℕ) (v : braidAlgebra X (overlapIndex 
       End (tensorPower X ((overlapIndex t k + (t + 1)) + 2))).asHom ≫
     (overlapPowerIso X t k).inv = _
   rw [addRightBraidAlgebraIter_asHom]
-  simp [insertRightIdentity, isoEndAlgEquiv, Iso.conj_apply_asHom, overlapPowerIso,
+  simp [insertRightIdentity, Iso.conj_apply_asHom, overlapPowerIso,
     tensorIso_hom, tensorIso_inv, tensorHom_id, comp_whiskerRight, Category.assoc]
 
 section LocalOverlap
@@ -174,9 +174,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The fresh algebra element is left whiskering along its canonical
 left-insertion isomorphism. -/
 theorem freshOverlapIso_action :
-    (isoEndAlgEquiv (freshOverlapIso X t k))
-      (End.of (tensorPower X (overlapIndex t k + 1) ◁ (u : End _).asHom)) =
-    (overlapRight X t k u : End _) := by
+    (freshOverlapIso X t k).inv ≫
+      (tensorPower X (overlapIndex t k + 1) ◁ (u : End _).asHom) ≫
+      (freshOverlapIso X t k).hom = (overlapRight X t k u : End _).asHom := by
   have hcast : ∀ (a b : ℕ) (h : a = b)
       (F : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b) (u : braidAlgebra X t),
       (((Eq.mpr (congrArg (fun n => braidAlgebra X t →ₐ[ℂ] braidAlgebra X n) h) F) u :
@@ -186,10 +186,6 @@ theorem freshOverlapIso_action :
       (eqToIso (congrArg (fun n => braidTensorPower X n) h)).inv := by
     rintro a b rfl F u
     simp
-  apply End.ext
-  change (freshOverlapIso X t k).inv ≫
-      (tensorPower X (overlapIndex t k + 1) ◁ (u : End (tensorPower X (t + 2))).asHom) ≫
-      (freshOverlapIso X t k).hom = _
   dsimp only [overlapRight]
   rw [hcast _ _ (overlapIndex_formula t (k + 1)), addLeftBraidAlgebraIter_asHom]
   simp only [freshOverlapIso, Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv,
@@ -202,10 +198,9 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Agreement of the two canonical tensor-power isomorphisms identifies the
 fresh actual braid factor with the local overlap factor. -/
 theorem overlapRight_local_of_iso (hiso : HasOverlapCoherence X t k) :
-    (isoEndAlgEquiv (overlapPowerIso X t k).symm) (overlapRight X t k u : End _) =
+    (overlapPowerIso X t k).symm.conj (overlapRight X t k u : End _) =
     overlapFresh (tensorPower X (overlapIndex t k + 1)) (u : End (tensorPower X (t + 2))) :=
-  End.ext (by simp [← freshOverlapIso_action k u, hiso, overlapFresh, isoEndAlgEquiv,
-    Iso.conj_apply_asHom])
+  End.ext (by simp [← freshOverlapIso_action k u, hiso, overlapFresh, Iso.conj_apply_asHom])
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A single coherence equality between the left- and right-insertion
@@ -229,12 +224,8 @@ theorem overlap_trace_step_of_coherence (k : ℕ)
       actualBraidTrace D p (overlapProduct u k) * actualBraidTrace D p u := by
   have hh := congrArg
     (fun z => Ground.unitScalarEquiv D (p.rightTrace z.asHom)) hcoh
-  change Ground.unitScalarEquiv D (p.rightTrace
-    ((overlapPowerIso X t k).symm.conj (overlapProduct u (k + 1) : End _)).asHom) = _ at hh
   rw [rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p (Ground.unitScalarEquiv D)] at hh
   unfold previousOverlapLocal at hh
-  change _ = Ground.unitScalarEquiv D (p.rightTrace
-    ((appendIso X (overlapIndex t k + 1)).symm.conj (overlapProduct u k : End _)).asHom) * _ at hh
   rw [rightTrace_iso_conj] at hh
   change actualBraidTrace D p _ = actualBraidTrace D p _ *
     (actualBraidTrace D p u / _) at hh

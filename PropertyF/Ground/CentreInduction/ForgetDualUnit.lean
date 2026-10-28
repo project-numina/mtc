@@ -12,9 +12,10 @@ set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RigidCategory (Center D)]
 local notation "𝒵" => Center D
+variable (p : PivotalStructure (C := D)) (X Y : Center D)
 
 /-- The inverse tensor comparison commutes with the forgotten dual isomorphisms. -/
-private theorem forgetDualIso_tensor_inv (X Y : 𝒵) :
+private theorem forgetDualIso_tensor_inv :
     (rightDualTensorIso X Y).inv.f ≫ (forgetDualIso (X ⊗ Y)).hom =
       ((forgetDualIso Y).hom ⊗ₘ (forgetDualIso X).hom) ≫
         (rightDualTensorIso X.1 Y.1).inv :=
@@ -24,7 +25,7 @@ private theorem forgetDualIso_tensor_inv (X Y : 𝒵) :
         ((Center.forget D).mapIso (rightDualTensorIso X Y)).inv_hom_id_assoc _
 
 /-- Taking mates of the tensor comparison also preserves its inverse. -/
-private theorem forgetDualIso_tensor_mate_inv (X Y : 𝒵) :
+private theorem forgetDualIso_tensor_mate_inv :
     (rightDualTensorIso X Y).hom.fᘁ ≫ (forgetDualIso (X ⊗ Y)).invᘁ =
       (((forgetDualIso Y).inv ⊗ₘ (forgetDualIso X).inv)ᘁ) ≫
         (rightDualTensorIso X.1 Y.1).homᘁ := by
@@ -37,7 +38,7 @@ private theorem forgetDualIso_tensor_mate_inv (X Y : 𝒵) :
     (congrArg (fun m => rightAdjointMate m) (forgetDualIso_tensor X Y)).symm
 
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
-theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
+theorem forgetDoubleDualIso_tensor :
     (doubleDualTensorIso X Y).hom.f ≫ (forgetDoubleDualIso (X ⊗ Y)).hom =
       ((forgetDoubleDualIso X).hom ⊗ₘ (forgetDoubleDualIso Y).hom) ≫
         (doubleDualTensorIso X.1 Y.1).hom := by
@@ -51,10 +52,9 @@ theorem forgetDoubleDualIso_tensor (X Y : 𝒵) :
     ← rightDualTensorIso_inv_natural (forgetDualIso Y).inv (forgetDualIso X).inv]
   simp only [tensorHom_comp_tensorHom_assoc, Category.assoc]
 
-variable (p : PivotalStructure (C := D))
 
 /-- The transported pivotal components satisfy the tensor law after forgetting. -/
-theorem transported_pivotal_tensor (X Y : 𝒵) :
+theorem transported_pivotal_tensor :
     (transportedPivotalHom p X ⊗ₘ transportedPivotalHom p Y) ≫
       (doubleDualTensorIso X Y).hom.f = transportedPivotalHom p (X ⊗ Y) := by
   dsimp only [transportedPivotalHom]

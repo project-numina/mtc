@@ -174,12 +174,13 @@ theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
 
 variable {k : Type*} [CommSemiring k] [Preadditive D] [Linear k D]
   [MonoidalPreadditive D] [MonoidalLinear k D]
+variable (X : D)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the output of a crossing block composes the
 fusion inclusion with that map. -/
 @[reassoc]
-theorem crossingBlock_post_test (X : D) (h : T ⟶ U)
+theorem crossingBlock_post_test (h : T ⟶ U)
     (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     crossingBlock X T S g f ≫ (h ▷ ((S ⊗ X) ⊗ Sᘁ)) =
       mixedCrossingBilinear (k := k) X T U R S (g ≫ (h ▷ S)) f := by
@@ -190,7 +191,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Moving a test-strand map to the input of a crossing block composes the
 fusion projection with that map. -/
 @[reassoc]
-theorem crossingBlock_pre_test (X : D) (h : T ⟶ U)
+theorem crossingBlock_pre_test (h : T ⟶ U)
     (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
     (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U S g f =
       mixedCrossingBilinear (k := k) X T U R S g ((h ▷ S) ≫ f) := by

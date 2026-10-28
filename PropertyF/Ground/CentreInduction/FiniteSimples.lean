@@ -92,32 +92,19 @@ theorem simple_mono_induced_simple (X : 𝒵) [Simple X] :
     (actualAdjunction C) X (simples C i)
   exact ⟨i, e.symm g, mono_of_nonzero_from_simple (e.symm.map_eq_zero_iff.not.mpr hg)⟩
 
-end PropertyF.Ground.CentreInduction
-
-end
-end
-
 /-! Finiteness of simple objects in the actual Drinfeld centre. -/
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-universe v u
-@[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
-variable (C : BraidedFusionCategory.{v,u})
-local notation "𝒵" => Center C.Obj
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
 theorem center_cokernel_measure_lt {S W : 𝒵} (p : S ⟶ W) (hp : p ≠ 0) :
     let Q := Centre.centerCokernel p
-    Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) := by
+    Module.finrank ℂ (Q.1 ⟶ Q.1) < Module.finrank ℂ (W.1 ⟶ W.1) :=
   let Q := Centre.centerCokernel p
   let q : W.1 ⟶ Q.1 := (Centre.centerCokernelπ p).f
-  have : Epi q := by
-    change Epi (cokernel.π p.f)
-    infer_instance
-  let : IsSplitEpi q := epi_splits q
-  let : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
-  exact finrank_end_lt_of_split_epi p.f q (fun h => hp (by ext; exact h))
+  letI : Epi q := inferInstanceAs (Epi (cokernel.π p.f))
+  letI : IsSplitEpi q := epi_splits q
+  letI : FiniteDimensional ℂ (W.1 ⟶ W.1) := IsFusionCategory.hom_finite _ _
+  finrank_end_lt_of_split_epi p.f q (fun h => hp (Center.ext p 0 h))
     (congrArg Center.Hom.f (Centre.centerCokernel_condition p))
 
 /-- A simple subobject either lies in a simple kernel or embeds into the cokernel. -/
@@ -191,3 +178,6 @@ theorem finite_simple_labels :
 
 
 end PropertyF.Ground.CentreInduction
+
+end
+end

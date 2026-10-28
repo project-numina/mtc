@@ -28,16 +28,13 @@ theorem finrank_end_lt_of_split_epi {S W Q : D} (p : S ⟶ W) (q : W ⟶ Q)
   let s : Q ⟶ W := section_ q
   let L : (Q ⟶ Q) →ₗ[k] (W ⟶ W) :=
     (Linear.leftComp k W q).comp (Linear.rightComp k Q s)
-  have hinj : Function.Injective L := by
-    intro x y h
+  have hinj : Function.Injective L := fun x y h => by
     simpa [L, s, Category.assoc] using congrArg (fun f => s ≫ f ≫ q) h
   have hproper : LinearMap.range L ≠ ⊤ := by
     intro hall
     obtain ⟨x, hx⟩ := (LinearMap.range_eq_top.mp hall) (𝟙 W)
-    have he := congrArg (fun f => p ≫ f) hx
     apply hp
-    change p ≫ (q ≫ x ≫ s) = p ≫ 𝟙 W at he
-    simpa only [← Category.assoc, hq, zero_comp, Category.comp_id] using he.symm
+    simpa [L, s, ← Category.assoc, hq] using (congrArg (fun f => p ≫ f) hx).symm
   simpa only [finrank_top, LinearMap.finrank_range_of_inj hinj] using
     Submodule.finrank_lt_finrank_of_lt (lt_top_iff_ne_top.mpr hproper)
 
@@ -130,7 +127,7 @@ theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum D X) :
     let V : Fin 0 → D := Fin.elim0
     have hzero : IsZero (⨁ V) := (IsZero.iff_id_eq_zero _).mpr (by
       simpa using (biproduct.total (f := V)).symm)
-    exact ⟨0, V, by intro i; exact Fin.elim0 i, ⟨hz.iso hzero⟩⟩
+    exact ⟨0, V, fun i => Fin.elim0 i, ⟨hz.iso hzero⟩⟩
   | @cons X S K hs hk he ih =>
     obtain ⟨n, V, hv, ⟨e⟩⟩ := ih
     obtain ⟨eX⟩ := he
@@ -156,16 +153,17 @@ end
 open CategoryTheory CategoryTheory.Limits
 namespace PropertyF.Ground.CentreInduction
 universe v u
+variable {D : Type u} [Category.{v} D]
 
 /-- A family contains one representative of each isomorphism class of simples. -/
-abbrev IsSimpleRepresentativeFamily {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
+abbrev IsSimpleRepresentativeFamily [HasZeroMorphisms D]
     {ι : Type*} (S : ι → D) : Prop :=
   (∀ i, Simple (S i)) ∧
     (∀ i j, Nonempty (S i ≅ S j) → i = j) ∧
     ∀ X : D, Simple X → ∃ i, Nonempty (X ≅ S i)
 
 /-- A finite covering family of simples can be deduplicated up to isomorphism. -/
-theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
+theorem simple_representatives_of_finite_cover [HasZeroMorphisms D]
     {labels : Finset D} (hs : ∀ T ∈ labels, Simple T)
     (hc : ∀ X : D, Simple X → ∃ T ∈ labels, Nonempty (X ≅ T)) :
     ∃ (n : ℕ) (S : Fin n → D), IsSimpleRepresentativeFamily S := by
@@ -193,7 +191,7 @@ theorem simple_representatives_of_finite_cover {D : Type u} [Category.{v} D] [Ha
       ⟨iso ≪≫ Classical.choice hq⟩)
 
 /-- Group finitely many objects by chosen representative labels. -/
-theorem regroup_biproduct {D : Type u} [Category.{v} D] [Preadditive D]
+theorem regroup_biproduct [Preadditive D]
     [HasFiniteBiproducts D] {n k : ℕ} {S : Fin n → D} {V : Fin k → D}
     (h : ∀ j, ∃ i, Nonempty (V j ≅ S i)) :
     ∃ m : Fin n → ℕ, Nonempty ((⨁ V) ≅ ⨁ (fun p : Σ i, Fin (m i) => S p.1)) := by

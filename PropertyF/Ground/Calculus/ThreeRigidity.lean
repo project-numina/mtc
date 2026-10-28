@@ -87,8 +87,7 @@ adjacent copies of double self-braiding. -/
 theorem local_monodromy_of_block_squares_equal {X : C} {r : ℕ} {size : Fin r → ℕ}
     (b : BraidBlockPresentation X 1 size)
     (h : tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2) :
-    insertRightIdentity X (selfMonodromy X) =
-      overlapFresh X (selfMonodromy X) := by
+    insertRightIdentity X (selfMonodromy X) = overlapFresh X (selfMonodromy X) := by
   apply local_monodromy_of_three_squares_equal X
   have hs : braidInImage (threeGeneratorLeft X ^ 2) =
       braidInImage (threeGeneratorRight X ^ 2) := by
@@ -104,8 +103,10 @@ set_option backward.isDefEq.respectTransparency false in
 self-braiding on the ordinary tensor product. -/
 theorem selfMonodromy_isOfFinOrder {X : C} (hfinite : ObjectPropertyF X) :
     IsOfFinOrder (selfMonodromy X) := by
-  have h := (twoPowerIso X).conj.toMonoidHom.isOfFinOrder
-    (Aut.toEnd.isOfFinOrder (braidImage_isOfFinOrder hfinite 0 (imageGenerator X 0 0)))
+  let _ : Finite (braidImage X 0) := hfinite 0
+  have h := ((twoPowerIso X).conj.toMonoidHom.comp
+    (Aut.toEnd.comp (braidImage X 0).subtype)).isOfFinOrder
+      (isOfFinOrder_of_finite (imageGenerator X 0 0))
   change IsOfFinOrder ((twoPowerIso X).conj (Aut.toEnd (braidGenerator X 0 0))) at h
   rw [show (twoPowerIso X).conj (Aut.toEnd (braidGenerator X 0 0)) =
     End.of ((β_ X X).hom) from End.ext (twoGenerator_transport X)] at h

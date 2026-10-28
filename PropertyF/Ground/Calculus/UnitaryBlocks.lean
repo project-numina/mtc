@@ -23,12 +23,24 @@ open Matrix
 open scoped BigOperators ComplexOrder
 namespace PropertyF.Ground.Calculus
 
-variable {G ι : Type*} [Group G] [Fintype G] [Fintype ι] [DecidableEq ι]
-variable (ρ : G →* (Matrix ι ι ℂ)ˣ)
+section Averaging
 
-/-- The Gram matrix of the sum of all pullbacks of the standard form. -/
-def averagedGram : Matrix ι ι ℂ :=
-  ∑ g : G, (↑(ρ g) : Matrix ι ι ℂ)ᴴ * (↑(ρ g) : Matrix ι ι ℂ)
+variable {G A : Type*} [Group G] [Fintype G] [Semiring A] [StarMul A]
+variable (ρ : G →* A)
+
+/-- The sum of the adjoint squares of a finite group representation. -/
+def averagedGram : A := ∑ g : G, star (ρ g) * ρ g
+
+/-- Every group element preserves the averaged form. -/
+theorem averagedGram_invariant (h : G) :
+    star (ρ h) * averagedGram ρ * ρ h = averagedGram ρ := by
+  simpa [averagedGram, Finset.mul_sum, Finset.sum_mul, mul_assoc, star_mul] using
+    (Equiv.sum_comp (Equiv.mulRight h) fun g => star (ρ g) * ρ g)
+
+end Averaging
+
+variable {G ι : Type*} [Group G] [Fintype G] [Fintype ι] [DecidableEq ι]
+variable (ρ : G →* Matrix ι ι ℂ)
 
 open scoped Classical in
 /-- The averaged form is positive definite, even in dimension zero. -/
@@ -36,29 +48,16 @@ theorem averagedGram_posDef :
     (averagedGram ρ).PosDef :=
   Matrix.posDef_sum Finset.univ_nonempty fun g _ =>
     Matrix.PosDef.conjTranspose_mul_self _
-      (Matrix.mulVec_injective_of_isUnit (Units.isUnit (ρ g)))
-
-/-- Every group element is an isometry for the averaged form. -/
-theorem averagedGram_invariant (h : G) :
-    (↑(ρ h) : Matrix ι ι ℂ)ᴴ * averagedGram ρ * (↑(ρ h) : Matrix ι ι ℂ) = averagedGram ρ := by
-  simpa [averagedGram, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_assoc] using
-    (Equiv.sum_comp (Equiv.mulRight h) fun g => (ρ g : Matrix ι ι ℂ)ᴴ * (ρ g : Matrix ι ι ℂ))
+      (Matrix.mulVec_injective_of_isUnit (Units.isUnit (ρ.toHomUnits g)))
 
 /-! A finite complex matrix representation can be conjugated into the unitary group. -/
 
 open scoped MatrixOrder
 
-/-- Conjugating by a self-adjoint unit makes an isometry unitary. -/
-private theorem conjugate_mem_unitary {A : Type*} [Monoid A] [StarMul A]
-    (P U : Aˣ) (hP : star P = P) (h : star U * P ^ 2 * U = P ^ 2) :
-    ((P * U * P⁻¹ : Aˣ) : A) ∈ unitary A :=
-  (Units.mul_inv_mem_unitary (P * U) P).2 (by
-    simpa only [star_mul, hP, pow_two, mul_assoc] using h)
-
 /-- A single change of basis unitarizes every matrix in a finite group representation. -/
 theorem exists_unitarizing_basis :
     ∃ P : (Matrix ι ι ℂ)ˣ, ∀ g : G,
-      ((↑(P * ρ g * P⁻¹) : Matrix ι ι ℂ) ∈ Matrix.unitaryGroup ι ℂ) := by
+      ((↑(P * ρ.toHomUnits g * P⁻¹) : Matrix ι ι ℂ) ∈ Matrix.unitaryGroup ι ℂ) := by
   classical
   let A := averagedGram ρ
   have hA : 0 ≤ A := (averagedGram_posDef ρ).posSemidef.nonneg
@@ -72,10 +71,12 @@ theorem exists_unitarizing_basis :
   have hsquare : (↑P : Matrix ι ι ℂ) * (↑P : Matrix ι ι ℂ) = A := by
     rw [hP, ← pow_two, CFC.sq_sqrt A hA]
   refine ⟨P, fun g => ?_⟩
-  apply conjugate_mem_unitary P (ρ g) hselfu
+  apply (Units.mul_inv_mem_unitary (P * ρ.toHomUnits g) P).2
+  rw [star_mul, hselfu]
   apply Units.ext
-  simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Units.coe_star,
-    pow_two, hsquare, ← Matrix.star_eq_conjTranspose] using averagedGram_invariant ρ g
+  have h : star (ρ g) * A * ρ g = A := averagedGram_invariant ρ g
+  rw [← hsquare] at h
+  simpa only [Units.val_mul, Units.coe_star, MonoidHom.coe_toHomUnits, mul_assoc] using h
 
 end PropertyF.Ground.Calculus
 
@@ -243,7 +244,7 @@ theorem groupImageAlgebra_unitary_blocks :
   obtain ⟨n, d, hd, ⟨e⟩⟩ := groupImageAlgebra_blocks ρ
   let blockRep (i : Fin n) : G →* Matrix (Fin (d i)) (Fin (d i)) ℂ :=
     (Pi.evalMonoidHom _ i).comp (e.toMonoidHom.comp (groupInImage ρ))
-  choose P hP using fun i : Fin n => exists_unitarizing_basis (blockRep i).toHomUnits
+  choose P hP using fun i : Fin n => exists_unitarizing_basis (blockRep i)
   let e' := e.trans (AlgEquiv.piCongrRight (fun i => unitConjugation (P i)))
   refine ⟨n, d, e', hd, fun g i => ?_⟩
   simpa [e', unitConjugation, blockRep] using hP i g
@@ -256,13 +257,5 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 abbrev IsUnitaryBraidPresentation {X : C} {n r : ℕ} {d : Fin r → ℕ}
     (e : BraidBlockPresentation X n d) : Prop :=
   IsUnitaryPresentation (braidEndRepresentation X n) e
-
-/-- Finite categorical braid images admit a simultaneous unitary block
-realization of their actual endomorphism algebra. -/
-theorem braidAlgebra_unitary_blocks {X : C} {n : ℕ} (h : Finite (braidImage X n)) :
-    ∃ (r : ℕ) (d : Fin r → ℕ) (e : BraidBlockPresentation X n d),
-      (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e :=
-  let _ : Finite (braidImage X n) := h
-  groupImageAlgebra_unitary_blocks _
 
 end PropertyF.Ground.Calculus

@@ -33,7 +33,7 @@ theorem finiteOrder_matrix_unitarizable :
   let G := Subgroup.zpowers u
   let : Finite G := hufin.finite_zpowers
   let : Fintype G := Fintype.ofFinite G
-  let ⟨P, hP⟩ := Calculus.exists_unitarizing_basis G.subtype
+  let ⟨P, hP⟩ := Calculus.exists_unitarizing_basis ((Units.coeHom _).comp G.subtype)
   let g : G := ⟨u, Subgroup.mem_zpowers u⟩
   ⟨P, by simpa [g, u] using hP g⟩
 
@@ -110,15 +110,12 @@ equivalent to categorical centrality. -/
 theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     (hdim : HasFPSimpleDimensions D p) {i j : Fin (rank D)}
     (hfinite : IsOfFinOrder (End.of (doubleBraiding (simples D i) (simples D j))))
-    (hs : sCentralizes D p i j) : doubleBraiding (simples D i) (simples D j) = 𝟙 _ := by
-  have ht : p.rightTrace (doubleBraiding (simples D i) (simples D j)) =
-      p.rightTrace (𝟙 (simples D i ⊗ simples D j)) := by
-    apply (Ground.unitScalarEquiv D).injective
-    change Modular.categoricalS D p i j = _
-    rw [hs]
-    simpa [Modular.simpleDimension, pivotalDimension,
-      Ground.unitScalar_eq_equiv] using
-      (pivotalDimension_tensor D p (simples D i) (simples D j)).symm
-  exact congrArg End.asHom (finiteOrder_eq_one_of_trace_eq_dimension hdim hfinite ht)
+    (hs : sCentralizes D p i j) : doubleBraiding (simples D i) (simples D j) = 𝟙 _ :=
+  congrArg End.asHom <| finiteOrder_eq_one_of_trace_eq_dimension hdim hfinite <|
+    (Ground.unitScalarEquiv D).injective <| by
+      change Modular.categoricalS D p i j = _
+      rw [hs]
+      simpa [Modular.simpleDimension, pivotalDimension, Ground.unitScalar_eq_equiv] using
+        (pivotalDimension_tensor D p (simples D i) (simples D j)).symm
 
 end PropertyF.Ground.CentreCabling

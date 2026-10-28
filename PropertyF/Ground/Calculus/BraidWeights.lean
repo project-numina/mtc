@@ -93,9 +93,8 @@ theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
     (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → ℝ)
     (hdim : HasMultiplicityDecomposition m d mult) :
     (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) = ∑ i, (m i : ℝ) * fp i := by
-  simp only [hdim, Nat.cast_sum, Nat.cast_mul, Finset.sum_mul]
-  rw [Finset.sum_comm]
-  simp only [mul_comm, mul_left_comm]
+  simpa [hdim, Finset.sum_mul, Finset.mul_sum, mul_comm, mul_left_comm] using
+    (Finset.sum_comm (s := .univ) (t := .univ) (f := fun i j => (mult i j : ℝ) * fp i * d j)).symm
 
 /-- The paper's Galois-transported multiplicity weights cannot vanish when
 all original constituent dimensions are positive and the block is retained. -/
@@ -125,16 +124,16 @@ namespace PropertyF.Ground.Calculus
 
 section
 
-variable {ι : Type*} [Fintype ι] [DecidableEq ι]
-  (T : Matrix ι ι ℂ →ₗ[ℂ] ℂ) (hT : ∀ X Y, T (X * Y) = T (Y * X))
+variable {R : Type*} [CommSemiring R] {ι : Type*} [Fintype ι] [DecidableEq ι]
+  (T : Matrix ι ι R →ₗ[R] R) (hT : ∀ X Y, T (X * Y) = T (Y * X))
 
 include hT in
 /-- A cyclic functional agrees with a multiple of the trace on matrix units. -/
-private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
+private theorem cyclic_matrix_single (i₀ i j : ι) (a : R) :
     T (Matrix.single i j a) = T (Matrix.single i₀ i₀ 1) * (Matrix.single i j a).trace := by
   by_cases hij : i = j
   · subst j
-    have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
+    have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : R))
     simp only [Matrix.single_mul_single_same, mul_one, one_mul] at hdiag
     rw [hdiag, Matrix.trace_single_eq_same, mul_comm]
     change T (Matrix.single i₀ i₀ a) = a • T (Matrix.single i₀ i₀ 1)
@@ -142,12 +141,12 @@ private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
   · rw [Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
     simpa only [Matrix.single_mul_single_same, one_mul,
       Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] using
-      hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
+      hT (Matrix.single i i (1 : R)) (Matrix.single i j a)
 
 include hT in
-/-- A cyclic linear functional on a complex matrix algebra is a scalar
+/-- A cyclic linear functional on a matrix algebra is a scalar
 multiple of ordinary matrix trace, including the zero-dimensional case. -/
-theorem cyclic_matrix_trace : ∃ w : ℂ, ∀ X, T X = w * X.trace := by
+theorem cyclic_matrix_trace : ∃ w : R, ∀ X, T X = w * X.trace := by
   classical
   by_cases hn : Nonempty ι
   · let i₀ : ι := Classical.choice hn
@@ -349,7 +348,9 @@ theorem exists_unitary_braid_trace_blocks
   let m : Fin (Ground.rank C) → ℕ := fun i =>
     Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)
   obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (braidTensorPower X n)
-  obtain ⟨r, d, b, hnonzero, hunitary⟩ := braidAlgebra_unitary_blocks hfinite
+  let _ : Finite (braidImage X n) := hfinite
+  obtain ⟨r, d, b, hnonzero, hunitary⟩ :=
+    groupImageAlgebra_unitary_blocks (braidEndRepresentation X n)
   have hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
   obtain ⟨mult, hret, hdim, htrace⟩ :=
     pivotalTrace_braid_multiplicities C p scalar e hd b

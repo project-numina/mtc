@@ -25,11 +25,11 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- The unit-labelled summand is isomorphic to the middle object. -/
 def unitSummandIso (X : C.Obj) :
-    (simples C (unitIndex C) ⊗ X) ⊗ (simples C (unitIndex C))ᘁ ≅ X := by
+    (simples C (unitIndex C) ⊗ X) ⊗ (simples C (unitIndex C))ᘁ ≅ X :=
   let e : simples C (unitIndex C) ≅ 𝟙_ C.Obj := Classical.choice (unitIndex_iso C)
   let d : (simples C (unitIndex C))ᘁ ≅ 𝟙_ C.Obj :=
     rightDualIsoMap e.symm ≪≫ rightDualUnitIso
-  exact ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫ ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ X
+  ((e ⊗ᵢ Iso.refl X) ⊗ᵢ d) ≪≫ ((λ_ X) ⊗ᵢ Iso.refl (𝟙_ C.Obj)) ≪≫ ρ_ X
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Every object is a retract of its underlying induction sum through the
