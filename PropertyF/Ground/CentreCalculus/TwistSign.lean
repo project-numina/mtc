@@ -98,25 +98,23 @@ theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
   apply smul_left_injective ℂ (id_nonzero X)
   simpa [θ] using ht
 
-include hp hdim in
 /-- Every self-transparent simple has integral FP dimension in an FP-valued
 spherical braided fusion category. -/
-theorem selfTransparent_simple_integral {X : C.Obj} [Simple X]
+theorem selfTransparent_simple_integral (hfp : IsFPSpherical C p) {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
     ∃ m : ℕ, fpDimension C X = m :=
-  integral_of_spherical_and_twist_sign hp hdim hX
-    (pivotalTwist_sign_of_selfTransparent (C := C) hp hX)
+  integral_of_spherical_and_twist_sign hfp hX
+    (pivotalTwist_sign_of_selfTransparent (C := C) hfp.1 hX)
 
-include hp hdim in
 /-- The complex categorical dimension of a self-transparent simple label is
 an integer. -/
-theorem selfTransparent_simpleDimension_integer {i : Fin (rank C)}
+theorem selfTransparent_simpleDimension_integer (hfp : IsFPSpherical C p) {i : Fin (rank C)}
     (hX : SelfTransparent (simples C i)) :
     ∃ z : ℤ, Modular.simpleDimension C p i = z :=
   let : Simple (simples C i) := simples_simple C i
-  let ⟨m, hm⟩ := selfTransparent_simple_integral hp hdim hX
+  let ⟨m, hm⟩ := selfTransparent_simple_integral hfp hX
   ⟨m, by
-    rw [hdim i, ← fpDimension_simple C i, hm]
+    rw [hfp.2 i, ← fpDimension_simple C i, hm]
     norm_cast⟩
 
 end PropertyF.Ground.CentreCalculus

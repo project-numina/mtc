@@ -112,10 +112,9 @@ theorem integral_of_trace_deletion {C : BraidedFusionCategory.{v,u}}
     rw [map_one]
     change unitScalar C (p.rightTrace (𝟙 (𝟙_ C.Obj))) = 1
     rw [Dimensions.rightTrace_unit, unitScalar_eq_equiv, map_one]
-  have hf := signedTraceSum_falling hz hfixed hmoved
   apply integral_of_signed_permutation_traces hdim
   intro n
-  exact ⟨ρ n, hf n⟩
+  exact ⟨ρ n, signedTraceSum_falling hz hfixed hmoved n⟩
 
 end PropertyF.Ground.CentreCalculus
 

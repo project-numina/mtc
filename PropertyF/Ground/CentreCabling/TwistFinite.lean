@@ -38,7 +38,7 @@ theorem tensor_end_pow {D : Type u} [Category.{v} D] [MonoidalCategory D]
     (End.of (f.asHom ⊗ₘ g.asHom)) ^ n =
       End.of ((f ^ n).asHom ⊗ₘ (g ^ n).asHom) := by
   induction n with
-  | zero => apply End.ext; simp
+  | zero => exact End.ext (id_tensorHom_id X Y).symm
   | succ n ih =>
     apply End.ext
     simp only [pow_succ, End.mul_asHom, ih, tensorHom_comp_tensorHom]
@@ -62,10 +62,9 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist
     apply End.ext
     simp
   refine isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, ?_⟩
-  have h := (show Commute t m from
-    End.ext (doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))).mul_pow n
-  rw [show t * m = z from End.ext (hbalance X Y), hp _, ht, one_mul] at h
-  exact h.symm
+  symm
+  simpa only [show t * m = z from End.ext (hbalance X Y), z, hp, ht, one_mul] using
+    (show Commute t m from End.ext (doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))).mul_pow n
 
 /-- The actual pivotal twist scalars, viewed as nonzero complex numbers. -/
 def pivotalTwistUnit (C : Ground.BraidedFusionCategory.{v,u})
