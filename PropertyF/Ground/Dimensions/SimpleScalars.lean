@@ -129,10 +129,10 @@ universe v u
 with all maps between finite sums of those simples. -/
 theorem simple_scalar_biproduct_natural
     {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [Preadditive C]
-    [Linear k C] [HasKernels C] [HasFiniteBiproducts C] {L ι κ : Type*}
-    [Fintype ι] [Fintype κ] (T : L → C) (hT : ∀ i, Simple (T i))
+    [Linear k C] [HasKernels C] {L ι κ : Type*} (T : L → C) (hT : ∀ i, Simple (T i))
     (hinj : ∀ {i j}, Nonempty (T i ≅ T j) → i = j)
     (a : ι → L) (b : κ → L) (c : L → k)
+    [HasBiproduct (fun i ↦ T (a i))] [HasBiproduct (fun j ↦ T (b j))]
     (f : (⨁ (fun i ↦ T (a i))) ⟶ (⨁ (fun j ↦ T (b j)))) :
     biproduct.map (fun i ↦ c (a i) • 𝟙 (T (a i))) ≫ f =
       f ≫ biproduct.map (fun j ↦ c (b j) • 𝟙 (T (b j))) := by
