@@ -40,9 +40,7 @@ theorem rightDualTensorIso_associativity (X Y Z : C)
   simp only [comp_whiskerRight_assoc]
   rw [tensorPairing_evaluation_whiskerLeft (p := HasRightDual.exact) (q := ExactPairing.tensor)
     (r := HasRightDual.exact) (rightDualTensorIso X Y).hom (rightDualTensorIso_evaluation X Y),
-    rightDualTensorIso_evaluation (X ⊗ Y) Z]
-  symm
-  rw [ha, ← whisker_exchange_assoc,
+    rightDualTensorIso_evaluation (X ⊗ Y) Z, ha, ← whisker_exchange_assoc,
     tensorPairing_evaluation_whiskerRight (p := HasRightDual.exact) (q := HasRightDual.exact)
       (r := ExactPairing.tensor) (rightDualTensorIso Y Z).hom (rightDualTensorIso_evaluation Y Z),
     ← whisker_exchange_assoc, rightDualTensorIso_evaluation X (Y ⊗ Z),

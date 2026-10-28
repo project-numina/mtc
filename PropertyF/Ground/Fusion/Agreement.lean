@@ -149,9 +149,9 @@ theorem matrix_quadratic_form [DecidableEq ι]
     (A : Matrix ι ι ℝ) (x : EuclideanSpace ℝ ι) :
     (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf x =
       ∑ i, ∑ j, x i * A i j * x j := by
+  rw [Finset.sum_comm]
   simp [ContinuousLinearMap.reApplyInnerSelf, EuclideanSpace.inner_eq_star_dotProduct,
-    Matrix.toLpLin_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc,
-    mul_comm, mul_left_comm]
+    Matrix.toLpLin_apply, Matrix.dot_mulVec_eq_sum_sum]
 
 /-- A nonnegative eigenvector of a positive matrix is positive in every coordinate
 if it has a positive coordinate. -/
