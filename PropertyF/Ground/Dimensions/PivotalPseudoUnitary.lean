@@ -43,14 +43,9 @@ theorem pivotal_dual {C : Type u} [Category.{v} C]
   have hm := rightAdjointMate_comp_evaluation (p.iso X).hom
   rw [← hm] at h
   rw [← comp_whiskerRight_assoc] at h
-  have hh := congrArg (tensorRightHomEquiv (Xᘁ) X (Xᘁ) (𝟙_ C)) h
-  simp only [tensorRightHomEquiv_whiskerRight_comp_evaluation] at hh
-  have hi := tensorRightHomEquiv_whiskerRight_comp_evaluation (X := X) (Y := (Xᘁ)) (𝟙 (Xᘁ))
-  simp only [id_whiskerRight, Category.id_comp] at hi
-  rw [hi] at hh
   have hk : (p.iso (Xᘁ)).hom ≫ ((p.iso X).hom)ᘁ = 𝟙 (Xᘁ) := by
-    apply (cancel_mono (λ_ (Xᘁ)).inv).1
-    simpa only [id_whiskerRight, Category.id_comp] using hh
+    apply evaluation_ext (X := X)
+    simpa only [id_whiskerRight, Category.id_comp] using h
   calc
     _ = (p.iso (Xᘁ)).hom ≫ (((p.iso X).hom)ᘁ ≫ ((p.iso X).inv)ᘁ) := by
       rw [← comp_rightAdjointMate, Iso.inv_hom_id, rightAdjointMate_id, Category.comp_id]
@@ -64,15 +59,17 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The left dimension is the right dimension of the dual object. -/
 theorem pivotal_leftTrace_id_eq_rightTrace_dual {C : Type u} [Category.{v} C]
     [MonoidalCategory C] [RigidCategory C] (p : PivotalStructure (C := C)) (X : C) :
-    p.leftTrace (𝟙 X) = p.rightTrace (𝟙 (Xᘁ)) := by
-  rw [leftTrace_id, rightTrace_id, pivotal_dual, leftQuantumTrace_eq_rightDual]
+    p.leftTrace (𝟙 X) = p.rightTrace (𝟙 (Xᘁ)) :=
+  by rw [leftTrace_id, rightTrace_id, pivotal_dual, leftQuantumTrace_eq_rightDual]
 
 /-- A pivotal fusion category is spherical exactly when all simple dimensions are real. -/
-theorem pivotal_spherical_iff_simple_dimensions_real (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotal_spherical_iff_simple_dimensions_real
     (p : PivotalStructure (C := C.Obj)) :
     p.IsSpherical ↔ ∀ i, star (pivotalDimension C p (Ground.simples C i)) =
       pivotalDimension C p (Ground.simples C i) := by
@@ -99,9 +96,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The intrinsic norm is the product of the pivotal dimensions of a simple and its dual. -/
-theorem squaredNorm_eq_pivotal_dimension_product (C : Ground.BraidedFusionCategory.{v,u})
+theorem squaredNorm_eq_pivotal_dimension_product
     (p : PivotalStructure (C := C.Obj)) (i : Fin (Ground.rank C)) :
     Ground.squaredNorm C (Ground.simples C i) = pivotalDimension C p (Ground.simples C i) *
       pivotalDimension C p (Ground.simples C (Ground.dualIndex C i)) := by
@@ -113,7 +112,7 @@ theorem squaredNorm_eq_pivotal_dimension_product (C : Ground.BraidedFusionCatego
   rw [pivotalDimension_iso C p (rightDualLabelIso C i)]
 
 /-- Each Galois-conjugate intrinsic norm is the squared norm of the corresponding conjugate pivotal dimension. -/
-theorem galois_squaredNorm_eq_pivotalDimension_norm_sq (C : Ground.BraidedFusionCategory.{v,u})
+theorem galois_squaredNorm_eq_pivotalDimension_norm_sq
     (p : PivotalStructure (C := C.Obj)) (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
     σ (Ground.squaredNorm C (Ground.simples C i)) =
       ((‖σ (pivotalDimension C p (Ground.simples C i))‖ ^ 2 : ℝ) : ℂ) := by
@@ -128,9 +127,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Pseudo-unitarity saturates every pivotal simple-dimension FP bound. -/
-theorem pseudoUnitary_saturation_of_pivotal (C : Ground.BraidedFusionCategory.{v,u})
+theorem pseudoUnitary_saturation_of_pivotal
     (p : PivotalStructure (C := C.Obj)) (hpu : Ground.PseudoUnitary C) :
     ∀ i, ‖pivotalDimension C p (Ground.simples C i)‖ = Ground.fpSimple C i := by
   let d : Fin (Ground.rank C) → ℝ := fun i => ‖pivotalDimension C p (Ground.simples C i)‖
@@ -154,7 +155,7 @@ theorem pseudoUnitary_saturation_of_pivotal (C : Ground.BraidedFusionCategory.{v
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Twisting any pivotal structure by its saturated phases constructs the canonical positive spherical structure. -/
-theorem positive_spherical_of_pivotal_pseudoUnitary (C : Ground.BraidedFusionCategory.{v,u})
+theorem positive_spherical_of_pivotal_pseudoUnitary
     (p : PivotalStructure (C := C.Obj)) (hpu : Ground.PseudoUnitary C) :
     ∃ q : PivotalStructure (C := C.Obj), q.IsSpherical ∧ ∀ i,
       pivotalDimension C q (Ground.simples C i) = (Ground.fpSimple C i : ℂ) := by

@@ -28,6 +28,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- Dualizing a double-dual component twice exchanges its left and right
 quantum traces. -/
 theorem leftQuantumTrace_dual_component {C : Type u} [Category.{v} C] [MonoidalCategory C]
@@ -43,7 +44,7 @@ theorem leftQuantumTrace_dual_component {C : Type u} [Category.{v} C] [MonoidalC
 
 /-- The intrinsic squared norm is invariant under right duality, without any
 pivotal or spherical structure. -/
-theorem target_squaredNorm_rightDual (C : Ground.BraidedFusionCategory.{v,u})
+theorem target_squaredNorm_rightDual
     (X : C.Obj) [Simple X] : Ground.squaredNorm C (Xᘁ) = Ground.squaredNorm C X := by
   let : Simple (Xᘁ) := Ground.simple_rightDual C X
   let j := Ground.doubleDualIso C X

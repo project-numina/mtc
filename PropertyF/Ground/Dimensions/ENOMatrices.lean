@@ -75,6 +75,8 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Trace with the actual natural square root of the fourth dual, without
@@ -98,7 +100,7 @@ def rootTraceLinear (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Naturality of the square root makes its trace cyclic. -/
-theorem rootTrace_cyclic (C : Ground.BraidedFusionCategory.{v,u}) {X Y : C.Obj}
+theorem rootTrace_cyclic {X Y : C.Obj}
     (f : X ⟶ Y) (g : Y ⟶ X) : rootTrace C (f ≫ g) = rootTrace C (g ≫ f) := by
   apply rightTraceWith_cyclic
   have h := (fourthDualRootNaturalIso C).hom.naturality f
@@ -107,7 +109,7 @@ theorem rootTrace_cyclic (C : Ground.BraidedFusionCategory.{v,u}) {X Y : C.Obj}
   exact h
 
 /-- The root trace of a finite biproduct is the sum of its diagonal block traces. -/
-theorem rootTrace_biproduct (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTrace_biproduct
     {ι : Type*} [Fintype ι] (F : ι → C.Obj) [HasBiproduct F]
     (f : (⨁ F) ⟶ (⨁ F)) :
     rootTrace C f = ∑ i, rootTrace C (biproduct.ι F i ≫ f ≫ biproduct.π F i) := by
@@ -125,13 +127,12 @@ theorem rootTrace_biproduct (C : Ground.BraidedFusionCategory.{v,u})
       simpa only [Category.assoc] using rootTrace_cyclic C (biproduct.π F i) (biproduct.ι F i ≫ f)
 
 /-- The natural-root trace of the identity is invariant under isomorphism. -/
-theorem rootTrace_id_iso (C : Ground.BraidedFusionCategory.{v,u}) {X Y : C.Obj} (e : X ≅ Y) :
-    rootTrace C (𝟙 X) = rootTrace C (𝟙 Y) := by
-  simpa using rootTrace_cyclic C e.hom e.inv
+theorem rootTrace_id_iso {X Y : C.Obj} (e : X ≅ Y) :
+    rootTrace C (𝟙 X) = rootTrace C (𝟙 Y) := by simpa using rootTrace_cyclic C e.hom e.inv
 
 /-- On a finite biproduct of simples, the natural-root trace is the sum of
 simple dimensions weighted by the scalar diagonal blocks. -/
-theorem rootTrace_biproduct_simple (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTrace_biproduct_simple
     {ι : Type*} [Fintype ι] (F : ι → C.Obj) [HasBiproduct F]
     (hs : ∀ i, Simple (F i)) (f : (⨁ F) ⟶ (⨁ F)) :
     ∃ c : ι → ℂ,
@@ -162,6 +163,7 @@ open scoped BigOperators Matrix
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- The dimension of a simple object with respect to the natural double-dual
 square root. -/
 def rootDimension (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) : ℂ :=
@@ -169,7 +171,7 @@ def rootDimension (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank
 
 set_option backward.isDefEq.respectTransparency false in
 /-- All natural-root simple dimensions are nonzero. -/
-theorem rootDimension_ne_zero (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
+theorem rootDimension_ne_zero (i : Fin (Ground.rank C)) :
     rootDimension C i ≠ 0 := by
   letI : Simple (Ground.simples C i) := Ground.simples_simple C i
   have h := rightQuantumTrace_simple_ne_zero C (Ground.simples C i)
@@ -190,8 +192,7 @@ def enoTraceMatrix (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.ran
 /-- Once the categorical multiplicity defects are involutive and their trace
 matrix has the natural-root dimension vector as an eigenvector, ENO's FP
 bound follows. Both remaining identities are explicit hypotheses. -/
-theorem rootDimension_norm_le_fp_of_trace_matrix
-    (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C))
+theorem rootDimension_norm_le_fp_of_trace_matrix (i : Fin (Ground.rank C))
     (hinv : ∀ j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =

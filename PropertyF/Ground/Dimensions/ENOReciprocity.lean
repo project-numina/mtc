@@ -16,6 +16,7 @@ open scoped BigOperators Matrix ComplexOrder
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- Eigenvalues on a common eigenvector for a real matrix and its transpose
 are complex conjugates. -/
 theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
@@ -41,7 +42,7 @@ theorem conjugate_of_transpose_eigenvector {ι : Type*} [Fintype ι]
 
 /-- Every nonzero fusion character takes complex-conjugate values on dual
 simple objects, with no pivotal or spherical hypothesis. -/
-theorem fusion_character_dual_eq_conj (C : Ground.BraidedFusionCategory.{v,u})
+theorem fusion_character_dual_eq_conj
     (χ : Fin (Ground.rank C) → ℂ) (i₀ : Fin (Ground.rank C)) (hχ : χ i₀ ≠ 0)
     (hchar : ∀ i j, χ i * χ j = ∑ k, (Ground.fusionCoeff C i j k : ℂ) * χ k)
     (i : Fin (Ground.rank C)) : χ (Ground.dualIndex C i) = star (χ i) := by
@@ -69,7 +70,7 @@ theorem fusion_character_dual_eq_conj (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- Simple pivotal dimensions on duals are conjugate, for any pivotal
 structure on a genuine braided fusion category. -/
-theorem pivotalDimension_dual_eq_conj (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotalDimension_dual_eq_conj
     (p : PivotalStructure (C := C.Obj)) (i : Fin (Ground.rank C)) :
     pivotalDimension C p (Ground.simples C (Ground.dualIndex C i)) =
       star (pivotalDimension C p (Ground.simples C i)) := by
@@ -82,7 +83,7 @@ theorem pivotalDimension_dual_eq_conj (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- Galois conjugates of pivotal dimensions also interchange complex
 conjugation and duality. -/
-theorem galois_pivotalDimension_dual_eq_conj (C : Ground.BraidedFusionCategory.{v,u})
+theorem galois_pivotalDimension_dual_eq_conj
     (p : PivotalStructure (C := C.Obj)) (σ : ℂ ≃+* ℂ) (i : Fin (Ground.rank C)) :
     σ (pivotalDimension C p (Ground.simples C (Ground.dualIndex C i))) =
       star (σ (pivotalDimension C p (Ground.simples C i))) := by
@@ -103,10 +104,11 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The inverse dual of a natural fourth-dual square root is also a root at
 the dual object. -/
-theorem inverseDualRoot_square (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem inverseDualRoot_square (X : C.Obj) :
     (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom ≫
       (((((rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom)ᘁ)ᘁ)) =
       (fourthDualIso C (Xᘁ)).hom := by
@@ -126,7 +128,7 @@ theorem inverseDualRoot_square (C : Ground.BraidedFusionCategory.{v,u}) (X : C.O
 set_option backward.isDefEq.respectTransparency false in
 /-- On a simple object, the natural root on the dual differs from the inverse
 dual root by a sign. -/
-theorem rootDual_differs_by_sign (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
+theorem rootDual_differs_by_sign (X : C.Obj)
     [Simple X] : ∃ ε : ℂ, ε * ε = 1 ∧
       ((fourthDualRootNaturalIso C).app (Xᘁ)).hom =
         ε • (rightDualIsoMap ((fourthDualRootNaturalIso C).app X)).symm.hom := by
@@ -163,18 +165,20 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- The sign comparing the root on a simple's dual to the inverse dual root. -/
 noncomputable def rootDualSign (C : Ground.BraidedFusionCategory.{v,u})
     (i : Fin (Ground.rank C)) : ℂ := by
   letI : Simple (Ground.simples C i) := Ground.simples_simple C i
   exact Classical.choose (rootDual_differs_by_sign C (Ground.simples C i))
 
-theorem rootDualSign_sq (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
+theorem rootDualSign_sq (i : Fin (Ground.rank C)) :
     rootDualSign C i * rootDualSign C i = 1 := by
   letI : Simple (Ground.simples C i) := Ground.simples_simple C i
   exact (Classical.choose_spec (rootDual_differs_by_sign C (Ground.simples C i))).1
 
-theorem rootDualSign_component (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
+theorem rootDualSign_component (i : Fin (Ground.rank C)) :
     ((fourthDualRootNaturalIso C).app ((Ground.simples C i)ᘁ)).hom =
       rootDualSign C i • (rightDualIsoMap ((fourthDualRootNaturalIso C).app (Ground.simples C i))).symm.hom := by
   letI : Simple (Ground.simples C i) := Ground.simples_simple C i
@@ -183,7 +187,7 @@ theorem rootDualSign_component (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin
 set_option backward.isDefEq.respectTransparency false in
 /-- Intrinsic simple norms are signed products of the root dimensions of a
 simple and its dual, using the same sign as the dual-root component. -/
-theorem squaredNorm_eq_rootDualSign_mul (C : Ground.BraidedFusionCategory.{v,u})
+theorem squaredNorm_eq_rootDualSign_mul
     (i : Fin (Ground.rank C)) :
     Ground.squaredNorm C (Ground.simples C i) = rootDualSign C i * rootDimension C i *
       rootDimension C (Ground.dualIndex C i) := by
@@ -231,9 +235,10 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- A pivotal structure whose simple dimensions and intrinsic norms are the
 FP values is spherical. -/
-theorem spherical_of_fp_dimensions_and_squaredNorms (C : Ground.BraidedFusionCategory.{v,u})
+theorem spherical_of_fp_dimensions_and_squaredNorms
     (p : PivotalStructure (C := C.Obj))
     (hdim : ∀ i, pivotalDimension C p (Ground.simples C i) = (Ground.fpSimple C i : ℂ))
     (hnorm : ∀ i, Ground.squaredNorm C (Ground.simples C i) =
@@ -257,7 +262,6 @@ theorem spherical_of_fp_dimensions_and_squaredNorms (C : Ground.BraidedFusionCat
 /-- ENO's trace-matrix bound and the root-norm identity turn global
 pseudo-unitarity into pointwise FP saturation. -/
 theorem eno_root_norm_saturation_of_pseudoUnitary
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
@@ -290,6 +294,7 @@ open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- A phase-twisted natural root becomes pivotal when its scaled multiplicity
 operators are identities and the double-dual tensorator is natural. -/
 def rootPhasePivotal (C : Ground.BraidedFusionCategory.{v,u})
@@ -313,7 +318,7 @@ def rootPhasePivotal (C : Ground.BraidedFusionCategory.{v,u})
   unit := hunit
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootPhasePivotal_dimension (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootPhasePivotal_dimension
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
       (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
@@ -336,7 +341,6 @@ theorem rootPhasePivotal_dimension (C : Ground.BraidedFusionCategory.{v,u})
 /-- The ENO phase construction removes any need to assume the chosen natural
 root has real dimensions. The remaining categorical identities are explicit. -/
 theorem eno_pseudoUnitary_yields_positive_spherical_of_matrix_identities
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
@@ -416,10 +420,10 @@ open scoped BigOperators Matrix ComplexOrder
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- ENO's trace reciprocity identifies the dual root dimension with the
 signed complex conjugate of the original one. -/
 theorem rootDimension_dual_conjugate_of_trace_reciprocity
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
@@ -475,7 +479,6 @@ theorem rootDimension_dual_conjugate_of_trace_reciprocity
 
 /-- ENO's trace reciprocity proves the intrinsic root-norm identity. -/
 theorem squaredNorm_eq_rootDimension_norm_sq_of_trace_reciprocity
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1)
     (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =

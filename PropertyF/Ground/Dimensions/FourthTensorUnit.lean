@@ -7,9 +7,11 @@ public import PropertyF.Ground.Dimensions.DefectNaturality
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor map with a unit factor has the root's unit sign. -/
-theorem rootTensorIso_unit_left (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem rootTensorIso_unit_left (X : C.Obj) :
     (rootTensorIso C (𝟙_ C.Obj) X).hom =
       rootDimension C (Ground.unitIndex C) • ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj ⊗ X)).hom := by
   let I := 𝟙_ C.Obj
@@ -40,7 +42,7 @@ theorem rootTensorIso_unit_left (C : Ground.BraidedFusionCategory.{v,u}) (X : C.
       simpa only [doubleDualFunctor, Functor.id_obj, Linear.smul_comp] using hh
 
 /-- The ENO tensor defect with a left unit factor is its unit sign. -/
-theorem rootTensorDefect_unit_left (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem rootTensorDefect_unit_left (X : C.Obj) :
     (rootTensorDefect C (𝟙_ C.Obj) X).hom =
       rootDimension C (Ground.unitIndex C) • 𝟙 (𝟙_ C.Obj ⊗ X) := by
   let I := 𝟙_ C.Obj
@@ -61,7 +63,7 @@ theorem rootTensorDefect_unit_left (C : Ground.BraidedFusionCategory.{v,u}) (X :
   exact hleft.trans hright.symm
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor map with a unit factor has the root's unit sign. -/
-theorem rootTensorIso_unit_right (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem rootTensorIso_unit_right (X : C.Obj) :
     (rootTensorIso C X (𝟙_ C.Obj)).hom =
       rootDimension C (Ground.unitIndex C) • ((fourthDualRootNaturalIso C).app (X ⊗ 𝟙_ C.Obj)).hom := by
   let I := 𝟙_ C.Obj
@@ -92,7 +94,7 @@ theorem rootTensorIso_unit_right (C : Ground.BraidedFusionCategory.{v,u}) (X : C
       simpa only [doubleDualFunctor, Functor.id_obj, Linear.smul_comp] using hh
 
 /-- The ENO tensor defect with a right unit factor is its unit sign. -/
-theorem rootTensorDefect_unit_right (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem rootTensorDefect_unit_right (X : C.Obj) :
     (rootTensorDefect C X (𝟙_ C.Obj)).hom =
       rootDimension C (Ground.unitIndex C) • 𝟙 (X ⊗ 𝟙_ C.Obj) := by
   let I := 𝟙_ C.Obj
@@ -112,7 +114,7 @@ theorem rootTensorDefect_unit_right (C : Ground.BraidedFusionCategory.{v,u}) (X 
     exact hsmul
   exact hleft.trans hright.symm
 /-- The left-unit defect formula holds for the chosen simple representative. -/
-theorem rootTensorDefect_unitLabel_left (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem rootTensorDefect_unitLabel_left (X : C.Obj) :
     (rootTensorDefect C (Ground.simples C (Ground.unitIndex C)) X).hom =
       rootDimension C (Ground.unitIndex C) • 𝟙 (Ground.simples C (Ground.unitIndex C) ⊗ X) := by
   obtain ⟨e⟩ := Ground.unitIndex_iso C
@@ -125,7 +127,7 @@ theorem rootTensorDefect_unitLabel_left (C : Ground.BraidedFusionCategory.{v,u})
   simp only [Linear.comp_smul, Linear.smul_comp, Category.comp_id, Category.id_comp]
 
 /-- The right-unit defect formula holds for the chosen simple representative. -/
-theorem rootTensorDefect_unitLabel_right (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem rootTensorDefect_unitLabel_right (X : C.Obj) :
     (rootTensorDefect C X (Ground.simples C (Ground.unitIndex C))).hom =
       rootDimension C (Ground.unitIndex C) • 𝟙 (X ⊗ Ground.simples C (Ground.unitIndex C)) := by
   obtain ⟨e⟩ := Ground.unitIndex_iso C
@@ -140,7 +142,7 @@ theorem rootTensorDefect_unitLabel_right (C : Ground.BraidedFusionCategory.{v,u}
 set_option backward.isDefEq.respectTransparency false in
 /-- Squaring the root tensor map gives the tensor of the fourth-dual maps,
 with the canonical iterated double-dual tensor comparison. -/
-theorem rootTensor_square_eq_fourthDual_tensor (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTensor_square_eq_fourthDual_tensor
     (X Y : C.Obj) :
     (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
       ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫

@@ -5,11 +5,12 @@ public import PropertyF.Ground.Dimensions.DoubleDualMonoidal
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+  [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle dual pair in the tensor-product coevaluation recovers
 the coevaluation of the right dual. -/
-theorem tensorPairing_coevaluation_evaluation {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem tensorPairing_coevaluation_evaluation (X : C) :
     let W := (Xᘁ) ⊗ X
     let V := (Xᘁ) ⊗ ((Xᘁ)ᘁ)
     letI : ExactPairing W V := ExactPairing.tensor
@@ -37,8 +38,7 @@ theorem tensorPairing_coevaluation_evaluation {C : Type u} [Category.{v} C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Dualizing evaluation and transporting the dual of a tensor product gives
 the coevaluation of the dual object. -/
-theorem rightDualEvaluation_coevaluation {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem rightDualEvaluation_coevaluation (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (rightDualUnitIso (C := C)).inv ≫ ((ε_ X (Xᘁ))ᘁ) ≫
       (rightDualTensorIso (Xᘁ) X).hom = η_ (Xᘁ) ((Xᘁ)ᘁ) := by
@@ -80,10 +80,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+  [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the middle pair in a tensor-product evaluation leaves the outer evaluation. -/
-theorem tensorPairing_evaluation_coevaluation {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem tensorPairing_evaluation_coevaluation (X : C) :
     let W := X ⊗ (Xᘁ)
     let V := ((Xᘁ)ᘁ) ⊗ (Xᘁ)
     letI : ExactPairing W V := ExactPairing.tensor
@@ -109,8 +110,7 @@ theorem tensorPairing_evaluation_coevaluation {C : Type u} [Category.{v} C]
       monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- Dualizing coevaluation gives the evaluation of the right dual. -/
-theorem rightDualCoevaluation_evaluation {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem rightDualCoevaluation_evaluation (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (rightDualTensorIso X (Xᘁ)).inv ≫ ((η_ X (Xᘁ))ᘁ) ≫
       (rightDualUnitIso (C := C)).hom = ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
@@ -147,8 +147,7 @@ theorem rightDualCoevaluation_evaluation {C : Type u} [Category.{v} C]
     _ = _ := hc
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves evaluation. -/
-theorem doubleDual_evaluation {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem doubleDual_evaluation (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (doubleDualTensorIso (Xᘁ) X).hom ≫ (((ε_ X (Xᘁ))ᘁ)ᘁ) ≫
       (doubleDualUnitIso (C := C)).inv = ε_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by
@@ -172,8 +171,7 @@ theorem doubleDual_evaluation {C : Type u} [Category.{v} C]
   simpa only [Category.assoc] using hx.trans hc
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical strong monoidal double-dual functor preserves coevaluation. -/
-theorem doubleDual_coevaluation {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem doubleDual_coevaluation (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     (doubleDualUnitIso (C := C)).hom ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) ≫
       (doubleDualTensorIso X (Xᘁ)).inv = η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) := by

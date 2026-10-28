@@ -230,6 +230,8 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 
 namespace PropertyF.Ground
+
+variable (D : BraidedFusionCategory)
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Sum of all simple fusion matrices, over the real numbers. -/
@@ -238,7 +240,7 @@ def totalFusionMatrix (D : BraidedFusionCategory) :
   fun j k => ∑ i, (fusionCoeff D i k j : ℝ)
 
 /-- Duality and Frobenius reciprocity make the total fusion matrix symmetric. -/
-theorem totalFusionMatrix_symmetric (D : BraidedFusionCategory) (j k : Fin (rank D)) :
+theorem totalFusionMatrix_symmetric (j k : Fin (rank D)) :
     totalFusionMatrix D j k = totalFusionMatrix D k j := by
   classical
   unfold totalFusionMatrix
@@ -254,7 +256,7 @@ theorem totalFusionMatrix_symmetric (D : BraidedFusionCategory) (j k : Fin (rank
       exact h
 
 /-- The total fusion matrix is strictly positive in every entry. -/
-theorem totalFusionMatrix_pos (D : BraidedFusionCategory) (j k : Fin (rank D)) :
+theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
     0 < totalFusionMatrix D j k := by
   classical
   letI : Simple (simples D j) := simples_simple D j
@@ -310,12 +312,14 @@ open scoped BigOperators Matrix
 
 namespace PropertyF.Ground
 
+variable (D : BraidedFusionCategory)
+
 /-- The transpose convention: its rows encode the fusion equations. -/
 def characterMatrix (D : BraidedFusionCategory) (i : Fin (rank D)) :
     Matrix (Fin (rank D)) (Fin (rank D)) ℝ :=
   fun j k => fusionCoeff D i j k
 
-theorem characterMatrix_commute (D : BraidedFusionCategory) (i j : Fin (rank D)) :
+theorem characterMatrix_commute (i j : Fin (rank D)) :
     Commute (characterMatrix D i) (characterMatrix D j) := by
   classical
   apply Matrix.ext
@@ -331,14 +335,14 @@ theorem characterMatrix_commute (D : BraidedFusionCategory) (i j : Fin (rank D))
       _ = _ := (fusionCoeff_assoc D i j a b).symm
   exact_mod_cast hn
 
-theorem totalFusionMatrix_eq_sum_characterMatrix (D : BraidedFusionCategory) :
+theorem totalFusionMatrix_eq_sum_characterMatrix :
     totalFusionMatrix D = ∑ i, characterMatrix D i := by
   classical
   apply Matrix.ext
   intro j k
   simpa [totalFusionMatrix, characterMatrix, Matrix.sum_apply] using totalFusionMatrix_symmetric D j k
 
-theorem total_commutes_characterMatrix (D : BraidedFusionCategory) (i : Fin (rank D)) :
+theorem total_commutes_characterMatrix (i : Fin (rank D)) :
     Commute (totalFusionMatrix D) (characterMatrix D i) := by
   classical
   rw [totalFusionMatrix_eq_sum_characterMatrix]
@@ -351,7 +355,7 @@ theorem total_commutes_characterMatrix (D : BraidedFusionCategory) (i : Fin (ran
 
 /-- The total matrix has a strictly positive common eigenvector for all
 fusion matrices. -/
-theorem exists_positive_common_eigenvector (D : BraidedFusionCategory) :
+theorem exists_positive_common_eigenvector :
     ∃ (v : Fin (rank D) → ℝ), (∀ j, 0 < v j) ∧
       ∀ i, ∃ d : ℝ, characterMatrix D i *ᵥ v = d • v := by
   classical
@@ -373,7 +377,7 @@ theorem exists_positive_common_eigenvector (D : BraidedFusionCategory) :
   exact ⟨d, hd⟩
 
 /-- A positive normalized character exists for the actual fusion rules. -/
-theorem exists_positive_character (D : BraidedFusionCategory) :
+theorem exists_positive_character :
     ∃ f : Fin (rank D) → ℝ,
       (∀ i, 0 < f i) ∧ f (unitIndex D) = 1 ∧
       ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k := by
@@ -403,7 +407,7 @@ theorem exists_positive_character (D : BraidedFusionCategory) :
       _ = ∑ k, (fusionCoeff D i j k : ℝ) * f k := by
         simp [f, Finset.sum_div, mul_div_assoc]
 
-theorem character_total_eigenvector (D : BraidedFusionCategory)
+theorem character_total_eigenvector
     (f : Fin (rank D) → ℝ)
     (hf : ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k) :
     totalFusionMatrix D *ᵥ f = (∑ i, f i) • f := by
@@ -417,7 +421,7 @@ theorem character_total_eigenvector (D : BraidedFusionCategory)
   exact (hf i j).symm
 
 /-- The positive normalized fusion character is unique. -/
-theorem positive_character_unique (D : BraidedFusionCategory)
+theorem positive_character_unique
     (f g : Fin (rank D) → ℝ) (hfpos : ∀ i, 0 < f i) (hgpos : ∀ i, 0 < g i)
     (hfunit : f (unitIndex D) = 1) (hgunit : g (unitIndex D) = 1)
     (hf : ∀ i j, f i * f j = ∑ k, (fusionCoeff D i j k : ℝ) * f k)
@@ -453,13 +457,13 @@ theorem positive_character_unique (D : BraidedFusionCategory)
 def fpCharacter (D : BraidedFusionCategory) : Fin (rank D) → ℝ :=
   Classical.choose (exists_positive_character D)
 
-theorem fpCharacter_pos (D : BraidedFusionCategory) (i : Fin (rank D)) :
+theorem fpCharacter_pos (i : Fin (rank D)) :
     0 < fpCharacter D i := (Classical.choose_spec (exists_positive_character D)).1 i
 
-theorem fpCharacter_unit (D : BraidedFusionCategory) : fpCharacter D (unitIndex D) = 1 :=
+theorem fpCharacter_unit : fpCharacter D (unitIndex D) = 1 :=
   (Classical.choose_spec (exists_positive_character D)).2.1
 
-theorem fpCharacter_mul (D : BraidedFusionCategory) (i j : Fin (rank D)) :
+theorem fpCharacter_mul (i j : Fin (rank D)) :
     fpCharacter D i * fpCharacter D j =
       ∑ k, (fusionCoeff D i j k : ℝ) * fpCharacter D k :=
   (Classical.choose_spec (exists_positive_character D)).2.2 i j
@@ -537,7 +541,9 @@ open scoped BigOperators Matrix Matrix.Norms.Operator
 
 namespace PropertyF.Ground
 
-theorem fpCharacter_le_fpSimple (D : BraidedFusionCategory) (i : Fin (rank D)) :
+variable (D : BraidedFusionCategory)
+
+theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
     fpCharacter D i ≤ fpSimple D i := by
   let χ : Fin (rank D) → ℂ := fun j => fpCharacter D j
   have hχ : χ (unitIndex D) ≠ 0 := by simp [χ, fpCharacter_unit]
@@ -548,7 +554,7 @@ theorem fpCharacter_le_fpSimple (D : BraidedFusionCategory) (i : Fin (rank D)) :
   have h := Dimensions.character_norm_le_fpSimple D χ (unitIndex D) hχ hchar i
   simpa [χ, Complex.norm_real, abs_of_pos (fpCharacter_pos D i)] using h
 
-theorem fpSimple_le_fpCharacter (D : BraidedFusionCategory) (i : Fin (rank D)) :
+theorem fpSimple_le_fpCharacter (i : Fin (rank D)) :
     fpSimple D i ≤ fpCharacter D i := by
   classical
   letI : Nonempty (Fin (rank D)) := ⟨unitIndex D⟩
@@ -578,20 +584,20 @@ theorem fpSimple_le_fpCharacter (D : BraidedFusionCategory) (i : Fin (rank D)) :
   exact hbound
 
 /-- The target spectral-radius FP dimension is the unique positive character. -/
-theorem fpSimple_eq_fpCharacter (D : BraidedFusionCategory) (i : Fin (rank D)) :
+theorem fpSimple_eq_fpCharacter (i : Fin (rank D)) :
     fpSimple D i = fpCharacter D i :=
   le_antisymm (fpSimple_le_fpCharacter D i) (fpCharacter_le_fpSimple D i)
 
-theorem fpSimple_pos (D : BraidedFusionCategory) (i : Fin (rank D)) :
+theorem fpSimple_pos (i : Fin (rank D)) :
     0 < fpSimple D i := by rw [fpSimple_eq_fpCharacter]; exact fpCharacter_pos D i
 
-theorem fpSimple_mul (D : BraidedFusionCategory) (i j : Fin (rank D)) :
+theorem fpSimple_mul (i j : Fin (rank D)) :
     fpSimple D i * fpSimple D j =
-      ∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k := by
-  simp only [fpSimple_eq_fpCharacter, fpCharacter_mul]
+      ∑ k, (fusionCoeff D i j k : ℝ) * fpSimple D k :=
+  by simp only [fpSimple_eq_fpCharacter, fpCharacter_mul]
 
 /-- The fusion matrix of a dual is the transpose of the original one. -/
-theorem fusionMatrix_dual (D : BraidedFusionCategory) (i : Fin (rank D)) :
+theorem fusionMatrix_dual (i : Fin (rank D)) :
     fusionMatrix D (dualIndex D i) = (fusionMatrix D i)ᵀ := by
   ext j k
   change (fusionCoeff D (dualIndex D i) k j : ℂ) = (fusionCoeff D i j k : ℂ)
@@ -599,18 +605,18 @@ theorem fusionMatrix_dual (D : BraidedFusionCategory) (i : Fin (rank D)) :
     dualIndex_involutive, fusionCoeff_comm D j i]
 
 /-- Dual simple objects have the same FP dimension. -/
-theorem fpSimple_dual (D : BraidedFusionCategory) (i : Fin (rank D)) :
-    fpSimple D (dualIndex D i) = fpSimple D i := by
-  simp [fpSimple, fusionMatrix_dual, Matrix.spectralRadius_transpose]
+theorem fpSimple_dual (i : Fin (rank D)) :
+    fpSimple D (dualIndex D i) = fpSimple D i :=
+  by simp [fpSimple, fusionMatrix_dual, Matrix.spectralRadius_transpose]
 
-theorem fusionCoeff_dual_unit (D : BraidedFusionCategory) (i : Fin (rank D)) :
+theorem fusionCoeff_dual_unit (i : Fin (rank D)) :
     fusionCoeff D i (dualIndex D i) (unitIndex D) = 1 := by
   rw [fusionCoeff_comm D i (dualIndex D i), fusionCoeff_reciprocity_labels,
     fusionCoeff_unit]
   simp
 
 /-- Every simple has FP dimension at least one. -/
-theorem one_le_fpSimple (D : BraidedFusionCategory) (i : Fin (rank D)) :
+theorem one_le_fpSimple (i : Fin (rank D)) :
     1 ≤ fpSimple D i := by
   classical
   have hsum : 1 ≤ ∑ k, (fusionCoeff D i (dualIndex D i) k : ℝ) * fpSimple D k := by

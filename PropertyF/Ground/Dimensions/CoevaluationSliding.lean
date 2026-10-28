@@ -5,19 +5,20 @@ public import PropertyF.Ground.Dimensions.DefectNaturality
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Linear ℂ D]
   [MonoidalPreadditive D] [MonoidalLinear ℂ D]
 
 theorem tensorLeftHomLinearEquiv_postcomp (X Y Y' Z W : D) [ExactPairing Y Y']
     (f : Y' ⊗ X ⟶ Z) (g : Z ⟶ W) :
     Ground.tensorLeftHomLinearEquiv X Y Y' W (f ≫ g) =
-      Ground.tensorLeftHomLinearEquiv X Y Y' Z f ≫ Y ◁ g := by
-  simp [Ground.tensorLeftHomLinearEquiv, tensorLeftHomEquiv, whiskerLeft_comp, Category.assoc]
+      Ground.tensorLeftHomLinearEquiv X Y Y' Z f ≫ Y ◁ g :=
+  by simp [Ground.tensorLeftHomLinearEquiv, tensorLeftHomEquiv, whiskerLeft_comp, Category.assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The Frobenius defect equation reduces to its value on the identity map. -/
 theorem enoTraceMatrix_reciprocity_of_coevaluation_defect
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hunit : ∀ i k,
       let X := Ground.simples C i
       let K := Ground.simples C k
@@ -49,11 +50,12 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The ENO reciprocity identity only needs the defect to slide through the
 coevaluation of the swapped dual pairing. -/
 theorem enoTraceMatrix_reciprocity_of_coevaluation_sliding
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hslide : ∀ i k,
       let X := Ground.simples C i
       let K := Ground.simples C k

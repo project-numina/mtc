@@ -85,8 +85,8 @@ def fusionFlow (D : BraidedFusionCategory.{v,u}) (i j k : Fin (rank D)) : ℝ :=
   fpSimple D j * (fusionCoeff D i j k : ℝ) * fpSimple D k
 
 theorem fusionFlow_nonneg (D : BraidedFusionCategory.{v,u}) (i j k : Fin (rank D)) :
-    0 ≤ fusionFlow D i j k := by
-  exact mul_nonneg (mul_nonneg (fpSimple_pos D j).le (Nat.cast_nonneg _)) (fpSimple_pos D k).le
+    0 ≤ fusionFlow D i j k :=
+  mul_nonneg (mul_nonneg (fpSimple_pos D j).le (Nat.cast_nonneg _)) (fpSimple_pos D k).le
 
 theorem fusionFlow_balance (D : BraidedFusionCategory.{v,u}) (i j : Fin (rank D)) :
     (∑ k, fusionFlow D i j k) = ∑ k, fusionFlow D i k j := by

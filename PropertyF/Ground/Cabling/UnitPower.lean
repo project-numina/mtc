@@ -7,14 +7,6 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Cabling
 universe v u
 
-/-- The right dual of a simple object is simple. -/
-theorem simple_rightDual (D : Ground.BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X] :
-    Simple (Xᘁ) := by
-  let _ : Simple (ᘁX) := Ground.simple_leftDual D X
-  let _ : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-  exact Simple.of_iso (leftDualIso (inferInstance : ExactPairing (Xᘁ) X)
-    (inferInstance : ExactPairing (ᘁX) X))
-
 set_option backward.isDefEq.respectTransparency false in
 /-- A positive tensor power containing the unit makes the simple generator's
 right dual a retract of a lower tensor power. -/
@@ -22,7 +14,7 @@ theorem generatedBy_rightDual_of_unit_power (D : Ground.BraidedFusionCategory.{v
     (X : D.Obj) [Simple X] (n : ℕ) (r : Retract (𝟙_ D.Obj) (tensorPower X (n + 1))) :
     GeneratedBy X (Xᘁ) := by
   let _ : Simple (𝟙_ D.Obj) := Ground.IsFusionCategory.unit_simple
-  let _ : Simple (Xᘁ) := simple_rightDual D X
+  let _ : Simple (Xᘁ) := Ground.simple_rightDual D X
   have hi : r.i ≠ 0 := by
     intro h
     have hr := r.retract

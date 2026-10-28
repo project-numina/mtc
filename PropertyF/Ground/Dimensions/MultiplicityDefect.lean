@@ -11,6 +11,8 @@ public import Mathlib.CategoryTheory.Iso
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Scalar comparing the chosen simple fourth-dual square root to the
@@ -21,7 +23,7 @@ def fourthDualRootScalar (C : Ground.BraidedFusionCategory.{v,u})
   exact Classical.choose (isomorphisms_differ_by_scalar C
     (Ground.doubleDualIso C (Ground.simples C i)) (fourthDualSimpleRoot C i))
 
-theorem fourthDualRootScalar_spec (C : Ground.BraidedFusionCategory.{v,u})
+theorem fourthDualRootScalar_spec
     (i : Fin (Ground.rank C)) : fourthDualRootScalar C i ≠ 0 ∧
     (fourthDualSimpleRoot C i).hom = fourthDualRootScalar C i •
       (Ground.doubleDualIso C (Ground.simples C i)).hom := by
@@ -37,7 +39,7 @@ def fourthDualRootNaturalIso (C : Ground.BraidedFusionCategory.{v,u}) :
     drinfeldNaturalIso C
 
 /-- The natural extension has exactly the chosen simple components. -/
-theorem fourthDualRootNaturalIso_app_simple (C : Ground.BraidedFusionCategory.{v,u})
+theorem fourthDualRootNaturalIso_app_simple
     (i : Fin (Ground.rank C)) :
     (fourthDualRootNaturalIso C).app (Ground.simples C i) = fourthDualSimpleRoot C i := by
   apply Iso.ext
@@ -49,7 +51,7 @@ theorem fourthDualRootNaturalIso_app_simple (C : Ground.BraidedFusionCategory.{v
 
 /-- Natural transformations from the identity are determined by their
 components on the simple representatives. -/
-theorem natTrans_eq_of_simple_components (C : Ground.BraidedFusionCategory.{v,u})
+theorem natTrans_eq_of_simple_components
     (F : C.Obj ⥤ C.Obj) (α β : 𝟭 C.Obj ⟶ F)
     (h : ∀ i, α.app (Ground.simples C i) = β.app (Ground.simples C i)) : α = β := by
   apply NatTrans.ext
@@ -78,7 +80,7 @@ def fourthDualRootNaturalSquare (C : Ground.BraidedFusionCategory.{v,u}) :
 
 /-- The natural double-dual root squares to the natural braided fourth-dual
 isomorphism on every object. Monoidal compatibility remains a separate issue. -/
-theorem fourthDualRootNaturalSquare_eq (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem fourthDualRootNaturalSquare_eq :
     fourthDualRootNaturalSquare C = fourthDualNaturalIso C := by
   apply Iso.ext
   apply natTrans_eq_of_simple_components C
@@ -264,6 +266,8 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Tensoring the components of the natural square root gives another
@@ -288,18 +292,17 @@ def multiplicityDefect (C : Ground.BraidedFusionCategory.{v,u})
   Linear.homCongr ℂ (Iso.refl _) (rootTensorDefect C (Ground.simples C i) (Ground.simples C j))
 
 /-- The multiplicity operator is composition with the tensor defect. -/
-theorem multiplicityDefect_apply (C : Ground.BraidedFusionCategory.{v,u})
+theorem multiplicityDefect_apply
     (i j k : Fin (Ground.rank C))
     (f : Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :
     multiplicityDefect C i j k f =
-      f ≫ (rootTensorDefect C (Ground.simples C i) (Ground.simples C j)).hom := by
-  simp [multiplicityDefect, Linear.homCongr_apply]
+      f ≫ (rootTensorDefect C (Ground.simples C i) (Ground.simples C j)).hom :=
+  by simp [multiplicityDefect, Linear.homCongr_apply]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- If the categorical multiplicity defect is involutive, its trace is an
 integer bounded by the actual fusion coefficient. -/
-theorem multiplicityDefect_trace_integer_bound
-    (C : Ground.BraidedFusionCategory.{v,u}) (i j k : Fin (Ground.rank C))
+theorem multiplicityDefect_trace_integer_bound (i j k : Fin (Ground.rank C))
     (hinv : (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ∃ n : ℤ, LinearMap.trace ℂ _ (multiplicityDefect C i j k).toLinearMap = (n : ℂ) ∧
@@ -311,8 +314,7 @@ theorem multiplicityDefect_trace_integer_bound
 
 /-- If the tensor of the simple root components has the expected fourth-dual
 square, the resulting tensor defect is an involution. -/
-theorem rootTensorDefect_involution_of_tensor_square
-    (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj)
+theorem rootTensorDefect_involution_of_tensor_square (X Y : C.Obj)
     (hsq : (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
       (fourthDualIso C (X ⊗ Y)).hom) :
     (rootTensorDefect C X Y).hom ≫ (rootTensorDefect C X Y).hom = 𝟙 (X ⊗ Y) := by
@@ -326,8 +328,7 @@ theorem rootTensorDefect_involution_of_tensor_square
 
 /-- The tensor-square comparison implies involutivity of every corresponding
 actual multiplicity-space operator. -/
-theorem multiplicityDefect_involution_of_tensor_square
-    (C : Ground.BraidedFusionCategory.{v,u}) (i j k : Fin (Ground.rank C))
+theorem multiplicityDefect_involution_of_tensor_square (i j k : Fin (Ground.rank C))
     (hsq : (rootTensorIso C (Ground.simples C i) (Ground.simples C j)).hom ≫
       (((rootTensorIso C (Ground.simples C i) (Ground.simples C j)).homᘁ)ᘁ) =
         (fourthDualIso C (Ground.simples C i ⊗ Ground.simples C j)).hom) :
@@ -341,8 +342,7 @@ theorem multiplicityDefect_involution_of_tensor_square
 set_option backward.isDefEq.respectTransparency false in
 /-- The tensor-square identity follows from naturality of the double-dual
 tensor comparison and the corresponding tensor law for the fourth dual. -/
-theorem rootTensor_square_of_fourthDual_tensor
-    (C : Ground.BraidedFusionCategory.{v,u}) (X Y : C.Obj)
+theorem rootTensor_square_of_fourthDual_tensor (X Y : C.Obj)
     (hnat : (doubleDualTensorIso X Y).hom ≫
         (((((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
           ((fourthDualRootNaturalIso C).app Y).hom)ᘁ)ᘁ) =

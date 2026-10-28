@@ -6,11 +6,13 @@ public import PropertyF.Ground.Fusion.Agreement
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Every positive pivotal dimension character is the Frobenius–Perron
 character. This does not require pseudo-unitarity or sphericality. -/
-theorem positive_pivotalDimension_eq_fpSimple (C : Ground.BraidedFusionCategory.{v,u})
+theorem positive_pivotalDimension_eq_fpSimple
     (p : PivotalStructure (C := C.Obj)) (d : Fin (Ground.rank C) → ℝ)
     (hreal : ∀ i, pivotalDimension C p (Ground.simples C i) = (d i : ℂ))
     (hpos : ∀ i, 0 < d i) : ∀ i, d i = Ground.fpSimple C i := by

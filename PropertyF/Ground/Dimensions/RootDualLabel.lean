@@ -8,10 +8,10 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- It suffices to prove the fourth-dual tensor law on simple pairs; the
 construction uses no assumption about that law on arbitrary objects. -/
 theorem eno_pseudoUnitary_yields_positive_spherical_of_simple_fourth_and_reciprocity
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hfourth : ∀ i j : Fin (Ground.rank C),
       (fourthDualIso C (Ground.simples C i ⊗ Ground.simples C j)).hom =
       ((fourthDualIso C (Ground.simples C i)).hom ⊗ₘ (fourthDualIso C (Ground.simples C j)).hom) ≫
@@ -52,6 +52,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- Braiding identifies the right dual with the chosen left-dual representative. -/
 def rightDualLabelIso (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
     (Ground.simples C i)ᘁ ≅ Ground.simples C (Ground.dualIndex C i) :=
@@ -76,7 +77,6 @@ def enoReciprocityEquiv (C : Ground.BraidedFusionCategory.{v,u})
 /-- The categorical operator intertwining under the actual reciprocity
 isomorphism implies ENO's trace-transpose relation. -/
 theorem enoTraceMatrix_reciprocity_of_operator_intertwining
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hintertwine : ∀ i j k
       (v : Module.Dual ℂ (Ground.simples C j ⟶ Ground.simples C i ⊗ Ground.simples C k)),
       enoReciprocityEquiv C i k j
@@ -116,6 +116,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- Actual Frobenius reciprocity using the chosen dual-label identification. -/
 def enoFrobeniusEquiv (C : Ground.BraidedFusionCategory.{v,u})
     (i j k : Fin (Ground.rank C)) :
@@ -130,17 +131,15 @@ def enoFrobeniusEquiv (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- The ENO reciprocity equivalence is the composition pairing followed by
 the actual Frobenius reciprocity map. -/
-theorem enoReciprocityEquiv_pairing (C : Ground.BraidedFusionCategory.{v,u})
+theorem enoReciprocityEquiv_pairing
     (i j k : Fin (Ground.rank C))
     (g : Ground.simples C i ⊗ Ground.simples C j ⟶ Ground.simples C k) :
     enoReciprocityEquiv C i j k (simpleHomPairingEquiv C k (Ground.simples C i ⊗ Ground.simples C j) g) =
-      enoFrobeniusEquiv C i j k g := by
-  simp [enoReciprocityEquiv, enoFrobeniusEquiv]
+      enoFrobeniusEquiv C i j k g := by simp [enoReciprocityEquiv, enoFrobeniusEquiv]
 
 /-- It is enough to prove the defect compatibility on ordinary categorical
 morphisms before applying the perfect-pairing duality. -/
 theorem enoTraceMatrix_reciprocity_of_frobenius_defect
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hcompat : ∀ i j k (g : Ground.simples C i ⊗ Ground.simples C k ⟶ Ground.simples C j),
       enoFrobeniusEquiv C i k j ((rootTensorDefect C (Ground.simples C i) (Ground.simples C k)).hom ≫ g) =
       rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
@@ -175,9 +174,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The ENO signs agree on the chosen dual label. -/
-theorem rootDualSign_dual (C : Ground.BraidedFusionCategory.{v,u}) (i : Fin (Ground.rank C)) :
+theorem rootDualSign_dual (i : Fin (Ground.rank C)) :
     rootDualSign C (Ground.dualIndex C i) = rootDualSign C i := by
   let X := Ground.simples C i
   let Y := Ground.simples C (Ground.dualIndex C i)

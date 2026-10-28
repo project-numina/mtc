@@ -138,15 +138,8 @@ theorem rightDualTensorIso_associativity {C : Type u} [Category.{v} C]
     rw [ha, ← whisker_exchange_assoc, hT, ← whisker_exchange_assoc, heD,
       ← whisker_exchange_assoc, rightAdjointMate_comp_evaluation]
     rw [← Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]
-  have he := hl.trans hr.symm
-  let : HasRightDual A := { rightDual := B, exact := ExactPairing.tensor }
-  have hh := congrArg (tensorRightHomEquiv K A B (𝟙_ C)) he
-  have hL := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ A K this l
-  have hR := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ A K this r
-  change (tensorRightHomEquiv K A B (𝟙_ C)) (l ▷ A ≫ ε_ A B) = l ≫ (λ_ B).inv at hL
-  change (tensorRightHomEquiv K A B (𝟙_ C)) (r ▷ A ≫ ε_ A B) = r ≫ (λ_ B).inv at hR
-  rw [hL, hR] at hh
-  exact (cancel_mono (λ_ B).inv).1 hh
+  exact evaluation_ext (hl.trans hr.symm)
+
 end PropertyF.Ground.Dimensions
 
 end
@@ -169,22 +162,14 @@ theorem doubleDualTensorIso_associativity {C : Type u} [Category.{v} C]
       (rightDualTensorIso (Zᘁ) ((X ⊗ Y)ᘁ)).inv =
     (rightDualTensorIso (Zᘁ) ((Yᘁ) ⊗ (Xᘁ))).inv ≫
       (((Zᘁ) ◁ (rightDualTensorIso X Y).hom)ᘁ) := by
-    have h := rightDualTensorIso_natural (𝟙 (Zᘁ)) (rightDualTensorIso X Y).hom
-    simp only [rightAdjointMate_id, id_tensorHom, tensorHom_id] at h
-    apply (cancel_mono (rightDualTensorIso (Zᘁ) ((X ⊗ Y)ᘁ)).hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [h]
-    simp [← Category.assoc]
+    simpa only [rightAdjointMate_id, id_tensorHom, tensorHom_id] using
+      rightDualTensorIso_inv_natural (𝟙 (Zᘁ)) (rightDualTensorIso X Y).hom
   have hmove2 : (rightDualTensorIso ((Zᘁ) ⊗ (Yᘁ)) (Xᘁ)).inv ≫
       (((rightDualTensorIso Y Z).hom ▷ (Xᘁ))ᘁ) =
     ((Xᘁ)ᘁ) ◁ ((rightDualTensorIso Y Z).homᘁ) ≫
       (rightDualTensorIso ((Y ⊗ Z)ᘁ) (Xᘁ)).inv := by
-    have h := rightDualTensorIso_natural (rightDualTensorIso Y Z).hom (𝟙 (Xᘁ))
-    simp only [rightAdjointMate_id, id_tensorHom, tensorHom_id] at h
-    apply (cancel_mono (rightDualTensorIso ((Y ⊗ Z)ᘁ) (Xᘁ)).hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [h]
-    simp [← Category.assoc]
+    simpa only [rightAdjointMate_id, id_tensorHom, tensorHom_id] using
+      (rightDualTensorIso_inv_natural (rightDualTensorIso Y Z).hom (𝟙 (Xᘁ))).symm
   have hdual := congrArg (fun f => rightAdjointMate f) (rightDualTensorIso_associativity X Y Z)
   simp only [comp_rightAdjointMate] at hdual
   let A := (rightDualTensorIso (Yᘁ) (Xᘁ)).symm ▷ᵢ ((Zᘁ)ᘁ)
@@ -229,6 +214,7 @@ theorem doubleDualTensorIso_associativity {C : Type u} [Category.{v} C]
   simp only [Category.comp_id]
   slice_lhs 3 4 => rw [hmove2]
   simp only [Category.assoc]
+
 end PropertyF.Ground.Dimensions
 
 end

@@ -64,6 +64,7 @@ namespace PropertyF.Ground.Dimensions
 
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 /-- The target's scalar extraction is an algebra equivalence, as a
 consequence of the fusion-category axioms. -/
 def groundUnitScalarEquiv (C : Ground.BraidedFusionCategory.{v,u}) :
@@ -71,7 +72,7 @@ def groundUnitScalarEquiv (C : Ground.BraidedFusionCategory.{v,u}) :
   (AlgEquiv.ofBijective (Algebra.ofId ℂ (End (𝟙_ C.Obj)))
     (Ground.unit_algebraMap_bijective C)).symm
 
-theorem groundUnitScalarEquiv_apply (C : Ground.BraidedFusionCategory.{v,u})
+theorem groundUnitScalarEquiv_apply
     (a : End (𝟙_ C.Obj)) : groundUnitScalarEquiv C a = Ground.unitScalar C a := by
   apply (Ground.unit_algebraMap_bijective C).1
   rw [Ground.algebraMap_unitScalar]
@@ -80,7 +81,7 @@ theorem groundUnitScalarEquiv_apply (C : Ground.BraidedFusionCategory.{v,u})
 /-- For every simple object of a genuine braided fusion category, the
 intrinsic squared norm in the target is independent of the chosen double-dual
 isomorphism. -/
-theorem target_squaredNorm_choice_independent (C : Ground.BraidedFusionCategory.{v,u})
+theorem target_squaredNorm_choice_independent
     (X : C.Obj) [Simple X] (j : X ≅ ((Xᘁ)ᘁ)) :
     Ground.squaredNorm C X =
       Ground.unitScalar C (rightQuantumTrace j) * Ground.unitScalar C (leftQuantumTrace j) := by
@@ -91,7 +92,7 @@ theorem target_squaredNorm_choice_independent (C : Ground.BraidedFusionCategory.
 
 /-- With any spherical structure the target norm of a simple object is its
 categorical dimension squared. -/
-theorem target_squaredNorm_eq_dimension_sq (C : Ground.BraidedFusionCategory.{v,u})
+theorem target_squaredNorm_eq_dimension_sq
     (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
     (X : C.Obj) [Simple X] :
     Ground.squaredNorm C X =
@@ -101,7 +102,7 @@ theorem target_squaredNorm_eq_dimension_sq (C : Ground.BraidedFusionCategory.{v,
 
 /-- The target's intrinsic global dimension is the sum of squared spherical
 simple dimensions, for any spherical structure. -/
-theorem target_globalDimension_eq_sum_squares (C : Ground.BraidedFusionCategory.{v,u})
+theorem target_globalDimension_eq_sum_squares
     (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical) :
     Ground.globalDimension C = ∑ i : Fin (Ground.rank C),
       (Ground.unitScalar C (rightQuantumTrace (p.iso (Ground.simples C i)))) ^ 2 := by
@@ -113,7 +114,7 @@ theorem target_globalDimension_eq_sum_squares (C : Ground.BraidedFusionCategory.
 
 /-- Intrinsic squared norms are invariant under simple-object isomorphism,
 without assuming a pivotal or spherical structure. -/
-theorem target_squaredNorm_iso (C : Ground.BraidedFusionCategory.{v,u})
+theorem target_squaredNorm_iso
     {X Y : C.Obj} [Simple X] [Simple Y] (e : X ≅ Y) :
     Ground.squaredNorm C X = Ground.squaredNorm C Y := by
   let j := Ground.doubleDualIso C X

@@ -5,9 +5,11 @@ public import PropertyF.Ground.Dimensions.CoevaluationSliding
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The braided double-dual map has the canonical component on the unit. -/
-theorem drinfeld_unit (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem drinfeld_unit :
     (Ground.doubleDualIso C (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
   let U : C.Obj := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U
@@ -28,13 +30,7 @@ theorem drinfeld_unit (C : Ground.BraidedFusionCategory.{v,u}) :
     rw [← whisker_exchange_assoc, ← Category.assoc, hc]
   change (doubleDualUnitIso (C := C.Obj)).hom ▷ (Uᘁ) ≫ ε_ (Uᘁ) ((Uᘁ)ᘁ) = _ at h
   have he := (drinfeld_eval C U).trans h.symm
-  have ht := congrArg (tensorRightHomEquiv U (Uᘁ) ((Uᘁ)ᘁ) U) he
-  have hh := @tensorRightHomEquiv_whiskerRight_comp_evaluation C.Obj _ _ (Uᘁ) U this
-    (Ground.doubleDualIso C U).hom
-  have hh' := @tensorRightHomEquiv_whiskerRight_comp_evaluation C.Obj _ _ (Uᘁ) U this
-    (doubleDualUnitIso (C := C.Obj)).hom
-  rw [hh, hh'] at ht
-  exact (cancel_mono (λ_ ((Uᘁ)ᘁ)).inv).1 ht
+  exact evaluation_ext he
 end PropertyF.Ground.Dimensions
 
 end
@@ -43,9 +39,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The Drinfeld map respects duality on the tensor unit. -/
-theorem drinfeld_unit_dual (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem drinfeld_unit_dual :
     Ground.doubleDualIso C (rightDualObject (𝟙_ C.Obj)) =
       (rightDualIsoMap (Ground.doubleDualIso C (𝟙_ C.Obj))).symm := by
   let U : C.Obj := 𝟙_ C.Obj
@@ -77,7 +75,7 @@ theorem drinfeld_unit_dual (C : Ground.BraidedFusionCategory.{v,u}) :
   rw [hui, comp_rightAdjointMate, Category.assoc, ← comp_rightAdjointMate,
     hcancel, rightAdjointMate_id, Category.comp_id]
 /-- The fourth-dual map has the canonical iterated unit component. -/
-theorem fourthDualIso_unit (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem fourthDualIso_unit :
     letI : HasRightDual (𝟙_ C.Obj) := RightRigidCategory.rightDual (𝟙_ C.Obj)
     letI : HasRightDual ((𝟙_ C.Obj)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C.Obj)ᘁ)
     letI : HasRightDual (((𝟙_ C.Obj)ᘁ)ᘁ) := RightRigidCategory.rightDual (((𝟙_ C.Obj)ᘁ)ᘁ)
@@ -99,7 +97,7 @@ theorem fourthDualIso_unit (C : Ground.BraidedFusionCategory.{v,u}) :
   rfl
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root dimension of the unit is a sign. -/
-theorem rootDimension_unit_sq (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem rootDimension_unit_sq :
     rootDimension C (Ground.unitIndex C) * rootDimension C (Ground.unitIndex C) = 1 := by
   let U := 𝟙_ C.Obj
   let : HasRightDual U := RightRigidCategory.rightDual U

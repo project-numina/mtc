@@ -122,10 +122,11 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
 
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing the inverse tensor defect with the natural root gives the product
 of the two simple root dimensions. -/
-theorem rootTrace_inverseDefect (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTrace_inverseDefect
     (i j : Fin (Ground.rank C)) :
     Ground.unitScalar C (rootTrace C (rootTensorDefect C (Ground.simples C i) (Ground.simples C j)).inv) =
       rootDimension C i * rootDimension C j := by
@@ -169,6 +170,8 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 def simpleInclusion (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
@@ -177,7 +180,7 @@ def simpleInclusion (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
   biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫ (simpleDecomposition C X).inv
 
 set_option backward.isDefEq.respectTransparency false in
-theorem simpleInclusion_independent (C : Ground.BraidedFusionCategory.{v,u})
+theorem simpleInclusion_independent
     (X : C.Obj) (k : Fin (Ground.rank C)) :
     LinearIndependent ℂ (simpleInclusion C X k) := by
   classical
@@ -211,7 +214,7 @@ def simpleInclusionBasis (C : Ground.BraidedFusionCategory.{v,u})
     (simpleInclusion_independent C X k) (Fintype.card_fin _)
 
 @[simp]
-theorem simpleInclusionBasis_apply (C : Ground.BraidedFusionCategory.{v,u})
+theorem simpleInclusionBasis_apply
     (X : C.Obj) (k : Fin (Ground.rank C))
     (t : Fin (Module.finrank ℂ (Ground.simples C k ⟶ X))) :
     simpleInclusionBasis C X k t = simpleInclusion C X k t := by
@@ -221,7 +224,7 @@ theorem simpleInclusionBasis_apply (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Coordinates in the simple-inclusion basis are the scalar diagonal
 projections of the morphism. -/
-theorem simpleInclusionBasis_projection (C : Ground.BraidedFusionCategory.{v,u})
+theorem simpleInclusionBasis_projection
     (X : C.Obj) (k : Fin (Ground.rank C)) (g : Ground.simples C k ⟶ X)
     (t : Fin (Module.finrank ℂ (Ground.simples C k ⟶ X))) :
     ((simpleInclusionBasis C X k).repr g t) • 𝟙 (Ground.simples C k) =
@@ -247,7 +250,7 @@ theorem simpleInclusionBasis_projection (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Ordinary trace on a simple Hom space is the sum of scalar diagonal
 blocks in the chosen object decomposition. -/
-theorem simpleHom_postcomp_trace (C : Ground.BraidedFusionCategory.{v,u})
+theorem simpleHom_postcomp_trace
     (X : C.Obj) (k : Fin (Ground.rank C)) (g : X ⟶ X)
     (c : Fin (Module.finrank ℂ (Ground.simples C k ⟶ X)) → ℂ)
     (hc : ∀ t, biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫
@@ -270,7 +273,7 @@ theorem simpleHom_postcomp_trace (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root categorical trace equals the dimension-weighted sum of
 ordinary traces on the simple Hom spaces. -/
-theorem rootTrace_eq_simpleHom_trace_sum (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTrace_eq_simpleHom_trace_sum
     (X : C.Obj) (g : X ⟶ X) :
     Ground.unitScalar C (rootTrace C g) =
       ∑ k, LinearMap.trace ℂ _ (Linear.rightComp ℂ (Ground.simples C k) g) * rootDimension C k := by
@@ -302,8 +305,7 @@ theorem rootTrace_eq_simpleHom_trace_sum (C : Ground.BraidedFusionCategory.{v,u}
 set_option backward.isDefEq.respectTransparency false in
 /-- Involutivity of every multiplicity operator implies ENO's trace-matrix
 root-dimension eigenvector identity. -/
-theorem enoTraceMatrix_eigenvector_of_involutions
-    (C : Ground.BraidedFusionCategory.{v,u}) (i j : Fin (Ground.rank C))
+theorem enoTraceMatrix_eigenvector_of_involutions (i j : Fin (Ground.rank C))
     (hinv : ∀ k, (multiplicityDefect C i j k).toLinearMap *
       (multiplicityDefect C i j k).toLinearMap = 1) :
     ∑ k, enoTraceMatrix C i j k * rootDimension C k = rootDimension C i * rootDimension C j := by

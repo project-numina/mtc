@@ -9,10 +9,11 @@ public import PropertyF.Ground.Dimensions.PositiveCanonical
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+  [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Right dual tensor comparison is compatible with the left unitor. -/
-theorem rightDualTensorIso_unit_left {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem rightDualTensorIso_unit_left (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     ((λ_ X).homᘁ) ≫ (rightDualTensorIso (𝟙_ C) X).hom =
       (ρ_ (Xᘁ)).inv ≫ ((Xᘁ) ◁ (rightDualUnitIso (C := C)).inv) := by
@@ -50,18 +51,9 @@ theorem rightDualTensorIso_unit_left {C : Type u} [Category.{v} C]
         monoidal
   have h : l ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J = s ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J := hl.trans hs.symm
   let : HasRightDual (I ⊗ X) := { rightDual := J, exact := ExactPairing.tensor }
-  have hh := congrArg (tensorRightHomEquiv (Xᘁ) (I ⊗ X) J I) h
-  have hL := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ (I ⊗ X) (Xᘁ) this l
-  have hR := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ (I ⊗ X) (Xᘁ) this s
-  change (tensorRightHomEquiv (Xᘁ) (I ⊗ X) J I)
-    (l ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J) = l ≫ (λ_ J).inv at hL
-  change (tensorRightHomEquiv (Xᘁ) (I ⊗ X) J I)
-    (s ▷ (I ⊗ X) ≫ ε_ (I ⊗ X) J) = s ≫ (λ_ J).inv at hR
-  rw [hL, hR] at hh
-  exact (cancel_mono (λ_ J).inv).1 hh
+  exact evaluation_ext h
 /-- Right dual tensor comparison is compatible with the right unitor. -/
-theorem rightDualTensorIso_unit_right {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem rightDualTensorIso_unit_right (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     ((ρ_ X).homᘁ) ≫ (rightDualTensorIso X (𝟙_ C)).hom =
       (λ_ (Xᘁ)).inv ≫ ((rightDualUnitIso (C := C)).inv ▷ (Xᘁ)) := by
@@ -104,15 +96,7 @@ theorem rightDualTensorIso_unit_right {C : Type u} [Category.{v} C]
         monoidal
   have h : l ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J = s ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J := hl.trans hs.symm
   let : HasRightDual (X ⊗ I) := { rightDual := J, exact := ExactPairing.tensor }
-  have hh := congrArg (tensorRightHomEquiv (Xᘁ) (X ⊗ I) J I) h
-  have hL := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ (X ⊗ I) (Xᘁ) this l
-  have hR := @tensorRightHomEquiv_whiskerRight_comp_evaluation C _ _ (X ⊗ I) (Xᘁ) this s
-  change (tensorRightHomEquiv (Xᘁ) (X ⊗ I) J I)
-    (l ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J) = l ≫ (λ_ J).inv at hL
-  change (tensorRightHomEquiv (Xᘁ) (X ⊗ I) J I)
-    (s ▷ (X ⊗ I) ≫ ε_ (X ⊗ I) J) = s ≫ (λ_ J).inv at hR
-  rw [hL, hR] at hh
-  exact (cancel_mono (λ_ J).inv).1 hh
+  exact evaluation_ext h
 
 end PropertyF.Ground.Dimensions
 
@@ -122,10 +106,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
+  [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is left-unital. -/
-theorem doubleDualTensorIso_unit_left {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem doubleDualTensorIso_unit_left (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
     (doubleDualUnitIso (C := C)).hom ▷ ((Xᘁ)ᘁ) ≫
@@ -143,13 +128,9 @@ theorem doubleDualTensorIso_unit_left {C : Type u} [Category.{v} C]
     exact rightDualTensorIso_unit_left X
   have hR' := congrArg (fun f => rightAdjointMate f) hR
   simp only [comp_rightAdjointMate] at hR'
-  have hn := rightDualTensorIso_natural (𝟙 (Xᘁ)) r.inv
-  simp only [rightAdjointMate_id, id_tensorHom] at hn
   have hs : S.inv ≫ ((Xᘁ) ◁ r.inv)ᘁ = ((r.invᘁ) ▷ ((Xᘁ)ᘁ)) ≫ S₀.inv := by
-    apply (cancel_mono S₀.hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [hn]
-    simp [← Category.assoc]
+    simpa only [rightAdjointMate_id, id_tensorHom, tensorHom_id] using
+      (rightDualTensorIso_inv_natural (𝟙 (Xᘁ)) r.inv).symm
   have hS : ((ρ_ (Xᘁ)).homᘁ) ≫ S₀.hom = (λ_ ((Xᘁ)ᘁ)).inv ≫ r.inv ▷ ((Xᘁ)ᘁ) := by
     exact rightDualTensorIso_unit_right (Xᘁ)
   have hS' : r.inv ▷ ((Xᘁ)ᘁ) ≫ S₀.inv ≫ ((ρ_ (Xᘁ)).invᘁ) = (λ_ ((Xᘁ)ᘁ)).hom := by
@@ -168,12 +149,11 @@ theorem doubleDualTensorIso_unit_left {C : Type u} [Category.{v} C]
     exact h
   simp only [Category.assoc]
   slice_lhs 2 3 => rw [← comp_whiskerRight, hc, id_whiskerRight]
-  simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS' 
+  simpa only [Category.id_comp, Category.comp_id, Category.assoc] using hS'
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison is right-unital. -/
-theorem doubleDualTensorIso_unit_right {C : Type u} [Category.{v} C]
-    [MonoidalCategory C] [RightRigidCategory C] (X : C) :
+theorem doubleDualTensorIso_unit_right (X : C) :
     letI : HasRightDual (𝟙_ C) := RightRigidCategory.rightDual (𝟙_ C)
     letI : HasRightDual ((𝟙_ C)ᘁ) := RightRigidCategory.rightDual ((𝟙_ C)ᘁ)
     ((Xᘁ)ᘁ) ◁ (doubleDualUnitIso (C := C)).hom ≫
@@ -191,13 +171,9 @@ theorem doubleDualTensorIso_unit_right {C : Type u} [Category.{v} C]
     exact rightDualTensorIso_unit_right X
   have hR' := congrArg (fun f => rightAdjointMate f) hR
   simp only [comp_rightAdjointMate] at hR'
-  have hn := rightDualTensorIso_natural r.inv (𝟙 (Xᘁ))
-  simp only [rightAdjointMate_id, tensorHom_id] at hn
   have hs : S.inv ≫ (r.inv ▷ (Xᘁ))ᘁ = (((Xᘁ)ᘁ) ◁ (r.invᘁ)) ≫ S₀.inv := by
-    apply (cancel_mono S₀.hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [hn]
-    simp [← Category.assoc]
+    simpa only [rightAdjointMate_id, id_tensorHom, tensorHom_id] using
+      (rightDualTensorIso_inv_natural r.inv (𝟙 (Xᘁ))).symm
   have hS : ((λ_ (Xᘁ)).homᘁ) ≫ S₀.hom = (ρ_ ((Xᘁ)ᘁ)).inv ≫ ((Xᘁ)ᘁ) ◁ r.inv := by
     exact rightDualTensorIso_unit_left (Xᘁ)
   have hS' : ((Xᘁ)ᘁ) ◁ r.inv ≫ S₀.inv ≫ ((λ_ (Xᘁ)).invᘁ) = (ρ_ ((Xᘁ)ᘁ)).hom := by

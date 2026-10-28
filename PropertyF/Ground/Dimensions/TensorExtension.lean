@@ -7,6 +7,8 @@ public import PropertyF.Ground.Dimensions.GroundNorm
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 def rootSignTwist (C : Ground.BraidedFusionCategory.{v,u})
@@ -25,7 +27,7 @@ def rootSignDefect (C : Ground.BraidedFusionCategory.{v,u})
   (rootSignTwist C c hc).app (X ⊗ Y) ≪≫ (rootSignTensorIso C c hc X Y).symm
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootSignTwist_app_simple (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootSignTwist_app_simple
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (Ground.rank C)) :
     ((rootSignTwist C c hc).app (Ground.simples C i)).hom =
       c i • ((fourthDualRootNaturalIso C).app (Ground.simples C i)).hom := by
@@ -35,7 +37,7 @@ theorem rootSignTwist_app_simple (C : Ground.BraidedFusionCategory.{v,u})
   simp
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootSignTensorIso_hom (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootSignTensorIso_hom
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i j : Fin (Ground.rank C)) :
     (rootSignTensorIso C c hc (Ground.simples C i) (Ground.simples C j)).hom =
       (c i * c j) • (rootTensorIso C (Ground.simples C i) (Ground.simples C j)).hom := by
@@ -48,7 +50,7 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency false in
-theorem rootPhaseTensorIso_inv (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootPhaseTensorIso_inv
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (i j : Fin (Ground.rank C)) :
     (rootSignTensorIso C c hc (Ground.simples C i) (Ground.simples C j)).inv =
@@ -61,7 +63,7 @@ theorem rootPhaseTensorIso_inv (C : Ground.BraidedFusionCategory.{v,u})
   rw [hr, one_smul]
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootPhaseDefect_apply (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootPhaseDefect_apply
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (i j k : Fin (Ground.rank C))
     (f : Ground.simples C k ⟶ Ground.simples C i ⊗ Ground.simples C j) :
@@ -82,8 +84,7 @@ theorem rootPhaseDefect_apply (C : Ground.BraidedFusionCategory.{v,u})
   simp [rootTensorDefect, Linear.smul_comp, smul_smul, div_eq_mul_inv, mul_comm]
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootPhaseTensor_compatible_of_scaled_defects
-    (C : Ground.BraidedFusionCategory.{v,u}) (c : Fin (Ground.rank C) → ℂ)
+theorem rootPhaseTensor_compatible_of_scaled_defects (c : Fin (Ground.rank C) → ℂ)
     (hc : ∀ i, c i ≠ 0) (i j : Fin (Ground.rank C))
     (hdef : ∀ k, (c k / (c i * c j)) • (multiplicityDefect C i j k).toLinearMap = 1) :
     (rootSignTwist C c hc).app (Ground.simples C i ⊗ Ground.simples C j) =
@@ -157,11 +158,12 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 set_option backward.isDefEq.respectTransparency false in
-theorem doubleDualTensor_extension
-    (C : Ground.BraidedFusionCategory.{v,u}) (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
+theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
     (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
       (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
         (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
@@ -203,7 +205,7 @@ theorem doubleDualTensor_extension
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency false in
-theorem rootSignQuantumTrace_simple (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootSignQuantumTrace_simple
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (i : Fin (Ground.rank C)) :
     Ground.unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (Ground.simples C i))) =
       c i * rootDimension C i := by
@@ -218,7 +220,7 @@ theorem rootSignQuantumTrace_simple (C : Ground.BraidedFusionCategory.{v,u})
   simp only [← groundUnitScalarEquiv_apply, map_smul, smul_eq_mul]
 
 set_option backward.isDefEq.respectTransparency false in
-theorem naturalDoubleDual_unit_eq_of_trace_one (C : Ground.BraidedFusionCategory.{v,u})
+theorem naturalDoubleDual_unit_eq_of_trace_one
     (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
     (htrace : Ground.unitScalar C (rightQuantumTrace (a.app (𝟙_ C.Obj))) = 1) :
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
@@ -235,7 +237,7 @@ theorem naturalDoubleDual_unit_eq_of_trace_one (C : Ground.BraidedFusionCategory
   simpa [hr1] using hr
 
 set_option backward.isDefEq.respectTransparency false in
-theorem rootSignTwist_unit_of_simple_dimension (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootSignTwist_unit_of_simple_dimension
     (c : Fin (Ground.rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (hunit : c (Ground.unitIndex C) * rootDimension C (Ground.unitIndex C) = 1) :
     ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by

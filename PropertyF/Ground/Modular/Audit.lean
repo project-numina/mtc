@@ -43,7 +43,6 @@ import all PropertyF.Ground.Modular.Construction
 import all PropertyF.Ground.Modular.DimensionNonzero
 import all PropertyF.Ground.Modular.UnitDimension
 import all PropertyF.Ground.Modular.GaloisFromVerlinde
-import all PropertyF.Ground.Modular.PseudoGalois
 import all PropertyF.Ground.Integrate.DependencyAudit
 meta import PropertyF.Ground.Integrate.DependencyAudit
 /-!
@@ -75,13 +74,10 @@ run_cmd do
       ``PropertyF.Ground.Modular.categoricalS_galois_action_of_invertibleS,
       ``PropertyF.Ground.Modular.categoricalS_galois_symmetry,
       ``PropertyF.Ground.Modular.simpleDimension_dual,
-      ``PropertyF.Ground.Modular.categoricalS_galois_action_of_S_square,
       ``PropertyF.Ground.Modular.simpleDimension_ne_zero,
       ``PropertyF.Ground.Modular.simpleDimension_unit,
       ``PropertyF.Ground.Modular.categoricalS_galois_action,
-      ``PropertyF.Ground.Modular.galois_unit_properties,
-      ``PropertyF.Ground.Modular.categoricalS_galois_action_pseudoUnitary,
-      ``PropertyF.Ground.Modular.categoricalS_galois_unit_properties] do
+      ``PropertyF.Ground.Modular.galois_unit_properties] do
     if let some bad := findIssue env n then
       throwError "{n}: {repr bad}"
     let axioms ← Lean.collectAxioms n

@@ -5,10 +5,12 @@ public import PropertyF.Ground.Dimensions.FourthDualUnit
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual natural fourth-dual root is its unit dimension times the
 canonical double-dual unit map. -/
-theorem fourthDualRoot_unit_component (C : Ground.BraidedFusionCategory.{v,u}) :
+theorem fourthDualRoot_unit_component :
     ((fourthDualRootNaturalIso C).app (𝟙_ C.Obj)).hom =
       rootDimension C (Ground.unitIndex C) • (doubleDualUnitIso (C := C.Obj)).hom := by
   let U := 𝟙_ C.Obj
@@ -49,10 +51,12 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- On a simple and its right dual the root carries the ordinary duality cup
 to the double-dual cup, with the ENO sign. -/
-theorem root_components_coevaluation (C : Ground.BraidedFusionCategory.{v,u})
+theorem root_components_coevaluation
     (i : Fin (Ground.rank C)) :
     let X := Ground.simples C i
     η_ X (Xᘁ) ≫ (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ

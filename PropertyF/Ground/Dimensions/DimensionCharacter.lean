@@ -10,6 +10,8 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Complex pivotal dimension obtained using the canonical unit scalar map. -/
@@ -19,7 +21,7 @@ def pivotalDimension (C : Ground.BraidedFusionCategory.{v,u})
 
 /-- Pivotal dimension is a sum of simple dimensions with the actual Hom-space
 multiplicities, for any pivotal structure. -/
-theorem pivotalDimension_decomposition (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotalDimension_decomposition
     (p : PivotalStructure (C := C.Obj)) (X : C.Obj) :
     pivotalDimension C p X = ∑ i, (Module.finrank ℂ (Ground.simples C i ⟶ X) : ℂ) *
       pivotalDimension C p (Ground.simples C i) := by
@@ -37,21 +39,21 @@ theorem pivotalDimension_decomposition (C : Ground.BraidedFusionCategory.{v,u})
   rfl
 
 /-- The pivotal dimension of the tensor unit is normalized to one. -/
-theorem pivotalDimension_unit (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotalDimension_unit
     (p : PivotalStructure (C := C.Obj)) : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
   unfold pivotalDimension
   rw [rightTrace_unit]
   simpa using Ground.unitScalar_algebraMap C 1
 
 /-- Pivotal dimensions multiply under tensor products. -/
-theorem pivotalDimension_tensor (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotalDimension_tensor
     (p : PivotalStructure (C := C.Obj)) (X Y : C.Obj) :
     pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
   simpa [pivotalDimension, ← groundUnitScalarEquiv_apply] using
     pivotalTrace_tensor p (groundUnitScalarEquiv C) X Y (𝟙 X) (𝟙 Y)
 
 /-- Pivotal simple dimensions form a fusion character. -/
-theorem pivotalDimension_character (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotalDimension_character
     (p : PivotalStructure (C := C.Obj)) :
     ∀ i j, pivotalDimension C p (Ground.simples C i) * pivotalDimension C p (Ground.simples C j) =
       ∑ k, (Ground.fusionCoeff C i j k : ℂ) * pivotalDimension C p (Ground.simples C k) := by
@@ -60,7 +62,7 @@ theorem pivotalDimension_character (C : Ground.BraidedFusionCategory.{v,u})
   rfl
 
 /-- Pivotal dimension is invariant under object isomorphism. -/
-theorem pivotalDimension_iso (C : Ground.BraidedFusionCategory.{v,u})
+theorem pivotalDimension_iso
     (p : PivotalStructure (C := C.Obj)) {X Y : C.Obj} (e : X ≅ Y) :
     pivotalDimension C p X = pivotalDimension C p Y := by
   unfold pivotalDimension

@@ -12,9 +12,11 @@ public import PropertyF.Ground.Dimensions.TensorExtension
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The root tensor defect acts on a simple duality cup by the product of the unit-root and dual signs. -/
-theorem rootTensorDefect_coevaluation (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTensorDefect_coevaluation
     (i : Fin (Ground.rank C)) :
     let X := Ground.simples C i
     η_ X (Xᘁ) ≫ (rootTensorDefect C X (Xᘁ)).hom =
@@ -59,6 +61,8 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- Coevaluation is transported by an isomorphism and its inverse right dual. -/
 theorem coevaluation_iso_map {C : Type u} [Category.{v} C] [MonoidalCategory C]
@@ -76,7 +80,7 @@ theorem coevaluation_iso_map {C : Type u} [Category.{v} C] [MonoidalCategory C]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The cup eigenvalue is invariant under changing the simple representative. -/
-theorem rootTensorDefect_coevaluation_of_iso (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTensorDefect_coevaluation_of_iso
     {X : C.Obj} (i : Fin (Ground.rank C)) (a : X ≅ Ground.simples C i) :
     η_ X (Xᘁ) ≫ (rootTensorDefect C X (Xᘁ)).hom =
       (rootDimension C (Ground.unitIndex C) * rootDualSign C i) • η_ X (Xᘁ) := by
@@ -95,7 +99,7 @@ theorem rootTensorDefect_coevaluation_of_iso (C : Ground.BraidedFusionCategory.{
     _ = _ := by rw [rootTensorDefect_coevaluation, ← hc, Linear.smul_comp]
 set_option backward.isDefEq.respectTransparency false in
 /-- The root defect has the same eigenvalue on the braided-swapped cup. -/
-theorem rootTensorDefect_swapped_coevaluation (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTensorDefect_swapped_coevaluation
     (i : Fin (Ground.rank C)) :
     let X := Ground.simples C i
     letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
@@ -130,9 +134,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual root tensor defect obeys the noncommutative tensor-cocycle law. -/
-theorem rootTensorDefect_associativity (C : Ground.BraidedFusionCategory.{v,u}) (X Y Z : C.Obj) :
+theorem rootTensorDefect_associativity (X Y Z : C.Obj) :
     (rootTensorDefect C X (Y ⊗ Z)).hom ≫ X ◁ (rootTensorDefect C Y Z).hom =
       (α_ X Y Z).inv ≫ (rootTensorDefect C (X ⊗ Y) Z).hom ≫
         (rootTensorDefect C X Y).hom ▷ Z ≫ (α_ X Y Z).hom := by
@@ -155,9 +161,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The signed three-object cup slide follows from involutivity of its outer tensor defect. -/
-theorem rootTensorDefect_slide_of_involution (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTensorDefect_slide_of_involution
     (i : Fin (Ground.rank C)) (K : C.Obj)
     (hinv : let X := Ground.simples C i
       (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom =
@@ -211,9 +219,11 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- A signed scalar tensor defect forces the fourth-dual tensor law. -/
-theorem fourthDualIso_tensor_of_signed_defect (C : Ground.BraidedFusionCategory.{v,u})
+theorem fourthDualIso_tensor_of_signed_defect
     (X Y : C.Obj) (z : ℂ) (hz : z * z = 1)
     (hd : (rootTensorDefect C X Y).hom = z • 𝟙 (X ⊗ Y)) :
     (fourthDualIso C (X ⊗ Y)).hom =
@@ -240,7 +250,7 @@ theorem fourthDualIso_tensor_of_signed_defect (C : Ground.BraidedFusionCategory.
 
 /-- The fourth-dual tensor law holds when the left factor is the chosen unit
 simple representative. -/
-theorem fourthDualIso_tensor_unitLabel_left (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem fourthDualIso_tensor_unitLabel_left (X : C.Obj) :
     (fourthDualIso C (Ground.simples C (Ground.unitIndex C) ⊗ X)).hom =
       ((fourthDualIso C (Ground.simples C (Ground.unitIndex C))).hom ⊗ₘ (fourthDualIso C X).hom) ≫
         (doubleDualTensorIso (((Ground.simples C (Ground.unitIndex C))ᘁ)ᘁ) ((Xᘁ)ᘁ)).hom ≫
@@ -250,7 +260,7 @@ theorem fourthDualIso_tensor_unitLabel_left (C : Ground.BraidedFusionCategory.{v
 
 /-- The fourth-dual tensor law holds when the right factor is the chosen unit
 simple representative. -/
-theorem fourthDualIso_tensor_unitLabel_right (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
+theorem fourthDualIso_tensor_unitLabel_right (X : C.Obj) :
     (fourthDualIso C (X ⊗ Ground.simples C (Ground.unitIndex C))).hom =
       ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C (Ground.simples C (Ground.unitIndex C))).hom) ≫
         (doubleDualTensorIso ((Xᘁ)ᘁ) (((Ground.simples C (Ground.unitIndex C))ᘁ)ᘁ)).hom ≫
@@ -265,10 +275,12 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace PropertyF.Ground.Dimensions
 universe v u
+
+variable (C : Ground.BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 set_option backward.isDefEq.respectTransparency false in
 /-- Involutivity on simple pairs extends to all object pairs by semisimple decomposition. -/
-theorem rootTensorDefect_involution_extension (C : Ground.BraidedFusionCategory.{v,u})
+theorem rootTensorDefect_involution_extension
     (hsimple : ∀ i j, (rootTensorDefect C (Ground.simples C i) (Ground.simples C j)).hom ≫
       (rootTensorDefect C (Ground.simples C i) (Ground.simples C j)).hom =
         𝟙 (Ground.simples C i ⊗ Ground.simples C j)) (X Y : C.Obj) :
@@ -291,7 +303,6 @@ theorem rootTensorDefect_involution_extension (C : Ground.BraidedFusionCategory.
     Category.assoc] using hh
 /-- The fourth-dual tensor law on simple pairs implies ENO trace reciprocity. -/
 theorem enoTraceMatrix_reciprocity_of_simple_fourthDual_tensor
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hfourth : ∀ i j : Fin (Ground.rank C),
       (fourthDualIso C (Ground.simples C i ⊗ Ground.simples C j)).hom =
       ((fourthDualIso C (Ground.simples C i)).hom ⊗ₘ (fourthDualIso C (Ground.simples C j)).hom) ≫
@@ -309,7 +320,6 @@ theorem enoTraceMatrix_reciprocity_of_simple_fourthDual_tensor
 
 /-- The fourth-dual law on non-unit simple pairs suffices for the canonical pseudo-unitary spherical structure. -/
 theorem eno_pseudoUnitary_yields_positive_spherical_of_nonunit_fourthDual_tensor
-    (C : Ground.BraidedFusionCategory.{v,u})
     (hfourth : ∀ i j : Fin (Ground.rank C), i ≠ Ground.unitIndex C → j ≠ Ground.unitIndex C →
       (fourthDualIso C (Ground.simples C i ⊗ Ground.simples C j)).hom =
       ((fourthDualIso C (Ground.simples C i)).hom ⊗ₘ (fourthDualIso C (Ground.simples C j)).hom) ≫
