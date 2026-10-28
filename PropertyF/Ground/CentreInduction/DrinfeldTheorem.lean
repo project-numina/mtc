@@ -106,15 +106,13 @@ theorem drinfeld_inv_dual_tensor :
     rightDualIsoMap, Category.assoc]
   change (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫ t.homᘁ ≫
     (d ((X ⊗ Y)ᘁ)).invᘁ = _
-  rw [hn', hi']
-  simp only [comp_rightAdjointMate, Category.assoc]
+  simp only [hn', hi', comp_rightAdjointMate, Category.assoc]
   rw [← Category.assoc (t.homᘁ), ← comp_rightAdjointMate, Iso.inv_hom_id,
     rightAdjointMate_id, Category.id_comp]
   rw [reassoc_of% rightDualTensorIso_inv_monodromy,
     ← reassoc_of% rightDualTensorIso_inv_natural f g]
-  dsimp only [doubleDualTensorIso, rightDualIsoMap,
-    Iso.trans_inv, Iso.symm_inv]
-  simp only [comp_rightAdjointMate, Category.assoc, f, g, t]
+  simp only [doubleDualTensorIso, rightDualIsoMap, Iso.trans_inv, Iso.symm_inv,
+    comp_rightAdjointMate, Category.assoc, f, g, t]
 
 /-- The Drinfeld tensor law forces monoidality of the canonical fourth-dual map. -/
 theorem fourthDualIso_tensor :

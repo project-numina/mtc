@@ -40,9 +40,9 @@ theorem forgetDoubleDualIso_tensor :
     (doubleDualTensorIso X Y).hom.f ≫ (κ₂ (X ⊗ Y)).hom =
       ((κ₂ X).hom ⊗ₘ (κ₂ Y).hom) ≫
         (doubleDualTensorIso X.1 Y.1).hom := by
-  dsimp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
-    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso]
-  rw [Category.assoc, reassoc_of% forgetDualIso_natural,
+  simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
+    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso, Category.assoc]
+  rw [reassoc_of% forgetDualIso_natural,
     reassoc_of% forgetDualIso_tensor_inv (Yᘁ) (Xᘁ), forgetDualIso_tensor_mate_inv X Y,
     ← reassoc_of% rightDualTensorIso_inv_natural (κ Y).inv (κ X).inv,
     tensorHom_comp_tensorHom_assoc]
@@ -87,9 +87,8 @@ theorem forgetDoubleDualIso_unit :
   have hu : (κ U).hom ≫ b.hom = e.hom.f := forgetDualIso_unit (D := D)
   have hv : e.inv.f ≫ (κ U).hom = b.inv :=
     (Iso.inv_comp_eq ((Center.forget D).mapIso e)).2 ((Iso.eq_comp_inv b).2 hu)
-  dsimp only [doubleDualUnitIso, Iso.trans_hom, Iso.symm_hom,
-    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso]
-  rw [Category.assoc]
+  simp only [doubleDualUnitIso, Iso.trans_hom, Iso.symm_hom,
+    rightDualIsoMap, Center.comp_f, forgetDoubleDualIso, Category.assoc]
   change e.inv.f ≫ (e.homᘁ).f ≫ (κ (Uᘁ)).hom ≫
       (κ U).invᘁ = b.inv ≫ b.homᘁ
   erw [reassoc_of% forgetDualIso_natural e.hom]
