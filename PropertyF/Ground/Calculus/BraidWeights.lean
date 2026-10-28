@@ -156,18 +156,14 @@ theorem cyclic_matrix_trace {ι : Type*} [Fintype ι] [DecidableEq ι]
         rw [hdiag, hscalar, map_smul, Matrix.trace_single_eq_same]
         simp [w, mul_comm]
       · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
-        have hz : Matrix.single i j a * Matrix.single i i (1 : ℂ) = 0 :=
-          Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1
-        simp only [Matrix.single_mul_single_same, one_mul, hz, map_zero] at hoff
+        simp only [Matrix.single_mul_single_same, one_mul,
+          Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
         rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
     induction X using Matrix.induction_on with
     | h_add X Y hX hY => simp [hX, hY, Matrix.trace_add, mul_add]
     | h_std_basis i j a => exact hs i j a
-  · have hempty : IsEmpty ι := not_nonempty_iff.mp hn
-    let _ := hempty
-    refine ⟨0, fun X => ?_⟩
-    have hX : X = 0 := Subsingleton.elim _ _
-    simp [hX]
+  · let _ : IsEmpty ι := not_nonempty_iff.mp hn
+    exact ⟨0, fun X => by simp [Subsingleton.elim X 0]⟩
 
 /-- Every cyclic linear functional on a finite product of matrix algebras is
 a weighted sum of ordinary block traces. The weights may be arbitrary complex
@@ -184,15 +180,12 @@ theorem cyclic_block_trace {n : ℕ} {d : Fin n → ℕ}
     change T (Pi.single i (X * Y)) = T (Pi.single i (Y * X))
     rw [Pi.single_mul, Pi.single_mul]
     exact hT _ _
-  have hw : ∀ i, ∃ w : ℂ, ∀ X : V i, Tblock i X = w * X.trace :=
-    fun i => cyclic_matrix_trace (Tblock i) (hc i)
-  choose w hw using hw
+  choose w hw using fun i : Fin n => cyclic_matrix_trace (Tblock i) (hc i)
   refine ⟨w, fun X => ?_⟩
-  calc
-    T X = ∑ i, Tblock i (X i) := by
-      conv_lhs => rw [← LinearMap.sum_single_apply V X]
-      simp [Tblock]
-    _ = ∑ i, w i * (X i).trace := by simp [hw]
+  conv_lhs => rw [← LinearMap.sum_single_apply V X]
+  rw [map_sum]
+  change (∑ i, Tblock i (X i)) = _
+  simp only [hw]
 
 end PropertyF.Ground.Calculus
 

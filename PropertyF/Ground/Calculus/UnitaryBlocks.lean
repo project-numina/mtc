@@ -77,9 +77,9 @@ theorem exists_unitarizing_basis (ρ : G →* (Matrix ι ι ℂ)ˣ) :
     ((↑P : Matrix ι ι ℂ) * (↑(ρ g) : Matrix ι ι ℂ) * (↑(P⁻¹) : Matrix ι ι ℂ)) = 1
   simp only [star_mul, hself, ← Matrix.star_eq_conjTranspose] at hinv ⊢
   have hselfu : star P = P := Units.ext hself
-  have hselfinv : star (↑(P⁻¹) : Matrix ι ι ℂ) = ↑(P⁻¹) := by
-    have h : star (P⁻¹) = P⁻¹ := by simp [hselfu]
-    exact congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ)) h
+  have hselfinv : star (↑(P⁻¹) : Matrix ι ι ℂ) = ↑(P⁻¹) :=
+    congrArg (fun Q : (Matrix ι ι ℂ)ˣ => (↑Q : Matrix ι ι ℂ))
+      (show star (P⁻¹) = P⁻¹ from by simp [hselfu])
   rw [hselfinv]
   calc
     _ = (↑(P⁻¹) : Matrix ι ι ℂ) * (star (↑(ρ g) : Matrix ι ι ℂ) * A * ↑(ρ g)) * ↑(P⁻¹) := by
