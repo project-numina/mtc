@@ -1,5 +1,10 @@
 module
-public import PropertyF.Ground.CentreInduction.Artinian
+public import PropertyF.Ground.CentreInduction.Splitting
+public import PropertyF.Ground.Centre.Abelian
+public import Mathlib.CategoryTheory.Subobject.ArtinianObject
+public import Mathlib.CategoryTheory.Subobject.NoetherianObject
+public import Mathlib.RingTheory.Artinian.Module
+public import Mathlib.CategoryTheory.Abelian.Exact
 
 /-! A finite-step semisimple decomposition from split subobjects. -/
 

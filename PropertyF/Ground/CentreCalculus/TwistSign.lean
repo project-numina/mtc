@@ -47,22 +47,15 @@ theorem leftPartialTrace_inverse_braiding (C : BraidedFusionCategory.{v,u})
   have hsnake : (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ ((β_ (Xᘁ) X).inv ▷ X) ≫
       (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫ (α_ (Xᘁ) X X).inv ≫
       (ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom = 𝟙 X := by
-    have hc : (β_ (Xᘁ ⊗ X) X).inv =
-        (α_ X (Xᘁ) X).inv ≫ (β_ (Xᘁ) X).inv ▷ X ≫
-          (α_ (Xᘁ) X X).hom ≫ (Xᘁ ◁ (β_ X X).inv) ≫
-          (α_ (Xᘁ) X X).inv := braiding_tensor_left_inv (Xᘁ) X X
-    have h := braiding_inv_naturality_right X (ε_ X (Xᘁ))
-    have ht : (β_ (Xᘁ ⊗ X) X).inv ≫ ε_ X (Xᘁ) ▷ X =
-        X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ C.Obj) X).inv := h.symm
-    rw [hc] at ht
-    simp only [Category.assoc] at ht
     calc
       _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
-          ((α_ X (Xᘁ) X).inv ≫ (β_ (Xᘁ) X).inv ▷ X ≫
-            (α_ (Xᘁ) X X).hom ≫ Xᘁ ◁ (β_ X X).inv ≫
-            (α_ (Xᘁ) X X).inv ≫ ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom := by simp [Category.assoc]
+          ((β_ (Xᘁ ⊗ X) X).inv ≫ ε_ X (Xᘁ) ▷ X) ≫ (λ_ X).hom := by
+            rw [braiding_tensor_left_inv]
+            simp [Category.assoc]
       _ = (λ_ X).inv ≫ (η_ X (Xᘁ) ▷ X) ≫ (α_ X (Xᘁ) X).hom ≫
-          X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ C.Obj) X).inv ≫ (λ_ X).hom := by rw [ht]; simp [Category.assoc]
+          X ◁ ε_ X (Xᘁ) ≫ (β_ (𝟙_ C.Obj) X).inv ≫ (λ_ X).hom := by
+            rw [← braiding_inv_naturality_right]
+            simp [Category.assoc]
       _ = 𝟙 X := by
         rw [ExactPairing.evaluation_coevaluation_assoc]
         simp
@@ -81,10 +74,7 @@ theorem pivotalTwist_sign_of_selfTransparent (C : BraidedFusionCategory.{v,u})
       Dimensions.pivotalBraidedTwistScalar C p X = -1 := by
   let θ := Dimensions.pivotalBraidedTwistScalar C p X
   let t : X ⟶ X := (doubleDualIso C X).hom ≫ (p.iso X).inv
-  have hc : (β_ X X).hom = (β_ X X).inv := by
-    calc
-      (β_ X X).hom = ((β_ X X).hom ≫ (β_ X X).hom) ≫ (β_ X X).inv := by simp [Category.assoc]
-      _ = (β_ X X).inv := by rw [hX, Category.id_comp]
+  have hc : (β_ X X).hom = (β_ X X).inv := (β_ X X).inv_ext' hX
   have htr := spherical_rightTrace_leftPartialTrace p hp X X (End.of (β_ X X).hom)
   have hp1 := leftPartialTrace_braiding_of_trace_compatibility C p X htr
   have hp2 := leftPartialTrace_inverse_braiding C p X
