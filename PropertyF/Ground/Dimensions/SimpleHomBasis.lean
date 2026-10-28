@@ -265,7 +265,6 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 theorem simpleHomPairingEquiv_natural {S X Y : D} [Simple S] (g : Y ⟶ S) (a : X ⟶ Y) :
     simpleHomPairingEquiv S X (a ≫ g) =
       Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairingEquiv S Y g) :=
-  letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
   LinearMap.ext fun f ↦ by
     simp [simpleHomPairingEquiv, simpleHomPairing, Module.Dual.transpose_apply,
       Linear.rightComp_apply, Category.assoc]
