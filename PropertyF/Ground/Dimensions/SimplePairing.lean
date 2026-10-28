@@ -34,7 +34,7 @@ theorem split_to_simple
     intro a
     simpa [Category.assoc] using h a
   obtain ⟨a, ha⟩ := hp
-  let : Simple (V a) := Ground.simples_simple C a.1
+  let : Simple (V a) := simples_simple C a.1
   let h : V a ⟶ S := biproduct.ι V a ≫ e.inv ≫ g
   let : IsIso h := isIso_of_hom_simple ha
   refine ⟨inv h ≫ biproduct.ι V a ≫ e.inv, ?_⟩
@@ -43,7 +43,7 @@ theorem split_to_simple
 /-- Schur's scalar isomorphism for any simple object. -/
 def simpleEndScalarEquiv (C : BraidedFusionCategory.{v,u})
     (S : C.Obj) [Simple S] : End S ≃ₐ[ℂ] ℂ := by
-  letI : FiniteDimensional ℂ (S ⟶ S) := Ground.IsFusionCategory.hom_finite _ _
+  letI : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
   apply (AlgEquiv.ofBijective (Algebra.ofId ℂ (End S)) ?_).symm
   constructor
   · exact (algebraMap ℂ (End S)).injective
@@ -101,15 +101,15 @@ theorem simpleHomPairing_injective
 def simpleHomPairingEquiv (C : BraidedFusionCategory.{v,u})
     (i : Fin (rank C)) (X : C.Obj) :
     (X ⟶ simples C i) ≃ₗ[ℂ] Module.Dual ℂ (simples C i ⟶ X) := by
-  letI : Simple (simples C i) := Ground.simples_simple C i
-  letI : FiniteDimensional ℂ (X ⟶ simples C i) := Ground.IsFusionCategory.hom_finite _ _
-  letI : FiniteDimensional ℂ (simples C i ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  letI : Simple (simples C i) := simples_simple C i
+  letI : FiniteDimensional ℂ (X ⟶ simples C i) := IsFusionCategory.hom_finite _ _
+  letI : FiniteDimensional ℂ (simples C i ⟶ X) := IsFusionCategory.hom_finite _ _
   let p := simpleHomPairing C (simples C i) X
   have hi := simpleHomPairing_injective C (simples C i) X
   have hd : Module.finrank ℂ (X ⟶ simples C i) =
       Module.finrank ℂ (Module.Dual ℂ (simples C i ⟶ X)) := by
     rw [Subspace.dual_finrank_eq]
-    exact Ground.finrank_to_simple_eq_from_simple C X i
+    exact finrank_to_simple_eq_from_simple C X i
   exact LinearEquiv.ofBijective p ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).1 hi⟩
 
 /-- Composition pairs precomposition on one Hom space with postcomposition on

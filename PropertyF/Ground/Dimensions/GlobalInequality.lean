@@ -19,14 +19,8 @@ separates the sum-of-squares argument from the remaining ENO estimate. -/
 theorem target_globalDimension_le_of_simple_bounds
     (d : Fin (rank C) → ℝ)
     (hbound : ∀ i, |d i| ≤ fpSimple C i) :
-    ∑ i, (d i) ^ 2 ≤ globalFPDimension C := by
-  unfold globalFPDimension
-  apply Finset.sum_le_sum
-  intro i _
-  have hneg : -fpSimple C i ≤ d i := (abs_le.mp (hbound i)).1
-  have hpos : d i ≤ fpSimple C i := (abs_le.mp (hbound i)).2
-  have hsum : 0 ≤ d i + fpSimple C i := by linarith
-  nlinarith [mul_nonneg (sub_nonneg.mpr hpos) hsum]
+    ∑ i, (d i) ^ 2 ≤ globalFPDimension C :=
+  Finset.sum_le_sum fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2
 
 /-- If each real simple dimension is bounded by its FP dimension, equality of
 the global sums is equivalent to saturation at every simple. -/
@@ -35,19 +29,12 @@ theorem global_sum_squares_eq_iff
     (hbound : ∀ i, |d i| ≤ fpSimple C i) :
     (∑ i, (d i) ^ 2) = globalFPDimension C ↔
       ∀ i, |d i| = fpSimple C i := by
-  have hsq : ∀ i, (d i) ^ 2 ≤ (fpSimple C i) ^ 2 := by
-    intro i
-    have hneg : -fpSimple C i ≤ d i := (abs_le.mp (hbound i)).1
-    have hpos : d i ≤ fpSimple C i := (abs_le.mp (hbound i)).2
-    have hsum : 0 ≤ d i + fpSimple C i := by linarith
-    nlinarith [mul_nonneg (sub_nonneg.mpr hpos) hsum]
-  rw [globalFPDimension, Finset.sum_eq_sum_iff_of_le (fun i _ => hsq i)]
+  rw [globalFPDimension, Finset.sum_eq_sum_iff_of_le
+    (fun i _ => sq_le_sq' (abs_le.mp (hbound i)).1 (abs_le.mp (hbound i)).2)]
   constructor
   · intro heq i
-    have h := heq i (Finset.mem_univ i)
-    have ha : 0 ≤ |d i| := abs_nonneg _
-    have hb : 0 ≤ fpSimple C i := le_trans ha (hbound i)
-    nlinarith [sq_abs (d i)]
+    apply (sq_eq_sq₀ (abs_nonneg _) ((abs_nonneg _).trans (hbound i))).mp
+    simpa only [sq_abs] using heq i (Finset.mem_univ i)
   · intro heq i _
     rw [← heq i, sq_abs]
 

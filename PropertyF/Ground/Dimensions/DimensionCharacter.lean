@@ -27,7 +27,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 /-- Complex pivotal dimension obtained using the canonical unit scalar map. -/
 def pivotalDimension (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) (X : C.Obj) : ℂ :=
-  Ground.unitScalar C (p.rightTrace (𝟙 X))
+  unitScalar C (p.rightTrace (𝟙 X))
 
 /-- A spherical structure whose simple dimensions are the FP dimensions. -/
 abbrev HasFPSphericalStructure (C : BraidedFusionCategory.{v,u}) : Prop :=
@@ -43,7 +43,7 @@ theorem pivotalDimension_decomposition
   classical
   let m (i : Fin (rank C)) := Module.finrank ℂ (simples C i ⟶ X)
   let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
-  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C X
+  obtain ⟨e⟩ := exists_canonical_decomposition C X
   have ht : p.rightTrace (𝟙 X) = ∑ i, (m i : ℂ) • p.rightTrace (𝟙 (simples C i)) := by
     calc
       _ = p.rightTrace (𝟙 (⨁ V)) := p.rightTrace_id_iso e
@@ -58,7 +58,7 @@ theorem pivotalDimension_unit
     (p : PivotalStructure (C := C.Obj)) : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
   unfold pivotalDimension
   rw [rightTrace_unit]
-  simpa using Ground.unitScalar_algebraMap C 1
+  simpa using unitScalar_algebraMap C 1
 
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor
@@ -70,7 +70,7 @@ theorem pivotalDimension_tensor
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character
     (p : PivotalStructure (C := C.Obj)) :
-    Ground.IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) := by
+    IsFusionMultiplicative C (fun i => pivotalDimension C p (simples C i)) := by
   intro i j
   rw [← pivotalDimension_tensor, pivotalDimension_decomposition]
   rfl
@@ -79,7 +79,7 @@ theorem pivotalDimension_character
 theorem pivotalDimension_iso
     (p : PivotalStructure (C := C.Obj)) {X Y : C.Obj} (e : X ≅ Y) :
     pivotalDimension C p X = pivotalDimension C p Y :=
-  congrArg (Ground.unitScalar C) (p.rightTrace_id_iso e)
+  congrArg (unitScalar C) (p.rightTrace_id_iso e)
 
 /-- Every Galois conjugate of each pivotal simple dimension is bounded by
 its Frobenius–Perron dimension. -/
@@ -89,7 +89,7 @@ theorem galois_pivotalDimension_norm_le_fpSimple (C : BraidedFusionCategory)
     ‖σ (pivotalDimension C p (simples C i))‖ ≤ fpSimple C i := by
   apply galois_character_norm_le_fpSimple C
     (χ := fun j => pivotalDimension C p (simples C j)) (i₀ := unitIndex C)
-  · obtain ⟨e⟩ := Ground.unitIndex_iso C
+  · obtain ⟨e⟩ := unitIndex_iso C
     rw [pivotalDimension_iso C p e, pivotalDimension_unit]
     exact one_ne_zero
   · exact pivotalDimension_character C p
