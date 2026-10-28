@@ -59,8 +59,8 @@ theorem leftPartialTrace_right (p : PivotalStructure (C := C))
   apply End.ext
   simp only [leftPartialTrace, insertLeftIdentity, LinearMap.coe_mk, AddHom.coe_mk,
     End.mul_asHom, whiskerLeft_comp, Category.assoc]
-  rw [← associator_naturality_right_assoc]
-  rw [← whisker_exchange_assoc, ← leftUnitor_inv_naturality_assoc]
+  rw [← associator_naturality_right_assoc, ← whisker_exchange_assoc,
+    ← leftUnitor_inv_naturality_assoc]
 
 /-- Closing the first factor commutes with a spectator factor on the right. -/
 theorem leftPartialTrace_whiskerRight (p : PivotalStructure (C := C))
@@ -207,8 +207,7 @@ theorem tensorDual_coevaluation (X Y : C) :
   let E := ((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)
   let r : A ≅ B := rightDualTensorIso X Y
   let t : Bᘁ ≅ E := rightDualTensorIso (Yᘁ) (Xᘁ)
-  rw [← Dimensions.coevaluation_iso_map r.symm]
-  rw [Iso.symm_hom, Iso.symm_inv, tensorHom_def]
+  rw [← Dimensions.coevaluation_iso_map r.symm, Iso.symm_hom, Iso.symm_inv, tensorHom_def]
   have he : η_ B E ≫ B ◁ t.inv = η_ B (Bᘁ) :=
     Dimensions.coevaluation_rightDualIso_inv HasRightDual.exact ExactPairing.tensor
   rw [← he]

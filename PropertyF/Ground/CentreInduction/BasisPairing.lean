@@ -51,11 +51,10 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
       (Dimensions.simpleInclusionBasis C V i).dualBasis a := by
   classical
   let : Simple (simples C i) := simples_simple C i
-  let B := Dimensions.simpleInclusionBasis C V i
-  apply B.ext
+  apply (Dimensions.simpleInclusionBasis C V i).ext
   intro b
   rw [Module.Basis.dualBasis_apply_self]
-  simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
+  simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing,
     Dimensions.simpleInclusion, simpleProjection, Category.assoc, biproduct.ι_π]
   split_ifs <;> simp <;> exact End.ext rfl
 

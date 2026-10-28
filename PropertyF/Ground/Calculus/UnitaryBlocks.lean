@@ -244,7 +244,7 @@ abbrev IsUnitaryBraidPresentation {X : C} {n r : ℕ} {d : Fin r → ℕ}
 
 /-- Finite categorical braid images admit a simultaneous unitary block
 realization of their actual endomorphism algebra. -/
-theorem braidAlgebra_unitary_blocks (X : C) (n : ℕ) (h : Finite (braidImage X n)) :
+theorem braidAlgebra_unitary_blocks {X : C} {n : ℕ} (h : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ) (e : braidAlgebra X n ≃ₐ[ℂ]
         Blocks.Algebra ⟨_, d⟩),
       (∀ i, NeZero (d i)) ∧ IsUnitaryBraidPresentation e :=

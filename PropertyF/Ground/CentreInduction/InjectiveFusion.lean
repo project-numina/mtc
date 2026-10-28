@@ -105,11 +105,10 @@ theorem center_fusion_of_nonzero_induced_trace (X : C.Obj)
   let J := (induction C).obj X
   let cap : J ⊗ Jᘁ ⟶ 𝟙_ (𝒵) :=
     ((p.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
-  have hcap : η_ J (Jᘁ) ≫ cap ≠ 0 := by
-    intro h
-    apply hne
-    apply End.ext
-    simpa [Dimensions.PivotalStructure.rightTrace, cap, J, Category.assoc] using h
-  exact center_fusion_of_nonzero_induced_cap C X cap hcap
+  apply center_fusion_of_nonzero_induced_cap C X cap
+  intro h
+  apply hne
+  apply End.ext
+  simpa [Dimensions.PivotalStructure.rightTrace, cap, J, Category.assoc] using h
 
 end PropertyF.Ground.CentreInduction

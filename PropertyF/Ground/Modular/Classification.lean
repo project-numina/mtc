@@ -174,10 +174,7 @@ theorem dual_involutive {R : Type*} [CommSemiring R]
   intro y
   have hsym_sq : (∑ z, S (dual y) z * S z y) =
       ∑ z, S y z * S z (dual y) := by
-    apply Finset.sum_congr rfl
-    intro z _
-    rw [hsym (dual y) z, hsym z y]
-    ring
+    simp_rw [hsym (dual y), hsym _ y, mul_comm]
   by_contra hn
   apply hD
   simpa only [ite_eq_left rfl, ite_true, hsym_sq, hsq, ite_eq_right (Ne.symm hn)] using
@@ -191,8 +188,7 @@ theorem normalized_columns_injective (hdet : S.det ≠ 0) (hd : ∀ i, dimension
     Function.Injective (fun j i ↦ S i j / dimension j) := fun a b h ↦
   (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply
     (dimension b) (dimension a) a b (hd b) (funext fun x ↦ by
-      change dimension b * S x a = dimension a * S x b
-      simpa only [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
+      simpa [mul_comm] using (div_eq_div_iff (hd a) (hd b)).mp (congrFun h x))
 
 /-- The normalized S columns are linearly independent. The proof constructs an
 explicit inverse from the S-square identity and nonzero dimensions. -/
