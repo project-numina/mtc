@@ -25,8 +25,10 @@ abbrev BraidWords (n : ℕ) := FreeGroup (Fin (n + 1))
 def strandPermutation (n : ℕ) : BraidWords n →* Equiv.Perm (Fin (n + 2)) :=
   FreeGroup.lift (fun i => Equiv.swap i.castSucc i.succ)
 
+variable (X : C) (n : ℕ)
+
 /-- Evaluate a word in the actual categorical braid generators. -/
-def braidWordAction (X : C) (n : ℕ) : BraidWords n →* braidImage X n :=
+def braidWordAction : BraidWords n →* braidImage X n :=
   (FreeGroup.lift (braidGenerator X n)).codRestrict (braidImage X n) (by
     intro w
     change (FreeGroup.lift (braidGenerator X n)) w ∈ Subgroup.closure (Set.range (braidGenerator X n))
@@ -34,7 +36,7 @@ def braidWordAction (X : C) (n : ℕ) : BraidWords n →* braidImage X n :=
     exact ⟨w, rfl⟩)
 
 /-- Every element of the categorical braid image is represented by a word. -/
-theorem braidWordAction_surjective (X : C) (n : ℕ) :
+theorem braidWordAction_surjective :
     Function.Surjective (braidWordAction X n) := fun ⟨a, ha⟩ =>
   let ⟨w, hw⟩ : a ∈ (FreeGroup.lift (braidGenerator X n)).range := by
     simpa only [FreeGroup.range_lift_eq_closure, braidImage] using ha
@@ -119,11 +121,10 @@ theorem braidWordAction_ker_le_of_retract {X Y : C} (r : Retract X Y) (n : ℕ) 
   apply Iso.ext
   have nat := braidWord_map_natural r.i n w
   rw [hw] at nat
-  have hi : Mono (tensorPowerMap r.i (n + 2)) := by
-    let _ : IsSplitMono (tensorPowerMap r.i (n + 2)) := ⟨⟨{retraction := tensorPowerMap r.r (n + 2), id := by rw [← tensorPowerMap_comp, r.retract, tensorPowerMap_id]}⟩⟩
-    infer_instance
-  apply (cancel_mono (tensorPowerMap r.i (n + 2))).mp
-  simpa using nat
+  let : IsSplitMono (tensorPowerMap r.i (n + 2)) := ⟨⟨{
+    retraction := tensorPowerMap r.r (n + 2)
+    id := by rw [← tensorPowerMap_comp, r.retract, tensorPowerMap_id] }⟩⟩
+  exact (cancel_mono (tensorPowerMap r.i (n + 2))).mp (by simpa using nat)
 
 /-- Restriction to a retract induces a surjective homomorphism of braid images. -/
 def braidImageRetractMap {X Y : C} (r : Retract X Y) (n : ℕ) :

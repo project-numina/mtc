@@ -92,21 +92,23 @@ def trace (B : Blocks) (w : Fin B.count → ℝ) (u : B.Algebra) : ℂ :=
 def mass (B : Blocks) (w : Fin B.count → ℝ) : ℝ :=
   ∑ r, |w r| * B.size r
 
-lemma norm_trace_le (B : Blocks) (w : Fin B.count → ℝ) {u : B.Algebra}
+variable (B : Blocks) (w : Fin B.count → ℝ)
+
+lemma norm_trace_le {u : B.Algebra}
     (hu : B.IsUnitary u) : ‖B.trace w u‖ ≤ B.mass w :=
   (norm_sum_le _ _).trans <| Finset.sum_le_sum fun r _ => by
     simpa using mul_le_mul_of_nonneg_left
       (by simpa using norm_trace_le_card (hu r)) (abs_nonneg (w r))
 
 /-- The sign element used on page 4, equation (3). -/
-def signElement (B : Blocks) (w : Fin B.count → ℝ) : B.Algebra :=
+def signElement : B.Algebra :=
   fun r => (if 0 ≤ w r then (1 : ℂ) else -1) • 1
 
-lemma signElement_unitary (B : Blocks) (w : Fin B.count → ℝ) :
+lemma signElement_unitary :
     B.IsUnitary (B.signElement w) := fun r => by
   by_cases h : 0 ≤ w r <;> simp [signElement, h, Matrix.mem_unitaryGroup_iff]
 
-lemma trace_signElement (B : Blocks) (w : Fin B.count → ℝ) :
+lemma trace_signElement :
     B.trace w (B.signElement w) = (B.mass w : ℂ) := by
   simp only [trace, mass, signElement, Matrix.trace_smul, Matrix.trace_one,
     Fintype.card_fin, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast]
@@ -115,7 +117,7 @@ lemma trace_signElement (B : Blocks) (w : Fin B.count → ℝ) :
   by_cases h : 0 ≤ w r <;> simp [h, abs_of_nonneg, abs_of_neg, lt_of_not_ge]
 
 /-- A bound on all unitary traces bounds the total weighted block mass. -/
-lemma mass_le_of_unitary_trace_bound (B : Blocks) (w : Fin B.count → ℝ) {R : ℝ}
+lemma mass_le_of_unitary_trace_bound {R : ℝ}
     (hbound : ∀ u, B.IsUnitary u → ‖B.trace w u‖ ≤ R) : B.mass w ≤ R := by
   have hm : 0 ≤ B.mass w :=
     Finset.sum_nonneg (fun r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _))
@@ -123,7 +125,7 @@ lemma mass_le_of_unitary_trace_bound (B : Blocks) (w : Fin B.count → ℝ) {R :
     hbound (B.signElement w) (B.signElement_unitary w)
 
 /-- Saturation of the weighted bound saturates every block with nonzero weight. -/
-theorem block_trace_norm_eq_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
+theorem block_trace_norm_eq_of_saturation
     {g : B.Algebra} (hg : B.IsUnitary g) (hsat : ‖B.trace w g‖ = B.mass w)
     (r : Fin B.count) (hw : w r ≠ 0) : ‖(g r).trace‖ = B.size r := by
   have hle : ∀ r, |w r| * ‖(g r).trace‖ ≤ |w r| * B.size r := fun r =>
@@ -140,7 +142,7 @@ theorem block_trace_norm_eq_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
 
 /-- Equality in the weighted bound implies centrality when no weight vanishes.
 This is the equality argument in Lemma 3.2, proved using actual complex matrices. -/
-theorem central_of_saturation (B : Blocks) (w : Fin B.count → ℝ)
+theorem central_of_saturation
     (hw : ∀ r, w r ≠ 0) {g : B.Algebra} (hg : B.IsUnitary g)
     (hsat : ‖B.trace w g‖ = B.mass w) : ∀ T : B.Algebra, g * T = T * g :=
   fun T => funext fun r =>

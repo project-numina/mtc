@@ -22,27 +22,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def imageGenerator (X : C) (n : ℕ) (i : Fin (n + 1)) : braidImage X n :=
   ⟨braidGenerator X n i, Subgroup.subset_closure (Set.mem_range_self _)⟩
 
-/-- Every represented braid image element has finite order when the categorical
-image is finite. No faithfulness of the representation is required. -/
-theorem represented_braid_finite_order {H : Type*} [Monoid H]
-    {X : C} {n : ℕ} (h : Finite (braidImage X n))
-    (ρ : braidImage X n →* H) (g : braidImage X n) :
-    ∃ k : ℕ, k ≠ 0 ∧ (ρ g) ^ k = 1 :=
-  let _ : Finite (braidImage X n) := h
-  (ρ.isOfFinOrder (isOfFinOrder_of_finite g)).exists_pow_eq_one.imp
-    fun _ ⟨hk, hpow⟩ ↦ ⟨hk.ne', hpow⟩
-
-/-- In particular, the represented square of the two-strand self-braiding
-satisfies the `finite_order` condition needed for three-strand rigidity. -/
-theorem represented_square_finite_order {H : Type*} [Monoid H]
-    {X : C} (h : ObjectPropertyF X) (ρ : braidImage X 0 →* H) :
-    ∃ k : ℕ, k ≠ 0 ∧ (ρ ((imageGenerator X 0 0) ^ 2)) ^ k = 1 :=
-  represented_braid_finite_order (h 0) ρ _
-
-/-- The categorical square itself has finite order. -/
+/-- The categorical square has finite order when its braid image is finite. -/
 theorem braid_square_finite_order {X : C} (h : ObjectPropertyF X) :
     ∃ k : ℕ, k ≠ 0 ∧ (braidGenerator X 0 0 ^ 2) ^ k = 1 :=
-  represented_square_finite_order h (braidImage X 0).subtype
+  let _ : Finite (braidImage X 0) := h 0
+  ((braidImage X 0).subtype.isOfFinOrder
+    (isOfFinOrder_of_finite ((imageGenerator X 0 0) ^ 2))).exists_pow_eq_one.imp
+      fun _ ⟨hk, hpow⟩ ↦ ⟨hk.ne', hpow⟩
 
 end PropertyF.Ground.Calculus
 
@@ -54,12 +40,16 @@ namespace PropertyF.Ground.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
+section
+variable (X : C)
+
 /-- Remove the trailing tensor unit from the three-fold tensor power. -/
-def threePowerIso (X : C) : tensorPower X 3 ≅ X ⊗ (X ⊗ X) :=
+def threePowerIso : tensorPower X 3 ≅ X ⊗ (X ⊗ X) :=
   Iso.refl X ⊗ᵢ (Iso.refl X ⊗ᵢ (ρ_ X))
 
 set_option backward.isDefEq.respectTransparency false in
-theorem threeGeneratorLeft_transport (X : C) :
+/-- The left generator becomes the crossing of the first two factors. -/
+theorem threeGeneratorLeft_transport :
   ((threePowerIso X).conjAut (braidGenerator X 1 0)).asIso.hom =
     (α_ X X X).inv ≫ (β_ X X).hom ▷ X ≫ (α_ X X X).hom := by
   change (threePowerIso X).inv ≫ (braidGenerator X 1 _).asIso.hom ≫ (threePowerIso X).hom = _
@@ -69,7 +59,8 @@ theorem threeGeneratorLeft_transport (X : C) :
   monoidal
 
 set_option backward.isDefEq.respectTransparency false in
-theorem threeGeneratorRight_transport (X : C) :
+/-- The right generator becomes the crossing of the last two factors. -/
+theorem threeGeneratorRight_transport :
   ((threePowerIso X).conjAut (braidGenerator X 1 1)).asIso.hom = X ◁ (β_ X X).hom := by
   change (threePowerIso X).inv ≫ (braidGenerator X 1 _).asIso.hom ≫ (threePowerIso X).hom = _
   dsimp only [threePowerIso, braidGenerator, Iso.trans_hom, Iso.trans_inv, Iso.symm_hom,
@@ -79,7 +70,7 @@ theorem threeGeneratorRight_transport (X : C) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The categorical adjacent braidings satisfy Yang–Baxter. -/
-theorem three_braid_relation (X : C) :
+theorem three_braid_relation :
     braidGenerator X 1 0 * braidGenerator X 1 1 * braidGenerator X 1 0 =
     braidGenerator X 1 1 * braidGenerator X 1 0 * braidGenerator X 1 1 :=
   (threePowerIso X).conjAut.injective (Aut.ext (Iso.ext (by
@@ -87,16 +78,18 @@ theorem three_braid_relation (X : C) :
       threeGeneratorRight_transport, Category.assoc] using BraidedCategory.yang_baxter X X X)))
 
 /-- The two adjacent generators in the actual three-strand image. -/
-def threeGeneratorLeft (X : C) : braidImage X 1 := imageGenerator X 1 0
+def threeGeneratorLeft : braidImage X 1 := imageGenerator X 1 0
 
 /-- The right adjacent generator in the three-strand braid image. -/
-def threeGeneratorRight (X : C) : braidImage X 1 := imageGenerator X 1 1
+def threeGeneratorRight : braidImage X 1 := imageGenerator X 1 1
 
 /-- The Yang–Baxter relation holds inside the actual categorical braid image. -/
-theorem three_braid_image_relation (X : C) :
+theorem three_braid_image_relation :
     threeGeneratorLeft X * threeGeneratorRight X * threeGeneratorLeft X =
     threeGeneratorRight X * threeGeneratorLeft X * threeGeneratorRight X :=
   Subtype.ext (three_braid_relation X)
+
+end
 
 /-- Every representation of the actual three-strand image satisfies the braid relation. -/
 theorem three_braid_relation_map {H : Type*} [Monoid H] {X : C}
@@ -184,11 +177,12 @@ def overlapEndProduct (A X Y : C) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
 
 variable (D : BraidedFusionCategory.{v,u})
 
+variable {A X Y : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
+  (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y))
+
 /-- Tracing the new strands of the overlap gives the old operator times the
 normalized trace of the fresh operator. -/
-theorem rightPartialTrace_overlap {A X Y : D.Obj} [Simple X]
-    (p : PivotalStructure (C := D.Obj))
-    (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+theorem rightPartialTrace_overlap :
     rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
       (scalarTrace p scalar u / scalar (p.rightTrace (𝟙 X))) • v := by
   rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
@@ -197,9 +191,7 @@ theorem rightPartialTrace_overlap {A X Y : D.Obj} [Simple X]
 
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/
-theorem pivotalTrace_overlap {A X Y : D.Obj} [Simple X]
-    (p : PivotalStructure (C := D.Obj))
-    (scalar : End (𝟙_ D.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+theorem pivotalTrace_overlap :
     scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by

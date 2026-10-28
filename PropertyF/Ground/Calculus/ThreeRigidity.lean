@@ -122,10 +122,9 @@ theorem local_monodromy_of_three_squares_equal
   rw [threeGeneratorLeft_end_transport X, threeGeneratorRight_end_transport X] at hh
   apply (isoEndAlgEquiv (α_ X X X)).injective
   apply End.ext
-  have hhom := congrArg End.asHom hh
   simpa [insertRightIdentity, overlapFresh, selfMonodromy, isoEndAlgEquiv,
     Iso.conj_apply_asHom, pow_two, End.mul_asHom, comp_whiskerRight,
-    whiskerLeft_comp, Category.assoc] using hhom
+    whiskerLeft_comp, Category.assoc] using congrArg End.asHom hh
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Equality of the actual block squares implies equality of the categorical
@@ -142,9 +141,9 @@ theorem local_monodromy_of_block_squares_equal
       braidInImage X 1 (threeGeneratorRight X ^ 2) := by
     apply b.injective
     simpa [tripleBlockLeft, tripleBlockRight, map_pow] using h
-  have hm := congrArg (fun z : braidAlgebra X 1 => (z : End (tensorPower X 3))) hs
   simpa [braidInImage_val, braidEndRepresentation, threeGeneratorLeft,
-    threeGeneratorRight, imageGenerator] using hm
+    threeGeneratorRight, imageGenerator] using
+      congrArg (fun z : braidAlgebra X 1 => (z : End (tensorPower X 3))) hs
 
 /-- If the same pair operator occurs on either adjacent pair, partial trace
 forces that operator to be scalar. -/
@@ -185,12 +184,9 @@ theorem selfMonodromy_finite_order {C : Type u} [Category.{v} C]
       End.of ((β_ X X).hom) := End.ext (twoGenerator_transport X)
   have h := congrArg (fun z => (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd z)) hpow
   simp only [map_pow, map_one, hgen] at h
-  refine ⟨n, hn, ?_⟩
-  have hs : (End.of ((β_ X X).hom) : End (X ⊗ X)) ^ 2 = selfMonodromy X := by
-    apply End.ext
-    simp [selfMonodromy, pow_two, End.mul_asHom]
-  rw [← hs]
-  exact h
+  have hs : (End.of ((β_ X X).hom) : End (X ⊗ X)) ^ 2 = selfMonodromy X :=
+    End.ext (by simp [selfMonodromy, pow_two, End.mul_asHom])
+  exact ⟨n, hn, hs ▸ h⟩
 
 /-- An object with nonzero pivotal dimension has a nonzero identity endomorphism. -/
 theorem end_one_ne_zero_of_pivotalDimension_ne_zero {X : C.Obj}

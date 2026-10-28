@@ -58,10 +58,9 @@ theorem moveWord_exchange {s : ℕ → G} {m : ℕ}
     intro i hij hjm
     by_cases h : i + 1 = j
     · subst j
-      have hcomm := commute_moveWord hc (i + 1) i (by omega) (by omega)
       simp only [moveWord]
       rw [← mul_assoc, ← mul_assoc, hb i (by omega)]
-      simp only [mul_assoc, hcomm]
+      simp only [mul_assoc, commute_moveWord hc (i + 1) i (by omega) (by omega)]
     · simp only [moveWord]
       rw [← mul_assoc, hc i j (by omega) (by omega), mul_assoc,
         ih i (by omega) (by omega), ← mul_assoc]
@@ -165,8 +164,8 @@ theorem finite_card_of_typeA (m : ℕ) : ∀ {G : Type*} [Group G] (s : ℕ → 
     refine ⟨inferInstance, ?_⟩
     calc
       Nat.card G ≤ Nat.card (Fin (m + 2) × H) := Nat.card_le_card_of_surjective f hf
-      _ = (m + 2) * Nat.card H := by simp [Nat.card_prod]
+      _ = (m + 2) * Nat.card H := by rw [Nat.card_prod, Nat.card_fin]
       _ ≤ (m + 2) * Nat.factorial (m + 1) := Nat.mul_le_mul_left _ hcard
-      _ = Nat.factorial (m + 1 + 1) := by simp [Nat.factorial_succ]
+      _ = Nat.factorial (m + 1 + 1) := (Nat.factorial_succ (m + 1)).symm
 
 end PropertyF.Ground.CentreCalculus

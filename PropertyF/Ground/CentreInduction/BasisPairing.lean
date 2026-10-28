@@ -37,26 +37,10 @@ theorem dualBasis_contraction_natural {k : Type*} [CommSemiring k] {I J : Type} 
   have hL (i : I) : L (a i) = ∑ j, c i j • b j := (b.sum_repr _).symm
   have hD (j : J) : Module.Dual.transpose L (b.dualBasis j) =
       ∑ i, c i j • a.dualBasis i := by
-    calc
-      _ = ∑ i, (a.dualBasis.repr (Module.Dual.transpose L (b.dualBasis j)) i) •
-        a.dualBasis i := (a.dualBasis.sum_repr _).symm
-      _ = _ := by
-        apply Finset.sum_congr rfl
-        intro i _
-        simp [c, Module.Basis.dualBasis_repr,
-          Module.Dual.transpose_apply]
-  calc
-    _ = ∑ i, ∑ j, c i j • F (b j) (a.dualBasis i) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [hL i]
-      simp
-    _ = ∑ j, ∑ i, c i j • F (b j) (a.dualBasis i) := Finset.sum_comm
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [hD j]
-      simp
+    simpa [c, Module.Basis.dualBasis_repr, Module.Dual.transpose_apply] using
+      (a.dualBasis.sum_repr (Module.Dual.transpose L (b.dualBasis j))).symm
+  simp only [hL, hD, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]
+  exact Finset.sum_comm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Simple projections form the dual basis to simple inclusions. -/
@@ -70,15 +54,9 @@ theorem pairing_simpleProjection (V : C.Obj) (i : Fin (rank C))
   apply B.ext
   intro b
   rw [Module.Basis.dualBasis_apply_self]
-  by_cases hab : b = a
-  · subst b
-    simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
-      Dimensions.simpleInclusion, simpleProjection, Category.assoc]
-    exact End.ext rfl
-  · simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
-      Dimensions.simpleInclusion, simpleProjection, Category.assoc,
-      biproduct.ι_π_ne _ (show (⟨i,b⟩ : Dimensions.simplePieces C V) ≠ ⟨i,a⟩ by simpa using hab), hab]
-    exact End.ext rfl
+  simp [Dimensions.simpleHomPairingEquiv, Dimensions.simpleHomPairing, B,
+    Dimensions.simpleInclusion, simpleProjection, Category.assoc, biproduct.ι_π]
+  split_ifs <;> simp <;> exact End.ext rfl
 
 /-- Basis contractions are natural in an arbitrary morphism. -/
 theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V ⟶ W)
@@ -93,19 +71,10 @@ theorem simpleBasis_contraction_natural {V W : C.Obj} (i : Fin (rank C)) (q : V 
   let F' : (simples C i ⟶ W) →ₗ[ℂ]
       Module.Dual ℂ (simples C i ⟶ V) →ₗ[ℂ] E :=
     (LinearMap.lcomp ℂ E P.symm.toLinearMap).comp F
-  have hproj (a) : P.symm (A.dualBasis a) = simpleProjection C V i a := by
-    apply P.injective
-    simpa [P, A] using (pairing_simpleProjection C V i a).symm
-  have hdual (b) : P.symm (Module.Dual.transpose (Linear.rightComp ℂ (simples C i) q)
-      (B.dualBasis b)) = q ≫ simpleProjection C W i b := by
-    apply P.injective
-    rw [P.apply_symm_apply]
-    symm
-    rw [simpleHomPairingEquiv_natural, pairing_simpleProjection]
-  have h := dualBasis_contraction_natural A B (Linear.rightComp ℂ (simples C i) q) F'
-  simp only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply, LinearEquiv.coe_coe] at h
-  simp_rw [hproj, hdual] at h
-  simpa only [A, B, Dimensions.simpleInclusionBasis_apply] using h
+  simpa only [F', LinearMap.comp_apply, LinearMap.lcomp_apply, Linear.rightComp_apply,
+    LinearEquiv.coe_coe, A, B, P, Dimensions.simpleInclusionBasis_apply,
+    ← pairing_simpleProjection, ← simpleHomPairingEquiv_natural, LinearEquiv.symm_apply_apply] using
+    dualBasis_contraction_natural A B (Linear.rightComp ℂ (simples C i) q) F'
 
 /-- A mixed crossing block, with the input and output test strands allowed
 to differ, is bilinear in its two fusion morphisms. -/
@@ -158,10 +127,7 @@ theorem simpleBasis_contraction_refinement {J : Type} [Fintype J] {V : J → C.O
     simpa [F', Category.assoc] using simpleBasis_contraction_natural C i (q j) F'
   simp_rw [step]
   rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro b _
-  rw [← map_sum]
-  simp only [← Category.assoc, ← Preadditive.sum_comp, h, Category.id_comp]
+  simp_rw [← map_sum, ← Category.assoc, ← Preadditive.sum_comp, h, Category.id_comp]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Nested fusion decompositions give the direct crossing-block contraction. -/
@@ -177,13 +143,10 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
   let q (p : J) : V p ⟶ W := (T ◁ crossingInclusion C U p.1 j p.2) ≫ (α_ T U (simples C j)).inv
   let r (p : J) : W ⟶ V p := (α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U p.1 j p.2)
   have h : (∑ p, r p ≫ q p) = 𝟙 W := by
-    calc
-      _ = (α_ T U (simples C j)).hom ≫
-        (T ◁ (∑ p : J, crossingProjection C U p.1 j p.2 ≫ crossingInclusion C U p.1 j p.2)) ≫
-        (α_ T U (simples C j)).inv := by
-          simp only [r, q, whiskerLeft_sum, Preadditive.comp_sum,
-            Preadditive.sum_comp, whiskerLeft_comp, Category.assoc]
-      _ = _ := by rw [crossing_completeness]; simp [W]
+    simp only [r, q, Category.assoc, ← whiskerLeft_comp_assoc,
+      ← Preadditive.comp_sum, ← Preadditive.sum_comp, ← whiskerLeft_sum]
+    rw [crossing_completeness]
+    simp [W]
   have hc := simpleBasis_contraction_refinement C i q r h
     (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (simples C i) (simples C j))
   simpa [V, W, J, q, r, nestedCrossingBlock, crossingSummand, simpleProjection,

@@ -131,36 +131,44 @@ end PropertyF.Ground.Calculus
 open scoped BigOperators
 namespace PropertyF.Ground.Calculus
 
+section
+
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+  (T : Matrix ι ι ℂ →ₗ[ℂ] ℂ) (hT : ∀ X Y, T (X * Y) = T (Y * X))
+
+include hT in
+/-- A cyclic functional agrees with a multiple of the trace on matrix units. -/
+private theorem cyclic_matrix_single (i₀ i j : ι) (a : ℂ) :
+    T (Matrix.single i j a) = T (Matrix.single i₀ i₀ 1) * (Matrix.single i j a).trace := by
+  classical
+  by_cases hij : i = j
+  · subst j
+    have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
+    simp only [Matrix.single_mul_single_same, mul_one, one_mul] at hdiag
+    have hscalar : Matrix.single i₀ i₀ a = a • Matrix.single i₀ i₀ (1 : ℂ) := by
+      simp [Matrix.smul_single]
+    rw [hdiag, hscalar, map_smul, Matrix.trace_single_eq_same]
+    simp [mul_comm]
+  · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
+    simp only [Matrix.single_mul_single_same, one_mul,
+      Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
+    rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
+
+include hT in
 /-- A cyclic linear functional on a complex matrix algebra is a scalar
 multiple of ordinary matrix trace, including the zero-dimensional case. -/
-theorem cyclic_matrix_trace {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (T : Matrix ι ι ℂ →ₗ[ℂ] ℂ) (hT : ∀ X Y, T (X * Y) = T (Y * X)) :
-    ∃ w : ℂ, ∀ X, T X = w * X.trace := by
+theorem cyclic_matrix_trace : ∃ w : ℂ, ∀ X, T X = w * X.trace := by
   classical
   by_cases hn : Nonempty ι
   · let i₀ : ι := Classical.choice hn
-    let w := T (Matrix.single i₀ i₀ 1)
-    refine ⟨w, fun X => ?_⟩
-    have hs : ∀ i j (a : ℂ), T (Matrix.single i j a) =
-        w * (Matrix.single i j a).trace := by
-      intro i j a
-      by_cases hij : i = j
-      · subst j
-        have hdiag := hT (Matrix.single i i₀ a) (Matrix.single i₀ i (1 : ℂ))
-        simp only [Matrix.single_mul_single_same, mul_one, one_mul] at hdiag
-        have hscalar : Matrix.single i₀ i₀ a = a • Matrix.single i₀ i₀ (1 : ℂ) := by
-          simp [Matrix.smul_single]
-        rw [hdiag, hscalar, map_smul, Matrix.trace_single_eq_same]
-        simp [w, mul_comm]
-      · have hoff := hT (Matrix.single i i (1 : ℂ)) (Matrix.single i j a)
-        simp only [Matrix.single_mul_single_same, one_mul,
-          Matrix.single_mul_single_of_ne a i j i (Ne.symm hij) 1, map_zero] at hoff
-        rw [hoff, Matrix.trace_single_eq_of_ne _ _ _ hij, mul_zero]
+    refine ⟨T (Matrix.single i₀ i₀ 1), fun X => ?_⟩
     induction X using Matrix.induction_on with
     | h_add X Y hX hY => simp [hX, hY, Matrix.trace_add, mul_add]
-    | h_std_basis i j a => exact hs i j a
+    | h_std_basis i j a => exact cyclic_matrix_single T hT i₀ i j a
   · let _ : IsEmpty ι := not_nonempty_iff.mp hn
     exact ⟨0, fun X => by simp [Subsingleton.elim X 0]⟩
+
+end
 
 /-- Every cyclic linear functional on a finite product of matrix algebras is
 a weighted sum of ordinary block traces. The weights may be arbitrary complex
@@ -230,15 +238,14 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
     intro i
     let j : Fin (d i) := ⟨0, hd i⟩
     let e : Blocks.Algebra ⟨_, d⟩ := Pi.single i (Matrix.single j j 1)
-    have he : e * e = e := by
-      simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
-    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by rw [← map_mul, he])
+    obtain ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by
+      rw [← map_mul]
+      simp [e, ← Pi.single_mul, Matrix.single_mul_single_same])
     refine ⟨k, ?_⟩
     have ht := hw e
-    have ht' : (φ e).trace = w i := by
-      change (φ e).trace = ∑ k, w k * (e k).trace at ht
-      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one] using ht
-    exact ht'.symm.trans hk
+    change (φ e).trace = ∑ k, w k * (e k).trace at ht
+    exact (show w i = (φ e).trace from by
+      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one] using ht.symm).trans hk
   choose mult hm using hnat
   refine ⟨mult, fun x => ?_⟩
   have hx := hw x
@@ -274,19 +281,17 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
   push Not at hn
   let k : Fin (d j) := ⟨0, hd j⟩
   let e : Blocks.Algebra ⟨_, d⟩ := Pi.single j (Matrix.single k k 1)
-  have he : e * e = e := by
-    simp [e, ← Pi.single_mul, Matrix.single_mul_single_same]
   have hzero : φ e = 0 := by
     funext i
     have hidem : φ e i * φ e i = φ e i := by
-      simpa [he] using (congrFun (map_mul φ e e) i).symm
+      simpa [e, ← Pi.single_mul, Matrix.single_mul_single_same] using
+        (congrFun (map_mul φ e e) i).symm
     have ht : (φ e i).trace = 0 := by
       simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
         Nat.eq_zero_of_le_zero (hn i), Nat.cast_zero] using hmult i e
     exact idempotent_matrix_eq_zero_of_trace_eq_zero hidem ht
-  have hezero : e = 0 := hinj (by simpa using hzero)
-  have hentry := congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k) hezero
-  simp [e] at hentry
+  simpa [e] using congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k)
+    (hinj (show φ e = φ 0 from by simpa using hzero))
 
 end PropertyF.Ground.Calculus
 

@@ -33,67 +33,54 @@ theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
       simpa [w, character_dual_conj N dual hdual χ i] using
         character_inner_balance N dual hdual χ ψ i)).symm
 
+include hdual in
+/-- Distinct normalized columns that are fusion characters are orthogonal. -/
+theorem character_columns_orthogonal [DecidableEq ι] {S : Matrix ι ι ℂ} {d : ι → ℂ}
+    (cols : ι → Character N) (hcols : ∀ j i, (cols j).value i = S i j / d j)
+    (hdet : S.det ≠ 0) (hd : ∀ j, d j ≠ 0)
+    (hreal : ∀ j, starRingEnd ℂ (d j) = d j) {a b : ι} (hab : a ≠ b) :
+    ∑ x, starRingEnd ℂ (S x a) * S x b = 0 :=
+  have hne : cols a ≠ cols b := fun h ↦
+    hab (normalized_columns_injective hdet hd (by
+      funext i
+      simpa only [hcols] using congrFun (congrArg Character.value h) i))
+  (div_eq_zero_iff.mp (show (∑ x, starRingEnd ℂ (S x a) * S x b) / (d a * d b) = 0 from by
+    simpa only [hcols, map_div₀, hreal, div_mul_div_comm, ← Finset.sum_div] using
+      character_orthogonal N dual hdual (cols a) (cols b) hne)).resolve_right
+    (mul_ne_zero (hd a) (hd b))
+
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
 
-/-- A nondegenerate S matrix has distinct normalized columns. -/
-theorem categoricalS_character_injective
-    (hdet : (Sₚ).det ≠ 0) :
-    Function.Injective (normalizedSColumn C p) := by
-  intro a b h
-  apply (Matrix.linearIndependent_cols_of_det_ne_zero hdet).eq_of_smul_apply_eq_smul_apply
-    (dₚ b) (dₚ a) a b (simpleDimension_ne_zero C p b)
-  funext x
-  change dₚ b * Sₚ x a = dₚ a * Sₚ x b
-  simpa only [mul_comm] using
-    (div_eq_div_iff (simpleDimension_ne_zero C p a) (simpleDimension_ne_zero C p b)).mp
-      (congrFun h x)
-
-/-- The columns of a nondegenerate categorical S matrix are orthogonal. -/
-theorem categoricalS_columns_orthogonal
-    (hdet : (Sₚ).det ≠ 0)
-    (hreal : HasRealSimpleDimensions C p)
-    {a b : Fin (rank C)} (hab : a ≠ b) :
-    ∑ x, starRingEnd ℂ (Sₚ x a) * Sₚ x b = 0 := by
-  let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  let cols (j : Fin (rank C)) : Character rules := categoricalSCharacter C p j
-  have ho := character_orthogonal rules (Ground.dualIndex C) (fusionCoeff_dual_adjoint C)
-    (cols a) (cols b) (fun h ↦
-      hab (categoricalS_character_injective C p hdet (congrArg Character.value h)))
-  change (∑ x, starRingEnd ℂ (Sₚ x a / dₚ a) * (Sₚ x b / dₚ b)) = 0 at ho
-  simp only [map_div₀, hreal, div_mul_div_comm, ← Finset.sum_div] at ho
-  exact (div_eq_zero_iff).mp ho |>.resolve_right
-    (mul_ne_zero (simpleDimension_ne_zero C p a) (simpleDimension_ne_zero C p b))
-
-
-/-- Nondegeneracy forces the off-charge-conjugation entries of S² to vanish. -/
-theorem categoricalS_square_off_dual
-    (hdet : (Sₚ).det ≠ 0)
-    (hreal : HasRealSimpleDimensions C p)
-    (x y : Fin (rank C)) (hxy : x ≠ Ground.dualIndex C y) :
-    ∑ z, Sₚ x z * Sₚ z y = 0 := by
-  have hstar (z : Fin (rank C)) :
-      starRingEnd ℂ (Sₚ z (Ground.dualIndex C x)) = Sₚ x z := by
-    rw [categoricalS_symmetric C p z, categoricalS_dual_conj C p hreal]
+/-- Orthogonal columns and dual-conjugation force off-dual entries of the square to vanish. -/
+theorem square_off_dual_of_orthogonal {J K : Type*} [Fintype J] [CommRing K] [StarRing K]
+    (δ : J → J) (hdual : Function.Involutive δ) {S : Matrix J J K}
+    (hsym : ∀ x y, S x y = S y x) (hconj : ∀ x z, S (δ x) z = star (S x z))
+    (horth : ∀ {a b}, a ≠ b → ∑ z, star (S z a) * S z b = 0)
+    (x y : J) (hxy : x ≠ δ y) : ∑ z, S x z * S z y = 0 := by
+  have hstar (z : J) : star (S z (δ x)) = S x z := by
+    rw [hsym z, hconj]
     simp
-  simpa only [hstar] using categoricalS_columns_orthogonal C p hdet hreal
-    (fun (h : Ground.dualIndex C x = y) ↦ hxy (by
-      simpa only [Ground.dualIndex_involutive C x] using congrArg (Ground.dualIndex C) h))
+  simpa only [hstar] using horth (fun (h : δ x = y) ↦ hxy (by
+    simpa only [hdual x] using congrArg δ h))
 
+section SquareSupport
+variable {R : Type*} [CommRing R] [IsDomain R] [DecidableEq ι]
+variable (S : Matrix ι ι R) {δ : ι → ι} {u : ι} (hδ : Function.Involutive δ)
+variable (hunit : δ u = u) (hcol : ∀ x, S (δ x) u = S x u) (hne : ∀ x, S x u ≠ 0)
+variable (hoff : ∀ x y, x ≠ δ y → (∑ z, S x z * S z y) = 0)
 
+omit [DecidableEq ι] in
+include hδ hunit hcol hne hoff in
 /-- If the square of a matrix is supported on an involution, an invariant
 nonzero column forces all supported entries to agree. -/
-theorem square_support_constant {R : Type*} [CommRing R] [IsDomain R] [DecidableEq ι]
-    (S : Matrix ι ι R) {δ : ι → ι} {u : ι} (hdual : Function.Involutive δ)
-    (hunit : δ u = u) (hcol : ∀ x, S (δ x) u = S x u)
-    (hne : ∀ x, S x u ≠ 0)
-    (hoff : ∀ x y, x ≠ δ y → (∑ z, S x z * S z y) = 0) (x : ι) :
+theorem square_support_constant (x : ι) :
     (∑ z, S x z * S z (δ x)) = ∑ z, S u z * S z u := by
   let a : ι → R := fun x => ∑ z, S x z * S z (δ x)
   have hcross (x t : ι) (h : t ≠ δ x) : (∑ z, S x z * S z t) = 0 :=
-    hoff x t (fun hh ↦ h (by simpa only [hdual t] using (congrArg δ hh).symm))
+    hoff x t (fun hh ↦ h (by simpa only [hδ t] using (congrArg δ hh).symm))
   have hleft (x : ι) :
       (∑ t, (∑ z, S x z * S z t) * S t u) = a x * S x u := by
     rw [Finset.sum_eq_single_of_mem (δ x) (Finset.mem_univ _)]
@@ -112,6 +99,18 @@ theorem square_support_constant {R : Type*} [CommRing R] [IsDomain R] [Decidable
   have ha : a x = a u := mul_right_cancel₀ (hne x) (by simpa [mul_comm] using hm)
   simpa [a, hunit] using ha
 
+include hδ hunit hcol hne hoff in
+/-- Involution support and an invariant nonzero column determine the entire square. -/
+theorem square_eq_of_support :
+    HasSSquare S δ (∑ z, S u z * S z u) := by
+  intro x y
+  by_cases hxy : x = δ y
+  · rw [ite_eq_left hxy, show y = δ x by rw [hxy, hδ]]
+    exact square_support_constant S hδ hunit hcol hne hoff x
+  · simpa only [ite_eq_right hxy] using hoff x y hxy
+
+end SquareSupport
+
 variable (hp : p.IsSpherical)
 
 include hp in
@@ -120,18 +119,18 @@ theorem categoricalS_square (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
     HasSSquare Sₚ (Ground.dualIndex C) (globalDimension C) := by
   classical
-  intro x y
-  by_cases hxy : x = Ground.dualIndex C y
-  · rw [ite_eq_left hxy]
-    rw [show y = Ground.dualIndex C x by rw [hxy, Ground.dualIndex_involutive]]
-    refine (square_support_constant Sₚ (Ground.dualIndex_involutive C)
-      (Ground.dualIndex_unit C)
-      (fun i => by simpa only [categoricalS_unit] using simpleDimension_dual C p hreal i)
-      (fun i => by simpa only [categoricalS_unit] using simpleDimension_ne_zero C p i)
-      (fun i j hij => categoricalS_square_off_dual C p hdet hreal i j hij) x).trans ?_
+  have hoff := square_off_dual_of_orthogonal (Ground.dualIndex C) (Ground.dualIndex_involutive C)
+    (categoricalS_symmetric C p) (categoricalS_dual_conj C p hreal)
+    (character_columns_orthogonal ⟨unitIndex C, fusionCoeff C⟩ (Ground.dualIndex C)
+      (fusionCoeff_dual_adjoint C) (S := Sₚ) (d := dₚ) (categoricalSCharacter C p)
+      (fun _ _ ↦ rfl) hdet (simpleDimension_ne_zero C p) hreal)
+  have hglobal : (∑ z, Sₚ (unitIndex C) z * Sₚ z (unitIndex C)) = globalDimension C := by
     simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
     simpa only [pow_two] using (categorical_global_eq_sum_squares C p hp).symm
-  · simpa only [ite_eq_right hxy] using categoricalS_square_off_dual C p hdet hreal x y hxy
+  rw [← hglobal]
+  exact square_eq_of_support Sₚ (Ground.dualIndex_involutive C) (Ground.dualIndex_unit C)
+    (fun i ↦ by simpa only [categoricalS_unit] using simpleDimension_dual C p hreal i)
+    (fun i ↦ by simpa only [categoricalS_unit] using simpleDimension_ne_zero C p i) hoff
 
 end PropertyF.Ground.Modular
 end
