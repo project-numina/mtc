@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.DualCoherence
 /-! # Naturality of dual tensor comparisons
 
 Evaluation pairings establish naturality of the right-dual and double-dual tensor isomorphisms.
+
+## Main results
+
+* `evaluation_ext`: compares dual morphisms by composing with evaluation.
+* `rightDualTensorIso_natural`: proves naturality of the right-dual tensor comparison.
 -/
 
 @[expose] public noncomputable section

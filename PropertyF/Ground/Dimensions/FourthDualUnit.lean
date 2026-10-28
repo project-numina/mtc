@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.CoevaluationSliding
 /-! # Fourth duals of the tensor unit
 
 The Drinfeld and fourth-dual maps satisfy the unit identities used for root dimensions.
+
+## Main results
+
+* `fourthDualIso_unit`: identifies the fourth-dual isomorphism on the unit.
+* `rootDimension_unit_sq`: shows that the root dimension of the unit is a sign.
 -/
 
 @[expose] public noncomputable section

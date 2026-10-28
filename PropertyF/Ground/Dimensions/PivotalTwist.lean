@@ -7,6 +7,11 @@ public import PropertyF.Ground.Dimensions.IntrinsicNonzero
 /-! # Pivotal scalar twists
 
 Scalar natural transformations twist pivotal structures and their simple dimensions.
+
+## Main results
+
+* `pivotalScalarTwist`: twists a pivotal structure by scalar natural data.
+* `pivotalDimension_scalarTwist_simple`: computes the resulting dimensions of simples.
 -/
 
 @[expose] public noncomputable section

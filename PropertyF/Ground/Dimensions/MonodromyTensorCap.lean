@@ -5,6 +5,11 @@ public import PropertyF.Ground.Modular.SMatrix
 /-! # Tensor caps and monodromy
 
 Braiding and evaluation identities simplify the tensor-cap expression for monodromy.
+
+## Main results
+
+* `drinfeld_tensor_cap_factor`: expresses the Drinfeld tensor comparison through a tensor cap.
+* `monodromy_tensor_cap_expansion`: expands the cap in terms of monodromy.
 -/
 
 @[expose] public noncomputable section
