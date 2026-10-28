@@ -56,8 +56,7 @@ This is the main rewriting step for the type-A coset normal form. -/
 theorem moveWord_exchange
     (hb : ∀ i, i + 1 < m → s i * s (i + 1) * s i = s (i + 1) * s i * s (i + 1))
     (hc : ∀ i j, i + 1 < j → j < m → s i * s j = s j * s i) :
-    ∀ j i, i + 1 < j → j ≤ m →
-      s i * moveWord s j = moveWord s j * s (i + 1) := by
+    ∀ j i, i + 1 < j → j ≤ m → s i * moveWord s j = moveWord s j * s (i + 1) := by
   intro j
   induction j with
   | zero => intro i hi; omega

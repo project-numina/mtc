@@ -31,11 +31,8 @@ def tensorPermAction (X : C)
   | n + 2 => Aut.toEnd.comp (permutationAction X hX n)
 
 /-- Every adjacent transposition acts by the actual categorical crossing. -/
-theorem tensorPermAction_swap {X : C}
-    (hX : SelfTransparent X)
-    {n : ℕ} (i : Fin (n + 1)) :
-    tensorPermAction X hX (n + 2) (adjacentSwap i) =
-      Aut.toEnd (braidGenerator X n i) :=
+theorem tensorPermAction_swap {X : C} (hX : SelfTransparent X) {n : ℕ} (i : Fin (n + 1)) :
+    tensorPermAction X hX (n + 2) (adjacentSwap i) = Aut.toEnd (braidGenerator X n i) :=
   congrArg Aut.toEnd (permutationAction_swap hX i)
 
 end PropertyF.Ground.CentreCalculus
@@ -55,12 +52,12 @@ theorem sign_decomposeFin {n : ℕ} (p : Fin (n + 1)) (σ : Equiv.Perm (Fin n)) 
   by_cases hp : p = 0 <;>
     simp [permutationSign, decomposeFin.symm_sign, hp]
 
+variable {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ} {d c : ℂ} {n : ℕ}
+
 /-- A deletion identity for the trace gives the signed-sum recurrence. -/
-theorem signedTraceSum_succ {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ}
-    {d c : ℂ} {n : ℕ}
+theorem signedTraceSum_succ
     (hfixed : ∀ σ, F (n + 1) (decomposeFin.symm (0, σ)) = d * F n σ)
-    (hmoved : ∀ (p : Fin (n + 1)), p ≠ 0 → ∀ σ,
-      F (n + 1) (decomposeFin.symm (p, σ)) = c * F n σ) :
+    (hmoved : ∀ (p : Fin (n + 1)), p ≠ 0 → ∀ σ, F (n + 1) (decomposeFin.symm (p, σ)) = c * F n σ) :
     signedTraceSum F (n + 1) = (d - (n : ℂ) * c) * signedTraceSum F n := by
   unfold signedTraceSum
   rw [← decomposeFin.symm.sum_comp,
@@ -88,7 +85,7 @@ structure IsTraceDeletion (F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ) (d : ℂ
 
 /-- The deletion identities imply the falling-factorial signed trace sum.
 This isolates the categorical trace calculation from the permutation sum. -/
-theorem signedTraceSum_falling {F : ∀ n : ℕ, Equiv.Perm (Fin n) → ℂ} {d : ℂ}
+theorem signedTraceSum_falling
     (hzero : F 0 1 = 1) (h : IsTraceDeletion F d) :
     ∀ n, signedTraceSum F n = ∏ k ∈ Finset.range n, (d - (k : ℂ)) := by
   intro n
@@ -113,12 +110,10 @@ local notation "tr" => permScalarTrace
 
 /-- Integrality follows from one-strand trace deletion for any compatible
 (possibly sign-twisted) family of actual actions. -/
-theorem integral_of_trace_deletion {C : BraidedFusionCategory.{v,u}}
-    {p : PivotalStructure (C := C.Obj)}
+theorem integral_of_trace_deletion {C : BraidedFusionCategory} {p : PivotalStructure (C := C.Obj)}
     (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
-    (h : IsTraceDeletion (tr C p ρ) (fpDimension C X : ℂ)) :
-    ∃ m : ℕ, fpDimension C X = m := by
+    (h : IsTraceDeletion (tr C p ρ) (fpDimension C X : ℂ)) : IsFPIntegral C X := by
   let F := tr C p ρ
   have hz : F 0 1 = 1 := by
     change unitScalar C (p.rightTrace (((ρ 0) 1).asHom)) = 1
@@ -221,11 +216,9 @@ end
 set_option backward.isDefEq.respectTransparency false in
 /-- A fixed inserted strand contributes its positive categorical dimension to
  the actual permutation trace. -/
-theorem tensorPermTrace_fixHead {D : BraidedFusionCategory.{v,u}}
-    {p : PivotalStructure (C := D.Obj)}
-    (hdim : HasFPSimpleDimensions D p)
-    {X : D.Obj} (hX : SelfTransparent X) {n : ℕ} (σ : Equiv.Perm (Fin n)) :
-      tr D p (tensorPermAction X hX) (n + 1) (fixHead n σ) =
+theorem tensorPermTrace_fixHead {D : BraidedFusionCategory} {p : PivotalStructure (C := D.Obj)}
+    (hdim : HasFPSimpleDimensions D p) {X : D.Obj} (hX : SelfTransparent X)
+    {n : ℕ} (σ : Equiv.Perm (Fin n)) : tr D p (tensorPermAction X hX) (n + 1) (fixHead n σ) =
       (fpDimension D X : ℂ) * tr D p (tensorPermAction X hX) n σ := by
   simp only [permScalarTrace]
   rw [tensorPermAction_fixHead]

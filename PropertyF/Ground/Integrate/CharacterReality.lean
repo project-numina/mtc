@@ -13,13 +13,6 @@ namespace PropertyF.Ground
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
-/-- Frobenius reciprocity identifies the transpose of the fusion matrix of a
-simple with the fusion matrix of its dual. -/
-theorem fusionCoeff_dual_transpose (i j k : Fin (rank C)) :
-    fusionCoeff C i j k = fusionCoeff C (dualIndex C i) k j := by
-  rw [fusionCoeff_comm C i j, fusionCoeff_reciprocity_labels,
-    fusionCoeff_comm C k (dualIndex C i)]
-
 /-- Left and right eigenvectors with nonzero pairing have the same eigenvalue. -/
 theorem eigenvalue_eq_of_dotProduct_ne_zero {ι K : Type*} [Fintype ι]
     [CommSemiring K] [IsDomain K] {A : Matrix ι ι K} {u v : ι → K} {z w : K}
@@ -52,17 +45,13 @@ include hχ hchar
 /-- Every nonzero fusion character takes complex-conjugate values on dual
 simple objects, with no pivotal or spherical hypothesis. -/
 theorem fusion_character_dual_eq_conj (i : Fin (rank C)) : χ (dualIndex C i) = star (χ i) := by
-  classical
-  let A : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
-    fun j k => (fusionCoeff C i j k : ℂ)
-  have ht : Aᵀ *ᵥ χ = χ (dualIndex C i) • χ := by
-    convert fusion_character_eigenvector hchar (dualIndex C i) using 1
-    congr 1
-    ext j k
-    change (fusionCoeff C i k j : ℂ) = _
-    exact_mod_cast fusionCoeff_dual_transpose C i k j
-  simpa using congrArg star (conjugate_of_transpose_eigenvector A (by intro j k; simp [A])
-    (fun hz ↦ hχ (congrFun hz i₀)) (fusion_character_eigenvector hchar i) ht)
+  simpa using congrArg star (conjugate_of_transpose_eigenvector (fusionMatrix C i)ᵀ
+    (fun j k ↦ star_natCast _) (fun hz ↦ hχ (congrFun hz i₀))
+    (fusion_character_eigenvector hchar i) (by
+      change fusionMatrix C i *ᵥ χ = _
+      simpa only [fusionMatrix_dual, Matrix.transpose_transpose] using
+        (show (fusionMatrix C (dualIndex C i))ᵀ *ᵥ χ = χ (dualIndex C i) • χ from
+          fusion_character_eigenvector hchar (dualIndex C i))))
 
 variable (hdual : ∀ i, χ (dualIndex C i) = χ i)
 include hdual

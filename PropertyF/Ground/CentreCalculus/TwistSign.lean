@@ -123,7 +123,7 @@ theorem pivotalTwist_sign_of_selfTransparent {X : C.Obj} [Simple X]
 spherical braided fusion category. -/
 theorem selfTransparent_simple_integral (hfp : IsFPSpherical C p) {X : C.Obj} [Simple X]
     (hX : SelfTransparent X) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_spherical_and_twist_sign hfp hX
     (pivotalTwist_sign_of_selfTransparent (C := C) hfp.1 hX)
 
