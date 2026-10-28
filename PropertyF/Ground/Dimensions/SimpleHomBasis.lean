@@ -149,8 +149,7 @@ theorem simpleHom_postcomp_trace
   let : FiniteDimensional ℂ (simples C k ⟶ X) := IsFusionCategory.hom_finite _ _
   rw [LinearMap.trace_eq_matrix_trace ℂ (simpleInclusionBasis C X k)]
   unfold Matrix.trace
-  apply Finset.sum_congr rfl
-  intro t _
+  refine Finset.sum_congr rfl fun t _ ↦ ?_
   simp only [Matrix.diag_apply, LinearMap.toMatrix_apply, Linear.rightComp_apply,
     simpleInclusionBasis_apply]
   apply smul_left_injective ℂ (id_nonzero (simples C k))
@@ -174,9 +173,8 @@ theorem rootTrace_eq_simpleHom_trace_sum
   rw [heq, ht]
   simp only [Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
-  have hblock : ∀ t, biproduct.ι V ⟨k, t⟩ ≫ e.inv ≫ g ≫ e.hom ≫ biproduct.π V ⟨k, t⟩ =
-      c ⟨k, t⟩ • 𝟙 (simples C k) := fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩
-  rw [simpleHom_postcomp_trace C g (fun t => c ⟨k,t⟩) hblock, Finset.sum_mul]
+  rw [simpleHom_postcomp_trace C g (fun t ↦ c ⟨k, t⟩)
+    (fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩), Finset.sum_mul]
   simp only [rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
 
 set_option backward.isDefEq.respectTransparency false in
