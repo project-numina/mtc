@@ -107,16 +107,15 @@ theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum D X) :
     ∃ (n : ℕ) (V : Fin n → D), (∀ i, Simple (V i)) ∧ Nonempty (X ≅ ⨁ V) := by
   induction hX with
   | zero hz =>
-    refine ⟨0, Fin.elim0, fun i => Fin.elim0 i, ⟨hz.iso ?_⟩⟩
-    exact (IsZero.iff_id_eq_zero _).2 (biproduct.hom_ext' _ _ fun i => Fin.elim0 i)
+    exact ⟨0, Fin.elim0, fun i => Fin.elim0 i, ⟨hz.iso ((IsZero.iff_id_eq_zero _).2
+      (biproduct.hom_ext' _ _ fun i => Fin.elim0 i))⟩⟩
   | @cons X S K hs hk he ih =>
     obtain ⟨n, V, hv, ⟨e⟩⟩ := ih
     obtain ⟨eX⟩ := he
-    let W : Fin (n + 1) → D := fun i => (finSuccEquiv n i).elim S V
-    refine ⟨n + 1, W, fun i ↦
+    refine ⟨n + 1, fun i ↦ (finSuccEquiv n i).elim S V, fun i ↦
       Option.rec (motive := fun o ↦ Simple (o.elim S V)) hs hv (finSuccEquiv n i), ⟨?_⟩⟩
     exact eX ≪≫ biprod.mapIso (Iso.refl S) e ≪≫ biprodOptionIso S V ≪≫
-      biproduct.whiskerEquiv (finSuccEquiv n).symm (fun i => eqToIso (by simp [W]))
+      biproduct.whiskerEquiv (finSuccEquiv n).symm (fun i => eqToIso (by simp))
 
 end PropertyF.Ground.CentreInduction
 

@@ -49,8 +49,6 @@ theorem central_of_positive_braiding [BraidedCategory D] {Z W B : 𝒵} {T : D}
 /-- Every transported base pivotal component is a morphism in the actual centre. -/
 theorem pivotalComponentsCentral_proved [BraidedCategory D] :
     PivotalComponentsCentral p := fun Z T ↦
-  letI : IsIso (transportedPivotalHom p ((Center.ofBraided D).obj T)) :=
-    inferInstanceAs (IsIso ((p.iso T).hom ≫ (forgetDoubleDualIso ((Center.ofBraided D).obj T)).inv))
   central_of_positive_braiding (transportedPivotalHom p Z)
     (transportedPivotalHom p ((Center.ofBraided D).obj T))
     (transported_pivotal_braiding p Z ((Center.ofBraided D).obj T))
