@@ -30,13 +30,12 @@ theorem center_globalDimension_square_of_actual_induction
     (p : Dimensions.PivotalStructure (C := (Integrate.bundledCenter C).Obj))
     (hp : p.IsSpherical)
     (hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter C) p) :
-    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 := by
-  apply CentreModular.center_globalDimension_of_adjunction C
+    globalDimension (Integrate.bundledCenter C) = (globalFPDimension C : ℂ) ^ 2 :=
+  CentreModular.center_globalDimension_of_adjunction C
     (CentreInduction.induction C) (CentreInduction.actualAdjunction C)
-    (fun _ => ⟨Iso.refl _⟩) p hp
-  intro i
-  simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
-    Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hdim i
+    (fun _ ↦ ⟨Iso.refl _⟩) p hp fun i ↦ by
+      simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
+        Dimensions.groundUnitScalarEquiv_apply, unitScalar_eq_equiv] using hdim i
 
 /-- The target reduces to the actual positive modular centre, core
 integrality, and finite mixed monodromy on the specified image labels. Its
