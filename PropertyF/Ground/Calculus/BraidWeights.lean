@@ -33,7 +33,7 @@ def groundSimpleScalar (i : Fin (Ground.rank C)) :
   let _ : Simple (Ground.simples C i) := Ground.simples_simple C i
   let _ : FiniteDimensional ℂ (Ground.simples C i ⟶ Ground.simples C i) :=
     Ground.IsFusionCategory.hom_finite _ _
-  exact simpleEndScalar _
+  exact simpleEndScalar (k := ℂ) _
 
 variable {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
   (e : X ≅ ⨁ (simpleCopies C m)) (a : End X)
