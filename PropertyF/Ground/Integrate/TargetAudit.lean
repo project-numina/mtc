@@ -150,7 +150,6 @@ import all PropertyF.Ground.Fusion.UnitPower
 import all PropertyF.Ground.Integrate.ActualCenterReduction
 import all PropertyF.Ground.Integrate.Arithmetic
 import all PropertyF.Ground.Integrate.CenterBundle
-import all PropertyF.Ground.Integrate.CenterDualMate
 import all PropertyF.Ground.Integrate.CharacterReality
 import all PropertyF.Ground.Integrate.DependencyAudit
 import all PropertyF.Ground.Integrate.Representatives
