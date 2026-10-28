@@ -225,45 +225,23 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 section
-variable {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D] [HasKernels D]
+variable {k : Type*} [Field k] [IsAlgClosed k]
+  {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D] [HasKernels D]
 
 /-- Composition induces the scalar-valued pairing between morphisms to and
 from a simple object. -/
-def simpleHomPairing (S X : D) [Simple S] [FiniteDimensional ℂ (S ⟶ S)] : (X ⟶ S) →ₗ[ℂ] Module.Dual ℂ (S ⟶ X) := by
-  exact {
-    toFun g := {
-      toFun := fun f => Ground.simpleEndScalar S (End.of (f ≫ g))
-      map_add' := by
-        intro f f'
-        simp only [Preadditive.add_comp]
-        change Ground.simpleEndScalar S (End.of (f ≫ g) + End.of (f' ≫ g)) = _
-        exact map_add _ _ _
-      map_smul' := by
-        intro z f
-        simp only [Linear.smul_comp]
-        change Ground.simpleEndScalar S (z • End.of (f ≫ g)) = z • _
-        exact map_smul _ _ _ }
-    map_add' := by
-      intro g g'
-      ext f
-      simp only [Preadditive.comp_add]
-      change Ground.simpleEndScalar S (End.of (f ≫ g) + End.of (f ≫ g')) = _
-      exact map_add _ _ _
-    map_smul' := by
-      intro z g
-      ext f
-      simp only [Linear.comp_smul]
-      change Ground.simpleEndScalar S (z • End.of (f ≫ g)) = z • _
-      exact map_smul _ _ _
-  }
+def simpleHomPairing (S X : D) [Simple S] [FiniteDimensional k (S ⟶ S)] :
+    (X ⟶ S) →ₗ[k] Module.Dual k (S ⟶ X) :=
+  (LinearMap.compRight k ((Ground.simpleEndScalar (k := k) S).toLinearMap.comp
+    (End.linearEquiv (R := k) (X := S)).symm.toLinearMap)).comp (Linear.comp S X S).flip
 
 
 /-- Composition pairs precomposition on one Hom space with postcomposition on
 the other. -/
 theorem simpleHomPairing_natural
-    {S X Y : D} [Simple S] [FiniteDimensional ℂ (S ⟶ S)] (g : Y ⟶ S) (a : X ⟶ Y) :
-    simpleHomPairing S X (a ≫ g) =
-      Module.Dual.transpose (Linear.rightComp ℂ S a) (simpleHomPairing S Y g) := by
+    {S X Y : D} [Simple S] [FiniteDimensional k (S ⟶ S)] (g : Y ⟶ S) (a : X ⟶ Y) :
+    simpleHomPairing (k := k) S X (a ≫ g) =
+      Module.Dual.transpose (Linear.rightComp k S a) (simpleHomPairing (k := k) S Y g) := by
   ext f
   simp [simpleHomPairing, Module.Dual.transpose_apply, Linear.rightComp_apply, Category.assoc]
 
@@ -277,16 +255,16 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 set_option backward.isDefEq.respectTransparency false in
 /-- The composition pairing is nondegenerate in the morphism-to-simple factor. -/
 theorem simpleHomPairing_injective
-    (S X : D) [Simple S] [FiniteDimensional ℂ (S ⟶ S)] : Function.Injective (simpleHomPairing S X) := by
+    (S X : D) [Simple S] [FiniteDimensional ℂ (S ⟶ S)] : Function.Injective (simpleHomPairing (k := ℂ) S X) := by
   apply LinearMap.ker_eq_bot.mp
   rw [LinearMap.ker_eq_bot']
   intro g hg
   by_contra hne
   obtain ⟨f, hf⟩ := Ground.split_to_simple g hne
   have h := congrArg (fun F : Module.Dual ℂ (S ⟶ X) => F f) hg
-  change Ground.simpleEndScalar S (End.of (f ≫ g)) = 0 at h
+  change Ground.simpleEndScalar (k := ℂ) S (End.of (f ≫ g)) = 0 at h
   rw [hf] at h
-  change Ground.simpleEndScalar S 1 = 0 at h
+  change Ground.simpleEndScalar (k := ℂ) S 1 = 0 at h
   simp at h
 
 end
@@ -300,7 +278,7 @@ def simpleHomPairingEquiv {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [MonoidalPreadditive D] [MonoidalLinear ℂ D] [IsFusionCategory D]
     (S X : D) [Simple S] : (X ⟶ S) ≃ₗ[ℂ] Module.Dual ℂ (S ⟶ X) := by
   letI : ∀ A B : D, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  let p := simpleHomPairing S X
+  let p := simpleHomPairing (k := ℂ) S X
   have hi := simpleHomPairing_injective S X
   have hd : Module.finrank ℂ (X ⟶ S) = Module.finrank ℂ (Module.Dual ℂ (S ⟶ X)) :=
     (finrank_to_simple_eq_from_simple X S).trans

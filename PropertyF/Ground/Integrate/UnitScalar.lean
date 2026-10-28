@@ -19,13 +19,13 @@ variable (C : BraidedFusionCategory.{v,u})
 theorem unit_algebraMap_bijective : Function.Bijective (algebraMap ℂ (End (𝟙_ C.Obj))) :=
   let : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   let : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
-  simple_algebraMap_bijective _
+  simple_algebraMap_bijective (k := ℂ) _
 
 /-- The canonical scalar identification is an algebra equivalence. -/
 def unitScalarEquiv : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ :=
   letI : Simple (𝟙_ C.Obj) := IsFusionCategory.unit_simple
   letI : FiniteDimensional ℂ ((𝟙_ C.Obj) ⟶ (𝟙_ C.Obj)) := IsFusionCategory.hom_finite _ _
-  simpleEndScalar _
+  simpleEndScalar (k := ℂ) _
 
 /-- The scalar inverse used by the ground target really inverts the canonical
 algebra map; no fallback value is reachable. -/

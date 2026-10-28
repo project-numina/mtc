@@ -104,9 +104,9 @@ theorem dual_multiplicity (X : D.Obj) (i : Fin (rank D)) :
   obtain ⟨e⟩ := dualIndex_iso D i
   let : Simple (simples D (dualIndex D i)) := simples_simple D _
   exact (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁX : D.Obj)).symm).trans
-    (tensorLeftHomLinearEquiv (simples D i) (ᘁX) X (𝟙_ D.Obj)).symm |>.trans
+    (tensorLeftHomLinearEquiv (k := ℂ) (simples D i) (ᘁX) X (𝟙_ D.Obj)).symm |>.trans
     (CategoryTheory.Linear.homCongr ℂ (β_ X (simples D i)) (Iso.refl _)) |>.trans
-    (tensorLeftHomLinearEquiv X (ᘁ(simples D i)) (simples D i) (𝟙_ D.Obj)) |>.trans
+    (tensorLeftHomLinearEquiv (k := ℂ) X (ᘁ(simples D i)) (simples D i) (𝟙_ D.Obj)) |>.trans
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (ρ_ (ᘁ(simples D i) : D.Obj))) |>.trans
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) e) |>.finrank_eq |>.trans
     (finrank_to_simple_eq_from_simple X (simples D (dualIndex D i)))

@@ -66,8 +66,8 @@ theorem trace_reciprocity_of_coeval_defect
       let X := simples C i
       let K := simples C k
       letI : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
-      tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom =
-        rootDualSign C i • (tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
+      tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom =
+        rootDualSign C i • (tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫
           (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)) :
     ENOTraceMatrixReciprocity C := by
   apply trace_reciprocity_of_frobenius_defect C
@@ -78,10 +78,10 @@ theorem trace_reciprocity_of_coeval_defect
   let : ExactPairing (Xᘁ) X := BraidedCategory.exactPairing_swap X (Xᘁ)
   have hpost := tensorLeftHomEquiv_naturality (Y := Xᘁ) (rootTensorDefect C X K).hom g
   have hpost' := tensorLeftHomEquiv_naturality (Y := Xᘁ) (𝟙 (X ⊗ K)) g
-  change tensorLeftHomLinearEquiv K (Xᘁ) X J ((rootTensorDefect C X K).hom ≫ g) =
-    tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom ≫ (Xᘁ) ◁ g at hpost
-  change tensorLeftHomLinearEquiv K (Xᘁ) X J ((𝟙 (X ⊗ K)) ≫ g) =
-    tensorLeftHomLinearEquiv K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫ (Xᘁ) ◁ g at hpost'
+  change tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X J ((rootTensorDefect C X K).hom ≫ g) =
+    tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (rootTensorDefect C X K).hom ≫ (Xᘁ) ◁ g at hpost
+  change tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X J ((𝟙 (X ⊗ K)) ≫ g) =
+    tensorLeftHomLinearEquiv (k := ℂ) K (Xᘁ) X (X ⊗ K) (𝟙 (X ⊗ K)) ≫ (Xᘁ) ◁ g at hpost'
   have hn := rootTensorDefect_natural C (𝟙 (Xᘁ)) g
   simp only [id_tensorHom] at hn
   simp only [Category.id_comp] at hpost'
