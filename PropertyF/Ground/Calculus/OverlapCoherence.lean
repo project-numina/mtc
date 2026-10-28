@@ -12,14 +12,14 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
 
 /-- At the level of endomorphisms, left insertion is left whiskering. -/
-theorem addLeftBraidAlgebra_asHom (X : C) (n : ℕ) (a : braidAlgebra X n) :
+theorem addLeftBraidAlgebra_asHom {X : C} {n : ℕ} (a : braidAlgebra X n) :
     ((addLeftBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
       X ◁ (a : End (tensorPower X (n + 2))).asHom := rfl
 
 /-- At the level of endomorphisms, right insertion is right whiskering,
 transported across the append isomorphism. -/
-theorem addRightBraidAlgebra_asHom (X : C) (n : ℕ) (a : braidAlgebra X n) :
+theorem addRightBraidAlgebra_asHom {X : C} {n : ℕ} (a : braidAlgebra X n) :
     ((addRightBraidAlgebra X n a : braidAlgebra X (n + 1)) :
       End (tensorPower X ((n + 1) + 2))).asHom =
       (appendIso X (n + 2)).inv ≫ ((a : End (tensorPower X (n + 2))).asHom ▷ X) ≫
@@ -37,7 +37,7 @@ def insertLeftPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X k ⊗ tensorPowe
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated left insertion is one identity tensor factor, transported along
 the canonical tensor-power isomorphism. -/
-theorem addLeftBraidAlgebraIter_asHom (X : C) (n k : ℕ) (a : braidAlgebra X n) :
+theorem addLeftBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlgebra X n) :
     ((addLeftBraidAlgebraIter X n k a : braidAlgebra X (n + k)) :
       End (tensorPower X ((n + k) + 2))).asHom =
       (insertLeftPowerIso X n k).inv ≫
@@ -68,7 +68,7 @@ def insertRightPowerIso (X : C) (n : ℕ) : ∀ k, tensorPower X (n + 2) ⊗ ten
 set_option backward.isDefEq.respectTransparency false in
 /-- Repeated right insertion is one identity tensor factor, transported along
 the canonical tensor-power isomorphism. -/
-theorem addRightBraidAlgebraIter_asHom (X : C) (n k : ℕ) (a : braidAlgebra X n) :
+theorem addRightBraidAlgebraIter_asHom {X : C} {n : ℕ} (k : ℕ) (a : braidAlgebra X n) :
     ((addRightBraidAlgebraIter X n k a : braidAlgebra X (n + k)) :
       End (tensorPower X ((n + k) + 2))).asHom =
       (insertRightPowerIso X n k).inv ≫

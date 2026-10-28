@@ -144,7 +144,7 @@ theorem rightPartialTrace_simple_ground (C : Ground.BraidedFusionCategory.{v,u})
     rightPartialTrace p X Y f =
       (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
   let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
-  apply rightPartialTrace_simple_of_trace_compatibility X Y p scalar f
+  apply rightPartialTrace_simple_of_trace_compatibility (X := X) (Y := Y) p scalar f
   · intro h
     apply Modular.pivotalTrace_simple_ne_zero C p X
     apply scalar.injective
