@@ -25,8 +25,8 @@ private theorem transported_pivotal_braiding (p : Dimensions.PivotalStructure (C
   let u (W : CategoryTheory.Center D) : W.1 ⟶ ((Wᘁ)ᘁ).1 :=
     (p.iso W.1).hom ≫ (forgetDoubleDualIso W).inv
   have hu (X Y : CategoryTheory.Center D) :
-      u (X ⊗ Y) = (u X ⊗ₘ u Y) ≫ (Dimensions.doubleDualTensorIso X Y).hom.f := by
-    convert (transported_pivotal_tensor p X Y).symm using 1 <;> rfl
+      u (X ⊗ Y) = (u X ⊗ₘ u Y) ≫ (Dimensions.doubleDualTensorIso X Y).hom.f :=
+    (transported_pivotal_tensor p X Y).symm
   let b := (β_ Z B).hom
   have hn : b.f ≫ u (B ⊗ Z) = u (Z ⊗ B) ≫ ((bᘁ)ᘁ).f :=
     by simpa [u, Category.assoc] using transported_pivotal_natural p b

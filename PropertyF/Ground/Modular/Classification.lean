@@ -146,15 +146,14 @@ theorem characters_exhausted (b : Basis ι ℂ (ι → ℂ)) (hb : ∀ y, b y = 
     (character_eigenvector N χ i) y hy
 
 
+open scoped Classical in
 /-- A linearly independent family of as many characters as labels is a
 complete, duplicate-free classification. -/
 theorem characters_bijective (hlin : LinearIndependent ℂ (fun y => (columns y).value)) :
-    Function.Bijective columns := by
-  classical
-  refine ⟨fun _ _ h ↦ hlin.injective (congrArg Character.value h), fun χ ↦ ?_⟩
-  let b := basisOfPiSpaceOfLinearIndependent hlin
-  exact (characters_exhausted N columns b
-    (fun y ↦ congrFun (coe_basisOfPiSpaceOfLinearIndependent hlin) y) χ).imp fun _ h ↦ h.symm
+    Function.Bijective columns :=
+  ⟨fun _ _ h ↦ hlin.injective (congrArg Character.value h), fun χ ↦
+    (characters_exhausted N columns (basisOfPiSpaceOfLinearIndependent hlin)
+      (fun y ↦ congrFun (coe_basisOfPiSpaceOfLinearIndependent hlin) y) χ).imp fun _ h ↦ h.symm⟩
 
 /-- Normalized columns satisfy the fusion-character equations. -/
 abbrev HasVerlindeFormula {ι : Type*} [Fintype ι] {K : Type*} [DivisionSemiring K]

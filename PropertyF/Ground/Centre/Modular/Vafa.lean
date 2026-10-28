@@ -856,10 +856,7 @@ variable (C : BraidedFusionCategory.{v,u})
 
 /-- The pivotal twist satisfies the balancing equation. -/
 abbrev IsPivotalTwistBalanced (p : Dimensions.PivotalStructure (C := C.Obj)) : Prop :=
-  ∀ X Y, Modular.doubleBraiding X Y ≫
-    ((Dimensions.pivotalBraidedTwist C p X).hom ⊗ₘ
-      (Dimensions.pivotalBraidedTwist C p Y).hom) =
-    (Dimensions.pivotalBraidedTwist C p (X ⊗ Y)).hom
+  CentreCabling.IsBalancedTwist (Dimensions.pivotalBraidedTwistNaturalIso C p)
 
 /-- The pivotal twist acts by its chosen scalar on each simple object. -/
 theorem pivotal_twist_has_simple_scalars (p : Dimensions.PivotalStructure (C := C.Obj)) :
