@@ -31,8 +31,7 @@ theorem split_to_simple {S X : D.Obj} [Simple S] (f : X ⟶ S) (hf : f ≠ 0) :
   let V : (Σ i, Fin (m i)) → D.Obj := fun p => simples D p.1
   have hg : e.inv ≫ f ≠ 0 := fun h ↦ hf ((cancel_epi e.inv).1 (by simpa using h))
   have hc : ∃ p, biproduct.ι V p ≫ e.inv ≫ f ≠ 0 := by
-    by_contra h
-    push Not at h
+    by_contra! h
     apply hg
     apply biproduct.hom_ext'
     intro p

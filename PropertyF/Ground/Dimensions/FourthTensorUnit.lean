@@ -45,25 +45,21 @@ theorem rootTensorIso_unit_left (X : C.Obj) :
   let I := 𝟙_ C.Obj
   let : HasRightDual I := RightRigidCategory.rightDual I
   let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual (Iᘁ)
-  let a := (fourthDualRootNaturalIso C).app X
-  let b := (fourthDualRootNaturalIso C).app (I ⊗ X)
-  let z := rootDimension C (unitIndex C)
-  let L := rightDualIsoMap (rightDualIsoMap (λ_ X))
-  have hnat : (λ_ X).hom ≫ a.hom = b.hom ≫ (((λ_ X).homᘁ)ᘁ) :=
-    (fourthDualRootNaturalIso C).hom.naturality (λ_ X).hom
-  have hu : ((fourthDualRootNaturalIso C).app I).hom = z • (doubleDualUnitIso (C := C.Obj)).hom :=
-    fourthDualRoot_unit_component C
-  have ht : (rootTensorIso C I X).hom ≫ (((λ_ X).homᘁ)ᘁ) =
-      z • ((λ_ X).hom ≫ a.hom) := by
-    change ((((fourthDualRootNaturalIso C).app I).hom ⊗ₘ a.hom) ≫
-      (doubleDualTensorIso I X).hom) ≫ (((λ_ X).homᘁ)ᘁ) = _
-    rw [tensorHom_def', hu]
-    simp only [doubleDualFunctor, Functor.id_obj, MonoidalLinear.smul_whiskerRight, Linear.comp_smul, Linear.smul_comp, Category.assoc]
-    rw [doubleDualTensorIso_unit_left, leftUnitor_naturality]
-  apply (cancel_mono L.hom).1
+  apply (cancel_mono (rightDualIsoMap (rightDualIsoMap (λ_ X))).hom).1
   change (rootTensorIso C I X).hom ≫ (((λ_ X).homᘁ)ᘁ) =
-    (z • b.hom) ≫ (((λ_ X).homᘁ)ᘁ)
-  simpa only [Linear.smul_comp, ← hnat] using ht
+    (rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (I ⊗ X)).hom) ≫
+      (((λ_ X).homᘁ)ᘁ)
+  have hnat : (λ_ X).hom ≫ ((fourthDualRootNaturalIso C).app X).hom =
+      ((fourthDualRootNaturalIso C).app (I ⊗ X)).hom ≫ (((λ_ X).homᘁ)ᘁ) :=
+    (fourthDualRootNaturalIso C).hom.naturality (λ_ X).hom
+  rw [Linear.smul_comp, ← hnat]
+  change ((((fourthDualRootNaturalIso C).app I).hom ⊗ₘ
+    ((fourthDualRootNaturalIso C).app X).hom) ≫ (doubleDualTensorIso I X).hom) ≫
+      (((λ_ X).homᘁ)ᘁ) = _
+  rw [tensorHom_def', fourthDualRoot_unit_component]
+  simp only [doubleDualFunctor, Functor.id_obj, MonoidalLinear.smul_whiskerRight,
+    Linear.comp_smul, Linear.smul_comp, Category.assoc]
+  rw [doubleDualTensorIso_unit_left, leftUnitor_naturality]
 
 /-- The ENO tensor defect with a left unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_left (X : C.Obj) :
@@ -79,25 +75,21 @@ theorem rootTensorIso_unit_right (X : C.Obj) :
   let I := 𝟙_ C.Obj
   let : HasRightDual I := RightRigidCategory.rightDual I
   let : HasRightDual (Iᘁ) := RightRigidCategory.rightDual (Iᘁ)
-  let a := (fourthDualRootNaturalIso C).app X
-  let b := (fourthDualRootNaturalIso C).app (X ⊗ I)
-  let z := rootDimension C (unitIndex C)
-  let L := rightDualIsoMap (rightDualIsoMap (ρ_ X))
-  have hnat : (ρ_ X).hom ≫ a.hom = b.hom ≫ (((ρ_ X).homᘁ)ᘁ) :=
-    (fourthDualRootNaturalIso C).hom.naturality (ρ_ X).hom
-  have hu : ((fourthDualRootNaturalIso C).app I).hom = z • (doubleDualUnitIso (C := C.Obj)).hom :=
-    fourthDualRoot_unit_component C
-  have ht : (rootTensorIso C X I).hom ≫ (((ρ_ X).homᘁ)ᘁ) =
-      z • ((ρ_ X).hom ≫ a.hom) := by
-    change ((a.hom ⊗ₘ ((fourthDualRootNaturalIso C).app I).hom) ≫
-      (doubleDualTensorIso X I).hom) ≫ (((ρ_ X).homᘁ)ᘁ) = _
-    rw [tensorHom_def, hu]
-    simp only [doubleDualFunctor, Functor.id_obj, MonoidalLinear.whiskerLeft_smul, Linear.comp_smul, Linear.smul_comp, Category.assoc]
-    rw [doubleDualTensorIso_unit_right, rightUnitor_naturality]
-  apply (cancel_mono L.hom).1
+  apply (cancel_mono (rightDualIsoMap (rightDualIsoMap (ρ_ X))).hom).1
   change (rootTensorIso C X I).hom ≫ (((ρ_ X).homᘁ)ᘁ) =
-    (z • b.hom) ≫ (((ρ_ X).homᘁ)ᘁ)
-  simpa only [Linear.smul_comp, ← hnat] using ht
+    (rootDimension C (unitIndex C) • ((fourthDualRootNaturalIso C).app (X ⊗ I)).hom) ≫
+      (((ρ_ X).homᘁ)ᘁ)
+  have hnat : (ρ_ X).hom ≫ ((fourthDualRootNaturalIso C).app X).hom =
+      ((fourthDualRootNaturalIso C).app (X ⊗ I)).hom ≫ (((ρ_ X).homᘁ)ᘁ) :=
+    (fourthDualRootNaturalIso C).hom.naturality (ρ_ X).hom
+  rw [Linear.smul_comp, ← hnat]
+  change ((((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
+    ((fourthDualRootNaturalIso C).app I).hom) ≫ (doubleDualTensorIso X I).hom) ≫
+      (((ρ_ X).homᘁ)ᘁ) = _
+  rw [tensorHom_def, fourthDualRoot_unit_component]
+  simp only [doubleDualFunctor, Functor.id_obj, MonoidalLinear.whiskerLeft_smul,
+    Linear.comp_smul, Linear.smul_comp, Category.assoc]
+  rw [doubleDualTensorIso_unit_right, rightUnitor_naturality]
 
 /-- The ENO tensor defect with a right unit factor is its unit sign. -/
 theorem rootTensorDefect_unit_right (X : C.Obj) :
