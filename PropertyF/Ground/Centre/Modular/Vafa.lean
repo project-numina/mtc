@@ -137,9 +137,8 @@ def fpDeterminant (X : C.Obj) (a : X ≅ X) :
 theorem fpDeterminant_trans {X : C.Obj}
     (a b : X ≅ X) : fpDeterminant C X (a ≪≫ b) =
       fpDeterminant C X a + fpDeterminant C X b := by
-  unfold fpDeterminant
-  simp_rw [homAction_trans, LinearEquiv.det_trans, vafaUnitClass_mul, smul_add]
-  rw [Finset.sum_add_distrib, add_comm]
+  simp [fpDeterminant, homAction_trans, LinearEquiv.det_trans, vafaUnitClass_mul,
+    smul_add, Finset.sum_add_distrib, add_comm]
 
 /-- The actual scalar automorphism of an object. -/
 def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
@@ -751,10 +750,9 @@ variable (C : BraidedFusionCategory.{v,u})
 monodromy automorphisms. -/
 theorem monodromy_hexagon_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [BraidedCategory D] (Z X Y : D) :
+    let e := ((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)
     (α_ Z X Y) ≪≫ monodromyIso Z (X ⊗ Y) ≪≫ (α_ Z X Y).symm =
-      (((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)) ≪≫
-        (Iso.refl X ⊗ᵢ monodromyIso Z Y) ≪≫
-        (((β_ Z X) ⊗ᵢ Iso.refl Y) ≪≫ (α_ X Z Y)).symm ≪≫
+      e ≪≫ (Iso.refl X ⊗ᵢ monodromyIso Z Y) ≪≫ e.symm ≪≫
         (monodromyIso Z X ⊗ᵢ Iso.refl Y) :=
   Iso.ext (by simp [monodromyIso, tensorIso_hom, tensorHom_id, id_tensorHom, Category.assoc,
     ← comp_whiskerRight])

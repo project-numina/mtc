@@ -41,37 +41,41 @@ theorem doubleDualTensor_evaluation {C : Type u} [Category.{v} C] [MonoidalCateg
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
   [RightRigidCategory D]
 
+/-- The Drinfeld comparison satisfies the tensor equation at two objects. -/
+abbrev HasDrinfeldTensorEquation (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ) (X Y : D) : Prop :=
+  Modular.doubleBraiding X Y ≫ (d (X ⊗ Y)).hom =
+    ((d X).hom ⊗ₘ (d Y).hom) ≫ (doubleDualTensorIso X Y).hom
+
 /-- A compatible double-dual tensor equation implies pivotal twist balancing. -/
 theorem balance_of_drinfeld_tensor (p : PivotalStructure (C := D)) {X Y : D}
     (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
-    (h : Modular.doubleBraiding X Y ≫ (d (X ⊗ Y)).hom =
-      ((d X).hom ⊗ₘ (d Y).hom) ≫ (doubleDualTensorIso X Y).hom) :
+    (h : HasDrinfeldTensorEquation d X Y) :
     (p.iso (X ⊗ Y)).hom ≫ (d (X ⊗ Y)).inv =
       (((p.iso X).hom ≫ (d X).inv) ⊗ₘ ((p.iso Y).hom ≫ (d Y).inv)) ≫
         Modular.doubleBraiding X Y := by
+  dsimp only [HasDrinfeldTensorEquation] at h
   apply (cancel_mono (d (X ⊗ Y)).hom).1
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rw [h, p.tensor]
-  rw [← Category.assoc, tensorHom_comp_tensorHom]
-  rw [Category.assoc, Iso.inv_hom_id, Category.comp_id,
-    Category.assoc, Iso.inv_hom_id, Category.comp_id]
+  rw [h, p.tensor, ← Category.assoc, tensorHom_comp_tensorHom]
+  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+
+/-- The tensor-pairing cap identity for a double-dual comparison. -/
+abbrev HasDrinfeldTensorCap (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ) (X Y : D) : Prop :=
+  let W := X ⊗ Y
+  let V := (Yᘁ) ⊗ (Xᘁ)
+  let p : ExactPairing W V := ExactPairing.tensor
+  let q : ExactPairing V (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) := ExactPairing.tensor
+  (Modular.doubleBraiding X Y ▷ V) ≫ (β_ W V).hom ≫
+    @ExactPairing.evaluation D _ _ W V p =
+  ((d X).hom ⊗ₘ (d Y).hom) ▷ V ≫ @ExactPairing.evaluation D _ _ V _ q
 
 /-- The tensor-pairing cap identity implies the Drinfeld tensor equation. -/
 theorem drinfeld_tensor_of_pairing_cap {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
     (hd : (d (X ⊗ Y)).hom ▷ ((X ⊗ Y)ᘁ) ≫
         ε_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
       (β_ (X ⊗ Y) ((X ⊗ Y)ᘁ)).hom ≫ ε_ (X ⊗ Y) ((X ⊗ Y)ᘁ))
-    (hcap : let W := X ⊗ Y
-      let V := (Yᘁ) ⊗ (Xᘁ)
-      let p : ExactPairing W V := ExactPairing.tensor
-      let q : ExactPairing V (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) := ExactPairing.tensor
-      (Modular.doubleBraiding X Y ▷ V) ≫ (β_ W V).hom ≫
-        @ExactPairing.evaluation D _ _ W V p =
-      ((d X).hom ⊗ₘ (d Y).hom) ▷ V ≫
-        @ExactPairing.evaluation D _ _ V _ q) :
-    Modular.doubleBraiding X Y ≫ (d (X ⊗ Y)).hom =
-      ((d X).hom ⊗ₘ (d Y).hom) ≫
-        (doubleDualTensorIso X Y).hom := by
+    (hcap : HasDrinfeldTensorCap d X Y) :
+    HasDrinfeldTensorEquation d X Y := by
   let W := X ⊗ Y
   let V := (Yᘁ) ⊗ (Xᘁ)
   let t : Wᘁ ≅ V := rightDualTensorIso X Y
@@ -85,23 +89,17 @@ theorem drinfeld_tensor_of_pairing_cap {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ
     (doubleDualTensorIso X Y).hom) ▷ Wᘁ ≫ ε_ (Wᘁ) ((Wᘁ)ᘁ) =
     ((d X).hom ⊗ₘ (d Y).hom) ▷ Wᘁ ≫
       (((Xᘁ)ᘁ ⊗ (Yᘁ)ᘁ) ◁ t.hom) ≫ @ExactPairing.evaluation D _ _ V _ q at hs
-  have htest : (Modular.doubleBraiding X Y ≫ (d W).hom) ▷ Wᘁ ≫
-      ε_ (Wᘁ) ((Wᘁ)ᘁ) =
-      (((d X).hom ⊗ₘ (d Y).hom) ≫
-        (doubleDualTensorIso X Y).hom) ▷ Wᘁ ≫ ε_ (Wᘁ) ((Wᘁ)ᘁ) := by
-    rw [comp_whiskerRight_assoc, hd, ← he, hs]
-    rw [← braiding_naturality_right_assoc]
-    rw [← whisker_exchange_assoc, ← whisker_exchange_assoc]
-    rw [hcap]
-  have hh := congrArg (tensorRightHomEquiv W (Wᘁ) ((Wᘁ)ᘁ) (𝟙_ D)) htest
-  simp only [tensorRightHomEquiv_whiskerRight_comp_evaluation] at hh
-  exact (cancel_mono (λ_ ((Wᘁ)ᘁ)).inv).1 hh
+  apply evaluation_ext (X := Wᘁ)
+  rw [comp_whiskerRight_assoc, hd, ← he, hs]
+  rw [← braiding_naturality_right_assoc]
+  rw [← whisker_exchange_assoc, ← whisker_exchange_assoc]
+  dsimp only [HasDrinfeldTensorCap] at hcap
+  rw [hcap]
 
 /-- In the usual convention, twist balancing has monodromy first. -/
 theorem pivotal_balance_of_drinfeld_tensor (p : PivotalStructure (C := D)) {X Y : D}
     (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ)
-    (h : Modular.doubleBraiding X Y ≫ (d (X ⊗ Y)).hom =
-      ((d X).hom ⊗ₘ (d Y).hom) ≫ (doubleDualTensorIso X Y).hom) :
+    (h : HasDrinfeldTensorEquation d X Y) :
     Modular.doubleBraiding X Y ≫
       (((p.iso X).hom ≫ (d X).inv) ⊗ₘ ((p.iso Y).hom ≫ (d Y).inv)) =
         (p.iso (X ⊗ Y)).hom ≫ (d (X ⊗ Y)).inv :=
