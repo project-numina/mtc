@@ -1,6 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.ENOMatrices
-public import PropertyF.Ground.Dimensions.DualCoherence
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.GroundNorm
 
 /-! # Scalar twists and tensor extension
@@ -149,9 +149,6 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 set_option backward.isDefEq.respectTransparency false in
 theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
-    (hnat : ∀ {X X' Y Y' : C.Obj} (f : X ⟶ X') (g : Y ⟶ Y'),
-      (((fᘁ)ᘁ) ⊗ₘ ((gᘁ)ᘁ)) ≫ (doubleDualTensorIso X' Y').hom =
-        (doubleDualTensorIso X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ))
     (hpair : ∀ i j, (a.app (simples C i ⊗ simples C j)).hom =
       (((a.app (simples C i)).hom ⊗ₘ (a.app (simples C j)).hom) ≫
         (doubleDualTensorIso (simples C i) (simples C j)).hom))
@@ -181,7 +178,7 @@ theorem doubleDualTensor_extension (a : 𝟭 C.Obj ≅ doubleDualFunctor C.Obj)
       _ = (((a.app (simples C i.1)).hom ⊗ₘ (a.app (simples C j.1)).hom) ≫
         (doubleDualTensorIso _ _).hom) ≫ (((sx ⊗ₘ sy)ᘁ)ᘁ) := by rw [hpair]
       _ = ((a.app (simples C i.1)).hom ⊗ₘ (a.app (simples C j.1)).hom) ≫
-        ((((sxᘁ)ᘁ) ⊗ₘ ((syᘁ)ᘁ)) ≫ (doubleDualTensorIso X Y).hom) := by rw [Category.assoc, ← hnat]
+        ((((sxᘁ)ᘁ) ⊗ₘ ((syᘁ)ᘁ)) ≫ (doubleDualTensorIso X Y).hom) := by rw [Category.assoc, ← doubleDualTensorIso_natural]
       _ = ((sx ≫ (a.app X).hom) ⊗ₘ (sy ≫ (a.app Y).hom)) ≫ (doubleDualTensorIso X Y).hom := by
         rw [tensorHom_comp_tensorHom_assoc, ← hx, ← hy]
       _ = _ := by rw [← tensorHom_comp_tensorHom, Category.assoc]

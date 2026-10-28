@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.Dimensions.SimpleScalars
+public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import Mathlib.CategoryTheory.Whiskering
 public import Mathlib.LinearAlgebra.Trace
 public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
@@ -339,6 +340,34 @@ theorem multiplicityDefect_involution_of_tensor_square {i j : Fin (rank C)} (k :
   rw [multiplicityDefect_apply, multiplicityDefect_apply, Category.assoc,
     rootTensorDefect_involution_of_tensor_square C hsq, Category.comp_id]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Squaring the root tensor map gives the tensor of the fourth-dual maps,
+with the canonical iterated double-dual tensor comparison. -/
+theorem rootTensor_square_eq_fourthDual_tensor
+    (X Y : C.Obj) :
+    (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
+      ((fourthDualIso C X).hom ⊗ₘ (fourthDualIso C Y).hom) ≫
+        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
+          (((doubleDualTensorIso X Y).homᘁ)ᘁ) := by
+  have hx := congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C)
+  have hy := congrArg (fun n => (n.app Y).hom) (fourthDualRootNaturalSquare_eq C)
+  change ((fourthDualRootNaturalIso C).app X).hom ≫
+    ((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) = (fourthDualIso C X).hom at hx
+  change ((fourthDualRootNaturalIso C).app Y).hom ≫
+    ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ) = (fourthDualIso C Y).hom at hy
+  rw [← hx, ← hy]
+  simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
+    Category.assoc]
+  have hn := doubleDualTensorIso_natural ((fourthDualRootNaturalIso C).app X).hom
+    ((fourthDualRootNaturalIso C).app Y).hom
+  have hn2 := congrArg (fun f =>
+    (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
+      ((fourthDualRootNaturalIso C).app Y).hom) ≫ f ≫
+      (((doubleDualTensorIso X Y).homᘁ)ᘁ)) hn.symm
+  simp only [Functor.id_obj, doubleDualFunctor, Category.assoc] at hn2
+  rw [hn2]
+  rw [tensorHom_comp_tensorHom_assoc]
+
 /-- The fourth-dual isomorphism is compatible with tensoring two objects. -/
 abbrev fourthDualTensorLaw (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) : Prop :=
   (fourthDualIso C (X ⊗ Y)).hom =
@@ -346,35 +375,6 @@ abbrev fourthDualTensorLaw (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj) : Pro
       (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom ≫
         (((doubleDualTensorIso X Y).homᘁ)ᘁ)
 
-set_option backward.isDefEq.respectTransparency false in
-/-- The tensor-square identity follows from naturality of the double-dual
-tensor comparison and the corresponding tensor law for the fourth dual. -/
-theorem rootTensor_square_of_fourthDual_tensor {X Y : C.Obj}
-    (hnat : (doubleDualTensorIso X Y).hom ≫
-        (((((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
-          ((fourthDualRootNaturalIso C).app Y).hom)ᘁ)ᘁ) =
-      (((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) ⊗ₘ
-        ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ)) ≫
-        (doubleDualTensorIso ((Xᘁ)ᘁ) ((Yᘁ)ᘁ)).hom)
-    (hfourth : fourthDualTensorLaw C X Y) :
-    (rootTensorIso C X Y).hom ≫ (((rootTensorIso C X Y).homᘁ)ᘁ) =
-      (fourthDualIso C (X ⊗ Y)).hom := by
-  have hx := congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C)
-  have hy := congrArg (fun n => (n.app Y).hom) (fourthDualRootNaturalSquare_eq C)
-  change ((fourthDualRootNaturalIso C).app X).hom ≫
-    ((((fourthDualRootNaturalIso C).app X).homᘁ)ᘁ) = (fourthDualIso C X).hom at hx
-  change ((fourthDualRootNaturalIso C).app Y).hom ≫
-    ((((fourthDualRootNaturalIso C).app Y).homᘁ)ᘁ) = (fourthDualIso C Y).hom at hy
-  rw [hfourth, ← hx, ← hy]
-  simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom, comp_rightAdjointMate,
-    Category.assoc]
-  have hn2 := congrArg (fun f =>
-    (((fourthDualRootNaturalIso C).app X).hom ⊗ₘ
-      ((fourthDualRootNaturalIso C).app Y).hom) ≫ f ≫
-      (((doubleDualTensorIso X Y).homᘁ)ᘁ)) hnat
-  simp only [Category.assoc] at hn2
-  rw [hn2]
-  rw [tensorHom_comp_tensorHom_assoc]
 
 end PropertyF.Ground.Dimensions
 
