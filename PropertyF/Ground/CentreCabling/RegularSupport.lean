@@ -222,7 +222,7 @@ theorem regularVector_mul_of_mem (hA : IsDualFusionClosed D A) {a k : Fin (rank 
   calc
     _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
       refine Finset.sum_congr rfl fun i _ ↦ ?_
-      rw [Modular.fusionCoeff_dual_adjoint D a i k]
+      rw [Ground.fusionCoeff_dual_symmetry D a k i]
       by_cases hi : i ∈ A
       · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi]
       · simp [regularVector, hi, hA.fusion.fusionCoeff_eq_zero (hA.dual a ha) hk hi]

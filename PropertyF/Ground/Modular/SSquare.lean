@@ -115,7 +115,7 @@ theorem categoricalS_square (hdet : (Sₚ).det ≠ 0)
   have hoff := square_off_dual_of_orthogonal (Ground.dualIndex C) (Ground.dualIndex_involutive C)
     (categoricalS_symmetric C p) (categoricalS_dual_conj C p hreal)
     (character_columns_orthogonal ⟨unitIndex C, fusionCoeff C⟩ (Ground.dualIndex C)
-      (fusionCoeff_dual_adjoint C) (S := Sₚ) (d := dₚ) (categoricalSCharacter C p)
+      (fun i j k ↦ Ground.fusionCoeff_dual_symmetry C i k j) (S := Sₚ) (d := dₚ) (categoricalSCharacter C p)
       (fun _ _ ↦ rfl) hdet (simpleDimension_ne_zero C p) hreal)
   have hglobal : (∑ z, Sₚ (unitIndex C) z * Sₚ z (unitIndex C)) = globalDimension C := by
     simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
