@@ -1,6 +1,8 @@
 module
 public import PropertyF.Ground.Modular.HopfPartialTrace
-public import PropertyF.Ground.Modular.PseudoGalois
+public import PropertyF.Ground.Modular.GaloisFromVerlinde
+public import PropertyF.Ground.Fusion.SpectralIntegral
+public import PropertyF.Ground.Modular.UnitDimension
 
 /-!
 # Verlinde characters from categorical trace
@@ -117,15 +119,5 @@ theorem categoricalS_verlinde (D : Ground.BraidedFusionCategory.{v,u})
     ∑ l, (fusionCoeff D i j l : ℂ) * (categoricalS D p l k / simpleDimension D p k) :=
   categoricalS_verlinde_of_hopf_product D p
     (hopf_product_of_partialTrace_composition D p (partialTrace_doubleBraiding_tensor D p))
-
-/-- In the pseudo-unitary case, S-square alone now gives the Galois action. -/
-theorem categoricalS_galois_action_of_S_square (D : Ground.BraidedFusionCategory.{v,u})
-    (h : Ground.PseudoUnitary D) (p : PivotalStructure (C := D.Obj))
-    (hsq : ∀ x y, ∑ z, categoricalS D p x z * categoricalS D p z y =
-      if x = Ground.dualIndex D y then globalDimension D else 0) :
-    ∃ act : (ℂ ≃+* ℂ) →* Equiv.Perm (Fin (rank D)), ∀ (σ : ℂ ≃+* ℂ) i j,
-      σ (categoricalS D p i j / simpleDimension D p j) =
-        categoricalS D p i (act σ j) / simpleDimension D p (act σ j) :=
-  categoricalS_galois_action_pseudoUnitary D h p hsq (categoricalS_verlinde D p)
 
 end PropertyF.Ground.Modular
