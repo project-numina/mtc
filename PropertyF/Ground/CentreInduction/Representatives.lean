@@ -7,7 +7,7 @@ public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 /-! A finite-step semisimple decomposition from split subobjects. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.Limits
+open CategoryTheory CategoryTheory.Limits Module
 namespace PropertyF.Ground.CentreInduction
 universe v u
 variable {k : Type*} [Field k] {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D]
@@ -19,7 +19,7 @@ omit [HasBinaryBiproducts D] in
 theorem finrank_end_lt_of_split_epi (p : S ⟶ W) (q : W ⟶ Q)
     [IsSplitEpi q] [FiniteDimensional k (W ⟶ W)]
     (hp : p ≠ 0) (hq : p ≫ q = 0) :
-    Module.finrank k (Q ⟶ Q) < Module.finrank k (W ⟶ W) := by
+    finrank k (Q ⟶ Q) < finrank k (W ⟶ W) := by
   let s : Q ⟶ W := section_ q
   let L : (Q ⟶ Q) →ₗ[k] (W ⟶ W) :=
     (Linear.leftComp k W q).comp (Linear.rightComp k Q s)
@@ -35,7 +35,7 @@ theorem finrank_end_lt_of_split_epi (p : S ⟶ W) (q : W ⟶ Q)
 endomorphism space. -/
 theorem finrank_end_complement_lt (K : D)
     [FiniteDimensional k (S ⊞ K ⟶ S ⊞ K)] (hS : ¬ IsZero S) :
-    Module.finrank k (K ⟶ K) < Module.finrank k (S ⊞ K ⟶ S ⊞ K) :=
+    finrank k (K ⟶ K) < finrank k (S ⊞ K ⟶ S ⊞ K) :=
   finrank_end_lt_of_split_epi (k := k) biprod.inl biprod.snd
     ((IsZero.iff_isSplitMono_eq_zero (biprod.inl : S ⟶ S ⊞ K)).not.mp hS) biprod.inl_snd
 
@@ -54,7 +54,7 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
     [(A : E) → FiniteDimensional k (A ⟶ A)] [(Z : E) → Injective Z]
     (hasSimple : ∀ {Z : E}, ¬ IsZero Z → ∃ (S : E) (f : S ⟶ Z), Simple S ∧ Mono f)
     (Z : E) : FiniteSimpleSum E Z := by
-  induction Z using (measure fun W : E => Module.finrank k (W ⟶ W)).wf.induction with
+  induction Z using (measure fun W : E => finrank k (W ⟶ W)).wf.induction with
   | h Z ih =>
     by_cases hz : IsZero Z
     · exact .zero hz
@@ -66,7 +66,7 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
         (ShortComplex.Splitting.ofExactOfRetraction (ShortComplex.cokernelSequence f)
           (ShortComplex.cokernelSequence_exact f) r hr inferInstance).isoBinaryBiproduct
       exact .cons hS (ih (cokernel f) (by
-        change Module.finrank k (cokernel f ⟶ cokernel f) < Module.finrank k (Z ⟶ Z)
+        change finrank k (cokernel f ⟶ cokernel f) < finrank k (Z ⟶ Z)
         simpa only [(CategoryTheory.Linear.homCongr k e e).finrank_eq] using
           finrank_end_complement_lt (k := k) (cokernel f) (Simple.not_isZero S))) ⟨e⟩
 

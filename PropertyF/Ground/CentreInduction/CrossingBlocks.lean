@@ -2,7 +2,7 @@ module
 public import PropertyF.Ground.Fusion.ObjectDimension
 public import PropertyF.Ground.Dimensions.SimpleHomBasis
 
-open PropertyF.Ground.Dimensions
+open PropertyF.Ground.Dimensions Module
 
 /-! The underlying object of the induction construction for the Drinfeld centre. -/
 
@@ -95,12 +95,12 @@ theorem mixedCrossing_natural_middle {X Y : D} (h : X ⟶ Y) {T U R S : D}
 
 /-- The projection from the chosen simple decomposition of an object. -/
 def simpleProjection (V : C.Obj) (i : Fin (rank C))
-    (a : Fin (Module.finrank ℂ (Sᶜ i ⟶ V))) : V ⟶ Sᶜ i :=
+    (a : Fin (finrank ℂ (Sᶜ i ⟶ V))) : V ⟶ Sᶜ i :=
   (simpleDecomposition C V).hom ≫ biproduct.π (simplePiecesObject C V) ⟨i,a⟩
 
 /-- The multiplicity index for a simple summand of `T ⊗ Sⱼ`. -/
 abbrev crossingIndex (T : C.Obj) (i j : Fin (rank C)) : Type :=
-  Fin (Module.finrank ℂ (Sᶜ i ⟶ T ⊗ Sᶜ j))
+  Fin (finrank ℂ (Sᶜ i ⟶ T ⊗ Sᶜ j))
 
 /-- The inclusion attached to the canonical decomposition of `T ⊗ Sⱼ`. -/
 def crossingInclusion (T : C.Obj)

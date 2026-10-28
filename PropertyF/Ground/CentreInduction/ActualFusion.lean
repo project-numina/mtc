@@ -175,7 +175,7 @@ end
 /-! Centre fusion and FP dimension using the constructed induction adjunction. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
 open scoped BigOperators
 namespace PropertyF.Ground.CentreInduction
 universe v u
@@ -188,20 +188,20 @@ local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
 
 /-- FP dimension is the weighted sum of Hom dimensions to simple objects. -/
 theorem fpDimension_eq_sum_to_simple (X : C.Obj) :
-    fpDimension C X = ∑ i, (Module.finrank ℂ (X ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
+    fpDimension C X = ∑ i, (finrank ℂ (X ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
   Finset.sum_congr rfl fun i _ =>
     congrArg (fun n : ℕ => (n : ℝ) * fpSimple C i)
       (finrank_to_simple_eq_from_simple X (Sᶜ i)).symm
 
 /-- The induction adjunction preserves the dimensions of corresponding Hom spaces. -/
 theorem finrank_hom_induction (Z : 𝒵) (X : C.Obj) :
-    Module.finrank ℂ (Z ⟶ (induction C).obj X) = Module.finrank ℂ (Z.1 ⟶ X) :=
+    finrank ℂ (Z ⟶ (induction C).obj X) = finrank ℂ (Z.1 ⟶ X) :=
   (homLinearEquivOfAdjunction (k := ℂ) (Center.forget C.Obj)
     (induction C) (actualAdjunction C) Z X).finrank_eq
 
 /-- The FP dimension of a centre object is the weighted Hom sum of its underlying object. -/
 theorem center_fpDimension_eq_sum_to_simple [RigidCategory 𝒵] [IsFusionCategory 𝒵] (Z : 𝒵) :
-    fpDimension 𝒵ᶠ Z = ∑ i, (Module.finrank ℂ (Z.1 ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
+    fpDimension 𝒵ᶠ Z = ∑ i, (finrank ℂ (Z.1 ⟶ Sᶜ i) : ℝ) * fpSimple C i :=
   (Integrate.center_forget_fpDimension C Z).symm.trans (fpDimension_eq_sum_to_simple C Z.1)
 
 set_option backward.isDefEq.respectTransparency false in
