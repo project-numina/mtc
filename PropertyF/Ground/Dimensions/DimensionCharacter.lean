@@ -132,12 +132,11 @@ theorem isSpherical_iff_simple_dimensions
   refine ⟨fun h i ↦ h _ _, ?_⟩
   intro hs X f
   classical
-  let m (i : Fin (rank C)) := simpleMultiplicity C i X
-  let V : (Σ i, Fin (m i)) → C.Obj := fun a => simples C a.1
-  obtain ⟨e⟩ := exists_canonical_decomposition C X
+  let V : (Σ i, Fin (simpleMultiplicity C i X)) → C.Obj := fun a ↦ simples C a.1
+  let e : X ≅ ⨁ V := Classical.choice (exists_canonical_decomposition C X)
   let g : (⨁ V) ⟶ (⨁ V) := e.inv ≫ f ≫ e.hom
   obtain ⟨c, hc, htrace⟩ := rightTrace_biproduct_simple (k := ℂ)
-    (fun (a : Σ i, Fin (m i)) ↦ simples_simple C a.1)
+    (fun (a : Σ i, Fin (simpleMultiplicity C i X)) ↦ simples_simple C a.1)
     (fun _ ↦ IsFusionCategory.hom_finite _ _) p g
   rw [show p.leftTrace f = p.leftTrace g from by
         simpa [g, Category.assoc] using (leftTrace_cyclic p e.hom (e.inv ≫ f)),
