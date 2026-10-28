@@ -31,12 +31,10 @@ import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
 import all PropertyF.Ground.Integrate.DrinfeldComplete
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
-import all PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 import all PropertyF.Ground.CentreCalculus.TwistSign
 import all PropertyF.Ground.Centre.Modular.Vafa
 import all PropertyF.Ground.CentreCabling.TwistFinite
 import all PropertyF.Ground.CentreCalculus.BraidRelations
-import all PropertyF.Ground.CentreCalculus.LeftPartialTrace
 import all PropertyF.Ground.CentreCalculus.LeftTensorTrace
 import all PropertyF.Ground.CentreCalculus.ParityDeletion
 import all PropertyF.Ground.CentreCalculus.PermutationInsert
