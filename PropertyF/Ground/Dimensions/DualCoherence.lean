@@ -4,6 +4,11 @@ public import PropertyF.Ground.Dimensions.Pivotal
 /-! # Duality coherence
 
 Evaluation and coevaluation identities relate changes of duals and the associated traces.
+
+## Main results
+
+* `rightDualIso_evaluation`: describes the canonical isomorphism between two right duals through evaluation.
+* `unitDoubleDual_trace`: computes the trace of the unit double-dual isomorphism.
 -/
 
 @[expose] public noncomputable section

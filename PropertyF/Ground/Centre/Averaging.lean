@@ -42,11 +42,6 @@ theorem algebraAverage_eq_sum (ρ : G →* A) :
     algebraAverage (k := k) ρ = ⅟(Fintype.card G : k) • ∑ g : G, ρ g := by
   simp [algebraAverage, GroupAlgebra.average]
 
-/-- Averaging an action gives an actual idempotent in its target algebra. -/
-theorem algebraAverage_idempotent (ρ : G →* A) :
-    algebraAverage (k := k) ρ * algebraAverage (k := k) ρ = algebraAverage (k := k) ρ := by
-  rw [algebraAverage, ← map_mul, groupAverage_idempotent]
-
 /-- The sign character of the symmetric group, with values in the scalar ring. -/
 def permutationSign (k : Type*) [CommRing k] (n : ℕ) : Equiv.Perm (Fin n) →* kˣ :=
   (Units.map (Int.castRingHom k)).comp Equiv.Perm.sign
@@ -59,15 +54,8 @@ def alternatingProjector (ρ : Equiv.Perm (Fin n) →* A) : A :=
 
 /-- The alternating projector is idempotent before making any splitting assumption. -/
 theorem alternatingProjector_idempotent (ρ : Equiv.Perm (Fin n) →* A) :
-    IsIdempotentElem (alternatingProjector (k := k) ρ) :=
-  algebraAverage_idempotent _
-
-/-- The alternating projector is the normalized signed sum of permutation operators. -/
-theorem alternatingProjector_eq_sum (ρ : Equiv.Perm (Fin n) →* A) :
-    alternatingProjector (k := k) ρ =
-      ⅟(Fintype.card (Equiv.Perm (Fin n)) : k) •
-        ∑ σ : Equiv.Perm (Fin n), ((permutationSign k n σ : k) • ρ σ) :=
-  algebraAverage_eq_sum _
+    IsIdempotentElem (alternatingProjector (k := k) ρ) := by
+  rw [IsIdempotentElem, alternatingProjector, algebraAverage, ← map_mul, groupAverage_idempotent]
 
 end PropertyF.Ground.Centre
 

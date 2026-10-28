@@ -19,21 +19,17 @@ construction uses no assumption about that law on arbitrary objects. -/
 theorem positive_spherical_of_simple_fourth_and_reciprocity
     (hfourth : ∀ i j : Fin (rank C),
       fourthDualTensorLaw C (simples C i) (simples C j))
-    (htranspose : ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j)
+    (htranspose : ENOTraceMatrixReciprocity C)
     (hpu : Ground.PseudoUnitary C) :
     HasFPSphericalStructure C := by
-  have hinv : ∀ i j k, (multiplicityDefect C i j k).toLinearMap *
-      (multiplicityDefect C i j k).toLinearMap = 1 := by
+  have hinv : MultiplicityDefectsInvolutive C := by
     intro i j k
     apply multiplicityDefect_involution_of_tensor_square C k
     exact (rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm
-  have heig : ∀ i j, ∑ k, enoTraceMatrix C i j k * rootDimension C k =
-      rootDimension C i * rootDimension C j := by
+  have heig : ENOTraceMatrixEigenvector C := by
     intro i j
     exact enoTraceMatrix_eigenvector_of_involutions C (hinv i j)
-  have hnorm : ∀ i, squaredNorm C (simples C i) =
-      ((‖rootDimension C i‖ ^ 2 : ℝ) : ℂ) := by
+  have hnorm : RootNormIdentity C := by
     intro i
     exact squaredNorm_eq_root_norm_sq_of_reciprocity C hinv htranspose i
   exact positive_spherical_of_matrix_identities C hinv heig hnorm hpu
@@ -79,8 +75,7 @@ theorem enoTraceMatrix_reciprocity_of_operator_intertwining
         (Module.Dual.transpose (multiplicityDefect C i k j).toLinearMap v) =
       rootDualSign C i • (multiplicityDefect C (Ground.dualIndex C i) j k)
         (enoReciprocityEquiv C i k j v)) :
-    ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k =
-      rootDualSign C i * enoTraceMatrix C i k j := by
+    ENOTraceMatrixReciprocity C := by
   intro i j k
   let E := enoReciprocityEquiv C i k j
   let A := (multiplicityDefect C i k j).toLinearMap
@@ -140,7 +135,7 @@ theorem enoTraceMatrix_reciprocity_of_frobenius_defect
       enoFrobeniusEquiv C i k j ((rootTensorDefect C (simples C i) (simples C k)).hom ≫ g) =
       rootDualSign C i • (enoFrobeniusEquiv C i k j g ≫
         (rootTensorDefect C (simples C (Ground.dualIndex C i)) (simples C j)).hom)) :
-    ∀ i j k, enoTraceMatrix C (Ground.dualIndex C i) j k = rootDualSign C i * enoTraceMatrix C i k j := by
+    ENOTraceMatrixReciprocity C := by
   apply enoTraceMatrix_reciprocity_of_operator_intertwining C
   intro i j k v
   let : Simple (simples C j) := Ground.simples_simple C j
