@@ -34,8 +34,8 @@ set_option backward.isDefEq.respectTransparency false in
 unit-labelled component. -/
 def unitSummandRetract (X : C.Obj) :
     Retract X (underlying C X) where
-  i := (unitSummandIso C X).inv ≫ biproduct.ι (fun i : Fin (rank C) => (simples C i ⊗ X) ⊗ (simples C i)ᘁ) (unitIndex C)
-  r := biproduct.π (fun i : Fin (rank C) => (simples C i ⊗ X) ⊗ (simples C i)ᘁ) (unitIndex C) ≫ (unitSummandIso C X).hom
+  i := (unitSummandIso C X).inv ≫ biproduct.ι (inductionSummand C X) (unitIndex C)
+  r := biproduct.π (inductionSummand C X) (unitIndex C) ≫ (unitSummandIso C X).hom
   retract := by simp [underlying, Category.assoc]
 
 /-- A fixed map on either outer tensor factor commutes with a map on the
@@ -76,7 +76,7 @@ def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
     dsimp only [underlyingFunctor, unitSummandRetract, Functor.id_map]
     simp only [Category.assoc, biproduct.map_π_assoc]
     simpa only [Category.assoc] using congrArg (fun g =>
-      biproduct.π (fun i : Fin (rank C) => (simples C i ⊗ X) ⊗ (simples C i)ᘁ)
+      biproduct.π (inductionSummand C X)
         (unitIndex C) ≫ g) (unitSummandIso_natural C f)
 
 

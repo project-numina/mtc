@@ -13,7 +13,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- The matrix coefficients of the actual induction crossing. -/
 theorem crossingCandidate_matrix (X T : C.Obj) (i j : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (biproduct.ι V i ▷ T) ≫ crossingCandidate C X T ≫ (T ◁ biproduct.π V j) =
     ∑ a, crossingBlock X T (simples C i) (simples C j)
       (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
@@ -31,17 +31,17 @@ theorem crossingCandidate_matrix (X T : C.Obj) (i j : Fin (rank C)) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Two crossings on a summand expand into nested fusion blocks. -/
 theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U =
-    ∑ k, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
-      ∑ j, ∑ b : Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)),
+    ∑ k, ∑ a : crossingIndex C T i k,
+      ∑ j, ∑ b : crossingIndex C U k j,
         crossingBlock X (T ⊗ U) (simples C i) (simples C j)
           (crossingInclusion C T i k a ≫ (T ◁ crossingInclusion C U k j b) ≫
             (α_ T U (simples C j)).inv)
           ((α_ T U (simples C j)).hom ≫ (T ◁ crossingProjection C U k j b) ≫
             crossingProjection C T i k a) ≫ ((T ⊗ U) ◁ biproduct.ι V j) := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   let bT : (⨁ V) ⊗ T ⟶ T ⊗ (⨁ V) := crossingCandidate C X T
   let bU : (⨁ V) ⊗ U ⟶ U ⊗ (⨁ V) := crossingCandidate C X U
   change (biproduct.ι V i ▷ (T ⊗ U)) ≫ crossingTensorComposite C X T U = _
@@ -52,7 +52,7 @@ theorem crossingComposite_summand (X T U : C.Obj) (i : Fin (rank C)) :
         ((α_ (⨁ V) T U).inv ≫ (bT ▷ U) ≫ (α_ T (⨁ V) U).hom ≫
           (T ◁ bU) ≫ (α_ T U (⨁ V)).inv) = _
       monoidal
-    _ = ∑ k, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)),
+    _ = ∑ k, ∑ a : crossingIndex C T i k,
       𝟙 _ ⊗≫ (crossingBlock X T (simples C i) (simples C k)
           (crossingInclusion C T i k a) (crossingProjection C T i k a) ▷ U) ⊗≫
         (T ◁ ((biproduct.ι V k ▷ U) ≫ bU)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
@@ -86,7 +86,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem crossingCandidate_tensor (X T U : C.Obj) :
     crossingCandidate C X (T ⊗ U) = crossingTensorComposite C X T U := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ X) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C X
   apply (cancel_epi (rightDistributor V (T ⊗ U)).inv).1
   apply biproduct.hom_ext'
   intro i
@@ -101,8 +101,8 @@ theorem crossingCandidate_tensor (X T U : C.Obj) :
   intro k _
   conv_lhs =>
     enter [2, j]
-    rw [Finset.sum_comm (s := (Finset.univ : Finset (Fin (Module.finrank ℂ (simples C k ⟶ U ⊗ simples C j)))))
-      (t := (Finset.univ : Finset (Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C k)))))]
+    rw [Finset.sum_comm (s := (Finset.univ : Finset (crossingIndex C U k j)))
+      (t := (Finset.univ : Finset (crossingIndex C T i k)))]
   rw [Finset.sum_comm]
 
 

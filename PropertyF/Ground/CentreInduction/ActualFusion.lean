@@ -13,6 +13,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
 namespace PropertyF.Ground.CentreInduction
 variable (C : BraidedFusionCategory.{v,u})
+local notation "𝒵" => CategoryTheory.Center C.Obj
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -149,14 +150,14 @@ theorem unitBlockLinear_id (Z : CategoryTheory.Center D) (T S : D) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Fusion completeness gives the unit intertwining equation on a summand. -/
-theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)) :
-  (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+theorem unit_sum (Z : 𝒵) (T : C.Obj) (j : Fin (rank C)) :
+  (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
     (unitComponent C Z p.1 ▷ T) ≫ crossingBlock Z.1 T (simples C p.1) (simples C j)
       (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)) =
     (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
   classical
   calc
-    _ = ∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+    _ = ∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
       unitBlockLinear (k := ℂ) Z T (simples C j) (crossingProjection C T p.1 j p.2 ≫
         crossingInclusion C T p.1 j p.2) := by
       apply Finset.sum_congr rfl
@@ -164,17 +165,17 @@ theorem unit_sum (Z : CategoryTheory.Center C.Obj) (T : C.Obj) (j : Fin (rank C)
       exact unit_block Z
         (crossingInclusion C T p.1 j p.2) (crossingProjection C T p.1 j p.2)
     _ = unitBlockLinear (k := ℂ) Z T (simples C j)
-      (∑ p : Σ i : Fin (rank C), Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+      (∑ p : Σ i : Fin (rank C), crossingIndex C T i j,
         crossingProjection C T p.1 j p.2 ≫ crossingInclusion C T p.1 j p.2) := by rw [map_sum]
     _ = _ := by rw [crossing_completeness, unitBlockLinear_id]; rfl
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The underlying unit is the sum of its biproduct components. -/
-theorem unitCandidate_sum (Z : CategoryTheory.Center C.Obj) :
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
+theorem unitCandidate_sum (Z : 𝒵) :
+  let V := inductionSummand C Z.1
   unitCandidate C Z = ∑ i, unitComponent C Z i ≫ biproduct.ι V i := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C Z.1
   have hp (i) : unitCandidate C Z ≫ biproduct.π V i = unitComponent C Z i :=
     biproduct.lift_π _ _
   have hid : unitCandidate C Z ≫ 𝟙 (⨁ V) = unitCandidate C Z := Category.comp_id _
@@ -183,11 +184,11 @@ theorem unitCandidate_sum (Z : CategoryTheory.Center C.Obj) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
-theorem unitCandidate_central (Z : CategoryTheory.Center C.Obj) (T : C.Obj) :
+theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
       (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
   classical
-  let V : Fin (rank C) → C.Obj := fun k => (simples C k ⊗ Z.1) ⊗ (simples C k)ᘁ
+  let V := inductionSummand C Z.1
   apply (cancel_mono (leftDistributor T V).hom).1
   apply biproduct.hom_ext
   intro j
@@ -198,7 +199,7 @@ theorem unitCandidate_central (Z : CategoryTheory.Center C.Obj) (T : C.Obj) :
       (Z.2.β T).hom ≫ (T ◁ unitComponent C Z j) := by
     rw [← whiskerLeft_comp, hcomp]
   have hl : (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T ≫ (T ◁ biproduct.π V j) =
-      ∑ i, ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ T ⊗ simples C j)),
+      ∑ i, ∑ a : crossingIndex C T i j,
         (unitComponent C Z i ▷ T) ≫ crossingBlock Z.1 T (simples C i) (simples C j)
           (crossingInclusion C T i j a) (crossingProjection C T i j a) := by
     rw [unitCandidate_sum]
