@@ -23,11 +23,6 @@ universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 
-/-- Pivotal trace of an element of an actual categorical braid algebra. -/
-def actualBraidTrace {X : C.Obj} {n : ℕ} (a : braidAlgebra X n) : ℂ :=
-  Ground.unitScalarEquiv C
-    (p.rightTrace (a : End (braidTensorPower X n)).asHom)
-
 /-- A block presentation realizes the categorical braid trace with the given weights. -/
 abbrev IsTracePresentation {X : C.Obj}
     {n r : ℕ} {d : Fin r → ℕ}
