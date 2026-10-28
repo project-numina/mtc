@@ -39,19 +39,19 @@ variable {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
   (e : X ≅ ⨁ (simpleCopies C m)) (a : End X)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- A diagonal matrix coefficient is the scalar of the corresponding simple
-biproduct component of the transported endomorphism. -/
+/-- A diagonal biproduct component is its block coefficient times the identity. -/
 theorem groundEndBlockEquiv_diagonal (i : Fin (Ground.rank C)) (j : Fin (m i)) :
-    groundEndBlockEquiv C e a i j j =
-      groundSimpleScalar C i (End.of
-        (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫
-          e.inv ≫ a.asHom ≫ e.hom ≫
-          biproduct.π (simpleCopies C m) ⟨i, j⟩)) := by
+    biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫ e.inv ≫ a.asHom ≫ e.hom ≫
+        biproduct.π (simpleCopies C m) ⟨i, j⟩ =
+      (groundEndBlockEquiv C e a i j j) • 𝟙 (Ground.simples C i) := by
   classical
-  simp [groundEndBlockEquiv, orthogonalEndBlocks, isoEndAlgEquiv,
-    simpleFiberEquiv, groundSimpleScalar, HomOrthogonal.matrixDecompositionAddEquiv, HomOrthogonal.matrixDecomposition,
-    Matrix.reindexAlgEquiv, Matrix.reindexRingEquiv, Matrix.reindexAddEquiv,
-    Matrix.reindex, Category.assoc, biproduct.components]
+  simpa [groundEndBlockEquiv, orthogonalEndBlocks, isoEndAlgEquiv,
+    simpleFiberEquiv, groundSimpleScalar, HomOrthogonal.matrixDecompositionAddEquiv,
+    HomOrthogonal.matrixDecomposition, Matrix.reindexAlgEquiv, Matrix.reindexRingEquiv,
+    Matrix.reindexAddEquiv, Matrix.reindex, Category.assoc, biproduct.components] using
+    congrArg End.asHom (eq_smul_one_of_algEquiv (groundSimpleScalar C i) (End.of
+      (biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫ e.inv ≫ a.asHom ≫ e.hom ≫
+        biproduct.π (simpleCopies C m) ⟨i, j⟩)))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The actual pivotal trace on a fusion-category endomorphism is the sum of
@@ -65,18 +65,12 @@ theorem pivotalTrace_groundEndBlocks (p : PivotalStructure (C := C.Obj))
   classical
   let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
-  have hz : p.rightTrace z = p.rightTrace a.asHom := by
-    have h := p.rightTrace_cyclic e.inv (a.asHom ≫ e.hom)
-    simpa [z, Category.assoc] using h
-  have hc (q : Σ i, Fin (m i)) : biproduct.ι F q ≫ z ≫ biproduct.π F q =
-      (groundEndBlockEquiv C e a q.1 q.2 q.2) • 𝟙 (F q) := by
-    rcases q with ⟨i, j⟩
-    rw [groundEndBlockEquiv_diagonal]
-    simpa [z, F, Category.assoc] using congrArg End.asHom
-      (eq_smul_one_of_algEquiv (groundSimpleScalar C i) (End.of _))
+  have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj p e a
   have h := cyclicTrace_biproduct_scalar_blocks
     (fun Y => scalar.toLinearMap.comp (rightTraceLinear p Y))
-    (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z hc
+    (fun f g => congrArg scalar (p.rightTrace_cyclic f g)) z
+    (c := fun q => groundEndBlockEquiv C e a q.1 q.2 q.2)
+    (fun ⟨i, j⟩ => by simpa [F, z, Category.assoc] using groundEndBlockEquiv_diagonal C e a i j)
   change scalar (p.rightTrace z) = ∑ q, groundEndBlockEquiv C e a q.1 q.2 q.2 *
     scalar (p.rightTrace (𝟙 (F q))) at h
   rw [← hz, h, Fintype.sum_sigma]
@@ -109,16 +103,19 @@ theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
 /-- The paper's Galois-transported multiplicity weights cannot vanish when
 all original constituent dimensions are positive and the block is retained. -/
 theorem transported_weight_ne_zero {ι : Type*} [Fintype ι]
-    (mult : ι → ℕ) (dim : ι → ℝ) (σ : ℂ ≃+* ℂ)
-    (hpos : ∀ i, 0 < dim i) (hret : ∃ i, 0 < mult i) :
-    (∑ i, (mult i : ℂ) * σ (dim i : ℂ)) ≠ 0 := by
+    (mult : ι → ℕ) (dim qdim : ι → ℝ) (σ : ℂ ≃+* ℂ)
+    (hpos : ∀ i, 0 < dim i) (htransport : ∀ i, σ (dim i : ℂ) = (qdim i : ℂ))
+    (hret : ∃ i, 0 < mult i) : (∑ i, (mult i : ℝ) * qdim i) ≠ 0 := by
   have hsum : 0 < ∑ i, (mult i : ℝ) * dim i := by
     obtain ⟨i, hi⟩ := hret
     exact Finset.sum_pos' (fun i _ => mul_nonneg (Nat.cast_nonneg _) (hpos i).le)
       ⟨i, Finset.mem_univ _, mul_pos (by exact_mod_cast hi) (hpos i)⟩
   intro hz
+  have hz' : (∑ i, (mult i : ℂ) * σ (dim i : ℂ)) = 0 := by
+    simpa only [htransport, ← Complex.ofReal_natCast, ← Complex.ofReal_mul,
+      ← Complex.ofReal_sum, Complex.ofReal_zero] using congrArg Complex.ofReal hz
   apply (ne_of_gt hsum)
-  exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz) :
+  exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz') :
     (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0)
 
 end PropertyF.Ground.Calculus
@@ -295,7 +292,7 @@ variable (C : BraidedFusionCategory.{v,u})
 algebra, expressed in their respective matrix-block presentations. -/
 def braidToEndBlocks {X : C.Obj} {n : ℕ}
     {m : Fin (Ground.rank C) → ℕ}
-    (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
+    (e : braidTensorPower X n ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ}
     (b : BraidBlockPresentation X n d) :
     (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
@@ -310,7 +307,7 @@ abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
     {d : Fin r → ℕ} (b : BraidBlockPresentation X n d)
     (mult : Fin (Ground.rank C) → Fin r → ℕ) : Prop :=
   ∀ a : braidAlgebra X n,
-    scalar (p.rightTrace (a : End (tensorPower X (n + 2))).asHom) =
+    scalar (p.rightTrace (a : End (braidTensorPower X n)).asHom) =
       ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
         (b a j).trace
 
@@ -319,7 +316,7 @@ multiplicity-weight formula. Every retained braid block occurs in a simple
 constituent's multiplicity space. -/
 theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     {m : Fin (Ground.rank C) → ℕ}
-    (e : tensorPower X (n + 2) ≅ ⨁ (simpleCopies C m))
+    (e : braidTensorPower X n ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
     (b : BraidBlockPresentation X n d) :
     ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,
@@ -333,7 +330,7 @@ theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
     exact_mod_cast (show (m i : ℂ) = ∑ j, (mult i j : ℂ) * d j from by
       simpa only [map_one, Pi.one_apply, Matrix.trace_one, Fintype.card_fin] using hmult i 1)
   refine ⟨mult, hretained, hdim, fun a => ?_⟩
-  have hi : ∀ i, (groundEndBlockEquiv C e (a : End (tensorPower X (n + 2))) i).trace =
+  have hi : ∀ i, (groundEndBlockEquiv C e (a : End (braidTensorPower X n)) i).trace =
       ∑ j, (mult i j : ℂ) * (b a j).trace := by
     intro i
     simpa [F, braidToEndBlocks] using hmult i (b a)
@@ -354,11 +351,11 @@ theorem exists_unitary_braid_trace_blocks
       IsUnitaryBraidPresentation b ∧
       (∀ j, ∃ i, 0 < mult i j) ∧
       HasMultiplicityDecomposition
-        (fun i => Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))) d mult ∧
+        (fun i => Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)) d mult ∧
       HasMultiplicityTrace C p scalar b mult := by
   let m : Fin (Ground.rank C) → ℕ := fun i =>
-    Module.finrank ℂ (Ground.simples C i ⟶ tensorPower X (n + 2))
-  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (tensorPower X (n + 2))
+    Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)
+  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (braidTensorPower X n)
   obtain ⟨r, d, b, hnonzero, hunitary⟩ := braidAlgebra_unitary_blocks hfinite
   have hd : ∀ j, 0 < d j := fun j => Nat.pos_of_ne_zero (hnonzero j).ne
   obtain ⟨mult, hret, hdim, htrace⟩ :=

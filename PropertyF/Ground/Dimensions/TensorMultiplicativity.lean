@@ -102,6 +102,23 @@ theorem rightTrace_partialTrace (p : PivotalStructure (C := C)) {X Y : C} (f : E
 
 end PropertyF.Ground.Dimensions
 
+namespace PropertyF.Ground.Calculus
+
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+
+/-- The partial trace on a simple object is its normalized total trace. -/
+theorem rightPartialTrace_simple [CategoryTheory.Limits.HasKernels C] {X Y : C}
+    [Simple X] [FiniteDimensional ℂ (X ⟶ X)] (p : Dimensions.PivotalStructure (C := C))
+    (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y))
+    (hd : scalar (p.rightTrace (𝟙 X)) ≠ 0) :
+    rightPartialTrace p f =
+      (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
+  simpa only [scalarTrace, Dimensions.rightTrace_partialTrace p f] using
+    simple_end_eq_trace_smul p scalar (rightPartialTrace p f) hd
+
+end PropertyF.Ground.Calculus
+
 end
 
 @[expose] public noncomputable section

@@ -96,16 +96,6 @@ theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
   exact End.ext (by simpa [← hcval] using hc.symm)
 
 
-/-- Schur's lemma reduces the simple-survivor partial-trace formula to the
-single, explicitly stated compatibility of iterated and total pivotal traces. -/
-theorem rightPartialTrace_simple_of_trace_compatibility [CategoryTheory.Limits.HasKernels C] {X Y : C}
-    [Simple X] [FiniteDimensional ℂ (X ⟶ X)]
-    (f : End (X ⊗ Y)) (hd : scalar (p.rightTrace (𝟙 X)) ≠ 0)
-    (htrace : p.rightTrace (rightPartialTrace p f).asHom = p.rightTrace f.asHom) :
-    rightPartialTrace p f =
-      (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
-  simpa only [scalarTrace, htrace] using simple_end_eq_trace_smul p scalar (rightPartialTrace p f) hd
-
 /-- Closing a right tensor factor commutes with adding an identity factor on
 the left, with the associator made explicit. -/
 theorem rightPartialTrace_whiskerLeft {A X Y : C} (f : End (X ⊗ Y)) :

@@ -74,29 +74,40 @@ def flattenDependent (a : ℕ) (b : Fin a → ℕ) (f : (i : Fin a) → Fin (b i
     Pi.mapIso (fun i => biproduct.isoProduct (f i)) ≪≫
     piPiIso (fun i => Fin (b i)) f ≪≫ (biproduct.isoProduct _).symm
 
-/-- Finite biproducts of generated objects are generated. -/
-theorem generatedBy_biproduct {X : C} {a : ℕ} (f : Fin a → C)
-    (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
+/-- A finite biproduct of retracts is a retract of the corresponding biproduct. -/
+private def biproductRetract {J : Type} [Fintype J] {f g : J → C}
+    (r : ∀ i, Retract (f i) (g i)) : Retract (⨁ f) (⨁ g) := by
   classical
-  choose n k hr using hf
-  let r : ∀ i, Retract (f i) (⨁ fun j => tensorPower X (k i j)) := fun i => (hr i).some
-  let h : Fin a → C := fun i => ⨁ fun j => tensorPower X (k i j)
-  let R : Retract (⨁ f) (⨁ h) := {
+  exact {
     i := biproduct.map fun i => (r i).i
     r := biproduct.map fun i => (r i).r
     retract := by
       apply biproduct.hom_ext
       intro i
-      simp [Category.assoc, (r i).retract]
-  }
-  let e : (Σ i, Fin (n i)) ≃ Fin (Fintype.card (Σ i, Fin (n i))) := Fintype.equivFin _
-  let k' : Fin (Fintype.card (Σ i, Fin (n i))) → ℕ := fun p => k (e.symm p).1 (e.symm p).2
-  let e' : (⨁ h) ≅ ⨁ fun p => tensorPower X (k' p) :=
-    flattenDependent a n (fun i j => tensorPower X (k i j)) ≪≫
-      biproduct.whiskerEquiv e (fun p => eqToIso (by
-        change tensorPower X (k (e.symm (e p)).1 (e.symm (e p)).2) = _
-        rw [e.symm_apply_apply]))
-  exact ⟨_, k', ⟨R.trans (Retract.ofIso e')⟩⟩
+      simp [Category.assoc, (r i).retract] }
+
+/-- Flatten a dependent biproduct to a single finite index. -/
+private def flattenDependentFin (a : ℕ) (b : Fin a → ℕ)
+    (f : (i : Fin a) → Fin (b i) → C) :
+    (⨁ fun i => ⨁ fun j => f i j) ≅
+      ⨁ fun p : Fin (Fintype.card (Σ i, Fin (b i))) =>
+        f ((Fintype.equivFin (Σ i, Fin (b i))).symm p).1
+          ((Fintype.equivFin (Σ i, Fin (b i))).symm p).2 := by
+  let e := Fintype.equivFin (Σ i, Fin (b i))
+  exact flattenDependent a b f ≪≫
+    biproduct.whiskerEquiv e (fun p => eqToIso (by
+      change f (e.symm (e p)).1 (e.symm (e p)).2 = _
+      rw [e.symm_apply_apply]))
+
+/-- Finite biproducts of generated objects are generated. -/
+theorem generatedBy_biproduct {X : C} {a : ℕ} (f : Fin a → C)
+    (hf : ∀ i, GeneratedBy X (f i)) : GeneratedBy X (⨁ f) := by
+  classical
+  choose n k hr using hf
+  let e := Fintype.equivFin (Σ i, Fin (n i))
+  refine ⟨_, fun p => k (e.symm p).1 (e.symm p).2, ?_⟩
+  exact ⟨(biproductRetract (fun i => (hr i).some)).trans
+    (Retract.ofIso (flattenDependentFin a n (fun i j => tensorPower X (k i j))))⟩
 
 /-- Generated objects are closed under biproducts indexed by any finite type. -/
 theorem generatedBy_finiteBiproduct {X : C} {J : Type} [Finite J] (f : J → C)
