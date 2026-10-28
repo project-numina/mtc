@@ -44,17 +44,13 @@ theorem crossingComposite_summand :
         (T ◁ ((biproduct.ι V k ▷ U) ≫ bU)) ⊗≫ 𝟙 ((T ⊗ U) ⊗ (⨁ V)) := by
       dsimp only [bT]
       rw [crossingCandidate_on_summand]
-      simp only [monoidalComp, sum_whiskerRight, Preadditive.sum_comp, Preadditive.comp_sum]
-      refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => ?_
-      monoidal
+      simp [monoidalComp, sum_whiskerRight, Preadditive.sum_comp, Preadditive.comp_sum,
+        crossingSummand, V]
     _ = _ := by
-      refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => ?_
-      dsimp only [bU]
-      rw [crossingCandidate_on_summand]
-      simp only [whiskerLeft_sum, monoidalComp, Preadditive.comp_sum, Preadditive.sum_comp]
-      refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun b _ => ?_
-      rw [crossingBlock_tensor]
-      monoidal
+      dsimp only [bU, V, underlying]
+      simp_rw [crossingCandidate_on_summand]
+      simp [whiskerLeft_sum, monoidalComp, Preadditive.comp_sum, Preadditive.sum_comp,
+        crossingBlock_tensor, crossingSummand, V]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The induction crossing obeys the half-braiding tensor law. -/
@@ -66,10 +62,10 @@ theorem crossingCandidate_tensor :
   simp only [Fintype.sum_sigma, Preadditive.sum_comp]
   dsimp only [underlying] at *
   rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  simp_rw [Finset.sum_comm (s := (Finset.univ : Finset (crossingIndex C U k _)))
-    (t := (Finset.univ : Finset (crossingIndex C T i k)))]
-  rw [Finset.sum_comm]
+  simp_rw [Finset.sum_comm (s := (Finset.univ : Finset (crossingIndex C U _ _)))
+    (t := (Finset.univ : Finset (crossingIndex C T i _))),
+    Finset.sum_comm (s := (Finset.univ : Finset (Fin (rank C))))
+      (t := (Finset.univ : Finset (crossingIndex C T i _)))]
 
 /-- The actual matrix crossing is invertible by rigidity. -/
 theorem crossingCandidate_isIso :

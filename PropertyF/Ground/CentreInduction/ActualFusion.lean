@@ -117,14 +117,14 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
 theorem unitCandidate_central :
     (unitCandidate C Z ▷ T) ≫ crossingCandidate C Z.1 T =
-      (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) := by
+      (Z.2.β T).hom ≫ (T ◁ unitCandidate C Z) :=
   let V := inductionSummand C Z.1
-  refine leftDistributor_ext_right (f := V) fun j => ?_
-  simp only [Category.assoc, ← whiskerLeft_comp,
-    show unitCandidate C Z ≫ biproduct.π V j = unitComponent C Z j from biproduct.lift_π _ _]
-  simpa only [V, unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
-    comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum,
-    Fintype.sum_sigma, crossingSummand] using unit_sum C Z T j
+  leftDistributor_ext_right (f := V) fun j => by
+    simp only [Category.assoc, ← whiskerLeft_comp,
+      show unitCandidate C Z ≫ biproduct.π V j = unitComponent C Z j from biproduct.lift_π _ _]
+    simpa only [V, unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
+      comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum,
+      Fintype.sum_sigma, crossingSummand] using unit_sum C Z T j
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/
