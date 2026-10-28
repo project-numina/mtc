@@ -45,7 +45,7 @@ theorem generatedBy_rightDual_of_unit_power {X : D} [Simple X] {n : ℕ}
   let _ : Simple (Xᘁ) := Ground.simple_rightDual X
   let : IsSplitMono r.i := r.instIsSplitMonoI
   let f : Xᘁ ⊗ 𝟙_ D ⟶ tensorPower X n :=
-    (Ground.tensorLeftHomLinearEquiv (𝟙_ D) X (Xᘁ) (tensorPower X n)).symm r.i
+    (Ground.tensorLeftHomLinearEquiv (k := ℂ) (𝟙_ D) X (Xᘁ) (tensorPower X n)).symm r.i
   have hf : f ≠ 0 := (Ground.tensorLeftHomLinearEquiv
     (𝟙_ D) X (Xᘁ) (tensorPower X n)).symm.map_ne_zero_iff.mpr
       (Ground.mono_ne_zero_of_id_ne_zero r.i (id_nonzero (𝟙_ D)))

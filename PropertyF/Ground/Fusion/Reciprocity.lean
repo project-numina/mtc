@@ -10,36 +10,45 @@ open CategoryTheory.Limits
 namespace PropertyF.Ground
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
-variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
-  [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+section
+variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [MonoidalCategory C]
+  [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
 
-/-- Rigidity's Hom equivalence is complex-linear. -/
+/-- Rigidity's Hom equivalence is linear. -/
 def tensorRightHomLinearEquiv (X Y Y' Z : C) [ExactPairing Y Y'] :
-    (X ⊗ Y ⟶ Z) ≃ₗ[ℂ] (X ⟶ Z ⊗ Y') where
+    (X ⊗ Y ⟶ Z) ≃ₗ[k] (X ⟶ Z ⊗ Y') where
   toEquiv := tensorRightHomEquiv X Y Y' Z
   map_add' f g := by simp [tensorRightHomEquiv]
   map_smul' c f := by simp [tensorRightHomEquiv]
 
-/-- Rigidity's left Hom equivalence is complex-linear. -/
+/-- Rigidity's left Hom equivalence is linear. -/
 def tensorLeftHomLinearEquiv (X Y Y' Z : C) [ExactPairing Y Y'] :
-    (Y' ⊗ X ⟶ Z) ≃ₗ[ℂ] (X ⟶ Y ⊗ Z) where
+    (Y' ⊗ X ⟶ Z) ≃ₗ[k] (X ⟶ Y ⊗ Z) where
   toEquiv := tensorLeftHomEquiv X Y Y' Z
   map_add' f g := by simp [tensorLeftHomEquiv]
   map_smul' c f := by simp [tensorLeftHomEquiv]
 
+end
+
+section
+variable {k : Type*} [Field k] {C : Type u} [Category.{v} C] [MonoidalCategory C]
+  [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
+
 /-- Frobenius reciprocity for Hom dimensions. -/
 theorem finrank_frobenius_reciprocity [RigidCategory C] (X Y Z : C) :
-    Module.finrank ℂ (Z ⟶ X ⊗ Y) = Module.finrank ℂ (Z ⊗ (ᘁY) ⟶ X) :=
-  (tensorRightHomLinearEquiv Z (ᘁY) Y X).finrank_eq.symm
+    Module.finrank k (Z ⟶ X ⊗ Y) = Module.finrank k (Z ⊗ (ᘁY) ⟶ X) :=
+  (tensorRightHomLinearEquiv (k := k) Z (ᘁY) Y X).finrank_eq.symm
 
 /-- An object and its left dual have endomorphism spaces of the same
 dimension, obtained using both rigidity adjunctions. -/
 theorem finrank_end_leftDual [RigidCategory C] (X : C) :
-    Module.finrank ℂ ((ᘁX) ⟶ (ᘁX)) = Module.finrank ℂ (X ⟶ X) :=
-  (CategoryTheory.Linear.homCongr ℂ (λ_ (ᘁX)).symm (Iso.refl _)).trans
-    (tensorRightHomLinearEquiv (𝟙_ C) (ᘁX) X (ᘁX)) |>.trans
-    (tensorLeftHomLinearEquiv (𝟙_ C) (ᘁX) X X).symm |>.trans
-    (CategoryTheory.Linear.homCongr ℂ (ρ_ X) (Iso.refl _)) |>.finrank_eq
+    Module.finrank k ((ᘁX) ⟶ (ᘁX)) = Module.finrank k (X ⟶ X) :=
+  (CategoryTheory.Linear.homCongr k (λ_ (ᘁX)).symm (Iso.refl _)).trans
+    (tensorRightHomLinearEquiv (k := k) (𝟙_ C) (ᘁX) X (ᘁX)) |>.trans
+    (tensorLeftHomLinearEquiv (k := k) (𝟙_ C) (ᘁX) X X).symm |>.trans
+    (CategoryTheory.Linear.homCongr k (ρ_ X) (Iso.refl _)) |>.finrank_eq
+
+end
 
 section
 variable {E : Type u} [Category.{v} E] [MonoidalCategory E] [BraidedCategory E]
@@ -71,7 +80,7 @@ theorem simple_of_finrank_end_eq_one {X : E}
 theorem simple_leftDual (X : E) [Simple X] :
     Simple (ᘁX) :=
   letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  simple_of_finrank_end_eq_one ((finrank_end_leftDual X).trans
+  simple_of_finrank_end_eq_one ((finrank_end_leftDual (k := ℂ) X).trans
     (CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X))
 
 /-- The right dual of a simple object in a braided fusion category is simple. -/
@@ -104,7 +113,7 @@ theorem fusionCoeff_reciprocity
   letI : Simple (simples D i) := simples_simple D i
   calc
     _ = Module.finrank ℂ (simples D k ⊗ (ᘁ(simples D j)) ⟶ simples D i) :=
-      finrank_frobenius_reciprocity (simples D i) (simples D j) (simples D k)
+      finrank_frobenius_reciprocity (k := ℂ) (simples D i) (simples D j) (simples D k)
     _ = _ := finrank_to_simple_eq_from_simple _ (simples D i)
 
 /-- The usual fusion-coefficient Frobenius reciprocity identity. -/
@@ -175,7 +184,7 @@ theorem rightQuantumTrace_simple_ne_zero
   let r : X ⊗ (Xᘁ) ⟶ 𝟙_ C := t.hom ≫ ev
   have hr : r ≠ 0 := fun h ↦ hev ((cancel_epi t.hom).1 (by simpa [r] using h))
   have hfin : Module.finrank ℂ (X ⊗ (Xᘁ) ⟶ 𝟙_ C) = 1 :=
-    ((tensorRightHomLinearEquiv X (Xᘁ) ((Xᘁ)ᘁ) (𝟙_ C)).trans
+    ((tensorRightHomLinearEquiv (k := ℂ) X (Xᘁ) ((Xᘁ)ᘁ) (𝟙_ C)).trans
       ((CategoryTheory.Linear.homCongr ℂ (Iso.refl X) (λ_ ((Xᘁ)ᘁ))).trans
         (CategoryTheory.Linear.homCongr ℂ (Iso.refl X) j.symm))).finrank_eq.trans
           (CategoryTheory.finrank_endomorphism_simple_eq_one ℂ X)

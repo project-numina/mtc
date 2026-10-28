@@ -231,8 +231,7 @@ theorem leftTrace_tensor_pairing (f : X ⊗ Y ⟶ X ⊗ Y) :
     whiskerLeft_comp, Category.assoc]
   dsimp only [A, D, E, r] at *
   simp only [Category.id_comp, ← whiskerLeft_comp_assoc, Iso.hom_inv_id_assoc,
-    Category.id_comp]
-  rw [← whisker_exchange_assoc, ← hev]
+    ← whisker_exchange_assoc, ← hev]
 
 end
 

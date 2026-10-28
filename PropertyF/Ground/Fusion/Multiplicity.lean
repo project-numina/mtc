@@ -12,26 +12,31 @@ open scoped BigOperators
 namespace PropertyF.Ground
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
-variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
+section
+variable {k : Type*} [Field k] [IsAlgClosed k]
+  {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
 
 /-- Schur's lemma identifies the scalar algebra with the endomorphism algebra
 of a finite-dimensional simple object. -/
 theorem simple_algebraMap_bijective [HasKernels C] (X : C) [Simple X]
-    [FiniteDimensional ℂ (X ⟶ X)] : Function.Bijective (algebraMap ℂ (End X)) :=
-  ⟨RingHom.injective _, fun a ↦ (endomorphism_simple_eq_smul_id ℂ a.asHom).imp
+    [FiniteDimensional k (X ⟶ X)] : Function.Bijective (algebraMap k (End X)) :=
+  ⟨RingHom.injective _, fun a ↦ (endomorphism_simple_eq_smul_id k a.asHom).imp
     fun _ hz ↦ End.ext (by simpa [Algebra.algebraMap_eq_smul_one] using hz)⟩
 
 /-- The endomorphism algebra of a finite-dimensional simple object is the scalar field. -/
 def simpleEndScalar [HasKernels C] (X : C) [Simple X]
-    [FiniteDimensional ℂ (X ⟶ X)] : End X ≃ₐ[ℂ] ℂ :=
-  (AlgEquiv.ofBijective (Algebra.ofId ℂ (End X)) (simple_algebraMap_bijective X)).symm
+    [FiniteDimensional k (X ⟶ X)] : End X ≃ₐ[k] k :=
+  (AlgEquiv.ofBijective (Algebra.ofId k (End X)) (simple_algebraMap_bijective X)).symm
+
+end
 
 section
-variable {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
+  {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
 
 /-- The Hom space into a finite biproduct is the product of the Hom spaces. -/
 def homBiproductLinearEquiv
-    (X : C) (V : ι → C) : (X ⟶ ⨁ V) ≃ₗ[ℂ] (∀ i, X ⟶ V i) where
+    (X : C) (V : ι → C) : (X ⟶ ⨁ V) ≃ₗ[k] (∀ i, X ⟶ V i) where
   toFun f i := f ≫ biproduct.π V i
   invFun f := biproduct.lift f
   left_inv f := by
@@ -50,7 +55,7 @@ def homBiproductLinearEquiv
 
 /-- The Hom space out of a finite biproduct is the product of the Hom spaces. -/
 def biproductHomLinearEquiv
-    (V : ι → C) (X : C) : (⨁ V ⟶ X) ≃ₗ[ℂ] (∀ i, V i ⟶ X) where
+    (V : ι → C) (X : C) : (⨁ V ⟶ X) ≃ₗ[k] (∀ i, V i ⟶ X) where
   toFun f i := biproduct.ι V i ≫ f
   invFun f := biproduct.desc f
   left_inv f := by
@@ -67,15 +72,21 @@ def biproductHomLinearEquiv
     funext i
     simp
 
+end
+
+section
+variable {k : Type*} [Field k] {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
+  {ι : Type*} [Fintype ι] [HasFiniteBiproducts C]
+
 theorem finrank_hom_biproduct
-    (X : C) (V : ι → C) [∀ i, FiniteDimensional ℂ (X ⟶ V i)] :
-    Module.finrank ℂ (X ⟶ ⨁ V) = ∑ i, Module.finrank ℂ (X ⟶ V i) :=
-  by rw [(homBiproductLinearEquiv X V).finrank_eq, Module.finrank_pi_fintype]
+    (X : C) (V : ι → C) [∀ i, FiniteDimensional k (X ⟶ V i)] :
+    Module.finrank k (X ⟶ ⨁ V) = ∑ i, Module.finrank k (X ⟶ V i) :=
+  by rw [(homBiproductLinearEquiv (k := k) X V).finrank_eq, Module.finrank_pi_fintype]
 
 theorem finrank_biproduct_hom
-    (V : ι → C) (X : C) [∀ i, FiniteDimensional ℂ (V i ⟶ X)] :
-    Module.finrank ℂ (⨁ V ⟶ X) = ∑ i, Module.finrank ℂ (V i ⟶ X) :=
-  by rw [(biproductHomLinearEquiv V X).finrank_eq, Module.finrank_pi_fintype]
+    (V : ι → C) (X : C) [∀ i, FiniteDimensional k (V i ⟶ X)] :
+    Module.finrank k (⨁ V ⟶ X) = ∑ i, Module.finrank k (V i ⟶ X) :=
+  by rw [(biproductHomLinearEquiv (k := k) V X).finrank_eq, Module.finrank_pi_fintype]
 
 end
 
