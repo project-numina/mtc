@@ -46,8 +46,7 @@ abbrev HasDrinfeldEvaluation {X : C} (d : X ≅ (Xᘁ)ᘁ) : Prop :=
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Closing self-braiding gives the pivotal twist determined by a compatible double-dual isomorphism. -/
-theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C}
-    (d : X ≅ (Xᘁ)ᘁ)
+theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C} (d : X ≅ (Xᘁ)ᘁ)
     (hd : HasDrinfeldEvaluation d) :
     Calculus.rightPartialTrace p (End.of (β_ X X).hom) =
       End.of ((p.iso X).hom ≫ d.inv) :=
