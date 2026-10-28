@@ -23,7 +23,6 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
     (heq : ∑ k, x k * (f k : ℂ) = ((∑ k, N k * f k : ℝ) : ℂ)) :
     ∀ k, x k = (N k : ℂ) := by
   classical
-  have hN (k : ι) : 0 ≤ N k := le_trans (norm_nonneg _) (hdom k)
   have hnonneg (k : ι) : 0 ≤ (N k - (x k).re) * f k :=
     mul_nonneg (sub_nonneg.mpr (le_trans (Complex.re_le_norm _) (hdom k))) (le_of_lt (hf k))
   have hsum : ∑ k, (N k - (x k).re) * f k = 0 := by
@@ -34,12 +33,11 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
     linarith
   intro k
   have hz := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => hnonneg j)).1 hsum k (Finset.mem_univ k)
-  have hre : (x k).re = N k := by
-    have hh := (mul_eq_zero.mp hz).resolve_right (ne_of_gt (hf k))
-    linarith
-  have hsq : ‖x k‖ ^ 2 ≤ N k ^ 2 := by nlinarith [norm_nonneg (x k), hdom k, hN k]
-  rw [Complex.sq_norm, Complex.normSq_apply, hre] at hsq
-  have him : (x k).im = 0 := by nlinarith [sq_nonneg ((x k).im)]
+  have hre : (x k).re = N k :=
+    (sub_eq_zero.mp ((mul_eq_zero.mp hz).resolve_right (ne_of_gt (hf k)))).symm
+  have him : (x k).im = 0 := Complex.abs_re_eq_norm.mp <| by
+    rw [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))]
+    exact le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)
   apply Complex.ext <;> simp [hre, him]
 
 /-- Saturation of a complex fusion-matrix eigenvector forces every term to

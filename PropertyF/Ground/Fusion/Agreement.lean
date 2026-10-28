@@ -170,10 +170,11 @@ theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
       ⟨j, Finset.mem_univ _, mul_pos (hpos i j) hj⟩
   have hi := congrFun heigen i
   simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hi
-  have : 0 < d * v i := by linarith
-  by_contra hn
-  have : v i = 0 := le_antisymm (le_of_not_gt hn) (hnonneg i)
-  simp [this] at *
+  have hv : 0 < d * v i := hi ▸ hsum
+  have hne : v i ≠ 0 := by
+    intro h
+    simp [h] at hv
+  exact lt_of_le_of_ne (hnonneg i) (Ne.symm hne)
 
 /-- A nonnegative symmetric real matrix has a nonnegative eigenvector with a
 positive coordinate. -/
@@ -646,7 +647,7 @@ theorem one_le_fpSimple (i : Fin (rank D)) :
       (Finset.mem_univ (unitIndex D))
     simpa [fusionCoeff_dual_unit, fpSimple_unit] using h
   rw [← fpSimple_mul, fpSimple_dual] at hsum
-  nlinarith [fpSimple_pos D i]
+  exact (one_le_sq_iff₀ (fpSimple_pos D i).le).mp (by simpa only [pow_two] using hsum)
 
 end PropertyF.Ground
 
