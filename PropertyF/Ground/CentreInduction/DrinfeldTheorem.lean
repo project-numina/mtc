@@ -120,8 +120,7 @@ theorem fourthDualIso_tensor :
   simp only [fourthDualIso, Iso.trans_hom, Iso.symm_hom,
     rightDualIsoMap]
   rw [(Iso.eq_inv_comp m).2 (drinfeld_tensor C X Y)]
-  simp only [Category.assoc]
-  rw [drinfeld_inv_dual_tensor C X Y]
+  simp only [Category.assoc, drinfeld_inv_dual_tensor C X Y]
   simp only [← tensorHom_comp_tensorHom_assoc, ← Category.assoc]
   rw [Category.assoc m.inv,
     ← CentreCabling.doubleBraiding_natural (doubleDualIso C X).hom (doubleDualIso C Y).hom]

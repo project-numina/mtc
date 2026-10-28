@@ -56,7 +56,7 @@ def enoFrobeniusEquiv (C : BraidedFusionCategory.{v,u})
   let Xj := simples C j
   let Xk := simples C k
   letI : ExactPairing (Xiᘁ) Xi := BraidedCategory.exactPairing_swap Xi (Xiᘁ)
-  exact (tensorLeftHomLinearEquiv Xj (Xiᘁ) Xi Xk).trans
+  exact (tensorLeftHomLinearEquiv (k := ℂ) Xj (Xiᘁ) Xi Xk).trans
     (Linear.homCongr ℂ (Iso.refl Xj) (rightDualLabelIso C i ⊗ᵢ Iso.refl Xk))
 
 /-- The actual ENO Frobenius/semisimple reciprocity isomorphism: the dual of
@@ -131,7 +131,7 @@ theorem trace_reciprocity_of_frobenius_defect
   have hv : P g = v := P.apply_symm_apply v
   rw [← hv]
   let : FiniteDimensional ℂ (simples C j ⟶ simples C j) := IsFusionCategory.hom_finite _ _
-  have hn := simpleHomPairing_natural g
+  have hn := simpleHomPairing_natural (k := ℂ) g
     (rootTensorDefect C (simples C i) (simples C k)).hom
   have hm : (multiplicityDefect C i k j).toLinearMap =
       Linear.rightComp ℂ (simples C j) (rootTensorDefect C (simples C i) (simples C k)).hom := by

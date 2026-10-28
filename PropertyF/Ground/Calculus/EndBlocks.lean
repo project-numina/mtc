@@ -123,7 +123,7 @@ def groundEndBlockEquiv {X : D.Obj}
   let decomp := orthogonalEndBlocks (Ground.simples D) f (groundSimples_orthogonal D)
   let scalars : (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) (End (Ground.simples D i))) ≃ₐ[ℂ]
       (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) ℂ) :=
-    AlgEquiv.piCongrRight fun i => (simpleEndScalar (Ground.simples D i)).mapMatrix
+    AlgEquiv.piCongrRight fun i => (simpleEndScalar (k := ℂ) (Ground.simples D i)).mapMatrix
   let reindex : (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) ℂ) ≃ₐ[ℂ]
       (∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ) :=
     AlgEquiv.piCongrRight fun i => Matrix.reindexAlgEquiv ℂ ℂ (simpleFiberEquiv m i)
