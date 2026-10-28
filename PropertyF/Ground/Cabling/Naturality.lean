@@ -37,10 +37,9 @@ def braidWordAction : BraidWords n →* braidImage X n :=
 
 /-- Every element of the categorical braid image is represented by a word. -/
 theorem braidWordAction_surjective :
-    Function.Surjective (braidWordAction X n) := fun ⟨a, ha⟩ =>
-  let ⟨w, hw⟩ : a ∈ (FreeGroup.lift (braidGenerator X n)).range := by
-    simpa only [FreeGroup.range_lift_eq_closure, braidImage] using ha
-  ⟨w, Subtype.ext hw⟩
+    Function.Surjective (braidWordAction X n) :=
+  (Set.surjective_codRestrict _).2 (by
+    simp only [← MonoidHom.coe_range, FreeGroup.range_lift_eq_closure, braidImage])
 
 end PropertyF
 
