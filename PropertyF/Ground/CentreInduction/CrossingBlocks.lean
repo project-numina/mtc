@@ -170,8 +170,7 @@ theorem crossingCandidate_on_summand (X T : C.Obj) (i : Fin (rank C)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The proposed crossing is natural in the induction argument. -/
-theorem crossingCandidate_natural_middle
-    {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj) :
+theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj) :
     ((underlyingFunctor C).map h ▷ T) ≫ crossingCandidate C Y T =
       crossingCandidate C X T ≫ (T ◁ (underlyingFunctor C).map h) := by
   let VX := inductionSummand C X

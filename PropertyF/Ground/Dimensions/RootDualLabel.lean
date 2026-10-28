@@ -21,11 +21,11 @@ theorem positive_spherical_of_simple_fourth_and_reciprocity
       fourthDualTensorLaw C (simples C i) (simples C j))
     (htranspose : ENOTraceMatrixReciprocity C)
     (hpu : PseudoUnitary C) :
-    HasFPSphericalStructure C := by
-  have hinv : MultiplicityDefectsInvolutive C := fun i j k ↦
+    HasFPSphericalStructure C :=
+  let hinv : MultiplicityDefectsInvolutive C := fun i j k ↦
     multiplicityDefect_involution_of_tensor_square C k
       ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)
-  exact positive_spherical_of_matrix_identities C hinv
+  positive_spherical_of_matrix_identities C hinv
     (fun i j ↦ enoTraceMatrix_eigenvector_of_involutions C (hinv i j))
     (fun i ↦ squaredNorm_eq_root_norm_sq_of_reciprocity C hinv htranspose i) hpu
 
@@ -46,20 +46,26 @@ def rightDualLabelIso (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
   leftDualIso (BraidedCategory.exactPairing_swap (simples C i) ((simples C i)ᘁ))
     HasLeftDual.exact ≪≫ Classical.choice (dualIndex_iso C i)
 
-/-- The actual ENO Frobenius/semisimple reciprocity isomorphism: the dual of
-one fusion multiplicity space is the dual-label multiplicity space. -/
-def enoReciprocityEquiv (C : BraidedFusionCategory.{v,u})
+/-- Actual Frobenius reciprocity using the chosen dual-label identification. -/
+def enoFrobeniusEquiv (C : BraidedFusionCategory.{v,u})
     (i j k : Fin (rank C)) :
-    Module.Dual ℂ (simples C k ⟶ simples C i ⊗ simples C j) ≃ₗ[ℂ]
+    (simples C i ⊗ simples C j ⟶ simples C k) ≃ₗ[ℂ]
       (simples C j ⟶ simples C (dualIndex C i) ⊗ simples C k) := by
   let Xi := simples C i
   let Xj := simples C j
   let Xk := simples C k
   letI : ExactPairing (Xiᘁ) Xi := BraidedCategory.exactPairing_swap Xi (Xiᘁ)
-  let eq1 := (simpleHomPairingEquiv C k (Xi ⊗ Xj)).symm
-  let eq2 := tensorLeftHomLinearEquiv Xj (Xiᘁ) Xi Xk
-  let eq3 := Linear.homCongr ℂ (Iso.refl Xj) (rightDualLabelIso C i ⊗ᵢ Iso.refl Xk)
-  exact eq1.trans (eq2.trans eq3)
+  exact (tensorLeftHomLinearEquiv Xj (Xiᘁ) Xi Xk).trans
+    (Linear.homCongr ℂ (Iso.refl Xj) (rightDualLabelIso C i ⊗ᵢ Iso.refl Xk))
+
+/-- The actual ENO Frobenius/semisimple reciprocity isomorphism: the dual of
+one fusion multiplicity space is the dual-label multiplicity space. -/
+def enoReciprocityEquiv (C : BraidedFusionCategory.{v,u})
+    (i j k : Fin (rank C)) :
+    Module.Dual ℂ (simples C k ⟶ simples C i ⊗ simples C j) ≃ₗ[ℂ]
+      (simples C j ⟶ simples C (dualIndex C i) ⊗ simples C k) :=
+  (simpleHomPairingEquiv C k (simples C i ⊗ simples C j)).symm.trans
+    (enoFrobeniusEquiv C i j k)
 
 /-- The categorical operator intertwining under the actual reciprocity
 isomorphism implies ENO's trace-transpose relation. -/
@@ -99,25 +105,13 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
-/-- Actual Frobenius reciprocity using the chosen dual-label identification. -/
-def enoFrobeniusEquiv (C : BraidedFusionCategory.{v,u})
-    (i j k : Fin (rank C)) :
-    (simples C i ⊗ simples C j ⟶ simples C k) ≃ₗ[ℂ]
-      (simples C j ⟶ simples C (dualIndex C i) ⊗ simples C k) := by
-  let Xi := simples C i
-  let Xj := simples C j
-  let Xk := simples C k
-  letI : ExactPairing (Xiᘁ) Xi := BraidedCategory.exactPairing_swap Xi (Xiᘁ)
-  exact (tensorLeftHomLinearEquiv Xj (Xiᘁ) Xi Xk).trans
-    (Linear.homCongr ℂ (Iso.refl Xj) (rightDualLabelIso C i ⊗ᵢ Iso.refl Xk))
-
 /-- The ENO reciprocity equivalence is the composition pairing followed by
 the actual Frobenius reciprocity map. -/
 theorem enoReciprocityEquiv_pairing
     {i j k : Fin (rank C)}
     (g : simples C i ⊗ simples C j ⟶ simples C k) :
     enoReciprocityEquiv C i j k (simpleHomPairingEquiv C k (simples C i ⊗ simples C j) g) =
-      enoFrobeniusEquiv C i j k g := by simp [enoReciprocityEquiv, enoFrobeniusEquiv]
+      enoFrobeniusEquiv C i j k g := by simp [enoReciprocityEquiv]
 
 /-- It is enough to prove the defect compatibility on ordinary categorical
 morphisms before applying the perfect-pairing duality. -/
@@ -166,9 +160,8 @@ theorem rootDualSign_dual (i : Fin (rank C)) :
   let : Simple X := simples_simple C i
   let : Simple Y := simples_simple C _
   let : Simple (Xᘁ) := simple_rightDual C X
-  have he : squaredNorm C Y = squaredNorm C X := by
-    rw [← target_squaredNorm_iso C (rightDualLabelIso C i)]
-    exact target_squaredNorm_rightDual C X
+  have he : squaredNorm C Y = squaredNorm C X :=
+    (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans (target_squaredNorm_rightDual C X)
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul] at he
   rw [Ground.dualIndex_involutive] at he
   apply mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero C i)

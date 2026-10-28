@@ -30,12 +30,9 @@ theorem cyclicTrace_decomposition {ι : Type*} [Fintype ι]
     (h : ∑ j, q j ≫ i j = 𝟙 X) (f : X ⟶ X) :
     trace X f = ∑ j, trace (Y j) (i j ≫ f ≫ q j) := by
   classical
-  calc
-    _ = trace X ((∑ j, q j ≫ i j) ≫ f) := by rw [h, Category.id_comp]
-    _ = ∑ j, trace X ((q j ≫ i j) ≫ f) := by
-      simpa only [Preadditive.sum_comp] using map_sum (trace X) _ _
-    _ = _ := Finset.sum_congr rfl fun j _ ↦ by
-      simpa only [Category.assoc] using hcyclic (q j) (i j ≫ f)
+  conv_lhs => rw [← Category.id_comp f, ← h, Preadditive.sum_comp, map_sum]
+  exact Finset.sum_congr rfl fun j _ ↦ by
+    simpa only [Category.assoc] using hcyclic (q j) (i j ≫ f)
 
 /-- Each diagonal block on a biproduct of simple objects is a scalar. -/
 theorem simple_biproduct_diagonal [HasKernels C] {ι : Type*}
@@ -43,12 +40,11 @@ theorem simple_biproduct_diagonal [HasKernels C] {ι : Type*}
     (hfinite : ∀ i, FiniteDimensional ℂ (F i ⟶ F i)) (f : (⨁ F) ⟶ (⨁ F)) :
     ∃ c : ι → ℂ, ∀ i, biproduct.ι F i ≫ f ≫ biproduct.π F i = c i • 𝟙 (F i) := by
   classical
-  have h : ∀ i, ∃ c : ℂ, biproduct.ι F i ≫ f ≫ biproduct.π F i = c • 𝟙 (F i) := by
-    intro i
+  have h (i : ι) : ∃ c : ℂ, biproduct.ι F i ≫ f ≫ biproduct.π F i = c • 𝟙 (F i) := by
     let : Simple (F i) := hs i
     let : FiniteDimensional ℂ (F i ⟶ F i) := hfinite i
-    obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ (biproduct.ι F i ≫ f ≫ biproduct.π F i)
-    exact ⟨c, hc.symm⟩
+    exact (endomorphism_simple_eq_smul_id ℂ (biproduct.ι F i ≫ f ≫ biproduct.π F i)).imp
+      fun _ h ↦ h.symm
   exact Classical.skolem.mp h
 /-- Scalar diagonal blocks give the corresponding weighted cyclic trace. -/
 theorem cyclicTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]

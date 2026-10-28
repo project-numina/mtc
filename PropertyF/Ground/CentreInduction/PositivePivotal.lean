@@ -39,12 +39,12 @@ def liftedPivotalStructure (p : PivotalStructure (C := D))
     exact Center.isoMk f
   naturality f := by
     apply Center.ext
-    simpa only [Center.comp_f, Center.isoMk_hom, transportedPivotalHom, Category.assoc] using
+    simpa only [Center.comp_f, Center.isoMk_hom] using
       transported_pivotal_natural p f
   tensor X Y := by
     apply Center.ext
     simpa only [Center.comp_f, Center.tensor_f,
-      Center.isoMk_hom, Center.tensor_fst, transportedPivotalHom] using
+      Center.isoMk_hom, Center.tensor_fst] using
       (transported_pivotal_tensor p X Y).symm
   unit := by
     apply Center.ext
@@ -72,19 +72,18 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
   [RightRigidCategory D] [RigidCategory (Center D)]
+local notation "Z⁺" => Functor.obj (Center.ofBraided D)
 
 /-- The positive centre embedding preserves right duals up to the canonical isomorphism. -/
-def positiveDualIso (T : D) :
-    ((Center.ofBraided D).obj T)ᘁ ≅
-      (Center.ofBraided D).obj (Tᘁ) :=
+def positiveDualIso (T : D) : (Z⁺ T)ᘁ ≅ Z⁺ (Tᘁ) :=
   rightDualIso HasRightDual.exact (Centre.positiveExactPairing T (Tᘁ))
 
+/-- Forgetting the positive dual comparison gives the base dual comparison. -/
 theorem positiveDualIso_forget (T : D) :
-    (positiveDualIso T).hom.f =
-      (forgetDualIso ((Center.ofBraided D).obj T)).hom := by
+    (positiveDualIso T).hom.f = (forgetDualIso (Z⁺ T)).hom := by
   let F := Center.ofBraided D
   have hc : (@ExactPairing.coevaluation (Center D) _ _
-      ((Center.ofBraided D).obj T) ((Center.ofBraided D).obj (Tᘁ))
+      (Z⁺ T) (Z⁺ (Tᘁ))
       (Centre.positiveExactPairing T (Tᘁ))).f = η_ T (Tᘁ) := by
     change (ε F ≫ F.map (η_ T (Tᘁ)) ≫ δ F T (Tᘁ)).f = _
     simp [F]
@@ -96,38 +95,36 @@ theorem positiveDualIso_forget (T : D) :
   rfl
 
 /-- The comparison between the double duals of an object and its positive lift. -/
-def positiveDoubleDualIso (T : D) :
-    (((Center.ofBraided D).obj T)ᘁ)ᘁ ≅
-      (Center.ofBraided D).obj ((Tᘁ)ᘁ) :=
+def positiveDoubleDualIso (T : D) : ((Z⁺ T)ᘁ)ᘁ ≅ Z⁺ ((Tᘁ)ᘁ) :=
   rightDualIsoMap (positiveDualIso T).symm ≪≫ positiveDualIso (Tᘁ)
 
+/-- Forgetting also preserves the inverse positive dual comparison. -/
 theorem positiveDualIso_inv_forget (T : D) :
-    (positiveDualIso T).inv.f =
-      (forgetDualIso ((Center.ofBraided D).obj T)).inv :=
+    (positiveDualIso T).inv.f = (forgetDualIso (Z⁺ T)).inv :=
   (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDualIso T))
-    (forgetDualIso ((Center.ofBraided D).obj T))).2 (positiveDualIso_forget T)
+    (forgetDualIso (Z⁺ T))).2 (positiveDualIso_forget T)
 
+/-- Forgetting the positive double-dual comparison gives the base comparison. -/
 theorem positiveDoubleDualIso_forget (T : D) :
-    (positiveDoubleDualIso T).hom.f =
-      (forgetDoubleDualIso ((Center.ofBraided D).obj T)).hom := by
+    (positiveDoubleDualIso T).hom.f = (forgetDoubleDualIso (Z⁺ T)).hom := by
   simpa only [positiveDoubleDualIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap,
     Center.comp_f, forgetDoubleDualIso, positiveDualIso_forget, positiveDualIso_inv_forget] using
     forgetDualIso_natural (positiveDualIso T).inv
 
+/-- Forgetting also preserves the inverse positive double-dual comparison. -/
 theorem positiveDoubleDualIso_inv_forget (T : D) :
-    (positiveDoubleDualIso T).inv.f =
-      (forgetDoubleDualIso ((Center.ofBraided D).obj T)).inv :=
+    (positiveDoubleDualIso T).inv.f = (forgetDoubleDualIso (Z⁺ T)).inv :=
   (Iso.inv_eq_inv ((Center.forget D).mapIso (positiveDoubleDualIso T))
-    (forgetDoubleDualIso ((Center.ofBraided D).obj T))).2 (positiveDoubleDualIso_forget T)
+    (forgetDoubleDualIso (Z⁺ T))).2 (positiveDoubleDualIso_forget T)
 
 /-- The pivotal component transported to the positive centre lift. -/
 def positivePivotalComponent (p : PivotalStructure (C := D)) (T : D) :
-    (Center.ofBraided D).obj T ≅
-      (((Center.ofBraided D).obj T)ᘁ)ᘁ :=
+    Z⁺ T ≅ ((Z⁺ T)ᘁ)ᘁ :=
   (Center.ofBraided D).mapIso (p.iso T) ≪≫ (positiveDoubleDualIso T).symm
 
+/-- Forgetting a positive pivotal component gives the transported component. -/
 theorem positivePivotalComponent_forget (p : PivotalStructure (C := D)) (T : D) :
-    (positivePivotalComponent p T).hom.f = transportedPivotalHom p ((Center.ofBraided D).obj T) :=
+    (positivePivotalComponent p T).hom.f = transportedPivotalHom p (Z⁺ T) :=
   congrArg ((p.iso T).hom ≫ ·) (positiveDoubleDualIso_inv_forget T)
 
 end PropertyF.Ground.CentreInduction
@@ -181,11 +178,10 @@ theorem center_positive_spherical_of_compatible_pivotal
     pZ.IsSpherical ∧ PivotalHasFPDimensions 𝒵ᶠ pZ := by
   let D := 𝒵ᶠ
   have hd (i : Fin (rank D)) : pivotalDimension D pZ (simples D i) =
-      (fpSimple D i : ℂ) := by
-    rw [center_pivotalDimension_forget C (hcompat _),
-      pivotalDimension_eq_fp hsimple]
-    change (fpDimension C ((Center.forget C.Obj).obj (simples D i)) : ℂ) = _
-    rw [Integrate.center_forget_fpDimension C, fpDimension_simple]
+      (fpSimple D i : ℂ) :=
+    (center_pivotalDimension_forget C (hcompat _)).trans <|
+      (pivotalDimension_eq_fp hsimple _).trans <| congrArg (fun x : ℝ => (x : ℂ)) <|
+        (Integrate.center_forget_fpDimension C _).trans (fpDimension_simple D i)
   refine ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 ?_, hd⟩
   intro i
   simp [hd]

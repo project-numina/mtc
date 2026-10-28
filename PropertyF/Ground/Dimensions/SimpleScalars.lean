@@ -44,10 +44,7 @@ theorem exists_fourthDual_square_root
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   obtain ⟨c, hc0, hc, _⟩ := isomorphisms_scalar e2 g
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq c (n := 2) (by decide)
-  have hz0 : z ≠ 0 := by
-    intro h
-    apply hc0
-    simpa [h] using hz.symm
+  have hz0 : z ≠ 0 := fun h ↦ hc0 (by simpa [h] using hz.symm)
   refine ⟨scaleIso e z hz0, ?_⟩
   apply Iso.ext
   change (z • e.hom) ≫ (((z • e.hom)ᘁ)ᘁ) = g.hom
@@ -59,10 +56,9 @@ theorem exists_fourthDual_square_root
 /-- A chosen square root of the natural braided fourth-dual map on each
 simple representative. -/
 def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
-    simples C i ≅ ((simples C i)ᘁ)ᘁ := by
-  let : Simple (simples C i) := simples_simple C i
-  exact Classical.choose (exists_fourthDual_square_root C
-    (fourthDualIso C (simples C i)))
+    simples C i ≅ ((simples C i)ᘁ)ᘁ :=
+  letI : Simple (simples C i) := simples_simple C i
+  Classical.choose (exists_fourthDual_square_root C (fourthDualIso C (simples C i)))
 
 /-- The chosen simple component squares to the natural fourth-dual component. -/
 theorem fourthDualSimpleRoot_sq (i : Fin (rank C)) :

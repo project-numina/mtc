@@ -25,10 +25,10 @@ abbrev SelfTransparent (X : C) : Prop :=
 /-- Adding a strand on the left shifts the braid generator by one. -/
 theorem braidGenerator_succ (X : C) {n : ℕ} (k : Fin (n + 1)) :
     (tensorLeft X).mapAut (tensorPower X (n + 2)) (b X n k) =
-      b X (n + 1) k.succ := by
-  ext
-  rcases k with ⟨k, hk⟩
-  simp [Functor.mapAut, braidGenerator, tensorIso_hom, tensorLeft, id_tensorHom]
+      b X (n + 1) k.succ :=
+  Aut.ext <| Iso.ext <| by
+    rcases k with ⟨k, hk⟩
+    simp [Functor.mapAut, braidGenerator, tensorIso_hom, tensorLeft, id_tensorHom]
 
 variable {X : C} (hX : SelfTransparent X)
 
