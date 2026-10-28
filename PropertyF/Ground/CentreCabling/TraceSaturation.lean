@@ -33,7 +33,7 @@ theorem finiteOrder_matrix_unitarizable :
   let G := Subgroup.zpowers u
   let : Finite G := hufin.finite_zpowers
   let : Fintype G := Fintype.ofFinite G
-  let ⟨P, hP⟩ := Calculus.exists_unitarizing_basis G.subtype
+  let ⟨P, hP⟩ := Calculus.exists_unitarizing_basis ((Units.coeHom _).comp G.subtype)
   let g : G := ⟨u, Subgroup.mem_zpowers u⟩
   ⟨P, by simpa [g, u] using hP g⟩
 
