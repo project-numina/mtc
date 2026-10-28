@@ -29,7 +29,8 @@ theorem target : TargetStatement.{v,u} := by
     simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
       unitScalar_eq_equiv] using hfp i
   have hbalance : CentreModular.IsPivotalTwistBalanced (Integrate.bundledCenter D) pZ :=
-    pivotal_twist_balanced (Integrate.bundledCenter D) pZ
+    fun X Y ↦ CentreIntegrate.pivotal_balance_of_drinfeld_tensor pZ
+      (doubleDualIso (Integrate.bundledCenter D)) (drinfeld_tensor (Integrate.bundledCenter D) X Y)
   have hdet := CentreModular.categoricalS_det_ne_zero_of_trivial_transparency
     (Integrate.bundledCenter D) pZ hdim hbalance (center_transparent_label_eq_unit D)
   have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy D pZ :=
