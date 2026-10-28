@@ -108,11 +108,11 @@ theorem fusionCoeff_reciprocity (D : BraidedFusionCategory.{v,u})
 /-- The usual fusion-coefficient Frobenius reciprocity identity. -/
 theorem fusionCoeff_reciprocity_labels (D : BraidedFusionCategory.{v,u})
     (i j k : Fin (rank D)) :
-    fusionCoeff D i j k = fusionCoeff D k (dualIndex D j) i := by
-  obtain ⟨e⟩ := dualIndex_iso D j
-  rw [fusionCoeff_reciprocity]
-  exact (CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
-    (Iso.refl (simples D k) ⊗ᵢ e)).finrank_eq
+    fusionCoeff D i j k = fusionCoeff D k (dualIndex D j) i :=
+  (dualIndex_iso D j).elim fun e ↦
+    (fusionCoeff_reciprocity D i j k).trans
+      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _)
+        (Iso.refl (simples D k) ⊗ᵢ e)).finrank_eq
 
 /-- The label of the tensor unit is fixed by duality. -/
 theorem dualIndex_unit (D : BraidedFusionCategory.{v,u}) :

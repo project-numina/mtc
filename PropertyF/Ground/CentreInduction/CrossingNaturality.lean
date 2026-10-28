@@ -55,11 +55,10 @@ theorem crossingBlock_pre_test (X : D) {T U R S : D} (h : T ⟶ U)
     (g : R ⟶ U ⊗ S) (f : U ⊗ S ⟶ R) :
     (((R ⊗ X) ⊗ Rᘁ) ◁ h) ≫ crossingBlock X U S g f =
       mixedCrossingBilinear (k := k) X T U R S g ((h ▷ S) ≫ f) := by
-  simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk]
-  rw [associator_naturality_right_assoc]
-  simp only [tensorHom_def, Category.assoc]
-  rw [← whisker_exchange_assoc, ← whiskerLeft_comp_assoc, closeFusionMap_pre_test]
-  rw [whisker_exchange_assoc]
+  simp only [crossingBlock, mixedCrossingBilinear, LinearMap.coe_mk, AddHom.coe_mk,
+    tensorHom_def, Category.assoc]
+  rw [associator_naturality_right_assoc, ← whisker_exchange_assoc, ← whiskerLeft_comp_assoc,
+    closeFusionMap_pre_test, whisker_exchange_assoc]
 
 /-- Summing the crossing blocks removes the dependence on the chosen fusion
 basis, so a map of test objects can pass through each matrix entry. -/
@@ -71,8 +70,8 @@ theorem crossingBlock_sum_natural_test
     ∑ a, crossingBlock X T (simples C j)
       (crossingInclusion C T i j a) (crossingProjection C T i j a) ≫
         (h ▷ ((simples C j ⊗ X) ⊗ (simples C j)ᘁ)) := by
-  simp_rw [crossingBlock_pre_test (k := ℂ), crossingBlock_post_test (k := ℂ)]
-  simpa only [crossingInclusion, crossingProjection, simpleProjection] using
+  simpa only [crossingBlock_pre_test (k := ℂ), crossingBlock_post_test (k := ℂ),
+    crossingInclusion, crossingProjection, simpleProjection] using
     (simpleBasis_contraction_natural C i (h ▷ simples C j)
       (mixedCrossingBilinear (k := ℂ) X T U (simples C i) (simples C j))).symm
 

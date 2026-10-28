@@ -1,6 +1,5 @@
 module
 public import PropertyF.Ground.CentreInduction.ForgetDualUnit
-public import PropertyF.Ground.CentreInduction.PivotalTransfer
 public import PropertyF.Ground.Centre.Product
 
 section
@@ -55,22 +54,6 @@ theorem liftedPivotalStructure_compatible {p : Dimensions.PivotalStructure (C :=
 
 end
 
-variable {C : BraidedFusionCategory.{v,u}} [RigidCategory (CategoryTheory.Center C.Obj)]
-local notation "𝒵" => CategoryTheory.Center C.Obj
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
-
-/-- Centrality of the transported pivotal components yields centre fusion,
-positive sphericality, pseudo-unitarity and the categorical dimension square. -/
-theorem center_structure_of_pivotal_centrality
-    {p : Dimensions.PivotalStructure (C := C.Obj)}
-    (hsimple : PivotalHasFPDimensions C p)
-    (hc : PivotalComponentsCentral p) :
-    ∃ hFusion : IsFusionCategory (𝒵),
-      letI := hFusion
-      let pZ := liftedPivotalStructure p hc
-      CenterPivotalData C pZ :=
-  center_structure_of_compatible_pivotal hsimple
-    (liftedPivotalStructure_compatible hc)
 
 end PropertyF.Ground.CentreInduction
 

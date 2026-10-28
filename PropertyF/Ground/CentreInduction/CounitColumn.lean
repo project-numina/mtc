@@ -58,10 +58,8 @@ theorem crossing_counit_offdiag (X : C.Obj) {i j : Fin (rank C)} (hne : i ≠ j)
   (biproduct.ι V i ▷ simples C j) ≫ crossingCandidate C X (simples C j) ≫
     (simples C j ◁ (underlyingCounit C).app X) = 0 := by
   classical
-  have hdim : Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C (unitIndex C)) = 0 := by
-    rw [counit_column_finrank]; simp [hne]
   let : IsEmpty (crossingIndex C (simples C j) i (unitIndex C)) := by
-    simp only [crossingIndex, hdim]
+    simp only [crossingIndex, counit_column_finrank, hne, ↓reduceIte]
     infer_instance
   simpa only [Fintype.sum_empty, zero_comp] using crossing_counit_matrix C X (simples C j) i
 
@@ -75,11 +73,10 @@ theorem crossing_counit_diagonal (X : C.Obj) (i : Fin (rank C)) :
         (simpleTensorUnitIso C i).inv (simpleTensorUnitIso C i).hom ≫
           (simples C i ◁ (unitSummandIso C X).hom) := by
   classical
-  have hdim : Module.finrank ℂ (simples C i ⟶ simples C i ⊗ simples C (unitIndex C)) = 1 := by
-    rw [counit_column_finrank]; simp
-  let a : crossingIndex C (simples C i) i (unitIndex C) := ⟨0, by rw [hdim]; decide⟩
+  let a : crossingIndex C (simples C i) i (unitIndex C) :=
+    ⟨0, by simp [counit_column_finrank]⟩
   let : Subsingleton (crossingIndex C (simples C i) i (unitIndex C)) := by
-    simp only [crossingIndex, hdim]
+    simp only [crossingIndex, counit_column_finrank, ↓reduceIte]
     infer_instance
   let : Unique (crossingIndex C (simples C i) i (unitIndex C)) :=
     ⟨⟨a⟩, fun b => Subsingleton.elim b a⟩

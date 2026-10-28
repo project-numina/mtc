@@ -92,15 +92,17 @@ theorem object_injective (X : D.Obj) : Injective X := by
   exact Injective.of_iso e.symm inferInstance
 
 /-- Every epimorphism splits. -/
-theorem epi_splits {X Y : D.Obj} (f : X ⟶ Y) [Epi f] : IsSplitEpi f := by
-  let : Projective Y := object_projective D Y
-  obtain ⟨s, hs⟩ := Projective.factors (𝟙 Y) f
-  exact IsSplitEpi.mk' { section_ := s, id := hs }
+theorem epi_splits {X Y : D.Obj} (f : X ⟶ Y) [Epi f] : IsSplitEpi f :=
+  letI : Projective Y := object_projective D Y
+  IsSplitEpi.mk' {
+    section_ := Projective.factorThru (𝟙 Y) f
+    id := Projective.factorThru_comp (𝟙 Y) f }
 
 /-- Every monomorphism splits. -/
-theorem mono_splits {X Y : D.Obj} (f : X ⟶ Y) [Mono f] : IsSplitMono f := by
-  let : Injective X := object_injective D X
-  obtain ⟨r, hr⟩ := Injective.factors (𝟙 X) f
-  exact IsSplitMono.mk' { retraction := r, id := hr }
+theorem mono_splits {X Y : D.Obj} (f : X ⟶ Y) [Mono f] : IsSplitMono f :=
+  letI : Injective X := object_injective D X
+  IsSplitMono.mk' {
+    retraction := Injective.factorThru (𝟙 X) f
+    id := Injective.comp_factorThru (𝟙 X) f }
 
 end PropertyF.Ground
