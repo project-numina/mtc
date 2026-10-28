@@ -25,11 +25,9 @@ theorem exactPairing_ne_zero {C : Type u} [Category.{v} C] [MonoidalCategory C]
   have hzero : Y ◁ ExactPairing.coevaluation X Y ≫ (α_ Y X Y).inv ≫
       ExactPairing.evaluation X Y ▷ Y ≠ 0 := by
     intro h
-    have ht := ExactPairing.coevaluation_evaluation X Y
-    rw [h] at ht
     apply hY
-    simpa [Category.assoc] using
-      congrArg (fun t => (ρ_ Y).inv ≫ t ≫ (λ_ Y).hom) ht.symm
+    simpa [h, Category.assoc] using
+      congrArg (fun t ↦ (ρ_ Y).inv ≫ t ≫ (λ_ Y).hom) (ExactPairing.coevaluation_evaluation X Y).symm
   constructor <;> intro h <;> apply hzero <;> simp [h]
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
@@ -45,11 +43,10 @@ theorem split_from_simple {S X : C} [Simple S] (f : S ⟶ X) (hf : f ≠ 0) :
   obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := C)
   obtain ⟨m, ⟨e⟩⟩ := hdecomp X
   let V : (Σ i, Fin (m i)) → C := fun p => T p.1
-  have hg : f ≫ e.hom ≠ 0 := fun h ↦ hf ((cancel_mono e.hom).1 (by simpa using h))
-  have hcomponent : ∃ p, f ≫ e.hom ≫ biproduct.π V p ≠ 0 := by
+  obtain ⟨p, hp⟩ : ∃ p, f ≫ e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra! h
-    exact hg (biproduct.hom_ext _ _ fun p ↦ by simpa only [zero_comp, Category.assoc] using h p)
-  obtain ⟨p, hp⟩ := hcomponent
+    exact hf ((cancel_mono e.hom).1 (by simpa only [zero_comp] using
+      (biproduct.hom_ext _ _ fun p ↦ by simpa only [zero_comp, Category.assoc] using h p)))
   let : Simple (V p) := hsimple p.1
   let g : S ⟶ V p := f ≫ e.hom ≫ biproduct.π V p
   let : IsIso g := CategoryTheory.isIso_of_hom_simple hp
@@ -99,11 +96,10 @@ theorem exists_simple_retract {X : C.Obj} (hX : 𝟙 X ≠ 0) :
   classical
   obtain ⟨m, ⟨e⟩⟩ := simples_decompose C X
   let V : (Σ i, Fin (m i)) → C.Obj := fun p => simples C p.1
-  have he : e.hom ≠ 0 := mono_ne_zero_of_id_ne_zero e.hom hX
-  have hp : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
+  obtain ⟨p, hp⟩ : ∃ p, e.hom ≫ biproduct.π V p ≠ 0 := by
     by_contra! h
-    exact he (biproduct.hom_ext _ _ fun p ↦ by simpa only [zero_comp] using h p)
-  obtain ⟨p, hp⟩ := hp
+    exact mono_ne_zero_of_id_ne_zero e.hom hX
+      (biproduct.hom_ext _ _ fun p ↦ by simpa only [zero_comp] using h p)
   refine ⟨p.1, e.hom ≫ biproduct.π V p, biproduct.ι V p ≫ e.inv, hp, ?_⟩
   simp [V, Category.assoc]
 

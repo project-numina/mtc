@@ -202,11 +202,11 @@ theorem generatedBy_rightDual (X : D) :
     exact { i := biproduct.ι V p ≫ e.inv
             r := e.hom ≫ biproduct.π V p
             retract := by simp [Category.assoc] }
-  have hd (p : Σ i, Fin (m i)) : GeneratedBy X ((V p)ᘁ) := by
-    let : Simple (V p) := hsimple p.1
-    exact generatedBy_trans (hv p) (simple_generatedBy_rightDual (V p))
   exact generatedBy_of_iso
-    (generatedBy_retract (generatedBy_finiteBiproduct _ hd) (dualFiniteBiproductRetract V))
+    (generatedBy_retract (generatedBy_finiteBiproduct _ fun p ↦
+      letI : Simple (V p) := hsimple p.1
+      generatedBy_trans (hv p) (simple_generatedBy_rightDual (V p)))
+      (dualFiniteBiproductRetract V))
     (Dimensions.rightDualIsoMap e).symm
 
 end PropertyF.Ground
