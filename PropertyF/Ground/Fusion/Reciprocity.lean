@@ -140,9 +140,8 @@ theorem dualIndex_unit :
 
 /-- Duality is involutive on simple labels. -/
 theorem dualIndex_involutive :
-    Function.Involutive (dualIndex D) := by
-  intro i
-  simpa [fusionCoeff_unit, eq_comm] using
+    Function.Involutive (dualIndex D) :=
+  fun i ↦ by simpa [fusionCoeff_unit, eq_comm] using
     ((fusionCoeff_reciprocity_labels D i (dualIndex D i) (unitIndex D)).symm.trans
       (fusionCoeff_dual_unit D i))
 
