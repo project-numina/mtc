@@ -30,10 +30,7 @@ theorem character_inner_balance (χ ψ : Character N) (i : ι) :
   change ψ.value i * w = starRingEnd ℂ (χ.value (dual i)) * w
   calc
     _ = ∑ j, starRingEnd ℂ (χ.value j) * (ψ.value i * ψ.value j) := by
-      simp only [w, Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro j _
-      ring
+      simp only [w, Finset.mul_sum, mul_left_comm]
     _ = ∑ j, ∑ k, starRingEnd ℂ (χ.value j) * ((N.coeff i j k : ℂ) * ψ.value k) := by
       simp only [ψ.mul_eq, Finset.mul_sum]
     _ = ∑ k, ∑ j, ((N.coeff (dual i) k j : ℂ) * starRingEnd ℂ (χ.value j)) * ψ.value k := by
@@ -50,10 +47,7 @@ theorem character_inner_balance (χ ψ : Character N) (i : ι) :
       rw [χ.mul_eq, map_sum, Finset.sum_mul]
       simp only [map_mul, map_natCast]
     _ = starRingEnd ℂ (χ.value (dual i)) * w := by
-      simp only [w, map_mul, Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro k _
-      ring
+      simp only [w, map_mul, Finset.mul_sum, mul_left_comm, mul_assoc]
 
 omit [DecidableEq ι] in
 include hdual in
@@ -86,6 +80,14 @@ theorem fusionCoeff_dual_adjoint (C : Ground.BraidedFusionCategory) (i j k : Fin
 
 variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
+/-- Each normalized S-matrix column defines a fusion character. -/
+def categoricalSCharacter (j : Fin (rank C)) : Character ⟨unitIndex C, fusionCoeff C⟩ where
+  value i := categoricalS C p i j / simpleDimension C p j
+  unit_eq := by
+    rw [categoricalS_symmetric C p, categoricalS_unit]
+    exact div_self (simpleDimension_ne_zero C p j)
+  mul_eq i k := categoricalS_verlinde C p i k j
+
 /-- The simple pivotal dimensions are fixed by complex conjugation. -/
 abbrev HasRealSimpleDimensions : Prop :=
   ∀ j, starRingEnd ℂ (simpleDimension C p j) = simpleDimension C p j
@@ -97,15 +99,11 @@ theorem categoricalS_dual_conj
     (i j : Fin (rank C)) :
     categoricalS C p (Ground.dualIndex C i) j = starRingEnd ℂ (categoricalS C p i j) := by
   let rules : FusionRules (Fin (rank C)) := ⟨unitIndex C, fusionCoeff C⟩
-  let χ : Character rules := {
-    value := fun x => categoricalS C p x j / simpleDimension C p j
-    unit_eq := by rw [categoricalS_symmetric C p, categoricalS_unit]; exact div_self (simpleDimension_ne_zero C p j)
-    mul_eq := fun x y => categoricalS_verlinde C p x y j }
+  let χ : Character rules := categoricalSCharacter C p j
   have hh := character_dual_conj rules (Ground.dualIndex C) (fusionCoeff_dual_adjoint C) χ i
   change categoricalS C p (Ground.dualIndex C i) j / simpleDimension C p j =
     starRingEnd ℂ (categoricalS C p i j / simpleDimension C p j) at hh
-  have hmap := map_div₀ (starRingEnd ℂ) (categoricalS C p i j) (simpleDimension C p j)
-  rw [hmap, hreal j] at hh
+  rw [map_div₀, hreal j] at hh
   have hd := simpleDimension_ne_zero C p j
   simpa [hd] using congrArg (fun z : ℂ => z * simpleDimension C p j) hh
 

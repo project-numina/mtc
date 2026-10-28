@@ -42,12 +42,12 @@ theorem target_of_bounded_conjugates_and_witness
 by
   intro C hPU hF
   obtain ⟨D, σ, ⟨E⟩, hD⟩ := hPU
-  have hDF := Modular.conjugate_propertyF C D E hF
+  have hDF := Modular.conjugate_propertyF E hF
   have hfixed := galois_fixed_of_smaller_conjugate_witness (globalFPDimension D)
     (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension D))
     (hConjugates D hD hDF) (hWitness D hD hDF)
   have hInt := weaklyIntegral_of_globalFPDimension_fixed D hfixed
-  rwa [Modular.conjugate_globalFPDimension C D E]
+  rwa [Modular.conjugate_globalFPDimension E]
 
 end PropertyF.Ground
 end
@@ -81,9 +81,7 @@ theorem exists_modular_witness (Z : BraidedFusionCategory.{v,u})
   have hreal := CentreCabling.realSimpleDimensions_of_fp hdim
   obtain ⟨act, hact⟩ := Modular.categoricalS_galois_action_of_invertibleS Z p hp hdet hreal
   let y := act σ.symm (unitIndex Z)
-  have hprop := Modular.galois_unit_properties (unitIndex Z) (Modular.categoricalS Z p)
-    (dualIndex Z) (Modular.simpleDimension Z p) (globalDimension Z)
-    (Modular.simpleDimension_ne_zero Z p)
+  have hprop := Modular.galois_unit_properties (Modular.simpleDimension_ne_zero Z p)
     (Modular.globalDimension_ne_zero_of_invertibleS Z p hp hdet hreal)
     (Modular.simpleDimension_unit Z p) (Modular.categorical_global_eq_sum_squares Z p hp)
     (Modular.categoricalS_symmetric Z p) (Modular.categoricalS_unit Z p)
@@ -172,6 +170,11 @@ section
 namespace PropertyF.Ground
 universe v u
 
+/-- The simple dimensions indexed by a set are integers. -/
+abbrev HasIntegralSimpleDimensionsOn (Z : BraidedFusionCategory.{v,u})
+    (p : Dimensions.PivotalStructure (C := Z.Obj)) (core : Set (Fin (rank Z))) : Prop :=
+  ∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z
+
 /-- If the common centralizer has integral dimensions, its double centralizer
 contains a simple with the Galois-unit column. Any such simple has property F
 when property F holds throughout the generated subcategory. The two label
@@ -180,7 +183,7 @@ explicit interim premises, not assumptions in the target. -/
 theorem propertyF_of_galois_column
     (Z : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj))
     (τ : ℂ ≃+* ℂ) (core generated : Set (Fin (rank Z)))
-    (hIntegral : ∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z)
+    (hIntegral : HasIntegralSimpleDimensionsOn Z p core)
     (hDouble : CentreCabling.sCentralizer Z p core ⊆ generated)
     (hFinite : ∀ y ∈ generated, ObjectPropertyF (simples Z y))
     (y : Fin (rank Z))
@@ -259,7 +262,7 @@ theorem target_of_center_centralizers
         (Modular.HasFPSimpleDimensions Z p) ∧
         (Modular.categoricalS Z p).det ≠ 0 ∧
         globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-        (∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z) ∧
+        (HasIntegralSimpleDimensionsOn Z p core) ∧
         (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
         (∀ y ∈ generated, ObjectPropertyF (simples Z y))) : TargetStatement.{v,u} := by
   apply target_of_modular_center
@@ -309,7 +312,7 @@ theorem target_of_center_product_retracts
         (Modular.HasFPSimpleDimensions Z p) ∧
         (Modular.categoricalS Z p).det ≠ 0 ∧
         globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-        (∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z) ∧
+        (HasIntegralSimpleDimensionsOn Z p core) ∧
         (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
         (∀ y ∈ generated, Centre.ProductRetract (F.obj (simples Z y)))) :
     TargetStatement.{v,u} := by
@@ -353,7 +356,7 @@ theorem target_of_actual_center
             (Modular.HasFPSimpleDimensions Z p) ∧
             (Modular.categoricalS Z p).det ≠ 0 ∧
             globalDimension Z = (globalFPDimension C : ℂ) ^ 2 ∧
-            (∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z) ∧
+            (HasIntegralSimpleDimensionsOn Z p core) ∧
             (CentreCabling.sCentralizer Z p core ⊆ generated) ∧
             (∀ y ∈ generated, Centre.ProductRetract (simples Z y))) : TargetStatement.{v,u} := by
   apply target_of_center_product_retracts

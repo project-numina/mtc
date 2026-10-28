@@ -54,19 +54,8 @@ theorem regular_fusion_derivation_vanishes
   have hsum' : (∑ j, fpSimple C j • ∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
       D • B i z + fpSimple C i • R := by
     simp_rw [hhex, smul_add, smul_smul]
-    rw [Finset.sum_add_distrib]
-    congr 1
-    · rw [← Finset.sum_smul]
-      congr 1
-      apply Finset.sum_congr rfl
-      intro j _
-      ring
-    · dsimp [R]
-      simp only [Finset.smul_sum, smul_smul]
-      apply Finset.sum_congr rfl
-      intro j _
-      congr 1
-      ring
+    simp only [Finset.sum_add_distrib, ← Finset.sum_smul, D, R, pow_two,
+      Finset.smul_sum, smul_smul, mul_comm]
   have hzero : D • B i z = 0 := by
     have h := hsum'.symm.trans hsum
     exact add_right_cancel (h.trans (zero_add (fpSimple C i • R)).symm)
@@ -99,15 +88,8 @@ theorem vafaUnitClass_eq_zero_iff (z : ℂˣ) : vafaUnitClass z = 0 ↔ IsOfFinO
   change ((1 ⊗ₜ[ℤ] Additive.ofMul z : ℚ ⊗[ℤ] Additive ℂˣ) = 0) ↔
     ∃ s : nonZeroDivisors ℤ, (s : ℤ) • Additive.ofMul z = 0 at hh
   rw [hh, isOfFinOrder_iff_zpow_eq_one]
-  constructor
-  · rintro ⟨s, hs⟩
-    refine ⟨s, ?_, ?_⟩
-    · exact nonZeroDivisors.ne_zero s.property
-    · exact hs
-  · rintro ⟨n, hn, hz⟩
-    refine ⟨⟨n, ?_⟩, ?_⟩
-    · exact mem_nonZeroDivisors_iff_ne_zero.mpr hn
-    · exact hz
+  simp only [Subtype.exists, mem_nonZeroDivisors_iff_ne_zero, exists_prop]
+  rfl
 
 /-- Multiplication of units becomes addition in the Vafa vector space. -/
 theorem vafaUnitClass_mul (z w : ℂˣ) :
@@ -117,9 +99,7 @@ theorem vafaUnitClass_mul (z w : ℂˣ) :
 /-- Natural powers become scalar multiples in the Vafa vector space. -/
 theorem vafaUnitClass_pow (z : ℂˣ) (n : ℕ) :
     vafaUnitClass (z ^ n) = n • vafaUnitClass z := by
-  induction n with
-  | zero => simp [vafaUnitClass]
-  | succ n ih => rw [pow_succ, vafaUnitClass_mul, ih, succ_nsmul]
+  simp [vafaUnitClass]
 
 end PropertyF.Ground.CentreModular
 end
@@ -134,14 +114,14 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- An object automorphism acts linearly on maps from a fixed source. -/
-def homAction {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (S X : D) (a : X ≅ X) : (S ⟶ X) ≃ₗ[ℂ] (S ⟶ X) :=
-  CategoryTheory.Linear.homCongr ℂ (Iso.refl _) a
+def homAction {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D] [Preadditive D] [Linear R D]
+    (S X : D) (a : X ≅ X) : (S ⟶ X) ≃ₗ[R] (S ⟶ X) :=
+  CategoryTheory.Linear.homCongr R (Iso.refl _) a
 
 /-- The action on a Hom space respects composition of automorphisms. -/
-theorem homAction_trans {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (S X : D) (a b : X ≅ X) :
-    homAction S X (a ≪≫ b) = (homAction S X a).trans (homAction S X b) := by
+theorem homAction_trans {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
+    [Preadditive D] [Linear R D] {S X : D} (a b : X ≅ X) :
+    homAction (R := R) S X (a ≪≫ b) = (homAction (R := R) S X a).trans (homAction (R := R) S X b) := by
   ext f
   simp [homAction, CategoryTheory.Linear.homCongr_apply, Category.assoc]
 
@@ -149,33 +129,32 @@ theorem homAction_trans {D : Type u} [Category.{v} D] [Preadditive D] [Linear �
 valued in a real vector space that detects torsion. -/
 def fpDeterminant (X : C.Obj) (a : X ≅ X) :
     vafaUnitSpace :=
-  ∑ i, fpSimple C i • vafaUnitClass (homAction (simples C i) X a).det
+  ∑ i, fpSimple C i • vafaUnitClass (homAction (R := ℂ) (simples C i) X a).det
 
 /-- FP determinants turn composition into addition. -/
-theorem fpDeterminant_trans (X : C.Obj)
+theorem fpDeterminant_trans {X : C.Obj}
     (a b : X ≅ X) : fpDeterminant C X (a ≪≫ b) =
       fpDeterminant C X a + fpDeterminant C X b := by
   unfold fpDeterminant
   simp_rw [homAction_trans, LinearEquiv.det_trans, vafaUnitClass_mul, smul_add]
-  rw [Finset.sum_add_distrib]
-  rw [add_comm]
+  rw [Finset.sum_add_distrib, add_comm]
 
 /-- The actual scalar automorphism of an object. -/
-def scalarIso {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (X : D) (z : ℂˣ) : X ≅ X where
-  hom := (z : ℂ) • 𝟙 X
-  inv := ((z⁻¹ : ℂˣ) : ℂ) • 𝟙 X
+def scalarIso {R : Type*} [CommSemiring R] {D : Type u} [Category.{v} D]
+    [Preadditive D] [Linear R D] (X : D) (z : Rˣ) : X ≅ X where
+  hom := (z : R) • 𝟙 X
+  inv := ((z⁻¹ : Rˣ) : R) • 𝟙 X
   hom_inv_id := by simp [Linear.comp_smul, smul_smul]
   inv_hom_id := by simp [Linear.comp_smul, smul_smul]
 
 /-- On a scalar map, each Hom-space determinant is the corresponding power. -/
-theorem homAction_det_scalar {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (S X : D) (z : ℂˣ) :
-    (homAction S X (scalarIso X z)).det = z ^ Module.finrank ℂ (S ⟶ X) := by
+theorem homAction_det_scalar {R : Type*} [Field R] {D : Type u} [Category.{v} D]
+    [Preadditive D] [Linear R D] {S X : D} (z : Rˣ) :
+    (homAction (R := R) S X (scalarIso X z)).det = z ^ Module.finrank R (S ⟶ X) := by
   apply Units.ext
   rw [LinearEquiv.coe_det]
-  change LinearMap.det _ = (z : ℂ) ^ _
-  have h : (homAction S X (scalarIso X z)).toLinearMap = (z : ℂ) • LinearMap.id := by
+  change LinearMap.det _ = (z : R) ^ _
+  have h : (homAction (R := R) S X (scalarIso X z)).toLinearMap = (z : R) • LinearMap.id := by
     ext f
     simp [homAction, scalarIso, CategoryTheory.Linear.homCongr_apply]
   rw [h, LinearMap.det_smul, LinearMap.det_id, mul_one]
@@ -208,17 +187,17 @@ theorem fpDeterminant_conjugate
   intro i _
   congr 1
   let E := CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples C i)) e
-  have h : homAction (simples C i) Y (e.symm ≪≫ a ≪≫ e) =
-      ((E.symm.trans (homAction (simples C i) X a)).trans E) := by
+  have h : homAction (R := ℂ) (simples C i) Y (e.symm ≪≫ a ≪≫ e) =
+      ((E.symm.trans (homAction (R := ℂ) (simples C i) X a)).trans E) := by
     ext f
     simp [homAction, E, CategoryTheory.Linear.homCongr_apply,
       CategoryTheory.Linear.homCongr_symm_apply, Category.assoc]
   rw [h, LinearEquiv.det_conj]
 
 /-- Tensoring a scalar automorphism preserves the scalar action. -/
-theorem tensor_scalarIso {D : Type u} [Category.{v} D] [MonoidalCategory D]
-    [Preadditive D] [Linear ℂ D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
-    (X Y : D) (z : ℂˣ) :
+theorem tensor_scalarIso {R : Type*} [CommSemiring R] {D : Type u}
+    [Category.{v} D] [MonoidalCategory D] [Preadditive D] [Linear R D]
+    [MonoidalPreadditive D] [MonoidalLinear R D] (X Y : D) (z : Rˣ) :
     Iso.refl X ⊗ᵢ scalarIso Y z = scalarIso (X ⊗ Y) z :=
   Iso.ext (by simp [scalarIso, tensorHom_def])
 
@@ -274,16 +253,17 @@ set_option backward.defeqAttrib.useBackward true
 namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
-variable (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ)
+variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
 
 /-- The values of a natural automorphism on the chosen simple objects are scalar. -/
-abbrev HasSimpleScalars : Prop :=
+abbrev HasSimpleScalars (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ) : Prop :=
   ∀ i, (η.app (simples C i)).hom = (t i : ℂ) • 𝟙 (simples C i)
 
 /-- A natural automorphism acts on a Hom space by its scalar on the source. -/
-theorem homAction_natural_scalar {D : Type u} [Category.{v} D] [Preadditive D] [Linear ℂ D]
-    (η : 𝟭 D ≅ 𝟭 D) (S X : D) (z : ℂ) (hz : (η.app S).hom = z • 𝟙 S) :
-    (homAction S X (η.app X)).toLinearMap = z • LinearMap.id := by
+theorem homAction_natural_scalar {R : Type*} [CommSemiring R] {D : Type u}
+    [Category.{v} D] [Preadditive D] [Linear R D] (η : 𝟭 D ≅ 𝟭 D) {S X : D}
+    (z : R) (hz : (η.app S).hom = z • 𝟙 S) :
+    (homAction (R := R) S X (η.app X)).toLinearMap = z • LinearMap.id := by
   ext f
   simpa [homAction, CategoryTheory.Linear.homCongr_apply,
     show η.hom.app S = z • 𝟙 S from hz] using η.hom.naturality f
@@ -298,12 +278,12 @@ theorem fpDeterminant_natural
   unfold fpDeterminant
   apply Finset.sum_congr rfl
   intro i _
-  have hd : (homAction (simples C i) X (η.app X)).det =
+  have hd : (homAction (R := ℂ) (simples C i) X (η.app X)).det =
       (t i) ^ Module.finrank ℂ (simples C i ⟶ X) := by
     apply Units.ext
     rw [LinearEquiv.coe_det]
     change LinearMap.det _ = (t i : ℂ) ^ _
-    rw [homAction_natural_scalar η (simples C i) X (t i : ℂ) (ht i), LinearMap.det_smul,
+    rw [homAction_natural_scalar η (t i : ℂ) (ht i), LinearMap.det_smul,
       LinearMap.det_id, mul_one]
   rw [hd, vafaUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
   simp only [smul_smul, mul_comm]
@@ -320,7 +300,7 @@ theorem natural_scalars_finite_of_fpDeterminant_balance
     ∀ i, IsOfFinOrder (t i) := by
   apply finite_order_of_fp_twist_balance C t
   intro i j
-  simpa only [fpDeterminant_natural C η t ht, fpDimension_tensor, fpDimension_simple, fusionCoeff] using hdet i j
+  simpa only [fpDeterminant_natural C ht, fpDimension_tensor, fpDimension_simple, fusionCoeff] using hdet i j
 
 /-- The actual double braiding as an automorphism. -/
 def monodromyIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
@@ -328,7 +308,7 @@ def monodromyIso {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCate
   (β_ X Y) ≪≫ (β_ Y X)
 
 /-- The natural automorphism satisfies the balancing equation on simple pairs. -/
-abbrev HasSimpleBalance : Prop :=
+abbrev HasSimpleBalance (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ) : Prop :=
   ∀ i j, η.app (simples C i ⊗ simples C j) =
     scalarIso (simples C i ⊗ simples C j) (t i * t j) ≪≫
       monodromyIso (simples C i) (simples C j)
@@ -342,7 +322,7 @@ theorem natural_scalars_finite_of_monodromy_determinant
     (hmon : ∀ i j, fpDeterminant C (simples C i ⊗ simples C j)
       (monodromyIso (simples C i) (simples C j)) = 0) :
     ∀ i, IsOfFinOrder (t i) := by
-  apply natural_scalars_finite_of_fpDeterminant_balance C η t ht
+  apply natural_scalars_finite_of_fpDeterminant_balance C ht
   intro i j
   rw [hbalance, fpDeterminant_trans, hmon, add_zero, fpDeterminant_scalar,
     vafaUnitClass_mul]
@@ -361,9 +341,9 @@ variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Hom into a binary biproduct is the product of the two Hom spaces. -/
-def homBiprodLinearEquiv {D : Type u} [Category.{v} D] [Preadditive D]
-    [Linear ℂ D] [HasBinaryBiproducts D] (S X Y : D) :
-    (S ⟶ X ⊞ Y) ≃ₗ[ℂ] ((S ⟶ X) × (S ⟶ Y)) where
+def homBiprodLinearEquiv {R : Type*} [CommSemiring R] {D : Type u}
+    [Category.{v} D] [Preadditive D] [Linear R D] [HasBinaryBiproducts D]
+    (S X Y : D) : (S ⟶ X ⊞ Y) ≃ₗ[R] ((S ⟶ X) × (S ⟶ Y)) where
   toFun f := (f ≫ biprod.fst, f ≫ biprod.snd)
   invFun f := f.1 ≫ biprod.inl + f.2 ≫ biprod.inr
   left_inv f := by ext <;> simp [Preadditive.add_comp, Category.assoc]
@@ -372,29 +352,29 @@ def homBiprodLinearEquiv {D : Type u} [Category.{v} D] [Preadditive D]
   map_smul' r f := by ext <;> simp
 
 /-- The determinant of the Hom action factors over a binary biproduct. -/
-theorem homAction_det_biprod {D : Type u} [Category.{v} D] [Preadditive D]
-    [Linear ℂ D] [HasBinaryBiproducts D] (S X Y : D)
-    [FiniteDimensional ℂ (S ⟶ X)] [FiniteDimensional ℂ (S ⟶ Y)]
+theorem homAction_det_biprod {R : Type*} [Field R] {D : Type u} [Category.{v} D] [Preadditive D]
+    [Linear R D] [HasBinaryBiproducts D] {S X Y : D}
+    [FiniteDimensional R (S ⟶ X)] [FiniteDimensional R (S ⟶ Y)]
     (a : X ≅ X) (b : Y ≅ Y) :
-    (homAction S (X ⊞ Y) (biprod.mapIso a b)).det =
-      (homAction S X a).det * (homAction S Y b).det := by
-  let E := homBiprodLinearEquiv S X Y
-  let A := homAction S (X ⊞ Y) (biprod.mapIso a b)
-  let L := homAction S X a
-  let R := homAction S Y b
-  have h : (E.symm.trans A).trans E = L.prodCongr R := by
-    ext f <;> simp [E, A, L, R, homBiprodLinearEquiv, homAction,
+    (homAction (R := R) S (X ⊞ Y) (biprod.mapIso a b)).det =
+      (homAction (R := R) S X a).det * (homAction (R := R) S Y b).det := by
+  let E := homBiprodLinearEquiv (R := R) S X Y
+  let A := homAction (R := R) S (X ⊞ Y) (biprod.mapIso a b)
+  let L := homAction (R := R) S X a
+  let right := homAction (R := R) S Y b
+  have h : (E.symm.trans A).trans E = L.prodCongr right := by
+    ext f <;> simp [E, A, L, right, homBiprodLinearEquiv, homAction,
       CategoryTheory.Linear.homCongr_apply, Category.assoc]
   apply Units.ext
   rw [← LinearEquiv.det_conj A E, h, LinearEquiv.coe_det]
-  change LinearMap.det (L.toLinearMap.prodMap R.toLinearMap) = _
+  change LinearMap.det (L.toLinearMap.prodMap right.toLinearMap) = _
   rw [LinearMap.det_prodMap]
   simp only [Units.val_mul, LinearEquiv.coe_det]
   rfl
 
 /-- FP determinants are additive over direct sums of automorphisms. -/
 theorem fpDeterminant_biprod
-    (X Y : C.Obj) (a : X ≅ X) (b : Y ≅ Y) :
+    {X Y : C.Obj} (a : X ≅ X) (b : Y ≅ Y) :
     fpDeterminant C (X ⊞ Y) (biprod.mapIso a b) =
       fpDeterminant C X a + fpDeterminant C Y b := by
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
@@ -418,7 +398,7 @@ local instance (C : BraidedFusionCategory.{v,u}) (X : C.Obj) :
 
 /-- The tensor determinant identity is closed under binary direct sums. -/
 theorem fpDeterminant_tensor_biprod
-    (X Y Z : C.Obj) (a : Y ≅ Y) (b : Z ≅ Z)
+    (X : C.Obj) {Y Z : C.Obj} (a : Y ≅ Y) (b : Z ≅ Z)
     (ha : fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ a) = fpDimension C X • fpDeterminant C Y a)
     (hb : fpDeterminant C (X ⊗ Z) (Iso.refl X ⊗ᵢ b) = fpDimension C X • fpDeterminant C Z b) :
     fpDeterminant C (X ⊗ (Y ⊞ Z)) (Iso.refl X ⊗ᵢ biprod.mapIso a b) =
@@ -428,27 +408,20 @@ theorem fpDeterminant_tensor_biprod
   have hc : Iso.refl X ⊗ᵢ biprod.mapIso a b = e ≪≫ A ≪≫ e.symm := by
     apply Iso.ext
     apply (cancel_epi e.inv).1
-    apply biprod.hom_ext'
-    · have hι : biprod.inl ≫ e.inv = X ◁ biprod.inl := by
-        rw [Functor.mapBiprod_inv, biprod.inl_desc]
-        rfl
-      simp only [Iso.trans_hom, Iso.symm_hom, Iso.inv_hom_id_assoc]
-      simp only [← Category.assoc, hι, tensorIso_hom, Iso.refl_hom, id_tensorHom,
-        ← whiskerLeft_comp]
-      simp only [A, biprod.mapIso_hom, tensorIso_hom,
-        Iso.refl_hom, id_tensorHom]
-      simp only [biprod.inl_map, whiskerLeft_comp, Category.assoc]
-      exact (congrArg (fun f => (X ◁ a.hom) ≫ f) hι).symm
-    · have hι : biprod.inr ≫ e.inv = X ◁ biprod.inr := by
-        rw [Functor.mapBiprod_inv, biprod.inr_desc]
-        rfl
-      simp only [Iso.trans_hom, Iso.symm_hom, Iso.inv_hom_id_assoc]
-      simp only [← Category.assoc, hι, tensorIso_hom, Iso.refl_hom, id_tensorHom,
-        ← whiskerLeft_comp]
-      simp only [A, biprod.mapIso_hom, tensorIso_hom,
-        Iso.refl_hom, id_tensorHom]
-      simp only [biprod.inr_map, whiskerLeft_comp, Category.assoc]
-      exact (congrArg (fun f => (X ◁ b.hom) ≫ f) hι).symm
+    have hleft : biprod.inl ≫ e.inv = X ◁ biprod.inl := by
+      rw [Functor.mapBiprod_inv, biprod.inl_desc]
+      rfl
+    have hright : biprod.inr ≫ e.inv = X ◁ biprod.inr := by
+      rw [Functor.mapBiprod_inv, biprod.inr_desc]
+      rfl
+    apply biprod.hom_ext' <;>
+      simp only [Iso.trans_hom, Iso.symm_hom, Iso.inv_hom_id_assoc] <;>
+      simp only [← Category.assoc, hleft, hright, tensorIso_hom, Iso.refl_hom, id_tensorHom,
+        ← whiskerLeft_comp] <;>
+      simp only [A, biprod.mapIso_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom] <;>
+      simp only [biprod.inl_map, biprod.inr_map, whiskerLeft_comp, Category.assoc]
+    · exact (congrArg (fun f => (X ◁ a.hom) ≫ f) hleft).symm
+    · exact (congrArg (fun f => (X ◁ b.hom) ≫ f) hright).symm
   rw [hc]
   have hd := fpDeterminant_conjugate C e.symm A
   change fpDeterminant C (X ⊗ (Y ⊞ Z)) (e ≪≫ A ≪≫ e.symm) = fpDeterminant C _ A at hd
@@ -469,46 +442,19 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 /-- Every base object is a finite iterated binary sum of simple objects. -/
 theorem base_finite_simple_sum (X : C.Obj) :
     CentreInduction.FiniteSimpleSum C.Obj X := by
-  let m : C.Obj → ℕ := fun W => Module.finrank ℂ (W ⟶ W)
-  induction X using (measure m).wf.induction with
-  | h X ih =>
-    by_cases hz : IsZero X
-    · exact .zero hz
-    · obtain ⟨i, hi⟩ := exists_positive_multiplicity C hz
-      let S := simples C i
-      let : Simple S := simples_simple C i
-      let : FiniteDimensional ℂ (S ⟶ X) := IsFusionCategory.hom_finite _ _
-      obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp hi
-      let : Mono f := mono_of_nonzero_from_simple hf
-      obtain ⟨r, hr⟩ := split_from_simple f hf
-      let : IsSplitMono f := IsSplitMono.mk' { retraction := r, id := hr }
-      let E := ShortComplex.cokernelSequence f
-      let split : E.Splitting := ShortComplex.Splitting.ofExactOfRetraction E
-        (ShortComplex.cokernelSequence_exact f) (retraction f)
-        (IsSplitMono.id f) inferInstance
-      let K := cokernel f
-      let e : X ≅ S ⊞ K := split.isoBinaryBiproduct
-      let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-      have hs : ¬ IsZero S := by
-        intro h
-        exact id_nonzero _ ((IsZero.iff_id_eq_zero _).mp h)
-      have he : Module.finrank ℂ (X ⟶ X) = Module.finrank ℂ (S ⊞ K ⟶ S ⊞ K) :=
-        (CategoryTheory.Linear.homCongr ℂ e e).finrank_eq
-      have hk : m K < m X := by
-        change Module.finrank ℂ (K ⟶ K) < Module.finrank ℂ (X ⟶ X)
-        rw [he]
-        exact CentreInduction.finrank_end_complement_lt _ K hs
-      exact .cons (simples_simple C i) (ih K hk) ⟨e⟩
+  let (A B : C.Obj) : FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite _ _
+  let (W : C.Obj) : Injective W := object_injective C W
+  apply CentreInduction.finiteSimpleSum_of_injective ?_ X
+  intro W hW
+  obtain ⟨i, hi⟩ := exists_positive_multiplicity C hW
+  let : Simple (simples C i) := simples_simple C i
+  obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp hi
+  exact ⟨simples C i, f, simples_simple C i, mono_of_nonzero_from_simple hf⟩
 
 /-- Identity automorphisms have zero FP determinant. -/
 theorem fpDeterminant_refl (X : C.Obj) :
     fpDeterminant C X (Iso.refl X) = 0 := by
-  have h := fpDeterminant_trans C X (Iso.refl X) (Iso.refl X)
-  have h' : fpDeterminant C X (Iso.refl X) =
-      fpDeterminant C X (Iso.refl X) + fpDeterminant C X (Iso.refl X) := by
-    simpa using h
-  have h'' := (add_zero (fpDeterminant C X (Iso.refl X))).trans h'
-  exact (add_left_cancel h'').symm
+  simpa using (fpDeterminant_trans C (Iso.refl X) (Iso.refl X))
 
 /-- The tensor determinant rule holds on any simple object. -/
 theorem fpDeterminant_tensor_of_simple
@@ -529,20 +475,32 @@ theorem fpDeterminant_tensor_of_simple
   rw [ha]
   exact fpDeterminant_tensor_scalar C X S _
 
-/-- A natural automorphism acts block-diagonally on a binary biproduct. -/
-theorem natural_app_biprod {D : Type u} [Category.{v} D] [Preadditive D]
-    [HasBinaryBiproducts D] (η : 𝟭 D ≅ 𝟭 D) (S K : D) :
-    η.app (S ⊞ K) = biprod.mapIso (η.app S) (η.app K) := by
-  apply Iso.ext
-  apply biprod.hom_ext'
-  · simpa using η.hom.naturality (biprod.inl : S ⟶ S ⊞ K)
-  · simpa using η.hom.naturality (biprod.inr : K ⟶ S ⊞ K)
+/-- Components of a natural automorphism of a functor are conjugate along
+isomorphisms in the source. -/
+theorem functor_natural_app_conjugate {D : Type u} {E : Type*}
+    [Category.{v} D] [Category E] (F : D ⥤ E) (η : F ≅ F) {X Y : D} (e : X ≅ Y) :
+    η.app X = F.mapIso e ≪≫ η.app Y ≪≫ (F.mapIso e).symm :=
+  Iso.ext ((cancel_mono (F.mapIso e).hom).1 (by simp))
 
-/-- Naturality transports a component along any object isomorphism. -/
-theorem natural_app_conjugate {D : Type u} [Category.{v} D]
-    (η : 𝟭 D ≅ 𝟭 D) {Y Z : D} (e : Y ≅ Z) :
-    η.app Y = e ≪≫ η.app Z ≪≫ e.symm :=
-  Iso.ext ((cancel_mono e.hom).1 (by simpa [Category.assoc] using (η.hom.naturality e.hom).symm))
+/-- An additive functor's natural automorphism is block diagonal on a binary
+biproduct under its canonical comparison isomorphism. -/
+theorem functor_natural_app_biprod {D : Type u} {E : Type*}
+    [Category.{v} D] [Category E] [Preadditive D] [Preadditive E]
+    [HasBinaryBiproducts D] [HasBinaryBiproducts E]
+    (F : D ⥤ E) [F.Additive] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
+    η.app (X ⊞ Y) = F.mapBiprod X Y ≪≫
+      biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm := by
+  apply Iso.ext
+  apply (cancel_mono (F.mapBiprod X Y).hom).1
+  change (η.app (X ⊞ Y)).hom ≫ (F.mapBiprod X Y).hom =
+    ((F.mapBiprod X Y).hom ≫ (biprod.mapIso (η.app X) (η.app Y)).hom ≫
+      (F.mapBiprod X Y).inv) ≫ (F.mapBiprod X Y).hom
+  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+  apply biprod.hom_ext
+  · simpa only [Functor.mapBiprod_hom, Category.assoc, biprod.lift_fst, biprod.lift_fst_assoc,
+      biprod.mapIso_hom, biprod.map_fst, Iso.app_hom] using (η.hom.naturality (biprod.fst : X ⊞ Y ⟶ X)).symm
+  · simpa only [Functor.mapBiprod_hom, Category.assoc, biprod.lift_snd, biprod.lift_snd_assoc,
+      biprod.mapIso_hom, biprod.map_snd, Iso.app_hom] using (η.hom.naturality (biprod.snd : X ⊞ Y ⟶ Y)).symm
 
 /-- Tensoring a conjugated automorphism conjugates its tensor extension. -/
 theorem tensor_conjugate_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -560,23 +518,26 @@ theorem fpDeterminant_tensor_natural
   have hY := base_finite_simple_sum C Y
   induction hY with
   | @zero W hz =>
-    have hη : η.app W = Iso.refl W := by
-      apply Iso.ext
-      exact hz.eq_of_src _ _
-    rw [hη]
-    have ht : Iso.refl X ⊗ᵢ Iso.refl W = Iso.refl (X ⊗ W) := by
-      apply Iso.ext
-      simp
-    rw [ht, fpDeterminant_refl, fpDeterminant_refl, smul_zero]
+    have hη : η.app W = Iso.refl W := Iso.ext (hz.eq_of_src _ _)
+    have ht : Iso.refl X ⊗ᵢ Iso.refl W = Iso.refl (X ⊗ W) := Iso.ext (by simp)
+    simp only [hη, ht, fpDeterminant_refl, smul_zero]
   | @cons Y S K hs hk he ih =>
     obtain ⟨e⟩ := he
     have hS : fpDeterminant C (X ⊗ S) (Iso.refl X ⊗ᵢ η.app S) =
         fpDimension C X • fpDeterminant C S (η.app S) := by
       let : Simple S := hs
       exact fpDeterminant_tensor_of_simple C X S (η.app S)
-    have hsum := fpDeterminant_tensor_biprod C X S K (η.app S) (η.app K) hS ih
-    rw [← natural_app_biprod] at hsum
-    have hη := natural_app_conjugate η e
+    have hsum := fpDeterminant_tensor_biprod C X (η.app S) (η.app K) hS ih
+    let : PreservesBinaryBiproducts (𝟭 C.Obj) := preservesBinaryBiproducts_of_preservesBiproducts _
+    have hid : (𝟭 C.Obj).mapBiprod S K = Iso.refl (S ⊞ K) := by
+      apply Iso.ext
+      apply biprod.hom_ext <;> simp
+    have hsum' : η.app (S ⊞ K) = biprod.mapIso (η.app S) (η.app K) := by
+      simpa [hid] using functor_natural_app_biprod (𝟭 C.Obj) η S K
+    rw [← hsum'] at hsum
+    have he : (𝟭 C.Obj).mapIso e = e := Iso.ext rfl
+    have hη : η.app Y = e ≪≫ η.app (S ⊞ K) ≪≫ e.symm := by
+      simpa only [he] using functor_natural_app_conjugate (𝟭 C.Obj) η e
     rw [hη, tensor_conjugate_iso]
     have hl := fpDeterminant_conjugate C (Iso.refl X ⊗ᵢ e).symm
       (Iso.refl X ⊗ᵢ η.app (S ⊞ K))
@@ -664,41 +625,6 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
 
-/-- Components of a natural automorphism of a functor are conjugate along
-isomorphisms in the source. -/
-theorem functor_natural_app_conjugate {D : Type u} {E : Type*}
-    [Category.{v} D] [Category E] (F : D ⥤ E) (η : F ≅ F) {X Y : D} (e : X ≅ Y) :
-    η.app X = F.mapIso e ≪≫ η.app Y ≪≫ (F.mapIso e).symm :=
-  Iso.ext ((cancel_mono (F.mapIso e).hom).1 (by simp))
-
-/-- An additive functor's natural automorphism is block diagonal on a binary
-biproduct under its canonical comparison isomorphism. -/
-theorem functor_natural_app_biprod {D : Type u} {E : Type*}
-    [Category.{v} D] [Category E] [Preadditive D] [Preadditive E]
-    [HasBinaryBiproducts D] [HasBinaryBiproducts E]
-    (F : D ⥤ E) [F.Additive] [PreservesBinaryBiproducts F] (η : F ≅ F) (X Y : D) :
-    η.app (X ⊞ Y) = F.mapBiprod X Y ≪≫
-      biprod.mapIso (η.app X) (η.app Y) ≪≫ (F.mapBiprod X Y).symm := by
-  let e := F.mapBiprod X Y
-  apply Iso.ext
-  change (η.app (X ⊞ Y)).hom = e.hom ≫ (biprod.mapIso (η.app X) (η.app Y)).hom ≫ e.inv
-  apply (cancel_epi e.inv).1
-  apply biprod.hom_ext'
-  · have hι : biprod.inl ≫ e.inv = F.map biprod.inl := by
-      rw [Functor.mapBiprod_inv, biprod.inl_desc]
-    have hn := η.hom.naturality (biprod.inl : X ⟶ X ⊞ Y)
-    change F.map biprod.inl ≫ (η.app (X ⊞ Y)).hom = (η.app X).hom ≫ F.map biprod.inl at hn
-    simp only [Iso.inv_hom_id_assoc]
-    rw [← Category.assoc, hι, hn]
-    simp only [biprod.mapIso_hom, biprod.inl_map_assoc, hι]
-  · have hι : biprod.inr ≫ e.inv = F.map biprod.inr := by
-      rw [Functor.mapBiprod_inv, biprod.inr_desc]
-    have hn := η.hom.naturality (biprod.inr : Y ⟶ X ⊞ Y)
-    change F.map biprod.inr ≫ (η.app (X ⊞ Y)).hom = (η.app Y).hom ≫ F.map biprod.inr at hn
-    simp only [Iso.inv_hom_id_assoc]
-    rw [← Category.assoc, hι, hn]
-    simp only [biprod.mapIso_hom, biprod.inr_map_assoc, hι]
-
 /-- The FP determinant of a natural automorphism of an additive functor
 expands over the simple summands of the source object. -/
 theorem fpDeterminant_functor_natural_decomposition
@@ -738,7 +664,7 @@ set_option backward.defeqAttrib.useBackward true
 namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
-variable (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ)
+variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
 
 /-- The FP tensor determinant rule holds for scalar multiples of a component
 of an arbitrary natural automorphism. -/
@@ -747,9 +673,8 @@ theorem fpDeterminant_tensor_scalar_natural
     fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ (scalarIso Y z ≪≫ η.app Y)) =
       fpDimension C X • fpDeterminant C Y (scalarIso Y z ≪≫ η.app Y) := by
   have h : (Iso.refl X ⊗ᵢ (scalarIso Y z ≪≫ η.app Y)) =
-      (Iso.refl X ⊗ᵢ scalarIso Y z) ≪≫ (Iso.refl X ⊗ᵢ η.app Y) := by
-    apply Iso.ext
-    simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp]
+      (Iso.refl X ⊗ᵢ scalarIso Y z) ≪≫ (Iso.refl X ⊗ᵢ η.app Y) :=
+    Iso.ext (by simp [tensorIso_hom, tensorHom_def, whiskerLeft_comp])
   rw [h, fpDeterminant_trans, fpDeterminant_trans, fpDeterminant_tensor_scalar,
     fpDeterminant_tensor_natural, smul_add]
 
@@ -761,12 +686,8 @@ theorem monodromy_simple_eq_scalar_natural
     monodromyIso (simples C i) (simples C j) =
       scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ ≪≫
         η.app (simples C i ⊗ simples C j) := by
-  rw [hbalance]
-  have h : scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ =
-      (scalarIso (simples C i ⊗ simples C j) (t i * t j)).symm := by
-    apply Iso.ext
-    rfl
-  rw [h]
+  rw [hbalance, show scalarIso (simples C i ⊗ simples C j) (t i * t j)⁻¹ =
+    (scalarIso (simples C i ⊗ simples C j) (t i * t j)).symm from Iso.ext rfl]
   simp
 
 /-- Under the explicit balancing equation, the tensor determinant rule holds
@@ -778,13 +699,13 @@ theorem fpDeterminant_tensor_simple_monodromy
       (Iso.refl X ⊗ᵢ monodromyIso (simples C i) (simples C j)) =
       fpDimension C X • fpDeterminant C (simples C i ⊗ simples C j)
         (monodromyIso (simples C i) (simples C j)) := by
-  rw [monodromy_simple_eq_scalar_natural C η t hbalance]
+  rw [monodromy_simple_eq_scalar_natural C hbalance]
   exact fpDeterminant_tensor_scalar_natural C η X _ _
 
 /-- Braiding transports tensoring an automorphism on the right to tensoring it
 on the left, preserving its categorical FP determinant. -/
 theorem fpDeterminant_tensor_flip
-    (X Y : C.Obj) (a : Y ≅ Y) :
+    (X : C.Obj) {Y : C.Obj} (a : Y ≅ Y) :
     fpDeterminant C (Y ⊗ X) (a ⊗ᵢ Iso.refl X) =
       fpDeterminant C (X ⊗ Y) (Iso.refl X ⊗ᵢ a) := by
   let e := β_ Y X
@@ -805,7 +726,7 @@ theorem fpDeterminant_simple_monodromy_tensor
       fpDimension C X • fpDeterminant C (simples C i ⊗ simples C j)
         (monodromyIso (simples C i) (simples C j)) := by
   rw [fpDeterminant_tensor_flip]
-  exact fpDeterminant_tensor_simple_monodromy C η t hbalance X i j
+  exact fpDeterminant_tensor_simple_monodromy C hbalance X i j
 
 end PropertyF.Ground.CentreModular
 end
@@ -833,7 +754,7 @@ theorem monodromy_hexagon_iso {D : Type u} [Category.{v} D] [MonoidalCategory D]
 /-- The actual FP determinant of the monodromy hexagon is the weighted sum
 of the two simple monodromy determinants, under simple twist balancing. -/
 theorem fpDeterminant_monodromy_hexagon
-    (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ)
+    {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
     (hbalance : HasSimpleBalance C η t)
     (z i j : Fin (rank C)) :
     fpDeterminant C (simples C z ⊗ (simples C i ⊗ simples C j))
@@ -860,8 +781,8 @@ theorem fpDeterminant_monodromy_hexagon
     apply Iso.ext
     simp
   rw [heq, fpDeterminant_trans, hq] at hconj
-  have h1 := fpDeterminant_tensor_simple_monodromy C η t hbalance X z j
-  have h2 := fpDeterminant_simple_monodromy_tensor C η t hbalance Y z i
+  have h1 := fpDeterminant_tensor_simple_monodromy C hbalance X z j
+  have h2 := fpDeterminant_simple_monodromy_tensor C hbalance Y z i
   change fpDeterminant C (X ⊗ (Z ⊗ Y)) q = _ at h1
   change fpDeterminant C ((Z ⊗ X) ⊗ Y) r = _ at h2
   rw [h1, h2, fpDimension_simple, fpDimension_simple] at hconj
@@ -878,7 +799,7 @@ set_option backward.defeqAttrib.useBackward true
 namespace PropertyF.Ground.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
-variable (η : 𝟭 C.Obj ≅ 𝟭 C.Obj) (t : Fin (rank C) → ℂˣ)
+variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
 
 /-- For a fixed first strand, double braiding is a natural automorphism of
 the actual tensor-left functor. -/
@@ -914,7 +835,7 @@ theorem fpDeterminant_simple_monodromy_eq_zero
   have hhex : ∀ i j z, (∑ k, (fusionCoeff C i j k : ℝ) • B k z) =
       fpSimple C j • B i z + fpSimple C i • B j z := by
     intro i j z
-    have h := fpDeterminant_monodromy_hexagon C η t hbalance z i j
+    have h := fpDeterminant_monodromy_hexagon C hbalance z i j
     rw [fpDeterminant_monodromy_decomposition] at h
     change (∑ k, (fusionCoeff C i j k : ℝ) • B k z) = _ at h
     simpa [B, add_comm] using h
@@ -926,9 +847,9 @@ theorem natural_scalars_finite_of_simple_balancing
     (ht : HasSimpleScalars C η t)
     (hbalance : HasSimpleBalance C η t) :
     ∀ i, IsOfFinOrder (t i) := by
-  apply natural_scalars_finite_of_monodromy_determinant C η t ht hbalance
+  apply natural_scalars_finite_of_monodromy_determinant C ht hbalance
   intro i j
-  exact fpDeterminant_simple_monodromy_eq_zero C η t hbalance i j
+  exact fpDeterminant_simple_monodromy_eq_zero C hbalance i j
 
 end PropertyF.Ground.CentreModular
 end
@@ -971,7 +892,7 @@ theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C :=
       Linear.smul_comp, Linear.comp_smul, smul_smul] at h
     simpa [scalarIso, monodromyIso, Modular.doubleBraiding, Category.assoc,
       Linear.smul_comp, mul_comm] using h.symm
-  have hf := natural_scalars_finite_of_simple_balancing C η t ht hb
+  have hf := natural_scalars_finite_of_simple_balancing C ht hb
   intro i
   have hf' : IsOfFinOrder ((t i : ℂˣ) : ℂ) := Units.isOfFinOrder_val.mpr (hf i)
   let : Simple (simples C i) := simples_simple C i
