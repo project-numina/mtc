@@ -3,3 +3,9 @@ public import Conjectures.Seed
 public import Conjectures.PropertyF.NaiduRowell
 public import Conjectures.PropertyF.PropertyFImpliesWeaklyIntegral
 public import Conjectures.PropertyF.WeaklyIntegralImpliesPropertyF
+public import Conjectures.Fusion.GlobalDimensionAlgebraicInteger
+public import Conjectures.Fusion.OddDimensionIntegral
+public import Conjectures.Fusion.SimpleDimensionAlgebraicInteger
+public import Conjectures.Fusion.SimpleDimensionLowerBound
+public import Conjectures.Fusion.WeaklyIntegralPseudoUnitary
+public import Conjectures.Fusion.WeaklyIntegralSquares
