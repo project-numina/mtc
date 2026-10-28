@@ -233,7 +233,7 @@ theorem sharp_trace_bound_of_overlap [Simple X]
       ‖pivotalDimension C p X‖ *
         Ground.fpDimension C X ^ (t + 1) :=
   norm_bound_of_overlap (m := t + 2) (by
-    simpa [pivotalDimension, unitScalar_eq_equiv] using Modular.unitScalar_rightTrace_ne_zero C p X)
+    simpa only [pivotalDimension] using Modular.unitScalar_rightTrace_ne_zero C p X)
     (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension (Simple.not_isZero X)))
     (fun k => actualBraidTrace C p (overlapProduct u k)) (fun k => by
       convert hbound k using 1

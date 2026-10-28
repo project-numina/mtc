@@ -21,8 +21,9 @@ variable {X X' Y Y' : C.Obj}
 set_option backward.isDefEq.respectTransparency false in
 /-- The tensor of natural-root components is natural. -/
 theorem rootTensorIso_natural (f : X ⟶ X') (g : Y ⟶ Y') :
-    (f ⊗ₘ g) ≫ (rootTensorIso C X' Y').hom =
-      (rootTensorIso C X Y).hom ≫ (((f ⊗ₘ g)ᘁ)ᘁ) := by
+    CommSq (f ⊗ₘ g) (rootTensorIso C X Y).hom (rootTensorIso C X' Y').hom
+      (((f ⊗ₘ g)ᘁ)ᘁ) := by
+  refine ⟨?_⟩
   simp only [rootTensorIso, Iso.trans_hom, tensorIso_hom]
   rw [Category.assoc, ← doubleDualTensorIso_natural, ← Category.assoc,
     ← Category.assoc, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom]
@@ -40,7 +41,7 @@ theorem rootTensorDefect_natural (f : X ⟶ X') (g : Y ⟶ Y') :
         (rootTensorIso C X' Y').inv) =
       (((fourthDualRootNaturalIso C).app (X ⊗ Y)).hom ≫ (rootTensorIso C X Y).inv) ≫ (f ⊗ₘ g)
   dsimp only [doubleDualFunctor] at ha ⊢
-  rw [reassoc_of% ha, (CommSq.vert_inv (CommSq.mk (rootTensorIso_natural C f g))).w,
+  rw [reassoc_of% ha, (CommSq.vert_inv (rootTensorIso_natural C f g)).w,
     Category.assoc]
 
 
