@@ -53,11 +53,13 @@ def transportedPivotalHom (Z : 𝒵) :
 instance transportedPivotalHom_isIso (Z : 𝒵) : IsIso (transportedPivotalHom p Z) :=
   inferInstanceAs (IsIso ((p.iso Z.1).hom ≫ (κ₂ Z).inv))
 
-/-- The transported pivotal components are natural on centre morphisms. -/
-theorem transported_pivotal_natural (f : X ⟶ Y) :
-    f.f ≫ transportedPivotalHom p Y = transportedPivotalHom p X ≫ ((fᘁ)ᘁ).f :=
+/-- A naturality equation survives transport along the forgotten double-dual comparisons. -/
+theorem transported_natural (f : X ⟶ Y)
+    {jX : X.1 ⟶ (X.1ᘁ)ᘁ} {jY : Y.1 ⟶ (Y.1ᘁ)ᘁ}
+    (h : f.f ≫ jY = jX ≫ ((f.fᘁ)ᘁ)) :
+    f.f ≫ (jY ≫ (κ₂ Y).inv) = (jX ≫ (κ₂ X).inv) ≫ ((fᘁ)ᘁ).f :=
   (cancel_mono (κ₂ Y).hom).1 <| by
-    simpa [transportedPivotalHom, forgetDoubleDualIso_natural] using p.naturality f.f
+    simpa [forgetDoubleDualIso_natural] using h
 
 end PropertyF.Ground.CentreInduction
 
@@ -151,12 +153,15 @@ theorem forgetDoubleDualIso_tensor :
     tensorHom_comp_tensorHom_assoc]
 
 
-/-- The transported pivotal components satisfy the tensor law after forgetting. -/
-theorem transported_pivotal_tensor :
-    (transportedPivotalHom p X ⊗ₘ transportedPivotalHom p Y) ≫
-      (μ₂ X Y).hom.f = transportedPivotalHom p (X ⊗ Y) :=
+/-- Transport a tensor-compatible family of maps through the double-dual comparisons. -/
+theorem transported_tensor
+    {jX : X.1 ⟶ (X.1ᘁ)ᘁ} {jY : Y.1 ⟶ (Y.1ᘁ)ᘁ}
+    {jXY : (X ⊗ Y).1 ⟶ ((X ⊗ Y).1ᘁ)ᘁ}
+    (h : (jX ⊗ₘ jY) ≫ (μ₂ X.1 Y.1).hom = jXY) :
+    ((jX ≫ (κ₂ X).inv) ⊗ₘ (jY ≫ (κ₂ Y).inv)) ≫
+      (μ₂ X Y).hom.f = jXY ≫ (κ₂ (X ⊗ Y)).inv :=
   (Iso.eq_comp_inv (κ₂ (X ⊗ Y))).2 <| by
-    simpa [transportedPivotalHom, forgetDoubleDualIso_tensor] using (p.tensor X.1 Y.1).symm
+    simpa [forgetDoubleDualIso_tensor] using h
 
 /-! Unit coherence of centre dual and pivotal comparisons. -/
 
@@ -191,10 +196,11 @@ theorem forgetDoubleDualIso_unit :
     ← Category.assoc e.inv.f, hv, ← comp_rightAdjointMate, Iso.inv_hom_id,
     rightAdjointMate_id, Category.comp_id]
 
-/-- Transported pivotal components preserve the tensor unit after forgetting. -/
-theorem transported_pivotal_unit :
-    transportedPivotalHom p (𝟙_ (𝒵)) = (doubleDualUnitIso (C := 𝒵)).hom.f :=
+/-- Transport a unit-compatible map through the double-dual comparison. -/
+theorem transported_unit {j : (𝟙_ (𝒵)).1 ⟶ (((𝟙_ (𝒵)).1)ᘁ)ᘁ}
+    (h : j = (doubleDualUnitIso (C := D)).hom) :
+    j ≫ (κ₂ (𝟙_ (𝒵))).inv = (doubleDualUnitIso (C := 𝒵)).hom.f :=
   (Iso.comp_inv_eq (κ₂ (𝟙_ (𝒵)))).2 <|
-    p.unit.trans (forgetDoubleDualIso_unit (D := D)).symm
+    h.trans (forgetDoubleDualIso_unit (D := D)).symm
 
 end PropertyF.Ground.CentreInduction
