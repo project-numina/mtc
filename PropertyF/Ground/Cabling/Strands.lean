@@ -34,7 +34,7 @@ def addLeftStrand (X : C) (n : ℕ) : braidImage X n →* braidImage X (n + 1) :
 omit [BraidedCategory C] in
 /-- If the unit is a retract of a tensor product with `X` on the right,
 then tensoring on the left by `X` is faithful. -/
-theorem tensorLeft_faithful_of_unit_retract (X Y : C)
+theorem tensorLeft_faithful_of_unit_retract {X Y : C}
     (i : 𝟙_ C ⟶ Y ⊗ X) (r : Y ⊗ X ⟶ 𝟙_ C) (h : i ≫ r = 𝟙 _) :
     Functor.Faithful (tensorLeft X) := by
   constructor
