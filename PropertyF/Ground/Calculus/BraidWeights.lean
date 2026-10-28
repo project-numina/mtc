@@ -200,6 +200,18 @@ theorem idempotent_matrix_trace_nat {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ}
   ⟨Module.finrank ℂ (LinearMap.range p), by
     simpa only [p, Matrix.trace_toLin'_eq] using ((LinearMap.isProj_range_iff_isIdempotentElem p).2 hp).trace⟩
 
+/-- A weighted block trace of an element supported in one block. -/
+theorem sum_trace_single {n : ℕ} {d : Fin n → ℕ} (w : Fin n → ℂ)
+    (i : Fin n) (A : Matrix (Fin (d i)) (Fin (d i)) ℂ) :
+    (∑ j, w j * (Pi.single (M := fun k => Matrix (Fin (d k)) (Fin (d k)) ℂ) i A j).trace) =
+      w i * A.trace := by
+  classical
+  rw [Finset.sum_eq_single i]
+  · simp
+  · intro j _ h
+    simp [Pi.single_eq_of_ne h]
+  · simp
+
 /-- For any representation of a finite product of nonzero complex matrix
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the
 standard block traces. The integers are ranks of images of matrix units. -/
@@ -225,11 +237,7 @@ theorem representation_trace_multiplicities {n m : ℕ} {d : Fin n → ℕ}
     have ht := hw e
     have ht' : (φ e).trace = w i := by
       change (φ e).trace = ∑ k, w k * (e k).trace at ht
-      rw [Finset.sum_eq_single i] at ht
-      · simpa [e] using ht
-      · intro j _ hji
-        simp [e, Pi.single_eq_of_ne hji]
-      · simp
+      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one] using ht
     exact ht'.symm.trans hk
   choose mult hm using hnat
   refine ⟨mult, fun x => ?_⟩
@@ -273,12 +281,8 @@ theorem faithful_block_representation_multiplicities {n m : ℕ}
     have hidem : φ e i * φ e i = φ e i := by
       simpa [he] using (congrFun (map_mul φ e e) i).symm
     have ht : (φ e i).trace = 0 := by
-      rw [hmult]
-      rw [Finset.sum_eq_single j]
-      · simp [Nat.eq_zero_of_le_zero (hn i)]
-      · intro r _ h
-        simp [e, Pi.single_eq_of_ne h]
-      · simp
+      simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
+        Nat.eq_zero_of_le_zero (hn i), Nat.cast_zero] using hmult i e
     exact idempotent_matrix_eq_zero_of_trace_eq_zero hidem ht
   have hezero : e = 0 := hinj (by simpa using hzero)
   have hentry := congrArg (fun x : Blocks.Algebra ⟨_, d⟩ => x j k k) hezero
