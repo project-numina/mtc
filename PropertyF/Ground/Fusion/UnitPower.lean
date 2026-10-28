@@ -129,8 +129,8 @@ theorem unit_retract_tensorPower {E : Type u} [Category.{v} E] [MonoidalCategory
       simpa [fusionFlow, fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, fpSimple_unit] using
         fpSimple_pos D i⟩
   have hji : j = i := by
-    by_contra h
-    simp [fusionFlow, fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit, h] at hj
+    simpa [fusionFlow, fusionCoeff_comm D i (unitIndex D), fusionCoeff_unit,
+      fpSimple_unit, apply_ite, fpSimple_pos D] using hj
   subst j
   obtain ⟨n, ⟨r⟩⟩ := fusionPath_retract D hp
   obtain ⟨u⟩ := unitIndex_iso D
