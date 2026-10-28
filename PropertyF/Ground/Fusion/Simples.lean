@@ -19,7 +19,7 @@ theorem mono_ne_zero_of_id_ne_zero {C : Type u} [Category.{v} C] [HasZeroMorphis
 
 /-- The evaluation and coevaluation of a dual pair are nonzero when the right object is nonzero. -/
 theorem exactPairing_ne_zero {C : Type u} [Category.{v} C] [MonoidalCategory C]
-    [Preadditive C] [MonoidalPreadditive C] (X Y : C) [ExactPairing X Y]
+    [Preadditive C] [MonoidalPreadditive C] (X : C) {Y : C} [ExactPairing X Y]
     (hY : 𝟙 Y ≠ 0) : ExactPairing.coevaluation X Y ≠ 0 ∧
       ExactPairing.evaluation X Y ≠ 0 := by
   constructor <;> intro h <;> apply hY <;>
@@ -55,7 +55,7 @@ theorem unit_retract_leftDual_tensor (X : C) [Simple X] :
     ∃ (s : 𝟙_ C ⟶ (ᘁX) ⊗ X) (r : (ᘁX) ⊗ X ⟶ 𝟙_ C), s ≫ r = 𝟙 (𝟙_ C) :=
   letI : Simple (𝟙_ C) := IsFusionCategory.unit_simple (C := C)
   ⟨_, split_from_simple (ExactPairing.coevaluation (ᘁX) X)
-    (exactPairing_ne_zero (ᘁX) X (id_nonzero X)).1⟩
+    (exactPairing_ne_zero (ᘁX) (id_nonzero X)).1⟩
 
 end PropertyF.Ground
 

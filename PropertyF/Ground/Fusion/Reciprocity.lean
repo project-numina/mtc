@@ -165,14 +165,14 @@ theorem rightQuantumTrace_simple_ne_zero
   let s : 𝟙_ C ⟶ X ⊗ (Xᘁ) := ExactPairing.coevaluation X (Xᘁ)
   let _ : Simple (Xᘁ) := simple_rightDual X
   obtain ⟨r₀, hr₀⟩ := split_from_simple s
-    ((exactPairing_ne_zero X (Xᘁ) (id_nonzero (Xᘁ))).1)
+    ((exactPairing_ne_zero X (id_nonzero (Xᘁ))).1)
   have hr₀ne : r₀ ≠ 0 := fun h ↦
     id_nonzero (𝟙_ C) (by simpa [h] using hr₀.symm)
   let t : X ⊗ (Xᘁ) ≅ ((Xᘁ)ᘁ) ⊗ (Xᘁ) := j ⊗ᵢ Iso.refl _
   let ev : ((Xᘁ)ᘁ) ⊗ (Xᘁ) ⟶ 𝟙_ C := ExactPairing.evaluation (Xᘁ) ((Xᘁ)ᘁ)
   have hev : ev ≠ 0 := by
     let _ : Simple ((Xᘁ)ᘁ) := Simple.of_iso j.symm
-    exact (exactPairing_ne_zero (Xᘁ) ((Xᘁ)ᘁ) (id_nonzero ((Xᘁ)ᘁ))).2
+    exact (exactPairing_ne_zero (Xᘁ) (id_nonzero ((Xᘁ)ᘁ))).2
   let r : X ⊗ (Xᘁ) ⟶ 𝟙_ C := t.hom ≫ ev
   have hr : r ≠ 0 := fun h ↦ hev ((cancel_epi t.hom).1 (by simpa [r] using h))
   have hfin : Module.finrank ℂ (X ⊗ (Xᘁ) ⟶ 𝟙_ C) = 1 :=
