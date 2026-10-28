@@ -40,11 +40,10 @@ theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
   rw [← Category.assoc, forgetDualIso_natural (fᘁ)]
   simp only [Category.assoc]
   congr 1
-  change (fᘁ).fᘁ ≫ (rightDualIsoMap (forgetDualIso Y)).inv =
-    (rightDualIsoMap (forgetDualIso X)).inv ≫ ((f.fᘁ)ᘁ)
-  rw [Iso.eq_inv_comp, ← Category.assoc, Iso.comp_inv_eq]
-  simpa only [comp_rightAdjointMate, rightDualIsoMap] using
-    congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
+  have h := congrArg (fun m => rightAdjointMate m) (forgetDualIso_natural f)
+  simp only [comp_rightAdjointMate] at h
+  exact (CommSq.vert_inv (g := rightDualIsoMap (forgetDualIso X))
+    (h := rightDualIsoMap (forgetDualIso Y)) ⟨h.symm⟩).w
 
 variable (p : PivotalStructure (C := D))
 

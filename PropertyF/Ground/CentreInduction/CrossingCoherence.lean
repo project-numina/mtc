@@ -1,5 +1,6 @@
 module
 public import PropertyF.Ground.CentreInduction.CrossingUnit
+public import Mathlib.CategoryTheory.Monoidal.Center
 
 /-! Tensor coherence of the actual induction crossing. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
