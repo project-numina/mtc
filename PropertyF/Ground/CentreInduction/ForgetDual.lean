@@ -5,7 +5,11 @@ public import PropertyF.Ground.Dimensions.Trace
 
 open PropertyF.Ground.Dimensions
 
-/-! Transport duality through centre forget and reduce fusion to one component. -/
+/-! # Forgetting centre duals
+
+The centre forgetful functor transports dual pairings to the base category.
+The resulting dual comparisons identify traces of compatible pivotal components.
+-/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
 @[expose] public noncomputable section
@@ -88,10 +92,8 @@ theorem forget_trace_of_pivotal_component
   have hn : (pZ.rightTrace (𝟙 Z)).asHom.f =
       (η_ Z (Zᘁ)).f ≫ ((u ≫ e'.hom) ⊗ₘ 𝟙 ((Zᘁ).1)) ≫
         ε_ ((Zᘁ).1) (((Zᘁ).1)ᘁ) := by
-    dsimp [PivotalStructure.rightTrace, rightTraceWith]
-    simp only [Category.id_comp, tensorHom_def, whiskerLeft_id, Category.comp_id]
-    rw [← heval]
-    simp [comp_whiskerRight, Category.assoc, u]
+    simp [PivotalStructure.rightTrace, rightTraceWith, tensorHom_def, ← heval,
+      comp_whiskerRight, Category.assoc, u]
   rw [hn, htrans, ht]
   simp [PivotalStructure.rightTrace, rightTraceWith]
 
