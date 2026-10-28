@@ -113,9 +113,7 @@ theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
   rw [(CategoryTheory.Linear.homCongr ℂ e (Iso.refl S)).finrank_eq,
     (CategoryTheory.Linear.homCongr ℂ (Iso.refl S) e).finrank_eq,
     finrank_biproduct_hom, finrank_hom_biproduct]
-  exact Finset.sum_congr rfl fun p _ ↦ by
-    rw [CategoryTheory.finrank_hom_simple_simple ℂ,
-      CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
+  simp only [CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
 
 /-- A nonzero object decomposed over a finite family has a nonzero multiplicity. -/
 theorem exists_positive_multiplicity {k : Type*} [Field k]

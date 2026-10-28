@@ -29,10 +29,9 @@ theorem balanced_flow_no_entry {s : Finset ι} (hclosed : ∀ i ∈ s, ∀ j ∉
   have hrow (y : ι) (hy : y ∈ s) : ∑ x ∈ s, b x y = ∑ x, b x y :=
     (Finset.sum_eq_sum_iff_of_le (fun z _ ↦
       Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ s) (fun x _ _ ↦ hb x z))).mp hin y hy
-  have hzero : ∑ x ∈ Finset.univ \ s, b x j = 0 := by
-    have h := Finset.sum_sdiff (f := fun x => b x j) (Finset.subset_univ s)
-    rw [← hrow j hj] at h
-    exact add_right_cancel (h.trans (zero_add _).symm)
+  have hzero : ∑ x ∈ Finset.univ \ s, b x j = 0 := add_right_cancel (by
+    simpa only [← hrow j hj, zero_add] using
+      Finset.sum_sdiff (f := fun x ↦ b x j) (Finset.subset_univ s))
   exact (Finset.sum_eq_zero_iff_of_nonneg (fun x _ => hb x j)).mp hzero i
     (Finset.mem_sdiff.mpr ⟨Finset.mem_univ i, hi⟩)
 
@@ -47,8 +46,7 @@ theorem balanced_flow_cycle {o : ι} (hout : ∃ j, 0 < b o j) :
     intro i hi j hj
     exact le_antisymm (not_lt.mp fun h ↦ (Finset.mem_filter.mp hi).2
       (Relation.ReflTransGen.head h (by simpa [s] using hj))) (hb i j)
-  obtain ⟨j, hj⟩ := hout
-  refine ⟨j, hj, ?_⟩
+  refine hout.imp fun j hj ↦ ⟨hj, ?_⟩
   simpa [s] using (show j ∉ s from fun hjs ↦
     (ne_of_gt hj) (balanced_flow_no_entry hb hbalance hc
       (by simp [s, Relation.ReflTransGen.refl]) hjs))
