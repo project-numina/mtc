@@ -66,8 +66,8 @@ theorem actual_three_braid_trace (C : Ground.BraidedFusionCategory.{v,u})
 /-- The modular self-entry identity makes the actual three-strand trace attain
 the value used in the saturation argument. -/
 theorem actual_three_braid_saturates (C : Ground.BraidedFusionCategory.{v,u})
-    (X : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
-    (d f : ℝ) (hd : d ≠ 0)
+    {X : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {d f : ℝ} (hd : d ≠ 0)
     (hdim : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
     (hS : Dimensions.groundUnitScalarEquiv C (p.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * f) :
@@ -156,8 +156,8 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Equality of the actual block squares implies equality of the categorical
 adjacent copies of double self-braiding. -/
 theorem local_monodromy_of_block_squares_equal
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
-    (r : ℕ) (size : Fin r → ℕ)
+    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj}
+    {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] PropertyF.Blocks.Algebra ⟨_, size⟩)
     (h : tripleBlockLeft X b ^ 2 = tripleBlockRight X b ^ 2) :
     insertRightIdentity (X ⊗ X) X (selfMonodromy X) =
@@ -174,9 +174,9 @@ theorem local_monodromy_of_block_squares_equal
 /-- If the same pair operator occurs on either adjacent pair, partial trace
 forces that operator to be scalar. -/
 theorem pair_operator_scalar_of_overlaps_equal
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) [Simple X]
+    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj} [Simple X]
     (p : Dimensions.PivotalStructure (C := C.Obj)) (u : End (X ⊗ X))
-    (d f : ℝ) (hd : d ≠ 0)
+    {d f : ℝ} (hd : d ≠ 0)
     (hdim : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
     (htrace : Dimensions.groundUnitScalarEquiv C (p.rightTrace u.asHom) = (d : ℂ) * f)
     (heq : insertRightIdentity (X ⊗ X) X u = overlapFresh X X X u) :
@@ -207,7 +207,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Finite categorical braid image gives finite order of the double
 self-braiding on the ordinary tensor product. -/
 theorem selfMonodromy_finite_order (C : Ground.BraidedFusionCategory.{v,u})
-    (X : C.Obj) (hfinite : ObjectPropertyF X) :
+    {X : C.Obj} (hfinite : ObjectPropertyF X) :
     ∃ n : ℕ, n ≠ 0 ∧ selfMonodromy X ^ n = 1 := by
   obtain ⟨n, hn, hpow⟩ := braid_square_finite_order hfinite
   have hgen : (isoEndAlgEquiv (twoPowerIso X)) (Aut.toEnd (braidGenerator X 0 0)) =
@@ -226,9 +226,9 @@ theorem selfMonodromy_finite_order (C : Ground.BraidedFusionCategory.{v,u})
 /-- A scalar double self-braiding of finite order has unit-modulus scalar,
 so the two real dimensions have equal absolute value. -/
 theorem dimension_eq_abs_of_scalar_monodromy
-    (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
+    (C : Ground.BraidedFusionCategory.{v,u}) {X : C.Obj}
     (p : Dimensions.PivotalStructure (C := C.Obj))
-    (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
+    {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
     (hdim : Dimensions.groundUnitScalarEquiv C (p.rightTrace (𝟙 X)) = (d : ℂ))
     (hfinite : ObjectPropertyF X)
     (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| := by
@@ -246,7 +246,7 @@ theorem dimension_eq_abs_of_scalar_monodromy
     have : (d : ℂ) ^ 2 = 0 := by
       simpa only [End.one_asHom, End.zero_asHom, hdim2, hz, map_zero] using ht
     exact (pow_ne_zero 2 hd') this
-  obtain ⟨n, hn, hpow⟩ := selfMonodromy_finite_order C X hfinite
+  obtain ⟨n, hn, hpow⟩ := selfMonodromy_finite_order C hfinite
   apply PropertyF.fp_eq_abs_dim_of_finite_order hd hf
   refine ⟨n, hn, ?_⟩
   apply (smul_left_injective ℂ hnonzero)
@@ -272,10 +272,10 @@ theorem actual_three_strand_rigidity_of_trace_bound
     (hbound : ∀ z : braidAlgebra X 1,
       (∀ i, b z i ∈ Matrix.unitaryGroup (Fin (size i)) ℂ) →
       ‖actualBraidTrace C X p 1 z‖ ≤ |d| * f ^ 2) : f = |d| := by
-  have hvalue := actual_three_braid_saturates C X p d f hd hdim hS
+  have hvalue := actual_three_braid_saturates C p hd hdim hS
   have hsq := actual_braid_squares_equal_of_saturation C p b he hw hf htrace hbound hvalue
-  have hlocal := local_monodromy_of_block_squares_equal C X r size b hsq
-  have hscalar := pair_operator_scalar_of_overlaps_equal C X p (selfMonodromy X) d f hd hdim hS hlocal
-  exact dimension_eq_abs_of_scalar_monodromy C X p d f hd hf hdim hfinite hscalar
+  have hlocal := local_monodromy_of_block_squares_equal C b hsq
+  have hscalar := pair_operator_scalar_of_overlaps_equal C p (selfMonodromy X) hd hdim hS hlocal
+  exact dimension_eq_abs_of_scalar_monodromy C p hd hf hdim hfinite hscalar
 
 end PropertyF.Ground.Calculus

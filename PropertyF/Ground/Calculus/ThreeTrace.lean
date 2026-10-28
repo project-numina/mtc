@@ -174,7 +174,7 @@ def overlapEndProduct (A X Y : C) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
 /-- Tracing the new strands of the overlap gives the old operator times the
 normalized trace of the fresh operator. -/
 theorem rightPartialTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
-    (A X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {A X Y : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
       (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) • v := by
@@ -186,13 +186,13 @@ theorem rightPartialTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/
 theorem pivotalTrace_overlap (C : Ground.BraidedFusionCategory.{v,u})
-    (A X Y : C.Obj) [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
+    {A X Y : C.Obj} [Simple X] (p : Dimensions.PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
     scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
   rw [← Dimensions.rightTrace_partialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u)]
-  rw [rightPartialTrace_overlap C A X Y p scalar v u]
+  rw [rightPartialTrace_overlap C p scalar v u]
   simp [Dimensions.PivotalStructure.rightTrace_smul, mul_comm]
 
 end PropertyF.Ground.Calculus
@@ -252,7 +252,7 @@ theorem three_braid_trace (D : Ground.BraidedFusionCategory.{v,u})
   have h := congrArg (fun z : End (X ⊗ (X ⊗ X)) => scalar (p.rightTrace z.asHom))
     (three_braid_double_overlap X)
   simp only [rightTrace_iso_conj] at h
-  rw [h, pivotalTrace_overlap D X X X p scalar]
+  rw [h, pivotalTrace_overlap D (X := X) p scalar]
   ring
 
 /-- Remove the trailing tensor unit from the two-fold tensor power. -/
