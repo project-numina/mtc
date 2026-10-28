@@ -76,9 +76,7 @@ theorem inverseDualRoot_square (X : C.Obj) :
   let j : X ≅ (Xᘁ)ᘁ := (fourthDualRootNaturalIso C).app X
   have hroot : j.hom ≫ ((j.homᘁ)ᘁ) = (fourthDualIso C X).hom :=
     (congrArg (fun n => (n.app X).hom) (fourthDualRootNaturalSquare_eq C))
-  have hiso : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso C X := by
-    apply Iso.ext
-    exact hroot
+  have hiso : j ≪≫ rightDualIsoMap (rightDualIsoMap j) = fourthDualIso C X := Iso.ext hroot
   have hinv := congrArg Iso.inv hiso
   have hm := congrArg (fun f => rightAdjointMate f) hinv
   rw [fourthDualIso_rightDual]
