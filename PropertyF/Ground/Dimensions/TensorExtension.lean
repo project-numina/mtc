@@ -27,6 +27,11 @@ def rootSignTwist (C : BraidedFusionCategory.{v,u})
     𝟭 C.Obj ≅ doubleDualFunctor C.Obj :=
   simpleScalarNaturalIso C c hc ≪≫ fourthDualRootNaturalIso C
 
+/-- The scalar-twisted root has the canonical double-dual unit component. -/
+abbrev RootSignUnitLaw (C : BraidedFusionCategory.{v,u})
+    (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) : Prop :=
+  ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom
+
 /-- The tensor comparison induced by the sign-twisted root. -/
 def rootSignTensorIso (C : BraidedFusionCategory.{v,u})
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0) (X Y : C.Obj) :
@@ -224,7 +229,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem rootSignTwist_unit_of_simple_dimension
     (c : Fin (rank C) → ℂ) (hc : ∀ i, c i ≠ 0)
     (hunit : c (unitIndex C) * rootDimension C (unitIndex C) = 1) :
-    ((rootSignTwist C c hc).app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
+    RootSignUnitLaw C c hc := by
   apply naturalDoubleDual_unit_eq_of_trace_one
   obtain ⟨e⟩ := unitIndex_iso C
   have hn := (rootSignTwist C c hc).hom.naturality e.hom

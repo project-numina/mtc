@@ -139,20 +139,21 @@ theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,
     (simpleDimension_ne_zero D p k)
     (rightTrace_partialTrace p (simples D k) X (End.of (doubleBraiding (simples D k) X)))
 
-/-- The product formula follows from the precise residual partial-trace
-composition law for double braidings. -/
+/-- Partial traces of double braiding multiply on a simple strand. -/
+abbrev HasMultiplicativePartialTrace (D : Ground.BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := D.Obj)) : Prop :=
+  ∀ i j k : Fin (rank D),
+    rightPartialTrace p (simples D k) (simples D i ⊗ simples D j)
+        (End.of (doubleBraiding (simples D k) (simples D i ⊗ simples D j))) =
+    rightPartialTrace p (simples D k) (simples D i)
+        (End.of (doubleBraiding (simples D k) (simples D i))) *
+    rightPartialTrace p (simples D k) (simples D j)
+        (End.of (doubleBraiding (simples D k) (simples D j)))
+
+/-- Multiplicative partial traces imply the Hopf-link product rule. -/
 theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := D.Obj))
-    (hcomp : ∀ i j k : Fin (rank D),
-      rightPartialTrace p (simples D k) (simples D i ⊗ simples D j)
-          (End.of (doubleBraiding (simples D k) (simples D i ⊗ simples D j))) =
-      rightPartialTrace p (simples D k) (simples D i)
-          (End.of (doubleBraiding (simples D k) (simples D i))) *
-      rightPartialTrace p (simples D k) (simples D j)
-          (End.of (doubleBraiding (simples D k) (simples D j)))) :
-    ∀ i j k : Fin (rank D),
-      Ground.unitScalarEquiv D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
-        simpleDimension D p k = categoricalS D p i k * categoricalS D p j k := by
+    (p : PivotalStructure (C := D.Obj)) (hcomp : HasMultiplicativePartialTrace D p) :
+    HasHopfProduct D p := by
   intro i j k
   let _ : Simple (simples D k) := simples_simple D k
   have honene : (1 : End (simples D k)) ≠ 0 := by
@@ -263,13 +264,8 @@ end Nested
 
 /-- Double-braiding partial traces multiply on a simple surviving strand. -/
 theorem partialTrace_doubleBraiding_tensor (D : Ground.BraidedFusionCategory.{v,u})
-    (p : PivotalStructure (C := D.Obj)) (i j k : Fin (rank D)) :
-    rightPartialTrace p (simples D k) (simples D i ⊗ simples D j)
-      (End.of (doubleBraiding (simples D k) (simples D i ⊗ simples D j))) =
-    rightPartialTrace p (simples D k) (simples D i)
-      (End.of (doubleBraiding (simples D k) (simples D i))) *
-    rightPartialTrace p (simples D k) (simples D j)
-      (End.of (doubleBraiding (simples D k) (simples D j))) := by
+    (p : PivotalStructure (C := D.Obj)) : HasMultiplicativePartialTrace D p := by
+  intro i j k
   let Z : D.Obj := simples D k
   let X : D.Obj := simples D i
   let Y : D.Obj := simples D j

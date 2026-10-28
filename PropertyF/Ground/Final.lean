@@ -13,7 +13,7 @@ universe v u
 conjugate has integral global Frobenius–Perron dimension. -/
 theorem target : TargetStatement.{v,u} := by
   apply target_of_actual_center
-  intro C hpu hF
+  intro C hpu _
   obtain ⟨p, _, _⟩ := CentreInduction.positive_spherical_of_pseudoUnitary C hpu
   let := CentreRigid.rigidCenter (C := C.Obj)
   let := centerFusionOfPivotalPseudoUnitary C p hpu

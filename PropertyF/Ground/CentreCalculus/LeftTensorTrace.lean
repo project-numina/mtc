@@ -104,11 +104,11 @@ theorem integral_of_leftTrace_and_twist_sign
       Dimensions.pivotalBraidedTwistScalar C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m := by
   rcases hsign with h | h
-  · apply integral_of_parity_adjacent_trace C p hdim hX false
+  · apply integral_of_parity_adjacent_trace hdim hX false
     intro n σ
     simpa [permutationScalarTrace, parityPermutationAction, h] using
       tensorPermutationTrace_adjacent_of_leftTrace C p X hX htotal n σ
-  · apply integral_of_parity_adjacent_trace C p hdim hX true
+  · apply integral_of_parity_adjacent_trace hdim hX true
     intro n σ
     have hsign' : (Centre.permutationSign ℂ (n + 2)
         (Equiv.Perm.decomposeFin.symm (1, σ)) : ℂ) =
