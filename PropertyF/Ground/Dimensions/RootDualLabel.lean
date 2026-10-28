@@ -21,11 +21,11 @@ theorem positive_spherical_of_simple_fourth_and_reciprocity
       fourthDualTensorLaw C (simples C i) (simples C j))
     (htranspose : ENOTraceMatrixReciprocity C)
     (hpu : PseudoUnitary C) :
-    HasFPSphericalStructure C := by
-  have hinv : MultiplicityDefectsInvolutive C := fun i j k ↦
+    HasFPSphericalStructure C :=
+  let hinv : MultiplicityDefectsInvolutive C := fun i j k ↦
     multiplicityDefect_involution_of_tensor_square C k
       ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)
-  exact positive_spherical_of_matrix_identities C hinv
+  positive_spherical_of_matrix_identities C hinv
     (fun i j ↦ enoTraceMatrix_eigenvector_of_involutions C (hinv i j))
     (fun i ↦ squaredNorm_eq_root_norm_sq_of_reciprocity C hinv htranspose i) hpu
 

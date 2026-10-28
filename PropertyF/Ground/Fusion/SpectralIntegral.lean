@@ -54,18 +54,13 @@ theorem integer_matrix_spectralRadius_sq_isIntegral {ι : Type*} [Fintype ι]
     change Polynomial.eval₂ (Int.castRingHom ℂ) z A.charpoly = 0
     rw [Polynomial.eval₂_eq_eval_map, ← Matrix.charpoly_map]
     exact ((Matrix.mem_spectrum_iff_isRoot_charpoly.mp hz).eq_zero)
-  have hconj : IsIntegral ℤ (starRingEnd ℂ z) := hzint.map Complex.conjAe
-  have hprod : IsIntegral ℤ (starRingEnd ℂ z * z) := hconj.mul hzint
-  have hnorm : IsIntegral ℤ (‖z‖ ^ 2 : ℝ) := by
-    have hc : IsIntegral ℤ ((‖z‖ ^ 2 : ℝ) : ℂ) := by
+  have hnorm : IsIntegral ℤ (‖z‖ ^ 2 : ℝ) :=
+    (isIntegral_algebraMap_iff (R := ℤ) (A := ℝ) (B := ℂ)).mp (by
+      change IsIntegral ℤ ((‖z‖ ^ 2 : ℝ) : ℂ)
       rw [← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]
-      exact hprod
-    exact (isIntegral_algebraMap_iff (R := ℤ) (A := ℝ) (B := ℂ)).mp hc
-  have hreal : (spectralRadius ℂ B).toReal = ‖z‖ := by
-    rw [← hzmax]
-    simp
-  rw [← hreal] at hnorm
-  exact hnorm
+      exact (hzint.map Complex.conjAe).mul hzint)
+  change IsIntegral ℤ ((spectralRadius ℂ B).toReal ^ 2)
+  simpa only [← hzmax, ENNReal.coe_toReal, coe_nnnorm] using hnorm
 
 /-- Every target simple FP dimension is integral over ℤ. -/
 theorem fpSimple_isIntegral (i : Fin (rank D)) :
