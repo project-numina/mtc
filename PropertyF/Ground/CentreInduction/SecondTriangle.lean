@@ -67,12 +67,12 @@ theorem crossing_counit_diagonal (i : Fin (rank C)) :
       (inferInstance : Unique (Fin 1))
   dsimp only
   rw [crossing_counit_matrix C X (S i) i, Fintype.sum_unique]
-  dsimp only [crossingSummand]
   let : Simple (S i) := simples_simple C i
   let : FiniteDimensional ℂ (S i ⟶ S i) := IsFusionCategory.hom_finite _ _
-  rw [crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
-    (crossingInclusion_projection default)]
-  rfl
+  simpa only [crossingSummand, Iso.symm_hom, Iso.symm_inv] using
+    congrArg (· ≫ (S i ◁ (unitSummandIso C X).hom))
+      (crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
+        (crossingInclusion_projection default))
 
 end PropertyF.Ground.CentreInduction
 

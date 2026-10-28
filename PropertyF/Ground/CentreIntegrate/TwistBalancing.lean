@@ -70,7 +70,7 @@ theorem balance_of_drinfeld_tensor {X Y : D} (h : HasDrinfeldTensorEquation d X 
 theorem pivotal_balance_of_drinfeld_tensor {X Y : D} (h : HasDrinfeldTensorEquation d X Y) :
     Modular.doubleBraiding X Y ≫ (relativeTwist p d X ⊗ᵢ relativeTwist p d Y).hom =
       (relativeTwist p d (X ⊗ Y)).hom :=
-  (CentreCabling.doubleBraiding_natural _ _).trans (balance_of_drinfeld_tensor p d h).symm
+  (Modular.doubleBraiding_natural _ _).trans (balance_of_drinfeld_tensor p d h).symm
 
 
 end Twist
