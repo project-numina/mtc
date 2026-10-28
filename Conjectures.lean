@@ -16,3 +16,4 @@ public import Conjectures.Fusion.InvertibleDimension
 public import Conjectures.Galois.GlobalFPDimension
 public import Conjectures.Galois.SimpleFPDimension
 public import Conjectures.Galois.SquaredNorm
+public import Conjectures.RankFiniteness.EffectiveDimension
