@@ -24,8 +24,8 @@ local notation "𝒵" => Center D
 half-braiding intertwining equation for the transported components. -/
 def PivotalComponentsCentral (p : PivotalStructure (C := D)) : Prop :=
   ∀ (Z : 𝒵) (T : D),
-    let u := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
-    (u ▷ T) ≫ (((Zᘁ)ᘁ).2.β T).hom = (Z.2.β T).hom ≫ (T ◁ u)
+    (transportedPivotalHom p Z ▷ T) ≫ (((Zᘁ)ᘁ).2.β T).hom =
+      (Z.2.β T).hom ≫ (T ◁ transportedPivotalHom p Z)
 
 /-- Central transported components assemble into a pivotal structure on the
 actual centre; naturality, tensor and unit coherence are proved. -/
@@ -33,30 +33,29 @@ def liftedPivotalStructure (p : PivotalStructure (C := D))
     (hc : PivotalComponentsCentral p) :
     PivotalStructure (C := 𝒵) where
   iso Z := by
-    let u := (p.iso Z.1).hom ≫ (forgetDoubleDualIso Z).inv
+    let u := transportedPivotalHom p Z
     let f : Z ⟶ ((Zᘁ)ᘁ) := ⟨u, hc Z⟩
-    letI : IsIso f.f := by change IsIso u; dsimp only [u]; infer_instance
+    letI : IsIso f.f := by change IsIso u; dsimp only [u, transportedPivotalHom]; infer_instance
     exact Center.isoMk f
   naturality f := by
     apply Center.ext
-    simpa only [Center.comp_f, Center.isoMk_hom, Category.assoc] using
+    simpa only [Center.comp_f, Center.isoMk_hom, transportedPivotalHom, Category.assoc] using
       transported_pivotal_natural p f
   tensor X Y := by
     apply Center.ext
     simpa only [Center.comp_f, Center.tensor_f,
-      Center.isoMk_hom, Center.tensor_fst] using
+      Center.isoMk_hom, Center.tensor_fst, transportedPivotalHom] using
       (transported_pivotal_tensor p X Y).symm
   unit := by
     apply Center.ext
     simp only [Center.isoMk_hom]
-    convert transported_pivotal_unit p using 1
-    all_goals rfl
+    exact transported_pivotal_unit p
 
 /-- The lifted component agrees with the original pivotal component. -/
 theorem liftedPivotalStructure_compatible {p : PivotalStructure (C := D)}
     (hc : PivotalComponentsCentral p) (Z : 𝒵) :
     PivotalCompatibleAt p (liftedPivotalStructure p hc) Z := by
-  simp [PivotalCompatibleAt, liftedPivotalStructure, Category.assoc]
+  simp [PivotalCompatibleAt, liftedPivotalStructure, transportedPivotalHom, Category.assoc]
 
 end
 
@@ -128,8 +127,7 @@ def positivePivotalComponent (p : PivotalStructure (C := D)) (T : D) :
   (Center.ofBraided D).mapIso (p.iso T) ≪≫ (positiveDoubleDualIso T).symm
 
 theorem positivePivotalComponent_forget (p : PivotalStructure (C := D)) (T : D) :
-    (positivePivotalComponent p T).hom.f = (p.iso T).hom ≫
-      (forgetDoubleDualIso ((Center.ofBraided D).obj T)).inv :=
+    (positivePivotalComponent p T).hom.f = transportedPivotalHom p ((Center.ofBraided D).obj T) :=
   congrArg ((p.iso T).hom ≫ ·) (positiveDoubleDualIso_inv_forget T)
 
 end PropertyF.Ground.CentreInduction

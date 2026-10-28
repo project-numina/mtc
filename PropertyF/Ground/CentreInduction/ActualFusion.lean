@@ -54,8 +54,7 @@ theorem fusion_coevaluation {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) 
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A unit component followed by a crossing block reduces to a fusion endomorphism. -/
-theorem unit_block (Z : Center D) {T S R : D}
-    (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+theorem unit_block (Z : Center D) {T S R : D} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     (unitComponentAt Z R ▷ T) ≫ crossingBlock Z.1 T S g f =
       𝟙 _ ⊗≫ (Z.1 ◁ (𝟙 T ⊗≫ T ◁ η_ S (Sᘁ) ⊗≫ (f ≫ g) ▷ Sᘁ ⊗≫
         𝟙 ((T ⊗ S) ⊗ Sᘁ))) ⊗≫ ((Z.2.β (T ⊗ S)).hom ▷ Sᘁ) ⊗≫ 𝟙 _ := by
@@ -136,10 +135,9 @@ theorem unitCandidate_central (Z : 𝒵) (T : C.Obj) :
   simp only [Category.assoc, leftDistributor_hom_comp_biproduct_π]
   rw [← whiskerLeft_comp, show unitCandidate C Z ≫ biproduct.π V j =
     unitComponent C Z j from biproduct.lift_π _ _]
-  dsimp only [V]
-  simp only [unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
-    comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum]
-  simpa only [Fintype.sum_sigma, crossingSummand, Category.assoc] using unit_sum C Z T j
+  simpa only [V, unitCandidate, biproduct.lift_eq, sum_whiskerRight, Preadditive.sum_comp,
+    comp_whiskerRight, Category.assoc, crossingCandidate_matrix, Preadditive.comp_sum,
+    Fintype.sum_sigma, crossingSummand] using unit_sum C Z T j
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The forgetful functor is left adjoint to the actual centre induction functor. -/
