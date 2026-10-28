@@ -63,8 +63,8 @@ set_option backward.isDefEq.respectTransparency false in
 theorem doubleDualTensorIso_associativity (X Y Z : C) :
     (doubleDualTensorIso X Y).hom ▷ ((Zᘁ)ᘁ) ≫ (doubleDualTensorIso (X ⊗ Y) Z).hom ≫
       (((α_ X Y Z).homᘁ)ᘁ) =
-    (α_ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ((Zᘁ)ᘁ)).hom ≫
-      ((Xᘁ)ᘁ) ◁ (doubleDualTensorIso Y Z).hom ≫ (doubleDualTensorIso X (Y ⊗ Z)).hom := by
+    (α_ ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ((Zᘁ)ᘁ)).hom ≫ ((Xᘁ)ᘁ) ◁ (doubleDualTensorIso Y Z).hom ≫
+      (doubleDualTensorIso X (Y ⊗ Z)).hom := by
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap,
     comp_whiskerRight, whiskerLeft_comp, Category.assoc]
   have hmove1 : (rightDualTensorIso X Y).homᘁ ▷ ((Zᘁ)ᘁ) ≫

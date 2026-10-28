@@ -57,10 +57,9 @@ theorem fourthDualRootNaturalIso_app_simple
 
 /-- Natural transformations from the identity are determined on a family
 whose finite biproducts contain every object. -/
-theorem natTrans_eq_of_biproduct_components
-    {D : Type u} [Category.{v} D] [HasZeroMorphisms D] [HasFiniteBiproducts D]
-    {ι : Type} [Fintype ι] {T : ι → D} {F : D ⥤ D} {α β : 𝟭 D ⟶ F}
-    (hdecomp : ∀ X, HasBiproductDecomposition T X)
+theorem natTrans_eq_of_biproduct_components {D : Type u} [Category.{v} D] [HasZeroMorphisms D]
+    [HasFiniteBiproducts D] {ι : Type} [Fintype ι] {T : ι → D}
+    {F : D ⥤ D} {α β : 𝟭 D ⟶ F} (hdecomp : ∀ X, HasBiproductDecomposition T X)
     (h : ∀ i, α.app (T i) = β.app (T i)) : α = β :=
   NatTrans.ext <| funext fun X ↦ (hdecomp X).elim fun m ⟨e⟩ ↦
     biproduct_decomposition_hom_ext e fun ⟨i, t⟩ ↦ by
@@ -135,9 +134,8 @@ theorem involution_trace_integer_bound (hT : IsInvolutiveElem T) :
     ∃ n : ℤ, LinearMap.trace k V T = (n : k) ∧
       |n| ≤ (Module.finrank k V : ℤ) :=
   (involution_trace_formula hT).elim fun m ⟨hm, htrace⟩ ↦
-    ⟨2 * (m : ℤ) - (Module.finrank k V : ℤ), by simpa using htrace, by
-      rw [abs_le]
-      omega⟩
+    ⟨2 * (m : ℤ) - (Module.finrank k V : ℤ), by simpa using htrace,
+      abs_le.mpr ⟨by omega, by omega⟩⟩
 
 omit [NeZero (2 : k)] in
 /-- An involution whose trace reaches the dimension is the identity. -/
@@ -190,7 +188,7 @@ theorem involution_phase_inv_eq_one_of_trace :
   have hs : T = c • (1 : V →ₗ[ℂ] V) := by
     simpa [smul_mul_assoc, hT] using
       (congrArg (fun F ↦ F * T) (involution_phase_eq_one_of_trace hT hc htrace)).symm
-  rw [hs, smul_smul, inv_mul_cancel₀ (norm_ne_zero_iff.mp (by rw [hc]; exact one_ne_zero)), one_smul]
+  rw [hs, smul_smul, inv_mul_cancel₀ (norm_ne_zero_iff.mp (by simp [hc])), one_smul]
 
 
 end PropertyF.Ground.Dimensions

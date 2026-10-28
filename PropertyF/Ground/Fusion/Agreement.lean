@@ -155,9 +155,8 @@ theorem matrix_quadratic_form [DecidableEq ι]
 
 /-- A nonnegative eigenvector of a positive matrix is positive in every coordinate
 if it has a positive coordinate. -/
-theorem positive_matrix_eigenvector_pos
-    {k : Type*} [Semiring k] [LinearOrder k] [IsStrictOrderedRing k]
-    {A : Matrix ι ι k} (hpos : ∀ i j, 0 < A i j) {v : ι → k}
+theorem positive_matrix_eigenvector_pos {k : Type*} [Semiring k] [LinearOrder k]
+    [IsStrictOrderedRing k] {A : Matrix ι ι k} (hpos : ∀ i j, 0 < A i j) {v : ι → k}
     (hnonneg : ∀ i, 0 ≤ v i) (hpositive : ∃ i, 0 < v i)
     {d : k} (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
   obtain ⟨j, hj⟩ := hpositive

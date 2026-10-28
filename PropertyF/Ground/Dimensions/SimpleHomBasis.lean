@@ -27,8 +27,7 @@ variable {R : Type*} [CommSemiring R] [Preadditive C] [Linear R C]
 set_option backward.isDefEq.respectTransparency false in
 /-- Quantum dimensions multiply for any two double-dual isomorphisms, without
 a naturality or pivotal assumption. -/
-theorem rightQuantumTrace_tensor_scalar
-    (scalar : End (𝟙_ C) ≃ₐ[R] R) {X Y : C}
+theorem rightQuantumTrace_tensor_scalar (scalar : End (𝟙_ C) ≃ₐ[R] R) {X Y : C}
     (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ) :
     scalar (rightQuantumTrace ((j ⊗ᵢ k) ≪≫ doubleDualTensorIso X Y)) =
       scalar (rightQuantumTrace j) * scalar (rightQuantumTrace k) := by
@@ -131,8 +130,7 @@ set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 /-- Coordinates in the simple-inclusion basis are the scalar diagonal
 projections of the morphism. -/
-theorem simpleInclusionBasis_projection
-    {X : C.Obj} {k : Fin (rank C)} (g : simples C k ⟶ X)
+theorem simpleInclusionBasis_projection {X : C.Obj} {k : Fin (rank C)} (g : simples C k ⟶ X)
     (t : Fin (simpleMultiplicity C k X)) :
     ((simpleInclusionBasis C X k).repr g t) • 𝟙 (simples C k) =
       g ≫ (simpleDecomposition C X).hom ≫ biproduct.π (simplePiecesObject C X) ⟨k, t⟩ := by
@@ -146,8 +144,7 @@ set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 /-- Ordinary trace on a simple Hom space is the sum of scalar diagonal
 blocks in the chosen object decomposition. -/
-theorem simpleHom_postcomp_trace
-    {X : C.Obj} {k : Fin (rank C)} (g : X ⟶ X)
+theorem simpleHom_postcomp_trace {X : C.Obj} {k : Fin (rank C)} (g : X ⟶ X)
     (c : Fin (simpleMultiplicity C k X) → ℂ)
     (hc : ∀ t, biproduct.ι (simplePiecesObject C X) ⟨k, t⟩ ≫
       (simpleDecomposition C X).inv ≫ g ≫ (simpleDecomposition C X).hom ≫
