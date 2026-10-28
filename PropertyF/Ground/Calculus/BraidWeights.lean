@@ -93,9 +93,8 @@ theorem multiplicity_mass_eq {ι κ : Type*} [Fintype ι] [Fintype κ]
     (m : ι → ℕ) (d : κ → ℕ) (mult : ι → κ → ℕ) (fp : ι → ℝ)
     (hdim : HasMultiplicityDecomposition m d mult) :
     (∑ j, (∑ i, (mult i j : ℝ) * fp i) * (d j : ℝ)) = ∑ i, (m i : ℝ) * fp i := by
-  simp only [hdim, Nat.cast_sum, Nat.cast_mul, Finset.sum_mul]
-  rw [Finset.sum_comm]
-  simp only [mul_comm, mul_left_comm]
+  simpa [hdim, Finset.sum_mul, Finset.mul_sum, mul_comm, mul_left_comm] using
+    (Finset.sum_comm (s := .univ) (t := .univ) (f := fun i j => (mult i j : ℝ) * fp i * d j)).symm
 
 /-- The paper's Galois-transported multiplicity weights cannot vanish when
 all original constituent dimensions are positive and the block is retained. -/
