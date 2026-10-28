@@ -10,6 +10,25 @@ import tempfile
 from conjecture_status import ROOT, entries
 
 LIBRARIES = ("MTC", "Conjectures", "AnyonAtlas")
+COMMAND = re.compile(
+    r"(?m)^[ \t]*(?:(?:private|public|protected|noncomputable|unsafe)\s+)*"
+    r"(theorem|lemma|example|def|abbrev|opaque|axiom|instance|structure|class|"
+    r"inductive|namespace|section|end|run_cmd|#\w+)\b(?:[ \t]+([^\s:({]+))?"
+)
+SORRY = re.compile(r"(?<![\w'])sorry(?![\w'])")
+
+
+def check_sorry_scope(path, code, fields):
+    """Allow sorry tokens only in the named theorem's proof, including anonymous examples."""
+    commands = list(COMMAND.finditer(code))
+    for token in SORRY.finditer(code):
+        current = next((command for command in reversed(commands) if command.start() < token.start()), None)
+        theorem = fields["Declaration"].rsplit(".", 1)[-1]
+        if (fields["Status"] == "formalized" or current is None or
+                current.group(1) not in ("theorem", "lemma") or current.group(2) != theorem or
+                ":=" not in code[current.end():token.start()]):
+            line = code.count("\n", 0, token.start()) + 1
+            raise ValueError(f"{path}:{line}: sorry is allowed only in the named conjecture proof")
 
 
 def code_without_comments_and_strings(text):
@@ -66,14 +85,16 @@ def main():
     try:
         items = entries()
         # The token check covers project Lean sources; dependency audits below also catch `admit`.
+        metadata = {path: fields for path, fields in items}
         for path in sorted(ROOT.rglob("*.lean")):
             rel = path.relative_to(ROOT)
             if any(part.startswith(".") for part in rel.parts) or rel.parts[0] in ("scratch", "data"):
                 continue
-            if rel.parts[0] != "Conjectures":
-                code = code_without_comments_and_strings(path.read_text(encoding="utf-8"))
-                if re.search(r"(?<![\w'])sorry(?![\w'])", code):
-                    raise ValueError(f"{rel}: sorry is only permitted in conjecture proofs")
+            code = code_without_comments_and_strings(path.read_text(encoding="utf-8"))
+            if rel in metadata:
+                check_sorry_scope(rel, code, metadata[rel])
+            elif SORRY.search(code):
+                raise ValueError(f"{rel}: sorry is only permitted in conjecture proofs")
         modules = []
         for lib in LIBRARIES:
             modules.append(lib)
@@ -95,6 +116,8 @@ run_cmd do
   ]
   for (name, moduleName, _) in conjectures do
     let some ci := env.find? name | throwError "Missing conjecture declaration {{name}}"
+    if ci.type.hasSorry then
+      throwError "Conjecture {{name}} contains sorry in its statement"
     match ci with
     | .thmInfo _ => pure ()
     | _ => throwError "Conjecture {{name}} must be a theorem"
