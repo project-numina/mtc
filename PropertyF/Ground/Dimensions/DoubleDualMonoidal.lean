@@ -99,12 +99,12 @@ theorem doubleDualTensorIso_associativity (X Y Z : C) :
     simpa only [Iso.trans_inv, Iso.symm_inv, Category.assoc] using (congrArg Iso.inv heq).symm
   simp only [A, B, C₀, D, E, F, rightDualIsoMap, Iso.symm_hom,
     whiskerRightIso_hom, whiskerLeftIso_inv] at hrev
-  rw [reassoc_of% hmove1, reassoc_of% hrev, reassoc_of% hdual]
-  rw [← comp_rightAdjointMate_assoc, Iso.hom_inv_id, rightAdjointMate_id, Category.id_comp]
-  rw [← (comp_rightAdjointMate (f := (α_ X Y Z).homᘁ) (g := (α_ X Y Z).invᘁ)),
+  rw [reassoc_of% hmove1, reassoc_of% hrev, reassoc_of% hdual,
+    ← comp_rightAdjointMate_assoc, Iso.hom_inv_id, rightAdjointMate_id, Category.id_comp,
+    ← (comp_rightAdjointMate (f := (α_ X Y Z).homᘁ) (g := (α_ X Y Z).invᘁ)),
     ← (comp_rightAdjointMate (f := (α_ X Y Z).inv) (g := (α_ X Y Z).hom)),
-    Iso.inv_hom_id, rightAdjointMate_id, rightAdjointMate_id, Category.comp_id]
-  rw [reassoc_of% hmove2]
+    Iso.inv_hom_id, rightAdjointMate_id, rightAdjointMate_id, Category.comp_id,
+    reassoc_of% hmove2]
 
 end PropertyF.Ground.Dimensions
 
