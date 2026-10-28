@@ -45,7 +45,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Closing the first strand of the inverse braiding gives the inverse
 pivotal/Drinfeld twist. -/
 theorem leftPartialTrace_inverse_braiding (X : C.Obj) :
-    leftPartialTrace p X X (End.of (β_ X X).inv) =
+    leftPartialTrace p (End.of (β_ X X).inv) =
       End.of ((doubleDualIso C X).hom ≫ (p.iso X).inv) := by
   apply End.ext
   simp only [leftPartialTrace, LinearMap.coe_mk, AddHom.coe_mk]
@@ -79,7 +79,7 @@ theorem pivotalTwist_sign_of_selfTransparent (X : C.Obj) [Simple X]
   let θ := Dimensions.pivotalBraidedTwistScalar C p X
   let t : X ⟶ X := (doubleDualIso C X).hom ≫ (p.iso X).inv
   have hc : (β_ X X).hom = (β_ X X).inv := (β_ X X).inv_ext' hX
-  have htr := spherical_rightTrace_leftPartialTrace p hp X X (End.of (β_ X X).hom)
+  have htr := spherical_rightTrace_leftPartialTrace p hp (End.of (β_ X X).hom)
   have hp1 := leftPartialTrace_braiding_of_trace_compatibility C p X htr
   have hp2 := leftPartialTrace_inverse_braiding C p X
   rw [← hc] at hp2

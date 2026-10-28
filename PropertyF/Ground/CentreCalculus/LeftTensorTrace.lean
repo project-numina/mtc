@@ -22,9 +22,9 @@ variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C :
 /-- Once left partial trace composes with total trace, Schur's lemma computes
 the closed crossing as the pivotal twist scalar. -/
 theorem leftPartialTrace_braiding_of_trace_compatibility
-    (ht : p.rightTrace (leftPartialTrace p X X (End.of (β_ X X).hom)).asHom =
+    (ht : p.rightTrace (leftPartialTrace p (End.of (β_ X X).hom)).asHom =
       p.rightTrace (β_ X X).hom) :
-    leftPartialTrace p X X (End.of (β_ X X).hom) =
+    leftPartialTrace p (End.of (β_ X X).hom) =
       Dimensions.pivotalBraidedTwistScalar C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   have hd : unitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
@@ -42,9 +42,9 @@ set_option backward.isDefEq.respectTransparency false in
 scalar on the entire untraced factor. -/
 theorem leftPartialTrace_firstGenerator_of_trace_compatibility
     (n : ℕ)
-    (ht : p.rightTrace (leftPartialTrace p X X (End.of (β_ X X).hom)).asHom =
+    (ht : p.rightTrace (leftPartialTrace p (End.of (β_ X X).hom)).asHom =
       p.rightTrace (β_ X X).hom) :
-    leftPartialTrace p X (tensorPower X (n + 1)) (Aut.toEnd (braidGenerator X n 0)) =
+    leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) =
       Dimensions.pivotalBraidedTwistScalar C p X • 1 := by
   have hg : (Aut.toEnd (braidGenerator X n 0)) = End.of
       ((α_ X X (tensorPower X n)).inv ≫ ((β_ X X).hom ▷ tensorPower X n) ≫
@@ -53,11 +53,11 @@ theorem leftPartialTrace_firstGenerator_of_trace_compatibility
     change (braidGenerator X n ⟨0, by omega⟩).asIso.hom = _
     simp only [braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom,
       tensorHom_id]
-  change leftPartialTrace p X (X ⊗ tensorPower X n) (Aut.toEnd (braidGenerator X n 0)) = _
+  change leftPartialTrace p (Aut.toEnd (braidGenerator X n 0)) = _
   dsimp only [tensorPower] at hg ⊢
   rw [hg]
   have hw := leftPartialTrace_whiskerRight p (tensorPower X n) (End.of (β_ X X).hom)
-  change leftPartialTrace p X (X ⊗ tensorPower X n) (End.of
+  change leftPartialTrace p (End.of
       ((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
         (α_ X X (tensorPower X n)).hom)) = _ at hw
   rw [hw, leftPartialTrace_braiding_of_trace_compatibility C p X ht]
@@ -87,7 +87,7 @@ theorem tensorPermutationTrace_adjacent_of_leftTrace
     change b * _ = b * _
     congr 1
   rw [hact, ← htotal _ _, leftPartialTrace_right]
-  change unitScalar C (p.rightTrace ((leftPartialTrace p X (tensorPower X (n + 1)) b * f).asHom)) = _
+  change unitScalar C (p.rightTrace ((leftPartialTrace p b * f).asHom)) = _
   dsimp only [b]
   rw [
     leftPartialTrace_firstGenerator_of_trace_compatibility C p X n (htotal X (End.of (β_ X X).hom))]
@@ -184,10 +184,10 @@ set_option backward.isDefEq.respectTransparency false in
 left pivotal trace. -/
 theorem leftTrace_partialTrace [Preadditive C] [Linear ℂ C]
     [MonoidalPreadditive C] [MonoidalLinear ℂ C]
-    (p : Dimensions.PivotalStructure (C := C)) (X Y : C) (f : End (X ⊗ Y)) :
-    p.leftTrace (leftPartialTrace p X Y f).asHom = p.leftTrace f.asHom := by
+    (p : Dimensions.PivotalStructure (C := C)) {X Y : C} (f : End (X ⊗ Y)) :
+    p.leftTrace (leftPartialTrace p f).asHom = p.leftTrace f.asHom := by
   apply End.homEquiv.injective
-  change (p.leftTrace (leftPartialTrace p X Y f).asHom).asHom = (p.leftTrace f.asHom).asHom
+  change (p.leftTrace (leftPartialTrace p f).asHom).asHom = (p.leftTrace f.asHom).asHom
   rw [leftTrace_tensor_pairing]
   simp only [Dimensions.PivotalStructure.leftTrace, leftPartialTrace,
     LinearMap.coe_mk, AddHom.coe_mk]
@@ -212,9 +212,9 @@ pivotal trace after the remaining strand is closed. -/
 theorem spherical_rightTrace_leftPartialTrace [Preadditive C] [Linear ℂ C]
     [MonoidalPreadditive C] [MonoidalLinear ℂ C]
     (p : Dimensions.PivotalStructure (C := C)) (hp : p.IsSpherical)
-    (X Y : C) (f : End (X ⊗ Y)) :
-    p.rightTrace (leftPartialTrace p X Y f).asHom = p.rightTrace f.asHom :=
-  (hp Y _).symm.trans <| (leftTrace_partialTrace p X Y f).trans (hp _ _)
+    {X Y : C} (f : End (X ⊗ Y)) :
+    p.rightTrace (leftPartialTrace p f).asHom = p.rightTrace f.asHom :=
+  (hp Y _).symm.trans <| (leftTrace_partialTrace p f).trans (hp _ _)
 
 /-- A self-transparent simple with sign-valued twist has integral FP
 dimension in any FP-valued spherical fusion category. -/
@@ -227,6 +227,6 @@ theorem integral_of_spherical_and_twist_sign
       Dimensions.pivotalBraidedTwistScalar C p X = -1) :
     ∃ m : ℕ, fpDimension C X = m :=
   integral_of_leftTrace_and_twist_sign C p hdim X hX
-    (spherical_rightTrace_leftPartialTrace p hp X) hsign
+    (fun _ f ↦ spherical_rightTrace_leftPartialTrace p hp f) hsign
 
 end PropertyF.Ground.CentreCalculus
