@@ -171,12 +171,8 @@ include he
 private theorem overlapLeft_unitary (k : ℕ) {v : braidAlgebra X (overlapIndex t k)}
     (hv : Blocks.IsUnitary ⟨_, d (overlapIndex t k)⟩ (e _ v)) :
     Blocks.IsUnitary ⟨_, d (overlapIndex t (k + 1))⟩ (e _ (overlapLeft X t k v)) := by
-  change e (overlapIndex t k + (t + 1))
-    (addRightBraidAlgebraIter X (overlapIndex t k) (t + 1) v) ∈
-      unitary (Blocks.Algebra ⟨_, d (overlapIndex t k + (t + 1))⟩)
-  simpa [addRightBlocksIterStarMap] using
-    Unitary.map_mem
-      (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) hv
+  simpa [overlapLeft, overlapIndex, Blocks.IsUnitary, addRightBlocksIterStarMap] using! Unitary.map_mem
+    (addRightBlocksIterStarMap X (overlapIndex t k) (t + 1) (e _) (e _) (he _) (he _)) hv
 
 /-- Inserting a fresh overlapping factor preserves unitarity. -/
 private theorem overlapRight_unitary (k : ℕ) {u : braidAlgebra X t}

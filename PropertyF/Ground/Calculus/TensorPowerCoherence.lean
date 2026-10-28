@@ -159,8 +159,8 @@ theorem overlap_trace_power (C : BraidedFusionCategory.{v,u})
     {X : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     {t : ℕ} (u : braidAlgebra X t) :
     HasOverlapTracePower C p u :=
-  overlap_trace_power_of_step C p u fun k ↦
-    overlap_trace_step_of_coherence C p u k
-      (overlapProduct_local_of_iso k u (freshOverlapIso_eq_overlapPowerIso X t k))
+  overlap_trace_power_of_step C p u fun k ↦ overlap_trace_step_of_coherence C p u k <| by
+    simp [IsLocalOverlapProduct, overlapProduct, overlapEndProduct, previousOverlapLocal,
+      overlapLeft_local, overlapRight_local_of_iso k u (freshOverlapIso_eq_overlapPowerIso X t k)]
 
 end PropertyF.Ground.Calculus
