@@ -19,8 +19,8 @@ namespace PropertyF.Ground
 /-- For a strictly positive matrix, the eigenspace of any strictly positive
 eigenvector is one-dimensional. No spectral theorem is assumed. -/
 theorem positive_matrix_eigenspace_unique {ι : Type*} [Fintype ι] [Nonempty ι]
-    (A : Matrix ι ι ℝ) (hA : ∀ i j, 0 < A i j)
-    (x y : ι → ℝ) (hx : ∀ i, 0 < x i) (d : ℝ)
+    {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 < A i j)
+    {x y : ι → ℝ} (hx : ∀ i, 0 < x i) {d : ℝ}
     (hxe : A *ᵥ x = d • x) (hye : A *ᵥ y = d • y) :
     ∃ c : ℝ, y = c • x := by
   classical
@@ -138,7 +138,7 @@ theorem euclideanAbs_norm {ι : Type*} [Fintype ι] (x : EuclideanSpace ℝ ι) 
 /-- Replacing coordinates by absolute values cannot decrease the quadratic
 form of a matrix with nonnegative entries. -/
 theorem quadratic_le_abs {ι : Type*} [Fintype ι]
-    (A : Matrix ι ι ℝ) (hA : ∀ i j, 0 ≤ A i j) (x : ι → ℝ) :
+    {A : Matrix ι ι ℝ} (hA : ∀ i j, 0 ≤ A i j) (x : ι → ℝ) :
     ∑ i, ∑ j, x i * A i j * x j ≤
       ∑ i, ∑ j, |x i| * A i j * |x j| := by
   refine Finset.sum_le_sum fun i _ ↦ Finset.sum_le_sum fun j _ ↦ ?_
@@ -156,9 +156,9 @@ theorem matrix_quadratic_form {ι : Type*} [Fintype ι] [DecidableEq ι]
 /-- A nonnegative eigenvector of a positive matrix is positive in every coordinate
 if it has a positive coordinate. -/
 theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
-    (A : Matrix ι ι ℝ) (hpos : ∀ i j, 0 < A i j) (v : ι → ℝ)
+    {A : Matrix ι ι ℝ} (hpos : ∀ i j, 0 < A i j) {v : ι → ℝ}
     (hnonneg : ∀ i, 0 ≤ v i) (hpositive : ∃ i, 0 < v i)
-    (d : ℝ) (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
+    {d : ℝ} (heigen : A *ᵥ v = d • v) : ∀ i, 0 < v i := by
   classical
   obtain ⟨j, hj⟩ := hpositive
   intro i
@@ -173,7 +173,7 @@ theorem positive_matrix_eigenvector_pos {ι : Type*} [Fintype ι]
 /-- A nonnegative symmetric real matrix has a nonnegative eigenvector with a
 positive coordinate. -/
 theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {ι : Type*} [Fintype ι]
-    [DecidableEq ι] [Nonempty ι] (A : Matrix ι ι ℝ)
+    [DecidableEq ι] [Nonempty ι] {A : Matrix ι ι ℝ}
     (hsym : A.IsHermitian) (hA : ∀ i j, 0 ≤ A i j) :
     ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 ≤ v i) ∧ (∃ i, 0 < v i) ∧ A *ᵥ v = d • v := by
   classical
@@ -206,7 +206,7 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {ι : Type*} [Fintype ι]
     change (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf x ≤
       (Matrix.toEuclideanLin A).toContinuousLinearMap.reApplyInnerSelf y
     rw [matrix_quadratic_form, matrix_quadratic_form]
-    simpa [y, euclideanAbs] using quadratic_le_abs A hA (fun i => x i)
+    simpa [y, euclideanAbs] using quadratic_le_abs hA (fun i => x i)
   have hymax : IsMaxOn T.reApplyInnerSelf (Metric.sphere 0 ‖y‖) y :=
     fun _ hw ↦ (hxmax (by simpa [hynorm] using hw)).trans hyquad
   have heigen := hself.eq_smul_self_of_isLocalExtrOn (Or.inr hymax.isLocalMaxOn)
@@ -216,12 +216,12 @@ theorem nonneg_symmetric_matrix_has_nonneg_eigenvector {ι : Type*} [Fintype ι]
 
 /-- A strictly positive symmetric real matrix has a strictly positive eigenvector. -/
 theorem positive_symmetric_matrix_has_positive_eigenvector {ι : Type*} [Fintype ι]
-    [DecidableEq ι] [Nonempty ι] (A : Matrix ι ι ℝ)
+    [DecidableEq ι] [Nonempty ι] {A : Matrix ι ι ℝ}
     (hsym : A.IsHermitian) (hpos : ∀ i j, 0 < A i j) :
     ∃ (d : ℝ) (v : ι → ℝ), (∀ i, 0 < v i) ∧ A *ᵥ v = d • v := by
   obtain ⟨d, v, hv, hvpos, heigen⟩ :=
-    nonneg_symmetric_matrix_has_nonneg_eigenvector A hsym (fun i j => (hpos i j).le)
-  exact ⟨d, v, positive_matrix_eigenvector_pos A hpos v hv hvpos d heigen, heigen⟩
+    nonneg_symmetric_matrix_has_nonneg_eigenvector hsym (fun i j => (hpos i j).le)
+  exact ⟨d, v, positive_matrix_eigenvector_pos hpos hv hvpos heigen, heigen⟩
 
 end PropertyF.Ground
 
@@ -352,7 +352,7 @@ theorem exists_positive_common_eigenvector :
     rw [Matrix.isHermitian_iff_isSymm]
     exact Matrix.IsSymm.ext (fun j k => totalFusionMatrix_symmetric D k j)
   obtain ⟨a, v, hvpos, hve⟩ := positive_symmetric_matrix_has_positive_eigenvector
-    (totalFusionMatrix D) hs (totalFusionMatrix_pos D)
+    hs (totalFusionMatrix_pos D)
   refine ⟨v, hvpos, ?_⟩
   intro i
   have hcomm := total_commutes_characterMatrix D i
@@ -360,8 +360,8 @@ theorem exists_positive_common_eigenvector :
       a • (characterMatrix D i *ᵥ v) := by
     rw [Matrix.mulVec_mulVec, hcomm.eq, ← Matrix.mulVec_mulVec, hve]
     rw [Matrix.mulVec_smul]
-  obtain ⟨d, hd⟩ := positive_matrix_eigenspace_unique (totalFusionMatrix D)
-    (totalFusionMatrix_pos D) v (characterMatrix D i *ᵥ v) hvpos a hve hve'
+  obtain ⟨d, hd⟩ := positive_matrix_eigenspace_unique
+    (totalFusionMatrix_pos D) hvpos hve hve'
   exact ⟨d, hd⟩
 
 /-- A positive normalized character exists for the actual fusion rules. -/
@@ -434,8 +434,8 @@ theorem positive_character_unique
     have := mul_right_cancel₀ (ne_of_gt hdotpos) hdot.symm
     exact this
   rw [← heq] at hge
-  obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique (totalFusionMatrix D)
-    (totalFusionMatrix_pos D) f g hfpos _ hfe hge
+  obtain ⟨c, hc⟩ := positive_matrix_eigenspace_unique
+    (totalFusionMatrix_pos D) hfpos hfe hge
   have hc1 : c = 1 := by
     simpa [hfunit, hgunit] using (congrFun hc (unitIndex D)).symm
   rw [hc, hc1, one_smul]

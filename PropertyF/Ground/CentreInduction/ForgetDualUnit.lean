@@ -60,8 +60,7 @@ theorem transported_pivotal_tensor
       (Dimensions.doubleDualTensorIso X Y).hom.f =
     (p.iso (X.1 ⊗ Y.1)).hom ≫ (forgetDoubleDualIso (X ⊗ Y)).inv := by
   rw [Iso.eq_comp_inv, Category.assoc, forgetDoubleDualIso_tensor]
-  simpa only [tensorHom_comp_tensorHom_assoc, Category.assoc, Iso.inv_hom_id,
-    Category.comp_id] using (p.tensor X.1 Y.1).symm
+  simpa [Category.assoc] using (p.tensor X.1 Y.1).symm
 
 end PropertyF.Ground.CentreInduction
 

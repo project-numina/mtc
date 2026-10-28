@@ -24,28 +24,6 @@ theorem map_star_of_mem_span (φ : A →ₐ[ℂ] B) (S : Set A)
     (fun _ _ _ _ hx hy => by simp [hx, hy])
     (fun _ _ _ hx => by simp [star_smul, hx]) hx
 
-/-- A unitary matrix's adjoint is the inverse of the corresponding unit. -/
-theorem star_eq_coe_inv_of_unitary {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (u : (Matrix ι ι ℂ)ˣ) (hu : (u : Matrix ι ι ℂ) ∈ Matrix.unitaryGroup ι ℂ) :
-    star (u : Matrix ι ι ℂ) = (↑u⁻¹ : Matrix ι ι ℂ) :=
-  u.eq_inv_of_mul_eq_one_right (Matrix.mem_unitaryGroup_iff'.mp hu)
-
-/-- If a group spans an algebra and two representations have adjoint equal to
-inverse on group elements, every intertwining algebra map preserves adjoints.
-This captures identity-strand maps without assuming injectivity or surjectivity. -/
-theorem map_star_of_group_span {G H : Type*} [Group G] [Group H]
-    (ρ : G →* A) (σ : H →* B) (τ : G →* H) (φ : A →ₐ[ℂ] B)
-    (hspan : Submodule.span ℂ (Set.range ρ) = ⊤)
-    (hρ : ∀ g, star (ρ g) = ρ g⁻¹)
-    (hσ : ∀ h, star (σ h) = σ h⁻¹)
-    (hφ : ∀ g, φ (ρ g) = σ (τ g)) (x : A) :
-    φ (star x) = star (φ x) :=
-  map_star_of_mem_span φ (Set.range ρ)
-    (fun _ h => by
-      obtain ⟨g, rfl⟩ := h
-      rw [hρ, hφ, hφ, hσ, map_inv])
-    (hspan.symm ▸ Submodule.mem_top)
-
 end PropertyF.Ground.Calculus
 
 /-! Compatibility of unitary block realizations under maps of group images. -/
@@ -72,7 +50,8 @@ theorem unitary_block_star_inv {n : ℕ} {d : Fin n → ℕ}
     (ρ : G →* Blocks.Algebra ⟨_, d⟩)
     (hu : ∀ g, Blocks.IsUnitary ⟨_, d⟩ (ρ g)) (g : G) :
     star (ρ g) = ρ g⁻¹ :=
-  funext fun i => star_eq_coe_inv_of_unitary (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g) (hu g i)
+  funext fun i => (((Pi.evalMonoidHom _ i).comp ρ).toHomUnits g).eq_inv_of_mul_eq_one_right
+    (Matrix.mem_unitaryGroup_iff'.mp (hu g i))
 
 /-- Any algebra map intertwining two unitary block presentations is a star map.
 This gives the analytic part of identity-strand compatibility; the categorical
@@ -87,11 +66,17 @@ theorem presented_intertwiner_map_star
     (φ : (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
       (Blocks.Algebra ⟨_, k⟩))
     (hφ : ∀ g, φ (e (groupInImage ρ g)) = f (groupInImage σ (τ g)))
-    (x : Blocks.Algebra ⟨_, d⟩) : φ (star x) = star (φ x) :=
-  let ρ' := e.toMonoidHom.comp (groupInImage ρ)
-  let σ' := f.toMonoidHom.comp (groupInImage σ)
-  map_star_of_group_span ρ' σ' τ φ (presented_group_span ρ e)
-    (unitary_block_star_inv ρ' he) (unitary_block_star_inv σ' hf) hφ x
+    (x : Blocks.Algebra ⟨_, d⟩) : φ (star x) = star (φ x) := by
+  apply map_star_of_mem_span φ (Set.range (e.toMonoidHom.comp (groupInImage ρ)))
+  · rintro _ ⟨g, rfl⟩
+    change φ (star (e (groupInImage ρ g))) = star (φ (e (groupInImage ρ g)))
+    rw [show star (e (groupInImage ρ g)) = e (groupInImage ρ g⁻¹) from
+        unitary_block_star_inv (e.toMonoidHom.comp (groupInImage ρ)) he g,
+      hφ, hφ,
+      show star (f (groupInImage σ (τ g))) = f (groupInImage σ (τ g)⁻¹) from
+        unitary_block_star_inv (f.toMonoidHom.comp (groupInImage σ)) hf (τ g), map_inv]
+  · rw [presented_group_span ρ e]
+    exact Submodule.mem_top
 
 end PropertyF.Ground.Calculus
 
