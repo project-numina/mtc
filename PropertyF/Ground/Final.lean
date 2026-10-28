@@ -91,7 +91,7 @@ conjugate has integral global Frobenius–Perron dimension. -/
 theorem target : TargetStatement.{v,u} := by
   intro C hPU hF
   obtain ⟨D, _, ⟨E⟩, hD⟩ := hPU
-  obtain ⟨p, _, hp⟩ := CentreInduction.positive_spherical_of_pseudoUnitary D hD
+  obtain ⟨p, _, hp⟩ := CentreInduction.positive_spherical_of_pseudoUnitary hD
   let := CentreRigid.rigidCenter (C := D.Obj)
   let hc := CentreInduction.pivotalComponentsCentral_proved p
   let pZ := CentreInduction.liftedPivotalStructure p hc
