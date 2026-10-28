@@ -143,12 +143,12 @@ theorem squaredNorm_eq_rootDualSign_mul
   obtain ⟨u⟩ := dualIndex_iso C i
   have hq : unitScalar C (rightQuantumTrace k) = rootDimension C (dualIndex C i) :=
     congrArg (unitScalar C) ((rootTrace_id C (Xᘁ)).symm.trans (rootTrace_id_iso C (e ≪≫ u)))
-  have hx : unitScalar C (rightQuantumTrace j) = rootDimension C i :=
-    congrArg (unitScalar C) (rootTrace_id C X).symm
   rw [target_squaredNorm_choice_independent C j, leftQuantumTrace_eq_rightDual j]
   change unitScalar C (rightQuantumTrace j) * unitScalar C (rightQuantumTrace l) =
     rootDualSign C i * rootDimension C i * rootDimension C (dualIndex C i)
-  rw [← hx, ← hq, rightQuantumTrace_smul_hom (rootDualSign_component C i)]
+  rw [← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
+      congrArg (unitScalar C) (rootTrace_id C X).symm), ← hq,
+    rightQuantumTrace_smul_hom (rootDualSign_component C i)]
   simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
   rw [mul_mul_mul_comm, rootDualSign_sq, one_mul]
 
@@ -268,9 +268,10 @@ theorem positive_spherical_of_matrix_identities
   let c : Fin (rank C) → ℂ := fun i => (q i)⁻¹
   have hc : ∀ i, c i ≠ 0 := fun i ↦ inv_ne_zero (div_ne_zero (rootDimension_ne_zero C i)
     (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))))
-  have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) := by
-    dsimp [c, q]
-    rw [inv_div, div_mul_cancel₀ _ (rootDimension_ne_zero C i)]
+  have hvalue (i) : c i * rootDimension C i = (fpSimple C i : ℂ) :=
+    (congrArg (fun z : ℂ ↦ z * rootDimension C i)
+      (inv_div (rootDimension C i) (fpSimple C i : ℂ))).trans
+        (div_mul_cancel₀ _ (rootDimension_ne_zero C i))
   let unitProof := rootSignTwist_unit_of_simple_dimension C hc (by
     simp only [hvalue, fpSimple_unit, Complex.ofReal_one])
   let p := rootPhasePivotal C c hc (normalized_defects_trivial C hinv heig hsat) unitProof
