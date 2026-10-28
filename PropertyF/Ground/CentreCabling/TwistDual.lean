@@ -59,37 +59,4 @@ theorem spherical_twistScalar_rightDual
     Dimensions.pivotalDimension_simple_ne_zero C p i
   exact (mul_right_cancel₀ hn hb).symm
 
-/-- The pivotal twist scalar is invariant under isomorphism of simple objects. -/
-theorem pivotal_twistScalar_iso
-    (C : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj))
-    {X Y : C.Obj} [Simple X] [Simple Y] (e : X ≅ Y) :
-    Dimensions.pivotalBraidedTwistScalar C p X = Dimensions.pivotalBraidedTwistScalar C p Y := by
-  have he : e.hom ≠ 0 := by
-    intro hz
-    have h := e.hom_inv_id
-    rw [hz, Limits.zero_comp] at h
-    exact id_nonzero X h.symm
-  have hn := Dimensions.pivotalBraidedTwist_natural C p e.hom
-  rw [Dimensions.pivotalBraidedTwist_simple, Dimensions.pivotalBraidedTwist_simple] at hn
-  apply smul_left_injective ℂ he
-  simpa using hn.symm
-
-/-- In a spherical fusion category the twist scalars agree on dual labels. -/
-theorem spherical_twistScalar_dual_label
-    (C : Ground.BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)
-    (i : Fin (rank C)) :
-    letI : Simple (simples C i) := simples_simple C i
-    letI : Simple (simples C (dualIndex C i)) := simples_simple C _
-    Dimensions.pivotalBraidedTwistScalar C p (simples C (dualIndex C i)) =
-      Dimensions.pivotalBraidedTwistScalar C p (simples C i) := by
-  letI : Simple (simples C i) := simples_simple C i
-  letI : Simple ((simples C i)ᘁ) := Ground.simple_rightDual C (simples C i)
-  letI : Simple (simples C (dualIndex C i)) := simples_simple C _
-  calc
-    _ = Dimensions.pivotalBraidedTwistScalar C p ((simples C i)ᘁ) :=
-      (pivotal_twistScalar_iso C p (Dimensions.rightDualLabelIso C i)).symm
-    _ = _ := spherical_twistScalar_rightDual C p hp i
-
 end PropertyF.Ground.CentreCabling

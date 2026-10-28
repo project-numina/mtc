@@ -3,7 +3,7 @@ public import PropertyF.Ground.CentreInduction.PositivePivotal
 public import PropertyF.Ground.Dimensions.DualTensorNaturality
 public import PropertyF.Ground.Dimensions.DualBraiding
 public import PropertyF.Ground.Dimensions.DoubleDualBraiding
-public import PropertyF.Ground.CentreCabling.FiniteMonodromy
+public import PropertyF.Ground.CentreCabling.CentralityClosure
 public import PropertyF.Ground.Dimensions.DefectExtension
 public import PropertyF.Ground.CentreIntegrate.TwistBalancing
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
@@ -18,7 +18,7 @@ set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D] [RightRigidCategory D]
 
 /-- Right duality reverses the tensor factors of mixed monodromy. -/
-theorem rightDualTensorIso_monodromy (X Y : D) :
+theorem rightDualTensorIso_monodromy {X Y : D} :
     (Modular.doubleBraiding X Y)ᘁ ≫ (rightDualTensorIso X Y).hom =
       (rightDualTensorIso X Y).hom ≫ Modular.doubleBraiding (Yᘁ) (Xᘁ) := by
   unfold Modular.doubleBraiding
@@ -93,7 +93,7 @@ theorem drinfeld_inv_dual_tensor (h : DrinfeldTensorLaw C) (X Y : C.Obj) :
     Modular.doubleBraiding (Yᘁ) (Xᘁ) at hi
   have hi' := congrArg (fun z => rightAdjointMate z) hi
   simp only [comp_rightAdjointMate] at hi'
-  have hm := rightDualTensorIso_monodromy (Yᘁ) (Xᘁ)
+  have hm := rightDualTensorIso_monodromy (X := Yᘁ) (Y := Xᘁ)
   have hm' : (rightDualTensorIso (Yᘁ) (Xᘁ)).inv ≫
       ((Modular.doubleBraiding (Yᘁ) (Xᘁ))ᘁ) =
       Modular.doubleBraiding ((Xᘁ)ᘁ) ((Yᘁ)ᘁ) ≫

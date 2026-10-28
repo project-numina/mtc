@@ -16,7 +16,7 @@ variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Resolving a fusion strand commutes with coevaluation. -/
-theorem fusion_coevaluation (T S R : C.Obj) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
+theorem fusion_coevaluation {T S R : C.Obj} (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶ R) :
     𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ closeFusionMap C T S R f) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) =
       𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) := by
   have hr : (𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ (Sᘁ)) ⊗≫
@@ -30,7 +30,7 @@ theorem fusion_coevaluation (T S R : C.Obj) (g : R ⟶ T ⊗ S) (f : T ⊗ S ⟶
     𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
       ((T ⊗ S) ◁ ε_ S (Sᘁ)) ≫ (ρ_ (T ⊗ S)).hom = f ≫ g
   let q := closeFusionMap C T S R f
-  have hq := closeFusionMap_evaluation C T S R f
+  have hq := closeFusionMap_evaluation C f
   change q ▷ S ≫ ε_ S (Sᘁ) = 𝟙 _ ⊗≫ ((Rᘁ : C.Obj) ◁ f) ⊗≫ ε_ R (Rᘁ) at hq
   change ((𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫
     𝟙 ((T ⊗ S) ⊗ Sᘁ)) ▷ S) ≫ (α_ (T ⊗ S) (Sᘁ) S).hom ≫
@@ -69,7 +69,7 @@ theorem unit_block (Z : CategoryTheory.Center C.Obj) (T S R : C.Obj)
   have hn : bR ≫ (g ▷ Z.1) = (Z.1 ◁ g) ≫ bTS := (Z.2.naturality g).symm
   have hf : (𝟙 T ⊗≫ (η_ R (Rᘁ) ▷ T) ⊗≫ (g ⊗ₘ q) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ)) =
       𝟙 T ⊗≫ (T ◁ η_ S (Sᘁ)) ⊗≫ ((f ≫ g) ▷ Sᘁ) ⊗≫ 𝟙 ((T ⊗ S) ⊗ Sᘁ) :=
-    fusion_coevaluation C T S R g f
+    fusion_coevaluation C g f
   change (((ρ_ Z.1).inv ≫ (Z.1 ◁ η_ R (Rᘁ)) ≫ (α_ Z.1 R (Rᘁ)).inv ≫ (bR ▷ Rᘁ)) ▷ T) ≫
     ((α_ (R ⊗ Z.1) (Rᘁ) T).hom ≫ ((g ▷ Z.1) ⊗ₘ q) ≫
       (α_ (T ⊗ S) Z.1 (Sᘁ)).hom ≫ (α_ T S (Z.1 ⊗ Sᘁ)).hom ≫

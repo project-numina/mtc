@@ -41,6 +41,7 @@ theorem tensor_preserves_injective (J U : D) [Injective J] : Injective (J ⊗ U)
   let : R.PreservesInjectiveObjects := Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms adj
   exact R.injective_obj_of_injective (inferInstance : Injective J)
 
+omit [Abelian D] in
 /-- A unit retract of a tensor product with an injective makes every object injective. -/
 theorem all_injective_of_unit_retract (J U : D) [Injective J]
     (r : Retract (𝟙_ D) (J ⊗ U)) (X : D) : Injective X := by

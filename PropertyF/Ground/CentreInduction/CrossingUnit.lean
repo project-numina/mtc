@@ -11,7 +11,7 @@ variable (C : BraidedFusionCategory.{v,u})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The closed fusion map is characterized by its evaluation pairing. -/
-theorem closeFusionMap_evaluation (T S R : C.Obj) (f : T ⊗ S ⟶ R) :
+theorem closeFusionMap_evaluation {T S R : C.Obj} (f : T ⊗ S ⟶ R) :
     (closeFusionMap C T S R f ▷ S) ≫ ε_ S (Sᘁ) =
       𝟙 _ ⊗≫ ((Rᘁ : C.Obj) ◁ f) ⊗≫ ε_ R (Rᘁ) := by
   have he := PropertyF.Ground.Dimensions.rightDualIso_evaluation

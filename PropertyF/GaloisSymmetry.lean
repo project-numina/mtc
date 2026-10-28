@@ -46,12 +46,6 @@ theorem galois_unit_self_dual (M : ModularData) (τ : ℂ ≃+* ℂ) :
   exact mul_ne_zero (pow_ne_zero 2 (M.dimension_ne_zero _))
     (by simpa using τ.injective.ne M.global_ne_zero) hzero
 
-/-- Proposition 2.1, equation (2). -/
-theorem galois_global_dimension (M : ModularData) (τ : ℂ ≃+* ℂ) :
-    τ M.globalDimension = M.globalDimension / M.dimension (M.galoisLabel τ M.unit) ^ 2 := by
-  apply (eq_div_iff (pow_ne_zero 2 (M.dimension_ne_zero _))).mpr
-  rw [mul_comm, M.galois_unit_square, ite_eq_left (M.galois_unit_self_dual τ)]
-
 /-- Avoid square-root/Galois-commutation issues: positivity uniquely selects
 `f * τ(δ) = δ` from Proposition 2.1. This is page 5's displayed square-root step. -/
 theorem positive_dimension_ratio (M : ModularData) (τ : ℂ ≃+* ℂ)
