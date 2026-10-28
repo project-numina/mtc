@@ -59,18 +59,11 @@ theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C} (d : 
       simp only [comp_whiskerRight_assoc]
       rw [← hd, ← Category.assoc, ← comp_whiskerRight]
       simp
-    have hg : (ρ_ X).inv ≫ X ◁ η_ X (Xᘁ) ≫ (α_ X X (Xᘁ)).inv ≫
-        (β_ X X).hom ▷ (Xᘁ) ≫ (α_ X X (Xᘁ)).hom ≫
-        X ◁ ((p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ)) ≫ (ρ_ X).hom = t := by
-      rw [hclose]
-      simp only [whiskerLeft_comp]
-      simp only [Category.assoc]
-      slice_lhs 3 6 => rw [braid_self_slide]
-      simp only [Category.assoc]
-      rw [whisker_exchange_assoc]
-      rw [← rightUnitor_inv_naturality_assoc]
-      rw [braided_self_close, Category.comp_id]
-    simpa only [whiskerLeft_comp, Category.assoc, t] using hg)
+    rw [← whiskerLeft_comp_assoc, hclose]
+    simp only [whiskerLeft_comp, Category.assoc]
+    slice_lhs 3 6 => rw [braid_self_slide]
+    simp only [Category.assoc]
+    rw [whisker_exchange_assoc, ← rightUnitor_inv_naturality_assoc, braided_self_close, Category.comp_id])
 end PropertyF.Ground.Dimensions
 end
 

@@ -67,16 +67,15 @@ theorem braidGenerator_functor (X : C) (n : ℕ) (i : Fin (n + 1)) :
   | zero =>
     simpa only [Fin.eq_zero i] using braid_first_power F X 0
   | succ n ih =>
-    refine Fin.cases ?_ (fun j ↦ ?_) i
-    · exact braid_first_power F X (n+1)
-    · change (𝟙 (F.obj X) ⊗ₘ (braidGenerator (F.obj X) n j).asIso.hom) ≫
-          ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X (n+2)) ≪≫ μIso F X (tensorPower X (n+2))).hom =
-        ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X (n+2)) ≪≫ μIso F X (tensorPower X (n+2))).hom ≫
-          F.map (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom)
-      simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom, μIso_hom]
-      rw [← Category.assoc, ← whiskerLeft_comp, ih, whiskerLeft_comp, Category.assoc,
-        μ_natural_right]
-      simp [Category.assoc]
+    refine Fin.cases (braid_first_power F X (n+1)) (fun j ↦ ?_) i
+    change (𝟙 (F.obj X) ⊗ₘ (braidGenerator (F.obj X) n j).asIso.hom) ≫
+        ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X (n+2)) ≪≫ μIso F X (tensorPower X (n+2))).hom =
+      ((Iso.refl (F.obj X) ⊗ᵢ tensorPowerComparison F X (n+2)) ≪≫ μIso F X (tensorPower X (n+2))).hom ≫
+        F.map (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom)
+    simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom, μIso_hom]
+    rw [← Category.assoc, ← whiskerLeft_comp, ih, whiskerLeft_comp, Category.assoc,
+      μ_natural_right]
+    simp [Category.assoc]
 
 
 /-- The functor map followed by the tensor-power comparison. -/

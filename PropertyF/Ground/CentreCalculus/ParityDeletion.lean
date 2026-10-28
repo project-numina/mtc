@@ -59,7 +59,7 @@ include hdim in
 positive dimensional integrality follows for the self-transparent object. -/
 theorem integral_of_parity_moved_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hmoved : HasMovedTrace (tr C p (parityPermAction C hX odd))) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_trace_deletion hdim (parityPermAction C hX odd)
     ⟨(fun _ σ ↦ parityPermTrace_fixHead hdim hX odd σ), hmoved⟩
 
@@ -72,8 +72,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 theorem decomposeFin_succ_conj {n : ℕ} (j : Fin (n + 1)) (σ : Equiv.Perm (Fin (n + 1))) :
     let τ := Equiv.swap 0 j
     let T := fixHead (n + 1) τ
-    decomposeFin.symm (j.succ, σ) =
-      T * decomposeFin.symm (1, τ⁻¹ * σ * τ) * T⁻¹ := by
+    decomposeFin.symm (j.succ, σ) = T * decomposeFin.symm (1, τ⁻¹ * σ * τ) * T⁻¹ := by
   let τ : Equiv.Perm (Fin (n + 1)) := Equiv.swap 0 j
   let T := fixHead (n + 1) τ
   change decomposeFin.symm (j.succ, σ) = T * decomposeFin.symm (1, τ⁻¹ * σ * τ) * T⁻¹
@@ -96,8 +95,7 @@ strands. -/
 theorem movedTrace_of_adjacent {C : BraidedFusionCategory.{v,u}}
     {p : PivotalStructure (C := C.Obj)} {X : C.Obj}
     (ρ : ∀ n : ℕ, Equiv.Perm (Fin n) →* End (tensorPower X n))
-    (hadj : HasAdjacentTrace (tr C p ρ)) :
-    HasMovedTrace (tr C p ρ) := by
+    (hadj : HasAdjacentTrace (tr C p ρ)) : HasMovedTrace (tr C p ρ) := by
   intro n q hq σ
   simp only [HasAdjacentTrace, permScalarTrace] at hadj ⊢
   cases n with
@@ -124,7 +122,7 @@ include hdim in
 one of the two actual parity choices. -/
 theorem integral_of_parity_adjacent_trace {X : C.Obj} (hX : SelfTransparent X) (odd : Bool)
     (hadj : HasAdjacentTrace (tr C p (parityPermAction C hX odd))) :
-    ∃ m : ℕ, fpDimension C X = m :=
+    IsFPIntegral C X :=
   integral_of_parity_moved_trace hdim hX odd
     (movedTrace_of_adjacent (parityPermAction C hX odd) hadj)
 
