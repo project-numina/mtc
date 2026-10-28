@@ -69,8 +69,8 @@ end MTC
 
 namespace MTC.ModularData
 
-/-- The modular data of the trivial rank-one theory. -/
-def trivial : ModularData ℂ 1 where
+/-- The modular data of the trivial rank-one theory over any exact scalar field. -/
+def trivial (K : Type*) [Field K] [StarRing K] : ModularData K 1 where
   vacuum := 0
   dual := id
   dual_involutive := by intro i; rfl
@@ -94,7 +94,12 @@ def trivial : ModularData ℂ 1 where
     simp [Matrix.diagonal_one]
   verlinde := by intro i j k; fin_cases i; fin_cases j; fin_cases k; norm_num [Matrix.one_apply]
 
-@[simp] theorem trivial_globalDimension : trivial.globalDimension = 1 := by
+@[simp] theorem trivial_globalDimension (K : Type*) [Field K] [StarRing K] :
+    (trivial K).globalDimension = 1 := by
   simp [globalDimension, trivial]
+
+/-- The trivial datum also exists over the decidable exact field of rationals. -/
+example : (trivial ℚ).globalDimension = 1 := by
+  norm_num [globalDimension, trivial]
 
 end MTC.ModularData
