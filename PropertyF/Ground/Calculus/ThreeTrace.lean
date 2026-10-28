@@ -126,12 +126,12 @@ theorem threeGeneratorRight_end_transport (X : C) :
   End.ext (threeGeneratorRight_transport X)
 
 /-- The left three-strand generator in a chosen block presentation. -/
-def tripleBlockLeft (X : C) {r : ℕ} {d : Fin r → ℕ}
+def tripleBlockLeft {X : C} {r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
   b (braidInImage (threeGeneratorLeft X))
 
 /-- The right three-strand generator in a chosen block presentation. -/
-def tripleBlockRight (X : C) {r : ℕ} {d : Fin r → ℕ}
+def tripleBlockRight {X : C} {r : ℕ} {d : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩) :=
   b (braidInImage (threeGeneratorRight X))
 
@@ -168,12 +168,12 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [Preadditive C] [Lin
 
 /-- Embed a fresh endomorphism after a left spectator, with the associator
 explicit. -/
-def overlapFresh (A X Y : C) (u : End (X ⊗ Y)) : End ((A ⊗ X) ⊗ Y) :=
+def overlapFresh (A : C) {X Y : C} (u : End (X ⊗ Y)) : End ((A ⊗ X) ⊗ Y) :=
   End.of ((α_ A X Y).hom ≫ (A ◁ u.asHom) ≫ (α_ A X Y).inv)
 
 /-- Multiply an old endomorphism by a new one sharing the middle factor. -/
-def overlapEndProduct (A X Y : C) (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
-    End ((A ⊗ X) ⊗ Y) := insertRightIdentity (A ⊗ X) Y v * overlapFresh A X Y u
+def overlapEndProduct {A X Y : C} (v : End (A ⊗ X)) (u : End (X ⊗ Y)) :
+    End ((A ⊗ X) ⊗ Y) := insertRightIdentity Y v * overlapFresh A u
 
 variable (D : BraidedFusionCategory.{v,u})
 
@@ -183,7 +183,7 @@ variable {A X Y : D.Obj} [Simple X] (p : PivotalStructure (C := D.Obj))
 /-- Tracing the new strands of the overlap gives the old operator times the
 normalized trace of the fresh operator. -/
 theorem rightPartialTrace_overlap :
-    rightPartialTrace p (A ⊗ X) Y (overlapEndProduct A X Y v u) =
+    rightPartialTrace p (A ⊗ X) Y (overlapEndProduct v u) =
       (scalarTrace p scalar u / scalar (p.rightTrace (𝟙 X))) • v := by
   rw [overlapEndProduct, rightPartialTrace_left, overlapFresh, rightPartialTrace_whiskerLeft,
     rightPartialTrace_simple_ground D (X := X) (Y := Y) p scalar u]
@@ -192,10 +192,10 @@ theorem rightPartialTrace_overlap :
 /-- The categorical trace obeys the overlap recurrence with no braid-span
 closure assumption on arbitrary partial traces. -/
 theorem pivotalTrace_overlap :
-    scalar (p.rightTrace (overlapEndProduct A X Y v u).asHom) =
+    scalar (p.rightTrace (overlapEndProduct v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
-  rw [← Dimensions.rightTrace_partialTrace p (overlapEndProduct A X Y v u),
+  rw [← Dimensions.rightTrace_partialTrace p (overlapEndProduct v u),
     rightPartialTrace_overlap D p scalar v u]
   simp [scalarTrace, PivotalStructure.rightTrace_smul, mul_comm]
 
@@ -229,7 +229,7 @@ theorem three_braid_double_overlap (X : C) :
     (isoEndAlgEquiv (threePowerIso X))
       (Aut.toEnd ((braidGenerator X 1 0) ^ 2 * (braidGenerator X 1 1) ^ 2)) =
     (isoEndAlgEquiv (α_ X X X))
-      (overlapEndProduct X X X (selfMonodromy X) (selfMonodromy X)) := by
+      (overlapEndProduct (selfMonodromy X) (selfMonodromy X)) := by
   rw [map_mul, map_pow, map_pow, map_mul, map_pow, map_pow, threeGeneratorLeft_end_transport, threeGeneratorRight_end_transport]
   apply End.ext
   simp [overlapEndProduct, insertRightIdentity, overlapFresh, selfMonodromy,

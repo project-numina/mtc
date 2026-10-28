@@ -34,13 +34,13 @@ def rightPartialTrace (p : PivotalStructure (C := C)) (X Y : C) :
     simp
 
 /-- Insert an endomorphism on the untraced tensor factor. -/
-def insertRightIdentity (X Y : C) (a : End X) : End (X ⊗ Y) :=
+def insertRightIdentity {X : C} (Y : C) (a : End X) : End (X ⊗ Y) :=
   End.of (a.asHom ▷ Y)
 
 /-- Partial trace commutes with postcomposition on the untraced factor. -/
 theorem rightPartialTrace_left (p : PivotalStructure (C := C))
     {X Y : C} (a : End X) (f : End (X ⊗ Y)) :
-    rightPartialTrace p X Y (insertRightIdentity X Y a * f) =
+    rightPartialTrace p X Y (insertRightIdentity Y a * f) =
       a * rightPartialTrace p X Y f :=
   End.ext (by simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
     End.mul_asHom, comp_whiskerRight, Category.assoc, associator_naturality_left_assoc,
@@ -50,7 +50,7 @@ theorem rightPartialTrace_left (p : PivotalStructure (C := C))
 /-- Partial trace commutes with precomposition on the untraced factor. -/
 theorem rightPartialTrace_right (p : PivotalStructure (C := C))
     {X Y : C} (a : End X) (f : End (X ⊗ Y)) :
-    rightPartialTrace p X Y (f * insertRightIdentity X Y a) =
+    rightPartialTrace p X Y (f * insertRightIdentity Y a) =
       rightPartialTrace p X Y f * a :=
   End.ext (by simp only [rightPartialTrace, insertRightIdentity, LinearMap.coe_mk, AddHom.coe_mk,
     End.mul_asHom, comp_whiskerRight, Category.assoc, ← associator_inv_naturality_left_assoc,
@@ -71,9 +71,9 @@ variable (p : PivotalStructure (C := C)) (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ
 /-- The partial trace of an inserted endomorphism is the dimension of the
 closed factor times that endomorphism. -/
 theorem rightPartialTrace_insert {X Y : C} (a : End X) :
-    rightPartialTrace p X Y (insertRightIdentity X Y a) =
+    rightPartialTrace p X Y (insertRightIdentity Y a) =
       (scalar (p.rightTrace (𝟙 Y))) • a := by
-  rw [← mul_one (insertRightIdentity X Y a), rightPartialTrace_left, rightPartialTrace_one,
+  rw [← mul_one (insertRightIdentity Y a), rightPartialTrace_left, rightPartialTrace_one,
     eq_smul_one_of_algEquiv scalar (p.rightTrace (𝟙 Y))]
   exact End.ext (by simp)
 

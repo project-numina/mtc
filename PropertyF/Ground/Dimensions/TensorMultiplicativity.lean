@@ -134,7 +134,7 @@ theorem rightPartialTrace_one_tensor (p : PivotalStructure (C := C))
 theorem rightPartialTrace_tensor (p : PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[ℂ] ℂ) {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
     rightPartialTrace p X Y (End.of (a ⊗ₘ b)) = scalar (p.rightTrace b) • End.of a := by
-  rw [show End.of (a ⊗ₘ b) = End.of (𝟙 X ⊗ₘ b) * insertRightIdentity X Y (End.of a) from
+  rw [show End.of (a ⊗ₘ b) = End.of (𝟙 X ⊗ₘ b) * insertRightIdentity Y (End.of a) from
       End.ext (by simp [insertRightIdentity, tensorHom_def]),
     rightPartialTrace_right, rightPartialTrace_one_tensor p scalar X b]
   simp
