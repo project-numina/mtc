@@ -95,9 +95,8 @@ theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
       (rootDimension C (unitIndex C) * rootDualSign C i) • η_ (Xᘁ) X :=
   let X := simples C i
   let A := Xᘁ
-  let Q := (Xᘁ)ᘁ
   letI : ExactPairing A X := BraidedCategory.exactPairing_swap X A
-  let r : X ≅ Q := rightDualIso inferInstance HasRightDual.exact
+  let r : X ≅ (Xᘁ)ᘁ := rightDualIso inferInstance HasRightDual.exact
   scalar_eigenvector_of_mono (s := A ◁ r.hom)
     (coevaluation_rightDualIso inferInstance HasRightDual.exact)
     (by simpa only [id_tensorHom] using rootTensorDefect_natural C (𝟙 A) r.hom)

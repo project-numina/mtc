@@ -168,14 +168,13 @@ set_option backward.isDefEq.respectTransparency false in
 variable {C} in
 theorem rootSignTwist_unit_of_simple_dimension
     (hunit : c (unitIndex C) * rootDimension C (unitIndex C) = 1) :
-    RootSignUnitLaw C c hc := by
-  apply naturalDoubleDual_unit_eq_of_trace_one
-  obtain ⟨e⟩ := unitIndex_iso C
-  have hq := rightQuantumTrace_iso
-    (j := (rootSignTwist C c hc).app (simples C (unitIndex C)))
-    (k := (rootSignTwist C c hc).app (𝟙_ C.Obj)) e
-    (by simpa [doubleDualFunctor] using (rootSignTwist C c hc).hom.naturality e.hom)
-  rw [← hq, rootSignQuantumTrace_simple, hunit]
+    RootSignUnitLaw C c hc :=
+  naturalDoubleDual_unit_eq_of_trace_one <| (unitIndex_iso C).elim fun e ↦ by
+    rw [← rightQuantumTrace_iso
+      (j := (rootSignTwist C c hc).app (simples C (unitIndex C)))
+      (k := (rootSignTwist C c hc).app (𝟙_ C.Obj)) e
+      (by simpa [doubleDualFunctor] using (rootSignTwist C c hc).hom.naturality e.hom),
+      rootSignQuantumTrace_simple, hunit]
 
 
 end PropertyF.Ground.Dimensions
