@@ -30,7 +30,6 @@ public import PropertyF.Ground.Cabling.Strands
 import all PropertyF.Ground.CentreInduction.DrinfeldTheorem
 import all PropertyF.Ground.Dimensions.MonodromyTensorCap
 import all PropertyF.Ground.Integrate.DrinfeldComplete
-import all PropertyF.Ground.CentreInduction.Transparent
 import all PropertyF.Ground.CentreModular.TransparencyCriterion
 import all PropertyF.Ground.CentreCalculus.ActualCoreIntegrality
 import all PropertyF.Ground.CentreCalculus.TwistSign
@@ -64,12 +63,10 @@ import all PropertyF.Ground.CentreInduction.ActualFusion
 import all PropertyF.Ground.CentreInduction.AdjunctionAssembly
 import all PropertyF.Ground.CentreInduction.BasisPairing
 import all PropertyF.Ground.CentreInduction.BasisRefinement
-import all PropertyF.Ground.CentreInduction.CandidateAssembly
 import all PropertyF.Ground.CentreInduction.CounitColumn
 import all PropertyF.Ground.CentreInduction.CrossingBlocks
 import all PropertyF.Ground.CentreInduction.CrossingCoherence
 import all PropertyF.Ground.CentreInduction.CrossingNaturality
-import all PropertyF.Ground.CentreInduction.CrossingTensor
 import all PropertyF.Ground.CentreInduction.CrossingUnit
 import all PropertyF.Ground.CentreInduction.FiniteSimples
 import all PropertyF.Ground.CentreInduction.FiniteSum
@@ -77,7 +74,6 @@ import all PropertyF.Ground.CentreInduction.ForgetDual
 import all PropertyF.Ground.CentreInduction.InjectiveFusion
 import all PropertyF.Ground.CentreInduction.Representatives
 import all PropertyF.Ground.CentreInduction.SecondTriangle
-import all PropertyF.Ground.CentreInduction.UnitSummand
 import all PropertyF.Ground.CentreInduction.WeakHalfBraiding
 import all PropertyF.Ground.Dimensions.CoevaluationSliding
 import all PropertyF.Ground.Dimensions.DefectNaturality
@@ -235,7 +231,6 @@ run_cmd do
       ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
       ``PropertyF.Ground.fpSimple_eq_fpCharacter,
       ``PropertyF.Ground.fpSimple_mul,
-      ``PropertyF.Ground.ScalarTwist.conjugate,
       ``PropertyF.Ground.ScalarTwist.labels,
       ``PropertyF.Ground.fpDimension_functor,
       ``PropertyF.Ground.Integrate.center_forget_fpDimension,
@@ -245,9 +240,7 @@ run_cmd do
       ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
       ``PropertyF.Ground.drinfeld_tensor,
       ``PropertyF.Ground.pivotal_twist_balanced,
-      ``PropertyF.Ground.target_of_pseudoUnitary_pivotal_existence,
       ``PropertyF.Ground.CentreIntegrate.pivotal_balance_of_drinfeld_tensor,
-      ``PropertyF.Ground.target_of_pivotal_base_and_center_balancing,
       ``PropertyF.Ground.CentreInduction.center_transparent_simple_iso_unit,
       ``PropertyF.Ground.CentreModular.categoricalS_det_ne_zero_of_trivial_transparency,
       ``PropertyF.Ground.CentreCalculus.actual_symmetricCore_integrality,

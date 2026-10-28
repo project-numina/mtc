@@ -147,11 +147,8 @@ theorem dual_pivotal_naturality (p : PivotalStructure (C := C))
     {X Y : C} (f : X ⟶ Y) :
     (fᘁ) ≫ (rightDualIsoMap (p.iso X)).symm.hom =
       (rightDualIsoMap (p.iso Y)).symm.hom ≫ ((fᘁ)ᘁ)ᘁ := by
-  have hinv : (p.iso X).inv ≫ f = (fᘁ)ᘁ ≫ (p.iso Y).inv := by
-    apply (cancel_mono (p.iso Y).hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [p.naturality f]
-    simp [← Category.assoc]
+  have hinv : (p.iso X).inv ≫ f = (fᘁ)ᘁ ≫ (p.iso Y).inv :=
+    (iso_inv_naturality_of_hom (p.iso X) (p.iso Y) (p.naturality f)).symm
   simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using
     (congrArg (fun (a : (Xᘁ)ᘁ ⟶ Y) => rightAdjointMate a) hinv)
 

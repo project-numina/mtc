@@ -40,10 +40,7 @@ theorem finiteOrder_matrix_trace_saturation {M : Matrix ι ι ℂ} (hM : IsOfFin
       (M.trace.re = Fintype.card ι → M = 1) := by
   obtain ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
   let U : Matrix ι ι ℂ := (P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)
-  have ht : U.trace = M.trace := by
-    dsimp [U]
-    rw [Matrix.trace_mul_cycle]
-    simp
+  have ht : U.trace = M.trace := Matrix.trace_units_conj P M
   have hu : PropertyF.ColumnUnitary U := PropertyF.columnUnitary_of_unitary hP
   constructor
   · rw [← ht]

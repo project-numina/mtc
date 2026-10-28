@@ -35,11 +35,8 @@ theorem doubleDualTensorIso_braiding {C : Type u} [Category.{v} C] [MonoidalCate
   simp only [comp_rightAdjointMate] at hd
   have hb := rightDualTensorIso_braiding U V
   change ((β_ U V).homᘁ) ≫ a.hom = b.hom ≫ (β_ (Uᘁ) (Vᘁ)).hom at hb
-  have hm : b.inv ≫ ((β_ U V).homᘁ) = (β_ (Uᘁ) (Vᘁ)).hom ≫ a.inv := by
-    apply (cancel_mono a.hom).1
-    simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-    rw [hb]
-    simp
+  have hm : b.inv ≫ ((β_ U V).homᘁ) = (β_ (Uᘁ) (Vᘁ)).hom ≫ a.inv :=
+    (iso_inv_naturality_of_hom b a hb).symm
   change (b.inv ≫ t.homᘁ) ≫ (((β_ X Y).homᘁ)ᘁ) =
     (β_ (Uᘁ) (Vᘁ)).hom ≫ (a.inv ≫ s.homᘁ)
   simp only [Category.assoc, hd]

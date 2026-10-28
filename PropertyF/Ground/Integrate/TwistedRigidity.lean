@@ -12,8 +12,7 @@ public import PropertyF.Ground.Fusion.Agreement
 section
 /-! Scalar twisting along an arbitrary complex-field automorphism. The underlying
 category, monoidal structure, braiding and duality are unchanged; only the
-complex action on morphisms is precomposed with the inverse automorphism. The
-identity functor is consequently semilinear in the stated direction. -/
+complex action on morphisms is precomposed with the inverse automorphism. -/
 
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false
@@ -82,15 +81,6 @@ instance twistedFusion : IsFusionCategory (Obj C σ) where
 def category : BraidedFusionCategory.{v,u} where
   Obj := Obj C σ
 
-/-- The identity-on-morphisms braided equivalence is σ-semilinear. -/
-def conjugate : GaloisConjugate C (category C σ) σ where
-  equivalence := CategoryTheory.Equivalence.refl
-  monoidal := inferInstanceAs ((𝟭 C.Obj).Monoidal)
-  braided := inferInstanceAs ((𝟭 C.Obj).Braided)
-  map_smul := by
-    intro X Y z f
-    change z • f = σ.symm (σ z) • f
-    rw [σ.symm_apply_apply]
 
 end PropertyF.Ground.ScalarTwist
 end
@@ -132,15 +122,14 @@ theorem pivotalDimension_twist (p : Dimensions.PivotalStructure (C := C.Obj)) (X
     σ (Dimensions.pivotalDimension C p X) :=
   unitScalar_twist C σ _
 
-/-- Match chosen simple representatives and transport both dimensions. -/
+/-- Match chosen simple representatives and transport pivotal dimensions. -/
 theorem labels (p : Dimensions.PivotalStructure (C := C.Obj)) :
     ∃ e : Fin (rank C) ≃ Fin (rank (category C σ)),
-      ∀ i, fpSimple C i = fpSimple (category C σ) (e i) ∧
-        Dimensions.pivotalDimension (category C σ) (pivotal C σ p)
+      ∀ i, Dimensions.pivotalDimension (category C σ) (pivotal C σ p)
           (simples (category C σ) (e i)) =
         σ (Dimensions.pivotalDimension C p (simples C i)) := by
-  obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C (category C σ) (conjugate C σ).equivalence
-  refine ⟨e, fun i => ⟨Modular.conjugate_fpSimple (conjugate C σ) he i, ?_⟩⟩
+  obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C (category C σ) (CategoryTheory.Equivalence.refl)
+  refine ⟨e, fun i ↦ ?_⟩
   rw [← pivotalDimension_twist C σ p (simples C i)]
   exact (Dimensions.pivotalDimension_iso (category C σ) (pivotal C σ p) (he i).some).symm
 
@@ -161,11 +150,12 @@ variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 /-- FP dimension is unchanged on every object. -/
 theorem fpDimension_twist (X : C.Obj) :
     fpDimension (category C σ) X = fpDimension C X := by
-  let E := conjugate C σ
-  let F := E.equivalence.functor
+  let E : C.Obj ≌ (category C σ).Obj := CategoryTheory.Equivalence.refl
+  let F := E.functor
   letI : F.Additive := F.additive_of_preserves_binary_products
-  letI : F.Faithful := inferInstanceAs E.equivalence.functor.Faithful
-  letI : F.Monoidal := E.monoidal
+  letI : F.Monoidal := by
+    change (𝟭 C.Obj).Monoidal
+    infer_instance
   exact fpDimension_functor C (category C σ) F X
 
 /-- A pivotal trace scalar is carried through σ. -/
@@ -218,7 +208,7 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
   have hqdim : ∀ i, Dimensions.groundUnitScalarEquiv D (q.rightTrace (𝟙 (simples D i))) =
       (transformed i : ℂ) := by
     intro i
-    have hi := (he (e.symm i)).2
+    have hi := he (e.symm i)
     rw [e.apply_symm_apply] at hi
     rw [Dimensions.groundUnitScalarEquiv_apply]
     change Dimensions.pivotalDimension D q (simples D i) = _
@@ -229,10 +219,8 @@ theorem galois_rigidity_of_propertyF (Z : BraidedFusionCategory.{v,u})
       Modular.simpleDimension] using hdim (e.symm i)
   have hd : d ≠ 0 := by
     intro hz
-    have hn : σ (fpSimple Z y : ℂ) ≠ 0 := (map_ne_zero σ).2 (by exact_mod_cast (ne_of_gt (fpSimple_pos Z y)))
-    apply hn
-    rw [hσ, hz]
-    simp
+    have h : (fpSimple Z y : ℂ) ≠ 0 := by exact_mod_cast (ne_of_gt (fpSimple_pos Z y))
+    exact (map_ne_zero σ).2 h (by simpa [hz] using hσ)
   have hXdim : Dimensions.groundUnitScalarEquiv D (q.rightTrace (𝟙 X)) = (d : ℂ) := by
     change Dimensions.groundUnitScalarEquiv (ScalarTwist.category Z σ)
       ((ScalarTwist.pivotal Z σ p).rightTrace (𝟙 (show (ScalarTwist.category Z σ).Obj from simples Z y))) = _

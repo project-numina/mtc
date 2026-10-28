@@ -78,6 +78,18 @@ theorem categoricalS_fourier_inversion
       simp only [(dualIndex_involutive D).eq_iff.symm, ite_mul, zero_mul,
         Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]
 
+/-- A weighted sum may be factored using an equality on the weight's support. -/
+theorem sum_mul_eq_mul_sum_of_supported {ι R : Type*} [Fintype ι] [Semiring R]
+    (s : Set ι) (f g w : ι → R) (c : R)
+    (hw : ∀ i ∉ s, w i = 0) (hfg : ∀ i ∈ s, f i = c * g i) :
+    (∑ i, f i * w i) = c * ∑ i, g i * w i := by
+  classical
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  by_cases hi : i ∈ s
+  · rw [hfg i hi, mul_assoc]
+  · simp [hw i hi]
+
 include hp hdet hreal in
 /-- If the S-transform of a vector is supported on a set of labels and its
 unit coefficient is nonzero, any label centralizing that support has a
@@ -93,13 +105,9 @@ theorem nonzero_dual_coefficient_of_sCentralizer
   have heq : (∑ y, Modular.categoricalS D p x y * T y) =
       Modular.simpleDimension D p x *
         (∑ y, Modular.categoricalS D p (unitIndex D) y * T y) := by
-    rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl fun y _ ↦ ?_
-    by_cases hy : y ∈ core
-    · rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
-        Modular.categoricalS_unit]
-      ring
-    · simp [show T y = 0 from hsupport y hy]
+    refine sum_mul_eq_mul_sum_of_supported core _ _ T _ hsupport fun y hy ↦ ?_
+    rw [hx y hy, Modular.categoricalS_symmetric D p (unitIndex D) y,
+      Modular.categoricalS_unit]
   dsimp only [T] at heq
   rw [categoricalS_fourier_inversion hp hdet hreal f x,
     categoricalS_fourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D] at heq
