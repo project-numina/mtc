@@ -102,7 +102,7 @@ private theorem simple_mono_cokernel {D : Type u} [Category.{v} D] [Abelian D] {
     let : IsIso g := isIso_of_hom_simple (fun h =>
       id_nonzero S ((cancel_mono t).1 (by simpa [h] using hg.symm)))
     exact Or.inl ⟨asIso g⟩
-  · exact Or.inr (mono_of_nonzero_from_simple hz)
+  · exact .inr (mono_of_nonzero_from_simple hz)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A centre object has only finitely many isomorphism classes of simple subobjects. -/
@@ -146,13 +146,13 @@ theorem finite_simple_labels :
   have hL (i : Fin (rank C)) := Classical.choose_spec (finite_simple_subobject_labels C
     ((induction C).obj (simples C i)))
   let labels := (Finset.univ.biUnion (fun i => (L i).toFinset)).filter Simple
-  refine ⟨labels, fun _ hT => (Finset.mem_filter.mp hT).2, ?_⟩
-  intro X hX
+  refine ⟨labels, fun _ hT => (Finset.mem_filter.mp hT).2, fun X hX => ?_⟩
   let : Simple X := hX
   obtain ⟨i, t, ht⟩ := simple_mono_induced_simple C X
   obtain ⟨T, hT, ⟨e⟩⟩ := hL i X hX ⟨t, ht⟩
-  refine ⟨T, Finset.mem_filter.mpr ⟨?_, Simple.of_iso e.symm⟩, ⟨e⟩⟩
-  exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, List.mem_toFinset.mpr hT⟩
+  exact ⟨T, Finset.mem_filter.mpr
+    ⟨Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, List.mem_toFinset.mpr hT⟩,
+      Simple.of_iso e.symm⟩, ⟨e⟩⟩
 
 
 end PropertyF.Ground.CentreInduction

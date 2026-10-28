@@ -29,10 +29,11 @@ theorem coevaluation_iso_map {C : Type u} [Category.{v} C] [MonoidalCategory C]
 
 section
 variable {X Y Z : C}
+variable (p : ExactPairing X Y) (q : ExactPairing X Z)
 
 /-- The canonical isomorphism between two right duals transports coevaluation. -/
 @[reassoc]
-theorem coevaluation_rightDualIso (p : ExactPairing X Y) (q : ExactPairing X Z) :
+theorem coevaluation_rightDualIso :
     @ExactPairing.coevaluation C _ _ X Y p ≫ X ◁ (rightDualIso p q).hom =
       @ExactPairing.coevaluation C _ _ X Z q := by
   let hp : HasRightDual X := { rightDual := Y, exact := p }
@@ -43,7 +44,7 @@ theorem coevaluation_rightDualIso (p : ExactPairing X Y) (q : ExactPairing X Z) 
         @coevaluation_comp_rightAdjointMate C _ _ X X hq hp (𝟙 X))
 
 /-- The canonical isomorphism between two right duals transports evaluation. -/
-theorem rightDualIso_evaluation (p : ExactPairing X Y) (q : ExactPairing X Z) :
+theorem rightDualIso_evaluation :
     (rightDualIso p q).hom ▷ X ≫ @ExactPairing.evaluation C _ _ X Z q =
       @ExactPairing.evaluation C _ _ X Y p := by
   let hp : HasRightDual X := { rightDual := Y, exact := p }
@@ -61,9 +62,11 @@ theorem rightDualTensorIso_evaluation [RightRigidCategory C] (X Y : C) :
     (@HasRightDual.exact C _ _ (X ⊗ Y) (RightRigidCategory.rightDual _))
     (ExactPairing.tensor (X₁ := X) (X₂ := Y) (Y₁ := Xᘁ) (Y₂ := Yᘁ))
 
+variable {A B U V W : C}
+
 set_option backward.isDefEq.respectTransparency false in
 /-- Evaluation of tensor pairings respects a change of the first dual. -/
-theorem tensorPairing_evaluation_whiskerLeft {A B U V W : C} [p : ExactPairing A U]
+theorem tensorPairing_evaluation_whiskerLeft [p : ExactPairing A U]
     [q : ExactPairing A V] [r : ExactPairing B W] (f : U ⟶ V)
     (hf : f ▷ A ≫ ε_ A V = ε_ A U) :
     (W ◁ f) ▷ (A ⊗ B) ≫ ε_ (A ⊗ B) (W ⊗ V) = ε_ (A ⊗ B) (W ⊗ U) := by
@@ -77,7 +80,7 @@ theorem tensorPairing_evaluation_whiskerLeft {A B U V W : C} [p : ExactPairing A
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Evaluation of tensor pairings respects a change of the second dual. -/
-theorem tensorPairing_evaluation_whiskerRight {A B U V W : C} [p : ExactPairing A U]
+theorem tensorPairing_evaluation_whiskerRight [p : ExactPairing A U]
     [q : ExactPairing B V] [r : ExactPairing B W] (f : V ⟶ W)
     (hf : f ▷ B ≫ ε_ B W = ε_ B V) :
     (f ▷ U) ▷ (A ⊗ B) ≫ ε_ (A ⊗ B) (W ⊗ U) = ε_ (A ⊗ B) (V ⊗ U) := by
@@ -91,13 +94,13 @@ theorem tensorPairing_evaluation_whiskerRight {A B U V W : C} [p : ExactPairing 
     _ = _ := by rw [hf]
 
 /-- The inverse dual comparison transports coevaluation in the reverse direction. -/
-theorem coevaluation_rightDualIso_inv (p : ExactPairing X Y) (q : ExactPairing X Z) :
+theorem coevaluation_rightDualIso_inv :
     @ExactPairing.coevaluation C _ _ X Z q ≫ X ◁ (rightDualIso p q).inv =
       @ExactPairing.coevaluation C _ _ X Y p :=
   coevaluation_rightDualIso q p
 
 /-- The inverse dual comparison transports evaluation in the reverse direction. -/
-theorem rightDualIso_inv_evaluation (p : ExactPairing X Y) (q : ExactPairing X Z) :
+theorem rightDualIso_inv_evaluation :
     (rightDualIso p q).inv ▷ X ≫ @ExactPairing.evaluation C _ _ X Y p =
       @ExactPairing.evaluation C _ _ X Z q :=
   rightDualIso_evaluation q p

@@ -128,6 +128,12 @@ section
 variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵ᶜ" => Center C.Obj
 
+/-- The pivotal dimension of the underlying induced unit is the global FP dimension. -/
+theorem pivotalDimension_underlying_unit {p : PivotalStructure (C := C.Obj)}
+    (hsimple : PivotalHasFPDimensions C p) :
+    pivotalDimension C p (underlying C (𝟙_ C.Obj)) = (globalFPDimension C : ℂ) := by
+  rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
+
 /-- A compatible centre pivotal structure constructs centre fusion when the base
 pivotal dimensions equal FP dimensions. -/
 theorem center_fusion_of_compatible_pivotal {p : PivotalStructure (C := C.Obj)}
@@ -139,17 +145,13 @@ theorem center_fusion_of_compatible_pivotal {p : PivotalStructure (C := C.Obj)}
   have ht := forget_trace_of_pivotal_component hcompat
   change (pZ.rightTrace (𝟙 ((induction C).obj (𝟙_ C.Obj)))).asHom.f =
     (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))).asHom at ht
-  have hbase : p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj))) = 0 :=
-    End.ext (ht.symm.trans (congrArg (fun a => a.asHom.f) hz))
-  have hd : pivotalDimension C p (underlying C (𝟙_ C.Obj)) =
-      (globalFPDimension C : ℂ) := by
-    rw [pivotalDimension_eq_fp hsimple, fpDimension_underlying, fpDimension_unit, mul_one]
+  have hd := pivotalDimension_underlying_unit C hsimple
   change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
-  rw [hbase] at hd
-  have hne : (globalFPDimension C : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr
-    (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
-  apply hne
-  simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
+  rw [show p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj))) = 0 from
+    End.ext (ht.symm.trans (congrArg (fun a => a.asHom.f) hz))] at hd
+  exact (Complex.ofReal_ne_zero.mpr
+    (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))) <|
+      by simpa only [Ground.unitScalar_eq_equiv, map_zero] using hd.symm
 
 end
 
