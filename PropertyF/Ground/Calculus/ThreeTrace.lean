@@ -22,27 +22,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def imageGenerator (X : C) (n : ℕ) (i : Fin (n + 1)) : braidImage X n :=
   ⟨braidGenerator X n i, Subgroup.subset_closure (Set.mem_range_self _)⟩
 
-/-- Every represented braid image element has finite order when the categorical
-image is finite. No faithfulness of the representation is required. -/
-theorem represented_braid_finite_order {H : Type*} [Monoid H]
-    {X : C} {n : ℕ} (h : Finite (braidImage X n))
-    (ρ : braidImage X n →* H) (g : braidImage X n) :
-    ∃ k : ℕ, k ≠ 0 ∧ (ρ g) ^ k = 1 :=
-  let _ : Finite (braidImage X n) := h
-  (ρ.isOfFinOrder (isOfFinOrder_of_finite g)).exists_pow_eq_one.imp
-    fun _ ⟨hk, hpow⟩ ↦ ⟨hk.ne', hpow⟩
-
-/-- In particular, the represented square of the two-strand self-braiding
-satisfies the `finite_order` condition needed for three-strand rigidity. -/
-theorem represented_square_finite_order {H : Type*} [Monoid H]
-    {X : C} (h : ObjectPropertyF X) (ρ : braidImage X 0 →* H) :
-    ∃ k : ℕ, k ≠ 0 ∧ (ρ ((imageGenerator X 0 0) ^ 2)) ^ k = 1 :=
-  represented_braid_finite_order (h 0) ρ _
-
-/-- The categorical square itself has finite order. -/
+/-- The categorical square has finite order when its braid image is finite. -/
 theorem braid_square_finite_order {X : C} (h : ObjectPropertyF X) :
     ∃ k : ℕ, k ≠ 0 ∧ (braidGenerator X 0 0 ^ 2) ^ k = 1 :=
-  represented_square_finite_order h (braidImage X 0).subtype
+  let _ : Finite (braidImage X 0) := h 0
+  ((braidImage X 0).subtype.isOfFinOrder
+    (isOfFinOrder_of_finite ((imageGenerator X 0 0) ^ 2))).exists_pow_eq_one.imp
+      fun _ ⟨hk, hpow⟩ ↦ ⟨hk.ne', hpow⟩
 
 end PropertyF.Ground.Calculus
 

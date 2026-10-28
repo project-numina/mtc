@@ -102,11 +102,15 @@ variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 def pivotal (p : Dimensions.PivotalStructure (C := C.Obj)) :
     Dimensions.PivotalStructure (C := (category C σ).Obj) := p
 
+variable (p : Dimensions.PivotalStructure (C := C.Obj))
+local notation "Cσ" => category C σ
+local notation "pσ" => pivotal C σ p
+
 /-- The twisted inverse unit-scalar map applies σ to the original scalar. -/
 theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
-    unitScalar (category C σ) f = σ (unitScalar C f) := by
-  apply (unit_algebraMap_bijective (category C σ)).1
-  rw [algebraMap_unitScalar (category C σ) f]
+    unitScalar Cσ f = σ (unitScalar C f) := by
+  apply (unit_algebraMap_bijective Cσ).1
+  rw [algebraMap_unitScalar Cσ f]
   change f = _
   conv_lhs => rw [← algebraMap_unitScalar C f]
   simp only [Algebra.algebraMap_eq_smul_one]
@@ -114,35 +118,30 @@ theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
   rw [σ.symm_apply_apply]
 
 /-- Pivotal dimensions transform by the specified field automorphism. -/
-theorem pivotalDimension_twist (p : Dimensions.PivotalStructure (C := C.Obj)) (X : C.Obj) :
-    Dimensions.pivotalDimension (category C σ) (pivotal C σ p) X =
+theorem pivotalDimension_twist (X : C.Obj) :
+    Dimensions.pivotalDimension Cσ pσ X =
     σ (Dimensions.pivotalDimension C p X) :=
   unitScalar_twist C σ _
 
 /-- Match chosen simple representatives and transport pivotal dimensions. -/
-theorem labels (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : Modular.HasFPSimpleDimensions C p) :
-    ∃ e : Fin (rank C) ≃ Fin (rank (category C σ)),
-      ∀ i, Dimensions.pivotalDimension (category C σ) (pivotal C σ p)
-          (simples (category C σ) (e i)) =
-        σ (fpSimple C i : ℂ) := by
-  obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C (category C σ) (CategoryTheory.Equivalence.refl)
+theorem labels (hdim : Modular.HasFPSimpleDimensions C p) :
+    ∃ e : Fin (rank C) ≃ Fin (rank Cσ),
+      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ (e i)) = σ (fpSimple C i : ℂ) := by
+  obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C Cσ (CategoryTheory.Equivalence.refl)
   refine ⟨e, fun i ↦ ?_⟩
   have hd : Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ) := by
     simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using hdim i
   rw [← hd, ← pivotalDimension_twist C σ p (simples C i)]
-  exact (Dimensions.pivotalDimension_iso (category C σ) (pivotal C σ p) (he i).some).symm
+  exact (Dimensions.pivotalDimension_iso Cσ pσ (he i).some).symm
 
 /-- Simple FP dimensions and their real conjugates give the twisted pivotal dimensions. -/
-theorem exists_galois_fp_dimensions (p : Dimensions.PivotalStructure (C := C.Obj))
-    (hdim : Modular.HasFPSimpleDimensions C p) :
-    ∃ original transformed : Fin (rank (category C σ)) → ℝ,
+theorem exists_galois_fp_dimensions (hdim : Modular.HasFPSimpleDimensions C p) :
+    ∃ original transformed : Fin (rank Cσ) → ℝ,
       (∀ i, 0 < original i) ∧ (∀ i, σ (original i : ℂ) = (transformed i : ℂ)) ∧
-      ∀ i, Dimensions.pivotalDimension (category C σ) (pivotal C σ p)
-        (simples (category C σ) i) = (transformed i : ℂ) := by
+      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ i) = (transformed i : ℂ) := by
   obtain ⟨e, he⟩ := labels C σ p hdim
-  let original : Fin (rank (category C σ)) → ℝ := fun i ↦ fpSimple C (e.symm i)
-  let transformed : Fin (rank (category C σ)) → ℝ := fun i ↦ (σ (original i : ℂ)).re
+  let original : Fin (rank Cσ) → ℝ := fun i ↦ fpSimple C (e.symm i)
+  let transformed : Fin (rank Cσ) → ℝ := fun i ↦ (σ (original i : ℂ)).re
   refine ⟨original, transformed, fun i ↦ fpSimple_pos C _,
     fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, ?_⟩
   intro i

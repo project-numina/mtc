@@ -301,15 +301,13 @@ theorem fpDeterminant_natural
     (X : C.Obj) :
     fpDeterminant C (η.app X) = ∑ i,
       (Module.finrank ℂ (simples C i ⟶ X) : ℝ) • (fpSimple C i • vafaUnitClass (t i)) := by
-  unfold fpDeterminant
+  simp only [fpDeterminant, vafaUnitClass]
   apply Finset.sum_congr rfl
   intro i _
-  have hd : (homAction (R := ℂ) (simples C i) X (η.app X)).det =
-      (t i) ^ Module.finrank ℂ (simples C i ⟶ X) :=
-    linearEquiv_det_of_scalar _ (t i) (homAction_natural_scalar η (t i : ℂ) (ht i))
-  change fpSimple C i • vafaUnitClass (homAction (R := ℂ) (simples C i) X (η.app X)).det = _
-  rw [hd, vafaUnitClass, rationalUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
-  simp only [vafaUnitClass, smul_smul, mul_comm]
+  change fpSimple C i • rationalUnitClass (homAction (R := ℂ) (simples C i) X (η.app X)).det = _
+  rw [linearEquiv_det_of_scalar _ (t i) (homAction_natural_scalar η (t i : ℂ) (ht i)),
+    rationalUnitClass_pow, ← Nat.cast_smul_eq_nsmul ℝ]
+  simp only [smul_smul, mul_comm]
 
 /-- A natural automorphism whose actual FP determinant satisfies the
 multiplicative balance on simple tensor products has finite-order simple
