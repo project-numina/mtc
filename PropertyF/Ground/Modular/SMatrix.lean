@@ -149,7 +149,8 @@ theorem pivotalTrace_simple_ne_zero (X : C.Obj) [Simple X] :
 
 /-- The scalar pivotal trace of a simple object is nonzero. -/
 theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :
-    Ground.unitScalarEquiv C (p.rightTrace (𝟙 X)) ≠ 0 := by
+    Ground.unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
+  rw [Ground.unitScalar_eq_equiv]
   simpa only [map_zero] using
     (Ground.unitScalarEquiv C).injective.ne (pivotalTrace_simple_ne_zero C p X)
 
@@ -157,7 +158,8 @@ theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :
 theorem simpleDimension_ne_zero (i : Fin (rank C)) :
     simpleDimension C p i ≠ 0 :=
   let : Simple (simples C i) := simples_simple C i
-  unitScalar_rightTrace_ne_zero C p (simples C i)
+  by simpa only [simpleDimension, ← Ground.unitScalar_eq_equiv] using
+    unitScalar_rightTrace_ne_zero C p (simples C i)
 
 end PropertyF.Ground.Modular
 end

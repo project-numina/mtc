@@ -214,6 +214,7 @@ theorem overlap_trace_step_of_coherence (k : ℕ)
     (actualBraidTrace D p u / _) at hh
   unfold pivotalDimension
   rw [unitScalar_eq_equiv, hh, mul_assoc,
-    div_mul_cancel₀ _ (Modular.unitScalar_rightTrace_ne_zero D p X)]
+    div_mul_cancel₀ _ (by simpa only [← unitScalar_eq_equiv] using
+      Modular.unitScalar_rightTrace_ne_zero D p X)]
 
 end PropertyF.Ground.Calculus
