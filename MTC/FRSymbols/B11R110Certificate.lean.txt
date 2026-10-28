@@ -1,0 +1,21 @@
+
+/- This certificate is appended to the locally generated B11-00119 R(1,1;0)
+block. If the input coefficients differ, the proof of hentry fails. -/
+namespace AtlasGenerated.R11_1_1_0
+
+/-- The imported coefficient is the 64th power of the primitive 70th root. -/
+theorem exact_phase : entry_0_0 = cyclotomicGenerator 70 ^ 64 := by
+  let z : ExactCyclotomic 70 := cyclotomicGenerator 70
+  have hgen : AdjoinRoot.mk (cyclotomic 70 ℚ) X = z := rfl
+  have hentry : entry_0_0 = z - z ^ 8 + z ^ 15 - z ^ 22 := by
+    simp only [entry_0_0, map_add, map_pow, map_neg, map_one,
+      hgen, pow_one, one_mul, neg_one_mul, sub_eq_add_neg]
+  exact hentry.trans (primitive_seventy_phase z (cyclotomicGenerator_primitive 70))
+
+/-- This one-dimensional R block is unitary in the standard complex embedding. -/
+theorem phase_unitary : Complex.normSq (cyclotomicEmbedding 70 entry_0_0) = 1 := by
+  rw [exact_phase, map_pow, cyclotomicEmbedding_generator, Complex.normSq_eq_norm_sq, norm_pow,
+    (Complex.isPrimitiveRoot_exp 70 (by decide)).norm'_eq_one (by decide)]
+  norm_num
+
+end AtlasGenerated.R11_1_1_0

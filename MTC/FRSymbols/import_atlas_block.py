@@ -84,6 +84,7 @@ def main():
     parser.add_argument("payload", type=Path, help="unpacked .aasym payload")
     parser.add_argument("labels", nargs="+", type=int, help="F: a b c d; R: a b c")
     parser.add_argument("--output", required=True, type=Path, help="output Lean file")
+    parser.add_argument("--certificate", type=Path, help="append a local Lean proof template")
     args = parser.parse_args()
     with args.payload.open("rb") as stream:
         if read_exact(stream, 8) != b"ANYSYM01":
@@ -120,6 +121,9 @@ def main():
     row_text = [", ".join(f"entry_{row}_{col}" for col in range(cols)) for row in range(rows)]
     lines.append("  !![" + ";\n    ".join(row_text) + "]")
     lines.extend(["", f"end {namespace}", ""])
+    if args.certificate:
+        lines.insert(2, "public import MTC.FRSymbols.RootsOfUnity")
+        lines.append(args.certificate.read_text(encoding="utf-8"))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(lines), encoding="utf-8")
     print(f"Generated {name} block {wanted}: {rows} x {cols} over Q(zeta_{order}) in {args.output}")

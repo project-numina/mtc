@@ -34,7 +34,8 @@ After downloading and unpacking an archive locally, emit one block as Lean:
 ```sh
 python3 MTC/FRSymbols/import_atlas_block.py \
   data/symbols/B11-00119-R-symbols/rsymbols.aasym 1 1 0 \
-  --output data/generated-r110.lean
+  --output data/generated-r110.lean \
+  --certificate MTC/FRSymbols/B11R110Certificate.lean.txt
 LEAN_NUM_THREADS=4 taskset -c 12-15 lake env lean data/generated-r110.lean
 ```
 
@@ -46,4 +47,6 @@ conversion. This is a block importer, not a whole-solution verifier: it does
 not assemble fusion rules, reconstruct omitted blocks, prove matrix
 invertibility or unitarity, check coherence, or match modular data. It expects
 an already verified and unpacked payload and does not check the catalog hash.
+The optional certificate checks that this specific imported R entry equals
+`ζ₇₀⁶⁴` and has complex norm one; it does not certify the other blocks.
 Generated data remain under ignored `data/` pending redistribution terms.
