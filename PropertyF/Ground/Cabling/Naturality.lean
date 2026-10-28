@@ -54,6 +54,7 @@ def tensorPowerMap {X Y : C} (f : X ⟶ Y) : ∀ n, tensorPower X n ⟶ tensorPo
   | 0 => 𝟙 _
   | n + 1 => f ⊗ₘ tensorPowerMap f n
 
+/-- Tensor powers preserve identity morphisms. -/
 @[simp] theorem tensorPowerMap_id (X : C) : ∀ n, tensorPowerMap (𝟙 X) n = 𝟙 _
   | 0 => rfl
   | n + 1 => by simp [tensorPowerMap, tensorPowerMap_id X n, tensorPower]
