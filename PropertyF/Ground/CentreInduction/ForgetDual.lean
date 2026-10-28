@@ -41,13 +41,10 @@ theorem induced_center_trace_ne_zero_of_compatible (p : Dimensions.PivotalStruct
   have hd := induced_unit_dimension C p hsimple
   change unitScalar C (p.rightTrace (𝟙 (underlying C (𝟙_ C.Obj)))) = _ at hd
   rw [hbase] at hd
-  have hpos : 0 < globalFPDimension C := lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)
-  have hne : (globalFPDimension C : ℂ) ≠ 0 := by exact_mod_cast (ne_of_gt hpos)
-  have hzero : unitScalar C 0 = 0 := by
-    rw [← Dimensions.groundUnitScalarEquiv_apply]
-    exact map_zero _
-  rw [hzero] at hd
-  exact hne hd.symm
+  have hne : (globalFPDimension C : ℂ) ≠ 0 := by
+    exact_mod_cast (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))
+  apply hne
+  simpa only [← Dimensions.groundUnitScalarEquiv_apply, map_zero] using hd.symm
 
 
 set_option backward.isDefEq.respectTransparency false in
