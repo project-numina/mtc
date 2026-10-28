@@ -314,7 +314,7 @@ theorem positive_spherical_of_matrix_identities
       dsimp [c, r]
       field_simp [hq0 i, hq0 j, hq0 k]
     rw [hfactor]
-    exact involution_phase_inv_eq_one_of_trace _ (hinv i j k) r hrnorm hrtrace
+    exact involution_phase_inv_eq_one_of_trace (hinv i j k) hrnorm hrtrace
   have hvalue : ∀ i, c i * rootDimension C i = (fpSimple C i : ℂ) := by
     intro i
     have hf : (fpSimple C i : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (fpSimple_pos C i)
