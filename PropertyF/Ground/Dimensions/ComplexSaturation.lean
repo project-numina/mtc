@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Dimensions.WeightedEigenvalue
+public import PropertyF.Ground.Dimensions.ENOMatrices
 
 @[expose] public noncomputable section
 open scoped BigOperators

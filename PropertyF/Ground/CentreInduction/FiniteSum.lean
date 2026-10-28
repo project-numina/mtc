@@ -1,5 +1,11 @@
 module
-public import PropertyF.Ground.CentreInduction.Splitting
+public import PropertyF.Ground.Calculus.PartialTrace
+public import PropertyF.Ground.Centre.Basic
+public import PropertyF.Ground.Modular.SMatrix
+public import PropertyF.Ground.Dimensions.SimpleScalars
+public import PropertyF.Ground.Centre.Basic
+public import PropertyF.Ground.Fusion.SemisimpleSplit
+public import PropertyF.Ground.Centre.Abelian
 public import PropertyF.Ground.Centre.Abelian
 public import Mathlib.CategoryTheory.Subobject.ArtinianObject
 public import Mathlib.CategoryTheory.Subobject.NoetherianObject
@@ -25,13 +31,13 @@ def diagonalEndMap (S K : D) : ((S ⟶ S) × (K ⟶ K)) →ₗ[ℂ] (S ⊞ K ⟶
     apply biprod.hom_ext' <;> apply biprod.hom_ext <;> simp
 
 /-- A block-diagonal endomorphism determines both diagonal blocks. -/
-theorem diagonalEndMap_injective (S K : D) : Function.Injective (diagonalEndMap S K) := by
+theorem diagonalEndMap_injective {S K : D} : Function.Injective (diagonalEndMap S K) := by
   intro a b h
   apply Prod.ext
-  · have h' := congrArg (fun f => biprod.inl ≫ f ≫ biprod.fst) h
-    simpa [diagonalEndMap, Category.assoc] using h'
-  · have h' := congrArg (fun f => biprod.inr ≫ f ≫ biprod.snd) h
-    simpa [diagonalEndMap, Category.assoc] using h'
+  · simpa [diagonalEndMap, Category.assoc] using
+      congrArg (fun f => biprod.inl ≫ f ≫ biprod.fst) h
+  · simpa [diagonalEndMap, Category.assoc] using
+      congrArg (fun f => biprod.inr ≫ f ≫ biprod.snd) h
 
 /-- Removing a nonzero direct summand strictly decreases the dimension of the
 endomorphism space. -/
@@ -42,7 +48,7 @@ theorem finrank_end_complement_lt (S K : D)
   have hpos : 0 < Module.finrank ℂ (S ⟶ S) :=
     Module.finrank_pos_iff_exists_ne_zero.mpr ⟨𝟙 S, (IsZero.iff_id_eq_zero S).not.mp hS⟩
   have hle := LinearMap.finrank_le_finrank_of_injective (f := diagonalEndMap S K)
-    (diagonalEndMap_injective S K)
+    (diagonalEndMap_injective (S := S) (K := K))
   rw [Module.finrank_prod] at hle
   omega
 

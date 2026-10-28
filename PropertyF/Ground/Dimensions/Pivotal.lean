@@ -70,12 +70,12 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 /-- For a rigid category these traces of the identity recover the traces used
 in the existing intrinsic squared norm. -/
 theorem rightTrace_id (p : PivotalStructure (C := C)) (X : C) :
-    p.rightTrace (𝟙 X) = rightQuantumTrace (p.iso X) := by
-  simp [PivotalStructure.rightTrace, rightQuantumTrace]
+    p.rightTrace (𝟙 X) = rightQuantumTrace (p.iso X) :=
+  by simp [PivotalStructure.rightTrace, rightQuantumTrace]
 
 theorem leftTrace_id (p : PivotalStructure (C := C)) (X : C) :
-    p.leftTrace (𝟙 X) = leftQuantumTrace (p.iso X) := by
-  simp [PivotalStructure.leftTrace, leftQuantumTrace]
+    p.leftTrace (𝟙 X) = leftQuantumTrace (p.iso X) :=
+  by simp [PivotalStructure.leftTrace, leftQuantumTrace]
 
 /-- In a spherical category the two quantum dimensions agree. -/
 theorem spherical_quantumTraces_eq (p : PivotalStructure (C := C))

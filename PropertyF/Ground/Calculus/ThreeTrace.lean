@@ -4,8 +4,7 @@ public import Mathlib.GroupTheory.OrderOfElement
 public import Mathlib.CategoryTheory.Conj
 public import Mathlib.Tactic
 public import PropertyF.Ground.Calculus.RightStrand
-public import PropertyF.Ground.Dimensions.IteratedTrace
-public import PropertyF.Ground.Modular.DimensionNonzero
+public import PropertyF.Ground.Dimensions.TensorMultiplicativity
 public import PropertyF.Ground.Modular.SMatrix
 
 /-! Finiteness of categorical braid images supplies the finite-order condition
