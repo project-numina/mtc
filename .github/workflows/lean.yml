@@ -23,6 +23,7 @@ jobs:
           python3 scripts/update_roots.py --check
           python3 -m unittest discover -s scripts -p 'test_*.py'
           python3 scripts/audit_new_libraries.py
-          python3 scripts/conjecture_status.py --check
+          python3 scripts/conjecture_status.py
+          git diff --exit-code -- docs/STATUS.md
       - name: Audit frozen target
         run: scripts/audit-target.sh
