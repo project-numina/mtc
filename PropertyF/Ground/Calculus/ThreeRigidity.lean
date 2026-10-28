@@ -88,7 +88,7 @@ theorem actual_braid_squares_equal_of_saturation {X : C.Obj}
     (hvalue : actualBraidTrace C p
       (braidInImage
         (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2) :
-    tripleBlockLeft X b ^ 2 = tripleBlockRight X b ^ 2 := by
+    tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2 := by
   let B : Blocks := ⟨r, size⟩
   let ρ : braidImage X 1 →* B.Algebra :=
     b.toMonoidHom.comp (braidInImage (X := X) (n := 1))
@@ -114,8 +114,8 @@ theorem local_monodromy_of_three_squares_equal
     {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
     [Preadditive C] [Linear ℂ C] (X : C)
     (h : Aut.toEnd (braidGenerator X 1 0 ^ 2) = Aut.toEnd (braidGenerator X 1 1 ^ 2)) :
-    insertRightIdentity (X ⊗ X) X (selfMonodromy X) =
-      overlapFresh X X X (selfMonodromy X) := by
+    insertRightIdentity X (selfMonodromy X) =
+      overlapFresh X (selfMonodromy X) := by
   have hh := congrArg (isoEndAlgEquiv (threePowerIso X)) h
   simp only [map_pow] at hh
   rw [threeGeneratorLeft_end_transport X, threeGeneratorRight_end_transport X] at hh
@@ -132,9 +132,9 @@ theorem local_monodromy_of_block_squares_equal
     {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
     [Preadditive C] [Linear ℂ C] {X : C} {r : ℕ} {size : Fin r → ℕ}
     (b : braidAlgebra X 1 ≃ₐ[ℂ] Blocks.Algebra ⟨_, size⟩)
-    (h : tripleBlockLeft X b ^ 2 = tripleBlockRight X b ^ 2) :
-    insertRightIdentity (X ⊗ X) X (selfMonodromy X) =
-      overlapFresh X X X (selfMonodromy X) := by
+    (h : tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2) :
+    insertRightIdentity X (selfMonodromy X) =
+      overlapFresh X (selfMonodromy X) := by
   apply local_monodromy_of_three_squares_equal X
   have hs : braidInImage (threeGeneratorLeft X ^ 2) =
       braidInImage (threeGeneratorRight X ^ 2) := by
@@ -151,7 +151,7 @@ theorem pair_operator_scalar_of_overlaps_equal {X : C.Obj} [Simple X]
     {d f : ℝ} (hd : d ≠ 0)
     (hdim : pivotalDimension C p X = (d : ℂ))
     (htrace : scalarTrace p (Ground.unitScalarEquiv C) u = (d : ℂ) * f)
-    (heq : insertRightIdentity (X ⊗ X) X u = overlapFresh X X X u) :
+    (heq : insertRightIdentity X u = overlapFresh X u) :
     u = (f / d : ℂ) • (1 : End (X ⊗ X)) := by
   simp only [scalarTrace] at htrace
   simp only [pivotalDimension, unitScalar_eq_equiv] at hdim
