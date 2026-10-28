@@ -112,23 +112,4 @@ def groundEndBlockEquiv (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj)
     AlgEquiv.piCongrRight fun i => Matrix.reindexAlgEquiv ℂ ℂ (simpleFiberEquiv m i)
   exact (isoEndAlgEquiv e).trans (decomp.trans (scalars.trans reindex))
 
-/-- Endomorphisms of a genuine fusion-category object are a product of matrix
-algebras indexed by simple objects, with sizes equal to actual Hom dimensions. -/
-theorem groundEnd_blocks_canonical (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
-    Nonempty (End X ≃ₐ[ℂ] ∀ i, Matrix
-      (Fin (Module.finrank ℂ (Ground.simples C i ⟶ X)))
-      (Fin (Module.finrank ℂ (Ground.simples C i ⟶ X))) ℂ) := by
-  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C X
-  exact ⟨groundEndBlockEquiv C X _ e⟩
-
-/-- Every endomorphism algebra in a genuine fusion category is finite-dimensional
-and semisimple over ℂ. -/
-theorem groundEnd_finite_semisimple (C : Ground.BraidedFusionCategory.{v,u}) (X : C.Obj) :
-    FiniteDimensional ℂ (End X) ∧ IsSemisimpleRing (End X) := by
-  let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
-  have hfinite : FiniteDimensional ℂ (End X) :=
-    FiniteDimensional.of_injective End.linearEquiv.toLinearMap End.linearEquiv.injective
-  obtain ⟨e⟩ := groundEnd_blocks_canonical C X
-  exact ⟨hfinite, e.toRingEquiv.symm.isSemisimpleRing⟩
-
 end PropertyF.Ground.Calculus

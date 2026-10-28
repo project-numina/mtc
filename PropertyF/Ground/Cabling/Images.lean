@@ -59,21 +59,4 @@ def braidImageEquivOfGeneratorCoherence (F : C ⥤ D) [F.Monoidal] [F.Faithful]
     exact F.map_injective h
   exact generatedImageEquiv f hf _ _ hgen
 
-/-- An equivariant monomorphism forces an automorphism acting trivially on
-its codomain to act trivially on its domain. This is the restriction step for
-summands in the cabling argument. -/
-theorem ker_le_of_mono_intertwiner {G : Type*} [Group G]
-    {C : Type*} [Category C] {Y Z : C}
-    (ρY : G →* Aut Y) (ρZ : G →* Aut Z) (i : Y ⟶ Z) [Mono i]
-    (hi : ∀ g, (ρY g).asIso.hom ≫ i = i ≫ (ρZ g).asIso.hom) :
-    ρZ.ker ≤ ρY.ker := by
-  intro g hg
-  change ρZ g = 1 at hg
-  change ρY g = 1
-  apply Aut.ext
-  apply Iso.ext
-  apply (cancel_mono i).mp
-  rw [hi, hg]
-  simp
-
 end PropertyF
