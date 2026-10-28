@@ -101,15 +101,24 @@ theorem exists_canonical_decomposition (X : D.Obj) :
   exact ⟨e⟩
 
 /-- Hom dimensions to and from a simple coincide in a semisimple category. -/
-theorem finrank_to_simple_eq_from_simple
-    (X : D.Obj) (i : Fin (rank D)) :
-    Module.finrank ℂ (X ⟶ simples D i) = Module.finrank ℂ (simples D i ⟶ X) := by
+theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
+    [MonoidalCategory E] [BraidedCategory E] [Abelian E] [Linear ℂ E]
+    [RigidCategory E] [MonoidalPreadditive E] [MonoidalLinear ℂ E] [IsFusionCategory E]
+    (X S : E) [Simple S] :
+    Module.finrank ℂ (X ⟶ S) = Module.finrank ℂ (S ⟶ X) := by
   classical
-  obtain ⟨e⟩ := exists_canonical_decomposition D X
-  let : ∀ A B : D.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
-  rw [(CategoryTheory.Linear.homCongr ℂ e (Iso.refl _)).finrank_eq,
-    finrank_biproduct_hom, Fintype.sum_sigma]
-  simp [finrank_simples_hom]
+  obtain ⟨n, T, hsimple, _, hdecomp⟩ := IsFusionCategory.finite_semisimple (C := E)
+  obtain ⟨m, ⟨e⟩⟩ := hdecomp X
+  let V : (Σ i, Fin (m i)) → E := fun p ↦ T p.1
+  let : ∀ A B : E, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
+  let : ∀ p, Simple (V p) := fun p ↦ hsimple p.1
+  rw [(CategoryTheory.Linear.homCongr ℂ e (Iso.refl S)).finrank_eq,
+    (CategoryTheory.Linear.homCongr ℂ (Iso.refl S) e).finrank_eq,
+    finrank_biproduct_hom, finrank_hom_biproduct]
+  apply Finset.sum_congr rfl
+  intro p _
+  rw [CategoryTheory.finrank_hom_simple_simple ℂ,
+    CategoryTheory.finrank_hom_simple_simple ℂ, Iso.nonempty_iso_symm]
 
 /-- Tensoring an object on the left acts on simple multiplicities by its
 integer fusion matrix. -/
