@@ -93,13 +93,13 @@ theorem forget_rightDualTensorIso :
 
 /-- Forgetting centre duals preserves their tensor comparison. -/
 theorem forgetDualIso_tensor :
-    (κ (X ⊗ Y)).hom ≫ (rightDualTensorIso X.1 Y.1).hom =
-      (rightDualTensorIso X Y).hom.f ≫
-        ((κ Y).hom ⊗ₘ (κ X).hom) := by
-  rw [forget_rightDualTensorIso]
-  simp only [forgetDualIso, rightDualTensorIso,
-    ← rightDualIso_tensor (forgetPairing X) HasRightDual.exact
-      (forgetPairing Y) HasRightDual.exact, rightDualIso_trans]
+    CommSq (κ (X ⊗ Y)).hom (rightDualTensorIso X Y).hom.f
+      (rightDualTensorIso X.1 Y.1).hom ((κ Y).hom ⊗ₘ (κ X).hom) :=
+  ⟨by
+    rw [forget_rightDualTensorIso]
+    simp only [forgetDualIso, rightDualTensorIso,
+      ← rightDualIso_tensor (forgetPairing X) HasRightDual.exact
+        (forgetPairing Y) HasRightDual.exact, rightDualIso_trans]⟩
 
 end PropertyF.Ground.CentreInduction
 end
@@ -128,7 +128,7 @@ private theorem forgetDualIso_tensor_inv :
     (τ X Y).inv.f ≫ (κ (X ⊗ Y)).hom =
       ((κ Y).hom ⊗ₘ (κ X).hom) ≫
         (τ X.1 Y.1).inv :=
-  (CommSq.vert_inv (g := (Center.forget D).mapIso (τ X Y)) ⟨forgetDualIso_tensor X Y⟩).w.symm
+  (CommSq.vert_inv (g := (Center.forget D).mapIso (τ X Y)) (forgetDualIso_tensor X Y)).w.symm
 
 /-- Taking mates of the tensor comparison also preserves its inverse. -/
 private theorem forgetDualIso_tensor_mate_inv :
@@ -137,7 +137,7 @@ private theorem forgetDualIso_tensor_mate_inv :
         (τ X.1 Y.1).homᘁ :=
   by simpa only [comp_rightAdjointMate, tensorIso_inv] using
     congrArg rightAdjointMate (CommSq.horiz_inv
-      (i := (κ Y) ⊗ᵢ (κ X)) ⟨forgetDualIso_tensor X Y⟩).w
+      (i := (κ Y) ⊗ᵢ (κ X)) (forgetDualIso_tensor X Y)).w
 
 /-- Forgetting the centre preserves the tensor comparison for double duals. -/
 theorem forgetDoubleDualIso_tensor :
