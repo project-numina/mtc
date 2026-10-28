@@ -95,7 +95,7 @@ abbrev HasBiproductDecomposition {D : Type u} [Category.{v} D] [HasZeroMorphisms
 /-- A nonzero object decomposed over a finite family has a retract from that family. -/
 theorem exists_retract_of_biproduct_decomposition
     {D : Type u} [Category.{v} D] [HasZeroMorphisms D] [HasFiniteBiproducts D]
-    {ι : Type} [Fintype ι] (T : ι → D) {X : D}
+    {ι : Type} [Fintype ι] {T : ι → D} {X : D}
     (hdecomp : HasBiproductDecomposition T X)
     (hX : 𝟙 X ≠ 0) : ∃ (i : ι) (s : X ⟶ T i) (t : T i ⟶ X),
       s ≠ 0 ∧ t ≫ s = 𝟙 (T i) := by
@@ -112,7 +112,7 @@ theorem exists_retract_of_biproduct_decomposition
 /-- Every simple object is isomorphic to one of the chosen representatives. -/
 theorem exists_simple_iso (X : C.Obj) [Simple X] :
     ∃ i : Fin (rank C), Nonempty (X ≅ simples C i) :=
-  (exists_retract_of_biproduct_decomposition (simples C) (simples_decompose C X)
+  (exists_retract_of_biproduct_decomposition (simples_decompose C X)
     (id_nonzero X)).imp fun _i ⟨s, _, hs, _⟩ ↦
     letI : IsIso s := CategoryTheory.isIso_of_hom_simple hs
     ⟨asIso s⟩

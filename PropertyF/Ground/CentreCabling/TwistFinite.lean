@@ -60,7 +60,7 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist (θ : 𝟭 C.Obj ≅ �
     (X Y : C.Obj) : IsOfFinOrder (End.of (doubleBraiding X Y)) := by
   let : HasFiniteBiproducts C.Obj := Abelian.hasFiniteBiproducts
   obtain ⟨n, hn, hp⟩ := natural_end_finite_order_of_components (simples C)
-    (fun h ↦ Dimensions.natTrans_eq_of_biproduct_components (simples C) (simples_decompose C) h) θ.hom hfinite
+    (fun h ↦ Dimensions.natTrans_eq_of_biproduct_components (simples_decompose C) h) θ.hom hfinite
   let t : End (X ⊗ Y) := End.of (θ.hom.app X ⊗ₘ θ.hom.app Y)
   let m : End (X ⊗ Y) := End.of (doubleBraiding X Y)
   have ht : t ^ n = 1 := by

@@ -116,12 +116,12 @@ theorem finrank_to_simple_eq_from_simple {E : Type u} [Category.{v} E]
 /-- A nonzero object decomposed over a finite family has a nonzero multiplicity. -/
 theorem exists_positive_multiplicity {k : Type*} [Field k]
     {E : Type u} [Category.{v} E] [Preadditive E] [Linear k E] [HasFiniteBiproducts E]
-    {ι : Type} [Fintype ι] (T : ι → E) {X : E}
+    {ι : Type} [Fintype ι] {T : ι → E} {X : E}
     (hdecomp : HasBiproductDecomposition T X)
     (hfinite : ∀ i, FiniteDimensional k (T i ⟶ X)) (hX : ¬ IsZero X) :
     ∃ i, 0 < Module.finrank k (T i ⟶ X) := by
   classical
-  obtain ⟨i, s, t, hs, ht⟩ := exists_retract_of_biproduct_decomposition T hdecomp (by
+  obtain ⟨i, s, t, hs, ht⟩ := exists_retract_of_biproduct_decomposition hdecomp (by
     simpa [IsZero.iff_id_eq_zero] using hX)
   let : FiniteDimensional k (T i ⟶ X) := hfinite i
   exact ⟨i, Module.finrank_pos_iff_exists_ne_zero.mpr
