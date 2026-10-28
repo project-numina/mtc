@@ -59,6 +59,10 @@ namespace PropertyF.Ground.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj)
+-- The two right duals and their tensor product appear throughout the cap calculation.
+local notation "U" => (Xᘁ)
+local notation "V" => (Yᘁ)
+local notation "P" => (V ⊗ U)
 
 /-- The monodromy of two objects closed against their tensor-product dual. -/
 abbrev monodromyTensorCap :
@@ -70,40 +74,27 @@ abbrev monodromyTensorCap :
 set_option backward.isDefEq.respectTransparency false in
 /-- Expand monodromy and tensor braiding into their six individual crossings. -/
 theorem monodromy_tensor_cap_expansion :
-    let U := Xᘁ
-    let V := Yᘁ
-    let P := V ⊗ U
     monodromyTensorCap C X Y =
     𝟙 ((X ⊗ Y) ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫ (β_ Y X).hom ▷ P ⊗≫
       (X ◁ (β_ Y V).hom) ▷ U ⊗≫ ((β_ X V).hom ▷ Y) ▷ U ⊗≫
       V ◁ (X ◁ (β_ Y U).hom) ⊗≫ V ◁ ((β_ X U).hom ▷ Y) ⊗≫
       V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V := by
-  let U := Xᘁ
-  let V := Yᘁ
   let W := X ⊗ Y
-  let P := V ⊗ U
   let p : ExactPairing W P := ExactPairing.tensor
   change (((β_ X Y).hom ≫ (β_ Y X).hom) ▷ P) ≫ (β_ W P).hom ≫
       (𝟙 (P ⊗ W) ⊗≫ V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V) = _
-  dsimp only [W, P]
+  dsimp only [W]
   simp only [comp_whiskerRight, braiding_tensor_right_hom, braiding_tensor_left_hom]
   monoidal
 set_option backward.isDefEq.respectTransparency false in
 /-- Reorder the six crossings using the Yang–Baxter identity twice. -/
 theorem monodromy_tensor_cap_braid_reordered :
-    let U := Xᘁ
-    let V := Yᘁ
-    let P := V ⊗ U
     monodromyTensorCap C X Y =
     𝟙 ((X ⊗ Y) ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫
       (Y ◁ (β_ X V).hom) ▷ U ⊗≫ ((β_ Y V).hom ▷ X) ▷ U ⊗≫
       V ◁ (Y ◁ (β_ X U).hom) ⊗≫ V ◁ ((β_ Y U).hom ▷ X) ⊗≫
       V ◁ (U ◁ (β_ Y X).hom) ⊗≫ V ◁ (ε_ X U ▷ Y) ⊗≫ ε_ Y V := by
-  let U := Xᘁ
-  let V := Yᘁ
   let W := X ⊗ Y
-  let P := V ⊗ U
-  dsimp only
   rw [monodromy_tensor_cap_expansion]
   calc
     _ = 𝟙 (W ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫
@@ -150,18 +141,11 @@ end
 set_option backward.isDefEq.respectTransparency false in
 /-- Contract the first braiding loop in the monodromy evaluation. -/
 theorem monodromy_tensor_cap_remove_loop :
-    let U := Xᘁ
-    let V := Yᘁ
-    let P := V ⊗ U
     monodromyTensorCap C X Y =
     𝟙 ((X ⊗ Y) ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫
       (Y ◁ (β_ X V).hom) ▷ U ⊗≫ ((β_ Y V).hom ▷ X) ▷ U ⊗≫
       V ◁ (Y ◁ (β_ X U).hom) ⊗≫ V ◁ (Y ◁ ε_ X U) ⊗≫ ε_ Y V := by
-  let U := Xᘁ
-  let V := Yᘁ
   let W := X ⊗ Y
-  let P := V ⊗ U
-  dsimp only
   rw [monodromy_tensor_cap_braid_reordered]
   calc
     _ = 𝟙 (W ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫
@@ -181,20 +165,13 @@ theorem monodromy_tensor_cap_remove_loop :
 set_option backward.isDefEq.respectTransparency false in
 /-- The monodromy tensor evaluation closes the two crossed caps in sequence. -/
 theorem monodromy_tensor_cap_evaluated :
-    let U := Xᘁ
-    let V := Yᘁ
-    let P := V ⊗ U
     monodromyTensorCap C X Y =
     𝟙 ((X ⊗ Y) ⊗ P) ⊗≫ (X ◁ (β_ Y V).hom) ▷ U ⊗≫
       (X ◁ ε_ Y V) ▷ U ⊗≫ (β_ X U).hom ⊗≫ ε_ X U := by
-  let U := Xᘁ
-  let V := Yᘁ
   let W := X ⊗ Y
-  let P := V ⊗ U
   let I := 𝟙_ C.Obj
   let g : X ⊗ U ⟶ I := (β_ X U).hom ≫ ε_ X U
   let b : Y ⊗ V ⟶ I := (β_ Y V).hom ≫ ε_ Y V
-  dsimp only
   rw [monodromy_tensor_cap_remove_loop]
   calc
     _ = 𝟙 (W ⊗ P) ⊗≫ (β_ X Y).hom ▷ P ⊗≫
