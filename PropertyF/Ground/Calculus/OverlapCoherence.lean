@@ -174,9 +174,12 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The fresh algebra element is left whiskering along its canonical
 left-insertion isomorphism. -/
 theorem freshOverlapIso_action :
-    (freshOverlapIso X t k).inv ≫
+    (freshOverlapIso X t k).hom ≫ (overlapRight X t k u : End _).asHom =
       (tensorPower X (overlapIndex t k + 1) ◁ (u : End _).asHom) ≫
-      (freshOverlapIso X t k).hom = (overlapRight X t k u : End _).asHom := by
+        (freshOverlapIso X t k).hom := by
+  apply (cancel_epi (freshOverlapIso X t k).inv).mp
+  simp only [Iso.inv_hom_id_assoc]
+  symm
   have hcast : ∀ (a b : ℕ) (h : a = b)
       (F : braidAlgebra X t →ₐ[ℂ] braidAlgebra X b) (u : braidAlgebra X t),
       (((Eq.mpr (congrArg (fun n => braidAlgebra X t →ₐ[ℂ] braidAlgebra X n) h) F) u :
@@ -200,7 +203,12 @@ fresh actual braid factor with the local overlap factor. -/
 theorem overlapRight_local_of_iso (hiso : HasOverlapCoherence X t k) :
     (overlapPowerIso X t k).symm.conj (overlapRight X t k u : End _) =
     overlapFresh (tensorPower X (overlapIndex t k + 1)) (u : End (tensorPower X (t + 2))) :=
-  End.ext (by simp [← freshOverlapIso_action k u, hiso, overlapFresh, Iso.conj_apply_asHom])
+  End.ext (by
+    apply (cancel_mono (overlapPowerIso X t k).hom).mp
+    apply (cancel_epi (α_ (tensorPower X (overlapIndex t k + 1)) X
+      (tensorPower X (t + 1))).inv).mp
+    simpa [hiso, overlapFresh, Iso.conj_apply_asHom, Category.assoc] using
+      freshOverlapIso_action k u)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A single coherence equality between the left- and right-insertion

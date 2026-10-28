@@ -52,12 +52,9 @@ theorem one_le_fpDimension {X : D.Obj}
     (hX : ¬ IsZero X) : 1 ≤ fpDimension D X := by
   classical
   obtain ⟨i, hi⟩ := exists_positive_multiplicity D hX
-  have hcoeff : (1 : ℝ) ≤ Module.finrank ℂ (simples D i ⟶ X) := by exact_mod_cast hi
-  have hterm : (1 : ℝ) ≤
-      (Module.finrank ℂ (simples D i ⟶ X) : ℝ) * fpSimple D i :=
-    one_le_mul_of_one_le_of_one_le hcoeff (one_le_fpSimple D i)
   unfold fpDimension
-  exact hterm.trans (Finset.single_le_sum
+  exact (one_le_mul_of_one_le_of_one_le (by exact_mod_cast hi) (one_le_fpSimple D i)).trans
+    (Finset.single_le_sum
     (f := fun j => (Module.finrank ℂ (simples D j ⟶ X) : ℝ) * fpSimple D j)
     (fun j _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D j).le) (Finset.mem_univ i))
 
