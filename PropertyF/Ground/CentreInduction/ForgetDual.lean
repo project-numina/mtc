@@ -15,8 +15,7 @@ theorem pivotalDimension_eq_fp (p : Dimensions.PivotalStructure (C := C.Obj))
     (hsimple : ∀ i, Dimensions.pivotalDimension C p (simples C i) = (fpSimple C i : ℂ))
     (X : C.Obj) : Dimensions.pivotalDimension C p X = (fpDimension C X : ℂ) := by
   rw [Dimensions.pivotalDimension_decomposition]
-  unfold fpDimension
-  simp only [Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast, hsimple]
+  simp only [fpDimension, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast, hsimple]
 
 /-- The induction of the tensor unit has base pivotal dimension FPdim(C). -/
 theorem induced_unit_dimension (p : Dimensions.PivotalStructure (C := C.Obj))

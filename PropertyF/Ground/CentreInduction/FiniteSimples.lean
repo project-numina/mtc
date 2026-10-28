@@ -130,7 +130,7 @@ variable (C : BraidedFusionCategory.{v,u})
 set_option backward.isDefEq.respectTransparency false in
 /-- A nonzero centre subobject strictly decreases the underlying endomorphism dimension on quotient. -/
 theorem center_cokernel_measure_lt {S W : CategoryTheory.Center C.Obj}
-    (p : S ⟶ W) [Mono p] (hp : p ≠ 0) :
+    (p : S ⟶ W) (hp : p ≠ 0) :
     Module.finrank ℂ ((PropertyF.Ground.Centre.centerCokernel p).1 ⟶
       (PropertyF.Ground.Centre.centerCokernel p).1) < Module.finrank ℂ (W.1 ⟶ W.1) := by
   let Q := PropertyF.Ground.Centre.centerCokernel p

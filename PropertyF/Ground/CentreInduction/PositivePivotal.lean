@@ -82,6 +82,7 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u}) [RigidCategory (CategoryTheory.Center C.Obj)]
 
+/-- The positive centre embedding preserves right duals up to the canonical isomorphism. -/
 def positiveDualIso (T : C.Obj) :
     ((CategoryTheory.Center.ofBraided C.Obj).obj T)ᘁ ≅
       (CategoryTheory.Center.ofBraided C.Obj).obj (Tᘁ) :=
@@ -111,6 +112,7 @@ theorem positiveDualIso_forget (T : C.Obj) :
     CategoryTheory.Center.id_f, hc']
   rfl
 
+/-- The comparison between the double duals of an object and its positive lift. -/
 def positiveDoubleDualIso (T : C.Obj) :
     (((CategoryTheory.Center.ofBraided C.Obj).obj T)ᘁ)ᘁ ≅
       (CategoryTheory.Center.ofBraided C.Obj).obj ((Tᘁ)ᘁ) :=
@@ -152,6 +154,7 @@ theorem positiveDoubleDualIso_inv_forget (T : C.Obj) :
   rw [← positiveDoubleDualIso_forget C T, ← CategoryTheory.Center.comp_f, Iso.inv_hom_id]
   rfl
 
+/-- The pivotal component transported to the positive centre lift. -/
 def positivePivotalComponent (p : Dimensions.PivotalStructure (C := C.Obj)) (T : C.Obj) :
     (CategoryTheory.Center.ofBraided C.Obj).obj T ≅
       (((CategoryTheory.Center.ofBraided C.Obj).obj T)ᘁ)ᘁ :=
