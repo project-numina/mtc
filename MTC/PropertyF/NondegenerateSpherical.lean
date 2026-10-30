@@ -12,7 +12,7 @@ specified numerical modular-data record is asserted.
 -/
 
 @[expose] public noncomputable section
-open MTC MTC.Dimensions MTC.Modular
+open MTC MTC.CategoryTheory.Dimensions MTC.Modular
 namespace MTC.PropertyF
 universe v u
 

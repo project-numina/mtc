@@ -10,7 +10,7 @@ Galois transport of positive constituent dimensions gives nonzero braid-block tr
 weights. These weights supply the hypotheses of the three-strand rigidity argument.
 -/
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

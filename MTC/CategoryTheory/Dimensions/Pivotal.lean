@@ -10,7 +10,7 @@ the quantum traces on identity morphisms; `IsSpherical` requires them to agree.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 
 universe v u
 
@@ -105,4 +105,4 @@ theorem spherical_quantumTraces_eq {p : PivotalStructure (C := C)}
     rightQuantumTrace (p.iso X) = leftQuantumTrace (p.iso X) := by
   simpa only [← rightTrace_id, ← leftTrace_id] using (hp X (𝟙 X)).symm
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions

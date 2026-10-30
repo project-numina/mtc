@@ -83,7 +83,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators Matrix Matrix.Norms.Operator ENNReal
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 
 variable (C : BraidedFusionCategory)
 
@@ -116,7 +116,7 @@ theorem galois_character_norm_le_fpSimple
   character_norm_le_fpSimple (i₀ := i₀)
     ((map_ne_zero σ).2 hχ) (fun j k ↦ by simpa using congrArg σ (hchar j k)) i
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
@@ -336,7 +336,7 @@ end
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 
 /-- A matrix dominated entrywise by a nonnegative matrix cannot have an
 eigenvalue larger than the latter's positive eigenvalue. -/
@@ -366,7 +366,7 @@ theorem weighted_eigenvalue_bound {K : Type*} [NormedRing K] [NormMulClass K]
       rw [hfp i, mul_left_comm, show r * f i = ‖v i‖ from
         div_mul_cancel₀ _ (ne_of_gt (hf i))]
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
@@ -384,7 +384,7 @@ theorem complex_eigenvalue_le_positive_eigenvalue {ι : Type*} [Fintype ι]
     (hwe : A *ᵥ w = d • w) (hve : A.map Complex.ofRealHom *ᵥ v = z • v)
     (hA : ∀ i j, 0 ≤ A i j) (hw : ∀ i, 0 < w i) (hv : v ≠ 0) : ‖z‖ ≤ d :=
   (Function.ne_iff.mp hv).elim fun _ hi ↦
-    Dimensions.weighted_eigenvalue_bound (T := fun i j ↦ (A i j : ℂ)) hi hw hA
+    MTC.CategoryTheory.Dimensions.weighted_eigenvalue_bound (T := fun i j ↦ (A i j : ℂ)) hi hw hA
       (fun i j ↦ by simp [Complex.norm_real, abs_of_nonneg (hA i j)])
       (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hwe i)
       (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hve i)
@@ -405,7 +405,7 @@ variable (D : BraidedFusionCategory)
 theorem fpCharacter_le_fpSimple (i : Fin (rank D)) :
     (fpCharacter D).1 i ≤ fpSimple D i := by
   simpa [Complex.norm_real, abs_of_pos ((fpCharacter D).2.1 i)] using
-    (Dimensions.character_norm_le_fpSimple (χ := fun j ↦ ((fpCharacter D).1 j : ℂ))
+    (MTC.CategoryTheory.Dimensions.character_norm_le_fpSimple (χ := fun j ↦ ((fpCharacter D).1 j : ℂ))
       (i₀ := unitIndex D) (Complex.ofReal_ne_zero.mpr (ne_of_gt ((fpCharacter D).2.1 (unitIndex D))))
       (fun j k ↦ by
         dsimp

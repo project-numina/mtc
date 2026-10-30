@@ -18,7 +18,7 @@ used in the ENO matrix argument.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -77,12 +77,12 @@ theorem fourthDualRootNaturalSquare_eq :
     exact congrArg Iso.hom (Classical.choose_spec
       (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i))))
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 
 /-- An element is involutive when its square is one. -/
 abbrev IsInvolutiveElem {M : Type*} [Monoid M] (a : M) : Prop := a * a = 1
@@ -175,13 +175,13 @@ theorem involution_phase_inv_eq_one_of_trace :
   rw [hs, smul_smul, inv_mul_cancel₀ (norm_ne_zero_iff.mp (hc.symm ▸ one_ne_zero)), one_smul]
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 /-- An endomorphism is involutive when its square is the identity. -/
@@ -206,13 +206,13 @@ theorem natural_square_defect_involution {C : Type u} [Category.{v} C]
   simp only [Category.assoc]
   erw [← reassoc_of% hc, reassoc_of% hd, ← Functor.map_comp, hd, hsq, Category.id_comp]
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -294,6 +294,6 @@ theorem rootTensor_square_eq_fourthDual_tensor (X Y : C.Obj) :
   rw [← reassoc_of% (doubleDualTensorIso_natural _ _), tensorHom_comp_tensorHom_assoc]
   rfl
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end

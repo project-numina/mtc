@@ -14,7 +14,7 @@ Partial traces establish multiplicativity of the pivotal trace on tensor product
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
@@ -68,14 +68,14 @@ theorem rightTraceWith_partialTraceWith {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y �
     ← comp_whiskerRight_assoc, ← associator_naturality_left, comp_whiskerRight, Category.assoc]
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open MTC.Braided.Trace
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
@@ -85,7 +85,7 @@ theorem rightTrace_partialTrace (p : PivotalStructure (C := C)) {X Y : C} (f : E
   simpa [rightTraceWith, PivotalStructure.rightTrace, partialTraceWith, rightPartialTrace,
     ← p.tensor X Y, Category.assoc] using rightTraceWith_partialTraceWith (p.iso X) (p.iso Y) f
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 namespace MTC.Braided.Trace
 
@@ -95,12 +95,12 @@ variable {k : Type*} [Field k] [IsAlgClosed k]
 
 /-- The partial trace on a simple object is its normalized total trace. -/
 theorem rightPartialTrace_simple [CategoryTheory.Limits.HasKernels C] {X Y : C}
-    [Simple X] [FiniteDimensional k (X ⟶ X)] (p : Dimensions.PivotalStructure (C := C))
+    [Simple X] [FiniteDimensional k (X ⟶ X)] (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C))
     (scalar : End (𝟙_ C) ≃ₐ[k] k) (f : End (X ⊗ Y))
     (hd : scalar (p.rightTrace (𝟙 X)) ≠ 0) :
     rightPartialTrace p f =
       (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) := by
-  simpa only [scalarTrace, Dimensions.rightTrace_partialTrace p f] using
+  simpa only [scalarTrace, MTC.CategoryTheory.Dimensions.rightTrace_partialTrace p f] using
     simple_end_eq_trace_smul p scalar (rightPartialTrace p f) hd
 
 end MTC.Braided.Trace
@@ -110,7 +110,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open MTC.Braided.Trace
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {k : Type*} [CommSemiring k]
   {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
@@ -153,6 +153,6 @@ theorem pivotalTrace_tensor {X Y : C} (a : X ⟶ X) (b : Y ⟶ Y) :
   simpa [rightPartialTrace_tensor p scalar a b, PivotalStructure.rightTrace_smul, mul_comm] using
     congrArg scalar (rightTrace_partialTrace p (End.of (a ⊗ₘ b))).symm
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end

@@ -4,7 +4,7 @@ public import MTC.Braided.Trace.OverlapCoherence
 public import Mathlib.Tactic
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 /-!
 # Tensor-power concatenation

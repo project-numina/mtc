@@ -2,7 +2,7 @@ module
 public import MTC.Center.Induction.ForgetDual
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 /-! # Centre dual comparisons
 
@@ -104,7 +104,7 @@ theorem forgetDualIso_tensor :
 end MTC.Center.Induction
 end
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 /-! Tensor coherence for the forgotten double-dual and pivotal components. -/
 @[expose] public noncomputable section

@@ -23,7 +23,7 @@ these simple dimensions. No modular nondegeneracy is required here.
 -/
 open scoped BigOperators
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 namespace MTC.Modular
 universe v u
@@ -134,7 +134,7 @@ nonzero evaluation must be a nonzero multiple of that splitting. Consequently
 the pivotal dimension of a simple object cannot vanish.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 namespace MTC.Modular
 universe v u
@@ -144,8 +144,8 @@ variable (C : MTC.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj
 /-- A simple object has nonzero pivotal trace of the identity. -/
 theorem pivotalTrace_simple_ne_zero (X : C.Obj) [Simple X] :
     p.rightTrace (𝟙 X) ≠ 0 := by
-  simpa only [Dimensions.rightTrace_id] using
-    Dimensions.rightQuantumTrace_simple_ne_zero (p.iso X)
+  simpa only [MTC.CategoryTheory.Dimensions.rightTrace_id] using
+    MTC.CategoryTheory.Dimensions.rightQuantumTrace_simple_ne_zero (p.iso X)
 
 /-- The scalar pivotal trace of a simple object is nonzero. -/
 theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :

@@ -62,7 +62,7 @@ theorem character_columns_orthogonal [DecidableEq ι] {S : Matrix ι ι ℂ} {d 
       character_orthogonal N dual hdual (cols a) (cols b) hne)).resolve_right
     (mul_ne_zero (hd a) (hd b))
 
-variable (C : MTC.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (C : MTC.BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
@@ -148,11 +148,11 @@ A spherical category with real simple dimensions and an invertible S matrix
 has the Galois symmetries of its normalized S columns.
 -/
 open scoped BigOperators
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 namespace MTC.Modular
 
-variable (C : MTC.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (C : MTC.BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p

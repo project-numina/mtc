@@ -13,7 +13,7 @@ Evaluation cap slides show that the right-dual tensor comparison transports the 
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 variable {U W : C} (V : C) (f : U ⊗ W ⟶ 𝟙_ C)
@@ -32,13 +32,13 @@ theorem braiding_cap_slide :
           Iso.inv_hom_id, whiskerLeft_id, Category.id_comp, Iso.hom_inv_id_assoc]
         monoidal
     _ = _ := by monoidal
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [BraidedCategory C] [RightRigidCategory C]
@@ -79,6 +79,6 @@ theorem rightDualTensorIso_braiding [HasRightDual X] [HasRightDual Y]
   evaluation_ext (X := X ⊗ Y) (by
     simp only [comp_whiskerRight_assoc, rightDualTensorIso_evaluation,
       rightAdjointMate_comp_evaluation, dual_braiding_tensor_evaluations, ← whisker_exchange_assoc])
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end

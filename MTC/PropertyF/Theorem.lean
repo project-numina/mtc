@@ -36,7 +36,7 @@ local notation "𝒵ᶠ" => MTC.PropertyF.Reduction.bundledCenter C
 /-- The centre square follows from its actual induction adjunction as soon as
 its genuine fusion structure and FP-valued spherical structure are available. -/
 theorem center_globalDimension_square_of_actual_induction
-    {p : Dimensions.PivotalStructure (C := 𝒵ᶠ.Obj)}
+    {p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := 𝒵ᶠ.Obj)}
     (hfp : Modular.IsFPSpherical 𝒵ᶠ p) :
     globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
   (Modular.categorical_global_eq_sum_squares 𝒵ᶠ p hfp.1).trans <| by
@@ -102,7 +102,7 @@ theorem PropertyF.weaklyIntegral_of_propertyF : PropertyF.TargetStatement.{v,u} 
     (MTC.Center.Induction.liftedPivotalStructure_compatible hc)
   have hdim : Modular.HasFPSimpleDimensions (MTC.PropertyF.Reduction.bundledCenter D) pZ := by
     intro i
-    simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
+    simpa [Modular.simpleDimension, MTC.CategoryTheory.Dimensions.pivotalDimension, MTC.CategoryTheory.Dimensions.rightTrace_id,
       unitScalar_eq_equiv] using hfp i
   have hbalance : MTC.Center.Modular.IsPivotalTwistBalanced (MTC.PropertyF.Reduction.bundledCenter D) pZ :=
     fun X Y ↦ MTC.Center.Balancing.pivotal_balance_of_drinfeld_tensor pZ

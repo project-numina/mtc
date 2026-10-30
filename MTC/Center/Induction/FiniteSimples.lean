@@ -85,7 +85,7 @@ end
 end
 
 /-! An injective-retract route to centre semisimplicity and fusion. -/
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits MTC.Dimensions
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits MTC.CategoryTheory.Dimensions
 universe v u
 @[expose] public noncomputable section
 namespace MTC.Center.Induction

@@ -14,7 +14,7 @@ open scoped BigOperators
 @[expose] public noncomputable section
 namespace MTC.Modular
 
-variable (C : MTC.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (C : MTC.BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p

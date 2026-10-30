@@ -18,7 +18,7 @@ Pivotal dimension is additive and multiplicative; simple dimensions determine sp
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -79,12 +79,12 @@ theorem pivotalDimension_unitIndex :
   (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso p e).trans (by
     simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1)
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
   [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
@@ -104,9 +104,9 @@ theorem leftTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
   cyclicTrace_biproduct_scalar_blocks (leftTraceLinear p)
     (fun f g => leftTrace_cyclic p f g) f hc
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -131,4 +131,4 @@ theorem isSpherical_iff_simple_dimensions
         simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f)),
       htrace, leftTrace_biproduct_scalar_blocks p g hc, V, hs]⟩
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions

@@ -13,7 +13,7 @@ Naturality of the root tensor isomorphism and sliding through coevaluation yield
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -45,11 +45,11 @@ theorem rootTensorDefect_natural (f : X ⟶ X') (g : Y ⟶ Y') :
     Category.assoc]
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -85,13 +85,13 @@ theorem trace_reciprocity_of_coeval_defect
     rw [hpost, hunit i k, Linear.smul_comp, Category.assoc, ← hn, ← Category.assoc, ← hpost']
     dsimp only [X, K, J] at hnlabel ⊢
     simp only [Linear.smul_comp, Category.assoc, ← hnlabel]
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -121,6 +121,6 @@ theorem trace_reciprocity_of_coevaluation
       (rootDualSign C i).1 • (((λ_ K).inv ≫ (η_ (Xᘁ) X ▷ K) ≫ (α_ (Xᘁ) X K).hom ≫
         (Xᘁ) ◁ 𝟙 (X ⊗ K)) ≫ (rootTensorDefect C (Xᘁ) (X ⊗ K)).hom)
     simpa only [RootTensorDefectSlide, whiskerLeft_id, Category.comp_id, Category.assoc] using hslide i k
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end

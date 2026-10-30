@@ -500,7 +500,7 @@ theorem fpDeterminant_tensor_of_simple
     (X S : C.Obj) [Simple S] (a : S ≅ S) :
     HasTensorDeterminant C X a :=
   let : FiniteDimensional ℂ (S ⟶ S) := IsFusionCategory.hom_finite _ _
-  (Dimensions.isomorphisms_scalar (k := ℂ) (Iso.refl S) a).elim fun z ⟨hne, hz⟩ ↦
+  (MTC.CategoryTheory.Dimensions.isomorphisms_scalar (k := ℂ) (Iso.refl S) a).elim fun z ⟨hne, hz⟩ ↦
     (show a = scalarIso S (Units.mk0 z hne) from Iso.ext hz).symm ▸ fpDeterminant_tensor_scalar C X S _
 
 /-- Components of a natural automorphism of a functor are conjugate along
@@ -835,26 +835,26 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- The pivotal twist satisfies the balancing equation. -/
-abbrev IsPivotalTwistBalanced (p : Dimensions.PivotalStructure (C := C.Obj)) : Prop :=
-  MTC.Center.Braid.IsBalancedTwist (Dimensions.pivotalBraidedTwistNaturalIso C p)
+abbrev IsPivotalTwistBalanced (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj)) : Prop :=
+  MTC.Center.Braid.IsBalancedTwist (MTC.CategoryTheory.Dimensions.pivotalBraidedTwistNaturalIso C p)
 
 /-- The pivotal twist acts by its chosen scalar on each simple object. -/
-theorem pivotal_twist_has_simple_scalars (p : Dimensions.PivotalStructure (C := C.Obj)) :
-    HasSimpleScalars C (Dimensions.pivotalBraidedTwistNaturalIso C p)
+theorem pivotal_twist_has_simple_scalars (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj)) :
+    HasSimpleScalars C (MTC.CategoryTheory.Dimensions.pivotalBraidedTwistNaturalIso C p)
       (MTC.Center.Braid.pivotalTwistUnit C p) := fun i ↦
   letI : Simple (simples C i) := simples_simple C i
-  Dimensions.pivotalBraidedTwist_simple C p (simples C i)
+  MTC.CategoryTheory.Dimensions.pivotalBraidedTwist_simple C p (simples C i)
 
 /-- Pivotal twist balancing gives the simple balancing equation. -/
-theorem pivotal_twist_simple_balance (p : Dimensions.PivotalStructure (C := C.Obj))
+theorem pivotal_twist_simple_balance (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p) :
-    HasSimpleBalance C (Dimensions.pivotalBraidedTwistNaturalIso C p)
+    HasSimpleBalance C (MTC.CategoryTheory.Dimensions.pivotalBraidedTwistNaturalIso C p)
       (MTC.Center.Braid.pivotalTwistUnit C p) := fun i j ↦ Iso.ext (by
     have h := hbalance (simples C i) (simples C j)
     change Modular.doubleBraiding _ _ ≫
-      (((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i)).hom ⊗ₘ
-        ((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C j)).hom) =
-        ((Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i ⊗ simples C j)).hom at h
+      (((MTC.CategoryTheory.Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i)).hom ⊗ₘ
+        ((MTC.CategoryTheory.Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C j)).hom) =
+        ((MTC.CategoryTheory.Dimensions.pivotalBraidedTwistNaturalIso C p).app (simples C i ⊗ simples C j)).hom at h
     rw [pivotal_twist_has_simple_scalars C p i, pivotal_twist_has_simple_scalars C p j] at h
     simp only [tensorHom_def, MonoidalLinear.whiskerLeft_smul, MonoidalLinear.smul_whiskerRight,
       Linear.smul_comp, Linear.comp_smul, smul_smul] at h
@@ -863,23 +863,23 @@ theorem pivotal_twist_simple_balance (p : Dimensions.PivotalStructure (C := C.Ob
 
 /-- Pivotal twist scalars have finite order whenever its actual balancing law
 holds; no lantern relation or modularity hypothesis is used. -/
-theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
+theorem pivotal_twist_finite_of_balancing (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p) :
-    ∀ i, IsOfFinOrder (End.of ((Dimensions.pivotalBraidedTwist C p (simples C i)).hom)) := fun i ↦
+    ∀ i, IsOfFinOrder (End.of ((MTC.CategoryTheory.Dimensions.pivotalBraidedTwist C p (simples C i)).hom)) := fun i ↦
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
-  by simpa [MTC.Center.Braid.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using
+  by simpa [MTC.Center.Braid.pivotalTwistUnit, MTC.CategoryTheory.Dimensions.pivotalBraidedTwistScalar] using
     (MTC.simpleEndScalar (k := ℂ) (simples C i)).symm.toMonoidHom.isOfFinOrder
       (Units.isOfFinOrder_val.mpr (natural_scalars_finite_of_simple_balancing C
         (pivotal_twist_has_simple_scalars C p) (pivotal_twist_simple_balance C p hbalance) i))
 
 /-- The actual pivotal twist balancing law alone forces every mixed
 monodromy to have finite order; no lantern relation is required. -/
-theorem mixed_monodromy_finite_of_pivotal_balancing (p : Dimensions.PivotalStructure (C := C.Obj))
+theorem mixed_monodromy_finite_of_pivotal_balancing (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
     (hbalance : IsPivotalTwistBalanced C p)
     (X Y : C.Obj) : IsOfFinOrder (End.of (Modular.doubleBraiding X Y)) :=
   MTC.Center.Braid.mixed_monodromy_finite_of_balanced_finite_twist
-    (Dimensions.pivotalBraidedTwistNaturalIso C p)
+    (MTC.CategoryTheory.Dimensions.pivotalBraidedTwistNaturalIso C p)
     (pivotal_twist_finite_of_balancing C p hbalance) hbalance X Y
 
 end MTC.Center.Modular

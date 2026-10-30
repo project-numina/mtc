@@ -9,7 +9,7 @@ Canonical tensor-power isomorphisms identify strand insertions with local operat
 Their coherence implies the recurrence for traces of overlapping products.
 -/
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

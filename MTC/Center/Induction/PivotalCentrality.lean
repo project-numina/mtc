@@ -6,7 +6,7 @@ public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 public import MTC.CategoryTheory.Dimensions.DualBraiding
 public import MTC.CategoryTheory.Dimensions.DoubleDualMonoidal
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 /-! The pivotal structure of the base lifts to the rigid centre. -/
 @[expose] public noncomputable section

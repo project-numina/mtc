@@ -11,7 +11,7 @@ Saturation of a unitary trace bound forces equality of braid squares. Partial tr
 then identifies the monodromy scalar and its dimension consequences.
 -/
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open scoped BigOperators
@@ -141,7 +141,7 @@ theorem dimension_eq_abs_of_scalar_monodromy {X : C.Obj} {d f : ℝ} (hd : d ≠
     (hscalar : selfMonodromy X = (f / d : ℂ) • (1 : End (X ⊗ X))) : f = |d| :=
   let hnonzero : (1 : End (X ⊗ X)) ≠ 0 :=
     end_one_ne_zero_of_pivotalDimension_ne_zero C p (by
-      rw [Dimensions.pivotalDimension_tensor, hdim]
+      rw [MTC.CategoryTheory.Dimensions.pivotalDimension_tensor, hdim]
       exact_mod_cast mul_ne_zero hd hd)
   let ⟨n, hn, hpow⟩ := (selfMonodromy_isOfFinOrder hfinite).exists_pow_eq_one
   fp_eq_abs_dim_of_finite_order hd hf ⟨n, hn.ne', smul_left_injective ℂ hnonzero (by

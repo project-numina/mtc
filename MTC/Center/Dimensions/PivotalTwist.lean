@@ -10,7 +10,7 @@ public import MTC.CategoryTheory.Dimensions.FourthDualUnit
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -65,12 +65,12 @@ theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C} (d : 
     slice_lhs 3 6 => rw [braid_self_slide]
     simp only [Category.assoc]
     rw [whisker_exchange_assoc, ← rightUnitor_inv_naturality_assoc, braided_self_close, Category.comp_id])
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 end
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable (C : MTC.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 /-- The pivotal/Drinfeld twist on an object. -/
@@ -123,5 +123,5 @@ def pivotalBraidedTwistNaturalIso : 𝟭 C.Obj ≅ 𝟭 C.Obj :=
       pivotalBraidedTwist_natural p (MTC.doubleDualIso C) (fun f ↦ drinfeldIso_natural f) f)
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 end

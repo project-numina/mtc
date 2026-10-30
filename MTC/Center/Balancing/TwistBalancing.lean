@@ -17,7 +17,7 @@ Evaluation against duals reduces the Drinfeld tensor equation to a cap identity.
 The resulting compatibility supplies the balancing equation for the pivotal twist.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-open MTC MTC.Dimensions
+open MTC MTC.CategoryTheory.Dimensions
 universe v u
 @[expose] public noncomputable section
 namespace MTC.Center.Balancing

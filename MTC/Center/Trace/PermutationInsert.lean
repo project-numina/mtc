@@ -16,7 +16,7 @@ signed traces to one-strand deletion and insertion identities. The notation
 open MTC.Modular (HasFPSimpleDimensions)
 local notation "sgn" => MTC.Center.permutationSign
 open Equiv.Perm (decomposeFin)
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace MTC.Center.Trace
@@ -117,7 +117,7 @@ theorem integral_of_trace_deletion {C : BraidedFusionCategory} {p : PivotalStruc
   let hz : tr C p ρ 0 1 = 1 := by
     change unitScalarEquiv C (p.rightTrace (((ρ 0) 1).asHom)) = 1
     rw [map_one]
-    simpa only [End.one_asHom, tensorPower, Dimensions.rightTrace_unit] using (map_one (unitScalarEquiv C))
+    simpa only [End.one_asHom, tensorPower, MTC.CategoryTheory.Dimensions.rightTrace_unit] using (map_one (unitScalarEquiv C))
   integral_of_signed_permutation_traces hdim fun n ↦ ⟨ρ n, by
     simpa [permScalarTrace, scalarPermTrace, signedTraceSum, ← unitScalar_eq_equiv] using
       signedTraceSum_falling hz h n⟩
@@ -223,7 +223,7 @@ theorem tensorPermTrace_fixHead (σ : Perm (Fin n)) :
   (congrArg (fun a : End (tensorPower X (n + 1)) ↦ scalar (p.rightTrace a.asHom))
     (tensorPermAction_fixHead hX σ)).trans <| by
       change scalar (p.rightTrace (X ◁ ((tensorPermAction X hX n) σ).asHom)) = _
-      simpa only [id_tensorHom] using Dimensions.pivotalTrace_tensor p scalar
+      simpa only [id_tensorHom] using MTC.CategoryTheory.Dimensions.pivotalTrace_tensor p scalar
         (𝟙 X) ((tensorPermAction X hX n) σ).asHom
 
 end

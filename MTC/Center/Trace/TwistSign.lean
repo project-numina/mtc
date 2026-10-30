@@ -9,9 +9,9 @@ self-transparent simple object the twist is a sign, giving integral dimension.
 We write `θ C p X` for the pivotal twist scalar.
 -/
 @[expose] public noncomputable section
-local notation "θ" => MTC.Dimensions.pivotalBraidedTwistScalar
+local notation "θ" => MTC.CategoryTheory.Dimensions.pivotalBraidedTwistScalar
 open MTC.Modular (HasFPSimpleDimensions IsFPSpherical)
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace MTC.Center.Trace
 universe v u
@@ -30,7 +30,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem drinfeld_coevaluation :
     η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (drinfeldIso X).inv =
       η_ X (Xᘁ) ≫ (β_ (Xᘁ) X).inv :=
-  Dimensions.coevaluation_rightDualIso_inv (BraidedCategory.exactPairing_swap X (Xᘁ))
+  MTC.CategoryTheory.Dimensions.coevaluation_rightDualIso_inv (BraidedCategory.exactPairing_swap X (Xᘁ))
     (HasRightDual.exact : ExactPairing (Xᘁ) ((Xᘁ)ᘁ))
 
 /-- Pivotal coevaluation factors through the braided double-dual comparison. -/
@@ -101,11 +101,11 @@ theorem pivotalTwist_sign_of_selfTransparent :
   apply mul_self_eq_one_iff.mp
   apply smul_left_injective ℂ (id_nonzero X)
   simpa only [inverse_twist_eq_scalar_of_selfTransparent (C := C) hp hX,
-    Dimensions.pivotalBraidedTwist_simple, Linear.smul_comp, Linear.comp_smul,
+    MTC.CategoryTheory.Dimensions.pivotalBraidedTwist_simple, Linear.smul_comp, Linear.comp_smul,
     Category.id_comp, smul_smul, one_smul] using
     (show ((doubleDualIso C X).hom ≫ (p.iso X).inv) ≫
-      (Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X from
-        (Dimensions.pivotalBraidedTwist C p X).inv_hom_id)
+      (MTC.CategoryTheory.Dimensions.pivotalBraidedTwist C p X).hom = 𝟙 X from
+        (MTC.CategoryTheory.Dimensions.pivotalBraidedTwist C p X).inv_hom_id)
 
 end
 

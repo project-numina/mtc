@@ -16,7 +16,7 @@ local notation "tr" => MTC.Center.Trace.permScalarTrace
 open MTC.Modular (HasFPSimpleDimensions)
 local notation "sgn" => MTC.Center.permutationSign
 open Equiv.Perm (decomposeFin)
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace MTC.Center.Trace

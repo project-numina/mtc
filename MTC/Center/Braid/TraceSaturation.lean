@@ -17,7 +17,7 @@ categorical double braiding to its numerical S-matrix centrality test.
 -/
 @[expose] public noncomputable section
 open MTC.Modular (HasFPSimpleDimensions doubleBraiding sCentralizes)
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 open scoped BigOperators
 namespace MTC.Center.Braid
 

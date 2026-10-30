@@ -18,7 +18,7 @@ Right-dual and double-dual tensor comparisons are compatible with the unitors.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
@@ -59,13 +59,13 @@ theorem rightDualTensorIso_unit_right :
     show ε_ I I = (ρ_ I).hom from rfl]
   monoidal
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
@@ -130,6 +130,6 @@ theorem doubleDualTensorIso_unit_right :
     Iso.inv_hom_id, rightAdjointMate_id, whiskerLeft_id, Category.id_comp]
   exact hS'
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end

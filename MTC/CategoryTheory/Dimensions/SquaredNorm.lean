@@ -19,7 +19,7 @@ sum-of-squares and saturation statements used in the global dimension argument.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 
 universe v u
 section SimpleIsomorphisms
@@ -61,13 +61,13 @@ theorem squaredNorm_independent {X : C} [Simple X] [FiniteDimensional k (X ⟶ X
   (isomorphisms_scalar (k := k) j l).elim fun c ⟨hc, hhom⟩ ↦ by
     simp [rightQuantumTrace_smul_hom hhom, leftQuantumTrace_smul_hom hc hhom, hc, mul_comm, mul_left_comm]
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 
 universe v u
 
@@ -115,14 +115,14 @@ theorem target_squaredNorm_iso {X Y : C.Obj} (e : X ≅ Y) :
   (quantumTraces_iso e (j := doubleDualIso C X) (k := doubleDualIso C Y)
     (drinfeldIso_natural e.hom)).elim fun hr hl ↦ by simp only [squaredNorm, hr, hl]
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -158,11 +158,11 @@ theorem global_sum_squares_one_le {k : Type*} [CommRing k] [LinearOrder k] [IsSt
   h.elim fun i hi ↦ by
     simpa [hi] using Finset.single_le_sum (fun j _ ↦ sq_nonneg (d j)) (Finset.mem_univ i)
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -178,6 +178,6 @@ theorem target_squaredNorm_rightDual
     leftQuantumTrace_eq_rightDual ((rightDualIsoMap j).symm),
     ← rightQuantumTrace_iso j rfl, mul_comm]
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end

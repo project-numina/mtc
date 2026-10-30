@@ -14,7 +14,7 @@ The categorical three-strand generators obey the braid relation and have finite
 order when the object has property F. Partial traces compute their overlap trace.
 -/
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 @[expose] public section
 open CategoryTheory
@@ -177,7 +177,7 @@ theorem pivotalTrace_overlap :
     scalar (p.rightTrace (overlapEndProduct v u).asHom) =
       scalar (p.rightTrace v.asHom) *
         (scalar (p.rightTrace u.asHom) / scalar (p.rightTrace (𝟙 X))) := by
-  rw [← Dimensions.rightTrace_partialTrace p, rightPartialTrace_overlap D p scalar]
+  rw [← MTC.CategoryTheory.Dimensions.rightTrace_partialTrace p, rightPartialTrace_overlap D p scalar]
   simp [scalarTrace, PivotalStructure.rightTrace_smul, mul_comm]
 
 end MTC.Braided.Trace

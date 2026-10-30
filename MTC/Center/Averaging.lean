@@ -89,7 +89,7 @@ variable [MonoidalCategory C] [RightRigidCategory C]
 omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The trace of the alternating projector is the dimension of its split image. -/
 theorem alternatingProjector_trace (ρ : Equiv.Perm (Fin n) →* End X)
-    (p : MTC.Dimensions.PivotalStructure (C := C)) :
+    (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C)) :
     ∃ Y : C, p.rightTrace ((alternatingProjector (k := ℂ) ρ).asHom) = p.rightTrace (𝟙 Y) :=
   match alternatingProjector_splits ρ with
   | ⟨Y, i, r, hir, hri⟩ => ⟨Y, by rw [← hri, p.rightTrace_cyclic, hir]⟩

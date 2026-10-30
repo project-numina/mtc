@@ -22,7 +22,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Closing the tensor-unit unitor gives the unitor of the dual object. -/
 theorem closeFusionMap_unit :
     closeFusionMap (𝟙_ D) S (λ_ S).hom = (ρ_ (Sᘁ)).hom :=
-  Dimensions.evaluation_ext (X := S) <| by
+  MTC.CategoryTheory.Dimensions.evaluation_ext (X := S) <| by
     simp [closeFusionMap_evaluation, monoidalComp]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -41,7 +41,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem closeFusionMap_tensor (f : T ⊗ K ⟶ R) (g : U ⊗ S ⟶ K) :
   closeFusionMap (T ⊗ U) S ((α_ T U S).hom ≫ (T ◁ g) ≫ f) =
     𝟙 _ ⊗≫ (closeFusionMap T K f ▷ U) ⊗≫ closeFusionMap U S g := by
-  apply Dimensions.evaluation_ext (X := S)
+  apply MTC.CategoryTheory.Dimensions.evaluation_ext (X := S)
   rw [closeFusionMap_evaluation]
   calc
     _ = 𝟙 _ ⊗≫ ((((Rᘁ : D) ⊗ T) ◁ g) ≫ (closeFusionMap T K f ▷ K)) ⊗≫ ε_ K (Kᘁ) := by

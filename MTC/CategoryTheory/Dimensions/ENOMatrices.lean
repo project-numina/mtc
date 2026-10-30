@@ -15,7 +15,7 @@ Saturated complex bounds determine the phases of their eigenvectors.
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -51,14 +51,14 @@ theorem rootTrace_biproduct_simple
   cyclicTrace_biproduct_simple (fun X ↦ rightTraceWithLinear ((fourthDualRootNaturalIso C).app X)) (fun f g => rootTrace_cyclic C f g)
     hs (fun _ => IsFusionCategory.hom_finite _ _) f
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators Matrix
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -112,13 +112,13 @@ theorem rootDimension_norm_le_fp_of_trace_matrix {i : Fin (rank C)}
     (fun _ _ ↦ Nat.cast_nonneg _) (fun j k ↦ enoTraceMatrix_norm_le_fusionCoeff (hinv j k))
     (fun j ↦ (fpSimple_mul C i j).symm) heig
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 
 /-- If a complex weighted sum reaches its nonnegative termwise norm bound,
 all its positive-weight terms equal their respective bounds. -/
@@ -159,4 +159,4 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
   rw [← hrepr i, ← hrepr j, ← hmul, Complex.ofReal_mul]
   field_simp [hqn i, hqn j]
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions

@@ -149,11 +149,11 @@ universe v u
 
 /-- A column satisfying the Galois-unit identity. -/
 abbrev IsGaloisUnitColumn (Z : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := Z.Obj)) (τ : ℂ ≃+* ℂ) (y : Fin (rank Z)) : Prop :=
+    (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := Z.Obj)) (τ : ℂ ≃+* ℂ) (y : Fin (rank Z)) : Prop :=
   ∀ x, Modular.categoricalS Z p x y =
     Modular.simpleDimension Z p y * τ (Modular.simpleDimension Z p x)
 
-variable (Z : BraidedFusionCategory.{v,u}) {p : Dimensions.PivotalStructure (C := Z.Obj)}
+variable (Z : BraidedFusionCategory.{v,u}) {p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := Z.Obj)}
 local notation "𝒮" => Modular.categoricalS Z p
 local notation "𝒇" => fpSimple Z
 
@@ -229,7 +229,7 @@ theorem positive_galois_sum_squares {d e : ι → ℝ} (σ : K ≃+* K)
     (h : ∀ i, σ (φ (d i)) = φ (e i)) (hone : ∃ i, e i = 1)
     (hbound : ∑ i, e i ^ 2 ≤ ∑ i, d i ^ 2) :
     ∃ a : ℝ, 0 < a ∧ a ≤ ∑ i, d i ^ 2 ∧ σ (φ (∑ i, d i ^ 2)) = φ a :=
-  ⟨∑ i, e i ^ 2, lt_of_lt_of_le zero_lt_one (Dimensions.global_sum_squares_one_le e hone),
+  ⟨∑ i, e i ^ 2, lt_of_lt_of_le zero_lt_one (MTC.CategoryTheory.Dimensions.global_sum_squares_one_le e hone),
     hbound, galois_sum_squares σ h⟩
 
 variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
@@ -240,14 +240,14 @@ theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalF
   let d : Fin (rank C) → ℝ := fun i ↦ (σ (fpSimple C i : ℂ)).re
   have hbound (i : Fin (rank C)) : |d i| ≤ fpSimple C i := by
     simp only [d, ← Real.norm_eq_abs, ← Complex.norm_real, fp_simple_galois_real]
-    exact Dimensions.galois_character_norm_le_fpSimple (χ := fun i ↦ (fpSimple C i : ℂ))
+    exact MTC.CategoryTheory.Dimensions.galois_character_norm_le_fpSimple (χ := fun i ↦ (fpSimple C i : ℂ))
       (i₀ := unitIndex C) (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) σ i
   by
     change ∃ a : ℝ, 0 < a ∧ a ≤ ∑ i, fpSimple C i ^ 2 ∧
       σ ((algebraMap ℝ ℂ) (∑ i, fpSimple C i ^ 2)) = (algebraMap ℝ ℂ) a
     exact positive_galois_sum_squares σ (fun i ↦ (fp_simple_galois_real C σ i).symm)
       ⟨unitIndex C, by simp [fpSimple_unit]⟩
-      (Dimensions.sum_sq_le_sum_sq_of_abs_le hbound)
+      (MTC.CategoryTheory.Dimensions.sum_sq_le_sum_sq_of_abs_le hbound)
 
 end MTC
 end
@@ -262,10 +262,10 @@ universe v u
 
 /-- The simple dimensions indexed by a set are integers. -/
 abbrev HasIntegralSimpleDimensionsOn (Z : BraidedFusionCategory.{v,u})
-    (p : Dimensions.PivotalStructure (C := Z.Obj)) (core : Set (Fin (rank Z))) : Prop :=
+    (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := Z.Obj)) (core : Set (Fin (rank Z))) : Prop :=
   ∀ x ∈ core, ∃ z : ℤ, Modular.simpleDimension Z p x = z
 
-variable {Z : BraidedFusionCategory.{v,u}} {p : Dimensions.PivotalStructure (C := Z.Obj)}
+variable {Z : BraidedFusionCategory.{v,u}} {p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := Z.Obj)}
 variable {τ : ℂ ≃+* ℂ} {core generated : Set (Fin (rank Z))} {y : Fin (rank Z)}
 
 /-- If the common centralizer has integral dimensions, its double centralizer
@@ -306,7 +306,7 @@ local notation "𝒵ᶠ" => MTC.PropertyF.Reduction.bundledCenter C
 /-- A modular actual centre with integral centralizer and finite braid-image
 retracts forces the global Frobenius–Perron dimension to be integral. -/
 theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
-    {p : Dimensions.PivotalStructure (C := 𝒵ᶠ.Obj)}
+    {p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := 𝒵ᶠ.Obj)}
     {core generated : Set (Fin (rank 𝒵ᶠ))}
     (hfp : Modular.IsFPSpherical 𝒵ᶠ p) (hdet : (Modular.categoricalS 𝒵ᶠ p).det ≠ 0)
     (hglobal : globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2)

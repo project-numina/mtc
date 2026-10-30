@@ -17,7 +17,7 @@ Representations of braid algebras give nonnegative integral multiplicities, yiel
 `pivotalTrace_braid_multiplicities` and unitary trace presentations.
 -/
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

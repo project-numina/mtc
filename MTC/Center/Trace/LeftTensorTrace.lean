@@ -16,11 +16,11 @@ compatibility in spherical categories. We write `θ C p X` for the pivotal
 twist scalar and `tr C p ρ n σ` for a scalar permutation trace.
 -/
 @[expose] public noncomputable section
-local notation "θ" => MTC.Dimensions.pivotalBraidedTwistScalar
+local notation "θ" => MTC.CategoryTheory.Dimensions.pivotalBraidedTwistScalar
 local notation "tr" => MTC.Center.Trace.permScalarTrace
 open MTC.Modular (HasFPSimpleDimensions IsFPSpherical)
 open Equiv.Perm (decomposeFin)
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace MTC.Center.Trace
@@ -97,7 +97,7 @@ theorem leftPartialTrace_braiding_of_trace_compatibility
     leftPartialTrace p (End.of (β_ X X).hom) =
       θ C p X • (1 : End X) := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  simpa only [← unitScalar_eq_equiv, Dimensions.pivotalTrace_selfBraiding,
+  simpa only [← unitScalar_eq_equiv, MTC.CategoryTheory.Dimensions.pivotalTrace_selfBraiding,
     pivotalDimension, mul_div_cancel_right₀ _ (Modular.unitScalar_rightTrace_ne_zero C p X)] using
     leftPartialTrace_simple_of_trace_compatibility p (unitScalarEquiv C)
       (End.of (β_ X X).hom) (by simpa only [← unitScalar_eq_equiv] using
@@ -186,18 +186,18 @@ canonical tensor-dual pairing. -/
 theorem tensorDual_coevaluation :
     η_ ((X ⊗ Y)ᘁ) (((X ⊗ Y)ᘁ)ᘁ) =
       η_ ((Yᘁ) ⊗ (Xᘁ)) (((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)) ≫
-        ((rightDualTensorIso X Y).inv ⊗ₘ (Dimensions.doubleDualTensorIso X Y).hom) := by
+        ((rightDualTensorIso X Y).inv ⊗ₘ (MTC.CategoryTheory.Dimensions.doubleDualTensorIso X Y).hom) := by
   let A := (X ⊗ Y)ᘁ
   let B := (Yᘁ) ⊗ (Xᘁ)
   let E := ((Xᘁ)ᘁ) ⊗ ((Yᘁ)ᘁ)
   let r : A ≅ B := rightDualTensorIso X Y
   let t : Bᘁ ≅ E := rightDualTensorIso (Yᘁ) (Xᘁ)
-  rw [← Dimensions.coevaluation_iso_map r.symm, Iso.symm_hom, Iso.symm_inv, tensorHom_def]
+  rw [← MTC.CategoryTheory.Dimensions.coevaluation_iso_map r.symm, Iso.symm_hom, Iso.symm_inv, tensorHom_def]
   have he : η_ B E ≫ B ◁ t.inv = η_ B (Bᘁ) :=
-    Dimensions.coevaluation_rightDualIso_inv HasRightDual.exact ExactPairing.tensor
+    MTC.CategoryTheory.Dimensions.coevaluation_rightDualIso_inv HasRightDual.exact ExactPairing.tensor
   rw [← he]
-  simp only [Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
-    Dimensions.rightDualIsoMap, tensorHom_def, whiskerLeft_comp, Category.assoc]
+  simp only [MTC.CategoryTheory.Dimensions.doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom,
+    MTC.CategoryTheory.Dimensions.rightDualIsoMap, tensorHom_def, whiskerLeft_comp, Category.assoc]
   rw [whisker_exchange_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -211,11 +211,11 @@ theorem leftTrace_tensor_pairing (f : X ⊗ Y ⟶ X ⊗ Y) :
   let E := (Yᘁ) ⊗ (Xᘁ)
   let r : D ≅ E := rightDualTensorIso X Y
   have hev : r.inv ▷ A ≫ ε_ A D = ε_ A E :=
-    Dimensions.rightDualIso_inv_evaluation
+    MTC.CategoryTheory.Dimensions.rightDualIso_inv_evaluation
       (@HasRightDual.exact C _ _ A (RightRigidCategory.rightDual A)) ExactPairing.tensor
   change η_ D (Dᘁ) ≫ (𝟙 D ⊗ₘ ((p.iso A).inv ≫ f)) ≫ ε_ A D = _
   rw [tensorDual_coevaluation,
-    show p.iso (X ⊗ Y) = (p.iso X ⊗ᵢ p.iso Y) ≪≫ Dimensions.doubleDualTensorIso X Y from
+    show p.iso (X ⊗ Y) = (p.iso X ⊗ᵢ p.iso Y) ≪≫ MTC.CategoryTheory.Dimensions.doubleDualTensorIso X Y from
       Iso.ext (p.tensor X Y)]
   simp only [Iso.trans_inv, tensorIso_inv, tensorHom_def, id_whiskerRight,
     whiskerLeft_comp, Category.assoc]

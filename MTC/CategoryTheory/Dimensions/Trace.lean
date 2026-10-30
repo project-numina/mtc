@@ -12,7 +12,7 @@ inverse duals and supplies cyclicity of the left pivotal trace.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
@@ -44,9 +44,9 @@ theorem rightTraceWith_cyclic {X Y : C} [HasRightDual X] [HasRightDual Y]
       whisker_exchange_assoc j.hom (fᘁ), ← rightAdjointMate_comp_evaluation,
       ← comp_whiskerRight_assoc j.hom (fᘁᘁ), ← hnat, comp_whiskerRight_assoc])
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
-namespace MTC.Dimensions.PivotalStructure
+namespace MTC.CategoryTheory.Dimensions.PivotalStructure
 
 universe v u
 variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C]
@@ -65,9 +65,9 @@ theorem leftTrace_add (f g : X ⟶ X) : p.leftTrace (f + g) = p.leftTrace f + p.
 theorem leftTrace_smul (c : k) (f : X ⟶ X) : p.leftTrace (c • f) = c • p.leftTrace f :=
   End.homEquiv.injective (by simp [leftTrace, tensorHom_def])
 
-end MTC.Dimensions.PivotalStructure
+end MTC.CategoryTheory.Dimensions.PivotalStructure
 
-namespace MTC.Dimensions.PivotalStructure
+namespace MTC.CategoryTheory.Dimensions.PivotalStructure
 open CategoryTheory CategoryTheory.MonoidalCategory
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
@@ -81,9 +81,9 @@ theorem rightTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
 theorem rightTrace_id_iso (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) :
     p.rightTrace (𝟙 X) = p.rightTrace (𝟙 Y) := by simpa using p.rightTrace_cyclic e.hom e.inv
 
-end MTC.Dimensions.PivotalStructure
+end MTC.CategoryTheory.Dimensions.PivotalStructure
 
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
@@ -146,4 +146,4 @@ theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
     rightAdjointMate_comp_evaluation] using
       rightTraceWith_cyclic (gᘁ) (fᘁ) (dual_naturality (p.iso Y) (p.iso X) g (p.naturality g))
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions

@@ -15,7 +15,7 @@ numerical double-centralizer inclusion. The local notations `S D p` and
 @[expose] public noncomputable section
 open MTC.Modular
   (HasFPSimpleDimensions HasRealSimpleDimensions IsFPSpherical sCentralizes sCentralizer)
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 open scoped BigOperators
 local notation "S" => MTC.Modular.categoricalS
 local notation "dim" => MTC.Modular.simpleDimension

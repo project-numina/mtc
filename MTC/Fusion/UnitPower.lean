@@ -191,6 +191,6 @@ theorem generatedBy_rightDual (X : D) :
     (generatedBy_retract (generatedBy_finiteBiproduct _ fun p ↦
       letI : Simple (V p) := hsimple p.1
       generatedBy_trans (hv p) (simple_generatedBy_rightDual (V p))) (dualFiniteBiproductRetract V))
-    (Dimensions.rightDualIsoMap e).symm
+    (MTC.CategoryTheory.Dimensions.rightDualIsoMap e).symm
 
 end MTC

@@ -15,7 +15,7 @@ Scalar sign twists and tensor-defect identities describe extensions from simple 
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -100,13 +100,13 @@ theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
   simpa [X] using (Iso.comp_inv_eq (rootSignTensorIso C c hc _ _)).1 hid
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
@@ -114,13 +114,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C)) = 1 :=
   End.homEquiv.injective (unitDoubleDual_trace (C := C))
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -175,6 +175,6 @@ theorem rootSignTwist_unit_of_simple_dimension
       rootSignQuantumTrace_simple, hunit]
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end

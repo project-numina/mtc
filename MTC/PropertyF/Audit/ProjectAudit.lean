@@ -235,10 +235,10 @@ run_cmd do
       ``MTC.Center.Balancing.balance_of_drinfeld_tensor,
       ``MTC.center_globalDimension_square_of_actual_induction,
       ``MTC.Braided.Trace.actual_rigidity_of_overlap_and_galois_dimensions,
-      ``MTC.Dimensions.fourthDualRootNaturalSquare_eq,
+      ``MTC.CategoryTheory.Dimensions.fourthDualRootNaturalSquare_eq,
       ``MTC.selfDual_character_galois_real,
       ``MTC.Braided.Trace.exists_unitary_braid_trace_blocks,
-      ``MTC.Dimensions.squaredNorm_independent] do
+      ``MTC.CategoryTheory.Dimensions.squaredNorm_independent] do
     if let some issue := findIssue env n then
       throwError "dependency audit failed for ground result {n}: {repr issue}"
   logInfo "Dependency audit passed imported positive and negative fixtures."

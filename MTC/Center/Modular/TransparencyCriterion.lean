@@ -17,7 +17,7 @@ Trivial transparency provides the needed vanishing in a positive pivotal categor
 open scoped BigOperators
 namespace MTC.Center.Modular
 open MTC.Modular
-variable (C : BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (C : BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
@@ -118,7 +118,7 @@ set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
 namespace MTC.Center.Modular
 universe v u
-variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (C : BraidedFusionCategory.{v,u}) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => Modular.categoricalS C p
 local notation "dₚ" => Modular.simpleDimension C p

@@ -12,7 +12,7 @@ the fusion-coefficient expansion; the remaining Hopf-link product identity is
 isolated precisely as the input needed for the Verlinde character equations.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory CategoryTheory.Limits
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 open scoped BigOperators
 @[expose] public noncomputable section
 namespace MTC.Modular

@@ -13,7 +13,7 @@ The categorical braid trace obeys a weighted unitary bound. Repeated overlapping
 products remain unitary, and their trace recurrence yields the sharper bound.
 -/
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits

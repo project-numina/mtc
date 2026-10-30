@@ -2,7 +2,7 @@ module
 public import MTC.Fusion.ObjectDimension
 public import MTC.CategoryTheory.Dimensions.SimpleHomBasis
 
-open MTC.Dimensions Module
+open MTC.CategoryTheory.Dimensions Module
 
 /-! The underlying object of the induction construction for the Drinfeld centre. -/
 

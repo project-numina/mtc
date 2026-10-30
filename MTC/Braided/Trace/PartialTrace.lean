@@ -10,7 +10,7 @@ The right partial trace closes a tensor factor using duality. Its compatibility 
 endomorphisms of the other factor yields formulas for simple objects.
 -/
 
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

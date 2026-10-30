@@ -12,7 +12,7 @@ file does not assume that every numerical datum is categorically realized.
 
 @[expose] public noncomputable section
 open scoped BigOperators
-open MTC MTC.Dimensions MTC.Modular
+open MTC MTC.CategoryTheory.Dimensions MTC.Modular
 
 namespace MTC.ModularData
 universe v u

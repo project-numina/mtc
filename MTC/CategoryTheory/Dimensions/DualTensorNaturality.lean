@@ -14,7 +14,7 @@ Evaluation pairings establish naturality of dual tensor isomorphisms and the Dri
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 /-- A morphism into a dual object is determined by its evaluation pairing. -/
@@ -116,12 +116,12 @@ theorem doubleDualTensorIso_natural :
   rw [comp_rightAdjointMate, comp_rightAdjointMate] at h2
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc,
     reassoc_of% (rightDualTensorIso_inv_natural (gᘁ) (fᘁ)), ← h2]
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 open MTC
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -199,4 +199,4 @@ theorem fourthDualIso_rightDual (X : C) [HasRightDual X] [HasRightDual (Xᘁ)]
   simpa only [drinfeldIso_doubleDual] using (drinfeldIso_natural ((drinfeldIso X).invᘁ)).symm
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions

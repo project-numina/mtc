@@ -21,7 +21,7 @@ The classification and complex-automorphism action follow from the S-square,
 global nonvanishing, and Verlinde equations.
 -/
 open scoped BigOperators
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 namespace MTC.Modular
 
@@ -117,7 +117,7 @@ scalar partial trace on a simple surviving strand. The Hopf-link product follows
 from the composition law for these partial traces.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory
-open MTC.Dimensions MTC.Braided.Trace
+open MTC.CategoryTheory.Dimensions MTC.Braided.Trace
 
 namespace MTC.Modular
 universe v u
@@ -167,7 +167,7 @@ end
 section
 /-! The unit axiom of a pivotal structure normalizes the tensor-unit trace. -/
 open CategoryTheory CategoryTheory.MonoidalCategory
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 
 namespace MTC.Modular
 universe v u
@@ -176,8 +176,8 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory 
 /-- The dimension of the simple representative of the tensor unit is one. -/
 theorem simpleDimension_unit (C : MTC.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) : simpleDimension C p (unitIndex C) = 1 :=
-  by simpa only [simpleDimension, ← MTC.unitScalar_eq_equiv, Dimensions.pivotalDimension] using
-    Dimensions.pivotalDimension_unitIndex C p
+  by simpa only [simpleDimension, ← MTC.unitScalar_eq_equiv, MTC.CategoryTheory.Dimensions.pivotalDimension] using
+    MTC.CategoryTheory.Dimensions.pivotalDimension_unitIndex C p
 
 end MTC.Modular
 end
@@ -192,7 +192,7 @@ give the Hopf-link product identity on a simple strand. Additivity on the
 semisimple tensor-product decomposition then proves the Verlinde equations.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-open MTC.Dimensions MTC.Braided.Trace
+open MTC.CategoryTheory.Dimensions MTC.Braided.Trace
 open scoped BigOperators
 
 namespace MTC.Modular

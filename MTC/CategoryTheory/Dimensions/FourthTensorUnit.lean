@@ -15,7 +15,7 @@ The tensor unit and unit labels satisfy the coherence identities for the root te
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
@@ -54,4 +54,4 @@ theorem rootTensorDefect_unit_left :
     erw [rootTensorIso_unit_left, Linear.comp_smul, smul_smul, rootDimension_unit_sq,
       one_smul, Category.id_comp]
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions

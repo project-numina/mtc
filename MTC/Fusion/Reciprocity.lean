@@ -153,7 +153,7 @@ def dualEquiv : Equiv.Perm (Fin (rank D)) :=
 
 end MTC
 
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -190,4 +190,4 @@ theorem rightQuantumTrace_simple_ne_zero
       simpa [rightQuantumTrace, s, r, t, ev, tensorIso_hom] using congrArg End.asHom hzero)
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions

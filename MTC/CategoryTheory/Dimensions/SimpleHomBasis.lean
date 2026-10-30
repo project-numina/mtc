@@ -19,7 +19,7 @@ Partial traces, bases, and composition pairings describe simple multiplicity spa
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 variable {R : Type*} [CommSemiring R] [Preadditive C] [Linear R C]
@@ -41,13 +41,13 @@ theorem rightQuantumTrace_tensor_scalar (scalar : End (𝟙_ C) ≃ₐ[R] R) {X 
       simpa [hpt, rightTraceWith, rightQuantumTrace, tensorHom_def] using
         congrArg End.asHom (rightTraceWith_partialTraceWith j k (1 : End (X ⊗ Y))).symm)
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -66,14 +66,14 @@ theorem rootTrace_inverseDefect (i j : Fin (rank C)) :
         ((fourthDualRootNaturalIso C).app (simples C i))
         ((fourthDualRootNaturalIso C).app (simples C j))
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 section
@@ -191,13 +191,13 @@ theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}
   by simpa only [enoTraceMatrix, hop, d, rootTrace_inverseDefect] using
     (rootTrace_eq_simpleHom_trace_sum d.inv).symm
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 section
@@ -256,4 +256,4 @@ theorem simpleHomPairingEquiv_natural {S X Y : D} [Simple S] (g : Y ⟶ S) (a : 
       Linear.rightComp_apply, Category.assoc]
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions

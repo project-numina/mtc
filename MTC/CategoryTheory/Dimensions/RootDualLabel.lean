@@ -13,7 +13,7 @@ signs on a label and its dual.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -36,13 +36,13 @@ theorem positive_spherical_of_simple_fourth_and_reciprocity
     (fun i ↦ squaredNorm_eq_root_norm_sq_of_reciprocity hinv htranspose i) hpu
 
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -90,13 +90,13 @@ theorem trace_reciprocity_of_intertwining
   change LinearMap.trace ℂ _ B = (rootDualSign C i).1 * LinearMap.trace ℂ _ A
   rw [ht, ← mul_assoc, (rootDualSign C i).2.1, one_mul]
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -119,13 +119,13 @@ theorem trace_reciprocity_of_frobenius_defect
     erw [← simpleHomPairingEquiv_natural]
     simp [enoReciprocityEquiv, hcompat, multiplicityDefect_apply]
 
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Dimensions
+namespace MTC.CategoryTheory.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -142,6 +142,6 @@ theorem rootDualSign_dual (i : Fin (rank C)) :
   apply mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero i)
     (rootDimension_ne_zero (dualIndex C i)))
   simpa only [mul_assoc, mul_left_comm, mul_comm] using he
-end MTC.Dimensions
+end MTC.CategoryTheory.Dimensions
 
 end

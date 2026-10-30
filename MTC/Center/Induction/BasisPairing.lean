@@ -2,7 +2,7 @@ module
 public import MTC.Center.Induction.CrossingBlocks
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 
-open MTC.Dimensions Algebra
+open MTC.CategoryTheory.Dimensions Algebra
 
 /-! Dual bases for the actual fusion summand inclusions and projections. -/
 
@@ -136,7 +136,7 @@ set_option backward.isDefEq.respectTransparency false in
 theorem closeFusionMap_pre_test (h : T ⟶ U) (f : U ⊗ S ⟶ R) :
     (Rᘁ ◁ h) ≫ closeFusionMap U S f =
       closeFusionMap T S ((h ▷ S) ≫ f) :=
-  Dimensions.evaluation_ext (X := S) <| by
+  MTC.CategoryTheory.Dimensions.evaluation_ext (X := S) <| by
     simp [comp_whiskerRight, closeFusionMap_evaluation, whiskerLeft_comp, monoidalComp]
 
 variable (X : D) (h : T ⟶ U)

@@ -106,10 +106,10 @@ universe v u
 variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 
 /-- The original pivotal maps satisfy the same categorical equations. -/
-def pivotal (p : Dimensions.PivotalStructure (C := C.Obj)) :
-    Dimensions.PivotalStructure (C := (category C σ).Obj) := p
+def pivotal (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj)) :
+    MTC.CategoryTheory.Dimensions.PivotalStructure (C := (category C σ).Obj) := p
 
-variable (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 local notation "Cσ" => category C σ
 local notation "pσ" => pivotal C σ p
 
@@ -122,8 +122,8 @@ theorem unitScalar_twist (f : End (𝟙_ C.Obj)) :
 
 /-- Pivotal dimensions transform by the specified field automorphism. -/
 theorem pivotalDimension_twist (X : C.Obj) :
-    Dimensions.pivotalDimension Cσ pσ X =
-    σ (Dimensions.pivotalDimension C p X) :=
+    MTC.CategoryTheory.Dimensions.pivotalDimension Cσ pσ X =
+    σ (MTC.CategoryTheory.Dimensions.pivotalDimension C p X) :=
   unitScalar_twist C σ _
 
 variable {p}
@@ -131,19 +131,19 @@ variable {p}
 /-- Match chosen simple representatives and transport pivotal dimensions. -/
 theorem labels (hdim : Modular.HasFPSimpleDimensions C p) :
     ∃ e : Fin (rank C) ≃ Fin (rank Cσ),
-      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ (e i)) = σ (fpSimple C i : ℂ) :=
+      ∀ i, MTC.CategoryTheory.Dimensions.pivotalDimension Cσ pσ (simples Cσ (e i)) = σ (fpSimple C i : ℂ) :=
   let ⟨e, he⟩ := Modular.simpleLabels_equiv C Cσ (CategoryTheory.Equivalence.refl)
-  ⟨e, fun i ↦ (Dimensions.pivotalDimension_iso pσ (he i).some).symm.trans <| by
-    change Dimensions.pivotalDimension Cσ pσ (simples C i) = _
+  ⟨e, fun i ↦ (MTC.CategoryTheory.Dimensions.pivotalDimension_iso pσ (he i).some).symm.trans <| by
+    change MTC.CategoryTheory.Dimensions.pivotalDimension Cσ pσ (simples C i) = _
     simp only [pivotalDimension_twist]
-    simpa [Dimensions.pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using
+    simpa [MTC.CategoryTheory.Dimensions.pivotalDimension, unitScalar_eq_equiv, Modular.simpleDimension] using
       congrArg σ (hdim i)⟩
 
 /-- Simple FP dimensions and their real conjugates give the twisted pivotal dimensions. -/
 theorem exists_galois_fp_dimensions (hdim : Modular.HasFPSimpleDimensions C p) :
     ∃ original transformed : Fin (rank Cσ) → ℝ,
       (∀ i, 0 < original i) ∧ (∀ i, σ (original i : ℂ) = (transformed i : ℂ)) ∧
-      ∀ i, Dimensions.pivotalDimension Cσ pσ (simples Cσ i) = (transformed i : ℂ) :=
+      ∀ i, MTC.CategoryTheory.Dimensions.pivotalDimension Cσ pσ (simples Cσ i) = (transformed i : ℂ) :=
   let ⟨e, he⟩ := labels C σ hdim
   ⟨fun i ↦ fpSimple C (e.symm i), fun i ↦ (σ (fpSimple C (e.symm i) : ℂ)).re,
     fun i ↦ fpSimple_pos C _, fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, fun i ↦ by
@@ -174,7 +174,7 @@ theorem fpDimension_twist (X : C.Obj) :
     infer_instance
   fpDimension_functor F X
 
-variable (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 local notation "Cσ" => category C σ
 local notation "pσ" => pivotal C σ p
 
@@ -199,7 +199,7 @@ open scoped BigOperators
 namespace MTC
 universe v u
 
-variable (Z : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj))
+variable (Z : BraidedFusionCategory.{v,u}) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := Z.Obj))
 local notation "𝒇" => fpSimple Z
 local notation "𝒮" => Modular.categoricalS Z p
 
@@ -219,8 +219,8 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
   have hd : d ≠ 0 := fun hz ↦ (map_ne_zero σ).2
     (show (𝒇 y : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (fpSimple_pos Z y)))
     (by simpa [hz] using hσ)
-  have hXdim : Dimensions.pivotalDimension D q X = (d : ℂ) := by
-    rw [ScalarTwist.pivotalDimension_twist, Dimensions.pivotalDimension, unitScalar_eq_equiv]
+  have hXdim : MTC.CategoryTheory.Dimensions.pivotalDimension D q X = (d : ℂ) := by
+    rw [ScalarTwist.pivotalDimension_twist, MTC.CategoryTheory.Dimensions.pivotalDimension, unitScalar_eq_equiv]
     change σ (Modular.simpleDimension Z p y) = _
     rw [hdim, hσ]
   have hXfp : fpDimension D X = 𝒇 y :=

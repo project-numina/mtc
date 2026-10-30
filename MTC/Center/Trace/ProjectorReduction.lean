@@ -17,7 +17,7 @@ denotes the permutation sign in the scalar ring.
 @[expose] public noncomputable section
 open MTC.Modular (HasFPSimpleDimensions)
 local notation "sgn" => MTC.Center.permutationSign
-open MTC.Dimensions
+open MTC.CategoryTheory.Dimensions
 open Equiv (Perm)
 open Fintype (card_perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -107,11 +107,11 @@ theorem rightTrace_alternatingProjector :
       ⅟(Fintype.card (Perm (Fin n)) : ℂ) •
         ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
   rw [MTC.Center.alternatingProjector, MTC.Center.algebraAverage_eq_sum]
-  change (Dimensions.rightTraceWithLinear (k := ℂ) (p.iso X))
+  change (MTC.CategoryTheory.Dimensions.rightTraceWithLinear (k := ℂ) (p.iso X))
     ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
       ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
   simp only [End.smul_asHom, End.sum_asHom, map_smul, map_sum,
-    Dimensions.rightTraceWithLinear, LinearMap.coe_mk, AddHom.coe_mk, PivotalStructure.rightTrace]
+    MTC.CategoryTheory.Dimensions.rightTraceWithLinear, LinearMap.coe_mk, AddHom.coe_mk, PivotalStructure.rightTrace]
 
 /-- Multiplying the alternating-projector trace by the group order gives
  the signed sum of the actual categorical permutation traces. -/
