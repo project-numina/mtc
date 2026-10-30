@@ -51,8 +51,8 @@ the import, first build `MTC.AnyonAtlas.Raw` with Lake. The generated modules ar
 not part of the default build and are not committed. `MTC/AnyonAtlas/Raw.lean`
 represents each exact entry as a sum of rational coefficients times roots of
 unity. `MTC/AnyonAtlas/Sample.lean` evaluates the rank-one source record and
-connects S and T to the proved `MTC.ModularData.trivial`. The general raw
-encoding is not yet a constructor for `MTC.ModularData`: such a constructor
+connects S and T to the proved `MTC.Modular.Data.trivial`. The general raw
+encoding is not yet a constructor for `MTC.Modular.Data`: such a constructor
 must supply duals, fusion rules, and proofs of its axioms. In particular, the
 fermionic full S matrix is singular and must not be imported as ordinary
 modular data. No categorification follows merely from a data record.

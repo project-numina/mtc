@@ -1,6 +1,6 @@
 module
-public import MTC.ModularData.Equivalence
-public import MTC.PropertyF.NondegenerateSpherical
+public import MTC.Fusion.Equivalence
+public import MTC.Modular.SMatrix
 public import Mathlib.Computability.Partrec
 
 /-!
@@ -26,7 +26,7 @@ Lean rank-one category example remain future work.
 -/
 
 @[expose] public noncomputable section
-open MTC MTC.PropertyF
+open MTC MTC.PropertyF MTC.Modular
 
 namespace MTC.Conjectures.RankFiniteness
 universe v u
@@ -39,7 +39,7 @@ theorem effectiveCategoryCount :
         (∀ i, rank (reps i) = r ∧ HasNondegenerateSphericalStructure (reps i)) ∧
         ∀ C : BraidedFusionCategory.{v,u}, rank C = r →
           HasNondegenerateSphericalStructure C →
-          ∃ i, Nonempty (MTC.BraidedTensorEquivalence C (reps i)) := by
+          ∃ i, Nonempty (MTC.Fusion.BraidedTensorEquivalence C (reps i)) := by
   sorry
 
 end MTC.Conjectures.RankFiniteness

@@ -19,12 +19,12 @@ https://anyonatlas.org/documentation (derived data conventions).
 
 @[expose] public section
 open scoped BigOperators
-namespace MTC
+namespace MTC.Modular
 
 /-- Unnormalized modular data over a field with conjugation. Labels are `Fin n`;
 `vacuum` need not be the first label. The Verlinde equation is cleared of the
 global-dimension denominator, but retains the nonzero unit-row denominators. -/
-structure ModularData (K : Type*) [Field K] [StarRing K] (n : ℕ) where
+structure Data (K : Type*) [Field K] [StarRing K] (n : ℕ) where
   vacuum : Fin n
   dual : Fin n → Fin n
   dual_involutive : Function.Involutive dual
@@ -47,8 +47,8 @@ structure ModularData (K : Type*) [Field K] [StarRing K] (n : ℕ) where
   verlinde : ∀ i j k, ∑ x, S i x * S j x * S (dual k) x / S vacuum x =
     (∑ x, S vacuum x ^ 2) * (fusion i j k : K)
 
-namespace ModularData
-variable {K : Type*} [Field K] [StarRing K] {n : ℕ} (d : ModularData K n)
+namespace Data
+variable {K : Type*} [Field K] [StarRing K] {n : ℕ} (d : Data K n)
 
 /-- The square of the total quantum dimension in the chosen normalization. -/
 def globalDimension : K := ∑ i, d.S d.vacuum i ^ 2
@@ -64,13 +64,13 @@ include d in
 /-- A modular datum has at least one label: the tensor unit. -/
 theorem rank_pos : 0 < n := Fin.pos_iff_nonempty.mpr ⟨d.vacuum⟩
 
-end ModularData
-end MTC
+end Data
+end MTC.Modular
 
-namespace MTC.ModularData
+namespace MTC.Modular.Data
 
 /-- The modular data of the trivial rank-one theory over any exact scalar field. -/
-def trivial (K : Type*) [Field K] [StarRing K] : ModularData K 1 where
+def trivial (K : Type*) [Field K] [StarRing K] : Data K 1 where
   vacuum := 0
   dual := id
   dual_involutive := by intro i; rfl
@@ -102,4 +102,4 @@ def trivial (K : Type*) [Field K] [StarRing K] : ModularData K 1 where
 example : (trivial ℚ).globalDimension = 1 := by
   norm_num [globalDimension, trivial]
 
-end MTC.ModularData
+end MTC.Modular.Data

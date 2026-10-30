@@ -91,7 +91,7 @@ modular data.
 For a finite group G, complex representations of dimension r are semisimple.
 There are at most |G| irreducibles, and each multiplicity is at most r, so
 there are at most (r+1)^|G| isomorphism classes of r-dimensional
-representations. `MTC.ModularData.card_multiplicityProfile` proves the elementary
+representations. `MTC.Modular.Data.card_multiplicityProfile` proves the elementary
 profile count; applying it requires formalizing semisimplicity, irreducible
 classification, and the correspondence between profiles and representations.
 

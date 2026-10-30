@@ -1,5 +1,5 @@
 module
-public import MTC.PropertyF.NondegenerateSpherical
+public import MTC.Modular.SMatrix
 public import MTC.PropertyF.Theorem
 
 /-!
@@ -19,7 +19,7 @@ Declaration: MTC.Conjectures.PropertyF.modular_propertyF
 -/
 
 @[expose] public noncomputable section
-open MTC MTC MTC.PropertyF
+open MTC MTC.Modular MTC.PropertyF
 namespace MTC.Conjectures.PropertyF
 universe v u
 

@@ -1,6 +1,6 @@
 module
 public import MTC.AnyonAtlas.Raw
-public import MTC.ModularData.Basic
+public import MTC.Modular.Data.Basic
 public import Mathlib.Analysis.Complex.Exponential
 
 /-!
@@ -8,7 +8,7 @@ public import Mathlib.Analysis.Complex.Exponential
 
 The first bosonic record is the rank-one trivial theory. Its exported S and T
 entries are both 1. The equality below connects this exact raw encoding to the
-independently verified `MTC.ModularData.trivial`, whose structure fields include
+independently verified `MTC.Modular.Data.trivial`, whose structure fields include
 all of the shared interface's modular-data axioms.
 -/
 
@@ -35,13 +35,13 @@ noncomputable def CyclotomicExpression.value (x : CyclotomicExpression) : ℂ :=
 example : rankOne.id = "B01-00000" ∧ rankOne.rank = 1 := by decide
 
 /-- The exported S entry agrees with the checked modular-data example. -/
-theorem rankOne_s : (((rankOne.s[0]!)[0]!).value) = (MTC.ModularData.trivial ℂ).S 0 0 := by
+theorem rankOne_s : (((rankOne.s[0]!)[0]!).value) = (MTC.Modular.Data.trivial ℂ).S 0 0 := by
   norm_num [rankOne, CyclotomicExpression.value, CyclotomicTerm.value,
-    MTC.ModularData.trivial, Matrix.one_apply]
+    MTC.Modular.Data.trivial, Matrix.one_apply]
 
 /-- The exported T entry agrees with the checked modular-data example. -/
-theorem rankOne_t : ((rankOne.t[0]!).value) = (MTC.ModularData.trivial ℂ).twist 0 := by
+theorem rankOne_t : ((rankOne.t[0]!).value) = (MTC.Modular.Data.trivial ℂ).twist 0 := by
   norm_num [rankOne, CyclotomicExpression.value, CyclotomicTerm.value,
-    MTC.ModularData.trivial]
+    MTC.Modular.Data.trivial]
 
 end MTC.AnyonAtlas

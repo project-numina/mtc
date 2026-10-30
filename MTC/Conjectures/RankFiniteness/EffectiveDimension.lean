@@ -1,5 +1,5 @@
 module
-public import MTC.PropertyF.NondegenerateSpherical
+public import MTC.Modular.SMatrix
 public import Mathlib.Computability.Partrec
 
 /-!
@@ -25,7 +25,7 @@ construction satisfying the categorical hypotheses remains to be supplied.
 -/
 
 @[expose] public noncomputable section
-open MTC MTC.PropertyF
+open MTC MTC.PropertyF MTC.Modular
 
 namespace MTC.Conjectures.RankFiniteness
 universe v u

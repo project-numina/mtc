@@ -10,8 +10,8 @@ The definition does not use braiding or property F.
 -/
 
 @[expose] public noncomputable section
-open MTC
-namespace MTC.PropertyF
+open MTC CategoryTheory
+namespace MTC.Fusion
 universe v u
 
 /-- A multiplicity-preserving bijection between the simple labels. -/
@@ -38,4 +38,13 @@ theorem sameFusionRules_trans {C D E : BraidedFusionCategory.{v,u}}
   obtain ⟨f, hf⟩ := hDE
   exact ⟨e.trans f, fun i j k ↦ (he i j k).trans (hf (e i) (e j) (e k))⟩
 
-end MTC.PropertyF
+
+/-- Complex-linear braided monoidal equivalence of braided fusion categories. -/
+structure BraidedTensorEquivalence (C D : MTC.BraidedFusionCategory.{v,u}) where
+  equivalence : C.Obj ≌ D.Obj
+  [monoidal : equivalence.functor.Monoidal]
+  [braided : equivalence.functor.Braided]
+  map_smul : ∀ {X Y : C.Obj} (z : ℂ) (f : X ⟶ Y),
+    equivalence.functor.map (z • f) = z • equivalence.functor.map f
+
+end MTC.Fusion

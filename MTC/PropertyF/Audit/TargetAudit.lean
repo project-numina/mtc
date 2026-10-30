@@ -137,13 +137,11 @@ import all MTC.Modular.SAdditivity
 import all MTC.Modular.SMatrix
 import all MTC.Modular.SSquare
 import all MTC.Modular.Verlinde
-import all MTC.ModularData.Basic
-import all MTC.ModularData.CategoricalS
-import all MTC.ModularData.Equivalence
-import all MTC.ModularData.RepresentationCount
+import all MTC.Modular.Data.Basic
+import all MTC.Modular.Data.CategoricalS
+import all MTC.Fusion.Equivalence
+import all MTC.Modular.Data.RepresentationCount
 import all MTC.PropertyF.Audit.DependencyAudit
-import all MTC.PropertyF.FusionRules
-import all MTC.PropertyF.NondegenerateSpherical
 import all MTC.PropertyF.PseudoUnitary
 import all MTC.PropertyF.Reduction.ActualCenterReduction
 import all MTC.Center.Fusion.Bundled

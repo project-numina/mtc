@@ -163,3 +163,20 @@ theorem simpleDimension_ne_zero (i : Fin (rank C)) :
 
 end MTC.Modular
 end
+
+@[expose] public noncomputable section
+open MTC MTC.CategoryTheory.Dimensions MTC.Modular
+namespace MTC.Modular
+universe v u
+
+/-- A spherical pivotal structure with nonzero determinant of its categorical S matrix. -/
+def HasNondegenerateSphericalStructure (C : BraidedFusionCategory.{v,u}) : Prop :=
+  ∃ p : PivotalStructure (C := C.Obj), p.IsSpherical ∧ (categoricalS C p).det ≠ 0
+
+/-- An explicit spherical structure and invertible S matrix give the predicate. -/
+theorem hasNondegenerateSphericalStructure_of_data (C : BraidedFusionCategory.{v,u})
+    (p : PivotalStructure (C := C.Obj)) (hs : p.IsSpherical)
+    (hS : (categoricalS C p).det ≠ 0) : HasNondegenerateSphericalStructure C :=
+  ⟨p, hs, hS⟩
+
+end MTC.Modular

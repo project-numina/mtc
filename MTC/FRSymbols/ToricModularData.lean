@@ -1,6 +1,6 @@
 module
 public import MTC.FRSymbols.ToricCode
-public import MTC.ModularData.Basic
+public import MTC.Modular.Data.Basic
 
 /-!
 # Toric-code modular data from R symbols
@@ -38,7 +38,7 @@ theorem fusion_eq_label_add (i j k : Fin 4) :
   fin_cases i <;> fin_cases j <;> fin_cases k <;> decide
 
 /-- The toric-code F/R solution determines these exact modular data. -/
-def modularData : MTC.ModularData ℚ 4 where
+def modularData : MTC.Modular.Data ℚ 4 where
   vacuum := 0
   dual := id
   dual_involutive := by intro i; rfl
@@ -78,7 +78,7 @@ def modularData : MTC.ModularData ℚ 4 where
 
 /-- The total squared quantum dimension is four. -/
 theorem globalDimension : modularData.globalDimension = 4 := by
-  norm_num [MTC.ModularData.globalDimension, modularData, hopfLink, label, symbols,
+  norm_num [MTC.Modular.Data.globalDimension, modularData, hopfLink, label, symbols,
     braiding, Fin.sum_univ_succ]
 
 end MTC.FRSymbols.Pointed.ToricCode

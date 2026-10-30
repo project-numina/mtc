@@ -18,7 +18,7 @@ the levels of their linear lifts respectively.
 -/
 
 @[expose] public section
-namespace MTC.ModularData
+namespace MTC.Modular.Data
 
 /-- Bounded multiplicities of `k` possible irreducibles in dimension `n`. -/
 abbrev MultiplicityProfile (k n : ℕ) := Fin k → Fin (n + 1)
@@ -36,4 +36,4 @@ theorem card_profile_subset_le (k n : ℕ) (s : Finset (MultiplicityProfile k n)
     s.card ≤ Fintype.card (MultiplicityProfile k n) := Finset.card_le_univ s
     _ = (n + 1) ^ k := card_multiplicityProfile k n
 
-end MTC.ModularData
+end MTC.Modular.Data

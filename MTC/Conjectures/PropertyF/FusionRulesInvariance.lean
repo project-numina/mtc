@@ -1,5 +1,5 @@
 module
-public import MTC.PropertyF.FusionRules
+public import MTC.Fusion.Equivalence
 
 /-!
 # Property F and fusion rules
@@ -16,7 +16,7 @@ Declaration: MTC.Conjectures.PropertyF.propertyF_fusionRules_invariant
 -/
 
 @[expose] public noncomputable section
-open MTC MTC MTC.PropertyF
+open MTC MTC.Fusion MTC.PropertyF
 namespace MTC.Conjectures.PropertyF
 universe v u
 
