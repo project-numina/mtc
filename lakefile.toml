@@ -1,4 +1,4 @@
-name = "property-f-lean"
+name = "mtc"
 version = "0.1.0"
 defaultTargets = ["PropertyF", "MTC", "Conjectures", "AnyonAtlas"]
 moreLeanArgs = ["-j2", "-M3000"]

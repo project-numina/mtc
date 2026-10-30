@@ -146,7 +146,7 @@ run_cmd do
             filename = f.name
         try:
             env = os.environ.copy()
-            env["LEAN_NUM_THREADS"] = "4"
+            env.setdefault("LEAN_NUM_THREADS", "4")
             return subprocess.call(["taskset", "-c", env.get("PROPERTYF_AUDIT_CORES", "0-3"), "lake", "env", "lean", filename], cwd=ROOT, env=env)
         finally:
             os.unlink(filename)
