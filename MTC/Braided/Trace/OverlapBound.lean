@@ -41,9 +41,9 @@ abbrev HasUnitaryTraceBound {X : C.Obj}
 
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
 theorem fpDimension_tensorPower (X : C.Obj) :
-    ∀ n, MTC.fpDimension C (tensorPower X n) = MTC.fpDimension C X ^ n
-  | 0 => MTC.fpDimension_unit C
-  | n + 1 => by simp [tensorPower, MTC.fpDimension_tensor, fpDimension_tensorPower X n,
+    ∀ n, MTC.Fusion.fpDimension C (tensorPower X n) = MTC.Fusion.fpDimension C X ^ n
+  | 0 => MTC.Fusion.fpDimension_unit C
+  | n + 1 => by simp [tensorPower, MTC.Fusion.fpDimension_tensor, fpDimension_tensorPower X n,
       pow_succ, mul_comm]
 
 section BraidTraceBound
@@ -80,14 +80,14 @@ theorem pivotalTrace_braid_unitary_bound
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
 theorem braid_trace_unitary_bound_ground :
-    HasUnitaryTraceBound C p b (MTC.fpDimension C X ^ (n + 2)) := fun a ha ↦ by
+    HasUnitaryTraceBound C p b (MTC.Fusion.fpDimension C X ^ (n + 2)) := fun a ha ↦ by
   let m : Fin (MTC.Fusion.rank C) → ℕ := fun i =>
     Module.finrank ℂ (MTC.Fusion.simples C i ⟶ braidTensorPower X n)
   obtain ⟨e⟩ := MTC.exists_canonical_decomposition C (braidTensorPower X n)
   rw [← fpDimension_tensorPower]
   change ‖MTC.unitScalarEquiv C
     (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
-      MTC.fpDimension C (braidTensorPower X n)
+      MTC.Fusion.fpDimension C (braidTensorPower X n)
   exact pivotalTrace_braid_unitary_bound C p hd b (MTC.unitScalarEquiv C) e (fun i => by
     simpa only [pivotalDimension, unitScalar_eq_equiv] using character_norm_le_fpSimple
       (i₀ := MTC.unitIndex C) ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
@@ -231,14 +231,14 @@ theorem overlap_trace_power_of_step
 /-- Bounds for the overlapping traces and their recurrence imply the sharp bound. -/
 theorem sharp_trace_bound_of_overlap [Simple X]
     (hbound : ∀ k, ‖actualBraidTrace C p (overlapProduct u k)‖ ≤
-      MTC.fpDimension C X ^ (overlapIndex t k + 2))
+      MTC.Fusion.fpDimension C X ^ (overlapIndex t k + 2))
     (hrec : HasOverlapTracePower C p u) :
     ‖actualBraidTrace C p u‖ ≤
       ‖pivotalDimension C p X‖ *
-        MTC.fpDimension C X ^ (t + 1) :=
+        MTC.Fusion.fpDimension C X ^ (t + 1) :=
   norm_bound_of_overlap (m := t + 2) (by
     simpa only [pivotalDimension] using Modular.unitScalar_rightTrace_ne_zero C p X)
-    (lt_of_lt_of_le zero_lt_one (MTC.one_le_fpDimension (Simple.not_isZero X)))
+    (lt_of_lt_of_le zero_lt_one (MTC.Fusion.one_le_fpDimension (Simple.not_isZero X)))
     (fun k => actualBraidTrace C p (overlapProduct u k)) (fun k => by
       convert hbound k using 1
       congr 1

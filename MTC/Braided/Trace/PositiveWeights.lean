@@ -56,7 +56,7 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (X : C.Obj) [Simple X]
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
-    (hfp : MTC.fpDimension C X = f)
+    (hfp : MTC.Fusion.fpDimension C X = f)
     (hS : scalarTrace p (MTC.unitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)

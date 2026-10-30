@@ -219,7 +219,7 @@ run_cmd do
       ``MTC.fpSimple_eq_fpCharacter,
       ``MTC.fpSimple_mul,
       ``MTC.ScalarTwist.labels,
-      ``MTC.fpDimension_functor,
+      ``MTC.Fusion.fpDimension_functor,
       ``MTC.PropertyF.Reduction.center_forget_fpDimension,
       ``MTC.galois_rigidity_of_propertyF,
       ``MTC.weaklyIntegral_of_actual_center,

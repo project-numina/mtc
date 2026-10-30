@@ -20,7 +20,7 @@ See Etingof–Gelaki–Nikshych–Ostrik, *Tensor Categories*, §3.3.
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 
-namespace MTC
+namespace MTC.Fusion
 
 variable (D : BraidedFusionCategory)
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -119,13 +119,13 @@ theorem fpDimension_rightDual (X : D.Obj) :
           show ⇑(dualEquiv D) = dualIndex D from rfl] using
           Equiv.sum_comp (dualEquiv D) (fun i ↦ (simpleMultiplicity D i X : ℝ) * fpSimple D i))
 
-end MTC
+end MTC.Fusion
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open CategoryTheory.Functor.Monoidal
 open scoped BigOperators
-namespace MTC
+namespace MTC.Fusion
 universe v u v' u'
 attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 variable (C : BraidedFusionCategory.{v,u}) (D : BraidedFusionCategory.{v',u'})
@@ -169,4 +169,4 @@ theorem fpDimension_functor (F : C.Obj ⥤ D.Obj) [F.Additive] [F.Faithful] [F.M
     (character_total_eigenvector (fpSimple_mul C))
   simpa only [fpDimension, ← heq, f] using fpDimension_functor_decomposition F X
 
-end MTC
+end MTC.Fusion
