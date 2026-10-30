@@ -24,7 +24,7 @@ def check_sorry_scope(path, code, fields):
     for token in SORRY.finditer(code):
         current = next((command for command in reversed(commands) if command.start() < token.start()), None)
         theorem = fields["Declaration"].rsplit(".", 1)[-1]
-        if (fields["Status"] == "formalized" or current is None or
+        if (fields["Status"] == "proved" or current is None or
                 current.group(1) not in ("theorem", "lemma") or current.group(2) != theorem or
                 ":=" not in code[current.end():token.start()]):
             line = code.count("\n", 0, token.start()) + 1
@@ -101,7 +101,7 @@ def main():
             modules.extend(".".join(p.relative_to(ROOT).with_suffix("").parts) for p in sorted((ROOT / lib).rglob("*.lean")))
         imports = "\n".join(f"import all {m}" for m in modules)
         declarations = "\n".join(
-            f'  (\u0060{fields["Declaration"]}, "{path.with_suffix("").as_posix().replace("/", ".")}", {str(fields["Status"] != "formalized").lower()}),'
+            f'  (\u0060{fields["Declaration"]}, "{path.with_suffix("").as_posix().replace("/", ".")}", {str(fields["Status"] != "proved").lower()}),'
             for path, fields in items
         )
         source = f'''module

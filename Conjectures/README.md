@@ -39,11 +39,12 @@ numerical modular datum is realized by a category unless there is evidence for t
 The status values are:
 
 - `open`: no accepted proof or disproof is known.
-- `solved`: an accepted proof exists in the literature, but this statement has not been formally proved here.
-- `formalized`: the statement has a proof in this repository with only the allowed axioms.
+- `proved`: the statement has a proof in this repository with only the allowed axioms.
 - `disproved`: a counterexample has been established; cite it and identify the precise statement refuted.
 
-Cite the basis for status changes. For `open`, `solved` and `disproved`, only the named conjecture
-itself may depend on `sorryAx`; auxiliary results must have complete proofs. A `formalized` statement
-must be free of `sorryAx` and all other nonstandard axioms. Regenerate the dashboard with
+Only open problems are added here. Results that are already established in the literature are not
+conjectures; they are listed in [the formalization backlog](../docs/formalization-backlog.md) and
+their proofs belong in `MTC/`. Cite the basis for status changes. For `open` and `disproved`, only
+the named conjecture itself may depend on `sorryAx`; auxiliary results must have complete proofs. A
+`proved` statement must be free of `sorryAx` and all other nonstandard axioms. Regenerate the dashboard with
 `python3 scripts/conjecture_status.py` and commit the result.

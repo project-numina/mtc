@@ -32,7 +32,7 @@ class StatusTests(unittest.TestCase):
             status.entries()
 
     def test_duplicate_fields_are_rejected(self):
-        self.path.write_text(self.fixture.replace('Status: open', 'Status: open\nStatus: solved'))
+        self.path.write_text(self.fixture.replace('Status: open', 'Status: open\nStatus: proved'))
         with self.assertRaises(ValueError):
             status.entries()
 

@@ -6,7 +6,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parent.parent
-STATUSES = {"open", "solved", "formalized", "disproved"}
+STATUSES = {"open", "proved", "disproved"}
 FIELDS = ("Status", "Source", "Declaration")
 NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)+\Z")
 

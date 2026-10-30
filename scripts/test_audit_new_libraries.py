@@ -29,7 +29,7 @@ class SorryScopeTests(unittest.TestCase):
             self.check('theorem goal : (by sorry) := by trivial\n')
 
     def test_formalized_cannot_use_sorry(self):
-        self.fields["Status"] = "formalized"
+        self.fields["Status"] = "proved"
         with self.assertRaises(ValueError):
             self.check('theorem goal : True := by sorry\n')
 
