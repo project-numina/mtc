@@ -1,3 +1,5 @@
+> This document describes the earlier repository layout.
+
 # Independent verification report: `PropertyF.Ground.target`
 
 Worktree: `property-f-verify`, branch `verify/opus`, library snapshot at commit 75174961.

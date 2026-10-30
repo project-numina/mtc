@@ -1,3 +1,5 @@
+> This document describes the earlier repository layout.
+
 > Written on 2026-10-28, before the conjecture libraries were added; paths refer to `PropertyF/`.
 
 # Architecture review

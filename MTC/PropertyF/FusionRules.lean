@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Target
+public import MTC.PropertyF.Statement
 
 /-! # Fusion rules of braided fusion categories
 

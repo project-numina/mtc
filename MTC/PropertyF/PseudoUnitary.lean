@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Final
+public import MTC.PropertyF.Theorem
 
 /-! # Property F with a pseudo-unitary conjugate
 

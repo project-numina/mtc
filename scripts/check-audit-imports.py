@@ -5,16 +5,16 @@ import sys
 
 root = Path(__file__).resolve().parent.parent
 excluded = {
-    "PropertyF.Ground.Integrate.ProjectAudit",
-    "PropertyF.Ground.Integrate.TargetAudit",
+    "MTC.PropertyF.Audit.ProjectAudit",
+    "MTC.PropertyF.Audit.TargetAudit",
 }
 modules = {
     ".".join(path.relative_to(root).with_suffix("").parts)
-    for path in (root / "PropertyF").rglob("*.lean")
+    for path in (root / "MTC").rglob("*.lean") if "Conjectures" not in path.parts
 } - excluded
 failed = False
 for name in ("ProjectAudit", "TargetAudit"):
-    path = root / "PropertyF" / "Ground" / "Integrate" / f"{name}.lean"
+    path = root / "MTC" / "PropertyF" / "Audit" / f"{name}.lean"
     imports = {
         line.removeprefix("import all ").strip()
         for line in path.read_text().splitlines()

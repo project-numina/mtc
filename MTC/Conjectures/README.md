@@ -31,7 +31,7 @@ end MTC.Conjectures.Topic
 ```
 
 This is a format example, not a research problem. Replace the statement, imports, topic, source and
-name. Use `PropertyF.Ground.Target` and its definitions directly for property F statements. Cite the
+name. Use `MTC.PropertyF.Statement` and its definitions directly for property F statements. Cite the
 exact theorem or question when available and distinguish a conjecture from an established result.
 Explain how hypotheses are satisfied and check the statement against examples. Do not assume that a
 numerical modular datum is realized by a category unless there is evidence for that claim.

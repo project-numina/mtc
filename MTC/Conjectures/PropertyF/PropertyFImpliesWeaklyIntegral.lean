@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Final
+public import MTC.PropertyF.Theorem
 
 /-!
 # Property F implies weak integrality

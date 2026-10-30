@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Target
+public import MTC.PropertyF.Statement
 
 /-!
 # Naidu–Rowell property F conjecture

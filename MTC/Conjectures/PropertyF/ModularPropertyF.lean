@@ -1,6 +1,6 @@
 module
 public import MTC.PropertyF.NondegenerateSpherical
-public import PropertyF.Ground.Final
+public import MTC.PropertyF.Theorem
 
 /-!
 # Property F for modular fusion categories

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit every declaration in the three new libraries using Lean's kernel environment."""
+"""Audit every declaration in the MTC library using Lean's kernel environment."""
 from pathlib import Path
 import os
 import re
@@ -137,7 +137,7 @@ run_cmd do
             (allowSorry && ax == ``sorryAx) do
           throwError "Forbidden axiom {{ax}} in project declaration {{name}}"
       checked := checked + 1
-  logInfo m!"Audited {{checked}} declarations in new libraries."
+  logInfo m!"Audited {{checked}} declarations in MTC."
 '''
         scratch = ROOT / "scratch"
         scratch.mkdir(exist_ok=True)

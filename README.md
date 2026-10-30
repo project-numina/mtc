@@ -9,10 +9,10 @@ test and prove mathematical statements. It is inspired by
 
 ## A formalized theorem
 
-The existing [PropertyF](PropertyF.lean) library proves that a braided fusion category with a
+The library proves that a braided fusion category with a
 pseudo-unitary Galois conjugate and property F is weakly integral. The theorem is
-`PropertyF.Ground.target` in [Final.lean](PropertyF/Ground/Final.lean), using the definitions in
-[Target.lean](PropertyF/Ground/Target.lean). The proof is complete and its audit reports precisely
+`PropertyF.Ground.target` in [Final.lean](MTC/PropertyF/Theorem.lean), using the definitions in
+[Target.lean](MTC/PropertyF/Statement.lean). The proof is complete and its audit reports precisely
 `[propext, Classical.choice, Quot.sound]`. The manuscript and a map from its results to Lean are in [papers/property-f-weak-integrality](papers/property-f-weak-integrality/).
 
 Property F means that the relevant braid group representations have finite image; weak integrality
@@ -32,7 +32,6 @@ modular data and categories realizing them, is one of the project's research goa
   records locally; the committed rank-one sample is checked in Lean. Data-checkable claims should
   specify their actual scope and evidence. Modular data alone do not establish the existence of an
   MTC or its property F.
-- [PropertyF/](PropertyF/) contains the existing proof, pending a later library reorganization.
 
 Research directions include property F and weak integrality, realizability of modular data via
 pentagon and hexagon equations, non-Chern–Simons examples, Galois orbits and condensations, and

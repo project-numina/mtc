@@ -1,0 +1,181 @@
+module
+public import MTC.PropertyF.Theorem
+public meta import MTC.PropertyF.Audit.DependencyAudit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import all MTC.Algebra.Arithmetic
+import all MTC.Algebra.PowerBound
+import all MTC.AnyonAtlas.Raw
+import all MTC.AnyonAtlas.Sample
+import all MTC.Braided.BraidAlgebra
+import all MTC.Braided.Cabling.Generated
+import all MTC.Braided.Cabling.Naturality
+import all MTC.Braided.Cabling.Strands
+import all MTC.Braided.Cabling.UnitPower
+import all MTC.Braided.Definitions
+import all MTC.Braided.Trace.BraidWeights
+import all MTC.Braided.Trace.EndBlocks
+import all MTC.Braided.Trace.OverlapBound
+import all MTC.Braided.Trace.OverlapCoherence
+import all MTC.Braided.Trace.PartialTrace
+import all MTC.Braided.Trace.PositiveWeights
+import all MTC.Braided.Trace.RightStrand
+import all MTC.Braided.Trace.TensorPowerCoherence
+import all MTC.Braided.Trace.ThreeRigidity
+import all MTC.Braided.Trace.ThreeTrace
+import all MTC.Braided.Trace.UnitaryBlocks
+import all MTC.CategoryTheory.BlockTrace
+import all MTC.CategoryTheory.Dimensions.BiproductTrace
+import all MTC.CategoryTheory.Dimensions.DefectExtension
+import all MTC.CategoryTheory.Dimensions.DefectNaturality
+import all MTC.CategoryTheory.Dimensions.DimensionCharacter
+import all MTC.CategoryTheory.Dimensions.DoubleDualMonoidal
+import all MTC.CategoryTheory.Dimensions.DoubleDualPairing
+import all MTC.CategoryTheory.Dimensions.DoubleDualUnitTensor
+import all MTC.CategoryTheory.Dimensions.DualBraiding
+import all MTC.CategoryTheory.Dimensions.DualCoherence
+import all MTC.CategoryTheory.Dimensions.DualTensorNaturality
+import all MTC.CategoryTheory.Dimensions.ENOMatrices
+import all MTC.CategoryTheory.Dimensions.ENOReciprocity
+import all MTC.CategoryTheory.Dimensions.FourthDualUnit
+import all MTC.CategoryTheory.Dimensions.FourthTensorUnit
+import all MTC.CategoryTheory.Dimensions.GroundNorm
+import all MTC.CategoryTheory.Dimensions.MonodromyTensorCap
+import all MTC.CategoryTheory.Dimensions.MultiplicityDefect
+import all MTC.CategoryTheory.Dimensions.Pivotal
+import all MTC.CategoryTheory.Dimensions.RootDualLabel
+import all MTC.CategoryTheory.Dimensions.SimpleHomBasis
+import all MTC.CategoryTheory.Dimensions.SimpleScalars
+import all MTC.CategoryTheory.Dimensions.TensorExtension
+import all MTC.CategoryTheory.Dimensions.TensorMultiplicativity
+import all MTC.CategoryTheory.Dimensions.Trace
+import all MTC.Center.Abelian
+import all MTC.Center.Averaging
+import all MTC.Center.Balancing.TwistBalancing
+import all MTC.Center.Basic
+import all MTC.Center.Braid.CentralityClosure
+import all MTC.Center.Braid.ImageCore
+import all MTC.Center.Braid.RegularSupport
+import all MTC.Center.Braid.TraceSaturation
+import all MTC.Center.Braid.TwistFinite
+import all MTC.Center.BraidWords.TypeA
+import all MTC.Center.BraidWords.TypeANormalWords
+import all MTC.Center.Dimensions.PivotalTwist
+import all MTC.Center.Fusion.Fusion
+import all MTC.Center.Helpers
+import all MTC.Center.Induction.ActualFusion
+import all MTC.Center.Induction.AdjunctionAssembly
+import all MTC.Center.Induction.BasisPairing
+import all MTC.Center.Induction.CrossingBlocks
+import all MTC.Center.Induction.CrossingCoherence
+import all MTC.Center.Induction.CrossingUnit
+import all MTC.Center.Induction.DrinfeldTheorem
+import all MTC.Center.Induction.FiniteSimples
+import all MTC.Center.Induction.ForgetDual
+import all MTC.Center.Induction.ForgetDualTensor
+import all MTC.Center.Induction.PivotalCentrality
+import all MTC.Center.Induction.PositivePivotal
+import all MTC.Center.Induction.Representatives
+import all MTC.Center.Induction.SecondTriangle
+import all MTC.Center.Modular.TransparencyCriterion
+import all MTC.Center.Modular.Vafa
+import all MTC.Center.Product
+import all MTC.Center.ProductClosure
+import all MTC.Center.ProductImages
+import all MTC.Center.Rigid
+import all MTC.Center.SymmetricIntegrality
+import all MTC.Center.Trace.BraidRelations
+import all MTC.Center.Trace.LeftTensorTrace
+import all MTC.Center.Trace.ParityDeletion
+import all MTC.Center.Trace.PermutationInsert
+import all MTC.Center.Trace.ProjectorReduction
+import all MTC.Center.Trace.TwistSign
+import all MTC.FRSymbols.B11Dimension
+import all MTC.FRSymbols.Cyclotomic
+import all MTC.FRSymbols.CyclotomicMatrix
+import all MTC.FRSymbols.FusionRules
+import all MTC.FRSymbols.MatrixGauge
+import all MTC.FRSymbols.MatrixSymbols
+import all MTC.FRSymbols.Metric
+import all MTC.FRSymbols.Pointed
+import all MTC.FRSymbols.RootsOfUnity
+import all MTC.FRSymbols.ToricCode
+import all MTC.FRSymbols.ToricMatrix
+import all MTC.FRSymbols.ToricModularData
+import all MTC.FRSymbols.Trivial
+import all MTC.Fusion.Agreement
+import all MTC.Fusion.Multiplicity
+import all MTC.Fusion.ObjectDimension
+import all MTC.Fusion.Reciprocity
+import all MTC.Fusion.SemisimpleSplit
+import all MTC.Fusion.Simples
+import all MTC.Fusion.SpectralIntegral
+import all MTC.Fusion.UnitPower
+import all MTC.Modular.BraidFunctor
+import all MTC.Modular.BraidIso
+import all MTC.Modular.CharacterStar
+import all MTC.Modular.Classification
+import all MTC.Modular.FusionTransport
+import all MTC.Modular.SAdditivity
+import all MTC.Modular.SMatrix
+import all MTC.Modular.SSquare
+import all MTC.Modular.Verlinde
+import all MTC.ModularData.Basic
+import all MTC.ModularData.CategoricalS
+import all MTC.ModularData.Equivalence
+import all MTC.ModularData.RepresentationCount
+import all MTC.PropertyF.Audit.DependencyAudit
+import all MTC.PropertyF.FusionRules
+import all MTC.PropertyF.NondegenerateSpherical
+import all MTC.PropertyF.PseudoUnitary
+import all MTC.PropertyF.Reduction.ActualCenterReduction
+import all MTC.PropertyF.Reduction.CenterBundle
+import all MTC.PropertyF.Reduction.CharacterReality
+import all MTC.PropertyF.Reduction.TwistedRigidity
+import all MTC.PropertyF.Reduction.UnitScalar
+import all MTC.PropertyF.Statement
+import all MTC.PropertyF.Theorem
+import all MTC.Seed
+
+/-! Explicit final-theorem gate. This module intentionally fails to build until
+`PropertyF.Ground.target : PropertyF.Ground.TargetStatement` exists. It is not
+part of the ordinary library build while the proof remains under development. -/
+
+open Lean Elab Command PropertyF.Ground.DependencyAudit in
+run_cmd do
+  let env ← getEnv
+  let targetName := `PropertyF.Ground.target
+  let some ci := env.find? targetName
+    | throwError "Final theorem PropertyF.Ground.target is missing"
+  match ci with
+  | .thmInfo _ => pure ()
+  | _ => throwError "PropertyF.Ground.target must be a theorem"
+  match ci.type with
+  | .const n _ =>
+      unless n == ``PropertyF.Ground.TargetStatement do
+        throwError "Final theorem must have exactly the frozen TargetStatement type"
+  | _ => throwError "Final theorem must have exactly the frozen TargetStatement type"
+  if let some issue := findIssue env targetName then
+    throwError "Final theorem dependency audit failed: {repr issue}"
+  let axioms ← collectAxioms targetName
+  for ax in axioms do
+    unless #[``propext, ``Classical.choice, ``Quot.sound].contains ax do
+      throwError "Final theorem depends on forbidden axiom {ax}"
+  logInfo m!"Final theorem axiom dependencies: {axioms}"

@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Modular.SMatrix
+public import MTC.Modular.SMatrix
 
 /-!
 # Nondegenerate spherical braided fusion categories

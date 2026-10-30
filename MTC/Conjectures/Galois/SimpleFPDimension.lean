@@ -1,5 +1,5 @@
 module
-public import PropertyF.Ground.Target
+public import MTC.PropertyF.Statement
 
 /-!
 # Galois divisibility for simple FP dimensions

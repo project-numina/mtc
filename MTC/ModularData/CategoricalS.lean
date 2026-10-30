@@ -1,6 +1,6 @@
 module
 public import MTC.ModularData.Basic
-public import PropertyF.Ground.Modular.SMatrix
+public import MTC.Modular.SMatrix
 
 /-!
 # Comparison with the categorical S-matrix
