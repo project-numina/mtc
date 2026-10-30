@@ -1,8 +1,12 @@
 # Property F implies weak integrality for pseudo-unitary braided fusion categories
 
-[manuscript.pdf](manuscript.pdf) · [manuscript.txt](manuscript.txt)
+- [property-f-unitary.tex](property-f-unitary.tex) ([PDF](property-f-unitary.pdf)): the full
+  manuscript, October 15, 2026.
+- [property-f-simplified.pdf](property-f-simplified.pdf): a shorter proof by contradiction,
+  written by Julio Parra-Martinez (October 22, 2026). The formalization follows this argument.
+  Its LaTeX source will be added when available.
 
-The manuscript proves that every braided fusion category with property F and a pseudo-unitary
+Both prove that every braided fusion category with property F and a pseudo-unitary
 Galois conjugate is weakly integral. This is one direction of the Naidu–Rowell property F
 conjecture, for a class that includes all unitary modular tensor categories.
 
@@ -12,6 +16,6 @@ conjecture, for a class that includes all unitary modular tensor categories.
 
 | Manuscript | Lean declaration | File |
 |---|---|---|
-| Theorem 1.1 | `MTC.PropertyF.weaklyIntegral_of_propertyF` | [MTC/PropertyF/Theorem.lean](../../MTC/PropertyF/Theorem.lean) |
+| Theorem 1.1 (`thm:main` in the full manuscript) | `MTC.PropertyF.weaklyIntegral_of_propertyF` | [MTC/PropertyF/Theorem.lean](../../MTC/PropertyF/Theorem.lean) |
 | Definitions used in the statement | `MTC.PropertyF.TargetStatement` | [MTC/PropertyF/Statement.lean](../../MTC/PropertyF/Statement.lean) |
 | Consequences for pseudo-unitary categories | | [MTC/PropertyF/PseudoUnitary.lean](../../MTC/PropertyF/PseudoUnitary.lean) |

@@ -1,51 +1,49 @@
 # Modular tensor categories in Lean
 
-This project is building a crowdsourced Lean 4 and Mathlib library for modular tensor categories
-(MTCs), related categorical structures, and anyon data. It combines formalized theorems, precisely
-stated research problems and exact computational data so that people and AI systems can formulate,
-test and prove mathematical statements. It is inspired by
-[formal-conjectures](https://github.com/google-deepmind/formal-conjectures) and the
-[Equational Theories Project](https://github.com/teorth/equational_theories).
+[The Anyon Atlas](https://anyonatlas.org/) catalogues more than 25,000 modular and supermodular
+data, with exact values and selected F- and R-symbols. This project uses that data as a testing
+ground for AI-assisted mathematics: modelling the data in Lean 4, formulating conjectures about it,
+and proving or disproving them.
 
-## A formalized theorem
+Everything is in one Lean library, [MTC](MTC.lean):
 
-The library proves that a braided fusion category with a
-pseudo-unitary Galois conjugate and property F is weakly integral. The theorem is
-`MTC.PropertyF.weaklyIntegral_of_propertyF` in [Theorem.lean](MTC/PropertyF/Theorem.lean), using the definitions in
-[Statement.lean](MTC/PropertyF/Statement.lean). The proof is complete and its audit reports precisely
-`[propext, Classical.choice, Quot.sound]`. The manuscript and a map from its results to Lean are in [papers/property-f-weak-integrality](papers/property-f-weak-integrality/).
+- [MTC/](MTC/) provides the definitions and theorems needed to do this: fusion and braided fusion
+  categories ([Fusion](MTC/Fusion/), [Braided](MTC/Braided/)), the Drinfeld center
+  ([Center](MTC/Center/)), modular data ([Modular](MTC/Modular/)), and F- and R-symbols
+  ([FRSymbols](MTC/FRSymbols/)). Outside `MTC/Conjectures`, it contains no `sorry`.
+- [MTC/Conjectures/](MTC/Conjectures/) contains Lean formulations of open conjectures in this
+  area, one per file. The [dashboard](docs/STATUS.md) lists each conjecture with its status and
+  source.
+- [MTC/AnyonAtlas/](MTC/AnyonAtlas/) contains the exact Lean encoding of Atlas records. The
+  [data guide](MTC/AnyonAtlas/README.md) explains how to download, validate and generate the data.
 
-Property F means that the relevant braid group representations have finite image; weak integrality
-means that the global Frobenius–Perron dimension is an integer. The converse is the open direction
-of the Naidu–Rowell property F conjecture. Its investigation, including the distinction between
-modular data and categories realizing them, is one of the project's research goals.
+**Open a pull request** with a proof or disproof of a conjecture, or with a new conjecture. See
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Problems and data
+## A proof of property F implies weak integrality
 
-- [MTC/](MTC/) contains shared definitions, proved theorems, conjectures, and Atlas data.
-- [MTC/Conjectures/](MTC/Conjectures/) contains formalized statements of open problems, for the community
-  to prove or disprove. The [dashboard](docs/STATUS.md) lists their status and sources; the
-  [conjecture template](MTC/Conjectures/README.md) explains the metadata. Established results that are not yet formalized are listed in the
-  [formalization backlog](docs/formalization-backlog.md).
-- [MTC/AnyonAtlas/](MTC/AnyonAtlas/) contains generated, exact data when available, without `sorry`.
-  The [data guide](MTC/AnyonAtlas/README.md) describes downloading, validating and generating exact
-  records locally; the committed rank-one sample is checked in Lean. Data-checkable claims should
-  specify their actual scope and evidence. Modular data alone do not establish the existence of an
-  MTC or its property F.
+The Naidu–Rowell conjecture states that a braided fusion category has property F (every braid group
+representation it defines has finite image) if and only if it is weakly integral (its global
+Frobenius–Perron dimension is an integer). This library proves one direction: **every braided
+fusion category with property F and a pseudo-unitary Galois conjugate is weakly integral**. This
+covers every unitary modular tensor category.
 
-Research directions include property F and weak integrality, realizability of modular data via
-pentagon and hexagon equations, non-Chern–Simons examples, Galois orbits and condensations, and
-quantitative bounds on modular data at fixed rank. See the [literature catalog](docs/literature.md),
-[Atlas rank-growth study](docs/rank-growth.md), and [property F search guide](scripts/propf/README.md)
-for references, observations and limitations.
+The theorem is `MTC.PropertyF.weaklyIntegral_of_propertyF` in
+[Theorem.lean](MTC/PropertyF/Theorem.lean), with its statement in
+[Statement.lean](MTC/PropertyF/Statement.lean). The proof
+is complete and depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`. The
+manuscripts and a map from their results to Lean declarations are in
+[papers/property-f-weak-integrality](papers/property-f-weak-integrality/). The converse direction
+remains open and is stated in [MTC/Conjectures/PropertyF](MTC/Conjectures/PropertyF/).
 
-[The Anyon Atlas](https://anyonatlas.org/) is due to Jonah Berean-Dutcher, Clay Córdova, Julio
-Parra-Martinez and Richard Tuddenham; see their [paper](https://arxiv.org/abs/2610.25439). It
-catalogues modular and supermodular data and supplies exact data and selected F- and R-symbols.
-The paper establishes realizability of selected rank-11 and rank-12 examples outside its explored
-Chern–Simons constructions. Respect the source's terms when obtaining or redistributing data.
+## The Anyon Atlas
 
-## Build and contribute
+The Atlas is due to Jonah Berean-Dutcher, Clay Córdova, Julio Parra-Martinez and Richard Tuddenham
+([arXiv:2610.25439](https://arxiv.org/abs/2610.25439)). Cite the paper and the record ID when using
+an entry. Modular data alone do not establish that a category realizing them exists, so a claim
+about the data should state its scope precisely.
+
+## Building
 
 Lean and Mathlib are pinned to v4.35.0. In a fresh clone with the Lean toolchain installed:
 
@@ -55,7 +53,5 @@ scripts/check.sh
 scripts/audit-target.sh
 ```
 
-The checks build the library, audit axioms of project declarations and the frozen target, and
-verify the generated dashboard. `scripts/check.sh` defaults to CPU cores 0–3; set
-`PROPERTYF_AUDIT_CORES` to a valid CPU list on your machine if needed. See
-[CONTRIBUTING.md](CONTRIBUTING.md) for claiming problems, submissions and AI contributions.
+These build the library, audit the axioms of every declaration, and check the dashboard.
+`scripts/check.sh` uses CPU cores 0–3 by default; set `PROPERTYF_AUDIT_CORES` to change this.
