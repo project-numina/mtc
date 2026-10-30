@@ -20,7 +20,7 @@ with the usual FP dimension and proving its positivity are separate tasks.
 
 @[expose] public noncomputable section
 namespace MTC.Conjectures.Galois
-open PropertyF.Ground
+open MTC
 universe v u
 
 /-- A proposed positive answer to Ostrik's braided d-number question. -/

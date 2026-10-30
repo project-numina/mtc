@@ -14,7 +14,7 @@ of their unitary block presentations.
 -/
 
 @[expose] public section
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 
 section UnitaryRepresentation
 
@@ -60,12 +60,12 @@ theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
     simp [show star (ρ g) = ρ g⁻¹ from unitary_star_coe_inv (ρ.toHomUnits g) (hρ g),
       show star (σ g) = σ g⁻¹ from unitary_star_coe_inv (σ.toHomUnits g) (hσ g), hφ]) (hspan.symm ▸ Submodule.mem_top)
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Compatibility of unitary block realizations under maps of group images. -/
 
 @[expose] public noncomputable section
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 
 variable {G A : Type*} [Monoid G] [Ring A] [Algebra ℂ A]
 
@@ -83,13 +83,13 @@ theorem presented_group_span :
 end PresentedGroup
 
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Algebra maps induced by intertwiners of categorical group images. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 
 variable {G H A B : Type*} [Monoid G] [Monoid H]
   [Semiring A] [Algebra ℂ A] [Semiring B] [Algebra ℂ B]
@@ -197,13 +197,13 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     rw [e.symm_apply_apply, addLeftBraidAlgebraIter_group]
     rfl
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Right identity-strand insertion on categorical braid algebras. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -370,4 +370,4 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     rw [e.symm_apply_apply, addRightBraidAlgebraIter_group]
     rfl
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus

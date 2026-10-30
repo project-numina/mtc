@@ -2,14 +2,14 @@ module
 public import MTC.Fusion.ObjectDimension
 public import MTC.CategoryTheory.Dimensions.SimpleHomBasis
 
-open PropertyF.Ground.Dimensions Module
+open MTC.Dimensions Module
 
 /-! The underlying object of the induction construction for the Drinfeld centre. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -50,7 +50,7 @@ def underlyingFunctor : C.Obj ⥤ C.Obj where
   map_comp f g := biproduct.hom_ext' _ _ fun i => by
     simp [underlying, whiskerLeft_comp, comp_whiskerRight]
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 
@@ -59,7 +59,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 -- The chosen simple representatives of the base category.
@@ -206,4 +206,4 @@ theorem crossingCandidate_natural_middle {X Y : C.Obj} (h : X ⟶ Y) (T : C.Obj)
       crossingCandidate_on_summand, Preadditive.comp_sum, Preadditive.sum_comp,
       ← whiskerLeft_comp, crossingBlock, mixedCrossing_natural_middle_assoc]
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction

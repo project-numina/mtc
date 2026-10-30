@@ -16,7 +16,7 @@ products of matrix algebras.
 
 @[expose] public section
 open scoped BigOperators ComplexConjugate ComplexOrder Matrix
-namespace PropertyF
+namespace MTC
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
@@ -61,11 +61,11 @@ theorem scalar_of_norm_trace_eq_card (ht : ‖U.trace‖ = Fintype.card ι) : �
 
 end UnitaryTrace
 
-end PropertyF
+end MTC
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace PropertyF
+namespace MTC
 
 /-- Explicit finite Wedderburn blocks, rather than an opaque trace space. -/
 structure Blocks where
@@ -152,4 +152,4 @@ theorem central_of_saturation (hw : ∀ r, w r ≠ 0) : ∀ T : B.Algebra, g * T
 end Saturation
 
 end Blocks
-end PropertyF
+end MTC

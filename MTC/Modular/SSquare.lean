@@ -19,7 +19,7 @@ show the remaining entries equal the global dimension.
 -/
 open scoped BigOperators Matrix
 
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 variable {ι : Type*} [Fintype ι] (N : FusionRules ι) (dual : ι → ι)
 variable (hdual : ∀ i j k, N.coeff i j k = N.coeff (dual i) k j)
 
@@ -40,11 +40,11 @@ theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
     rw [← Matrix.mulVec_transpose]
     change (fun j k ↦ (N.coeff i k j : ℂ)) *ᵥ (fun j ↦ starRingEnd ℂ (χ.value j)) = _
     simpa only [hdual i,
-      Ground.fusion_character_dual_eq_conj (i₀ := N.unit)
+      MTC.fusion_character_dual_eq_conj (i₀ := N.unit)
         (fun a b c ↦ (hdual a c b).symm) (by simp [χ.unit_eq]) χ.mul_eq i,
-      starRingEnd_apply, star_star] using Ground.fusion_character_eigenvector hχ (dual i)
-  exact (Ground.eigenvalue_eq_of_dotProduct_ne_zero
-    (Ground.fusion_character_eigenvector ψ.mul_eq i) hleft (by simpa [dotProduct] using hw)).symm
+      starRingEnd_apply, star_star] using MTC.fusion_character_eigenvector hχ (dual i)
+  exact (MTC.eigenvalue_eq_of_dotProduct_ne_zero
+    (MTC.fusion_character_eigenvector ψ.mul_eq i) hleft (by simpa [dotProduct] using hw)).symm
 
 include hdual in
 /-- Distinct normalized columns that are fusion characters are orthogonal. -/
@@ -62,7 +62,7 @@ theorem character_columns_orthogonal [DecidableEq ι] {S : Matrix ι ι ℂ} {d 
       character_orthogonal N dual hdual (cols a) (cols b) hne)).resolve_right
     (mul_ne_zero (hd a) (hd b))
 
-variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (C : MTC.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
@@ -125,19 +125,19 @@ include hp in
 /-- Nondegeneracy, sphericality, and real dimensions imply the S-square identity. -/
 theorem categoricalS_square (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
-    HasSSquare Sₚ (Ground.dualIndex C) (globalDimension C) := by
-  have hoff := square_off_dual_of_orthogonal (Ground.dualIndex C) (Ground.dualIndex_involutive C)
+    HasSSquare Sₚ (MTC.dualIndex C) (globalDimension C) := by
+  have hoff := square_off_dual_of_orthogonal (MTC.dualIndex C) (MTC.dualIndex_involutive C)
     (categoricalS_symmetric C p) (categoricalS_dual_conj C p hreal)
-    (character_columns_orthogonal ⟨unitIndex C, fusionCoeff C⟩ (Ground.dualIndex C)
-      (fun i j k ↦ Ground.fusionCoeff_dual_symmetry C i k j) (S := Sₚ) (d := dₚ) (categoricalSCharacter C p)
+    (character_columns_orthogonal ⟨unitIndex C, fusionCoeff C⟩ (MTC.dualIndex C)
+      (fun i j k ↦ MTC.fusionCoeff_dual_symmetry C i k j) (S := Sₚ) (d := dₚ) (categoricalSCharacter C p)
       (fun _ _ ↦ rfl) hdet (simpleDimension_ne_zero C p) hreal)
-  convert square_eq_of_support Sₚ (Ground.dualIndex_involutive C) (Ground.dualIndex_unit C)
+  convert square_eq_of_support Sₚ (MTC.dualIndex_involutive C) (MTC.dualIndex_unit C)
     (fun i ↦ by simpa only [categoricalS_unit] using simpleDimension_dual C p hreal i)
     (fun i ↦ by simpa only [categoricalS_unit] using simpleDimension_ne_zero C p i) hoff using 1
   simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
   simpa only [pow_two] using categorical_global_eq_sum_squares C p hp
 
-end PropertyF.Ground.Modular
+end MTC.Modular
 end
 
 section
@@ -148,11 +148,11 @@ A spherical category with real simple dimensions and an invertible S matrix
 has the Galois symmetries of its normalized S columns.
 -/
 open scoped BigOperators
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 
-variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (C : MTC.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
@@ -181,5 +181,5 @@ theorem categoricalS_galois_action_of_invertibleS (hdet : (Sₚ).det ≠ 0)
   exists_galoisLabel_of_verlinde (simpleDimension_ne_zero C p)
     (globalDimension_ne_zero_of_invertibleS C p hp hdet hreal) (categoricalS_symmetric C p)
     (categoricalS_unit C p) (categoricalS_square C p hp hdet hreal) (categoricalS_verlinde C p)
-end PropertyF.Ground.Modular
+end MTC.Modular
 end

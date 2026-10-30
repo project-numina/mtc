@@ -15,7 +15,7 @@ Scalar sign twists and tensor-defect identities describe extensions from simple 
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -100,13 +100,13 @@ theorem rootPhaseTensor_compatible_of_scaled_defects {i j : Fin (rank C)}
   simpa [X] using (Iso.comp_inv_eq (rootSignTensorIso C c hc _ _)).1 hid
 
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
@@ -114,13 +114,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 theorem rightQuantumTrace_unitIso : rightQuantumTrace (doubleDualUnitIso (C := C)) = 1 :=
   End.homEquiv.injective (unitDoubleDual_trace (C := C))
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -148,8 +148,8 @@ variable {C} in
 theorem rootSignQuantumTrace_simple (i : Fin (rank C)) :
     unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (simples C i))) =
       c i * rootDimension C i := by
-  simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul] using
-    congrArg (Ground.unitScalarEquiv C) (rightQuantumTrace_smul_hom (rootSignTwist_app_simple hc i))
+  simpa only [rootDimension, rootTrace_id, MTC.unitScalar_eq_equiv, map_smul, smul_eq_mul] using
+    congrArg (MTC.unitScalarEquiv C) (rightQuantumTrace_smul_hom (rootSignTwist_app_simple hc i))
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -159,7 +159,7 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
   simp only [rightQuantumTrace_smul_hom hr, rightQuantumTrace_unitIso,
-    Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] at htrace
+    MTC.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] at htrace
   simpa [htrace] using hr
 
 set_option backward.isDefEq.respectTransparency false in
@@ -175,6 +175,6 @@ theorem rootSignTwist_unit_of_simple_dimension
       rootSignQuantumTrace_simple, hunit]
 
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end

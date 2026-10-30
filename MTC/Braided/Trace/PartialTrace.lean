@@ -10,11 +10,11 @@ The right partial trace closes a tensor factor using duality. Its compatibility 
 endomorphisms of the other factor yields formulas for simple objects.
 -/
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
@@ -114,4 +114,4 @@ theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
 
 end SimpleTrace
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus

@@ -15,7 +15,7 @@ section
 Trivial transparency provides the needed vanishing in a positive pivotal category. -/
 
 open scoped BigOperators
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 open Modular
 variable (C : BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
@@ -93,7 +93,7 @@ theorem categoricalS_det_ne_zero_of_unit_character_unique
     (div_eq_zero_iff.mp (show (∑ z, dₚ z * Sₚ k z) / dₚ k = 0 from by
       simpa [categoricalSCharacter, normalizedSColumn, categoricalS_unit, simpleDimension_unit, hdim,
         fpSimple_unit, categoricalS_symmetric C p k, ← mul_div_assoc, ← Finset.sum_div] using
-        character_orthogonal _ (dualIndex C) (fun i j k ↦ Ground.fusionCoeff_dual_symmetry C i k j)
+        character_orthogonal _ (dualIndex C) (fun i j k ↦ MTC.fusionCoeff_dual_symmetry C i k j)
           (categoricalSCharacter C p (unitIndex C)) (categoricalSCharacter C p k)
           (fun he ↦ hunique k hk (congrArg Character.value he).symm))).resolve_right
       (simpleDimension_ne_zero C p k)
@@ -109,14 +109,14 @@ theorem categoricalS_det_ne_zero_of_trivial_S_centralizer
     hk (htrivial k fun i ↦ (div_eq_iff (simpleDimension_ne_zero C p k)).mp (by
       simpa only [normalizedSColumn, categoricalS_unit, simpleDimension_unit, div_one] using congrFun heq i))
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
 
@@ -153,5 +153,5 @@ theorem categoricalS_det_ne_zero_of_trivial_transparency
   categoricalS_det_ne_zero_of_trivial_S_centralizer C p hdim fun k hs ↦
     htrivial k (transparent_of_S_test_and_balancing C p hdim hbalance k hs)
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end

@@ -10,14 +10,14 @@ The centre has finitely many simple isomorphism classes. A retract of the tensor
 an induced object then gives finite semisimple decompositions and a fusion structure.
 -/
 
-attribute [local instance] PropertyF.Ground.Centre.finiteDimensional_hom
+attribute [local instance] MTC.Centre.finiteDimensional_hom
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
 open CategoryTheory.Category
 universe v u
 @[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 variable {C : BraidedFusionCategory.{v,u}}
 local notation "Sᶜ" => simples C
 local notation "𝒵" => Center C.Obj
@@ -79,16 +79,16 @@ theorem simple_hom_induced_simple [Simple X] :
     fun i hi ↦ (finrank_pos_iff_exists_ne_zero (R := ℂ)).mp (by
       simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 end
 
 /-! An injective-retract route to centre semisimplicity and fusion. -/
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits PropertyF.Ground.Dimensions
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits MTC.Dimensions
 universe v u
 @[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple
 variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [LeftRigidCategory D]
 
@@ -176,4 +176,4 @@ theorem center_fusion_of_nonzero_induced_trace (p : PivotalStructure (C := 𝒵)
     hne (End.ext (by simpa [PivotalStructure.rightTrace, rightTraceWith,
       cap, J, Category.assoc] using h))
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction

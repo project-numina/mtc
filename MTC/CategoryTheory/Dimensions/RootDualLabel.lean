@@ -13,7 +13,7 @@ signs on a label and its dual.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -36,13 +36,13 @@ theorem positive_spherical_of_simple_fourth_and_reciprocity
     (fun i ↦ squaredNorm_eq_root_norm_sq_of_reciprocity hinv htranspose i) hpu
 
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -90,13 +90,13 @@ theorem trace_reciprocity_of_intertwining
   change LinearMap.trace ℂ _ B = (rootDualSign C i).1 * LinearMap.trace ℂ _ A
   rw [ht, ← mul_assoc, (rootDualSign C i).2.1, one_mul]
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -119,13 +119,13 @@ theorem trace_reciprocity_of_frobenius_defect
     erw [← simpleHomPairingEquiv_natural]
     simp [enoReciprocityEquiv, hcompat, multiplicityDefect_apply]
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -138,10 +138,10 @@ theorem rootDualSign_dual (i : Fin (rank C)) :
   have he := (target_squaredNorm_iso C (rightDualLabelIso C i)).symm.trans
     (target_squaredNorm_rightDual (simples C i))
   rw [squaredNorm_eq_rootDualSign_mul, squaredNorm_eq_rootDualSign_mul,
-    Ground.dualIndex_involutive] at he
+    MTC.dualIndex_involutive] at he
   apply mul_right_cancel₀ (mul_ne_zero (rootDimension_ne_zero i)
     (rootDimension_ne_zero (dualIndex C i)))
   simpa only [mul_assoc, mul_left_comm, mul_comm] using he
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end

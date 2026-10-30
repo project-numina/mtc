@@ -17,7 +17,7 @@ For fusion rings, see Etingof–Gelaki–Nikshych–Ostrik, *Tensor Categories*,
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 section
@@ -187,4 +187,4 @@ theorem fusionCoeff_assoc (i j k l : Fin (rank D)) :
   simpa only [← fusionCoeff_comm D k] using
     (show ∑ r, N j k r * N i r l = ∑ r, N i j r * N k r l from h)
 
-end PropertyF.Ground
+end MTC

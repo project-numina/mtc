@@ -17,10 +17,10 @@ Evaluation against duals reduces the Drinfeld tensor equation to a cap identity.
 The resulting compatibility supplies the balancing equation for the pivotal twist.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-open PropertyF.Ground PropertyF.Ground.Dimensions
+open MTC MTC.Dimensions
 universe v u
 @[expose] public noncomputable section
-namespace PropertyF.Ground.CentreIntegrate
+namespace MTC.CentreIntegrate
 set_option backward.isDefEq.respectTransparency false
 
 /-- Evaluating a double-dual tensor map reduces to the tensor pairing on
@@ -110,4 +110,4 @@ theorem drinfeld_tensor_of_pairing_cap {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ
   rw [hcap]
 
 
-end PropertyF.Ground.CentreIntegrate
+end MTC.CentreIntegrate

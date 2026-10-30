@@ -16,7 +16,7 @@ scalars. The inverse agrees with the scalar map in the target statement.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
@@ -48,4 +48,4 @@ theorem unitScalar_eq_equiv (f : End (𝟙_ C.Obj)) :
   (congrArg (unitScalar C) ((unitScalarEquiv C).symm_apply_apply f).symm).trans
     (unitScalar_algebraMap C _)
 
-end PropertyF.Ground
+end MTC

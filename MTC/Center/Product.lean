@@ -9,7 +9,7 @@ its braided monoidal structure follows from the centrality of the two images. No
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Functor.Monoidal
 open CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -92,4 +92,4 @@ def negativeProductIso (X : C) : productFunctor.obj (𝟙_ C, X) ≅ (negative C
   whiskerRightIso (εIso (CategoryTheory.Center.ofBraided C)).symm ((negative C).obj X) ≪≫
     λ_ ((negative C).obj X)
 
-end PropertyF.Ground.Centre
+end MTC.Centre

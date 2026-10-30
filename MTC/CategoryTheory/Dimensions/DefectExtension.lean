@@ -20,7 +20,7 @@ Duality, associativity and coevaluation identities extend root tensor-defect rel
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 /-- A scalar eigenvector pulls back along a monomorphism intertwining two endomorphisms. -/
@@ -64,13 +64,13 @@ theorem rootTensorDefect_coevaluation (i : Fin (rank C)) :
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, Linear.smul_comp]
   rw [hn, fourthDualRoot_unit_component, Linear.smul_comp, ht, ← mul_smul, mul_assoc,
     (rootDualSign C i).2.1, mul_one]
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -95,13 +95,13 @@ theorem rootTensorDefect_swapped_coevaluation (i : Fin (rank C)) :
       (s := (a ⊗ᵢ (rightDualIsoMap a).symm).hom) (coevaluation_iso_map a)
       (rootTensorDefect_natural C a.hom (rightDualIsoMap a).symm.hom)
       (rootTensorDefect_coevaluation (dualIndex C i))))
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -121,13 +121,13 @@ theorem rootTensorDefect_associativity (X Y Z : C.Obj) :
       (Functor.Monoidal.transport_δ (fourthDualRootNaturalIso C).symm A B)
   simpa only [hd, Functor.id_obj, Functor.id_map] using
     Functor.OplaxMonoidal.δ_comp_whiskerLeft_δ (𝟭 C.Obj) X Y Z
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -171,13 +171,13 @@ theorem rootTensorDefect_slide_of_involution
   change D ≫ D = 𝟙 _ at hinv
   simpa only [Category.assoc, hinv, Category.comp_id, Linear.smul_comp] using
     (congrArg (fun f => f ≫ D) hloop)
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -199,6 +199,6 @@ theorem trace_reciprocity_of_fourth_dual
     (rootTensorDefect_involution_extension C (fun i j ↦ rootTensorDefect_involution_of_tensor_square C
       ((rootTensor_square_eq_fourthDual_tensor C _ _).trans (hfourth i j).symm)) _ _)
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end

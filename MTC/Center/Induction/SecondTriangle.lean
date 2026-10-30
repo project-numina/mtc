@@ -2,7 +2,7 @@ module
 public import MTC.Center.Induction.CrossingCoherence
 public import MTC.Center.Induction.AdjunctionAssembly
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 /-! Duality identities for the induction counit and triangle. -/
 /-! Matrix reductions for the induction adjunction. -/
@@ -12,7 +12,7 @@ open scoped BigOperators
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 attribute [local instance] IsFusionCategory.hom_finite
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 -- The chosen simple representatives of the base fusion category.
@@ -68,7 +68,7 @@ theorem crossing_counit_diagonal :
       (crossingBlock_of_simple_split (k := ℂ) X (simpleTensorUnitIso C i).symm _ _
         (simpleInclusion_projection default))
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 end
@@ -77,7 +77,7 @@ section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits CategoryTheory.ExactPairing
 universe v u
 @[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 variable {A : D}
 
@@ -136,7 +136,7 @@ theorem crossingUnitBlock_eval (e : A ≅ 𝟙_ D) :
   crossingBlock_unit_of_split X T e.hom e.inv
     (rightDualIsoMap e.symm).hom e.inv_hom_id (close_rightUnit_eval T e)
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 end
@@ -146,7 +146,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Catego
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 variable {C : BraidedFusionCategory.{v,u}} (X : C.Obj)
 -- The chosen simple representatives of the base fusion category.
 local notation "S" => simples C
@@ -182,4 +182,4 @@ theorem unit_diag :
     (coevaluation_evaluation'' (S i) ((S i)ᘁ)) using 1 <;> monoidal
 
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction

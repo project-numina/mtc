@@ -10,18 +10,18 @@ Galois transport of positive constituent dimensions gives nonzero braid-block tr
 weights. These weights supply the hypotheses of the three-strand rigidity argument.
 -/
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
-variable (original qdim : Fin (Ground.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
+variable (original qdim : Fin (MTC.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
   (hpos : ∀ i, 0 < original i)
   (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
-  (hqdim : ∀ i, pivotalDimension C p (Ground.simples C i) = (qdim i : ℂ))
+  (hqdim : ∀ i, pivotalDimension C p (MTC.simples C i) = (qdim i : ℂ))
 include hpos htransport hqdim
 
 /-- Real Galois conjugates of positive simple dimensions yield nonzero real
@@ -37,7 +37,7 @@ theorem exists_galois_braid_trace_weights
       (∀ i, w i ≠ 0) ∧
       IsTracePresentation C p b w :=
   let ⟨r, size, b, mult, hsize, hunit, hret, _, htrace⟩ :=
-    exists_unitary_braid_trace_blocks C p (Ground.unitScalarEquiv C) hfinite
+    exists_unitary_braid_trace_blocks C p (MTC.unitScalarEquiv C) hfinite
   let w : Fin r → ℝ := fun j => ∑ i, (mult i j : ℝ) * qdim i
   ⟨r, size, b, w, hsize, hunit,
     (fun j => transported_weight_ne_zero (fun i => mult i j) original qdim σ
@@ -52,8 +52,8 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (X : C.Obj) [Simple X]
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
-    (hfp : Ground.fpDimension C X = f)
-    (hS : scalarTrace p (Ground.unitScalarEquiv C) (selfMonodromy X) =
+    (hfp : MTC.fpDimension C X = f)
+    (hS : scalarTrace p (MTC.unitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
     (hrec : ∀ u : braidAlgebra X 1, HasOverlapTracePower C p u) : f = |d| := by
@@ -68,4 +68,4 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
       (overlapProduct z k) (overlapProduct_unitary b he hz k)) (hrec z)
   simpa [hdim, hfp, Complex.norm_real, Real.norm_eq_abs] using hbound
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus

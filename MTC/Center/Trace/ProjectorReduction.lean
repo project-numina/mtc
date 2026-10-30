@@ -15,14 +15,14 @@ criteria for objects and simple dimensions. The notation `sgn ℂ n σ`
 denotes the permutation sign in the scalar ring.
 -/
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (HasFPSimpleDimensions)
-local notation "sgn" => PropertyF.Ground.Centre.permutationSign
-open PropertyF.Ground.Dimensions
+open MTC.Modular (HasFPSimpleDimensions)
+local notation "sgn" => MTC.Centre.permutationSign
+open MTC.Dimensions
 open Equiv (Perm)
 open Fintype (card_perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 
 /-- Signed sum of a function on permutations of a finite set. -/
@@ -66,11 +66,11 @@ theorem integral_of_pivotal_exterior
   integral_of_exterior_dimensions fun n ↦ (hExterior n).imp fun Y hY ↦
     Complex.ofReal_injective <| by simpa [pivotalDimension_eq_fp (pivotalDimensions_on_simples hdim) _] using hY
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus
 
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
@@ -136,4 +136,4 @@ theorem integral_of_signed_permutation_traces
     let ⟨ρ, hρ⟩ := hTrace n
     ⟨ρ, (alternatingProjector_scalar_trace (C := C) (p := p) ρ).trans hρ⟩
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus

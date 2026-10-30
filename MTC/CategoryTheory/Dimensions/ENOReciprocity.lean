@@ -20,7 +20,7 @@ Character duality, phase normalization and trace reciprocity control the dimensi
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {k : Type*} [Field k] {D : Type u} [Category.{v} D]
   [MonoidalCategory D] [RightRigidCategory D]
@@ -66,13 +66,13 @@ theorem rootDual_differs_by_sign (X : C.Obj)
       ((congrArg (fun n ↦ (n.app (Xᘁ)).hom) (fourthDualRootNaturalSquare_eq C)).trans
         (inverseDualRoot_square C X).symm), he⟩
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -112,17 +112,17 @@ theorem squaredNorm_eq_rootDualSign_mul
     ← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
       congrArg (unitScalar C) (rootTrace_id C X).symm), ← hq,
     rightQuantumTrace_smul_hom ((rootDualSign C i).2.2)]
-  simp only [Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul]
+  simp only [MTC.unitScalar_eq_equiv, map_smul, smul_eq_mul]
   rw [mul_mul_mul_comm, (rootDualSign C i).2.1, one_mul]
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -138,8 +138,8 @@ theorem spherical_of_fp_dimensions_and_squaredNorms {p : PivotalStructure (C := 
     let : Simple X := simples_simple C i
     have hh := target_squaredNorm_choice_independent (p.iso X)
     rw [← rightTrace_id, ← leftTrace_id, ← pivotalDimension, hdim i, hnorm i, Complex.ofReal_pow] at hh
-    apply (Ground.unitScalarEquiv C).injective
-    rw [← Ground.unitScalar_eq_equiv, ← Ground.unitScalar_eq_equiv, ← pivotalDimension, hdim i]
+    apply (MTC.unitScalarEquiv C).injective
+    rw [← MTC.unitScalar_eq_equiv, ← MTC.unitScalar_eq_equiv, ← pivotalDimension, hdim i]
     exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i)))
       (by simpa [pow_two] using hh.symm)
 
@@ -153,14 +153,14 @@ theorem eno_root_norm_saturation_of_pseudoUnitary
   norm_saturation_of_pseudoUnitary
     (fun i => rootDimension_norm_le_fp_of_trace_matrix (hinv i) (heig i)) hnorm hpu
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -229,14 +229,14 @@ theorem positive_spherical_of_matrix_identities
     rw [rootPhasePivotal_dimension, hvalue]
   ⟨p, spherical_of_fp_dimensions_and_squaredNorms hp (by simp [hnorm, hsat]), hp⟩
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators Matrix ComplexOrder
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -284,6 +284,6 @@ theorem squaredNorm_eq_root_norm_sq_of_reciprocity
   rw [squaredNorm_eq_rootDualSign_mul i, rootDimension_dual_conjugate_of_trace_reciprocity hinv htranspose i,
     mul_mul_mul_comm, (rootDualSign C i).2.1, one_mul]; simpa using Complex.mul_conj' (rootDimension C i)
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end

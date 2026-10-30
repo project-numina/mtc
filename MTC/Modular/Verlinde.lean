@@ -21,9 +21,9 @@ The classification and complex-automorphism action follow from the S-square,
 global nonvanishing, and Verlinde equations.
 -/
 open scoped BigOperators
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 
 /-- Verlinde's character equations give a fusion expansion for S-entry products. -/
 theorem fusion_character_product {ι K : Type*} [Fintype ι] [Field K]
@@ -105,7 +105,7 @@ theorem galois_unit_properties (hu : d u = 1) (hglobal : D = ∑ x, d x ^ 2)
 
 end
 
-end PropertyF.Ground.Modular
+end MTC.Modular
 end
 
 section
@@ -117,9 +117,9 @@ scalar partial trace on a simple surviving strand. The Hopf-link product follows
 from the composition law for these partial traces.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory
-open PropertyF.Ground.Dimensions PropertyF.Ground.Calculus
+open MTC.Dimensions MTC.Calculus
 
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 universe v u
 
 /-- The partial trace of monodromy, leaving the first strand open. -/
@@ -129,18 +129,18 @@ abbrev partialMonodromy {C : Type u} [Category.{v} C] [MonoidalCategory C] [Brai
   rightPartialTrace p (End.of (doubleBraiding X Y))
 
 /-- Closing one strand of a double braiding gives the normalized S scalar. -/
-theorem partialTrace_doubleBraiding_simple (D : Ground.BraidedFusionCategory.{v,u})
+theorem partialTrace_doubleBraiding_simple (D : MTC.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (k : Fin (rank D)) (X : D.Obj) :
     partialMonodromy p (simples D k) X =
-      (Ground.unitScalar D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 :=
+      (MTC.unitScalar D (SEntry p (simples D k) X) / simpleDimension D p k) • 1 :=
   letI : Simple (simples D k) := simples_simple D k
-  letI : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
+  letI : FiniteDimensional ℂ (simples D k ⟶ simples D k) := MTC.IsFusionCategory.hom_finite _ _
   by
-    rw [Ground.unitScalar_eq_equiv]
-    exact rightPartialTrace_simple p (Ground.unitScalarEquiv D) _ (simpleDimension_ne_zero D p k)
+    rw [MTC.unitScalar_eq_equiv]
+    exact rightPartialTrace_simple p (MTC.unitScalarEquiv D) _ (simpleDimension_ne_zero D p k)
 
 /-- Partial traces of double braiding multiply on a simple strand. -/
-abbrev HasMultiplicativePartialTrace (D : Ground.BraidedFusionCategory.{v,u})
+abbrev HasMultiplicativePartialTrace (D : MTC.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) : Prop :=
   ∀ i j k : Fin (rank D),
     partialMonodromy p (simples D k) (simples D i ⊗ simples D j) =
@@ -148,7 +148,7 @@ abbrev HasMultiplicativePartialTrace (D : Ground.BraidedFusionCategory.{v,u})
         partialMonodromy p (simples D k) (simples D j)
 
 /-- Multiplicative partial traces imply the Hopf-link product rule. -/
-theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCategory.{v,u})
+theorem hopf_product_of_partialTrace_composition (D : MTC.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (hcomp : HasMultiplicativePartialTrace D p) :
     HasHopfProduct D p := by
   intro i j k
@@ -159,27 +159,27 @@ theorem hopf_product_of_partialTrace_composition (D : Ground.BraidedFusionCatego
   simpa only [SEntry_symmetric p (simples D k) (simples D i ⊗ simples D j),
     SEntry_symmetric p (simples D k) (simples D i),
     SEntry_symmetric p (simples D k) (simples D j), categoricalS,
-    ← Ground.unitScalar_eq_equiv] using hv
+    ← MTC.unitScalar_eq_equiv] using hv
 
-end PropertyF.Ground.Modular
+end MTC.Modular
 end
 
 section
 /-! The unit axiom of a pivotal structure normalizes the tensor-unit trace. -/
 open CategoryTheory CategoryTheory.MonoidalCategory
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
 /-- The dimension of the simple representative of the tensor unit is one. -/
-theorem simpleDimension_unit (C : Ground.BraidedFusionCategory.{v,u})
+theorem simpleDimension_unit (C : MTC.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) : simpleDimension C p (unitIndex C) = 1 :=
-  by simpa only [simpleDimension, ← Ground.unitScalar_eq_equiv, Dimensions.pivotalDimension] using
+  by simpa only [simpleDimension, ← MTC.unitScalar_eq_equiv, Dimensions.pivotalDimension] using
     Dimensions.pivotalDimension_unitIndex C p
 
-end PropertyF.Ground.Modular
+end MTC.Modular
 end
 
 section
@@ -192,10 +192,10 @@ give the Hopf-link product identity on a simple strand. Additivity on the
 semisimple tensor-product decomposition then proves the Verlinde equations.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-open PropertyF.Ground.Dimensions PropertyF.Ground.Calculus
+open MTC.Dimensions MTC.Calculus
 open scoped BigOperators
 
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 universe v u
 section Braiding
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -278,7 +278,7 @@ theorem partialTrace_doubleBraiding_tensor (D : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) : HasMultiplicativePartialTrace D p := by
   intro i j k
   let : Simple (simples D k) := simples_simple D k
-  let : FiniteDimensional ℂ (simples D k ⟶ simples D k) := Ground.IsFusionCategory.hom_finite _ _
+  let : FiniteDimensional ℂ (simples D k ⟶ simples D k) := MTC.IsFusionCategory.hom_finite _ _
   let f := End.of (doubleBraiding (simples D k) (simples D i ⊗ simples D j))
   have hs := partialTrace_doubleBraiding_simple D p k (simples D j)
   change rightPartialTrace p f = _
@@ -288,11 +288,11 @@ theorem partialTrace_doubleBraiding_tensor (D : BraidedFusionCategory.{v,u})
 
 
 /-- The normalized S columns satisfy the Verlinde fusion-character equations. -/
-theorem categoricalS_verlinde (D : Ground.BraidedFusionCategory.{v,u})
+theorem categoricalS_verlinde (D : MTC.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) :
     HasVerlindeFormula ⟨unitIndex D, fusionCoeff D⟩ (categoricalS D p) (simpleDimension D p) :=
   categoricalS_verlinde_of_hopf_product D p
     (hopf_product_of_partialTrace_composition D p (partialTrace_doubleBraiding_tensor D p))
 
-end PropertyF.Ground.Modular
+end MTC.Modular
 end

@@ -16,13 +16,13 @@ product centralizer, under the stated finite-monodromy hypotheses. We write
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical doubleBraiding sCentralizer)
-open PropertyF.Ground.Dimensions
-local notation "𝒵" => PropertyF.Ground.Integrate.bundledCenter
+open MTC.Modular (HasFPSimpleDimensions IsFPSpherical doubleBraiding sCentralizer)
+open MTC.Dimensions
+local notation "𝒵" => MTC.Integrate.bundledCenter
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCabling
+namespace MTC.CentreCabling
 universe v u
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : MTC.BraidedFusionCategory.{v,u})
   [RigidCategory (CategoryTheory.Center C.Obj)]
   [IsFusionCategory (CategoryTheory.Center C.Obj)]
 
@@ -58,7 +58,7 @@ theorem dual_mem_productLabels : dualIndex (𝒵 C) i ∈ productLabels C :=
 /-- Every constituent label of two product labels is itself a product label. -/
 theorem constituent_mem_productLabels
     (k : {k : Fin (rank (𝒵 C)) // 0 < fusionCoeff (𝒵 C) i j k}) : k.val ∈ productLabels C :=
-  let ⟨r⟩ := Ground.fusionCoeff_retract k.property
+  let ⟨r⟩ := MTC.fusionCoeff_retract k.property
   (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|
     Centre.productRetract_tensor ((mem_productLabels C i).1 i.2) ((mem_productLabels C j).1 j.2)
 
@@ -86,12 +86,12 @@ def symmetricCore : Set (Fin (rank (𝒵 C))) :=
     (∀ X : C.Obj, Centre.Centralizes (simples (𝒵 C) y)
       ((Centre.negative C.Obj).obj X))}
 
-end PropertyF.Ground.CentreCabling
+end MTC.CentreCabling
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCabling
+namespace MTC.CentreCabling
 universe v u
-variable (C : Ground.BraidedFusionCategory.{v,u})
+variable (C : MTC.BraidedFusionCategory.{v,u})
   [RigidCategory (CategoryTheory.Center C.Obj)]
   [IsFusionCategory (CategoryTheory.Center C.Obj)]
 
@@ -170,9 +170,9 @@ theorem productLabels_doubleCentralizer_of_image_monodromy
     numericalImageCentralizer_subset_symmetricCore C hdim hfinite fun a ha ↦
       hy a (imageLabels_subset_productLabels C ha)
 
-end PropertyF.Ground.CentreCabling
+end MTC.CentreCabling
 
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 
 /-- Every simple in the common centralizer of the two canonical images in
@@ -187,4 +187,4 @@ theorem actual_symmetricCore_integrality {C : BraidedFusionCategory.{v,u}}
   selfTransparent_simpleDimension_integer hfp
     (commonCentralizer_self (simples (𝒵 C) y) y.property.1 y.property.2)
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus

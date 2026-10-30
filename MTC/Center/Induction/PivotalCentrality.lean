@@ -6,12 +6,12 @@ public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 public import MTC.CategoryTheory.Dimensions.DualBraiding
 public import MTC.CategoryTheory.Dimensions.DoubleDualMonoidal
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 /-! The pivotal structure of the base lifts to the rigid centre. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
@@ -53,9 +53,9 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] :
     PivotalComponentsCentral p := fun Z _ ↦
   central_of_positive_braiding (transported_pivotal_braiding p Z _)
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {C : BraidedFusionCategory.{v,u}}
@@ -104,4 +104,4 @@ theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
     (Centre.centralizes_symm (Centre.centralizes_of_iso_left e'.symm (hcentral _)))
   exact ⟨e' ≪≫ F.mapIso (unitIndex_iso C).some ≪≫ (CategoryTheory.Functor.Monoidal.εIso F).symm⟩
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction

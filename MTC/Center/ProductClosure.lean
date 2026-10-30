@@ -15,7 +15,7 @@ product retract.
 -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [MonoidalCategory C]
   [MonoidalPreadditive C] [HasBinaryBiproducts C] [BraidedCategory C]
@@ -69,12 +69,12 @@ theorem productRetract_propertyF {Z : CategoryTheory.Center C}
   match hZ with
   | ⟨X, Y, ⟨r⟩⟩ => productFunctor_retract_objectPropertyF r (hC X) (hC Y)
 
-end PropertyF.Ground.Centre
+end MTC.Centre
 
 /-! Finite sums of retracts of product images. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [MonoidalCategory C]
   [MonoidalPreadditive C] [HasBinaryBiproducts C] [HasZeroObject C]
@@ -126,12 +126,12 @@ theorem productRetract_tensorPower {Z : CategoryTheory.Center C} (hZ : ProductRe
     (n : ℕ) : ProductRetract (tensorPower Z n) :=
   Nat.rec unit_productRetract (fun _ ih ↦ productRetract_tensor hZ ih) n
 
-end PropertyF.Ground.Centre
+end MTC.Centre
 
 /-! Closure of product retracts under generated objects in the actual centre. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [MonoidalCategory C]
   [MonoidalPreadditive C] [RigidCategory C] [BraidedCategory C]
@@ -144,4 +144,4 @@ theorem productRetract_generatedBy {Z W : CategoryTheory.Center C}
   | ⟨_, k, ⟨r⟩⟩ => productRetract_of_retract r
       (productRetract_finiteBiproduct (fun i ↦ productRetract_tensorPower hZ (k i)))
 
-end PropertyF.Ground.Centre
+end MTC.Centre

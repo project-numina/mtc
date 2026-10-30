@@ -16,14 +16,14 @@ compatibility in spherical categories. We write `θ C p X` for the pivotal
 twist scalar and `tr C p ρ n σ` for a scalar permutation trace.
 -/
 @[expose] public noncomputable section
-local notation "θ" => PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar
-local notation "tr" => PropertyF.Ground.CentreCalculus.permScalarTrace
-open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical)
+local notation "θ" => MTC.Dimensions.pivotalBraidedTwistScalar
+local notation "tr" => MTC.CentreCalculus.permScalarTrace
+open MTC.Modular (HasFPSimpleDimensions IsFPSpherical)
 open Equiv.Perm (decomposeFin)
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 variable (p : PivotalStructure (C := C))
@@ -82,10 +82,10 @@ theorem leftPartialTrace_simple_of_trace_compatibility (scalar : End (𝟙_ C) �
   (Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p f) hd).trans <|
     congrArg (fun t ↦ (scalar t / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y)) htrace
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : HasFPSimpleDimensions C p) {X : C.Obj} [Simple X]
@@ -169,10 +169,10 @@ theorem integral_of_leftTrace_and_twist_sign (hsign : θ C p X = 1 ∨ θ C p X 
     (fun h ↦ integral_of_parity_adjacent_trace hdim hX true
       (negativeParity_adjacentTrace p (unitScalarEquiv C).toLinearMap hX htotal _ hfirst h))
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 variable (p : PivotalStructure (C := C))
@@ -262,4 +262,4 @@ theorem integral_of_spherical_and_twist_sign
   integral_of_leftTrace_and_twist_sign hfp.2 hX
     (fun _ f ↦ spherical_rightTrace_leftPartialTrace p hfp.1 f) hsign
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus

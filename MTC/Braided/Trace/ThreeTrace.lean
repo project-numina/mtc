@@ -14,11 +14,11 @@ The categorical three-strand generators obey the braid relation and have finite
 order when the object has property F. Partial traces compute their overlap trace.
 -/
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 @[expose] public section
 open CategoryTheory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -26,13 +26,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def imageGenerator (X : C) (n : ℕ) (i : Fin (n + 1)) : braidImage X n :=
   ⟨braidGenerator X n i, Subgroup.subset_closure (Set.mem_range_self _)⟩
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! The actual three-strand braid relation, including tensor-power unitors. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -81,13 +81,13 @@ theorem three_braid_image_relation :
 
 end
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Two- and three-strand categorical braid embeddings. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -120,13 +120,13 @@ def tripleBlockLeft :=
 def tripleBlockRight :=
   b (braidInImage (threeGeneratorRight X))
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Simple-strand partial trace from the constructed iterated trace law. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 
 /-- In a genuine braided fusion category, the partial trace onto a simple
@@ -135,17 +135,17 @@ theorem rightPartialTrace_simple_ground (C : BraidedFusionCategory.{v,u})
     {X Y : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y)) :
     rightPartialTrace p f = (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) :=
-  let _ : FiniteDimensional ℂ (X ⟶ X) := Ground.IsFusionCategory.hom_finite _ _
+  let _ : FiniteDimensional ℂ (X ⟶ X) := MTC.IsFusionCategory.hom_finite _ _
   rightPartialTrace_simple (X := X) (Y := Y) p scalar f
     (by simpa only [map_zero] using scalar.injective.ne (Modular.pivotalTrace_simple_ne_zero C p X))
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! The graphical recurrence for two overlapping endomorphisms. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [Preadditive C] [Linear ℂ C]
 
@@ -180,13 +180,13 @@ theorem pivotalTrace_overlap :
   rw [← Dimensions.rightTrace_partialTrace p, rightPartialTrace_overlap D p scalar]
   simp [scalarTrace, PivotalStructure.rightTrace_smul, mul_comm]
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! The trace of the actual three-strand double-monodromy braid. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -211,7 +211,7 @@ theorem three_braid_double_overlap (X : C) :
 /-- Pivotal trace of an element of an actual categorical braid algebra. -/
 def actualBraidTrace (D : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := D.Obj))
     {X : D.Obj} {n : ℕ} (a : braidAlgebra X n) : ℂ :=
-  Ground.unitScalarEquiv D (p.rightTrace (a : End (braidTensorPower X n)).asHom)
+  MTC.unitScalarEquiv D (p.rightTrace (a : End (braidTensorPower X n)).asHom)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The trace of the three-strand overlap is the squared monodromy trace,
@@ -219,7 +219,7 @@ normalized by the pivotal dimension. -/
 theorem actual_three_braid_trace (D : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (X : D.Obj) [Simple X] :
     actualBraidTrace D p (braidInImage (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) =
-      scalarTrace p (Ground.unitScalarEquiv D) (selfMonodromy X) ^ 2 / pivotalDimension D p X := by
+      scalarTrace p (MTC.unitScalarEquiv D) (selfMonodromy X) ^ 2 / pivotalDimension D p X := by
   simp only [actualBraidTrace, threeGeneratorLeft, threeGeneratorRight, imageGenerator,
     SubmonoidClass.mk_pow, MulMemClass.mk_mul_mk, braidInImage_val, braidEndRepresentation,
     MonoidHom.coe_comp, Subgroup.coe_subtype, Function.comp_apply, pivotalDimension,
@@ -231,4 +231,4 @@ theorem actual_three_braid_trace (D : BraidedFusionCategory.{v,u})
 def twoPowerIso (X : C) : tensorPower X 2 ≅ X ⊗ X :=
   Iso.refl X ⊗ᵢ (ρ_ X)
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus

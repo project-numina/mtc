@@ -10,7 +10,7 @@ Negative centralization, positive half-braidings and transparency.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF
+namespace MTC
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -33,4 +33,4 @@ theorem centralizesNegative_iff (Y : CategoryTheory.Center C) :
   ⟨fun h X => Iso.ext ((cancel_mono (β_ Y.1 X).inv).mp (by simpa using h X)),
     fun h X => by rw [h X]; simp⟩
 
-end PropertyF
+end MTC

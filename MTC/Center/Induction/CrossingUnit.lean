@@ -6,7 +6,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing 
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 attribute [local instance] IsFusionCategory.hom_finite
 variable {C : BraidedFusionCategory.{v,u}}
 -- Chosen simple representatives of the base category.
@@ -126,4 +126,4 @@ theorem crossingCandidate_unit :
     simpa [underlying, ← leftUnitor_inv_naturality] using
       crossingCandidate_unit_summand X i
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction

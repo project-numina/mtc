@@ -12,9 +12,9 @@ S columns, this yields the usual dual-conjugation law when dimensions are real.
 -/
 open scoped BigOperators
 @[expose] public noncomputable section
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 
-variable (C : Ground.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
+variable (C : MTC.BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
@@ -38,18 +38,18 @@ include hreal in
 /-- With real simple dimensions, dualizing a label conjugates the corresponding
 categorical S entry. No categorical dual-trace identity is needed. -/
 theorem categoricalS_dual_conj (i j : Fin (rank C)) :
-    Sₚ (Ground.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) :=
+    Sₚ (MTC.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) :=
   (div_left_inj' (simpleDimension_ne_zero C p j)).mp (by
     simpa only [categoricalSCharacter, normalizedSColumn, ← starRingEnd_apply, map_div₀, hreal j] using
-      Ground.fusion_character_dual_eq_conj (i₀ := unitIndex C)
-        (fun a b c ↦ (Ground.fusionCoeff_dual_symmetry C a b c).symm)
+      MTC.fusion_character_dual_eq_conj (i₀ := unitIndex C)
+        (fun a b c ↦ (MTC.fusionCoeff_dual_symmetry C a b c).symm)
         (by simp [(categoricalSCharacter C p j).unit_eq]) (categoricalSCharacter C p j).mul_eq i)
 
 include hreal in
 /-- Real pivotal simple dimensions are invariant under dual labels. -/
 theorem simpleDimension_dual (i : Fin (rank C)) :
-    dₚ (Ground.dualIndex C i) = dₚ i := by
+    dₚ (MTC.dualIndex C i) = dₚ i := by
   simpa only [categoricalS_unit, hreal i] using
     categoricalS_dual_conj C p hreal i (unitIndex C)
 
-end PropertyF.Ground.Modular
+end MTC.Modular

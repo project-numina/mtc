@@ -26,7 +26,7 @@ Lean rank-one category example remain future work.
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground MTC.PropertyF
+open MTC MTC.PropertyF
 
 namespace MTC.Conjectures.RankFiniteness
 universe v u

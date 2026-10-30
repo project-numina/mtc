@@ -23,7 +23,7 @@ Determinant relations and tensor decompositions imply finiteness of mixed monodr
 
 section
 open scoped BigOperators
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe u v w
 variable (C : BraidedFusionCategory.{v,u})
 
@@ -61,7 +61,7 @@ end
 /-- The Frobenius–Perron dimensions form a regular fusion eigenvector. -/
 theorem fpSimple_regular (i k : Fin (rank C)) :
     (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
-  simp_rw [Ground.fusionCoeff_dual_symmetry C i]
+  simp_rw [MTC.fusionCoeff_dual_symmetry C i]
   simpa only [mul_comm, fpSimple_dual] using (fpSimple_mul C (dualIndex C i) k).symm
 
 /-- The FP regular-element cancellation at the heart of the determinant argument. -/
@@ -72,12 +72,12 @@ theorem regular_fusion_derivation_vanishes {M : Type w} {σ : Type*}
   fun i z ↦ derivation_vanishes_of_regular_eigenvector _ _ (fpSimple_regular C)
     (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C))) _ (hhex z) i
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
 open TensorProduct
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 
 /-- A real vector space recording complex units up to torsion. -/
 abbrev vafaUnitSpace : Type := ℝ ⊗[ℚ] (ℚ ⊗[ℤ] Additive ℂˣ)
@@ -113,7 +113,7 @@ theorem rationalUnitClass_pow {K G : Type*} [CommSemiring K] [Algebra ℚ K] [Co
     (z : G) (n : ℕ) : rationalUnitClass (K := K) (z ^ n) = n • rationalUnitClass (K := K) z := by
   simp [rationalUnitClass]
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
@@ -121,7 +121,7 @@ open CategoryTheory
 open scoped BigOperators
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
@@ -187,7 +187,7 @@ theorem fpDeterminant_scalar (X : C.Obj) (z : ℂˣ) :
   simp only [fpDeterminant, fpDimension, homAction_det_scalar, vafaUnitClass, rationalUnitClass_pow,
     ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, Finset.sum_smul, mul_comm]
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
@@ -195,7 +195,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
@@ -240,12 +240,12 @@ theorem fpDeterminant_tensor_scalar
   dsimp only [HasTensorDeterminant]
   rw [tensor_scalarIso, fpDeterminant_scalar, fpDeterminant_scalar, fpDimension_tensor, mul_smul]
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
 open scoped BigOperators
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
@@ -270,7 +270,7 @@ theorem finite_order_of_weighted_twist_balance [Module.FaithfullyFlat ℚ K]
 
 end
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
@@ -278,7 +278,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 open scoped BigOperators
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
@@ -373,7 +373,7 @@ theorem natural_scalars_finite_of_monodromy_determinant
     dsimp only [monodromyDet] at hmon
     simp [hbalance, fpDeterminant_trans, hmon, fpDeterminant_scalar, vafaUnitClass, rationalUnitClass_mul]
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
@@ -381,7 +381,7 @@ open CategoryTheory CategoryTheory.Limits
 open scoped BigOperators
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -424,14 +424,14 @@ theorem fpDeterminant_biprod
   let : ∀ A B : C.Obj, FiniteDimensional ℂ (A ⟶ B) := IsFusionCategory.hom_finite
   simp [fpDeterminant, homAction_det_biprod, vafaUnitClass, rationalUnitClass_mul, Finset.sum_add_distrib]
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -465,14 +465,14 @@ theorem fpDeterminant_tensor_biprod
   change fpDeterminant C (e ≪≫ A ≪≫ e.symm) = fpDeterminant C A at hd
   rw [hd, fpDeterminant_biprod, fpDeterminant_biprod, ha, hb, smul_add]
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -583,7 +583,7 @@ theorem fpDeterminant_tensor_natural (Y : C.Obj) : HasTensorDeterminantRule C η
     exact fpDeterminant_tensor_biprod C X (η.app S) (η.app K)
       (fpDeterminant_tensor_of_simple C X S (η.app S)) ih
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
@@ -591,7 +591,7 @@ open CategoryTheory CategoryTheory.Limits
 open scoped BigOperators
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u w
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -639,7 +639,7 @@ theorem additive_object_function_decomposition {M : Type w} [AddCommMonoid M]
         ((homBiprodLinearEquiv (simples C i) S K).finrank_eq.trans Module.finrank_prod)
     rw [hdim, add_smul]
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
@@ -647,7 +647,7 @@ open CategoryTheory CategoryTheory.Limits
 open scoped BigOperators
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -672,14 +672,14 @@ theorem fpDeterminant_functor_natural_decomposition
         fpDeterminant_conjugate C (F.mapBiprod X Y).symm
           (biprod.mapIso (η.app X) (η.app Y))) X
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
@@ -741,14 +741,14 @@ theorem fpDeterminant_simple_monodromy_tensor
   (fpDeterminant_tensor_flip C X (monodromyIso (simples C i) (simples C j))).trans
     (fpDeterminant_tensor_simple_monodromy C hbalance X i j)
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
@@ -772,7 +772,7 @@ theorem fpDeterminant_monodromy_hexagon
   simp only [fpDeterminant_monodromy_tensor C, fpDeterminant_tensor_simple_monodromy C hbalance,
     fpDeterminant_simple_monodromy_tensor C hbalance, fpDimension_simple]
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
@@ -780,7 +780,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 open scoped BigOperators
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 variable {η : 𝟭 C.Obj ≅ 𝟭 C.Obj} {t : Fin (rank C) → ℂˣ}
@@ -823,14 +823,14 @@ theorem natural_scalars_finite_of_simple_balancing :
   natural_scalars_finite_of_monodromy_determinant C ht hbalance fun i j ↦
     fpDeterminant_simple_monodromy_eq_zero C hbalance i j
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace PropertyF.Ground.CentreModular
+namespace MTC.CentreModular
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
@@ -869,7 +869,7 @@ theorem pivotal_twist_finite_of_balancing (p : Dimensions.PivotalStructure (C :=
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   by simpa [CentreCabling.pivotalTwistUnit, Dimensions.pivotalBraidedTwistScalar] using
-    (Ground.simpleEndScalar (k := ℂ) (simples C i)).symm.toMonoidHom.isOfFinOrder
+    (MTC.simpleEndScalar (k := ℂ) (simples C i)).symm.toMonoidHom.isOfFinOrder
       (Units.isOfFinOrder_val.mpr (natural_scalars_finite_of_simple_balancing C
         (pivotal_twist_has_simple_scalars C p) (pivotal_twist_simple_balance C p hbalance) i))
 
@@ -882,5 +882,5 @@ theorem mixed_monodromy_finite_of_pivotal_balancing (p : Dimensions.PivotalStruc
     (Dimensions.pivotalBraidedTwistNaturalIso C p)
     (pivotal_twist_finite_of_balancing C p hbalance) hbalance X Y
 
-end PropertyF.Ground.CentreModular
+end MTC.CentreModular
 end

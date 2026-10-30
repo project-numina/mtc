@@ -37,7 +37,7 @@ Run `python3 scripts/propf/cyclotomic_braid.py matrices.json`. The field arithme
 - Galindo–Rowell, [arXiv:1312.5557](https://arxiv.org/abs/1312.5557), study braid images from unitary braided vector spaces and related finite-image questions; a solution for such a vector space is not automatically a braided fusion category realization.
 - Li–Ruan, [arXiv:2610.05177](https://arxiv.org/abs/2610.05177), report finite projective mapping-class-group images for weakly group-theoretical modular fusion categories with their canonical positive spherical structures. This generalized property is stronger and different from the braid-image predicate used here.
 
-For results stated using the frozen `PropertyF.Ground` definitions, the identifications with the standard categorical conventions still need the justifications flagged in that interface's module docstring. In particular, a formal statement about the frozen structure should not be silently identified with every categorical or numerical version in the literature.
+For results stated using the frozen `MTC` definitions, the identifications with the standard categorical conventions still need the justifications flagged in that interface's module docstring. In particular, a formal statement about the frozen structure should not be silently identified with every categorical or numerical version in the literature.
 
 ## Atlas snapshot screen
 

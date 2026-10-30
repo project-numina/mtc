@@ -18,7 +18,7 @@ Pivotal dimension is additive and multiplicative; simple dimensions determine sp
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -43,7 +43,7 @@ theorem pivotalDimension_decomposition :
     pivotalDimension C p X = ∑ i, (simpleMultiplicity C i X : ℂ) *
       pivotalDimension C p (simples C i) :=
   (exists_canonical_decomposition C X).elim fun e ↦ by
-    simp [pivotalDimension, Ground.unitScalar_eq_equiv, p.rightTrace_id_iso e,
+    simp [pivotalDimension, MTC.unitScalar_eq_equiv, p.rightTrace_id_iso e,
       rightDimension_biproduct, Fintype.sum_sigma]
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
@@ -57,8 +57,8 @@ variable {C} in
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor (X Y : C.Obj) :
     pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
-  simpa [pivotalDimension, Ground.unitScalar_eq_equiv] using
-    pivotalTrace_tensor p (Ground.unitScalarEquiv C) (𝟙 X) (𝟙 Y)
+  simpa [pivotalDimension, MTC.unitScalar_eq_equiv] using
+    pivotalTrace_tensor p (MTC.unitScalarEquiv C) (𝟙 X) (𝟙 Y)
 
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character :
@@ -79,12 +79,12 @@ theorem pivotalDimension_unitIndex :
   (unitIndex_iso C).elim fun e ↦ (pivotalDimension_iso p e).trans (by
     simpa [pivotalDimension, rightTrace_unit] using unitScalar_algebraMap C 1)
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
   [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
@@ -104,9 +104,9 @@ theorem leftTrace_biproduct_scalar_blocks {ι : Type*} [Fintype ι]
   cyclicTrace_biproduct_scalar_blocks (leftTraceLinear p)
     (fun f g => leftTrace_cyclic p f g) f hc
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -131,4 +131,4 @@ theorem isSpherical_iff_simple_dimensions
         simpa [g, Category.assoc] using (p.rightTrace_cyclic e.hom (e.inv ≫ f)),
       htrace, leftTrace_biproduct_scalar_blocks p g hc, V, hs]⟩
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions

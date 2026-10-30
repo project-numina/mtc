@@ -11,7 +11,7 @@ those structures are passed through intermediate helper declarations. -/
 
 public section
 open Lean
-namespace PropertyF.Ground.DependencyAudit
+namespace MTC.DependencyAudit
 
 /-- Legacy structures that may not occur in the target dependency cone. -/
 def forbidden : Array String := #[
@@ -22,7 +22,7 @@ def forbidden : Array String := #[
   "PropertyF.ThreeStrandModel", "PropertyF.ThreeStrandRealization",
   "PropertyF.ProductImageWitness", "PropertyF.CablingWitness",
   "PropertyF.GeneratedInputs", "PropertyF.ModularData",
-  "PropertyF.Ground.DependencyAudit.ForbiddenFixture"]
+  "MTC.DependencyAudit.ForbiddenFixture"]
 
 /-- Detect a forbidden structure or one of its generated declarations. -/
 def isForbidden (n : Name) : Bool :=
@@ -54,7 +54,7 @@ inductive Issue where
   deriving Repr
 
 /-- Pinned upstream modules cannot import this project. Any other module must be
-inspected even if it uses a namespace other than `PropertyF`. -/
+inspected even if it uses a namespace other than `MTC`. -/
 def isTrustedUpstream (n : Name) : Bool :=
   #["Init", "Lean", "Std", "Lake", "Mathlib", "Batteries", "Aesop", "Qq",
     "Plausible", "ImportGraph", "ProofWidgets", "LeanSearchClient", "Cli"].any fun s =>
@@ -107,8 +107,8 @@ run_cmd do
   let env ← getEnv
   unless (findForbidden env ``hiddenInputWrapper).isSome do
     throwError "dependency audit failed to detect a hidden old input"
-  if let some bad := findForbidden env ``PropertyF.Ground.TargetStatement then
+  if let some bad := findForbidden env ``MTC.TargetStatement then
     throwError "target statement depends on forbidden declaration {bad}"
   logInfo "Dependency audit self-test passed; target statement has no old hypothesis structures."
 
-end PropertyF.Ground.DependencyAudit
+end MTC.DependencyAudit

@@ -14,7 +14,7 @@ The main construction is `CentreRigid.rigidCenter`. The intermediate
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreRigid
+namespace MTC.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
@@ -29,13 +29,13 @@ theorem halfBraiding_unit (Z : CategoryTheory.Center C) :
     CategoryTheory.Center.leftUnitor_inv_f] at h
   exact h
 
-end PropertyF.Ground.CentreRigid
+end MTC.CentreRigid
 
 /-! Lifting the underlying duality to the actual centre. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreRigid
+namespace MTC.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
@@ -104,14 +104,14 @@ explicit hypotheses. -/
         (Classical.choose_spec (h Z)).1 (Classical.choose_spec (h Z)).2 } }
   exact BraidedCategory.rigidCategoryOfRightRigidCategory
 
-end PropertyF.Ground.CentreRigid
+end MTC.CentreRigid
 
 /-! The normalized dual candidate starts from an adjoint mate. These equations
 expose its compatibility with the units and counits of the tensor adjunctions. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory PropertyF.Ground.Integrate
-namespace PropertyF.Ground.CentreRigid
+open CategoryTheory CategoryTheory.MonoidalCategory MTC.Integrate
+namespace MTC.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
@@ -124,13 +124,13 @@ theorem dualMate_unit (Z : CategoryTheory.Center C) (U : C) :
   simpa [Integrate.dualMateIso] using unit_conjugateEquiv_symm
     (tensorLeftAdjunction Z.1 Z.1ᘁ) (tensorRightAdjunction (ᘁZ.1) Z.1) (halfBraidingIso Z).hom U
 
-end PropertyF.Ground.CentreRigid
+end MTC.CentreRigid
 
 /-! Componentwise cup and cap identities for the dual mate. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreRigid
+namespace MTC.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
@@ -160,13 +160,13 @@ theorem dualMateUnit_crossed_coevaluation (Z : Center C) :
           ((ρ_ Z.1ᘁ).hom ▷ Z.1) := by rw [h]
     _ = _ := by monoidal
 
-end PropertyF.Ground.CentreRigid
+end MTC.CentreRigid
 
 /-! Coevaluation centrality for the normalized dual crossing. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreRigid
+namespace MTC.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
@@ -236,13 +236,13 @@ theorem coevaluation_central {Z : Center C}
     _ = (λ_ U).hom ≫ (𝟙 U ⊗≫ (U ◁ η_ Z.1 Z.1ᘁ) ⊗≫ 𝟙 (U ⊗ (Z.1 ⊗ Z.1ᘁ))) := by rw [h]
     _ = _ := by monoidal
 
-end PropertyF.Ground.CentreRigid
+end MTC.CentreRigid
 
 /-! Tensor coherence of the normalized dual half-braiding. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreRigid
+namespace MTC.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
@@ -299,13 +299,13 @@ theorem dualCrossing_tensor (Z : Center C) (U V : C) :
     _ = 𝟙 (U ⊗ V) ⊗≫ (η_ X D ▷ (U ⊗ V)) ⊗≫ (X ◁ p) ⊗≫ (c (U ⊗ V) ▷ D) ⊗≫ 𝟙 ((U ⊗ V) ⊗ (X ⊗ D)) := eq1
     _ = _ := by monoidal
 
-end PropertyF.Ground.CentreRigid
+end MTC.CentreRigid
 
 /-! Evaluation centrality and rigidity of the Drinfeld centre. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing
-namespace PropertyF.Ground.CentreRigid
+namespace MTC.CentreRigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
@@ -383,4 +383,4 @@ theorem evaluation_central {Z : Center C}
   refine ⟨dualCrossing_tensor Z, coevaluation_central (dualCrossing_tensor Z),
     evaluation_central (dualCrossing_tensor Z)⟩
 
-end PropertyF.Ground.CentreRigid
+end MTC.CentreRigid

@@ -23,7 +23,7 @@ For the fusion-ring background, see Etingof–Gelaki–Nikshych–Ostrik,
 @[expose] public noncomputable section
 open scoped BigOperators Matrix
 
-namespace PropertyF.Ground
+namespace MTC
 
 section
 variable {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k]
@@ -76,14 +76,14 @@ abbrev IsFusionMultiplicative {R : Type*} [Semiring R]
     (C : BraidedFusionCategory) (χ : Fin (rank C) → R) : Prop :=
   ∀ i j, χ i * χ j = ∑ k, (fusionCoeff C i j k : R) * χ k
 
-end PropertyF.Ground
+end MTC
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators Matrix Matrix.Norms.Operator ENNReal
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 
 variable (C : BraidedFusionCategory)
 
@@ -116,7 +116,7 @@ theorem galois_character_norm_le_fpSimple
   character_norm_le_fpSimple (i₀ := i₀)
     ((map_ne_zero σ).2 hχ) (fun j k ↦ by simpa using congrArg σ (hchar j k)) i
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
@@ -126,7 +126,7 @@ end
 open scoped BigOperators Matrix InnerProductSpace
 open WithLp
 
-namespace PropertyF.Ground
+namespace MTC
 
 variable {ι : Type*}
 
@@ -210,7 +210,7 @@ theorem positive_symmetric_matrix_has_positive_eigenvector {A : Matrix ι ι ℝ
     fun _ ⟨v, hv, hvpos, heigen⟩ ↦
       ⟨v, positive_matrix_eigenvector_pos hpos hv hvpos heigen, heigen⟩
 
-end PropertyF.Ground
+end MTC
 
 end
 
@@ -220,7 +220,7 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 
-namespace PropertyF.Ground
+namespace MTC
 
 variable (D : BraidedFusionCategory)
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -248,7 +248,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
     0 < totalFusionMatrix D j k := by
   let : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor (simples D k)
-  let : (tensorLeft (simples D k)).Faithful := PropertyF.tensorLeft_faithful_of_unit_retract s r hsr
+  let : (tensorLeft (simples D k)).Faithful := MTC.tensorLeft_faithful_of_unit_retract s r hsr
   let Y : D.Obj := simples D k ⊗ (ᘁ(simples D j))
   obtain ⟨i, hm⟩ := exists_positive_multiplicity (simples_decompose D Y)
     (fun _ ↦ IsFusionCategory.hom_finite _ _) (fun h ↦ id_nonzero (ᘁ(simples D j))
@@ -258,7 +258,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
     (fun _ _ => Nat.cast_nonneg _)
     ⟨i, Finset.mem_univ _, Nat.cast_pos.mpr (by simpa only [fusionCoeff_reciprocity] using hm)⟩
 
-end PropertyF.Ground
+end MTC
 
 end
 
@@ -267,7 +267,7 @@ end
 @[expose] public noncomputable section
 open scoped BigOperators Matrix
 
-namespace PropertyF.Ground
+namespace MTC
 
 variable (D : BraidedFusionCategory)
 
@@ -328,7 +328,7 @@ def fpCharacter (D : BraidedFusionCategory) :
     {f : Fin (rank D) → ℝ // (∀ i, 0 < f i) ∧ IsFusionMultiplicative D f} :=
   Classical.indefiniteDescription _ (exists_positive_character D)
 
-end PropertyF.Ground
+end MTC
 
 end
 
@@ -336,7 +336,7 @@ end
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 
 /-- A matrix dominated entrywise by a nonnegative matrix cannot have an
 eigenvalue larger than the latter's positive eigenvalue. -/
@@ -366,7 +366,7 @@ theorem weighted_eigenvalue_bound {K : Type*} [NormedRing K] [NormMulClass K]
       rw [hfp i, mul_left_comm, show r * f i = ‖v i‖ from
         div_mul_cancel₀ _ (ne_of_gt (hf i))]
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
@@ -375,7 +375,7 @@ end
 @[expose] public noncomputable section
 open scoped BigOperators Matrix
 
-namespace PropertyF.Ground
+namespace MTC
 
 /-- A positive real eigenvector bounds the modulus of every complex eigenvalue
 of a nonnegative real matrix. -/
@@ -389,7 +389,7 @@ theorem complex_eigenvalue_le_positive_eigenvalue {ι : Type*} [Fintype ι]
       (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hwe i)
       (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hve i)
 
-end PropertyF.Ground
+end MTC
 
 end
 
@@ -398,7 +398,7 @@ end
 @[expose] public noncomputable section
 open scoped BigOperators Matrix Matrix.Norms.Operator
 
-namespace PropertyF.Ground
+namespace MTC
 
 variable (D : BraidedFusionCategory)
 
@@ -471,6 +471,6 @@ theorem one_le_fpSimple (i : Fin (rank D)) :
       (fun k _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D k).le)
       (Finset.mem_univ (unitIndex D)))
 
-end PropertyF.Ground
+end MTC
 
 end

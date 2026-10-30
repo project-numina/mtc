@@ -17,7 +17,7 @@ pivotal trace is the trace of the identity on its split image.
 -/
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 
 variable (k G : Type*) [CommRing k] [Group G] [Fintype G] [Invertible (Fintype.card G : k)]
 
@@ -63,13 +63,13 @@ theorem alternatingProjector_idempotent (ρ : Equiv.Perm (Fin n) →* A) :
     IsIdempotentElem (alternatingProjector (k := k) ρ) := by
   rw [IsIdempotentElem, alternatingProjector, algebraAverage, ← map_mul, groupAverage_idempotent]
 
-end PropertyF.Ground.Centre
+end MTC.Centre
 
 /-! Splitting the alternating projector and identifying its pivotal trace. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
@@ -89,9 +89,9 @@ variable [MonoidalCategory C] [RightRigidCategory C]
 omit [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 /-- The trace of the alternating projector is the dimension of its split image. -/
 theorem alternatingProjector_trace (ρ : Equiv.Perm (Fin n) →* End X)
-    (p : PropertyF.Ground.Dimensions.PivotalStructure (C := C)) :
+    (p : MTC.Dimensions.PivotalStructure (C := C)) :
     ∃ Y : C, p.rightTrace ((alternatingProjector (k := ℂ) ρ).asHom) = p.rightTrace (𝟙 Y) :=
   match alternatingProjector_splits ρ with
   | ⟨Y, i, r, hir, hri⟩ => ⟨Y, by rw [← hri, p.rightTrace_cyclic, hir]⟩
 
-end PropertyF.Ground.Centre
+end MTC.Centre

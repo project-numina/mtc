@@ -13,13 +13,13 @@ signed traces to one-strand deletion and insertion identities. The notation
 `sgn R n σ` is the permutation sign in the scalar ring.
 -/
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (HasFPSimpleDimensions)
-local notation "sgn" => PropertyF.Ground.Centre.permutationSign
+open MTC.Modular (HasFPSimpleDimensions)
+local notation "sgn" => MTC.Centre.permutationSign
 open Equiv.Perm (decomposeFin)
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -32,11 +32,11 @@ def tensorPermAction (X : C)
   | 1 => 1
   | n + 2 => Aut.toEnd.comp (permAction X hX n)
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus
 
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 
 section
 variable {R : Type*} [CommRing R]
@@ -122,10 +122,10 @@ theorem integral_of_trace_deletion {C : BraidedFusionCategory} {p : PivotalStruc
     simpa [permScalarTrace, scalarPermTrace, signedTraceSum, ← unitScalar_eq_equiv] using
       signedTraceSum_falling hz h n⟩
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 local notation "tr" => permScalarTrace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -228,4 +228,4 @@ theorem tensorPermTrace_fixHead (σ : Perm (Fin n)) :
 
 end
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus

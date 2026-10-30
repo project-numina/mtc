@@ -11,7 +11,7 @@ by these tensor-power isomorphisms identifies the associated braid-image groups.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 @[expose] public noncomputable section
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 /-- Tensor powers transport an isomorphism between objects. -/
@@ -75,4 +75,4 @@ def braidImageIso (n : ℕ) : braidImage X n ≃* braidImage Y n := by
   exact ((braidImage X n).equivMapOfInjective e.toMonoidHom e.injective).trans
     (MulEquiv.subgroupCongr hm)
 
-end PropertyF.Ground.Modular
+end MTC.Modular

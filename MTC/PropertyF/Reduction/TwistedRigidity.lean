@@ -24,7 +24,7 @@ braiding and duality, while precomposing the action on morphisms with its invers
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.ScalarTwist
+namespace MTC.ScalarTwist
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
@@ -88,7 +88,7 @@ instance twistedFusion : IsFusionCategory (Obj C σ) where
 def category : BraidedFusionCategory.{v,u} where
   Obj := Obj C σ
 
-end PropertyF.Ground.ScalarTwist
+end MTC.ScalarTwist
 end
 end
 
@@ -101,7 +101,7 @@ section
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.ScalarTwist
+namespace MTC.ScalarTwist
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 
@@ -149,7 +149,7 @@ theorem exists_galois_fp_dimensions (hdim : Modular.HasFPSimpleDimensions C p) :
     fun i ↦ fpSimple_pos C _, fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, fun i ↦ by
       simpa only [e.apply_symm_apply, fp_simple_galois_real] using he (e.symm i)⟩
 
-end PropertyF.Ground.ScalarTwist
+end MTC.ScalarTwist
 end
 end
 
@@ -159,7 +159,7 @@ section
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.ScalarTwist
+namespace MTC.ScalarTwist
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 
@@ -180,11 +180,11 @@ local notation "pσ" => pivotal C σ p
 
 /-- A pivotal trace scalar is carried through σ. -/
 theorem rightTrace_twist {X : C.Obj} (f : X ⟶ X) :
-    Ground.unitScalarEquiv Cσ ((pσ).rightTrace f) = σ (Ground.unitScalarEquiv C (p.rightTrace f)) :=
+    MTC.unitScalarEquiv Cσ ((pσ).rightTrace f) = σ (MTC.unitScalarEquiv C (p.rightTrace f)) :=
   ((unitScalar_eq_equiv Cσ _).symm.trans (unitScalar_twist C σ _)).trans
     (congrArg σ (unitScalar_eq_equiv C _))
 
-end PropertyF.Ground.ScalarTwist
+end MTC.ScalarTwist
 end
 end
 
@@ -194,9 +194,9 @@ section
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false
 open CategoryTheory CategoryTheory.MonoidalCategory
-open PropertyF.Ground.Calculus
+open MTC.Calculus
 open scoped BigOperators
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 
 variable (Z : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := Z.Obj))
@@ -225,12 +225,12 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
     rw [hdim, hσ]
   have hXfp : fpDimension D X = 𝒇 y :=
     (ScalarTwist.fpDimension_twist Z σ _).trans (fpDimension_simple y)
-  have hXS : Ground.unitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
+  have hXS : MTC.unitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * 𝒇 y := (ScalarTwist.rightTrace_twist Z σ p _).trans hS
   actual_rigidity_of_overlap_and_galois_dimensions D q original transformed σ
     hpos htrans hqdim X d (𝒇 y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
     (Calculus.overlap_trace_power D q)
 
-end PropertyF.Ground
+end MTC
 end
 end

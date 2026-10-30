@@ -13,12 +13,12 @@ The categorical braid trace obeys a weighted unitary bound. Repeated overlapping
 products remain unitary, and their trace recurrence yields the sharper bound.
 -/
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
@@ -37,9 +37,9 @@ abbrev HasUnitaryTraceBound {X : C.Obj}
 
 /-- The actual FP dimension of a tensor power is the corresponding power. -/
 theorem fpDimension_tensorPower (X : C.Obj) :
-    ∀ n, Ground.fpDimension C (tensorPower X n) = Ground.fpDimension C X ^ n
-  | 0 => Ground.fpDimension_unit C
-  | n + 1 => by simp [tensorPower, Ground.fpDimension_tensor, fpDimension_tensorPower X n,
+    ∀ n, MTC.fpDimension C (tensorPower X n) = MTC.fpDimension C X ^ n
+  | 0 => MTC.fpDimension_unit C
+  | n + 1 => by simp [tensorPower, MTC.fpDimension_tensor, fpDimension_tensorPower X n,
       pow_succ, mul_comm]
 
 section BraidTraceBound
@@ -53,10 +53,10 @@ unitary is bounded by the simple-multiplicity mass. The explicit dimension
 bound is supplied by the fusion/Perron and dimensions workstreams. -/
 theorem pivotalTrace_braid_unitary_bound
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
-    {m : Fin (Ground.rank C) → ℕ}
+    {m : Fin (MTC.rank C) → ℕ}
     (e : braidTensorPower X n ≅ ⨁ (simpleCopies C m))
-    {fp : Fin (Ground.rank C) → ℝ}
-    (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (Ground.simples C i)))‖ ≤ fp i)
+    {fp : Fin (MTC.rank C) → ℝ}
+    (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (MTC.simples C i)))‖ ≤ fp i)
     (a : braidAlgebra X n) (ha : Blocks.IsUnitary ⟨_, d⟩ (b a)) :
     ‖scalar (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
       ∑ i, (m i : ℝ) * fp i := by
@@ -76,28 +76,28 @@ theorem pivotalTrace_braid_unitary_bound
 /-- The ordinary bound holds in any block presentation, not only a particular
 presentation chosen by the finite-group unitarization theorem. -/
 theorem braid_trace_unitary_bound_ground :
-    HasUnitaryTraceBound C p b (Ground.fpDimension C X ^ (n + 2)) := fun a ha ↦ by
-  let m : Fin (Ground.rank C) → ℕ := fun i =>
-    Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)
-  obtain ⟨e⟩ := Ground.exists_canonical_decomposition C (braidTensorPower X n)
+    HasUnitaryTraceBound C p b (MTC.fpDimension C X ^ (n + 2)) := fun a ha ↦ by
+  let m : Fin (MTC.rank C) → ℕ := fun i =>
+    Module.finrank ℂ (MTC.simples C i ⟶ braidTensorPower X n)
+  obtain ⟨e⟩ := MTC.exists_canonical_decomposition C (braidTensorPower X n)
   rw [← fpDimension_tensorPower]
-  change ‖Ground.unitScalarEquiv C
+  change ‖MTC.unitScalarEquiv C
     (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
-      Ground.fpDimension C (braidTensorPower X n)
-  exact pivotalTrace_braid_unitary_bound C p hd b (Ground.unitScalarEquiv C) e (fun i => by
+      MTC.fpDimension C (braidTensorPower X n)
+  exact pivotalTrace_braid_unitary_bound C p hd b (MTC.unitScalarEquiv C) e (fun i => by
     simpa only [pivotalDimension, unitScalar_eq_equiv] using character_norm_le_fpSimple
-      (i₀ := Ground.unitIndex C) ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
+      (i₀ := MTC.unitIndex C) ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
       (pivotalDimension_character C p) i) a ha
 
 end BraidTraceBound
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Actual overlapping braid products, using the constructed strand maps. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -130,11 +130,11 @@ def overlapProduct {X : C} {t : ℕ} (u : braidAlgebra X t) :
   | 0 => u
   | k + 1 => overlapLeft X t k (overlapProduct u k) * overlapRight X t k u
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 
 /-- A single overlap multiplies the trace by the normalized trace of its new factor. -/
@@ -149,13 +149,13 @@ abbrev HasOverlapTracePower (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
   ∀ k, actualBraidTrace C p (overlapProduct u k) *
     (pivotalDimension C p X) ^ k = actualBraidTrace C p u ^ (k + 1)
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Unitarity of the actual overlapping braid products. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -197,14 +197,14 @@ theorem overlapProduct_unitary : ∀ k,
 
 end OverlapUnitary
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Reduction of the sharp trace bound to the categorical overlap recurrence. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
@@ -227,18 +227,18 @@ theorem overlap_trace_power_of_step
 /-- Bounds for the overlapping traces and their recurrence imply the sharp bound. -/
 theorem sharp_trace_bound_of_overlap [Simple X]
     (hbound : ∀ k, ‖actualBraidTrace C p (overlapProduct u k)‖ ≤
-      Ground.fpDimension C X ^ (overlapIndex t k + 2))
+      MTC.fpDimension C X ^ (overlapIndex t k + 2))
     (hrec : HasOverlapTracePower C p u) :
     ‖actualBraidTrace C p u‖ ≤
       ‖pivotalDimension C p X‖ *
-        Ground.fpDimension C X ^ (t + 1) :=
+        MTC.fpDimension C X ^ (t + 1) :=
   norm_bound_of_overlap (m := t + 2) (by
     simpa only [pivotalDimension] using Modular.unitScalar_rightTrace_ne_zero C p X)
-    (lt_of_lt_of_le zero_lt_one (Ground.one_le_fpDimension (Simple.not_isZero X)))
+    (lt_of_lt_of_le zero_lt_one (MTC.one_le_fpDimension (Simple.not_isZero X)))
     (fun k => actualBraidTrace C p (overlapProduct u k)) (fun k => by
       convert hbound k using 1
       congr 1
       rw [overlapIndex_formula, show t + 2 - 1 = t + 1 by omega]
       ring) hrec
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus

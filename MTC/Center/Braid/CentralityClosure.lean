@@ -13,9 +13,9 @@ it extends from simple constituents to all objects in a retract-closed class.
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (doubleBraiding)
+open MTC.Modular (doubleBraiding)
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory CategoryTheory.Limits
-namespace PropertyF.Ground.CentreCabling
+namespace MTC.CentreCabling
 universe v u
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -52,9 +52,9 @@ theorem doubleBraiding_eq_one_of_constituents [Abelian D] [MonoidalPreadditive D
     doubleBraiding_eq_one_biproduct fun a ↦ h a.1 <| hP
       ((Retract.mk (biproduct.ι V a) (biproduct.π V a) (biproduct.ι_π_self V a)).trans (Retract.ofIso e.symm)) hX
 
-end PropertyF.Ground.CentreCabling
+end MTC.CentreCabling
 
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [MonoidalCategory C]
   [MonoidalPreadditive C] [RigidCategory C] [BraidedCategory C]
@@ -63,10 +63,10 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 omit [RigidCategory C] in
 /-- Once the actual centre is a rigid fusion category, duals of product
 retracts are product retracts, using fusion-category generation. -/
-theorem productRetract_rightDual (D : Ground.BraidedFusionCategory.{v,u})
+theorem productRetract_rightDual (D : MTC.BraidedFusionCategory.{v,u})
     [RigidCategory (CategoryTheory.Center D.Obj)]
     [IsFusionCategory (CategoryTheory.Center D.Obj)]
     {Z : CategoryTheory.Center D.Obj} (hZ : ProductRetract Z) : ProductRetract (Zᘁ) :=
-  productRetract_generatedBy hZ (Ground.generatedBy_rightDual Z)
+  productRetract_generatedBy hZ (MTC.generatedBy_rightDual Z)
 
-end PropertyF.Ground.Centre
+end MTC.Centre

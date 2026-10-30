@@ -6,13 +6,13 @@ public import MTC.Center.Rigid
 public import MTC.Center.Induction.Representatives
 public import MTC.Center.Fusion.Fusion
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 /-! The unit summand of the underlying induction object. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 local notation "Sᶜ" => simples C
@@ -73,7 +73,7 @@ def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
       biproduct.π (inductionSummand X)
         (unitIndex C) ≫ g) (unitTensorIso_natural (Classical.choice (unitIndex_iso C)) f)
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 
@@ -81,7 +81,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 
 set_option backward.isDefEq.respectTransparency false in
@@ -97,7 +97,7 @@ theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
       coevaluation_iso_map e]
   monoidal_coherence
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 
@@ -105,7 +105,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 local notation "Sᶜ" => simples C
@@ -139,7 +139,7 @@ theorem unitComponentAt_natural {D : Type u} [Category.{v} D] [MonoidalCategory 
     ← whisker_exchange_assoc, associator_inv_naturality_left_assoc, ← comp_whiskerRight, f.comm]
 
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 
@@ -148,7 +148,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 open CategoryTheory.Limits
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 
@@ -181,6 +181,6 @@ theorem unitCandidate_counit {C : BraidedFusionCategory.{v,u}}
   (biproduct.lift_π_assoc (unitComponent Z) (unitIndex C) (unitSummandIso Z.1).hom).trans
     (unitComponentAt_unit_factor Z e.hom (rightDualIsoMap e.symm).hom (coevaluation_iso_unit e))
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end

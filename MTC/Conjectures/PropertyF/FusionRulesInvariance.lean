@@ -16,7 +16,7 @@ Declaration: MTC.Conjectures.PropertyF.propertyF_fusionRules_invariant
 -/
 
 @[expose] public noncomputable section
-open PropertyF PropertyF.Ground MTC.PropertyF
+open MTC MTC MTC.PropertyF
 namespace MTC.Conjectures.PropertyF
 universe v u
 

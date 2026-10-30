@@ -12,7 +12,7 @@ file does not assume that every numerical datum is categorically realized.
 
 @[expose] public noncomputable section
 open scoped BigOperators
-open PropertyF.Ground PropertyF.Ground.Dimensions PropertyF.Ground.Modular
+open MTC MTC.Dimensions MTC.Modular
 
 namespace MTC.ModularData
 universe v u
@@ -28,7 +28,7 @@ def MatchesCategoricalS (d : ModularData ℂ (rank C)) : Prop :=
 /-- Under sphericality, matching S identifies the two global dimensions. -/
 theorem globalDimension_eq_categorical (d : ModularData ℂ (rank C))
     (h : MatchesCategoricalS C p d) (hp : p.IsSpherical) :
-    d.globalDimension = PropertyF.Ground.globalDimension C := by
+    d.globalDimension = MTC.globalDimension C := by
   rw [categorical_global_eq_sum_squares C p hp]
   simp only [globalDimension, h.1, h.2, categoricalS_symmetric C p,
     categoricalS_unit C p]

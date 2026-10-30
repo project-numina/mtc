@@ -2,14 +2,14 @@ module
 public import MTC.Center.Induction.CrossingBlocks
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 
-open PropertyF.Ground.Dimensions Algebra
+open MTC.Dimensions Algebra
 
 /-! Dual bases for the actual fusion summand inclusions and projections. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 variable {C : BraidedFusionCategory.{v,u}}
 -- Chosen simple representatives of the base category.
@@ -99,7 +99,7 @@ theorem crossingBlock_refinement (X T U : C.Obj) (i j : Fin (rank C)) :
     simpleBasis_contraction_refinement q r h
       (mixedCrossingBilinear (k := ℂ) X (T ⊗ U) (T ⊗ U) (Sᶜ i) (Sᶜ j))
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 
@@ -108,7 +108,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 variable {C : BraidedFusionCategory.{v,u}}
 -- Chosen simple representatives of the base category.
@@ -190,4 +190,4 @@ theorem crossingCandidate_natural_test {T U : C.Obj} (h : T ⟶ U) :
     simp_rw [Category.assoc, whisker_exchange, ← Category.assoc, ← Preadditive.sum_comp,
       crossingBlock_sum_natural_test X T U h i, ← Preadditive.sum_comp]
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction

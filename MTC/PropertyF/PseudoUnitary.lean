@@ -3,12 +3,12 @@ public import MTC.PropertyF.Theorem
 
 /-! # Property F with a pseudo-unitary conjugate
 
-These are direct consequences of `PropertyF.Ground.target`. The identity
+These are direct consequences of `MTC.target`. The identity
 Galois conjugate gives the pseudo-unitary special case.
 -/
 
 @[expose] public noncomputable section
-open CategoryTheory PropertyF PropertyF.Ground
+open CategoryTheory MTC MTC
 namespace MTC.PropertyF
 universe v u
 
@@ -16,7 +16,7 @@ universe v u
 theorem weaklyIntegral_of_propertyF_of_conjugate (C : BraidedFusionCategory.{v,u})
     (h : HasPseudoUnitaryGaloisConjugate C) (hF : HasPropertyF C.Obj) :
     WeaklyIntegral (globalFPDimension C) :=
-  PropertyF.Ground.target C h hF
+  MTC.target C h hF
 
 /-- A pseudo-unitary category is its own pseudo-unitary Galois conjugate. -/
 theorem hasPseudoUnitaryGaloisConjugate_of_pseudoUnitary

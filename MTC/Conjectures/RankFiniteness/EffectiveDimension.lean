@@ -25,7 +25,7 @@ construction satisfying the categorical hypotheses remains to be supplied.
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground MTC.PropertyF
+open MTC MTC.PropertyF
 
 namespace MTC.Conjectures.RankFiniteness
 universe v u

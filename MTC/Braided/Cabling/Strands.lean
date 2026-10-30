@@ -10,7 +10,7 @@ Adding an identity strand and faithfulness of tensoring from a unit retract.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF
+namespace MTC
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -45,4 +45,4 @@ theorem tensorLeft_faithful_of_unit_retract {X Y : C}
       Iso.inv_hom_id, Category.comp_id]
   rw [← recover f, tensor_whiskerLeft Y X f, hfg, ← tensor_whiskerLeft Y X g, recover g]⟩
 
-end PropertyF
+end MTC

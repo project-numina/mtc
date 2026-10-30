@@ -12,7 +12,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 open CategoryTheory.Functor.Monoidal CategoryTheory.Functor.LaxMonoidal
 open CategoryTheory.Functor.OplaxMonoidal
 @[expose] public noncomputable section
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 universe v u v' u'
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 variable {D : Type u'} [Category.{v'} D] [MonoidalCategory D] [BraidedCategory D]
@@ -140,4 +140,4 @@ theorem braidImages_of_essentiallySurjective [F.Faithful] [F.EssSurj]
   ⟨F.objPreimage Y, ⟨(braidImageIso (F.objObjPreimageIso Y) n).symm.trans
     (braidImageFunctorIso F (F.objPreimage Y) n).symm⟩⟩
 
-end PropertyF.Ground.Modular
+end MTC.Modular

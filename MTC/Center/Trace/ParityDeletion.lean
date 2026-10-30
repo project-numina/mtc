@@ -12,14 +12,14 @@ for the scalar pivotal trace of the permutation action and `sgn ℂ n σ`
 for the permutation sign.
 -/
 @[expose] public noncomputable section
-local notation "tr" => PropertyF.Ground.CentreCalculus.permScalarTrace
-open PropertyF.Ground.Modular (HasFPSimpleDimensions)
-local notation "sgn" => PropertyF.Ground.Centre.permutationSign
+local notation "tr" => MTC.CentreCalculus.permScalarTrace
+open MTC.Modular (HasFPSimpleDimensions)
+local notation "sgn" => MTC.Centre.permutationSign
 open Equiv.Perm (decomposeFin)
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 open CategoryTheory CategoryTheory.MonoidalCategory
 
@@ -66,9 +66,9 @@ theorem movedTrace_of_adjacent {p : PivotalStructure (C := D)} {X : D} {R : Type
 
 end
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus
 
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 
 /-- Either the actual permutation action or its sign twist. -/
@@ -124,4 +124,4 @@ theorem integral_of_parity_adjacent_trace (hadj : HasAdjacentTrace (tr C p (pari
   integral_of_parity_moved_trace hdim hX odd
     (movedTrace_of_adjacent (unitScalarEquiv C) (parityPermAction C.Obj hX odd) hadj)
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus

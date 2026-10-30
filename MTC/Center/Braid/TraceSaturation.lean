@@ -16,10 +16,10 @@ positive dimensions, trace saturation detects an identity, relating the
 categorical double braiding to its numerical S-matrix centrality test.
 -/
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (HasFPSimpleDimensions doubleBraiding sCentralizes)
-open PropertyF.Ground.Dimensions
+open MTC.Modular (HasFPSimpleDimensions doubleBraiding sCentralizes)
+open MTC.Dimensions
 open scoped BigOperators
-namespace PropertyF.Ground.CentreCabling
+namespace MTC.CentreCabling
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
   {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M)
@@ -45,18 +45,18 @@ theorem finiteOrder_matrix_trace_saturation :
   let ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
   let U : Matrix ι ι ℂ := (P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)
   have ht : U.trace = M.trace := Matrix.trace_units_conj P M
-  ⟨ht ▸ (Complex.re_le_norm _).trans (PropertyF.norm_trace_le_card hP), fun heq ↦ by
+  ⟨ht ▸ (Complex.re_le_norm _).trans (MTC.norm_trace_le_card hP), fun heq ↦ by
     simpa [U, Matrix.mul_assoc, ← Units.val_mul] using
       congrArg (fun A : Matrix ι ι ℂ ↦ (↑(P⁻¹) : Matrix ι ι ℂ) * A * (P : Matrix ι ι ℂ))
-        (PropertyF.eq_one_of_re_trace_eq_card hP (ht.symm ▸ heq))⟩
+        (MTC.eq_one_of_re_trace_eq_card hP (ht.symm ▸ heq))⟩
 
-end PropertyF.Ground.CentreCabling
+end MTC.CentreCabling
 
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.CentreCabling
+namespace MTC.CentreCabling
 universe v u
-variable {D : Ground.BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := D.Obj)}
+variable {D : MTC.BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := D.Obj)}
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Positive weighted sums preserve equality when the terms are pointwise ordered. -/
@@ -90,12 +90,12 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   let B := Calculus.groundEndBlockEquiv D e
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
-    have h2 := Calculus.pivotalTrace_groundEndBlocks D e 1 p (Ground.unitScalarEquiv D)
-    change (∀ i, Ground.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
+    have h2 := Calculus.pivotalTrace_groundEndBlocks D e 1 p (MTC.unitScalarEquiv D)
+    change (∀ i, MTC.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
       (fpSimple D i : ℂ)) at hdim
     simpa [hdim, B, End.one_asHom, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
-      ((Calculus.pivotalTrace_groundEndBlocks D e a p (Ground.unitScalarEquiv D)).symm.trans
-        ((congrArg (Ground.unitScalarEquiv D) ht).trans h2))
+      ((Calculus.pivotalTrace_groundEndBlocks D e a p (MTC.unitScalarEquiv D)).symm.trans
+        ((congrArg (MTC.unitScalarEquiv D) ht).trans h2))
   exact B.injective <| funext fun i ↦ by
     simpa using finiteOrder_matrices_eq_one_of_weighted_trace (B a) (fpSimple D)
       (fpSimple_pos D) (fun j ↦ (Pi.evalMonoidHom _ j).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha))
@@ -108,10 +108,10 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     (hfinite : IsOfFinOrder (End.of (doubleBraiding (simples D i) (simples D j))))
     (hs : sCentralizes D p i j) : doubleBraiding (simples D i) (simples D j) = 𝟙 _ :=
   congrArg End.asHom <| finiteOrder_eq_one_of_trace_eq_dimension hdim hfinite <|
-    (Ground.unitScalarEquiv D).injective <| by
+    (MTC.unitScalarEquiv D).injective <| by
       change Modular.categoricalS D p i j = _
       rw [hs]
-      simpa [Modular.simpleDimension, pivotalDimension, Ground.unitScalar_eq_equiv] using
+      simpa [Modular.simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using
         (pivotalDimension_tensor p (simples D i) (simples D j)).symm
 
-end PropertyF.Ground.CentreCabling
+end MTC.CentreCabling

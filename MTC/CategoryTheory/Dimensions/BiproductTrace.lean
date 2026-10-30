@@ -15,7 +15,7 @@ The resulting formulas include the biproduct formula for right dimensions.
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 section CyclicTrace
 variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C]
@@ -136,4 +136,4 @@ theorem rightTrace_biproduct_simple [HasKernels C]
 
 end
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions

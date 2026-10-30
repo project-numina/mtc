@@ -16,7 +16,7 @@ Declaration: MTC.Conjectures.PropertyF.weaklyIntegral_implies_propertyF
 -/
 
 @[expose] public noncomputable section
-open PropertyF PropertyF.Ground
+open MTC MTC
 namespace MTC.Conjectures.PropertyF
 universe v u
 

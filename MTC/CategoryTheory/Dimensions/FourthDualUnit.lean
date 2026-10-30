@@ -14,7 +14,7 @@ The fourth-dual maps satisfy unit identities and their roots interact with coeva
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -38,13 +38,13 @@ theorem drinfeld_unit :
       ← comp_whiskerRight_assoc, Iso.hom_inv_id, id_whiskerRight,
       Category.id_comp, U, braiding_tensorUnit_left]
   exact evaluation_ext ((drinfeld_eval U).trans h.symm)
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 section
@@ -102,7 +102,7 @@ theorem fourthDualRoot_unit_component :
     (unitIndex_iso C).elim fun e ↦
       congrArg (unitScalar C) ((rootTrace_id_iso C e).trans (rootTrace_id C _)),
     rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
-  simpa only [Ground.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one, hu] using hr
+  simpa only [MTC.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one, hu] using hr
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root dimension of the unit is a sign. -/
@@ -119,13 +119,13 @@ theorem rootDimension_unit_sq :
         simpa only [Iso.trans_hom, rightDualIsoMap] using
           congrArg Iso.hom (fourthDualIso_unit (C := C.Obj)))
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -144,6 +144,6 @@ theorem root_components_coevaluation (i : Fin (rank C)) :
   simpa only [tensorHom_def, Category.assoc, doubleDualFunctor, Functor.id_obj] using
     coevaluation_iso_map ((fourthDualRootNaturalIso C).app (simples C i))
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end

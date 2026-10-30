@@ -12,10 +12,10 @@ the fusion-coefficient expansion; the remaining Hopf-link product identity is
 isolated precisely as the input needed for the Verlinde character equations.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory CategoryTheory.Limits
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 open scoped BigOperators
 @[expose] public noncomputable section
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -49,23 +49,23 @@ theorem SEntry_iso_left (p : PivotalStructure (C := C)) {X Z : C} (e : X ≅ Z) 
     (SEntry_iso_right p Y e).trans (SEntry_symmetric p Y Z)
 
 section
-variable (D : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := D.Obj))
+variable (D : MTC.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := D.Obj))
 local notation "Sₚ" => categoricalS D p
 local notation "dₚ" => simpleDimension D p
 
 /-- Expanding a tensor product into simple summands expands its S entry with
 exactly the fusion coefficients. -/
 theorem SEntry_tensor_decomposition (i j k : Fin (rank D)) :
-    Ground.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
+    MTC.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
       ∑ l, (fusionCoeff D i j l : ℂ) * Sₚ l k := by
   obtain ⟨e⟩ := exists_canonical_decomposition D (simples D i ⊗ simples D j)
-  rw [Ground.unitScalar_eq_equiv]
+  rw [MTC.unitScalar_eq_equiv]
   simp [SEntry_iso_left p e _, SEntry_biproduct_left, Fintype.sum_sigma, categoricalS, fusionCoeff]
 
 
 /-- The Hopf-link product rule for simple objects. -/
 abbrev HasHopfProduct : Prop :=
-  ∀ i j k, Ground.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
+  ∀ i j k, MTC.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
     dₚ k = Sₚ i k * Sₚ j k
 
 /-- The categorical Hopf-link product identity implies the Verlinde character
@@ -80,4 +80,4 @@ theorem categoricalS_verlinde_of_hopf_product (hopf : HasHopfProduct D p) :
 
 end
 
-end PropertyF.Ground.Modular
+end MTC.Modular

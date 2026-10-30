@@ -14,7 +14,7 @@ section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing
 universe v u
 @[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 variable {A : C} (b : ∀ T : C, A ⊗ T ⟶ T ⊗ A)
 variable (hn : ∀ {T U} (f : T ⟶ U), (A ◁ f) ≫ b U = b T ≫ (f ▷ A))
@@ -70,7 +70,7 @@ theorem weak_isIso (X : C) [ExactPairing X Y] : IsIso (b Y) :=
   ⟨⟨weakInverse b X Y, weak_left b hu X Y (hn (ε_ X Y)) (ht Y X),
     weak_right b hu X Y (hn (η_ X Y)) (ht X Y)⟩⟩
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 end
 end
 
@@ -80,7 +80,7 @@ open scoped BigOperators
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 variable {C : BraidedFusionCategory.{v,u}} (X T U : C.Obj) (i j : Fin (rank C))
 -- Chosen simple representatives of the base category.
 local notation "Sᶜ" => simples C
@@ -148,4 +148,4 @@ def induction : C.Obj ⥤ Center C.Obj where
   map_id X := Center.ext _ _ ((underlyingFunctor C).map_id X)
   map_comp f g := Center.ext _ _ ((underlyingFunctor C).map_comp f g)
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction

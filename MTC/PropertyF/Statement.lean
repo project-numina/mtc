@@ -20,7 +20,7 @@ not be advertised as established merely because its definition elaborates.
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -111,4 +111,4 @@ def TargetStatement : Prop :=
     HasPseudoUnitaryGaloisConjugate C → HasPropertyF C.Obj →
       WeaklyIntegral (globalFPDimension C)
 
-end PropertyF.Ground
+end MTC

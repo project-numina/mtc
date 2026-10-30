@@ -11,8 +11,8 @@ needs careful statements and examples as well as proofs and exact data.
    modular datum is not automatically a realized modular tensor category.
 3. Develop on a branch. Add shared definitions and proved lemmas to `MTC/`; keep conjectures in
    `MTC/Conjectures/` as described in [the template](MTC/Conjectures/README.md). Use the existing frozen
-   `PropertyF.Ground` definitions for property F. Do not edit `MTC/PropertyF/Statement.lean` or the
-   proof of `PropertyF.Ground.target`.
+   `MTC` definitions for property F. Do not edit `MTC/PropertyF/Statement.lean` or the
+   proof of `MTC.target`.
 4. Replace the conjecture proof with a complete Lean proof, update its status and reference, and run
    `python3 scripts/conjecture_status.py` and `python3 scripts/update_roots.py`. A result is formalized only when its proof and all
    dependencies use no `sorry` and only `propext`, `Classical.choice` and `Quot.sound` as axioms.

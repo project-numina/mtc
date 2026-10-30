@@ -15,7 +15,7 @@ For duality in fusion categories, see Etingof–Gelaki–Nikshych–Ostrik,
 open CategoryTheory CategoryTheory.MonoidalCategory
 open CategoryTheory.Limits
 
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 section
@@ -151,9 +151,9 @@ theorem dualIndex_involutive :
 def dualEquiv : Equiv.Perm (Fin (rank D)) :=
   ⟨dualIndex D, dualIndex D, dualIndex_involutive D, dualIndex_involutive D⟩
 
-end PropertyF.Ground
+end MTC
 
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -190,4 +190,4 @@ theorem rightQuantumTrace_simple_ne_zero
       simpa [rightQuantumTrace, s, r, t, ev, tensorIso_hom] using congrArg End.asHom hzero)
 
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions

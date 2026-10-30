@@ -160,7 +160,7 @@ import all MTC.PropertyF.Theorem
 import all MTC.Seed
 
 /-! Scan all currently integrated project declarations, including the ground
-modules. `PropertyF.Audit` alone sees only its own imports. -/
+modules. `MTC.Audit` alone sees only its own imports. -/
 
 open Lean Elab Command in
 run_cmd do
@@ -171,7 +171,7 @@ run_cmd do
       | some idx => env.header.modules[idx.toNat]?.any fun m =>
           m.module.toString == "MTC" || m.module.toString.startsWith "MTC."
       | none => false
-    if name.toString.startsWith "PropertyF." || projectModule then
+    if name.toString.startsWith "MTC." || projectModule then
       if Lean.isExtern env name || (Lean.Compiler.getImplementedBy? env name).isSome then
         throwError "Unexpected foreign implementation in project declaration {name}"
       for ax in ← collectAxioms name do
@@ -182,7 +182,7 @@ run_cmd do
 
 private def auditFixture (n : Nat) : Nat := n
 
-open Lean Elab Command PropertyF.Ground.DependencyAudit in
+open Lean Elab Command MTC.DependencyAudit in
 run_cmd do
   let env ← getEnv
   let modified ← match Lean.Compiler.setImplementedBy env
@@ -192,54 +192,54 @@ run_cmd do
   match findIssue modified ``auditFixture with
   | some (.foreignImplementation _) => pure ()
   | _ => throwError "dependency audit did not reject a substituted implementation"
-  match findIssue env `PropertyF.Ground.AuditMissingFixture with
+  match findIssue env `MTC.AuditMissingFixture with
   | some (.missingDeclaration _) => pure ()
   | _ => throwError "dependency audit did not reject a missing declaration"
-  match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenInputWrapper with
+  match findIssue env ``MTC.DependencyAudit.hiddenInputWrapper with
   | some (.forbidden n) =>
-      unless n == ``PropertyF.Ground.DependencyAudit.ForbiddenFixture do
+      unless n == ``MTC.DependencyAudit.ForbiddenFixture do
         throwError "unexpected forbidden fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect an imported definition body"
-  match findIssue env ``PropertyF.Ground.DependencyAudit.hiddenProof with
+  match findIssue env ``MTC.DependencyAudit.hiddenProof with
   | some (.forbidden n) =>
-      unless n == ``PropertyF.Ground.DependencyAudit.ForbiddenFixture do
+      unless n == ``MTC.DependencyAudit.ForbiddenFixture do
         throwError "unexpected forbidden theorem fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
-  for n in #[``PropertyF.Ground.TargetStatement,
-      ``PropertyF.Ground.unit_algebraMap_bijective,
-      ``PropertyF.Ground.integral_eq_int_of_complex_galois_fixed,
-      ``PropertyF.Ground.Modular.conjugate_propertyF,
-      ``PropertyF.Ground.galois_fixed_of_smaller_conjugate_witness,
-      ``PropertyF.Ground.positive_bounded_conjugates_of_fp,
-      ``PropertyF.Ground.exists_modular_witness,
-      ``PropertyF.Ground.center_witness_of_categorical_modular_data,
-      ``PropertyF.Ground.propertyF_of_galois_column,
-      ``PropertyF.Ground.Modular.conjugate_globalFPDimension,
-      ``PropertyF.Ground.fpSimple_eq_fpCharacter,
-      ``PropertyF.Ground.fpSimple_mul,
-      ``PropertyF.Ground.ScalarTwist.labels,
-      ``PropertyF.Ground.fpDimension_functor,
-      ``PropertyF.Ground.Integrate.center_forget_fpDimension,
-      ``PropertyF.Ground.galois_rigidity_of_propertyF,
-      ``PropertyF.Ground.weaklyIntegral_of_actual_center,
-      ``PropertyF.Ground.CentreInduction.liftedPivotalStructure,
-      ``PropertyF.Ground.CentreInduction.pivotalComponentsCentral_proved,
-      ``PropertyF.Ground.drinfeld_tensor,
-      ``PropertyF.Ground.CentreIntegrate.pivotal_balance_of_drinfeld_tensor,
-      ``PropertyF.Ground.CentreInduction.center_transparent_simple_iso_unit,
-      ``PropertyF.Ground.CentreModular.categoricalS_det_ne_zero_of_trivial_transparency,
-      ``PropertyF.Ground.CentreCalculus.actual_symmetricCore_integrality,
-      ``PropertyF.Ground.CentreModular.mixed_monodromy_finite_of_pivotal_balancing,
-      ``PropertyF.Ground.CentreRigid.rigidCenter,
-      ``PropertyF.Ground.CentreIntegrate.doubleDualTensor_evaluation,
-      ``PropertyF.Ground.CentreIntegrate.drinfeld_tensor_of_pairing_cap,
-      ``PropertyF.Ground.CentreIntegrate.balance_of_drinfeld_tensor,
-      ``PropertyF.Ground.center_globalDimension_square_of_actual_induction,
-      ``PropertyF.Ground.Calculus.actual_rigidity_of_overlap_and_galois_dimensions,
-      ``PropertyF.Ground.Dimensions.fourthDualRootNaturalSquare_eq,
-      ``PropertyF.Ground.selfDual_character_galois_real,
-      ``PropertyF.Ground.Calculus.exists_unitary_braid_trace_blocks,
-      ``PropertyF.Ground.Dimensions.squaredNorm_independent] do
+  for n in #[``MTC.TargetStatement,
+      ``MTC.unit_algebraMap_bijective,
+      ``MTC.integral_eq_int_of_complex_galois_fixed,
+      ``MTC.Modular.conjugate_propertyF,
+      ``MTC.galois_fixed_of_smaller_conjugate_witness,
+      ``MTC.positive_bounded_conjugates_of_fp,
+      ``MTC.exists_modular_witness,
+      ``MTC.center_witness_of_categorical_modular_data,
+      ``MTC.propertyF_of_galois_column,
+      ``MTC.Modular.conjugate_globalFPDimension,
+      ``MTC.fpSimple_eq_fpCharacter,
+      ``MTC.fpSimple_mul,
+      ``MTC.ScalarTwist.labels,
+      ``MTC.fpDimension_functor,
+      ``MTC.Integrate.center_forget_fpDimension,
+      ``MTC.galois_rigidity_of_propertyF,
+      ``MTC.weaklyIntegral_of_actual_center,
+      ``MTC.CentreInduction.liftedPivotalStructure,
+      ``MTC.CentreInduction.pivotalComponentsCentral_proved,
+      ``MTC.drinfeld_tensor,
+      ``MTC.CentreIntegrate.pivotal_balance_of_drinfeld_tensor,
+      ``MTC.CentreInduction.center_transparent_simple_iso_unit,
+      ``MTC.CentreModular.categoricalS_det_ne_zero_of_trivial_transparency,
+      ``MTC.CentreCalculus.actual_symmetricCore_integrality,
+      ``MTC.CentreModular.mixed_monodromy_finite_of_pivotal_balancing,
+      ``MTC.CentreRigid.rigidCenter,
+      ``MTC.CentreIntegrate.doubleDualTensor_evaluation,
+      ``MTC.CentreIntegrate.drinfeld_tensor_of_pairing_cap,
+      ``MTC.CentreIntegrate.balance_of_drinfeld_tensor,
+      ``MTC.center_globalDimension_square_of_actual_induction,
+      ``MTC.Calculus.actual_rigidity_of_overlap_and_galois_dimensions,
+      ``MTC.Dimensions.fourthDualRootNaturalSquare_eq,
+      ``MTC.selfDual_character_galois_real,
+      ``MTC.Calculus.exists_unitary_braid_trace_blocks,
+      ``MTC.Dimensions.squaredNorm_independent] do
     if let some issue := findIssue env n then
       throwError "dependency audit failed for ground result {n}: {repr issue}"
   logInfo "Dependency audit passed imported positive and negative fixtures."

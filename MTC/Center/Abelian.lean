@@ -20,7 +20,7 @@ for centre objects over a rigid abelian monoidal category.
 -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [MonoidalCategory C]
   [MonoidalPreadditive C] [HasBinaryBiproducts C]
@@ -181,12 +181,12 @@ instance centerHasFiniteBiproducts [HasZeroObject C] :
     hasFiniteProducts_of_has_binary_and_terminal
   exact HasFiniteBiproducts.of_hasFiniteProducts
 
-end PropertyF.Ground.Centre
+end MTC.Centre
 
 /-! Kernels of centre morphisms in a rigid abelian category. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [MonoidalCategory C]
   [MonoidalPreadditive C] [RigidCategory C]
@@ -334,12 +334,12 @@ theorem centerUnitSimple [Simple (𝟙_ C)] : Simple (𝟙_ (CategoryTheory.Cent
   have : Simple (𝟙_ (CategoryTheory.Center C)).1 := ‹Simple (𝟙_ C)›
   centerSimple_of_underlying
 
-end PropertyF.Ground.Centre
+end MTC.Centre
 
 /-! Cokernels of centre morphisms in a rigid abelian category. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [MonoidalCategory C]
   [MonoidalPreadditive C] [RigidCategory C]
@@ -475,12 +475,12 @@ instance centerForgetPreservesEpimorphisms : (CategoryTheory.Center.forget C).Pr
       simpa using centerCokernel_condition f
     exact congrArg CategoryTheory.Center.Hom.f hzero
 
-end PropertyF.Ground.Centre
+end MTC.Centre
 
 /-! The Drinfeld centre of a rigid abelian monoidal category is abelian. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [MonoidalCategory C]
   [MonoidalPreadditive C] [RigidCategory C]
@@ -554,4 +554,4 @@ instance centerAbelian : Abelian (CategoryTheory.Center C) where
   normalMonoOfMono f := ⟨centerNormalMono f⟩
   normalEpiOfEpi f := ⟨centerNormalEpi f⟩
 
-end PropertyF.Ground.Centre
+end MTC.Centre

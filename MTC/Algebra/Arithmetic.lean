@@ -11,7 +11,7 @@ An integral element fixed by a Galois group is an integer.
 -/
 
 @[expose] public section
-namespace PropertyF
+namespace MTC
 
 /-- The last arithmetic step in Theorem 1.1. For a Galois dimension field,
 invariance of an algebraic integer under all Galois automorphisms forces
@@ -25,4 +25,4 @@ theorem integer_of_galois_fixed {K : Type*} [Field K] [Algebra ℚ K]
   let hq' : IsIntegral ℤ q := (isIntegral_algebraMap_iff (B := K)).mp (hq.symm ▸ hx)
   (IsIntegrallyClosed.algebraMap_eq_of_integral hq').imp fun z hz => by simpa [← hz] using hq.symm
 
-end PropertyF
+end MTC

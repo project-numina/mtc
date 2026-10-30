@@ -7,12 +7,12 @@ public import MTC.CategoryTheory.Dimensions.DefectExtension
 public import MTC.Center.Balancing.TwistBalancing
 public import MTC.CategoryTheory.Dimensions.MonodromyTensorCap
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 /-! The Drinfeld map satisfies its tensor coherence law. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 
 /-- The Drinfeld map satisfies tensor coherence in a braided rigid category. -/
@@ -24,14 +24,14 @@ theorem drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
     (drinfeld_eval (X ⊗ Y))
     ((monodromy_tensor_cap_evaluated X Y).trans (drinfeld_tensor_cap_factor X Y).symm)⟩
 
-end PropertyF.Ground
+end MTC
 end
 
 section
 /-! The dual functors transport monodromy through their tensorators. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
@@ -46,7 +46,7 @@ theorem rightDualTensorIso_monodromy :
   let : HasRightDual (Y ⊗ X) := hasRightDualTensor
   ⟨by simp [Modular.doubleBraiding, comp_rightAdjointMate, rightDualTensorIso_braiding]⟩
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 end
@@ -54,7 +54,7 @@ end
 /-! Monoidality of the fourth dual from the Drinfeld tensor law. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
@@ -116,14 +116,14 @@ theorem fourthDualIso_tensor :
   simp only [Category.assoc, show M X Y = m.hom from rfl,
     Iso.inv_hom_id_assoc]
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction
 
 end
 
 /-! The Drinfeld tensor law and its pseudo-unitary consequences. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.CentreInduction
+namespace MTC.CentreInduction
 universe v u
 
 /-- Every pseudo-unitary braided fusion category has a positive spherical
@@ -134,4 +134,4 @@ theorem positive_spherical_of_pseudoUnitary {C : BraidedFusionCategory.{v,u}}
   let h (i j : Fin (rank C)) := fourthDualIso_tensor (simples C i) (simples C j)
   positive_spherical_of_simple_fourth_and_reciprocity h (trace_reciprocity_of_fourth_dual h) hpu
 
-end PropertyF.Ground.CentreInduction
+end MTC.CentreInduction

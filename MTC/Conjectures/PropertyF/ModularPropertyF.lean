@@ -19,7 +19,7 @@ Declaration: MTC.Conjectures.PropertyF.modular_propertyF
 -/
 
 @[expose] public noncomputable section
-open PropertyF PropertyF.Ground MTC.PropertyF
+open MTC MTC MTC.PropertyF
 namespace MTC.Conjectures.PropertyF
 universe v u
 
@@ -33,6 +33,6 @@ theorem modular_propertyF (C : BraidedFusionCategory.{v,u})
 theorem modular_propertyF_forward_of_conjugate (C : BraidedFusionCategory.{v,u})
     (h : HasPseudoUnitaryGaloisConjugate C) (hF : HasPropertyF C.Obj) :
     WeaklyIntegral (globalFPDimension C) :=
-  PropertyF.Ground.target C h hF
+  MTC.target C h hF
 
 end MTC.Conjectures.PropertyF

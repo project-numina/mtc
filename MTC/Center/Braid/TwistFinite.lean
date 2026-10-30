@@ -11,13 +11,13 @@ Finite order on detecting components gives finite order for a natural
 endomorphism. For a balanced automorphism this implies finite-order monodromy.
 -/
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular (doubleBraiding)
-open PropertyF.Ground.Dimensions
+open MTC.Modular (doubleBraiding)
+open MTC.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.CentreCabling
+namespace MTC.CentreCabling
 universe v u
 variable {D : Type u} [Category.{v} D]
-variable {C : Ground.BraidedFusionCategory.{v,u}}
+variable {C : MTC.BraidedFusionCategory.{v,u}}
 
 /-- A natural endomorphism has finite order if finitely many components detect
 it and each of those components has finite order. -/
@@ -55,7 +55,7 @@ abbrev IsBalancedTwist [MonoidalCategory D] [BraidedCategory D] (θ : 𝟭 D ≅
 finite-order double braidings on every pair of objects. The balancing identity
 is stated explicitly and is not asserted here for the pivotal twist. -/
 theorem mixed_monodromy_finite_of_balanced_finite_twist (θ : 𝟭 C.Obj ≅ 𝟭 C.Obj)
-    (hfinite : ∀ i, IsOfFinOrder (End.of (θ.hom.app (Ground.simples C i))))
+    (hfinite : ∀ i, IsOfFinOrder (End.of (θ.hom.app (MTC.simples C i))))
     (hbalance : IsBalancedTwist θ)
     (X Y : C.Obj) : IsOfFinOrder (End.of (doubleBraiding X Y)) := by
   let : HasFiniteBiproducts C.Obj := Abelian.hasFiniteBiproducts
@@ -71,10 +71,10 @@ theorem mixed_monodromy_finite_of_balanced_finite_twist (θ : 𝟭 C.Obj ≅ �
     ((show Commute t m from End.ext (Modular.doubleBraiding_natural (θ.hom.app X) (θ.hom.app Y))).mul_pow n).symm
 
 /-- The actual pivotal twist scalars, viewed as nonzero complex numbers. -/
-def pivotalTwistUnit (C : Ground.BraidedFusionCategory.{v,u})
+def pivotalTwistUnit (C : MTC.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C)) : ℂˣ := by
   letI : Simple (simples C i) := simples_simple C i
   exact Units.mk0 (pivotalBraidedTwistScalar C p (simples C i))
     (pivotalBraidedTwistScalar_ne_zero C p (simples C i))
 
-end PropertyF.Ground.CentreCabling
+end MTC.CentreCabling

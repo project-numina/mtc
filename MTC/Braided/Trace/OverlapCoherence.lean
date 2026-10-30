@@ -9,11 +9,11 @@ Canonical tensor-power isomorphisms identify strand insertions with local operat
 Their coherence implies the recurrence for traces of overlapping products.
 -/
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -92,13 +92,13 @@ theorem addRightBraidAlgebraIter_asHom : ∀ (k : ℕ) (a : braidAlgebra X n),
 
 end IteratedInsertion
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! The exact tensor-power coherence needed for the overlap trace step. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -206,8 +206,8 @@ theorem overlap_trace_step_of_coherence (k : ℕ)
     actualBraidTrace D p (overlapProduct u (k + 1)) * pivotalDimension D p X =
       actualBraidTrace D p (overlapProduct u k) * actualBraidTrace D p u := by
   have hh := congrArg
-    (fun z => Ground.unitScalarEquiv D (p.rightTrace z.asHom)) hcoh
-  rw [rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p (Ground.unitScalarEquiv D)] at hh
+    (fun z => MTC.unitScalarEquiv D (p.rightTrace z.asHom)) hcoh
+  rw [rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p (MTC.unitScalarEquiv D)] at hh
   unfold previousOverlapLocal at hh
   rw [rightTrace_iso_conj] at hh
   change actualBraidTrace D p _ = actualBraidTrace D p _ *
@@ -217,4 +217,4 @@ theorem overlap_trace_step_of_coherence (k : ℕ)
     div_mul_cancel₀ _ (by simpa only [← unitScalar_eq_equiv] using
       Modular.unitScalar_rightTrace_ne_zero D p X)]
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus

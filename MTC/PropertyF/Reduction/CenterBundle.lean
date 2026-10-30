@@ -20,7 +20,7 @@ section
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Integrate
+namespace MTC.Integrate
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 variable [LeftRigidCategory C] [RightRigidCategory C]
@@ -51,7 +51,7 @@ theorem dualCrossing_natural {U V : C} (f : U ⟶ V) :
       ((dualCrossingIso Z).app U).hom ≫ f ▷ (Z.1ᘁ) :=
   (dualCrossingIso Z).hom.naturality f
 
-end PropertyF.Ground.Integrate
+end MTC.Integrate
 end
 end
 
@@ -59,7 +59,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Integrate
+namespace MTC.Integrate
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 variable [RigidCategory (CategoryTheory.Center C.Obj)]
@@ -77,4 +77,4 @@ theorem center_forget_fpDimension (X : (bundledCenter C).Obj) :
     Centre.centerForgetAdditive Centre.centerForgetFaithful
     (show (CategoryTheory.Center.forget C.Obj).Monoidal from inferInstance) X
 
-end PropertyF.Ground.Integrate
+end MTC.Integrate

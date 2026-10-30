@@ -21,7 +21,7 @@ Pivotal duality characterizes spherical structures by real simple dimensions.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
@@ -68,13 +68,13 @@ theorem rightDualEvaluation_coevaluation :
     _ = η_ W V ≫ (ε_ X (Xᘁ) ▷ V) ≫ (λ_ V).hom := by
       rw [← ht, Category.assoc, ← whisker_exchange_assoc, Category.assoc]
     _ = _ := tensorPairing_coevaluation_evaluation X
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [RightRigidCategory C]
@@ -152,13 +152,13 @@ theorem doubleDual_coevaluation :
   change (r.inv ≫ r.homᘁ) ≫ (((η_ X (Xᘁ))ᘁ)ᘁ) ≫ (t.invᘁ ≫ s.hom) = _
   simpa only [Category.assoc] using
     (congrArg (fun f ↦ r.inv ≫ f ≫ s.hom) hd).trans (rightDualEvaluation_coevaluation (Xᘁ))
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 variable (p : PivotalStructure (C := C)) (X : C)
@@ -175,14 +175,14 @@ theorem pivotal_dual :
   Iso.ext <| show (p.iso (Xᘁ)).hom = ((p.iso X).inv)ᘁ from
     evaluation_ext (X := (Xᘁ)ᘁ) <| (cancel_epi ((Xᘁ) ◁ (p.iso X).hom)).1 <| by
       simpa [tensorHom_def'] using (pivotal_evaluation p X).trans (evaluation_iso_map _).symm
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -202,6 +202,6 @@ theorem pivotal_spherical_iff_simple_dimensions_real
   rw [isSpherical_iff_simple_dimensions]
   exact forall_congr' fun i ↦ by rw [← hdual i]; simp only [pivotalDimension, unitScalar_eq_equiv,
     (unitScalarEquiv C).injective.eq_iff]
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end

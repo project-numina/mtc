@@ -14,8 +14,8 @@ Braiding and evaluation identities simplify the tensor-cap expression for monodr
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-open PropertyF.Ground
-namespace PropertyF.Ground.Dimensions
+open MTC
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [RightRigidCategory C] (X Y : C)
@@ -48,14 +48,14 @@ theorem drinfeld_tensor_cap_factor [HasRightDual X] [HasRightDual (Xᘁ)]
         associator_naturality_left_assoc]
       monoidal
     _ = _ := by rw [drinfeld_eval, drinfeld_eval]; monoidal
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-open PropertyF.Ground
-namespace PropertyF.Ground.Dimensions
+open MTC
+namespace MTC.Dimensions
 universe v u
 
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -189,6 +189,6 @@ theorem monodromy_tensor_cap_evaluated [HasRightDual X] [HasRightDual Y] :
     _ = _ := by
       simp only [b, g, monoidalComp, comp_whiskerRight, whiskerLeft_comp]
       monoidal
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end

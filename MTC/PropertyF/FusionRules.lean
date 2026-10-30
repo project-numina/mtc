@@ -10,7 +10,7 @@ The definition does not use braiding or property F.
 -/
 
 @[expose] public noncomputable section
-open PropertyF.Ground
+open MTC
 namespace MTC.PropertyF
 universe v u
 

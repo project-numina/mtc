@@ -9,7 +9,7 @@ Power estimates convert a scaled overlap recurrence into a sharp norm bound.
 -/
 
 @[expose] public section
-namespace PropertyF
+namespace MTC
 
 /-- The elementary unbounded-powers step in Lemma 3.1. No limit of roots is needed. -/
 theorem le_of_power_bounds {a b c : ℝ} (ha : 0 < a)
@@ -48,4 +48,4 @@ theorem norm_bound_of_overlap {K : Type*} [NormedRing K] [NormMulClass K] [NormO
             mul_le_mul_of_nonneg_right (hbound k) (pow_nonneg (norm_nonneg δ) k))
 
 
-end PropertyF
+end MTC

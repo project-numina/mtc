@@ -31,7 +31,7 @@ follow from the definitions here.
 
 open scoped BigOperators
 
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 
 /-- The data needed to state the character equations. No fusion-ring axioms are
 needed for the Galois action itself. -/
@@ -87,7 +87,7 @@ def galoisLabel (e : ι ≃ Character N) : (ℂ ≃+* ℂ) →* Equiv.Perm ι wh
   simp [galoisLabel, galoisPerm, map]
 
 end Character
-end PropertyF.Ground.Modular
+end MTC.Modular
 
 end
 
@@ -103,7 +103,7 @@ This is the linear-algebra step in the standard Verlinde argument.
 open scoped BigOperators
 open Module
 
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] (N : FusionRules ι)
 
@@ -206,5 +206,5 @@ theorem normalized_columns_linearIndependent {dual : ι → ι} {D : K} (hD : D 
 
 end NormalizedColumns
 
-end PropertyF.Ground.Modular
+end MTC.Modular
 end

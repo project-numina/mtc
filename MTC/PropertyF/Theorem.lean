@@ -26,7 +26,7 @@ section
 
 @[expose] public noncomputable section
 open CategoryTheory
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -43,7 +43,7 @@ theorem center_globalDimension_square_of_actual_induction
     simpa [globalFPDimension, hfp.2, Complex.ofReal_sum, Complex.ofReal_pow] using
       congrArg (fun x : ℝ ↦ (x : ℂ)) (CentreInduction.globalFPDimension_square_of_actual_induction C)
 
-end PropertyF.Ground
+end MTC
 end
 end
 
@@ -57,7 +57,7 @@ section
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 set_option linter.style.haveILetI false
 set_option backward.isDefEq.respectTransparency false
@@ -75,7 +75,7 @@ theorem center_transparent_label_eq_unit
   simples_injective _ ⟨(CentreInduction.center_transparent_simple_iso_unit (C := C) hk).some ≪≫
     (unitIndex_iso 𝒵ᶠ).some.symm⟩
 
-end PropertyF.Ground
+end MTC
 end
 end
 
@@ -83,7 +83,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 
 /-- A braided fusion category with property F and a pseudo-unitary Galois
@@ -121,4 +121,4 @@ theorem target : TargetStatement.{v,u} := by
       (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)
   · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mp hy
 
-end PropertyF.Ground
+end MTC

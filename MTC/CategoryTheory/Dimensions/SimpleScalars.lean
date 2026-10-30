@@ -15,7 +15,7 @@ a natural root on every object.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 section
 variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C]
@@ -36,9 +36,9 @@ def scaleIso {X Y : C} (e : X ≅ Y) (c : k) (hc : c ≠ 0) : X ≅ Y where
   hom_inv_id := by simp [smul_smul, hc]
   inv_hom_id := by simp [smul_smul, hc]
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable {k : Type*} [Field k] [IsAlgClosed k]
@@ -64,9 +64,9 @@ theorem exists_fourthDual_square_root {X : C} [HasRightDual X] [HasRightDual (X�
   change c • e2.hom = g.hom
   exact hc.symm
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] IsFusionCategory.hom_finite
@@ -78,13 +78,13 @@ def fourthDualSimpleRoot (C : BraidedFusionCategory.{v,u}) (i : Fin (rank C)) :
     simples C i ≅ ((simples C i)ᘁ)ᘁ :=
   Classical.choose (exists_fourthDual_square_root (k := ℂ) (doubleDualIso C _) (fourthDualIso (simples C i)))
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable (C : Type u) [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
@@ -96,9 +96,9 @@ def doubleDualFunctor : C ⥤ C where
   map_comp f g := by simp [comp_rightAdjointMate]
 
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 /-- The canonical braided double-dual components form a natural isomorphism. -/
@@ -113,13 +113,13 @@ def fourthDualNaturalIso (C : Type u) [Category.{v} C] [MonoidalCategory C]
     𝟭 C ≅ doubleDualFunctor C ⋙ doubleDualFunctor C :=
   NatIso.ofComponents (fun X ↦ fourthDualIso X) (fun f ↦ fourthDualIso_natural f)
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 /-- Diagonal scalar maps, indexed by isomorphism classes of simples, commute
@@ -269,6 +269,6 @@ theorem tensor_decomposition_hom_ext
       h (biproduct.ι F i ≫ eX.inv) (biproduct.ι G j ≫ eY.inv)
 
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end

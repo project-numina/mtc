@@ -14,7 +14,7 @@ retract and multiplicity constructions used by the fusion rules.
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 
 /-- A monomorphism from an object with nonzero identity is nonzero. -/
@@ -59,7 +59,7 @@ theorem unit_retract_leftDual_tensor (X : C) [Simple X] :
   ⟨_, split_from_simple (ExactPairing.coevaluation (ᘁX) X)
     (exactPairing_ne_zero (ᘁX) (id_nonzero X)).1⟩
 
-end PropertyF.Ground
+end MTC
 
 end
 
@@ -68,7 +68,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 
-namespace PropertyF.Ground
+namespace MTC
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
   IsFusionCategory.unit_simple
@@ -123,6 +123,6 @@ theorem finrank_simples_hom (i j : Fin (rank C)) :
   simp only [finrank_hom_simple_simple ℂ, show Nonempty (simples C i ≅ simples C j) ↔
     i = j from ⟨simples_injective C, fun h ↦ by subst j; exact ⟨Iso.refl _⟩⟩]
 
-end PropertyF.Ground
+end MTC
 
 end

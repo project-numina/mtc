@@ -8,7 +8,7 @@ fusion categories. The categorical construction of exterior powers and their
 nonnegative dimensions is not assumed or established in this module. -/
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 
 /-- A nonnegative real number whose falling factorials are all nonnegative is
 an integer. In a pseudo-unitary symmetric setting, the intended application is
@@ -32,4 +32,4 @@ theorem integral_of_nonnegative_falling_factorials {d : ℝ} (hd : 0 ≤ d)
     rw [show m + 2 = (m + 1) + 1 by omega, Finset.prod_range_succ] at hn
     exact False.elim ((not_le_of_gt (mul_neg_of_pos_of_neg hprod hneg)) hn)
 
-end PropertyF.Ground.Centre
+end MTC.Centre

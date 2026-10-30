@@ -9,11 +9,11 @@ self-transparent simple object the twist is a sign, giving integral dimension.
 We write `θ C p X` for the pivotal twist scalar.
 -/
 @[expose] public noncomputable section
-local notation "θ" => PropertyF.Ground.Dimensions.pivotalBraidedTwistScalar
-open PropertyF.Ground.Modular (HasFPSimpleDimensions IsFPSpherical)
-open PropertyF.Ground.Dimensions
+local notation "θ" => MTC.Dimensions.pivotalBraidedTwistScalar
+open MTC.Modular (HasFPSimpleDimensions IsFPSpherical)
+open MTC.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.CentreCalculus
+namespace MTC.CentreCalculus
 universe v u
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hp : p.IsSpherical) (hdim : HasFPSimpleDimensions C p)
@@ -126,4 +126,4 @@ theorem selfTransparent_simpleDimension_integer (hfp : IsFPSpherical C p) {i : F
   let ⟨m, hm⟩ := selfTransparent_simple_integral hfp hX
   ⟨m, by simp [hfp.2 i, ← fpDimension_simple i, hm]⟩
 
-end PropertyF.Ground.CentreCalculus
+end MTC.CentreCalculus

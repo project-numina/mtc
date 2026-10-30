@@ -10,7 +10,7 @@ public import MTC.CategoryTheory.Dimensions.FourthDualUnit
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [RightRigidCategory C] [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -65,17 +65,17 @@ theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C} (d : 
     slice_lhs 3 6 => rw [braid_self_slide]
     simp only [Category.assoc]
     rw [whisker_exchange_assoc, ← rightUnitor_inv_naturality_assoc, braided_self_close, Category.comp_id])
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 end
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
-variable (C : Ground.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
+variable (C : MTC.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 /-- The pivotal/Drinfeld twist on an object. -/
 def pivotalBraidedTwist (X : C.Obj) : X ≅ X :=
-  p.iso X ≪≫ (Ground.doubleDualIso C X).symm
+  p.iso X ≪≫ (MTC.doubleDualIso C X).symm
 
 /-- The ratio of natural pivotal and double-dual isomorphisms is natural. -/
 theorem pivotalBraidedTwist_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -88,7 +88,7 @@ theorem pivotalBraidedTwist_natural {D : Type u} [Category.{v} D] [MonoidalCateg
 /-- The twist scalar of a simple object. -/
 def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
   letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  Ground.simpleEndScalar (k := ℂ) X (End.of (pivotalBraidedTwist C p X).hom)
+  MTC.simpleEndScalar (k := ℂ) X (End.of (pivotalBraidedTwist C p X).hom)
 
 local notation "θₚ" => pivotalBraidedTwistScalar C p
 
@@ -97,7 +97,7 @@ theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
     (pivotalBraidedTwist C p X).hom = θₚ X • 𝟙 X :=
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   congrArg End.asHom (show End.of (pivotalBraidedTwist C p X).hom = θₚ X • (1 : End X) from
-    (Ground.simpleEndScalar (k := ℂ) X).injective (by simp [pivotalBraidedTwistScalar]))
+    (MTC.simpleEndScalar (k := ℂ) X).injective (by simp [pivotalBraidedTwistScalar]))
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
@@ -106,22 +106,22 @@ theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
 
 /-- The trace of a simple self-braiding is twist scalar times dimension. -/
 theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
-    Ground.unitScalar C (p.rightTrace (β_ X X).hom) =
+    MTC.unitScalar C (p.rightTrace (β_ X X).hom) =
       θₚ X * pivotalDimension C p X := by
   have h : p.rightTrace (pivotalBraidedTwist C p X).hom = p.rightTrace (β_ X X).hom := by
     simpa only [pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom,
-      rightPartialTrace_braiding p (Ground.doubleDualIso C X) (drinfeld_eval X)] using
+      rightPartialTrace_braiding p (MTC.doubleDualIso C X) (drinfeld_eval X)] using
       rightTrace_partialTrace p (End.of (β_ X X).hom)
   simpa only [pivotalBraidedTwist_simple, PivotalStructure.rightTrace_smul,
-    Ground.unitScalar_eq_equiv, map_smul, smul_eq_mul, pivotalDimension] using
-      congrArg (Ground.unitScalar C) h.symm
+    MTC.unitScalar_eq_equiv, map_smul, smul_eq_mul, pivotalDimension] using
+      congrArg (MTC.unitScalar C) h.symm
 
 /-- The actual pivotal/Drinfeld twists form a natural automorphism. -/
 def pivotalBraidedTwistNaturalIso : 𝟭 C.Obj ≅ 𝟭 C.Obj :=
   NatIso.ofComponents (pivotalBraidedTwist C p) (fun f ↦ by
     simpa only [Functor.id_map, pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom] using
-      pivotalBraidedTwist_natural p (Ground.doubleDualIso C) (fun f ↦ drinfeldIso_natural f) f)
+      pivotalBraidedTwist_natural p (MTC.doubleDualIso C) (fun f ↦ drinfeldIso_natural f) f)
 
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 end

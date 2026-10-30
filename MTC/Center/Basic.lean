@@ -25,7 +25,7 @@ inherit additive and linear structures, and the zero object lifts to the centre.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -106,13 +106,13 @@ def positiveIsoOfCentralizesNegative (Y : CategoryTheory.Center C)
   letI : IsIso f.f := inferInstanceAs (IsIso (𝟙 Y.1))
   exact CategoryTheory.Center.isoMk f
 
-end PropertyF.Ground.Centre
+end MTC.Centre
 
 
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [MonoidalCategory C]
   [MonoidalPreadditive C]
@@ -210,13 +210,13 @@ theorem finiteDimensional_hom (K : Type*) [Field K] [Linear K C] [MonoidalLinear
     (show (X ⟶ Y) →ₗ[K] (X.1 ⟶ Y.1) from (CategoryTheory.Center.forget C).mapLinearMap K)
     (Functor.map_injective (CategoryTheory.Center.forget C))
 
-end PropertyF.Ground.Centre
+end MTC.Centre
 
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped ZeroObject
-namespace PropertyF.Ground.Centre
+namespace MTC.Centre
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [MonoidalCategory C]
   [MonoidalPreadditive C] [HasZeroObject C]
@@ -247,4 +247,4 @@ theorem centerZero_isZero : IsZero (centerZero (C := C)) :=
 instance centerHasZeroObject : HasZeroObject (CategoryTheory.Center C) :=
   centerZero_isZero.hasZeroObject
 
-end PropertyF.Ground.Centre
+end MTC.Centre

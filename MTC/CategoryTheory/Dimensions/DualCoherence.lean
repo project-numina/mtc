@@ -13,7 +13,7 @@ Evaluation and coevaluation identities relate changes of duals and the associate
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 
@@ -156,4 +156,4 @@ theorem rightTrace_unit (p : PivotalStructure (C := C)) :
 
 end
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions

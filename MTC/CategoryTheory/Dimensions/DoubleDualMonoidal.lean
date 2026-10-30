@@ -14,7 +14,7 @@ Dual tensor comparisons make the double-dual functor monoidal and preserve the b
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 omit [RightRigidCategory C] in
@@ -47,13 +47,13 @@ theorem rightDualTensorIso_associativity (X Y Z : C)
     ← whisker_exchange_assoc, rightAdjointMate_comp_evaluation,
     ← Category.assoc, ← whiskerLeft_comp, Iso.hom_inv_id, whiskerLeft_id, Category.id_comp]
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
@@ -104,13 +104,13 @@ theorem doubleDualTensorIso_associativity (X Y Z : C) :
     Iso.inv_hom_id, rightAdjointMate_id, rightAdjointMate_id, Category.comp_id,
     reassoc_of% hmove2]
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual assignment is strongly monoidal. -/
@@ -133,13 +133,13 @@ def doubleDualCoreMonoidal (C : Type u) [Category.{v} C] [MonoidalCategory C] [R
 /-- The canonical monoidal structure on the double-dual functor. -/
 @[instance_reducible] def doubleDualMonoidal (C : Type u) [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C] :
     (doubleDualFunctor C).Monoidal := (doubleDualCoreMonoidal C).toMonoidal
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical double-dual tensor comparison preserves the braiding. -/
@@ -152,4 +152,4 @@ theorem doubleDualTensorIso_braiding {C : Type u} [Category.{v} C] [MonoidalCate
   simp only [doubleDualTensorIso, Iso.trans_hom, Iso.symm_hom, rightDualIsoMap, Category.assoc,
     hd, reassoc_of%
       ((CommSq.vert_inv (CommSq.mk (rightDualTensorIso_braiding (Xᘁ) (Yᘁ)))).w).symm]
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions

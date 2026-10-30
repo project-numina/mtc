@@ -17,7 +17,7 @@ Declaration: MTC.Conjectures.PropertyF.naiduRowell
 -/
 
 @[expose] public noncomputable section
-open PropertyF PropertyF.Ground
+open MTC MTC
 namespace MTC.Conjectures.PropertyF
 universe v u
 

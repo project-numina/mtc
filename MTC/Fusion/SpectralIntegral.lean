@@ -19,7 +19,7 @@ square. Applying this to the fusion matrices proves `fpSimple_isIntegral`; the u
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators Matrix.Norms.Operator
 
-namespace PropertyF.Ground
+namespace MTC
 
 variable (D : BraidedFusionCategory)
 
@@ -71,4 +71,4 @@ theorem fpSimple_isIntegral (i : Fin (rank D)) :
   simpa only [hmatrix, fpSimple] using integer_matrix_spectralRadius_sq_isIntegral A
 
 
-end PropertyF.Ground
+end MTC

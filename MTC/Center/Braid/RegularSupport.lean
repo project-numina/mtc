@@ -13,24 +13,24 @@ numerical double-centralizer inclusion. The local notations `S D p` and
 `dim D p` denote the categorical S-matrix and simple dimensions.
 -/
 @[expose] public noncomputable section
-open PropertyF.Ground.Modular
+open MTC.Modular
   (HasFPSimpleDimensions HasRealSimpleDimensions IsFPSpherical sCentralizes sCentralizer)
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 open scoped BigOperators
-local notation "S" => PropertyF.Ground.Modular.categoricalS
-local notation "dim" => PropertyF.Ground.Modular.simpleDimension
-namespace PropertyF.Ground.CentreCabling
+local notation "S" => MTC.Modular.categoricalS
+local notation "dim" => MTC.Modular.simpleDimension
+namespace MTC.CentreCabling
 universe v u
-variable {D : Ground.BraidedFusionCategory.{v,u}}
+variable {D : MTC.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
 
 /-- The S-matrix transform of a vector on the simple labels. -/
-abbrev sFourier (D : Ground.BraidedFusionCategory.{v,u})
+abbrev sFourier (D : MTC.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (f : Fin (rank D) → ℂ) (y : Fin (rank D)) : ℂ :=
   ∑ i, S D p y i * f i
 
 /-- The S-transform of a vector vanishes outside the given set. -/
-abbrev FourierSupportedOn (D : Ground.BraidedFusionCategory.{v,u})
+abbrev FourierSupportedOn (D : MTC.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (f : Fin (rank D) → ℂ)
     (core : Set (Fin (rank D))) : Prop :=
   ∀ y ∉ core, sFourier D p f y = 0
@@ -53,12 +53,12 @@ theorem sCentralizes_dual (hdim : HasFPSimpleDimensions D p) {y : Fin (rank D)}
   simpa [sCentralizes, Modular.categoricalS_dual_conj D p (realSimpleDimensions_of_fp hdim),
     hdim, fpSimple_dual] using congrArg (starRingEnd ℂ) i.property
 
-end PropertyF.Ground.CentreCabling
+end MTC.CentreCabling
 
 open scoped BigOperators
-namespace PropertyF.Ground.CentreCabling
+namespace MTC.CentreCabling
 universe v u
-variable {D : Ground.BraidedFusionCategory.{v,u}}
+variable {D : MTC.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
   (hp : p.IsSpherical) (hdet : (S D p).det ≠ 0)
   (hreal : HasRealSimpleDimensions D p)
@@ -103,7 +103,7 @@ theorem nonzero_dual_coefficient_of_sCentralizer
     (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit))
       (by
         simpa only [sFourier_inversion hp hdet hreal f x,
-          sFourier_inversion hp hdet hreal f (unitIndex D), Ground.dualIndex_unit D, hz, mul_zero] using
+          sFourier_inversion hp hdet hreal f (unitIndex D), MTC.dualIndex_unit D, hz, mul_zero] using
           heq.symm)
 
 include hdet in
@@ -119,12 +119,12 @@ theorem doubleCentralizer_of_fourier_support
     nonzero_dual_coefficient_of_sCentralizer hfp.1 hdet (realSimpleDimensions_of_fp hfp.2)
       hunit hsupport (fun y hy ↦ sCentralizes_dual (D := D) hfp.2 ⟨x, sCentralizes_symm (hx y hy)⟩)
 
-end PropertyF.Ground.CentreCabling
+end MTC.CentreCabling
 
 open scoped BigOperators
-namespace PropertyF.Ground.CentreCabling
+namespace MTC.CentreCabling
 universe v u
-variable {D : Ground.BraidedFusionCategory.{v,u}}
+variable {D : MTC.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
 
 /-- A character pairing with an eigenvector has the same eigenvalue on both sides. -/
@@ -163,13 +163,13 @@ abbrev IsFusionClosed {ι : Type*} (N : ι → ι → ι → ℕ) (A : Finset ι
   ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < N a b k → k ∈ A
 
 /-- A set of simple labels closed under duals and fusion constituents. -/
-structure IsDualFusionClosed (D : Ground.BraidedFusionCategory.{v,u})
+structure IsDualFusionClosed (D : MTC.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) : Prop where
   dual : ∀ a ∈ A, dualIndex D a ∈ A
   fusion : IsFusionClosed (fusionCoeff D) A
 
 /-- A set of labels containing the unit and closed under duals and fusion. -/
-structure IsFusionSubring (D : Ground.BraidedFusionCategory.{v,u})
+structure IsFusionSubring (D : MTC.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) : Prop extends IsDualFusionClosed D A where
   unit : unitIndex D ∈ A
 
@@ -194,7 +194,7 @@ end
 variable {A : Finset (Fin (rank D))} {a b : A} {k : {k : Fin (rank D) // k ∉ A}}
 
 /-- The FP-weighted regular vector supported on a set of simple labels. -/
-abbrev regularVector (D : Ground.BraidedFusionCategory.{v,u})
+abbrev regularVector (D : MTC.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) (i : Fin (rank D)) : ℂ :=
   if i ∈ A then (fpSimple D i : ℂ) else 0
 
@@ -210,7 +210,7 @@ theorem regularVector_mul (hA : IsDualFusionClosed D A) {k : A} :
   calc
     _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
       refine Finset.sum_congr rfl fun i _ ↦ ?_
-      rw [Ground.fusionCoeff_dual_symmetry D a k i]
+      rw [MTC.fusionCoeff_dual_symmetry D a k i]
       by_cases hi : i ∈ A
       · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi]
       · simp [regularVector, hi, hA.fusion.fusionCoeff_eq_zero (a := ⟨_, hA.dual _ a.2⟩) (k := ⟨i, hi⟩)]
@@ -248,4 +248,4 @@ theorem doubleCentralizer_of_fusion_closed
     (regularVector_ne_zero_iff.mpr hA.unit) (fun _ hi ↦ regularVector_ne_zero_iff.mp hi)
     (regularVector_fourier_support hfp.2 hA.toIsDualFusionClosed hcore)
 
-end PropertyF.Ground.CentreCabling
+end MTC.CentreCabling

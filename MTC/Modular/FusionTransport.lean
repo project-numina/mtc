@@ -16,12 +16,12 @@ section
 
 
 open CategoryTheory
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 universe v u
 
 /-- An equivalence transports the chosen simple labels bijectively, with an
 actual isomorphism between each transported representative and its new label. -/
-theorem simpleLabels_equiv (C D : Ground.BraidedFusionCategory.{v,u})
+theorem simpleLabels_equiv (C D : MTC.BraidedFusionCategory.{v,u})
     (E : C.Obj ≌ D.Obj) : ∃ e : Fin (rank C) ≃ Fin (rank D),
     ∀ i, Nonempty (E.functor.obj (simples C i) ≅ simples D (e i)) := by
   let F := E.functor
@@ -44,7 +44,7 @@ theorem simpleLabels_equiv (C D : Ground.BraidedFusionCategory.{v,u})
     obtain ⟨i, ⟨ei⟩⟩ := exists_simple_iso C X
     exact ⟨i, ⟨F.mapIso ei.symm ≪≫ e⟩⟩
 
-end PropertyF.Ground.Modular
+end MTC.Modular
 end
 
 section
@@ -60,11 +60,11 @@ open scoped BigOperators
 open CategoryTheory CategoryTheory.MonoidalCategory
 open CategoryTheory.Functor.Monoidal
 
-namespace PropertyF.Ground.Modular
+namespace MTC.Modular
 universe v u
 
-variable {C D : Ground.BraidedFusionCategory.{v,u}}
-variable {σ : ℂ ≃+* ℂ} (h : Ground.GaloisConjugate C D σ)
+variable {C D : MTC.BraidedFusionCategory.{v,u}}
+variable {σ : ℂ ≃+* ℂ} (h : MTC.GaloisConjugate C D σ)
 include h
 
 /-- Semilinear equivalences preserve the dimensions of Hom spaces. -/
@@ -139,5 +139,5 @@ theorem conjugate_propertyF
   (ground_conjugate_images h Y n).elim fun X ⟨e⟩ ↦
     Finite.of_equiv (braidImage X n) (h := hF X n) e.symm.toEquiv
 
-end PropertyF.Ground.Modular
+end MTC.Modular
 end

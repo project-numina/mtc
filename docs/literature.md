@@ -8,7 +8,7 @@ is a rough assessment: **low** means arithmetic on an established exact data
 interface, **medium** means substantial algebra or finite group machinery, and
 **high** means new categorical infrastructure or long classification proofs.
 
-The existing `PropertyF.Ground` interface represents braided fusion categories
+The existing `MTC` interface represents braided fusion categories
 and defines FP dimensions using spectral radii. Its own documentation records
 that identification with standard categorical invariants is pending. It does not
 yet provide a general (not necessarily braided) fusion category, modularity,

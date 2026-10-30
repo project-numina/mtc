@@ -17,33 +17,33 @@ Representations of braid algebras give nonnegative integral multiplicities, yiel
 `pivotalTrace_braid_multiplicities` and unitary trace presentations.
 -/
 
-open PropertyF.Ground.Dimensions
+open MTC.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable (C : BraidedFusionCategory.{v,u})
 
 /-- Scalar identification for a chosen simple object. -/
-def groundSimpleScalar (i : Fin (Ground.rank C)) :
-    End (Ground.simples C i) ≃ₐ[ℂ] ℂ := by
-  let _ : Simple (Ground.simples C i) := Ground.simples_simple C i
-  let _ : FiniteDimensional ℂ (Ground.simples C i ⟶ Ground.simples C i) :=
-    Ground.IsFusionCategory.hom_finite _ _
+def groundSimpleScalar (i : Fin (MTC.rank C)) :
+    End (MTC.simples C i) ≃ₐ[ℂ] ℂ := by
+  let _ : Simple (MTC.simples C i) := MTC.simples_simple C i
+  let _ : FiniteDimensional ℂ (MTC.simples C i ⟶ MTC.simples C i) :=
+    MTC.IsFusionCategory.hom_finite _ _
   exact simpleEndScalar (k := ℂ) _
 
-variable {X : C.Obj} {m : Fin (Ground.rank C) → ℕ}
+variable {X : C.Obj} {m : Fin (MTC.rank C) → ℕ}
   (e : X ≅ ⨁ (simpleCopies C m)) (a : End X)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A diagonal biproduct component is its block coefficient times the identity. -/
-theorem groundEndBlockEquiv_diagonal (i : Fin (Ground.rank C)) (j : Fin (m i)) :
+theorem groundEndBlockEquiv_diagonal (i : Fin (MTC.rank C)) (j : Fin (m i)) :
     biproduct.ι (simpleCopies C m) ⟨i, j⟩ ≫ e.inv ≫ a.asHom ≫ e.hom ≫
         biproduct.π (simpleCopies C m) ⟨i, j⟩ =
-      (groundEndBlockEquiv C e a i j j) • 𝟙 (Ground.simples C i) := by
+      (groundEndBlockEquiv C e a i j j) • 𝟙 (MTC.simples C i) := by
   classical
   simpa [groundEndBlockEquiv, orthogonalEndBlocks, isoEndAlgEquiv,
     simpleFiberEquiv, groundSimpleScalar, HomOrthogonal.matrixDecompositionAddEquiv,
@@ -61,8 +61,8 @@ simple categorical dimensions times the ordinary traces of its constituent
 multiplicity blocks. -/
 theorem pivotalTrace_groundEndBlocks :
     scalar (p.rightTrace a.asHom) =
-      ∑ i, scalar (p.rightTrace (𝟙 (Ground.simples C i))) * (groundEndBlockEquiv C e a i).trace := by
-  let F : (Σ i, Fin (m i)) → C.Obj := fun q => Ground.simples C q.1
+      ∑ i, scalar (p.rightTrace (𝟙 (MTC.simples C i))) * (groundEndBlockEquiv C e a i).trace := by
+  let F : (Σ i, Fin (m i)) → C.Obj := fun q => MTC.simples C q.1
   let z : (⨁ F) ⟶ (⨁ F) := e.inv ≫ a.asHom ≫ e.hom
   have hz : p.rightTrace z = p.rightTrace a.asHom := rightTrace_iso_conj e p a
   have h := cyclicTrace_biproduct_scalar_blocks
@@ -74,13 +74,13 @@ theorem pivotalTrace_groundEndBlocks :
   simpa [rightTraceWithLinear, PivotalStructure.rightTrace, F, Matrix.trace, Finset.mul_sum, mul_comm,
     Fintype.sum_sigma] using h
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Consequences of the categorical multiplicity weights. -/
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 
 /-- Dimensions obtained by decomposing a family into matrix blocks. -/
 abbrev HasMultiplicityDecomposition {ι κ : Type*} [Fintype κ]
@@ -113,13 +113,13 @@ theorem transported_weight_ne_zero {ι : Type*} [Fintype ι]
     exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz') :
       (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0))
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Cyclic linear functionals on complex matrix algebras. -/
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 
 section
 
@@ -175,13 +175,13 @@ theorem cyclic_block_trace {B : Blocks} (T : B.Algebra →ₗ[ℂ] ℂ)
     simp only [← hw, Tblock, LinearMap.comp_apply, LinearMap.single_apply, ← map_sum,
       LinearMap.sum_single_apply]⟩
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Multiplicities in traces of representations of matrix-block algebras. -/
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 
 section IdempotentTrace
 
@@ -258,14 +258,14 @@ theorem faithful_block_representation_multiplicities {B' : Blocks}
   simpa [e] using congrArg (fun x : B.Algebra => x j k k)
     (hinj (show φ e = φ 0 from by simpa using hzero))
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus
 
 /-! Multiplicity weights for the pivotal trace on finite braid-image blocks. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.Calculus
+namespace MTC.Calculus
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable (C : BraidedFusionCategory.{v,u})
@@ -273,7 +273,7 @@ variable (C : BraidedFusionCategory.{v,u})
 /-- The faithful inclusion of the braid algebra in the full endomorphism
 algebra, expressed in their respective matrix-block presentations. -/
 def braidToEndBlocks {X : C.Obj} {n : ℕ}
-    {m : Fin (Ground.rank C) → ℕ}
+    {m : Fin (MTC.rank C) → ℕ}
     (e : braidTensorPower X n ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ}
     (b : BraidBlockPresentation X n d) :
@@ -287,21 +287,21 @@ variable (p : PivotalStructure (C := C.Obj)) (scalar : End (𝟙_ C.Obj) ≃ₐ[
 /-- The categorical braid trace has the weights supplied by block multiplicities. -/
 abbrev HasMultiplicityTrace {X : C.Obj} {n r : ℕ}
     {d : Fin r → ℕ} (b : BraidBlockPresentation X n d)
-    (mult : Fin (Ground.rank C) → Fin r → ℕ) : Prop :=
+    (mult : Fin (MTC.rank C) → Fin r → ℕ) : Prop :=
   ∀ a : braidAlgebra X n,
     scalar (p.rightTrace (a : End (braidTensorPower X n)).asHom) =
-      ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (Ground.simples C i)))) *
+      ∑ j, (∑ i, (mult i j : ℂ) * scalar (p.rightTrace (𝟙 (MTC.simples C i)))) *
         (b a j).trace
 
 /-- The actual categorical trace on the braid algebra has the paper's
 multiplicity-weight formula. Every retained braid block occurs in a simple
 constituent's multiplicity space. -/
 theorem pivotalTrace_braid_multiplicities {X : C.Obj} {n : ℕ}
-    {m : Fin (Ground.rank C) → ℕ}
+    {m : Fin (MTC.rank C) → ℕ}
     (e : braidTensorPower X n ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ} (hd : ∀ j, 0 < d j)
     (b : BraidBlockPresentation X n d) :
-    ∃ mult : Fin (Ground.rank C) → Fin r → ℕ,
+    ∃ mult : Fin (MTC.rank C) → Fin r → ℕ,
       (∀ j, ∃ i, 0 < mult i j) ∧
       HasMultiplicityDecomposition m d mult ∧ HasMultiplicityTrace C p scalar b mult :=
   let F := braidToEndBlocks C e b
@@ -326,14 +326,14 @@ theorem exists_unitary_braid_trace_blocks
     (hfinite : Finite (braidImage X n)) :
     ∃ (r : ℕ) (d : Fin r → ℕ)
       (b : BraidBlockPresentation X n d)
-      (mult : Fin (Ground.rank C) → Fin r → ℕ),
+      (mult : Fin (MTC.rank C) → Fin r → ℕ),
       (∀ j, 0 < d j) ∧
       IsUnitaryBraidPresentation b ∧
       (∀ j, ∃ i, 0 < mult i j) ∧
       HasMultiplicityDecomposition
-        (fun i => Module.finrank ℂ (Ground.simples C i ⟶ braidTensorPower X n)) d mult ∧
+        (fun i => Module.finrank ℂ (MTC.simples C i ⟶ braidTensorPower X n)) d mult ∧
       HasMultiplicityTrace C p scalar b mult :=
-  let ⟨e⟩ := Ground.exists_canonical_decomposition C (braidTensorPower X n)
+  let ⟨e⟩ := MTC.exists_canonical_decomposition C (braidTensorPower X n)
   let _ : Finite (braidImage X n) := hfinite
   let ⟨r, d, b, hnonzero, hunitary⟩ :=
     groupImageAlgebra_unitary_blocks (braidEndRepresentation X n)
@@ -341,4 +341,4 @@ theorem exists_unitary_braid_trace_blocks
   let ⟨mult, hret, hdim, htrace⟩ := pivotalTrace_braid_multiplicities C p scalar e hd b
   ⟨r, d, b, mult, hd, hunitary, hret, hdim, htrace⟩
 
-end PropertyF.Ground.Calculus
+end MTC.Calculus

@@ -19,7 +19,7 @@ Partial traces, bases, and composition pairings describe simple multiplicity spa
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 variable {R : Type*} [CommSemiring R] [Preadditive C] [Linear R C]
@@ -41,13 +41,13 @@ theorem rightQuantumTrace_tensor_scalar (scalar : End (𝟙_ C) ≃ₐ[R] R) {X 
       simpa [hpt, rightTraceWith, rightQuantumTrace, tensorHom_def] using
         congrArg End.asHom (rightTraceWith_partialTraceWith j k (1 : End (X ⊗ Y))).symm)
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -58,22 +58,22 @@ of the two simple root dimensions. -/
 theorem rootTrace_inverseDefect (i j : Fin (rank C)) :
     unitScalar C (rootTrace C (rootTensorDefect C (simples C i) (simples C j)).inv) =
       rootDimension C i * rootDimension C j := by
-  simpa only [rootDimension, rootTrace_id, Ground.unitScalar_eq_equiv, rootTrace,
+  simpa only [rootDimension, rootTrace_id, MTC.unitScalar_eq_equiv, rootTrace,
     rightTraceWith, rightQuantumTrace, rootTensorDefect, rootTensorIso,
     Iso.trans_inv, Iso.symm_inv, Functor.id_obj, Category.assoc, Iso.inv_hom_id_assoc,
     Iso.inv_hom_id, Category.id_comp, Category.comp_id] using
-      rightQuantumTrace_tensor_scalar (Ground.unitScalarEquiv C)
+      rightQuantumTrace_tensor_scalar (MTC.unitScalarEquiv C)
         ((fourthDualRootNaturalIso C).app (simples C i))
         ((fourthDualRootNaturalIso C).app (simples C j))
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 section
@@ -168,11 +168,11 @@ theorem rootTrace_eq_simpleHom_trace_sum
   have heq : rootTrace C g = rootTrace C f := by
     simpa [f, Category.assoc] using (rootTrace_cyclic C e.hom (e.inv ≫ g))
   obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple V (fun a => simples_simple C a.1) f
-  simp only [heq, ht, Ground.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
+  simp only [heq, ht, MTC.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
   simp only [simpleHom_postcomp_trace g (fun t ↦ c ⟨k, t⟩)
     (fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩), Finset.sum_mul,
-    rootDimension, Ground.unitScalar_eq_equiv, V, simplePiecesObject]
+    rootDimension, MTC.unitScalar_eq_equiv, V, simplePiecesObject]
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -191,13 +191,13 @@ theorem enoTraceMatrix_eigenvector_of_involutions {i j : Fin (rank C)}
   by simpa only [enoTraceMatrix, hop, d, rootTrace_inverseDefect] using
     (rootTrace_eq_simpleHom_trace_sum d.inv).symm
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace PropertyF.Ground.Dimensions
+namespace MTC.Dimensions
 universe v u
 
 section
@@ -208,7 +208,7 @@ variable {k : Type*} [Field k] [IsAlgClosed k]
 from a simple object. -/
 def simpleHomPairing (S X : D) [Simple S] [FiniteDimensional k (S ⟶ S)] :
     (X ⟶ S) →ₗ[k] Module.Dual k (S ⟶ X) :=
-  (LinearMap.compRight k ((Ground.simpleEndScalar (k := k) S).toLinearMap.comp
+  (LinearMap.compRight k ((MTC.simpleEndScalar (k := k) S).toLinearMap.comp
     (End.linearEquiv (R := k) (X := S)).symm.toLinearMap)).comp (Linear.comp S X S).flip
 
 
@@ -222,7 +222,7 @@ theorem simpleHomPairing_injective
     by_contra hne
     obtain ⟨f, hf⟩ := hsplit g hne
     have h := congrArg (fun F : Module.Dual k (S ⟶ X) => F f) hg
-    change Ground.simpleEndScalar (k := k) S (End.of (f ≫ g)) = 0 at h
+    change MTC.simpleEndScalar (k := k) S (End.of (f ≫ g)) = 0 at h
     simp only [hf, show End.of (𝟙 S) = (1 : End S) from rfl, map_one, one_ne_zero] at h)
 
 end
@@ -236,7 +236,7 @@ def simpleHomPairingEquiv {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [MonoidalPreadditive D] [MonoidalLinear ℂ D] [IsFusionCategory D]
     (S X : D) [Simple S] : (X ⟶ S) ≃ₗ[ℂ] Module.Dual ℂ (S ⟶ X) := by
   let p := simpleHomPairing (k := ℂ) S X
-  have hi := simpleHomPairing_injective (k := ℂ) S X fun g hg ↦ Ground.split_to_simple g hg
+  have hi := simpleHomPairing_injective (k := ℂ) S X fun g hg ↦ MTC.split_to_simple g hg
   have hd : Module.finrank ℂ (X ⟶ S) = Module.finrank ℂ (Module.Dual ℂ (S ⟶ X)) :=
     (finrank_to_simple_eq_from_simple X S).trans
       (Subspace.dual_finrank_eq (K := ℂ) (V := S ⟶ X)).symm
@@ -256,4 +256,4 @@ theorem simpleHomPairingEquiv_natural {S X Y : D} [Simple S] (g : Y ⟶ S) (a : 
       Linear.rightComp_apply, Category.assoc]
 
 
-end PropertyF.Ground.Dimensions
+end MTC.Dimensions
