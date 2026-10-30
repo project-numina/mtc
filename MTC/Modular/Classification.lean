@@ -11,6 +11,8 @@ public import Mathlib.FieldTheory.Galois.Basic
 public import Mathlib.NumberTheory.NumberField.Basic
 public import Mathlib.GroupTheory.Index
 
+open MTC.Braided
+
 /-!
 # Fusion rules, their characters, and classification of normalized S columns.
 -/

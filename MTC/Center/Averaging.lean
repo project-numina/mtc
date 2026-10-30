@@ -5,6 +5,8 @@ public import Mathlib.GroupTheory.Perm.Sign
 public import MTC.CategoryTheory.Dimensions.BiproductTrace
 public import Mathlib.CategoryTheory.Idempotents.Basic
 
+open MTC.Braided
+
 /-!
 # Averaging and alternating projectors
 

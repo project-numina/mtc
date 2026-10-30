@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.DualBraiding
 public import MTC.Modular.SMatrix
 
+open MTC.Braided
+
 /-! # Tensor caps and monodromy
 
 Braiding and evaluation identities simplify the tensor-cap expression for monodromy.

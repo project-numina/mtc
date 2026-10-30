@@ -1,6 +1,8 @@
 module
 public import MTC.Center.Trace.LeftTensorTrace
 
+open MTC.Braided
+
 /-!
 # Twist signs and integral dimensions
 

@@ -4,6 +4,8 @@ public import Mathlib.CategoryTheory.Preadditive.Biproducts
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
+open MTC.Braided
+
 /-! # Traces of biproducts
 
 Pivotal traces decompose over finite biproducts and their scalar blocks.

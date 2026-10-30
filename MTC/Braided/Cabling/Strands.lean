@@ -2,6 +2,8 @@ module
 public import MTC.Braided.Definitions
 public import Mathlib.CategoryTheory.Endomorphism
 
+open MTC.Braided
+
 /-!
 # Adding strands to braid images
 

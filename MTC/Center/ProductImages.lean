@@ -8,6 +8,8 @@ public import MTC.Center.Product
 public import MTC.Modular.BraidFunctor
 public import MTC.Braided.Cabling.Naturality
 
+open MTC.Braided
+
 /-!
 # Braid images of centre product objects
 

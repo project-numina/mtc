@@ -1,6 +1,8 @@
 module
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 
+open MTC.Braided
+
 /-! # Braiding and dual tensor products
 
 Evaluation cap slides show that the right-dual tensor comparison transports the braiding.

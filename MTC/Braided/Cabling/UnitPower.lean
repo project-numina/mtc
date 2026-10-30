@@ -6,6 +6,8 @@ public import Mathlib.CategoryTheory.Preadditive.Biproducts
 public import MTC.Fusion.Reciprocity
 public import MTC.Fusion.Simples
 
+open MTC.Braided
+
 /-!
 # Duals in generated closures
 

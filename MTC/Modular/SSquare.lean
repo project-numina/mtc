@@ -1,6 +1,8 @@
 module
 public import MTC.Modular.CharacterStar
 
+open MTC.Braided
+
 /-!
 # Orthogonality, the S-square identity, and modular constructions.
 -/

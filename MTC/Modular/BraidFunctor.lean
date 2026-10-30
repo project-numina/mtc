@@ -1,6 +1,8 @@
 module
 public import MTC.Modular.BraidIso
 
+open MTC.Braided
+
 /-!
 # Braid images under braided functors
 

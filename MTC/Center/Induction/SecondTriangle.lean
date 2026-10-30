@@ -2,6 +2,8 @@ module
 public import MTC.Center.Induction.CrossingCoherence
 public import MTC.Center.Induction.AdjunctionAssembly
 
+open MTC.Braided
+
 open MTC.CategoryTheory.Dimensions
 
 /-! Duality identities for the induction counit and triangle. -/

@@ -6,6 +6,8 @@ public import MTC.Fusion.SpectralIntegral
 public import MTC.Center.Fusion.Bundled
 public import Mathlib.CategoryTheory.Adjunction.Additive
 
+open MTC.Braided
+
 section
 /-! Centrality of the induction unit and the center-forgetful adjunction. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits CategoryTheory.ExactPairing

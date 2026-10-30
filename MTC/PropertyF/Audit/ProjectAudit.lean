@@ -156,6 +156,8 @@ import all MTC.PropertyF.Reduction.UnitScalar
 import all MTC.PropertyF.Statement
 import all MTC.PropertyF.Theorem
 
+open MTC.Braided
+
 /-! Scan all currently integrated project declarations, including the ground
 modules. `MTC.Audit` alone sees only its own imports. -/
 

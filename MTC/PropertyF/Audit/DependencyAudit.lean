@@ -5,6 +5,8 @@ public import Lean.Util.CollectAxioms
 public import Lean.Compiler.ImplementedByAttr
 public import Lean.Compiler.ExternAttr
 
+open MTC.Braided
+
 /-! Dependency-cone audit. Unlike `#print axioms`, this traverses declaration
 bodies AND types, so it detects unconstructed hypothesis structures even if
 those structures are passed through intermediate helper declarations. -/

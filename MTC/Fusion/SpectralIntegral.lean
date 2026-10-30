@@ -8,6 +8,8 @@ public import Mathlib.Analysis.Normed.Algebra.GelfandFormula
 public import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs
 public import Mathlib.Analysis.Matrix.Normed
 
+open MTC.Braided
+
 /-! # Integrality of spectral-radius dimensions
 
 The spectral radius of an integer matrix on a nonempty index type has an integral

@@ -2,6 +2,8 @@ module
 public import MTC.Fusion.Simples
 public import Mathlib.CategoryTheory.Preadditive.Injective.Basic
 
+open MTC.Braided
+
 /-! # Splittings in fusion categories
 
 Nonzero maps to a simple object split. Finite semisimple decompositions then

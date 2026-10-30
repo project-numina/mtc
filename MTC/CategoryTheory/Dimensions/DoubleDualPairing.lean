@@ -8,6 +8,8 @@ public import MTC.CategoryTheory.Dimensions.SimpleScalars
 public import MTC.Fusion.Agreement
 public import MTC.CategoryTheory.Dimensions.ENOMatrices
 
+open MTC.Braided
+
 /-! # Double-dual pairings and pivotal duality
 
 Tensor pairings satisfy the triangle identities and give the double-dual evaluation and coevaluation laws.

@@ -2,6 +2,8 @@ module
 public import MTC.Modular.Data.Basic
 public import MTC.Modular.SMatrix
 
+open MTC.Braided
+
 /-!
 # Comparison with the categorical S-matrix
 

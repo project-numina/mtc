@@ -7,6 +7,8 @@ public import MTC.CategoryTheory.Dimensions.DoubleDualPairing
 public import MTC.Modular.BraidIso
 public import MTC.CategoryTheory.Dimensions.DualCoherence
 
+open MTC.Braided
+
 /-!
 # Left traces of braid crossings
 

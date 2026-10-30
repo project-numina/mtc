@@ -9,6 +9,8 @@ public import MTC.Fusion.Simples
 public import MTC.Fusion.Reciprocity
 public import MTC.PropertyF.Reduction.UnitScalar
 
+open MTC.Braided
+
 /-! # Intrinsic squared norms
 
 The product of the left and right quantum traces of a simple object is

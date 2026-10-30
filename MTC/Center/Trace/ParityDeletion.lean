@@ -2,6 +2,8 @@ module
 public import MTC.Center.Trace.ProjectorReduction
 public import MTC.Center.Trace.PermutationInsert
 
+open MTC.Braided
+
 /-!
 # Parity-corrected permutation traces
 

@@ -6,6 +6,8 @@ public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.Braided.Trace.ThreeTrace
 public import MTC.Algebra.PowerBound
 
+open MTC.Braided
+
 /-!
 # Trace bounds from overlapping braids
 

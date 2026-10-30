@@ -7,6 +7,8 @@ public import MTC.CategoryTheory.Dimensions.DefectExtension
 public import MTC.Center.Balancing.TwistBalancing
 public import MTC.CategoryTheory.Dimensions.MonodromyTensorCap
 
+open MTC.Braided
+
 open MTC.CategoryTheory.Dimensions
 
 /-! The Drinfeld map satisfies its tensor coherence law. -/

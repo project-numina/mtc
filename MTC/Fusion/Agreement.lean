@@ -9,6 +9,8 @@ public import MTC.Braided.Cabling.Strands
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.LinearAlgebra.Eigenspace.Matrix
 
+open MTC.Braided
+
 /-! # Positive fusion characters and FP dimensions
 
 The character matrices of the fusion rules have a common positive eigenvector.

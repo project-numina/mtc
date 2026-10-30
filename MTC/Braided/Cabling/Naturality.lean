@@ -6,6 +6,8 @@ public import Mathlib.GroupTheory.Perm.Basic
 public import Mathlib.CategoryTheory.Conj
 public import Mathlib.Algebra.Group.Subgroup.Map
 
+open MTC.Braided
+
 /-!
 # Braid words and naturality
 

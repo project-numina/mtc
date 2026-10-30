@@ -8,6 +8,8 @@ public import Mathlib.Basic.Complex.Basic
 public import Mathlib.Tactic
 public import Mathlib.CategoryTheory.Iso
 
+open MTC.Braided
+
 /-! # Tensor defects and multiplicities
 
 Chosen simple fourth-dual roots extend to a natural double-dual isomorphism.

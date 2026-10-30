@@ -1,6 +1,8 @@
 module
 public import MTC.PropertyF.Theorem
 
+open MTC.Braided
+
 /-!
 # Property F implies weak integrality
 

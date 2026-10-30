@@ -2,6 +2,8 @@ module
 public import MTC.Braided.Trace.PartialTrace
 public import MTC.CategoryTheory.Dimensions.FourthDualUnit
 
+open MTC.Braided
+
 /-!
 # Braiding traces and the pivotal twist.
 -/

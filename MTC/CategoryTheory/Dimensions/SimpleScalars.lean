@@ -5,6 +5,8 @@ public import MTC.Fusion.Simples
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 public import MTC.Fusion.Multiplicity
 
+open MTC.Braided
+
 /-! # Scalar natural transformations
 
 Scalar components on simple objects extend naturally over their biproduct

@@ -1,6 +1,8 @@
 module
 public import MTC.PropertyF.Theorem
 
+open MTC.Braided
+
 /-! # Property F with a pseudo-unitary conjugate
 
 These are direct consequences of `MTC.PropertyF.weaklyIntegral_of_propertyF`. The identity

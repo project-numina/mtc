@@ -4,6 +4,8 @@ public import MTC.Center.Braid.CentralityClosure
 public import MTC.Center.Braid.TraceSaturation
 public import MTC.Modular.SSquare
 
+open MTC.Braided
+
 /-!
 # Kirby identities and nondegeneracy from trivial transparency.
 -/

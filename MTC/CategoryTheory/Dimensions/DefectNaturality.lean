@@ -1,6 +1,8 @@
 module
 public import MTC.CategoryTheory.Dimensions.RootDualLabel
 
+open MTC.Braided
+
 /-! # Tensor-defect naturality and coevaluation sliding
 
 Naturality of the root tensor isomorphism and sliding through coevaluation yield trace reciprocity.

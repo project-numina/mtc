@@ -20,6 +20,8 @@ public import Mathlib.FieldTheory.IsAlgClosed.Classification
 public import Mathlib.Algebra.MvPolynomial.Equiv
 public import MTC.Algebra.Arithmetic
 
+open MTC.Braided
+
 /-! # Galois arithmetic and the centre reduction
 
 The numerical descent and categorical centre witnesses combine to prove

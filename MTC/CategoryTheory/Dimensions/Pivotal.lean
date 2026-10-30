@@ -1,6 +1,8 @@
 module
 public import MTC.Braided.Definitions
 
+open MTC.Braided
+
 /-! # Pivotal structures
 
 `rightDualIsoMap` and `doubleDualTensorIso` provide the duality comparisons

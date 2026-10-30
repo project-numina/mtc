@@ -13,6 +13,8 @@ public import MTC.Fusion.SemisimpleSplit
 public import MTC.Modular.SSquare
 public import MTC.Modular.Verlinde
 
+open MTC.Braided
+
 /-!
 # Vafa finiteness for centre modularity
 

@@ -2,6 +2,8 @@ module
 public import MTC.Modular.SMatrix
 public import MTC.PropertyF.Theorem
 
+open MTC.Braided
+
 /-!
 # Property F for modular fusion categories
 

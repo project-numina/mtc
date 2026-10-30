@@ -2,6 +2,8 @@ module
 public import MTC.Center.Induction.CrossingBlocks
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 
+open MTC.Braided
+
 open MTC.CategoryTheory.Dimensions Algebra
 
 /-! Dual bases for the actual fusion summand inclusions and projections. -/

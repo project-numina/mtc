@@ -3,6 +3,8 @@ public import MTC.CategoryTheory.Dimensions.Trace
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
+open MTC.Braided
+
 /-!
 # Partial pivotal trace
 

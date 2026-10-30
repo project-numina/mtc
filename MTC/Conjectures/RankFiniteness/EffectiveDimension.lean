@@ -2,6 +2,8 @@ module
 public import MTC.Modular.SMatrix
 public import Mathlib.Computability.Partrec
 
+open MTC.Braided
+
 /-!
 # Effective bounds for Frobenius–Perron dimension
 

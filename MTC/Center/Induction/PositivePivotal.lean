@@ -6,6 +6,8 @@ public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.PropertyF.Reduction.CharacterReality
 public import MTC.Modular.SMatrix
 
+open MTC.Braided
+
 open MTC.CategoryTheory.Dimensions
 
 /-! # Pivotal structures on the centre

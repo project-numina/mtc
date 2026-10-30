@@ -4,6 +4,8 @@ public import Mathlib.CategoryTheory.Adjunction.Mates
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
 public import MTC.Fusion.ObjectDimension
 
+open MTC.Braided
+
 /-! # Dual half-braidings and the bundled centre
 
 Adjoint mates of half-braidings give the candidate dual crossing. When rigidity

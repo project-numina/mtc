@@ -4,6 +4,8 @@ public import MTC.Fusion.Multiplicity
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
+open MTC.Braided
+
 /-! # Scalars on the tensor unit
 
 Schur's lemma identifies the endomorphisms of the tensor unit with complex

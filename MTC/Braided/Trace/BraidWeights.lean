@@ -9,6 +9,8 @@ public import Mathlib.LinearAlgebra.Pi
 public import Mathlib.LinearAlgebra.Trace
 public import MTC.Braided.Trace.UnitaryBlocks
 
+open MTC.Braided
+
 /-!
 # Braid traces and multiplicities
 

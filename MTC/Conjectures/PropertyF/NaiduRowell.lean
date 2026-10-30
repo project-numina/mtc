@@ -1,6 +1,8 @@
 module
 public import MTC.PropertyF.Statement
 
+open MTC.Braided
+
 /-!
 # Naidu–Rowell property F conjecture
 

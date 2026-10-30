@@ -6,6 +6,8 @@ public import MTC.Fusion.Multiplicity
 public import MTC.Fusion.Reciprocity
 public import MTC.Modular.FusionTransport
 
+open MTC.Braided
+
 /-!
 # The categorical S matrix and nonvanishing of simple dimensions.
 -/

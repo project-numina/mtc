@@ -1,6 +1,8 @@
 module
 public import MTC.CategoryTheory.Dimensions.Pivotal
 
+open MTC.Braided
+
 /-! # Duality coherence
 
 Evaluation and coevaluation identities relate changes of duals and the associated traces.

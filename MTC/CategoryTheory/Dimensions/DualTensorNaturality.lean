@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.DualCoherence
 public import MTC.PropertyF.Statement
 
+open MTC.Braided
+
 /-! # Dual tensor comparisons and the Drinfeld isomorphism
 
 Evaluation pairings establish naturality of dual tensor isomorphisms and the Drinfeld isomorphism.

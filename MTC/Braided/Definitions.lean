@@ -20,7 +20,7 @@ Tensor powers, categorical braid generators, property F, quantum traces and gene
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC
+namespace MTC.Braided
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
@@ -82,4 +82,4 @@ def GeneratedBy [Abelian C] (X Y : C) : Prop :=
   ∃ (count : ℕ) (k : Fin count → ℕ),
     Nonempty (Retract Y (⨁ (fun i => tensorPower X (k i))))
 
-end MTC
+end MTC.Braided

@@ -3,6 +3,8 @@ public import MTC.Fusion.Simples
 public import Mathlib.LinearAlgebra.Dimension.Constructions
 public import Mathlib.CategoryTheory.Monoidal.Preadditive
 
+open MTC.Braided
+
 /-! # Simple multiplicities and fusion coefficients
 
 `simpleMultiplicity` counts copies of a chosen simple in an object, and

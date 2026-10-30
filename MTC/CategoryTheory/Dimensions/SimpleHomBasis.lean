@@ -7,6 +7,8 @@ public import MTC.CategoryTheory.Dimensions.SquaredNorm
 public import MTC.CategoryTheory.Dimensions.ENOMatrices
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
+open MTC.Braided
+
 /-! # Traces on simple multiplicity spaces
 
 Partial traces, bases, and composition pairings describe simple multiplicity spaces.

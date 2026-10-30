@@ -1,6 +1,8 @@
 module
 public import MTC.Fusion.Equivalence
 
+open MTC.Braided
+
 /-!
 # Property F and fusion rules
 

@@ -8,6 +8,8 @@ public import MTC.Center.Basic
 public import MTC.Braided.Trace.BraidWeights
 public import MTC.Fusion.Agreement
 
+open MTC.Braided
+
 /-!
 # Centrality and finite-order trace saturation
 

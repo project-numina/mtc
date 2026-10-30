@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.DualBraiding
 public import MTC.CategoryTheory.Dimensions.DoubleDualUnitTensor
 
+open MTC.Braided
+
 /-! # Monoidality of the double dual
 
 Dual tensor comparisons make the double-dual functor monoidal and preserve the braiding.

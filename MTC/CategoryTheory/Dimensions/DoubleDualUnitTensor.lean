@@ -6,6 +6,8 @@ public import MTC.Modular.SMatrix
 public import MTC.CategoryTheory.Dimensions.SimpleScalars
 public import MTC.Fusion.Agreement
 
+open MTC.Braided
+
 /-! # Unit laws for dual tensor comparisons
 
 Right-dual and double-dual tensor comparisons are compatible with the unitors.

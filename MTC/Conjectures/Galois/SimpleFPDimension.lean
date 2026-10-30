@@ -1,6 +1,8 @@
 module
 public import MTC.PropertyF.Statement
 
+open MTC.Braided
+
 /-!
 # Galois divisibility for simple FP dimensions
 

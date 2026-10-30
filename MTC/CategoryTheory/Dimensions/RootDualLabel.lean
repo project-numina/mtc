@@ -3,6 +3,8 @@ public import MTC.CategoryTheory.Dimensions.ENOReciprocity
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 public import MTC.CategoryTheory.Dimensions.SimpleHomBasis
 
+open MTC.Braided
+
 /-! # Dual labels and reciprocity
 
 `enoFrobeniusEquiv` and `enoReciprocityEquiv` realize Frobenius reciprocity on

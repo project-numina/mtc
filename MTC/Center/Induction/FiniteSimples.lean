@@ -4,6 +4,8 @@ public import Mathlib.CategoryTheory.Subobject.ArtinianObject
 public import Mathlib.RingTheory.Artinian.Module
 public import Mathlib.CategoryTheory.Preadditive.Injective.Basic
 
+open MTC.Braided
+
 /-! # Finiteness and fusion of the center
 
 The center has finitely many simple isomorphism classes. A retract of the tensor unit through

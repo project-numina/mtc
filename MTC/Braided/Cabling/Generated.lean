@@ -9,6 +9,8 @@ public import Mathlib.CategoryTheory.ObjectProperty.ContainsZero
 public import Mathlib.CategoryTheory.Abelian.Subcategory
 public import Mathlib.CategoryTheory.ObjectProperty.EpiMono
 
+open MTC.Braided
+
 /-!
 # Generated objects
 

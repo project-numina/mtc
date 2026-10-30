@@ -4,6 +4,8 @@ public import Mathlib.Tactic
 public import MTC.Braided.Trace.ThreeTrace
 public import MTC.Braided.Trace.RightStrand
 
+open MTC.Braided
+
 /-!
 # Relations of tensor-power braid generators
 
@@ -12,7 +14,7 @@ generators satisfy the braid relation, and disjoint generators commute.
 We write `b X n i` for the braid generator on the tensor power of `X`.
 -/
 @[expose] public noncomputable section
-local notation "b" => MTC.braidGenerator
+local notation "b" => MTC.Braided.braidGenerator
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace MTC.Center.Trace
 universe v u

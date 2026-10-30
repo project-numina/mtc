@@ -2,6 +2,8 @@ module
 public import MTC.Modular.Verlinde
 public import MTC.PropertyF.Reduction.CharacterReality
 
+open MTC.Braided
+
 /-!
 # Duality and complex conjugation of fusion characters
 

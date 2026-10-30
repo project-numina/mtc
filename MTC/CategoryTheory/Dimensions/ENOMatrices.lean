@@ -6,6 +6,8 @@ public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.PropertyF.Reduction.CharacterReality
 public import MTC.Modular.SMatrix
 
+open MTC.Braided
+
 /-! # Trace matrices, eigenvalue bounds, and saturation
 
 Weighted eigenvalue estimates and root traces produce matrix bounds for fusion coefficients.

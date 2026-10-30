@@ -5,6 +5,8 @@ public import MTC.Center.Braid.RegularSupport
 public import MTC.Fusion.UnitPower
 public import MTC.Center.Trace.TwistSign
 
+open MTC.Braided
+
 /-!
 # The symmetric core and canonical images
 

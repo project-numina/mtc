@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.DualCoherence
 public import MTC.Braided.Trace.PartialTrace
 
+open MTC.Braided
+
 /-! # Tensor products of pivotal traces
 
 Partial traces establish multiplicativity of the pivotal trace on tensor products.

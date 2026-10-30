@@ -3,6 +3,8 @@ public import Mathlib.CategoryTheory.Monoidal.Center
 public import MTC.CategoryTheory.Dimensions.DualCoherence
 public import MTC.CategoryTheory.Dimensions.Trace
 
+open MTC.Braided
+
 open MTC.CategoryTheory.Dimensions
 
 /-! # Forgetting centre duals

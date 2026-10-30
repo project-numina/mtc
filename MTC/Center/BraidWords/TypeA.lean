@@ -7,6 +7,8 @@ public import Mathlib.GroupTheory.Perm.Sign
 public import Mathlib.GroupTheory.QuotientGroup.Defs
 public import MTC.Center.BraidWords.TypeANormalWords
 
+open MTC.Braided
+
 /-!
 # The type-A presentation of the symmetric group
 

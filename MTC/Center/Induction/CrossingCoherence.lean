@@ -3,6 +3,8 @@ public import MTC.Center.Induction.CrossingUnit
 public import Mathlib.CategoryTheory.Monoidal.Center
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Basic
 
+open MTC.Braided
+
 /-! # Induction crossing
 
 Rigidity makes a natural tensor-compatible crossing invertible. The matrix crossings of the

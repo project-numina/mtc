@@ -1,6 +1,8 @@
 module
 public import MTC.Center.Induction.BasisPairing
 
+open MTC.Braided
+
 /-! Tensor-unit normalization for the explicit induction crossing. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing CategoryTheory.Limits
 universe v u

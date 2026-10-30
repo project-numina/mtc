@@ -6,6 +6,8 @@ public import Mathlib.CategoryTheory.Conj
 public import Mathlib.LinearAlgebra.Matrix.Reindex
 public import Mathlib.RingTheory.SimpleModule.IsAlgClosed
 
+open MTC.Braided
+
 /-!
 # Endomorphism algebras of finite sums
 

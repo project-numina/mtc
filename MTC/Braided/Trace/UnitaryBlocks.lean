@@ -11,6 +11,8 @@ public import Mathlib.RingTheory.Finiteness.Basic
 public import MTC.Braided.Definitions
 public import MTC.CategoryTheory.BlockTrace
 
+open MTC.Braided
+
 /-!
 # Unitary blocks for braid images
 

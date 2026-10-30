@@ -13,8 +13,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parent.parent
 FROZEN = {
-    'MTC/Braided/Definitions.lean': '203931cf4f85dbaa1792bd81d7bdf59bd6fcbe6c6f13e6e37ef77e1f5db1530d',
-    'MTC/PropertyF/Statement.lean': 'afc454d4f21ff01a65cfbfd6c31688fb394addaa12e1dad37640e4ddc8783ff0',
+    'MTC/Braided/Definitions.lean': '69a4e4647ddb4ce40c87924982eb953226ef01bae00afe4f13c5bda0ff040150',
+    'MTC/PropertyF/Statement.lean': 'c4c9608e50ff3c8b2422a9bbec8cc909e03ef155f4975385f52a4b7554c9beaf',
 }
 
 

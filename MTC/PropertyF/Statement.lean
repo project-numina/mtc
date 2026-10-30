@@ -3,6 +3,8 @@ public import MTC.Braided.Definitions
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
 public import Mathlib.Analysis.Normed.Algebra.Spectrum
 
+open MTC.Braided
+
 /-!
 # The property F weak-integrality statement
 

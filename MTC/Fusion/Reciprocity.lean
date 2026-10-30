@@ -1,6 +1,8 @@
 module
 public import MTC.Fusion.Multiplicity
 
+open MTC.Braided
+
 /-! # Duality and Frobenius reciprocity
 
 The tensor-Hom linear equivalences give Frobenius reciprocity on actual Hom

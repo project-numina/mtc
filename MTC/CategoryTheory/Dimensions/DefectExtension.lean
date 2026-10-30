@@ -9,6 +9,8 @@ public import MTC.CategoryTheory.Dimensions.FourthTensorUnit
 
 public import MTC.CategoryTheory.Dimensions.TensorExtension
 
+open MTC.Braided
+
 /-! # Extending tensor-defect identities
 
 Duality, associativity and coevaluation identities extend root tensor-defect relations.

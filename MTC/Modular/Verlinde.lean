@@ -7,6 +7,8 @@ public import MTC.Modular.Classification
 public import MTC.Modular.SMatrix
 public import MTC.Modular.SAdditivity
 
+open MTC.Braided
+
 /-!
 # Categorical partial traces, Verlinde identities, and Galois symmetry.
 -/

@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.DualCoherence
 public import MTC.CategoryTheory.Dimensions.DefectNaturality
 
+open MTC.Braided
+
 /-! # Fourth duals of the tensor unit
 
 The fourth-dual maps satisfy unit identities and their roots interact with coevaluation.

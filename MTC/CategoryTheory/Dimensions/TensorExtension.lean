@@ -3,6 +3,8 @@ public import MTC.CategoryTheory.Dimensions.ENOMatrices
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 public import MTC.CategoryTheory.Dimensions.SquaredNorm
 
+open MTC.Braided
+
 /-! # Scalar twists and tensor extension
 
 Scalar sign twists and tensor-defect identities describe extensions from simple objects.

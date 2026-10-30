@@ -1,6 +1,8 @@
 module
 public import MTC.PropertyF.Statement
 
+open MTC.Braided
+
 /-! # Fusion rules of braided fusion categories
 
 An isomorphism of based fusion rings is a bijection of the chosen simple

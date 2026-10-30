@@ -2,6 +2,8 @@ module
 public import MTC.Center.ProductImages
 public import MTC.Center.Abelian
 
+open MTC.Braided
+
 /-!
 # Retracts of centre product objects
 

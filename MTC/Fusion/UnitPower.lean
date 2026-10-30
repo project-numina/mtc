@@ -6,6 +6,8 @@ public import MTC.Modular.BraidIso
 public import MTC.Braided.Cabling.UnitPower
 public import MTC.CategoryTheory.Dimensions.Pivotal
 
+open MTC.Braided
+
 /-! # Fusion flow and tensor generation
 
 A finite balanced nonnegative flow with an outgoing edge contains a directed

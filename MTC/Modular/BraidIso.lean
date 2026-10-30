@@ -3,6 +3,8 @@ public import MTC.Braided.Definitions
 public import Mathlib.CategoryTheory.Endomorphism
 public import Mathlib.CategoryTheory.Conj
 
+open MTC.Braided
+
 /-!
 # Braid images of isomorphic objects
 

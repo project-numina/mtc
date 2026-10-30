@@ -5,6 +5,8 @@ public import MTC.CategoryTheory.Dimensions.TensorMultiplicativity
 public import MTC.Fusion.ObjectDimension
 public import MTC.CategoryTheory.Dimensions.SquaredNorm
 
+open MTC.Braided
+
 /-! # Pivotal dimension characters
 
 Pivotal dimension is additive and multiplicative; simple dimensions determine sphericality.

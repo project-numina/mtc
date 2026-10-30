@@ -3,6 +3,8 @@ public import MTC.CategoryTheory.Dimensions.DoubleDualUnitTensor
 public import MTC.CategoryTheory.Dimensions.FourthDualUnit
 public import MTC.CategoryTheory.Dimensions.DefectNaturality
 
+open MTC.Braided
+
 /-! # Unit laws for the fourth-dual root
 
 The tensor unit and unit labels satisfy the coherence identities for the root tensor defect.

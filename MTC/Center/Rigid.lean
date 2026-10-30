@@ -1,6 +1,8 @@
 module
 public import MTC.Center.Fusion.Bundled
 
+open MTC.Braided
+
 /-!
 # Rigidity of the Drinfeld centre
 

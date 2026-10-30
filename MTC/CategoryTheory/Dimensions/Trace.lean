@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.Pivotal
 public import Mathlib.CategoryTheory.Monoidal.Linear
 
+open MTC.Braided
+
 /-! # Pivotal traces
 
 Right and left traces are linear, cyclic and compatible with duality and
