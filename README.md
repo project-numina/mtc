@@ -13,7 +13,7 @@ The existing [PropertyF](PropertyF.lean) library proves that a braided fusion ca
 pseudo-unitary Galois conjugate and property F is weakly integral. The theorem is
 `PropertyF.Ground.target` in [Final.lean](PropertyF/Ground/Final.lean), using the definitions in
 [Target.lean](PropertyF/Ground/Target.lean). The proof is complete and its audit reports precisely
-`[propext, Classical.choice, Quot.sound]`. The text of the paper is in [paper/](paper/).
+`[propext, Classical.choice, Quot.sound]`. The manuscript and a map from its results to Lean are in [papers/property-f-weak-integrality](papers/property-f-weak-integrality/).
 
 Property F means that the relevant braid group representations have finite image; weak integrality
 means that the global Frobenius–Perron dimension is an integer. The converse is the open direction
