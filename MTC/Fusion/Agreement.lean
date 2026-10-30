@@ -252,7 +252,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
     0 < totalFusionMatrix D j k := by
   let : Simple (ᘁ(simples D j)) := simple_leftDual (simples D j)
   obtain ⟨s, r, hsr⟩ := unit_retract_leftDual_tensor (simples D k)
-  let : (tensorLeft (simples D k)).Faithful := MTC.tensorLeft_faithful_of_unit_retract s r hsr
+  let : (tensorLeft (simples D k)).Faithful := MTC.Braided.tensorLeft_faithful_of_unit_retract s r hsr
   let Y : D.Obj := simples D k ⊗ (ᘁ(simples D j))
   obtain ⟨i, hm⟩ := exists_positive_multiplicity (simples_decompose D Y)
     (fun _ ↦ IsFusionCategory.hom_finite _ _) (fun h ↦ id_nonzero (ᘁ(simples D j))

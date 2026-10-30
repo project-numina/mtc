@@ -9,7 +9,7 @@ A central product of squares forces equality of squares under the braid relation
 -/
 
 @[expose] public section
-namespace MTC
+namespace MTC.Braided
 
 /-- The braid-algebra step on page 4. Centrality is only needed against `a` and
 `b`, so the statement applies to the generated subgroup as well as to an algebra. -/
@@ -35,4 +35,4 @@ theorem fp_eq_abs_dim_of_finite_order {d f : ℝ} (hd : d ≠ 0) (hf : 0 < f)
   (div_eq_one_iff_eq (abs_ne_zero.mpr hd)).mp (by
     simpa [norm_div, abs_of_pos hf] using Complex.norm_eq_one_of_pow_eq_one heq hn)
 
-end MTC
+end MTC.Braided

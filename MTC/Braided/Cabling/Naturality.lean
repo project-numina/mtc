@@ -16,7 +16,7 @@ The categorical action of braid words is natural in the underlying object.
 
 @[expose] public noncomputable section
 open CategoryTheory
-namespace MTC
+namespace MTC.Braided
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -43,11 +43,11 @@ theorem braidWordAction_surjective :
   (Set.surjective_codRestrict _).2 (by
     simp only [← MonoidHom.coe_range, FreeGroup.range_lift_eq_closure, braidImage])
 
-end MTC
+end MTC.Braided
 
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 @[expose] public noncomputable section
-namespace MTC
+namespace MTC.Braided
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 
@@ -159,4 +159,4 @@ theorem objectPropertyF_of_retract {X Y : C} (r : Retract X Y)
     (g := braidWordAction Y n) (by
       simpa [braidImageRetractMap, Function.comp_def] using braidWordAction_surjective X n)
 
-end MTC
+end MTC.Braided

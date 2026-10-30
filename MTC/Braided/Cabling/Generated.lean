@@ -20,7 +20,7 @@ products. In particular, `generatedBy_trans` gives transitivity of generation.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC
+namespace MTC.Braided
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
   [Abelian C]
@@ -160,4 +160,4 @@ theorem generatedBy_trans {X Y Z : C} (hY : GeneratedBy X Y) (hZ : GeneratedBy Y
   generatedBy_retract (generatedBy_biproduct _ fun i =>
     generatedBy_tensorPower_of_generated hY (k i)) r
 
-end MTC
+end MTC.Braided

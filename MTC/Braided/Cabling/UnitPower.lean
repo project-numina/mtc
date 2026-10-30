@@ -19,7 +19,7 @@ Finite sums of right mates and generation of a simple object’s dual.
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 @[expose] public noncomputable section
-namespace MTC
+namespace MTC.Braided
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [Preadditive C]
   [MonoidalPreadditive C]
@@ -29,7 +29,7 @@ theorem rightAdjointMate_sum {A B : C} [HasRightDual A] [HasRightDual B] {ι : T
   simp [rightAdjointMate, sum_whiskerRight,
     whiskerLeft_sum, Preadditive.comp_sum, Preadditive.sum_comp]
 
-end MTC
+end MTC.Braided
 
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 @[expose] public noncomputable section
