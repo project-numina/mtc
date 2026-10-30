@@ -151,9 +151,7 @@ import all MTC.PropertyF.Reduction.UnitScalar
 import all MTC.PropertyF.Statement
 import all MTC.PropertyF.Theorem
 
-/-! Explicit final-theorem gate. This module intentionally fails to build until
-`MTC.PropertyF.weaklyIntegral_of_propertyF : MTC.PropertyF.TargetStatement` exists. It is not
-part of the ordinary library build while the proof remains under development. -/
+/-! Audit the theorem type, its complete dependency cone, and its axioms. -/
 
 open Lean Elab Command MTC.DependencyAudit in
 run_cmd do

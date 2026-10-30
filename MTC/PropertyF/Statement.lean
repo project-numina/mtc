@@ -4,17 +4,12 @@ public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
 public import Mathlib.Analysis.Normed.Algebra.Spectrum
 
 /-!
-# Ground target
+# The property F weak-integrality statement
 
-This file gives a category-level statement without the numerical data fields in
-`FusionData` or `GlobalDimensionData`. The simple representatives are chosen
-from the finite semisimplicity property. FP dimension is the spectral radius of
-left multiplication on the fusion ring. The categorical dimension uses the
-canonical double-dual isomorphism afforded by braiding and rigidity.
-
-The mathematical identifications and independence of representatives still
-need proofs; see ground/integrate/LEDGER.md. In particular this statement must
-not be advertised as established merely because its definition elaborates.
+This is the intrinsic category-level statement: simple representatives come
+from finite semisimplicity, FP dimension is the spectral radius on the fusion
+ring, and squared norms use the braiding's canonical double-dual isomorphism.
+The theorem is proved in `MTC.PropertyF.Theorem`.
 -/
 
 @[expose] public noncomputable section

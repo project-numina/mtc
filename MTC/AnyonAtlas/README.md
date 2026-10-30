@@ -43,7 +43,7 @@ so a particularly large record can exceed that target. It does not silently
 replace previously generated modules. For example, check a generated module:
 
 ```sh
-LEAN_NUM_THREADS=4 taskset -c 16-19 lake env lean data/generated-small/BosonicRank02Chunk000Part000.lean
+LEAN_NUM_THREADS=4 taskset -c 0-3 lake env lean data/generated-small/BosonicRank02Chunk000Part000.lean
 ```
 
 Adjust the CPU affinity to the cores assigned to your environment. To resolve

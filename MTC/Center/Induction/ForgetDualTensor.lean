@@ -4,7 +4,7 @@ public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 
 open MTC.CategoryTheory.Dimensions
 
-/-! # Centre dual comparisons
+/-! # Center dual comparisons
 
 The forgetful functor preserves right duals up to a natural isomorphism. Its double-dual
 comparison satisfies the tensor and unit laws used to transport pivotal components.
@@ -23,19 +23,19 @@ local notation "κ₂" => forgetDoubleDualIso
 variable {X Y : Center D}
 
 omit [RightRigidCategory D] in
-/-- Forgetting a centre mate computes the mate for the forgotten dual pairings. -/
+/-- Forgetting a center mate computes the mate for the forgotten dual pairings. -/
 theorem forget_rightAdjointMate (f : X ⟶ Y) :
     (fᘁ).f = @rightAdjointMate D _ _ X.1 Y.1
       (forgetRightDual X) (forgetRightDual Y) f.f := by
   simp [rightAdjointMate]
   rfl
 
-/-- The canonical comparison of centre and base duals is natural in centre morphisms. -/
+/-- The canonical comparison of center and base duals is natural in center morphisms. -/
 theorem forgetDualIso_natural (f : X ⟶ Y) :
     CommSq (fᘁ).f (κ Y).hom (κ X).hom (f.fᘁ) :=
   ⟨by simp [forget_rightAdjointMate, forgetDualIso, rightDualIso, ← comp_rightAdjointMate]⟩
 
-/-- The double-dual comparison is natural in centre morphisms. -/
+/-- The double-dual comparison is natural in center morphisms. -/
 theorem forgetDoubleDualIso_natural (f : X ⟶ Y) :
     CommSq ((fᘁ)ᘁ).f (κ₂ X).hom (κ₂ Y).hom ((f.fᘁ)ᘁ) :=
   (forgetDualIso_natural (fᘁ)).vert_comp ⟨by
@@ -63,7 +63,7 @@ end MTC.Center.Induction
 
 end
 
-/-! Tensor coherence of centre and base dual comparisons. -/
+/-! Tensor coherence of center and base dual comparisons. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace MTC.Center.Induction
@@ -77,7 +77,7 @@ local notation "κ" => forgetDualIso
 variable (X Y : Center D)
 
 omit [RightRigidCategory D] in
-/-- Tensor the forgotten dual pairings of two centre objects. -/
+/-- Tensor the forgotten dual pairings of two center objects. -/
 abbrev tensorForgetPairing :
     ExactPairing (X.1 ⊗ Y.1) ((Yᘁ).1 ⊗ (Xᘁ).1) :=
   @ExactPairing.tensor D _ _ X.1 Y.1 (Xᘁ).1 (Yᘁ).1 (forgetPairing X) (forgetPairing Y)
@@ -91,7 +91,7 @@ theorem forget_rightDualTensorIso :
     simp [ExactPairing.tensor_coevaluation, monoidalComp]
     rfl
 
-/-- Forgetting centre duals preserves their tensor comparison. -/
+/-- Forgetting center duals preserves their tensor comparison. -/
 theorem forgetDualIso_tensor :
     CommSq (κ (X ⊗ Y)).hom (rightDualTensorIso X Y).hom.f
       (rightDualTensorIso X.1 Y.1).hom ((κ Y).hom ⊗ₘ (κ X).hom) :=
@@ -139,7 +139,7 @@ private theorem forgetDualIso_tensor_mate_inv :
     congrArg rightAdjointMate (CommSq.horiz_inv
       (i := (κ Y) ⊗ᵢ (κ X)) (forgetDualIso_tensor X Y)).w
 
-/-- Forgetting the centre preserves the tensor comparison for double duals. -/
+/-- Forgetting the center preserves the tensor comparison for double duals. -/
 theorem forgetDoubleDualIso_tensor :
     (μ₂ X Y).hom.f ≫ (κ₂ (X ⊗ Y)).hom =
       ((κ₂ X).hom ⊗ₘ (κ₂ Y).hom) ≫
@@ -162,7 +162,7 @@ theorem transported_tensor
   (Iso.eq_comp_inv (κ₂ (X ⊗ Y))).2 <| by
     simpa [forgetDoubleDualIso_tensor] using h
 
-/-! Unit coherence of centre dual and pivotal comparisons. -/
+/-! Unit coherence of center dual and pivotal comparisons. -/
 
 /-- Forgetting preserves the unit comparison for right duals. -/
 theorem forgetDualIso_unit :

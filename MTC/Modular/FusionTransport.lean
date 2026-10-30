@@ -126,7 +126,7 @@ theorem conjugate_globalFPDimension :
     simpa only [globalFPDimension, he] using e.sum_comp (fun j => fpSimple D j ^ 2)
 
 
-/-- Ground version of braid-image invariance for a conjugate category. -/
+/-- Braid-image invariance for a conjugate category. -/
 theorem ground_conjugate_images (Y : D.Obj) (n : ℕ) :
     ∃ X : C.Obj, Nonempty (braidImage Y n ≃* braidImage X n) :=
   letI := h.monoidal

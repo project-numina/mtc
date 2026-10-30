@@ -8,17 +8,17 @@ public import Mathlib.Algebra.Module.Submodule.Basic
 public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 
 /-!
-# Basic structure of the Drinfeld centre
+# Basic structure of the Drinfeld center
 
-The positive and negative embeddings of a braided category into its centre
-centralize each other. For an additive monoidal category, centre morphisms
-inherit additive and linear structures, and the zero object lifts to the centre.
+The positive and negative embeddings of a braided category into its center
+centralize each other. For an additive monoidal category, center morphisms
+inherit additive and linear structures, and the zero object lifts to the center.
 
 ## Main definitions and results
 
 * `negative` is the embedding induced by the reversed braiding.
 * `Centralizes` and its image characterizations describe the two embeddings.
-* `centerZero` and the centre instances lift additive and linear structure.
+* `centerZero` and the center instances lift additive and linear structure.
 -/
 
 
@@ -55,17 +55,17 @@ instance positiveFull : (CategoryTheory.Center.ofBraided C).Full where
     intro X Y f
     exact ⟨f.f, CategoryTheory.Center.ext _ _ rfl⟩
 
-/-- The underlying component of a centre object's half-braiding. -/
+/-- The underlying component of a center object's half-braiding. -/
 abbrev halfBraidingHom (Z : CategoryTheory.Center C) (U : C) : Z.1 ⊗ U ⟶ U ⊗ Z.1 :=
   (Z.2.β U).hom
 
-/-- The two canonical images centralize one another in the actual centre. -/
+/-- The two canonical images centralize one another in the actual center. -/
 theorem positive_negative_centralize (X Y : C) :
     (β_ ((CategoryTheory.Center.ofBraided C).obj X) ((negative C).obj Y)).hom ≫
       (β_ ((negative C).obj Y) ((CategoryTheory.Center.ofBraided C).obj X)).hom = 𝟙 _ :=
   CategoryTheory.Center.ext _ _ (Iso.hom_inv_id (β_ X Y))
 
-/-- Two centre objects centralize when their double braiding is the identity. -/
+/-- Two center objects centralize when their double braiding is the identity. -/
 def Centralizes (A B : CategoryTheory.Center C) : Prop :=
   (β_ A B).hom ≫ (β_ B A).hom = 𝟙 _
 
@@ -117,7 +117,7 @@ universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [MonoidalCategory C]
   [MonoidalPreadditive C]
 
-/-- Centre morphisms form an additive subgroup of the underlying Hom group. -/
+/-- Center morphisms form an additive subgroup of the underlying Hom group. -/
 def homSubgroup (X Y : CategoryTheory.Center C) : AddSubgroup (X.1 ⟶ Y.1) where
   carrier := {f | ∀ U, (f ▷ U) ≫ (Y.2.β U).hom = (X.2.β U).hom ≫ (U ◁ f)}
   zero_mem' := by simp
@@ -132,7 +132,7 @@ def homSubgroup (X Y : CategoryTheory.Center C) : AddSubgroup (X.1 ⟶ Y.1) wher
     rw [Functor.map_neg, Functor.map_neg, Preadditive.neg_comp, Preadditive.comp_neg]
     exact congrArg Neg.neg (hf U)
 
-/-- A centre morphism is its underlying map satisfying the intertwining equations. -/
+/-- A center morphism is its underlying map satisfying the intertwining equations. -/
 def homEquivSubgroup (X Y : CategoryTheory.Center C) :
     (X ⟶ Y) ≃ homSubgroup X Y where
   toFun f := ⟨f.f, f.comm⟩
@@ -175,7 +175,7 @@ def homSubmodule (X Y : CategoryTheory.Center C) : Submodule R (X.1 ⟶ Y.1) whe
     simp only [MonoidalLinear.smul_whiskerRight, Linear.smul_comp,
       MonoidalLinear.whiskerLeft_smul, Linear.comp_smul, hf U]
 
-/-- The centre Hom group and the submodule of intertwiners are additively equivalent. -/
+/-- The center Hom group and the submodule of intertwiners are additively equivalent. -/
 def homAddEquivSubmodule (X Y : CategoryTheory.Center C) :
     (X ⟶ Y) ≃+ homSubmodule R X Y where
   toFun f := ⟨f.f, f.comm⟩
@@ -202,7 +202,7 @@ instance centerMonoidalLinear : MonoidalLinear R (CategoryTheory.Center C) :=
 end Linear
 
 /-- A finite-dimensional underlying Hom space gives a finite-dimensional
-centre Hom space, since the forgetful map is injective and linear. -/
+center Hom space, since the forgetful map is injective and linear. -/
 theorem finiteDimensional_hom (K : Type*) [Field K] [Linear K C] [MonoidalLinear K C]
     (X Y : CategoryTheory.Center C) [FiniteDimensional K (X.1 ⟶ Y.1)] :
     FiniteDimensional K (X ⟶ Y) :=
@@ -240,7 +240,7 @@ omit [HasZeroObject C] in
 theorem isZero_of_forget {Z : CategoryTheory.Center C} (h : IsZero Z.1) : IsZero Z :=
   (IsZero.iff_id_eq_zero _).mpr (CategoryTheory.Center.ext _ _ (h.eq_of_src _ _))
 
-/-- The constructed centre object over zero is a zero object. -/
+/-- The constructed center object over zero is a zero object. -/
 theorem centerZero_isZero : IsZero (centerZero (C := C)) :=
   isZero_of_forget (isZero_zero C)
 

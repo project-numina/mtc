@@ -11,8 +11,9 @@ interface, **medium** means substantial algebra or finite group machinery, and
 The existing `MTC` interface represents braided fusion categories
 and defines FP dimensions using spectral radii. Its own documentation records
 that identification with standard categorical invariants is pending. It does not
-yet provide a general (not necessarily braided) fusion category, modularity,
-pivotal structures, centers, module categories, or weak group-theoreticity.
+yet provide a general (not necessarily braided) fusion category, module
+categories, or weak group-theoreticity. Its pivotal, center, and modular
+constructions cover the braided setting used by the property F theorem.
 Claims below should not be encoded with unconstrained stand-in predicates. The
 Backlog statements concerning general fusion categories require careful translation
 to this braided interface and verification of their hypotheses.
@@ -75,7 +76,7 @@ to this braided interface and verification of their hypotheses.
     and FP dimensions coincide; there is a positive spherical structure with
     simple dimensions equal to FP dimensions. DGNO, [Proposition 2.18 and
     Corollary 2.24](https://arxiv.org/html/0906.0620). **High:** traces,
-    squared norms, and pivotal structures. The ground encoding needs the
+    squared norms, and pivotal structures. The categorical encoding needs the
     independent identification noted at the beginning of this catalog.
 11. **Pivotal structure problem — open.** Does every fusion category admit a
     pivotal structure? DGNO, [Section 2.4.3](https://arxiv.org/html/0906.0620)

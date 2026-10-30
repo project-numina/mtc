@@ -7,7 +7,7 @@ public import MTC.Center.Fusion.Bundled
 public import Mathlib.CategoryTheory.Adjunction.Additive
 
 section
-/-! Centrality of the induction unit and the centre-forgetful adjunction. -/
+/-! Centrality of the induction unit and the center-forgetful adjunction. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits CategoryTheory.ExactPairing
 open scoped BigOperators
 universe v u
@@ -86,7 +86,7 @@ def unitBlockLinear [HasRightDual S] :
     simp [monoidalComp]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The identity fusion endomorphism yields the centre intertwining diagram. -/
+/-- The identity fusion endomorphism yields the center intertwining diagram. -/
 theorem unitBlockLinear_id [HasRightDual S] :
     unitBlockLinear (k := k) Z T S (𝟙 (T ⊗ S)) =
       (Z.2.β T).hom ≫ (T ◁ unitComponentAt Z S) := by
@@ -100,7 +100,7 @@ variable (Z : Center C.Obj) (T : C.Obj)
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
-/-- The proposed induction unit is a morphism in the actual Drinfeld centre. -/
+/-- The proposed induction unit is a morphism in the actual Drinfeld center. -/
 theorem unitCandidate_central :
     (unitCandidate Z ▷ T) ≫ crossingCandidate Z.1 T =
       (Z.2.β T).hom ≫ (T ◁ unitCandidate Z) :=
@@ -117,7 +117,7 @@ theorem unitCandidate_central :
       crossingInclusion, LinearMap.coe_mk, AddHom.coe_mk, Fintype.sum_sigma]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The forgetful functor is left adjoint to the actual centre induction functor. -/
+/-- The forgetful functor is left adjoint to the actual center induction functor. -/
 def actualAdjunction : Center.forget C.Obj ⊣ induction C where
   unit := {
     app Z := ⟨unitCandidate Z, unitCandidate_central Z⟩
@@ -172,7 +172,7 @@ end MTC.Center.Induction
 
 end
 
-/-! Centre fusion and FP dimension using the constructed induction adjunction. -/
+/-! Center fusion and FP dimension using the constructed induction adjunction. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
@@ -195,7 +195,7 @@ theorem finrank_hom_induction (Z : 𝒵) (X : C.Obj) :
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 variable (C) in
-/-- If the actual centre has a fusion structure, its global FP dimension is the square
+/-- If the actual center has a fusion structure, its global FP dimension is the square
 of the base global FP dimension. -/
 theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFusionCategory 𝒵] :
     globalFPDimension 𝒵ᶠ = (globalFPDimension C) ^ 2 := by

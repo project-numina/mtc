@@ -4,9 +4,9 @@ public import Mathlib.CategoryTheory.Subobject.ArtinianObject
 public import Mathlib.RingTheory.Artinian.Module
 public import Mathlib.CategoryTheory.Preadditive.Injective.Basic
 
-/-! # Finiteness and fusion of the centre
+/-! # Finiteness and fusion of the center
 
-The centre has finitely many simple isomorphism classes. A retract of the tensor unit through
+The center has finitely many simple isomorphism classes. A retract of the tensor unit through
 an induced object then gives finite semisimple decompositions and a fusion structure.
 -/
 
@@ -27,7 +27,7 @@ local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- An underlying factorization through a centre monomorphism is central. -/
+/-- An underlying factorization through a center monomorphism is central. -/
 theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     [IsSplitMono q.f] (g : P.1 ⟶ Q.1) (hg : g ≫ q.f = p.f) :
     ∃ t : P ⟶ Q, t.f = g :=
@@ -35,12 +35,12 @@ theorem center_factor {P Q X : Center D} (p : P ⟶ X) (q : Q ⟶ X)
     (cancel_mono (T ◁ q.f)).1 <| by
       simp only [assoc, ← whiskerLeft_comp, hg, ← q.comm, ← comp_whiskerRight_assoc, p.comm]⟩, rfl⟩
 
-/-- Underlying endomorphisms that factor through a centre subobject. -/
+/-- Underlying endomorphisms that factor through a center subobject. -/
 def centerUnderlyingRange [Preadditive D] [Linear ℂ D] (X : Center D) (P : Subobject X) :
     Submodule ℂ (X.1 ⟶ X.1) := LinearMap.range (Linear.rightComp ℂ X.1 P.arrow.f)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Underlying endomorphism ranges detect the order of centre subobjects. -/
+/-- Underlying endomorphism ranges detect the order of center subobjects. -/
 def centerUnderlyingRangeEmbedding (X : 𝒵) :
     Subobject X ↪o Submodule ℂ (X.1 ⟶ X.1) :=
   OrderEmbedding.ofMapLEIff (centerUnderlyingRange X) (by
@@ -66,12 +66,12 @@ def centerUnderlyingRangeEmbedding (X : 𝒵) :
 
 variable (X : Center C.Obj)
 
-/-- Every actual centre object is Artinian, without spherical hypotheses. -/
+/-- Every actual center object is Artinian, without spherical hypotheses. -/
 theorem center_artinian : IsArtinianObject X :=
   ⟨(centerUnderlyingRangeEmbedding X).wellFoundedLT⟩
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Every simple centre object has a nonzero map to an induced base simple. -/
+/-- Every simple center object has a nonzero map to an induced base simple. -/
 theorem simple_hom_induced_simple [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), f ≠ 0 :=
   (exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
@@ -84,7 +84,7 @@ end MTC.Center.Induction
 end
 end
 
-/-! An injective-retract route to centre semisimplicity and fusion. -/
+/-! An injective-retract route to center semisimplicity and fusion. -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits MTC.CategoryTheory.Dimensions
 universe v u
 @[expose] public noncomputable section
@@ -115,7 +115,7 @@ local notation "𝒵" => Center C.Obj
 variable {X : C.Obj}
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Under the unit-retract condition every centre object is a finite simple sum. -/
+/-- Under the unit-retract condition every center object is a finite simple sum. -/
 theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U))
     (Z : 𝒵) : FiniteSimpleSum Z :=
@@ -125,7 +125,7 @@ theorem center_finite_simple_sum_of_unit_retract {U : 𝒵}
   finiteSimpleSum_of_injective (k := ℂ) (fun {_} hW =>
     ⟨simpleSubobject hW, simpleSubobjectArrow hW, inferInstance, inferInstance⟩) Z
 
-/-- The actual centre has finitely many simple objects up to isomorphism. -/
+/-- The actual center has finitely many simple objects up to isomorphism. -/
 theorem finite_simple_labels {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
     ∃ labels : Finset 𝒵, (∀ T ∈ labels, Simple T) ∧
@@ -142,7 +142,7 @@ theorem finite_simple_labels {U : 𝒵}
   exact ⟨V i j, Finset.mem_filter.mpr ⟨Finset.mem_biUnion.mpr
     ⟨i, Finset.mem_univ _, Finset.mem_image_of_mem _ (Finset.mem_univ j)⟩, hV i j⟩, e⟩
 
-/-- Centre rigidity and the explicit unit retract imply centre fusion. -/
+/-- Center rigidity and the explicit unit retract imply center fusion. -/
 theorem center_fusion_of_unit_retract {U : 𝒵}
     (r : Retract (𝟙_ (𝒵)) ((induction C).obj X ⊗ U)) :
     IsFusionCategory (𝒵) :=
@@ -164,7 +164,7 @@ def unitRetractOfNonzeroCap {D : Type u} [Category.{v} D] [MonoidalCategory D]
     retract := (Category.assoc _ _ _).symm.trans (IsIso.hom_inv_id _) }
 
 set_option backward.isDefEq.respectTransparency false in
-/-- A centre pivotal structure with nonzero trace on an induced object implies fusion. -/
+/-- A center pivotal structure with nonzero trace on an induced object implies fusion. -/
 theorem center_fusion_of_nonzero_induced_trace (p : PivotalStructure (C := 𝒵))
     (hne : p.rightTrace (𝟙 ((induction C).obj X)) ≠ 0) :
     IsFusionCategory (𝒵) :=
