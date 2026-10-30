@@ -106,7 +106,7 @@ def HasPseudoUnitaryGaloisConjugate : Prop :=
     Nonempty (GaloisConjugate C D σ) ∧ PseudoUnitary D
 
 /-- The intended, unconditional theorem. No proof is asserted here. -/
-def TargetStatement : Prop :=
+def PropertyF.TargetStatement : Prop :=
   ∀ C : BraidedFusionCategory.{v,u},
     HasPseudoUnitaryGaloisConjugate C → HasPropertyF C.Obj →
       WeaklyIntegral (globalFPDimension C)

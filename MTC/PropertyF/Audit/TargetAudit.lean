@@ -155,21 +155,21 @@ import all MTC.PropertyF.Theorem
 import all MTC.Seed
 
 /-! Explicit final-theorem gate. This module intentionally fails to build until
-`MTC.target : MTC.TargetStatement` exists. It is not
+`MTC.PropertyF.weaklyIntegral_of_propertyF : MTC.PropertyF.TargetStatement` exists. It is not
 part of the ordinary library build while the proof remains under development. -/
 
 open Lean Elab Command MTC.DependencyAudit in
 run_cmd do
   let env ← getEnv
-  let targetName := `MTC.target
+  let targetName := `MTC.PropertyF.weaklyIntegral_of_propertyF
   let some ci := env.find? targetName
-    | throwError "Final theorem MTC.target is missing"
+    | throwError "Final theorem MTC.PropertyF.weaklyIntegral_of_propertyF is missing"
   match ci with
   | .thmInfo _ => pure ()
-  | _ => throwError "MTC.target must be a theorem"
+  | _ => throwError "MTC.PropertyF.weaklyIntegral_of_propertyF must be a theorem"
   match ci.type with
   | .const n _ =>
-      unless n == ``MTC.TargetStatement do
+      unless n == ``MTC.PropertyF.TargetStatement do
         throwError "Final theorem must have exactly the frozen TargetStatement type"
   | _ => throwError "Final theorem must have exactly the frozen TargetStatement type"
   if let some issue := findIssue env targetName then

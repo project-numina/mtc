@@ -11,7 +11,7 @@ test and prove mathematical statements. It is inspired by
 
 The library proves that a braided fusion category with a
 pseudo-unitary Galois conjugate and property F is weakly integral. The theorem is
-`MTC.target` in [Final.lean](MTC/PropertyF/Theorem.lean), using the definitions in
+`MTC.PropertyF.weaklyIntegral_of_propertyF` in [Final.lean](MTC/PropertyF/Theorem.lean), using the definitions in
 [Target.lean](MTC/PropertyF/Statement.lean). The proof is complete and its audit reports precisely
 `[propext, Classical.choice, Quot.sound]`. The manuscript and a map from its results to Lean are in [papers/property-f-weak-integrality](papers/property-f-weak-integrality/).
 

@@ -19,7 +19,7 @@ the modular ingredients for the property-F weak-integrality theorem.
 
 * `center_globalDimension_square_of_actual_induction` gives the centre dimension.
 * `center_transparent_label_eq_unit` proves trivial centre transparency.
-* `target` proves weak integrality from property F and a pseudo-unitary conjugate. -/
+* `PropertyF.weaklyIntegral_of_propertyF` proves weak integrality from property F and a pseudo-unitary conjugate. -/
 
 section
 /-! The constructed induction adjunction removes the centre square premise. -/
@@ -88,7 +88,7 @@ universe v u
 
 /-- A braided fusion category with property F and a pseudo-unitary Galois
 conjugate has integral global Frobenius–Perron dimension. -/
-theorem target : TargetStatement.{v,u} := by
+theorem PropertyF.weaklyIntegral_of_propertyF : PropertyF.TargetStatement.{v,u} := by
   intro C hPU hF
   obtain ⟨D, _, ⟨E⟩, hD⟩ := hPU
   obtain ⟨p, _, hp⟩ := CentreInduction.positive_spherical_of_pseudoUnitary hD

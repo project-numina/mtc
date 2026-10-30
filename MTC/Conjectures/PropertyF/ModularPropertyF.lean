@@ -33,6 +33,6 @@ theorem modular_propertyF (C : BraidedFusionCategory.{v,u})
 theorem modular_propertyF_forward_of_conjugate (C : BraidedFusionCategory.{v,u})
     (h : HasPseudoUnitaryGaloisConjugate C) (hF : HasPropertyF C.Obj) :
     WeaklyIntegral (globalFPDimension C) :=
-  MTC.target C h hF
+  MTC.PropertyF.weaklyIntegral_of_propertyF C h hF
 
 end MTC.Conjectures.PropertyF

@@ -14,4 +14,4 @@ as targets in `MTC/Conjectures/`.
 
 | Folder | Main result | Lean | Status |
 |---|---|---|---|
-| [property-f-weak-integrality](property-f-weak-integrality/) | Property F implies weak integrality for braided fusion categories with a pseudo-unitary Galois conjugate | `MTC.target` | Formalized |
+| [property-f-weak-integrality](property-f-weak-integrality/) | Property F implies weak integrality for braided fusion categories with a pseudo-unitary Galois conjugate | `MTC.PropertyF.weaklyIntegral_of_propertyF` | Formalized |

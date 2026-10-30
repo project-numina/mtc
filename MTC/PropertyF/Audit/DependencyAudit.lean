@@ -107,7 +107,7 @@ run_cmd do
   let env ← getEnv
   unless (findForbidden env ``hiddenInputWrapper).isSome do
     throwError "dependency audit failed to detect a hidden old input"
-  if let some bad := findForbidden env ``MTC.TargetStatement then
+  if let some bad := findForbidden env ``MTC.PropertyF.TargetStatement then
     throwError "target statement depends on forbidden declaration {bad}"
   logInfo "Dependency audit self-test passed; target statement has no old hypothesis structures."
 

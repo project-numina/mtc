@@ -7,7 +7,7 @@ public import MTC.PropertyF.Theorem
 The global Frobenius–Perron dimension of any braided fusion category with
 property F should be an integer, without a pseudo-unitary conjugate assumption.
 This is one direction of Naidu–Rowell. It is established by
-`MTC.target` when a pseudo-unitary Galois conjugate exists.
+`MTC.PropertyF.weaklyIntegral_of_propertyF` when a pseudo-unitary Galois conjugate exists.
 
 Status: open
 Source: Naidu–Rowell, arXiv:0903.4157, Conjecture 2.3
@@ -28,6 +28,6 @@ theorem propertyF_implies_weaklyIntegral (C : BraidedFusionCategory.{v,u})
 theorem propertyF_implies_weaklyIntegral_of_conjugate (C : BraidedFusionCategory.{v,u})
     (h : HasPseudoUnitaryGaloisConjugate C) (hF : HasPropertyF C.Obj) :
     WeaklyIntegral (globalFPDimension C) :=
-  MTC.target C h hF
+  MTC.PropertyF.weaklyIntegral_of_propertyF C h hF
 
 end MTC.Conjectures.PropertyF

@@ -205,7 +205,7 @@ run_cmd do
       unless n == ``MTC.DependencyAudit.ForbiddenFixture do
         throwError "unexpected forbidden theorem fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
-  for n in #[``MTC.TargetStatement,
+  for n in #[``MTC.PropertyF.TargetStatement,
       ``MTC.unit_algebraMap_bijective,
       ``MTC.integral_eq_int_of_complex_galois_fixed,
       ``MTC.Modular.conjugate_propertyF,

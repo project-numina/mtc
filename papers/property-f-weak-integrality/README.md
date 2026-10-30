@@ -12,6 +12,6 @@ conjecture, for a class that includes all unitary modular tensor categories.
 
 | Manuscript | Lean declaration | File |
 |---|---|---|
-| Theorem 1.1 | `MTC.target` | [MTC/PropertyF/Theorem.lean](../../MTC/PropertyF/Theorem.lean) |
-| Definitions used in the statement | `MTC.TargetStatement` | [MTC/PropertyF/Statement.lean](../../MTC/PropertyF/Statement.lean) |
+| Theorem 1.1 | `MTC.PropertyF.weaklyIntegral_of_propertyF` | [MTC/PropertyF/Theorem.lean](../../MTC/PropertyF/Theorem.lean) |
+| Definitions used in the statement | `MTC.PropertyF.TargetStatement` | [MTC/PropertyF/Statement.lean](../../MTC/PropertyF/Statement.lean) |
 | Consequences for pseudo-unitary categories | | [MTC/PropertyF/PseudoUnitary.lean](../../MTC/PropertyF/PseudoUnitary.lean) |
