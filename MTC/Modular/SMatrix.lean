@@ -1,6 +1,7 @@
 module
 public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 public import MTC.CategoryTheory.Dimensions.SquaredNorm
+public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.CategoryTheory.Dimensions.Trace
 public import MTC.Fusion.Multiplicity
 public import MTC.Fusion.Reciprocity
@@ -79,8 +80,8 @@ section
 variable (C : MTC.Fusion.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 
 /-- Spherical dimension of a chosen simple representative. -/
-def simpleDimension (i : Fin (rank C)) : ℂ :=
-  MTC.unitScalarEquiv C (p.rightTrace (𝟙 (simples C i)))
+abbrev simpleDimension (i : Fin (rank C)) : ℂ :=
+  pivotalDimension C p (simples C i)
 
 /-- The simple pivotal dimensions agree with Frobenius–Perron dimensions. -/
 abbrev HasFPSimpleDimensions : Prop :=
@@ -114,13 +115,14 @@ theorem categoricalS_symmetric (i j : Fin (rank C)) :
 theorem categoricalS_unit (i : Fin (rank C)) :
     categoricalS C p i (unitIndex C) = simpleDimension C p i :=
   (unitIndex_iso C).elim fun e ↦
-    congrArg (MTC.unitScalarEquiv C)
-      ((SEntry_iso_right p (simples C i) e).trans (SEntry_unit p (simples C i)))
+    by simpa [categoricalS, simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using
+      congrArg (MTC.unitScalarEquiv C)
+        ((SEntry_iso_right p (simples C i) e).trans (SEntry_unit p (simples C i)))
 
 /-- In the spherical case, global dimension is the sum of squared simple dimensions. -/
 theorem categorical_global_eq_sum_squares (hp : p.IsSpherical) :
     MTC.Fusion.globalDimension C = ∑ i, simpleDimension C p i ^ 2 := by
-  simpa only [simpleDimension, ← MTC.unitScalar_eq_equiv, ← rightTrace_id] using
+  simpa only [simpleDimension, pivotalDimension, ← MTC.unitScalar_eq_equiv, ← rightTrace_id] using
     target_globalDimension_eq_sum_squares hp
 
 end
@@ -162,7 +164,7 @@ theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :
 theorem simpleDimension_ne_zero (i : Fin (rank C)) :
     simpleDimension C p i ≠ 0 :=
   let : Simple (simples C i) := simples_simple C i
-  by simpa only [simpleDimension, ← MTC.unitScalar_eq_equiv] using
+  by simpa only [simpleDimension, pivotalDimension, ← MTC.unitScalar_eq_equiv] using
     unitScalar_rightTrace_ne_zero C p (simples C i)
 
 end MTC.Modular

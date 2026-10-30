@@ -224,7 +224,7 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
     (show (𝒇 y : ℂ) ≠ 0 by exact_mod_cast (ne_of_gt (fpSimple_pos Z y)))
     (by simpa [hz] using hσ)
   have hXdim : MTC.CategoryTheory.Dimensions.pivotalDimension D q X = (d : ℂ) := by
-    rw [ScalarTwist.pivotalDimension_twist, MTC.CategoryTheory.Dimensions.pivotalDimension, unitScalar_eq_equiv]
+    rw [ScalarTwist.pivotalDimension_twist]
     change σ (Modular.simpleDimension Z p y) = _
     rw [hdim, hσ]
   have hXfp : fpDimension D X = 𝒇 y :=

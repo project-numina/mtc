@@ -140,8 +140,11 @@ theorem partialTrace_doubleBraiding_simple (D : MTC.Fusion.BraidedFusionCategory
   letI : Simple (simples D k) := simples_simple D k
   letI : FiniteDimensional ℂ (simples D k ⟶ simples D k) := MTC.Fusion.IsFusionCategory.hom_finite _ _
   by
-    rw [MTC.unitScalar_eq_equiv]
-    exact rightPartialTrace_simple p (MTC.unitScalarEquiv D) _ (simpleDimension_ne_zero D p k)
+    have hne : MTC.unitScalarEquiv D (p.rightTrace (𝟙 (simples D k))) ≠ 0 := by
+      simpa [simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using
+        simpleDimension_ne_zero D p k
+    simpa [partialMonodromy, SEntry, scalarTrace, simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using
+      rightPartialTrace_simple p (MTC.unitScalarEquiv D) _ hne
 
 /-- Partial traces of double braiding multiply on a simple strand. -/
 abbrev HasMultiplicativePartialTrace (D : MTC.Fusion.BraidedFusionCategory.{v,u})
@@ -286,7 +289,10 @@ theorem partialTrace_doubleBraiding_tensor (D : BraidedFusionCategory.{v,u})
   let f := End.of (doubleBraiding (simples D k) (simples D i ⊗ simples D j))
   have hs := partialTrace_doubleBraiding_simple D p k (simples D j)
   change rightPartialTrace p f = _
-  rw [rightPartialTrace_nested_simple p (simpleDimension_ne_zero D p k) f,
+  have hne : MTC.unitScalarEquiv D (p.rightTrace (𝟙 (simples D k))) ≠ 0 := by
+    simpa [simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using
+      simpleDimension_ne_zero D p k
+  rw [rightPartialTrace_nested_simple p hne f,
     partialTrace_doubleBraiding_scalar p (simples D i) hs, rightPartialTrace_smul, hs]
   simp [partialMonodromy]
 

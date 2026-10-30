@@ -95,9 +95,10 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
     have h2 := MTC.Braided.Trace.pivotalTrace_groundEndBlocks D e 1 p (MTC.unitScalarEquiv D)
-    change (∀ i, MTC.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
-      (fpSimple D i : ℂ)) at hdim
-    simpa [hdim, B, End.one_asHom, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
+    have hdim' : ∀ i, MTC.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
+        (fpSimple D i : ℂ) := by
+      simpa [HasFPSimpleDimensions, Modular.simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using hdim
+    simpa [hdim', B, End.one_asHom, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
       ((MTC.Braided.Trace.pivotalTrace_groundEndBlocks D e a p (MTC.unitScalarEquiv D)).symm.trans
         ((congrArg (MTC.unitScalarEquiv D) ht).trans h2))
   exact B.injective <| funext fun i ↦ by
