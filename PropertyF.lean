@@ -105,6 +105,6 @@ public import PropertyF.Ground.CentreCabling.TwistFinite
 
 public import PropertyF.Ground.Dimensions.MonodromyTensorCap
 
-/-! Formalization of `papers/property-f-weak-integrality/manuscript.pdf`.
+/-! Formalization of `papers/property-f-weak-integrality/property-f-simplified.pdf`.
 The main theorem is `PropertyF.Ground.target`.
 -/

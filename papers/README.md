@@ -3,9 +3,7 @@
 Informal manuscripts whose results are formalized in this library. Each manuscript has its own
 folder, named after its main result, with:
 
-- `manuscript.pdf`: the manuscript;
-- `manuscript.txt`: a plain-text copy for search and review (optional);
-- source files such as `manuscript.tex` and its bibliography, when available;
+- the LaTeX source (`.tex`, with its bibliography and figures) and the compiled `.pdf`;
 - `README.md`: the citation, status, and a table that maps each numbered result to its Lean
   declaration.
 
