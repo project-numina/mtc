@@ -22,7 +22,7 @@ The Naidu–Rowell conjecture states that a braided fusion category has property
 representation it defines has finite image) if and only if it is weakly integral (its global
 Frobenius–Perron dimension is an integer). This library proves one direction: **every braided
 fusion category with property F and a pseudo-unitary Galois conjugate is weakly integral**. This
-covers every unitary modular tensor category, and hence every entry of the Atlas.
+covers every unitary modular tensor category.
 
 The theorem is `PropertyF.Ground.target` in [Final.lean](PropertyF/Ground/Final.lean). The proof
 is complete and depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`. The
