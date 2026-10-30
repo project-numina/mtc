@@ -15,7 +15,7 @@ in a fusion category is split.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC
+namespace MTC.Fusion
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 
@@ -58,4 +58,4 @@ theorem mono_splits {X Y : C} (f : X ⟶ Y) [Mono f] : IsSplitMono f :=
   letI : Injective X := object_injective X
   IsSplitMono.mk' ⟨Injective.factorThru (𝟙 X) f, Injective.comp_factorThru (𝟙 X) f⟩
 
-end MTC
+end MTC.Fusion

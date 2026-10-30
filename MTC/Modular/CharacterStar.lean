@@ -42,17 +42,17 @@ include hreal in
 /-- With real simple dimensions, dualizing a label conjugates the corresponding
 categorical S entry. No categorical dual-trace identity is needed. -/
 theorem categoricalS_dual_conj (i j : Fin (rank C)) :
-    Sₚ (MTC.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) :=
+    Sₚ (MTC.Fusion.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) :=
   (div_left_inj' (simpleDimension_ne_zero C p j)).mp (by
     simpa only [categoricalSCharacter, normalizedSColumn, ← starRingEnd_apply, map_div₀, hreal j] using
       MTC.fusion_character_dual_eq_conj (i₀ := unitIndex C)
-        (fun a b c ↦ (MTC.fusionCoeff_dual_symmetry C a b c).symm)
+        (fun a b c ↦ (MTC.Fusion.fusionCoeff_dual_symmetry C a b c).symm)
         (by simp [(categoricalSCharacter C p j).unit_eq]) (categoricalSCharacter C p j).mul_eq i)
 
 include hreal in
 /-- Real pivotal simple dimensions are invariant under dual labels. -/
 theorem simpleDimension_dual (i : Fin (rank C)) :
-    dₚ (MTC.dualIndex C i) = dₚ i := by
+    dₚ (MTC.Fusion.dualIndex C i) = dₚ i := by
   simpa only [categoricalS_unit, hreal i] using
     categoricalS_dual_conj C p hreal i (unitIndex C)
 

@@ -97,7 +97,7 @@ theorem categoricalS_det_ne_zero_of_unit_character_unique
     (div_eq_zero_iff.mp (show (∑ z, dₚ z * Sₚ k z) / dₚ k = 0 from by
       simpa [categoricalSCharacter, normalizedSColumn, categoricalS_unit, simpleDimension_unit, hdim,
         fpSimple_unit, categoricalS_symmetric C p k, ← mul_div_assoc, ← Finset.sum_div] using
-        character_orthogonal _ (dualIndex C) (fun i j k ↦ MTC.fusionCoeff_dual_symmetry C i k j)
+        character_orthogonal _ (dualIndex C) (fun i j k ↦ MTC.Fusion.fusionCoeff_dual_symmetry C i k j)
           (categoricalSCharacter C p (unitIndex C)) (categoricalSCharacter C p k)
           (fun he ↦ hunique k hk (congrArg Character.value he).symm))).resolve_right
       (simpleDimension_ne_zero C p k)

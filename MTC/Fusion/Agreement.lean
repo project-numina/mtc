@@ -27,7 +27,7 @@ For the fusion-ring background, see Etingof–Gelaki–Nikshych–Ostrik,
 @[expose] public noncomputable section
 open scoped BigOperators Matrix
 
-namespace MTC
+namespace MTC.Fusion
 
 section
 variable {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k]
@@ -80,7 +80,7 @@ abbrev IsFusionMultiplicative {R : Type*} [Semiring R]
     (C : BraidedFusionCategory) (χ : Fin (rank C) → R) : Prop :=
   ∀ i j, χ i * χ j = ∑ k, (fusionCoeff C i j k : R) * χ k
 
-end MTC
+end MTC.Fusion
 
 end
 
@@ -130,7 +130,7 @@ end
 open scoped BigOperators Matrix InnerProductSpace
 open WithLp
 
-namespace MTC
+namespace MTC.Fusion
 
 variable {ι : Type*}
 
@@ -214,7 +214,7 @@ theorem positive_symmetric_matrix_has_positive_eigenvector {A : Matrix ι ι ℝ
     fun _ ⟨v, hv, hvpos, heigen⟩ ↦
       ⟨v, positive_matrix_eigenvector_pos hpos hv hvpos heigen, heigen⟩
 
-end MTC
+end MTC.Fusion
 
 end
 
@@ -224,7 +224,7 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 
-namespace MTC
+namespace MTC.Fusion
 
 variable (D : BraidedFusionCategory)
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -262,7 +262,7 @@ theorem totalFusionMatrix_pos (j k : Fin (rank D)) :
     (fun _ _ => Nat.cast_nonneg _)
     ⟨i, Finset.mem_univ _, Nat.cast_pos.mpr (by simpa only [fusionCoeff_reciprocity] using hm)⟩
 
-end MTC
+end MTC.Fusion
 
 end
 
@@ -271,7 +271,7 @@ end
 @[expose] public noncomputable section
 open scoped BigOperators Matrix
 
-namespace MTC
+namespace MTC.Fusion
 
 variable (D : BraidedFusionCategory)
 
@@ -332,7 +332,7 @@ def fpCharacter (D : BraidedFusionCategory) :
     {f : Fin (rank D) → ℝ // (∀ i, 0 < f i) ∧ IsFusionMultiplicative D f} :=
   Classical.indefiniteDescription _ (exists_positive_character D)
 
-end MTC
+end MTC.Fusion
 
 end
 
@@ -379,7 +379,7 @@ end
 @[expose] public noncomputable section
 open scoped BigOperators Matrix
 
-namespace MTC
+namespace MTC.Fusion
 
 /-- A positive real eigenvector bounds the modulus of every complex eigenvalue
 of a nonnegative real matrix. -/
@@ -393,7 +393,7 @@ theorem complex_eigenvalue_le_positive_eigenvalue {ι : Type*} [Fintype ι]
       (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hwe i)
       (fun i ↦ by simpa [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] using congrFun hve i)
 
-end MTC
+end MTC.Fusion
 
 end
 
@@ -402,7 +402,7 @@ end
 @[expose] public noncomputable section
 open scoped BigOperators Matrix Matrix.Norms.Operator
 
-namespace MTC
+namespace MTC.Fusion
 
 variable (D : BraidedFusionCategory)
 
@@ -475,6 +475,6 @@ theorem one_le_fpSimple (i : Fin (rank D)) :
       (fun k _ => mul_nonneg (Nat.cast_nonneg _) (fpSimple_pos D k).le)
       (Finset.mem_univ (unitIndex D)))
 
-end MTC
+end MTC.Fusion
 
 end

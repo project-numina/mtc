@@ -62,7 +62,7 @@ theorem dual_mem_productLabels : dualIndex (𝒵 C) i ∈ productLabels C :=
 /-- Every constituent label of two product labels is itself a product label. -/
 theorem constituent_mem_productLabels
     (k : {k : Fin (rank (𝒵 C)) // 0 < fusionCoeff (𝒵 C) i j k}) : k.val ∈ productLabels C :=
-  let ⟨r⟩ := MTC.fusionCoeff_retract k.property
+  let ⟨r⟩ := MTC.Fusion.fusionCoeff_retract k.property
   (mem_productLabels C k).2 <| MTC.Center.productRetract_of_retract r <|
     MTC.Center.productRetract_tensor ((mem_productLabels C i).1 i.2) ((mem_productLabels C j).1 j.2)
 

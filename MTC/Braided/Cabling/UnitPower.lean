@@ -46,14 +46,14 @@ theorem generatedBy_rightDual_of_unit_power {X : D} [Simple X] {n : ℕ}
     (r : Retract (𝟙_ D) (tensorPower X (n + 1))) :
     GeneratedBy X (Xᘁ) :=
   let _ : Simple (𝟙_ D) := MTC.Fusion.IsFusionCategory.unit_simple
-  let _ : Simple (Xᘁ) := MTC.simple_rightDual X
+  let _ : Simple (Xᘁ) := MTC.Fusion.simple_rightDual X
   let _ : IsSplitMono r.i := r.instIsSplitMonoI
   let f : Xᘁ ⊗ 𝟙_ D ⟶ tensorPower X n :=
-    (MTC.tensorLeftHomLinearEquiv (k := ℂ) (𝟙_ D) X (Xᘁ) (tensorPower X n)).symm r.i
-  let hf : f ≠ 0 := (MTC.tensorLeftHomLinearEquiv
+    (MTC.Fusion.tensorLeftHomLinearEquiv (k := ℂ) (𝟙_ D) X (Xᘁ) (tensorPower X n)).symm r.i
+  let hf : f ≠ 0 := (MTC.Fusion.tensorLeftHomLinearEquiv
     (𝟙_ D) X (Xᘁ) (tensorPower X n)).symm.map_ne_zero_iff.mpr
-      (MTC.mono_ne_zero_of_id_ne_zero r.i (id_nonzero (𝟙_ D)))
+      (MTC.Fusion.mono_ne_zero_of_id_ne_zero r.i (id_nonzero (𝟙_ D)))
   let g : Xᘁ ⟶ tensorPower X n := (ρ_ (Xᘁ)).inv ≫ f
-  let ⟨s, hs⟩ := MTC.split_from_simple g (by simpa [g] using hf)
+  let ⟨s, hs⟩ := MTC.Fusion.split_from_simple g (by simpa [g] using hf)
   generatedBy_retract (generatedBy_tensorPower X n) { i := g, r := s, retract := hs }
 end MTC.Braided.Cabling

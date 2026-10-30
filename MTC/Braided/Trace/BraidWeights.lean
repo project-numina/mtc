@@ -34,7 +34,7 @@ variable (C : BraidedFusionCategory.{v,u})
 /-- Scalar identification for a chosen simple object. -/
 def groundSimpleScalar (i : Fin (MTC.Fusion.rank C)) :
     End (MTC.Fusion.simples C i) ≃ₐ[ℂ] ℂ := by
-  let _ : Simple (MTC.Fusion.simples C i) := MTC.simples_simple C i
+  let _ : Simple (MTC.Fusion.simples C i) := MTC.Fusion.simples_simple C i
   let _ : FiniteDimensional ℂ (MTC.Fusion.simples C i ⟶ MTC.Fusion.simples C i) :=
     MTC.Fusion.IsFusionCategory.hom_finite _ _
   exact simpleEndScalar (k := ℂ) _
@@ -337,7 +337,7 @@ theorem exists_unitary_braid_trace_blocks
       HasMultiplicityDecomposition
         (fun i => Module.finrank ℂ (MTC.Fusion.simples C i ⟶ braidTensorPower X n)) d mult ∧
       HasMultiplicityTrace C p scalar b mult :=
-  let ⟨e⟩ := MTC.exists_canonical_decomposition C (braidTensorPower X n)
+  let ⟨e⟩ := MTC.Fusion.exists_canonical_decomposition C (braidTensorPower X n)
   let _ : Finite (braidImage X n) := hfinite
   let ⟨r, d, b, hnonzero, hunitary⟩ :=
     groupImageAlgebra_unitary_blocks (braidEndRepresentation X n)

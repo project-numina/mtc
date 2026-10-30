@@ -92,9 +92,9 @@ variable (D : BraidedFusionCategory.{v,u})
 
 /-- The chosen nonisomorphic simple representatives are Hom-orthogonal. -/
 theorem groundSimples_orthogonal : HomOrthogonal (MTC.Fusion.simples D) :=
-  let _ : ∀ i, Simple (MTC.Fusion.simples D i) := MTC.simples_simple D
+  let _ : ∀ i, Simple (MTC.Fusion.simples D i) := MTC.Fusion.simples_simple D
   fun _i _j hij => subsingleton_of_forall_eq 0 fun f => Classical.byContradiction fun hf =>
-    hij (MTC.simples_injective D ⟨let _ : IsIso f := isIso_of_hom_simple hf; asIso f⟩)
+    hij (MTC.Fusion.simples_injective D ⟨let _ : IsIso f := isIso_of_hom_simple hf; asIso f⟩)
 
 /-- The family containing `m i` copies of each chosen simple object. -/
 abbrev simpleCopies (m : Fin (MTC.Fusion.rank D) → ℕ)
@@ -119,7 +119,7 @@ def groundEndBlockEquiv {X : D.Obj}
     End X ≃ₐ[ℂ] ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ := by
   classical
   let _ : HasFiniteBiproducts D.Obj := inferInstance
-  let _ : ∀ i, Simple (MTC.Fusion.simples D i) := MTC.simples_simple D
+  let _ : ∀ i, Simple (MTC.Fusion.simples D i) := MTC.Fusion.simples_simple D
   let _ : ∀ i, FiniteDimensional ℂ (MTC.Fusion.simples D i ⟶ MTC.Fusion.simples D i) :=
     fun i => MTC.Fusion.IsFusionCategory.hom_finite _ _
   let _ : DecidableEq (Σ i, Fin (m i)) := Classical.decEq _

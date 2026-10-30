@@ -107,7 +107,7 @@ theorem nonzero_dual_coefficient_of_sCentralizer
     (mul_ne_zero (Modular.globalDimension_ne_zero_of_invertibleS D p hp hdet hreal) hunit))
       (by
         simpa only [sFourier_inversion hp hdet hreal f x,
-          sFourier_inversion hp hdet hreal f (unitIndex D), MTC.dualIndex_unit D, hz, mul_zero] using
+          sFourier_inversion hp hdet hreal f (unitIndex D), MTC.Fusion.dualIndex_unit D, hz, mul_zero] using
           heq.symm)
 
 include hdet in
@@ -214,7 +214,7 @@ theorem regularVector_mul (hA : IsDualFusionClosed D A) {k : A} :
   calc
     _ = ∑ i, (fusionCoeff D (dualIndex D a) k i : ℂ) * (fpSimple D i : ℂ) := by
       refine Finset.sum_congr rfl fun i _ ↦ ?_
-      rw [MTC.fusionCoeff_dual_symmetry D a k i]
+      rw [MTC.Fusion.fusionCoeff_dual_symmetry D a k i]
       by_cases hi : i ∈ A
       · rw [show regularVector D A i = (fpSimple D i : ℂ) from ite_eq_left hi]
       · simp [regularVector, hi, hA.fusion.fusionCoeff_eq_zero (a := ⟨_, hA.dual _ a.2⟩) (k := ⟨i, hi⟩)]

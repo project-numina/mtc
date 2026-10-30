@@ -212,7 +212,7 @@ variable {k : Type*} [Field k] [IsAlgClosed k]
 from a simple object. -/
 def simpleHomPairing (S X : D) [Simple S] [FiniteDimensional k (S ⟶ S)] :
     (X ⟶ S) →ₗ[k] Module.Dual k (S ⟶ X) :=
-  (LinearMap.compRight k ((MTC.simpleEndScalar (k := k) S).toLinearMap.comp
+  (LinearMap.compRight k ((MTC.Fusion.simpleEndScalar (k := k) S).toLinearMap.comp
     (End.linearEquiv (R := k) (X := S)).symm.toLinearMap)).comp (Linear.comp S X S).flip
 
 
@@ -226,7 +226,7 @@ theorem simpleHomPairing_injective
     by_contra hne
     obtain ⟨f, hf⟩ := hsplit g hne
     have h := congrArg (fun F : Module.Dual k (S ⟶ X) => F f) hg
-    change MTC.simpleEndScalar (k := k) S (End.of (f ≫ g)) = 0 at h
+    change MTC.Fusion.simpleEndScalar (k := k) S (End.of (f ≫ g)) = 0 at h
     simp only [hf, show End.of (𝟙 S) = (1 : End S) from rfl, map_one, one_ne_zero] at h)
 
 end
@@ -240,7 +240,7 @@ def simpleHomPairingEquiv {D : Type u} [Category.{v} D] [MonoidalCategory D]
     [MonoidalPreadditive D] [MonoidalLinear ℂ D] [IsFusionCategory D]
     (S X : D) [Simple S] : (X ⟶ S) ≃ₗ[ℂ] Module.Dual ℂ (S ⟶ X) := by
   let p := simpleHomPairing (k := ℂ) S X
-  have hi := simpleHomPairing_injective (k := ℂ) S X fun g hg ↦ MTC.split_to_simple g hg
+  have hi := simpleHomPairing_injective (k := ℂ) S X fun g hg ↦ MTC.Fusion.split_to_simple g hg
   have hd : Module.finrank ℂ (X ⟶ S) = Module.finrank ℂ (Module.Dual ℂ (S ⟶ X)) :=
     (finrank_to_simple_eq_from_simple X S).trans
       (Subspace.dual_finrank_eq (K := ℂ) (V := S ⟶ X)).symm

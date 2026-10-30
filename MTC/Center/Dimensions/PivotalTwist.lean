@@ -92,7 +92,7 @@ theorem pivotalBraidedTwist_natural {D : Type u} [Category.{v} D] [MonoidalCateg
 /-- The twist scalar of a simple object. -/
 def pivotalBraidedTwistScalar (X : C.Obj) [Simple X] : ℂ :=
   letI : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  MTC.simpleEndScalar (k := ℂ) X (End.of (pivotalBraidedTwist C p X).hom)
+  MTC.Fusion.simpleEndScalar (k := ℂ) X (End.of (pivotalBraidedTwist C p X).hom)
 
 local notation "θₚ" => pivotalBraidedTwistScalar C p
 
@@ -101,7 +101,7 @@ theorem pivotalBraidedTwist_simple (X : C.Obj) [Simple X] :
     (pivotalBraidedTwist C p X).hom = θₚ X • 𝟙 X :=
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
   congrArg End.asHom (show End.of (pivotalBraidedTwist C p X).hom = θₚ X • (1 : End X) from
-    (MTC.simpleEndScalar (k := ℂ) X).injective (by simp [pivotalBraidedTwistScalar]))
+    (MTC.Fusion.simpleEndScalar (k := ℂ) X).injective (by simp [pivotalBraidedTwistScalar]))
 
 /-- A simple twist scalar is nonzero. -/
 theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :

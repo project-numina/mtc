@@ -19,7 +19,7 @@ For duality in fusion categories, see Etingof–Gelaki–Nikshych–Ostrik,
 open CategoryTheory CategoryTheory.MonoidalCategory
 open CategoryTheory.Limits
 
-namespace MTC
+namespace MTC.Fusion
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts IsFusionCategory.hom_finite
 section
@@ -155,7 +155,7 @@ theorem dualIndex_involutive :
 def dualEquiv : Equiv.Perm (Fin (rank D)) :=
   ⟨dualIndex D, dualIndex D, dualIndex_involutive D, dualIndex_involutive D⟩
 
-end MTC
+end MTC.Fusion
 
 namespace MTC.CategoryTheory.Dimensions
 attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple

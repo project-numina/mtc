@@ -71,6 +71,6 @@ theorem productRetract_rightDual (D : MTC.Fusion.BraidedFusionCategory.{v,u})
     [RigidCategory (CategoryTheory.Center D.Obj)]
     [IsFusionCategory (CategoryTheory.Center D.Obj)]
     {Z : CategoryTheory.Center D.Obj} (hZ : ProductRetract Z) : ProductRetract (Zᘁ) :=
-  productRetract_generatedBy hZ (MTC.generatedBy_rightDual Z)
+  productRetract_generatedBy hZ (MTC.Fusion.generatedBy_rightDual Z)
 
 end MTC.Center

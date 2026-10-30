@@ -65,7 +65,7 @@ end
 /-- The Frobenius–Perron dimensions form a regular fusion eigenvector. -/
 theorem fpSimple_regular (i k : Fin (rank C)) :
     (∑ j, fpSimple C j * (fusionCoeff C i j k : ℝ)) = fpSimple C i * fpSimple C k := by
-  simp_rw [MTC.fusionCoeff_dual_symmetry C i]
+  simp_rw [MTC.Fusion.fusionCoeff_dual_symmetry C i]
   simpa only [mul_comm, fpSimple_dual] using (fpSimple_mul C (dualIndex C i) k).symm
 
 /-- The FP regular-element cancellation at the heart of the determinant argument. -/
@@ -873,7 +873,7 @@ theorem pivotal_twist_finite_of_balancing (p : MTC.CategoryTheory.Dimensions.Piv
   letI : Simple (simples C i) := simples_simple C i
   letI : FiniteDimensional ℂ (simples C i ⟶ simples C i) := IsFusionCategory.hom_finite _ _
   by simpa [MTC.Center.Braid.pivotalTwistUnit, MTC.CategoryTheory.Dimensions.pivotalBraidedTwistScalar] using
-    (MTC.simpleEndScalar (k := ℂ) (simples C i)).symm.toMonoidHom.isOfFinOrder
+    (MTC.Fusion.simpleEndScalar (k := ℂ) (simples C i)).symm.toMonoidHom.isOfFinOrder
       (Units.isOfFinOrder_val.mpr (natural_scalars_finite_of_simple_balancing C
         (pivotal_twist_has_simple_scalars C p) (pivotal_twist_simple_balance C p hbalance) i))
 

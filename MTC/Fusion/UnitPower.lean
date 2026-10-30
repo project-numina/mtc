@@ -23,7 +23,7 @@ For tensor generation, see Etingof–Gelaki–Nikshych–Ostrik,
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace MTC
+namespace MTC.Fusion
 
 variable {k : Type*} [AddCommGroup k] [LinearOrder k] [IsOrderedAddMonoid k]
   {ι : Type*} [Fintype ι] {b : ι → ι → k}
@@ -62,7 +62,7 @@ theorem balanced_flow_cycle {o : ι} (hout : ∃ j, 0 < b o j) :
     (ne_of_gt hj) (balanced_flow_no_entry hb hbalance hc
       (by simp [s, Relation.ReflTransGen.refl]) hjs))
 
-end MTC
+end MTC.Fusion
 
 end
 
@@ -71,7 +71,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC
+namespace MTC.Fusion
 universe v u
 
 variable (D : BraidedFusionCategory.{v,u})
@@ -138,13 +138,13 @@ theorem unit_retract_tensorPower {E : Type u} [Category.{v} E] [MonoidalCategory
   obtain ⟨u⟩ := unitIndex_iso D
   exact ⟨n, ⟨(Retract.ofIso u.symm).trans (r.trans (Retract.ofIso (Modular.tensorPowerIso e.symm _)))⟩⟩
 
-end MTC
+end MTC.Fusion
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC
+namespace MTC.Fusion
 universe v u
 
 /-- The right dual of a simple object lies in its generated tensor closure. -/
@@ -154,9 +154,9 @@ theorem simple_generatedBy_rightDual {D : Type u} [Category.{v} D] [MonoidalCate
     (X : D) [Simple X] : GeneratedBy X (Xᘁ) :=
   (unit_retract_tensorPower X).elim fun _ ⟨r⟩ ↦ MTC.Braided.Cabling.generatedBy_rightDual_of_unit_power r
 
-end MTC
+end MTC.Fusion
 
-namespace MTC
+namespace MTC.Fusion
 
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
@@ -197,4 +197,4 @@ theorem generatedBy_rightDual (X : D) :
       generatedBy_trans (hv p) (simple_generatedBy_rightDual (V p))) (dualFiniteBiproductRetract V))
     (MTC.CategoryTheory.Dimensions.rightDualIsoMap e).symm
 
-end MTC
+end MTC.Fusion

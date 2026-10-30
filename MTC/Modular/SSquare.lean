@@ -129,13 +129,13 @@ include hp in
 /-- Nondegeneracy, sphericality, and real dimensions imply the S-square identity. -/
 theorem categoricalS_square (hdet : (Sₚ).det ≠ 0)
     (hreal : HasRealSimpleDimensions C p) :
-    HasSSquare Sₚ (MTC.dualIndex C) (globalDimension C) := by
-  have hoff := square_off_dual_of_orthogonal (MTC.dualIndex C) (MTC.dualIndex_involutive C)
+    HasSSquare Sₚ (MTC.Fusion.dualIndex C) (globalDimension C) := by
+  have hoff := square_off_dual_of_orthogonal (MTC.Fusion.dualIndex C) (MTC.Fusion.dualIndex_involutive C)
     (categoricalS_symmetric C p) (categoricalS_dual_conj C p hreal)
-    (character_columns_orthogonal ⟨unitIndex C, fusionCoeff C⟩ (MTC.dualIndex C)
-      (fun i j k ↦ MTC.fusionCoeff_dual_symmetry C i k j) (S := Sₚ) (d := dₚ) (categoricalSCharacter C p)
+    (character_columns_orthogonal ⟨unitIndex C, fusionCoeff C⟩ (MTC.Fusion.dualIndex C)
+      (fun i j k ↦ MTC.Fusion.fusionCoeff_dual_symmetry C i k j) (S := Sₚ) (d := dₚ) (categoricalSCharacter C p)
       (fun _ _ ↦ rfl) hdet (simpleDimension_ne_zero C p) hreal)
-  convert square_eq_of_support Sₚ (MTC.dualIndex_involutive C) (MTC.dualIndex_unit C)
+  convert square_eq_of_support Sₚ (MTC.Fusion.dualIndex_involutive C) (MTC.Fusion.dualIndex_unit C)
     (fun i ↦ by simpa only [categoricalS_unit] using simpleDimension_dual C p hreal i)
     (fun i ↦ by simpa only [categoricalS_unit] using simpleDimension_ne_zero C p i) hoff using 1
   simp_rw [categoricalS_symmetric C p (unitIndex C), categoricalS_unit]
