@@ -15,7 +15,7 @@ open MTC.Dimensions
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 variable (original qdim : Fin (MTC.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
@@ -68,4 +68,4 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
       (overlapProduct z k) (overlapProduct_unitary b he hz k)) (hrec z)
   simpa [hdim, hfp, Complex.norm_real, Real.norm_eq_abs] using hbound
 
-end MTC.Calculus
+end MTC.Braided.Trace

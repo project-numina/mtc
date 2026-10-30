@@ -301,7 +301,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 variable [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)]
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
+local notation "𝒵ᶠ" => MTC.PropertyF.Reduction.bundledCenter C
 
 /-- A modular actual centre with integral centralizer and finite braid-image
 retracts forces the global Frobenius–Perron dimension to be integral. -/

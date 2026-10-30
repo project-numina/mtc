@@ -14,7 +14,7 @@ open MTC.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
 
@@ -114,4 +114,4 @@ theorem simple_end_eq_trace_smul [CategoryTheory.Limits.HasKernels C]
 
 end SimpleTrace
 
-end MTC.Calculus
+end MTC.Braided.Trace

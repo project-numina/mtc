@@ -31,7 +31,7 @@ universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
 variable [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)]
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
+local notation "𝒵ᶠ" => MTC.PropertyF.Reduction.bundledCenter C
 
 /-- The centre square follows from its actual induction adjunction as soon as
 its genuine fusion structure and FP-valued spherical structure are available. -/
@@ -64,7 +64,7 @@ set_option backward.isDefEq.respectTransparency false
 
 variable (C : BraidedFusionCategory.{v,u})
 variable [RigidCategory (CategoryTheory.Center C.Obj)] [IsFusionCategory (CategoryTheory.Center C.Obj)]
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
+local notation "𝒵ᶠ" => MTC.PropertyF.Reduction.bundledCenter C
 
 /-- The actual rigid fusion centre has no non-unit transparent simple. -/
 theorem center_transparent_label_eq_unit
@@ -100,18 +100,18 @@ theorem PropertyF.weaklyIntegral_of_propertyF : PropertyF.TargetStatement.{v,u} 
     (MTC.Center.Induction.liftedPivotalStructure_compatible hc J)
   obtain ⟨hspherical, hfp⟩ := MTC.Center.Induction.center_positive_spherical_of_compatible_pivotal hp
     (MTC.Center.Induction.liftedPivotalStructure_compatible hc)
-  have hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter D) pZ := by
+  have hdim : Modular.HasFPSimpleDimensions (MTC.PropertyF.Reduction.bundledCenter D) pZ := by
     intro i
     simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
       unitScalar_eq_equiv] using hfp i
-  have hbalance : MTC.Center.Modular.IsPivotalTwistBalanced (Integrate.bundledCenter D) pZ :=
+  have hbalance : MTC.Center.Modular.IsPivotalTwistBalanced (MTC.PropertyF.Reduction.bundledCenter D) pZ :=
     fun X Y ↦ MTC.Center.Balancing.pivotal_balance_of_drinfeld_tensor pZ
-      (doubleDualIso (Integrate.bundledCenter D)) (drinfeld_tensor X Y).w
+      (doubleDualIso (MTC.PropertyF.Reduction.bundledCenter D)) (drinfeld_tensor X Y).w
   have hdet := MTC.Center.Modular.categoricalS_det_ne_zero_of_trivial_transparency
-    (Integrate.bundledCenter D) pZ hdim hbalance (center_transparent_label_eq_unit D)
+    (MTC.PropertyF.Reduction.bundledCenter D) pZ hdim hbalance (center_transparent_label_eq_unit D)
   have hfinite : MTC.Center.Braid.HasFiniteImageCentralizerMonodromy D pZ :=
     fun _ _ _ _ ↦ MTC.Center.Modular.mixed_monodromy_finite_of_pivotal_balancing
-      (Integrate.bundledCenter D) pZ hbalance _ _
+      (MTC.PropertyF.Reduction.bundledCenter D) pZ hbalance _ _
   rw [Modular.conjugate_globalFPDimension E]
   apply weaklyIntegral_of_actual_center D (Modular.conjugate_propertyF E hF) ⟨hspherical, hdim⟩ hdet
     (center_globalDimension_square_of_actual_induction D ⟨hspherical, hdim⟩)

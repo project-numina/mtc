@@ -112,7 +112,7 @@ variable (C : BraidedFusionCategory.{v,u})
   [RigidCategory (Center C.Obj)]
   [IsFusionCategory (Center C.Obj)]
 local notation "𝒵" => Center C.Obj
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
+local notation "𝒵ᶠ" => MTC.PropertyF.Reduction.bundledCenter C
 
 variable {C} in
 /-- The scalar of a centre unit endomorphism is unchanged by forgetting. -/
@@ -140,7 +140,7 @@ variable {C : BraidedFusionCategory.{v,u}}
   [RigidCategory (Center C.Obj)]
   [IsFusionCategory (Center C.Obj)]
 local notation "𝒵" => Center C.Obj
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
+local notation "𝒵ᶠ" => MTC.PropertyF.Reduction.bundledCenter C
 
 /-- A compatible lift of a positive pivotal structure is spherical and has
 FP dimensions on the centre. -/
@@ -152,7 +152,7 @@ theorem center_positive_spherical_of_compatible_pivotal
   let hd (i : Fin (rank D)) : pivotalDimension D pZ (simples D i) =
       (fpSimple D i : ℂ) := by
     rw [center_pivotalDimension_forget (hcompat _), pivotalDimension_eq_fp hsimple,
-      Integrate.center_forget_fpDimension C, fpDimension_simple]
+      MTC.PropertyF.Reduction.center_forget_fpDimension C, fpDimension_simple]
   ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i ↦ by simp [hd i]), hd⟩
 
 end MTC.Center.Induction

@@ -182,7 +182,7 @@ universe v u
 
 variable {C : BraidedFusionCategory.{v,u}}
 local notation "Sᶜ" => simples C
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
+local notation "𝒵ᶠ" => MTC.PropertyF.Reduction.bundledCenter C
 local notation "𝒵" => Center C.Obj
 local instance (i : Fin (rank C)) : Simple (Sᶜ i) := simples_simple C i
 
@@ -207,8 +207,8 @@ theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFus
     simp only [mul_comm (fpSimple C _), mul_comm _ (fpSimple 𝒵ᶠ _), mul_assoc,
       ← Finset.mul_sum, finrank_to_simple_eq_from_simple, show ∀ Z : C.Obj, (∑ i,
         ↑(finrank ℂ (Sᶜ i ⟶ Z)) * fpSimple C i) = fpDimension C Z from fun _ ↦ rfl,
-      Integrate.center_forget_fpDimension C, fpDimension_simple, globalFPDimension, pow_two]
-  simpa [← Integrate.center_forget_fpDimension C, induction, fpDimension_underlying,
+      MTC.PropertyF.Reduction.center_forget_fpDimension C, fpDimension_simple, globalFPDimension, pow_two]
+  simpa [← MTC.PropertyF.Reduction.center_forget_fpDimension C, induction, fpDimension_underlying,
     fpDimension_simple, globalFPDimension, pow_two, Finset.mul_sum, mul_left_comm] using h
 
 end MTC.Center.Induction

@@ -18,7 +18,7 @@ open MTC.Dimensions
 
 @[expose] public section
 open CategoryTheory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -26,13 +26,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def imageGenerator (X : C) (n : ℕ) (i : Fin (n + 1)) : braidImage X n :=
   ⟨braidGenerator X n i, Subgroup.subset_closure (Set.mem_range_self _)⟩
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! The actual three-strand braid relation, including tensor-power unitors. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -81,13 +81,13 @@ theorem three_braid_image_relation :
 
 end
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Two- and three-strand categorical braid embeddings. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -120,13 +120,13 @@ def tripleBlockLeft :=
 def tripleBlockRight :=
   b (braidInImage (threeGeneratorRight X))
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Simple-strand partial trace from the constructed iterated trace law. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 
 /-- In a genuine braided fusion category, the partial trace onto a simple
@@ -139,13 +139,13 @@ theorem rightPartialTrace_simple_ground (C : BraidedFusionCategory.{v,u})
   rightPartialTrace_simple (X := X) (Y := Y) p scalar f
     (by simpa only [map_zero] using scalar.injective.ne (Modular.pivotalTrace_simple_ne_zero C p X))
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! The graphical recurrence for two overlapping endomorphisms. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [Preadditive C] [Linear ℂ C]
 
@@ -180,13 +180,13 @@ theorem pivotalTrace_overlap :
   rw [← Dimensions.rightTrace_partialTrace p, rightPartialTrace_overlap D p scalar]
   simp [scalarTrace, PivotalStructure.rightTrace_smul, mul_comm]
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! The trace of the actual three-strand double-monodromy braid. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -231,4 +231,4 @@ theorem actual_three_braid_trace (D : BraidedFusionCategory.{v,u})
 def twoPowerIso (X : C) : tensorPower X 2 ≅ X ⊗ X :=
   Iso.refl X ⊗ᵢ (ρ_ X)
 
-end MTC.Calculus
+end MTC.Braided.Trace

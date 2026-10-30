@@ -117,7 +117,7 @@ scalar partial trace on a simple surviving strand. The Hopf-link product follows
 from the composition law for these partial traces.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory
-open MTC.Dimensions MTC.Calculus
+open MTC.Dimensions MTC.Braided.Trace
 
 namespace MTC.Modular
 universe v u
@@ -192,7 +192,7 @@ give the Hopf-link product identity on a simple strand. Additivity on the
 semisimple tensor-product decomposition then proves the Verlinde equations.
 -/
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-open MTC.Dimensions MTC.Calculus
+open MTC.Dimensions MTC.Braided.Trace
 open scoped BigOperators
 
 namespace MTC.Modular
@@ -239,7 +239,7 @@ theorem rightPartialTrace_nested_simple {scalar : End (𝟙_ C) ≃ₐ[k] k} {Z 
     simpa [g, Iso.conj_apply_asHom, Category.assoc] using
       p.rightTrace_cyclic ((α_ Z X Y).hom ≫ f.asHom) (α_ Z X Y).inv
   (rightPartialTrace_simple p scalar f hd).trans (by
-    simpa only [Calculus.scalarTrace, rightTrace_partialTrace p g, hc] using
+    simpa only [MTC.Braided.Trace.scalarTrace, rightTrace_partialTrace p g, hc] using
       (rightPartialTrace_simple p scalar (rightPartialTrace p g) hd).symm)
 
 
@@ -258,7 +258,7 @@ theorem partialTrace_doubleBraiding_factor (p : PivotalStructure (C := C)) (Z X 
   have hfactor : (α_ Z X Y).symm.conj (End.of (doubleBraiding Z (X ⊗ Y))) =
       End.of (((β_ Z X).hom ▷ Y) ≫ t.asHom ≫ ((β_ X Z).hom ▷ Y)) := End.ext (by
     simpa [t, Iso.conj_apply_asHom, Category.assoc] using doubleBraiding_tensor_factorization Z X Y)
-  by rw [hfactor, rightPartialTrace_natural, Calculus.rightPartialTrace_whiskerLeft]
+  by rw [hfactor, rightPartialTrace_natural, MTC.Braided.Trace.rightPartialTrace_whiskerLeft]
 
 variable {k : Type*} [CommSemiring k] [Preadditive C] [Linear k C]
   [MonoidalPreadditive C] [MonoidalLinear k C]

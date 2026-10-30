@@ -18,7 +18,7 @@ open MTC.Dimensions
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
@@ -91,13 +91,13 @@ theorem braid_trace_unitary_bound_ground :
 
 end BraidTraceBound
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Actual overlapping braid products, using the constructed strand maps. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -130,11 +130,11 @@ def overlapProduct {X : C} {t : ℕ} (u : braidAlgebra X t) :
   | 0 => u
   | k + 1 => overlapLeft X t k (overlapProduct u k) * overlapRight X t k u
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 
 /-- A single overlap multiplies the trace by the normalized trace of its new factor. -/
@@ -149,13 +149,13 @@ abbrev HasOverlapTracePower (C : BraidedFusionCategory.{v,u}) {X : C.Obj}
   ∀ k, actualBraidTrace C p (overlapProduct u k) *
     (pivotalDimension C p X) ^ k = actualBraidTrace C p u ^ (k + 1)
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Unitarity of the actual overlapping braid products. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -197,14 +197,14 @@ theorem overlapProduct_unitary : ∀ k,
 
 end OverlapUnitary
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Reduction of the sharp trace bound to the categorical overlap recurrence. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
@@ -241,4 +241,4 @@ theorem sharp_trace_bound_of_overlap [Simple X]
       rw [overlapIndex_formula, show t + 2 - 1 = t + 1 by omega]
       ring) hrec
 
-end MTC.Calculus
+end MTC.Braided.Trace

@@ -74,7 +74,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-open MTC.Calculus
+open MTC.Braided.Trace
 namespace MTC.Dimensions
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
@@ -87,7 +87,7 @@ theorem rightTrace_partialTrace (p : PivotalStructure (C := C)) {X Y : C} (f : E
 
 end MTC.Dimensions
 
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 variable {k : Type*} [Field k] [IsAlgClosed k]
   {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
@@ -103,13 +103,13 @@ theorem rightPartialTrace_simple [CategoryTheory.Limits.HasKernels C] {X Y : C}
   simpa only [scalarTrace, Dimensions.rightTrace_partialTrace p f] using
     simple_end_eq_trace_smul p scalar (rightPartialTrace p f) hd
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-open MTC.Calculus
+open MTC.Braided.Trace
 namespace MTC.Dimensions
 universe v u
 variable {k : Type*} [CommSemiring k]

@@ -13,7 +13,7 @@ open MTC.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -92,13 +92,13 @@ theorem addRightBraidAlgebraIter_asHom : ∀ (k : ℕ) (a : braidAlgebra X n),
 
 end IteratedInsertion
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! The exact tensor-power coherence needed for the overlap trace step. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
@@ -217,4 +217,4 @@ theorem overlap_trace_step_of_coherence (k : ℕ)
     div_mul_cancel₀ _ (by simpa only [← unitScalar_eq_equiv] using
       Modular.unitScalar_rightTrace_ne_zero D p X)]
 
-end MTC.Calculus
+end MTC.Braided.Trace

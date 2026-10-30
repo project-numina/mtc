@@ -219,7 +219,7 @@ run_cmd do
       ``MTC.fpSimple_mul,
       ``MTC.ScalarTwist.labels,
       ``MTC.fpDimension_functor,
-      ``MTC.Integrate.center_forget_fpDimension,
+      ``MTC.PropertyF.Reduction.center_forget_fpDimension,
       ``MTC.galois_rigidity_of_propertyF,
       ``MTC.weaklyIntegral_of_actual_center,
       ``MTC.Center.Induction.liftedPivotalStructure,
@@ -235,10 +235,10 @@ run_cmd do
       ``MTC.Center.Balancing.drinfeld_tensor_of_pairing_cap,
       ``MTC.Center.Balancing.balance_of_drinfeld_tensor,
       ``MTC.center_globalDimension_square_of_actual_induction,
-      ``MTC.Calculus.actual_rigidity_of_overlap_and_galois_dimensions,
+      ``MTC.Braided.Trace.actual_rigidity_of_overlap_and_galois_dimensions,
       ``MTC.Dimensions.fourthDualRootNaturalSquare_eq,
       ``MTC.selfDual_character_galois_real,
-      ``MTC.Calculus.exists_unitary_braid_trace_blocks,
+      ``MTC.Braided.Trace.exists_unitary_braid_trace_blocks,
       ``MTC.Dimensions.squaredNorm_independent] do
     if let some issue := findIssue env n then
       throwError "dependency audit failed for ground result {n}: {repr issue}"

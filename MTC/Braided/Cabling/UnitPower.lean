@@ -29,7 +29,7 @@ end MTC
 
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 @[expose] public noncomputable section
-namespace MTC.Cabling
+namespace MTC.Braided.Cabling
 universe v u
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
   [Abelian D] [Linear ℂ D] [RigidCategory D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
@@ -52,4 +52,4 @@ theorem generatedBy_rightDual_of_unit_power {X : D} [Simple X] {n : ℕ}
   let g : Xᘁ ⟶ tensorPower X n := (ρ_ (Xᘁ)).inv ≫ f
   let ⟨s, hs⟩ := MTC.split_from_simple g (by simpa [g] using hf)
   generatedBy_retract (generatedBy_tensorPower X n) { i := g, r := s, retract := hs }
-end MTC.Cabling
+end MTC.Braided.Cabling

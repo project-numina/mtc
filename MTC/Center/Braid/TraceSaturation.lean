@@ -33,7 +33,7 @@ theorem finiteOrder_matrix_unitarizable :
   let G := Subgroup.zpowers u
   let : Finite G := hufin.finite_zpowers
   let : Fintype G := Fintype.ofFinite G
-  let ⟨P, hP⟩ := Calculus.exists_unitarizing_basis ((Units.coeHom _).comp G.subtype)
+  let ⟨P, hP⟩ := MTC.Braided.Trace.exists_unitarizing_basis ((Units.coeHom _).comp G.subtype)
   ⟨P, by simpa [u] using hP ⟨u, Subgroup.mem_zpowers u⟩⟩
 
 include hM in
@@ -87,14 +87,14 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
     (ht : p.rightTrace a.asHom = p.rightTrace (𝟙 X)) : a = 1 := by
   let m (i : Fin (rank D)) := Module.finrank ℂ (simples D i ⟶ X)
   obtain ⟨e⟩ := exists_canonical_decomposition D X
-  let B := Calculus.groundEndBlockEquiv D e
+  let B := MTC.Braided.Trace.groundEndBlockEquiv D e
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
-    have h2 := Calculus.pivotalTrace_groundEndBlocks D e 1 p (MTC.unitScalarEquiv D)
+    have h2 := MTC.Braided.Trace.pivotalTrace_groundEndBlocks D e 1 p (MTC.unitScalarEquiv D)
     change (∀ i, MTC.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
       (fpSimple D i : ℂ)) at hdim
     simpa [hdim, B, End.one_asHom, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
-      ((Calculus.pivotalTrace_groundEndBlocks D e a p (MTC.unitScalarEquiv D)).symm.trans
+      ((MTC.Braided.Trace.pivotalTrace_groundEndBlocks D e a p (MTC.unitScalarEquiv D)).symm.trans
         ((congrArg (MTC.unitScalarEquiv D) ht).trans h2))
   exact B.injective <| funext fun i ↦ by
     simpa using finiteOrder_matrices_eq_one_of_weighted_trace (B a) (fpSimple D)

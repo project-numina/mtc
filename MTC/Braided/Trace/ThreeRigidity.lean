@@ -15,7 +15,7 @@ open MTC.Dimensions
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 /-- In explicit matrix blocks, a sharp trace bound and a saturating braid
 force the squares of the two braid generators to coincide. The trace bound,
@@ -38,13 +38,13 @@ theorem braid_squares_equal_of_saturation (B : Blocks)
       rw [htrace]
       simpa [norm_pow, abs_of_pos hf] using B.mass_le_of_unitary_trace_bound w hbound)) hw b
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Apply the matrix saturation step to actual categorical braid blocks. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 
@@ -195,4 +195,4 @@ theorem actual_three_strand_rigidity_of_trace_bound [Simple X]
 
 end BlockRigidity
 
-end MTC.Calculus
+end MTC.Braided.Trace

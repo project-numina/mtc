@@ -15,7 +15,7 @@ insert overlapping braid factors, and hence their trace recurrence.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 variable (X : C)
@@ -102,13 +102,13 @@ theorem reverseConcat_overlap : ∀ a b : ℕ,
       id_tensorHom, whiskerLeft_comp, comp_whiskerRight, Category.assoc]
     monoidal
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Coherence of the canonical tensor-power concatenation isomorphisms. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C]
 
@@ -169,4 +169,4 @@ theorem overlap_trace_power (C : BraidedFusionCategory.{v,u})
     simp [IsLocalOverlapProduct, overlapProduct, overlapEndProduct, previousOverlapLocal,
       overlapLeft_local, hr]
 
-end MTC.Calculus
+end MTC.Braided.Trace

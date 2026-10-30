@@ -22,7 +22,7 @@ open MTC.Dimensions
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable (C : BraidedFusionCategory.{v,u})
@@ -74,13 +74,13 @@ theorem pivotalTrace_groundEndBlocks :
   simpa [rightTraceWithLinear, PivotalStructure.rightTrace, F, Matrix.trace, Finset.mul_sum, mul_comm,
     Fintype.sum_sigma] using h
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Consequences of the categorical multiplicity weights. -/
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 /-- Dimensions obtained by decomposing a family into matrix blocks. -/
 abbrev HasMultiplicityDecomposition {ι κ : Type*} [Fintype κ]
@@ -113,13 +113,13 @@ theorem transported_weight_ne_zero {ι : Type*} [Fintype ι]
     exact_mod_cast (σ.injective (by simpa [map_sum, map_mul] using hz') :
       (∑ i, (mult i : ℂ) * (dim i : ℂ)) = 0))
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Cyclic linear functionals on complex matrix algebras. -/
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 section
 
@@ -175,13 +175,13 @@ theorem cyclic_block_trace {B : Blocks} (T : B.Algebra →ₗ[ℂ] ℂ)
     simp only [← hw, Tblock, LinearMap.comp_apply, LinearMap.single_apply, ← map_sum,
       LinearMap.sum_single_apply]⟩
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Multiplicities in traces of representations of matrix-block algebras. -/
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 section IdempotentTrace
 
@@ -258,14 +258,14 @@ theorem faithful_block_representation_multiplicities {B' : Blocks}
   simpa [e] using congrArg (fun x : B.Algebra => x j k k)
     (hinj (show φ e = φ 0 from by simpa using hzero))
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Multiplicity weights for the pivotal trace on finite braid-image blocks. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable (C : BraidedFusionCategory.{v,u})
@@ -341,4 +341,4 @@ theorem exists_unitary_braid_trace_blocks
   let ⟨mult, hret, hdim, htrace⟩ := pivotalTrace_braid_multiplicities C p scalar e hd b
   ⟨r, d, b, mult, hd, hunitary, hret, hdim, htrace⟩
 
-end MTC.Calculus
+end MTC.Braided.Trace

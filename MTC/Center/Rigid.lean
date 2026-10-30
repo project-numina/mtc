@@ -41,9 +41,9 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
 /-- The normalized dual crossing respects tensor products. -/
 abbrev IsDualCrossingMonoidal (Z : CategoryTheory.Center C) : Prop :=
-  ∀ U V : C, ((Integrate.dualCrossingIso Z).app (U ⊗ V)).hom =
-    (α_ _ _ _).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ V) ≫
-      (α_ _ _ _).hom ≫ (U ◁ ((Integrate.dualCrossingIso Z).app V).hom) ≫
+  ∀ U V : C, ((MTC.PropertyF.Reduction.dualCrossingIso Z).app (U ⊗ V)).hom =
+    (α_ _ _ _).inv ≫ (((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom ▷ V) ≫
+      (α_ _ _ _).hom ≫ (U ◁ ((MTC.PropertyF.Reduction.dualCrossingIso Z).app V).hom) ≫
         (α_ _ _ _).inv
 
 /-- If the normalized mate satisfies the half-braiding law, it defines an
@@ -51,9 +51,9 @@ object of the actual centre on the underlying right dual. -/
 def dualObject (Z : CategoryTheory.Center C)
     (hTensor : IsDualCrossingMonoidal Z) : CategoryTheory.Center C :=
   ⟨Z.1ᘁ, {
-    β := fun U => (Integrate.dualCrossingIso Z).app U
+    β := fun U => (MTC.PropertyF.Reduction.dualCrossingIso Z).app U
     monoidal := hTensor
-    naturality := fun f => Integrate.dualCrossing_natural Z f }⟩
+    naturality := fun f => MTC.PropertyF.Reduction.dualCrossing_natural Z f }⟩
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Once the underlying duality maps intertwine the lifted half-braidings,
@@ -110,18 +110,18 @@ end MTC.Center.Rigid
 expose its compatibility with the units and counits of the tensor adjunctions. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory MTC.Integrate
+open CategoryTheory CategoryTheory.MonoidalCategory MTC.PropertyF.Reduction
 namespace MTC.Center.Rigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
 theorem dualMate_unit (Z : CategoryTheory.Center C) (U : C) :
     (tensorLeftAdjunction Z.1 Z.1ᘁ).unit.app U ≫
-      (Integrate.halfBraidingIso Z).hom.app
+      (MTC.PropertyF.Reduction.halfBraidingIso Z).hom.app
         ((tensorLeft Z.1ᘁ).obj U) =
     (tensorRightAdjunction (ᘁZ.1) Z.1).unit.app U ≫
-      (tensorRight Z.1).map ((Integrate.dualMateIso Z).inv.app U) := by
-  simpa [Integrate.dualMateIso] using unit_conjugateEquiv_symm
+      (tensorRight Z.1).map ((MTC.PropertyF.Reduction.dualMateIso Z).inv.app U) := by
+  simpa [MTC.PropertyF.Reduction.dualMateIso] using unit_conjugateEquiv_symm
     (tensorLeftAdjunction Z.1 Z.1ᘁ) (tensorRightAdjunction (ᘁZ.1) Z.1) (halfBraidingIso Z).hom U
 
 end MTC.Center.Rigid
@@ -138,25 +138,25 @@ set_option backward.isDefEq.respectTransparency false in
 theorem dualMate_unit_explicit (Z : Center C) (U : C) :
   (λ_ U).inv ≫ (η_ Z.1 Z.1ᘁ ▷ U) ≫ (α_ Z.1 Z.1ᘁ U).hom ≫ MTC.Center.halfBraidingHom Z (Z.1ᘁ ⊗ U) =
   (ρ_ U).inv ≫ (U ◁ η_ (ᘁZ.1) Z.1) ≫ (α_ U (ᘁZ.1) Z.1).inv ≫
-    ((Integrate.dualMateIso Z).inv.app U ▷ Z.1) := by
+    ((MTC.PropertyF.Reduction.dualMateIso Z).inv.app U ▷ Z.1) := by
   simpa [tensorRightAdjunction, tensorLeftAdjunction, tensorRightHomEquiv,
-    tensorLeftHomEquiv, Integrate.halfBraidingIso] using MTC.Center.Rigid.dualMate_unit Z U
+    tensorLeftHomEquiv, MTC.PropertyF.Reduction.halfBraidingIso] using MTC.Center.Rigid.dualMate_unit Z U
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component identifies the two chosen duals compatibly with the crossed cup. -/
 theorem dualMateUnit_crossed_coevaluation (Z : Center C) :
   η_ Z.1 Z.1ᘁ ≫ (Z.2.β (Z.1ᘁ)).hom =
-  η_ (ᘁZ.1) Z.1 ≫ ((Integrate.dualMateUnit Z).inv ▷ Z.1) := by
+  η_ (ᘁZ.1) Z.1 ≫ ((MTC.PropertyF.Reduction.dualMateUnit Z).inv ▷ Z.1) := by
   have h := MTC.Center.Rigid.dualMate_unit_explicit Z (𝟙_ C)
   have hn := Z.2.naturality (ρ_ Z.1ᘁ).hom
-  dsimp [Integrate.dualMateUnit]
+  dsimp [MTC.PropertyF.Reduction.dualMateUnit]
   simp only [Category.assoc, comp_whiskerRight]
   calc
     _ = ((λ_ (𝟙_ C)).inv ≫ (η_ Z.1 Z.1ᘁ ▷ (𝟙_ C)) ≫
         (α_ Z.1 Z.1ᘁ (𝟙_ C)).hom ≫ (Z.2.β (Z.1ᘁ ⊗ (𝟙_ C))).hom) ≫
           ((ρ_ Z.1ᘁ).hom ▷ Z.1) := by rw [Category.assoc, Category.assoc, Category.assoc, ← hn]; monoidal
     _ = ((ρ_ (𝟙_ C)).inv ≫ ((𝟙_ C) ◁ η_ (ᘁZ.1) Z.1) ≫
-        (α_ (𝟙_ C) (ᘁZ.1) Z.1).inv ≫ ((Integrate.dualMateIso Z).inv.app (𝟙_ C) ▷ Z.1)) ≫
+        (α_ (𝟙_ C) (ᘁZ.1) Z.1).inv ≫ ((MTC.PropertyF.Reduction.dualMateIso Z).inv.app (𝟙_ C) ▷ Z.1)) ≫
           ((ρ_ Z.1ᘁ).hom ▷ Z.1) := by rw [h]
     _ = _ := by monoidal
 
@@ -173,15 +173,15 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The normalized dual crossing intertwines the coevaluation. -/
 theorem coevaluation_sliding (Z : Center C) (U : C) :
     𝟙 U ⊗≫ (η_ Z.1 Z.1ᘁ ▷ U) ⊗≫
-      (Z.1 ◁ (show Z.1ᘁ ⊗ U ⟶ U ⊗ Z.1ᘁ from ((Integrate.dualCrossingIso Z).app U).hom)) ⊗≫
+      (Z.1 ◁ (show Z.1ᘁ ⊗ U ⟶ U ⊗ Z.1ᘁ from ((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom)) ⊗≫
       ((Z.2.β U).hom ▷ Z.1ᘁ) ⊗≫ 𝟙 (U ⊗ (Z.1 ⊗ Z.1ᘁ)) =
     𝟙 U ⊗≫ (U ◁ η_ Z.1 Z.1ᘁ) ⊗≫ 𝟙 (U ⊗ (Z.1 ⊗ Z.1ᘁ)) := by
   let X := Z.1
   let D : C := Z.1ᘁ
   let L : C := ᘁZ.1
-  let f : L ⟶ D := (Integrate.dualMateUnit Z).inv
-  let m : D ⊗ U ⟶ U ⊗ L := (Integrate.dualMateIso Z).hom.app U
-  let n : U ⊗ L ⟶ D ⊗ U := (Integrate.dualMateIso Z).inv.app U
+  let f : L ⟶ D := (MTC.PropertyF.Reduction.dualMateUnit Z).inv
+  let m : D ⊗ U ⟶ U ⊗ L := (MTC.PropertyF.Reduction.dualMateIso Z).hom.app U
+  let n : U ⊗ L ⟶ D ⊗ U := (MTC.PropertyF.Reduction.dualMateIso Z).inv.app U
   let c (T : C) : X ⊗ T ⟶ T ⊗ X := (Z.2.β T).hom
   have hm : n ≫ m = 𝟙 _ := by simp [n, m, L]
   have hf : (X ◁ f) ≫ c D = c L ≫ (f ▷ X) := Z.2.naturality f
@@ -192,7 +192,7 @@ theorem coevaluation_sliding (Z : Center C) (U : C) :
   have hu := MTC.Center.Rigid.dualMate_unit_explicit Z U
   change (λ_ U).inv ≫ (η_ X D ▷ U) ≫ (α_ X D U).hom ≫ c (D ⊗ U) = (ρ_ U).inv ≫ (U ◁ η_ L X) ≫ (α_ U L X).inv ≫ (n ▷ X) at hu
   have hc : η_ X D ≫ c D = η_ L X ≫ (f ▷ X) := MTC.Center.Rigid.dualMateUnit_crossed_coevaluation Z
-  have hx : (show D ⊗ U ⟶ U ⊗ D from ((Integrate.dualCrossingIso Z).app U).hom) = m ≫ (U ◁ f) := by
+  have hx : (show D ⊗ U ⟶ U ⊗ D from ((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom) = m ≫ (U ◁ f) := by
     rfl
   rw [hx]
   apply (cancel_mono (U ◁ c D)).1
@@ -226,12 +226,12 @@ theorem coevaluation_central {Z : Center C}
       ((𝟙_ (Center C)).2.β U).hom ≫ (U ◁ η_ Z.1 Z.1ᘁ) := by
   have h := coevaluation_sliding Z U
   change (η_ Z.1 Z.1ᘁ ▷ U) ≫
-    ((α_ Z.1 Z.1ᘁ U).hom ≫ (Z.1 ◁ ((Integrate.dualCrossingIso Z).app U).hom) ≫
+    ((α_ Z.1 Z.1ᘁ U).hom ≫ (Z.1 ◁ ((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom) ≫
       (α_ Z.1 U Z.1ᘁ).inv ≫ ((Z.2.β U).hom ▷ Z.1ᘁ) ≫ (α_ U Z.1 Z.1ᘁ).hom) =
     ((λ_ U).hom ≫ (ρ_ U).inv) ≫ (U ◁ η_ Z.1 Z.1ᘁ)
   calc
     _ = (λ_ U).hom ≫ (𝟙 U ⊗≫ (η_ Z.1 Z.1ᘁ ▷ U) ⊗≫
-      (Z.1 ◁ (show Z.1ᘁ ⊗ U ⟶ U ⊗ Z.1ᘁ from ((Integrate.dualCrossingIso Z).app U).hom)) ⊗≫
+      (Z.1 ◁ (show Z.1ᘁ ⊗ U ⟶ U ⊗ Z.1ᘁ from ((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom)) ⊗≫
       ((Z.2.β U).hom ▷ Z.1ᘁ) ⊗≫ 𝟙 (U ⊗ (Z.1 ⊗ Z.1ᘁ))) := by monoidal
     _ = (λ_ U).hom ≫ (𝟙 U ⊗≫ (U ◁ η_ Z.1 Z.1ᘁ) ⊗≫ 𝟙 (U ⊗ (Z.1 ⊗ Z.1ᘁ))) := by rw [h]
     _ = _ := by monoidal
@@ -248,13 +248,13 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The normalized dual crossing satisfies the half-braiding tensor law. -/
 theorem dualCrossing_tensor (Z : Center C) (U V : C) :
-    ((Integrate.dualCrossingIso Z).app (U ⊗ V)).hom =
-      (α_ _ _ _).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ V) ≫
-        (α_ _ _ _).hom ≫ (U ◁ ((Integrate.dualCrossingIso Z).app V).hom) ≫ (α_ _ _ _).inv := by
+    ((MTC.PropertyF.Reduction.dualCrossingIso Z).app (U ⊗ V)).hom =
+      (α_ _ _ _).inv ≫ (((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom ▷ V) ≫
+        (α_ _ _ _).hom ≫ (U ◁ ((MTC.PropertyF.Reduction.dualCrossingIso Z).app V).hom) ≫ (α_ _ _ _).inv := by
   let X := Z.1
   let D : C := Z.1ᘁ
   let c (T : C) : X ⊗ T ⟶ T ⊗ X := (Z.2.β T).hom
-  let d (T : C) : D ⊗ T ⟶ T ⊗ D := ((Integrate.dualCrossingIso Z).app T).hom
+  let d (T : C) : D ⊗ T ⟶ T ⊗ D := ((MTC.PropertyF.Reduction.dualCrossingIso Z).app T).hom
   let p : D ⊗ (U ⊗ V) ⟶ (U ⊗ V) ⊗ D :=
     (α_ D U V).inv ≫ (d U ▷ V) ≫ (α_ U D V).hom ≫ (U ◁ d V) ≫ (α_ U V D).inv
   have hs (T : C) :
@@ -313,13 +313,13 @@ set_option backward.isDefEq.respectTransparency false in
 theorem evaluation_sliding (Z : Center C) (U : C) :
     𝟙 ((Z.1ᘁ ⊗ Z.1) ⊗ U) ⊗≫ (ε_ Z.1 Z.1ᘁ ▷ U) ⊗≫ 𝟙 (U ⊗ (𝟙_ C)) =
     𝟙 ((Z.1ᘁ ⊗ Z.1) ⊗ U) ⊗≫ (Z.1ᘁ ◁ (Z.2.β U).hom) ⊗≫
-      (show Z.1ᘁ ⊗ U ⟶ U ⊗ Z.1ᘁ from ((Integrate.dualCrossingIso Z).app U).hom) ▷ Z.1 ⊗≫
+      (show Z.1ᘁ ⊗ U ⟶ U ⊗ Z.1ᘁ from ((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom) ▷ Z.1 ⊗≫
       (U ◁ ε_ Z.1 Z.1ᘁ) ⊗≫ 𝟙 (U ⊗ (𝟙_ C)) := by
   let X := Z.1
   let D : C := Z.1ᘁ
   let c : X ⊗ U ⟶ U ⊗ X := (Z.2.β U).hom
   let cInv : U ⊗ X ⟶ X ⊗ U := (Z.2.β U).inv
-  let d : D ⊗ U ⟶ U ⊗ D := ((Integrate.dualCrossingIso Z).app U).hom
+  let d : D ⊗ U ⟶ U ⊗ D := ((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom
   have hslide := MTC.Center.Rigid.coevaluation_sliding Z U
   have hc : cInv ≫ c = 𝟙 (U ⊗ X) := by simp [cInv, c, X]
   apply (cancel_epi (α_ D X U).inv).1
@@ -367,12 +367,12 @@ theorem evaluation_central {Z : Center C}
   have h := evaluation_sliding Z U
   change (ε_ Z.1 Z.1ᘁ ▷ U) ≫ ((λ_ U).hom ≫ (ρ_ U).inv) =
     ((α_ Z.1ᘁ Z.1 U).hom ≫ (Z.1ᘁ ◁ (Z.2.β U).hom) ≫
-      (α_ Z.1ᘁ U Z.1).inv ≫ (((Integrate.dualCrossingIso Z).app U).hom ▷ Z.1) ≫
+      (α_ Z.1ᘁ U Z.1).inv ≫ (((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom ▷ Z.1) ≫
       (α_ U Z.1ᘁ Z.1).hom) ≫ (U ◁ ε_ Z.1 Z.1ᘁ)
   calc
     _ = (𝟙 ((Z.1ᘁ ⊗ Z.1) ⊗ U) ⊗≫ (ε_ Z.1 Z.1ᘁ ▷ U) ⊗≫ 𝟙 (U ⊗ (𝟙_ C))) := by monoidal
     _ = (𝟙 ((Z.1ᘁ ⊗ Z.1) ⊗ U) ⊗≫ (Z.1ᘁ ◁ (Z.2.β U).hom) ⊗≫
-      (show Z.1ᘁ ⊗ U ⟶ U ⊗ Z.1ᘁ from ((Integrate.dualCrossingIso Z).app U).hom) ▷ Z.1 ⊗≫
+      (show Z.1ᘁ ⊗ U ⟶ U ⊗ Z.1ᘁ from ((MTC.PropertyF.Reduction.dualCrossingIso Z).app U).hom) ▷ Z.1 ⊗≫
       (U ◁ ε_ Z.1 Z.1ᘁ) ⊗≫ 𝟙 (U ⊗ (𝟙_ C))) := h
     _ = _ := by monoidal
 

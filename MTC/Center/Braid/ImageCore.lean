@@ -18,7 +18,7 @@ product centralizer, under the stated finite-monodromy hypotheses. We write
 @[expose] public noncomputable section
 open MTC.Modular (HasFPSimpleDimensions IsFPSpherical doubleBraiding sCentralizer)
 open MTC.Dimensions
-local notation "𝒵" => MTC.Integrate.bundledCenter
+local notation "𝒵" => MTC.PropertyF.Reduction.bundledCenter
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace MTC.Center.Braid
 universe v u

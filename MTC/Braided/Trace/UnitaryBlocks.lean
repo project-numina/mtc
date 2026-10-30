@@ -21,7 +21,7 @@ algebra has a matrix-block presentation in which the group acts unitarily.
 @[expose] public noncomputable section
 open Matrix
 open scoped BigOperators ComplexOrder
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 section Averaging
 
@@ -78,12 +78,12 @@ theorem exists_unitarizing_basis :
   rw [← hsquare] at h
   simpa only [Units.val_mul, Units.coe_star, MonoidHom.coe_toHomUnits, mul_assoc] using h
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Wedderburn decomposition of the linear span of a finite group image. -/
 
 @[expose] public noncomputable section
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 variable {G A : Type*} [Monoid G] [Semiring A] [Algebra ℂ A]
 variable (ρ : G →* A)
@@ -117,10 +117,10 @@ instance [Finite G] : Module.Finite ℂ (groupImageAlgebra ρ) :=
   Module.Finite.of_surjective (groupAlgebraMap ρ).rangeRestrict.toLinearMap
     (AlgHom.rangeRestrict_surjective (groupAlgebraMap ρ))
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 @[expose] public noncomputable section
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 variable {G A : Type*} [Group G] [Ring A] [Algebra ℂ A] (ρ : G →* A) [Finite G]
 
@@ -140,13 +140,13 @@ theorem groupImageAlgebra_blocks :
   let _ := groupImageAlgebra_semisimple ρ
   IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ (groupImageAlgebra ρ)
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! The actual linear span of a finite categorical braid image has matrix blocks. -/
 
 @[expose] public noncomputable section
 open CategoryTheory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   [Preadditive C] [Linear ℂ C]
@@ -167,13 +167,13 @@ def braidAlgebra (X : C) (n : ℕ) : Subalgebra ℂ (End (braidTensorPower X n))
 abbrev BraidBlockPresentation {r : ℕ} (X : C) (n : ℕ) (d : Fin r → ℕ) :=
   braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 /-! Unitary representatives for finite-group Wedderburn blocks. -/
 
 @[expose] public noncomputable section
 open CategoryTheory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 variable {A : Type*} [Semiring A] [Algebra ℂ A]
 
@@ -220,11 +220,11 @@ theorem groupInImage_span :
     simpa only [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp',
       Submodule.subtype_apply, groupInImage_val] using (groupImageAlgebra_toSubmodule ρ).symm
 
-end MTC.Calculus
+end MTC.Braided.Trace
 
 @[expose] public noncomputable section
 open CategoryTheory
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 
 variable {G A : Type*} [Group G] [Ring A] [Algebra ℂ A] (ρ : G →* A) [Finite G]
 
@@ -252,4 +252,4 @@ abbrev IsUnitaryBraidPresentation {X : C} {n r : ℕ} {d : Fin r → ℕ}
     (e : BraidBlockPresentation X n d) : Prop :=
   IsUnitaryPresentation (braidEndRepresentation X n) e
 
-end MTC.Calculus
+end MTC.Braided.Trace

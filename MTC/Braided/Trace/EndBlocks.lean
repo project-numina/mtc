@@ -15,7 +15,7 @@ blocks. `groundEndBlockEquiv` applies this to the simple objects of a fusion cat
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.Calculus
+namespace MTC.Braided.Trace
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear ℂ C]
@@ -129,4 +129,4 @@ def groundEndBlockEquiv {X : D.Obj}
     AlgEquiv.piCongrRight fun i => Matrix.reindexAlgEquiv ℂ ℂ (simpleFiberEquiv m i)
   exact (isoEndAlgEquiv e).trans (decomp.trans (scalars.trans reindex))
 
-end MTC.Calculus
+end MTC.Braided.Trace

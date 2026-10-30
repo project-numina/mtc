@@ -60,7 +60,7 @@ universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {C : BraidedFusionCategory.{v,u}}
 local notation "𝒵" => Center C.Obj
-local notation "𝒵ᶠ" => Integrate.bundledCenter C
+local notation "𝒵ᶠ" => MTC.PropertyF.Reduction.bundledCenter C
 open CategoryTheory.Limits
 attribute [local instance] Abelian.hasFiniteBiproducts
 

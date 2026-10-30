@@ -48,11 +48,11 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Closing self-braiding gives the pivotal twist determined by a compatible double-dual isomorphism. -/
 theorem rightPartialTrace_braiding (p : PivotalStructure (C := C)) {X : C} (d : X ≅ (Xᘁ)ᘁ)
     (hd : HasDrinfeldEvaluation d) :
-    Calculus.rightPartialTrace p (End.of (β_ X X).hom) =
+    MTC.Braided.Trace.rightPartialTrace p (End.of (β_ X X).hom) =
       End.of ((p.iso X).hom ≫ d.inv) :=
   End.ext (by
     dsimp only [HasDrinfeldEvaluation] at hd
-    simp only [Calculus.rightPartialTrace]
+    simp only [MTC.Braided.Trace.rightPartialTrace]
     let t : X ⟶ X := (p.iso X).hom ≫ d.inv
     have hclose : (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
         t ▷ (Xᘁ) ≫ (β_ X (Xᘁ)).hom ≫ ε_ X (Xᘁ) := by

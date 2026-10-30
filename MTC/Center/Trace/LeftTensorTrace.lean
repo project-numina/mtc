@@ -79,7 +79,7 @@ theorem leftPartialTrace_simple_of_trace_compatibility (scalar : End (𝟙_ C) �
     (hd : scalar (p.rightTrace (𝟙 Y)) ≠ 0) (htrace : IsLeftTraceCompatibleAt p f) :
     leftPartialTrace p f =
       (scalar (p.rightTrace f.asHom) / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y) :=
-  (Calculus.simple_end_eq_trace_smul p scalar (leftPartialTrace p f) hd).trans <|
+  (MTC.Braided.Trace.simple_end_eq_trace_smul p scalar (leftPartialTrace p f) hd).trans <|
     congrArg (fun t ↦ (scalar t / scalar (p.rightTrace (𝟙 Y))) • (1 : End Y)) htrace
 
 end MTC.Center.Trace

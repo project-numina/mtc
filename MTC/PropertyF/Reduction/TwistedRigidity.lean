@@ -194,7 +194,7 @@ section
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false
 open CategoryTheory CategoryTheory.MonoidalCategory
-open MTC.Calculus
+open MTC.Braided.Trace
 open scoped BigOperators
 namespace MTC
 universe v u
@@ -229,7 +229,7 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
       (d : ℂ) * 𝒇 y := (ScalarTwist.rightTrace_twist Z σ p _).trans hS
   actual_rigidity_of_overlap_and_galois_dimensions D q original transformed σ
     hpos htrans hqdim X d (𝒇 y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
-    (Calculus.overlap_trace_power D q)
+    (MTC.Braided.Trace.overlap_trace_power D q)
 
 end MTC
 end

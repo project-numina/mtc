@@ -74,11 +74,11 @@ theorem adjacent_braid_relation (n : ℕ) (i : Fin (n + 1)) :
     b X (n + 1) i.succ * b X (n + 1) i.castSucc *
       b X (n + 1) i.succ := by
   induction n with
-  | zero => simpa [Fin.eq_zero i] using Calculus.three_braid_relation X
+  | zero => simpa [Fin.eq_zero i] using MTC.Braided.Trace.three_braid_relation X
   | succ n ih =>
     refine Fin.cases ?_ (fun j => ?_) i
-    · simpa [map_mul, Calculus.addRightAut_generator] using
-        congrArg (Calculus.addRightAut X (n + 1)) (ih 0)
+    · simpa [map_mul, MTC.Braided.Trace.addRightAut_generator] using
+        congrArg (MTC.Braided.Trace.addRightAut X (n + 1)) (ih 0)
     · have h := congrArg ((tensorLeft X).mapAut (tensorPower X (n + 3))) (ih j)
       simp only [map_mul, braidGenerator_succ] at h
       convert h using 1 <;> congr 2
@@ -97,7 +97,7 @@ theorem first_distant_commute (n : ℕ) (j : Fin (n + 1)) :
     rcases j with ⟨j, hj⟩
     simpa only [Fin.succ, braidGenerator, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
       Iso.refl_hom, tensorHom_id, id_tensorHom] using
-      (Calculus.first_pair_natural X (β_ X X).hom (b X n ⟨j, hj⟩).asIso.hom).symm
+      (MTC.Braided.Trace.first_pair_natural X (β_ X X).hom (b X n ⟨j, hj⟩).asIso.hom).symm
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Crossings supported on disjoint pairs of strands commute. -/

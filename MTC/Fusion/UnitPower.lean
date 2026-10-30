@@ -148,7 +148,7 @@ theorem simple_generatedBy_rightDual {D : Type u} [Category.{v} D] [MonoidalCate
     [BraidedCategory D] [Abelian D] [Linear ℂ D] [RigidCategory D]
     [MonoidalPreadditive D] [MonoidalLinear ℂ D] [IsFusionCategory D]
     (X : D) [Simple X] : GeneratedBy X (Xᘁ) :=
-  (unit_retract_tensorPower X).elim fun _ ⟨r⟩ ↦ Cabling.generatedBy_rightDual_of_unit_power r
+  (unit_retract_tensorPower X).elim fun _ ⟨r⟩ ↦ MTC.Braided.Cabling.generatedBy_rightDual_of_unit_power r
 
 end MTC
 
