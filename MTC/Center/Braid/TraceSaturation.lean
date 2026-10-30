@@ -94,13 +94,13 @@ theorem finiteOrder_eq_one_of_trace_eq_dimension
   let B := MTC.Braided.Trace.groundEndBlockEquiv D e
   have hsum : (∑ i, fpSimple D i * (B a i).trace.re) =
       ∑ i, fpSimple D i * (m i : ℝ) := by
-    have h2 := MTC.Braided.Trace.pivotalTrace_groundEndBlocks D e 1 p (MTC.unitScalarEquiv D)
-    have hdim' : ∀ i, MTC.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
+    have h2 := MTC.Braided.Trace.pivotalTrace_groundEndBlocks D e 1 p (MTC.Fusion.unitScalarEquiv D)
+    have hdim' : ∀ i, MTC.Fusion.unitScalarEquiv D (p.rightTrace (𝟙 (simples D i))) =
         (fpSimple D i : ℂ) := by
-      simpa [HasFPSimpleDimensions, Modular.simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using hdim
+      simpa [HasFPSimpleDimensions, Modular.simpleDimension, pivotalDimension, MTC.Fusion.unitScalar_eq_equiv] using hdim
     simpa [hdim', B, End.one_asHom, Complex.re_sum, Complex.mul_re] using congrArg Complex.re
-      ((MTC.Braided.Trace.pivotalTrace_groundEndBlocks D e a p (MTC.unitScalarEquiv D)).symm.trans
-        ((congrArg (MTC.unitScalarEquiv D) ht).trans h2))
+      ((MTC.Braided.Trace.pivotalTrace_groundEndBlocks D e a p (MTC.Fusion.unitScalarEquiv D)).symm.trans
+        ((congrArg (MTC.Fusion.unitScalarEquiv D) ht).trans h2))
   exact B.injective <| funext fun i ↦ by
     simpa using finiteOrder_matrices_eq_one_of_weighted_trace (B a) (fpSimple D)
       (fpSimple_pos D) (fun j ↦ (Pi.evalMonoidHom _ j).isOfFinOrder (B.toMonoidHom.isOfFinOrder ha))
@@ -113,10 +113,10 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
     (hfinite : IsOfFinOrder (End.of (doubleBraiding (simples D i) (simples D j))))
     (hs : sCentralizes D p i j) : doubleBraiding (simples D i) (simples D j) = 𝟙 _ :=
   congrArg End.asHom <| finiteOrder_eq_one_of_trace_eq_dimension hdim hfinite <|
-    (MTC.unitScalarEquiv D).injective <| by
+    (MTC.Fusion.unitScalarEquiv D).injective <| by
       change Modular.categoricalS D p i j = _
       rw [hs]
-      simpa [Modular.simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using
+      simpa [Modular.simpleDimension, pivotalDimension, MTC.Fusion.unitScalar_eq_equiv] using
         (pivotalDimension_tensor p (simples D i) (simples D j)).symm
 
 end MTC.Center.Braid

@@ -7,7 +7,7 @@ public import MTC.CategoryTheory.Dimensions.Trace
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 public import MTC.Fusion.Simples
 public import MTC.Fusion.Reciprocity
-public import MTC.PropertyF.Reduction.UnitScalar
+public import MTC.Fusion.UnitScalar
 
 open MTC.Fusion
 
@@ -85,8 +85,8 @@ theorem target_squaredNorm_choice_independent
     {X : C.Obj} [Simple X] (j : X ≅ ((Xᘁ)ᘁ)) :
     squaredNorm C X =
       unitScalar C (rightQuantumTrace j) * unitScalar C (leftQuantumTrace j) :=
-  by simpa only [squaredNorm, MTC.unitScalar_eq_equiv] using
-    squaredNorm_independent (MTC.unitScalarEquiv C) (doubleDualIso C X) j
+  by simpa only [squaredNorm, MTC.Fusion.unitScalar_eq_equiv] using
+    squaredNorm_independent (MTC.Fusion.unitScalarEquiv C) (doubleDualIso C X) j
 
 section
 variable (p : PivotalStructure (C := C.Obj)) (hp : p.IsSpherical)

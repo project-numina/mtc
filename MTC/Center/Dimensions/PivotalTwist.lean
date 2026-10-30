@@ -117,7 +117,7 @@ theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
       rightPartialTrace_braiding p (MTC.Fusion.doubleDualIso C X) (drinfeld_eval X)] using
       rightTrace_partialTrace p (End.of (β_ X X).hom)
   simpa only [pivotalBraidedTwist_simple, PivotalStructure.rightTrace_smul,
-    MTC.unitScalar_eq_equiv, map_smul, smul_eq_mul, pivotalDimension] using
+    MTC.Fusion.unitScalar_eq_equiv, map_smul, smul_eq_mul, pivotalDimension] using
       congrArg (MTC.Fusion.unitScalar C) h.symm
 
 /-- The actual pivotal/Drinfeld twists form a natural automorphism. -/

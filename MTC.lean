@@ -119,6 +119,7 @@ public import MTC.Fusion.SemisimpleSplit
 public import MTC.Fusion.Simples
 public import MTC.Fusion.SpectralIntegral
 public import MTC.Fusion.UnitPower
+public import MTC.Fusion.UnitScalar
 public import MTC.Modular.BraidFunctor
 public import MTC.Modular.BraidIso
 public import MTC.Modular.CharacterStar
@@ -138,6 +139,5 @@ public import MTC.PropertyF.PseudoUnitary
 public import MTC.PropertyF.Reduction.ActualCenterReduction
 public import MTC.PropertyF.Reduction.CharacterReality
 public import MTC.PropertyF.Reduction.TwistedRigidity
-public import MTC.PropertyF.Reduction.UnitScalar
 public import MTC.PropertyF.Statement
 public import MTC.PropertyF.Theorem

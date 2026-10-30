@@ -92,7 +92,7 @@ abbrev IsFPSpherical : Prop := p.IsSpherical ∧ HasFPSimpleDimensions C p
 
 /-- The unnormalized categorical S-matrix, defined by double-braiding traces. -/
 def categoricalS : Matrix (Fin (rank C)) (Fin (rank C)) ℂ :=
-  fun i j => MTC.unitScalarEquiv C (SEntry p (simples C i) (simples C j))
+  fun i j => MTC.Fusion.unitScalarEquiv C (SEntry p (simples C i) (simples C j))
 
 /-- Two simple labels satisfy the numerical S-matrix centrality test. -/
 abbrev sCentralizes (i j : Fin (rank C)) : Prop :=
@@ -109,20 +109,20 @@ def normalizedSColumn (j : Fin (rank C)) : Fin (rank C) → ℂ :=
 /-- The categorical S-matrix is symmetric. -/
 theorem categoricalS_symmetric (i j : Fin (rank C)) :
     categoricalS C p i j = categoricalS C p j i :=
-  congrArg (MTC.unitScalarEquiv C) (SEntry_symmetric p _ _)
+  congrArg (MTC.Fusion.unitScalarEquiv C) (SEntry_symmetric p _ _)
 
 /-- The unit column consists of categorical dimensions. -/
 theorem categoricalS_unit (i : Fin (rank C)) :
     categoricalS C p i (unitIndex C) = simpleDimension C p i :=
   (unitIndex_iso C).elim fun e ↦
-    by simpa [categoricalS, simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using
-      congrArg (MTC.unitScalarEquiv C)
+    by simpa [categoricalS, simpleDimension, pivotalDimension, MTC.Fusion.unitScalar_eq_equiv] using
+      congrArg (MTC.Fusion.unitScalarEquiv C)
         ((SEntry_iso_right p (simples C i) e).trans (SEntry_unit p (simples C i)))
 
 /-- In the spherical case, global dimension is the sum of squared simple dimensions. -/
 theorem categorical_global_eq_sum_squares (hp : p.IsSpherical) :
     MTC.Fusion.globalDimension C = ∑ i, simpleDimension C p i ^ 2 := by
-  simpa only [simpleDimension, pivotalDimension, ← MTC.unitScalar_eq_equiv, ← rightTrace_id] using
+  simpa only [simpleDimension, pivotalDimension, ← MTC.Fusion.unitScalar_eq_equiv, ← rightTrace_id] using
     target_globalDimension_eq_sum_squares hp
 
 end
@@ -156,15 +156,15 @@ theorem pivotalTrace_simple_ne_zero (X : C.Obj) [Simple X] :
 /-- The scalar pivotal trace of a simple object is nonzero. -/
 theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :
     MTC.Fusion.unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
-  rw [MTC.unitScalar_eq_equiv]
+  rw [MTC.Fusion.unitScalar_eq_equiv]
   simpa only [map_zero] using
-    (MTC.unitScalarEquiv C).injective.ne (pivotalTrace_simple_ne_zero C p X)
+    (MTC.Fusion.unitScalarEquiv C).injective.ne (pivotalTrace_simple_ne_zero C p X)
 
 /-- Every simple categorical dimension is nonzero, without pseudo-unitarity. -/
 theorem simpleDimension_ne_zero (i : Fin (rank C)) :
     simpleDimension C p i ≠ 0 :=
   let : Simple (simples C i) := simples_simple C i
-  by simpa only [simpleDimension, pivotalDimension, ← MTC.unitScalar_eq_equiv] using
+  by simpa only [simpleDimension, pivotalDimension, ← MTC.Fusion.unitScalar_eq_equiv] using
     unitScalar_rightTrace_ne_zero C p (simples C i)
 
 end MTC.Modular

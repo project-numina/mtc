@@ -1,6 +1,6 @@
 module
 public meta import MTC.PropertyF.Audit.DependencyAudit
-public import MTC.PropertyF.Reduction.UnitScalar
+public import MTC.Fusion.UnitScalar
 public import MTC.PropertyF.Theorem
 public import MTC.Modular.FusionTransport
 public import MTC.Fusion.Reciprocity
@@ -152,7 +152,7 @@ import all MTC.PropertyF.Reduction.ActualCenterReduction
 import all MTC.Center.Fusion.Bundled
 import all MTC.PropertyF.Reduction.CharacterReality
 import all MTC.PropertyF.Reduction.TwistedRigidity
-import all MTC.PropertyF.Reduction.UnitScalar
+import all MTC.Fusion.UnitScalar
 import all MTC.PropertyF.Statement
 import all MTC.PropertyF.Theorem
 
@@ -207,7 +207,7 @@ run_cmd do
         throwError "unexpected forbidden theorem fixture dependency {n}"
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
   for n in #[``MTC.PropertyF.TargetStatement,
-      ``MTC.unit_algebraMap_bijective,
+      ``MTC.Fusion.unit_algebraMap_bijective,
       ``MTC.integral_eq_int_of_complex_galois_fixed,
       ``MTC.Modular.conjugate_propertyF,
       ``MTC.galois_fixed_of_smaller_conjugate_witness,

@@ -62,11 +62,11 @@ of the two simple root dimensions. -/
 theorem rootTrace_inverseDefect (i j : Fin (rank C)) :
     unitScalar C (rootTrace C (rootTensorDefect C (simples C i) (simples C j)).inv) =
       rootDimension C i * rootDimension C j := by
-  simpa only [rootDimension, rootTrace_id, MTC.unitScalar_eq_equiv, rootTrace,
+  simpa only [rootDimension, rootTrace_id, MTC.Fusion.unitScalar_eq_equiv, rootTrace,
     rightTraceWith, rightQuantumTrace, rootTensorDefect, rootTensorIso,
     Iso.trans_inv, Iso.symm_inv, Functor.id_obj, Category.assoc, Iso.inv_hom_id_assoc,
     Iso.inv_hom_id, Category.id_comp, Category.comp_id] using
-      rightQuantumTrace_tensor_scalar (MTC.unitScalarEquiv C)
+      rightQuantumTrace_tensor_scalar (MTC.Fusion.unitScalarEquiv C)
         ((fourthDualRootNaturalIso C).app (simples C i))
         ((fourthDualRootNaturalIso C).app (simples C j))
 
@@ -172,11 +172,11 @@ theorem rootTrace_eq_simpleHom_trace_sum
   have heq : rootTrace C g = rootTrace C f := by
     simpa [f, Category.assoc] using (rootTrace_cyclic C e.hom (e.inv ≫ g))
   obtain ⟨c, hc, ht⟩ := rootTrace_biproduct_simple V (fun a => simples_simple C a.1) f
-  simp only [heq, ht, MTC.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
+  simp only [heq, ht, MTC.Fusion.unitScalar_eq_equiv, map_sum, map_smul, smul_eq_mul, Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
   simp only [simpleHom_postcomp_trace g (fun t ↦ c ⟨k, t⟩)
     (fun t ↦ by simpa [f, Category.assoc] using hc ⟨k, t⟩), Finset.sum_mul,
-    rootDimension, MTC.unitScalar_eq_equiv, V, simplePiecesObject]
+    rootDimension, MTC.Fusion.unitScalar_eq_equiv, V, simplePiecesObject]
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in

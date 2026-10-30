@@ -85,10 +85,10 @@ theorem braid_trace_unitary_bound_ground :
     Module.finrank ℂ (MTC.Fusion.simples C i ⟶ braidTensorPower X n)
   obtain ⟨e⟩ := MTC.Fusion.exists_canonical_decomposition C (braidTensorPower X n)
   rw [← fpDimension_tensorPower]
-  change ‖MTC.unitScalarEquiv C
+  change ‖MTC.Fusion.unitScalarEquiv C
     (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
       MTC.Fusion.fpDimension C (braidTensorPower X n)
-  exact pivotalTrace_braid_unitary_bound C p hd b (MTC.unitScalarEquiv C) e (fun i => by
+  exact pivotalTrace_braid_unitary_bound C p hd b (MTC.Fusion.unitScalarEquiv C) e (fun i => by
     simpa only [pivotalDimension, unitScalar_eq_equiv] using character_norm_le_fpSimple
       (i₀ := MTC.Fusion.unitIndex C) ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
       (pivotalDimension_character C p) i) a ha

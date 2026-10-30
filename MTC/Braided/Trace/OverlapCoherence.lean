@@ -210,8 +210,8 @@ theorem overlap_trace_step_of_coherence (k : ℕ)
     actualBraidTrace D p (overlapProduct u (k + 1)) * pivotalDimension D p X =
       actualBraidTrace D p (overlapProduct u k) * actualBraidTrace D p u := by
   have hh := congrArg
-    (fun z => MTC.unitScalarEquiv D (p.rightTrace z.asHom)) hcoh
-  rw [rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p (MTC.unitScalarEquiv D)] at hh
+    (fun z => MTC.Fusion.unitScalarEquiv D (p.rightTrace z.asHom)) hcoh
+  rw [rightTrace_iso_conj, pivotalTrace_overlap D (X := X) p (MTC.Fusion.unitScalarEquiv D)] at hh
   unfold previousOverlapLocal at hh
   rw [rightTrace_iso_conj] at hh
   change actualBraidTrace D p _ = actualBraidTrace D p _ *

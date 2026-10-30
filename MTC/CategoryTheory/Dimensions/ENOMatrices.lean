@@ -78,7 +78,7 @@ variable {C} in
 theorem rootDimension_ne_zero (i : Fin (rank C)) :
     rootDimension C i ≠ 0 :=
   letI : Simple (simples C i) := simples_simple C i
-  by simpa [rootDimension, rootTrace_id, MTC.unitScalar_eq_equiv] using
+  by simpa [rootDimension, rootTrace_id, MTC.Fusion.unitScalar_eq_equiv] using
     rightQuantumTrace_simple_ne_zero (X := simples C i) ((fourthDualRootNaturalIso C).app (simples C i))
 
 /-- The matrix of traces of the actual natural-root multiplicity defects. -/

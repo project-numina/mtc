@@ -63,7 +63,7 @@ theorem SEntry_tensor_decomposition (i j k : Fin (rank D)) :
     MTC.Fusion.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
       ∑ l, (fusionCoeff D i j l : ℂ) * Sₚ l k := by
   obtain ⟨e⟩ := exists_canonical_decomposition D (simples D i ⊗ simples D j)
-  rw [MTC.unitScalar_eq_equiv]
+  rw [MTC.Fusion.unitScalar_eq_equiv]
   simp [SEntry_iso_left p e _, SEntry_biproduct_left, Fintype.sum_sigma, categoricalS, fusionCoeff]
 
 

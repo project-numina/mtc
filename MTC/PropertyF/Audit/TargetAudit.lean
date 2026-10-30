@@ -147,7 +147,7 @@ import all MTC.PropertyF.Reduction.ActualCenterReduction
 import all MTC.Center.Fusion.Bundled
 import all MTC.PropertyF.Reduction.CharacterReality
 import all MTC.PropertyF.Reduction.TwistedRigidity
-import all MTC.PropertyF.Reduction.UnitScalar
+import all MTC.Fusion.UnitScalar
 import all MTC.PropertyF.Statement
 import all MTC.PropertyF.Theorem
 

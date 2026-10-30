@@ -106,7 +106,7 @@ theorem fourthDualRoot_unit_component :
     (unitIndex_iso C).elim fun e ↦
       congrArg (unitScalar C) ((rootTrace_id_iso C e).trans (rootTrace_id C _)),
     rightQuantumTrace_smul_hom hr, hu, rightQuantumTrace_unitIso]
-  simpa only [MTC.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one, hu] using hr
+  simpa only [MTC.Fusion.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one, hu] using hr
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The natural-root dimension of the unit is a sign. -/

@@ -110,16 +110,16 @@ theorem pair_operator_scalar_of_overlaps_equal {X : C.Obj} [Simple X]
     (u : End (X ⊗ X))
     {d f : ℝ} (hd : d ≠ 0)
     (hdim : pivotalDimension C p X = (d : ℂ))
-    (htrace : scalarTrace p (MTC.unitScalarEquiv C) u = (d : ℂ) * f)
+    (htrace : scalarTrace p (MTC.Fusion.unitScalarEquiv C) u = (d : ℂ) * f)
     (heq : insertRightIdentity X u = overlapFresh X u) :
     u = (f / d : ℂ) • (1 : End (X ⊗ X)) := by
   unfold scalarTrace at htrace
   unfold pivotalDimension at hdim
   rw [unitScalar_eq_equiv] at hdim
   have h := congrArg (rightPartialTrace p (X := X ⊗ X) (Y := X)) heq
-  rw [rightPartialTrace_insert p (MTC.unitScalarEquiv C),
+  rw [rightPartialTrace_insert p (MTC.Fusion.unitScalarEquiv C),
     overlapFresh, rightPartialTrace_whiskerLeft,
-    rightPartialTrace_simple_ground C (X := X) (Y := X) p (MTC.unitScalarEquiv C)] at h
+    rightPartialTrace_simple_ground C (X := X) (Y := X) p (MTC.Fusion.unitScalarEquiv C)] at h
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd
   rw [scalarTrace, hdim, htrace] at h
   have h' : (d : ℂ) • u = (f : ℂ) • (1 : End (X ⊗ X)) := by
@@ -188,7 +188,7 @@ theorem actual_braid_squares_equal_of_saturation (hf : 0 < f)
 reduced to explicit real, nonzero trace weights and the sharp unitary bound. -/
 theorem actual_three_strand_rigidity_of_trace_bound [Simple X]
     (hd : d ≠ 0) (hf : 0 < f) (hdim : pivotalDimension C p X = (d : ℂ))
-    (hS : scalarTrace p (MTC.unitScalarEquiv C) (selfMonodromy X) = (d : ℂ) * f)
+    (hS : scalarTrace p (MTC.Fusion.unitScalarEquiv C) (selfMonodromy X) = (d : ℂ) * f)
     (hfinite : ObjectPropertyF X) : f = |d| :=
   dimension_eq_abs_of_scalar_monodromy C p hd hf hdim hfinite
     (pair_operator_scalar_of_overlaps_equal C p (selfMonodromy X) hd hdim hS

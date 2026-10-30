@@ -41,7 +41,7 @@ theorem exists_galois_braid_trace_weights
       (∀ i, w i ≠ 0) ∧
       IsTracePresentation C p b w :=
   let ⟨r, size, b, mult, hsize, hunit, hret, _, htrace⟩ :=
-    exists_unitary_braid_trace_blocks C p (MTC.unitScalarEquiv C) hfinite
+    exists_unitary_braid_trace_blocks C p (MTC.Fusion.unitScalarEquiv C) hfinite
   let w : Fin r → ℝ := fun j => ∑ i, (mult i j : ℝ) * qdim i
   ⟨r, size, b, w, hsize, hunit,
     (fun j => transported_weight_ne_zero (fun i => mult i j) original qdim σ
@@ -57,7 +57,7 @@ theorem actual_rigidity_of_overlap_and_galois_dimensions
     (d f : ℝ) (hd : d ≠ 0) (hf : 0 < f)
     (hdim : pivotalDimension C p X = (d : ℂ))
     (hfp : MTC.Fusion.fpDimension C X = f)
-    (hS : scalarTrace p (MTC.unitScalarEquiv C) (selfMonodromy X) =
+    (hS : scalarTrace p (MTC.Fusion.unitScalarEquiv C) (selfMonodromy X) =
       (d : ℂ) * f)
     (hfinite : ObjectPropertyF X)
     (hrec : ∀ u : braidAlgebra X 1, HasOverlapTracePower C p u) : f = |d| := by

@@ -152,8 +152,8 @@ variable {C} in
 theorem rootSignQuantumTrace_simple (i : Fin (rank C)) :
     unitScalar C (rightQuantumTrace ((rootSignTwist C c hc).app (simples C i))) =
       c i * rootDimension C i := by
-  simpa only [rootDimension, rootTrace_id, MTC.unitScalar_eq_equiv, map_smul, smul_eq_mul] using
-    congrArg (MTC.unitScalarEquiv C) (rightQuantumTrace_smul_hom (rootSignTwist_app_simple hc i))
+  simpa only [rootDimension, rootTrace_id, MTC.Fusion.unitScalar_eq_equiv, map_smul, smul_eq_mul] using
+    congrArg (MTC.Fusion.unitScalarEquiv C) (rightQuantumTrace_smul_hom (rootSignTwist_app_simple hc i))
 
 set_option backward.isDefEq.respectTransparency false in
 variable {C} in
@@ -163,7 +163,7 @@ theorem naturalDoubleDual_unit_eq_of_trace_one
     (a.app (𝟙_ C.Obj)).hom = (doubleDualUnitIso (C := C.Obj)).hom := by
   obtain ⟨r, _, hr⟩ := isomorphisms_scalar (k := ℂ) (doubleDualUnitIso (C := C.Obj)) (a.app (𝟙_ C.Obj))
   simp only [rightQuantumTrace_smul_hom hr, rightQuantumTrace_unitIso,
-    MTC.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] at htrace
+    MTC.Fusion.unitScalar_eq_equiv, map_smul, map_one, smul_eq_mul, mul_one] at htrace
   simpa [htrace] using hr
 
 set_option backward.isDefEq.respectTransparency false in

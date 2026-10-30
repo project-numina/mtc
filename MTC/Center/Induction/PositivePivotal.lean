@@ -51,7 +51,7 @@ theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions p)
       End.ext (ht.symm.trans (congrArg (fun a => a.asHom.f) hz))] at hd
     exact (Complex.ofReal_ne_zero.mpr
       (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))) <|
-        by simpa only [MTC.unitScalar_eq_equiv, map_zero] using hd.symm
+        by simpa only [MTC.Fusion.unitScalar_eq_equiv, map_zero] using hd.symm
 
 end MTC.Center.Induction
 

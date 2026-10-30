@@ -184,7 +184,7 @@ local notation "pσ" => pivotal C σ p
 
 /-- A pivotal trace scalar is carried through σ. -/
 theorem rightTrace_twist {X : C.Obj} (f : X ⟶ X) :
-    MTC.unitScalarEquiv Cσ ((pσ).rightTrace f) = σ (MTC.unitScalarEquiv C (p.rightTrace f)) :=
+    MTC.Fusion.unitScalarEquiv Cσ ((pσ).rightTrace f) = σ (MTC.Fusion.unitScalarEquiv C (p.rightTrace f)) :=
   ((unitScalar_eq_equiv Cσ _).symm.trans (unitScalar_twist C σ _)).trans
     (congrArg σ (unitScalar_eq_equiv C _))
 
@@ -229,7 +229,7 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
     rw [hdim, hσ]
   have hXfp : fpDimension D X = 𝒇 y :=
     (ScalarTwist.fpDimension_twist Z σ _).trans (fpDimension_simple y)
-  have hXS : MTC.unitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
+  have hXS : MTC.Fusion.unitScalarEquiv D (q.rightTrace (selfMonodromy X).asHom) =
       (d : ℂ) * 𝒇 y := (ScalarTwist.rightTrace_twist Z σ p _).trans hS
   actual_rigidity_of_overlap_and_galois_dimensions D q original transformed σ
     hpos htrans hqdim X d (𝒇 y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF

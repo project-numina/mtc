@@ -116,7 +116,7 @@ theorem squaredNorm_eq_rootDualSign_mul
     ← (show unitScalar C (rightQuantumTrace j) = rootDimension C i from
       congrArg (unitScalar C) (rootTrace_id C X).symm), ← hq,
     rightQuantumTrace_smul_hom ((rootDualSign C i).2.2)]
-  simp only [MTC.unitScalar_eq_equiv, map_smul, smul_eq_mul]
+  simp only [MTC.Fusion.unitScalar_eq_equiv, map_smul, smul_eq_mul]
   rw [mul_mul_mul_comm, (rootDualSign C i).2.1, one_mul]
 
 end MTC.CategoryTheory.Dimensions
@@ -142,8 +142,8 @@ theorem spherical_of_fp_dimensions_and_squaredNorms {p : PivotalStructure (C := 
     let : Simple X := simples_simple C i
     have hh := target_squaredNorm_choice_independent (p.iso X)
     rw [← rightTrace_id, ← leftTrace_id, ← pivotalDimension, hdim i, hnorm i, Complex.ofReal_pow] at hh
-    apply (MTC.unitScalarEquiv C).injective
-    rw [← MTC.unitScalar_eq_equiv, ← MTC.unitScalar_eq_equiv, ← pivotalDimension, hdim i]
+    apply (MTC.Fusion.unitScalarEquiv C).injective
+    rw [← MTC.Fusion.unitScalar_eq_equiv, ← MTC.Fusion.unitScalar_eq_equiv, ← pivotalDimension, hdim i]
     exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i)))
       (by simpa [pow_two] using hh.symm)
 

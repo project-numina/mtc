@@ -47,7 +47,7 @@ theorem pivotalDimension_decomposition :
     pivotalDimension C p X = ∑ i, (simpleMultiplicity C i X : ℂ) *
       pivotalDimension C p (simples C i) :=
   (exists_canonical_decomposition C X).elim fun e ↦ by
-    simp [pivotalDimension, MTC.unitScalar_eq_equiv, p.rightTrace_id_iso e,
+    simp [pivotalDimension, MTC.Fusion.unitScalar_eq_equiv, p.rightTrace_id_iso e,
       rightDimension_biproduct, Fintype.sum_sigma]
 
 /-- Agreement with FP dimension on simples extends to all objects. -/
@@ -61,8 +61,8 @@ variable {C} in
 /-- Pivotal dimensions multiply under tensor products. -/
 theorem pivotalDimension_tensor (X Y : C.Obj) :
     pivotalDimension C p (X ⊗ Y) = pivotalDimension C p X * pivotalDimension C p Y := by
-  simpa [pivotalDimension, MTC.unitScalar_eq_equiv] using
-    pivotalTrace_tensor p (MTC.unitScalarEquiv C) (𝟙 X) (𝟙 Y)
+  simpa [pivotalDimension, MTC.Fusion.unitScalar_eq_equiv] using
+    pivotalTrace_tensor p (MTC.Fusion.unitScalarEquiv C) (𝟙 X) (𝟙 Y)
 
 /-- Pivotal simple dimensions form a fusion character. -/
 theorem pivotalDimension_character :

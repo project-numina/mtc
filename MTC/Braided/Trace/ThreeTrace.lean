@@ -215,7 +215,7 @@ theorem three_braid_double_overlap (X : C) :
 /-- Pivotal trace of an element of an actual categorical braid algebra. -/
 def actualBraidTrace (D : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := D.Obj))
     {X : D.Obj} {n : ℕ} (a : braidAlgebra X n) : ℂ :=
-  MTC.unitScalarEquiv D (p.rightTrace (a : End (braidTensorPower X n)).asHom)
+  MTC.Fusion.unitScalarEquiv D (p.rightTrace (a : End (braidTensorPower X n)).asHom)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The trace of the three-strand overlap is the squared monodromy trace,
@@ -223,7 +223,7 @@ normalized by the pivotal dimension. -/
 theorem actual_three_braid_trace (D : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (X : D.Obj) [Simple X] :
     actualBraidTrace D p (braidInImage (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) =
-      scalarTrace p (MTC.unitScalarEquiv D) (selfMonodromy X) ^ 2 / pivotalDimension D p X := by
+      scalarTrace p (MTC.Fusion.unitScalarEquiv D) (selfMonodromy X) ^ 2 / pivotalDimension D p X := by
   simp only [actualBraidTrace, threeGeneratorLeft, threeGeneratorRight, imageGenerator,
     SubmonoidClass.mk_pow, MulMemClass.mk_mul_mk, braidInImage_val, braidEndRepresentation,
     MonoidHom.coe_comp, Subgroup.coe_subtype, Function.comp_apply, pivotalDimension,
