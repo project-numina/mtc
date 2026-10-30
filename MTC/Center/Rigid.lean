@@ -1,5 +1,5 @@
 module
-public import MTC.PropertyF.Reduction.CenterBundle
+public import MTC.Center.Fusion.Bundled
 
 /-!
 # Rigidity of the Drinfeld centre

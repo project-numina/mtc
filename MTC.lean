@@ -37,13 +37,13 @@ public import MTC.CategoryTheory.Dimensions.ENOMatrices
 public import MTC.CategoryTheory.Dimensions.ENOReciprocity
 public import MTC.CategoryTheory.Dimensions.FourthDualUnit
 public import MTC.CategoryTheory.Dimensions.FourthTensorUnit
-public import MTC.CategoryTheory.Dimensions.GroundNorm
 public import MTC.CategoryTheory.Dimensions.MonodromyTensorCap
 public import MTC.CategoryTheory.Dimensions.MultiplicityDefect
 public import MTC.CategoryTheory.Dimensions.Pivotal
 public import MTC.CategoryTheory.Dimensions.RootDualLabel
 public import MTC.CategoryTheory.Dimensions.SimpleHomBasis
 public import MTC.CategoryTheory.Dimensions.SimpleScalars
+public import MTC.CategoryTheory.Dimensions.SquaredNorm
 public import MTC.CategoryTheory.Dimensions.TensorExtension
 public import MTC.CategoryTheory.Dimensions.TensorMultiplicativity
 public import MTC.CategoryTheory.Dimensions.Trace
@@ -59,6 +59,7 @@ public import MTC.Center.Braid.TwistFinite
 public import MTC.Center.BraidWords.TypeA
 public import MTC.Center.BraidWords.TypeANormalWords
 public import MTC.Center.Dimensions.PivotalTwist
+public import MTC.Center.Fusion.Bundled
 public import MTC.Center.Fusion.Fusion
 public import MTC.Center.Helpers
 public import MTC.Center.Induction.ActualFusion
@@ -137,10 +138,8 @@ public import MTC.PropertyF.FusionRules
 public import MTC.PropertyF.NondegenerateSpherical
 public import MTC.PropertyF.PseudoUnitary
 public import MTC.PropertyF.Reduction.ActualCenterReduction
-public import MTC.PropertyF.Reduction.CenterBundle
 public import MTC.PropertyF.Reduction.CharacterReality
 public import MTC.PropertyF.Reduction.TwistedRigidity
 public import MTC.PropertyF.Reduction.UnitScalar
 public import MTC.PropertyF.Statement
 public import MTC.PropertyF.Theorem
-public import MTC.Seed

@@ -1,7 +1,7 @@
 module
 public import MTC.PropertyF.Reduction.CharacterReality
 public import MTC.CategoryTheory.Dimensions.DimensionCharacter
-public import MTC.CategoryTheory.Dimensions.GroundNorm
+public import MTC.CategoryTheory.Dimensions.SquaredNorm
 public import MTC.Modular.FusionTransport
 public import MTC.Fusion.Agreement
 public import MTC.Modular.SSquare
@@ -11,7 +11,7 @@ public import MTC.CategoryTheory.Dimensions.SimpleScalars
 public import MTC.Braided.Trace.TensorPowerCoherence
 public import MTC.Center.ProductClosure
 public import MTC.Center.Braid.RegularSupport
-public import MTC.PropertyF.Reduction.CenterBundle
+public import MTC.Center.Fusion.Bundled
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.Tactic
 public import Mathlib.FieldTheory.IsSepClosed

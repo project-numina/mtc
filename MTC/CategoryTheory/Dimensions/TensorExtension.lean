@@ -1,7 +1,7 @@
 module
 public import MTC.CategoryTheory.Dimensions.ENOMatrices
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
-public import MTC.CategoryTheory.Dimensions.GroundNorm
+public import MTC.CategoryTheory.Dimensions.SquaredNorm
 
 /-! # Scalar twists and tensor extension
 

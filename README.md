@@ -11,8 +11,8 @@ test and prove mathematical statements. It is inspired by
 
 The library proves that a braided fusion category with a
 pseudo-unitary Galois conjugate and property F is weakly integral. The theorem is
-`MTC.PropertyF.weaklyIntegral_of_propertyF` in [Final.lean](MTC/PropertyF/Theorem.lean), using the definitions in
-[Target.lean](MTC/PropertyF/Statement.lean). The proof is complete and its audit reports precisely
+`MTC.PropertyF.weaklyIntegral_of_propertyF` in [Theorem.lean](MTC/PropertyF/Theorem.lean), using the definitions in
+[Statement.lean](MTC/PropertyF/Statement.lean). The proof is complete and its audit reports precisely
 `[propext, Classical.choice, Quot.sound]`. The manuscript and a map from its results to Lean are in [papers/property-f-weak-integrality](papers/property-f-weak-integrality/).
 
 Property F means that the relevant braid group representations have finite image; weak integrality
@@ -55,7 +55,7 @@ scripts/check.sh
 scripts/audit-target.sh
 ```
 
-The checks build all libraries, audit axioms of project declarations and the frozen target, and
+The checks build the library, audit axioms of project declarations and the frozen target, and
 verify the generated dashboard. `scripts/check.sh` defaults to CPU cores 0–3; set
 `PROPERTYF_AUDIT_CORES` to a valid CPU list on your machine if needed. See
 [CONTRIBUTING.md](CONTRIBUTING.md) for claiming problems, submissions and AI contributions.

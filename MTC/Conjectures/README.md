@@ -7,7 +7,7 @@ the theorem defined in this file.
 
 ```lean
 module
-public import MTC.Seed
+public import MTC.PropertyF.Statement
 
 /-!
 An informal, precise description of the statement and why it matters.

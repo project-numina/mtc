@@ -3,7 +3,7 @@ public import MTC.Center.Induction.SecondTriangle
 public import MTC.Center.Induction.Representatives
 public import MTC.Center.Fusion.Fusion
 public import MTC.Fusion.SpectralIntegral
-public import MTC.PropertyF.Reduction.CenterBundle
+public import MTC.Center.Fusion.Bundled
 public import Mathlib.CategoryTheory.Adjunction.Additive
 
 section

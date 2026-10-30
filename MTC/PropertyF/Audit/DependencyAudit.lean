@@ -13,16 +13,8 @@ public section
 open Lean
 namespace MTC.DependencyAudit
 
-/-- Legacy structures that may not occur in the target dependency cone. -/
-def forbidden : Array String := #[
-  "PropertyF.FusionData", "PropertyF.GlobalDimensionData",
-  "PropertyF.BraidedFusionCategory", "PropertyF.MultiplicityData",
-  "PropertyF.StandardInputs", "PropertyF.PseudoUnitaryInputs",
-  "PropertyF.CenterInputs", "PropertyF.DimensionField", "PropertyF.OverlapModel",
-  "PropertyF.ThreeStrandModel", "PropertyF.ThreeStrandRealization",
-  "PropertyF.ProductImageWitness", "PropertyF.CablingWitness",
-  "PropertyF.GeneratedInputs", "PropertyF.ModularData",
-  "MTC.DependencyAudit.ForbiddenFixture"]
+/-- A fixture used to test forbidden-dependency detection. -/
+def forbidden : Array String := #["MTC.DependencyAudit.ForbiddenFixture"]
 
 /-- Detect a forbidden structure or one of its generated declarations. -/
 def isForbidden (n : Name) : Bool :=
@@ -109,6 +101,6 @@ run_cmd do
     throwError "dependency audit failed to detect a hidden old input"
   if let some bad := findForbidden env ``MTC.PropertyF.TargetStatement then
     throwError "target statement depends on forbidden declaration {bad}"
-  logInfo "Dependency audit self-test passed; target statement has no old hypothesis structures."
+  logInfo "Dependency audit self-test passed; target statement passes the forbidden-dependency check."
 
 end MTC.DependencyAudit

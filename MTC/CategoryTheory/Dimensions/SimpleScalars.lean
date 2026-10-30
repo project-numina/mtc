@@ -1,6 +1,6 @@
 module
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
-public import MTC.CategoryTheory.Dimensions.GroundNorm
+public import MTC.CategoryTheory.Dimensions.SquaredNorm
 public import MTC.Fusion.Simples
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 public import MTC.Fusion.Multiplicity

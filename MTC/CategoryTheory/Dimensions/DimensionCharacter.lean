@@ -3,7 +3,7 @@ public import MTC.CategoryTheory.Dimensions.BiproductTrace
 public import MTC.CategoryTheory.Dimensions.DualCoherence
 public import MTC.CategoryTheory.Dimensions.TensorMultiplicativity
 public import MTC.Fusion.ObjectDimension
-public import MTC.CategoryTheory.Dimensions.GroundNorm
+public import MTC.CategoryTheory.Dimensions.SquaredNorm
 
 /-! # Pivotal dimension characters
 

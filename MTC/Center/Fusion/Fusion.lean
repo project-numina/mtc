@@ -1,5 +1,5 @@
 module
-public import MTC.PropertyF.Reduction.CenterBundle
+public import MTC.Center.Fusion.Bundled
 
 /-! Assembly of the ground fusion interface from centre semisimplicity. -/
 

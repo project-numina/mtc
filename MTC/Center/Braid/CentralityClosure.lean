@@ -3,7 +3,7 @@ public import MTC.Braided.Trace.ThreeRigidity
 public import MTC.Modular.SAdditivity
 public import MTC.Center.ProductClosure
 public import MTC.Fusion.UnitPower
-public import MTC.PropertyF.Reduction.CenterBundle
+public import MTC.Center.Fusion.Bundled
 
 /-!
 # Centrality of product retracts

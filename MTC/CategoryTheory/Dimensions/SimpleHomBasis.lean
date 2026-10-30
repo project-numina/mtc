@@ -3,7 +3,7 @@ public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.LinearAlgebra.Dual.Basis
 public import MTC.Fusion.SemisimpleSplit
 public import MTC.CategoryTheory.Dimensions.TensorMultiplicativity
-public import MTC.CategoryTheory.Dimensions.GroundNorm
+public import MTC.CategoryTheory.Dimensions.SquaredNorm
 public import MTC.CategoryTheory.Dimensions.ENOMatrices
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 

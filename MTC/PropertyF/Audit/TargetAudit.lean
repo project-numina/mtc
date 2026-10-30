@@ -56,7 +56,7 @@ import all MTC.CategoryTheory.Dimensions.ENOMatrices
 import all MTC.CategoryTheory.Dimensions.ENOReciprocity
 import all MTC.CategoryTheory.Dimensions.FourthDualUnit
 import all MTC.CategoryTheory.Dimensions.FourthTensorUnit
-import all MTC.CategoryTheory.Dimensions.GroundNorm
+import all MTC.CategoryTheory.Dimensions.SquaredNorm
 import all MTC.CategoryTheory.Dimensions.MonodromyTensorCap
 import all MTC.CategoryTheory.Dimensions.MultiplicityDefect
 import all MTC.CategoryTheory.Dimensions.Pivotal
@@ -146,13 +146,12 @@ import all MTC.PropertyF.FusionRules
 import all MTC.PropertyF.NondegenerateSpherical
 import all MTC.PropertyF.PseudoUnitary
 import all MTC.PropertyF.Reduction.ActualCenterReduction
-import all MTC.PropertyF.Reduction.CenterBundle
+import all MTC.Center.Fusion.Bundled
 import all MTC.PropertyF.Reduction.CharacterReality
 import all MTC.PropertyF.Reduction.TwistedRigidity
 import all MTC.PropertyF.Reduction.UnitScalar
 import all MTC.PropertyF.Statement
 import all MTC.PropertyF.Theorem
-import all MTC.Seed
 
 /-! Explicit final-theorem gate. This module intentionally fails to build until
 `MTC.PropertyF.weaklyIntegral_of_propertyF : MTC.PropertyF.TargetStatement` exists. It is not

@@ -1,6 +1,6 @@
 module
 public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
-public import MTC.CategoryTheory.Dimensions.GroundNorm
+public import MTC.CategoryTheory.Dimensions.SquaredNorm
 public import MTC.CategoryTheory.Dimensions.Trace
 public import MTC.Fusion.Multiplicity
 public import MTC.Fusion.Reciprocity
