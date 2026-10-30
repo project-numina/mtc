@@ -5,7 +5,7 @@ import argparse
 import sys
 
 ROOT = Path(__file__).resolve().parent.parent
-LIBRARIES = ('MTC', 'Conjectures', 'AnyonAtlas')
+LIBRARIES = ('MTC',)
 
 
 def render(library):

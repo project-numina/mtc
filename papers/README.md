@@ -10,7 +10,7 @@ folder, named after its main result, with:
   declaration.
 
 A manuscript is added in the same change that adds its formalization, or that states its results
-as targets in `Conjectures/`.
+as targets in `MTC/Conjectures/`.
 
 | Folder | Main result | Lean | Status |
 |---|---|---|---|

@@ -1,6 +1,6 @@
 # Conjecture files
 
-Put one statement in `Conjectures/<Topic>/<Name>.lean`, using the namespace
+Put one statement in `MTC/Conjectures/<Topic>/<Name>.lean`, using the namespace
 `MTC.Conjectures.<Topic>`. The module docstring must contain the following single-line fields exactly
 once. The dashboard and axiom audit read them. The declaration must be the fully qualified name of
 the theorem defined in this file.
@@ -43,7 +43,7 @@ The status values are:
 - `disproved`: a counterexample has been established; cite it and identify the precise statement refuted.
 
 Only open problems are added here. Results that are already established in the literature are not
-conjectures; they are listed in [the formalization backlog](../docs/formalization-backlog.md) and
+conjectures; they are listed in [the formalization backlog](../../docs/formalization-backlog.md) and
 their proofs belong in `MTC/`. Cite the basis for status changes. For `open` and `disproved`, only
 the named conjecture itself may depend on `sorryAx`; auxiliary results must have complete proofs. A
 `proved` statement must be free of `sorryAx` and all other nonstandard axioms. Regenerate the dashboard with

@@ -10,13 +10,13 @@ needs careful statements and examples as well as proofs and exact data.
    that the hypotheses are satisfiable and add small, proved sanity checks where feasible. A numerical
    modular datum is not automatically a realized modular tensor category.
 3. Develop on a branch. Add shared definitions and proved lemmas to `MTC/`; keep conjectures in
-   `Conjectures/` as described in [the template](Conjectures/README.md). Use the existing frozen
+   `MTC/Conjectures/` as described in [the template](MTC/Conjectures/README.md). Use the existing frozen
    `PropertyF.Ground` definitions for property F. Do not edit `PropertyF/Ground/Target.lean` or the
    proof of `PropertyF.Ground.target`.
 4. Replace the conjecture proof with a complete Lean proof, update its status and reference, and run
    `python3 scripts/conjecture_status.py` and `python3 scripts/update_roots.py`. A result is formalized only when its proof and all
    dependencies use no `sorry` and only `propext`, `Classical.choice` and `Quot.sound` as axioms.
-   `MTC/`, `AnyonAtlas/` and `PropertyF/` must be sorry-free. In `Conjectures/`, only the designated
+   `PropertyF/` and `MTC/` outside `MTC/Conjectures/` must be sorry-free. Only the designated
    unformalized conjecture proof may use `sorry`; helper lemmas may not depend on an unproved
    conjecture. New axioms or opaque foreign implementations are not accepted.
 5. Run `scripts/check.sh` and `scripts/audit-target.sh`, then open a pull request describing the

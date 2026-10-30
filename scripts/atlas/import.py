@@ -137,12 +137,12 @@ def main():
                 part = part
             if key != previous or module_bytes + encoded_bytes > args.max_module_bytes:
                 if file:
-                    file.write('\n]\n\nend AnyonAtlas.Generated\n')
+                    file.write('\n]\n\nend MTC.AnyonAtlas.Generated\n')
                     file.close()
                 name = f'{kind}Rank{rank:02}Chunk{chunk:03}Part{part:03}'
                 path = args.output / f'{name[0].upper() + name[1:]}.lean'
                 file = path.open('w')
-                file.write('module\npublic import AnyonAtlas.Raw\n\n/-! Generated from Atlas exact export. -/\n\n@[expose] public section\nnamespace AnyonAtlas.Generated\n\ndef ' + name + ' : List RawRecord := [\n')
+                file.write('module\npublic import MTC.AnyonAtlas.Raw\n\n/-! Generated from Atlas exact export. -/\n\n@[expose] public section\nnamespace MTC.AnyonAtlas.Generated\n\ndef ' + name + ' : List RawRecord := [\n')
                 previous = key
                 module_bytes = 0
                 first = True
@@ -153,7 +153,7 @@ def main():
             first = False
             index.append(index_row(kind, rank, identifiers, modular, structure))
         if file:
-            file.write('\n]\n\nend AnyonAtlas.Generated\n')
+            file.write('\n]\n\nend MTC.AnyonAtlas.Generated\n')
     finally:
         if file:
             file.close()

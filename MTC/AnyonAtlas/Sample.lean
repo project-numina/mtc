@@ -1,5 +1,5 @@
 module
-public import AnyonAtlas.Raw
+public import MTC.AnyonAtlas.Raw
 public import MTC.ModularData.Basic
 public import Mathlib.Analysis.Complex.Exponential
 
@@ -13,7 +13,7 @@ all of the shared interface's modular-data axioms.
 -/
 
 @[expose] public section
-namespace AnyonAtlas
+namespace MTC.AnyonAtlas
 
 /-- The exact first record from the Atlas export. -/
 def rankOne : RawRecord where
@@ -44,4 +44,4 @@ theorem rankOne_t : ((rankOne.t[0]!).value) = (MTC.ModularData.trivial ℂ).twis
   norm_num [rankOne, CyclotomicExpression.value, CyclotomicTerm.value,
     MTC.ModularData.trivial]
 
-end AnyonAtlas
+end MTC.AnyonAtlas

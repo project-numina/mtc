@@ -9,7 +9,7 @@ import tempfile
 
 from conjecture_status import ROOT, entries
 
-LIBRARIES = ("MTC", "Conjectures", "AnyonAtlas")
+LIBRARIES = ("MTC",)
 COMMAND = re.compile(
     r"(?m)^[ \t]*(?:(?:private|public|protected|noncomputable|unsafe)\s+)*"
     r"(theorem|lemma|example|def|abbrev|opaque|axiom|instance|structure|class|"
@@ -127,7 +127,7 @@ run_cmd do
   let mut checked := 0
   for (name, _) in env.constants.toList do
     let ownModule := (env.getModuleIdxFor? name).bind fun i => env.header.modules[i.toNat]?
-    if ownModule.any (fun m => #["MTC", "Conjectures", "AnyonAtlas"].any fun lib =>
+    if ownModule.any (fun m => #["MTC"].any fun lib =>
         m.module.toString == lib || m.module.toString.startsWith (lib ++ ".")) then
       if Lean.isExtern env name || (Lean.Compiler.getImplementedBy? env name).isSome then
         throwError "Foreign implementation in project declaration {{name}}"

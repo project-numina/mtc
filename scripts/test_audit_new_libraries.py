@@ -8,7 +8,7 @@ from audit_new_libraries import check_sorry_scope, code_without_comments_and_str
 class SorryScopeTests(unittest.TestCase):
     def setUp(self):
         self.fields = {"Declaration": "MTC.Conjectures.Test.goal", "Status": "open"}
-        self.path = Path("Conjectures/Test/Goal.lean")
+        self.path = Path("MTC/Conjectures/Test/Goal.lean")
 
     def check(self, text):
         check_sorry_scope(self.path, code_without_comments_and_strings(text), self.fields)

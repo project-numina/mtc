@@ -11,7 +11,7 @@ Fermionic records use the Atlas quotient convention, and are not modular data.
 -/
 
 @[expose] public section
-namespace AnyonAtlas
+namespace MTC.AnyonAtlas
 
 /-- A rational coefficient times a root of unity. Denominators are positive in imported data. -/
 structure CyclotomicTerm where
@@ -33,4 +33,4 @@ structure RawRecord where
   t : List CyclotomicExpression
   deriving Repr, DecidableEq
 
-end AnyonAtlas
+end MTC.AnyonAtlas

@@ -1,6 +1,6 @@
 name = "mtc"
 version = "0.1.0"
-defaultTargets = ["PropertyF", "MTC", "Conjectures", "AnyonAtlas"]
+defaultTargets = ["PropertyF", "MTC"]
 moreLeanArgs = ["-j2", "-M3000"]
 
 [[require]]
@@ -15,11 +15,3 @@ name = "PropertyF"
 [[lean_lib]]
 name = "MTC"
 globs = ["MTC.*"]
-
-[[lean_lib]]
-name = "Conjectures"
-globs = ["Conjectures.*"]
-
-[[lean_lib]]
-name = "AnyonAtlas"
-globs = ["AnyonAtlas.*"]

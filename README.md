@@ -22,13 +22,13 @@ modular data and categories realizing them, is one of the project's research goa
 
 ## Problems and data
 
-- [MTC/](MTC/) contains shared definitions and proved theorems, without `sorry`.
-- [Conjectures/](Conjectures/) contains formalized statements of open problems, for the community
+- [MTC/](MTC/) contains shared definitions, proved theorems, conjectures, and Atlas data.
+- [MTC/Conjectures/](MTC/Conjectures/) contains formalized statements of open problems, for the community
   to prove or disprove. The [dashboard](docs/STATUS.md) lists their status and sources; the
-  [conjecture template](Conjectures/README.md) explains the metadata. Established results that are not yet formalized are listed in the
+  [conjecture template](MTC/Conjectures/README.md) explains the metadata. Established results that are not yet formalized are listed in the
   [formalization backlog](docs/formalization-backlog.md).
-- [AnyonAtlas/](AnyonAtlas/) contains generated, exact data when available, without `sorry`.
-  The [data guide](AnyonAtlas/README.md) describes downloading, validating and generating exact
+- [MTC/AnyonAtlas/](MTC/AnyonAtlas/) contains generated, exact data when available, without `sorry`.
+  The [data guide](MTC/AnyonAtlas/README.md) describes downloading, validating and generating exact
   records locally; the committed rank-one sample is checked in Lean. Data-checkable claims should
   specify their actual scope and evidence. Modular data alone do not establish the existence of an
   MTC or its property F.

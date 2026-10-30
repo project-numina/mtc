@@ -47,10 +47,10 @@ LEAN_NUM_THREADS=4 taskset -c 16-19 lake env lean data/generated-small/BosonicRa
 ```
 
 Adjust the CPU affinity to the cores assigned to your environment. To resolve
-the import, first build `AnyonAtlas.Raw` with Lake. The generated modules are
-not part of the default build and are not committed. `AnyonAtlas/Raw.lean`
+the import, first build `MTC.AnyonAtlas.Raw` with Lake. The generated modules are
+not part of the default build and are not committed. `MTC/AnyonAtlas/Raw.lean`
 represents each exact entry as a sum of rational coefficients times roots of
-unity. `AnyonAtlas/Sample.lean` evaluates the rank-one source record and
+unity. `MTC/AnyonAtlas/Sample.lean` evaluates the rank-one source record and
 connects S and T to the proved `MTC.ModularData.trivial`. The general raw
 encoding is not yet a constructor for `MTC.ModularData`: such a constructor
 must supply duals, fusion rules, and proofs of its axioms. In particular, the

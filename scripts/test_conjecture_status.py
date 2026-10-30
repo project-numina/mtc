@@ -12,7 +12,7 @@ class StatusTests(unittest.TestCase):
         self.temp = TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        self.path = self.root / 'Conjectures' / 'Example' / 'Test.lean'
+        self.path = self.root / 'MTC' / 'Conjectures' / 'Example' / 'Test.lean'
         self.path.parent.mkdir(parents=True)
         self.fixture = ('/-!\nStatus: open\nSource: reference | detail\n'
                         'Declaration: MTC.Conjectures.Example.test\n-/\n')
@@ -23,7 +23,7 @@ class StatusTests(unittest.TestCase):
 
     def test_dashboard_and_link(self):
         result = status.render(status.entries())
-        self.assertIn('../Conjectures/Example/Test.lean', result)
+        self.assertIn('../MTC/Conjectures/Example/Test.lean', result)
         self.assertIn('reference \\| detail', result)
 
     def test_blank_source_cannot_consume_next_field(self):

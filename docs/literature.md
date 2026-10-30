@@ -14,7 +14,7 @@ that identification with standard categorical invariants is pending. It does not
 yet provide a general (not necessarily braided) fusion category, modularity,
 pivotal structures, centers, module categories, or weak group-theoreticity.
 Claims below should not be encoded with unconstrained stand-in predicates. The
-Lean files in `Conjectures/Fusion` are braided restrictions of source results,
+Lean files in `MTC/Conjectures/Fusion` are braided restrictions of source results,
 and their translation to the frozen interface is part of the proof obligation.
 
 ## Arithmetic and structure
