@@ -14,12 +14,12 @@ signed traces to one-strand deletion and insertion identities. The notation
 -/
 @[expose] public noncomputable section
 open MTC.Modular (HasFPSimpleDimensions)
-local notation "sgn" => MTC.Centre.permutationSign
+local notation "sgn" => MTC.Center.permutationSign
 open Equiv.Perm (decomposeFin)
 open MTC.Dimensions
 open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -32,11 +32,11 @@ def tensorPermAction (X : C)
   | 1 => 1
   | n + 2 => Aut.toEnd.comp (permAction X hX n)
 
-end MTC.CentreCalculus
+end MTC.Center.Trace
 
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 
 section
 variable {R : Type*} [CommRing R]
@@ -46,7 +46,7 @@ theorem sign_decomposeFin {n : ℕ} (p : Fin (n + 1)) (σ : Perm (Fin n)) :
     (sgn R (n + 1) (decomposeFin.symm (p, σ)) : R) =
       (if p = 0 then 1 else -1) * (sgn R n σ : R) := by
   by_cases hp : p = 0 <;>
-    simp [Centre.permutationSign, decomposeFin.symm_sign, hp]
+    simp [MTC.Center.permutationSign, decomposeFin.symm_sign, hp]
 
 variable {F : ∀ n : ℕ, Perm (Fin n) → R} {d : R} {n : ℕ}
 
@@ -85,7 +85,7 @@ theorem signedTraceSum_falling
     signedTraceSum (F n) = ∏ k ∈ Finset.range n, (d - (k : R)) := by
   induction n with
   | zero =>
-    simp [signedTraceSum, hzero, Centre.permutationSign]
+    simp [signedTraceSum, hzero, MTC.Center.permutationSign]
   | succ n ih =>
     simpa [ih, Finset.prod_range_succ, mul_comm] using
       signedTraceSum_succ (h.fixed n) (h.moved n)
@@ -122,10 +122,10 @@ theorem integral_of_trace_deletion {C : BraidedFusionCategory} {p : PivotalStruc
     simpa [permScalarTrace, scalarPermTrace, signedTraceSum, ← unitScalar_eq_equiv] using
       signedTraceSum_falling hz h n⟩
 
-end MTC.CentreCalculus
+end MTC.Center.Trace
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 local notation "tr" => permScalarTrace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -228,4 +228,4 @@ theorem tensorPermTrace_fixHead (σ : Perm (Fin n)) :
 
 end
 
-end MTC.CentreCalculus
+end MTC.Center.Trace

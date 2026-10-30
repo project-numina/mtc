@@ -41,7 +41,7 @@ theorem center_globalDimension_square_of_actual_induction
     globalDimension 𝒵ᶠ = (globalFPDimension C : ℂ) ^ 2 :=
   (Modular.categorical_global_eq_sum_squares 𝒵ᶠ p hfp.1).trans <| by
     simpa [globalFPDimension, hfp.2, Complex.ofReal_sum, Complex.ofReal_pow] using
-      congrArg (fun x : ℝ ↦ (x : ℂ)) (CentreInduction.globalFPDimension_square_of_actual_induction C)
+      congrArg (fun x : ℝ ↦ (x : ℂ)) (MTC.Center.Induction.globalFPDimension_square_of_actual_induction C)
 
 end MTC
 end
@@ -72,7 +72,7 @@ theorem center_transparent_label_eq_unit
     (hk : Transparent (simples 𝒵ᶠ k)) :
     k = unitIndex 𝒵ᶠ :=
   let : Simple (simples 𝒵ᶠ k) := simples_simple _ k
-  simples_injective _ ⟨(CentreInduction.center_transparent_simple_iso_unit (C := C) hk).some ≪≫
+  simples_injective _ ⟨(MTC.Center.Induction.center_transparent_simple_iso_unit (C := C) hk).some ≪≫
     (unitIndex_iso 𝒵ᶠ).some.symm⟩
 
 end MTC
@@ -91,34 +91,34 @@ conjugate has integral global Frobenius–Perron dimension. -/
 theorem PropertyF.weaklyIntegral_of_propertyF : PropertyF.TargetStatement.{v,u} := by
   intro C hPU hF
   obtain ⟨D, _, ⟨E⟩, hD⟩ := hPU
-  obtain ⟨p, _, hp⟩ := CentreInduction.positive_spherical_of_pseudoUnitary hD
-  let := CentreRigid.rigidCenter (C := D.Obj)
-  let hc := CentreInduction.pivotalComponentsCentral_proved p
-  let pZ := CentreInduction.liftedPivotalStructure p hc
-  let J := (CentreInduction.induction D).obj (𝟙_ D.Obj)
-  let := CentreInduction.center_fusion_of_compatible_pivotal hp
-    (CentreInduction.liftedPivotalStructure_compatible hc J)
-  obtain ⟨hspherical, hfp⟩ := CentreInduction.center_positive_spherical_of_compatible_pivotal hp
-    (CentreInduction.liftedPivotalStructure_compatible hc)
+  obtain ⟨p, _, hp⟩ := MTC.Center.Induction.positive_spherical_of_pseudoUnitary hD
+  let := MTC.Center.Rigid.rigidCenter (C := D.Obj)
+  let hc := MTC.Center.Induction.pivotalComponentsCentral_proved p
+  let pZ := MTC.Center.Induction.liftedPivotalStructure p hc
+  let J := (MTC.Center.Induction.induction D).obj (𝟙_ D.Obj)
+  let := MTC.Center.Induction.center_fusion_of_compatible_pivotal hp
+    (MTC.Center.Induction.liftedPivotalStructure_compatible hc J)
+  obtain ⟨hspherical, hfp⟩ := MTC.Center.Induction.center_positive_spherical_of_compatible_pivotal hp
+    (MTC.Center.Induction.liftedPivotalStructure_compatible hc)
   have hdim : Modular.HasFPSimpleDimensions (Integrate.bundledCenter D) pZ := by
     intro i
     simpa [Modular.simpleDimension, Dimensions.pivotalDimension, Dimensions.rightTrace_id,
       unitScalar_eq_equiv] using hfp i
-  have hbalance : CentreModular.IsPivotalTwistBalanced (Integrate.bundledCenter D) pZ :=
-    fun X Y ↦ CentreIntegrate.pivotal_balance_of_drinfeld_tensor pZ
+  have hbalance : MTC.Center.Modular.IsPivotalTwistBalanced (Integrate.bundledCenter D) pZ :=
+    fun X Y ↦ MTC.Center.Balancing.pivotal_balance_of_drinfeld_tensor pZ
       (doubleDualIso (Integrate.bundledCenter D)) (drinfeld_tensor X Y).w
-  have hdet := CentreModular.categoricalS_det_ne_zero_of_trivial_transparency
+  have hdet := MTC.Center.Modular.categoricalS_det_ne_zero_of_trivial_transparency
     (Integrate.bundledCenter D) pZ hdim hbalance (center_transparent_label_eq_unit D)
-  have hfinite : CentreCabling.HasFiniteImageCentralizerMonodromy D pZ :=
-    fun _ _ _ _ ↦ CentreModular.mixed_monodromy_finite_of_pivotal_balancing
+  have hfinite : MTC.Center.Braid.HasFiniteImageCentralizerMonodromy D pZ :=
+    fun _ _ _ _ ↦ MTC.Center.Modular.mixed_monodromy_finite_of_pivotal_balancing
       (Integrate.bundledCenter D) pZ hbalance _ _
   rw [Modular.conjugate_globalFPDimension E]
   apply weaklyIntegral_of_actual_center D (Modular.conjugate_propertyF E hF) ⟨hspherical, hdim⟩ hdet
     (center_globalDimension_square_of_actual_induction D ⟨hspherical, hdim⟩)
-    (fun y hy ↦ CentreCalculus.actual_symmetricCore_integrality ⟨hspherical, hdim⟩
+    (fun y hy ↦ MTC.Center.Trace.actual_symmetricCore_integrality ⟨hspherical, hdim⟩
       (y := ⟨y, hy⟩))
-  · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mpr
-      (CentreCabling.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)
-  · exact fun y hy ↦ (CentreCabling.mem_productLabels D y).mp hy
+  · exact fun y hy ↦ (MTC.Center.Braid.mem_productLabels D y).mpr
+      (MTC.Center.Braid.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)
+  · exact fun y hy ↦ (MTC.Center.Braid.mem_productLabels D y).mp hy
 
 end MTC

@@ -12,14 +12,14 @@ for the scalar pivotal trace of the permutation action and `sgn ℂ n σ`
 for the permutation sign.
 -/
 @[expose] public noncomputable section
-local notation "tr" => MTC.CentreCalculus.permScalarTrace
+local notation "tr" => MTC.Center.Trace.permScalarTrace
 open MTC.Modular (HasFPSimpleDimensions)
-local notation "sgn" => MTC.Centre.permutationSign
+local notation "sgn" => MTC.Center.permutationSign
 open Equiv.Perm (decomposeFin)
 open MTC.Dimensions
 open Equiv (Perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 open CategoryTheory CategoryTheory.MonoidalCategory
 
@@ -66,16 +66,16 @@ theorem movedTrace_of_adjacent {p : PivotalStructure (C := D)} {X : D} {R : Type
 
 end
 
-end MTC.CentreCalculus
+end MTC.Center.Trace
 
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 
 /-- Either the actual permutation action or its sign twist. -/
 def parityPermAction (D : Type u) [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
     [Preadditive D] [Linear ℂ D] {X : D} (hX : SelfTransparent X) (odd : Bool) (n : ℕ) :
     Perm (Fin n) →* End (tensorPower X n) :=
-  if odd then Centre.twistAction (sgn ℂ n) (tensorPermAction X hX n)
+  if odd then MTC.Center.twistAction (sgn ℂ n) (tensorPermAction X hX n)
   else tensorPermAction X hX n
 
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
@@ -90,7 +90,7 @@ theorem scalarPermTrace_parity (p : PivotalStructure (C := D)) (scalar : End (�
     {X : D} (hX : SelfTransparent X) {n : ℕ} (σ : Perm (Fin n)) :
     scalarPermTrace p scalar (parityPermAction D hX true) n σ =
       (sgn ℂ n σ : ℂ) * scalarPermTrace p scalar (tensorPermAction X hX) n σ := by
-  simp [scalarPermTrace, parityPermAction, Centre.twistAction, p.rightTrace_smul, smul_eq_mul]
+  simp [scalarPermTrace, parityPermAction, MTC.Center.twistAction, p.rightTrace_smul, smul_eq_mul]
 
 variable (p : PivotalStructure (C := D)) (scalar : End (𝟙_ D) ≃ₐ[ℂ] ℂ)
   {X : D} (hX : SelfTransparent X) (odd : Bool) {n : ℕ}
@@ -100,7 +100,7 @@ theorem parityPermTrace_fixHead (σ : Perm (Fin n)) :
     scalarPermTrace p scalar (parityPermAction D hX odd) (n + 1) (fixHead n σ) =
       scalar (p.rightTrace (𝟙 X)) * scalarPermTrace p scalar (parityPermAction D hX odd) n σ := by
   cases odd <;>
-    simpa [parityPermAction, scalarPermTrace, Centre.twistAction, p.rightTrace_smul,
+    simpa [parityPermAction, scalarPermTrace, MTC.Center.twistAction, p.rightTrace_smul,
       smul_eq_mul, fixHead, sign_decomposeFin, mul_left_comm] using
         tensorPermTrace_fixHead p scalar hX σ
 end
@@ -124,4 +124,4 @@ theorem integral_of_parity_adjacent_trace (hadj : HasAdjacentTrace (tr C p (pari
   integral_of_parity_moved_trace hdim hX odd
     (movedTrace_of_adjacent (unitScalarEquiv C) (parityPermAction C.Obj hX odd) hadj)
 
-end MTC.CentreCalculus
+end MTC.Center.Trace

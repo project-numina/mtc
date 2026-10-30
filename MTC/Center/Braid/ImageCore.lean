@@ -20,7 +20,7 @@ open MTC.Modular (HasFPSimpleDimensions IsFPSpherical doubleBraiding sCentralize
 open MTC.Dimensions
 local notation "𝒵" => MTC.Integrate.bundledCenter
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCabling
+namespace MTC.Center.Braid
 universe v u
 variable (C : MTC.BraidedFusionCategory.{v,u})
   [RigidCategory (CategoryTheory.Center C.Obj)]
@@ -29,11 +29,11 @@ variable (C : MTC.BraidedFusionCategory.{v,u})
 /-- The actual centre simple labels which are retracts of product images. -/
 def productLabels : Finset (Fin (rank (𝒵 C))) := by
   classical
-  exact Finset.univ.filter (fun i => Centre.ProductRetract (simples (𝒵 C) i))
+  exact Finset.univ.filter (fun i => MTC.Center.ProductRetract (simples (𝒵 C) i))
 
 /-- Product labels are exactly the labels of product retracts. -/
 theorem mem_productLabels (i : Fin (rank (𝒵 C))) :
-    i ∈ productLabels C ↔ Centre.ProductRetract (simples (𝒵 C) i) := by
+    i ∈ productLabels C ↔ MTC.Center.ProductRetract (simples (𝒵 C) i) := by
   classical
   simp [productLabels]
 
@@ -41,7 +41,7 @@ theorem mem_productLabels (i : Fin (rank (𝒵 C))) :
 theorem unit_mem_productLabels : unitIndex (𝒵 C) ∈ productLabels C :=
   let ⟨e⟩ := unitIndex_iso (𝒵 C)
   (mem_productLabels C _).2 <|
-    Centre.productRetract_of_retract (Retract.ofIso e) Centre.unit_productRetract
+    MTC.Center.productRetract_of_retract (Retract.ofIso e) MTC.Center.unit_productRetract
 
 variable {i j : productLabels C}
 
@@ -52,15 +52,15 @@ theorem dual_mem_productLabels : dualIndex (𝒵 C) i ∈ productLabels C :=
   let e : (ᘁX) ≅ (Xᘁ) := leftDualIso HasLeftDual.exact
     (BraidedCategory.exactPairing_swap X (Xᘁ))
   let ⟨e'⟩ := dualIndex_iso (D := Z) i
-  (mem_productLabels C _).2 <| Centre.productRetract_of_retract (Retract.ofIso (e'.symm ≪≫ e))
-    (Centre.productRetract_rightDual C ((mem_productLabels C i).1 i.property))
+  (mem_productLabels C _).2 <| MTC.Center.productRetract_of_retract (Retract.ofIso (e'.symm ≪≫ e))
+    (MTC.Center.productRetract_rightDual C ((mem_productLabels C i).1 i.property))
 
 /-- Every constituent label of two product labels is itself a product label. -/
 theorem constituent_mem_productLabels
     (k : {k : Fin (rank (𝒵 C)) // 0 < fusionCoeff (𝒵 C) i j k}) : k.val ∈ productLabels C :=
   let ⟨r⟩ := MTC.fusionCoeff_retract k.property
-  (mem_productLabels C k).2 <| Centre.productRetract_of_retract r <|
-    Centre.productRetract_tensor ((mem_productLabels C i).1 i.2) ((mem_productLabels C j).1 j.2)
+  (mem_productLabels C k).2 <| MTC.Center.productRetract_of_retract r <|
+    MTC.Center.productRetract_tensor ((mem_productLabels C i).1 i.2) ((mem_productLabels C j).1 j.2)
 
 /-- The product-retract labels form a fusion subring. -/
 theorem productLabels_isFusionSubring : IsFusionSubring (𝒵 C) (productLabels C) :=
@@ -74,22 +74,22 @@ theorem productLabels_doubleCentralizer {p : PivotalStructure (C := (𝒵 C).Obj
     (hfp : IsFPSpherical (𝒵 C) p) (hdet : (Modular.categoricalS (𝒵 C) p).det ≠ 0)
     {core : Set (Fin (rank (𝒵 C)))}
     (hcore : sCentralizer (𝒵 C) p (↑(productLabels C) : Set _) ⊆ core) :
-    ∀ x ∈ sCentralizer (𝒵 C) p core, Centre.ProductRetract (simples (𝒵 C) x) := fun x hx ↦
+    ∀ x ∈ sCentralizer (𝒵 C) p core, MTC.Center.ProductRetract (simples (𝒵 C) x) := fun x hx ↦
   (mem_productLabels C x).mp <|
     doubleCentralizer_of_fusion_closed hfp hdet (productLabels_isFusionSubring C) hcore hx
 
 
 /-- Actual centre labels centralizing both canonical images. -/
 def symmetricCore : Set (Fin (rank (𝒵 C))) :=
-  {y | (∀ X : C.Obj, Centre.Centralizes (simples (𝒵 C) y)
+  {y | (∀ X : C.Obj, MTC.Center.Centralizes (simples (𝒵 C) y)
       ((CategoryTheory.Center.ofBraided C.Obj).obj X)) ∧
-    (∀ X : C.Obj, Centre.Centralizes (simples (𝒵 C) y)
-      ((Centre.negative C.Obj).obj X))}
+    (∀ X : C.Obj, MTC.Center.Centralizes (simples (𝒵 C) y)
+      ((MTC.Center.negative C.Obj).obj X))}
 
-end MTC.CentreCabling
+end MTC.Center.Braid
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCabling
+namespace MTC.Center.Braid
 universe v u
 variable (C : MTC.BraidedFusionCategory.{v,u})
   [RigidCategory (CategoryTheory.Center C.Obj)]
@@ -101,7 +101,7 @@ variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 /-- Retracts of either canonical image, without taking mixed products. -/
 def CanonicalImageRetract (X : CategoryTheory.Center D) : Prop :=
   (∃ A : D, Nonempty (Retract X ((CategoryTheory.Center.ofBraided D).obj A))) ∨
-  (∃ A : D, Nonempty (Retract X ((Centre.negative D).obj A)))
+  (∃ A : D, Nonempty (Retract X ((MTC.Center.negative D).obj A)))
 
 /-- Retracts of canonical-image retracts remain canonical-image retracts. -/
 theorem canonicalImageRetract_of_retract {X Y : CategoryTheory.Center D}
@@ -111,9 +111,9 @@ theorem canonicalImageRetract_of_retract {X Y : CategoryTheory.Center D}
 
 /-- Every canonical-image retract is also a product retract. -/
 theorem canonicalImageRetract_product {X : CategoryTheory.Center D}
-    (h : CanonicalImageRetract X) : Centre.ProductRetract X :=
-  h.elim (fun ⟨A, ⟨s⟩⟩ ↦ Centre.productRetract_of_retract s (Centre.positive_productRetract A))
-    (fun ⟨A, ⟨s⟩⟩ ↦ Centre.productRetract_of_retract s (Centre.negative_productRetract A))
+    (h : CanonicalImageRetract X) : MTC.Center.ProductRetract X :=
+  h.elim (fun ⟨A, ⟨s⟩⟩ ↦ MTC.Center.productRetract_of_retract s (MTC.Center.positive_productRetract A))
+    (fun ⟨A, ⟨s⟩⟩ ↦ MTC.Center.productRetract_of_retract s (MTC.Center.negative_productRetract A))
 end
 
 /-- Simple constituents of either canonical image. -/
@@ -143,8 +143,8 @@ variable (hfinite : HasFiniteImageCentralizerMonodromy C p)
 include hdim hfinite hy in
 /-- The numerical image centralizer centralizes every canonical-image retract. -/
 theorem centralizes_imageRetract {X : CategoryTheory.Center C.Obj}
-    (hX : CanonicalImageRetract X) : Centre.Centralizes (simples (𝒵 C) y) X :=
-  Centre.centralizes_symm <| by
+    (hX : CanonicalImageRetract X) : MTC.Center.Centralizes (simples (𝒵 C) y) X :=
+  MTC.Center.centralizes_symm <| by
     obtain ⟨m, ⟨e⟩⟩ := simples_decompose (𝒵 C) X
     exact doubleBraiding_eq_one_of_constituents (simples (𝒵 C)) e CanonicalImageRetract
       (fun r hr ↦ canonicalImageRetract_of_retract r hr) hX fun a ha ↦
@@ -165,14 +165,14 @@ finite-order condition for simple canonical-image constituents. -/
 theorem productLabels_doubleCentralizer_of_image_monodromy
     (hfinite : HasFiniteImageCentralizerMonodromy C p) :
     ∀ x ∈ sCentralizer (𝒵 C) p (symmetricCore C),
-      Centre.ProductRetract (simples (𝒵 C) x) :=
+      MTC.Center.ProductRetract (simples (𝒵 C) x) :=
   productLabels_doubleCentralizer C ⟨hp, hdim⟩ hdet fun _ hy ↦
     numericalImageCentralizer_subset_symmetricCore C hdim hfinite fun a ha ↦
       hy a (imageLabels_subset_productLabels C ha)
 
-end MTC.CentreCabling
+end MTC.Center.Braid
 
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 
 /-- Every simple in the common centralizer of the two canonical images in
@@ -182,9 +182,9 @@ theorem actual_symmetricCore_integrality {C : BraidedFusionCategory.{v,u}}
     [RigidCategory (CategoryTheory.Center C.Obj)]
     [IsFusionCategory (CategoryTheory.Center C.Obj)]
     {p : PivotalStructure (C := (𝒵 C).Obj)}
-    (hfp : IsFPSpherical (𝒵 C) p) {y : CentreCabling.symmetricCore C} :
+    (hfp : IsFPSpherical (𝒵 C) p) {y : MTC.Center.Braid.symmetricCore C} :
     ∃ z : ℤ, Modular.simpleDimension (𝒵 C) p y = z :=
   selfTransparent_simpleDimension_integer hfp
     (commonCentralizer_self (simples (𝒵 C) y) y.property.1 y.property.2)
 
-end MTC.CentreCalculus
+end MTC.Center.Trace

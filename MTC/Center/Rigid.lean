@@ -8,13 +8,13 @@ The normalized mate of a centre object's half-braiding gives a half-braiding
 on its right dual. Its tensor law and the centrality of evaluation and
 coevaluation lift the underlying dual pair to the centre.
 
-The main construction is `CentreRigid.rigidCenter`. The intermediate
+The main construction is `MTC.Center.Rigid.rigidCenter`. The intermediate
 `dualObject` and `liftedPairing` make the coherence conditions explicit.
 -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreRigid
+namespace MTC.Center.Rigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
@@ -29,13 +29,13 @@ theorem halfBraiding_unit (Z : CategoryTheory.Center C) :
     CategoryTheory.Center.leftUnitor_inv_f] at h
   exact h
 
-end MTC.CentreRigid
+end MTC.Center.Rigid
 
 /-! Lifting the underlying duality to the actual centre. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreRigid
+namespace MTC.Center.Rigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
@@ -104,14 +104,14 @@ explicit hypotheses. -/
         (Classical.choose_spec (h Z)).1 (Classical.choose_spec (h Z)).2 } }
   exact BraidedCategory.rigidCategoryOfRightRigidCategory
 
-end MTC.CentreRigid
+end MTC.Center.Rigid
 
 /-! The normalized dual candidate starts from an adjoint mate. These equations
 expose its compatibility with the units and counits of the tensor adjunctions. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory MTC.Integrate
-namespace MTC.CentreRigid
+namespace MTC.Center.Rigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 
@@ -124,30 +124,30 @@ theorem dualMate_unit (Z : CategoryTheory.Center C) (U : C) :
   simpa [Integrate.dualMateIso] using unit_conjugateEquiv_symm
     (tensorLeftAdjunction Z.1 Z.1ᘁ) (tensorRightAdjunction (ᘁZ.1) Z.1) (halfBraidingIso Z).hom U
 
-end MTC.CentreRigid
+end MTC.Center.Rigid
 
 /-! Componentwise cup and cap identities for the dual mate. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreRigid
+namespace MTC.Center.Rigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
 /-- The mate unit in terms of the actual base coevaluation maps. -/
 theorem dualMate_unit_explicit (Z : Center C) (U : C) :
-  (λ_ U).inv ≫ (η_ Z.1 Z.1ᘁ ▷ U) ≫ (α_ Z.1 Z.1ᘁ U).hom ≫ Centre.halfBraidingHom Z (Z.1ᘁ ⊗ U) =
+  (λ_ U).inv ≫ (η_ Z.1 Z.1ᘁ ▷ U) ≫ (α_ Z.1 Z.1ᘁ U).hom ≫ MTC.Center.halfBraidingHom Z (Z.1ᘁ ⊗ U) =
   (ρ_ U).inv ≫ (U ◁ η_ (ᘁZ.1) Z.1) ≫ (α_ U (ᘁZ.1) Z.1).inv ≫
     ((Integrate.dualMateIso Z).inv.app U ▷ Z.1) := by
   simpa [tensorRightAdjunction, tensorLeftAdjunction, tensorRightHomEquiv,
-    tensorLeftHomEquiv, Integrate.halfBraidingIso] using CentreRigid.dualMate_unit Z U
+    tensorLeftHomEquiv, Integrate.halfBraidingIso] using MTC.Center.Rigid.dualMate_unit Z U
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The unit component identifies the two chosen duals compatibly with the crossed cup. -/
 theorem dualMateUnit_crossed_coevaluation (Z : Center C) :
   η_ Z.1 Z.1ᘁ ≫ (Z.2.β (Z.1ᘁ)).hom =
   η_ (ᘁZ.1) Z.1 ≫ ((Integrate.dualMateUnit Z).inv ▷ Z.1) := by
-  have h := CentreRigid.dualMate_unit_explicit Z (𝟙_ C)
+  have h := MTC.Center.Rigid.dualMate_unit_explicit Z (𝟙_ C)
   have hn := Z.2.naturality (ρ_ Z.1ᘁ).hom
   dsimp [Integrate.dualMateUnit]
   simp only [Category.assoc, comp_whiskerRight]
@@ -160,13 +160,13 @@ theorem dualMateUnit_crossed_coevaluation (Z : Center C) :
           ((ρ_ Z.1ᘁ).hom ▷ Z.1) := by rw [h]
     _ = _ := by monoidal
 
-end MTC.CentreRigid
+end MTC.Center.Rigid
 
 /-! Coevaluation centrality for the normalized dual crossing. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreRigid
+namespace MTC.Center.Rigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
@@ -189,9 +189,9 @@ theorem coevaluation_sliding (Z : Center C) (U : C) :
   have ht1 := Z.2.monoidal D U
   have ht2 := Z.2.monoidal U L
   change c (U ⊗ L) = (α_ X U L).inv ≫ (c U ▷ L) ≫ (α_ U X L).hom ≫ (U ◁ c L) ≫ (α_ U L X).inv at ht2
-  have hu := CentreRigid.dualMate_unit_explicit Z U
+  have hu := MTC.Center.Rigid.dualMate_unit_explicit Z U
   change (λ_ U).inv ≫ (η_ X D ▷ U) ≫ (α_ X D U).hom ≫ c (D ⊗ U) = (ρ_ U).inv ≫ (U ◁ η_ L X) ≫ (α_ U L X).inv ≫ (n ▷ X) at hu
-  have hc : η_ X D ≫ c D = η_ L X ≫ (f ▷ X) := CentreRigid.dualMateUnit_crossed_coevaluation Z
+  have hc : η_ X D ≫ c D = η_ L X ≫ (f ▷ X) := MTC.Center.Rigid.dualMateUnit_crossed_coevaluation Z
   have hx : (show D ⊗ U ⟶ U ⊗ D from ((Integrate.dualCrossingIso Z).app U).hom) = m ≫ (U ◁ f) := by
     rfl
   rw [hx]
@@ -236,13 +236,13 @@ theorem coevaluation_central {Z : Center C}
     _ = (λ_ U).hom ≫ (𝟙 U ⊗≫ (U ◁ η_ Z.1 Z.1ᘁ) ⊗≫ 𝟙 (U ⊗ (Z.1 ⊗ Z.1ᘁ))) := by rw [h]
     _ = _ := by monoidal
 
-end MTC.CentreRigid
+end MTC.Center.Rigid
 
 /-! Tensor coherence of the normalized dual half-braiding. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreRigid
+namespace MTC.Center.Rigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
@@ -259,7 +259,7 @@ theorem dualCrossing_tensor (Z : Center C) (U V : C) :
     (α_ D U V).inv ≫ (d U ▷ V) ≫ (α_ U D V).hom ≫ (U ◁ d V) ≫ (α_ U V D).inv
   have hs (T : C) :
       𝟙 T ⊗≫ (η_ X D ▷ T) ⊗≫ (X ◁ d T) ⊗≫ (c T ▷ D) ⊗≫ 𝟙 (T ⊗ (X ⊗ D)) =
-        𝟙 T ⊗≫ (T ◁ η_ X D) ⊗≫ 𝟙 (T ⊗ (X ⊗ D)) := CentreRigid.coevaluation_sliding Z T
+        𝟙 T ⊗≫ (T ◁ η_ X D) ⊗≫ 𝟙 (T ⊗ (X ⊗ D)) := MTC.Center.Rigid.coevaluation_sliding Z T
   have ht : c (U ⊗ V) = (α_ X U V).inv ≫ (c U ▷ V) ≫ (α_ U X V).hom ≫ (U ◁ c V) ≫ (α_ U V X).inv := Z.2.monoidal U V
   have hp :
       𝟙 (U ⊗ V) ⊗≫ (η_ X D ▷ (U ⊗ V)) ⊗≫ (X ◁ p) ⊗≫ (c (U ⊗ V) ▷ D) ⊗≫ 𝟙 ((U ⊗ V) ⊗ (X ⊗ D)) =
@@ -299,13 +299,13 @@ theorem dualCrossing_tensor (Z : Center C) (U V : C) :
     _ = 𝟙 (U ⊗ V) ⊗≫ (η_ X D ▷ (U ⊗ V)) ⊗≫ (X ◁ p) ⊗≫ (c (U ⊗ V) ▷ D) ⊗≫ 𝟙 ((U ⊗ V) ⊗ (X ⊗ D)) := eq1
     _ = _ := by monoidal
 
-end MTC.CentreRigid
+end MTC.Center.Rigid
 
 /-! Evaluation centrality and rigidity of the Drinfeld centre. -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.ExactPairing
-namespace MTC.CentreRigid
+namespace MTC.Center.Rigid
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
 set_option backward.isDefEq.respectTransparency false in
@@ -320,7 +320,7 @@ theorem evaluation_sliding (Z : Center C) (U : C) :
   let c : X ⊗ U ⟶ U ⊗ X := (Z.2.β U).hom
   let cInv : U ⊗ X ⟶ X ⊗ U := (Z.2.β U).inv
   let d : D ⊗ U ⟶ U ⊗ D := ((Integrate.dualCrossingIso Z).app U).hom
-  have hslide := CentreRigid.coevaluation_sliding Z U
+  have hslide := MTC.Center.Rigid.coevaluation_sliding Z U
   have hc : cInv ≫ c = 𝟙 (U ⊗ X) := by simp [cInv, c, X]
   apply (cancel_epi (α_ D X U).inv).1
   apply (tensorLeftHomEquiv (X ⊗ U) X D (U ⊗ (𝟙_ C))).injective
@@ -383,4 +383,4 @@ theorem evaluation_central {Z : Center C}
   refine ⟨dualCrossing_tensor Z, coevaluation_central (dualCrossing_tensor Z),
     evaluation_central (dualCrossing_tensor Z)⟩
 
-end MTC.CentreRigid
+end MTC.Center.Rigid

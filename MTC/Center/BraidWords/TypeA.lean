@@ -21,7 +21,7 @@ open Equiv (Perm swap_comm swap_mul_swap_mul_swap)
 open QuotientGroup (eq_iff_div_mem)
 open Subgroup (subset_normalClosure)
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -29,11 +29,11 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 negative-image condition places it in the positive image, to which the
 positive-image condition can then be applied. -/
 theorem commonCentralizer_self (Y : CategoryTheory.Center C)
-    (hp : ∀ X : C, Centre.Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X))
-    (hn : ∀ X : C, Centre.Centralizes Y ((Centre.negative C).obj X)) :
-    Centre.Centralizes Y Y :=
-  Centre.centralizes_symm <| Centre.centralizes_of_iso_left
-    (Centre.positiveIsoOfCentralizesNegative Y hn) <| Centre.centralizes_symm (hp Y.1)
+    (hp : ∀ X : C, MTC.Center.Centralizes Y ((CategoryTheory.Center.ofBraided C).obj X))
+    (hn : ∀ X : C, MTC.Center.Centralizes Y ((MTC.Center.negative C).obj X)) :
+    MTC.Center.Centralizes Y Y :=
+  MTC.Center.centralizes_symm <| MTC.Center.centralizes_of_iso_left
+    (MTC.Center.positiveIsoOfCentralizesNegative Y hn) <| MTC.Center.centralizes_symm (hp Y.1)
 
 
 /-- Adjacent transpositions generate the full symmetric group. -/
@@ -63,10 +63,10 @@ theorem permActionOfPureTrivial_swap (i : Fin (n + 1)) :
     ((QuotientGroup.liftEquiv _ (strandPermutation_surjective n) rfl).symm_apply_apply
       (QuotientGroup.mk' _ (FreeGroup.of i)))).trans FreeGroup.lift_apply_of
 
-end MTC.CentreCalculus
+end MTC.Center.Trace
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -162,10 +162,10 @@ theorem typeARelations_permutation_trivial (n : ℕ) :
       · exact adjacentSwaps_braid hij
       · exact adjacentSwaps_commute hij
 
-end MTC.CentreCalculus
+end MTC.Center.Trace
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -191,10 +191,10 @@ theorem pureWords_eq_typeANormal_of_card_bound [Finite (typeAGroup n)]
     (typeARelations_permutation_trivial n) (strandPermutation_surjective n)
     (by simpa [Nat.card_eq_fintype_card, Fintype.card_perm] using hcard)
 
-end MTC.CentreCalculus
+end MTC.Center.Trace
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -270,4 +270,4 @@ theorem permAction_swap {X : C}
     permAction X hX n (adjacentSwap i) = braidGenerator X n i :=
   permActionOfPureTrivial_swap X n _ i
 
-end MTC.CentreCalculus
+end MTC.Center.Trace

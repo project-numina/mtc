@@ -13,7 +13,7 @@ The resulting dual comparisons identify traces of compatible pivotal components.
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
 @[expose] public noncomputable section
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
   [RightRigidCategory (Center D)]
 local notation "𝒵" => Center D
@@ -92,4 +92,4 @@ theorem forget_rightTraceWith {Z : 𝒵} {j : Z.1 ≅ ((Z.1ᘁ)ᘁ)}
   erw [trace_change_rightDual (forgetPairing Z) HasRightDual.exact (f.f ≫ j.hom)]
   rfl
 
-end MTC.CentreInduction
+end MTC.Center.Induction

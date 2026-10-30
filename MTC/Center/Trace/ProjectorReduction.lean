@@ -16,13 +16,13 @@ denotes the permutation sign in the scalar ring.
 -/
 @[expose] public noncomputable section
 open MTC.Modular (HasFPSimpleDimensions)
-local notation "sgn" => MTC.Centre.permutationSign
+local notation "sgn" => MTC.Center.permutationSign
 open MTC.Dimensions
 open Equiv (Perm)
 open Fintype (card_perm)
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 
 /-- Signed sum of a function on permutations of a finite set. -/
@@ -53,7 +53,7 @@ establish their dimensions using alternating projectors. -/
 theorem integral_of_exterior_dimensions
     (hExterior : HasFallingFactorialDimensions (fpDimension C X) (fpDimension C)) :
     IsFPIntegral C X :=
-  Centre.integral_of_nonnegative_falling_factorials (fpDimension_nonneg X) fun n ↦
+  MTC.Center.integral_of_nonnegative_falling_factorials (fpDimension_nonneg X) fun n ↦
     let ⟨Y, hY⟩ := hExterior n
     hY ▸ mul_nonneg (Nat.cast_nonneg _) (fpDimension_nonneg Y)
 
@@ -66,11 +66,11 @@ theorem integral_of_pivotal_exterior
   integral_of_exterior_dimensions fun n ↦ (hExterior n).imp fun Y hY ↦
     Complex.ofReal_injective <| by simpa [pivotalDimension_eq_fp (pivotalDimensions_on_simples hdim) _] using hY
 
-end MTC.CentreCalculus
+end MTC.Center.Trace
 
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hdim : HasFPSimpleDimensions C p) {X : C.Obj}
@@ -91,11 +91,11 @@ theorem integral_of_alternating_projector_trace
     (hTrace : ∀ n : ℕ, ∃ ρ : Perm (Fin n) →* End (tensorPower X n),
       letI := permutationCardInvertible n
       (Nat.factorial n : ℂ) * unitScalar C
-        (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
+        (p.rightTrace ((MTC.Center.alternatingProjector (k := ℂ) ρ).asHom)) =
           ∏ k ∈ Finset.range n, ((fpDimension C X : ℂ) - (k : ℂ))) :
     IsFPIntegral C X :=
   integral_of_pivotal_exterior hdim fun n ↦ (hTrace n).elim fun ρ hρ ↦
-    (Centre.alternatingProjector_trace ρ p).imp fun _ hY ↦
+    (MTC.Center.alternatingProjector_trace ρ p).imp fun _ hY ↦
       (congrArg (fun t ↦ (Nat.factorial n : ℂ) * unitScalar C t) hY.symm).trans hρ
 
 variable {n : ℕ} (ρ : Perm (Fin n) →* End X)
@@ -103,10 +103,10 @@ variable {n : ℕ} (ρ : Perm (Fin n) →* End X)
 /-- The trace of an alternating projector is the signed average of traces. -/
 theorem rightTrace_alternatingProjector :
     letI := permutationCardInvertible n
-    p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom) =
+    p.rightTrace ((MTC.Center.alternatingProjector (k := ℂ) ρ).asHom) =
       ⅟(Fintype.card (Perm (Fin n)) : ℂ) •
         ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • p.rightTrace (ρ σ).asHom := by
-  rw [Centre.alternatingProjector, Centre.algebraAverage_eq_sum]
+  rw [MTC.Center.alternatingProjector, MTC.Center.algebraAverage_eq_sum]
   change (Dimensions.rightTraceWithLinear (k := ℂ) (p.iso X))
     ((⅟(Fintype.card (Perm (Fin n)) : ℂ) •
       ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) • ρ σ).asHom) = _
@@ -118,7 +118,7 @@ theorem rightTrace_alternatingProjector :
 theorem alternatingProjector_scalar_trace :
     letI := permutationCardInvertible n
     (Nat.factorial n : ℂ) * unitScalar C
-      (p.rightTrace ((Centre.alternatingProjector (k := ℂ) ρ).asHom)) =
+      (p.rightTrace ((MTC.Center.alternatingProjector (k := ℂ) ρ).asHom)) =
       ∑ σ : Perm (Fin n), (sgn ℂ n σ : ℂ) *
         unitScalar C (p.rightTrace (ρ σ).asHom) := by
   simp [rightTrace_alternatingProjector, unitScalar_eq_equiv, card_perm, n.factorial_ne_zero]
@@ -136,4 +136,4 @@ theorem integral_of_signed_permutation_traces
     let ⟨ρ, hρ⟩ := hTrace n
     ⟨ρ, (alternatingProjector_scalar_trace (C := C) (p := p) ρ).trans hρ⟩
 
-end MTC.CentreCalculus
+end MTC.Center.Trace

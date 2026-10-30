@@ -13,7 +13,7 @@ open scoped BigOperators
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 @[expose] public noncomputable section
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵" => Center C.Obj
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -142,7 +142,7 @@ def actualAdjunction : Center.forget C.Obj ⊣ induction C where
     · simpa [monoidalComp, crossing_counit_offdiag X h, biproduct.ι_π_ne _ h,
         induction, underlying, underlyingFunctor] using unit_matrix_reduce X i j
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 end
@@ -153,7 +153,7 @@ end
 open CategoryTheory
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u v' u'
 
 /-- The reverse Hom equivalence of an adjunction is linear when its left
@@ -168,7 +168,7 @@ def homLinearEquivOfAdjunction {k : Type*} [CommSemiring k] {A : Type u} {B : Ty
   change (adj.homEquiv X Y).symm (r • f) = r • (adj.homEquiv X Y).symm f
   simp [Adjunction.homEquiv_counit]
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 
@@ -177,7 +177,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
 open scoped BigOperators
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 
 variable {C : BraidedFusionCategory.{v,u}}
@@ -211,4 +211,4 @@ theorem globalFPDimension_square_of_actual_induction [RigidCategory 𝒵] [IsFus
   simpa [← Integrate.center_forget_fpDimension C, induction, fpDimension_underlying,
     fpDimension_simple, globalFPDimension, pow_two, Finset.mul_sum, mul_left_comm] using h
 
-end MTC.CentreInduction
+end MTC.Center.Induction

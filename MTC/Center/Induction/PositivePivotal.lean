@@ -18,7 +18,7 @@ section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 universe v u
 @[expose] public noncomputable section
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 variable (C : BraidedFusionCategory.{v,u})
 local notation "𝒵ᶜ" => Center C.Obj
 
@@ -49,7 +49,7 @@ theorem center_fusion_of_compatible_pivotal (hsimple : PivotalHasFPDimensions p)
       (ne_of_gt (lt_of_lt_of_le zero_lt_one (one_le_globalFPDimension C)))) <|
         by simpa only [MTC.unitScalar_eq_equiv, map_zero] using hd.symm
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 end
@@ -58,7 +58,7 @@ section
 /-! Lift a pivotal structure once its transported components are central. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 section
@@ -96,7 +96,7 @@ theorem liftedPivotalStructure_compatible
 
 end
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 end
@@ -105,7 +105,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable (C : BraidedFusionCategory.{v,u})
@@ -131,9 +131,9 @@ theorem center_pivotalDimension_forget
   (center_unitScalar_forget (pZ.rightTrace (𝟙 Z))).trans
     (congrArg (fun f => unitScalar C (End.of f)) (forget_rightTraceWith hcompat (𝟙 Z)))
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {C : BraidedFusionCategory.{v,u}}
@@ -155,4 +155,4 @@ theorem center_positive_spherical_of_compatible_pivotal
       Integrate.center_forget_fpDimension C, fpDimension_simple]
   ⟨(pivotal_spherical_iff_simple_dimensions_real D pZ).2 (fun i ↦ by simp [hd i]), hd⟩
 
-end MTC.CentreInduction
+end MTC.Center.Induction

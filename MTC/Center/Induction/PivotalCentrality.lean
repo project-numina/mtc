@@ -11,7 +11,7 @@ open MTC.Dimensions
 /-! The pivotal structure of the base lifts to the rigid centre. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
@@ -53,9 +53,9 @@ theorem pivotalComponentsCentral_proved [BraidedCategory D] :
     PivotalComponentsCentral p := fun Z _ ↦
   central_of_positive_braiding (transported_pivotal_braiding p Z _)
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {C : BraidedFusionCategory.{v,u}}
@@ -66,7 +66,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- A positive simple image centralizing the induced unit is the unit. -/
 theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
-    (hcentral : Centre.Centralizes
+    (hcentral : MTC.Center.Centralizes
       ((induction C).obj (𝟙_ C.Obj)) ((Center.ofBraided C.Obj).obj (simples C i))) :
     i = unitIndex C := by
   by_contra hi
@@ -90,10 +90,10 @@ theorem positive_simple_centralizes_induced_unit {i : Fin (rank C)}
 
 /-- Every transparent simple of the actual centre is the unit. -/
 theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
-    (hcentral : ∀ W : 𝒵, Centre.Centralizes Z W) :
+    (hcentral : ∀ W : 𝒵, MTC.Center.Centralizes Z W) :
     Nonempty (Z ≅ 𝟙_ (𝒵)) := by
   let F := Center.ofBraided C.Obj
-  let e := Centre.positiveIsoOfCentralizesNegative Z (fun X => hcentral ((Centre.negative C.Obj).obj X))
+  let e := MTC.Center.positiveIsoOfCentralizesNegative Z (fun X => hcentral ((MTC.Center.negative C.Obj).obj X))
   let : F.PreservesMonomorphisms := ⟨fun f _ =>
     (Center.forget C.Obj).mono_of_mono_map (show Mono f from inferInstance)⟩
   let : Simple (F.obj Z.1) := Simple.of_iso e.symm
@@ -101,7 +101,7 @@ theorem center_transparent_simple_iso_unit {Z : 𝒵} [Simple Z]
   obtain ⟨i, ⟨s⟩⟩ := exists_simple_iso C Z.1
   let e' : Z ≅ F.obj (simples C i) := e ≪≫ F.mapIso s
   obtain rfl := positive_simple_centralizes_induced_unit
-    (Centre.centralizes_symm (Centre.centralizes_of_iso_left e'.symm (hcentral _)))
+    (MTC.Center.centralizes_symm (MTC.Center.centralizes_of_iso_left e'.symm (hcentral _)))
   exact ⟨e' ≪≫ F.mapIso (unitIndex_iso C).some ≪≫ (CategoryTheory.Functor.Monoidal.εIso F).symm⟩
 
-end MTC.CentreInduction
+end MTC.Center.Induction

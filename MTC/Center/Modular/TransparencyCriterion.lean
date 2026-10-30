@@ -15,8 +15,8 @@ section
 Trivial transparency provides the needed vanishing in a positive pivotal category. -/
 
 open scoped BigOperators
-namespace MTC.CentreModular
-open Modular
+namespace MTC.Center.Modular
+open MTC.Modular
 variable (C : BraidedFusionCategory) (p : Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
@@ -109,14 +109,14 @@ theorem categoricalS_det_ne_zero_of_trivial_S_centralizer
     hk (htrivial k fun i ↦ (div_eq_iff (simpleDimension_ne_zero C p k)).mp (by
       simpa only [normalizedSColumn, categoricalS_unit, simpleDimension_unit, div_one] using congrFun heq i))
 
-end MTC.CentreModular
+end MTC.Center.Modular
 end
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 set_option backward.isDefEq.respectTransparency false
 set_option backward.defeqAttrib.useBackward true
-namespace MTC.CentreModular
+namespace MTC.Center.Modular
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : Dimensions.PivotalStructure (C := C.Obj))
 
@@ -135,10 +135,10 @@ theorem transparent_of_S_test_and_balancing (k : Fin (rank C))
   intro X
   have hx : Modular.doubleBraiding X (simples C k) = 𝟙 _ := by
     obtain ⟨m, ⟨e⟩⟩ := simples_decompose C X
-    apply CentreCabling.doubleBraiding_eq_one_of_constituents (simples C) e (fun _ => True)
+    apply MTC.Center.Braid.doubleBraiding_eq_one_of_constituents (simples C) e (fun _ => True)
       (fun _ _ => trivial) trivial
     intro i _
-    exact CentreCabling.doubleBraiding_eq_one_of_sTest_of_finite_order hdim
+    exact MTC.Center.Braid.doubleBraiding_eq_one_of_sTest_of_finite_order hdim
       (mixed_monodromy_finite_of_pivotal_balancing C p hbalance _ _) (hs i)
   change Modular.doubleBraiding (simples C k) X = 𝟙 _
   simpa [Modular.doubleBraiding, Category.assoc] using
@@ -153,5 +153,5 @@ theorem categoricalS_det_ne_zero_of_trivial_transparency
   categoricalS_det_ne_zero_of_trivial_S_centralizer C p hdim fun k hs ↦
     htrivial k (transparent_of_S_test_and_balancing C p hdim hbalance k hs)
 
-end MTC.CentreModular
+end MTC.Center.Modular
 end

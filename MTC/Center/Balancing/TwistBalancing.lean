@@ -20,7 +20,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCatego
 open MTC MTC.Dimensions
 universe v u
 @[expose] public noncomputable section
-namespace MTC.CentreIntegrate
+namespace MTC.Center.Balancing
 set_option backward.isDefEq.respectTransparency false
 
 /-- Evaluating a double-dual tensor map reduces to the tensor pairing on
@@ -110,4 +110,4 @@ theorem drinfeld_tensor_of_pairing_cap {X Y : D} (d : ∀ Z : D, Z ≅ (Zᘁ)ᘁ
   rw [hcap]
 
 
-end MTC.CentreIntegrate
+end MTC.Center.Balancing

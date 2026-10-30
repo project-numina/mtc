@@ -15,7 +15,7 @@ it extends from simple constituents to all objects in a retract-closed class.
 @[expose] public noncomputable section
 open MTC.Modular (doubleBraiding)
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory CategoryTheory.Limits
-namespace MTC.CentreCabling
+namespace MTC.Center.Braid
 universe v u
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -52,9 +52,9 @@ theorem doubleBraiding_eq_one_of_constituents [Abelian D] [MonoidalPreadditive D
     doubleBraiding_eq_one_biproduct fun a ↦ h a.1 <| hP
       ((Retract.mk (biproduct.ι V a) (biproduct.π V a) (biproduct.ι_π_self V a)).trans (Retract.ofIso e.symm)) hX
 
-end MTC.CentreCabling
+end MTC.Center.Braid
 
-namespace MTC.Centre
+namespace MTC.Center
 universe v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [MonoidalCategory C]
   [MonoidalPreadditive C] [RigidCategory C] [BraidedCategory C]
@@ -69,4 +69,4 @@ theorem productRetract_rightDual (D : MTC.BraidedFusionCategory.{v,u})
     {Z : CategoryTheory.Center D.Obj} (hZ : ProductRetract Z) : ProductRetract (Zᘁ) :=
   productRetract_generatedBy hZ (MTC.generatedBy_rightDual Z)
 
-end MTC.Centre
+end MTC.Center

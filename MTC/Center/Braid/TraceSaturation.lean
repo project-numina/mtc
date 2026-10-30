@@ -19,7 +19,7 @@ categorical double braiding to its numerical S-matrix centrality test.
 open MTC.Modular (HasFPSimpleDimensions doubleBraiding sCentralizes)
 open MTC.Dimensions
 open scoped BigOperators
-namespace MTC.CentreCabling
+namespace MTC.Center.Braid
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
   {M : Matrix ι ι ℂ} (hM : IsOfFinOrder M)
@@ -50,11 +50,11 @@ theorem finiteOrder_matrix_trace_saturation :
       congrArg (fun A : Matrix ι ι ℂ ↦ (↑(P⁻¹) : Matrix ι ι ℂ) * A * (P : Matrix ι ι ℂ))
         (MTC.eq_one_of_re_trace_eq_card hP (ht.symm ▸ heq))⟩
 
-end MTC.CentreCabling
+end MTC.Center.Braid
 
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC.CentreCabling
+namespace MTC.Center.Braid
 universe v u
 variable {D : MTC.BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := D.Obj)}
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -114,4 +114,4 @@ theorem doubleBraiding_eq_one_of_sTest_of_finite_order
       simpa [Modular.simpleDimension, pivotalDimension, MTC.unitScalar_eq_equiv] using
         (pivotalDimension_tensor p (simples D i) (simples D j)).symm
 
-end MTC.CentreCabling
+end MTC.Center.Braid

@@ -5,7 +5,7 @@ public import MTC.PropertyF.Reduction.CenterBundle
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.CentreBundle
+namespace MTC.Center.Fusion
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -22,10 +22,10 @@ theorem fusionOfFiniteSemisimple
     IsFusionCategory (CategoryTheory.Center C.Obj) where
   hom_finite X Y :=
     letI := IsFusionCategory.hom_finite (C := C.Obj) X.1 Y.1
-    Centre.finiteDimensional_hom ℂ X Y
+    MTC.Center.finiteDimensional_hom ℂ X Y
   unit_simple :=
     letI := IsFusionCategory.unit_simple (C := C.Obj)
-    Centre.centerUnitSimple
+    MTC.Center.centerUnitSimple
   finite_semisimple := h
 
-end MTC.CentreBundle
+end MTC.Center.Fusion

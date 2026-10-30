@@ -10,14 +10,14 @@ The centre has finitely many simple isomorphism classes. A retract of the tensor
 an induced object then gives finite semisimple decompositions and a fusion structure.
 -/
 
-attribute [local instance] MTC.Centre.finiteDimensional_hom
+attribute [local instance] MTC.Center.finiteDimensional_hom
 
 section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits Module
 open CategoryTheory.Category
 universe v u
 @[expose] public noncomputable section
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 variable {C : BraidedFusionCategory.{v,u}}
 local notation "Sᶜ" => simples C
 local notation "𝒵" => Center C.Obj
@@ -75,11 +75,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem simple_hom_induced_simple [Simple X] :
     ∃ i : Fin (rank C), ∃ f : X ⟶ (induction C).obj (Sᶜ i), f ≠ 0 :=
   (exists_positive_multiplicity (k := ℂ) (simples_decompose C X.1)
-    (fun _ ↦ inferInstance) (fun h ↦ Simple.not_isZero X (Centre.isZero_of_forget h))).imp
+    (fun _ ↦ inferInstance) (fun h ↦ Simple.not_isZero X (MTC.Center.isZero_of_forget h))).imp
     fun i hi ↦ (finrank_pos_iff_exists_ne_zero (R := ℂ)).mp (by
       simpa only [finrank_hom_induction, finrank_to_simple_eq_from_simple _ (Sᶜ i)] using hi)
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 end
@@ -88,7 +88,7 @@ end
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits MTC.Dimensions
 universe v u
 @[expose] public noncomputable section
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 attribute [local instance] IsFusionCategory.hom_finite IsFusionCategory.unit_simple
 variable {D : Type u} [Category.{v} D] [Abelian D] [MonoidalCategory D] [LeftRigidCategory D]
 
@@ -148,7 +148,7 @@ theorem center_fusion_of_unit_retract {U : 𝒵}
     IsFusionCategory (𝒵) :=
   let ⟨_, hsimple, hcover⟩ := finite_simple_labels r
   let ⟨n, S, hS, hinj, hcover⟩ := simple_representatives_of_finite_cover hsimple hcover
-  CentreBundle.fusionOfFiniteSemisimple C ⟨n, S, hS, hinj, fun Z =>
+  MTC.Center.Fusion.fusionOfFiniteSemisimple C ⟨n, S, hS, hinj, fun Z =>
     let ⟨_, V, hV, ⟨e⟩⟩ := finiteSimpleSum_biproduct (center_finite_simple_sum_of_unit_retract r Z)
     let ⟨m, ⟨a⟩⟩ := regroup_biproduct (fun j => hcover (V j) (hV j))
     ⟨m, ⟨e ≪≫ a⟩⟩⟩
@@ -171,9 +171,9 @@ theorem center_fusion_of_nonzero_induced_trace (p : PivotalStructure (C := 𝒵)
   let J := (induction C).obj X
   let cap : J ⊗ Jᘁ ⟶ 𝟙_ (𝒵) :=
     ((p.iso J).hom ⊗ₘ 𝟙 (Jᘁ)) ≫ ε_ (Jᘁ) ((Jᘁ)ᘁ)
-  letI : Simple (𝟙_ (𝒵)) := Centre.centerUnitSimple
+  letI : Simple (𝟙_ (𝒵)) := MTC.Center.centerUnitSimple
   center_fusion_of_unit_retract <| unitRetractOfNonzeroCap cap <| fun h =>
     hne (End.ext (by simpa [PivotalStructure.rightTrace, rightTraceWith,
       cap, J, Category.assoc] using h))
 
-end MTC.CentreInduction
+end MTC.Center.Induction

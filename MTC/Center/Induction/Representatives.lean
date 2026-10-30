@@ -9,7 +9,7 @@ public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.Limits Module
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 variable {k : Type*} [Field k] {D : Type u} [Category.{v} D] [Preadditive D] [Linear k D]
   [HasBinaryBiproducts D]
@@ -71,7 +71,7 @@ theorem finiteSimpleSum_of_injective {E : Type u} [Category.{v} E] [Abelian E] [
         simpa only [(CategoryTheory.Linear.homCongr k e e).finrank_eq] using
           finrank_end_complement_lt (k := k) (cokernel f) (Simple.not_isZero S))) ⟨e⟩
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 
@@ -79,7 +79,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.Limits
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 variable {D : Type u} [Category.{v} D] [Preadditive D] [HasFiniteBiproducts D] [HasBinaryBiproducts D]
 
@@ -117,7 +117,7 @@ theorem finiteSimpleSum_biproduct {X : D} (hX : FiniteSimpleSum X) :
     exact eX ≪≫ biprod.mapIso (Iso.refl S) e ≪≫ biprodOptionIso S V ≪≫
       biproduct.whiskerEquiv (finSuccEquiv n).symm (fun i => eqToIso (by simp))
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 
@@ -125,7 +125,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.Limits
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 variable {D : Type u} [Category.{v} D]
 
@@ -185,4 +185,4 @@ theorem regroup_biproduct [Preadditive D]
   exact ⟨m, ⟨(biproduct.whiskerEquiv E fun p =>
     Classical.choice (by simpa only [hE] using hIso (E p))).symm⟩⟩
 
-end MTC.CentreInduction
+end MTC.Center.Induction

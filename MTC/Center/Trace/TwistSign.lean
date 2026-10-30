@@ -13,7 +13,7 @@ local notation "θ" => MTC.Dimensions.pivotalBraidedTwistScalar
 open MTC.Modular (HasFPSimpleDimensions IsFPSpherical)
 open MTC.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 variable {C : BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := C.Obj)}
   (hp : p.IsSpherical) (hdim : HasFPSimpleDimensions C p)
@@ -126,4 +126,4 @@ theorem selfTransparent_simpleDimension_integer (hfp : IsFPSpherical C p) {i : F
   let ⟨m, hm⟩ := selfTransparent_simple_integral hfp hX
   ⟨m, by simp [hfp.2 i, ← fpDimension_simple i, hm]⟩
 
-end MTC.CentreCalculus
+end MTC.Center.Trace

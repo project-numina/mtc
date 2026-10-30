@@ -14,7 +14,7 @@ endomorphism. For a balanced automorphism this implies finite-order monodromy.
 open MTC.Modular (doubleBraiding)
 open MTC.Dimensions
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.CentreCabling
+namespace MTC.Center.Braid
 universe v u
 variable {D : Type u} [Category.{v} D]
 variable {C : MTC.BraidedFusionCategory.{v,u}}
@@ -77,4 +77,4 @@ def pivotalTwistUnit (C : MTC.BraidedFusionCategory.{v,u})
   exact Units.mk0 (pivotalBraidedTwistScalar C p (simples C i))
     (pivotalBraidedTwistScalar_ne_zero C p (simples C i))
 
-end MTC.CentreCabling
+end MTC.Center.Braid

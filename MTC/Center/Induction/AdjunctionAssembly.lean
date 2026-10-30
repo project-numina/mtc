@@ -12,7 +12,7 @@ open MTC.Dimensions
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (X : C.Obj)
 local notation "Sᶜ" => simples C
@@ -73,7 +73,7 @@ def underlyingCounit : underlyingFunctor C ⟶ 𝟭 C.Obj where
       biproduct.π (inductionSummand X)
         (unitIndex C) ≫ g) (unitTensorIso_natural (Classical.choice (unitIndex_iso C)) f)
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 
@@ -81,7 +81,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 
 set_option backward.isDefEq.respectTransparency false in
@@ -97,7 +97,7 @@ theorem coevaluation_iso_unit {D : Type u} [Category.{v} D] [MonoidalCategory D]
       coevaluation_iso_map e]
   monoidal_coherence
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 
@@ -105,7 +105,7 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 local notation "Sᶜ" => simples C
@@ -139,7 +139,7 @@ theorem unitComponentAt_natural {D : Type u} [Category.{v} D] [MonoidalCategory 
     ← whisker_exchange_assoc, associator_inv_naturality_left_assoc, ← comp_whiskerRight, f.comm]
 
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 
@@ -148,7 +148,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 open CategoryTheory.Limits
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 attribute [local instance] Abelian.hasFiniteBiproducts
 
@@ -163,7 +163,7 @@ theorem unitComponentAt_unit_factor {D : Type u} [Category.{v} D] [MonoidalCateg
   simp only [tensorHom_def, whiskerLeft_id, Category.comp_id, Category.assoc]
   rw [← comp_whiskerRight_assoc, ← Z.2.naturality f, comp_whiskerRight_assoc,
     ← associator_inv_naturality_middle_assoc, ← whiskerLeft_comp_assoc,
-    CentreRigid.halfBraiding_unit Z]
+    MTC.Center.Rigid.halfBraiding_unit Z]
   simp only [comp_whiskerRight, Category.assoc]
   rw [triangle_assoc_comp_right_assoc, ← whisker_exchange_assoc]
   simp only [← comp_whiskerRight_assoc, Iso.inv_hom_id, id_whiskerRight, Category.id_comp,
@@ -181,6 +181,6 @@ theorem unitCandidate_counit {C : BraidedFusionCategory.{v,u}}
   (biproduct.lift_π_assoc (unitComponent Z) (unitIndex C) (unitSummandIso Z.1).hom).trans
     (unitComponentAt_unit_factor Z e.hom (rightDualIsoMap e.symm).hom (coevaluation_iso_unit e))
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end

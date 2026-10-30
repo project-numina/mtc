@@ -21,7 +21,7 @@ to the product of the positive and negative centre embeddings.
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Centre
+namespace MTC.Center
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -60,12 +60,12 @@ theorem reverse_braidGenerator (X : C) {n : ℕ} (i : Fin (n + 1)) :
     (fun n ih i ↦ Fin.cases (reverse_braidGenerator_zero X (n + 1))
       (fun j ↦ reverse_braidGenerator_succ (ih j)) i) n i
 
-end MTC.Centre
+end MTC.Center
 
 /-! Braid images in the ordinary product with mixed braiding. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.Centre
+namespace MTC.Center
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [bc : BraidedCategory C]
 /-- The product category uses the ordinary braiding on the first factor and its reverse on the second. -/
@@ -177,4 +177,4 @@ theorem productFunctor_retract_objectPropertyF {X Y : C} {Z : CategoryTheory.Cen
     (hX : ObjectPropertyF X) (hY : ObjectPropertyF Y) : ObjectPropertyF Z :=
   objectPropertyF_of_retract r (productFunctor_objectPropertyF hX hY)
 
-end MTC.Centre
+end MTC.Center

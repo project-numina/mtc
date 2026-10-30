@@ -11,7 +11,7 @@ comparison satisfies the tensor and unit laws used to transport pivotal componen
 -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
@@ -59,14 +59,14 @@ theorem transported_natural (f : X ⟶ Y)
     CommSq f.f (jX ≫ (κ₂ X).inv) (jY ≫ (κ₂ Y).inv) ((fᘁ)ᘁ).f :=
   h.vert_comp (forgetDoubleDualIso_natural f).vert_inv
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 
 end
 
 /-! Tensor coherence of centre and base dual comparisons. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
@@ -101,7 +101,7 @@ theorem forgetDualIso_tensor :
       ← rightDualIso_tensor (forgetPairing X) HasRightDual.exact
         (forgetPairing Y) HasRightDual.exact, rightDualIso_trans]⟩
 
-end MTC.CentreInduction
+end MTC.Center.Induction
 end
 
 open MTC.Dimensions
@@ -109,7 +109,7 @@ open MTC.Dimensions
 /-! Tensor coherence for the forgotten double-dual and pivotal components. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreInduction
+namespace MTC.Center.Induction
 universe v u
 set_option backward.isDefEq.respectTransparency false
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [RightRigidCategory D]
@@ -202,4 +202,4 @@ theorem transported_unit {j : (𝟙_ (𝒵)).1 ⟶ (((𝟙_ (𝒵)).1)ᘁ)ᘁ}
   (Iso.comp_inv_eq (κ₂ (𝟙_ (𝒵)))).2 <|
     h.trans (forgetDoubleDualIso_unit (D := D)).symm
 
-end MTC.CentreInduction
+end MTC.Center.Induction

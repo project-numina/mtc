@@ -14,7 +14,7 @@ We write `b X n i` for the braid generator on the tensor power of `X`.
 @[expose] public noncomputable section
 local notation "b" => MTC.braidGenerator
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 
@@ -58,10 +58,10 @@ theorem braidGenerator_involutive (n : ℕ) (i : Fin (n + 1)) :
     simpa only [map_mul, map_one, braidGenerator_succ] using
       congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2))) (ih j)
 
-end MTC.CentreCalculus
+end MTC.Center.Trace
 
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.CentreCalculus
+namespace MTC.Center.Trace
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
   (X : C)
@@ -120,4 +120,4 @@ theorem distant_braid_commute (n : ℕ) (i j : Fin (n + 1)) (hij : i.val + 1 < j
         congrArg ((tensorLeft X).mapAut (tensorPower X (n + 2)))
           (ih i j' (by simpa using hij))
 
-end MTC.CentreCalculus
+end MTC.Center.Trace

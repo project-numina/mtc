@@ -19,7 +19,7 @@ open MTC.Dimensions
 open scoped BigOperators
 local notation "S" => MTC.Modular.categoricalS
 local notation "dim" => MTC.Modular.simpleDimension
-namespace MTC.CentreCabling
+namespace MTC.Center.Braid
 universe v u
 variable {D : MTC.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
@@ -53,10 +53,10 @@ theorem sCentralizes_dual (hdim : HasFPSimpleDimensions D p) {y : Fin (rank D)}
   simpa [sCentralizes, Modular.categoricalS_dual_conj D p (realSimpleDimensions_of_fp hdim),
     hdim, fpSimple_dual] using congrArg (starRingEnd ℂ) i.property
 
-end MTC.CentreCabling
+end MTC.Center.Braid
 
 open scoped BigOperators
-namespace MTC.CentreCabling
+namespace MTC.Center.Braid
 universe v u
 variable {D : MTC.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
@@ -119,10 +119,10 @@ theorem doubleCentralizer_of_fourier_support
     nonzero_dual_coefficient_of_sCentralizer hfp.1 hdet (realSimpleDimensions_of_fp hfp.2)
       hunit hsupport (fun y hy ↦ sCentralizes_dual (D := D) hfp.2 ⟨x, sCentralizes_symm (hx y hy)⟩)
 
-end MTC.CentreCabling
+end MTC.Center.Braid
 
 open scoped BigOperators
-namespace MTC.CentreCabling
+namespace MTC.Center.Braid
 universe v u
 variable {D : MTC.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
@@ -248,4 +248,4 @@ theorem doubleCentralizer_of_fusion_closed
     (regularVector_ne_zero_iff.mpr hA.unit) (fun _ hi ↦ regularVector_ne_zero_iff.mp hi)
     (regularVector_fourier_support hfp.2 hA.toIsDualFusionClosed hcore)
 
-end MTC.CentreCabling
+end MTC.Center.Braid
