@@ -10,6 +10,8 @@ public import MTC.Center.Induction.PivotalCentrality
 public import MTC.Center.Modular.Vafa
 public import MTC.Center.Modular.TransparencyCriterion
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided
@@ -30,7 +32,7 @@ section
 
 @[expose] public noncomputable section
 open CategoryTheory
-namespace MTC
+namespace MTC.PropertyF
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -47,7 +49,7 @@ theorem center_globalDimension_square_of_actual_induction
     simpa [globalFPDimension, hfp.2, Complex.ofReal_sum, Complex.ofReal_pow] using
       congrArg (fun x : ℝ ↦ (x : ℂ)) (MTC.Center.Induction.globalFPDimension_square_of_actual_induction C)
 
-end MTC
+end MTC.PropertyF
 end
 end
 
@@ -61,7 +63,7 @@ section
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC
+namespace MTC.PropertyF
 universe v u
 set_option linter.style.haveILetI false
 set_option backward.isDefEq.respectTransparency false
@@ -79,7 +81,7 @@ theorem center_transparent_label_eq_unit
   simples_injective _ ⟨(MTC.Center.Induction.center_transparent_simple_iso_unit (C := C) hk).some ≪≫
     (unitIndex_iso 𝒵ᶠ).some.symm⟩
 
-end MTC
+end MTC.PropertyF
 end
 end
 
@@ -87,12 +89,12 @@ end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC
+namespace MTC.PropertyF
 universe v u
 
 /-- A braided fusion category with property F and a pseudo-unitary Galois
 conjugate has integral global Frobenius–Perron dimension. -/
-theorem PropertyF.weaklyIntegral_of_propertyF : PropertyF.TargetStatement.{v,u} := by
+theorem weaklyIntegral_of_propertyF : TargetStatement.{v,u} := by
   intro C hPU hF
   obtain ⟨D, _, ⟨E⟩, hD⟩ := hPU
   obtain ⟨p, _, hp⟩ := MTC.Center.Induction.positive_spherical_of_pseudoUnitary hD
@@ -125,4 +127,4 @@ theorem PropertyF.weaklyIntegral_of_propertyF : PropertyF.TargetStatement.{v,u} 
       (MTC.Center.Braid.productLabels_doubleCentralizer_of_image_monodromy D hspherical hdet hdim hfinite y hy)
   · exact fun y hy ↦ (MTC.Center.Braid.mem_productLabels D y).mp hy
 
-end MTC
+end MTC.PropertyF

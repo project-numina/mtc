@@ -4,6 +4,8 @@ public import MTC.Center.Dimensions.PivotalTwist
 public import MTC.Fusion.Agreement
 public import MTC.CategoryTheory.Dimensions.MultiplicityDefect
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

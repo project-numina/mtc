@@ -42,7 +42,7 @@ conjugates. A real algebraic integer fixed by every complex automorphism is an
 integer, yielding the arithmetic descent used in the final theorem. -/
 
 @[expose] public noncomputable section
-namespace MTC
+namespace MTC.PropertyF.Reduction
 
 /-- Every automorphism of a subfield extends to the ambient algebraically closed field.
 Choose a transcendence basis, apply the automorphism to coefficients while
@@ -65,7 +65,7 @@ private theorem extend_subfield_automorphism {L : Type*} [Field L] [IsAlgClosed 
   simpa [he, Subfield.algebraMap_ofSubfield] using
     IsAlgClosure.equivOfEquiv_algebraMap L L α (algebraMap K A x)
 
-end MTC
+end MTC.PropertyF.Reduction
 
 end
 
@@ -75,7 +75,7 @@ section
 
 variable {R K : Type*} [Field R] [LinearOrder R] [IsStrictOrderedRing R] [Field K]
 
-namespace MTC
+namespace MTC.PropertyF.Reduction
 
 /-- The final strict-inequality contradiction, including the inverse Galois
 transport of the positive dimension ratio. Lemma 3.2 supplies `hrigidity`.
@@ -87,9 +87,9 @@ theorem galois_dimension_contradiction {j : R →+* K} {δ δσ δτ f d : R}
   have hreal : d * δ = δσ := j.injective <| by simpa [hδτ, hσδ, hσf] using congrArg (σ ∘ j) hratio
   nlinarith [abs_of_pos (show 0 < d by nlinarith)]
 
-end MTC
+end MTC.PropertyF.Reduction
 
-namespace MTC
+namespace MTC.PropertyF.Reduction
 
 /-- The numerical witness supplied by a Galois-unit column. -/
 abbrev HasGaloisDimensionWitness (j : R →+* K) (σ : K ≃+* K) (δ b : R) : Prop :=
@@ -112,7 +112,7 @@ theorem galois_fixed_of_smaller_conjugate_witness {j : R →+* K} (δ : R) (hδ 
       haeq hσf hratio hf hrigidity).elim
   · simpa [heq] using haeq
 
-end MTC
+end MTC.PropertyF.Reduction
 end
 end
 
@@ -120,7 +120,7 @@ end
 field or standard-input hypothesis. -/
 
 @[expose] public noncomputable section
-namespace MTC
+namespace MTC.PropertyF.Reduction
 universe v u
 variable {R : Type*} [Field R] [Algebra R ℂ]
 local notation "ι" => algebraMap R ℂ
@@ -137,7 +137,7 @@ theorem integral_eq_int_of_complex_galois_fixed {δ : R} (hδr : IsIntegral ℤ 
       exact Subtype.ext ((hτ x).symm.trans (hfixed τ))
   ⟨z, (algebraMap R ℂ).injective (by simpa [x] using congrArg (fun y : K ↦ (y : ℂ)) hz)⟩
 
-end MTC
+end MTC.PropertyF.Reduction
 end
 
 section
@@ -148,7 +148,7 @@ spherical category with positive FP dimensions and invertible S matrix. -/
 open CategoryTheory
 open MTC.Modular (IsFPSpherical)
 open scoped BigOperators
-namespace MTC
+namespace MTC.PropertyF.Reduction
 universe v u
 
 /-- A column satisfying the Galois-unit identity. -/
@@ -201,7 +201,7 @@ theorem center_witness_of_categorical_modular_data (hfp : IsFPSpherical Z p)
     galois_rigidity_of_propertyF Z p hfp.2 (hF y hcolumn) hσf (by
       rw [hcolumn y, hfp.2 y, map_mul, hσf, σ.apply_symm_apply])⟩
 
-end MTC
+end MTC.PropertyF.Reduction
 end
 end
 
@@ -213,7 +213,7 @@ pseudo-unitary assumptions. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
 open scoped BigOperators
-namespace MTC
+namespace MTC.PropertyF.Reduction
 universe v u
 
 section
@@ -253,7 +253,7 @@ theorem positive_bounded_conjugates_of_fp : ∃ a : ℝ, 0 < a ∧ a ≤ globalF
       ⟨unitIndex C, by simp [fpSimple_unit]⟩
       (MTC.CategoryTheory.Dimensions.sum_sq_le_sum_sq_of_abs_le hbound)
 
-end MTC
+end MTC.PropertyF.Reduction
 end
 end
 
@@ -261,7 +261,7 @@ section
 /-! The Galois-unit finite-image argument without `CenterInputs`. -/
 
 @[expose] public noncomputable section
-namespace MTC
+namespace MTC.PropertyF.Reduction
 universe v u
 
 /-- The simple dimensions indexed by a set are integers. -/
@@ -285,7 +285,7 @@ theorem propertyF_of_galois_column (hIntegral : HasIntegralSimpleDimensionsOn Z 
     obtain ⟨z, hz⟩ := hIntegral x hx
     simpa only [Modular.sCentralizes, hz, map_intCast, mul_comm] using hColumn x
 
-end MTC
+end MTC.PropertyF.Reduction
 end
 end
 
@@ -300,7 +300,7 @@ section
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false
 open CategoryTheory
-namespace MTC
+namespace MTC.PropertyF.Reduction
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u})
@@ -328,6 +328,6 @@ theorem weaklyIntegral_of_actual_center (hF : HasPropertyF C.Obj)
             propertyF_of_galois_column hIntegral hDouble
               (fun i hi ↦ MTC.Center.productRetract_propertyF (hProduct i hi) hF) hColumn
 
-end MTC
+end MTC.PropertyF.Reduction
 end
 end

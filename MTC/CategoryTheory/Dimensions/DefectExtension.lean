@@ -9,6 +9,8 @@ public import MTC.CategoryTheory.Dimensions.FourthTensorUnit
 
 public import MTC.CategoryTheory.Dimensions.TensorExtension
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

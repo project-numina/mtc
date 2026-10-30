@@ -3,6 +3,8 @@ public import MTC.Fusion.Equivalence
 public import MTC.Modular.SMatrix
 public import Mathlib.Computability.Partrec
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

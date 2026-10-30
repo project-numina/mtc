@@ -6,6 +6,8 @@ public import MTC.Modular.SMatrix
 public import MTC.Center.Averaging
 public import MTC.Braided.Definitions
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

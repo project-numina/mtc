@@ -6,6 +6,8 @@ public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.PropertyF.Reduction.CharacterReality
 public import MTC.Modular.SMatrix
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

@@ -5,6 +5,8 @@ public import MTC.Center.ProductClosure
 public import MTC.Fusion.UnitPower
 public import MTC.Center.Fusion.Bundled
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

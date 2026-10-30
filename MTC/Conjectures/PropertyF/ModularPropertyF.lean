@@ -2,6 +2,8 @@ module
 public import MTC.Modular.SMatrix
 public import MTC.PropertyF.Theorem
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

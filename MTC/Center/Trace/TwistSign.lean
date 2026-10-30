@@ -1,6 +1,8 @@
 module
 public import MTC.Center.Trace.LeftTensorTrace
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

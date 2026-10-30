@@ -1,6 +1,8 @@
 module
 public import MTC.Center.Induction.BasisPairing
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

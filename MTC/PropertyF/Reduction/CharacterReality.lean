@@ -24,7 +24,7 @@ nonzero characters take conjugate values at dual labels.
 @[expose] public noncomputable section
 open CategoryTheory
 open scoped BigOperators
-namespace MTC
+namespace MTC.PropertyF.Reduction
 universe v u
 variable {C : Type u} [Category.{v} C] {ι κ : Type*}
 
@@ -43,7 +43,7 @@ theorem representatives_equiv (S : ι → C) (T : κ → C)
     obtain ⟨i, e⟩ := hTS j
     exact ⟨i, hT _ _ ((hf i).elim fun ei ↦ e.map fun e ↦ ei.symm ≪≫ e)⟩
 
-end MTC
+end MTC.PropertyF.Reduction
 end
 
 /-! Reality of self-dual fusion characters via transposed fusion matrices. -/
@@ -51,7 +51,7 @@ end
 @[expose] public noncomputable section
 open CategoryTheory
 open scoped BigOperators Matrix ComplexOrder
-namespace MTC
+namespace MTC.PropertyF.Reduction
 universe v u
 variable {ι K : Type*} [Fintype ι]
 
@@ -125,4 +125,4 @@ theorem fp_simple_galois_real (σ : ℂ ≃+* ℂ) (i : Fin (rank C)) :
       (fun i j k ↦ (fusionCoeff_dual_symmetry C i j k).symm)
       (by simp [fpSimple_unit]) (fpSimple_isFusionMultiplicative C) (by simp [fpSimple_dual]) σ i
 
-end MTC
+end MTC.PropertyF.Reduction

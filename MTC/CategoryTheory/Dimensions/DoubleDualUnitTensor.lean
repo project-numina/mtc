@@ -6,6 +6,8 @@ public import MTC.Modular.SMatrix
 public import MTC.CategoryTheory.Dimensions.SimpleScalars
 public import MTC.Fusion.Agreement
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

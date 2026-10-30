@@ -1,6 +1,8 @@
 module
 public import MTC.Modular.CharacterStar
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided
@@ -44,11 +46,11 @@ theorem character_orthogonal (χ ψ : Character N) (hne : χ ≠ ψ) :
     rw [← Matrix.mulVec_transpose]
     change (fun j k ↦ (N.coeff i k j : ℂ)) *ᵥ (fun j ↦ starRingEnd ℂ (χ.value j)) = _
     simpa only [hdual i,
-      MTC.fusion_character_dual_eq_conj (i₀ := N.unit)
+      MTC.PropertyF.Reduction.fusion_character_dual_eq_conj (i₀ := N.unit)
         (fun a b c ↦ (hdual a c b).symm) (by simp [χ.unit_eq]) χ.mul_eq i,
-      starRingEnd_apply, star_star] using MTC.fusion_character_eigenvector hχ (dual i)
-  exact (MTC.eigenvalue_eq_of_dotProduct_ne_zero
-    (MTC.fusion_character_eigenvector ψ.mul_eq i) hleft (by simpa [dotProduct] using hw)).symm
+      starRingEnd_apply, star_star] using MTC.PropertyF.Reduction.fusion_character_eigenvector hχ (dual i)
+  exact (MTC.PropertyF.Reduction.eigenvalue_eq_of_dotProduct_ne_zero
+    (MTC.PropertyF.Reduction.fusion_character_eigenvector ψ.mul_eq i) hleft (by simpa [dotProduct] using hw)).symm
 
 include hdual in
 /-- Distinct normalized columns that are fusion characters are orthogonal. -/

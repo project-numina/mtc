@@ -4,6 +4,8 @@ public import Mathlib.Tactic
 public import MTC.Braided.Trace.ThreeTrace
 public import MTC.Braided.Trace.RightStrand
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

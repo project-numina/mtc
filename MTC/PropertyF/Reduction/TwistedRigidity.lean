@@ -28,7 +28,7 @@ braiding and duality, while precomposing the action on morphisms with its invers
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
-namespace MTC.ScalarTwist
+namespace MTC.PropertyF.Reduction.ScalarTwist
 universe v u
 
 variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
@@ -92,7 +92,7 @@ instance twistedFusion : IsFusionCategory (Obj C σ) where
 def category : BraidedFusionCategory.{v,u} where
   Obj := Obj C σ
 
-end MTC.ScalarTwist
+end MTC.PropertyF.Reduction.ScalarTwist
 end
 end
 
@@ -105,7 +105,7 @@ section
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.ScalarTwist
+namespace MTC.PropertyF.Reduction.ScalarTwist
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 
@@ -153,7 +153,7 @@ theorem exists_galois_fp_dimensions (hdim : Modular.HasFPSimpleDimensions C p) :
     fun i ↦ fpSimple_pos C _, fun i ↦ (fp_simple_galois_real C σ (e.symm i)).symm, fun i ↦ by
       simpa only [e.apply_symm_apply, fp_simple_galois_real] using he (e.symm i)⟩
 
-end MTC.ScalarTwist
+end MTC.PropertyF.Reduction.ScalarTwist
 end
 end
 
@@ -163,7 +163,7 @@ section
 @[expose] public noncomputable section
 set_option linter.style.haveILetI false
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC.ScalarTwist
+namespace MTC.PropertyF.Reduction.ScalarTwist
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ)
 
@@ -188,7 +188,7 @@ theorem rightTrace_twist {X : C.Obj} (f : X ⟶ X) :
   ((unitScalar_eq_equiv Cσ _).symm.trans (unitScalar_twist C σ _)).trans
     (congrArg σ (unitScalar_eq_equiv C _))
 
-end MTC.ScalarTwist
+end MTC.PropertyF.Reduction.ScalarTwist
 end
 end
 
@@ -200,7 +200,7 @@ set_option linter.style.haveILetI false
 open CategoryTheory CategoryTheory.MonoidalCategory
 open MTC.Braided.Trace
 open scoped BigOperators
-namespace MTC
+namespace MTC.PropertyF.Reduction
 universe v u
 
 variable (Z : BraidedFusionCategory.{v,u}) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := Z.Obj))
@@ -235,6 +235,6 @@ theorem galois_rigidity_of_propertyF (hdim : Modular.HasFPSimpleDimensions Z p)
     hpos htrans hqdim X d (𝒇 y) hd (fpSimple_pos Z y) hXdim hXfp hXS hF
     (MTC.Braided.Trace.overlap_trace_power D q)
 
-end MTC
+end MTC.PropertyF.Reduction
 end
 end

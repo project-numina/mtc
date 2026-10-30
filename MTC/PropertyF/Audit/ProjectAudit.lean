@@ -156,6 +156,8 @@ import all MTC.Fusion.UnitScalar
 import all MTC.PropertyF.Statement
 import all MTC.PropertyF.Theorem
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided
@@ -208,21 +210,21 @@ run_cmd do
   | _ => throwError "dependency audit did not inspect the imported theorem proof"
   for n in #[``MTC.PropertyF.TargetStatement,
       ``MTC.Fusion.unit_algebraMap_bijective,
-      ``MTC.integral_eq_int_of_complex_galois_fixed,
+      ``MTC.PropertyF.Reduction.integral_eq_int_of_complex_galois_fixed,
       ``MTC.Modular.conjugate_propertyF,
-      ``MTC.galois_fixed_of_smaller_conjugate_witness,
-      ``MTC.positive_bounded_conjugates_of_fp,
-      ``MTC.exists_modular_witness,
-      ``MTC.center_witness_of_categorical_modular_data,
-      ``MTC.propertyF_of_galois_column,
+      ``MTC.PropertyF.Reduction.galois_fixed_of_smaller_conjugate_witness,
+      ``MTC.PropertyF.Reduction.positive_bounded_conjugates_of_fp,
+      ``MTC.PropertyF.Reduction.exists_modular_witness,
+      ``MTC.PropertyF.Reduction.center_witness_of_categorical_modular_data,
+      ``MTC.PropertyF.Reduction.propertyF_of_galois_column,
       ``MTC.Modular.conjugate_globalFPDimension,
       ``MTC.Fusion.fpSimple_eq_fpCharacter,
       ``MTC.Fusion.fpSimple_mul,
-      ``MTC.ScalarTwist.labels,
+      ``MTC.PropertyF.Reduction.ScalarTwist.labels,
       ``MTC.Fusion.fpDimension_functor,
       ``MTC.PropertyF.Reduction.center_forget_fpDimension,
-      ``MTC.galois_rigidity_of_propertyF,
-      ``MTC.weaklyIntegral_of_actual_center,
+      ``MTC.PropertyF.Reduction.galois_rigidity_of_propertyF,
+      ``MTC.PropertyF.Reduction.weaklyIntegral_of_actual_center,
       ``MTC.Center.Induction.liftedPivotalStructure,
       ``MTC.Center.Induction.pivotalComponentsCentral_proved,
       ``MTC.Center.Induction.drinfeld_tensor,
@@ -235,10 +237,10 @@ run_cmd do
       ``MTC.Center.Balancing.doubleDualTensor_evaluation,
       ``MTC.Center.Balancing.drinfeld_tensor_of_pairing_cap,
       ``MTC.Center.Balancing.balance_of_drinfeld_tensor,
-      ``MTC.center_globalDimension_square_of_actual_induction,
+      ``MTC.PropertyF.center_globalDimension_square_of_actual_induction,
       ``MTC.Braided.Trace.actual_rigidity_of_overlap_and_galois_dimensions,
       ``MTC.CategoryTheory.Dimensions.fourthDualRootNaturalSquare_eq,
-      ``MTC.selfDual_character_galois_real,
+      ``MTC.PropertyF.Reduction.selfDual_character_galois_real,
       ``MTC.Braided.Trace.exists_unitary_braid_trace_blocks,
       ``MTC.CategoryTheory.Dimensions.squaredNorm_independent] do
     if let some issue := findIssue env n then

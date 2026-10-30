@@ -10,6 +10,8 @@ public import MTC.Fusion.UnitPower
 public import MTC.CategoryTheory.Dimensions.DoubleDualPairing
 public import MTC.CategoryTheory.Dimensions.DualBraiding
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

@@ -1,6 +1,8 @@
 module
 public import MTC.CategoryTheory.Dimensions.RootDualLabel
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

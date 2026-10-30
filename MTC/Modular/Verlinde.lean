@@ -7,6 +7,8 @@ public import MTC.Modular.Classification
 public import MTC.Modular.SMatrix
 public import MTC.Modular.SAdditivity
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

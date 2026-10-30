@@ -2,6 +2,8 @@ module
 public import MTC.Center.Induction.CrossingBlocks
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

@@ -4,6 +4,8 @@ public import Mathlib.CategoryTheory.Subobject.ArtinianObject
 public import Mathlib.RingTheory.Artinian.Module
 public import Mathlib.CategoryTheory.Preadditive.Injective.Basic
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

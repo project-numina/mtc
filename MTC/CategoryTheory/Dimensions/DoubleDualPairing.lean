@@ -8,6 +8,8 @@ public import MTC.CategoryTheory.Dimensions.SimpleScalars
 public import MTC.Fusion.Agreement
 public import MTC.CategoryTheory.Dimensions.ENOMatrices
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

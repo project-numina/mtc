@@ -7,6 +7,8 @@ public import MTC.Fusion.Multiplicity
 public import MTC.Fusion.Reciprocity
 public import MTC.Modular.FusionTransport
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

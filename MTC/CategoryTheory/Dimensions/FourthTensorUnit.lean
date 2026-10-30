@@ -3,6 +3,8 @@ public import MTC.CategoryTheory.Dimensions.DoubleDualUnitTensor
 public import MTC.CategoryTheory.Dimensions.FourthDualUnit
 public import MTC.CategoryTheory.Dimensions.DefectNaturality
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

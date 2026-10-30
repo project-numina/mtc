@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.DualBraiding
 public import MTC.Modular.SMatrix
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

@@ -6,6 +6,8 @@ public import MTC.Fusion.SpectralIntegral
 public import MTC.Center.Fusion.Bundled
 public import Mathlib.CategoryTheory.Adjunction.Additive
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

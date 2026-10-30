@@ -5,6 +5,8 @@ public import MTC.Center.Braid.RegularSupport
 public import MTC.Fusion.UnitPower
 public import MTC.Center.Trace.TwistSign
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

@@ -5,6 +5,8 @@ public import MTC.Fusion.Multiplicity
 public import MTC.PropertyF.Reduction.CharacterReality
 public import MTC.Modular.BraidFunctor
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

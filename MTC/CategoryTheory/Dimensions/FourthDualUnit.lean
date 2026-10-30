@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.DualCoherence
 public import MTC.CategoryTheory.Dimensions.DefectNaturality
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided

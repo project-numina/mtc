@@ -2,6 +2,8 @@ module
 public import MTC.Modular.Verlinde
 public import MTC.PropertyF.Reduction.CharacterReality
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided
@@ -45,7 +47,7 @@ theorem categoricalS_dual_conj (i j : Fin (rank C)) :
     Sₚ (MTC.Fusion.dualIndex C i) j = starRingEnd ℂ (Sₚ i j) :=
   (div_left_inj' (simpleDimension_ne_zero C p j)).mp (by
     simpa only [categoricalSCharacter, normalizedSColumn, ← starRingEnd_apply, map_div₀, hreal j] using
-      MTC.fusion_character_dual_eq_conj (i₀ := unitIndex C)
+      MTC.PropertyF.Reduction.fusion_character_dual_eq_conj (i₀ := unitIndex C)
         (fun a b c ↦ (MTC.Fusion.fusionCoeff_dual_symmetry C a b c).symm)
         (by simp [(categoricalSCharacter C p j).unit_eq]) (categoricalSCharacter C p j).mul_eq i)
 

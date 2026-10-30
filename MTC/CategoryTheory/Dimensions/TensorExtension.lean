@@ -3,6 +3,8 @@ public import MTC.CategoryTheory.Dimensions.ENOMatrices
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 public import MTC.CategoryTheory.Dimensions.SquaredNorm
 
+open MTC.PropertyF.Reduction
+
 open MTC.Fusion
 
 open MTC.Braided
