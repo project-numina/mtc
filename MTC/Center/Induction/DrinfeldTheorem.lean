@@ -16,7 +16,7 @@ open MTC.CategoryTheory.Dimensions
 /-! The Drinfeld map satisfies its tensor coherence law. -/
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC
+namespace MTC.Center.Induction
 universe v u
 
 /-- The Drinfeld map satisfies tensor coherence in a braided rigid category. -/
@@ -28,7 +28,7 @@ theorem drinfeld_tensor {D : Type u} [Category.{v} D] [MonoidalCategory D]
     (drinfeld_eval (X ⊗ Y))
     ((monodromy_tensor_cap_evaluated X Y).trans (drinfeld_tensor_cap_factor X Y).symm)⟩
 
-end MTC
+end MTC.Center.Induction
 end
 
 section

@@ -225,7 +225,7 @@ run_cmd do
       ``MTC.weaklyIntegral_of_actual_center,
       ``MTC.Center.Induction.liftedPivotalStructure,
       ``MTC.Center.Induction.pivotalComponentsCentral_proved,
-      ``MTC.drinfeld_tensor,
+      ``MTC.Center.Induction.drinfeld_tensor,
       ``MTC.Center.Balancing.pivotal_balance_of_drinfeld_tensor,
       ``MTC.Center.Induction.center_transparent_simple_iso_unit,
       ``MTC.Center.Modular.categoricalS_det_ne_zero_of_trivial_transparency,

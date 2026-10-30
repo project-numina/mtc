@@ -3,14 +3,14 @@ public import Mathlib.CategoryTheory.Monoidal.Center
 public import Mathlib.Tactic
 
 /-!
-# Centralizers in the monoidal centre
+# Centralizers in the monoidal center
 
 Negative centralization, positive half-braidings and transparency.
 -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
-namespace MTC
+namespace MTC.Center
 
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
@@ -33,4 +33,4 @@ theorem centralizesNegative_iff (Y : CategoryTheory.Center C) :
   ⟨fun h X => Iso.ext ((cancel_mono (β_ Y.1 X).inv).mp (by simpa using h X)),
     fun h X => by rw [h X]; simp⟩
 
-end MTC
+end MTC.Center
