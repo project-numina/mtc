@@ -1,7 +1,7 @@
 module
 public import Mathlib.LinearAlgebra.Basis.VectorSpace
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
-public import MTC.CategoryTheory.BlockTrace
+public import MTC.Algebra.BlockTrace
 public import MTC.Braided.Definitions
 public import MTC.Center.Helpers
 public import Mathlib.CategoryTheory.Monoidal.Center
@@ -10,6 +10,8 @@ public import Mathlib.CategoryTheory.Monoidal.Rigid.Basic
 public import Mathlib.FieldTheory.Galois.Basic
 public import Mathlib.NumberTheory.NumberField.Basic
 public import Mathlib.GroupTheory.Index
+
+open MTC.Algebra
 
 open MTC.Braided
 

@@ -9,7 +9,9 @@ public import Mathlib.RingTheory.SimpleModule.IsAlgClosed
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 public import Mathlib.RingTheory.Finiteness.Basic
 public import MTC.Braided.Definitions
-public import MTC.CategoryTheory.BlockTrace
+public import MTC.Algebra.BlockTrace
+
+open MTC.Algebra
 
 open MTC.Braided
 
@@ -99,7 +101,7 @@ def groupImageAlgebra : Subalgebra ℂ A := (groupAlgebraMap ρ).range
 
 /-- A matrix-block presentation of a group-image algebra. -/
 abbrev GroupBlockPresentation {r : ℕ} (d : Fin r → ℕ) :=
-  groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩
+  groupImageAlgebra ρ ≃ₐ[ℂ] Blocks.Matrices ⟨_, d⟩
 
 /-- The image algebra has precisely the underlying linear span of the group image. -/
 theorem groupImageAlgebra_toSubmodule :
@@ -167,7 +169,7 @@ def braidAlgebra (X : C) (n : ℕ) : Subalgebra ℂ (End (braidTensorPower X n))
 
 /-- An equivalence from a categorical braid algebra to its matrix blocks. -/
 abbrev BraidBlockPresentation {r : ℕ} (X : C) (n : ℕ) (d : Fin r → ℕ) :=
-  braidAlgebra X n ≃ₐ[ℂ] Blocks.Algebra ⟨_, d⟩
+  braidAlgebra X n ≃ₐ[ℂ] Blocks.Matrices ⟨_, d⟩
 
 end MTC.Braided.Trace
 

@@ -10,6 +10,8 @@ public import MTC.Center.Induction.PivotalCentrality
 public import MTC.Center.Modular.Vafa
 public import MTC.Center.Modular.TransparencyCriterion
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

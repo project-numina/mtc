@@ -2,6 +2,8 @@ module
 public import MTC.Braided.Trace.OverlapBound
 public import MTC.Braided.Trace.ThreeTrace
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

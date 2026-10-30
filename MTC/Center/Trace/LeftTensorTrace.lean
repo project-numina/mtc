@@ -7,6 +7,8 @@ public import MTC.CategoryTheory.Dimensions.DoubleDualPairing
 public import MTC.Modular.BraidIso
 public import MTC.CategoryTheory.Dimensions.DualCoherence
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

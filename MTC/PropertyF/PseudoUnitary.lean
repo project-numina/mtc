@@ -1,6 +1,8 @@
 module
 public import MTC.PropertyF.Theorem
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

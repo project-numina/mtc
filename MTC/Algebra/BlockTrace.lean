@@ -16,7 +16,7 @@ products of matrix algebras.
 
 @[expose] public section
 open scoped BigOperators ComplexConjugate ComplexOrder Matrix
-namespace MTC
+namespace MTC.Algebra
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
@@ -61,11 +61,11 @@ theorem scalar_of_norm_trace_eq_card (ht : ‖U.trace‖ = Fintype.card ι) : �
 
 end UnitaryTrace
 
-end MTC
+end MTC.Algebra
 
 @[expose] public noncomputable section
 open scoped BigOperators
-namespace MTC
+namespace MTC.Algebra
 
 /-- Explicit finite Wedderburn blocks, rather than an opaque trace space. -/
 structure Blocks where
@@ -76,13 +76,13 @@ structure Blocks where
 
 namespace Blocks
 /-- Product of the complex matrix algebras in the decomposition. -/
-abbrev Algebra (B : Blocks) := ∀ r, Matrix (Fin (B.size r)) (Fin (B.size r)) ℂ
+abbrev Matrices (B : Blocks) := ∀ r, Matrix (Fin (B.size r)) (Fin (B.size r)) ℂ
 
 /-- Unitarity in the product of matrix blocks. -/
-abbrev IsUnitary (B : Blocks) (u : B.Algebra) : Prop := u ∈ unitary B.Algebra
+abbrev IsUnitary (B : Blocks) (u : B.Matrices) : Prop := u ∈ unitary B.Matrices
 
 /-- Weighted sum of the block traces. -/
-def trace (B : Blocks) (w : Fin B.count → ℝ) (u : B.Algebra) : ℂ :=
+def trace (B : Blocks) (w : Fin B.count → ℝ) (u : B.Matrices) : ℂ :=
   ∑ r, (w r : ℂ) * (u r).trace
 
 /-- Weighted sum of the block dimensions. -/
@@ -96,14 +96,14 @@ lemma mass_nonneg : 0 ≤ B.mass w :=
   Finset.sum_nonneg fun _r _ => mul_nonneg (abs_nonneg _) (Nat.cast_nonneg _)
 
 /-- The norm of a unitary weighted trace is bounded by the block mass. -/
-lemma norm_trace_le {u : B.Algebra}
+lemma norm_trace_le {u : B.Matrices}
     (hu : B.IsUnitary u) : ‖B.trace w u‖ ≤ B.mass w :=
   (norm_sum_le _ _).trans <| Finset.sum_le_sum fun r _ => by
     simpa using mul_le_mul_of_nonneg_left
       (by simpa using norm_trace_le_card (Pi.mem_unitary_iff.mp hu r)) (abs_nonneg (w r))
 
 /-- The sign element used on page 4, equation (3). -/
-def signElement : B.Algebra :=
+def signElement : B.Matrices :=
   fun r => (if 0 ≤ w r then (1 : ℂ) else -1) • 1
 
 /-- The sign element is unitary in every block. -/
@@ -126,7 +126,7 @@ lemma mass_le_of_unitary_trace_bound {R : ℝ}
 
 section Saturation
 
-variable {g : B.Algebra} (hg : B.IsUnitary g) (hsat : ‖B.trace w g‖ = B.mass w)
+variable {g : B.Matrices} (hg : B.IsUnitary g) (hsat : ‖B.trace w g‖ = B.mass w)
 include hg hsat
 
 /-- Saturation of the weighted bound saturates every block with nonzero weight. -/
@@ -144,7 +144,7 @@ theorem block_trace_norm_eq_of_saturation (r : Fin B.count) (hw : w r ≠ 0) : �
 
 /-- Equality in the weighted bound implies centrality when no weight vanishes.
 This is the equality argument in Lemma 3.2, proved using actual complex matrices. -/
-theorem central_of_saturation (hw : ∀ r, w r ≠ 0) : ∀ T : B.Algebra, g * T = T * g :=
+theorem central_of_saturation (hw : ∀ r, w r ≠ 0) : ∀ T : B.Matrices, g * T = T * g :=
   fun T => funext fun r => (scalar_of_norm_trace_eq_card (Pi.mem_unitary_iff.mp hg r)
     (by simpa using B.block_trace_norm_eq_of_saturation w hg hsat r (hw r))).elim fun _ hz =>
       by simp [hz]
@@ -152,4 +152,4 @@ theorem central_of_saturation (hw : ∀ r, w r ≠ 0) : ∀ T : B.Algebra, g * T
 end Saturation
 
 end Blocks
-end MTC
+end MTC.Algebra

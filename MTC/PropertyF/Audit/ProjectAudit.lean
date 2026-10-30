@@ -46,7 +46,7 @@ import all MTC.Braided.Trace.TensorPowerCoherence
 import all MTC.Braided.Trace.ThreeRigidity
 import all MTC.Braided.Trace.ThreeTrace
 import all MTC.Braided.Trace.UnitaryBlocks
-import all MTC.CategoryTheory.BlockTrace
+import all MTC.Algebra.BlockTrace
 import all MTC.CategoryTheory.Dimensions.BiproductTrace
 import all MTC.CategoryTheory.Dimensions.DefectExtension
 import all MTC.CategoryTheory.Dimensions.DefectNaturality
@@ -155,6 +155,8 @@ import all MTC.PropertyF.Reduction.TwistedRigidity
 import all MTC.Fusion.UnitScalar
 import all MTC.PropertyF.Statement
 import all MTC.PropertyF.Theorem
+
+open MTC.Algebra
 
 open MTC.PropertyF.Reduction
 

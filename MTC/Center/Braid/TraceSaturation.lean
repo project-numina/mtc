@@ -1,12 +1,14 @@
 module
 public import MTC.Braided.Trace.UnitaryBlocks
-public import MTC.CategoryTheory.BlockTrace
+public import MTC.Algebra.BlockTrace
 public import Mathlib.GroupTheory.OrderOfElement
 public import MTC.Modular.SMatrix
 public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.Center.Basic
 public import MTC.Braided.Trace.BraidWeights
 public import MTC.Fusion.Agreement
+
+open MTC.Algebra
 
 open MTC.PropertyF.Reduction
 
@@ -51,10 +53,10 @@ theorem finiteOrder_matrix_trace_saturation :
   let ⟨P, hP⟩ := finiteOrder_matrix_unitarizable hM
   let U : Matrix ι ι ℂ := (P : Matrix ι ι ℂ) * M * (↑(P⁻¹) : Matrix ι ι ℂ)
   have ht : U.trace = M.trace := Matrix.trace_units_conj P M
-  ⟨ht ▸ (Complex.re_le_norm _).trans (MTC.norm_trace_le_card hP), fun heq ↦ by
+  ⟨ht ▸ (Complex.re_le_norm _).trans (MTC.Algebra.norm_trace_le_card hP), fun heq ↦ by
     simpa [U, Matrix.mul_assoc, ← Units.val_mul] using
       congrArg (fun A : Matrix ι ι ℂ ↦ (↑(P⁻¹) : Matrix ι ι ℂ) * A * (P : Matrix ι ι ℂ))
-        (MTC.eq_one_of_re_trace_eq_card hP (ht.symm ▸ heq))⟩
+        (MTC.Algebra.eq_one_of_re_trace_eq_card hP (ht.symm ▸ heq))⟩
 
 end MTC.Center.Braid
 

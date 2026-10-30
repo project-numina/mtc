@@ -13,6 +13,8 @@ public import MTC.Fusion.SemisimpleSplit
 public import MTC.Modular.SSquare
 public import MTC.Modular.Verlinde
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

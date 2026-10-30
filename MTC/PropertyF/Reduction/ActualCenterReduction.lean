@@ -20,6 +20,8 @@ public import Mathlib.FieldTheory.IsAlgClosed.Classification
 public import Mathlib.Algebra.MvPolynomial.Equiv
 public import MTC.Algebra.Arithmetic
 
+open MTC.Algebra
+
 open MTC.Fusion
 
 open MTC.Braided

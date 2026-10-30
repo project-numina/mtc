@@ -3,6 +3,8 @@ public import MTC.Braided.Cabling.Strands
 public import MTC.Braided.Trace.OverlapCoherence
 public import Mathlib.Tactic
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

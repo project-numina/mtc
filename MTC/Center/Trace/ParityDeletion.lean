@@ -2,6 +2,8 @@ module
 public import MTC.Center.Trace.ProjectorReduction
 public import MTC.Center.Trace.PermutationInsert
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

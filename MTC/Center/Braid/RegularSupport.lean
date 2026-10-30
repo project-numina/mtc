@@ -4,6 +4,8 @@ public import MTC.Fusion.Agreement
 public import MTC.Modular.SSquare
 public import MTC.Fusion.Reciprocity
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

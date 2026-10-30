@@ -7,6 +7,8 @@ public import MTC.Braided.Trace.RightStrand
 public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.Modular.SMatrix
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

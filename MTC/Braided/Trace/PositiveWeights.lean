@@ -3,6 +3,8 @@ public import MTC.Braided.Trace.ThreeRigidity
 public import MTC.Braided.Trace.BraidWeights
 public import MTC.Braided.Trace.OverlapCoherence
 
+open MTC.Algebra
+
 open MTC.PropertyF.Reduction
 
 open MTC.Fusion

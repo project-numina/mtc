@@ -1,8 +1,10 @@
 module
-public import MTC.CategoryTheory.BlockTrace
+public import MTC.Algebra.BlockTrace
 public import MTC.Braided.BraidAlgebra
 public import MTC.Braided.Trace.OverlapBound
 public import MTC.Braided.Trace.ThreeTrace
+
+open MTC.Algebra
 
 open MTC.PropertyF.Reduction
 
@@ -28,17 +30,17 @@ force the squares of the two braid generators to coincide. The trace bound,
 nonzero weights, and the trace value are explicit hypotheses, rather than a
 hypothesis structure. -/
 theorem braid_squares_equal_of_saturation (B : Blocks)
-    (w : Fin B.count → ℝ) (a b : B.Algebraˣ) (d f : ℝ)
+    (w : Fin B.count → ℝ) (a b : B.Matricesˣ) (d f : ℝ)
     (hf : 0 < f) (hw : ∀ r, w r ≠ 0)
-    (ha : B.IsUnitary (a : B.Algebra)) (hb : B.IsUnitary (b : B.Algebra))
+    (ha : B.IsUnitary (a : B.Matrices)) (hb : B.IsUnitary (b : B.Matrices))
     (hbraid : a * b * a = b * a * b)
-    (hbound : ∀ u : B.Algebra, B.IsUnitary u → ‖B.trace w u‖ ≤ |d| * f ^ 2)
-    (htrace : B.trace w ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) = (d : ℂ) * f ^ 2) :
+    (hbound : ∀ u : B.Matrices, B.IsUnitary u → ‖B.trace w u‖ ≤ |d| * f ^ 2)
+    (htrace : B.trace w ((a ^ 2 * b ^ 2 : B.Matricesˣ) : B.Matrices) = (d : ℂ) * f ^ 2) :
     a ^ 2 = b ^ 2 :=
-  let hunit : B.IsUnitary ((a ^ 2 * b ^ 2 : B.Algebraˣ) : B.Algebra) := by
+  let hunit : B.IsUnitary ((a ^ 2 * b ^ 2 : B.Matricesˣ) : B.Matrices) := by
     simpa only [Units.val_mul, Units.val_pow_eq_pow_val] using
-      (unitary B.Algebra).mul_mem ((unitary B.Algebra).pow_mem ha 2)
-        ((unitary B.Algebra).pow_mem hb 2)
+      (unitary B.Matrices).mul_mem ((unitary B.Matrices).pow_mem ha 2)
+        ((unitary B.Matrices).pow_mem hb 2)
   squares_eq_of_central_product a b hbraid <| Units.ext <|
     B.central_of_saturation w hunit (le_antisymm (B.norm_trace_le w hunit) (by
       rw [htrace]
@@ -172,11 +174,11 @@ theorem actual_braid_squares_equal_of_saturation (hf : 0 < f)
       (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) = (d : ℂ) * f ^ 2) :
     tripleBlockLeft b ^ 2 = tripleBlockRight b ^ 2 :=
   let B : Blocks := ⟨r, size⟩
-  let ρ : braidImage X 1 →* B.Algebra :=
+  let ρ : braidImage X 1 →* B.Matrices :=
     b.toMonoidHom.comp (braidInImage (X := X) (n := 1))
-  let a : B.Algebraˣ := ρ.toHomUnits (threeGeneratorLeft X)
-  let c : B.Algebraˣ := ρ.toHomUnits (threeGeneratorRight X)
-  congrArg (fun z : B.Algebraˣ => (z : B.Algebra))
+  let a : B.Matricesˣ := ρ.toHomUnits (threeGeneratorLeft X)
+  let c : B.Matricesˣ := ρ.toHomUnits (threeGeneratorRight X)
+  congrArg (fun z : B.Matricesˣ => (z : B.Matrices))
     (braid_squares_equal_of_saturation B w a c d f hf hw (he _) (he _)
       (Units.ext (by simpa only [a, c, Units.val_mul, MonoidHom.coe_toHomUnits, map_mul] using
         (congrArg ρ (three_braid_image_relation X))))

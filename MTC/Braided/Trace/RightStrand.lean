@@ -6,6 +6,8 @@ public import MTC.Braided.Cabling.Strands
 public import MTC.Braided.Trace.EndBlocks
 public import Mathlib.Tactic
 
+open MTC.Algebra
+
 open MTC.Fusion
 
 open MTC.Braided
@@ -185,8 +187,8 @@ def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     (f : BraidBlockPresentation X (n + k) q)
     (he : IsUnitaryBraidPresentation e)
     (hf : IsUnitaryBraidPresentation f) :
-    (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
-      (Blocks.Algebra ⟨_, q⟩) where
+    (Blocks.Matrices ⟨_, d⟩) →⋆ₐ[ℂ]
+      (Blocks.Matrices ⟨_, q⟩) where
   toAlgHom := f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom)
   map_star' x := by
     apply unitary_intertwiner_map_star
@@ -358,8 +360,8 @@ def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
     (f : BraidBlockPresentation X (n + k) q)
     (he : IsUnitaryBraidPresentation e)
     (hf : IsUnitaryBraidPresentation f) :
-    (Blocks.Algebra ⟨_, d⟩) →⋆ₐ[ℂ]
-      (Blocks.Algebra ⟨_, q⟩) where
+    (Blocks.Matrices ⟨_, d⟩) →⋆ₐ[ℂ]
+      (Blocks.Matrices ⟨_, q⟩) where
   toAlgHom := f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)
   map_star' x := by
     apply unitary_intertwiner_map_star

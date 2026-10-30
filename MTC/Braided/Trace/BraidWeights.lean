@@ -9,6 +9,8 @@ public import Mathlib.LinearAlgebra.Pi
 public import Mathlib.LinearAlgebra.Trace
 public import MTC.Braided.Trace.UnitaryBlocks
 
+open MTC.Algebra
+
 open MTC.Fusion
 
 open MTC.Braided
@@ -165,7 +167,7 @@ end
 /-- Every cyclic linear functional on a finite product of matrix algebras is
 a weighted sum of ordinary block traces. The weights may be arbitrary complex
 numbers; reality and categorical multiplicities require additional input. -/
-theorem cyclic_block_trace {B : Blocks} (T : B.Algebra →ₗ[ℂ] ℂ)
+theorem cyclic_block_trace {B : Blocks} (T : B.Matrices →ₗ[ℂ] ℂ)
     (hT : ∀ X Y, T (X * Y) = T (Y * X)) :
     ∃ w : Fin B.count → ℂ, ∀ X, T X = ∑ i, w i * (X i).trace := by
   let V : Fin B.count → Type := fun i => Matrix (Fin (B.size i)) (Fin (B.size i)) ℂ
@@ -210,10 +212,10 @@ open scoped Classical in
 /-- A weighted block trace of an element supported in one block. -/
 theorem sum_trace_single {B : Blocks} (w : Fin B.count → ℂ)
     (i : Fin B.count) (A : Matrix (Fin (B.size i)) (Fin (B.size i)) ℂ) :
-    (∑ j, w j * ((Pi.single i A : B.Algebra) j).trace) =
+    (∑ j, w j * ((Pi.single i A : B.Matrices) j).trace) =
       w i * A.trace := by
   simpa using Fintype.sum_eq_single i
-    (f := fun j => w j * ((Pi.single i A : B.Algebra) j).trace) (fun j h => by simp_all)
+    (f := fun j => w j * ((Pi.single i A : B.Matrices) j).trace) (fun j h => by simp_all)
 
 variable {B : Blocks} (hd : ∀ i, 0 < B.size i)
 
@@ -222,7 +224,7 @@ include hd in
 algebras, its ordinary trace is a nonnegative integer-weighted sum of the
 standard block traces. The integers are ranks of images of matrix units. -/
 theorem representation_trace_multiplicities {m : ℕ}
-    (φ : B.Algebra →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
+    (φ : B.Matrices →ₐ[ℂ] Matrix (Fin m) (Fin m) ℂ) :
     ∃ mult : Fin B.count → ℕ, ∀ x, (φ x).trace = ∑ i, (mult i : ℂ) * (x i).trace := by
   let T := (Matrix.traceLinearMap (Fin m) ℂ ℂ).comp φ.toLinearMap
   obtain ⟨w, hw⟩ := cyclic_block_trace T (fun x y => by
@@ -230,7 +232,7 @@ theorem representation_trace_multiplicities {m : ℕ}
     simpa only [map_mul] using Matrix.trace_mul_comm (φ x) (φ y))
   have hnat : ∀ i, ∃ k : ℕ, w i = k := fun i =>
     let j : Fin (B.size i) := ⟨0, hd i⟩
-    let e : B.Algebra := Pi.single i (Matrix.single j j 1)
+    let e : B.Matrices := Pi.single i (Matrix.single j j 1)
     let ⟨k, hk⟩ := idempotent_matrix_trace_nat (A := φ e) (by
       rw [← map_mul]
       simp [e, ← Pi.single_mul, Matrix.single_mul_single_same])
@@ -242,7 +244,7 @@ include hd in
 /-- A faithful block-algebra representation has nonnegative integer
 multiplicities, and every source block occurs in at least one target block. -/
 theorem faithful_block_representation_multiplicities {B' : Blocks}
-    (φ : B.Algebra →ₐ[ℂ] B'.Algebra) (hinj : Function.Injective φ) :
+    (φ : B.Matrices →ₐ[ℂ] B'.Matrices) (hinj : Function.Injective φ) :
     ∃ mult : Fin B'.count → Fin B.count → ℕ,
       (∀ i x, (φ x i).trace = ∑ j, (mult i j : ℂ) * (x j).trace) ∧ (∀ j, ∃ i, 0 < mult i j) := by
   choose mult hmult using fun i : Fin B'.count =>
@@ -251,7 +253,7 @@ theorem faithful_block_representation_multiplicities {B' : Blocks}
   refine ⟨mult, hmult, fun j => ?_⟩
   by_contra! hn
   let k : Fin (B.size j) := ⟨0, hd j⟩
-  let e : B.Algebra := Pi.single j (Matrix.single k k 1)
+  let e : B.Matrices := Pi.single j (Matrix.single k k 1)
   have hzero : φ e = 0 := by
     funext i
     apply idempotent_matrix_eq_zero_of_trace_eq_zero
@@ -259,7 +261,7 @@ theorem faithful_block_representation_multiplicities {B' : Blocks}
         (congrFun (map_mul φ e e) i).symm
     · simpa only [e, sum_trace_single, Matrix.trace_single_eq_same, mul_one,
         Nat.eq_zero_of_le_zero (hn i), Nat.cast_zero] using hmult i e
-  simpa [e] using congrArg (fun x : B.Algebra => x j k k)
+  simpa [e] using congrArg (fun x : B.Matrices => x j k k)
     (hinj (show φ e = φ 0 from by simpa using hzero))
 
 end MTC.Braided.Trace
@@ -281,8 +283,8 @@ def braidToEndBlocks {X : C.Obj} {n : ℕ}
     (e : braidTensorPower X n ≅ ⨁ (simpleCopies C m))
     {r : ℕ} {d : Fin r → ℕ}
     (b : BraidBlockPresentation X n d) :
-    (Blocks.Algebra ⟨_, d⟩) →ₐ[ℂ]
-      (Blocks.Algebra ⟨_, m⟩) :=
+    (Blocks.Matrices ⟨_, d⟩) →ₐ[ℂ]
+      (Blocks.Matrices ⟨_, m⟩) :=
   (groundEndBlockEquiv C e).toAlgHom.comp
     ((braidAlgebra X n).val.comp b.symm.toAlgHom)
 

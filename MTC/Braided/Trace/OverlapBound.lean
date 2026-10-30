@@ -1,10 +1,12 @@
 module
 public import MTC.Braided.Trace.BraidWeights
-public import MTC.CategoryTheory.BlockTrace
+public import MTC.Algebra.BlockTrace
 public import MTC.Fusion.ObjectDimension
 public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.Braided.Trace.ThreeTrace
 public import MTC.Algebra.PowerBound
+
+open MTC.Algebra
 
 open MTC.PropertyF.Reduction
 
