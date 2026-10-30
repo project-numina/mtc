@@ -131,7 +131,7 @@ theorem integral_eq_int_of_complex_galois_fixed {δ : R} (hδr : IsIntegral ℤ 
   let hδ := (isIntegral_algebraMap_iff (R := ℤ) (A := R) (B := ℂ)).mpr hδr
   let K := separableClosure ℚ ℂ
   let x : K := ⟨ι δ, (minpoly.irreducible (hδ.tower_top (A := ℚ))).separable⟩
-  let ⟨z, hz⟩ := integer_of_galois_fixed (x := x)
+  let ⟨z, hz⟩ := MTC.Algebra.integer_of_galois_fixed (x := x)
     ((isIntegral_algebraMap_iff (R := ℤ) (A := K) (B := ℂ)).mp (by simpa [x] using hδ)) fun σ ↦ by
       obtain ⟨τ, hτ⟩ := extend_subfield_automorphism K.toSubfield σ.toRingEquiv
       exact Subtype.ext ((hτ x).symm.trans (hfixed τ))

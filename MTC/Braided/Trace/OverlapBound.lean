@@ -236,7 +236,7 @@ theorem sharp_trace_bound_of_overlap [Simple X]
     ‖actualBraidTrace C p u‖ ≤
       ‖pivotalDimension C p X‖ *
         MTC.Fusion.fpDimension C X ^ (t + 1) :=
-  norm_bound_of_overlap (m := t + 2) (by
+  MTC.Algebra.norm_bound_of_overlap (m := t + 2) (by
     simpa only [pivotalDimension] using Modular.unitScalar_rightTrace_ne_zero C p X)
     (lt_of_lt_of_le zero_lt_one (MTC.Fusion.one_le_fpDimension (Simple.not_isZero X)))
     (fun k => actualBraidTrace C p (overlapProduct u k)) (fun k => by
