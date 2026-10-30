@@ -5,6 +5,8 @@ public import MTC.Center.Braid.RegularSupport
 public import MTC.Fusion.UnitPower
 public import MTC.Center.Trace.TwistSign
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -24,7 +26,7 @@ local notation "𝒵" => MTC.PropertyF.Reduction.bundledCenter
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace MTC.Center.Braid
 universe v u
-variable (C : MTC.BraidedFusionCategory.{v,u})
+variable (C : MTC.Fusion.BraidedFusionCategory.{v,u})
   [RigidCategory (CategoryTheory.Center C.Obj)]
   [IsFusionCategory (CategoryTheory.Center C.Obj)]
 
@@ -93,7 +95,7 @@ end MTC.Center.Braid
 open CategoryTheory CategoryTheory.MonoidalCategory
 namespace MTC.Center.Braid
 universe v u
-variable (C : MTC.BraidedFusionCategory.{v,u})
+variable (C : MTC.Fusion.BraidedFusionCategory.{v,u})
   [RigidCategory (CategoryTheory.Center C.Obj)]
   [IsFusionCategory (CategoryTheory.Center C.Obj)]
 

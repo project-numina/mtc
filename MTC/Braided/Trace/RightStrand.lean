@@ -6,6 +6,8 @@ public import MTC.Braided.Cabling.Strands
 public import MTC.Braided.Trace.EndBlocks
 public import Mathlib.Tactic
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!

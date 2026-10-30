@@ -6,6 +6,8 @@ public import MTC.Fusion.Multiplicity
 public import MTC.Fusion.Reciprocity
 public import MTC.Modular.FusionTransport
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -74,7 +76,7 @@ theorem SEntry_unit (p : PivotalStructure (C := C)) (X : C) :
   (congrArg p.rightTrace (doubleBraiding_unit X)).trans (p.rightTrace_id_iso (ρ_ X))
 
 section
-variable (C : MTC.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
+variable (C : MTC.Fusion.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 
 /-- Spherical dimension of a chosen simple representative. -/
 def simpleDimension (i : Fin (rank C)) : ℂ :=
@@ -117,7 +119,7 @@ theorem categoricalS_unit (i : Fin (rank C)) :
 
 /-- In the spherical case, global dimension is the sum of squared simple dimensions. -/
 theorem categorical_global_eq_sum_squares (hp : p.IsSpherical) :
-    MTC.globalDimension C = ∑ i, simpleDimension C p i ^ 2 := by
+    MTC.Fusion.globalDimension C = ∑ i, simpleDimension C p i ^ 2 := by
   simpa only [simpleDimension, ← MTC.unitScalar_eq_equiv, ← rightTrace_id] using
     target_globalDimension_eq_sum_squares hp
 
@@ -140,7 +142,7 @@ open MTC.CategoryTheory.Dimensions
 
 namespace MTC.Modular
 universe v u
-variable (C : MTC.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
+variable (C : MTC.Fusion.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 
 
 /-- A simple object has nonzero pivotal trace of the identity. -/
@@ -151,7 +153,7 @@ theorem pivotalTrace_simple_ne_zero (X : C.Obj) [Simple X] :
 
 /-- The scalar pivotal trace of a simple object is nonzero. -/
 theorem unitScalar_rightTrace_ne_zero (X : C.Obj) [Simple X] :
-    MTC.unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
+    MTC.Fusion.unitScalar C (p.rightTrace (𝟙 X)) ≠ 0 := by
   rw [MTC.unitScalar_eq_equiv]
   simpa only [map_zero] using
     (MTC.unitScalarEquiv C).injective.ne (pivotalTrace_simple_ne_zero C p X)

@@ -8,6 +8,8 @@ public import Mathlib.Basic.Complex.Basic
 public import Mathlib.Tactic
 public import Mathlib.CategoryTheory.Iso
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Tensor defects and multiplicities

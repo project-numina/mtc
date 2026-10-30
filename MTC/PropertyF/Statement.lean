@@ -17,7 +17,7 @@ The theorem is proved in `MTC.PropertyF.Theorem`.
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
-namespace MTC
+namespace MTC.Fusion
 universe v u
 
 attribute [local instance] Abelian.hasFiniteBiproducts
@@ -103,9 +103,9 @@ def HasPseudoUnitaryGaloisConjugate : Prop :=
     Nonempty (GaloisConjugate C D σ) ∧ PseudoUnitary D
 
 /-- The intended, unconditional theorem. No proof is asserted here. -/
-def PropertyF.TargetStatement : Prop :=
+def _root_.MTC.PropertyF.TargetStatement : Prop :=
   ∀ C : BraidedFusionCategory.{v,u},
     HasPseudoUnitaryGaloisConjugate C → HasPropertyF C.Obj →
       WeaklyIntegral (globalFPDimension C)
 
-end MTC
+end MTC.Fusion

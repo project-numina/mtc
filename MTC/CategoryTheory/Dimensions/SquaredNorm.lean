@@ -9,6 +9,8 @@ public import MTC.Fusion.Simples
 public import MTC.Fusion.Reciprocity
 public import MTC.PropertyF.Reduction.UnitScalar
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Intrinsic squared norms

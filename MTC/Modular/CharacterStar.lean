@@ -2,6 +2,8 @@ module
 public import MTC.Modular.Verlinde
 public import MTC.PropertyF.Reduction.CharacterReality
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -16,7 +18,7 @@ open scoped BigOperators
 @[expose] public noncomputable section
 namespace MTC.Modular
 
-variable (C : MTC.BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
+variable (C : MTC.Fusion.BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p

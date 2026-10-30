@@ -5,6 +5,8 @@ public import Lean.Util.CollectAxioms
 public import Lean.Compiler.ImplementedByAttr
 public import Lean.Compiler.ExternAttr
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! Dependency-cone audit. Unlike `#print axioms`, this traverses declaration

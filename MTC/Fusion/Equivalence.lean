@@ -1,6 +1,8 @@
 module
 public import MTC.PropertyF.Statement
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Fusion rules of braided fusion categories
@@ -42,7 +44,7 @@ theorem sameFusionRules_trans {C D E : BraidedFusionCategory.{v,u}}
 
 
 /-- Complex-linear braided monoidal equivalence of braided fusion categories. -/
-structure BraidedTensorEquivalence (C D : MTC.BraidedFusionCategory.{v,u}) where
+structure BraidedTensorEquivalence (C D : MTC.Fusion.BraidedFusionCategory.{v,u}) where
   equivalence : C.Obj ≌ D.Obj
   [monoidal : equivalence.functor.Monoidal]
   [braided : equivalence.functor.Braided]

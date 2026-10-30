@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.DualBraiding
 public import MTC.CategoryTheory.Dimensions.DoubleDualUnitTensor
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Monoidality of the double dual

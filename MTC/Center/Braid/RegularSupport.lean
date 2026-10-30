@@ -4,6 +4,8 @@ public import MTC.Fusion.Agreement
 public import MTC.Modular.SSquare
 public import MTC.Fusion.Reciprocity
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -23,16 +25,16 @@ local notation "S" => MTC.Modular.categoricalS
 local notation "dim" => MTC.Modular.simpleDimension
 namespace MTC.Center.Braid
 universe v u
-variable {D : MTC.BraidedFusionCategory.{v,u}}
+variable {D : MTC.Fusion.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
 
 /-- The S-matrix transform of a vector on the simple labels. -/
-abbrev sFourier (D : MTC.BraidedFusionCategory.{v,u})
+abbrev sFourier (D : MTC.Fusion.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (f : Fin (rank D) → ℂ) (y : Fin (rank D)) : ℂ :=
   ∑ i, S D p y i * f i
 
 /-- The S-transform of a vector vanishes outside the given set. -/
-abbrev FourierSupportedOn (D : MTC.BraidedFusionCategory.{v,u})
+abbrev FourierSupportedOn (D : MTC.Fusion.BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := D.Obj)) (f : Fin (rank D) → ℂ)
     (core : Set (Fin (rank D))) : Prop :=
   ∀ y ∉ core, sFourier D p f y = 0
@@ -60,7 +62,7 @@ end MTC.Center.Braid
 open scoped BigOperators
 namespace MTC.Center.Braid
 universe v u
-variable {D : MTC.BraidedFusionCategory.{v,u}}
+variable {D : MTC.Fusion.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
   (hp : p.IsSpherical) (hdet : (S D p).det ≠ 0)
   (hreal : HasRealSimpleDimensions D p)
@@ -126,7 +128,7 @@ end MTC.Center.Braid
 open scoped BigOperators
 namespace MTC.Center.Braid
 universe v u
-variable {D : MTC.BraidedFusionCategory.{v,u}}
+variable {D : MTC.Fusion.BraidedFusionCategory.{v,u}}
   {p : PivotalStructure (C := D.Obj)}
 
 /-- A character pairing with an eigenvector has the same eigenvalue on both sides. -/
@@ -165,13 +167,13 @@ abbrev IsFusionClosed {ι : Type*} (N : ι → ι → ι → ℕ) (A : Finset ι
   ∀ a ∈ A, ∀ b ∈ A, ∀ k, 0 < N a b k → k ∈ A
 
 /-- A set of simple labels closed under duals and fusion constituents. -/
-structure IsDualFusionClosed (D : MTC.BraidedFusionCategory.{v,u})
+structure IsDualFusionClosed (D : MTC.Fusion.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) : Prop where
   dual : ∀ a ∈ A, dualIndex D a ∈ A
   fusion : IsFusionClosed (fusionCoeff D) A
 
 /-- A set of labels containing the unit and closed under duals and fusion. -/
-structure IsFusionSubring (D : MTC.BraidedFusionCategory.{v,u})
+structure IsFusionSubring (D : MTC.Fusion.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) : Prop extends IsDualFusionClosed D A where
   unit : unitIndex D ∈ A
 
@@ -196,7 +198,7 @@ end
 variable {A : Finset (Fin (rank D))} {a b : A} {k : {k : Fin (rank D) // k ∉ A}}
 
 /-- The FP-weighted regular vector supported on a set of simple labels. -/
-abbrev regularVector (D : MTC.BraidedFusionCategory.{v,u})
+abbrev regularVector (D : MTC.Fusion.BraidedFusionCategory.{v,u})
     (A : Finset (Fin (rank D))) (i : Fin (rank D)) : ℂ :=
   if i ∈ A then (fpSimple D i : ℂ) else 0
 

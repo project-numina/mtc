@@ -2,6 +2,8 @@ module
 public import MTC.Center.Induction.ForgetDual
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 
+open MTC.Fusion
+
 open MTC.Braided
 
 open MTC.CategoryTheory.Dimensions

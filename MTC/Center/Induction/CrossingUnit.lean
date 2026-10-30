@@ -1,6 +1,8 @@
 module
 public import MTC.Center.Induction.BasisPairing
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! Tensor-unit normalization for the explicit induction crossing. -/

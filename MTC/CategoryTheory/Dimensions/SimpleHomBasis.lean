@@ -7,6 +7,8 @@ public import MTC.CategoryTheory.Dimensions.SquaredNorm
 public import MTC.CategoryTheory.Dimensions.ENOMatrices
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Traces on simple multiplicity spaces

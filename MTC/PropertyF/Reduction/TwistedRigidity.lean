@@ -9,6 +9,8 @@ public import MTC.Braided.Trace.PositiveWeights
 public import MTC.Braided.Trace.TensorPowerCoherence
 public import MTC.Fusion.Agreement
 
+open MTC.Fusion
+
 open MTC.Braided
 
 section

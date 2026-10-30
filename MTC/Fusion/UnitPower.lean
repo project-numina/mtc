@@ -6,6 +6,8 @@ public import MTC.Modular.BraidIso
 public import MTC.Braided.Cabling.UnitPower
 public import MTC.CategoryTheory.Dimensions.Pivotal
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Fusion flow and tensor generation

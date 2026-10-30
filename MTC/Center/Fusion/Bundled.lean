@@ -4,6 +4,8 @@ public import Mathlib.CategoryTheory.Adjunction.Mates
 public import Mathlib.CategoryTheory.Monoidal.Rigid.Braided
 public import MTC.Fusion.ObjectDimension
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Dual half-braidings and the bundled centre

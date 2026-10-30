@@ -3,6 +3,8 @@ public import MTC.Modular.SMatrix
 public import MTC.Modular.Classification
 public import MTC.CategoryTheory.Dimensions.BiproductTrace
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -51,14 +53,14 @@ theorem SEntry_iso_left (p : PivotalStructure (C := C)) {X Z : C} (e : X ≅ Z) 
     (SEntry_iso_right p Y e).trans (SEntry_symmetric p Y Z)
 
 section
-variable (D : MTC.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := D.Obj))
+variable (D : MTC.Fusion.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := D.Obj))
 local notation "Sₚ" => categoricalS D p
 local notation "dₚ" => simpleDimension D p
 
 /-- Expanding a tensor product into simple summands expands its S entry with
 exactly the fusion coefficients. -/
 theorem SEntry_tensor_decomposition (i j k : Fin (rank D)) :
-    MTC.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
+    MTC.Fusion.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) =
       ∑ l, (fusionCoeff D i j l : ℂ) * Sₚ l k := by
   obtain ⟨e⟩ := exists_canonical_decomposition D (simples D i ⊗ simples D j)
   rw [MTC.unitScalar_eq_equiv]
@@ -67,7 +69,7 @@ theorem SEntry_tensor_decomposition (i j k : Fin (rank D)) :
 
 /-- The Hopf-link product rule for simple objects. -/
 abbrev HasHopfProduct : Prop :=
-  ∀ i j k, MTC.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
+  ∀ i j k, MTC.Fusion.unitScalar D (SEntry p (simples D i ⊗ simples D j) (simples D k)) *
     dₚ k = Sₚ i k * Sₚ j k
 
 /-- The categorical Hopf-link product identity implies the Verlinde character

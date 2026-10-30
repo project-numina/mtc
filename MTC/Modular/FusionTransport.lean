@@ -5,6 +5,8 @@ public import MTC.Fusion.Multiplicity
 public import MTC.PropertyF.Reduction.CharacterReality
 public import MTC.Modular.BraidFunctor
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -23,7 +25,7 @@ universe v u
 
 /-- An equivalence transports the chosen simple labels bijectively, with an
 actual isomorphism between each transported representative and its new label. -/
-theorem simpleLabels_equiv (C D : MTC.BraidedFusionCategory.{v,u})
+theorem simpleLabels_equiv (C D : MTC.Fusion.BraidedFusionCategory.{v,u})
     (E : C.Obj ≌ D.Obj) : ∃ e : Fin (rank C) ≃ Fin (rank D),
     ∀ i, Nonempty (E.functor.obj (simples C i) ≅ simples D (e i)) := by
   let F := E.functor
@@ -65,8 +67,8 @@ open CategoryTheory.Functor.Monoidal
 namespace MTC.Modular
 universe v u
 
-variable {C D : MTC.BraidedFusionCategory.{v,u}}
-variable {σ : ℂ ≃+* ℂ} (h : MTC.GaloisConjugate C D σ)
+variable {C D : MTC.Fusion.BraidedFusionCategory.{v,u}}
+variable {σ : ℂ ≃+* ℂ} (h : MTC.Fusion.GaloisConjugate C D σ)
 include h
 
 /-- Semilinear equivalences preserve the dimensions of Hom spaces. -/

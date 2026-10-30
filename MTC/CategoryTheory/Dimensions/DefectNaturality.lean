@@ -1,6 +1,8 @@
 module
 public import MTC.CategoryTheory.Dimensions.RootDualLabel
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Tensor-defect naturality and coevaluation sliding

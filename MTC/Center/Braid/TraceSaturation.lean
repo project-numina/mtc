@@ -8,6 +8,8 @@ public import MTC.Center.Basic
 public import MTC.Braided.Trace.BraidWeights
 public import MTC.Fusion.Agreement
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -58,7 +60,7 @@ open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 open scoped BigOperators
 namespace MTC.Center.Braid
 universe v u
-variable {D : MTC.BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := D.Obj)}
+variable {D : MTC.Fusion.BraidedFusionCategory.{v,u}} {p : PivotalStructure (C := D.Obj)}
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /-- Positive weighted sums preserve equality when the terms are pointwise ordered. -/

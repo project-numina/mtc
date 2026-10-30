@@ -2,6 +2,8 @@ module
 public import MTC.Fusion.ObjectDimension
 public import MTC.CategoryTheory.Dimensions.SimpleHomBasis
 
+open MTC.Fusion
+
 open MTC.Braided
 
 open MTC.CategoryTheory.Dimensions Module

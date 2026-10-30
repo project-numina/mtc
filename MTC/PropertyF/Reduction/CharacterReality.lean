@@ -5,6 +5,8 @@ public import Mathlib.LinearAlgebra.Matrix.ConjTranspose
 public import Mathlib.Analysis.RCLike.Basic
 public import MTC.Fusion.Simples
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Representatives and real fusion characters

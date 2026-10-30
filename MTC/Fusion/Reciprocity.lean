@@ -1,6 +1,8 @@
 module
 public import MTC.Fusion.Multiplicity
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Duality and Frobenius reciprocity

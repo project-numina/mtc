@@ -2,6 +2,8 @@ module
 public import MTC.Center.Induction.CrossingCoherence
 public import MTC.Center.Induction.AdjunctionAssembly
 
+open MTC.Fusion
+
 open MTC.Braided
 
 open MTC.CategoryTheory.Dimensions

@@ -1,6 +1,8 @@
 module
 public import MTC.CategoryTheory.Dimensions.DualTensorNaturality
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Braiding and dual tensor products

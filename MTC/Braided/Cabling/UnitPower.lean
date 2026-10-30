@@ -6,6 +6,8 @@ public import Mathlib.CategoryTheory.Preadditive.Biproducts
 public import MTC.Fusion.Reciprocity
 public import MTC.Fusion.Simples
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -35,7 +37,7 @@ namespace MTC.Braided.Cabling
 universe v u
 variable {D : Type u} [Category.{v} D] [MonoidalCategory D] [BraidedCategory D]
   [Abelian D] [Linear ℂ D] [RigidCategory D] [MonoidalPreadditive D] [MonoidalLinear ℂ D]
-  [MTC.IsFusionCategory D]
+  [MTC.Fusion.IsFusionCategory D]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A positive tensor power containing the unit makes the simple generator's
@@ -43,7 +45,7 @@ right dual a retract of a lower tensor power. -/
 theorem generatedBy_rightDual_of_unit_power {X : D} [Simple X] {n : ℕ}
     (r : Retract (𝟙_ D) (tensorPower X (n + 1))) :
     GeneratedBy X (Xᘁ) :=
-  let _ : Simple (𝟙_ D) := MTC.IsFusionCategory.unit_simple
+  let _ : Simple (𝟙_ D) := MTC.Fusion.IsFusionCategory.unit_simple
   let _ : Simple (Xᘁ) := MTC.simple_rightDual X
   let _ : IsSplitMono r.i := r.instIsSplitMonoI
   let f : Xᘁ ⊗ 𝟙_ D ⟶ tensorPower X n :=

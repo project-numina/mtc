@@ -10,6 +10,8 @@ public import MTC.Center.Induction.PivotalCentrality
 public import MTC.Center.Modular.Vafa
 public import MTC.Center.Modular.TransparencyCriterion
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # The centre reduction and the final theorem

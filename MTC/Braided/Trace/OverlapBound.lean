@@ -6,6 +6,8 @@ public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.Braided.Trace.ThreeTrace
 public import MTC.Algebra.PowerBound
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -55,10 +57,10 @@ unitary is bounded by the simple-multiplicity mass. The explicit dimension
 bound is supplied by the fusion/Perron and dimensions workstreams. -/
 theorem pivotalTrace_braid_unitary_bound
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ)
-    {m : Fin (MTC.rank C) → ℕ}
+    {m : Fin (MTC.Fusion.rank C) → ℕ}
     (e : braidTensorPower X n ≅ ⨁ (simpleCopies C m))
-    {fp : Fin (MTC.rank C) → ℝ}
-    (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (MTC.simples C i)))‖ ≤ fp i)
+    {fp : Fin (MTC.Fusion.rank C) → ℝ}
+    (hbound : ∀ i, ‖scalar (p.rightTrace (𝟙 (MTC.Fusion.simples C i)))‖ ≤ fp i)
     (a : braidAlgebra X n) (ha : Blocks.IsUnitary ⟨_, d⟩ (b a)) :
     ‖scalar (p.rightTrace (a : End (braidTensorPower X n)).asHom)‖ ≤
       ∑ i, (m i : ℝ) * fp i := by
@@ -79,8 +81,8 @@ theorem pivotalTrace_braid_unitary_bound
 presentation chosen by the finite-group unitarization theorem. -/
 theorem braid_trace_unitary_bound_ground :
     HasUnitaryTraceBound C p b (MTC.fpDimension C X ^ (n + 2)) := fun a ha ↦ by
-  let m : Fin (MTC.rank C) → ℕ := fun i =>
-    Module.finrank ℂ (MTC.simples C i ⟶ braidTensorPower X n)
+  let m : Fin (MTC.Fusion.rank C) → ℕ := fun i =>
+    Module.finrank ℂ (MTC.Fusion.simples C i ⟶ braidTensorPower X n)
   obtain ⟨e⟩ := MTC.exists_canonical_decomposition C (braidTensorPower X n)
   rw [← fpDimension_tensorPower]
   change ‖MTC.unitScalarEquiv C

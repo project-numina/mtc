@@ -2,6 +2,8 @@ module
 public import MTC.Modular.Data.Basic
 public import MTC.Modular.SMatrix
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -30,7 +32,7 @@ def MatchesCategoricalS (d : Data ℂ (rank C)) : Prop :=
 /-- Under sphericality, matching S identifies the two global dimensions. -/
 theorem globalDimension_eq_categorical (d : Data ℂ (rank C))
     (h : MatchesCategoricalS C p d) (hp : p.IsSpherical) :
-    d.globalDimension = MTC.globalDimension C := by
+    d.globalDimension = MTC.Fusion.globalDimension C := by
   rw [categorical_global_eq_sum_squares C p hp]
   simp only [globalDimension, h.1, h.2, categoricalS_symmetric C p,
     categoricalS_unit C p]

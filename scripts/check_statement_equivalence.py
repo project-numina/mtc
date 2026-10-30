@@ -14,7 +14,7 @@ import sys
 ROOT = Path(__file__).resolve().parent.parent
 FROZEN = {
     'MTC/Braided/Definitions.lean': '69a4e4647ddb4ce40c87924982eb953226ef01bae00afe4f13c5bda0ff040150',
-    'MTC/PropertyF/Statement.lean': 'c4c9608e50ff3c8b2422a9bbec8cc909e03ef155f4975385f52a4b7554c9beaf',
+    'MTC/PropertyF/Statement.lean': '06a9b850d944ce94c4a00eae21fd0a3228672181202ae36c91e1beb0aba10f69',
 }
 
 

@@ -3,6 +3,8 @@ public import MTC.Fusion.Simples
 public import Mathlib.LinearAlgebra.Dimension.Constructions
 public import Mathlib.CategoryTheory.Monoidal.Preadditive
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Simple multiplicities and fusion coefficients

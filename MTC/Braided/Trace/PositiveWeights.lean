@@ -3,6 +3,8 @@ public import MTC.Braided.Trace.ThreeRigidity
 public import MTC.Braided.Trace.BraidWeights
 public import MTC.Braided.Trace.OverlapCoherence
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -20,10 +22,10 @@ open scoped BigOperators
 namespace MTC.Braided.Trace
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
-variable (original qdim : Fin (MTC.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
+variable (original qdim : Fin (MTC.Fusion.rank C) → ℝ) (σ : ℂ ≃+* ℂ)
   (hpos : ∀ i, 0 < original i)
   (htransport : ∀ i, σ (original i : ℂ) = (qdim i : ℂ))
-  (hqdim : ∀ i, pivotalDimension C p (MTC.simples C i) = (qdim i : ℂ))
+  (hqdim : ∀ i, pivotalDimension C p (MTC.Fusion.simples C i) = (qdim i : ℂ))
 include hpos htransport hqdim
 
 /-- Real Galois conjugates of positive simple dimensions yield nonzero real

@@ -8,6 +8,8 @@ public import MTC.CategoryTheory.Dimensions.SimpleScalars
 public import MTC.Fusion.Agreement
 public import MTC.CategoryTheory.Dimensions.ENOMatrices
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Double-dual pairings and pivotal duality

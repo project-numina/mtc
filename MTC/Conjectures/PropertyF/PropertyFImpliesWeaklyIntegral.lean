@@ -1,6 +1,8 @@
 module
 public import MTC.PropertyF.Theorem
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!

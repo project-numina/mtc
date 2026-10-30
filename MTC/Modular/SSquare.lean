@@ -1,6 +1,8 @@
 module
 public import MTC.Modular.CharacterStar
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -64,7 +66,7 @@ theorem character_columns_orthogonal [DecidableEq ι] {S : Matrix ι ι ℂ} {d 
       character_orthogonal N dual hdual (cols a) (cols b) hne)).resolve_right
     (mul_ne_zero (hd a) (hd b))
 
-variable (C : MTC.BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
+variable (C : MTC.Fusion.BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p
@@ -154,7 +156,7 @@ open MTC.CategoryTheory.Dimensions
 
 namespace MTC.Modular
 
-variable (C : MTC.BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
+variable (C : MTC.Fusion.BraidedFusionCategory) (p : MTC.CategoryTheory.Dimensions.PivotalStructure (C := C.Obj))
 
 local notation "Sₚ" => categoricalS C p
 local notation "dₚ" => simpleDimension C p

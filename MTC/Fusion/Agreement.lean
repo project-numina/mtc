@@ -9,6 +9,8 @@ public import MTC.Braided.Cabling.Strands
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.LinearAlgebra.Eigenspace.Matrix
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Positive fusion characters and FP dimensions

@@ -5,6 +5,8 @@ public import MTC.Center.ProductClosure
 public import MTC.Fusion.UnitPower
 public import MTC.Center.Fusion.Bundled
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -65,7 +67,7 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 omit [RigidCategory C] in
 /-- Once the actual centre is a rigid fusion category, duals of product
 retracts are product retracts, using fusion-category generation. -/
-theorem productRetract_rightDual (D : MTC.BraidedFusionCategory.{v,u})
+theorem productRetract_rightDual (D : MTC.Fusion.BraidedFusionCategory.{v,u})
     [RigidCategory (CategoryTheory.Center D.Obj)]
     [IsFusionCategory (CategoryTheory.Center D.Obj)]
     {Z : CategoryTheory.Center D.Obj} (hZ : ProductRetract Z) : ProductRetract (Zᘁ) :=

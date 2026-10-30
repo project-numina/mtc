@@ -6,6 +6,8 @@ public import Mathlib.CategoryTheory.Conj
 public import Mathlib.LinearAlgebra.Matrix.Reindex
 public import Mathlib.RingTheory.SimpleModule.IsAlgClosed
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -89,14 +91,14 @@ end PivotalTrace
 variable (D : BraidedFusionCategory.{v,u})
 
 /-- The chosen nonisomorphic simple representatives are Hom-orthogonal. -/
-theorem groundSimples_orthogonal : HomOrthogonal (MTC.simples D) :=
-  let _ : ∀ i, Simple (MTC.simples D i) := MTC.simples_simple D
+theorem groundSimples_orthogonal : HomOrthogonal (MTC.Fusion.simples D) :=
+  let _ : ∀ i, Simple (MTC.Fusion.simples D i) := MTC.simples_simple D
   fun _i _j hij => subsingleton_of_forall_eq 0 fun f => Classical.byContradiction fun hf =>
     hij (MTC.simples_injective D ⟨let _ : IsIso f := isIso_of_hom_simple hf; asIso f⟩)
 
 /-- The family containing `m i` copies of each chosen simple object. -/
-abbrev simpleCopies (m : Fin (MTC.rank D) → ℕ)
-    (p : Σ i, Fin (m i)) : D.Obj := MTC.simples D p.1
+abbrev simpleCopies (m : Fin (MTC.Fusion.rank D) → ℕ)
+    (p : Σ i, Fin (m i)) : D.Obj := MTC.Fusion.simples D p.1
 
 /-- The occurrences of label `i` in a dependent sum are indexed by `Fin (m i)`. -/
 def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
@@ -112,20 +114,20 @@ def simpleFiberEquiv {ι : Type} (m : ι → ℕ) (i : ι) :
 /-- A chosen simple-object decomposition gives the corresponding complex
 matrix-block decomposition of its endomorphism algebra. -/
 def groundEndBlockEquiv {X : D.Obj}
-    {m : Fin (MTC.rank D) → ℕ}
+    {m : Fin (MTC.Fusion.rank D) → ℕ}
     (e : X ≅ ⨁ (simpleCopies D m)) :
     End X ≃ₐ[ℂ] ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ := by
   classical
   let _ : HasFiniteBiproducts D.Obj := inferInstance
-  let _ : ∀ i, Simple (MTC.simples D i) := MTC.simples_simple D
-  let _ : ∀ i, FiniteDimensional ℂ (MTC.simples D i ⟶ MTC.simples D i) :=
-    fun i => MTC.IsFusionCategory.hom_finite _ _
+  let _ : ∀ i, Simple (MTC.Fusion.simples D i) := MTC.simples_simple D
+  let _ : ∀ i, FiniteDimensional ℂ (MTC.Fusion.simples D i ⟶ MTC.Fusion.simples D i) :=
+    fun i => MTC.Fusion.IsFusionCategory.hom_finite _ _
   let _ : DecidableEq (Σ i, Fin (m i)) := Classical.decEq _
-  let f : (Σ i, Fin (m i)) → Fin (MTC.rank D) := Sigma.fst
-  let decomp := orthogonalEndBlocks (MTC.simples D) f (groundSimples_orthogonal D)
-  let scalars : (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) (End (MTC.simples D i))) ≃ₐ[ℂ]
+  let f : (Σ i, Fin (m i)) → Fin (MTC.Fusion.rank D) := Sigma.fst
+  let decomp := orthogonalEndBlocks (MTC.Fusion.simples D) f (groundSimples_orthogonal D)
+  let scalars : (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) (End (MTC.Fusion.simples D i))) ≃ₐ[ℂ]
       (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) ℂ) :=
-    AlgEquiv.piCongrRight fun i => (simpleEndScalar (k := ℂ) (MTC.simples D i)).mapMatrix
+    AlgEquiv.piCongrRight fun i => (simpleEndScalar (k := ℂ) (MTC.Fusion.simples D i)).mapMatrix
   let reindex : (∀ i, Matrix (f ⁻¹' {i}) (f ⁻¹' {i}) ℂ) ≃ₐ[ℂ]
       (∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ) :=
     AlgEquiv.piCongrRight fun i => Matrix.reindexAlgEquiv ℂ ℂ (simpleFiberEquiv m i)

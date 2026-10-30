@@ -2,6 +2,8 @@ module
 public import MTC.Fusion.Agreement
 public import Mathlib.CategoryTheory.Preadditive.AdditiveFunctor
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Frobenius–Perron dimensions of objects

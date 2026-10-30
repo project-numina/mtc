@@ -3,6 +3,8 @@ public import MTC.PropertyF.Statement
 public import Mathlib.CategoryTheory.Preadditive.Schur
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Simple representatives and splittings

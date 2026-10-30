@@ -1,6 +1,8 @@
 module
 public import MTC.Center.Fusion.Bundled
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! Assembly of the ground fusion interface from centre semisimplicity. -/

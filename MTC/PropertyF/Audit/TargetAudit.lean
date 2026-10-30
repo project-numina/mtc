@@ -151,6 +151,8 @@ import all MTC.PropertyF.Reduction.UnitScalar
 import all MTC.PropertyF.Statement
 import all MTC.PropertyF.Theorem
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! Audit the theorem type, its complete dependency cone, and its axioms. -/

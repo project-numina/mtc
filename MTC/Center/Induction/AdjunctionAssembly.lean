@@ -6,6 +6,8 @@ public import MTC.Center.Rigid
 public import MTC.Center.Induction.Representatives
 public import MTC.Center.Fusion.Fusion
 
+open MTC.Fusion
+
 open MTC.Braided
 
 open MTC.CategoryTheory.Dimensions

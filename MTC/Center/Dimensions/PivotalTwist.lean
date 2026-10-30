@@ -2,6 +2,8 @@ module
 public import MTC.Braided.Trace.PartialTrace
 public import MTC.CategoryTheory.Dimensions.FourthDualUnit
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -74,10 +76,10 @@ section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace MTC.CategoryTheory.Dimensions
 universe v u
-variable (C : MTC.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
+variable (C : MTC.Fusion.BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 /-- The pivotal/Drinfeld twist on an object. -/
 def pivotalBraidedTwist (X : C.Obj) : X ≅ X :=
-  p.iso X ≪≫ (MTC.doubleDualIso C X).symm
+  p.iso X ≪≫ (MTC.Fusion.doubleDualIso C X).symm
 
 /-- The ratio of natural pivotal and double-dual isomorphisms is natural. -/
 theorem pivotalBraidedTwist_natural {D : Type u} [Category.{v} D] [MonoidalCategory D]
@@ -108,21 +110,21 @@ theorem pivotalBraidedTwistScalar_ne_zero (X : C.Obj) [Simple X] :
 
 /-- The trace of a simple self-braiding is twist scalar times dimension. -/
 theorem pivotalTrace_selfBraiding (X : C.Obj) [Simple X] :
-    MTC.unitScalar C (p.rightTrace (β_ X X).hom) =
+    MTC.Fusion.unitScalar C (p.rightTrace (β_ X X).hom) =
       θₚ X * pivotalDimension C p X := by
   have h : p.rightTrace (pivotalBraidedTwist C p X).hom = p.rightTrace (β_ X X).hom := by
     simpa only [pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom,
-      rightPartialTrace_braiding p (MTC.doubleDualIso C X) (drinfeld_eval X)] using
+      rightPartialTrace_braiding p (MTC.Fusion.doubleDualIso C X) (drinfeld_eval X)] using
       rightTrace_partialTrace p (End.of (β_ X X).hom)
   simpa only [pivotalBraidedTwist_simple, PivotalStructure.rightTrace_smul,
     MTC.unitScalar_eq_equiv, map_smul, smul_eq_mul, pivotalDimension] using
-      congrArg (MTC.unitScalar C) h.symm
+      congrArg (MTC.Fusion.unitScalar C) h.symm
 
 /-- The actual pivotal/Drinfeld twists form a natural automorphism. -/
 def pivotalBraidedTwistNaturalIso : 𝟭 C.Obj ≅ 𝟭 C.Obj :=
   NatIso.ofComponents (pivotalBraidedTwist C p) (fun f ↦ by
     simpa only [Functor.id_map, pivotalBraidedTwist, Iso.trans_hom, Iso.symm_hom] using
-      pivotalBraidedTwist_natural p (MTC.doubleDualIso C) (fun f ↦ drinfeldIso_natural f) f)
+      pivotalBraidedTwist_natural p (MTC.Fusion.doubleDualIso C) (fun f ↦ drinfeldIso_natural f) f)
 
 
 end MTC.CategoryTheory.Dimensions

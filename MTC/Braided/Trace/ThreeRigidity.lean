@@ -4,6 +4,8 @@ public import MTC.Braided.BraidAlgebra
 public import MTC.Braided.Trace.OverlapBound
 public import MTC.Braided.Trace.ThreeTrace
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!

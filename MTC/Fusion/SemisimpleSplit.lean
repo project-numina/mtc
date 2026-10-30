@@ -2,6 +2,8 @@ module
 public import MTC.Fusion.Simples
 public import Mathlib.CategoryTheory.Preadditive.Injective.Basic
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Splittings in fusion categories

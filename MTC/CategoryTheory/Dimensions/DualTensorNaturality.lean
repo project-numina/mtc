@@ -2,6 +2,8 @@ module
 public import MTC.CategoryTheory.Dimensions.DualCoherence
 public import MTC.PropertyF.Statement
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-! # Dual tensor comparisons and the Drinfeld isomorphism

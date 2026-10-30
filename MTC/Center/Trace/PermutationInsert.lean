@@ -4,6 +4,8 @@ public import MTC.Center.Trace.ProjectorReduction
 public import Mathlib.GroupTheory.Perm.Fin
 public import MTC.CategoryTheory.Dimensions.TensorMultiplicativity
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!

@@ -7,6 +7,8 @@ public import MTC.Braided.Trace.RightStrand
 public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 public import MTC.Modular.SMatrix
 
+open MTC.Fusion
+
 open MTC.Braided
 
 /-!
@@ -137,7 +139,7 @@ theorem rightPartialTrace_simple_ground (C : BraidedFusionCategory.{v,u})
     {X Y : C.Obj} [Simple X] (p : PivotalStructure (C := C.Obj))
     (scalar : End (𝟙_ C.Obj) ≃ₐ[ℂ] ℂ) (f : End (X ⊗ Y)) :
     rightPartialTrace p f = (scalarTrace p scalar f / scalar (p.rightTrace (𝟙 X))) • (1 : End X) :=
-  let _ : FiniteDimensional ℂ (X ⟶ X) := MTC.IsFusionCategory.hom_finite _ _
+  let _ : FiniteDimensional ℂ (X ⟶ X) := MTC.Fusion.IsFusionCategory.hom_finite _ _
   rightPartialTrace_simple (X := X) (Y := Y) p scalar f
     (by simpa only [map_zero] using scalar.injective.ne (Modular.pivotalTrace_simple_ne_zero C p X))
 
