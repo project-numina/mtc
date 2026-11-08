@@ -20,6 +20,14 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.Centralizer
+import all MTC.Algebra.ComplexTraceReciprocity
+import all MTC.Braided.Cabling.ClosurePure
+import all MTC.Braided.Trace.MonodromyReciprocity
+import all MTC.Braided.Trace.SaturationSquare
+import all MTC.Center.Braid.PivotalRegularSupport
+import all MTC.Center.Normalization.PivotalTwist
+import all MTC.PropertyF.Pivotal.SlopeSquare
 import all MTC.Algebra.ComplexBlockTrace
 import all MTC.Algebra.ComplexBraidSaturation
 import all MTC.Braided.Trace.ComplexSaturation
