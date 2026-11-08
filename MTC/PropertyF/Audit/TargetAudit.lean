@@ -20,6 +20,7 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.GeneratedConsequences
 import all MTC.PropertyF.Pivotal.GeneratedCategory
 import all MTC.PropertyF.Pivotal.FPSquareIntegral
 import all MTC.Braided.Cabling.ClosureLeftInsertion
