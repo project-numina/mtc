@@ -39,4 +39,24 @@ theorem saturation_of_square_phase
       exact hphase (MTC.Fusion.simples C i)
         (nonzero_square_hom_of_braid_multiplicity C X _ hi)) hmax
 
+/-- The saturation implication follows from the precise tensor-square slope
+identity; the modulus-one property of the pivotal phase is derived here from
+nonvanishing of simple pivotal dimensions. -/
+theorem saturation_of_square_slope
+    (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
+    {X : C.Obj} [Simple X] (hfinite : ObjectPropertyF X)
+    (hphase : ∀ (Y : C.Obj) [Simple Y], (∃ f : Y ⟶ X ⊗ X, f ≠ 0) →
+      pivotalDimension C p Y =
+        (pivotalDimension C p X / (‖pivotalDimension C p X‖ : ℂ)) ^ 4 *
+          star (pivotalDimension C p Y))
+    (hmax : ‖scalarTrace p (MTC.Fusion.unitScalarEquiv C) (selfMonodromy X) /
+      pivotalDimension C p X‖ = MTC.Fusion.fpDimension C X) :
+    ‖pivotalDimension C p X‖ = MTC.Fusion.fpDimension C X := by
+  have hd : 0 < ‖pivotalDimension C p X‖ := norm_pos_iff.mpr (by
+    simpa only [pivotalDimension] using Modular.unitScalar_rightTrace_ne_zero C p X)
+  have hunit : ‖(pivotalDimension C p X / (‖pivotalDimension C p X‖ : ℂ)) ^ 4‖ = 1 := by
+    rw [norm_pow, norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hd,
+      div_self hd.ne', one_pow]
+  exact saturation_of_square_phase C p hfinite _ hunit hphase hmax
+
 end MTC.Braided.Trace
