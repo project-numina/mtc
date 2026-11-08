@@ -21,6 +21,7 @@ public import MTC.Braided.Cabling.ClosureCommonInterface
 public import MTC.Braided.Cabling.ClosureCrossing
 public import MTC.Braided.Cabling.ClosureFirstBlock
 public import MTC.Braided.Cabling.ClosureFlatten
+public import MTC.Braided.Cabling.ClosureFlattenCoherence
 public import MTC.Braided.Cabling.ClosureFlattenCompare
 public import MTC.Braided.Cabling.ClosureFlattenUnit
 public import MTC.Braided.Cabling.ClosureFour
@@ -241,6 +242,7 @@ public import MTC.PropertyF.Pivotal.GeneratedCategory
 public import MTC.PropertyF.Pivotal.GeneratedConsequences
 public import MTC.PropertyF.Pivotal.GlobalCriterionConsequences
 public import MTC.PropertyF.Pivotal.InfiniteImages
+public import MTC.PropertyF.Pivotal.MainTheorems
 public import MTC.PropertyF.Pivotal.MonoidalDual
 public import MTC.PropertyF.Pivotal.MonoidalDualComparison
 public import MTC.PropertyF.Pivotal.MonoidalQuantumTrace
@@ -252,12 +254,14 @@ public import MTC.PropertyF.Pivotal.NondegeneracyHaarBasis
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarMate
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarSlide
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarSnake
+public import MTC.PropertyF.Pivotal.NondegeneracyRelative
 public import MTC.PropertyF.Pivotal.Nondegenerate
 public import MTC.PropertyF.Pivotal.NondegenerateTransport
 public import MTC.PropertyF.Pivotal.NormalizedConjugates
 public import MTC.PropertyF.Pivotal.NormalizedScalarTwist
 public import MTC.PropertyF.Pivotal.NumericalReduction
 public import MTC.PropertyF.Pivotal.ObjectwiseConsequences
+public import MTC.PropertyF.Pivotal.ObjectwiseMain
 public import MTC.PropertyF.Pivotal.RelativeCriterionConsequences
 public import MTC.PropertyF.Pivotal.SOrthogonality
 public import MTC.PropertyF.Pivotal.SScalarTwist
