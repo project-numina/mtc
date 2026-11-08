@@ -71,3 +71,19 @@ set_option maxRecDepth 4096 in
     rw [hj]
     simp only [Category.assoc, Iso.inv_hom_id_assoc]
 
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Standard flattening commutes with concatenation of block lists. -/
+theorem flattenPower_concat_heq (X : C) (k p q : ℕ) :
+    flattenPower X k (strandSum p q) ≍
+      (joinPowerIso (tensorPower X k) p q).symm ≪≫
+        (flattenPower X k p ⊗ᵢ flattenPower X k q) ≪≫
+        joinPowerIso X (p*k) (q*k) := by
+  have hc := flattenBlocksRecursive_concat_heq X k p q
+  have hp := flattenBlocksRecursive_heq X k p
+  have hq := flattenBlocksRecursive_heq X k q
+  have hall := flattenBlocksRecursive_heq X k (strandSum p q)
+  apply HEq.trans hall.symm
+  apply HEq.trans hc
+  congr 3
+  all_goals try simp [blockStrandCount_eq_mul, strandSum_eq_add]
