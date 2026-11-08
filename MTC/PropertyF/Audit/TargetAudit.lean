@@ -20,6 +20,9 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Braided.Cabling.ClosureLeftInsertion
+import all MTC.Braided.Cabling.ClosureLocalFlatten
+import all MTC.Center.Normalization.SymmetricSquares
 import all MTC.PropertyF.Pivotal.ConjugateCorollary
 import all MTC.Braided.Cabling.ClosureBlockContext
 import all MTC.Braided.Cabling.ClosureFirstBlock

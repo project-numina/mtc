@@ -26,6 +26,8 @@ public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosureInsertion
 public import MTC.Braided.Cabling.ClosureInterchange
 public import MTC.Braided.Cabling.ClosureIsoWord
+public import MTC.Braided.Cabling.ClosureLeftInsertion
+public import MTC.Braided.Cabling.ClosureLocalFlatten
 public import MTC.Braided.Cabling.ClosureMergeCommon
 public import MTC.Braided.Cabling.ClosurePure
 public import MTC.Braided.Cabling.ClosureRectangular
@@ -141,6 +143,7 @@ public import MTC.Center.Normalization.SymmetricGlobal
 public import MTC.Center.Normalization.SymmetricInteger
 public import MTC.Center.Normalization.SymmetricPivotal
 public import MTC.Center.Normalization.SymmetricRising
+public import MTC.Center.Normalization.SymmetricSquares
 public import MTC.Center.Normalization.UniversalGrading
 public import MTC.Center.Product
 public import MTC.Center.ProductClosure
