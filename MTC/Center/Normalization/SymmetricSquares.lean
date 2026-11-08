@@ -86,5 +86,31 @@ theorem transparent_fpSimple_positive_integer_of_muger_pseudoUnitary
   rw [transparent_norm_saturation_of_muger_pseudoUnitary C p hpu i hi] at hnorm
   exact ⟨n, hn, hnorm⟩
 
+/-- Every actual transparent simple object has positive integer pivotal
+ dimension norm, for an arbitrary ambient pivotal structure. -/
+theorem transparent_simple_object_pivotal_norm_positive_integer
+    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) [Simple X]
+    (hX : MTC.Center.Transparent X) :
+    ∃ n : ℕ, 0 < n ∧ ‖pivotalDimension C p X‖ = (n : ℝ) := by
+  obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso C X
+  have hi : MTC.Center.Transparent (simples C i) :=
+    transparent_of_retract (Retract.ofIso e.symm) hX
+  obtain ⟨n, hn, hnorm⟩ := transparent_simple_pivotal_norm_positive_integer C p i hi
+  rw [← pivotalDimension_iso p e] at hnorm
+  exact ⟨n, hn, hnorm⟩
+
+/-- Every actual transparent simple object has intrinsic squared norm equal
+to a positive integer square. -/
+theorem transparent_simple_object_squaredNorm_positive_square
+    (p : PivotalStructure (C := C.Obj)) (X : C.Obj) [Simple X]
+    (hX : MTC.Center.Transparent X) :
+    ∃ n : ℕ, 0 < n ∧ squaredNorm C X = (n : ℂ) ^ 2 := by
+  obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso C X
+  have hi : MTC.Center.Transparent (simples C i) :=
+    transparent_of_retract (Retract.ofIso e.symm) hX
+  obtain ⟨n, hn, hsq⟩ := transparent_simple_squaredNorm_positive_square C p i hi
+  rw [← target_squaredNorm_iso C e] at hsq
+  exact ⟨n, hn, hsq⟩
+
 end MTC.Center.Normalization
 end
