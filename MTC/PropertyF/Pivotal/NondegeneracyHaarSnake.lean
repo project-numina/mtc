@@ -71,5 +71,30 @@ theorem pivotalLeftPairing_snake_left_whisker (X Z : C.Obj) :
   simpa only [comp_whiskerRight, id_whiskerRight] using
     congrArg (fun f ↦ f ▷ Z) (pivotalLeftPairing_snake_left_id C p X)
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The inclusion Frobenius mate is the standard cup, fusion morphism,
+and cap diagram, with all coherence maps supplied canonically. -/
+theorem haarInclusionMate_diagram (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) :
+    haarInclusionMate C X Y U f =
+      𝟙 (Yᘁ : C.Obj) ⊗≫ ((Yᘁ) ◁ η_ X (Xᘁ)) ⊗≫
+        ((Yᘁ) ◁ (f ▷ (Xᘁ))) ⊗≫ (ε_ Y (Yᘁ) ▷ (U ⊗ (Xᘁ))) ⊗≫ 𝟙 _ := by
+  dsimp [haarInclusionMate, tensorLeftHomLinearEquiv, tensorRightHomLinearEquiv,
+    tensorLeftHomEquiv, tensorRightHomEquiv]
+  monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The projection Frobenius mate is the analogous diagram with the actual
+pivotal left-dual cup and cap. -/
+theorem haarProjectionMate_diagram (X Y U : C.Obj) (g : Y ⊗ U ⟶ X) :
+    haarProjectionMate C p X Y U g =
+      𝟙 (U ⊗ (Xᘁ)) ⊗≫
+        ((η_ (Yᘁ) ((Yᘁ)ᘁ) ≫ (Yᘁ) ◁ (p.iso Y).inv) ▷ (U ⊗ (Xᘁ))) ⊗≫
+        ((Yᘁ) ◁ (g ▷ (Xᘁ))) ⊗≫
+        ((Yᘁ) ◁ ((p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ))) ⊗≫ 𝟙 _ := by
+  dsimp [haarProjectionMate, tensorLeftHomLinearEquiv, tensorRightHomLinearEquiv,
+    tensorLeftHomEquiv, tensorRightHomEquiv]
+  rw [pivotalLeftPairing_coevaluation C p Y, pivotalLeftPairing_evaluation C p X]
+  monoidal
+
 end MTC.PropertyF.Pivotal
 end
