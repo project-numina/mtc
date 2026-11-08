@@ -20,6 +20,8 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Braided.Cabling.ClosureTwoBlockPower
+import all MTC.Center.Normalization.SymmetricInteger
 import all MTC.PropertyF.Pivotal.CenterNondegenerate
 import all MTC.Center.Normalization.BinomialArithmetic
 import all MTC.PropertyF.Pivotal.MonoidalTrace

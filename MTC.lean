@@ -29,6 +29,7 @@ public import MTC.Braided.Cabling.ClosureRectangular
 public import MTC.Braided.Cabling.ClosureSplitMerge
 public import MTC.Braided.Cabling.ClosureSweep
 public import MTC.Braided.Cabling.ClosureSweepContext
+public import MTC.Braided.Cabling.ClosureTwoBlockPower
 public import MTC.Braided.Cabling.ClosureTwoRow
 public import MTC.Braided.Cabling.ClosureUnit
 public import MTC.Braided.Cabling.Generated
@@ -131,6 +132,7 @@ public import MTC.Center.Normalization.ScalarFusionCharacter
 public import MTC.Center.Normalization.SubringCharacter
 public import MTC.Center.Normalization.SubringGrading
 public import MTC.Center.Normalization.SymmetricBinomial
+public import MTC.Center.Normalization.SymmetricInteger
 public import MTC.Center.Normalization.SymmetricPivotal
 public import MTC.Center.Normalization.SymmetricRising
 public import MTC.Center.Normalization.UniversalGrading
