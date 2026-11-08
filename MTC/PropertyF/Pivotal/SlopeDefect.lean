@@ -1,6 +1,7 @@
 module
 public import MTC.Center.Induction.DrinfeldTheorem
 public import MTC.CategoryTheory.Dimensions.MultiplicityDefect
+public import MTC.CategoryTheory.Dimensions.DimensionCharacter
 
 open MTC.Fusion MTC.Braided MTC.CategoryTheory.Dimensions
 
@@ -27,6 +28,14 @@ theorem multiplicityDefect_involutive (i j k : Fin (rank C)) :
   apply multiplicityDefect_involution_of_tensor_square C k
   rw [rootTensor_square_eq_fourthDual_tensor]
   exact (MTC.Center.Induction.fourthDualIso_tensor (simples C i) (simples C j)).symm
+
+/-- The phase of the pivotal dimension of a simple object has unit norm. -/
+theorem norm_pivotalDimension_phase (p : PivotalStructure (C := C.Obj))
+    (X : C.Obj) [Simple X] :
+    ‖pivotalDimension C p X / (‖pivotalDimension C p X‖ : ℂ)‖ = 1 := by
+  have hd : pivotalDimension C p X ≠ 0 := by
+    simpa only [pivotalDimension] using MTC.Modular.unitScalar_rightTrace_ne_zero C p X
+  simp [norm_ne_zero_iff.mpr hd]
 
 end MTC.PropertyF.Pivotal
 end
