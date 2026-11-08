@@ -1,0 +1,126 @@
+module
+public import MTC.Fusion.Agreement
+public import MTC.Fusion.Reciprocity
+public import Mathlib.GroupTheory.FreeAbelianGroup
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+
+open MTC.Fusion MTC.Braided
+
+/-! # The universal abelian group of fusion degrees
+
+This presents the universal grading group of the fusion rules of a braided
+fusion category by generators and fusion-constituent relations. Further work
+is required to identify its neutral component with the categorical adjoint
+subcategory.
+-/
+
+@[expose] public noncomputable section
+namespace MTC.Center.Normalization
+universe v u
+variable (C : BraidedFusionCategory.{v,u})
+
+/-- The relation vectors: unit degree zero and a product relation for every
+simple constituent of a tensor product. -/
+def fusionDegreeRelations : Set (FreeAbelianGroup (Fin (rank C))) :=
+  {x | x = FreeAbelianGroup.of (unitIndex C) ∨
+    ∃ i j k, 0 < fusionCoeff C i j k ∧
+      x = FreeAbelianGroup.of k - FreeAbelianGroup.of i - FreeAbelianGroup.of j}
+
+/-- The abelian group presented by the fusion-degree relations. -/
+abbrev FusionDegreeGroup :=
+  FreeAbelianGroup (Fin (rank C)) ⧸ AddSubgroup.closure (fusionDegreeRelations C)
+
+/-- The degree of a chosen simple object. -/
+def fusionDegree (i : Fin (rank C)) : FusionDegreeGroup C :=
+  QuotientAddGroup.mk (FreeAbelianGroup.of i)
+
+/-- The tensor unit has degree zero. -/
+theorem fusionDegree_unit : fusionDegree C (unitIndex C) = 0 := by
+  apply (QuotientAddGroup.eq_zero_iff _).mpr
+  exact AddSubgroup.subset_closure (Or.inl rfl)
+
+/-- A simple tensor constituent has the sum of its factors' degrees. -/
+theorem fusionDegree_tensor {i j k : Fin (rank C)} (h : 0 < fusionCoeff C i j k) :
+    fusionDegree C k = fusionDegree C i + fusionDegree C j := by
+  have hrel : FreeAbelianGroup.of k - FreeAbelianGroup.of i - FreeAbelianGroup.of j ∈
+      AddSubgroup.closure (fusionDegreeRelations C) :=
+    AddSubgroup.subset_closure (Or.inr ⟨i, j, k, h, rfl⟩)
+  have hz := (QuotientAddGroup.eq_zero_iff _).mpr hrel
+  change fusionDegree C k - fusionDegree C i - fusionDegree C j = 0 at hz
+  exact (sub_eq_iff_eq_add.mp (sub_eq_zero.mp hz)).trans (add_comm _ _)
+
+/-- Tensoring two simple objects has a simple constituent. -/
+theorem fusionCoeff_exists_positive (i j : Fin (rank C)) :
+    ∃ k, 0 < fusionCoeff C i j k := by
+  classical
+  by_contra h
+  have hz : ∀ k, fusionCoeff C i j k = 0 := by
+    intro k
+    exact Nat.eq_zero_of_not_pos (fun hk ↦ h ⟨k, hk⟩)
+  have heq := fpSimple_mul C i j
+  simp only [hz, Nat.cast_zero, zero_mul, Finset.sum_const_zero] at heq
+  exact (ne_of_gt (mul_pos (fpSimple_pos C i) (fpSimple_pos C j))) heq
+
+/-- The degree of a dual simple is the inverse degree. -/
+theorem fusionDegree_dual (i : Fin (rank C)) :
+    fusionDegree C (dualIndex C i) = -fusionDegree C i := by
+  have h := fusionDegree_tensor C (i := i) (j := dualIndex C i) (k := unitIndex C)
+    (by rw [fusionCoeff_dual_unit]; exact Nat.zero_lt_one)
+  rw [fusionDegree_unit] at h
+  exact eq_neg_of_add_eq_zero_right h.symm
+
+/-- The simple degrees exhaust the presented group. -/
+theorem fusionDegree_surjective : Function.Surjective (fusionDegree C) := by
+  intro x
+  induction x using QuotientAddGroup.induction_on with
+  | _ x =>
+    induction x using FreeAbelianGroup.induction_on with
+    | zero => exact ⟨unitIndex C, by simpa using fusionDegree_unit C⟩
+    | of i => exact ⟨i, rfl⟩
+    | neg i hi =>
+      refine ⟨dualIndex C i, ?_⟩
+      change fusionDegree C (dualIndex C i) = -fusionDegree C i
+      exact fusionDegree_dual C i
+    | add x y hx hy =>
+      obtain ⟨i, hi⟩ := hx
+      obtain ⟨j, hj⟩ := hy
+      obtain ⟨k, hk⟩ := fusionCoeff_exists_positive C i j
+      exact ⟨k, by simpa [← hi, ← hj] using fusionDegree_tensor C hk⟩
+
+/-- The fusion-degree group is finite, because every degree contains a simple. -/
+instance fusionDegreeGroup_finite : Finite (FusionDegreeGroup C) :=
+  Finite.of_surjective (fusionDegree C) (fusionDegree_surjective C)
+
+/-- Any additive degree assignment satisfying the same constituent relations
+induces a unique homomorphism out of the presented group. -/
+def fusionDegreeLift {G : Type*} [AddCommGroup G] (d : Fin (rank C) → G)
+    (hu : d (unitIndex C) = 0)
+    (hmul : ∀ i j k, 0 < fusionCoeff C i j k → d k = d i + d j) :
+    FusionDegreeGroup C →+ G :=
+  QuotientAddGroup.lift _ (FreeAbelianGroup.lift d) <| by
+    apply (AddSubgroup.closure_le _).mpr
+    rintro x (hx | ⟨i, j, k, h, rfl⟩)
+    · subst x
+      simp [hu]
+    · simp [hmul i j k h]
+
+/-- The induced map recovers the assigned degrees on the generators. -/
+theorem fusionDegreeLift_apply {G : Type*} [AddCommGroup G] (d : Fin (rank C) → G)
+    (hu : d (unitIndex C) = 0)
+    (hmul : ∀ i j k, 0 < fusionCoeff C i j k → d k = d i + d j)
+    (i : Fin (rank C)) : fusionDegreeLift C d hu hmul (fusionDegree C i) = d i := by
+  simp [fusionDegreeLift, fusionDegree]
+
+/-- The universal homomorphism is unique, since simple degrees exhaust the group. -/
+theorem fusionDegreeLift_unique {G : Type*} [AddCommGroup G] (d : Fin (rank C) → G)
+    (hu : d (unitIndex C) = 0)
+    (hmul : ∀ i j k, 0 < fusionCoeff C i j k → d k = d i + d j)
+    (f : FusionDegreeGroup C →+ G) (hf : ∀ i, f (fusionDegree C i) = d i) :
+    f = fusionDegreeLift C d hu hmul := by
+  apply AddMonoidHom.ext
+  intro x
+  obtain ⟨i, rfl⟩ := fusionDegree_surjective C x
+  rw [hf, fusionDegreeLift_apply]
+
+end MTC.Center.Normalization
+end
