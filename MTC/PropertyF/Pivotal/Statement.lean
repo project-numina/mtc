@@ -25,8 +25,7 @@ def AllGaloisConjugatesPseudoUnitary (C : BraidedFusionCategory.{v,u}) : Prop :=
   ∀ (D : BraidedFusionCategory.{v,u}) (σ : ℂ ≃+* ℂ),
     Nonempty (GaloisConjugate C D σ) → PseudoUnitary D
 
-/-- The main theorem's nondegenerate pivotal statement. This definition does
-not assert that the statement has been proved. -/
+/-- The main theorem's nondegenerate pivotal statement. -/
 def NondegenerateMainStatement : Prop :=
   ∀ C : BraidedFusionCategory.{v,u},
     Nonempty (PivotalStructure (C := C.Obj)) → IsNondegenerate C → HasPropertyF C.Obj →
@@ -35,15 +34,15 @@ def NondegenerateMainStatement : Prop :=
 
 /-- Positivity of pivotal dimensions on transparent simple adjoint labels.
 The adjoint labels are defined by the fusion closure of constituents of
-`X ⊗ X*`; identifying this presentation with a bundled categorical adjoint
-subcategory is a separate obligation. -/
+`X ⊗ X*`; their equivalence to the categorical adjoint closure is proved in
+`AdjointObjectsSupport`. -/
 def PositiveOnTransparentAdjoint (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) : Prop :=
   ∀ i, MTC.Center.Transparent (simples C i) →
     MTC.Center.Normalization.IsAdjointLabel C i →
     ∃ r : ℝ, 0 < r ∧ MTC.Modular.simpleDimension C p i = (r : ℂ)
 
-/-- The normalization lemma, stated as an unproved target. -/
+/-- The normalization lemma. -/
 def NormalizationStatement : Prop :=
   ∀ (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj)),
     PositiveOnTransparentAdjoint C p →
@@ -51,15 +50,14 @@ def NormalizationStatement : Prop :=
         MTC.Center.Transparent (simples C i) →
           MTC.Modular.simpleDimension C q i = (fpSimple C i : ℂ)
 
-/-- The degenerate pivotal theorem, stated as an unproved target. -/
+/-- The degenerate pivotal theorem. -/
 def DegenerateMainStatement : Prop :=
   ∀ (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj)),
     PositiveOnTransparentAdjoint C p → HasPropertyF C.Obj →
       PseudoUnitary C ∧ AllGaloisConjugatesPseudoUnitary C ∧
         WeaklyIntegral (globalFPDimension C)
 
-/-- The pseudo-unitary-conjugate corollary's full conclusion, stated as an
-unproved target; the existing theorem covers its weak-integrality component. -/
+/-- The pseudo-unitary-conjugate corollary's full conclusion. -/
 def PseudoUnitaryConjugateStatement : Prop :=
   ∀ C : BraidedFusionCategory.{v,u},
     HasPseudoUnitaryGaloisConjugate C → HasPropertyF C.Obj →
