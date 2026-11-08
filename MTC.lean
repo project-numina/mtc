@@ -20,6 +20,7 @@ public import MTC.Braided.Cabling.ClosureInsertion
 public import MTC.Braided.Cabling.ClosureIsoWord
 public import MTC.Braided.Cabling.ClosurePure
 public import MTC.Braided.Cabling.ClosureSweep
+public import MTC.Braided.Cabling.ClosureSweepContext
 public import MTC.Braided.Cabling.ClosureUnit
 public import MTC.Braided.Cabling.Generated
 public import MTC.Braided.Cabling.Naturality

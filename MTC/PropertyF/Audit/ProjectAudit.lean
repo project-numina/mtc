@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.ClosureSweepContext
 import all MTC.Braided.Cabling.ClosureSweep
 import all MTC.Center.Normalization.CommonCentralizer
 import all MTC.Center.Normalization.FPPlacement

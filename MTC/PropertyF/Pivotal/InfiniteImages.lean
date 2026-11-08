@@ -51,4 +51,17 @@ theorem simple_braidImage_infinite_of_le (D : BraidedFusionCategory.{v,u})
   letI : Functor.Faithful (tensorLeft X) := tensorLeft_faithful_of_unit_retract i r hir
   exact braidImage_infinite_of_le X hn h
 
+/-- A simple object that fails objectwise property F has infinite braid
+images on every sufficiently large number of strands. -/
+theorem eventually_infinite_braidImages_of_not_objectPropertyF
+    (D : BraidedFusionCategory.{v,u}) (X : D.Obj) [Simple X]
+    (h : ¬ ObjectPropertyF X) :
+    ∃ n, ∀ m ≥ n, Infinite (braidImage X m) := by
+  classical
+  have hn : ∃ n, ¬ Finite (braidImage X n) := by
+    simpa only [ObjectPropertyF, not_forall] using h
+  obtain ⟨n, hn⟩ := hn
+  exact ⟨n, fun m hm ↦ simple_braidImage_infinite_of_le D X
+    (not_finite_iff_infinite.mp hn) hm⟩
+
 end MTC.PropertyF.Pivotal
