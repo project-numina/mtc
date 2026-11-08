@@ -39,5 +39,17 @@ theorem productNumericalCentralizer_subset_symmetricCore_of_relative
   exact ⟨fun X ↦ h _ (Or.inl ⟨X, ⟨Retract.refl _⟩⟩),
     fun X ↦ h _ (Or.inr ⟨X, ⟨Retract.refl _⟩⟩)⟩
 
+/-- The generic relative numerical-to-actual criterion for fusion subrings
+supplies the product-centralizer containment by applying it to the actual
+fusion subring of product labels. -/
+theorem productNumericalCentralizer_subset_symmetricCore_of_fusionSubring_criterion
+    {pZ : PivotalStructure (C := Center C.Obj)}
+    (hrelative : ∀ (A : Finset (Fin (rank Z))), IsFusionSubring Z A →
+      ∀ y : Fin (rank Z), (∀ a ∈ A, sCentralizes Z pZ a y) →
+      ∀ a ∈ A, doubleBraiding (simples Z a) (simples Z y) = 𝟙 _) :
+    sCentralizer Z pZ (↑(productLabels C) : Set _) ⊆ symmetricCore C :=
+  productNumericalCentralizer_subset_symmetricCore_of_relative C
+    (hrelative (productLabels C) (productLabels_isFusionSubring C))
+
 end MTC.Center.Normalization
 end
