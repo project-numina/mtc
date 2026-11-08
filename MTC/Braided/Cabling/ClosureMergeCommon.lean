@@ -55,4 +55,24 @@ theorem sweepBlockMerge_succ_left (X : C) (s : ℕ) : ∀ r : ℕ,
     simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, tensorHom_id] at h
     rw [h]
 
+omit [BraidedCategory C] in
+/-- A transport of tensor-power indices composes by transitivity. -/
+theorem powerIndexIso_trans (X : C) {a b c : ℕ} (h : a = b) (g : b = c) :
+    powerIndexIso X h ≪≫ powerIndexIso X g = powerIndexIso X (h.trans g) := by
+  subst b
+  subst c
+  simp [powerIndexIso]
+
+omit [BraidedCategory C] in
+set_option backward.isDefEq.respectTransparency false in
+/-- Prefixing the same strand commutes with index transport. -/
+theorem powerIndexIso_whisker (X : C) {a b : ℕ} (h : a = b) :
+    HEq (Iso.refl X ⊗ᵢ powerIndexIso X h)
+      (powerIndexIso X (congrArg (fun n => n+1) h)) := by
+  subst b
+  apply heq_of_eq
+  apply Iso.ext
+  simp [powerIndexIso, tensorIso_hom]
+  rfl
+
 end MTC.Braided
