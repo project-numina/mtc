@@ -172,5 +172,62 @@ theorem haarDualLabel_complete (T : C.Obj) :
   simpa [haarDualLabelProjection, haarDualLabelBasis,
     Linear.homCongr_apply, simpleInclusionBasis_apply, Category.assoc] using h
 
+/-- A rotated block after composing its two fusion maps. -/
+def haarRotatedCore (X U V : C.Obj) (β : End (X ⊗ V))
+    (h : U ⊗ (Xᘁ) ⟶ U ⊗ (Xᘁ)) : U ⊗ V ⟶ U ⊗ V :=
+  𝟙 (U ⊗ V) ⊗≫
+    (U ◁ ((η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv) ▷ V)) ⊗≫
+    (h ▷ (X ⊗ V)) ⊗≫ (((U ⊗ (Xᘁ)) ◁ β.asHom)) ⊗≫
+    (U ◁ (ε_ X (Xᘁ) ▷ V)) ⊗≫ 𝟙 (U ⊗ V)
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Exchange the boxed morphism with the inclusion to compose a rotated pair. -/
+theorem haarRotatedBlock_comp (X Y U V : C.Obj) (β : End (X ⊗ V))
+    (a : (Yᘁ) ⟶ U ⊗ (Xᘁ)) (b : U ⊗ (Xᘁ) ⟶ (Yᘁ)) :
+    haarRotatedBlock C p X Y U V β a b = haarRotatedCore C p X U V β (b ≫ a) := by
+  calc
+    _ = 𝟙 (U ⊗ V) ⊗≫
+      (U ◁ ((η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv) ▷ V)) ⊗≫
+      ((b ▷ (X ⊗ V)) ≫ ((Yᘁ) ◁ β.asHom) ≫ (a ▷ (X ⊗ V))) ⊗≫
+      (U ◁ (ε_ X (Xᘁ) ▷ V)) ⊗≫ 𝟙 (U ⊗ V) := by dsimp [haarRotatedBlock]; monoidal
+    _ = 𝟙 (U ⊗ V) ⊗≫
+      (U ◁ ((η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv) ▷ V)) ⊗≫
+      ((b ▷ (X ⊗ V)) ≫ (a ▷ (X ⊗ V)) ≫ ((U ⊗ (Xᘁ)) ◁ β.asHom)) ⊗≫
+      (U ◁ (ε_ X (Xᘁ) ▷ V)) ⊗≫ 𝟙 (U ⊗ V) := by
+        rw [whisker_exchange]
+    _ = _ := by dsimp [haarRotatedCore]; rw [comp_whiskerRight]; monoidal
+
+/-- The core depends linearly on the inserted endomorphism. -/
+def haarRotatedCoreLinear (X U V : C.Obj) (β : End (X ⊗ V)) :
+    (U ⊗ (Xᘁ) ⟶ U ⊗ (Xᘁ)) →ₗ[ℂ] (U ⊗ V ⟶ U ⊗ V) where
+  toFun := haarRotatedCore C p X U V β
+  map_add' := by intro a b; simp [haarRotatedCore, monoidalComp]
+  map_smul' := by intro c a; simp [haarRotatedCore, monoidalComp]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The identity insertion leaves the ordinary pivotal loop on the V strand. -/
+theorem haarRotatedCore_id (X U V : C.Obj) (β : End (X ⊗ V)) :
+    haarRotatedCore C p X U V β (𝟙 (U ⊗ (Xᘁ))) =
+      U ◁ leftPartialTraceHom C p X V V β.asHom := by
+  dsimp [haarRotatedCore, leftPartialTraceHom]
+  monoidal
+
+/-- Summing the dual-label rotated blocks collapses to the vacuum loop. -/
+theorem haarRotatedBlock_dualLabel_sum (X U V : C.Obj) (β : End (X ⊗ V)) :
+    (∑ j : Fin (rank C), ∑ a : Fin (Module.finrank ℂ
+      (simples C (dualIndex C j) ⟶ U ⊗ (Xᘁ))),
+      haarRotatedBlock C p X (simples C j) U V β
+        (haarDualLabelBasis C (U ⊗ (Xᘁ)) j a)
+        (haarDualLabelProjection C (U ⊗ (Xᘁ)) j a)) =
+      U ◁ leftPartialTraceHom C p X V V β.asHom := by
+  classical
+  simp_rw [haarRotatedBlock_comp]
+  change (∑ j : Fin (rank C), ∑ a : Fin (Module.finrank ℂ
+      (simples C (dualIndex C j) ⟶ U ⊗ (Xᘁ))),
+      haarRotatedCoreLinear C p X U V β
+        (haarDualLabelProjection C (U ⊗ (Xᘁ)) j a ≫ haarDualLabelBasis C (U ⊗ (Xᘁ)) j a)) = _
+  simp only [← map_sum, haarDualLabel_complete]
+  exact haarRotatedCore_id C p X U V β
+
 end MTC.PropertyF.Pivotal
 end
