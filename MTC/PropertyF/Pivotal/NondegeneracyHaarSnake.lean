@@ -277,5 +277,52 @@ theorem haar_mate_trace_boxed (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) (g : Y ⊗ U �
   simp only [Category.assoc]
   rw [hc]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The other boxed closure is the right trace, by both boxed snakes and cup exchange. -/
+theorem haar_right_trace_boxed (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) (g : Y ⊗ U ⟶ X) :
+    let a : (Yᘁ) ⊗ (X ⊗ (Xᘁ)) ⟶ (Yᘁ) ⊗ (X ⊗ (Xᘁ)) :=
+      𝟙 _ ⊗≫ ((Yᘁ) ◁ (f ▷ Xᘁ)) ⊗≫ (ε_ Y (Yᘁ) ▷ (U ⊗ Xᘁ)) ⊗≫
+       ((η_ (Yᘁ) ((Yᘁ)ᘁ) ≫ (Yᘁ) ◁ (p.iso Y).inv) ▷ (U ⊗ Xᘁ)) ⊗≫
+       ((Yᘁ) ◁ (g ▷ Xᘁ)) ⊗≫ 𝟙 _
+    End.of (η_ Y (Yᘁ) ⊗≫ ((Y ⊗ (Yᘁ)) ◁ η_ X (Xᘁ)) ⊗≫ (Y ◁ a) ⊗≫
+      (((p.iso Y).hom ▷ (Yᘁ)) ▷ (X ⊗ (Xᘁ))) ⊗≫
+      (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ (X ⊗ (Xᘁ))) ⊗≫
+      ((p.iso X).hom ▷ (Xᘁ)) ⊗≫ ε_ (Xᘁ) ((Xᘁ)ᘁ)) =
+      p.rightTrace (f ≫ g) := by
+  dsimp only
+  conv_rhs => rw [← haar_yank_inclusion C X Y U f, ← haar_yank_projection C p X Y U g]
+  apply End.ext
+  simp only [PivotalStructure.rightTrace, rightTraceWith]
+  monoidal <;> simp
+  have hc : η_ Y (Yᘁ) ≫ (ρ_ (Y ⊗ (Yᘁ))).inv ≫
+      (α_ Y (Yᘁ) (𝟙_ C.Obj)).hom ≫ Y ◁ (Yᘁ) ◁ η_ X (Xᘁ) =
+      η_ X (Xᘁ) ≫ (λ_ (X ⊗ (Xᘁ))).inv ≫ (α_ (𝟙_ C.Obj) X (Xᘁ)).inv ≫
+      (η_ Y (Yᘁ) ▷ X ▷ (Xᘁ)) ≫ (α_ (Y ⊗ (Yᘁ)) X (Xᘁ)).hom ≫
+      (α_ Y (Yᘁ) (X ⊗ (Xᘁ))).hom := by
+    have hh := congrArg (fun t ↦ t ≫ (α_ Y (Yᘁ) (X ⊗ (Xᘁ))).hom)
+      (haar_coevaluation_exchange C X Y)
+    convert hh.symm using 1 <;> monoidal
+  slice_lhs 1 4 => rw [hc]
+  simp only [Category.assoc]
+  have h₁ : (Yᘁ) ◁ (α_ Y U (Xᘁ)).hom ≫ (α_ (Yᘁ) Y (U ⊗ (Xᘁ))).inv ≫
+      (α_ ((Yᘁ) ⊗ Y) U (Xᘁ)).inv =
+      (α_ (Yᘁ) (Y ⊗ U) (Xᘁ)).inv ≫ (α_ (Yᘁ) Y U).inv ▷ (Xᘁ) := by monoidal
+  have h₂ : (α_ (Yᘁ) (Y ⊗ U) (Xᘁ)).inv ≫ (α_ (Yᘁ) Y U).inv ▷ (Xᘁ) ≫
+      (α_ ((Yᘁ) ⊗ Y) U (Xᘁ)).hom ≫ (α_ (Yᘁ) Y (U ⊗ (Xᘁ))).hom ≫
+      (Yᘁ) ◁ (α_ Y U (Xᘁ)).inv = 𝟙 _ := by monoidal
+  simp only [← whiskerLeft_comp_assoc]
+  conv_lhs =>
+    pattern (Yᘁ ◁ (f ▷ Xᘁ ≫ (α_ Y U (Xᘁ)).hom))
+    rw [whiskerLeft_comp]
+  simp only [Category.assoc, reassoc_of% h₁, reassoc_of% h₂, Category.id_comp]
+
+/-- The two Frobenius mates preserve the pivotal trace pairing. -/
+theorem haarMate_trace_pairing (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) (g : Y ⊗ U ⟶ X) :
+    p.leftTrace (haarInclusionMate C X Y U f ≫ haarProjectionMate C p X Y U g) =
+      p.rightTrace (f ≫ g) := by
+  rw [haar_mate_trace_boxed C p X Y U f g]
+  rw [haar_pivotal_closed_slide C p X Y]
+  exact haar_right_trace_boxed C p X Y U f g
+
 end MTC.PropertyF.Pivotal
 end
