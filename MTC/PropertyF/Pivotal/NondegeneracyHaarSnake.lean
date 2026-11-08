@@ -244,5 +244,38 @@ theorem haar_pivotal_cap_exchange (X Y : C.Obj) :
           rw [whisker_exchange]
     _ = _ := by monoidal
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Rotate the composite of the actual two Frobenius mates into a boxed
+fusion endomorphism surrounded by two pivotal cups and caps. -/
+theorem haar_mate_trace_boxed (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) (g : Y ⊗ U ⟶ X) :
+    let a : (Yᘁ) ⊗ (X ⊗ (Xᘁ)) ⟶ (Yᘁ) ⊗ (X ⊗ (Xᘁ)) :=
+      𝟙 _ ⊗≫ ((Yᘁ) ◁ (f ▷ Xᘁ)) ⊗≫ (ε_ Y (Yᘁ) ▷ (U ⊗ Xᘁ)) ⊗≫
+       ((η_ (Yᘁ) ((Yᘁ)ᘁ) ≫ (Yᘁ) ◁ (p.iso Y).inv) ▷ (U ⊗ Xᘁ)) ⊗≫
+       ((Yᘁ) ◁ (g ▷ Xᘁ)) ⊗≫ 𝟙 _
+    p.leftTrace (haarInclusionMate C X Y U f ≫ haarProjectionMate C p X Y U g) =
+      End.of (η_ Y (Yᘁ) ⊗≫ ((p.iso Y).hom ▷ (Yᘁ)) ⊗≫
+      ((((Yᘁ)ᘁ) ⊗ (Yᘁ)) ◁ η_ X (Xᘁ)) ⊗≫ (((Yᘁ)ᘁ) ◁ a) ⊗≫
+      (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ (X ⊗ (Xᘁ))) ⊗≫
+      ((p.iso X).hom ▷ (Xᘁ)) ⊗≫ ε_ (Xᘁ) ((Xᘁ)ᘁ)) := by
+  dsimp only
+  rw [haarInclusionMate_diagram, haarProjectionMate_diagram]
+  apply End.ext
+  simp only [PivotalStructure.leftTrace]
+  monoidal <;> simp
+  slice_lhs 1 2 => rw [pivotalDual_coevaluation_rotate C p Y]
+  have hc : (((Yᘁ)ᘁ) ◁ (Yᘁ) ◁ ((p.iso X).hom ▷ (Xᘁ))) ≫
+      (((Yᘁ)ᘁ) ◁ (Yᘁ) ◁ ε_ (Xᘁ) ((Xᘁ)ᘁ)) ≫
+      (α_ ((Yᘁ)ᘁ) (Yᘁ) (𝟙_ C.Obj)).inv ≫ (ρ_ (((Yᘁ)ᘁ) ⊗ (Yᘁ))).hom ≫
+      ε_ (Yᘁ) ((Yᘁ)ᘁ) =
+      (α_ ((Yᘁ)ᘁ) (Yᘁ) (X ⊗ (Xᘁ))).inv ≫
+      (α_ (((Yᘁ)ᘁ) ⊗ (Yᘁ)) X (Xᘁ)).inv ≫
+      (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ X ▷ (Xᘁ)) ≫ (α_ (𝟙_ C.Obj) X (Xᘁ)).hom ≫
+      (λ_ (X ⊗ (Xᘁ))).hom ≫ (p.iso X).hom ▷ (Xᘁ) ≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
+    have hh := congrArg (fun t ↦ (α_ ((Yᘁ)ᘁ) (Yᘁ) (X ⊗ (Xᘁ))).inv ≫ t)
+      (haar_pivotal_cap_exchange C p X Y)
+    convert hh using 1 <;> monoidal
+  simp only [Category.assoc]
+  rw [hc]
+
 end MTC.PropertyF.Pivotal
 end
