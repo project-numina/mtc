@@ -112,6 +112,7 @@ public import MTC.Center.Modular.Vafa
 public import MTC.Center.Normalization.AdjointDegrees
 public import MTC.Center.Normalization.AdjointQuotient
 public import MTC.Center.Normalization.AdjointRelation
+public import MTC.Center.Normalization.AlgebraicDimension
 public import MTC.Center.Normalization.CharacterExtension
 public import MTC.Center.Normalization.CommonCentralizer
 public import MTC.Center.Normalization.FPPlacement
@@ -124,6 +125,7 @@ public import MTC.Center.Normalization.PivotalTwist
 public import MTC.Center.Normalization.ScalarFusionCharacter
 public import MTC.Center.Normalization.SubringCharacter
 public import MTC.Center.Normalization.SubringGrading
+public import MTC.Center.Normalization.SymmetricBinomial
 public import MTC.Center.Normalization.SymmetricPivotal
 public import MTC.Center.Normalization.UniversalGrading
 public import MTC.Center.Product
