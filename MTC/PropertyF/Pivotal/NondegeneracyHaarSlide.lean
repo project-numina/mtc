@@ -229,5 +229,45 @@ theorem haarRotatedBlock_dualLabel_sum (X U V : C.Obj) (β : End (X ⊗ V)) :
   simp only [← map_sum, haarDualLabel_complete]
   exact haarRotatedCore_id C p X U V β
 
+/-- Restricted dual-label completeness when the object has no simple
+summands outside the chosen labels. -/
+theorem haarDualLabel_complete_restricted (T : C.Obj) (S : Finset (Fin (rank C)))
+    (hs : ∀ j, j ∉ S → Module.finrank ℂ (simples C (dualIndex C j) ⟶ T) = 0) :
+    (∑ j ∈ S, ∑ a : Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T)),
+      haarDualLabelProjection C T j a ≫ haarDualLabelBasis C T j a) = 𝟙 T := by
+  classical
+  have he : (∑ j ∈ S, ∑ a : Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T)),
+      haarDualLabelProjection C T j a ≫ haarDualLabelBasis C T j a) =
+      ∑ j : Fin (rank C), ∑ a : Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T)),
+        haarDualLabelProjection C T j a ≫ haarDualLabelBasis C T j a := by
+    apply Finset.sum_subset (Finset.subset_univ S)
+    intro j hj hn
+    letI : IsEmpty (Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T))) := by
+      rw [hs j hn]
+      infer_instance
+    simp
+  rw [he, haarDualLabel_complete]
+
+/-- A restricted sum collapses when the tensor target has no summands
+outside the chosen dual labels. -/
+theorem haarRotatedBlock_dualLabel_sum_restricted (X U V : C.Obj) (β : End (X ⊗ V))
+    (S : Finset (Fin (rank C)))
+    (hs : ∀ j, j ∉ S → Module.finrank ℂ
+      (simples C (dualIndex C j) ⟶ U ⊗ (Xᘁ)) = 0) :
+    (∑ j ∈ S, ∑ a : Fin (Module.finrank ℂ
+      (simples C (dualIndex C j) ⟶ U ⊗ (Xᘁ))),
+      haarRotatedBlock C p X (simples C j) U V β
+        (haarDualLabelBasis C (U ⊗ (Xᘁ)) j a)
+        (haarDualLabelProjection C (U ⊗ (Xᘁ)) j a)) =
+      U ◁ leftPartialTraceHom C p X V V β.asHom := by
+  classical
+  simp_rw [haarRotatedBlock_comp]
+  change (∑ j ∈ S, ∑ a : Fin (Module.finrank ℂ
+      (simples C (dualIndex C j) ⟶ U ⊗ (Xᘁ))),
+      haarRotatedCoreLinear C p X U V β
+        (haarDualLabelProjection C (U ⊗ (Xᘁ)) j a ≫ haarDualLabelBasis C (U ⊗ (Xᘁ)) j a)) = _
+  simp only [← map_sum, haarDualLabel_complete_restricted C _ S hs]
+  exact haarRotatedCore_id C p X U V β
+
 end MTC.PropertyF.Pivotal
 end
