@@ -158,5 +158,19 @@ theorem haarRotatedBlock_dualLabel_contraction (U V : C.Obj) (i j : Fin (rank C)
   simp_rw [← haarDualLabelProjection_dual] at h
   simpa using h
 
+/-- The dual-label bases and projections still resolve the identity. -/
+theorem haarDualLabel_complete (T : C.Obj) :
+    (∑ j : Fin (rank C), ∑ a : Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T)),
+      haarDualLabelProjection C T j a ≫ haarDualLabelBasis C T j a) = 𝟙 T := by
+  classical
+  have h : (∑ j : Fin (rank C), ∑ a : Fin (Module.finrank ℂ (simples C j ⟶ T)),
+      simpleProjection T j a ≫ simpleInclusion C T j a) = 𝟙 T := by
+    simpa only [simplePieces, Fintype.sum_sigma] using (simple_completeness C T)
+  rw [← (dualEquiv C).sum_comp] at h <;> try simp
+  change (∑ j : Fin (rank C), ∑ a : Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T)),
+    simpleProjection T (dualIndex C j) a ≫ simpleInclusion C T (dualIndex C j) a) = 𝟙 T at h
+  simpa [haarDualLabelProjection, haarDualLabelBasis,
+    Linear.homCongr_apply, simpleInclusionBasis_apply, Category.assoc] using h
+
 end MTC.PropertyF.Pivotal
 end
