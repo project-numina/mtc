@@ -1,6 +1,8 @@
 module
 public import MTC.Fusion.UnitPower
 public import MTC.Braided.Cabling.Naturality
+public import MTC.Center.Normalization.MugerLabels
+public import MTC.PropertyF.Pivotal.SymmetricPropertyF
 
 /-! # Replacing zero tensor powers by positive powers -/
 
@@ -12,6 +14,17 @@ set_option backward.isDefEq.respectTransparency false
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 attribute [local instance] Abelian.hasFiniteBiproducts
+
+/-- If the generator is zero, every object in its generated category has
+property F because it is transparent. -/
+theorem objectPropertyF_of_generatedBy_zero {X Y : C.Obj}
+    (hX : IsZero X) (hY : GeneratedBy X Y) : ObjectPropertyF Y := by
+  have r : Retract X (𝟙_ C.Obj) := ⟨0, 0, by
+    simpa using hX.eq_of_src (0 : X ⟶ X) (𝟙 X)⟩
+  apply objectPropertyF_of_transparent
+  exact MTC.Center.Normalization.transparent_generatedBy
+    (MTC.Center.Normalization.transparent_of_retract r
+      MTC.Center.Normalization.transparent_unit) hY
 
 /-- Every nonzero object in a braided fusion category has a positive tensor
 power containing the tensor unit as an actual retract. -/
