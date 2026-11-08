@@ -17,3 +17,11 @@ theorem blockStrandCount_sum (k p q : ℕ) :
       strandSum (blockStrandCount k p) (blockStrandCount k q) := by
   simp [blockStrandCount_eq_mul, strandSum_eq_add, Nat.add_mul]
 
+
+/-- Reindexing the right input of a join commutes with joining. -/
+theorem joinPowerIso_transport_right (X : C) (a : ℕ) {b c : ℕ} (h : b = c) :
+    (Iso.refl (tensorPower X a) ⊗ᵢ powerIndexIso X h) ≪≫ joinPowerIso X a c =
+      joinPowerIso X a b ≪≫ powerIndexIso X (congrArg (strandSum a) h) := by
+  cases h
+  apply Iso.ext
+  simp [powerIndexIso]
