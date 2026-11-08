@@ -25,6 +25,13 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.BlockFinite
+import all MTC.Braided.Cabling.ClosureAssembly
+import all MTC.Braided.Cabling.ClosureColoredCrossing
+import all MTC.Braided.Cabling.ClosureColoredFlatten
+import all MTC.Braided.Cabling.ColorBiproduct
+import all MTC.Center.Normalization.ProductCategory
+import all MTC.Center.Normalization.ProductCategoryPivotal
 import all MTC.Braided.Cabling.ClosureFlattenLocalCompare
 import all MTC.PropertyF.Pivotal.CenterGenerated
 import all MTC.Braided.Cabling.PureSumColored

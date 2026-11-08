@@ -10,13 +10,17 @@ public import MTC.Algebra.PowerBound
 public import MTC.AnyonAtlas.Raw
 public import MTC.AnyonAtlas.Sample
 public import MTC.Braided.BraidAlgebra
+public import MTC.Braided.Cabling.BlockFinite
 public import MTC.Braided.Cabling.ClosureAdjacentCoherence
+public import MTC.Braided.Cabling.ClosureAssembly
 public import MTC.Braided.Cabling.ClosureBlockContext
 public import MTC.Braided.Cabling.ClosureBlockFinite
 public import MTC.Braided.Cabling.ClosureBlockInduction
 public import MTC.Braided.Cabling.ClosureBlockProof
 public import MTC.Braided.Cabling.ClosureBlockWord
 public import MTC.Braided.Cabling.ClosureCanonicalBlocks
+public import MTC.Braided.Cabling.ClosureColoredCrossing
+public import MTC.Braided.Cabling.ClosureColoredFlatten
 public import MTC.Braided.Cabling.ClosureCommonInterface
 public import MTC.Braided.Cabling.ClosureCrossing
 public import MTC.Braided.Cabling.ClosureFirstBlock
@@ -49,6 +53,7 @@ public import MTC.Braided.Cabling.ClosureSweepContext
 public import MTC.Braided.Cabling.ClosureTwoBlockPower
 public import MTC.Braided.Cabling.ClosureTwoRow
 public import MTC.Braided.Cabling.ClosureUnit
+public import MTC.Braided.Cabling.ColorBiproduct
 public import MTC.Braided.Cabling.Generated
 public import MTC.Braided.Cabling.Naturality
 public import MTC.Braided.Cabling.PureSum
@@ -158,6 +163,8 @@ public import MTC.Center.Normalization.MugerNormalization
 public import MTC.Center.Normalization.MugerObjectNormalization
 public import MTC.Center.Normalization.PivotalTwist
 public import MTC.Center.Normalization.PositiveSubring
+public import MTC.Center.Normalization.ProductCategory
+public import MTC.Center.Normalization.ProductCategoryPivotal
 public import MTC.Center.Normalization.ProductGenerator
 public import MTC.Center.Normalization.RelativeCentralizer
 public import MTC.Center.Normalization.ScalarFusionCharacter
