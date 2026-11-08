@@ -277,3 +277,65 @@ theorem joinCross_word_heq (X : C) [BraidedCategory C] [Abelian C] (r s : ℕ) :
   all_goals try exact h1.symm
   all_goals try (apply congrArg (tensorPower X); simp only [strandSum_eq_add]; omega)
   all_goals omega
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A positive rectangular crossing followed by an arbitrary strand suffix is
+the corresponding explicit right-inserted braid word. -/
+theorem leftTripleCross_word_heq (X : C) [BraidedCategory C] [Abelian C]
+    (r s t : ℕ) :
+    ((leftTripleFlatten X (r+1) (s+1) t).symm ≪≫
+      ((β_ (tensorPower X (r+1)) (tensorPower X (s+1))) ⊗ᵢ Iso.refl (tensorPower X t)) ≪≫
+      leftTripleFlatten X (s+1) (r+1) t) ≍
+    ((braidWordAction X ((s+r)+t) (insertRightWords (s+r) t (blockSweepWord s r))).val).asIso := by
+  rw [leftTripleCross_eq]
+  have hc := joinCross_word_heq X r s
+  have hw := congrArg Aut.asIso (joinSuffix_braidWord X (s+r) t (blockSweepWord s r))
+  have hi : ((joinPowerIso X (s+r+2) t ≪≫
+      powerIndexIso X (by rw [strandSum_eq_add]; omega : strandSum (s+r+2) t = (s+r+t)+2)).conjAut
+      ((tensorRight (tensorPower X t)).mapAut (tensorPower X (s+r+2))
+        (braidWordAction X (s+r) (blockSweepWord s r)).val)).asIso =
+    ((joinPowerIso X (s+r+2) t ≪≫
+      powerIndexIso X (by rw [strandSum_eq_add]; omega : strandSum (s+r+2) t = (s+r+t)+2)).symm ≪≫
+    (((braidWordAction X (s+r) (blockSweepWord s r)).val).asIso ⊗ᵢ Iso.refl (tensorPower X t)) ≪≫
+      (joinPowerIso X (s+r+2) t ≪≫
+        powerIndexIso X (by rw [strandSum_eq_add]; omega : strandSum (s+r+2) t = (s+r+t)+2))) := by
+    apply Iso.ext
+    simp [Iso.conjAut_hom, Functor.mapAut, tensorRight, tensorIso_hom, Iso.trans_hom]
+  rw [hi] at hw
+  apply HEq.trans _ (heq_of_eq hw)
+  simp only [Iso.trans_symm, powerIndexIso]
+  simp only [Iso.trans_assoc]
+  apply HEq.trans _ (eqToIso_trans_heq _ _).symm
+  all_goals try (apply congrArg (tensorPower X); simp only [strandSum_eq_add]; omega)
+  rw [← Iso.trans_assoc, ← Iso.trans_assoc, ← Iso.trans_assoc, ← Iso.trans_assoc]
+  apply HEq.trans _ (iso_trans_eqToIso_heq _ _).symm
+  congr 2
+  all_goals try exact hc
+  all_goals try simp [strandSum_eq_add]
+  all_goals try omega
+  all_goals try (apply congrArg (tensorPower X); simp only [strandSum_eq_add]; omega)
+  all_goals try (congr 1; apply congrArg (tensorPower X); simp only [strandSum_eq_add]; omega)
+  all_goals try (congr 1; try exact hc; try (congr 1; simp only [strandSum_eq_add]; omega))
+  all_goals try omega
+  all_goals try (apply congrArg (tensorPower X); simp only [strandSum_eq_add]; omega)
+  all_goals try (congr 1; try omega; try (simp only [strandSum_eq_add]; omega))
+  all_goals try exact hc
+  all_goals try (apply congrArg (tensorPower X); simp only [strandSum_eq_add]; omega)
+  all_goals simp only [strandSum_eq_add]
+  all_goals omega
+
+/-- The actual first colored generator on positive blocks is the explicit
+rectangular braid word with the tuple's original-strand suffix inserted. -/
+theorem coloredGenerator_zero_word_heq (X : C) [BraidedCategory C] [Abelian C]
+    (n : ℕ) (k : Fin (n+2) → ℕ) (r s : ℕ)
+    (h0 : k 0 = r+1) (h1 : k 1 = s+1) :
+    ((coloredTensorPowersFlatten X (n+2) k).symm ≪≫
+      Cabling.coloredGenerator n 0 (fun i => tensorPower X (k i)) ≪≫
+      coloredTensorPowersFlatten X (n+2) (fun i => k (Cabling.coloredSwap n 0 i))) ≍
+    ((braidWordAction X ((s+r)+heterogeneousStrandCount n (fun i => k i.succ.succ))
+      (insertRightWords (s+r) (heterogeneousStrandCount n (fun i => k i.succ.succ))
+        (blockSweepWord s r))).val).asIso := by
+  have h := coloredGenerator_zero_flatten_heq X n k
+  rw [h0, h1] at h
+  exact h.trans ((rightTripleCross_heq X (r+1) (s+1) _).trans
+    (leftTripleCross_word_heq X r s _))
