@@ -59,3 +59,39 @@ theorem insertRightPowerIso_heq_join (X : C) (n : ℕ) : ∀ r,
     rw [tensorPowerTensorIso_zero] at h
     exact h.symm
   | r+1 => insertRightPowerIso_succ_heq_join X n r
+
+/-- Canonical joining of a prefix agrees with the strand-insertion map after
+transporting the concatenated strand index. -/
+theorem insertLeftPowerIso_eq_join (X : C) (n p : ℕ) :
+    joinPowerIso X p (n+2) ≪≫
+      powerIndexIso X (by rw [strandSum_eq_add]; omega : strandSum p (n+2) = (n+p)+2) =
+    Trace.insertLeftPowerIso X n p := by
+  apply eq_of_heq
+  exact (iso_trans_eqToIso_heq _ _).trans (insertLeftPowerIso_heq_join X n p).symm
+
+/-- Canonical joining of a suffix agrees with the strand-insertion map after
+transporting the concatenated strand index. -/
+theorem insertRightPowerIso_eq_join (X : C) (n t : ℕ) :
+    joinPowerIso X (n+2) t ≪≫
+      powerIndexIso X (by rw [strandSum_eq_add]; omega : strandSum (n+2) t = (n+t)+2) =
+    Trace.insertRightPowerIso X n t := by
+  apply eq_of_heq
+  exact (iso_trans_eqToIso_heq _ _).trans (insertRightPowerIso_heq_join X n t).symm
+
+/-- Prefixing arbitrary strands to an actual braid word gives the explicit
+left-inserted braid word under canonical joining. -/
+theorem joinPrefix_braidWord (X : C) (n p : ℕ) (w : BraidWords n) :
+    (joinPowerIso X p (n+2) ≪≫
+      powerIndexIso X (by rw [strandSum_eq_add]; omega : strandSum p (n+2) = (n+p)+2)).conjAut
+      ((tensorLeft (tensorPower X p)).mapAut (tensorPower X (n+2)) (braidWordAction X n w).val) =
+    (braidWordAction X (n+p) (insertLeftWords n p w)).val := by
+  rw [insertLeftPowerIso_eq_join, leftInsertion_conjAut, braidWordAction_insertLeftWords]
+
+/-- Suffixing arbitrary strands to an actual braid word gives the explicit
+right-inserted braid word under canonical joining. -/
+theorem joinSuffix_braidWord (X : C) (n t : ℕ) (w : BraidWords n) :
+    (joinPowerIso X (n+2) t ≪≫
+      powerIndexIso X (by rw [strandSum_eq_add]; omega : strandSum (n+2) t = (n+t)+2)).conjAut
+      ((tensorRight (tensorPower X t)).mapAut (tensorPower X (n+2)) (braidWordAction X n w).val) =
+    (braidWordAction X (n+t) (insertRightWords n t w)).val := by
+  rw [insertRightPowerIso_eq_join, rightInsertion_conjAut, braidWordAction_insertRightWords]
