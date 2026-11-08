@@ -79,5 +79,27 @@ theorem finite_pureBlock_range_of_cabling (n r : ℕ)
   dsimp only
   rw [← he, pureWord_coloredBlock_diagonal n l hw X Y f g hf, hz]
 
+/-- If every actual colored pure word is the identity, the corresponding
+pure braid diagonal range is contained in the singleton identity. -/
+theorem finite_pureBlock_range_of_colored_trivial (n : ℕ)
+    (X : Fin (n + 2) → C) (Y : C) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
+    (hf : ∀ j, f j ≫ g j = 𝟙 (X j))
+    (htrivial : ∀ (w : List (Fin (n + 1) × Bool))
+      (hw : strandPermutation n (FreeGroup.mk w) = 1),
+      coloredPureWordHom n w hw X = 𝟙 _) :
+    Set.Finite (Set.range fun h : pureBraidImage Y n =>
+      coloredBlockInclusion (n + 2) X Y f ≫ h.val.val.asIso.hom ≫
+        coloredBlockProjection (n + 2) X Y g) := by
+  classical
+  apply (Set.finite_singleton (𝟙 (coloredTensor (n + 2) X))).subset
+  rintro _ ⟨h, rfl⟩
+  obtain ⟨w, hw, he⟩ := h.property
+  obtain ⟨l, hl⟩ := Quot.exists_rep w
+  change FreeGroup.mk l = w at hl
+  subst w
+  change strandPermutation n (FreeGroup.mk l) = 1 at hw
+  simp only [Set.mem_singleton_iff]
+  rw [← he, pureWord_coloredBlock_diagonal n l hw X Y f g hf, htrivial]
+
 end MTC.Braided.Cabling
 end
