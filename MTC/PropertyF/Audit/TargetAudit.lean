@@ -20,6 +20,8 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.NondegeneracyHaarBasis
+import all MTC.PropertyF.Pivotal.NondegenerateTransport
 import all MTC.Braided.Cabling.ClosureBlockInduction
 import all MTC.PropertyF.Pivotal.CenterAdjointReduction
 import all MTC.Braided.Cabling.ClosureRectangular

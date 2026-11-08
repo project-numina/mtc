@@ -188,7 +188,9 @@ public import MTC.PropertyF.Pivotal.InfiniteImages
 public import MTC.PropertyF.Pivotal.Nondegeneracy
 public import MTC.PropertyF.Pivotal.NondegeneracyConverse
 public import MTC.PropertyF.Pivotal.NondegeneracyHaar
+public import MTC.PropertyF.Pivotal.NondegeneracyHaarBasis
 public import MTC.PropertyF.Pivotal.Nondegenerate
+public import MTC.PropertyF.Pivotal.NondegenerateTransport
 public import MTC.PropertyF.Pivotal.SOrthogonality
 public import MTC.PropertyF.Pivotal.SScalarTwist
 public import MTC.PropertyF.Pivotal.Saturation
