@@ -2,7 +2,7 @@ module
 public import MTC.Braided.Cabling.PureSumPositiveCabling
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
 namespace MTC.Braided.Cabling
 universe v u
 variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C] [Abelian C]
@@ -140,6 +140,24 @@ theorem positiveWidth_cabling_of_positive_states (X : C) (n : ℕ)
   have h := coloredPureWord_cabling_of_positive_states X n ((∑ j, q j) - 2) q
     (Nat.sub_add_cancel (two_le_sum_positive_widths n q hq)).symm hq hletter w hw
   simpa only [positiveWidthFlatten, coloredPowerStateFlatten, powerIndexIso] using h
+
+/-- Positive-power finite sums have property F once positive colored
+crossings on positive fixed-total states are original-strand braids. -/
+theorem objectPropertyF_positivePower_biproduct_of_positive_letters
+    [MonoidalPreadditive C] [HasFiniteBiproducts C] {I : Type} [Fintype I] [DecidableEq I]
+    (X : C) (k : I → ℕ) (hk : ∀ i, 0 < k i) (hX : ObjectPropertyF X)
+    (hletter : ∀ (n r : ℕ) (s : ColoredPowerState n (r + 2)),
+      (∀ j, 0 < s.val j) → ∀ (i : Fin (n + 1)),
+      Aut.of ((coloredPowerStateFlatten X n (r + 2) s).symm ≪≫
+        coloredLetter n i true (fun j => tensorPower X (s.val j)) ≪≫
+        coloredPowerStateFlatten X n (r + 2) (coloredPowerSwap n (r + 2) i s)) ∈
+          braidImage X r) :
+    ObjectPropertyF (⨁ (fun i => tensorPower X (k i))) := by
+  apply finite_positivePower_biproduct_of_cabling X k hk hX
+    (fun n q => coloredTensorPowersFlatten X (n + 2) q)
+  intro n q hq w hw
+  apply positiveWidth_cabling_of_positive_states X n q hq
+  · exact hletter n _
 
 end MTC.Braided.Cabling
 end
