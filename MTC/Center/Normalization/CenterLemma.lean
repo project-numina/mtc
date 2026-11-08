@@ -45,5 +45,25 @@ theorem center_product_centralizer_and_propertyF
   · intro hF W hW
     exact MTC.Center.productRetract_propertyF hW hF
 
+omit [RigidCategory (Center C.Obj)] [IsFusionCategory (Center C.Obj)] in
+/-- The manuscript's centre lemma follows from an ambient pivotal structure;
+the actual centre rigidity, fusion structure, and pivotal lift are
+constructed internally. -/
+theorem center_lemma_of_pivotal
+    (p : PivotalStructure (C := C.Obj)) :
+    (∀ W : Center C.Obj,
+      (∀ P : Center C.Obj, MTC.Center.ProductRetract P → MTC.Center.Centralizes W P) ↔
+        ∃ X : C.Obj, MTC.Center.Transparent X ∧
+          Nonempty (W ≅ (Center.ofBraided C.Obj).obj X)) ∧
+    (∀ W : Center C.Obj, MTC.Center.ProductRetract W ↔
+      ∀ E : Center C.Obj, (∃ X : C.Obj, MTC.Center.Transparent X ∧
+        Nonempty (E ≅ (Center.ofBraided C.Obj).obj X)) → MTC.Center.Centralizes W E) ∧
+    (HasPropertyF C.Obj → ∀ W : Center C.Obj, MTC.Center.ProductRetract W → ObjectPropertyF W) := by
+  let _ : RigidCategory (Center C.Obj) := MTC.Center.Rigid.rigidCenter
+  let _ : IsFusionCategory (Center C.Obj) := MTC.Center.Induction.center_fusion_of_pivotal p
+  let pZ := MTC.Center.Induction.liftedPivotalStructure p
+    (MTC.Center.Induction.pivotalComponentsCentral_proved p)
+  exact center_product_centralizer_and_propertyF C pZ
+
 end MTC.Center.Normalization
 end
