@@ -20,6 +20,8 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Center.Normalization.BinomialAnalytic
+import all MTC.Center.Normalization.SymmetricRising
 import all MTC.PropertyF.Pivotal.MonoidalDual
 import all MTC.Braided.Cabling.ClosureMergeCommon
 import all MTC.PropertyF.Pivotal.AdjointObjectsSupport
