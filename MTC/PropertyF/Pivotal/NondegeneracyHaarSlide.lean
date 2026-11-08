@@ -269,5 +269,35 @@ theorem haarRotatedBlock_dualLabel_sum_restricted (X U V : C.Obj) (β : End (X �
   simp only [← map_sum, haarDualLabel_complete_restricted C _ S hs]
   exact haarRotatedCore_id C p X U V β
 
+/-- Dimension-weighted original fusion summands are the normalized mated
+contraction, with the dimension of the output simple moved outside. -/
+theorem haar_weighted_fusion_block (U V : C.Obj) (i j : Fin (rank C))
+    (β : End (simples C i ⊗ V)) :
+    (∑ a : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U)),
+      simpleDimension C p j • leftPartialTraceHom C p (simples C j) (U ⊗ V) (U ⊗ V)
+        ((α_ (simples C j) U V).inv ≫
+          (simpleProjection (simples C j ⊗ U) i a ▷ V) ≫ β.asHom ≫
+          (simpleInclusion C (simples C j ⊗ U) i a ▷ V) ≫
+          (α_ (simples C j) U V).hom)) =
+    simpleDimension C p i • ∑ a, haarRotatedBlock C p (simples C i) (simples C j) U V β
+      (haarInclusionMate C (simples C i) (simples C j) U
+        (simpleInclusion C (simples C j ⊗ U) i a))
+      (simpleDimension C p j • haarProjectionMate C p (simples C i) (simples C j) U
+        (pivotalTraceDualProjection C p (simples C j ⊗ U) i a)) := by
+  classical
+  rw [Finset.smul_sum]
+  apply Finset.sum_congr rfl
+  intro a _
+  rw [← haarRotatedBlock_eq_partialTrace]
+  change simpleDimension C p j • (haarRotatedBilinear C p (simples C i) (simples C j) U V β)
+      _ ((haarProjectionMate C p (simples C i) (simples C j) U)
+        (simpleProjection (simples C j ⊗ U) i a)) =
+    simpleDimension C p i • (haarRotatedBilinear C p (simples C i) (simples C j) U V β)
+      _ (simpleDimension C p j • (haarProjectionMate C p (simples C i) (simples C j) U)
+        (pivotalTraceDualProjection C p (simples C j ⊗ U) i a))
+  simp only [pivotalTraceDualProjection, map_smul, smul_smul]
+  congr 1
+  field_simp [simpleDimension_ne_zero C p i]
+
 end MTC.PropertyF.Pivotal
 end
