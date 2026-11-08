@@ -20,6 +20,7 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Braided.Cabling.ClosureInterchange
 import all MTC.Center.Normalization.IntegerDimensions
 import all MTC.Center.Normalization.SymmetricPivotal
 import all MTC.Center.Normalization.MugerCategory

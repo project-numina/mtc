@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.ClosureInterchange
 import all MTC.Center.Normalization.IntegerDimensions
 import all MTC.Center.Normalization.SymmetricPivotal
 import all MTC.Center.Normalization.MugerCategory
