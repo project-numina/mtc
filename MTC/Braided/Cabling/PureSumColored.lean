@@ -68,5 +68,47 @@ def coloredTensorMap : ∀ (n : ℕ) {X Y : Fin n → C},
   | 0, _, _, _ => 𝟙 _
   | n + 1, _, _, f => f 0 ⊗ₘ coloredTensorMap n (fun i => f i.succ)
 
+/-- Naturality of a crossing of two different strands with a spectator tail. -/
+theorem colored_first_map {X Y X' Y' A B : C} (f : X ⟶ X') (g : Y ⟶ Y') (h : A ⟶ B) :
+    ((α_ X Y A).symm ≪≫ ((β_ X Y) ⊗ᵢ Iso.refl A) ≪≫ α_ Y X A).hom ≫
+        (g ⊗ₘ (f ⊗ₘ h)) =
+      (f ⊗ₘ (g ⊗ₘ h)) ≫
+        ((α_ X' Y' B).symm ≪≫ ((β_ X' Y') ⊗ᵢ Iso.refl B) ≪≫ α_ Y' X' B).hom := by
+  simp only [Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom, Category.assoc]
+  rw [← associator_naturality, associator_inv_naturality_assoc]
+  simp only [← Category.assoc, tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id,
+    braiding_naturality]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A colored adjacent crossing is natural in the independent strand maps. -/
+theorem coloredGenerator_natural : ∀ (n : ℕ) (i : Fin (n + 1))
+    {X Y : Fin (n + 2) → C} (f : ∀ j, X j ⟶ Y j),
+    (coloredGenerator n i X).hom ≫
+      coloredTensorMap (n + 2) (fun j => f (coloredSwap n i j)) =
+    coloredTensorMap (n + 2) f ≫ (coloredGenerator n i Y).hom := by
+  intro n
+  induction n with
+  | zero =>
+    intro i X Y f
+    fin_cases i
+    change ((α_ (X 0) (X 1) (𝟙_ C)).symm ≪≫ ((β_ (X 0) (X 1)) ⊗ᵢ Iso.refl _) ≪≫ α_ (X 1) (X 0) _).hom ≫
+      (f 1 ⊗ₘ (f 0 ⊗ₘ 𝟙 _)) = (f 0 ⊗ₘ (f 1 ⊗ₘ 𝟙 _)) ≫
+      ((α_ (Y 0) (Y 1) (𝟙_ C)).symm ≪≫ ((β_ (Y 0) (Y 1)) ⊗ᵢ Iso.refl _) ≪≫ α_ (Y 1) (Y 0) _).hom
+    exact colored_first_map (f 0) (f 1) (𝟙 _)
+  | succ n ih =>
+    intro i X Y f
+    refine Fin.cases ?_ (fun j => ?_) i
+    · change ((α_ (X 0) (X 1) _).symm ≪≫ ((β_ (X 0) (X 1)) ⊗ᵢ Iso.refl _) ≪≫ α_ (X 1) (X 0) _).hom ≫
+        (f 1 ⊗ₘ (f 0 ⊗ₘ coloredTensorMap (n + 1) (fun k => f k.succ.succ))) =
+        (f 0 ⊗ₘ (f 1 ⊗ₘ coloredTensorMap (n + 1) (fun k => f k.succ.succ))) ≫
+        ((α_ (Y 0) (Y 1) _).symm ≪≫ ((β_ (Y 0) (Y 1)) ⊗ᵢ Iso.refl _) ≪≫ α_ (Y 1) (Y 0) _).hom
+      exact colored_first_map (f 0) (f 1) _
+    · change (𝟙 (X 0) ⊗ₘ (coloredGenerator n j (fun k => X k.succ)).hom) ≫
+        (f 0 ⊗ₘ coloredTensorMap (n + 2) (fun k => f (coloredSwap n j k).succ)) =
+        (f 0 ⊗ₘ coloredTensorMap (n + 2) (fun k => f k.succ)) ≫
+        (𝟙 (Y 0) ⊗ₘ (coloredGenerator n j (fun k => Y k.succ)).hom)
+      simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
+      rw [ih j (fun k => f k.succ)]
+
 end MTC.Braided.Cabling
 end
