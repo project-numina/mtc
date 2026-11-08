@@ -53,5 +53,25 @@ theorem normalize_pivotal_all_transparent_of_muger_pseudoUnitary
     normalize_pivotal_of_muger_pseudoUnitary_and_adjoint_positivity C p hpu hpositive
   exact ⟨q, fun X hX => pivotalDimension_eq_fp_of_transparent C q hq X hX⟩
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Adjoint positivity normalizes pivotal dimensions on every transparent
+object when the actual Müger category's Drinfeld centre has invertible S. -/
+theorem normalize_pivotal_all_transparent_of_muger_center_S_invertible
+    [RigidCategory (Center (bundledMuger C).Obj)]
+    [IsFusionCategory (Center (bundledMuger C).Obj)]
+    (p : PivotalStructure (C := C.Obj))
+    (hpositive : ∀ i, MTC.Center.Transparent (simples C i) → IsAdjointLabel C i →
+      ∃ r : ℝ, 0 < r ∧ pivotalDimension C p (simples C i) = r)
+    (hdet : (MTC.Modular.categoricalS
+      (MTC.PropertyF.Reduction.bundledCenter (bundledMuger C))
+      (MTC.Center.Induction.liftedPivotalStructure
+        (canonicalSymmetricPivotal (D := (bundledMuger C).Obj) (mugerBraiding_symmetric C))
+        (MTC.Center.Induction.pivotalComponentsCentral_proved
+          (canonicalSymmetricPivotal (D := (bundledMuger C).Obj) (mugerBraiding_symmetric C))))).det ≠ 0) :
+    ∃ q : PivotalStructure (C := C.Obj), ∀ X : C.Obj,
+      MTC.Center.Transparent X → pivotalDimension C q X = (fpDimension C X : ℂ) :=
+  normalize_pivotal_all_transparent_of_muger_pseudoUnitary C p
+    (muger_pseudoUnitary_of_center_S_invertible C hdet) hpositive
+
 end MTC.Center.Normalization
 end
