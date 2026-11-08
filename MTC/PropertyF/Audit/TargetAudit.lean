@@ -20,6 +20,8 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.NondegeneracyHaarSnake
+import all MTC.PropertyF.Pivotal.SymmetricPropertyF
 import all MTC.Braided.Cabling.ClosureInterchange
 import all MTC.Center.Normalization.IntegerDimensions
 import all MTC.Center.Normalization.SymmetricPivotal

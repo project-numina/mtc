@@ -197,6 +197,7 @@ public import MTC.PropertyF.Pivotal.NondegeneracyConverse
 public import MTC.PropertyF.Pivotal.NondegeneracyHaar
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarBasis
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarMate
+public import MTC.PropertyF.Pivotal.NondegeneracyHaarSnake
 public import MTC.PropertyF.Pivotal.Nondegenerate
 public import MTC.PropertyF.Pivotal.NondegenerateTransport
 public import MTC.PropertyF.Pivotal.SOrthogonality
@@ -207,6 +208,7 @@ public import MTC.PropertyF.Pivotal.SlopePower
 public import MTC.PropertyF.Pivotal.SlopeSquare
 public import MTC.PropertyF.Pivotal.SlopeTrace
 public import MTC.PropertyF.Pivotal.Statement
+public import MTC.PropertyF.Pivotal.SymmetricPropertyF
 public import MTC.PropertyF.PseudoUnitary
 public import MTC.PropertyF.Reduction.ActualCenterReduction
 public import MTC.PropertyF.Reduction.CharacterReality
