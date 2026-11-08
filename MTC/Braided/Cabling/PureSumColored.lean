@@ -271,5 +271,79 @@ theorem coloredGenerator_constant : ∀ (n : ℕ) (i : Fin (n + 1)) (X : C),
         (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom)
       simp only [tensorHom_comp_tensorHom, Category.id_comp, ih]
 
+/-- The inverse homogeneous adjacent generator is the negative crossing. -/
+theorem braidGenerator_first_inv (X : C) (n : ℕ) :
+    (braidGenerator X n 0).asIso.inv =
+      ((α_ X X (tensorPower X n)).symm ≪≫
+        ((β_ X X).symm ⊗ᵢ Iso.refl (tensorPower X n)) ≪≫
+        α_ X X (tensorPower X n)).hom := by
+  cases n with
+  | zero =>
+    change ((α_ X X (tensorPower X 0)).symm ≪≫
+      ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).inv = _
+    simp
+  | succ n =>
+    change ((α_ X X (tensorPower X (n + 1))).symm ≪≫
+      ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).inv = _
+    simp
+
+set_option backward.isDefEq.respectTransparency false in
+/-- On a homogeneous tuple the actual colored generator is the existing
+categorical braid generator, transported along the constant-tuple isomorphism. -/
+theorem coloredGeneratorInverse_constant : ∀ (n : ℕ) (i : Fin (n + 1)) (X : C),
+    (coloredGeneratorInverse n i (fun _ => X)).hom ≫ (coloredConstantIso X (n + 2)).hom =
+      (coloredConstantIso X (n + 2)).hom ≫ (braidGenerator X n i).asIso.inv := by
+  intro n
+  induction n with
+  | zero =>
+    intro i X
+    have : i = 0 := Fin.eq_zero i
+    subst i
+    rw [braidGenerator_first_inv]
+    change ((α_ X X (𝟙_ C)).symm ≪≫ ((β_ X X).symm ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom ≫
+      (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ 𝟙 _)) = (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ 𝟙 _)) ≫
+      ((α_ X X (𝟙_ C)).symm ≪≫ ((β_ X X).symm ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom
+    exact colored_first_inverse_map (𝟙 X) (𝟙 X) (𝟙 _)
+  | succ n ih =>
+    intro i X
+    refine Fin.cases ?_ (fun j => ?_) i
+    · rw [braidGenerator_first_inv]
+      change ((α_ X X _).symm ≪≫ ((β_ X X).symm ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom ≫
+        (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ (coloredConstantIso X (n + 1)).hom)) =
+        (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ (coloredConstantIso X (n + 1)).hom)) ≫
+        ((α_ X X _).symm ≪≫ ((β_ X X).symm ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom
+      exact colored_first_inverse_map (𝟙 X) (𝟙 X) _
+    · change (𝟙 X ⊗ₘ (coloredGeneratorInverse n j (fun _ => X)).hom) ≫
+        (𝟙 X ⊗ₘ (coloredConstantIso X (n + 2)).hom) =
+        (𝟙 X ⊗ₘ (coloredConstantIso X (n + 2)).hom) ≫
+        (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.inv)
+      simp only [tensorHom_comp_tensorHom, Category.id_comp, ih]
+
+/-- Both signs of a homogeneous colored crossing are the corresponding
+actual signed categorical braid generator. -/
+theorem coloredLetter_constant (n : ℕ) (i : Fin (n + 1)) (b : Bool) (X : C) :
+    (coloredLetter n i b (fun _ => X)).hom ≫ (coloredConstantIso X (n + 2)).hom =
+      (coloredConstantIso X (n + 2)).hom ≫
+        (if b then (braidGenerator X n i).asIso.hom else (braidGenerator X n i).asIso.inv) := by
+  cases b
+  · exact coloredGeneratorInverse_constant n i X
+  · exact coloredGenerator_constant n i X
+
+/-- On a homogeneous tuple, evaluating a signed colored word is the actual
+categorical braid word action. -/
+theorem coloredWordIso_constant (n : ℕ) (w : List (Fin (n + 1) × Bool)) (X : C) :
+    (coloredWordIso n w (fun _ => X)).hom ≫ (coloredConstantIso X (n + 2)).hom =
+      (coloredConstantIso X (n + 2)).hom ≫
+        ((braidWordAction X n (FreeGroup.mk w.reverse)).val).asIso.hom := by
+  induction w with
+  | nil => simp [coloredWordIso, braidWordAction]
+  | cons a w ih =>
+    cases a with
+    | mk i b =>
+      simp only [coloredWordIso, Iso.trans_hom, Category.assoc]
+      rw [ih, ← Category.assoc, coloredLetter_constant]
+      cases b <;> simp [braidWordAction, FreeGroup.lift_mk, List.map_reverse, List.prod_reverse, Aut.mul_asIso, Aut.inv_asIso,
+        Iso.trans_hom, Category.assoc]
+
 end MTC.Braided.Cabling
 end
