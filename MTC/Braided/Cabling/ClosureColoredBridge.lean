@@ -118,3 +118,23 @@ theorem coloredGenerator_two_word_heq (X : C) (k : Fin 2 → ℕ) (r s : ℕ)
   all_goals try exact hjoin1.symm
   all_goals try (apply congrArg (tensorPower X); simp only [strandSum_eq_add]; omega)
   all_goals omega
+
+/-- If the first colored block is empty, the flattened crossing is identity. -/
+theorem coloredGenerator_two_zero_left_heq (X : C) (k : Fin 2 → ℕ) (h0 : k 0 = 0) :
+    ((heterogeneousPowerFlatten X 2 k).symm ≪≫
+      Cabling.coloredGenerator 0 0 (fun i => tensorPower X (k i)) ≪≫
+      heterogeneousPowerFlatten X 2 (fun i => k (Cabling.coloredSwap 0 0 i))) ≍
+      Iso.refl (tensorPower X (k 1)) := by
+  have h := coloredGenerator_two_flatten_heq X k
+  rw [h0] at h
+  exact h.trans (heterogeneousBlockCross_zero_left X (k 1))
+
+/-- If the second colored block is empty, the flattened crossing is identity. -/
+theorem coloredGenerator_two_zero_right_heq (X : C) (k : Fin 2 → ℕ) (h1 : k 1 = 0) :
+    ((heterogeneousPowerFlatten X 2 k).symm ≪≫
+      Cabling.coloredGenerator 0 0 (fun i => tensorPower X (k i)) ≪≫
+      heterogeneousPowerFlatten X 2 (fun i => k (Cabling.coloredSwap 0 0 i))) ≍
+      Iso.refl (tensorPower X (k 0)) := by
+  have h := coloredGenerator_two_flatten_heq X k
+  rw [h1] at h
+  exact h.trans (heterogeneousBlockCross_zero_right X (k 0))
