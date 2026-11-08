@@ -20,6 +20,7 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Braided.Cabling.ClosureBlockProof
 import all MTC.PropertyF.Pivotal.NondegeneracyHaarSnake
 import all MTC.PropertyF.Pivotal.SymmetricPropertyF
 import all MTC.Braided.Cabling.ClosureInterchange
