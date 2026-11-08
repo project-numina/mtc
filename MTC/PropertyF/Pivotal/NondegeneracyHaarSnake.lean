@@ -379,5 +379,30 @@ theorem haar_mated_scalar_pairing (U : C.Obj) (i j : Fin (rank C))
   rw [hscalar]
   exact (eq_div_iff (simpleDimension_ne_zero C p j)).2 ht
 
+/-- The dimension-normalized mated projections are the scalar dual basis
+of the actual mated fusion inclusions. -/
+theorem haar_mated_pairing_eq_dualBasis (U : C.Obj) (i j : Fin (rank C))
+    (b : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U))) :
+    simpleHomPairingEquiv ((simples C j)ᘁ) (U ⊗ ((simples C i)ᘁ))
+      (simpleDimension C p j • haarProjectionMate C p (simples C i) (simples C j) U
+        (pivotalTraceDualProjection C p (simples C j ⊗ U) i b)) =
+      (haarMatedInclusionBasis C (simples C i) (simples C j) U
+        (simpleInclusionBasis C (simples C j ⊗ U) i)).dualBasis b := by
+  classical
+  apply (haarMatedInclusionBasis C (simples C i) (simples C j) U
+    (simpleInclusionBasis C (simples C j ⊗ U) i)).ext
+  intro a
+  simp only [Module.Basis.dualBasis_apply, haarMatedInclusionBasis, Module.Basis.map_apply,
+    simpleInclusionBasis_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]
+  change simpleDimension C p j * simpleEndScalar (k := ℂ) ((simples C j)ᘁ) (End.of
+      (haarInclusionMate C (simples C i) (simples C j) U (simpleInclusion C (simples C j ⊗ U) i a) ≫
+       haarProjectionMate C p (simples C i) (simples C j) U
+         (pivotalTraceDualProjection C p (simples C j ⊗ U) i b))) = _
+  rw [haar_mated_scalar_pairing]
+  rw [← simpleInclusionBasis_apply C (simples C j ⊗ U) i a]
+  simp only [Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, Module.Basis.repr_self]
+  simp only [Finsupp.single_apply]
+  split_ifs <;> simp_all [simpleDimension_ne_zero C p j]
+
 end MTC.PropertyF.Pivotal
 end
