@@ -68,4 +68,34 @@ theorem sweepBlockImage_zero (X : C) (s : ℕ) :
   change sweepFirst X s = sweepBlockCross X s 0
   exact (sweepBlockCross_zero X s).symm
 
+omit [BraidedCategory C] in
+set_option backward.isDefEq.respectTransparency false in
+set_option maxRecDepth 4096 in
+/-- Right insertion and recursive merging use the same parenthesization. -/
+theorem insertRightPowerIso_eq_merge (X : C) (s : ℕ) : ∀ r : ℕ,
+    Trace.insertRightPowerIso X s (r+1) =
+      α_ X (tensorPower X (s+1)) (tensorPower X (r+1)) ≪≫
+        (Iso.refl X ⊗ᵢ sweepBlockMerge X s r)
+  | 0 => by
+    apply Iso.ext
+    simp [Trace.insertRightPowerIso, sweepBlockMerge, tensorPower,
+      Trace.appendIso_succ, Category.assoc]
+    monoidal
+    simp [Trace.appendIso]
+    monoidal
+  | r+1 => by
+    change ((Iso.refl (Trace.braidTensorPower X s) ⊗ᵢ
+        (Trace.appendIso X (r+1)).symm) ≪≫
+      (α_ (Trace.braidTensorPower X s) (tensorPower X (r+1)) X).symm ≪≫
+      (Trace.insertRightPowerIso X s (r+1) ⊗ᵢ Iso.refl X) ≪≫
+        Trace.appendIso X (s+(r+1)+2)) = _
+    rw [insertRightPowerIso_eq_merge X s r]
+    apply Iso.ext
+    simp only [sweepBlockMerge, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+      Iso.refl_hom, tensorHom_id, id_tensorHom]
+    rw [Trace.appendIso_succ X (s+(r+1)+1)]
+    simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom]
+    monoidal
+
+
 end MTC.Braided
