@@ -36,5 +36,29 @@ theorem fusionSubring_dualLabel_finrank_zero
     simples C a ⊗ (simples C i)ᘁ) = fusionCoeff C a (dualIndex C i) (dualIndex C j) at he
   exact he.trans hcoeff
 
+/-- The restricted dual-label support statement for an arbitrary object U
+whose simple constituents all belong to the fusion subring. -/
+theorem fusionSubring_dualLabel_finrank_zero_of_supported
+    (A : Finset (Fin (rank C))) (hA : IsFusionSubring C A)
+    (U : C.Obj) (hU : ∀ a, 0 < simpleMultiplicity C a U → a ∈ A)
+    (i : Fin (rank C)) (hi : i ∈ A) (j : Fin (rank C)) (hj : j ∉ A) :
+    Module.finrank ℂ (simples C (dualIndex C j) ⟶ U ⊗ (simples C i)ᘁ) = 0 := by
+  have he : simpleMultiplicity C (dualIndex C j) (U ⊗ (simples C i)ᘁ) =
+      simpleMultiplicity C (dualIndex C j) ((simples C i)ᘁ ⊗ U) :=
+    (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (β_ U (simples C i)ᘁ)).finrank_eq
+  change simpleMultiplicity C (dualIndex C j) (U ⊗ (simples C i)ᘁ) = 0
+  rw [he, tensor_multiplicity]
+  apply Finset.sum_eq_zero
+  intro a ha
+  by_cases hz : simpleMultiplicity C a U = 0
+  · simp [hz]
+  · have hmem := hU a (Nat.pos_of_ne_zero hz)
+    have hbraid : simpleMultiplicity C (dualIndex C j) ((simples C i)ᘁ ⊗ simples C a) =
+        simpleMultiplicity C (dualIndex C j) (simples C a ⊗ (simples C i)ᘁ) :=
+      (CategoryTheory.Linear.homCongr ℂ (Iso.refl _) (β_ (simples C i)ᘁ (simples C a))).finrank_eq
+    have hzero : simpleMultiplicity C (dualIndex C j) (simples C a ⊗ (simples C i)ᘁ) = 0 :=
+      fusionSubring_dualLabel_finrank_zero C A hA a i hmem hi j hj
+    rw [hbraid, hzero, mul_zero]
+
 end MTC.Center.Normalization
 end
