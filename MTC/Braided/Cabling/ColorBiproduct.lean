@@ -161,5 +161,26 @@ theorem coloredWordIso_intertwines_colorInclusion (n : ℕ)
   exact coloredWordIso_intertwines_uniform n w (fun j => V (f j)) (⨁ V)
     (fun j => biproduct.ι V (f j))
 
+/-- Every actual braid word intertwines the colored projections in the
+opposite direction. -/
+theorem braidWordAction_intertwines_colorProjection (n : ℕ)
+    (w : List (Fin (n + 1) × Bool)) (f : Fin (n + 2) → I) :
+    ((braidWordAction (⨁ V) n (FreeGroup.mk w.reverse)).val).asIso.hom ≫
+      colorProjection V (n + 2) (fun j => f (coloredWordSwap n w j)) =
+    colorProjection V (n + 2) f ≫ (coloredWordIso n w (fun j => V (f j))).hom := by
+  let c := coloredConstantIso (⨁ V) (n + 2)
+  have hc := coloredWordIso_constant n w (⨁ V)
+  have hn := coloredWordIso_natural n w (X := fun _ => ⨁ V) (Y := fun j => V (f j))
+    (fun j => biproduct.π V (f j))
+  rw [colorProjection_eq_coloredTensorMap, colorProjection_eq_coloredTensorMap]
+  apply (cancel_epi c.hom).1
+  change (coloredWordIso n w (fun _ => ⨁ V)).hom ≫ c.hom =
+    c.hom ≫ ((braidWordAction (⨁ V) n (FreeGroup.mk w.reverse)).val).asIso.hom at hc
+  change _ = _
+  simp only [← Category.assoc]
+  rw [← hc]
+  simp only [c, Category.assoc, Iso.hom_inv_id_assoc]
+  exact hn
+
 end MTC.Braided.Cabling
 end
