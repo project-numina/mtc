@@ -127,5 +127,39 @@ def coloredBiproductIso (n : ℕ) : tensorPower (⨁ V) n ≅
       (coloredBiproductIso V n).inv = colorInclusion V n f := by
   simp [coloredBiproductIso]
 
+/-- Each recursive inclusion is the independent-strand tensor map followed
+by the canonical homogeneous tensor-power comparison. -/
+theorem colorInclusion_eq_coloredTensorMap : ∀ n (f : Fin n → I),
+    colorInclusion V n f = coloredTensorMap n (fun j => biproduct.ι V (f j)) ≫
+      (coloredConstantIso (⨁ V) n).hom
+  | 0, _ => by simp [colorInclusion, coloredTensorMap, coloredConstantIso]
+  | n + 1, f => by
+    rw [colorInclusion, coloredTensorMap, coloredConstantIso]
+    simp only [tensorIso_hom, Iso.refl_hom, tensorHom_comp_tensorHom, Category.comp_id]
+    rw [← colorInclusion_eq_coloredTensorMap n (fun j => f j.succ)]
+
+/-- Each recursive projection is the homogeneous comparison followed by the
+independent-strand tensor map of biproduct projections. -/
+theorem colorProjection_eq_coloredTensorMap : ∀ n (f : Fin n → I),
+    colorProjection V n f = (coloredConstantIso (⨁ V) n).inv ≫
+      coloredTensorMap n (fun j => biproduct.π V (f j))
+  | 0, _ => by simp [colorProjection, coloredTensorMap, coloredConstantIso, coloredTensor, tensorPower]
+  | n + 1, f => by
+    rw [colorProjection, coloredTensorMap, coloredConstantIso]
+    simp only [tensorIso_inv, Iso.refl_inv, tensorHom_comp_tensorHom, Category.id_comp]
+    rw [← colorProjection_eq_coloredTensorMap n (fun j => f j.succ)]
+
+/-- Every actual colored signed word intertwines the corresponding
+component inclusion with the actual braid action on the finite sum. -/
+theorem coloredWordIso_intertwines_colorInclusion (n : ℕ)
+    (w : List (Fin (n + 1) × Bool)) (f : Fin (n + 2) → I) :
+    (coloredWordIso n w (fun j => V (f j))).hom ≫
+      colorInclusion V (n + 2) (fun j => f (coloredWordSwap n w j)) =
+    colorInclusion V (n + 2) f ≫
+      ((braidWordAction (⨁ V) n (FreeGroup.mk w.reverse)).val).asIso.hom := by
+  simp only [colorInclusion_eq_coloredTensorMap, Category.assoc]
+  exact coloredWordIso_intertwines_uniform n w (fun j => V (f j)) (⨁ V)
+    (fun j => biproduct.ι V (f j))
+
 end MTC.Braided.Cabling
 end
