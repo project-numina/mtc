@@ -19,6 +19,7 @@ public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosureInsertion
 public import MTC.Braided.Cabling.ClosureIsoWord
 public import MTC.Braided.Cabling.ClosurePure
+public import MTC.Braided.Cabling.ClosureSweep
 public import MTC.Braided.Cabling.ClosureUnit
 public import MTC.Braided.Cabling.Generated
 public import MTC.Braided.Cabling.Naturality
@@ -103,6 +104,8 @@ public import MTC.Center.Modular.TransparencyCriterion
 public import MTC.Center.Modular.Vafa
 public import MTC.Center.Normalization.AdjointDegrees
 public import MTC.Center.Normalization.CharacterExtension
+public import MTC.Center.Normalization.CommonCentralizer
+public import MTC.Center.Normalization.FPPlacement
 public import MTC.Center.Normalization.GradingTwist
 public import MTC.Center.Normalization.MugerLabels
 public import MTC.Center.Normalization.PivotalTwist
@@ -167,6 +170,7 @@ public import MTC.Modular.Verlinde
 public import MTC.PropertyF.Audit.DependencyAudit
 public import MTC.PropertyF.Audit.ProjectAudit
 public import MTC.PropertyF.Audit.TargetAudit
+public import MTC.PropertyF.Pivotal.CenterReduction
 public import MTC.PropertyF.Pivotal.Centralizer
 public import MTC.PropertyF.Pivotal.FPGlobalDimension
 public import MTC.PropertyF.Pivotal.FPInvertible
@@ -175,6 +179,7 @@ public import MTC.PropertyF.Pivotal.Galois
 public import MTC.PropertyF.Pivotal.InfiniteImages
 public import MTC.PropertyF.Pivotal.Nondegeneracy
 public import MTC.PropertyF.Pivotal.NondegeneracyConverse
+public import MTC.PropertyF.Pivotal.NondegeneracyHaar
 public import MTC.PropertyF.Pivotal.Nondegenerate
 public import MTC.PropertyF.Pivotal.SOrthogonality
 public import MTC.PropertyF.Pivotal.SScalarTwist
