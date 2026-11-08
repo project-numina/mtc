@@ -26,6 +26,7 @@ public import MTC.Braided.Cabling.ClosureIsoWord
 public import MTC.Braided.Cabling.ClosureMergeCommon
 public import MTC.Braided.Cabling.ClosurePure
 public import MTC.Braided.Cabling.ClosureRectangular
+public import MTC.Braided.Cabling.ClosureSplitMerge
 public import MTC.Braided.Cabling.ClosureSweep
 public import MTC.Braided.Cabling.ClosureSweepContext
 public import MTC.Braided.Cabling.ClosureTwoRow
