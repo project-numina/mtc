@@ -25,5 +25,32 @@ theorem pureBraidImage_preserves_coloredBlock (n : ℕ)
   rw [← he]
   exact pureWord_preserves_coloredBlock n l hw X Y f g hf
 
+/-- A finite group containing all actual colored pure-word endomorphisms
+makes the corresponding diagonal pure-braid block range finite. -/
+theorem finite_pureBlock_range_of_colored_group (n : ℕ)
+    (X : Fin (n + 2) → C) (Y : C) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
+    (hf : ∀ j, f j ≫ g j = 𝟙 (X j))
+    (H : Subgroup (Aut (coloredTensor (n + 2) X))) (hH : Finite H)
+    (hcable : ∀ (w : List (Fin (n + 1) × Bool))
+      (hw : strandPermutation n (FreeGroup.mk w) = 1),
+      ∃ z : H, z.val.asIso.hom = coloredPureWordHom n w hw X) :
+    Set.Finite (Set.range fun h : pureBraidImage Y n =>
+      coloredBlockInclusion (n + 2) X Y f ≫ h.val.val.asIso.hom ≫
+        coloredBlockProjection (n + 2) X Y g) := by
+  classical
+  letI : Finite H := hH
+  apply (Set.finite_range (fun z : H => z.val.asIso.hom)).subset
+  rintro _ ⟨h, rfl⟩
+  obtain ⟨w, hw, he⟩ := h.property
+  obtain ⟨l, hl⟩ := Quot.exists_rep w
+  change FreeGroup.mk l = w at hl
+  subst w
+  change strandPermutation n (FreeGroup.mk l) = 1 at hw
+  obtain ⟨z, hz⟩ := hcable l hw
+  refine ⟨z, ?_⟩
+  dsimp only
+  rw [hz, ← he]
+  exact (pureWord_coloredBlock_diagonal n l hw X Y f g hf).symm
+
 end MTC.Braided.Cabling
 end
