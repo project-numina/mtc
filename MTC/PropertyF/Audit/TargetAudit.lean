@@ -20,6 +20,7 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Center.Normalization.MugerCategory
 import all MTC.PropertyF.Pivotal.GaloisDual
 import all MTC.PropertyF.Pivotal.NondegeneracyHaarMate
 import all MTC.PropertyF.Pivotal.GaloisUnitScalar

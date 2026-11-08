@@ -115,6 +115,7 @@ public import MTC.Center.Normalization.CommonCentralizer
 public import MTC.Center.Normalization.FPPlacement
 public import MTC.Center.Normalization.GradingTwist
 public import MTC.Center.Normalization.MugerAdjointNormalization
+public import MTC.Center.Normalization.MugerCategory
 public import MTC.Center.Normalization.MugerLabels
 public import MTC.Center.Normalization.PivotalTwist
 public import MTC.Center.Normalization.ScalarFusionCharacter
