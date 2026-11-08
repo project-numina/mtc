@@ -111,3 +111,30 @@ theorem coloredSwap_zero_tail (n : ℕ) (i : Fin n) :
   cases n with
   | zero => exact Fin.elim0 i
   | succ n => rfl
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Flattening a spectator suffix commutes with crossing the first two factors. -/
+theorem firstCross_suffix_cancel [BraidedCategory C] (A B U T P Q : C)
+    (f : U ≅ T) (j : A ⊗ (B ⊗ T) ≅ P) (k : B ⊗ (A ⊗ T) ≅ Q) :
+    (((Iso.refl A ⊗ᵢ (Iso.refl B ⊗ᵢ f)) ≪≫ j).symm ≪≫
+      (α_ A B U).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl U) ≪≫ (α_ B A U) ≪≫
+      ((Iso.refl B ⊗ᵢ (Iso.refl A ⊗ᵢ f)) ≪≫ k)) =
+    (j.symm ≪≫ (α_ A B T).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl T) ≪≫
+      (α_ B A T) ≪≫ k) := by
+  have hn : ((α_ A B U).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl U) ≪≫ (α_ B A U)) ≪≫
+      (Iso.refl B ⊗ᵢ (Iso.refl A ⊗ᵢ f)) =
+      (Iso.refl A ⊗ᵢ (Iso.refl B ⊗ᵢ f)) ≪≫
+        ((α_ A B T).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl T) ≪≫ (α_ B A T)) := by
+    apply Iso.ext
+    have h := Cabling.colored_first_map (𝟙 A) (𝟙 B) f.hom
+    simpa only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom] using h
+  calc
+    _ = j.symm ≪≫ (Iso.refl A ⊗ᵢ (Iso.refl B ⊗ᵢ f)).symm ≪≫
+        (((α_ A B U).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl U) ≪≫ (α_ B A U)) ≪≫
+          (Iso.refl B ⊗ᵢ (Iso.refl A ⊗ᵢ f))) ≪≫ k := by
+      simp [Iso.trans_symm, Iso.trans_assoc]
+    _ = j.symm ≪≫ (Iso.refl A ⊗ᵢ (Iso.refl B ⊗ᵢ f)).symm ≪≫
+        ((Iso.refl A ⊗ᵢ (Iso.refl B ⊗ᵢ f)) ≪≫
+          ((α_ A B T).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl T) ≪≫ (α_ B A T))) ≪≫ k := by rw [hn]
+    _ = _ := by simp [Iso.trans_assoc]
+
