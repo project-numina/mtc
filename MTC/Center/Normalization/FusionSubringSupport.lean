@@ -72,5 +72,23 @@ theorem fusionSubring_forward_finrank_zero
   intro hp
   exact hi (hA.fusion j hj a ha i hp)
 
+/-- The forward support statement for arbitrary U whose simple constituents
+belong to the fusion subring. -/
+theorem fusionSubring_forward_finrank_zero_of_supported
+    (A : Finset (Fin (rank C))) (hA : IsFusionSubring C A)
+    (j : Fin (rank C)) (hj : j ∈ A) (U : C.Obj)
+    (hU : ∀ a, 0 < simpleMultiplicity C a U → a ∈ A)
+    (i : Fin (rank C)) (hi : i ∉ A) :
+    Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U) = 0 := by
+  change simpleMultiplicity C i (simples C j ⊗ U) = 0
+  rw [tensor_multiplicity]
+  apply Finset.sum_eq_zero
+  intro a ha
+  by_cases hz : simpleMultiplicity C a U = 0
+  · simp [hz]
+  · have hzero : simpleMultiplicity C i (simples C j ⊗ simples C a) = 0 :=
+      fusionSubring_forward_finrank_zero C A hA j a hj (hU a (Nat.pos_of_ne_zero hz)) i hi
+    rw [hzero, mul_zero]
+
 end MTC.Center.Normalization
 end
