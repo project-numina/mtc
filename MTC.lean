@@ -130,12 +130,14 @@ public import MTC.Center.Induction.Representatives
 public import MTC.Center.Induction.SecondTriangle
 public import MTC.Center.Modular.TransparencyCriterion
 public import MTC.Center.Modular.Vafa
+public import MTC.Center.Normalization.ActualDoubleCentralizer
 public import MTC.Center.Normalization.AdjointDegrees
 public import MTC.Center.Normalization.AdjointQuotient
 public import MTC.Center.Normalization.AdjointRelation
 public import MTC.Center.Normalization.AlgebraicDimension
 public import MTC.Center.Normalization.BinomialAnalytic
 public import MTC.Center.Normalization.BinomialArithmetic
+public import MTC.Center.Normalization.CenterLemma
 public import MTC.Center.Normalization.CharacterExtension
 public import MTC.Center.Normalization.CommonCentralizer
 public import MTC.Center.Normalization.DualContraction
@@ -226,6 +228,7 @@ public import MTC.PropertyF.Audit.TargetAudit
 public import MTC.PropertyF.Pivotal.AdjointObjects
 public import MTC.PropertyF.Pivotal.AdjointObjectsSupport
 public import MTC.PropertyF.Pivotal.CenterAdjointReduction
+public import MTC.PropertyF.Pivotal.CenterLemma
 public import MTC.PropertyF.Pivotal.CenterNondegenerate
 public import MTC.PropertyF.Pivotal.CenterReduction
 public import MTC.PropertyF.Pivotal.Centralizer
