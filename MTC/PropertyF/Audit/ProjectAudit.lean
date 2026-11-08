@@ -25,6 +25,11 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Center.Normalization.MugerLabels
+import all MTC.Braided.Cabling.ClosureBlockWord
+import all MTC.Braided.Cabling.ClosureIsoWord
+import all MTC.PropertyF.Pivotal.FPInvertible
+import all MTC.PropertyF.Pivotal.Nondegeneracy
 import all MTC.Center.Normalization.ScalarFusionCharacter
 import all MTC.Braided.Cabling.ClosureInsertion
 import all MTC.Braided.Trace.SphericalSaturation

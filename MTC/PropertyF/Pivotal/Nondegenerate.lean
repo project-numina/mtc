@@ -1,6 +1,7 @@
 module
 public import MTC.PropertyF.Pivotal.FPGlobalDimension
 public import MTC.PropertyF.Pivotal.Saturation
+public import MTC.PropertyF.Pivotal.FPInvertible
 
 /-! # Frobenius–Perron self-monodromy
 
@@ -52,5 +53,15 @@ theorem pseudoUnitary_of_invertibleS_of_propertyF
     PseudoUnitary C := by
   obtain ⟨j, hj, _⟩ := existsUnique_fp_column C p hdet
   exact (pseudoUnitary_of_fp_column_propertyF C p hdet j hj (hF _)).1
+
+/-- In the S-invertible pivotal case, the FP-column object has a genuine
+categorical tensor inverse when its own braid images are finite. -/
+theorem fp_column_invertible_of_propertyF
+    (hdet : (categoricalS C p).det ≠ 0) (j : Fin (rank C))
+    (hcolumn : ∀ i, categoricalS C p i j = simpleDimension C p j * (fpSimple C i : ℂ))
+    (hfinite : ObjectPropertyF (simples C j)) :
+    PseudoUnitary C ∧ Nonempty (simples C j ⊗ (simples C j)ᘁ ≅ 𝟙_ C.Obj) := by
+  obtain ⟨hpu, hfp⟩ := pseudoUnitary_of_fp_column_propertyF C p hdet j hcolumn hfinite
+  exact ⟨hpu, simple_fp_one_tensor_rightDual_iso_unit C j hfp⟩
 
 end MTC.PropertyF.Pivotal

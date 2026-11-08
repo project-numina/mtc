@@ -10,10 +10,12 @@ public import MTC.Algebra.PowerBound
 public import MTC.AnyonAtlas.Raw
 public import MTC.AnyonAtlas.Sample
 public import MTC.Braided.BraidAlgebra
+public import MTC.Braided.Cabling.ClosureBlockWord
 public import MTC.Braided.Cabling.ClosureCrossing
 public import MTC.Braided.Cabling.ClosureFlatten
 public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosureInsertion
+public import MTC.Braided.Cabling.ClosureIsoWord
 public import MTC.Braided.Cabling.ClosurePure
 public import MTC.Braided.Cabling.ClosureUnit
 public import MTC.Braided.Cabling.Generated
@@ -100,6 +102,7 @@ public import MTC.Center.Modular.Vafa
 public import MTC.Center.Normalization.AdjointDegrees
 public import MTC.Center.Normalization.CharacterExtension
 public import MTC.Center.Normalization.GradingTwist
+public import MTC.Center.Normalization.MugerLabels
 public import MTC.Center.Normalization.PivotalTwist
 public import MTC.Center.Normalization.ScalarFusionCharacter
 public import MTC.Center.Normalization.SubringCharacter
@@ -164,9 +167,11 @@ public import MTC.PropertyF.Audit.ProjectAudit
 public import MTC.PropertyF.Audit.TargetAudit
 public import MTC.PropertyF.Pivotal.Centralizer
 public import MTC.PropertyF.Pivotal.FPGlobalDimension
+public import MTC.PropertyF.Pivotal.FPInvertible
 public import MTC.PropertyF.Pivotal.FPObject
 public import MTC.PropertyF.Pivotal.Galois
 public import MTC.PropertyF.Pivotal.InfiniteImages
+public import MTC.PropertyF.Pivotal.Nondegeneracy
 public import MTC.PropertyF.Pivotal.Nondegenerate
 public import MTC.PropertyF.Pivotal.SOrthogonality
 public import MTC.PropertyF.Pivotal.SScalarTwist
