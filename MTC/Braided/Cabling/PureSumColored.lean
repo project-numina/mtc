@@ -367,5 +367,56 @@ theorem coloredWordIso_intertwines_uniform (n : ℕ)
   simp only [Category.assoc]
   rw [coloredWordIso_constant]
 
+/-- Inclusion of a colored tensor block into the tensor power of a common object. -/
+def coloredBlockInclusion (n : ℕ) (X : Fin n → C) (Y : C) (f : ∀ j, X j ⟶ Y) :
+    coloredTensor n X ⟶ tensorPower Y n :=
+  coloredTensorMap n f ≫ (coloredConstantIso Y n).hom
+
+/-- Projection onto a colored tensor block. -/
+def coloredBlockProjection (n : ℕ) (X : Fin n → C) (Y : C) (g : ∀ j, Y ⟶ X j) :
+    tensorPower Y n ⟶ coloredTensor n X :=
+  (coloredConstantIso Y n).inv ≫ coloredTensorMap n g
+
+/-- Componentwise retracts induce a retract of tensor blocks. -/
+theorem coloredBlockInclusion_projection (n : ℕ) (X : Fin n → C) (Y : C)
+    (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j) (h : ∀ j, f j ≫ g j = 𝟙 (X j)) :
+    coloredBlockInclusion n X Y f ≫ coloredBlockProjection n X Y g = 𝟙 _ := by
+  simp only [coloredBlockInclusion, coloredBlockProjection, Category.assoc, Iso.hom_inv_id_assoc]
+  rw [← coloredTensorMap_comp]
+  simpa only [h] using coloredTensorMap_id n X
+
+/-- Transport along an identity strand permutation commutes with the
+componentwise colored tensor map. -/
+theorem coloredTensorMap_identityPermutation (n : ℕ) (σ : Fin n → Fin n)
+    (hσ : σ = id) (X : Fin n → C) (Y : C) (f : ∀ j, X j ⟶ Y) :
+    coloredTensorMap n (fun j => f (σ j)) =
+      eqToHom (congrArg (coloredTensor n) (congrArg (fun t => fun j => X (t j)) hσ)) ≫
+        coloredTensorMap n f := by
+  cases hσ
+  simp
+
+/-- A pure word preserves every colored retract block of a tensor power. -/
+theorem pureWord_preserves_coloredBlock (n : ℕ)
+    (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1)
+    (X : Fin (n + 2) → C) (Y : C) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
+    (h : ∀ j, f j ≫ g j = 𝟙 (X j)) :
+    let ι := coloredBlockInclusion (n + 2) X Y f
+    let π := coloredBlockProjection (n + 2) X Y g
+    let b := ((braidWordAction Y n (FreeGroup.mk w)).val).asIso.hom
+    ι ≫ b = (ι ≫ b ≫ π) ≫ ι := by
+  have hp : coloredWordSwap n w.reverse = id := by
+    rw [coloredWordSwap_eq_strandPermutation, strandPermutation_reverse, hw]
+    rfl
+  have hn := coloredWordIso_intertwines_uniform n w.reverse X Y f
+  simp only [List.reverse_reverse] at hn
+  rw [coloredTensorMap_identityPermutation (n + 2) _ hp X Y f] at hn
+  have hr := coloredBlockInclusion_projection (n + 2) X Y f g h
+  dsimp only [coloredBlockInclusion] at hr ⊢
+  simp only [Category.assoc] at hn hr ⊢
+  rw [← reassoc_of% hn, ← hn]
+  rw [reassoc_of% hr]
+
+
 end MTC.Braided.Cabling
 end
