@@ -1,5 +1,6 @@
 module
 public import MTC.Braided.Cabling.ClosureFlattenConcat
+public import MTC.Braided.Cabling.ClosureUnit
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -86,3 +87,9 @@ theorem objectPropertyF_positive_power (X : C) (hX : ObjectPropertyF X) (k : ℕ
   apply objectPropertyF_power_of_common_flattening X hX k
   intro n
   exact ⟨localBlockFlattenAt X k n 0, fun i => localBlockFlattenAt_eq X k n i 0⟩
+
+/-- Property F passes to every nonnegative tensor power, including the unit. -/
+theorem objectPropertyF_tensorPower (X : C) (hX : ObjectPropertyF X) : ∀ k : ℕ,
+    ObjectPropertyF (tensorPower X k)
+  | 0 => objectPropertyF_tensorPower_zero X
+  | k+1 => objectPropertyF_positive_power X hX k
