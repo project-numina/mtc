@@ -145,5 +145,25 @@ theorem coloredWordSwap_eq_strandPermutation (n : ℕ)
       cases b <;> simp [coloredWordSwap, coloredSwap_eq_swap, strandPermutation,
         FreeGroup.lift_mk, ih, Equiv.Perm.mul_apply]
 
+/-- The colored tensor map preserves identities. -/
+theorem coloredTensorMap_id : ∀ (n : ℕ) (X : Fin n → C),
+    coloredTensorMap n (fun i => 𝟙 (X i)) = 𝟙 (coloredTensor n X)
+  | 0, _ => rfl
+  | n + 1, X => by
+    change (𝟙 (X 0) ⊗ₘ coloredTensorMap n (fun i => 𝟙 (X i.succ))) = _
+    rw [coloredTensorMap_id]
+    simp [coloredTensor]
+
+/-- The colored tensor map preserves independent componentwise composition. -/
+theorem coloredTensorMap_comp : ∀ (n : ℕ) {X Y Z : Fin n → C}
+    (f : ∀ i, X i ⟶ Y i) (g : ∀ i, Y i ⟶ Z i),
+    coloredTensorMap n (fun i => f i ≫ g i) = coloredTensorMap n f ≫ coloredTensorMap n g
+  | 0, _, _, _, _, _ => by simp [coloredTensorMap, coloredTensor]
+  | n + 1, _, _, _, f, g => by
+    change ((f 0 ≫ g 0) ⊗ₘ coloredTensorMap n (fun i => f i.succ ≫ g i.succ)) =
+      (f 0 ⊗ₘ coloredTensorMap n (fun i => f i.succ)) ≫
+        (g 0 ⊗ₘ coloredTensorMap n (fun i => g i.succ))
+    rw [coloredTensorMap_comp, tensorHom_comp_tensorHom]
+
 end MTC.Braided.Cabling
 end
