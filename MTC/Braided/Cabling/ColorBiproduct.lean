@@ -93,5 +93,39 @@ theorem colorProjection_inclusion_total : ∀ n,
     rw [← sum_tensor, biproduct.total]
     simp
 
+/-- Tensor powers of a finite biproduct decompose into the actual colored
+tensor products of its summands. -/
+def coloredBiproductIso (n : ℕ) : tensorPower (⨁ V) n ≅
+    ⨁ (fun f : Fin n → I => coloredTensor n (fun j => V (f j))) where
+  hom := biproduct.lift (colorProjection V n)
+  inv := biproduct.desc (colorInclusion V n)
+  hom_inv_id := by rw [biproduct.lift_desc, colorProjection_inclusion_total]
+  inv_hom_id := by
+    classical
+    apply biproduct.hom_ext'
+    intro f
+    apply biproduct.hom_ext
+    intro g
+    simp only [Category.assoc, biproduct.ι_desc_assoc, biproduct.lift_π,
+      Category.comp_id]
+    by_cases h : f = g
+    · subst g
+      simp
+    · rw [colorInclusion_projection_ne V n f g h]
+      simp [biproduct.ι_π_ne _ h]
+
+/-- The decomposition's component projections are the recursive maps. -/
+@[simp] theorem coloredBiproductIso_hom_π (n : ℕ) (f : Fin n → I) :
+    (coloredBiproductIso V n).hom ≫
+      biproduct.π (fun f : Fin n → I => coloredTensor n (fun j => V (f j))) f =
+        colorProjection V n f := by
+  simp [coloredBiproductIso]
+
+/-- The decomposition's component inclusions are the recursive maps. -/
+@[simp] theorem coloredBiproductIso_ι_inv (n : ℕ) (f : Fin n → I) :
+    biproduct.ι (fun f : Fin n → I => coloredTensor n (fun j => V (f j))) f ≫
+      (coloredBiproductIso V n).inv = colorInclusion V n f := by
+  simp [coloredBiproductIso]
+
 end MTC.Braided.Cabling
 end
