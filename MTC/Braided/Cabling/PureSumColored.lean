@@ -464,5 +464,40 @@ theorem pureWord_coloredBlock_diagonal (n : ℕ)
   slice_lhs 3 5 => rw [hr]
   simp [coloredPureWordHom]
 
+theorem tensor_refl_heq {A B B' D D' : C} {f : B ≅ D} {g : B' ≅ D'}
+    (h : HEq f g) : HEq (Iso.refl A ⊗ᵢ f) (Iso.refl A ⊗ᵢ g) := by
+  cases h
+  rfl
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The negative colored crossing is the inverse of the positive crossing
+on the tuple with the two colors exchanged. -/
+theorem coloredGeneratorInverse_heq_symm : ∀ (n : ℕ) (i : Fin (n + 1))
+    (X : Fin (n + 2) → C),
+    HEq (coloredGeneratorInverse n i X)
+      (coloredGenerator n i (fun j => X (coloredSwap n i j))).symm := by
+  intro n
+  induction n with
+  | zero =>
+    intro i X
+    have : i = 0 := Fin.eq_zero i
+    subst i
+    simp only [coloredGeneratorInverse, coloredGenerator, coloredSwap, Fin.cases_zero]
+    <;> apply Iso.ext <;> simp [tensorIso_hom, tensorIso_inv]
+  | succ n ih =>
+    intro i X
+    refine Fin.cases ?_ (fun j => ?_) i
+    · simp only [coloredGeneratorInverse, coloredGenerator, coloredSwap, Fin.cases_zero]
+      apply Iso.ext
+      simp [tensorIso_hom, tensorIso_inv]
+    · have h := ih j (fun k => X k.succ)
+      have h' := tensor_refl_heq (A := X 0) h
+      have hs {B D : C} (f : B ≅ D) :
+          (Iso.refl (X 0) ⊗ᵢ f).symm = Iso.refl (X 0) ⊗ᵢ f.symm := by
+        apply Iso.ext
+        simp [tensorIso_hom, tensorIso_inv]
+      simpa only [coloredGeneratorInverse, coloredGenerator, coloredSwap, Fin.cases_succ,
+        Fin.cases_zero, hs] using h'
+
 end MTC.Braided.Cabling
 end
