@@ -155,5 +155,53 @@ theorem haar_coevaluation_exchange (X Y : C.Obj) :
           rw [← whisker_exchange]
     _ = _ := by monoidal
 
+/-- A pivotal component slides past any morphism on an independent strand. -/
+theorem pivotalComponent_whisker_exchange (Y A B : C.Obj) (h : A ⟶ B) :
+    ((p.iso Y).hom ▷ A) ≫ (((Yᘁ)ᘁ) ◁ h) =
+      (Y ◁ h) ≫ ((p.iso Y).hom ▷ B) := by
+  exact (whisker_exchange (p.iso Y).hom h).symm
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Two independent duality caps exchange. This supplies the final planar
+interchange in the two-mate trace rotation. -/
+theorem haar_evaluation_exchange (X Y : C.Obj) :
+    (((Yᘁ : C.Obj) ⊗ Y) ◁ ε_ X (Xᘁ)) ⊗≫ ε_ Y (Yᘁ) =
+      (ε_ Y (Yᘁ) ▷ ((Xᘁ : C.Obj) ⊗ X)) ⊗≫ ε_ X (Xᘁ) := by
+  calc
+    _ = 𝟙 (((Yᘁ : C.Obj) ⊗ Y) ⊗ ((Xᘁ : C.Obj) ⊗ X)) ⊗≫ ((((Yᘁ : C.Obj) ⊗ Y) ◁ ε_ X (Xᘁ)) ≫ (ε_ Y (Yᘁ) ▷ (𝟙_ C.Obj))) ⊗≫
+        𝟙 (𝟙_ C.Obj) := by monoidal
+    _ = 𝟙 (((Yᘁ : C.Obj) ⊗ Y) ⊗ ((Xᘁ : C.Obj) ⊗ X)) ⊗≫ ((ε_ Y (Yᘁ) ▷ ((Xᘁ : C.Obj) ⊗ X)) ≫ ((𝟙_ C.Obj) ◁ ε_ X (Xᘁ))) ⊗≫
+        𝟙 (𝟙_ C.Obj) := by rw [whisker_exchange]
+    _ = _ := by monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A pivotal component can be moved through an arbitrary boxed morphism
+on an independent strand, in the association used by the Haar proof. -/
+theorem haar_pivotal_box_exchange (Y W : C.Obj) (a : (Yᘁ) ⊗ W ⟶ (Yᘁ) ⊗ W) :
+    (((p.iso Y).hom ▷ (Yᘁ)) ▷ W) ⊗≫ (((Yᘁ)ᘁ) ◁ a) =
+      𝟙 ((Y ⊗ (Yᘁ)) ⊗ W) ⊗≫ (Y ◁ a) ⊗≫
+        (((p.iso Y).hom ▷ (Yᘁ)) ▷ W) ⊗≫ 𝟙 (((Yᘁ)ᘁ) ⊗ ((Yᘁ) ⊗ W)) := by
+  simp only [monoidalComp, Category.id_comp, Category.comp_id]
+  monoidal; simp
+  rw [associator_naturality_left_assoc, ← associator_inv_naturality_left_assoc]
+  simp only [Iso.inv_hom_id, Category.comp_id]
+  rw [← whisker_exchange]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A pivotal component slides past the other duality cup in the association
+used by the two-mate trace diagram. -/
+theorem haar_pivotal_cup_exchange (X Y : C.Obj) :
+    ((p.iso Y).hom ▷ (Yᘁ)) ⊗≫ ((((Yᘁ)ᘁ) ⊗ (Yᘁ)) ◁ η_ X (Xᘁ)) =
+      𝟙 (Y ⊗ (Yᘁ)) ⊗≫ ((Y ⊗ (Yᘁ)) ◁ η_ X (Xᘁ)) ⊗≫
+        (((p.iso Y).hom ▷ (Yᘁ)) ▷ (X ⊗ (Xᘁ))) ⊗≫
+          𝟙 (((Yᘁ)ᘁ ⊗ (Yᘁ)) ⊗ (X ⊗ (Xᘁ))) := by
+  calc
+    _ = 𝟙 _ ⊗≫ (((p.iso Y).hom ▷ (Yᘁ)) ▷ (𝟙_ C.Obj) ≫
+        ((((Yᘁ)ᘁ) ⊗ (Yᘁ)) ◁ η_ X (Xᘁ))) ⊗≫ 𝟙 _ := by monoidal
+    _ = 𝟙 _ ⊗≫ (((Y ⊗ (Yᘁ)) ◁ η_ X (Xᘁ)) ≫
+        (((p.iso Y).hom ▷ (Yᘁ)) ▷ (X ⊗ (Xᘁ)))) ⊗≫ 𝟙 _ := by
+          rw [whisker_exchange]
+    _ = _ := by monoidal
+
 end MTC.PropertyF.Pivotal
 end
