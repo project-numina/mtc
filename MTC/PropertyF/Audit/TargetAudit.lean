@@ -20,6 +20,7 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.MonoidalDual
 import all MTC.Braided.Cabling.ClosureMergeCommon
 import all MTC.PropertyF.Pivotal.AdjointObjectsSupport
 import all MTC.Braided.Cabling.ClosureBlockFinite

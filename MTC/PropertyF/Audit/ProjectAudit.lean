@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.PropertyF.Pivotal.MonoidalDual
 import all MTC.Braided.Cabling.ClosureMergeCommon
 import all MTC.PropertyF.Pivotal.AdjointObjectsSupport
 import all MTC.Braided.Cabling.ClosureBlockFinite
