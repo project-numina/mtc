@@ -51,6 +51,7 @@ public import MTC.Braided.Cabling.ClosureUnit
 public import MTC.Braided.Cabling.Generated
 public import MTC.Braided.Cabling.Naturality
 public import MTC.Braided.Cabling.PureSum
+public import MTC.Braided.Cabling.PureSumColored
 public import MTC.Braided.Cabling.Strands
 public import MTC.Braided.Cabling.UnitPower
 public import MTC.Braided.Definitions
@@ -156,6 +157,7 @@ public import MTC.Center.Normalization.MugerNormalization
 public import MTC.Center.Normalization.MugerObjectNormalization
 public import MTC.Center.Normalization.PivotalTwist
 public import MTC.Center.Normalization.PositiveSubring
+public import MTC.Center.Normalization.ProductGenerator
 public import MTC.Center.Normalization.RelativeCentralizer
 public import MTC.Center.Normalization.ScalarFusionCharacter
 public import MTC.Center.Normalization.SubringCharacter

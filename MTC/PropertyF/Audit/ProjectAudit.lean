@@ -25,6 +25,8 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.PureSumColored
+import all MTC.Center.Normalization.ProductGenerator
 import all MTC.Center.Normalization.ActualDoubleCentralizer
 import all MTC.Center.Normalization.CenterLemma
 import all MTC.PropertyF.Pivotal.CenterLemma
