@@ -334,5 +334,50 @@ theorem haar_mated_trace_dual_basis (Y U : C.Obj) (i : Fin (rank C))
   rw [haarMate_trace_pairing]
   exact pivotalTrace_dual_basis C p (Y ⊗ U) i a b
 
+/-- The left pivotal dimension of a right dual is the right dimension of its original object. -/
+theorem haar_leftDimension_dual (Y : C.Obj) :
+    unitScalar C (p.leftTrace (𝟙 (Yᘁ : C.Obj))) = pivotalDimension C p Y := by
+  rw [leftTrace_eq_rightTrace_dual C p (Yᘁ) (End.of (𝟙 (Yᘁ : C.Obj)))]
+  simpa [pivotalDimension] using (pivotalDimension_iso p (p.iso Y)).symm
+
+attribute [local instance] IsFusionCategory.hom_finite
+
+local instance (j : Fin (rank C)) : Simple ((simples C j)ᘁ) := by
+  letI : Simple (simples C j) := simples_simple C j
+  exact simple_rightDual _
+
+/-- Scalar composition of the mated fusion maps, normalized by the
+right pivotal dimension of the simple whose dual is the source. -/
+theorem haar_mated_scalar_pairing (U : C.Obj) (i j : Fin (rank C))
+    (a b : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U))) :
+    simpleEndScalar (k := ℂ) ((simples C j)ᘁ) (End.of
+      (haarInclusionMate C (simples C i) (simples C j) U (simpleInclusion C (simples C j ⊗ U) i a) ≫
+       haarProjectionMate C p (simples C i) (simples C j) U
+         (pivotalTraceDualProjection C p (simples C j ⊗ U) i b))) =
+      (if a = b then 1 else 0) / simpleDimension C p j := by
+  classical
+  let : Simple (simples C j) := simples_simple C j
+  let : Simple ((simples C j)ᘁ) := simple_rightDual _
+  let : FiniteDimensional ℂ (((simples C j)ᘁ) ⟶ ((simples C j)ᘁ)) := IsFusionCategory.hom_finite _ _
+  let h := haarInclusionMate C (simples C i) (simples C j) U (simpleInclusion C (simples C j ⊗ U) i a) ≫
+       haarProjectionMate C p (simples C i) (simples C j) U
+         (pivotalTraceDualProjection C p (simples C j ⊗ U) i b)
+  obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ h
+  have ht := haar_mated_trace_dual_basis C p (simples C j) U i a b
+  change unitScalar C (p.leftTrace h) = _ at ht
+  rw [← hc, PivotalStructure.leftTrace_smul, unitScalar_eq_equiv, map_smul, smul_eq_mul,
+    ← unitScalar_eq_equiv, haar_leftDimension_dual] at ht
+  change c * simpleDimension C p j = _ at ht
+  have hscalar : simpleEndScalar (k := ℂ) ((simples C j)ᘁ) (End.of h) = c := by
+    rw [← hc]
+    apply (simpleEndScalar (k := ℂ) ((simples C j)ᘁ)).symm.injective
+    simp only [AlgEquiv.symm_apply_apply]
+    change End.of (c • 𝟙 _) = algebraMap ℂ (End ((simples C j)ᘁ : C.Obj)) c
+    rw [Algebra.algebraMap_eq_smul_one]
+    apply End.ext
+    rfl
+  rw [hscalar]
+  exact (eq_div_iff (simpleDimension_ne_zero C p j)).2 ht
+
 end MTC.PropertyF.Pivotal
 end
