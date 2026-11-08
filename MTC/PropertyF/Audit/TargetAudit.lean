@@ -20,6 +20,12 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.ConjugateCorollary
+import all MTC.Braided.Cabling.ClosureBlockContext
+import all MTC.Braided.Cabling.ClosureFirstBlock
+import all MTC.Center.Normalization.MugerConditional
+import all MTC.Center.Normalization.SymmetricConditional
+import all MTC.Center.Normalization.SymmetricGlobal
 import all MTC.PropertyF.Pivotal.GaloisDimensionTransport
 import all MTC.PropertyF.Pivotal.MonoidalQuantumTrace
 import all MTC.Braided.Cabling.ClosureGeneratorOrder
