@@ -84,5 +84,82 @@ theorem coloredGenerator_succ_flatten_heq (X : C) (n : ℕ)
   all_goals try rfl
   all_goals try simp [coloredSwap, Fin.cases_succ, Fin.cases_zero, Fin.sum_univ_succ, strandSum_eq_add]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Fixed-total flattening differs from unindexed colored flattening only by
+its terminal power-index transport. -/
+theorem coloredPowerStateFlatten_heq (X : C) (n N : ℕ) (s : ColoredPowerState n N) :
+    coloredPowerStateFlatten X n N s ≍ coloredTensorPowersFlatten X (n + 2) s.val := by
+  unfold coloredPowerStateFlatten powerIndexIso
+  exact iso_trans_eqToIso_heq _ _
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The fixed-total non-first crossing is the prefixed fixed-total tail crossing. -/
+theorem coloredPower_succ_prefix_eq (X : C) (n m : ℕ)
+    (i : Fin (n + 1)) (k : Fin (n + 3) → ℕ)
+    (htail : (∑ j : Fin (n + 2), k j.succ) = m + 2)
+    (hfull : (∑ j, k j) = (m + k 0) + 2) :
+    let s : ColoredPowerState (n + 1) ((m + k 0) + 2) := ⟨k, hfull⟩
+    let t : ColoredPowerState n (m + 2) := ⟨fun j => k j.succ, htail⟩
+    Aut.of ((coloredPowerStateFlatten X (n + 1) _ s).symm ≪≫
+      coloredLetter (n + 1) i.succ true (fun j => tensorPower X (s.val j)) ≪≫
+      coloredPowerStateFlatten X (n + 1) _ (coloredPowerSwap (n + 1) _ i.succ s)) =
+    (joinPowerIso X (k 0) (m + 2) ≪≫
+      powerIndexIso X (by rw [strandSum_eq_add]; omega :
+        strandSum (k 0) (m + 2) = (m + k 0) + 2)).conjAut
+      ((tensorLeft (tensorPower X (k 0))).mapAut (tensorPower X (m + 2))
+        (Aut.of ((coloredPowerStateFlatten X n (m + 2) t).symm ≪≫
+          coloredLetter n i true (fun j => tensorPower X (t.val j)) ≪≫
+          coloredPowerStateFlatten X n (m + 2) (coloredPowerSwap n (m + 2) i t)))) := by
+  dsimp only
+  apply Aut.ext
+  apply eq_of_heq
+  simp only [Iso.conjAut_apply]
+  have hc := coloredGenerator_succ_flatten_heq X n i k
+  have hs := coloredPowerStateFlatten_heq X (n + 1) _ ⟨k, hfull⟩
+  have ht := coloredPowerStateFlatten_heq X n (m + 2) ⟨fun j => k j.succ, htail⟩
+  have hs' := coloredPowerStateFlatten_heq X (n + 1) _
+    (coloredPowerSwap (n + 1) _ i.succ ⟨k, hfull⟩)
+  have ht' := coloredPowerStateFlatten_heq X n (m + 2)
+    (coloredPowerSwap n (m + 2) i ⟨fun j => k j.succ, htail⟩)
+  have hswap : (∑ j : Fin (n + 2), k (coloredSwap n i j).succ) = m + 2 := by
+    rw [coloredSwap_eq_swap]
+    exact (Equiv.sum_comp (Equiv.swap i.castSucc i.succ) (fun j => k j.succ)).trans htail
+  have hj : ∀ (b c : ℕ), b = c → HEq (joinPowerIso X (k 0) b) (joinPowerIso X (k 0) c) := by
+    intro b c h
+    subst c
+    rfl
+  have hmap {A B : C} (f : A ≅ B) :
+      (tensorLeft (tensorPower X (k 0))).mapIso f = Iso.refl _ ⊗ᵢ f := by
+    apply Iso.ext
+    simp [tensorIso_hom]
+  refine HEq.trans ?_ (hc.trans ?_)
+  all_goals simp only [coloredLetter, ↓reduceIte, Functor.mapAut, hmap]
+  all_goals congr 2
+  all_goals try exact hs
+  all_goals try exact hs'
+  all_goals try exact ht
+  all_goals try exact ht'
+  all_goals try simp [coloredLetter, coloredPowerSwap, coloredSwap, Fin.cases_succ,
+    Fin.cases_zero, powerIndexIso, strandSum_eq_add, Fin.sum_univ_succ, htail, hswap]
+  all_goals try omega
+  all_goals try (congr 1 <;> omega)
+  all_goals try (simpa only [htail, hswap] using (iso_trans_eqToIso_heq _ _).symm)
+  all_goals congr 2
+  all_goals try exact ht.symm
+  all_goals try exact ht'.symm
+  all_goals try simp [coloredPowerSwap, htail, hswap]
+  all_goals try omega
+  all_goals try (congr 1 <;> omega)
+  all_goals try (simp only [htail, hswap]; exact (iso_trans_eqToIso_heq _ _).symm)
+  all_goals congr 2
+  all_goals try exact ht.symm
+  all_goals try exact ht'.symm
+  all_goals try simp [htail, hswap]
+  all_goals try omega
+  all_goals try (congr 1 <;> omega)
+  all_goals first
+    | exact (hj _ _ htail).trans (iso_trans_eqToIso_heq _ _).symm
+    | exact (hj _ _ hswap).trans (iso_trans_eqToIso_heq _ _).symm
+
 end MTC.Braided.Cabling
 end
