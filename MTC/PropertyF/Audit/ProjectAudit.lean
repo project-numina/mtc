@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.ClosureFourTail
 import all MTC.Braided.Cabling.ClosureFour
 import all MTC.PropertyF.Pivotal.NondegeneracyConverse
 import all MTC.Center.Normalization.MugerLabels

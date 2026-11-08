@@ -14,6 +14,7 @@ public import MTC.Braided.Cabling.ClosureBlockWord
 public import MTC.Braided.Cabling.ClosureCrossing
 public import MTC.Braided.Cabling.ClosureFlatten
 public import MTC.Braided.Cabling.ClosureFour
+public import MTC.Braided.Cabling.ClosureFourTail
 public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosureInsertion
 public import MTC.Braided.Cabling.ClosureIsoWord
