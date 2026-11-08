@@ -75,4 +75,15 @@ theorem powerIndexIso_whisker (X : C) {a b : ℕ} (h : a = b) :
   simp [powerIndexIso, tensorIso_hom]
   rfl
 
+omit [BraidedCategory C] in
+/-- The common merge is recursive on its leading block, with the canonical
+arithmetic transport made explicit. This aligns it with `sweepBlockSplit`. -/
+theorem sweepBlockMerge_succ_left_recursive (X : C) (s r : ℕ) :
+    sweepBlockMerge X (s+1) r =
+      (α_ X (tensorPower X (s+1)) (tensorPower X (r+1)) ≪≫
+        (Iso.refl X ⊗ᵢ sweepBlockMerge X s r)) ≪≫
+          powerIndexIso X (by omega : s+(r+1)+2 = (s+1)+r+2) := by
+  rw [sweepBlockMerge_succ_left, insertRightPowerIso_eq_merge]
+  rfl
+
 end MTC.Braided
