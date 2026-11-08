@@ -62,12 +62,18 @@ public import MTC.Braided.Cabling.ClosureUnit
 public import MTC.Braided.Cabling.ColorBiproduct
 public import MTC.Braided.Cabling.ColorBiproductConstant
 public import MTC.Braided.Cabling.ColorBiproductFinite
+public import MTC.Braided.Cabling.ColorBiproductLetters
+public import MTC.Braided.Cabling.ColorBiproductPositive
 public import MTC.Braided.Cabling.Generated
 public import MTC.Braided.Cabling.Naturality
 public import MTC.Braided.Cabling.PureSum
+public import MTC.Braided.Cabling.PureSumCabling
 public import MTC.Braided.Cabling.PureSumColored
+public import MTC.Braided.Cabling.PureSumInverse
 public import MTC.Braided.Cabling.PureSumPositive
+public import MTC.Braided.Cabling.PureSumPositiveCabling
 public import MTC.Braided.Cabling.PureSumPreservation
+public import MTC.Braided.Cabling.PureSumSigned
 public import MTC.Braided.Cabling.Strands
 public import MTC.Braided.Cabling.UnitPower
 public import MTC.Braided.Definitions
@@ -253,6 +259,7 @@ public import MTC.PropertyF.Pivotal.CenterLemma
 public import MTC.PropertyF.Pivotal.CenterNondegenerate
 public import MTC.PropertyF.Pivotal.CenterReduction
 public import MTC.PropertyF.Pivotal.Centralizer
+public import MTC.PropertyF.Pivotal.ClosureFinalReduction
 public import MTC.PropertyF.Pivotal.ConjugateCorollary
 public import MTC.PropertyF.Pivotal.DegenerateConsequences
 public import MTC.PropertyF.Pivotal.DegenerateRelative
