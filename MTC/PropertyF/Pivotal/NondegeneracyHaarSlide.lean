@@ -340,5 +340,50 @@ theorem haarSummand_fusion_expansion (U V : C.Obj) (j : Fin (rank C))
   simp only [F, Category.assoc]
   rfl
 
+/-- Relative pivotal Haar sliding, under the two concrete fusion-support
+conditions for the chosen label set and free strand. -/
+theorem categoricalHaarRestricted_slide (S : Finset (Fin (rank C))) (U V : C.Obj)
+    (β : ∀ X : C.Obj, End (X ⊗ V))
+    (hβ : ∀ {X Y : C.Obj} (f : X ⟶ Y),
+      (f ▷ V) ≫ (β Y).asHom = (β X).asHom ≫ (f ▷ V))
+    (hforward : ∀ j ∈ S, ∀ i ∉ S,
+      Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U) = 0)
+    (hdual : ∀ i ∈ S, ∀ j ∉ S,
+      Module.finrank ℂ (simples C (dualIndex C j) ⟶ U ⊗ ((simples C i)ᘁ)) = 0) :
+    categoricalHaarRestricted C p S U V β =
+      U ◁ (∑ i ∈ S, simpleDimension C p i •
+        leftPartialTraceHom C p (simples C i) V V (β (simples C i)).asHom) := by
+  classical
+  let T (j i : Fin (rank C)) : U ⊗ V ⟶ U ⊗ V :=
+    ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U)),
+      simpleDimension C p j • leftPartialTraceHom C p (simples C j) (U ⊗ V) (U ⊗ V)
+        ((α_ (simples C j) U V).inv ≫ (simpleProjection (simples C j ⊗ U) i a ▷ V) ≫
+          (β (simples C i)).asHom ≫ (simpleInclusion C (simples C j ⊗ U) i a ▷ V) ≫
+          (α_ (simples C j) U V).hom)
+  have hr (j : Fin (rank C)) (hj : j ∈ S) : (∑ i : Fin (rank C), T j i) = ∑ i ∈ S, T j i := by
+    symm
+    apply Finset.sum_subset (Finset.subset_univ S)
+    intro i _ hi
+    letI : IsEmpty (Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U))) := by
+      rw [hforward j hj i hi]
+      infer_instance
+    simp [T]
+  unfold categoricalHaarRestricted
+  simp_rw [haarSummand_fusion_expansion C p U V _ β hβ]
+  change (∑ j ∈ S, ∑ i : Fin (rank C), T j i) = _
+  have he : (∑ j ∈ S, ∑ i : Fin (rank C), T j i) = ∑ j ∈ S, ∑ i ∈ S, T j i := by
+    apply Finset.sum_congr rfl
+    intro j hj
+    exact hr j hj
+  rw [he, Finset.sum_comm]
+  simp only [T]
+  simp_rw [haar_weighted_fusion_block]
+  simp_rw [haarRotatedBlock_dualLabel_contraction]
+  simp only [whiskerLeft_sum, MonoidalLinear.whiskerLeft_smul]
+  apply Finset.sum_congr rfl
+  intro i hi
+  rw [← Finset.smul_sum]
+  rw [haarRotatedBlock_dualLabel_sum_restricted C p _ U V _ S (hdual i hi)]
+
 end MTC.PropertyF.Pivotal
 end
