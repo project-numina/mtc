@@ -10,6 +10,7 @@ public import MTC.Algebra.PowerBound
 public import MTC.AnyonAtlas.Raw
 public import MTC.AnyonAtlas.Sample
 public import MTC.Braided.BraidAlgebra
+public import MTC.Braided.Cabling.ClosureAdjacentCoherence
 public import MTC.Braided.Cabling.ClosureBlockContext
 public import MTC.Braided.Cabling.ClosureBlockFinite
 public import MTC.Braided.Cabling.ClosureBlockInduction
@@ -145,6 +146,7 @@ public import MTC.Center.Normalization.MugerNormalization
 public import MTC.Center.Normalization.MugerObjectNormalization
 public import MTC.Center.Normalization.PivotalTwist
 public import MTC.Center.Normalization.PositiveSubring
+public import MTC.Center.Normalization.RelativeCentralizer
 public import MTC.Center.Normalization.ScalarFusionCharacter
 public import MTC.Center.Normalization.SubringCharacter
 public import MTC.Center.Normalization.SubringGrading
@@ -221,6 +223,7 @@ public import MTC.PropertyF.Pivotal.CenterReduction
 public import MTC.PropertyF.Pivotal.Centralizer
 public import MTC.PropertyF.Pivotal.ConjugateCorollary
 public import MTC.PropertyF.Pivotal.DegenerateConsequences
+public import MTC.PropertyF.Pivotal.DegenerateRelative
 public import MTC.PropertyF.Pivotal.FPGlobalDimension
 public import MTC.PropertyF.Pivotal.FPInvertible
 public import MTC.PropertyF.Pivotal.FPObject
@@ -247,7 +250,9 @@ public import MTC.PropertyF.Pivotal.Nondegenerate
 public import MTC.PropertyF.Pivotal.NondegenerateTransport
 public import MTC.PropertyF.Pivotal.NormalizedConjugates
 public import MTC.PropertyF.Pivotal.NormalizedScalarTwist
+public import MTC.PropertyF.Pivotal.NumericalReduction
 public import MTC.PropertyF.Pivotal.ObjectwiseConsequences
+public import MTC.PropertyF.Pivotal.RelativeCriterionConsequences
 public import MTC.PropertyF.Pivotal.SOrthogonality
 public import MTC.PropertyF.Pivotal.SScalarTwist
 public import MTC.PropertyF.Pivotal.Saturation

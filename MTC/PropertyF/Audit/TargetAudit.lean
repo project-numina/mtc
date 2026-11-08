@@ -20,6 +20,11 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Braided.Cabling.ClosureAdjacentCoherence
+import all MTC.Center.Normalization.RelativeCentralizer
+import all MTC.PropertyF.Pivotal.DegenerateRelative
+import all MTC.PropertyF.Pivotal.NumericalReduction
+import all MTC.PropertyF.Pivotal.RelativeCriterionConsequences
 import all MTC.Center.Normalization.MugerIntegralOfPositive
 import all MTC.PropertyF.Pivotal.NormalizedConjugates
 import all MTC.Center.Normalization.MugerNormalization
