@@ -52,5 +52,32 @@ theorem finite_pureBlock_range_of_colored_group (n : ℕ)
   rw [hz, ← he]
   exact (pureWord_coloredBlock_diagonal n l hw X Y f g hf).symm
 
+/-- Explicit cabling into one finite original-strand braid image gives
+finite range of an actual pure braid diagonal block. -/
+theorem finite_pureBlock_range_of_cabling (n r : ℕ)
+    (X : Fin (n + 2) → C) (Y Z : C) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
+    (hf : ∀ j, f j ≫ g j = 𝟙 (X j)) (e : coloredTensor (n + 2) X ≅ tensorPower Z (r + 2))
+    (hfinite : Finite (braidImage Z r))
+    (hcable : ∀ (w : List (Fin (n + 1) × Bool))
+      (hw : strandPermutation n (FreeGroup.mk w) = 1),
+      ∃ z : braidImage Z r, coloredPureWordHom n w hw X =
+        e.hom ≫ z.val.asIso.hom ≫ e.inv) :
+    Set.Finite (Set.range fun h : pureBraidImage Y n =>
+      coloredBlockInclusion (n + 2) X Y f ≫ h.val.val.asIso.hom ≫
+        coloredBlockProjection (n + 2) X Y g) := by
+  classical
+  letI : Finite (braidImage Z r) := hfinite
+  apply (Set.finite_range (fun z : braidImage Z r => e.hom ≫ z.val.asIso.hom ≫ e.inv)).subset
+  rintro _ ⟨h, rfl⟩
+  obtain ⟨w, hw, he⟩ := h.property
+  obtain ⟨l, hl⟩ := Quot.exists_rep w
+  change FreeGroup.mk l = w at hl
+  subst w
+  change strandPermutation n (FreeGroup.mk l) = 1 at hw
+  obtain ⟨z, hz⟩ := hcable l hw
+  refine ⟨z, ?_⟩
+  dsimp only
+  rw [← he, pureWord_coloredBlock_diagonal n l hw X Y f g hf, hz]
+
 end MTC.Braided.Cabling
 end
