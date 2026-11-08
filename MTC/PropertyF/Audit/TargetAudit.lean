@@ -20,6 +20,8 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.ClosureTheorems
+import all MTC.Braided.Cabling.ClosureColoredFirst
 import all MTC.Braided.Cabling.PureSumPositiveState
 import all MTC.Braided.Cabling.PureSumPrefix
 import all MTC.Braided.Cabling.ColorBiproductLetters

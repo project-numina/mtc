@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.ClosureCanonicalBlocks
 public import MTC.Braided.Cabling.ClosureColoredBridge
 public import MTC.Braided.Cabling.ClosureColoredContext
 public import MTC.Braided.Cabling.ClosureColoredCrossing
+public import MTC.Braided.Cabling.ClosureColoredFirst
 public import MTC.Braided.Cabling.ClosureColoredFlatten
 public import MTC.Braided.Cabling.ClosureColoredWords
 public import MTC.Braided.Cabling.ClosureCommonInterface
@@ -262,6 +263,7 @@ public import MTC.PropertyF.Pivotal.CenterNondegenerate
 public import MTC.PropertyF.Pivotal.CenterReduction
 public import MTC.PropertyF.Pivotal.Centralizer
 public import MTC.PropertyF.Pivotal.ClosureFinalReduction
+public import MTC.PropertyF.Pivotal.ClosureTheorems
 public import MTC.PropertyF.Pivotal.ConjugateCorollary
 public import MTC.PropertyF.Pivotal.DegenerateConsequences
 public import MTC.PropertyF.Pivotal.DegenerateRelative

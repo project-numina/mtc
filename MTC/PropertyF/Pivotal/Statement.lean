@@ -63,8 +63,8 @@ def PseudoUnitaryConjugateStatement : Prop :=
     HasPseudoUnitaryGaloisConjugate C → HasPropertyF C.Obj →
       PseudoUnitary C ∧ WeaklyIntegral (globalFPDimension C)
 
-/-- Property F is preserved by the generated tensor closure, stated as an
-unproved target in terms of actual generated objects and braid images. -/
+/-- Property F is preserved by the generated tensor closure, stated in terms
+of actual generated objects and braid images. -/
 def ClosureStatement : Prop :=
   ∀ (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj),
     ObjectPropertyF X → GeneratedBy X Y → ObjectPropertyF Y
