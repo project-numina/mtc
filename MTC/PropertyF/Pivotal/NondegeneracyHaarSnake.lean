@@ -203,5 +203,31 @@ theorem haar_pivotal_cup_exchange (X Y : C.Obj) :
           rw [whisker_exchange]
     _ = _ := by monoidal
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Move the outer pivotal component across the second cup and an arbitrary
+inner box in a closed two-strand diagram. -/
+theorem haar_pivotal_closed_slide (X Y : C.Obj)
+    (a : (Yᘁ) ⊗ (X ⊗ (Xᘁ)) ⟶ (Yᘁ) ⊗ (X ⊗ (Xᘁ))) :
+    η_ Y (Yᘁ) ⊗≫ ((p.iso Y).hom ▷ (Yᘁ)) ⊗≫
+      ((((Yᘁ)ᘁ) ⊗ (Yᘁ)) ◁ η_ X (Xᘁ)) ⊗≫ (((Yᘁ)ᘁ) ◁ a) ⊗≫
+      (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ (X ⊗ (Xᘁ))) ⊗≫
+      ((p.iso X).hom ▷ (Xᘁ)) ⊗≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) =
+    η_ Y (Yᘁ) ⊗≫ ((Y ⊗ (Yᘁ)) ◁ η_ X (Xᘁ)) ⊗≫ (Y ◁ a) ⊗≫
+      (((p.iso Y).hom ▷ (Yᘁ)) ▷ (X ⊗ (Xᘁ))) ⊗≫
+      (ε_ (Yᘁ) ((Yᘁ)ᘁ) ▷ (X ⊗ (Xᘁ))) ⊗≫
+      ((p.iso X).hom ▷ (Xᘁ)) ⊗≫ ε_ (Xᘁ) ((Xᘁ)ᘁ) := by
+  monoidal <;> simp
+  have hc : (p.iso Y).hom ▷ (Yᘁ) ≫ (ρ_ (((Yᘁ)ᘁ) ⊗ (Yᘁ))).inv ≫
+      (α_ ((Yᘁ)ᘁ) (Yᘁ) (𝟙_ C.Obj)).hom ≫ (((Yᘁ)ᘁ) ◁ (Yᘁ) ◁ η_ X (Xᘁ)) =
+      (ρ_ (Y ⊗ (Yᘁ))).inv ≫ (α_ Y (Yᘁ) (𝟙_ C.Obj)).hom ≫
+        (Y ◁ (Yᘁ) ◁ η_ X (Xᘁ)) ≫
+          ((p.iso Y).hom ▷ ((Yᘁ) ⊗ (X ⊗ (Xᘁ)))) := by
+    rw [rightUnitor_inv_naturality_assoc, associator_naturality_left_assoc,
+      ← whisker_exchange]
+  slice_lhs 1 4 => rw [hc]
+  simp only [Category.assoc]
+  rw [← whisker_exchange_assoc, associator_inv_naturality_left_assoc,
+    associator_inv_naturality_left_assoc]
+
 end MTC.PropertyF.Pivotal
 end
