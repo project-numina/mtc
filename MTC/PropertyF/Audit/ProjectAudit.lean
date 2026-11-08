@@ -25,6 +25,8 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.PropertyF.Pivotal.GaloisDimensionTransport
+import all MTC.PropertyF.Pivotal.MonoidalQuantumTrace
 import all MTC.Braided.Cabling.ClosureGeneratorOrder
 import all MTC.Braided.Cabling.ClosureTwoBlockPower
 import all MTC.Center.Normalization.SymmetricInteger

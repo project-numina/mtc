@@ -20,6 +20,8 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.GaloisDimensionTransport
+import all MTC.PropertyF.Pivotal.MonoidalQuantumTrace
 import all MTC.Braided.Cabling.ClosureGeneratorOrder
 import all MTC.Braided.Cabling.ClosureTwoBlockPower
 import all MTC.Center.Normalization.SymmetricInteger

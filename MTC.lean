@@ -204,11 +204,13 @@ public import MTC.PropertyF.Pivotal.FPGlobalDimension
 public import MTC.PropertyF.Pivotal.FPInvertible
 public import MTC.PropertyF.Pivotal.FPObject
 public import MTC.PropertyF.Pivotal.Galois
+public import MTC.PropertyF.Pivotal.GaloisDimensionTransport
 public import MTC.PropertyF.Pivotal.GaloisDual
 public import MTC.PropertyF.Pivotal.GaloisUnitScalar
 public import MTC.PropertyF.Pivotal.InfiniteImages
 public import MTC.PropertyF.Pivotal.MonoidalDual
 public import MTC.PropertyF.Pivotal.MonoidalDualComparison
+public import MTC.PropertyF.Pivotal.MonoidalQuantumTrace
 public import MTC.PropertyF.Pivotal.MonoidalTrace
 public import MTC.PropertyF.Pivotal.Nondegeneracy
 public import MTC.PropertyF.Pivotal.NondegeneracyConverse
