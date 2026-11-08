@@ -96,5 +96,23 @@ theorem haarProjectionMate_diagram (X Y U : C.Obj) (g : Y ⊗ U ⟶ X) :
   rw [pivotalLeftPairing_coevaluation C p Y, pivotalLeftPairing_evaluation C p X]
   monoidal
 
+/-- Uncurry the inclusion mate to recover its first Frobenius transpose.
+This is the first exact-pairing snake before expanding any coherence maps. -/
+theorem haarInclusionMate_uncurry (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) :
+    (tensorRightHomLinearEquiv (k := ℂ) (Yᘁ) X (Xᘁ) U).symm
+      (haarInclusionMate C X Y U f) =
+        (tensorLeftHomLinearEquiv (k := ℂ) X Y (Yᘁ) U).symm f := by
+  simp [haarInclusionMate]
+
+/-- Curry the projection mate to recover the pivotal left-dual transpose.
+This is the second exact-pairing snake in the mate construction. -/
+theorem haarProjectionMate_curry (X Y U : C.Obj) (g : Y ⊗ U ⟶ X) :
+    letI : ExactPairing (Yᘁ) Y := pivotalLeftPairing C p Y
+    letI : ExactPairing (Xᘁ) X := pivotalLeftPairing C p X
+    tensorRightHomLinearEquiv (k := ℂ) U (Xᘁ) X (Yᘁ)
+      (haarProjectionMate C p X Y U g) =
+        tensorLeftHomLinearEquiv (k := ℂ) U (Yᘁ) Y X g := by
+  simp [haarProjectionMate]
+
 end MTC.PropertyF.Pivotal
 end
