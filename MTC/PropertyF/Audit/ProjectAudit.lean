@@ -25,6 +25,8 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Center.Normalization.MugerIntegralOfPositive
+import all MTC.PropertyF.Pivotal.NormalizedConjugates
 import all MTC.Center.Normalization.MugerNormalization
 import all MTC.Center.Normalization.PositiveSubring
 import all MTC.PropertyF.Pivotal.DegenerateConsequences

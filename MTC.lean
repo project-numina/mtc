@@ -139,6 +139,7 @@ public import MTC.Center.Normalization.MugerCategory
 public import MTC.Center.Normalization.MugerConditional
 public import MTC.Center.Normalization.MugerFPConditional
 public import MTC.Center.Normalization.MugerFPIntegral
+public import MTC.Center.Normalization.MugerIntegralOfPositive
 public import MTC.Center.Normalization.MugerLabels
 public import MTC.Center.Normalization.MugerNormalization
 public import MTC.Center.Normalization.MugerObjectNormalization
@@ -244,6 +245,7 @@ public import MTC.PropertyF.Pivotal.NondegeneracyHaarSlide
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarSnake
 public import MTC.PropertyF.Pivotal.Nondegenerate
 public import MTC.PropertyF.Pivotal.NondegenerateTransport
+public import MTC.PropertyF.Pivotal.NormalizedConjugates
 public import MTC.PropertyF.Pivotal.NormalizedScalarTwist
 public import MTC.PropertyF.Pivotal.ObjectwiseConsequences
 public import MTC.PropertyF.Pivotal.SOrthogonality
