@@ -4,7 +4,7 @@ public import MTC.PropertyF.Pivotal.NondegeneracyHaarSnake
 open MTC.Fusion MTC.Modular MTC.CategoryTheory.Dimensions MTC.Center.Induction MTC.Center.Trace
 open scoped BigOperators
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory CategoryTheory.Limits
 namespace MTC.PropertyF.Pivotal
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
@@ -384,6 +384,152 @@ theorem categoricalHaarRestricted_slide (S : Finset (Fin (rank C))) (U V : C.Obj
   intro i hi
   rw [← Finset.smul_sum]
   rw [haarRotatedBlock_dualLabel_sum_restricted C p _ U V _ S (hdual i hi)]
+
+theorem leftTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
+    (hs : categoricalS C p (dualIndex C i) k =
+      simpleDimension C p (dualIndex C i) * simpleDimension C p k) :
+    unitScalar C (p.leftTrace (doubleBraiding (simples C i) (simples C k))) =
+      star (simpleDimension C p i) * star (simpleDimension C p k) := by
+  rw [leftTrace_doubleBraiding_eq_dual]
+  have htest := hs
+  have hki := MTC.Center.Induction.pivotalDimension_simple_dual_conj p i
+  have hkk := MTC.Center.Induction.pivotalDimension_simple_dual_conj p k
+  have hi := pivotalDimension_iso p (rightDualLabelIso C i)
+  have hk := pivotalDimension_iso p (rightDualLabelIso C k)
+  have hidim : simpleDimension C p (dualIndex C i) = star (simpleDimension C p i) := by
+    simpa only [simpleDimension] using hi.symm.trans hki
+  have hkdim : simpleDimension C p (dualIndex C k) = star (simpleDimension C p k) := by
+    simpa only [simpleDimension] using hk.symm.trans hkk
+  -- The normalized S character of a dual label is conjugated.
+  have hdualtest : categoricalS C p (dualIndex C i) (dualIndex C k) =
+      simpleDimension C p (dualIndex C i) * simpleDimension C p (dualIndex C k) := by
+    have hh' := categoricalS_star_eq_dual_phase C p (dualIndex C i) k
+    have hd : simpleDimension C p (dualIndex C i) ≠ 0 := simpleDimension_ne_zero C p _
+    have hdstar : starRingEnd ℂ (simpleDimension C p (dualIndex C i)) ≠ 0 :=
+      (map_ne_zero (starRingEnd ℂ)).2 hd
+    rw [htest, map_mul] at hh'
+    field_simp at hh'
+    rw [hkdim]
+    exact hh'.symm.trans (mul_comm _ _)
+  have he : unitScalar C (p.rightTrace (doubleBraiding ((simples C k)ᘁ) ((simples C i)ᘁ))) =
+      categoricalS C p (dualIndex C i) (dualIndex C k) := by
+    rw [categoricalS_symmetric C p, categoricalS, ← unitScalar_eq_equiv]
+    change unitScalar C (SEntry p ((simples C k)ᘁ) ((simples C i)ᘁ)) = _
+    rw [SEntry_iso_left p (rightDualLabelIso C k), SEntry_iso_right p _ (rightDualLabelIso C i)]
+  rw [he, hdualtest, hidim, hkdim]
+
+/-- Under the numerical S-test, every closed monodromy loop is the
+conjugate pivotal dimension times the identity of the surviving simple. -/
+theorem leftPartialTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
+    (hs : categoricalS C p (dualIndex C i) k =
+      simpleDimension C p (dualIndex C i) * simpleDimension C p k) :
+    leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k))) =
+      star (simpleDimension C p i) • (1 : End (simples C k)) := by
+  let : Simple (simples C k) := simples_simple C k
+  let : FiniteDimensional ℂ (simples C k ⟶ simples C k) := IsFusionCategory.hom_finite _ _
+  let a := leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k)))
+  obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ a.asHom
+  have ha : a = c • (1 : End (simples C k)) := End.ext hc.symm
+  have ht := congrArg (unitScalar C) (leftTrace_partialTrace p
+    (End.of (doubleBraiding (simples C i) (simples C k))))
+  change unitScalar C (p.leftTrace a.asHom) = _ at ht
+  rw [ha] at ht
+  simp only [End.smul_asHom, End.one_asHom, PivotalStructure.leftTrace_smul,
+    unitScalar_eq_equiv, map_smul, smul_eq_mul] at ht
+  have hd : unitScalarEquiv C (p.leftTrace (𝟙 (simples C k))) =
+      star (simpleDimension C p k) := by
+    have hh := congrArg (unitScalar C) (leftTrace_eq_rightTrace_dual C p (simples C k) 1)
+    simp only [End.one_asHom, rightAdjointMate_id] at hh
+    change unitScalar C (p.leftTrace (𝟙 (simples C k))) =
+      pivotalDimension C p ((simples C k)ᘁ) at hh
+    simpa only [unitScalar_eq_equiv] using
+      hh.trans (pivotalDimension_dual_conj C p (simples C k))
+  rw [hd, ← unitScalar_eq_equiv, leftTrace_monodromy_of_dual_sTest C p k i hs] at ht
+  have hn : star (simpleDimension C p k) ≠ 0 := by
+    simpa using ((map_ne_zero (starRingEnd ℂ)).2 (simpleDimension_ne_zero C p k))
+  have hc' : c = star (simpleDimension C p i) := mul_right_cancel₀ hn ht
+  simpa [hc'] using ha
+
+/-- The positive intrinsic dimension of a nonempty family of simples. -/
+def restrictedGlobalDimension (S : Finset (Fin (rank C))) : ℂ :=
+  ∑ i ∈ S, simpleDimension C p i * star (simpleDimension C p i)
+
+theorem restrictedGlobalDimension_ne_zero (S : Finset (Fin (rank C))) (hS : S.Nonempty) :
+    restrictedGlobalDimension C p S ≠ 0 := by
+  classical
+  have hp : (0 : ℝ) < ∑ i ∈ S, ‖simpleDimension C p i‖ ^ 2 := by
+    apply Finset.sum_pos _ hS
+    intro i hi
+    exact sq_pos_of_pos (norm_pos_iff.mpr (simpleDimension_ne_zero C p i))
+  have he : restrictedGlobalDimension C p S =
+      ((∑ i ∈ S, ‖simpleDimension C p i‖ ^ 2 : ℝ) : ℂ) := by
+    simp only [restrictedGlobalDimension, Complex.ofReal_sum, Complex.ofReal_pow]
+    apply Finset.sum_congr rfl
+    intro i hi
+    exact Complex.mul_conj' _
+  rw [he, Complex.ofReal_ne_zero]
+  exact ne_of_gt hp
+
+/-- The restricted Haar loop factors through the braiding and its vacuum. -/
+theorem categoricalHaarRestricted_monodromy_factor (S : Finset (Fin (rank C)))
+    (U V : C.Obj) :
+    categoricalHaarRestricted C p S U V (fun X ↦ End.of (doubleBraiding X V)) =
+      (β_ U V).hom ≫
+        ((∑ i ∈ S, simpleDimension C p i •
+          leftPartialTraceHom C p (simples C i) V V (doubleBraiding (simples C i) V)) ▷ U) ≫
+        (β_ V U).hom := by
+  classical
+  simp only [categoricalHaarRestricted, sum_whiskerRight, MonoidalLinear.smul_whiskerRight,
+    Preadditive.sum_comp, Preadditive.comp_sum, Linear.smul_comp, Linear.comp_smul]
+  apply Finset.sum_congr rfl
+  intro i hi
+  congr 1
+  exact monodromyHaar_summand_factor C p (simples C i) U V
+
+/-- The restricted vacuum loop is the restricted global dimension when the
+S-test holds against the dual of every chosen label. -/
+theorem restrictedVacuum_of_dual_sTest (S : Finset (Fin (rank C))) (k : Fin (rank C))
+    (hs : ∀ i ∈ S, categoricalS C p (dualIndex C i) k =
+      simpleDimension C p (dualIndex C i) * simpleDimension C p k) :
+    (∑ i ∈ S, simpleDimension C p i •
+      leftPartialTraceHom C p (simples C i) (simples C k) (simples C k)
+        (doubleBraiding (simples C i) (simples C k))) =
+      restrictedGlobalDimension C p S • 𝟙 (simples C k) := by
+  classical
+  calc
+    _ = ∑ i ∈ S, (simpleDimension C p i * star (simpleDimension C p i)) • 𝟙 (simples C k) := by
+      apply Finset.sum_congr rfl
+      intro i hi
+      have h := leftPartialTrace_monodromy_of_dual_sTest C p k i (hs i hi)
+      have hh := congrArg End.asHom h
+      change leftPartialTraceHom C p (simples C i) (simples C k) (simples C k)
+        (doubleBraiding (simples C i) (simples C k)) =
+          star (simpleDimension C p i) • 𝟙 (simples C k) at hh
+      rw [hh]
+      simp [smul_smul]
+    _ = _ := by simp [restrictedGlobalDimension, Finset.sum_smul]
+
+/-- Relative numerical centrality forces actual monodromy to be the identity,
+provided the free strand satisfies the concrete fusion-support conditions. -/
+theorem doubleBraiding_eq_id_of_restricted_sTest (S : Finset (Fin (rank C)))
+    (hS : S.Nonempty) (U : C.Obj) (k : Fin (rank C))
+    (hs : ∀ i ∈ S, categoricalS C p (dualIndex C i) k =
+      simpleDimension C p (dualIndex C i) * simpleDimension C p k)
+    (hforward : ∀ j ∈ S, ∀ i ∉ S,
+      Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U) = 0)
+    (hdual : ∀ i ∈ S, ∀ j ∉ S,
+      Module.finrank ℂ (simples C (dualIndex C j) ⟶ U ⊗ ((simples C i)ᘁ)) = 0) :
+    doubleBraiding U (simples C k) = 𝟙 (U ⊗ simples C k) := by
+  classical
+  have hslide := categoricalHaarRestricted_slide C p S U (simples C k)
+    (fun X ↦ End.of (doubleBraiding X (simples C k)))
+    (fun f ↦ (doubleBraiding_natural_left f (simples C k)).symm) hforward hdual
+  rw [categoricalHaarRestricted_monodromy_factor C p S U (simples C k),
+    restrictedVacuum_of_dual_sTest C p S k hs] at hslide
+  have hd := restrictedGlobalDimension_ne_zero C p S hS
+  apply (smul_right_injective _ hd)
+  simpa [doubleBraiding, MonoidalLinear.smul_whiskerRight, MonoidalLinear.whiskerLeft_smul,
+    Linear.comp_smul, Linear.smul_comp] using hslide
 
 end MTC.PropertyF.Pivotal
 end
