@@ -10,7 +10,10 @@ public import MTC.Algebra.PowerBound
 public import MTC.AnyonAtlas.Raw
 public import MTC.AnyonAtlas.Sample
 public import MTC.Braided.BraidAlgebra
+public import MTC.Braided.Cabling.ClosureCrossing
+public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosurePure
+public import MTC.Braided.Cabling.ClosureUnit
 public import MTC.Braided.Cabling.Generated
 public import MTC.Braided.Cabling.Naturality
 public import MTC.Braided.Cabling.Strands
@@ -91,8 +94,13 @@ public import MTC.Center.Induction.Representatives
 public import MTC.Center.Induction.SecondTriangle
 public import MTC.Center.Modular.TransparencyCriterion
 public import MTC.Center.Modular.Vafa
+public import MTC.Center.Normalization.AdjointDegrees
 public import MTC.Center.Normalization.CharacterExtension
+public import MTC.Center.Normalization.GradingTwist
 public import MTC.Center.Normalization.PivotalTwist
+public import MTC.Center.Normalization.SubringCharacter
+public import MTC.Center.Normalization.SubringGrading
+public import MTC.Center.Normalization.UniversalGrading
 public import MTC.Center.Product
 public import MTC.Center.ProductClosure
 public import MTC.Center.ProductImages
