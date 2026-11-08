@@ -404,5 +404,40 @@ theorem haar_mated_pairing_eq_dualBasis (U : C.Obj) (i j : Fin (rank C))
   simp only [Finsupp.single_apply]
   split_ifs <;> simp_all [simpleDimension_ne_zero C p j]
 
+/-- The mated fusion-basis contraction is independent of the basis chosen
+on the dual-simple Hom space. -/
+theorem haar_mated_contraction_basis_independent (U : C.Obj) (i j : Fin (rank C))
+    {I : Type} [Fintype I] [DecidableEq I] {E : Type*} [AddCommGroup E] [Module ℂ E]
+    (b : Module.Basis I ℂ (((simples C j)ᘁ) ⟶ U ⊗ ((simples C i)ᘁ)))
+    (F : (((simples C j)ᘁ) ⟶ U ⊗ ((simples C i)ᘁ)) →ₗ[ℂ]
+      (U ⊗ ((simples C i)ᘁ) ⟶ ((simples C j)ᘁ)) →ₗ[ℂ] E) :
+    (∑ a, F (haarInclusionMate C (simples C i) (simples C j) U
+        (simpleInclusion C (simples C j ⊗ U) i a))
+      (simpleDimension C p j • haarProjectionMate C p (simples C i) (simples C j) U
+        (pivotalTraceDualProjection C p (simples C j ⊗ U) i a))) =
+    ∑ a, F (b a) ((simpleHomPairingEquiv ((simples C j)ᘁ)
+      (U ⊗ ((simples C i)ᘁ))).symm (b.dualBasis a)) := by
+  classical
+  let A := haarMatedInclusionBasis C (simples C i) (simples C j) U
+    (simpleInclusionBasis C (simples C j ⊗ U) i)
+  let T := simpleHomPairingEquiv ((simples C j)ᘁ) (U ⊗ ((simples C i)ᘁ))
+  let G := (LinearMap.lcomp ℂ E T.symm.toLinearMap).comp F
+  have h := dualBasis_contraction_natural A b LinearMap.id G
+  have hT (a : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U))) :
+      T.symm (A.dualBasis a) = simpleDimension C p j •
+        haarProjectionMate C p (simples C i) (simples C j) U
+          (pivotalTraceDualProjection C p (simples C j ⊗ U) i a) := by
+    apply T.injective
+    simp only [LinearEquiv.apply_symm_apply]
+    exact (haar_mated_pairing_eq_dualBasis C p U i j a).symm
+  simp only [LinearMap.id_coe, id_eq, Module.Dual.transpose_apply, LinearMap.comp_apply,
+    LinearMap.id_comp, LinearMap.lcomp_apply] at h
+  dsimp only [G, LinearMap.comp_apply, LinearMap.lcomp_apply] at h
+  simp only [LinearMap.comp_id] at h
+  change (∑ a, F (A a) (T.symm (A.dualBasis a))) =
+    ∑ a, F (b a) (T.symm (b.dualBasis a)) at h
+  simp_rw [hT] at h
+  simpa [A, T, haarMatedInclusionBasis, simpleInclusionBasis_apply] using h
+
 end MTC.PropertyF.Pivotal
 end
