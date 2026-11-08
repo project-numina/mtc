@@ -1,6 +1,7 @@
 module
 public import MTC.PropertyF.Pivotal.Nondegeneracy
 public import MTC.Center.Trace.LeftTensorTrace
+public import MTC.PropertyF.Pivotal.SlopeTrace
 
 open MTC.Fusion MTC.Modular MTC.CategoryTheory.Dimensions MTC.Center.Trace
 open scoped BigOperators
@@ -8,7 +9,7 @@ open scoped BigOperators
 /-! The actual pivotal Haar loop used in the categorical centrality criterion. -/
 
 @[expose] public noncomputable section
-open CategoryTheory CategoryTheory.MonoidalCategory
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.BraidedCategory
 namespace MTC.PropertyF.Pivotal
 universe v u
 variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
@@ -85,6 +86,178 @@ theorem monodromyHaar_natural (U W V : C.Obj) (f : U ⟶ W) :
   apply Finset.sum_congr rfl
   intro i _
   rw [monodromyHaar_summand_natural]
+
+/-- The monodromy around a tensor product separates into its two loops. -/
+theorem doubleBraiding_tensor_first_factor (S U V : C.Obj) :
+    (α_ S U V).inv ≫ doubleBraiding (S ⊗ U) V ≫ (α_ S U V).hom =
+      (S ◁ (β_ U V).hom) ≫ (α_ S V U).inv ≫
+        (doubleBraiding S V ▷ U) ≫ (α_ S V U).hom ≫ (S ◁ (β_ V U).hom) := by
+  simp only [doubleBraiding, braiding_tensor_left_hom, braiding_tensor_right_hom,
+    Category.assoc]
+  monoidal
+
+/-- The simple-strand monodromy loop used as the Haar vacuum value. -/
+def monodromyHaarVacuum (V : C.Obj) : End V :=
+  ∑ i : Fin (rank C), simpleDimension C p i •
+    leftPartialTrace p (End.of (doubleBraiding (simples C i) V))
+
+/-- Factoring a monodromy loop and closing its simple strand leaves a
+conjugated vacuum loop. -/
+theorem monodromyHaar_summand_factor (S U V : C.Obj) :
+    (leftPartialTrace p (End.of ((α_ S U V).inv ≫
+      doubleBraiding (S ⊗ U) V ≫ (α_ S U V).hom))).asHom =
+      (β_ U V).hom ≫
+        ((leftPartialTrace p (End.of (doubleBraiding S V))).asHom ▷ U) ≫
+          (β_ V U).hom := by
+  rw [doubleBraiding_tensor_first_factor]
+  change leftPartialTraceHom C p S _ _ _ = _
+  rw [leftPartialTraceHom_pre]
+  simp only [← Category.assoc]
+  rw [leftPartialTraceHom_post]
+  rw [leftPartialTraceHom_end]
+  simp only [Category.assoc]
+  rw [leftPartialTrace_whiskerRight]
+
+/-- The Haar loop factors through its vacuum loop and the two braidings. -/
+theorem monodromyHaar_factor (U V : C.Obj) :
+    (monodromyHaar C p U V).asHom =
+      (β_ U V).hom ≫ ((monodromyHaarVacuum C p V).asHom ▷ U) ≫ (β_ V U).hom := by
+  classical
+  simp only [monodromyHaar, monodromyHaarVacuum, End.sum_asHom, End.smul_asHom,
+    sum_whiskerRight, MonoidalLinear.smul_whiskerRight, Preadditive.sum_comp,
+    Preadditive.comp_sum, Linear.smul_comp, Linear.comp_smul]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [monodromyHaar_summand_factor]
+
+/-- The left pivotal trace is the right pivotal trace of the dual morphism. -/
+theorem leftTrace_eq_rightTrace_dual (X : C.Obj) (f : End X) :
+    p.leftTrace f.asHom = p.rightTrace (f.asHomᘁ) := by
+  simp only [PivotalStructure.leftTrace, PivotalStructure.rightTrace, rightTraceWith]
+  rw [pivotal_dual]
+  apply End.ext
+  simp [rightDualIsoMap, tensorHom_def, rightAdjointMate_comp_evaluation]
+  rw [← coevaluation_comp_rightAdjointMate_assoc (f.asHomᘁ)]
+  simp only [← whiskerLeft_comp_assoc]
+  congr 2
+  congr 1
+  apply (cancel_mono (p.iso X).hom).1
+  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+  rw [p.naturality f.asHom, Iso.inv_hom_id_assoc]
+
+
+/-- The dual of monodromy is monodromy of the dual strands in reverse order. -/
+theorem doubleBraiding_dual_tensor (S V : C.Obj) :
+    ((doubleBraiding S V)ᘁ) ≫ (rightDualTensorIso S V).hom =
+      (rightDualTensorIso S V).hom ≫ doubleBraiding (Vᘁ : C.Obj) (Sᘁ : C.Obj) := by
+  simp only [doubleBraiding, comp_rightAdjointMate, Category.assoc]
+  rw [rightDualTensorIso_braiding S V, ← Category.assoc,
+    rightDualTensorIso_braiding V S, Category.assoc]
+
+/-- The left trace of monodromy is the right trace of the monodromy
+of the dual objects. -/
+theorem leftTrace_doubleBraiding_eq_dual (S V : C.Obj) :
+    p.leftTrace (doubleBraiding S V) =
+      p.rightTrace (doubleBraiding (Vᘁ : C.Obj) (Sᘁ : C.Obj)) := by
+  rw [leftTrace_eq_rightTrace_dual C p (S ⊗ V) (End.of (doubleBraiding S V))]
+  let e := rightDualTensorIso S V
+  have h := p.rightTrace_cyclic (((doubleBraiding S V)ᘁ) ≫ e.hom) e.inv
+  rw [Category.assoc, Iso.hom_inv_id, Category.comp_id,
+    doubleBraiding_dual_tensor, Iso.inv_hom_id_assoc] at h
+  exact h
+
+/-- The trace of a simple monodromy loop under the global numerical S-test,
+using the left pivotal trace. -/
+theorem leftTrace_monodromy_of_sTest (k i : Fin (rank C))
+    (hs : ∀ j, categoricalS C p j k = simpleDimension C p j * simpleDimension C p k) :
+    unitScalar C (p.leftTrace (doubleBraiding (simples C i) (simples C k))) =
+      star (simpleDimension C p i) * star (simpleDimension C p k) := by
+  rw [leftTrace_doubleBraiding_eq_dual]
+  have htest := hs (dualIndex C i)
+  have hki := MTC.Center.Induction.pivotalDimension_simple_dual_conj p i
+  have hkk := MTC.Center.Induction.pivotalDimension_simple_dual_conj p k
+  have hi := pivotalDimension_iso p (rightDualLabelIso C i)
+  have hk := pivotalDimension_iso p (rightDualLabelIso C k)
+  have hidim : simpleDimension C p (dualIndex C i) = star (simpleDimension C p i) := by
+    simpa only [simpleDimension] using hi.symm.trans hki
+  have hkdim : simpleDimension C p (dualIndex C k) = star (simpleDimension C p k) := by
+    simpa only [simpleDimension] using hk.symm.trans hkk
+  -- The normalized S character of a dual label is conjugated.
+  have hdualtest : categoricalS C p (dualIndex C i) (dualIndex C k) =
+      simpleDimension C p (dualIndex C i) * simpleDimension C p (dualIndex C k) := by
+    have hh' := categoricalS_star_eq_dual_phase C p (dualIndex C i) k
+    have hd : simpleDimension C p (dualIndex C i) ≠ 0 := simpleDimension_ne_zero C p _
+    have hdstar : starRingEnd ℂ (simpleDimension C p (dualIndex C i)) ≠ 0 :=
+      (map_ne_zero (starRingEnd ℂ)).2 hd
+    rw [htest, map_mul] at hh'
+    field_simp at hh'
+    rw [hkdim]
+    exact hh'.symm.trans (mul_comm _ _)
+  have he : unitScalar C (p.rightTrace (doubleBraiding ((simples C k)ᘁ) ((simples C i)ᘁ))) =
+      categoricalS C p (dualIndex C i) (dualIndex C k) := by
+    rw [categoricalS_symmetric C p, categoricalS, ← unitScalar_eq_equiv]
+    change unitScalar C (SEntry p ((simples C k)ᘁ) ((simples C i)ᘁ)) = _
+    rw [SEntry_iso_left p (rightDualLabelIso C k), SEntry_iso_right p _ (rightDualLabelIso C i)]
+  rw [he, hdualtest, hidim, hkdim]
+
+/-- Under the numerical S-test, every closed monodromy loop is the
+conjugate pivotal dimension times the identity of the surviving simple. -/
+theorem leftPartialTrace_monodromy_of_sTest (k i : Fin (rank C))
+    (hs : ∀ j, categoricalS C p j k = simpleDimension C p j * simpleDimension C p k) :
+    leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k))) =
+      star (simpleDimension C p i) • (1 : End (simples C k)) := by
+  let : Simple (simples C k) := simples_simple C k
+  let : FiniteDimensional ℂ (simples C k ⟶ simples C k) := IsFusionCategory.hom_finite _ _
+  let a := leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k)))
+  obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ a.asHom
+  have ha : a = c • (1 : End (simples C k)) := End.ext hc.symm
+  have ht := congrArg (unitScalar C) (leftTrace_partialTrace p
+    (End.of (doubleBraiding (simples C i) (simples C k))))
+  change unitScalar C (p.leftTrace a.asHom) = _ at ht
+  rw [ha] at ht
+  simp only [End.smul_asHom, End.one_asHom, PivotalStructure.leftTrace_smul,
+    unitScalar_eq_equiv, map_smul, smul_eq_mul] at ht
+  have hd : unitScalarEquiv C (p.leftTrace (𝟙 (simples C k))) =
+      star (simpleDimension C p k) := by
+    have hh := congrArg (unitScalar C) (leftTrace_eq_rightTrace_dual C p (simples C k) 1)
+    simp only [End.one_asHom, rightAdjointMate_id] at hh
+    change unitScalar C (p.leftTrace (𝟙 (simples C k))) =
+      pivotalDimension C p ((simples C k)ᘁ) at hh
+    simpa only [unitScalar_eq_equiv] using
+      hh.trans (pivotalDimension_dual_conj C p (simples C k))
+  rw [hd, ← unitScalar_eq_equiv, leftTrace_monodromy_of_sTest C p k i hs] at ht
+  have hn : star (simpleDimension C p k) ≠ 0 := by
+    simpa using ((map_ne_zero (starRingEnd ℂ)).2 (simpleDimension_ne_zero C p k))
+  have hc' : c = star (simpleDimension C p i) := mul_right_cancel₀ hn ht
+  simpa [hc'] using ha
+
+/-- The Haar vacuum loop on a numerically central simple is the intrinsic
+global dimension times the identity. -/
+theorem monodromyHaarVacuum_of_sTest (k : Fin (rank C))
+    (hs : ∀ j, categoricalS C p j k = simpleDimension C p j * simpleDimension C p k) :
+    monodromyHaarVacuum C p (simples C k) =
+      globalDimension C • (1 : End (simples C k)) := by
+  classical
+  simp only [monodromyHaarVacuum, leftPartialTrace_monodromy_of_sTest C p k _ hs,
+    smul_smul, ← Finset.sum_smul]
+  congr 1
+  rw [MTC.Center.Induction.globalDimension_eq_sum_pivotal_norm_sq p]
+  simp only [Complex.ofReal_sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  simpa only [simpleDimension, Complex.ofReal_pow, Complex.star_def] using
+    Complex.mul_conj' (pivotalDimension C p (simples C i))
+
+/-- Under numerical centrality, the actual Haar loop is global dimension
+ times the monodromy on the untraced strands. -/
+theorem monodromyHaar_of_sTest (U : C.Obj) (k : Fin (rank C))
+    (hs : ∀ j, categoricalS C p j k = simpleDimension C p j * simpleDimension C p k) :
+    monodromyHaar C p U (simples C k) =
+      globalDimension C • End.of (doubleBraiding U (simples C k)) := by
+  apply End.ext
+  rw [monodromyHaar_factor, monodromyHaarVacuum_of_sTest C p k hs]
+  simp [doubleBraiding, MonoidalLinear.smul_whiskerRight, Linear.comp_smul,
+    Linear.smul_comp]
 
 end MTC.PropertyF.Pivotal
 end
