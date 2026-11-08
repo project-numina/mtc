@@ -196,5 +196,16 @@ theorem colorProjection_eq_coloredBlockProjection (n : ℕ) (f : Fin n → I) :
       (fun j => biproduct.π V (f j)) :=
   colorProjection_eq_coloredTensorMap V n f
 
+/-- The colored retract blocks associated to the biproduct summands resolve
+the identity on the whole tensor power. -/
+theorem coloredBlockProjection_inclusion_total (n : ℕ) :
+    (∑ f : Fin n → I,
+      coloredBlockProjection n (fun j => V (f j)) (⨁ V) (fun j => biproduct.π V (f j)) ≫
+      coloredBlockInclusion n (fun j => V (f j)) (⨁ V) (fun j => biproduct.ι V (f j))) =
+      𝟙 (tensorPower (⨁ V) n) := by
+  simp only [← colorProjection_eq_coloredBlockProjection,
+    ← colorInclusion_eq_coloredBlockInclusion]
+  exact colorProjection_inclusion_total V n
+
 end MTC.Braided.Cabling
 end
