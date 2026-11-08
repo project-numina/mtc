@@ -185,12 +185,14 @@ public import MTC.PropertyF.Pivotal.FPGlobalDimension
 public import MTC.PropertyF.Pivotal.FPInvertible
 public import MTC.PropertyF.Pivotal.FPObject
 public import MTC.PropertyF.Pivotal.Galois
+public import MTC.PropertyF.Pivotal.GaloisDual
 public import MTC.PropertyF.Pivotal.GaloisUnitScalar
 public import MTC.PropertyF.Pivotal.InfiniteImages
 public import MTC.PropertyF.Pivotal.Nondegeneracy
 public import MTC.PropertyF.Pivotal.NondegeneracyConverse
 public import MTC.PropertyF.Pivotal.NondegeneracyHaar
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarBasis
+public import MTC.PropertyF.Pivotal.NondegeneracyHaarMate
 public import MTC.PropertyF.Pivotal.Nondegenerate
 public import MTC.PropertyF.Pivotal.NondegenerateTransport
 public import MTC.PropertyF.Pivotal.SOrthogonality

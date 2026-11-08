@@ -25,6 +25,8 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.PropertyF.Pivotal.GaloisDual
+import all MTC.PropertyF.Pivotal.NondegeneracyHaarMate
 import all MTC.PropertyF.Pivotal.GaloisUnitScalar
 import all MTC.Braided.Cabling.ClosureCanonicalBlocks
 import all MTC.PropertyF.Pivotal.NondegeneracyHaarBasis
