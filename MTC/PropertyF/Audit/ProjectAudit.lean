@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.ClosureGeneratorOrder
 import all MTC.Braided.Cabling.ClosureTwoBlockPower
 import all MTC.Center.Normalization.SymmetricInteger
 import all MTC.PropertyF.Pivotal.CenterNondegenerate
