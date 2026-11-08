@@ -20,6 +20,18 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Braided.Cabling.BlockFiniteBraid
+import all MTC.Braided.Cabling.BlockFiniteGroups
+import all MTC.Braided.Cabling.BlockFiniteSum
+import all MTC.Braided.Cabling.ClosureColoredBridge
+import all MTC.Braided.Cabling.ClosureColoredContext
+import all MTC.Braided.Cabling.ClosureColoredWords
+import all MTC.Braided.Cabling.ColorBiproductConstant
+import all MTC.Braided.Cabling.ColorBiproductFinite
+import all MTC.Braided.Cabling.PureSumPositive
+import all MTC.Braided.Cabling.PureSumPreservation
+import all MTC.PropertyF.Pivotal.PositiveClosure
+import all MTC.PropertyF.Pivotal.PositivePowers
 import all MTC.Braided.Cabling.BlockFinite
 import all MTC.Braided.Cabling.ClosureAssembly
 import all MTC.Braided.Cabling.ClosureColoredCrossing
