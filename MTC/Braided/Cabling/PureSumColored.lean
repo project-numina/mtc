@@ -345,5 +345,27 @@ theorem coloredWordIso_constant (n : ℕ) (w : List (Fin (n + 1) × Bool)) (X : 
       cases b <;> simp [braidWordAction, FreeGroup.lift_mk, List.map_reverse, List.prod_reverse, Aut.mul_asIso, Aut.inv_asIso,
         Iso.trans_hom, Category.assoc]
 
+/-- Reversing a signed word inverts its strand permutation. -/
+theorem strandPermutation_reverse (n : ℕ) (w : List (Fin (n + 1) × Bool)) :
+    strandPermutation n (FreeGroup.mk w.reverse) =
+      (strandPermutation n (FreeGroup.mk w))⁻¹ := by
+  rw [← map_inv, FreeGroup.inv_mk]
+  simp [strandPermutation, FreeGroup.lift_mk, FreeGroup.invRev, List.map_reverse,
+    List.map_map, Function.comp_def]
+
+/-- Each actual braid word carries an arbitrary colored tensor block to the
+block with the corresponding permuted strand colors. -/
+theorem coloredWordIso_intertwines_uniform (n : ℕ)
+    (w : List (Fin (n + 1) × Bool)) (X : Fin (n + 2) → C) (Y : C)
+    (f : ∀ j, X j ⟶ Y) :
+    (coloredWordIso n w X).hom ≫
+      coloredTensorMap (n + 2) (fun j => f (coloredWordSwap n w j)) ≫
+        (coloredConstantIso Y (n + 2)).hom =
+    coloredTensorMap (n + 2) f ≫ (coloredConstantIso Y (n + 2)).hom ≫
+      ((braidWordAction Y n (FreeGroup.mk w.reverse)).val).asIso.hom := by
+  rw [← Category.assoc, coloredWordIso_natural]
+  simp only [Category.assoc]
+  rw [coloredWordIso_constant]
+
 end MTC.Braided.Cabling
 end
