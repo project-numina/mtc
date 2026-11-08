@@ -37,6 +37,30 @@ theorem pseudoUnitary_and_weaklyIntegral_of_propertyF_of_conjugate
       _ = σ (globalFPDimension C : ℂ) := hfix.symm
   · exact ⟨z, hz⟩
 
+/-- A pseudo-unitary weakly integral fusion category has pseudo-unitary
+Galois conjugates in every semilinearly equivalent presentation. -/
+theorem allGaloisConjugatesPseudoUnitary_of_pseudoUnitary_of_weaklyIntegral
+    (C : BraidedFusionCategory.{v,u}) (hpu : PseudoUnitary C)
+    (hw : WeaklyIntegral (globalFPDimension C)) :
+    AllGaloisConjugatesPseudoUnitary C := by
+  obtain ⟨z, hz⟩ := hw
+  intro D σ h
+  obtain ⟨h⟩ := h
+  change globalDimension D = (globalFPDimension D : ℂ)
+  have hfix : σ (globalFPDimension C : ℂ) = (globalFPDimension C : ℂ) := by
+    rw [hz]
+    exact map_intCast σ z
+  rw [globalDimension_galois h, hpu, hfix, MTC.Modular.conjugate_globalFPDimension h]
+
+/-- Under the corollary's hypothesis, all represented Galois conjugates are
+pseudo-unitary as well. -/
+theorem allGaloisConjugatesPseudoUnitary_of_propertyF_of_conjugate
+    (C : BraidedFusionCategory.{v,u})
+    (hconj : HasPseudoUnitaryGaloisConjugate C) (hF : HasPropertyF C.Obj) :
+    AllGaloisConjugatesPseudoUnitary C := by
+  obtain ⟨hpu, hw⟩ := pseudoUnitary_and_weaklyIntegral_of_propertyF_of_conjugate C hconj hF
+  exact allGaloisConjugatesPseudoUnitary_of_pseudoUnitary_of_weaklyIntegral C hpu hw
+
 /-- The manuscript's pseudo-unitary-conjugate corollary holds as stated. -/
 theorem pseudoUnitaryConjugateStatement_proved : PseudoUnitaryConjugateStatement := by
   intro C hconj hF
