@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.PropertyF.Pivotal.AdjointObjectsSupport
 import all MTC.Braided.Cabling.ClosureBlockFinite
 import all MTC.Center.Normalization.AlgebraicDimension
 import all MTC.Center.Normalization.SymmetricBinomial
