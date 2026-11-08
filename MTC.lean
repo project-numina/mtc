@@ -117,6 +117,7 @@ public import MTC.Center.Normalization.AdjointQuotient
 public import MTC.Center.Normalization.AdjointRelation
 public import MTC.Center.Normalization.AlgebraicDimension
 public import MTC.Center.Normalization.BinomialAnalytic
+public import MTC.Center.Normalization.BinomialArithmetic
 public import MTC.Center.Normalization.CharacterExtension
 public import MTC.Center.Normalization.CommonCentralizer
 public import MTC.Center.Normalization.FPPlacement

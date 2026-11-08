@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Center.Normalization.BinomialArithmetic
 import all MTC.PropertyF.Pivotal.MonoidalTrace
 import all MTC.Braided.Cabling.ClosureSplitMerge
 import all MTC.PropertyF.Pivotal.MonoidalDualComparison

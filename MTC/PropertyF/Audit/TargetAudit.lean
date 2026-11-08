@@ -20,6 +20,7 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Center.Normalization.BinomialArithmetic
 import all MTC.PropertyF.Pivotal.MonoidalTrace
 import all MTC.Braided.Cabling.ClosureSplitMerge
 import all MTC.PropertyF.Pivotal.MonoidalDualComparison
