@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.PropertyF.Pivotal.AdjointObjects
 import all MTC.Braided.Cabling.ClosureBlockProof
 import all MTC.PropertyF.Pivotal.NondegeneracyHaarSnake
 import all MTC.PropertyF.Pivotal.SymmetricPropertyF

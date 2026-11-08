@@ -183,6 +183,7 @@ public import MTC.Modular.Verlinde
 public import MTC.PropertyF.Audit.DependencyAudit
 public import MTC.PropertyF.Audit.ProjectAudit
 public import MTC.PropertyF.Audit.TargetAudit
+public import MTC.PropertyF.Pivotal.AdjointObjects
 public import MTC.PropertyF.Pivotal.CenterAdjointReduction
 public import MTC.PropertyF.Pivotal.CenterReduction
 public import MTC.PropertyF.Pivotal.Centralizer
