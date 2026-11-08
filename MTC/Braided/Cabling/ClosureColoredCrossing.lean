@@ -55,3 +55,13 @@ theorem heterogeneousBlockCross_zero_right (X : C) (a : ℕ) :
   apply heq_of_eq
   apply Iso.ext
   simp
+
+/-- The inverse unequal-block crossing is represented by the inverse word. -/
+theorem heterogeneousBlockCross_inverse_word (X : C) (s r : ℕ) :
+    (Aut.of ((joinPowerNormalized X s r).symm ≪≫
+      β_ (tensorPower X (r+1)) (tensorPower X (s+1)) ≪≫
+      joinPowerNormalized X r s ≪≫
+      powerIndexIso X (by omega : r+s+2 = s+r+2)))⁻¹ =
+    (braidWordAction X (s+r) ((blockSweepWord s r)⁻¹)).val := by
+  rw [heterogeneousBlockCross_word]
+  simp

@@ -37,3 +37,15 @@ theorem heterogeneousStrandCount_eq_sum : ∀ (n : ℕ) (k : Fin n → ℕ),
 def heterogeneousPowerFlattenSum (X : C) (n : ℕ) (k : Fin n → ℕ) :
     heterogeneousPowerTensor X n k ≅ tensorPower X (∑ i, k i) :=
   heterogeneousPowerFlatten X n k ≪≫ powerIndexIso X (heterogeneousStrandCount_eq_sum n k)
+
+/-- Permuting block labels preserves the number of original strands. -/
+theorem heterogeneousStrandCount_comp_equiv (n : ℕ) (k : Fin n → ℕ) (e : Fin n ≃ Fin n) :
+    heterogeneousStrandCount n (fun i => k (e i)) = heterogeneousStrandCount n k := by
+  simp only [heterogeneousStrandCount_eq_sum]
+  exact e.sum_comp k
+
+/-- Flatten a permuted tuple into the same original-strand tensor power. -/
+def heterogeneousPowerFlattenPermuted (X : C) (n : ℕ) (k : Fin n → ℕ) (e : Fin n ≃ Fin n) :
+    heterogeneousPowerTensor X n (fun i => k (e i)) ≅ tensorPower X (heterogeneousStrandCount n k) :=
+  heterogeneousPowerFlatten X n (fun i => k (e i)) ≪≫
+    powerIndexIso X (heterogeneousStrandCount_comp_equiv n k e)
