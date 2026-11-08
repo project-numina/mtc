@@ -236,5 +236,40 @@ theorem coloredWordIso_natural (n : ℕ) : ∀ (w : List (Fin (n + 1) × Bool))
     rw [← Category.assoc, coloredLetter_natural]
     simp only [Category.assoc]
 
+/-- The homogeneous colored tensor is canonically the existing tensor power. -/
+def coloredConstantIso (X : C) : ∀ n : ℕ,
+    coloredTensor n (fun _ => X) ≅ tensorPower X n
+  | 0 => Iso.refl _
+  | n + 1 => Iso.refl X ⊗ᵢ coloredConstantIso X n
+
+set_option backward.isDefEq.respectTransparency false in
+/-- On a homogeneous tuple the actual colored generator is the existing
+categorical braid generator, transported along the constant-tuple isomorphism. -/
+theorem coloredGenerator_constant : ∀ (n : ℕ) (i : Fin (n + 1)) (X : C),
+    (coloredGenerator n i (fun _ => X)).hom ≫ (coloredConstantIso X (n + 2)).hom =
+      (coloredConstantIso X (n + 2)).hom ≫ (braidGenerator X n i).asIso.hom := by
+  intro n
+  induction n with
+  | zero =>
+    intro i X
+    fin_cases i
+    change ((α_ X X (𝟙_ C)).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom ≫
+      (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ 𝟙 _)) = (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ 𝟙 _)) ≫
+      ((α_ X X (𝟙_ C)).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom
+    exact braid_first_map (𝟙 X) (𝟙 _)
+  | succ n ih =>
+    intro i X
+    refine Fin.cases ?_ (fun j => ?_) i
+    · change ((α_ X X _).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom ≫
+        (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ (coloredConstantIso X (n + 1)).hom)) =
+        (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ (coloredConstantIso X (n + 1)).hom)) ≫
+        ((α_ X X _).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom
+      exact braid_first_map (𝟙 X) _
+    · change (𝟙 X ⊗ₘ (coloredGenerator n j (fun _ => X)).hom) ≫
+        (𝟙 X ⊗ₘ (coloredConstantIso X (n + 2)).hom) =
+        (𝟙 X ⊗ₘ (coloredConstantIso X (n + 2)).hom) ≫
+        (𝟙 X ⊗ₘ (braidGenerator X n j).asIso.hom)
+      simp only [tensorHom_comp_tensorHom, Category.id_comp, ih]
+
 end MTC.Braided.Cabling
 end
