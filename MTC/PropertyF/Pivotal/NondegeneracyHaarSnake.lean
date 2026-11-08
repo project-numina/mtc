@@ -324,5 +324,15 @@ theorem haarMate_trace_pairing (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) (g : Y ⊗ U 
   rw [haar_pivotal_closed_slide C p X Y]
   exact haar_right_trace_boxed C p X Y U f g
 
+/-- Mating the normalized fusion basis preserves its pivotal trace duality. -/
+theorem haar_mated_trace_dual_basis (Y U : C.Obj) (i : Fin (rank C))
+    (a b : Fin (Module.finrank ℂ (simples C i ⟶ Y ⊗ U))) :
+    unitScalar C (p.leftTrace
+      (haarInclusionMate C (simples C i) Y U (simpleInclusion C (Y ⊗ U) i a) ≫
+       haarProjectionMate C p (simples C i) Y U (pivotalTraceDualProjection C p (Y ⊗ U) i b))) =
+      if a = b then 1 else 0 := by
+  rw [haarMate_trace_pairing]
+  exact pivotalTrace_dual_basis C p (Y ⊗ U) i a b
+
 end MTC.PropertyF.Pivotal
 end
