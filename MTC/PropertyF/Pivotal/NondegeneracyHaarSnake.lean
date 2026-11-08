@@ -229,5 +229,20 @@ theorem haar_pivotal_closed_slide (X Y : C.Obj)
   rw [← whisker_exchange_assoc, associator_inv_naturality_left_assoc,
     associator_inv_naturality_left_assoc]
 
+set_option backward.isDefEq.respectTransparency false in
+theorem haar_pivotal_cap_exchange (X Y : C.Obj) :
+    ((((Yᘁ : C.Obj)ᘁ) ⊗ (Yᘁ : C.Obj)) ◁ ((p.iso X).hom ▷ (Xᘁ : C.Obj) ≫ ε_ (Xᘁ : C.Obj) ((Xᘁ : C.Obj)ᘁ))) ⊗≫
+      ε_ (Yᘁ : C.Obj) ((Yᘁ : C.Obj)ᘁ) =
+    (ε_ (Yᘁ : C.Obj) ((Yᘁ : C.Obj)ᘁ) ▷ (X ⊗ (Xᘁ : C.Obj))) ⊗≫
+      ((p.iso X).hom ▷ (Xᘁ : C.Obj)) ⊗≫ ε_ (Xᘁ : C.Obj) ((Xᘁ : C.Obj)ᘁ) := by
+  calc
+    _ = 𝟙 ((((Yᘁ : C.Obj)ᘁ) ⊗ (Yᘁ : C.Obj)) ⊗ (X ⊗ (Xᘁ : C.Obj))) ⊗≫ (((((Yᘁ : C.Obj)ᘁ) ⊗ (Yᘁ : C.Obj)) ◁
+        ((p.iso X).hom ▷ (Xᘁ : C.Obj) ≫ ε_ (Xᘁ : C.Obj) ((Xᘁ : C.Obj)ᘁ))) ≫
+        (ε_ (Yᘁ : C.Obj) ((Yᘁ : C.Obj)ᘁ) ▷ (𝟙_ C.Obj))) ⊗≫ 𝟙 (𝟙_ C.Obj) := by monoidal
+    _ = 𝟙 ((((Yᘁ : C.Obj)ᘁ) ⊗ (Yᘁ : C.Obj)) ⊗ (X ⊗ (Xᘁ : C.Obj))) ⊗≫ ((ε_ (Yᘁ : C.Obj) ((Yᘁ : C.Obj)ᘁ) ▷ (X ⊗ (Xᘁ : C.Obj))) ≫
+        ((𝟙_ C.Obj) ◁ ((p.iso X).hom ▷ (Xᘁ : C.Obj) ≫ ε_ (Xᘁ : C.Obj) ((Xᘁ : C.Obj)ᘁ)))) ⊗≫ 𝟙 (𝟙_ C.Obj) := by
+          rw [whisker_exchange]
+    _ = _ := by monoidal
+
 end MTC.PropertyF.Pivotal
 end
