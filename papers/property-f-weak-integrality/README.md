@@ -22,15 +22,14 @@ conjecture, for a class that includes all unitary modular tensor categories.
 
 ## Later pivotal manuscript
 
-[property-f-pivotal-simplified.tex](property-f-pivotal-simplified.tex) is the later manuscript
+[property-f-pivotal-simplified.tex](property-f-pivotal-simplified.tex) ([PDF generated from this source](property-f-pivotal-simplified.pdf)) is the later manuscript
 “Property F implies weak integrality” dated October 22, 2026. It is distinct from the
 October 22 PDF listed above: its main theorem treats nondegenerate **pivotal** braided fusion
 categories, without assuming a pseudo-unitary conjugate. The source was supplied as Slack file
 `F0CDCTLCP7S` (posted October 27, 2026); the supplied context identifies it with the title and
 date of the latest PDF in the November 8 thread. SHA-256:
 `eeaebf94753d7d98a216a3e2e0e9faa37b2d024222adf433c66b2b750093d10f`.
-The repository's earlier October 22 PDF has a different abstract and main theorem and is
-preserved unchanged.
+The linked PDF was generated locally from this source with Tectonic 0.15.0; it is not a copy of the Slack PDF. The repository's earlier October 22 PDF has a different abstract and main theorem and is preserved unchanged.
 
 The existing theorem above formalizes the weak-integrality conclusion under the stronger
 pseudo-unitary-conjugate hypothesis. It does **not** establish the new pivotal manuscript's
