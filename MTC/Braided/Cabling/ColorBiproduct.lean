@@ -182,5 +182,19 @@ theorem braidWordAction_intertwines_colorProjection (n : ℕ)
   simp only [c, Category.assoc, Iso.hom_inv_id_assoc]
   exact hn
 
+/-- The component inclusion agrees with the independently constructed
+colored-block inclusion for the actual biproduct injections. -/
+theorem colorInclusion_eq_coloredBlockInclusion (n : ℕ) (f : Fin n → I) :
+    colorInclusion V n f = coloredBlockInclusion n (fun j => V (f j)) (⨁ V)
+      (fun j => biproduct.ι V (f j)) :=
+  colorInclusion_eq_coloredTensorMap V n f
+
+/-- The component projection agrees with the independently constructed
+colored-block projection for the actual biproduct projections. -/
+theorem colorProjection_eq_coloredBlockProjection (n : ℕ) (f : Fin n → I) :
+    colorProjection V n f = coloredBlockProjection n (fun j => V (f j)) (⨁ V)
+      (fun j => biproduct.π V (f j)) :=
+  colorProjection_eq_coloredTensorMap V n f
+
 end MTC.Braided.Cabling
 end
