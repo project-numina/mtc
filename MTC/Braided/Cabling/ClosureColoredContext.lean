@@ -153,3 +153,16 @@ theorem coloredTensorPowersFlatten_heq (X : C) [BraidedCategory C] [Abelian C]
   simp only [powerIndexIso]
   exact (eqToIso_trans_heq _ _).trans (iso_trans_eqToIso_heq _ _)
 
+
+/-- The actual colored tuple flattening starts with the first two blocks,
+followed by the flattening of all remaining colors. -/
+theorem coloredFlatten_head_two_heq (X : C) [BraidedCategory C] [Abelian C]
+    (n : ℕ) (k : Fin (n+2) → ℕ) :
+    coloredTensorPowersFlatten X (n+2) k ≍
+      (Iso.refl (tensorPower X (k 0)) ⊗ᵢ
+        (Iso.refl (tensorPower X (k 1)) ⊗ᵢ
+          heterogeneousPowerFlatten X n (fun i => k i.succ.succ))) ≪≫
+        rightTripleFlatten X (k 0) (k 1)
+          (heterogeneousStrandCount n (fun i => k i.succ.succ)) :=
+  (coloredTensorPowersFlatten_heq X (n+2) k).trans
+    (heq_of_eq (heterogeneousPowerFlatten_head_two X n k))
