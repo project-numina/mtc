@@ -10,6 +10,7 @@ public import MTC.Algebra.PowerBound
 public import MTC.AnyonAtlas.Raw
 public import MTC.AnyonAtlas.Sample
 public import MTC.Braided.BraidAlgebra
+public import MTC.Braided.Cabling.ClosureBlockFinite
 public import MTC.Braided.Cabling.ClosureBlockInduction
 public import MTC.Braided.Cabling.ClosureBlockProof
 public import MTC.Braided.Cabling.ClosureBlockWord
