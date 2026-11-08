@@ -432,6 +432,18 @@ def coloredPureWordHom (n : ℕ) (w : List (Fin (n + 1) × Bool))
     eqToHom (congrArg (coloredTensor (n + 2))
       (congrArg (fun t => fun j => X (t j)) (coloredWordSwap_reverse_pure n w hw)))
 
+/-- The colored pure-word endomorphism is an actual automorphism. -/
+def coloredPureWordAut (n : ℕ) (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1) (X : Fin (n + 2) → C) :
+    Aut (coloredTensor (n + 2) X) :=
+  Aut.of (coloredWordIso n w.reverse X ≪≫
+    eqToIso (congrArg (coloredTensor (n + 2))
+      (congrArg (fun t => fun j => X (t j)) (coloredWordSwap_reverse_pure n w hw))))
+
+@[simp] theorem coloredPureWordAut_hom (n : ℕ) (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1) (X : Fin (n + 2) → C) :
+    (coloredPureWordAut n w hw X).asIso.hom = coloredPureWordHom n w hw X := rfl
+
 /-- The diagonal of the actual pure braid action is the colored pure-word
 endomorphism, without any finiteness hypothesis. -/
 theorem pureWord_coloredBlock_diagonal (n : ℕ)
