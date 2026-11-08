@@ -1,6 +1,7 @@
 module
 public import MTC.Braided.Cabling.PureSumPositiveState
 public import MTC.Braided.Cabling.ClosureInsertionCompare
+public import MTC.Braided.Cabling.ClosureColoredContext
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -22,6 +23,22 @@ theorem braidImage_prefix_mem (X : C) (n p : ℕ)
   change (braidWordAction X n w).val = a at hw'
   rw [← hw', joinPrefix_braidWord]
   exact (braidWordAction X (n + p) _).property
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Flattening a colored tuple starts by flattening its tail and joining the
+first block. -/
+theorem coloredFlatten_head_heq (X : C) (n : ℕ) (k : Fin (n + 1) → ℕ) :
+    coloredTensorPowersFlatten X (n + 1) k ≍
+      (Iso.refl (tensorPower X (k 0)) ⊗ᵢ
+        coloredTensorPowersFlatten X n (fun j => k j.succ)) ≪≫
+        joinPowerIso X (k 0) (∑ j : Fin n, k j.succ) := by
+  have h := coloredTensorPowersFlatten_heq X (n + 1) k
+  have ht := coloredTensorPowersFlatten_heq X n (fun j => k j.succ)
+  apply h.trans
+  simp only [heterogeneousPowerFlatten]
+  congr 2
+  all_goals try exact ht.symm
+  all_goals try simp [heterogeneousStrandCount_eq_sum, heterogeneousPowerTensor, ← coloredTensor_powers_eq, strandSum_eq_add, Fin.sum_univ_succ]
 
 end MTC.Braided.Cabling
 end
