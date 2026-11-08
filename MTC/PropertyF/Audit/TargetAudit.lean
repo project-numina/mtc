@@ -20,6 +20,10 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.DegenerateConsequences
+import all MTC.PropertyF.Pivotal.NondegeneracyHaarSlide
+import all MTC.PropertyF.Pivotal.NormalizedScalarTwist
+import all MTC.PropertyF.Pivotal.ObjectwiseConsequences
 import all MTC.Braided.Cabling.ClosureCommonInterface
 import all MTC.Braided.Cabling.ClosureFlattenUnit
 import all MTC.Braided.Cabling.ClosureRecursiveFlatten

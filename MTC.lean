@@ -217,6 +217,7 @@ public import MTC.PropertyF.Pivotal.CenterNondegenerate
 public import MTC.PropertyF.Pivotal.CenterReduction
 public import MTC.PropertyF.Pivotal.Centralizer
 public import MTC.PropertyF.Pivotal.ConjugateCorollary
+public import MTC.PropertyF.Pivotal.DegenerateConsequences
 public import MTC.PropertyF.Pivotal.FPGlobalDimension
 public import MTC.PropertyF.Pivotal.FPInvertible
 public import MTC.PropertyF.Pivotal.FPObject
@@ -237,9 +238,12 @@ public import MTC.PropertyF.Pivotal.NondegeneracyConverse
 public import MTC.PropertyF.Pivotal.NondegeneracyHaar
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarBasis
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarMate
+public import MTC.PropertyF.Pivotal.NondegeneracyHaarSlide
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarSnake
 public import MTC.PropertyF.Pivotal.Nondegenerate
 public import MTC.PropertyF.Pivotal.NondegenerateTransport
+public import MTC.PropertyF.Pivotal.NormalizedScalarTwist
+public import MTC.PropertyF.Pivotal.ObjectwiseConsequences
 public import MTC.PropertyF.Pivotal.SOrthogonality
 public import MTC.PropertyF.Pivotal.SScalarTwist
 public import MTC.PropertyF.Pivotal.Saturation
