@@ -60,5 +60,17 @@ theorem fusionSubring_dualLabel_finrank_zero_of_supported
       fusionSubring_dualLabel_finrank_zero C A hA a i hmem hi j hj
     rw [hbraid, hzero, mul_zero]
 
+/-- Tensor products of two subring simples have no constituents with labels
+outside the subring. -/
+theorem fusionSubring_forward_finrank_zero
+    (A : Finset (Fin (rank C))) (hA : IsFusionSubring C A)
+    (j a : Fin (rank C)) (hj : j ∈ A) (ha : a ∈ A)
+    (i : Fin (rank C)) (hi : i ∉ A) :
+    Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C a) = 0 := by
+  change fusionCoeff C j a i = 0
+  apply Nat.eq_zero_of_not_pos
+  intro hp
+  exact hi (hA.fusion j hj a ha i hp)
+
 end MTC.Center.Normalization
 end
