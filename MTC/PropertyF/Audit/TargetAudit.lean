@@ -20,6 +20,7 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.FPSquareIntegral
 import all MTC.Braided.Cabling.ClosureLeftInsertion
 import all MTC.Braided.Cabling.ClosureLocalFlatten
 import all MTC.Center.Normalization.SymmetricSquares

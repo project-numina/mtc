@@ -212,6 +212,7 @@ public import MTC.PropertyF.Pivotal.ConjugateCorollary
 public import MTC.PropertyF.Pivotal.FPGlobalDimension
 public import MTC.PropertyF.Pivotal.FPInvertible
 public import MTC.PropertyF.Pivotal.FPObject
+public import MTC.PropertyF.Pivotal.FPSquareIntegral
 public import MTC.PropertyF.Pivotal.Galois
 public import MTC.PropertyF.Pivotal.GaloisDimensionTransport
 public import MTC.PropertyF.Pivotal.GaloisDual
