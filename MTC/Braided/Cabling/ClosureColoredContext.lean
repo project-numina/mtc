@@ -250,3 +250,30 @@ theorem coloredGenerator_zero_flatten_heq (X : C) [BraidedCategory C] [Abelian C
   all_goals try simp [hf]
   all_goals congr 1
   all_goals exact hf
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The crossing between two positive-width canonical joins is the explicit
+rectangular braid word, up to index transport. -/
+theorem joinCross_word_heq (X : C) [BraidedCategory C] [Abelian C] (r s : ℕ) :
+    ((joinPowerIso X (r+1) (s+1)).symm ≪≫
+      β_ (tensorPower X (r+1)) (tensorPower X (s+1)) ≪≫
+      joinPowerIso X (s+1) (r+1)) ≍
+      ((braidWordAction X (s+r) (blockSweepWord s r)).val).asIso := by
+  have h1 : joinPowerNormalized X s r ≍ joinPowerIso X (r+1) (s+1) :=
+    iso_trans_eqToIso_heq _ _
+  have h2 : joinPowerNormalized X r s ≍ joinPowerIso X (s+1) (r+1) :=
+    iso_trans_eqToIso_heq _ _
+  have hw := congrArg Aut.asIso (heterogeneousBlockCross_word X s r)
+  apply HEq.trans _ (heq_of_eq hw)
+  dsimp only [Aut.of]
+  rw [← Iso.trans_assoc, ← Iso.trans_assoc, ← Iso.trans_assoc]
+  simp only [powerIndexIso]
+  apply HEq.trans _ (iso_trans_eqToIso_heq _ _).symm
+  congr 2
+  all_goals try exact h2.symm
+  all_goals try simp [strandSum_eq_add]
+  all_goals try omega
+  all_goals try (congr 1; try exact h1.symm; try (apply congrArg (tensorPower X); omega))
+  all_goals try exact h1.symm
+  all_goals try (apply congrArg (tensorPower X); simp only [strandSum_eq_add]; omega)
+  all_goals omega
