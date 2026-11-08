@@ -20,6 +20,8 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Braided.Cabling.ClosureFlattenConcat
+import all MTC.Braided.Cabling.PureSum
 import all MTC.Braided.Cabling.ClosureFlattenCoherence
 import all MTC.PropertyF.Pivotal.MainTheorems
 import all MTC.PropertyF.Pivotal.NondegeneracyRelative

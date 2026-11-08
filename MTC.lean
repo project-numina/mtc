@@ -23,6 +23,7 @@ public import MTC.Braided.Cabling.ClosureFirstBlock
 public import MTC.Braided.Cabling.ClosureFlatten
 public import MTC.Braided.Cabling.ClosureFlattenCoherence
 public import MTC.Braided.Cabling.ClosureFlattenCompare
+public import MTC.Braided.Cabling.ClosureFlattenConcat
 public import MTC.Braided.Cabling.ClosureFlattenUnit
 public import MTC.Braided.Cabling.ClosureFour
 public import MTC.Braided.Cabling.ClosureFourTail
@@ -49,6 +50,7 @@ public import MTC.Braided.Cabling.ClosureTwoRow
 public import MTC.Braided.Cabling.ClosureUnit
 public import MTC.Braided.Cabling.Generated
 public import MTC.Braided.Cabling.Naturality
+public import MTC.Braided.Cabling.PureSum
 public import MTC.Braided.Cabling.Strands
 public import MTC.Braided.Cabling.UnitPower
 public import MTC.Braided.Definitions
