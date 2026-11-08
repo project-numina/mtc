@@ -20,6 +20,7 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Center.Normalization.ScalarFusionCharacter
 import all MTC.Braided.Cabling.ClosureInsertion
 import all MTC.Braided.Trace.SphericalSaturation
 import all MTC.PropertyF.Pivotal.Nondegenerate

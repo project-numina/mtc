@@ -101,6 +101,7 @@ public import MTC.Center.Normalization.AdjointDegrees
 public import MTC.Center.Normalization.CharacterExtension
 public import MTC.Center.Normalization.GradingTwist
 public import MTC.Center.Normalization.PivotalTwist
+public import MTC.Center.Normalization.ScalarFusionCharacter
 public import MTC.Center.Normalization.SubringCharacter
 public import MTC.Center.Normalization.SubringGrading
 public import MTC.Center.Normalization.UniversalGrading
