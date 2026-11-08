@@ -59,5 +59,22 @@ theorem transparent_simple_squaredNorm_positive_square
     rfl
   exact he.symm.trans hsq
 
+/-- The norm of the pivotal dimension of a transparent simple is a positive
+integer, for any pivotal structure on the ambient braided fusion category. -/
+theorem transparent_simple_pivotal_norm_positive_integer
+    (p : PivotalStructure (C := C.Obj)) (i : Fin (rank C))
+    (hi : MTC.Center.Transparent (simples C i)) :
+    ∃ n : ℕ, 0 < n ∧ ‖pivotalDimension C p (simples C i)‖ = (n : ℝ) := by
+  obtain ⟨n, hn, hsq⟩ := transparent_simple_squaredNorm_positive_square C p i hi
+  let : Simple (simples C i) := simples_simple C i
+  rw [squaredNorm_eq_pivotalDimension_mul_dual p, pivotalDimension_simple_dual_conj p] at hsq
+  have hreal : ‖pivotalDimension C p (simples C i)‖ ^ 2 = (n : ℝ) ^ 2 := by
+    have hnorm := Complex.mul_conj' (pivotalDimension C p (simples C i))
+    rw [show star (pivotalDimension C p (simples C i)) =
+      starRingEnd ℂ (pivotalDimension C p (simples C i)) from rfl, hnorm] at hsq
+    exact_mod_cast hsq
+  refine ⟨n, hn, ?_⟩
+  nlinarith [norm_nonneg (pivotalDimension C p (simples C i)), Nat.cast_nonneg (α := ℝ) n]
+
 end MTC.Center.Normalization
 end
