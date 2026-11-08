@@ -56,4 +56,25 @@ theorem twoRowCross_word (X : C) (n : ℕ) :
     MonoidHom.codRestrict, MonoidHom.comp]
   rfl
 
+/-- Every two-row crossing belongs to the corresponding actual braid image. -/
+theorem twoRowCross_mem (X : C) (n : ℕ) : twoRowCross X n ∈ braidImage X (n+1) := by
+  rw [twoRowCross_word]
+  exact (braidWordAction X (n+1) (twoRowWord n)).property
+
+/-- Two-row block crossing as an element of the actual image. -/
+def twoRowCrossImage (X : C) (n : ℕ) : braidImage X (n+1) :=
+  ⟨twoRowCross X n, twoRowCross_mem X n⟩
+
+/-- The two-row block braid admits arbitrary prefixes and suffixes of
+identity strands, with an explicit word in the surrounding braid image. -/
+theorem twoRowCross_word_with_surrounding (X : C) (n p t : ℕ) :
+    braidWordAction X (((n+1)+t)+p)
+      (insertLeftWords ((n+1)+t) p (insertRightWords (n+1) t (twoRowWord n))) =
+      Trace.addLeftStrands X ((n+1)+t) p
+        (Trace.addRightStrands X (n+1) t (twoRowCrossImage X n)) := by
+  rw [braidWordAction_insertLeftWords, braidWordAction_insertRightWords]
+  congr 2
+  apply Subtype.ext
+  exact (twoRowCross_word X n).symm
+
 end MTC.Braided
