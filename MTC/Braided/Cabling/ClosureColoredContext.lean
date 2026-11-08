@@ -187,3 +187,66 @@ theorem coloredFlatten_swap_zero_heq (X : C) [BraidedCategory C] [Abelian C]
   all_goals congr 1
   all_goals try (congr 1 <;> simp [coloredSwap_zero_tail, (coloredSwap_zero_head n).1,
     (coloredSwap_zero_head n).2])
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The flattened first colored crossing is the crossing of its two blocks
+with the flattened tuple suffix carried along. -/
+theorem coloredGenerator_zero_flatten_heq (X : C) [BraidedCategory C] [Abelian C]
+    (n : ℕ) (k : Fin (n+2) → ℕ) :
+    ((coloredTensorPowersFlatten X (n+2) k).symm ≪≫
+      Cabling.coloredGenerator n 0 (fun i => tensorPower X (k i)) ≪≫
+      coloredTensorPowersFlatten X (n+2) (fun i => k (Cabling.coloredSwap n 0 i))) ≍
+    ((rightTripleFlatten X (k 0) (k 1) (heterogeneousStrandCount n (fun i => k i.succ.succ))).symm ≪≫
+      (α_ (tensorPower X (k 0)) (tensorPower X (k 1))
+        (tensorPower X (heterogeneousStrandCount n (fun i => k i.succ.succ)))).symm ≪≫
+      ((β_ (tensorPower X (k 0)) (tensorPower X (k 1))) ⊗ᵢ Iso.refl _) ≪≫
+      (α_ (tensorPower X (k 1)) (tensorPower X (k 0))
+        (tensorPower X (heterogeneousStrandCount n (fun i => k i.succ.succ)))) ≪≫
+      rightTripleFlatten X (k 1) (k 0) (heterogeneousStrandCount n (fun i => k i.succ.succ))) := by
+  have hs := coloredFlatten_head_two_heq X n k
+  have ht := coloredFlatten_swap_zero_heq X n k
+  have hg := coloredGenerator_zero n (fun i => tensorPower X (k i))
+  have hf := coloredTensor_powers_eq X n (fun i => k i.succ.succ)
+  have hcancel := firstCross_suffix_cancel (tensorPower X (k 0)) (tensorPower X (k 1))
+    (heterogeneousPowerTensor X n (fun i => k i.succ.succ))
+    (tensorPower X (heterogeneousStrandCount n (fun i => k i.succ.succ))) _ _
+    (heterogeneousPowerFlatten X n (fun i => k i.succ.succ))
+    (rightTripleFlatten X (k 0) (k 1) _)
+    (rightTripleFlatten X (k 1) (k 0) _)
+  have hpre : (((Iso.refl (tensorPower X (k 0)) ⊗ᵢ
+        (Iso.refl (tensorPower X (k 1)) ⊗ᵢ heterogeneousPowerFlatten X n (fun i => k i.succ.succ))) ≪≫
+          rightTripleFlatten X (k 0) (k 1) _).symm ≪≫
+      ((α_ (tensorPower X (k 0)) (tensorPower X (k 1)) (heterogeneousPowerTensor X n (fun i => k i.succ.succ))).symm ≪≫
+       ((β_ (tensorPower X (k 0)) (tensorPower X (k 1))) ⊗ᵢ Iso.refl _) ≪≫
+        α_ (tensorPower X (k 1)) (tensorPower X (k 0)) (heterogeneousPowerTensor X n (fun i => k i.succ.succ))) ≪≫
+      ((Iso.refl (tensorPower X (k 1)) ⊗ᵢ
+        (Iso.refl (tensorPower X (k 0)) ⊗ᵢ heterogeneousPowerFlatten X n (fun i => k i.succ.succ))) ≪≫
+          rightTripleFlatten X (k 1) (k 0) _)) =
+    ((rightTripleFlatten X (k 0) (k 1) (heterogeneousStrandCount n (fun i => k i.succ.succ))).symm ≪≫
+      (α_ (tensorPower X (k 0)) (tensorPower X (k 1))
+        (tensorPower X (heterogeneousStrandCount n (fun i => k i.succ.succ)))).symm ≪≫
+      ((β_ (tensorPower X (k 0)) (tensorPower X (k 1))) ⊗ᵢ Iso.refl _) ≪≫
+      (α_ (tensorPower X (k 1)) (tensorPower X (k 0))
+        (tensorPower X (heterogeneousStrandCount n (fun i => k i.succ.succ)))) ≪≫
+      rightTripleFlatten X (k 1) (k 0) (heterogeneousStrandCount n (fun i => k i.succ.succ))) := by
+    simpa only [Iso.trans_assoc] using hcancel
+  apply HEq.trans _ (heq_of_eq hpre)
+  congr 2
+  all_goals try exact hs
+  all_goals try exact ht
+  all_goals try exact hg
+  all_goals try exact hf
+  all_goals try simp only [hf]
+  all_goals try simp [Cabling.coloredTensor, coloredTensor_powers_eq,
+    coloredSwap_zero_tail, (coloredSwap_zero_head n).1, (coloredSwap_zero_head n).2,
+    heterogeneousStrandCount_eq_sum, strandSum_eq_add, Fin.sum_univ_succ, Nat.add_comm,
+    Nat.add_left_comm, Nat.add_assoc]
+  all_goals apply HEq.trans hg
+  all_goals congr 2
+  all_goals try exact hf
+  all_goals try simp only [hf]
+  all_goals try rfl
+  all_goals congr 1
+  all_goals try simp [hf]
+  all_goals congr 1
+  all_goals exact hf
