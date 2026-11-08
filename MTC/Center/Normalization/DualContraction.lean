@@ -27,5 +27,20 @@ theorem dualBasis_contraction_of_equiv
     simp [Module.Dual.transpose_apply]
   simpa [G, he] using h
 
+/-- A bilinear contraction using dual partners from a perfect pairing is
+independent of the choice of basis. -/
+theorem pairing_contraction_basis_independent
+    {k : Type*} [CommSemiring k] {I J : Type} [Fintype I] [Fintype J]
+    [DecidableEq I] [DecidableEq J]
+    {A B E : Type*} [AddCommMonoid A] [Module k A] [AddCommMonoid B] [Module k B]
+    [AddCommMonoid E] [Module k E]
+    (a : Module.Basis I k A) (b : Module.Basis J k A)
+    (pair : B ≃ₗ[k] Module.Dual k A) (F : A →ₗ[k] B →ₗ[k] E) :
+    (∑ i, F (a i) (pair.symm (a.dualBasis i))) =
+      ∑ j, F (b j) (pair.symm (b.dualBasis j)) := by
+  let G := (LinearMap.lcomp k E pair.symm.toLinearMap).comp F
+  have h := MTC.CategoryTheory.Dimensions.dualBasis_contraction_natural a b (LinearMap.id) G
+  simpa [G, Module.Dual.transpose_apply] using h
+
 end MTC.Center.Normalization
 end
