@@ -166,3 +166,24 @@ theorem coloredFlatten_head_two_heq (X : C) [BraidedCategory C] [Abelian C]
           (heterogeneousStrandCount n (fun i => k i.succ.succ)) :=
   (coloredTensorPowersFlatten_heq X (n+2) k).trans
     (heq_of_eq (heterogeneousPowerFlatten_head_two X n k))
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The swapped tuple has the same suffix, with its first two blocks exchanged. -/
+theorem coloredFlatten_swap_zero_heq (X : C) [BraidedCategory C] [Abelian C]
+    (n : ℕ) (k : Fin (n+2) → ℕ) :
+    coloredTensorPowersFlatten X (n+2) (fun i => k (Cabling.coloredSwap n 0 i)) ≍
+      (Iso.refl (tensorPower X (k 1)) ⊗ᵢ
+        (Iso.refl (tensorPower X (k 0)) ⊗ᵢ
+          heterogeneousPowerFlatten X n (fun i => k i.succ.succ))) ≪≫
+        rightTripleFlatten X (k 1) (k 0)
+          (heterogeneousStrandCount n (fun i => k i.succ.succ)) := by
+  have h := coloredFlatten_head_two_heq X n (fun i => k (Cabling.coloredSwap n 0 i))
+  apply h.trans
+  congr 2
+  all_goals try simp [coloredSwap_zero_tail, (coloredSwap_zero_head n).1,
+    (coloredSwap_zero_head n).2]
+  all_goals try (congr 1 <;> simp [coloredSwap_zero_tail, (coloredSwap_zero_head n).1,
+    (coloredSwap_zero_head n).2])
+  all_goals congr 1
+  all_goals try (congr 1 <;> simp [coloredSwap_zero_tail, (coloredSwap_zero_head n).1,
+    (coloredSwap_zero_head n).2])
