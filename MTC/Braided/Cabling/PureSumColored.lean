@@ -110,15 +110,65 @@ theorem coloredGenerator_natural : ∀ (n : ℕ) (i : Fin (n + 1))
       simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
       rw [ih j (fun k => f k.succ)]
 
-/-- The inverse crossing uses the opposite colored crossing on swapped inputs. -/
+/-- The negative adjacent crossing of differently colored strands. -/
+def coloredGeneratorInverse : ∀ (n : ℕ) (i : Fin (n + 1)) (X : Fin (n + 2) → C),
+    coloredTensor (n + 2) X ≅ coloredTensor (n + 2) (fun j => X (coloredSwap n i j))
+  | 0, _, X =>
+      (α_ (X 0) (X 1) (𝟙_ C)).symm ≪≫
+        ((β_ (X 1) (X 0)).symm ⊗ᵢ Iso.refl (𝟙_ C)) ≪≫
+        (α_ (X 1) (X 0) (𝟙_ C))
+  | n + 1, i, X => Fin.cases
+      ((α_ (X 0) (X 1) (coloredTensor (n + 1) (fun k => X k.succ.succ))).symm ≪≫
+        ((β_ (X 1) (X 0)).symm ⊗ᵢ Iso.refl _) ≪≫
+        (α_ (X 1) (X 0) (coloredTensor (n + 1) (fun k => X k.succ.succ))))
+      (fun j => Iso.refl (X 0) ⊗ᵢ coloredGeneratorInverse n j (fun k => X k.succ)) i
+
+/-- Positive and negative actual colored crossings. -/
 def coloredLetter (n : ℕ) (i : Fin (n + 1)) (positive : Bool) (X : Fin (n + 2) → C) :
-    coloredTensor (n + 2) X ≅ coloredTensor (n + 2) (fun j => X (coloredSwap n i j)) := by
-  cases positive
-  · refine eqToIso ?_ ≪≫ (coloredGenerator n i (fun j => X (coloredSwap n i j))).symm
-    congr 1
-    funext j
-    simp [coloredSwap_eq_swap]
-  · exact coloredGenerator n i X
+    coloredTensor (n + 2) X ≅ coloredTensor (n + 2) (fun j => X (coloredSwap n i j)) :=
+  if positive then coloredGenerator n i X else coloredGeneratorInverse n i X
+
+/-- Naturality of a crossing of two different strands with a spectator tail. -/
+theorem colored_first_inverse_map {X Y X' Y' A B : C} (f : X ⟶ X') (g : Y ⟶ Y') (h : A ⟶ B) :
+    ((α_ X Y A).symm ≪≫ ((β_ Y X).symm ⊗ᵢ Iso.refl A) ≪≫ α_ Y X A).hom ≫
+        (g ⊗ₘ (f ⊗ₘ h)) =
+      (f ⊗ₘ (g ⊗ₘ h)) ≫
+        ((α_ X' Y' B).symm ≪≫ ((β_ Y' X').symm ⊗ᵢ Iso.refl B) ≪≫ α_ Y' X' B).hom := by
+  simp only [Iso.trans_hom, Iso.symm_hom, tensorIso_hom, Iso.refl_hom, Category.assoc]
+  rw [← associator_naturality, associator_inv_naturality_assoc]
+  simp only [← Category.assoc, tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id,
+    braiding_inv_naturality]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A colored adjacent crossing is natural in the independent strand maps. -/
+theorem coloredGeneratorInverse_natural : ∀ (n : ℕ) (i : Fin (n + 1))
+    {X Y : Fin (n + 2) → C} (f : ∀ j, X j ⟶ Y j),
+    (coloredGeneratorInverse n i X).hom ≫
+      coloredTensorMap (n + 2) (fun j => f (coloredSwap n i j)) =
+    coloredTensorMap (n + 2) f ≫ (coloredGeneratorInverse n i Y).hom := by
+  intro n
+  induction n with
+  | zero =>
+    intro i X Y f
+    fin_cases i
+    change ((α_ (X 0) (X 1) (𝟙_ C)).symm ≪≫ ((β_ (X 1) (X 0)).symm ⊗ᵢ Iso.refl _) ≪≫ α_ (X 1) (X 0) _).hom ≫
+      (f 1 ⊗ₘ (f 0 ⊗ₘ 𝟙 _)) = (f 0 ⊗ₘ (f 1 ⊗ₘ 𝟙 _)) ≫
+      ((α_ (Y 0) (Y 1) (𝟙_ C)).symm ≪≫ ((β_ (Y 1) (Y 0)).symm ⊗ᵢ Iso.refl _) ≪≫ α_ (Y 1) (Y 0) _).hom
+    exact colored_first_inverse_map (f 0) (f 1) (𝟙 _)
+  | succ n ih =>
+    intro i X Y f
+    refine Fin.cases ?_ (fun j => ?_) i
+    · change ((α_ (X 0) (X 1) _).symm ≪≫ ((β_ (X 1) (X 0)).symm ⊗ᵢ Iso.refl _) ≪≫ α_ (X 1) (X 0) _).hom ≫
+        (f 1 ⊗ₘ (f 0 ⊗ₘ coloredTensorMap (n + 1) (fun k => f k.succ.succ))) =
+        (f 0 ⊗ₘ (f 1 ⊗ₘ coloredTensorMap (n + 1) (fun k => f k.succ.succ))) ≫
+        ((α_ (Y 0) (Y 1) _).symm ≪≫ ((β_ (Y 1) (Y 0)).symm ⊗ᵢ Iso.refl _) ≪≫ α_ (Y 1) (Y 0) _).hom
+      exact colored_first_inverse_map (f 0) (f 1) _
+    · change (𝟙 (X 0) ⊗ₘ (coloredGeneratorInverse n j (fun k => X k.succ)).hom) ≫
+        (f 0 ⊗ₘ coloredTensorMap (n + 2) (fun k => f (coloredSwap n j k).succ)) =
+        (f 0 ⊗ₘ coloredTensorMap (n + 2) (fun k => f k.succ)) ≫
+        (𝟙 (Y 0) ⊗ₘ (coloredGeneratorInverse n j (fun k => Y k.succ)).hom)
+      simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
+      rw [ih j (fun k => f k.succ)]
 
 /-- The target-strand permutation of a concrete signed adjacent word. -/
 def coloredWordSwap (n : ℕ) : List (Fin (n + 1) × Bool) → Fin (n + 2) → Fin (n + 2)
@@ -164,6 +214,27 @@ theorem coloredTensorMap_comp : ∀ (n : ℕ) {X Y Z : Fin n → C}
       (f 0 ⊗ₘ coloredTensorMap n (fun i => f i.succ)) ≫
         (g 0 ⊗ₘ coloredTensorMap n (fun i => g i.succ))
     rw [coloredTensorMap_comp, tensorHom_comp_tensorHom]
+
+/-- Both signs of a colored crossing are natural in independent strand maps. -/
+theorem coloredLetter_natural (n : ℕ) (i : Fin (n + 1)) (b : Bool)
+    {X Y : Fin (n + 2) → C} (f : ∀ j, X j ⟶ Y j) :
+    (coloredLetter n i b X).hom ≫ coloredTensorMap (n + 2) (fun j => f (coloredSwap n i j)) =
+      coloredTensorMap (n + 2) f ≫ (coloredLetter n i b Y).hom := by
+  cases b
+  · exact coloredGeneratorInverse_natural n i f
+  · exact coloredGenerator_natural n i f
+
+/-- A signed colored word is natural in independent maps on its strands. -/
+theorem coloredWordIso_natural (n : ℕ) : ∀ (w : List (Fin (n + 1) × Bool))
+    {X Y : Fin (n + 2) → C} (f : ∀ j, X j ⟶ Y j),
+    (coloredWordIso n w X).hom ≫ coloredTensorMap (n + 2) (fun j => f (coloredWordSwap n w j)) =
+      coloredTensorMap (n + 2) f ≫ (coloredWordIso n w Y).hom
+  | [], _, _, f => by simp [coloredWordIso, coloredWordSwap]
+  | a :: w, _, _, f => by
+    simp only [coloredWordIso, coloredWordSwap, Iso.trans_hom, Category.assoc]
+    rw [coloredWordIso_natural n w (fun j => f (coloredSwap n a.1 j))]
+    rw [← Category.assoc, coloredLetter_natural]
+    simp only [Category.assoc]
 
 end MTC.Braided.Cabling
 end
