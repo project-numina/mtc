@@ -21,15 +21,18 @@ public import MTC.Braided.Cabling.ClosureCommonInterface
 public import MTC.Braided.Cabling.ClosureCrossing
 public import MTC.Braided.Cabling.ClosureFirstBlock
 public import MTC.Braided.Cabling.ClosureFlatten
+public import MTC.Braided.Cabling.ClosureFlattenCompare
 public import MTC.Braided.Cabling.ClosureFlattenUnit
 public import MTC.Braided.Cabling.ClosureFour
 public import MTC.Braided.Cabling.ClosureFourTail
 public import MTC.Braided.Cabling.ClosureGeneratorOrder
 public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosureInsertion
+public import MTC.Braided.Cabling.ClosureInsertionCompare
 public import MTC.Braided.Cabling.ClosureInterchange
 public import MTC.Braided.Cabling.ClosureIsoWord
 public import MTC.Braided.Cabling.ClosureJoinAssociativity
+public import MTC.Braided.Cabling.ClosureJoinCompare
 public import MTC.Braided.Cabling.ClosureLeftInsertion
 public import MTC.Braided.Cabling.ClosureLocalFlatten
 public import MTC.Braided.Cabling.ClosureMergeCommon
@@ -134,6 +137,7 @@ public import MTC.Center.Normalization.CharacterExtension
 public import MTC.Center.Normalization.CommonCentralizer
 public import MTC.Center.Normalization.DualContraction
 public import MTC.Center.Normalization.FPPlacement
+public import MTC.Center.Normalization.FusionSubringSupport
 public import MTC.Center.Normalization.GradingTwist
 public import MTC.Center.Normalization.IntegerDimensions
 public import MTC.Center.Normalization.MugerAdjointNormalization
@@ -235,6 +239,7 @@ public import MTC.PropertyF.Pivotal.GaloisDual
 public import MTC.PropertyF.Pivotal.GaloisUnitScalar
 public import MTC.PropertyF.Pivotal.GeneratedCategory
 public import MTC.PropertyF.Pivotal.GeneratedConsequences
+public import MTC.PropertyF.Pivotal.GlobalCriterionConsequences
 public import MTC.PropertyF.Pivotal.InfiniteImages
 public import MTC.PropertyF.Pivotal.MonoidalDual
 public import MTC.PropertyF.Pivotal.MonoidalDualComparison

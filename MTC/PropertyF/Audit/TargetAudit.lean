@@ -20,6 +20,11 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Braided.Cabling.ClosureFlattenCompare
+import all MTC.Braided.Cabling.ClosureInsertionCompare
+import all MTC.Braided.Cabling.ClosureJoinCompare
+import all MTC.Center.Normalization.FusionSubringSupport
+import all MTC.PropertyF.Pivotal.GlobalCriterionConsequences
 import all MTC.Braided.Cabling.ClosureJoinAssociativity
 import all MTC.Braided.Cabling.ClosureAdjacentCoherence
 import all MTC.Center.Normalization.RelativeCentralizer
