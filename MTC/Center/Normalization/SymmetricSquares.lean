@@ -76,5 +76,15 @@ theorem transparent_simple_pivotal_norm_positive_integer
   refine ⟨n, hn, ?_⟩
   nlinarith [norm_nonneg (pivotalDimension C p (simples C i)), Nat.cast_nonneg (α := ℝ) n]
 
+/-- If the actual Müger category is pseudo-unitary, every transparent simple
+has positive integer Frobenius–Perron dimension. -/
+theorem transparent_fpSimple_positive_integer_of_muger_pseudoUnitary
+    (p : PivotalStructure (C := C.Obj)) (hpu : PseudoUnitary (bundledMuger C))
+    (i : Fin (rank C)) (hi : MTC.Center.Transparent (simples C i)) :
+    ∃ n : ℕ, 0 < n ∧ fpSimple C i = (n : ℝ) := by
+  obtain ⟨n, hn, hnorm⟩ := transparent_simple_pivotal_norm_positive_integer C p i hi
+  rw [transparent_norm_saturation_of_muger_pseudoUnitary C p hpu i hi] at hnorm
+  exact ⟨n, hn, hnorm⟩
+
 end MTC.Center.Normalization
 end
