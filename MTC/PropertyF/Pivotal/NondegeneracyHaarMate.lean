@@ -57,5 +57,15 @@ def haarMatedProjectionBasis (X Y U : C.Obj) {I : Type*}
     Module.Basis I ℂ (U ⊗ (Xᘁ) ⟶ (Yᘁ)) :=
   b.map (haarProjectionMate C p X Y U)
 
+/-- Pivotal coevaluation on a dual strand can be rotated to the ordinary
+coevaluation with a pivotal component on the other side. -/
+theorem pivotalDual_coevaluation_rotate (X : C.Obj) :
+    η_ ((Xᘁ)ᘁ) (((Xᘁ)ᘁ)ᘁ) ≫
+      (((Xᘁ)ᘁ) ◁ (p.iso (Xᘁ)).inv) =
+      η_ X (Xᘁ) ≫ (p.iso X).hom ▷ (Xᘁ) := by
+  have h := congrArg Iso.inv (pivotal_dual p X)
+  change (p.iso (Xᘁ)).inv = ((p.iso X).homᘁ) at h
+  rw [h, coevaluation_comp_rightAdjointMate]
+
 end MTC.PropertyF.Pivotal
 end
