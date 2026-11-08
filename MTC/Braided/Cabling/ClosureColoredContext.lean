@@ -138,3 +138,18 @@ theorem firstCross_suffix_cancel [BraidedCategory C] (A B U T P Q : C)
           ((α_ A B T).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl T) ≪≫ (α_ B A T))) ≪≫ k := by rw [hn]
     _ = _ := by simp [Iso.trans_assoc]
 
+
+/-- The zeroth swap exchanges the first two colors. -/
+theorem coloredSwap_zero_head (n : ℕ) :
+    Cabling.coloredSwap n 0 0 = 1 ∧ Cabling.coloredSwap n 0 1 = 0 := by
+  cases n <;> exact ⟨rfl, rfl⟩
+
+/-- The colored flattening differs from recursive tuple flattening only by
+source and target index transports. -/
+theorem coloredTensorPowersFlatten_heq (X : C) [BraidedCategory C] [Abelian C]
+    (n : ℕ) (k : Fin n → ℕ) :
+    coloredTensorPowersFlatten X n k ≍ heterogeneousPowerFlatten X n k := by
+  unfold coloredTensorPowersFlatten heterogeneousPowerFlattenSum
+  simp only [powerIndexIso]
+  exact (eqToIso_trans_heq _ _).trans (iso_trans_eqToIso_heq _ _)
+
