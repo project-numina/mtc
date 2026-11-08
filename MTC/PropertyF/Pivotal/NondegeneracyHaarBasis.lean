@@ -85,5 +85,55 @@ theorem monodromyHaar_fusion_expansion (p : PivotalStructure (C := C.Obj))
   simp only [F, Category.assoc]
 
 
+/-- DGNO's Haar operator for any actual family of endomorphisms of `(-) ⊗ V`.
+Naturality is an independent property of the supplied family. -/
+def categoricalHaar (p : PivotalStructure (C := C.Obj)) (V U : C.Obj)
+    (β : ∀ X : C.Obj, End (X ⊗ V)) : End (U ⊗ V) :=
+  ∑ i : Fin (rank C), simpleDimension C p i •
+    leftPartialTrace p (End.of ((α_ (simples C i) U V).inv ≫
+      (β (simples C i ⊗ U)).asHom ≫ (α_ (simples C i) U V).hom))
+
+/-- The monodromy Haar loop is the specialization of the general operator
+to the actual monodromy family. -/
+theorem categoricalHaar_monodromy (p : PivotalStructure (C := C.Obj)) (U V : C.Obj) :
+    categoricalHaar C p V U (fun X ↦ End.of (doubleBraiding X V)) =
+      monodromyHaar C p U V := rfl
+
+/-- The first fusion-basis expansion in DGNO's Haar identity applies to any
+natural tensor family, not just monodromy. -/
+theorem categoricalHaar_fusion_expansion (p : PivotalStructure (C := C.Obj))
+    (U V : C.Obj) (β : ∀ X : C.Obj, End (X ⊗ V))
+    (hβ : ∀ {X Y : C.Obj} (f : X ⟶ Y),
+      (f ▷ V) ≫ (β Y).asHom = (β X).asHom ≫ (f ▷ V)) :
+    categoricalHaar C p V U β = ∑ i : Fin (rank C),
+      ∑ q : simplePieces C (simples C i ⊗ U),
+      simpleDimension C p i • leftPartialTrace p (End.of
+        ((α_ (simples C i) U V).inv ≫
+          (simpleProjection (simples C i ⊗ U) q.1 q.2 ▷ V) ≫
+          (β (simples C q.1)).asHom ≫
+          (simpleInclusion C (simples C i ⊗ U) q.1 q.2 ▷ V) ≫
+          (α_ (simples C i) U V).hom)) := by
+  classical
+  unfold categoricalHaar
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [natural_tensor_family_simple_expansion C V (simples C i ⊗ U) β hβ]
+  simp only [Preadditive.comp_sum, Preadditive.sum_comp]
+  let F (q : simplePieces C (simples C i ⊗ U)) :
+      (simples C i ⊗ (U ⊗ V)) ⟶ (simples C i ⊗ (U ⊗ V)) :=
+    (α_ (simples C i) U V).inv ≫
+      ((simpleProjection (simples C i ⊗ U) q.1 q.2 ▷ V) ≫
+        (β (simples C q.1)).asHom ≫
+          (simpleInclusion C (simples C i ⊗ U) q.1 q.2 ▷ V)) ≫
+        (α_ (simples C i) U V).hom
+  have he : End.of (∑ q, F q) = ∑ q, End.of (F q) := by
+    apply End.ext
+    simp
+  change simpleDimension C p i • leftPartialTrace p (End.of (∑ q, F q)) = _
+  rw [he, leftPartialTrace_sum, Finset.smul_sum]
+  apply Finset.sum_congr rfl
+  intro q _
+  simp only [F, Category.assoc]
+
 end MTC.PropertyF.Pivotal
 end
