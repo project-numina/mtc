@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.ClosureJoinAssociativity
 import all MTC.Braided.Cabling.ClosureAdjacentCoherence
 import all MTC.Center.Normalization.RelativeCentralizer
 import all MTC.PropertyF.Pivotal.DegenerateRelative

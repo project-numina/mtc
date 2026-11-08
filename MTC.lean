@@ -29,6 +29,7 @@ public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosureInsertion
 public import MTC.Braided.Cabling.ClosureInterchange
 public import MTC.Braided.Cabling.ClosureIsoWord
+public import MTC.Braided.Cabling.ClosureJoinAssociativity
 public import MTC.Braided.Cabling.ClosureLeftInsertion
 public import MTC.Braided.Cabling.ClosureLocalFlatten
 public import MTC.Braided.Cabling.ClosureMergeCommon
