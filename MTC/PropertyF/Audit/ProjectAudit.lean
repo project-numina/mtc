@@ -25,6 +25,14 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.ClosureCommonInterface
+import all MTC.Braided.Cabling.ClosureFlattenUnit
+import all MTC.Braided.Cabling.ClosureRecursiveFlatten
+import all MTC.Braided.Cabling.ClosureReindex
+import all MTC.Center.Normalization.DualContraction
+import all MTC.Center.Normalization.MugerFPConditional
+import all MTC.Center.Normalization.MugerFPIntegral
+import all MTC.Center.Normalization.MugerObjectNormalization
 import all MTC.PropertyF.Pivotal.GeneratedConsequences
 import all MTC.PropertyF.Pivotal.GeneratedCategory
 import all MTC.PropertyF.Pivotal.FPSquareIntegral
