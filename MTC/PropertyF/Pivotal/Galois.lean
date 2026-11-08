@@ -108,4 +108,27 @@ theorem weaklyIntegral_of_all_conjugates_pseudoUnitary
     (IsIntegral.sum _ fun i _ ↦ (fpSimple_isIntegral i).pow 2)
     (fun σ ↦ globalFPDimension_galois_fixed_of_all_conjugates C σ hAll)
 
+/-- It already suffices to know pseudo-unitarity for the canonical scalar
+twists: no separate assumption about arbitrary equivalent presentations is
+needed for arithmetic descent. -/
+theorem weaklyIntegral_of_all_scalarTwists_pseudoUnitary
+    (h : ∀ τ : ℂ ≃+* ℂ, PseudoUnitary (ScalarTwist.category C τ)) :
+    MTC.Braided.WeaklyIntegral (globalFPDimension C) := by
+  have hfp (τ : ℂ ≃+* ℂ) :
+      globalFPDimension (ScalarTwist.category C τ) = globalFPDimension C :=
+    (Modular.conjugate_globalFPDimension (scalarTwistGaloisConjugate C τ)).symm
+  have hC : globalDimension C = (globalFPDimension C : ℂ) := by
+    have h0 := h (RingEquiv.refl ℂ)
+    change globalDimension (ScalarTwist.category C (RingEquiv.refl ℂ)) = _ at h0
+    rw [globalDimension_scalarTwist, hfp] at h0
+    simpa using h0
+  apply integral_eq_int_of_complex_galois_fixed
+    (IsIntegral.sum _ fun i _ ↦ (fpSimple_isIntegral i).pow 2)
+  intro τ
+  calc
+    τ (globalFPDimension C : ℂ) = τ (globalDimension C) := congrArg τ hC.symm
+    _ = globalDimension (ScalarTwist.category C τ) := (globalDimension_scalarTwist C τ).symm
+    _ = (globalFPDimension (ScalarTwist.category C τ) : ℂ) := h τ
+    _ = (globalFPDimension C : ℂ) := congrArg (fun x : ℝ ↦ (x : ℂ)) (hfp τ)
+
 end MTC.PropertyF.Pivotal

@@ -25,6 +25,14 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.ClosureInsertion
+import all MTC.Braided.Trace.SphericalSaturation
+import all MTC.PropertyF.Pivotal.Nondegenerate
+import all MTC.PropertyF.Pivotal.SScalarTwist
+import all MTC.PropertyF.Pivotal.Saturation
+import all MTC.PropertyF.Pivotal.SlopePower
+import all MTC.PropertyF.Pivotal.SlopeTrace
+import all MTC.Braided.Cabling.ClosureFlatten
 import all MTC.Center.Normalization.SubringCharacter
 import all MTC.Center.Normalization.SubringGrading
 import all MTC.Braided.Cabling.ClosureImage
