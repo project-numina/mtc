@@ -25,6 +25,8 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.PureSumPositiveState
+import all MTC.Braided.Cabling.PureSumPrefix
 import all MTC.Braided.Cabling.ColorBiproductLetters
 import all MTC.Braided.Cabling.ColorBiproductPositive
 import all MTC.Braided.Cabling.PureSumCabling

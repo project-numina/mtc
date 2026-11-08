@@ -72,6 +72,8 @@ public import MTC.Braided.Cabling.PureSumColored
 public import MTC.Braided.Cabling.PureSumInverse
 public import MTC.Braided.Cabling.PureSumPositive
 public import MTC.Braided.Cabling.PureSumPositiveCabling
+public import MTC.Braided.Cabling.PureSumPositiveState
+public import MTC.Braided.Cabling.PureSumPrefix
 public import MTC.Braided.Cabling.PureSumPreservation
 public import MTC.Braided.Cabling.PureSumSigned
 public import MTC.Braided.Cabling.Strands
