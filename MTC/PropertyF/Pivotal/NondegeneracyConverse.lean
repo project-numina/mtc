@@ -34,5 +34,18 @@ theorem transparent_label_eq_unit_of_categoricalS_det_ne_zero
     categoricalS_eq_dimension_product_of_transparent C p k hk i]
   exact mul_div_cancel_right₀ _ (simpleDimension_ne_zero C p k)
 
+/-- The actual pivotal S matrix is invertible exactly when the unit is the
+only simple satisfying all numerical S-centrality equations. -/
+theorem categoricalS_det_ne_zero_iff_trivial_S_centralizer :
+    (categoricalS C p).det ≠ 0 ↔
+      ∀ k, (∀ i, categoricalS C p i k =
+        simpleDimension C p i * simpleDimension C p k) → k = unitIndex C := by
+  refine ⟨?_, categoricalS_det_ne_zero_of_trivial_S_centralizer C p⟩
+  intro hdet k hk
+  apply normalized_columns_injective (simpleDimension_ne_zero C p) hdet
+  funext i
+  simp only [categoricalS_unit, simpleDimension_unit, div_one, hk i]
+  exact mul_div_cancel_right₀ _ (simpleDimension_ne_zero C p k)
+
 end MTC.PropertyF.Pivotal
 end
