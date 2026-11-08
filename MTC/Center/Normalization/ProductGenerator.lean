@@ -53,5 +53,18 @@ theorem generatedBy_productGenerator_iff_productRetract (W : Center C.Obj) :
       ⟨biproduct.ι T i, biproduct.π T i, biproduct.ι_π_self T i⟩
     exact generatedBy_retract (generatedBy_self (productGenerator C)) r'
 
+omit [RigidCategory (Center C.Obj)] [IsFusionCategory (Center C.Obj)] in
+/-- Every retract-closed tensor class containing both canonical images
+contains every product retract. This is the minimality property of their join. -/
+theorem productRetract_minimal
+    (P : Center C.Obj → Prop)
+    (hpositive : ∀ X : C.Obj, P ((Center.ofBraided C.Obj).obj X))
+    (hnegative : ∀ X : C.Obj, P ((MTC.Center.negative C.Obj).obj X))
+    (htensor : ∀ {X Y : Center C.Obj}, P X → P Y → P (X ⊗ Y))
+    (hretract : ∀ {X Y : Center C.Obj}, Retract X Y → P Y → P X)
+    (W : Center C.Obj) (hW : MTC.Center.ProductRetract W) : P W := by
+  obtain ⟨X, Y, ⟨r⟩⟩ := hW
+  exact hretract r (htensor (hpositive X) (hnegative Y))
+
 end MTC.Center.Normalization
 end
