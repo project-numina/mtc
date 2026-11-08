@@ -10,6 +10,7 @@ public import MTC.Algebra.PowerBound
 public import MTC.AnyonAtlas.Raw
 public import MTC.AnyonAtlas.Sample
 public import MTC.Braided.BraidAlgebra
+public import MTC.Braided.Cabling.ClosureBlockInduction
 public import MTC.Braided.Cabling.ClosureBlockWord
 public import MTC.Braided.Cabling.ClosureCrossing
 public import MTC.Braided.Cabling.ClosureFlatten
@@ -19,8 +20,10 @@ public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosureInsertion
 public import MTC.Braided.Cabling.ClosureIsoWord
 public import MTC.Braided.Cabling.ClosurePure
+public import MTC.Braided.Cabling.ClosureRectangular
 public import MTC.Braided.Cabling.ClosureSweep
 public import MTC.Braided.Cabling.ClosureSweepContext
+public import MTC.Braided.Cabling.ClosureTwoRow
 public import MTC.Braided.Cabling.ClosureUnit
 public import MTC.Braided.Cabling.Generated
 public import MTC.Braided.Cabling.Naturality
@@ -104,10 +107,13 @@ public import MTC.Center.Induction.SecondTriangle
 public import MTC.Center.Modular.TransparencyCriterion
 public import MTC.Center.Modular.Vafa
 public import MTC.Center.Normalization.AdjointDegrees
+public import MTC.Center.Normalization.AdjointQuotient
+public import MTC.Center.Normalization.AdjointRelation
 public import MTC.Center.Normalization.CharacterExtension
 public import MTC.Center.Normalization.CommonCentralizer
 public import MTC.Center.Normalization.FPPlacement
 public import MTC.Center.Normalization.GradingTwist
+public import MTC.Center.Normalization.MugerAdjointNormalization
 public import MTC.Center.Normalization.MugerLabels
 public import MTC.Center.Normalization.PivotalTwist
 public import MTC.Center.Normalization.ScalarFusionCharacter
@@ -171,6 +177,7 @@ public import MTC.Modular.Verlinde
 public import MTC.PropertyF.Audit.DependencyAudit
 public import MTC.PropertyF.Audit.ProjectAudit
 public import MTC.PropertyF.Audit.TargetAudit
+public import MTC.PropertyF.Pivotal.CenterAdjointReduction
 public import MTC.PropertyF.Pivotal.CenterReduction
 public import MTC.PropertyF.Pivotal.Centralizer
 public import MTC.PropertyF.Pivotal.FPGlobalDimension
