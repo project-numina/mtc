@@ -39,5 +39,31 @@ theorem character_extend_along {A B : Type*} [Group A] [CommGroup B] [Finite B]
   rw [heq]
   rfl
 
+/-- A positive real value of a character of a finite group is one. -/
+theorem character_eq_one_of_positive {A : Type*} [Group A] [Finite A]
+    (η : A →* ℂˣ) (a : A) {r : ℝ} (hr : 0 < r) (hval : (η a : ℂ) = r) :
+    η a = 1 := by
+  obtain ⟨n, hn, hpow⟩ := (isOfFinOrder_of_finite a).exists_pow_eq_one
+  have hz : (r : ℂ) ^ n = 1 := by
+    have h := congrArg (fun b : A => (η b : ℂ)) hpow
+    simpa only [map_pow, map_one, Units.val_pow_eq_pow_val, Units.val_one, hval] using h
+  have hrpow : r ^ n = 1 := by
+    apply Complex.ofReal_injective
+    simpa only [Complex.ofReal_pow, Complex.ofReal_one] using hz
+  have hrone := (pow_eq_one_iff_of_nonneg hr.le (ne_of_gt hn)).mp hrpow
+  apply Units.ext
+  simpa [hrone] using hval
+
+/-- The positivity-on-the-kernel form of the finite abelian extension step. -/
+theorem character_extend_along_of_positive_kernel
+    {A B : Type*} [Group A] [Finite A] [CommGroup B] [Finite B]
+    (φ : A →* B) (η : A →* ℂˣ)
+    (hpositive : ∀ a ∈ φ.ker, ∃ r : ℝ, 0 < r ∧ (η a : ℂ) = r) :
+    ∃ ψ : B →* ℂˣ, ψ.comp φ = η := by
+  apply character_extend_along φ η
+  intro a ha
+  obtain ⟨r, hr, hval⟩ := hpositive a ha
+  exact MonoidHom.mem_ker.mpr (character_eq_one_of_positive η a hr hval)
+
 end MTC.Center.Normalization
 end
