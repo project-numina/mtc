@@ -20,6 +20,8 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Braided.Cabling.ClosureFour
+import all MTC.PropertyF.Pivotal.NondegeneracyConverse
 import all MTC.Center.Normalization.MugerLabels
 import all MTC.Braided.Cabling.ClosureBlockWord
 import all MTC.Braided.Cabling.ClosureIsoWord

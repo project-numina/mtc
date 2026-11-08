@@ -13,6 +13,7 @@ public import MTC.Braided.BraidAlgebra
 public import MTC.Braided.Cabling.ClosureBlockWord
 public import MTC.Braided.Cabling.ClosureCrossing
 public import MTC.Braided.Cabling.ClosureFlatten
+public import MTC.Braided.Cabling.ClosureFour
 public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosureInsertion
 public import MTC.Braided.Cabling.ClosureIsoWord
@@ -172,6 +173,7 @@ public import MTC.PropertyF.Pivotal.FPObject
 public import MTC.PropertyF.Pivotal.Galois
 public import MTC.PropertyF.Pivotal.InfiniteImages
 public import MTC.PropertyF.Pivotal.Nondegeneracy
+public import MTC.PropertyF.Pivotal.NondegeneracyConverse
 public import MTC.PropertyF.Pivotal.Nondegenerate
 public import MTC.PropertyF.Pivotal.SOrthogonality
 public import MTC.PropertyF.Pivotal.SScalarTwist
