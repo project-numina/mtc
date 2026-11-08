@@ -135,6 +135,8 @@ public import MTC.Modular.Verlinde
 public import MTC.PropertyF.Audit.DependencyAudit
 public import MTC.PropertyF.Audit.ProjectAudit
 public import MTC.PropertyF.Audit.TargetAudit
+public import MTC.PropertyF.Pivotal.FPObject
+public import MTC.PropertyF.Pivotal.SOrthogonality
 public import MTC.PropertyF.PseudoUnitary
 public import MTC.PropertyF.Reduction.ActualCenterReduction
 public import MTC.PropertyF.Reduction.CharacterReality

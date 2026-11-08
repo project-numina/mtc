@@ -19,3 +19,29 @@ conjecture, for a class that includes all unitary modular tensor categories.
 | Theorem 1.1 (`thm:main` in the full manuscript) | `MTC.PropertyF.weaklyIntegral_of_propertyF` | [MTC/PropertyF/Theorem.lean](../../MTC/PropertyF/Theorem.lean) |
 | Definitions used in the statement | `MTC.PropertyF.TargetStatement` | [MTC/PropertyF/Statement.lean](../../MTC/PropertyF/Statement.lean) |
 | Consequences for pseudo-unitary categories | | [MTC/PropertyF/PseudoUnitary.lean](../../MTC/PropertyF/PseudoUnitary.lean) |
+
+## Later pivotal manuscript
+
+[property-f-pivotal-simplified.tex](property-f-pivotal-simplified.tex) is the later manuscript
+“Property F implies weak integrality” dated October 22, 2026. It is distinct from the
+October 22 PDF listed above: its main theorem treats nondegenerate **pivotal** braided fusion
+categories, without assuming a pseudo-unitary conjugate. The source was supplied as Slack file
+`F0CDCTLCP7S` (posted October 27, 2026); the supplied context identifies it with the title and
+date of the latest PDF in the November 8 thread. SHA-256:
+`eeaebf94753d7d98a216a3e2e0e9faa37b2d024222adf433c66b2b750093d10f`.
+The repository's earlier October 22 PDF has a different abstract and main theorem and is
+preserved unchanged.
+
+The existing theorem above formalizes the weak-integrality conclusion under the stronger
+pseudo-unitary-conjugate hypothesis. It does **not** establish the new pivotal manuscript's
+main theorem, its degenerate extension, normalization or closure lemmas, or its objectwise
+conclusion. The table below tracks the new manuscript independently.
+
+| Later manuscript result | Current Lean coverage |
+|---|---|
+| Proposition 2.1 (`prop:FPobject`) | `MTC.PropertyF.Pivotal.existsUnique_fp_column` and `fp_column_dimension_identity` prove the unique FP column and its norm identity for any pivotal structure with invertible categorical S matrix. Identification with intrinsic global dimension and equivalence with categorical nondegeneracy remain outstanding. |
+| Trace bound and saturation (`lem:trace`, `lem:saturation`) | In progress; the existing positive spherical trace results do not cover the general pivotal statement. |
+| Nondegenerate proposition and main theorem (`prop:nondeg`, `thm:main`) | Not formalized. |
+| Centre and normalization lemmas, degenerate theorem (`lem:centre`, `lem:normalise`, `thm:degenerate`) | Not formalized. |
+| Pseudo-unitary-conjugate corollary (`cor:pu`) | The existing `weaklyIntegral_of_propertyF` proves weak integrality under this hypothesis; the additional pseudo-unitarity conclusion is not yet established here. |
+| Closure lemma and eventual objectwise infinite images (`lem:closure`, `cor:object`) | Not formalized. |
