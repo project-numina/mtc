@@ -217,6 +217,7 @@ public import MTC.PropertyF.Pivotal.Galois
 public import MTC.PropertyF.Pivotal.GaloisDimensionTransport
 public import MTC.PropertyF.Pivotal.GaloisDual
 public import MTC.PropertyF.Pivotal.GaloisUnitScalar
+public import MTC.PropertyF.Pivotal.GeneratedCategory
 public import MTC.PropertyF.Pivotal.InfiniteImages
 public import MTC.PropertyF.Pivotal.MonoidalDual
 public import MTC.PropertyF.Pivotal.MonoidalDualComparison
