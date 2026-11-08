@@ -110,5 +110,40 @@ theorem coloredGenerator_natural : ∀ (n : ℕ) (i : Fin (n + 1))
       simp only [tensorHom_comp_tensorHom, Category.id_comp, Category.comp_id]
       rw [ih j (fun k => f k.succ)]
 
+/-- The inverse crossing uses the opposite colored crossing on swapped inputs. -/
+def coloredLetter (n : ℕ) (i : Fin (n + 1)) (positive : Bool) (X : Fin (n + 2) → C) :
+    coloredTensor (n + 2) X ≅ coloredTensor (n + 2) (fun j => X (coloredSwap n i j)) := by
+  cases positive
+  · refine eqToIso ?_ ≪≫ (coloredGenerator n i (fun j => X (coloredSwap n i j))).symm
+    congr 1
+    funext j
+    simp [coloredSwap_eq_swap]
+  · exact coloredGenerator n i X
+
+/-- The target-strand permutation of a concrete signed adjacent word. -/
+def coloredWordSwap (n : ℕ) : List (Fin (n + 1) × Bool) → Fin (n + 2) → Fin (n + 2)
+  | [] => id
+  | a :: w => fun j => coloredSwap n a.1 (coloredWordSwap n w j)
+
+/-- Evaluate a concrete signed word as actual heterogeneous categorical crossings. -/
+def coloredWordIso (n : ℕ) : ∀ (w : List (Fin (n + 1) × Bool)) (X : Fin (n + 2) → C),
+    coloredTensor (n + 2) X ≅ coloredTensor (n + 2) (fun j => X (coloredWordSwap n w j))
+  | [], X => Iso.refl _
+  | a :: w, X => coloredLetter n a.1 a.2 X ≪≫
+      coloredWordIso n w (fun j => X (coloredSwap n a.1 j))
+
+/-- The colored-word endpoint is the actual strand permutation of the word. -/
+theorem coloredWordSwap_eq_strandPermutation (n : ℕ)
+    (w : List (Fin (n + 1) × Bool)) :
+    coloredWordSwap n w = strandPermutation n (FreeGroup.mk w) := by
+  induction w with
+  | nil => funext j; simp [coloredWordSwap, strandPermutation]
+  | cons a w ih =>
+    funext j
+    cases a with
+    | mk i b =>
+      cases b <;> simp [coloredWordSwap, coloredSwap_eq_swap, strandPermutation,
+        FreeGroup.lift_mk, ih, Equiv.Perm.mul_apply]
+
 end MTC.Braided.Cabling
 end
