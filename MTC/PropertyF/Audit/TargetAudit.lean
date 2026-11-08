@@ -20,6 +20,7 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.PropertyF.Pivotal.MonoidalDualComparison
 import all MTC.Center.Normalization.BinomialAnalytic
 import all MTC.Center.Normalization.SymmetricRising
 import all MTC.PropertyF.Pivotal.MonoidalDual
