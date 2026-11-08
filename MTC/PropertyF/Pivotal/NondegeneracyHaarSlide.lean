@@ -50,5 +50,59 @@ theorem haarRotatedBlock_contraction (U V : C.Obj) (i j : Fin (rank C))
   exact haar_mated_contraction_basis_independent C p U i j b
     (haarRotatedBilinear C p (simples C i) (simples C j) U V β)
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Closing the right X strand of the inclusion mate recovers the first
+Frobenius transpose, with arbitrary Y and U. -/
+theorem haar_inclusion_mate_close (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) :
+    𝟙 ((Yᘁ) ⊗ X) ⊗≫ ((haarInclusionMate C X Y U f) ▷ X) ⊗≫
+      (U ◁ ε_ X (Xᘁ)) ⊗≫ 𝟙 U =
+    𝟙 ((Yᘁ) ⊗ X) ⊗≫ ((Yᘁ) ◁ f) ⊗≫
+      (ε_ Y (Yᘁ) ▷ U) ⊗≫ 𝟙 U := by
+  have h := haarInclusionMate_uncurry C X Y U f
+  dsimp [tensorRightHomLinearEquiv, tensorLeftHomLinearEquiv,
+    tensorRightHomEquiv, tensorLeftHomEquiv] at h
+  convert h using 1 <;> monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Opening the pivotal X cup before the projection mate recovers its
+pivotal Frobenius transpose. -/
+theorem haar_projection_mate_open (X Y U : C.Obj) (g : Y ⊗ U ⟶ X) :
+    𝟙 U ⊗≫ (U ◁ (η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv)) ⊗≫
+      ((haarProjectionMate C p X Y U g) ▷ X) ⊗≫ 𝟙 ((Yᘁ) ⊗ X) =
+    𝟙 U ⊗≫ ((η_ (Yᘁ) ((Yᘁ)ᘁ) ≫ (Yᘁ) ◁ (p.iso Y).inv) ▷ U) ⊗≫
+      ((Yᘁ) ◁ g) ⊗≫ 𝟙 ((Yᘁ) ⊗ X) := by
+  let : ExactPairing (Yᘁ) Y := pivotalLeftPairing C p Y
+  letI : ExactPairing (Xᘁ) X := pivotalLeftPairing C p X
+  have h := haarProjectionMate_curry C p X Y U g
+  dsimp [tensorRightHomLinearEquiv, tensorLeftHomLinearEquiv,
+    tensorRightHomEquiv, tensorLeftHomEquiv] at h
+  rw [pivotalLeftPairing_coevaluation C p X, pivotalLeftPairing_coevaluation C p Y] at h
+  convert h using 1 <;> monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A rotated fusion block is the original pivotal partial-trace summand. -/
+theorem haarRotatedBlock_eq_partialTrace (X Y U V : C.Obj) (β : End (X ⊗ V))
+    (f : X ⟶ Y ⊗ U) (g : Y ⊗ U ⟶ X) :
+    haarRotatedBlock C p X Y U V β (haarInclusionMate C X Y U f)
+      (haarProjectionMate C p X Y U g) =
+    leftPartialTraceHom C p Y (U ⊗ V) (U ⊗ V)
+      ((α_ Y U V).inv ≫ (g ▷ V) ≫ β.asHom ≫ (f ▷ V) ≫ (α_ Y U V).hom) := by
+  calc
+    _ = 𝟙 (U ⊗ V) ⊗≫
+      ((𝟙 U ⊗≫ (U ◁ (η_ (Xᘁ) ((Xᘁ)ᘁ) ≫ (Xᘁ) ◁ (p.iso X).inv)) ⊗≫
+        ((haarProjectionMate C p X Y U g) ▷ X) ⊗≫ 𝟙 ((Yᘁ) ⊗ X)) ▷ V) ⊗≫
+      ((Yᘁ) ◁ β.asHom) ⊗≫
+      ((𝟙 ((Yᘁ) ⊗ X) ⊗≫ ((haarInclusionMate C X Y U f) ▷ X) ⊗≫
+        (U ◁ ε_ X (Xᘁ)) ⊗≫ 𝟙 U) ▷ V) ⊗≫ 𝟙 (U ⊗ V) := by
+          dsimp [haarRotatedBlock]; monoidal
+    _ = 𝟙 (U ⊗ V) ⊗≫
+      ((𝟙 U ⊗≫ ((η_ (Yᘁ) ((Yᘁ)ᘁ) ≫ (Yᘁ) ◁ (p.iso Y).inv) ▷ U) ⊗≫
+        ((Yᘁ) ◁ g) ⊗≫ 𝟙 ((Yᘁ) ⊗ X)) ▷ V) ⊗≫
+      ((Yᘁ) ◁ β.asHom) ⊗≫
+      ((𝟙 ((Yᘁ) ⊗ X) ⊗≫ ((Yᘁ) ◁ f) ⊗≫
+        (ε_ Y (Yᘁ) ▷ U) ⊗≫ 𝟙 U) ▷ V) ⊗≫ 𝟙 (U ⊗ V) := by
+          rw [haar_projection_mate_open, haar_inclusion_mate_close]
+    _ = _ := by dsimp [leftPartialTraceHom]; monoidal
+
 end MTC.PropertyF.Pivotal
 end
