@@ -107,12 +107,53 @@ theorem haarInclusionMate_uncurry (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) :
 /-- Curry the projection mate to recover the pivotal left-dual transpose.
 This is the second exact-pairing snake in the mate construction. -/
 theorem haarProjectionMate_curry (X Y U : C.Obj) (g : Y ⊗ U ⟶ X) :
-    letI : ExactPairing (Yᘁ) Y := pivotalLeftPairing C p Y
+    let : ExactPairing (Yᘁ) Y := pivotalLeftPairing C p Y
     letI : ExactPairing (Xᘁ) X := pivotalLeftPairing C p X
     tensorRightHomLinearEquiv (k := ℂ) U (Xᘁ) X (Yᘁ)
       (haarProjectionMate C p X Y U g) =
         tensorLeftHomLinearEquiv (k := ℂ) U (Yᘁ) Y X g := by
   simp [haarProjectionMate]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A fusion morphism passes through a coevaluation/evaluation pair; this is
+the first boxed snake needed to regroup the Haar trace diagram. -/
+theorem haar_yank_inclusion (X Y U : C.Obj) (f : X ⟶ Y ⊗ U) :
+    𝟙 X ⊗≫ (η_ Y (Yᘁ) ▷ X) ⊗≫
+      (Y ◁ (𝟙 ((Yᘁ) ⊗ X) ⊗≫ ((Yᘁ) ◁ f) ⊗≫
+        (ε_ Y (Yᘁ) ▷ U) ⊗≫ 𝟙 U)) ⊗≫ 𝟙 (Y ⊗ U) = f := by
+  have h := (tensorLeftHomEquiv X Y (Yᘁ) U).apply_symm_apply f
+  dsimp [tensorLeftHomEquiv] at h
+  convert h using 1; monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A projection passes through the transported pivotal cup and cap; this is
+the second boxed snake needed for the Haar trace contraction. -/
+theorem haar_yank_projection (X Y U : C.Obj) (g : Y ⊗ U ⟶ X) :
+    𝟙 (Y ⊗ U) ⊗≫
+      (Y ◁ (𝟙 U ⊗≫
+        ((η_ (Yᘁ) ((Yᘁ)ᘁ) ≫ (Yᘁ) ◁ (p.iso Y).inv) ▷ U) ⊗≫
+        ((Yᘁ) ◁ g) ⊗≫ 𝟙 ((Yᘁ) ⊗ X))) ⊗≫
+      (((p.iso Y).hom ▷ (Yᘁ) ≫ ε_ (Yᘁ) ((Yᘁ)ᘁ)) ▷ X) ⊗≫ 𝟙 X = g := by
+  let : ExactPairing (Yᘁ) Y := pivotalLeftPairing C p Y
+  have h := (tensorLeftHomEquiv U (Yᘁ) Y X).symm_apply_apply g
+  dsimp [tensorLeftHomEquiv] at h
+  rw [pivotalLeftPairing_coevaluation C p Y, pivotalLeftPairing_evaluation C p Y] at h
+  convert h using 1; monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Two independent duality cups exchange without changing their pairing.
+This is the first interchange used to bring the two Haar snakes together. -/
+theorem haar_coevaluation_exchange (X Y : C.Obj) :
+    η_ X (Xᘁ) ⊗≫ (η_ Y (Yᘁ) ▷ (X ⊗ (Xᘁ))) =
+      η_ Y (Yᘁ) ⊗≫ ((Y ⊗ (Yᘁ)) ◁ η_ X (Xᘁ)) := by
+  calc
+    _ = 𝟙 (𝟙_ C.Obj) ⊗≫
+        ((𝟙_ C.Obj ◁ η_ X (Xᘁ)) ≫ (η_ Y (Yᘁ) ▷ (X ⊗ (Xᘁ)))) ⊗≫ 𝟙 _ := by
+          monoidal
+    _ = 𝟙 (𝟙_ C.Obj) ⊗≫
+        ((η_ Y (Yᘁ) ▷ (𝟙_ C.Obj)) ≫ ((Y ⊗ (Yᘁ)) ◁ η_ X (Xᘁ))) ⊗≫ 𝟙 _ := by
+          rw [← whisker_exchange]
+    _ = _ := by monoidal
 
 end MTC.PropertyF.Pivotal
 end
