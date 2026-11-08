@@ -104,5 +104,59 @@ theorem haarRotatedBlock_eq_partialTrace (X Y U V : C.Obj) (β : End (X ⊗ V))
           rw [haar_projection_mate_open, haar_inclusion_mate_close]
     _ = _ := by dsimp [leftPartialTraceHom]; monoidal
 
+/-- Standard simple inclusions transported to the chosen right dual. -/
+def haarDualLabelBasis (T : C.Obj) (j : Fin (rank C)) :
+    Module.Basis (Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T))) ℂ
+      (((simples C j)ᘁ) ⟶ T) :=
+  (simpleInclusionBasis C T (dualIndex C j)).map
+    (Linear.homCongr ℂ (rightDualLabelIso C j).symm (Iso.refl T))
+
+/-- Standard simple projections transported from the chosen label to its actual dual. -/
+def haarDualLabelProjection (T : C.Obj) (j : Fin (rank C))
+    (a : Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T))) :
+    T ⟶ ((simples C j)ᘁ) :=
+  MTC.Center.Induction.simpleProjection T (dualIndex C j) a ≫ (rightDualLabelIso C j).inv
+
+/-- Transported projections are dual to the transported inclusion basis. -/
+theorem haarDualLabelProjection_dual (T : C.Obj) (j : Fin (rank C))
+    (a : Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T))) :
+    simpleHomPairingEquiv ((simples C j)ᘁ) T (haarDualLabelProjection C T j a) =
+      (haarDualLabelBasis C T j).dualBasis a := by
+  classical
+  apply (haarDualLabelBasis C T j).ext
+  intro b
+  simp [haarDualLabelBasis, haarDualLabelProjection, simpleHomPairingEquiv,
+    simpleHomPairing, simpleInclusionBasis_apply, Linear.homCongr_apply,
+    Module.Basis.dualBasis_apply] 
+  simp only [Linear.homCongr_symm_apply, Iso.symm_hom, Iso.refl_inv, Category.comp_id,
+    Category.assoc, Iso.inv_hom_id_assoc, Module.Basis.repr_self, Finsupp.single_apply]
+  conv_rhs => rw [← simpleInclusionBasis_apply C T (dualIndex C j) b, Module.Basis.repr_self]
+  simp only [Finsupp.single_apply]
+  by_cases hab : b = a
+  · subst b
+    simp [← Category.assoc, simpleInclusion_projection]
+    rfl
+  · have hz : simpleInclusion C T (dualIndex C j) b ≫
+        simpleProjection T (dualIndex C j) a = 0 := by
+      simp [simpleInclusion, simpleProjection, Category.assoc, hab]
+    simp [← Category.assoc, hz, hab, eq_comm]
+
+/-- Reindex a mated contraction using the standard basis at the dual label. -/
+theorem haarRotatedBlock_dualLabel_contraction (U V : C.Obj) (i j : Fin (rank C))
+    (β : End (simples C i ⊗ V)) :
+    (∑ a, haarRotatedBlock C p (simples C i) (simples C j) U V β
+      (haarInclusionMate C (simples C i) (simples C j) U
+        (simpleInclusion C (simples C j ⊗ U) i a))
+      (simpleDimension C p j • haarProjectionMate C p (simples C i) (simples C j) U
+        (pivotalTraceDualProjection C p (simples C j ⊗ U) i a))) =
+    ∑ a, haarRotatedBlock C p (simples C i) (simples C j) U V β
+      (haarDualLabelBasis C (U ⊗ ((simples C i)ᘁ)) j a)
+      (haarDualLabelProjection C (U ⊗ ((simples C i)ᘁ)) j a) := by
+  classical
+  have h := haarRotatedBlock_contraction C p U V i j
+    (haarDualLabelBasis C (U ⊗ ((simples C i)ᘁ)) j) β
+  simp_rw [← haarDualLabelProjection_dual] at h
+  simpa using h
+
 end MTC.PropertyF.Pivotal
 end
