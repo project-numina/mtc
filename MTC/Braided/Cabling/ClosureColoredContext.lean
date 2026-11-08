@@ -82,3 +82,32 @@ theorem leftTripleCross_eq (X : C) (a b t : ℕ) [BraidedCategory C] :
     tensorIso_hom, tensorIso_inv, Iso.refl_hom, Iso.refl_inv, tensorHom_id,
     Category.assoc]
   monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Flatten a tuple by first flattening its suffix and then its three blocks. -/
+theorem heterogeneousPowerFlatten_head_two (X : C) (n : ℕ) (k : Fin (n+2) → ℕ) :
+    heterogeneousPowerFlatten X (n+2) k =
+      (Iso.refl (tensorPower X (k 0)) ⊗ᵢ
+        (Iso.refl (tensorPower X (k 1)) ⊗ᵢ
+          heterogeneousPowerFlatten X n (fun i => k i.succ.succ))) ≪≫
+        rightTripleFlatten X (k 0) (k 1)
+          (heterogeneousStrandCount n (fun i => k i.succ.succ)) := by
+  apply Iso.ext
+  simp only [heterogeneousPowerFlatten, heterogeneousStrandCount, rightTripleFlatten,
+    Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom, whiskerLeft_comp, Category.assoc]
+  congr 1
+
+/-- The zeroth colored generator braids the first two colors and fixes the tail. -/
+theorem coloredGenerator_zero (n : ℕ) [BraidedCategory C] (F : Fin (n+2) → C) :
+    Cabling.coloredGenerator n 0 F ≍
+      (α_ (F 0) (F 1) (Cabling.coloredTensor n (fun i => F i.succ.succ))).symm ≪≫
+      ((β_ (F 0) (F 1)) ⊗ᵢ Iso.refl _) ≪≫
+      (α_ (F 1) (F 0) (Cabling.coloredTensor n (fun i => F i.succ.succ))) := by
+  cases n <;> rfl
+
+/-- The zeroth swap fixes every color in its suffix. -/
+theorem coloredSwap_zero_tail (n : ℕ) (i : Fin n) :
+    Cabling.coloredSwap n 0 i.succ.succ = i.succ.succ := by
+  cases n with
+  | zero => exact Fin.elim0 i
+  | succ n => rfl
