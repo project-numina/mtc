@@ -24,6 +24,7 @@ public import MTC.Braided.Cabling.ClosureFlatten
 public import MTC.Braided.Cabling.ClosureFlattenCoherence
 public import MTC.Braided.Cabling.ClosureFlattenCompare
 public import MTC.Braided.Cabling.ClosureFlattenConcat
+public import MTC.Braided.Cabling.ClosureFlattenLocalCompare
 public import MTC.Braided.Cabling.ClosureFlattenUnit
 public import MTC.Braided.Cabling.ClosureFour
 public import MTC.Braided.Cabling.ClosureFourTail
@@ -230,6 +231,7 @@ public import MTC.PropertyF.Audit.TargetAudit
 public import MTC.PropertyF.Pivotal.AdjointObjects
 public import MTC.PropertyF.Pivotal.AdjointObjectsSupport
 public import MTC.PropertyF.Pivotal.CenterAdjointReduction
+public import MTC.PropertyF.Pivotal.CenterGenerated
 public import MTC.PropertyF.Pivotal.CenterLemma
 public import MTC.PropertyF.Pivotal.CenterNondegenerate
 public import MTC.PropertyF.Pivotal.CenterReduction

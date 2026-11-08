@@ -25,6 +25,8 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.ClosureFlattenLocalCompare
+import all MTC.PropertyF.Pivotal.CenterGenerated
 import all MTC.Braided.Cabling.PureSumColored
 import all MTC.Center.Normalization.ProductGenerator
 import all MTC.Center.Normalization.ActualDoubleCentralizer
