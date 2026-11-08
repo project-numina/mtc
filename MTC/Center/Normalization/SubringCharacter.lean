@@ -20,6 +20,29 @@ universe v u
 variable {C : BraidedFusionCategory.{v,u}} {A : Finset (Fin (rank C))}
 variable (hA : IsFusionSubring C A)
 
+/-- Any unit-valued scalar assignment satisfying subring fusion relations
+defines a character of the subring degree group. -/
+def subringCharacterOfScalars (c : A → ℂˣ)
+    (hu : c ⟨unitIndex C, hA.unit⟩ = 1)
+    (hmul : ∀ i j k : A, 0 < fusionCoeff C i j k → c k = c i * c j) :
+    Multiplicative (SubringDegreeGroup hA) →* ℂˣ :=
+  AddMonoidHom.toMultiplicative <|
+    subringDegreeLift hA (fun i ↦ Additive.ofMul (c i))
+      (by change c ⟨unitIndex C, hA.unit⟩ = 1; exact hu)
+      (fun i j k h ↦ by change c k = c i * c j; exact hmul i j k h)
+
+/-- The character induced by compatible scalars recovers each scalar. -/
+theorem subringCharacterOfScalars_apply (c : A → ℂˣ)
+    (hu : c ⟨unitIndex C, hA.unit⟩ = 1)
+    (hmul : ∀ i j k : A, 0 < fusionCoeff C i j k → c k = c i * c j) (i : A) :
+    subringCharacterOfScalars hA c hu hmul (Multiplicative.ofAdd (subringDegree hA i)) = c i := by
+  change subringDegreeLift hA (fun i ↦ Additive.ofMul (c i))
+    (by change c ⟨unitIndex C, hA.unit⟩ = 1; exact hu)
+    (fun i j k h ↦ by change c k = c i * c j; exact hmul i j k h)
+    (subringDegree hA i) = _
+  rw [subringDegreeLift_apply]
+  rfl
+
 /-- A subring degree character that is positive on all ambient-neutral simple
 labels extends to a character of the ambient degree group. -/
 theorem subringCharacter_extend_of_positive_neutral
@@ -85,6 +108,22 @@ theorem normalize_pivotal_of_subring_character_and_positive_dimensions
     Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C i))
   refine ⟨r / fpSimple C i, div_pos hr (fpSimple_pos C i), ?_⟩
   rw [Complex.ofReal_div, eq_div_iff hfp, ← hη i, hrval]
+
+/-- Fusion-compatible scalar ratios and positivity on the neutral ambient
+component suffice to normalize the pivotal dimensions on a fusion subring. -/
+theorem normalize_pivotal_of_fusion_scalar_ratios
+    (p : PivotalStructure (C := C.Obj)) (c : A → ℂˣ)
+    (hu : c ⟨unitIndex C, hA.unit⟩ = 1)
+    (hmul : ∀ i j k : A, 0 < fusionCoeff C i j k → c k = c i * c j)
+    (hpositive : ∀ i : A, fusionDegree C i = 0 → ∃ r : ℝ,
+      0 < r ∧ pivotalDimension C p (simples C i) = r)
+    (hc : ∀ i : A, pivotalDimension C p (simples C i) = (c i : ℂ) * (fpSimple C i : ℂ)) :
+    ∃ q : PivotalStructure (C := C.Obj), ∀ i : A,
+      pivotalDimension C q (simples C i) = (fpSimple C i : ℂ) := by
+  apply normalize_pivotal_of_subring_character_and_positive_dimensions hA p
+    (subringCharacterOfScalars hA c hu hmul) hpositive
+  intro i
+  simpa only [subringCharacterOfScalars_apply] using hc i
 
 end MTC.Center.Normalization
 end

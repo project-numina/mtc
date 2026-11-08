@@ -102,5 +102,36 @@ theorem subringDegreeToAmbient_kernel_iff (g : SubringDegreeGroup hA) :
   · rintro ⟨i, rfl, hi⟩
     simpa [subringDegreeToAmbient_apply] using hi
 
+/-- A degree assignment on the subring's simple labels that obeys the fusion
+relations induces a homomorphism from its degree group. -/
+def subringDegreeLift {G : Type*} [AddCommGroup G] (d : A → G)
+    (hu : d ⟨unitIndex C, hA.unit⟩ = 0)
+    (hmul : ∀ i j k : A, 0 < fusionCoeff C i j k → d k = d i + d j) :
+    SubringDegreeGroup hA →+ G :=
+  QuotientAddGroup.lift _ (FreeAbelianGroup.lift d) <| by
+    apply (AddSubgroup.closure_le _).mpr
+    rintro x (hx | ⟨i, j, k, h, rfl⟩)
+    · subst x
+      simp [hu]
+    · simp [hmul i j k h]
+
+/-- The induced subring homomorphism recovers the assigned simple degrees. -/
+theorem subringDegreeLift_apply {G : Type*} [AddCommGroup G] (d : A → G)
+    (hu : d ⟨unitIndex C, hA.unit⟩ = 0)
+    (hmul : ∀ i j k : A, 0 < fusionCoeff C i j k → d k = d i + d j) (i : A) :
+    subringDegreeLift hA d hu hmul (subringDegree hA i) = d i := by
+  simp [subringDegreeLift, subringDegree]
+
+/-- The induced homomorphism is unique. -/
+theorem subringDegreeLift_unique {G : Type*} [AddCommGroup G] (d : A → G)
+    (hu : d ⟨unitIndex C, hA.unit⟩ = 0)
+    (hmul : ∀ i j k : A, 0 < fusionCoeff C i j k → d k = d i + d j)
+    (f : SubringDegreeGroup hA →+ G) (hf : ∀ i, f (subringDegree hA i) = d i) :
+    f = subringDegreeLift hA d hu hmul := by
+  apply AddMonoidHom.ext
+  intro x
+  obtain ⟨i, rfl⟩ := subringDegree_surjective hA x
+  rw [hf, subringDegreeLift_apply]
+
 end MTC.Center.Normalization
 end
