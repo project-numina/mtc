@@ -2,6 +2,7 @@ module
 public import MTC.PropertyF.Pivotal.Nondegeneracy
 public import MTC.Center.Trace.LeftTensorTrace
 public import MTC.PropertyF.Pivotal.SlopeTrace
+public import MTC.Center.Induction.BasisPairing
 
 open MTC.Fusion MTC.Modular MTC.CategoryTheory.Dimensions MTC.Center.Trace
 open scoped BigOperators
@@ -258,6 +259,63 @@ theorem monodromyHaar_of_sTest (U : C.Obj) (k : Fin (rank C))
   rw [monodromyHaar_factor, monodromyHaarVacuum_of_sTest C p k hs]
   simp [doubleBraiding, MonoidalLinear.smul_whiskerRight, Linear.comp_smul,
     Linear.smul_comp]
+
+/-- The actual Haar loop at the tensor unit is its vacuum value,
+transported along the left unitor. -/
+theorem monodromyHaar_unit (V : C.Obj) :
+    (monodromyHaar C p (𝟙_ C.Obj) V).asHom =
+      (λ_ V).hom ≫ (monodromyHaarVacuum C p V).asHom ≫ (λ_ V).inv := by
+  rw [monodromyHaar_factor]
+  simp only [braiding_tensorUnit_left, braiding_tensorUnit_right, Category.assoc]
+  rw [rightUnitor_naturality_assoc, Iso.inv_hom_id_assoc]
+
+/-- Canonical inclusions and projections pair by a Kronecker delta,
+with the actual simple pivotal dimension as normalization. -/
+theorem pivotalTrace_simpleInclusion_projection (X : C.Obj) (i : Fin (rank C))
+    (a b : Fin (Module.finrank ℂ (simples C i ⟶ X))) :
+    unitScalar C (p.rightTrace (simpleInclusion C X i a ≫
+      MTC.Center.Induction.simpleProjection X i b)) =
+      if a = b then simpleDimension C p i else 0 := by
+  classical
+  by_cases hab : a = b
+  · subst b
+    rw [MTC.Center.Induction.simpleInclusion_projection]
+    simp [simpleDimension, pivotalDimension]
+  · have hzero : simpleInclusion C X i a ≫
+        MTC.Center.Induction.simpleProjection X i b = 0 := by
+      simp [simpleInclusion, MTC.Center.Induction.simpleProjection,
+        Category.assoc, hab]
+    rw [hzero]
+    have hz : p.rightTrace (0 : simples C i ⟶ simples C i) = 0 :=
+      (rightTraceWithLinear (k := ℂ) (p.iso (simples C i))).map_zero
+    simp [hab, hz, unitScalar_eq_equiv]
+
+/-- Projection normalized to be dual to the corresponding inclusion for
+the actual pivotal trace pairing. -/
+def pivotalTraceDualProjection (X : C.Obj) (i : Fin (rank C))
+    (a : Fin (Module.finrank ℂ (simples C i ⟶ X))) : X ⟶ simples C i :=
+  (simpleDimension C p i)⁻¹ • MTC.Center.Induction.simpleProjection X i a
+
+/-- The normalized projections form the trace-dual basis to the canonical
+inclusions. -/
+theorem pivotalTrace_dual_basis (X : C.Obj) (i : Fin (rank C))
+    (a b : Fin (Module.finrank ℂ (simples C i ⟶ X))) :
+    unitScalar C (p.rightTrace (simpleInclusion C X i a ≫
+      pivotalTraceDualProjection C p X i b)) = if a = b then 1 else 0 := by
+  classical
+  rw [pivotalTraceDualProjection, Linear.comp_smul, PivotalStructure.rightTrace_smul,
+    unitScalar_eq_equiv, map_smul, smul_eq_mul, ← unitScalar_eq_equiv,
+    pivotalTrace_simpleInclusion_projection]
+  split_ifs <;> simp [simpleDimension_ne_zero C p i]
+
+/-- The weighted trace-dual bases resolve the identity on every object. -/
+theorem pivotalTrace_dual_basis_complete (X : C.Obj) :
+    (∑ q : simplePieces C X, simpleDimension C p q.1 •
+      (pivotalTraceDualProjection C p X q.1 q.2 ≫ simpleInclusion C X q.1 q.2)) = 𝟙 X := by
+  classical
+  simp only [pivotalTraceDualProjection, Linear.smul_comp, smul_smul,
+    mul_inv_cancel₀ (simpleDimension_ne_zero C p _), one_smul]
+  exact MTC.Center.Induction.simple_completeness C X
 
 end MTC.PropertyF.Pivotal
 end
