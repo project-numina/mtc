@@ -140,8 +140,10 @@ public import MTC.Center.Normalization.MugerConditional
 public import MTC.Center.Normalization.MugerFPConditional
 public import MTC.Center.Normalization.MugerFPIntegral
 public import MTC.Center.Normalization.MugerLabels
+public import MTC.Center.Normalization.MugerNormalization
 public import MTC.Center.Normalization.MugerObjectNormalization
 public import MTC.Center.Normalization.PivotalTwist
+public import MTC.Center.Normalization.PositiveSubring
 public import MTC.Center.Normalization.ScalarFusionCharacter
 public import MTC.Center.Normalization.SubringCharacter
 public import MTC.Center.Normalization.SubringGrading

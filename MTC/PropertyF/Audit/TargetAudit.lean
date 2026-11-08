@@ -20,6 +20,8 @@ public meta import MTC.PropertyF.Audit.DependencyAudit
 
 
 
+import all MTC.Center.Normalization.MugerNormalization
+import all MTC.Center.Normalization.PositiveSubring
 import all MTC.PropertyF.Pivotal.DegenerateConsequences
 import all MTC.PropertyF.Pivotal.NondegeneracyHaarSlide
 import all MTC.PropertyF.Pivotal.NormalizedScalarTwist

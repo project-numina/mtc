@@ -2,6 +2,7 @@ module
 public import MTC.PropertyF.Pivotal.CenterAdjointReduction
 public import MTC.PropertyF.Pivotal.ConjugateCorollary
 public import MTC.PropertyF.PseudoUnitary
+public import MTC.Center.Normalization.PositiveSubring
 
 /-! # Consequences of the pivotal centre reduction
 
@@ -14,6 +15,13 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 open MTC.Fusion MTC.Modular MTC.Braided MTC.CategoryTheory.Dimensions
 namespace MTC.PropertyF.Pivotal
 universe v u
+
+/-- The manuscript's normalization lemma holds with exactly its stated
+transparent-adjoint positivity hypothesis. -/
+theorem normalizationStatement_proved : NormalizationStatement.{v,u} := by
+  intro C p hpositive
+  exact MTC.Center.Normalization.normalize_pivotal_on_muger_of_adjoint_positivity_unconditional
+    C p hpositive
 
 /-- Property F upgrades pseudo-unitarity to all Galois conjugates and weak
 integrality. -/
@@ -47,6 +55,24 @@ theorem degenerate_conclusions_of_center_criteria
       WeaklyIntegral (globalFPDimension C) :=
   all_conclusions_of_pseudoUnitary_of_propertyF C
     (pseudoUnitary_of_adjoint_positivity_and_center_criteria C p hpositive hsat hdet hcriterion hF) hF
+
+/-- The complete degenerate conclusion from adjoint positivity and property F,
+conditional on the two centre S-matrix criteria alone. -/
+theorem degenerate_conclusions_of_S_criteria
+    (p : PivotalStructure (C := C.Obj))
+    (hpositive : PositiveOnTransparentAdjoint C p)
+    (hdet : ∀ pZ : PivotalStructure (C := (MTC.PropertyF.Reduction.bundledCenter C).Obj),
+      (categoricalS Z pZ).det ≠ 0)
+    (hcriterion : ∀ (pZ : PivotalStructure (C := (MTC.PropertyF.Reduction.bundledCenter C).Obj))
+      (a : Fin (rank Z)) (_ha : a ∈ MTC.Center.Braid.imageLabels C)
+      (y : Fin (rank Z)), sCentralizes Z pZ a y →
+        doubleBraiding (simples Z a) (simples Z y) = 𝟙 _)
+    (hF : HasPropertyF C.Obj) :
+    PseudoUnitary C ∧ AllGaloisConjugatesPseudoUnitary C ∧
+      WeaklyIntegral (globalFPDimension C) :=
+  degenerate_conclusions_of_center_criteria C p hpositive
+    (MTC.Center.Normalization.transparent_norm_saturation_of_adjoint_positivity C p hpositive)
+    hdet hcriterion hF
 
 end MTC.PropertyF.Pivotal
 end
