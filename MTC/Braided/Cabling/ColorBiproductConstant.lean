@@ -1,10 +1,12 @@
 module
 public import MTC.Braided.Cabling.ColorBiproductFinite
+public import MTC.PropertyF.Pivotal.SymmetricPropertyF
 
 /-! # Homogeneous colored blocks of pure braid actions -/
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+open scoped BigOperators
 namespace MTC.Braided.Cabling
 universe v u
 set_option backward.isDefEq.respectTransparency false
@@ -62,6 +64,34 @@ theorem finite_pureColor_range_of_equal_colors
     (fun j => biproduct.ι_π_self V (f j)) hT
   simpa only [← colorInclusion_eq_coloredBlockInclusion,
     ← colorProjection_eq_coloredBlockProjection] using h
+
+/-- The tensor unit has property F in every braided monoidal category. -/
+theorem tensorUnit_objectPropertyF : ObjectPropertyF (𝟙_ C) := by
+  apply MTC.PropertyF.Pivotal.objectPropertyF_of_selfTransparent
+  simp [MTC.Center.Trace.SelfTransparent]
+  monoidal
+
+/-- If every selected color is the tensor unit, its pure-braid diagonal range
+is finite. This covers the zero-original-strand case. -/
+theorem finite_pureColor_range_of_unit_colors
+    {I : Type} [Fintype I] [DecidableEq I] (V : I → C)
+    (n : ℕ) (f : Fin (n + 2) → I) (hconst : ∀ j, V (f j) = 𝟙_ C) :
+    Set.Finite (Set.range fun h : pureBraidImage (⨁ V) n =>
+      colorInclusion V (n + 2) f ≫ h.val.val.asIso.hom ≫ colorProjection V (n + 2) f) :=
+  finite_pureColor_range_of_equal_colors V n f (𝟙_ C) hconst tensorUnit_objectPropertyF
+
+/-- For a coloring of tensor powers with zero total original strands, the
+actual pure-braid diagonal range is finite. -/
+theorem finite_pureColor_range_of_zero_total
+    {I : Type} [Fintype I] [DecidableEq I] (X : C) (k : I → ℕ)
+    (n : ℕ) (f : Fin (n + 2) → I) (hzero : ∑ j, k (f j) = 0) :
+    Set.Finite (Set.range fun h : pureBraidImage (⨁ (fun i => tensorPower X (k i))) n =>
+      colorInclusion (fun i => tensorPower X (k i)) (n + 2) f ≫ h.val.val.asIso.hom ≫
+        colorProjection (fun i => tensorPower X (k i)) (n + 2) f) := by
+  apply finite_pureColor_range_of_unit_colors (fun i => tensorPower X (k i)) n f
+  intro j
+  have hj : k (f j) = 0 := (Finset.sum_eq_zero_iff.mp hzero) j (Finset.mem_univ j)
+  simp [hj, tensorPower]
 
 end MTC.Braided.Cabling
 end
