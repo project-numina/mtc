@@ -1,5 +1,6 @@
 module
-public import MTC.Center.Normalization.RelativeCentralizer
+public import MTC.Center.Braid.RegularSupport
+public import MTC.CategoryTheory.Dimensions.ENOReciprocity
 
 open MTC.Fusion MTC.Braided MTC.Center.Braid MTC.CategoryTheory.Dimensions
 
