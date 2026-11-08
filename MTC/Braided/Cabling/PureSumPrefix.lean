@@ -2,6 +2,7 @@ module
 public import MTC.Braided.Cabling.PureSumPositiveState
 public import MTC.Braided.Cabling.ClosureInsertionCompare
 public import MTC.Braided.Cabling.ClosureColoredContext
+public import MTC.Braided.Cabling.ClosureColoredFirst
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -160,6 +161,53 @@ theorem coloredPower_succ_prefix_eq (X : C) (n m : ℕ)
   all_goals first
     | exact (hj _ _ htail).trans (iso_trans_eqToIso_heq _ _).symm
     | exact (hj _ _ hswap).trans (iso_trans_eqToIso_heq _ _).symm
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Every positive-width colored crossing is an actual original-strand braid. -/
+theorem coloredPower_positive_mem (X : C) : ∀ (n r : ℕ)
+    (s : ColoredPowerState n (r + 2)), (∀ j, 0 < s.val j) → ∀ i : Fin (n + 1),
+    Aut.of ((coloredPowerStateFlatten X n (r + 2) s).symm ≪≫
+      coloredLetter n i true (fun j => tensorPower X (s.val j)) ≪≫
+      coloredPowerStateFlatten X n (r + 2) (coloredPowerSwap n (r + 2) i s)) ∈
+        braidImage X r := by
+  intro n
+  induction n with
+  | zero =>
+    intro r s hp i
+    have hi : i = 0 := Fin.eq_zero i
+    subst i
+    simpa only [coloredLetter, if_pos] using coloredPower_first_mem X 0 r s (hp 0) (hp 1)
+  | succ n ih =>
+    intro r s hp i
+    refine Fin.cases ?_ (fun j => ?_) i
+    · simpa only [coloredLetter, if_pos] using coloredPower_first_mem X (n + 1) r s (hp 0) (hp 1)
+    · let k := s.val
+      let m := (∑ t : Fin (n + 2), k t.succ) - 2
+      have hge : 2 ≤ ∑ t : Fin (n + 2), k t.succ :=
+        two_le_sum_positive_widths n (fun t => k t.succ) (fun t => hp t.succ)
+      have ht : (∑ t : Fin (n + 2), k t.succ) = m + 2 :=
+        (Nat.sub_add_cancel hge).symm
+      have hf : (∑ t, k t) = r + 2 := s.property
+      have hr : r = m + k 0 := by
+        rw [Fin.sum_univ_succ, ht] at hf
+        omega
+      have hfull : (∑ t, k t) = (m + k 0) + 2 := by omega
+      have hstep : ∀ (r' : ℕ), r' = m + k 0 →
+          ∀ (s' : ColoredPowerState (n + 1) (r' + 2)), s'.val = k →
+          Aut.of ((coloredPowerStateFlatten X (n + 1) (r' + 2) s').symm ≪≫
+            coloredLetter (n + 1) j.succ true (fun j => tensorPower X (s'.val j)) ≪≫
+            coloredPowerStateFlatten X (n + 1) (r' + 2)
+              (coloredPowerSwap (n + 1) (r' + 2) j.succ s')) ∈ braidImage X r' := by
+        intro r' hr' s' hsk
+        subst r'
+        have hs' : s' = ⟨k, hfull⟩ := Subtype.ext hsk
+        subst s'
+        let t : ColoredPowerState n (m + 2) := ⟨fun j => k j.succ, ht⟩
+        have hmem := ih m t (fun j => hp j.succ) j
+        have hprefix := braidImage_prefix_mem X m (k 0) _ hmem
+        rw [coloredPower_succ_prefix_eq X n m j k ht hfull]
+        exact hprefix
+      exact hstep r hr s rfl
 
 end MTC.Braided.Cabling
 end
