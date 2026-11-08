@@ -194,6 +194,7 @@ public import MTC.PropertyF.Audit.TargetAudit
 public import MTC.PropertyF.Pivotal.AdjointObjects
 public import MTC.PropertyF.Pivotal.AdjointObjectsSupport
 public import MTC.PropertyF.Pivotal.CenterAdjointReduction
+public import MTC.PropertyF.Pivotal.CenterNondegenerate
 public import MTC.PropertyF.Pivotal.CenterReduction
 public import MTC.PropertyF.Pivotal.Centralizer
 public import MTC.PropertyF.Pivotal.FPGlobalDimension
