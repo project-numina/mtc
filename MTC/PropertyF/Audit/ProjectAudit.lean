@@ -25,6 +25,7 @@ public import MTC.Braided.Cabling.Strands
 
 
 
+import all MTC.Braided.Cabling.ClosureCanonicalBlocks
 import all MTC.PropertyF.Pivotal.NondegeneracyHaarBasis
 import all MTC.PropertyF.Pivotal.NondegenerateTransport
 import all MTC.Braided.Cabling.ClosureBlockInduction

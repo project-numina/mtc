@@ -12,6 +12,7 @@ public import MTC.AnyonAtlas.Sample
 public import MTC.Braided.BraidAlgebra
 public import MTC.Braided.Cabling.ClosureBlockInduction
 public import MTC.Braided.Cabling.ClosureBlockWord
+public import MTC.Braided.Cabling.ClosureCanonicalBlocks
 public import MTC.Braided.Cabling.ClosureCrossing
 public import MTC.Braided.Cabling.ClosureFlatten
 public import MTC.Braided.Cabling.ClosureFour
