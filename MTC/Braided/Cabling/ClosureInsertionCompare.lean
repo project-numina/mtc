@@ -1,6 +1,7 @@
 module
 public import MTC.Braided.Cabling.ClosureFlattenCompare
 public import MTC.Braided.Cabling.ClosureCommonInterface
+public import MTC.Braided.Cabling.ClosureFlattenUnit
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory
@@ -18,3 +19,43 @@ theorem insertLeftPowerIso_heq_join (X : C) (n : ℕ) : ∀ k,
     have ih := insertLeftPowerIso_heq_join X n k
     congr 2
     all_goals simp [strandSum_eq_add, tensorPower, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
+
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Positive-width block merge is the same canonical join. -/
+theorem sweepBlockMerge_heq_join (X : C) (s r : ℕ) :
+    sweepBlockMerge X s r ≍ joinPowerIso X (s+1) (r+1) := by
+  have hm := sweepBlockMerge_eq_split X s r
+  have hj := joinPowerNormalized_eq_split X r s
+  have hmerge : sweepBlockMerge X s r ≍ (sweepBlockSplit X r s).symm := by
+    rw [hm]
+    exact iso_trans_eqToIso_heq _ _
+  have hjoin : joinPowerIso X (s+1) (r+1) ≍ (sweepBlockSplit X r s).symm := by
+    have h := iso_trans_eqToIso_heq (joinPowerIso X (s+1) (r+1))
+      (congrArg (tensorPower X) (by rw [strandSum_eq_add]; omega :
+        strandSum (s+1) (r+1) = r+s+2))
+    change joinPowerNormalized X r s ≍ joinPowerIso X (s+1) (r+1) at h
+    exact h.symm.trans (heq_of_eq hj)
+  exact hmerge.trans hjoin.symm
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Right insertion of a nonempty block is canonical concatenation. -/
+theorem insertRightPowerIso_succ_heq_join (X : C) (n r : ℕ) :
+    Trace.insertRightPowerIso X n (r+1) ≍ joinPowerIso X (n+2) (r+1) := by
+  rw [insertRightPowerIso_eq_merge]
+  simp only [joinPowerIso]
+  have hm := sweepBlockMerge_heq_join X n r
+  congr 2
+  all_goals try simp [strandSum_eq_add, tensorPower, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
+  all_goals exact hm
+
+
+/-- Right strand insertion is canonical concatenation, also for an empty tail. -/
+theorem insertRightPowerIso_heq_join (X : C) (n : ℕ) : ∀ r,
+    Trace.insertRightPowerIso X n r ≍ joinPowerIso X (n+2) r
+  | 0 => by
+    change ρ_ (tensorPower X (n+2)) ≍ joinPowerIso X (n+2) 0
+    have h := joinPowerIso_heq X (n+2) 0
+    rw [tensorPowerTensorIso_zero] at h
+    exact h.symm
+  | r+1 => insertRightPowerIso_succ_heq_join X n r
