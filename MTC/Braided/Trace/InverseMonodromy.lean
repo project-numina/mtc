@@ -88,10 +88,8 @@ theorem dimension_norm_eq_fp_of_inverse_trace_norm
   rw [norm_div, norm_mul, hinv, norm_pow] at hn
   rw [norm_div, div_eq_iff hd.ne'] at hmax
   rw [hmax, div_eq_iff hd.ne'] at hn
-  have hsq : (MTC.Fusion.fpDimension D X) ^ 2 * ‖pivotalDimension D p X‖ ^ 2 =
-      ‖pivotalDimension D p X‖ ^ 2 * ‖pivotalDimension D p X‖ ^ 2 := by
-    nlinarith [hn]
-  have hsq' := mul_right_cancel₀ (pow_ne_zero 2 hd.ne') hsq
-  nlinarith
+  have hsq : (MTC.Fusion.fpDimension D X) ^ 2 = ‖pivotalDimension D p X‖ ^ 2 :=
+    mul_right_cancel₀ (pow_ne_zero 2 hd.ne') (by nlinarith [hn])
+  exact ((sq_eq_sq₀ hf hd.le).mp hsq).symm
 
 end MTC.Braided.Trace

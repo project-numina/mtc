@@ -46,10 +46,6 @@ theorem actual_mixed_braid_trace_eq_one_of_saturation
   have hbraid : a * c * a = c * a * c := Units.ext (by
     simpa only [a, c, Units.val_mul, MonoidHom.coe_toHomUnits, map_mul] using
       congrArg ρ (three_braid_image_relation X))
-  have hunit : B.IsUnitary ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices) := by
-    simpa only [Units.val_mul, Units.val_pow_eq_pow_val] using
-      (unitary B.Matrices).mul_mem ((unitary B.Matrices).pow_mem ha 2)
-        ((unitary B.Matrices).pow_mem hc 2)
   have hmass : B.complexMass w ≤ ‖pivotalDimension C p X‖ *
       MTC.Fusion.fpDimension C X ^ 2 :=
     B.complexMass_le_of_unitary_trace_bound w (fun u hu => by
@@ -58,6 +54,8 @@ theorem actual_mixed_braid_trace_eq_one_of_saturation
       b (braidInImage (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) := by
     simp only [a, c, ← map_pow, ← map_mul, MonoidHom.coe_toHomUnits]
     rfl
+  have hunit : B.IsUnitary ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices) :=
+    hpos.symm ▸ he _
   have hsat : ‖B.complexTrace w ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices)‖ =
       B.complexMass w := le_antisymm (B.norm_complexTrace_le w hunit) (by
     rw [hpos, ← htr, hvalue]
