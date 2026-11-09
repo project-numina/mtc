@@ -1,6 +1,7 @@
 module
 public import MTC.Fusion.UnitPower
 public import MTC.Braided.Cabling.Naturality
+public import MTC.Braided.Cabling.Generated
 public import MTC.Center.Normalization.MugerLabels
 public import MTC.PropertyF.Pivotal.SymmetricPropertyF
 
@@ -61,12 +62,7 @@ theorem powerSum_retract_positive_of_nonzero (X : C.Obj) (hX : ¬ IsZero X)
     · simpa [l, h, tensorPower] using q
     · simp only [l, if_neg h]
       exact Retract.refl _
-  refine ⟨l, hl, ⟨?_, ?_, ?_⟩⟩
-  · exact biproduct.map fun i => (r i).i
-  · exact biproduct.map fun i => (r i).r
-  · apply biproduct.hom_ext
-    intro i
-    simp [Category.assoc, (r i).retract]
+  exact ⟨l, hl, ⟨MTC.Braided.biproductRetract r⟩⟩
 
 end MTC.PropertyF.Pivotal
 end

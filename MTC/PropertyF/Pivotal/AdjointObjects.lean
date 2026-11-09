@@ -6,7 +6,7 @@ public import MTC.PropertyF.Pivotal.Statement
 /-! # Actual objects in the adjoint tensor closure
 
 This gives one categorical direction of the identification of fusion labels
-with the adjoint subcategory; the reverse direction is a separate obligation.
+with the adjoint subcategory; `AdjointObjectsSupport` proves the reverse direction.
 -/
 
 @[expose] public noncomputable section

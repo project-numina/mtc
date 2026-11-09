@@ -7,7 +7,7 @@ public import MTC.Center.Normalization.PositiveSubring
 /-! # Consequences of the pivotal centre reduction
 
 The centre criteria below are explicit intermediate assumptions. They are not
-part of the manuscript's degenerate theorem and remain to be discharged.
+part of the manuscript's degenerate theorem; `MainTheorems` discharges them.
 -/
 
 @[expose] public noncomputable section
