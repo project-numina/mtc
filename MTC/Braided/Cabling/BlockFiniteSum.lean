@@ -21,16 +21,9 @@ theorem finite_braidImage_biproduct_of_finite_pure_block_ranges (n : ℕ)
     (hfinite : ∀ f : Fin (n+2) → I, Set.Finite (Set.range fun h : pureBraidImage (⨁ V) n =>
       colorInclusion V (n+2) f ≫ h.val.val.asIso.hom ≫ colorProjection V (n+2) f)) :
     Finite (braidImage (⨁ V) n) := by
-  classical
-  apply braidImage_finite_of_pureBraidImage_finite (⨁ V) n
-  let A := pureBraidImage (⨁ V) n
-  let g : A → Aut (tensorPower (⨁ V) (n+2)) := fun h => h.val.val
-  have hg : Function.Injective g := by
-    intro x y h
-    exact Subtype.ext (Subtype.ext h)
-  apply finite_type_of_finite_preserved_blocks
+  apply finite_braidImage_of_finite_actual_pure_blocks (⨁ V) n
     (colorInclusion V (n+2)) (colorProjection V (n+2))
-    (colorProjection_inclusion_total V (n+2)) g hg
+    (colorProjection_inclusion_total V (n+2))
   · intro h f
     have hp := pureBraidImage_preserves_coloredBlock n (fun j => V (f j)) (⨁ V)
       (fun j => biproduct.ι V (f j)) (fun j => biproduct.π V (f j))

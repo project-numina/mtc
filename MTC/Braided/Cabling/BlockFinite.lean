@@ -71,6 +71,25 @@ open scoped BigOperators
 namespace MTC.Braided.Cabling
 universe v u w
 
+/-- A finite family of preserved blocks with finite diagonal ranges makes
+an actual braid image finite. The ranges are taken over the pure braid image,
+not over a chosen set of word representatives. -/
+theorem finite_braidImage_of_finite_actual_pure_blocks
+    {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C] [Preadditive C]
+    {I : Type w} [Fintype I] (Y : C) (n : ℕ) {B : I → C}
+    (ι : ∀ i, B i ⟶ tensorPower Y (n+2))
+    (π : ∀ i, tensorPower Y (n+2) ⟶ B i)
+    (hresolution : (∑ i, π i ≫ ι i) = 𝟙 (tensorPower Y (n+2)))
+    (hpreserve : ∀ (h : pureBraidImage Y n) i,
+      ι i ≫ h.val.val.asIso.hom = (ι i ≫ h.val.val.asIso.hom ≫ π i) ≫ ι i)
+    (hfinite : ∀ i, Set.Finite (Set.range fun h : pureBraidImage Y n =>
+      ι i ≫ h.val.val.asIso.hom ≫ π i)) :
+    Finite (braidImage Y n) := by
+  apply braidImage_finite_of_pureBraidImage_finite Y n
+  exact finite_type_of_finite_preserved_blocks ι π hresolution
+    (fun h : pureBraidImage Y n => h.val.val)
+    (fun _ _ h => Subtype.ext (Subtype.ext h)) hpreserve hfinite
+
 /-- A braid image is finite if its pure words preserve a finite family of
 blocks resolving the identity and have finite diagonal range on each block. -/
 theorem finite_braidImage_of_finite_pure_block_ranges
@@ -85,30 +104,19 @@ theorem finite_braidImage_of_finite_pure_block_ranges
     (hfinite : ∀ i, Set.Finite (Set.range fun w : (strandPermutation n).ker =>
       ι i ≫ ((braidWordAction Y n w.val).val).asIso.hom ≫ π i)) :
     Finite (braidImage Y n) := by
-  classical
-  apply braidImage_finite_of_pureBraidImage_finite Y n
-  let A := pureBraidImage Y n
-  let g : A → Aut (tensorPower Y (n+2)) := fun h => h.val.val
-  have hg : Function.Injective g := by
-    intro x y h
-    exact Subtype.ext (Subtype.ext h)
-  have hrep (h : A) : ∃ w : (strandPermutation n).ker,
-      (braidWordAction Y n w.val).val = g h := by
-    obtain ⟨w, hw, he⟩ := h.property
-    exact ⟨⟨w, hw⟩, congrArg Subtype.val he⟩
-  apply finite_type_of_finite_preserved_blocks ι π hresolution g hg
+  apply finite_braidImage_of_finite_actual_pure_blocks Y n ι π hresolution
   · intro h i
-    obtain ⟨w, hw⟩ := hrep h
-    rw [← hw]
-    exact hpreserve w i
+    obtain ⟨w, hw, he⟩ := h.property
+    have he' := congrArg Subtype.val he
+    rw [← he']
+    exact hpreserve ⟨w, hw⟩ i
   · intro i
     apply (hfinite i).subset
     rintro _ ⟨h, rfl⟩
-    obtain ⟨w, hw⟩ := hrep h
-    refine ⟨w, ?_⟩
-    change ι i ≫ ((braidWordAction Y n w.val).val).asIso.hom ≫ π i =
-      ι i ≫ (g h).asIso.hom ≫ π i
-    rw [hw]
+    obtain ⟨w, hw, he⟩ := h.property
+    refine ⟨⟨w, hw⟩, ?_⟩
+    dsimp only
+    rw [congrArg Subtype.val he]
 
 end MTC.Braided.Cabling
 end

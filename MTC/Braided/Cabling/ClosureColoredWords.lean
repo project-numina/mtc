@@ -55,15 +55,8 @@ theorem coloredPowerStateWord_mem_of_letters (X : C) (n N : ℕ) (G : Subgroup (
         coloredPowerStateWordIso X n N w k ≪≫
         coloredPowerStateFlatten X n N (coloredPowerWordState n N w k)) ∈ G
   | [], k => by
-    have hid : Aut.of ((coloredPowerStateFlatten X n N k).symm ≪≫
-        Iso.refl _ ≪≫ coloredPowerStateFlatten X n N k) = 1 := by
-      apply Aut.ext
-      apply Iso.ext
-      simp
-    change Aut.of ((coloredPowerStateFlatten X n N k).symm ≪≫
-      Iso.refl _ ≪≫ coloredPowerStateFlatten X n N k) ∈ G
-    rw [hid]
-    exact G.one_mem
+    simpa only [coloredPowerStateWordIso, coloredPowerWordState, Iso.refl_trans,
+      Iso.symm_self_id] using (show Aut.of (Iso.refl (tensorPower X N)) ∈ G from G.one_mem)
   | a::w, k => by
     have ha := h k a
     have hw := coloredPowerStateWord_mem_of_letters X n N G h w (coloredPowerSwap n N a.1 k)
