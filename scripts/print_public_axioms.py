@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Print and check axioms of uniquely matched public project source theorems.
+"""Print and check axioms of matched public project source proofs.
 
 Run the fresh style survey first, after building the project. The independent
 kernel-environment audit in check.sh covers every project declaration, including
@@ -25,13 +25,30 @@ def main():
     index = collections.defaultdict(list)
     for d in env:
         index[(d['module'], d['name'].split('.')[-1])].append(d['name'])
+    theorem_names = {(d['module'], d['name']) for d in env if d['kind'] in ('theorem', 'axiom')}
     names, unmatched = set(), []
+    anonymous = collections.defaultdict(list)
+    for d in env:
+        if d['kind'] in ('theorem', 'axiom') and d['name'].split('.')[-1].startswith('inst'):
+            anonymous[d['module']].append(d['name'])
     for path in sorted((ROOT / 'MTC').rglob('*.lean')):
         module = mod(path, ROOT / 'MTC', 'MTC')
-        for d in parse(path, module)['declarations']:
-            if d['kind'] not in ('theorem', 'lemma') or not d['proof_lines']:
+        for d in parse(path, module, include_inline_attributes=True, count_all_proofs=True)['declarations']:
+            if not d['proof_lines']:
                 continue
-            matches = index[(module, d['name'].split('.')[-1])]
+            if d['name'] == '(anonymous)':
+                matches = anonymous[module]
+            else:
+                matches = index[(module, d['name'].split('.')[-1])]
+            # Non-theorem source declarations include data definitions and
+            # ordinary instances. Include only Lean theorem-valued matches.
+            if d['kind'] not in ('theorem', 'lemma'):
+                matches = [n for n in matches if (module, n) in theorem_names]
+                if not matches:
+                    continue
+            if d['name'] == '(anonymous)' and len(matches) > 1:
+                names.update(n for n in matches if not n.startswith('_private.'))
+                continue
             if len(matches) != 1:
                 unmatched.append(f"{d['file']}:{d['line']} {d['name']}")
             elif not matches[0].startswith('_private.'):
@@ -66,7 +83,7 @@ def main():
         if unexpected:
             print(f'{name}: unexpected axioms {sorted(unexpected)}', file=sys.stderr)
             return 1
-    print(f'Explicit axiom outputs checked: {len(names)} public source theorems.')
+    print(f'Explicit axiom outputs checked: {len(names)} public source proofs.')
     return 0
 
 

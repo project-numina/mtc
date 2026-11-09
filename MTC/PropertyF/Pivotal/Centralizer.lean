@@ -18,12 +18,8 @@ variable (C : BraidedFusionCategory.{v,u}) (p : PivotalStructure (C := C.Obj))
 pivotal simple-dimension vector. -/
 theorem globalDimension_eq_hermitian_sum :
     globalDimension C = ∑ i, star (simpleDimension C p i) * simpleDimension C p i := by
-  rw [MTC.Center.Induction.globalDimension_eq_sum_pivotal_norm_sq p]
-  simp only [Complex.ofReal_sum, Complex.ofReal_pow]
-  apply Finset.sum_congr rfl
-  intro i _
-  simpa only [simpleDimension, Complex.star_def, mul_comm] using
-    (Complex.mul_conj' (simpleDimension C p i)).symm
+  simpa only [simpleDimension] using
+    MTC.Center.Induction.globalDimension_eq_sum_pivotal_conj_mul p
 
 /-- The actual pivotal S matrix satisfies Hermitian orthogonality whenever it
 is invertible. -/

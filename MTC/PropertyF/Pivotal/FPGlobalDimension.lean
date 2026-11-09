@@ -29,12 +29,8 @@ theorem existsUnique_fp_column_globalDimension
   subst k
   have hglobal : globalDimension C =
       ∑ i, starRingEnd ℂ (simpleDimension C p i) * simpleDimension C p i := by
-    rw [MTC.Center.Induction.globalDimension_eq_sum_pivotal_norm_sq p]
-    simp only [Complex.ofReal_sum, Complex.ofReal_pow]
-    apply Finset.sum_congr rfl
-    intro i _
-    simpa only [simpleDimension, Complex.star_def, mul_comm] using
-      (Complex.mul_conj' (simpleDimension C p i)).symm
+    simpa only [simpleDimension, starRingEnd_apply] using
+      MTC.Center.Induction.globalDimension_eq_sum_pivotal_conj_mul p
   refine ⟨j, ⟨hj, ?_⟩, fun k hk ↦ hu k hk.1⟩
   rw [hglobal, hdim]
   congr 1

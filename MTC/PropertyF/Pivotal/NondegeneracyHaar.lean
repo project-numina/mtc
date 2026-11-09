@@ -258,12 +258,8 @@ theorem monodromyHaarVacuum_of_sTest (k : Fin (rank C))
   simp only [monodromyHaarVacuum, leftPartialTrace_monodromy_of_sTest C p k _ hs,
     smul_smul, ← Finset.sum_smul]
   congr 1
-  rw [MTC.Center.Induction.globalDimension_eq_sum_pivotal_norm_sq p]
-  simp only [Complex.ofReal_sum]
-  apply Finset.sum_congr rfl
-  intro i _
-  simpa only [simpleDimension, Complex.ofReal_pow, Complex.star_def] using
-    Complex.mul_conj' (pivotalDimension C p (simples C i))
+  simpa only [simpleDimension, mul_comm] using
+    (MTC.Center.Induction.globalDimension_eq_sum_pivotal_conj_mul p).symm
 
 /-- Under numerical centrality, the actual Haar loop is global dimension
  times the monodromy on the untraced strands. -/

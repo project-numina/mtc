@@ -24,9 +24,9 @@ def read(path):
 
 def write(path, rows, fields):
     with path.open('w', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=fields, delimiter='\t', lineterminator='\n', extrasaction='ignore')
+        w = csv.DictWriter(f, fieldnames=fields + ['_end'], delimiter='\t', lineterminator='\n', extrasaction='ignore')
         w.writeheader()
-        w.writerows(rows)
+        w.writerows({**row, '_end': '-'} for row in rows)
 
 def snapshot():
     env = collections.defaultdict(list)
@@ -39,7 +39,9 @@ def snapshot():
             anonymous_env[module].extend(hits)
     files = {r['file']: r['population'] for r in read(OUT / 'cohort-files-fb6ec518.tsv')}
     original = read(OUT / 'cohort-fb6ec518-expanded.tsv')
-    old_names = {r['qualified_name'] for r in original if r['population'] == 'Inherited modules'}
+    old_names = {r['qualified_name'] for r in original if r['population'] == 'Inherited modules' and r['qualified_name']}
+    old_sources = {(r['file'], str(r['line']), r['kind'], r['name']) for r in original
+                   if r['population'] == 'Inherited modules'}
     rows = []
     for path in sorted((ROOT / 'MTC').rglob('*.lean')):
         module = mod(path, ROOT / 'MTC', 'MTC')
@@ -49,12 +51,13 @@ def snapshot():
             hits = (anonymous_env[module] if d['name'] == '(anonymous)'
                     else env[(module, d['name'].split('.')[-1])])
             e = hits[0] if len(hits) == 1 else {}
-            if d['kind'] not in ('theorem', 'lemma') and not e:
+            if d['kind'] not in ('theorem', 'lemma') and not hits:
                 continue
             population = files.get(d['file'], 'New pivotal modules')
             # Declarations added to inherited files are included. Ambiguous names
             # stay in the accounting instead of silently disappearing.
-            if population == 'Inherited modules' and e.get('name') not in old_names:
+            if (population == 'Inherited modules' and e.get('name') not in old_names
+                and (d['file'], str(d['line']), d['kind'], d['name']) not in old_sources):
                 population = 'New pivotal modules (in inherited file; review)'
             rows.append(dict(population=population, file=d['file'], line=d['line'], kind=d['kind'], name=d['name'],
                              qualified_name=e.get('name', ''), match=('unique' if e else 'missing' if not hits else 'ambiguous'),
@@ -89,6 +92,11 @@ def main():
     legacy = read(OUT / 'cohort-fb6ec518-full.tsv')
     all_new = [r for r in current if r['population'].startswith('New pivotal modules')]
     write(OUT / 'all-new-proofs.tsv', all_new, FIELDS)
+    outliers = [r for r in all_new if int(r['proof_lines']) > 12
+                or (r['explicit'] and int(r['explicit']) > 5)
+                or (r['hypotheses'] and r['hypotheses'] != '999999'
+                    and int(r['hypotheses']) > 3)]
+    write(OUT / 'target-outliers.tsv', outliers, FIELDS)
     # Environment-only theorems are retained for review: most are generated
     # equation lemmas, tactic auxiliaries, or recursors, not source commands.
     modules = {r['file'][:-5].replace('/', '.') for r in all_new}
@@ -121,15 +129,39 @@ def main():
             if len(hits) == 1:
                 pairs.append((b, hits[0]))
             else:
-                unmatched.append({'cohort': label, 'kind': 'baseline unmatched', **b})
+                unmatched.append({'cohort': label, 'status': 'baseline unmatched', **b})
         used = {id(c) for _, c in pairs}
         for c in all_new:
             if id(c) not in used:
-                unmatched.append({'cohort': label, 'kind': 'current unpaired', **c})
+                unmatched.append({'cohort': label, 'status': 'current unpaired', **c})
         # Original pinned scorecard lacks by-proof flags and strict binders.
         results[label] = {'paired': len(pairs), 'before': metrics([b for b, _ in pairs]),
                           'after': metrics([c for _, c in pairs])}
-    write(OUT / 'target-unmatched.tsv', unmatched, ['cohort', 'kind'] + FIELDS)
+    write(OUT / 'target-unmatched.tsv', unmatched, ['cohort', 'status'] + FIELDS)
+    def area(row):
+        file = row['file']
+        if file.startswith('MTC/Braided/Cabling/'):
+            return 'cabling'
+        if (file.startswith('MTC/Center/Normalization/') or
+            file in ('MTC/Center/Induction/PivotalFusion.lean',
+                     'MTC/Center/Induction/PivotalSquare.lean')):
+            return 'centre'
+        if (file.startswith('MTC/Braided/Trace/') or file.startswith('MTC/Algebra/')):
+            return 'trace and algebra'
+        if file.startswith('MTC/PropertyF/Pivotal/') and any(
+            Path(file).name.startswith(prefix) for prefix in
+            ('Nondegeneracy', 'Slope', 'Monoidal', 'FPObject', 'FPGlobalDimension',
+             'SOrthogonality', 'Galois')):
+            return 'infrastructure'
+        return 'other new layer'
+    results['areas'] = {}
+    for label in sorted({area(r) for r in all_new} | {area(r) for r in round_two
+                         if r['population'].startswith('New pivotal modules')}):
+        before = [r for r in round_two if r['population'].startswith('New pivotal modules')
+                  and area(r) == label]
+        after = [r for r in all_new if area(r) == label]
+        results['areas'][label] = {'round_two_all': metrics(before),
+                                  'current_all': metrics(after)}
     (OUT / 'target-dashboard.json').write_text(json.dumps(results, indent=2) + '\n')
     print(json.dumps(results, indent=2))
 

@@ -66,12 +66,8 @@ theorem categoricalS_conjugate_kirby
   by_cases hk : k = unitIndex C
   · subst k
     simp only [categoricalS_unit]
-    rw [MTC.Center.Induction.globalDimension_eq_sum_pivotal_norm_sq p]
-    simp only [Complex.ofReal_sum]
-    apply Finset.sum_congr rfl
-    intro i _
-    simpa only [simpleDimension, Complex.ofReal_pow, Complex.star_def, mul_comm] using
-      Complex.mul_conj' (pivotalDimension C p (simples C i))
+    simpa only [simpleDimension, starRingEnd_apply, ite_true] using
+      (MTC.Center.Induction.globalDimension_eq_sum_pivotal_conj_mul p).symm
   · simpa [hk] using categoricalS_unit_character_orthogonal C p hunique k hk
 
 /-- A unique unit character forces the Hermitian Gram matrix to be the
