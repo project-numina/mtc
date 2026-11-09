@@ -373,27 +373,6 @@ theorem coloredWordSwap_reverse_pure (n : ℕ) (w : List (Fin (n + 1) × Bool))
   rw [coloredWordSwap_eq_strandPermutation, strandPermutation_reverse, hw]
   rfl
 
-/-- A pure word preserves every colored retract block of a tensor power. -/
-theorem pureWord_preserves_coloredBlock (n : ℕ)
-    (w : List (Fin (n + 1) × Bool))
-    (hw : strandPermutation n (FreeGroup.mk w) = 1)
-    (X : Fin (n + 2) → C) (Y : C) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
-    (h : ∀ j, f j ≫ g j = 𝟙 (X j)) :
-    let ι := coloredBlockInclusion (n + 2) X Y f
-    let π := coloredBlockProjection (n + 2) X Y g
-    let b := ((braidWordAction Y n (FreeGroup.mk w)).val).asIso.hom
-    ι ≫ b = (ι ≫ b ≫ π) ≫ ι := by
-  have hp := coloredWordSwap_reverse_pure n w hw
-  have hn := coloredWordIso_intertwines_uniform n w.reverse X Y f
-  simp only [List.reverse_reverse] at hn
-  rw [coloredTensorMap_identityPermutation (n + 2) _ hp X Y f] at hn
-  have hr := coloredBlockInclusion_projection (n + 2) X Y f g h
-  dsimp only [coloredBlockInclusion] at hr ⊢
-  simp only [Category.assoc] at hn hr ⊢
-  rw [← reassoc_of% hn, ← hn]
-  rw [reassoc_of% hr]
-
-
 /-- The actual endomorphism of a colored block induced by a pure word. -/
 def coloredPureWordHom (n : ℕ) (w : List (Fin (n + 1) × Bool))
     (hw : strandPermutation n (FreeGroup.mk w) = 1) (X : Fin (n + 2) → C) :
@@ -414,6 +393,34 @@ def coloredPureWordAut (n : ℕ) (w : List (Fin (n + 1) × Bool))
     (hw : strandPermutation n (FreeGroup.mk w) = 1) (X : Fin (n + 2) → C) :
     (coloredPureWordAut n w hw X).asIso.hom = coloredPureWordHom n w hw X := rfl
 
+/-- The pure colored endomorphism intertwines with its ambient braid action. -/
+theorem coloredPureWordHom_intertwines (n : ℕ)
+    (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1)
+    (X : Fin (n + 2) → C) (Y : C) (f : ∀ j, X j ⟶ Y) :
+    coloredPureWordHom n w hw X ≫ coloredBlockInclusion (n + 2) X Y f =
+      coloredBlockInclusion (n + 2) X Y f ≫
+        ((braidWordAction Y n (FreeGroup.mk w)).val).asIso.hom := by
+  have hn := coloredWordIso_intertwines_uniform n w.reverse X Y f
+  simp only [List.reverse_reverse] at hn
+  rw [coloredTensorMap_identityPermutation (n + 2) _ (coloredWordSwap_reverse_pure n w hw) X Y f] at hn
+  simpa only [coloredPureWordHom, coloredBlockInclusion, Category.assoc] using hn
+
+/-- A pure word preserves every colored retract block of a tensor power. -/
+theorem pureWord_preserves_coloredBlock (n : ℕ)
+    (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1)
+    (X : Fin (n + 2) → C) (Y : C) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
+    (h : ∀ j, f j ≫ g j = 𝟙 (X j)) :
+    let ι := coloredBlockInclusion (n + 2) X Y f
+    let π := coloredBlockProjection (n + 2) X Y g
+    let b := ((braidWordAction Y n (FreeGroup.mk w)).val).asIso.hom
+    ι ≫ b = (ι ≫ b ≫ π) ≫ ι := by
+  dsimp only
+  simp only [← Category.assoc, ← coloredPureWordHom_intertwines n w hw X Y f]
+  simp only [Category.assoc, coloredBlockInclusion_projection (n + 2) X Y f g h,
+    Category.comp_id]
+
 /-- The diagonal of the actual pure braid action is the colored pure-word
 endomorphism, without any finiteness hypothesis. -/
 theorem pureWord_coloredBlock_diagonal (n : ℕ)
@@ -424,15 +431,9 @@ theorem pureWord_coloredBlock_diagonal (n : ℕ)
     coloredBlockInclusion (n + 2) X Y f ≫
       ((braidWordAction Y n (FreeGroup.mk w)).val).asIso.hom ≫
         coloredBlockProjection (n + 2) X Y g = coloredPureWordHom n w hw X := by
-  have hn := coloredWordIso_intertwines_uniform n w.reverse X Y f
-  simp only [List.reverse_reverse] at hn
-  rw [coloredTensorMap_identityPermutation (n + 2) _ (coloredWordSwap_reverse_pure n w hw) X Y f] at hn
-  have hr := coloredBlockInclusion_projection (n + 2) X Y f g h
-  dsimp only [coloredBlockInclusion] at hr ⊢
-  simp only [Category.assoc] at hn hr ⊢
-  rw [← reassoc_of% hn]
-  slice_lhs 3 5 => rw [hr]
-  simp [coloredPureWordHom]
+  simp only [← Category.assoc, ← coloredPureWordHom_intertwines n w hw X Y f]
+  simp only [Category.assoc, coloredBlockInclusion_projection (n + 2) X Y f g h,
+    Category.comp_id]
 
 end MTC.Braided.Cabling
 end

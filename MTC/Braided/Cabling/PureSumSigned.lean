@@ -42,19 +42,13 @@ theorem coloredPower_negative_eq_inverse (X : C) (n N : ℕ)
         eqToIso (congrArg T hs)).symm := by
     apply eq_of_heq
     exact h.trans (htransport _ _).symm
-  have hflat : ∀ (q : ColoredPowerState n N) (p : q = s),
-      eqToIso (congrArg T p) ≪≫ coloredPowerStateFlatten X n N s =
-        coloredPowerStateFlatten X n N q := by
-    intro q p
-    cases p
-    simp
   apply Aut.ext
   apply Iso.ext
   simp only [Aut.inv_asIso, coloredLetter, Bool.false_eq_true, ↓reduceIte,
     Iso.trans_hom, Iso.symm_hom, Iso.trans_inv, Category.assoc]
   have hh := congrArg Iso.hom hclose
-  have hf := congrArg Iso.inv (hflat _ hs)
-  simp only [Iso.trans_inv] at hf
+  have hf := eqToHom_iso_inv_naturality (coloredPowerStateFlatten X n N) hs.symm
+  simp only [eqToHom_refl, Category.id_comp] at hf
   simp only [Iso.symm_hom, Iso.trans_inv, Category.assoc] at hh
   rw [hh]
   rw [← hf]

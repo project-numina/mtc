@@ -128,15 +128,10 @@ theorem firstCross_suffix_cancel [BraidedCategory C] {A B U T P Q : C}
     apply Iso.ext
     have h := Cabling.colored_first_map (𝟙 A) (𝟙 B) f.hom
     simpa only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom] using h
-  calc
-    _ = j.symm ≪≫ (Iso.refl A ⊗ᵢ (Iso.refl B ⊗ᵢ f)).symm ≪≫
-        (((α_ A B U).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl U) ≪≫ (α_ B A U)) ≪≫
-          (Iso.refl B ⊗ᵢ (Iso.refl A ⊗ᵢ f))) ≪≫ k := by
-      simp [Iso.trans_symm, Iso.trans_assoc]
-    _ = j.symm ≪≫ (Iso.refl A ⊗ᵢ (Iso.refl B ⊗ᵢ f)).symm ≪≫
-        ((Iso.refl A ⊗ᵢ (Iso.refl B ⊗ᵢ f)) ≪≫
-          ((α_ A B T).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl T) ≪≫ (α_ B A T))) ≪≫ k := by rw [hn]
-    _ = _ := by simp [Iso.trans_assoc]
+  have hnₖ := congrArg (fun t => t ≪≫ k) hn
+  simp only [Iso.trans_symm, Iso.trans_assoc] at hnₖ ⊢
+  rw [hnₖ]
+  simp only [Iso.symm_self_id_assoc]
 
 
 /-- The zeroth swap exchanges the first two colors. -/
@@ -177,16 +172,13 @@ theorem coloredFlatten_swap_zero_heq (X : C) [BraidedCategory C] [Abelian C]
           heterogeneousPowerFlatten X n (fun i => k i.succ.succ))) ≪≫
         rightTripleFlatten X (k 1) (k 0)
           (heterogeneousStrandCount n (fun i => k i.succ.succ)) := by
+  have ht : (fun i : Fin n => k (Cabling.coloredSwap n 0 i.succ.succ)) =
+      (fun i => k i.succ.succ) := by
+    funext i
+    rw [coloredSwap_zero_tail]
   have h := coloredFlatten_head_two_heq X n (fun i => k (Cabling.coloredSwap n 0 i))
-  apply h.trans
-  congr 2
-  all_goals try simp [coloredSwap_zero_tail, (coloredSwap_zero_head n).1,
-    (coloredSwap_zero_head n).2]
-  all_goals try (congr 1 <;> simp [coloredSwap_zero_tail, (coloredSwap_zero_head n).1,
-    (coloredSwap_zero_head n).2])
-  all_goals congr 1
-  all_goals try (congr 1 <;> simp [coloredSwap_zero_tail, (coloredSwap_zero_head n).1,
-    (coloredSwap_zero_head n).2])
+  rw [(coloredSwap_zero_head n).1, (coloredSwap_zero_head n).2, ht] at h
+  exact h
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The flattened first colored crossing is the crossing of its two blocks
@@ -211,24 +203,12 @@ theorem coloredGenerator_zero_flatten_heq (X : C) [BraidedCategory C] [Abelian C
     (heterogeneousPowerFlatten X n (fun i => k i.succ.succ))
     (rightTripleFlatten X (k 0) (k 1) _)
     (rightTripleFlatten X (k 1) (k 0) _)
-  have hpre : (((Iso.refl (tensorPower X (k 0)) ⊗ᵢ
-        (Iso.refl (tensorPower X (k 1)) ⊗ᵢ heterogeneousPowerFlatten X n (fun i => k i.succ.succ))) ≪≫
-          rightTripleFlatten X (k 0) (k 1) _).symm ≪≫
-      ((α_ (tensorPower X (k 0)) (tensorPower X (k 1)) (heterogeneousPowerTensor X n (fun i => k i.succ.succ))).symm ≪≫
-       ((β_ (tensorPower X (k 0)) (tensorPower X (k 1))) ⊗ᵢ Iso.refl _) ≪≫
-        α_ (tensorPower X (k 1)) (tensorPower X (k 0)) (heterogeneousPowerTensor X n (fun i => k i.succ.succ))) ≪≫
-      ((Iso.refl (tensorPower X (k 1)) ⊗ᵢ
-        (Iso.refl (tensorPower X (k 0)) ⊗ᵢ heterogeneousPowerFlatten X n (fun i => k i.succ.succ))) ≪≫
-          rightTripleFlatten X (k 1) (k 0) _)) =
-    ((rightTripleFlatten X (k 0) (k 1) (heterogeneousStrandCount n (fun i => k i.succ.succ))).symm ≪≫
-      (α_ (tensorPower X (k 0)) (tensorPower X (k 1))
-        (tensorPower X (heterogeneousStrandCount n (fun i => k i.succ.succ)))).symm ≪≫
-      ((β_ (tensorPower X (k 0)) (tensorPower X (k 1))) ⊗ᵢ Iso.refl _) ≪≫
-      (α_ (tensorPower X (k 1)) (tensorPower X (k 0))
-        (tensorPower X (heterogeneousStrandCount n (fun i => k i.succ.succ)))) ≪≫
-      rightTripleFlatten X (k 1) (k 0) (heterogeneousStrandCount n (fun i => k i.succ.succ))) := by
-    simpa only [Iso.trans_assoc] using hcancel
-  apply HEq.trans _ (heq_of_eq hpre)
+  rw [← Iso.trans_assoc (α_ (tensorPower X (k 0)) (tensorPower X (k 1))
+    (heterogeneousPowerTensor X n (fun i => k i.succ.succ))).symm] at hcancel
+  rw [← Iso.trans_assoc ((α_ (tensorPower X (k 0)) (tensorPower X (k 1))
+    (heterogeneousPowerTensor X n (fun i => k i.succ.succ))).symm ≪≫
+      ((β_ (tensorPower X (k 0)) (tensorPower X (k 1))) ⊗ᵢ Iso.refl _))] at hcancel
+  apply HEq.trans _ (heq_of_eq hcancel)
   congr 2
   all_goals try exact hs
   all_goals try exact ht

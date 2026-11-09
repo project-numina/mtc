@@ -30,12 +30,6 @@ theorem coloredPureWord_eq_stateWord (X : C) (n r : ℕ)
   have he := coloredPowerStateWordIso_heq X n (r + 2) w.reverse s
   let T : ColoredPowerState n (r + 2) → C := fun t =>
     coloredTensor (n + 2) (fun i => tensorPower X (t.val i))
-  have hflat : ∀ (t : ColoredPowerState n (r + 2)) (p : t = s),
-      eqToIso (congrArg T p) ≪≫ coloredPowerStateFlatten X n (r + 2) s =
-        coloredPowerStateFlatten X n (r + 2) t := by
-    intro t p
-    cases p
-    simp
   have hclose : coloredPowerStateWordIso X n (r + 2) w.reverse s ≪≫
       eqToIso (congrArg T hs) =
       coloredWordIso n w.reverse (fun i => tensorPower X (k i)) ≪≫
@@ -45,12 +39,13 @@ theorem coloredPureWord_eq_stateWord (X : C) (n r : ℕ)
     apply eq_of_heq
     exact (iso_trans_eqToIso_heq _ _).trans (he.trans (iso_trans_eqToIso_heq _ _).symm)
   have hh := congrArg Iso.hom hclose
-  have hf := congrArg Iso.hom (hflat _ hs)
+  have hf := eqToHom_iso_hom_naturality (coloredPowerStateFlatten X n (r + 2)) hs
+  simp only [eqToHom_refl, Category.comp_id] at hf
   dsimp only [coloredPureWordHom]
   simp only [Iso.trans_hom, eqToIso.hom] at hh hf ⊢
   simp only [Category.assoc] at *
   rw [← hh]
-  rw [← hf]
+  rw [hf]
   simp [Category.assoc, s]
 
 /-- The fixed-total word construction produces an original-strand braid for each
