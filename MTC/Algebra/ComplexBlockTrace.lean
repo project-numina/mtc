@@ -103,11 +103,7 @@ theorem complexTrace_star_of_weight_phase (B : Blocks) (w : Fin B.count → ℂ)
     Matrix.trace_conjTranspose]
   change (∑ r, w r * star (u r).trace) =
     ξ * (starRingEnd ℂ) (∑ r, w r * (u r).trace)
-  simp only [map_sum, map_mul, Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro r _
-  conv_lhs => rw [hphase r]
-  exact mul_assoc _ _ _
+  simp only [map_sum, map_mul, starRingEnd_apply, Finset.mul_sum, ← mul_assoc, ← hphase]
 
 /-- A unit-modulus common weight phase gives equal trace norms for a unitary
 and its adjoint, with no nonzero-weight assumption. -/

@@ -77,18 +77,15 @@ theorem norm_inverse_monodromy_trace_eq_of_constituent_phase
   let g : braidImage X 0 := imageGenerator X 0 0 ^ 2
   let ρ : braidImage X 0 →* B.Matrices :=
     b.toMonoidHom.comp (braidInImage (X := X) (n := 0))
-  have hn := B.norm_complexTrace_star_of_weight_phase w ξ hξ hw (ρ g)
   have hstar : star (ρ g) = ρ g⁻¹ := by
     simpa only [← map_inv, MonoidHom.coe_toHomUnits] using
       unitary_star_coe_inv (ρ.toHomUnits g) (he g)
+  have hn := B.norm_complexTrace_star_of_weight_phase w ξ hξ hw (ρ g)
   rw [hstar] at hn
   change ‖B.complexTrace w (b (braidInImage g⁻¹))‖ =
     ‖B.complexTrace w (b (braidInImage g))‖ at hn
   rw [← htr, ← htr] at hn
-  change ‖actualBraidTrace C p (braidInImage ((imageGenerator X 0 0 ^ 2)⁻¹))‖ =
-    ‖actualBraidTrace C p (braidInImage (imageGenerator X 0 0 ^ 2))‖ at hn
-  rw [actual_two_inverse_braid_trace, actual_two_braid_trace] at hn
-  exact hn
+  simpa only [g, actual_two_inverse_braid_trace, actual_two_braid_trace] using hn
 
 /-- Saturation under the explicit tensor-square phase premise. Establishing that
 premise for arbitrary pivotal fusion categories is a separate slope theorem. -/
