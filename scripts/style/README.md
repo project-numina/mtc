@@ -26,7 +26,7 @@ The committed project scorecards and summary support review without checking
 in a copy of the Mathlib declaration dataset.
 
 For the target census, run `LEAN_NUM_THREADS=4 python3 scripts/style/survey_proposition_definitions.py`
-after the fresh survey, followed by `python3 scripts/style/target_dashboard.py`. It compares the two committed expanded cohorts, lists
+after the fresh survey, followed by `python3 scripts/style/target_dashboard.py`. It compares the two historical expanded cohorts and the sustained-run starting cohort, lists
 all current new-layer source proofs and unpaired identities, records type-hash
 changes, and inventories environment-only theorem names. The proposition scan checks proof-valued definitions and opaque declarations
 through Lean; the dashboard includes source-matched proofs among them. Generated

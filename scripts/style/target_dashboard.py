@@ -128,6 +128,7 @@ def main():
     round_two = read(pin)
     original = read(OUT / 'cohort-fb6ec518-expanded.tsv')
     legacy = read(OUT / 'cohort-fb6ec518-full.tsv')
+    sustained_start = read(OUT / 'cohort-a93ce31a.tsv')
     all_new = [r for r in current if r['population'].startswith('New pivotal modules')]
     write(OUT / 'all-new-proofs.tsv', all_new, FIELDS)
     outliers = [r for r in all_new if int(r['proof_lines']) > 12
@@ -173,7 +174,8 @@ def main():
             index[row['qualified_name']].append(row)
     unmatched = []
     changed_types = []
-    for label, base in (('fb6ec518_legacy', legacy), ('fb6ec518', original), ('3826bb02', round_two)):
+    for label, base in (('fb6ec518_legacy', legacy), ('fb6ec518', original),
+                        ('3826bb02', round_two), ('a93ce31a', sustained_start)):
         base = [r for r in base if r['population'].startswith('New pivotal modules')]
         pairs = []
         for b in base:
