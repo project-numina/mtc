@@ -28,7 +28,7 @@ theorem finite_pureColor_range_of_cabling (n r : ℕ) (f : Fin (n + 2) → I) (X
         e.hom ≫ z.val.asIso.hom ≫ e.inv) :
     Set.Finite (Set.range fun h : pureBraidImage (⨁ V) n =>
       colorInclusion V (n + 2) f ≫ h.val.val.asIso.hom ≫ colorProjection V (n + 2) f) := by
-  have h := finite_pureBlock_range_of_cabling n r (fun j => V (f j)) (⨁ V) X
+  have h := finite_pureBlock_range_of_cabling
     (fun j => biproduct.ι V (f j)) (fun j => biproduct.π V (f j))
     (fun j => biproduct.ι_π_self V (f j)) e (hX r) hcable
   simpa only [← colorInclusion_eq_coloredBlockInclusion,

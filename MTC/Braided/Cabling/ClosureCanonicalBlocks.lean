@@ -1,5 +1,5 @@
 module
-public import MTC.Braided.Cabling.ClosureBlockInduction
+public import MTC.Braided.Cabling.ClosureTwoRow
 public import MTC.Braided.Trace.OverlapCoherence
 
 /-! Recursive block parenthesizations aligned with the row-sweep induction. -/

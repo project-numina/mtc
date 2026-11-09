@@ -1,7 +1,6 @@
 module
 public import MTC.Braided.Cabling.ClosureFlattenCompare
 public import MTC.Braided.Cabling.ClosureCommonInterface
-public import MTC.Braided.Cabling.ClosureFlattenUnit
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory

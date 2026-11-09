@@ -77,7 +77,7 @@ def flattenDependent (a : ℕ) (b : Fin a → ℕ) (f : (i : Fin a) → Fin (b i
     piPiIso (fun i => Fin (b i)) f ≪≫ (biproduct.isoProduct _).symm
 
 /-- A finite biproduct of retracts is a retract of the corresponding biproduct. -/
-private def biproductRetract {J : Type} [Fintype J] {f g : J → C}
+def biproductRetract {J : Type} [Fintype J] {f g : J → C}
     (r : ∀ i, Retract (f i) (g i)) : Retract (⨁ f) (⨁ g) := by
   classical
   exact {

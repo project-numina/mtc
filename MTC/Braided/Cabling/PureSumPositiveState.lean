@@ -1,5 +1,39 @@
 module
-public import MTC.Braided.Cabling.PureSumPositiveCabling
+public import MTC.Braided.Cabling.ColorBiproductPositive
+public import MTC.Braided.Cabling.PureSumSigned
+public import MTC.Braided.Cabling.PureSumCabling
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace MTC.Braided.Cabling
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C] [Abelian C]
+
+/-- Positive fixed-total generator membership supplies the exact pure-word
+cabling premise for the canonical flattening of positive-width tuples. -/
+theorem positiveWidth_cabling_of_positive_letters (X : C) (n : ℕ)
+    (q : Fin (n + 2) → ℕ) (hq : ∀ j, 0 < q j)
+    (hletter : ∀ (s : ColoredPowerState n (((∑ j, q j) - 2) + 2))
+      (i : Fin (n + 1)),
+      Aut.of ((coloredPowerStateFlatten X n (((∑ j, q j) - 2) + 2) s).symm ≪≫
+        coloredLetter n i true (fun j => tensorPower X (s.val j)) ≪≫
+        coloredPowerStateFlatten X n (((∑ j, q j) - 2) + 2)
+          (coloredPowerSwap n (((∑ j, q j) - 2) + 2) i s)) ∈
+        braidImage X ((∑ j, q j) - 2))
+    (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1) :
+    ∃ z : braidImage X ((∑ j, q j) - 2),
+      coloredPureWordHom n w hw (fun j => tensorPower X (q j)) =
+        (positiveWidthFlatten X n q hq (coloredTensorPowersFlatten X (n + 2) q)).hom ≫
+          z.val.asIso.hom ≫
+        (positiveWidthFlatten X n q hq (coloredTensorPowersFlatten X (n + 2) q)).inv := by
+  have h := coloredPureWord_cabling_of_letters X n ((∑ j, q j) - 2) q
+    (Nat.sub_add_cancel (two_le_sum_positive_widths n q hq)).symm
+    (coloredPower_letters_mem_of_positive X n _ _ hletter) w hw
+  simpa only [positiveWidthFlatten, coloredPowerStateFlatten, powerIndexIso] using h
+
+end MTC.Braided.Cabling
+end
 
 @[expose] public noncomputable section
 open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
@@ -83,41 +117,9 @@ theorem coloredPureWord_cabling_of_positive_states (X : C) (n r : ℕ)
         (coloredPowerStateFlatten X n (r + 2) ⟨k, hk⟩).hom ≫ z.val.asIso.hom ≫
           (coloredPowerStateFlatten X n (r + 2) ⟨k, hk⟩).inv := by
   let s : ColoredPowerState n (r + 2) := ⟨k, hk⟩
-  have hs : coloredPowerWordState n (r + 2) w.reverse s = s := by
-    apply Subtype.ext
-    rw [coloredPowerWordState_val, coloredWordSwap_reverse_pure n w hw]
-    rfl
   have hm := coloredPowerStateWord_mem_of_positive_letters X n (r + 2) (braidImage X r)
     (coloredPower_positive_letters_mem X n (r + 2) (braidImage X r) hletter) w.reverse s hpos
-
-  let z : braidImage X r := ⟨_, hm⟩
-  refine ⟨z, ?_⟩
-  have he := coloredPowerStateWordIso_heq X n (r + 2) w.reverse s
-  let T : ColoredPowerState n (r + 2) → C := fun t =>
-    coloredTensor (n + 2) (fun i => tensorPower X (t.val i))
-  have hflat : ∀ (t : ColoredPowerState n (r + 2)) (p : t = s),
-      eqToIso (congrArg T p) ≪≫ coloredPowerStateFlatten X n (r + 2) s =
-        coloredPowerStateFlatten X n (r + 2) t := by
-    intro t p
-    cases p
-    simp
-  have hclose : coloredPowerStateWordIso X n (r + 2) w.reverse s ≪≫
-      eqToIso (congrArg T hs) =
-      coloredWordIso n w.reverse (fun i => tensorPower X (k i)) ≪≫
-        eqToIso (congrArg (coloredTensor (n + 2))
-          (congrArg (fun t => fun j => tensorPower X (k (t j)))
-            (coloredWordSwap_reverse_pure n w hw))) := by
-    apply eq_of_heq
-    exact (iso_trans_eqToIso_heq _ _).trans (he.trans (iso_trans_eqToIso_heq _ _).symm)
-  have hh := congrArg Iso.hom hclose
-  have hf := congrArg Iso.hom (hflat _ hs)
-  dsimp only [z, coloredPureWordHom]
-  simp only [Iso.trans_hom, eqToIso.hom] at hh hf ⊢
-  simp only [Category.assoc] at *
-  rw [← hh]
-  rw [← hf]
-  simp [Category.assoc]
-
+  exact ⟨⟨_, hm⟩, coloredPureWord_eq_stateWord X n r k hk w hw⟩
 
 /-- Exact positive-width flattening cabling interface with positive-state
 crossing membership only. -/

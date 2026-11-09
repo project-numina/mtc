@@ -74,3 +74,65 @@ theorem objectPropertyF_power_of_common_flattening (X : C) (hX : ObjectPropertyF
   exact finite_power_braidImage_of_common_flattening X k n e he
 
 end MTC.Braided
+
+end
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace MTC.Braided
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C] [Abelian C]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Concatenating a zero-length tensor power is the right unitor. -/
+theorem tensorPowerTensorIso_zero (X : C) : ∀ k : ℕ,
+    tensorPowerTensorIso X k 0 = ρ_ (tensorPower X k)
+  | 0 => by
+    apply Iso.ext
+    simp [tensorPowerTensorIso, tensorPower, unitors_equal]
+  | k+1 => by
+    have ih := tensorPowerTensorIso_zero X k
+    apply Iso.ext
+    simp only [tensorPowerTensorIso, tensorPower, Iso.trans_hom, tensorIso_hom,
+      Iso.refl_hom, id_tensorHom]
+    rw [ih]
+    change ((α_ X (tensorPower X k) (𝟙_ C)) ≪≫ (Iso.refl X ⊗ᵢ ρ_ (tensorPower X k))).hom = (ρ_ (X ⊗ tensorPower X k)).hom
+    simp only [Iso.trans_hom, tensorIso_hom, Iso.refl_hom, id_tensorHom]
+    monoidal
+
+
+end MTC.Braided
+
+end
+
+/-! Local reduction of the common block-flattening coherence problem. -/
+
+@[expose] public noncomputable section
+open CategoryTheory
+namespace MTC.Braided
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C] [Abelian C]
+
+/-- It suffices to compare the flattenings at consecutive generator positions. -/
+theorem common_flattening_of_adjacent (X : C) (k n : ℕ)
+    (h : ∀ i : Fin n, localBlockFlattenAt X k n i.castSucc =
+      localBlockFlattenAt X k n i.succ) :
+    ∃ e, ∀ i : Fin (n+1), localBlockFlattenAt X k n i = e := by
+  refine ⟨localBlockFlattenAt X k n 0, ?_⟩
+  intro i
+  induction i using Fin.induction with
+  | zero => rfl
+  | succ i ih => exact (h i).symm.trans ih
+
+/-- Neighboring-position coherence for every block count gives property F
+for the corresponding positive tensor power. -/
+theorem objectPropertyF_power_of_adjacent_coherence (X : C) (hX : ObjectPropertyF X)
+    (k : ℕ)
+    (h : ∀ n, ∀ i : Fin n, localBlockFlattenAt X k n i.castSucc =
+      localBlockFlattenAt X k n i.succ) :
+    ObjectPropertyF (tensorPower X (k+1)) := by
+  apply objectPropertyF_power_of_common_flattening X hX k
+  intro n
+  exact common_flattening_of_adjacent X k n (h n)
+
+end MTC.Braided

@@ -34,7 +34,7 @@ theorem finite_pureBlock_range_of_constant (n : ℕ) (X Y : C)
     Set.Finite (Set.range fun h : pureBraidImage Y n =>
       coloredBlockInclusion (n + 2) (fun _ => X) Y f ≫ h.val.val.asIso.hom ≫
         coloredBlockProjection (n + 2) (fun _ => X) Y g) := by
-  apply finite_pureBlock_range_of_cabling n n (fun _ => X) Y X f g hf
+  apply finite_pureBlock_range_of_cabling f g hf
     (coloredConstantIso X (n + 2)) (hX n)
   intro w hw
   exact ⟨braidWordAction X n (FreeGroup.mk w), coloredPureWordHom_constant n w hw X⟩

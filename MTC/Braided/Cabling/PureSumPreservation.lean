@@ -25,6 +25,28 @@ theorem pureBraidImage_preserves_coloredBlock (n : ℕ)
   rw [← he]
   exact pureWord_preserves_coloredBlock n l hw X Y f g hf
 
+/-- Every diagonal component of an actual pure braid is the action of a
+colored pure word. This range inclusion lets finiteness arguments work with
+any finite family containing those actions. -/
+theorem pureBlock_range_subset_coloredWords (n : ℕ)
+    (X : Fin (n + 2) → C) (Y : C) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
+    (hf : ∀ j, f j ≫ g j = 𝟙 (X j)) :
+    Set.range (fun h : pureBraidImage Y n =>
+      coloredBlockInclusion (n + 2) X Y f ≫ h.val.val.asIso.hom ≫
+        coloredBlockProjection (n + 2) X Y g) ⊆
+      {a | ∃ (w : List (Fin (n + 1) × Bool))
+        (hw : strandPermutation n (FreeGroup.mk w) = 1),
+          a = coloredPureWordHom n w hw X} := by
+  rintro _ ⟨h, rfl⟩
+  obtain ⟨w, hw, he⟩ := h.property
+  obtain ⟨l, hl⟩ := Quot.exists_rep w
+  change FreeGroup.mk l = w at hl
+  subst w
+  change strandPermutation n (FreeGroup.mk l) = 1 at hw
+  refine ⟨l, hw, ?_⟩
+  dsimp only
+  rw [← he, pureWord_coloredBlock_diagonal n l hw X Y f g hf]
+
 /-- A finite group containing all actual colored pure-word endomorphisms
 makes the corresponding diagonal pure-braid block range finite. -/
 theorem finite_pureBlock_range_of_colored_group (n : ℕ)
@@ -38,24 +60,17 @@ theorem finite_pureBlock_range_of_colored_group (n : ℕ)
       coloredBlockInclusion (n + 2) X Y f ≫ h.val.val.asIso.hom ≫
         coloredBlockProjection (n + 2) X Y g) := by
   classical
-  letI : Finite H := hH
+  let : Finite H := hH
   apply (Set.finite_range (fun z : H => z.val.asIso.hom)).subset
-  rintro _ ⟨h, rfl⟩
-  obtain ⟨w, hw, he⟩ := h.property
-  obtain ⟨l, hl⟩ := Quot.exists_rep w
-  change FreeGroup.mk l = w at hl
-  subst w
-  change strandPermutation n (FreeGroup.mk l) = 1 at hw
-  obtain ⟨z, hz⟩ := hcable l hw
-  refine ⟨z, ?_⟩
-  dsimp only
-  rw [hz, ← he]
-  exact (pureWord_coloredBlock_diagonal n l hw X Y f g hf).symm
+  rintro a ha
+  obtain ⟨w, hw, rfl⟩ := pureBlock_range_subset_coloredWords n X Y f g hf ha
+  obtain ⟨z, hz⟩ := hcable w hw
+  exact ⟨z, hz⟩
 
 /-- Explicit cabling into one finite original-strand braid image gives
 finite range of an actual pure braid diagonal block. -/
-theorem finite_pureBlock_range_of_cabling (n r : ℕ)
-    (X : Fin (n + 2) → C) (Y Z : C) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
+theorem finite_pureBlock_range_of_cabling {n r : ℕ}
+    {X : Fin (n + 2) → C} {Y Z : C} (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
     (hf : ∀ j, f j ≫ g j = 𝟙 (X j)) (e : coloredTensor (n + 2) X ≅ tensorPower Z (r + 2))
     (hfinite : Finite (braidImage Z r))
     (hcable : ∀ (w : List (Fin (n + 1) × Bool))
@@ -66,18 +81,12 @@ theorem finite_pureBlock_range_of_cabling (n r : ℕ)
       coloredBlockInclusion (n + 2) X Y f ≫ h.val.val.asIso.hom ≫
         coloredBlockProjection (n + 2) X Y g) := by
   classical
-  letI : Finite (braidImage Z r) := hfinite
+  let : Finite (braidImage Z r) := hfinite
   apply (Set.finite_range (fun z : braidImage Z r => e.hom ≫ z.val.asIso.hom ≫ e.inv)).subset
-  rintro _ ⟨h, rfl⟩
-  obtain ⟨w, hw, he⟩ := h.property
-  obtain ⟨l, hl⟩ := Quot.exists_rep w
-  change FreeGroup.mk l = w at hl
-  subst w
-  change strandPermutation n (FreeGroup.mk l) = 1 at hw
-  obtain ⟨z, hz⟩ := hcable l hw
-  refine ⟨z, ?_⟩
-  dsimp only
-  rw [← he, pureWord_coloredBlock_diagonal n l hw X Y f g hf, hz]
+  rintro a ha
+  obtain ⟨w, hw, rfl⟩ := pureBlock_range_subset_coloredWords n X Y f g hf ha
+  obtain ⟨z, hz⟩ := hcable w hw
+  exact ⟨z, hz.symm⟩
 
 /-- If every actual colored pure word is the identity, the corresponding
 pure braid diagonal range is contained in the singleton identity. -/
@@ -92,14 +101,9 @@ theorem finite_pureBlock_range_of_colored_trivial (n : ℕ)
         coloredBlockProjection (n + 2) X Y g) := by
   classical
   apply (Set.finite_singleton (𝟙 (coloredTensor (n + 2) X))).subset
-  rintro _ ⟨h, rfl⟩
-  obtain ⟨w, hw, he⟩ := h.property
-  obtain ⟨l, hl⟩ := Quot.exists_rep w
-  change FreeGroup.mk l = w at hl
-  subst w
-  change strandPermutation n (FreeGroup.mk l) = 1 at hw
-  simp only [Set.mem_singleton_iff]
-  rw [← he, pureWord_coloredBlock_diagonal n l hw X Y f g hf, htrivial]
+  rintro a ha
+  obtain ⟨w, hw, rfl⟩ := pureBlock_range_subset_coloredWords n X Y f g hf ha
+  simpa only [Set.mem_singleton_iff] using htrivial w hw
 
 end MTC.Braided.Cabling
 end
