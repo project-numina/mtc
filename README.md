@@ -15,4 +15,4 @@ hypothesis and the supporting results of the proof.
 The [earlier theorem](MTC/PropertyF/Theorem.lean), assuming a pseudo-unitary
 Galois conjugate, is also included.
 
-For background on the research, see [Academic Loops](https://web-demo.projectnumina.ai/article.html?slug=academic-loops).
+For background on the research, see [Academic Loops](https://projectnumina.ai/article?slug=academic-loops).
