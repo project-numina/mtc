@@ -41,7 +41,7 @@ theorem finite_pureBlock_range_of_constant (n : ℕ) (X Y : C)
 
 /-- A colored block all of whose objects equal one property-F object has
 finite pure-braid diagonal range. -/
-theorem finite_pureBlock_range_of_equal_colors (n : ℕ) (X : Fin (n + 2) → C) (T Y : C)
+theorem finite_pureBlock_range_of_equal_colors {n : ℕ} {X : Fin (n + 2) → C} {T Y : C}
     (hconst : ∀ j, X j = T) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
     (hf : ∀ j, f j ≫ g j = 𝟙 (X j)) (hT : ObjectPropertyF T) :
     Set.Finite (Set.range fun h : pureBraidImage Y n =>
@@ -59,8 +59,7 @@ theorem finite_pureColor_range_of_equal_colors
     (hconst : ∀ j, V (f j) = T) (hT : ObjectPropertyF T) :
     Set.Finite (Set.range fun h : pureBraidImage (⨁ V) n =>
       colorInclusion V (n + 2) f ≫ h.val.val.asIso.hom ≫ colorProjection V (n + 2) f) := by
-  have h := finite_pureBlock_range_of_equal_colors n (fun j => V (f j)) T (⨁ V)
-    hconst (fun j => biproduct.ι V (f j)) (fun j => biproduct.π V (f j))
+  have h := finite_pureBlock_range_of_equal_colors hconst (fun j => biproduct.ι V (f j)) (fun j => biproduct.π V (f j))
     (fun j => biproduct.ι_π_self V (f j)) hT
   simpa only [← colorInclusion_eq_coloredBlockInclusion,
     ← colorProjection_eq_coloredBlockProjection] using h
