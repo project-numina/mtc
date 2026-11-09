@@ -50,43 +50,28 @@ theorem monoidalFunctor_rightQuantumTrace (F : C ⥤ D) [F.Monoidal] {X : C} (j 
   simpa only [tensorHom_def, whiskerLeft_id, Category.comp_id, Category.assoc,
     rightQuantumTrace] using ht
 
+/-- Double-dual transport commutes with inverse duality up to the canonical
+comparison of the functor image of the dual. -/
+theorem transformedDoubleDual_dual_natural (F : C ⥤ D) [F.Monoidal] {X : C}
+    (j : X ≅ (Xᘁ)ᘁ) :
+    (monoidalFunctorDualIso F X).hom ≫
+        (rightDualIsoMap (transformedDoubleDual F j)).symm.hom =
+      (transformedDoubleDual F (rightDualIsoMap j).symm).hom ≫
+        (((monoidalFunctorDualIso F X).homᘁ)ᘁ) := by
+  have hn := monoidalFunctorDualIso_natural F j.inv
+  have h := congrArg (fun t => t ≫ (monoidalFunctorDualIso F (Xᘁ)).invᘁ ≫
+    ((monoidalFunctorDualIso F X).homᘁ)ᘁ) hn.symm
+  simpa [transformedDoubleDual, transformedDualIso, rightDualIsoMap,
+    comp_rightAdjointMate, Category.assoc] using h
+
 /-- The actual left quantum trace is preserved through a strong monoidal
 functor, up to its unit isomorphism. -/
 theorem monoidalFunctor_leftQuantumTrace (F : C ⥤ D) [F.Monoidal] {X : C} (j : X ≅ (Xᘁ)ᘁ) :
  ε F ≫ F.map (leftQuantumTrace j).asHom ≫ η F = (leftQuantumTrace (transformedDoubleDual F j)).asHom := by
-  let e := monoidalFunctorDualIso F X
-  let e' := monoidalFunctorDualIso F (Xᘁ)
-  let u := F.map j.inv
-  let J := transformedDoubleDual F j
-  have hj : J.inv = (e.homᘁ) ≫ e'.inv ≫ u := by
-    simp [J, transformedDoubleDual, transformedDualIso, rightDualIsoMap, e, e', u, Category.assoc]
-  have heval : (e.hom ▷ F.obj X) ≫ ε_ (F.obj X) ((F.obj X)ᘁ) =
-      μ F (Xᘁ) X ≫ F.map (ε_ X (Xᘁ)) ≫ η F :=
-    monoidalFunctorDual_evaluation F X
-  have hcoev : (ε F ≫ F.map (η_ (Xᘁ) ((Xᘁ)ᘁ)) ≫ δ F (Xᘁ) ((Xᘁ)ᘁ)) =
-      η_ (F.obj (Xᘁ)) ((F.obj (Xᘁ))ᘁ) ≫ F.obj (Xᘁ) ◁ e'.inv := by
-    apply (cancel_mono (F.obj (Xᘁ) ◁ e'.hom)).1
-    simpa only [Category.assoc, ← whiskerLeft_comp, Iso.inv_hom_id, whiskerLeft_id, Category.comp_id] using
-      (monoidalFunctorDual_coevaluation F (Xᘁ))
-  have hc := monoidalFunctor_leftClosedDiagram F X (Xᘁ) ((Xᘁ)ᘁ) j.inv
-  change (ε F ≫ F.map (leftQuantumTrace j).asHom ≫ η F) = _ at hc
-  rw [← heval, hcoev] at hc
-  rw [hc]
-  change (η_ (F.obj (Xᘁ)) ((F.obj (Xᘁ))ᘁ) ≫ F.obj (Xᘁ) ◁ e'.inv) ≫
-    (𝟙 (F.obj (Xᘁ)) ⊗ₘ u) ≫ ((e.hom ▷ F.obj X) ≫ ε_ (F.obj X) ((F.obj X)ᘁ)) = _
-  simp only [tensorHom_def, id_whiskerRight, Category.id_comp, ← whiskerLeft_comp_assoc,
-    Category.assoc]
-  simp only [leftQuantumTrace, tensorHom_def, id_whiskerRight, Category.id_comp]
-  change η_ (F.obj (Xᘁ)) ((F.obj (Xᘁ))ᘁ) ≫ F.obj (Xᘁ) ◁ (e'.inv ≫ u) ≫
-    e.hom ▷ F.obj X ≫ ε_ (F.obj X) ((F.obj X)ᘁ) =
-    η_ ((F.obj X)ᘁ) (((F.obj X)ᘁ)ᘁ) ≫ ((F.obj X)ᘁ) ◁ J.inv ≫ ε_ (F.obj X) ((F.obj X)ᘁ)
-  rw [← coevaluation_iso_map e]
-  simp only [tensorHom_def, hj, whiskerLeft_comp, Category.assoc]
-  rw [← whiskerLeft_comp_assoc (F.obj (Xᘁ)) e'.inv u]
-  rw [whisker_exchange_assoc e.hom (e'.inv ≫ u)]
-  rw [← whiskerLeft_comp_assoc ((F.obj X)ᘁ) (e.invᘁ) (e.homᘁ)]
-  simp only [← comp_rightAdjointMate, Iso.hom_inv_id, rightAdjointMate_id,
-    whiskerLeft_id, Category.id_comp, whiskerLeft_comp, Category.assoc]
+  rw [leftQuantumTrace_eq_rightDual, leftQuantumTrace_eq_rightDual]
+  rw [monoidalFunctor_rightQuantumTrace]
+  exact congrArg End.asHom
+    (rightQuantumTrace_iso (monoidalFunctorDualIso F X) (transformedDoubleDual_dual_natural F j))
 
 
 end MTC.PropertyF.Pivotal

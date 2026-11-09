@@ -64,8 +64,8 @@ theorem supportedOn_retract {A : Finset (Fin (rank C))} {X Y : C.Obj}
   refine ⟨f ≫ r.i, ?_⟩
   intro hz
   apply hf
-  have h := congrArg (fun g ↦ g ≫ r.r) hz
-  simpa only [Category.assoc, r.retract, Category.comp_id, zero_comp] using h
+  apply (cancel_mono r.i).1
+  simpa only [zero_comp] using hz
 
 /-- Support is closed under finite biproducts. -/
 theorem supportedOn_sum {A : Finset (Fin (rank C))} {n : ℕ}
@@ -92,13 +92,9 @@ theorem supportedOn_seed {A : Finset (Fin (rank C))}
   obtain ⟨i, ⟨e⟩⟩ := exists_simple_iso C S
   let E : S ⊗ (ᘁS) ≅ simples C i ⊗ simples C (dualIndex C i) :=
     e ⊗ᵢ (leftDualIsoOfIso C e ≪≫ (dualIndex_iso i).some)
+  apply supportedOn_iso C E
   intro k hk
-  apply hseed k
-  refine ⟨i, ?_⟩
-  change 0 < Module.finrank ℂ (simples C k ⟶ S ⊗ (ᘁS)) at hk
-  change 0 < Module.finrank ℂ (simples C k ⟶ simples C i ⊗ simples C (dualIndex C i))
-  rw [← (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples C k)) E).finrank_eq]
-  exact hk
+  exact hseed k ⟨i, hk⟩
 
 /-- An object in the actual adjoint closure is supported on every fusion
 subring containing the adjoint seeds. -/

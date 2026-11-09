@@ -109,5 +109,16 @@ theorem monoidalFunctorDual_evaluation
     μ F (Xᘁ) X ≫ F.map (ε_ X (Xᘁ)) ≫ η F at h
   exact h
 
+/-- The canonical dual comparison is natural in the object being dualized. -/
+theorem monoidalFunctorDualIso_natural (F : C ⥤ D) [F.Monoidal] {X Y : C} (f : X ⟶ Y) :
+    F.map (fᘁ) ≫ (monoidalFunctorDualIso F X).hom =
+      (monoidalFunctorDualIso F Y).hom ≫ ((F.map f)ᘁ) := by
+  apply evaluation_ext (X := F.obj X)
+  rw [comp_whiskerRight_assoc, monoidalFunctorDual_evaluation,
+    comp_whiskerRight_assoc, rightAdjointMate_comp_evaluation, ← whisker_exchange_assoc,
+    monoidalFunctorDual_evaluation]
+  rw [μ_natural_left_assoc, μ_natural_right_assoc, ← F.map_comp_assoc,
+    ← F.map_comp_assoc, rightAdjointMate_comp_evaluation]
+
 end MTC.PropertyF.Pivotal
 end

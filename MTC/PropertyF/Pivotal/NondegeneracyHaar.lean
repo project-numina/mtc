@@ -298,18 +298,15 @@ theorem pivotalTrace_simpleInclusion_projection (X : C.Obj) (i : Fin (rank C))
       MTC.Center.Induction.simpleProjection X i b)) =
       if a = b then simpleDimension C p i else 0 := by
   classical
-  by_cases hab : a = b
-  · subst b
-    rw [MTC.Center.Induction.simpleInclusion_projection]
-    simp [simpleDimension, pivotalDimension]
-  · have hzero : simpleInclusion C X i a ≫
-        MTC.Center.Induction.simpleProjection X i b = 0 := by
-      simp [simpleInclusion, MTC.Center.Induction.simpleProjection,
-        Category.assoc, hab]
-    rw [hzero]
-    have hz : p.rightTrace (0 : simples C i ⟶ simples C i) = 0 :=
-      (rightTraceWithLinear (k := ℂ) (p.iso (simples C i))).map_zero
-    simp [hab, hz, unitScalar_eq_equiv]
+  have h := simpleInclusionBasis_projection (simpleInclusion C X i a) b
+  rw [← simpleInclusionBasis_apply C X i a, Module.Basis.repr_self] at h
+  have h' : (if a = b then (1 : ℂ) else 0) • 𝟙 (simples C i) =
+      simpleInclusion C X i a ≫ MTC.Center.Induction.simpleProjection X i b := by
+    simpa [simpleInclusionBasis_apply, MTC.Center.Induction.simpleProjection, Finsupp.single_apply] using h
+  rw [← h', PivotalStructure.rightTrace_smul, unitScalar_eq_equiv, map_smul]
+  split_ifs
+  · simp [smul_eq_mul, simpleDimension, pivotalDimension, unitScalar_eq_equiv]
+  · simp
 
 /-- Projection normalized to be dual to the corresponding inclusion for
 the actual pivotal trace pairing. -/
