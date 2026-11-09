@@ -65,12 +65,11 @@ theorem norm_inverse_monodromy_trace_eq_of_constituent_phase
     intro i _
     by_cases hm : mult i j = 0
     · simp [hm]
-    · have hle : mult i j * size j ≤
-          Module.finrank ℂ (MTC.Fusion.simples C i ⟶ braidTensorPower X 0) := by
+    · have hp := hphase i (by
         simpa only [← hdim i] using
-          (Finset.single_le_sum (f := fun j => mult i j * size j)
-            (fun _ _ => Nat.zero_le _) (Finset.mem_univ j))
-      have hp := hphase i (lt_of_lt_of_le (Nat.mul_pos (Nat.pos_of_ne_zero hm) (hsize j)) hle)
+          (Finset.sum_pos' (s := Finset.univ) (f := fun j => mult i j * size j)
+            (fun _ _ => Nat.zero_le _) ⟨j, Finset.mem_univ _,
+              Nat.mul_pos (Nat.pos_of_ne_zero hm) (hsize j)⟩))
       conv_lhs => rw [hp]
       exact mul_left_comm _ _ _
 

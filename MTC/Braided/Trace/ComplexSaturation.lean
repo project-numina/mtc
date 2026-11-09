@@ -83,12 +83,9 @@ theorem actual_mixed_braid_trace_of_maximal_monodromy
   apply actual_mixed_braid_trace_eq_one_of_saturation C p hfinite
   have hd : pivotalDimension C p X ≠ 0 := by
     simpa only [pivotalDimension] using Modular.unitScalar_rightTrace_ne_zero C p X
-  rw [actual_three_braid_trace]
-  have heq : scalarTrace p (MTC.Fusion.unitScalarEquiv C) (selfMonodromy X) ^ 2 /
-      pivotalDimension C p X = pivotalDimension C p X *
-        (scalarTrace p (MTC.Fusion.unitScalarEquiv C) (selfMonodromy X) /
-          pivotalDimension C p X) ^ 2 := by
-    field_simp
-  rw [heq, norm_mul, norm_pow, hmax]
+  rw [norm_div, div_eq_iff (norm_ne_zero_iff.mpr hd)] at hmax
+  rw [actual_three_braid_trace, norm_div, norm_pow, hmax]
+  rw [div_eq_iff (norm_ne_zero_iff.mpr hd)]
+  ring
 
 end MTC.Braided.Trace

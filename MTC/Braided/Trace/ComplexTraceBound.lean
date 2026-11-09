@@ -29,10 +29,8 @@ theorem pivotal_unitary_trace_bound (C : BraidedFusionCategory.{v,u})
     letI : Finite (braidImage X n) := hfinite n
     exact groupImageAlgebra_unitary_blocks (braidEndRepresentation X n)
   have hz' : Blocks.IsUnitary ⟨r' t, size' t⟩ (e t z) := by
-    have h := Unitary.map_mem (addLeftBlocksIterStarMap X t 0 b (e t) hb (he t)) hz
-    change (e t) (b.symm (b z)) ∈ unitary _ at h
-    rw [b.symm_apply_apply] at h
-    exact h
+    simpa [Blocks.IsUnitary, addLeftBlocksIterStarMap, addLeftBraidAlgebraIter] using!
+      Unitary.map_mem (addLeftBlocksIterStarMap X t 0 b (e t) hb (he t)) hz
   exact sharp_trace_bound_of_overlap C p z
     (fun k => braid_trace_unitary_bound_ground C p
       (fun j => Nat.pos_of_ne_zero (hsize _ j).ne) (e _)
