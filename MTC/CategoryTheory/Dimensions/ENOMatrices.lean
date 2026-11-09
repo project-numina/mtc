@@ -144,6 +144,31 @@ theorem complex_weighted_saturation {ι : Type*} [Fintype ι]
       simpa only [hre, abs_of_nonneg ((norm_nonneg _).trans (hdom k))] using
         le_antisymm (hre ▸ Complex.re_le_norm _) (hdom k)))
 
+/-- Saturated factor values propagate the phase to a bounded weighted character. -/
+theorem two_factor_weighted_saturation {ι : Type*} [Fintype ι]
+    {N : ι → ι → ι → ℝ} {T : ι → ι → ι → ℂ} {f : ι → ℝ} {d : ι → ℂ}
+    (hf : ∀ a, 0 < f a) (hmul : ∀ i j, f i * f j = ∑ k, N i j k * f k)
+    (hd : ∀ a, ‖d a‖ ≤ f a) (hdom : ∀ i j k, ‖T i j k‖ ≤ N i j k)
+    (heig : ∀ i j, ∑ k, T i j k * d k = d i * d j)
+    (i j k : ι) (hi : ‖d i‖ = f i) (hj : ‖d j‖ = f j) :
+    T i j k * (d k / (f k : ℂ)) /
+      ((d i / (f i : ℂ)) * (d j / (f j : ℂ))) = (N i j k : ℂ) := by
+  let q : ι → ℂ := fun a => d a / (f a : ℂ)
+  have hq (a) : ‖q a‖ ≤ 1 := by
+    simpa [q, Complex.norm_real, abs_of_pos (hf a), div_le_one (hf a)] using hd a
+  have hqi : ‖q i‖ = 1 := by simp [q, Complex.norm_real, abs_of_pos (hf i), hi, (hf i).ne']
+  have hqj : ‖q j‖ = 1 := by simp [q, Complex.norm_real, abs_of_pos (hf j), hj, (hf j).ne']
+  have hqni : q i ≠ 0 := norm_ne_zero_iff.mp (by simp [hqi])
+  have hqnj : q j ≠ 0 := norm_ne_zero_iff.mp (by simp [hqj])
+  have hrepr (a) : q a * (f a : ℂ) = d a := by simp [q, (hf a).ne']
+  let x : ι → ℂ := fun l => T i j l * q l / (q i * q j)
+  apply complex_weighted_saturation (x := x) hf (fun l ↦ by
+    simpa [x, norm_div, norm_mul, hqi, hqj] using
+      mul_le_mul (hdom i j l) (hq l) (norm_nonneg _) ((norm_nonneg _).trans (hdom i j l))) ?_ k
+  simp only [x, div_mul_eq_mul_div, mul_assoc, hrepr, ← Finset.sum_div, heig]
+  rw [← hrepr i, ← hrepr j, ← hmul, Complex.ofReal_mul]
+  field_simp [hqni, hqnj]
+
 /-- Saturation of a weighted complex eigenvector forces each entry to have
   the phase of the product of its eigenvector values. -/
 theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
@@ -153,16 +178,8 @@ theorem weighted_eigenvalue_saturation {ι : Type*} [Fintype ι]
     (heig : ∀ i j, ∑ k, T i j k * d k = d i * d j) :
     ∀ i j k, T i j k * (d k / (f k : ℂ)) /
       ((d i / (f i : ℂ)) * (d j / (f j : ℂ))) = (N i j k : ℂ) := by
-  let q : ι → ℂ := fun i => d i / (f i : ℂ)
-  have hq (i) : ‖q i‖ = 1 := by simp [q, Complex.norm_real, abs_of_pos (hf i), hd i, (hf i).ne']
-  have hqn (i) : q i ≠ 0 := norm_ne_zero_iff.mp (by simp [hq])
-  have hrepr (i) : q i * (f i : ℂ) = d i := by simp [q, (hf i).ne']
   intro i j k
-  let x : ι → ℂ := fun l => T i j l * q l / (q i * q j)
-  apply complex_weighted_saturation (x := x) hf (fun l ↦ by
-    simpa [x, norm_div, norm_mul, hq] using hdom i j l) ?_ k
-  simp only [x, div_mul_eq_mul_div, mul_assoc, hrepr, ← Finset.sum_div, heig]
-  rw [← hrepr i, ← hrepr j, ← hmul, Complex.ofReal_mul]
-  field_simp [hqn i, hqn j]
+  exact two_factor_weighted_saturation hf hmul (fun a ↦ le_of_eq (hd a)) hdom heig
+    i j k (hd i) (hd j)
 
 end MTC.CategoryTheory.Dimensions

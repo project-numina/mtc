@@ -66,48 +66,21 @@ theorem dimensionRatio_tensor_constituent
     (hj : ‖pivotalDimension C p (simples C j)‖ = fpSimple C j)
     (hk : 0 < fusionCoeff C i j k) :
     dimensionRatio p k = dimensionRatio p i * dimensionRatio p j := by
-  classical
-  let u := dimensionRatio p i * dimensionRatio p j
-  let w (a : Fin (rank C)) : ℝ := (fusionCoeff C i j a : ℝ) * fpSimple C a
-  let z (a : Fin (rank C)) : ℂ := star u * dimensionRatio p a
-  have hu : ‖u‖ = 1 := by
-    simp [u, dimensionRatio_norm_eq_one p i hi, dimensionRatio_norm_eq_one p j hj]
-  have huone : star u * u = 1 := by
-    simpa only [Complex.star_def, hu, one_pow, Complex.ofReal_one] using Complex.conj_mul' u
-  have hw (a : Fin (rank C)) : 0 ≤ w a := by
-    exact mul_nonneg (Nat.cast_nonneg _) (le_of_lt (fpSimple_pos C a))
-  have hz (a : Fin (rank C)) : ‖z a‖ ≤ 1 := by
-    simpa [z, norm_mul, hu] using dimensionRatio_norm_le_one p a
-  have hsum : (∑ a, (w a : ℂ) * z a) = ((∑ a, w a : ℝ) : ℂ) := by
-    have hfp : (∑ a, (fusionCoeff C i j a : ℂ) * (fpSimple C a : ℂ)) =
-        (fpSimple C i : ℂ) * (fpSimple C j : ℂ) := by
-      exact_mod_cast (fpSimple_mul C i j).symm
-    have hd (a : Fin (rank C)) : (fpSimple C a : ℂ) ≠ 0 :=
-      Complex.ofReal_ne_zero.mpr (ne_of_gt (fpSimple_pos C a))
-    calc
-      _ = star u * ∑ a, (fusionCoeff C i j a : ℂ) * pivotalDimension C p (simples C a) := by
-        simp only [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro a ha
-        dsimp [w, z, dimensionRatio]
-        push_cast
-        field_simp [hd a]
-      _ = star u * (pivotalDimension C p (simples C i) * pivotalDimension C p (simples C j)) := by
-        rw [← pivotalDimension_character C p i j]
-      _ = (star u * u) * ((fpSimple C i : ℂ) * (fpSimple C j : ℂ)) := by
-        dsimp [u, dimensionRatio]
-        field_simp [hd i, hd j]
-      _ = ((∑ a, w a : ℝ) : ℂ) := by
-        rw [huone, one_mul]
-        simpa only [w, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_natCast] using hfp.symm
-  have hwk : 0 < w k := mul_pos (Nat.cast_pos.mpr hk) (fpSimple_pos C k)
-  have heq := eq_one_of_weighted_unit_disc w z hw hz hsum k hwk
-  have hu0 : u ≠ 0 := by
-    intro h
-    simp [h] at hu
-  apply mul_left_cancel₀ (star_ne_zero.mpr hu0)
-  change z k = star u * u
-  exact heq.trans huone.symm
+  have hs := two_factor_weighted_saturation (N := fun a b c ↦ fusionCoeff C a b c)
+    (T := fun a b c ↦ fusionCoeff C a b c) (fpSimple_pos C) (fpSimple_mul C)
+    (fun a ↦ character_norm_le_fpSimple (C := C) (i₀ := unitIndex C)
+      ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero) (pivotalDimension_character C p) a)
+    (fun _ _ _ ↦ by simp) (fun a b ↦ (pivotalDimension_character C p a b).symm) i j k hi hj
+  have hu : dimensionRatio p i * dimensionRatio p j ≠ 0 := by
+    have h : ‖dimensionRatio p i * dimensionRatio p j‖ = 1 := by
+      simp [dimensionRatio_norm_eq_one p i hi, dimensionRatio_norm_eq_one p j hj]
+    apply norm_ne_zero_iff.mp
+    rw [h]
+    exact one_ne_zero
+  have hn : (fusionCoeff C i j k : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (ne_of_gt hk)
+  apply mul_left_cancel₀ hn
+  apply (div_eq_iff hu).mp
+  simpa only [dimensionRatio, Complex.ofReal_natCast] using hs
 
 
 /-- The pivotal-to-FP dimension ratio of a simple is a complex unit. -/
