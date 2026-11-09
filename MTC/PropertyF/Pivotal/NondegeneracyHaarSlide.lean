@@ -72,7 +72,7 @@ theorem haar_projection_mate_open (X Y U : C.Obj) (g : Y ⊗ U ⟶ X) :
     𝟙 U ⊗≫ ((η_ (Yᘁ) ((Yᘁ)ᘁ) ≫ (Yᘁ) ◁ (p.iso Y).inv) ▷ U) ⊗≫
       ((Yᘁ) ◁ g) ⊗≫ 𝟙 ((Yᘁ) ⊗ X) := by
   let : ExactPairing (Yᘁ) Y := pivotalLeftPairing C p Y
-  letI : ExactPairing (Xᘁ) X := pivotalLeftPairing C p X
+  let : ExactPairing (Xᘁ) X := pivotalLeftPairing C p X
   have h := haarProjectionMate_curry C p X Y U g
   dsimp [tensorRightHomLinearEquiv, tensorLeftHomLinearEquiv,
     tensorRightHomEquiv, tensorLeftHomEquiv] at h
@@ -81,7 +81,7 @@ theorem haar_projection_mate_open (X Y U : C.Obj) (g : Y ⊗ U ⟶ X) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A rotated fusion block is the original pivotal partial-trace summand. -/
-theorem haarRotatedBlock_eq_partialTrace (X Y U V : C.Obj) (β : End (X ⊗ V))
+theorem haarRotatedBlock_eq_partialTrace {X Y U V : C.Obj} (β : End (X ⊗ V))
     (f : X ⟶ Y ⊗ U) (g : Y ⊗ U ⟶ X) :
     haarRotatedBlock C p X Y U V β (haarInclusionMate C X Y U f)
       (haarProjectionMate C p X Y U g) =
@@ -126,10 +126,9 @@ theorem haarDualLabelProjection_dual (T : C.Obj) (j : Fin (rank C))
   apply (haarDualLabelBasis C T j).ext
   intro b
   simp [haarDualLabelBasis, haarDualLabelProjection, simpleHomPairingEquiv,
-    simpleHomPairing, simpleInclusionBasis_apply, Linear.homCongr_apply,
-    Module.Basis.dualBasis_apply] 
+    simpleHomPairing, simpleInclusionBasis_apply, Linear.homCongr_apply]
   simp only [Linear.homCongr_symm_apply, Iso.symm_hom, Iso.refl_inv, Category.comp_id,
-    Category.assoc, Iso.inv_hom_id_assoc, Module.Basis.repr_self, Finsupp.single_apply]
+    Iso.inv_hom_id_assoc]
   conv_rhs => rw [← simpleInclusionBasis_apply C T (dualIndex C j) b, Module.Basis.repr_self]
   simp only [Finsupp.single_apply]
   by_cases hab : b = a
@@ -139,7 +138,7 @@ theorem haarDualLabelProjection_dual (T : C.Obj) (j : Fin (rank C))
   · have hz : simpleInclusion C T (dualIndex C j) b ≫
         simpleProjection T (dualIndex C j) a = 0 := by
       simp [simpleInclusion, simpleProjection, Category.assoc, hab]
-    simp [← Category.assoc, hz, hab, eq_comm]
+    simp [← Category.assoc, hz, hab]
 
 /-- Reindex a mated contraction using the standard basis at the dual label. -/
 theorem haarRotatedBlock_dualLabel_contraction (U V : C.Obj) (i j : Fin (rank C))
@@ -182,7 +181,7 @@ def haarRotatedCore (X U V : C.Obj) (β : End (X ⊗ V))
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Exchange the boxed morphism with the inclusion to compose a rotated pair. -/
-theorem haarRotatedBlock_comp (X Y U V : C.Obj) (β : End (X ⊗ V))
+theorem haarRotatedBlock_comp {X Y U V : C.Obj} (β : End (X ⊗ V))
     (a : (Yᘁ) ⟶ U ⊗ (Xᘁ)) (b : U ⊗ (Xᘁ) ⟶ (Yᘁ)) :
     haarRotatedBlock C p X Y U V β a b = haarRotatedCore C p X U V β (b ≫ a) := by
   calc
@@ -242,7 +241,7 @@ theorem haarDualLabel_complete_restricted (T : C.Obj) (S : Finset (Fin (rank C))
         haarDualLabelProjection C T j a ≫ haarDualLabelBasis C T j a := by
     apply Finset.sum_subset (Finset.subset_univ S)
     intro j hj hn
-    letI : IsEmpty (Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T))) := by
+    let : IsEmpty (Fin (Module.finrank ℂ (simples C (dualIndex C j) ⟶ T))) := by
       rw [hs j hn]
       infer_instance
     simp
@@ -364,7 +363,7 @@ theorem categoricalHaarRestricted_slide (S : Finset (Fin (rank C))) (U V : C.Obj
     symm
     apply Finset.sum_subset (Finset.subset_univ S)
     intro i _ hi
-    letI : IsEmpty (Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U))) := by
+    let : IsEmpty (Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U))) := by
       rw [hforward j hj i hi]
       infer_instance
     simp [T]
@@ -384,71 +383,6 @@ theorem categoricalHaarRestricted_slide (S : Finset (Fin (rank C))) (U V : C.Obj
   intro i hi
   rw [← Finset.smul_sum]
   rw [haarRotatedBlock_dualLabel_sum_restricted C p _ U V _ S (hdual i hi)]
-
-theorem leftTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
-    (hs : categoricalS C p (dualIndex C i) k =
-      simpleDimension C p (dualIndex C i) * simpleDimension C p k) :
-    unitScalar C (p.leftTrace (doubleBraiding (simples C i) (simples C k))) =
-      star (simpleDimension C p i) * star (simpleDimension C p k) := by
-  rw [leftTrace_doubleBraiding_eq_dual]
-  have htest := hs
-  have hki := MTC.Center.Induction.pivotalDimension_simple_dual_conj p i
-  have hkk := MTC.Center.Induction.pivotalDimension_simple_dual_conj p k
-  have hi := pivotalDimension_iso p (rightDualLabelIso C i)
-  have hk := pivotalDimension_iso p (rightDualLabelIso C k)
-  have hidim : simpleDimension C p (dualIndex C i) = star (simpleDimension C p i) := by
-    simpa only [simpleDimension] using hi.symm.trans hki
-  have hkdim : simpleDimension C p (dualIndex C k) = star (simpleDimension C p k) := by
-    simpa only [simpleDimension] using hk.symm.trans hkk
-  -- The normalized S character of a dual label is conjugated.
-  have hdualtest : categoricalS C p (dualIndex C i) (dualIndex C k) =
-      simpleDimension C p (dualIndex C i) * simpleDimension C p (dualIndex C k) := by
-    have hh' := categoricalS_star_eq_dual_phase C p (dualIndex C i) k
-    have hd : simpleDimension C p (dualIndex C i) ≠ 0 := simpleDimension_ne_zero C p _
-    have hdstar : starRingEnd ℂ (simpleDimension C p (dualIndex C i)) ≠ 0 :=
-      (map_ne_zero (starRingEnd ℂ)).2 hd
-    rw [htest, map_mul] at hh'
-    field_simp at hh'
-    rw [hkdim]
-    exact hh'.symm.trans (mul_comm _ _)
-  have he : unitScalar C (p.rightTrace (doubleBraiding ((simples C k)ᘁ) ((simples C i)ᘁ))) =
-      categoricalS C p (dualIndex C i) (dualIndex C k) := by
-    rw [categoricalS_symmetric C p, categoricalS, ← unitScalar_eq_equiv]
-    change unitScalar C (SEntry p ((simples C k)ᘁ) ((simples C i)ᘁ)) = _
-    rw [SEntry_iso_left p (rightDualLabelIso C k), SEntry_iso_right p _ (rightDualLabelIso C i)]
-  rw [he, hdualtest, hidim, hkdim]
-
-/-- Under the numerical S-test, every closed monodromy loop is the
-conjugate pivotal dimension times the identity of the surviving simple. -/
-theorem leftPartialTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
-    (hs : categoricalS C p (dualIndex C i) k =
-      simpleDimension C p (dualIndex C i) * simpleDimension C p k) :
-    leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k))) =
-      star (simpleDimension C p i) • (1 : End (simples C k)) := by
-  let : Simple (simples C k) := simples_simple C k
-  let : FiniteDimensional ℂ (simples C k ⟶ simples C k) := IsFusionCategory.hom_finite _ _
-  let a := leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k)))
-  obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ a.asHom
-  have ha : a = c • (1 : End (simples C k)) := End.ext hc.symm
-  have ht := congrArg (unitScalar C) (leftTrace_partialTrace p
-    (End.of (doubleBraiding (simples C i) (simples C k))))
-  change unitScalar C (p.leftTrace a.asHom) = _ at ht
-  rw [ha] at ht
-  simp only [End.smul_asHom, End.one_asHom, PivotalStructure.leftTrace_smul,
-    unitScalar_eq_equiv, map_smul, smul_eq_mul] at ht
-  have hd : unitScalarEquiv C (p.leftTrace (𝟙 (simples C k))) =
-      star (simpleDimension C p k) := by
-    have hh := congrArg (unitScalar C) (leftTrace_eq_rightTrace_dual C p (simples C k) 1)
-    simp only [End.one_asHom, rightAdjointMate_id] at hh
-    change unitScalar C (p.leftTrace (𝟙 (simples C k))) =
-      pivotalDimension C p ((simples C k)ᘁ) at hh
-    simpa only [unitScalar_eq_equiv] using
-      hh.trans (pivotalDimension_dual_conj C p (simples C k))
-  rw [hd, ← unitScalar_eq_equiv, leftTrace_monodromy_of_dual_sTest C p k i hs] at ht
-  have hn : star (simpleDimension C p k) ≠ 0 := by
-    simpa using ((map_ne_zero (starRingEnd ℂ)).2 (simpleDimension_ne_zero C p k))
-  have hc' : c = star (simpleDimension C p i) := mul_right_cancel₀ hn ht
-  simpa [hc'] using ha
 
 /-- The positive intrinsic dimension of a nonempty family of simples. -/
 def restrictedGlobalDimension (S : Finset (Fin (rank C))) : ℂ :=

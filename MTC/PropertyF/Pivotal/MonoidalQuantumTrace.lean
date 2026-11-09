@@ -1,6 +1,5 @@
 module
-public import MTC.PropertyF.Pivotal.MonoidalTrace
-public import MTC.PropertyF.Pivotal.MonoidalDualComparison
+public import MTC.PropertyF.Pivotal.MonoidalDual
 public import MTC.CategoryTheory.Dimensions.SquaredNorm
 /-! # Right quantum trace under strong monoidal functors -/
 

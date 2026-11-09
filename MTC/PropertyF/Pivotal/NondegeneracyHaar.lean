@@ -167,14 +167,13 @@ theorem leftTrace_doubleBraiding_eq_dual (S V : C.Obj) :
     doubleBraiding_dual_tensor, Iso.inv_hom_id_assoc] at h
   exact h
 
-/-- The trace of a simple monodromy loop under the global numerical S-test,
-using the left pivotal trace. -/
-theorem leftTrace_monodromy_of_sTest (k i : Fin (rank C))
-    (hs : ∀ j, categoricalS C p j k = simpleDimension C p j * simpleDimension C p k) :
+theorem leftTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
+    (hs : categoricalS C p (dualIndex C i) k =
+      simpleDimension C p (dualIndex C i) * simpleDimension C p k) :
     unitScalar C (p.leftTrace (doubleBraiding (simples C i) (simples C k))) =
       star (simpleDimension C p i) * star (simpleDimension C p k) := by
   rw [leftTrace_doubleBraiding_eq_dual]
-  have htest := hs (dualIndex C i)
+  have htest := hs
   have hki := MTC.Center.Induction.pivotalDimension_simple_dual_conj p i
   have hkk := MTC.Center.Induction.pivotalDimension_simple_dual_conj p k
   have hi := pivotalDimension_iso p (rightDualLabelIso C i)
@@ -203,8 +202,9 @@ theorem leftTrace_monodromy_of_sTest (k i : Fin (rank C))
 
 /-- Under the numerical S-test, every closed monodromy loop is the
 conjugate pivotal dimension times the identity of the surviving simple. -/
-theorem leftPartialTrace_monodromy_of_sTest (k i : Fin (rank C))
-    (hs : ∀ j, categoricalS C p j k = simpleDimension C p j * simpleDimension C p k) :
+theorem leftPartialTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
+    (hs : categoricalS C p (dualIndex C i) k =
+      simpleDimension C p (dualIndex C i) * simpleDimension C p k) :
     leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k))) =
       star (simpleDimension C p i) • (1 : End (simples C k)) := by
   let : Simple (simples C k) := simples_simple C k
@@ -226,11 +226,27 @@ theorem leftPartialTrace_monodromy_of_sTest (k i : Fin (rank C))
       pivotalDimension C p ((simples C k)ᘁ) at hh
     simpa only [unitScalar_eq_equiv] using
       hh.trans (pivotalDimension_dual_conj C p (simples C k))
-  rw [hd, ← unitScalar_eq_equiv, leftTrace_monodromy_of_sTest C p k i hs] at ht
+  rw [hd, ← unitScalar_eq_equiv, leftTrace_monodromy_of_dual_sTest C p k i hs] at ht
   have hn : star (simpleDimension C p k) ≠ 0 := by
     simpa using ((map_ne_zero (starRingEnd ℂ)).2 (simpleDimension_ne_zero C p k))
   have hc' : c = star (simpleDimension C p i) := mul_right_cancel₀ hn ht
   simpa [hc'] using ha
+
+/-- The trace of a simple monodromy loop under the global numerical S-test,
+using the left pivotal trace. -/
+theorem leftTrace_monodromy_of_sTest (k i : Fin (rank C))
+    (hs : ∀ j, categoricalS C p j k = simpleDimension C p j * simpleDimension C p k) :
+    unitScalar C (p.leftTrace (doubleBraiding (simples C i) (simples C k))) =
+      star (simpleDimension C p i) * star (simpleDimension C p k) :=
+  leftTrace_monodromy_of_dual_sTest C p k i (hs (dualIndex C i))
+
+/-- Under the numerical S-test, every closed monodromy loop is the
+conjugate pivotal dimension times the identity of the surviving simple. -/
+theorem leftPartialTrace_monodromy_of_sTest (k i : Fin (rank C))
+    (hs : ∀ j, categoricalS C p j k = simpleDimension C p j * simpleDimension C p k) :
+    leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k))) =
+      star (simpleDimension C p i) • (1 : End (simples C k)) :=
+  leftPartialTrace_monodromy_of_dual_sTest C p k i (hs (dualIndex C i))
 
 /-- The Haar vacuum loop on a numerically central simple is the intrinsic
 global dimension times the identity. -/

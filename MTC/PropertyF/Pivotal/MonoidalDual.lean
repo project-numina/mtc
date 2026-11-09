@@ -1,5 +1,6 @@
 module
 public import MTC.PropertyF.Pivotal.GaloisDual
+public import MTC.CategoryTheory.Dimensions.DualCoherence
 
 /-! # Exact duality pairings under strong monoidal functors -/
 
@@ -7,6 +8,7 @@ public import MTC.PropertyF.Pivotal.GaloisDual
 open CategoryTheory CategoryTheory.MonoidalCategory
 open CategoryTheory.Functor.LaxMonoidal CategoryTheory.Functor.OplaxMonoidal
 open CategoryTheory.Functor.Monoidal
+open MTC.CategoryTheory.Dimensions
 namespace MTC.PropertyF.Pivotal
 set_option linter.style.haveILetI false
 universe v u v' u'
@@ -52,6 +54,54 @@ theorem monoidalFunctor_pairing_coevaluation
   letI := exactPairingOfMonoidalFunctor F X Y
   change F.map (η_ X Y) = η F ≫ (ε F ≫ F.map (η_ X Y) ≫ δ F X Y) ≫ μ F X Y
   simp [Category.assoc]
+
+/-- A strong monoidal functor carries the right closed duality diagram to the
+closed diagram built from the transported pairings. -/
+theorem monoidalFunctor_rightClosedDiagram (F : C ⥤ D) [F.Monoidal]
+    (X Y Z : C) [ExactPairing X Y] [ExactPairing Y Z] (f : X ⟶ Z) :
+    (ε F ≫ F.map (η_ X Y ≫ (f ⊗ₘ 𝟙 Y) ≫ ε_ Y Z) ≫ η F) =
+      (ε F ≫ F.map (η_ X Y) ≫ δ F X Y) ≫
+        (F.map f ⊗ₘ 𝟙 (F.obj Y)) ≫ (μ F Z Y ≫ F.map (ε_ Y Z) ≫ η F) := by
+  simp only [Functor.map_comp, map_tensor, F.map_id, Category.assoc]
+
+/-- A strong monoidal functor carries the left closed duality diagram to the
+closed diagram built from the transported pairings. -/
+theorem monoidalFunctor_leftClosedDiagram (F : C ⥤ D) [F.Monoidal]
+    (X Y Z : C) [ExactPairing X Y] [ExactPairing Y Z] (g : Z ⟶ X) :
+    (ε F ≫ F.map (η_ Y Z ≫ (𝟙 Y ⊗ₘ g) ≫ ε_ X Y) ≫ η F) =
+      (ε F ≫ F.map (η_ Y Z) ≫ δ F Y Z) ≫
+        (𝟙 (F.obj Y) ⊗ₘ F.map g) ≫ (μ F Y X ≫ F.map (ε_ X Y) ≫ η F) := by
+  simp only [Functor.map_comp, map_tensor, F.map_id, Category.assoc]
+
+variable [RightRigidCategory C] [RightRigidCategory D]
+
+/-- The comparison from the functor image of a chosen right dual to the
+chosen right dual of its image. -/
+def monoidalFunctorDualIso (F : C ⥤ D) [F.Monoidal] (X : C) :
+    F.obj (Xᘁ) ≅ (F.obj X)ᘁ :=
+  rightDualIso (exactPairingOfMonoidalFunctor F X (Xᘁ)) HasRightDual.exact
+
+/-- The dual comparison carries the transported coevaluation to the chosen
+coevaluation. -/
+theorem monoidalFunctorDual_coevaluation (F : C ⥤ D) [F.Monoidal] (X : C) :
+    (ε F ≫ F.map (η_ X (Xᘁ)) ≫ δ F X (Xᘁ)) ≫
+      F.obj X ◁ (monoidalFunctorDualIso F X).hom = η_ (F.obj X) ((F.obj X)ᘁ) := by
+  have h := coevaluation_rightDualIso (exactPairingOfMonoidalFunctor F X (Xᘁ))
+    (HasRightDual.exact (X := F.obj X))
+  change (ε F ≫ F.map (η_ X (Xᘁ)) ≫ δ F X (Xᘁ)) ≫
+    F.obj X ◁ (monoidalFunctorDualIso F X).hom = _ at h
+  exact h
+
+/-- The chosen evaluation carries the dual comparison to the transported
+evaluation. -/
+theorem monoidalFunctorDual_evaluation (F : C ⥤ D) [F.Monoidal] (X : C) :
+    ((monoidalFunctorDualIso F X).hom ▷ F.obj X) ≫ ε_ (F.obj X) ((F.obj X)ᘁ) =
+      μ F (Xᘁ) X ≫ F.map (ε_ X (Xᘁ)) ≫ η F := by
+  have h := rightDualIso_evaluation (exactPairingOfMonoidalFunctor F X (Xᘁ))
+    (HasRightDual.exact (X := F.obj X))
+  change ((monoidalFunctorDualIso F X).hom ▷ F.obj X) ≫ _ =
+    μ F (Xᘁ) X ≫ F.map (ε_ X (Xᘁ)) ≫ η F at h
+  exact h
 
 end MTC.PropertyF.Pivotal
 end

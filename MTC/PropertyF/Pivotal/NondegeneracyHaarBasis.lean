@@ -51,40 +51,6 @@ theorem leftPartialTrace_sum (p : PivotalStructure (C := C.Obj))
   apply End.ext
   simp [leftPartialTrace, whiskerLeft_sum, Preadditive.sum_comp, Preadditive.comp_sum]
 
-/-- Expanding monodromy through simple tensor-product summands gives the
-first double sum in the DGNO Haar sliding calculation. -/
-theorem monodromyHaar_fusion_expansion (p : PivotalStructure (C := C.Obj))
-    (U V : C.Obj) :
-    monodromyHaar C p U V = ∑ i : Fin (rank C), ∑ q : simplePieces C (simples C i ⊗ U),
-      simpleDimension C p i • leftPartialTrace p (End.of
-        ((α_ (simples C i) U V).inv ≫
-          (simpleProjection (simples C i ⊗ U) q.1 q.2 ▷ V) ≫
-          doubleBraiding (simples C q.1) V ≫
-          (simpleInclusion C (simples C i ⊗ U) q.1 q.2 ▷ V) ≫
-          (α_ (simples C i) U V).hom)) := by
-  classical
-  unfold monodromyHaar
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [monodromy_simple_expansion C V (simples C i ⊗ U)]
-  simp only [Preadditive.comp_sum, Preadditive.sum_comp]
-  let F (q : simplePieces C (simples C i ⊗ U)) :
-      (simples C i ⊗ (U ⊗ V)) ⟶ (simples C i ⊗ (U ⊗ V)) :=
-    (α_ (simples C i) U V).inv ≫
-      ((simpleProjection (simples C i ⊗ U) q.1 q.2 ▷ V) ≫
-        doubleBraiding (simples C q.1) V ≫
-          (simpleInclusion C (simples C i ⊗ U) q.1 q.2 ▷ V)) ≫
-        (α_ (simples C i) U V).hom
-  have he : End.of (∑ q, F q) = ∑ q, End.of (F q) := by
-    apply End.ext
-    simp
-  change simpleDimension C p i • leftPartialTrace p (End.of (∑ q, F q)) = _
-  rw [he, leftPartialTrace_sum, Finset.smul_sum]
-  apply Finset.sum_congr rfl
-  intro q _
-  simp only [F, Category.assoc]
-
-
 /-- DGNO's Haar operator for any actual family of endomorphisms of `(-) ⊗ V`.
 Naturality is an independent property of the supplied family. -/
 def categoricalHaar (p : PivotalStructure (C := C.Obj)) (V U : C.Obj)
@@ -134,6 +100,22 @@ theorem categoricalHaar_fusion_expansion (p : PivotalStructure (C := C.Obj))
   apply Finset.sum_congr rfl
   intro q _
   simp only [F, Category.assoc]
+
+/-- Expanding monodromy through simple tensor-product summands gives the
+first double sum in the DGNO Haar sliding calculation. -/
+theorem monodromyHaar_fusion_expansion (p : PivotalStructure (C := C.Obj))
+    (U V : C.Obj) :
+    monodromyHaar C p U V = ∑ i : Fin (rank C), ∑ q : simplePieces C (simples C i ⊗ U),
+      simpleDimension C p i • leftPartialTrace p (End.of
+        ((α_ (simples C i) U V).inv ≫
+          (simpleProjection (simples C i ⊗ U) q.1 q.2 ▷ V) ≫
+          doubleBraiding (simples C q.1) V ≫
+          (simpleInclusion C (simples C i ⊗ U) q.1 q.2 ▷ V) ≫
+          (α_ (simples C i) U V).hom)) := by
+  simpa only [categoricalHaar_monodromy] using
+    categoricalHaar_fusion_expansion C p U V
+      (fun X ↦ End.of (doubleBraiding X V))
+      (fun f ↦ (doubleBraiding_natural_left f V).symm)
 
 end MTC.PropertyF.Pivotal
 end
