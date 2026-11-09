@@ -16,14 +16,8 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 transparent. -/
 theorem transparent_simple_of_positive_multiplicity
     (X : C.Obj) (hX : MTC.Center.Transparent X) (i : Fin (rank C))
-    (hi : 0 < simpleMultiplicity C i X) : MTC.Center.Transparent (simples C i) := by
-  classical
-  let V : (Σ i, Fin (simpleMultiplicity C i X)) → C.Obj := fun k => simples C k.1
-  let e := Classical.choice (exists_canonical_decomposition C X)
-  let k : Σ i, Fin (simpleMultiplicity C i X) := ⟨i, ⟨0, hi⟩⟩
-  let r : Retract (simples C i) X :=
-    ⟨biproduct.ι V k ≫ e.inv, e.hom ≫ biproduct.π V k, by simp [V, k]⟩
-  exact transparent_of_retract r hX
+    (hi : 0 < simpleMultiplicity C i X) : MTC.Center.Transparent (simples C i) :=
+  muger_piece_transparent C ⟨X, hX⟩ ⟨i, ⟨0, hi⟩⟩
 
 /-- Normalization on transparent simple representatives extends to every actual
 transparent object by semisimplicity. -/

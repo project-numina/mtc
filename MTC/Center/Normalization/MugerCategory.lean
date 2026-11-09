@@ -133,14 +133,6 @@ def mugerPieces (X : MugerCategory C)
 instance mugerInclusion_preservesMonos : (mugerProperty C).ι.PreservesMonomorphisms :=
   (mugerProperty C).preservesMonomorphisms_ι_of_isNormalEpiCategory
 
-/-- Each simple summand remains simple in the full Müger category. -/
-theorem mugerPieces_simple (X : MugerCategory C)
-    (a : MTC.CategoryTheory.Dimensions.simplePieces C X.obj) : Simple (mugerPieces C X a) := by
-  let : Simple ((mugerProperty C).ι.obj (mugerPieces C X a)) := by
-    change Simple (simples C a.1)
-    exact simples_simple C a.1
-  exact Functor.simple_of_simple_obj (mugerProperty C).ι (mugerPieces C X a)
-
 /-- The actual ambient simple decomposition lifts to the Müger category. -/
 def mugerPiecesDecomposition (X : MugerCategory C) : X ≅ ⨁ (mugerPieces C X) := by
   let F := (mugerProperty C).ι
@@ -163,6 +155,11 @@ theorem mugerSimple_simple (i : MugerSimpleIndex C) : Simple (mugerSimple C i) :
     change Simple (simples C i)
     exact simples_simple C i
   exact Functor.simple_of_simple_obj (mugerProperty C).ι (mugerSimple C i)
+
+/-- Each simple summand remains simple in the full Müger category. -/
+theorem mugerPieces_simple (X : MugerCategory C)
+    (a : MTC.CategoryTheory.Dimensions.simplePieces C X.obj) : Simple (mugerPieces C X a) :=
+  mugerSimple_simple C ⟨a.1, (mem_mugerLabels C _).mpr (muger_piece_transparent C X a)⟩
 
 /-- Distinct ambient simple labels remain nonisomorphic in the full subcategory. -/
 theorem mugerSimple_injective {i j : MugerSimpleIndex C}

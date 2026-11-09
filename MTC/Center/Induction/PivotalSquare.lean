@@ -63,27 +63,10 @@ theorem globalDimension_square_of_actual_induction
       let : Simple (simples C i) := simples_simple C i
       rw [finrank_to_simple_eq_from_simple, mul_comm]
     simp_rw [hsum, ← center_pivotalDimension_conj_forget hcompat]
-    rw [globalDimension]
-    apply Finset.sum_congr rfl
-    intro i hi
-    let : Simple (simples 𝒵ᶠ i) := simples_simple 𝒵ᶠ i
-    rw [squaredNorm_eq_pivotalDimension_mul_dual pZ, pivotalDimension_simple_dual_conj (C := 𝒵ᶠ) pZ]
+    simpa only [mul_comm] using (globalDimension_eq_sum_pivotal_conj_mul (C := 𝒵ᶠ) pZ).symm
   rw [h]
-  conv_lhs =>
-    arg 2
-    ext i
-    rw [center_pivotalDimension_induction hcompat]
-  have hbase : (∑ i, star (pivotalDimension C p (simples C i)) *
-      pivotalDimension C p (simples C i)) = globalDimension C :=
-    (globalDimension_eq_sum_pivotal_conj_mul p).symm
-  calc
-    _ = globalDimension C * (∑ i, star (pivotalDimension C p (simples C i)) *
-          pivotalDimension C p (simples C i)) := by
-        simp only [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro i hi
-        ring
-    _ = globalDimension C ^ 2 := by rw [hbase]; ring
+  simp_rw [center_pivotalDimension_induction hcompat, mul_left_comm (star _),
+    ← Finset.mul_sum, ← globalDimension_eq_sum_pivotal_conj_mul (C := C) p, ← pow_two]
 
 /-- The square formula uses the canonical lift of the given pivotal structure. -/
 theorem globalDimension_square_of_pivotal

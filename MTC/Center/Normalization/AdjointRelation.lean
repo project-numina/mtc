@@ -63,14 +63,7 @@ omit hA in
 fusion subring. -/
 theorem fusionSubringRelated_unit_iff (i : Fin (rank C)) :
     fusionSubringRelated C (A := A) (unitIndex C) i ↔ i ∈ A := by
-  constructor
-  · rintro ⟨a, ha, hp⟩
-    rw [fusionCoeff_unit] at hp
-    split_ifs at hp with h
-    · simpa [h] using ha
-    · simp at hp
-  · intro hi
-    exact ⟨i, hi, by simp [fusionCoeff_unit]⟩
+  simp [fusionSubringRelated, fusionCoeff_unit, apply_ite]
 
 omit hA in
 /-- If a fusion subring contains the adjoint generators, any two simple

@@ -52,14 +52,12 @@ theorem fusionDegree_tensor {i j k : Fin (rank C)} (h : 0 < fusionCoeff C i j k)
 /-- Tensoring two simple objects has a simple constituent. -/
 theorem fusionCoeff_exists_positive (i j : Fin (rank C)) :
     ∃ k, 0 < fusionCoeff C i j k := by
-  classical
-  by_contra h
-  have hz : ∀ k, fusionCoeff C i j k = 0 := by
-    intro k
-    exact Nat.eq_zero_of_not_pos (fun hk ↦ h ⟨k, hk⟩)
-  have heq := fpSimple_mul C i j
-  simp only [hz, Nat.cast_zero, zero_mul, Finset.sum_const_zero] at heq
-  exact (ne_of_gt (mul_pos (fpSimple_pos C i) (fpSimple_pos C j))) heq
+  have hsum : 0 < ∑ k, (fusionCoeff C i j k : ℝ) * fpSimple C k := by
+    rw [← fpSimple_mul]
+    exact mul_pos (fpSimple_pos C i) (fpSimple_pos C j)
+  obtain ⟨k, _, hk⟩ := (Finset.sum_pos_iff_of_nonneg
+    (fun k _ ↦ mul_nonneg (Nat.cast_nonneg _) (le_of_lt (fpSimple_pos C k)))).mp hsum
+  exact ⟨k, Nat.cast_pos.mp (pos_of_mul_pos_left hk (le_of_lt (fpSimple_pos C k)))⟩
 
 /-- The degree of a dual simple is the inverse degree. -/
 theorem fusionDegree_dual (i : Fin (rank C)) :
