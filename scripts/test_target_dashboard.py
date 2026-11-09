@@ -2,9 +2,12 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / 'style'))
 from source_metrics import ROOT, parse
+import source_metrics
+import target_dashboard
 from target_dashboard import target_gap
 
 
@@ -44,6 +47,33 @@ class TargetGapTest(unittest.TestCase):
         interpolated = target_gap([0, 0, 1, 3], .5, .5, 0)
         self.assertEqual(interpolated['minimum_distinct_reductions_relaxed'], 0)
         self.assertIsNone(target_gap([], .5, 2, 0))
+
+    def test_proof_valued_definition_is_in_census(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'scratch') as dirname:
+            root = Path(dirname)
+            (root / 'MTC').mkdir()
+            (root / 'style').mkdir()
+            (root / 'out').mkdir()
+            (root / 'MTC' / 'Example.lean').write_text(
+                '@[inline] private def proof_helper : True := by\n  trivial\n'
+                'def data_helper : Nat := 0\n')
+            (root / 'style' / '.proposition-definitions.tsv').write_text(
+                'module\tname\nMTC.Example\t_private.MTC.Example.0.proof_helper\n')
+            (root / 'style' / '.environment.tsv').write_text(
+                'module\tname\tkind\texplicit\timplicit\tstrict\tinstance\thypotheses\ttype_hash\n'
+                'MTC.Example\t_private.MTC.Example.0.proof_helper\tdefinition\t0\t0\t0\t0\t0\t1\n'
+                'MTC.Example\tdata_helper\tdefinition\t0\t0\t0\t0\t0\t2\n')
+            (root / 'out' / 'cohort-files-fb6ec518.tsv').write_text('file\tpopulation\n')
+            (root / 'out' / 'cohort-fb6ec518-expanded.tsv').write_text(
+                'population\tqualified_name\tfile\tline\tkind\tname\n')
+            with patch.object(target_dashboard, 'ROOT', root), \
+                 patch.object(target_dashboard, 'STYLE', root / 'style'), \
+                 patch.object(target_dashboard, 'OUT', root / 'out'), \
+                 patch.object(source_metrics, 'ROOT', root):
+                result = target_dashboard.snapshot()
+            self.assertEqual([r['name'] for r in result], ['proof_helper'])
+            self.assertEqual(result[0]['match'], 'unique')
+            self.assertEqual(result[0]['proof_lines'], 2)
 
 
 if __name__ == '__main__':

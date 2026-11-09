@@ -30,9 +30,18 @@ def write(path, rows, fields):
         w.writerows({**row, '_end': '-'} for row in rows)
 
 def snapshot():
+    # A theorem-only environment match misses source-level `def`/`opaque`
+    # helpers whose values are proofs.  The Lean isProp scan identifies them;
+    # run it against the same freshly built environment before this dashboard.
+    prop_path = STYLE / '.proposition-definitions.tsv'
+    if not prop_path.exists():
+        raise SystemExit('Run scripts/style/survey_proposition_definitions.py before the dashboard')
+    proof_defs = {(r['module'], r['name']) for r in read(prop_path)}
     env = collections.defaultdict(list)
     for e in read(STYLE / '.environment.tsv'):
-        if e['module'].startswith('MTC.') and e['kind'] in ('theorem', 'axiom'):
+        if (e['module'].startswith('MTC.') and
+            (e['kind'] in ('theorem', 'axiom') or
+             (e['module'], e['name']) in proof_defs)):
             env[(e['module'], e['name'].split('.')[-1])].append(e)
     anonymous_env = collections.defaultdict(list)
     for (module, terminal), hits in env.items():
