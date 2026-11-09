@@ -36,9 +36,12 @@ def snapshot():
     prop_path = STYLE / '.proposition-definitions.tsv'
     if not prop_path.exists():
         raise SystemExit('Run scripts/style/survey_proposition_definitions.py before the dashboard')
+    env_path = STYLE / '.environment.tsv'
+    if prop_path.stat().st_mtime_ns < env_path.stat().st_mtime_ns:
+        raise SystemExit('The proposition-definition scan predates the environment; rerun it')
     proof_defs = {(r['module'], r['name']) for r in read(prop_path)}
     env = collections.defaultdict(list)
-    for e in read(STYLE / '.environment.tsv'):
+    for e in read(env_path):
         if (e['module'].startswith('MTC.') and
             (e['kind'] in ('theorem', 'axiom') or
              (e['module'], e['name']) in proof_defs)):

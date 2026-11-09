@@ -57,12 +57,12 @@ class TargetGapTest(unittest.TestCase):
             (root / 'MTC' / 'Example.lean').write_text(
                 '@[inline] private def proof_helper : True := by\n  trivial\n'
                 'def data_helper : Nat := 0\n')
-            (root / 'style' / '.proposition-definitions.tsv').write_text(
-                'module\tname\nMTC.Example\t_private.MTC.Example.0.proof_helper\n')
             (root / 'style' / '.environment.tsv').write_text(
                 'module\tname\tkind\texplicit\timplicit\tstrict\tinstance\thypotheses\ttype_hash\n'
                 'MTC.Example\t_private.MTC.Example.0.proof_helper\tdefinition\t0\t0\t0\t0\t0\t1\n'
                 'MTC.Example\tdata_helper\tdefinition\t0\t0\t0\t0\t0\t2\n')
+            (root / 'style' / '.proposition-definitions.tsv').write_text(
+                'module\tname\nMTC.Example\t_private.MTC.Example.0.proof_helper\n')
             (root / 'out' / 'cohort-files-fb6ec518.tsv').write_text('file\tpopulation\n')
             (root / 'out' / 'cohort-fb6ec518-expanded.tsv').write_text(
                 'population\tqualified_name\tfile\tline\tkind\tname\n')
