@@ -304,41 +304,6 @@ def categoricalHaarRestricted (S : Finset (Fin (rank C))) (U V : C.Obj)
   ∑ j ∈ S, simpleDimension C p j • leftPartialTraceHom C p (simples C j) (U ⊗ V) (U ⊗ V)
     ((α_ (simples C j) U V).inv ≫ (β (simples C j ⊗ U)).asHom ≫ (α_ (simples C j) U V).hom)
 
-/-- Fusion expansion of a single actual pivotal loop summand. -/
-theorem haarSummand_fusion_expansion (U V : C.Obj) (j : Fin (rank C))
-    (β : ∀ X : C.Obj, End (X ⊗ V))
-    (hβ : ∀ {X Y : C.Obj} (f : X ⟶ Y),
-      (f ▷ V) ≫ (β Y).asHom = (β X).asHom ≫ (f ▷ V)) :
-    simpleDimension C p j • leftPartialTraceHom C p (simples C j) (U ⊗ V) (U ⊗ V)
-      ((α_ (simples C j) U V).inv ≫ (β (simples C j ⊗ U)).asHom ≫ (α_ (simples C j) U V).hom) =
-    ∑ i : Fin (rank C), ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U)),
-      simpleDimension C p j • leftPartialTraceHom C p (simples C j) (U ⊗ V) (U ⊗ V)
-        ((α_ (simples C j) U V).inv ≫ (simpleProjection (simples C j ⊗ U) i a ▷ V) ≫
-          (β (simples C i)).asHom ≫ (simpleInclusion C (simples C j ⊗ U) i a ▷ V) ≫
-          (α_ (simples C j) U V).hom) := by
-  classical
-  rw [natural_tensor_family_simple_expansion C V (simples C j ⊗ U) β hβ]
-  simp only [Preadditive.comp_sum, Preadditive.sum_comp]
-  let F (q : simplePieces C (simples C j ⊗ U)) :
-      (simples C j ⊗ (U ⊗ V)) ⟶ (simples C j ⊗ (U ⊗ V)) :=
-    (α_ (simples C j) U V).inv ≫
-      ((simpleProjection (simples C j ⊗ U) q.1 q.2 ▷ V) ≫
-        (β (simples C q.1)).asHom ≫
-          (simpleInclusion C (simples C j ⊗ U) q.1 q.2 ▷ V)) ≫
-        (α_ (simples C j) U V).hom
-  have he : End.of (∑ q, F q) = ∑ q, End.of (F q) := by
-    apply End.ext
-    simp
-  change simpleDimension C p j • (leftPartialTrace p (End.of (∑ q, F q))).asHom = _
-  rw [he, leftPartialTrace_sum]
-  simp only [End.sum_asHom, Finset.smul_sum, Fintype.sum_sigma]
-  apply Finset.sum_congr rfl
-  intro i _
-  apply Finset.sum_congr rfl
-  intro a _
-  simp only [F, Category.assoc]
-  rfl
-
 /-- Relative pivotal Haar sliding, under the two concrete fusion-support
 conditions for the chosen label set and free strand. -/
 theorem categoricalHaarRestricted_slide (S : Finset (Fin (rank C))) (U V : C.Obj)

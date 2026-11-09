@@ -23,17 +23,6 @@ theorem categoricalS_eq_dimension_product_of_transparent
   rw [pivotalDimension_tensor]
   exact mul_comm _ _
 
-/-- Invertibility of the actual pivotal S matrix implies that every
-transparent simple label is the unit label. -/
-theorem transparent_label_eq_unit_of_categoricalS_det_ne_zero
-    (hdet : (categoricalS C p).det ≠ 0) (k : Fin (rank C))
-    (hk : MTC.Center.Transparent (simples C k)) : k = unitIndex C := by
-  apply normalized_columns_injective (simpleDimension_ne_zero C p) hdet
-  funext i
-  simp only [categoricalS_unit, simpleDimension_unit, div_one,
-    categoricalS_eq_dimension_product_of_transparent C p k hk i]
-  exact mul_div_cancel_right₀ _ (simpleDimension_ne_zero C p k)
-
 /-- The actual pivotal S matrix is invertible exactly when the unit is the
 only simple satisfying all numerical S-centrality equations. -/
 theorem categoricalS_det_ne_zero_iff_trivial_S_centralizer :
@@ -46,6 +35,14 @@ theorem categoricalS_det_ne_zero_iff_trivial_S_centralizer :
   funext i
   simp only [categoricalS_unit, simpleDimension_unit, div_one, hk i]
   exact mul_div_cancel_right₀ _ (simpleDimension_ne_zero C p k)
+
+/-- Invertibility of the actual pivotal S matrix implies that every
+transparent simple label is the unit label. -/
+theorem transparent_label_eq_unit_of_categoricalS_det_ne_zero
+    (hdet : (categoricalS C p).det ≠ 0) (k : Fin (rank C))
+    (hk : MTC.Center.Transparent (simples C k)) : k = unitIndex C :=
+  (categoricalS_det_ne_zero_iff_trivial_S_centralizer C p).mp hdet k
+    (categoricalS_eq_dimension_product_of_transparent C p k hk)
 
 end MTC.PropertyF.Pivotal
 end

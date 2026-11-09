@@ -39,16 +39,9 @@ theorem existsUnique_fp_column (hdet : (categoricalS C p).det ≠ 0) :
     convert h.units_smul (fun j ↦ (Units.mk0 (simpleDimension C p j)
         (simpleDimension_ne_zero C p j))⁻¹) using 1
     ext j i
-    change categoricalS C p i j / simpleDimension C p j =
-      ((Units.mk0 (simpleDimension C p j) (simpleDimension_ne_zero C p j))⁻¹ : ℂˣ) •
-        categoricalS C p i j
-    change categoricalS C p i j / simpleDimension C p j =
-      ((↑((Units.mk0 (simpleDimension C p j) (simpleDimension_ne_zero C p j))⁻¹) : ℂ) *
-        categoricalS C p i j)
-    simp [div_eq_mul_inv, mul_comm]
+    simp [normalizedSColumn, Units.smul_def, div_eq_mul_inv, mul_comm]
   have hbij := characters_bijective ⟨unitIndex C, fusionCoeff C⟩
     (categoricalSCharacter C p) hlin
-  obtain ⟨j, hj⟩ := hbij.2 (fpFusionCharacter C)
   have heq : ∀ j, categoricalSCharacter C p j = fpFusionCharacter C ↔
       ∀ i, categoricalS C p i j = simpleDimension C p j * (fpSimple C i : ℂ) := by
     intro j
@@ -62,8 +55,6 @@ theorem existsUnique_fp_column (hdet : (categoricalS C p).det ≠ 0) :
       funext i
       change categoricalS C p i j / simpleDimension C p j = (fpSimple C i : ℂ)
       rw [h i, mul_comm, mul_div_cancel_right₀ _ (simpleDimension_ne_zero C p j)]
-  refine ⟨j, (heq j).mp hj, ?_⟩
-  intro k hk
-  exact hbij.1 ((heq k).mpr hk |>.trans hj.symm)
+  exact (existsUnique_congr heq).mp (hbij.existsUnique (fpFusionCharacter C))
 
 end MTC.PropertyF.Pivotal

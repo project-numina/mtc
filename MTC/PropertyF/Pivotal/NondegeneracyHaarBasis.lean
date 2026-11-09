@@ -65,6 +65,42 @@ theorem categoricalHaar_monodromy (p : PivotalStructure (C := C.Obj)) (U V : C.O
     categoricalHaar C p V U (fun X ↦ End.of (doubleBraiding X V)) =
       monodromyHaar C p U V := rfl
 
+/-- Fusion expansion of a single actual pivotal loop summand. -/
+theorem haarSummand_fusion_expansion (p : PivotalStructure (C := C.Obj))
+    (U V : C.Obj) (j : Fin (rank C))
+    (β : ∀ X : C.Obj, End (X ⊗ V))
+    (hβ : ∀ {X Y : C.Obj} (f : X ⟶ Y),
+      (f ▷ V) ≫ (β Y).asHom = (β X).asHom ≫ (f ▷ V)) :
+    simpleDimension C p j • leftPartialTraceHom C p (simples C j) (U ⊗ V) (U ⊗ V)
+      ((α_ (simples C j) U V).inv ≫ (β (simples C j ⊗ U)).asHom ≫ (α_ (simples C j) U V).hom) =
+    ∑ i : Fin (rank C), ∑ a : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U)),
+      simpleDimension C p j • leftPartialTraceHom C p (simples C j) (U ⊗ V) (U ⊗ V)
+        ((α_ (simples C j) U V).inv ≫ (simpleProjection (simples C j ⊗ U) i a ▷ V) ≫
+          (β (simples C i)).asHom ≫ (simpleInclusion C (simples C j ⊗ U) i a ▷ V) ≫
+          (α_ (simples C j) U V).hom) := by
+  classical
+  rw [natural_tensor_family_simple_expansion C V (simples C j ⊗ U) β hβ]
+  simp only [Preadditive.comp_sum, Preadditive.sum_comp]
+  let F (q : simplePieces C (simples C j ⊗ U)) :
+      (simples C j ⊗ (U ⊗ V)) ⟶ (simples C j ⊗ (U ⊗ V)) :=
+    (α_ (simples C j) U V).inv ≫
+      ((simpleProjection (simples C j ⊗ U) q.1 q.2 ▷ V) ≫
+        (β (simples C q.1)).asHom ≫
+          (simpleInclusion C (simples C j ⊗ U) q.1 q.2 ▷ V)) ≫
+        (α_ (simples C j) U V).hom
+  have he : End.of (∑ q, F q) = ∑ q, End.of (F q) := by
+    apply End.ext
+    simp
+  change simpleDimension C p j • (leftPartialTrace p (End.of (∑ q, F q))).asHom = _
+  rw [he, leftPartialTrace_sum]
+  simp only [End.sum_asHom, Finset.smul_sum, Fintype.sum_sigma]
+  apply Finset.sum_congr rfl
+  intro i _
+  apply Finset.sum_congr rfl
+  intro a _
+  simp only [F, Category.assoc]
+  rfl
+
 /-- The first fusion-basis expansion in DGNO's Haar identity applies to any
 natural tensor family, not just monodromy. -/
 theorem categoricalHaar_fusion_expansion (p : PivotalStructure (C := C.Obj))
@@ -83,23 +119,10 @@ theorem categoricalHaar_fusion_expansion (p : PivotalStructure (C := C.Obj))
   unfold categoricalHaar
   apply Finset.sum_congr rfl
   intro i _
-  rw [natural_tensor_family_simple_expansion C V (simples C i ⊗ U) β hβ]
-  simp only [Preadditive.comp_sum, Preadditive.sum_comp]
-  let F (q : simplePieces C (simples C i ⊗ U)) :
-      (simples C i ⊗ (U ⊗ V)) ⟶ (simples C i ⊗ (U ⊗ V)) :=
-    (α_ (simples C i) U V).inv ≫
-      ((simpleProjection (simples C i ⊗ U) q.1 q.2 ▷ V) ≫
-        (β (simples C q.1)).asHom ≫
-          (simpleInclusion C (simples C i ⊗ U) q.1 q.2 ▷ V)) ≫
-        (α_ (simples C i) U V).hom
-  have he : End.of (∑ q, F q) = ∑ q, End.of (F q) := by
-    apply End.ext
-    simp
-  change simpleDimension C p i • leftPartialTrace p (End.of (∑ q, F q)) = _
-  rw [he, leftPartialTrace_sum, Finset.smul_sum]
-  apply Finset.sum_congr rfl
-  intro q _
-  simp only [F, Category.assoc]
+  apply End.ext
+  simpa only [End.sum_asHom, End.smul_asHom, Fintype.sum_sigma,
+    leftPartialTraceHom, leftPartialTrace] using
+    haarSummand_fusion_expansion C p U V i β hβ
 
 /-- Expanding monodromy through simple tensor-product summands gives the
 first double sum in the DGNO Haar sliding calculation. -/
