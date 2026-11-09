@@ -5,7 +5,11 @@ This imports pinned Mathlib and private project declarations in a separate
 analysis module; it does not change the proof library or its dependencies.
 Set `PROPERTYF_AUDIT_CORES` to choose the analysis CPU set.
 
-Results are in [docs/style](../../docs/style/README.md). The source parser and
+Results are in [docs/style](../../docs/style/README.md). The pinned `docs/style/cohort-fb6ec518.tsv` identifies baseline source
+theorems by their uniquely matched Lean names; the report pairs retained
+names across moves and records missing or new declarations separately. File
+distributions are snapshots, not paired declaration statistics. The Mathlib
+sample module list is pinned and checked. The source parser and
 Lean expression/binder measurement were adapted from the earlier
 `property-f-style/scripts/style` survey without changing their metric
 definitions. The source parser is heuristic; the report describes matching
