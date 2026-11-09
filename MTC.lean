@@ -272,9 +272,7 @@ public import MTC.PropertyF.Pivotal.GlobalCriterionConsequences
 public import MTC.PropertyF.Pivotal.InfiniteImages
 public import MTC.PropertyF.Pivotal.MainTheorems
 public import MTC.PropertyF.Pivotal.MonoidalDual
-public import MTC.PropertyF.Pivotal.MonoidalDualComparison
 public import MTC.PropertyF.Pivotal.MonoidalQuantumTrace
-public import MTC.PropertyF.Pivotal.MonoidalTrace
 public import MTC.PropertyF.Pivotal.Nondegeneracy
 public import MTC.PropertyF.Pivotal.NondegeneracyConverse
 public import MTC.PropertyF.Pivotal.NondegeneracyHaar
