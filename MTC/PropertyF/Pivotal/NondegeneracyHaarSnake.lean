@@ -1,5 +1,6 @@
 module
 public import MTC.PropertyF.Pivotal.NondegeneracyHaarMate
+public import MTC.Center.Normalization.DualContraction
 
 open MTC.Fusion MTC.Modular MTC.CategoryTheory.Dimensions MTC.Center.Induction MTC.Center.Trace
 @[expose] public noncomputable section
@@ -226,12 +227,6 @@ theorem haar_mated_trace_dual_basis (Y U : C.Obj) (i : Fin (rank C))
   rw [haarMate_trace_pairing]
   exact pivotalTrace_dual_basis C p (Y ⊗ U) i a b
 
-/-- The left pivotal dimension of a right dual is the right dimension of its original object. -/
-theorem haar_leftDimension_dual (Y : C.Obj) :
-    unitScalar C (p.leftTrace (𝟙 (Yᘁ : C.Obj))) = pivotalDimension C p Y := by
-  rw [leftTrace_eq_rightTrace_dual C p (Yᘁ) (End.of (𝟙 (Yᘁ : C.Obj)))]
-  simpa [pivotalDimension] using (pivotalDimension_iso p (p.iso Y)).symm
-
 attribute [local instance] IsFusionCategory.hom_finite
 
 local instance (j : Fin (rank C)) : Simple ((simples C j)ᘁ) := by
@@ -248,27 +243,12 @@ theorem haar_mated_scalar_pairing (U : C.Obj) (i j : Fin (rank C))
          (pivotalTraceDualProjection C p (simples C j ⊗ U) i b))) =
       (if a = b then 1 else 0) / simpleDimension C p j := by
   classical
-  let : Simple (simples C j) := simples_simple C j
-  let : Simple ((simples C j)ᘁ) := simple_rightDual _
-  let : FiniteDimensional ℂ (((simples C j)ᘁ) ⟶ ((simples C j)ᘁ)) := IsFusionCategory.hom_finite _ _
   let h := haarInclusionMate C (simples C i) (simples C j) U (simpleInclusion C (simples C j ⊗ U) i a) ≫
        haarProjectionMate C p (simples C i) (simples C j) U
          (pivotalTraceDualProjection C p (simples C j ⊗ U) i b)
-  obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ h
   have ht := haar_mated_trace_dual_basis C p (simples C j) U i a b
   change unitScalar C (p.leftTrace h) = _ at ht
-  rw [← hc, PivotalStructure.leftTrace_smul, unitScalar_eq_equiv, map_smul, smul_eq_mul,
-    ← unitScalar_eq_equiv, haar_leftDimension_dual] at ht
-  change c * simpleDimension C p j = _ at ht
-  have hscalar : simpleEndScalar (k := ℂ) ((simples C j)ᘁ) (End.of h) = c := by
-    rw [← hc]
-    apply (simpleEndScalar (k := ℂ) ((simples C j)ᘁ)).symm.injective
-    simp only [AlgEquiv.symm_apply_apply]
-    change End.of (c • 𝟙 _) = algebraMap ℂ (End ((simples C j)ᘁ : C.Obj)) c
-    rw [Algebra.algebraMap_eq_smul_one]
-    apply End.ext
-    rfl
-  rw [hscalar]
+  rw [simpleEndScalar_mul_leftTrace, haar_leftDimension_dual] at ht
   exact (eq_div_iff (simpleDimension_ne_zero C p j)).2 ht
 
 /-- The dimension-normalized mated projections are the scalar dual basis
@@ -310,25 +290,13 @@ theorem haar_mated_contraction_basis_independent (U : C.Obj) (i j : Fin (rank C)
     ∑ a, F (b a) ((simpleHomPairingEquiv ((simples C j)ᘁ)
       (U ⊗ ((simples C i)ᘁ))).symm (b.dualBasis a)) := by
   classical
-  let A := haarMatedInclusionBasis C (simples C i) (simples C j) U
-    (simpleInclusionBasis C (simples C j ⊗ U) i)
-  let T := simpleHomPairingEquiv ((simples C j)ᘁ) (U ⊗ ((simples C i)ᘁ))
-  let G := (LinearMap.lcomp ℂ E T.symm.toLinearMap).comp F
-  have h := dualBasis_contraction_natural A b LinearMap.id G
-  have hT (a : Fin (Module.finrank ℂ (simples C i ⟶ simples C j ⊗ U))) :
-      T.symm (A.dualBasis a) = simpleDimension C p j •
-        haarProjectionMate C p (simples C i) (simples C j) U
-          (pivotalTraceDualProjection C p (simples C j ⊗ U) i a) := by
-    apply T.injective
-    simp only [LinearEquiv.apply_symm_apply]
-    exact (haar_mated_pairing_eq_dualBasis C p U i j a).symm
-  simp only [LinearMap.id_coe, id_eq, Module.Dual.transpose_apply] at h
-  dsimp only [G, LinearMap.comp_apply, LinearMap.lcomp_apply] at h
-  simp only [LinearMap.comp_id] at h
-  change (∑ a, F (A a) (T.symm (A.dualBasis a))) =
-    ∑ a, F (b a) (T.symm (b.dualBasis a)) at h
-  simp_rw [hT] at h
-  simpa [A, T, haarMatedInclusionBasis, simpleInclusionBasis_apply] using h
+  have h := MTC.Center.Normalization.pairing_contraction_basis_independent
+    (haarMatedInclusionBasis C (simples C i) (simples C j) U
+      (simpleInclusionBasis C (simples C j ⊗ U) i)) b
+    (simpleHomPairingEquiv ((simples C j)ᘁ) (U ⊗ ((simples C i)ᘁ))) F
+  simp_rw [← haar_mated_pairing_eq_dualBasis C p U i j,
+    LinearEquiv.symm_apply_apply] at h
+  simpa only [haarMatedInclusionBasis, Module.Basis.map_apply, simpleInclusionBasis_apply] using h
 
 end MTC.PropertyF.Pivotal
 end

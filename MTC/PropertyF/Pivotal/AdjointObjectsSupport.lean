@@ -123,9 +123,7 @@ theorem adjointGenerated_simple_iff (i : Fin (rank C)) :
   · intro h A hA hseed
     have hs := supportedOn_of_adjointGenerated C hA hseed h
     apply hs i
-    change 0 < Module.finrank ℂ (simples C i ⟶ simples C i)
-    rw [finrank_simples_hom C i i]
-    simp
+    simpa [simpleMultiplicity, finrank_simples_hom]
   · exact adjointLabel_generated C
 
 /-- The label-level positivity condition is equivalent to positivity on

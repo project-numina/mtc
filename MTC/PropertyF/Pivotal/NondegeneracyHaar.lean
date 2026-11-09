@@ -200,6 +200,22 @@ theorem leftTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
     rw [SEntry_iso_left p (rightDualLabelIso C k), SEntry_iso_right p _ (rightDualLabelIso C i)]
   rw [he, hdualtest, hidim, hkdim]
 
+attribute [local instance] IsFusionCategory.hom_finite
+
+/-- The left trace of a simple endomorphism is its scalar times the left
+pivotal dimension. -/
+theorem simpleEndScalar_mul_leftTrace (X : C.Obj) [Simple X] (f : End X) :
+    unitScalar C (p.leftTrace f.asHom) =
+      simpleEndScalar (k := ℂ) X f * unitScalar C (p.leftTrace (𝟙 X)) := by
+  rw [eq_smul_one_of_algEquiv (simpleEndScalar (k := ℂ) X) f]
+  simp [PivotalStructure.leftTrace_smul, unitScalar_eq_equiv, smul_eq_mul]
+
+/-- The left pivotal dimension of a right dual is the right dimension of its original object. -/
+theorem haar_leftDimension_dual (Y : C.Obj) :
+    unitScalar C (p.leftTrace (𝟙 (Yᘁ : C.Obj))) = pivotalDimension C p Y := by
+  rw [leftTrace_eq_rightTrace_dual C p (Yᘁ) (End.of (𝟙 (Yᘁ : C.Obj)))]
+  simpa [pivotalDimension] using (pivotalDimension_iso p (p.iso Y)).symm
+
 /-- Under the numerical S-test, every closed monodromy loop is the
 conjugate pivotal dimension times the identity of the surviving simple. -/
 theorem leftPartialTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
@@ -208,29 +224,23 @@ theorem leftPartialTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
     leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k))) =
       star (simpleDimension C p i) • (1 : End (simples C k)) := by
   let : Simple (simples C k) := simples_simple C k
-  let : FiniteDimensional ℂ (simples C k ⟶ simples C k) := IsFusionCategory.hom_finite _ _
   let a := leftPartialTrace p (End.of (doubleBraiding (simples C i) (simples C k)))
-  obtain ⟨c, hc⟩ := endomorphism_simple_eq_smul_id ℂ a.asHom
-  have ha : a = c • (1 : End (simples C k)) := End.ext hc.symm
   have ht := congrArg (unitScalar C) (leftTrace_partialTrace p
     (End.of (doubleBraiding (simples C i) (simples C k))))
   change unitScalar C (p.leftTrace a.asHom) = _ at ht
-  rw [ha] at ht
-  simp only [End.smul_asHom, End.one_asHom, PivotalStructure.leftTrace_smul,
-    unitScalar_eq_equiv, map_smul, smul_eq_mul] at ht
-  have hd : unitScalarEquiv C (p.leftTrace (𝟙 (simples C k))) =
+  rw [simpleEndScalar_mul_leftTrace] at ht
+  have hd : unitScalar C (p.leftTrace (𝟙 (simples C k))) =
       star (simpleDimension C p k) := by
     have hh := congrArg (unitScalar C) (leftTrace_eq_rightTrace_dual C p (simples C k) 1)
     simp only [End.one_asHom, rightAdjointMate_id] at hh
     change unitScalar C (p.leftTrace (𝟙 (simples C k))) =
       pivotalDimension C p ((simples C k)ᘁ) at hh
-    simpa only [unitScalar_eq_equiv] using
-      hh.trans (pivotalDimension_dual_conj C p (simples C k))
-  rw [hd, ← unitScalar_eq_equiv, leftTrace_monodromy_of_dual_sTest C p k i hs] at ht
+    exact hh.trans (pivotalDimension_dual_conj C p (simples C k))
+  rw [hd, leftTrace_monodromy_of_dual_sTest C p k i hs] at ht
   have hn : star (simpleDimension C p k) ≠ 0 := by
     simpa using ((map_ne_zero (starRingEnd ℂ)).2 (simpleDimension_ne_zero C p k))
-  have hc' : c = star (simpleDimension C p i) := mul_right_cancel₀ hn ht
-  simpa [hc'] using ha
+  apply (simpleEndScalar (k := ℂ) (simples C k)).injective
+  simpa only [map_smul, map_one, smul_eq_mul, mul_one] using mul_right_cancel₀ hn ht
 
 /-- The trace of a simple monodromy loop under the global numerical S-test,
 using the left pivotal trace. -/
