@@ -90,7 +90,7 @@ def parse(path, module, include_inline_attributes=False, count_all_proofs=False)
     if include_inline_attributes:
         # Preserve line lengths and offsets while moving same-line attributes
         # after the command; only the masked analysis text is rewritten.
-        pattern = r'(?m)^([ \t]*)@\[[^\n]*?\][ \t]+(?=(?:(?:private|protected|public|noncomputable|unsafe|partial|local|scoped)\s+)*(?:theorem|lemma|def|abbrev|opaque|instance)\b)([^\n]*)'
+        pattern = r'(?m)^([ \t]*)(?:@\[[^\n]*?\][ \t]+)+(?=(?:(?:private|protected|public|noncomputable|unsafe|partial|local|scoped)\s+)*(?:theorem|lemma|def|abbrev|opaque|instance)\b)([^\n]*)'
         clean = re.sub(pattern, lambda m: m[1] + m[2] + ' ' * (len(m[0]) - len(m[1]) - len(m[2])), clean)
     lines=text.count('\n') + bool(text and not text.endswith('\n'))
     comments,docs=comment_lines(text); starts=list(DECL.finditer(clean)); boundaries=[m.start() for m in COMMAND.finditer(clean)]

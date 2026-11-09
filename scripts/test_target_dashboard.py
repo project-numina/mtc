@@ -55,7 +55,7 @@ class TargetGapTest(unittest.TestCase):
             (root / 'style').mkdir()
             (root / 'out').mkdir()
             (root / 'MTC' / 'Example.lean').write_text(
-                '@[inline] private def proof_helper : True := by\n  trivial\n'
+                '@[inline] @[simp] private def proof_helper : True := by\n  trivial\n'
                 'def data_helper : Nat := 0\n')
             (root / 'style' / '.environment.tsv').write_text(
                 'module\tname\tkind\texplicit\timplicit\tstrict\tinstance\thypotheses\ttype_hash\n'
