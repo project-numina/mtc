@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Print and check axioms of matched public project source proofs.
 
-Run the fresh style survey first, after building the project. The independent
+Run the fresh style survey and proposition-definition scan first, after building
+the project. The independent
 kernel-environment audit in check.sh covers every project declaration, including
 private declarations and names that the source heuristic cannot match.
 """
@@ -25,11 +26,13 @@ def main():
     index = collections.defaultdict(list)
     for d in env:
         index[(d['module'], d['name'].split('.')[-1])].append(d['name'])
-    theorem_names = {(d['module'], d['name']) for d in env if d['kind'] in ('theorem', 'axiom')}
+    proof_names = {(d['module'], d['name']) for d in env if d['kind'] in ('theorem', 'axiom')}
+    with (ROOT / 'scripts/style/.proposition-definitions.tsv').open() as f:
+        proof_names.update((d['module'], d['name']) for d in csv.DictReader(f, delimiter='\t'))
     names, unmatched = set(), []
     anonymous = collections.defaultdict(list)
     for d in env:
-        if d['kind'] in ('theorem', 'axiom') and d['name'].split('.')[-1].startswith('inst'):
+        if (d['module'], d['name']) in proof_names and d['name'].split('.')[-1].startswith('inst'):
             anonymous[d['module']].append(d['name'])
     for path in sorted((ROOT / 'MTC').rglob('*.lean')):
         module = mod(path, ROOT / 'MTC', 'MTC')
@@ -41,9 +44,9 @@ def main():
             else:
                 matches = index[(module, d['name'].split('.')[-1])]
             # Non-theorem source declarations include data definitions and
-            # ordinary instances. Include only Lean theorem-valued matches.
+            # ordinary instances. Include only Lean proposition-valued matches.
             if d['kind'] not in ('theorem', 'lemma'):
-                matches = [n for n in matches if (module, n) in theorem_names]
+                matches = [n for n in matches if (module, n) in proof_names]
                 if not matches:
                     continue
             if d['name'] == '(anonymous)' and len(matches) > 1:
