@@ -21,13 +21,18 @@ from source_metrics import parse, mod
 
 
 def main():
-    with (ROOT / 'scripts/style/.environment.tsv').open() as f:
+    env_path = ROOT / 'scripts/style/.environment.tsv'
+    prop_path = ROOT / 'scripts/style/.proposition-definitions.tsv'
+    if not prop_path.exists() or prop_path.stat().st_mtime_ns < env_path.stat().st_mtime_ns:
+        print('Run the proposition-definition scan after the fresh style survey.', file=sys.stderr)
+        return 1
+    with env_path.open() as f:
         env = list(csv.DictReader(f, delimiter='\t'))
     index = collections.defaultdict(list)
     for d in env:
         index[(d['module'], d['name'].split('.')[-1])].append(d['name'])
     proof_names = {(d['module'], d['name']) for d in env if d['kind'] in ('theorem', 'axiom')}
-    with (ROOT / 'scripts/style/.proposition-definitions.tsv').open() as f:
+    with prop_path.open() as f:
         proof_names.update((d['module'], d['name']) for d in csv.DictReader(f, delimiter='\t'))
     names, unmatched = set(), []
     anonymous = collections.defaultdict(list)
