@@ -20,6 +20,11 @@ FILES = {
 GENERATED = {
     'generatedProperty': 'f335b9846969c080436c05c030484365fcbcf5ae15436b67a0f4f7ccd5fe5922',
     'GeneratedCategory': '149f2d648de90490550bedba0dd95a2b8be4ccd7fe04d5e3f0150b70f6fd18cd',
+    'generatedPieces': '41d745df1f4789f0a0171575867a8c5e67f9a63f61a667fac7269dc9ffec8587',
+    'generatedPiecesDecomposition': 'f0d6d73a308b155408ee76ef9f4525731e31b25073b79ef512f6ee859c7725f1',
+    'generatedLabels': 'aefab832aca96276893d089e5ca5c0401d3319910fe0234feffaee3601646007',
+    'GeneratedSimpleIndex': 'b4216edd13ae54be2e60c7626fc36b4da3be465713b3978d4f5fafdf934626f8',
+    'generatedSimple': '0245b3ec3f717b2517bf60192c8136b100f77feae3f7233c1241e17d2be5d4f9',
     'bundledGenerated': 'f3f5d88f9d9a9623e7bf4985bb2a7fec8d8456d41cf0234dc1d2fa21d1cebafb',
     'generatedObject': 'e2ec9cff1a741303631ad88c8febc81a80872be83fe0eac612600e58d3aebe44',
     'ObjectwiseStatement': '813a5273b31fa6026de1460cb6d3a41da9aa1fe5f06c246fe5163e48c5f0d7fe',
