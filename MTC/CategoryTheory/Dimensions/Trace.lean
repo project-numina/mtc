@@ -1,0 +1,159 @@
+module
+public import MTC.CategoryTheory.Dimensions.Pivotal
+public import Mathlib.CategoryTheory.Monoidal.Linear
+
+open MTC.Braided
+
+/-! # Pivotal traces
+
+Right and left traces are linear, cyclic and compatible with duality and
+isomorphisms. `rightTraceWith_cyclic` needs only a naturality square for the
+two components involved; `dual_naturality` transports such a square to their
+inverse duals and supplies cyclicity of the left pivotal trace.
+-/
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace MTC.CategoryTheory.Dimensions
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+
+/-- An algebra equivalent to the scalar field is spanned by its identity. -/
+theorem eq_smul_one_of_algEquiv {k : Type*} [CommSemiring k] {A : Type*}
+    [Semiring A] [Algebra k A] (e : A ≃ₐ[k] k) (a : A) : a = e a • (1 : A) :=
+  e.injective (by simp)
+
+omit [RightRigidCategory C] in
+/-- The right trace associated to a double-dual isomorphism is linear. -/
+def rightTraceWithLinear {k : Type*} [CommSemiring k] [Preadditive C] [Linear k C]
+    [MonoidalPreadditive C] [MonoidalLinear k C] {X : C} [HasRightDual X]
+    [HasRightDual (Xᘁ)] (j : X ≅ (Xᘁ)ᘁ) :
+    (X ⟶ X) →ₗ[k] End (𝟙_ C) where
+  toFun := rightTraceWith j
+  map_add' f g := End.homEquiv.injective (by simp [rightTraceWith, tensorHom_def])
+  map_smul' c f := End.homEquiv.injective (by simp [rightTraceWith, tensorHom_def])
+
+omit [RightRigidCategory C] in
+/-- Cyclicity needs naturality only for the two components involved. -/
+theorem rightTraceWith_cyclic {X Y : C} [HasRightDual X] [HasRightDual Y]
+    [HasRightDual (Xᘁ)] [HasRightDual (Yᘁ)] {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
+    (f : X ⟶ Y) (g : Y ⟶ X) (hnat : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
+    rightTraceWith j (f ≫ g) = rightTraceWith k (g ≫ f) :=
+  End.homEquiv.injective (by
+    simp only [rightTraceWith, End.homEquiv_apply, tensorHom_def, whiskerLeft_id,
+      Category.comp_id, comp_whiskerRight, Category.assoc]
+    rw [← coevaluation_comp_rightAdjointMate_assoc, whisker_exchange_assoc g (fᘁ),
+      whisker_exchange_assoc j.hom (fᘁ), ← rightAdjointMate_comp_evaluation,
+      ← comp_whiskerRight_assoc j.hom (fᘁᘁ), ← hnat, comp_whiskerRight_assoc])
+
+end MTC.CategoryTheory.Dimensions
+
+namespace MTC.CategoryTheory.Dimensions.PivotalStructure
+
+universe v u
+variable {k : Type*} [CommSemiring k] {C : Type u} [Category.{v} C]
+  [MonoidalCategory C] [RightRigidCategory C]
+  [Preadditive C] [Linear k C] [MonoidalPreadditive C] [MonoidalLinear k C]
+  (p : PivotalStructure (C := C)) {X : C}
+
+theorem rightTrace_smul (c : k) (f : X ⟶ X) : p.rightTrace (c • f) = c • p.rightTrace f :=
+  (rightTraceWithLinear (p.iso X)).map_smul c f
+
+omit [Linear k C] [MonoidalLinear k C] in
+/-- The left trace is linear in its endomorphism argument. -/
+theorem leftTrace_add (f g : X ⟶ X) : p.leftTrace (f + g) = p.leftTrace f + p.leftTrace g :=
+  End.homEquiv.injective (by simp [leftTrace, tensorHom_def])
+
+theorem leftTrace_smul (c : k) (f : X ⟶ X) : p.leftTrace (c • f) = c • p.leftTrace f :=
+  End.homEquiv.injective (by simp [leftTrace, tensorHom_def])
+
+end MTC.CategoryTheory.Dimensions.PivotalStructure
+
+namespace MTC.CategoryTheory.Dimensions.PivotalStructure
+open CategoryTheory CategoryTheory.MonoidalCategory
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+
+/-- The right pivotal trace is cyclic. -/
+theorem rightTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
+    (f : X ⟶ Y) (g : Y ⟶ X) : p.rightTrace (f ≫ g) = p.rightTrace (g ≫ f) :=
+  rightTraceWith_cyclic f g (p.naturality f)
+
+/-- Endomorphisms intertwined by an isomorphism have the same pivotal trace. -/
+theorem rightTrace_of_iso_intertwining (p : PivotalStructure (C := C)) {X Y : C}
+    (e : X ≅ Y) (f : X ⟶ X) (g : Y ⟶ Y) (h : f ≫ e.hom = e.hom ≫ g) :
+    p.rightTrace f = p.rightTrace g := by
+  have ht := p.rightTrace_cyclic (f ≫ e.hom) e.inv
+  rw [Category.assoc, Iso.hom_inv_id, Category.comp_id, h, Iso.inv_hom_id_assoc] at ht
+  exact ht
+
+/-- Pivotal dimensions are invariant under object isomorphism. -/
+theorem rightTrace_id_iso (p : PivotalStructure (C := C)) {X Y : C} (e : X ≅ Y) :
+    p.rightTrace (𝟙 X) = p.rightTrace (𝟙 Y) := by simpa using p.rightTrace_cyclic e.hom e.inv
+
+end MTC.CategoryTheory.Dimensions.PivotalStructure
+
+namespace MTC.CategoryTheory.Dimensions
+open CategoryTheory CategoryTheory.MonoidalCategory
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [RigidCategory C]
+
+/-- Scaling the double-dual component scales its right quantum trace. -/
+theorem rightQuantumTrace_smul_hom {k : Type*} [CommSemiring k] [Preadditive C] [Linear k C]
+    [MonoidalPreadditive C] [MonoidalLinear k C] {X : C}
+    {j l : X ≅ (Xᘁ)ᘁ} {c : k} (h : j.hom = c • l.hom) :
+    rightQuantumTrace j = c • rightQuantumTrace l :=
+  End.homEquiv.injective (by simp [rightQuantumTrace, h, tensorHom_def])
+
+/-- The left quantum trace of an isomorphism is the right quantum trace of the
+corresponding inverse dual isomorphism. -/
+theorem leftQuantumTrace_eq_rightDual {X : C} (j : X ≅ (Xᘁ)ᘁ) :
+    leftQuantumTrace j = rightQuantumTrace (rightDualIsoMap j).symm :=
+  End.homEquiv.injective (by
+    simp [leftQuantumTrace, rightQuantumTrace, rightDualIsoMap, tensorHom_def,
+      rightAdjointMate_comp_evaluation])
+
+section
+variable {X Y : C} {j : X ≅ (Xᘁ)ᘁ} {k : Y ≅ (Yᘁ)ᘁ}
+variable (e : X ≅ Y) (hnat : e.hom ≫ k.hom = j.hom ≫ (e.homᘁ)ᘁ)
+include hnat
+
+/-- Compatible double-dual components have the same right quantum trace under
+an object isomorphism. -/
+theorem rightQuantumTrace_iso :
+    rightQuantumTrace j = rightQuantumTrace k := by
+  simpa [rightTraceWith, rightQuantumTrace] using (rightTraceWith_cyclic e.hom e.inv hnat)
+
+/-- Compatibility of double-dual components is preserved by inverse duality. -/
+theorem dual_components_natural :
+    (e.invᘁ) ≫ (rightDualIsoMap k).symm.hom =
+      (rightDualIsoMap j).symm.hom ≫ ((e.invᘁ)ᘁ)ᘁ := by
+  simpa [rightDualIsoMap, comp_rightAdjointMate] using congrArg (fun (a : X ≅ (Yᘁ)ᘁ) ↦ a.invᘁ)
+    (Iso.ext hnat : e ≪≫ k = j ≪≫ rightDualIsoMap (rightDualIsoMap e))
+
+/-- Both quantum traces are preserved when double-dual components are
+transported across an object isomorphism. -/
+theorem quantumTraces_iso :
+    rightQuantumTrace j = rightQuantumTrace k ∧ leftQuantumTrace j = leftQuantumTrace k :=
+  ⟨rightQuantumTrace_iso e hnat, by
+    simpa only [leftQuantumTrace_eq_rightDual] using
+      rightQuantumTrace_iso (rightDualIsoMap e.symm) (dual_components_natural e hnat)⟩
+
+end
+
+/-- A naturality square for double-dual components induces one on their inverse duals. -/
+theorem dual_naturality {X Y : C} (j : X ≅ (Xᘁ)ᘁ) (k : Y ≅ (Yᘁ)ᘁ) (f : X ⟶ Y)
+    (h : f ≫ k.hom = j.hom ≫ (fᘁ)ᘁ) :
+    (fᘁ) ≫ (rightDualIsoMap j).symm.hom =
+      (rightDualIsoMap k).symm.hom ≫ ((fᘁ)ᘁ)ᘁ := by
+  simpa only [rightDualIsoMap, Iso.symm_hom, comp_rightAdjointMate] using congrArg rightAdjointMate
+    ((CommSq.vert_inv (CommSq.mk h)).w).symm
+
+/-- The left pivotal trace is cyclic without requiring sphericality. -/
+theorem leftTrace_cyclic (p : PivotalStructure (C := C)) {X Y : C}
+    (f : X ⟶ Y) (g : Y ⟶ X) : p.leftTrace (f ≫ g) = p.leftTrace (g ≫ f) := by
+  simpa [PivotalStructure.leftTrace, rightTraceWith, rightDualIsoMap, ← comp_rightAdjointMate,
+    rightAdjointMate_comp_evaluation] using
+      rightTraceWith_cyclic (gᘁ) (fᘁ) (dual_naturality (p.iso Y) (p.iso X) g (p.naturality g))
+
+end MTC.CategoryTheory.Dimensions

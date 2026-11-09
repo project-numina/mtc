@@ -1,0 +1,27 @@
+name: Lean
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      LEAN_NUM_THREADS: 4
+      PROPERTYF_AUDIT_CORES: 0-1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          use-mathlib-cache: true
+      - name: Audit all declarations
+        run: |
+          python3 scripts/check-audit-imports.py
+          python3 scripts/update_roots.py --check
+          (cd scripts && python3 -m unittest discover -p 'test_*.py')
+          python3 scripts/audit_new_libraries.py
+      - name: Audit frozen target
+        run: scripts/audit-target.sh

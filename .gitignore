@@ -1,0 +1,10 @@
+/.lake/
+*.olean
+*.ilean
+*.trace
+/scratch/
+
+/data/
+/SEED_STATUS.md
+
+__pycache__/

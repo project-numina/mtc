@@ -1,0 +1,148 @@
+module
+public import MTC.Braided.Cabling.ColorBiproductPositive
+public import MTC.Braided.Cabling.PureSumSigned
+public import MTC.Braided.Cabling.PureSumCabling
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace MTC.Braided.Cabling
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C] [Abelian C]
+
+/-- Positive fixed-total generator membership supplies the exact pure-word
+cabling premise for the canonical flattening of positive-width tuples. -/
+theorem positiveWidth_cabling_of_positive_letters (X : C) (n : ℕ)
+    (q : Fin (n + 2) → ℕ) (hq : ∀ j, 0 < q j)
+    (hletter : ∀ (s : ColoredPowerState n (((∑ j, q j) - 2) + 2))
+      (i : Fin (n + 1)),
+      Aut.of ((coloredPowerStateFlatten X n (((∑ j, q j) - 2) + 2) s).symm ≪≫
+        coloredLetter n i true (fun j => tensorPower X (s.val j)) ≪≫
+        coloredPowerStateFlatten X n (((∑ j, q j) - 2) + 2)
+          (coloredPowerSwap n (((∑ j, q j) - 2) + 2) i s)) ∈
+        braidImage X ((∑ j, q j) - 2))
+    (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1) :
+    ∃ z : braidImage X ((∑ j, q j) - 2),
+      coloredPureWordHom n w hw (fun j => tensorPower X (q j)) =
+        (positiveWidthFlatten X n q hq (coloredTensorPowersFlatten X (n + 2) q)).hom ≫
+          z.val.asIso.hom ≫
+        (positiveWidthFlatten X n q hq (coloredTensorPowersFlatten X (n + 2) q)).inv := by
+  have h := coloredPureWord_cabling_of_letters X n q
+    (Nat.sub_add_cancel (two_le_sum_positive_widths n q hq)).symm
+    (coloredPower_letters_mem_of_positive X _ _ hletter) w hw
+  simpa only [positiveWidthFlatten, coloredPowerStateFlatten, powerIndexIso] using h
+
+end MTC.Braided.Cabling
+end
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory CategoryTheory.Limits
+namespace MTC.Braided.Cabling
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C] [Abelian C]
+
+/-- Swapping positive widths preserves positivity. -/
+theorem coloredPowerSwap_positive {n N : ℕ} (i : Fin (n + 1))
+    (s : ColoredPowerState n N) (hs : ∀ j, 0 < s.val j) :
+    ∀ j, 0 < (coloredPowerSwap n N i s).val j := fun j => hs _
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Signed letter membership on positive states lifts to all words from a
+positive state. -/
+theorem coloredPowerStateWord_mem_of_positive_letters (X : C) {n : ℕ} (N : ℕ)
+    (G : Subgroup (Aut (tensorPower X N)))
+    (h : ∀ (s : ColoredPowerState n N), (∀ j, 0 < s.val j) →
+      ∀ (a : Fin (n + 1) × Bool),
+      Aut.of ((coloredPowerStateFlatten X n N s).symm ≪≫
+        coloredLetter n a.1 a.2 (fun i => tensorPower X (s.val i)) ≪≫
+        coloredPowerStateFlatten X n N (coloredPowerSwap n N a.1 s)) ∈ G) :
+    ∀ (w : List (Fin (n + 1) × Bool)) (s : ColoredPowerState n N),
+      (∀ j, 0 < s.val j) →
+      Aut.of ((coloredPowerStateFlatten X n N s).symm ≪≫
+        coloredPowerStateWordIso X n N w s ≪≫
+        coloredPowerStateFlatten X n N (coloredPowerWordState n N w s)) ∈ G := by
+  exact coloredPowerStateWord_mem_of_invariant_letters X n N G (fun s => ∀ j, 0 < s.val j)
+    (fun s hs a => coloredPowerSwap_positive a.1 s hs) h
+
+/-- Positive membership on positive-width states supplies both signs there. -/
+theorem coloredPower_positive_letters_mem (X : C) {n : ℕ} (N : ℕ)
+    (G : Subgroup (Aut (tensorPower X N)))
+    (h : ∀ (s : ColoredPowerState n N), (∀ j, 0 < s.val j) →
+      ∀ (i : Fin (n + 1)),
+      Aut.of ((coloredPowerStateFlatten X n N s).symm ≪≫
+        coloredLetter n i true (fun j => tensorPower X (s.val j)) ≪≫
+        coloredPowerStateFlatten X n N (coloredPowerSwap n N i s)) ∈ G) :
+    ∀ (s : ColoredPowerState n N), (∀ j, 0 < s.val j) →
+      ∀ (a : Fin (n + 1) × Bool),
+      Aut.of ((coloredPowerStateFlatten X n N s).symm ≪≫
+        coloredLetter n a.1 a.2 (fun j => tensorPower X (s.val j)) ≪≫
+        coloredPowerStateFlatten X n N (coloredPowerSwap n N a.1 s)) ∈ G := by
+  intro s hs ⟨i, b⟩
+  cases b with
+  | false =>
+    rw [coloredPower_negative_eq_inverse]
+    exact G.inv_mem (h (coloredPowerSwap n N i s) (coloredPowerSwap_positive i s hs) i)
+  | true => exact h s hs i
+
+/-- Pure colored words on positive-width tuples are cabled by actual braids
+when positive generators on positive-width states are cabled. -/
+theorem coloredPureWord_cabling_of_positive_states (X : C) (n : ℕ) {r : ℕ}
+    (k : Fin (n + 2) → ℕ) (hk : ∑ i, k i = r + 2) (hpos : ∀ j, 0 < k j)
+    (hletter : ∀ (s : ColoredPowerState n (r + 2)), (∀ j, 0 < s.val j) →
+      ∀ (i : Fin (n + 1)),
+      Aut.of ((coloredPowerStateFlatten X n (r + 2) s).symm ≪≫
+        coloredLetter n i true (fun j => tensorPower X (s.val j)) ≪≫
+        coloredPowerStateFlatten X n (r + 2) (coloredPowerSwap n (r + 2) i s)) ∈ braidImage X r)
+    (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1) :
+    ∃ z : braidImage X r,
+      coloredPureWordHom n w hw (fun i => tensorPower X (k i)) =
+        (coloredPowerStateFlatten X n (r + 2) ⟨k, hk⟩).hom ≫ z.val.asIso.hom ≫
+          (coloredPowerStateFlatten X n (r + 2) ⟨k, hk⟩).inv := by
+  let s : ColoredPowerState n (r + 2) := ⟨k, hk⟩
+  have hm := coloredPowerStateWord_mem_of_positive_letters X (r + 2) (braidImage X r)
+    (coloredPower_positive_letters_mem X (r + 2) (braidImage X r) hletter) w.reverse s hpos
+  exact ⟨⟨_, hm⟩, coloredPureWord_eq_stateWord X n r k hk w hw⟩
+
+/-- Exact positive-width flattening cabling interface with positive-state
+crossing membership only. -/
+theorem positiveWidth_cabling_of_positive_states (X : C) (n : ℕ)
+    (q : Fin (n + 2) → ℕ) (hq : ∀ j, 0 < q j)
+    (hletter : ∀ (s : ColoredPowerState n (((∑ j, q j) - 2) + 2)),
+      (∀ j, 0 < s.val j) → ∀ (i : Fin (n + 1)),
+      Aut.of ((coloredPowerStateFlatten X n (((∑ j, q j) - 2) + 2) s).symm ≪≫
+        coloredLetter n i true (fun j => tensorPower X (s.val j)) ≪≫
+        coloredPowerStateFlatten X n (((∑ j, q j) - 2) + 2)
+          (coloredPowerSwap n (((∑ j, q j) - 2) + 2) i s)) ∈
+        braidImage X ((∑ j, q j) - 2))
+    (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1) :
+    ∃ z : braidImage X ((∑ j, q j) - 2),
+      coloredPureWordHom n w hw (fun j => tensorPower X (q j)) =
+        (positiveWidthFlatten X n q hq (coloredTensorPowersFlatten X (n + 2) q)).hom ≫
+          z.val.asIso.hom ≫
+        (positiveWidthFlatten X n q hq (coloredTensorPowersFlatten X (n + 2) q)).inv := by
+  have h := coloredPureWord_cabling_of_positive_states X n q
+    (Nat.sub_add_cancel (two_le_sum_positive_widths n q hq)).symm hq hletter w hw
+  simpa only [positiveWidthFlatten, coloredPowerStateFlatten, powerIndexIso] using h
+
+/-- Positive-power finite sums have property F once positive colored
+crossings on positive fixed-total states are original-strand braids. -/
+theorem objectPropertyF_positivePower_biproduct_of_positive_letters
+    [MonoidalPreadditive C] [HasFiniteBiproducts C] {I : Type} [Fintype I] [DecidableEq I]
+    (X : C) (k : I → ℕ) (hk : ∀ i, 0 < k i) (hX : ObjectPropertyF X)
+    (hletter : ∀ (n r : ℕ) (s : ColoredPowerState n (r + 2)),
+      (∀ j, 0 < s.val j) → ∀ (i : Fin (n + 1)),
+      Aut.of ((coloredPowerStateFlatten X n (r + 2) s).symm ≪≫
+        coloredLetter n i true (fun j => tensorPower X (s.val j)) ≪≫
+        coloredPowerStateFlatten X n (r + 2) (coloredPowerSwap n (r + 2) i s)) ∈
+          braidImage X r) :
+    ObjectPropertyF (⨁ (fun i => tensorPower X (k i))) := by
+  apply finite_positivePower_biproduct_of_cabling X k hk hX
+    (fun n q => coloredTensorPowersFlatten X (n + 2) q)
+  intro n q hq w hw
+  apply positiveWidth_cabling_of_positive_states X n q hq
+  · exact hletter n _
+
+end MTC.Braided.Cabling
+end

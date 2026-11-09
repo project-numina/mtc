@@ -1,0 +1,381 @@
+module
+public import MTC.Braided.Trace.UnitaryBlocks
+public import Mathlib.LinearAlgebra.Span.Defs
+public import Mathlib.CategoryTheory.Linear.LinearFunctor
+public import MTC.Braided.Cabling.Strands
+public import MTC.Braided.Trace.EndBlocks
+public import Mathlib.Tactic
+
+open MTC.Algebra
+
+open MTC.Fusion
+
+open MTC.Braided
+
+/-!
+# Strand insertion and unitary presentations
+
+Maps induced by adding strands act on braid-image algebras and preserve the adjoints
+of their unitary block presentations.
+-/
+
+@[expose] public section
+namespace MTC.Braided.Trace
+
+section UnitaryRepresentation
+
+variable {A : Type*} [Monoid A] [StarMul A]
+
+/-- The adjoint of a unitary unit is its inverse. -/
+theorem unitary_star_coe_inv (u : Aˣ) (hu : (u : A) ∈ unitary A) :
+    star (u : A) = ((u⁻¹ : Aˣ) : A) :=
+  u.eq_inv_of_mul_eq_one_right (Unitary.star_mul_self_of_mem hu)
+
+end UnitaryRepresentation
+
+section Span
+
+variable {R A B : Type*} [Semiring R] [Star R] [AddCommMonoid A] [AddCommMonoid B]
+  [Module R A] [Module R B] [StarAddMonoid A] [StarAddMonoid B]
+  [StarModule R A] [StarModule R B]
+
+/-- A linear map that preserves the adjoint of each generator preserves
+it on their entire linear span. In particular this applies to identity-strand
+embeddings once the braids are represented by unitary matrices. -/
+theorem map_star_of_mem_span (φ : A →ₗ[R] B) (S : Set A)
+    (hS : ∀ x ∈ S, φ (star x) = star (φ x))
+    {x : A} (hx : x ∈ Submodule.span R S) : φ (star x) = star (φ x) :=
+  Submodule.span_induction hS (by simp)
+    (fun _ _ _ _ hx hy => by simp [hx, hy])
+    (fun _ _ _ hx => by simp [star_smul, hx]) hx
+
+end Span
+
+variable {R A B : Type*} [Semiring R] [Star R] [Semiring A] [Semiring B]
+  [Module R A] [Module R B] [StarRing A] [StarRing B] [StarModule R A] [StarModule R B]
+  {G : Type*} [Group G]
+
+/-- A linear map intertwining unitary representations is a star map when
+the source representation spans the source algebra. -/
+theorem unitary_intertwiner_map_star (ρ : G →* A) (σ : G →* B)
+    (hspan : Submodule.span R (Set.range ρ) = ⊤)
+    (hρ : ∀ g, ρ g ∈ unitary A) (hσ : ∀ g, σ g ∈ unitary B)
+    (φ : A →ₗ[R] B) (hφ : ∀ g, φ (ρ g) = σ g) (x : A) :
+    φ (star x) = star (φ x) :=
+  map_star_of_mem_span φ (Set.range ρ) (fun _ ⟨g, hg⟩ ↦ hg ▸ by
+    simp [show star (ρ g) = ρ g⁻¹ from unitary_star_coe_inv (ρ.toHomUnits g) (hρ g),
+      show star (σ g) = σ g⁻¹ from unitary_star_coe_inv (σ.toHomUnits g) (hσ g), hφ]) (hspan.symm ▸ Submodule.mem_top)
+
+end MTC.Braided.Trace
+
+/-! Compatibility of unitary block realizations under maps of group images. -/
+
+@[expose] public noncomputable section
+namespace MTC.Braided.Trace
+
+variable {G A : Type*} [Monoid G] [Ring A] [Algebra ℂ A]
+
+section PresentedGroup
+
+variable (ρ : G →* A) {n : ℕ} {d : Fin n → ℕ} (e : GroupBlockPresentation ρ d)
+
+/-- The group image spans any algebra-equivalent block presentation. -/
+theorem presented_group_span :
+    Submodule.span ℂ (Set.range (e.toMonoidHom.comp (groupInImage ρ))) = ⊤ :=
+  show Submodule.span ℂ (Set.range (fun g => e.toLinearMap (groupInImage ρ g))) = ⊤ from by
+    simpa only [Set.range_comp', ← Submodule.map_span, groupInImage_span, Submodule.map_top]
+      using (LinearMap.range_eq_top.mpr e.surjective : e.toLinearMap.range = ⊤)
+
+end PresentedGroup
+
+
+end MTC.Braided.Trace
+
+/-! Algebra maps induced by intertwiners of categorical group images. -/
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace MTC.Braided.Trace
+
+variable {G H A B : Type*} [Monoid G] [Monoid H]
+  [Semiring A] [Algebra ℂ A] [Semiring B] [Algebra ℂ B]
+
+/-- An algebra map intertwining monoid representations carries the image
+algebra into the target image algebra. -/
+def imageAlgebraMap (ρ : G →* A) (σ : H →* B) (τ : G →* H)
+    (F : A →ₐ[ℂ] B) (hF : ∀ g, F (ρ g) = σ (τ g)) :
+    groupImageAlgebra ρ →ₐ[ℂ] groupImageAlgebra σ := by
+  let f := F.comp (groupImageAlgebra ρ).val
+  refine f.codRestrict _ ?_
+  intro x
+  have hx : (x : A) ∈ Submodule.span ℂ (Set.range ρ) := by
+    rw [← groupImageAlgebra_toSubmodule]
+    exact x.property
+  have hspan : Submodule.span ℂ (Set.range ρ) ≤
+      ((groupImageAlgebra σ).toSubmodule.comap F.toLinearMap) := by
+    apply Submodule.span_le.mpr
+    rintro _ ⟨g, rfl⟩
+    change F (ρ g) ∈ groupImageAlgebra σ
+    rw [hF]
+    simpa using (groupInImage σ (τ g)).property
+  exact hspan hx
+
+/-- The induced algebra map intertwines the image representations. -/
+theorem imageAlgebraMap_group (ρ : G →* A) (σ : H →* B) (τ : G →* H)
+    (F : A →ₐ[ℂ] B) (hF : ∀ g, F (ρ g) = σ (τ g)) (g : G) :
+    imageAlgebraMap ρ σ τ F hF (groupInImage ρ g) = groupInImage σ (τ g) :=
+  Subtype.ext (by
+    change F (groupInImage ρ g : A) = (groupInImage σ (τ g) : B)
+    simpa using hF g)
+
+universe v u v' u'
+variable {C : Type u} {D : Type u'} [Category.{v} C] [Category.{v'} D]
+  [Preadditive C] [Preadditive D] [Linear ℂ C] [Linear ℂ D]
+
+/-- A complex-linear additive functor acts by algebra homomorphisms on
+endomorphisms. -/
+def functorEndAlgHom (F : C ⥤ D) [F.Additive] [F.Linear ℂ] (X : C) :
+    End X →ₐ[ℂ] End (F.obj X) where
+  toFun := F.mapEnd X
+  map_one' := (F.mapEnd X).map_one
+  map_mul' := (F.mapEnd X).map_mul
+  map_zero' := by
+    apply End.ext
+    simp
+  map_add' x y := by
+    apply End.ext
+    simp
+  commutes' z := by
+    apply End.ext
+    simp [Algebra.algebraMap_eq_smul_one]
+
+variable [MonoidalCategory C] [BraidedCategory C] [MonoidalPreadditive C]
+  [MonoidalLinear ℂ C]
+
+/-- Adding an identity strand on the left induces an algebra map on the
+actual braid-image spans. -/
+def addLeftBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + 1) :=
+  imageAlgebraMap (braidEndRepresentation X n) (braidEndRepresentation X (n + 1))
+    (addLeftStrand X n) (functorEndAlgHom (tensorLeft X) (braidTensorPower X n)) (by
+      intro g
+      rfl)
+
+/-- Repeated left identity-strand insertion on the actual image groups. -/
+def addLeftStrands (X : C) (n : ℕ) : ∀ k, braidImage X n →* braidImage X (n + k)
+  | 0 => MonoidHom.id _
+  | k + 1 => (addLeftStrand X (n + k)).comp (addLeftStrands X n k)
+
+/-- Repeated left identity-strand insertion on the actual braid algebras. -/
+def addLeftBraidAlgebraIter (X : C) (n : ℕ) :
+    ∀ k, braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + k)
+  | 0 => AlgHom.id ℂ _
+  | k + 1 => (addLeftBraidAlgebra X (n + k)).comp (addLeftBraidAlgebraIter X n k)
+
+/-- Repeated insertion acts as expected on every actual braid. -/
+theorem addLeftBraidAlgebraIter_group {X : C} {n : ℕ} :
+    ∀ (k : ℕ) (g : braidImage X n),
+      addLeftBraidAlgebraIter X n k (braidInImage g) = braidInImage (addLeftStrands X n k g)
+  | 0, _g => rfl
+  | k + 1, g => (congrArg (addLeftBraidAlgebra X _) (addLeftBraidAlgebraIter_group k g)).trans
+      (imageAlgebraMap_group _ _ _ _ _ _)
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The repeated identity-strand insertion as a star algebra map. -/
+def addLeftBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
+    {d : Fin r → ℕ} {q : Fin s → ℕ}
+    (e : BraidBlockPresentation X n d)
+    (f : BraidBlockPresentation X (n + k) q)
+    (he : IsUnitaryBraidPresentation e)
+    (hf : IsUnitaryBraidPresentation f) :
+    (Blocks.Matrices ⟨_, d⟩) →⋆ₐ[ℂ]
+      (Blocks.Matrices ⟨_, q⟩) where
+  toAlgHom := f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom)
+  map_star' x := by
+    apply unitary_intertwiner_map_star
+      (e.toMonoidHom.comp (groupInImage (braidEndRepresentation X n)))
+      ((f.toMonoidHom.comp (groupInImage (braidEndRepresentation X (n + k)))).comp
+        (addLeftStrands X n k))
+      (presented_group_span (braidEndRepresentation X n) e)
+      he (fun g => hf (addLeftStrands X n k g))
+      (f.toAlgHom.comp ((addLeftBraidAlgebraIter X n k).comp e.symm.toAlgHom)).toLinearMap
+    intro g
+    change f (addLeftBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
+    rw [e.symm_apply_apply, addLeftBraidAlgebraIter_group]
+    rfl
+
+end MTC.Braided.Trace
+
+/-! Right identity-strand insertion on categorical braid algebras. -/
+
+@[expose] public noncomputable section
+open CategoryTheory CategoryTheory.MonoidalCategory
+namespace MTC.Braided.Trace
+universe v u
+variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
+
+section
+variable (X : C)
+
+/-- Append one tensor factor to a right-associated tensor power. -/
+def appendIso : ∀ n : ℕ, tensorPower X n ⊗ X ≅ tensorPower X (n + 1)
+  | 0 => (λ_ X) ≪≫ (ρ_ X).symm
+  | n + 1 => by
+    simpa only [tensorPower] using
+      ((α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso n))
+
+/-- Append an identity strand to an automorphism of a tensor power. -/
+def addRightAut (n : ℕ) : Aut (tensorPower X (n+2)) →* Aut (tensorPower X ((n+1)+2)) :=
+  (appendIso X (n+2)).conjAut.toMonoidHom.comp ((tensorRight X).mapAut (tensorPower X (n+2)))
+
+omit [BraidedCategory C] in
+/-- An endomorphism of the first two factors is natural in the tail. -/
+@[reassoc]
+theorem first_pair_natural (f : X ⊗ X ⟶ X ⊗ X) {A B : C} (g : A ⟶ B) :
+    ((α_ X X A).inv ≫ f ▷ A ≫ (α_ X X A).hom) ≫ X ◁ X ◁ g =
+      X ◁ X ◁ g ≫ ((α_ X X B).inv ≫ f ▷ B ≫ (α_ X X B).hom) := by
+  simp only [Category.assoc, ← associator_naturality_right X X g,
+    ← whisker_exchange_assoc, ← associator_inv_naturality_right_assoc]
+
+section Append
+
+variable {A B : C} (e : A ⊗ X ≅ B)
+
+/-- Appending a strand commutes with the first crossing. -/
+theorem append_first_two :
+  let E := (α_ X (X ⊗ A) X) ≪≫ (Iso.refl X ⊗ᵢ ((α_ X A X) ≪≫ (Iso.refl X ⊗ᵢ e)))
+  E.inv ≫ (((α_ X X A).inv ≫ (β_ X X).hom ▷ A ≫ (α_ X X A).hom) ▷ X) ≫ E.hom =
+    (α_ X X B).inv ≫ (β_ X X).hom ▷ B ≫ (α_ X X B).hom :=
+  calc
+    _ = (X ◁ X ◁ e.inv) ≫
+        ((α_ X X (A ⊗ X)).inv ≫ (β_ X X).hom ▷ (A ⊗ X) ≫ (α_ X X (A ⊗ X)).hom) ≫
+        (X ◁ X ◁ e.hom) := by
+          simp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv,
+            Iso.refl_hom, Iso.refl_inv, id_tensorHom, Category.assoc]
+          monoidal
+    _ = _ := by
+      simp only [Category.assoc, ← first_pair_natural_assoc X (β_ X X).hom e.inv,
+        ← whiskerLeft_comp, Iso.inv_hom_id, whiskerLeft_id, Category.comp_id]
+
+end Append
+
+omit [BraidedCategory C] in
+/-- The recursive form of the append isomorphism. -/
+theorem appendIso_succ (n : ℕ) : appendIso X (n+1) =
+  (α_ X (tensorPower X n) X) ≪≫ (Iso.refl X ⊗ᵢ appendIso X n) := rfl
+
+omit [BraidedCategory C] in
+set_option backward.isDefEq.respectTransparency false in
+/-- Appending on the right commutes with adding an identity strand on the left. -/
+theorem addRightAut_tensorLeft (n : ℕ) (f : Aut (tensorPower X (n+2))) :
+    addRightAut X (n+1) ((tensorLeft X).mapAut _ f) =
+      (tensorLeft X).mapAut _ (addRightAut X n f) := by
+  apply Aut.ext
+  apply Iso.ext
+  change (appendIso X (n+3)).inv ≫ ((X ◁ f.asIso.hom) ▷ X) ≫
+    (appendIso X (n+3)).hom =
+      X ◁ ((appendIso X (n+2)).inv ≫ (f.asIso.hom ▷ X) ≫ (appendIso X (n+2)).hom)
+  rw [appendIso_succ X (n+2)]
+  dsimp only [Iso.trans_hom, Iso.trans_inv, tensorIso_hom, tensorIso_inv, Iso.refl_hom,
+    Iso.refl_inv]
+  monoidal
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Appending preserves the first adjacent generator. -/
+private theorem addRightAut_first_generator (n : ℕ) : addRightAut X n (braidGenerator X n 0) =
+    braidGenerator X (n + 1) 0 :=
+  Aut.ext (Iso.ext (by
+    change (appendIso X (n + 2)).inv ≫ ((braidGenerator X n 0).asIso.hom ▷ X) ≫
+      (appendIso X (n + 2)).hom = (braidGenerator X (n + 1) 0).asIso.hom
+    simp only [← Fin.zero_eta, braidGenerator.eq_1, Iso.trans_hom, Iso.symm_hom, tensorIso_hom,
+      Iso.refl_hom, tensorHom_id]
+    change (appendIso X (n + 2)).inv ≫
+      (((α_ X X (tensorPower X n)).inv ≫ (β_ X X).hom ▷ tensorPower X n ≫
+        (α_ X X (tensorPower X n)).hom) ▷ X) ≫ (appendIso X (n + 2)).hom =
+      (α_ X X (tensorPower X (n + 1))).inv ≫ (β_ X X).hom ▷ tensorPower X (n + 1) ≫
+        (α_ X X (tensorPower X (n + 1))).hom
+    rw [appendIso_succ X (n + 1), appendIso_succ X n]
+    exact append_first_two X (appendIso X n)))
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Appending a strand preserves each adjacent braid generator. -/
+theorem addRightAut_generator {n : ℕ} (i : Fin (n+1)) :
+    addRightAut X n (braidGenerator X n i) = braidGenerator X (n+1) i.castSucc := by
+  induction n with
+  | zero => exact (Fin.eq_zero i).symm ▸ addRightAut_first_generator X 0
+  | succ n ih =>
+    refine Fin.cases (addRightAut_first_generator X (n + 1)) (fun j => ?_) i
+    rw [show j.succ.castSucc = j.castSucc.succ from rfl,
+      ← MTC.Center.Trace.braidGenerator_succ, ← MTC.Center.Trace.braidGenerator_succ,
+      addRightAut_tensorLeft, ih]
+
+/-- Appending one identity strand on the right maps the actual braid image to
+the larger actual braid image. -/
+def addRightStrand (n : ℕ) : braidImage X n →* braidImage X (n + 1) := by
+  let f := addRightAut X n
+  have hf : ∀ a ∈ braidImage X n, f a ∈ braidImage X (n + 1) := by
+    change braidImage X n ≤ (braidImage X (n + 1)).comap f
+    apply (Subgroup.closure_le _).mpr
+    rintro _ ⟨i, rfl⟩
+    change addRightAut X n (braidGenerator X n i) ∈ braidImage X (n + 1)
+    exact Subgroup.subset_closure ⟨i.castSucc, (addRightAut_generator X i).symm⟩
+  exact (f.comp (braidImage X n).subtype).codRestrict _ (fun a => hf a a.property)
+
+end
+
+variable [Preadditive C] [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C]
+
+/-- Append a right identity strand as an algebra map on all endomorphisms. -/
+def appendRightEndAlgHom (X : C) (n : ℕ) :
+    End (braidTensorPower X n) →ₐ[ℂ] End (tensorPower X ((n + 1) + 2)) :=
+  (isoEndAlgEquiv (appendIso X (n + 2))).toAlgHom.comp
+    (functorEndAlgHom (tensorRight X) (braidTensorPower X n))
+
+/-- Appending one right identity strand gives a map of actual braid algebras. -/
+def addRightBraidAlgebra (X : C) (n : ℕ) : braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + 1) :=
+  imageAlgebraMap (braidEndRepresentation X n) (braidEndRepresentation X (n + 1))
+    (addRightStrand X n) (appendRightEndAlgHom X n) (fun _ => End.ext rfl)
+
+/-- Repeated right identity-strand insertion on the actual image groups. -/
+def addRightStrands (X : C) (n : ℕ) : ∀ k, braidImage X n →* braidImage X (n + k)
+  | 0 => MonoidHom.id _
+  | k + 1 => (addRightStrand X (n + k)).comp (addRightStrands X n k)
+
+/-- Repeated right identity-strand insertion on the actual braid algebras. -/
+def addRightBraidAlgebraIter (X : C) (n : ℕ) :
+    ∀ k, braidAlgebra X n →ₐ[ℂ] braidAlgebra X (n + k)
+  | 0 => AlgHom.id ℂ _
+  | k + 1 => (addRightBraidAlgebra X (n + k)).comp (addRightBraidAlgebraIter X n k)
+
+/-- Repeated insertion acts as expected on every actual braid. -/
+theorem addRightBraidAlgebraIter_group {X : C} {n : ℕ} :
+    ∀ (k : ℕ) (g : braidImage X n),
+      addRightBraidAlgebraIter X n k (braidInImage g) = braidInImage (addRightStrands X n k g)
+  | 0, _g => rfl
+  | k + 1, g => (congrArg (addRightBraidAlgebra X _) (addRightBraidAlgebraIter_group k g)).trans
+      (imageAlgebraMap_group _ _ _ _ _ _)
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The repeated identity-strand insertion as a star algebra map. -/
+def addRightBlocksIterStarMap (X : C) (n k : ℕ) {r s : ℕ}
+    {d : Fin r → ℕ} {q : Fin s → ℕ}
+    (e : BraidBlockPresentation X n d)
+    (f : BraidBlockPresentation X (n + k) q)
+    (he : IsUnitaryBraidPresentation e)
+    (hf : IsUnitaryBraidPresentation f) :
+    (Blocks.Matrices ⟨_, d⟩) →⋆ₐ[ℂ]
+      (Blocks.Matrices ⟨_, q⟩) where
+  toAlgHom := f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)
+  map_star' x := by
+    apply unitary_intertwiner_map_star
+      (e.toMonoidHom.comp (groupInImage (braidEndRepresentation X n)))
+      ((f.toMonoidHom.comp (groupInImage (braidEndRepresentation X (n + k)))).comp
+        (addRightStrands X n k))
+      (presented_group_span (braidEndRepresentation X n) e)
+      he (fun g => hf (addRightStrands X n k g))
+      (f.toAlgHom.comp ((addRightBraidAlgebraIter X n k).comp e.symm.toAlgHom)).toLinearMap
+    intro g
+    change f (addRightBraidAlgebraIter X n k (e.symm (e (braidInImage g)))) = _
+    rw [e.symm_apply_apply, addRightBraidAlgebraIter_group]
+    rfl
+
+end MTC.Braided.Trace
