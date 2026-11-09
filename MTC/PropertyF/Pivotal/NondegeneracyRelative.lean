@@ -37,8 +37,7 @@ theorem relative_fusionSubring_numerical_centrality
   apply relative_fusionSubring_numerical_centrality_supported C p A hA y hs (simples C a)
   intro i hi
   have : i = a := by
-    by_contra hne
-    simp [simpleMultiplicity, finrank_simples_hom, hne] at hi
+    simpa [simpleMultiplicity, finrank_simples_hom, apply_ite] using hi
   simpa [this] using ha
 
 end MTC.PropertyF.Pivotal
