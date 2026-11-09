@@ -5,7 +5,6 @@ public import MTC.Algebra.Arithmetic
 public import MTC.Algebra.BlockTrace
 public import MTC.Algebra.ComplexBlockTrace
 public import MTC.Algebra.ComplexBraidSaturation
-public import MTC.Algebra.ComplexTraceReciprocity
 public import MTC.Algebra.PowerBound
 public import MTC.AnyonAtlas.Raw
 public import MTC.AnyonAtlas.Sample

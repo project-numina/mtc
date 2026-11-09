@@ -170,7 +170,6 @@ import all MTC.Center.Normalization.AdjointDegrees
 import all MTC.Center.Normalization.GradingTwist
 import all MTC.Center.Normalization.UniversalGrading
 import all MTC.PropertyF.Pivotal.Centralizer
-import all MTC.Algebra.ComplexTraceReciprocity
 import all MTC.Braided.Cabling.ClosurePure
 import all MTC.Braided.Trace.MonodromyReciprocity
 import all MTC.Braided.Trace.SaturationSquare
