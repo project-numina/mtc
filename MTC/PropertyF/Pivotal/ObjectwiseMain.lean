@@ -20,13 +20,7 @@ theorem generated_not_propertyF_of_nonintegral_sq_of_nondegenerate
     (hX : ¬ WeaklyIntegral (fpDimension C X ^ 2)) : ¬ HasPropertyF (bundledGenerated C X).Obj := by
   intro hF
   have hw := (nondegenerateMainStatement_proved G hp hn hF).2.2
-  let Y := generatedObject C X
-  letI : Simple Y := generatedObject_simple C X
-  have hi := simple_fpDimension_sq_integral_of_weaklyIntegral G hw Y
-  apply hX
-  change WeaklyIntegral (fpDimension C Y.obj ^ 2)
-  rw [generated_forget_fpDimension C X Y]
-  exact hi
+  exact hX (generated_simple_fpDimension_sq_integral C X hw)
 
 /-- The entire objectwise manuscript corollary follows from the closure
 lemma, with no further mathematical assumptions. -/

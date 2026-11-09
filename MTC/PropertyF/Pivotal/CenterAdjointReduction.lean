@@ -21,7 +21,7 @@ local notation "Z" => MTC.PropertyF.Reduction.bundledCenter C
 
 /-- Adjoint positivity and property F imply pseudo-unitarity once transparent
 FP-norm saturation and the centre's S-matrix criteria have been established.
-All three currently missing categorical inputs are visible in the statement. -/
+All three intermediate categorical inputs are visible in the statement. -/
 theorem pseudoUnitary_of_adjoint_positivity_and_center_criteria
     (p : PivotalStructure (C := C.Obj))
     (hpositive : PositiveOnTransparentAdjoint C p)

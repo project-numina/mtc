@@ -5,7 +5,7 @@ public import MTC.PropertyF.Pivotal.GaloisDimensionTransport
 /-! # Reduction of the nondegenerate theorem to numerical centrality
 
 The numerical-to-actual transparency implication is an explicit categorical
-premise below, not an asserted proof of that missing implication.
+premise below; the implication is established in `NondegeneracyRelative`.
 -/
 
 @[expose] public noncomputable section

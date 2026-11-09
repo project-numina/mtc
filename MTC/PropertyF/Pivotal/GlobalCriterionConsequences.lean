@@ -5,8 +5,8 @@ public import MTC.Center.Induction.PivotalFusion
 
 /-! # Manuscript targets reduced to relative fusion centrality
 
-The relative numerical-to-actual criterion is an explicit, unproved
-categorical premise in these two reductions.
+The relative numerical-to-actual criterion is an explicit premise in these
+reductions and is proved in `NondegeneracyRelative`.
 -/
 
 @[expose] public noncomputable section
@@ -44,8 +44,8 @@ theorem degenerateStatement_of_relative_fusion_criterion
       ∀ a ∈ A, doubleBraiding (simples D a) (simples D y) = 𝟙 _) :
     DegenerateMainStatement.{v,u} := by
   intro C p hpositive hF
-  letI : RigidCategory (CategoryTheory.Center C.Obj) := MTC.Center.Rigid.rigidCenter
-  letI : IsFusionCategory (CategoryTheory.Center C.Obj) :=
+  let : RigidCategory (CategoryTheory.Center C.Obj) := MTC.Center.Rigid.rigidCenter
+  let : IsFusionCategory (CategoryTheory.Center C.Obj) :=
     MTC.Center.Induction.center_fusion_of_pivotal p
   exact degenerate_conclusions_of_relative_fusion_criterion C p hpositive
     (fun pZ A hA => hrelative (MTC.PropertyF.Reduction.bundledCenter C) pZ A hA) hF

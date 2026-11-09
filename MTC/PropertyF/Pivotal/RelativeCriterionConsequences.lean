@@ -5,8 +5,8 @@ public import MTC.PropertyF.Pivotal.CenterNondegenerate
 
 /-! # Consequences of relative numerical-to-actual centrality
 
-These are conditional adapters for the still-unproved relative categorical
-criterion. No conclusion is asserted without that explicit intermediate input.
+These adapters expose the relative categorical criterion as a premise. The
+criterion itself is proved in `NondegeneracyRelative`.
 -/
 
 @[expose] public noncomputable section
