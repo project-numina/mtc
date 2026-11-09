@@ -1,51 +1,47 @@
-# Modular tensor categories in Lean
+# Property F implies weak integrality
 
-[The Anyon Atlas](https://anyonatlas.org/) catalogues more than 25,000 modular and supermodular
-data, with exact values and selected F- and R-symbols. This project uses that data as a testing
-ground for AI-assisted mathematics: modelling the data in Lean 4, formulating conjectures about it,
-and proving or disproving them.
+A Lean 4 formalization of **Property F implies weak integrality for non-degenerate
+pivotal braided fusion categories**, together with the degenerate extension and
+the manuscript's supporting results.
 
-Everything is in one Lean library, [MTC](MTC.lean):
+The main theorem proves that a non-degenerate pivotal braided fusion category
+with property F is pseudo-unitary and weakly integral, and every represented
+Galois conjugate is pseudo-unitary. The degenerate theorem assumes positivity
+of pivotal dimensions on the simple objects of the intersection of the Müger
+centre and the adjoint subcategory.
 
-- [MTC/](MTC/) provides the definitions and theorems needed to do this: fusion and braided fusion
-  categories ([Fusion](MTC/Fusion/), [Braided](MTC/Braided/)), the Drinfeld center
-  ([Center](MTC/Center/)), modular data ([Modular](MTC/Modular/)), and F- and R-symbols
-  ([FRSymbols](MTC/FRSymbols/)). Outside `MTC/Conjectures`, it contains no `sorry`.
-- [MTC/Conjectures/](MTC/Conjectures/) contains Lean formulations of open conjectures in this
-  area, one per file. The [dashboard](docs/STATUS.md) lists each conjecture with its status and
-  source.
-- [MTC/AnyonAtlas/](MTC/AnyonAtlas/) contains the exact Lean encoding of Atlas records. The
-  [data guide](MTC/AnyonAtlas/README.md) explains how to download, validate and generate the data.
+## Start here
 
-**Open a pull request** with a proof or disproof of a conjecture, or with a new conjecture. See
-[CONTRIBUTING.md](CONTRIBUTING.md).
+- [Main theorems](MTC/PropertyF/Pivotal/MainTheorems.lean):
+  `nondegenerateMainStatement_proved` and `degenerateMainStatement_proved`.
+- [Exact statements](MTC/PropertyF/Pivotal/Statement.lean), including the positivity
+  condition and the semilinear-equivalence definition of Galois conjugates.
+- [Manuscript and theorem map](papers/property-f-weak-integrality/README.md):
+  trace bound, saturation, centre and normalization lemmas, closure, and the
+  eventual infinite-braid-image corollary.
+- [Verification record](docs/pivotal-verification.md).
+- [Code distribution audit](docs/style/README.md): proof lengths, elaborated
+  binders and module sizes compared with the inherited library and Mathlib.
 
-## A proof of property F implies weak integrality
+No sphericality or pseudo-unitary Galois conjugate is assumed in the
+non-degenerate pivotal theorem. The earlier result with a pseudo-unitary
+Galois conjugate is preserved in [Theorem.lean](MTC/PropertyF/Theorem.lean).
 
-The Naidu–Rowell conjecture states that a braided fusion category has property F (every braid group
-representation it defines has finite image) if and only if it is weakly integral (its global
-Frobenius–Perron dimension is an integer). This library proves one direction: **every braided
-fusion category with property F and a pseudo-unitary Galois conjugate is weakly integral**. This
-covers every unitary modular tensor category.
+## Library
 
-The theorem is `MTC.PropertyF.weaklyIntegral_of_propertyF` in
-[Theorem.lean](MTC/PropertyF/Theorem.lean), with its statement in
-[Statement.lean](MTC/PropertyF/Statement.lean). The proof
-is complete and depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`. The
-manuscripts and a map from their results to Lean declarations are in
-[papers/property-f-weak-integrality](papers/property-f-weak-integrality/). The converse direction
-remains open and is stated in [MTC/Conjectures/PropertyF](MTC/Conjectures/PropertyF/).
+The [MTC](MTC.lean) library contains the fusion-category, pivotal-dimension,
+braid-group and Drinfeld-centre infrastructure used by the proofs. Every
+library declaration is audited: no `sorry`, custom axioms, or foreign proof
+implementations are allowed. Proofs use only `propext`, `Classical.choice`,
+and `Quot.sound`.
 
-## The Anyon Atlas
+Existing modular-data, F/R-symbol and Anyon Atlas support remains available,
+but the project's primary deliverable is the manuscript formalization.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for proof and review requirements.
 
-The Atlas is due to Jonah Berean-Dutcher, Clay Córdova, Julio Parra-Martinez and Richard Tuddenham
-([arXiv:2610.25439](https://arxiv.org/abs/2610.25439)). Cite the paper and the record ID when using
-an entry. Modular data alone do not establish that a category realizing them exists, so a claim
-about the data should state its scope precisely.
+## Build and verify
 
-## Building
-
-Lean and Mathlib are pinned to v4.35.0. In a fresh clone with the Lean toolchain installed:
+Lean and Mathlib are pinned to v4.35.0.
 
 ```sh
 lake exe cache get
@@ -53,5 +49,6 @@ scripts/check.sh
 scripts/audit-target.sh
 ```
 
-These build the library, audit the axioms of every declaration, and check the dashboard.
-`scripts/check.sh` uses CPU cores 0–3 by default; set `PROPERTYF_AUDIT_CORES` to change this.
+These build the library, check generated imports and statement equivalence,
+run the script tests, and audit declarations and target dependencies.
+The scripts use CPU cores 0–3 by default; set `PROPERTYF_AUDIT_CORES` to change this.

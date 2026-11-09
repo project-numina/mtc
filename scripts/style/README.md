@@ -1,0 +1,22 @@
+# Style measurement
+
+Run `LEAN_NUM_THREADS=4 python3 scripts/style/survey.py` from the repository.
+This imports pinned Mathlib and private project declarations in a separate
+analysis module; it does not change the proof library or its dependencies.
+Set `PROPERTYF_AUDIT_CORES` to choose the analysis CPU set.
+
+Results are in [docs/style](../../docs/style/README.md). The source parser and
+Lean expression/binder measurement were adapted from the earlier
+`property-f-style/scripts/style` survey without changing their metric
+definitions. The source parser is heuristic; the report describes matching
+and sampling limitations. File lengths include all Mathlib files as well as
+the declaration sample for comparability with the earlier report.
+
+The six dependency roots are the new main theorems, normalization,
+pseudo-unitary-conjugate corollary, closure and objectwise theorem.
+Constant-reference reachability is not a deletion criterion.
+
+`--skip-lean` is for source/report iteration against an unchanged compiled
+environment only. Generated analysis modules and environment TSVs are ignored.
+The committed project scorecards and summary support review without checking
+in a copy of the Mathlib declaration dataset.

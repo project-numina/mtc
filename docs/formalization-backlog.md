@@ -1,7 +1,7 @@
 # Known results to formalize
 
 These results are established in the literature but not yet proved in this library. They are
-not conjectures, so they are kept out of `MTC/Conjectures/`. Their Lean statements were written and
+not open conjectures. Their Lean statements were written and
 checked during seeding and are preserved in commit `5966c406`; find a statement by its result
 name in that commit when starting its proof, and add the finished proof under `MTC/`.
 

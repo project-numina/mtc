@@ -7,28 +7,10 @@ import subprocess
 import sys
 import tempfile
 
-from conjecture_status import ROOT, entries
+ROOT = Path(__file__).resolve().parent.parent
 
 LIBRARIES = ("MTC",)
-COMMAND = re.compile(
-    r"(?m)^[ \t]*(?:(?:private|public|protected|noncomputable|unsafe)\s+)*"
-    r"(theorem|lemma|example|def|abbrev|opaque|axiom|instance|structure|class|"
-    r"inductive|namespace|section|end|run_cmd|#\w+)\b(?:[ \t]+([^\s:({]+))?"
-)
 SORRY = re.compile(r"(?<![\w'])(?:sorry|admit)(?![\w'])")
-
-
-def check_sorry_scope(path, code, fields):
-    """Allow placeholder tokens only in the named theorem proof, including in anonymous examples."""
-    commands = list(COMMAND.finditer(code))
-    for token in SORRY.finditer(code):
-        current = next((command for command in reversed(commands) if command.start() < token.start()), None)
-        theorem = fields["Declaration"].rsplit(".", 1)[-1]
-        if (fields["Status"] == "proved" or current is None or
-                current.group(1) not in ("theorem", "lemma") or current.group(2) != theorem or
-                ":=" not in code[current.end():token.start()]):
-            line = code.count("\n", 0, token.start()) + 1
-            raise ValueError(f"{path}:{line}: sorry is allowed only in the named conjecture proof")
 
 
 def code_without_comments_and_strings(text):
@@ -83,27 +65,19 @@ def code_without_comments_and_strings(text):
 
 def main():
     try:
-        items = entries()
         # The token check covers project Lean sources; dependency audits below also catch `admit`.
-        metadata = {path: fields for path, fields in items}
         for path in sorted(ROOT.rglob("*.lean")):
             rel = path.relative_to(ROOT)
             if any(part.startswith(".") for part in rel.parts) or rel.parts[0] in ("scratch", "data"):
                 continue
             code = code_without_comments_and_strings(path.read_text(encoding="utf-8"))
-            if rel in metadata:
-                check_sorry_scope(rel, code, metadata[rel])
-            elif SORRY.search(code):
-                raise ValueError(f"{rel}: sorry is only permitted in conjecture proofs")
+            if SORRY.search(code):
+                raise ValueError(f"{rel}: unfinished proofs are forbidden in library sources")
         modules = []
         for lib in LIBRARIES:
             modules.append(lib)
             modules.extend(".".join(p.relative_to(ROOT).with_suffix("").parts) for p in sorted((ROOT / lib).rglob("*.lean")))
         imports = "\n".join(f"import all {m}" for m in modules)
-        declarations = "\n".join(
-            f'  (\u0060{fields["Declaration"]}, "{path.with_suffix("").as_posix().replace("/", ".")}", {str(fields["Status"] != "proved").lower()}),'
-            for path, fields in items
-        )
         source = f'''module
 public meta import Lean
 {imports}
@@ -111,30 +85,15 @@ public meta import Lean
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv
-  let conjectures : Array (Name × String × Bool) := #[
-{declarations}
-  ]
-  for (name, moduleName, _) in conjectures do
-    let some ci := env.find? name | throwError "Missing conjecture declaration {{name}}"
-    if ci.type.hasSorry then
-      throwError "Conjecture {{name}} contains sorry in its statement"
-    match ci with
-    | .thmInfo _ => pure ()
-    | _ => throwError "Conjecture {{name}} must be a theorem"
-    let actual := (env.getModuleIdxFor? name).bind fun i => env.header.modules[i.toNat]?
-    unless actual.any (fun m => m.module.toString == moduleName) do
-      throwError "Conjecture {{name}} must be declared in {{moduleName}}"
-  let mut checked := 0
+  let mut checked : Nat := 0
   for (name, _) in env.constants.toList do
     let ownModule := (env.getModuleIdxFor? name).bind fun i => env.header.modules[i.toNat]?
     if ownModule.any (fun m => #["MTC"].any fun lib =>
         m.module.toString == lib || m.module.toString.startsWith (lib ++ ".")) then
       if Lean.isExtern env name || (Lean.Compiler.getImplementedBy? env name).isSome then
         throwError "Foreign implementation in project declaration {{name}}"
-      let allowSorry := conjectures.any fun (n, _, allowed) => n == name && allowed
       for ax in ← collectAxioms name do
-        unless #[``propext, ``Classical.choice, ``Quot.sound].contains ax ||
-            (allowSorry && ax == ``sorryAx) do
+        unless #[``propext, ``Classical.choice, ``Quot.sound].contains ax do
           throwError "Forbidden axiom {{ax}} in project declaration {{name}}"
       checked := checked + 1
   logInfo m!"Audited {{checked}} declarations in MTC."

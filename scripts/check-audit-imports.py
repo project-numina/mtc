@@ -10,7 +10,7 @@ excluded = {
 }
 modules = {
     ".".join(path.relative_to(root).with_suffix("").parts)
-    for path in (root / "MTC").rglob("*.lean") if "Conjectures" not in path.parts
+    for path in (root / "MTC").rglob("*.lean")
 } - excluded
 failed = False
 for name in ("ProjectAudit", "TargetAudit"):

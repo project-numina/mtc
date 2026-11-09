@@ -208,14 +208,6 @@ public import MTC.Center.Trace.ParityDeletion
 public import MTC.Center.Trace.PermutationInsert
 public import MTC.Center.Trace.ProjectorReduction
 public import MTC.Center.Trace.TwistSign
-public import MTC.Conjectures.Galois.SimpleFPDimension
-public import MTC.Conjectures.PropertyF.FusionRulesInvariance
-public import MTC.Conjectures.PropertyF.ModularPropertyF
-public import MTC.Conjectures.PropertyF.NaiduRowell
-public import MTC.Conjectures.PropertyF.PropertyFImpliesWeaklyIntegral
-public import MTC.Conjectures.PropertyF.WeaklyIntegralImpliesPropertyF
-public import MTC.Conjectures.RankFiniteness.EffectiveCategoryCount
-public import MTC.Conjectures.RankFiniteness.EffectiveDimension
 public import MTC.FRSymbols.B11Dimension
 public import MTC.FRSymbols.Cyclotomic
 public import MTC.FRSymbols.CyclotomicMatrix

@@ -1,15 +1,10 @@
 # Papers
 
-Informal manuscripts whose results are formalized in this library. Each manuscript has its own
-folder, named after its main result, with:
+The primary manuscript is [Property F implies weak integrality for
+non-degenerate pivotal braided fusion categories](property-f-weak-integrality/README.md).
+Its directory contains the source, PDF, provenance and a map from each result
+to its checked Lean declaration. The earlier weaker manuscript is retained
+for provenance.
 
-- the LaTeX source (`.tex`, with its bibliography and figures) and the compiled `.pdf`;
-- `README.md`: the citation, status, and a table that maps each numbered result to its Lean
-  declaration.
-
-A manuscript is added in the same change that adds its formalization, or that states its results
-as targets in `MTC/Conjectures/`.
-
-| Folder | Main result | Lean | Status |
-|---|---|---|---|
-| [property-f-weak-integrality](property-f-weak-integrality/) | Property F implies weak integrality for braided fusion categories with a pseudo-unitary Galois conjugate | `MTC.PropertyF.weaklyIntegral_of_propertyF` | Formalized |
+Add or update a manuscript together with its complete formalization and
+verification record.

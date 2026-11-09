@@ -1,0 +1,1168 @@
+population	file	lines	declarations
+New pivotal modules	MTC/Algebra/ComplexBlockTrace.lean	100	12
+New pivotal modules	MTC/Algebra/ComplexBraidSaturation.lean	64	2
+New pivotal modules	MTC/Algebra/ComplexTraceReciprocity.lean	35	2
+New pivotal modules	MTC/Braided/Cabling/BlockFinite.lean	64	2
+New pivotal modules	MTC/Braided/Cabling/BlockFiniteBraid.lean	52	1
+New pivotal modules	MTC/Braided/Cabling/BlockFiniteGroups.lean	37	1
+New pivotal modules	MTC/Braided/Cabling/BlockFiniteSum.lean	44	1
+New pivotal modules	MTC/Braided/Cabling/ClosureAdjacentCoherence.lean	34	2
+New pivotal modules	MTC/Braided/Cabling/ClosureAssembly.lean	34	3
+New pivotal modules	MTC/Braided/Cabling/ClosureBlockContext.lean	65	5
+New pivotal modules	MTC/Braided/Cabling/ClosureBlockFinite.lean	30	2
+New pivotal modules	MTC/Braided/Cabling/ClosureBlockInduction.lean	50	5
+New pivotal modules	MTC/Braided/Cabling/ClosureBlockProof.lean	54	3
+New pivotal modules	MTC/Braided/Cabling/ClosureBlockWord.lean	38	4
+New pivotal modules	MTC/Braided/Cabling/ClosureCanonicalBlocks.lean	101	7
+New pivotal modules	MTC/Braided/Cabling/ClosureColoredBridge.lean	140	8
+New pivotal modules	MTC/Braided/Cabling/ClosureColoredContext.lean	341	17
+New pivotal modules	MTC/Braided/Cabling/ClosureColoredCrossing.lean	67	4
+New pivotal modules	MTC/Braided/Cabling/ClosureColoredFirst.lean	61	2
+New pivotal modules	MTC/Braided/Cabling/ClosureColoredFlatten.lean	51	7
+New pivotal modules	MTC/Braided/Cabling/ClosureColoredWords.lean	89	8
+New pivotal modules	MTC/Braided/Cabling/ClosureCommonInterface.lean	76	6
+New pivotal modules	MTC/Braided/Cabling/ClosureCrossing.lean	59	4
+New pivotal modules	MTC/Braided/Cabling/ClosureFirstBlock.lean	115	9
+New pivotal modules	MTC/Braided/Cabling/ClosureFlatten.lean	29	2
+New pivotal modules	MTC/Braided/Cabling/ClosureFlattenCoherence.lean	46	2
+New pivotal modules	MTC/Braided/Cabling/ClosureFlattenCompare.lean	43	4
+New pivotal modules	MTC/Braided/Cabling/ClosureFlattenConcat.lean	89	5
+New pivotal modules	MTC/Braided/Cabling/ClosureFlattenLocalCompare.lean	95	7
+New pivotal modules	MTC/Braided/Cabling/ClosureFlattenUnit.lean	28	1
+New pivotal modules	MTC/Braided/Cabling/ClosureFour.lean	144	14
+New pivotal modules	MTC/Braided/Cabling/ClosureFourTail.lean	37	3
+New pivotal modules	MTC/Braided/Cabling/ClosureGeneratorOrder.lean	54	2
+New pivotal modules	MTC/Braided/Cabling/ClosureImage.lean	53	4
+New pivotal modules	MTC/Braided/Cabling/ClosureInsertion.lean	88	8
+New pivotal modules	MTC/Braided/Cabling/ClosureInsertionCompare.lean	97	8
+New pivotal modules	MTC/Braided/Cabling/ClosureInterchange.lean	61	2
+New pivotal modules	MTC/Braided/Cabling/ClosureIsoWord.lean	40	3
+New pivotal modules	MTC/Braided/Cabling/ClosureJoinAssociativity.lean	52	2
+New pivotal modules	MTC/Braided/Cabling/ClosureJoinCompare.lean	48	5
+New pivotal modules	MTC/Braided/Cabling/ClosureLeftInsertion.lean	60	4
+New pivotal modules	MTC/Braided/Cabling/ClosureLocalFlatten.lean	77	5
+New pivotal modules	MTC/Braided/Cabling/ClosureMergeCommon.lean	89	6
+New pivotal modules	MTC/Braided/Cabling/ClosurePure.lean	28	2
+New pivotal modules	MTC/Braided/Cabling/ClosureRectangular.lean	49	6
+New pivotal modules	MTC/Braided/Cabling/ClosureRecursiveFlatten.lean	82	9
+New pivotal modules	MTC/Braided/Cabling/ClosureReindex.lean	80	5
+New pivotal modules	MTC/Braided/Cabling/ClosureSplitMerge.lean	54	2
+New pivotal modules	MTC/Braided/Cabling/ClosureSweep.lean	98	8
+New pivotal modules	MTC/Braided/Cabling/ClosureSweepContext.lean	33	3
+New pivotal modules	MTC/Braided/Cabling/ClosureTwoBlockPower.lean	71	5
+New pivotal modules	MTC/Braided/Cabling/ClosureTwoRow.lean	80	7
+New pivotal modules	MTC/Braided/Cabling/ClosureUnit.lean	56	4
+New pivotal modules	MTC/Braided/Cabling/ColorBiproduct.lean	211	12
+New pivotal modules	MTC/Braided/Cabling/ColorBiproductConstant.lean	97	7
+New pivotal modules	MTC/Braided/Cabling/ColorBiproductFinite.lean	38	1
+New pivotal modules	MTC/Braided/Cabling/ColorBiproductLetters.lean	40	1
+New pivotal modules	MTC/Braided/Cabling/ColorBiproductPositive.lean	55	2
+New pivotal modules	MTC/Braided/Cabling/PureSum.lean	28	3
+New pivotal modules	MTC/Braided/Cabling/PureSumCabling.lean	60	1
+New pivotal modules	MTC/Braided/Cabling/PureSumColored.lean	468	35
+New pivotal modules	MTC/Braided/Cabling/PureSumInverse.lean	62	2
+New pivotal modules	MTC/Braided/Cabling/PureSumPositive.lean	20	1
+New pivotal modules	MTC/Braided/Cabling/PureSumPositiveCabling.lean	36	1
+New pivotal modules	MTC/Braided/Cabling/PureSumPositiveState.lean	163	6
+New pivotal modules	MTC/Braided/Cabling/PureSumPrefix.lean	213	7
+New pivotal modules	MTC/Braided/Cabling/PureSumPreservation.lean	105	4
+New pivotal modules	MTC/Braided/Cabling/PureSumSigned.lean	82	3
+New pivotal modules	MTC/Braided/Trace/ComplexSaturation.lean	100	2
+New pivotal modules	MTC/Braided/Trace/ComplexTraceBound.lean	42	1
+New pivotal modules	MTC/Braided/Trace/InverseMonodromy.lean	100	6
+New pivotal modules	MTC/Braided/Trace/MonodromyBound.lean	51	2
+New pivotal modules	MTC/Braided/Trace/MonodromyReciprocity.lean	121	3
+New pivotal modules	MTC/Braided/Trace/SaturationSquare.lean	62	3
+New pivotal modules	MTC/Braided/Trace/SphericalSaturation.lean	32	1
+New pivotal modules	MTC/Center/Braid/PivotalRegularSupport.lean	151	9
+New pivotal modules	MTC/Center/Induction/PivotalFusion.lean	126	8
+New pivotal modules	MTC/Center/Induction/PivotalSquare.lean	101	4
+New pivotal modules	MTC/Center/Normalization/ActualDoubleCentralizer.lean	103	3
+New pivotal modules	MTC/Center/Normalization/AdjointDegrees.lean	60	6
+New pivotal modules	MTC/Center/Normalization/AdjointQuotient.lean	164	20
+New pivotal modules	MTC/Center/Normalization/AdjointRelation.lean	135	11
+New pivotal modules	MTC/Center/Normalization/AlgebraicDimension.lean	56	2
+New pivotal modules	MTC/Center/Normalization/BinomialAnalytic.lean	83	6
+New pivotal modules	MTC/Center/Normalization/BinomialArithmetic.lean	90	5
+New pivotal modules	MTC/Center/Normalization/CenterLemma.lean	69	3
+New pivotal modules	MTC/Center/Normalization/CharacterExtension.lean	69	3
+New pivotal modules	MTC/Center/Normalization/CommonCentralizer.lean	87	4
+New pivotal modules	MTC/Center/Normalization/DualContraction.lean	46	2
+New pivotal modules	MTC/Center/Normalization/FPPlacement.lean	149	6
+New pivotal modules	MTC/Center/Normalization/FusionSubringSupport.lean	94	4
+New pivotal modules	MTC/Center/Normalization/GradingTwist.lean	47	6
+New pivotal modules	MTC/Center/Normalization/IntegerDimensions.lean	115	3
+New pivotal modules	MTC/Center/Normalization/MugerAdjointNormalization.lean	36	1
+New pivotal modules	MTC/Center/Normalization/MugerCategory.lean	321	32
+New pivotal modules	MTC/Center/Normalization/MugerConditional.lean	50	2
+New pivotal modules	MTC/Center/Normalization/MugerFPConditional.lean	31	1
+New pivotal modules	MTC/Center/Normalization/MugerFPIntegral.lean	105	5
+New pivotal modules	MTC/Center/Normalization/MugerIntegralOfPositive.lean	37	2
+New pivotal modules	MTC/Center/Normalization/MugerLabels.lean	120	10
+New pivotal modules	MTC/Center/Normalization/MugerNormalization.lean	50	2
+New pivotal modules	MTC/Center/Normalization/MugerObjectNormalization.lean	77	4
+New pivotal modules	MTC/Center/Normalization/PivotalTwist.lean	103	7
+New pivotal modules	MTC/Center/Normalization/PositiveSubring.lean	170	5
+New pivotal modules	MTC/Center/Normalization/ProductCategory.lean	60	4
+New pivotal modules	MTC/Center/Normalization/ProductCategoryPivotal.lean	33	2
+New pivotal modules	MTC/Center/Normalization/ProductGenerator.lean	70	4
+New pivotal modules	MTC/Center/Normalization/RelativeCentralizer.lean	106	4
+New pivotal modules	MTC/Center/Normalization/ScalarFusionCharacter.lean	165	9
+New pivotal modules	MTC/Center/Normalization/SubringCharacter.lean	129	6
+New pivotal modules	MTC/Center/Normalization/SubringGrading.lean	137	14
+New pivotal modules	MTC/Center/Normalization/SymmetricBinomial.lean	94	3
+New pivotal modules	MTC/Center/Normalization/SymmetricConditional.lean	52	1
+New pivotal modules	MTC/Center/Normalization/SymmetricGlobal.lean	83	5
+New pivotal modules	MTC/Center/Normalization/SymmetricInteger.lean	42	3
+New pivotal modules	MTC/Center/Normalization/SymmetricPivotal.lean	80	6
+New pivotal modules	MTC/Center/Normalization/SymmetricRising.lean	102	5
+New pivotal modules	MTC/Center/Normalization/SymmetricSquares.lean	116	6
+New pivotal modules	MTC/Center/Normalization/UniversalGrading.lean	126	12
+New pivotal modules	MTC/PropertyF/Audit/ProjectAudit.lean	426	1
+New pivotal modules	MTC/PropertyF/Audit/TargetAudit.lean	360	0
+New pivotal modules	MTC/PropertyF/Pivotal/AdjointObjects.lean	88	7
+New pivotal modules	MTC/PropertyF/Pivotal/AdjointObjectsSupport.lean	149	12
+New pivotal modules	MTC/PropertyF/Pivotal/CenterAdjointReduction.lean	47	1
+New pivotal modules	MTC/PropertyF/Pivotal/CenterGenerated.lean	28	1
+New pivotal modules	MTC/PropertyF/Pivotal/CenterLemma.lean	35	1
+New pivotal modules	MTC/PropertyF/Pivotal/CenterNondegenerate.lean	30	1
+New pivotal modules	MTC/PropertyF/Pivotal/CenterReduction.lean	106	4
+New pivotal modules	MTC/PropertyF/Pivotal/Centralizer.lean	53	3
+New pivotal modules	MTC/PropertyF/Pivotal/ClosureFinalReduction.lean	62	3
+New pivotal modules	MTC/PropertyF/Pivotal/ClosureTheorems.lean	22	2
+New pivotal modules	MTC/PropertyF/Pivotal/ConjugateCorollary.lean	70	4
+New pivotal modules	MTC/PropertyF/Pivotal/DegenerateConsequences.lean	78	4
+New pivotal modules	MTC/PropertyF/Pivotal/DegenerateRelative.lean	44	1
+New pivotal modules	MTC/PropertyF/Pivotal/FPGlobalDimension.lean	94	4
+New pivotal modules	MTC/PropertyF/Pivotal/FPInvertible.lean	63	2
+New pivotal modules	MTC/PropertyF/Pivotal/FPObject.lean	69	2
+New pivotal modules	MTC/PropertyF/Pivotal/FPSquareIntegral.lean	70	3
+New pivotal modules	MTC/PropertyF/Pivotal/Galois.lean	134	8
+New pivotal modules	MTC/PropertyF/Pivotal/GaloisDimensionTransport.lean	106	6
+New pivotal modules	MTC/PropertyF/Pivotal/GaloisDual.lean	35	1
+New pivotal modules	MTC/PropertyF/Pivotal/GaloisUnitScalar.lean	37	1
+New pivotal modules	MTC/PropertyF/Pivotal/GeneratedCategory.lean	231	30
+New pivotal modules	MTC/PropertyF/Pivotal/GeneratedConsequences.lean	66	3
+New pivotal modules	MTC/PropertyF/Pivotal/GlobalCriterionConsequences.lean	54	2
+New pivotal modules	MTC/PropertyF/Pivotal/InfiniteImages.lean	67	4
+New pivotal modules	MTC/PropertyF/Pivotal/MainTheorems.lean	31	2
+New pivotal modules	MTC/PropertyF/Pivotal/MonoidalDual.lean	57	2
+New pivotal modules	MTC/PropertyF/Pivotal/MonoidalDualComparison.lean	45	3
+New pivotal modules	MTC/PropertyF/Pivotal/MonoidalQuantumTrace.lean	94	4
+New pivotal modules	MTC/PropertyF/Pivotal/MonoidalTrace.lean	34	2
+New pivotal modules	MTC/PropertyF/Pivotal/Nondegeneracy.lean	147	6
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyConverse.lean	51	3
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaar.lean	321	23
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaarBasis.lean	139	7
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaarMate.lean	71	7
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaarSlide.lean	535	29
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaarSnake.lean	443	27
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyRelative.lean	47	2
+New pivotal modules	MTC/PropertyF/Pivotal/Nondegenerate.lean	67	4
+New pivotal modules	MTC/PropertyF/Pivotal/NondegenerateTransport.lean	58	2
+New pivotal modules	MTC/PropertyF/Pivotal/NormalizedConjugates.lean	33	1
+New pivotal modules	MTC/PropertyF/Pivotal/NormalizedScalarTwist.lean	47	1
+New pivotal modules	MTC/PropertyF/Pivotal/NumericalReduction.lean	42	2
+New pivotal modules	MTC/PropertyF/Pivotal/ObjectwiseConsequences.lean	50	3
+New pivotal modules	MTC/PropertyF/Pivotal/ObjectwiseMain.lean	43	2
+New pivotal modules	MTC/PropertyF/Pivotal/PositiveClosure.lean	30	1
+New pivotal modules	MTC/PropertyF/Pivotal/PositivePowers.lean	72	3
+New pivotal modules	MTC/PropertyF/Pivotal/RelativeCriterionConsequences.lean	68	3
+New pivotal modules	MTC/PropertyF/Pivotal/SOrthogonality.lean	105	4
+New pivotal modules	MTC/PropertyF/Pivotal/SScalarTwist.lean	70	5
+New pivotal modules	MTC/PropertyF/Pivotal/Saturation.lean	27	1
+New pivotal modules	MTC/PropertyF/Pivotal/SlopeDefect.lean	41	3
+New pivotal modules	MTC/PropertyF/Pivotal/SlopePower.lean	69	5
+New pivotal modules	MTC/PropertyF/Pivotal/SlopeSquare.lean	96	9
+New pivotal modules	MTC/PropertyF/Pivotal/SlopeTrace.lean	170	12
+New pivotal modules	MTC/PropertyF/Pivotal/Statement.lean	72	8
+New pivotal modules	MTC/PropertyF/Pivotal/SymmetricPropertyF.lean	41	3
+Inherited modules	MTC/Algebra/Arithmetic.lean	28	1
+Inherited modules	MTC/Algebra/BlockTrace.lean	155	16
+Inherited modules	MTC/Algebra/PowerBound.lean	51	3
+Inherited modules	MTC/AnyonAtlas/Raw.lean	36	3
+Inherited modules	MTC/AnyonAtlas/Sample.lean	47	5
+Inherited modules	MTC/Braided/BraidAlgebra.lean	38	2
+Inherited modules	MTC/Braided/Cabling/Generated.lean	163	17
+Inherited modules	MTC/Braided/Cabling/Naturality.lean	162	13
+Inherited modules	MTC/Braided/Cabling/Strands.lean	50	2
+Inherited modules	MTC/Braided/Cabling/UnitPower.lean	59	2
+Inherited modules	MTC/Braided/Definitions.lean	85	9
+Inherited modules	MTC/Braided/Trace/BraidWeights.lean	350	18
+Inherited modules	MTC/Braided/Trace/EndBlocks.lean	136	7
+Inherited modules	MTC/Braided/Trace/OverlapBound.lean	252	15
+Inherited modules	MTC/Braided/Trace/OverlapCoherence.lean	228	15
+Inherited modules	MTC/Braided/Trace/PartialTrace.lean	119	9
+Inherited modules	MTC/Braided/Trace/PositiveWeights.lean	79	2
+Inherited modules	MTC/Braided/Trace/RightStrand.lean	379	26
+Inherited modules	MTC/Braided/Trace/TensorPowerCoherence.lean	180	8
+Inherited modules	MTC/Braided/Trace/ThreeRigidity.lean	206	9
+Inherited modules	MTC/Braided/Trace/ThreeTrace.lean	242	22
+Inherited modules	MTC/Braided/Trace/UnitaryBlocks.lean	259	22
+Inherited modules	MTC/CategoryTheory/Dimensions/BiproductTrace.lean	141	11
+Inherited modules	MTC/CategoryTheory/Dimensions/DefectExtension.lean	210	7
+Inherited modules	MTC/CategoryTheory/Dimensions/DefectNaturality.lean	132	5
+Inherited modules	MTC/CategoryTheory/Dimensions/DimensionCharacter.lean	138	11
+Inherited modules	MTC/CategoryTheory/Dimensions/DoubleDualMonoidal.lean	161	4
+Inherited modules	MTC/CategoryTheory/Dimensions/DoubleDualPairing.lean	213	11
+Inherited modules	MTC/CategoryTheory/Dimensions/DoubleDualUnitTensor.lean	141	7
+Inherited modules	MTC/CategoryTheory/Dimensions/DualBraiding.lean	88	3
+Inherited modules	MTC/CategoryTheory/Dimensions/DualCoherence.lean	161	15
+Inherited modules	MTC/CategoryTheory/Dimensions/DualTensorNaturality.lean	206	14
+Inherited modules	MTC/CategoryTheory/Dimensions/ENOMatrices.lean	168	14
+Inherited modules	MTC/CategoryTheory/Dimensions/ENOReciprocity.lean	295	17
+Inherited modules	MTC/CategoryTheory/Dimensions/FourthDualUnit.lean	155	11
+Inherited modules	MTC/CategoryTheory/Dimensions/FourthTensorUnit.lean	63	2
+Inherited modules	MTC/CategoryTheory/Dimensions/MonodromyTensorCap.lean	200	7
+Inherited modules	MTC/CategoryTheory/Dimensions/MultiplicityDefect.lean	303	25
+Inherited modules	MTC/CategoryTheory/Dimensions/Pivotal.lean	110	14
+Inherited modules	MTC/CategoryTheory/Dimensions/RootDualLabel.lean	153	7
+Inherited modules	MTC/CategoryTheory/Dimensions/SimpleHomBasis.lean	265	14
+Inherited modules	MTC/CategoryTheory/Dimensions/SimpleScalars.lean	278	21
+Inherited modules	MTC/CategoryTheory/Dimensions/SquaredNorm.lean	187	13
+Inherited modules	MTC/CategoryTheory/Dimensions/TensorExtension.lean	186	14
+Inherited modules	MTC/CategoryTheory/Dimensions/TensorMultiplicativity.lean	160	8
+Inherited modules	MTC/CategoryTheory/Dimensions/Trace.lean	151	15
+Inherited modules	MTC/Center/Abelian.lean	557	45
+Inherited modules	MTC/Center/Averaging.lean	99	9
+Inherited modules	MTC/Center/Balancing/TwistBalancing.lean	121	7
+Inherited modules	MTC/Center/Basic.lean	250	30
+Inherited modules	MTC/Center/Braid/CentralityClosure.lean	80	4
+Inherited modules	MTC/Center/Braid/ImageCore.lean	198	18
+Inherited modules	MTC/Center/Braid/RegularSupport.lean	259	22
+Inherited modules	MTC/Center/Braid/TraceSaturation.lean	126	6
+Inherited modules	MTC/Center/Braid/TwistFinite.lean	88	5
+Inherited modules	MTC/Center/BraidWords/TypeA.lean	281	28
+Inherited modules	MTC/Center/BraidWords/TypeANormalWords.lean	168	11
+Inherited modules	MTC/Center/Dimensions/PivotalTwist.lean	133	11
+Inherited modules	MTC/Center/Fusion/Bundled.lean	84	7
+Inherited modules	MTC/Center/Fusion/Fusion.lean	35	1
+Inherited modules	MTC/Center/Helpers.lean	36	4
+Inherited modules	MTC/Center/Induction/ActualFusion.lean	220	9
+Inherited modules	MTC/Center/Induction/AdjunctionAssembly.lean	192	14
+Inherited modules	MTC/Center/Induction/BasisPairing.lean	199	11
+Inherited modules	MTC/Center/Induction/CrossingBlocks.lean	215	21
+Inherited modules	MTC/Center/Induction/CrossingCoherence.lean	157	9
+Inherited modules	MTC/Center/Induction/CrossingUnit.lean	135	8
+Inherited modules	MTC/Center/Induction/DrinfeldTheorem.lean	145	7
+Inherited modules	MTC/Center/Induction/FiniteSimples.lean	185	12
+Inherited modules	MTC/Center/Induction/ForgetDual.lean	97	5
+Inherited modules	MTC/Center/Induction/ForgetDualTensor.lean	209	16
+Inherited modules	MTC/Center/Induction/PivotalCentrality.lean	113	5
+Inherited modules	MTC/Center/Induction/PositivePivotal.lean	164	8
+Inherited modules	MTC/Center/Induction/Representatives.lean	188	10
+Inherited modules	MTC/Center/Induction/SecondTriangle.lean	191	9
+Inherited modules	MTC/Center/Modular/TransparencyCriterion.lean	165	8
+Inherited modules	MTC/Center/Modular/Vafa.lean	894	69
+Inherited modules	MTC/Center/Product.lean	95	7
+Inherited modules	MTC/Center/ProductClosure.lean	149	12
+Inherited modules	MTC/Center/ProductImages.lean	182	18
+Inherited modules	MTC/Center/Rigid.lean	390	11
+Inherited modules	MTC/Center/SymmetricIntegrality.lean	35	1
+Inherited modules	MTC/Center/Trace/BraidRelations.lean	131	7
+Inherited modules	MTC/Center/Trace/LeftTensorTrace.lean	273	17
+Inherited modules	MTC/Center/Trace/ParityDeletion.lean	135	8
+Inherited modules	MTC/Center/Trace/PermutationInsert.lean	239	18
+Inherited modules	MTC/Center/Trace/ProjectorReduction.lean	145	11
+Inherited modules	MTC/Center/Trace/TwistSign.lean	137	8
+Inherited modules	MTC/FRSymbols/B11Dimension.lean	45	9
+Inherited modules	MTC/FRSymbols/Cyclotomic.lean	126	12
+Inherited modules	MTC/FRSymbols/CyclotomicMatrix.lean	27	1
+Inherited modules	MTC/FRSymbols/FusionRules.lean	43	3
+Inherited modules	MTC/FRSymbols/MatrixGauge.lean	76	3
+Inherited modules	MTC/FRSymbols/MatrixSymbols.lean	140	11
+Inherited modules	MTC/FRSymbols/Metric.lean	82	3
+Inherited modules	MTC/FRSymbols/Pointed.lean	105	9
+Inherited modules	MTC/FRSymbols/RootsOfUnity.lean	61	2
+Inherited modules	MTC/FRSymbols/ToricCode.lean	72	7
+Inherited modules	MTC/FRSymbols/ToricMatrix.lean	72	8
+Inherited modules	MTC/FRSymbols/ToricModularData.lean	84	7
+Inherited modules	MTC/FRSymbols/Trivial.lean	44	4
+Inherited modules	MTC/Fusion/Agreement.lean	480	29
+Inherited modules	MTC/Fusion/Equivalence.lean	54	5
+Inherited modules	MTC/Fusion/Multiplicity.lean	194	18
+Inherited modules	MTC/Fusion/ObjectDimension.lean	172	13
+Inherited modules	MTC/Fusion/Reciprocity.lean	197	17
+Inherited modules	MTC/Fusion/SemisimpleSplit.lean	61	4
+Inherited modules	MTC/Fusion/Simples.lean	132	11
+Inherited modules	MTC/Fusion/SpectralIntegral.lean	78	4
+Inherited modules	MTC/Fusion/UnitPower.lean	200	10
+Inherited modules	MTC/Fusion/UnitScalar.lean	55	5
+Inherited modules	MTC/Modular/BraidFunctor.lean	145	14
+Inherited modules	MTC/Modular/BraidIso.lean	80	7
+Inherited modules	MTC/Modular/CharacterStar.lean	63	4
+Inherited modules	MTC/Modular/Classification.lean	214	16
+Inherited modules	MTC/Modular/Data/Basic.lean	105	5
+Inherited modules	MTC/Modular/Data/CategoricalS.lean	42	2
+Inherited modules	MTC/Modular/Data/RepresentationCount.lean	39	3
+Inherited modules	MTC/Modular/FusionTransport.lean	149	9
+Inherited modules	MTC/Modular/SAdditivity.lean	91	6
+Inherited modules	MTC/Modular/SMatrix.lean	190	22
+Inherited modules	MTC/Modular/SSquare.lean	193	8
+Inherited modules	MTC/Modular/Verlinde.lean	312	17
+Inherited modules	MTC/PropertyF/Audit/DependencyAudit.lean	110	10
+Inherited modules	MTC/PropertyF/PseudoUnitary.lean	41	2
+Inherited modules	MTC/PropertyF/Reduction/ActualCenterReduction.lean	335	14
+Inherited modules	MTC/PropertyF/Reduction/CharacterReality.lean	128	9
+Inherited modules	MTC/PropertyF/Reduction/TwistedRigidity.lean	242	20
+Inherited modules	MTC/PropertyF/Statement.lean	111	15
+Inherited modules	MTC/PropertyF/Theorem.lean	132	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/AddConstMap/Equiv.lean	173	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Algebra/NonUnitalHom.lean	487	66
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Algebra/Subalgebra/Centralizer.lean	195	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Algebra/Subalgebra/Pi.lean	51	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Algebra/Subalgebra/Rank.lean	72	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Algebra/Subalgebra/Tower.lean	164	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Algebra/ZMod.lean	71	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Azumaya/Defs.lean	61	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/BigOperators/Finprod.lean	1426	154
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean	1167	150
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset/Indicator.lean	88	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/BigOperators/GroupWithZero/Action.lean	140	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/BigOperators/Module.lean	83	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/FGModuleCat/Limits.lean	81	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/Grp/EnoughInjectives.lean	58	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/Grp/IsFinite.lean	59	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/Grp/LeftExactFunctor.lean	130	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/Grp/Subobject.lean	28	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/Grp/Ulift.lean	209	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/Grp/Zero.lean	84	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/ModuleCat/ChangeOfRings.lean	1065	81
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/ModuleCat/EpiMono.lean	74	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/ModuleCat/InjectiveDimension.lean	160	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/ModuleCat/Presheaf/Free.lean	124	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/ModuleCat/Presheaf/Limits.lean	157	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/ModuleCat/Presheaf/Pullback.lean	163	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/ModuleCat/Semi.lean	471	58
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/MonCat/Basic.lean	548	78
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/MonCat/ForgetCorepresentable.lean	87	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Category/Ring/Under/Property.lean	210	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Central/Matrix.lean	35	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Central/TensorProduct.lean	86	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/CharP/IntermediateField.lean	43	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/ContinuedFractions/Computation/Translations.lean	332	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/ContinuedFractions/Euler.lean	363	31
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/EuclideanDomain/Defs.lean	260	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Exact/Sequence.lean	136	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Field/Basic.lean	324	54
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Free.lean	716	101
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/FreeAbelianGroup/UniqueSums.lean	20	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/FreeNonUnitalNonAssocAlgebra.lean	106	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/GCDMonoid/IntegrallyClosed.lean	52	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/GCDMonoid/Multiset.lean	236	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Action/Faithful.lean	127	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Action/Pointwise/Finset.lean	321	46
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/End.lean	801	132
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Equiv/Basic.lean	252	27
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Ext.lean	164	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Pointwise/Set/Finite.lean	191	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Pointwise/Set/Small.lean	33	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Semigroup.lean	356	45
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Submonoid/BigOperators.lean	195	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Submonoid/Finsupp.lean	67	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Group/Submonoid/Pointwise.lean	304	45
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/GroupWithZero/Action/Basic.lean	121	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/GroupWithZero/Action/Hom.lean	105	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/GroupWithZero/FunLike.lean	82	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/GroupWithZero/Hom.lean	269	35
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/GroupWithZero/Range.lean	346	39
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/BifunctorAssociator.lean	817	60
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/CochainComplexOpposite.lean	208	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/CommSq.lean	201	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/ComplexShapeSigns.lean	400	46
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/DerivedCategory/Ext/EnoughProjectives.lean	155	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/DerivedCategory/Ext/ExtClass.lean	135	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/Embedding/HomEquiv.lean	228	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/Embedding/TruncLE.lean	251	31
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/ExactSequenceFour.lean	223	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/HomotopyCategory/KInjective.lean	193	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/HomotopyCategory/Pretriangulated.lean	534	37
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/QuasiIso.lean	360	45
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/ShortComplex/QuasiIso.lean	197	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/ShortComplex/ShortExact.lean	233	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Homology/SpectralObject/FirstPage.lean	137	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Lie/BaseChange.lean	247	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Lie/LieTheorem.lean	255	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Lie/Nilpotent.lean	975	98
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Lie/SkewAdjoint.lean	168	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Lie/Submodule.lean	1022	165
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Lie/TraceForm.lean	487	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Lie/UniversalEnveloping.lean	153	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/LieRinehartAlgebra/Subalgebra.lean	232	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/LinearRecurrence.lean	242	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Module/CharacterModule.lean	258	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Module/LinearMap/Defs.lean	1072	146
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Module/LocalizedModule/Exact.lean	61	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Module/LocalizedModule/Submodule.lean	383	46
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Module/Opposite.lean	47	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Module/Torsion/Basic.lean	1032	117
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Module/ULift.lean	148	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Degree.lean	646	63
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Invertible.lean	33	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/NoZeroSMulDivisors/Defs.lean	81	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/NoZeroSMulDivisors/Pi.lean	38	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/NonAssoc/PreLie/Basic.lean	122	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Notation/Indicator.lean	287	44
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Notation/Pi/Basic.lean	146	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Notation/Pi/Defs.lean	164	26
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/AddGroupWithTop.lean	272	38
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Antidiag/Tendsto.lean	40	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Group/Finset.lean	837	86
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/GroupWithZero/List.lean	97	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/GroupWithZero/Multiset.lean	76	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Group/Action/Flag.lean	34	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Group/Basic.lean	119	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Group/CompleteLattice.lean	53	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Group/Finset.lean	120	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Group/Ideal.lean	72	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Hom/Lattice.lean	28	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Interval/Basic.lean	682	85
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Interval/Finset/Basic.lean	94	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Monoid/Multiset.lean	33	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Monoid/Unbundled/Units.lean	113	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Nonneg/Ring.lean	101	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/Star/Conjneg.lean	43	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Order/UpperLower.lean	267	48
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Polynomial/BigOperators.lean	422	40
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/SmallDegree.lean	151	28
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Eval/Coeff.lean	232	30
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean	249	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Monomial.lean	78	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/QuadraticDiscriminant.lean	166	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Quandle.lean	718	70
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Regular/Defs.lean	61	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/Associated.lean	34	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/Aut.lean	94	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/Center.lean	75	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/CentroidHom.lean	625	95
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean	357	53
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/GrindInstances.lean	111	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/Hom/Defs.lean	681	104
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/Prod.lean	349	54
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/Subring/Units.lean	52	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Ring/Units.lean	140	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/RingQuot.lean	581	51
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/SkewMonoidAlgebra/Support.lean	140	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Squarefree/Basic.lean	329	39
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Star/MonoidHom.lean	354	55
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Star/Subalgebra.lean	946	152
+Mathlib sample	.lake/packages/mathlib/Mathlib/Algebra/Torsor/Basic.lean	291	39
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicGeometry/Birational/RationalMap.lean	651	80
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicGeometry/EllipticCurve/Affine/AddSubMap.lean	270	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicGeometry/EllipticCurve/IsomOfJ.lean	341	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicGeometry/Morphisms/Basic.lean	683	56
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicGeometry/RationalMap.lean	10	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicGeometry/Restrict.lean	905	127
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicGeometry/ValuativeCriterion.lean	347	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/DoldKan/FunctorGamma.lean	355	27
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/DoldKan/GammaCompN.lean	195	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/DoldKan/NCompGamma.lean	258	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/DoldKan/Projections.lean	205	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/EilenbergSteenrod.lean	165	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/ModelCategory/CofibrantObjectHomotopy.lean	331	34
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/ModelCategory/FundamentalLemma.lean	138	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/ModelCategory/Instances.lean	396	53
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/ModelCategory/Over.lean	147	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/RelativeCellComplex/AttachCells.lean	201	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialCategory/Basic.lean	74	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialObject/Split.lean	441	49
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/AnodyneExtensions/Inner/PushoutProduct.lean	160	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/AnodyneExtensions/Pairing.lean	220	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/Basic.lean	261	49
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/HoFunctorMonoidal.lean	424	50
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/Homology/Basic.lean	159	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/NerveAdjunction.lean	486	46
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/Op.lean	96	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/Presentable.lean	66	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/StrictSegal.lean	535	56
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SimplicialSet/Subcomplex.lean	394	71
+Mathlib sample	.lake/packages/mathlib/Mathlib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean	64	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Analytic/Within.lean	216	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/AperiodicOrder/Delone/Basic.lean	208	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Asymptotics/TVS.lean	835	107
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/BoxIntegral/Partition/Basic.lean	703	112
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/CStarAlgebra/CStarMatrix.lean	850	137
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Basic.lean	483	29
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Continuity.lean	1147	64
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Pi.lean	135	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/Deriv/Comp.lean	416	58
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/Deriv/Inverse.lean	174	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Bilinear.lean	149	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/ContinuousMultilinearMap.lean	144	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Prod.lean	661	102
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/InverseFunctionTheorem/Analytic.lean	47	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/InverseFunctionTheorem/ContDiff.lean	75	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/LineDeriv/IntegrationByParts.lean	235	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/LocalExtr/Rolle.lean	85	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Calculus/MeanValue.lean	835	59
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Complex/AbsMax.lean	440	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Complex/HalfPlane.lean	60	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Complex/JensenFormula.lean	448	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Complex/ReImTopology.lean	256	40
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/Exp.lean	44	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/Manifold.lean	262	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Complex/ValueDistribution/LogCounting/Asymptotic.lean	201	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Basic.lean	655	101
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Birkhoff.lean	207	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Body.lean	239	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Cone/Dual.lean	148	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Deriv.lean	1052	106
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/FunctionTopology.lean	51	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Integral.lean	340	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Join.lean	194	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/MetricSpace.lean	286	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Mul.lean	188	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Piecewise.lean	127	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Convex/Uniform.lean	123	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Distribution/Support.lean	334	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Distribution/TemperateGrowth.lean	600	45
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Fourier/FiniteAbelian/PontryaginDuality.lean	214	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Hofer.lean	98	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/Affine.lean	94	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/Calculus.lean	398	68
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/CanonicalTensor.lean	65	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/JointEigenspace.lean	153	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/Orientation.lean	321	25
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/Projection/FiniteDimensional.lean	415	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/SingularValues.lean	223	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/LocallyConvex/AbsConvexOpen.lean	135	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/LocallyConvex/WeakOperatorTopology.lean	544	63
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Matrix/Spectrum.lean	246	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Meromorphic/Complex.lean	31	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Meromorphic/IsolatedZeros.lean	153	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Affine/AsymptoticCone.lean	82	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Affine/Simplex.lean	182	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Field/Basic.lean	371	45
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Field/Instances.lean	35	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean	1118	196
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Group/ControlledClosure.lean	127	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Group/NullSubmodule.lean	70	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Group/SemiNormedGrp/Kernels.lean	334	35
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/WithLp.lean	312	50
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Module/MStructure.lean	304	30
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Module/Seminorm/Norm.lean	106	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Operator/Compact.lean	5	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Operator/NNNorm.lean	252	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/InfiniteSum.lean	180	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/TransferInstance.lean	37	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/WithAbs.lean	301	43
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/IsPowMulFaithful.lean	100	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/ODE/DiscreteGronwall.lean	103	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/Real/Pi/Irrational.lean	312	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/BinaryEntropy.lean	452	34
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/ContinuousFunctionalCalculus/ExpLog/Basic.lean	185	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/ContinuousFunctionalCalculus/Rpow/Measurable.lean	38	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/ExpDeriv.lean	393	69
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Gamma/Digamma.lean	153	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Integrability/Basic.lean	266	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Arctan.lean	450	75
+Mathlib sample	.lake/packages/mathlib/Mathlib/Basic/Finite/Sigma.lean	49	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Basic/Nontrivial/Defs.lean	137	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Abelian/FunctorCategory.lean	103	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Abelian/GrothendieckCategory/ModuleEmbedding/GabrielPopescu.lean	162	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Abelian/Indization.lean	45	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Action/Concrete.lean	230	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Action/Continuous.lean	232	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Action/Limits.lean	412	54
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Adhesive/Basic.lean	530	26
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Adjunction/Basic.lean	810	77
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Adjunction/Limits.lean	361	30
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Adjunction/Mates.lean	553	35
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Bicategory/NaturalTransformation/Oplax.lean	471	37
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Category/Cat/CartesianClosed.lean	92	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Category/Cat/Op.lean	48	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Category/TwoP.lean	170	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Center/Basic.lean	105	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Center/Linear.lean	99	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Center/Preadditive.lean	44	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/CodiscreteCategory.lean	175	25
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Comma/Basic.lean	542	49
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Comma/StructuredArrow/CommaMap.lean	93	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Discrete/Basic.lean	398	43
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Enriched/FunctorCategory.lean	490	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Enriched/Limits/HasConicalLimits.lean	136	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Enriched/Ordinary/Basic.lean	351	27
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Equivalence.lean	765	101
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Filtered/Small.lean	345	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Functor/ReflectsIso/Jointly.lean	141	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Generator/Basic.lean	1025	149
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Generator/StrongGenerator.lean	160	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Generator/Type.lean	29	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/GradedObject/Monoidal.lean	628	54
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Groupoid/FreeGroupoid.lean	228	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Groupoid/VertexGroup.lean	94	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Idempotents/FunctorCategories.lean	162	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/ConstructLimitMap.lean	132	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Constructions/BinaryProducts.lean	233	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Constructions/WidePullbackOfTerminal.lean	61	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/IndYoneda.lean	350	28
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Opposites.lean	587	96
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Preserves/Shapes/Kernels.lean	348	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Preserves/Shapes/Square.lean	117	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Shapes/BinaryProducts/WalkingPair.lean	174	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Shapes/KernelPair.lean	237	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Shapes/Preorder/PrincipalSeg.lean	36	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Sifted.lean	297	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Types/Images.lean	122	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/VanKampen.lean	941	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Linear/Yoneda.lean	115	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Localization/FiniteProducts.lean	139	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Localization/LocallySmall.lean	79	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Localization/OfQuotient.lean	111	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/LocallyCartesianClosed/Sections.lean	163	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monad/Equalizer.lean	135	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monad/Kleisli.lean	186	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Action/End.lean	225	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Cartesian/Basic.lean	1022	139
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Cartesian/Cat.lean	120	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Cartesian/CommGrp_.lean	65	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Cartesian/FunctorCategory.lean	168	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Cartesian/Grp_.lean	5	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Cartesian/Mon.lean	481	54
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Closed/Types.lean	81	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/DayConvolution/Closed.lean	293	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Functor.lean	1436	130
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Mod.lean	451	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/MorphismProperty/Local.lean	257	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/ObjectProperty/Extensions.lean	100	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/ObjectProperty/FullSubcategory.lean	190	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/ObjectProperty/LimitsOfShape.lean	274	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/ObjectProperty/OrthogonalLimits.lean	82	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/ObjectProperty/Subobject.lean	56	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/PathCategory/Basic.lean	300	27
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Pi/Basic.lean	371	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Preadditive/EndoFunctor.lean	106	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Preadditive/FreydCategory/RightFreyd.lean	208	27
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Preadditive/LiftToFinset.lean	72	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Presentable/CardinalDirectedPoset.lean	518	42
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Presentable/CardinalFilteredPresentation.lean	197	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Presentable/Directed.lean	552	28
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Presentable/EssentiallyLarge.lean	67	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Presentable/IsCardinalFiltered.lean	388	28
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Presentable/Limits.lean	206	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Presentable/Type.lean	172	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Profunctor/Comp.lean	422	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/RegularCategory/Basic.lean	242	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Shift/ShiftedHomOpposite.lean	161	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/CartesianClosed.lean	30	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/Coherent/CoherentSheaves.lean	72	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/Coherent/RegularTopology.lean	83	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/DenseSubsite/InducedTopology.lean	212	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/Hypercover/Homotopy.lean	323	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/LocalProperties.lean	74	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/LocallyBijective.lean	185	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/Point/Basic.lean	362	38
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/Point/Monoidal.lean	132	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/Point/Presheaf.lean	107	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/PreservesLocallyBijective.lean	85	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/Pretopology.lean	311	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/RegularEpi.lean	114	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/SheafOfTypes.lean	257	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/SubcanonicalOver.lean	60	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/SmallObject/IsCardinalForSmallObjectArgument.lean	543	48
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/SmallRepresentatives.lean	214	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Square.lean	387	30
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Subfunctor/Equalizer.lean	129	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Subfunctor/Finite.lean	169	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Subobject/Lattice.lean	779	99
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Subobject/MonoOver.lean	554	70
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Sums/Products.lean	202	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Triangulated/HomologicalFunctor.lean	294	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Triangulated/Opposite/Pretriangulated.lean	209	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Triangulated/Opposite/Subcategory.lean	79	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Triangulated/Subcategory.lean	748	87
+Mathlib sample	.lake/packages/mathlib/Mathlib/CategoryTheory/Triangulated/WeakKernels.lean	49	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Additive/CovBySMul.lean	78	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Additive/RuzsaCovering.lean	72	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Compactness.lean	132	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Enumerative/Bell.lean	286	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Enumerative/Catalan/Basic.lean	133	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Enumerative/Catalan/Tree.lean	85	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Enumerative/Pentagonal.lean	10	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Hindman.lean	282	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Matroid/IndepAxioms.lean	551	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Matroid/Map.lean	719	62
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Matroid/Minor/Contract.lean	610	87
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/SetFamily/Compression/UV.lean	401	29
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/SimpleGraph/Extremal/Basic.lean	197	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/SimpleGraph/Operations.lean	221	34
+Mathlib sample	.lake/packages/mathlib/Mathlib/Combinatorics/Young/YoungDiagram.lean	486	69
+Mathlib sample	.lake/packages/mathlib/Mathlib/Computability/AkraBazzi/GrowsPolynomially.lean	687	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/Computability/Encoding.lean	265	39
+Mathlib sample	.lake/packages/mathlib/Mathlib/Computability/TuringMachine/Config.lean	727	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/Condensed/Explicit.lean	200	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Condensed/Light/AB.lean	39	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Condensed/Light/Module.lean	95	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Condensed/Light/Monoidal.lean	64	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/Control/Random.lean	171	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Bool/Set.lean	32	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/DFinsupp/Multiset.lean	144	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/DFinsupp/Submonoid.lean	100	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/DFinsupp/WellFounded.lean	262	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Erased.lean	116	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/FP/Basic.lean	257	31
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Fin/Basic.lean	561	77
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Fin/FlagRange.lean	66	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Fin/Pigeonhole.lean	61	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Reflection.lean	254	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finite/Sigma.lean	5	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/Card.lean	992	149
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/Dedup.lean	206	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/Filter.lean	236	30
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/Grade.lean	174	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/Interval.lean	167	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/Lattice/Basic.lean	330	77
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/Lattice/Prod.lean	124	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/NatDivisors.lean	71	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/NoncommProd.lean	440	46
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/Piecewise.lean	178	31
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/Preimage.lean	225	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finset/SMulAntidiagonal.lean	127	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finsupp/AList.lean	124	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean	1450	199
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean	347	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/FunLike/Graded.lean	5	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Int/Order/Basic.lean	74	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/LawfulXor/Basic.lean	161	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/List/Chain.lean	521	83
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/List/DropRight.lean	219	39
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/List/ToFinsupp.lean	137	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Matrix/ColumnRowPartitioned.lean	314	50
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Matrix/DMatrix.lean	163	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Multiset/Antidiagonal.lean	112	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Multiset/Basic.lean	176	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Multiset/Fold.lean	103	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/Cast/Defs.lean	190	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/Cast/Pi.lean	44	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/Choose/Basic.lean	423	60
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/Choose/Dvd.lean	46	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/EvenOddRec.lean	57	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/Factorization/Defs.lean	369	42
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/Factorization/PrimePow.lean	207	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/Init.lean	441	49
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/MaxPrimeFac.lean	147	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/Pairing.lean	185	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Nat/Prime/Defs.lean	470	72
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Num/Prime.lean	127	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/PEquiv.lean	5	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/QPF/Multivariate/Basic.lean	292	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/QPF/Multivariate/Constructions/Quot.lean	91	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Rat/Cast/Defs.lean	297	29
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Rat/Star.lean	5	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/SProd.lean	5	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/BooleanAlgebra.lean	41	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/Card/Arithmetic.lean	161	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/CoeSort.lean	46	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/Finite/Lattice.lean	479	54
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/Finite/Range.lean	114	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/Lattice/Image.lean	620	117
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/List.lean	75	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/Restrict.lean	365	53
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/SMulAntidiagonal.lean	119	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/Semiring.lean	234	47
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Set/Subset.lean	152	25
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/SetLike/Fintype.lean	31	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Sigma/Basic.lean	258	42
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Sign/Defs.lean	5	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Sum/Basic.lean	318	52
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/Sym/Sym2/Order.lean	5	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Data/UInt.lean	157	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Dynamics/BirkhoffSum/Average.lean	164	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/Dynamics/Ergodic/MeasurePreserving.lean	252	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/Dynamics/FixedPoints/Basic.lean	145	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/AbsoluteGaloisGroup.lean	105	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/Finite/Extension.lean	200	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/Finite/GaloisField.lean	339	25
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/KummerExtension.lean	578	39
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/KummerPolynomial.lean	128	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/Minpoly/ConjRootClass.lean	207	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/Normal/Basic.lean	298	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/PurelyInseparable/PerfectClosure.lean	432	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/RatFunc/Degree.lean	123	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/RatFunc/Luroth.lean	516	71
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/Relrank.lean	532	110
+Mathlib sample	.lake/packages/mathlib/Mathlib/FieldTheory/SeparableClosure.lean	487	65
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Convex/Cone/Simplicial.lean	54	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Convex/ConvexSpace/AffineMap.lean	136	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Convex/Hull.lean	122	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Euclidean/Circumcenter.lean	822	61
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Euclidean/Congruence.lean	116	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Euclidean/Sphere/OrthRadius.lean	388	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Manifold/ChartedSpace.lean	707	58
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Manifold/DerivationBundle.lean	172	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Manifold/Diffeomorph.lean	676	101
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Manifold/MFDeriv/Basic.lean	1280	187
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Manifold/MFDeriv/FDeriv.lean	105	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Manifold/Notation.lean	1173	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Manifold/SmoothEmbedding.lean	116	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Metric.lean	181	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Geometry/Manifold/VectorBundle/Pullback.lean	46	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/Archimedean.lean	97	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/ClassEquation.lean	85	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/Congruence/BigOperators.lean	130	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/Exponent.lean	707	66
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/FreeGroup/Reduce.lean	469	63
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/GroupAction/DomAct/ActionHom.lean	87	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/GroupAction/Pointwise.lean	155	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/GroupAction/Ring.lean	45	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/GroupAction/SubMulAction/Combination.lean	293	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/GroupAction/SubMulAction.lean	615	82
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/GroupAction/Support.lean	64	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/GroupExtension/Defs.lean	345	39
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/MonoidLocalization/MonoidWithZero.lean	149	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/OrderOfElement.lean	1503	205
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/Perm/Centralizer.lean	725	53
+Mathlib sample	.lake/packages/mathlib/Mathlib/GroupTheory/SpecificGroups/Alternating/Centralizer.lean	301	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/InformationTheory/KullbackLeibler/KLFun.lean	194	26
+Mathlib sample	.lake/packages/mathlib/Mathlib/Lean/ContextInfo.lean	151	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Lean/LocalContext.lean	37	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Lean/Meta/RefinedDiscrTree/Encode.lean	322	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/AffineSpace/Combination.lean	987	101
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/AffineSpace/Homogenization.lean	418	62
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/AffineSpace/Simplex/Basic.lean	729	80
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/CliffordAlgebra/Inversion.lean	77	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Complex/Module.lean	662	80
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Contraction.lean	480	49
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Dual/Lemmas.lean	1155	119
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Eigenspace/ContinuousLinearMap.lean	34	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/ExteriorPower/Pairing.lean	140	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/FiniteDimensional/Basic.lean	665	63
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LSum.lean	361	42
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/SumProd.lean	98	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/FreeModule/ModN.lean	116	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/FreeModule/PID.lean	743	37
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/InvariantBasisNumber.lean	321	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/JordanChevalley.lean	104	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Determinant/Misc.lean	98	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Gershgorin.lean	76	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Hessenberg/Defs.lean	59	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Swap.lean	145	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Pi.lean	793	93
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/PiTensorProduct/DirectSum.lean	63	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Projection.lean	853	114
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Projectivization/Cardinality.lean	130	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Reflection.lean	454	29
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/RootSystem/Defs.lean	688	104
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/RootSystem/Finite/CanonicalBilinear.lean	412	52
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/RootSystem/Reduced.lean	320	27
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/Semisimple.lean	323	29
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/TensorProduct/Finiteness.lean	192	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/TensorProduct/Free.lean	45	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/TensorProduct/Lift.lean	68	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/TensorProduct/Opposite.lean	66	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/LinearAlgebra/TensorProduct/Quotient.lean	326	28
+Mathlib sample	.lake/packages/mathlib/Mathlib/Logic/Equiv/Multiset.lean	101	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Logic/Equiv/Option.lean	292	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/Logic/Equiv/Pairwise.lean	25	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Constructions/BorelSpace/WithTop.lean	81	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Constructions/Cylinders.lean	492	52
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Covering/Differentiation.lean	873	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/ConditionalExpectation/AEMeasurable.lean	498	40
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/ConditionalExpectation/CondJensen.lean	292	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/ConditionalExpectation/PullOut.lean	270	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/ConvergenceInMeasure.lean	469	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/LpSeminorm/Indicator.lean	266	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/LpSpace/Basic.lean	1067	157
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/LpSpace/ContinuousCompMeasurePreserving.lean	108	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/LpSpace/DomAct/Continuous.lean	61	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/LpSpace/Indicator.lean	327	35
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/StronglyMeasurable/Inner.lean	65	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Function/UniformIntegrable.lean	935	63
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Group/FoelnerFilter.lean	235	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Bochner/SumMeasure.lean	219	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/BoundedContinuousFunction.lean	200	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/DistLEIntegral.lean	205	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Lebesgue/Add.lean	504	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/MeasurableSpace/Embedding.lean	843	115
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Decomposition/Hahn.lean	197	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/GiryMonad.lean	377	54
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Haar/DistribChar.lean	98	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Haar/Extension.lean	274	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Haar/Unique.lean	1078	34
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Lebesgue/VolumeOfBalls.lean	431	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Map.lean	329	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/RegularityCompacts.lean	218	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/TotalVariation/Defs.lean	264	35
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Typeclasses/Finite.lean	664	92
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Typeclasses/Probability.lean	247	36
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/OuterMeasure/OfAddContent.lean	181	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/OuterMeasure/Operations.lean	359	64
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/SpecificCodomains/WithLp.lean	104	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/VectorMeasure/Order.lean	367	38
+Mathlib sample	.lake/packages/mathlib/Mathlib/MeasureTheory/VectorMeasure/Variation/Semivariation.lean	186	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/ModelTheory/Algebra/Field/Basic.lean	163	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/ModelTheory/Arithmetic/Presburger/Definability.lean	181	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/ModelTheory/Basic.lean	839	136
+Mathlib sample	.lake/packages/mathlib/Mathlib/ModelTheory/Fraisse.lean	437	31
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/AbelSummation.lean	401	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/AlmostPrime.lean	90	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/ArithmeticFunction/LFunction.lean	348	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/Bernoulli.lean	727	51
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/ClassNumber/Finite.lean	378	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/Cyclotomic/CyclotomicCharacter.lean	366	28
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/GaussSum.lean	403	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/Harmonic/Bounds.lean	77	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/Harmonic/Int.lean	57	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/HeckeRing/Defs.lean	228	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/JacobiSum/Basic.lean	354	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/LSeries/HardyZ.lean	140	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/LegendreSymbol/QuadraticChar/GaussSum.lean	112	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/LucasLehmer.lean	757	91
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/ModularForms/ArithmeticSubgroups.lean	260	25
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/ModularForms/CuspFormSubmodule.lean	162	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/ModularForms/EisensteinSeries/E2/Transform.lean	250	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/ModularForms/SlashInvariantForms.lean	276	40
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/NumberField/CanonicalEmbedding/PolarCoord.lean	466	42
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/NumberField/Completion/LiesOverInstances.lean	60	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/Padics/Hensel.lean	470	55
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/Padics/PadicNumbers.lean	1259	141
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/Padics/PadicVal/Basic.lean	732	86
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/Primorial.lean	148	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/RamificationInertia/Inertia.lean	246	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/SelbergSieve.lean	406	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/NumberTheory/SiegelsLemma.lean	184	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Antichain.lean	466	87
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Antisymmetrization.lean	471	84
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Category/Semilat.lean	183	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/CompleteLattice/Basic.lean	952	161
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/CompleteLatticeIntervals.lean	257	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Copy.lean	267	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/CountableDenseLinearOrder.lean	262	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Defs/Lattice.lean	354	53
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Defs/LinearOrder.lean	282	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Disjoint.lean	585	100
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/BigOperators.lean	85	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/CountablyGenerated.lean	152	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Floor.lean	35	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Filter/Cofinite.lean	337	52
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Filter/FilterProduct.lean	137	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Filter/Interval.lean	272	40
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Filter/TendstoCofinite.lean	124	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Grade.lean	393	52
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Height.lean	178	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Interval/Finset/Gaps.lean	198	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Interval/Finset/Nat.lean	301	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Interval/Set/Pi.lean	316	44
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Interval/Set/SurjOn.lean	81	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Interval/Set/Union.lean	43	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Lattice/Congruence.lean	120	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/LatticeIntervals.lean	198	31
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Nat.lean	49	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/PSigma.lean	193	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/PropInstances.lean	132	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/SaddlePoint.lean	126	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/SupClosed.lean	480	58
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/TeichmullerTukey.lean	58	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/Types/Arithmetic.lean	152	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/UpperLower/Fibration.lean	61	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/UpperLower/Hom.lean	93	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Order/UpperLower/Principal.lean	149	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Distributions/Bernoulli.lean	217	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Distributions/Cauchy.lean	141	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Kernel/Category/SFinKer.lean	282	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Kernel/Condexp.lean	339	30
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Kernel/Defs.lean	421	62
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Kernel/Disintegration/Basic.lean	222	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Kernel/Disintegration/CondCDF.lean	334	43
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Martingale/Upcrossing.lean	818	66
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Moments/IntegrableExpMul.lean	602	44
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Moments/Variance.lean	544	57
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Notation.lean	73	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/ProbabilityMassFunction/Integrals.lean	60	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Process/FiniteDimensionalLaws.lean	106	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Process/HittingTime.lean	507	49
+Mathlib sample	.lake/packages/mathlib/Mathlib/Probability/Process/LocalProperty.lean	344	28
+Mathlib sample	.lake/packages/mathlib/Mathlib/RepresentationTheory/FDRep.lean	219	22
+Mathlib sample	.lake/packages/mathlib/Mathlib/RepresentationTheory/Homological/ContCohomology/LowDegree.lean	89	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/RepresentationTheory/Induced.lean	256	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/AdicCompletion/RingHom.lean	193	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/AlgebraTower.lean	220	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Algebraic/Denominator.lean	100	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/AlgebraicIndependent/Basic.lean	496	61
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Bialgebra/GroupLike.lean	91	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/ClassGroup/Basic.lean	484	42
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Coalgebra/Primitive.lean	143	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Coprime/Ideal.lean	118	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/Factorization.lean	957	63
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/Instances.lean	218	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/DiscreteValuationRing/TFAE.lean	261	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Discriminant.lean	310	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Etale/StandardEtale.lean	451	40
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/FinitePresentation.lean	557	35
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Finiteness/Ideal.lean	112	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Flat/FaithfullyFlat/Basic.lean	658	45
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Flat/IsBaseChange.lean	62	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Flat/Localization.lean	130	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/HahnSeries/Summable.lean	913	97
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Ideal/BigOperators.lean	33	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Ideal/Lattice.lean	117	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Ideal/Maps.lean	1357	198
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Ideal/Norm/AbsNorm.lean	579	56
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Ideal/Quotient/HasFiniteQuotients/Norm.lean	32	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Jacobson/Polynomial.lean	49	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/KrullDimension/PID.lean	55	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean	1240	118
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/LittleWedderburn.lean	182	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/LocalRing/ResidueField/Separable.lean	133	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Localization/Away/AdjoinRoot.lean	57	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Localization/Finiteness.lean	336	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Localization/LocalizationLocalization.lean	295	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Localization/Module.lean	369	32
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Morita/Matrix.lean	220	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/MonomialOrder.lean	1461	179
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/Tower.lean	88	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial.lean	61	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/LinearTopology.lean	175	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Rename.lean	316	44
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/NonUnitalSubsemiring/Basic.lean	795	128
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/NormalClosure.lean	140	27
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/OreLocalization/OreSet.lean	67	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/OrzechProperty.lean	108	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Cyclotomic/Basic.lean	660	58
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Polynomial/HilbertPoly.lean	287	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Morse.lean	97	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Tower.lean	95	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Catalan.lean	55	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Exp.lean	177	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Regular/Category.lean	53	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Regular/Depth.lean	10	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/RingHom/Bijective.lean	46	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/RingHom/EssFiniteType.lean	59	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/RootsOfUnity/Basic.lean	338	37
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/RootsOfUnity/PrimitiveRoots.lean	907	101
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/SimpleRing/Field.lean	57	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Smooth/AdicCompletion.lean	115	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Smooth/IntegralClosure.lean	390	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Spectrum/Maximal/Topology.lean	53	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Spectrum/Prime/Basic.lean	520	71
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Spectrum/Prime/ChevalleyComplexity.lean	904	31
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/TensorProduct/Free.lean	134	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/TensorProduct/IsBaseChangeHom.lean	239	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/TotallySplit.lean	214	13
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Unramified/Basic.lean	400	28
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Valuation/AlgebraInstances.lean	81	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/Valuation/IsTrivialOn.lean	87	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/WittVector/MulP.lean	81	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/WittVector/Verschiebung.lean	187	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/RingTheory/ZMod/LocalRing.lean	35	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/Cardinal/Aleph.lean	941	199
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/Cardinal/Cofinality/Basic.lean	204	31
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/Cardinal/EventuallyConst.lean	74	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/Cardinal/Pigeonhole.lean	124	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/Descriptive/Tree.lean	153	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/Ordinal/FixedPoint.lean	514	75
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/Ordinal/FixedPointApproximants.lean	345	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/Ordinal/Rank.lean	100	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/Ordinal/Topology.lean	215	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/SetTheory/ZFC/VonNeumann.lean	162	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/ApplyAt.lean	46	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/ArithMult/Init.lean	19	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Basify/Attr.lean	175	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Bound/Init.lean	19	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/CategoryTheory/BicategoryCoherence.lean	166	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/CategoryTheory/Coherence/PureCoherence.lean	204	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Clean.lean	76	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/ClickSuggestions/FindPremises.lean	299	17
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/ComputeAsymptotics/Multiseries/Basis.lean	226	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/DuplicateDecls.lean	200	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Eqns.lean	54	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/FieldSimp/Attr.lean	19	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/FunProp/Core.lean	718	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/FunProp/ToBatteries.lean	162	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/GCongr/Core.lean	1034	35
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/GRewrite.lean	21	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/GuardGoalNums.lean	26	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/ITauto.lean	744	30
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Inclusion/Extension/IntervalDyadicReal/Basic.lean	142	21
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Linarith/Oracle/FourierMotzkin.lean	351	28
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Linarith/Oracle/SimplexAlgorithm/SimplexAlgorithm.lean	128	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/LinearCombination/Lemmas.lean	287	44
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Linter/AuxLemma.lean	74	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Linter/DocString.lean	250	9
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Linter/HaveLetLinter.lean	130	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Linter/OldObtain.lean	86	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Linter/PrivateModule.lean	103	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Linter/TacticDocumentation.lean	78	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Linter/ValidatePRTitle.lean	156	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Order/Graph/Basic.lean	86	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Order/Graph/Tarjan.lean	92	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/PPWithUniv.lean	57	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Polynomial/Core.lean	101	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/ProdAssoc.lean	156	11
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Recover.lean	74	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/ReduceModChar.lean	309	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Replace.lean	44	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/SetLike.lean	60	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/SetNotationForOrder.lean	305	15
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/SimpRw.lean	77	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Spread.lean	84	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/SudoSetOption.lean	56	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/TermCongr.lean	741	34
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/ToExpr.lean	61	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Translate/ToDual.lean	362	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Widget/GCongr.lean	61	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Tactic/Widget/LibraryRewrite.lean	611	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/Group/Pointwise.lean	502	50
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/Group/TopologicalAbelianization.lean	60	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/InfiniteSum/Basic.lean	795	110
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/IsUniformGroup/Order.lean	51	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/Module/Compact.lean	47	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/Module/Determinant.lean	48	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/Module/Equiv/Basic.lean	876	129
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/Module/Spaces/WeakDual.lean	304	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/Module/StrongTopology.lean	6	0
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/Module/TransferInstance.lean	111	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/SeparationQuotient/Basic.lean	435	77
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/UniformFilterBasis.lean	54	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/UniformRing.lean	292	26
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Algebra/Valued/WithVal.lean	663	86
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Bornology/BoundedOperation.lean	254	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/CantorBendixson.lean	191	20
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Category/CompHaus/Basic.lean	223	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Category/CompHaus/Projective.lean	71	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Category/LightProfinite/Limits.lean	61	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Category/TopCat/Sphere.lean	93	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/ClopenBox.lean	100	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Closure.lean	625	131
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Compactification/OnePoint/Sphere.lean	47	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Compactness/CompactlyCoherentSpace.lean	260	33
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Compactness/DeltaGeneratedSpace.lean	127	5
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Compactness/Paracompact.lean	322	8
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Connected/Basic.lean	815	107
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/ContinuousMap/Bounded/Basic.lean	792	111
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/ContinuousMap/Ideals.lean	430	27
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/ContinuousMap/Ordered.lean	100	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Convenient/ContinuousMapGeneratedBy.lean	153	16
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Covering/FundamentalGroupCircle.lean	80	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/EMetricSpace/Basic.lean	346	34
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/EMetricSpace/Diam.lean	155	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Homeomorph/Quotient.lean	64	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Homotopy/HSpaces.lean	255	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Homotopy/TopCat/Path.lean	53	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Instances/Discrete.lean	63	4
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Instances/Shrink.lean	31	1
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Instances/TrivSqZeroExt.lean	187	30
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/LocallyFinsupp.lean	907	84
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/MetricSpace/CantorScheme.lean	188	12
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/MetricSpace/Cover.lean	185	19
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/MetricSpace/GromovHausdorff.lean	1020	31
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Metrizable/Basic.lean	224	18
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/NoetherianSpace.lean	224	24
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Order/MonotoneConvergence.lean	367	46
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Order/ProjIcc.lean	62	7
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Order/UpperLowerSetTopology.lean	474	68
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/PartitionOfUnity.lean	667	70
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Sequences.lean	419	41
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Sets/VietorisTopology.lean	1162	143
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Sheaves/AddCommGrpCat.lean	51	3
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Sheaves/Flasque.lean	217	10
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Sheaves/Forget.lean	58	2
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Sheaves/SheafCondition/OpensLeCover.lean	228	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/Sheaves/SheafCondition/PairwiseIntersections.lean	431	23
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/UniformSpace/Basic.lean	1108	175
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/UniformSpace/UniformConvergence.lean	631	81
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/UnitInterval.lean	583	89
+Mathlib sample	.lake/packages/mathlib/Mathlib/Topology/VectorBundle/Riemannian.lean	505	14
+Mathlib sample	.lake/packages/mathlib/Mathlib/Util/AtomM/Recurse.lean	141	6
+Mathlib sample	.lake/packages/mathlib/Mathlib/Util/Notation3.lean	690	30
+Mathlib sample	.lake/packages/mathlib/Mathlib/Util/PPOptions.lean	34	1
