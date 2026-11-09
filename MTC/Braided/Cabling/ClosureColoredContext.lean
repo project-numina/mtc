@@ -114,7 +114,7 @@ theorem coloredSwap_zero_tail (n : ℕ) (i : Fin n) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Flattening a spectator suffix commutes with crossing the first two factors. -/
-theorem firstCross_suffix_cancel [BraidedCategory C] (A B U T P Q : C)
+theorem firstCross_suffix_cancel [BraidedCategory C] {A B U T P Q : C}
     (f : U ≅ T) (j : A ⊗ (B ⊗ T) ≅ P) (k : B ⊗ (A ⊗ T) ≅ Q) :
     (((Iso.refl A ⊗ᵢ (Iso.refl B ⊗ᵢ f)) ≪≫ j).symm ≪≫
       (α_ A B U).symm ≪≫ ((β_ A B) ⊗ᵢ Iso.refl U) ≪≫ (α_ B A U) ≪≫
@@ -207,9 +207,7 @@ theorem coloredGenerator_zero_flatten_heq (X : C) [BraidedCategory C] [Abelian C
   have ht := coloredFlatten_swap_zero_heq X n k
   have hg := coloredGenerator_zero n (fun i => tensorPower X (k i))
   have hf := coloredTensor_powers_eq X n (fun i => k i.succ.succ)
-  have hcancel := firstCross_suffix_cancel (tensorPower X (k 0)) (tensorPower X (k 1))
-    (heterogeneousPowerTensor X n (fun i => k i.succ.succ))
-    (tensorPower X (heterogeneousStrandCount n (fun i => k i.succ.succ))) _ _
+  have hcancel := firstCross_suffix_cancel
     (heterogeneousPowerFlatten X n (fun i => k i.succ.succ))
     (rightTripleFlatten X (k 0) (k 1) _)
     (rightTripleFlatten X (k 1) (k 0) _)
