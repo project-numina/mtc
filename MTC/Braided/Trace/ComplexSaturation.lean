@@ -34,8 +34,7 @@ theorem actual_mixed_braid_trace_eq_one_of_saturation
   let B : Blocks := ⟨r, size⟩
   let w : Fin r → ℂ := fun j => ∑ i, (mult i j : ℂ) *
     MTC.Fusion.unitScalarEquiv C (p.rightTrace (𝟙 (MTC.Fusion.simples C i)))
-  have htr : ∀ z : braidAlgebra X 1,
-      actualBraidTrace C p z = B.complexTrace w (b.toMulEquiv z) := by
+  have htr : ∀ z : braidAlgebra X 1, actualBraidTrace C p z = B.complexTrace w (b z) := by
     intro z
     simpa [actualBraidTrace, Blocks.complexTrace, B, w] using htrace z
   let ρ : braidImage X 1 →* B.Matrices :=
@@ -55,15 +54,21 @@ theorem actual_mixed_braid_trace_eq_one_of_saturation
       MTC.Fusion.fpDimension C X ^ 2 :=
     B.complexMass_le_of_unitary_trace_bound w (fun u hu => by
       simpa [htr] using pivotal_unitary_trace_bound C p hfinite b he (b.symm u) (by simpa using hu))
+  have hpos : ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices) =
+      b (braidInImage (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) := by
+    simp only [a, c, ← map_pow, ← map_mul, MonoidHom.coe_toHomUnits]
+    rfl
   have hsat : ‖B.complexTrace w ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices)‖ =
       B.complexMass w := le_antisymm (B.norm_complexTrace_le w hunit) (by
-    simpa only [a, c, ← map_pow, ← map_mul, MonoidHom.coe_toHomUnits, ρ,
-      MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, ← htr, hvalue]
-      using hmass)
+    rw [hpos, ← htr, hvalue]
+    exact hmass)
   have hmixed := B.mixed_braid_trace_eq_one_of_saturation w ha hc hbraid hsat
-  simpa only [a, c, ← map_pow, ← map_inv, ← map_mul, MonoidHom.coe_toHomUnits,
-    ρ, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom,
-    ← map_one b.toMulEquiv, ← htr] using hmixed
+  have hmix : ((a ^ 2 * (c ^ 2)⁻¹ : B.Matricesˣ) : B.Matrices) =
+      b (braidInImage (threeGeneratorLeft X ^ 2 * (threeGeneratorRight X ^ 2)⁻¹)) := by
+    simp only [a, c, ← map_pow, ← map_inv, ← map_mul, MonoidHom.coe_toHomUnits]
+    rfl
+  rw [hmix, ← htr, ← map_one b, ← htr] at hmixed
+  exact hmixed
 
 /-- A maximal normalized self-monodromy trace gives the mixed-braid identity
 for actual categorical traces. -/
