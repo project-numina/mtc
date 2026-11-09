@@ -75,12 +75,12 @@ theorem globalDimension_square_of_actual_induction
     rw [center_pivotalDimension_induction hcompat]
   have hbase : (∑ i, star (pivotalDimension C p (simples C i)) *
       pivotalDimension C p (simples C i)) = globalDimension C := by
-    rw [globalDimension]
+    rw [globalDimension_eq_sum_pivotal_norm_sq p]
+    simp only [Complex.ofReal_sum, Complex.ofReal_pow]
     apply Finset.sum_congr rfl
     intro i hi
-    let : Simple (simples C i) := simples_simple C i
-    rw [squaredNorm_eq_pivotalDimension_mul_dual p, pivotalDimension_simple_dual_conj p]
-    ring
+    simpa only [Complex.star_def] using
+      (Complex.conj_mul' (pivotalDimension C p (simples C i)))
   calc
     _ = globalDimension C * (∑ i, star (pivotalDimension C p (simples C i)) *
           pivotalDimension C p (simples C i)) := by

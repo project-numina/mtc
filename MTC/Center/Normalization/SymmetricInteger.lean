@@ -1,5 +1,5 @@
 module
-public import MTC.Center.Normalization.SymmetricRising
+public import MTC.Center.Normalization.SymmetricBinomial
 public import MTC.Center.Normalization.BinomialArithmetic
 public import MTC.Center.Normalization.IntegerDimensions
 

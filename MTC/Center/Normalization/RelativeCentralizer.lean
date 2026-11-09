@@ -7,8 +7,8 @@ open MTC.PropertyF.Reduction MTC.Modular
 
 /-! # Relative numerical-to-actual centre centralizer adapter
 
-The missing relative numerical-to-actual theorem is an explicit hypothesis.
-This file checks how its product-label instance enters the centre reduction.
+The relative numerical-to-actual criterion is an explicit hypothesis here.
+This file shows how its product-label instance enters the centre reduction.
 -/
 
 @[expose] public noncomputable section

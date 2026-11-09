@@ -82,16 +82,7 @@ theorem pivotalDimension_underlying (p : PivotalStructure (C := C.Obj)) (X : C.O
 /-- The induced unit has intrinsic global dimension, for any pivotal structure. -/
 theorem pivotalDimension_underlying_unit (p : PivotalStructure (C := C.Obj)) :
     pivotalDimension C p (underlying (𝟙_ C.Obj)) = globalDimension C := by
-  rw [globalDimension]
-  simp only [underlying, pivotalDimension, rightDimension_biproduct,
-    MTC.Fusion.unitScalar_eq_equiv, map_sum]
-  apply Finset.sum_congr rfl
-  intro i hi
-  let : Simple (simples C i) := simples_simple C i
-  rw [squaredNorm_eq_pivotalDimension_mul_dual p]
-  rw [← MTC.Fusion.unitScalar_eq_equiv]
-  change pivotalDimension C p (conjugate (simples C i) (𝟙_ C.Obj)) = _
-  rw [pivotalDimension_tensor, pivotalDimension_tensor]
+  rw [pivotalDimension_underlying]
   have hu : pivotalDimension C p (𝟙_ C.Obj) = 1 := by
     simpa only [pivotalDimension_unitIndex] using
       (pivotalDimension_iso p (Classical.choice (unitIndex_iso C))).symm

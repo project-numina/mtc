@@ -8,7 +8,8 @@ open MTC.Fusion MTC.Braided MTC.Center.Braid
 
 The adjoint fusion labels are the intersection of all fusion subrings
 containing the constituents of each `X ⊗ X*`. This file proves the inclusion
-into the neutral universal degree; it does not prove the reverse inclusion.
+into the neutral universal degree. `AdjointQuotient` proves the reverse
+inclusion for these fusion labels.
 -/
 
 @[expose] public noncomputable section

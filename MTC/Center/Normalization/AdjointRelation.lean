@@ -6,8 +6,8 @@ open MTC.Fusion MTC.Braided MTC.Center.Braid
 /-! # Fusion-subring adjacency
 
 Fusion multiplication modulo a fusion subring is an equivalence relation on
-simple labels. This is a step towards identifying the neutral universal degree
-with the adjoint subring; no such identification is asserted here.
+simple labels. The resulting quotient is used in `AdjointQuotient` to identify
+the neutral universal degree with the adjoint subring.
 -/
 
 @[expose] public noncomputable section
@@ -91,11 +91,9 @@ reassociated from the right-associated side to the left-associated side. -/
 theorem fusionCoeff_exists_reassociate_reverse (i j k l t : Fin (rank C))
     (hjk : 0 < fusionCoeff C j k t) (hit : 0 < fusionCoeff C i t l) :
     ∃ s, 0 < fusionCoeff C i j s ∧ 0 < fusionCoeff C s k l := by
-  have hsum : 0 < ∑ r, fusionCoeff C j k r * fusionCoeff C i r l := by
-    exact Finset.sum_pos' (fun _ _ ↦ Nat.zero_le _) ⟨t, Finset.mem_univ _, Nat.mul_pos hjk hit⟩
-  rw [fusionCoeff_assoc i j k l] at hsum
-  obtain ⟨s, _, hs⟩ := Finset.sum_pos_iff.mp hsum
-  exact ⟨s, Nat.pos_of_mul_pos_right hs, Nat.pos_of_mul_pos_left hs⟩
+  obtain ⟨s, hs, ht⟩ := fusionCoeff_exists_reassociate C k j i l t
+    (by rwa [fusionCoeff_comm]) (by rwa [fusionCoeff_comm])
+  exact ⟨s, by rwa [fusionCoeff_comm], by rwa [fusionCoeff_comm]⟩
 
 /-- Replacing one tensor factor by a related label preserves the relation
 between arbitrary simple constituents. -/

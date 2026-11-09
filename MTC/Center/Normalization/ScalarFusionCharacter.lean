@@ -5,8 +5,8 @@ open MTC.Fusion MTC.Braided MTC.Center.Braid MTC.CategoryTheory.Dimensions
 
 /-! # Saturated fusion characters
 
-These lemmas analyze fusion-character scalar ratios. They are independent of
-the missing proof that the Müger-centre restrictions satisfy the hypotheses.
+These lemmas analyze fusion-character scalar ratios and the normalization
+of a fusion subring whose simple dimensions attain their FP bounds.
 -/
 
 @[expose] public noncomputable section

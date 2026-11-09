@@ -12,6 +12,18 @@ namespace MTC.Center.Normalization
 universe v u
 variable (C : BraidedFusionCategory.{v,u})
 
+/-- Tensor products of two subring simples have no constituents with labels
+outside the subring. -/
+theorem fusionSubring_forward_finrank_zero
+    (A : Finset (Fin (rank C))) (hA : IsFusionSubring C A)
+    (j a : Fin (rank C)) (hj : j ∈ A) (ha : a ∈ A)
+    (i : Fin (rank C)) (hi : i ∉ A) :
+    Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C a) = 0 := by
+  change fusionCoeff C j a i = 0
+  apply Nat.eq_zero_of_not_pos
+  intro hp
+  exact hi (hA.fusion j hj a ha i hp)
+
 /-- If two labels lie in a fusion subring, the tensor of the first simple and
 the right dual of the second has no simple summands with dual label outside
 that subring. -/
@@ -26,15 +38,10 @@ theorem fusionSubring_dualLabel_finrank_zero
     have h' := hA.dual (dualIndex C j) h
     apply hj
     rwa [dualIndex_involutive C j] at h'
-  have hcoeff : fusionCoeff C a (dualIndex C i) (dualIndex C j) = 0 := by
-    apply Nat.eq_zero_of_not_pos
-    intro hp
-    exact hj' (hA.fusion a ha (dualIndex C i) (hA.dual i hi) (dualIndex C j) hp)
   have he := (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples C (dualIndex C j)))
     (Iso.refl (simples C a) ⊗ᵢ rightDualLabelIso C i)).finrank_eq
-  change Module.finrank ℂ (simples C (dualIndex C j) ⟶
-    simples C a ⊗ (simples C i)ᘁ) = fusionCoeff C a (dualIndex C i) (dualIndex C j) at he
-  exact he.trans hcoeff
+  exact he.trans (fusionSubring_forward_finrank_zero C A hA a (dualIndex C i)
+    ha (hA.dual i hi) (dualIndex C j) hj')
 
 /-- The restricted dual-label support statement for an arbitrary object U
 whose simple constituents all belong to the fusion subring. -/
@@ -59,18 +66,6 @@ theorem fusionSubring_dualLabel_finrank_zero_of_supported
     have hzero : simpleMultiplicity C (dualIndex C j) (simples C a ⊗ (simples C i)ᘁ) = 0 :=
       fusionSubring_dualLabel_finrank_zero C A hA a i hmem hi j hj
     rw [hbraid, hzero, mul_zero]
-
-/-- Tensor products of two subring simples have no constituents with labels
-outside the subring. -/
-theorem fusionSubring_forward_finrank_zero
-    (A : Finset (Fin (rank C))) (hA : IsFusionSubring C A)
-    (j a : Fin (rank C)) (hj : j ∈ A) (ha : a ∈ A)
-    (i : Fin (rank C)) (hi : i ∉ A) :
-    Module.finrank ℂ (simples C i ⟶ simples C j ⊗ simples C a) = 0 := by
-  change fusionCoeff C j a i = 0
-  apply Nat.eq_zero_of_not_pos
-  intro hp
-  exact hi (hA.fusion j hj a ha i hp)
 
 /-- The forward support statement for arbitrary U whose simple constituents
 belong to the fusion subring. -/
