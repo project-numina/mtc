@@ -395,6 +395,12 @@ theorem coloredTensorMap_identityPermutation (n : ℕ) (σ : Fin n → Fin n)
   cases hσ
   simp
 
+/-- A pure word, read in the categorical composition order, fixes all positions. -/
+theorem coloredWordSwap_reverse_pure (n : ℕ) (w : List (Fin (n + 1) × Bool))
+    (hw : strandPermutation n (FreeGroup.mk w) = 1) : coloredWordSwap n w.reverse = id := by
+  rw [coloredWordSwap_eq_strandPermutation, strandPermutation_reverse, hw]
+  rfl
+
 /-- A pure word preserves every colored retract block of a tensor power. -/
 theorem pureWord_preserves_coloredBlock (n : ℕ)
     (w : List (Fin (n + 1) × Bool))
@@ -405,9 +411,7 @@ theorem pureWord_preserves_coloredBlock (n : ℕ)
     let π := coloredBlockProjection (n + 2) X Y g
     let b := ((braidWordAction Y n (FreeGroup.mk w)).val).asIso.hom
     ι ≫ b = (ι ≫ b ≫ π) ≫ ι := by
-  have hp : coloredWordSwap n w.reverse = id := by
-    rw [coloredWordSwap_eq_strandPermutation, strandPermutation_reverse, hw]
-    rfl
+  have hp := coloredWordSwap_reverse_pure n w hw
   have hn := coloredWordIso_intertwines_uniform n w.reverse X Y f
   simp only [List.reverse_reverse] at hn
   rw [coloredTensorMap_identityPermutation (n + 2) _ hp X Y f] at hn
@@ -417,12 +421,6 @@ theorem pureWord_preserves_coloredBlock (n : ℕ)
   rw [← reassoc_of% hn, ← hn]
   rw [reassoc_of% hr]
 
-
-/-- A pure word, read in the categorical composition order, fixes all positions. -/
-theorem coloredWordSwap_reverse_pure (n : ℕ) (w : List (Fin (n + 1) × Bool))
-    (hw : strandPermutation n (FreeGroup.mk w) = 1) : coloredWordSwap n w.reverse = id := by
-  rw [coloredWordSwap_eq_strandPermutation, strandPermutation_reverse, hw]
-  rfl
 
 /-- The actual endomorphism of a colored block induced by a pure word. -/
 def coloredPureWordHom (n : ℕ) (w : List (Fin (n + 1) × Bool))
