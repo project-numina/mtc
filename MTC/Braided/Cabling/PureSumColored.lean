@@ -91,18 +91,11 @@ theorem coloredGenerator_natural : ∀ (n : ℕ) (i : Fin (n + 1))
   | zero =>
     intro i X Y f
     fin_cases i
-    change ((α_ (X 0) (X 1) (𝟙_ C)).symm ≪≫ ((β_ (X 0) (X 1)) ⊗ᵢ Iso.refl _) ≪≫ α_ (X 1) (X 0) _).hom ≫
-      (f 1 ⊗ₘ (f 0 ⊗ₘ 𝟙 _)) = (f 0 ⊗ₘ (f 1 ⊗ₘ 𝟙 _)) ≫
-      ((α_ (Y 0) (Y 1) (𝟙_ C)).symm ≪≫ ((β_ (Y 0) (Y 1)) ⊗ᵢ Iso.refl _) ≪≫ α_ (Y 1) (Y 0) _).hom
     exact colored_first_map (f 0) (f 1) (𝟙 _)
   | succ n ih =>
     intro i X Y f
     refine Fin.cases ?_ (fun j => ?_) i
-    · change ((α_ (X 0) (X 1) _).symm ≪≫ ((β_ (X 0) (X 1)) ⊗ᵢ Iso.refl _) ≪≫ α_ (X 1) (X 0) _).hom ≫
-        (f 1 ⊗ₘ (f 0 ⊗ₘ coloredTensorMap (n + 1) (fun k => f k.succ.succ))) =
-        (f 0 ⊗ₘ (f 1 ⊗ₘ coloredTensorMap (n + 1) (fun k => f k.succ.succ))) ≫
-        ((α_ (Y 0) (Y 1) _).symm ≪≫ ((β_ (Y 0) (Y 1)) ⊗ᵢ Iso.refl _) ≪≫ α_ (Y 1) (Y 0) _).hom
-      exact colored_first_map (f 0) (f 1) _
+    · exact colored_first_map (f 0) (f 1) _
     · change (𝟙 (X 0) ⊗ₘ (coloredGenerator n j (fun k => X k.succ)).hom) ≫
         (f 0 ⊗ₘ coloredTensorMap (n + 2) (fun k => f (coloredSwap n j k).succ)) =
         (f 0 ⊗ₘ coloredTensorMap (n + 2) (fun k => f k.succ)) ≫
@@ -151,18 +144,11 @@ theorem coloredGeneratorInverse_natural : ∀ (n : ℕ) (i : Fin (n + 1))
   | zero =>
     intro i X Y f
     fin_cases i
-    change ((α_ (X 0) (X 1) (𝟙_ C)).symm ≪≫ ((β_ (X 1) (X 0)).symm ⊗ᵢ Iso.refl _) ≪≫ α_ (X 1) (X 0) _).hom ≫
-      (f 1 ⊗ₘ (f 0 ⊗ₘ 𝟙 _)) = (f 0 ⊗ₘ (f 1 ⊗ₘ 𝟙 _)) ≫
-      ((α_ (Y 0) (Y 1) (𝟙_ C)).symm ≪≫ ((β_ (Y 1) (Y 0)).symm ⊗ᵢ Iso.refl _) ≪≫ α_ (Y 1) (Y 0) _).hom
     exact colored_first_inverse_map (f 0) (f 1) (𝟙 _)
   | succ n ih =>
     intro i X Y f
     refine Fin.cases ?_ (fun j => ?_) i
-    · change ((α_ (X 0) (X 1) _).symm ≪≫ ((β_ (X 1) (X 0)).symm ⊗ᵢ Iso.refl _) ≪≫ α_ (X 1) (X 0) _).hom ≫
-        (f 1 ⊗ₘ (f 0 ⊗ₘ coloredTensorMap (n + 1) (fun k => f k.succ.succ))) =
-        (f 0 ⊗ₘ (f 1 ⊗ₘ coloredTensorMap (n + 1) (fun k => f k.succ.succ))) ≫
-        ((α_ (Y 0) (Y 1) _).symm ≪≫ ((β_ (Y 1) (Y 0)).symm ⊗ᵢ Iso.refl _) ≪≫ α_ (Y 1) (Y 0) _).hom
-      exact colored_first_inverse_map (f 0) (f 1) _
+    · exact colored_first_inverse_map (f 0) (f 1) _
     · change (𝟙 (X 0) ⊗ₘ (coloredGeneratorInverse n j (fun k => X k.succ)).hom) ≫
         (f 0 ⊗ₘ coloredTensorMap (n + 2) (fun k => f (coloredSwap n j k).succ)) =
         (f 0 ⊗ₘ coloredTensorMap (n + 2) (fun k => f k.succ)) ≫
@@ -253,18 +239,11 @@ theorem coloredGenerator_constant : ∀ (n : ℕ) (i : Fin (n + 1)) (X : C),
   | zero =>
     intro i X
     fin_cases i
-    change ((α_ X X (𝟙_ C)).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom ≫
-      (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ 𝟙 _)) = (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ 𝟙 _)) ≫
-      ((α_ X X (𝟙_ C)).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom
     exact braid_first_map (𝟙 X) (𝟙 _)
   | succ n ih =>
     intro i X
     refine Fin.cases ?_ (fun j => ?_) i
-    · change ((α_ X X _).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom ≫
-        (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ (coloredConstantIso X (n + 1)).hom)) =
-        (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ (coloredConstantIso X (n + 1)).hom)) ≫
-        ((α_ X X _).symm ≪≫ ((β_ X X) ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom
-      exact braid_first_map (𝟙 X) _
+    · exact braid_first_map (𝟙 X) _
     · change (𝟙 X ⊗ₘ (coloredGenerator n j (fun _ => X)).hom) ≫
         (𝟙 X ⊗ₘ (coloredConstantIso X (n + 2)).hom) =
         (𝟙 X ⊗ₘ (coloredConstantIso X (n + 2)).hom) ≫
@@ -300,18 +279,11 @@ theorem coloredGeneratorInverse_constant : ∀ (n : ℕ) (i : Fin (n + 1)) (X : 
     have : i = 0 := Fin.eq_zero i
     subst i
     rw [braidGenerator_first_inv]
-    change ((α_ X X (𝟙_ C)).symm ≪≫ ((β_ X X).symm ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom ≫
-      (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ 𝟙 _)) = (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ 𝟙 _)) ≫
-      ((α_ X X (𝟙_ C)).symm ≪≫ ((β_ X X).symm ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom
     exact colored_first_inverse_map (𝟙 X) (𝟙 X) (𝟙 _)
   | succ n ih =>
     intro i X
     refine Fin.cases ?_ (fun j => ?_) i
     · rw [braidGenerator_first_inv]
-      change ((α_ X X _).symm ≪≫ ((β_ X X).symm ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom ≫
-        (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ (coloredConstantIso X (n + 1)).hom)) =
-        (𝟙 X ⊗ₘ (𝟙 X ⊗ₘ (coloredConstantIso X (n + 1)).hom)) ≫
-        ((α_ X X _).symm ≪≫ ((β_ X X).symm ⊗ᵢ Iso.refl _) ≪≫ α_ X X _).hom
       exact colored_first_inverse_map (𝟙 X) (𝟙 X) _
     · change (𝟙 X ⊗ₘ (coloredGeneratorInverse n j (fun _ => X)).hom) ≫
         (𝟙 X ⊗ₘ (coloredConstantIso X (n + 2)).hom) =

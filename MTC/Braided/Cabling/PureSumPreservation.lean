@@ -17,19 +17,15 @@ theorem pureBraidImage_preserves_coloredBlock (n : ℕ)
     let π := coloredBlockProjection (n + 2) X Y g
     let b := h.val.val.asIso.hom
     ι ≫ b = (ι ≫ b ≫ π) ≫ ι := by
-  obtain ⟨w, hw, he⟩ := h.property
-  obtain ⟨l, hl⟩ := Quot.exists_rep w
-  change FreeGroup.mk l = w at hl
-  subst w
-  change strandPermutation n (FreeGroup.mk l) = 1 at hw
+  obtain ⟨l, hw, he⟩ := pureBraidImage_exists_word h
   rw [← he]
   exact pureWord_preserves_coloredBlock n l hw X Y f g hf
 
 /-- Every diagonal component of an actual pure braid is the action of a
 colored pure word. This range inclusion lets finiteness arguments work with
 any finite family containing those actions. -/
-theorem pureBlock_range_subset_coloredWords (n : ℕ)
-    (X : Fin (n + 2) → C) (Y : C) (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
+theorem pureBlock_range_subset_coloredWords {n : ℕ}
+    {X : Fin (n + 2) → C} {Y : C} (f : ∀ j, X j ⟶ Y) (g : ∀ j, Y ⟶ X j)
     (hf : ∀ j, f j ≫ g j = 𝟙 (X j)) :
     Set.range (fun h : pureBraidImage Y n =>
       coloredBlockInclusion (n + 2) X Y f ≫ h.val.val.asIso.hom ≫
@@ -38,11 +34,7 @@ theorem pureBlock_range_subset_coloredWords (n : ℕ)
         (hw : strandPermutation n (FreeGroup.mk w) = 1),
           a = coloredPureWordHom n w hw X} := by
   rintro _ ⟨h, rfl⟩
-  obtain ⟨w, hw, he⟩ := h.property
-  obtain ⟨l, hl⟩ := Quot.exists_rep w
-  change FreeGroup.mk l = w at hl
-  subst w
-  change strandPermutation n (FreeGroup.mk l) = 1 at hw
+  obtain ⟨l, hw, he⟩ := pureBraidImage_exists_word h
   refine ⟨l, hw, ?_⟩
   dsimp only
   rw [← he, pureWord_coloredBlock_diagonal n l hw X Y f g hf]
@@ -63,7 +55,7 @@ theorem finite_pureBlock_range_of_colored_group (n : ℕ)
   let : Finite H := hH
   apply (Set.finite_range (fun z : H => z.val.asIso.hom)).subset
   rintro a ha
-  obtain ⟨w, hw, rfl⟩ := pureBlock_range_subset_coloredWords n X Y f g hf ha
+  obtain ⟨w, hw, rfl⟩ := pureBlock_range_subset_coloredWords f g hf ha
   obtain ⟨z, hz⟩ := hcable w hw
   exact ⟨z, hz⟩
 
@@ -84,7 +76,7 @@ theorem finite_pureBlock_range_of_cabling {n r : ℕ}
   let : Finite (braidImage Z r) := hfinite
   apply (Set.finite_range (fun z : braidImage Z r => e.hom ≫ z.val.asIso.hom ≫ e.inv)).subset
   rintro a ha
-  obtain ⟨w, hw, rfl⟩ := pureBlock_range_subset_coloredWords n X Y f g hf ha
+  obtain ⟨w, hw, rfl⟩ := pureBlock_range_subset_coloredWords f g hf ha
   obtain ⟨z, hz⟩ := hcable w hw
   exact ⟨z, hz.symm⟩
 
@@ -102,7 +94,7 @@ theorem finite_pureBlock_range_of_colored_trivial (n : ℕ)
   classical
   apply (Set.finite_singleton (𝟙 (coloredTensor (n + 2) X))).subset
   rintro a ha
-  obtain ⟨w, hw, rfl⟩ := pureBlock_range_subset_coloredWords n X Y f g hf ha
+  obtain ⟨w, hw, rfl⟩ := pureBlock_range_subset_coloredWords f g hf ha
   simpa only [Set.mem_singleton_iff] using htrivial w hw
 
 end MTC.Braided.Cabling

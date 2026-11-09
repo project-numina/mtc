@@ -78,16 +78,9 @@ theorem colorProjection_inclusion_total : ∀ n,
       intro a ha
       apply Finset.sum_congr rfl
       intro f hf
-      simp only [e, Fin.consEquiv_apply, colorProjection, colorInclusion, tensorHom_comp_tensorHom]
-      change (biproduct.π V (Fin.cons (α := fun _ : Fin (n + 1) => I) a f 0) ≫ biproduct.ι V (Fin.cons (α := fun _ : Fin (n + 1) => I) a f 0)) ⊗ₘ
-        (colorProjection V n (fun j : Fin n => Fin.cons (α := fun _ : Fin (n + 1) => I) a f j.succ) ≫
-          colorInclusion V n (fun j : Fin n => Fin.cons (α := fun _ : Fin (n + 1) => I) a f j.succ)) = _
-      have ht : (fun j : Fin n => Fin.cons (α := fun _ : Fin (n + 1) => I) a f j.succ) = f := by
-        funext j
-        exact Fin.cons_succ (α := fun _ : Fin (n + 1) => I) a f j
-      have htcomp := congrArg (fun g : Fin n → I =>
-        colorProjection V n g ≫ colorInclusion V n g) ht
-      rw [Fin.cons_zero, htcomp]
+      simp only [e, Fin.consEquiv_apply, colorProjection, colorInclusion,
+        tensorHom_comp_tensorHom]
+      simp [Fin.cons]
     rw [hs]
     simp_rw [← tensor_sum, colorProjection_inclusion_total n]
     rw [← sum_tensor, biproduct.total]

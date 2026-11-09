@@ -13,6 +13,18 @@ variable {C : Type u} [Category.{v} C] [MonoidalCategory C] [BraidedCategory C]
 def pureBraidImage (X : C) (n : ℕ) : Subgroup (braidImage X n) :=
   (strandPermutation n).ker.map (braidWordAction X n)
 
+/-- Every element of the pure image has a concrete signed-word representative
+whose strand permutation is trivial. -/
+theorem pureBraidImage_exists_word {X : C} {n : ℕ} (h : pureBraidImage X n) :
+    ∃ l : List (Fin (n + 1) × Bool),
+      strandPermutation n (FreeGroup.mk l) = 1 ∧
+        braidWordAction X n (FreeGroup.mk l) = h.val := by
+  obtain ⟨w, hw, he⟩ := h.property
+  obtain ⟨l, hl⟩ := Quot.exists_rep w
+  change FreeGroup.mk l = w at hl
+  subst w
+  exact ⟨l, hw, he⟩
+
 /-- The pure image has finite index in the full categorical braid image. -/
 theorem pureBraidImage_finiteIndex (X : C) (n : ℕ) : (pureBraidImage X n).FiniteIndex := by
   letI : ((strandPermutation n).ker).FiniteIndex := inferInstance

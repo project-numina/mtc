@@ -181,33 +181,21 @@ theorem coloredPower_positive_mem (X : C) : ∀ (n r : ℕ)
     intro r s hp i
     refine Fin.cases ?_ (fun j => ?_) i
     · simpa only [coloredLetter, if_pos] using coloredPower_first_mem X (n + 1) r s (hp 0) (hp 1)
-    · let k := s.val
+    · rcases s with ⟨k, hf⟩
       let m := (∑ t : Fin (n + 2), k t.succ) - 2
       have hge : 2 ≤ ∑ t : Fin (n + 2), k t.succ :=
         two_le_sum_positive_widths n (fun t => k t.succ) (fun t => hp t.succ)
       have ht : (∑ t : Fin (n + 2), k t.succ) = m + 2 :=
         (Nat.sub_add_cancel hge).symm
-      have hf : (∑ t, k t) = r + 2 := s.property
       have hr : r = m + k 0 := by
         rw [Fin.sum_univ_succ, ht] at hf
         omega
-      have hfull : (∑ t, k t) = (m + k 0) + 2 := by omega
-      have hstep : ∀ (r' : ℕ), r' = m + k 0 →
-          ∀ (s' : ColoredPowerState (n + 1) (r' + 2)), s'.val = k →
-          Aut.of ((coloredPowerStateFlatten X (n + 1) (r' + 2) s').symm ≪≫
-            coloredLetter (n + 1) j.succ true (fun j => tensorPower X (s'.val j)) ≪≫
-            coloredPowerStateFlatten X (n + 1) (r' + 2)
-              (coloredPowerSwap (n + 1) (r' + 2) j.succ s')) ∈ braidImage X r' := by
-        intro r' hr' s' hsk
-        subst r'
-        have hs' : s' = ⟨k, hfull⟩ := Subtype.ext hsk
-        subst s'
-        let t : ColoredPowerState n (m + 2) := ⟨fun j => k j.succ, ht⟩
-        have hmem := ih m t (fun j => hp j.succ) j
-        have hprefix := braidImage_prefix_mem X m (k 0) _ hmem
-        rw [coloredPower_succ_prefix_eq X n m j k ht hfull]
-        exact hprefix
-      exact hstep r hr s rfl
+      subst r
+      let t : ColoredPowerState n (m + 2) := ⟨fun j => k j.succ, ht⟩
+      have hmem := ih m t (fun j => hp j.succ) j
+      have hprefix := braidImage_prefix_mem X m (k 0) _ hmem
+      rw [coloredPower_succ_prefix_eq X n m j k ht hf]
+      exact hprefix
 
 end MTC.Braided.Cabling
 end
