@@ -35,12 +35,7 @@ theorem braidImage_infinite_of_le (X : C) [Functor.Faithful (tensorLeft X)]
   | base => exact hn
   | succ m hm ih =>
     letI : Infinite (braidImage X m) := ih
-    apply not_finite_iff_infinite.mp
-    intro hf
-    letI : Finite (braidImage X (m + 1)) := hf
-    letI : Finite (braidImage X m) := Finite.of_injective (addLeftStrand X m)
-      (addLeftStrand_injective X m)
-    exact not_finite (braidImage X m)
+    exact Infinite.of_injective (addLeftStrand X m) (addLeftStrand_injective X m)
 
 /-- An infinite image of a simple object in a braided fusion category remains
 infinite after adding any number of strands. -/

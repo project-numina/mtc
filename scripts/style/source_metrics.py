@@ -85,8 +85,14 @@ def proof_delimiter(chunk):
             return i
     return -1
 
-def parse(path, module):
-    text=path.read_text(encoding='utf8'); clean=mask(text); lines=text.count('\n') + bool(text and not text.endswith('\n'))
+def parse(path, module, include_inline_attributes=False, count_all_proofs=False):
+    text=path.read_text(encoding='utf8'); clean=mask(text);
+    if include_inline_attributes:
+        # Preserve line lengths and offsets while moving same-line attributes
+        # after the command; only the masked analysis text is rewritten.
+        pattern = r'(?m)^([ \t]*)@\[[^\n]*?\][ \t]+(?=(?:(?:private|protected|public|noncomputable|unsafe|partial|local|scoped)\s+)*(?:theorem|lemma)\b)([^\n]*)'
+        clean = re.sub(pattern, lambda m: m[1] + m[2] + ' ' * (len(m[0]) - len(m[1]) - len(m[2])), clean)
+    lines=text.count('\n') + bool(text and not text.endswith('\n'))
     comments,docs=comment_lines(text); starts=list(DECL.finditer(clean)); boundaries=[m.start() for m in COMMAND.finditer(clean)]
     ds=[]
     for m in starts:
@@ -96,11 +102,32 @@ def parse(path, module):
             em=re.search(r'(?m)^[ \t]+\|[^\n]*=>',chunk)
             if em and (eq<0 or em.start()<eq): eq=em.start(); equation=True
         stmt=chunk if eq<0 else chunk[:eq]; proof='' if eq<0 else chunk[eq+(0 if equation else 2):].strip()
-        if kind in ('theorem','lemma') and eq>=0:
+        if (kind in ('theorem','lemma') or count_all_proofs) and eq>=0:
             tactic=bool(re.match(r'^by\b',proof)) and not equation; matches=list(TACTIC.finditer(proof)); toks={k:len(re.findall(r'\b'+k+r'\b',proof)) for k in TOKENS}
             toks['simp_only']=len(re.findall(r'\bsimp\s+only\b',proof)); toks['nonterminal_simp']=sum(1 for z in re.finditer(r'\bsimp(?:\s+only)?\b[^\n]*',proof) if proof[z.end():].strip())
         else: tactic=False; matches=[]; toks={k:0 for k in TOKENS}; toks.update(simp_only=0,nonterminal_simp=0)
         ds.append(dict(module=module,file=str(path.relative_to(ROOT)),line=text.count('\n',0,m.start())+1,kind=kind,name=m['name'],statement_lines=stmt.count('\n')+1,statement_chars=len(stmt.strip()),statement=stmt.strip(),proof_lines=(proof.count('\n')+1 if proof else 0),equation=equation,tactic=tactic,steps=len(matches)+proof.count(';'),**toks))
+    if count_all_proofs:
+        # Anonymous proposition-valued instances can elaborate to theorems.
+        # Give them a source identity; the dashboard separately resolves Lean's
+        # generated name when it is unique in the module.
+        for im in re.finditer(r'(?m)^[ \t]*(?:(?:public|private|local|scoped|noncomputable)\s+)*instance\s*(?=[:\[(])', clean):
+            start = im.start()
+            end = next((b for b in boundaries if b > start), len(text))
+            chunk = clean[start:end].rstrip()
+            eq = proof_delimiter(chunk)
+            if eq < 0:
+                continue
+            proof = chunk[eq + 2:].strip()
+            if not proof:
+                continue
+            ds.append(dict(module=module, file=str(path.relative_to(ROOT)),
+                line=text.count('\n', 0, start)+1, kind='instance', name='(anonymous)',
+                statement_lines=0, statement_chars=0, statement='',
+                proof_lines=proof.count('\n')+1, equation=False,
+                tactic=bool(re.match(r'^by\b', proof)),
+                steps=len(list(TACTIC.finditer(proof)))+proof.count(';'),
+                **{k:0 for k in TOKENS}, simp_only=0, nonterminal_simp=0))
     # Anonymous instances are commands too, but have no stable source name.
     for im in re.finditer(r'(?m)^[ \t]*(?:(?:public|private|local|scoped|noncomputable)\s+)*instance\s*(?=[:\[])',clean):
         ds.append(dict(module=module,file=str(path.relative_to(ROOT)),line=text.count('\n',0,im.start())+1,kind='instance',name='(anonymous)',statement_lines=0,statement_chars=0,statement='',proof_lines=0,equation=False,tactic=False,steps=0,**{k:0 for k in TOKENS},simp_only=0,nonterminal_simp=0))
