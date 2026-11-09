@@ -174,6 +174,7 @@ def main():
             index[row['qualified_name']].append(row)
     unmatched = []
     changed_types = []
+    changed_binders = []
     for label, base in (('fb6ec518_legacy', legacy), ('fb6ec518', original),
                         ('3826bb02', round_two), ('a93ce31a', sustained_start)):
         base = [r for r in base if r['population'].startswith('New pivotal modules')]
@@ -194,11 +195,22 @@ def main():
                 changed_types.append({'cohort': label, 'qualified_name': b['qualified_name'],
                                       'before_hash': b['type_hash'], 'after_hash': c['type_hash'],
                                       'before_file': b['file'], 'after_file': c['file']})
+            binder_keys = ('explicit', 'implicit', 'strict', 'instance', 'hypotheses')
+            if any(b.get(k, '') != c.get(k, '') for k in binder_keys):
+                changed_binders.append({
+                    'cohort': label, 'qualified_name': b['qualified_name'],
+                    'before_file': b['file'], 'after_file': c['file'],
+                    **{f'before_{k}': b.get(k, '') for k in binder_keys},
+                    **{f'after_{k}': c.get(k, '') for k in binder_keys}})
         results[label] = {'paired': len(pairs), 'before': metrics([b for b, _ in pairs]),
                           'after': metrics([c for _, c in pairs])}
     write(OUT / 'target-unmatched.tsv', unmatched, ['cohort', 'status'] + FIELDS)
     write(OUT / 'target-type-hash-changes.tsv', changed_types,
           ['cohort', 'qualified_name', 'before_hash', 'after_hash', 'before_file', 'after_file'])
+    write(OUT / 'target-binder-changes.tsv', changed_binders,
+          ['cohort', 'qualified_name', 'before_file', 'after_file'] +
+          [f'{side}_{k}' for side in ('before', 'after')
+           for k in ('explicit', 'implicit', 'strict', 'instance', 'hypotheses')])
     def area(row):
         file = row['file']
         if file.startswith('MTC/Braided/Cabling/'):
