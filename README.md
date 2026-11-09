@@ -32,6 +32,4 @@ library declaration is audited: no `sorry`, custom axioms, or foreign proof
 implementations are allowed. Proofs use only `propext`, `Classical.choice`,
 and `Quot.sound`.
 
-Existing modular-data, F/R-symbol and Anyon Atlas support remains available,
-but the project's primary deliverable is the manuscript formalization.
 See [CONTRIBUTING.md](CONTRIBUTING.md) for proof and review requirements.
