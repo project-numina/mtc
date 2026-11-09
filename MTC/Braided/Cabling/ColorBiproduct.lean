@@ -39,11 +39,7 @@ def colorProjection : ∀ n : ℕ, (f : Fin n → I) →
 /-- Distinct colorings give orthogonal inclusion/projection components. -/
 theorem colorInclusion_projection_ne : ∀ n (f g : Fin n → I), f ≠ g →
     colorInclusion V n f ≫ colorProjection V n g = 0
-  | 0, f, g, h => by
-    exfalso
-    apply h
-    funext i
-    exact Fin.elim0 i
+  | 0, f, g, h => False.elim (h (Subsingleton.elim f g))
   | n + 1, f, g, h => by
     rw [colorInclusion, colorProjection, tensorHom_comp_tensorHom]
     by_cases hhead : f 0 = g 0
@@ -68,20 +64,11 @@ theorem colorProjection_inclusion_total : ∀ n,
     classical
     change (∑ f : Fin (n + 1) → I, colorProjection V (n + 1) f ≫ colorInclusion V (n + 1) f) =
       𝟙 ((⨁ V) ⊗ tensorPower (⨁ V) n)
-    let e : I × (Fin n → I) ≃ (Fin (n + 1) → I) := Fin.consEquiv (fun _ => I)
-    have hs : (∑ f : Fin (n + 1) → I, colorProjection V (n + 1) f ≫ colorInclusion V (n + 1) f) =
-        ∑ a : I, ∑ f : Fin n → I,
-          (biproduct.π V a ≫ biproduct.ι V a) ⊗ₘ
-            (colorProjection V n f ≫ colorInclusion V n f) := by
-      rw [← e.sum_comp, Fintype.sum_prod_type]
-      apply Finset.sum_congr rfl
-      intro a ha
-      apply Finset.sum_congr rfl
-      intro f hf
-      simp only [e, Fin.consEquiv_apply, colorProjection, colorInclusion,
-        tensorHom_comp_tensorHom]
-      simp [Fin.cons]
-    rw [hs]
+    rw [← (Fin.consEquiv (fun _ => I)).sum_comp, Fintype.sum_prod_type]
+    simp only [Fin.consEquiv_apply, colorProjection, colorInclusion, tensorHom_comp_tensorHom]
+    change (∑ a : I, ∑ f : Fin n → I,
+      (biproduct.π V a ≫ biproduct.ι V a) ⊗ₘ
+        (colorProjection V n f ≫ colorInclusion V n f)) = _
     simp_rw [← tensor_sum, colorProjection_inclusion_total n]
     rw [← sum_tensor, biproduct.total]
     simp
@@ -161,19 +148,13 @@ theorem braidWordAction_intertwines_colorProjection (n : ℕ)
     ((braidWordAction (⨁ V) n (FreeGroup.mk w.reverse)).val).asIso.hom ≫
       colorProjection V (n + 2) (fun j => f (coloredWordSwap n w j)) =
     colorProjection V (n + 2) f ≫ (coloredWordIso n w (fun j => V (f j))).hom := by
-  let c := coloredConstantIso (⨁ V) (n + 2)
   have hc := coloredWordIso_constant n w (⨁ V)
   have hn := coloredWordIso_natural n w (X := fun _ => ⨁ V) (Y := fun j => V (f j))
     (fun j => biproduct.π V (f j))
   rw [colorProjection_eq_coloredTensorMap, colorProjection_eq_coloredTensorMap]
-  apply (cancel_epi c.hom).1
-  change (coloredWordIso n w (fun _ => ⨁ V)).hom ≫ c.hom =
-    c.hom ≫ ((braidWordAction (⨁ V) n (FreeGroup.mk w.reverse)).val).asIso.hom at hc
-  change _ = _
-  simp only [← Category.assoc]
-  rw [← hc]
-  simp only [c, Category.assoc, Iso.hom_inv_id_assoc]
-  exact hn
+  simp only [Category.assoc]
+  rw [Iso.eq_inv_comp, ← Category.assoc, ← hc]
+  simpa only [Category.assoc, Iso.hom_inv_id_assoc] using hn
 
 /-- The component inclusion agrees with the independently constructed
 colored-block inclusion for the actual biproduct injections. -/
