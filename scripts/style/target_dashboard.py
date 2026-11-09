@@ -114,6 +114,11 @@ def target_gap(values, percentile, target, minimum):
             'above_target': sum(v > target for v in values),
             'minimum_distinct_reductions_relaxed': changes}
 
+def classify_environment_only(name, inherited_matched, generated):
+    if name in inherited_matched:
+        return 'inherited source proof'
+    return 'generated-name pattern' if generated.search(name) else 'review'
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--pin-round-two', action='store_true')
@@ -143,11 +148,13 @@ def main():
                if classified.get(str(p.relative_to(ROOT)), 'New pivotal modules') == 'New pivotal modules'}
     modules.update(r['file'][:-5].replace('/', '.') for r in all_new)
     matched = {r['qualified_name'] for r in all_new if r['qualified_name']}
+    inherited_matched = {r['qualified_name'] for r in current
+                         if r['population'] == 'Inherited modules' and r['match'] == 'unique'}
     generated = re.compile(r'(?:\.(?:_proof_\d|_simp_\d|match_\d|eq_\d|eq_def|congr_simp|_eq_\d)|\._sunfold|\.injEq|\.ext_iff|\.ext$|\.noConfusion|\.casesOn|\.recOn|\.brecOn)')
     environment_only = []
     for row in read(STYLE / '.environment.tsv'):
         if row['module'] in modules and row['kind'] == 'theorem' and row['name'] not in matched:
-            row['classification'] = 'generated-name pattern' if generated.search(row['name']) else 'review'
+            row['classification'] = classify_environment_only(row['name'], inherited_matched, generated)
             environment_only.append(row)
     environment_only.sort(key=lambda row: (row['module'], row['name']))
     if environment_only:

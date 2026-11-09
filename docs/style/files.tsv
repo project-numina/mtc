@@ -1,5 +1,5 @@
 population	file	lines	declarations
-New pivotal modules	MTC/Algebra/ComplexBlockTrace.lean	123	14
+New pivotal modules	MTC/Algebra/ComplexBlockTrace.lean	116	14
 New pivotal modules	MTC/Algebra/ComplexBraidSaturation.lean	59	2
 New pivotal modules	MTC/Braided/Cabling/BlockFinite.lean	122	4
 New pivotal modules	MTC/Braided/Cabling/BlockFiniteSum.lean	71	2
@@ -9,11 +9,11 @@ New pivotal modules	MTC/Braided/Cabling/ClosureBlockProof.lean	84	5
 New pivotal modules	MTC/Braided/Cabling/ClosureBlockWord.lean	38	4
 New pivotal modules	MTC/Braided/Cabling/ClosureCanonicalBlocks.lean	101	7
 New pivotal modules	MTC/Braided/Cabling/ClosureColoredBridge.lean	149	9
-New pivotal modules	MTC/Braided/Cabling/ClosureColoredContext.lean	312	16
+New pivotal modules	MTC/Braided/Cabling/ClosureColoredContext.lean	292	16
 New pivotal modules	MTC/Braided/Cabling/ClosureColoredCrossing.lean	67	4
 New pivotal modules	MTC/Braided/Cabling/ClosureColoredFirst.lean	61	2
 New pivotal modules	MTC/Braided/Cabling/ClosureColoredFlatten.lean	51	7
-New pivotal modules	MTC/Braided/Cabling/ClosureColoredWords.lean	82	8
+New pivotal modules	MTC/Braided/Cabling/ClosureColoredWords.lean	81	8
 New pivotal modules	MTC/Braided/Cabling/ClosureCommonInterface.lean	138	9
 New pivotal modules	MTC/Braided/Cabling/ClosureCrossing.lean	59	4
 New pivotal modules	MTC/Braided/Cabling/ClosureFirstBlock.lean	115	9
@@ -43,33 +43,33 @@ New pivotal modules	MTC/Braided/Cabling/ClosureSweep.lean	131	11
 New pivotal modules	MTC/Braided/Cabling/ClosureTwoBlockPower.lean	71	5
 New pivotal modules	MTC/Braided/Cabling/ClosureTwoRow.lean	130	12
 New pivotal modules	MTC/Braided/Cabling/ClosureUnit.lean	56	4
-New pivotal modules	MTC/Braided/Cabling/ColorBiproduct.lean	211	12
+New pivotal modules	MTC/Braided/Cabling/ColorBiproduct.lean	185	12
 New pivotal modules	MTC/Braided/Cabling/ColorBiproductConstant.lean	96	7
 New pivotal modules	MTC/Braided/Cabling/ColorBiproductFinite.lean	38	1
 New pivotal modules	MTC/Braided/Cabling/ColorBiproductLetters.lean	40	1
 New pivotal modules	MTC/Braided/Cabling/ColorBiproductPositive.lean	73	3
-New pivotal modules	MTC/Braided/Cabling/PureSum.lean	28	3
-New pivotal modules	MTC/Braided/Cabling/PureSumCabling.lean	75	2
-New pivotal modules	MTC/Braided/Cabling/PureSumColored.lean	466	35
+New pivotal modules	MTC/Braided/Cabling/PureSum.lean	40	4
+New pivotal modules	MTC/Braided/Cabling/PureSumCabling.lean	70	2
+New pivotal modules	MTC/Braided/Cabling/PureSumColored.lean	439	36
 New pivotal modules	MTC/Braided/Cabling/PureSumInverse.lean	62	2
-New pivotal modules	MTC/Braided/Cabling/PureSumPositiveState.lean	165	7
-New pivotal modules	MTC/Braided/Cabling/PureSumPrefix.lean	213	7
-New pivotal modules	MTC/Braided/Cabling/PureSumPreservation.lean	109	5
-New pivotal modules	MTC/Braided/Cabling/PureSumSigned.lean	82	3
-New pivotal modules	MTC/Braided/Trace/ComplexSaturation.lean	98	2
-New pivotal modules	MTC/Braided/Trace/ComplexTraceBound.lean	42	1
-New pivotal modules	MTC/Braided/Trace/InverseMonodromy.lean	100	6
-New pivotal modules	MTC/Braided/Trace/MonodromyBound.lean	60	3
-New pivotal modules	MTC/Braided/Trace/MonodromyReciprocity.lean	111	3
+New pivotal modules	MTC/Braided/Cabling/PureSumPositiveState.lean	157	7
+New pivotal modules	MTC/Braided/Cabling/PureSumPrefix.lean	194	7
+New pivotal modules	MTC/Braided/Cabling/PureSumPreservation.lean	101	5
+New pivotal modules	MTC/Braided/Cabling/PureSumSigned.lean	76	3
+New pivotal modules	MTC/Braided/Trace/ComplexSaturation.lean	89	2
+New pivotal modules	MTC/Braided/Trace/ComplexTraceBound.lean	40	1
+New pivotal modules	MTC/Braided/Trace/InverseMonodromy.lean	95	6
+New pivotal modules	MTC/Braided/Trace/MonodromyBound.lean	57	3
+New pivotal modules	MTC/Braided/Trace/MonodromyReciprocity.lean	104	3
 New pivotal modules	MTC/Braided/Trace/SaturationSquare.lean	60	3
 New pivotal modules	MTC/Braided/Trace/SphericalSaturation.lean	32	1
 New pivotal modules	MTC/Center/Braid/PivotalRegularSupport.lean	151	9
-New pivotal modules	MTC/Center/Induction/PivotalFusion.lean	148	10
-New pivotal modules	MTC/Center/Induction/PivotalSquare.lean	96	4
+New pivotal modules	MTC/Center/Induction/PivotalFusion.lean	140	10
+New pivotal modules	MTC/Center/Induction/PivotalSquare.lean	79	4
 New pivotal modules	MTC/Center/Normalization/ActualDoubleCentralizer.lean	99	3
 New pivotal modules	MTC/Center/Normalization/AdjointDegrees.lean	61	6
 New pivotal modules	MTC/Center/Normalization/AdjointQuotient.lean	164	20
-New pivotal modules	MTC/Center/Normalization/AdjointRelation.lean	133	11
+New pivotal modules	MTC/Center/Normalization/AdjointRelation.lean	126	11
 New pivotal modules	MTC/Center/Normalization/AlgebraicDimension.lean	56	2
 New pivotal modules	MTC/Center/Normalization/BinomialAnalytic.lean	83	6
 New pivotal modules	MTC/Center/Normalization/BinomialArithmetic.lean	90	5
@@ -78,25 +78,25 @@ New pivotal modules	MTC/Center/Normalization/CharacterExtension.lean	69	3
 New pivotal modules	MTC/Center/Normalization/CommonCentralizer.lean	87	4
 New pivotal modules	MTC/Center/Normalization/DualContraction.lean	46	2
 New pivotal modules	MTC/Center/Normalization/FPPlacement.lean	149	6
-New pivotal modules	MTC/Center/Normalization/FusionSubringSupport.lean	89	4
+New pivotal modules	MTC/Center/Normalization/FusionSubringSupport.lean	82	4
 New pivotal modules	MTC/Center/Normalization/GradingTwist.lean	47	6
-New pivotal modules	MTC/Center/Normalization/IntegerDimensions.lean	115	3
+New pivotal modules	MTC/Center/Normalization/IntegerDimensions.lean	111	3
 New pivotal modules	MTC/Center/Normalization/MugerAdjointNormalization.lean	36	1
-New pivotal modules	MTC/Center/Normalization/MugerCategory.lean	310	32
+New pivotal modules	MTC/Center/Normalization/MugerCategory.lean	305	32
 New pivotal modules	MTC/Center/Normalization/MugerConditional.lean	50	2
 New pivotal modules	MTC/Center/Normalization/MugerFPConditional.lean	31	1
-New pivotal modules	MTC/Center/Normalization/MugerFPIntegral.lean	85	5
+New pivotal modules	MTC/Center/Normalization/MugerFPIntegral.lean	82	5
 New pivotal modules	MTC/Center/Normalization/MugerIntegralOfPositive.lean	37	2
 New pivotal modules	MTC/Center/Normalization/MugerLabels.lean	120	10
 New pivotal modules	MTC/Center/Normalization/MugerNormalization.lean	50	2
-New pivotal modules	MTC/Center/Normalization/MugerObjectNormalization.lean	77	4
+New pivotal modules	MTC/Center/Normalization/MugerObjectNormalization.lean	71	4
 New pivotal modules	MTC/Center/Normalization/PivotalTwist.lean	103	7
-New pivotal modules	MTC/Center/Normalization/PositiveSubring.lean	170	5
+New pivotal modules	MTC/Center/Normalization/PositiveSubring.lean	167	5
 New pivotal modules	MTC/Center/Normalization/ProductCategory.lean	60	4
 New pivotal modules	MTC/Center/Normalization/ProductCategoryPivotal.lean	33	2
 New pivotal modules	MTC/Center/Normalization/ProductGenerator.lean	70	4
 New pivotal modules	MTC/Center/Normalization/RelativeCentralizer.lean	108	4
-New pivotal modules	MTC/Center/Normalization/ScalarFusionCharacter.lean	162	9
+New pivotal modules	MTC/Center/Normalization/ScalarFusionCharacter.lean	132	9
 New pivotal modules	MTC/Center/Normalization/SubringCharacter.lean	129	6
 New pivotal modules	MTC/Center/Normalization/SubringGrading.lean	137	14
 New pivotal modules	MTC/Center/Normalization/SymmetricBinomial.lean	176	8
@@ -105,11 +105,11 @@ New pivotal modules	MTC/Center/Normalization/SymmetricGlobal.lean	83	5
 New pivotal modules	MTC/Center/Normalization/SymmetricInteger.lean	42	3
 New pivotal modules	MTC/Center/Normalization/SymmetricPivotal.lean	80	6
 New pivotal modules	MTC/Center/Normalization/SymmetricSquares.lean	116	6
-New pivotal modules	MTC/Center/Normalization/UniversalGrading.lean	126	12
+New pivotal modules	MTC/Center/Normalization/UniversalGrading.lean	124	12
 New pivotal modules	MTC/PropertyF/Audit/ProjectAudit.lean	412	1
 New pivotal modules	MTC/PropertyF/Audit/TargetAudit.lean	346	0
 New pivotal modules	MTC/PropertyF/Pivotal/AdjointObjects.lean	88	7
-New pivotal modules	MTC/PropertyF/Pivotal/AdjointObjectsSupport.lean	149	12
+New pivotal modules	MTC/PropertyF/Pivotal/AdjointObjectsSupport.lean	139	12
 New pivotal modules	MTC/PropertyF/Pivotal/CenterAdjointReduction.lean	47	1
 New pivotal modules	MTC/PropertyF/Pivotal/CenterGenerated.lean	28	1
 New pivotal modules	MTC/PropertyF/Pivotal/CenterLemma.lean	35	1
@@ -125,8 +125,8 @@ New pivotal modules	MTC/PropertyF/Pivotal/FPGlobalDimension.lean	90	4
 New pivotal modules	MTC/PropertyF/Pivotal/FPInvertible.lean	63	2
 New pivotal modules	MTC/PropertyF/Pivotal/FPObject.lean	60	2
 New pivotal modules	MTC/PropertyF/Pivotal/FPSquareIntegral.lean	70	3
-New pivotal modules	MTC/PropertyF/Pivotal/Galois.lean	134	8
-New pivotal modules	MTC/PropertyF/Pivotal/GaloisDimensionTransport.lean	106	6
+New pivotal modules	MTC/PropertyF/Pivotal/Galois.lean	131	8
+New pivotal modules	MTC/PropertyF/Pivotal/GaloisDimensionTransport.lean	103	6
 New pivotal modules	MTC/PropertyF/Pivotal/GaloisDual.lean	35	1
 New pivotal modules	MTC/PropertyF/Pivotal/GaloisUnitScalar.lean	37	1
 New pivotal modules	MTC/PropertyF/Pivotal/GeneratedCategory.lean	231	30
@@ -134,16 +134,16 @@ New pivotal modules	MTC/PropertyF/Pivotal/GeneratedConsequences.lean	66	4
 New pivotal modules	MTC/PropertyF/Pivotal/GlobalCriterionConsequences.lean	54	2
 New pivotal modules	MTC/PropertyF/Pivotal/InfiniteImages.lean	62	4
 New pivotal modules	MTC/PropertyF/Pivotal/MainTheorems.lean	31	2
-New pivotal modules	MTC/PropertyF/Pivotal/MonoidalDual.lean	113	7
-New pivotal modules	MTC/PropertyF/Pivotal/MonoidalQuantumTrace.lean	93	4
+New pivotal modules	MTC/PropertyF/Pivotal/MonoidalDual.lean	124	8
+New pivotal modules	MTC/PropertyF/Pivotal/MonoidalQuantumTrace.lean	78	5
 New pivotal modules	MTC/PropertyF/Pivotal/Nondegeneracy.lean	143	6
 New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyConverse.lean	48	3
-New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaar.lean	333	25
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaar.lean	334	27
 New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaarBasis.lean	144	8
 New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaarMate.lean	71	7
 New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaarSlide.lean	434	26
-New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaarSnake.lean	334	17
-New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyRelative.lean	45	2
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyHaarSnake.lean	302	16
+New pivotal modules	MTC/PropertyF/Pivotal/NondegeneracyRelative.lean	44	2
 New pivotal modules	MTC/PropertyF/Pivotal/Nondegenerate.lean	67	4
 New pivotal modules	MTC/PropertyF/Pivotal/NondegenerateTransport.lean	58	2
 New pivotal modules	MTC/PropertyF/Pivotal/NormalizedConjugates.lean	33	1
@@ -158,9 +158,9 @@ New pivotal modules	MTC/PropertyF/Pivotal/SOrthogonality.lean	105	4
 New pivotal modules	MTC/PropertyF/Pivotal/SScalarTwist.lean	70	5
 New pivotal modules	MTC/PropertyF/Pivotal/Saturation.lean	27	1
 New pivotal modules	MTC/PropertyF/Pivotal/SlopeDefect.lean	41	3
-New pivotal modules	MTC/PropertyF/Pivotal/SlopePower.lean	69	5
+New pivotal modules	MTC/PropertyF/Pivotal/SlopePower.lean	5	0
 New pivotal modules	MTC/PropertyF/Pivotal/SlopeSquare.lean	96	9
-New pivotal modules	MTC/PropertyF/Pivotal/SlopeTrace.lean	170	12
+New pivotal modules	MTC/PropertyF/Pivotal/SlopeTrace.lean	225	17
 New pivotal modules	MTC/PropertyF/Pivotal/Statement.lean	72	8
 New pivotal modules	MTC/PropertyF/Pivotal/SymmetricPropertyF.lean	41	3
 Inherited modules	MTC/Algebra/Arithmetic.lean	28	1
@@ -195,7 +195,7 @@ Inherited modules	MTC/CategoryTheory/Dimensions/DoubleDualUnitTensor.lean	141	7
 Inherited modules	MTC/CategoryTheory/Dimensions/DualBraiding.lean	88	3
 Inherited modules	MTC/CategoryTheory/Dimensions/DualCoherence.lean	161	15
 Inherited modules	MTC/CategoryTheory/Dimensions/DualTensorNaturality.lean	206	14
-Inherited modules	MTC/CategoryTheory/Dimensions/ENOMatrices.lean	168	14
+Inherited modules	MTC/CategoryTheory/Dimensions/ENOMatrices.lean	185	15
 Inherited modules	MTC/CategoryTheory/Dimensions/ENOReciprocity.lean	295	17
 Inherited modules	MTC/CategoryTheory/Dimensions/FourthDualUnit.lean	155	11
 Inherited modules	MTC/CategoryTheory/Dimensions/FourthTensorUnit.lean	63	2

@@ -1,45 +1,45 @@
 {
   "all_current_new": {
-    "n": 720,
+    "n": 726,
     "proof_lines": {
-      "n": 720,
-      "sum": 6196,
+      "n": 726,
+      "sum": 5886,
       "p25_median_p75_p90_p99_max": [
         3.0,
         6.0,
-        11.0,
-        19.0,
-        43.0,
-        63
+        10.0,
+        17.0,
+        38.0,
+        60
       ]
     },
     "steps": {
-      "n": 594,
-      "sum": 4004,
+      "n": 598,
+      "sum": 3797,
       "p25_median_p75_p90_p99_max": [
         3.0,
-        5.0,
+        4.0,
         8.0,
-        14.0,
-        34.0,
-        55
+        13.0,
+        31.089999999999918,
+        51
       ]
     },
     "explicit": {
-      "n": 720,
-      "sum": 2515,
+      "n": 726,
+      "sum": 2537,
       "p25_median_p75_p90_p99_max": [
         2.0,
         3.0,
-        5.0,
+        4.75,
         6.0,
-        8.809999999999945,
-        9
+        9.0,
+        10
       ]
     },
     "implicit": {
-      "n": 720,
-      "sum": 701,
+      "n": 726,
+      "sum": 720,
       "p25_median_p75_p90_p99_max": [
         0.0,
         1.0,
@@ -50,7 +50,7 @@
       ]
     },
     "strict": {
-      "n": 720,
+      "n": 726,
       "sum": 0,
       "p25_median_p75_p90_p99_max": [
         0.0,
@@ -62,8 +62,8 @@
       ]
     },
     "instance": {
-      "n": 720,
-      "sum": 1158,
+      "n": 726,
+      "sum": 1180,
       "p25_median_p75_p90_p99_max": [
         0.0,
         1.0,
@@ -74,113 +74,117 @@
       ]
     },
     "hypotheses": {
-      "n": 720,
-      "sum": 801,
+      "n": 726,
+      "sum": 810,
       "p25_median_p75_p90_p99_max": [
         0.0,
         1.0,
         2.0,
         3.0,
-        5.809999999999945,
+        6.0,
         7
       ]
     },
     "total_binders": {
-      "n": 720,
-      "sum": 4374,
+      "n": 726,
+      "sum": 4437,
       "p25_median_p75_p90_p99_max": [
         4.0,
         6.0,
         8.0,
         11.0,
-        15.809999999999945,
+        16.0,
         21
       ]
     }
   },
   "matching_audit": {
     "source_unmatched": 0,
-    "environment_only": 544,
+    "environment_only": 557,
     "environment_only_review": 0
   },
   "target_gaps": {
     "proof_lines_p50": {
       "missing": 0,
-      "n": 720,
+      "n": 726,
       "target": 3,
       "boundary_positions_one_based": [
-        360,
-        361
+        363,
+        364
       ],
       "boundary_values": [
         6,
         6
       ],
-      "at_or_below_target": 181,
-      "equal_to_target": 79,
-      "above_target": 539,
-      "minimum_distinct_reductions_relaxed": 180
+      "at_or_below_target": 186,
+      "equal_to_target": 81,
+      "above_target": 540,
+      "minimum_distinct_reductions_relaxed": 178
     },
     "proof_lines_p90": {
       "missing": 0,
-      "n": 720,
+      "n": 726,
       "target": 12,
       "boundary_positions_one_based": [
-        648,
-        649
+        653,
+        654
       ],
       "boundary_values": [
-        19,
-        19
+        17,
+        17
       ],
-      "at_or_below_target": 578,
-      "equal_to_target": 21,
-      "above_target": 142,
-      "minimum_distinct_reductions_relaxed": 71
+      "at_or_below_target": 593,
+      "equal_to_target": 20,
+      "above_target": 133,
+      "minimum_distinct_reductions_relaxed": 61
     },
     "explicit_p50": {
       "missing": 0,
-      "n": 720,
+      "n": 726,
       "target": 2,
       "boundary_positions_one_based": [
-        360,
-        361
+        363,
+        364
       ],
       "boundary_values": [
         3,
         3
       ],
-      "at_or_below_target": 232,
-      "equal_to_target": 145,
-      "above_target": 488,
+      "at_or_below_target": 235,
+      "equal_to_target": 147,
+      "above_target": 491,
       "minimum_distinct_reductions_relaxed": 129
     },
     "explicit_p90": {
       "missing": 0,
-      "n": 720,
+      "n": 726,
       "target": 5,
       "boundary_positions_one_based": [
-        648,
-        649
+        653,
+        654
       ],
       "boundary_values": [
         6,
         6
       ],
-      "at_or_below_target": 610,
+      "at_or_below_target": 615,
       "equal_to_target": 71,
-      "above_target": 110,
+      "above_target": 111,
       "minimum_distinct_reductions_relaxed": 39
     }
   },
   "middle_proofs_by_file": [
     {
       "file": "MTC/Braided/Cabling/PureSumColored.lean",
-      "count": 15
+      "count": 16
     },
     {
       "file": "MTC/PropertyF/Pivotal/NondegeneracyHaar.lean",
-      "count": 14
+      "count": 15
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/SlopeTrace.lean",
+      "count": 12
     },
     {
       "file": "MTC/PropertyF/Pivotal/AdjointObjectsSupport.lean",
@@ -195,31 +199,27 @@
       "count": 9
     },
     {
+      "file": "MTC/PropertyF/Pivotal/NondegeneracyHaarSnake.lean",
+      "count": 9
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureColoredContext.lean",
+      "count": 8
+    },
+    {
       "file": "MTC/Center/Induction/PivotalFusion.lean",
       "count": 8
     },
     {
       "file": "MTC/Center/Normalization/AdjointRelation.lean",
-      "count": 8
+      "count": 7
     },
     {
       "file": "MTC/Center/Normalization/MugerCategory.lean",
-      "count": 8
-    },
-    {
-      "file": "MTC/PropertyF/Pivotal/SlopeTrace.lean",
-      "count": 8
-    },
-    {
-      "file": "MTC/Braided/Cabling/ClosureColoredContext.lean",
       "count": 7
     },
     {
       "file": "MTC/PropertyF/Pivotal/GeneratedCategory.lean",
-      "count": 7
-    },
-    {
-      "file": "MTC/PropertyF/Pivotal/NondegeneracyHaarSnake.lean",
       "count": 7
     },
     {
@@ -231,7 +231,15 @@
       "count": 6
     },
     {
+      "file": "MTC/Braided/Cabling/ColorBiproduct.lean",
+      "count": 6
+    },
+    {
       "file": "MTC/Braided/Cabling/ColorBiproductConstant.lean",
+      "count": 6
+    },
+    {
+      "file": "MTC/Braided/Cabling/PureSumPositiveState.lean",
       "count": 6
     },
     {
@@ -251,19 +259,15 @@
       "count": 5
     },
     {
-      "file": "MTC/Braided/Cabling/ColorBiproduct.lean",
-      "count": 5
-    },
-    {
-      "file": "MTC/Braided/Cabling/PureSumPositiveState.lean",
-      "count": 5
-    },
-    {
       "file": "MTC/Braided/Cabling/PureSumPreservation.lean",
       "count": 5
     },
     {
       "file": "MTC/Center/Normalization/BinomialAnalytic.lean",
+      "count": 5
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/MonoidalDual.lean",
       "count": 5
     },
     {
@@ -284,6 +288,10 @@
     },
     {
       "file": "MTC/Center/Braid/PivotalRegularSupport.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/Center/Normalization/FusionSubringSupport.lean",
       "count": 4
     },
     {
@@ -323,14 +331,6 @@
       "count": 4
     },
     {
-      "file": "MTC/PropertyF/Pivotal/MonoidalDual.lean",
-      "count": 4
-    },
-    {
-      "file": "MTC/PropertyF/Pivotal/SlopePower.lean",
-      "count": 4
-    },
-    {
       "file": "MTC/Braided/Cabling/ClosureBlockContext.lean",
       "count": 3
     },
@@ -359,11 +359,11 @@
       "count": 3
     },
     {
-      "file": "MTC/Braided/Trace/SaturationSquare.lean",
+      "file": "MTC/Braided/Trace/MonodromyBound.lean",
       "count": 3
     },
     {
-      "file": "MTC/Center/Normalization/FusionSubringSupport.lean",
+      "file": "MTC/Braided/Trace/SaturationSquare.lean",
       "count": 3
     },
     {
@@ -372,10 +372,6 @@
     },
     {
       "file": "MTC/Center/Normalization/MugerLabels.lean",
-      "count": 3
-    },
-    {
-      "file": "MTC/Center/Normalization/MugerObjectNormalization.lean",
       "count": 3
     },
     {
@@ -443,10 +439,6 @@
       "count": 2
     },
     {
-      "file": "MTC/Braided/Trace/MonodromyBound.lean",
-      "count": 2
-    },
-    {
       "file": "MTC/Center/Normalization/AdjointDegrees.lean",
       "count": 2
     },
@@ -468,6 +460,10 @@
     },
     {
       "file": "MTC/Center/Normalization/FPPlacement.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/MugerObjectNormalization.lean",
       "count": 2
     },
     {
@@ -496,6 +492,10 @@
     },
     {
       "file": "MTC/PropertyF/Pivotal/GlobalCriterionConsequences.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/MonoidalQuantumTrace.lean",
       "count": 2
     },
     {
@@ -600,6 +600,10 @@
     },
     {
       "file": "MTC/Braided/Cabling/ColorBiproductLetters.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/PureSum.lean",
       "count": 1
     },
     {
@@ -812,26 +816,26 @@
       "n": 690,
       "proof_lines": {
         "n": 690,
-        "sum": 6022,
+        "sum": 5682,
         "p25_median_p75_p90_p99_max": [
           4.0,
           6.0,
-          11.0,
-          19.0,
-          43.110000000000014,
-          63
+          10.0,
+          17.0,
+          38.110000000000014,
+          60
         ]
       },
       "steps": {
-        "n": 572,
-        "sum": 3892,
+        "n": 570,
+        "sum": 3665,
         "p25_median_p75_p90_p99_max": [
           3.0,
-          5.0,
+          4.0,
           8.0,
-          14.0,
-          34.0,
-          55
+          13.100000000000023,
+          31.929999999999836,
+          51
         ]
       },
       "explicit": {
@@ -1013,26 +1017,26 @@
       "n": 713,
       "proof_lines": {
         "n": 713,
-        "sum": 6119,
+        "sum": 5779,
         "p25_median_p75_p90_p99_max": [
           3.0,
           6.0,
-          11.0,
-          19.0,
-          43.0,
-          63
+          10.0,
+          17.0,
+          38.0,
+          60
         ]
       },
       "steps": {
-        "n": 587,
-        "sum": 3950,
+        "n": 585,
+        "sum": 3723,
         "p25_median_p75_p90_p99_max": [
           3.0,
-          5.0,
+          4.0,
           8.0,
-          14.0,
-          34.0,
-          55
+          13.0,
+          31.479999999999905,
+          51
         ]
       },
       "explicit": {
@@ -1214,35 +1218,35 @@
       "n": 717,
       "proof_lines": {
         "n": 717,
-        "sum": 6172,
+        "sum": 5823,
         "p25_median_p75_p90_p99_max": [
           3.0,
           6.0,
-          11.0,
-          19.0,
-          43.0,
-          63
+          10.0,
+          17.0,
+          38.0,
+          60
         ]
       },
       "steps": {
-        "n": 591,
-        "sum": 3990,
+        "n": 589,
+        "sum": 3756,
         "p25_median_p75_p90_p99_max": [
           3.0,
-          5.0,
+          4.0,
           8.0,
-          14.0,
-          34.0,
-          55
+          13.0,
+          31.360000000000014,
+          51
         ]
       },
       "explicit": {
         "n": 717,
-        "sum": 2504,
+        "sum": 2501,
         "p25_median_p75_p90_p99_max": [
           2.0,
           3.0,
-          5.0,
+          4.0,
           6.0,
           8.840000000000032,
           9
@@ -1250,7 +1254,7 @@
       },
       "implicit": {
         "n": 717,
-        "sum": 696,
+        "sum": 699,
         "p25_median_p75_p90_p99_max": [
           0.0,
           1.0,
@@ -1305,6 +1309,207 @@
           8.0,
           11.0,
           15.840000000000032,
+          21
+        ]
+      }
+    }
+  },
+  "a93ce31a": {
+    "paired": 720,
+    "before": {
+      "n": 720,
+      "proof_lines": {
+        "n": 720,
+        "sum": 6196,
+        "p25_median_p75_p90_p99_max": [
+          3.0,
+          6.0,
+          11.0,
+          19.0,
+          43.0,
+          63
+        ]
+      },
+      "steps": {
+        "n": 594,
+        "sum": 4004,
+        "p25_median_p75_p90_p99_max": [
+          3.0,
+          5.0,
+          8.0,
+          14.0,
+          34.0,
+          55
+        ]
+      },
+      "explicit": {
+        "n": 720,
+        "sum": 2515,
+        "p25_median_p75_p90_p99_max": [
+          2.0,
+          3.0,
+          5.0,
+          6.0,
+          8.809999999999945,
+          9
+        ]
+      },
+      "implicit": {
+        "n": 720,
+        "sum": 701,
+        "p25_median_p75_p90_p99_max": [
+          0.0,
+          1.0,
+          1.0,
+          3.0,
+          6.0,
+          8
+        ]
+      },
+      "strict": {
+        "n": 720,
+        "sum": 0,
+        "p25_median_p75_p90_p99_max": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0
+        ]
+      },
+      "instance": {
+        "n": 720,
+        "sum": 1158,
+        "p25_median_p75_p90_p99_max": [
+          0.0,
+          1.0,
+          3.0,
+          4.0,
+          8.0,
+          11
+        ]
+      },
+      "hypotheses": {
+        "n": 720,
+        "sum": 801,
+        "p25_median_p75_p90_p99_max": [
+          0.0,
+          1.0,
+          2.0,
+          3.0,
+          5.809999999999945,
+          7
+        ]
+      },
+      "total_binders": {
+        "n": 720,
+        "sum": 4374,
+        "p25_median_p75_p90_p99_max": [
+          4.0,
+          6.0,
+          8.0,
+          11.0,
+          15.809999999999945,
+          21
+        ]
+      }
+    },
+    "after": {
+      "n": 720,
+      "proof_lines": {
+        "n": 720,
+        "sum": 5843,
+        "p25_median_p75_p90_p99_max": [
+          3.0,
+          6.0,
+          10.0,
+          17.0,
+          38.0,
+          60
+        ]
+      },
+      "steps": {
+        "n": 592,
+        "sum": 3766,
+        "p25_median_p75_p90_p99_max": [
+          3.0,
+          4.0,
+          8.0,
+          13.0,
+          31.270000000000095,
+          51
+        ]
+      },
+      "explicit": {
+        "n": 720,
+        "sum": 2512,
+        "p25_median_p75_p90_p99_max": [
+          2.0,
+          3.0,
+          4.25,
+          6.0,
+          8.809999999999945,
+          9
+        ]
+      },
+      "implicit": {
+        "n": 720,
+        "sum": 704,
+        "p25_median_p75_p90_p99_max": [
+          0.0,
+          1.0,
+          1.0,
+          3.0,
+          6.0,
+          8
+        ]
+      },
+      "strict": {
+        "n": 720,
+        "sum": 0,
+        "p25_median_p75_p90_p99_max": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0
+        ]
+      },
+      "instance": {
+        "n": 720,
+        "sum": 1158,
+        "p25_median_p75_p90_p99_max": [
+          0.0,
+          1.0,
+          3.0,
+          4.0,
+          8.0,
+          11
+        ]
+      },
+      "hypotheses": {
+        "n": 720,
+        "sum": 801,
+        "p25_median_p75_p90_p99_max": [
+          0.0,
+          1.0,
+          2.0,
+          3.0,
+          5.809999999999945,
+          7
+        ]
+      },
+      "total_binders": {
+        "n": 720,
+        "sum": 4374,
+        "p25_median_p75_p90_p99_max": [
+          4.0,
+          6.0,
+          8.0,
+          11.0,
+          15.809999999999945,
           21
         ]
       }
@@ -1411,7 +1616,7 @@
           ]
         }
       },
-      "current_all": {
+      "sustained_start_all": {
         "n": 245,
         "proof_lines": {
           "n": 245,
@@ -1500,6 +1705,105 @@
         "total_binders": {
           "n": 245,
           "sum": 2034,
+          "p25_median_p75_p90_p99_max": [
+            6.0,
+            8.0,
+            10.0,
+            13.0,
+            16.0,
+            18
+          ]
+        }
+      },
+      "current_all": {
+        "n": 247,
+        "proof_lines": {
+          "n": 247,
+          "sum": 2042,
+          "p25_median_p75_p90_p99_max": [
+            3.5,
+            5.0,
+            10.0,
+            19.0,
+            37.53999999999999,
+            44
+          ]
+        },
+        "steps": {
+          "n": 195,
+          "sum": 1166,
+          "p25_median_p75_p90_p99_max": [
+            2.0,
+            3.0,
+            6.0,
+            13.0,
+            42.0,
+            49
+          ]
+        },
+        "explicit": {
+          "n": 247,
+          "sum": 852,
+          "p25_median_p75_p90_p99_max": [
+            2.0,
+            3.0,
+            4.0,
+            6.0,
+            8.0,
+            9
+          ]
+        },
+        "implicit": {
+          "n": 247,
+          "sum": 350,
+          "p25_median_p75_p90_p99_max": [
+            1.0,
+            1.0,
+            1.0,
+            3.0,
+            7.0,
+            8
+          ]
+        },
+        "strict": {
+          "n": 247,
+          "sum": 0,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0
+          ]
+        },
+        "instance": {
+          "n": 247,
+          "sum": 849,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            3.0,
+            4.0,
+            5.400000000000006,
+            8.0,
+            9
+          ]
+        },
+        "hypotheses": {
+          "n": 247,
+          "sum": 181,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            1.0,
+            2.0,
+            5.0,
+            5
+          ]
+        },
+        "total_binders": {
+          "n": 247,
+          "sum": 2051,
           "p25_median_p75_p90_p99_max": [
             6.0,
             8.0,
@@ -1611,7 +1915,7 @@
           ]
         }
       },
-      "current_all": {
+      "sustained_start_all": {
         "n": 200,
         "proof_lines": {
           "n": 200,
@@ -1635,6 +1939,105 @@
             15.0,
             35.85000000000002,
             55
+          ]
+        },
+        "explicit": {
+          "n": 200,
+          "sum": 627,
+          "p25_median_p75_p90_p99_max": [
+            2.0,
+            3.0,
+            4.0,
+            6.0,
+            9.0,
+            9
+          ]
+        },
+        "implicit": {
+          "n": 200,
+          "sum": 206,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            2.0,
+            3.0,
+            6.0,
+            7
+          ]
+        },
+        "strict": {
+          "n": 200,
+          "sum": 0,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0
+          ]
+        },
+        "instance": {
+          "n": 200,
+          "sum": 155,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            1.0,
+            2.0,
+            6.0499999999999545,
+            11
+          ]
+        },
+        "hypotheses": {
+          "n": 200,
+          "sum": 308,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            6.009999999999991,
+            7
+          ]
+        },
+        "total_binders": {
+          "n": 200,
+          "sum": 988,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            4.0,
+            7.0,
+            9.0,
+            14.069999999999936,
+            21
+          ]
+        }
+      },
+      "current_all": {
+        "n": 200,
+        "proof_lines": {
+          "n": 200,
+          "sum": 1577,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            5.0,
+            10.0,
+            17.099999999999994,
+            43.069999999999936,
+            60
+          ]
+        },
+        "steps": {
+          "n": 162,
+          "sum": 1134,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            5.0,
+            9.0,
+            14.0,
+            35.559999999999945,
+            51
           ]
         },
         "explicit": {
@@ -1811,7 +2214,7 @@
           ]
         }
       },
-      "current_all": {
+      "sustained_start_all": {
         "n": 133,
         "proof_lines": {
           "n": 133,
@@ -1906,6 +2309,105 @@
             7.0,
             9.0,
             13.680000000000007,
+            14
+          ]
+        }
+      },
+      "current_all": {
+        "n": 136,
+        "proof_lines": {
+          "n": 136,
+          "sum": 1185,
+          "p25_median_p75_p90_p99_max": [
+            4.0,
+            7.0,
+            11.25,
+            16.5,
+            29.950000000000017,
+            32
+          ]
+        },
+        "steps": {
+          "n": 126,
+          "sum": 767,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            5.0,
+            8.0,
+            11.0,
+            21.75,
+            22
+          ]
+        },
+        "explicit": {
+          "n": 136,
+          "sum": 587,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            4.0,
+            5.25,
+            7.0,
+            8.650000000000006,
+            9
+          ]
+        },
+        "implicit": {
+          "n": 136,
+          "sum": 63,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            0.0,
+            2.0,
+            4.0,
+            4
+          ]
+        },
+        "strict": {
+          "n": 136,
+          "sum": 0,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0
+          ]
+        },
+        "instance": {
+          "n": 136,
+          "sum": 101,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            0.0,
+            2.0,
+            7.0,
+            7
+          ]
+        },
+        "hypotheses": {
+          "n": 136,
+          "sum": 81,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            1.0,
+            2.0,
+            3.6500000000000057,
+            4
+          ]
+        },
+        "total_binders": {
+          "n": 136,
+          "sum": 751,
+          "p25_median_p75_p90_p99_max": [
+            4.0,
+            5.0,
+            7.0,
+            9.0,
+            13.650000000000006,
             14
           ]
         }
@@ -2011,7 +2513,7 @@
           ]
         }
       },
-      "current_all": {
+      "sustained_start_all": {
         "n": 112,
         "proof_lines": {
           "n": 112,
@@ -2107,6 +2609,105 @@
             7.0,
             10.0,
             10
+          ]
+        }
+      },
+      "current_all": {
+        "n": 113,
+        "proof_lines": {
+          "n": 113,
+          "sum": 798,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            6.0,
+            9.0,
+            13.799999999999997,
+            21.879999999999995,
+            24
+          ]
+        },
+        "steps": {
+          "n": 89,
+          "sum": 549,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            5.0,
+            8.0,
+            11.400000000000006,
+            19.120000000000005,
+            20
+          ]
+        },
+        "explicit": {
+          "n": 113,
+          "sum": 350,
+          "p25_median_p75_p90_p99_max": [
+            2.0,
+            3.0,
+            4.0,
+            5.799999999999997,
+            8.0,
+            10
+          ]
+        },
+        "implicit": {
+          "n": 113,
+          "sum": 76,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            1.0,
+            2.799999999999997,
+            5.0,
+            5
+          ]
+        },
+        "strict": {
+          "n": 113,
+          "sum": 0,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0
+          ]
+        },
+        "instance": {
+          "n": 113,
+          "sum": 54,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            1.0,
+            2.0,
+            3.8799999999999955,
+            4
+          ]
+        },
+        "hypotheses": {
+          "n": 113,
+          "sum": 180,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            1.0,
+            2.0,
+            4.0,
+            6.0,
+            7
+          ]
+        },
+        "total_binders": {
+          "n": 113,
+          "sum": 480,
+          "p25_median_p75_p90_p99_max": [
+            2.0,
+            4.0,
+            6.0,
+            7.0,
+            10.0,
+            16
           ]
         }
       }
@@ -2211,7 +2812,7 @@
           ]
         }
       },
-      "current_all": {
+      "sustained_start_all": {
         "n": 30,
         "proof_lines": {
           "n": 30,
@@ -2235,6 +2836,105 @@
             12.5,
             32.0,
             32
+          ]
+        },
+        "explicit": {
+          "n": 30,
+          "sum": 121,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            4.0,
+            6.0,
+            7.0,
+            7.0,
+            7
+          ]
+        },
+        "implicit": {
+          "n": 30,
+          "sum": 25,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            1.0,
+            1.0,
+            1.1000000000000014,
+            3.710000000000001,
+            4
+          ]
+        },
+        "strict": {
+          "n": 30,
+          "sum": 0,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0
+          ]
+        },
+        "instance": {
+          "n": 30,
+          "sum": 21,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            0.0,
+            1.0,
+            1.2000000000000028,
+            3.710000000000001,
+            4
+          ]
+        },
+        "hypotheses": {
+          "n": 30,
+          "sum": 60,
+          "p25_median_p75_p90_p99_max": [
+            0.0,
+            1.5,
+            4.0,
+            4.100000000000001,
+            5.0,
+            5
+          ]
+        },
+        "total_binders": {
+          "n": 30,
+          "sum": 167,
+          "p25_median_p75_p90_p99_max": [
+            4.0,
+            5.5,
+            7.0,
+            9.0,
+            11.420000000000002,
+            12
+          ]
+        }
+      },
+      "current_all": {
+        "n": 30,
+        "proof_lines": {
+          "n": 30,
+          "sum": 284,
+          "p25_median_p75_p90_p99_max": [
+            4.25,
+            6.0,
+            11.0,
+            14.300000000000004,
+            40.71,
+            41
+          ]
+        },
+        "steps": {
+          "n": 26,
+          "sum": 181,
+          "p25_median_p75_p90_p99_max": [
+            3.0,
+            4.0,
+            8.5,
+            11.5,
+            28.5,
+            29
           ]
         },
         "explicit": {

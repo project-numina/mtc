@@ -1,4 +1,5 @@
 import sys
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -37,6 +38,15 @@ local instance (n : Nat) : Fact (n = n) := by
 
 
 class TargetGapTest(unittest.TestCase):
+    def test_environment_only_inherited_source_is_not_generated(self):
+        generated = re.compile(r'\._proof_\d')
+        classify = target_dashboard.classify_environment_only
+        self.assertEqual(classify('MTC.Existing', {'MTC.Existing'}, generated),
+                         'inherited source proof')
+        self.assertEqual(classify('MTC.foo._proof_1', set(), generated),
+                         'generated-name pattern')
+        self.assertEqual(classify('MTC.Unknown', set(), generated), 'review')
+
     def test_ties_and_interpolation(self):
         median = target_gap([1, 2, 3, 3, 4, 4, 5, 6], .5, 3, 1)
         self.assertEqual(median['boundary_values'], [3, 4])

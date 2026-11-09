@@ -105,3 +105,26 @@ complete command logs are also recorded in the run directory's `lead-status.md`.
 ## Second target pass
 
 The second pass reuses shared actual-pure-block, Hermitian-dimension, Haar-expansion, symmetric-integrality, and infinitude arguments. It preserves existing public signatures and retains explicit premises. The expanded cohort, exact targets, exceptions, per-area totals, source-matching audit, type-hash comparison, and verification are recorded in [the target dashboard](target-report.md). The numerical proof-line and explicit-binder targets remain missed.
+
+## Sustained target-directed rounds
+
+Four further independently assigned rounds are documented in the
+[sustained target report](target-report.md), including the still-missed targets,
+all-current and pinned-cohort measurements, exact outliers and attempted
+alternatives. The new general two-factor weighted-saturation theorem has two
+actual consumers and is counted as new-layer proof code even though its
+coherent home is the inherited `ENOMatrices` module. The previous inherited
+all-factor theorem is also included in the combined cost comparison. Monoidal
+trace transport now follows from right-trace preservation and two explicit,
+counted duality naturality results; actual pure-word intertwining and pure-image
+representatives are shared by their consumers.
+
+The public `pureBlock_range_subset_coloredWords` theorem now infers three
+parameters from its typed maps, and its three repository call sites were
+migrated. Its assumptions, conclusion and total binder count are unchanged.
+The earlier `SlopePower` module remains a compatibility import after four
+unchanged public results moved to `SlopeTrace`. A proposed inclusion/projection
+delta helper was rejected after another worker found an existing basis API;
+rephasing and weighted-adjunction alternatives that added more proof cost were
+retained only as documented experiments. No failure of a shorter attempt is a
+proof of mathematical impossibility.
