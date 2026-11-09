@@ -75,9 +75,9 @@ def pivotalFourthScalar (X : C.Obj) [Simple X] : ℂ :=
 theorem pivotalFourthComparison_simple (X : C.Obj) [Simple X] :
     (pivotalFourthComparison C p X).hom = pivotalFourthScalar C p X • 𝟙 X := by
   let : FiniteDimensional ℂ (X ⟶ X) := IsFusionCategory.hom_finite _ _
-  exact congrArg End.asHom (show End.of (pivotalFourthComparison C p X).hom =
-    pivotalFourthScalar C p X • (1 : End X) from
-    (simpleEndScalar (k := ℂ) X).injective (by simp [pivotalFourthScalar]))
+  exact congrArg End.asHom
+    (eq_smul_one_of_algEquiv (simpleEndScalar (k := ℂ) X)
+      (End.of (pivotalFourthComparison C p X).hom))
 
 /-- A nonzero morphism into a tensor product forces the comparison scalars
 on its three simple objects to multiply. -/

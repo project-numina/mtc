@@ -3,6 +3,7 @@ public import MTC.PropertyF.Pivotal.Nondegeneracy
 public import MTC.Center.Trace.LeftTensorTrace
 public import MTC.PropertyF.Pivotal.SlopeTrace
 public import MTC.Center.Induction.BasisPairing
+public import MTC.Center.Braid.PivotalRegularSupport
 
 open MTC.Fusion MTC.Modular MTC.CategoryTheory.Dimensions MTC.Center.Trace
 open scoped BigOperators
@@ -174,14 +175,8 @@ theorem leftTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
       star (simpleDimension C p i) * star (simpleDimension C p k) := by
   rw [leftTrace_doubleBraiding_eq_dual]
   have htest := hs
-  have hki := MTC.Center.Induction.pivotalDimension_simple_dual_conj p i
-  have hkk := MTC.Center.Induction.pivotalDimension_simple_dual_conj p k
-  have hi := pivotalDimension_iso p (rightDualLabelIso C i)
-  have hk := pivotalDimension_iso p (rightDualLabelIso C k)
-  have hidim : simpleDimension C p (dualIndex C i) = star (simpleDimension C p i) := by
-    simpa only [simpleDimension] using hi.symm.trans hki
-  have hkdim : simpleDimension C p (dualIndex C k) = star (simpleDimension C p k) := by
-    simpa only [simpleDimension] using hk.symm.trans hkk
+  have hidim := MTC.Center.Braid.simpleDimension_dual_eq_star (D := C) (p := p) i
+  have hkdim := MTC.Center.Braid.simpleDimension_dual_eq_star (D := C) (p := p) k
   -- The normalized S character of a dual label is conjugated.
   have hdualtest : categoricalS C p (dualIndex C i) (dualIndex C k) =
       simpleDimension C p (dualIndex C i) * simpleDimension C p (dualIndex C k) := by
