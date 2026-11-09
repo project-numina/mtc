@@ -41,11 +41,8 @@ lemma norm_weightPhase (z : ℂ) : ‖weightPhase z‖ = 1 := by
 lemma weight_mul_phase (z : ℂ) : z * weightPhase z = (‖z‖ : ℂ) := by
   by_cases hz : z = 0
   · simp [weightPhase, hz]
-  · have hn : (‖z‖ : ℂ) ≠ 0 := by exact_mod_cast (norm_ne_zero_iff.mpr hz)
-    simp only [weightPhase, hz, ↓reduceIte]
-    rw [← mul_div_assoc]
-    simp only [Complex.star_def, Complex.mul_conj']
-    field_simp
+  · simp [weightPhase, hz, ← mul_div_assoc, Complex.mul_conj',
+      pow_two, Complex.ofReal_ne_zero.mpr (norm_ne_zero_iff.mpr hz)]
 
 /-- A unitary block element aligning arbitrary complex weights. -/
 def complexPhaseElement : B.Matrices := fun r => weightPhase (w r) • 1

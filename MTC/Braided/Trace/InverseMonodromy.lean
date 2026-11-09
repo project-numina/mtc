@@ -22,14 +22,11 @@ set_option backward.isDefEq.respectTransparency false in
 theorem threeGeneratorRight_inv_transport (X : C) :
     (threePowerIso X).conj (Aut.toEnd ((braidGenerator X 1 1)⁻¹)) =
       End.of (X ◁ (β_ X X).inv) := by
-  have hi : ((threePowerIso X).conjAut (braidGenerator X 1 1)).asIso =
-      whiskerLeftIso X (β_ X X) := Iso.ext (threeGeneratorRight_transport X)
   apply End.ext
   change ((threePowerIso X).conjAut ((braidGenerator X 1 1)⁻¹)).asIso.hom = _
   rw [map_inv]
-  change ((threePowerIso X).conjAut (braidGenerator X 1 1)).asIso.inv = _
-  rw [hi]
-  rfl
+  exact congrArg Iso.inv (show ((threePowerIso X).conjAut (braidGenerator X 1 1)).asIso =
+    whiskerLeftIso X (β_ X X) from Iso.ext (threeGeneratorRight_transport X))
 
 omit [Linear ℂ C] [MonoidalPreadditive C] [MonoidalLinear ℂ C] in
 set_option backward.isDefEq.respectTransparency false in

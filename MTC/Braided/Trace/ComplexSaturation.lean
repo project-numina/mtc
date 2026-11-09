@@ -56,9 +56,7 @@ theorem actual_mixed_braid_trace_eq_one_of_saturation
       simpa [htr] using pivotal_unitary_trace_bound C p hfinite b he (b.symm u) (by simpa using hu))
   have hpos : ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices) =
       b (braidInImage (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) := by
-    change ((ρ.toHomUnits (threeGeneratorLeft X) ^ 2 *
-      ρ.toHomUnits (threeGeneratorRight X) ^ 2 : B.Matricesˣ) : B.Matrices) = _
-    rw [← map_pow, ← map_pow, ← map_mul]
+    simp only [a, c, ← map_pow, ← map_mul, MonoidHom.coe_toHomUnits]
     rfl
   have hsat : ‖B.complexTrace w ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices)‖ =
       B.complexMass w := le_antisymm (B.norm_complexTrace_le w hunit) (by
@@ -67,9 +65,7 @@ theorem actual_mixed_braid_trace_eq_one_of_saturation
   have hmixed := B.mixed_braid_trace_eq_one_of_saturation w ha hc hbraid hsat
   have hmix : ((a ^ 2 * (c ^ 2)⁻¹ : B.Matricesˣ) : B.Matrices) =
       b (braidInImage (threeGeneratorLeft X ^ 2 * (threeGeneratorRight X ^ 2)⁻¹)) := by
-    change ((ρ.toHomUnits (threeGeneratorLeft X) ^ 2 *
-      (ρ.toHomUnits (threeGeneratorRight X) ^ 2)⁻¹ : B.Matricesˣ) : B.Matrices) = _
-    rw [← map_pow, ← map_pow, ← map_inv, ← map_mul]
+    simp only [a, c, ← map_pow, ← map_inv, ← map_mul, MonoidHom.coe_toHomUnits]
     rfl
   rw [hmix, ← htr, ← map_one b, ← htr] at hmixed
   exact hmixed

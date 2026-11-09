@@ -28,8 +28,7 @@ theorem actual_two_inverse_braid_trace (C : BraidedFusionCategory.{v,u})
     apply End.ext
     change ((twoPowerIso X).conjAut (braidGenerator X 0 0)⁻¹).asIso.hom = _
     rw [map_inv]
-    change ((twoPowerIso X).conjAut (braidGenerator X 0 0)).asIso.inv = _
-    rw [twoGenerator_transport]
+    exact congrArg Iso.inv (twoGenerator_transport X)
   rw [← inv_pow, map_pow, map_pow, hgen]
   simp [inverseSelfMonodromy, pow_two, End.mul_asHom]
 
@@ -68,11 +67,9 @@ theorem norm_inverse_monodromy_trace_eq_of_constituent_phase
     · simp [hm]
     · have hle : mult i j * size j ≤
           Module.finrank ℂ (MTC.Fusion.simples C i ⟶ braidTensorPower X 0) := by
-        have hdim_i : Module.finrank ℂ (MTC.Fusion.simples C i ⟶ braidTensorPower X 0) =
-            ∑ j, mult i j * size j := hdim i
-        rw [hdim_i]
-        exact Finset.single_le_sum (f := fun j => mult i j * size j)
-          (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)
+        simpa only [← hdim i] using
+          (Finset.single_le_sum (f := fun j => mult i j * size j)
+            (fun _ _ => Nat.zero_le _) (Finset.mem_univ j))
       have hp := hphase i (lt_of_lt_of_le (Nat.mul_pos (Nat.pos_of_ne_zero hm) (hsize j)) hle)
       conv_lhs => rw [hp]
       exact mul_left_comm _ _ _

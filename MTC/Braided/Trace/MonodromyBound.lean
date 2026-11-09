@@ -32,10 +32,7 @@ theorem actual_two_braid_trace (C : BraidedFusionCategory.{v,u})
   congr 2
   change ((twoPowerIso X).conj (Aut.toEnd ((braidGenerator X 0 0) ^ 2))).asHom = _
   have hgen : (twoPowerIso X).conj (Aut.toEnd (braidGenerator X 0 0)) =
-      End.of (β_ X X).hom := by
-    apply End.ext
-    change ((twoPowerIso X).conjAut (braidGenerator X 0 0)).asIso.hom = _
-    rw [twoGenerator_transport]
+      End.of (β_ X X).hom := End.ext (congrArg Iso.hom (twoGenerator_transport X))
   rw [map_pow, map_pow, hgen]
   simp [selfMonodromy, pow_two, End.mul_asHom]
 
