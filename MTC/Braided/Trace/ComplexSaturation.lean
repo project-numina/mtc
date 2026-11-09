@@ -50,29 +50,27 @@ theorem actual_mixed_braid_trace_eq_one_of_saturation
     simpa only [Units.val_mul, Units.val_pow_eq_pow_val] using
       (unitary B.Matrices).mul_mem ((unitary B.Matrices).pow_mem ha 2)
         ((unitary B.Matrices).pow_mem hc 2)
+  have hmass : B.complexMass w ≤ ‖pivotalDimension C p X‖ *
+      MTC.Fusion.fpDimension C X ^ 2 :=
+    B.complexMass_le_of_unitary_trace_bound w (fun u hu => by
+      simpa [htr] using pivotal_unitary_trace_bound C p hfinite b he (b.symm u) (by simpa using hu))
   have hpos : ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices) =
       b (braidInImage (threeGeneratorLeft X ^ 2 * threeGeneratorRight X ^ 2)) := by
     change ((ρ.toHomUnits (threeGeneratorLeft X) ^ 2 *
       ρ.toHomUnits (threeGeneratorRight X) ^ 2 : B.Matricesˣ) : B.Matrices) = _
     rw [← map_pow, ← map_pow, ← map_mul]
     rfl
+  have hsat : ‖B.complexTrace w ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices)‖ =
+      B.complexMass w := le_antisymm (B.norm_complexTrace_le w hunit) (by
+    rw [hpos, ← htr, hvalue]
+    exact hmass)
+  have hmixed := B.mixed_braid_trace_eq_one_of_saturation w ha hc hbraid hsat
   have hmix : ((a ^ 2 * (c ^ 2)⁻¹ : B.Matricesˣ) : B.Matrices) =
       b (braidInImage (threeGeneratorLeft X ^ 2 * (threeGeneratorRight X ^ 2)⁻¹)) := by
     change ((ρ.toHomUnits (threeGeneratorLeft X) ^ 2 *
       (ρ.toHomUnits (threeGeneratorRight X) ^ 2)⁻¹ : B.Matricesˣ) : B.Matrices) = _
     rw [← map_pow, ← map_pow, ← map_inv, ← map_mul]
     rfl
-  have hnorm : ‖B.complexTrace w ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices)‖ =
-      ‖pivotalDimension C p X‖ * MTC.Fusion.fpDimension C X ^ 2 := by
-    rw [hpos, ← htr]
-    exact hvalue
-  have hmass : B.complexMass w ≤ ‖pivotalDimension C p X‖ *
-      MTC.Fusion.fpDimension C X ^ 2 :=
-    B.complexMass_le_of_unitary_trace_bound w (fun u hu => by
-      simpa [htr] using pivotal_unitary_trace_bound C p hfinite b he (b.symm u) (by simpa using hu))
-  have hsat : ‖B.complexTrace w ((a ^ 2 * c ^ 2 : B.Matricesˣ) : B.Matrices)‖ =
-      B.complexMass w := le_antisymm (B.norm_complexTrace_le w hunit) (hnorm ▸ hmass)
-  have hmixed := B.mixed_braid_trace_eq_one_of_saturation w a c ha hc hbraid hsat
   rw [hmix, ← htr, ← map_one b, ← htr] at hmixed
   exact hmixed
 

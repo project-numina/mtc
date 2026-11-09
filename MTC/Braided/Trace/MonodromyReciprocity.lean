@@ -1,5 +1,5 @@
 module
-public import MTC.Algebra.ComplexTraceReciprocity
+public import MTC.Algebra.ComplexBlockTrace
 public import MTC.Braided.Trace.InverseMonodromy
 public import MTC.Braided.Trace.MonodromyBound
 
@@ -23,18 +23,13 @@ theorem actual_two_inverse_braid_trace (C : BraidedFusionCategory.{v,u})
   simp only [Subgroup.coe_inv, Subgroup.coe_pow]
   rw [← rightTrace_iso_conj (twoPowerIso X) p]
   congr 2
-  have hi : ((twoPowerIso X).conjAut (braidGenerator X 0 0)).asIso = β_ X X := by
-    apply Iso.ext
-    change (twoPowerIso X).inv ≫ (braidGenerator X 0 0).asIso.hom ≫
-      (twoPowerIso X).hom = _
-    simp [twoPowerIso, braidGenerator, tensorPower]
   have hgen : (twoPowerIso X).conj (Aut.toEnd (braidGenerator X 0 0)⁻¹) =
       End.of (β_ X X).inv := by
     apply End.ext
     change ((twoPowerIso X).conjAut (braidGenerator X 0 0)⁻¹).asIso.hom = _
     rw [map_inv]
     change ((twoPowerIso X).conjAut (braidGenerator X 0 0)).asIso.inv = _
-    rw [hi]
+    rw [twoGenerator_transport]
   rw [← inv_pow, map_pow, map_pow, hgen]
   simp [inverseSelfMonodromy, pow_two, End.mul_asHom]
 
@@ -66,38 +61,33 @@ theorem norm_inverse_monodromy_trace_eq_of_constituent_phase
     change (∑ i, (mult i j : ℂ) * pivotalDimension C p (MTC.Fusion.simples C i)) =
       ξ * (starRingEnd ℂ) (∑ i, (mult i j : ℂ) *
         pivotalDimension C p (MTC.Fusion.simples C i))
-    rw [map_sum, Finset.mul_sum]
+    simp only [map_sum, map_mul, map_natCast, Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro i _
     by_cases hm : mult i j = 0
     · simp [hm]
-    · have hpos : 0 < mult i j * size j := Nat.mul_pos (Nat.pos_of_ne_zero hm) (hsize j)
-      have hle : mult i j * size j ≤
+    · have hle : mult i j * size j ≤
           Module.finrank ℂ (MTC.Fusion.simples C i ⟶ braidTensorPower X 0) := by
         have hdim_i : Module.finrank ℂ (MTC.Fusion.simples C i ⟶ braidTensorPower X 0) =
             ∑ j, mult i j * size j := hdim i
         rw [hdim_i]
         exact Finset.single_le_sum (f := fun j => mult i j * size j)
           (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)
-      have hp := hphase i (lt_of_lt_of_le hpos hle)
-      simp only [map_mul, map_natCast]
+      have hp := hphase i (lt_of_lt_of_le (Nat.mul_pos (Nat.pos_of_ne_zero hm) (hsize j)) hle)
       conv_lhs => rw [hp]
-      change (mult i j : ℂ) * (ξ * star (pivotalDimension C p (MTC.Fusion.simples C i))) =
-        ξ * ((mult i j : ℂ) * star (pivotalDimension C p (MTC.Fusion.simples C i)))
-      ring
+      exact mul_left_comm _ _ _
+
   let g : braidImage X 0 := imageGenerator X 0 0 ^ 2
   let ρ : braidImage X 0 →* B.Matrices :=
     b.toMonoidHom.comp (braidInImage (X := X) (n := 0))
-  let u : B.Matricesˣ := ρ.toHomUnits g
-  have hu : B.IsUnitary (u : B.Matrices) := he g
-  have hn := B.norm_complexTrace_star_of_weight_phase w ξ hξ hw (u : B.Matrices)
-  rw [unitary_star_coe_inv u hu] at hn
-  have hinv : ((u⁻¹ : B.Matricesˣ) : B.Matrices) = b (braidInImage g⁻¹) := by
-    change (((ρ.toHomUnits g)⁻¹ : B.Matricesˣ) : B.Matrices) = _
-    rw [← map_inv]
-    rfl
-  have hfwd : (u : B.Matrices) = b (braidInImage g) := rfl
-  rw [hinv, hfwd, ← htr, ← htr] at hn
+  have hn := B.norm_complexTrace_star_of_weight_phase w ξ hξ hw (ρ g)
+  have hstar : star (ρ g) = ρ g⁻¹ := by
+    simpa only [← map_inv, MonoidHom.coe_toHomUnits] using
+      unitary_star_coe_inv (ρ.toHomUnits g) (he g)
+  rw [hstar] at hn
+  change ‖B.complexTrace w (b (braidInImage g⁻¹))‖ =
+    ‖B.complexTrace w (b (braidInImage g))‖ at hn
+  rw [← htr, ← htr] at hn
   change ‖actualBraidTrace C p (braidInImage ((imageGenerator X 0 0 ^ 2)⁻¹))‖ =
     ‖actualBraidTrace C p (braidInImage (imageGenerator X 0 0 ^ 2))‖ at hn
   rw [actual_two_inverse_braid_trace, actual_two_braid_trace] at hn

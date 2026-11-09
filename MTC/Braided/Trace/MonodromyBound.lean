@@ -10,6 +10,16 @@ open CategoryTheory CategoryTheory.MonoidalCategory
 namespace MTC.Braided.Trace
 universe v u
 
+/-- After removing the trailing tensor unit, the two-strand generator is
+exactly the braiding on the ordinary tensor square. -/
+theorem twoGenerator_transport {D : Type u} [Category.{v} D] [MonoidalCategory D]
+    [BraidedCategory D] (X : D) :
+    ((twoPowerIso X).conjAut (braidGenerator X 0 0)).asIso = β_ X X := by
+  apply Iso.ext
+  change (twoPowerIso X).inv ≫ (braidGenerator X 0 0).asIso.hom ≫
+    (twoPowerIso X).hom = _
+  simp [twoPowerIso, braidGenerator, tensorPower]
+
 /-- Two-strand braid-square trace is the categorical self-monodromy trace. -/
 theorem actual_two_braid_trace (C : BraidedFusionCategory.{v,u})
     (p : PivotalStructure (C := C.Obj)) (X : C.Obj) :
@@ -24,9 +34,8 @@ theorem actual_two_braid_trace (C : BraidedFusionCategory.{v,u})
   have hgen : (twoPowerIso X).conj (Aut.toEnd (braidGenerator X 0 0)) =
       End.of (β_ X X).hom := by
     apply End.ext
-    change (twoPowerIso X).inv ≫ (braidGenerator X 0 0).asIso.hom ≫
-      (twoPowerIso X).hom = _
-    simp [twoPowerIso, braidGenerator, tensorPower]
+    change ((twoPowerIso X).conjAut (braidGenerator X 0 0)).asIso.hom = _
+    rw [twoGenerator_transport]
   rw [map_pow, map_pow, hgen]
   simp [selfMonodromy, pow_two, End.mul_asHom]
 

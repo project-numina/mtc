@@ -14,10 +14,10 @@ namespace MTC.Algebra.Blocks
 /-- Saturation of the weighted unitary bound forces the two braid squares to
 agree on each block of nonzero weight, even when other weights vanish. -/
 theorem braid_squares_equal_on_support (B : Blocks) (w : Fin B.count → ℂ)
-    (a b : B.Matricesˣ) (ha : B.IsUnitary (a : B.Matrices))
+    {a b : B.Matricesˣ} (ha : B.IsUnitary (a : B.Matrices))
     (hb : B.IsUnitary (b : B.Matrices)) (hbraid : a * b * a = b * a * b)
     (hsat : ‖B.complexTrace w ((a ^ 2 * b ^ 2 : B.Matricesˣ) : B.Matrices)‖ =
-      B.complexMass w) (r : Fin B.count) (hw : w r ≠ 0) :
+      B.complexMass w) {r : Fin B.count} (hw : w r ≠ 0) :
     ((a ^ 2 : B.Matricesˣ) : B.Matrices) r = ((b ^ 2 : B.Matricesˣ) : B.Matrices) r := by
   let ev := Pi.evalMonoidHom (fun r => Matrix (Fin (B.size r)) (Fin (B.size r)) ℂ) r
   let a' := Units.map ev a
@@ -39,7 +39,7 @@ theorem braid_squares_equal_on_support (B : Blocks) (w : Fin B.count → ℂ)
 /-- Under the same hypotheses, the weighted trace of the mixed-sign braid is
 exactly the weighted trace of the identity, regardless of zero-weight blocks. -/
 theorem mixed_braid_trace_eq_one_of_saturation (B : Blocks) (w : Fin B.count → ℂ)
-    (a b : B.Matricesˣ) (ha : B.IsUnitary (a : B.Matrices))
+    {a b : B.Matricesˣ} (ha : B.IsUnitary (a : B.Matrices))
     (hb : B.IsUnitary (b : B.Matrices)) (hbraid : a * b * a = b * a * b)
     (hsat : ‖B.complexTrace w ((a ^ 2 * b ^ 2 : B.Matricesˣ) : B.Matrices)‖ =
       B.complexMass w) :
@@ -49,13 +49,10 @@ theorem mixed_braid_trace_eq_one_of_saturation (B : Blocks) (w : Fin B.count →
   intro r _
   by_cases hw : w r = 0
   · simp [hw]
-  · have hs := B.braid_squares_equal_on_support w a b ha hb hbraid hsat r hw
-    have hu : ((a ^ 2 : B.Matricesˣ) : B.Matrices) r =
-        ((b ^ 2 : B.Matricesˣ) : B.Matrices) r := hs
-    have h : (((a ^ 2 * (b ^ 2)⁻¹ : B.Matricesˣ) : B.Matrices) r) = 1 := by
+  · have h : (((a ^ 2 * (b ^ 2)⁻¹ : B.Matricesˣ) : B.Matrices) r) = 1 := by
       change (((a ^ 2 : B.Matricesˣ) : B.Matrices) r) *
         ((((b ^ 2)⁻¹ : B.Matricesˣ) : B.Matrices) r) = 1
-      rw [hu]
+      rw [B.braid_squares_equal_on_support w ha hb hbraid hsat hw]
       have hv := congrArg (fun u : B.Matricesˣ => (u : B.Matrices))
         (mul_inv_cancel (b ^ 2))
       simpa only [Units.val_mul, Units.val_one, Pi.mul_apply, Pi.one_apply] using congrFun hv r
