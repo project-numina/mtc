@@ -19,13 +19,13 @@ universe v u
 /-- The manuscript's full nondegenerate pivotal theorem. -/
 theorem nondegenerateMainStatement_proved : NondegenerateMainStatement.{v,u} :=
   nondegenerateStatement_of_relative_fusion_criterion
-    (fun D p A hA y hs a ha => relative_fusionSubring_numerical_centrality D p A hA y hs a ha)
+    relative_fusionSubring_numerical_centrality
 
 /-- The manuscript's full degenerate pivotal theorem under its stated
 positivity hypothesis on the transparent adjoint simples. -/
 theorem degenerateMainStatement_proved : DegenerateMainStatement.{v,u} :=
   degenerateStatement_of_relative_fusion_criterion
-    (fun D p A hA y hs a ha => relative_fusionSubring_numerical_centrality D p A hA y hs a ha)
+    relative_fusionSubring_numerical_centrality
 
 end MTC.PropertyF.Pivotal
 end
