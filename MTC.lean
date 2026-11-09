@@ -194,7 +194,6 @@ public import MTC.Center.Normalization.SymmetricConditional
 public import MTC.Center.Normalization.SymmetricGlobal
 public import MTC.Center.Normalization.SymmetricInteger
 public import MTC.Center.Normalization.SymmetricPivotal
-public import MTC.Center.Normalization.SymmetricRising
 public import MTC.Center.Normalization.SymmetricSquares
 public import MTC.Center.Normalization.UniversalGrading
 public import MTC.Center.Product

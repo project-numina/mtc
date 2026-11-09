@@ -113,7 +113,6 @@ import all MTC.PropertyF.Pivotal.MonoidalTrace
 import all MTC.Braided.Cabling.ClosureSplitMerge
 import all MTC.PropertyF.Pivotal.MonoidalDualComparison
 import all MTC.Center.Normalization.BinomialAnalytic
-import all MTC.Center.Normalization.SymmetricRising
 import all MTC.PropertyF.Pivotal.MonoidalDual
 import all MTC.Braided.Cabling.ClosureMergeCommon
 import all MTC.PropertyF.Pivotal.AdjointObjectsSupport
