@@ -99,9 +99,7 @@ theorem pivotalDimension_underlying (p : PivotalStructure (C := C.Obj)) (X : C.O
   rw [squaredNorm_eq_pivotalDimension_mul_dual p, ← MTC.Fusion.unitScalar_eq_equiv]
   change pivotalDimension C p (conjugate (simples C i) X) = _
   rw [pivotalDimension_tensor, pivotalDimension_tensor]
-  have heq : (unitScalarEquiv C) (p.rightTrace (𝟙 X)) = pivotalDimension C p X := by
-    rw [pivotalDimension, unitScalar_eq_equiv]
-  rw [heq]
+  simp only [pivotalDimension, unitScalar_eq_equiv]
   ring
 
 /-- The induced unit has intrinsic global dimension, for any pivotal structure. -/

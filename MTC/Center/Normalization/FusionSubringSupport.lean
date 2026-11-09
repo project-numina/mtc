@@ -33,11 +33,8 @@ theorem fusionSubring_dualLabel_finrank_zero
     (j : Fin (rank C)) (hj : j ∉ A) :
     Module.finrank ℂ (simples C (dualIndex C j) ⟶
       simples C a ⊗ (simples C i)ᘁ) = 0 := by
-  have hj' : dualIndex C j ∉ A := by
-    intro h
-    have h' := hA.dual (dualIndex C j) h
-    apply hj
-    rwa [dualIndex_involutive C j] at h'
+  have hj' : dualIndex C j ∉ A := fun h ↦ hj (by
+    simpa only [dualIndex_involutive C j] using hA.dual (dualIndex C j) h)
   have he := (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples C (dualIndex C j)))
     (Iso.refl (simples C a) ⊗ᵢ rightDualLabelIso C i)).finrank_eq
   exact he.trans (fusionSubring_forward_finrank_zero C A hA a (dualIndex C i)
@@ -68,11 +65,8 @@ theorem fusionSubring_dualLabel_finrank_zero_of_supported
     (U : C.Obj) (hU : ∀ a, 0 < simpleMultiplicity C a U → a ∈ A)
     (i : Fin (rank C)) (hi : i ∈ A) (j : Fin (rank C)) (hj : j ∉ A) :
     Module.finrank ℂ (simples C (dualIndex C j) ⟶ U ⊗ (simples C i)ᘁ) = 0 := by
-  have hj' : dualIndex C j ∉ A := by
-    intro h
-    apply hj
-    have h' := hA.dual (dualIndex C j) h
-    rwa [dualIndex_involutive C j] at h'
+  have hj' : dualIndex C j ∉ A := fun h ↦ hj (by
+    simpa only [dualIndex_involutive C j] using hA.dual (dualIndex C j) h)
   have he := (CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples C (dualIndex C j)))
     ((Iso.refl U ⊗ᵢ (rightDualLabelIso C i)) ≪≫ β_ U (simples C (dualIndex C i)))).finrank_eq
   exact he.trans (fusionSubring_forward_finrank_zero_of_supported C A hA

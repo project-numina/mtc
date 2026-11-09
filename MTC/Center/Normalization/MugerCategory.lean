@@ -167,9 +167,7 @@ theorem mugerSimple_injective {i j : MugerSimpleIndex C}
   apply Subtype.ext
   apply simples_injective C
   obtain ⟨e⟩ := h
-  have he := (mugerProperty C).ι.mapIso e
-  change simples C i ≅ simples C j at he
-  exact ⟨he⟩
+  exact ⟨(mugerProperty C).ι.mapIso e⟩
 
 /-- The Müger category has a finite, pairwise nonisomorphic simple family,
 and every object decomposes into these simples. -/
