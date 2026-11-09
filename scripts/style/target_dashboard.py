@@ -216,12 +216,15 @@ def main():
             return 'infrastructure'
         return 'other new layer'
     results['areas'] = {}
-    for label in sorted({area(r) for r in all_new} | {area(r) for r in round_two
+    for label in sorted({area(r) for r in all_new} | {area(r) for r in round_two + sustained_start
                          if r['population'].startswith('New pivotal modules')}):
         before = [r for r in round_two if r['population'].startswith('New pivotal modules')
                   and area(r) == label]
         after = [r for r in all_new if area(r) == label]
+        start = [r for r in sustained_start if r['population'].startswith('New pivotal modules')
+                 and area(r) == label]
         results['areas'][label] = {'round_two_all': metrics(before),
+                                  'sustained_start_all': metrics(start),
                                   'current_all': metrics(after)}
     (OUT / 'target-dashboard.json').write_text(json.dumps(results, indent=2) + '\n')
     print(json.dumps(results, indent=2))
