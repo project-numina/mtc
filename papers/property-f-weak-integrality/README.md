@@ -32,7 +32,7 @@ date of the latest PDF in the November 8 thread. SHA-256:
 The linked PDF was generated locally from this source with Tectonic 0.15.0; it is not a copy of the Slack PDF. The repository's earlier October 22 PDF has a different abstract and main theorem and is preserved unchanged.
 
 The existing theorem above formalizes weak integrality under a pseudo-unitary-conjugate hypothesis. The results in the later pivotal manuscript are proved in the declarations mapped below, including the closure lemma and objectwise conclusion.
-The review and final audit are recorded in [docs/pivotal-verification.md](../../docs/pivotal-verification.md).
+The target review, including the represented-conjugate and braid-presentation modeling limits, and audit history are recorded in [docs/pivotal-verification.md](../../docs/pivotal-verification.md).
 
 | Later manuscript result | Current Lean coverage |
 |---|---|
