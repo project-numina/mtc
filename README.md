@@ -16,9 +16,6 @@ centre and the adjoint subcategory.
   `nondegenerateMainStatement_proved` and `degenerateMainStatement_proved`.
 - [Exact statements](MTC/PropertyF/Pivotal/Statement.lean), including the positivity
   condition and the semilinear-equivalence definition of Galois conjugates.
-- [Manuscript and theorem map](papers/property-f-weak-integrality/README.md):
-  trace bound, saturation, centre and normalization lemmas, closure, and the
-  eventual infinite-braid-image corollary.
 - [Verification record](docs/pivotal-verification.md).
 - [Code distribution audit](docs/style/README.md): proof lengths, elaborated
   binders and module sizes compared with the inherited library and Mathlib.

@@ -1,8 +1,6 @@
 # Verification of the later pivotal manuscript
 
-The source and its provenance are recorded in the
-[paper map](../papers/property-f-weak-integrality/README.md). The new target
-definitions and their proofs cover the nondegenerate and degenerate pivotal
+The new target definitions and their proofs cover the nondegenerate and degenerate pivotal
 theorems, the centre and normalization lemmas, the pseudo-unitary-conjugate
 corollary, closure, and the eventual infinite-image corollary.
 

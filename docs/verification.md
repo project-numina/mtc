@@ -7,7 +7,7 @@ Toolchain: Lean 4.35.0, Mathlib v4.35.0 (all package checkouts clean at tag v4.3
 ## Verdict
 
 The Lean theorem `PropertyF.Ground.target : TargetStatement` is a faithful formalization of Theorem 1.1 of
-[the manuscript](../papers/property-f-weak-integrality/property-f-simplified.pdf) ("a braided fusion category with property F and a pseudo-unitary Galois conjugate is
+the manuscript ("a braided fusion category with property F and a pseudo-unitary Galois conjugate is
 weakly integral"). The library builds from scratch, and the theorem depends only on `propext`,
 `Classical.choice` and `Quot.sound`. The kernel checker `leanchecker` independently replayed every declaration
 in all 111 built project modules without error. I checked every definition in the frozen statement against the
