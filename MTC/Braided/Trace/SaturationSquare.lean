@@ -16,12 +16,11 @@ theorem nonzero_square_hom_of_braid_multiplicity
     (C : BraidedFusionCategory.{v,u}) (X Y : C.Obj)
     (h : 0 < Module.finrank ℂ (Y ⟶ braidTensorPower X 0)) :
     ∃ f : Y ⟶ X ⊗ X, f ≠ 0 := by
-  let _ : FiniteDimensional ℂ (Y ⟶ X ⊗ X) := MTC.Fusion.IsFusionCategory.hom_finite _ _
-  have he := (CategoryTheory.Linear.homCongr ℂ (Iso.refl Y) (twoPowerIso X)).finrank_eq
-  have h' : 0 < Module.finrank ℂ (Y ⟶ X ⊗ X) := by
-    rw [← he]
-    exact h
-  exact Module.finrank_pos_iff_exists_ne_zero.mp h'
+  let _ : FiniteDimensional ℂ (Y ⟶ braidTensorPower X 0) :=
+    MTC.Fusion.IsFusionCategory.hom_finite _ _
+  obtain ⟨f, hf⟩ := Module.finrank_pos_iff_exists_ne_zero.mp h
+  refine ⟨f ≫ (twoPowerIso X).hom, ?_⟩
+  exact fun hz => hf (CategoryTheory.Limits.zero_of_comp_mono (twoPowerIso X).hom hz)
 
 /-- Saturation from an ordinary tensor-square phase law, formulated for every
 actual simple constituent rather than a chosen list of representatives. -/
@@ -52,11 +51,10 @@ theorem saturation_of_square_slope
     (hmax : ‖scalarTrace p (MTC.Fusion.unitScalarEquiv C) (selfMonodromy X) /
       pivotalDimension C p X‖ = MTC.Fusion.fpDimension C X) :
     ‖pivotalDimension C p X‖ = MTC.Fusion.fpDimension C X := by
-  have hd : 0 < ‖pivotalDimension C p X‖ := norm_pos_iff.mpr (by
-    simpa only [pivotalDimension] using Modular.unitScalar_rightTrace_ne_zero C p X)
+  have hd : pivotalDimension C p X ≠ 0 := by
+    simpa only [pivotalDimension] using Modular.unitScalar_rightTrace_ne_zero C p X
   have hunit : ‖(pivotalDimension C p X / (‖pivotalDimension C p X‖ : ℂ)) ^ 4‖ = 1 := by
-    rw [norm_pow, norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hd,
-      div_self hd.ne', one_pow]
+    simp [norm_ne_zero_iff.mpr hd]
   exact saturation_of_square_phase C p hfinite _ hunit hphase hmax
 
 end MTC.Braided.Trace

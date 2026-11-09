@@ -53,9 +53,7 @@ theorem mixed_braid_trace_eq_one_of_saturation (B : Blocks) (w : Fin B.count →
       change (((a ^ 2 : B.Matricesˣ) : B.Matrices) r) *
         ((((b ^ 2)⁻¹ : B.Matricesˣ) : B.Matrices) r) = 1
       rw [B.braid_squares_equal_on_support w ha hb hbraid hsat hw]
-      have hv := congrArg (fun u : B.Matricesˣ => (u : B.Matrices))
-        (mul_inv_cancel (b ^ 2))
-      simpa only [Units.val_mul, Units.val_one, Pi.mul_apply, Pi.one_apply] using congrFun hv r
+      exact congrFun (b ^ 2).val_inv r
     simp only [Pi.one_apply, h]
 
 end MTC.Algebra.Blocks
